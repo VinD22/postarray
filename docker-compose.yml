@@ -1,0 +1,150 @@
+# Relay local development stack.
+#
+#   pnpm docker:up      start everything
+#   pnpm db:migrate     apply SQL migrations, including RLS policies
+#   pnpm db:seed        realistic seed data
+#
+# Ports match the table in README.md. Nothing here is production configuration:
+# the credentials are the well-known local ones, every service binds to
+# 127.0.0.1 so nothing is reachable from the network, and no volume holds
+# anything worth protecting.
+#
+# The app boots without any of these except Postgres. Redis falls back to an
+# in-memory limiter for a single process, Temporal falls back to an in-process
+# test scheduler, and mail is written to the console.
+
+name: relay
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: relay-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: relay
+      # Deterministic collation, so an index built locally sorts the same way it
+      # does on the managed database.
+      POSTGRES_INITDB_ARGS: '--locale-provider=icu --icu-locale=en-US --encoding=UTF8'
+    command:
+      - postgres
+      # Logging the statements a migration runs is the difference between
+      # debugging an RLS policy in a minute and in an hour.
+      - -c
+      - log_statement=ddl
+      - -c
+      - max_connections=200
+    ports:
+      - '127.0.0.1:5432:5432'
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      # `pg_isready` alone returns true while the init scripts are still running,
+      # which is long enough for a migration to connect and fail. Ask for a real
+      # query against the real database instead.
+      test: ['CMD-SHELL', 'psql -U postgres -d relay -c "SELECT 1" || exit 1']
+      interval: 5s
+      timeout: 5s
+      retries: 20
+      start_period: 20s
+
+  redis:
+    image: redis:7-alpine
+    container_name: relay-redis
+    restart: unless-stopped
+    command: ['redis-server', '--appendonly', 'yes', '--save', '60', '1']
+    ports:
+      - '127.0.0.1:6379:6379'
+    volumes:
+      - redis-data:/data
+    healthcheck:
+      test: ['CMD', 'redis-cli', 'ping']
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  # Temporal's own persistence. Kept separate from the product database so a
+  # `pnpm db:reset` cannot destroy workflow history, and so nothing tempts us to
+  # join across the two.
+  temporal-postgres:
+    image: postgres:16-alpine
+    container_name: relay-temporal-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: temporal
+      POSTGRES_PASSWORD: temporal
+      POSTGRES_DB: temporal
+    volumes:
+      - temporal-postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U temporal -d temporal']
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  temporal:
+    image: temporalio/auto-setup:1.26.2
+    container_name: relay-temporal
+    restart: unless-stopped
+    depends_on:
+      temporal-postgres:
+        condition: service_healthy
+    environment:
+      DB: postgres12
+      DB_PORT: 5432
+      POSTGRES_USER: temporal
+      POSTGRES_PWD: temporal
+      POSTGRES_SEEDS: temporal-postgres
+      DEFAULT_NAMESPACE: default
+      DEFAULT_NAMESPACE_RETENTION: 72h
+    ports:
+      - '127.0.0.1:7233:7233'
+    healthcheck:
+      test: ['CMD', 'temporal', 'operator', 'cluster', 'health', '--address', '127.0.0.1:7233']
+      interval: 10s
+      timeout: 5s
+      retries: 20
+      start_period: 30s
+
+  temporal-ui:
+    image: temporalio/ui:2.32.0
+    container_name: relay-temporal-ui
+    restart: unless-stopped
+    depends_on:
+      temporal:
+        condition: service_started
+    environment:
+      TEMPORAL_ADDRESS: temporal:7233
+      TEMPORAL_CORS_ORIGINS: http://localhost:3000
+      TEMPORAL_UI_PORT: 8233
+    ports:
+      - '127.0.0.1:8233:8233'
+
+  # Catches every outbound email locally. Nothing leaves the machine, which is
+  # what you want when a test fixture contains an address that looks real.
+  mailpit:
+    image: axllent/mailpit:v1.21
+    container_name: relay-mailpit
+    restart: unless-stopped
+    environment:
+      MP_MAX_MESSAGES: 500
+      MP_SMTP_AUTH_ACCEPT_ANY: 1
+      MP_SMTP_AUTH_ALLOW_INSECURE: 1
+      MP_DATABASE: /data/mailpit.db
+    ports:
+      - '127.0.0.1:8025:8025' # web UI
+      - '127.0.0.1:1025:1025' # SMTP
+    volumes:
+      - mailpit-data:/data
+    healthcheck:
+      test: ['CMD', '/mailpit', 'readyz']
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  postgres-data:
+  redis-data:
+  temporal-postgres-data:
+  mailpit-data:

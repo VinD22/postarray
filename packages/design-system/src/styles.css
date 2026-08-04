@@ -1,0 +1,17 @@
+/*
+ * The single stylesheet entry point.
+ *
+ * Import this once, at the app root:
+ *
+ *   import '@relay/design-system/styles.css';
+ *
+ * `@source` tells Tailwind v4 where to scan for utility usage. The design
+ * system's own source is listed here so its classes are generated even when a
+ * consuming app only imports a couple of components; the app adds its own
+ * `@source` lines for its routes.
+ */
+
+@import 'tailwindcss';
+@import './tokens/theme.css';
+
+@source "../src";

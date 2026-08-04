@@ -1,0 +1,2812 @@
+// Relay: system of record.
+//
+// Conventions enforced here and reviewed on every change:
+//   * Every tenant-owned model carries `workspaceId` and indexes it. Row level
+//     security in `migrations/0020_rls_policies.sql` is the second enforcement
+//     point; Prisma is the third, never the first.
+//   * Two physical schemas. `app` is safe to expose through a Data API with RLS.
+//     `private` holds credentials, billing, OAuth and audit and is never granted
+//     to `anon` or `authenticated`.
+//   * Primary keys are UUIDs. The application supplies sortable UUIDv7 values;
+//     `gen_random_uuid()` is the fallback so raw SQL and migrations still work.
+//     Prefixed public identifiers (`post_...`) are a presentation concern and
+//     never reach a column.
+//   * Actor columns such as `createdByUserId` are deliberately plain indexed
+//     UUIDs rather than declared relations. They point at `app.users` through a
+//     foreign key added in SQL; keeping them out of the Prisma relation graph
+//     avoids ~120 back-relation fields on `User` that nothing would traverse.
+//   * Money is integer minor units plus an ISO 4217 code. Never a float.
+//   * Instants are `timestamptz`; a wall-clock intent always ships with its IANA
+//     zone in a sibling column.
+
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["multiSchema", "postgresqlExtensions"]
+}
+
+datasource db {
+  provider   = "postgresql"
+  url        = env("DATABASE_URL")
+  directUrl  = env("DIRECT_DATABASE_URL")
+  schemas    = ["app", "private"]
+  extensions = [pgcrypto, citext]
+}
+
+// ---------------------------------------------------------------------------
+// Enums
+// ---------------------------------------------------------------------------
+
+enum UserStatus {
+  invited
+  active
+  suspended
+  deleted
+
+  @@map("user_status")
+  @@schema("app")
+}
+
+enum WorkspaceStatus {
+  active
+  trialing
+  past_due
+  read_only
+  suspended
+  deleted
+
+  @@map("workspace_status")
+  @@schema("app")
+}
+
+enum WorkspaceRole {
+  owner
+  admin
+  manager
+  editor
+  approver
+  analyst
+  viewer
+
+  @@map("workspace_role")
+  @@schema("app")
+}
+
+enum MembershipState {
+  invited
+  active
+  suspended
+  removed
+
+  @@map("membership_state")
+  @@schema("app")
+}
+
+enum ActorType {
+  user
+  service_account
+  oauth_client
+  system
+
+  @@map("actor_type")
+  @@schema("app")
+}
+
+enum ConsentKind {
+  terms_of_service
+  privacy_notice
+  product_analytics
+  marketing_email
+  ai_improvement_program
+  affiliate_disclosure
+
+  @@map("consent_kind")
+  @@schema("app")
+}
+
+enum ConsentState {
+  granted
+  withdrawn
+  expired
+
+  @@map("consent_state")
+  @@schema("app")
+}
+
+enum SourceConsentState {
+  declared
+  verified
+  withheld
+  revoked
+
+  @@map("source_consent_state")
+  @@schema("app")
+}
+
+enum BrandSourceKind {
+  uploaded_document
+  linked_url
+  pasted_text
+  imported_export
+
+  @@map("brand_source_kind")
+  @@schema("app")
+}
+
+/// The publishing state machine. Applies to a content item as a whole and to
+/// each individual platform target. `partially_published` only ever describes an
+/// aggregate, never a single target.
+enum PublishState {
+  draft
+  validation_needed
+  approval_requested
+  approved
+  scheduled
+  preparing_media
+  dispatching
+  provider_processing
+  published
+  partially_published
+  action_required
+  retry_scheduled
+  failed_permanently
+  canceled
+  deleted_externally
+
+  @@map("publish_state")
+  @@schema("app")
+}
+
+enum CreationSurface {
+  web
+  api
+  mcp
+  cli
+  rss
+  automation_rule
+  import
+
+  @@map("creation_surface")
+  @@schema("app")
+}
+
+enum CreationMethod {
+  human
+  ai_assisted
+  imported
+  template
+  duplicated
+
+  @@map("creation_method")
+  @@schema("app")
+}
+
+enum ApprovalState {
+  pending
+  approved
+  changes_requested
+  rejected
+  expired
+  canceled
+
+  @@map("approval_state")
+  @@schema("app")
+}
+
+enum ApprovalDecisionKind {
+  approve
+  request_changes
+  reject
+
+  @@map("approval_decision_kind")
+  @@schema("app")
+}
+
+enum ApprovalPolicy {
+  none
+  single_approver
+  any_approver
+  named_approver
+  policy_auto
+
+  @@map("approval_policy")
+  @@schema("app")
+}
+
+enum ProviderKind {
+  x
+  linkedin
+  instagram
+  facebook
+  youtube
+  tiktok
+  threads
+  bluesky
+  fake
+
+  @@map("provider_kind")
+  @@schema("app")
+}
+
+enum ExternalAccountType {
+  personal_profile
+  creator_account
+  business_account
+  page
+  organization
+  channel
+  group
+
+  @@map("external_account_type")
+  @@schema("app")
+}
+
+enum ConnectionStatus {
+  active
+  action_required
+  expired
+  revoked
+  paused
+  disconnected
+
+  @@map("connection_status")
+  @@schema("app")
+}
+
+/// A capability we have not built is `not_implemented`. A capability the
+/// provider does not offer is `unsupported`. They are shown differently.
+enum CapabilityState {
+  supported
+  unsupported
+  not_implemented
+  unknown
+
+  @@map("capability_state")
+  @@schema("app")
+}
+
+enum DestinationKind {
+  community
+  board
+  group
+  organization
+  page
+  channel
+  publication
+  playlist
+
+  @@map("destination_kind")
+  @@schema("app")
+}
+
+enum MentionEntityKind {
+  person
+  company
+  page
+  organization
+  community
+
+  @@map("mention_entity_kind")
+  @@schema("app")
+}
+
+enum MediaKind {
+  image
+  video
+  document
+  audio
+
+  @@map("media_kind")
+  @@schema("app")
+}
+
+enum MediaScanState {
+  pending
+  clean
+  suspicious
+  infected
+  failed
+
+  @@map("media_scan_state")
+  @@schema("app")
+}
+
+enum RightsDeclaration {
+  owned_original
+  licensed
+  public_domain
+  user_generated_with_consent
+  unverified
+
+  @@map("rights_declaration")
+  @@schema("app")
+}
+
+enum DerivativeKind {
+  transcode
+  crop
+  resize
+  thumbnail
+  format_conversion
+  compressed
+
+  @@map("derivative_kind")
+  @@schema("app")
+}
+
+/// Provider error taxonomy from the handoff. Only `transient_provider` is ever
+/// retried automatically, and only for operations proven safe to repeat.
+enum ErrorClass {
+  user_action_required
+  content_invalid
+  transient_provider
+  permanent_provider
+  internal
+  unknown
+
+  @@map("error_class")
+  @@schema("app")
+}
+
+enum AttemptOutcome {
+  pending
+  succeeded
+  failed
+  abandoned
+
+  @@map("attempt_outcome")
+  @@schema("app")
+}
+
+enum IncidentKind {
+  invalid_token
+  permission_lost
+  review_restriction
+  rate_limited
+  account_restricted
+  provider_outage
+  refresh_failed
+
+  @@map("incident_kind")
+  @@schema("app")
+}
+
+enum IncidentState {
+  open
+  acknowledged
+  resolved
+  dismissed
+
+  @@map("incident_state")
+  @@schema("app")
+}
+
+enum AutomationRuleState {
+  draft
+  active
+  paused
+  disabled
+  archived
+
+  @@map("automation_rule_state")
+  @@schema("app")
+}
+
+enum RunState {
+  pending
+  running
+  succeeded
+  failed
+  skipped
+  blocked_by_policy
+
+  @@map("run_state")
+  @@schema("app")
+}
+
+enum FeedHealth {
+  healthy
+  degraded
+  invalid
+  stalled
+
+  @@map("feed_health")
+  @@schema("app")
+}
+
+enum RssItemState {
+  seen
+  drafted
+  scheduled
+  published
+  skipped
+  failed
+
+  @@map("rss_item_state")
+  @@schema("app")
+}
+
+enum WebhookEndpointState {
+  active
+  paused
+  disabled_on_failure
+  deleted
+
+  @@map("webhook_endpoint_state")
+  @@schema("private")
+}
+
+enum WebhookDeliveryState {
+  pending
+  delivering
+  delivered
+  failed
+  dead_lettered
+
+  @@map("webhook_delivery_state")
+  @@schema("private")
+}
+
+enum MetricAvailability {
+  available
+  unavailable
+  unsupported
+  requires_permission
+  restricted_by_provider
+
+  @@map("metric_availability")
+  @@schema("app")
+}
+
+enum MetricUnit {
+  count
+  ratio
+  seconds
+  percentage
+  currency_minor
+
+  @@map("metric_unit")
+  @@schema("app")
+}
+
+enum AggregationRule {
+  latest_snapshot
+  sum
+  average
+  max
+  not_aggregatable
+
+  @@map("aggregation_rule")
+  @@schema("app")
+}
+
+enum ExperimentState {
+  planned
+  running
+  concluded
+  abandoned
+
+  @@map("experiment_state")
+  @@schema("app")
+}
+
+enum InsightState {
+  new
+  accepted
+  dismissed
+  superseded
+
+  @@map("insight_state")
+  @@schema("app")
+}
+
+enum ShortLinkState {
+  active
+  disabled
+  expired
+  blocked
+
+  @@map("short_link_state")
+  @@schema("app")
+}
+
+enum BotClassification {
+  human
+  suspected_bot
+  known_bot
+  unknown
+
+  @@map("bot_classification")
+  @@schema("app")
+}
+
+enum SubscriptionStatus {
+  incomplete
+  trialing
+  active
+  past_due
+  canceled
+  unpaid
+
+  @@map("subscription_status")
+  @@schema("private")
+}
+
+enum BillingInterval {
+  month
+  year
+
+  @@map("billing_interval")
+  @@schema("private")
+}
+
+enum EntitlementKind {
+  boolean_flag
+  numeric_limit
+  metered_allowance
+
+  @@map("entitlement_kind")
+  @@schema("private")
+}
+
+enum InboxProcessingState {
+  received
+  verified
+  processed
+  rejected
+  duplicate
+  failed
+
+  @@map("inbox_processing_state")
+  @@schema("private")
+}
+
+enum AffiliatePartnerState {
+  applied
+  approved
+  suspended
+  terminated
+
+  @@map("affiliate_partner_state")
+  @@schema("private")
+}
+
+enum CommissionState {
+  pending
+  on_hold
+  approved
+  reversed
+  paid
+
+  @@map("commission_state")
+  @@schema("private")
+}
+
+enum PayoutBatchState {
+  open
+  locked
+  paid
+  failed
+
+  @@map("payout_batch_state")
+  @@schema("private")
+}
+
+enum OAuthClientType {
+  public
+  confidential
+
+  @@map("oauth_client_type")
+  @@schema("private")
+}
+
+enum OAuthClientStatus {
+  active
+  sandbox
+  disabled
+  deleted
+
+  @@map("oauth_client_status")
+  @@schema("private")
+}
+
+enum OAuthTransactionPurpose {
+  connect_social_account
+  reconnect_social_account
+  authorize_developer_app
+  mcp_session
+
+  @@map("oauth_transaction_purpose")
+  @@schema("private")
+}
+
+enum GrowthPlanState {
+  draft
+  in_review
+  approved
+  superseded
+  discarded
+
+  @@map("growth_plan_state")
+  @@schema("app")
+}
+
+/// Catalog lifecycle for admin-curated records. Nothing becomes customer visible
+/// before `active`, and `stale` is shown honestly rather than hidden.
+enum CatalogState {
+  draft
+  reviewed
+  active
+  stale
+  retired
+
+  @@map("catalog_state")
+  @@schema("app")
+}
+
+enum OpportunityKind {
+  directory
+  community
+  publication
+  launch_platform
+  partner
+  integration_marketplace
+  newsletter
+
+  @@map("opportunity_kind")
+  @@schema("app")
+}
+
+enum MatchDecision {
+  proposed
+  accepted
+  dismissed
+  in_progress
+  completed
+  rejected_by_source
+
+  @@map("match_decision")
+  @@schema("app")
+}
+
+enum ToolCategory {
+  image_editing
+  video_editing
+  ugc
+  research
+  automation
+  analytics
+  accessibility
+  asset_management
+
+  @@map("tool_category")
+  @@schema("app")
+}
+
+enum DeletionRequestState {
+  requested
+  verifying
+  scheduled
+  executing
+  completed
+  canceled
+  failed
+
+  @@map("deletion_request_state")
+  @@schema("app")
+}
+
+enum DataExportState {
+  requested
+  building
+  ready
+  delivered
+  expired
+  failed
+
+  @@map("data_export_state")
+  @@schema("app")
+}
+
+enum SessionState {
+  active
+  expired
+  revoked
+
+  @@map("session_state")
+  @@schema("private")
+}
+
+// ---------------------------------------------------------------------------
+// Identity and tenancy
+// ---------------------------------------------------------------------------
+
+model User {
+  id             String     @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  /// Supabase `auth.users.id`. Authentication is Supabase's job; this row is
+  /// our profile and tenancy anchor.
+  authSubjectId  String?    @unique @map("auth_subject_id") @db.Uuid
+  email          String     @unique @db.Citext
+  emailVerifiedAt DateTime? @map("email_verified_at") @db.Timestamptz(6)
+  displayName    String     @map("display_name")
+  avatarUrl      String?    @map("avatar_url")
+  status         UserStatus @default(active)
+  locale         String     @default("en")
+  timeZone       String     @default("UTC") @map("time_zone")
+  mfaEnrolledAt  DateTime?  @map("mfa_enrolled_at") @db.Timestamptz(6)
+  lastSeenAt     DateTime?  @map("last_seen_at") @db.Timestamptz(6)
+  createdAt      DateTime   @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt      DateTime   @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  aliases     UserAlias[]
+  memberships Membership[]
+  sessions    UserSession[]
+  consents    Consent[]
+
+  @@index([status])
+  @@map("users")
+  @@schema("app")
+}
+
+/// A username is a verified alias onto an existing identity, never a credential
+/// by itself. `normalizedHandle` is NFKC + conservative lowercase so confusables
+/// collapse before the unique index is consulted.
+model UserAlias {
+  id               String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId           String    @map("user_id") @db.Uuid
+  handle           String
+  normalizedHandle String    @unique @map("normalized_handle") @db.Citext
+  verifiedAt       DateTime? @map("verified_at") @db.Timestamptz(6)
+  isPrimary        Boolean   @default(false) @map("is_primary")
+  reservedReason   String?   @map("reserved_reason")
+  createdAt        DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt        DateTime  @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("user_aliases")
+  @@schema("app")
+}
+
+model Workspace {
+  id              String          @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name            String
+  slug            String          @unique @db.Citext
+  ownerUserId     String          @map("owner_user_id") @db.Uuid
+  status          WorkspaceStatus @default(trialing)
+  defaultLocale   String          @default("en") @map("default_locale")
+  defaultTimeZone String          @default("UTC") @map("default_time_zone")
+  /// Set by an operator to stop every outbound provider call for this tenant.
+  killSwitchAt    DateTime?       @map("kill_switch_at") @db.Timestamptz(6)
+  killSwitchReason String?        @map("kill_switch_reason")
+  deletedAt       DateTime?       @map("deleted_at") @db.Timestamptz(6)
+  createdAt       DateTime        @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt       DateTime        @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  memberships             Membership[]
+  rolePermissions         RolePermission[]
+  serviceAccounts         ServiceAccount[]
+  apiKeys                 ApiKey[]
+  auditEvents             AuditEvent[]
+  sessions                UserSession[]
+  consents                Consent[]
+  brands                  Brand[]
+  businessProfiles        BusinessProfile[]
+  brandSources            BrandSource[]
+  glossaryTerms           GlossaryTerm[]
+  campaigns               Campaign[]
+  contentItems            ContentItem[]
+  contentVersions         ContentVersion[]
+  postVariants            PostVariant[]
+  postingSets             PostingSet[]
+  signatures              Signature[]
+  providerDestinations    ProviderDestination[]
+  mentionEntities         MentionEntity[]
+  approvalRequests        ApprovalRequest[]
+  approvalDecisions       ApprovalDecision[]
+  commentThreadItems      CommentThreadItem[]
+  growthPlans             GrowthPlan[]
+  opportunityMatches      StrategyOpportunityMatch[]
+  socialConnections       SocialConnection[]
+  socialCredentials       SocialCredential[]
+  oauthTransactions       OAuthTransaction[]
+  oauthClients            OAuthClient[]
+  oauthGrants             OAuthGrant[]
+  mediaAssets             MediaAsset[]
+  mediaDerivatives        MediaDerivative[]
+  publishJobs             PublishJob[]
+  publishAttempts         PublishAttempt[]
+  publicationReceipts     PublicationReceipt[]
+  providerLimits          ProviderLimit[]
+  connectionIncidents     ConnectionIncident[]
+  automationRules         AutomationRule[]
+  automationRuleRuns      AutomationRuleRun[]
+  rssFeeds                RssFeed[]
+  rssFeedItems            RssFeedItem[]
+  webhookEndpoints        WebhookEndpoint[]
+  webhookDeliveries       WebhookDelivery[]
+  metricObservations      MetricObservation[]
+  analyticsSyncRuns       AnalyticsSyncRun[]
+  experiments             Experiment[]
+  insights                Insight[]
+  shortLinks              ShortLink[]
+  shortLinkClicks         ShortLinkClick[]
+  polarCustomer           PolarCustomer?
+  subscriptions           Subscription[]
+  entitlements            Entitlement[]
+  usageEvents             UsageEvent[]
+  affiliatePartners       AffiliatePartner[]
+  referralAttributions    ReferralAttribution[]
+  commissionLedgerEntries CommissionLedger[]
+  deletionRequests        DeletionRequest[]
+  dataExports             DataExport[]
+
+  @@index([ownerUserId])
+  @@index([status])
+  @@map("workspaces")
+  @@schema("app")
+}
+
+model Membership {
+  id            String          @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  workspaceId   String          @map("workspace_id") @db.Uuid
+  userId        String          @map("user_id") @db.Uuid
+  role          WorkspaceRole
+  state         MembershipState @default(invited)
+  /// Empty means "every brand in the workspace".
+  brandScope    String[]        @default([]) @map("brand_scope") @db.Uuid
+  invitedByUserId String?       @map("invited_by_user_id") @db.Uuid
+  invitedAt     DateTime?       @map("invited_at") @db.Timestamptz(6)
+  acceptedAt    DateTime?       @map("accepted_at") @db.Timestamptz(6)
+  removedAt     DateTime?       @map("removed_at") @db.Timestamptz(6)
+  createdAt     DateTime        @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt     DateTime        @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  workspace Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([workspaceId, userId])
+  @@index([workspaceId])
+  @@index([userId])
+  @@index([workspaceId, role, state])
+  @@map("memberships")
+  @@schema("app")
+}
+
+/// Built-in roles are code. This table stores per-workspace grants and denials
+/// layered on top, which is what a future custom role becomes.
+model RolePermission {
+  id          String        @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  workspaceId String        @map("workspace_id") @db.Uuid
+  role        WorkspaceRole
+  permission  String
+  effect      String        @default("allow")
+  createdAt   DateTime      @default(now()) @map("created_at") @db.Timestamptz(6)
+
+  workspace Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+
+  @@unique([workspaceId, role, permission])
+  @@index([workspaceId])
+  @@map("role_permissions")
+  @@schema("app")
+}
+
+model ServiceAccount {
+  id                  String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  workspaceId         String   @map("workspace_id") @db.Uuid
+  name                String
+  description         String?
+  scopes              String[] @default([])
+  brandScope          String[] @default([]) @map("brand_scope") @db.Uuid
+  connectionScope     String[] @default([]) @map("connection_scope") @db.Uuid
+  providerScope       ProviderKind[] @default([]) @map("provider_scope")
+  localeScope         String[] @default([]) @map("locale_scope")
+  approvedDomains     String[] @default([]) @map("approved_domains")
+  maxDailyPublishes   Int?     @map("max_daily_publishes")
+  maxLookAheadDays    Int?     @map("max_look_ahead_days")
+  /// 0 read, 1 draft, 2 schedule within preapproval, 3 human confirmation.
+  maxApprovalLevel    Int      @default(1) @map("max_approval_level")
+  disabledAt          DateTime? @map("disabled_at") @db.Timestamptz(6)
+  createdByUserId     String   @map("created_by_user_id") @db.Uuid
+  createdAt           DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt           DateTime @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  workspace Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  apiKeys   ApiKey[]
+
+  @@unique([workspaceId, name])
+  @@index([workspaceId])
+  @@map("service_accounts")
+  @@schema("app")
+}
+
+/// Only the hash is stored. `prefix` is the short public fragment shown in the
+/// UI so a key can be identified without revealing it.
+model ApiKey {
+  id               String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  workspaceId      String    @map("workspace_id") @db.Uuid
+  serviceAccountId String?   @map("service_account_id") @db.Uuid
+  name             String
+  prefix           String    @unique
+  secretHash       String    @map("secret_hash")
+  hashAlgorithm    String    @default("argon2id") @map("hash_algorithm")
+  scopes           String[]  @default([])
+  expiresAt        DateTime? @map("expires_at") @db.Timestamptz(6)
+  lastUsedAt       DateTime? @map("last_used_at") @db.Timestamptz(6)
+  revokedAt        DateTime? @map("revoked_at") @db.Timestamptz(6)
+  createdByUserId  String    @map("created_by_user_id") @db.Uuid
+  createdAt        DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
+
+  workspace      Workspace       @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  serviceAccount ServiceAccount? @relation(fields: [serviceAccountId], references: [id], onDelete: SetNull)
+
+  @@index([workspaceId])
+  @@index([serviceAccountId])
+  @@map("api_keys")
+  @@schema("private")
+}
+
+/// Append only. `0040_audit.sql` installs a trigger that rejects UPDATE and
+/// DELETE, including for the owner role.
+model AuditEvent {
+  id             String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  workspaceId    String    @map("workspace_id") @db.Uuid
+  actorType      ActorType @map("actor_type")
+  actorId        String?   @map("actor_id") @db.Uuid
+  /// Set when the action arrived through a third-party developer application.
+  actorClientId  String?   @map("actor_client_id") @db.Uuid
+  surface        CreationSurface
+  action         String
+  targetType     String    @map("target_type")
+  targetId       String?   @map("target_id") @db.Uuid
+  beforeHash     String?   @map("before_hash")
+  afterHash      String?   @map("after_hash")
+  /// Sanitized. Never a token, provider payload or raw request body.
+  metadata       Json      @default("{}")
+  ipAddress      String?   @map("ip_address") @db.Inet
+  userAgent      String?   @map("user_agent")
+  correlationId  String?   @map("correlation_id")
+  createdAt      DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
+
+  /// Restrict, not Cascade. The audit log outlives the tenant: a workspace is
+  /// soft deleted through `deletedAt`, and the row is only removed for real once
+  /// the retention window has passed and `private.prune_audit_events()` has run.
+  /// A cascade here would let deleting a workspace erase the evidence of what
+  /// happened in it, which is precisely what an audit log exists to prevent.
+  workspace Workspace @relation(fields: [workspaceId], references: [id], onDelete: Restrict)
+
+  @@index([workspaceId, createdAt(sort: Desc)])
+  @@index([workspaceId, targetType, targetId])
+  @@index([workspaceId, actorType, actorId, createdAt(sort: Desc)])
+  @@index([correlationId])
+  @@map("audit_events")
+  @@schema("private")
+}
+
+/// Session metadata only. The session secret lives in Supabase Auth; this row
+/// exists so a user can review and revoke devices and so privileged reads are
+/// attributable.
+model UserSession {
+  id             String       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId         String       @map("user_id") @db.Uuid
+  workspaceId    String?      @map("workspace_id") @db.Uuid
+  state          SessionState @default(active)
+  authMethod     String       @map("auth_method")
+  mfaSatisfiedAt DateTime?    @map("mfa_satisfied_at") @db.Timestamptz(6)
+  ipAddress      String?      @map("ip_address") @db.Inet
+  userAgent      String?      @map("user_agent")
+  lastSeenAt     DateTime?    @map("last_seen_at") @db.Timestamptz(6)
+  expiresAt      DateTime     @map("expires_at") @db.Timestamptz(6)
+  revokedAt      DateTime?    @map("revoked_at") @db.Timestamptz(6)
+  createdAt      DateTime     @default(now()) @map("created_at") @db.Timestamptz(6)
+
+  user      User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  workspace Workspace? @relation(fields: [workspaceId], references: [id], onDelete: SetNull)
+
+  @@index([userId, state])
+  @@index([workspaceId])
+  @@map("user_sessions")
+  @@schema("private")
+}
+
+model Consent {
+  id              String       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId          String       @map("user_id") @db.Uuid
+  workspaceId     String?      @map("workspace_id") @db.Uuid
+  kind            ConsentKind
+  state           ConsentState @default(granted)
+  documentVersion String       @map("document_version")
+  grantedAt       DateTime     @default(now()) @map("granted_at") @db.Timestamptz(6)
+  withdrawnAt     DateTime?    @map("withdrawn_at") @db.Timestamptz(6)
+  ipAddress       String?      @map("ip_address") @db.Inet
+  createdAt       DateTime     @default(now()) @map("created_at") @db.Timestamptz(6)
+
+  user      User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  workspace Workspace? @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, kind, documentVersion])
+  @@index([workspaceId])
+  @@index([userId, kind])
+  @@map("consents")
+  @@schema("app")
+}
+
+// ---------------------------------------------------------------------------
+// Brands and content
+// ---------------------------------------------------------------------------
+
+model Brand {
+  id                  String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  workspaceId         String   @map("workspace_id") @db.Uuid
+  name                String
+  slug                String   @db.Citext
+  voice               String?
+  audience            String?
+  approvedClaims      String[] @default([]) @map("approved_claims")
+  blockedTerms        String[] @default([]) @map("blocked_terms")
+  localeRules         Json     @default("{}") @map("locale_rules")
+  domains             String[] @default([])
+  /// Default AI or paid-partnership disclosure appended where a platform
+  /// requires one. Never silently applied without preview.
+  disclosureDefaults  Json     @default("{}") @map("disclosure_defaults")
+  defaultTimeZone     String?  @map("default_time_zone")
+  defaultShortLinkOn  Boolean  @default(false) @map("default_short_link_on")
+  archivedAt          DateTime? @map("archived_at") @db.Timestamptz(6)
+  createdAt           DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt           DateTime @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  workspace            Workspace                @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  businessProfiles     BusinessProfile[]
+  brandSources         BrandSource[]
+  glossaryTerms        GlossaryTerm[]
+  campaigns            Campaign[]
+  contentItems         ContentItem[]
+  signatures           Signature[]
+  postingSets          PostingSet[]
+  socialConnections    SocialConnection[]
+  growthPlans          GrowthPlan[]
+  shortLinks           ShortLink[]
+  automationRules      AutomationRule[]
+  rssFeeds             RssFeed[]
+
+  @@unique([workspaceId, slug])
+  @@index([workspaceId])
+  @@map("brands")
+  @@schema("app")
+}
+
+/// Versioned. A new revision never overwrites the confirmed one, because an
+/// approved growth plan points at the exact profile version it was built from.
+model BusinessProfile {
+  id                 String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  workspaceId        String    @map("workspace_id") @db.Uuid
+  brandId            String    @map("brand_id") @db.Uuid
+  version            Int       @default(1)
+  productUrl         String?   @map("product_url")
+  productUrlVerifiedAt DateTime? @map("product_url_verified_at") @db.Timestamptz(6)
+  description        String?
+  category           String?
+  markets            String[]  @default([])
+  languages          String[]  @default([])
+  idealCustomer      String?   @map("ideal_customer")
+  objective          String?
+  conversionEvent    String?   @map("conversion_event")
+  existingChannels   Json      @default("[]") @map("existing_channels")
+  /// Facts the user explicitly confirmed. AI never promotes an inference here.
+  provenClaims       Json      @default("[]") @map("proven_claims")
+  prohibitedClaims   String[]  @default([]) @map("prohibited_claims")
+  competitors        Json      @default("[]")
+  weeklyCapacityHours Int?     @map("weekly_capacity_hours")
+  constraints        String?
+  /// 0-100. Drives the "missing information" warnings in a generated plan.
+  completenessScore  Int       @default(0) @map("completeness_score")
+  confirmedAt        DateTime? @map("confirmed_at") @db.Timestamptz(6)
+  confirmedByUserId  String?   @map("confirmed_by_user_id") @db.Uuid
+  createdAt          DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt          DateTime  @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  workspace   Workspace    @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  brand       Brand        @relation(fields: [brandId], references: [id], onDelete: Cascade)
+  growthPlans GrowthPlan[]
+
+  @@unique([brandId, version])
+  @@index([workspaceId])
+  @@index([workspaceId, brandId, confirmedAt(sort: Desc)])
+  @@map("business_profiles")
+  @@schema("app")
+}
+
+model BrandSource {
+  id            String             @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  workspaceId   String             @map("workspace_id") @db.Uuid
+  brandId       String             @map("brand_id") @db.Uuid
+  kind          BrandSourceKind
+  label         String
+  sourceUrl     String?            @map("source_url")
+  storageKey    String?            @map("storage_key")
+  checksum      String?
+  byteSize      Int?               @map("byte_size")
+  mimeType      String?            @map("mime_type")
+  consentState  SourceConsentState @default(declared) @map("consent_state")
+  /// Retrieved text is untrusted prompt input. It is delimited before it ever
+  /// reaches a model and can never change tool policy.
+  extractedText String?            @map("extracted_text")
+  retrievedAt   DateTime?          @map("retrieved_at") @db.Timestamptz(6)
+  createdByUserId String           @map("created_by_user_id") @db.Uuid
+  createdAt     DateTime           @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt     DateTime           @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  workspace Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  brand     Brand     @relation(fields: [brandId], references: [id], onDelete: Cascade)
+
+  @@index([workspaceId])
+  @@index([workspaceId, brandId])
+  @@map("brand_sources")
+  @@schema("app")
+}
+
+model GlossaryTerm {
+  id                   String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  workspaceId          String   @map("workspace_id") @db.Uuid
+  brandId              String   @map("brand_id") @db.Uuid
+  locale               String
+  term                 String
+  preferredTranslation String?  @map("preferred_translation")
+  prohibitedTranslations String[] @default([]) @map("prohibited_translations")
+  context              String?
+  doNotTranslate       Boolean  @default(false) @map("do_not_translate")
+  createdAt            DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt            DateTime @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  workspace Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  brand     Brand     @relation(fields: [brandId], references: [id], onDelete: Cascade)
+
+  @@unique([brandId, locale, term])
+  @@index([workspaceId])
+  @@map("glossary_terms")
+  @@schema("app")
+}
+
+model Campaign {
+  id             String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  workspaceId    String    @map("workspace_id") @db.Uuid
+  brandId        String    @map("brand_id") @db.Uuid
+  name           String
+  objective      String?
+  tags           String[]  @default([])
+  utmDefaults    Json      @default("{}") @map("utm_defaults")
+  startsAt       DateTime? @map("starts_at") @db.Timestamptz(6)
+  endsAt         DateTime? @map("ends_at") @db.Timestamptz(6)
+  archivedAt     DateTime? @map("archived_at") @db.Timestamptz(6)
+  createdByUserId String   @map("created_by_user_id") @db.Uuid
+  createdAt      DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt      DateTime  @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  workspace    Workspace     @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  brand        Brand         @relation(fields: [brandId], references: [id], onDelete: Cascade)
+  contentItems ContentItem[]
+  experiments  Experiment[]
+  shortLinks   ShortLink[]
+
+  @@index([workspaceId])
+  @@index([workspaceId, brandId])
+  @@map("campaigns")
+  @@schema("app")
+}
+
+/// The canonical idea. Copy lives in immutable `ContentVersion` rows; per-target
+/// output lives in `PostVariant`.
+model ContentItem {
+  id               String          @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  workspaceId      String          @map("workspace_id") @db.Uuid
+  brandId          String          @map("brand_id") @db.Uuid
+  campaignId       String?         @map("campaign_id") @db.Uuid
+  postingSetId     String?         @map("posting_set_id") @db.Uuid
+  title            String?
+  brief            String?
+  state            PublishState    @default(draft)
+  approvalPolicy   ApprovalPolicy  @default(none) @map("approval_policy")
+  currentVersionId String?         @unique @map("current_version_id") @db.Uuid
+  approvedVersionId String?        @map("approved_version_id") @db.Uuid
+  /// Wall-clock intent plus its zone. The UTC instant lives on `PublishJob`.
+  scheduledAt      DateTime?       @map("scheduled_at") @db.Timestamptz(6)
+  scheduledTimeZone String?        @map("scheduled_time_zone")
+  approvedAt       DateTime?       @map("approved_at") @db.Timestamptz(6)
+  publishedAt      DateTime?       @map("published_at") @db.Timestamptz(6)
+  canceledAt       DateTime?       @map("canceled_at") @db.Timestamptz(6)
+  /// Repeat cadence in days: 1, 2, 3, 4, 5, 6, 7, 14 or 30. Null means once.
+  repeatEveryDays  Int?            @map("repeat_every_days")
+  repeatUntil      DateTime?       @map("repeat_until") @db.Timestamptz(6)
+  repeatCount      Int?            @map("repeat_count")
+  repeatOfItemId   String?         @map("repeat_of_item_id") @db.Uuid
+  surface          CreationSurface @default(web)
+  creationMethod   CreationMethod  @default(human) @map("creation_method")
+  createdByUserId  String?         @map("created_by_user_id") @db.Uuid
+  createdByServiceAccountId String? @map("created_by_service_account_id") @db.Uuid
+  correlationId    String?         @map("correlation_id")
+  createdAt        DateTime        @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt        DateTime        @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  workspace      Workspace       @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  brand          Brand           @relation(fields: [brandId], references: [id], onDelete: Cascade)
+  campaign       Campaign?       @relation(fields: [campaignId], references: [id], onDelete: SetNull)
+  postingSet     PostingSet?     @relation(fields: [postingSetId], references: [id], onDelete: SetNull)
+  currentVersion ContentVersion? @relation("ContentItemCurrentVersion", fields: [currentVersionId], references: [id], onDelete: SetNull)
+
+  versions         ContentVersion[]  @relation("ContentItemVersions")
+  variants         PostVariant[]
+  approvalRequests ApprovalRequest[]
+  publishJobs      PublishJob[]
+  insights         Insight[]
+
+  @@index([workspaceId])
+  // Calendar range query: one workspace, a date window, filtered by state.
+  @@index([workspaceId, scheduledAt, state])
+  @@index([workspaceId, brandId, state])
+  @@index([workspaceId, campaignId])
+  @@index([repeatOfItemId])
+  @@map("content_items")
+  @@schema("app")
+}
+
+/// Immutable. `0030_constraints.sql` installs a trigger that rejects UPDATE.
+/// Every publish attempt references exactly one of these rows.
+model ContentVersion {
+  id             String         @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  workspaceId    String         @map("workspace_id") @db.Uuid
+  contentItemId  String         @map("content_item_id") @db.Uuid
+  version        Int
+  body           String
+  /// The canonical master payload: blocks, media references, link decisions,
+  /// applied signature and frozen short URLs.
+  payload        Json           @default("{}")
+  /// SHA-256 over the canonicalized payload. Copied onto every receipt.
+  contentHash    String         @map("content_hash")
+  locale         String         @default("en")
+  creationMethod CreationMethod @default(human) @map("creation_method")
+  aiModel        String?        @map("ai_model")
+  aiPromptVersion String?       @map("ai_prompt_version")
+  sourceIds      String[]       @default([]) @map("source_ids") @db.Uuid
+  createdByUserId String?       @map("created_by_user_id") @db.Uuid
+  createdAt      DateTime       @default(now()) @map("created_at") @db.Timestamptz(6)
+
+  workspace   Workspace   @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  contentItem ContentItem @relation("ContentItemVersions", fields: [contentItemId], references: [id], onDelete: Cascade)
+
+  currentOf        ContentItem?         @relation("ContentItemCurrentVersion")
+  variants         PostVariant[]
+  approvalRequests ApprovalRequest[]
+  publishJobs      PublishJob[]
+  publishAttempts  PublishAttempt[]
+  receipts         PublicationReceipt[]
+
+  @@unique([contentItemId, version])
+  @@index([workspaceId])
+  @@index([workspaceId, contentHash])
+  @@map("content_versions")
+  @@schema("app")
+}
+
+/// One platform target. `inheritedFields` records what still tracks the master
+/// so the composer can show inherited versus overridden without guessing.
+model PostVariant {
+  id               String       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  workspaceId      String       @map("workspace_id") @db.Uuid
+  contentItemId    String       @map("content_item_id") @db.Uuid
+  contentVersionId String       @map("content_version_id") @db.Uuid
+  connectionId     String       @map("connection_id") @db.Uuid
+  destinationId    String?      @map("destination_id") @db.Uuid
+  provider         ProviderKind
+  locale           String       @default("en")
+  body             String
+  /// Provider-specific settings: privacy, comment/duet/stitch toggles, title,
+  /// description, thumbnail choice, category, alt text.
+  settings         Json         @default("{}")
+  mediaAssetIds    String[]     @default([]) @map("media_asset_ids") @db.Uuid
+  mentionEntityIds String[]     @default([]) @map("mention_entity_ids") @db.Uuid
+  signatureId      String?      @map("signature_id") @db.Uuid
+  inheritedFields  String[]     @default([]) @map("inherited_fields")
+  overriddenFields String[]     @default([]) @map("overridden_fields")
+  state            PublishState @default(draft)
+  /// Snapshot of the capability contract used at approval, revalidated
+  /// immediately before dispatch.
+  capabilitySnapshotVersion String? @map("capability_snapshot_version")
+  validationIssues Json         @default("[]") @map("validation_issues")
+  /// Integer minor units of `estimatedCostCurrency`. X charges per operation and
+  /// a post containing a URL costs materially more.
+  estimatedCostMinor Int?       @map("estimated_cost_minor")
+  estimatedCostCurrency String? @map("estimated_cost_currency")
+  createdAt        DateTime     @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt        DateTime     @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  workspace      Workspace            @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  contentItem    ContentItem          @relation(fields: [contentItemId], references: [id], onDelete: Cascade)
+  contentVersion ContentVersion       @relation(fields: [contentVersionId], references: [id], onDelete: Cascade)
+  connection     SocialConnection     @relation(fields: [connectionId], references: [id], onDelete: Cascade)
+  destination    ProviderDestination? @relation(fields: [destinationId], references: [id], onDelete: SetNull)
+  signature      Signature?           @relation(fields: [signatureId], references: [id], onDelete: SetNull)
+
+  commentItems CommentThreadItem[]
+  publishJobs  PublishJob[]
+
+  @@unique([contentVersionId, connectionId])
+  @@index([workspaceId])
+  @@index([workspaceId, connectionId, state])
+  @@index([contentItemId])
+  @@map("post_variants")
+  @@schema("app")
+}
+
+/// A reusable multi-platform group of targets, defaults and follow-up skeletons.
+/// Applying a Set produces an independent draft; later Set edits never rewrite
+/// an approved or scheduled post.
+model PostingSet {
+  id              String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  workspaceId     String   @map("workspace_id") @db.Uuid
+  brandId         String   @map("brand_id") @db.Uuid
+  name            String
+  description     String?
+  connectionIds   String[] @default([]) @map("connection_ids") @db.Uuid
+  /// Per-provider placeholder copy, media placement rules and settings.
+  targetDefaults  Json     @default("{}") @map("target_defaults")
+  commentSkeleton Json     @default("[]") @map("comment_skeleton")
+  signatureId     String?  @map("signature_id") @db.Uuid
+  approvalPolicy  ApprovalPolicy @default(none) @map("approval_policy")
+  slotBehavior    String   @default("next_free_slot") @map("slot_behavior")
+  archivedAt      DateTime? @map("archived_at") @db.Timestamptz(6)
+  createdByUserId String   @map("created_by_user_id") @db.Uuid
+  createdAt       DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt       DateTime @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  workspace Workspace  @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  brand     Brand      @relation(fields: [brandId], references: [id], onDelete: Cascade)
+  signature Signature? @relation(fields: [signatureId], references: [id], onDelete: SetNull)
+
+  contentItems ContentItem[]
+
+  @@unique([workspaceId, brandId, name])
+  @@index([workspaceId])
+  @@map("posting_sets")
+  @@schema("app")
+}
+
+model Signature {
+  id           String        @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  workspaceId  String        @map("workspace_id") @db.Uuid
+  brandId      String        @map("brand_id") @db.Uuid
+  name         String
+  body         String
+  locale       String        @default("en")
+  providers    ProviderKind[] @default([])
+  autoApply    Boolean       @default(false) @map("auto_apply")
+  archivedAt   DateTime?     @map("archived_at") @db.Timestamptz(6)
+  createdAt    DateTime      @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt    DateTime      @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  workspace Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  brand     Brand     @relation(fields: [brandId], references: [id], onDelete: Cascade)
+
+  postVariants PostVariant[]
+  postingSets  PostingSet[]
+
+  @@unique([workspaceId, brandId, name, locale])
+  @@index([workspaceId])
+  @@map("signatures")
+  @@schema("app")
+}
+
+/// Communities, boards, groups, organizations, Pages, channels and publications
+/// discovered through the provider API for one connection.
+model ProviderDestination {
+  id                 String          @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  workspaceId        String          @map("workspace_id") @db.Uuid
+  connectionId       String          @map("connection_id") @db.Uuid
+  provider           ProviderKind
+  kind               DestinationKind
+  externalId         String          @map("external_id")
+  displayName        String          @map("display_name")
+  permalink          String?
+  canPublish         Boolean         @default(true) @map("can_publish")
+  metadata           Json            @default("{}")
+  refreshedAt        DateTime        @default(now()) @map("refreshed_at") @db.Timestamptz(6)
+  staleAfter         DateTime?       @map("stale_after") @db.Timestamptz(6)
+  createdAt          DateTime        @default(now()) @map("created_at") @db.Timestamptz(6)
+
+  workspace  Workspace        @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  connection SocialConnection @relation(fields: [connectionId], references: [id], onDelete: Cascade)
+
+  postVariants PostVariant[]
+
+  @@unique([connectionId, kind, externalId])
+  @@index([workspaceId])
+  @@index([workspaceId, connectionId, kind])
+  @@map("provider_destinations")
+  @@schema("app")
+}
+
+/// A resolved provider entity. A plain display string is never published as a
+/// native tag; without a resolved `externalId` the composer falls back to plain
+/// text and says so.
+model MentionEntity {
+  id           String            @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  workspaceId  String            @map("workspace_id") @db.Uuid
+  connectionId String            @map("connection_id") @db.Uuid
+  provider     ProviderKind
+  kind         MentionEntityKind
+  externalId   String            @map("external_id")
+  handle       String?
+  displayLabel String            @map("display_label")
+  avatarUrl    String?           @map("avatar_url")
+  resolvedAt   DateTime          @default(now()) @map("resolved_at") @db.Timestamptz(6)
+  expiresAt    DateTime?         @map("expires_at") @db.Timestamptz(6)
+  metadata     Json              @default("{}")
+
+  workspace  Workspace        @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  connection SocialConnection @relation(fields: [connectionId], references: [id], onDelete: Cascade)
+
+  @@unique([connectionId, provider, externalId])
+  @@index([workspaceId])
+  @@index([workspaceId, provider, handle])
+  @@map("mention_entities")
+  @@schema("app")
+}
+
+model ApprovalRequest {
+  id               String        @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  workspaceId      String        @map("workspace_id") @db.Uuid
+  contentItemId    String        @map("content_item_id") @db.Uuid
+  contentVersionId String        @map("content_version_id") @db.Uuid
+  policy           ApprovalPolicy
+  state            ApprovalState @default(pending)
+  requestedByUserId String?      @map("requested_by_user_id") @db.Uuid
+  requestedByServiceAccountId String? @map("requested_by_service_account_id") @db.Uuid
+  assignedUserIds  String[]      @default([]) @map("assigned_user_ids") @db.Uuid
+  note             String?
+  dueAt            DateTime?     @map("due_at") @db.Timestamptz(6)
+  /// Set the moment the request reaches `approved`. `0030_constraints.sql`
+  /// rejects a publish job whose scheduled instant precedes this.
+  resolvedAt       DateTime?     @map("resolved_at") @db.Timestamptz(6)
+  createdAt        DateTime      @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt        DateTime      @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  workspace      Workspace      @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  contentItem    ContentItem    @relation(fields: [contentItemId], references: [id], onDelete: Cascade)
+  contentVersion ContentVersion @relation(fields: [contentVersionId], references: [id], onDelete: Cascade)
+
+  decisions   ApprovalDecision[]
+  publishJobs PublishJob[]
+
+  @@index([workspaceId])
+  @@index([workspaceId, state, dueAt])
+  @@index([contentItemId])
+  @@map("approval_requests")
+  @@schema("app")
+}
+
+model ApprovalDecision {
+  id                String               @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  workspaceId       String               @map("workspace_id") @db.Uuid
+  approvalRequestId String               @map("approval_request_id") @db.Uuid
+  decision          ApprovalDecisionKind
+  decidedByUserId   String               @map("decided_by_user_id") @db.Uuid
+  comment           String?
+  /// Hash of the exact version the approver saw. If it differs at dispatch the
+  /// job stops and reapproval is required.
+  reviewedContentHash String             @map("reviewed_content_hash")
+  createdAt         DateTime             @default(now()) @map("created_at") @db.Timestamptz(6)
+
+  workspace       Workspace       @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  approvalRequest ApprovalRequest @relation(fields: [approvalRequestId], references: [id], onDelete: Cascade)
+
+  @@index([workspaceId])
+  @@index([approvalRequestId, createdAt])
+  @@map("approval_decisions")
+  @@schema("app")
+}
+
+/// A first comment or an ordered thread segment. A failed segment never
+/// retroactively fails the root post that already published.
+model CommentThreadItem {
+  id             String       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  workspaceId    String       @map("workspace_id") @db.Uuid
+  postVariantId  String       @map("post_variant_id") @db.Uuid
+  position       Int
+  body           String
+  mediaAssetIds  String[]     @default([]) @map("media_asset_ids") @db.Uuid
+  /// Presets are 1, 2, 5, 10, 15, 30, 60 and 120 minutes, or a custom value.
+  delayMinutes   Int          @default(0) @map("delay_minutes")
+  /// A follow-up may be authored by a different owned connection where the
+  /// provider allows it.
+  authorConnectionId String?  @map("author_connection_id") @db.Uuid
+  state          PublishState @default(draft)
+  settings       Json         @default("{}")
+  createdAt      DateTime     @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt      DateTime     @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  workspace   Workspace   @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  postVariant PostVariant @relation(fields: [postVariantId], references: [id], onDelete: Cascade)
+
+  publishJobs PublishJob[]
+
+  @@unique([postVariantId, position])
+  @@index([workspaceId])
+  @@map("comment_thread_items")
+  @@schema("app")
+}
+
+// ---------------------------------------------------------------------------
+// Growth advisor
+// ---------------------------------------------------------------------------
+
+/// The versioned `GrowthPlan` document. `sections` holds the nine required
+/// sections validated against one schema shared by UI, API, MCP and exports.
+model GrowthPlan {
+  id                String          @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  workspaceId       String          @map("workspace_id") @db.Uuid
+  brandId           String          @map("brand_id") @db.Uuid
+  businessProfileId String          @map("business_profile_id") @db.Uuid
+  version           Int             @default(1)
+  state             GrowthPlanState @default(draft)
+  objective         String?
+  schemaVersion     String          @default("1") @map("schema_version")
+  sections          Json            @default("{}")
+  channelPriorities Json            @default("[]") @map("channel_priorities")
+  contentPillars    Json            @default("[]") @map("content_pillars")
+  cadence           Json            @default("{}")
+  ugcPlan           Json            @default("{}") @map("ugc_plan")
+  measurementPlan   Json            @default("{}") @map("measurement_plan")
+  risksAndUnknowns  Json            @default("[]") @map("risks_and_unknowns")
+  aiModel           String?         @map("ai_model")
+  aiPromptVersion   String?         @map("ai_prompt_version")
+  evidenceIds       String[]        @default([]) @map("evidence_ids") @db.Uuid
+  supersededByPlanId String?        @map("superseded_by_plan_id") @db.Uuid
+  approvedAt        DateTime?       @map("approved_at") @db.Timestamptz(6)
+  approvedByUserId  String?         @map("approved_by_user_id") @db.Uuid
+  createdAt         DateTime        @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt         DateTime        @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  workspace       Workspace       @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  brand           Brand           @relation(fields: [brandId], references: [id], onDelete: Cascade)
+  businessProfile BusinessProfile @relation(fields: [businessProfileId], references: [id], onDelete: Restrict)
+
+  opportunityMatches StrategyOpportunityMatch[]
+
+  @@unique([brandId, version])
+  @@index([workspaceId])
+  @@index([workspaceId, state])
+  @@map("growth_plans")
+  @@schema("app")
+}
+
+/// Operator-curated and global, not tenant owned. Readable by any authenticated
+/// user only while `state = active`; writes are service-role only.
+model GrowthOpportunity {
+  id              String          @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  kind            OpportunityKind
+  name            String
+  officialUrl     String          @map("official_url")
+  description     String?
+  audience        String?
+  regions         String[]        @default([])
+  categories      String[]        @default([])
+  /// How a submission is actually made. Never automated by us.
+  submissionMethod String         @map("submission_method")
+  submissionRules String?         @map("submission_rules")
+  /// Integer minor units. Zero means free to submit.
+  costMinor       Int             @default(0) @map("cost_minor")
+  costCurrency    String          @default("USD") @map("cost_currency")
+  disclosureRules String?         @map("disclosure_rules")
+  selfPromotionAllowed Boolean    @default(false) @map("self_promotion_allowed")
+  sourceNote      String?         @map("source_note")
+  state           CatalogState    @default(draft)
+  lastVerifiedAt  DateTime?       @map("last_verified_at") @db.Timestamptz(6)
+  nextReviewAt    DateTime?       @map("next_review_at") @db.Timestamptz(6)
+  verifiedByUserId String?        @map("verified_by_user_id") @db.Uuid
+  changeLog       Json            @default("[]") @map("change_log")
+  createdAt       DateTime        @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt       DateTime        @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  matches StrategyOpportunityMatch[]
+
+  @@unique([officialUrl])
+  @@index([state, kind])
+  @@index([state, lastVerifiedAt])
+  @@map("growth_opportunities")
+  @@schema("app")
+}
+
+/// A suggestion. Never a promised backlink, ranking or placement.
+model StrategyOpportunityMatch {
+  id            String        @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  workspaceId   String        @map("workspace_id") @db.Uuid
+  growthPlanId  String        @map("growth_plan_id") @db.Uuid
+  opportunityId String        @map("opportunity_id") @db.Uuid
+  rank          Int
+  fitExplanation String       @map("fit_explanation")
+  suggestedAsset String?      @map("suggested_asset")
+  suggestedPitch String?      @map("suggested_pitch")
+  estimatedEffort String?     @map("estimated_effort")
+  evidenceIds   String[]      @default([]) @map("evidence_ids") @db.Uuid
+  decision      MatchDecision @default(proposed)
+  decidedByUserId String?     @map("decided_by_user_id") @db.Uuid
+  decidedAt     DateTime?     @map("decided_at") @db.Timestamptz(6)
+  outcomeNote   String?       @map("outcome_note")
+  createdAt     DateTime      @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt     DateTime      @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  workspace   Workspace         @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  growthPlan  GrowthPlan        @relation(fields: [growthPlanId], references: [id], onDelete: Cascade)
+  opportunity GrowthOpportunity @relation(fields: [opportunityId], references: [id], onDelete: Restrict)
+
+  @@unique([growthPlanId, opportunityId])
+  @@index([workspaceId])
+  @@index([workspaceId, decision])
+  @@map("strategy_opportunity_matches")
+  @@schema("app")
+}
+
+/// Operator-curated and global. The Creative Tool Radar may only recommend rows
+/// from here, and shows `lastVerifiedAt` rather than guessing when it is stale.
+model ToolCatalogEntry {
+  id             String       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name           String
+  officialUrl    String       @map("official_url")
+  category       ToolCategory
+  summary        String
+  useCases       String[]     @default([]) @map("use_cases")
+  inputs         String[]     @default([])
+  outputs        String[]     @default([])
+  priceModel     String       @map("price_model")
+  priceNote      String?      @map("price_note")
+  rightsCaveats  String?      @map("rights_caveats")
+  privacyCaveats String?      @map("privacy_caveats")
+  limitations    String?
+  integrations   String[]     @default([])
+  isAffiliate    Boolean      @default(false) @map("is_affiliate")
+  affiliateDisclosure String?  @map("affiliate_disclosure")
+  state          CatalogState @default(draft)
+  lastVerifiedAt DateTime?    @map("last_verified_at") @db.Timestamptz(6)
+  nextReviewAt   DateTime?    @map("next_review_at") @db.Timestamptz(6)
+  verifiedByUserId String?    @map("verified_by_user_id") @db.Uuid
+  changeLog      Json         @default("[]") @map("change_log")
+  createdAt      DateTime     @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt      DateTime     @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  @@unique([officialUrl])
+  @@index([state, category])
+  @@index([state, lastVerifiedAt])
+  @@map("tool_catalog_entries")
+  @@schema("app")
+}
+
+// ---------------------------------------------------------------------------
+// Connections, media and publishing
+// ---------------------------------------------------------------------------
+
+model SocialConnection {
+  id                String              @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  workspaceId       String              @map("workspace_id") @db.Uuid
+  brandId           String?             @map("brand_id") @db.Uuid
+  provider          ProviderKind
+  externalAccountId String              @map("external_account_id")
+  accountType       ExternalAccountType @map("account_type")
+  displayName       String              @map("display_name")
+  handle            String?
+  avatarUrl         String?             @map("avatar_url")
+  profileUrl        String?             @map("profile_url")
+  status            ConnectionStatus    @default(active)
+  statusReason      String?             @map("status_reason")
+  grantedScopes     String[]            @default([]) @map("granted_scopes")
+  /// Data, not code. Records the account-specific limits and permissions in
+  /// force. Saved at approval and revalidated immediately before publish.
+  capabilities      Json                @default("{}")
+  capabilityVersion String?             @map("capability_version")
+  capabilitiesRefreshedAt DateTime?     @map("capabilities_refreshed_at") @db.Timestamptz(6)
+  lastSuccessfulActionAt DateTime?      @map("last_successful_action_at") @db.Timestamptz(6)
+  connectedAt       DateTime            @default(now()) @map("connected_at") @db.Timestamptz(6)
+  disconnectedAt    DateTime?           @map("disconnected_at") @db.Timestamptz(6)
+  createdByUserId   String?             @map("created_by_user_id") @db.Uuid
+  createdAt         DateTime            @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt         DateTime            @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  workspace Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  brand     Brand?    @relation(fields: [brandId], references: [id], onDelete: SetNull)
+
+  credential          SocialCredential?
+  destinations        ProviderDestination[]
+  mentionEntities     MentionEntity[]
+  postVariants        PostVariant[]
+  publishJobs         PublishJob[]
+  publishAttempts     PublishAttempt[]
+  receipts            PublicationReceipt[]
+  providerLimits      ProviderLimit[]
+  incidents           ConnectionIncident[]
+  analyticsSyncRuns   AnalyticsSyncRun[]
+  metricObservations  MetricObservation[]
+
+  // One row per external account per workspace, forever. Disconnect flips
+  // `status`; reconnect updates the same row so history and receipts survive.
+  @@unique([provider, externalAccountId, workspaceId], map: "uq_social_connections_provider_account_workspace")
+  @@index([workspaceId])
+  @@index([workspaceId, status])
+  @@index([workspaceId, brandId, provider])
+  @@map("social_connections")
+  @@schema("app")
+}
+
+/// Envelope encrypted. Ciphertext, nonce, algorithm and key version are stored
+/// separately so a key rotation can re-encrypt without touching the plaintext
+/// path. Workers decrypt immediately before a provider request and never place
+/// a token in a Temporal history, log, trace or client payload.
+model SocialCredential {
+  id                    String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  workspaceId           String    @map("workspace_id") @db.Uuid
+  connectionId          String    @unique @map("connection_id") @db.Uuid
+  accessTokenCiphertext Bytes     @map("access_token_ciphertext")
+  accessTokenNonce      Bytes     @map("access_token_nonce")
+  refreshTokenCiphertext Bytes?   @map("refresh_token_ciphertext")
+  refreshTokenNonce     Bytes?    @map("refresh_token_nonce")
+  algorithm             String    @default("aes-256-gcm")
+  keyVersion            String    @map("key_version")
+  wrappedDataKey        Bytes?    @map("wrapped_data_key")
+  accessTokenExpiresAt  DateTime? @map("access_token_expires_at") @db.Timestamptz(6)
+  refreshTokenExpiresAt DateTime? @map("refresh_token_expires_at") @db.Timestamptz(6)
+  lastRefreshedAt       DateTime? @map("last_refreshed_at") @db.Timestamptz(6)
+  lastRefreshError      String?   @map("last_refresh_error")
+  rotatedAt             DateTime? @map("rotated_at") @db.Timestamptz(6)
+  createdAt             DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt             DateTime  @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  workspace  Workspace        @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  connection SocialConnection @relation(fields: [connectionId], references: [id], onDelete: Cascade)
+
+  @@index([workspaceId])
+  @@index([accessTokenExpiresAt])
+  @@map("social_credentials")
+  @@schema("private")
+}
+
+/// Short lived. `state` is unpredictable, the redirect must match the exact
+/// allowlist, and the row is consumed once.
+model OAuthTransaction {
+  id             String                  @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  workspaceId    String                  @map("workspace_id") @db.Uuid
+  purpose        OAuthTransactionPurpose
+  provider       ProviderKind?
+  stateHash      String                  @unique @map("state_hash")
+  codeChallenge  String?                 @map("code_challenge")
+  codeChallengeMethod String?            @map("code_challenge_method")
+  redirectUri    String                  @map("redirect_uri")
+  requestedScopes String[]               @default([]) @map("requested_scopes")
+  initiatedByUserId String?              @map("initiated_by_user_id") @db.Uuid
+  oauthClientId  String?                 @map("oauth_client_id") @db.Uuid
+  reconnectConnectionId String?          @map("reconnect_connection_id") @db.Uuid
+  consumedAt     DateTime?               @map("consumed_at") @db.Timestamptz(6)
+  expiresAt      DateTime                @map("expires_at") @db.Timestamptz(6)
+  createdAt      DateTime                @default(now()) @map("created_at") @db.Timestamptz(6)
+
+  workspace Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+
+  @@index([workspaceId])
+  @@index([expiresAt])
+  @@map("oauth_transactions")
+  @@schema("private")
+}
+
+/// A third-party developer application registered in our own OAuth console.
+model OAuthClient {
+  id               String            @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  workspaceId      String            @map("workspace_id") @db.Uuid
+  name             String
+  clientId         String            @unique @map("client_id")
+  clientType       OAuthClientType   @map("client_type")
+  secretHash       String?           @map("secret_hash")
+  secretRotatedAt  DateTime?         @map("secret_rotated_at") @db.Timestamptz(6)
+  /// Exact match only. No wildcards, no prefix matching.
+  redirectUris     String[]          @default([]) @map("redirect_uris")
+  allowedScopes    String[]          @default([]) @map("allowed_scopes")
+  homepageUrl      String?           @map("homepage_url")
+  privacyPolicyUrl String?           @map("privacy_policy_url")
+  termsUrl         String?           @map("terms_url")
+  logoUrl          String?           @map("logo_url")
+  status           OAuthClientStatus @default(sandbox)
+  createdByUserId  String            @map("created_by_user_id") @db.Uuid
+  createdAt        DateTime          @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt        DateTime          @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  workspace Workspace    @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  grants    OAuthGrant[]
+
+  @@index([workspaceId])
+  @@map("oauth_clients")
+  @@schema("private")
+}
+
+model OAuthGrant {
+  id                 String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  workspaceId        String    @map("workspace_id") @db.Uuid
+  oauthClientId      String    @map("oauth_client_id") @db.Uuid
+  subjectUserId      String    @map("subject_user_id") @db.Uuid
+  scopes             String[]  @default([])
+  brandScope         String[]  @default([]) @map("brand_scope") @db.Uuid
+  connectionScope    String[]  @default([]) @map("connection_scope") @db.Uuid
+  refreshTokenHash   String?   @unique @map("refresh_token_hash")
+  refreshTokenRotatedAt DateTime? @map("refresh_token_rotated_at") @db.Timestamptz(6)
+  consentedAt        DateTime  @default(now()) @map("consented_at") @db.Timestamptz(6)
+  lastUsedAt         DateTime? @map("last_used_at") @db.Timestamptz(6)
+  expiresAt          DateTime? @map("expires_at") @db.Timestamptz(6)
+  revokedAt          DateTime? @map("revoked_at") @db.Timestamptz(6)
+  revokedByUserId    String?   @map("revoked_by_user_id") @db.Uuid
+
+  workspace   Workspace   @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  oauthClient OAuthClient @relation(fields: [oauthClientId], references: [id], onDelete: Cascade)
+
+  @@unique([oauthClientId, subjectUserId, workspaceId])
+  @@index([workspaceId])
+  @@index([subjectUserId])
+  @@map("oauth_grants")
+  @@schema("private")
+}
+
+model MediaAsset {
+  id             String            @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  workspaceId    String            @map("workspace_id") @db.Uuid
+  brandId        String?           @map("brand_id") @db.Uuid
+  kind           MediaKind
+  storageBucket  String            @map("storage_bucket")
+  storageKey     String            @map("storage_key")
+  /// Sniffed from the bytes. The uploaded filename extension is not trusted.
+  mimeType       String            @map("mime_type")
+  byteSize       BigInt            @map("byte_size")
+  checksumSha256 String            @map("checksum_sha256")
+  width          Int?
+  height         Int?
+  durationMs     Int?              @map("duration_ms")
+  frameRate      Float?            @map("frame_rate")
+  altText        String?           @map("alt_text")
+  altTextWaivedAt DateTime?        @map("alt_text_waived_at") @db.Timestamptz(6)
+  rights         RightsDeclaration @default(unverified)
+  rightsNote     String?           @map("rights_note")
+  /// Where the file came from, kept for provenance. An imported asset keeps the
+  /// origin the source supplied.
+  originKind     String            @default("upload") @map("origin_kind")
+  originUrl      String?           @map("origin_url")
+  scanState      MediaScanState    @default(pending) @map("scan_state")
+  scanNote       String?           @map("scan_note")
+  metadata       Json              @default("{}")
+  createdByUserId String?          @map("created_by_user_id") @db.Uuid
+  deletedAt      DateTime?         @map("deleted_at") @db.Timestamptz(6)
+  createdAt      DateTime          @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt      DateTime          @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  workspace   Workspace         @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  derivatives MediaDerivative[]
+
+  @@unique([workspaceId, checksumSha256])
+  @@index([workspaceId])
+  @@index([workspaceId, kind, createdAt(sort: Desc)])
+  @@map("media_assets")
+  @@schema("app")
+}
+
+model MediaDerivative {
+  id             String         @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  workspaceId    String         @map("workspace_id") @db.Uuid
+  mediaAssetId   String         @map("media_asset_id") @db.Uuid
+  kind           DerivativeKind
+  provider       ProviderKind?
+  presetKey      String         @map("preset_key")
+  storageBucket  String         @map("storage_bucket")
+  storageKey     String         @map("storage_key")
+  mimeType       String         @map("mime_type")
+  byteSize       BigInt         @map("byte_size")
+  checksumSha256 String         @map("checksum_sha256")
+  width          Int?
+  height         Int?
+  durationMs     Int?           @map("duration_ms")
+  metadata       Json           @default("{}")
+  createdAt      DateTime       @default(now()) @map("created_at") @db.Timestamptz(6)
+
+  workspace  Workspace  @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  mediaAsset MediaAsset @relation(fields: [mediaAssetId], references: [id], onDelete: Cascade)
+
+  @@unique([mediaAssetId, presetKey])
+  @@index([workspaceId])
+  @@map("media_derivatives")
+  @@schema("app")
+}
+
+/// One durable unit of external work. `idempotencyKey` is unique per workspace
+/// and `temporalWorkflowId` is deterministic, so a replay cannot create twice.
+model PublishJob {
+  id                  String       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  workspaceId         String       @map("workspace_id") @db.Uuid
+  contentItemId       String       @map("content_item_id") @db.Uuid
+  contentVersionId    String       @map("content_version_id") @db.Uuid
+  postVariantId       String?      @map("post_variant_id") @db.Uuid
+  commentThreadItemId String?      @map("comment_thread_item_id") @db.Uuid
+  connectionId        String       @map("connection_id") @db.Uuid
+  approvalRequestId   String?      @map("approval_request_id") @db.Uuid
+  approvalPolicy      ApprovalPolicy @default(none) @map("approval_policy")
+  /// The instant that actually executes, always UTC.
+  scheduledFor        DateTime     @map("scheduled_for") @db.Timestamptz(6)
+  /// The zone the user chose, retained so a DST shift is explainable.
+  scheduledTimeZone   String       @map("scheduled_time_zone")
+  state               PublishState @default(scheduled)
+  idempotencyKey      String       @map("idempotency_key")
+  temporalWorkflowId  String?      @unique @map("temporal_workflow_id")
+  temporalRunId       String?      @map("temporal_run_id")
+  attemptCount        Int          @default(0) @map("attempt_count")
+  nextAttemptAt       DateTime?    @map("next_attempt_at") @db.Timestamptz(6)
+  lastErrorClass      ErrorClass?  @map("last_error_class")
+  lastErrorCode       String?      @map("last_error_code")
+  surface             CreationSurface @default(web)
+  dispatchedAt        DateTime?    @map("dispatched_at") @db.Timestamptz(6)
+  completedAt         DateTime?    @map("completed_at") @db.Timestamptz(6)
+  canceledAt          DateTime?    @map("canceled_at") @db.Timestamptz(6)
+  createdAt           DateTime     @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt           DateTime     @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  workspace         Workspace          @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  contentItem       ContentItem        @relation(fields: [contentItemId], references: [id], onDelete: Cascade)
+  contentVersion    ContentVersion     @relation(fields: [contentVersionId], references: [id], onDelete: Restrict)
+  postVariant       PostVariant?       @relation(fields: [postVariantId], references: [id], onDelete: Cascade)
+  commentThreadItem CommentThreadItem? @relation(fields: [commentThreadItemId], references: [id], onDelete: Cascade)
+  connection        SocialConnection   @relation(fields: [connectionId], references: [id], onDelete: Restrict)
+  approvalRequest   ApprovalRequest?   @relation(fields: [approvalRequestId], references: [id], onDelete: SetNull)
+
+  attempts PublishAttempt[]
+  receipt  PublicationReceipt?
+
+  @@unique([workspaceId, idempotencyKey], map: "uq_publish_jobs_workspace_idempotency_key")
+  @@index([workspaceId])
+  // Queue sweep and calendar range query.
+  @@index([workspaceId, scheduledFor, state])
+  @@index([state, nextAttemptAt])
+  @@index([workspaceId, connectionId, scheduledFor])
+  @@map("publish_jobs")
+  @@schema("app")
+}
+
+/// Always references the exact immutable content version that was sent. A
+/// sanitized response only: no token, no full provider payload.
+model PublishAttempt {
+  id                String         @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  workspaceId       String         @map("workspace_id") @db.Uuid
+  publishJobId      String         @map("publish_job_id") @db.Uuid
+  contentVersionId  String         @map("content_version_id") @db.Uuid
+  connectionId      String         @map("connection_id") @db.Uuid
+  attemptNumber     Int            @map("attempt_number")
+  outcome           AttemptOutcome @default(pending)
+  errorClass        ErrorClass?    @map("error_class")
+  errorCode         String?        @map("error_code")
+  /// Safe to show a user. Provider text is redacted before it lands here.
+  sanitizedResponse Json           @default("{}") @map("sanitized_response")
+  requestMetadata   Json           @default("{}") @map("request_metadata")
+  providerRequestId String?        @map("provider_request_id")
+  httpStatus        Int?           @map("http_status")
+  startedAt         DateTime       @default(now()) @map("started_at") @db.Timestamptz(6)
+  endedAt           DateTime?      @map("ended_at") @db.Timestamptz(6)
+  retryAfterSeconds Int?           @map("retry_after_seconds")
+  costEstimateMinor Int?           @map("cost_estimate_minor")
+  costActualMinor   Int?           @map("cost_actual_minor")
+  costCurrency      String?        @map("cost_currency")
+  correlationId     String?        @map("correlation_id")
+
+  workspace      Workspace        @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  publishJob     PublishJob       @relation(fields: [publishJobId], references: [id], onDelete: Cascade)
+  contentVersion ContentVersion   @relation(fields: [contentVersionId], references: [id], onDelete: Restrict)
+  connection     SocialConnection @relation(fields: [connectionId], references: [id], onDelete: Restrict)
+
+  @@unique([publishJobId, attemptNumber])
+  @@index([workspaceId])
+  @@index([workspaceId, startedAt(sort: Desc)])
+  @@index([workspaceId, errorClass])
+  @@map("publish_attempts")
+  @@schema("app")
+}
+
+/// Immutable evidence that an external post exists. `0030_constraints.sql`
+/// rejects UPDATE apart from the narrow analytics-sync bookkeeping columns.
+/// "Published" requires an external ID or provider evidence, never a bare 2xx
+/// from a media container step.
+model PublicationReceipt {
+  id               String       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  workspaceId      String       @map("workspace_id") @db.Uuid
+  publishJobId     String       @unique @map("publish_job_id") @db.Uuid
+  contentVersionId String       @map("content_version_id") @db.Uuid
+  connectionId     String       @map("connection_id") @db.Uuid
+  provider         ProviderKind
+  externalPostId   String       @map("external_post_id")
+  permalink        String?
+  contentHash      String       @map("content_hash")
+  mediaChecksums   String[]     @default([]) @map("media_checksums")
+  /// The exact public short URLs that appeared in the published copy.
+  publishedShortLinks String[]  @default([]) @map("published_short_links")
+  publishedAt      DateTime     @map("published_at") @db.Timestamptz(6)
+  dispatchedAt     DateTime?    @map("dispatched_at") @db.Timestamptz(6)
+  scheduledFor     DateTime?    @map("scheduled_for") @db.Timestamptz(6)
+  scheduledTimeZone String?     @map("scheduled_time_zone")
+  surface          CreationSurface
+  approvedByUserId String?      @map("approved_by_user_id") @db.Uuid
+  approvalPolicy   ApprovalPolicy @default(none) @map("approval_policy")
+  costActualMinor  Int?         @map("cost_actual_minor")
+  costCurrency     String?      @map("cost_currency")
+  responseEvidence Json         @default("{}") @map("response_evidence")
+  deletedExternallyAt DateTime? @map("deleted_externally_at") @db.Timestamptz(6)
+  lastAnalyticsSyncAt DateTime? @map("last_analytics_sync_at") @db.Timestamptz(6)
+  createdAt        DateTime     @default(now()) @map("created_at") @db.Timestamptz(6)
+
+  workspace      Workspace        @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  publishJob     PublishJob       @relation(fields: [publishJobId], references: [id], onDelete: Cascade)
+  contentVersion ContentVersion   @relation(fields: [contentVersionId], references: [id], onDelete: Restrict)
+  connection     SocialConnection @relation(fields: [connectionId], references: [id], onDelete: Restrict)
+
+  metricObservations MetricObservation[]
+
+  @@unique([provider, externalPostId], map: "uq_publication_receipts_provider_external_post_id")
+  @@index([workspaceId])
+  @@index([workspaceId, publishedAt(sort: Desc)])
+  @@index([workspaceId, connectionId, publishedAt(sort: Desc)])
+  @@map("publication_receipts")
+  @@schema("app")
+}
+
+model ProviderLimit {
+  id            String       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  workspaceId   String       @map("workspace_id") @db.Uuid
+  connectionId  String?      @map("connection_id") @db.Uuid
+  provider      ProviderKind
+  resource      String
+  windowSeconds Int          @map("window_seconds")
+  limitValue    Int?         @map("limit_value")
+  remaining     Int?
+  resetsAt      DateTime?    @map("resets_at") @db.Timestamptz(6)
+  policyVersion String?      @map("policy_version")
+  observedAt    DateTime     @default(now()) @map("observed_at") @db.Timestamptz(6)
+
+  workspace  Workspace         @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  connection SocialConnection? @relation(fields: [connectionId], references: [id], onDelete: Cascade)
+
+  @@index([workspaceId])
+  @@index([workspaceId, provider, resource, observedAt(sort: Desc)])
+  @@map("provider_limits")
+  @@schema("app")
+}
+
+model ConnectionIncident {
+  id             String        @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  workspaceId    String        @map("workspace_id") @db.Uuid
+  connectionId   String        @map("connection_id") @db.Uuid
+  kind           IncidentKind
+  state          IncidentState @default(open)
+  /// A stable i18n key. The message itself lives in packages/i18n.
+  remediationKey String        @map("remediation_key")
+  detail         Json          @default("{}")
+  detectedAt     DateTime      @default(now()) @map("detected_at") @db.Timestamptz(6)
+  acknowledgedAt DateTime?     @map("acknowledged_at") @db.Timestamptz(6)
+  resolvedAt     DateTime?     @map("resolved_at") @db.Timestamptz(6)
+  resolvedByUserId String?     @map("resolved_by_user_id") @db.Uuid
+
+  workspace  Workspace        @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  connection SocialConnection @relation(fields: [connectionId], references: [id], onDelete: Cascade)
+
+  @@index([workspaceId])
+  @@index([workspaceId, state, detectedAt(sort: Desc)])
+  @@map("connection_incidents")
+  @@schema("app")
+}
+
+// ---------------------------------------------------------------------------
+// Automation
+// ---------------------------------------------------------------------------
+
+/// Our policy-aware replacement for Plugs. A rule can never activate a
+/// disallowed platform action; the policy check runs at save and at every run.
+model AutomationRule {
+  id              String              @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  workspaceId     String              @map("workspace_id") @db.Uuid
+  brandId         String              @map("brand_id") @db.Uuid
+  name            String
+  state           AutomationRuleState @default(draft)
+  /// When [trigger], if [conditions], then [actions], after [delay], until [end].
+  trigger         Json                @default("{}")
+  conditions      Json                @default("[]")
+  actions         Json                @default("[]")
+  delaySeconds    Int                 @default(0) @map("delay_seconds")
+  endCondition    Json                @default("{}") @map("end_condition")
+  /// Engagement-threshold rules require a window, cooldown and execution cap.
+  measurementWindowSeconds Int?       @map("measurement_window_seconds")
+  cooldownSeconds Int?                @map("cooldown_seconds")
+  maxExecutions   Int?                @map("max_executions")
+  executionCount  Int                 @default(0) @map("execution_count")
+  runOncePerSource Boolean            @default(true) @map("run_once_per_source")
+  skipWhenMetricStale Boolean         @default(true) @map("skip_when_metric_stale")
+  requiresApproval Boolean            @default(true) @map("requires_approval")
+  preauthorizedConnectionIds String[] @default([]) @map("preauthorized_connection_ids") @db.Uuid
+  version         Int                 @default(1)
+  lastRunAt       DateTime?           @map("last_run_at") @db.Timestamptz(6)
+  pausedReason    String?             @map("paused_reason")
+  createdByUserId String              @map("created_by_user_id") @db.Uuid
+  createdAt       DateTime            @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt       DateTime            @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  workspace Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  brand     Brand     @relation(fields: [brandId], references: [id], onDelete: Cascade)
+
+  runs AutomationRuleRun[]
+
+  @@unique([workspaceId, brandId, name])
+  @@index([workspaceId])
+  @@index([workspaceId, state])
+  @@map("automation_rules")
+  @@schema("app")
+}
+
+model AutomationRuleRun {
+  id               String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  workspaceId      String   @map("workspace_id") @db.Uuid
+  automationRuleId String   @map("automation_rule_id") @db.Uuid
+  ruleVersion      Int      @map("rule_version")
+  state            RunState @default(pending)
+  isTest           Boolean  @default(false) @map("is_test")
+  /// Deduplication anchor: the post, feed item or webhook that triggered this.
+  sourceKind       String   @map("source_kind")
+  sourceId         String?  @map("source_id")
+  triggerPayload   Json     @default("{}") @map("trigger_payload")
+  evaluatedConditions Json  @default("[]") @map("evaluated_conditions")
+  performedActions Json     @default("[]") @map("performed_actions")
+  blockedReason    String?  @map("blocked_reason")
+  errorClass       ErrorClass? @map("error_class")
+  errorCode        String?  @map("error_code")
+  startedAt        DateTime @default(now()) @map("started_at") @db.Timestamptz(6)
+  endedAt          DateTime? @map("ended_at") @db.Timestamptz(6)
+  correlationId    String?  @map("correlation_id")
+
+  workspace      Workspace      @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  automationRule AutomationRule @relation(fields: [automationRuleId], references: [id], onDelete: Cascade)
+
+  @@unique([automationRuleId, sourceKind, sourceId])
+  @@index([workspaceId])
+  @@index([workspaceId, automationRuleId, startedAt(sort: Desc)])
+  @@map("automation_rule_runs")
+  @@schema("app")
+}
+
+model RssFeed {
+  id                String     @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  workspaceId       String     @map("workspace_id") @db.Uuid
+  brandId           String     @map("brand_id") @db.Uuid
+  title             String
+  feedUrl           String     @map("feed_url")
+  health            FeedHealth @default(healthy)
+  /// SSRF-safe fetch only: HTTP(S) scheme, DNS and IP checks before and after
+  /// every redirect, private ranges denied, size and time limits.
+  connectionIds     String[]   @default([]) @map("connection_ids") @db.Uuid
+  /// draft, approval, next_free_slot, fixed_cadence or immediate.
+  publishPolicy     String     @default("draft") @map("publish_policy")
+  templateBody      String?    @map("template_body")
+  useAiAdaptation   Boolean    @default(false) @map("use_ai_adaptation")
+  markCurrentAsSeen Boolean    @default(true) @map("mark_current_as_seen")
+  pollIntervalSeconds Int      @default(900) @map("poll_interval_seconds")
+  lastPolledAt      DateTime?  @map("last_polled_at") @db.Timestamptz(6)
+  lastNewItemAt     DateTime?  @map("last_new_item_at") @db.Timestamptz(6)
+  lastError         String?    @map("last_error")
+  pausedAt          DateTime?  @map("paused_at") @db.Timestamptz(6)
+  createdByUserId   String     @map("created_by_user_id") @db.Uuid
+  createdAt         DateTime   @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt         DateTime   @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  workspace Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  brand     Brand     @relation(fields: [brandId], references: [id], onDelete: Cascade)
+
+  items RssFeedItem[]
+
+  @@unique([workspaceId, feedUrl])
+  @@index([workspaceId])
+  @@index([health, lastPolledAt])
+  @@map("rss_feeds")
+  @@schema("app")
+}
+
+model RssFeedItem {
+  id            String       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  workspaceId   String       @map("workspace_id") @db.Uuid
+  rssFeedId     String       @map("rss_feed_id") @db.Uuid
+  /// GUID, link and content are all fingerprinted so the same item never
+  /// republishes because a feed rewrote one field.
+  guid          String
+  fingerprint   String
+  link          String?
+  title         String?
+  summary       String?
+  imageUrl      String?      @map("image_url")
+  publishedAt   DateTime?    @map("published_at") @db.Timestamptz(6)
+  state         RssItemState @default(seen)
+  contentItemId String?      @map("content_item_id") @db.Uuid
+  error         String?
+  createdAt     DateTime     @default(now()) @map("created_at") @db.Timestamptz(6)
+
+  workspace Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  rssFeed   RssFeed   @relation(fields: [rssFeedId], references: [id], onDelete: Cascade)
+
+  @@unique([rssFeedId, fingerprint])
+  @@index([workspaceId])
+  @@index([workspaceId, rssFeedId, createdAt(sort: Desc)])
+  @@map("rss_feed_items")
+  @@schema("app")
+}
+
+/// Holds a signing secret, so it lives in `private`.
+model WebhookEndpoint {
+  id               String               @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  workspaceId      String               @map("workspace_id") @db.Uuid
+  name             String
+  url              String
+  state            WebhookEndpointState @default(active)
+  secretCiphertext Bytes                @map("secret_ciphertext")
+  secretNonce      Bytes                @map("secret_nonce")
+  keyVersion       String               @map("key_version")
+  secretRotatedAt  DateTime?            @map("secret_rotated_at") @db.Timestamptz(6)
+  subscribedEvents String[]             @default([]) @map("subscribed_events")
+  brandScope       String[]             @default([]) @map("brand_scope") @db.Uuid
+  connectionScope  String[]             @default([]) @map("connection_scope") @db.Uuid
+  consecutiveFailures Int               @default(0) @map("consecutive_failures")
+  disabledReason   String?              @map("disabled_reason")
+  createdByUserId  String               @map("created_by_user_id") @db.Uuid
+  createdAt        DateTime             @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt        DateTime             @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  workspace Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+
+  deliveries WebhookDelivery[]
+
+  @@unique([workspaceId, name])
+  @@index([workspaceId])
+  @@map("webhook_endpoints")
+  @@schema("private")
+}
+
+model WebhookDelivery {
+  id                String               @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  workspaceId       String               @map("workspace_id") @db.Uuid
+  webhookEndpointId String               @map("webhook_endpoint_id") @db.Uuid
+  eventId           String               @map("event_id") @db.Uuid
+  eventType         String               @map("event_type")
+  state             WebhookDeliveryState @default(pending)
+  attemptCount      Int                  @default(0) @map("attempt_count")
+  payloadHash       String               @map("payload_hash")
+  signatureVersion  String               @default("v1") @map("signature_version")
+  responseStatus    Int?                 @map("response_status")
+  responseSnippet   String?              @map("response_snippet")
+  nextAttemptAt     DateTime?            @map("next_attempt_at") @db.Timestamptz(6)
+  deliveredAt       DateTime?            @map("delivered_at") @db.Timestamptz(6)
+  deadLetteredAt    DateTime?            @map("dead_lettered_at") @db.Timestamptz(6)
+  createdAt         DateTime             @default(now()) @map("created_at") @db.Timestamptz(6)
+
+  workspace       Workspace       @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  webhookEndpoint WebhookEndpoint @relation(fields: [webhookEndpointId], references: [id], onDelete: Cascade)
+
+  @@unique([webhookEndpointId, eventId])
+  @@index([workspaceId])
+  @@index([state, nextAttemptAt])
+  @@index([workspaceId, createdAt(sort: Desc)])
+  @@map("webhook_deliveries")
+  @@schema("private")
+}
+
+// ---------------------------------------------------------------------------
+// Analytics, experiments and links
+// ---------------------------------------------------------------------------
+
+/// Global reference data. The provider's own field name and definition are kept
+/// verbatim so a normalized label never hides an incompatible denominator.
+model MetricDefinition {
+  id                 String             @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  provider           ProviderKind
+  providerFieldName  String             @map("provider_field_name")
+  providerDefinition String             @map("provider_definition")
+  normalizedName     String             @map("normalized_name")
+  unit               MetricUnit
+  availability       MetricAvailability @default(available)
+  aggregationRule    AggregationRule    @default(latest_snapshot) @map("aggregation_rule")
+  /// Some providers forbid deriving or combining their metrics. When true the
+  /// value is displayed alone and excluded from comparisons.
+  derivationRestricted Boolean          @default(false) @map("derivation_restricted")
+  denominatorNote    String?            @map("denominator_note")
+  appliesToAccount   Boolean            @default(false) @map("applies_to_account")
+  appliesToPost      Boolean            @default(true) @map("applies_to_post")
+  documentationUrl   String?            @map("documentation_url")
+  lastVerifiedAt     DateTime?          @map("last_verified_at") @db.Timestamptz(6)
+  createdAt          DateTime           @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt          DateTime           @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  observations MetricObservation[]
+
+  @@unique([provider, providerFieldName])
+  @@index([provider, normalizedName])
+  @@map("metric_definitions")
+  @@schema("app")
+}
+
+/// A missing permission or unsupported metric is stored with a null `rawValue`
+/// and an explicit `availability`. It is never written as zero.
+model MetricObservation {
+  id                 String             @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  workspaceId        String             @map("workspace_id") @db.Uuid
+  metricDefinitionId String             @map("metric_definition_id") @db.Uuid
+  receiptId          String?            @map("receipt_id") @db.Uuid
+  connectionId       String             @map("connection_id") @db.Uuid
+  provider           ProviderKind
+  externalPostId     String?            @map("external_post_id")
+  observedAt         DateTime           @map("observed_at") @db.Timestamptz(6)
+  /// Numeric(20,4): counts, ratios and seconds share one column without float
+  /// rounding surprises.
+  rawValue           Decimal?           @map("raw_value") @db.Decimal(20, 4)
+  normalizedValue    Decimal?           @map("normalized_value") @db.Decimal(20, 4)
+  availability       MetricAvailability @default(available)
+  unavailableReason  String?            @map("unavailable_reason")
+  /// Hash of the provider response this value came from, for auditability.
+  sourceResponseHash String?            @map("source_response_hash")
+  syncRunId          String?            @map("sync_run_id") @db.Uuid
+  createdAt          DateTime           @default(now()) @map("created_at") @db.Timestamptz(6)
+
+  workspace        Workspace           @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  metricDefinition MetricDefinition    @relation(fields: [metricDefinitionId], references: [id], onDelete: Restrict)
+  receipt          PublicationReceipt? @relation(fields: [receiptId], references: [id], onDelete: Cascade)
+  connection       SocialConnection    @relation(fields: [connectionId], references: [id], onDelete: Cascade)
+  syncRun          AnalyticsSyncRun?   @relation(fields: [syncRunId], references: [id], onDelete: SetNull)
+
+  @@unique([receiptId, metricDefinitionId, observedAt])
+  @@index([workspaceId])
+  @@index([receiptId, observedAt(sort: Desc)])
+  @@index([workspaceId, connectionId, observedAt(sort: Desc)])
+  @@map("metric_observations")
+  @@schema("app")
+}
+
+model AnalyticsSyncRun {
+  id            String       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  workspaceId   String       @map("workspace_id") @db.Uuid
+  connectionId  String       @map("connection_id") @db.Uuid
+  provider      ProviderKind
+  state         RunState     @default(pending)
+  scope         String
+  cursor        String?
+  windowStart   DateTime?    @map("window_start") @db.Timestamptz(6)
+  windowEnd     DateTime?    @map("window_end") @db.Timestamptz(6)
+  receiptsCovered Int        @default(0) @map("receipts_covered")
+  observationsWritten Int    @default(0) @map("observations_written")
+  errorClass    ErrorClass?  @map("error_class")
+  errorCode     String?      @map("error_code")
+  providerCostMinor Int?     @map("provider_cost_minor")
+  costCurrency  String?      @map("cost_currency")
+  startedAt     DateTime     @default(now()) @map("started_at") @db.Timestamptz(6)
+  endedAt       DateTime?    @map("ended_at") @db.Timestamptz(6)
+
+  workspace  Workspace        @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  connection SocialConnection @relation(fields: [connectionId], references: [id], onDelete: Cascade)
+
+  observations MetricObservation[]
+
+  @@index([workspaceId])
+  @@index([workspaceId, connectionId, startedAt(sort: Desc)])
+  @@map("analytics_sync_runs")
+  @@schema("app")
+}
+
+/// Tagged before publishing so analysis is not entirely post hoc.
+model Experiment {
+  id            String          @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  workspaceId   String          @map("workspace_id") @db.Uuid
+  campaignId    String?         @map("campaign_id") @db.Uuid
+  name          String
+  hypothesis    String
+  variants      Json            @default("[]")
+  successMetric String          @map("success_metric")
+  windowStart   DateTime        @map("window_start") @db.Timestamptz(6)
+  windowEnd     DateTime        @map("window_end") @db.Timestamptz(6)
+  state         ExperimentState @default(planned)
+  /// Sample size, confounders and comparability warnings. Association is never
+  /// reported as causation.
+  caveats       String?
+  conclusion    String?
+  createdByUserId String        @map("created_by_user_id") @db.Uuid
+  createdAt     DateTime        @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt     DateTime        @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  workspace Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  campaign  Campaign? @relation(fields: [campaignId], references: [id], onDelete: SetNull)
+
+  insights Insight[]
+
+  @@index([workspaceId])
+  @@index([workspaceId, state, windowStart])
+  @@map("experiments")
+  @@schema("app")
+}
+
+model Insight {
+  id            String       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  workspaceId   String       @map("workspace_id") @db.Uuid
+  contentItemId String?      @map("content_item_id") @db.Uuid
+  experimentId  String?      @map("experiment_id") @db.Uuid
+  /// A stable i18n key plus its ICU arguments. No English lives in this table.
+  messageKey    String       @map("message_key")
+  messageArgs   Json         @default("{}") @map("message_args")
+  evidenceIds   String[]     @default([]) @map("evidence_ids") @db.Uuid
+  /// low, moderate or high. Wording, never a fabricated probability.
+  confidence    String       @default("low")
+  sampleSize    Int?         @map("sample_size")
+  state         InsightState @default(new)
+  aiModel       String?      @map("ai_model")
+  aiPromptVersion String?    @map("ai_prompt_version")
+  decidedByUserId String?    @map("decided_by_user_id") @db.Uuid
+  decidedAt     DateTime?    @map("decided_at") @db.Timestamptz(6)
+  createdAt     DateTime     @default(now()) @map("created_at") @db.Timestamptz(6)
+
+  workspace   Workspace    @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  contentItem ContentItem? @relation(fields: [contentItemId], references: [id], onDelete: Cascade)
+  experiment  Experiment?  @relation(fields: [experimentId], references: [id], onDelete: Cascade)
+
+  @@index([workspaceId])
+  @@index([workspaceId, state, createdAt(sort: Desc)])
+  @@map("insights")
+  @@schema("app")
+}
+
+/// First-party redirect measurement. Deliberately a different data series from
+/// provider-reported link clicks; neither substitutes for the other.
+model ShortLink {
+  id             String         @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  workspaceId    String         @map("workspace_id") @db.Uuid
+  brandId        String?        @map("brand_id") @db.Uuid
+  campaignId     String?        @map("campaign_id") @db.Uuid
+  /// Null means the default isolated redirect domain.
+  domain         String?
+  slug           String
+  destinationUrl String         @map("destination_url")
+  utmParameters  Json           @default("{}") @map("utm_parameters")
+  state          ShortLinkState @default(active)
+  /// Result of the safety scan: open redirect, private network target,
+  /// executable scheme, known abuse. Blocked links never resolve.
+  safetyScan     Json           @default("{}") @map("safety_scan")
+  safetyScannedAt DateTime?     @map("safety_scanned_at") @db.Timestamptz(6)
+  expiresAt      DateTime?      @map("expires_at") @db.Timestamptz(6)
+  disabledAt     DateTime?      @map("disabled_at") @db.Timestamptz(6)
+  /// Every destination change is an audited action and never rewrites history.
+  destinationHistory Json       @default("[]") @map("destination_history")
+  createdByUserId String        @map("created_by_user_id") @db.Uuid
+  createdAt      DateTime       @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt      DateTime       @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  workspace Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  brand     Brand?    @relation(fields: [brandId], references: [id], onDelete: SetNull)
+  campaign  Campaign? @relation(fields: [campaignId], references: [id], onDelete: SetNull)
+
+  clicks ShortLinkClick[]
+
+  @@unique([domain, slug], map: "uq_short_links_domain_slug")
+  @@index([workspaceId])
+  @@index([workspaceId, state, createdAt(sort: Desc)])
+  @@map("short_links")
+  @@schema("app")
+}
+
+/// No raw IP column. `dedupeKey` is a keyed hash with a short retention window,
+/// which is enough for bot classification and deduplication and nothing more.
+model ShortLinkClick {
+  id             String            @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  workspaceId    String            @map("workspace_id") @db.Uuid
+  shortLinkId    String            @map("short_link_id") @db.Uuid
+  /// Truncated to the hour.
+  occurredAt     DateTime          @map("occurred_at") @db.Timestamptz(6)
+  countryCode    String?           @map("country_code")
+  deviceClass    String?           @map("device_class")
+  referrerClass  String?           @map("referrer_class")
+  botClass       BotClassification @default(unknown) @map("bot_class")
+  dedupeKey      String            @map("dedupe_key")
+  dedupeExpiresAt DateTime         @map("dedupe_expires_at") @db.Timestamptz(6)
+  createdAt      DateTime          @default(now()) @map("created_at") @db.Timestamptz(6)
+
+  workspace Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  shortLink ShortLink @relation(fields: [shortLinkId], references: [id], onDelete: Cascade)
+
+  @@unique([shortLinkId, dedupeKey])
+  @@index([workspaceId])
+  @@index([shortLinkId, occurredAt])
+  @@index([dedupeExpiresAt])
+  @@map("short_link_clicks")
+  @@schema("app")
+}
+
+// ---------------------------------------------------------------------------
+// Billing
+// ---------------------------------------------------------------------------
+
+model PolarCustomer {
+  id               String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  workspaceId      String   @unique @map("workspace_id") @db.Uuid
+  polarCustomerId  String   @unique @map("polar_customer_id")
+  billingEmail     String   @map("billing_email") @db.Citext
+  portalUrl        String?  @map("portal_url")
+  createdAt        DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt        DateTime @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  workspace     Workspace      @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  subscriptions Subscription[]
+
+  @@map("polar_customers")
+  @@schema("private")
+}
+
+/// Entitlement is driven from verified Polar state, never from a success
+/// redirect. Both intervals carry a seven-day trial that charges zero at
+/// checkout and converts only if the customer has not canceled.
+model Subscription {
+  id                 String             @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  workspaceId        String             @map("workspace_id") @db.Uuid
+  polarCustomerId    String             @map("polar_customer_id") @db.Uuid
+  polarSubscriptionId String            @unique @map("polar_subscription_id")
+  polarProductId     String             @map("polar_product_id")
+  status             SubscriptionStatus
+  interval           BillingInterval
+  /// Integer minor units. $29 monthly is 2900; $300 annual is 30000.
+  amountMinor        Int                @map("amount_minor")
+  currency           String             @default("USD")
+  trialStartsAt      DateTime?          @map("trial_starts_at") @db.Timestamptz(6)
+  trialEndsAt        DateTime?          @map("trial_ends_at") @db.Timestamptz(6)
+  currentPeriodStart DateTime?          @map("current_period_start") @db.Timestamptz(6)
+  currentPeriodEnd   DateTime?          @map("current_period_end") @db.Timestamptz(6)
+  cancelAtPeriodEnd  Boolean            @default(false) @map("cancel_at_period_end")
+  canceledAt         DateTime?          @map("canceled_at") @db.Timestamptz(6)
+  pastDueSince       DateTime?          @map("past_due_since") @db.Timestamptz(6)
+  lastReconciledAt   DateTime?          @map("last_reconciled_at") @db.Timestamptz(6)
+  createdAt          DateTime           @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt          DateTime           @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  workspace     Workspace     @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  polarCustomer PolarCustomer @relation(fields: [polarCustomerId], references: [id], onDelete: Restrict)
+
+  entitlements Entitlement[]
+
+  @@index([workspaceId])
+  @@index([workspaceId, status])
+  @@index([status, trialEndsAt])
+  @@map("subscriptions")
+  @@schema("private")
+}
+
+/// One public plan, no feature tiers. A limit is a number here, not a plan name.
+model Entitlement {
+  id             String          @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  workspaceId    String          @map("workspace_id") @db.Uuid
+  subscriptionId String?         @map("subscription_id") @db.Uuid
+  key            String
+  kind           EntitlementKind
+  booleanValue   Boolean?        @map("boolean_value")
+  numericValue   Int?            @map("numeric_value")
+  /// Where it came from: `polar_webhook`, `reconciliation` or `operator_grant`.
+  source         String          @default("polar_webhook")
+  effectiveFrom  DateTime        @default(now()) @map("effective_from") @db.Timestamptz(6)
+  effectiveUntil DateTime?       @map("effective_until") @db.Timestamptz(6)
+  updatedAt      DateTime        @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  workspace    Workspace     @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  subscription Subscription? @relation(fields: [subscriptionId], references: [id], onDelete: SetNull)
+
+  @@unique([workspaceId, key])
+  @@index([workspaceId])
+  @@map("entitlements")
+  @@schema("private")
+}
+
+/// Metered pass-through: managed X operations and AI text tokens. No media
+/// generation meter exists in V1.
+model UsageEvent {
+  id            String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  workspaceId   String   @map("workspace_id") @db.Uuid
+  meterKey      String   @map("meter_key")
+  quantity      Decimal  @db.Decimal(20, 6)
+  unit          String
+  costMinor     Int?     @map("cost_minor")
+  costCurrency  String?  @map("cost_currency")
+  provider      ProviderKind?
+  referenceType String?  @map("reference_type")
+  referenceId   String?  @map("reference_id") @db.Uuid
+  /// Unique per workspace so a retried report cannot double-charge.
+  idempotencyKey String  @map("idempotency_key")
+  reportedToPolarAt DateTime? @map("reported_to_polar_at") @db.Timestamptz(6)
+  occurredAt    DateTime @map("occurred_at") @db.Timestamptz(6)
+  createdAt     DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+
+  workspace Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+
+  @@unique([workspaceId, idempotencyKey])
+  @@index([workspaceId])
+  @@index([workspaceId, meterKey, occurredAt])
+  @@map("usage_events")
+  @@schema("private")
+}
+
+/// Global. Signature verification happens before any side effect, and the body
+/// hash plus event ID make reprocessing idempotent.
+model BillingWebhookInbox {
+  id             String               @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  provider       String               @default("polar")
+  eventId        String               @map("event_id")
+  eventType      String               @map("event_type")
+  signatureValid Boolean              @map("signature_valid")
+  bodyHash       String               @map("body_hash")
+  payload        Json
+  state          InboxProcessingState @default(received)
+  processingError String?             @map("processing_error")
+  receivedAt     DateTime             @default(now()) @map("received_at") @db.Timestamptz(6)
+  processedAt    DateTime?            @map("processed_at") @db.Timestamptz(6)
+
+  @@unique([provider, eventId])
+  @@index([state, receivedAt])
+  @@map("billing_webhook_inbox")
+  @@schema("private")
+}
+
+/// Disclosure acceptance is mandatory. No commission is ever conditional on a
+/// positive review.
+model AffiliatePartner {
+  id                  String                @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  workspaceId         String                @map("workspace_id") @db.Uuid
+  contactUserId       String                @map("contact_user_id") @db.Uuid
+  displayName         String                @map("display_name")
+  referralCode        String                @unique @map("referral_code") @db.Citext
+  state               AffiliatePartnerState @default(applied)
+  commissionRateBps   Int                   @default(2000) @map("commission_rate_bps")
+  disclosureAcceptedAt DateTime?            @map("disclosure_accepted_at") @db.Timestamptz(6)
+  disclosureVersion   String?               @map("disclosure_version")
+  payoutMethod        String?               @map("payout_method")
+  fraudFlags          Json                  @default("[]") @map("fraud_flags")
+  approvedAt          DateTime?             @map("approved_at") @db.Timestamptz(6)
+  terminatedAt        DateTime?             @map("terminated_at") @db.Timestamptz(6)
+  createdAt           DateTime              @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt           DateTime              @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  workspace Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+
+  attributions ReferralAttribution[]
+  commissions  CommissionLedger[]
+
+  @@index([workspaceId])
+  @@index([state])
+  @@map("affiliate_partners")
+  @@schema("private")
+}
+
+model ReferralAttribution {
+  id                  String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  /// The referred workspace, which is the tenant that owns this row.
+  workspaceId         String    @map("workspace_id") @db.Uuid
+  affiliatePartnerId  String    @map("affiliate_partner_id") @db.Uuid
+  referralCode        String    @map("referral_code") @db.Citext
+  landingUrl          String?   @map("landing_url")
+  referrerClass       String?   @map("referrer_class")
+  attributedAt        DateTime  @default(now()) @map("attributed_at") @db.Timestamptz(6)
+  convertedAt         DateTime? @map("converted_at") @db.Timestamptz(6)
+  polarOrderId        String?   @map("polar_order_id")
+  fraudReviewState    String    @default("pending") @map("fraud_review_state")
+  fraudReviewNote     String?   @map("fraud_review_note")
+
+  workspace        Workspace        @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  affiliatePartner AffiliatePartner @relation(fields: [affiliatePartnerId], references: [id], onDelete: Cascade)
+
+  commissions CommissionLedger[]
+
+  @@unique([workspaceId, affiliatePartnerId])
+  @@index([workspaceId])
+  @@index([affiliatePartnerId, attributedAt(sort: Desc)])
+  @@map("referral_attributions")
+  @@schema("private")
+}
+
+/// Immutable in spirit: a correction is a new offsetting row, never an edit.
+model CommissionLedger {
+  id                    String          @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  workspaceId           String          @map("workspace_id") @db.Uuid
+  affiliatePartnerId    String          @map("affiliate_partner_id") @db.Uuid
+  referralAttributionId String          @map("referral_attribution_id") @db.Uuid
+  payoutBatchId         String?         @map("payout_batch_id") @db.Uuid
+  polarOrderId          String          @map("polar_order_id")
+  amountMinor           Int             @map("amount_minor")
+  currency              String          @default("USD")
+  state                 CommissionState @default(pending)
+  holdUntil             DateTime?       @map("hold_until") @db.Timestamptz(6)
+  reversalOfId          String?         @map("reversal_of_id") @db.Uuid
+  note                  String?
+  createdAt             DateTime        @default(now()) @map("created_at") @db.Timestamptz(6)
+
+  workspace           Workspace           @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  affiliatePartner    AffiliatePartner    @relation(fields: [affiliatePartnerId], references: [id], onDelete: Restrict)
+  referralAttribution ReferralAttribution @relation(fields: [referralAttributionId], references: [id], onDelete: Restrict)
+  payoutBatch         PayoutBatch?        @relation(fields: [payoutBatchId], references: [id], onDelete: SetNull)
+
+  @@unique([polarOrderId, affiliatePartnerId, reversalOfId])
+  @@index([workspaceId])
+  @@index([affiliatePartnerId, state])
+  @@map("commission_ledger")
+  @@schema("private")
+}
+
+/// Operator level, not tenant owned. Service role only.
+model PayoutBatch {
+  id            String           @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  reference     String           @unique
+  state         PayoutBatchState @default(open)
+  periodStart   DateTime         @map("period_start") @db.Timestamptz(6)
+  periodEnd     DateTime         @map("period_end") @db.Timestamptz(6)
+  totalMinor    Int              @default(0) @map("total_minor")
+  currency      String           @default("USD")
+  exportedAt    DateTime?        @map("exported_at") @db.Timestamptz(6)
+  paidAt        DateTime?        @map("paid_at") @db.Timestamptz(6)
+  createdAt     DateTime         @default(now()) @map("created_at") @db.Timestamptz(6)
+
+  commissions CommissionLedger[]
+
+  @@index([state, periodEnd])
+  @@map("payout_batches")
+  @@schema("private")
+}
+
+// ---------------------------------------------------------------------------
+// Lifecycle
+// ---------------------------------------------------------------------------
+
+/// Executing a deletion also cancels Temporal workflows, revokes provider
+/// grants, deletes stored objects and tombstones analytics where required.
+model DeletionRequest {
+  id              String               @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  workspaceId     String               @map("workspace_id") @db.Uuid
+  requestedByUserId String             @map("requested_by_user_id") @db.Uuid
+  scope           String
+  subjectUserId   String?              @map("subject_user_id") @db.Uuid
+  state           DeletionRequestState @default(requested)
+  reason          String?
+  /// Cooling-off window before anything is destroyed.
+  executeAfter    DateTime             @map("execute_after") @db.Timestamptz(6)
+  verifiedAt      DateTime?            @map("verified_at") @db.Timestamptz(6)
+  executedAt      DateTime?            @map("executed_at") @db.Timestamptz(6)
+  canceledAt      DateTime?            @map("canceled_at") @db.Timestamptz(6)
+  steps           Json                 @default("[]")
+  failureNote     String?              @map("failure_note")
+  createdAt       DateTime             @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt       DateTime             @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  workspace Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+
+  @@index([workspaceId])
+  @@index([state, executeAfter])
+  @@map("deletion_requests")
+  @@schema("app")
+}
+
+model DataExport {
+  id              String          @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  workspaceId     String          @map("workspace_id") @db.Uuid
+  requestedByUserId String        @map("requested_by_user_id") @db.Uuid
+  scope           String
+  format          String          @default("json")
+  state           DataExportState @default(requested)
+  storageBucket   String?         @map("storage_bucket")
+  storageKey      String?         @map("storage_key")
+  byteSize        BigInt?         @map("byte_size")
+  checksumSha256  String?         @map("checksum_sha256")
+  downloadedAt    DateTime?       @map("downloaded_at") @db.Timestamptz(6)
+  expiresAt       DateTime?       @map("expires_at") @db.Timestamptz(6)
+  failureNote     String?         @map("failure_note")
+  createdAt       DateTime        @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt       DateTime        @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  workspace Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+
+  @@index([workspaceId])
+  @@index([state, expiresAt])
+  @@map("data_exports")
+  @@schema("app")
+}

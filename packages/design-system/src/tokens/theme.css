@@ -1,0 +1,715 @@
+/*
+ * Relay design tokens.
+ *
+ * Philosophy
+ * ----------
+ * The product is a publishing desk, not a command center. The canvas is a warm
+ * neutral (a paper white in light, a warm ink in dark). Hierarchy is carried by
+ * typography and by tonal surface steps separated with hairline borders, not by
+ * shadows. Exactly one accent (a deep petrol teal) marks the primary path.
+ * Warning, destructive, success and info are semantic exceptions and are never
+ * used decoratively. Provider brand colours exist only as 8px identity dots.
+ *
+ * Dark is designed, not inverted. Its surfaces are warm charcoals with a lower
+ * step delta, its accent is lifted so it reads on a dark ground, and its
+ * destructive solid is a light coral carrying dark text rather than a dark red
+ * carrying white text.
+ *
+ * Layering rule: component code must reference the semantic layer only
+ * (--color-surface-*, --color-text-*, --color-accent-*, --color-status-*).
+ * The raw palette below exists so the semantic layer has somewhere to point.
+ *
+ * Direction: every rule here uses logical properties (inline/block), so RTL is
+ * a `dir="rtl"` attribute and nothing else.
+ *
+ * ---------------------------------------------------------------------------
+ * WCAG 2.2 AA verification (computed with the sRGB relative-luminance formula,
+ * see src/tokens/contrast.ts; the assertions live in contrast.test.ts and are a
+ * merge gate). Threshold: 4.5:1 for body text, 3:1 for large text and for the
+ * visual boundary of interactive controls.
+ *
+ * LIGHT THEME                                canvas  raised  sunken  overlay
+ *   text.primary       #1B1917               16.66   17.53   15.25   17.53
+ *   text.secondary     #524C45                8.05    8.47    7.37    8.47
+ *   text.tertiary      #6E675F                5.30    5.57    4.85    5.57
+ *   text.accent        #12585F                7.72    8.12    7.06    8.12
+ *   border.strong      #8C857A                3.47    3.65    3.18    3.65
+ *   accent.on   #FFFFFF on accent   #12585F  = 8.12
+ *   accent.on   #FFFFFF on hover    #0E4A50  = 9.93
+ *   accent.on   #FFFFFF on active   #0A3B40  = 12.26
+ *   accent      #12585F on subtle   #E2EFEF  = 6.89
+ *   destructive.on #FFFFFF on solid #9A2016  = 8.10 (hover 10.02, active 12.19)
+ *   status fg on its own tinted bg:  success 6.93  warning 7.00
+ *                                    destructive 6.92  info 7.62
+ *   status fg on canvas:             success 7.64  warning 7.52
+ *                                    destructive 7.70  info 8.40
+ *   status border on canvas:         success 3.85  warning 3.67
+ *                                    destructive 4.12  info 3.52
+ *   text.disabled      #8C857A                3.47    3.65    3.18    3.65
+ *   text.inverted #FAF9F7 on surface.inverted #211E1B = 15.76
+ *
+ * DARK THEME                                 canvas  raised  sunken  overlay
+ *   text.primary       #F2EFE9               15.58   14.45   16.44   13.58
+ *   text.secondary     #B5AEA3                8.13    7.54    8.58    7.09
+ *   text.tertiary      #9A9184                5.75    5.34    6.06    5.01
+ *   text.accent        #4FB6A8                7.31    6.78    7.71    6.37
+ *   border.strong      #7A7168                3.74    3.47    3.94    3.26
+ *   accent.on   #0A2422 on accent   #4FB6A8  = 6.67
+ *   accent.on   #0A2422 on hover    #68C7BA  = 8.12
+ *   accent.on   #0A2422 on active   #3C9E91  = 5.04
+ *   accent      #4FB6A8 on subtle   #16302E  = 5.74
+ *   destructive.on #170F0D on solid #DC7365  = 6.02 (hover 7.39, active 4.92)
+ *   status fg on its own tinted bg:  success 7.74  warning 7.81
+ *                                    destructive 6.76  info 7.42
+ *   status fg on canvas:             success 8.94  warning 8.84
+ *                                    destructive 7.35  info 8.43
+ *   status border on canvas:         success 4.79  warning 4.20
+ *                                    destructive 3.88  info 4.23
+ *   text.disabled      #7A7168                3.74    3.47    3.94    3.26
+ *   text.inverted #17150F on surface.inverted #F2EFE9 = 15.90
+ *
+ * Provider identity dots clear 3:1 against their own theme canvas in both
+ * themes (lowest: reddit 4.84 light, youtube 5.25 dark).
+ * ---------------------------------------------------------------------------
+ */
+
+/* ==========================================================================
+   1. Raw palette. Never referenced by component code.
+   ========================================================================== */
+
+:root {
+  /* Warm neutral ramp. Hue drifts slightly red-yellow so the canvas reads as
+     paper rather than as a cold screen grey. */
+  --relay-sand-50: #faf9f7;
+  --relay-sand-100: #f1efea;
+  --relay-sand-150: #e9e6e0;
+  --relay-sand-200: #dcd7cf;
+  --relay-sand-300: #c3bcb1;
+  --relay-sand-500: #8c857a;
+  --relay-sand-600: #6e675f;
+  --relay-sand-700: #524c45;
+  --relay-sand-800: #322d28;
+  --relay-sand-850: #272320;
+  --relay-sand-900: #211e1b;
+  --relay-sand-950: #191715;
+  --relay-sand-990: #121110;
+  --relay-ink: #1b1917;
+  --relay-paper: #ffffff;
+
+  /* Petrol teal. The single accent. */
+  --relay-petrol-050: #e2efef;
+  --relay-petrol-100: #d3e5e5;
+  --relay-petrol-500: #12585f;
+  --relay-petrol-600: #0e4a50;
+  --relay-petrol-700: #0a3b40;
+  --relay-petrol-300: #4fb6a8;
+  --relay-petrol-200: #68c7ba;
+  --relay-petrol-400: #3c9e91;
+  --relay-petrol-900: #16302e;
+  --relay-petrol-880: #1d3e3b;
+  --relay-petrol-990: #0a2422;
+
+  /* Semantic hues. Muted, never neon. */
+  --relay-moss-100: #e5f1e9;
+  --relay-moss-400: #4f8a6b;
+  --relay-moss-700: #1c5b3c;
+  --relay-moss-300: #7cc79b;
+  --relay-moss-500: #57906f;
+  --relay-moss-950: #16281e;
+
+  --relay-amber-100: #fbf0da;
+  --relay-amber-500: #a9791f;
+  --relay-amber-800: #7a4400;
+  --relay-amber-300: #e0ae5e;
+  --relay-amber-600: #977540;
+  --relay-amber-950: #2b2114;
+
+  --relay-clay-100: #fce9e6;
+  --relay-clay-400: #c05b4c;
+  --relay-clay-700: #9a2016;
+  --relay-clay-800: #82190f;
+  --relay-clay-900: #6b1309;
+  --relay-clay-300: #f08a7c;
+  --relay-clay-350: #dc7365;
+  --relay-clay-250: #e9877a;
+  --relay-clay-450: #ce6154;
+  --relay-clay-500: #ac6053;
+  --relay-clay-950: #2e1a17;
+  --relay-clay-990: #170f0d;
+
+  --relay-slate-100: #e8eff6;
+  --relay-slate-400: #6388ae;
+  --relay-slate-700: #2a4c72;
+  --relay-slate-300: #8fb6dd;
+  --relay-slate-500: #5c7f9b;
+  --relay-slate-950: #182430;
+}
+
+/* ==========================================================================
+   2. Semantic layer, light theme (default).
+   ========================================================================== */
+
+:root,
+:root[data-theme='light'] {
+  color-scheme: light;
+
+  --surface-canvas: var(--relay-sand-50);
+  --surface-raised: var(--relay-paper);
+  --surface-sunken: var(--relay-sand-100);
+  --surface-overlay: var(--relay-paper);
+  --surface-hover: var(--relay-sand-100);
+  --surface-active: var(--relay-sand-150);
+  --surface-inverted: var(--relay-sand-900);
+  --surface-scrim: rgb(27 25 23 / 0.44);
+
+  --border-subtle: #efece6;
+  --border-default: var(--relay-sand-200);
+  --border-strong: var(--relay-sand-500);
+  --border-focus: var(--relay-petrol-500);
+
+  --text-primary: var(--relay-ink);
+  --text-secondary: var(--relay-sand-700);
+  --text-tertiary: var(--relay-sand-600);
+  --text-disabled: var(--relay-sand-500);
+  --text-inverted: var(--relay-sand-50);
+  --text-accent: var(--relay-petrol-500);
+
+  --accent-default: var(--relay-petrol-500);
+  --accent-hover: var(--relay-petrol-600);
+  --accent-active: var(--relay-petrol-700);
+  --accent-subtle-bg: var(--relay-petrol-050);
+  --accent-subtle-bg-hover: var(--relay-petrol-100);
+  --accent-on-accent: var(--relay-paper);
+
+  --status-success-fg: var(--relay-moss-700);
+  --status-success-bg: var(--relay-moss-100);
+  --status-success-border: var(--relay-moss-400);
+
+  --status-warning-fg: var(--relay-amber-800);
+  --status-warning-bg: var(--relay-amber-100);
+  --status-warning-border: var(--relay-amber-500);
+
+  --status-destructive-fg: var(--relay-clay-700);
+  --status-destructive-bg: var(--relay-clay-100);
+  --status-destructive-border: var(--relay-clay-400);
+  --status-destructive-solid: var(--relay-clay-700);
+  --status-destructive-solid-hover: var(--relay-clay-800);
+  --status-destructive-solid-active: var(--relay-clay-900);
+  --status-destructive-on: var(--relay-paper);
+
+  --status-info-fg: var(--relay-slate-700);
+  --status-info-bg: var(--relay-slate-100);
+  --status-info-border: var(--relay-slate-400);
+
+  /* Provider identity. Dots and 1px rules only, never a surface. */
+  --brand-x: #0f0f0f;
+  --brand-linkedin: #0a66c2;
+  --brand-instagram: #c31e68;
+  --brand-facebook: #1466d2;
+  --brand-youtube: #c42b20;
+  --brand-tiktok: #111111;
+  --brand-threads: #101010;
+  --brand-bluesky: #0f5fc0;
+  --brand-pinterest: #be1f28;
+  --brand-reddit: #c63f16;
+  --brand-mastodon: #4b4cc4;
+}
+
+/* ==========================================================================
+   3. Semantic layer, dark theme. Designed, not inverted.
+   ========================================================================== */
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    color-scheme: dark;
+
+    --surface-canvas: var(--relay-sand-950);
+    --surface-raised: var(--relay-sand-900);
+    --surface-sunken: var(--relay-sand-990);
+    --surface-overlay: var(--relay-sand-850);
+    --surface-hover: #2a2622;
+    --surface-active: var(--relay-sand-800);
+    --surface-inverted: #f2efe9;
+    --surface-scrim: rgb(9 8 7 / 0.62);
+
+    --border-subtle: #2a2723;
+    --border-default: #3a352f;
+    --border-strong: #7a7168;
+    --border-focus: var(--relay-petrol-300);
+
+    --text-primary: #f2efe9;
+    --text-secondary: #b5aea3;
+    --text-tertiary: #9a9184;
+    --text-disabled: #7a7168;
+    --text-inverted: #17150f;
+    --text-accent: var(--relay-petrol-300);
+
+    --accent-default: var(--relay-petrol-300);
+    --accent-hover: var(--relay-petrol-200);
+    --accent-active: var(--relay-petrol-400);
+    --accent-subtle-bg: var(--relay-petrol-900);
+    --accent-subtle-bg-hover: var(--relay-petrol-880);
+    --accent-on-accent: var(--relay-petrol-990);
+
+    --status-success-fg: var(--relay-moss-300);
+    --status-success-bg: var(--relay-moss-950);
+    --status-success-border: var(--relay-moss-500);
+
+    --status-warning-fg: var(--relay-amber-300);
+    --status-warning-bg: var(--relay-amber-950);
+    --status-warning-border: var(--relay-amber-600);
+
+    --status-destructive-fg: var(--relay-clay-300);
+    --status-destructive-bg: var(--relay-clay-950);
+    --status-destructive-border: var(--relay-clay-500);
+    --status-destructive-solid: var(--relay-clay-350);
+    --status-destructive-solid-hover: var(--relay-clay-250);
+    --status-destructive-solid-active: var(--relay-clay-450);
+    --status-destructive-on: var(--relay-clay-990);
+
+    --status-info-fg: var(--relay-slate-300);
+    --status-info-bg: var(--relay-slate-950);
+    --status-info-border: var(--relay-slate-500);
+
+    --brand-x: #e8e8e8;
+    --brand-linkedin: #5aa5ec;
+    --brand-instagram: #f0629b;
+    --brand-facebook: #6badf7;
+    --brand-youtube: #f0574a;
+    --brand-tiktok: #25f4ee;
+    --brand-threads: #ededed;
+    --brand-bluesky: #6bb0f5;
+    --brand-pinterest: #ee6a72;
+    --brand-reddit: #ff8a60;
+    --brand-mastodon: #9394f2;
+  }
+}
+
+/* The explicit attribute always wins over the media query, in both directions. */
+:root[data-theme='dark'] {
+  color-scheme: dark;
+
+  --surface-canvas: var(--relay-sand-950);
+  --surface-raised: var(--relay-sand-900);
+  --surface-sunken: var(--relay-sand-990);
+  --surface-overlay: var(--relay-sand-850);
+  --surface-hover: #2a2622;
+  --surface-active: var(--relay-sand-800);
+  --surface-inverted: #f2efe9;
+  --surface-scrim: rgb(9 8 7 / 0.62);
+
+  --border-subtle: #2a2723;
+  --border-default: #3a352f;
+  --border-strong: #7a7168;
+  --border-focus: var(--relay-petrol-300);
+
+  --text-primary: #f2efe9;
+  --text-secondary: #b5aea3;
+  --text-tertiary: #9a9184;
+  --text-disabled: #7a7168;
+  --text-inverted: #17150f;
+  --text-accent: var(--relay-petrol-300);
+
+  --accent-default: var(--relay-petrol-300);
+  --accent-hover: var(--relay-petrol-200);
+  --accent-active: var(--relay-petrol-400);
+  --accent-subtle-bg: var(--relay-petrol-900);
+  --accent-subtle-bg-hover: var(--relay-petrol-880);
+  --accent-on-accent: var(--relay-petrol-990);
+
+  --status-success-fg: var(--relay-moss-300);
+  --status-success-bg: var(--relay-moss-950);
+  --status-success-border: var(--relay-moss-500);
+
+  --status-warning-fg: var(--relay-amber-300);
+  --status-warning-bg: var(--relay-amber-950);
+  --status-warning-border: var(--relay-amber-600);
+
+  --status-destructive-fg: var(--relay-clay-300);
+  --status-destructive-bg: var(--relay-clay-950);
+  --status-destructive-border: var(--relay-clay-500);
+  --status-destructive-solid: var(--relay-clay-350);
+  --status-destructive-solid-hover: var(--relay-clay-250);
+  --status-destructive-solid-active: var(--relay-clay-450);
+  --status-destructive-on: var(--relay-clay-990);
+
+  --status-info-fg: var(--relay-slate-300);
+  --status-info-bg: var(--relay-slate-950);
+  --status-info-border: var(--relay-slate-500);
+
+  --brand-x: #e8e8e8;
+  --brand-linkedin: #5aa5ec;
+  --brand-instagram: #f0629b;
+  --brand-facebook: #6badf7;
+  --brand-youtube: #f0574a;
+  --brand-tiktok: #25f4ee;
+  --brand-threads: #ededed;
+  --brand-bluesky: #6bb0f5;
+  --brand-pinterest: #ee6a72;
+  --brand-reddit: #ff8a60;
+  --brand-mastodon: #9394f2;
+}
+
+/* ==========================================================================
+   4. Tailwind v4 theme. Utilities point at the semantic layer, so a theme
+      switch is a single attribute change with no class churn.
+   ========================================================================== */
+
+@theme {
+  /* --- Colour ------------------------------------------------------------ */
+  --color-surface-canvas: var(--surface-canvas);
+  --color-surface-raised: var(--surface-raised);
+  --color-surface-sunken: var(--surface-sunken);
+  --color-surface-overlay: var(--surface-overlay);
+  --color-surface-hover: var(--surface-hover);
+  --color-surface-active: var(--surface-active);
+  --color-surface-inverted: var(--surface-inverted);
+  --color-surface-scrim: var(--surface-scrim);
+
+  --color-border-subtle: var(--border-subtle);
+  --color-border-default: var(--border-default);
+  --color-border-strong: var(--border-strong);
+  --color-border-focus: var(--border-focus);
+
+  --color-text-primary: var(--text-primary);
+  --color-text-secondary: var(--text-secondary);
+  --color-text-tertiary: var(--text-tertiary);
+  --color-text-disabled: var(--text-disabled);
+  --color-text-inverted: var(--text-inverted);
+  --color-text-accent: var(--text-accent);
+
+  --color-accent: var(--accent-default);
+  --color-accent-hover: var(--accent-hover);
+  --color-accent-active: var(--accent-active);
+  --color-accent-subtle: var(--accent-subtle-bg);
+  --color-accent-subtle-hover: var(--accent-subtle-bg-hover);
+  --color-accent-on: var(--accent-on-accent);
+
+  --color-success-fg: var(--status-success-fg);
+  --color-success-bg: var(--status-success-bg);
+  --color-success-border: var(--status-success-border);
+  --color-warning-fg: var(--status-warning-fg);
+  --color-warning-bg: var(--status-warning-bg);
+  --color-warning-border: var(--status-warning-border);
+  --color-destructive-fg: var(--status-destructive-fg);
+  --color-destructive-bg: var(--status-destructive-bg);
+  --color-destructive-border: var(--status-destructive-border);
+  --color-destructive-solid: var(--status-destructive-solid);
+  --color-destructive-solid-hover: var(--status-destructive-solid-hover);
+  --color-destructive-solid-active: var(--status-destructive-solid-active);
+  --color-destructive-on: var(--status-destructive-on);
+  --color-info-fg: var(--status-info-fg);
+  --color-info-bg: var(--status-info-bg);
+  --color-info-border: var(--status-info-border);
+
+  --color-brand-x: var(--brand-x);
+  --color-brand-linkedin: var(--brand-linkedin);
+  --color-brand-instagram: var(--brand-instagram);
+  --color-brand-facebook: var(--brand-facebook);
+  --color-brand-youtube: var(--brand-youtube);
+  --color-brand-tiktok: var(--brand-tiktok);
+  --color-brand-threads: var(--brand-threads);
+  --color-brand-bluesky: var(--brand-bluesky);
+  --color-brand-pinterest: var(--brand-pinterest);
+  --color-brand-reddit: var(--brand-reddit);
+  --color-brand-mastodon: var(--brand-mastodon);
+
+  /* --- Typography -------------------------------------------------------- */
+  --font-sans:
+    'Inter Variable', 'Inter', ui-sans-serif, system-ui, -apple-system,
+    'Segoe UI', 'Noto Sans', 'Noto Sans Arabic', 'Noto Sans Hebrew',
+    'Noto Sans JP', 'Noto Sans KR', 'Noto Sans SC', sans-serif;
+  --font-serif: 'Source Serif 4', 'Iowan Old Style', Georgia, serif;
+  --font-mono:
+    'JetBrains Mono', ui-monospace, 'SFMono-Regular', 'Menlo', 'Consolas',
+    monospace;
+
+  /* A closed scale. Nine steps, each with a line height and tracking. */
+  --text-display: 2.5rem; /* 40px */
+  --text-display--line-height: 2.75rem; /* 44px */
+  --text-display--letter-spacing: -0.022em;
+  --text-display--font-weight: 620;
+
+  --text-title-lg: 1.75rem; /* 28px */
+  --text-title-lg--line-height: 2.125rem; /* 34px */
+  --text-title-lg--letter-spacing: -0.018em;
+  --text-title-lg--font-weight: 600;
+
+  --text-title-md: 1.25rem; /* 20px */
+  --text-title-md--line-height: 1.75rem; /* 28px */
+  --text-title-md--letter-spacing: -0.012em;
+  --text-title-md--font-weight: 600;
+
+  --text-title-sm: 1rem; /* 16px */
+  --text-title-sm--line-height: 1.375rem; /* 22px */
+  --text-title-sm--letter-spacing: -0.006em;
+  --text-title-sm--font-weight: 600;
+
+  --text-body-lg: 1rem; /* 16px */
+  --text-body-lg--line-height: 1.5rem; /* 24px */
+  --text-body-lg--letter-spacing: -0.003em;
+
+  --text-body-md: 0.875rem; /* 14px */
+  --text-body-md--line-height: 1.3125rem; /* 21px */
+  --text-body-md--letter-spacing: 0em;
+
+  --text-body-sm: 0.8125rem; /* 13px */
+  --text-body-sm--line-height: 1.1875rem; /* 19px */
+  --text-body-sm--letter-spacing: 0.002em;
+
+  --text-label: 0.75rem; /* 12px */
+  --text-label--line-height: 1rem; /* 16px */
+  --text-label--letter-spacing: 0.01em;
+  --text-label--font-weight: 550;
+
+  --text-code: 0.8125rem; /* 13px */
+  --text-code--line-height: 1.25rem; /* 20px */
+  --text-code--letter-spacing: 0em;
+
+  --text-mono: 0.8125rem;
+  --text-mono--line-height: 1.25rem;
+  --text-mono--letter-spacing: 0.005em;
+
+  /* --- Space ------------------------------------------------------------- */
+  --spacing: 0.25rem; /* the 4px base for p-*, gap-*, m-* */
+  --spacing-hairline: 1px;
+  --spacing-touch: 2.75rem; /* 44px minimum touch target */
+
+  /* --- Radius ------------------------------------------------------------ */
+  --radius-xs: 3px;
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 8px;
+  --radius-xl: 10px;
+  --radius-editorial: 14px; /* marketing imagery only */
+  --radius-full: 9999px;
+
+  /* --- Border widths ----------------------------------------------------- */
+  --border-width-hairline: 1px;
+  --border-width-emphasis: 1.5px;
+  --border-width-focus: 2px;
+
+  /* --- Elevation. Tonal, not theatrical. --------------------------------- */
+  --shadow-raised: 0 1px 2px rgb(27 25 23 / 0.05);
+  --shadow-overlay: 0 6px 20px -6px rgb(27 25 23 / 0.16);
+  --shadow-none: none;
+
+  /* --- Motion ------------------------------------------------------------ */
+  --duration-instant: 80ms;
+  --duration-fast: 120ms;
+  --duration-base: 160ms;
+  --duration-slow: 200ms;
+  --ease-standard: cubic-bezier(0.2, 0, 0.15, 1);
+  --ease-entrance: cubic-bezier(0.05, 0.7, 0.1, 1);
+  --ease-exit: cubic-bezier(0.3, 0, 0.8, 0.15);
+
+  /* --- Z layers ---------------------------------------------------------- */
+  --z-index-base: 0;
+  --z-index-raised: 10;
+  --z-index-sticky: 20;
+  --z-index-drawer: 30;
+  --z-index-dropdown: 40;
+  --z-index-overlay: 50;
+  --z-index-modal: 60;
+  --z-index-popover: 70;
+  --z-index-toast: 80;
+  --z-index-tooltip: 90;
+
+  /* --- Breakpoints matching the responsive test matrix ------------------- */
+  --breakpoint-xs: 22.5rem; /* 360 */
+  --breakpoint-sm: 24.375rem; /* 390 */
+  --breakpoint-md: 48rem; /* 768 */
+  --breakpoint-lg: 64rem; /* 1024 */
+  --breakpoint-xl: 80rem; /* 1280 */
+  --breakpoint-2xl: 90rem; /* 1440 */
+  --breakpoint-3xl: 120rem; /* 1920 */
+}
+
+/* Dark theme elevation needs less ink and more contrast than light. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    --shadow-raised: 0 1px 2px rgb(0 0 0 / 0.4);
+    --shadow-overlay: 0 8px 24px -8px rgb(0 0 0 / 0.6);
+  }
+}
+
+:root[data-theme='dark'] {
+  --shadow-raised: 0 1px 2px rgb(0 0 0 / 0.4);
+  --shadow-overlay: 0 8px 24px -8px rgb(0 0 0 / 0.6);
+}
+
+/* ==========================================================================
+   5. Base layer.
+   ========================================================================== */
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+    font-family: var(--font-sans);
+    font-size: 100%;
+  }
+
+  body {
+    margin: 0;
+    background-color: var(--surface-canvas);
+    color: var(--text-primary);
+    font-size: var(--text-body-md);
+    line-height: var(--text-body-md--line-height);
+    font-synthesis-weight: none;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  /* One focus treatment across the whole product. Two device-independent
+     pixels of accent, offset so it never sits on top of the control's own
+     border, plus a canvas-coloured halo so it survives on tinted surfaces. */
+  :where(:focus-visible) {
+    outline: var(--border-width-focus) solid var(--border-focus);
+    outline-offset: 2px;
+    border-radius: inherit;
+  }
+
+  :where(:focus:not(:focus-visible)) {
+    outline: none;
+  }
+
+  ::selection {
+    background-color: var(--accent-subtle-bg);
+    color: var(--text-primary);
+  }
+
+  [hidden] {
+    display: none !important;
+  }
+
+  /* Logical scroll padding so sticky headers never cover a focused row. */
+  :where(html) {
+    scroll-padding-block-start: 4rem;
+  }
+
+  /* Forced colors: keep every boundary and state visible in Windows HCM. */
+  @media (forced-colors: active) {
+    :where(:focus-visible) {
+      outline-color: Highlight;
+    }
+  }
+}
+
+/* ==========================================================================
+   6. Motion policy. Functional only, and fully removable.
+   ========================================================================== */
+
+@layer base {
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 1ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 1ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+@layer utilities {
+  /* Skeletons breathe rather than sweep. A sweeping gradient reads as a
+     loading spectacle; opacity reads as "not here yet". */
+  @keyframes relay-pulse {
+    0%,
+    100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.55;
+    }
+  }
+
+  @keyframes relay-spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  @keyframes relay-fade-in {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  @keyframes relay-slide-in-block-start {
+    from {
+      opacity: 0;
+      transform: translateY(-4px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes relay-slide-in-inline-end {
+    from {
+      opacity: 0;
+      transform: translateX(8px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  .relay-anim-pulse {
+    animation: relay-pulse 1.6s var(--ease-standard) infinite;
+  }
+
+  .relay-anim-spin {
+    animation: relay-spin 720ms linear infinite;
+  }
+
+  .relay-anim-fade-in {
+    animation: relay-fade-in var(--duration-fast) var(--ease-entrance);
+  }
+
+  .relay-anim-enter-overlay {
+    animation: relay-slide-in-block-start var(--duration-base)
+      var(--ease-entrance);
+  }
+
+  .relay-anim-enter-toast {
+    animation: relay-slide-in-inline-end var(--duration-base)
+      var(--ease-entrance);
+  }
+
+  /* RTL: the toast enters from the inline end, whichever side that is. */
+  [dir='rtl'] .relay-anim-enter-toast {
+    animation-name: relay-slide-in-inline-end;
+    animation-direction: normal;
+    --tw-enter-translate-x: -8px;
+  }
+
+  .relay-scrollbar {
+    scrollbar-width: thin;
+    scrollbar-color: var(--border-strong) transparent;
+  }
+
+  .relay-scrollbar::-webkit-scrollbar {
+    inline-size: 10px;
+    block-size: 10px;
+  }
+
+  .relay-scrollbar::-webkit-scrollbar-thumb {
+    background-color: var(--border-strong);
+    border-radius: var(--radius-full);
+    border: 3px solid transparent;
+    background-clip: content-box;
+  }
+
+  .relay-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+  }
+}
