@@ -14,6 +14,7 @@ import {
   PROVIDER_KEYS,
   themes,
   typeScale,
+  type ContrastPair,
   type ThemeName,
 } from './tokens.js';
 
@@ -87,7 +88,12 @@ describe('pickReadableForeground', () => {
 describe.each<ThemeName>(['light', 'dark'])('WCAG 2.2 AA gate: %s theme', (themeName) => {
   const theme = themes[themeName];
 
-  it.each(documentedContrastPairs.map((pair) => [pair.id, pair] as const))(
+  const cases: [string, ContrastPair][] = documentedContrastPairs.map((pair) => [
+    pair.id,
+    pair,
+  ]);
+
+  it.each(cases)(
     '%s',
     (_id, pair) => {
       const foreground = pair.foreground(theme);

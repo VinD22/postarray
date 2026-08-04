@@ -62,7 +62,9 @@ export function createPrismaClient(options: PrismaClientOptions = {}): RelayPris
     ...(options.databaseUrl === undefined
       ? {}
       : { datasources: { db: { url: options.databaseUrl } } }),
-  }) as RelayPrismaClient;
+    // The log definition is built conditionally above, which defeats Prisma's
+    // literal inference. The cast restates what the options object already says.
+  }) as unknown as RelayPrismaClient;
 
   client.$on('query', (event) => {
     const fields = {

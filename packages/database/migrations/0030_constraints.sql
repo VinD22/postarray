@@ -220,7 +220,7 @@ $$;
 
 DROP TRIGGER IF EXISTS publish_jobs_published_has_receipt ON app.publish_jobs;
 CREATE CONSTRAINT TRIGGER publish_jobs_published_has_receipt
-  AFTER INSERT OR UPDATE OF state ON app.publish_jobs
+  AFTER INSERT OR UPDATE ON app.publish_jobs
   DEFERRABLE INITIALLY DEFERRED
   FOR EACH ROW
   EXECUTE FUNCTION app.enforce_published_has_receipt();

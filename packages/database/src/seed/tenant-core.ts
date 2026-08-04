@@ -63,7 +63,7 @@ export const FAKE_CAPABILITY_SNAPSHOT = {
   analytics: { state: 'supported', postLevel: true, accountLevel: false, freshnessMinutes: 60 },
   aiDisclosure: { state: 'not_implemented', reason: 'No disclosure field is exposed by this simulator yet.' },
   costPerCreate: { minor: 0, currency: 'USD' },
-} as const;
+};
 
 export async function seedTenantCore(tx: RlsTransactionClient): Promise<void> {
   await seedPeopleAndWorkspace(tx);
@@ -595,12 +595,21 @@ async function seedBilling(tx: RlsTransactionClient): Promise<void> {
     update: { status: 'trialing', trialEndsAt: trialEnd },
   });
 
-  const entitlements = [
-    { key: 'channels.active.max', kind: 'numeric_limit' as const, numericValue: 30 },
-    { key: 'team.members.max', kind: 'numeric_limit' as const, numericValue: null },
-    { key: 'api.enabled', kind: 'boolean_flag' as const, booleanValue: true },
-    { key: 'mcp.enabled', kind: 'boolean_flag' as const, booleanValue: true },
-    { key: 'ai.text.enabled', kind: 'boolean_flag' as const, booleanValue: true },
+  interface EntitlementSeed {
+    readonly key: string;
+    readonly kind: 'numeric_limit' | 'boolean_flag';
+    readonly numericValue?: number;
+    readonly booleanValue?: boolean;
+  }
+
+  // One public plan, no feature tiers. `team.members.max` is deliberately absent
+  // rather than a large number: unlimited is the absence of a limit.
+  const entitlements: readonly EntitlementSeed[] = [
+    { key: 'channels.active.max', kind: 'numeric_limit', numericValue: 30 },
+    { key: 'team.members.max', kind: 'numeric_limit' },
+    { key: 'api.enabled', kind: 'boolean_flag', booleanValue: true },
+    { key: 'mcp.enabled', kind: 'boolean_flag', booleanValue: true },
+    { key: 'ai.text.enabled', kind: 'boolean_flag', booleanValue: true },
   ];
 
   for (const entitlement of entitlements) {
@@ -612,7 +621,7 @@ async function seedBilling(tx: RlsTransactionClient): Promise<void> {
         subscriptionId: SEED_IDS.subscription,
         key: entitlement.key,
         kind: entitlement.kind,
-        ...(entitlement.numericValue === null || entitlement.numericValue === undefined
+        ...(entitlement.numericValue === undefined
           ? {}
           : { numericValue: entitlement.numericValue }),
         ...(entitlement.booleanValue === undefined ? {} : { booleanValue: entitlement.booleanValue }),

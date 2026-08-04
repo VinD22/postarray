@@ -133,7 +133,26 @@ async function seedMetricDefinitions(tx: RlsTransactionClient): Promise<void> {
 async function seedToolCatalog(tx: RlsTransactionClient): Promise<void> {
   const verifiedAt = hoursAgo(72);
 
-  const tools = [
+  interface ToolSeed {
+    readonly id: string;
+    readonly name: string;
+    readonly officialUrl: string;
+    readonly category: 'image_editing' | 'research' | 'automation';
+    readonly summary: string;
+    readonly useCases: string[];
+    readonly inputs: string[];
+    readonly outputs: string[];
+    readonly priceModel: string;
+    readonly priceNote: string;
+    readonly rightsCaveats: string;
+    readonly privacyCaveats: string;
+    readonly limitations: string;
+    readonly integrations: string[];
+    readonly isAffiliate: boolean;
+    readonly affiliateDisclosure?: string;
+  }
+
+  const tools: readonly ToolSeed[] = [
     {
       id: SEED_TOOL_IDS.imageEditor,
       name: 'Sample Image Editor (seed record)',
@@ -210,7 +229,23 @@ async function seedToolCatalog(tx: RlsTransactionClient): Promise<void> {
 async function seedOpportunities(tx: RlsTransactionClient): Promise<void> {
   const verifiedAt = hoursAgo(96);
 
-  const opportunities = [
+  interface OpportunitySeed {
+    readonly id: string;
+    readonly kind: 'directory' | 'community' | 'newsletter';
+    readonly name: string;
+    readonly officialUrl: string;
+    readonly description: string;
+    readonly audience: string;
+    readonly regions: string[];
+    readonly categories: string[];
+    readonly submissionMethod: string;
+    readonly submissionRules: string;
+    readonly costMinor: number;
+    readonly selfPromotionAllowed: boolean;
+    readonly disclosureRules?: string;
+  }
+
+  const opportunities: readonly OpportunitySeed[] = [
     {
       id: SEED_OPPORTUNITY_IDS.directory,
       kind: 'directory' as const,
