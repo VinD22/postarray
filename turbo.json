@@ -1,0 +1,71 @@
+{
+  "$schema": "https://turbo.build/schema.json",
+  "ui": "stream",
+  "globalDependencies": [".env", ".env.example", "tsconfig.base.json"],
+  "globalEnv": [
+    "NODE_ENV",
+    "APP_URL",
+    "API_URL",
+    "DATABASE_URL",
+    "DIRECT_DATABASE_URL",
+    "SUPABASE_URL",
+    "SUPABASE_ANON_KEY",
+    "SUPABASE_SERVICE_ROLE_KEY",
+    "SUPABASE_JWT_SECRET",
+    "STORAGE_BUCKET",
+    "REDIS_URL",
+    "TEMPORAL_ADDRESS",
+    "TEMPORAL_NAMESPACE",
+    "TEMPORAL_API_KEY",
+    "POLAR_ACCESS_TOKEN",
+    "POLAR_WEBHOOK_SECRET",
+    "POLAR_SERVER",
+    "POLAR_MONTHLY_PRODUCT_ID",
+    "POLAR_ANNUAL_PRODUCT_ID",
+    "POLAR_TRIAL_DAYS",
+    "DEEPSEEK_API_KEY",
+    "DEEPSEEK_BASE_URL",
+    "DEEPSEEK_MODEL",
+    "AI_PROVIDER",
+    "AI_PROMPT_VERSION",
+    "TOKEN_ENCRYPTION_KMS_KEY_ID",
+    "TOKEN_ENCRYPTION_LOCAL_KEY",
+    "OAUTH_ISSUER_URL",
+    "OAUTH_SIGNING_KMS_KEY_ID",
+    "SHORT_LINK_BASE_URL",
+    "SHORT_LINK_HASH_KEY",
+    "EMAIL_API_KEY",
+    "SENTRY_DSN",
+    "POSTHOG_KEY"
+  ],
+  "tasks": {
+    "build": {
+      "dependsOn": ["^build"],
+      "outputs": ["dist/**", ".next/**", "!.next/cache/**", "generated/**"]
+    },
+    "dev": {
+      "cache": false,
+      "persistent": true,
+      "dependsOn": ["^build"]
+    },
+    "typecheck": {
+      "dependsOn": ["^build"],
+      "outputs": []
+    },
+    "lint": {
+      "dependsOn": ["^build"],
+      "outputs": []
+    },
+    "test": {
+      "dependsOn": ["^build"],
+      "outputs": ["coverage/**"]
+    },
+    "generate": {
+      "cache": false,
+      "outputs": ["generated/**"]
+    },
+    "clean": {
+      "cache": false
+    }
+  }
+}

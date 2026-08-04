@@ -1,0 +1,49 @@
+# dependencies
+node_modules/
+.pnpm-store/
+
+# builds
+dist/
+build/
+.next/
+out/
+generated/
+*.tsbuildinfo
+
+# env / secrets  (only .env.example is committed)
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+!packages/**/fixtures/**/*.key
+
+# test / coverage
+coverage/
+.nyc_output/
+playwright-report/
+test-results/
+blob-report/
+
+# caches
+.turbo/
+.eslintcache
+.cache/
+*.log
+npm-debug.log*
+pnpm-debug.log*
+
+# local data
+.tmp/
+tmp/
+storage-local/
+*.sqlite
+*.sqlite3
+
+# editors / OS
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.recommended.json
