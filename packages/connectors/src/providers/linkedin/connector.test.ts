@@ -3,6 +3,7 @@ import { describe, expect, it } from 'vitest';
 
 import {
   createTestDeps,
+  expectPublished,
   testConnection,
   testDraft,
   testGrant,
@@ -186,7 +187,7 @@ describe('LinkedIn publish', () => {
     );
     expect(result.status).toBe('published');
     if (result.status !== 'published') return;
-    expect(result.externalPostId).toBe('urn:li:share:7100000000000000001');
+    expect(expectPublished(result).externalPostId).toBe('urn:li:share:7100000000000000001');
   });
 
   it('sends the reviewed version header on every request', async () => {
@@ -288,7 +289,7 @@ describe('LinkedIn mentions', () => {
     const mentions = await connector.searchMentions?.(
       testMentionSearchRequest(organizationConnection, '@sample-studio-fake'),
     );
-    expect(mentions?.[0]?.externalAccountId).toBe('urn:li:organization:99000001');
+    expect(mentions?.[0]?.externalId).toBe('urn:li:organization:99000001');
     expect(mentions?.[0]?.resolvedToExternalId).toBe(true);
   });
 });

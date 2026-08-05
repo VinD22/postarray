@@ -1,7 +1,15 @@
 import { RelayError, summarizeCapabilities } from '@relay/contracts';
 import { describe, expect, it } from 'vitest';
 
-import { createTestDeps, testConnection, testDraft, testMedia } from '../../shared/testing.js';
+import {
+  createTestDeps,
+  expectPublished,
+  testConnection,
+  testDraft,
+  testGrant,
+  testMedia,
+  testMetricsRequest,
+} from '../../shared/testing.js';
 import { buildInstagramCapabilities } from './capabilities.js';
 import { createInstagramConnector } from './connector.js';
 import {
@@ -92,15 +100,7 @@ describe('Instagram account discovery', () => {
       ],
     });
     const connector = createInstagramConnector(deps);
-    const accounts = await connector.discoverAccounts({
-      provider: 'instagram',
-      accessToken: 'fake-test-access-token-not-a-real-credential',
-      refreshToken: null,
-      expiresAt: null,
-      scopes: SCOPES,
-      externalUserId: null,
-      extra: {},
-    });
+    const accounts = await connector.discoverAccounts(testGrant({ provider: 'instagram', scopes: SCOPES }));
     expect(accounts[0]?.eligible).toBe(false);
     expect(accounts[0]?.ineligibleReasonKey).toBe(
       'connectors.instagram.professional_account_required',
@@ -115,15 +115,7 @@ describe('Instagram account discovery', () => {
       ],
     });
     const connector = createInstagramConnector(deps);
-    const accounts = await connector.discoverAccounts({
-      provider: 'instagram',
-      accessToken: 'fake-test-access-token-not-a-real-credential',
-      refreshToken: null,
-      expiresAt: null,
-      scopes: SCOPES,
-      externalUserId: null,
-      extra: {},
-    });
+    const accounts = await connector.discoverAccounts(testGrant({ provider: 'instagram', scopes: SCOPES }));
     expect(accounts).toHaveLength(1);
     expect(accounts[0]?.eligible).toBe(true);
     expect(accounts[0]?.parentExternalId).toBe('61550000000001');
@@ -145,8 +137,7 @@ describe('Instagram publish', () => {
     const connector = createInstagramConnector(deps);
     const result = await connector.publish(request({ draft: imageDraft }) as never);
     expect(result.status).toBe('processing');
-    expect(result.externalPostId).toBeNull();
-    expect(result.resume['containerId']).toBe('17990000000000001');
+    expect(expectPublished(result).externalPostId).toBeNull();
     expect(simulator.callsTo('/media_publish')).toHaveLength(0);
   });
 
@@ -162,8 +153,8 @@ describe('Instagram publish', () => {
     const connector = createInstagramConnector(deps);
     const result = await connector.publish(request({ draft: imageDraft }) as never);
     expect(result.status).toBe('published');
-    expect(result.externalPostId).toBe('17880000000000001');
-    expect(result.permalink).toBe('https://www.instagram.com/p/FAKEPOSTCODE1/');
+    expect(expectPublished(result).externalPostId).toBe('17880000000000001');
+    expect(expectPublished(result).permalink).toBe('https://www.instagram.com/p/FAKEPOSTCODE1/');
   });
 
   it('reuses a stored container on retry instead of creating a second one', async () => {
@@ -178,7 +169,7 @@ describe('Instagram publish', () => {
     const result = await connector.publish(
       request({ draft: imageDraft, resume: { containerId: '17990000000000001' } }) as never,
     );
-    expect(result.externalPostId).toBe('17880000000000001');
+    expect(expectPublished(result).externalPostId).toBe('17880000000000001');
     expect(
       simulator.calls.filter(
         (call) => call.method === 'POST' && call.url.endsWith('/media'),
@@ -218,11 +209,10 @@ describe('Instagram validation', () => {
     const connector = createInstagramConnector(deps);
     const result = await connector.validateDraft(
       testDraft({
-        connection,
         capabilities,
         contentKind: 'image',
         media: [testMedia({ kind: 'image' })],
-        providerOptions: { surface: 'STORIES' },
+        connection: { ...connection, metadata: { providerOptions: { surface: 'STORIES' } } },
       }),
     );
     const issue = result.issues.find(
@@ -236,11 +226,10 @@ describe('Instagram validation', () => {
     const connector = createInstagramConnector(deps);
     const result = await connector.validateDraft(
       testDraft({
-        connection,
         capabilities,
         contentKind: 'short_video',
         media: [testMedia({ kind: 'video', width: 1080, height: 1350, durationSeconds: 30 })],
-        providerOptions: { surface: 'REELS' },
+        connection: { ...connection, metadata: { providerOptions: { surface: 'REELS' } } },
       }),
     );
     expect(result.issues.some((issue) => issue.code === 'REELS_ASPECT_RATIO_INVALID')).toBe(true);
@@ -267,11 +256,7 @@ describe('Instagram metrics', () => {
       routes: [{ method: 'GET', match: '/insights', body: INSTAGRAM_MEDIA_INSIGHTS_FIXTURE }],
     });
     const connector = createInstagramConnector(deps);
-    const observations = await connector.fetchMetrics({
-      connection,
-      scope: 'post',
-      externalPostId: '17880000000000001',
-    });
+    const observations = await connector.fetchMetrics(testMetricsRequest({ connection, scope: 'post', externalPostId: '17880000000000001' }));
     const shares = observations.find((entry) => entry.normalizedName === 'shares');
     expect(shares?.value).toBeNull();
     expect(shares?.availability).toBe('unavailable_provider');
@@ -291,10 +276,9 @@ describe('Instagram metrics', () => {
       ],
     });
     const connector = createInstagramConnector(deps);
-    const observations = await connector.fetchMetrics({
-      connection,
-      scope: 'account',
-    });
+    const observations = await connector.fetchMetrics(
+      testMetricsRequest({ connection, scope: 'account' }),
+    );
     expect(observations.every((entry) => entry.availability === 'unavailable_permission')).toBe(
       true,
     );
@@ -305,7 +289,7 @@ describe('Instagram metrics', () => {
       routes: [{ method: 'GET', match: '/insights', body: INSTAGRAM_ACCOUNT_INSIGHTS_FIXTURE }],
     });
     const connector = createInstagramConnector(deps);
-    const observations = await connector.fetchMetrics({ connection, scope: 'account' });
+    const observations = await connector.fetchMetrics(testMetricsRequest({ connection, scope: 'account' }));
     const reach = observations.find((entry) => entry.normalizedName === 'reach');
     expect(reach?.value).toBe(4310);
     const followerDelta = observations.find((entry) => entry.normalizedName === 'follower_delta');

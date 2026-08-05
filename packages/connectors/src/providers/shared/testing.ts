@@ -15,6 +15,7 @@ import type {
   ProviderMedia,
   ProviderThreadItem,
   PublishRequest,
+  PublishResult,
   RefreshRequest,
   RevokeRequest,
   StatusRequest,
@@ -453,4 +454,34 @@ export function testRevokeRequest(
     refreshToken: null,
     client: { clientId, clientSecret: null, redirectUri: 'https://app.relay.invalid/oauth/callback' },
   };
+}
+
+/**
+ * Narrow a `PublishResult` in a test.
+ *
+ * The result is a discriminated union on purpose, so a test that wants the
+ * published fields has to say so. These helpers fail loudly with the status
+ * that actually came back, which is more useful than a type assertion.
+ */
+export function expectPublished(
+  result: PublishResult,
+): Extract<PublishResult, { status: 'published' }> {
+  if (result.status !== 'published') {
+    throw new Error(`expected a published result, received "${result.status}"`);
+  }
+  return result;
+}
+
+export function expectPartial(result: PublishResult): Extract<PublishResult, { status: 'partial' }> {
+  if (result.status !== 'partial') {
+    throw new Error(`expected a partial result, received "${result.status}"`);
+  }
+  return result;
+}
+
+export function expectPending(result: PublishResult): Extract<PublishResult, { status: 'pending' }> {
+  if (result.status !== 'pending') {
+    throw new Error(`expected a pending result, received "${result.status}"`);
+  }
+  return result;
 }

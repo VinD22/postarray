@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 
 import {
   createTestDeps,
+  expectPublished,
   testConnection,
   testDraft,
   testGrant,
@@ -144,10 +145,10 @@ describe('Bluesky publish', () => {
     );
     expect(result.status).toBe('published');
     if (result.status !== 'published') return;
-    expect(result.externalPostId).toBe(
+    expect(expectPublished(result).externalPostId).toBe(
       'at://did:plc:fakedidfakedidfake01/app.bsky.feed.post/fakerkey0001',
     );
-    expect(result.permalink).toBe(
+    expect(expectPublished(result).permalink).toBe(
       'https://bsky.app/profile/sample-studio.fake.invalid/post/fakerkey0001',
     );
   });
@@ -278,7 +279,7 @@ describe('Bluesky reads', () => {
     const mentions = await connector.searchMentions?.(
       testMentionSearchRequest(connection, '@someone-else'),
     );
-    expect(mentions?.[0]?.externalAccountId).toBe('did:plc:fakedidfakedidfake02');
+    expect(mentions?.[0]?.externalId).toBe('did:plc:fakedidfakedidfake02');
     expect(mentions?.[0]?.resolvedToExternalId).toBe(true);
   });
 

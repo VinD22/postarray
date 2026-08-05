@@ -1,7 +1,16 @@
 import { RelayError } from '@relay/contracts';
 import { describe, expect, it } from 'vitest';
 
-import { createTestDeps, testConnection, testDraft, testThreadItem } from '../../shared/testing.js';
+import {
+  createTestDeps,
+  expectPartial,
+  expectPublished,
+  testConnection,
+  testDraft,
+  testGrant,
+  testMetricsRequest,
+  testThreadItem,
+} from '../../shared/testing.js';
 import { buildThreadsCapabilities } from './capabilities.js';
 import { createThreadsConnector } from './connector.js';
 import {
@@ -73,15 +82,7 @@ describe('Threads publish', () => {
       routes: [{ method: 'GET', match: '/me', body: THREADS_PROFILE_FIXTURE }],
     });
     const connector = createThreadsConnector(deps);
-    const accounts = await connector.discoverAccounts({
-      provider: 'threads',
-      accessToken: 'fake-test-access-token-not-a-real-credential',
-      refreshToken: null,
-      expiresAt: null,
-      scopes: SCOPES,
-      externalUserId: null,
-      extra: {},
-    });
+    const accounts = await connector.discoverAccounts(testGrant({ provider: 'threads', scopes: SCOPES }));
     expect(accounts).toHaveLength(1);
     expect(accounts[0]?.handle).toBe('sample_studio_fake');
   });
@@ -96,7 +97,7 @@ describe('Threads publish', () => {
     const connector = createThreadsConnector(deps);
     const result = await connector.publish(request({ draft }) as never);
     expect(result.status).toBe('processing');
-    expect(result.externalPostId).toBeNull();
+    expect(expectPublished(result).externalPostId).toBeNull();
     expect(simulator.callsTo('threads_publish')).toHaveLength(0);
   });
 
@@ -112,8 +113,8 @@ describe('Threads publish', () => {
     const connector = createThreadsConnector(deps);
     const result = await connector.publish(request({ draft }) as never);
     expect(result.status).toBe('published');
-    expect(result.externalPostId).toBe('19000000000000001');
-    expect(result.permalink).toBe(
+    expect(expectPublished(result).externalPostId).toBe('19000000000000001');
+    expect(expectPublished(result).permalink).toBe(
       'https://www.threads.net/@sample_studio_fake/post/FAKESHORTCODE1',
     );
   });
@@ -130,7 +131,7 @@ describe('Threads publish', () => {
     const result = await connector.publish(
       request({ draft, resume: { containerId: '18000000000000001' } }) as never,
     );
-    expect(result.externalPostId).toBe('19000000000000001');
+    expect(expectPublished(result).externalPostId).toBe('19000000000000001');
     expect(
       simulator.calls.filter((call) => call.method === 'POST' && call.url.endsWith('/threads')),
     ).toHaveLength(0);
@@ -169,9 +170,12 @@ describe('Threads publish', () => {
         }),
       }) as never,
     );
-    expect(result.status).toBe('processing');
-    expect(result.root.state).toBe('published');
-    expect(result.items[0]?.state).toBe('processing');
+    // The root exists externally, so a reply that is not yet live is a partial
+    // success carrying the posts that do exist, never a failed publish.
+    expect(result.status).toBe('partial');
+    const partial = expectPartial(result);
+    expect(partial.items[0]?.kind).toBe('root');
+    expect(partial.failures.length).toBeGreaterThan(0);
   });
 });
 
@@ -181,11 +185,7 @@ describe('Threads metrics', () => {
       routes: [{ method: 'GET', match: '/insights', body: THREADS_MEDIA_INSIGHTS_FIXTURE }],
     });
     const connector = createThreadsConnector(deps);
-    const observations = await connector.fetchMetrics({
-      connection,
-      scope: 'post',
-      externalPostId: '19000000000000001',
-    });
+    const observations = await connector.fetchMetrics(testMetricsRequest({ connection, scope: 'post', externalPostId: '19000000000000001' }));
     expect(observations.find((entry) => entry.normalizedName === 'views')?.value).toBe(3120);
     const shares = observations.find((entry) => entry.normalizedName === 'shares');
     expect(shares?.value).toBeNull();
@@ -204,11 +204,7 @@ describe('Threads metrics', () => {
       ],
     });
     const connector = createThreadsConnector(deps);
-    const observations = await connector.fetchMetrics({
-      connection,
-      scope: 'post',
-      externalPostId: '19000000000000001',
-    });
+    const observations = await connector.fetchMetrics(testMetricsRequest({ connection, scope: 'post', externalPostId: '19000000000000001' }));
     expect(observations.every((entry) => entry.availability === 'unavailable_permission')).toBe(
       true,
     );

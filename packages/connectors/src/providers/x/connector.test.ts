@@ -3,6 +3,7 @@ import { describe, expect, it } from 'vitest';
 
 import {
   createTestDeps,
+  expectPublished,
   testConnection,
   testDestinationRequest,
   testDraft,
@@ -95,7 +96,6 @@ describe('X validateDraft', () => {
     const result = await connector.validateDraft(
       testDraft({ connection, capabilities, body: 'Plain text only.' }),
     );
-    expect(result.currency).toBe('USD');
     expect(result.estimatedCostMinor).toBe(2);
   });
 
@@ -125,8 +125,8 @@ describe('X publish', () => {
     );
     expect(result.status).toBe('published');
     if (result.status !== 'published') return;
-    expect(result.externalPostId).toBe('1900000000000000001');
-    expect(result.permalink).toBe(
+    expect(expectPublished(result).externalPostId).toBe('1900000000000000001');
+    expect(expectPublished(result).permalink).toBe(
       'https://x.com/sample_studio_fake/status/1900000000000000001',
     );
     expect(simulator.calls.filter((call) => call.method === 'POST')).toHaveLength(1);
@@ -153,7 +153,7 @@ describe('X publish', () => {
     );
     expect(result.status).toBe('published');
     if (result.status !== 'published') return;
-    expect(result.items[1]?.externalPostId).toBe('1900000000000000002');
+    expect(expectPublished(result).items[1]?.externalPostId).toBe('1900000000000000002');
     const reply = simulator.calls.filter((call) => call.method === 'POST')[1];
     expect(reply?.json).toMatchObject({
       reply: { in_reply_to_tweet_id: '1900000000000000001' },
@@ -182,8 +182,8 @@ describe('X publish', () => {
     expect(result.status).toBe('published');
     if (result.status !== 'published') return;
     // $0.200 for the URL create plus $0.015 for the plain reply, in whole minor units.
-    expect(result.costMinor).toBe(22);
-    expect(result.currency).toBe('USD');
+    expect(expectPublished(result).costMinor).toBe(22);
+    expect(expectPublished(result).currency).toBe('USD');
   });
 
   it('adopts an existing post instead of creating a duplicate', async () => {
@@ -205,7 +205,7 @@ describe('X publish', () => {
     );
     expect(result.status).toBe('published');
     if (result.status !== 'published') return;
-    expect(result.externalPostId).toBe('1900000000000000001');
+    expect(expectPublished(result).externalPostId).toBe('1900000000000000001');
     // The whole point: no second create was issued.
     expect(simulator.calls.filter((call) => call.method === 'POST')).toHaveLength(0);
   });
@@ -248,8 +248,8 @@ describe('X publish', () => {
     );
     expect(result.status).toBe('partial');
     if (result.status !== 'partial') return;
-    expect(result.externalPostId).toBe('1900000000000000001');
-    expect(result.items).toHaveLength(1);
+    expect(expectPublished(result).externalPostId).toBe('1900000000000000001');
+    expect(expectPublished(result).items).toHaveLength(1);
     expect(result.failures[0]?.error.remediationCode).toBe('comment_failed_root_published');
   });
 

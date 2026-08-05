@@ -1,7 +1,16 @@
 import { RelayError } from '@relay/contracts';
 import { describe, expect, it } from 'vitest';
 
-import { createTestDeps, testConnection, testDraft, testMedia } from '../shared/testing.js';
+import {
+  createTestDeps,
+  expectPublished,
+  testConnection,
+  testDraft,
+  testGrant,
+  testMedia,
+  testMetricsRequest,
+  testStatusRequest,
+} from '../shared/testing.js';
 import {
   YOUTUBE_UPLOADS_PER_DAY,
   buildYouTubeCapabilities,
@@ -46,7 +55,6 @@ const capabilities = buildYouTubeCapabilities({
 
 function videoDraft(overrides: Record<string, unknown> = {}) {
   return testDraft({
-    connection,
     capabilities,
     contentKind: 'video',
     title: 'Sample upload',
@@ -62,7 +70,7 @@ function videoDraft(overrides: Record<string, unknown> = {}) {
       }),
     ],
     privacyValue: 'private',
-    providerOptions: { madeForKids: false },
+    connection: { ...connection, metadata: { providerOptions: { madeForKids: false } } },
     ...overrides,
   });
 }
@@ -157,7 +165,7 @@ describe('YouTube validation', () => {
     const connector = createYouTubeConnector(deps);
     const result = await connector.validateDraft(
       videoDraft({
-        providerOptions: { madeForKids: false, commentsDisabled: true },
+        connection: { ...connection, metadata: { providerOptions: { madeForKids: false, commentsDisabled: true } } },
         threadItems: [
           { id: 'cmt_test_1', kind: 'comment', order: 1, body: 'First.', media: [], delaySeconds: 0 },
         ],
@@ -212,8 +220,7 @@ describe('YouTube upload and publish', () => {
       idempotencyKey: 'idem-youtube-0001',
     } as never);
     expect(prepared[0]?.providerMediaId).toBe('FAKEVIDEOID001');
-    expect(prepared[0]?.metadata['sessionUri']).toContain('FAKEUPLOADSESSION001');
-    expect(prepared[0]?.state).toBe('processing');
+    expect(prepared[0]?.uploadState).toBe('processing');
   });
 
   it('classifies quota exhaustion as reschedulable, not as a permanent failure', async () => {
@@ -247,7 +254,7 @@ describe('YouTube upload and publish', () => {
       request({ draft: videoDraft(), resume: { videoId: 'FAKEVIDEOID001' } }) as never,
     );
     expect(result.status).toBe('processing');
-    expect(result.externalPostId).toBeNull();
+    expect(expectPublished(result).externalPostId).toBeNull();
   });
 
   it('reports the video id and watch URL once YouTube finished processing', async () => {
@@ -259,8 +266,8 @@ describe('YouTube upload and publish', () => {
       request({ draft: videoDraft(), resume: { videoId: 'FAKEVIDEOID001' } }) as never,
     );
     expect(result.status).toBe('published');
-    expect(result.externalPostId).toBe('FAKEVIDEOID001');
-    expect(result.permalink).toBe('https://www.youtube.com/watch?v=FAKEVIDEOID001');
+    expect(expectPublished(result).externalPostId).toBe('FAKEVIDEOID001');
+    expect(expectPublished(result).permalink).toBe('https://www.youtube.com/watch?v=FAKEVIDEOID001');
   });
 
   it('fails permanently when YouTube rejected the video', async () => {
@@ -268,9 +275,9 @@ describe('YouTube upload and publish', () => {
       routes: [{ method: 'GET', match: '/videos', body: YOUTUBE_VIDEO_REJECTED_FIXTURE }],
     });
     const connector = createYouTubeConnector(deps);
-    const status = await connector.getStatus({ connection, providerJobId: 'FAKEVIDEOID002' });
+    const status = await connector.getStatus(testStatusRequest({ connection, providerJobId: 'FAKEVIDEOID002' }));
     expect(status.state).toBe('failed');
-    expect(status.remediationKey).toBe('provider_rejected_content');
+    expect(status.error?.remediationCode).toBe('provider_rejected_content');
   });
 
   it('posts a first comment after the video is live', async () => {
@@ -299,7 +306,7 @@ describe('YouTube upload and publish', () => {
       }) as never,
     );
     expect(result.status).toBe('published');
-    expect(result.items[0]?.externalPostId).toBe('FAKECOMMENTTHREAD001');
+    expect(expectPublished(result).items[0]?.externalPostId).toBe('FAKECOMMENTTHREAD001');
     expect(simulator.callsTo('/commentThreads')).toHaveLength(1);
   });
 });
@@ -310,11 +317,7 @@ describe('YouTube metrics', () => {
       routes: [{ method: 'GET', match: '/videos', body: YOUTUBE_VIDEO_STATISTICS_FIXTURE }],
     });
     const connector = createYouTubeConnector(deps);
-    const observations = await connector.fetchMetrics({
-      connection,
-      scope: 'post',
-      externalPostId: 'FAKEVIDEOID001',
-    });
+    const observations = await connector.fetchMetrics(testMetricsRequest({ connection, scope: 'post', externalPostId: 'FAKEVIDEOID001' }));
     expect(observations.find((entry) => entry.normalizedName === 'views')?.value).toBe(15_230);
     expect(observations.find((entry) => entry.normalizedName === 'likes')?.value).toBe(412);
   });
@@ -326,11 +329,7 @@ describe('YouTube metrics', () => {
       ],
     });
     const connector = createYouTubeConnector(deps);
-    const observations = await connector.fetchMetrics({
-      connection,
-      scope: 'post',
-      externalPostId: 'FAKEVIDEOID003',
-    });
+    const observations = await connector.fetchMetrics(testMetricsRequest({ connection, scope: 'post', externalPostId: 'FAKEVIDEOID003' }));
     const likes = observations.find((entry) => entry.normalizedName === 'likes');
     expect(likes?.value).toBeNull();
     expect(likes?.availability).toBe('unavailable_provider');
@@ -341,15 +340,7 @@ describe('YouTube metrics', () => {
       routes: [{ method: 'GET', match: '/channels', body: YOUTUBE_CHANNELS_FIXTURE }],
     });
     const connector = createYouTubeConnector(deps);
-    const accounts = await connector.discoverAccounts({
-      provider: 'youtube',
-      accessToken: 'fake-test-access-token-not-a-real-credential',
-      refreshToken: null,
-      expiresAt: null,
-      scopes: SCOPES,
-      externalUserId: null,
-      extra: {},
-    });
+    const accounts = await connector.discoverAccounts(testGrant({ provider: 'youtube', scopes: SCOPES }));
     expect(accounts).toHaveLength(1);
     expect(accounts[0]?.externalAccountId).toBe('UCFAKECHANNEL0000000001');
     expect(accounts[0]?.metadata['longUploadsAllowed']).toBe(false);

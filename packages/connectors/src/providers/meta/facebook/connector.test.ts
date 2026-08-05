@@ -1,6 +1,14 @@
 import { describe, expect, it } from 'vitest';
 
-import { createTestDeps, testConnection, testDraft } from '../../shared/testing.js';
+import {
+  createTestDeps,
+  expectPublished,
+  testConnection,
+  testDraft,
+  testGrant,
+  testMetricsRequest,
+  testStatusRequest,
+} from '../../shared/testing.js';
 import { buildFacebookCapabilities } from './capabilities.js';
 import { createFacebookConnector } from './connector.js';
 import {
@@ -69,15 +77,7 @@ describe('Facebook account discovery', () => {
       routes: [{ method: 'GET', match: '/me/accounts', body: FACEBOOK_PAGES_FIXTURE }],
     });
     const connector = createFacebookConnector(deps);
-    const accounts = await connector.discoverAccounts({
-      provider: 'facebook',
-      accessToken: 'fake-test-access-token-not-a-real-credential',
-      refreshToken: null,
-      expiresAt: null,
-      scopes: SCOPES,
-      externalUserId: null,
-      extra: {},
-    });
+    const accounts = await connector.discoverAccounts(testGrant({ provider: 'facebook', scopes: SCOPES }));
     expect(accounts).toHaveLength(2);
     expect(accounts.find((account) => account.externalAccountId === '61550000000001')?.eligible).toBe(
       true,
@@ -92,15 +92,7 @@ describe('Facebook account discovery', () => {
       routes: [{ method: 'GET', match: '/me/accounts', body: FACEBOOK_PAGES_FIXTURE }],
     });
     const connector = createFacebookConnector(deps);
-    const accounts = await connector.discoverAccounts({
-      provider: 'facebook',
-      accessToken: 'fake-test-access-token-not-a-real-credential',
-      refreshToken: null,
-      expiresAt: null,
-      scopes: SCOPES,
-      externalUserId: null,
-      extra: {},
-    });
+    const accounts = await connector.discoverAccounts(testGrant({ provider: 'facebook', scopes: SCOPES }));
     expect(accounts[0]?.metadata['tasks']).toContain('CREATE_CONTENT');
   });
 });
@@ -124,8 +116,8 @@ describe('Facebook publish', () => {
       }) as never,
     );
     expect(result.status).toBe('published');
-    expect(result.externalPostId).toBe('61550000000001_122000000000001');
-    expect(result.permalink).toBe(
+    expect(expectPublished(result).externalPostId).toBe('61550000000001_122000000000001');
+    expect(expectPublished(result).permalink).toBe(
       'https://www.facebook.com/61550000000001/posts/122000000000001',
     );
   });
@@ -147,7 +139,7 @@ describe('Facebook publish', () => {
         resume: { postId: '61550000000001_122000000000001' },
       }) as never,
     );
-    expect(result.externalPostId).toBe('61550000000001_122000000000001');
+    expect(expectPublished(result).externalPostId).toBe('61550000000001_122000000000001');
     expect(simulator.calls.filter((call) => call.method === 'POST')).toHaveLength(0);
   });
 
@@ -158,7 +150,7 @@ describe('Facebook publish', () => {
       ],
     });
     const connector = createFacebookConnector(deps);
-    const status = await connector.getStatus({ connection, providerJobId: '122000000000500' });
+    const status = await connector.getStatus(testStatusRequest({ connection, providerJobId: '122000000000500' }));
     expect(status.state).toBe('processing');
     expect(status.externalPostId).toBeNull();
   });
@@ -177,11 +169,7 @@ describe('Facebook metrics', () => {
       ],
     });
     const connector = createFacebookConnector(deps);
-    const observations = await connector.fetchMetrics({
-      connection,
-      scope: 'post',
-      externalPostId: '61550000000001_122000000000001',
-    });
+    const observations = await connector.fetchMetrics(testMetricsRequest({ connection, scope: 'post', externalPostId: '61550000000001_122000000000001' }));
     expect(observations.find((entry) => entry.normalizedName === 'impressions')?.value).toBe(15_400);
     expect(observations.find((entry) => entry.normalizedName === 'likes')?.value).toBe(64);
     expect(observations.find((entry) => entry.normalizedName === 'shares')?.value).toBe(3);
@@ -192,7 +180,7 @@ describe('Facebook metrics', () => {
       routes: [{ method: 'GET', match: '/insights', body: FACEBOOK_PAGE_INSIGHTS_FIXTURE }],
     });
     const connector = createFacebookConnector(deps);
-    const observations = await connector.fetchMetrics({ connection, scope: 'account' });
+    const observations = await connector.fetchMetrics(testMetricsRequest({ connection, scope: 'account' }));
     const profileViews = observations.find((entry) => entry.normalizedName === 'profile_views');
     expect(profileViews?.value).toBeNull();
     expect(profileViews?.availability).toBe('unavailable_provider');
