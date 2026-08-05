@@ -43,6 +43,7 @@ import { validateDraftShape } from '../shared/validate.js';
 import { SOURCE_VERIFIED_ON } from '../shared/verification.js';
 import { accessTokenOf, errorSummary, providerOptionsOf, providerOptionsOfConnection } from '../shared/access.js';
 import { NOT_IMPLEMENTED_FEATURES } from '../../contract.js';
+import type { FailedItem, PublishedItem } from '../../contract.js';
 import {
   YOUTUBE_MAX_TAGS,
   YOUTUBE_MAX_TITLE_LENGTH,
@@ -103,10 +104,11 @@ function watchUrl(videoId: string): string {
   return `https://www.youtube.com/watch?v=${videoId}`;
 }
 
-function toNumberRecord(source: Readonly<Record<string, string | undefined>>): Record<string, unknown> {
+function toNumberRecord(source: Readonly<Record<string, unknown>>): Record<string, unknown> {
   const output: Record<string, unknown> = {};
   for (const [key, value] of Object.entries(source)) {
-    if (value !== undefined) {
+    // YouTube reports counts as strings. Anything else is not a metric we can map.
+    if (typeof value === 'string' || typeof value === 'number') {
       output[key] = value;
     }
   }
@@ -202,43 +204,49 @@ export function createYouTubeConnector(deps: ConnectorDeps): SocialConnector {
         authorizeUrl: AUTHORIZE_URL,
         tokenUrl: TOKEN_URL,
         revokeUrl: REVOKE_URL,
-        requiresPkce: true,
+        pkceRequired: true,
         multiStep: false,
+        stepDescriptionKeys: [],
+        supportsRefresh: true,
+        refreshAtLifetimeFraction: 0.75,
+        extraAuthorizeParameters: { access_type: 'offline', prompt: 'consent' },
         redirectPath: '/oauth/youtube/callback',
         scopes: [
           {
             scope: 'https://www.googleapis.com/auth/youtube.upload',
             explanationKey: 'connectors.youtube.scope.upload',
-        usedBy: ['publish'],
-        required: true,
+            usedBy: ['publish'],
+            required: true,
           },
           {
             scope: 'https://www.googleapis.com/auth/youtube.readonly',
             explanationKey: 'connectors.youtube.scope.readonly',
-        usedBy: ['publish'],
-        required: true,
+            usedBy: ['publish'],
+            required: true,
           },
           {
             scope: 'https://www.googleapis.com/auth/youtube.force-ssl',
             explanationKey: 'connectors.youtube.scope.force_ssl',
-        usedBy: ['publish'],
-        required: true,
+            usedBy: ['publish'],
+            required: true,
           },
         ],
-        notesKey: isUnaudited()
-          ? 'connectors.youtube.unaudited_private_only'
-          : 'connectors.youtube.authorization_note',
       };
     },
 
     async discoverAccounts(grant: OAuthGrant): Promise<ExternalAccount[]> {
-      const channels = await readChannel(grant.accessToken, null);
+      const channels = await readChannel(
+        await grant.accessToken.use((plaintext) => plaintext),
+        null,
+      );
       return channels.items.map((channel) => ({
         externalAccountId: channel.id,
         accountType: 'channel' as const,
         displayName: channel.snippet?.title ?? `Channel ${channel.id}`,
         handle: channel.snippet?.customUrl ?? null,
         avatarUrl: channel.snippet?.thumbnails?.default?.url ?? null,
+        profileUrl: `https://www.youtube.com/channel/${channel.id}`,
+        accountAccessToken: null,
         parentExternalId: null,
         eligible: grant.grantedScopes.some((scope) => scope.endsWith('/youtube.upload')),
         ineligibleReasonKey: grant.grantedScopes.some((scope) => scope.endsWith('/youtube.upload'))
@@ -256,10 +264,13 @@ export function createYouTubeConnector(deps: ConnectorDeps): SocialConnector {
       const accessToken = await token(input.connection);
       const channels = await readChannel(accessToken, null);
       return channels.items.map((channel) => ({
-        externalAccountId: channel.id,
+        externalId: channel.id,
         kind: 'channel' as const,
-        label: channel.snippet?.title ?? `Channel ${channel.id}`,
-        description: null,
+        displayLabel: channel.snippet?.title ?? `Channel ${channel.id}`,
+        parentExternalId: null,
+        canPost: true,
+        refreshedAt: nowIso(),
+        expiresAt: new Date(clock.now().getTime() + 24 * 60 * 60 * 1000).toISOString(),
         metadata: { longUploadsAllowed: channel.status?.longUploadsStatus === 'allowed' },
       }));
     },
@@ -445,8 +456,10 @@ export function createYouTubeConnector(deps: ConnectorDeps): SocialConnector {
           query: { uploadType: 'resumable', part: 'snippet,status' },
           json: {
             snippet: {
-              title: input.title ?? '',
-              description: input.body,
+              // Placeholder metadata. `publish` sets the real snippet from the
+              // draft, which is the only place the title and description exist.
+              title: 'Pending upload',
+              description: '',
               ...(options.tags === undefined ? {} : { tags: options.tags }),
               ...(options.categoryId === undefined ? {} : { categoryId: options.categoryId }),
               ...(options.defaultLanguage === undefined
@@ -454,7 +467,9 @@ export function createYouTubeConnector(deps: ConnectorDeps): SocialConnector {
                 : { defaultLanguage: options.defaultLanguage }),
             },
             status: {
-              privacyStatus: input.privacyValue ?? 'private',
+              // Always private at upload. `publish` applies the requested privacy,
+              // and an unaudited project cannot go beyond private at all.
+              privacyStatus: 'private',
               selfDeclaredMadeForKids: options.madeForKids ?? false,
             },
           },
@@ -477,9 +492,18 @@ export function createYouTubeConnector(deps: ConnectorDeps): SocialConnector {
         sessionUri = location;
       }
 
+      if (media.sourceUrl === null) {
+        throw providerFailure({
+          provider: PROVIDER,
+          operation: 'youtube.prepare_media',
+          remediationCode: REMEDIATION.mediaInvalid,
+          details: { reason: 'no_source_url' },
+        });
+      }
+      const sourceUrl = media.sourceUrl;
       const source = await http.request({
         method: 'GET',
-        url: media.sourceUrl,
+        url: sourceUrl,
         accept: 'binary',
         provider: PROVIDER,
         operation: 'youtube.fetch_source',
@@ -533,8 +557,13 @@ export function createYouTubeConnector(deps: ConnectorDeps): SocialConnector {
           // The upload is finished but YouTube still processes the video, so the state is
           // processing until `getStatus` confirms it.
           uploadState: 'processing',
+          derivativeId: media.derivativeId,
           derivativeChecksum: media.checksum,
-          metadata: { sessionUri, confirmedBytes: offset, videoId },
+          byteSize: media.byteSize,
+          altTextApplied: false,
+          publicUrl: null,
+          expiresAt: null,
+          reusedFromPreviousAttempt: false,
         },
       ];
     },
@@ -618,29 +647,48 @@ export function createYouTubeConnector(deps: ConnectorDeps): SocialConnector {
       }
 
       if (uploadStatus !== 'processed' && processing !== 'succeeded') {
+        // The bytes are uploaded but YouTube is still processing. An upload is not a
+        // publication, so this is pending and the workflow polls until it is done.
         return {
-          uploadState: 'processing',
-          externalPostId: null,
-          permalink: null,
-          root: {
-            kind: 'root',
-            order: 0,
-            threadItemId: null,
-            uploadState: 'processing',
-            externalPostId: null,
-            permalink: null,
-            errorClass: null,
-            errorCode: null,
-            remediationCode: null,
+          status: 'pending',
+          providerJobId: videoId,
+          pollAfterSeconds: 30,
+          giveUpAt: new Date(clock.now().getTime() + 6 * 60 * 60 * 1000).toISOString(),
+          sanitizedResponse: {
+            uploadStatus,
+            processing: video.processingDetails?.processingStatus ?? 'processing',
           },
-          items: [],
-          pollToken: videoId,
-          resume: { videoId },
-          sanitizedResponse: { uploadStatus, processing },
-          costMinor: null,
-          currency: null,
+          providerRequestId: null,
         };
       }
+
+      // Apply the real snippet and privacy now that the draft is in scope.
+      const update = await http.request({
+        method: 'PUT',
+        url: `${API_BASE}/videos`,
+        headers: bearer(accessToken),
+        query: { part: 'snippet,status' },
+        json: {
+          id: videoId,
+          snippet: {
+            title: draft.title ?? draft.body.slice(0, 100),
+            description: draft.body,
+            ...(options.categoryId === undefined ? {} : { categoryId: options.categoryId }),
+            ...(options.tags === undefined ? {} : { tags: options.tags }),
+            ...(options.defaultLanguage === undefined
+              ? {}
+              : { defaultLanguage: options.defaultLanguage }),
+          },
+          status: {
+            privacyStatus: draft.privacyValue ?? 'private',
+            selfDeclaredMadeForKids: options.madeForKids ?? false,
+          },
+        },
+        accept: 'json',
+        provider: PROVIDER,
+        operation: 'youtube.update_metadata',
+      });
+      ensureOk(update, { provider: PROVIDER, operation: 'youtube.update_metadata', response: update });
 
       if (options.thumbnailMediaId !== undefined) {
         const thumbnail = await http.request({
@@ -661,20 +709,11 @@ export function createYouTubeConnector(deps: ConnectorDeps): SocialConnector {
         }
       }
 
-      const items: PublishItemResult[] = [];
+      const items: PublishedItem[] = [];
+      const failures: FailedItem[] = [];
       for (const item of draft.threadItems) {
+        // A delayed comment belongs to the thread sequence workflow.
         if (item.kind !== 'comment' || item.delaySeconds > 0) {
-          items.push({
-            kind: item.kind,
-            order: item.order,
-            threadItemId: item.threadItemId,
-            uploadState: 'processing',
-            externalPostId: null,
-            permalink: null,
-            errorClass: null,
-            errorCode: null,
-            remediationCode: null,
-          });
           continue;
         }
         const comment = await http.request({
@@ -692,50 +731,71 @@ export function createYouTubeConnector(deps: ConnectorDeps): SocialConnector {
           provider: PROVIDER,
           operation: 'youtube.create_comment',
         });
-        items.push({
-          kind: item.kind,
-          order: item.order,
-          threadItemId: item.threadItemId,
-          state: comment.ok ? 'published' : 'failed',
-          externalPostId: comment.ok
-            ? parseProviderBody(youTubeCommentThreadSchema, comment, {
-                provider: PROVIDER,
-                operation: 'youtube.create_comment',
-                response: comment,
-              }).id
-            : null,
-          permalink: null,
-          errorClass: null,
-          errorCode: null,
-          remediationCode: comment.ok ? null : REMEDIATION.commentFailedRootPublished,
-        });
+        if (comment.ok) {
+          items.push({
+            kind: item.kind,
+            order: item.order,
+            threadItemId: item.threadItemId,
+            externalPostId: parseProviderBody(youTubeCommentThreadSchema, comment, {
+              provider: PROVIDER,
+              operation: 'youtube.create_comment',
+              response: comment,
+            }).id,
+            permalink: null,
+            publishedAt: nowIso(),
+          });
+        } else {
+          // The video is already live, so a failed comment is a partial success.
+          failures.push({
+            kind: item.kind,
+            order: item.order,
+            threadItemId: item.threadItemId,
+            error: errorSummary({
+              errorClass: 'PERMANENT_PROVIDER',
+              remediationCode: REMEDIATION.commentFailedRootPublished,
+              messageKey: 'connectors.youtube.comment_failed',
+              retryable: false,
+            }),
+          });
+        }
       }
 
-      const anyFailed = items.some((item) => item.state === 'failed');
-      const anyPending = items.some((item) => item.state === 'processing');
 
-      return {
-        state: anyFailed ? 'partially_published' : anyPending ? 'processing' : 'published',
-        externalPostId: videoId,
-        permalink: watchUrl(videoId),
-        root: {
+      const publishedAt = nowIso();
+      const allItems: PublishedItem[] = [
+        {
           kind: 'root',
           order: 0,
           threadItemId: null,
-          state: 'published',
           externalPostId: videoId,
           permalink: watchUrl(videoId),
-          errorClass: null,
-          errorCode: null,
-          remediationCode: null,
+          publishedAt,
         },
-        items,
-        pollToken: videoId,
-        resume: { videoId },
-        sanitizedResponse: {
-          uploadStatus,
-          privacyStatus: video.status?.privacyStatus ?? 'private',
-        },
+        ...items,
+      ];
+      const sanitizedResponse = { videoId, itemCount: allItems.length };
+      if (failures.length > 0) {
+        return {
+          status: 'partial',
+          externalPostId: videoId,
+          permalink: watchUrl(videoId),
+          publishedAt,
+          items: allItems,
+          failures,
+          sanitizedResponse,
+          providerRequestId: null,
+          costMinor: null,
+          currency: null,
+        };
+      }
+      return {
+        status: 'published',
+        externalPostId: videoId,
+        permalink: watchUrl(videoId),
+        publishedAt,
+        items: allItems,
+        sanitizedResponse,
+        providerRequestId: null,
         costMinor: null,
         currency: null,
       };
@@ -747,7 +807,7 @@ export function createYouTubeConnector(deps: ConnectorDeps): SocialConnector {
         method: 'GET',
         url: `${API_BASE}/videos`,
         headers: bearer(accessToken),
-        query: { part: YOUTUBE_VIDEO_PARTS, id: input.providerJobId },
+        query: { part: YOUTUBE_VIDEO_PARTS, id: input.providerJobId ?? input.externalPostId ?? '' },
         accept: 'json',
         provider: PROVIDER,
         operation: 'youtube.get_status',
@@ -790,11 +850,18 @@ export function createYouTubeConnector(deps: ConnectorDeps): SocialConnector {
       const uploadStatus = video.status?.uploadStatus ?? 'uploaded';
       if (uploadStatus === 'failed' || uploadStatus === 'rejected') {
         return {
-          uploadState: 'failed',
+          state: 'failed',
           externalPostId: null,
           permalink: null,
-          errorClass: 'PERMANENT_PROVIDER',
-          remediationCode: REMEDIATION.providerRejectedContent,
+          publishedAt: null,
+          items: [],
+          error: errorSummary({
+            errorClass: 'PERMANENT_PROVIDER',
+            remediationCode: REMEDIATION.providerRejectedContent,
+            messageKey: 'connectors.youtube.upload_rejected',
+            retryable: false,
+          }),
+          pollAfterSeconds: null,
           sanitizedResponse: {
             uploadStatus,
             reason: video.status?.failureReason ?? video.status?.rejectionReason ?? 'unknown',
@@ -820,6 +887,10 @@ export function createYouTubeConnector(deps: ConnectorDeps): SocialConnector {
         state: 'published',
         externalPostId: video.id,
         permalink: watchUrl(video.id),
+        publishedAt: nowIso(),
+        items: [],
+        error: null,
+        pollAfterSeconds: null,
         sanitizedResponse: { privacyStatus: video.status?.privacyStatus ?? 'private' },
       };
     },
@@ -877,7 +948,7 @@ export function createYouTubeConnector(deps: ConnectorDeps): SocialConnector {
           mappings: YOUTUBE_ACCOUNT_METRICS,
           values,
           observedAt,
-          rawPayload: values,
+          rawPayload: { ...statistics },
         });
       }
 
@@ -897,7 +968,7 @@ export function createYouTubeConnector(deps: ConnectorDeps): SocialConnector {
         method: 'GET',
         url: `${API_BASE}/videos`,
         headers: bearer(accessToken),
-        query: { part: 'statistics', id: externalPostId },
+        query: { part: 'statistics', id: externalPostId ?? '' },
         accept: 'json',
         provider: PROVIDER,
         operation: 'youtube.video_metrics',
@@ -951,13 +1022,13 @@ export function createYouTubeConnector(deps: ConnectorDeps): SocialConnector {
         tokenUrl: TOKEN_URL,
         clientId,
         clientSecret,
-        refreshToken: input.refreshToken,
+        refreshToken: await input.refreshToken.use((plaintext) => plaintext),
         basicAuth: false,
       });
     },
 
     async revoke(input: RevokeRequest): Promise<void> {
-      const accessToken = await token(input.connection);
+      const accessToken = await input.accessToken.use((plaintext) => plaintext);
       const response = await http.request({
         method: 'POST',
         url: REVOKE_URL,
