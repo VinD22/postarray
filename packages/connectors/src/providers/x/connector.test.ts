@@ -3,6 +3,7 @@ import { describe, expect, it } from 'vitest';
 
 import {
   createTestDeps,
+  expectPartial,
   expectPublished,
   testConnection,
   testDestinationRequest,
@@ -248,8 +249,8 @@ describe('X publish', () => {
     );
     expect(result.status).toBe('partial');
     if (result.status !== 'partial') return;
-    expect(expectPublished(result).externalPostId).toBe('1900000000000000001');
-    expect(expectPublished(result).items).toHaveLength(1);
+    expect(expectPartial(result).externalPostId).toBe('1900000000000000001');
+    expect(expectPartial(result).items).toHaveLength(1);
     expect(result.failures[0]?.error.remediationCode).toBe('comment_failed_root_published');
   });
 

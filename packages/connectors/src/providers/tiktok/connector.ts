@@ -556,26 +556,35 @@ export function createTikTokConnector(deps: ConnectorDeps): TikTokConnector {
 
       // Creator info is re-fetched at dispatch. A post scheduled far in advance must not
       // publish with an option that is no longer available.
-      const creator = await creatorInfo(connection);
-      const available = creator.privacy_level_options;
+      // Creator info is fetched and shown before the user consents at initialization.
+      // A resumed publish has already done that, and re-fetching it would be a second
+      // call for a decision the creator already made.
+      const carriedPublishIdForCreator =
+        request.preparedMedia.find((prepared) => prepared.providerMediaId !== null)
+          ?.providerMediaId ?? null;
       const privacyLevel = options.privacyLevel;
-      if (privacyLevel === undefined || !available.includes(privacyLevel)) {
-        throw new ConnectionActionRequiredError({
-          messageKey: 'connectors.tiktok.privacy_option_unavailable',
-          details: {
-            provider: PROVIDER,
-            remediationCode: REMEDIATION.choosePrivacyOption,
-            available: available.join(', '),
-          },
-        });
-      }
+      if (carriedPublishIdForCreator === null) {
+        const creator = await creatorInfo(connection);
+        const available = creator.privacy_level_options;
+        if (privacyLevel === undefined || !available.includes(privacyLevel)) {
+          throw new ConnectionActionRequiredError({
+            messageKey: 'connectors.tiktok.privacy_option_unavailable',
+            details: {
+              provider: PROVIDER,
+              remediationCode: REMEDIATION.choosePrivacyOption,
+              available: available.join(', '),
+            },
+          });
+        }
 
-      const interactions = interactionAvailability(creator);
-      if (options.disableComment === false && !interactions.commentAllowed) {
-        throw new ConnectionActionRequiredError({
-          messageKey: 'connectors.tiktok.comments_disabled_by_creator',
-          details: { provider: PROVIDER, remediationCode: REMEDIATION.choosePrivacyOption },
-        });
+        const interactions = interactionAvailability(creator);
+        if (options.disableComment === false && !interactions.commentAllowed) {
+          throw new ConnectionActionRequiredError({
+            messageKey: 'connectors.tiktok.comments_disabled_by_creator',
+            details: { provider: PROVIDER, remediationCode: REMEDIATION.choosePrivacyOption },
+          });
+        }
+
       }
 
       const media = draft.media[0];
@@ -609,37 +618,51 @@ export function createTikTokConnector(deps: ConnectorDeps): TikTokConnector {
             ),
           };
 
+      // A publish this attempt's predecessor already initialized is carried on
+      // PreparedMedia. Initializing a second one is how the same video gets
+      // posted twice, so it is only done when there is nothing to resume.
+      const carriedPublishId =
+        request.preparedMedia.find((prepared) => prepared.providerMediaId !== null)
+          ?.providerMediaId ?? null;
+
+      let publishId: string;
+      let uploadUrl: string | undefined;
+      if (carriedPublishId !== null) {
+        publishId = carriedPublishId;
+        uploadUrl = undefined;
+      } else {
       const init = await http.request({
-        method: 'POST',
-        url: `${API_BASE}/post/publish/video/init/`,
-        headers: bearer(accessToken),
-        json: {
-          post_info: {
-            title: draft.body,
-            privacy_level: privacyLevel,
-            disable_comment: options.disableComment ?? true,
-            disable_duet: options.disableDuet ?? true,
-            disable_stitch: options.disableStitch ?? true,
-            ...(options.videoCoverTimestampMs === undefined
-              ? {}
-              : { video_cover_timestamp_ms: options.videoCoverTimestampMs }),
-            brand_content_toggle: options.brandedContent ?? false,
-            brand_organic_toggle: options.brandOrganic ?? false,
+          method: 'POST',
+          url: `${API_BASE}/post/publish/video/init/`,
+          headers: bearer(accessToken),
+          json: {
+            post_info: {
+              title: draft.body,
+              privacy_level: privacyLevel,
+              disable_comment: options.disableComment ?? true,
+              disable_duet: options.disableDuet ?? true,
+              disable_stitch: options.disableStitch ?? true,
+              ...(options.videoCoverTimestampMs === undefined
+                ? {}
+                : { video_cover_timestamp_ms: options.videoCoverTimestampMs }),
+              brand_content_toggle: options.brandedContent ?? false,
+              brand_organic_toggle: options.brandOrganic ?? false,
+            },
+            source_info: sourceInfo,
           },
-          source_info: sourceInfo,
-        },
-        accept: 'json',
-        provider: PROVIDER,
-        operation: 'tiktok.publish_init',
-      });
-      ensureOk(init, { provider: PROVIDER, operation: 'tiktok.publish_init', response: init });
-      const initialized = parseProviderBody(tikTokPublishInitSchema, init, {
-        provider: PROVIDER,
-        operation: 'tiktok.publish_init',
-        response: init,
-      });
-      const publishId = initialized.data.publish_id;
-      const uploadUrl = initialized.data.upload_url;
+          accept: 'json',
+          provider: PROVIDER,
+          operation: 'tiktok.publish_init',
+        });
+        ensureOk(init, { provider: PROVIDER, operation: 'tiktok.publish_init', response: init });
+        const initialized = parseProviderBody(tikTokPublishInitSchema, init, {
+          provider: PROVIDER,
+          operation: 'tiktok.publish_init',
+          response: init,
+        });
+        publishId = initialized.data.publish_id;
+        uploadUrl = initialized.data.upload_url;
+      }
 
       if (!verified && uploadUrl !== undefined) {
         const source = await http.request({

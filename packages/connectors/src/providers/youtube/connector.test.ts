@@ -3,6 +3,7 @@ import { describe, expect, it } from 'vitest';
 
 import {
   createTestDeps,
+  expectPending,
   expectPublished,
   testConnection,
   testDraft,
@@ -70,9 +71,26 @@ function videoDraft(overrides: Record<string, unknown> = {}) {
       }),
     ],
     privacyValue: 'private',
-    connection: { ...connection, metadata: { providerOptions: { madeForKids: false } } },
+    connection: { ...connection, metadata: { ...connection.metadata, providerOptions: { madeForKids: false } } },
     ...overrides,
   });
+}
+
+/** A video whose bytes an earlier attempt already uploaded. */
+function preparedVideo(providerMediaId: string): Record<string, unknown> {
+  return {
+    mediaId: 'media_test_0001',
+    derivativeId: null,
+    providerMediaId,
+    containerId: null,
+    uploadState: 'processing',
+    derivativeChecksum: 'e'.repeat(64),
+    byteSize: 5_000_000,
+    altTextApplied: false,
+    publicUrl: null,
+    expiresAt: null,
+    reusedFromPreviousAttempt: true,
+  };
 }
 
 function request(overrides: Record<string, unknown>): Record<string, unknown> {
@@ -152,7 +170,10 @@ describe('YouTube validation', () => {
     const { deps } = createTestDeps();
     const connector = createYouTubeConnector(deps);
     const result = await connector.validateDraft(
-      videoDraft({ title: null, providerOptions: {} }),
+      videoDraft({
+        title: null,
+        connection: { ...connection, metadata: { ...connection.metadata, providerOptions: {} } },
+      }),
     );
     expect(result.issues.some((issue) => issue.code === 'YOUTUBE_TITLE_REQUIRED')).toBe(true);
     expect(
@@ -165,7 +186,7 @@ describe('YouTube validation', () => {
     const connector = createYouTubeConnector(deps);
     const result = await connector.validateDraft(
       videoDraft({
-        connection: { ...connection, metadata: { providerOptions: { madeForKids: false, commentsDisabled: true } } },
+        connection: { ...connection, metadata: { ...connection.metadata, providerOptions: { madeForKids: false, commentsDisabled: true } } },
         threadItems: [
           { id: 'cmt_test_1', kind: 'comment', order: 1, body: 'First.', media: [], delaySeconds: 0 },
         ],
@@ -245,25 +266,27 @@ describe('YouTube upload and publish', () => {
     ).rejects.toSatisfy((error: unknown) => RelayError.is(error));
   });
 
-  it('reports a video that is still processing as processing, never published', async () => {
+  it('reports a video that is still processing as pending, never published', async () => {
     const { deps } = createTestDeps({
-      routes: [{ method: 'GET', match: '/videos', body: YOUTUBE_VIDEO_PROCESSING_FIXTURE }],
+      routes: [
+        { method: 'PUT', match: '/videos', body: {} },{ method: 'GET', match: '/videos', body: YOUTUBE_VIDEO_PROCESSING_FIXTURE }],
     });
     const connector = createYouTubeConnector(deps);
     const result = await connector.publish(
-      request({ draft: videoDraft(), resume: { videoId: 'FAKEVIDEOID001' } }) as never,
+      request({ draft: videoDraft(), preparedMedia: [preparedVideo('FAKEVIDEOID001')] }) as never,
     );
-    expect(result.status).toBe('processing');
-    expect(expectPublished(result).externalPostId).toBeNull();
+    expect(result.status).toBe('pending');
+    expect(expectPending(result).providerJobId).toBe('FAKEVIDEOID001');
   });
 
   it('reports the video id and watch URL once YouTube finished processing', async () => {
     const { deps } = createTestDeps({
-      routes: [{ method: 'GET', match: '/videos', body: YOUTUBE_VIDEO_PROCESSED_FIXTURE }],
+      routes: [
+        { method: 'PUT', match: '/videos', body: {} },{ method: 'GET', match: '/videos', body: YOUTUBE_VIDEO_PROCESSED_FIXTURE }],
     });
     const connector = createYouTubeConnector(deps);
     const result = await connector.publish(
-      request({ draft: videoDraft(), resume: { videoId: 'FAKEVIDEOID001' } }) as never,
+      request({ draft: videoDraft(), preparedMedia: [preparedVideo('FAKEVIDEOID001')] }) as never,
     );
     expect(result.status).toBe('published');
     expect(expectPublished(result).externalPostId).toBe('FAKEVIDEOID001');
@@ -272,7 +295,8 @@ describe('YouTube upload and publish', () => {
 
   it('fails permanently when YouTube rejected the video', async () => {
     const { deps } = createTestDeps({
-      routes: [{ method: 'GET', match: '/videos', body: YOUTUBE_VIDEO_REJECTED_FIXTURE }],
+      routes: [
+        { method: 'PUT', match: '/videos', body: {} },{ method: 'GET', match: '/videos', body: YOUTUBE_VIDEO_REJECTED_FIXTURE }],
     });
     const connector = createYouTubeConnector(deps);
     const status = await connector.getStatus(testStatusRequest({ connection, providerJobId: 'FAKEVIDEOID002' }));
@@ -283,6 +307,7 @@ describe('YouTube upload and publish', () => {
   it('posts a first comment after the video is live', async () => {
     const { deps, simulator } = createTestDeps({
       routes: [
+        { method: 'PUT', match: '/videos', body: {} },
         { method: 'GET', match: '/videos', body: YOUTUBE_VIDEO_PROCESSED_FIXTURE },
         { method: 'POST', match: '/commentThreads', body: YOUTUBE_COMMENT_THREAD_FIXTURE },
       ],
@@ -293,20 +318,22 @@ describe('YouTube upload and publish', () => {
         draft: videoDraft({
           threadItems: [
             {
-              id: 'cmt_test_1',
+              threadItemId: 'cmt_test_1',
               kind: 'comment',
               order: 1,
               body: 'Chapters below.',
               media: [],
               delaySeconds: 0,
+              links: [],
             },
           ],
         }),
-        resume: { videoId: 'FAKEVIDEOID001' },
+        preparedMedia: [preparedVideo('FAKEVIDEOID001')],
       }) as never,
     );
     expect(result.status).toBe('published');
-    expect(expectPublished(result).items[0]?.externalPostId).toBe('FAKECOMMENTTHREAD001');
+    expect(expectPublished(result).items[0]?.kind).toBe('root');
+    expect(expectPublished(result).items[1]?.externalPostId).toBe('FAKECOMMENTTHREAD001');
     expect(simulator.callsTo('/commentThreads')).toHaveLength(1);
   });
 });
@@ -314,7 +341,8 @@ describe('YouTube upload and publish', () => {
 describe('YouTube metrics', () => {
   it('maps the statistics YouTube returned', async () => {
     const { deps } = createTestDeps({
-      routes: [{ method: 'GET', match: '/videos', body: YOUTUBE_VIDEO_STATISTICS_FIXTURE }],
+      routes: [
+        { method: 'PUT', match: '/videos', body: {} },{ method: 'GET', match: '/videos', body: YOUTUBE_VIDEO_STATISTICS_FIXTURE }],
     });
     const connector = createYouTubeConnector(deps);
     const observations = await connector.fetchMetrics(testMetricsRequest({ connection, scope: 'post', externalPostId: 'FAKEVIDEOID001' }));
@@ -325,6 +353,7 @@ describe('YouTube metrics', () => {
   it('reports a hidden like count as unavailable rather than zero', async () => {
     const { deps } = createTestDeps({
       routes: [
+        { method: 'PUT', match: '/videos', body: {} },
         { method: 'GET', match: '/videos', body: YOUTUBE_VIDEO_STATISTICS_HIDDEN_LIKES_FIXTURE },
       ],
     });

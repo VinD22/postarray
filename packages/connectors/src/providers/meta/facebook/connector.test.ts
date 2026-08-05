@@ -122,8 +122,11 @@ describe('Facebook publish', () => {
     );
   });
 
-  it('adopts an already created post rather than creating a second one', async () => {
-    const { deps, simulator } = createTestDeps({
+  it('reports an existing post so a retry can adopt it instead of creating a second one', async () => {
+    // The orchestrator calls getStatus through ensureNotAlreadyPublished before it
+    // repeats a create. See idempotency.test.ts for that decision; what this
+    // connector owes is a truthful answer about a post that already exists.
+    const { deps } = createTestDeps({
       routes: [
         {
           method: 'GET',
@@ -133,14 +136,11 @@ describe('Facebook publish', () => {
       ],
     });
     const connector = createFacebookConnector(deps);
-    const result = await connector.publish(
-      request({
-        draft: testDraft({ connection, capabilities }),
-        resume: { postId: '61550000000001_122000000000001' },
-      }) as never,
+    const status = await connector.getStatus(
+      testStatusRequest({ connection, externalPostId: '61550000000001_122000000000001' }),
     );
-    expect(expectPublished(result).externalPostId).toBe('61550000000001_122000000000001');
-    expect(simulator.calls.filter((call) => call.method === 'POST')).toHaveLength(0);
+    expect(status.state).toBe('published');
+    expect(status.externalPostId).toBe('61550000000001_122000000000001');
   });
 
   it('reports a video that is still processing as processing, not published', async () => {

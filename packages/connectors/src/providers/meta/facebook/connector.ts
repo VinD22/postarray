@@ -461,7 +461,7 @@ export function createFacebookConnector(deps: ConnectorDeps): SocialConnector {
     async getStatus(input: StatusRequest): Promise<PublishStatus> {
       const accessToken = await token(input.connection);
       const response = await client.get({
-        path: `/${input.providerJobId}`,
+        path: `/${input.providerJobId ?? input.externalPostId ?? ''}`,
         accessToken,
         query: { fields: 'id,permalink_url,is_published,status' },
         operation: 'facebook.get_status',

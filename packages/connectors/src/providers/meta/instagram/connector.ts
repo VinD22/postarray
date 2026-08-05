@@ -458,8 +458,15 @@ export function createInstagramConnector(deps: ConnectorDeps): SocialConnector {
       // If a previous attempt already published, adopt the media id rather than
       // republishing the container.
 
-      // Reuse a stored container. Never create a second one.
-      let containerId = null;
+      // Reuse a container a previous attempt already created. Media preparation
+      // records it on `PreparedMedia`, which is what makes a retry safe: creating
+      // a second container is how the same photo gets posted twice.
+      const carriedContainerId =
+        draft.contentKind === 'carousel'
+          ? null
+          : (request.preparedMedia.find((prepared) => prepared.containerId !== null)?.containerId ??
+            null);
+      let containerId = carriedContainerId;
 
       if (containerId === null) {
         if (draft.contentKind === 'carousel') {

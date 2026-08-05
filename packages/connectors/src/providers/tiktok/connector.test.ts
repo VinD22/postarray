@@ -71,9 +71,26 @@ function videoDraft(overrides: Record<string, unknown> = {}) {
         durationSeconds: 30,
       }),
     ],
-    connection: { ...connection, metadata: { providerOptions: COMPLETE_OPTIONS } },
+    connection: { ...connection, metadata: { ...connection.metadata, providerOptions: COMPLETE_OPTIONS } },
     ...overrides,
   });
+}
+
+/** A publish an earlier attempt already initialized with TikTok. */
+function preparedPublish(providerMediaId: string): Record<string, unknown> {
+  return {
+    mediaId: 'media_test_0001',
+    derivativeId: null,
+    providerMediaId,
+    containerId: null,
+    uploadState: 'processing',
+    derivativeChecksum: 'e'.repeat(64),
+    byteSize: 5_000_000,
+    altTextApplied: false,
+    publicUrl: null,
+    expiresAt: null,
+    reusedFromPreviousAttempt: true,
+  };
 }
 
 function request(overrides: Record<string, unknown>): Record<string, unknown> {
@@ -114,7 +131,7 @@ describe('TikTok privacy rules', () => {
     const connector = createTikTokConnector(deps);
     const result = await connector.validateDraft(
       videoDraft({
-        connection: { ...connection, metadata: { providerOptions: { ...COMPLETE_OPTIONS, privacyLevel: undefined } } },
+        connection: { ...connection, metadata: { ...connection.metadata, providerOptions: { ...COMPLETE_OPTIONS, privacyLevel: undefined } } },
         privacyValue: null,
       }),
     );
@@ -162,7 +179,7 @@ describe('TikTok validation', () => {
     const connector = createTikTokConnector(deps);
     const result = await connector.validateDraft(
       videoDraft({
-        connection: { ...connection, metadata: { providerOptions: {
+        connection: { ...connection, metadata: { ...connection.metadata, providerOptions: {
           privacyLevel: 'SELF_ONLY',
           commercialContent: false,
           musicRightsConfirmed: true,
@@ -181,7 +198,7 @@ describe('TikTok validation', () => {
     const connector = createTikTokConnector(deps);
     const missing = await connector.validateDraft(
       videoDraft({
-        connection: { ...connection, metadata: { providerOptions: { ...COMPLETE_OPTIONS, commercialContent: undefined } } },
+        connection: { ...connection, metadata: { ...connection.metadata, providerOptions: { ...COMPLETE_OPTIONS, commercialContent: undefined } } },
       }),
     );
     expect(
@@ -189,7 +206,9 @@ describe('TikTok validation', () => {
     ).toBe(true);
 
     const unkinded = await connector.validateDraft(
-      videoDraft({ providerOptions: { ...COMPLETE_OPTIONS, commercialContent: true } }),
+      videoDraft({
+        connection: { ...connection, metadata: { ...connection.metadata, providerOptions: { ...COMPLETE_OPTIONS, commercialContent: true } } },
+      }),
     );
     expect(unkinded.issues.some((issue) => issue.code === 'TIKTOK_COMMERCIAL_KIND_REQUIRED')).toBe(
       true,
@@ -201,7 +220,7 @@ describe('TikTok validation', () => {
     const connector = createTikTokConnector(deps);
     const result = await connector.validateDraft(
       videoDraft({
-        connection: { ...connection, metadata: { providerOptions: {
+        connection: { ...connection, metadata: { ...connection.metadata, providerOptions: {
           ...COMPLETE_OPTIONS,
           musicRightsConfirmed: undefined,
           consentConfirmed: undefined,
@@ -253,7 +272,7 @@ describe('TikTok publish', () => {
       connector.publish(
         request({
           draft: videoDraft({
-            connection: { ...connection, metadata: { providerOptions: { ...COMPLETE_OPTIONS, privacyLevel: 'PUBLIC_TO_EVERYONE' } } },
+            connection: { ...connection, metadata: { ...connection.metadata, providerOptions: { ...COMPLETE_OPTIONS, privacyLevel: 'PUBLIC_TO_EVERYONE' } } },
           }),
         }) as never,
       ),
@@ -274,8 +293,8 @@ describe('TikTok publish', () => {
     });
     const connector = createTikTokConnector(deps);
     const result = await connector.publish(request({ draft: videoDraft() }) as never);
-    expect(result.status).toBe('processing');
-    expect(expectPublished(result).externalPostId).toBeNull();
+    expect(result.status).toBe('pending');
+    expect(expectPending(result).providerJobId).not.toBe('');
     expect(expectPending(result).providerJobId).toBe('v_pub_fake~publish.id.0000000001');
   });
 
@@ -316,7 +335,7 @@ describe('TikTok publish', () => {
     const result = await connector.publish(
       request({
         draft: videoDraft(),
-        resume: { publishId: 'v_pub_fake~publish.id.0000000001' },
+        preparedMedia: [preparedPublish('v_pub_fake~publish.id.0000000001')],
       }) as never,
     );
     expect(expectPublished(result).externalPostId).toBe('7400000000000000001');

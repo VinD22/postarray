@@ -356,8 +356,13 @@ export function createThreadsConnector(deps: ConnectorDeps): SocialConnector {
       const userId = connection.externalAccountId;
 
 
-      let containerId =
-        null;
+      // A container created by an earlier attempt is carried on PreparedMedia.
+      // Creating a second one is how the same post gets published twice.
+      let containerId: string | null =
+        draft.contentKind === 'carousel'
+          ? null
+          : (request.preparedMedia.find((prepared) => prepared.containerId !== null)?.containerId ??
+            null);
 
       if (containerId === null) {
         if (draft.contentKind === 'carousel') {

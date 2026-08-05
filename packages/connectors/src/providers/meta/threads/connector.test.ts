@@ -4,6 +4,7 @@ import { describe, expect, it } from 'vitest';
 import {
   createTestDeps,
   expectPartial,
+  expectPending,
   expectPublished,
   testConnection,
   testDraft,
@@ -45,6 +46,23 @@ const capabilities = buildThreadsCapabilities({
   grantedScopes: SCOPES,
 });
 
+/** A prepared asset that already carries a provider container from an earlier attempt. */
+function preparedWithContainer(containerId: string): Record<string, unknown> {
+  return {
+    mediaId: 'media_test_0001',
+    derivativeId: null,
+    providerMediaId: null,
+    containerId,
+    uploadState: 'ready',
+    derivativeChecksum: 'e'.repeat(64),
+    byteSize: 120_000,
+    altTextApplied: false,
+    publicUrl: null,
+    expiresAt: null,
+    reusedFromPreviousAttempt: true,
+  };
+}
+
 function request(overrides: Record<string, unknown>): Record<string, unknown> {
   return {
     connection,
@@ -53,7 +71,6 @@ function request(overrides: Record<string, unknown>): Record<string, unknown> {
     capabilityVersion: capabilities.capabilityVersion,
     contentChecksum: 'f'.repeat(64),
     dispatchedAt: '2026-08-04T12:00:00.000Z',
-    resume: {},
     ...overrides,
   };
 }
@@ -87,7 +104,7 @@ describe('Threads publish', () => {
     expect(accounts[0]?.handle).toBe('sample_studio_fake');
   });
 
-  it('treats a container that is still building as provider processing', async () => {
+  it('treats a container that is still building as pending, never published', async () => {
     const { deps, simulator } = createTestDeps({
       routes: [
         { method: 'POST', match: '/threads', body: THREADS_CONTAINER_FIXTURE },
@@ -96,8 +113,8 @@ describe('Threads publish', () => {
     });
     const connector = createThreadsConnector(deps);
     const result = await connector.publish(request({ draft }) as never);
-    expect(result.status).toBe('processing');
-    expect(expectPublished(result).externalPostId).toBeNull();
+    expect(result.status).toBe('pending');
+    expect(expectPending(result).providerJobId).not.toBe('');
     expect(simulator.callsTo('threads_publish')).toHaveLength(0);
   });
 
@@ -129,7 +146,7 @@ describe('Threads publish', () => {
     });
     const connector = createThreadsConnector(deps);
     const result = await connector.publish(
-      request({ draft, resume: { containerId: '18000000000000001' } }) as never,
+      request({ draft, preparedMedia: [preparedWithContainer('18000000000000001')] }) as never,
     );
     expect(expectPublished(result).externalPostId).toBe('19000000000000001');
     expect(
@@ -150,7 +167,7 @@ describe('Threads publish', () => {
     );
   });
 
-  it('leaves a delayed thread part for the worker', async () => {
+  it('publishes the root and leaves a delayed thread part for the worker', async () => {
     const { deps } = createTestDeps({
       routes: [
         { method: 'POST', match: '/threads_publish', body: THREADS_PUBLISH_FIXTURE },
@@ -172,10 +189,12 @@ describe('Threads publish', () => {
     );
     // The root exists externally, so a reply that is not yet live is a partial
     // success carrying the posts that do exist, never a failed publish.
-    expect(result.status).toBe('partial');
-    const partial = expectPartial(result);
-    expect(partial.items[0]?.kind).toBe('root');
-    expect(partial.failures.length).toBeGreaterThan(0);
+    // The root is live and nothing failed. The delayed reply belongs to the
+    // thread sequence workflow, which gives it its own receipt.
+    expect(result.status).toBe('published');
+    const published = expectPublished(result);
+    expect(published.items[0]?.kind).toBe('root');
+    expect(published.items).toHaveLength(1);
   });
 });
 

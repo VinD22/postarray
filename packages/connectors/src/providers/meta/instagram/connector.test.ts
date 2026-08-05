@@ -3,12 +3,14 @@ import { describe, expect, it } from 'vitest';
 
 import {
   createTestDeps,
+  expectPending,
   expectPublished,
   testConnection,
   testDraft,
   testGrant,
   testMedia,
   testMetricsRequest,
+  testStatusRequest,
 } from '../../shared/testing.js';
 import { buildInstagramCapabilities } from './capabilities.js';
 import { createInstagramConnector } from './connector.js';
@@ -49,6 +51,23 @@ const capabilities = buildInstagramCapabilities({
   grantedScopes: SCOPES,
 });
 
+/** A prepared asset that already carries a provider container from an earlier attempt. */
+function preparedWithContainer(containerId: string): Record<string, unknown> {
+  return {
+    mediaId: 'media_test_0001',
+    derivativeId: null,
+    providerMediaId: null,
+    containerId,
+    uploadState: 'ready',
+    derivativeChecksum: 'e'.repeat(64),
+    byteSize: 120_000,
+    altTextApplied: false,
+    publicUrl: null,
+    expiresAt: null,
+    reusedFromPreviousAttempt: true,
+  };
+}
+
 function request(overrides: Record<string, unknown>): Record<string, unknown> {
   return {
     connection,
@@ -57,7 +76,6 @@ function request(overrides: Record<string, unknown>): Record<string, unknown> {
     capabilityVersion: capabilities.capabilityVersion,
     contentChecksum: 'd'.repeat(64),
     dispatchedAt: '2026-08-04T12:00:00.000Z',
-    resume: {},
     ...overrides,
   };
 }
@@ -136,8 +154,8 @@ describe('Instagram publish', () => {
     });
     const connector = createInstagramConnector(deps);
     const result = await connector.publish(request({ draft: imageDraft }) as never);
-    expect(result.status).toBe('processing');
-    expect(expectPublished(result).externalPostId).toBeNull();
+    expect(result.status).toBe('pending');
+    expect(expectPending(result).providerJobId).not.toBe('');
     expect(simulator.callsTo('/media_publish')).toHaveLength(0);
   });
 
@@ -167,7 +185,7 @@ describe('Instagram publish', () => {
     });
     const connector = createInstagramConnector(deps);
     const result = await connector.publish(
-      request({ draft: imageDraft, resume: { containerId: '17990000000000001' } }) as never,
+      request({ draft: imageDraft, preparedMedia: [preparedWithContainer('17990000000000001')] }) as never,
     );
     expect(expectPublished(result).externalPostId).toBe('17880000000000001');
     expect(
@@ -177,16 +195,18 @@ describe('Instagram publish', () => {
     ).toHaveLength(0);
   });
 
-  it('adopts an already published media id after a crash before the receipt', async () => {
-    const { deps, simulator } = createTestDeps({
+  it('reports an existing media id so a retry can adopt it after a crash', async () => {
+    // Adoption itself is the orchestrator's decision, made through getStatus in
+    // ensureNotAlreadyPublished. This asserts the answer the connector gives it.
+    const { deps } = createTestDeps({
       routes: [{ method: 'GET', match: '/17880000000000001', body: INSTAGRAM_MEDIA_FIXTURE }],
     });
     const connector = createInstagramConnector(deps);
-    const result = await connector.publish(
-      request({ draft: imageDraft, resume: { mediaId: '17880000000000001' } }) as never,
+    const status = await connector.getStatus(
+      testStatusRequest({ connection, externalPostId: '17880000000000001' }),
     );
-    expect(result.status).toBe('published');
-    expect(simulator.calls.filter((call) => call.method === 'POST')).toHaveLength(0);
+    expect(status.state).toBe('published');
+    expect(status.externalPostId).toBe('17880000000000001');
   });
 
   it('maps a container error to the provider stated reason', async () => {
@@ -212,7 +232,7 @@ describe('Instagram validation', () => {
         capabilities,
         contentKind: 'image',
         media: [testMedia({ kind: 'image' })],
-        connection: { ...connection, metadata: { providerOptions: { surface: 'STORIES' } } },
+        connection: { ...connection, metadata: { ...connection.metadata, providerOptions: { surface: 'STORIES' } } },
       }),
     );
     const issue = result.issues.find(
@@ -229,7 +249,7 @@ describe('Instagram validation', () => {
         capabilities,
         contentKind: 'short_video',
         media: [testMedia({ kind: 'video', width: 1080, height: 1350, durationSeconds: 30 })],
-        connection: { ...connection, metadata: { providerOptions: { surface: 'REELS' } } },
+        connection: { ...connection, metadata: { ...connection.metadata, providerOptions: { surface: 'REELS' } } },
       }),
     );
     expect(result.issues.some((issue) => issue.code === 'REELS_ASPECT_RATIO_INVALID')).toBe(true);
