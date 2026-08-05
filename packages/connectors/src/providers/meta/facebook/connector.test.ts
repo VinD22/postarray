@@ -79,12 +79,12 @@ describe('Facebook account discovery', () => {
       extra: {},
     });
     expect(accounts).toHaveLength(2);
-    expect(accounts.find((account) => account.externalId === '61550000000001')?.connectable).toBe(
+    expect(accounts.find((account) => account.externalAccountId === '61550000000001')?.eligible).toBe(
       true,
     );
-    const analyzeOnly = accounts.find((account) => account.externalId === '61550000000003');
-    expect(analyzeOnly?.connectable).toBe(false);
-    expect(analyzeOnly?.blockedReasonKey).toBe('connectors.facebook.page_role_required');
+    const analyzeOnly = accounts.find((account) => account.externalAccountId === '61550000000003');
+    expect(analyzeOnly?.eligible).toBe(false);
+    expect(analyzeOnly?.ineligibleReasonKey).toBe('connectors.facebook.page_role_required');
   });
 
   it('records the page tasks so a later role change is detectable', async () => {
@@ -123,7 +123,7 @@ describe('Facebook publish', () => {
         draft: testDraft({ connection, capabilities, body: 'A sample Page post.' }),
       }) as never,
     );
-    expect(result.state).toBe('published');
+    expect(result.status).toBe('published');
     expect(result.externalPostId).toBe('61550000000001_122000000000001');
     expect(result.permalink).toBe(
       'https://www.facebook.com/61550000000001/posts/122000000000001',
@@ -158,7 +158,7 @@ describe('Facebook publish', () => {
       ],
     });
     const connector = createFacebookConnector(deps);
-    const status = await connector.getStatus({ connection, pollToken: '122000000000500' });
+    const status = await connector.getStatus({ connection, providerJobId: '122000000000500' });
     expect(status.state).toBe('processing');
     expect(status.externalPostId).toBeNull();
   });

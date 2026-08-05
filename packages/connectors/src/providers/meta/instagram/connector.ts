@@ -51,6 +51,8 @@ import {
   metaPublishSchema,
 } from '../graph.js';
 import { metaAuthorization, refreshMetaCredential } from '../oauth.js';
+import { accessTokenOf, errorSummary, providerOptionsOf, providerOptionsOfConnection } from '../../shared/access.js';
+import { NOT_IMPLEMENTED_FEATURES } from '../../../contract.js';
 import {
   INSTAGRAM_CAROUSEL_MAX,
   INSTAGRAM_CAROUSEL_MIN,
@@ -108,7 +110,7 @@ export function createInstagramConnector(deps: ConnectorDeps): SocialConnector {
   const { vault, clock, logger } = deps;
 
   async function token(connection: ProviderConnection): Promise<string> {
-    return vault.getAccessToken(connection.credentialRef);
+    return accessTokenOf(connection);
   }
 
   function nowIso(): string {
@@ -125,8 +127,8 @@ export function createInstagramConnector(deps: ConnectorDeps): SocialConnector {
       accessToken,
       json: {
         ...(media.kind === 'video'
-          ? { video_url: media.downloadUrl, media_type: 'VIDEO' }
-          : { image_url: media.downloadUrl }),
+          ? { video_url: media.sourceUrl, media_type: 'VIDEO' }
+          : { image_url: media.sourceUrl }),
         is_carousel_item: true,
         ...(media.altText === null ? {} : { alt_text: media.altText }),
       },
@@ -158,9 +160,11 @@ export function createInstagramConnector(deps: ConnectorDeps): SocialConnector {
         state: 'published',
         externalPostId: parsed.id,
         permalink: parsed.permalink ?? null,
-        errorClass: null,
-        remediationKey: null,
-        sanitizedProviderResponse: { mediaType: parsed.media_type ?? 'unknown' },
+          publishedAt: nowIso(),
+          items: [],
+          error: null,
+          pollAfterSeconds: null,
+        sanitizedResponse: { mediaType: parsed.media_type ?? 'unknown' },
       };
     }
     const status = await readContainerStatus(
@@ -174,9 +178,11 @@ export function createInstagramConnector(deps: ConnectorDeps): SocialConnector {
         state: 'processing',
         externalPostId: null,
         permalink: null,
-        errorClass: null,
-        remediationKey: null,
-        sanitizedProviderResponse: { statusCode: status.statusCode, awaitingPublish: true },
+          publishedAt: null,
+          items: [],
+          error: null,
+          pollAfterSeconds: 15,
+        sanitizedResponse: { statusCode: status.statusCode, awaitingPublish: true },
       };
     }
     return containerStatusToPublishStatus(status, PROVIDER);
@@ -189,12 +195,29 @@ export function createInstagramConnector(deps: ConnectorDeps): SocialConnector {
         displayName: 'Instagram',
         iconToken: 'provider.instagram',
         accountTypes: ['business_profile', 'creator_profile'],
-        docsUrl: 'https://developers.facebook.com/docs/instagram-platform/content-publishing',
-        policyUrl: 'https://developers.facebook.com/terms',
+        officialDocsUrl: 'https://developers.facebook.com/docs/instagram-platform/content-publishing',
+        officialPolicyUrl: 'https://developers.facebook.com/terms',
         engineeringOwner: 'Backend/Connectors 1',
         policyOwner: 'Policy Owner',
-        lastPolicyReviewAt: SOURCE_VERIFIED_ON,
+        lastPolicyReviewAt: `${SOURCE_VERIFIED_ON}T00:00:00.000Z`,
+        nextPolicyReviewAt: '2027-02-04T00:00:00.000Z',
         contractVersion: CONNECTOR_CONTRACT_VERSION,
+        connectorVersion: '1.0.0',
+        // Meta app review is not complete, and Instagram publishing requires a professional account.
+        label: 'beta',
+        limitationKey: 'connectors.instagram.review_pending',
+        features: {
+          ...NOT_IMPLEMENTED_FEATURES,
+          discover_accounts: 'requires_review',
+          get_capabilities: 'supported',
+          validate_draft: 'supported',
+          prepare_media: 'requires_review',
+          preview: 'supported',
+          publish: 'requires_review',
+          get_status: 'requires_review',
+          fetch_metrics: 'requires_review',
+          refresh_credential: 'supported',
+        },
       };
     },
 
@@ -205,7 +228,7 @@ export function createInstagramConnector(deps: ConnectorDeps): SocialConnector {
     async discoverAccounts(grant: OAuthGrant): Promise<ExternalAccount[]> {
       const pages = await client.get({
         path: '/me/accounts',
-        accessToken: grant.accessToken,
+        accessToken: await grant.accessToken.use((plaintext) => plaintext),
         query: {
           fields: 'id,name,access_token,tasks,instagram_business_account{id}',
           limit: 100,
@@ -238,20 +261,20 @@ export function createInstagramConnector(deps: ConnectorDeps): SocialConnector {
         const accountType = account.account_type ?? 'PERSONAL';
         const professional = INSTAGRAM_PROFESSIONAL_ACCOUNT_TYPES.has(accountType);
         accounts.push({
-          externalId: account.id,
+          externalAccountId: account.id,
           accountType: accountType === 'MEDIA_CREATOR' ? 'creator_profile' : 'business_profile',
           displayName: account.name ?? account.username ?? page.name,
           handle: account.username ?? null,
           avatarUrl: account.profile_picture_url ?? null,
           parentExternalId: page.id,
-          connectable: professional && canPublishToPage(page),
+          eligible: professional && canPublishToPage(page),
           // Blocked before OAuth completes rather than after a publish fails.
-          blockedReasonKey: professional
+          ineligibleReasonKey: professional
             ? canPublishToPage(page)
               ? null
               : 'connectors.instagram.page_role_required'
             : 'connectors.instagram.professional_account_required',
-          scopes: [...grant.scopes],
+          grantedScopes: [...grant.grantedScopes],
           metadata: { pageId: page.id, pageName: page.name, accountType },
         });
       }
@@ -262,14 +285,14 @@ export function createInstagramConnector(deps: ConnectorDeps): SocialConnector {
       return buildInstagramCapabilities({
         connection,
         observedAt: nowIso(),
-        grantedScopes: connection.scopes,
+        grantedScopes: connection.grantedScopes,
       });
     },
 
     async validateDraft(draft: ProviderDraft): Promise<ValidationResult> {
       const snapshot = draft.capabilities;
       const targetId = draft.connection.connectionId;
-      const options = instagramProviderOptionsSchema.parse(draft.providerOptions);
+      const options = instagramProviderOptionsSchema.parse(providerOptionsOf(draft));
       const surface = options.surface ?? (draft.contentKind === 'short_video' ? 'REELS' : 'FEED');
       const issues: ValidationIssue[] = [
         ...validateDraftShape(draft, snapshot, {
@@ -370,9 +393,9 @@ export function createInstagramConnector(deps: ConnectorDeps): SocialConnector {
       // is the container create. It is idempotent on the asset because a container id is
       // stored and reused rather than recreated on retry.
       const accessToken = await token(input.connection);
-      const options = instagramProviderOptionsSchema.parse(input.draft.providerOptions);
-      const surface = options.surface ?? (input.draft.contentKind === 'short_video' ? 'REELS' : 'FEED');
-      const isCarousel = input.draft.contentKind === 'carousel';
+      const options = instagramProviderOptionsSchema.parse(providerOptionsOfConnection(input.connection));
+      const surface = options.surface ?? (input.contentKind === 'short_video' ? 'REELS' : 'FEED');
+      const isCarousel = input.contentKind === 'carousel';
 
       const prepared: PreparedMedia[] = [];
       for (const media of input.media) {
@@ -382,19 +405,18 @@ export function createInstagramConnector(deps: ConnectorDeps): SocialConnector {
         prepared.push({
           mediaId: media.mediaId,
           providerMediaId: null,
-          providerContainerId: containerId,
-          uploadUrl: null,
+          containerId: containerId,
           state: containerId === null ? 'ready' : 'processing',
-          checksum: media.sha256,
+          derivativeChecksum: media.checksum,
           variant: `instagram:${surface.toLowerCase()}`,
-          metadata: { surface, sourceUrlHost: new URL(media.downloadUrl).host },
+          metadata: { surface, sourceUrlHost: new URL(media.sourceUrl).host },
         });
       }
       return prepared;
     },
 
     async preview(draft: ProviderDraft): Promise<CanonicalPreview> {
-      const options = instagramProviderOptionsSchema.parse(draft.providerOptions);
+      const options = instagramProviderOptionsSchema.parse(providerOptionsOf(draft));
       const surface = options.surface ?? (draft.contentKind === 'short_video' ? 'REELS' : 'FEED');
       return buildPreview(draft, draft.capabilities, {
         unit: 'grapheme',
@@ -414,15 +436,16 @@ export function createInstagramConnector(deps: ConnectorDeps): SocialConnector {
     },
 
     async publish(request: PublishRequest): Promise<PublishResult> {
-      const { connection, draft } = request;
+      const { draft } = request;
+      const { connection } = draft;
       const accessToken = await token(connection);
-      const options = instagramProviderOptionsSchema.parse(draft.providerOptions);
+      const options = instagramProviderOptionsSchema.parse(providerOptionsOf(draft));
       const surface = options.surface ?? (draft.contentKind === 'short_video' ? 'REELS' : 'FEED');
       const accountId = connection.externalAccountId;
 
       // If a previous attempt already published, adopt the media id rather than
       // republishing the container.
-      const publishedId = request.resume['mediaId'];
+      const publishedId = undefined;
       if (typeof publishedId === 'string' && publishedId !== '') {
         const status = await statusOf(connection, publishedId);
         if (status.state === 'published' && status.externalPostId !== null) {
@@ -439,12 +462,12 @@ export function createInstagramConnector(deps: ConnectorDeps): SocialConnector {
               permalink: status.permalink,
               errorClass: null,
               errorCode: null,
-              remediationKey: null,
+              remediationCode: null,
             },
             items: [],
             pollToken: status.externalPostId,
             resume: { mediaId: status.externalPostId },
-            sanitizedProviderResponse: { adopted: true },
+            sanitizedResponse: { adopted: true },
             costMinor: null,
             currency: null,
           };
@@ -452,14 +475,12 @@ export function createInstagramConnector(deps: ConnectorDeps): SocialConnector {
       }
 
       // Reuse a stored container. Never create a second one.
-      let containerId = typeof request.resume['containerId'] === 'string'
-        ? (request.resume['containerId'] as string)
-        : null;
+      let containerId = null;
 
       if (containerId === null) {
         if (draft.contentKind === 'carousel') {
           const children = request.preparedMedia
-            .map((prepared) => prepared.providerContainerId)
+            .map((prepared) => prepared.containerId)
             .filter((value): value is string => value !== null);
           const parent = await client.post({
             path: `/${accountId}/media`,
@@ -486,7 +507,7 @@ export function createInstagramConnector(deps: ConnectorDeps): SocialConnector {
             throw providerFailure({
               provider: PROVIDER,
               operation: 'instagram.create_container',
-              remediationKey: REMEDIATION.mediaInvalid,
+              remediationCode: REMEDIATION.mediaInvalid,
               details: { reason: 'no_media' },
             });
           }
@@ -496,7 +517,7 @@ export function createInstagramConnector(deps: ConnectorDeps): SocialConnector {
             json: {
               ...(media.kind === 'video'
                 ? {
-                    video_url: media.downloadUrl,
+                    video_url: media.sourceUrl,
                     media_type: surface === 'REELS' ? 'REELS' : 'VIDEO',
                     ...(options.shareToFeed === undefined
                       ? {}
@@ -505,7 +526,7 @@ export function createInstagramConnector(deps: ConnectorDeps): SocialConnector {
                       ? {}
                       : { thumb_offset: options.thumbOffsetMs }),
                   }
-                : { image_url: media.downloadUrl }),
+                : { image_url: media.sourceUrl }),
               caption: draft.body,
               ...(media.altText === null ? {} : { alt_text: media.altText }),
               ...(options.collaborators === undefined
@@ -532,24 +553,24 @@ export function createInstagramConnector(deps: ConnectorDeps): SocialConnector {
         // Container accepted but still building. This is provider processing, not a
         // publication, and the caller polls with the stored container id.
         return {
-          state: 'processing',
+          uploadState: 'processing',
           externalPostId: null,
           permalink: null,
           root: {
             kind: 'root',
             order: 0,
             threadItemId: null,
-            state: 'processing',
+            uploadState: 'processing',
             externalPostId: null,
             permalink: null,
             errorClass: null,
             errorCode: null,
-            remediationKey: null,
+            remediationCode: null,
           },
           items: [],
           pollToken: containerId,
           resume: { containerId },
-          sanitizedProviderResponse: { statusCode: status.statusCode },
+          sanitizedResponse: { statusCode: status.statusCode },
           costMinor: null,
           currency: null,
         };
@@ -580,13 +601,13 @@ export function createInstagramConnector(deps: ConnectorDeps): SocialConnector {
           items.push({
             kind: item.kind,
             order: item.order,
-            threadItemId: item.id,
-            state: 'processing',
+            threadItemId: item.threadItemId,
+            uploadState: 'processing',
             externalPostId: null,
             permalink: null,
             errorClass: null,
             errorCode: null,
-            remediationKey: null,
+            remediationCode: null,
           });
           continue;
         }
@@ -599,7 +620,7 @@ export function createInstagramConnector(deps: ConnectorDeps): SocialConnector {
         items.push({
           kind: item.kind,
           order: item.order,
-          threadItemId: item.id,
+          threadItemId: item.threadItemId,
           state: comment.ok ? 'published' : 'failed',
           externalPostId: comment.ok
             ? client.parse(instagramCommentSchema, comment, 'instagram.create_comment').id
@@ -607,7 +628,7 @@ export function createInstagramConnector(deps: ConnectorDeps): SocialConnector {
           permalink: null,
           errorClass: null,
           errorCode: null,
-          remediationKey: comment.ok ? null : REMEDIATION.commentFailedRootPublished,
+          remediationCode: comment.ok ? null : REMEDIATION.commentFailedRootPublished,
         });
       }
 
@@ -627,19 +648,19 @@ export function createInstagramConnector(deps: ConnectorDeps): SocialConnector {
           permalink,
           errorClass: null,
           errorCode: null,
-          remediationKey: null,
+          remediationCode: null,
         },
         items,
         pollToken: mediaId,
         resume: { containerId, mediaId },
-        sanitizedProviderResponse: { mediaId, containerConsumed: true },
+        sanitizedResponse: { mediaId, containerConsumed: true },
         costMinor: null,
         currency: null,
       };
     },
 
     async getStatus(input: StatusRequest): Promise<PublishStatus> {
-      return statusOf(input.connection, input.pollToken);
+      return statusOf(input.connection, input.providerJobId);
     },
 
     async fetchMetrics(input: MetricsRequest): Promise<MetricObservation[]> {
@@ -739,7 +760,7 @@ export async function findRecentInstagramMedia(
   caption: string,
 ): Promise<string | null> {
   const client = createMetaClient(deps, PROVIDER);
-  const accessToken = await deps.vault.getAccessToken(connection.credentialRef);
+  const accessToken = await deps.accessTokenOf(connection);
   const response = await client.get({
     path: `/${connection.externalAccountId}/media`,
     accessToken,
@@ -764,6 +785,6 @@ export async function findRecentInstagramMedia(
 export function consumerAccountError(): ConnectionActionRequiredError {
   return new ConnectionActionRequiredError({
     messageKey: 'connectors.instagram.professional_account_required',
-    details: { provider: PROVIDER, remediationKey: REMEDIATION.switchToProfessionalAccount },
+    details: { provider: PROVIDER, remediationCode: REMEDIATION.switchToProfessionalAccount },
   });
 }

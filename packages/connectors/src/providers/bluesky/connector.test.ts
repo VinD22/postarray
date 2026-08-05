@@ -278,7 +278,7 @@ describe('Bluesky reads', () => {
     const mentions = await connector.searchMentions?.(
       testMentionSearchRequest(connection, '@someone-else'),
     );
-    expect(mentions?.[0]?.externalId).toBe('did:plc:fakedidfakedidfake02');
+    expect(mentions?.[0]?.externalAccountId).toBe('did:plc:fakedidfakedidfake02');
     expect(mentions?.[0]?.resolvedToExternalId).toBe(true);
   });
 

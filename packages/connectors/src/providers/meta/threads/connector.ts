@@ -38,6 +38,9 @@ import { SOURCE_VERIFIED_ON } from '../../shared/verification.js';
 import { createMetaClient, metaContainerSchema, metaPublishSchema } from '../graph.js';
 import { metaAuthorization, refreshMetaCredential } from '../oauth.js';
 import { THREADS_CAROUSEL_MAX, THREADS_CAROUSEL_MIN, buildThreadsCapabilities } from './capabilities.js';
+import { accessTokenOf, errorSummary, providerOptionsOf } from '../../shared/access.js';
+import { NOT_IMPLEMENTED_FEATURES } from '../../../contract.js';
+import type { FailedItem, PublishedItem } from '../../../contract.js';
 import {
   THREADS_ACCOUNT_METRICS,
   THREADS_ACCOUNT_METRIC_QUERY,
@@ -92,7 +95,7 @@ export function createThreadsConnector(deps: ConnectorDeps): SocialConnector {
   const { vault, clock } = deps;
 
   async function token(connection: ProviderConnection): Promise<string> {
-    return vault.getAccessToken(connection.credentialRef);
+    return accessTokenOf(connection);
   }
 
   function nowIso(): string {
@@ -163,10 +166,10 @@ export function createThreadsConnector(deps: ConnectorDeps): SocialConnector {
 
   function mediaPayload(media: ProviderMedia): Record<string, unknown> {
     return media.kind === 'video'
-      ? { media_type: 'VIDEO', video_url: media.downloadUrl }
+      ? { media_type: 'VIDEO', video_url: media.sourceUrl }
       : {
           media_type: 'IMAGE',
-          image_url: media.downloadUrl,
+          image_url: media.sourceUrl,
           ...(media.altText === null ? {} : { alt_text: media.altText }),
         };
   }
@@ -191,12 +194,29 @@ export function createThreadsConnector(deps: ConnectorDeps): SocialConnector {
         displayName: 'Threads',
         iconToken: 'provider.threads',
         accountTypes: ['personal_profile', 'creator_profile', 'business_profile'],
-        docsUrl: 'https://developers.facebook.com/docs/threads',
-        policyUrl: 'https://developers.facebook.com/terms',
+        officialDocsUrl: 'https://developers.facebook.com/docs/threads',
+        officialPolicyUrl: 'https://developers.facebook.com/terms',
         engineeringOwner: 'Backend/Connectors 1',
         policyOwner: 'Policy Owner',
-        lastPolicyReviewAt: SOURCE_VERIFIED_ON,
+        lastPolicyReviewAt: `${SOURCE_VERIFIED_ON}T00:00:00.000Z`,
+        nextPolicyReviewAt: '2027-02-04T00:00:00.000Z',
         contractVersion: CONNECTOR_CONTRACT_VERSION,
+        connectorVersion: '1.0.0',
+        // Meta app review is not complete.
+        label: 'beta',
+        limitationKey: 'connectors.threads.review_pending',
+        features: {
+          ...NOT_IMPLEMENTED_FEATURES,
+          discover_accounts: 'requires_review',
+          get_capabilities: 'supported',
+          validate_draft: 'supported',
+          prepare_media: 'requires_review',
+          preview: 'supported',
+          publish: 'requires_review',
+          get_status: 'requires_review',
+          fetch_metrics: 'requires_review',
+          refresh_credential: 'supported',
+        },
       };
     },
 
@@ -207,7 +227,7 @@ export function createThreadsConnector(deps: ConnectorDeps): SocialConnector {
     async discoverAccounts(grant: OAuthGrant): Promise<ExternalAccount[]> {
       const response = await client.get({
         path: '/me',
-        accessToken: grant.accessToken,
+        accessToken: await grant.accessToken.use((plaintext) => plaintext),
         query: { fields: 'id,username,name,threads_profile_picture_url' },
         operation: 'threads.discover_accounts',
       });
@@ -215,17 +235,20 @@ export function createThreadsConnector(deps: ConnectorDeps): SocialConnector {
       const profile = client.parse(threadsProfileSchema, response, 'threads.discover_accounts');
       return [
         {
-          externalId: profile.id,
+          externalAccountId: profile.id,
           accountType: 'personal_profile',
           displayName: profile.name ?? profile.username ?? 'Threads account',
           handle: profile.username ?? null,
+          profileUrl:
+            profile.username === undefined ? null : `https://www.threads.net/@${profile.username}`,
+          accountAccessToken: null,
           avatarUrl: profile.threads_profile_picture_url ?? null,
           parentExternalId: null,
-          connectable: grant.scopes.includes('threads_content_publish'),
-          blockedReasonKey: grant.scopes.includes('threads_content_publish')
+          eligible: grant.grantedScopes.includes('threads_content_publish'),
+          ineligibleReasonKey: grant.grantedScopes.includes('threads_content_publish')
             ? null
             : 'connectors.threads.publish_scope_missing',
-          scopes: [...grant.scopes],
+          grantedScopes: [...grant.grantedScopes],
           metadata: { username: profile.username ?? null },
         },
       ];
@@ -235,13 +258,13 @@ export function createThreadsConnector(deps: ConnectorDeps): SocialConnector {
       return buildThreadsCapabilities({
         connection,
         observedAt: nowIso(),
-        grantedScopes: connection.scopes,
+        grantedScopes: connection.grantedScopes,
       });
     },
 
     async validateDraft(draft: ProviderDraft): Promise<ValidationResult> {
       const targetId = draft.connection.connectionId;
-      threadsProviderOptionsSchema.parse(draft.providerOptions);
+      threadsProviderOptionsSchema.parse(providerOptionsOf(draft));
       const issues: ValidationIssue[] = [
         ...validateDraftShape(draft, draft.capabilities, {
           unit: 'grapheme',
@@ -280,7 +303,7 @@ export function createThreadsConnector(deps: ConnectorDeps): SocialConnector {
     async prepareMedia(input: MediaPreparationRequest): Promise<PreparedMedia[]> {
       const accessToken = await token(input.connection);
       const userId = input.connection.externalAccountId;
-      const isCarousel = input.draft.contentKind === 'carousel';
+      const isCarousel = input.contentKind === 'carousel';
       const prepared: PreparedMedia[] = [];
       for (const media of input.media) {
         const containerId = isCarousel
@@ -293,20 +316,23 @@ export function createThreadsConnector(deps: ConnectorDeps): SocialConnector {
           : null;
         prepared.push({
           mediaId: media.mediaId,
+          derivativeId: media.derivativeId,
           providerMediaId: null,
-          providerContainerId: containerId,
-          uploadUrl: null,
-          state: containerId === null ? 'ready' : 'processing',
-          checksum: media.sha256,
-          variant: `threads:${media.kind}`,
-          metadata: { userId },
+          containerId,
+          uploadState: containerId === null ? 'ready' : 'processing',
+          derivativeChecksum: media.checksum,
+          byteSize: media.byteSize,
+          altTextApplied: media.altText !== null,
+          publicUrl: null,
+          expiresAt: null,
+          reusedFromPreviousAttempt: false,
         });
       }
       return prepared;
     },
 
     async preview(draft: ProviderDraft): Promise<CanonicalPreview> {
-      const options = threadsProviderOptionsSchema.parse(draft.providerOptions);
+      const options = threadsProviderOptionsSchema.parse(providerOptionsOf(draft));
       return buildPreview(draft, draft.capabilities, {
         unit: 'grapheme',
         mediaLayout:
@@ -323,47 +349,20 @@ export function createThreadsConnector(deps: ConnectorDeps): SocialConnector {
     },
 
     async publish(request: PublishRequest): Promise<PublishResult> {
-      const { connection, draft } = request;
+      const { draft } = request;
+      const { connection } = draft;
       const accessToken = await token(connection);
-      const options = threadsProviderOptionsSchema.parse(draft.providerOptions);
+      const options = threadsProviderOptionsSchema.parse(providerOptionsOf(draft));
       const userId = connection.externalAccountId;
 
-      const alreadyPublished = request.resume['mediaId'];
-      if (typeof alreadyPublished === 'string' && alreadyPublished !== '') {
-        const permalink = await readPermalink(accessToken, alreadyPublished);
-        return {
-          state: 'published',
-          externalPostId: alreadyPublished,
-          permalink,
-          root: {
-            kind: 'root',
-            order: 0,
-            threadItemId: null,
-            state: 'published',
-            externalPostId: alreadyPublished,
-            permalink,
-            errorClass: null,
-            errorCode: null,
-            remediationKey: null,
-          },
-          items: [],
-          pollToken: alreadyPublished,
-          resume: { mediaId: alreadyPublished },
-          sanitizedProviderResponse: { adopted: true },
-          costMinor: null,
-          currency: null,
-        };
-      }
 
       let containerId =
-        typeof request.resume['containerId'] === 'string'
-          ? (request.resume['containerId'] as string)
-          : null;
+        null;
 
       if (containerId === null) {
         if (draft.contentKind === 'carousel') {
           const children = request.preparedMedia
-            .map((prepared) => prepared.providerContainerId)
+            .map((prepared) => prepared.containerId)
             .filter((value): value is string => value !== null);
           containerId = await createContainer(
             accessToken,
@@ -402,7 +401,7 @@ export function createThreadsConnector(deps: ConnectorDeps): SocialConnector {
         throw providerFailure({
           provider: PROVIDER,
           operation: 'threads.container_status',
-          remediationKey:
+          remediationCode:
             state.status === 'EXPIRED'
               ? REMEDIATION.providerRateLimited
               : REMEDIATION.providerRejectedContent,
@@ -417,40 +416,21 @@ export function createThreadsConnector(deps: ConnectorDeps): SocialConnector {
       if (!state.ready) {
         // The container exists but is still building. This is provider processing.
         return {
-          state: 'processing',
-          externalPostId: null,
-          permalink: null,
-          root: {
-            kind: 'root',
-            order: 0,
-            threadItemId: null,
-            state: 'processing',
-            externalPostId: null,
-            permalink: null,
-            errorClass: null,
-            errorCode: null,
-            remediationKey: null,
-          },
-          items: [],
-          pollToken: containerId,
-          resume: { containerId },
-          sanitizedProviderResponse: { status: state.status },
-          costMinor: null,
-          currency: null,
+          status: 'pending',
+          providerJobId: containerId,
+          pollAfterSeconds: 15,
+          giveUpAt: new Date(clock.now().getTime() + 60 * 60 * 1000).toISOString(),
+          sanitizedResponse: { containerStatus: state.status },
+          providerRequestId: null,
         };
       }
 
       const mediaId = await publishContainer(accessToken, userId, containerId);
       const permalink = await readPermalink(accessToken, mediaId);
 
-      const publishedOrders = new Set<number>(
-        Array.isArray(request.resume['publishedOrders'])
-          ? (request.resume['publishedOrders'] as unknown[]).filter(
-              (entry): entry is number => typeof entry === 'number',
-            )
-          : [],
-      );
-      const items: PublishItemResult[] = [];
+      const publishedOrders = new Set<number>();
+      const items: PublishedItem[] = [];
+      const failures: FailedItem[] = [];
       let previousId = mediaId;
       let pending = false;
       let failed = false;
@@ -459,19 +439,9 @@ export function createThreadsConnector(deps: ConnectorDeps): SocialConnector {
         if (publishedOrders.has(item.order)) {
           continue;
         }
-        if (item.delaySeconds > 0 || failed) {
-          pending = true;
-          items.push({
-            kind: item.kind,
-            order: item.order,
-            threadItemId: item.id,
-            state: 'processing',
-            externalPostId: null,
-            permalink: null,
-            errorClass: null,
-            errorCode: null,
-            remediationKey: null,
-          });
+        // A delayed reply belongs to the thread sequence workflow, which gives it
+        // its own receipt. Nothing is reported for it here.
+        if (item.delaySeconds > 0) {
           continue;
         }
         try {
@@ -483,17 +453,16 @@ export function createThreadsConnector(deps: ConnectorDeps): SocialConnector {
           );
           const replyState = await containerState(accessToken, replyContainer);
           if (!replyState.ready) {
-            pending = true;
-            items.push({
+            failures.push({
               kind: item.kind,
               order: item.order,
-              threadItemId: item.id,
-              state: 'processing',
-              externalPostId: null,
-              permalink: null,
-              errorClass: null,
-              errorCode: null,
-              remediationKey: null,
+              threadItemId: item.threadItemId,
+              error: errorSummary({
+                errorClass: 'TRANSIENT_PROVIDER',
+                remediationCode: REMEDIATION.providerRejectedContent,
+                messageKey: 'connectors.threads.reply_processing',
+                retryable: true,
+              }),
             });
             continue;
           }
@@ -503,50 +472,64 @@ export function createThreadsConnector(deps: ConnectorDeps): SocialConnector {
           items.push({
             kind: item.kind,
             order: item.order,
-            threadItemId: item.id,
-            state: 'published',
+            threadItemId: item.threadItemId,
             externalPostId: replyId,
             permalink: await readPermalink(accessToken, replyId),
-            errorClass: null,
-            errorCode: null,
-            remediationKey: null,
+            publishedAt: nowIso(),
           });
         } catch {
           // A failed part never invalidates a root post that already exists externally.
-          failed = true;
-          items.push({
+          failures.push({
             kind: item.kind,
             order: item.order,
-            threadItemId: item.id,
-            state: 'failed',
-            externalPostId: null,
-            permalink: null,
-            errorClass: null,
-            errorCode: null,
-            remediationKey: REMEDIATION.commentFailedRootPublished,
+            threadItemId: item.threadItemId,
+            error: errorSummary({
+              errorClass: 'PERMANENT_PROVIDER',
+              remediationCode: REMEDIATION.commentFailedRootPublished,
+              messageKey: 'connectors.threads.reply_failed',
+              retryable: false,
+            }),
           });
         }
       }
 
-      return {
-        state: failed ? 'partially_published' : pending ? 'processing' : 'published',
-        externalPostId: mediaId,
-        permalink,
-        root: {
+      const publishedAt = nowIso();
+      const allItems: PublishedItem[] = [
+        {
           kind: 'root',
           order: 0,
           threadItemId: null,
-          state: 'published',
           externalPostId: mediaId,
           permalink,
-          errorClass: null,
-          errorCode: null,
-          remediationKey: null,
+          publishedAt,
         },
-        items,
-        pollToken: mediaId,
-        resume: { containerId, mediaId, publishedOrders: [...publishedOrders] },
-        sanitizedProviderResponse: { mediaId, itemCount: items.length },
+        ...items,
+      ];
+      const sanitizedResponse = { mediaId, itemCount: allItems.length };
+      // The root exists externally. A failed or still building reply is a partial
+      // success, never a failed publish and never a rollback.
+      if (failures.length > 0) {
+        return {
+          status: 'partial',
+          externalPostId: mediaId,
+          permalink,
+          publishedAt,
+          items: allItems,
+          failures,
+          sanitizedResponse,
+          providerRequestId: null,
+          costMinor: null,
+          currency: null,
+        };
+      }
+      return {
+        status: 'published',
+        externalPostId: mediaId,
+        permalink,
+        publishedAt,
+        items: allItems,
+        sanitizedResponse,
+        providerRequestId: null,
         costMinor: null,
         currency: null,
       };
@@ -555,7 +538,7 @@ export function createThreadsConnector(deps: ConnectorDeps): SocialConnector {
     async getStatus(input: StatusRequest): Promise<PublishStatus> {
       const accessToken = await token(input.connection);
       const media = await client.get({
-        path: `/${input.pollToken}`,
+        path: `/${input.providerJobId}`,
         accessToken,
         query: { fields: THREADS_MEDIA_FIELDS },
         operation: 'threads.get_status',
@@ -567,33 +550,56 @@ export function createThreadsConnector(deps: ConnectorDeps): SocialConnector {
             state: 'published',
             externalPostId: parsed.id,
             permalink: parsed.permalink,
-            errorClass: null,
-            remediationKey: null,
-            sanitizedProviderResponse: { mediaType: parsed.media_type ?? 'unknown' },
+          publishedAt: nowIso(),
+          items: [],
+          error: null,
+          pollAfterSeconds: null,
+            sanitizedResponse: { mediaType: parsed.media_type ?? 'unknown' },
           };
         }
       }
-      const state = await containerState(accessToken, input.pollToken);
+      if (input.providerJobId === null) {
+        return {
+          state: 'unknown',
+          externalPostId: null,
+          permalink: null,
+          publishedAt: null,
+          items: [],
+          error: null,
+          pollAfterSeconds: 30,
+          sanitizedResponse: { reason: 'no_container_id' },
+        };
+      }
+      const state = await containerState(accessToken, input.providerJobId);
       if (state.failed) {
         return {
           state: 'failed',
           externalPostId: null,
           permalink: null,
-          errorClass: state.status === 'EXPIRED' ? 'TRANSIENT_PROVIDER' : 'PERMANENT_PROVIDER',
-          remediationKey:
-            state.status === 'EXPIRED'
-              ? REMEDIATION.providerRateLimited
-              : REMEDIATION.providerRejectedContent,
-          sanitizedProviderResponse: { status: state.status },
+          publishedAt: null,
+          items: [],
+          error: errorSummary({
+            errorClass: 'PERMANENT_PROVIDER',
+            remediationCode:
+              state.status === 'EXPIRED'
+                ? REMEDIATION.providerRateLimited
+                : REMEDIATION.providerRejectedContent,
+            messageKey: 'connectors.threads.container_failed',
+            retryable: false,
+          }),
+          pollAfterSeconds: null,
+          sanitizedResponse: { status: state.status },
         };
       }
       return {
         state: 'processing',
         externalPostId: null,
         permalink: null,
-        errorClass: null,
-        remediationKey: null,
-        sanitizedProviderResponse: { status: state.status },
+          publishedAt: null,
+          items: [],
+          error: null,
+          pollAfterSeconds: 15,
+        sanitizedResponse: { status: state.status },
       };
     },
 
@@ -675,7 +681,7 @@ export function createThreadsConnector(deps: ConnectorDeps): SocialConnector {
     },
 
     async refreshCredential(input: RefreshRequest): Promise<CredentialResult> {
-      const current = await token(input.connection);
+      const current = await input.refreshToken.use((plaintext) => plaintext);
       return refreshMetaCredential(deps, PROVIDER, current);
     },
   };
@@ -688,7 +694,7 @@ export async function findRecentThreadsPost(
   text: string,
 ): Promise<string | null> {
   const client = createMetaClient(deps, 'threads');
-  const accessToken = await deps.vault.getAccessToken(connection.credentialRef);
+  const accessToken = await accessTokenOf(connection);
   const response = await client.get({
     path: `/${connection.externalAccountId}/threads`,
     accessToken,

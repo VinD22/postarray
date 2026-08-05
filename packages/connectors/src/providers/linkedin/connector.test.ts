@@ -288,7 +288,7 @@ describe('LinkedIn mentions', () => {
     const mentions = await connector.searchMentions?.(
       testMentionSearchRequest(organizationConnection, '@sample-studio-fake'),
     );
-    expect(mentions?.[0]?.externalId).toBe('urn:li:organization:99000001');
+    expect(mentions?.[0]?.externalAccountId).toBe('urn:li:organization:99000001');
     expect(mentions?.[0]?.resolvedToExternalId).toBe(true);
   });
 });

@@ -37,6 +37,8 @@ import {
 import { buildPreview } from '../shared/preview.js';
 import { validateDraftShape } from '../shared/validate.js';
 import { SOURCE_VERIFIED_ON } from '../shared/verification.js';
+import { accessTokenOf, errorSummary, providerOptionsOf } from '../shared/access.js';
+import { NOT_IMPLEMENTED_FEATURES } from '../../contract.js';
 import {
   TIKTOK_UNAUDITED_PRIVACY_LEVEL,
   buildTikTokCapabilities,
@@ -114,7 +116,7 @@ export function createTikTokConnector(deps: ConnectorDeps): TikTokConnector {
   const { http, vault, clock, config, logger } = deps;
 
   async function token(connection: ProviderConnection): Promise<string> {
-    return vault.getAccessToken(connection.credentialRef);
+    return accessTokenOf(connection);
   }
 
   function bearer(accessToken: string): Record<string, string> {
@@ -144,7 +146,7 @@ export function createTikTokConnector(deps: ConnectorDeps): TikTokConnector {
       provider: PROVIDER,
       operation: 'tiktok.creator_info',
       response,
-      remediationKey: REMEDIATION.reconnectAccount,
+      remediationCode: REMEDIATION.reconnectAccount,
     });
     return parseProviderBody(tikTokCreatorInfoSchema, response, {
       provider: PROVIDER,
@@ -172,9 +174,11 @@ export function createTikTokConnector(deps: ConnectorDeps): TikTokConnector {
         state: 'unknown',
         externalPostId: null,
         permalink: null,
-        errorClass: null,
-        remediationKey: null,
-        sanitizedProviderResponse: { status: response.status },
+          publishedAt: null,
+          items: [],
+          error: null,
+          pollAfterSeconds: 30,
+        sanitizedResponse: { status: response.status },
       };
     }
     const parsed = parseProviderBody(tikTokPublishStatusSchema, response, {
@@ -185,12 +189,12 @@ export function createTikTokConnector(deps: ConnectorDeps): TikTokConnector {
     const status = parsed.data.status;
     if (status === TERMINAL_FAILURE) {
       return {
-        state: 'failed',
+        uploadState: 'failed',
         externalPostId: null,
         permalink: null,
         errorClass: 'PERMANENT_PROVIDER',
-        remediationKey: REMEDIATION.providerRejectedContent,
-        sanitizedProviderResponse: {
+        remediationCode: REMEDIATION.providerRejectedContent,
+        sanitizedResponse: {
           status,
           ...(parsed.data.fail_reason === undefined
             ? {}
@@ -204,9 +208,11 @@ export function createTikTokConnector(deps: ConnectorDeps): TikTokConnector {
         state: 'published',
         externalPostId: postId,
         permalink: tikTokPermalink(usernameOf(connection), postId),
-        errorClass: null,
-        remediationKey: null,
-        sanitizedProviderResponse: { status },
+        publishedAt: nowIso(),
+        items: [],
+        error: null,
+        pollAfterSeconds: null,
+        sanitizedResponse: { status },
       };
     }
     // An upload alone is not success. Anything short of a terminal state with a post id is
@@ -215,9 +221,11 @@ export function createTikTokConnector(deps: ConnectorDeps): TikTokConnector {
       state: 'processing',
       externalPostId: null,
       permalink: null,
-      errorClass: null,
-      remediationKey: null,
-      sanitizedProviderResponse: { status },
+          publishedAt: null,
+          items: [],
+          error: null,
+          pollAfterSeconds: 15,
+      sanitizedResponse: { status },
     };
   }
 
@@ -228,12 +236,29 @@ export function createTikTokConnector(deps: ConnectorDeps): TikTokConnector {
         displayName: 'TikTok',
         iconToken: 'provider.tiktok',
         accountTypes: ['creator_profile', 'business_profile'],
-        docsUrl: 'https://developers.tiktok.com/doc/content-posting-api-get-started',
-        policyUrl: 'https://developers.tiktok.com/doc/content-sharing-guidelines',
+        officialDocsUrl: 'https://developers.tiktok.com/doc/content-posting-api-get-started',
+        officialPolicyUrl: 'https://developers.tiktok.com/doc/content-sharing-guidelines',
         engineeringOwner: 'Backend/Connectors 2',
         policyOwner: 'Policy Owner',
-        lastPolicyReviewAt: SOURCE_VERIFIED_ON,
+        lastPolicyReviewAt: `${SOURCE_VERIFIED_ON}T00:00:00.000Z`,
+        nextPolicyReviewAt: '2027-02-04T00:00:00.000Z',
         contractVersion: CONNECTOR_CONTRACT_VERSION,
+        connectorVersion: '1.0.0',
+        // Until the app is audited, TikTok posts are private and per user caps apply.
+        label: 'beta',
+        limitationKey: 'connectors.tiktok.audit_pending',
+        features: {
+          ...NOT_IMPLEMENTED_FEATURES,
+          discover_accounts: 'requires_review',
+          get_capabilities: 'supported',
+          validate_draft: 'supported',
+          prepare_media: 'requires_review',
+          preview: 'supported',
+          publish: 'requires_review',
+          get_status: 'requires_review',
+          fetch_metrics: 'requires_review',
+          refresh_credential: 'supported',
+        },
       };
     },
 
@@ -247,13 +272,15 @@ export function createTikTokConnector(deps: ConnectorDeps): TikTokConnector {
         multiStep: false,
         redirectPath: '/oauth/tiktok/callback',
         scopes: [
-          { scope: 'user.info.basic', descriptionKey: 'connectors.tiktok.scope.user_info_basic' },
+          { scope: 'user.info.basic', explanationKey: 'connectors.tiktok.scope.user_info_basic' },
           {
             scope: 'user.info.profile',
-            descriptionKey: 'connectors.tiktok.scope.user_info_profile',
+            explanationKey: 'connectors.tiktok.scope.user_info_profile',
+        usedBy: ['publish'],
+        required: true,
           },
-          { scope: 'video.publish', descriptionKey: 'connectors.tiktok.scope.video_publish' },
-          { scope: 'video.upload', descriptionKey: 'connectors.tiktok.scope.video_upload' },
+          { scope: 'video.publish', explanationKey: 'connectors.tiktok.scope.video_publish' },
+          { scope: 'video.upload', explanationKey: 'connectors.tiktok.scope.video_upload' },
         ],
         notesKey: isUnaudited()
           ? 'connectors.tiktok.unaudited_private_only'
@@ -275,7 +302,7 @@ export function createTikTokConnector(deps: ConnectorDeps): TikTokConnector {
         provider: PROVIDER,
         operation: 'tiktok.discover_accounts',
         response,
-        remediationKey: REMEDIATION.reconnectAccount,
+        remediationCode: REMEDIATION.reconnectAccount,
       });
       const parsed = parseProviderBody(tikTokUserInfoSchema, response, {
         provider: PROVIDER,
@@ -283,18 +310,18 @@ export function createTikTokConnector(deps: ConnectorDeps): TikTokConnector {
         response,
       });
       const user = parsed.data.user;
-      const canPublish = grant.scopes.includes('video.publish');
+      const canPublish = grant.grantedScopes.includes('video.publish');
       return [
         {
-          externalId: user.open_id,
+          externalAccountId: user.open_id,
           accountType: 'creator_profile',
           displayName: user.display_name ?? user.username ?? 'TikTok creator',
           handle: user.username ?? null,
           avatarUrl: user.avatar_url ?? null,
           parentExternalId: null,
-          connectable: canPublish,
-          blockedReasonKey: canPublish ? null : 'connectors.tiktok.publish_scope_missing',
-          scopes: [...grant.scopes],
+          eligible: canPublish,
+          ineligibleReasonKey: canPublish ? null : 'connectors.tiktok.publish_scope_missing',
+          grantedScopes: [...grant.grantedScopes],
           metadata: {
             username: user.username ?? null,
             unionId: user.union_id ?? null,
@@ -324,7 +351,7 @@ export function createTikTokConnector(deps: ConnectorDeps): TikTokConnector {
       return buildTikTokCapabilities({
         connection,
         observedAt: nowIso(),
-        grantedScopes: connection.scopes,
+        grantedScopes: connection.grantedScopes,
         ...(creator === undefined ? {} : { creatorInfo: creator }),
       });
     },
@@ -332,7 +359,7 @@ export function createTikTokConnector(deps: ConnectorDeps): TikTokConnector {
     async validateDraft(draft: ProviderDraft): Promise<ValidationResult> {
       const snapshot = draft.capabilities;
       const targetId = draft.connection.connectionId;
-      const options = tikTokProviderOptionsSchema.parse(draft.providerOptions);
+      const options = tikTokProviderOptionsSchema.parse(providerOptionsOf(draft));
       const issues: ValidationIssue[] = [
         ...validateDraftShape(draft, snapshot, {
           unit: 'grapheme',
@@ -462,22 +489,21 @@ export function createTikTokConnector(deps: ConnectorDeps): TikTokConnector {
       return input.media.map((media) => ({
         mediaId: media.mediaId,
         providerMediaId: null,
-        providerContainerId: null,
-        uploadUrl: null,
-        state: 'ready',
-        checksum: media.sha256,
+        containerId: null,
+        uploadState: 'ready',
+        derivativeChecksum: media.checksum,
         variant: `tiktok:${media.kind}`,
         metadata: {
           byteSize: media.byteSize,
           mimeType: media.mimeType,
           // The source URL host is recorded so the pull-from-URL domain check is auditable.
-          sourceHost: new URL(media.downloadUrl).host,
+          sourceHost: new URL(media.sourceUrl).host,
         },
       }));
     },
 
     async preview(draft: ProviderDraft): Promise<CanonicalPreview> {
-      const options = tikTokProviderOptionsSchema.parse(draft.providerOptions);
+      const options = tikTokProviderOptionsSchema.parse(providerOptionsOf(draft));
       return buildPreview(draft, draft.capabilities, {
         unit: 'grapheme',
         mediaLayout: 'video',
@@ -492,11 +518,12 @@ export function createTikTokConnector(deps: ConnectorDeps): TikTokConnector {
     },
 
     async publish(request: PublishRequest): Promise<PublishResult> {
-      const { connection, draft } = request;
+      const { draft } = request;
+      const { connection } = draft;
       const accessToken = await token(connection);
-      const options = tikTokProviderOptionsSchema.parse(draft.providerOptions);
+      const options = tikTokProviderOptionsSchema.parse(providerOptionsOf(draft));
 
-      const existing = request.resume['publishId'];
+      const existing = undefined;
       if (typeof existing === 'string' && existing !== '') {
         // Never re-initialize a publish we already started.
         const status = await readStatus(connection, existing);
@@ -523,12 +550,12 @@ export function createTikTokConnector(deps: ConnectorDeps): TikTokConnector {
             permalink: status.permalink,
             errorClass: status.errorClass,
             errorCode: null,
-            remediationKey: status.remediationKey,
+            remediationCode: status.remediationKey,
           },
           items: [],
           pollToken: existing,
           resume: { publishId: existing },
-          sanitizedProviderResponse: status.sanitizedProviderResponse,
+          sanitizedResponse: status.sanitizedProviderResponse,
           costMinor: null,
           currency: null,
         };
@@ -544,7 +571,7 @@ export function createTikTokConnector(deps: ConnectorDeps): TikTokConnector {
           messageKey: 'connectors.tiktok.privacy_option_unavailable',
           details: {
             provider: PROVIDER,
-            remediationKey: REMEDIATION.choosePrivacyOption,
+            remediationCode: REMEDIATION.choosePrivacyOption,
             available: available.join(', '),
           },
         });
@@ -554,7 +581,7 @@ export function createTikTokConnector(deps: ConnectorDeps): TikTokConnector {
       if (options.disableComment === false && !interactions.commentAllowed) {
         throw new ConnectionActionRequiredError({
           messageKey: 'connectors.tiktok.comments_disabled_by_creator',
-          details: { provider: PROVIDER, remediationKey: REMEDIATION.choosePrivacyOption },
+          details: { provider: PROVIDER, remediationCode: REMEDIATION.choosePrivacyOption },
         });
       }
 
@@ -563,14 +590,14 @@ export function createTikTokConnector(deps: ConnectorDeps): TikTokConnector {
         throw providerFailure({
           provider: PROVIDER,
           operation: 'tiktok.publish_init',
-          remediationKey: REMEDIATION.mediaInvalid,
+          remediationCode: REMEDIATION.mediaInvalid,
           details: { reason: 'no_media' },
         });
       }
 
-      const verified = isVerifiedPullDomain(media.downloadUrl, VERIFIED_PULL_DOMAINS);
+      const verified = isVerifiedPullDomain(media.sourceUrl, VERIFIED_PULL_DOMAINS);
       const sourceInfo = verified
-        ? { source: 'PULL_FROM_URL', video_url: media.downloadUrl }
+        ? { source: 'PULL_FROM_URL', video_url: media.sourceUrl }
         : {
             source: 'FILE_UPLOAD',
             video_size: media.byteSize,
@@ -616,7 +643,7 @@ export function createTikTokConnector(deps: ConnectorDeps): TikTokConnector {
       if (!verified && uploadUrl !== undefined) {
         const source = await http.request({
           method: 'GET',
-          url: media.downloadUrl,
+          url: media.sourceUrl,
           accept: 'binary',
           provider: PROVIDER,
           operation: 'tiktok.fetch_source',
@@ -646,7 +673,7 @@ export function createTikTokConnector(deps: ConnectorDeps): TikTokConnector {
             provider: PROVIDER,
             operation: 'tiktok.upload_chunk',
             response: upload,
-            remediationKey: REMEDIATION.mediaInvalid,
+            remediationCode: REMEDIATION.mediaInvalid,
           });
         }
       }
@@ -675,12 +702,12 @@ export function createTikTokConnector(deps: ConnectorDeps): TikTokConnector {
           permalink: status.permalink,
           errorClass: status.errorClass,
           errorCode: null,
-          remediationKey: status.remediationKey,
+          remediationCode: status.remediationKey,
         },
         items: [],
         pollToken: publishId,
         resume: { publishId },
-        sanitizedProviderResponse: {
+        sanitizedResponse: {
           ...status.sanitizedProviderResponse,
           source: verified ? 'PULL_FROM_URL' : 'FILE_UPLOAD',
         },
@@ -690,7 +717,7 @@ export function createTikTokConnector(deps: ConnectorDeps): TikTokConnector {
     },
 
     async getStatus(input: StatusRequest): Promise<PublishStatus> {
-      return readStatus(input.connection, input.pollToken);
+      return readStatus(input.connection, input.providerJobId);
     },
 
     async fetchMetrics(input: MetricsRequest): Promise<MetricObservation[]> {
@@ -711,7 +738,7 @@ export function createTikTokConnector(deps: ConnectorDeps): TikTokConnector {
         throw providerFailure({
           provider: PROVIDER,
           operation: 'tiktok.refresh_credential',
-          remediationKey: REMEDIATION.contactSupport,
+          remediationCode: REMEDIATION.contactSupport,
           details: { missingConfig: 'TIKTOK_CLIENT_KEY, TIKTOK_CLIENT_SECRET' },
         });
       }

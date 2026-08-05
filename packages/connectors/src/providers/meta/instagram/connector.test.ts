@@ -101,8 +101,8 @@ describe('Instagram account discovery', () => {
       externalUserId: null,
       extra: {},
     });
-    expect(accounts[0]?.connectable).toBe(false);
-    expect(accounts[0]?.blockedReasonKey).toBe(
+    expect(accounts[0]?.eligible).toBe(false);
+    expect(accounts[0]?.ineligibleReasonKey).toBe(
       'connectors.instagram.professional_account_required',
     );
   });
@@ -125,7 +125,7 @@ describe('Instagram account discovery', () => {
       extra: {},
     });
     expect(accounts).toHaveLength(1);
-    expect(accounts[0]?.connectable).toBe(true);
+    expect(accounts[0]?.eligible).toBe(true);
     expect(accounts[0]?.parentExternalId).toBe('61550000000001');
   });
 });
@@ -144,7 +144,7 @@ describe('Instagram publish', () => {
     });
     const connector = createInstagramConnector(deps);
     const result = await connector.publish(request({ draft: imageDraft }) as never);
-    expect(result.state).toBe('processing');
+    expect(result.status).toBe('processing');
     expect(result.externalPostId).toBeNull();
     expect(result.resume['containerId']).toBe('17990000000000001');
     expect(simulator.callsTo('/media_publish')).toHaveLength(0);
@@ -161,7 +161,7 @@ describe('Instagram publish', () => {
     });
     const connector = createInstagramConnector(deps);
     const result = await connector.publish(request({ draft: imageDraft }) as never);
-    expect(result.state).toBe('published');
+    expect(result.status).toBe('published');
     expect(result.externalPostId).toBe('17880000000000001');
     expect(result.permalink).toBe('https://www.instagram.com/p/FAKEPOSTCODE1/');
   });
@@ -194,7 +194,7 @@ describe('Instagram publish', () => {
     const result = await connector.publish(
       request({ draft: imageDraft, resume: { mediaId: '17880000000000001' } }) as never,
     );
-    expect(result.state).toBe('published');
+    expect(result.status).toBe('published');
     expect(simulator.calls.filter((call) => call.method === 'POST')).toHaveLength(0);
   });
 

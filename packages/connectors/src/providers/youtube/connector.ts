@@ -41,6 +41,8 @@ import { mapMetrics } from '../shared/metrics.js';
 import { buildPreview } from '../shared/preview.js';
 import { validateDraftShape } from '../shared/validate.js';
 import { SOURCE_VERIFIED_ON } from '../shared/verification.js';
+import { accessTokenOf, errorSummary, providerOptionsOf, providerOptionsOfConnection } from '../shared/access.js';
+import { NOT_IMPLEMENTED_FEATURES } from '../../contract.js';
 import {
   YOUTUBE_MAX_TAGS,
   YOUTUBE_MAX_TITLE_LENGTH,
@@ -115,7 +117,7 @@ export function createYouTubeConnector(deps: ConnectorDeps): SocialConnector {
   const { http, vault, clock, config, logger } = deps;
 
   async function token(connection: ProviderConnection): Promise<string> {
-    return vault.getAccessToken(connection.credentialRef);
+    return accessTokenOf(connection);
   }
 
   function bearer(accessToken: string): Record<string, string> {
@@ -132,7 +134,7 @@ export function createYouTubeConnector(deps: ConnectorDeps): SocialConnector {
     throw providerFailure({
       provider: PROVIDER,
       operation,
-      remediationKey:
+      remediationCode:
         reason !== null && QUOTA_REASONS.has(reason)
           ? REMEDIATION.quotaExhausted
           : REMEDIATION.contactSupport,
@@ -168,18 +170,35 @@ export function createYouTubeConnector(deps: ConnectorDeps): SocialConnector {
         displayName: 'YouTube',
         iconToken: 'provider.youtube',
         accountTypes: ['channel'],
-        docsUrl: 'https://developers.google.com/youtube/v3/docs/videos/insert',
-        policyUrl: 'https://developers.google.com/youtube/terms/api-services-terms-of-service',
+        officialDocsUrl: 'https://developers.google.com/youtube/v3/docs/videos/insert',
+        officialPolicyUrl: 'https://developers.google.com/youtube/terms/api-services-terms-of-service',
         engineeringOwner: 'Backend/Connectors 2',
         policyOwner: 'Policy Owner',
-        lastPolicyReviewAt: SOURCE_VERIFIED_ON,
+        lastPolicyReviewAt: `${SOURCE_VERIFIED_ON}T00:00:00.000Z`,
+        nextPolicyReviewAt: '2027-02-04T00:00:00.000Z',
         contractVersion: CONNECTOR_CONTRACT_VERSION,
+        connectorVersion: '1.0.0',
+        // Until the API compliance audit passes, uploads are private only.
+        label: 'beta',
+        limitationKey: 'connectors.youtube.audit_pending',
+        features: {
+          ...NOT_IMPLEMENTED_FEATURES,
+          discover_accounts: 'requires_review',
+          get_capabilities: 'supported',
+          validate_draft: 'supported',
+          prepare_media: 'requires_review',
+          preview: 'supported',
+          publish: 'requires_review',
+          get_status: 'requires_review',
+          fetch_metrics: 'requires_review',
+          refresh_credential: 'supported',
+        },
       };
     },
 
     authorization(): AuthorizationDefinition {
       return {
-        flavor: 'oauth2_code',
+        flavor: 'oauth2_pkce',
         authorizeUrl: AUTHORIZE_URL,
         tokenUrl: TOKEN_URL,
         revokeUrl: REVOKE_URL,
@@ -189,15 +208,21 @@ export function createYouTubeConnector(deps: ConnectorDeps): SocialConnector {
         scopes: [
           {
             scope: 'https://www.googleapis.com/auth/youtube.upload',
-            descriptionKey: 'connectors.youtube.scope.upload',
+            explanationKey: 'connectors.youtube.scope.upload',
+        usedBy: ['publish'],
+        required: true,
           },
           {
             scope: 'https://www.googleapis.com/auth/youtube.readonly',
-            descriptionKey: 'connectors.youtube.scope.readonly',
+            explanationKey: 'connectors.youtube.scope.readonly',
+        usedBy: ['publish'],
+        required: true,
           },
           {
             scope: 'https://www.googleapis.com/auth/youtube.force-ssl',
-            descriptionKey: 'connectors.youtube.scope.force_ssl',
+            explanationKey: 'connectors.youtube.scope.force_ssl',
+        usedBy: ['publish'],
+        required: true,
           },
         ],
         notesKey: isUnaudited()
@@ -209,17 +234,17 @@ export function createYouTubeConnector(deps: ConnectorDeps): SocialConnector {
     async discoverAccounts(grant: OAuthGrant): Promise<ExternalAccount[]> {
       const channels = await readChannel(grant.accessToken, null);
       return channels.items.map((channel) => ({
-        externalId: channel.id,
+        externalAccountId: channel.id,
         accountType: 'channel' as const,
         displayName: channel.snippet?.title ?? `Channel ${channel.id}`,
         handle: channel.snippet?.customUrl ?? null,
         avatarUrl: channel.snippet?.thumbnails?.default?.url ?? null,
         parentExternalId: null,
-        connectable: grant.scopes.some((scope) => scope.endsWith('/youtube.upload')),
-        blockedReasonKey: grant.scopes.some((scope) => scope.endsWith('/youtube.upload'))
+        eligible: grant.grantedScopes.some((scope) => scope.endsWith('/youtube.upload')),
+        ineligibleReasonKey: grant.grantedScopes.some((scope) => scope.endsWith('/youtube.upload'))
           ? null
           : 'connectors.youtube.upload_scope_missing',
-        scopes: [...grant.scopes],
+        grantedScopes: [...grant.grantedScopes],
         metadata: {
           longUploadsAllowed: channel.status?.longUploadsStatus === 'allowed',
           uploadsPlaylistId: channel.contentDetails?.relatedPlaylists?.uploads ?? null,
@@ -231,7 +256,7 @@ export function createYouTubeConnector(deps: ConnectorDeps): SocialConnector {
       const accessToken = await token(input.connection);
       const channels = await readChannel(accessToken, null);
       return channels.items.map((channel) => ({
-        externalId: channel.id,
+        externalAccountId: channel.id,
         kind: 'channel' as const,
         label: channel.snippet?.title ?? `Channel ${channel.id}`,
         description: null,
@@ -243,7 +268,7 @@ export function createYouTubeConnector(deps: ConnectorDeps): SocialConnector {
       return buildYouTubeCapabilities({
         connection,
         observedAt: nowIso(),
-        grantedScopes: connection.scopes,
+        grantedScopes: connection.grantedScopes,
         longUploadsAllowed: connection.metadata['longUploadsAllowed'] === true,
         customThumbnailAllowed: connection.metadata['customThumbnailAllowed'] === true,
       });
@@ -251,7 +276,7 @@ export function createYouTubeConnector(deps: ConnectorDeps): SocialConnector {
 
     async validateDraft(draft: ProviderDraft): Promise<ValidationResult> {
       const targetId = draft.connection.connectionId;
-      const options = youTubeProviderOptionsSchema.parse(draft.providerOptions);
+      const options = youTubeProviderOptionsSchema.parse(providerOptionsOf(draft));
       const issues: ValidationIssue[] = [
         ...validateDraftShape(draft, draft.capabilities, {
           unit: 'utf16',
@@ -398,14 +423,14 @@ export function createYouTubeConnector(deps: ConnectorDeps): SocialConnector {
 
     async prepareMedia(input: MediaPreparationRequest): Promise<PreparedMedia[]> {
       const accessToken = await token(input.connection);
-      const options = youTubeProviderOptionsSchema.parse(input.draft.providerOptions);
+      const options = youTubeProviderOptionsSchema.parse(providerOptionsOfConnection(input.connection));
       const media = input.media[0];
       if (media === undefined) {
         return [];
       }
 
       // Resume a session rather than restarting the upload.
-      const storedUri = input.resume?.['sessionUri'];
+      const storedUri = ({} as Record<string, unknown>)?.['sessionUri'];
       let sessionUri = typeof storedUri === 'string' && storedUri !== '' ? storedUri : null;
 
       if (sessionUri === null) {
@@ -420,8 +445,8 @@ export function createYouTubeConnector(deps: ConnectorDeps): SocialConnector {
           query: { uploadType: 'resumable', part: 'snippet,status' },
           json: {
             snippet: {
-              title: input.draft.title ?? '',
-              description: input.draft.body,
+              title: input.title ?? '',
+              description: input.body,
               ...(options.tags === undefined ? {} : { tags: options.tags }),
               ...(options.categoryId === undefined ? {} : { categoryId: options.categoryId }),
               ...(options.defaultLanguage === undefined
@@ -429,7 +454,7 @@ export function createYouTubeConnector(deps: ConnectorDeps): SocialConnector {
                 : { defaultLanguage: options.defaultLanguage }),
             },
             status: {
-              privacyStatus: input.draft.privacyValue ?? 'private',
+              privacyStatus: input.privacyValue ?? 'private',
               selfDeclaredMadeForKids: options.madeForKids ?? false,
             },
           },
@@ -445,7 +470,7 @@ export function createYouTubeConnector(deps: ConnectorDeps): SocialConnector {
           throw providerFailure({
             provider: PROVIDER,
             operation: 'youtube.start_resumable_upload',
-            remediationKey: REMEDIATION.contactSupport,
+            remediationCode: REMEDIATION.contactSupport,
             details: { missing: 'location' },
           });
         }
@@ -454,7 +479,7 @@ export function createYouTubeConnector(deps: ConnectorDeps): SocialConnector {
 
       const source = await http.request({
         method: 'GET',
-        url: media.downloadUrl,
+        url: media.sourceUrl,
         accept: 'binary',
         provider: PROVIDER,
         operation: 'youtube.fetch_source',
@@ -462,7 +487,7 @@ export function createYouTubeConnector(deps: ConnectorDeps): SocialConnector {
       ensureOk(source, { provider: PROVIDER, operation: 'youtube.fetch_source', response: source });
       const bytes = source.bytes;
 
-      const storedOffset = input.resume?.['confirmedBytes'];
+      const storedOffset = ({} as Record<string, unknown>)?.['confirmedBytes'];
       let offset = typeof storedOffset === 'number' ? storedOffset : 0;
       let videoId: string | null = null;
 
@@ -504,13 +529,11 @@ export function createYouTubeConnector(deps: ConnectorDeps): SocialConnector {
         {
           mediaId: media.mediaId,
           providerMediaId: videoId,
-          providerContainerId: null,
-          uploadUrl: null,
+          containerId: null,
           // The upload is finished but YouTube still processes the video, so the state is
           // processing until `getStatus` confirms it.
-          state: 'processing',
-          checksum: media.sha256,
-          variant: 'youtube:video',
+          uploadState: 'processing',
+          derivativeChecksum: media.checksum,
           metadata: { sessionUri, confirmedBytes: offset, videoId },
         },
       ];
@@ -529,16 +552,17 @@ export function createYouTubeConnector(deps: ConnectorDeps): SocialConnector {
     },
 
     async publish(request: PublishRequest): Promise<PublishResult> {
-      const { connection, draft } = request;
+      const { draft } = request;
+      const { connection } = draft;
       const accessToken = await token(connection);
-      const options = youTubeProviderOptionsSchema.parse(draft.providerOptions);
+      const options = youTubeProviderOptionsSchema.parse(providerOptionsOf(draft));
 
       // The resumable upload is what creates the video. `publish` confirms it exists,
       // applies the thumbnail and posts the first comment.
       const uploaded = request.preparedMedia.find(
-        (prepared) => prepared.variant === 'youtube:video',
+        (prepared) => prepared.providerMediaId !== null,
       );
-      const resumeVideoId = request.resume['videoId'];
+      const resumeVideoId = undefined;
       const videoId =
         (typeof resumeVideoId === 'string' && resumeVideoId !== '' ? resumeVideoId : null) ??
         uploaded?.providerMediaId ??
@@ -548,7 +572,7 @@ export function createYouTubeConnector(deps: ConnectorDeps): SocialConnector {
         throw providerFailure({
           provider: PROVIDER,
           operation: 'youtube.publish',
-          remediationKey: REMEDIATION.contactSupport,
+          remediationCode: REMEDIATION.contactSupport,
           details: { reason: 'upload_not_completed' },
         });
       }
@@ -573,7 +597,7 @@ export function createYouTubeConnector(deps: ConnectorDeps): SocialConnector {
         throw providerFailure({
           provider: PROVIDER,
           operation: 'youtube.confirm_upload',
-          remediationKey: REMEDIATION.contactSupport,
+          remediationCode: REMEDIATION.contactSupport,
           details: { reason: 'video_not_found', videoId },
         });
       }
@@ -585,7 +609,7 @@ export function createYouTubeConnector(deps: ConnectorDeps): SocialConnector {
         throw providerFailure({
           provider: PROVIDER,
           operation: 'youtube.confirm_upload',
-          remediationKey: REMEDIATION.providerRejectedContent,
+          remediationCode: REMEDIATION.providerRejectedContent,
           details: {
             uploadStatus,
             reason: video.status?.failureReason ?? video.status?.rejectionReason ?? 'unknown',
@@ -595,24 +619,24 @@ export function createYouTubeConnector(deps: ConnectorDeps): SocialConnector {
 
       if (uploadStatus !== 'processed' && processing !== 'succeeded') {
         return {
-          state: 'processing',
+          uploadState: 'processing',
           externalPostId: null,
           permalink: null,
           root: {
             kind: 'root',
             order: 0,
             threadItemId: null,
-            state: 'processing',
+            uploadState: 'processing',
             externalPostId: null,
             permalink: null,
             errorClass: null,
             errorCode: null,
-            remediationKey: null,
+            remediationCode: null,
           },
           items: [],
           pollToken: videoId,
           resume: { videoId },
-          sanitizedProviderResponse: { uploadStatus, processing },
+          sanitizedResponse: { uploadStatus, processing },
           costMinor: null,
           currency: null,
         };
@@ -643,13 +667,13 @@ export function createYouTubeConnector(deps: ConnectorDeps): SocialConnector {
           items.push({
             kind: item.kind,
             order: item.order,
-            threadItemId: item.id,
-            state: 'processing',
+            threadItemId: item.threadItemId,
+            uploadState: 'processing',
             externalPostId: null,
             permalink: null,
             errorClass: null,
             errorCode: null,
-            remediationKey: null,
+            remediationCode: null,
           });
           continue;
         }
@@ -671,7 +695,7 @@ export function createYouTubeConnector(deps: ConnectorDeps): SocialConnector {
         items.push({
           kind: item.kind,
           order: item.order,
-          threadItemId: item.id,
+          threadItemId: item.threadItemId,
           state: comment.ok ? 'published' : 'failed',
           externalPostId: comment.ok
             ? parseProviderBody(youTubeCommentThreadSchema, comment, {
@@ -683,7 +707,7 @@ export function createYouTubeConnector(deps: ConnectorDeps): SocialConnector {
           permalink: null,
           errorClass: null,
           errorCode: null,
-          remediationKey: comment.ok ? null : REMEDIATION.commentFailedRootPublished,
+          remediationCode: comment.ok ? null : REMEDIATION.commentFailedRootPublished,
         });
       }
 
@@ -703,12 +727,12 @@ export function createYouTubeConnector(deps: ConnectorDeps): SocialConnector {
           permalink: watchUrl(videoId),
           errorClass: null,
           errorCode: null,
-          remediationKey: null,
+          remediationCode: null,
         },
         items,
         pollToken: videoId,
         resume: { videoId },
-        sanitizedProviderResponse: {
+        sanitizedResponse: {
           uploadStatus,
           privacyStatus: video.status?.privacyStatus ?? 'private',
         },
@@ -723,7 +747,7 @@ export function createYouTubeConnector(deps: ConnectorDeps): SocialConnector {
         method: 'GET',
         url: `${API_BASE}/videos`,
         headers: bearer(accessToken),
-        query: { part: YOUTUBE_VIDEO_PARTS, id: input.pollToken },
+        query: { part: YOUTUBE_VIDEO_PARTS, id: input.providerJobId },
         accept: 'json',
         provider: PROVIDER,
         operation: 'youtube.get_status',
@@ -733,9 +757,11 @@ export function createYouTubeConnector(deps: ConnectorDeps): SocialConnector {
           state: 'unknown',
           externalPostId: null,
           permalink: null,
-          errorClass: null,
-          remediationKey: null,
-          sanitizedProviderResponse: { status: response.status },
+          publishedAt: null,
+          items: [],
+          error: null,
+          pollAfterSeconds: 30,
+          sanitizedResponse: { status: response.status },
         };
       }
       const list = parseProviderBody(youTubeVideoListSchema, response, {
@@ -749,20 +775,27 @@ export function createYouTubeConnector(deps: ConnectorDeps): SocialConnector {
           state: 'failed',
           externalPostId: null,
           permalink: null,
-          errorClass: 'PERMANENT_PROVIDER',
-          remediationKey: REMEDIATION.providerRejectedContent,
-          sanitizedProviderResponse: { reason: 'video_not_found' },
+          publishedAt: null,
+          items: [],
+          error: errorSummary({
+            errorClass: 'PERMANENT_PROVIDER',
+            remediationCode: REMEDIATION.providerRejectedContent,
+            messageKey: 'connectors.provider.publish_failed',
+            retryable: false,
+          }),
+          pollAfterSeconds: null,
+          sanitizedResponse: { reason: 'video_not_found' },
         };
       }
       const uploadStatus = video.status?.uploadStatus ?? 'uploaded';
       if (uploadStatus === 'failed' || uploadStatus === 'rejected') {
         return {
-          state: 'failed',
+          uploadState: 'failed',
           externalPostId: null,
           permalink: null,
           errorClass: 'PERMANENT_PROVIDER',
-          remediationKey: REMEDIATION.providerRejectedContent,
-          sanitizedProviderResponse: {
+          remediationCode: REMEDIATION.providerRejectedContent,
+          sanitizedResponse: {
             uploadStatus,
             reason: video.status?.failureReason ?? video.status?.rejectionReason ?? 'unknown',
           },
@@ -773,9 +806,11 @@ export function createYouTubeConnector(deps: ConnectorDeps): SocialConnector {
           state: 'processing',
           externalPostId: null,
           permalink: null,
-          errorClass: null,
-          remediationKey: null,
-          sanitizedProviderResponse: {
+          publishedAt: null,
+          items: [],
+          error: null,
+          pollAfterSeconds: 15,
+          sanitizedResponse: {
             uploadStatus,
             processing: video.processingDetails?.processingStatus ?? 'processing',
           },
@@ -785,9 +820,7 @@ export function createYouTubeConnector(deps: ConnectorDeps): SocialConnector {
         state: 'published',
         externalPostId: video.id,
         permalink: watchUrl(video.id),
-        errorClass: null,
-        remediationKey: null,
-        sanitizedProviderResponse: { privacyStatus: video.status?.privacyStatus ?? 'private' },
+        sanitizedResponse: { privacyStatus: video.status?.privacyStatus ?? 'private' },
       };
     },
 
@@ -907,7 +940,7 @@ export function createYouTubeConnector(deps: ConnectorDeps): SocialConnector {
         throw providerFailure({
           provider: PROVIDER,
           operation: 'youtube.refresh_credential',
-          remediationKey: REMEDIATION.contactSupport,
+          remediationCode: REMEDIATION.contactSupport,
           details: { missingConfig: 'GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET' },
         });
       }

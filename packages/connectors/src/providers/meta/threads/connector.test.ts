@@ -95,7 +95,7 @@ describe('Threads publish', () => {
     });
     const connector = createThreadsConnector(deps);
     const result = await connector.publish(request({ draft }) as never);
-    expect(result.state).toBe('processing');
+    expect(result.status).toBe('processing');
     expect(result.externalPostId).toBeNull();
     expect(simulator.callsTo('threads_publish')).toHaveLength(0);
   });
@@ -111,7 +111,7 @@ describe('Threads publish', () => {
     });
     const connector = createThreadsConnector(deps);
     const result = await connector.publish(request({ draft }) as never);
-    expect(result.state).toBe('published');
+    expect(result.status).toBe('published');
     expect(result.externalPostId).toBe('19000000000000001');
     expect(result.permalink).toBe(
       'https://www.threads.net/@sample_studio_fake/post/FAKESHORTCODE1',
@@ -169,7 +169,7 @@ describe('Threads publish', () => {
         }),
       }) as never,
     );
-    expect(result.state).toBe('processing');
+    expect(result.status).toBe('processing');
     expect(result.root.state).toBe('published');
     expect(result.items[0]?.state).toBe('processing');
   });

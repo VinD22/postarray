@@ -246,7 +246,7 @@ describe('YouTube upload and publish', () => {
     const result = await connector.publish(
       request({ draft: videoDraft(), resume: { videoId: 'FAKEVIDEOID001' } }) as never,
     );
-    expect(result.state).toBe('processing');
+    expect(result.status).toBe('processing');
     expect(result.externalPostId).toBeNull();
   });
 
@@ -258,7 +258,7 @@ describe('YouTube upload and publish', () => {
     const result = await connector.publish(
       request({ draft: videoDraft(), resume: { videoId: 'FAKEVIDEOID001' } }) as never,
     );
-    expect(result.state).toBe('published');
+    expect(result.status).toBe('published');
     expect(result.externalPostId).toBe('FAKEVIDEOID001');
     expect(result.permalink).toBe('https://www.youtube.com/watch?v=FAKEVIDEOID001');
   });
@@ -268,7 +268,7 @@ describe('YouTube upload and publish', () => {
       routes: [{ method: 'GET', match: '/videos', body: YOUTUBE_VIDEO_REJECTED_FIXTURE }],
     });
     const connector = createYouTubeConnector(deps);
-    const status = await connector.getStatus({ connection, pollToken: 'FAKEVIDEOID002' });
+    const status = await connector.getStatus({ connection, providerJobId: 'FAKEVIDEOID002' });
     expect(status.state).toBe('failed');
     expect(status.remediationKey).toBe('provider_rejected_content');
   });
@@ -298,7 +298,7 @@ describe('YouTube upload and publish', () => {
         resume: { videoId: 'FAKEVIDEOID001' },
       }) as never,
     );
-    expect(result.state).toBe('published');
+    expect(result.status).toBe('published');
     expect(result.items[0]?.externalPostId).toBe('FAKECOMMENTTHREAD001');
     expect(simulator.callsTo('/commentThreads')).toHaveLength(1);
   });
@@ -351,7 +351,7 @@ describe('YouTube metrics', () => {
       extra: {},
     });
     expect(accounts).toHaveLength(1);
-    expect(accounts[0]?.externalId).toBe('UCFAKECHANNEL0000000001');
+    expect(accounts[0]?.externalAccountId).toBe('UCFAKECHANNEL0000000001');
     expect(accounts[0]?.metadata['longUploadsAllowed']).toBe(false);
   });
 });

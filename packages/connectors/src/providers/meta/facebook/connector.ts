@@ -38,6 +38,10 @@ import { SOURCE_VERIFIED_ON } from '../../shared/verification.js';
 import { canPublishToPage, createMetaClient, metaPagesResponseSchema } from '../graph.js';
 import { metaAuthorization, refreshMetaCredential } from '../oauth.js';
 import { buildFacebookCapabilities } from './capabilities.js';
+import { accessTokenOf, errorSummary, providerOptionsOf } from '../../shared/access.js';
+import { NOT_IMPLEMENTED_FEATURES } from '../../../contract.js';
+import { SecretValue } from '../../../vault.js';
+import type { FailedItem, PublishedItem } from '../../../contract.js';
 import {
   FACEBOOK_ACCOUNT_METRICS,
   FACEBOOK_ACCOUNT_METRIC_QUERY,
@@ -116,7 +120,7 @@ export function createFacebookConnector(deps: ConnectorDeps): SocialConnector {
   const { vault, clock } = deps;
 
   async function token(connection: ProviderConnection): Promise<string> {
-    return vault.getAccessToken(connection.credentialRef);
+    return accessTokenOf(connection);
   }
 
   function nowIso(): string {
@@ -131,12 +135,29 @@ export function createFacebookConnector(deps: ConnectorDeps): SocialConnector {
         iconToken: 'provider.facebook',
         // Pages only. A personal profile is never a target.
         accountTypes: ['page'],
-        docsUrl: 'https://developers.facebook.com/docs/pages-api/posts',
-        policyUrl: 'https://developers.facebook.com/terms',
+        officialDocsUrl: 'https://developers.facebook.com/docs/pages-api/posts',
+        officialPolicyUrl: 'https://developers.facebook.com/terms',
         engineeringOwner: 'Backend/Connectors 1',
         policyOwner: 'Policy Owner',
-        lastPolicyReviewAt: SOURCE_VERIFIED_ON,
+        lastPolicyReviewAt: `${SOURCE_VERIFIED_ON}T00:00:00.000Z`,
+        nextPolicyReviewAt: '2027-02-04T00:00:00.000Z',
         contractVersion: CONNECTOR_CONTRACT_VERSION,
+        connectorVersion: '1.0.0',
+        // Meta app review has not been completed, so nothing here is "supported".
+        label: 'beta',
+        limitationKey: 'connectors.facebook.review_pending',
+        features: {
+          ...NOT_IMPLEMENTED_FEATURES,
+          discover_accounts: 'requires_review',
+          get_capabilities: 'supported',
+          validate_draft: 'supported',
+          prepare_media: 'requires_review',
+          preview: 'supported',
+          publish: 'requires_review',
+          get_status: 'requires_review',
+          fetch_metrics: 'requires_review',
+          refresh_credential: 'supported',
+        },
       };
     },
 
@@ -147,22 +168,26 @@ export function createFacebookConnector(deps: ConnectorDeps): SocialConnector {
     async discoverAccounts(grant: OAuthGrant): Promise<ExternalAccount[]> {
       const response = await client.get({
         path: '/me/accounts',
-        accessToken: grant.accessToken,
+        accessToken: await grant.accessToken.use((plaintext) => plaintext),
         query: { fields: 'id,name,access_token,tasks,category,picture{url}', limit: 100 },
         operation: 'facebook.discover_pages',
       });
       client.require(response, 'facebook.discover_pages');
       const parsed = client.parse(metaPagesResponseSchema, response, 'facebook.discover_pages');
       return parsed.data.map((page) => ({
-        externalId: page.id,
+        externalAccountId: page.id,
         accountType: 'page' as const,
         displayName: page.name,
         handle: null,
         avatarUrl: page.picture?.data?.url ?? null,
+        profileUrl: `https://www.facebook.com/${page.id}`,
         parentExternalId: null,
-        connectable: canPublishToPage(page),
-        blockedReasonKey: canPublishToPage(page) ? null : 'connectors.facebook.page_role_required',
-        scopes: [...grant.scopes],
+        // A Page issues its own token; it is what every later call uses.
+        accountAccessToken:
+          page.access_token === undefined ? null : new SecretValue(page.access_token),
+        eligible: canPublishToPage(page),
+        ineligibleReasonKey: canPublishToPage(page) ? null : 'connectors.facebook.page_role_required',
+        grantedScopes: [...grant.grantedScopes],
         // The tasks are recorded so a later role change is detectable, not only expiry.
         metadata: { tasks: page.tasks ?? [], category: page.category ?? null },
       }));
@@ -172,13 +197,13 @@ export function createFacebookConnector(deps: ConnectorDeps): SocialConnector {
       return buildFacebookCapabilities({
         connection,
         observedAt: nowIso(),
-        grantedScopes: connection.scopes,
+        grantedScopes: connection.grantedScopes,
       });
     },
 
     async validateDraft(draft: ProviderDraft): Promise<ValidationResult> {
       const targetId = draft.connection.connectionId;
-      facebookProviderOptionsSchema.parse(draft.providerOptions);
+      facebookProviderOptionsSchema.parse(providerOptionsOf(draft));
       const issues: ValidationIssue[] = [
         ...validateDraftShape(draft, draft.capabilities, { unit: 'utf16', allowMixedMedia: false }),
       ];
@@ -209,7 +234,7 @@ export function createFacebookConnector(deps: ConnectorDeps): SocialConnector {
             path: `/${pageId}/videos`,
             accessToken,
             json: {
-              file_url: media.downloadUrl,
+              file_url: media.sourceUrl,
               published: false,
               ...(media.altText === null ? {} : { description: media.altText }),
             },
@@ -219,13 +244,16 @@ export function createFacebookConnector(deps: ConnectorDeps): SocialConnector {
           const video = client.parse(facebookVideoSchema, response, 'facebook.upload_video');
           prepared.push({
             mediaId: media.mediaId,
+            derivativeId: media.derivativeId,
             providerMediaId: video.id,
-            providerContainerId: null,
-            uploadUrl: null,
-            state: 'processing',
-            checksum: media.sha256,
-            variant: 'facebook:video',
-            metadata: { pageId },
+            containerId: null,
+            uploadState: 'processing',
+            derivativeChecksum: media.checksum,
+            byteSize: media.byteSize,
+            altTextApplied: media.altText !== null,
+            publicUrl: null,
+            expiresAt: null,
+            reusedFromPreviousAttempt: false,
           });
           continue;
         }
@@ -234,7 +262,7 @@ export function createFacebookConnector(deps: ConnectorDeps): SocialConnector {
           path: `/${pageId}/photos`,
           accessToken,
           json: {
-            url: media.downloadUrl,
+            url: media.sourceUrl,
             published: false,
             ...(media.altText === null ? {} : { alt_text_custom: media.altText }),
           },
@@ -244,13 +272,16 @@ export function createFacebookConnector(deps: ConnectorDeps): SocialConnector {
         const photo = client.parse(facebookPostSchema, response, 'facebook.upload_photo');
         prepared.push({
           mediaId: media.mediaId,
+            derivativeId: media.derivativeId,
           providerMediaId: photo.id,
-          providerContainerId: null,
-          uploadUrl: null,
-          state: 'ready',
-          checksum: media.sha256,
-          variant: 'facebook:photo',
-          metadata: { pageId },
+          containerId: null,
+          uploadState: 'ready',
+          derivativeChecksum: media.checksum,
+            byteSize: media.byteSize,
+            altTextApplied: media.altText !== null,
+            publicUrl: null,
+            expiresAt: null,
+            reusedFromPreviousAttempt: false,
         });
       }
       return prepared;
@@ -272,22 +303,28 @@ export function createFacebookConnector(deps: ConnectorDeps): SocialConnector {
     },
 
     async publish(request: PublishRequest): Promise<PublishResult> {
-      const { connection, draft } = request;
+      const { draft } = request;
+      const { connection } = draft;
       const accessToken = await token(connection);
-      const options = facebookProviderOptionsSchema.parse(draft.providerOptions);
+      const options = facebookProviderOptionsSchema.parse(providerOptionsOf(draft));
       const pageId = connection.externalAccountId;
 
-      const existing = request.resume['postId'];
-      const adoptedId = typeof existing === 'string' && existing !== '' ? existing : null;
+      // A create that may already have landed is reconciled by the core through
+      // getStatus and the content fingerprint, so nothing is adopted here.
+      const adoptedId: string | null = null;
 
-      let postId = adoptedId;
+      let postId: string | null = adoptedId;
       if (postId === null) {
+        // PreparedMedia carries no free form variant, so the kind comes from the
+        // draft entry the preparation was derived from.
+        const kindOf = (mediaId: string): string | undefined =>
+          draft.media.find((item) => item.mediaId === mediaId)?.kind;
         const photoIds = request.preparedMedia
-          .filter((prepared) => prepared.variant === 'facebook:photo')
+          .filter((prepared) => kindOf(prepared.mediaId) === 'image')
           .map((prepared) => prepared.providerMediaId)
           .filter((value): value is string => value !== null);
         const videoId = request.preparedMedia.find(
-          (prepared) => prepared.variant === 'facebook:video',
+          (prepared) => kindOf(prepared.mediaId) === 'video',
         )?.providerMediaId;
 
         if (videoId !== undefined && videoId !== null) {
@@ -326,7 +363,7 @@ export function createFacebookConnector(deps: ConnectorDeps): SocialConnector {
         throw providerFailure({
           provider: PROVIDER,
           operation: 'facebook.create_post',
-          remediationKey: REMEDIATION.contactSupport,
+          remediationCode: REMEDIATION.contactSupport,
           details: { reason: 'no_post_id' },
         });
       }
@@ -341,20 +378,23 @@ export function createFacebookConnector(deps: ConnectorDeps): SocialConnector {
         ? (client.parse(facebookPostSchema, lookup, 'facebook.read_permalink').permalink_url ?? null)
         : null;
 
-      const items: PublishItemResult[] = [];
+      const publishedAt = nowIso();
+      const items: PublishedItem[] = [
+        {
+          kind: 'root',
+          order: 0,
+          threadItemId: null,
+          externalPostId: postId,
+          permalink,
+          publishedAt,
+        },
+      ];
+      const failures: FailedItem[] = [];
+
       for (const item of draft.threadItems) {
+        // A delayed comment is not this connector's job. The thread sequence
+        // workflow owns it, and it gets its own receipt.
         if (item.kind !== 'comment' || item.delaySeconds > 0) {
-          items.push({
-            kind: item.kind,
-            order: item.order,
-            threadItemId: item.id,
-            state: 'processing',
-            externalPostId: null,
-            permalink: null,
-            errorClass: null,
-            errorCode: null,
-            remediationKey: null,
-          });
           continue;
         }
         const comment = await client.post({
@@ -363,43 +403,56 @@ export function createFacebookConnector(deps: ConnectorDeps): SocialConnector {
           json: { message: item.body },
           operation: 'facebook.create_comment',
         });
-        items.push({
+        if (comment.ok) {
+          items.push({
+            kind: item.kind,
+            order: item.order,
+            threadItemId: item.threadItemId,
+            externalPostId: client.parse(facebookCommentSchema, comment, 'facebook.create_comment')
+              .id,
+            permalink: null,
+            publishedAt: nowIso(),
+          });
+          continue;
+        }
+        // The root post already exists externally, so a failed comment is a
+        // partial success. It must never be reported as a failed publish.
+        failures.push({
           kind: item.kind,
           order: item.order,
-          threadItemId: item.id,
-          state: comment.ok ? 'published' : 'failed',
-          externalPostId: comment.ok
-            ? client.parse(facebookCommentSchema, comment, 'facebook.create_comment').id
-            : null,
-          permalink: null,
-          errorClass: null,
-          errorCode: null,
-          remediationKey: comment.ok ? null : REMEDIATION.commentFailedRootPublished,
+          threadItemId: item.threadItemId,
+          error: errorSummary({
+            errorClass: 'PERMANENT_PROVIDER',
+            remediationCode: REMEDIATION.commentFailedRootPublished,
+            messageKey: 'connectors.facebook.comment_failed',
+            retryable: false,
+          }),
         });
       }
 
-      const anyFailed = items.some((item) => item.state === 'failed');
-      const anyPending = items.some((item) => item.state === 'processing');
-
-      return {
-        state: anyFailed ? 'partially_published' : anyPending ? 'processing' : 'published',
-        externalPostId: postId,
-        permalink,
-        root: {
-          kind: 'root',
-          order: 0,
-          threadItemId: null,
-          state: 'published',
+      const sanitizedResponse = { postId, adopted: adoptedId !== null };
+      if (failures.length > 0) {
+        return {
+          status: 'partial',
           externalPostId: postId,
           permalink,
-          errorClass: null,
-          errorCode: null,
-          remediationKey: null,
-        },
+          publishedAt,
+          items,
+          failures,
+          sanitizedResponse,
+          providerRequestId: null,
+          costMinor: null,
+          currency: null,
+        };
+      }
+      return {
+        status: 'published',
+        externalPostId: postId,
+        permalink,
+        publishedAt,
         items,
-        pollToken: postId,
-        resume: { postId },
-        sanitizedProviderResponse: { postId, adopted: adoptedId !== null },
+        sanitizedResponse,
+        providerRequestId: null,
         costMinor: null,
         currency: null,
       };
@@ -408,7 +461,7 @@ export function createFacebookConnector(deps: ConnectorDeps): SocialConnector {
     async getStatus(input: StatusRequest): Promise<PublishStatus> {
       const accessToken = await token(input.connection);
       const response = await client.get({
-        path: `/${input.pollToken}`,
+        path: `/${input.providerJobId}`,
         accessToken,
         query: { fields: 'id,permalink_url,is_published,status' },
         operation: 'facebook.get_status',
@@ -418,9 +471,16 @@ export function createFacebookConnector(deps: ConnectorDeps): SocialConnector {
           state: 'failed',
           externalPostId: null,
           permalink: null,
-          errorClass: 'PERMANENT_PROVIDER',
-          remediationKey: REMEDIATION.providerRejectedContent,
-          sanitizedProviderResponse: { status: response.status },
+          publishedAt: null,
+          items: [],
+          error: errorSummary({
+            errorClass: 'PERMANENT_PROVIDER',
+            remediationCode: REMEDIATION.providerRejectedContent,
+            messageKey: 'connectors.facebook.post_not_found',
+            retryable: false,
+          }),
+          pollAfterSeconds: null,
+          sanitizedResponse: { status: response.status },
         };
       }
       if (!response.ok) {
@@ -428,9 +488,11 @@ export function createFacebookConnector(deps: ConnectorDeps): SocialConnector {
           state: 'unknown',
           externalPostId: null,
           permalink: null,
-          errorClass: null,
-          remediationKey: null,
-          sanitizedProviderResponse: { status: response.status },
+          publishedAt: null,
+          items: [],
+          error: null,
+          pollAfterSeconds: 30,
+          sanitizedResponse: { status: response.status },
         };
       }
       const video = facebookVideoSchema.safeParse(response.body);
@@ -440,9 +502,11 @@ export function createFacebookConnector(deps: ConnectorDeps): SocialConnector {
           state: 'processing',
           externalPostId: null,
           permalink: null,
-          errorClass: null,
-          remediationKey: null,
-          sanitizedProviderResponse: { videoStatus },
+          publishedAt: null,
+          items: [],
+          error: null,
+          pollAfterSeconds: 15,
+          sanitizedResponse: { videoStatus },
         };
       }
       const parsed = client.parse(facebookPostSchema, response, 'facebook.get_status');
@@ -450,9 +514,11 @@ export function createFacebookConnector(deps: ConnectorDeps): SocialConnector {
         state: 'published',
         externalPostId: parsed.id,
         permalink: parsed.permalink_url ?? null,
-        errorClass: null,
-        remediationKey: null,
-        sanitizedProviderResponse: { isPublished: parsed.is_published ?? true },
+        publishedAt: nowIso(),
+        items: [],
+        error: null,
+        pollAfterSeconds: null,
+        sanitizedResponse: { isPublished: parsed.is_published ?? true },
       };
     },
 
@@ -557,7 +623,7 @@ export function createFacebookConnector(deps: ConnectorDeps): SocialConnector {
     },
 
     async refreshCredential(input: RefreshRequest): Promise<CredentialResult> {
-      const current = await token(input.connection);
+      const current = await input.refreshToken.use((plaintext) => plaintext);
       return refreshMetaCredential(deps, PROVIDER, current);
     },
   };
@@ -570,7 +636,7 @@ export async function findRecentFacebookPost(
   message: string,
 ): Promise<string | null> {
   const client = createMetaClient(deps, PROVIDER);
-  const accessToken = await deps.vault.getAccessToken(connection.credentialRef);
+  const accessToken = await accessTokenOf(connection);
   const response = await client.get({
     path: `/${connection.externalAccountId}/feed`,
     accessToken,

@@ -262,7 +262,7 @@ describe('TikTok publish', () => {
     });
     const connector = createTikTokConnector(deps);
     const result = await connector.publish(request({ draft: videoDraft() }) as never);
-    expect(result.state).toBe('processing');
+    expect(result.status).toBe('processing');
     expect(result.externalPostId).toBeNull();
     expect(result.pollToken).toBe('v_pub_fake~publish.id.0000000001');
   });
@@ -279,7 +279,7 @@ describe('TikTok publish', () => {
     });
     const connector = createTikTokConnector(deps);
     const result = await connector.publish(request({ draft: videoDraft() }) as never);
-    expect(result.state).toBe('published');
+    expect(result.status).toBe('published');
     expect(result.externalPostId).toBe('7400000000000000001');
     expect(result.permalink).toBe(
       'https://www.tiktok.com/@sample_studio_fake/video/7400000000000000001',
@@ -293,7 +293,7 @@ describe('TikTok publish', () => {
     const connector = createTikTokConnector(deps);
     const status = await connector.getStatus({
       connection,
-      pollToken: 'v_pub_fake~publish.id.0000000001',
+      providerJobId: 'v_pub_fake~publish.id.0000000001',
     });
     expect(status.state).toBe('failed');
     expect(status.remediationKey).toBe('provider_rejected_content');

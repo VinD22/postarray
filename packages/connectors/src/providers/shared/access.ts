@@ -53,7 +53,15 @@ export function connectionMetadataString(
  * silently ignored setting.
  */
 export function providerOptionsOf(draft: ProviderDraft): unknown {
-  const bag = draft.connection.metadata['providerOptions'];
+  return providerOptionsOfConnection(draft.connection);
+}
+
+/**
+ * The same bag, for the calls that carry a connection but no draft, such as
+ * media preparation.
+ */
+export function providerOptionsOfConnection(connection: ConnectionRef): unknown {
+  const bag = connection.metadata['providerOptions'];
   return bag === undefined ? {} : bag;
 }
 
