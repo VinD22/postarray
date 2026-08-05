@@ -233,6 +233,13 @@ function parseBlock(lines: readonly YamlLine[], start: number, indent: number): 
     return [items, index];
   }
 
+  // A block that is not a sequence and not a mapping is a plain scalar. This is
+  // how the content of a scalar sequence item ("- one") arrives here; without
+  // this branch it fell through to the mapping case and produced an empty object.
+  if (splitKey(first.text) === null) {
+    return [parseScalar(first.text), start + 1];
+  }
+
   const map: Record<string, unknown> = {};
   let index = start;
   while (index < lines.length) {

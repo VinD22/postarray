@@ -7,7 +7,7 @@ describe('FakeClock', () => {
     const clock = new FakeClock('2026-08-04T12:00:00.000Z');
     expect(clock.iso()).toBe('2026-08-04T12:00:00.000Z');
     expect(clock.iso()).toBe('2026-08-04T12:00:00.000Z');
-    expect(clock.epochSeconds()).toBe(1_785_672_000);
+    expect(clock.epochSeconds()).toBe(1_785_844_800);
   });
 
   it('advances by the units a billing or scheduling test needs', () => {

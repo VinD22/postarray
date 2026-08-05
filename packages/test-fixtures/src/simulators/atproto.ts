@@ -48,7 +48,7 @@ export class BlueskySimulator extends BaseProviderSimulator {
         return xrpc(429, 'RateLimitExceeded', 'Rate limit exceeded.', {
           'ratelimit-limit': '3000',
           'ratelimit-remaining': '0',
-          'ratelimit-reset': String(Math.floor(1_785_672_000 + RETRY_AFTER_SECONDS)),
+          'ratelimit-reset': String(Math.floor(1_785_844_800 + RETRY_AFTER_SECONDS)),
           'ratelimit-policy': '3000;w=3600',
         });
       case 'server_error':

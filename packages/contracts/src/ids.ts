@@ -133,6 +133,23 @@ function nextBody(now: number): string {
   return encodeBase32((BigInt(timestamp) << ENTROPY_BITS) | entropy, ID_BODY_LENGTH);
 }
 
+/**
+ * Reset the monotonic generator.
+ *
+ * The generator deliberately keeps process-wide state so that two ids minted in
+ * the same millisecond still sort, and so that a backwards clock step cannot
+ * produce a lower id. That state outlives an individual test, so a test which
+ * fakes the clock must reset it first, otherwise the backwards-clock guard
+ * correctly pins the timestamp to the previously observed one.
+ *
+ * Test-only. Calling this in production would reintroduce the ordering bugs the
+ * state exists to prevent.
+ */
+export function resetIdGeneratorState(): void {
+  state.lastTimestamp = -1;
+  state.lastEntropy = 0n;
+}
+
 /** Mint a new sortable identifier for the given public prefix. */
 export function newId(prefix: IdPrefix): string {
   const now = Date.now();

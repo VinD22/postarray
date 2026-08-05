@@ -20,7 +20,7 @@ const ENTROPY_BITS = 80n;
 const ENTROPY_MASK = (1n << ENTROPY_BITS) - 1n;
 
 /** The instant every fixture id is anchored to: 4 August 2026, 12:00 UTC. */
-export const FIXTURE_EPOCH_MS = 1_785_672_000_000;
+export const FIXTURE_EPOCH_MS = 1_785_844_800_000;
 
 /** The instant fixtures use as "now" unless a test moves the clock. */
 export const FIXTURE_NOW = '2026-08-04T12:00:00.000Z';

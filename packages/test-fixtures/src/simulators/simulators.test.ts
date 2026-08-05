@@ -458,11 +458,24 @@ describe('every provider supports the shared failure modes', () => {
     ['forbidden', 403],
   ];
 
+  /**
+   * Documented provider deviations from the common status.
+   *
+   * AT Protocol XRPC signals a bad or expired token with 400 plus a named error
+   * ("ExpiredToken", "InvalidToken") rather than 401, so the simulator stays
+   * faithful to the real service. The connector's error classifier is what
+   * normalizes these into user_action_required, and it is tested separately.
+   */
+  const statusOverrides: Partial<Record<ProviderId, Partial<Record<SimulatorMode, number>>>> = {
+    bluesky: { expired_token: 400, revoked: 400 },
+  };
+
   for (const provider of providers) {
     for (const [mode, status] of expectations) {
       it(`${provider} reports ${mode} as ${status}`, async () => {
+        const expected = statusOverrides[provider]?.[mode] ?? status;
         const response = await call(provider, writePaths[provider], { method: 'POST', simulatorMode: mode });
-        expect(response.status).toBe(status);
+        expect(response.status).toBe(expected);
       });
     }
 

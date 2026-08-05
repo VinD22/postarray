@@ -13,6 +13,7 @@ import {
   newId,
   newIdFor,
   parseId,
+  resetIdGeneratorState,
   safeParseId,
 } from './ids.js';
 
@@ -65,6 +66,9 @@ describe('monotonic sortability', () => {
   it('orders ids minted across advancing milliseconds', () => {
     vi.useFakeTimers();
     vi.setSystemTime(new Date('2026-08-04T12:00:00.000Z'));
+    // The generator's backwards-clock guard is process wide, so an id minted by an
+    // earlier test under the real clock would otherwise pin these two together.
+    resetIdGeneratorState();
     const first = newId(ID_PREFIXES.media);
     vi.advanceTimersByTime(5);
     const second = newId(ID_PREFIXES.media);
@@ -75,6 +79,9 @@ describe('monotonic sortability', () => {
   it('stays monotonic when the clock moves backwards', () => {
     vi.useFakeTimers();
     vi.setSystemTime(new Date('2026-08-04T12:00:00.000Z'));
+    // The generator's backwards-clock guard is process wide, so an id minted by an
+    // earlier test under the real clock would otherwise pin these two together.
+    resetIdGeneratorState();
     const first = newId(ID_PREFIXES.media);
     vi.setSystemTime(new Date('2026-08-04T11:59:59.000Z'));
     const second = newId(ID_PREFIXES.media);
