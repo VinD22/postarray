@@ -44,23 +44,23 @@ import {
   type SocialConnector,
   type StatusRequest,
   refreshOAuth2Token,
-} from '../shared/contract-shape.js';
-import { CONNECTOR_CONTRACT_VERSION } from '../shared/contract-shape.js';
+} from '../shared/contract-shape';
+import { CONNECTOR_CONTRACT_VERSION } from '../shared/contract-shape';
 import {
   accessTokenOf,
   bearerHeader,
   connectionMetadataString,
   errorSummary,
   providerOptionsOf,
-} from '../shared/access.js';
-import { buildPreview } from '../shared/preview.js';
-import { mapMetrics } from '../shared/metrics.js';
-import { normalizeForSimilarity } from '../shared/text.js';
-import { validateDraftShape } from '../shared/validate.js';
-import { SOURCE_VERIFIED_ON } from '../shared/verification.js';
-import { X_SCOPES, buildXCapabilities } from './capabilities.js';
-import { estimateCost, isLinkHeavy, type XCostEstimate } from './cost.js';
-import { X_ACCOUNT_METRICS, X_POST_FIELDS, X_POST_METRICS, X_USER_FIELDS } from './metrics.js';
+} from '../shared/access';
+import { buildPreview } from '../shared/preview';
+import { mapMetrics } from '../shared/metrics';
+import { normalizeForSimilarity } from '../shared/text';
+import { validateDraftShape } from '../shared/validate';
+import { SOURCE_VERIFIED_ON } from '../shared/verification';
+import { X_SCOPES, buildXCapabilities } from './capabilities';
+import { estimateCost, isLinkHeavy, type XCostEstimate } from './cost';
+import { X_ACCOUNT_METRICS, X_POST_FIELDS, X_POST_METRICS, X_USER_FIELDS } from './metrics';
 import {
   xCreatePostResponseSchema,
   xDeleteResponseSchema,
@@ -71,7 +71,7 @@ import {
   xTimelineResponseSchema,
   xUserResponseSchema,
   xUserSearchResponseSchema,
-} from './schemas.js';
+} from './schemas';
 
 /**
  * X connector.

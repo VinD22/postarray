@@ -1,10 +1,10 @@
 'use client';
 
 import type { ReactNode } from 'react';
-import { cn } from '../utils/cn.js';
-import { Button } from '../primitives/button.js';
-import { Code } from '../primitives/code.js';
-import { Notice } from './notice.js';
+import { cn } from '../utils/cn';
+import { Button } from '../primitives/button';
+import { Code } from '../primitives/code';
+import { Notice } from './notice';
 
 export interface ErrorStateProps {
   /** What failed, in the user's terms. Name the account and the action. */

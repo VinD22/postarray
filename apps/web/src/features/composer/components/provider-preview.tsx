@@ -15,10 +15,10 @@ import { useTranslations } from '@relay/i18n/react';
 import { resolveVariant } from '@relay/contracts';
 import { formatDateTime } from '@relay/i18n';
 
-import { useComposer } from '../composer-context.js';
-import { sequenceTimeline } from '../state/selectors.js';
-import { PROVIDER_LABEL, ProviderIdentity } from './provider-identity.js';
-import type { TargetSummary } from '../types.js';
+import { useComposer } from '../composer-context';
+import { sequenceTimeline } from '../state/selectors';
+import { PROVIDER_LABEL, ProviderIdentity } from './provider-identity';
+import type { TargetSummary } from '../types';
 
 export interface ProviderPreviewProps {
   readonly summary: TargetSummary;

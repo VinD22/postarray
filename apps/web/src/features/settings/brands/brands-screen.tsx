@@ -17,14 +17,14 @@ import {
 import { EmptyState, PageHeader } from '@relay/design-system/patterns';
 import { useTranslations } from '@relay/i18n/react';
 
-import { AsyncBoundary } from '../lib/async-boundary.js';
-import { brandsGateway } from '../lib/gateway.js';
-import { useFormatters } from '../lib/formatters.js';
-import { settingsKey, useWorkspaceId } from '../lib/keys.js';
-import { useSettingsMutation } from '../lib/use-settings-mutation.js';
-import { SettingsStack } from '../components/section.js';
-import { BrandEditor } from './brand-editor.js';
-import { NewBrandDialog } from './new-brand-dialog.js';
+import { AsyncBoundary } from '../lib/async-boundary';
+import { brandsGateway } from '../lib/gateway';
+import { useFormatters } from '../lib/formatters';
+import { settingsKey, useWorkspaceId } from '../lib/keys';
+import { useSettingsMutation } from '../lib/use-settings-mutation';
+import { SettingsStack } from '../components/section';
+import { BrandEditor } from './brand-editor';
+import { NewBrandDialog } from './new-brand-dialog';
 
 export function BrandsScreen(): ReactNode {
   const t = useTranslations();

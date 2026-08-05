@@ -1,16 +1,16 @@
 import { CONTENT_KINDS, MEDIA_KINDS, summarizeCapabilities } from '@relay/contracts';
 import { describe, expect, it } from 'vitest';
 
-import { contentKinds, mediaBytes } from './capability.js';
-import { buildBlueskyCapabilities } from '../bluesky/capabilities.js';
-import { buildInstagramCapabilities } from '../meta/instagram/capabilities.js';
-import { buildLinkedInCapabilities } from '../linkedin/capabilities.js';
-import { buildTikTokCapabilities } from '../tiktok/capabilities.js';
-import { buildXCapabilities } from '../x/capabilities.js';
-import { buildYouTubeCapabilities } from '../youtube/capabilities.js';
-import { buildFacebookCapabilities } from '../meta/facebook/capabilities.js';
-import { buildThreadsCapabilities } from '../meta/threads/capabilities.js';
-import { testConnection } from './testing.js';
+import { contentKinds, mediaBytes } from './capability';
+import { buildBlueskyCapabilities } from '../bluesky/capabilities';
+import { buildInstagramCapabilities } from '../meta/instagram/capabilities';
+import { buildLinkedInCapabilities } from '../linkedin/capabilities';
+import { buildTikTokCapabilities } from '../tiktok/capabilities';
+import { buildXCapabilities } from '../x/capabilities';
+import { buildYouTubeCapabilities } from '../youtube/capabilities';
+import { buildFacebookCapabilities } from '../meta/facebook/capabilities';
+import { buildThreadsCapabilities } from '../meta/threads/capabilities';
+import { testConnection } from './testing';
 
 describe('capability builders', () => {
   it('defaults every content kind to not_implemented, the honest starting point', () => {

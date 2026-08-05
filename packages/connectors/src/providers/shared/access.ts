@@ -3,7 +3,7 @@ import type {
   ProviderDraft,
   ProviderErrorSummary,
   RemediationCode,
-} from './contract-shape.js';
+} from './contract-shape';
 
 /**
  * Small translations between a connector's own vocabulary and the contract.

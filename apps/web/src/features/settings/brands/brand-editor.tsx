@@ -24,10 +24,10 @@ import {
 import { CapabilityBadge, Notice } from '@relay/design-system/patterns';
 import { useTranslations } from '@relay/i18n/react';
 
-import { SettingRow, SettingsPanel } from '../components/section.js';
-import { useFormatters } from '../lib/formatters.js';
-import { fromLines, toLines } from '../lib/lines.js';
-import type { BrandView } from '../lib/view-models.js';
+import { SettingRow, SettingsPanel } from '../components/section';
+import { useFormatters } from '../lib/formatters';
+import { fromLines, toLines } from '../lib/lines';
+import type { BrandView } from '../lib/view-models';
 
 export interface BrandEditorProps {
   brand: BrandView;

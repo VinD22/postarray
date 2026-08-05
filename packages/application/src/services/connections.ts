@@ -8,21 +8,21 @@ import {
   type ProviderId,
 } from '@relay/contracts';
 
-import type { ActorContext, ConnectionService, PageQuery, ServiceDeps } from '../types.js';
+import type { ActorContext, ConnectionService, PageQuery, ServiceDeps } from '../types';
 import type {
   ConnectionHealth,
   ConnectionView,
   MentionEntityView,
   ProviderDestinationView,
-} from '../views.js';
+} from '../views';
 
-import { recordAudit } from '../internal/audit.js';
-import { loadCapabilities } from '../internal/capabilities.js';
-import { invalid, notFound } from '../internal/errors.js';
-import { fromStoredAccountType, toProviderId } from '../internal/mappers.js';
-import { pageArgs, toPage } from '../internal/pagination.js';
-import { authorized, type Db } from '../internal/runtime.js';
-import { asDestinationKind } from '../internal/storage-enums.js';
+import { recordAudit } from '../internal/audit';
+import { loadCapabilities } from '../internal/capabilities';
+import { invalid, notFound } from '../internal/errors';
+import { fromStoredAccountType, toProviderId } from '../internal/mappers';
+import { pageArgs, toPage } from '../internal/pagination';
+import { authorized, type Db } from '../internal/runtime';
+import { asDestinationKind } from '../internal/storage-enums';
 
 /**
  * Connected accounts.

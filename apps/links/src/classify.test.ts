@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 
-import { classifyBot, classifyDevice, classifyReferrer, normalizeCountry } from './classify.js';
-import type { RequestSignals } from './classify.js';
+import { classifyBot, classifyDevice, classifyReferrer, normalizeCountry } from './classify';
+import type { RequestSignals } from './classify';
 
 function signals(overrides: Partial<RequestSignals> = {}): RequestSignals {
   return {

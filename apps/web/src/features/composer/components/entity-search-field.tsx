@@ -15,7 +15,7 @@ import { CapabilityBadge } from '@relay/design-system/patterns';
 import { useTranslations } from '@relay/i18n/react';
 import type { CapabilitySupport, ProviderId } from '@relay/contracts';
 
-import { PROVIDER_LABEL } from './provider-identity.js';
+import { PROVIDER_LABEL } from './provider-identity';
 
 export interface ResolvedEntity {
   readonly externalId: string;

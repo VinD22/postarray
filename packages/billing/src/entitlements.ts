@@ -3,14 +3,14 @@ import { z } from 'zod';
 import { RelayError, subscriptionStatusSchema } from '@relay/contracts';
 import type { SubscriptionStatus } from '@relay/contracts';
 
-import { BILLING_MESSAGE_KEYS } from './messages.js';
+import { BILLING_MESSAGE_KEYS } from './messages';
 import {
   ACTIVE_CHANNEL_ALLOWANCE,
   GRACE_PERIOD_DAYS,
   READ_ONLY_PERIOD_DAYS,
   billingIntervalSchema,
-} from './products.js';
-import { addDays, daysUntil, isAtOrAfter, isBefore } from './time.js';
+} from './products';
+import { addDays, daysUntil, isAtOrAfter, isBefore } from './time';
 
 /**
  * Entitlements are **derived**, never hand set, and only ever from verified

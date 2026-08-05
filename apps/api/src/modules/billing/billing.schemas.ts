@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-import { timeRangeShape } from '../../common/pagination.js';
+import { timeRangeShape } from '../../common/pagination';
 
 /**
  * Billing payloads.

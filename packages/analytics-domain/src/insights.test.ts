@@ -1,14 +1,14 @@
 import { describe, expect, it } from 'vitest';
 
-import { compareToTrailingMedian } from './baseline.js';
+import { compareToTrailingMedian } from './baseline';
 import {
   buildBaselineInsights,
   buildNextTestInsight,
   buildUnavailabilityInsights,
   compareAcrossPlatforms,
-} from './insights.js';
-import { normalizeMetrics } from './normalize.js';
-import { HASH, makeHistory, makeObserved } from './test-support.js';
+} from './insights';
+import { normalizeMetrics } from './normalize';
+import { HASH, makeHistory, makeObserved } from './test-support';
 
 function codes(insights: readonly { code: string }[]): string[] {
   return insights.map((entry) => entry.code);

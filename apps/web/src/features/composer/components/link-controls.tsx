@@ -23,8 +23,8 @@ import {
 } from '@relay/design-system/primitives';
 import { useTranslations } from '@relay/i18n/react';
 
-import { useComposer } from '../composer-context.js';
-import { RadioRow } from './form-rows.js';
+import { useComposer } from '../composer-context';
+import { RadioRow } from './form-rows';
 
 /** Sentinel for "no branded domain". Radix forbids an empty option value. */
 const RELAY_DOMAIN = 'relay-default';

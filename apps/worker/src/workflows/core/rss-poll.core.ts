@@ -1,8 +1,8 @@
-import type { WorkerActivities } from '../../activities/types.js';
-import { MESSAGE_KEYS } from '../../messages.js';
-import { jitterMs, toIsoInstant } from '../../runtime/deterministic.js';
-import type { ChildWorkflowDescriptor, WorkflowRuntime } from '../../runtime/types.js';
-import type { RssPollWorkflowInput, RssPollWorkflowOutput } from '../inputs.js';
+import type { WorkerActivities } from '../../activities/types';
+import { MESSAGE_KEYS } from '../../messages';
+import { jitterMs, toIsoInstant } from '../../runtime/deterministic';
+import type { ChildWorkflowDescriptor, WorkflowRuntime } from '../../runtime/types';
+import type { RssPollWorkflowInput, RssPollWorkflowOutput } from '../inputs';
 
 /**
  * Feed polling.

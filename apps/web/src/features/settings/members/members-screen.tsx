@@ -30,15 +30,15 @@ import {
 import { useTranslations } from '@relay/i18n/react';
 import { MoreHorizontal } from 'lucide-react';
 
-import { AsyncBoundary } from '../lib/async-boundary.js';
-import { brandsGateway, membersGateway } from '../lib/gateway.js';
-import { useFormatters } from '../lib/formatters.js';
-import { settingsKey, useWorkspaceId } from '../lib/keys.js';
-import { useSettingsMutation } from '../lib/use-settings-mutation.js';
-import type { BrandRef, MemberView } from '../lib/view-models.js';
-import { SettingsPanel, SettingsStack } from '../components/section.js';
-import { MemberDialog, type MemberFormValue } from './member-dialog.js';
-import { RoleReference } from './role-reference.js';
+import { AsyncBoundary } from '../lib/async-boundary';
+import { brandsGateway, membersGateway } from '../lib/gateway';
+import { useFormatters } from '../lib/formatters';
+import { settingsKey, useWorkspaceId } from '../lib/keys';
+import { useSettingsMutation } from '../lib/use-settings-mutation';
+import type { BrandRef, MemberView } from '../lib/view-models';
+import { SettingsPanel, SettingsStack } from '../components/section';
+import { MemberDialog, type MemberFormValue } from './member-dialog';
+import { RoleReference } from './role-reference';
 
 export function MembersScreen(): ReactNode {
   const t = useTranslations();

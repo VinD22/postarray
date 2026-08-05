@@ -3,13 +3,13 @@ import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 import { createLogger } from '@relay/observability';
 import type { Logger } from '@relay/observability';
 
-import { createKillSwitch } from './cache.js';
-import { fixedClock } from './clock.js';
-import { createMemoryClickSink } from './clicks.js';
-import { createLinksServer } from './server.js';
-import type { LinksServer } from './server.js';
-import { createMemoryShortLinkStore } from './store.js';
-import type { ShortLinkRecord } from './types.js';
+import { createKillSwitch } from './cache';
+import { fixedClock } from './clock';
+import { createMemoryClickSink } from './clicks';
+import { createLinksServer } from './server';
+import type { LinksServer } from './server';
+import { createMemoryShortLinkStore } from './store';
+import type { ShortLinkRecord } from './types';
 
 const NOW = Date.parse('2026-08-04T12:30:00.000Z');
 const HOST = 'rl.example';

@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import { fromLines, toLines } from './lines.js';
+import { fromLines, toLines } from './lines';
 
 describe('line editing', () => {
   it('drops blank lines so an empty line never becomes an empty rule', () => {

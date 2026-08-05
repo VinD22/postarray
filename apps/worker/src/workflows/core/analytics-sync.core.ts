@@ -1,10 +1,10 @@
 import type { ProviderId } from '@relay/contracts';
 
-import type { WorkerActivities } from '../../activities/types.js';
-import { MESSAGE_KEYS } from '../../messages.js';
-import { jitterMs, parseInstant, toIsoInstant } from '../../runtime/deterministic.js';
-import type { ChildWorkflowDescriptor, WorkflowRuntime } from '../../runtime/types.js';
-import type { AnalyticsSyncWorkflowInput, AnalyticsSyncWorkflowOutput } from '../inputs.js';
+import type { WorkerActivities } from '../../activities/types';
+import { MESSAGE_KEYS } from '../../messages';
+import { jitterMs, parseInstant, toIsoInstant } from '../../runtime/deterministic';
+import type { ChildWorkflowDescriptor, WorkflowRuntime } from '../../runtime/types';
+import type { AnalyticsSyncWorkflowInput, AnalyticsSyncWorkflowOutput } from '../inputs';
 
 /**
  * Analytics polling on provider appropriate intervals.

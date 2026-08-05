@@ -25,14 +25,10 @@ import type {
 } from '@relay/contracts';
 import { z } from 'zod';
 
-import {
-  type ProviderErrorClass,
-  type RemediationCode,
-  providerOperationSchema,
-} from './errors.js';
-import type { HttpClient } from './http.js';
-import type { Clock, ConnectorLogger } from './ports.js';
-import { type ConnectorVault, type SecretHandle, SecretValue } from './vault.js';
+import { type ProviderErrorClass, type RemediationCode, providerOperationSchema } from './errors';
+import type { HttpClient } from './http';
+import type { Clock, ConnectorLogger } from './ports';
+import { type ConnectorVault, type SecretHandle, SecretValue } from './vault';
 
 /**
  * The versioned connector contract.
@@ -793,8 +789,8 @@ export type { CapabilitySnapshot, MetricObservation, ValidationResult };
  * The ports an adapter is constructed with. Everything an adapter needs and
  * nothing it does not: no database, no application service, no scheduler.
  */
-export type { Clock, ConnectorLogger } from './ports.js';
-export type { ConnectorRegistry } from './registry.js';
+export type { Clock, ConnectorLogger } from './ports';
+export type { ConnectorRegistry } from './registry';
 
 /** The slice of `RelayConfig` a connector reads. Values may be absent. */
 export interface ConnectorConfig {

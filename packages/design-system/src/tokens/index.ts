@@ -7,7 +7,7 @@ export {
   CONTRAST_THRESHOLD_AA,
   type ContrastPurpose,
   type Rgb,
-} from './contrast.js';
+} from './contrast';
 
 export {
   lightTheme,
@@ -41,4 +41,4 @@ export {
   type TypeScaleKey,
   type BreakpointKey,
   type ContrastPair,
-} from './tokens.js';
+} from './tokens';

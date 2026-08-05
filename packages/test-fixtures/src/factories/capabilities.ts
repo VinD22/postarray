@@ -8,7 +8,7 @@ import type {
   ProviderId,
 } from '@relay/contracts';
 
-import { FIXTURE_NOW, fixtureId } from '../ids.js';
+import { FIXTURE_NOW, fixtureId } from '../ids';
 
 /**
  * Capability snapshots.

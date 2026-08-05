@@ -7,10 +7,10 @@ import type {
   BusinessProfileView,
   CalendarEntry,
   ContentItemView,
-} from '../../application/port.js';
-import { Actor, Idempotent, RequireScope } from '../../common/decorators.js';
-import { growthPlanIdSchema, growthProfileIdSchema } from '../../common/schemas.js';
-import { parseBody, parseParams, parseQuery } from '../../common/zod.js';
+} from '../../application/port';
+import { Actor, Idempotent, RequireScope } from '../../common/decorators';
+import { growthPlanIdSchema, growthProfileIdSchema } from '../../common/schemas';
+import { parseBody, parseParams, parseQuery } from '../../common/zod';
 import {
   businessProfileInputSchema,
   exportPlanQuerySchema,
@@ -18,8 +18,8 @@ import {
   listOpportunitiesQuerySchema,
   listToolsQuerySchema,
   planItemSchema,
-} from './growth.schemas.js';
-import { GrowthService } from './growth.service.js';
+} from './growth.schemas';
+import { GrowthService } from './growth.service';
 
 /**
  * The Growth Advisor.

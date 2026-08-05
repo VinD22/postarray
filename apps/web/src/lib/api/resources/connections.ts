@@ -2,15 +2,15 @@
 
 import type { CapabilitySnapshot } from '@relay/contracts';
 
-import { call } from '../call.js';
-import { demoConnections, page } from '../fixtures.js';
+import { call } from '../call';
+import { demoConnections, page } from '../fixtures';
 import type {
   ConnectionDestination,
   ConnectionView,
   MentionResult,
   Paginated,
   ProviderId,
-} from '../types.js';
+} from '../types';
 import { requireFirst } from '@/lib/utils/require-first';
 
 export type ConnectionListQuery = {

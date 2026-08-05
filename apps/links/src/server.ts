@@ -8,20 +8,20 @@ import type { HealthReport, Logger } from '@relay/observability';
 import { DEFAULT_LOCALE, createTranslator, en, getDirection } from '@relay/i18n';
 import type { Translator } from '@relay/i18n';
 
-import { systemClock, toIsoInstant, truncateToHour } from './clock.js';
-import type { Clock } from './clock.js';
-import { classifyBot, classifyDevice, classifyReferrer, normalizeCountry } from './classify.js';
-import { buildDedupeKey } from './dedupe.js';
-import { createEnumerationGuard } from './rate-limit.js';
-import type { EnumerationGuardOptions } from './rate-limit.js';
-import { createKillSwitch } from './cache.js';
-import type { MutableKillSwitch } from './cache.js';
-import { createResolver } from './resolve.js';
-import type { ResolveOutcome, Resolver } from './resolve.js';
-import { NOTICE_HEADERS, renderNoticePage, renderRateLimitedPage } from './pages.js';
-import type { SafetyOptions } from './safety.js';
-import { abuseReportSchema } from './types.js';
-import type { AbuseReportSink, ClickSink, ShortLinkStore } from './types.js';
+import { systemClock, toIsoInstant, truncateToHour } from './clock';
+import type { Clock } from './clock';
+import { classifyBot, classifyDevice, classifyReferrer, normalizeCountry } from './classify';
+import { buildDedupeKey } from './dedupe';
+import { createEnumerationGuard } from './rate-limit';
+import type { EnumerationGuardOptions } from './rate-limit';
+import { createKillSwitch } from './cache';
+import type { MutableKillSwitch } from './cache';
+import { createResolver } from './resolve';
+import type { ResolveOutcome, Resolver } from './resolve';
+import { NOTICE_HEADERS, renderNoticePage, renderRateLimitedPage } from './pages';
+import type { SafetyOptions } from './safety';
+import { abuseReportSchema } from './types';
+import type { AbuseReportSink, ClickSink, ShortLinkStore } from './types';
 
 /**
  * The redirect service.

@@ -1,6 +1,6 @@
 import type { ApprovalLevel, ProviderId } from '@relay/contracts';
 
-import { clusterSimilar, SUBSTANTIAL_SIMILARITY_THRESHOLD } from './similarity.js';
+import { clusterSimilar, SUBSTANTIAL_SIMILARITY_THRESHOLD } from './similarity';
 
 /**
  * The approval-level engine.

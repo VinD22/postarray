@@ -12,11 +12,11 @@ import type {
   ProviderThreadItem,
   PublishRequest,
   StatusRequest,
-} from '../contract.js';
-import { fingerprintDraft } from '../idempotency.js';
-import { type Clock, instantOf, systemClock } from '../ports.js';
-import { leaseSecret } from '../vault.js';
-import { buildFakeCapabilitySnapshot, type FakeCapabilityOverrides } from './capabilities.js';
+} from '../contract';
+import { fingerprintDraft } from '../idempotency';
+import { type Clock, instantOf, systemClock } from '../ports';
+import { leaseSecret } from '../vault';
+import { buildFakeCapabilitySnapshot, type FakeCapabilityOverrides } from './capabilities';
 
 /**
  * Ready made fake inputs.

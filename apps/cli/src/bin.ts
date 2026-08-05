@@ -1,8 +1,8 @@
 #!/usr/bin/env -S node --experimental-strip-types --no-warnings
 
-import { createFileConfigStore } from './config/store.js';
-import { createFileCredentialStore } from './config/credentials.js';
-import { runCli } from './program.js';
+import { createFileConfigStore } from './config/store';
+import { createFileCredentialStore } from './config/credentials';
+import { runCli } from './program';
 
 /**
  * The `relay` entrypoint.

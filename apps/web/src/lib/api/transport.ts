@@ -15,9 +15,9 @@
 
 import { API_HEADERS, PROBLEM_JSON_CONTENT_TYPE, type ProblemJson } from '@relay/contracts';
 
-import { apiConfig } from './config.js';
-import { newCorrelationId } from './correlation.js';
-import { ApiError } from './error.js';
+import { apiConfig } from './config';
+import { newCorrelationId } from './correlation';
+import { ApiError } from './error';
 
 export type HttpMethod = 'GET' | 'POST' | 'PATCH' | 'PUT' | 'DELETE';
 

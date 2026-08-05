@@ -4,27 +4,21 @@ import { AuthRequiredError, ForbiddenError } from '@relay/contracts';
 import type { Logger } from '@relay/observability';
 import type { Response } from 'express';
 
-import type { Clock, IdentityContext, Services } from '../../application/port.js';
-import {
-  CLOCK,
-  IDENTITY_PROVIDER,
-  LOGGER,
-  RELAY_CONFIG,
-  SERVICES,
-} from '../../application/tokens.js';
+import type { Clock, IdentityContext, Services } from '../../application/port';
+import { CLOCK, IDENTITY_PROVIDER, LOGGER, RELAY_CONFIG, SERVICES } from '../../application/tokens';
 import {
   CSRF_COOKIE,
   REFRESH_COOKIE,
   SESSION_COOKIE,
   expireCookie,
   serializeCookie,
-} from '../../common/cookies.js';
-import { instantAfter } from '../../common/instant.js';
-import { CredentialDirectory, tokenLookupHash } from '../../security/credential-directory.js';
-import { randomToken } from '../../security/credentials.js';
-import { csrfTokenFor, issueCsrfToken } from '../../security/csrf.js';
-import { sessionRecordSchema, sessionRefreshRecordSchema } from '../../security/records.js';
-import type { IdentityProvider, IdentitySession } from './identity.port.js';
+} from '../../common/cookies';
+import { instantAfter } from '../../common/instant';
+import { CredentialDirectory, tokenLookupHash } from '../../security/credential-directory';
+import { randomToken } from '../../security/credentials';
+import { csrfTokenFor, issueCsrfToken } from '../../security/csrf';
+import { sessionRecordSchema, sessionRefreshRecordSchema } from '../../security/records';
+import type { IdentityProvider, IdentitySession } from './identity.port';
 
 /**
  * Session lifecycle.

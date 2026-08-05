@@ -1,8 +1,8 @@
 import { describe, expect, it } from 'vitest';
 
-import { computeCoverage, computeFreshness, markStaleMetrics } from './freshness.js';
-import { normalizeMetrics } from './normalize.js';
-import { HASH, makeObservation } from './test-support.js';
+import { computeCoverage, computeFreshness, markStaleMetrics } from './freshness';
+import { normalizeMetrics } from './normalize';
+import { HASH, makeObservation } from './test-support';
 
 const NOW = new Date('2026-08-04T12:00:00Z');
 

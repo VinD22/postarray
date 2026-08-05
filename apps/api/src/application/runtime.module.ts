@@ -2,8 +2,8 @@ import { Global, Module, type DynamicModule } from '@nestjs/common';
 import type { RelayConfig } from '@relay/config';
 import type { Logger } from '@relay/observability';
 
-import type { Clock, KeyValueStore, Services } from './port.js';
-import type { IdentityProvider } from '../modules/auth/identity.port.js';
+import type { Clock, KeyValueStore, Services } from './port';
+import type { IdentityProvider } from '../modules/auth/identity.port';
 import {
   CLOCK,
   IDENTITY_PROVIDER,
@@ -11,7 +11,7 @@ import {
   LOGGER,
   RELAY_CONFIG,
   SERVICES,
-} from './tokens.js';
+} from './tokens';
 
 /**
  * Everything the API is handed at bootstrap.

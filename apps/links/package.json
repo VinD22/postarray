@@ -13,8 +13,9 @@
     "typecheck": "tsc --noEmit",
     "lint": "eslint src",
     "test": "vitest run",
-    "start": "node --experimental-strip-types src/start.ts",
-    "clean": "rm -rf dist .turbo"
+    "start": "tsx src/start.ts",
+    "clean": "rm -rf dist .turbo",
+    "dev": "tsx watch src/start.ts"
   },
   "dependencies": {
     "@relay/config": "workspace:*",
@@ -29,6 +30,7 @@
     "@types/node": "^22.10.2",
     "@types/pg": "^8.11.10",
     "typescript": "^5.7.2",
-    "vitest": "^2.1.8"
+    "vitest": "^2.1.8",
+    "tsx": "^4.19.2"
   }
 }

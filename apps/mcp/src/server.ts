@@ -3,10 +3,10 @@ import { z } from 'zod';
 import { Server } from '@modelcontextprotocol/sdk/server/index.js';
 import { CallToolRequestSchema, ListToolsRequestSchema } from '@modelcontextprotocol/sdk/types.js';
 
-import { describeTool } from './tools/registry.js';
-import type { ToolDefinition, ToolRegistry, ToolResult } from './tools/registry.js';
-import type { Dispatcher } from './dispatch.js';
-import type { VerifiedGrant } from './auth/verifier.js';
+import { describeTool } from './tools/registry';
+import type { ToolDefinition, ToolRegistry, ToolResult } from './tools/registry';
+import type { Dispatcher } from './dispatch';
+import type { VerifiedGrant } from './auth/verifier';
 
 /**
  * The MCP protocol layer.

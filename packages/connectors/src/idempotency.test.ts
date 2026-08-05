@@ -1,14 +1,14 @@
 import { describe, expect, it } from 'vitest';
 
-import { createFakeConnector } from './fake/connector.js';
-import { fakeDraft, fakePublishRequest, fakeStatusRequest } from './fake/fixtures.js';
+import { createFakeConnector } from './fake/connector';
+import { fakeDraft, fakePublishRequest, fakeStatusRequest } from './fake/fixtures';
 import {
   computeContentFingerprint,
   ensureNotAlreadyPublished,
   fingerprintDraft,
   providerHonoursIdempotencyKey,
-} from './idempotency.js';
-import { fixedClock } from './ports.js';
+} from './idempotency';
+import { fixedClock } from './ports';
 
 const clock = fixedClock('2026-08-04T12:00:00.000Z');
 

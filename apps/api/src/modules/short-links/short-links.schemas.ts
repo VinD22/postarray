@@ -1,8 +1,8 @@
 import { utmParametersSchema } from '@relay/contracts';
 import { z } from 'zod';
 
-import { cursorQuerySchema, timeRangeShape } from '../../common/pagination.js';
-import { campaignIdSchema, shortLinkIdSchema } from '../../common/schemas.js';
+import { cursorQuerySchema, timeRangeShape } from '../../common/pagination';
+import { campaignIdSchema, shortLinkIdSchema } from '../../common/schemas';
 
 /**
  * Short link payloads.

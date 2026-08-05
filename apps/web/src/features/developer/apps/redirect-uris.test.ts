@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import { checkRedirectUri } from './redirect-uris.js';
+import { checkRedirectUri } from './redirect-uris';
 
 describe('checkRedirectUri', () => {
   it('accepts an exact https callback', () => {

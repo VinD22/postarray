@@ -1,4 +1,4 @@
-import type { WorkerActivities } from '../activities/types.js';
+import type { WorkerActivities } from '../activities/types';
 import {
   SignalInbox,
   type ChildWorkflowDescriptor,
@@ -7,8 +7,8 @@ import {
   type WorkflowLog,
   type WorkflowRuntime,
   type WorkflowStatusView,
-} from '../runtime/types.js';
-import { nowMs, nowIso } from '../runtime/clock.js';
+} from '../runtime/types';
+import { nowMs, nowIso } from '../runtime/clock';
 
 /**
  * A `WorkflowRuntime` backed by the real clock and ordinary timers.

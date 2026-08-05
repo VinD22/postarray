@@ -7,9 +7,9 @@ import type {
   ReceiptItem,
 } from '@relay/contracts';
 
-import { FIXTURE_NOW, fakeExternalId, fixtureChecksum, fixtureId, fixtureUrl } from '../ids.js';
-import { makeCapabilitySnapshot } from './capabilities.js';
-import { makeConnection } from './connection.js';
+import { FIXTURE_NOW, fakeExternalId, fixtureChecksum, fixtureId, fixtureUrl } from '../ids';
+import { makeCapabilitySnapshot } from './capabilities';
+import { makeConnection } from './connection';
 
 /**
  * Publish jobs, attempts and publication receipts.

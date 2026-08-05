@@ -5,12 +5,12 @@ import { RelayError } from '@relay/contracts';
 import type { ProblemJson } from '@relay/contracts';
 import type { Logger } from '@relay/observability';
 
-import { authorizeCall } from './auth/authorize.js';
-import type { VerifiedGrant } from './auth/verifier.js';
-import type { ConfirmationStore } from './confirmations.js';
-import type { ActorContextLike, AuditSink, RelayServicePort } from './ports.js';
-import { requirementOf } from './tools/registry.js';
-import type { ToolRegistry, ToolResult } from './tools/registry.js';
+import { authorizeCall } from './auth/authorize';
+import type { VerifiedGrant } from './auth/verifier';
+import type { ConfirmationStore } from './confirmations';
+import type { ActorContextLike, AuditSink, RelayServicePort } from './ports';
+import { requirementOf } from './tools/registry';
+import type { ToolRegistry, ToolResult } from './tools/registry';
 
 /**
  * The one path every tool call takes.

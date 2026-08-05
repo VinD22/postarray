@@ -7,7 +7,7 @@ import {
 } from '@relay/contracts';
 import { z } from 'zod';
 
-import { requireEpochMillis } from './instant.js';
+import { requireEpochMillis } from './instant';
 
 /**
  * Cursor pagination and explicit time zones, on every list endpoint without

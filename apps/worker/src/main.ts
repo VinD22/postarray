@@ -1,8 +1,8 @@
 import { InternalError } from '@relay/contracts';
 import { createLogger } from '@relay/observability';
 
-import { ACTIVITY_NAMES, type WorkerActivities } from './activities/types.js';
-import { installShutdownHandlers, startWorker, WORKER_SERVICE_NAME } from './worker.js';
+import { ACTIVITY_NAMES, type WorkerActivities } from './activities/types';
+import { installShutdownHandlers, startWorker, WORKER_SERVICE_NAME } from './worker';
 
 /**
  * The process entry point.

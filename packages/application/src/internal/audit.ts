@@ -1,7 +1,7 @@
 import { appendAuditEvent, type RlsTransactionClient } from '@relay/database';
 
-import { fromStoredSurface, toStoredActorType, toStoredSurface } from './mappers.js';
-import type { ActorSnapshot, Db } from './runtime.js';
+import { fromStoredSurface, toStoredActorType, toStoredSurface } from './mappers';
+import type { ActorSnapshot, Db } from './runtime';
 
 /**
  * Every write appends one audit event, in the same transaction as the write it

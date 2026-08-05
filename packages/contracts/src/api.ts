@@ -1,9 +1,9 @@
 import { z } from 'zod';
 
-import { problemJsonSchema } from './errors.js';
-import { ID_PREFIXES, idSchema } from './ids.js';
-import { isoInstantSchema } from './primitives.js';
-import { idempotencyKeySchema } from './publishing.js';
+import { problemJsonSchema } from './errors';
+import { ID_PREFIXES, idSchema } from './ids';
+import { isoInstantSchema } from './primitives';
+import { idempotencyKeySchema } from './publishing';
 
 /** Shared REST and webhook envelopes. Every public surface speaks these shapes. */
 

@@ -17,9 +17,9 @@ import {
   checkSequenceCompatibility,
   type Incompatibility,
   type MediaFacts,
-} from './capability-rules.js';
-import type { ComposerAction } from './composer-reducer.js';
-import type { ComposerState, TargetAccount } from '../types.js';
+} from './capability-rules';
+import type { ComposerAction } from './composer-reducer';
+import type { ComposerState, TargetAccount } from '../types';
 
 export interface GlobalEditIncompatibility {
   readonly connectionId: string;

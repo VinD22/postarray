@@ -9,7 +9,7 @@ import {
   hashBody,
   signWebhook,
   verifyWebhookSignature,
-} from './signature.js';
+} from './signature';
 
 const SECRET = 'whsec_dGVzdC1zZWNyZXQtbm90LWEtcmVhbC1rZXk=';
 const BODY = JSON.stringify({ type: 'subscription.created', data: { id: 'sim_sub_000001' } });

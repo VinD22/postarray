@@ -25,7 +25,7 @@ import type {
   SignatureOption,
   TargetAccount,
   TargetSet,
-} from '../types.js';
+} from '../types';
 
 const OBSERVED_AT = '2026-08-04T07:00:00.000Z';
 

@@ -10,7 +10,7 @@ import {
   growthProfileIdSchema,
   passthroughObjectSchema,
   shortTextSchema,
-} from '../../common/schemas.js';
+} from '../../common/schemas';
 
 /**
  * Growth Advisor payloads.

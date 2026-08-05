@@ -1,9 +1,9 @@
 import { describe, expect, it } from 'vitest';
 
-import { exportGrowthPlan, planToCanonicalValue } from './export.js';
-import { toMarkdown } from './markdown.js';
-import { fromYaml, toYaml, yamlScalar } from './yaml.js';
-import { TEST_OPPORTUNITY_ID, makeOpportunity, makePlan, makeTool } from './testing.js';
+import { exportGrowthPlan, planToCanonicalValue } from './export';
+import { toMarkdown } from './markdown';
+import { fromYaml, toYaml, yamlScalar } from './yaml';
+import { TEST_OPPORTUNITY_ID, makeOpportunity, makePlan, makeTool } from './testing';
 
 const EMPTY_CATALOG = { opportunities: [], tools: [] };
 

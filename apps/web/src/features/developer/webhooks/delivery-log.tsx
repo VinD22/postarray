@@ -25,8 +25,8 @@ import {
 import { DefinitionList, EmptyState } from '@relay/design-system/patterns';
 import { useTranslations } from '@relay/i18n/react';
 
-import { useFormatters } from '../../settings/lib/formatters.js';
-import type { WebhookDeliveryView } from '../../settings/lib/view-models.js';
+import { useFormatters } from '../../settings/lib/formatters';
+import type { WebhookDeliveryView } from '../../settings/lib/view-models';
 
 const STATUS_TONE = {
   pending: 'neutral',

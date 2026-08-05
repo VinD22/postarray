@@ -10,9 +10,9 @@ import {
 } from '@relay/contracts';
 import { z } from 'zod';
 
-import type { ActorContext, Clock, KeyValueStore } from '../../application/port.js';
-import { CLOCK, KEY_VALUE_STORE } from '../../application/tokens.js';
-import { requireEpochMillis } from '../../common/instant.js';
+import type { ActorContext, Clock, KeyValueStore } from '../../application/port';
+import { CLOCK, KEY_VALUE_STORE } from '../../application/tokens';
+import { requireEpochMillis } from '../../common/instant';
 
 /**
  * The server side of a social publisher OAuth handshake.

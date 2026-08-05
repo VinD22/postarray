@@ -5,7 +5,7 @@
  * another tool without spawning anything.
  */
 
-export { VERSION, buildProgram, runCli, type RunResult } from './program.js';
+export { VERSION, buildProgram, runCli, type RunResult } from './program';
 
 export {
   DEFAULT_CLIENT_ID,
@@ -18,7 +18,7 @@ export {
   type CliEnvironment,
   type Clock,
   type GlobalOptions,
-} from './context.js';
+} from './context';
 
 export {
   EXIT_CODES,
@@ -28,7 +28,7 @@ export {
   errorCodesForExit,
   exitCodeFor,
   isRetryableExit,
-} from './exit-codes.js';
+} from './exit-codes';
 
 export {
   createMemoryWriter,
@@ -42,7 +42,7 @@ export {
   type PlannedExternalAction,
   type RenderInput,
   type Writer,
-} from './output.js';
+} from './output';
 
 export {
   CONFIG_KEYS,
@@ -61,7 +61,7 @@ export {
   type ConfigStore,
   type OutputMode,
   type Profile,
-} from './config/store.js';
+} from './config/store';
 
 export {
   EMPTY_CREDENTIALS,
@@ -77,7 +77,7 @@ export {
   type CredentialStore,
   type CredentialSummary,
   type StoredCredential,
-} from './config/credentials.js';
+} from './config/credentials';
 
 export {
   CONFIG_DIR_NAME,
@@ -86,7 +86,7 @@ export {
   configDir,
   configFilePath,
   credentialsFilePath,
-} from './config/paths.js';
+} from './config/paths';
 
 export {
   DEFAULT_TIMEOUT_MS,
@@ -97,9 +97,9 @@ export {
   type ApiResult,
   type FetchLike,
   type RequestOptions,
-} from './api/client.js';
+} from './api/client';
 
-export { DISCOVERY_PATHS, ROUTES } from './api/routes.js';
+export { DISCOVERY_PATHS, ROUTES } from './api/routes';
 
 export {
   authorizationCodeLogin,
@@ -112,7 +112,7 @@ export {
   type DeviceAuthorization,
   type LoginResult,
   type OAuthTransport,
-} from './auth/oauth.js';
+} from './auth/oauth';
 
 export {
   draftDocumentSchema,
@@ -120,13 +120,13 @@ export {
   readDraftFile,
   type DraftDocument,
   type DraftTarget,
-} from './draft.js';
+} from './draft';
 
 export {
   BULK_ACCOUNT_THRESHOLD,
   BULK_PUBLICATION_THRESHOLD,
   assessBulk,
   type BulkAssessment,
-} from './commands/posts.js';
+} from './commands/posts';
 
-export { DEFAULT_LOGIN_SCOPES, type LoginFlow } from './commands/auth.js';
+export { DEFAULT_LOGIN_SCOPES, type LoginFlow } from './commands/auth';

@@ -14,8 +14,8 @@ import {
   PUBLISH_STATES,
   RELAY_ERROR_CODES,
   VALIDATION_ISSUE_CODES,
-} from './codes.js';
-import { getCardinalPluralCategories } from './locales.js';
+} from './codes';
+import { getCardinalPluralCategories } from './locales';
 
 export type LintSeverity = 'error' | 'warning';
 

@@ -9,7 +9,7 @@ import {
   redirectUriMatches,
   resolveRedirectUri,
   verifyCodeVerifier,
-} from './pkce.js';
+} from './pkce';
 
 describe('code verifier and challenge', () => {
   it('round trips a valid verifier', () => {

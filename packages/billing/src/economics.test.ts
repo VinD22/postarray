@@ -12,8 +12,8 @@ import {
   planEconomics,
   referredCohortEconomics,
   subscribersToMeetMarginGate,
-} from './economics.js';
-import { MICRO_PER_UNIT } from './money.js';
+} from './economics';
+import { MICRO_PER_UNIT } from './money';
 
 function dollars(micro: number): number {
   return Math.round((micro / MICRO_PER_UNIT) * 100) / 100;

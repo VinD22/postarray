@@ -3,13 +3,7 @@ import { describe, expect, it } from 'vitest';
 import { ERROR_CODES } from '@relay/contracts';
 import type { ErrorCode } from '@relay/contracts';
 
-import {
-  EXIT_CODES,
-  EXIT_OK,
-  errorCodesForExit,
-  exitCodeFor,
-  isRetryableExit,
-} from './exit-codes.js';
+import { EXIT_CODES, EXIT_OK, errorCodesForExit, exitCodeFor, isRetryableExit } from './exit-codes';
 
 describe('EXIT_CODES', () => {
   it('covers every error code in the taxonomy', () => {

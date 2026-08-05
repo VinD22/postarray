@@ -1,7 +1,7 @@
 import { RelayError } from '@relay/contracts';
 
-import { BILLING_MESSAGE_KEYS } from './messages.js';
-import { formatMoneyMinor } from './money.js';
+import { BILLING_MESSAGE_KEYS } from './messages';
+import { formatMoneyMinor } from './money';
 import {
   POLAR_TRIAL_REMINDER_DAY,
   POLAR_TRIAL_REMINDER_LEAD_DAYS,
@@ -9,10 +9,10 @@ import {
   RELAY_TRIAL_SUMMARY_DAY,
   TRIAL_DAYS,
   planPriceMinor,
-} from './products.js';
-import type { BillingInterval } from './products.js';
-import type { VerifiedSubscription } from './entitlements.js';
-import { addDays, daysUntil, isAtOrAfter, isBefore, normalizeInstant } from './time.js';
+} from './products';
+import type { BillingInterval } from './products';
+import type { VerifiedSubscription } from './entitlements';
+import { addDays, daysUntil, isAtOrAfter, isBefore, normalizeInstant } from './time';
 
 /**
  * The seven day trial.

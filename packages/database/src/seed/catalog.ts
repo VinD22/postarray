@@ -1,6 +1,6 @@
-import type { RlsTransactionClient } from '../tenancy/rls-context.js';
+import type { RlsTransactionClient } from '../tenancy/rls-context';
 
-import { hoursAgo, seedId } from './ids.js';
+import { hoursAgo, seedId } from './ids';
 
 /**
  * Global reference data: metric definitions plus the two operator-curated

@@ -21,15 +21,15 @@ import { EmptyState, Notice, PageHeader } from '@relay/design-system/patterns';
 import { useAnnouncer } from '@relay/design-system/hooks';
 import { useTranslations } from '@relay/i18n/react';
 
-import { SettingsPanel, SettingsStack } from '../settings/components/section.js';
-import { AsyncBoundary } from '../settings/lib/async-boundary.js';
-import { billingGateway } from '../settings/lib/gateway.js';
-import { useFormatters } from '../settings/lib/formatters.js';
-import { settingsKey, useWorkspaceId } from '../settings/lib/keys.js';
-import { useSettingsMutation } from '../settings/lib/use-settings-mutation.js';
-import { CancelDialog } from './cancel-dialog.js';
-import { TrialSummary } from './trial-summary.js';
-import { UsagePanel } from './usage-panel.js';
+import { SettingsPanel, SettingsStack } from '../settings/components/section';
+import { AsyncBoundary } from '../settings/lib/async-boundary';
+import { billingGateway } from '../settings/lib/gateway';
+import { useFormatters } from '../settings/lib/formatters';
+import { settingsKey, useWorkspaceId } from '../settings/lib/keys';
+import { useSettingsMutation } from '../settings/lib/use-settings-mutation';
+import { CancelDialog } from './cancel-dialog';
+import { TrialSummary } from './trial-summary';
+import { UsagePanel } from './usage-panel';
 
 export function BillingScreen(): ReactNode {
   const t = useTranslations();

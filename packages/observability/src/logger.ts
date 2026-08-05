@@ -1,7 +1,7 @@
 import { LOG_LEVELS, redactRecord, redactString, type LogLevel } from '@relay/config';
 import pino, { type DestinationStream, type Logger, type LoggerOptions } from 'pino';
 
-import { contextFields } from './context.js';
+import { contextFields } from './context';
 
 /**
  * Structured logging.

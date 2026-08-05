@@ -4,7 +4,7 @@ export {
   isVerifiedPullDomain,
   tikTokPermalink,
   type TikTokConnector,
-} from './connector.js';
+} from './connector';
 export {
   TIKTOK_CAPABILITY_REVISION,
   TIKTOK_DEFAULT_MAX_DURATION_SECONDS,
@@ -18,11 +18,11 @@ export {
   tikTokPrivacyOptions,
   type InteractionAvailability,
   type TikTokCapabilityInput,
-} from './capabilities.js';
+} from './capabilities';
 export {
   TIKTOK_PUBLISH_STATUSES,
   tikTokCreatorInfoSchema,
   tikTokProviderOptionsSchema,
   type TikTokCreatorInfo,
   type TikTokProviderOptions,
-} from './schemas.js';
+} from './schemas';

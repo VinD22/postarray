@@ -17,9 +17,9 @@ import { Notice } from '@relay/design-system/patterns';
 import { useAnnouncer } from '@relay/design-system/hooks';
 import { useTranslations } from '@relay/i18n/react';
 
-import { agentsGateway } from '../../settings/lib/gateway.js';
-import { useSettingsMutation } from '../../settings/lib/use-settings-mutation.js';
-import type { ServiceAccountView } from '../../settings/lib/view-models.js';
+import { agentsGateway } from '../../settings/lib/gateway';
+import { useSettingsMutation } from '../../settings/lib/use-settings-mutation';
+import type { ServiceAccountView } from '../../settings/lib/view-models';
 
 /** The tools an agent can exercise against seeded data. */
 const DRY_RUN_TOOLS: readonly { readonly id: string; readonly sample: string }[] = [

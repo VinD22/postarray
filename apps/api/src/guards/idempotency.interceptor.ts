@@ -20,11 +20,11 @@ import {
 import type { Request, Response } from 'express';
 import { from, of, switchMap, tap, type Observable } from 'rxjs';
 
-import type { Clock, KeyValueStore } from '../application/port.js';
-import { CLOCK, KEY_VALUE_STORE } from '../application/tokens.js';
-import { IDEMPOTENT_KEY } from '../common/decorators.js';
-import { relayState } from '../common/request.types.js';
-import { idempotencyRecordSchema, type StoredIdempotencyRecord } from '../security/records.js';
+import type { Clock, KeyValueStore } from '../application/port';
+import { CLOCK, KEY_VALUE_STORE } from '../application/tokens';
+import { IDEMPOTENT_KEY } from '../common/decorators';
+import { relayState } from '../common/request.types';
+import { idempotencyRecordSchema, type StoredIdempotencyRecord } from '../security/records';
 
 /**
  * Idempotency for every create, schedule, publish and cancel.

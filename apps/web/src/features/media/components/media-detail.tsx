@@ -11,11 +11,11 @@ import { DefinitionList, Notice } from '@relay/design-system/patterns';
 import { useTranslations } from '@relay/i18n/react';
 import { formatBytes, formatDateTime, formatDuration } from '@relay/i18n';
 
-import { AltTextForm } from './alt-text-form.js';
-import { PictureEditor } from './picture-editor.js';
-import { RightsForm } from './rights-form.js';
-import type { AccountRule } from '../state/media-rules.js';
-import type { MediaAsset, MediaEditPlan, RightsDeclaration } from '../types.js';
+import { AltTextForm } from './alt-text-form';
+import { PictureEditor } from './picture-editor';
+import { RightsForm } from './rights-form';
+import type { AccountRule } from '../state/media-rules';
+import type { MediaAsset, MediaEditPlan, RightsDeclaration } from '../types';
 
 export interface MediaDetailProps {
   readonly asset: MediaAsset;

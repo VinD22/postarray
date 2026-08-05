@@ -1,6 +1,6 @@
-import { createTemporalRuntime, workerActivities } from './temporal-runtime.js';
-import { runRepeatPost } from './core/repeat-post.core.js';
-import type { RepeatPostWorkflowInput, RepeatPostWorkflowOutput } from './inputs.js';
+import { createTemporalRuntime, workerActivities } from './temporal-runtime';
+import { runRepeatPost } from './core/repeat-post.core';
+import type { RepeatPostWorkflowInput, RepeatPostWorkflowOutput } from './inputs';
 
 /**
  * A repeating series.

@@ -14,7 +14,7 @@ export {
   isPermission,
   isReadPermission,
   type Permission,
-} from './permissions.js';
+} from './permissions';
 
 export {
   ROLE_PERMISSIONS,
@@ -26,7 +26,7 @@ export {
   rolesWithPermission,
   type EffectivePermissions,
   type RolePermissionOverride,
-} from './roles.js';
+} from './roles';
 
 export {
   NON_DELEGABLE_PERMISSIONS,
@@ -42,7 +42,7 @@ export {
   scopesForPermission,
   type ScopeNarrowingInput,
   type ScopeNarrowingResult,
-} from './scopes.js';
+} from './scopes';
 
 export {
   DECISION_REASONS,
@@ -64,7 +64,7 @@ export {
   type PolicyResource,
   type WorkspacePolicy,
   type WorkspaceState,
-} from './policy.js';
+} from './policy';
 
 export {
   SUBSTANTIAL_SIMILARITY_THRESHOLD,
@@ -76,7 +76,7 @@ export {
   similarityRatio,
   tokenize,
   type SimilarityCluster,
-} from './similarity.js';
+} from './similarity';
 
 export {
   ACTION_MINIMUM_LEVEL,
@@ -102,4 +102,4 @@ export {
   type PolicyNoteValue,
   type RestrictionCode,
   type ServiceAccountRestrictions,
-} from './agent-policy.js';
+} from './agent-policy';

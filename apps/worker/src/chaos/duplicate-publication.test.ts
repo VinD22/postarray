@@ -1,10 +1,10 @@
 import { describe, expect, it } from 'vitest';
 
-import { ActivitySimulator } from '../testing/activity-simulator.js';
-import { makeTarget, makeTargetInput, makePostInput } from '../testing/fixtures.js';
-import { TEST_CONTEXT, TEST_EPOCH_MS, runWorkflow } from '../testing/harness.js';
-import { publishPostDescriptor } from '../workflows/core/publish-post.core.js';
-import { publishTargetDescriptor } from '../workflows/core/publish-target.core.js';
+import { ActivitySimulator } from '../testing/activity-simulator';
+import { makeTarget, makeTargetInput, makePostInput } from '../testing/fixtures';
+import { TEST_CONTEXT, TEST_EPOCH_MS, runWorkflow } from '../testing/harness';
+import { publishPostDescriptor } from '../workflows/core/publish-post.core';
+import { publishTargetDescriptor } from '../workflows/core/publish-target.core';
 
 /**
  * The chaos suite.

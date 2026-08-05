@@ -8,15 +8,15 @@ import type {
   PageQuery,
   ServiceDeps,
   TargetSpec,
-} from '../types.js';
+} from '../types';
 import type {
   CanonicalPreview,
   ContentItemView,
   ContentVersionView,
   PostVariantView,
-} from '../views.js';
+} from '../views';
 
-import { recordAudit } from '../internal/audit.js';
+import { recordAudit } from '../internal/audit';
 import {
   loadAggregate,
   reapprovalRequired,
@@ -25,12 +25,12 @@ import {
   writeVersion,
   type ContentAggregate,
   type VariantWriteSpec,
-} from '../internal/content-store.js';
-import { invalid, notFound } from '../internal/errors.js';
-import { withIdempotency } from '../internal/idempotency.js';
-import { pageArgs, toPage } from '../internal/pagination.js';
-import { authorized, guard, runInWorkspace, type Db } from '../internal/runtime.js';
-import { toApprovalPolicy } from '../internal/storage-enums.js';
+} from '../internal/content-store';
+import { invalid, notFound } from '../internal/errors';
+import { withIdempotency } from '../internal/idempotency';
+import { pageArgs, toPage } from '../internal/pagination';
+import { authorized, guard, runInWorkspace, type Db } from '../internal/runtime';
+import { toApprovalPolicy } from '../internal/storage-enums';
 import {
   EMPTY_VARIANT_SETTINGS,
   parseVariantSettings,
@@ -41,8 +41,8 @@ import {
   storedOverridesSchema,
   type StoredMaster,
   type StoredVariantSettings,
-} from '../internal/stored-content.js';
-import { previewFor } from './preview.js';
+} from '../internal/stored-content';
+import { previewFor } from './preview';
 
 /**
  * The content service.

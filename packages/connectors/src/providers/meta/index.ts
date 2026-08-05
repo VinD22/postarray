@@ -24,7 +24,7 @@ export {
   type MetaError,
   type MetaPage,
   type MetaSurface,
-} from './graph.js';
+} from './graph';
 
 export {
   FACEBOOK_SCOPES,
@@ -32,7 +32,7 @@ export {
   THREADS_SCOPES,
   metaAuthorization,
   refreshMetaCredential,
-} from './oauth.js';
+} from './oauth';
 
 export {
   CONTAINER_TERMINAL_STATUSES,
@@ -40,8 +40,8 @@ export {
   containerStatusToPublishStatus,
   readContainerStatus,
   type ContainerStatusResult,
-} from './container.js';
+} from './container';
 
-export * from './instagram/index.js';
-export * from './facebook/index.js';
-export * from './threads/index.js';
+export * from './instagram/index';
+export * from './facebook/index';
+export * from './threads/index';

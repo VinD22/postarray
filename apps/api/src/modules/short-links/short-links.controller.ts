@@ -1,16 +1,16 @@
 import { Body, Controller, Get, HttpCode, Param, Post, Query } from '@nestjs/common';
 import type { Paginated } from '@relay/contracts';
 
-import type { ActorContext, ShortLinkStats, ShortLinkView } from '../../application/port.js';
-import { Actor, Idempotent, RequireScope } from '../../common/decorators.js';
-import { shortLinkIdSchema } from '../../common/schemas.js';
-import { parseBody, parseParams, parseQuery } from '../../common/zod.js';
+import type { ActorContext, ShortLinkStats, ShortLinkView } from '../../application/port';
+import { Actor, Idempotent, RequireScope } from '../../common/decorators';
+import { shortLinkIdSchema } from '../../common/schemas';
+import { parseBody, parseParams, parseQuery } from '../../common/zod';
 import {
   createShortLinkSchema,
   listShortLinksQuerySchema,
   shortLinkStatsQuerySchema,
-} from './short-links.schemas.js';
-import { ShortLinksService } from './short-links.service.js';
+} from './short-links.schemas';
+import { ShortLinksService } from './short-links.service';
 
 /**
  * Short links and their click analytics.

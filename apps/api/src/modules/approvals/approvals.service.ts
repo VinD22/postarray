@@ -6,9 +6,9 @@ import type {
   ApprovalRequestView,
   CursorQuery,
   Services,
-} from '../../application/port.js';
-import { SERVICES } from '../../application/tokens.js';
-import type { DecideApprovalInput, RequestApprovalInput } from './approvals.schemas.js';
+} from '../../application/port';
+import { SERVICES } from '../../application/tokens';
+import type { DecideApprovalInput, RequestApprovalInput } from './approvals.schemas';
 
 /** Transport-level delegation for approvals. The policy itself is not here. */
 @Injectable()

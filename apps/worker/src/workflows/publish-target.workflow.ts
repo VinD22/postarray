@@ -1,6 +1,6 @@
-import { createTemporalRuntime, workerActivities } from './temporal-runtime.js';
-import { runPublishTarget } from './core/publish-target.core.js';
-import type { PublishTargetWorkflowInput, PublishTargetOutcome } from './inputs.js';
+import { createTemporalRuntime, workerActivities } from './temporal-runtime';
+import { runPublishTarget } from './core/publish-target.core';
+import type { PublishTargetWorkflowInput, PublishTargetOutcome } from './inputs';
 
 /**
  * One target of a campaign.

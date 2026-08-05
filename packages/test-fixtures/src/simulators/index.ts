@@ -10,13 +10,13 @@
  * network: an unregistered host throws.
  */
 
-export { BaseProviderSimulator, type BaseSimulatorOptions } from './engine.js';
+export { BaseProviderSimulator, type BaseSimulatorOptions } from './engine';
 
-export { BlueskySimulator, FakeProviderSimulator } from './atproto.js';
-export { LinkedInSimulator } from './linkedin.js';
-export { FacebookSimulator, InstagramSimulator, ThreadsSimulator } from './meta.js';
-export { TikTokSimulator, YouTubeSimulator } from './video.js';
-export { XSimulator } from './x.js';
+export { BlueskySimulator, FakeProviderSimulator } from './atproto';
+export { LinkedInSimulator } from './linkedin';
+export { FacebookSimulator, InstagramSimulator, ThreadsSimulator } from './meta';
+export { TikTokSimulator, YouTubeSimulator } from './video';
+export { XSimulator } from './x';
 
 export {
   SimulatorRegistry,
@@ -26,7 +26,7 @@ export {
   type SimulatorFetch,
   type SimulatorFetchOptions,
   type SimulatorRegistryOptions,
-} from './registry.js';
+} from './registry';
 
 export {
   CONTAINER_STATES,
@@ -47,4 +47,4 @@ export {
   type SimulatedRequest,
   type SimulatedResponse,
   type SimulatorMode,
-} from './types.js';
+} from './types';

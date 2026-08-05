@@ -1,6 +1,6 @@
 import type { PublishState } from '@relay/contracts';
 
-import type { WorkerActivities } from '../activities/types.js';
+import type { WorkerActivities } from '../activities/types';
 
 /**
  * The deterministic surface a workflow is allowed to touch.

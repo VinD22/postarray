@@ -1,5 +1,5 @@
-export { createDeepSeekProvider } from './deepseek.js';
-export type { DeepSeekOptions } from './deepseek.js';
+export { createDeepSeekProvider } from './deepseek';
+export type { DeepSeekOptions } from './deepseek';
 
-export { createEchoProvider, promptMarker } from './echo.js';
-export type { EchoProviderOptions } from './echo.js';
+export { createEchoProvider, promptMarker } from './echo';
+export type { EchoProviderOptions } from './echo';

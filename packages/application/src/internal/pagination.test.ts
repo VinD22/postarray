@@ -1,7 +1,7 @@
 import { DEFAULT_PAGE_SIZE, MAX_PAGE_SIZE } from '@relay/contracts';
 import { describe, expect, it } from 'vitest';
 
-import { decodeCursor, encodeCursor, normalizeLimit, pageArgs, toPage } from './pagination.js';
+import { decodeCursor, encodeCursor, normalizeLimit, pageArgs, toPage } from './pagination';
 
 interface Row {
   readonly id: string;

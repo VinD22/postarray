@@ -2,7 +2,7 @@
 
 import type { ReactNode } from 'react';
 import { CloudOff } from 'lucide-react';
-import { Notice } from './notice.js';
+import { Notice } from './notice';
 
 export interface OfflineBannerProps {
   /** For example: the connection dropped. */

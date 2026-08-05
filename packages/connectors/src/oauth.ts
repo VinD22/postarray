@@ -3,11 +3,11 @@ import { createHash, randomBytes, timingSafeEqual } from 'node:crypto';
 import { type ProviderId, RelayError } from '@relay/contracts';
 import { z } from 'zod';
 
-import type { AuthorizationDefinition, CredentialResult, OAuthClientConfig } from './contract.js';
-import { ProviderCallError, classifyProviderError, ensureOk, parseProviderBody } from './errors.js';
-import type { HttpClient, ProviderHttpClient } from './http.js';
-import { type Clock, epochMillisecondsOf, instantOf, systemClock } from './ports.js';
-import { SecretValue, leaseSecret } from './vault.js';
+import type { AuthorizationDefinition, CredentialResult, OAuthClientConfig } from './contract';
+import { ProviderCallError, classifyProviderError, ensureOk, parseProviderBody } from './errors';
+import type { HttpClient, ProviderHttpClient } from './http';
+import { type Clock, epochMillisecondsOf, instantOf, systemClock } from './ports';
+import { SecretValue, leaseSecret } from './vault';
 
 /**
  * OAuth 2 authorization code with PKCE, shared by every connector that uses it.

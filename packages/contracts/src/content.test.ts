@@ -13,10 +13,10 @@ import {
   resolveVariant,
   scheduleSpecSchema,
   threadItemSchema,
-} from './content.js';
-import type { MasterDraft, ThreadItem, VariantOverrides } from './content.js';
-import { ID_PREFIXES, newId } from './ids.js';
-import { canonicalJson } from './primitives.js';
+} from './content';
+import type { MasterDraft, ThreadItem, VariantOverrides } from './content';
+import { ID_PREFIXES, newId } from './ids';
+import { canonicalJson } from './primitives';
 
 function link(url: string) {
   return {

@@ -1,9 +1,9 @@
 import type { NormalizedMetricName } from '@relay/contracts';
 
-import type { BaselineResult } from './baseline.js';
-import { SMALL_SAMPLE_THRESHOLD } from './baseline.js';
-import { definitionsDiffer, mappingForMetric } from './registry.js';
-import type { MetricDefinition, NormalizedMetric, ProviderId } from './types.js';
+import type { BaselineResult } from './baseline';
+import { SMALL_SAMPLE_THRESHOLD } from './baseline';
+import { definitionsDiffer, mappingForMetric } from './registry';
+import type { MetricDefinition, NormalizedMetric, ProviderId } from './types';
 
 /**
  * Observation sentences with evidence and calibrated language.

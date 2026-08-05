@@ -1,8 +1,8 @@
-export { Button, buttonVariants, type ButtonProps } from './button.js';
-export { IconButton, iconButtonVariants, type IconButtonProps } from './icon-button.js';
-export { Spinner, type SpinnerProps } from './spinner.js';
-export { Input, inputVariants, type InputProps } from './input.js';
-export { Textarea, type TextareaProps } from './textarea.js';
+export { Button, buttonVariants, type ButtonProps } from './button';
+export { IconButton, iconButtonVariants, type IconButtonProps } from './icon-button';
+export { Spinner, type SpinnerProps } from './spinner';
+export { Input, inputVariants, type InputProps } from './input';
+export { Textarea, type TextareaProps } from './textarea';
 export {
   Select,
   SelectGroup,
@@ -15,7 +15,7 @@ export {
   type SelectTriggerProps,
   type SelectContentProps,
   type SelectItemProps,
-} from './select.js';
+} from './select';
 export {
   Combobox,
   type ComboboxProps,
@@ -23,18 +23,18 @@ export {
   type ComboboxMessages,
   type ComboboxStatus,
   type ComboboxHandle,
-} from './combobox.js';
-export { Checkbox, type CheckboxProps } from './checkbox.js';
+} from './combobox';
+export { Checkbox, type CheckboxProps } from './checkbox';
 export {
   RadioGroup,
   RadioGroupItem,
   type RadioGroupProps,
   type RadioGroupItemProps,
-} from './radio-group.js';
-export { Switch, type SwitchProps } from './switch.js';
-export { Slider, type SliderProps } from './slider.js';
-export { Label, type LabelProps } from './label.js';
-export { Field, useFieldControl, type FieldProps, type FieldControlProps } from './field.js';
+} from './radio-group';
+export { Switch, type SwitchProps } from './switch';
+export { Slider, type SliderProps } from './slider';
+export { Label, type LabelProps } from './label';
+export { Field, useFieldControl, type FieldProps, type FieldControlProps } from './field';
 export {
   Dialog,
   DialogTrigger,
@@ -48,7 +48,7 @@ export {
   DialogBody,
   DialogFooter,
   type DialogContentProps,
-} from './dialog.js';
+} from './dialog';
 export {
   Sheet,
   SheetTrigger,
@@ -61,8 +61,8 @@ export {
   SheetFooter,
   type SheetContentProps,
   type SheetSide,
-} from './sheet.js';
-export { Popover, PopoverTrigger, PopoverAnchor, PopoverClose, PopoverContent } from './popover.js';
+} from './sheet';
+export { Popover, PopoverTrigger, PopoverAnchor, PopoverClose, PopoverContent } from './popover';
 export {
   Tooltip,
   TooltipProvider,
@@ -70,7 +70,7 @@ export {
   TooltipTrigger,
   TooltipContent,
   type TooltipProps,
-} from './tooltip.js';
+} from './tooltip';
 export {
   DropdownMenu,
   DropdownMenuTrigger,
@@ -86,16 +86,16 @@ export {
   DropdownMenuSubTrigger,
   DropdownMenuSubContent,
   type DropdownMenuItemProps,
-} from './dropdown-menu.js';
-export { Tabs, TabsList, TabsTrigger, TabsContent } from './tabs.js';
-export { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from './accordion.js';
-export { Badge, badgeVariants, type BadgeProps } from './badge.js';
-export { StatusDot, type StatusDotProps, type StatusDotTone } from './status-dot.js';
-export { Avatar, type AvatarProps, type AvatarSize } from './avatar.js';
-export { Separator, type SeparatorProps } from './separator.js';
-export { ScrollArea, ScrollBar, type ScrollAreaProps } from './scroll-area.js';
-export { Progress, type ProgressProps } from './progress.js';
-export { Skeleton, type SkeletonProps } from './skeleton.js';
+} from './dropdown-menu';
+export { Tabs, TabsList, TabsTrigger, TabsContent } from './tabs';
+export { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from './accordion';
+export { Badge, badgeVariants, type BadgeProps } from './badge';
+export { StatusDot, type StatusDotProps, type StatusDotTone } from './status-dot';
+export { Avatar, type AvatarProps, type AvatarSize } from './avatar';
+export { Separator, type SeparatorProps } from './separator';
+export { ScrollArea, ScrollBar, type ScrollAreaProps } from './scroll-area';
+export { Progress, type ProgressProps } from './progress';
+export { Skeleton, type SkeletonProps } from './skeleton';
 export {
   Toaster,
   useToast,
@@ -104,7 +104,7 @@ export {
   type ToastTone,
   type ToasterProps,
   type ToastContextValue,
-} from './toast.js';
+} from './toast';
 export {
   Table,
   TableContainer,
@@ -121,10 +121,10 @@ export {
   type TableHeadProps,
   type TableCellProps,
   type TableSortDirection,
-} from './table.js';
-export { Pagination, type PaginationProps, type PaginationMessages } from './pagination.js';
-export { Breadcrumb, type BreadcrumbProps, type BreadcrumbItem } from './breadcrumb.js';
-export { Kbd, type KbdProps } from './kbd.js';
-export { Code, type CodeProps } from './code.js';
-export { VisuallyHidden } from './visually-hidden.js';
-export { FocusTrap, type FocusTrapProps } from './focus-trap.js';
+} from './table';
+export { Pagination, type PaginationProps, type PaginationMessages } from './pagination';
+export { Breadcrumb, type BreadcrumbProps, type BreadcrumbItem } from './breadcrumb';
+export { Kbd, type KbdProps } from './kbd';
+export { Code, type CodeProps } from './code';
+export { VisuallyHidden } from './visually-hidden';
+export { FocusTrap, type FocusTrapProps } from './focus-trap';

@@ -2,7 +2,7 @@
 
 import { forwardRef, type ComponentPropsWithoutRef } from 'react';
 import { Popover as PopoverPrimitive } from 'radix-ui';
-import { cn } from '../utils/cn.js';
+import { cn } from '../utils/cn';
 
 /**
  * A non-modal panel anchored to a trigger: a filter set, a date picker, a

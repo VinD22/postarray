@@ -13,19 +13,19 @@
  * live in `packages/application`.
  */
 
-export * from './ports.js';
-export * from './contract.js';
-export * from './errors.js';
-export * from './sanitize.js';
-export * from './ssrf.js';
-export * from './http.js';
-export * from './oauth.js';
-export * from './vault.js';
-export * from './registry.js';
-export * from './idempotency.js';
-export * from './capability-diff.js';
-export * from './fake/index.js';
+export * from './ports';
+export * from './contract';
+export * from './errors';
+export * from './sanitize';
+export * from './ssrf';
+export * from './http';
+export * from './oauth';
+export * from './vault';
+export * from './registry';
+export * from './idempotency';
+export * from './capability-diff';
+export * from './fake/index';
 
 // Provider adapters. This barrel is owned by the provider adapter work and is
 // the only place a concrete provider is exported from.
-export * from './providers/index.js';
+export * from './providers/index';

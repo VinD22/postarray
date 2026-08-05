@@ -2,8 +2,8 @@ import { describe, expect, it } from 'vitest';
 
 import { RelayError } from '@relay/contracts';
 
-import type { AuthorizationDefinition, OAuthClientConfig } from './contract.js';
-import { ProviderHttpClient } from './http.js';
+import type { AuthorizationDefinition, OAuthClientConfig } from './contract';
+import { ProviderHttpClient } from './http';
 import {
   CODE_CHALLENGE_METHOD,
   assertRedirectAllowed,
@@ -18,9 +18,9 @@ import {
   refreshDueAt,
   revokeCredential,
   verifyState,
-} from './oauth.js';
-import { fixedClock, recordingSleeper } from './ports.js';
-import { SecretValue, leaseSecret } from './vault.js';
+} from './oauth';
+import { fixedClock, recordingSleeper } from './ports';
+import { SecretValue, leaseSecret } from './vault';
 
 const clock = fixedClock('2026-08-04T12:00:00.000Z');
 

@@ -14,16 +14,16 @@ import type {
   AutomationRuleService,
   PageQuery,
   ServiceDeps,
-} from '../types.js';
-import type { AutomationRuleView, RulePreview, RuleRunView } from '../views.js';
+} from '../types';
+import type { AutomationRuleView, RulePreview, RuleRunView } from '../views';
 
-import { recordAudit } from '../internal/audit.js';
-import { loadCapabilitiesFor } from '../internal/capabilities.js';
-import { invalid, notFound } from '../internal/errors.js';
-import { toJson } from '../internal/json.js';
-import { toProviderId } from '../internal/mappers.js';
-import { pageArgs, toPage } from '../internal/pagination.js';
-import { authorized, guard, type Db } from '../internal/runtime.js';
+import { recordAudit } from '../internal/audit';
+import { loadCapabilitiesFor } from '../internal/capabilities';
+import { invalid, notFound } from '../internal/errors';
+import { toJson } from '../internal/json';
+import { toProviderId } from '../internal/mappers';
+import { pageArgs, toPage } from '../internal/pagination';
+import { authorized, guard, type Db } from '../internal/runtime';
 
 /**
  * Automation Rules.

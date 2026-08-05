@@ -1,7 +1,7 @@
 import { detectCapabilities } from '@relay/config';
 import { buildHealthReport, type HealthCheck, type HealthReport } from '@relay/observability';
 
-import type { HealthService, ServiceDeps } from '../types.js';
+import type { HealthService, ServiceDeps } from '../types';
 
 /**
  * Health.

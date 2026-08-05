@@ -1,6 +1,6 @@
 import { getRootLogger } from '@relay/observability';
 
-import { main } from './main.js';
+import { main } from './main';
 
 /** Process entrypoint. Keeps `main` importable and testable. */
 main().catch((error: unknown) => {

@@ -5,16 +5,12 @@ import {
   makeTarget,
   makeTargetInput,
   makeThreadInput,
-} from '../../testing/fixtures.js';
-import { TEST_EPOCH_MS, runWorkflow } from '../../testing/harness.js';
+} from '../../testing/fixtures';
+import { TEST_EPOCH_MS, runWorkflow } from '../../testing/harness';
 
-import {
-  classifyThrownPublish,
-  errorCodeOf,
-  publishTargetDescriptor,
-} from './publish-target.core.js';
-import { publishPostDescriptor } from './publish-post.core.js';
-import { threadSequenceDescriptor } from './thread-sequence.core.js';
+import { classifyThrownPublish, errorCodeOf, publishTargetDescriptor } from './publish-target.core';
+import { publishPostDescriptor } from './publish-post.core';
+import { threadSequenceDescriptor } from './thread-sequence.core';
 
 const TARGET_WORKFLOW_ID = 'publish:ws_test:job_1:pv_1';
 const CAMPAIGN_WORKFLOW_ID = 'publish:ws_test:job_1';

@@ -7,7 +7,7 @@
  * `Services` interface, it does not exist.
  */
 
-export { createServices } from './services/index.js';
+export { createServices } from './services/index';
 
 export type {
   ActorContext,
@@ -54,7 +54,7 @@ export type {
   ValidationService,
   WebhookService,
   WorkspaceService,
-} from './types.js';
+} from './types';
 
 export type {
   ApiKeyView,
@@ -97,9 +97,9 @@ export type {
   WebhookDeliveryView,
   WebhookEndpointView,
   WorkspaceView,
-} from './views.js';
+} from './views';
 
-export { CONNECTION_HEALTH } from './views.js';
+export { CONNECTION_HEALTH } from './views';
 
 /** Local implementations of every outbound port, so the product runs offline. */
 export {
@@ -117,21 +117,17 @@ export {
   type LocalStorageOptions,
   type RecordedPublish,
   type RedisLikeClient,
-} from './ports/index.js';
+} from './ports/index';
 
 /**
  * Selected internals other packages legitimately need: the worker recomputes a
  * publish job's idempotency key, and the links service and the RSS poller reuse
  * the same URL safety check the application applies.
  */
-export {
-  fingerprintOf,
-  publishJobIdempotencyKey,
-  withIdempotency,
-} from './internal/idempotency.js';
-export { assertFetchable, isPrivateAddress, type FetchableUrl } from './internal/url-safety.js';
-export { crossesOffsetChange } from './services/scheduling.js';
-export { feedItemFingerprint, parseFeed } from './services/rss.js';
+export { fingerprintOf, publishJobIdempotencyKey, withIdempotency } from './internal/idempotency';
+export { assertFetchable, isPrivateAddress, type FetchableUrl } from './internal/url-safety';
+export { crossesOffsetChange } from './services/scheduling';
+export { feedItemFingerprint, parseFeed } from './services/rss';
 export {
   computeContentChecksum,
   parseStoredMaster,
@@ -141,4 +137,4 @@ export {
   storedOverridesSchema,
   type StoredMaster,
   type StoredVariantSettings,
-} from './internal/stored-content.js';
+} from './internal/stored-content';

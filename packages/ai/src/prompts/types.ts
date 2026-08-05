@@ -1,7 +1,7 @@
 import { z } from 'zod';
 
-import type { OutputScanOptions } from '../guardrails.js';
-import type { AiTaskMode, AiVariables } from '../types.js';
+import type { OutputScanOptions } from '../guardrails';
+import type { AiTaskMode, AiVariables } from '../types';
 
 /**
  * A versioned prompt module.

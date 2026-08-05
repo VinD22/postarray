@@ -1,12 +1,12 @@
 import { z } from 'zod';
 
-import { cursorQuerySchema, timeRangeSchema, timeRangeShape } from '../../common/pagination.js';
+import { cursorQuerySchema, timeRangeSchema, timeRangeShape } from '../../common/pagination';
 import {
   connectionIdSchema,
   contentItemIdSchema,
   receiptIdSchema,
   shortTextSchema,
-} from '../../common/schemas.js';
+} from '../../common/schemas';
 
 /**
  * Analytics and experiment payloads.

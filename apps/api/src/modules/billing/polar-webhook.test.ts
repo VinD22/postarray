@@ -1,9 +1,9 @@
 import request from 'supertest';
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 
-import { toEpochSeconds } from '../../common/instant.js';
-import { signPayload } from '../../security/signing.js';
-import { createHarness, type Harness } from '../../testing/harness.js';
+import { toEpochSeconds } from '../../common/instant';
+import { signPayload } from '../../security/signing';
+import { createHarness, type Harness } from '../../testing/harness';
 
 /**
  * The Polar webhook receiver.

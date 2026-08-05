@@ -16,8 +16,8 @@ import {
 import { FreshnessLabel, MetricValue, Notice } from '@relay/design-system/patterns';
 import { useTranslations } from '@relay/i18n/react';
 
-import { useFormatters } from '../settings/lib/formatters.js';
-import type { UsageView } from '../settings/lib/view-models.js';
+import { useFormatters } from '../settings/lib/formatters';
+import type { UsageView } from '../settings/lib/view-models';
 
 export interface UsagePanelProps {
   usage: UsageView;

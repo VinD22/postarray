@@ -31,7 +31,7 @@ export interface NavItem {
 }
 
 export const NAV_ITEMS: readonly NavItem[] = [
-  { id: 'home', href: '/', labelKey: 'nav.home', icon: House, inBottomBar: true },
+  { id: 'home', href: '/home', labelKey: 'nav.home', icon: House, inBottomBar: true },
   {
     id: 'calendar',
     href: '/calendar',
@@ -71,8 +71,8 @@ export const NAV_ITEMS: readonly NavItem[] = [
 
 /** True when `pathname` is inside this destination. */
 export function isNavItemActive(item: NavItem, pathname: string): boolean {
-  if (item.href === '/') {
-    return pathname === '/';
+  if (item.href === '/home') {
+    return pathname === '/home';
   }
   return pathname === item.href || pathname.startsWith(`${item.href}/`);
 }

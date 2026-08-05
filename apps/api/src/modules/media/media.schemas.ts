@@ -1,8 +1,8 @@
 import { checksumSchema, mediaKindSchema } from '@relay/contracts';
 import { z } from 'zod';
 
-import { cursorQueryWith } from '../../common/pagination.js';
-import { brandIdSchema, mediaIdSchema } from '../../common/schemas.js';
+import { cursorQueryWith } from '../../common/pagination';
+import { brandIdSchema, mediaIdSchema } from '../../common/schemas';
 
 /**
  * Media payloads.

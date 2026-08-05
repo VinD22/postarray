@@ -1,5 +1,5 @@
-import type { PromptId } from '../prompts/types.js';
-import type { AiVariables, UntrustedSource } from '../types.js';
+import type { PromptId } from '../prompts/types';
+import type { AiVariables, UntrustedSource } from '../types';
 
 /**
  * The evaluation vocabulary.

@@ -1,8 +1,8 @@
 import { ianaTimeZoneSchema, localeSchema } from '@relay/contracts';
 import { z } from 'zod';
 
-import { cursorQuerySchema } from '../../common/pagination.js';
-import { mediumTextSchema, shortTextSchema } from '../../common/schemas.js';
+import { cursorQuerySchema } from '../../common/pagination';
+import { mediumTextSchema, shortTextSchema } from '../../common/schemas';
 
 /**
  * A brand is the unit a connection, a campaign and a schedule belong to. It

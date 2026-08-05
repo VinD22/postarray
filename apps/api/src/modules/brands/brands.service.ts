@@ -1,9 +1,9 @@
 import { Inject, Injectable } from '@nestjs/common';
 import type { Paginated } from '@relay/contracts';
 
-import type { ActorContext, BrandView, CursorQuery, Services } from '../../application/port.js';
-import { SERVICES } from '../../application/tokens.js';
-import type { CreateBrandInput, UpdateBrandInput } from './brands.schemas.js';
+import type { ActorContext, BrandView, CursorQuery, Services } from '../../application/port';
+import { SERVICES } from '../../application/tokens';
+import type { CreateBrandInput, UpdateBrandInput } from './brands.schemas';
 
 /** Transport-level delegation for brands. No rule lives here. */
 @Injectable()

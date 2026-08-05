@@ -15,7 +15,7 @@ export {
   type ActorType,
   type RelayContext,
   type RelayContextInput,
-} from './context.js';
+} from './context';
 
 export {
   childLogger,
@@ -27,7 +27,7 @@ export {
   type LogBindings,
   type Logger,
   type LoggerSettings,
-} from './logger.js';
+} from './logger';
 
 export {
   TRACER_NAME,
@@ -38,7 +38,7 @@ export {
   startTracing,
   withSpan,
   type TracingOptions,
-} from './tracing.js';
+} from './tracing';
 
 export {
   PROVIDER_CLASSIFIERS,
@@ -52,7 +52,7 @@ export {
   type CaptureContext,
   type ErrorReportingOptions,
   type ProviderErrorInput,
-} from './errors.js';
+} from './errors';
 
 export {
   METRIC_METER_NAME,
@@ -73,7 +73,7 @@ export {
   type MetricKind,
   type MetricsSnapshot,
   type ProductMetricKey,
-} from './metrics.js';
+} from './metrics';
 
 export {
   buildHealthReport,
@@ -85,4 +85,4 @@ export {
   type HealthReportOptions,
   type HealthStatus,
   type HealthSummary,
-} from './health.js';
+} from './health';

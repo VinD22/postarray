@@ -1,8 +1,8 @@
 import { describe, expect, it } from 'vitest';
 import { growthPlanSchema } from '@relay/contracts';
 
-import { SAMPLE_PLAN } from './plan-fixture.js';
-import { toJson, toMarkdown, toYaml, type MarkdownLabels } from './plan-export.js';
+import { SAMPLE_PLAN } from './plan-fixture';
+import { toJson, toMarkdown, toYaml, type MarkdownLabels } from './plan-export';
 
 const labels: MarkdownLabels = {
   section: { business_snapshot: 'Business snapshot' },

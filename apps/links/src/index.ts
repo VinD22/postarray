@@ -25,7 +25,7 @@ export {
   type SafetyDecision,
   type SafetyOptions,
   type SafetyReason,
-} from './safety.js';
+} from './safety';
 
 export {
   classifyBot,
@@ -33,7 +33,7 @@ export {
   classifyReferrer,
   normalizeCountry,
   type RequestSignals,
-} from './classify.js';
+} from './classify';
 
 export {
   DEFAULT_DEDUPE_RETENTION_SECONDS,
@@ -44,7 +44,7 @@ export {
   windowStart,
   type DedupeInput,
   type DedupeResult,
-} from './dedupe.js';
+} from './dedupe';
 
 export {
   EMPTY_KILL_SWITCH_STATE,
@@ -54,7 +54,7 @@ export {
   type KillSwitchState,
   type MutableKillSwitch,
   type TtlCacheOptions,
-} from './cache.js';
+} from './cache';
 
 export {
   DEFAULT_MISS_LIMIT,
@@ -68,7 +68,7 @@ export {
   type FixedWindowOptions,
   type RateLimitDecision,
   type RateLimiter,
-} from './rate-limit.js';
+} from './rate-limit';
 
 export {
   DEFAULT_FLUSH_INTERVAL_MS,
@@ -78,7 +78,7 @@ export {
   createMemoryClickSink,
   type BufferedClickSink,
   type BufferedClickSinkOptions,
-} from './clicks.js';
+} from './clicks';
 
 export {
   createMemoryShortLinkStore,
@@ -86,7 +86,7 @@ export {
   createSqlShortLinkStore,
   type MemoryShortLinkStore,
   type SqlQueryable,
-} from './store.js';
+} from './store';
 
 export {
   DEFAULT_HIT_TTL_SECONDS,
@@ -96,7 +96,7 @@ export {
   type ResolveOutcome,
   type Resolver,
   type ResolverOptions,
-} from './resolve.js';
+} from './resolve';
 
 export {
   NOTICE_HEADERS,
@@ -104,9 +104,9 @@ export {
   renderNoticePage,
   renderRateLimitedPage,
   type NoticePageInput,
-} from './pages.js';
+} from './pages';
 
-export { createLinksServer, type LinksServer, type LinksServerOptions } from './server.js';
+export { createLinksServer, type LinksServer, type LinksServerOptions } from './server';
 
 export {
   BOT_CLASSES,
@@ -134,7 +134,7 @@ export {
   type ShortLinkRecord,
   type ShortLinkState,
   type ShortLinkStore,
-} from './types.js';
+} from './types';
 
 export {
   fixedClock,
@@ -143,4 +143,4 @@ export {
   toIsoInstant,
   truncateToHour,
   type Clock,
-} from './clock.js';
+} from './clock';

@@ -3,11 +3,11 @@ import { Reflector } from '@nestjs/core';
 import { RelayError, ERROR_CODES } from '@relay/contracts';
 import type { Request } from 'express';
 
-import type { Clock } from '../application/port.js';
-import { CLOCK } from '../application/tokens.js';
-import { PUBLIC_ROUTE_KEY, STEP_UP_KEY } from '../common/decorators.js';
-import { epochMillis } from '../common/instant.js';
-import { relayState } from '../common/request.types.js';
+import type { Clock } from '../application/port';
+import { CLOCK } from '../application/tokens';
+import { PUBLIC_ROUTE_KEY, STEP_UP_KEY } from '../common/decorators';
+import { epochMillis } from '../common/instant';
+import { relayState } from '../common/request.types';
 
 /**
  * Step-up (re-authentication) enforcement.

@@ -1,7 +1,7 @@
 import { RelayError, ERROR_CODES } from '@relay/contracts';
 
-import { PROMPT_IDS, PROMPT_VERSION_PATTERN } from './types.js';
-import type { PromptId, PromptModule } from './types.js';
+import { PROMPT_IDS, PROMPT_VERSION_PATTERN } from './types';
+import type { PromptId, PromptModule } from './types';
 import {
   altTextPrompt,
   ctaOptionsPrompt,
@@ -11,18 +11,14 @@ import {
   shortenPrompt,
   toneAdjustPrompt,
   transcreatePrompt,
-} from './content.js';
+} from './content';
 import {
   accessibilityCheckPrompt,
   claimCheckPrompt,
   duplicateCheckPrompt,
   platformFitCheckPrompt,
-} from './review.js';
-import {
-  analyticsSummaryPrompt,
-  experimentSuggestionPrompt,
-  growthPlanPrompt,
-} from './analysis.js';
+} from './review';
+import { analyticsSummaryPrompt, experimentSuggestionPrompt, growthPlanPrompt } from './analysis';
 
 /**
  * The prompt registry.

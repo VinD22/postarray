@@ -1,8 +1,8 @@
 import { approvalLevelSchema, scopeSchema } from '@relay/contracts';
 import { z } from 'zod';
 
-import { cursorQuerySchema } from '../../common/pagination.js';
-import { brandIdSchema, connectionIdSchema, shortTextSchema } from '../../common/schemas.js';
+import { cursorQuerySchema } from '../../common/pagination';
+import { brandIdSchema, connectionIdSchema, shortTextSchema } from '../../common/schemas';
 
 /**
  * Workspace API keys.

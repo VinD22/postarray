@@ -1,7 +1,7 @@
 import type { ApprovalLevel, CreationSurface, Scope } from '@relay/contracts';
 import type { Request, Response } from 'express';
 
-import type { ActorContext, IdentityContext } from '../application/port.js';
+import type { ActorContext, IdentityContext } from '../application/port';
 
 /** How the caller proved who they are. Drives CSRF and cookie handling. */
 export type CredentialKind = 'session' | 'bearer' | 'api_key';

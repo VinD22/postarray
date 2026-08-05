@@ -12,17 +12,17 @@ import type {
   SchedulingService,
   ServiceDeps,
   ValidationService,
-} from '../types.js';
-import type { CalendarEntry, PublishJobView } from '../views.js';
+} from '../types';
+import type { CalendarEntry, PublishJobView } from '../views';
 
-import { recordAudit } from '../internal/audit.js';
-import { loadAggregate } from '../internal/content-store.js';
-import { invalid, notFound } from '../internal/errors.js';
-import { withIdempotency } from '../internal/idempotency.js';
-import { toLocalDateTime, toProviderId } from '../internal/mappers.js';
-import { pageArgs, toPage } from '../internal/pagination.js';
-import { PUBLISH_JOB_SELECT, jobToView, runPublishPath } from '../internal/publish-path.js';
-import { authorized, guard, type Db } from '../internal/runtime.js';
+import { recordAudit } from '../internal/audit';
+import { loadAggregate } from '../internal/content-store';
+import { invalid, notFound } from '../internal/errors';
+import { withIdempotency } from '../internal/idempotency';
+import { toLocalDateTime, toProviderId } from '../internal/mappers';
+import { pageArgs, toPage } from '../internal/pagination';
+import { PUBLISH_JOB_SELECT, jobToView, runPublishPath } from '../internal/publish-path';
+import { authorized, guard, type Db } from '../internal/runtime';
 
 /**
  * Scheduling.

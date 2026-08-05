@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-import { currencyCodeSchema } from './primitives.js';
+import { currencyCodeSchema } from './primitives';
 
 /**
  * Deterministic pre-flight. The same input always produces the same issues, so

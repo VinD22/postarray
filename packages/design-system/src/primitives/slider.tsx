@@ -2,8 +2,8 @@
 
 import { forwardRef, type ComponentPropsWithoutRef } from 'react';
 import { Slider as SliderPrimitive } from 'radix-ui';
-import { cn } from '../utils/cn.js';
-import { focusRing } from '../utils/style-constants.js';
+import { cn } from '../utils/cn';
+import { focusRing } from '../utils/style-constants';
 
 export interface SliderProps extends ComponentPropsWithoutRef<typeof SliderPrimitive.Root> {
   /**

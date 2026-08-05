@@ -22,11 +22,11 @@ import { Notice } from '@relay/design-system/patterns';
 import { useTranslations } from '@relay/i18n/react';
 import type { DestinationKind, DestinationRef, MentionRef } from '@relay/contracts';
 
-import { useComposer } from '../composer-context.js';
-import { EntitySearchField, type ResolvedEntity } from './entity-search-field.js';
-import { CheckRow } from './form-rows.js';
-import { PROVIDER_LABEL } from './provider-identity.js';
-import type { TargetSummary } from '../types.js';
+import { useComposer } from '../composer-context';
+import { EntitySearchField, type ResolvedEntity } from './entity-search-field';
+import { CheckRow } from './form-rows';
+import { PROVIDER_LABEL } from './provider-identity';
+import type { TargetSummary } from '../types';
 
 const DESTINATION_LABEL_KEY: Readonly<Record<DestinationKind, string>> = {
   none: 'composerWeb.native.heading',

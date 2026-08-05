@@ -2,7 +2,7 @@
 
 import { forwardRef, type ComponentPropsWithoutRef, type ReactNode } from 'react';
 import { AlertTriangle, CheckCircle2, Info, ShieldAlert, XCircle } from 'lucide-react';
-import { cn } from '../utils/cn.js';
+import { cn } from '../utils/cn';
 
 export type NoticeTone = 'info' | 'success' | 'warning' | 'destructive' | 'neutral';
 

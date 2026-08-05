@@ -1,8 +1,8 @@
 import { z } from 'zod';
 import { contentKindSchema } from '@relay/contracts';
 
-import { RESOURCE_URIS, defineTool, idempotencyInputShape, resourceLink } from './registry.js';
-import type { ToolResult } from './registry.js';
+import { RESOURCE_URIS, defineTool, idempotencyInputShape, resourceLink } from './registry';
+import type { ToolResult } from './registry';
 
 /**
  * Reversible tools.

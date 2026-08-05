@@ -6,7 +6,7 @@ import { z } from 'zod';
 import { RelayError, scopeSchema } from '@relay/contracts';
 import type { Scope } from '@relay/contracts';
 
-import { DISCOVERY_PATHS } from '../api/routes.js';
+import { DISCOVERY_PATHS } from '../api/routes';
 
 /**
  * CLI login.

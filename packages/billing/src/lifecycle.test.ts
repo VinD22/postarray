@@ -2,21 +2,17 @@ import { beforeEach, describe, expect, it } from 'vitest';
 
 import type { PolarConfig } from '@relay/config';
 
-import { createCheckoutSession } from './checkout.js';
-import { createPolarClient } from './client.js';
-import {
-  deriveEntitlement,
-  evaluateEntitlement,
-  scheduledPostDisposition,
-} from './entitlements.js';
-import type { EntitlementSnapshot } from './entitlements.js';
-import { InMemorySubscriptionStore, InMemoryWebhookInbox } from './inbox.js';
-import { reconcileSubscriptions } from './reconcile.js';
-import { type LocalPolarSimulator } from './simulator.js';
-import { cancellationOutcome } from './trial.js';
-import { MutableClock } from './time.js';
-import { createWebhookProcessor } from './webhooks.js';
-import type { OrderEvent, WebhookProcessor } from './webhooks.js';
+import { createCheckoutSession } from './checkout';
+import { createPolarClient } from './client';
+import { deriveEntitlement, evaluateEntitlement, scheduledPostDisposition } from './entitlements';
+import type { EntitlementSnapshot } from './entitlements';
+import { InMemorySubscriptionStore, InMemoryWebhookInbox } from './inbox';
+import { reconcileSubscriptions } from './reconcile';
+import { type LocalPolarSimulator } from './simulator';
+import { cancellationOutcome } from './trial';
+import { MutableClock } from './time';
+import { createWebhookProcessor } from './webhooks';
+import type { OrderEvent, WebhookProcessor } from './webhooks';
 
 /**
  * The whole billing lifecycle against the local simulator, with no Polar key

@@ -11,11 +11,11 @@ import {
   checkoutReturnState,
   createCheckoutSession,
   resolveProductId,
-} from './checkout.js';
-import { createPolarClient } from './client.js';
-import { deriveEntitlement } from './entitlements.js';
-import { LocalPolarSimulator } from './simulator.js';
-import { MutableClock } from './time.js';
+} from './checkout';
+import { createPolarClient } from './client';
+import { deriveEntitlement } from './entitlements';
+import { LocalPolarSimulator } from './simulator';
+import { MutableClock } from './time';
 
 const CONFIRMED_AT = '2026-08-04T14:00:00.000Z';
 

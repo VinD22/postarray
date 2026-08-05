@@ -25,9 +25,9 @@ import {
 import { DiffView, Notice, type DiffSegment } from '@relay/design-system/patterns';
 import { useTranslations } from '@relay/i18n/react';
 
-import { useComposer } from '../composer-context.js';
-import { PROVIDER_LABEL } from './provider-identity.js';
-import type { AssistAction, AssistProposal } from '../types.js';
+import { useComposer } from '../composer-context';
+import { PROVIDER_LABEL } from './provider-identity';
+import type { AssistAction, AssistProposal } from '../types';
 
 export interface AssistMenuProps {
   /** `null` targets the master draft. */

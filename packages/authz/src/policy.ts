@@ -1,8 +1,8 @@
 import type { ApprovalLevel, Role, Scope } from '@relay/contracts';
 
-import { PERMISSIONS, isPermission, isReadPermission, type Permission } from './permissions.js';
-import { effectivePermissions, minimumRoleFor, type RolePermissionOverride } from './roles.js';
-import { isDelegable, scopeGrantsPermission, scopesForPermission } from './scopes.js';
+import { PERMISSIONS, isPermission, isReadPermission, type Permission } from './permissions';
+import { effectivePermissions, minimumRoleFor, type RolePermissionOverride } from './roles';
+import { isDelegable, scopeGrantsPermission, scopesForPermission } from './scopes';
 
 /**
  * `can(actor, permission, resource?)`.

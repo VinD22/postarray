@@ -1,8 +1,8 @@
 import { API_VERSION } from '@relay/contracts';
 import { describe, expect, it } from 'vitest';
 
-import { OPERATIONS } from './catalog.js';
-import { buildOpenApiDocument } from './document.js';
+import { OPERATIONS } from './catalog';
+import { buildOpenApiDocument } from './document';
 
 /**
  * The published specification.

@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import { CREDENTIAL_ENV_VAR, SETUP_CLIENTS, buildSnippet } from './setup-snippets.js';
+import { CREDENTIAL_ENV_VAR, SETUP_CLIENTS, buildSnippet } from './setup-snippets';
 
 const input = {
   mcpEndpoint: 'https://mcp.relay.example/mcp',

@@ -23,15 +23,10 @@ import { useAnnouncer } from '@relay/design-system/hooks';
 import { useTranslations } from '@relay/i18n/react';
 import type { ValidationIssue } from '@relay/contracts';
 
-import { composerReducer, type ComposerAction } from './state/composer-reducer.js';
-import { findUrls } from './state/capability-rules.js';
-import { initialComposerState } from './state/seed.js';
-import {
-  summarizeTargets,
-  totalsFor,
-  type DraftTotals,
-  type MediaLookup,
-} from './state/selectors.js';
+import { composerReducer, type ComposerAction } from './state/composer-reducer';
+import { findUrls } from './state/capability-rules';
+import { initialComposerState } from './state/seed';
+import { summarizeTargets, totalsFor, type DraftTotals, type MediaLookup } from './state/selectors';
 import type {
   AssistProposal,
   AutosaveState,
@@ -39,7 +34,7 @@ import type {
   ComposerState,
   ConflictInfo,
   TargetSummary,
-} from './types.js';
+} from './types';
 
 export interface ComposerContextValue {
   readonly bootstrap: ComposerBootstrap;

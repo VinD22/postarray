@@ -3,7 +3,7 @@
 import { forwardRef, type ComponentPropsWithoutRef, type ReactNode } from 'react';
 import { DropdownMenu as MenuPrimitive } from 'radix-ui';
 import { Check, ChevronRight, Circle } from 'lucide-react';
-import { cn } from '../utils/cn.js';
+import { cn } from '../utils/cn';
 
 /**
  * An actions menu. Typing a letter jumps to the matching item, arrow keys

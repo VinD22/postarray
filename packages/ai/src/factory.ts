@@ -1,15 +1,15 @@
 import type { RelayConfig } from '@relay/config';
 
-import { createBudgetGuard, DEFAULT_BUDGET_LIMITS } from './budget.js';
-import type { AiBudgetGuard, AiBudgetLimits, TokenPricing } from './budget.js';
-import { systemClock } from './clock.js';
-import type { Clock } from './clock.js';
-import { createAiGateway } from './gateway.js';
-import { createDeepSeekProvider } from './providers/deepseek.js';
-import { createDisabledProvider } from './providers/disabled.js';
-import { createEchoProvider } from './providers/echo.js';
-import { createMemoryCounterStore } from './types.js';
-import type { AiCounterStore, AiGateway, AiLogger, AiProviderAdapter } from './types.js';
+import { createBudgetGuard, DEFAULT_BUDGET_LIMITS } from './budget';
+import type { AiBudgetGuard, AiBudgetLimits, TokenPricing } from './budget';
+import { systemClock } from './clock';
+import type { Clock } from './clock';
+import { createAiGateway } from './gateway';
+import { createDeepSeekProvider } from './providers/deepseek';
+import { createDisabledProvider } from './providers/disabled';
+import { createEchoProvider } from './providers/echo';
+import { createMemoryCounterStore } from './types';
+import type { AiCounterStore, AiGateway, AiLogger, AiProviderAdapter } from './types';
 
 /**
  * Wiring from configuration to a gateway.

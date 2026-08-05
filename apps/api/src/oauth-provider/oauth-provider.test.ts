@@ -4,7 +4,7 @@ import { newIdFor } from '@relay/contracts';
 import request from 'supertest';
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 
-import { oauthClientRecordSchema } from '../security/records.js';
+import { oauthClientRecordSchema } from '../security/records';
 import {
   TEST_ACCEPT_LANGUAGE,
   TEST_ORIGIN,
@@ -12,8 +12,8 @@ import {
   createHarness,
   seedSession,
   type Harness,
-} from '../testing/harness.js';
-import { deriveChallenge } from './pkce.js';
+} from '../testing/harness';
+import { deriveChallenge } from './pkce';
 
 /**
  * The authorization code flow with PKCE, end to end.

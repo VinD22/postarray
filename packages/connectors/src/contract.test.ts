@@ -13,8 +13,8 @@ import {
   providerIdentitySchema,
   publishResultSchema,
   publishStatusSchema,
-} from './contract.js';
-import { createFakeConnector } from './fake/connector.js';
+} from './contract';
+import { createFakeConnector } from './fake/connector';
 import {
   fakeConnectionRef,
   fakeDraft,
@@ -24,8 +24,8 @@ import {
   fakePublishRequest,
   fakeStatusRequest,
   fakeThreadItem,
-} from './fake/fixtures.js';
-import { fixedClock } from './ports.js';
+} from './fake/fixtures';
+import { fixedClock } from './ports';
 
 /**
  * The shared connector contract suite.

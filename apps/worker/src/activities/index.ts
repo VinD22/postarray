@@ -8,8 +8,8 @@ import {
 } from '@relay/observability';
 import { ApplicationFailure } from '@temporalio/common';
 
-import type { ActivityContext, ActivityName, WorkerActivities } from './types.js';
-import { nowMs } from '../runtime/clock.js';
+import type { ActivityContext, ActivityName, WorkerActivities } from './types';
+import { nowMs } from '../runtime/clock';
 
 /**
  * The activity layer.
@@ -227,4 +227,4 @@ export function createActivities(deps: ActivityDependencies): WorkerActivities {
   };
 }
 
-export * from './types.js';
+export * from './types';

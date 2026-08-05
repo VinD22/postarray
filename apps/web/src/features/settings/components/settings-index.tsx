@@ -6,8 +6,8 @@ import { ChevronRight } from 'lucide-react';
 import { PageHeader } from '@relay/design-system/patterns';
 import { useTranslations } from '@relay/i18n/react';
 
-import { SettingsStack } from './section.js';
-import { SETTINGS_SECTIONS } from './settings-sections.js';
+import { SettingsStack } from './section';
+import { SETTINGS_SECTIONS } from './settings-sections';
 
 /**
  * The settings index.

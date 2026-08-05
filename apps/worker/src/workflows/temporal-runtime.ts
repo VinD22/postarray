@@ -1,8 +1,8 @@
 import { InternalError } from '@relay/contracts';
 import * as wf from '@temporalio/workflow';
 
-import type { WorkerActivities } from '../activities/types.js';
-import { ACTIVITY_OPTIONS, toTemporalActivityOptions } from '../runtime/retry-policies.js';
+import type { WorkerActivities } from '../activities/types';
+import { ACTIVITY_OPTIONS, toTemporalActivityOptions } from '../runtime/retry-policies';
 import {
   SignalInbox,
   WORKFLOW_QUERIES,
@@ -16,7 +16,7 @@ import {
   type WorkflowLog,
   type WorkflowRuntime,
   type WorkflowStatusView,
-} from '../runtime/types.js';
+} from '../runtime/types';
 
 /**
  * The Temporal adapter.

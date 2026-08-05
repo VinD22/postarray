@@ -19,10 +19,10 @@ import {
 
 import { useWorkspaceId } from '@/lib/auth/session-context';
 
-import { api } from './client.js';
-import { newIdempotencyKey } from './correlation.js';
-import type { ApiError } from './error.js';
-import { keys } from './keys.js';
+import { api } from './client';
+import { newIdempotencyKey } from './correlation';
+import type { ApiError } from './error';
+import { keys } from './keys';
 import type {
   ActionItemCategory,
   ActionItemView,
@@ -36,7 +36,7 @@ import type {
   ProviderId,
   PublishState,
   ReceiptSummaryView,
-} from './types.js';
+} from './types';
 
 /* -------------------------------------------------------------------------
    Reads

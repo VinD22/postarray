@@ -3,8 +3,8 @@ import { fileURLToPath } from 'node:url';
 
 import { describe, expect, it } from 'vitest';
 
-import { ALL_TOOLS, TOOL_NAMES, createToolRegistry, describeTool } from './index.js';
-import { SKILLS } from '../skills.js';
+import { ALL_TOOLS, TOOL_NAMES, createToolRegistry, describeTool } from './index';
+import { SKILLS } from '../skills';
 
 /**
  * The tool set is a product decision, so it is asserted rather than assumed. A

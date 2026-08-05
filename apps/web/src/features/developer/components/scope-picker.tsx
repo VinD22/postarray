@@ -6,7 +6,7 @@ import { Notice } from '@relay/design-system/patterns';
 import { useTranslations } from '@relay/i18n/react';
 import type { Scope } from '@relay/contracts';
 
-import { scopeDescriptionKey, scopeGroups } from '../lib/scope-groups.js';
+import { scopeDescriptionKey, scopeGroups } from '../lib/scope-groups';
 
 export interface ScopePickerProps {
   selected: readonly Scope[];

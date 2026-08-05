@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from 'vitest';
 
-import { DAY_MS, FakeClock, frozenClock, steppingClock } from './clock.js';
+import { DAY_MS, FakeClock, frozenClock, steppingClock } from './clock';
 
 describe('FakeClock', () => {
   it('starts where it is told and never moves on its own', () => {

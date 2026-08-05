@@ -4,12 +4,12 @@ import compression from 'compression';
 import express, { type Request, type Response } from 'express';
 import helmet from 'helmet';
 
-import { AppModule } from './app.module.js';
-import type { RuntimeOptions } from './application/runtime.module.js';
-import { CSRF_HEADER } from './security/csrf.js';
-import { WORKSPACE_HEADER } from './guards/workspace.guard.js';
+import { AppModule } from './app.module';
+import type { RuntimeOptions } from './application/runtime.module';
+import { CSRF_HEADER } from './security/csrf';
+import { WORKSPACE_HEADER } from './guards/workspace.guard';
 import { API_HEADERS } from '@relay/contracts';
-import { rememberRawBody } from './common/raw-body.js';
+import { rememberRawBody } from './common/raw-body';
 
 /**
  * Build the HTTP application.

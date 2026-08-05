@@ -46,7 +46,7 @@ import {
   makeThreadDraft,
   makeThreadReceipt,
   makeWorkspaceBundle,
-} from './index.js';
+} from './index';
 
 const PROVIDERS: readonly ProviderId[] = [
   'x',
@@ -251,7 +251,7 @@ describe('growth', () => {
 
 describe('api envelopes', () => {
   it('builds a schema valid webhook envelope and validation result', async () => {
-    const { makeWebhookEnvelope } = await import('./api.js');
+    const { makeWebhookEnvelope } = await import('./api');
     expect(() => webhookEnvelopeSchema.parse(makeWebhookEnvelope())).not.toThrow();
     const failing = makeFailingValidationResult();
     expect(failing.ok).toBe(false);

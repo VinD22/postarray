@@ -11,9 +11,9 @@ import {
   testMedia,
   testMetricsRequest,
   testStatusRequest,
-} from '../../shared/testing.js';
-import { buildInstagramCapabilities } from './capabilities.js';
-import { createInstagramConnector } from './connector.js';
+} from '../../shared/testing';
+import { buildInstagramCapabilities } from './capabilities';
+import { createInstagramConnector } from './connector';
 import {
   INSTAGRAM_ACCOUNT_INSIGHTS_FIXTURE,
   INSTAGRAM_BUSINESS_ACCOUNT_FIXTURE,
@@ -27,7 +27,7 @@ import {
   INSTAGRAM_PAGES_FIXTURE,
   INSTAGRAM_PERMISSION_ERROR_FIXTURE,
   INSTAGRAM_PUBLISH_FIXTURE,
-} from './__fixtures__/index.js';
+} from './__fixtures__/index';
 
 const SCOPES = [
   'instagram_basic',

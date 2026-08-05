@@ -2,8 +2,8 @@
 
 import type { ReactNode } from 'react';
 import { CheckCircle2, XCircle } from 'lucide-react';
-import { cn } from '../utils/cn.js';
-import { Notice } from './notice.js';
+import { cn } from '../utils/cn';
+import { Notice } from './notice';
 
 export interface PartialSuccessTarget {
   readonly id: string;

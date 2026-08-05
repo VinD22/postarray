@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import { SEED_ACCOUNTS } from '../../composer/state/seed.js';
+import { SEED_ACCOUNTS } from '../../composer/state/seed';
 import {
   acceptedMimeTypes,
   altTextLimit,
@@ -12,8 +12,8 @@ import {
   planChangesAnything,
   projectedDimensions,
   type AccountRule,
-} from './media-rules.js';
-import { IDENTITY_EDIT_PLAN, type MediaAsset } from '../types.js';
+} from './media-rules';
+import { IDENTITY_EDIT_PLAN, type MediaAsset } from '../types';
 
 const RULES: AccountRule[] = SEED_ACCOUNTS.map((account) => ({
   connectionId: account.connectionId,

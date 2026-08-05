@@ -4,13 +4,13 @@ import { ERROR_CODES, RelayError } from '@relay/contracts';
 import type { Logger } from '@relay/observability';
 import { z } from 'zod';
 
-import { LOGGER, RELAY_CONFIG } from '../../application/tokens.js';
+import { LOGGER, RELAY_CONFIG } from '../../application/tokens';
 import type {
   IdentityProvider,
   IdentitySession,
   SignUpInput,
   TotpEnrollment,
-} from './identity.port.js';
+} from './identity.port';
 
 /**
  * Supabase Auth (GoTrue) over its REST interface.

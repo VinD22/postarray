@@ -9,9 +9,9 @@ import type {
   PostVariantView,
   Services,
   ViewModel,
-} from '../../application/port.js';
-import { SERVICES } from '../../application/tokens.js';
-import type { CreateDraftInput, TargetInput, UpdateMasterInput } from './content.schemas.js';
+} from '../../application/port';
+import { SERVICES } from '../../application/tokens';
+import type { CreateDraftInput, TargetInput, UpdateMasterInput } from './content.schemas';
 
 /**
  * Transport-level delegation for content.

@@ -23,14 +23,14 @@ import {
   type VariantOverrides,
 } from '@relay/contracts';
 
-import { appendUtm } from './capability-rules.js';
+import { appendUtm } from './capability-rules';
 import {
   EMPTY_VARIANT_SETTINGS,
   type ComposerState,
   type LinkPlan,
   type TargetSet,
   type VariantSettings,
-} from '../types.js';
+} from '../types';
 
 export type ComposerAction =
   | { type: 'target/add'; connectionId: string }

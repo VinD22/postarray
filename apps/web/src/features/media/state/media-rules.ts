@@ -8,7 +8,7 @@
 
 import type { CapabilitySnapshot, MediaKind } from '@relay/contracts';
 
-import type { AspectPreset, MediaAsset, MediaEditPlan } from '../types.js';
+import type { AspectPreset, MediaAsset, MediaEditPlan } from '../types';
 
 export interface CandidateFile {
   readonly name: string;

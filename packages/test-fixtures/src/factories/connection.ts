@@ -1,7 +1,7 @@
 import type { AccountType, CapabilitySnapshot, ProviderId } from '@relay/contracts';
 
-import { FIXTURE_NOW, fakeExternalId, fakeHandle, fixtureId } from '../ids.js';
-import { makeCapabilitySnapshot } from './capabilities.js';
+import { FIXTURE_NOW, fakeExternalId, fakeHandle, fixtureId } from '../ids';
+import { makeCapabilitySnapshot } from './capabilities';
 
 /**
  * Connections, destinations and mention entities.

@@ -1,17 +1,17 @@
 import type { ProviderId } from '@relay/contracts';
 
-import { BlueskySimulator, FakeProviderSimulator } from './atproto.js';
-import { LinkedInSimulator } from './linkedin.js';
-import { FacebookSimulator, InstagramSimulator, ThreadsSimulator } from './meta.js';
-import { SIMULATOR_MODE_HEADER, SimulatedNetworkError, isSimulatorMode } from './types.js';
+import { BlueskySimulator, FakeProviderSimulator } from './atproto';
+import { LinkedInSimulator } from './linkedin';
+import { FacebookSimulator, InstagramSimulator, ThreadsSimulator } from './meta';
+import { SIMULATOR_MODE_HEADER, SimulatedNetworkError, isSimulatorMode } from './types';
 import type {
   ProviderSimulator,
   SimulatedRequest,
   SimulatedResponse,
   SimulatorMode,
-} from './types.js';
-import { TikTokSimulator, YouTubeSimulator } from './video.js';
-import { XSimulator } from './x.js';
+} from './types';
+import { TikTokSimulator, YouTubeSimulator } from './video';
+import { XSimulator } from './x';
 
 /**
  * The simulator registry and the `fetch` bridge.

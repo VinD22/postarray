@@ -8,8 +8,8 @@ import type {
   ValidationResult,
 } from '@relay/contracts';
 
-import { call } from '../call.js';
-import { demoCalendar, demoReceipts, page } from '../fixtures.js';
+import { call } from '../call';
+import { demoCalendar, demoReceipts, page } from '../fixtures';
 import type {
   ApprovalRequestView,
   CalendarEntryView,
@@ -17,7 +17,7 @@ import type {
   Paginated,
   PublishState,
   ReceiptSummaryView,
-} from '../types.js';
+} from '../types';
 
 export type ContentListQuery = {
   readonly brandId?: string;

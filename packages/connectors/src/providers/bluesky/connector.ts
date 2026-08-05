@@ -39,20 +39,20 @@ import {
   type RevokeRequest,
   type SocialConnector,
   type StatusRequest,
-} from '../shared/contract-shape.js';
-import { accessTokenOf, errorSummary, mentionOffset, providerOptionsOf } from '../shared/access.js';
-import { mapMetrics } from '../shared/metrics.js';
-import { buildPreview } from '../shared/preview.js';
-import { countGraphemes } from '../shared/text.js';
-import { validateDraftShape } from '../shared/validate.js';
-import { SOURCE_VERIFIED_ON } from '../shared/verification.js';
+} from '../shared/contract-shape';
+import { accessTokenOf, errorSummary, mentionOffset, providerOptionsOf } from '../shared/access';
+import { mapMetrics } from '../shared/metrics';
+import { buildPreview } from '../shared/preview';
+import { countGraphemes } from '../shared/text';
+import { validateDraftShape } from '../shared/validate';
+import { SOURCE_VERIFIED_ON } from '../shared/verification';
 import {
   BLUESKY_MAX_BYTES,
   BLUESKY_REQUIRE_ALT_TEXT,
   buildBlueskyCapabilities,
-} from './capabilities.js';
-import { buildFacets, byteLength, type ResolvedMention } from './facets.js';
-import { BLUESKY_ACCOUNT_METRICS, BLUESKY_POST_METRICS } from './metrics.js';
+} from './capabilities';
+import { buildFacets, byteLength, type ResolvedMention } from './facets';
+import { BLUESKY_ACCOUNT_METRICS, BLUESKY_POST_METRICS } from './metrics';
 import {
   atprotoBlobSchema,
   atprotoRecordRefSchema,
@@ -61,7 +61,7 @@ import {
   blueskyPostThreadSchema,
   blueskyProfileSchema,
   blueskyProviderOptionsSchema,
-} from './schemas.js';
+} from './schemas';
 
 /**
  * Bluesky connector, on the AT Protocol.

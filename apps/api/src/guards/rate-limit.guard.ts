@@ -3,11 +3,11 @@ import { Reflector } from '@nestjs/core';
 import { API_HEADERS, RateLimitedError } from '@relay/contracts';
 import type { Request, Response } from 'express';
 
-import type { Clock, KeyValueStore } from '../application/port.js';
-import { CLOCK, KEY_VALUE_STORE } from '../application/tokens.js';
-import { PUBLIC_ROUTE_KEY, RATE_LIMIT_KEY, type RateLimitRule } from '../common/decorators.js';
-import { instantAfter } from '../common/instant.js';
-import { relayState } from '../common/request.types.js';
+import type { Clock, KeyValueStore } from '../application/port';
+import { CLOCK, KEY_VALUE_STORE } from '../application/tokens';
+import { PUBLIC_ROUTE_KEY, RATE_LIMIT_KEY, type RateLimitRule } from '../common/decorators';
+import { instantAfter } from '../common/instant';
+import { relayState } from '../common/request.types';
 
 /**
  * Rate limiting keyed by workspace, credential, route and connector cost.

@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 
-import { AuthController } from './auth.controller.js';
-import { AuthService } from './auth.service.js';
+import { AuthController } from './auth.controller';
+import { AuthService } from './auth.service';
 
 /**
  * The identity provider itself is bound by `RuntimeModule`, from the value the

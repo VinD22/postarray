@@ -10,8 +10,8 @@ import {
   createSimulatorFetch,
   createSimulatorRegistry,
   simulatorBaseUrls,
-} from './index.js';
-import type { SimulatorFetch, SimulatorMode } from './index.js';
+} from './index';
+import type { SimulatorFetch, SimulatorMode } from './index';
 
 const AUTH = { authorization: 'Bearer fake-simulator-credential-placeholder' };
 

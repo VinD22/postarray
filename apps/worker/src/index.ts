@@ -17,21 +17,21 @@ export {
   type ActivityName,
   type WorkerActivities,
   type WorkerGateway,
-} from './activities/index.js';
+} from './activities/index';
 
 export {
   MAX_PUBLISH_ATTEMPTS,
   PROVIDER_PROCESSING_BUDGET_MS,
   publishTargetDescriptor,
   runPublishTarget,
-} from './workflows/core/publish-target.core.js';
-export { publishPostDescriptor, runPublishPost } from './workflows/core/publish-post.core.js';
+} from './workflows/core/publish-target.core';
+export { publishPostDescriptor, runPublishPost } from './workflows/core/publish-post.core';
 export {
   MAX_SEQUENCE_ITEM_ATTEMPTS,
   runThreadSequence,
   threadSequenceDescriptor,
-} from './workflows/core/thread-sequence.core.js';
-export { repeatPostDescriptor, runRepeatPost } from './workflows/core/repeat-post.core.js';
+} from './workflows/core/thread-sequence.core';
+export { repeatPostDescriptor, runRepeatPost } from './workflows/core/repeat-post.core';
 export {
   ITERATIONS_PER_RUN,
   POST_METRIC_OFFSETS_MS,
@@ -39,30 +39,27 @@ export {
   initialAnalyticsInput,
   offsetsForProvider,
   runAnalyticsSync,
-} from './workflows/core/analytics-sync.core.js';
+} from './workflows/core/analytics-sync.core';
 export {
   REFRESH_AT_FRACTION,
   refreshWaitMs,
   runTokenRefresh,
   tokenRefreshDescriptor,
-} from './workflows/core/token-refresh.core.js';
+} from './workflows/core/token-refresh.core';
 export {
   MAX_CONSECUTIVE_FAILURES,
   failureBackoffMs,
   rssPollDescriptor,
   runRssPoll,
-} from './workflows/core/rss-poll.core.js';
-export {
-  automationRuleDescriptor,
-  runAutomationRule,
-} from './workflows/core/automation-rule.core.js';
+} from './workflows/core/rss-poll.core';
+export { automationRuleDescriptor, runAutomationRule } from './workflows/core/automation-rule.core';
 export {
   DEFAULT_MAX_ATTEMPTS,
   ENDPOINT_FAILURE_THRESHOLD,
   runWebhookDelivery,
   webhookDeliveryDescriptor,
-} from './workflows/core/webhook-delivery.core.js';
-export { dataDeletionDescriptor, runDataDeletion } from './workflows/core/data-deletion.core.js';
+} from './workflows/core/webhook-delivery.core';
+export { dataDeletionDescriptor, runDataDeletion } from './workflows/core/data-deletion.core';
 
 export type {
   AnalyticsSyncWorkflowInput,
@@ -87,7 +84,7 @@ export type {
   TokenRefreshWorkflowOutput,
   WebhookDeliveryWorkflowInput,
   WebhookDeliveryWorkflowOutput,
-} from './workflows/inputs.js';
+} from './workflows/inputs';
 
 export {
   ACTIVITY_OPTIONS,
@@ -96,7 +93,7 @@ export {
   type ActivityClass,
   type ActivityExecutionOptions,
   type WorkerRetryPolicy,
-} from './runtime/retry-policies.js';
+} from './runtime/retry-policies';
 
 export {
   SignalInbox,
@@ -110,24 +107,18 @@ export {
   type TargetStatusView,
   type WorkflowRuntime,
   type WorkflowStatusView,
-} from './runtime/types.js';
+} from './runtime/types';
 
-export {
-  backoffMs,
-  hashString,
-  jitterMs,
-  stableSort,
-  unitInterval,
-} from './runtime/deterministic.js';
+export { backoffMs, hashString, jitterMs, stableSort, unitInterval } from './runtime/deterministic';
 
-export { MESSAGE_KEYS } from './messages.js';
+export { MESSAGE_KEYS } from './messages';
 
 export {
   InlineScheduler,
   InlineSchedulerNotPermittedError,
   type InlineRun,
   type InlineSchedulerOptions,
-} from './fallback/inline-scheduler.js';
+} from './fallback/inline-scheduler';
 
 export {
   SHUTDOWN_GRACE_MS,
@@ -137,4 +128,4 @@ export {
   type RunningWorker,
   type WorkerMode,
   type WorkerStartOptions,
-} from './worker.js';
+} from './worker';

@@ -1,10 +1,10 @@
 import { CONSEQUENTIAL_RULE_ACTION_KINDS } from '@relay/contracts';
 
-import type { ExecuteRuleActionResult, WorkerActivities } from '../../activities/types.js';
-import { MESSAGE_KEYS } from '../../messages.js';
-import { stableSort, toIsoInstant } from '../../runtime/deterministic.js';
-import type { ChildWorkflowDescriptor, WorkflowRuntime } from '../../runtime/types.js';
-import type { AutomationRuleWorkflowInput, AutomationRuleWorkflowOutput } from '../inputs.js';
+import type { ExecuteRuleActionResult, WorkerActivities } from '../../activities/types';
+import { MESSAGE_KEYS } from '../../messages';
+import { stableSort, toIsoInstant } from '../../runtime/deterministic';
+import type { ChildWorkflowDescriptor, WorkflowRuntime } from '../../runtime/types';
+import type { AutomationRuleWorkflowInput, AutomationRuleWorkflowOutput } from '../inputs';
 
 /**
  * The trigger, condition and action engine.

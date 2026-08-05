@@ -7,12 +7,12 @@ import { Button, Checkbox } from '@relay/design-system/primitives';
 import { ConfirmDialog, Notice, PageHeader } from '@relay/design-system/patterns';
 import { useTranslations } from '@relay/i18n/react';
 
-import { AsyncBoundary } from '../lib/async-boundary.js';
-import { dataGateway, workspaceGateway } from '../lib/gateway.js';
-import { useFormatters } from '../lib/formatters.js';
-import { settingsKey, useWorkspaceId } from '../lib/keys.js';
-import { useSettingsMutation } from '../lib/use-settings-mutation.js';
-import { SettingRow, SettingsPanel, SettingsStack } from '../components/section.js';
+import { AsyncBoundary } from '../lib/async-boundary';
+import { dataGateway, workspaceGateway } from '../lib/gateway';
+import { useFormatters } from '../lib/formatters';
+import { settingsKey, useWorkspaceId } from '../lib/keys';
+import { useSettingsMutation } from '../lib/use-settings-mutation';
+import { SettingRow, SettingsPanel, SettingsStack } from '../components/section';
 
 type ExportFormat = 'json' | 'csv' | 'media';
 

@@ -22,16 +22,16 @@ import {
 } from '@relay/design-system/primitives';
 import { useTranslations } from '@relay/i18n/react';
 
-import { useComposer } from '../composer-context.js';
-import { AssistMenu, AssistProposalPanel } from './assist-menu.js';
-import { BodyField, type CounterTarget } from './body-field.js';
-import { GlobalEditDialog } from './global-edit-dialog.js';
-import { LinkControls } from './link-controls.js';
-import { MediaStrip } from './media-strip.js';
-import { SequencePanel } from './sequence-panel.js';
-import { SignaturePanel } from './signature-panel.js';
-import type { AssistAction, AssistProposal } from '../types.js';
-import type { MediaAsset } from '../../media/types.js';
+import { useComposer } from '../composer-context';
+import { AssistMenu, AssistProposalPanel } from './assist-menu';
+import { BodyField, type CounterTarget } from './body-field';
+import { GlobalEditDialog } from './global-edit-dialog';
+import { LinkControls } from './link-controls';
+import { MediaStrip } from './media-strip';
+import { SequencePanel } from './sequence-panel';
+import { SignaturePanel } from './signature-panel';
+import type { AssistAction, AssistProposal } from '../types';
+import type { MediaAsset } from '../../media/types';
 
 export interface MasterPanelProps {
   readonly assets: readonly MediaAsset[];

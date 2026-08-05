@@ -1,27 +1,27 @@
 import type { Logger } from '@relay/observability';
 
-import { deriveEntitlement, verifiedSubscriptionSchema } from './entitlements.js';
-import type { EntitlementSnapshot, VerifiedSubscription } from './entitlements.js';
-import { InMemorySubscriptionStore, InMemoryWebhookInbox } from './inbox.js';
+import { deriveEntitlement, verifiedSubscriptionSchema } from './entitlements';
+import type { EntitlementSnapshot, VerifiedSubscription } from './entitlements';
+import { InMemorySubscriptionStore, InMemoryWebhookInbox } from './inbox';
 import type {
   SubscriptionStore,
   WebhookInboxStore,
   WebhookResult,
   WebhookSignatureState,
-} from './inbox.js';
+} from './inbox';
 import {
   isKnownPolarEventType,
   polarBenefitGrantSchema,
   polarOrderSchema,
   polarSubscriptionSchema,
   polarWebhookBodySchema,
-} from './polar-schemas.js';
-import type { PolarEventType, PolarOrder, PolarSubscription } from './polar-schemas.js';
-import { hashBody, verifyWebhookSignature } from './signature.js';
-import type { Clock } from './time.js';
-import { isAfter, nowIso } from './time.js';
+} from './polar-schemas';
+import type { PolarEventType, PolarOrder, PolarSubscription } from './polar-schemas';
+import { hashBody, verifyWebhookSignature } from './signature';
+import type { Clock } from './time';
+import { isAfter, nowIso } from './time';
 
-export { InMemorySubscriptionStore, InMemoryWebhookInbox } from './inbox.js';
+export { InMemorySubscriptionStore, InMemoryWebhookInbox } from './inbox';
 export type {
   MarkProcessedInput,
   NewWebhookInboxRecord,
@@ -30,7 +30,7 @@ export type {
   WebhookInboxStore,
   WebhookResult,
   WebhookSignatureState,
-} from './inbox.js';
+} from './inbox';
 
 /**
  * Webhook ingestion.

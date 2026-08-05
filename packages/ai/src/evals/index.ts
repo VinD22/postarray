@@ -1,4 +1,4 @@
-export { EVAL_DIMENSIONS, EVAL_GATES } from './types.js';
+export { EVAL_DIMENSIONS, EVAL_GATES } from './types';
 export type {
   CaseResult,
   DimensionScore,
@@ -8,7 +8,7 @@ export type {
   Scorer,
   ScorerInput,
   SuiteReport,
-} from './types.js';
+} from './types';
 
 export {
   ALL_SCORERS,
@@ -18,9 +18,9 @@ export {
   platformScorer,
   verbosityScorer,
   voiceScorer,
-} from './scorers.js';
+} from './scorers';
 
-export { EN_EVAL_CASES, EVAL_DATASETS, casesForLocale } from './dataset.js';
+export { EN_EVAL_CASES, EVAL_DATASETS, casesForLocale } from './dataset';
 
-export { formatReport, runSuite } from './harness.js';
-export type { RunSuiteOptions } from './harness.js';
+export { formatReport, runSuite } from './harness';
+export type { RunSuiteOptions } from './harness';

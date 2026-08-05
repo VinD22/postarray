@@ -17,8 +17,8 @@ import { useTranslations } from '@relay/i18n/react';
 import { formatBytes } from '@relay/i18n';
 import { cn } from '@relay/design-system/utils';
 
-import { acceptedMimeTypes, lowestByteLimit, type AccountRule } from '../state/media-rules.js';
-import type { UploadItem } from '../types.js';
+import { acceptedMimeTypes, lowestByteLimit, type AccountRule } from '../state/media-rules';
+import type { UploadItem } from '../types';
 
 export interface UploadPanelProps {
   readonly rules: readonly AccountRule[];

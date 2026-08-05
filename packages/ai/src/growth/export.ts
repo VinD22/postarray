@@ -1,9 +1,9 @@
 import { canonicalJson, growthExportFormatSchema } from '@relay/contracts';
 import type { GrowthExportFormat, GrowthPlan } from '@relay/contracts';
 
-import { toMarkdown } from './markdown.js';
-import type { PlanCatalog } from './markdown.js';
-import { toYaml } from './yaml.js';
+import { toMarkdown } from './markdown';
+import type { PlanCatalog } from './markdown';
+import { toYaml } from './yaml';
 
 /**
  * One validated plan, three formats, all rendered by pure functions. There is

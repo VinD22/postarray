@@ -13,7 +13,7 @@ import type {
   ProviderId,
 } from '@relay/contracts';
 
-import { FIXTURE_NOW, fixtureChecksum } from '../ids.js';
+import { FIXTURE_NOW, fixtureChecksum } from '../ids';
 
 /**
  * Metric payloads.

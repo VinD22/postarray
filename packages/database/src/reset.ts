@@ -3,9 +3,9 @@ import { fileURLToPath } from 'node:url';
 
 import pg from 'pg';
 
-import { createStderrLogger, type DatabaseLogger } from './logger.js';
-import { migrate } from './migrate.js';
-import { seed } from './seed.js';
+import { createStderrLogger, type DatabaseLogger } from './logger';
+import { migrate } from './migrate';
+import { seed } from './seed';
 
 /**
  * Drops the product schemas and rebuilds them from migrations, then seeds.

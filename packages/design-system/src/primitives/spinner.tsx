@@ -2,7 +2,7 @@
 
 import { forwardRef, type ComponentPropsWithoutRef } from 'react';
 import { Loader2 } from 'lucide-react';
-import { cn } from '../utils/cn.js';
+import { cn } from '../utils/cn';
 
 export interface SpinnerProps extends ComponentPropsWithoutRef<'span'> {
   /**

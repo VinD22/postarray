@@ -9,12 +9,12 @@ import {
 import { normalizeScopes, type Role, type Scope } from '@relay/contracts';
 import { withWorkspaceContext, type WorkspaceScopedClient } from '@relay/database';
 
-import type { ActorContext, ServiceDeps } from '../types.js';
+import type { ActorContext, ServiceDeps } from '../types';
 
-import { decisionToError, notFound, toRelayError } from './errors.js';
-import { toProviderId } from './mappers.js';
-import { systemClock } from '../ports/clock.js';
-import type { Clock } from '../types.js';
+import { decisionToError, notFound, toRelayError } from './errors';
+import { toProviderId } from './mappers';
+import { systemClock } from '../ports/clock';
+import type { Clock } from '../types';
 
 export type Db = WorkspaceScopedClient;
 

@@ -1,13 +1,13 @@
 import { ROLE_RANK } from '@relay/authz';
 import type { Paginated, Role } from '@relay/contracts';
 
-import type { ActorContext, MembershipService, PageQuery, ServiceDeps } from '../types.js';
-import type { MembershipView } from '../views.js';
+import type { ActorContext, MembershipService, PageQuery, ServiceDeps } from '../types';
+import type { MembershipView } from '../views';
 
-import { recordAudit } from '../internal/audit.js';
-import { invalid, notFound } from '../internal/errors.js';
-import { pageArgs, toPage } from '../internal/pagination.js';
-import { authorized, type Db } from '../internal/runtime.js';
+import { recordAudit } from '../internal/audit';
+import { invalid, notFound } from '../internal/errors';
+import { pageArgs, toPage } from '../internal/pagination';
+import { authorized, type Db } from '../internal/runtime';
 
 /**
  * Membership.

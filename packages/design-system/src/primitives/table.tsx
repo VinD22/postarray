@@ -2,8 +2,8 @@
 
 import { forwardRef, type ComponentPropsWithoutRef } from 'react';
 import { ArrowDown, ArrowUp, ChevronsUpDown } from 'lucide-react';
-import { cn } from '../utils/cn.js';
-import { focusRingInset } from '../utils/style-constants.js';
+import { cn } from '../utils/cn';
+import { focusRingInset } from '../utils/style-constants';
 
 /**
  * A semantic data table, ready for TanStack Table.

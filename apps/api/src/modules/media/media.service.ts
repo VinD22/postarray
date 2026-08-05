@@ -7,9 +7,9 @@ import type {
   MediaAssetView,
   Services,
   ViewModel,
-} from '../../application/port.js';
-import { SERVICES } from '../../application/tokens.js';
-import type { CreateUploadUrlInput } from './media.schemas.js';
+} from '../../application/port';
+import { SERVICES } from '../../application/tokens';
+import type { CreateUploadUrlInput } from './media.schemas';
 
 /** Transport-level delegation for the media library. */
 @Injectable()

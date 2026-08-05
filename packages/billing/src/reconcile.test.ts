@@ -2,17 +2,17 @@ import { describe, expect, it } from 'vitest';
 
 import type { PolarConfig } from '@relay/config';
 
-import { createPolarClient } from './client.js';
-import { deriveEntitlement } from './entitlements.js';
-import { InMemorySubscriptionStore } from './inbox.js';
+import { createPolarClient } from './client';
+import { deriveEntitlement } from './entitlements';
+import { InMemorySubscriptionStore } from './inbox';
 import {
   DRIFT_PAGE_THRESHOLD_PER_HOUR,
   reconcileSubscriptions,
   reconcileWorkspace,
-} from './reconcile.js';
-import { type LocalPolarSimulator } from './simulator.js';
-import { toVerifiedSubscription } from './webhooks.js';
-import { MutableClock } from './time.js';
+} from './reconcile';
+import { type LocalPolarSimulator } from './simulator';
+import { toVerifiedSubscription } from './webhooks';
+import { MutableClock } from './time';
 
 const START = '2026-08-04T14:00:00.000Z';
 

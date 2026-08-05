@@ -9,12 +9,12 @@ import {
   PROTECTED_RESOURCE_PATH,
   buildAuthenticateChallenge,
   buildProtectedResourceMetadata,
-} from './auth/metadata.js';
-import { bearerFromHeader } from './auth/verifier.js';
-import type { TokenVerifier, VerifiedGrant } from './auth/verifier.js';
-import type { Dispatcher } from './dispatch.js';
-import { createMcpServer } from './server.js';
-import type { ToolRegistry } from './tools/registry.js';
+} from './auth/metadata';
+import { bearerFromHeader } from './auth/verifier';
+import type { TokenVerifier, VerifiedGrant } from './auth/verifier';
+import type { Dispatcher } from './dispatch';
+import { createMcpServer } from './server';
+import type { ToolRegistry } from './tools/registry';
 
 /**
  * The HTTP surface.

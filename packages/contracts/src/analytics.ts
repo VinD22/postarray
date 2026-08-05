@@ -1,8 +1,8 @@
 import { z } from 'zod';
 
-import { metricAvailabilitySchema, providerIdSchema } from './enums.js';
-import type { MetricAvailability } from './enums.js';
-import { checksumSchema, isoInstantSchema } from './primitives.js';
+import { metricAvailabilitySchema, providerIdSchema } from './enums';
+import type { MetricAvailability } from './enums';
+import { checksumSchema, isoInstantSchema } from './primitives';
 
 /**
  * Normalized analytics. The provider's own field name and definition are kept

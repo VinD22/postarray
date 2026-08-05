@@ -2,7 +2,7 @@
 
 import { forwardRef, type ComponentPropsWithoutRef, type ReactNode } from 'react';
 import { Tooltip as TooltipPrimitive } from 'radix-ui';
-import { cn } from '../utils/cn.js';
+import { cn } from '../utils/cn';
 
 /**
  * A tooltip repeats or shortens something that is already available.

@@ -1,7 +1,7 @@
 'use client';
 
 import { forwardRef, type ComponentPropsWithoutRef } from 'react';
-import { cn } from '../utils/cn.js';
+import { cn } from '../utils/cn';
 
 /**
  * Content that is available to assistive technology but not painted.

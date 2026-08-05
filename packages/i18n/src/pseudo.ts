@@ -14,10 +14,10 @@
  * not, the message was malformed to begin with and lint will say so.
  */
 
-import { transformIcu } from './icu.js';
-import { en } from './messages/en/index.js';
-import type { LocaleFormatting } from './locales.js';
-import type { PartialCatalog } from './messages/index.js';
+import { transformIcu } from './icu';
+import { en } from './messages/en/index';
+import type { LocaleFormatting } from './locales';
+import type { PartialCatalog } from './messages/index';
 
 export type PseudoVariant = 'accented' | 'bidi';
 

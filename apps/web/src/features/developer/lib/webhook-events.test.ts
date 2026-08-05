@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { WEBHOOK_EVENT_NAMES } from '@relay/contracts';
 
-import { webhookEventGroups } from './webhook-events.js';
+import { webhookEventGroups } from './webhook-events';
 
 describe('webhookEventGroups', () => {
   it('offers every event the API can send, exactly once', () => {

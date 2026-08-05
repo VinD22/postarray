@@ -1,6 +1,6 @@
-import { createTemporalRuntime, workerActivities } from './temporal-runtime.js';
-import { runRssPoll } from './core/rss-poll.core.js';
-import type { RssPollWorkflowInput, RssPollWorkflowOutput } from './inputs.js';
+import { createTemporalRuntime, workerActivities } from './temporal-runtime';
+import { runRssPoll } from './core/rss-poll.core';
+import type { RssPollWorkflowInput, RssPollWorkflowOutput } from './inputs';
 
 /**
  * Feed polling with SSRF-safe fetches and three-layer deduplication.

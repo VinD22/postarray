@@ -1,8 +1,8 @@
 'use client';
 
 import { forwardRef, type ComponentPropsWithoutRef } from 'react';
-import { cn } from '../utils/cn.js';
-import type { ProviderKey } from '../tokens/tokens.js';
+import { cn } from '../utils/cn';
+import type { ProviderKey } from '../tokens/tokens';
 
 export type StatusDotTone = 'neutral' | 'accent' | 'success' | 'warning' | 'destructive' | 'info';
 

@@ -50,7 +50,7 @@ import type {
   WebhookDeliveryView,
   WebhookEndpointView,
   WorkspaceRole,
-} from './view-models.js';
+} from './view-models';
 
 /* ------------------------------------------------------------------ helpers */
 

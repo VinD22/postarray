@@ -20,8 +20,8 @@ export {
   type NamespaceTranslator,
 } from '@relay/i18n/react';
 
-export { useFormatters, type Formatters } from './formatters.js';
-export { IntlProvider } from './provider.js';
+export { useFormatters, type Formatters } from './formatters';
+export { IntlProvider } from './provider';
 export {
   LOCALE_COOKIE,
   TIME_ZONE_COOKIE,
@@ -29,4 +29,4 @@ export {
   resolveTimeZone,
   routing,
   type ResolvedLocale,
-} from './routing.js';
+} from './routing';

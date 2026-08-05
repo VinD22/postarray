@@ -1,18 +1,18 @@
 import { Body, Controller, Get, HttpCode, Param, Post, Query } from '@nestjs/common';
 import type { IanaTimeZone, IsoInstant, Paginated, PublishJob } from '@relay/contracts';
 
-import type { ActorContext, CalendarEntry } from '../../application/port.js';
-import { Actor, Idempotent, RequireScope } from '../../common/decorators.js';
-import { publishJobIdSchema } from '../../common/schemas.js';
-import { parseBody, parseParams, parseQuery } from '../../common/zod.js';
+import type { ActorContext, CalendarEntry } from '../../application/port';
+import { Actor, Idempotent, RequireScope } from '../../common/decorators';
+import { publishJobIdSchema } from '../../common/schemas';
+import { parseBody, parseParams, parseQuery } from '../../common/zod';
 import {
   calendarQuerySchema,
   cancelRequestSchema,
   nextSlotQuerySchema,
   rescheduleRequestSchema,
   scheduleRequestSchema,
-} from './scheduling.schemas.js';
-import { SchedulingService } from './scheduling.service.js';
+} from './scheduling.schemas';
+import { SchedulingService } from './scheduling.service';
 
 /**
  * Scheduling and the calendar.

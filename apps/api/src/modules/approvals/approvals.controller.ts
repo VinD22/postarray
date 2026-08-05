@@ -1,16 +1,16 @@
 import { Body, Controller, Get, HttpCode, Param, Post, Query } from '@nestjs/common';
 import type { Paginated } from '@relay/contracts';
 
-import type { ActorContext, ApprovalRequestView } from '../../application/port.js';
-import { Actor, Idempotent, RequireScope } from '../../common/decorators.js';
-import { approvalIdSchema } from '../../common/schemas.js';
-import { parseBody, parseParams, parseQuery } from '../../common/zod.js';
+import type { ActorContext, ApprovalRequestView } from '../../application/port';
+import { Actor, Idempotent, RequireScope } from '../../common/decorators';
+import { approvalIdSchema } from '../../common/schemas';
+import { parseBody, parseParams, parseQuery } from '../../common/zod';
 import {
   decideApprovalSchema,
   listPendingQuerySchema,
   requestApprovalSchema,
-} from './approvals.schemas.js';
-import { ApprovalsService } from './approvals.service.js';
+} from './approvals.schemas';
+import { ApprovalsService } from './approvals.service';
 
 /**
  * Approvals.

@@ -1,9 +1,9 @@
 import { describe, expect, it } from 'vitest';
 
-import { buildMessages, missingVariables, parseJsonOutput, renderVariables } from './messages.js';
-import { altTextPrompt, draftFromBriefPrompt } from './prompts/content.js';
-import { TEST_CALL_CONTEXT } from './test-support.js';
-import type { AiRequest } from './types.js';
+import { buildMessages, missingVariables, parseJsonOutput, renderVariables } from './messages';
+import { altTextPrompt, draftFromBriefPrompt } from './prompts/content';
+import { TEST_CALL_CONTEXT } from './test-support';
+import type { AiRequest } from './types';
 
 function request(overrides: Partial<AiRequest> = {}): AiRequest {
   return {

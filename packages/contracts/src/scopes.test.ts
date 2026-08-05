@@ -14,7 +14,7 @@ import {
   scopeSchema,
   scopeStringSchema,
   scopesSatisfy,
-} from './scopes.js';
+} from './scopes';
 
 describe('scope registry', () => {
   it('lists exactly the documented scopes', () => {

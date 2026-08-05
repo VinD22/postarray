@@ -17,10 +17,10 @@ import type {
   CanonicalPreview,
   ContentItemView,
   PostVariantView,
-} from '../../application/port.js';
-import { Actor, Idempotent, RequireScope } from '../../common/decorators.js';
-import { contentItemIdSchema, postVariantIdSchema } from '../../common/schemas.js';
-import { parseBody, parseParams, parseQuery } from '../../common/zod.js';
+} from '../../application/port';
+import { Actor, Idempotent, RequireScope } from '../../common/decorators';
+import { contentItemIdSchema, postVariantIdSchema } from '../../common/schemas';
+import { parseBody, parseParams, parseQuery } from '../../common/zod';
 import {
   applySetSchema,
   applySignatureSchema,
@@ -30,8 +30,8 @@ import {
   previewQuerySchema,
   setTargetsSchema,
   updateMasterSchema,
-} from './content.schemas.js';
-import { ContentService } from './content.service.js';
+} from './content.schemas';
+import { ContentService } from './content.service';
 
 /**
  * Content items: the master draft, its per-target variants, and the frozen

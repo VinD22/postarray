@@ -1,4 +1,4 @@
-import type { EnvKey } from './schema.js';
+import type { EnvKey } from './schema';
 
 /**
  * Configuration errors happen before the i18n runtime and the logger exist, so

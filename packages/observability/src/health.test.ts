@@ -1,7 +1,7 @@
 import { detectCapabilities, loadConfig, type RuntimeCapabilities } from '@relay/config';
 import { describe, expect, it } from 'vitest';
 
-import { buildHealthReport, healthHttpStatus, type HealthCheck } from './health.js';
+import { buildHealthReport, healthHttpStatus, type HealthCheck } from './health';
 
 const LOCAL_KEY_32_BYTES = Buffer.alloc(32, 5).toString('base64');
 

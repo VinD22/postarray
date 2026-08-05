@@ -1,14 +1,14 @@
 import { GROWTH_PLAN_SCHEMA_VERSION, growthPlanSchema } from '@relay/contracts';
 import type { GrowthPlan } from '@relay/contracts';
 
-import { nowIso } from '../clock.js';
-import type { Clock } from '../clock.js';
-import { aiOutputInvalidError } from '../errors.js';
-import { growthPlanPrompt } from '../prompts/analysis.js';
-import type { AiCallContext, AiGateway, AiMeta } from '../types.js';
-import { postProcessGrowthPlan } from './postprocess.js';
-import type { GrowthViolation } from './postprocess.js';
-import type { GrowthPlanContext } from './retrieval.js';
+import { nowIso } from '../clock';
+import type { Clock } from '../clock';
+import { aiOutputInvalidError } from '../errors';
+import { growthPlanPrompt } from '../prompts/analysis';
+import type { AiCallContext, AiGateway, AiMeta } from '../types';
+import { postProcessGrowthPlan } from './postprocess';
+import type { GrowthViolation } from './postprocess';
+import type { GrowthPlanContext } from './retrieval';
 
 /**
  * The Growth Advisor generation pipeline.

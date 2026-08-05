@@ -28,7 +28,7 @@ import {
   type BrandRef,
   type MemberView,
   type WorkspaceRole,
-} from '../lib/view-models.js';
+} from '../lib/view-models';
 
 /** Roles that include a review step and can therefore hold approval rights. */
 const APPROVAL_CAPABLE_ROLES: readonly WorkspaceRole[] = ['owner', 'admin', 'manager', 'approver'];

@@ -1,11 +1,11 @@
-import { createBudgetGuard } from './budget.js';
-import type { AiBudgetLimits } from './budget.js';
-import { fixedClock } from './clock.js';
-import type { Clock } from './clock.js';
-import { createAiGateway } from './gateway.js';
-import { createEchoProvider } from './providers/echo.js';
-import { createMemoryCounterStore } from './types.js';
-import type { AiCallContext, AiGateway, AiLogger, AiProviderAdapter } from './types.js';
+import { createBudgetGuard } from './budget';
+import type { AiBudgetLimits } from './budget';
+import { fixedClock } from './clock';
+import type { Clock } from './clock';
+import { createAiGateway } from './gateway';
+import { createEchoProvider } from './providers/echo';
+import { createMemoryCounterStore } from './types';
+import type { AiCallContext, AiGateway, AiLogger, AiProviderAdapter } from './types';
 
 /**
  * Shared test scaffolding. Not exported from the package entry point: this is

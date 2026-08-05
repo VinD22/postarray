@@ -8,14 +8,14 @@ import {
   type WebhookEventName,
 } from '@relay/contracts';
 
-import type { ActorContext, PageQuery, ServiceDeps, WebhookService } from '../types.js';
-import type { WebhookDeliveryView, WebhookEndpointView } from '../views.js';
+import type { ActorContext, PageQuery, ServiceDeps, WebhookService } from '../types';
+import type { WebhookDeliveryView, WebhookEndpointView } from '../views';
 
-import { recordAudit } from '../internal/audit.js';
-import { invalid, notFound } from '../internal/errors.js';
-import { pageArgs, toPage } from '../internal/pagination.js';
-import { authorized } from '../internal/runtime.js';
-import { assertFetchable } from '../internal/url-safety.js';
+import { recordAudit } from '../internal/audit';
+import { invalid, notFound } from '../internal/errors';
+import { pageArgs, toPage } from '../internal/pagination';
+import { authorized } from '../internal/runtime';
+import { assertFetchable } from '../internal/url-safety';
 
 /**
  * Outbound webhooks.

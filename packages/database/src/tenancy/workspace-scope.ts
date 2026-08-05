@@ -1,7 +1,7 @@
-import { DATABASE_ERROR_CODES, DatabaseError } from '../errors.js';
-import type { RelayPrismaClient } from '../client.js';
+import { DATABASE_ERROR_CODES, DatabaseError } from '../errors';
+import type { RelayPrismaClient } from '../client';
 
-import { isGlobalModel, isTenantModel, isUnregisteredModel } from './model-registry.js';
+import { isGlobalModel, isTenantModel, isUnregisteredModel } from './model-registry';
 
 /**
  * Workspace-scoped repository access.

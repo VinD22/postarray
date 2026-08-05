@@ -8,9 +8,9 @@ import type {
   PublishStatus,
   SocialConnector,
   StatusRequest,
-} from './contract.js';
-import { ProviderCallError, classifyProviderError } from './errors.js';
-import { type Clock, type ConnectorLogger, instantOf, noopLogger, systemClock } from './ports.js';
+} from './contract';
+import { ProviderCallError, classifyProviderError } from './errors';
+import { type Clock, type ConnectorLogger, instantOf, noopLogger, systemClock } from './ports';
 
 /**
  * The "did this already publish?" guard.

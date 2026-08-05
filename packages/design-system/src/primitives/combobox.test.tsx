@@ -2,7 +2,7 @@ import { useState, type ReactNode } from 'react';
 import { describe, expect, it, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { Combobox, type ComboboxItem, type ComboboxMessages } from './combobox.js';
+import { Combobox, type ComboboxItem, type ComboboxMessages } from './combobox';
 
 // Test fixtures only. Product copy lives in @relay/i18n.
 const messages: ComboboxMessages = {

@@ -1,8 +1,8 @@
 'use client';
 
 import { forwardRef, type ComponentPropsWithoutRef } from 'react';
-import { cn } from '../utils/cn.js';
-import { formatHotkey } from '../hooks/use-hotkeys.js';
+import { cn } from '../utils/cn';
+import { formatHotkey } from '../hooks/use-hotkeys';
 
 export interface KbdProps extends Omit<ComponentPropsWithoutRef<'kbd'>, 'children'> {
   /**

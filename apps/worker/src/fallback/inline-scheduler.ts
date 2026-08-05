@@ -1,16 +1,16 @@
 import { RelayError, ERROR_CODES } from '@relay/contracts';
 import type { HealthCheck } from '@relay/observability';
 
-import type { WorkerActivities } from '../activities/types.js';
-import { MESSAGE_KEYS } from '../messages.js';
-import type { ChildWorkflowDescriptor, WorkflowLog, WorkflowStatusView } from '../runtime/types.js';
+import type { WorkerActivities } from '../activities/types';
+import { MESSAGE_KEYS } from '../messages';
+import type { ChildWorkflowDescriptor, WorkflowLog, WorkflowStatusView } from '../runtime/types';
 
 import {
   ContinueAsNewRequest,
   RealtimeWorkflowRuntime,
   applyInlineSignal,
-} from './realtime-runtime.js';
-import { nowIso } from '../runtime/clock.js';
+} from './realtime-runtime';
+import { nowIso } from '../runtime/clock';
 
 /**
  * The degraded local scheduler.

@@ -20,14 +20,14 @@ export {
   type UserFixture,
   type WorkspaceBundle,
   type WorkspaceFixture,
-} from './workspace.js';
+} from './workspace';
 
 export {
   makeAllCapabilitySnapshots,
   makeCapabilitySnapshot,
   makeDriftedCapabilitySnapshot,
   type MakeCapabilitySnapshotInput,
-} from './capabilities.js';
+} from './capabilities';
 
 export {
   CONNECTION_HEALTHS,
@@ -43,7 +43,7 @@ export {
   type DestinationFixture,
   type MakeConnectionInput,
   type MentionFixture,
-} from './connection.js';
+} from './connection';
 
 export {
   makeContentVersion,
@@ -58,7 +58,7 @@ export {
   type MakeContentVersionInput,
   type MakeDraftInput,
   type MakePostVariantInput,
-} from './content.js';
+} from './content';
 
 export {
   makeApprovedJob,
@@ -73,7 +73,7 @@ export {
   type MakeAttemptInput,
   type MakeJobInput,
   type MakeReceiptInput,
-} from './publishing.js';
+} from './publishing';
 
 export {
   makeAccountMetrics,
@@ -83,7 +83,7 @@ export {
   makePostMetrics,
   makeUnavailableObservation,
   type MakeMetricObservationInput,
-} from './analytics.js';
+} from './analytics';
 
 export {
   makeBusinessProfile,
@@ -91,7 +91,7 @@ export {
   makeOpportunity,
   makeTool,
   type MakeGrowthPlanInput,
-} from './growth.js';
+} from './growth';
 
 export {
   makeFailingValidationResult,
@@ -103,4 +103,4 @@ export {
   makeWebhookEndpoint,
   makeWebhookEnvelope,
   type MakeWebhookEnvelopeInput,
-} from './api.js';
+} from './api';

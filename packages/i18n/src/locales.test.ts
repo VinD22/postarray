@@ -14,7 +14,7 @@ import {
   parseAcceptLanguage,
   requireLocale,
   resolveLocale,
-} from './locales.js';
+} from './locales';
 
 const VALID_PLURAL_CATEGORIES = new Set(['zero', 'one', 'two', 'few', 'many', 'other']);
 

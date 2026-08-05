@@ -3,7 +3,7 @@ import { z } from 'zod';
 import { RelayError } from '@relay/contracts';
 import type { PolarConfig } from '@relay/config';
 
-import { BILLING_MESSAGE_KEYS } from './messages.js';
+import { BILLING_MESSAGE_KEYS } from './messages';
 import {
   polarBenefitGrantSchema,
   polarCheckoutSchema,
@@ -13,7 +13,7 @@ import {
   polarOrderSchema,
   polarProductSchema,
   polarSubscriptionSchema,
-} from './polar-schemas.js';
+} from './polar-schemas';
 import type {
   PolarBenefitGrant,
   PolarCheckout,
@@ -22,11 +22,11 @@ import type {
   PolarOrder,
   PolarProduct,
   PolarSubscription,
-} from './polar-schemas.js';
-import type { BillingInterval } from './products.js';
-import { LocalPolarSimulator } from './simulator.js';
-import type { Clock } from './time.js';
-import { systemClock } from './time.js';
+} from './polar-schemas';
+import type { BillingInterval } from './products';
+import { LocalPolarSimulator } from './simulator';
+import type { Clock } from './time';
+import { systemClock } from './time';
 
 /**
  * The merchant-of-record port.

@@ -7,7 +7,7 @@ import {
   type ConnectorDeps,
   type CredentialResult,
   type OAuthScopeDefinition,
-} from '../shared/contract-shape.js';
+} from '../shared/contract-shape';
 import {
   FACEBOOK_OAUTH_BASE,
   GRAPH_BASE,
@@ -15,7 +15,7 @@ import {
   THREADS_OAUTH_BASE,
   metaLongLivedTokenSchema,
   type MetaSurface,
-} from './graph.js';
+} from './graph';
 
 /**
  * Meta OAuth, shared by Instagram, Facebook Pages and Threads.

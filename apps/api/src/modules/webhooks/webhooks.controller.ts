@@ -6,17 +6,17 @@ import type {
   WebhookEndpoint,
 } from '@relay/contracts';
 
-import type { ActorContext, ContentItemView } from '../../application/port.js';
-import { Actor, Idempotent, RequireScope } from '../../common/decorators.js';
-import { cursorQuerySchema } from '../../common/pagination.js';
-import { webhookDeliveryIdSchema, webhookEndpointIdSchema } from '../../common/schemas.js';
-import { parseBody, parseParams, parseQuery } from '../../common/zod.js';
+import type { ActorContext, ContentItemView } from '../../application/port';
+import { Actor, Idempotent, RequireScope } from '../../common/decorators';
+import { cursorQuerySchema } from '../../common/pagination';
+import { webhookDeliveryIdSchema, webhookEndpointIdSchema } from '../../common/schemas';
+import { parseBody, parseParams, parseQuery } from '../../common/zod';
 import {
   createWebhookEndpointSchema,
   inboundIntegrationSchema,
   updateWebhookEndpointSchema,
-} from './webhooks.schemas.js';
-import { WebhooksService } from './webhooks.service.js';
+} from './webhooks.schemas';
+import { WebhooksService } from './webhooks.service';
 
 /**
  * Outbound webhook endpoints.

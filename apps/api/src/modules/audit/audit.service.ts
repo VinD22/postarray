@@ -1,9 +1,9 @@
 import { Inject, Injectable } from '@nestjs/common';
 import type { Paginated } from '@relay/contracts';
 
-import type { ActorContext, AuditEventView, Services } from '../../application/port.js';
-import { SERVICES } from '../../application/tokens.js';
-import type { ListAuditQuery } from './audit.schemas.js';
+import type { ActorContext, AuditEventView, Services } from '../../application/port';
+import { SERVICES } from '../../application/tokens';
+import type { ListAuditQuery } from './audit.schemas';
 
 /** Transport-level delegation for the audit log. */
 @Injectable()

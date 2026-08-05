@@ -1,13 +1,13 @@
 import { webhookEventNameSchema } from '@relay/contracts';
 import { z } from 'zod';
 
-import { cursorQuerySchema } from '../../common/pagination.js';
+import { cursorQuerySchema } from '../../common/pagination';
 import {
   connectionIdSchema,
   passthroughObjectSchema,
   shortTextSchema,
   webhookEndpointIdSchema,
-} from '../../common/schemas.js';
+} from '../../common/schemas';
 
 /**
  * Outbound endpoint management, and the inbound integration payload.

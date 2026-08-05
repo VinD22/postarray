@@ -1,17 +1,13 @@
 import type { Logger } from '@relay/observability';
 
-import type { PolarClient } from './client.js';
-import { deriveEntitlement } from './entitlements.js';
-import type {
-  EntitlementSnapshot,
-  EntitlementState,
-  VerifiedSubscription,
-} from './entitlements.js';
-import { isFullAccess } from './entitlements.js';
-import type { SubscriptionStore } from './inbox.js';
-import { toVerifiedSubscription, workspaceIdOf } from './webhooks.js';
-import type { Clock } from './time.js';
-import { addDays, nowIso } from './time.js';
+import type { PolarClient } from './client';
+import { deriveEntitlement } from './entitlements';
+import type { EntitlementSnapshot, EntitlementState, VerifiedSubscription } from './entitlements';
+import { isFullAccess } from './entitlements';
+import type { SubscriptionStore } from './inbox';
+import { toVerifiedSubscription, workspaceIdOf } from './webhooks';
+import type { Clock } from './time';
+import { addDays, nowIso } from './time';
 
 /**
  * Reconciliation.

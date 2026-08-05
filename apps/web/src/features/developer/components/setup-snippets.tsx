@@ -14,7 +14,7 @@ import { Notice } from '@relay/design-system/patterns';
 import { useAnnouncer } from '@relay/design-system/hooks';
 import { useTranslations } from '@relay/i18n/react';
 
-import { SETUP_CLIENTS, buildSnippet, type SnippetInput } from '../lib/setup-snippets.js';
+import { SETUP_CLIENTS, buildSnippet, type SnippetInput } from '../lib/setup-snippets';
 
 export type SetupSnippetsProps = SnippetInput;
 

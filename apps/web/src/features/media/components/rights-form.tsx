@@ -14,8 +14,8 @@ import { Notice } from '@relay/design-system/patterns';
 import { useTranslations } from '@relay/i18n/react';
 import { formatDate } from '@relay/i18n';
 
-import { CheckRow, RadioRow } from '../../composer/components/form-rows.js';
-import type { MediaAsset, RightsDeclaration, RightsOwner } from '../types.js';
+import { CheckRow, RadioRow } from '../../composer/components/form-rows';
+import type { MediaAsset, RightsDeclaration, RightsOwner } from '../types';
 
 export interface RightsFormProps {
   readonly asset: MediaAsset;

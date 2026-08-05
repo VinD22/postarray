@@ -19,11 +19,11 @@ import { EmptyState, MetricValue, Notice, PageHeader } from '@relay/design-syste
 import { useAnnouncer } from '@relay/design-system/hooks';
 import { useTranslations } from '@relay/i18n/react';
 
-import { AsyncBoundary } from '../lib/async-boundary.js';
-import { billingGateway } from '../lib/gateway.js';
-import { useFormatters } from '../lib/formatters.js';
-import { settingsKey, useWorkspaceId } from '../lib/keys.js';
-import { SettingsPanel, SettingsStack } from '../components/section.js';
+import { AsyncBoundary } from '../lib/async-boundary';
+import { billingGateway } from '../lib/gateway';
+import { useFormatters } from '../lib/formatters';
+import { settingsKey, useWorkspaceId } from '../lib/keys';
+import { SettingsPanel, SettingsStack } from '../components/section';
 
 const STATE_KEYS = {
   pending: 'billing.referral.commissionPending',

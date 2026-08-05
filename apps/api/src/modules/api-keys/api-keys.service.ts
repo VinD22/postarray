@@ -7,13 +7,13 @@ import type {
   Clock,
   CursorQuery,
   Services,
-} from '../../application/port.js';
-import { CLOCK, SERVICES } from '../../application/tokens.js';
-import { instantAfter } from '../../common/instant.js';
-import { CredentialDirectory } from '../../security/credential-directory.js';
-import { CREDENTIAL_PREFIXES, issueCredential } from '../../security/credentials.js';
-import { apiKeyRecordSchema } from '../../security/records.js';
-import type { CreateApiKeyInput } from './api-keys.schemas.js';
+} from '../../application/port';
+import { CLOCK, SERVICES } from '../../application/tokens';
+import { instantAfter } from '../../common/instant';
+import { CredentialDirectory } from '../../security/credential-directory';
+import { CREDENTIAL_PREFIXES, issueCredential } from '../../security/credentials';
+import { apiKeyRecordSchema } from '../../security/records';
+import type { CreateApiKeyInput } from './api-keys.schemas';
 
 export interface CreatedApiKey {
   readonly apiKey: ApiKeyView;

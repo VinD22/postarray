@@ -21,14 +21,14 @@ import type {
   ConnectionView,
   MentionEntity,
   ProviderDestination,
-} from '../../application/port.js';
-import { CLOCK, RELAY_CONFIG } from '../../application/tokens.js';
+} from '../../application/port';
+import { CLOCK, RELAY_CONFIG } from '../../application/tokens';
 import {
   OAUTH_STATE_COOKIE,
   expireCookie,
   parseCookies,
   serializeCookie,
-} from '../../common/cookies.js';
+} from '../../common/cookies';
 import {
   Actor,
   Idempotent,
@@ -36,12 +36,12 @@ import {
   RateLimit,
   RequireScope,
   RequireStepUp,
-} from '../../common/decorators.js';
-import { instantAfter } from '../../common/instant.js';
-import { relayState } from '../../common/request.types.js';
-import { connectionIdSchema } from '../../common/schemas.js';
-import { constantTimeEquals, randomToken } from '../../security/credentials.js';
-import { parseBody, parseParams, parseQuery } from '../../common/zod.js';
+} from '../../common/decorators';
+import { instantAfter } from '../../common/instant';
+import { relayState } from '../../common/request.types';
+import { connectionIdSchema } from '../../common/schemas';
+import { constantTimeEquals, randomToken } from '../../security/credentials';
+import { parseBody, parseParams, parseQuery } from '../../common/zod';
 import {
   beginOAuthSchema,
   callbackParamsSchema,
@@ -49,9 +49,9 @@ import {
   listDestinationsQuerySchema,
   oauthCallbackQuerySchema,
   searchMentionsQuerySchema,
-} from './connections.schemas.js';
-import { ConnectionsService } from './connections.service.js';
-import { OAUTH_TRANSACTION_TTL_SECONDS, OAuthTransactionStore } from './oauth-transaction.store.js';
+} from './connections.schemas';
+import { ConnectionsService } from './connections.service';
+import { OAUTH_TRANSACTION_TTL_SECONDS, OAuthTransactionStore } from './oauth-transaction.store';
 
 /**
  * Connected social accounts, and the OAuth handshake that creates them.

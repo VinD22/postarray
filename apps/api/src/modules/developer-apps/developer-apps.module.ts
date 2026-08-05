@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 
-import { DeveloperAppsController, DeveloperGrantsController } from './developer-apps.controller.js';
-import { DeveloperAppsService } from './developer-apps.service.js';
+import { DeveloperAppsController, DeveloperGrantsController } from './developer-apps.controller';
+import { DeveloperAppsService } from './developer-apps.service';
 
 @Module({
   controllers: [DeveloperAppsController, DeveloperGrantsController],

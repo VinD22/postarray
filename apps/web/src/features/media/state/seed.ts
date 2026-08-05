@@ -5,7 +5,7 @@
  * photography claim, no performance number attached to any asset.
  */
 
-import type { MediaAsset } from '../types.js';
+import type { MediaAsset } from '../types';
 
 export const SEED_ASSETS: readonly MediaAsset[] = [
   {

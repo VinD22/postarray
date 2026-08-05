@@ -1,5 +1,5 @@
-import { shortLinkRecordSchema } from './types.js';
-import type { ClickEvent, ShortLinkLookup, ShortLinkRecord, ShortLinkStore } from './types.js';
+import { shortLinkRecordSchema } from './types';
+import type { ClickEvent, ShortLinkLookup, ShortLinkRecord, ShortLinkStore } from './types';
 
 /**
  * Read models.

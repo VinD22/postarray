@@ -10,10 +10,10 @@ import type {
   ThreadSequenceWorkflowInput,
   TokenRefreshWorkflowInput,
   WebhookDeliveryWorkflowInput,
-} from '../workflows/inputs.js';
+} from '../workflows/inputs';
 
-import { TEST_CONTEXT, TEST_EPOCH_MS } from './harness.js';
-import { toIsoInstant } from '../runtime/deterministic.js';
+import { TEST_CONTEXT, TEST_EPOCH_MS } from './harness';
+import { toIsoInstant } from '../runtime/deterministic';
 
 /** Workflow inputs for the test suites. Ids only, never a body or a token. */
 

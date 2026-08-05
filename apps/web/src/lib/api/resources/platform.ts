@@ -9,9 +9,9 @@ import type {
   WebhookEventName,
 } from '@relay/contracts';
 
-import { call } from '../call.js';
-import { page } from '../fixtures.js';
-import type { Paginated } from '../types.js';
+import { call } from '../call';
+import { page } from '../fixtures';
+import type { Paginated } from '../types';
 
 export interface RuleView {
   readonly id: string;

@@ -2,7 +2,7 @@
 
 import type { ReactNode } from 'react';
 import { AlertTriangle, Check, Circle, Clock, RotateCcw, X } from 'lucide-react';
-import { cn } from '../utils/cn.js';
+import { cn } from '../utils/cn';
 
 export type TimelineOutcome =
   'completed' | 'current' | 'pending' | 'retried' | 'warning' | 'failed';

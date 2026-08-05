@@ -12,8 +12,8 @@ import type {
   KeyValueStore,
   PortalLinkView,
   UsageSummaryView,
-} from '../../application/port.js';
-import { CLOCK, KEY_VALUE_STORE, LOGGER, RELAY_CONFIG } from '../../application/tokens.js';
+} from '../../application/port';
+import { CLOCK, KEY_VALUE_STORE, LOGGER, RELAY_CONFIG } from '../../application/tokens';
 import {
   Actor,
   Idempotent,
@@ -21,18 +21,18 @@ import {
   RateLimit,
   RequireScope,
   RequireStepUp,
-} from '../../common/decorators.js';
-import { toEpochSeconds } from '../../common/instant.js';
-import { relayState } from '../../common/request.types.js';
-import { parseBody, parseOrThrow, parseQuery } from '../../common/zod.js';
-import { bodyHash, verifySignature } from '../../security/signing.js';
+} from '../../common/decorators';
+import { toEpochSeconds } from '../../common/instant';
+import { relayState } from '../../common/request.types';
+import { parseBody, parseOrThrow, parseQuery } from '../../common/zod';
+import { bodyHash, verifySignature } from '../../security/signing';
 import {
   createCheckoutSchema,
   createPortalLinkSchema,
   polarWebhookSchema,
   usageQuerySchema,
-} from './billing.schemas.js';
-import { BillingService } from './billing.service.js';
+} from './billing.schemas';
+import { BillingService } from './billing.service';
 
 /** Webhook event ids are remembered for a week, well past any retry schedule. */
 const WEBHOOK_DEDUPE_TTL_SECONDS = 7 * 24 * 60 * 60;

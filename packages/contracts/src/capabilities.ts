@@ -7,10 +7,10 @@ import {
   contentKindSchema,
   mediaKindSchema,
   providerIdSchema,
-} from './enums.js';
-import type { CapabilitySupport, ContentKind } from './enums.js';
-import { normalizedMetricNameSchema } from './analytics.js';
-import { currencyCodeSchema, isoInstantSchema } from './primitives.js';
+} from './enums';
+import type { CapabilitySupport, ContentKind } from './enums';
+import { normalizedMetricNameSchema } from './analytics';
+import { currencyCodeSchema, isoInstantSchema } from './primitives';
 
 /**
  * The capability snapshot is data, not code. It records what one connected

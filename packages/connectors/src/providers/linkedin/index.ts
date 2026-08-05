@@ -1,4 +1,4 @@
-export { createLinkedInConnector } from './connector.js';
+export { createLinkedInConnector } from './connector';
 export {
   LINKEDIN_API_VERSION,
   LINKEDIN_CAPABILITY_REVISION,
@@ -7,9 +7,9 @@ export {
   LINKEDIN_SCOPES,
   buildLinkedInCapabilities,
   type LinkedInCapabilityInput,
-} from './capabilities.js';
+} from './capabilities';
 export {
   LINKEDIN_ORGANIZATION_ACCOUNT_METRICS,
   LINKEDIN_ORGANIZATION_POST_METRICS,
   LINKEDIN_SOCIAL_METRICS,
-} from './metrics.js';
+} from './metrics';

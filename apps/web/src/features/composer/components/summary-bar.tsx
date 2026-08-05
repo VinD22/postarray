@@ -15,7 +15,7 @@ import { useTranslations } from '@relay/i18n/react';
 import { formatCurrency, formatDateTime } from '@relay/i18n';
 import { cn } from '@relay/design-system/utils';
 
-import { useComposer } from '../composer-context.js';
+import { useComposer } from '../composer-context';
 
 export interface SummaryBarProps {
   readonly onOpenReview: () => void;

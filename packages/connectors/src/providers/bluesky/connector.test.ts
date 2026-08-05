@@ -12,10 +12,10 @@ import {
   testPublishRequest,
   testStatusRequest,
   testThreadItem,
-} from '../shared/testing.js';
-import { buildBlueskyCapabilities } from './capabilities.js';
-import { blueskyPermalink, createBlueskyConnector } from './connector.js';
-import { buildFacets, byteLength, byteOffsetOf } from './facets.js';
+} from '../shared/testing';
+import { buildBlueskyCapabilities } from './capabilities';
+import { blueskyPermalink, createBlueskyConnector } from './connector';
+import { buildFacets, byteLength, byteOffsetOf } from './facets';
 import {
   BLUESKY_ACTOR_SEARCH_FIXTURE,
   BLUESKY_BLOB_FIXTURE,
@@ -25,7 +25,7 @@ import {
   BLUESKY_POST_THREAD_FIXTURE,
   BLUESKY_PROFILE_FIXTURE,
   BLUESKY_SESSION_FIXTURE,
-} from './__fixtures__/index.js';
+} from './__fixtures__/index';
 
 const connection = testConnection({
   provider: 'bluesky',

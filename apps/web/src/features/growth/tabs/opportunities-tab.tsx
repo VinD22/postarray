@@ -27,8 +27,8 @@ import { useTranslations } from '@relay/i18n/react';
 import type { GrowthPlan, OpportunityRecord } from '@relay/contracts';
 import { ExternalLink } from 'lucide-react';
 
-import { useFormatters } from '../../settings/lib/formatters.js';
-import { ItemActions, type DismissReason } from '../item-actions.js';
+import { useFormatters } from '../../settings/lib/formatters';
+import { ItemActions, type DismissReason } from '../item-actions';
 
 export interface OpportunitiesTabProps {
   plan: GrowthPlan;

@@ -67,9 +67,9 @@ import type {
   WebhookDeliveryView,
   WebhookEndpointView,
   WorkspaceView,
-} from './views.js';
+} from './views';
 
-export * from './views.js';
+export * from './views';
 
 /**
  * The shared application service contract.

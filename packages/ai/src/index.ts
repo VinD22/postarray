@@ -24,8 +24,8 @@ export {
   nowIso,
   parseInstant,
   systemClock,
-} from './clock.js';
-export type { Clock } from './clock.js';
+} from './clock';
+export type { Clock } from './clock';
 
 export {
   AI_AVAILABILITIES,
@@ -37,7 +37,7 @@ export {
   createMemoryCounterStore,
   untrustedSourceOriginSchema,
   untrustedSourceSchema,
-} from './types.js';
+} from './types';
 export type {
   AiAvailability,
   AiCallContext,
@@ -65,7 +65,7 @@ export type {
   ProviderToolDefinition,
   UntrustedSource,
   UntrustedSourceOrigin,
-} from './types.js';
+} from './types';
 
 export {
   AI_MESSAGE_KEYS,
@@ -73,8 +73,8 @@ export {
   aiOutputInvalidError,
   aiPolicyBlockedError,
   aiUnavailableError,
-} from './errors.js';
-export type { AiErrorContext } from './errors.js';
+} from './errors';
+export type { AiErrorContext } from './errors';
 
 export {
   ASSUMED_PRICING,
@@ -84,7 +84,7 @@ export {
   createBudgetGuard,
   estimateCostMicros,
   estimateTokens,
-} from './budget.js';
+} from './budget';
 export type {
   AiBudgetGuard,
   AiBudgetLimits,
@@ -92,14 +92,10 @@ export type {
   BudgetDecision,
   BudgetLimitName,
   TokenPricing,
-} from './budget.js';
+} from './budget';
 
-export {
-  CIRCUIT_STATES,
-  DEFAULT_CIRCUIT_OPTIONS,
-  createCircuitBreaker,
-} from './circuit-breaker.js';
-export type { CircuitBreaker, CircuitBreakerOptions, CircuitState } from './circuit-breaker.js';
+export { CIRCUIT_STATES, DEFAULT_CIRCUIT_OPTIONS, createCircuitBreaker } from './circuit-breaker';
+export type { CircuitBreaker, CircuitBreakerOptions, CircuitState } from './circuit-breaker';
 
 export {
   GUARDRAIL_RULES,
@@ -114,14 +110,14 @@ export {
   scanOutput,
   scanOutputTree,
   untrustedDataPolicy,
-} from './guardrails.js';
+} from './guardrails';
 export type {
   GuardrailFinding,
   GuardrailRule,
   OutputScanOptions,
   SanitizedSource,
   UntrustedBlock,
-} from './guardrails.js';
+} from './guardrails';
 
 export {
   BANNED_VOICE_WORDS,
@@ -130,20 +126,20 @@ export {
   PROHIBITED_BEHAVIOUR_PATTERNS,
   SECRET_PATTERNS,
   TESTIMONIAL_PATTERNS,
-} from './patterns.js';
+} from './patterns';
 
-export { buildMessages, missingVariables, parseJsonOutput, renderVariables } from './messages.js';
-export type { BuiltMessages } from './messages.js';
+export { buildMessages, missingVariables, parseJsonOutput, renderVariables } from './messages';
+export type { BuiltMessages } from './messages';
 
-export { createAiGateway, taskFor } from './gateway.js';
-export type { AiGatewayDeps } from './gateway.js';
+export { createAiGateway, taskFor } from './gateway';
+export type { AiGatewayDeps } from './gateway';
 
-export { createAiGatewayFromConfig, selectProvider } from './factory.js';
-export type { AiGatewayFactoryOptions } from './factory.js';
+export { createAiGatewayFromConfig, selectProvider } from './factory';
+export type { AiGatewayFactoryOptions } from './factory';
 
-export { createDeepSeekProvider, createEchoProvider, promptMarker } from './providers/index.js';
-export type { DeepSeekOptions, EchoProviderOptions } from './providers/index.js';
-export { createDisabledProvider } from './providers/disabled.js';
+export { createDeepSeekProvider, createEchoProvider, promptMarker } from './providers/index';
+export type { DeepSeekOptions, EchoProviderOptions } from './providers/index';
+export { createDisabledProvider } from './providers/disabled';
 
-export * from './prompts/index.js';
-export * from './growth/index.js';
+export * from './prompts/index';
+export * from './growth/index';

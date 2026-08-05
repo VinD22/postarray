@@ -2,7 +2,7 @@ import { newIdFor } from '@relay/contracts';
 import request from 'supertest';
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 
-import { createHarness, seedApiKey, type Harness } from '../testing/harness.js';
+import { createHarness, seedApiKey, type Harness } from '../testing/harness';
 
 /**
  * Idempotency, over HTTP.

@@ -1,15 +1,15 @@
 import type { Paginated } from '@relay/contracts';
 
-import type { ActorContext, ApprovalService, PageQuery, ServiceDeps } from '../types.js';
-import type { ApprovalRequestView } from '../views.js';
+import type { ActorContext, ApprovalService, PageQuery, ServiceDeps } from '../types';
+import type { ApprovalRequestView } from '../views';
 
-import { recordAudit } from '../internal/audit.js';
-import { loadAggregate, reapprovalRequired } from '../internal/content-store.js';
-import { invalid, notFound } from '../internal/errors.js';
-import { withIdempotency } from '../internal/idempotency.js';
-import { pageArgs, toPage } from '../internal/pagination.js';
-import { authorized, guard, type Db } from '../internal/runtime.js';
-import { toApprovalPolicy } from '../internal/storage-enums.js';
+import { recordAudit } from '../internal/audit';
+import { loadAggregate, reapprovalRequired } from '../internal/content-store';
+import { invalid, notFound } from '../internal/errors';
+import { withIdempotency } from '../internal/idempotency';
+import { pageArgs, toPage } from '../internal/pagination';
+import { authorized, guard, type Db } from '../internal/runtime';
+import { toApprovalPolicy } from '../internal/storage-enums';
 
 /**
  * Approvals.

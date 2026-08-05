@@ -9,7 +9,7 @@ import {
   useState,
   type ReactNode,
 } from 'react';
-import { useIsomorphicLayoutEffect } from './use-isomorphic-layout-effect.js';
+import { useIsomorphicLayoutEffect } from './use-isomorphic-layout-effect';
 
 export type ThemePreference = 'light' | 'dark' | 'system';
 export type ResolvedTheme = 'light' | 'dark';

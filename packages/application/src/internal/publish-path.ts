@@ -8,18 +8,18 @@ import {
   type ValidationResult,
 } from '@relay/contracts';
 
-import type { ActorContext, ServiceDeps } from '../types.js';
-import type { PublishJobView } from '../views.js';
+import type { ActorContext, ServiceDeps } from '../types';
+import type { PublishJobView } from '../views';
 
-import { recordAudit } from './audit.js';
-import { containsUrl, linkHosts, loadCapabilitiesFor } from './capabilities.js';
-import { loadAggregate, type ContentAggregate } from './content-store.js';
-import { invalid } from './errors.js';
-import { publishJobIdempotencyKey } from './idempotency.js';
-import { toLocalDateTime, toProviderId, toStoredSurface } from './mappers.js';
-import type { ActorSnapshot, Db } from './runtime.js';
-import { toApprovalPolicy } from './storage-enums.js';
-import { resolveTarget } from './stored-content.js';
+import { recordAudit } from './audit';
+import { containsUrl, linkHosts, loadCapabilitiesFor } from './capabilities';
+import { loadAggregate, type ContentAggregate } from './content-store';
+import { invalid } from './errors';
+import { publishJobIdempotencyKey } from './idempotency';
+import { toLocalDateTime, toProviderId, toStoredSurface } from './mappers';
+import type { ActorSnapshot, Db } from './runtime';
+import { toApprovalPolicy } from './storage-enums';
+import { resolveTarget } from './stored-content';
 
 /**
  * The one path to an external publication.

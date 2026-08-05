@@ -1,11 +1,11 @@
 import { Controller, Get, Query } from '@nestjs/common';
 import type { Paginated } from '@relay/contracts';
 
-import type { ActorContext, AuditEventView } from '../../application/port.js';
-import { Actor, RequireScope } from '../../common/decorators.js';
-import { parseQuery } from '../../common/zod.js';
-import { listAuditQuerySchema } from './audit.schemas.js';
-import { AuditService } from './audit.service.js';
+import type { ActorContext, AuditEventView } from '../../application/port';
+import { Actor, RequireScope } from '../../common/decorators';
+import { parseQuery } from '../../common/zod';
+import { listAuditQuerySchema } from './audit.schemas';
+import { AuditService } from './audit.service';
 
 /**
  * The audit log.

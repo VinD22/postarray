@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, it } from 'vitest';
 
-import { runWithContext } from './context.js';
-import { childLogger, createLogger, resetLoggingConfiguration } from './logger.js';
+import { runWithContext } from './context';
+import { childLogger, createLogger, resetLoggingConfiguration } from './logger';
 
 const FAKE_JWT =
   'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ0ZXN0In0.c2lnbmF0dXJlLXBsYWNlaG9sZGVy';

@@ -2,24 +2,24 @@ import { Command, CommanderError, Option } from 'commander';
 
 import { RelayError } from '@relay/contracts';
 
-import { assertNoTokenInArgv } from './config/credentials.js';
-import { createContext } from './context.js';
-import type { CliContext, CliDeps, GlobalOptions } from './context.js';
-import { EXIT_OK, EXIT_USAGE, exitCodeFor } from './exit-codes.js';
-import { processWriter, renderFailure } from './output.js';
-import type { RenderInput, Writer } from './output.js';
+import { assertNoTokenInArgv } from './config/credentials';
+import { createContext } from './context';
+import type { CliContext, CliDeps, GlobalOptions } from './context';
+import { EXIT_OK, EXIT_USAGE, exitCodeFor } from './exit-codes';
+import { processWriter, renderFailure } from './output';
+import type { RenderInput, Writer } from './output';
 
-import { authLogin, authLogout, authWhoAmI } from './commands/auth.js';
-import type { LoginFlow } from './commands/auth.js';
-import { configGet, configSet, configUnset } from './commands/config.js';
-import { linksCreate, linksStats } from './commands/links.js';
+import { authLogin, authLogout, authWhoAmI } from './commands/auth';
+import type { LoginFlow } from './commands/auth';
+import { configGet, configSet, configUnset } from './commands/config';
+import { linksCreate, linksStats } from './commands/links';
 import {
   postsCancel,
   postsPreview,
   postsPublish,
   postsSchedule,
   postsValidate,
-} from './commands/posts.js';
+} from './commands/posts';
 import {
   accountsCapabilities,
   accountsList,
@@ -33,7 +33,7 @@ import {
   receiptsGet,
   rulesList,
   rulesTest,
-} from './commands/read.js';
+} from './commands/read';
 
 /**
  * The command surface.

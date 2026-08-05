@@ -5,7 +5,7 @@ import {
 } from '@relay/contracts';
 import { describe, expect, it } from 'vitest';
 
-import { containsUrl, countCharacters, linkHosts } from './capabilities.js';
+import { containsUrl, countCharacters, linkHosts } from './capabilities';
 
 /**
  * Cost estimation and character counting are the two numbers the composer shows

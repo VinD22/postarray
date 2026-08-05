@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 
-import { PUBLISH_STATES } from './enums.js';
-import type { PublishState } from './enums.js';
+import { PUBLISH_STATES } from './enums';
+import type { PublishState } from './enums';
 import {
   IDEMPOTENCY_KEY_MIN_LENGTH,
   PUBLISH_TRANSITIONS,
@@ -12,7 +12,7 @@ import {
   isTerminal,
   nextStates,
   rollUpCampaignState,
-} from './publishing.js';
+} from './publishing';
 
 const CHECKSUM_A = 'a'.repeat(64);
 const CHECKSUM_B = 'b'.repeat(64);

@@ -1,4 +1,4 @@
-import type { GrowthPlanBody } from '../prompts/schemas.js';
+import type { GrowthPlanBody } from '../prompts/schemas';
 
 /**
  * A complete, schema-valid growth plan body.

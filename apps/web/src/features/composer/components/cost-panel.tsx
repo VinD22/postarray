@@ -13,9 +13,9 @@ import { DefinitionList, MetricValue } from '@relay/design-system/patterns';
 import { useTranslations } from '@relay/i18n/react';
 import { formatCurrency } from '@relay/i18n';
 
-import { useComposer } from '../composer-context.js';
-import { findUrls } from '../state/capability-rules.js';
-import { PROVIDER_LABEL } from './provider-identity.js';
+import { useComposer } from '../composer-context';
+import { findUrls } from '../state/capability-rules';
+import { PROVIDER_LABEL } from './provider-identity';
 
 export function CostPanel(): ReactNode {
   const t = useTranslations();

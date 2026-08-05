@@ -21,7 +21,7 @@ import {
 } from '@relay/design-system/primitives';
 import { useTranslations } from '@relay/i18n/react';
 
-import type { MediaAsset, MediaEditPlan, OutputFormat } from '../types.js';
+import type { MediaAsset, MediaEditPlan, OutputFormat } from '../types';
 
 export const FREE_PRESET = 'free';
 

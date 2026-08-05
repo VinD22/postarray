@@ -1,6 +1,6 @@
 import type { Role } from '@relay/contracts';
 
-import { FIXTURE_NOW, fixtureEmail, fixtureId, fixtureUrl } from '../ids.js';
+import { FIXTURE_NOW, fixtureEmail, fixtureId, fixtureUrl } from '../ids';
 
 /**
  * Workspace-shaped fixtures.

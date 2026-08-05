@@ -6,11 +6,11 @@ import {
   buildSnapshot,
   contentKinds,
   mediaBytes,
-} from '../shared/capability.js';
-import type { ProviderConnection } from '../shared/contract-shape.js';
-import { normalizedNames } from '../shared/metrics.js';
-import { capabilityVersion, reviewStatus } from '../shared/verification.js';
-import { YOUTUBE_ACCOUNT_METRICS, YOUTUBE_POST_METRICS } from './metrics.js';
+} from '../shared/capability';
+import type { ProviderConnection } from '../shared/contract-shape';
+import { normalizedNames } from '../shared/metrics';
+import { capabilityVersion, reviewStatus } from '../shared/verification';
+import { YOUTUBE_ACCOUNT_METRICS, YOUTUBE_POST_METRICS } from './metrics';
 
 /**
  * YouTube capability snapshot.

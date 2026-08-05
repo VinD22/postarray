@@ -1,9 +1,9 @@
 import { ALL_SCOPES, type Scope } from '@relay/contracts';
 import { describe, expect, it } from 'vitest';
 
-import { can, type PolicyActor } from './policy.js';
-import { PERMISSIONS } from './permissions.js';
-import { ROLE_PERMISSIONS } from './roles.js';
+import { can, type PolicyActor } from './policy';
+import { PERMISSIONS } from './permissions';
+import { ROLE_PERMISSIONS } from './roles';
 import {
   NON_DELEGABLE_PERMISSIONS,
   PERMISSION_SCOPES,
@@ -12,7 +12,7 @@ import {
   effectiveCredentialPermissions,
   narrowScopes,
   scopeGrantsPermission,
-} from './scopes.js';
+} from './scopes';
 
 function credential(overrides: Partial<PolicyActor> = {}): PolicyActor {
   return {

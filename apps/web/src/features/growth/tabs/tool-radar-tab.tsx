@@ -7,8 +7,8 @@ import { useTranslations } from '@relay/i18n/react';
 import { MAX_TOOL_RECOMMENDATIONS, type GrowthPlan, type ToolRecord } from '@relay/contracts';
 import { ExternalLink } from 'lucide-react';
 
-import { SettingsPanel } from '../../settings/components/section.js';
-import { useFormatters } from '../../settings/lib/formatters.js';
+import { SettingsPanel } from '../../settings/components/section';
+import { useFormatters } from '../../settings/lib/formatters';
 
 export interface ToolRadarTabProps {
   plan: GrowthPlan;

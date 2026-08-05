@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import { diffSegments } from './assist-menu.js';
+import { diffSegments } from './assist-menu';
 
 describe('diffSegments', () => {
   it('marks the changed run and keeps the shared prefix and suffix', () => {

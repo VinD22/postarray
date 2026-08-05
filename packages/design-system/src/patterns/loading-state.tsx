@@ -1,8 +1,8 @@
 'use client';
 
 import type { ReactNode } from 'react';
-import { cn } from '../utils/cn.js';
-import { Skeleton } from '../primitives/skeleton.js';
+import { cn } from '../utils/cn';
+import { Skeleton } from '../primitives/skeleton';
 
 export interface LoadingStateProps {
   /**

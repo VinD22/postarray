@@ -6,7 +6,7 @@ import { Notice } from '@relay/design-system/patterns';
 import { useTranslations } from '@relay/i18n/react';
 import type { GrowthPlan } from '@relay/contracts';
 
-import { SettingsPanel } from '../../settings/components/section.js';
+import { SettingsPanel } from '../../settings/components/section';
 
 export interface UgcTabProps {
   plan: GrowthPlan;

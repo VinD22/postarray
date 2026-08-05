@@ -6,8 +6,8 @@ import {
   estimateCreateCostMinor,
   summarizeCapabilities,
   supportsContentKind,
-} from './capabilities.js';
-import type { CapabilitySnapshot } from './capabilities.js';
+} from './capabilities';
+import type { CapabilitySnapshot } from './capabilities';
 
 function snapshot(overrides: Partial<CapabilitySnapshot> = {}): CapabilitySnapshot {
   return {

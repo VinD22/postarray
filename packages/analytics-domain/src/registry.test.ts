@@ -8,7 +8,7 @@ import {
   mappingForMetric,
   mappingsFor,
   supportedMetrics,
-} from './registry.js';
+} from './registry';
 
 describe('metric registry', () => {
   it('validates every definition against the shared contract', () => {

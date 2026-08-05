@@ -14,9 +14,9 @@ import { CapabilityBadge, Notice } from '@relay/design-system/patterns';
 import { useTranslations } from '@relay/i18n/react';
 import { formatDate } from '@relay/i18n';
 
-import { altTextLimit, altTextRequiredBy, type AccountRule } from '../state/media-rules.js';
-import { CheckRow } from '../../composer/components/form-rows.js';
-import type { MediaAsset } from '../types.js';
+import { altTextLimit, altTextRequiredBy, type AccountRule } from '../state/media-rules';
+import { CheckRow } from '../../composer/components/form-rows';
+import type { MediaAsset } from '../types';
 
 export interface AltTextFormProps {
   readonly asset: MediaAsset;

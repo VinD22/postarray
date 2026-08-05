@@ -2,8 +2,8 @@
 
 import { forwardRef, type ComponentPropsWithoutRef } from 'react';
 import { Tabs as TabsPrimitive } from 'radix-ui';
-import { cn } from '../utils/cn.js';
-import { focusRing, transitionBase } from '../utils/style-constants.js';
+import { cn } from '../utils/cn';
+import { focusRing, transitionBase } from '../utils/style-constants';
 
 /**
  * Tabs for peer views of the same subject: the composer's per-target variants,

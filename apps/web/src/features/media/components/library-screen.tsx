@@ -40,10 +40,10 @@ import { useTranslations } from '@relay/i18n/react';
 import { formatBytes, formatDateTime } from '@relay/i18n';
 import { cn } from '@relay/design-system/utils';
 
-import { MediaDetail } from './media-detail.js';
-import { UploadPanel } from './upload-panel.js';
-import type { AccountRule } from '../state/media-rules.js';
-import type { MediaAsset, MediaEditPlan, RightsDeclaration, UploadItem } from '../types.js';
+import { MediaDetail } from './media-detail';
+import { UploadPanel } from './upload-panel';
+import type { AccountRule } from '../state/media-rules';
+import type { MediaAsset, MediaEditPlan, RightsDeclaration, UploadItem } from '../types';
 
 export type LibraryStatus = 'loading' | 'ready' | 'error' | 'forbidden';
 

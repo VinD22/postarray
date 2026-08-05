@@ -9,7 +9,7 @@ import {
   withinAllowedHours,
   type AgentActionRequest,
   type AgentTarget,
-} from './agent-policy.js';
+} from './agent-policy';
 
 const NOW = new Date('2026-08-04T09:00:00.000Z');
 

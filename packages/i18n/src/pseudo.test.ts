@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 
-import { lintCatalog } from './lint.js';
-import { en } from './messages/en/index.js';
+import { lintCatalog } from './lint';
+import { en } from './messages/en/index';
 import {
   PSEUDO_LOCALES,
   PSEUDO_LOCALE_CODES,
@@ -10,8 +10,8 @@ import {
   isPseudoLocale,
   pseudoLocalize,
   pseudoLocalizeCatalog,
-} from './pseudo.js';
-import { createTranslator } from './translate.js';
+} from './pseudo';
+import { createTranslator } from './translate';
 
 describe('pseudo locales', () => {
   it('declares an accented and a right to left variant', () => {

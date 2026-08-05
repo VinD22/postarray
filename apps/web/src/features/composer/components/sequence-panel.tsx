@@ -28,10 +28,10 @@ import { useTranslations } from '@relay/i18n/react';
 import { DELAY_PRESET_MINUTES, type CapabilitySnapshot, type ThreadItem } from '@relay/contracts';
 import { formatDateTime, formatDuration } from '@relay/i18n';
 
-import { useComposer } from '../composer-context.js';
-import { newThreadItem, sequenceFor } from '../state/composer-reducer.js';
-import { sequenceTimeline } from '../state/selectors.js';
-import { PROVIDER_LABEL } from './provider-identity.js';
+import { useComposer } from '../composer-context';
+import { newThreadItem, sequenceFor } from '../state/composer-reducer';
+import { sequenceTimeline } from '../state/selectors';
+import { PROVIDER_LABEL } from './provider-identity';
 
 const CUSTOM_DELAY = 'custom';
 

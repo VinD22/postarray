@@ -5,26 +5,26 @@ import {
   type WebhookEventName,
 } from '@relay/contracts';
 
-import type { WorkerActivities } from '../../activities/types.js';
-import { MESSAGE_KEYS } from '../../messages.js';
-import { parseInstant, stableSort, toIsoInstant } from '../../runtime/deterministic.js';
+import type { WorkerActivities } from '../../activities/types';
+import { MESSAGE_KEYS } from '../../messages';
+import { parseInstant, stableSort, toIsoInstant } from '../../runtime/deterministic';
 import {
   WORKFLOW_SIGNALS,
   type ChildWorkflowDescriptor,
   type ChildWorkflowHandle,
   type TargetStatusView,
   type WorkflowRuntime,
-} from '../../runtime/types.js';
+} from '../../runtime/types';
 import type {
   PublishPostWorkflowInput,
   PublishPostWorkflowOutput,
   PublishTargetOutcome,
   PublishTargetPlan,
-} from '../inputs.js';
+} from '../inputs';
 
-import { parsePublishPostOutput } from '../outputs.schema.js';
+import { parsePublishPostOutput } from '../outputs.schema';
 
-import { publishTargetDescriptor } from './publish-target.core.js';
+import { publishTargetDescriptor } from './publish-target.core';
 
 /**
  * The campaign workflow.

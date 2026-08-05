@@ -8,7 +8,7 @@ import {
   parseCredential,
   randomBase62,
   secretMatches,
-} from './credentials.js';
+} from './credentials';
 
 const PEPPER = 'a-server-held-pepper-for-tests';
 

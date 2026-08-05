@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
 
-import { OAuthDiscoveryController } from './discovery.controller.js';
-import { OAuthProviderController } from './oauth-provider.controller.js';
-import { OAuthProviderService } from './oauth-provider.service.js';
+import { OAuthDiscoveryController } from './discovery.controller';
+import { OAuthProviderController } from './oauth-provider.controller';
+import { OAuthProviderService } from './oauth-provider.service';
 
 @Module({
   controllers: [OAuthProviderController, OAuthDiscoveryController],

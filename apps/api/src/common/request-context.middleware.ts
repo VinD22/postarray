@@ -3,10 +3,10 @@ import { API_HEADERS } from '@relay/contracts';
 import { newCorrelationId, runWithContext } from '@relay/observability';
 import type { NextFunction, Request, Response } from 'express';
 
-import type { Clock } from '../application/port.js';
-import { CLOCK } from '../application/tokens.js';
-import { takeRawBody } from './raw-body.js';
-import type { RelayRequest } from './request.types.js';
+import type { Clock } from '../application/port';
+import { CLOCK } from '../application/tokens';
+import { takeRawBody } from './raw-body';
+import type { RelayRequest } from './request.types';
 
 /**
  * Establishes the ambient request context for the whole call.

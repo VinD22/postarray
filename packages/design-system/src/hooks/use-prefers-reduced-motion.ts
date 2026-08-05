@@ -1,4 +1,4 @@
-import { useMediaQuery } from './use-media-query.js';
+import { useMediaQuery } from './use-media-query';
 
 /**
  * True when the operating system asks for reduced motion.

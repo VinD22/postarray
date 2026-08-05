@@ -20,20 +20,20 @@ import {
 import { useAnnouncer } from '@relay/design-system/hooks';
 import { useTranslations } from '@relay/i18n/react';
 
-import { SettingsStack } from '../settings/components/section.js';
-import { AsyncBoundary } from '../settings/lib/async-boundary.js';
-import { brandsGateway, growthGateway, securityGateway } from '../settings/lib/gateway.js';
-import { useFormatters } from '../settings/lib/formatters.js';
-import { settingsKey, useWorkspaceId } from '../settings/lib/keys.js';
-import { useSettingsMutation } from '../settings/lib/use-settings-mutation.js';
-import { ExportPanel } from './export-panel.js';
-import { IntakeForm, type IntakeValue } from './intake-form.js';
-import { ProfileConfirmation } from './profile-confirmation.js';
-import { FourWeekTab } from './tabs/four-week-tab.js';
-import { OpportunitiesTab } from './tabs/opportunities-tab.js';
-import { StrategyTab } from './tabs/strategy-tab.js';
-import { ToolRadarTab } from './tabs/tool-radar-tab.js';
-import { UgcTab } from './tabs/ugc-tab.js';
+import { SettingsStack } from '../settings/components/section';
+import { AsyncBoundary } from '../settings/lib/async-boundary';
+import { brandsGateway, growthGateway, securityGateway } from '../settings/lib/gateway';
+import { useFormatters } from '../settings/lib/formatters';
+import { settingsKey, useWorkspaceId } from '../settings/lib/keys';
+import { useSettingsMutation } from '../settings/lib/use-settings-mutation';
+import { ExportPanel } from './export-panel';
+import { IntakeForm, type IntakeValue } from './intake-form';
+import { ProfileConfirmation } from './profile-confirmation';
+import { FourWeekTab } from './tabs/four-week-tab';
+import { OpportunitiesTab } from './tabs/opportunities-tab';
+import { StrategyTab } from './tabs/strategy-tab';
+import { ToolRadarTab } from './tabs/tool-radar-tab';
+import { UgcTab } from './tabs/ugc-tab';
 
 /**
  * The Growth Advisor.

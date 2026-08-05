@@ -3,13 +3,13 @@ import { createHash, randomBytes } from 'node:crypto';
 import { narrowScopes } from '@relay/authz';
 import { normalizeScopes, type Paginated, type Scope } from '@relay/contracts';
 
-import type { ActorContext, OAuthAppService, PageQuery, ServiceDeps } from '../types.js';
-import type { CreatedOAuthAppView, OAuthAppView, OAuthGrantView } from '../views.js';
+import type { ActorContext, OAuthAppService, PageQuery, ServiceDeps } from '../types';
+import type { CreatedOAuthAppView, OAuthAppView, OAuthGrantView } from '../views';
 
-import { recordAudit } from '../internal/audit.js';
-import { invalid, notFound } from '../internal/errors.js';
-import { pageArgs, toPage } from '../internal/pagination.js';
-import { authorized } from '../internal/runtime.js';
+import { recordAudit } from '../internal/audit';
+import { invalid, notFound } from '../internal/errors';
+import { pageArgs, toPage } from '../internal/pagination';
+import { authorized } from '../internal/runtime';
 
 /**
  * Third-party developer applications.

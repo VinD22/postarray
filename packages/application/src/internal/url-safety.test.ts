@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import { assertFetchable, isPrivateAddress } from './url-safety.js';
+import { assertFetchable, isPrivateAddress } from './url-safety';
 
 describe('isPrivateAddress', () => {
   it('refuses loopback, private, link local and carrier grade ranges', () => {

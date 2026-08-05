@@ -1,15 +1,15 @@
 import type { ProviderId } from '@relay/contracts';
 import { describe, expect, it } from 'vitest';
 
-import type { SocialConnector } from './shared/contract-shape.js';
-import { createTestDeps } from './shared/testing.js';
+import type { SocialConnector } from './shared/contract-shape';
+import { createTestDeps } from './shared/testing';
 import {
   BUILT_IN_PROVIDERS,
   type ProviderRegistrar,
   missingCredentials,
   providerStatus,
   registerBuiltInProviders,
-} from './index.js';
+} from './index';
 
 /**
  * A recording stand-in for the registry. It implements exactly the two methods

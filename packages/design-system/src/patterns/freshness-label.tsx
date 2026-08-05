@@ -2,7 +2,7 @@
 
 import type { ReactNode } from 'react';
 import { AlertTriangle, RefreshCw } from 'lucide-react';
-import { cn } from '../utils/cn.js';
+import { cn } from '../utils/cn';
 
 export type FreshnessLevel = 'fresh' | 'aging' | 'stale' | 'never' | 'syncing';
 

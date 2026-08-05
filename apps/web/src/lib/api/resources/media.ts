@@ -1,7 +1,7 @@
 /** The media library: uploads, imports, derivatives and alt text. */
 
-import { call } from '../call.js';
-import { page } from '../fixtures.js';
+import { call } from '../call';
+import { page } from '../fixtures';
 import type { MediaKind, Paginated } from '@relay/contracts';
 
 export type { MediaKind };

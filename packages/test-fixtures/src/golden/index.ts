@@ -23,7 +23,7 @@ import {
   makeRichDraft,
   makeThreadDraft,
   makeThreadReceipt,
-} from '../factories/index.js';
+} from '../factories/index';
 
 /**
  * Golden examples.

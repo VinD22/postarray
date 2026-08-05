@@ -7,26 +7,26 @@ import type {
   ReceiptItemInput,
   RevalidateTargetResult,
   WorkerActivities,
-} from '../../activities/types.js';
-import { MESSAGE_KEYS } from '../../messages.js';
-import { backoffMs, toIsoInstant } from '../../runtime/deterministic.js';
+} from '../../activities/types';
+import { MESSAGE_KEYS } from '../../messages';
+import { backoffMs, toIsoInstant } from '../../runtime/deterministic';
 import type {
   ChildWorkflowDescriptor,
   WorkflowRuntime,
   WorkflowStatusView,
   TargetStatusView,
-} from '../../runtime/types.js';
+} from '../../runtime/types';
 import type {
   PublishTargetOutcome,
   PublishTargetWorkflowInput,
   ThreadSequenceItem,
   ThreadSequenceItemOutcome,
   ThreadSequenceWorkflowOutput,
-} from '../inputs.js';
+} from '../inputs';
 
-import { parsePublishTargetOutcome } from '../outputs.schema.js';
+import { parsePublishTargetOutcome } from '../outputs.schema';
 
-import { threadSequenceDescriptor } from './thread-sequence.core.js';
+import { threadSequenceDescriptor } from './thread-sequence.core';
 
 /**
  * One target, one child workflow, one external post.

@@ -7,11 +7,11 @@ import {
   buildSnapshot,
   contentKinds,
   mediaBytes,
-} from '../shared/capability.js';
-import type { ProviderConnection } from '../shared/contract-shape.js';
-import { normalizedNames } from '../shared/metrics.js';
-import { capabilityVersion } from '../shared/verification.js';
-import { BLUESKY_ACCOUNT_METRICS, BLUESKY_POST_METRICS } from './metrics.js';
+} from '../shared/capability';
+import type { ProviderConnection } from '../shared/contract-shape';
+import { normalizedNames } from '../shared/metrics';
+import { capabilityVersion } from '../shared/verification';
+import { BLUESKY_ACCOUNT_METRICS, BLUESKY_POST_METRICS } from './metrics';
 
 /**
  * Bluesky capability snapshot.

@@ -7,7 +7,7 @@ import { useTranslations } from '@relay/i18n/react';
 import type { Scope } from '@relay/contracts';
 import { Check, Minus } from 'lucide-react';
 
-import { scopeDescriptionKey, scopeGroups, withheldScopes } from '../lib/scope-groups.js';
+import { scopeDescriptionKey, scopeGroups, withheldScopes } from '../lib/scope-groups';
 
 export interface ConsentPreviewProps {
   appName: string;

@@ -5,8 +5,8 @@ export {
   PROMPT_VERSION_PATTERN,
   promptIdSchema,
   promptVersionSchema,
-} from './types.js';
-export type { PromptDegradation, PromptFixture, PromptId, PromptModule } from './types.js';
+} from './types';
+export type { PromptDegradation, PromptFixture, PromptId, PromptModule } from './types';
 
 export {
   PROMPT_REGISTRY,
@@ -15,10 +15,10 @@ export {
   listPrompts,
   promptProvenance,
   validateRegistry,
-} from './registry.js';
-export type { PromptProvenance, RegistryProblem } from './registry.js';
+} from './registry';
+export type { PromptProvenance, RegistryProblem } from './registry';
 
-export * from './schemas.js';
+export * from './schemas';
 
 export {
   altTextPrompt,
@@ -29,15 +29,11 @@ export {
   shortenPrompt,
   toneAdjustPrompt,
   transcreatePrompt,
-} from './content.js';
+} from './content';
 export {
   accessibilityCheckPrompt,
   claimCheckPrompt,
   duplicateCheckPrompt,
   platformFitCheckPrompt,
-} from './review.js';
-export {
-  analyticsSummaryPrompt,
-  experimentSuggestionPrompt,
-  growthPlanPrompt,
-} from './analysis.js';
+} from './review';
+export { analyticsSummaryPrompt, experimentSuggestionPrompt, growthPlanPrompt } from './analysis';

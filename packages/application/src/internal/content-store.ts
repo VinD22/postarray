@@ -1,12 +1,12 @@
 import type { ApprovalState, PublishState } from '@relay/contracts';
 
-import type { ContentItemView, PostVariantView } from '../views.js';
+import type { ContentItemView, PostVariantView } from '../views';
 
-import { notFound } from './errors.js';
-import { toJson } from './json.js';
-import { fromStoredAccountType, fromStoredSurface, toIso, toProviderId } from './mappers.js';
-import type { ActorSnapshot, Db } from './runtime.js';
-import { toProviderKind } from './storage-enums.js';
+import { notFound } from './errors';
+import { toJson } from './json';
+import { fromStoredAccountType, fromStoredSurface, toIso, toProviderId } from './mappers';
+import type { ActorSnapshot, Db } from './runtime';
+import { toProviderKind } from './storage-enums';
 import {
   EMPTY_VARIANT_SETTINGS,
   computeContentChecksum,
@@ -18,7 +18,7 @@ import {
   resolveTarget,
   type StoredMaster,
   type StoredVariantSettings,
-} from './stored-content.js';
+} from './stored-content';
 
 /**
  * Reading and writing the content aggregate.

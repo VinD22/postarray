@@ -5,7 +5,7 @@ import {
 } from '@relay/contracts';
 import type { GrowthPlan } from '@relay/contracts';
 
-import { parseInstant } from '../clock.js';
+import { parseInstant } from '../clock';
 import {
   BARE_DOMAIN_PATTERN,
   EMAIL_PATTERN,
@@ -13,8 +13,8 @@ import {
   PROHIBITED_BEHAVIOUR_PATTERNS,
   TESTIMONIAL_PATTERNS,
   URL_PATTERN,
-} from '../patterns.js';
-import type { GrowthPlanContext } from './retrieval.js';
+} from '../patterns';
+import type { GrowthPlanContext } from './retrieval';
 
 /**
  * The deterministic post-processor.

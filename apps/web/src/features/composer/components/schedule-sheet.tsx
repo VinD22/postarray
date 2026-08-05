@@ -34,10 +34,10 @@ import { useTranslations } from '@relay/i18n/react';
 import { crossesOffsetChange, formatCurrency, formatDateTime } from '@relay/i18n';
 import { resolveVariant } from '@relay/contracts';
 
-import { useComposer } from '../composer-context.js';
-import { PROVIDER_LABEL } from './provider-identity.js';
-import { RepeatPanel } from './repeat-panel.js';
-import { isoDateIn, isoTimeIn, zonedToInstant } from '../state/time.js';
+import { useComposer } from '../composer-context';
+import { PROVIDER_LABEL } from './provider-identity';
+import { RepeatPanel } from './repeat-panel';
+import { isoDateIn, isoTimeIn, zonedToInstant } from '../state/time';
 
 export type ScheduleIntent = 'draft' | 'approval' | 'schedule' | 'publish';
 

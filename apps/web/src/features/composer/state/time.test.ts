@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import { zonedToInstant } from './time.js';
+import { zonedToInstant } from './time';
 
 /**
  * A schedule computed in the browser's zone is a publishing incident, so the

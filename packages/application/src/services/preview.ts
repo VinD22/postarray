@@ -1,14 +1,14 @@
 import type { CapabilitySnapshot, ValidationIssue } from '@relay/contracts';
 
-import type { ServiceDeps } from '../types.js';
-import type { CanonicalPreview } from '../views.js';
+import type { ServiceDeps } from '../types';
+import type { CanonicalPreview } from '../views';
 
-import { countCharacters, loadCapabilities } from '../internal/capabilities.js';
-import type { ContentAggregate } from '../internal/content-store.js';
-import { notFound } from '../internal/errors.js';
-import { fromStoredAccountType, toProviderId } from '../internal/mappers.js';
-import type { Db } from '../internal/runtime.js';
-import { resolveTarget } from '../internal/stored-content.js';
+import { countCharacters, loadCapabilities } from '../internal/capabilities';
+import type { ContentAggregate } from '../internal/content-store';
+import { notFound } from '../internal/errors';
+import { fromStoredAccountType, toProviderId } from '../internal/mappers';
+import type { Db } from '../internal/runtime';
+import { resolveTarget } from '../internal/stored-content';
 
 /**
  * The canonical preview.

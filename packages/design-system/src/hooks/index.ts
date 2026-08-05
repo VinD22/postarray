@@ -1,7 +1,7 @@
-export { useIsomorphicLayoutEffect } from './use-isomorphic-layout-effect.js';
-export { useMediaQuery, useBreakpoint, useCoarsePointer } from './use-media-query.js';
-export { usePrefersReducedMotion } from './use-prefers-reduced-motion.js';
-export { useControllable, type UseControllableOptions } from './use-controllable.js';
+export { useIsomorphicLayoutEffect } from './use-isomorphic-layout-effect';
+export { useMediaQuery, useBreakpoint, useCoarsePointer } from './use-media-query';
+export { usePrefersReducedMotion } from './use-prefers-reduced-motion';
+export { useControllable, type UseControllableOptions } from './use-controllable';
 export {
   ThemeProvider,
   useTheme,
@@ -11,18 +11,18 @@ export {
   type ResolvedTheme,
   type ThemeContextValue,
   type ThemeProviderProps,
-} from './use-theme.js';
+} from './use-theme';
 export {
   AnnouncerProvider,
   useAnnouncer,
   type AnnouncementPoliteness,
   type AnnouncerContextValue,
   type AnnouncerProviderProps,
-} from './use-announcer.js';
+} from './use-announcer';
 export {
   useHotkeys,
   formatHotkey,
   type HotkeyMap,
   type HotkeyHandler,
   type HotkeyOptions,
-} from './use-hotkeys.js';
+} from './use-hotkeys';

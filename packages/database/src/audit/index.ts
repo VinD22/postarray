@@ -8,4 +8,4 @@ export {
   type AuditActor,
   type AuditEventRef,
   type AuditTarget,
-} from './append.js';
+} from './append';

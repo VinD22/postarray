@@ -9,8 +9,8 @@ import {
 } from '@relay/contracts';
 import { z } from 'zod';
 
-import { type Clock, systemClock } from './ports.js';
-import { type SanitizeOptions, sanitizeProviderPayload, sanitizeText } from './sanitize.js';
+import { type Clock, systemClock } from './ports';
+import { type SanitizeOptions, sanitizeProviderPayload, sanitizeText } from './sanitize';
 
 /**
  * Provider error classification.

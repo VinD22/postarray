@@ -1,8 +1,8 @@
 import { redactRecord, redactString } from '@relay/config';
 import type { ErrorClass } from '@relay/contracts';
 
-import { contextFields } from './context.js';
-import { getRootLogger } from './logger.js';
+import { contextFields } from './context';
+import { getRootLogger } from './logger';
 
 /**
  * Error reporting and the provider error taxonomy.

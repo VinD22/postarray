@@ -10,9 +10,9 @@ import {
 } from '@relay/contracts';
 import type { Request } from 'express';
 
-import { PUBLIC_ROUTE_KEY, WORKSPACE_OPTIONAL_KEY } from '../common/decorators.js';
-import { ActorContextFactory } from '../common/actor-context.factory.js';
-import { relayState } from '../common/request.types.js';
+import { PUBLIC_ROUTE_KEY, WORKSPACE_OPTIONAL_KEY } from '../common/decorators';
+import { ActorContextFactory } from '../common/actor-context.factory';
+import { relayState } from '../common/request.types';
 
 /** The header a client uses to pin the workspace for this request. */
 export const WORKSPACE_HEADER = 'x-relay-workspace-id';

@@ -1,6 +1,6 @@
-import { createTemporalRuntime, workerActivities } from './temporal-runtime.js';
-import { runAnalyticsSync } from './core/analytics-sync.core.js';
-import type { AnalyticsSyncWorkflowInput, AnalyticsSyncWorkflowOutput } from './inputs.js';
+import { createTemporalRuntime, workerActivities } from './temporal-runtime';
+import { runAnalyticsSync } from './core/analytics-sync.core';
+import type { AnalyticsSyncWorkflowInput, AnalyticsSyncWorkflowOutput } from './inputs';
 
 /**
  * Analytics polling.

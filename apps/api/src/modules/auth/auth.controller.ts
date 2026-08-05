@@ -6,9 +6,9 @@ import {
 } from '@relay/contracts';
 import type { Request, Response } from 'express';
 
-import type { IdentityContext, Services } from '../../application/port.js';
-import { SERVICES } from '../../application/tokens.js';
-import { REFRESH_COOKIE, SESSION_COOKIE, parseCookies } from '../../common/cookies.js';
+import type { IdentityContext, Services } from '../../application/port';
+import { SERVICES } from '../../application/tokens';
+import { REFRESH_COOKIE, SESSION_COOKIE, parseCookies } from '../../common/cookies';
 import {
   CurrentPrincipal,
   Identity,
@@ -16,11 +16,11 @@ import {
   RateLimit,
   RequireStepUp,
   WorkspaceOptional,
-} from '../../common/decorators.js';
-import type { Principal } from '../../common/request.types.js';
-import { parseBody } from '../../common/zod.js';
-import { clientFingerprint } from '../../security/csrf.js';
-import { AuthService, type EstablishedSession } from './auth.service.js';
+} from '../../common/decorators';
+import type { Principal } from '../../common/request.types';
+import { parseBody } from '../../common/zod';
+import { clientFingerprint } from '../../security/csrf';
+import { AuthService, type EstablishedSession } from './auth.service';
 import {
   magicLinkSchema,
   passwordResetSchema,
@@ -30,8 +30,8 @@ import {
   signUpSchema,
   verifyOtpSchema,
   verifyTotpSchema,
-} from './auth.schemas.js';
-import { withUniformTiming } from './uniform-timing.js';
+} from './auth.schemas';
+import { withUniformTiming } from './uniform-timing';
 
 /**
  * Authentication.

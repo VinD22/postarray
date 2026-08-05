@@ -1,16 +1,16 @@
-import type { ActivityContext } from '../activities/types.js';
-import type { ChildWorkflowDescriptor, SignalInbox } from '../runtime/types.js';
+import type { ActivityContext } from '../activities/types';
+import type { ChildWorkflowDescriptor, SignalInbox } from '../runtime/types';
 
-import { ActivitySimulator, type SimulatorOptions } from './activity-simulator.js';
+import { ActivitySimulator, type SimulatorOptions } from './activity-simulator';
 import {
   ContinueAsNewSignal,
   FakeWorkflowRuntime,
   createRecorder,
   type CommandRecorder,
   type WorkflowCommand,
-} from './fake-runtime.js';
-import { VirtualClock, drive } from './virtual-clock.js';
-import { parseInstant } from '../runtime/deterministic.js';
+} from './fake-runtime';
+import { VirtualClock, drive } from './virtual-clock';
+import { parseInstant } from '../runtime/deterministic';
 
 /** Everything a workflow test needs, assembled in one call. */
 

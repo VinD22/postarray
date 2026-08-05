@@ -9,7 +9,7 @@ import {
 import { RelayError, isoInstantSchema } from '@relay/contracts';
 import { z } from 'zod';
 
-import { type Clock, type ConnectorLogger, instantOf, noopLogger, systemClock } from './ports.js';
+import { type Clock, type ConnectorLogger, instantOf, noopLogger, systemClock } from './ports';
 
 /**
  * The credential vault.

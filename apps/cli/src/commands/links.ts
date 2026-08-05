@@ -1,10 +1,10 @@
 import { RelayError, webUrlSchema } from '@relay/contracts';
 
-import { ROUTES } from '../api/routes.js';
-import { shortLinkStatsSchema, shortLinkViewSchema } from '../api/schemas.js';
-import type { CliContext } from '../context.js';
-import { renderPlan, renderSuccess, renderTable } from '../output.js';
-import type { PlannedExternalAction, RenderInput } from '../output.js';
+import { ROUTES } from '../api/routes';
+import { shortLinkStatsSchema, shortLinkViewSchema } from '../api/schemas';
+import type { CliContext } from '../context';
+import { renderPlan, renderSuccess, renderTable } from '../output';
+import type { PlannedExternalAction, RenderInput } from '../output';
 
 /**
  * `relay links`.

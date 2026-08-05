@@ -1,10 +1,10 @@
 /** Helpers shared by the provider adapters. Not part of the package's public API. */
 
-export * from './access.js';
-export * from './capability.js';
-export * from './contract-shape.js';
-export * from './metrics.js';
-export * from './preview.js';
-export * from './text.js';
-export * from './validate.js';
-export * from './verification.js';
+export * from './access';
+export * from './capability';
+export * from './contract-shape';
+export * from './metrics';
+export * from './preview';
+export * from './text';
+export * from './validate';
+export * from './verification';

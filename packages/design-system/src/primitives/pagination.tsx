@@ -2,8 +2,8 @@
 
 import type { ReactNode } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
-import { cn } from '../utils/cn.js';
-import { Button } from './button.js';
+import { cn } from '../utils/cn';
+import { Button } from './button';
 
 export interface PaginationMessages {
   /** Accessible name for the navigation region. */

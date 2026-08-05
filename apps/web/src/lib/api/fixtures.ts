@@ -27,7 +27,7 @@ import type {
   ReceiptSummaryView,
   SessionView,
   UsageView,
-} from './types.js';
+} from './types';
 
 /** Anchor everything to the moment the page loads so the demo never goes stale. */
 function at(offsetMinutes: number): string {

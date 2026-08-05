@@ -1,6 +1,6 @@
-import type { Clock, KeyValueSetOptions, KeyValueStore } from '../types.js';
+import type { Clock, KeyValueSetOptions, KeyValueStore } from '../types';
 
-import { systemClock } from './clock.js';
+import { systemClock } from './clock';
 
 /**
  * The default key value store: in process, with real TTL semantics.

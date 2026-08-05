@@ -17,8 +17,8 @@ import {
 import { EmptyState, Notice } from '@relay/design-system/patterns';
 import { useTranslations } from '@relay/i18n/react';
 
-import { useFormatters } from '../../settings/lib/formatters.js';
-import type { AgentActivityView } from '../../settings/lib/view-models.js';
+import { useFormatters } from '../../settings/lib/formatters';
+import type { AgentActivityView } from '../../settings/lib/view-models';
 
 const OUTCOME_TONE = {
   ok: 'success',

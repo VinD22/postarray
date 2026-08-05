@@ -6,9 +6,9 @@ import type {
   ProviderId,
 } from '@relay/contracts';
 
-import { mappingsFor } from './registry.js';
-import { UNAVAILABLE_REASON_KEYS } from './types.js';
-import type { MetricMapping, NormalizedMetric, UnavailableReason } from './types.js';
+import { mappingsFor } from './registry';
+import { UNAVAILABLE_REASON_KEYS } from './types';
+import type { MetricMapping, NormalizedMetric, UnavailableReason } from './types';
 
 /**
  * Normalization.

@@ -2,9 +2,9 @@ import { describe, expect, it } from 'vitest';
 
 import type { GrowthPlan } from '@relay/contracts';
 
-import { fixedClock } from '../clock.js';
-import { postProcessGrowthPlan } from './postprocess.js';
-import type { GrowthRejectionRule } from './postprocess.js';
+import { fixedClock } from '../clock';
+import { postProcessGrowthPlan } from './postprocess';
+import type { GrowthRejectionRule } from './postprocess';
 import {
   TEST_OPPORTUNITY_ID,
   TEST_TOOL_ID,
@@ -13,7 +13,7 @@ import {
   makePlan,
   makePlanContext,
   makeTool,
-} from './testing.js';
+} from './testing';
 
 const NOW = fixedClock('2026-08-04T09:00:00Z').now();
 

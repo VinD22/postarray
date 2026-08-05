@@ -21,7 +21,7 @@ export {
   FAKE_TEXT_MAX_LENGTH,
   buildFakeCapabilitySnapshot,
   type FakeCapabilityOverrides,
-} from './capabilities.js';
+} from './capabilities';
 
 export {
   DEFAULT_FAKE_ACCOUNTS,
@@ -38,11 +38,11 @@ export {
   type FakePost,
   type FakeProviderStateOptions,
   type FakeUpload,
-} from './state.js';
+} from './state';
 
-export { buildFakePreview, validateFakeDraft } from './validate.js';
+export { buildFakePreview, validateFakeDraft } from './validate';
 
-export { FakeConnector, createFakeConnector, type FakeConnectorOptions } from './connector.js';
+export { FakeConnector, createFakeConnector, type FakeConnectorOptions } from './connector';
 
 export {
   FAKE_CONNECTION_ID,
@@ -61,4 +61,4 @@ export {
   fakeThreadItem,
   fakeVideoAsset,
   type FakeDraftOptions,
-} from './fixtures.js';
+} from './fixtures';

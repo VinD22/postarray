@@ -1,6 +1,6 @@
-import { CapabilityUnavailableError } from './errors.js';
-import type { RelayConfig } from './load.js';
-import type { EnvKey } from './schema.js';
+import { CapabilityUnavailableError } from './errors';
+import type { RelayConfig } from './load';
+import type { EnvKey } from './schema';
 
 /**
  * Runtime capability detection.

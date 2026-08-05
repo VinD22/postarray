@@ -6,13 +6,13 @@ import type {
   CreatedOAuthAppView,
   OAuthAppView,
   OAuthGrantView,
-} from '../../application/port.js';
-import { Actor, Idempotent, RequireScope, RequireStepUp } from '../../common/decorators.js';
-import { cursorQuerySchema } from '../../common/pagination.js';
-import { oauthClientIdSchema, oauthGrantIdSchema } from '../../common/schemas.js';
-import { parseBody, parseParams, parseQuery } from '../../common/zod.js';
-import { createOAuthAppSchema, updateOAuthAppSchema } from './developer-apps.schemas.js';
-import { DeveloperAppsService } from './developer-apps.service.js';
+} from '../../application/port';
+import { Actor, Idempotent, RequireScope, RequireStepUp } from '../../common/decorators';
+import { cursorQuerySchema } from '../../common/pagination';
+import { oauthClientIdSchema, oauthGrantIdSchema } from '../../common/schemas';
+import { parseBody, parseParams, parseQuery } from '../../common/zod';
+import { createOAuthAppSchema, updateOAuthAppSchema } from './developer-apps.schemas';
+import { DeveloperAppsService } from './developer-apps.service';
 
 /**
  * The developer console: register an app, rotate its secret, inspect the grants

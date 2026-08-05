@@ -6,7 +6,7 @@ import { useAnnouncer } from '@relay/design-system/hooks';
 import { useToast } from '@relay/design-system/primitives';
 import { useTranslations } from '@relay/i18n/react';
 
-import { describeApiError } from './api-error.js';
+import { describeApiError } from './api-error';
 
 export interface SettingsMutationOptions<TInput, TResult> {
   /** The section name, already translated. Used in the announcements. */

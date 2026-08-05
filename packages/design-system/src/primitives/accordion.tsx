@@ -3,8 +3,8 @@
 import { forwardRef, type ComponentPropsWithoutRef } from 'react';
 import { Accordion as AccordionPrimitive } from 'radix-ui';
 import { ChevronDown } from 'lucide-react';
-import { cn } from '../utils/cn.js';
-import { focusRing } from '../utils/style-constants.js';
+import { cn } from '../utils/cn';
+import { focusRing } from '../utils/style-constants';
 
 /**
  * Progressive disclosure for secondary detail: attempt history on a receipt,

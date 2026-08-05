@@ -1,4 +1,4 @@
-import { ConfigValidationError, type ConfigIssue } from './errors.js';
+import { ConfigValidationError, type ConfigIssue } from './errors';
 import {
   ENV_KEYS,
   type AiProvider,
@@ -9,7 +9,7 @@ import {
   type RelayEnv,
   envSchema,
   normalizeEnv,
-} from './schema.js';
+} from './schema';
 
 /** The six deployable surfaces. Each validates only what it actually uses. */
 export const RELAY_SERVICES = ['web', 'api', 'worker', 'mcp', 'cli', 'links'] as const;

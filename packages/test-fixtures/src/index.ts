@@ -27,7 +27,7 @@ export {
   fixtureUrl,
   isFixtureId,
   type FixtureIdOptions,
-} from './ids.js';
+} from './ids';
 
 export {
   DAY_MS,
@@ -39,7 +39,7 @@ export {
   steppingClock,
   type Clock,
   type ClockListener,
-} from './clock.js';
+} from './clock';
 
 export {
   ControllableKeyValueStore,
@@ -47,8 +47,8 @@ export {
   type ControllableKeyValueStoreOptions,
   type KeyValueStore,
   type KvOperation,
-} from './kv.js';
+} from './kv';
 
-export * from './factories/index.js';
-export * from './golden/index.js';
-export * from './simulators/index.js';
+export * from './factories/index';
+export * from './golden/index';
+export * from './simulators/index';

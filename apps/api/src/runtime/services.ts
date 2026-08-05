@@ -2,7 +2,7 @@ import type { RelayConfig } from '@relay/config';
 import { ERROR_CODES, RelayError } from '@relay/contracts';
 import type { Logger } from '@relay/observability';
 
-import type { Clock, KeyValueStore, Services } from '../application/port.js';
+import type { Clock, KeyValueStore, Services } from '../application/port';
 
 /**
  * Load the application services.

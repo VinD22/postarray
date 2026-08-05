@@ -5,7 +5,7 @@ import {
   PUBLISH_STATE_DEFINITIONS,
   StatusPill,
   type PublishState,
-} from './status-pill.js';
+} from './status-pill';
 
 // Test fixtures only. Product copy lives in @relay/i18n.
 const label = (state: PublishState): string => state.replaceAll('_', ' ');

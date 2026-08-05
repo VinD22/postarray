@@ -12,8 +12,8 @@ import {
 } from 'react';
 import { Toast as ToastPrimitive } from 'radix-ui';
 import { AlertTriangle, CheckCircle2, Info, X, XCircle } from 'lucide-react';
-import { cn } from '../utils/cn.js';
-import { focusRing } from '../utils/style-constants.js';
+import { cn } from '../utils/cn';
+import { focusRing } from '../utils/style-constants';
 
 /**
  * Transient confirmations.

@@ -3,9 +3,9 @@ import { detectCapabilities, type RelayConfig, type RuntimeCapabilities } from '
 import { buildHealthReport, healthHttpStatus, type HealthReport } from '@relay/observability';
 import type { Response } from 'express';
 
-import type { Clock, Services } from '../../application/port.js';
-import { CLOCK, RELAY_CONFIG, SERVICES } from '../../application/tokens.js';
-import { Public } from '../../common/decorators.js';
+import type { Clock, Services } from '../../application/port';
+import { CLOCK, RELAY_CONFIG, SERVICES } from '../../application/tokens';
+import { Public } from '../../common/decorators';
 
 /**
  * Liveness, readiness and the runtime capability report.

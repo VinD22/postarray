@@ -25,7 +25,7 @@ export {
   metricMappingSchema,
   normalizedMetricNameSchema,
   providerIdSchema,
-} from './types.js';
+} from './types';
 export type {
   ComparablePost,
   Confounder,
@@ -39,10 +39,10 @@ export type {
   ObservedPost,
   ProviderId,
   UnavailableReason,
-} from './types.js';
+} from './types';
 
-export { fixedClock, parseInstant, secondsBetween, systemClock } from './time.js';
-export type { Clock } from './time.js';
+export { fixedClock, parseInstant, secondsBetween, systemClock } from './time';
+export type { Clock } from './time';
 
 export {
   METRIC_MAPPINGS,
@@ -50,10 +50,10 @@ export {
   mappingForMetric,
   mappingsFor,
   supportedMetrics,
-} from './registry.js';
+} from './registry';
 
-export { findMetric, normalizeMetrics, presentMetrics, unavailableByReason } from './normalize.js';
-export type { NormalizeInput } from './normalize.js';
+export { findMetric, normalizeMetrics, presentMetrics, unavailableByReason } from './normalize';
+export type { NormalizeInput } from './normalize';
 
 export {
   BASELINE_DIRECTIONS,
@@ -64,13 +64,8 @@ export {
   SMALL_SAMPLE_THRESHOLD,
   compareToTrailingMedian,
   median,
-} from './baseline.js';
-export type {
-  BaselineDirection,
-  BaselineInput,
-  BaselineOutcome,
-  BaselineResult,
-} from './baseline.js';
+} from './baseline';
+export type { BaselineDirection, BaselineInput, BaselineOutcome, BaselineResult } from './baseline';
 
 export {
   CONFIDENCES,
@@ -79,7 +74,7 @@ export {
   buildNextTestInsight,
   buildUnavailabilityInsights,
   compareAcrossPlatforms,
-} from './insights.js';
+} from './insights';
 export type {
   CrossPlatformComparison,
   CrossPlatformRequest,
@@ -88,7 +83,7 @@ export type {
   InsightConfidence,
   InsightKind,
   InsightParam,
-} from './insights.js';
+} from './insights';
 
 export {
   EXPERIMENT_STATES,
@@ -100,7 +95,7 @@ export {
   summarizeExperiment,
   tagBeforePublication,
   variantAgainstBaseline,
-} from './experiments.js';
+} from './experiments';
 export type {
   CompletionCheck,
   Experiment,
@@ -111,7 +106,7 @@ export type {
   TagResult,
   TaggingError,
   VariantSummary,
-} from './experiments.js';
+} from './experiments';
 
 export {
   DEFAULT_STALE_AFTER_SECONDS,
@@ -120,11 +115,11 @@ export {
   computeCoverage,
   computeFreshness,
   markStaleMetrics,
-} from './freshness.js';
+} from './freshness';
 export type {
   CoverageInput,
   CoverageReport,
   FreshnessInput,
   FreshnessLabel,
   FreshnessReport,
-} from './freshness.js';
+} from './freshness';

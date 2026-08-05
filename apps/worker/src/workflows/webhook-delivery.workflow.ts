@@ -1,6 +1,6 @@
-import { createTemporalRuntime, workerActivities } from './temporal-runtime.js';
-import { runWebhookDelivery } from './core/webhook-delivery.core.js';
-import type { WebhookDeliveryWorkflowInput, WebhookDeliveryWorkflowOutput } from './inputs.js';
+import { createTemporalRuntime, workerActivities } from './temporal-runtime';
+import { runWebhookDelivery } from './core/webhook-delivery.core';
+import type { WebhookDeliveryWorkflowInput, WebhookDeliveryWorkflowOutput } from './inputs';
 
 /**
  * One signed delivery to one customer endpoint.

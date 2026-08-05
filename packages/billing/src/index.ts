@@ -46,7 +46,7 @@ export {
   type IntervalPresentation,
   type PlanProduct,
   type PricePresentation,
-} from './products.js';
+} from './products';
 
 export {
   MICRO_PER_MINOR,
@@ -66,7 +66,7 @@ export {
   unitsToMicro,
   unitsToMinor,
   type FormatMoneyOptions,
-} from './money.js';
+} from './money';
 
 export {
   MILLISECONDS_PER_DAY,
@@ -91,9 +91,9 @@ export {
   systemClock,
   toIsoInstant,
   type Clock,
-} from './time.js';
+} from './time';
 
-export { BILLING_MESSAGE_KEYS, type BillingMessageKey } from './messages.js';
+export { BILLING_MESSAGE_KEYS, type BillingMessageKey } from './messages';
 
 export {
   POLAR_EVENT_TYPES,
@@ -114,7 +114,7 @@ export {
   type PolarOrder,
   type PolarProduct,
   type PolarSubscription,
-} from './polar-schemas.js';
+} from './polar-schemas';
 
 export {
   HttpPolarClient,
@@ -131,7 +131,7 @@ export {
   type PolarClient,
   type PolarSdkLike,
   type UsageEventInput,
-} from './client.js';
+} from './client';
 
 export {
   LocalPolarSimulator,
@@ -142,7 +142,7 @@ export {
   SIMULATOR_WEBHOOK_SECRET,
   type LocalPolarSimulatorOptions,
   type SimulatedDelivery,
-} from './simulator.js';
+} from './simulator';
 
 export {
   DEFAULT_TOLERANCE_SECONDS,
@@ -158,7 +158,7 @@ export {
   type SignatureVerification,
   type SignWebhookInput,
   type VerifyWebhookInput,
-} from './signature.js';
+} from './signature';
 
 export {
   CHECKOUT_RETURN_POLL_SECONDS,
@@ -176,7 +176,7 @@ export {
   type CreateCheckoutSessionInput,
   type DisclosureConsentRecord,
   type DisclosureLine,
-} from './checkout.js';
+} from './checkout';
 
 export {
   InMemorySubscriptionStore,
@@ -190,7 +190,7 @@ export {
   type WebhookInboxStore,
   type WebhookResult,
   type WebhookSignatureState,
-} from './inbox.js';
+} from './inbox';
 
 export {
   WEBHOOK_FAILURE_ALERT_THRESHOLD,
@@ -205,7 +205,7 @@ export {
   type WebhookOutcome,
   type WebhookProcessor,
   type WebhookProcessorDeps,
-} from './webhooks.js';
+} from './webhooks';
 
 export {
   ALWAYS_ALLOWED_ACTIONS,
@@ -235,7 +235,7 @@ export {
   type ScheduledPostDisposition,
   type SubscriptionSource,
   type VerifiedSubscription,
-} from './entitlements.js';
+} from './entitlements';
 
 export {
   DRIFT_PAGE_THRESHOLD_PER_HOUR,
@@ -249,7 +249,7 @@ export {
   type ReconcileDeps,
   type ReconcileInput,
   type ReconciliationReport,
-} from './reconcile.js';
+} from './reconcile';
 
 export {
   CANCELLATION_OFFER_KEYS,
@@ -267,7 +267,7 @@ export {
   type TrialPhase,
   type TrialSchedule,
   type TrialStatus,
-} from './trial.js';
+} from './trial';
 
 export {
   DEFAULT_SPEND_CONTROLS,
@@ -304,7 +304,7 @@ export {
   type UsageEstimateLine,
   type UsageOperation,
   type UsageRecord,
-} from './usage.js';
+} from './usage';
 
 export {
   AFFILIATE_TERMS,
@@ -342,7 +342,7 @@ export {
   type ReferralChannel,
   type ReferralTouch,
   type ReversalKind,
-} from './affiliate.js';
+} from './affiliate';
 
 export {
   DOCUMENTED_ASSUMPTIONS,
@@ -362,4 +362,4 @@ export {
   type MarginTableRow,
   type PlanEconomics,
   type ReferredCohortEconomics,
-} from './economics.js';
+} from './economics';

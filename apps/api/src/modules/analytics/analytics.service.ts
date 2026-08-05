@@ -9,9 +9,9 @@ import type {
   Services,
   TimeRange,
   ViewModel,
-} from '../../application/port.js';
-import { SERVICES } from '../../application/tokens.js';
-import type { CompareRequestInput } from './analytics.schemas.js';
+} from '../../application/port';
+import { SERVICES } from '../../application/tokens';
+import type { CompareRequestInput } from './analytics.schemas';
 
 /** Transport-level delegation for analytics. Normalization is not done here. */
 @Injectable()

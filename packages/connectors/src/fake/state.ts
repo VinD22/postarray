@@ -1,6 +1,6 @@
 import type { AccountType } from '@relay/contracts';
 
-import { type Clock, instantOf, systemClock } from '../ports.js';
+import { type Clock, instantOf, systemClock } from '../ports';
 
 /**
  * The fake provider's world.

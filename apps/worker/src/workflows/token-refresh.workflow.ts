@@ -1,6 +1,6 @@
-import { createTemporalRuntime, workerActivities } from './temporal-runtime.js';
-import { runTokenRefresh } from './core/token-refresh.core.js';
-import type { TokenRefreshWorkflowInput, TokenRefreshWorkflowOutput } from './inputs.js';
+import { createTemporalRuntime, workerActivities } from './temporal-runtime';
+import { runTokenRefresh } from './core/token-refresh.core';
+import type { TokenRefreshWorkflowInput, TokenRefreshWorkflowOutput } from './inputs';
 
 /**
  * Proactive credential refresh.

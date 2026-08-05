@@ -1,7 +1,7 @@
 import { ALL_SCOPES, type Role, type Scope } from '@relay/contracts';
 
-import { PERMISSIONS, type Permission } from './permissions.js';
-import { ROLE_PERMISSIONS } from './roles.js';
+import { PERMISSIONS, type Permission } from './permissions';
+import { ROLE_PERMISSIONS } from './roles';
 
 /**
  * The bridge between the OAuth scope registry in `@relay/contracts` and the

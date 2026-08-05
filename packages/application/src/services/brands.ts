@@ -1,12 +1,12 @@
 import type { Paginated } from '@relay/contracts';
 
-import type { ActorContext, BrandService, PageQuery, ServiceDeps } from '../types.js';
-import type { BrandView } from '../views.js';
+import type { ActorContext, BrandService, PageQuery, ServiceDeps } from '../types';
+import type { BrandView } from '../views';
 
-import { recordAudit } from '../internal/audit.js';
-import { notFound } from '../internal/errors.js';
-import { pageArgs, toPage } from '../internal/pagination.js';
-import { authorized } from '../internal/runtime.js';
+import { recordAudit } from '../internal/audit';
+import { notFound } from '../internal/errors';
+import { pageArgs, toPage } from '../internal/pagination';
+import { authorized } from '../internal/runtime';
 
 /** Brands: voice, claims, blocked terms, domains and scheduling defaults. */
 

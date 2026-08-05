@@ -4,8 +4,8 @@ import { fileURLToPath } from 'node:url';
 
 import { describe, expect, it } from 'vitest';
 
-import { GOLDEN_EXAMPLES } from './golden/index.js';
-import { createSimulatorRegistry } from './simulators/index.js';
+import { GOLDEN_EXAMPLES } from './golden/index';
+import { createSimulatorRegistry } from './simulators/index';
 
 /**
  * Fixture safety, enforced by the build.
@@ -144,7 +144,7 @@ describe('no credential material', () => {
   });
 
   it('labels the one token-shaped fixture as unusable', async () => {
-    const { FAKE_BEARER_TOKEN } = await import('./ids.js');
+    const { FAKE_BEARER_TOKEN } = await import('./ids');
     expect(FAKE_BEARER_TOKEN).toContain('FAKE');
     expect(FAKE_BEARER_TOKEN).toContain('DO-NOT-USE');
   });

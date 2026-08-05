@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-import type { VerifiedSubscription } from './entitlements.js';
+import type { VerifiedSubscription } from './entitlements';
 
 /**
  * The webhook inbox.

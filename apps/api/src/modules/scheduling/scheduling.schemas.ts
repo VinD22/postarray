@@ -7,15 +7,15 @@ import {
 } from '@relay/contracts';
 import { z } from 'zod';
 
-import { cursorQueryWith } from '../../common/pagination.js';
-import { requireEpochMillis } from '../../common/instant.js';
+import { cursorQueryWith } from '../../common/pagination';
+import { requireEpochMillis } from '../../common/instant';
 import {
   brandIdSchema,
   campaignIdSchema,
   connectionIdSchema,
   contentItemIdSchema,
   mediumTextSchema,
-} from '../../common/schemas.js';
+} from '../../common/schemas';
 
 /**
  * Scheduling payloads.

@@ -2,8 +2,8 @@ import { describe, expect, it } from 'vitest';
 
 import { ERROR_CODES } from '@relay/contracts';
 
-import type { ProviderRequest } from '../types.js';
-import { createDeepSeekProvider } from './deepseek.js';
+import type { ProviderRequest } from '../types';
+import { createDeepSeekProvider } from './deepseek';
 
 function request(): ProviderRequest {
   return {

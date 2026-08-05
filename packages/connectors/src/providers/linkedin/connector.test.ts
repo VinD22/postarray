@@ -11,9 +11,9 @@ import {
   testMentionSearchRequest,
   testMetricsRequest,
   testPublishRequest,
-} from '../shared/testing.js';
-import { buildLinkedInCapabilities } from './capabilities.js';
-import { createLinkedInConnector } from './connector.js';
+} from '../shared/testing';
+import { buildLinkedInCapabilities } from './capabilities';
+import { createLinkedInConnector } from './connector';
 import {
   LINKEDIN_ORGANIZATION_ACLS_FIXTURE,
   LINKEDIN_ORGANIZATION_SEARCH_FIXTURE,
@@ -21,7 +21,7 @@ import {
   LINKEDIN_SHARE_STATISTICS_FIXTURE,
   LINKEDIN_SOCIAL_ACTIONS_FIXTURE,
   LINKEDIN_USERINFO_FIXTURE,
-} from './__fixtures__/index.js';
+} from './__fixtures__/index';
 
 const MEMBER_SCOPES = ['openid', 'profile', 'w_member_social'];
 const ORG_SCOPES = [

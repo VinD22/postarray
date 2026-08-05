@@ -1,7 +1,7 @@
 import { validationIssue, type CapabilitySnapshot, type ValidationIssue } from '@relay/contracts';
 
-import type { ProviderDraft, ProviderMedia } from './contract-shape.js';
-import { countText, type CountingUnit } from './text.js';
+import type { ProviderDraft, ProviderMedia } from './contract-shape';
+import { countText, type CountingUnit } from './text';
 
 /**
  * Deterministic validation shared by every adapter.

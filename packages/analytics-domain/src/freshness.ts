@@ -1,8 +1,8 @@
 import type { MetricObservation, NormalizedMetricName } from '@relay/contracts';
 
-import { parseInstant, secondsBetween } from './time.js';
-import { UNAVAILABLE_REASON_KEYS } from './types.js';
-import type { NormalizedMetric, UnavailableReason } from './types.js';
+import { parseInstant, secondsBetween } from './time';
+import { UNAVAILABLE_REASON_KEYS } from './types';
+import type { NormalizedMetric, UnavailableReason } from './types';
 
 /**
  * Freshness and coverage.

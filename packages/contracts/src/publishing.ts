@@ -8,18 +8,18 @@ import {
   errorClassSchema,
   providerIdSchema,
   publishStateSchema,
-} from './enums.js';
-import type { PublishState } from './enums.js';
-import { errorCodeSchema } from './errors.js';
-import { ID_PREFIXES, idSchema } from './ids.js';
+} from './enums';
+import type { PublishState } from './enums';
+import { errorCodeSchema } from './errors';
+import { ID_PREFIXES, idSchema } from './ids';
 import {
   checksumSchema,
   currencyCodeSchema,
   ianaTimeZoneSchema,
   isoInstantSchema,
   localDateTimeSchema,
-} from './primitives.js';
-import { threadItemKindSchema } from './content.js';
+} from './primitives';
+import { threadItemKindSchema } from './content';
 
 /**
  * Publishing state, attempts and receipts.

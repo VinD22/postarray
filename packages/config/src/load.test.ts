@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 
-import { ConfigValidationError } from './errors.js';
-import { loadConfig, loadConfigFor, requireConfigValue } from './load.js';
+import { ConfigValidationError } from './errors';
+import { loadConfig, loadConfigFor, requireConfigValue } from './load';
 
 const LOCAL_KEY_32_BYTES = Buffer.alloc(32, 7).toString('base64');
 

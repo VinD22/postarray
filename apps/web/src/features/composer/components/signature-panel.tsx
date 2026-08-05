@@ -21,8 +21,8 @@ import {
 import { DefinitionList } from '@relay/design-system/patterns';
 import { useTranslations } from '@relay/i18n/react';
 
-import { useComposer } from '../composer-context.js';
-import { PROVIDER_LABEL } from './provider-identity.js';
+import { useComposer } from '../composer-context';
+import { PROVIDER_LABEL } from './provider-identity';
 
 const NO_SIGNATURE = 'none';
 

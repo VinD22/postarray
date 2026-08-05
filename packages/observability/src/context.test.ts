@@ -12,7 +12,7 @@ import {
   requireContext,
   runWithContext,
   runWithExtendedContext,
-} from './context.js';
+} from './context';
 
 describe('runWithContext', () => {
   it('exposes the context to everything inside the call', () => {

@@ -2,7 +2,7 @@ import { z } from 'zod';
 import { RelayError, growthExportFormatSchema } from '@relay/contracts';
 import type { GrowthExportFormat } from '@relay/contracts';
 
-import { ROUTES } from '../api/routes.js';
+import { ROUTES } from '../api/routes';
 import {
   automationRuleViewSchema,
   calendarEntrySchema,
@@ -16,11 +16,11 @@ import {
   publishJobViewSchema,
   ruleRunViewSchema,
   wrapped,
-} from '../api/schemas.js';
-import type { MetricObservationView } from '../api/schemas.js';
-import type { CliContext } from '../context.js';
-import { renderSuccess, renderTable } from '../output.js';
-import type { RenderInput } from '../output.js';
+} from '../api/schemas';
+import type { MetricObservationView } from '../api/schemas';
+import type { CliContext } from '../context';
+import { renderSuccess, renderTable } from '../output';
+import type { RenderInput } from '../output';
 
 /**
  * Read commands.

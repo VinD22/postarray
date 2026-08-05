@@ -6,7 +6,7 @@ import {
   isSubstantiallySimilar,
   normalizeForComparison,
   similarityRatio,
-} from './similarity.js';
+} from './similarity';
 
 describe('normalizeForComparison', () => {
   it('strips links, mentions, hashtags, punctuation and case', () => {

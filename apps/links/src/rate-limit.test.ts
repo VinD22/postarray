@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 
-import { fixedClock } from './clock.js';
-import { createEnumerationGuard, createRateLimiter } from './rate-limit.js';
+import { fixedClock } from './clock';
+import { createEnumerationGuard, createRateLimiter } from './rate-limit';
 
 describe('createRateLimiter', () => {
   it('allows up to the limit and then refuses', () => {

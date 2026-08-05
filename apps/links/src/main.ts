@@ -9,12 +9,12 @@ import {
 import { buildHealthReport, createLogger } from '@relay/observability';
 import type { HealthReport } from '@relay/observability';
 
-import { createBufferedClickSink } from './clicks.js';
-import { createKillSwitch } from './cache.js';
-import { createLinksServer } from './server.js';
-import { createSqlClickWriter, createSqlShortLinkStore } from './store.js';
-import type { SqlQueryable } from './store.js';
-import { systemClock } from './clock.js';
+import { createBufferedClickSink } from './clicks';
+import { createKillSwitch } from './cache';
+import { createLinksServer } from './server';
+import { createSqlClickWriter, createSqlShortLinkStore } from './store';
+import type { SqlQueryable } from './store';
+import { systemClock } from './clock';
 
 /**
  * The composition root.

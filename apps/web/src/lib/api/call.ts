@@ -6,8 +6,8 @@
  * behaviour instead of in a parallel mock layer that drifts.
  */
 
-import { apiConfig } from './config.js';
-import { request, type RequestOptions } from './transport.js';
+import { apiConfig } from './config';
+import { request, type RequestOptions } from './transport';
 
 export async function call<T>(path: string, options: RequestOptions, demo: () => T): Promise<T> {
   if (apiConfig.mode === 'demo') {

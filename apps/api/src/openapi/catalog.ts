@@ -13,7 +13,7 @@ import {
 } from '@relay/contracts';
 import { z } from 'zod';
 
-import { cursorQuerySchema } from '../common/pagination.js';
+import { cursorQuerySchema } from '../common/pagination';
 import {
   apiKeyIdSchema,
   approvalIdSchema,
@@ -35,29 +35,26 @@ import {
   webhookDeliveryIdSchema,
   webhookEndpointIdSchema,
   workspaceIdSchema,
-} from '../common/schemas.js';
-import {
-  createApiKeySchema,
-  listApiKeysQuerySchema,
-} from '../modules/api-keys/api-keys.schemas.js';
+} from '../common/schemas';
+import { createApiKeySchema, listApiKeysQuerySchema } from '../modules/api-keys/api-keys.schemas';
 import {
   decideApprovalSchema,
   listPendingQuerySchema,
   requestApprovalSchema,
-} from '../modules/approvals/approvals.schemas.js';
+} from '../modules/approvals/approvals.schemas';
 import {
   accountMetricsQuerySchema,
   compareRequestSchema,
   createExperimentSchema,
   listExperimentsQuerySchema,
-} from '../modules/analytics/analytics.schemas.js';
+} from '../modules/analytics/analytics.schemas';
 import {
   createRuleSchema,
   listRulesQuerySchema,
   listRunsQuerySchema,
   testRunSchema,
   updateRuleSchema,
-} from '../modules/automation-rules/automation-rules.schemas.js';
+} from '../modules/automation-rules/automation-rules.schemas';
 import {
   magicLinkSchema,
   passwordResetSchema,
@@ -67,23 +64,23 @@ import {
   signUpSchema,
   verifyOtpSchema,
   verifyTotpSchema,
-} from '../modules/auth/auth.schemas.js';
+} from '../modules/auth/auth.schemas';
 import {
   createCheckoutSchema,
   createPortalLinkSchema,
   usageQuerySchema,
-} from '../modules/billing/billing.schemas.js';
+} from '../modules/billing/billing.schemas';
 import {
   createBrandSchema,
   listBrandsQuerySchema,
   updateBrandSchema,
-} from '../modules/brands/brands.schemas.js';
+} from '../modules/brands/brands.schemas';
 import {
   beginOAuthSchema,
   listConnectionsQuerySchema,
   listDestinationsQuerySchema,
   searchMentionsQuerySchema,
-} from '../modules/connections/connections.schemas.js';
+} from '../modules/connections/connections.schemas';
 import {
   applySetSchema,
   applySignatureSchema,
@@ -93,13 +90,13 @@ import {
   previewQuerySchema,
   setTargetsSchema,
   updateMasterSchema,
-} from '../modules/content/content.schemas.js';
+} from '../modules/content/content.schemas';
 import {
   createOAuthAppSchema,
   listAppsQuerySchema,
   listGrantsQuerySchema,
   updateOAuthAppSchema,
-} from '../modules/developer-apps/developer-apps.schemas.js';
+} from '../modules/developer-apps/developer-apps.schemas';
 import {
   businessProfileInputSchema,
   exportPlanQuerySchema,
@@ -107,39 +104,39 @@ import {
   listOpportunitiesQuerySchema,
   listToolsQuerySchema,
   planItemSchema,
-} from '../modules/growth/growth.schemas.js';
+} from '../modules/growth/growth.schemas';
 import {
   createUploadUrlSchema,
   editMediaSchema,
   importFromUrlSchema,
   listMediaQuerySchema,
   setAltTextSchema,
-} from '../modules/media/media.schemas.js';
-import { publishNowSchema, retryTargetSchema } from '../modules/publishing/publishing.schemas.js';
+} from '../modules/media/media.schemas';
+import { publishNowSchema, retryTargetSchema } from '../modules/publishing/publishing.schemas';
 import {
   createFeedSchema,
   listFeedsQuerySchema,
   updateFeedSchema,
   validateFeedSchema,
-} from '../modules/rss/rss.schemas.js';
+} from '../modules/rss/rss.schemas';
 import {
   calendarQuerySchema,
   cancelRequestSchema,
   nextSlotQuerySchema,
   rescheduleRequestSchema,
   scheduleRequestSchema,
-} from '../modules/scheduling/scheduling.schemas.js';
+} from '../modules/scheduling/scheduling.schemas';
 import {
   createShortLinkSchema,
   listShortLinksQuerySchema,
   shortLinkStatsQuerySchema,
-} from '../modules/short-links/short-links.schemas.js';
-import { listAuditQuerySchema } from '../modules/audit/audit.schemas.js';
+} from '../modules/short-links/short-links.schemas';
+import { listAuditQuerySchema } from '../modules/audit/audit.schemas';
 import {
   createWebhookEndpointSchema,
   inboundIntegrationSchema,
   updateWebhookEndpointSchema,
-} from '../modules/webhooks/webhooks.schemas.js';
+} from '../modules/webhooks/webhooks.schemas';
 import {
   acceptInvitationSchema,
   createWorkspaceSchema,
@@ -147,15 +144,15 @@ import {
   listWorkspacesQuerySchema,
   updateRoleSchema,
   updateWorkspaceSchema,
-} from '../modules/workspaces/workspaces.schemas.js';
+} from '../modules/workspaces/workspaces.schemas';
 import {
   authorizeQuerySchema,
   consentDecisionSchema,
   introspectionRequestSchema,
   revocationRequestSchema,
   tokenRequestSchema,
-} from '../oauth-provider/oauth.schemas.js';
-import type { OperationSpec } from './types.js';
+} from '../oauth-provider/oauth.schemas';
+import type { OperationSpec } from './types';
 
 /**
  * The route catalog.

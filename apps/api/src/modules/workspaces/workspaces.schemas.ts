@@ -1,8 +1,8 @@
 import { ianaTimeZoneSchema, localeSchema, roleSchema } from '@relay/contracts';
 import { z } from 'zod';
 
-import { cursorQuerySchema } from '../../common/pagination.js';
-import { noteSchema, shortTextSchema } from '../../common/schemas.js';
+import { cursorQuerySchema } from '../../common/pagination';
+import { noteSchema, shortTextSchema } from '../../common/schemas';
 
 /**
  * Workspace, membership and invitation payloads.

@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import { describeApiError } from './api-error.js';
+import { describeApiError } from './api-error';
 
 describe('describeApiError', () => {
   it('routes a missing scope to the permission state and keeps the scope names', () => {

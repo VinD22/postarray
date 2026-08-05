@@ -1,9 +1,9 @@
 import { can, type PolicyActor } from '@relay/authz';
 import { describe, expect, it } from 'vitest';
 
-import { reapprovalRequired, type ContentAggregate } from './content-store.js';
-import { decisionToError } from './errors.js';
-import { storedMasterSchema } from './stored-content.js';
+import { reapprovalRequired, type ContentAggregate } from './content-store';
+import { decisionToError } from './errors';
+import { storedMasterSchema } from './stored-content';
 
 function aggregate(overrides: Partial<ContentAggregate> = {}): ContentAggregate {
   const master = storedMasterSchema.parse({

@@ -13,7 +13,7 @@ import {
   type ValidationResult,
 } from '@relay/contracts';
 
-import type { ActorContext, ServiceDeps, ValidationService } from '../types.js';
+import type { ActorContext, ServiceDeps, ValidationService } from '../types';
 
 import {
   containsUrl,
@@ -21,10 +21,10 @@ import {
   linkHosts,
   loadCapabilitiesFor,
   type ConnectionCapabilities,
-} from '../internal/capabilities.js';
-import { loadAggregate, type AggregateVariant } from '../internal/content-store.js';
-import { authorized, type Db } from '../internal/runtime.js';
-import { resolveTarget } from '../internal/stored-content.js';
+} from '../internal/capabilities';
+import { loadAggregate, type AggregateVariant } from '../internal/content-store';
+import { authorized, type Db } from '../internal/runtime';
+import { resolveTarget } from '../internal/stored-content';
 
 /**
  * The deterministic preflight.

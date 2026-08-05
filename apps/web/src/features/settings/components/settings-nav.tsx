@@ -6,7 +6,7 @@ import { usePathname } from 'next/navigation';
 import { cn } from '@relay/design-system/utils';
 import { useTranslations } from '@relay/i18n/react';
 
-import { SETTINGS_SECTIONS } from './settings-sections.js';
+import { SETTINGS_SECTIONS } from './settings-sections';
 
 /**
  * Settings navigation.

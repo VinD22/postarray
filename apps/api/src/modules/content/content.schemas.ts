@@ -16,7 +16,7 @@ import {
 } from '@relay/contracts';
 import { z } from 'zod';
 
-import { cursorQueryWith } from '../../common/pagination.js';
+import { cursorQueryWith } from '../../common/pagination';
 import {
   brandIdSchema,
   campaignIdSchema,
@@ -25,7 +25,7 @@ import {
   postVariantIdSchema,
   setIdSchema,
   signatureIdSchema,
-} from '../../common/schemas.js';
+} from '../../common/schemas';
 
 /**
  * Composer payloads.

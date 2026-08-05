@@ -19,14 +19,14 @@ import { DefinitionList, Notice } from '@relay/design-system/patterns';
 import { useTranslations } from '@relay/i18n/react';
 import type { Scope } from '@relay/contracts';
 
-import { SettingsPanel } from '../../settings/components/section.js';
-import { fromLines } from '../../settings/lib/lines.js';
+import { SettingsPanel } from '../../settings/components/section';
+import { fromLines } from '../../settings/lib/lines';
 import type {
   ApprovalLevel,
   BrandRef,
   ConnectionSummaryView,
-} from '../../settings/lib/view-models.js';
-import { ScopePicker } from '../components/scope-picker.js';
+} from '../../settings/lib/view-models';
+import { ScopePicker } from '../components/scope-picker';
 
 const APPROVAL_LEVELS: readonly ApprovalLevel[] = [0, 1, 2, 3];
 

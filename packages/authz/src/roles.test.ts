@@ -1,13 +1,13 @@
 import { ROLES } from '@relay/contracts';
 import { describe, expect, it } from 'vitest';
 
-import { PERMISSIONS } from './permissions.js';
+import { PERMISSIONS } from './permissions';
 import {
   ROLE_PERMISSIONS,
   effectivePermissions,
   permissionsForRole,
   roleHasPermission,
-} from './roles.js';
+} from './roles';
 
 describe('the role matrix', () => {
   it('covers every seeded role', () => {

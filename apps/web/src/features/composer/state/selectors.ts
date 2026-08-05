@@ -11,15 +11,10 @@ import {
   type ValidationIssue,
 } from '@relay/contracts';
 
-import {
-  countCharacters,
-  findUrls,
-  mediaLimitFor,
-  resolvePublishedUrl,
-} from './capability-rules.js';
-import { validateTarget, type DraftFacts } from './validate-draft.js';
-import type { MediaFacts } from './capability-rules.js';
-import type { ComposerState, TargetAccount, TargetRailState, TargetSummary } from '../types.js';
+import { countCharacters, findUrls, mediaLimitFor, resolvePublishedUrl } from './capability-rules';
+import { validateTarget, type DraftFacts } from './validate-draft';
+import type { MediaFacts } from './capability-rules';
+import type { ComposerState, TargetAccount, TargetRailState, TargetSummary } from '../types';
 
 export interface MediaLookup {
   /** The facts for one media id, or null when the library has not loaded it. */

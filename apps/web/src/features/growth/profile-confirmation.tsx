@@ -7,7 +7,7 @@ import { useTranslations } from '@relay/i18n/react';
 import type { BusinessProfile } from '@relay/contracts';
 import { AlertCircle, Check, HelpCircle } from 'lucide-react';
 
-import { SettingsPanel } from '../settings/components/section.js';
+import { SettingsPanel } from '../settings/components/section';
 
 export interface ProfileConfirmationProps {
   profile: BusinessProfile;

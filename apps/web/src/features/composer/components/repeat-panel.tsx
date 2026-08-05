@@ -25,9 +25,9 @@ import { useTranslations } from '@relay/i18n/react';
 import { formatDate } from '@relay/i18n';
 import { REPEAT_CADENCE_DAYS, type RepeatCadenceDays } from '@relay/contracts';
 
-import { useComposer } from '../composer-context.js';
-import { repeatOccurrences } from '../state/selectors.js';
-import { RadioRow, SwitchRow } from './form-rows.js';
+import { useComposer } from '../composer-context';
+import { repeatOccurrences } from '../state/selectors';
+import { RadioRow, SwitchRow } from './form-rows';
 
 const MAX_OCCURRENCES = 52;
 const PREVIEW_LIMIT = 4;

@@ -6,11 +6,11 @@ import {
   resolveProfile,
   setProfileValue,
   unsetProfileValue,
-} from '../config/store.js';
-import type { ConfigKey } from '../config/store.js';
-import type { CliContext } from '../context.js';
-import { renderSuccess, renderTable } from '../output.js';
-import type { RenderInput } from '../output.js';
+} from '../config/store';
+import type { ConfigKey } from '../config/store';
+import type { CliContext } from '../context';
+import { renderSuccess, renderTable } from '../output';
+import type { RenderInput } from '../output';
 
 /**
  * `relay config`.

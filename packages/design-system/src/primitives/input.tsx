@@ -2,8 +2,8 @@
 
 import { forwardRef, type ComponentPropsWithoutRef, type ReactNode } from 'react';
 import { cva, type VariantProps } from 'class-variance-authority';
-import { cn } from '../utils/cn.js';
-import { focusRing, transitionBase } from '../utils/style-constants.js';
+import { cn } from '../utils/cn';
+import { focusRing, transitionBase } from '../utils/style-constants';
 
 /**
  * A single line text field.

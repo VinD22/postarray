@@ -9,11 +9,11 @@ import {
 } from '@relay/contracts';
 import { z } from 'zod';
 
-import { systemClock } from '../ports/clock.js';
-import type { Clock } from '../types.js';
-import type { ActorContext, KeyValueStore } from '../types.js';
+import { systemClock } from '../ports/clock';
+import type { Clock } from '../types';
+import type { ActorContext, KeyValueStore } from '../types';
 
-import { invalid } from './errors.js';
+import { invalid } from './errors';
 
 /**
  * Idempotent writes.

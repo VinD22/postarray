@@ -5,10 +5,10 @@ import type { RelayConfig } from '@relay/config';
 import { API_VERSION } from '@relay/contracts';
 import type { Response } from 'express';
 
-import { RELAY_CONFIG } from '../application/tokens.js';
-import { Public } from '../common/decorators.js';
-import { buildOpenApiDocument } from './document.js';
-import { renderReference } from './reference-page.js';
+import { RELAY_CONFIG } from '../application/tokens';
+import { Public } from '../common/decorators';
+import { buildOpenApiDocument } from './document';
+import { renderReference } from './reference-page';
 
 /**
  * The published specification, and a reference page that renders it.

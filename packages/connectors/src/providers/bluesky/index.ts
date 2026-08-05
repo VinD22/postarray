@@ -1,4 +1,4 @@
-export { blueskyPermalink, createBlueskyConnector } from './connector.js';
+export { blueskyPermalink, createBlueskyConnector } from './connector';
 export {
   BLUESKY_CAPABILITY_REVISION,
   BLUESKY_CREATES_PER_HOUR,
@@ -12,7 +12,7 @@ export {
   BLUESKY_REQUIRE_ALT_TEXT,
   buildBlueskyCapabilities,
   type BlueskyCapabilityInput,
-} from './capabilities.js';
+} from './capabilities';
 export {
   buildFacets,
   byteLength,
@@ -21,5 +21,5 @@ export {
   type FacetFeature,
   type FacetIndex,
   type ResolvedMention,
-} from './facets.js';
-export { BLUESKY_ACCOUNT_METRICS, BLUESKY_POST_METRICS } from './metrics.js';
+} from './facets';
+export { BLUESKY_ACCOUNT_METRICS, BLUESKY_POST_METRICS } from './metrics';

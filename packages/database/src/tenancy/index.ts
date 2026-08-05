@@ -4,13 +4,13 @@ export {
   isGlobalModel,
   isTenantModel,
   isUnregisteredModel,
-} from './model-registry.js';
+} from './model-registry';
 
 export {
   assertWorkspaceScoped,
   withWorkspace,
   type WorkspaceScopedClient,
-} from './workspace-scope.js';
+} from './workspace-scope';
 
 export {
   buildClaimsPayload,
@@ -21,4 +21,4 @@ export {
   type RlsContextOptions,
   type RlsRole,
   type RlsTransactionClient,
-} from './rls-context.js';
+} from './rls-context';

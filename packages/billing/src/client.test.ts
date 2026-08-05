@@ -9,10 +9,10 @@ import {
   createPolarClient,
   isSimulated,
   polarClientFromSdk,
-} from './client.js';
-import type { PolarSdkLike } from './client.js';
-import { LocalPolarSimulator } from './simulator.js';
-import { MutableClock } from './time.js';
+} from './client';
+import type { PolarSdkLike } from './client';
+import { LocalPolarSimulator } from './simulator';
+import { MutableClock } from './time';
 
 const NOW = '2026-08-04T14:00:00.000Z';
 

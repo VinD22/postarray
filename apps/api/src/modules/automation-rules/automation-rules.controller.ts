@@ -6,13 +6,13 @@ import type {
   AutomationRuleView,
   RulePreview,
   RuleRunView,
-} from '../../application/port.js';
-import { Actor, Idempotent, RequireScope, RequireStepUp } from '../../common/decorators.js';
-import { cursorQuerySchema } from '../../common/pagination.js';
-import { ruleIdSchema } from '../../common/schemas.js';
-import { parseBody, parseParams, parseQuery } from '../../common/zod.js';
-import { createRuleSchema, testRunSchema, updateRuleSchema } from './automation-rules.schemas.js';
-import { AutomationRulesService } from './automation-rules.service.js';
+} from '../../application/port';
+import { Actor, Idempotent, RequireScope, RequireStepUp } from '../../common/decorators';
+import { cursorQuerySchema } from '../../common/pagination';
+import { ruleIdSchema } from '../../common/schemas';
+import { parseBody, parseParams, parseQuery } from '../../common/zod';
+import { createRuleSchema, testRunSchema, updateRuleSchema } from './automation-rules.schemas';
+import { AutomationRulesService } from './automation-rules.service';
 
 /**
  * Automation Rules.

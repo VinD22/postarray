@@ -1,7 +1,7 @@
 import { RelayError, missingScopes } from '@relay/contracts';
 import type { ApprovalLevel, Scope } from '@relay/contracts';
 
-import type { VerifiedGrant } from './verifier.js';
+import type { VerifiedGrant } from './verifier';
 
 /**
  * Per-call authorization.

@@ -4,7 +4,7 @@ import { dirname } from 'node:path';
 import { z } from 'zod';
 import { RelayError, localeSchema } from '@relay/contracts';
 
-import { configFilePath } from './paths.js';
+import { configFilePath } from './paths';
 
 /**
  * The configuration file.

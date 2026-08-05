@@ -15,7 +15,7 @@ import { cn } from '@relay/design-system/utils';
 import { useTranslations } from '@relay/i18n/react';
 import type { CapabilitySnapshot } from '@relay/contracts';
 
-import { readCounter } from '../state/capability-rules.js';
+import { readCounter } from '../state/capability-rules';
 
 export interface CounterTarget {
   readonly connectionId: string;

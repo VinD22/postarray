@@ -3,14 +3,14 @@ import { beforeEach, describe, expect, it } from 'vitest';
 import { createLogger } from '@relay/observability';
 import type { Scope } from '@relay/contracts';
 
-import { createMemoryConfirmationStore } from './confirmations.js';
-import type { ConfirmationStore } from './confirmations.js';
-import { createDispatcher, createWorkspaceKillSwitch } from './dispatch.js';
-import type { Dispatcher } from './dispatch.js';
-import { createSandboxServices } from './sandbox.js';
-import type { SandboxServices } from './sandbox.js';
-import { createToolRegistry } from './tools/index.js';
-import type { VerifiedGrant } from './auth/verifier.js';
+import { createMemoryConfirmationStore } from './confirmations';
+import type { ConfirmationStore } from './confirmations';
+import { createDispatcher, createWorkspaceKillSwitch } from './dispatch';
+import type { Dispatcher } from './dispatch';
+import { createSandboxServices } from './sandbox';
+import type { SandboxServices } from './sandbox';
+import { createToolRegistry } from './tools/index';
+import type { VerifiedGrant } from './auth/verifier';
 
 const WORKSPACE = 'ws_sandbox';
 const NOW = Date.parse('2026-08-04T12:00:00.000Z');

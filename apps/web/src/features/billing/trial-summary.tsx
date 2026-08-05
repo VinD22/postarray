@@ -5,8 +5,8 @@ import { Button } from '@relay/design-system/primitives';
 import { DefinitionList, Notice } from '@relay/design-system/patterns';
 import { useTranslations } from '@relay/i18n/react';
 
-import { useFormatters } from '../settings/lib/formatters.js';
-import type { BillingStateView } from '../settings/lib/view-models.js';
+import { useFormatters } from '../settings/lib/formatters';
+import type { BillingStateView } from '../settings/lib/view-models';
 
 export interface TrialSummaryProps {
   state: BillingStateView;

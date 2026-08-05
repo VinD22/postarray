@@ -5,7 +5,7 @@ import type {
   PublishPostWorkflowOutput,
   PublishTargetOutcome,
   ThreadSequenceWorkflowOutput,
-} from './inputs.js';
+} from './inputs';
 
 /**
  * Schemas for the values that cross a child workflow boundary.

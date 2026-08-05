@@ -2,7 +2,7 @@ export {
   consumerAccountError,
   createInstagramConnector,
   findRecentInstagramMedia,
-} from './connector.js';
+} from './connector';
 export {
   INSTAGRAM_CAPABILITY_REVISION,
   INSTAGRAM_CAROUSEL_MAX,
@@ -14,9 +14,9 @@ export {
   buildInstagramCapabilities,
   storiesSupport,
   type InstagramCapabilityInput,
-} from './capabilities.js';
+} from './capabilities';
 export {
   INSTAGRAM_ACCOUNT_METRICS,
   INSTAGRAM_MEDIA_FIELDS,
   INSTAGRAM_POST_METRICS,
-} from './metrics.js';
+} from './metrics';

@@ -1,9 +1,9 @@
-import type { ActorContext, ServiceDeps, WorkspaceService } from '../types.js';
-import type { WorkspaceView } from '../views.js';
+import type { ActorContext, ServiceDeps, WorkspaceService } from '../types';
+import type { WorkspaceView } from '../views';
 
-import { recordAudit } from '../internal/audit.js';
-import { notFound } from '../internal/errors.js';
-import { authorized, type Db } from '../internal/runtime.js';
+import { recordAudit } from '../internal/audit';
+import { notFound } from '../internal/errors';
+import { authorized, type Db } from '../internal/runtime';
 
 /** Workspace settings and the operator kill switch. */
 

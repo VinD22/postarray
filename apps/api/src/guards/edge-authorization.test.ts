@@ -11,7 +11,7 @@ import {
   seedApiKey,
   seedSession,
   type Harness,
-} from '../testing/harness.js';
+} from '../testing/harness';
 
 /**
  * Edge authentication and authorization, end to end over HTTP.

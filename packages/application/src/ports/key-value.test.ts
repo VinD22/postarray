@@ -1,10 +1,10 @@
 import { describe, expect, it } from 'vitest';
 
-import { FixedClock } from './clock.js';
-import { MemoryKeyValueStore } from './key-value.js';
-import { MemoryStorage } from './storage.js';
-import { RecordingMailer } from './mailer.js';
-import { InMemoryScheduler, publishWorkflowId } from './scheduler.js';
+import { FixedClock } from './clock';
+import { MemoryKeyValueStore } from './key-value';
+import { MemoryStorage } from './storage';
+import { RecordingMailer } from './mailer';
+import { InMemoryScheduler, publishWorkflowId } from './scheduler';
 
 describe('MemoryKeyValueStore', () => {
   it('round trips a value', async () => {

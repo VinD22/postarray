@@ -15,8 +15,8 @@ import { useTranslations } from '@relay/i18n/react';
 import { cn } from '@relay/design-system/utils';
 import type { ValidationIssue } from '@relay/contracts';
 
-import { useComposer } from '../composer-context.js';
-import { PROVIDER_LABEL } from './provider-identity.js';
+import { useComposer } from '../composer-context';
+import { PROVIDER_LABEL } from './provider-identity';
 
 export interface ValidationPanelProps {
   /** Index into the flattened issue list, driven by the keyboard shortcut. */

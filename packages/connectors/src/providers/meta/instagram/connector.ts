@@ -32,41 +32,41 @@ import {
   type RefreshRequest,
   type SocialConnector,
   type StatusRequest,
-} from '../../shared/contract-shape.js';
-import { mapMetrics } from '../../shared/metrics.js';
-import { buildPreview } from '../../shared/preview.js';
-import { validateDraftShape } from '../../shared/validate.js';
-import { SOURCE_VERIFIED_ON } from '../../shared/verification.js';
+} from '../../shared/contract-shape';
+import { mapMetrics } from '../../shared/metrics';
+import { buildPreview } from '../../shared/preview';
+import { validateDraftShape } from '../../shared/validate';
+import { SOURCE_VERIFIED_ON } from '../../shared/verification';
 import {
   assertContainerReady,
   containerStatusToPublishStatus,
   readContainerStatus,
-} from '../container.js';
+} from '../container';
 import {
   canPublishToPage,
   createMetaClient,
   metaContainerSchema,
   metaPagesResponseSchema,
   metaPublishSchema,
-} from '../graph.js';
-import { metaAuthorization, refreshMetaCredential } from '../oauth.js';
-import { accessTokenOf, errorSummary, providerOptionsOf } from '../../shared/access.js';
-import { NOT_IMPLEMENTED_FEATURES } from '../../../contract.js';
-import { SecretValue } from '../../../vault.js';
-import type { FailedItem, PublishedItem } from '../../../contract.js';
+} from '../graph';
+import { metaAuthorization, refreshMetaCredential } from '../oauth';
+import { accessTokenOf, errorSummary, providerOptionsOf } from '../../shared/access';
+import { NOT_IMPLEMENTED_FEATURES } from '../../../contract';
+import { SecretValue } from '../../../vault';
+import type { FailedItem, PublishedItem } from '../../../contract';
 import {
   INSTAGRAM_CAROUSEL_MAX,
   INSTAGRAM_CAROUSEL_MIN,
   INSTAGRAM_PROFESSIONAL_ACCOUNT_TYPES,
   buildInstagramCapabilities,
-} from './capabilities.js';
+} from './capabilities';
 import {
   INSTAGRAM_ACCOUNT_METRICS,
   INSTAGRAM_ACCOUNT_METRIC_QUERY,
   INSTAGRAM_MEDIA_FIELDS,
   INSTAGRAM_POST_METRICS,
   INSTAGRAM_POST_METRIC_QUERY,
-} from './metrics.js';
+} from './metrics';
 import {
   instagramAccountSchema,
   instagramCommentSchema,
@@ -75,7 +75,7 @@ import {
   instagramMediaSchema,
   instagramProviderOptionsSchema,
   type InstagramInsights,
-} from './schemas.js';
+} from './schemas';
 
 /**
  * Instagram connector.

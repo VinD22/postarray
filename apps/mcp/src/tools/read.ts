@@ -1,9 +1,9 @@
 import { z } from 'zod';
 import { providerIdSchema, summarizeCapabilities } from '@relay/contracts';
 
-import { RESOURCE_URIS, defineTool, pageInputShape, resourceLink } from './registry.js';
-import type { ToolDefinition, ToolResult } from './registry.js';
-import type { MetricObservationSummary } from '../ports.js';
+import { RESOURCE_URIS, defineTool, pageInputShape, resourceLink } from './registry';
+import type { ToolDefinition, ToolResult } from './registry';
+import type { MetricObservationSummary } from '../ports';
 
 /**
  * Read tools.

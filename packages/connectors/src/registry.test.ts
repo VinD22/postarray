@@ -8,10 +8,10 @@ import {
   NOT_IMPLEMENTED_FEATURES,
   type ProviderIdentity,
   type SocialConnector,
-} from './contract.js';
-import { createFakeConnector } from './fake/index.js';
-import { fixedClock } from './ports.js';
-import { ConnectorRegistry, createConnectorRegistry } from './registry.js';
+} from './contract';
+import { createFakeConnector } from './fake/index';
+import { fixedClock } from './ports';
+import { ConnectorRegistry, createConnectorRegistry } from './registry';
 
 const clock = fixedClock('2026-08-04T12:00:00.000Z');
 

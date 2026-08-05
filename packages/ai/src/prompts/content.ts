@@ -1,5 +1,5 @@
-import { JSON_OUTPUT_RULE } from './types.js';
-import type { PromptModule } from './types.js';
+import { JSON_OUTPUT_RULE } from './types';
+import type { PromptModule } from './types';
 import {
   altTextResultSchema,
   ctaOptionsResultSchema,
@@ -9,7 +9,7 @@ import {
   shortenResultSchema,
   toneAdjustResultSchema,
   transcreateResultSchema,
-} from './schemas.js';
+} from './schemas';
 import type {
   AltTextResult,
   CtaOptionsResult,
@@ -19,7 +19,7 @@ import type {
   ShortenResult,
   ToneAdjustResult,
   TranscreateResult,
-} from './schemas.js';
+} from './schemas';
 
 /** Composer prompts. All instruction text here is model-facing, not product copy. */
 

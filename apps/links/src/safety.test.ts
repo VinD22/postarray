@@ -8,7 +8,7 @@ import {
   isPrivateIpv4,
   isPrivateIpv6,
   isPubliclyRoutableHost,
-} from './safety.js';
+} from './safety';
 
 const SELF = { selfHosts: ['rl.example', 'go.acme.example'] };
 

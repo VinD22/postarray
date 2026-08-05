@@ -14,9 +14,9 @@ import {
   testPublishRequest,
   testStatusRequest,
   testThreadItem,
-} from '../shared/testing.js';
-import { buildXCapabilities } from './capabilities.js';
-import { createXConnector } from './connector.js';
+} from '../shared/testing';
+import { buildXCapabilities } from './capabilities';
+import { createXConnector } from './connector';
 import {
   X_CREATE_POST_FIXTURE,
   X_CREATE_REPLY_FIXTURE,
@@ -26,7 +26,7 @@ import {
   X_RATE_LIMIT_ERROR_FIXTURE,
   X_TIMELINE_FIXTURE,
   X_USER_ME_FIXTURE,
-} from './__fixtures__/index.js';
+} from './__fixtures__/index';
 
 const SCOPES = ['tweet.read', 'tweet.write', 'users.read', 'media.write', 'offline.access'];
 

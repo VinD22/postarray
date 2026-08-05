@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 
-import { findMetric, normalizeMetrics, presentMetrics, unavailableByReason } from './normalize.js';
-import { HASH } from './test-support.js';
+import { findMetric, normalizeMetrics, presentMetrics, unavailableByReason } from './normalize';
+import { HASH } from './test-support';
 
 const BASE = {
   observedAt: '2026-08-04T09:00:00Z',

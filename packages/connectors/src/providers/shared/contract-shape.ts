@@ -62,9 +62,9 @@ export {
   type RevokeRequest,
   type SocialConnector,
   type StatusRequest,
-} from '../../contract.js';
+} from '../../contract';
 
-export { type HttpClient, type HttpRequest, type HttpResponse } from '../../http.js';
+export { type HttpClient, type HttpRequest, type HttpResponse } from '../../http';
 
 export {
   REMEDIATION,
@@ -73,13 +73,13 @@ export {
   providerFailure,
   type ProviderFailureContext,
   type RemediationCode,
-} from '../../errors.js';
+} from '../../errors';
 
-export { refreshOAuth2Token, type OAuth2RefreshInput } from '../../oauth.js';
+export { refreshOAuth2Token, type OAuth2RefreshInput } from '../../oauth';
 
 export {
   SecretValue,
   type ConnectorVault,
   type CredentialRef,
   type SecretHandle,
-} from '../../vault.js';
+} from '../../vault';

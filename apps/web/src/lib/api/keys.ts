@@ -6,7 +6,7 @@
  * `keys.workspace(id)` clears everything that workspace owns.
  */
 
-import type { ActionItemCategory, ProviderId, PublishState } from './types.js';
+import type { ActionItemCategory, ProviderId, PublishState } from './types';
 
 export const keys = {
   session: () => ['session'] as const,

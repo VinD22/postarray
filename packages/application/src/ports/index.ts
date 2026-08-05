@@ -6,13 +6,13 @@
  * counterpart that is wired in by the process that owns the connection.
  */
 
-export { FixedClock, systemClock } from './clock.js';
-export { MemoryKeyValueStore, RedisKeyValueStore, type RedisLikeClient } from './key-value.js';
+export { FixedClock, systemClock } from './clock';
+export { MemoryKeyValueStore, RedisKeyValueStore, type RedisLikeClient } from './key-value';
 export {
   LocalFileStorage,
   MemoryStorage,
   STORAGE_HEADERS,
   type LocalStorageOptions,
-} from './storage.js';
-export { LoggingMailer, RecordingMailer } from './mailer.js';
-export { InMemoryScheduler, publishWorkflowId, type RecordedPublish } from './scheduler.js';
+} from './storage';
+export { LoggingMailer, RecordingMailer } from './mailer';
+export { InMemoryScheduler, publishWorkflowId, type RecordedPublish } from './scheduler';

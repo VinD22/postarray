@@ -1,11 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import {
-  containsSecret,
-  sanitizeHeaders,
-  sanitizeProviderPayload,
-  sanitizeText,
-} from './sanitize.js';
+import { containsSecret, sanitizeHeaders, sanitizeProviderPayload, sanitizeText } from './sanitize';
 
 describe('sanitizeText', () => {
   it('removes a bearer token echoed back by a provider', () => {

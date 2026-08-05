@@ -1,6 +1,6 @@
 /** Session, workspaces, brands, members, billing, audit and health. */
 
-import { call } from '../call.js';
+import { call } from '../call';
 import {
   demoAudit,
   demoBilling,
@@ -9,7 +9,7 @@ import {
   demoSession,
   demoUsage,
   page,
-} from '../fixtures.js';
+} from '../fixtures';
 import type {
   AuditEventView,
   BillingStateView,
@@ -21,7 +21,7 @@ import type {
   SessionView,
   UsageView,
   WorkspaceView,
-} from '../types.js';
+} from '../types';
 import { requireFirst } from '@/lib/utils/require-first';
 
 export type ListQuery = {

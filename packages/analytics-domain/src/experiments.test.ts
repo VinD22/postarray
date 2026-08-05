@@ -6,9 +6,9 @@ import {
   summarizeExperiment,
   tagBeforePublication,
   variantAgainstBaseline,
-} from './experiments.js';
-import type { Experiment } from './experiments.js';
-import { makeHistory, makeObserved } from './test-support.js';
+} from './experiments';
+import type { Experiment } from './experiments';
+import { makeHistory, makeObserved } from './test-support';
 
 function makeExperiment(overrides: Partial<Experiment> = {}): Experiment {
   return experimentSchema.parse({

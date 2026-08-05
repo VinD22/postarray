@@ -8,7 +8,7 @@ import {
   validationIssue,
   validationResult,
   validationResultSchema,
-} from './validation.js';
+} from './validation';
 
 describe('validationIssue', () => {
   it('derives a message key from the code', () => {

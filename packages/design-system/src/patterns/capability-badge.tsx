@@ -2,7 +2,7 @@
 
 import type { ReactNode } from 'react';
 import { CircleDashed, CircleSlash, Clock3, Check } from 'lucide-react';
-import { cn } from '../utils/cn.js';
+import { cn } from '../utils/cn';
 
 /**
  * Connector capability states.

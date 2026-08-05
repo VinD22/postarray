@@ -1,15 +1,15 @@
 import { RelayError, normalizeScopes } from '@relay/contracts';
 import type { Scope } from '@relay/contracts';
 
-import { ROUTES } from '../api/routes.js';
-import { principalSchema } from '../api/schemas.js';
-import { summarize } from '../config/credentials.js';
-import type { StoredCredential } from '../config/credentials.js';
-import { authorizationCodeLogin, deviceLogin, revokeToken } from '../auth/oauth.js';
-import { toIsoInstant } from '../context.js';
-import type { CliContext } from '../context.js';
-import { renderSuccess, renderTable } from '../output.js';
-import type { RenderInput } from '../output.js';
+import { ROUTES } from '../api/routes';
+import { principalSchema } from '../api/schemas';
+import { summarize } from '../config/credentials';
+import type { StoredCredential } from '../config/credentials';
+import { authorizationCodeLogin, deviceLogin, revokeToken } from '../auth/oauth';
+import { toIsoInstant } from '../context';
+import type { CliContext } from '../context';
+import { renderSuccess, renderTable } from '../output';
+import type { RenderInput } from '../output';
 
 /**
  * `relay auth`.

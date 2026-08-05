@@ -5,8 +5,8 @@ import {
   contentKindSchema,
   creationSurfaceSchema,
   providerIdSchema,
-} from './enums.js';
-import { ID_PREFIXES, idSchema } from './ids.js';
+} from './enums';
+import { ID_PREFIXES, idSchema } from './ids';
 import {
   checksumSchema,
   deepEqual,
@@ -15,7 +15,7 @@ import {
   isoInstantSchema,
   localeSchema,
   webUrlSchema,
-} from './primitives.js';
+} from './primitives';
 
 /**
  * One master draft is the canonical version. Every target variant either

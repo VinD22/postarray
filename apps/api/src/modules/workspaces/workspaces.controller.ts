@@ -7,7 +7,7 @@ import type {
   InvitationView,
   MembershipView,
   WorkspaceView,
-} from '../../application/port.js';
+} from '../../application/port';
 import {
   Actor,
   CurrentPrincipal,
@@ -16,19 +16,19 @@ import {
   RequireScope,
   RequireStepUp,
   WorkspaceOptional,
-} from '../../common/decorators.js';
-import { cursorQuerySchema } from '../../common/pagination.js';
-import type { Principal } from '../../common/request.types.js';
-import { membershipIdSchema, workspaceIdSchema } from '../../common/schemas.js';
-import { parseBody, parseParams, parseQuery } from '../../common/zod.js';
+} from '../../common/decorators';
+import { cursorQuerySchema } from '../../common/pagination';
+import type { Principal } from '../../common/request.types';
+import { membershipIdSchema, workspaceIdSchema } from '../../common/schemas';
+import { parseBody, parseParams, parseQuery } from '../../common/zod';
 import {
   acceptInvitationSchema,
   createWorkspaceSchema,
   inviteMemberSchema,
   updateRoleSchema,
   updateWorkspaceSchema,
-} from './workspaces.schemas.js';
-import { WorkspacesService } from './workspaces.service.js';
+} from './workspaces.schemas';
+import { WorkspacesService } from './workspaces.service';
 
 /**
  * Workspaces, members and invitations.

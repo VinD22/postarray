@@ -1,8 +1,8 @@
 import type { ProviderId } from '@relay/contracts';
 
-import { BaseProviderSimulator } from './engine.js';
-import { RETRY_AFTER_SECONDS } from './types.js';
-import type { FailureKind, SimulatedRequest, SimulatedResponse } from './types.js';
+import { BaseProviderSimulator } from './engine';
+import { RETRY_AFTER_SECONDS } from './types';
+import type { FailureKind, SimulatedRequest, SimulatedResponse } from './types';
 
 /**
  * The Graph-shaped providers: Instagram, Facebook Pages and Threads.

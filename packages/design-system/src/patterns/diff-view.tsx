@@ -1,9 +1,9 @@
 'use client';
 
 import { useId, useMemo, type ReactNode } from 'react';
-import { cn } from '../utils/cn.js';
-import { Button } from '../primitives/button.js';
-import { VisuallyHidden } from '../primitives/visually-hidden.js';
+import { cn } from '../utils/cn';
+import { Button } from '../primitives/button';
+import { VisuallyHidden } from '../primitives/visually-hidden';
 
 export type DiffOperation = 'unchanged' | 'added' | 'removed';
 

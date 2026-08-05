@@ -2,10 +2,10 @@ import { describe, expect, it } from 'vitest';
 
 import { RelayError } from '@relay/contracts';
 
-import { bearerFromHeader, createIntrospectionVerifier } from './verifier.js';
-import type { IntrospectionTransport } from './verifier.js';
-import { approvalLevelSatisfies, authorizeCall } from './authorize.js';
-import { buildAuthenticateChallenge, buildProtectedResourceMetadata } from './metadata.js';
+import { bearerFromHeader, createIntrospectionVerifier } from './verifier';
+import type { IntrospectionTransport } from './verifier';
+import { approvalLevelSatisfies, authorizeCall } from './authorize';
+import { buildAuthenticateChallenge, buildProtectedResourceMetadata } from './metadata';
 
 const RESOURCE = 'https://mcp.relay.example/mcp';
 const INTROSPECTION = 'https://api.relay.example/oauth/introspect';

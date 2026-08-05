@@ -1,11 +1,11 @@
 import { RelayError } from '@relay/contracts';
 import { describe, expect, it } from 'vitest';
 
-import { FixedClock } from '../ports/clock.js';
-import { MemoryKeyValueStore } from '../ports/key-value.js';
-import type { ActorContext } from '../types.js';
+import { FixedClock } from '../ports/clock';
+import { MemoryKeyValueStore } from '../ports/key-value';
+import type { ActorContext } from '../types';
 
-import { fingerprintOf, publishJobIdempotencyKey, withIdempotency } from './idempotency.js';
+import { fingerprintOf, publishJobIdempotencyKey, withIdempotency } from './idempotency';
 
 function context(overrides: Partial<ActorContext> = {}): ActorContext {
   return {

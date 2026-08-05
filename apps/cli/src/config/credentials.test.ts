@@ -11,9 +11,9 @@ import {
   createFileCredentialStore,
   createMemoryCredentialStore,
   summarize,
-} from './credentials.js';
-import type { StoredCredential } from './credentials.js';
-import { configDir, credentialsFilePath } from './paths.js';
+} from './credentials';
+import type { StoredCredential } from './credentials';
+import { configDir, credentialsFilePath } from './paths';
 
 const CREDENTIAL: StoredCredential = {
   accessToken: 'access-token-value',

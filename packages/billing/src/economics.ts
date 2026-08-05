@@ -1,7 +1,7 @@
-import { AFFILIATE_TERMS } from './affiliate.js';
-import { MICRO_PER_UNIT, applyBasisPoints, unitsToMicro } from './money.js';
-import { ANNUAL_PRICE_MINOR, MONTHLY_PRICE_MINOR } from './products.js';
-import type { BillingInterval } from './products.js';
+import { AFFILIATE_TERMS } from './affiliate';
+import { MICRO_PER_UNIT, applyBasisPoints, unitsToMicro } from './money';
+import { ANNUAL_PRICE_MINOR, MONTHLY_PRICE_MINOR } from './products';
+import type { BillingInterval } from './products';
 
 /**
  * The unit-economics model as code.

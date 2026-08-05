@@ -2,7 +2,7 @@
 
 import { forwardRef, type ComponentPropsWithoutRef, type ReactNode } from 'react';
 import { cva, type VariantProps } from 'class-variance-authority';
-import { cn } from '../utils/cn.js';
+import { cn } from '../utils/cn';
 
 /**
  * A small, low-emphasis label: a locale code, a surface of origin, a count.

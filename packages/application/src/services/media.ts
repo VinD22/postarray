@@ -6,17 +6,17 @@ import type {
   MediaService,
   PageQuery,
   ServiceDeps,
-} from '../types.js';
-import type { MediaAssetView } from '../views.js';
+} from '../types';
+import type { MediaAssetView } from '../views';
 
-import { recordAudit } from '../internal/audit.js';
-import { invalid, notFound } from '../internal/errors.js';
-import { withIdempotency } from '../internal/idempotency.js';
-import { toJson } from '../internal/json.js';
-import { pageArgs, toPage } from '../internal/pagination.js';
-import { authorized, type Db } from '../internal/runtime.js';
-import { asMediaKind } from '../internal/storage-enums.js';
-import { assertFetchable } from '../internal/url-safety.js';
+import { recordAudit } from '../internal/audit';
+import { invalid, notFound } from '../internal/errors';
+import { withIdempotency } from '../internal/idempotency';
+import { toJson } from '../internal/json';
+import { pageArgs, toPage } from '../internal/pagination';
+import { authorized, type Db } from '../internal/runtime';
+import { asMediaKind } from '../internal/storage-enums';
+import { assertFetchable } from '../internal/url-safety';
 
 /**
  * Media.

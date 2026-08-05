@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import { ipInAllowlist, ipInCidr } from './ip-allowlist.js';
+import { ipInAllowlist, ipInCidr } from './ip-allowlist';
 
 describe('ipInCidr', () => {
   it('matches inside an IPv4 block and rejects outside it', () => {

@@ -8,7 +8,7 @@ import { runWithExtendedContext } from '@relay/observability';
 import type { Request } from 'express';
 import { Observable } from 'rxjs';
 
-import { relayState } from './request.types.js';
+import { relayState } from './request.types';
 
 /**
  * Carry the resolved actor and workspace into the ambient request context.

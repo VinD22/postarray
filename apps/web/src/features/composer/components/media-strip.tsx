@@ -16,7 +16,7 @@ import { useTranslations } from '@relay/i18n/react';
 import { formatBytes } from '@relay/i18n';
 import { cn } from '@relay/design-system/utils';
 
-import type { MediaAsset } from '../../media/types.js';
+import type { MediaAsset } from '../../media/types';
 
 export interface MediaStripProps {
   readonly assets: readonly MediaAsset[];

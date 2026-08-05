@@ -1,14 +1,14 @@
 import { z } from 'zod';
 
-import { catalogStateSchema, contentKindSchema, providerIdSchema } from './enums.js';
-import { ID_PREFIXES, idSchema } from './ids.js';
+import { catalogStateSchema, contentKindSchema, providerIdSchema } from './enums';
+import { ID_PREFIXES, idSchema } from './ids';
 import {
   currencyCodeSchema,
   httpsUrlSchema,
   isoDateSchema,
   isoInstantSchema,
   localeSchema,
-} from './primitives.js';
+} from './primitives';
 
 /**
  * The Growth Advisor contract. One versioned schema serves the UI, the API, MCP

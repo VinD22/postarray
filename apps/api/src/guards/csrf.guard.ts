@@ -3,16 +3,16 @@ import type { RelayConfig } from '@relay/config';
 import { ForbiddenError } from '@relay/contracts';
 import type { Request } from 'express';
 
-import { RELAY_CONFIG } from '../application/tokens.js';
-import { SESSION_COOKIE, parseCookies } from '../common/cookies.js';
-import { relayState } from '../common/request.types.js';
-import { CredentialDirectory } from '../security/credential-directory.js';
+import { RELAY_CONFIG } from '../application/tokens';
+import { SESSION_COOKIE, parseCookies } from '../common/cookies';
+import { relayState } from '../common/request.types';
+import { CredentialDirectory } from '../security/credential-directory';
 import {
   CSRF_HEADER,
   STATE_CHANGING_METHODS,
   isAllowedOrigin,
   verifyCsrfToken,
-} from '../security/csrf.js';
+} from '../security/csrf';
 
 /**
  * CSRF protection for cookie-authenticated routes.

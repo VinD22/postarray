@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 
-import { FakeClock } from './clock.js';
-import { ControllableKeyValueStore } from './kv.js';
+import { FakeClock } from './clock';
+import { ControllableKeyValueStore } from './kv';
 
 function make(): { store: ControllableKeyValueStore; clock: FakeClock } {
   const clock = new FakeClock('2026-08-04T12:00:00.000Z');

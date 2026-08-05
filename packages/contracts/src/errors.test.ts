@@ -13,7 +13,7 @@ import {
   errorCodeSchema,
   problemJsonSchema,
   redactDetails,
-} from './errors.js';
+} from './errors';
 
 describe('error taxonomy', () => {
   it('has a status and retry hint for every code', () => {

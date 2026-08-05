@@ -6,9 +6,9 @@ import {
   createBudgetGuard,
   estimateCostMicros,
   estimateTokens,
-} from './budget.js';
-import { fixedClock } from './clock.js';
-import { createMemoryCounterStore } from './types.js';
+} from './budget';
+import { fixedClock } from './clock';
+import { createMemoryCounterStore } from './types';
 
 function guard(limits?: Parameters<typeof createBudgetGuard>[0]['limits']) {
   const clock = fixedClock('2026-08-04T10:00:00Z');

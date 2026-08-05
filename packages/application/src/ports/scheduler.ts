@@ -1,6 +1,6 @@
-import type { Clock, SchedulerPort } from '../types.js';
+import type { Clock, SchedulerPort } from '../types';
 
-import { systemClock } from './clock.js';
+import { systemClock } from './clock';
 
 /**
  * A scheduler that records intent instead of talking to Temporal.

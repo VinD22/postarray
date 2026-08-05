@@ -1,6 +1,6 @@
 import type { Logger } from '@relay/observability';
 
-import type { ClickEvent, ClickSink, ClickWriter } from './types.js';
+import type { ClickEvent, ClickSink, ClickWriter } from './types';
 
 /**
  * The click buffer.

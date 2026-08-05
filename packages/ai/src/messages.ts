@@ -1,9 +1,9 @@
-import { aiOutputInvalidError } from './errors.js';
-import { buildUntrustedBlock, newNonce, redactSecrets, untrustedDataPolicy } from './guardrails.js';
-import type { GuardrailFinding } from './guardrails.js';
-import { promptMarker } from './providers/echo.js';
-import type { PromptModule } from './prompts/types.js';
-import type { AiRequest, AiVariables, ProviderMessage } from './types.js';
+import { aiOutputInvalidError } from './errors';
+import { buildUntrustedBlock, newNonce, redactSecrets, untrustedDataPolicy } from './guardrails';
+import type { GuardrailFinding } from './guardrails';
+import { promptMarker } from './providers/echo';
+import type { PromptModule } from './prompts/types';
+import type { AiRequest, AiVariables, ProviderMessage } from './types';
 
 /**
  * Message assembly.

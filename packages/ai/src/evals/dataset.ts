@@ -1,4 +1,4 @@
-import type { EvalCase } from './types.js';
+import type { EvalCase } from './types';
 
 /**
  * The English evaluation dataset.

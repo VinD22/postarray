@@ -20,13 +20,13 @@ import {
 import { ConfirmDialog, Notice, PageHeader } from '@relay/design-system/patterns';
 import { useTranslations } from '@relay/i18n/react';
 
-import { AsyncBoundary } from '../lib/async-boundary.js';
-import { agentsGateway, securityGateway, webhooksGateway } from '../lib/gateway.js';
-import { useFormatters } from '../lib/formatters.js';
-import { settingsKey, useWorkspaceId } from '../lib/keys.js';
-import { useSettingsMutation } from '../lib/use-settings-mutation.js';
-import type { OAuthGrantView } from '../lib/view-models.js';
-import { InlineFact, SettingRow, SettingsPanel, SettingsStack } from '../components/section.js';
+import { AsyncBoundary } from '../lib/async-boundary';
+import { agentsGateway, securityGateway, webhooksGateway } from '../lib/gateway';
+import { useFormatters } from '../lib/formatters';
+import { settingsKey, useWorkspaceId } from '../lib/keys';
+import { useSettingsMutation } from '../lib/use-settings-mutation';
+import type { OAuthGrantView } from '../lib/view-models';
+import { InlineFact, SettingRow, SettingsPanel, SettingsStack } from '../components/section';
 
 export function SecurityScreen(): ReactNode {
   const t = useTranslations();

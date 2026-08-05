@@ -1,14 +1,14 @@
 import { describe, expect, it } from 'vitest';
 
-import { createMemoryConfigStore } from './config/store.js';
-import { createMemoryCredentialStore } from './config/credentials.js';
-import type { StoredCredential } from './config/credentials.js';
-import { createMemoryWriter } from './output.js';
-import type { JsonEnvelope } from './output.js';
-import { EXIT_CODES, EXIT_OK, EXIT_USAGE } from './exit-codes.js';
-import { runCli } from './program.js';
-import type { CliDeps } from './context.js';
-import type { FetchLike } from './api/client.js';
+import { createMemoryConfigStore } from './config/store';
+import { createMemoryCredentialStore } from './config/credentials';
+import type { StoredCredential } from './config/credentials';
+import { createMemoryWriter } from './output';
+import type { JsonEnvelope } from './output';
+import { EXIT_CODES, EXIT_OK, EXIT_USAGE } from './exit-codes';
+import { runCli } from './program';
+import type { CliDeps } from './context';
+import type { FetchLike } from './api/client';
 
 const API_URL = 'https://api.relay.example/';
 

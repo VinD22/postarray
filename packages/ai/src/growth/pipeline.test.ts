@@ -2,19 +2,19 @@ import { describe, expect, it } from 'vitest';
 
 import { ERROR_CODES } from '@relay/contracts';
 
-import { fixedClock } from '../clock.js';
-import { createEchoProvider } from '../providers/echo.js';
-import { TEST_CALL_CONTEXT, createTestGateway } from '../test-support.js';
-import { GROWTH_PLAN_FIXTURE_BODY } from './fixture.js';
-import { assemblePlan, generateGrowthPlan } from './pipeline.js';
-import { buildGrowthContext } from './retrieval.js';
+import { fixedClock } from '../clock';
+import { createEchoProvider } from '../providers/echo';
+import { TEST_CALL_CONTEXT, createTestGateway } from '../test-support';
+import { GROWTH_PLAN_FIXTURE_BODY } from './fixture';
+import { assemblePlan, generateGrowthPlan } from './pipeline';
+import { buildGrowthContext } from './retrieval';
 import {
   TEST_PLAN_ID,
   TEST_WORKSPACE_ID,
   makeBusinessProfile,
   makeOpportunity,
   makePlanContext,
-} from './testing.js';
+} from './testing';
 
 const CLOCK = fixedClock('2026-08-04T09:00:00Z');
 

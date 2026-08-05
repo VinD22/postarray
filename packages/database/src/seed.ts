@@ -1,12 +1,12 @@
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-import { createPrismaClient, type RelayPrismaClient } from './client.js';
-import { createStderrLogger, type DatabaseLogger } from './logger.js';
-import { seedGlobalCatalogs } from './seed/catalog.js';
-import { SEED_IDS, seedTenantCore } from './seed/tenant-core.js';
-import { seedTenantContent } from './seed/tenant-content.js';
-import { serviceRoleClaims, withRlsContext } from './tenancy/rls-context.js';
+import { createPrismaClient, type RelayPrismaClient } from './client';
+import { createStderrLogger, type DatabaseLogger } from './logger';
+import { seedGlobalCatalogs } from './seed/catalog';
+import { SEED_IDS, seedTenantCore } from './seed/tenant-core';
+import { seedTenantContent } from './seed/tenant-content';
+import { serviceRoleClaims, withRlsContext } from './tenancy/rls-context';
 
 /**
  * Realistic local data.
@@ -77,8 +77,8 @@ export async function seed(options: SeedOptions = {}): Promise<void> {
   });
 }
 
-export { SEED_IDS } from './seed/tenant-core.js';
-export { SEED_OPPORTUNITY_IDS, SEED_TOOL_IDS, SEED_METRIC_IDS } from './seed/catalog.js';
+export { SEED_IDS } from './seed/tenant-core';
+export { SEED_OPPORTUNITY_IDS, SEED_TOOL_IDS, SEED_METRIC_IDS } from './seed/catalog';
 
 const invokedDirectly =
   process.argv[1] !== undefined && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url);

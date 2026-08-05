@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-import { formatMoneyMinor, USD } from './money.js';
+import { formatMoneyMinor, USD } from './money';
 
 /**
  * The one public plan.

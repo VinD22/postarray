@@ -7,16 +7,16 @@ import {
   shouldAlertOnFailure,
   toVerifiedSubscription,
   workspaceIdOf,
-} from './webhooks.js';
-import type { EntitlementChange, OrderEvent } from './webhooks.js';
-import { polarSubscriptionSchema } from './polar-schemas.js';
+} from './webhooks';
+import type { EntitlementChange, OrderEvent } from './webhooks';
+import { polarSubscriptionSchema } from './polar-schemas';
 import {
   WEBHOOK_HEADER_ID,
   WEBHOOK_HEADER_SIGNATURE,
   WEBHOOK_HEADER_TIMESTAMP,
   signWebhook,
-} from './signature.js';
-import { MutableClock } from './time.js';
+} from './signature';
+import { MutableClock } from './time';
 
 const SECRET = 'whsec_dGVzdC1zZWNyZXQtbm90LWEtcmVhbC1rZXk=';
 const NOW = '2026-08-04T14:00:00.000Z';

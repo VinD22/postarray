@@ -1,11 +1,11 @@
 import type { Paginated } from '@relay/contracts';
 
-import type { ActorContext, AuditService, PageQuery, ServiceDeps } from '../types.js';
-import type { AuditEventView } from '../views.js';
+import type { ActorContext, AuditService, PageQuery, ServiceDeps } from '../types';
+import type { AuditEventView } from '../views';
 
-import { fromStoredSurface } from '../internal/mappers.js';
-import { pageArgs, toPage } from '../internal/pagination.js';
-import { authorized } from '../internal/runtime.js';
+import { fromStoredSurface } from '../internal/mappers';
+import { pageArgs, toPage } from '../internal/pagination';
+import { authorized } from '../internal/runtime';
 
 /**
  * The audit log.

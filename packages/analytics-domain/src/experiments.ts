@@ -3,10 +3,10 @@ import { z } from 'zod';
 import { normalizedMetricNameSchema } from '@relay/contracts';
 import type { NormalizedMetricName } from '@relay/contracts';
 
-import { compareToTrailingMedian, median, SMALL_SAMPLE_THRESHOLD } from './baseline.js';
-import type { Insight } from './insights.js';
-import { parseInstant } from './time.js';
-import type { ObservedPost } from './types.js';
+import { compareToTrailingMedian, median, SMALL_SAMPLE_THRESHOLD } from './baseline';
+import type { Insight } from './insights';
+import { parseInstant } from './time';
+import type { ObservedPost } from './types';
 
 /**
  * Experiments.

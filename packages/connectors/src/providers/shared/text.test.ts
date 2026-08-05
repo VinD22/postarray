@@ -12,7 +12,7 @@ import {
   similarity,
   splitIntoParts,
   truncationIndex,
-} from './text.js';
+} from './text';
 
 const FIXED_23 = {
   unit: 'weighted' as const,

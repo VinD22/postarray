@@ -29,28 +29,28 @@ import {
   type RefreshRequest,
   type SocialConnector,
   type StatusRequest,
-} from '../../shared/contract-shape.js';
-import { mapMetrics } from '../../shared/metrics.js';
-import { buildPreview } from '../../shared/preview.js';
-import { validateDraftShape } from '../../shared/validate.js';
-import { SOURCE_VERIFIED_ON } from '../../shared/verification.js';
-import { createMetaClient, metaContainerSchema, metaPublishSchema } from '../graph.js';
-import { metaAuthorization, refreshMetaCredential } from '../oauth.js';
+} from '../../shared/contract-shape';
+import { mapMetrics } from '../../shared/metrics';
+import { buildPreview } from '../../shared/preview';
+import { validateDraftShape } from '../../shared/validate';
+import { SOURCE_VERIFIED_ON } from '../../shared/verification';
+import { createMetaClient, metaContainerSchema, metaPublishSchema } from '../graph';
+import { metaAuthorization, refreshMetaCredential } from '../oauth';
 import {
   THREADS_CAROUSEL_MAX,
   THREADS_CAROUSEL_MIN,
   buildThreadsCapabilities,
-} from './capabilities.js';
-import { accessTokenOf, errorSummary, providerOptionsOf } from '../../shared/access.js';
-import { NOT_IMPLEMENTED_FEATURES } from '../../../contract.js';
-import type { FailedItem, PublishedItem } from '../../../contract.js';
+} from './capabilities';
+import { accessTokenOf, errorSummary, providerOptionsOf } from '../../shared/access';
+import { NOT_IMPLEMENTED_FEATURES } from '../../../contract';
+import type { FailedItem, PublishedItem } from '../../../contract';
 import {
   THREADS_ACCOUNT_METRICS,
   THREADS_ACCOUNT_METRIC_QUERY,
   THREADS_MEDIA_FIELDS,
   THREADS_POST_METRICS,
   THREADS_POST_METRIC_QUERY,
-} from './metrics.js';
+} from './metrics';
 import {
   threadsContainerStatusSchema,
   threadsInsightsSchema,
@@ -59,7 +59,7 @@ import {
   threadsProfileSchema,
   threadsProviderOptionsSchema,
   type ThreadsInsights,
-} from './schemas.js';
+} from './schemas';
 
 /**
  * Threads connector (launch fallback).

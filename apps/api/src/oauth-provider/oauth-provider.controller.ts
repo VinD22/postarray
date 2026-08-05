@@ -2,10 +2,10 @@ import { Body, Controller, Get, HttpCode, Post, Query, Res } from '@nestjs/commo
 import { SCOPES, scopeRisk, type Scope } from '@relay/contracts';
 import type { Response } from 'express';
 
-import type { WorkspaceView } from '../application/port.js';
-import { CurrentPrincipal, Public, RateLimit, WorkspaceOptional } from '../common/decorators.js';
-import type { Principal } from '../common/request.types.js';
-import { parseBody, parseQuery } from '../common/zod.js';
+import type { WorkspaceView } from '../application/port';
+import { CurrentPrincipal, Public, RateLimit, WorkspaceOptional } from '../common/decorators';
+import type { Principal } from '../common/request.types';
+import { parseBody, parseQuery } from '../common/zod';
 import {
   authorizeQuerySchema,
   consentDecisionSchema,
@@ -13,8 +13,8 @@ import {
   revocationRequestSchema,
   tokenRequestSchema,
   type TokenResponse,
-} from './oauth.schemas.js';
-import { OAuthProviderService } from './oauth-provider.service.js';
+} from './oauth.schemas';
+import { OAuthProviderService } from './oauth-provider.service';
 
 /**
  * The authorization endpoints.

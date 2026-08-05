@@ -1,6 +1,6 @@
 import { createHmac } from 'node:crypto';
 
-import { constantTimeEquals, randomToken } from './credentials.js';
+import { constantTimeEquals, randomToken } from './credentials';
 
 /**
  * CSRF protection for cookie-authenticated routes.

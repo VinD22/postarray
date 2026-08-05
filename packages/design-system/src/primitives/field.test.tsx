@@ -1,8 +1,8 @@
 import { describe, expect, it } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { Field } from './field.js';
-import { Input } from './input.js';
+import { Field } from './field';
+import { Input } from './input';
 
 // Test fixtures only. Product copy lives in @relay/i18n.
 const LABEL = 'Post time';

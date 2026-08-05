@@ -10,9 +10,9 @@ import {
   type GrowthPlan,
 } from '@relay/contracts';
 
-import { SettingsPanel } from '../settings/components/section.js';
-import { useFormatters } from '../settings/lib/formatters.js';
-import { toJson, toMarkdown, toYaml, type MarkdownLabels } from './lib/plan-export.js';
+import { SettingsPanel } from '../settings/components/section';
+import { useFormatters } from '../settings/lib/formatters';
+import { toJson, toMarkdown, toYaml, type MarkdownLabels } from './lib/plan-export';
 
 export interface ExportPanelProps {
   plan: GrowthPlan;

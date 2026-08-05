@@ -11,7 +11,7 @@ import { useAnnouncer } from '@relay/design-system/hooks';
 import { useTranslations } from '@relay/i18n/react';
 import type { OverridableVariantField } from '@relay/contracts';
 
-import { useComposer } from '../composer-context.js';
+import { useComposer } from '../composer-context';
 
 const FIELD_LABEL_KEY: Readonly<Record<OverridableVariantField, string>> = {
   body: 'composerWeb.override.field.body',

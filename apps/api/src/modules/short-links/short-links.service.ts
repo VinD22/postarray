@@ -8,9 +8,9 @@ import type {
   ShortLinkStats,
   ShortLinkView,
   TimeRange,
-} from '../../application/port.js';
-import { SERVICES } from '../../application/tokens.js';
-import type { CreateShortLinkInput } from './short-links.schemas.js';
+} from '../../application/port';
+import { SERVICES } from '../../application/tokens';
+import type { CreateShortLinkInput } from './short-links.schemas';
 
 /** Transport-level delegation for short links. */
 @Injectable()

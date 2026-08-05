@@ -2,16 +2,16 @@ import { describe, expect, it } from 'vitest';
 
 import { ERROR_CODES, RelayError } from '@relay/contracts';
 
-import { createAiGateway, taskFor } from './gateway.js';
-import { createBudgetGuard } from './budget.js';
-import { fixedClock } from './clock.js';
-import { altTextPrompt, draftFromBriefPrompt } from './prompts/content.js';
-import { altTextResultSchema, draftFromBriefResultSchema } from './prompts/schemas.js';
-import { createDisabledProvider } from './providers/disabled.js';
-import { createEchoProvider } from './providers/echo.js';
-import { createMemoryCounterStore } from './types.js';
-import type { AiProviderAdapter, AiStreamEvent, AiVariables, ProviderResponse } from './types.js';
-import { TEST_CALL_CONTEXT, createTestGateway, createTestLogger } from './test-support.js';
+import { createAiGateway, taskFor } from './gateway';
+import { createBudgetGuard } from './budget';
+import { fixedClock } from './clock';
+import { altTextPrompt, draftFromBriefPrompt } from './prompts/content';
+import { altTextResultSchema, draftFromBriefResultSchema } from './prompts/schemas';
+import { createDisabledProvider } from './providers/disabled';
+import { createEchoProvider } from './providers/echo';
+import { createMemoryCounterStore } from './types';
+import type { AiProviderAdapter, AiStreamEvent, AiVariables, ProviderResponse } from './types';
+import { TEST_CALL_CONTEXT, createTestGateway, createTestLogger } from './test-support';
 
 function baseRequest(promptId: string, variables: AiVariables) {
   return { context: TEST_CALL_CONTEXT, promptId, variables };

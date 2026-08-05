@@ -9,9 +9,9 @@ import type {
   OAuthGrantView,
   Services,
   ViewModel,
-} from '../../application/port.js';
-import { SERVICES } from '../../application/tokens.js';
-import { CredentialDirectory } from '../../security/credential-directory.js';
+} from '../../application/port';
+import { SERVICES } from '../../application/tokens';
+import { CredentialDirectory } from '../../security/credential-directory';
 
 /**
  * Developer OAuth application management.

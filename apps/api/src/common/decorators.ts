@@ -1,14 +1,14 @@
 import { SetMetadata, createParamDecorator, type ExecutionContext } from '@nestjs/common';
 import type { Scope } from '@relay/contracts';
 
-import type { ActorContext, IdentityContext } from '../application/port.js';
+import type { ActorContext, IdentityContext } from '../application/port';
 import {
   relayState,
   requireActorContext,
   requireIdentityContext,
   requirePrincipal,
-} from './request.types.js';
-import type { Principal, RelayRequestState } from './request.types.js';
+} from './request.types';
+import type { Principal, RelayRequestState } from './request.types';
 
 /**
  * Declarative route metadata.

@@ -10,8 +10,8 @@ import {
   scanOutput,
   scanOutputTree,
   untrustedDataPolicy,
-} from './guardrails.js';
-import type { UntrustedSource } from './types.js';
+} from './guardrails';
+import type { UntrustedSource } from './types';
 
 function source(text: string, id = 'src_1'): UntrustedSource {
   return {

@@ -17,15 +17,15 @@ import {
   type ReactNode,
 } from 'react';
 
-import { getDirection, type TextDirection } from './locales.js';
-import type { MessageKey, PartialCatalog } from './messages/index.js';
+import { getDirection, type TextDirection } from './locales';
+import type { MessageKey, PartialCatalog } from './messages/index';
 import {
   createTranslator,
   type MessageArguments,
   type MessageValues,
   type MissingMessageReporter,
   type Translator,
-} from './translate.js';
+} from './translate';
 
 export interface I18nContextValue {
   readonly locale: string;

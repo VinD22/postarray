@@ -1,10 +1,10 @@
 import { z } from 'zod';
 import { RelayError } from '@relay/contracts';
 
-import { RESOURCE_URIS, defineTool, idempotencyInputShape, resourceLink } from './registry.js';
-import type { ToolResult } from './registry.js';
-import type { ConfirmationSummary } from '../confirmations.js';
-import type { ActorContextLike, ContentItemSummary, RelayServicePort } from '../ports.js';
+import { RESOURCE_URIS, defineTool, idempotencyInputShape, resourceLink } from './registry';
+import type { ToolResult } from './registry';
+import type { ConfirmationSummary } from '../confirmations';
+import type { ActorContextLike, ContentItemSummary, RelayServicePort } from '../ports';
 
 /**
  * Consequential tools.

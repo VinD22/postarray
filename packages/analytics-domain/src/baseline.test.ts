@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 
-import { compareToTrailingMedian, median } from './baseline.js';
-import { makeHistory, makeObserved } from './test-support.js';
+import { compareToTrailingMedian, median } from './baseline';
+import { makeHistory, makeObserved } from './test-support';
 
 describe('median', () => {
   it('returns null for an empty set', () => {

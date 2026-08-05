@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 
-import { createCircuitBreaker } from './circuit-breaker.js';
-import type { Clock } from './clock.js';
+import { createCircuitBreaker } from './circuit-breaker';
+import type { Clock } from './clock';
 
 function movableClock(startMs: number): Clock & { advance(ms: number): void } {
   let current = startMs;

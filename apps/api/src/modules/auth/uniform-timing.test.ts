@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import { withUniformTiming } from './uniform-timing.js';
+import { withUniformTiming } from './uniform-timing';
 
 /**
  * Response timing uniformity.

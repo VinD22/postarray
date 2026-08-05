@@ -12,10 +12,10 @@
 
 import { IntlMessageFormat } from 'intl-messageformat';
 
-import { stripArguments } from './icu.js';
-import { en } from './messages/en/index.js';
-import type { MessageKey, PartialCatalog } from './messages/index.js';
-import { DEFAULT_LOCALE } from './locales.js';
+import { stripArguments } from './icu';
+import { en } from './messages/en/index';
+import type { MessageKey, PartialCatalog } from './messages/index';
+import { DEFAULT_LOCALE } from './locales';
 
 export type { MessageKey, PartialCatalog };
 

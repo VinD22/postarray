@@ -7,7 +7,7 @@ import {
   redact,
   redactRecord,
   redactString,
-} from './redaction.js';
+} from './redaction';
 
 const FAKE_JWT =
   'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ0ZXN0In0.c2lnbmF0dXJlLXBsYWNlaG9sZGVy';

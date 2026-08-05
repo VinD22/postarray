@@ -1,8 +1,8 @@
-import { createRegistry } from './registry.js';
-import type { ToolDefinition, ToolRegistry } from './registry.js';
-import { READ_TOOLS } from './read.js';
-import { REVERSIBLE_TOOLS } from './reversible.js';
-import { CONSEQUENTIAL_TOOLS } from './consequential.js';
+import { createRegistry } from './registry';
+import type { ToolDefinition, ToolRegistry } from './registry';
+import { READ_TOOLS } from './read';
+import { REVERSIBLE_TOOLS } from './reversible';
+import { CONSEQUENTIAL_TOOLS } from './consequential';
 
 /**
  * The complete tool set. Exactly these, in this order.
@@ -41,8 +41,8 @@ export {
   type ToolRegistry,
   type ToolResult,
   type ToolRisk,
-} from './registry.js';
+} from './registry';
 
-export { READ_TOOLS } from './read.js';
-export { REVERSIBLE_TOOLS } from './reversible.js';
-export { CONSEQUENTIAL_TOOLS } from './consequential.js';
+export { READ_TOOLS } from './read';
+export { REVERSIBLE_TOOLS } from './reversible';
+export { CONSEQUENTIAL_TOOLS } from './consequential';

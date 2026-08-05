@@ -1,18 +1,18 @@
 import { Body, Controller, Delete, Get, HttpCode, Param, Post, Put, Query } from '@nestjs/common';
 import type { OperationRef, Paginated } from '@relay/contracts';
 
-import type { ActorContext, MediaAssetView } from '../../application/port.js';
-import { Actor, Idempotent, RateLimit, RequireScope } from '../../common/decorators.js';
-import { mediaIdSchema } from '../../common/schemas.js';
-import { parseBody, parseParams, parseQuery } from '../../common/zod.js';
+import type { ActorContext, MediaAssetView } from '../../application/port';
+import { Actor, Idempotent, RateLimit, RequireScope } from '../../common/decorators';
+import { mediaIdSchema } from '../../common/schemas';
+import { parseBody, parseParams, parseQuery } from '../../common/zod';
 import {
   createUploadUrlSchema,
   editMediaSchema,
   importFromUrlSchema,
   listMediaQuerySchema,
   setAltTextSchema,
-} from './media.schemas.js';
-import { MediaService } from './media.service.js';
+} from './media.schemas';
+import { MediaService } from './media.service';
 
 /**
  * The media library.

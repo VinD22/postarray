@@ -24,10 +24,10 @@ import { Notice } from '@relay/design-system/patterns';
 import { useAnnouncer } from '@relay/design-system/hooks';
 import { useTranslations } from '@relay/i18n/react';
 
-import { useComposer } from '../composer-context.js';
-import { commitGlobalEdit, planGlobalEdit } from '../state/global-edit.js';
-import { PROVIDER_LABEL } from './provider-identity.js';
-import type { IncompatibilityCode } from '../state/capability-rules.js';
+import { useComposer } from '../composer-context';
+import { commitGlobalEdit, planGlobalEdit } from '../state/global-edit';
+import { PROVIDER_LABEL } from './provider-identity';
+import type { IncompatibilityCode } from '../state/capability-rules';
 
 const REASON_KEY: Readonly<Record<IncompatibilityCode, string>> = {
   text_too_long: 'composerWeb.globalEdit.reason.textTooLong',

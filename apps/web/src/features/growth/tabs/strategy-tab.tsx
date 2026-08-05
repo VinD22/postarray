@@ -18,8 +18,8 @@ import { Notice } from '@relay/design-system/patterns';
 import { useTranslations } from '@relay/i18n/react';
 import type { BusinessProfile, GrowthPlan } from '@relay/contracts';
 
-import { SettingsPanel } from '../../settings/components/section.js';
-import { useFormatters } from '../../settings/lib/formatters.js';
+import { SettingsPanel } from '../../settings/components/section';
+import { useFormatters } from '../../settings/lib/formatters';
 
 export interface StrategyTabProps {
   plan: GrowthPlan;

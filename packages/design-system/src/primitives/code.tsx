@@ -1,7 +1,7 @@
 'use client';
 
 import { forwardRef, type ComponentPropsWithoutRef } from 'react';
-import { cn } from '../utils/cn.js';
+import { cn } from '../utils/cn';
 
 export interface CodeProps extends ComponentPropsWithoutRef<'code'> {
   /** A block instead of an inline run. Blocks scroll inside themselves. */

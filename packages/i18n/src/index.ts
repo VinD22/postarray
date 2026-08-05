@@ -25,7 +25,7 @@ export {
   parseAcceptLanguage,
   requireLocale,
   resolveLocale,
-} from './locales.js';
+} from './locales';
 export type {
   HourCycle,
   LocaleCode,
@@ -35,16 +35,16 @@ export type {
   PluralCategory,
   TextDirection,
   WeekDayIndex,
-} from './locales.js';
+} from './locales';
 
-export { CATALOGS, en, loadCatalog, messageKeys } from './messages/index.js';
+export { CATALOGS, en, loadCatalog, messageKeys } from './messages/index';
 export type {
   Catalog,
   CatalogLoader,
   EnglishCatalog,
   MessageKey,
   PartialCatalog,
-} from './messages/index.js';
+} from './messages/index';
 
 export {
   APPROVAL_STATES,
@@ -52,14 +52,14 @@ export {
   PUBLISH_STATES,
   RELAY_ERROR_CODES,
   VALIDATION_ISSUE_CODES,
-} from './codes.js';
+} from './codes';
 export type {
   ApprovalState,
   CapabilityLevel,
   PublishState,
   RelayErrorCode,
   ValidationIssueCode,
-} from './codes.js';
+} from './codes';
 
 export {
   calendarDayNumber,
@@ -82,7 +82,7 @@ export {
   getTimeZoneOffsetMinutes,
   isValidTimeZone,
   toDate,
-} from './format.js';
+} from './format';
 export type {
   CurrencyFormatOptions,
   DateFormatOptions,
@@ -94,14 +94,14 @@ export type {
   TimeFormatOptions,
   TimeStyle,
   TimeZoneLabelOptions,
-} from './format.js';
+} from './format';
 
 export {
   createCollectingReporter,
   createTranslator,
   scopeTranslator,
   silentReporter,
-} from './translate.js';
+} from './translate';
 export type {
   MessageArguments,
   MessageValue,
@@ -111,7 +111,7 @@ export type {
   MissingMessageReporter,
   Translator,
   TranslatorOptions,
-} from './translate.js';
+} from './translate';
 
 export {
   PSEUDO_LOCALES,
@@ -121,11 +121,11 @@ export {
   isPseudoLocale,
   pseudoLocalize,
   pseudoLocalizeCatalog,
-} from './pseudo.js';
-export type { PseudoOptions, PseudoVariant } from './pseudo.js';
+} from './pseudo';
+export type { PseudoOptions, PseudoVariant } from './pseudo';
 
-export { assertCatalogValid, formatLintResult, lintCatalog } from './lint.js';
-export type { LintFinding, LintOptions, LintResult, LintRule, LintSeverity } from './lint.js';
+export { assertCatalogValid, formatLintResult, lintCatalog } from './lint';
+export type { LintFinding, LintOptions, LintResult, LintRule, LintSeverity } from './lint';
 
-export { collectArgumentNames, stripArguments, transformIcu } from './icu.js';
-export type { IcuTransform } from './icu.js';
+export { collectArgumentNames, stripArguments, transformIcu } from './icu';
+export type { IcuTransform } from './icu';

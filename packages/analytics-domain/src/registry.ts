@@ -1,5 +1,5 @@
-import { metricMappingSchema } from './types.js';
-import type { MetricMapping } from './types.js';
+import { metricMappingSchema } from './types';
+import type { MetricMapping } from './types';
 import type {
   MetricDenominator,
   MetricScope,

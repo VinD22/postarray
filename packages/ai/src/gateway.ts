@@ -2,17 +2,17 @@ import { type z } from 'zod';
 
 import { RelayError } from '@relay/contracts';
 
-import { ASSUMED_PRICING, centsToMicros, estimateCostMicros, estimateTokens } from './budget.js';
-import type { AiBudgetGuard, TokenPricing } from './budget.js';
-import { createCircuitBreaker } from './circuit-breaker.js';
-import type { CircuitBreaker } from './circuit-breaker.js';
-import { systemClock } from './clock.js';
-import type { Clock } from './clock.js';
-import { aiBudgetExceededError, aiOutputInvalidError, aiUnavailableError } from './errors.js';
-import { assertOutputSafe } from './guardrails.js';
-import { buildMessages, missingVariables, parseJsonOutput } from './messages.js';
-import { getPrompt } from './prompts/registry.js';
-import type { PromptModule } from './prompts/types.js';
+import { ASSUMED_PRICING, centsToMicros, estimateCostMicros, estimateTokens } from './budget';
+import type { AiBudgetGuard, TokenPricing } from './budget';
+import { createCircuitBreaker } from './circuit-breaker';
+import type { CircuitBreaker } from './circuit-breaker';
+import { systemClock } from './clock';
+import type { Clock } from './clock';
+import { aiBudgetExceededError, aiOutputInvalidError, aiUnavailableError } from './errors';
+import { assertOutputSafe } from './guardrails';
+import { buildMessages, missingVariables, parseJsonOutput } from './messages';
+import { getPrompt } from './prompts/registry';
+import type { PromptModule } from './prompts/types';
 import type {
   AiGateway,
   AiGatewayStatus,
@@ -26,7 +26,7 @@ import type {
   AiTextResult,
   ProviderRequest,
   ProviderResponse,
-} from './types.js';
+} from './types';
 
 /**
  * The provider-neutral AI gateway.

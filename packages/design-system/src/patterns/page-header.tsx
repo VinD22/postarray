@@ -1,8 +1,8 @@
 'use client';
 
 import type { ReactNode } from 'react';
-import { cn } from '../utils/cn.js';
-import { Breadcrumb, type BreadcrumbProps } from '../primitives/breadcrumb.js';
+import { cn } from '../utils/cn';
+import { Breadcrumb, type BreadcrumbProps } from '../primitives/breadcrumb';
 
 export interface PageHeaderProps {
   /** The page title. Rendered as the page's only h1. */

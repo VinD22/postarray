@@ -6,9 +6,9 @@ import {
 } from '@relay/contracts';
 import { z } from 'zod';
 
-import { WORKSPACE_HEADER } from '../guards/workspace.guard.js';
-import { OPERATIONS } from './catalog.js';
-import type { DocumentOptions, OperationSpec } from './types.js';
+import { WORKSPACE_HEADER } from '../guards/workspace.guard';
+import { OPERATIONS } from './catalog';
+import type { DocumentOptions, OperationSpec } from './types';
 
 /**
  * OpenAPI 3.1, generated from the zod schemas the API actually validates with.

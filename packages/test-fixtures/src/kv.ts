@@ -1,5 +1,5 @@
-import type { Clock } from './clock.js';
-import { FakeClock } from './clock.js';
+import type { Clock } from './clock';
+import { FakeClock } from './clock';
 
 /**
  * A controllable key value store.

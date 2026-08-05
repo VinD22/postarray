@@ -5,7 +5,7 @@ import {
   nextIncompleteStep,
   ONBOARDING_STEPS,
   type OnboardingProgress,
-} from './steps.js';
+} from './steps';
 
 const nothingDone: OnboardingProgress = {
   checkoutConfirmed: false,

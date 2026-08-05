@@ -25,8 +25,8 @@ import { EmptyState } from '@relay/design-system/patterns';
 import { useTranslations } from '@relay/i18n/react';
 import { formatBytes } from '@relay/i18n';
 
-import { checkFile, type AccountRule } from '../state/media-rules.js';
-import type { MediaAsset } from '../types.js';
+import { checkFile, type AccountRule } from '../state/media-rules';
+import type { MediaAsset } from '../types';
 
 export interface MediaPickerDialogProps {
   readonly open: boolean;

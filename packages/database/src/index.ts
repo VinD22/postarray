@@ -13,7 +13,7 @@ export {
   getPrismaClient,
   type PrismaClientOptions,
   type RelayPrismaClient,
-} from './client.js';
+} from './client';
 
 export {
   createStderrLogger,
@@ -21,14 +21,14 @@ export {
   type DatabaseLogFields,
   type DatabaseLogger,
   type LogLevel,
-} from './logger.js';
+} from './logger';
 
 export {
   DATABASE_ERROR_CODES,
   DatabaseError,
   isDatabaseError,
   type DatabaseErrorCode,
-} from './errors.js';
+} from './errors';
 
 export {
   GLOBAL_MODELS,
@@ -47,7 +47,7 @@ export {
   type RlsRole,
   type RlsTransactionClient,
   type WorkspaceScopedClient,
-} from './tenancy/index.js';
+} from './tenancy/index';
 
 export {
   AUDIT_ACTIONS,
@@ -59,10 +59,10 @@ export {
   type AuditActor,
   type AuditEventRef,
   type AuditTarget,
-} from './audit/index.js';
+} from './audit/index';
 
-export { migrate, type MigrateOptions } from './migrate.js';
-export { reset, type ResetOptions } from './reset.js';
+export { migrate, type MigrateOptions } from './migrate';
+export { reset, type ResetOptions } from './reset';
 
 /**
  * Generated Prisma types and enums are re-exported so consumers do not depend

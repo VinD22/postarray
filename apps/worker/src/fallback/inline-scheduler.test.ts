@@ -1,11 +1,11 @@
 import { describe, expect, it } from 'vitest';
 
-import { ActivitySimulator } from '../testing/activity-simulator.js';
-import { makeTargetInput } from '../testing/fixtures.js';
-import type { WorkflowLog } from '../runtime/types.js';
-import { publishTargetDescriptor } from '../workflows/core/publish-target.core.js';
+import { ActivitySimulator } from '../testing/activity-simulator';
+import { makeTargetInput } from '../testing/fixtures';
+import type { WorkflowLog } from '../runtime/types';
+import { publishTargetDescriptor } from '../workflows/core/publish-target.core';
 
-import { InlineScheduler, InlineSchedulerNotPermittedError } from './inline-scheduler.js';
+import { InlineScheduler, InlineSchedulerNotPermittedError } from './inline-scheduler';
 
 function silentLog(): WorkflowLog & { readonly lines: string[] } {
   const lines: string[] = [];

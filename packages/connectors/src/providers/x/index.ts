@@ -1,4 +1,4 @@
-export { createXConnector, X_REQUESTED_SCOPES, type XConnector } from './connector.js';
+export { createXConnector, X_REQUESTED_SCOPES, type XConnector } from './connector';
 export {
   X_CAPABILITY_REVISION,
   X_CHARACTERS_PER_LINK,
@@ -9,7 +9,7 @@ export {
   X_SCOPES,
   buildXCapabilities,
   type XCapabilityInput,
-} from './capabilities.js';
+} from './capabilities';
 export {
   LINK_HEAVY_OPERATION_THRESHOLD,
   MICRO_PER_MINOR,
@@ -24,5 +24,5 @@ export {
   type XCostEstimate,
   type XCostOperation,
   type XOperationKind,
-} from './cost.js';
-export { X_ACCOUNT_METRICS, X_POST_FIELDS, X_POST_METRICS, X_USER_FIELDS } from './metrics.js';
+} from './cost';
+export { X_ACCOUNT_METRICS, X_POST_FIELDS, X_POST_METRICS, X_USER_FIELDS } from './metrics';

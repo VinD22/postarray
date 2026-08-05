@@ -2,16 +2,16 @@ import type { NestExpressApplication } from '@nestjs/platform-express';
 import { newIdFor, type Scope } from '@relay/contracts';
 import type { Server } from 'node:http';
 
-import type { Services } from '../application/port.js';
-import { createApiApp } from '../bootstrap.js';
-import { instantAfter } from '../common/instant.js';
-import { CredentialDirectory, tokenLookupHash } from '../security/credential-directory.js';
-import { CREDENTIAL_PREFIXES, issueCredential } from '../security/credentials.js';
-import { clientFingerprint, issueCsrfToken } from '../security/csrf.js';
-import { apiKeyRecordSchema, sessionRecordSchema } from '../security/records.js';
-import { MemoryKeyValueStore } from '../runtime/redis-key-value-store.js';
-import { FakeClock, FakeIdentityProvider, RecordingLogger, asLogger, testConfig } from './fakes.js';
-import { createRefusingServices } from './service-doubles.js';
+import type { Services } from '../application/port';
+import { createApiApp } from '../bootstrap';
+import { instantAfter } from '../common/instant';
+import { CredentialDirectory, tokenLookupHash } from '../security/credential-directory';
+import { CREDENTIAL_PREFIXES, issueCredential } from '../security/credentials';
+import { clientFingerprint, issueCsrfToken } from '../security/csrf';
+import { apiKeyRecordSchema, sessionRecordSchema } from '../security/records';
+import { MemoryKeyValueStore } from '../runtime/redis-key-value-store';
+import { FakeClock, FakeIdentityProvider, RecordingLogger, asLogger, testConfig } from './fakes';
+import { createRefusingServices } from './service-doubles';
 
 /**
  * The integration test harness.

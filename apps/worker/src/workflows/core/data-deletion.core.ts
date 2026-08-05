@@ -1,8 +1,8 @@
-import type { WorkerActivities } from '../../activities/types.js';
-import { MESSAGE_KEYS } from '../../messages.js';
-import { stableSort, toIsoInstant } from '../../runtime/deterministic.js';
-import type { ChildWorkflowDescriptor, WorkflowRuntime } from '../../runtime/types.js';
-import type { DataDeletionWorkflowInput, DataDeletionWorkflowOutput } from '../inputs.js';
+import type { WorkerActivities } from '../../activities/types';
+import { MESSAGE_KEYS } from '../../messages';
+import { stableSort, toIsoInstant } from '../../runtime/deterministic';
+import type { ChildWorkflowDescriptor, WorkflowRuntime } from '../../runtime/types';
+import type { DataDeletionWorkflowInput, DataDeletionWorkflowOutput } from '../inputs';
 
 /**
  * Erasure, in the only order that is safe.

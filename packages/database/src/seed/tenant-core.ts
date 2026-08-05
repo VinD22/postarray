@@ -1,7 +1,7 @@
-import type { RlsTransactionClient } from '../tenancy/rls-context.js';
+import type { RlsTransactionClient } from '../tenancy/rls-context';
 
-import { SEED_OPPORTUNITY_IDS } from './catalog.js';
-import { SEED_WORKSPACE_ID, hoursAgo, seedId } from './ids.js';
+import { SEED_OPPORTUNITY_IDS } from './catalog';
+import { SEED_WORKSPACE_ID, hoursAgo, seedId } from './ids';
 
 /**
  * Identity, tenancy, brands and the fake provider connection.

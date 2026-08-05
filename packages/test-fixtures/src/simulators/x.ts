@@ -1,9 +1,9 @@
 import type { ProviderId } from '@relay/contracts';
 
-import { fakeHandle } from '../ids.js';
-import { BaseProviderSimulator } from './engine.js';
-import { DEFERRED_ID_POLLS, RETRY_AFTER_SECONDS } from './types.js';
-import type { FailureKind, SimulatedRequest, SimulatedResponse } from './types.js';
+import { fakeHandle } from '../ids';
+import { BaseProviderSimulator } from './engine';
+import { DEFERRED_ID_POLLS, RETRY_AFTER_SECONDS } from './types';
+import type { FailureKind, SimulatedRequest, SimulatedResponse } from './types';
 
 /**
  * X.

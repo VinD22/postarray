@@ -3,9 +3,9 @@
 import { forwardRef, type ComponentPropsWithoutRef, type ReactNode } from 'react';
 import { Dialog as DialogPrimitive } from 'radix-ui';
 import { X } from 'lucide-react';
-import { cn } from '../utils/cn.js';
-import { focusRing } from '../utils/style-constants.js';
-import { DialogOverlay } from './dialog.js';
+import { cn } from '../utils/cn';
+import { focusRing } from '../utils/style-constants';
+import { DialogOverlay } from './dialog';
 
 /**
  * A sheet, also used as the mobile drawer.

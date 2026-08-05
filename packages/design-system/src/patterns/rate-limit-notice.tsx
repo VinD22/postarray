@@ -2,9 +2,9 @@
 
 import type { ReactNode } from 'react';
 import { Gauge } from 'lucide-react';
-import { cn } from '../utils/cn.js';
-import { Notice } from './notice.js';
-import { Progress } from '../primitives/progress.js';
+import { cn } from '../utils/cn';
+import { Notice } from './notice';
+import { Progress } from '../primitives/progress';
 
 export interface RateLimitUsage {
   /** Consumed units. */

@@ -29,18 +29,18 @@ import {
   type RefreshRequest,
   type SocialConnector,
   type StatusRequest,
-} from '../../shared/contract-shape.js';
-import { mapMetrics } from '../../shared/metrics.js';
-import { buildPreview } from '../../shared/preview.js';
-import { validateDraftShape } from '../../shared/validate.js';
-import { SOURCE_VERIFIED_ON } from '../../shared/verification.js';
-import { canPublishToPage, createMetaClient, metaPagesResponseSchema } from '../graph.js';
-import { metaAuthorization, refreshMetaCredential } from '../oauth.js';
-import { buildFacebookCapabilities } from './capabilities.js';
-import { accessTokenOf, errorSummary, providerOptionsOf } from '../../shared/access.js';
-import { NOT_IMPLEMENTED_FEATURES } from '../../../contract.js';
-import { SecretValue } from '../../../vault.js';
-import type { FailedItem, PublishedItem } from '../../../contract.js';
+} from '../../shared/contract-shape';
+import { mapMetrics } from '../../shared/metrics';
+import { buildPreview } from '../../shared/preview';
+import { validateDraftShape } from '../../shared/validate';
+import { SOURCE_VERIFIED_ON } from '../../shared/verification';
+import { canPublishToPage, createMetaClient, metaPagesResponseSchema } from '../graph';
+import { metaAuthorization, refreshMetaCredential } from '../oauth';
+import { buildFacebookCapabilities } from './capabilities';
+import { accessTokenOf, errorSummary, providerOptionsOf } from '../../shared/access';
+import { NOT_IMPLEMENTED_FEATURES } from '../../../contract';
+import { SecretValue } from '../../../vault';
+import type { FailedItem, PublishedItem } from '../../../contract';
 import {
   FACEBOOK_ACCOUNT_METRICS,
   FACEBOOK_ACCOUNT_METRIC_QUERY,
@@ -48,7 +48,7 @@ import {
   FACEBOOK_POST_FIELDS,
   FACEBOOK_POST_METRICS,
   FACEBOOK_POST_METRIC_QUERY,
-} from './metrics.js';
+} from './metrics';
 import {
   facebookCommentSchema,
   facebookInsightsSchema,
@@ -57,7 +57,7 @@ import {
   facebookProviderOptionsSchema,
   facebookVideoSchema,
   type FacebookInsights,
-} from './schemas.js';
+} from './schemas';
 
 /**
  * Facebook Pages connector.

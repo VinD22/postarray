@@ -7,7 +7,7 @@ import {
   jitterMs,
   stableSort,
   unitInterval,
-} from './deterministic.js';
+} from './deterministic';
 
 describe('hashString', () => {
   it('is stable for the same input', () => {

@@ -14,8 +14,8 @@ import {
   type OverridableVariantField,
 } from '@relay/contracts';
 
-import type { ComposerBootstrap, ComposerState, TargetAccount } from '../types.js';
-import type { ResolvedEntity } from '../components/entity-search-field.js';
+import type { ComposerBootstrap, ComposerState, TargetAccount } from '../types';
+import type { ResolvedEntity } from '../components/entity-search-field';
 
 /** Load the draft, the connectable accounts and their capability snapshots. */
 export async function loadComposer(input: {

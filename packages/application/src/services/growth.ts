@@ -11,14 +11,14 @@ import {
   type ToolRecord,
 } from '@relay/contracts';
 
-import type { ActorContext, ContentService, GrowthService, ServiceDeps } from '../types.js';
-import type { BusinessProfileView, CalendarEntry, ContentItemView } from '../views.js';
+import type { ActorContext, ContentService, GrowthService, ServiceDeps } from '../types';
+import type { BusinessProfileView, CalendarEntry, ContentItemView } from '../views';
 
-import { recordAudit } from '../internal/audit.js';
-import { invalid, notFound } from '../internal/errors.js';
-import { withIdempotency } from '../internal/idempotency.js';
-import { authorized, type Db } from '../internal/runtime.js';
-import { asOpportunityKind } from '../internal/storage-enums.js';
+import { recordAudit } from '../internal/audit';
+import { invalid, notFound } from '../internal/errors';
+import { withIdempotency } from '../internal/idempotency';
+import { authorized, type Db } from '../internal/runtime';
+import { asOpportunityKind } from '../internal/storage-enums';
 
 /**
  * The Growth Advisor.

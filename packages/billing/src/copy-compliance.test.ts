@@ -6,8 +6,8 @@ import { describe, expect, it } from 'vitest';
 
 import { en } from '@relay/i18n';
 
-import { FORBIDDEN_BILLING_PHRASES, MANDATED_COPY, PRICE_PRESENTATION } from './products.js';
-import { FORBIDDEN_METER_NAMES } from './usage.js';
+import { FORBIDDEN_BILLING_PHRASES, MANDATED_COPY, PRICE_PRESENTATION } from './products';
+import { FORBIDDEN_METER_NAMES } from './usage';
 
 /**
  * Copy compliance, enforced by the build rather than by a release checklist.

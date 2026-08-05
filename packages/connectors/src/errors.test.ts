@@ -11,8 +11,8 @@ import {
   remediationFor,
   toContractErrorClass,
   toRelayError,
-} from './errors.js';
-import { fixedClock } from './ports.js';
+} from './errors';
+import { fixedClock } from './ports';
 
 const clock = fixedClock('2026-08-04T12:00:00.000Z');
 

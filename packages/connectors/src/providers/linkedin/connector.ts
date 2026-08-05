@@ -43,18 +43,18 @@ import {
   type RevokeRequest,
   type SocialConnector,
   type StatusRequest,
-} from '../shared/contract-shape.js';
-import { accessTokenOf, errorSummary, providerOptionsOf } from '../shared/access.js';
-import { mapMetrics } from '../shared/metrics.js';
-import { buildPreview } from '../shared/preview.js';
-import { validateDraftShape } from '../shared/validate.js';
-import { SOURCE_VERIFIED_ON } from '../shared/verification.js';
-import { LINKEDIN_API_VERSION, buildLinkedInCapabilities } from './capabilities.js';
+} from '../shared/contract-shape';
+import { accessTokenOf, errorSummary, providerOptionsOf } from '../shared/access';
+import { mapMetrics } from '../shared/metrics';
+import { buildPreview } from '../shared/preview';
+import { validateDraftShape } from '../shared/validate';
+import { SOURCE_VERIFIED_ON } from '../shared/verification';
+import { LINKEDIN_API_VERSION, buildLinkedInCapabilities } from './capabilities';
 import {
   LINKEDIN_ORGANIZATION_ACCOUNT_METRICS,
   LINKEDIN_ORGANIZATION_POST_METRICS,
   LINKEDIN_SOCIAL_METRICS,
-} from './metrics.js';
+} from './metrics';
 import {
   linkedInDocumentInitializeSchema,
   linkedInFollowerStatisticsSchema,
@@ -67,7 +67,7 @@ import {
   linkedInSocialActionsSchema,
   linkedInUserInfoSchema,
   linkedInVideoInitializeSchema,
-} from './schemas.js';
+} from './schemas';
 
 /**
  * LinkedIn connector.

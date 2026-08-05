@@ -6,8 +6,8 @@ import { fileURLToPath } from 'node:url';
 
 import pg from 'pg';
 
-import { DATABASE_ERROR_CODES, DatabaseError } from './errors.js';
-import { createStderrLogger, type DatabaseLogger } from './logger.js';
+import { DATABASE_ERROR_CODES, DatabaseError } from './errors';
+import { createStderrLogger, type DatabaseLogger } from './logger';
 
 /**
  * The migration runner.

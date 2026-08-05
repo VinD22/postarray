@@ -1,6 +1,6 @@
 import type { CapabilitySnapshot, ProviderId } from '@relay/contracts';
 
-import { leaseSecret } from '../../vault.js';
+import { leaseSecret } from '../../vault';
 import type {
   ConnectorDeps,
   DestinationRequest,
@@ -19,7 +19,7 @@ import type {
   RefreshRequest,
   RevokeRequest,
   StatusRequest,
-} from './contract-shape.js';
+} from './contract-shape';
 
 /**
  * Test harness for the provider adapters.

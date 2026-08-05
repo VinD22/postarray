@@ -3,11 +3,11 @@ import 'reflect-metadata';
 import { loadConfigFor } from '@relay/config';
 import { createLogger, startTracing } from '@relay/observability';
 
-import { createApiApp } from './bootstrap.js';
-import { systemClock } from './common/instant.js';
-import { SupabaseIdentityProvider } from './modules/auth/supabase-identity.provider.js';
-import { RedisKeyValueStore } from './runtime/redis-key-value-store.js';
-import { resolveServices } from './runtime/services.js';
+import { createApiApp } from './bootstrap';
+import { systemClock } from './common/instant';
+import { SupabaseIdentityProvider } from './modules/auth/supabase-identity.provider';
+import { RedisKeyValueStore } from './runtime/redis-key-value-store';
+import { resolveServices } from './runtime/services';
 
 /**
  * The composition root.

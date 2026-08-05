@@ -7,14 +7,14 @@ import {
 import { buildHealthReport, createLogger } from '@relay/observability';
 import type { HealthReport } from '@relay/observability';
 
-import { createIntrospectionVerifier } from './auth/verifier.js';
-import type { IntrospectionTransport } from './auth/verifier.js';
-import { createMemoryConfirmationStore } from './confirmations.js';
-import { createDispatcher, createWorkspaceKillSwitch } from './dispatch.js';
-import { createMcpHttpService } from './http.js';
-import { createSandboxServices } from './sandbox.js';
-import { createToolRegistry } from './tools/index.js';
-import type { AuditSink, RelayServicePort } from './ports.js';
+import { createIntrospectionVerifier } from './auth/verifier';
+import type { IntrospectionTransport } from './auth/verifier';
+import { createMemoryConfirmationStore } from './confirmations';
+import { createDispatcher, createWorkspaceKillSwitch } from './dispatch';
+import { createMcpHttpService } from './http';
+import { createSandboxServices } from './sandbox';
+import { createToolRegistry } from './tools/index';
+import type { AuditSink, RelayServicePort } from './ports';
 
 /**
  * The composition root.

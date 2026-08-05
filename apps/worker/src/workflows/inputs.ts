@@ -1,6 +1,6 @@
 import type { ErrorCode, ProviderId, PublishState, WebhookEventName } from '@relay/contracts';
 
-import type { ActivityContext, PublishTargetDescriptor } from '../activities/types.js';
+import type { ActivityContext, PublishTargetDescriptor } from '../activities/types';
 
 /**
  * Workflow inputs and outputs.

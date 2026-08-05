@@ -11,7 +11,7 @@ import {
 } from '@relay/i18n';
 import { useI18n } from '@relay/i18n/react';
 
-import type { MoneyView } from './view-models.js';
+import type { MoneyView } from './view-models';
 
 export interface Formatters {
   readonly locale: string;

@@ -5,9 +5,9 @@ import type { RelayConfig } from '@relay/config';
 import { requireConfigValue } from '@relay/config';
 import type { z } from 'zod';
 
-import type { Clock, KeyValueStore } from '../application/port.js';
-import { CLOCK, KEY_VALUE_STORE, RELAY_CONFIG } from '../application/tokens.js';
-import { requireEpochMillis } from '../common/instant.js';
+import type { Clock, KeyValueStore } from '../application/port';
+import { CLOCK, KEY_VALUE_STORE, RELAY_CONFIG } from '../application/tokens';
+import { requireEpochMillis } from '../common/instant';
 import {
   accessTokenRecordSchema,
   apiKeyRecordSchema,
@@ -25,7 +25,7 @@ import {
   type RefreshTokenRecord,
   type SessionRecord,
   type SessionRefreshRecord,
-} from './records.js';
+} from './records';
 
 /**
  * The edge credential store.

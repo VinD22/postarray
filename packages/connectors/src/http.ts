@@ -7,7 +7,7 @@ import {
   type ProviderOperation,
   asProviderOperation,
   classifyProviderError,
-} from './errors.js';
+} from './errors';
 import {
   type Clock,
   type ConnectorLogger,
@@ -17,10 +17,10 @@ import {
   noopLogger,
   realSleeper,
   systemClock,
-} from './ports.js';
-import { sanitizeHeaders, sanitizeText } from './sanitize.js';
-import { type UrlGuardOptions, assertSafeUrl } from './ssrf.js';
-import { type SecretHandle } from './vault.js';
+} from './ports';
+import { sanitizeHeaders, sanitizeText } from './sanitize';
+import { type UrlGuardOptions, assertSafeUrl } from './ssrf';
+import { type SecretHandle } from './vault';
 
 /**
  * The shared provider HTTP client.

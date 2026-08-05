@@ -2,9 +2,9 @@ import { z } from 'zod';
 
 import { RelayError } from '@relay/contracts';
 
-import { BILLING_MESSAGE_KEYS } from './messages.js';
-import { USD, applyBasisPoints } from './money.js';
-import { addDays, addMonths, differenceDays, isAfter, isAtOrAfter, isBefore } from './time.js';
+import { BILLING_MESSAGE_KEYS } from './messages';
+import { USD, applyBasisPoints } from './money';
+import { addDays, addMonths, differenceDays, isAfter, isAtOrAfter, isBefore } from './time';
 
 /**
  * Referral attribution, the commission ledger and payout batches.

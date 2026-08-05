@@ -10,9 +10,9 @@ import {
   testGrant,
   testMetricsRequest,
   testThreadItem,
-} from '../../shared/testing.js';
-import { buildThreadsCapabilities } from './capabilities.js';
-import { createThreadsConnector } from './connector.js';
+} from '../../shared/testing';
+import { buildThreadsCapabilities } from './capabilities';
+import { createThreadsConnector } from './connector';
 import {
   THREADS_CONTAINER_ERROR_FIXTURE,
   THREADS_CONTAINER_FINISHED_FIXTURE,
@@ -23,7 +23,7 @@ import {
   THREADS_PERMISSION_ERROR_FIXTURE,
   THREADS_PROFILE_FIXTURE,
   THREADS_PUBLISH_FIXTURE,
-} from './__fixtures__/index.js';
+} from './__fixtures__/index';
 
 const SCOPES = [
   'threads_basic',

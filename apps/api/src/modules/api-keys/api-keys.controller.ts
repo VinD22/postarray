@@ -1,12 +1,12 @@
 import { Body, Controller, Delete, Get, HttpCode, Param, Post, Query } from '@nestjs/common';
 import type { Paginated } from '@relay/contracts';
 
-import type { ActorContext, ApiKeyView } from '../../application/port.js';
-import { Actor, Idempotent, RequireScope, RequireStepUp } from '../../common/decorators.js';
-import { apiKeyIdSchema } from '../../common/schemas.js';
-import { parseBody, parseParams, parseQuery } from '../../common/zod.js';
-import { createApiKeySchema, listApiKeysQuerySchema } from './api-keys.schemas.js';
-import { ApiKeysService, type CreatedApiKey } from './api-keys.service.js';
+import type { ActorContext, ApiKeyView } from '../../application/port';
+import { Actor, Idempotent, RequireScope, RequireStepUp } from '../../common/decorators';
+import { apiKeyIdSchema } from '../../common/schemas';
+import { parseBody, parseParams, parseQuery } from '../../common/zod';
+import { createApiKeySchema, listApiKeysQuerySchema } from './api-keys.schemas';
+import { ApiKeysService, type CreatedApiKey } from './api-keys.service';
 
 /**
  * Workspace API keys: a bearer credential for the workspace's own automation.

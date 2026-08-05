@@ -1,8 +1,8 @@
-import type { ActorContext, CredentialVaultService, ServiceDeps } from '../types.js';
+import type { ActorContext, CredentialVaultService, ServiceDeps } from '../types';
 
-import { recordAudit } from '../internal/audit.js';
-import { notFound } from '../internal/errors.js';
-import { authorized } from '../internal/runtime.js';
+import { recordAudit } from '../internal/audit';
+import { notFound } from '../internal/errors';
+import { authorized } from '../internal/runtime';
 
 /**
  * The credential vault, seen from the application layer.

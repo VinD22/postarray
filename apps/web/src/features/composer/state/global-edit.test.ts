@@ -1,9 +1,9 @@
 import { describe, expect, it } from 'vitest';
 
-import { composerReducer } from './composer-reducer.js';
-import { commitGlobalEdit, planGlobalEdit } from './global-edit.js';
-import { initialComposerState, SEED_ACCOUNTS, SEED_BOOTSTRAP } from './seed.js';
-import { readCounter } from './capability-rules.js';
+import { composerReducer } from './composer-reducer';
+import { commitGlobalEdit, planGlobalEdit } from './global-edit';
+import { initialComposerState, SEED_ACCOUNTS, SEED_BOOTSTRAP } from './seed';
+import { readCounter } from './capability-rules';
 
 const X = 'conn_seed_x_acme';
 const LINKEDIN = 'conn_seed_li_acme';

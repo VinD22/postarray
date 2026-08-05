@@ -1,6 +1,6 @@
-import { createTemporalRuntime, workerActivities } from './temporal-runtime.js';
-import { runDataDeletion } from './core/data-deletion.core.js';
-import type { DataDeletionWorkflowInput, DataDeletionWorkflowOutput } from './inputs.js';
+import { createTemporalRuntime, workerActivities } from './temporal-runtime';
+import { runDataDeletion } from './core/data-deletion.core';
+import type { DataDeletionWorkflowInput, DataDeletionWorkflowOutput } from './inputs';
 
 /**
  * Erasure of a workspace or an account.

@@ -2,7 +2,7 @@ import { createHash, randomUUID } from 'node:crypto';
 
 import { RelayError } from '@relay/contracts';
 
-import type { PublishConfirmation } from './ports.js';
+import type { PublishConfirmation } from './ports';
 
 /**
  * Human confirmation for immediate publication.

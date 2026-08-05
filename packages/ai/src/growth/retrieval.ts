@@ -1,8 +1,8 @@
 import { RelayError, ERROR_CODES, isCustomerVisible } from '@relay/contracts';
 import type { BusinessProfile, OpportunityRecord, ToolRecord } from '@relay/contracts';
 
-import { addDays, isoDateOf } from '../clock.js';
-import type { AiVariables, UntrustedSource } from '../types.js';
+import { addDays, isoDateOf } from '../clock';
+import type { AiVariables, UntrustedSource } from '../types';
 
 /**
  * Retrieval for the Growth Advisor.

@@ -2,7 +2,7 @@ import type { ReactNode } from 'react';
 import { describe, expect, it } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from './tabs.js';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from './tabs';
 
 // Test fixtures only. Product copy lives in @relay/i18n.
 const TABS = [

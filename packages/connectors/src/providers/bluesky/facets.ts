@@ -1,4 +1,4 @@
-import { detectUrls } from '../shared/text.js';
+import { detectUrls } from '../shared/text';
 
 /**
  * AT Protocol rich text facets.

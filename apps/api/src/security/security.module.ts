@@ -1,6 +1,6 @@
 import { Global, Module } from '@nestjs/common';
 
-import { CredentialDirectory } from './credential-directory.js';
+import { CredentialDirectory } from './credential-directory';
 
 /**
  * The edge credential store, available everywhere.

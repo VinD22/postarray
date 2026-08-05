@@ -2,7 +2,7 @@ import { createHash } from 'node:crypto';
 
 import type { ActorType, CreationSurface, Prisma } from '@prisma/client';
 
-import type { RlsTransactionClient } from '../tenancy/rls-context.js';
+import type { RlsTransactionClient } from '../tenancy/rls-context';
 
 /**
  * Appending to the audit log.

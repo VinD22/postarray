@@ -11,14 +11,14 @@ import {
   testMedia,
   testMetricsRequest,
   testStatusRequest,
-} from '../shared/testing.js';
+} from '../shared/testing';
 import {
   buildTikTokCapabilities,
   interactionAvailability,
   isUnaudited,
   tikTokPrivacyOptions,
-} from './capabilities.js';
-import { createTikTokConnector, isVerifiedPullDomain } from './connector.js';
+} from './capabilities';
+import { createTikTokConnector, isVerifiedPullDomain } from './connector';
 import {
   TIKTOK_CREATOR_INFO_FIXTURE,
   TIKTOK_CREATOR_INFO_PRIVATE_ONLY_FIXTURE,
@@ -27,7 +27,7 @@ import {
   TIKTOK_STATUS_FAILED_FIXTURE,
   TIKTOK_STATUS_PROCESSING_FIXTURE,
   TIKTOK_USER_INFO_FIXTURE,
-} from './__fixtures__/index.js';
+} from './__fixtures__/index';
 
 const SCOPES = ['user.info.basic', 'user.info.profile', 'video.publish', 'video.upload'];
 

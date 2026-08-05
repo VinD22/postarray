@@ -1,6 +1,6 @@
 import { ERROR_CODES, canonicalJson, type ErrorCode } from '@relay/contracts';
 
-import type { CommandRecorder } from './fake-runtime.js';
+import type { CommandRecorder } from './fake-runtime';
 
 import type {
   ActivityName,
@@ -72,8 +72,8 @@ import type {
   WorkerActivities,
   WriteReceiptInput,
   WriteReceiptResult,
-} from '../activities/types.js';
-import { toIsoInstant, parseInstant } from '../runtime/deterministic.js';
+} from '../activities/types';
+import { toIsoInstant, parseInstant } from '../runtime/deterministic';
 
 /**
  * A deterministic stand-in for every activity, plus a model of the provider.

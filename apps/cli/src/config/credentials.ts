@@ -4,7 +4,7 @@ import { dirname } from 'node:path';
 import { z } from 'zod';
 import { RelayError, scopeSchema } from '@relay/contracts';
 
-import { credentialsFilePath } from './paths.js';
+import { credentialsFilePath } from './paths';
 
 /**
  * The credential file.

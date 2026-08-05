@@ -1,8 +1,8 @@
 import { Inject, Injectable } from '@nestjs/common';
 import type { PublicationReceipt, PublishJob } from '@relay/contracts';
 
-import type { ActorContext, Services, ViewModel } from '../../application/port.js';
-import { SERVICES } from '../../application/tokens.js';
+import type { ActorContext, Services, ViewModel } from '../../application/port';
+import { SERVICES } from '../../application/tokens';
 
 /**
  * Transport-level delegation for publishing and receipts.

@@ -1,9 +1,9 @@
 import type { Prisma } from '@prisma/client';
 
-import { DATABASE_ERROR_CODES, DatabaseError } from '../errors.js';
-import type { RelayPrismaClient } from '../client.js';
+import { DATABASE_ERROR_CODES, DatabaseError } from '../errors';
+import type { RelayPrismaClient } from '../client';
 
-import { withWorkspace, type WorkspaceScopedClient } from './workspace-scope.js';
+import { withWorkspace, type WorkspaceScopedClient } from './workspace-scope';
 
 /**
  * Row level security for server-side connections.

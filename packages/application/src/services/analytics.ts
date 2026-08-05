@@ -1,18 +1,18 @@
 import type { MetricUnit, NormalizedMetricName, Paginated } from '@relay/contracts';
 
-import type { ActorContext, AnalyticsService, PageQuery, ServiceDeps } from '../types.js';
+import type { ActorContext, AnalyticsService, PageQuery, ServiceDeps } from '../types';
 import type {
   ComparisonReport,
   ComparisonRow,
   ExperimentView,
   MetricObservationView,
-} from '../views.js';
+} from '../views';
 
-import { recordAudit } from '../internal/audit.js';
-import { notFound } from '../internal/errors.js';
-import { decimalToNumber, toProviderId } from '../internal/mappers.js';
-import { pageArgs, toPage } from '../internal/pagination.js';
-import { authorized, type Db } from '../internal/runtime.js';
+import { recordAudit } from '../internal/audit';
+import { notFound } from '../internal/errors';
+import { decimalToNumber, toProviderId } from '../internal/mappers';
+import { pageArgs, toPage } from '../internal/pagination';
+import { authorized, type Db } from '../internal/runtime';
 
 /**
  * Analytics.

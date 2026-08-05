@@ -2,8 +2,8 @@ import type { RelayConfig } from '@relay/config';
 import type { Logger } from '@relay/observability';
 import Redis from 'ioredis';
 
-import type { KeyValueSetOptions, KeyValueStore } from '../application/port.js';
-import { systemClock } from '../common/instant.js';
+import type { KeyValueSetOptions, KeyValueStore } from '../application/port';
+import { systemClock } from '../common/instant';
 
 /** A store the composition root can shut down cleanly. */
 export interface DisconnectableKeyValueStore extends KeyValueStore {

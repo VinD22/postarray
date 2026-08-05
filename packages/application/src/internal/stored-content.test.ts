@@ -11,7 +11,7 @@ import {
   storedMasterSchema,
   storedOverridesSchema,
   type StoredMaster,
-} from './stored-content.js';
+} from './stored-content';
 
 function master(overrides: Partial<StoredMaster> = {}): StoredMaster {
   return storedMasterSchema.parse({

@@ -11,8 +11,8 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from './dialog.js';
-import { Button } from './button.js';
+} from './dialog';
+import { Button } from './button';
 
 // Test fixtures only. Product copy lives in @relay/i18n.
 const TRIGGER = 'Disconnect account';

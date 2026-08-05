@@ -1,4 +1,4 @@
-import { REDACTED } from './vault.js';
+import { REDACTED } from './vault';
 
 /**
  * Provider payload sanitizer.

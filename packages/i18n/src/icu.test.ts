@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import { collectArgumentNames, stripArguments, transformIcu } from './icu.js';
+import { collectArgumentNames, stripArguments, transformIcu } from './icu';
 
 describe('transformIcu', () => {
   it('passes a plain message through unchanged', () => {

@@ -25,7 +25,7 @@ import {
   GOLDEN_TEXT_DRAFT,
   GOLDEN_THREAD_RECEIPT,
   goldenContentVersion,
-} from './index.js';
+} from './index';
 
 describe('golden examples', () => {
   it('every draft parses', () => {

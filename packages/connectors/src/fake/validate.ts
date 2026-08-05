@@ -6,12 +6,7 @@ import {
   validationResult,
 } from '@relay/contracts';
 
-import type {
-  CanonicalPreview,
-  PreviewEntity,
-  ProviderDraft,
-  ProviderMediaRef,
-} from '../contract.js';
+import type { CanonicalPreview, PreviewEntity, ProviderDraft, ProviderMediaRef } from '../contract';
 
 /**
  * Deterministic validation and preview for the fake provider.

@@ -2,7 +2,7 @@
 
 import { forwardRef, type ComponentPropsWithoutRef } from 'react';
 import { Progress as ProgressPrimitive } from 'radix-ui';
-import { cn } from '../utils/cn.js';
+import { cn } from '../utils/cn';
 
 export interface ProgressProps extends ComponentPropsWithoutRef<typeof ProgressPrimitive.Root> {
   /** Accessible name, from the message catalog. Required. */

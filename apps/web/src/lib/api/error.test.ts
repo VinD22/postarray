@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 
 import { ERROR_CODES } from '@relay/contracts';
 
-import { ApiError } from './error.js';
+import { ApiError } from './error';
 
 describe('ApiError', () => {
   it('resolves a catalog message pair from the finer messageKey', () => {

@@ -4,16 +4,16 @@ import { join } from 'node:path';
 
 import { describe, expect, it } from 'vitest';
 
-import { createMemoryConfigStore } from './config/store.js';
-import { createMemoryCredentialStore } from './config/credentials.js';
-import type { StoredCredential } from './config/credentials.js';
-import { createMemoryWriter } from './output.js';
-import type { JsonEnvelope } from './output.js';
-import { EXIT_OK } from './exit-codes.js';
-import { runCli } from './program.js';
-import type { FetchLike } from './api/client.js';
-import { assessBulk, BULK_ACCOUNT_THRESHOLD } from './commands/posts.js';
-import { draftDocumentSchema } from './draft.js';
+import { createMemoryConfigStore } from './config/store';
+import { createMemoryCredentialStore } from './config/credentials';
+import type { StoredCredential } from './config/credentials';
+import { createMemoryWriter } from './output';
+import type { JsonEnvelope } from './output';
+import { EXIT_OK } from './exit-codes';
+import { runCli } from './program';
+import type { FetchLike } from './api/client';
+import { assessBulk, BULK_ACCOUNT_THRESHOLD } from './commands/posts';
+import { draftDocumentSchema } from './draft';
 
 const API_URL = 'https://api.relay.example/';
 

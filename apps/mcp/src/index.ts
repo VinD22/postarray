@@ -31,7 +31,7 @@ export {
   type ToolRegistry,
   type ToolResult,
   type ToolRisk,
-} from './tools/index.js';
+} from './tools/index';
 
 export {
   APPROVAL_LEVEL_ORDER,
@@ -40,7 +40,7 @@ export {
   authorizeCall,
   type AuthorizationInput,
   type AuthorizationRequirement,
-} from './auth/authorize.js';
+} from './auth/authorize';
 
 export {
   DEFAULT_VERIFICATION_CACHE_TTL_SECONDS,
@@ -52,7 +52,7 @@ export {
   type IntrospectionVerifierOptions,
   type TokenVerifier,
   type VerifiedGrant,
-} from './auth/verifier.js';
+} from './auth/verifier';
 
 export {
   PROTECTED_RESOURCE_PATH,
@@ -60,7 +60,7 @@ export {
   buildProtectedResourceMetadata,
   protectedResourceMetadataSchema,
   type ProtectedResourceMetadata,
-} from './auth/metadata.js';
+} from './auth/metadata';
 
 export {
   DEFAULT_CONFIRMATION_TTL_SECONDS,
@@ -70,7 +70,7 @@ export {
   type ConfirmationSummary,
   type ConfirmationTicket,
   type PendingConfirmation,
-} from './confirmations.js';
+} from './confirmations';
 
 export {
   createDispatcher,
@@ -80,7 +80,7 @@ export {
   type Dispatcher,
   type DispatcherOptions,
   type WorkspaceKillSwitch,
-} from './dispatch.js';
+} from './dispatch';
 
 export {
   SERVER_NAME,
@@ -90,7 +90,7 @@ export {
   toCallToolError,
   toCallToolResult,
   type McpServerOptions,
-} from './server.js';
+} from './server';
 
 export {
   HEALTH_PATH,
@@ -99,7 +99,7 @@ export {
   createMcpHttpService,
   type McpHttpOptions,
   type McpHttpService,
-} from './http.js';
+} from './http';
 
 export {
   SANDBOX_BRAND_ID,
@@ -107,7 +107,7 @@ export {
   fakeCapabilitySnapshot,
   type SandboxOptions,
   type SandboxServices,
-} from './sandbox.js';
+} from './sandbox';
 
 export type {
   ActorContextLike,
@@ -129,8 +129,8 @@ export type {
   ScheduleSpecLike,
   TargetSpecLike,
   VariantSummary,
-} from './ports.js';
+} from './ports';
 
-export { toRelayServicePort } from './wiring.js';
+export { toRelayServicePort } from './wiring';
 
-export { SKILLS, skillFor, type SkillDefinition, type SkillHost } from './skills.js';
+export { SKILLS, skillFor, type SkillDefinition, type SkillHost } from './skills';

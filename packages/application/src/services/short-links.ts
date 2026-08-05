@@ -2,14 +2,14 @@ import { createHash, randomBytes } from 'node:crypto';
 
 import type { UtmParameters } from '@relay/contracts';
 
-import type { ActorContext, ServiceDeps, ShortLinkService } from '../types.js';
-import type { ShortLinkView, ShortLinkStats } from '../views.js';
+import type { ActorContext, ServiceDeps, ShortLinkService } from '../types';
+import type { ShortLinkView, ShortLinkStats } from '../views';
 
-import { recordAudit } from '../internal/audit.js';
-import { invalid, notFound } from '../internal/errors.js';
-import { withIdempotency } from '../internal/idempotency.js';
-import { authorized, type Db } from '../internal/runtime.js';
-import { assertFetchable } from '../internal/url-safety.js';
+import { recordAudit } from '../internal/audit';
+import { invalid, notFound } from '../internal/errors';
+import { withIdempotency } from '../internal/idempotency';
+import { authorized, type Db } from '../internal/runtime';
+import { assertFetchable } from '../internal/url-safety';
 
 /**
  * Short links.

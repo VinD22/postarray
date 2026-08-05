@@ -8,8 +8,8 @@ import {
   type ComponentPropsWithoutRef,
 } from 'react';
 import { AlertCircle } from 'lucide-react';
-import { cn } from '../utils/cn.js';
-import { Label } from './label.js';
+import { cn } from '../utils/cn';
+import { Label } from './label';
 
 /**
  * Field wires a label, a description, an error and a control together.

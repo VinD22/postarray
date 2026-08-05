@@ -2,8 +2,8 @@ import { describe, expect, it, vi } from 'vitest';
 
 import { createLogger } from '@relay/observability';
 
-import { createBufferedClickSink, createMemoryClickSink } from './clicks.js';
-import type { ClickEvent } from './types.js';
+import { createBufferedClickSink, createMemoryClickSink } from './clicks';
+import type { ClickEvent } from './types';
 
 const logger = createLogger({ service: 'links' }, { level: 'silent', pretty: false });
 

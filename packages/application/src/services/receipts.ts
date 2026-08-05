@@ -1,9 +1,9 @@
-import type { ActorContext, ReceiptService, ServiceDeps } from '../types.js';
-import type { PublicationReceiptView } from '../views.js';
+import type { ActorContext, ReceiptService, ServiceDeps } from '../types';
+import type { PublicationReceiptView } from '../views';
 
-import { notFound } from '../internal/errors.js';
-import { fromStoredSurface, toIso, toProviderId } from '../internal/mappers.js';
-import { authorized, type Db } from '../internal/runtime.js';
+import { notFound } from '../internal/errors';
+import { fromStoredSurface, toIso, toProviderId } from '../internal/mappers';
+import { authorized, type Db } from '../internal/runtime';
 
 /**
  * Publication receipts.

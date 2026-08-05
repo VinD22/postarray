@@ -1,6 +1,6 @@
 import { PrismaClient } from '@prisma/client';
 
-import { noopLogger, type DatabaseLogger } from './logger.js';
+import { noopLogger, type DatabaseLogger } from './logger';
 
 /**
  * The Prisma client, with query logging wired to a pluggable logger.

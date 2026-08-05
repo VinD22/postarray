@@ -33,18 +33,18 @@ import {
   type RevokeRequest,
   type SocialConnector,
   type StatusRequest,
-} from '../shared/contract-shape.js';
-import { buildPreview } from '../shared/preview.js';
-import { validateDraftShape } from '../shared/validate.js';
-import { SOURCE_VERIFIED_ON } from '../shared/verification.js';
-import { accessTokenOf, errorSummary, providerOptionsOf } from '../shared/access.js';
-import { NOT_IMPLEMENTED_FEATURES } from '../../contract.js';
+} from '../shared/contract-shape';
+import { buildPreview } from '../shared/preview';
+import { validateDraftShape } from '../shared/validate';
+import { SOURCE_VERIFIED_ON } from '../shared/verification';
+import { accessTokenOf, errorSummary, providerOptionsOf } from '../shared/access';
+import { NOT_IMPLEMENTED_FEATURES } from '../../contract';
 import {
   TIKTOK_UNAUDITED_PRIVACY_LEVEL,
   buildTikTokCapabilities,
   interactionAvailability,
   isUnaudited,
-} from './capabilities.js';
+} from './capabilities';
 import {
   tikTokCreatorInfoSchema,
   tikTokPublishInitSchema,
@@ -52,7 +52,7 @@ import {
   tikTokProviderOptionsSchema,
   tikTokUserInfoSchema,
   type TikTokCreatorInfo,
-} from './schemas.js';
+} from './schemas';
 
 /**
  * TikTok connector.

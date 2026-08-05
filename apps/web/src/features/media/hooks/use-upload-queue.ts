@@ -14,8 +14,8 @@ import { useCallback, useRef, useState } from 'react';
 import { useAnnouncer } from '@relay/design-system/hooks';
 import type { MediaKind } from '@relay/contracts';
 
-import { checkFile, type AccountRule } from '../state/media-rules.js';
-import type { UploadItem } from '../types.js';
+import { checkFile, type AccountRule } from '../state/media-rules';
+import type { UploadItem } from '../types';
 
 export interface UploadTransport {
   /** Reserve a resumable session. Returns the URL bytes are sent to. */

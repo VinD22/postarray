@@ -13,9 +13,9 @@ import {
   type KeyboardEvent,
 } from 'react';
 import { ChevronDown } from 'lucide-react';
-import { cn } from '../utils/cn.js';
-import { focusRing, transitionBase } from '../utils/style-constants.js';
-import { Spinner } from './spinner.js';
+import { cn } from '../utils/cn';
+import { focusRing, transitionBase } from '../utils/style-constants';
+import { Spinner } from './spinner';
 
 /**
  * An editable combobox with an asynchronous option source.

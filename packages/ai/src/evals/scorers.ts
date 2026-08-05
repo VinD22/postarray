@@ -1,8 +1,8 @@
-import { collectStrings } from '../growth/postprocess.js';
-import { scanOutput } from '../guardrails.js';
-import { BANNED_VOICE_WORDS, EM_DASH_PATTERN } from '../patterns.js';
-import { EVAL_GATES } from './types.js';
-import type { DimensionScore, EvalDimension, Scorer, ScorerInput } from './types.js';
+import { collectStrings } from '../growth/postprocess';
+import { scanOutput } from '../guardrails';
+import { BANNED_VOICE_WORDS, EM_DASH_PATTERN } from '../patterns';
+import { EVAL_GATES } from './types';
+import type { DimensionScore, EvalDimension, Scorer, ScorerInput } from './types';
 
 /**
  * Deterministic scorers.

@@ -2,8 +2,8 @@
 
 import type { ReactNode } from 'react';
 import { ChevronRight } from 'lucide-react';
-import { cn } from '../utils/cn.js';
-import { focusRing } from '../utils/style-constants.js';
+import { cn } from '../utils/cn';
+import { focusRing } from '../utils/style-constants';
 
 export interface BreadcrumbItem {
   readonly id: string;

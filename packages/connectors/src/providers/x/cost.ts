@@ -1,5 +1,5 @@
-import type { ProviderDraft } from '../shared/contract-shape.js';
-import { containsUrl } from '../shared/text.js';
+import type { ProviderDraft } from '../shared/contract-shape';
+import { containsUrl } from '../shared/text';
 
 /**
  * The X cost model.

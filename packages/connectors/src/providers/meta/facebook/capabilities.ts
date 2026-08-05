@@ -8,15 +8,15 @@ import {
   buildSnapshot,
   contentKinds,
   mediaBytes,
-} from '../../shared/capability.js';
-import type { ProviderConnection } from '../../shared/contract-shape.js';
-import { normalizedNames } from '../../shared/metrics.js';
-import { capabilityVersion } from '../../shared/verification.js';
+} from '../../shared/capability';
+import type { ProviderConnection } from '../../shared/contract-shape';
+import { normalizedNames } from '../../shared/metrics';
+import { capabilityVersion } from '../../shared/verification';
 import {
   FACEBOOK_ACCOUNT_METRICS,
   FACEBOOK_ENGAGEMENT_METRICS,
   FACEBOOK_POST_METRICS,
-} from './metrics.js';
+} from './metrics';
 
 /**
  * Facebook Pages capability snapshot.

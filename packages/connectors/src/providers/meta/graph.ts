@@ -8,7 +8,7 @@ import {
   type ConnectorDeps,
   type HttpResponse,
   type RemediationCode,
-} from '../shared/contract-shape.js';
+} from '../shared/contract-shape';
 
 /**
  * The shared Meta Graph client used by the Instagram, Facebook Pages and Threads adapters.

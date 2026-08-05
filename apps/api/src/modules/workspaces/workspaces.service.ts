@@ -9,13 +9,13 @@ import type {
   MembershipView,
   Services,
   WorkspaceView,
-} from '../../application/port.js';
-import { SERVICES } from '../../application/tokens.js';
+} from '../../application/port';
+import { SERVICES } from '../../application/tokens';
 import type {
   CreateWorkspaceInput,
   InviteMemberInput,
   UpdateWorkspaceInput,
-} from './workspaces.schemas.js';
+} from './workspaces.schemas';
 
 /**
  * Transport-level delegation for workspaces, members and invitations.

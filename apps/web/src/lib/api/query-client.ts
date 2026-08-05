@@ -9,7 +9,7 @@
 
 import { QueryClient, type QueryClientConfig } from '@tanstack/react-query';
 
-import { ApiError } from './error.js';
+import { ApiError } from './error';
 
 const MAX_RETRIES = 2;
 

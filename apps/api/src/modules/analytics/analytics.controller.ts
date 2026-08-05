@@ -1,17 +1,17 @@
 import { Body, Controller, Get, HttpCode, Param, Post, Query } from '@nestjs/common';
 import type { MetricObservation, Paginated } from '@relay/contracts';
 
-import type { ActorContext, ComparisonReport, ExperimentView } from '../../application/port.js';
-import { Actor, Idempotent, RequireScope } from '../../common/decorators.js';
-import { cursorQuerySchema } from '../../common/pagination.js';
-import { receiptIdSchema } from '../../common/schemas.js';
-import { parseBody, parseParams, parseQuery } from '../../common/zod.js';
+import type { ActorContext, ComparisonReport, ExperimentView } from '../../application/port';
+import { Actor, Idempotent, RequireScope } from '../../common/decorators';
+import { cursorQuerySchema } from '../../common/pagination';
+import { receiptIdSchema } from '../../common/schemas';
+import { parseBody, parseParams, parseQuery } from '../../common/zod';
 import {
   accountMetricsQuerySchema,
   compareRequestSchema,
   createExperimentSchema,
-} from './analytics.schemas.js';
-import { AnalyticsService } from './analytics.service.js';
+} from './analytics.schemas';
+import { AnalyticsService } from './analytics.service';
 
 /**
  * Analytics and experiments.

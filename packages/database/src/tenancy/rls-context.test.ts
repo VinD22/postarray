@@ -1,8 +1,8 @@
 import { describe, expect, it } from 'vitest';
 
-import { DatabaseError } from '../errors.js';
+import { DatabaseError } from '../errors';
 
-import { buildClaimsPayload, serviceRoleClaims } from './rls-context.js';
+import { buildClaimsPayload, serviceRoleClaims } from './rls-context';
 
 /**
  * The claim payload is the contract between this package and the SQL helpers in

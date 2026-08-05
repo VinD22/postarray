@@ -1,8 +1,8 @@
 import { describe, expect, it } from 'vitest';
 
-import { altTextResultSchema } from '../prompts/schemas.js';
-import type { ProviderRequest } from '../types.js';
-import { createEchoProvider, promptMarker } from './echo.js';
+import { altTextResultSchema } from '../prompts/schemas';
+import type { ProviderRequest } from '../types';
+import { createEchoProvider, promptMarker } from './echo';
 
 function request(promptId: string, jsonMode = true): ProviderRequest {
   return {

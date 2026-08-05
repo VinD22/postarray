@@ -1,17 +1,11 @@
 import { describe, expect, it } from 'vitest';
 
-import { TEST_CALL_CONTEXT, createTestGateway } from '../test-support.js';
-import { EN_EVAL_CASES, casesForLocale } from './dataset.js';
-import { formatReport, runSuite } from './harness.js';
-import {
-  groundingScorer,
-  harmScorer,
-  outputText,
-  verbosityScorer,
-  voiceScorer,
-} from './scorers.js';
-import { EVAL_DIMENSIONS, EVAL_GATES } from './types.js';
-import type { EvalCase } from './types.js';
+import { TEST_CALL_CONTEXT, createTestGateway } from '../test-support';
+import { EN_EVAL_CASES, casesForLocale } from './dataset';
+import { formatReport, runSuite } from './harness';
+import { groundingScorer, harmScorer, outputText, verbosityScorer, voiceScorer } from './scorers';
+import { EVAL_DIMENSIONS, EVAL_GATES } from './types';
+import type { EvalCase } from './types';
 
 const BASE_CASE: EvalCase = {
   id: 'unit',

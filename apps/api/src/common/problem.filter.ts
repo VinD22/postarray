@@ -16,9 +16,9 @@ import {
 import type { Logger } from '@relay/observability';
 import type { Request, Response } from 'express';
 
-import { LOGGER } from '../application/tokens.js';
-import { actionKeyFor, messageKeyFor } from './message-keys.js';
-import { relayState } from './request.types.js';
+import { LOGGER } from '../application/tokens';
+import { actionKeyFor, messageKeyFor } from './message-keys';
+import { relayState } from './request.types';
 
 /**
  * The single exit for every failure in the API, rendered as RFC 9457

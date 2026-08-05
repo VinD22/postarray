@@ -1,12 +1,12 @@
 import { Body, Controller, Get, HttpCode, Param, Post } from '@nestjs/common';
 import type { PublicationReceipt, PublishJob } from '@relay/contracts';
 
-import type { ActorContext } from '../../application/port.js';
-import { Actor, Idempotent, RateLimit, RequireScope } from '../../common/decorators.js';
-import { publishJobIdSchema, receiptIdSchema } from '../../common/schemas.js';
-import { parseBody, parseParams } from '../../common/zod.js';
-import { publishNowSchema, retryTargetSchema } from './publishing.schemas.js';
-import { PublishingService } from './publishing.service.js';
+import type { ActorContext } from '../../application/port';
+import { Actor, Idempotent, RateLimit, RequireScope } from '../../common/decorators';
+import { publishJobIdSchema, receiptIdSchema } from '../../common/schemas';
+import { parseBody, parseParams } from '../../common/zod';
+import { publishNowSchema, retryTargetSchema } from './publishing.schemas';
+import { PublishingService } from './publishing.service';
 
 /**
  * Immediate publishing, job status and publication receipts.

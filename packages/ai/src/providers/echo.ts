@@ -1,12 +1,12 @@
-import { PROMPT_REGISTRY } from '../prompts/registry.js';
-import { PROMPT_IDS } from '../prompts/types.js';
-import type { PromptId } from '../prompts/types.js';
+import { PROMPT_REGISTRY } from '../prompts/registry';
+import { PROMPT_IDS } from '../prompts/types';
+import type { PromptId } from '../prompts/types';
 import type {
   AiProviderAdapter,
   ProviderRequest,
   ProviderResponse,
   ProviderStreamChunk,
-} from '../types.js';
+} from '../types';
 
 /**
  * The offline provider.

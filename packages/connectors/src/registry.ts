@@ -23,8 +23,8 @@ import {
   type ProviderIdentity,
   type SocialConnector,
   providerIdentitySchema,
-} from './contract.js';
-import { type Clock, epochMillisecondsOf, systemClock } from './ports.js';
+} from './contract';
+import { type Clock, epochMillisecondsOf, systemClock } from './ports';
 
 /**
  * The connector registry.

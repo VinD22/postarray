@@ -1,4 +1,4 @@
-export { createThreadsConnector, findRecentThreadsPost } from './connector.js';
+export { createThreadsConnector, findRecentThreadsPost } from './connector';
 export {
   THREADS_CAPABILITY_REVISION,
   THREADS_CAROUSEL_MAX,
@@ -7,5 +7,5 @@ export {
   THREADS_MAX_THREAD_PARTS,
   buildThreadsCapabilities,
   type ThreadsCapabilityInput,
-} from './capabilities.js';
-export { THREADS_ACCOUNT_METRICS, THREADS_MEDIA_FIELDS, THREADS_POST_METRICS } from './metrics.js';
+} from './capabilities';
+export { THREADS_ACCOUNT_METRICS, THREADS_MEDIA_FIELDS, THREADS_POST_METRICS } from './metrics';

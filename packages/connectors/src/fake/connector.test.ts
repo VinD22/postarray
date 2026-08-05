@@ -2,9 +2,9 @@ import { describe, expect, it } from 'vitest';
 
 import { capabilitySnapshotSchema, metricObservationSchema } from '@relay/contracts';
 
-import { ProviderCallError } from '../errors.js';
-import { fixedClock, recordingSleeper } from '../ports.js';
-import { type FakeConnector, createFakeConnector } from './connector.js';
+import { ProviderCallError } from '../errors';
+import { fixedClock, recordingSleeper } from '../ports';
+import { type FakeConnector, createFakeConnector } from './connector';
 import {
   fakeConnectionRef,
   fakeDraft,
@@ -15,8 +15,8 @@ import {
   fakeStatusRequest,
   fakeThreadItem,
   fakeVideoAsset,
-} from './fixtures.js';
-import { FakeProviderState } from './state.js';
+} from './fixtures';
+import { FakeProviderState } from './state';
 
 const clock = fixedClock('2026-08-04T12:00:00.000Z');
 

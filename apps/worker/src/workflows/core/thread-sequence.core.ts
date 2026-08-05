@@ -1,15 +1,15 @@
 import { type PublishState } from '@relay/contracts';
 
-import type { WorkerActivities } from '../../activities/types.js';
-import { MESSAGE_KEYS } from '../../messages.js';
-import { stableSort, toIsoInstant } from '../../runtime/deterministic.js';
-import type { ChildWorkflowDescriptor, WorkflowRuntime } from '../../runtime/types.js';
+import type { WorkerActivities } from '../../activities/types';
+import { MESSAGE_KEYS } from '../../messages';
+import { stableSort, toIsoInstant } from '../../runtime/deterministic';
+import type { ChildWorkflowDescriptor, WorkflowRuntime } from '../../runtime/types';
 import type {
   ThreadSequenceItemOutcome,
   ThreadSequenceWorkflowInput,
   ThreadSequenceWorkflowOutput,
-} from '../inputs.js';
-import { parseThreadSequenceOutput } from '../outputs.schema.js';
+} from '../inputs';
+import { parseThreadSequenceOutput } from '../outputs.schema';
 
 /**
  * Ordered comments and thread parts, each with its own delay.

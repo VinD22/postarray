@@ -6,9 +6,9 @@
  * password", and the client never branches on anything finer.
  */
 
-import { call } from '../call.js';
-import { demoOnboardingState, demoSession } from '../fixtures.js';
-import type { OnboardingStateView, OnboardingUseCase, SessionView } from '../types.js';
+import { call } from '../call';
+import { demoOnboardingState, demoSession } from '../fixtures';
+import type { OnboardingStateView, OnboardingUseCase, SessionView } from '../types';
 
 export type SocialAuthProvider = 'google' | 'facebook';
 

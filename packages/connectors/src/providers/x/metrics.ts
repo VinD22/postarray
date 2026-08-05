@@ -1,4 +1,4 @@
-import type { MetricFieldMapping } from '../shared/metrics.js';
+import type { MetricFieldMapping } from '../shared/metrics';
 
 /**
  * X metric mapping.

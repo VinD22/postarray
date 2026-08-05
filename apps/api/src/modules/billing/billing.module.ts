@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 
-import { BillingController, PolarWebhookController } from './billing.controller.js';
-import { BillingService } from './billing.service.js';
+import { BillingController, PolarWebhookController } from './billing.controller';
+import { BillingService } from './billing.service';
 
 @Module({
   controllers: [BillingController, PolarWebhookController],

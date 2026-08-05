@@ -6,9 +6,9 @@
  * lists, because a derived queue silently misses the cases nobody thought of.
  */
 
-import { call } from '../call.js';
-import { demoActionItems, page } from '../fixtures.js';
-import type { ActionItemCategory, ActionItemView, Paginated } from '../types.js';
+import { call } from '../call';
+import { demoActionItems, page } from '../fixtures';
+import type { ActionItemCategory, ActionItemView, Paginated } from '../types';
 
 export type ActionCenterQuery = {
   readonly category?: ActionItemCategory;

@@ -3,8 +3,8 @@ import { Reflector } from '@nestjs/core';
 import { ScopeInsufficientError, missingScopes, type Scope } from '@relay/contracts';
 import type { Request } from 'express';
 
-import { PUBLIC_ROUTE_KEY, REQUIRED_SCOPES_KEY } from '../common/decorators.js';
-import { relayState } from '../common/request.types.js';
+import { PUBLIC_ROUTE_KEY, REQUIRED_SCOPES_KEY } from '../common/decorators';
+import { relayState } from '../common/request.types';
 
 /**
  * Declarative scope enforcement, driven entirely by `@RequireScope`.

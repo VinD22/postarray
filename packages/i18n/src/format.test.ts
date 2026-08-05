@@ -20,7 +20,7 @@ import {
   getTimeZoneOffsetMinutes,
   isValidTimeZone,
   toDate,
-} from './format.js';
+} from './format';
 
 const NEW_YORK = 'America/New_York';
 const BERLIN = 'Europe/Berlin';

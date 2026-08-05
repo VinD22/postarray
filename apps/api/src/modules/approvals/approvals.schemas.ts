@@ -1,7 +1,7 @@
 import { z } from 'zod';
 
-import { cursorQuerySchema } from '../../common/pagination.js';
-import { contentItemIdSchema, noteSchema, userIdSchema } from '../../common/schemas.js';
+import { cursorQuerySchema } from '../../common/pagination';
+import { contentItemIdSchema, noteSchema, userIdSchema } from '../../common/schemas';
 
 /**
  * Approval payloads.

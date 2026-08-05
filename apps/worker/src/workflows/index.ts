@@ -11,16 +11,16 @@
  * deterministic workflow sandbox.
  */
 
-export { publishPostWorkflow } from './publish-post.workflow.js';
-export { publishTargetWorkflow } from './publish-target.workflow.js';
-export { threadSequenceWorkflow } from './thread-sequence.workflow.js';
-export { repeatPostWorkflow } from './repeat-post.workflow.js';
-export { analyticsSyncWorkflow } from './analytics-sync.workflow.js';
-export { tokenRefreshWorkflow } from './token-refresh.workflow.js';
-export { rssPollWorkflow } from './rss-poll.workflow.js';
-export { automationRuleWorkflow } from './automation-rule.workflow.js';
-export { webhookDeliveryWorkflow } from './webhook-delivery.workflow.js';
-export { dataDeletionWorkflow } from './data-deletion.workflow.js';
+export { publishPostWorkflow } from './publish-post.workflow';
+export { publishTargetWorkflow } from './publish-target.workflow';
+export { threadSequenceWorkflow } from './thread-sequence.workflow';
+export { repeatPostWorkflow } from './repeat-post.workflow';
+export { analyticsSyncWorkflow } from './analytics-sync.workflow';
+export { tokenRefreshWorkflow } from './token-refresh.workflow';
+export { rssPollWorkflow } from './rss-poll.workflow';
+export { automationRuleWorkflow } from './automation-rule.workflow';
+export { webhookDeliveryWorkflow } from './webhook-delivery.workflow';
+export { dataDeletionWorkflow } from './data-deletion.workflow';
 
 export {
   cancelSignal,
@@ -30,4 +30,4 @@ export {
   rescheduleSignal,
   resumeSignal,
   statusQuery,
-} from './temporal-runtime.js';
+} from './temporal-runtime';

@@ -4,16 +4,16 @@ import type { RelayConfig } from '@relay/config';
 import { AuthRequiredError, ForbiddenError } from '@relay/contracts';
 import type { Request } from 'express';
 
-import type { Clock } from '../application/port.js';
-import { CLOCK, RELAY_CONFIG } from '../application/tokens.js';
-import { PUBLIC_ROUTE_KEY } from '../common/decorators.js';
-import { SESSION_COOKIE, parseCookies } from '../common/cookies.js';
-import { epochMillis } from '../common/instant.js';
-import { relayState, type Principal } from '../common/request.types.js';
-import { CredentialDirectory, tokenLookupHash } from '../security/credential-directory.js';
-import { CREDENTIAL_PREFIXES, parseCredential, secretMatches } from '../security/credentials.js';
-import { clientFingerprint } from '../security/csrf.js';
-import { ipInAllowlist } from './ip-allowlist.js';
+import type { Clock } from '../application/port';
+import { CLOCK, RELAY_CONFIG } from '../application/tokens';
+import { PUBLIC_ROUTE_KEY } from '../common/decorators';
+import { SESSION_COOKIE, parseCookies } from '../common/cookies';
+import { epochMillis } from '../common/instant';
+import { relayState, type Principal } from '../common/request.types';
+import { CredentialDirectory, tokenLookupHash } from '../security/credential-directory';
+import { CREDENTIAL_PREFIXES, parseCredential, secretMatches } from '../security/credentials';
+import { clientFingerprint } from '../security/csrf';
+import { ipInAllowlist } from './ip-allowlist';
 
 /**
  * Edge authentication: session cookie, bearer access token, or API key.

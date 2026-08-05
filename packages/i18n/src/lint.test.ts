@@ -5,9 +5,9 @@ import {
   PUBLISH_STATES,
   RELAY_ERROR_CODES,
   VALIDATION_ISSUE_CODES,
-} from './codes.js';
-import { assertCatalogValid, formatLintResult, lintCatalog } from './lint.js';
-import { en } from './messages/en/index.js';
+} from './codes';
+import { assertCatalogValid, formatLintResult, lintCatalog } from './lint';
+import { en } from './messages/en/index';
 
 const english = en as Record<string, string>;
 

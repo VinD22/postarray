@@ -7,7 +7,7 @@ import {
   shutdownTracing,
   startTracing,
   withSpan,
-} from './tracing.js';
+} from './tracing';
 
 afterEach(async () => {
   await shutdownTracing();

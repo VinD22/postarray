@@ -1,8 +1,8 @@
 import { describe, expect, it } from 'vitest';
 
-import { en } from './messages/en/index.js';
-import type { PartialCatalog } from './messages/index.js';
-import { createCollectingReporter, createTranslator, scopeTranslator } from './translate.js';
+import { en } from './messages/en/index';
+import type { PartialCatalog } from './messages/index';
+import { createCollectingReporter, createTranslator, scopeTranslator } from './translate';
 
 const english = en as PartialCatalog;
 

@@ -1,6 +1,6 @@
 import type { Services } from '@relay/application';
 
-import type { RelayServicePort } from './ports.js';
+import type { RelayServicePort } from './ports';
 
 /**
  * The single adapter between `@relay/application` and this server's port.

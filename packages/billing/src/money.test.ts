@@ -11,7 +11,7 @@ import {
   money,
   sumMoney,
   unitsToMicro,
-} from './money.js';
+} from './money';
 
 describe('money', () => {
   it('refuses a non integer minor amount', () => {

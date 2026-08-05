@@ -2,8 +2,8 @@ import { describe, expect, it } from 'vitest';
 
 import { RelayError } from '@relay/contracts';
 
-import type { VerifiedSubscription } from './entitlements.js';
-import { POLAR_TRIAL_REMINDER_DAY, RELAY_TRIAL_SUMMARY_DAY, TRIAL_DAYS } from './products.js';
+import type { VerifiedSubscription } from './entitlements';
+import { POLAR_TRIAL_REMINDER_DAY, RELAY_TRIAL_SUMMARY_DAY, TRIAL_DAYS } from './products';
 import {
   TRIAL_DUE_TODAY_MINOR,
   assertTrialConfiguration,
@@ -11,7 +11,7 @@ import {
   computeTrialSchedule,
   polarReminderAlignmentIsValid,
   trialStatus,
-} from './trial.js';
+} from './trial';
 
 const CONFIRMED_AT = '2026-08-04T14:00:00.000Z';
 

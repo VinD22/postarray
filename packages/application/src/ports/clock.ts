@@ -1,4 +1,4 @@
-import type { Clock } from '../types.js';
+import type { Clock } from '../types';
 
 /** The real clock. The only place in the product allowed to call `Date.now`. */
 export const systemClock: Clock = {

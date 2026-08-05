@@ -17,9 +17,9 @@ import { DefinitionList } from '@relay/design-system/patterns';
 import { useTranslations } from '@relay/i18n/react';
 import type { GrowthPlan } from '@relay/contracts';
 
-import { SettingsPanel } from '../../settings/components/section.js';
-import { useFormatters } from '../../settings/lib/formatters.js';
-import { ItemActions, type DismissReason } from '../item-actions.js';
+import { SettingsPanel } from '../../settings/components/section';
+import { useFormatters } from '../../settings/lib/formatters';
+import { ItemActions, type DismissReason } from '../item-actions';
 
 export interface FourWeekTabProps {
   plan: GrowthPlan;

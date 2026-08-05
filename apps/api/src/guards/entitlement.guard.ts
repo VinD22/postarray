@@ -3,10 +3,10 @@ import { Reflector } from '@nestjs/core';
 import { EntitlementRequiredError } from '@relay/contracts';
 import type { Request } from 'express';
 
-import type { Services } from '../application/port.js';
-import { SERVICES } from '../application/tokens.js';
-import { PUBLIC_ROUTE_KEY, REQUIRED_ENTITLEMENT_KEY } from '../common/decorators.js';
-import { relayState } from '../common/request.types.js';
+import type { Services } from '../application/port';
+import { SERVICES } from '../application/tokens';
+import { PUBLIC_ROUTE_KEY, REQUIRED_ENTITLEMENT_KEY } from '../common/decorators';
+import { relayState } from '../common/request.types';
 
 /**
  * Plan entitlement enforcement.

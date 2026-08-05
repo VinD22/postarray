@@ -1,6 +1,6 @@
 import type { Logger } from '@relay/observability';
 
-import type { MailMessage, MailerPort } from '../types.js';
+import type { MailMessage, MailerPort } from '../types';
 
 /**
  * The default mailer writes to the logger.

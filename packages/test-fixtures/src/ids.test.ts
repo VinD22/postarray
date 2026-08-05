@@ -13,7 +13,7 @@ import {
   fixtureId,
   fixtureUrl,
   isFixtureId,
-} from './ids.js';
+} from './ids';
 
 describe('fixture identifiers', () => {
   it('produces ids that the contracts parser accepts', () => {

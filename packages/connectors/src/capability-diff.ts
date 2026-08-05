@@ -6,9 +6,9 @@ import {
   RelayError,
 } from '@relay/contracts';
 
-import type { ProviderDraft } from './contract.js';
-import { type RemediationCode } from './errors.js';
-import { type Clock, epochMillisecondsOf, systemClock } from './ports.js';
+import type { ProviderDraft } from './contract';
+import { type RemediationCode } from './errors';
+import { type Clock, epochMillisecondsOf, systemClock } from './ports';
 
 /**
  * Approval drift.

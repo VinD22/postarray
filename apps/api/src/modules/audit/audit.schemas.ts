@@ -1,8 +1,8 @@
 import { isoInstantSchema } from '@relay/contracts';
 import { z } from 'zod';
 
-import { cursorQuerySchema } from '../../common/pagination.js';
-import { userIdSchema } from '../../common/schemas.js';
+import { cursorQuerySchema } from '../../common/pagination';
+import { userIdSchema } from '../../common/schemas';
 
 /**
  * Audit log queries.

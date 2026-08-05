@@ -6,7 +6,7 @@ import {
   coarsenAddress,
   dedupeKeysMatch,
   windowStart,
-} from './dedupe.js';
+} from './dedupe';
 
 const HASH_KEY = 'test-hash-key-not-a-secret';
 const BASE = Date.parse('2026-08-04T12:34:56.000Z');

@@ -1,10 +1,10 @@
 import { Controller, Get, Inject } from '@nestjs/common';
 import { ALL_SCOPES } from '@relay/contracts';
 
-import { Public } from '../common/decorators.js';
-import { CODE_CHALLENGE_METHOD } from './pkce.js';
-import { OAuthProviderService } from './oauth-provider.service.js';
-import { RELAY_CONFIG } from '../application/tokens.js';
+import { Public } from '../common/decorators';
+import { CODE_CHALLENGE_METHOD } from './pkce';
+import { OAuthProviderService } from './oauth-provider.service';
+import { RELAY_CONFIG } from '../application/tokens';
 import type { RelayConfig } from '@relay/config';
 
 /**

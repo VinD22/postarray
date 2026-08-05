@@ -4,8 +4,8 @@ import type { ReactNode } from 'react';
 import { CopyableSecret } from '@relay/design-system/patterns';
 import { useTranslations } from '@relay/i18n/react';
 
-import { useFormatters } from '../../settings/lib/formatters.js';
-import type { OneTimeCredential } from '../../settings/lib/view-models.js';
+import { useFormatters } from '../../settings/lib/formatters';
+import type { OneTimeCredential } from '../../settings/lib/view-models';
 
 export interface CredentialPanelProps {
   credential: OneTimeCredential;

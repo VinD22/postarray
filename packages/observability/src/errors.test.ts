@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import { classifyProviderError, isRetryableErrorClass } from './errors.js';
+import { classifyProviderError, isRetryableErrorClass } from './errors';
 
 describe('classifyProviderError: generic HTTP rules', () => {
   it('treats 429 as transient', () => {

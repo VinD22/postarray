@@ -41,8 +41,8 @@ import {
   providerDestinationSchema,
   publishResultSchema,
   publishStatusSchema,
-} from '../contract.js';
-import { ProviderCallError, classifyProviderError } from '../errors.js';
+} from '../contract';
+import { ProviderCallError, classifyProviderError } from '../errors';
 import {
   type Clock,
   type ConnectorLogger,
@@ -51,11 +51,11 @@ import {
   noopLogger,
   realSleeper,
   systemClock,
-} from '../ports.js';
-import { SecretValue } from '../vault.js';
-import { type FakeCapabilityOverrides, buildFakeCapabilitySnapshot } from './capabilities.js';
-import { FakeProviderState, type FakeFailureMode } from './state.js';
-import { buildFakePreview, validateFakeDraft } from './validate.js';
+} from '../ports';
+import { SecretValue } from '../vault';
+import { type FakeCapabilityOverrides, buildFakeCapabilitySnapshot } from './capabilities';
+import { FakeProviderState, type FakeFailureMode } from './state';
+import { buildFakePreview, validateFakeDraft } from './validate';
 
 /**
  * The fake provider.

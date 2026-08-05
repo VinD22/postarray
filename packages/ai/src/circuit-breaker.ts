@@ -1,4 +1,4 @@
-import type { Clock } from './clock.js';
+import type { Clock } from './clock';
 
 /**
  * A small circuit breaker in front of the provider.

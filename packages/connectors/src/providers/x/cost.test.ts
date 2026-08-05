@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 
-import { testConnection, testDraft, testThreadItem } from '../shared/testing.js';
-import { buildXCapabilities } from './capabilities.js';
+import { testConnection, testDraft, testThreadItem } from '../shared/testing';
+import { buildXCapabilities } from './capabilities';
 import {
   LINK_HEAVY_OPERATION_THRESHOLD,
   X_MICRO_PER_CREATE,
@@ -9,7 +9,7 @@ import {
   estimateCost,
   isLinkHeavy,
   microToMinor,
-} from './cost.js';
+} from './cost';
 
 const connection = testConnection({
   provider: 'x',

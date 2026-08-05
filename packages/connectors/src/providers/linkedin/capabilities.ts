@@ -7,15 +7,15 @@ import {
   buildSnapshot,
   contentKinds,
   mediaBytes,
-} from '../shared/capability.js';
-import type { ProviderConnection } from '../shared/contract-shape.js';
-import { normalizedNames } from '../shared/metrics.js';
-import { capabilityVersion, reviewApproved } from '../shared/verification.js';
+} from '../shared/capability';
+import type { ProviderConnection } from '../shared/contract-shape';
+import { normalizedNames } from '../shared/metrics';
+import { capabilityVersion, reviewApproved } from '../shared/verification';
 import {
   LINKEDIN_ORGANIZATION_ACCOUNT_METRICS,
   LINKEDIN_ORGANIZATION_POST_METRICS,
   LINKEDIN_SOCIAL_METRICS,
-} from './metrics.js';
+} from './metrics';
 
 /**
  * LinkedIn capability snapshot.

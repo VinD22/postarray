@@ -2,8 +2,8 @@ import { describe, expect, it } from 'vitest';
 
 import { RelayError } from '@relay/contracts';
 
-import { capturingLogger, fixedClock } from './ports.js';
-import { sanitizeProviderPayload } from './sanitize.js';
+import { capturingLogger, fixedClock } from './ports';
+import { sanitizeProviderPayload } from './sanitize';
 import {
   type CredentialAad,
   CredentialVault,
@@ -15,7 +15,7 @@ import {
   encryptedCredentialSchema,
   generateLocalMasterKey,
   leaseSecret,
-} from './vault.js';
+} from './vault';
 
 const TOKEN = 'provider-access-token-do-not-log-me';
 

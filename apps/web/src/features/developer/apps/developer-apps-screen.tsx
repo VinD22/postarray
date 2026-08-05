@@ -31,16 +31,16 @@ import {
 } from '@relay/design-system/patterns';
 import { useTranslations } from '@relay/i18n/react';
 
-import { SettingsPanel, SettingsStack } from '../../settings/components/section.js';
-import { AsyncBoundary } from '../../settings/lib/async-boundary.js';
-import { oauthAppsGateway, workspaceGateway } from '../../settings/lib/gateway.js';
-import { useFormatters } from '../../settings/lib/formatters.js';
-import { settingsKey, useWorkspaceId } from '../../settings/lib/keys.js';
-import { useSettingsMutation } from '../../settings/lib/use-settings-mutation.js';
-import type { OAuthAppView, OneTimeCredential } from '../../settings/lib/view-models.js';
-import { CredentialPanel } from '../components/credential-panel.js';
-import { AppForm, type AppFormValue } from './app-form.js';
-import { ConsentPreview } from './consent-preview.js';
+import { SettingsPanel, SettingsStack } from '../../settings/components/section';
+import { AsyncBoundary } from '../../settings/lib/async-boundary';
+import { oauthAppsGateway, workspaceGateway } from '../../settings/lib/gateway';
+import { useFormatters } from '../../settings/lib/formatters';
+import { settingsKey, useWorkspaceId } from '../../settings/lib/keys';
+import { useSettingsMutation } from '../../settings/lib/use-settings-mutation';
+import type { OAuthAppView, OneTimeCredential } from '../../settings/lib/view-models';
+import { CredentialPanel } from '../components/credential-panel';
+import { AppForm, type AppFormValue } from './app-form';
+import { ConsentPreview } from './consent-preview';
 
 export function DeveloperAppsScreen(): ReactNode {
   const t = useTranslations();

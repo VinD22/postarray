@@ -19,7 +19,7 @@ import {
   Upload,
   XOctagon,
 } from 'lucide-react';
-import { cn } from '../utils/cn.js';
+import { cn } from '../utils/cn';
 
 /**
  * The fifteen publish states.

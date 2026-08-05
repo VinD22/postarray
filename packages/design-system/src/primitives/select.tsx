@@ -3,8 +3,8 @@
 import { forwardRef, type ComponentPropsWithoutRef, type ReactNode } from 'react';
 import { Select as SelectPrimitive } from 'radix-ui';
 import { Check, ChevronDown, ChevronUp } from 'lucide-react';
-import { cn } from '../utils/cn.js';
-import { focusRing, transitionBase } from '../utils/style-constants.js';
+import { cn } from '../utils/cn';
+import { focusRing, transitionBase } from '../utils/style-constants';
 
 /**
  * A select for a short, known list: time zone offset, privacy level, page

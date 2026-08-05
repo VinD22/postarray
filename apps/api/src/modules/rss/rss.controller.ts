@@ -1,13 +1,13 @@
 import { Body, Controller, Delete, Get, HttpCode, Param, Patch, Post, Query } from '@nestjs/common';
 import type { Paginated } from '@relay/contracts';
 
-import type { ActorContext, FeedHealth, FeedPreview, FeedView } from '../../application/port.js';
-import { Actor, Idempotent, RateLimit, RequireScope } from '../../common/decorators.js';
-import { cursorQuerySchema } from '../../common/pagination.js';
-import { feedIdSchema } from '../../common/schemas.js';
-import { parseBody, parseParams, parseQuery } from '../../common/zod.js';
-import { createFeedSchema, updateFeedSchema, validateFeedSchema } from './rss.schemas.js';
-import { RssService } from './rss.service.js';
+import type { ActorContext, FeedHealth, FeedPreview, FeedView } from '../../application/port';
+import { Actor, Idempotent, RateLimit, RequireScope } from '../../common/decorators';
+import { cursorQuerySchema } from '../../common/pagination';
+import { feedIdSchema } from '../../common/schemas';
+import { parseBody, parseParams, parseQuery } from '../../common/zod';
+import { createFeedSchema, updateFeedSchema, validateFeedSchema } from './rss.schemas';
+import { RssService } from './rss.service';
 
 /**
  * RSS and Atom autoposting.

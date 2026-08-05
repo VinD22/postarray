@@ -1,6 +1,6 @@
 import { NotFoundError, emptyPage } from '@relay/contracts';
 
-import type { Services } from '../application/port.js';
+import type { Services } from '../application/port';
 
 /**
  * A complete `Services` implementation whose every method refuses.

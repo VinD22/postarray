@@ -6,7 +6,7 @@ import {
   parseHexColor,
   pickReadableForeground,
   relativeLuminance,
-} from './contrast.js';
+} from './contrast';
 import {
   darkTheme,
   documentedContrastPairs,
@@ -16,7 +16,7 @@ import {
   typeScale,
   type ContrastPair,
   type ThemeName,
-} from './tokens.js';
+} from './tokens';
 
 describe('contrastRatio', () => {
   it('returns 21 for black on white', () => {

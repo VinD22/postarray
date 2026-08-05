@@ -12,8 +12,8 @@ import {
 } from '@relay/design-system/patterns';
 import { useTranslations } from '@relay/i18n/react';
 
-import { describeApiError } from './api-error.js';
-import { useFormatters } from './formatters.js';
+import { describeApiError } from './api-error';
+import { useFormatters } from './formatters';
 
 export interface AsyncBoundaryProps {
   /** The name of the section, already translated. Used in every state. */

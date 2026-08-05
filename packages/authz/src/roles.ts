@@ -1,6 +1,6 @@
 import { ROLES, type Role } from '@relay/contracts';
 
-import { PERMISSIONS, type Permission } from './permissions.js';
+import { PERMISSIONS, type Permission } from './permissions';
 
 /**
  * The built-in role to permission matrix.

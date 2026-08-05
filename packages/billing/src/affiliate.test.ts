@@ -12,8 +12,8 @@ import {
   evaluateFraudTriggers,
   isWithinCommissionWindow,
   reverseCommission,
-} from './affiliate.js';
-import type { CommissionLedgerEntry, ReferralAttribution } from './affiliate.js';
+} from './affiliate';
+import type { CommissionLedgerEntry, ReferralAttribution } from './affiliate';
 
 const SIGNUP_AT = '2026-08-04T14:00:00.000Z';
 const FIRST_CHARGE_AT = '2026-08-11T14:00:00.000Z';

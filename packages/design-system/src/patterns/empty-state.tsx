@@ -1,7 +1,7 @@
 'use client';
 
 import type { ReactNode } from 'react';
-import { cn } from '../utils/cn.js';
+import { cn } from '../utils/cn';
 
 export interface EmptyStateProps {
   /** What is not here yet. A noun phrase, not an apology. */

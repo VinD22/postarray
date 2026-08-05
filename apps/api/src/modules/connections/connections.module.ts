@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
 
-import { ConnectionsController } from './connections.controller.js';
-import { ConnectionsService } from './connections.service.js';
-import { OAuthTransactionStore } from './oauth-transaction.store.js';
+import { ConnectionsController } from './connections.controller';
+import { ConnectionsService } from './connections.service';
+import { OAuthTransactionStore } from './oauth-transaction.store';
 
 @Module({
   controllers: [ConnectionsController],

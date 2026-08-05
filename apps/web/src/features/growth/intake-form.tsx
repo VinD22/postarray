@@ -5,8 +5,8 @@ import { Button, Checkbox, Field, Input, Textarea } from '@relay/design-system/p
 import { Notice } from '@relay/design-system/patterns';
 import { useTranslations } from '@relay/i18n/react';
 
-import { SettingsPanel } from '../settings/components/section.js';
-import { fromLines } from '../settings/lib/lines.js';
+import { SettingsPanel } from '../settings/components/section';
+import { fromLines } from '../settings/lib/lines';
 
 export interface IntakeValue {
   readonly productName: string;

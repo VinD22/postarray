@@ -1,8 +1,8 @@
 import { scopeSchema } from '@relay/contracts';
 import { z } from 'zod';
 
-import { cursorQuerySchema } from '../../common/pagination.js';
-import { shortTextSchema } from '../../common/schemas.js';
+import { cursorQuerySchema } from '../../common/pagination';
+import { shortTextSchema } from '../../common/schemas';
 
 /**
  * Developer OAuth application registration.

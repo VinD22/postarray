@@ -1,12 +1,12 @@
 import type { ProviderId } from '@relay/contracts';
 
-import { FAKE_BEARER_TOKEN, fakeExternalId } from '../ids.js';
+import { FAKE_BEARER_TOKEN, fakeExternalId } from '../ids';
 import {
   DEFERRED_ID_POLLS,
   SLOW_ACCEPT_DELAY_MS,
   SLOW_MEDIA_POLLS,
   SimulatedNetworkError,
-} from './types.js';
+} from './types';
 import type {
   FailureKind,
   ProviderSimulator,
@@ -15,7 +15,7 @@ import type {
   SimulatedRequest,
   SimulatedResponse,
   SimulatorMode,
-} from './types.js';
+} from './types';
 
 /**
  * The shared simulator engine.

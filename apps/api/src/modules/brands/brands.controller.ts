@@ -1,12 +1,12 @@
 import { Body, Controller, Delete, Get, HttpCode, Param, Patch, Post, Query } from '@nestjs/common';
 import type { Paginated } from '@relay/contracts';
 
-import type { ActorContext, BrandView } from '../../application/port.js';
-import { Actor, Idempotent, RequireScope } from '../../common/decorators.js';
-import { brandIdSchema } from '../../common/schemas.js';
-import { parseBody, parseParams, parseQuery } from '../../common/zod.js';
-import { createBrandSchema, listBrandsQuerySchema, updateBrandSchema } from './brands.schemas.js';
-import { BrandsService } from './brands.service.js';
+import type { ActorContext, BrandView } from '../../application/port';
+import { Actor, Idempotent, RequireScope } from '../../common/decorators';
+import { brandIdSchema } from '../../common/schemas';
+import { parseBody, parseParams, parseQuery } from '../../common/zod';
+import { createBrandSchema, listBrandsQuerySchema, updateBrandSchema } from './brands.schemas';
+import { BrandsService } from './brands.service';
 
 /** Brands: the posting identity a connection and a schedule belong to. */
 @Controller('v1/brands')

@@ -35,19 +35,19 @@ import {
   type RevokeRequest,
   type SocialConnector,
   type StatusRequest,
-} from '../shared/contract-shape.js';
-import { mapMetrics } from '../shared/metrics.js';
-import { buildPreview } from '../shared/preview.js';
-import { validateDraftShape } from '../shared/validate.js';
-import { SOURCE_VERIFIED_ON } from '../shared/verification.js';
+} from '../shared/contract-shape';
+import { mapMetrics } from '../shared/metrics';
+import { buildPreview } from '../shared/preview';
+import { validateDraftShape } from '../shared/validate';
+import { SOURCE_VERIFIED_ON } from '../shared/verification';
 import {
   accessTokenOf,
   errorSummary,
   providerOptionsOf,
   providerOptionsOfConnection,
-} from '../shared/access.js';
-import { NOT_IMPLEMENTED_FEATURES } from '../../contract.js';
-import type { FailedItem, PublishedItem } from '../../contract.js';
+} from '../shared/access';
+import { NOT_IMPLEMENTED_FEATURES } from '../../contract';
+import type { FailedItem, PublishedItem } from '../../contract';
 import {
   YOUTUBE_MAX_TAGS,
   YOUTUBE_MAX_TITLE_LENGTH,
@@ -55,13 +55,13 @@ import {
   buildYouTubeCapabilities,
   isUnaudited,
   youTubePrivacyOptions,
-} from './capabilities.js';
+} from './capabilities';
 import {
   YOUTUBE_ACCOUNT_METRICS,
   YOUTUBE_CHANNEL_PARTS,
   YOUTUBE_POST_METRICS,
   YOUTUBE_VIDEO_PARTS,
-} from './metrics.js';
+} from './metrics';
 import {
   googleErrorSchema,
   youTubeChannelListSchema,
@@ -69,7 +69,7 @@ import {
   youTubeProviderOptionsSchema,
   youTubeVideoListSchema,
   youTubeVideoSchema,
-} from './schemas.js';
+} from './schemas';
 
 /**
  * YouTube connector.

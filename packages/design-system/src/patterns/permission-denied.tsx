@@ -2,9 +2,9 @@
 
 import type { ReactNode } from 'react';
 import { Lock } from 'lucide-react';
-import { cn } from '../utils/cn.js';
-import { Notice } from './notice.js';
-import { Code } from '../primitives/code.js';
+import { cn } from '../utils/cn';
+import { Notice } from './notice';
+import { Code } from '../primitives/code';
 
 export interface PermissionDeniedProps {
   /** What the user tried to do and cannot. */

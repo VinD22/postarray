@@ -18,13 +18,13 @@ import { DefinitionList, Notice, PageHeader } from '@relay/design-system/pattern
 import { ACTIVE_LOCALES, ALL_LOCALES, toDate } from '@relay/i18n';
 import { useTranslations } from '@relay/i18n/react';
 
-import { AsyncBoundary } from '../lib/async-boundary.js';
-import { workspaceGateway, type WorkspaceLocalizationView } from '../lib/gateway.js';
-import { useFormatters } from '../lib/formatters.js';
-import { settingsKey, useWorkspaceId } from '../lib/keys.js';
-import { fromLines, toLines } from '../lib/lines.js';
-import { useSettingsMutation } from '../lib/use-settings-mutation.js';
-import { SettingRow, SettingsPanel, SettingsStack } from '../components/section.js';
+import { AsyncBoundary } from '../lib/async-boundary';
+import { workspaceGateway, type WorkspaceLocalizationView } from '../lib/gateway';
+import { useFormatters } from '../lib/formatters';
+import { settingsKey, useWorkspaceId } from '../lib/keys';
+import { fromLines, toLines } from '../lib/lines';
+import { useSettingsMutation } from '../lib/use-settings-mutation';
+import { SettingRow, SettingsPanel, SettingsStack } from '../components/section';
 
 /** A fixed sample instant, so the preview never depends on when it is read. */
 const PREVIEW_INSTANT = '2026-08-11T14:30:00.000Z';

@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 
 import { en } from '@relay/i18n';
 
-import { ACTION_KIND_DEFINITIONS, providerDotKey } from './action-center-catalog.js';
+import { ACTION_KIND_DEFINITIONS, providerDotKey } from './action-center-catalog';
 
 const KINDS = Object.keys(ACTION_KIND_DEFINITIONS);
 

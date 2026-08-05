@@ -1,7 +1,7 @@
 import { RelayError } from '@relay/contracts';
 import type { SubscriptionStatus } from '@relay/contracts';
 
-import { BILLING_MESSAGE_KEYS } from './messages.js';
+import { BILLING_MESSAGE_KEYS } from './messages';
 import {
   polarCheckoutSchema,
   polarCustomerSchema,
@@ -9,7 +9,7 @@ import {
   polarOrderSchema,
   polarProductSchema,
   polarSubscriptionSchema,
-} from './polar-schemas.js';
+} from './polar-schemas';
 import type {
   PolarBenefitGrant,
   PolarCheckout,
@@ -19,7 +19,7 @@ import type {
   PolarOrder,
   PolarProduct,
   PolarSubscription,
-} from './polar-schemas.js';
+} from './polar-schemas';
 import type {
   CancelSubscriptionInput,
   CreateCheckoutInput,
@@ -27,17 +27,17 @@ import type {
   ListSubscriptionsResult,
   PolarClient,
   UsageEventInput,
-} from './client.js';
-import { ANNUAL_PRICE_MINOR, MONTHLY_PRICE_MINOR, TRIAL_DAYS } from './products.js';
-import type { BillingInterval } from './products.js';
+} from './client';
+import { ANNUAL_PRICE_MINOR, MONTHLY_PRICE_MINOR, TRIAL_DAYS } from './products';
+import type { BillingInterval } from './products';
 import {
   WEBHOOK_HEADER_ID,
   WEBHOOK_HEADER_SIGNATURE,
   WEBHOOK_HEADER_TIMESTAMP,
   signWebhook,
-} from './signature.js';
-import type { Clock } from './time.js';
-import { addDays, addMonths, addYears, isAtOrAfter, nowIso } from './time.js';
+} from './signature';
+import type { Clock } from './time';
+import { addDays, addMonths, addYears, isAtOrAfter, nowIso } from './time';
 
 /**
  * The local Polar simulator.

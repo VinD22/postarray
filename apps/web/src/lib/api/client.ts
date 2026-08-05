@@ -6,9 +6,9 @@
  * mode are guaranteed for every call by construction.
  */
 
-import { actionCenterApi } from './resources/action-center.js';
-import { authApi, onboardingApi } from './resources/auth.js';
-import { connectionsApi } from './resources/connections.js';
+import { actionCenterApi } from './resources/action-center';
+import { authApi, onboardingApi } from './resources/auth';
+import { connectionsApi } from './resources/connections';
 import {
   approvalsApi,
   contentApi,
@@ -16,7 +16,7 @@ import {
   receiptsApi,
   schedulingApi,
   validationApi,
-} from './resources/content.js';
+} from './resources/content';
 import {
   auditApi,
   billingApi,
@@ -25,16 +25,16 @@ import {
   membersApi,
   sessionApi,
   workspacesApi,
-} from './resources/core.js';
-import { analyticsApi, growthApi, shortLinksApi } from './resources/insights.js';
-import { mediaApi } from './resources/media.js';
+} from './resources/core';
+import { analyticsApi, growthApi, shortLinksApi } from './resources/insights';
+import { mediaApi } from './resources/media';
 import {
   apiKeysApi,
   automationRulesApi,
   oauthAppsApi,
   rssApi,
   webhooksApi,
-} from './resources/platform.js';
+} from './resources/platform';
 
 export const api = {
   auth: authApi,

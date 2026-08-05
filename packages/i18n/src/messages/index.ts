@@ -1,5 +1,5 @@
-import { en } from './en/index.js';
-import type { EnglishCatalog, MessageKey } from './en/index.js';
+import { en } from './en/index';
+import type { EnglishCatalog, MessageKey } from './en/index';
 
 export { en };
 export type { EnglishCatalog, MessageKey };

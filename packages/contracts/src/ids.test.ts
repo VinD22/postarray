@@ -15,7 +15,7 @@ import {
   parseId,
   resetIdGeneratorState,
   safeParseId,
-} from './ids.js';
+} from './ids';
 
 afterEach(() => {
   vi.useRealTimers();

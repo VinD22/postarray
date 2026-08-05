@@ -10,9 +10,9 @@ import {
   SECRET_PATTERNS,
   TESTIMONIAL_PATTERNS,
   URL_PATTERN,
-} from './patterns.js';
-import { aiPolicyBlockedError } from './errors.js';
-import type { UntrustedSource } from './types.js';
+} from './patterns';
+import { aiPolicyBlockedError } from './errors';
+import type { UntrustedSource } from './types';
 
 /**
  * Guardrails.

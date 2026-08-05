@@ -1,17 +1,17 @@
-import { JSON_OUTPUT_RULE } from './types.js';
-import type { PromptModule } from './types.js';
+import { JSON_OUTPUT_RULE } from './types';
+import type { PromptModule } from './types';
 import {
   accessibilityCheckResultSchema,
   claimCheckResultSchema,
   duplicateCheckResultSchema,
   platformFitCheckResultSchema,
-} from './schemas.js';
+} from './schemas';
 import type {
   AccessibilityCheckResult,
   ClaimCheckResult,
   DuplicateCheckResult,
   PlatformFitCheckResult,
-} from './schemas.js';
+} from './schemas';
 
 /**
  * Review prompts. Every one of these degrades to a visible failure rather than

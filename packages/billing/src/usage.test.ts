@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import { microToMinor } from './money.js';
+import { microToMinor } from './money';
 import {
   DEFAULT_SPEND_CONTROLS,
   FORBIDDEN_METER_NAMES,
@@ -19,8 +19,8 @@ import {
   toPolarUsageEvents,
   usageMeterName,
   xPostOperation,
-} from './usage.js';
-import type { UsageRecord } from './usage.js';
+} from './usage';
+import type { UsageRecord } from './usage';
 
 const NOW = '2026-08-10T12:00:00.000Z';
 

@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import { PROMPT_IDS, PROMPT_VERSION_PATTERN } from './types.js';
+import { PROMPT_IDS, PROMPT_VERSION_PATTERN } from './types';
 import {
   PROMPT_REGISTRY,
   getPrompt,
@@ -8,7 +8,7 @@ import {
   listPrompts,
   promptProvenance,
   validateRegistry,
-} from './registry.js';
+} from './registry';
 
 describe('prompt registry', () => {
   it('is structurally valid', () => {

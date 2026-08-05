@@ -3,9 +3,9 @@ import { z } from 'zod';
 import { providerIdSchema } from '@relay/contracts';
 import type { ProviderId } from '@relay/contracts';
 
-import type { PolarClient, UsageEventInput } from './client.js';
-import { USD, formatMicro, microToMinor, unitsToMinor } from './money.js';
-import { addDays, differenceDays, isAfter, isAtOrAfter } from './time.js';
+import type { PolarClient, UsageEventInput } from './client';
+import { USD, formatMicro, microToMinor, unitsToMinor } from './money';
+import { addDays, differenceDays, isAfter, isAtOrAfter } from './time';
 
 /**
  * Provider usage metering.

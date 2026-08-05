@@ -1,14 +1,14 @@
 import { scheduleSpecSchema, type ValidationResult } from '@relay/contracts';
 
-import type { ActorContext, PublishingService, ServiceDeps, ValidationService } from '../types.js';
-import type { PublishJobView } from '../views.js';
+import type { ActorContext, PublishingService, ServiceDeps, ValidationService } from '../types';
+import type { PublishJobView } from '../views';
 
-import { recordAudit } from '../internal/audit.js';
-import { loadAggregate } from '../internal/content-store.js';
-import { invalid, notFound } from '../internal/errors.js';
-import { withIdempotency } from '../internal/idempotency.js';
-import { PUBLISH_JOB_SELECT, jobToView, runPublishPath } from '../internal/publish-path.js';
-import { authorized, guard } from '../internal/runtime.js';
+import { recordAudit } from '../internal/audit';
+import { loadAggregate } from '../internal/content-store';
+import { invalid, notFound } from '../internal/errors';
+import { withIdempotency } from '../internal/idempotency';
+import { PUBLISH_JOB_SELECT, jobToView, runPublishPath } from '../internal/publish-path';
+import { authorized, guard } from '../internal/runtime';
 
 /**
  * Immediate publishing.

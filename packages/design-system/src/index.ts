@@ -10,8 +10,8 @@
  * callers pass messages in from `@relay/i18n`.
  */
 
-export * from './tokens/index.js';
-export * from './primitives/index.js';
-export * from './patterns/index.js';
-export * from './hooks/index.js';
-export * from './utils/index.js';
+export * from './tokens/index';
+export * from './primitives/index';
+export * from './patterns/index';
+export * from './hooks/index';
+export * from './utils/index';

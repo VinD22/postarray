@@ -1,6 +1,6 @@
 import { SpanStatusCode, trace, type Attributes, type Span, type Tracer } from '@opentelemetry/api';
 
-import { getRootLogger } from './logger.js';
+import { getRootLogger } from './logger';
 
 /**
  * Tracing.

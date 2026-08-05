@@ -18,7 +18,7 @@ import type {
   WebhookEventName,
 } from '@relay/contracts';
 
-import { FIXTURE_NOW, fixtureId, fixtureUrl } from '../ids.js';
+import { FIXTURE_NOW, fixtureId, fixtureUrl } from '../ids';
 
 /** REST and webhook envelope fixtures. */
 

@@ -1,7 +1,7 @@
 'use client';
 
 import { forwardRef, type ComponentPropsWithoutRef } from 'react';
-import { cn } from '../utils/cn.js';
+import { cn } from '../utils/cn';
 
 export interface SkeletonProps extends ComponentPropsWithoutRef<'div'> {
   /** Matches a text step so the placeholder reserves the real line height. */

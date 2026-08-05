@@ -1,7 +1,7 @@
 import type { NormalizedMetricName } from '@relay/contracts';
 
-import { confounder, isComparable, isIncompatibleKind, kindFamily } from './types.js';
-import type { ComparablePost, Confounder, ObservedPost } from './types.js';
+import { confounder, isComparable, isIncompatibleKind, kindFamily } from './types';
+import type { ComparablePost, Confounder, ObservedPost } from './types';
 
 /**
  * The honest feedback engine.

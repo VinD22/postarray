@@ -1,4 +1,4 @@
-import { TOOL_NAMES } from './tools/index.js';
+import { TOOL_NAMES } from './tools/index';
 
 /**
  * Installable skills.

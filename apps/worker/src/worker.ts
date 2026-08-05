@@ -10,11 +10,11 @@ import {
 } from '@relay/observability';
 import { NativeConnection, Worker } from '@temporalio/worker';
 
-import { createActivities, type WorkerGateway } from './activities/index.js';
-import type { WorkerActivities } from './activities/types.js';
-import { InlineScheduler } from './fallback/inline-scheduler.js';
-import type { WorkflowLog } from './runtime/types.js';
-import { nowMs, nowIso } from './runtime/clock.js';
+import { createActivities, type WorkerGateway } from './activities/index';
+import type { WorkerActivities } from './activities/types';
+import { InlineScheduler } from './fallback/inline-scheduler';
+import type { WorkflowLog } from './runtime/types';
+import { nowMs, nowIso } from './runtime/clock';
 
 /**
  * Worker bootstrap.

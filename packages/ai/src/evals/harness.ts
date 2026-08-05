@@ -1,10 +1,10 @@
 import { RelayError } from '@relay/contracts';
 
-import { getPrompt } from '../prompts/registry.js';
-import type { AiCallContext, AiGateway } from '../types.js';
-import { ALL_SCORERS, outputText } from './scorers.js';
-import { EVAL_DIMENSIONS } from './types.js';
-import type { CaseResult, EvalCase, EvalDimension, Scorer, SuiteReport } from './types.js';
+import { getPrompt } from '../prompts/registry';
+import type { AiCallContext, AiGateway } from '../types';
+import { ALL_SCORERS, outputText } from './scorers';
+import { EVAL_DIMENSIONS } from './types';
+import type { CaseResult, EvalCase, EvalDimension, Scorer, SuiteReport } from './types';
 
 /**
  * The evaluation harness.

@@ -1,12 +1,7 @@
 import { z } from 'zod';
 
-import { cursorQuerySchema } from '../../common/pagination.js';
-import {
-  brandIdSchema,
-  feedIdSchema,
-  ruleIdSchema,
-  shortTextSchema,
-} from '../../common/schemas.js';
+import { cursorQuerySchema } from '../../common/pagination';
+import { brandIdSchema, feedIdSchema, ruleIdSchema, shortTextSchema } from '../../common/schemas';
 
 /**
  * RSS and Atom feed payloads.

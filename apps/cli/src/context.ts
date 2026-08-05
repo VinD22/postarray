@@ -1,15 +1,15 @@
 import { RelayError } from '@relay/contracts';
 
-import { createApiClient } from './api/client.js';
-import type { ApiClient, FetchLike } from './api/client.js';
-import { TOKEN_ENV_VAR } from './config/credentials.js';
-import type { CredentialStore, StoredCredential } from './config/credentials.js';
-import { resolveProfile } from './config/store.js';
-import type { CliConfig, ConfigStore, Profile } from './config/store.js';
-import { createFetchTransport } from './auth/oauth.js';
-import type { OAuthTransport } from './auth/oauth.js';
-import { processWriter } from './output.js';
-import type { Writer } from './output.js';
+import { createApiClient } from './api/client';
+import type { ApiClient, FetchLike } from './api/client';
+import { TOKEN_ENV_VAR } from './config/credentials';
+import type { CredentialStore, StoredCredential } from './config/credentials';
+import { resolveProfile } from './config/store';
+import type { CliConfig, ConfigStore, Profile } from './config/store';
+import { createFetchTransport } from './auth/oauth';
+import type { OAuthTransport } from './auth/oauth';
+import { processWriter } from './output';
+import type { Writer } from './output';
 
 /**
  * Everything a command needs, assembled once.

@@ -9,9 +9,9 @@
 import { describe, expect, it } from 'vitest';
 import { OVERRIDABLE_VARIANT_FIELDS, resolveVariant } from '@relay/contracts';
 
-import { composerReducer, newThreadItem } from './composer-reducer.js';
-import { initialComposerState, SEED_ACCOUNTS, SEED_BOOTSTRAP } from './seed.js';
-import type { ComposerState } from '../types.js';
+import { composerReducer, newThreadItem } from './composer-reducer';
+import { initialComposerState, SEED_ACCOUNTS, SEED_BOOTSTRAP } from './seed';
+import type { ComposerState } from '../types';
 
 const X = 'conn_seed_x_acme';
 const LINKEDIN = 'conn_seed_li_acme';

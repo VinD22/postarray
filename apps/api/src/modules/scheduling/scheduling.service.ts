@@ -1,9 +1,9 @@
 import { Inject, Injectable } from '@nestjs/common';
 import type { IanaTimeZone, IsoInstant, Paginated, PublishJob } from '@relay/contracts';
 
-import type { ActorContext, CalendarEntry, Services, ViewModel } from '../../application/port.js';
-import { SERVICES } from '../../application/tokens.js';
-import type { CalendarQueryInput } from './scheduling.schemas.js';
+import type { ActorContext, CalendarEntry, Services, ViewModel } from '../../application/port';
+import { SERVICES } from '../../application/tokens';
+import type { CalendarQueryInput } from './scheduling.schemas';
 
 /**
  * Transport-level delegation for scheduling and the calendar.

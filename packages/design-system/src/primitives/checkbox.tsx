@@ -3,8 +3,8 @@
 import { forwardRef, type ComponentPropsWithoutRef } from 'react';
 import { Checkbox as CheckboxPrimitive } from 'radix-ui';
 import { Check, Minus } from 'lucide-react';
-import { cn } from '../utils/cn.js';
-import { focusRing, transitionBase } from '../utils/style-constants.js';
+import { cn } from '../utils/cn';
+import { focusRing, transitionBase } from '../utils/style-constants';
 
 export type CheckboxProps = ComponentPropsWithoutRef<typeof CheckboxPrimitive.Root>;
 

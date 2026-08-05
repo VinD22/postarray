@@ -24,7 +24,7 @@ export {
   type NodeEnvironment,
   type PolarServer,
   type RelayEnv,
-} from './schema.js';
+} from './schema';
 
 export {
   CapabilityUnavailableError,
@@ -32,7 +32,7 @@ export {
   ENV_FILE_HINT,
   type ConfigIssue,
   type ConfigIssueKind,
-} from './errors.js';
+} from './errors';
 
 export {
   GLOBAL_REQUIREMENT,
@@ -57,7 +57,7 @@ export {
   type ShortLinksConfig,
   type SupabaseConfig,
   type TemporalConfig,
-} from './load.js';
+} from './load';
 
 export {
   CONNECTOR_KEYS,
@@ -80,7 +80,7 @@ export {
   type ConnectorKey,
   type RuntimeCapabilities,
   type SubsystemName,
-} from './capabilities.js';
+} from './capabilities';
 
 export {
   REDACTED_KEYS,
@@ -92,4 +92,4 @@ export {
   redactRecord,
   redactString,
   type RedactOptions,
-} from './redaction.js';
+} from './redaction';

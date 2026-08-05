@@ -2,7 +2,7 @@ import { z } from 'zod';
 
 import { subscriptionStatusSchema } from '@relay/contracts';
 
-import { billingIntervalSchema, normalizeInterval } from './products.js';
+import { billingIntervalSchema, normalizeInterval } from './products';
 
 /**
  * The Polar wire shapes we consume, parsed at the boundary and normalised into

@@ -1,5 +1,5 @@
-import type { Clock } from './clock.js';
-import type { KillSwitch, ShortLinkRecord } from './types.js';
+import type { Clock } from './clock';
+import type { KillSwitch, ShortLinkRecord } from './types';
 
 /**
  * A bounded in-process TTL cache.

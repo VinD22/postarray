@@ -12,10 +12,10 @@ import {
   isFullAccess,
   isVerifiedSource,
   scheduledPostDisposition,
-} from './entitlements.js';
-import type { EntitlementState, VerifiedSubscription } from './entitlements.js';
-import { GRACE_PERIOD_DAYS } from './products.js';
-import { addDays } from './time.js';
+} from './entitlements';
+import type { EntitlementState, VerifiedSubscription } from './entitlements';
+import { GRACE_PERIOD_DAYS } from './products';
+import { addDays } from './time';
 
 const NOW = '2026-08-11T14:00:00.000Z';
 

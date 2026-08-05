@@ -1,6 +1,6 @@
 import { getRootLogger } from '@relay/observability';
 
-import { main } from './main.js';
+import { main } from './main';
 
 /**
  * Process entrypoint.

@@ -1,8 +1,8 @@
 import { scopeSchema } from '@relay/contracts';
 import { z } from 'zod';
 
-import { brandIdSchema, connectionIdSchema, workspaceIdSchema } from '../common/schemas.js';
-import { CODE_CHALLENGE_METHOD, isValidCodeChallenge, isValidCodeVerifier } from './pkce.js';
+import { brandIdSchema, connectionIdSchema, workspaceIdSchema } from '../common/schemas';
+import { CODE_CHALLENGE_METHOD, isValidCodeChallenge, isValidCodeVerifier } from './pkce';
 
 /**
  * OAuth 2.1 request shapes.

@@ -14,10 +14,10 @@ import { useTranslations } from '@relay/i18n/react';
 import type { Scope } from '@relay/contracts';
 import { Plus, X } from 'lucide-react';
 
-import { SettingsPanel } from '../../settings/components/section.js';
-import { ScopePicker } from '../components/scope-picker.js';
-import { ConsentPreview } from './consent-preview.js';
-import { checkRedirectUri } from './redirect-uris.js';
+import { SettingsPanel } from '../../settings/components/section';
+import { ScopePicker } from '../components/scope-picker';
+import { ConsentPreview } from './consent-preview';
+import { checkRedirectUri } from './redirect-uris';
 
 export interface AppFormValue {
   readonly name: string;

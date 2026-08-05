@@ -17,17 +17,17 @@ import { useTranslations } from '@relay/i18n/react';
 import { formatBytes, formatDuration, formatRelativeTime } from '@relay/i18n';
 import { resolveVariant, type OverridableVariantField } from '@relay/contracts';
 
-import { useComposer } from '../composer-context.js';
-import { AssistMenu, AssistProposalPanel } from './assist-menu.js';
-import { BodyField } from './body-field.js';
-import { MediaStrip } from './media-strip.js';
-import { NativeSettings } from './native-settings.js';
-import { fieldLabel, ResetToMasterDialog } from './reset-to-master-dialog.js';
-import { SequencePanel } from './sequence-panel.js';
-import { PROVIDER_LABEL } from './provider-identity.js';
-import type { ResolvedEntity } from './entity-search-field.js';
-import type { AssistAction, AssistProposal, TargetSummary } from '../types.js';
-import type { MediaAsset } from '../../media/types.js';
+import { useComposer } from '../composer-context';
+import { AssistMenu, AssistProposalPanel } from './assist-menu';
+import { BodyField } from './body-field';
+import { MediaStrip } from './media-strip';
+import { NativeSettings } from './native-settings';
+import { fieldLabel, ResetToMasterDialog } from './reset-to-master-dialog';
+import { SequencePanel } from './sequence-panel';
+import { PROVIDER_LABEL } from './provider-identity';
+import type { ResolvedEntity } from './entity-search-field';
+import type { AssistAction, AssistProposal, TargetSummary } from '../types';
+import type { MediaAsset } from '../../media/types';
 
 export interface VariantEditorProps {
   readonly summary: TargetSummary;

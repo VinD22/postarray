@@ -6,29 +6,29 @@
  * from `ComposerProvider`.
  */
 
-export { ComposerProvider, useComposer, useActiveTarget } from './composer-context.js';
-export type { ComposerContextValue, ComposerProviderProps } from './composer-context.js';
+export { ComposerProvider, useComposer, useActiveTarget } from './composer-context';
+export type { ComposerContextValue, ComposerProviderProps } from './composer-context';
 
-export { ComposerScreen } from './components/composer-screen.js';
-export type { ComposerScreenProps } from './components/composer-screen.js';
-export type { ScheduleIntent } from './components/schedule-sheet.js';
-export type { ResolvedEntity } from './components/entity-search-field.js';
-export { PROVIDER_LABEL, ProviderIdentity } from './components/provider-identity.js';
-export { CheckRow, RadioRow, SwitchRow } from './components/form-rows.js';
+export { ComposerScreen } from './components/composer-screen';
+export type { ComposerScreenProps } from './components/composer-screen';
+export type { ScheduleIntent } from './components/schedule-sheet';
+export type { ResolvedEntity } from './components/entity-search-field';
+export { PROVIDER_LABEL, ProviderIdentity } from './components/provider-identity';
+export { CheckRow, RadioRow, SwitchRow } from './components/form-rows';
 
-export { composerReducer, newThreadItem, sequenceFor } from './state/composer-reducer.js';
-export type { ComposerAction } from './state/composer-reducer.js';
-export { planGlobalEdit, commitGlobalEdit } from './state/global-edit.js';
-export type { GlobalEditPlan } from './state/global-edit.js';
+export { composerReducer, newThreadItem, sequenceFor } from './state/composer-reducer';
+export type { ComposerAction } from './state/composer-reducer';
+export { planGlobalEdit, commitGlobalEdit } from './state/global-edit';
+export type { GlobalEditPlan } from './state/global-edit';
 export {
   issueCursorList,
   repeatOccurrences,
   sequenceTimeline,
   summarizeTargets,
   totalsFor,
-} from './state/selectors.js';
-export type { DraftTotals, MediaLookup } from './state/selectors.js';
-export { validateTarget } from './state/validate-draft.js';
+} from './state/selectors';
+export type { DraftTotals, MediaLookup } from './state/selectors';
+export { validateTarget } from './state/validate-draft';
 export {
   adaptBodyFor,
   appendUtm,
@@ -37,8 +37,8 @@ export {
   mediaLimitFor,
   readCounter,
   resolvePublishedUrl,
-} from './state/capability-rules.js';
-export { isoDateIn, isoTimeIn, zonedToInstant } from './state/time.js';
+} from './state/capability-rules';
+export { isoDateIn, isoTimeIn, zonedToInstant } from './state/time';
 export {
   initialComposerState,
   SEED_ACCOUNTS,
@@ -47,7 +47,7 @@ export {
   SEED_SETS,
   SEED_SIGNATURES,
   SEED_DOMAINS,
-} from './state/seed.js';
+} from './state/seed';
 
 export type {
   AssistAction,
@@ -61,4 +61,4 @@ export type {
   TargetSet,
   TargetSummary,
   VariantSettings,
-} from './types.js';
+} from './types';

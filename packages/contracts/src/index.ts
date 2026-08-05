@@ -8,15 +8,15 @@
  * This package depends on nothing but zod. Everything else depends on it.
  */
 
-export * from './primitives.js';
-export * from './ids.js';
-export * from './errors.js';
-export * from './enums.js';
-export * from './analytics.js';
-export * from './capabilities.js';
-export * from './content.js';
-export * from './validation.js';
-export * from './publishing.js';
-export * from './growth.js';
-export * from './api.js';
-export * from './scopes.js';
+export * from './primitives';
+export * from './ids';
+export * from './errors';
+export * from './enums';
+export * from './analytics';
+export * from './capabilities';
+export * from './content';
+export * from './validation';
+export * from './publishing';
+export * from './growth';
+export * from './api';
+export * from './scopes';

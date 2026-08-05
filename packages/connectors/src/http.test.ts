@@ -1,10 +1,10 @@
 import { describe, expect, it } from 'vitest';
 import { z } from 'zod';
 
-import { ProviderCallError } from './errors.js';
-import { ProviderHttpClient, RateLimitTracker, readRateLimitHeaders } from './http.js';
-import { capturingLogger, fixedClock, recordingSleeper } from './ports.js';
-import { leaseSecret } from './vault.js';
+import { ProviderCallError } from './errors';
+import { ProviderHttpClient, RateLimitTracker, readRateLimitHeaders } from './http';
+import { capturingLogger, fixedClock, recordingSleeper } from './ports';
+import { leaseSecret } from './vault';
 
 const okSchema = z.object({ id: z.string() });
 

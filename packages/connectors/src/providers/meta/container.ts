@@ -1,6 +1,6 @@
-import { REMEDIATION, providerFailure, type PublishStatus } from '../shared/contract-shape.js';
-import { errorSummary } from '../shared/access.js';
-import { metaContainerStatusSchema, type MetaClient, type MetaSurface } from './graph.js';
+import { REMEDIATION, providerFailure, type PublishStatus } from '../shared/contract-shape';
+import { errorSummary } from '../shared/access';
+import { metaContainerStatusSchema, type MetaClient, type MetaSurface } from './graph';
 
 /**
  * The Meta container lifecycle, shared by Instagram and Threads.

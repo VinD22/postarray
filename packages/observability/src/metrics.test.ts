@@ -9,7 +9,7 @@ import {
   resetMetrics,
   sanitizeAttributes,
   timeIt,
-} from './metrics.js';
+} from './metrics';
 
 beforeEach(() => {
   resetMetrics();

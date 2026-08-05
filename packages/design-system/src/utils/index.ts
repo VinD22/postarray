@@ -1,4 +1,4 @@
-export { cn, type ClassValue } from './cn.js';
+export { cn, type ClassValue } from './cn';
 export {
   focusRing,
   focusRingInset,
@@ -9,4 +9,4 @@ export {
   controlHeight,
   panelSurface,
   type ControlSize,
-} from './style-constants.js';
+} from './style-constants';

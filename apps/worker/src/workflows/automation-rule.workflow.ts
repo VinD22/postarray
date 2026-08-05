@@ -1,6 +1,6 @@
-import { createTemporalRuntime, workerActivities } from './temporal-runtime.js';
-import { runAutomationRule } from './core/automation-rule.core.js';
-import type { AutomationRuleWorkflowInput, AutomationRuleWorkflowOutput } from './inputs.js';
+import { createTemporalRuntime, workerActivities } from './temporal-runtime';
+import { runAutomationRule } from './core/automation-rule.core';
+import type { AutomationRuleWorkflowInput, AutomationRuleWorkflowOutput } from './inputs';
 
 /**
  * One automation rule run.

@@ -30,7 +30,7 @@ import type {
   ReceiptSummary,
   RelayServicePort,
   ScheduleSpecLike,
-} from './ports.js';
+} from './ports';
 
 /**
  * Sandbox mode.

@@ -2,8 +2,8 @@
 
 import { forwardRef, type ComponentPropsWithoutRef } from 'react';
 import { Switch as SwitchPrimitive } from 'radix-ui';
-import { cn } from '../utils/cn.js';
-import { focusRing, transitionBase } from '../utils/style-constants.js';
+import { cn } from '../utils/cn';
+import { focusRing, transitionBase } from '../utils/style-constants';
 
 export type SwitchProps = ComponentPropsWithoutRef<typeof SwitchPrimitive.Root>;
 

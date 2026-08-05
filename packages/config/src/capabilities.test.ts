@@ -9,9 +9,9 @@ import {
   getCapability,
   listCapabilities,
   missingEnvVars,
-} from './capabilities.js';
-import { CapabilityUnavailableError } from './errors.js';
-import { loadConfig } from './load.js';
+} from './capabilities';
+import { CapabilityUnavailableError } from './errors';
+import { loadConfig } from './load';
 
 const LOCAL_KEY_32_BYTES = Buffer.alloc(32, 3).toString('base64');
 

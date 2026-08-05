@@ -7,10 +7,10 @@ import {
   buildSnapshot,
   contentKinds,
   mediaBytes,
-} from '../shared/capability.js';
-import type { ProviderConnection } from '../shared/contract-shape.js';
-import { capabilityVersion, reviewStatus } from '../shared/verification.js';
-import type { TikTokCreatorInfo } from './schemas.js';
+} from '../shared/capability';
+import type { ProviderConnection } from '../shared/contract-shape';
+import { capabilityVersion, reviewStatus } from '../shared/verification';
+import type { TikTokCreatorInfo } from './schemas';
 
 /**
  * TikTok capability snapshot.

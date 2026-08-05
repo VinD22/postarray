@@ -1,6 +1,6 @@
-import { createTemporalRuntime, workerActivities } from './temporal-runtime.js';
-import { runThreadSequence } from './core/thread-sequence.core.js';
-import type { ThreadSequenceWorkflowInput, ThreadSequenceWorkflowOutput } from './inputs.js';
+import { createTemporalRuntime, workerActivities } from './temporal-runtime';
+import { runThreadSequence } from './core/thread-sequence.core';
+import type { ThreadSequenceWorkflowInput, ThreadSequenceWorkflowOutput } from './inputs';
 
 /**
  * Ordered comments and thread parts under a post that is already live.

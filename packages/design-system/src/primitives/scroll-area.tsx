@@ -2,7 +2,7 @@
 
 import { forwardRef, type ComponentPropsWithoutRef } from 'react';
 import { ScrollArea as ScrollAreaPrimitive } from 'radix-ui';
-import { cn } from '../utils/cn.js';
+import { cn } from '../utils/cn';
 
 export interface ScrollAreaProps extends ComponentPropsWithoutRef<typeof ScrollAreaPrimitive.Root> {
   orientation?: 'vertical' | 'horizontal' | 'both';

@@ -1,7 +1,7 @@
 import { metricObservationSchema } from '@relay/contracts';
 import type { MetricObservation, NormalizedMetricName } from '@relay/contracts';
 
-import type { ComparablePost, ObservedPost } from './types.js';
+import type { ComparablePost, ObservedPost } from './types';
 
 /** Deterministic builders for the colocated tests. Not product surface. */
 

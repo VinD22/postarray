@@ -8,8 +8,8 @@ import {
   metricDefinitionSchema,
   metricObservationSchema,
   unavailableObservation,
-} from './analytics.js';
-import type { MetricObservation } from './analytics.js';
+} from './analytics';
+import type { MetricObservation } from './analytics';
 
 const HASH = 'c'.repeat(64);
 

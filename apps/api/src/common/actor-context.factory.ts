@@ -7,8 +7,8 @@ import {
 } from '@relay/contracts';
 import { canonicalizeLocaleTag, isActiveLocale, resolveLocale } from '@relay/i18n';
 
-import type { ActorContext, IdentityContext } from '../application/port.js';
-import type { Principal } from './request.types.js';
+import type { ActorContext, IdentityContext } from '../application/port';
+import type { Principal } from './request.types';
 
 /**
  * The one construction site for `ActorContext`.

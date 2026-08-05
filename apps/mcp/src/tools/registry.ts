@@ -1,10 +1,10 @@
 import { z } from 'zod';
 import type { ApprovalLevel, Scope } from '@relay/contracts';
 
-import type { AuthorizationRequirement } from '../auth/authorize.js';
-import type { ActorContextLike, RelayServicePort } from '../ports.js';
-import type { ConfirmationStore } from '../confirmations.js';
-import type { VerifiedGrant } from '../auth/verifier.js';
+import type { AuthorizationRequirement } from '../auth/authorize';
+import type { ActorContextLike, RelayServicePort } from '../ports';
+import type { ConfirmationStore } from '../confirmations';
+import type { VerifiedGrant } from '../auth/verifier';
 
 /**
  * The tool contract.

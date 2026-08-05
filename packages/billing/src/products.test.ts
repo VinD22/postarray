@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 
 import { en } from '@relay/i18n';
 
-import { BILLING_MESSAGE_KEYS } from './messages.js';
+import { BILLING_MESSAGE_KEYS } from './messages';
 import {
   ANNUAL_EFFECTIVE_MONTHLY_MINOR,
   ANNUAL_PRICE_MINOR,
@@ -16,7 +16,7 @@ import {
   normalizeInterval,
   planPriceMinor,
   trialLengthMatches,
-} from './products.js';
+} from './products';
 
 const catalog = en as Readonly<Record<string, string>>;
 

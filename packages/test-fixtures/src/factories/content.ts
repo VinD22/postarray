@@ -17,9 +17,9 @@ import type {
   VariantOverrides,
 } from '@relay/contracts';
 
-import { FIXTURE_NOW, fixtureId, fixtureUrl } from '../ids.js';
-import { makeCapabilitySnapshot } from './capabilities.js';
-import { makeConnection } from './connection.js';
+import { FIXTURE_NOW, fixtureId, fixtureUrl } from '../ids';
+import { makeCapabilitySnapshot } from './capabilities';
+import { makeConnection } from './connection';
 
 /**
  * Drafts, variants and frozen content versions.

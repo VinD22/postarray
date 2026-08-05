@@ -1,16 +1,16 @@
 import { describe, expect, it } from 'vitest';
 
-import type { ChildWorkflowDescriptor } from '../runtime/types.js';
-import { analyticsSyncDescriptor } from '../workflows/core/analytics-sync.core.js';
-import { automationRuleDescriptor } from '../workflows/core/automation-rule.core.js';
-import { dataDeletionDescriptor } from '../workflows/core/data-deletion.core.js';
-import { publishPostDescriptor } from '../workflows/core/publish-post.core.js';
-import { publishTargetDescriptor } from '../workflows/core/publish-target.core.js';
-import { repeatPostDescriptor } from '../workflows/core/repeat-post.core.js';
-import { rssPollDescriptor } from '../workflows/core/rss-poll.core.js';
-import { threadSequenceDescriptor } from '../workflows/core/thread-sequence.core.js';
-import { tokenRefreshDescriptor } from '../workflows/core/token-refresh.core.js';
-import { webhookDeliveryDescriptor } from '../workflows/core/webhook-delivery.core.js';
+import type { ChildWorkflowDescriptor } from '../runtime/types';
+import { analyticsSyncDescriptor } from '../workflows/core/analytics-sync.core';
+import { automationRuleDescriptor } from '../workflows/core/automation-rule.core';
+import { dataDeletionDescriptor } from '../workflows/core/data-deletion.core';
+import { publishPostDescriptor } from '../workflows/core/publish-post.core';
+import { publishTargetDescriptor } from '../workflows/core/publish-target.core';
+import { repeatPostDescriptor } from '../workflows/core/repeat-post.core';
+import { rssPollDescriptor } from '../workflows/core/rss-poll.core';
+import { threadSequenceDescriptor } from '../workflows/core/thread-sequence.core';
+import { tokenRefreshDescriptor } from '../workflows/core/token-refresh.core';
+import { webhookDeliveryDescriptor } from '../workflows/core/webhook-delivery.core';
 
 import {
   makeAnalyticsInput,
@@ -23,15 +23,15 @@ import {
   makeThreadInput,
   makeTokenInput,
   makeWebhookInput,
-} from './fixtures.js';
-import { runWorkflow, type HarnessOptions, type HarnessRun } from './harness.js';
+} from './fixtures';
+import { runWorkflow, type HarnessOptions, type HarnessRun } from './harness';
 import {
   activityHistory,
   containsSubsequence,
   countActivity,
   describeHistory,
   diffHistories,
-} from './replay.js';
+} from './replay';
 
 /**
  * Replay tests.

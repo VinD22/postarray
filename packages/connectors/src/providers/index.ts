@@ -1,14 +1,14 @@
 import type { ProviderId } from '@relay/contracts';
 
-import type { ConnectorDeps, ConnectorRegistry, SocialConnector } from './shared/contract-shape.js';
-import { createBlueskyConnector } from './bluesky/index.js';
-import { createFacebookConnector } from './meta/facebook/index.js';
-import { createInstagramConnector } from './meta/instagram/index.js';
-import { createLinkedInConnector } from './linkedin/index.js';
-import { createThreadsConnector } from './meta/threads/index.js';
-import { createTikTokConnector } from './tiktok/index.js';
-import { createXConnector } from './x/index.js';
-import { createYouTubeConnector } from './youtube/index.js';
+import type { ConnectorDeps, ConnectorRegistry, SocialConnector } from './shared/contract-shape';
+import { createBlueskyConnector } from './bluesky/index';
+import { createFacebookConnector } from './meta/facebook/index';
+import { createInstagramConnector } from './meta/instagram/index';
+import { createLinkedInConnector } from './linkedin/index';
+import { createThreadsConnector } from './meta/threads/index';
+import { createTikTokConnector } from './tiktok/index';
+import { createXConnector } from './x/index';
+import { createYouTubeConnector } from './youtube/index';
 
 /**
  * The provider adapters.
@@ -17,13 +17,13 @@ import { createYouTubeConnector } from './youtube/index.js';
  * user-facing flows, and does not break any other connector or any other surface.
  */
 
-export * from './shared/index.js';
-export * from './x/index.js';
-export * from './linkedin/index.js';
-export * from './meta/index.js';
-export * from './youtube/index.js';
-export * from './tiktok/index.js';
-export * from './bluesky/index.js';
+export * from './shared/index';
+export * from './x/index';
+export * from './linkedin/index';
+export * from './meta/index';
+export * from './youtube/index';
+export * from './tiktok/index';
+export * from './bluesky/index';
 
 /** Every provider this package ships an adapter for. */
 export const BUILT_IN_PROVIDERS = [

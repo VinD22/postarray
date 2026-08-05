@@ -9,8 +9,8 @@ import type {
   TimeRange,
   UsageSummaryView,
   ViewModel,
-} from '../../application/port.js';
-import { SERVICES } from '../../application/tokens.js';
+} from '../../application/port';
+import { SERVICES } from '../../application/tokens';
 
 /** Transport-level delegation for billing. Entitlement logic is not here. */
 @Injectable()

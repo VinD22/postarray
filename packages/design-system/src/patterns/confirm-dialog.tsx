@@ -1,8 +1,8 @@
 'use client';
 
 import { useId, useState, type ReactNode } from 'react';
-import { cn } from '../utils/cn.js';
-import { Button } from '../primitives/button.js';
+import { cn } from '../utils/cn';
+import { Button } from '../primitives/button';
 import {
   Dialog,
   DialogBody,
@@ -11,9 +11,9 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from '../primitives/dialog.js';
-import { Input } from '../primitives/input.js';
-import { Label } from '../primitives/label.js';
+} from '../primitives/dialog';
+import { Input } from '../primitives/input';
+import { Label } from '../primitives/label';
 
 export interface ConfirmDialogConsequence {
   readonly id: string;

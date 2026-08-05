@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 
-import { can, grantedPermissions, type PolicyActor } from './policy.js';
-import { minimumRoleFor, roleHasPermission } from './roles.js';
+import { can, grantedPermissions, type PolicyActor } from './policy';
+import { minimumRoleFor, roleHasPermission } from './roles';
 
 function user(overrides: Partial<PolicyActor> = {}): PolicyActor {
   return {

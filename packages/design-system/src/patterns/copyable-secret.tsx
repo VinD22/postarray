@@ -2,12 +2,12 @@
 
 import { useCallback, useState, type ReactNode } from 'react';
 import { Check, Copy, Eye, EyeOff } from 'lucide-react';
-import { cn } from '../utils/cn.js';
-import { Button } from '../primitives/button.js';
-import { Code } from '../primitives/code.js';
-import { IconButton } from '../primitives/icon-button.js';
-import { Notice } from './notice.js';
-import { useAnnouncer } from '../hooks/use-announcer.js';
+import { cn } from '../utils/cn';
+import { Button } from '../primitives/button';
+import { Code } from '../primitives/code';
+import { IconButton } from '../primitives/icon-button';
+import { Notice } from './notice';
+import { useAnnouncer } from '../hooks/use-announcer';
 
 export interface CopyableSecretMessages {
   /** Heading for the one-time warning notice. */

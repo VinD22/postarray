@@ -2,7 +2,7 @@ import { z } from 'zod';
 
 import { ERROR_CODES, RelayError } from '@relay/contracts';
 
-import { AI_MESSAGE_KEYS } from '../errors.js';
+import { AI_MESSAGE_KEYS } from '../errors';
 import type {
   AiProviderAdapter,
   ProviderFinishReason,
@@ -10,7 +10,7 @@ import type {
   ProviderResponse,
   ProviderStreamChunk,
   ProviderToolCall,
-} from '../types.js';
+} from '../types';
 
 /**
  * DeepSeek adapter, speaking the OpenAI-compatible chat completions shape.

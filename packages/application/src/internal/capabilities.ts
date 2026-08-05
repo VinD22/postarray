@@ -4,10 +4,10 @@ import {
   type ProviderId,
 } from '@relay/contracts';
 
-import type { ServiceDeps } from '../types.js';
+import type { ServiceDeps } from '../types';
 
-import { fromStoredAccountType, toProviderId } from './mappers.js';
-import type { Db } from './runtime.js';
+import { fromStoredAccountType, toProviderId } from './mappers';
+import type { Db } from './runtime';
 
 /**
  * Capability snapshots.

@@ -1,4 +1,4 @@
-import type { MetricFieldMapping } from '../../shared/metrics.js';
+import type { MetricFieldMapping } from '../../shared/metrics';
 
 /**
  * Threads metric mapping. Insights are available where the Threads insights permission is

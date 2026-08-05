@@ -14,7 +14,7 @@ import {
 } from '@relay/design-system/primitives';
 import { useTranslations } from '@relay/i18n/react';
 
-import { WORKSPACE_ROLES } from '../lib/view-models.js';
+import { WORKSPACE_ROLES } from '../lib/view-models';
 
 /**
  * What each role actually allows.

@@ -1,5 +1,5 @@
-import { aiUnavailableError } from '../errors.js';
-import type { AiProviderAdapter } from '../types.js';
+import { aiUnavailableError } from '../errors';
+import type { AiProviderAdapter } from '../types';
 
 /**
  * The adapter used when no credentials are configured.

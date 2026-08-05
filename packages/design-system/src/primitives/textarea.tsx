@@ -7,9 +7,9 @@ import {
   useRef,
   type ComponentPropsWithoutRef,
 } from 'react';
-import { cn } from '../utils/cn.js';
-import { focusRing, transitionBase } from '../utils/style-constants.js';
-import { useIsomorphicLayoutEffect } from '../hooks/use-isomorphic-layout-effect.js';
+import { cn } from '../utils/cn';
+import { focusRing, transitionBase } from '../utils/style-constants';
+import { useIsomorphicLayoutEffect } from '../hooks/use-isomorphic-layout-effect';
 
 export interface TextareaProps extends ComponentPropsWithoutRef<'textarea'> {
   invalid?: boolean;

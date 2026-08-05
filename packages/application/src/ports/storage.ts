@@ -4,9 +4,9 @@ import { dirname, join, normalize, resolve, sep } from 'node:path';
 
 import { MediaInvalidError, RelayError } from '@relay/contracts';
 
-import type { Clock, StoragePort, StoredObject, UploadTicket } from '../types.js';
+import type { Clock, StoragePort, StoredObject, UploadTicket } from '../types';
 
-import { systemClock } from './clock.js';
+import { systemClock } from './clock';
 
 /**
  * Local filesystem storage.

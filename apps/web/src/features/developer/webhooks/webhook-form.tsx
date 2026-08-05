@@ -13,9 +13,9 @@ import {
 import { useTranslations } from '@relay/i18n/react';
 import { WEBHOOK_EVENT_NAMES, type WebhookEventName } from '@relay/contracts';
 
-import { SettingsPanel } from '../../settings/components/section.js';
-import type { ConnectionSummaryView } from '../../settings/lib/view-models.js';
-import { webhookEventGroups } from '../lib/webhook-events.js';
+import { SettingsPanel } from '../../settings/components/section';
+import type { ConnectionSummaryView } from '../../settings/lib/view-models';
+import { webhookEventGroups } from '../lib/webhook-events';
 
 export interface WebhookFormValue {
   readonly url: string;

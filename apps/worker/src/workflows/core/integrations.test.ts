@@ -8,16 +8,16 @@ import {
   makeRuleInput,
   makeTokenInput,
   makeWebhookInput,
-} from '../../testing/fixtures.js';
-import { TEST_EPOCH_MS, runWorkflow } from '../../testing/harness.js';
+} from '../../testing/fixtures';
+import { TEST_EPOCH_MS, runWorkflow } from '../../testing/harness';
 
-import { analyticsSyncDescriptor, offsetsForProvider } from './analytics-sync.core.js';
-import { automationRuleDescriptor } from './automation-rule.core.js';
-import { dataDeletionDescriptor } from './data-deletion.core.js';
-import { repeatPostDescriptor } from './repeat-post.core.js';
-import { failureBackoffMs, rssPollDescriptor } from './rss-poll.core.js';
-import { refreshWaitMs, tokenRefreshDescriptor } from './token-refresh.core.js';
-import { webhookDeliveryDescriptor } from './webhook-delivery.core.js';
+import { analyticsSyncDescriptor, offsetsForProvider } from './analytics-sync.core';
+import { automationRuleDescriptor } from './automation-rule.core';
+import { dataDeletionDescriptor } from './data-deletion.core';
+import { repeatPostDescriptor } from './repeat-post.core';
+import { failureBackoffMs, rssPollDescriptor } from './rss-poll.core';
+import { refreshWaitMs, tokenRefreshDescriptor } from './token-refresh.core';
+import { webhookDeliveryDescriptor } from './webhook-delivery.core';
 
 describe('repeat series', () => {
   it('creates a separate job and its own receipt for each occurrence', async () => {

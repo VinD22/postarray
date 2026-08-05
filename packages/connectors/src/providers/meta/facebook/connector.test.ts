@@ -8,9 +8,9 @@ import {
   testGrant,
   testMetricsRequest,
   testStatusRequest,
-} from '../../shared/testing.js';
-import { buildFacebookCapabilities } from './capabilities.js';
-import { createFacebookConnector } from './connector.js';
+} from '../../shared/testing';
+import { buildFacebookCapabilities } from './capabilities';
+import { createFacebookConnector } from './connector';
 import {
   FACEBOOK_FEED_POST_FIXTURE,
   FACEBOOK_PAGES_FIXTURE,
@@ -18,7 +18,7 @@ import {
   FACEBOOK_POST_INSIGHTS_FIXTURE,
   FACEBOOK_POST_LOOKUP_FIXTURE,
   FACEBOOK_VIDEO_PROCESSING_FIXTURE,
-} from './__fixtures__/index.js';
+} from './__fixtures__/index';
 
 const SCOPES = [
   'pages_show_list',

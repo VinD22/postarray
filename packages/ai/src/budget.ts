@@ -1,5 +1,5 @@
-import type { Clock } from './clock.js';
-import type { AiCounterStore } from './types.js';
+import type { Clock } from './clock';
+import type { AiCounterStore } from './types';
 
 /**
  * Per-workspace budgets, enforced BEFORE a provider call is made.

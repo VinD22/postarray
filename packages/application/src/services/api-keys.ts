@@ -3,13 +3,13 @@ import { createHash, randomBytes, timingSafeEqual } from 'node:crypto';
 import { narrowScopes } from '@relay/authz';
 import { normalizeScopes, type Paginated, type Scope } from '@relay/contracts';
 
-import type { ActorContext, ApiKeyService, PageQuery, ServiceDeps } from '../types.js';
-import type { ApiKeyView, CreatedApiKeyView } from '../views.js';
+import type { ActorContext, ApiKeyService, PageQuery, ServiceDeps } from '../types';
+import type { ApiKeyView, CreatedApiKeyView } from '../views';
 
-import { recordAudit } from '../internal/audit.js';
-import { invalid, notFound } from '../internal/errors.js';
-import { pageArgs, toPage } from '../internal/pagination.js';
-import { authorized } from '../internal/runtime.js';
+import { recordAudit } from '../internal/audit';
+import { invalid, notFound } from '../internal/errors';
+import { pageArgs, toPage } from '../internal/pagination';
+import { authorized } from '../internal/runtime';
 
 /**
  * Workspace API keys.

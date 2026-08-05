@@ -1,13 +1,13 @@
 import type { RelayConfig } from '@relay/config';
 import type { Logger } from '@relay/observability';
 
-import type { Clock } from '../application/port.js';
+import type { Clock } from '../application/port';
 import type {
   IdentityProvider,
   IdentitySession,
   SignUpInput,
   TotpEnrollment,
-} from '../modules/auth/identity.port.js';
+} from '../modules/auth/identity.port';
 
 /**
  * Doubles for everything the API is handed at bootstrap.

@@ -13,7 +13,7 @@ import { Notice } from '@relay/design-system/patterns';
 import { useTranslations } from '@relay/i18n/react';
 import { formatRelativeTime } from '@relay/i18n';
 
-import { useComposer } from '../composer-context.js';
+import { useComposer } from '../composer-context';
 
 export interface ComposerHeaderProps {
   readonly onClose: () => void;

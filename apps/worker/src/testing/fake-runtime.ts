@@ -1,4 +1,4 @@
-import type { WorkerActivities } from '../activities/types.js';
+import type { WorkerActivities } from '../activities/types';
 import {
   SignalInbox,
   WORKFLOW_SIGNALS,
@@ -8,10 +8,10 @@ import {
   type WorkflowLog,
   type WorkflowRuntime,
   type WorkflowStatusView,
-} from '../runtime/types.js';
+} from '../runtime/types';
 
-import type { VirtualClock } from './virtual-clock.js';
-import { toIsoInstant } from '../runtime/deterministic.js';
+import type { VirtualClock } from './virtual-clock';
+import { toIsoInstant } from '../runtime/deterministic';
 
 /**
  * The in-process `WorkflowRuntime`.

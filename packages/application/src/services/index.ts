@@ -1,27 +1,27 @@
-import type { ServiceDeps, Services } from '../types.js';
+import type { ServiceDeps, Services } from '../types';
 
-import { createAnalyticsService } from './analytics.js';
-import { createApiKeyService } from './api-keys.js';
-import { createApprovalService } from './approvals.js';
-import { createAuditService } from './audit.js';
-import { createAutomationRuleService } from './automation-rules.js';
-import { createBrandService } from './brands.js';
-import { createConnectionService } from './connections.js';
-import { createContentService } from './content.js';
-import { createCredentialVaultService } from './credentials.js';
-import { createGrowthService } from './growth.js';
-import { createHealthService } from './health.js';
-import { createMediaService } from './media.js';
-import { createMembershipService } from './members.js';
-import { createOAuthAppService } from './oauth-apps.js';
-import { createPublishingService } from './publishing.js';
-import { createReceiptService } from './receipts.js';
-import { createRssService } from './rss.js';
-import { createSchedulingService } from './scheduling.js';
-import { createShortLinkService } from './short-links.js';
-import { createValidationService } from './validation.js';
-import { createWebhookService } from './webhooks.js';
-import { createWorkspaceService } from './workspaces.js';
+import { createAnalyticsService } from './analytics';
+import { createApiKeyService } from './api-keys';
+import { createApprovalService } from './approvals';
+import { createAuditService } from './audit';
+import { createAutomationRuleService } from './automation-rules';
+import { createBrandService } from './brands';
+import { createConnectionService } from './connections';
+import { createContentService } from './content';
+import { createCredentialVaultService } from './credentials';
+import { createGrowthService } from './growth';
+import { createHealthService } from './health';
+import { createMediaService } from './media';
+import { createMembershipService } from './members';
+import { createOAuthAppService } from './oauth-apps';
+import { createPublishingService } from './publishing';
+import { createReceiptService } from './receipts';
+import { createRssService } from './rss';
+import { createSchedulingService } from './scheduling';
+import { createShortLinkService } from './short-links';
+import { createValidationService } from './validation';
+import { createWebhookService } from './webhooks';
+import { createWorkspaceService } from './workspaces';
 
 /**
  * The composition root.

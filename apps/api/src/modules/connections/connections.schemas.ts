@@ -1,8 +1,8 @@
 import { destinationKindSchema, providerIdSchema } from '@relay/contracts';
 import { z } from 'zod';
 
-import { cursorQueryWith } from '../../common/pagination.js';
-import { brandIdSchema, shortTextSchema } from '../../common/schemas.js';
+import { cursorQueryWith } from '../../common/pagination';
+import { brandIdSchema, shortTextSchema } from '../../common/schemas';
 
 /** Connection listing, OAuth handshake and provider lookup payloads. */
 

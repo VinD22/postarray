@@ -7,10 +7,10 @@ import {
   capabilityDriftError,
   diffCapabilities,
   usageFromDraft,
-} from './capability-diff.js';
-import { buildFakeCapabilitySnapshot } from './fake/capabilities.js';
-import { fakeDraft, fakeImageAsset, fakeThreadItem } from './fake/fixtures.js';
-import { fixedClock } from './ports.js';
+} from './capability-diff';
+import { buildFakeCapabilitySnapshot } from './fake/capabilities';
+import { fakeDraft, fakeImageAsset, fakeThreadItem } from './fake/fixtures';
+import { fixedClock } from './ports';
 
 const clock = fixedClock('2026-08-04T12:00:00.000Z');
 const observedAt = '2026-08-04T11:59:00.000Z';

@@ -8,9 +8,9 @@ import type {
   ToolRecord,
 } from '@relay/contracts';
 
-import { call } from '../call.js';
-import { demoGrowthPlan, page } from '../fixtures.js';
-import type { GrowthPlanSummaryView, MetricView, Paginated, ProviderId } from '../types.js';
+import { call } from '../call';
+import { demoGrowthPlan, page } from '../fixtures';
+import type { GrowthPlanSummaryView, MetricView, Paginated, ProviderId } from '../types';
 
 export type MetricWindow = {
   readonly from: string;

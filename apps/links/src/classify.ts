@@ -1,4 +1,4 @@
-import type { BotClass, DeviceClass, ReferrerClass } from './types.js';
+import type { BotClass, DeviceClass, ReferrerClass } from './types';
 
 /**
  * Request classification.

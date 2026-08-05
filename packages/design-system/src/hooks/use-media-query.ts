@@ -1,5 +1,5 @@
 import { useCallback, useSyncExternalStore } from 'react';
-import { breakpoints, type BreakpointKey } from '../tokens/tokens.js';
+import { breakpoints, type BreakpointKey } from '../tokens/tokens';
 
 /**
  * Subscribes to a media query without tearing during hydration.

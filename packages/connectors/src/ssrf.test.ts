@@ -8,7 +8,7 @@ import {
   classifyIpAddress,
   isPublicIpAddress,
   safeFetch,
-} from './ssrf.js';
+} from './ssrf';
 
 const publicResolver: DnsResolver = async () => [{ address: '93.184.216.34', family: 4 }];
 const privateResolver: DnsResolver = async () => [{ address: '10.0.0.5', family: 4 }];

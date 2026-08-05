@@ -1,23 +1,23 @@
 import { RelayError, computeChecksum } from '@relay/contracts';
 import type { PolarConfig } from '@relay/config';
 
-import type { PolarClient } from './client.js';
-import { isSimulated } from './client.js';
-import { BILLING_MESSAGE_KEYS } from './messages.js';
-import { formatMoneyMinor } from './money.js';
+import type { PolarClient } from './client';
+import { isSimulated } from './client';
+import { BILLING_MESSAGE_KEYS } from './messages';
+import { formatMoneyMinor } from './money';
 import {
   ACTIVE_CHANNEL_ALLOWANCE,
   MANDATED_COPY,
   PLAN_CURRENCY,
   PRICE_PRESENTATION,
   TRIAL_DAYS,
-} from './products.js';
-import type { BillingInterval } from './products.js';
-import { SIMULATOR_ANNUAL_PRODUCT_ID, SIMULATOR_MONTHLY_PRODUCT_ID } from './simulator.js';
-import { computeTrialSchedule } from './trial.js';
-import type { TrialSchedule } from './trial.js';
-import type { Clock } from './time.js';
-import { isoDateOf, nowIso } from './time.js';
+} from './products';
+import type { BillingInterval } from './products';
+import { SIMULATOR_ANNUAL_PRODUCT_ID, SIMULATOR_MONTHLY_PRODUCT_ID } from './simulator';
+import { computeTrialSchedule } from './trial';
+import type { TrialSchedule } from './trial';
+import type { Clock } from './time';
+import { isoDateOf, nowIso } from './time';
 
 /**
  * Checkout, and the disclosure the customer must see **before** they confirm.

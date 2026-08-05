@@ -10,30 +10,25 @@ import {
 } from '@relay/contracts';
 import type { Logger } from '@relay/observability';
 
-import type { Clock, Services } from '../application/port.js';
-import { CLOCK, LOGGER, RELAY_CONFIG, SERVICES } from '../application/tokens.js';
-import { instantAfter, requireEpochMillis } from '../common/instant.js';
-import { CredentialDirectory, tokenLookupHash } from '../security/credential-directory.js';
+import type { Clock, Services } from '../application/port';
+import { CLOCK, LOGGER, RELAY_CONFIG, SERVICES } from '../application/tokens';
+import { instantAfter, requireEpochMillis } from '../common/instant';
+import { CredentialDirectory, tokenLookupHash } from '../security/credential-directory';
 import {
   CREDENTIAL_PREFIXES,
   constantTimeEquals,
   randomBase62,
   randomToken,
   secretMatches,
-} from '../security/credentials.js';
+} from '../security/credentials';
 import {
   authorizationCodeRecordSchema,
   authorizationRequestRecordSchema,
   type AuthorizationCodeRecord,
   type OAuthClientRecord,
-} from '../security/records.js';
-import { resolveRedirectUri, verifyCodeVerifier } from './pkce.js';
-import type {
-  AuthorizeQuery,
-  ConsentDecision,
-  TokenRequest,
-  TokenResponse,
-} from './oauth.schemas.js';
+} from '../security/records';
+import { resolveRedirectUri, verifyCodeVerifier } from './pkce';
+import type { AuthorizeQuery, ConsentDecision, TokenRequest, TokenResponse } from './oauth.schemas';
 
 /**
  * Relay's own OAuth 2.1 authorization server.

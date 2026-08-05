@@ -1,10 +1,10 @@
 import { describe, expect, it } from 'vitest';
 
-import { composerReducer } from './composer-reducer.js';
-import { countCharacters, readCounter } from './capability-rules.js';
-import { repeatOccurrences, sequenceTimeline, summarizeTargets, totalsFor } from './selectors.js';
-import { initialComposerState, SEED_ACCOUNTS, SEED_BOOTSTRAP } from './seed.js';
-import type { MediaLookup } from './selectors.js';
+import { composerReducer } from './composer-reducer';
+import { countCharacters, readCounter } from './capability-rules';
+import { repeatOccurrences, sequenceTimeline, summarizeTargets, totalsFor } from './selectors';
+import { initialComposerState, SEED_ACCOUNTS, SEED_BOOTSTRAP } from './seed';
+import type { MediaLookup } from './selectors';
 
 const X = 'conn_seed_x_acme';
 const LINKEDIN = 'conn_seed_li_acme';

@@ -1,9 +1,9 @@
 import { describe, expect, it } from 'vitest';
 
-import { DATABASE_ERROR_CODES, DatabaseError } from '../errors.js';
-import type { RelayPrismaClient } from '../client.js';
+import { DATABASE_ERROR_CODES, DatabaseError } from '../errors';
+import type { RelayPrismaClient } from '../client';
 
-import { assertWorkspaceScoped, withWorkspace } from './workspace-scope.js';
+import { assertWorkspaceScoped, withWorkspace } from './workspace-scope';
 
 /**
  * These exercise the proxy without a database. The proxy is a lint, not the

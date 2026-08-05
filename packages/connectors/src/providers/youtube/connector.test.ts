@@ -11,14 +11,14 @@ import {
   testMedia,
   testMetricsRequest,
   testStatusRequest,
-} from '../shared/testing.js';
+} from '../shared/testing';
 import {
   YOUTUBE_UPLOADS_PER_DAY,
   buildYouTubeCapabilities,
   isUnaudited,
   youTubePrivacyOptions,
-} from './capabilities.js';
-import { createYouTubeConnector } from './connector.js';
+} from './capabilities';
+import { createYouTubeConnector } from './connector';
 import {
   YOUTUBE_CHANNELS_FIXTURE,
   YOUTUBE_COMMENT_THREAD_FIXTURE,
@@ -30,7 +30,7 @@ import {
   YOUTUBE_VIDEO_REJECTED_FIXTURE,
   YOUTUBE_VIDEO_STATISTICS_FIXTURE,
   YOUTUBE_VIDEO_STATISTICS_HIDDEN_LIKES_FIXTURE,
-} from './__fixtures__/index.js';
+} from './__fixtures__/index';
 
 const SCOPES = [
   'https://www.googleapis.com/auth/youtube.upload',

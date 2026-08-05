@@ -8,9 +8,9 @@ import type {
   MentionEntity,
   ProviderDestination,
   Services,
-} from '../../application/port.js';
-import { SERVICES } from '../../application/tokens.js';
-import type { BeginOAuthInput } from './connections.schemas.js';
+} from '../../application/port';
+import { SERVICES } from '../../application/tokens';
+import type { BeginOAuthInput } from './connections.schemas';
 
 /**
  * Transport-level delegation for connections.

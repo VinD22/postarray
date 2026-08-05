@@ -3,8 +3,8 @@
 import { forwardRef, type ComponentPropsWithoutRef, type ReactNode } from 'react';
 import { Dialog as DialogPrimitive } from 'radix-ui';
 import { X } from 'lucide-react';
-import { cn } from '../utils/cn.js';
-import { focusRing } from '../utils/style-constants.js';
+import { cn } from '../utils/cn';
+import { focusRing } from '../utils/style-constants';
 
 /**
  * A modal dialog.

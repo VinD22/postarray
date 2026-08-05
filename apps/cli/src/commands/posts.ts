@@ -7,7 +7,7 @@ import {
 } from '@relay/contracts';
 import type { CapabilitySnapshot, ValidationResult } from '@relay/contracts';
 
-import { ROUTES } from '../api/routes.js';
+import { ROUTES } from '../api/routes';
 import {
   canonicalPreviewSchema,
   capabilitySnapshotSchema,
@@ -16,13 +16,13 @@ import {
   paginated,
   publishJobViewSchema,
   validationResultSchema,
-} from '../api/schemas.js';
-import type { ConnectionView } from '../api/schemas.js';
-import type { CliContext } from '../context.js';
-import { externalPublicationCount, readDraftFile } from '../draft.js';
-import type { DraftDocument } from '../draft.js';
-import { describe, renderPlan, renderSuccess, renderTable } from '../output.js';
-import type { PlannedExternalAction, RenderInput } from '../output.js';
+} from '../api/schemas';
+import type { ConnectionView } from '../api/schemas';
+import type { CliContext } from '../context';
+import { externalPublicationCount, readDraftFile } from '../draft';
+import type { DraftDocument } from '../draft';
+import { describe, renderPlan, renderSuccess, renderTable } from '../output';
+import type { PlannedExternalAction, RenderInput } from '../output';
 
 /**
  * Consequential commands.

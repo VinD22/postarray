@@ -1,12 +1,12 @@
-import { GROWTH_PLAN_FIXTURE_BODY } from '../growth/fixture.js';
-import { JSON_OUTPUT_RULE } from './types.js';
-import type { PromptModule } from './types.js';
+import { GROWTH_PLAN_FIXTURE_BODY } from '../growth/fixture';
+import { JSON_OUTPUT_RULE } from './types';
+import type { PromptModule } from './types';
 import {
   analyticsSummaryResultSchema,
   experimentSuggestionResultSchema,
   growthPlanBodySchema,
-} from './schemas.js';
-import type { AnalyticsSummaryResult, ExperimentSuggestionResult } from './schemas.js';
+} from './schemas';
+import type { AnalyticsSummaryResult, ExperimentSuggestionResult } from './schemas';
 
 /** Analysis and planning prompts. */
 

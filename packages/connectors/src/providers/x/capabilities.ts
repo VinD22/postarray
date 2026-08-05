@@ -7,12 +7,12 @@ import {
   buildSnapshot,
   contentKinds,
   mediaBytes,
-} from '../shared/capability.js';
-import type { ProviderConnection } from '../shared/contract-shape.js';
-import { normalizedNames } from '../shared/metrics.js';
-import { capabilityVersion } from '../shared/verification.js';
-import { X_ACCOUNT_METRICS, X_POST_METRICS } from './metrics.js';
-import { X_SNAPSHOT_COST } from './cost.js';
+} from '../shared/capability';
+import type { ProviderConnection } from '../shared/contract-shape';
+import { normalizedNames } from '../shared/metrics';
+import { capabilityVersion } from '../shared/verification';
+import { X_ACCOUNT_METRICS, X_POST_METRICS } from './metrics';
+import { X_SNAPSHOT_COST } from './cost';
 
 /**
  * X capability snapshot.

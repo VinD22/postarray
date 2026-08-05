@@ -1,4 +1,4 @@
-export { createYouTubeConnector } from './connector.js';
+export { createYouTubeConnector } from './connector';
 export {
   YOUTUBE_CAPABILITY_REVISION,
   YOUTUBE_DAILY_QUOTA_UNITS,
@@ -19,10 +19,10 @@ export {
   youTubePrivacyOptions,
   type ThumbnailCapability,
   type YouTubeCapabilityInput,
-} from './capabilities.js';
+} from './capabilities';
 export {
   YOUTUBE_ACCOUNT_METRICS,
   YOUTUBE_CHANNEL_PARTS,
   YOUTUBE_POST_METRICS,
   YOUTUBE_VIDEO_PARTS,
-} from './metrics.js';
+} from './metrics';

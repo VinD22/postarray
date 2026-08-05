@@ -38,9 +38,9 @@ import {
   planChangesAnything,
   projectedDimensions,
   type AccountRule,
-} from '../state/media-rules.js';
-import { aspectPresetsFor } from '../state/media-rules.js';
-import { CheckRow } from '../../composer/components/form-rows.js';
+} from '../state/media-rules';
+import { aspectPresetsFor } from '../state/media-rules';
+import { CheckRow } from '../../composer/components/form-rows';
 import {
   CanvasTab,
   currentPresetId,
@@ -48,13 +48,13 @@ import {
   NumberField,
   OutputTab,
   withCrop,
-} from './picture-editor-fields.js';
+} from './picture-editor-fields';
 import {
   IDENTITY_EDIT_PLAN,
   type MediaAsset,
   type MediaEditPlan,
   type OutputFormat,
-} from '../types.js';
+} from '../types';
 
 export interface PictureEditorProps {
   readonly asset: MediaAsset;

@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-import { contentItemIdSchema, postVariantIdSchema } from '../../common/schemas.js';
+import { contentItemIdSchema, postVariantIdSchema } from '../../common/schemas';
 
 /**
  * Immediate publish.

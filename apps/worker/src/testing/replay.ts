@@ -1,4 +1,4 @@
-import type { WorkflowCommand } from './fake-runtime.js';
+import type { WorkflowCommand } from './fake-runtime';
 
 /**
  * Replay verification.

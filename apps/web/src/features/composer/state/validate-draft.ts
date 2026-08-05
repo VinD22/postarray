@@ -23,8 +23,8 @@ import {
   maxBytesFor,
   readCounter,
   type MediaFacts,
-} from './capability-rules.js';
-import type { TargetAccount } from '../types.js';
+} from './capability-rules';
+import type { TargetAccount } from '../types';
 
 /**
  * The catalog stores a sentence per code under `validation.<code>.message`.

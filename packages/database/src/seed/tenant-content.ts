@@ -1,10 +1,10 @@
 import { createHash } from 'node:crypto';
 
-import type { RlsTransactionClient } from '../tenancy/rls-context.js';
+import type { RlsTransactionClient } from '../tenancy/rls-context';
 
-import { SEED_METRIC_IDS } from './catalog.js';
-import { SEED_IDS } from './tenant-core.js';
-import { daysFromNow, hoursAgo, seedId } from './ids.js';
+import { SEED_METRIC_IDS } from './catalog';
+import { SEED_IDS } from './tenant-core';
+import { daysFromNow, hoursAgo, seedId } from './ids';
 
 /**
  * Content, publishing evidence, automation and links.

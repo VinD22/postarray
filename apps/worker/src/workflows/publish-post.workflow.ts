@@ -1,6 +1,6 @@
-import { createTemporalRuntime, workerActivities } from './temporal-runtime.js';
-import { runPublishPost } from './core/publish-post.core.js';
-import type { PublishPostWorkflowInput, PublishPostWorkflowOutput } from './inputs.js';
+import { createTemporalRuntime, workerActivities } from './temporal-runtime';
+import { runPublishPost } from './core/publish-post.core';
+import type { PublishPostWorkflowInput, PublishPostWorkflowOutput } from './inputs';
 
 /**
  * The campaign entry point.

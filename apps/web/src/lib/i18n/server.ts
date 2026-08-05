@@ -4,7 +4,7 @@ import { cookies, headers } from 'next/headers';
 
 import { createTranslator, loadCatalog, type PartialCatalog, type Translator } from '@relay/i18n';
 
-import { LOCALE_COOKIE, negotiateLocale, resolveTimeZone, TIME_ZONE_COOKIE } from './routing.js';
+import { LOCALE_COOKIE, negotiateLocale, resolveTimeZone, TIME_ZONE_COOKIE } from './routing';
 
 /** Everything a server component needs to render text for this request. */
 export interface RequestIntl {

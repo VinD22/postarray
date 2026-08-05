@@ -1,9 +1,9 @@
 import { GROWTH_PLAN_SCHEMA_VERSION, growthPlanSchema } from '@relay/contracts';
 import type { BusinessProfile, GrowthPlan, OpportunityRecord, ToolRecord } from '@relay/contracts';
 
-import { GROWTH_PLAN_FIXTURE_BODY } from './fixture.js';
-import { buildGrowthContext } from './retrieval.js';
-import type { GrowthPlanContext } from './retrieval.js';
+import { GROWTH_PLAN_FIXTURE_BODY } from './fixture';
+import { buildGrowthContext } from './retrieval';
+import type { GrowthPlanContext } from './retrieval';
 
 /**
  * Deterministic builders shared by the tests in this package. Kept out of the
