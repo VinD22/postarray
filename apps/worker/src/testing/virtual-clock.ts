@@ -193,12 +193,21 @@ export async function drive<T>(clock: VirtualClock, work: Promise<T>): Promise<T
     }
     const next = clock.nextEventMs();
     if (next === null) {
+      // A waiter with no deadline is woken by a state change, not by the clock.
+      // Its predicate can become true during the microtask drain that happens
+      // after `settle()` ran, so settle once more before calling it a deadlock.
+      const waitersBefore = clock.pendingWaiterCount;
+      clock.settle();
       await drainMicrotasks();
       if (isSettled()) {
         break;
       }
+      if (clock.pendingWaiterCount < waitersBefore || clock.nextEventMs() !== null) {
+        continue;
+      }
       throw new WorkflowDeadlockError(
-        'the workflow is awaiting something that can never happen in virtual time',
+        `the workflow is awaiting something that can never happen in virtual time ` +
+          `(now=${clock.now()} timers=${clock.pendingTimerCount} waiters=${clock.pendingWaiterCount})`,
       );
     }
     clock.advanceTo(next);

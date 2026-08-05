@@ -493,6 +493,17 @@ export class ActivitySimulator implements WorkerActivities {
         messageKey: null,
       });
     }
+    // The provider may or may not have created the item. Without this branch the
+    // script fell through to `transient`, which retries, so the test asserting
+    // that an unknown outcome is never recreated could not actually fail.
+    if (step.kind === 'unknown' || step.kind === 'accept_then_crash' || step.kind === 'accept_then_timeout') {
+      return Promise.resolve({
+        outcome: 'unknown',
+        publication: null,
+        errorCode: ERROR_CODES.UNKNOWN,
+        messageKey: null,
+      });
+    }
     return Promise.resolve({
       outcome: 'transient',
       publication: null,
