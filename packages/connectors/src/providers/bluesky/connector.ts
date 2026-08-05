@@ -8,7 +8,9 @@ import {
 
 import {
   CONNECTOR_CONTRACT_VERSION,
+  NOT_IMPLEMENTED_FEATURES,
   REMEDIATION,
+  SecretValue,
   ensureOk,
   parseProviderBody,
   providerFailure,
@@ -18,6 +20,7 @@ import {
   type CredentialResult,
   type DeleteRequest,
   type ExternalAccount,
+  type FailedItem,
   type MediaPreparationRequest,
   type MentionEntity,
   type MentionSearchRequest,
@@ -37,6 +40,7 @@ import {
   type SocialConnector,
   type StatusRequest,
 } from '../shared/contract-shape.js';
+import { accessTokenOf, errorSummary, mentionOffset, providerOptionsOf } from '../shared/access.js';
 import { mapMetrics } from '../shared/metrics.js';
 import { buildPreview } from '../shared/preview.js';
 import { countGraphemes } from '../shared/text.js';
@@ -102,10 +106,10 @@ export function blueskyPermalink(handle: string | null, atUri: string): string |
 }
 
 export function createBlueskyConnector(deps: ConnectorDeps): SocialConnector {
-  const { http, vault, clock, logger } = deps;
+  const { http, clock, logger } = deps;
 
   async function token(connection: ProviderConnection): Promise<string> {
-    return vault.getAccessToken(connection.credentialRef);
+    return await accessTokenOf(connection);
   }
 
   function nowIso(): string {
@@ -115,6 +119,18 @@ export function createBlueskyConnector(deps: ConnectorDeps): SocialConnector {
   function handleOf(connection: ProviderConnection): string | null {
     const handle = connection.metadata['handle'];
     return typeof handle === 'string' && handle !== '' ? handle : null;
+  }
+
+  function sourceUrlOf(media: ProviderMedia, operation: string): string {
+    if (media.sourceUrl === null) {
+      throw providerFailure({
+        provider: PROVIDER,
+        operation,
+        remediationCode: REMEDIATION.mediaInvalid,
+        details: { mediaId: media.mediaId, reason: 'MEDIA_SOURCE_URL_MISSING' },
+      });
+    }
+    return media.sourceUrl;
   }
 
   async function xrpcGet(
@@ -142,7 +158,7 @@ export function createBlueskyConnector(deps: ConnectorDeps): SocialConnector {
     const accessToken = await token(connection);
     const source = await http.request({
       method: 'GET',
-      url: media.downloadUrl,
+      url: sourceUrlOf(media, 'bluesky.fetch_source'),
       accept: 'binary',
       provider: PROVIDER,
       operation: 'bluesky.fetch_source',
@@ -162,7 +178,7 @@ export function createBlueskyConnector(deps: ConnectorDeps): SocialConnector {
       provider: PROVIDER,
       operation: 'bluesky.upload_blob',
       response,
-      remediationKey: REMEDIATION.mediaInvalid,
+      remediationCode: REMEDIATION.mediaInvalid,
     });
     const parsed = parseProviderBody(atprotoBlobSchema, response, {
       provider: PROVIDER,
@@ -171,13 +187,16 @@ export function createBlueskyConnector(deps: ConnectorDeps): SocialConnector {
     });
     return {
       mediaId: media.mediaId,
+      derivativeId: media.derivativeId,
       providerMediaId: parsed.blob.ref.$link,
-      providerContainerId: null,
-      uploadUrl: null,
-      state: 'ready',
-      checksum: media.sha256,
-      variant: `bluesky:${media.kind}`,
-      metadata: { mimeType: parsed.blob.mimeType, size: parsed.blob.size },
+      containerId: null,
+      uploadState: 'ready',
+      derivativeChecksum: media.checksum,
+      byteSize: media.byteSize,
+      altTextApplied: media.altText !== null && media.altText !== '',
+      publicUrl: null,
+      expiresAt: null,
+      reusedFromPreviousAttempt: false,
     };
   }
 
@@ -189,15 +208,15 @@ export function createBlueskyConnector(deps: ConnectorDeps): SocialConnector {
     if (blobs.length === 0) {
       return null;
     }
-    const video = blobs.find((item) => item.variant === 'bluesky:video');
+    const video = blobs.find((item) => draft.media.find((media) => media.mediaId === item.mediaId)?.kind === 'video');
     if (video !== undefined) {
       return {
         $type: 'app.bsky.embed.video',
         video: {
           $type: 'blob',
           ref: { $link: video.providerMediaId },
-          mimeType: video.metadata['mimeType'],
-          size: video.metadata['size'],
+          mimeType: draft.media.find((media) => media.mediaId === video.mediaId)?.mimeType,
+          size: draft.media.find((media) => media.mediaId === video.mediaId)?.byteSize,
         },
       };
     }
@@ -207,8 +226,8 @@ export function createBlueskyConnector(deps: ConnectorDeps): SocialConnector {
         image: {
           $type: 'blob',
           ref: { $link: blob.providerMediaId },
-          mimeType: blob.metadata['mimeType'],
-          size: blob.metadata['size'],
+          mimeType: draft.media.find((media) => media.mediaId === blob.mediaId)?.mimeType,
+          size: draft.media.find((media) => media.mediaId === blob.mediaId)?.byteSize,
         },
         // Alt text is never omitted silently. An explicitly waived image sends an empty
         // string, which is the protocol's own way of saying "no description".
@@ -251,11 +270,10 @@ export function createBlueskyConnector(deps: ConnectorDeps): SocialConnector {
     options: ReturnType<typeof blueskyProviderOptionsSchema.parse>,
     reply: { root: { uri: string; cid: string }; parent: { uri: string; cid: string } } | null,
   ): Record<string, unknown> {
-    const mentions: ResolvedMention[] = draft.mentions.map((mention) => ({
-      did: mention.externalId,
-      offset: mention.offset,
-      length: mention.length,
-    }));
+    const mentions: ResolvedMention[] = draft.mentions.flatMap((mention) => {
+      const range = mentionOffset(text, mention);
+      return range === null ? [] : [{ did: mention.externalId, ...range }];
+    });
     const facets = buildFacets(text, mentions);
     const embed = buildEmbed(draft, prepared);
     return {
@@ -284,12 +302,40 @@ export function createBlueskyConnector(deps: ConnectorDeps): SocialConnector {
         displayName: 'Bluesky',
         iconToken: 'provider.bluesky',
         accountTypes: ['personal_profile'],
-        docsUrl: 'https://docs.bsky.app/docs/category/http-reference',
-        policyUrl: 'https://bsky.social/about/support/tos',
+        connectorVersion: '1.0.0',
+        label: 'beta',
+        limitationKey: 'connectors.bluesky.review_pending',
+        officialDocsUrl: 'https://docs.bsky.app/docs/category/http-reference',
+        officialPolicyUrl: 'https://bsky.social/about/support/tos',
         engineeringOwner: 'Backend/Connectors 2',
         policyOwner: 'Policy Owner',
-        lastPolicyReviewAt: SOURCE_VERIFIED_ON,
+        lastPolicyReviewAt: `${SOURCE_VERIFIED_ON}T00:00:00.000Z`,
+        nextPolicyReviewAt: '2027-02-04T00:00:00.000Z',
         contractVersion: CONNECTOR_CONTRACT_VERSION,
+        features: {
+          ...NOT_IMPLEMENTED_FEATURES,
+          discover_accounts: 'supported',
+          search_mentions: 'supported',
+          native_mentions: 'supported',
+          get_capabilities: 'supported',
+          validate_draft: 'supported',
+          prepare_media: 'supported',
+          preview: 'supported',
+          publish: 'supported',
+          get_status: 'supported',
+          delete_post: 'supported',
+          fetch_metrics: 'supported',
+          refresh_credential: 'supported',
+          revoke: 'supported',
+          first_comment: 'supported',
+          thread_parts: 'supported',
+          provider_idempotency: 'unsupported',
+          post_analytics: 'supported',
+          account_analytics: 'supported',
+          alt_text: 'supported',
+          carousel: 'supported',
+          video: 'supported',
+        },
       };
     },
 
@@ -298,18 +344,31 @@ export function createBlueskyConnector(deps: ConnectorDeps): SocialConnector {
       // password is a first-class secret in the token vault, and the connect UI explains
       // what an app password is and how to revoke it. We never ask for a main password.
       return {
-        flavor: 'app_password',
+        flavor: 'provider_specific',
         authorizeUrl: APP_PASSWORD_DOCS,
         tokenUrl: `${serviceUrl(deps)}/xrpc/com.atproto.server.createSession`,
         revokeUrl: `${serviceUrl(deps)}/xrpc/com.atproto.server.deleteSession`,
-        requiresPkce: false,
-        multiStep: false,
         redirectPath: '/oauth/bluesky/callback',
         scopes: [
-          { scope: 'atproto:repo.write', descriptionKey: 'connectors.bluesky.scope.repo_write' },
-          { scope: 'atproto:repo.read', descriptionKey: 'connectors.bluesky.scope.repo_read' },
+          {
+            scope: 'atproto:repo.write',
+            explanationKey: 'connectors.bluesky.scope.repo_write',
+            usedBy: ['composer', 'queue'],
+            required: true,
+          },
+          {
+            scope: 'atproto:repo.read',
+            explanationKey: 'connectors.bluesky.scope.repo_read',
+            usedBy: ['connections', 'analytics'],
+            required: true,
+          },
         ],
-        notesKey: 'connectors.bluesky.app_password_note',
+        pkceRequired: false,
+        multiStep: false,
+        stepDescriptionKeys: ['connectors.bluesky.app_password_note'],
+        supportsRefresh: true,
+        refreshAtLifetimeFraction: 0.75,
+        extraAuthorizeParameters: {},
       };
     },
 
@@ -318,7 +377,7 @@ export function createBlueskyConnector(deps: ConnectorDeps): SocialConnector {
       const response = await http.request({
         method: 'GET',
         url: `${serviceUrl(deps)}/xrpc/com.atproto.server.getSession`,
-        headers: { authorization: `Bearer ${grant.accessToken}` },
+        headers: { authorization: `Bearer ${await grant.accessToken.use((value) => value)}` },
         accept: 'json',
         provider: PROVIDER,
         operation: 'bluesky.get_session',
@@ -327,7 +386,7 @@ export function createBlueskyConnector(deps: ConnectorDeps): SocialConnector {
         provider: PROVIDER,
         operation: 'bluesky.get_session',
         response,
-        remediationKey: REMEDIATION.reconnectAccount,
+        remediationCode: REMEDIATION.reconnectAccount,
       });
       const session = parseProviderBody(atprotoSessionSchema.partial({ accessJwt: true, refreshJwt: true }), response, {
         provider: PROVIDER,
@@ -336,15 +395,17 @@ export function createBlueskyConnector(deps: ConnectorDeps): SocialConnector {
       });
       return [
         {
-          externalId: session.did,
+          externalAccountId: session.did,
           accountType: 'personal_profile',
           displayName: session.handle,
           handle: session.handle,
           avatarUrl: null,
+          profileUrl: `https://bsky.app/profile/${session.handle}`,
           parentExternalId: null,
-          connectable: session.active !== false,
-          blockedReasonKey: session.active === false ? 'connectors.bluesky.account_inactive' : null,
-          scopes: [...grant.scopes],
+          grantedScopes: [...grant.grantedScopes],
+          eligible: session.active !== false,
+          ineligibleReasonKey: session.active === false ? 'connectors.bluesky.account_inactive' : null,
+          accountAccessToken: null,
           metadata: { handle: session.handle, serviceUrl: serviceUrl(deps) },
         },
       ];
@@ -358,7 +419,7 @@ export function createBlueskyConnector(deps: ConnectorDeps): SocialConnector {
       const response = await xrpcGet(
         input.connection,
         'app.bsky.actor.searchActorsTypeahead',
-        { q: query, limit: input.limit ?? 8 },
+        { q: query, limit: input.limit },
         'bluesky.search_mentions',
       );
       if (!response.ok) {
@@ -373,6 +434,7 @@ export function createBlueskyConnector(deps: ConnectorDeps): SocialConnector {
         operation: 'bluesky.search_mentions',
         response,
       });
+      const resolvedAt = nowIso();
       return parsed.actors.map((actor) => ({
         externalId: actor.did,
         displayLabel: actor.displayName ?? actor.handle,
@@ -380,7 +442,8 @@ export function createBlueskyConnector(deps: ConnectorDeps): SocialConnector {
         kind: 'person' as const,
         avatarUrl: actor.avatar ?? null,
         // A DID is a real, immutable entity id, so this is a native tag.
-        resolved: true,
+        resolvedToExternalId: true,
+        resolvedAt,
       }));
     },
 
@@ -390,7 +453,7 @@ export function createBlueskyConnector(deps: ConnectorDeps): SocialConnector {
 
     async validateDraft(draft: ProviderDraft): Promise<ValidationResult> {
       const targetId = draft.connection.connectionId;
-      blueskyProviderOptionsSchema.parse(draft.providerOptions);
+      blueskyProviderOptionsSchema.parse(providerOptionsOf(draft));
       const issues: ValidationIssue[] = [
         ...validateDraftShape(draft, draft.capabilities, {
           unit: 'grapheme',
@@ -466,77 +529,57 @@ export function createBlueskyConnector(deps: ConnectorDeps): SocialConnector {
     },
 
     async publish(request: PublishRequest): Promise<PublishResult> {
-      const { connection, draft } = request;
-      const options = blueskyProviderOptionsSchema.parse(draft.providerOptions);
+      const { draft } = request;
+      const connection = draft.connection;
+      const options = blueskyProviderOptionsSchema.parse(providerOptionsOf(draft));
       const handle = handleOf(connection);
-
-      const resumedUri = request.resume['rootUri'];
-      const resumedCid = request.resume['rootCid'];
-      let rootRef =
-        typeof resumedUri === 'string' && typeof resumedCid === 'string'
-          ? { uri: resumedUri, cid: resumedCid }
+      const explicitReply =
+        options.replyRootUri !== undefined &&
+        options.replyRootCid !== undefined &&
+        options.replyParentUri !== undefined &&
+        options.replyParentCid !== undefined
+          ? {
+              root: { uri: options.replyRootUri, cid: options.replyRootCid },
+              parent: { uri: options.replyParentUri, cid: options.replyParentCid },
+            }
           : null;
-
-      if (rootRef === null) {
-        const explicitReply =
-          options.replyRootUri !== undefined &&
-          options.replyRootCid !== undefined &&
-          options.replyParentUri !== undefined &&
-          options.replyParentCid !== undefined
-            ? {
-                root: { uri: options.replyRootUri, cid: options.replyRootCid },
-                parent: { uri: options.replyParentUri, cid: options.replyParentCid },
-              }
-            : null;
-        const created = await createRecord(
-          connection,
-          postRecord(draft, draft.body, request.preparedMedia, options, explicitReply),
-          'bluesky.create_post',
-        );
-        rootRef = { uri: created.uri, cid: created.cid };
-      }
+      const created = await createRecord(
+        connection,
+        postRecord(draft, draft.body, request.preparedMedia, options, explicitReply),
+        'bluesky.create_post',
+      );
+      const rootRef = { uri: created.uri, cid: created.cid };
+      const publishedAt = nowIso();
 
       const root: PublishItemResult = {
         kind: 'root',
         order: 0,
         threadItemId: null,
-        state: 'published',
         externalPostId: rootRef.uri,
         permalink: blueskyPermalink(handle, rootRef.uri),
-        errorClass: null,
-        errorCode: null,
-        remediationKey: null,
+        publishedAt,
       };
-
-      const publishedOrders = new Set<number>(
-        Array.isArray(request.resume['publishedOrders'])
-          ? (request.resume['publishedOrders'] as unknown[]).filter(
-              (entry): entry is number => typeof entry === 'number',
-            )
-          : [],
-      );
-      const items: PublishItemResult[] = [];
+      const items: PublishItemResult[] = [root];
+      const failures: FailedItem[] = [];
       let parent = rootRef;
       let pending = false;
       let failed = false;
 
       for (const item of [...draft.threadItems].sort((left, right) => left.order - right.order)) {
-        if (publishedOrders.has(item.order)) {
-          continue;
-        }
         if (item.delaySeconds > 0 || failed) {
-          // A delayed part is the worker's to schedule. The connector never sleeps.
-          pending = true;
-          items.push({
+          // Delayed parts are handed to a later activity. If one reaches this adapter,
+          // report it honestly rather than sleeping or inventing a provider job.
+          pending = item.delaySeconds > 0;
+          failures.push({
             kind: item.kind,
             order: item.order,
-            threadItemId: item.id,
-            state: 'processing',
-            externalPostId: null,
-            permalink: null,
-            errorClass: null,
-            errorCode: null,
-            remediationKey: null,
+            threadItemId: item.threadItemId,
+            error: errorSummary({
+              errorClass: 'TRANSIENT_PROVIDER',
+              remediationCode: REMEDIATION.commentFailedRootPublished,
+              messageKey: 'state.partially_published.label',
+              retryable: true,
+            }),
           });
           continue;
         }
@@ -553,57 +596,77 @@ export function createBlueskyConnector(deps: ConnectorDeps): SocialConnector {
             'bluesky.create_reply',
           );
           parent = { uri: created.uri, cid: created.cid };
-          publishedOrders.add(item.order);
           items.push({
             kind: item.kind,
             order: item.order,
-            threadItemId: item.id,
-            state: 'published',
+            threadItemId: item.threadItemId,
             externalPostId: created.uri,
             permalink: blueskyPermalink(handle, created.uri),
-            errorClass: null,
-            errorCode: null,
-            remediationKey: null,
+            publishedAt,
           });
-        } catch {
+        } catch (error) {
           failed = true;
-          items.push({
+          failures.push({
             kind: item.kind,
             order: item.order,
-            threadItemId: item.id,
-            state: 'failed',
-            externalPostId: null,
-            permalink: null,
-            errorClass: null,
-            errorCode: null,
-            remediationKey: REMEDIATION.commentFailedRootPublished,
+            threadItemId: item.threadItemId,
+            error: errorSummary({
+              errorClass: 'TRANSIENT_PROVIDER',
+              remediationCode: REMEDIATION.commentFailedRootPublished,
+              messageKey: 'state.partially_published.label',
+              retryable: true,
+              providerMessage: error instanceof Error ? error.message : null,
+            }),
           });
         }
       }
 
+      const sanitizedResponse = { rootUri: rootRef.uri, itemCount: items.length, pending };
+      if (failures.length > 0) {
+        return {
+          status: 'partial',
+          externalPostId: rootRef.uri,
+          permalink: blueskyPermalink(handle, rootRef.uri),
+          publishedAt,
+          items,
+          failures,
+          sanitizedResponse,
+          providerRequestId: null,
+          costMinor: null,
+          currency: null,
+        };
+      }
       return {
-        state: failed ? 'partially_published' : pending ? 'processing' : 'published',
+        status: 'published',
         externalPostId: rootRef.uri,
         permalink: blueskyPermalink(handle, rootRef.uri),
-        root,
+        publishedAt,
         items,
-        pollToken: rootRef.uri,
-        resume: {
-          rootUri: rootRef.uri,
-          rootCid: rootRef.cid,
-          publishedOrders: [...publishedOrders],
-        },
-        sanitizedProviderResponse: { rootUri: rootRef.uri, itemCount: items.length },
+        sanitizedResponse,
+        providerRequestId: null,
         costMinor: null,
         currency: null,
       };
     },
 
     async getStatus(input: StatusRequest): Promise<PublishStatus> {
+      const externalPostId = input.externalPostId ?? input.providerJobId;
+      if (externalPostId === null) {
+        return {
+          state: 'unknown',
+          externalPostId: null,
+          permalink: null,
+          publishedAt: null,
+          items: [],
+          error: null,
+          pollAfterSeconds: null,
+          sanitizedResponse: { reason: 'no_post_id_to_poll' },
+        };
+      }
       const response = await xrpcGet(
         input.connection,
         'app.bsky.feed.getPostThread',
-        { uri: input.pollToken, depth: 0, parentHeight: 0 },
+        { uri: externalPostId, depth: 0, parentHeight: 0 },
         'bluesky.get_status',
       );
       if (!response.ok) {
@@ -611,9 +674,11 @@ export function createBlueskyConnector(deps: ConnectorDeps): SocialConnector {
           state: 'unknown',
           externalPostId: null,
           permalink: null,
-          errorClass: null,
-          remediationKey: null,
-          sanitizedProviderResponse: { status: response.status },
+          publishedAt: null,
+          items: [],
+          error: null,
+          pollAfterSeconds: null,
+          sanitizedResponse: { status: response.status },
         };
       }
       const parsed = parseProviderBody(blueskyPostThreadSchema, response, {
@@ -627,18 +692,36 @@ export function createBlueskyConnector(deps: ConnectorDeps): SocialConnector {
           state: 'failed',
           externalPostId: null,
           permalink: null,
-          errorClass: 'PERMANENT_PROVIDER',
-          remediationKey: REMEDIATION.providerRejectedContent,
-          sanitizedProviderResponse: { notFound: true },
+          publishedAt: null,
+          items: [],
+          error: errorSummary({
+            errorClass: 'PERMANENT_PROVIDER',
+            remediationCode: REMEDIATION.providerRejectedContent,
+            messageKey: 'error.provider_content_rejected.message',
+            retryable: false,
+          }),
+          pollAfterSeconds: null,
+          sanitizedResponse: { notFound: true },
         };
       }
       return {
         state: 'published',
         externalPostId: post.uri,
         permalink: blueskyPermalink(handleOf(input.connection), post.uri),
-        errorClass: null,
-        remediationKey: null,
-        sanitizedProviderResponse: { indexedAt: post.indexedAt ?? null },
+        publishedAt: post.indexedAt ?? nowIso(),
+        items: [
+          {
+            kind: 'root',
+            order: 0,
+            threadItemId: null,
+            externalPostId: post.uri,
+            permalink: blueskyPermalink(handleOf(input.connection), post.uri),
+            publishedAt: post.indexedAt ?? nowIso(),
+          },
+        ],
+        error: null,
+        pollAfterSeconds: null,
+        sanitizedResponse: { indexedAt: post.indexedAt ?? null },
       };
     },
 
@@ -649,7 +732,7 @@ export function createBlueskyConnector(deps: ConnectorDeps): SocialConnector {
         throw providerFailure({
           provider: PROVIDER,
           operation: 'bluesky.delete_post',
-          remediationKey: REMEDIATION.contactSupport,
+          remediationCode: REMEDIATION.contactSupport,
           details: { reason: 'unparsable_at_uri' },
         });
       }
@@ -707,7 +790,7 @@ export function createBlueskyConnector(deps: ConnectorDeps): SocialConnector {
       }
 
       const externalPostId = input.externalPostId;
-      if (externalPostId === undefined) {
+      if (externalPostId === null) {
         return mapMetrics({
           provider: PROVIDER,
           scope: 'post',
@@ -762,8 +845,8 @@ export function createBlueskyConnector(deps: ConnectorDeps): SocialConnector {
       // The AT Protocol refresh uses the refresh JWT as the bearer, not a form grant.
       const response = await http.request({
         method: 'POST',
-        url: `${serviceUrl(deps, input.connection)}/xrpc/com.atproto.server.refreshSession`,
-        headers: { authorization: `Bearer ${input.refreshToken}` },
+        url: `${serviceUrl(deps)}/xrpc/com.atproto.server.refreshSession`,
+        headers: { authorization: `Bearer ${await input.refreshToken.use((value) => value)}` },
         accept: 'json',
         provider: PROVIDER,
         operation: 'bluesky.refresh_session',
@@ -772,7 +855,7 @@ export function createBlueskyConnector(deps: ConnectorDeps): SocialConnector {
         provider: PROVIDER,
         operation: 'bluesky.refresh_session',
         response,
-        remediationKey: REMEDIATION.reconnectAccount,
+        remediationCode: REMEDIATION.reconnectAccount,
       });
       const session = parseProviderBody(atprotoSessionSchema, response, {
         provider: PROVIDER,
@@ -780,20 +863,23 @@ export function createBlueskyConnector(deps: ConnectorDeps): SocialConnector {
         response,
       });
       return {
-        accessToken: session.accessJwt,
-        refreshToken: session.refreshJwt,
+        accessToken: new SecretValue(session.accessJwt, 'access_token'),
+        refreshToken: new SecretValue(session.refreshJwt, 'refresh_token'),
+        tokenType: 'bearer',
         // The AT Protocol does not return an expiry; the access JWT is short lived and we
         // refresh proactively rather than guessing a lifetime.
         expiresAt: null,
-        scopes: [],
+        grantedScopes: [...input.grantedScopes],
+        refreshTokenRotated: true,
+        obtainedAt: nowIso(),
       };
     },
 
     async revoke(input: RevokeRequest): Promise<void> {
-      const accessToken = await token(input.connection);
+      const accessToken = await input.accessToken.use((value) => value);
       const response = await http.request({
         method: 'POST',
-        url: `${serviceUrl(deps, input.connection)}/xrpc/com.atproto.server.deleteSession`,
+        url: `${serviceUrl(deps)}/xrpc/com.atproto.server.deleteSession`,
         headers: { authorization: `Bearer ${accessToken}` },
         accept: 'none',
         provider: PROVIDER,

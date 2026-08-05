@@ -742,14 +742,19 @@ export const billingGateway = {
     const usage = await api.billing.getUsage();
     // TODO(api): reconciliation, the price source date, the balance and the
     // spend alert belong on `GET /billing/usage`.
-    const detail = await request<{
+    interface UsageDetail {
       periodEnd?: string;
       reconciledAt?: string | null;
       priceSourceVerifiedAt?: string | null;
       balance?: MoneyView | null;
       spendAlert?: MoneyView | null;
       pauseAtAlert?: boolean;
-    }>('/billing/usage/detail').catch(() => ({}));
+    }
+    // The endpoint is optional today, so an absent detail falls back to the
+    // fields `GET /billing/usage` does return rather than failing the screen.
+    const detail = await request<UsageDetail>('/billing/usage/detail').catch(
+      (): UsageDetail => ({}),
+    );
 
     return {
       periodStart: usage.periodStart,

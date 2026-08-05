@@ -1,7 +1,16 @@
 import { RelayError, summarizeCapabilities } from '@relay/contracts';
 import { describe, expect, it } from 'vitest';
 
-import { createTestDeps, testConnection, testDraft, testMedia } from '../shared/testing.js';
+import {
+  createTestDeps,
+  testConnection,
+  testDraft,
+  testGrant,
+  testMedia,
+  testMentionSearchRequest,
+  testMetricsRequest,
+  testPublishRequest,
+} from '../shared/testing.js';
 import { buildLinkedInCapabilities } from './capabilities.js';
 import { createLinkedInConnector } from './connector.js';
 import {
@@ -49,17 +58,12 @@ const organizationCapabilities = buildLinkedInCapabilities({
   grantedScopes: ORG_SCOPES,
 });
 
-function request(overrides: Record<string, unknown>): Record<string, unknown> {
-  return {
-    preparedMedia: [],
-    idempotencyKey: 'idem-linkedin-0001',
-    capabilityVersion: organizationCapabilities.capabilityVersion,
-    contentChecksum: 'c'.repeat(64),
-    dispatchedAt: '2026-08-04T12:00:00.000Z',
-    resume: {},
-    ...overrides,
-  };
-}
+const organizationDraft = (body?: string) =>
+  testDraft({
+    connection: organizationConnection,
+    capabilities: organizationCapabilities,
+    ...(body === undefined ? {} : { body }),
+  });
 
 describe('LinkedIn capability snapshot', () => {
   it('supports the document post, which is the differentiated format', () => {
@@ -98,21 +102,15 @@ describe('LinkedIn account discovery', () => {
       ],
     });
     const connector = createLinkedInConnector(deps);
-    const accounts = await connector.discoverAccounts({
-      provider: 'linkedin',
-      accessToken: 'fake-test-access-token-not-a-real-credential',
-      refreshToken: null,
-      expiresAt: null,
-      scopes: ORG_SCOPES,
-      externalUserId: null,
-      extra: {},
-    });
+    const accounts = await connector.discoverAccounts(
+      testGrant({ provider: 'linkedin', scopes: ORG_SCOPES }),
+    );
     expect(accounts).toHaveLength(3);
-    const analyst = accounts.find((account) => account.externalId === '99000002');
-    expect(analyst?.connectable).toBe(false);
-    expect(analyst?.blockedReasonKey).toBe('connectors.linkedin.page_role_required');
-    const admin = accounts.find((account) => account.externalId === '99000001');
-    expect(admin?.connectable).toBe(true);
+    const analyst = accounts.find((account) => account.externalAccountId === '99000002');
+    expect(analyst?.eligible).toBe(false);
+    expect(analyst?.ineligibleReasonKey).toBe('connectors.linkedin.page_role_required');
+    const admin = accounts.find((account) => account.externalAccountId === '99000001');
+    expect(admin?.eligible).toBe(true);
   });
 
   it('still connects the member when the organization list is unavailable', async () => {
@@ -123,15 +121,9 @@ describe('LinkedIn account discovery', () => {
       ],
     });
     const connector = createLinkedInConnector(deps);
-    const accounts = await connector.discoverAccounts({
-      provider: 'linkedin',
-      accessToken: 'fake-test-access-token-not-a-real-credential',
-      refreshToken: null,
-      expiresAt: null,
-      scopes: ORG_SCOPES,
-      externalUserId: null,
-      extra: {},
-    });
+    const accounts = await connector.discoverAccounts(
+      testGrant({ provider: 'linkedin', scopes: ORG_SCOPES }),
+    );
     expect(accounts).toHaveLength(1);
   });
 });
@@ -190,16 +182,10 @@ describe('LinkedIn publish', () => {
     });
     const connector = createLinkedInConnector(deps);
     const result = await connector.publish(
-      request({
-        connection: organizationConnection,
-        draft: testDraft({
-          connection: organizationConnection,
-          capabilities: organizationCapabilities,
-          body: 'An organization update.',
-        }),
-      }) as never,
+      testPublishRequest({ draft: organizationDraft('An organization update.') }),
     );
-    expect(result.state).toBe('published');
+    expect(result.status).toBe('published');
+    if (result.status !== 'published') return;
     expect(result.externalPostId).toBe('urn:li:share:7100000000000000001');
   });
 
@@ -216,15 +202,7 @@ describe('LinkedIn publish', () => {
       ],
     });
     const connector = createLinkedInConnector(deps);
-    await connector.publish(
-      request({
-        connection: organizationConnection,
-        draft: testDraft({
-          connection: organizationConnection,
-          capabilities: organizationCapabilities,
-        }),
-      }) as never,
-    );
+    await connector.publish(testPublishRequest({ draft: organizationDraft() }));
     expect(simulator.callsTo('/rest/posts')).toHaveLength(1);
   });
 
@@ -236,36 +214,22 @@ describe('LinkedIn publish', () => {
     });
     const connector = createLinkedInConnector(deps);
     await expect(
-      connector.publish(
-        request({
-          connection: organizationConnection,
-          draft: testDraft({
-            connection: organizationConnection,
-            capabilities: organizationCapabilities,
-          }),
-        }) as never,
-      ),
+      connector.publish(testPublishRequest({ draft: organizationDraft() })),
     ).rejects.toSatisfy(
       (error: unknown) =>
         RelayError.is(error) && error.code === 'CONNECTION_ACTION_REQUIRED',
     );
   });
 
-  it('adopts an already created post rather than creating a second one', async () => {
-    const { deps, simulator } = createTestDeps();
+  it('refuses to report published when the create returned no post URN', async () => {
+    const { deps } = createTestDeps({
+      routes: [{ method: 'POST', match: '/rest/posts', status: 201, body: {} }],
+    });
     const connector = createLinkedInConnector(deps);
-    const result = await connector.publish(
-      request({
-        connection: organizationConnection,
-        draft: testDraft({
-          connection: organizationConnection,
-          capabilities: organizationCapabilities,
-        }),
-        resume: { postUrn: 'urn:li:share:7100000000000000001' },
-      }) as never,
-    );
-    expect(result.externalPostId).toBe('urn:li:share:7100000000000000001');
-    expect(simulator.calls).toHaveLength(0);
+    // Published means an external post id. A 2xx with no URN is not evidence.
+    await expect(
+      connector.publish(testPublishRequest({ draft: organizationDraft() })),
+    ).rejects.toSatisfy((error: unknown) => RelayError.is(error));
   });
 });
 
@@ -282,11 +246,13 @@ describe('LinkedIn metrics', () => {
       ],
     });
     const connector = createLinkedInConnector(deps);
-    const observations = await connector.fetchMetrics({
-      connection: organizationConnection,
-      scope: 'post',
-      externalPostId: 'urn:li:share:7100000000000000001',
-    });
+    const observations = await connector.fetchMetrics(
+      testMetricsRequest({
+        connection: organizationConnection,
+        scope: 'post',
+        externalPostId: 'urn:li:share:7100000000000000001',
+      }),
+    );
     const impressions = observations.find((entry) => entry.normalizedName === 'impressions');
     expect(impressions?.value).toBe(8420);
   });
@@ -296,11 +262,13 @@ describe('LinkedIn metrics', () => {
       routes: [{ method: 'GET', match: '/socialActions/', body: LINKEDIN_SOCIAL_ACTIONS_FIXTURE }],
     });
     const connector = createLinkedInConnector(deps);
-    const observations = await connector.fetchMetrics({
-      connection: memberConnection,
-      scope: 'post',
-      externalPostId: 'urn:li:share:7100000000000000002',
-    });
+    const observations = await connector.fetchMetrics(
+      testMetricsRequest({
+        connection: memberConnection,
+        scope: 'post',
+        externalPostId: 'urn:li:share:7100000000000000002',
+      }),
+    );
     const impressions = observations.find((entry) => entry.normalizedName === 'impressions');
     expect(impressions?.value).toBeNull();
     expect(impressions?.availability).toBe('unavailable_permission');
@@ -317,11 +285,10 @@ describe('LinkedIn mentions', () => {
       ],
     });
     const connector = createLinkedInConnector(deps);
-    const mentions = await connector.searchMentions?.({
-      connection: organizationConnection,
-      query: '@sample-studio-fake',
-    });
+    const mentions = await connector.searchMentions?.(
+      testMentionSearchRequest(organizationConnection, '@sample-studio-fake'),
+    );
     expect(mentions?.[0]?.externalId).toBe('urn:li:organization:99000001');
-    expect(mentions?.[0]?.resolved).toBe(true);
+    expect(mentions?.[0]?.resolvedToExternalId).toBe(true);
   });
 });

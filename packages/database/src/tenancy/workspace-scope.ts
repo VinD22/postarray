@@ -175,17 +175,20 @@ function wrapDelegate(
 
       const bound = (operation as PrismaOperation).bind(source);
 
+      // These wrappers are async so a scope violation surfaces as a rejected
+      // promise. Prisma operations are thenable, and a synchronous throw would
+      // slip past a caller's .catch() and surface somewhere unrelated.
       if (READ_OPERATIONS.has(property) || WHERE_WRITE_OPERATIONS.has(property)) {
-        return (args?: unknown) =>
+        return async (args?: unknown) =>
           bound(scopeWhere(args, model, workspaceId, property));
       }
 
       if (CREATE_OPERATIONS.has(property)) {
-        return (args?: unknown) => bound(scopeCreate(args, model, workspaceId));
+        return async (args?: unknown) => bound(scopeCreate(args, model, workspaceId));
       }
 
       if (property === 'upsert') {
-        return (args?: unknown) => bound(scopeUpsert(args, model, workspaceId));
+        return async (args?: unknown) => bound(scopeUpsert(args, model, workspaceId));
       }
 
       return bound;

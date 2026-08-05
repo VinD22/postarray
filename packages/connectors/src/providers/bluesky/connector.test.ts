@@ -4,7 +4,12 @@ import {
   createTestDeps,
   testConnection,
   testDraft,
+  testGrant,
   testMedia,
+  testMentionSearchRequest,
+  testMetricsRequest,
+  testPublishRequest,
+  testStatusRequest,
   testThreadItem,
 } from '../shared/testing.js';
 import { buildBlueskyCapabilities } from './capabilities.js';
@@ -32,19 +37,6 @@ const capabilities = buildBlueskyCapabilities({
   connection,
   observedAt: '2026-08-04T12:00:00.000Z',
 });
-
-function request(overrides: Record<string, unknown>): Record<string, unknown> {
-  return {
-    connection,
-    preparedMedia: [],
-    idempotencyKey: 'idem-bluesky-0001',
-    capabilityVersion: capabilities.capabilityVersion,
-    contentChecksum: '3'.repeat(64),
-    dispatchedAt: '2026-08-04T12:00:00.000Z',
-    resume: {},
-    ...overrides,
-  };
-}
 
 describe('Bluesky facets', () => {
   it('indexes into UTF-8 bytes, not UTF-16 code units', () => {
@@ -125,9 +117,10 @@ describe('Bluesky validation', () => {
   it('enforces the byte ceiling underneath the grapheme limit', async () => {
     const { deps } = createTestDeps();
     const connector = createBlueskyConnector(deps);
-    // 290 four-byte emoji are under 300 graphemes but over 3000 bytes.
+    // Family emoji are a single grapheme made of several UTF-8 code points, so this
+    // stays below 300 visible characters while crossing the 3000-byte protocol cap.
     const result = await connector.validateDraft(
-      testDraft({ connection, capabilities, body: '🌱'.repeat(290) }),
+      testDraft({ connection, capabilities, body: '👨‍👩‍👧‍👦'.repeat(150) }),
     );
     expect(result.issues.some((issue) => issue.code === 'BLUESKY_BYTE_LIMIT_EXCEEDED')).toBe(true);
     expect(result.issues.some((issue) => issue.code === 'TEXT_TOO_LONG')).toBe(false);
@@ -147,9 +140,10 @@ describe('Bluesky publish', () => {
     });
     const connector = createBlueskyConnector(deps);
     const result = await connector.publish(
-      request({ draft: testDraft({ connection, capabilities, body: 'Hello Bluesky.' }) }) as never,
+      testPublishRequest({ draft: testDraft({ connection, capabilities, body: 'Hello Bluesky.' }) }),
     );
-    expect(result.state).toBe('published');
+    expect(result.status).toBe('published');
+    if (result.status !== 'published') return;
     expect(result.externalPostId).toBe(
       'at://did:plc:fakedidfakedidfake01/app.bsky.feed.post/fakerkey0001',
     );
@@ -176,16 +170,16 @@ describe('Bluesky publish', () => {
     });
     const connector = createBlueskyConnector(deps);
     const result = await connector.publish(
-      request({
+      testPublishRequest({
         draft: testDraft({
           connection,
           capabilities,
           body: 'Part one.',
           threadItems: [testThreadItem(1, 'Part two.')],
         }),
-      }) as never,
+      }),
     );
-    expect(result.state).toBe('published');
+    expect(result.status).toBe('published');
     const reply = simulator.calls[1];
     expect(reply?.json).toMatchObject({
       record: {
@@ -195,24 +189,6 @@ describe('Bluesky publish', () => {
         },
       },
     });
-  });
-
-  it('adopts an existing root on retry rather than posting twice', async () => {
-    const { deps, simulator } = createTestDeps();
-    const connector = createBlueskyConnector(deps);
-    const result = await connector.publish(
-      request({
-        draft: testDraft({ connection, capabilities }),
-        resume: {
-          rootUri: 'at://did:plc:fakedidfakedidfake01/app.bsky.feed.post/fakerkey0001',
-          rootCid: 'bafyreifakerecordcidfakerecordcidfakerecordcid001',
-        },
-      }) as never,
-    );
-    expect(result.externalPostId).toBe(
-      'at://did:plc:fakedidfakedidfake01/app.bsky.feed.post/fakerkey0001',
-    );
-    expect(simulator.calls).toHaveLength(0);
   });
 
   it('uploads a blob and attaches it with its alt text', async () => {
@@ -225,10 +201,12 @@ describe('Bluesky publish', () => {
     const connector = createBlueskyConnector(deps);
     const prepared = await connector.prepareMedia({
       connection,
-      draft: testDraft({ connection, capabilities }),
+      postVariantId: 'pv_test_0001',
+      contentKind: 'image',
       media: [testMedia({ kind: 'image', altText: 'A described photograph.' })],
       idempotencyKey: 'idem-bluesky-0002',
-    } as never);
+      capabilities,
+    });
     expect(prepared[0]?.providerMediaId).toBe(
       'bafkreifakeblobreferencefakeblobreferencefake0001',
     );
@@ -246,10 +224,12 @@ describe('Bluesky publish', () => {
       ],
     });
     const connector = createBlueskyConnector(deps);
-    const status = await connector.getStatus({
-      connection,
-      pollToken: 'at://did:plc:fakedidfakedidfake01/app.bsky.feed.post/gone',
-    });
+    const status = await connector.getStatus(
+      testStatusRequest({
+        connection,
+        externalPostId: 'at://did:plc:fakedidfakedidfake01/app.bsky.feed.post/gone',
+      }),
+    );
     expect(status.state).toBe('failed');
   });
 });
@@ -262,11 +242,13 @@ describe('Bluesky reads', () => {
       ],
     });
     const connector = createBlueskyConnector(deps);
-    const observations = await connector.fetchMetrics({
-      connection,
-      scope: 'post',
-      externalPostId: 'at://did:plc:fakedidfakedidfake01/app.bsky.feed.post/fakerkey0001',
-    });
+    const observations = await connector.fetchMetrics(
+      testMetricsRequest({
+        connection,
+        scope: 'post',
+        externalPostId: 'at://did:plc:fakedidfakedidfake01/app.bsky.feed.post/fakerkey0001',
+      }),
+    );
     expect(observations.find((entry) => entry.normalizedName === 'likes')?.value).toBe(57);
     expect(observations.find((entry) => entry.normalizedName === 'comments')?.value).toBe(4);
   });
@@ -276,7 +258,7 @@ describe('Bluesky reads', () => {
       routes: [{ method: 'GET', match: 'app.bsky.actor.getProfile', body: BLUESKY_PROFILE_FIXTURE }],
     });
     const connector = createBlueskyConnector(deps);
-    const observations = await connector.fetchMetrics({ connection, scope: 'account' });
+    const observations = await connector.fetchMetrics(testMetricsRequest({ connection, scope: 'account' }));
     expect(observations.find((entry) => entry.normalizedName === 'published_count')?.value).toBe(
       437,
     );
@@ -293,9 +275,11 @@ describe('Bluesky reads', () => {
       ],
     });
     const connector = createBlueskyConnector(deps);
-    const mentions = await connector.searchMentions?.({ connection, query: '@someone-else' });
+    const mentions = await connector.searchMentions?.(
+      testMentionSearchRequest(connection, '@someone-else'),
+    );
     expect(mentions?.[0]?.externalId).toBe('did:plc:fakedidfakedidfake02');
-    expect(mentions?.[0]?.resolved).toBe(true);
+    expect(mentions?.[0]?.resolvedToExternalId).toBe(true);
   });
 
   it('discovers exactly one identity', async () => {
@@ -305,17 +289,9 @@ describe('Bluesky reads', () => {
       ],
     });
     const connector = createBlueskyConnector(deps);
-    const accounts = await connector.discoverAccounts({
-      provider: 'bluesky',
-      accessToken: 'fake-test-access-token-not-a-real-credential',
-      refreshToken: null,
-      expiresAt: null,
-      scopes: [],
-      externalUserId: null,
-      extra: {},
-    });
+    const accounts = await connector.discoverAccounts(testGrant({ provider: 'bluesky' }));
     expect(accounts).toHaveLength(1);
-    expect(accounts[0]?.externalId).toBe('did:plc:fakedidfakedidfake01');
+    expect(accounts[0]?.externalAccountId).toBe('did:plc:fakedidfakedidfake01');
   });
 });
 

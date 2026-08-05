@@ -7,6 +7,7 @@ import {
   providerFailure,
   type ConnectorDeps,
   type HttpResponse,
+  type RemediationCode,
 } from '../shared/contract-shape.js';
 
 /**
@@ -143,7 +144,7 @@ export function canPublishToPage(page: MetaPage): boolean {
  * signal; the message text is localized and must never be pattern matched for control flow
  * beyond the documented codes.
  */
-export function metaRemediation(response: HttpResponse): string | undefined {
+export function metaRemediation(response: HttpResponse): RemediationCode | undefined {
   const parsed = metaErrorSchema.safeParse(response.body);
   if (!parsed.success || parsed.data.error === undefined) {
     return undefined;
@@ -197,7 +198,13 @@ export interface MetaClient {
   delete(input: { path: string; accessToken: string; operation: string }): Promise<HttpResponse>;
   /** Throws a classified RelayError with a Meta remediation key when the call failed. */
   require(response: HttpResponse, operation: string): void;
-  parse<T>(schema: { parse(value: unknown): T }, response: HttpResponse, operation: string): T;
+  parse<T>(
+    schema: {
+      safeParse(value: unknown): { success: true; data: T } | { success: false; error: unknown };
+    },
+    response: HttpResponse,
+    operation: string,
+  ): T;
 }
 
 /** Build a Graph client bound to one Meta surface and its base URL. */
@@ -249,13 +256,13 @@ export function createMetaClient(deps: ConnectorDeps, surface: MetaSurface): Met
       if (response.ok) {
         return;
       }
-      const remediationKey = metaRemediation(response);
+      const remediationCode = metaRemediation(response);
       const providerMessage = metaUserMessage(response);
       throw providerFailure({
         provider: surface,
         operation,
         response,
-        ...(remediationKey === undefined ? {} : { remediationKey }),
+        ...(remediationCode === undefined ? {} : { remediationCode }),
         details: providerMessage === null ? {} : { providerMessage },
       });
     },

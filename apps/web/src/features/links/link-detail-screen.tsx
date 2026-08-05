@@ -448,14 +448,14 @@ export function LinkDetailScreen({
         confirmLabel={t('action.disable')}
         cancelLabel={t('action.cancel')}
         closeLabel={t('a11y.label.closeDialog')}
-        onConfirm={() =>
-          setEnabled.mutateAsync({
+        onConfirm={async () => {
+          await setEnabled.mutateAsync({
             shortLinkId: link.id,
             enabled: false,
             reason: '',
             idempotencyKey: crypto.randomUUID(),
-          })
-        }
+          });
+        }}
       />
     </div>
   );

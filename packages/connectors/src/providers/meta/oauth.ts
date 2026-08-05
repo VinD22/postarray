@@ -1,5 +1,6 @@
 import {
   REMEDIATION,
+  SecretValue,
   providerFailure,
   refreshOAuth2Token,
   type AuthorizationDefinition,
@@ -39,87 +40,156 @@ const THREADS_REFRESH_URL = `${THREADS_GRAPH_BASE}/refresh_access_token`;
 export const INSTAGRAM_SCOPES: readonly OAuthScopeDefinition[] = Object.freeze([
   {
     scope: 'instagram_basic',
-    descriptionKey: 'connectors.instagram.scope.instagram_basic',
+    explanationKey: 'connectors.instagram.scope.instagram_basic',
+    usedBy: ['connections', 'composer'],
+    required: true,
   },
   {
     scope: 'instagram_content_publish',
-    descriptionKey: 'connectors.instagram.scope.instagram_content_publish',
+    explanationKey: 'connectors.instagram.scope.instagram_content_publish',
+    usedBy: ['composer', 'queue'],
+    required: true,
   },
   {
     scope: 'instagram_manage_insights',
-    descriptionKey: 'connectors.instagram.scope.instagram_manage_insights',
+    explanationKey: 'connectors.instagram.scope.instagram_manage_insights',
+    usedBy: ['analytics'],
+    required: false,
   },
   {
     scope: 'instagram_manage_comments',
-    descriptionKey: 'connectors.instagram.scope.instagram_manage_comments',
+    explanationKey: 'connectors.instagram.scope.instagram_manage_comments',
+    usedBy: ['composer'],
+    required: false,
   },
-  { scope: 'pages_show_list', descriptionKey: 'connectors.instagram.scope.pages_show_list' },
+  {
+    scope: 'pages_show_list',
+    explanationKey: 'connectors.instagram.scope.pages_show_list',
+    usedBy: ['connections'],
+    required: true,
+  },
   {
     scope: 'pages_read_engagement',
-    descriptionKey: 'connectors.instagram.scope.pages_read_engagement',
+    explanationKey: 'connectors.instagram.scope.pages_read_engagement',
+    usedBy: ['connections', 'analytics'],
+    required: true,
   },
-  { scope: 'business_management', descriptionKey: 'connectors.instagram.scope.business_management' },
+  {
+    scope: 'business_management',
+    explanationKey: 'connectors.instagram.scope.business_management',
+    usedBy: ['connections'],
+    required: false,
+  },
 ]);
 
 export const FACEBOOK_SCOPES: readonly OAuthScopeDefinition[] = Object.freeze([
-  { scope: 'pages_show_list', descriptionKey: 'connectors.facebook.scope.pages_show_list' },
+  {
+    scope: 'pages_show_list',
+    explanationKey: 'connectors.facebook.scope.pages_show_list',
+    usedBy: ['connections'],
+    required: true,
+  },
   {
     scope: 'pages_manage_posts',
-    descriptionKey: 'connectors.facebook.scope.pages_manage_posts',
+    explanationKey: 'connectors.facebook.scope.pages_manage_posts',
+    usedBy: ['composer', 'queue'],
+    required: true,
   },
   {
     scope: 'pages_read_engagement',
-    descriptionKey: 'connectors.facebook.scope.pages_read_engagement',
+    explanationKey: 'connectors.facebook.scope.pages_read_engagement',
+    usedBy: ['connections', 'analytics'],
+    required: true,
   },
   {
     scope: 'pages_manage_engagement',
-    descriptionKey: 'connectors.facebook.scope.pages_manage_engagement',
+    explanationKey: 'connectors.facebook.scope.pages_manage_engagement',
+    usedBy: ['composer'],
+    required: false,
   },
-  { scope: 'read_insights', descriptionKey: 'connectors.facebook.scope.read_insights' },
-  { scope: 'business_management', descriptionKey: 'connectors.facebook.scope.business_management' },
+  {
+    scope: 'read_insights',
+    explanationKey: 'connectors.facebook.scope.read_insights',
+    usedBy: ['analytics'],
+    required: false,
+  },
+  {
+    scope: 'business_management',
+    explanationKey: 'connectors.facebook.scope.business_management',
+    usedBy: ['connections'],
+    required: false,
+  },
 ]);
 
 export const THREADS_SCOPES: readonly OAuthScopeDefinition[] = Object.freeze([
-  { scope: 'threads_basic', descriptionKey: 'connectors.threads.scope.threads_basic' },
+  {
+    scope: 'threads_basic',
+    explanationKey: 'connectors.threads.scope.threads_basic',
+    usedBy: ['connections', 'composer'],
+    required: true,
+  },
   {
     scope: 'threads_content_publish',
-    descriptionKey: 'connectors.threads.scope.threads_content_publish',
+    explanationKey: 'connectors.threads.scope.threads_content_publish',
+    usedBy: ['composer', 'queue'],
+    required: true,
   },
-  { scope: 'threads_manage_replies', descriptionKey: 'connectors.threads.scope.threads_manage_replies' },
-  { scope: 'threads_manage_insights', descriptionKey: 'connectors.threads.scope.threads_manage_insights' },
+  {
+    scope: 'threads_manage_replies',
+    explanationKey: 'connectors.threads.scope.threads_manage_replies',
+    usedBy: ['composer'],
+    required: false,
+  },
+  {
+    scope: 'threads_manage_insights',
+    explanationKey: 'connectors.threads.scope.threads_manage_insights',
+    usedBy: ['analytics'],
+    required: false,
+  },
 ]);
 
 export function metaAuthorization(surface: MetaSurface): AuthorizationDefinition {
   if (surface === 'threads') {
     return {
-      flavor: 'oauth2_code',
+      // Threads issues a short lived token that is exchanged for a long lived one, with a
+      // dedicated refresh endpoint. It is not a PKCE flow.
+      flavor: 'oauth2_client_credentials_exchange',
       authorizeUrl: THREADS_OAUTH_BASE,
       tokenUrl: THREADS_TOKEN_URL,
       // Threads exposes no revoke endpoint. Disconnect deletes our stored credential and
       // the connect screen tells the user how to remove the app on Threads.
       revokeUrl: null,
-      requiresPkce: false,
-      multiStep: false,
       redirectPath: '/oauth/threads/callback',
-      scopes: THREADS_SCOPES,
-      notesKey: 'connectors.threads.authorization_note',
+      scopes: [...THREADS_SCOPES],
+      pkceRequired: false,
+      multiStep: false,
+      stepDescriptionKeys: ['connectors.threads.authorization_note'],
+      supportsRefresh: true,
+      refreshAtLifetimeFraction: 0.75,
+      extraAuthorizeParameters: {},
     };
   }
   return {
-    flavor: 'oauth2_code',
+    // Meta exchanges the short lived user token for a long lived one rather than issuing
+    // a refresh token, which is what this flavor names.
+    flavor: 'oauth2_client_credentials_exchange',
     authorizeUrl: FACEBOOK_OAUTH_BASE,
     tokenUrl: FACEBOOK_TOKEN_URL,
     revokeUrl: `${GRAPH_BASE}/me/permissions`,
-    requiresPkce: false,
+    redirectPath: surface === 'instagram' ? '/oauth/instagram/callback' : '/oauth/facebook/callback',
+    scopes: surface === 'instagram' ? [...INSTAGRAM_SCOPES] : [...FACEBOOK_SCOPES],
+    pkceRequired: false,
     // Meta returns a user token from which we exchange Page tokens, and for Instagram we
     // then walk Pages to their linked professional account.
     multiStep: true,
-    redirectPath: surface === 'instagram' ? '/oauth/instagram/callback' : '/oauth/facebook/callback',
-    scopes: surface === 'instagram' ? INSTAGRAM_SCOPES : FACEBOOK_SCOPES,
-    notesKey:
+    stepDescriptionKeys: [
       surface === 'instagram'
         ? 'connectors.instagram.authorization_note'
         : 'connectors.facebook.authorization_note',
+    ],
+    supportsRefresh: true,
+    refreshAtLifetimeFraction: 0.75,
+    extraAuthorizeParameters: {},
   };
 }
 
@@ -138,7 +208,7 @@ export async function refreshMetaCredential(
     throw providerFailure({
       provider: surface,
       operation: `${surface}.refresh_credential`,
-      remediationKey: REMEDIATION.contactSupport,
+      remediationCode: REMEDIATION.contactSupport,
       details: { missingConfig: 'META_APP_ID, META_APP_SECRET' },
     });
   }
@@ -176,18 +246,24 @@ export async function refreshMetaCredential(
       provider: surface,
       operation: `${surface}.exchange_long_lived_token`,
       response,
-      remediationKey: REMEDIATION.reconnectAccount,
+      remediationCode: REMEDIATION.reconnectAccount,
     });
   }
   const parsed = metaLongLivedTokenSchema.parse(response.body);
   const expiresIn = parsed.expires_in;
+  const obtainedAt = deps.clock.now();
   return {
-    accessToken: parsed.access_token,
+    accessToken: new SecretValue(parsed.access_token, 'access_token'),
+    // Meta issues no refresh token for the Facebook family: the exchange above is the
+    // whole refresh story, so there is nothing rotated to store alongside it.
     refreshToken: null,
+    tokenType: parsed.token_type ?? 'bearer',
     expiresAt:
       expiresIn === undefined
         ? null
-        : new Date(deps.clock.now().getTime() + expiresIn * 1000).toISOString(),
-    scopes: [],
+        : new Date(obtainedAt.getTime() + expiresIn * 1000).toISOString(),
+    grantedScopes: [],
+    refreshTokenRotated: false,
+    obtainedAt: obtainedAt.toISOString(),
   };
 }

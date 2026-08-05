@@ -1,4 +1,5 @@
 import { REMEDIATION, providerFailure, type PublishStatus } from '../shared/contract-shape.js';
+import { errorSummary } from '../shared/access.js';
 import { metaContainerStatusSchema, type MetaClient, type MetaSurface } from './graph.js';
 
 /**
@@ -55,16 +56,26 @@ export function containerStatusToPublishStatus(
   surface: MetaSurface,
 ): PublishStatus {
   if (status.failed) {
+    const expired = status.statusCode === 'EXPIRED';
     return {
       state: 'failed',
       externalPostId: null,
       permalink: null,
-      errorClass: status.statusCode === 'EXPIRED' ? 'TRANSIENT_PROVIDER' : 'PERMANENT_PROVIDER',
-      remediationKey:
-        status.statusCode === 'EXPIRED'
+      publishedAt: null,
+      items: [],
+      error: errorSummary({
+        errorClass: expired ? 'TRANSIENT_PROVIDER' : 'PERMANENT_PROVIDER',
+        remediationCode: expired
           ? REMEDIATION.providerRateLimited
           : REMEDIATION.providerRejectedContent,
-      sanitizedProviderResponse: {
+        messageKey: expired
+          ? 'error.provider_rate_limited.message'
+          : 'error.provider_content_rejected.message',
+        retryable: expired,
+        providerMessage: status.errorMessage === null ? null : status.errorMessage.slice(0, 300),
+      }),
+      pollAfterSeconds: null,
+      sanitizedResponse: {
         surface,
         statusCode: status.statusCode,
         ...(status.errorMessage === null ? {} : { providerMessage: status.errorMessage.slice(0, 300) }),
@@ -75,9 +86,11 @@ export function containerStatusToPublishStatus(
     state: 'processing',
     externalPostId: null,
     permalink: null,
-    errorClass: null,
-    remediationKey: null,
-    sanitizedProviderResponse: { surface, statusCode: status.statusCode },
+    publishedAt: null,
+    items: [],
+    error: null,
+    pollAfterSeconds: 5,
+    sanitizedResponse: { surface, statusCode: status.statusCode },
   };
 }
 
@@ -93,7 +106,7 @@ export function assertContainerReady(
   throw providerFailure({
     provider: surface,
     operation,
-    remediationKey: status.failed
+    remediationCode: status.failed
       ? REMEDIATION.providerRejectedContent
       : REMEDIATION.providerRateLimited,
     details: {

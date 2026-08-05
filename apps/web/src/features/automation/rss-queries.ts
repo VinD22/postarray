@@ -3,6 +3,7 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 import { api, newIdempotencyKey } from '@/lib/api';
+import type { FeedInput } from '@/lib/api';
 
 import { automationKeys } from './queries';
 import type { FeedDraft, FeedHealthView, FeedSummaryView, FeedValidation } from './rss-types';
@@ -16,6 +17,20 @@ import type { FeedDraft, FeedHealthView, FeedSummaryView, FeedValidation } from 
  * follow. The wizard therefore cannot show a preview until the server has
  * fetched and parsed the feed itself.
  */
+
+/**
+ * The wizard's draft in the shape the API records. The wizard calls the feed's
+ * name its title, which is the only place the two shapes disagree.
+ */
+function toFeedInput(draft: FeedDraft): FeedInput {
+  const { title, ...rest } = draft;
+  return { name: title, ...rest };
+}
+
+function toPartialFeedInput(draft: Partial<FeedDraft>): Partial<FeedInput> {
+  const { title, ...rest } = draft;
+  return { ...(title === undefined ? {} : { name: title }), ...rest };
+}
 
 /** TODO(web): depends on `@/lib/api` publishing typed RSS view models. */
 function adapt<T>(value: unknown): T {
@@ -59,7 +74,7 @@ export function useCreateFeed() {
   const client = useQueryClient();
   return useMutation({
     mutationFn: async (draft: FeedDraft): Promise<FeedSummaryView> =>
-      adapt<FeedSummaryView>(await api.rss.create(draft, newIdempotencyKey('feed'))),
+      adapt<FeedSummaryView>(await api.rss.create(toFeedInput(draft), newIdempotencyKey('feed'))),
     onSuccess: () => {
       void client.invalidateQueries({ queryKey: automationKeys.feeds });
     },
@@ -73,7 +88,7 @@ export function useUpdateFeed() {
       readonly feedId: string;
       readonly draft: Partial<FeedDraft>;
     }): Promise<FeedSummaryView> =>
-      adapt<FeedSummaryView>(await api.rss.update(input.feedId, input.draft)),
+      adapt<FeedSummaryView>(await api.rss.update(input.feedId, toPartialFeedInput(input.draft))),
     onSuccess: (_result, input) => {
       void client.invalidateQueries({ queryKey: automationKeys.feeds });
       void client.invalidateQueries({ queryKey: automationKeys.feed(input.feedId) });

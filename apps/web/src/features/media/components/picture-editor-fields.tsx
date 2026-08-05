@@ -143,6 +143,7 @@ export function OutputTab({ plan, patch }: TabBodyProps): ReactNode {
           max={100}
           step={1}
           disabled={lossless}
+          thumbLabels={[t.full('mediaLib.editor.qualityLabel')]}
           aria-label={t.full('mediaLib.editor.qualityLabel')}
           onValueChange={(values) => patch({ quality: values[0] ?? plan.quality })}
         />

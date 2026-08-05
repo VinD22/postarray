@@ -17,14 +17,21 @@ export * from './types.js';
 export type { ConnectionListQuery } from './resources/connections.js';
 export type { CalendarQuery, ContentListQuery } from './resources/content.js';
 export type { ActionCenterQuery } from './resources/action-center.js';
-export type { MediaAssetView, UploadTicket } from './resources/media.js';
+export type {
+  MediaAssetView,
+  MediaEditInput,
+  RightsDeclarationInput,
+  UploadTicket,
+} from './resources/media.js';
 export type { ExperimentView, MetricWindow, ShortLinkStats, ShortLinkView } from './resources/insights.js';
 export type {
   ApiKeyView,
+  FeedInput,
   FeedView,
   OAuthAppView,
   OAuthGrantView,
   RuleInput,
+  RulePreflightView,
   RuleRunView,
   RuleView,
 } from './resources/platform.js';

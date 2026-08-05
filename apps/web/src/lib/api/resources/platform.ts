@@ -136,6 +136,30 @@ export interface FeedView {
   readonly health: 'ok' | 'invalid' | 'stalled' | 'unreachable';
 }
 
+/**
+ * A feed as the wizard defines it. A feed never publishes on its own: `policy`
+ * says what happens to the draft it produces, and every route through it still
+ * goes past validation and approval.
+ */
+export interface FeedInput {
+  readonly name: string;
+  readonly url: string;
+  /** True treats everything currently in the feed as seen. */
+  readonly markExistingAsSeen?: boolean;
+  /** The accounts items are drafted for. */
+  readonly connectionIds?: readonly string[];
+  readonly targetGroupId?: string | null;
+  readonly template?: string;
+  /** Rewrite the wording per platform, shown as a diff to accept or reject. */
+  readonly adaptText?: boolean;
+  /** Use the image the feed item carries. Relay never generates one. */
+  readonly useFeedImage?: boolean;
+  readonly policy?: 'draft' | 'approval' | 'next_slot' | 'fixed_cadence' | 'immediate';
+  /** Only meaningful with `fixed_cadence`. Seconds between items. */
+  readonly cadenceSeconds?: number | null;
+  readonly enabled?: boolean;
+}
+
 export const rssApi = {
   validateFeed: (input: { url: string }): Promise<{
     valid: boolean;
@@ -143,11 +167,9 @@ export const rssApi = {
     latestItemAt: string | null;
     problemKey: string | null;
   } | null> => call('/rss/validate', { method: 'POST', body: input, sideEffectFree: true }, () => null),
-  create: (
-    input: { name: string; url: string },
-    idempotencyKey: string,
-  ): Promise<FeedView | null> => call('/rss', { method: 'POST', body: input, idempotencyKey }, () => null),
-  update: (feedId: string, input: Partial<{ name: string; url: string; enabled: boolean }>): Promise<FeedView | null> =>
+  create: (input: FeedInput, idempotencyKey: string): Promise<FeedView | null> =>
+    call('/rss', { method: 'POST', body: input, idempotencyKey }, () => null),
+  update: (feedId: string, input: Partial<FeedInput>): Promise<FeedView | null> =>
     call(`/rss/${feedId}`, { method: 'PATCH', body: input }, () => null),
   list: (query: { cursor?: string; limit?: number } = {}): Promise<Paginated<FeedView>> =>
     call('/rss', { query }, () => page<FeedView>([])),
