@@ -240,6 +240,8 @@ function isLogger(value: unknown): value is Logger {
     return false;
   }
   const methods = ['trace', 'debug', 'info', 'warn', 'error', 'fatal', 'child'];
-  const record = Object.fromEntries(Object.entries(value));
+  // Read through the prototype chain. `child` is a class method, so it is not an
+  // own enumerable property and Object.entries would not see it.
+  const record = value as Record<string, unknown>;
   return methods.every((name) => typeof record[name] === 'function');
 }

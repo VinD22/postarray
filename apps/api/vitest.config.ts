@@ -1,17 +1,22 @@
+import swc from 'unplugin-swc';
 import { defineConfig } from 'vitest/config';
 
 export default defineConfig({
-  esbuild: {
-    target: 'es2023',
-    // Nest's DI reads design-time parameter types from decorator metadata.
-    tsconfigRaw: {
-      compilerOptions: {
-        experimentalDecorators: true,
-        emitDecoratorMetadata: true,
-        useDefineForClassFields: false,
+  // esbuild silently ignores `emitDecoratorMetadata`, so Nest's DI cannot read the
+  // design time parameter types and every by-type injection fails to resolve. SWC
+  // emits the metadata, which is why the suite is transformed with it rather than
+  // with vitest's default esbuild pipeline.
+  plugins: [
+    swc.vite({
+      module: { type: 'es6' },
+      jsc: {
+        target: 'es2023',
+        parser: { syntax: 'typescript', decorators: true },
+        transform: { legacyDecorator: true, decoratorMetadata: true },
+        keepClassNames: true,
       },
-    },
-  },
+    }),
+  ],
   test: {
     environment: 'node',
     include: ['src/**/*.test.ts'],

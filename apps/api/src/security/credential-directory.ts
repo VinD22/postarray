@@ -111,6 +111,29 @@ export class CredentialDirectory {
     await this.kv.set(key, JSON.stringify(value), { ttlSeconds });
   }
 
+  /**
+   * Read an index written by `write`, which JSON encodes its value. Reading it
+   * back with a raw `kv.get` returns a quoted string, and splitting that on
+   * commas yields hashes with stray quotes that match no key. That is how a
+   * refresh family could be "revoked" without any of its tokens being deleted.
+   */
+  private async readIndex(key: string): Promise<readonly string[]> {
+    const raw = await this.kv.get(key);
+    if (raw === null || raw === undefined || raw === '') {
+      return [];
+    }
+    let value: unknown = raw;
+    try {
+      value = JSON.parse(raw);
+    } catch {
+      // Tolerate a value written before this encoding was fixed.
+    }
+    if (typeof value !== 'string') {
+      return [];
+    }
+    return value.split(',').filter((hash) => hash.length > 0);
+  }
+
   private expired(expiresAt: string): boolean {
     return requireEpochMillis(expiresAt) <= this.clock.now().getTime();
   }
@@ -154,8 +177,7 @@ export class CredentialDirectory {
     expiresAt: string,
   ): Promise<void> {
     const key = CREDENTIAL_KEYS.sessionsForUser(userId);
-    const existing = (await this.kv.get(key)) ?? '';
-    const ids = new Set(existing.split(',').filter((id) => id.length > 0));
+    const ids = new Set(await this.readIndex(key));
     ids.add(sessionId);
     await this.write(key, [...ids].join(','), expiresAt);
   }
@@ -182,8 +204,7 @@ export class CredentialDirectory {
    */
   async revokeSessionRefreshFamily(familyId: string): Promise<readonly string[]> {
     const key = CREDENTIAL_KEYS.refreshFamily(familyId);
-    const index = (await this.kv.get(key)) ?? '';
-    const hashes = index.split(',').filter((hash) => hash.length > 0);
+    const hashes = await this.readIndex(key);
     for (const hash of hashes) {
       const record = await this.getSessionRefresh(hash);
       if (record !== null) {
@@ -260,8 +281,7 @@ export class CredentialDirectory {
    */
   async revokeRefreshFamily(familyId: string): Promise<readonly string[]> {
     const key = CREDENTIAL_KEYS.refreshFamily(familyId);
-    const index = (await this.kv.get(key)) ?? '';
-    const hashes = index.split(',').filter((hash) => hash.length > 0);
+    const hashes = await this.readIndex(key);
     await Promise.all(hashes.map((hash) => this.kv.delete(CREDENTIAL_KEYS.refreshToken(hash))));
     await this.kv.delete(key);
     return hashes;
@@ -270,8 +290,7 @@ export class CredentialDirectory {
   /** Revoking a grant kills every access and refresh token minted under it. */
   async revokeGrantTokens(grantId: string): Promise<number> {
     const key = CREDENTIAL_KEYS.grantTokens(grantId);
-    const index = (await this.kv.get(key)) ?? '';
-    const hashes = index.split(',').filter((hash) => hash.length > 0);
+    const hashes = await this.readIndex(key);
     await Promise.all(
       hashes.flatMap((hash) => [
         this.kv.delete(CREDENTIAL_KEYS.accessToken(hash)),
@@ -288,8 +307,7 @@ export class CredentialDirectory {
     expiresAt: string,
   ): Promise<void> {
     const key = CREDENTIAL_KEYS.refreshFamily(familyId);
-    const existing = (await this.kv.get(key)) ?? '';
-    const hashes = new Set(existing.split(',').filter((hash) => hash.length > 0));
+    const hashes = new Set(await this.readIndex(key));
     hashes.add(tokenHash);
     await this.write(key, [...hashes].join(','), expiresAt);
   }
@@ -300,8 +318,7 @@ export class CredentialDirectory {
     expiresAt: string,
   ): Promise<void> {
     const key = CREDENTIAL_KEYS.grantTokens(grantId);
-    const existing = (await this.kv.get(key)) ?? '';
-    const hashes = new Set(existing.split(',').filter((hash) => hash.length > 0));
+    const hashes = new Set(await this.readIndex(key));
     hashes.add(tokenHash);
     await this.write(key, [...hashes].join(','), expiresAt);
   }

@@ -49,6 +49,9 @@ export async function createApiApp(options: CreateAppOptions): Promise<NestExpre
     // logger from @relay/observability is the only thing that records one.
     logger: false,
     bodyParser: false,
+    // Nest calls process.abort() on a wiring failure by default, which kills the
+    // process before anything can report why. Surface the error instead.
+    abortOnError: false,
   });
 
   // `request.ip` drives rate limiting and API key CIDR restrictions. Trusting
