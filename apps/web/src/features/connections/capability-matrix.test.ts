@@ -28,7 +28,13 @@ function snapshot(overrides: Partial<CapabilitySnapshot> = {}): CapabilitySnapsh
       maxImages: 4,
       maxVideos: 1,
       allowedMimeTypes: ['image/jpeg'],
-      maxBytesByKind: { image: 5_000_000 },
+      maxBytesByKind: {
+        image: 5_000_000,
+        video: 512_000_000,
+        gif: 15_000_000,
+        document: null,
+        audio: null,
+      },
       aspectRatios: { min: 0.5, max: 2, recommended: [1] },
       maxDurationSeconds: 140,
       minDurationSeconds: 1,
@@ -63,7 +69,7 @@ function snapshot(overrides: Partial<CapabilitySnapshot> = {}): CapabilitySnapsh
     analytics: {
       support: 'supported',
       postMetrics: ['impressions'],
-      accountMetrics: ['followers'],
+      accountMetrics: ['follower_delta'],
       historyWindowDays: 90,
     },
     deletion: { support: 'supported', windowSeconds: null },

@@ -1,13 +1,23 @@
 import type { CapabilitySnapshot, ProviderId } from '@relay/contracts';
 
+import { leaseSecret } from '../../vault.js';
 import type {
   ConnectorDeps,
+  DestinationRequest,
   HttpRequest,
   HttpResponse,
+  MentionSearchRequest,
+  MetricsRequest,
+  OAuthGrant,
+  PreparedMedia,
   ProviderConnection,
   ProviderDraft,
   ProviderMedia,
   ProviderThreadItem,
+  PublishRequest,
+  RefreshRequest,
+  RevokeRequest,
+  StatusRequest,
 } from './contract-shape.js';
 
 /**
@@ -116,6 +126,7 @@ export function createSimulator(initial: readonly ScriptedRoute[] = []): {
         body: route.body ?? null,
         text: route.text ?? (route.body === undefined ? '' : JSON.stringify(route.body)),
         bytes: route.bytes ?? NO_BYTES,
+        requestId: null,
       };
     },
   };
@@ -139,6 +150,9 @@ const DEFAULT_PROVIDERS: ConnectorDeps['config']['providers'] = {
   bluesky: { serviceUrl: 'https://bsky.invalid' },
 };
 
+/** The obviously fake token every scripted connection reveals. */
+export const TEST_ACCESS_TOKEN = 'fake-test-access-token-not-a-real-credential';
+
 /** Deps wired to the simulator. The vault returns an obviously fake test token. */
 export function createTestDeps(options: TestDepsOptions = {}): TestDeps {
   const { client, handle } = createSimulator(options.routes ?? []);
@@ -154,7 +168,7 @@ export function createTestDeps(options: TestDepsOptions = {}): TestDeps {
     http: client,
     vault: {
       async getAccessToken() {
-        return options.accessToken ?? 'fake-test-access-token-not-a-real-credential';
+        return options.accessToken ?? TEST_ACCESS_TOKEN;
       },
       async getSecret() {
         return 'fake-test-secret-not-a-real-credential';
@@ -180,21 +194,32 @@ export interface TestConnectionOptions {
   readonly externalAccountId?: string;
   readonly parentExternalId?: string | null;
   readonly scopes?: readonly string[];
+  readonly accessToken?: string;
   readonly metadata?: Readonly<Record<string, unknown>>;
 }
 
 export function testConnection(options: TestConnectionOptions): ProviderConnection {
+  const parentExternalId = options.parentExternalId ?? null;
   return {
     connectionId: `conn_test_${options.provider}`,
     workspaceId: 'ws_test_0000',
     provider: options.provider,
     accountType: options.accountType ?? 'personal_profile',
     externalAccountId: options.externalAccountId ?? 'external-account-0001',
-    parentExternalId: options.parentExternalId ?? null,
     displayName: 'Sample Studio',
-    scopes: options.scopes ?? [],
-    credentialRef: `cred_test_${options.provider}`,
-    metadata: options.metadata ?? {},
+    grantedScopes: [...(options.scopes ?? [])],
+    accessToken: leaseSecret({
+      secret: options.accessToken ?? TEST_ACCESS_TOKEN,
+      credentialKind: 'access_token',
+      purpose: 'provider_adapter_test',
+    }),
+    locale: 'en',
+    metadata: {
+      // The Page an Instagram professional account hangs off travels in metadata on a
+      // live connection, so the harness puts it exactly where the adapters read it.
+      ...(parentExternalId === null ? {} : { parentExternalId }),
+      ...(options.metadata ?? {}),
+    },
   };
 }
 
@@ -213,6 +238,7 @@ export function testMedia(options: TestMediaOptions = {}): ProviderMedia {
   const kind = options.kind ?? 'image';
   return {
     mediaId: `media_test_${kind}`,
+    derivativeId: null,
     kind,
     mimeType: options.mimeType ?? (kind === 'video' ? 'video/mp4' : 'image/jpeg'),
     byteSize: options.byteSize ?? 120_000,
@@ -222,8 +248,9 @@ export function testMedia(options: TestMediaOptions = {}): ProviderMedia {
       options.durationSeconds === undefined ? (kind === 'video' ? 20 : null) : options.durationSeconds,
     altText: options.altText === undefined ? 'A sample photograph.' : options.altText,
     altTextWaived: options.altTextWaived ?? false,
-    sha256: 'a'.repeat(64),
-    downloadUrl: 'https://storage.invalid/media/sample',
+    checksum: 'a'.repeat(64),
+    sourceUrl: 'https://storage.invalid/media/sample',
+    sourceUrlExpiresAt: '2026-08-04T13:00:00.000Z',
   };
 }
 
@@ -233,7 +260,15 @@ export function testThreadItem(
   kind: ProviderThreadItem['kind'] = 'thread',
   delaySeconds = 0,
 ): ProviderThreadItem {
-  return { id: `cmt_test_${order}`, kind, order, body, media: [], delaySeconds };
+  return {
+    threadItemId: `cmt_test_${order}`,
+    kind,
+    order,
+    body,
+    media: [],
+    delaySeconds,
+    links: [],
+  };
 }
 
 export interface TestDraftOptions {
@@ -247,29 +282,175 @@ export interface TestDraftOptions {
   readonly privacyValue?: string | null;
   readonly destination?: ProviderDraft['destination'];
   readonly mentions?: ProviderDraft['mentions'];
-  readonly providerOptions?: Readonly<Record<string, unknown>>;
   readonly disclosure?: ProviderDraft['disclosure'];
 }
 
 export function testDraft(options: TestDraftOptions): ProviderDraft {
   return {
     connection: options.connection,
+    contentItemId: 'cnt_test_0001',
+    postVariantId: 'pv_test_0001',
     capabilities: options.capabilities,
     contentKind: options.contentKind ?? 'text',
     title: options.title ?? null,
     body: options.body ?? 'A calm, specific sentence about the product.',
     locale: 'en',
-    media: options.media ?? [],
+    media: [...(options.media ?? [])],
     links: [],
-    threadItems: options.threadItems ?? [],
+    threadItems: [...(options.threadItems ?? [])],
     destination: options.destination ?? null,
-    mentions: options.mentions ?? [],
+    mentions: [...(options.mentions ?? [])],
     privacyValue: options.privacyValue ?? null,
     disclosure: options.disclosure ?? {
       aiAssisted: false,
       commercialContent: false,
       brandedContent: false,
     },
-    providerOptions: options.providerOptions ?? {},
+    scheduledInstant: null,
+    createdVia: 'web',
+  };
+}
+
+const TEST_CHECKSUM = 'b'.repeat(64);
+const TEST_INSTANT = '2026-08-04T12:00:00.000Z';
+
+export interface TestPublishRequestOptions {
+  readonly draft: ProviderDraft;
+  readonly preparedMedia?: readonly PreparedMedia[];
+  readonly idempotencyKey?: string;
+  readonly contentFingerprint?: string;
+  readonly dispatchedAt?: string;
+}
+
+/** A `PublishRequest` with the draft nested exactly where the contract puts it. */
+export function testPublishRequest(options: TestPublishRequestOptions): PublishRequest {
+  return {
+    draft: options.draft,
+    preparedMedia: [...(options.preparedMedia ?? [])],
+    contentVersionId: 'cv_test_0001',
+    contentVersionChecksum: TEST_CHECKSUM,
+    capabilityVersion: options.draft.capabilities.capabilityVersion,
+    idempotencyKey: options.idempotencyKey ?? 'idem-test-00000001',
+    contentFingerprint: options.contentFingerprint ?? 'c'.repeat(64),
+    dispatchedAt: options.dispatchedAt ?? TEST_INSTANT,
+  };
+}
+
+export interface TestStatusRequestOptions {
+  readonly connection: ProviderConnection;
+  readonly providerJobId?: string | null;
+  readonly externalPostId?: string | null;
+  readonly contentFingerprint?: string;
+  readonly dispatchWindowFrom?: string;
+  readonly dispatchWindowTo?: string;
+}
+
+export function testStatusRequest(options: TestStatusRequestOptions): StatusRequest {
+  return {
+    connection: options.connection,
+    providerJobId: options.providerJobId ?? null,
+    externalPostId: options.externalPostId ?? null,
+    idempotencyKey: 'idem-test-00000001',
+    contentFingerprint: options.contentFingerprint ?? 'c'.repeat(64),
+    dispatchWindowFrom: options.dispatchWindowFrom ?? '2026-08-04T11:00:00.000Z',
+    dispatchWindowTo: options.dispatchWindowTo ?? TEST_INSTANT,
+  };
+}
+
+export interface TestMetricsRequestOptions {
+  readonly connection: ProviderConnection;
+  readonly scope: MetricsRequest['scope'];
+  readonly externalPostId?: string | null;
+  readonly rangeFrom?: string | null;
+  readonly rangeTo?: string | null;
+  readonly metrics?: MetricsRequest['metrics'];
+}
+
+export function testMetricsRequest(options: TestMetricsRequestOptions): MetricsRequest {
+  return {
+    connection: options.connection,
+    scope: options.scope,
+    externalPostId: options.externalPostId ?? null,
+    rangeFrom: options.rangeFrom ?? null,
+    rangeTo: options.rangeTo ?? null,
+    metrics: [...(options.metrics ?? [])],
+  };
+}
+
+export function testDestinationRequest(
+  connection: ProviderConnection,
+  kind: DestinationRequest['kind'],
+  overrides: { query?: string | null; cursor?: string | null; limit?: number } = {},
+): DestinationRequest {
+  return {
+    connection,
+    kind,
+    query: overrides.query ?? null,
+    cursor: overrides.cursor ?? null,
+    limit: overrides.limit ?? 25,
+  };
+}
+
+export function testMentionSearchRequest(
+  connection: ProviderConnection,
+  query: string,
+  limit = 10,
+): MentionSearchRequest {
+  return { connection, query, limit };
+}
+
+export interface TestGrantOptions {
+  readonly provider: OAuthGrant['provider'];
+  readonly scopes?: readonly string[];
+  readonly accessToken?: string;
+  readonly grantMetadata?: Readonly<Record<string, unknown>>;
+}
+
+export function testGrant(options: TestGrantOptions): OAuthGrant {
+  return {
+    provider: options.provider,
+    workspaceId: 'ws_test_0000',
+    accessToken: leaseSecret({
+      secret: options.accessToken ?? TEST_ACCESS_TOKEN,
+      credentialKind: 'access_token',
+      purpose: 'provider_adapter_test',
+    }),
+    refreshToken: null,
+    grantedScopes: [...(options.scopes ?? [])],
+    obtainedAt: TEST_INSTANT,
+    accessTokenExpiresAt: null,
+    grantMetadata: { ...(options.grantMetadata ?? {}) },
+  };
+}
+
+export function testRefreshRequest(
+  connection: ProviderConnection,
+  clientId = 'test-client',
+): RefreshRequest {
+  return {
+    connectionId: connection.connectionId,
+    workspaceId: connection.workspaceId,
+    provider: connection.provider,
+    refreshToken: leaseSecret({
+      secret: 'fake-test-refresh-token-not-a-real-credential',
+      credentialKind: 'refresh_token',
+      purpose: 'provider_adapter_test',
+    }),
+    grantedScopes: [...connection.grantedScopes],
+    client: { clientId, clientSecret: null, redirectUri: 'https://app.relay.invalid/oauth/callback' },
+  };
+}
+
+export function testRevokeRequest(
+  connection: ProviderConnection,
+  clientId = 'test-client',
+): RevokeRequest {
+  return {
+    connectionId: connection.connectionId,
+    workspaceId: connection.workspaceId,
+    provider: connection.provider,
+    accessToken: connection.accessToken,
+    refreshToken: null,
+    client: { clientId, clientSecret: null, redirectUri: 'https://app.relay.invalid/oauth/callback' },
   };
 }

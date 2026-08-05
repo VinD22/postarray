@@ -66,9 +66,9 @@ export const ACTION_KIND_DEFINITIONS: Readonly<Record<ActionItemKind, ActionKind
 export const URGENCY_ORDER: readonly ActionItemUrgency[] = ['now', 'soon', 'watching'];
 
 export const URGENCY_LABEL_KEY: Readonly<Record<ActionItemUrgency, string>> = {
-  now: 'actionCenter.group.now',
-  soon: 'actionCenter.group.soon',
-  watching: 'actionCenter.group.watching',
+  now: 'actionCenter.group.now.label',
+  soon: 'actionCenter.group.soon.label',
+  watching: 'actionCenter.group.watching.label',
 };
 
 export const URGENCY_HINT_KEY: Readonly<Record<ActionItemUrgency, string>> = {

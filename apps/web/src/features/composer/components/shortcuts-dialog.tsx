@@ -23,13 +23,15 @@ export interface ShortcutsDialogProps {
 
 export function ShortcutsDialog({ open, onOpenChange }: ShortcutsDialogProps): ReactNode {
   const t = useTranslations();
-  const rows: readonly [string, readonly string[]][] = [
-    [t.full('composerWeb.shortcuts.nextTarget'), ['Ctrl', ']']],
-    [t.full('composerWeb.shortcuts.previousTarget'), ['Ctrl', '[']],
-    [t.full('composerWeb.shortcuts.nextIssue'), ['Ctrl', 'I']],
-    [t.full('composerWeb.shortcuts.previousIssue'), ['Ctrl', 'Shift', 'I']],
-    [t.full('composerWeb.shortcuts.save'), ['Mod', 'S']],
-    [t.full('composerWeb.shortcuts.openSchedule'), ['Mod', 'Enter']],
+  // Bindings in hotkey syntax. `Kbd` renders each part with the symbols of the
+  // platform the reader is on, so one row covers macOS and Windows.
+  const rows: readonly [string, string][] = [
+    [t.full('composerWeb.shortcuts.nextTarget'), 'ctrl+]'],
+    [t.full('composerWeb.shortcuts.previousTarget'), 'ctrl+['],
+    [t.full('composerWeb.shortcuts.nextIssue'), 'ctrl+i'],
+    [t.full('composerWeb.shortcuts.previousIssue'), 'ctrl+shift+i'],
+    [t.full('composerWeb.shortcuts.save'), 'mod+s'],
+    [t.full('composerWeb.shortcuts.openSchedule'), 'mod+enter'],
   ];
 
   return (
@@ -47,9 +49,7 @@ export function ShortcutsDialog({ open, onOpenChange }: ShortcutsDialogProps): R
               >
                 <dt className="text-body-sm text-text-secondary">{label}</dt>
                 <dd className="flex shrink-0 items-center gap-1">
-                  {keys.map((key) => (
-                    <Kbd key={key}>{key}</Kbd>
-                  ))}
+                  <Kbd keys={keys} />
                 </dd>
               </div>
             ))}

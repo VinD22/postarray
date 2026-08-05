@@ -634,7 +634,7 @@ export const webAnalyticsMessages = {
 
   'automation.runs.table.caption': 'Recent runs of this rule.',
   'automation.runs.startedAt': 'Started',
-  'automation.runs.outcome': 'Outcome',
+  'automation.runs.outcome.label': 'Outcome',
   'automation.runs.actionsTaken': 'Actions',
   'automation.runs.trigger': 'Triggered by',
   'automation.runs.outcome.completed': 'Completed',

@@ -1082,6 +1082,9 @@ model BusinessProfile {
   workspaceId        String    @map("workspace_id") @db.Uuid
   brandId            String    @map("brand_id") @db.Uuid
   version            Int       @default(1)
+  /// What the thing being marketed is called. Required before a growth plan can
+  /// be generated, so the plan can name the product rather than the brand.
+  productName        String?   @map("product_name")
   productUrl         String?   @map("product_url")
   productUrlVerifiedAt DateTime? @map("product_url_verified_at") @db.Timestamptz(6)
   description        String?

@@ -149,6 +149,7 @@ export function createApiKeyService(deps: ServiceDeps): ApiKeyService {
 
         const created = await db.apiKey.create({
           data: {
+            workspaceId: actor.workspace.id,
             name: input.name,
             prefix,
             secretHash: `${salt}$${hashSecret(secret, salt)}`,

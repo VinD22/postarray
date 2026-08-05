@@ -20,6 +20,7 @@ import type { AutomationRuleView, RulePreview, RuleRunView } from '../views.js';
 import { recordAudit } from '../internal/audit.js';
 import { loadCapabilitiesFor } from '../internal/capabilities.js';
 import { invalid, notFound } from '../internal/errors.js';
+import { toJson } from '../internal/json.js';
 import { toProviderId } from '../internal/mappers.js';
 import { pageArgs, toPage } from '../internal/pagination.js';
 import { authorized, guard, type Db } from '../internal/runtime.js';
@@ -279,18 +280,23 @@ export function createAutomationRuleService(deps: ServiceDeps): AutomationRuleSe
 
           const created = await db.automationRule.create({
             data: {
+              workspaceId: actor.workspace.id,
               brandId: input.brandId,
               name: input.name,
               state: 'draft',
-              trigger: { kind: input.trigger.kind, config: input.trigger.config ?? {} },
-              conditions: (input.conditions ?? []).map((condition) => ({
-                kind: condition.kind,
-                config: condition.config ?? {},
-              })),
-              actions: input.actions.map((action) => ({
-                kind: action.kind,
-                config: action.config ?? {},
-              })),
+              trigger: toJson({ kind: input.trigger.kind, config: input.trigger.config ?? {} }),
+              conditions: toJson(
+                (input.conditions ?? []).map((condition) => ({
+                  kind: condition.kind,
+                  config: condition.config ?? {},
+                })),
+              ),
+              actions: toJson(
+                input.actions.map((action) => ({
+                  kind: action.kind,
+                  config: action.config ?? {},
+                })),
+              ),
               delaySeconds: input.delaySeconds ?? 0,
               requiresApproval: input.requiresApproval ?? true,
               preauthorizedConnectionIds: [...(input.preauthorizedConnectionIds ?? [])],
@@ -344,15 +350,19 @@ export function createAutomationRuleService(deps: ServiceDeps): AutomationRuleSe
           where: { id: ruleId },
           data: {
             name: merged.name,
-            trigger: { kind: merged.trigger.kind, config: merged.trigger.config ?? {} },
-            conditions: (merged.conditions ?? []).map((condition) => ({
-              kind: condition.kind,
-              config: condition.config ?? {},
-            })),
-            actions: merged.actions.map((action) => ({
-              kind: action.kind,
-              config: action.config ?? {},
-            })),
+            trigger: toJson({ kind: merged.trigger.kind, config: merged.trigger.config ?? {} }),
+            conditions: toJson(
+              (merged.conditions ?? []).map((condition) => ({
+                kind: condition.kind,
+                config: condition.config ?? {},
+              })),
+            ),
+            actions: toJson(
+              merged.actions.map((action) => ({
+                kind: action.kind,
+                config: action.config ?? {},
+              })),
+            ),
             ...(input.delaySeconds === undefined ? {} : { delaySeconds: input.delaySeconds }),
             ...(input.requiresApproval === undefined
               ? {}
@@ -460,21 +470,26 @@ export function createAutomationRuleService(deps: ServiceDeps): AutomationRuleSe
         // have happened so the sentence builder can show an example.
         const created = await db.automationRuleRun.create({
           data: {
+            workspaceId: actor.workspace.id,
             automationRuleId: rule.id,
             ruleVersion: rule.version,
             state: 'succeeded',
             isTest: true,
             sourceKind: 'test',
             sourceId: `test:${deps.clock.now().toISOString()}`,
-            triggerPayload: input.sampleEvent,
-            evaluatedConditions: parseConditions(rule.conditions).map((condition) => ({
-              kind: condition.kind,
-              matched: true,
-            })),
-            performedActions: parseActions(rule.actions).map((action) => ({
-              kind: action.kind,
-              outcome: 'simulated',
-            })),
+            triggerPayload: toJson(input.sampleEvent),
+            evaluatedConditions: toJson(
+              parseConditions(rule.conditions).map((condition) => ({
+                kind: condition.kind,
+                matched: true,
+              })),
+            ),
+            performedActions: toJson(
+              parseActions(rule.actions).map((action) => ({
+                kind: action.kind,
+                outcome: 'simulated',
+              })),
+            ),
             correlationId: ctx.correlationId,
           },
           select: RUN_SELECT,

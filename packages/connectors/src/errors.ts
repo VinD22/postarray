@@ -814,7 +814,7 @@ export class ProviderCallError extends RelayError {
     this.classified = classified;
   }
 
-  static is(value: unknown): value is ProviderCallError {
+  static override is(value: unknown): value is ProviderCallError {
     return value instanceof ProviderCallError;
   }
 }

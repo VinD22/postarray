@@ -158,6 +158,7 @@ export function createWebhookService(deps: ServiceDeps): WebhookService {
 
         const created = await db.webhookEndpoint.create({
           data: {
+            workspaceId: actor.workspace.id,
             name: input.name,
             url: input.url,
             state: 'active',
@@ -264,6 +265,7 @@ export function createWebhookService(deps: ServiceDeps): WebhookService {
         };
         const created = await db.webhookDelivery.create({
           data: {
+            workspaceId: actor.workspace.id,
             webhookEndpointId: endpointId,
             eventId: randomUuid(),
             eventType: 'connection.connected',

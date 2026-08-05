@@ -4,12 +4,14 @@ import {
   RelayError,
   validationIssue,
   validationResult,
+  type CapabilitySnapshot,
   type MetricObservation,
   type ValidationIssue,
   type ValidationResult,
 } from '@relay/contracts';
 
 import {
+  NOT_IMPLEMENTED_FEATURES,
   REMEDIATION,
   ensureOk,
   parseProviderBody,
@@ -21,6 +23,7 @@ import {
   type DeleteRequest,
   type DestinationRequest,
   type ExternalAccount,
+  type FailedItem,
   type MediaPreparationRequest,
   type MentionEntity,
   type MentionSearchRequest,
@@ -43,6 +46,13 @@ import {
   refreshOAuth2Token,
 } from '../shared/contract-shape.js';
 import { CONNECTOR_CONTRACT_VERSION } from '../shared/contract-shape.js';
+import {
+  accessTokenOf,
+  bearerHeader,
+  connectionMetadataString,
+  errorSummary,
+  providerOptionsOf,
+} from '../shared/access.js';
 import { buildPreview } from '../shared/preview.js';
 import { mapMetrics } from '../shared/metrics.js';
 import { normalizeForSimilarity } from '../shared/text.js';
@@ -76,9 +86,9 @@ import {
  *    validation result so the composer, the schedule confirmation and any bulk preview
  *    show the same number.
  * 2. **No duplicates.** X offers no idempotency token for post creation, so before any
- *    retry of a create we query the account's recent posts for a matching post inside the
- *    dispatch window and adopt it rather than creating a second one. A duplicate is both a
- *    policy violation and a billing event.
+ *    create we query the account's recent posts for a matching post inside the dispatch
+ *    window and adopt it rather than creating a second one. A duplicate is both a policy
+ *    violation and a billing event.
  */
 
 const PROVIDER = 'x' as const;
@@ -89,37 +99,11 @@ const REVOKE_URL = 'https://api.x.com/2/oauth2/revoke';
 const MEDIA_CHUNK_BYTES = 4 * 1024 * 1024;
 const DUPLICATE_LOOKBACK_MINUTES = 30;
 
-interface XResume {
-  readonly rootExternalPostId?: string;
-  readonly lastExternalPostId?: string;
-  readonly publishedOrders?: readonly number[];
-  readonly dueOrders?: readonly number[];
-  readonly attempted?: boolean;
-}
-
-function readResume(value: Readonly<Record<string, unknown>>): XResume {
-  const publishedOrders = Array.isArray(value['publishedOrders'])
-    ? value['publishedOrders'].filter((entry): entry is number => typeof entry === 'number')
-    : undefined;
-  const dueOrders = Array.isArray(value['dueOrders'])
-    ? value['dueOrders'].filter((entry): entry is number => typeof entry === 'number')
-    : undefined;
-  return {
-    ...(typeof value['rootExternalPostId'] === 'string'
-      ? { rootExternalPostId: value['rootExternalPostId'] }
-      : {}),
-    ...(typeof value['lastExternalPostId'] === 'string'
-      ? { lastExternalPostId: value['lastExternalPostId'] }
-      : {}),
-    ...(publishedOrders === undefined ? {} : { publishedOrders }),
-    ...(dueOrders === undefined ? {} : { dueOrders }),
-    ...(typeof value['attempted'] === 'boolean' ? { attempted: value['attempted'] } : {}),
-  };
-}
-
 function handleOf(connection: ProviderConnection): string | null {
-  const username = connection.metadata['username'];
-  return typeof username === 'string' && username !== '' ? username : null;
+  return (
+    connectionMetadataString(connection, 'username') ??
+    connectionMetadataString(connection, 'handle')
+  );
 }
 
 function permalink(connection: ProviderConnection, postId: string): string {
@@ -150,14 +134,10 @@ export interface XConnector extends SocialConnector {
 }
 
 export function createXConnector(deps: ConnectorDeps): XConnector {
-  const { http, vault, clock, config, logger } = deps;
-
-  async function token(connection: ProviderConnection): Promise<string> {
-    return vault.getAccessToken(connection.credentialRef);
-  }
+  const { http, clock, config, logger } = deps;
 
   function bearer(accessToken: string): Record<string, string> {
-    return { authorization: `Bearer ${accessToken}` };
+    return bearerHeader(accessToken);
   }
 
   function nowIso(): string {
@@ -182,7 +162,7 @@ export function createXConnector(deps: ConnectorDeps): XConnector {
       if (isDuplicateRejection(response.body)) {
         throw new ContentInvalidError({
           messageKey: 'connectors.x.duplicate_content',
-          details: { provider: PROVIDER, operation, remediationKey: REMEDIATION.duplicateContent },
+          details: { provider: PROVIDER, operation, remediationCode: REMEDIATION.duplicateContent },
         });
       }
       throw providerFailure({ provider: PROVIDER, operation, response });
@@ -198,7 +178,9 @@ export function createXConnector(deps: ConnectorDeps): XConnector {
 
   /**
    * Look for a post we may already have created. X has no idempotency token, so this is
-   * the guard that makes a retry safe. It is mandatory before repeating a create.
+   * the guard that makes a create safe to repeat. It runs before every create, because
+   * `PublishRequest` carries no attempt counter that would let us tell a first attempt
+   * from a retry after a lost response.
    */
   async function findRecentMatchingPost(
     connection: ProviderConnection,
@@ -225,7 +207,7 @@ export function createXConnector(deps: ConnectorDeps): XConnector {
         provider: PROVIDER,
         operation: 'x.duplicate_preflight',
         response,
-        remediationKey: REMEDIATION.contactSupport,
+        remediationCode: REMEDIATION.contactSupport,
       });
     }
     const parsed = parseProviderBody(xTimelineResponseSchema, response, {
@@ -241,7 +223,6 @@ export function createXConnector(deps: ConnectorDeps): XConnector {
   }
 
   async function uploadOne(
-    connection: ProviderConnection,
     accessToken: string,
     media: ProviderMedia,
   ): Promise<PreparedMedia> {
@@ -265,7 +246,7 @@ export function createXConnector(deps: ConnectorDeps): XConnector {
       provider: PROVIDER,
       operation: 'x.media.initialize',
       response: initialize,
-      remediationKey: REMEDIATION.mediaInvalid,
+      remediationCode: REMEDIATION.mediaInvalid,
     });
     const initialized = parseProviderBody(xMediaUploadResponseSchema, initialize, {
       provider: PROVIDER,
@@ -274,9 +255,19 @@ export function createXConnector(deps: ConnectorDeps): XConnector {
     });
     const mediaId = initialized.data.id;
 
+    if (media.sourceUrl === null) {
+      // Without the short lived signed URL there are no bytes to send, and a media id
+      // with no bytes would publish as a broken attachment.
+      throw providerFailure({
+        provider: PROVIDER,
+        operation: 'x.media.fetch_source',
+        remediationCode: REMEDIATION.mediaInvalid,
+        details: { mediaId: media.mediaId, reason: 'MEDIA_SOURCE_URL_MISSING' },
+      });
+    }
     const download = await http.request({
       method: 'GET',
-      url: media.downloadUrl,
+      url: media.sourceUrl,
       accept: 'binary',
       provider: PROVIDER,
       operation: 'x.media.fetch_source',
@@ -308,7 +299,7 @@ export function createXConnector(deps: ConnectorDeps): XConnector {
         provider: PROVIDER,
         operation: 'x.media.append',
         response: append,
-        remediationKey: REMEDIATION.mediaInvalid,
+        remediationCode: REMEDIATION.mediaInvalid,
       });
       segment += 1;
     }
@@ -325,7 +316,7 @@ export function createXConnector(deps: ConnectorDeps): XConnector {
       provider: PROVIDER,
       operation: 'x.media.finalize',
       response: finalize,
-      remediationKey: REMEDIATION.mediaInvalid,
+      remediationCode: REMEDIATION.mediaInvalid,
     });
     const finalized = parseProviderBody(xMediaUploadResponseSchema, finalize, {
       provider: PROVIDER,
@@ -334,7 +325,8 @@ export function createXConnector(deps: ConnectorDeps): XConnector {
     });
     const processing = finalized.data.processing_info;
 
-    if (media.altText !== null && media.altText !== '') {
+    const altTextApplied = media.altText !== null && media.altText !== '';
+    if (altTextApplied) {
       const metadata = await http.request({
         method: 'POST',
         url: `${API_BASE}/media/metadata`,
@@ -353,18 +345,22 @@ export function createXConnector(deps: ConnectorDeps): XConnector {
 
     return {
       mediaId: media.mediaId,
+      derivativeId: media.derivativeId,
       providerMediaId: mediaId,
-      providerContainerId: null,
-      uploadUrl: null,
-      state:
+      // X has no container step: the media id is the whole story.
+      containerId: null,
+      uploadState:
         processing === undefined || processing.state === 'succeeded'
           ? 'ready'
           : processing.state === 'failed'
             ? 'failed'
             : 'processing',
-      checksum: media.sha256,
-      variant: `x:${category}`,
-      metadata: { mediaCategory: category, connectionId: connection.connectionId },
+      derivativeChecksum: media.checksum,
+      byteSize: media.byteSize,
+      altTextApplied,
+      publicUrl: null,
+      expiresAt: null,
+      reusedFromPreviousAttempt: false,
     };
   }
 
@@ -381,12 +377,51 @@ export function createXConnector(deps: ConnectorDeps): XConnector {
         displayName: 'X',
         iconToken: 'provider.x',
         accountTypes: ['personal_profile', 'creator_profile'],
-        docsUrl: 'https://docs.x.com/x-api',
-        policyUrl: 'https://developer.x.com/en/developer-terms/policy',
+        contractVersion: CONNECTOR_CONTRACT_VERSION,
+        connectorVersion: '1.0.0',
+        label: 'beta',
+        limitationKey: 'connectors.x.review_pending',
+        officialDocsUrl: 'https://docs.x.com/x-api',
+        officialPolicyUrl: 'https://developer.x.com/en/developer-terms/policy',
         engineeringOwner: 'Backend/Connectors 1',
         policyOwner: 'Policy Owner',
-        lastPolicyReviewAt: SOURCE_VERIFIED_ON,
-        contractVersion: CONNECTOR_CONTRACT_VERSION,
+        lastPolicyReviewAt: `${SOURCE_VERIFIED_ON}T00:00:00.000Z`,
+        nextPolicyReviewAt: '2027-02-04T00:00:00.000Z',
+        features: {
+          ...NOT_IMPLEMENTED_FEATURES,
+          discover_accounts: 'supported',
+          // Communities exist; availability at our access tier is unconfirmed.
+          list_destinations: 'not_implemented',
+          search_mentions: 'supported',
+          // X resolves `@handle` at render time, so there is no entity to store.
+          native_mentions: 'unsupported',
+          get_capabilities: 'supported',
+          validate_draft: 'supported',
+          prepare_media: 'supported',
+          preview: 'supported',
+          publish: 'supported',
+          get_status: 'supported',
+          delete_post: 'supported',
+          fetch_metrics: 'supported',
+          refresh_credential: 'supported',
+          revoke: 'supported',
+          first_comment: 'supported',
+          thread_parts: 'supported',
+          comment_count: 'supported',
+          comment_replies: 'not_implemented',
+          // X offers no idempotency token for a post create.
+          provider_idempotency: 'unsupported',
+          post_analytics: 'supported',
+          account_analytics: 'supported',
+          privacy_controls: 'unsupported',
+          ai_disclosure: 'not_implemented',
+          commercial_disclosure: 'unsupported',
+          alt_text: 'supported',
+          carousel: 'unsupported',
+          video: 'supported',
+          document: 'unsupported',
+          metered_cost: 'supported',
+        },
       };
     },
 
@@ -396,17 +431,45 @@ export function createXConnector(deps: ConnectorDeps): XConnector {
         authorizeUrl: AUTHORIZE_URL,
         tokenUrl: TOKEN_URL,
         revokeUrl: REVOKE_URL,
-        requiresPkce: true,
-        multiStep: false,
         redirectPath: '/oauth/x/callback',
         scopes: [
-          { scope: 'tweet.read', descriptionKey: 'connectors.x.scope.tweet_read' },
-          { scope: 'tweet.write', descriptionKey: 'connectors.x.scope.tweet_write' },
-          { scope: 'users.read', descriptionKey: 'connectors.x.scope.users_read' },
-          { scope: 'media.write', descriptionKey: 'connectors.x.scope.media_write' },
-          { scope: 'offline.access', descriptionKey: 'connectors.x.scope.offline_access' },
+          {
+            scope: 'tweet.read',
+            explanationKey: 'connectors.x.scope.tweet_read',
+            usedBy: ['composer', 'analytics'],
+            required: true,
+          },
+          {
+            scope: 'tweet.write',
+            explanationKey: 'connectors.x.scope.tweet_write',
+            usedBy: ['composer', 'queue'],
+            required: true,
+          },
+          {
+            scope: 'users.read',
+            explanationKey: 'connectors.x.scope.users_read',
+            usedBy: ['connections', 'composer'],
+            required: true,
+          },
+          {
+            scope: 'media.write',
+            explanationKey: 'connectors.x.scope.media_write',
+            usedBy: ['composer'],
+            required: false,
+          },
+          {
+            scope: 'offline.access',
+            explanationKey: 'connectors.x.scope.offline_access',
+            usedBy: ['queue'],
+            required: true,
+          },
         ],
-        notesKey: 'connectors.x.authorization_note',
+        pkceRequired: true,
+        multiStep: false,
+        stepDescriptionKeys: [],
+        supportsRefresh: true,
+        refreshAtLifetimeFraction: 0.75,
+        extraAuthorizeParameters: {},
       };
     },
 
@@ -414,7 +477,7 @@ export function createXConnector(deps: ConnectorDeps): XConnector {
       const response = await http.request({
         method: 'GET',
         url: `${API_BASE}/users/me`,
-        headers: bearer(grant.accessToken),
+        auth: { handle: grant.accessToken },
         query: { 'user.fields': X_USER_FIELDS },
         accept: 'json',
         provider: PROVIDER,
@@ -424,7 +487,7 @@ export function createXConnector(deps: ConnectorDeps): XConnector {
         provider: PROVIDER,
         operation: 'x.discover_accounts',
         response,
-        remediationKey: REMEDIATION.reconnectAccount,
+        remediationCode: REMEDIATION.reconnectAccount,
       });
       const parsed = parseProviderBody(xUserResponseSchema, response, {
         provider: PROVIDER,
@@ -432,19 +495,21 @@ export function createXConnector(deps: ConnectorDeps): XConnector {
         response,
       });
       const user = parsed.data;
+      const canWrite = grant.grantedScopes.includes('tweet.write');
       return [
         {
-          externalId: user.id,
+          externalAccountId: user.id,
           accountType: 'personal_profile',
           displayName: user.name,
           handle: user.username,
           avatarUrl: user.profile_image_url ?? null,
+          profileUrl: `https://x.com/${user.username}`,
           parentExternalId: null,
-          connectable: grant.scopes.includes('tweet.write'),
-          blockedReasonKey: grant.scopes.includes('tweet.write')
-            ? null
-            : 'connectors.x.write_scope_missing',
-          scopes: [...grant.scopes],
+          grantedScopes: [...grant.grantedScopes],
+          eligible: canWrite,
+          ineligibleReasonKey: canWrite ? null : 'connectors.x.write_scope_missing',
+          // X issues no per account credential: the user token is the account token.
+          accountAccessToken: null,
           metadata: { username: user.username, protected: user.protected ?? false },
         },
       ];
@@ -462,7 +527,7 @@ export function createXConnector(deps: ConnectorDeps): XConnector {
     },
 
     async searchMentions(input: MentionSearchRequest): Promise<MentionEntity[]> {
-      const accessToken = await token(input.connection);
+      const accessToken = await accessTokenOf(input.connection);
       const handle = input.query.replace(/^@/u, '').trim();
       if (handle === '' || !/^[A-Za-z0-9_]{1,15}$/u.test(handle)) {
         return [];
@@ -489,7 +554,8 @@ export function createXConnector(deps: ConnectorDeps): XConnector {
         operation: 'x.search_mentions',
         response,
       });
-      return (parsed.data ?? []).map((user) => ({
+      const resolvedAt = nowIso();
+      return (parsed.data ?? []).slice(0, input.limit).map((user) => ({
         externalId: user.id,
         displayLabel: user.name,
         handle: user.username,
@@ -497,16 +563,19 @@ export function createXConnector(deps: ConnectorDeps): XConnector {
         avatarUrl: user.profile_image_url ?? null,
         // X resolves the handle when it renders the post. The entity id is not stored in
         // the post, so the composer must show this as plain text, not a native tag.
-        resolved: false,
+        resolvedToExternalId: false,
+        resolvedAt,
       }));
     },
 
-    async getCapabilities(connection: ProviderConnection) {
-      return buildXCapabilities({
-        connection,
-        observedAt: nowIso(),
-        grantedScopes: connection.scopes,
-      });
+    async getCapabilities(connection: ProviderConnection): Promise<CapabilitySnapshot> {
+      return await Promise.resolve(
+        buildXCapabilities({
+          connection,
+          observedAt: nowIso(),
+          grantedScopes: connection.grantedScopes,
+        }),
+      );
     },
 
     async validateDraft(draft: ProviderDraft): Promise<ValidationResult> {
@@ -516,7 +585,7 @@ export function createXConnector(deps: ConnectorDeps): XConnector {
         ...validateDraftShape(draft, snapshot, { unit: 'weighted', allowMixedMedia: false }),
       ];
 
-      const options = xProviderOptionsSchema.parse(draft.providerOptions);
+      const options = xProviderOptionsSchema.parse(providerOptionsOf(draft));
 
       // An animated GIF is the only media a post may carry.
       const gifCount = draft.media.filter((item) => item.kind === 'gif').length;
@@ -564,11 +633,13 @@ export function createXConnector(deps: ConnectorDeps): XConnector {
         );
       }
 
-      return validationResult({
-        issues,
-        estimatedCostMinor: cost.minorUnits,
-        currency: cost.currency,
-      });
+      return await Promise.resolve(
+        validationResult({
+          issues,
+          estimatedCostMinor: cost.minorUnits,
+          currency: cost.currency,
+        }),
+      );
     },
 
     estimateCost(draft: ProviderDraft): XCostEstimate {
@@ -576,37 +647,38 @@ export function createXConnector(deps: ConnectorDeps): XConnector {
     },
 
     async prepareMedia(input: MediaPreparationRequest): Promise<PreparedMedia[]> {
-      const accessToken = await token(input.connection);
+      const accessToken = await accessTokenOf(input.connection);
       const prepared: PreparedMedia[] = [];
       for (const media of input.media) {
-        prepared.push(await uploadOne(input.connection, accessToken, media));
+        prepared.push(await uploadOne(accessToken, media));
       }
       return prepared;
     },
 
     async preview(draft: ProviderDraft): Promise<CanonicalPreview> {
-      return buildPreview(draft, draft.capabilities, {
-        unit: 'weighted',
-        mediaLayout: draft.media.some((item) => item.kind === 'video') ? 'video' : 'grid',
-        linkRendering: 'card',
-        resolvesMentionsAtRender: true,
-        privacyLabelKey: null,
-        warningKeys: isLinkHeavy(estimateCost(draft)) ? ['connectors.x.link_heavy'] : [],
-      });
+      return await Promise.resolve(
+        buildPreview(draft, draft.capabilities, {
+          unit: 'weighted',
+          mediaLayout: draft.media.some((item) => item.kind === 'video') ? 'video' : 'grid',
+          linkRendering: 'card',
+          resolvesMentionsAtRender: true,
+          privacyLabelKey: null,
+          warningKeys: isLinkHeavy(estimateCost(draft)) ? ['connectors.x.link_heavy'] : [],
+        }),
+      );
     },
 
     async publish(request: PublishRequest): Promise<PublishResult> {
-      const { connection, draft } = request;
-      const accessToken = await token(connection);
-      const resume = readResume(request.resume);
+      const draft = request.draft;
+      const connection = draft.connection;
+      const accessToken = await accessTokenOf(connection);
       const mediaIds = providerMediaIds(request);
       const cost = estimateCost(draft);
 
-      let rootId = resume.rootExternalPostId ?? null;
-      if (rootId === null && resume.attempted === true) {
-        // A previous attempt may have created the post before we lost the response.
-        rootId = await findRecentMatchingPost(connection, accessToken, draft.body);
-      }
+      // Mandatory before any create: X has no idempotency token, so the only way to
+      // avoid a duplicate post and a duplicate charge is to look for one first.
+      let rootId = await findRecentMatchingPost(connection, accessToken, draft.body);
+      const adopted = rootId !== null;
       if (rootId === null) {
         rootId = await createPost(
           accessToken,
@@ -618,44 +690,37 @@ export function createXConnector(deps: ConnectorDeps): XConnector {
         );
       }
 
+      const publishedAt = nowIso();
       const root: PublishItemResult = {
         kind: 'root',
         order: 0,
         threadItemId: null,
-        state: 'published',
         externalPostId: rootId,
         permalink: permalink(connection, rootId),
-        errorClass: null,
-        errorCode: null,
-        remediationKey: null,
+        publishedAt,
       };
 
-      const publishedOrders = new Set(resume.publishedOrders ?? []);
-      const dueOrders = resume.dueOrders;
-      const items: PublishItemResult[] = [];
-      let previousId = resume.lastExternalPostId ?? rootId;
-      let pending = false;
+      const items: PublishItemResult[] = [root];
+      const failures: FailedItem[] = [];
+      let previousId = rootId;
       let failed = false;
 
+      // The connector never sleeps and never schedules. Every part handed to it is
+      // published now, in order; the worker decides which parts to hand over and when.
       for (const item of [...draft.threadItems].sort((left, right) => left.order - right.order)) {
-        if (publishedOrders.has(item.order)) {
-          continue;
-        }
-        const isDue =
-          dueOrders === undefined ? item.delaySeconds === 0 : dueOrders.includes(item.order);
-        if (!isDue || failed) {
-          // A delayed part is the worker's to schedule. The connector never sleeps.
-          pending = true;
-          items.push({
+        if (failed) {
+          // Once a part fails the chain is broken, so the rest are reported as failed
+          // rather than silently attached to the wrong parent.
+          failures.push({
             kind: item.kind,
             order: item.order,
-            threadItemId: item.id,
-            state: 'processing',
-            externalPostId: null,
-            permalink: null,
-            errorClass: null,
-            errorCode: null,
-            remediationKey: null,
+            threadItemId: item.threadItemId,
+            error: errorSummary({
+              errorClass: 'TRANSIENT_PROVIDER',
+              remediationCode: REMEDIATION.commentFailedRootPublished,
+              messageKey: 'state.partially_published.label',
+              retryable: true,
+            }),
           });
           continue;
         }
@@ -669,65 +734,86 @@ export function createXConnector(deps: ConnectorDeps): XConnector {
             `x.create_${item.kind}`,
           );
           previousId = itemId;
-          publishedOrders.add(item.order);
           items.push({
             kind: item.kind,
             order: item.order,
-            threadItemId: item.id,
-            state: 'published',
+            threadItemId: item.threadItemId,
             externalPostId: itemId,
             permalink: permalink(connection, itemId),
-            errorClass: null,
-            errorCode: null,
-            remediationKey: null,
+            publishedAt,
           });
         } catch (error) {
           // A failed part never invalidates a root post that already exists externally.
           failed = true;
-          items.push({
+          failures.push({
             kind: item.kind,
             order: item.order,
-            threadItemId: item.id,
-            state: 'failed',
-            externalPostId: null,
-            permalink: null,
-            errorClass: null,
-            errorCode: RelayError.is(error) ? error.code : null,
-            remediationKey: REMEDIATION.commentFailedRootPublished,
+            threadItemId: item.threadItemId,
+            error: errorSummary({
+              errorClass: 'TRANSIENT_PROVIDER',
+              remediationCode: REMEDIATION.commentFailedRootPublished,
+              messageKey: 'state.partially_published.label',
+              retryable: true,
+              providerMessage: RelayError.is(error) ? error.code : null,
+            }),
           });
         }
       }
 
-      const state: PublishResult['state'] = failed
-        ? 'partially_published'
-        : pending
-          ? 'processing'
-          : 'published';
+      const sanitizedResponse = {
+        rootExternalPostId: rootId,
+        itemCount: items.length,
+        adoptedExistingPost: adopted,
+      };
+
+      if (failures.length > 0) {
+        return {
+          status: 'partial',
+          externalPostId: rootId,
+          permalink: permalink(connection, rootId),
+          publishedAt,
+          items,
+          failures,
+          sanitizedResponse,
+          providerRequestId: null,
+          costMinor: cost.minorUnits,
+          currency: cost.currency,
+        };
+      }
 
       return {
-        state,
+        status: 'published',
         externalPostId: rootId,
         permalink: permalink(connection, rootId),
-        root,
+        publishedAt,
         items,
-        pollToken: rootId,
-        resume: {
-          rootExternalPostId: rootId,
-          lastExternalPostId: previousId,
-          publishedOrders: [...publishedOrders],
-          attempted: true,
-        },
-        sanitizedProviderResponse: { rootExternalPostId: rootId, itemCount: items.length },
+        sanitizedResponse,
+        providerRequestId: null,
         costMinor: cost.minorUnits,
         currency: cost.currency,
       };
     },
 
     async getStatus(input: StatusRequest): Promise<PublishStatus> {
-      const accessToken = await token(input.connection);
+      const externalPostId = input.externalPostId ?? input.providerJobId;
+      if (externalPostId === null) {
+        // X creates directly, so with no post id there is nothing to poll and we refuse
+        // to guess. `unknown` is the honest answer.
+        return {
+          state: 'unknown',
+          externalPostId: null,
+          permalink: null,
+          publishedAt: null,
+          items: [],
+          error: null,
+          pollAfterSeconds: null,
+          sanitizedResponse: { reason: 'no_post_id_to_poll' },
+        };
+      }
+      const accessToken = await accessTokenOf(input.connection);
       const response = await http.request({
         method: 'GET',
-        url: `${API_BASE}/tweets/${input.pollToken}`,
+        url: `${API_BASE}/tweets/${externalPostId}`,
         headers: bearer(accessToken),
         query: { 'tweet.fields': X_POST_FIELDS },
         accept: 'json',
@@ -739,9 +825,16 @@ export function createXConnector(deps: ConnectorDeps): XConnector {
           state: 'failed',
           externalPostId: null,
           permalink: null,
-          errorClass: 'PERMANENT_PROVIDER',
-          remediationKey: REMEDIATION.providerRejectedContent,
-          sanitizedProviderResponse: { status: response.status },
+          publishedAt: null,
+          items: [],
+          error: errorSummary({
+            errorClass: 'PERMANENT_PROVIDER',
+            remediationCode: REMEDIATION.providerRejectedContent,
+            messageKey: 'error.provider_content_rejected.message',
+            retryable: false,
+          }),
+          pollAfterSeconds: null,
+          sanitizedResponse: { status: response.status },
         };
       }
       if (!response.ok) {
@@ -749,9 +842,11 @@ export function createXConnector(deps: ConnectorDeps): XConnector {
           state: 'unknown',
           externalPostId: null,
           permalink: null,
-          errorClass: null,
-          remediationKey: null,
-          sanitizedProviderResponse: { status: response.status },
+          publishedAt: null,
+          items: [],
+          error: null,
+          pollAfterSeconds: null,
+          sanitizedResponse: { status: response.status },
         };
       }
       const parsed = parseProviderBody(xPostLookupResponseSchema, response, {
@@ -759,28 +854,43 @@ export function createXConnector(deps: ConnectorDeps): XConnector {
         operation: 'x.get_status',
         response,
       });
-      if (parsed.data === undefined) {
+      const post = parsed.data;
+      if (post === undefined) {
         return {
           state: 'unknown',
           externalPostId: null,
           permalink: null,
-          errorClass: null,
-          remediationKey: null,
-          sanitizedProviderResponse: { status: response.status },
+          publishedAt: null,
+          items: [],
+          error: null,
+          pollAfterSeconds: null,
+          sanitizedResponse: { status: response.status },
         };
       }
+      const publishedAt = post.created_at ?? nowIso();
       return {
         state: 'published',
-        externalPostId: parsed.data.id,
-        permalink: permalink(input.connection, parsed.data.id),
-        errorClass: null,
-        remediationKey: null,
-        sanitizedProviderResponse: { status: response.status, externalPostId: parsed.data.id },
+        externalPostId: post.id,
+        permalink: permalink(input.connection, post.id),
+        publishedAt,
+        items: [
+          {
+            kind: 'root',
+            order: 0,
+            threadItemId: null,
+            externalPostId: post.id,
+            permalink: permalink(input.connection, post.id),
+            publishedAt,
+          },
+        ],
+        error: null,
+        pollAfterSeconds: null,
+        sanitizedResponse: { status: response.status, externalPostId: post.id },
       };
     },
 
     async deletePost(input: DeleteRequest): Promise<void> {
-      const accessToken = await token(input.connection);
+      const accessToken = await accessTokenOf(input.connection);
       const response = await http.request({
         method: 'DELETE',
         url: `${API_BASE}/tweets/${input.externalPostId}`,
@@ -798,7 +908,7 @@ export function createXConnector(deps: ConnectorDeps): XConnector {
     },
 
     async fetchMetrics(input: MetricsRequest): Promise<MetricObservation[]> {
-      const accessToken = await token(input.connection);
+      const accessToken = await accessTokenOf(input.connection);
       const observedAt = nowIso();
 
       if (input.scope === 'account') {
@@ -841,7 +951,7 @@ export function createXConnector(deps: ConnectorDeps): XConnector {
       }
 
       const externalPostId = input.externalPostId;
-      if (externalPostId === undefined) {
+      if (externalPostId === null) {
         return mapMetrics({
           provider: PROVIDER,
           scope: 'post',
@@ -897,22 +1007,25 @@ export function createXConnector(deps: ConnectorDeps): XConnector {
         throw providerFailure({
           provider: PROVIDER,
           operation: 'x.refresh_credential',
-          remediationKey: REMEDIATION.contactSupport,
+          remediationCode: REMEDIATION.contactSupport,
           details: { missingConfig: 'X_CLIENT_ID' },
         });
       }
-      return refreshOAuth2Token({
-        http,
-        clock,
-        provider: PROVIDER,
-        tokenUrl: TOKEN_URL,
-        clientId,
-        ...(config.providers.x.clientSecret === undefined
-          ? {}
-          : { clientSecret: config.providers.x.clientSecret }),
-        refreshToken: input.refreshToken,
-        basicAuth: true,
-      });
+      return await input.refreshToken.use(
+        async (refreshToken) =>
+          await refreshOAuth2Token({
+            http,
+            clock,
+            provider: PROVIDER,
+            tokenUrl: TOKEN_URL,
+            clientId,
+            ...(config.providers.x.clientSecret === undefined
+              ? {}
+              : { clientSecret: config.providers.x.clientSecret }),
+            refreshToken,
+            basicAuth: true,
+          }),
+      );
     },
 
     async revoke(input: RevokeRequest): Promise<void> {
@@ -920,15 +1033,17 @@ export function createXConnector(deps: ConnectorDeps): XConnector {
       if (clientId === undefined) {
         return;
       }
-      const accessToken = await token(input.connection);
-      const response = await http.request({
-        method: 'POST',
-        url: REVOKE_URL,
-        form: { token: accessToken, client_id: clientId, token_type_hint: 'access_token' },
-        accept: 'json',
-        provider: PROVIDER,
-        operation: 'x.revoke',
-      });
+      const response = await input.accessToken.use(
+        async (accessToken) =>
+          await http.request({
+            method: 'POST',
+            url: REVOKE_URL,
+            form: { token: accessToken, client_id: clientId, token_type_hint: 'access_token' },
+            accept: 'json',
+            provider: PROVIDER,
+            operation: 'x.revoke',
+          }),
+      );
       if (!response.ok) {
         // We delete our stored credential regardless. A provider revoke failure must never
         // leave us holding a token we told the user we deleted.

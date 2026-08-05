@@ -27,8 +27,11 @@ export interface UploadTransport {
     offset: number,
     signal: AbortSignal,
   ) => Promise<number>;
-  /** Commit the upload and return the stored media id. */
-  finalize: (uploadId: string) => Promise<{ mediaId: string }>;
+  /**
+   * Commit the upload and return the stored media id. The file is handed back
+   * so the caller can checksum the bytes it sent before committing them.
+   */
+  finalize: (uploadId: string, file: File) => Promise<{ mediaId: string }>;
 }
 
 export interface UploadQueueMessages {
@@ -121,7 +124,7 @@ export function useUploadQueue({
         }
 
         patch(id, { status: 'finalizing' });
-        const { mediaId } = await transport.finalize(uploadId);
+        const { mediaId } = await transport.finalize(uploadId, file);
         patch(id, { status: 'done', mediaId });
         announce(messages.complete(file.name), 'polite');
         onUploaded(mediaId);

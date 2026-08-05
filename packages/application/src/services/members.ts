@@ -151,6 +151,7 @@ export function createMembershipService(deps: ServiceDeps): MembershipService {
 
         const created = await db.membership.create({
           data: {
+            workspaceId: actor.workspace.id,
             userId,
             role: input.role,
             state: 'invited',

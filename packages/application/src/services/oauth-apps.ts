@@ -180,6 +180,7 @@ export function createOAuthAppService(deps: ServiceDeps): OAuthAppService {
 
         const created = await db.oAuthClient.create({
           data: {
+            workspaceId: actor.workspace.id,
             name: input.name,
             clientId,
             clientType: input.clientType,

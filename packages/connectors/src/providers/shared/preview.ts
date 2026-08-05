@@ -1,6 +1,7 @@
 import type { CapabilitySnapshot } from '@relay/contracts';
 
-import type { CanonicalPreview, PreviewEntityRange, ProviderDraft } from './contract-shape.js';
+import { connectionMetadataString, mentionOffset } from './access.js';
+import type { CanonicalPreview, PreviewEntityRange, ProviderDraft, ProviderMedia } from './contract-shape.js';
 import { countText, detectUrls, truncationIndex, type CountingUnit } from './text.js';
 
 /**
@@ -32,9 +33,9 @@ function linkEntities(body: string, rendering: LinkRendering): PreviewEntityRang
     kind: 'link' as const,
     offset: url.offset,
     length: url.length,
-    label: url.url,
+    display: url.url,
     externalId: null,
-    native: true,
+    nativeTag: true,
   }));
 }
 
@@ -42,7 +43,7 @@ function captureEntities(
   body: string,
   pattern: RegExp,
   kind: PreviewEntityRange['kind'],
-  native: boolean,
+  nativeTag: boolean,
 ): PreviewEntityRange[] {
   const entities: PreviewEntityRange[] = [];
   for (const match of body.matchAll(pattern)) {
@@ -54,12 +55,43 @@ function captureEntities(
       kind,
       offset: match.index + match[0].length - captured.length,
       length: captured.length,
-      label: captured,
+      display: captured,
       externalId: null,
-      native,
+      nativeTag,
     });
   }
   return entities;
+}
+
+function aspectRatioOf(media: ProviderMedia): number | null {
+  if (media.width === null || media.height === null || media.height === 0) {
+    return null;
+  }
+  return media.width / media.height;
+}
+
+function previewMedia(media: readonly ProviderMedia[]): CanonicalPreview['mediaItems'] {
+  return media.map((item) => ({
+    mediaId: item.mediaId,
+    kind: item.kind,
+    aspectRatio: aspectRatioOf(item),
+    thumbnailUrl: item.sourceUrl,
+    altText: item.altText,
+  }));
+}
+
+function disclosureLabelKeys(draft: ProviderDraft): string[] {
+  const keys: string[] = [];
+  if (draft.disclosure.aiAssisted) {
+    keys.push('disclosure.aiAssisted.label');
+  }
+  if (draft.disclosure.commercialContent) {
+    keys.push('disclosure.commercialContent.label');
+  }
+  if (draft.disclosure.brandedContent) {
+    keys.push('disclosure.brandedContent.label');
+  }
+  return keys;
 }
 
 /** Build the preview every adapter returns, with provider specific bits passed in. */
@@ -69,17 +101,26 @@ export function buildPreview(
   options: PreviewOptions,
 ): CanonicalPreview {
   const counting = { unit: options.unit, linkCounting: snapshot.text.linkCounting };
-  const resolvedMentions: PreviewEntityRange[] = draft.mentions.map((mention) => ({
-    kind: 'mention' as const,
-    offset: mention.offset,
-    length: mention.length,
-    label: mention.displayLabel,
-    externalId: mention.externalId,
-    native: true,
-  }));
+  // A stored mention carries no offset, so the exact slice is located in the body.
+  const resolvedMentions: PreviewEntityRange[] = draft.mentions.flatMap((mention) => {
+    const at = mentionOffset(draft.body, mention);
+    if (at === null) {
+      return [];
+    }
+    return [
+      {
+        kind: 'mention' as const,
+        offset: at.offset,
+        length: at.length,
+        display: mention.displayLabel,
+        externalId: mention.externalId,
+        nativeTag: mention.resolvedToExternalId,
+      },
+    ];
+  });
   const resolvedOffsets = new Set(resolvedMentions.map((mention) => mention.offset));
   // A plain `@handle` the provider resolves when it renders is not a stored entity. It is
-  // reported with `native: false` so the composer can label it as plain text.
+  // reported with `nativeTag: false` so the composer can label it as plain text.
   const handleEntities = options.resolvesMentionsAtRender
     ? captureEntities(draft.body, HANDLE_PATTERN, 'mention', false).filter(
         (entity) => !resolvedOffsets.has(entity.offset),
@@ -95,36 +136,51 @@ export function buildPreview(
 
   const urls = detectUrls(draft.body);
   const firstUrl = urls[0];
+  const used = countText(draft.body, counting);
+  const atIndex = truncationIndex(draft.body, snapshot.text.maxLength, counting);
+  const linkCounting = snapshot.text.linkCounting;
 
   return {
     provider: snapshot.provider,
-    connectionId: draft.connection.connectionId,
     accountType: draft.connection.accountType,
+    connectionId: draft.connection.connectionId,
+    authorDisplayName: draft.connection.displayName,
+    authorHandle: connectionMetadataString(draft.connection, 'handle'),
+    authorAvatarUrl: connectionMetadataString(draft.connection, 'avatarUrl'),
     renderedText: draft.body,
     entities,
-    characterCount: countText(draft.body, counting),
-    characterLimit: snapshot.text.maxLength,
-    truncationIndex: truncationIndex(draft.body, snapshot.text.maxLength, counting),
-    media: draft.media.map((item) => ({
-      mediaId: item.mediaId,
-      kind: item.kind,
-      altText: item.altText,
-      width: item.width,
-      height: item.height,
-    })),
+    counter: {
+      used,
+      limit: snapshot.text.maxLength,
+      remaining: snapshot.text.maxLength - used,
+      unit: options.unit,
+    },
+    truncation: { willTruncate: atIndex !== null, atIndex },
     mediaLayout: draft.media.length === 0 ? 'none' : options.mediaLayout,
+    mediaItems: previewMedia(draft.media),
     linkCard:
       firstUrl === undefined || options.linkRendering === 'none'
         ? null
-        : { url: firstUrl.url, renderedAs: options.linkRendering },
-    destinationLabel: draft.destination === null ? null : draft.destination.label,
+        : {
+            url: firstUrl.url,
+            rendered: options.linkRendering === 'card',
+            titleFrom: options.linkRendering === 'card' ? 'provider_unfurl' : 'none',
+            consumesCharacters:
+              linkCounting.mode === 'fixed' && linkCounting.charactersPerLink !== null
+                ? linkCounting.charactersPerLink
+                : linkCounting.mode === 'actual'
+                  ? firstUrl.length
+                  : 0,
+          },
+    destinationLabel: draft.destination === null ? null : draft.destination.displayLabel,
     privacyLabelKey: options.privacyLabelKey,
-    sequence: draft.threadItems.map((item) => ({
-      kind: item.kind,
+    disclosureLabelKeys: disclosureLabelKeys(draft),
+    threadItems: draft.threadItems.map((item) => ({
       order: item.order,
       renderedText: item.body,
       delaySeconds: item.delaySeconds,
+      mediaItems: previewMedia(item.media),
     })),
-    warningKeys: [...options.warningKeys],
+    noticeKeys: [...options.warningKeys],
   };
 }

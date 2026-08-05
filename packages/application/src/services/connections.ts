@@ -27,6 +27,7 @@ import { invalid, notFound } from '../internal/errors.js';
 import { fromStoredAccountType, toProviderId } from '../internal/mappers.js';
 import { pageArgs, toPage } from '../internal/pagination.js';
 import { authorized, type Db } from '../internal/runtime.js';
+import { asDestinationKind } from '../internal/storage-enums.js';
 
 /**
  * Connected accounts.
@@ -198,6 +199,7 @@ export function createConnectionService(deps: ServiceDeps): ConnectionService {
 
           const transaction = await db.oAuthTransaction.create({
             data: {
+              workspaceId: actor.workspace.id,
               purpose: 'connect_social_account',
               provider: input.provider,
               stateHash,
@@ -406,10 +408,16 @@ export function createConnectionService(deps: ServiceDeps): ConnectionService {
       input: { kind: string; query?: string },
     ): Promise<readonly ProviderDestinationView[]> {
       return authorized(deps, ctx, 'connection.read', { connectionId }, async (db) => {
+        // An empty string means "every kind". Anything else has to name a real
+        // destination kind, or the answer would silently be the wrong list.
+        const kind = input.kind === '' ? undefined : asDestinationKind(input.kind);
+        if (input.kind !== '' && kind === undefined) {
+          throw invalid('errors.unknown_destination_kind', { kind: input.kind });
+        }
         const rows = await db.providerDestination.findMany({
           where: {
             connectionId,
-            ...(input.kind === '' ? {} : { kind: input.kind }),
+            ...(kind === undefined ? {} : { kind }),
             ...(input.query === undefined || input.query === ''
               ? {}
               : { displayName: { contains: input.query, mode: 'insensitive' } }),

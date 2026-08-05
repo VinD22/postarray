@@ -69,7 +69,7 @@
  *   text.inverted #17150F on surface.inverted #F2EFE9 = 15.90
  *
  * Provider identity dots clear 3:1 against their own theme canvas in both
- * themes (lowest: reddit 4.84 light, youtube 5.25 dark).
+ * themes (lowest: facebook 5.17 light, youtube 5.25 dark).
  * ---------------------------------------------------------------------------
  */
 
@@ -210,9 +210,7 @@
   --brand-tiktok: #111111;
   --brand-threads: #101010;
   --brand-bluesky: #0f5fc0;
-  --brand-pinterest: #be1f28;
-  --brand-reddit: #c63f16;
-  --brand-mastodon: #4b4cc4;
+  --brand-fake: #6b6560;
 }
 
 /* ==========================================================================
@@ -279,9 +277,7 @@
     --brand-tiktok: #25f4ee;
     --brand-threads: #ededed;
     --brand-bluesky: #6bb0f5;
-    --brand-pinterest: #ee6a72;
-    --brand-reddit: #ff8a60;
-    --brand-mastodon: #9394f2;
+    --brand-fake: #a8a29a;
   }
 }
 
@@ -345,9 +341,7 @@
   --brand-tiktok: #25f4ee;
   --brand-threads: #ededed;
   --brand-bluesky: #6bb0f5;
-  --brand-pinterest: #ee6a72;
-  --brand-reddit: #ff8a60;
-  --brand-mastodon: #9394f2;
+  --brand-fake: #a8a29a;
 }
 
 /* ==========================================================================
@@ -410,9 +404,7 @@
   --color-brand-tiktok: var(--brand-tiktok);
   --color-brand-threads: var(--brand-threads);
   --color-brand-bluesky: var(--brand-bluesky);
-  --color-brand-pinterest: var(--brand-pinterest);
-  --color-brand-reddit: var(--brand-reddit);
-  --color-brand-mastodon: var(--brand-mastodon);
+  --color-brand-fake: var(--brand-fake);
 
   /* --- Typography -------------------------------------------------------- */
   --font-sans:

@@ -10,12 +10,12 @@ import { call } from '../call.js';
 import { demoActionItems, page } from '../fixtures.js';
 import type { ActionItemCategory, ActionItemView, Paginated } from '../types.js';
 
-export interface ActionCenterQuery {
+export type ActionCenterQuery = {
   readonly category?: ActionItemCategory;
   readonly includeSnoozed?: boolean;
   readonly cursor?: string;
   readonly limit?: number;
-}
+};
 
 export const actionCenterApi = {
   list: (query: ActionCenterQuery = {}): Promise<Paginated<ActionItemView>> =>

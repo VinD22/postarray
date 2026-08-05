@@ -2,6 +2,7 @@ import {
   ConnectionActionRequiredError,
   validationIssue,
   validationResult,
+  type CapabilitySnapshot,
   type MetricObservation,
   type ValidationIssue,
   type ValidationResult,
@@ -9,6 +10,7 @@ import {
 
 import {
   CONNECTOR_CONTRACT_VERSION,
+  NOT_IMPLEMENTED_FEATURES,
   REMEDIATION,
   ensureOk,
   parseProviderBody,
@@ -21,6 +23,7 @@ import {
   type DeleteRequest,
   type DestinationRequest,
   type ExternalAccount,
+  type FailedItem,
   type MediaPreparationRequest,
   type MentionEntity,
   type MentionSearchRequest,
@@ -41,6 +44,11 @@ import {
   type SocialConnector,
   type StatusRequest,
 } from '../shared/contract-shape.js';
+import {
+  accessTokenOf,
+  errorSummary,
+  providerOptionsOf,
+} from '../shared/access.js';
 import { mapMetrics } from '../shared/metrics.js';
 import { buildPreview } from '../shared/preview.js';
 import { validateDraftShape } from '../shared/validate.js';
@@ -88,6 +96,8 @@ const AUTHORIZE_URL = 'https://www.linkedin.com/oauth/v2/authorization';
 const TOKEN_URL = 'https://www.linkedin.com/oauth/v2/accessToken';
 const REVOKE_URL = 'https://www.linkedin.com/oauth/v2/revoke';
 const VIDEO_CHUNK_HEADER = 'x-amz-server-side-encryption';
+/** How long a cached organization destination stays fresh. */
+const DESTINATION_TTL_MS = 24 * 60 * 60 * 1000;
 
 /** Page roles that may publish as an organization. */
 const PUBLISHING_ROLES = new Set(['ADMINISTRATOR', 'DIRECT_SPONSORED_CONTENT_POSTER']);
@@ -112,7 +122,7 @@ function organizationIdFromUrn(urn: string): string {
 }
 
 export function createLinkedInConnector(deps: ConnectorDeps): SocialConnector {
-  const { http, vault, clock, config, logger } = deps;
+  const { http, clock, config, logger } = deps;
 
   function headers(accessToken: string): Record<string, string> {
     return {
@@ -120,10 +130,6 @@ export function createLinkedInConnector(deps: ConnectorDeps): SocialConnector {
       'linkedin-version': LINKEDIN_API_VERSION,
       'x-restli-protocol-version': '2.0.0',
     };
-  }
-
-  async function token(connection: ProviderConnection): Promise<string> {
-    return vault.getAccessToken(connection.credentialRef);
   }
 
   function nowIso(): string {
@@ -139,10 +145,25 @@ export function createLinkedInConnector(deps: ConnectorDeps): SocialConnector {
       throw providerFailure({
         provider: PROVIDER,
         operation,
-        remediationKey: REMEDIATION.contactSupport,
+        remediationCode: REMEDIATION.contactSupport,
         details: { staleVersionHeader: LINKEDIN_API_VERSION },
       });
     }
+  }
+
+  /** The short lived signed URL the derivative can be fetched from. */
+  function sourceUrlOf(media: ProviderMedia, operation: string): string {
+    if (media.sourceUrl === null) {
+      // Without the signed URL there are no bytes to send, and an asset with no bytes
+      // would publish as a broken attachment.
+      throw providerFailure({
+        provider: PROVIDER,
+        operation,
+        remediationCode: REMEDIATION.mediaInvalid,
+        details: { mediaId: media.mediaId, reason: 'MEDIA_SOURCE_URL_MISSING' },
+      });
+    }
+    return media.sourceUrl;
   }
 
   async function uploadBinary(
@@ -153,7 +174,7 @@ export function createLinkedInConnector(deps: ConnectorDeps): SocialConnector {
   ): Promise<void> {
     const download = await http.request({
       method: 'GET',
-      url: media.downloadUrl,
+      url: sourceUrlOf(media, `${operation}.fetch_source`),
       accept: 'binary',
       provider: PROVIDER,
       operation: `${operation}.fetch_source`,
@@ -176,7 +197,7 @@ export function createLinkedInConnector(deps: ConnectorDeps): SocialConnector {
       provider: PROVIDER,
       operation,
       response: upload,
-      remediationKey: REMEDIATION.mediaInvalid,
+      remediationCode: REMEDIATION.mediaInvalid,
     });
   }
 
@@ -200,7 +221,7 @@ export function createLinkedInConnector(deps: ConnectorDeps): SocialConnector {
       provider: PROVIDER,
       operation: 'linkedin.image.initialize',
       response,
-      remediationKey: REMEDIATION.mediaInvalid,
+      remediationCode: REMEDIATION.mediaInvalid,
     });
     const parsed = parseProviderBody(linkedInImageInitializeSchema, response, {
       provider: PROVIDER,
@@ -210,13 +231,17 @@ export function createLinkedInConnector(deps: ConnectorDeps): SocialConnector {
     await uploadBinary(parsed.value.uploadUrl, media, accessToken, 'linkedin.image.upload');
     return {
       mediaId: media.mediaId,
+      derivativeId: media.derivativeId,
       providerMediaId: parsed.value.image,
-      providerContainerId: null,
-      uploadUrl: null,
-      state: 'ready',
-      checksum: media.sha256,
-      variant: 'linkedin:image',
-      metadata: { owner: authorUrn(connection) },
+      // LinkedIn images publish straight from the asset URN; there is no container.
+      containerId: null,
+      uploadState: 'ready',
+      derivativeChecksum: media.checksum,
+      byteSize: media.byteSize,
+      altTextApplied: media.altText !== null && media.altText !== '',
+      publicUrl: null,
+      expiresAt: null,
+      reusedFromPreviousAttempt: false,
     };
   }
 
@@ -240,7 +265,7 @@ export function createLinkedInConnector(deps: ConnectorDeps): SocialConnector {
       provider: PROVIDER,
       operation: 'linkedin.document.initialize',
       response,
-      remediationKey: REMEDIATION.mediaInvalid,
+      remediationCode: REMEDIATION.mediaInvalid,
     });
     const parsed = parseProviderBody(linkedInDocumentInitializeSchema, response, {
       provider: PROVIDER,
@@ -250,13 +275,16 @@ export function createLinkedInConnector(deps: ConnectorDeps): SocialConnector {
     await uploadBinary(parsed.value.uploadUrl, media, accessToken, 'linkedin.document.upload');
     return {
       mediaId: media.mediaId,
+      derivativeId: media.derivativeId,
       providerMediaId: parsed.value.document,
-      providerContainerId: null,
-      uploadUrl: null,
-      state: 'ready',
-      checksum: media.sha256,
-      variant: 'linkedin:document',
-      metadata: { owner: authorUrn(connection) },
+      containerId: null,
+      uploadState: 'ready',
+      derivativeChecksum: media.checksum,
+      byteSize: media.byteSize,
+      altTextApplied: false,
+      publicUrl: null,
+      expiresAt: null,
+      reusedFromPreviousAttempt: false,
     };
   }
 
@@ -287,7 +315,7 @@ export function createLinkedInConnector(deps: ConnectorDeps): SocialConnector {
       provider: PROVIDER,
       operation: 'linkedin.video.initialize',
       response,
-      remediationKey: REMEDIATION.mediaInvalid,
+      remediationCode: REMEDIATION.mediaInvalid,
     });
     const parsed = parseProviderBody(linkedInVideoInitializeSchema, response, {
       provider: PROVIDER,
@@ -297,7 +325,7 @@ export function createLinkedInConnector(deps: ConnectorDeps): SocialConnector {
 
     const source = await http.request({
       method: 'GET',
-      url: media.downloadUrl,
+      url: sourceUrlOf(media, 'linkedin.video.fetch_source'),
       accept: 'binary',
       provider: PROVIDER,
       operation: 'linkedin.video.fetch_source',
@@ -324,7 +352,7 @@ export function createLinkedInConnector(deps: ConnectorDeps): SocialConnector {
         provider: PROVIDER,
         operation: 'linkedin.video.upload_part',
         response: part,
-        remediationKey: REMEDIATION.mediaInvalid,
+        remediationCode: REMEDIATION.mediaInvalid,
       });
       const etag = part.headers['etag'] ?? part.headers[VIDEO_CHUNK_HEADER];
       if (etag !== undefined) {
@@ -352,19 +380,22 @@ export function createLinkedInConnector(deps: ConnectorDeps): SocialConnector {
       provider: PROVIDER,
       operation: 'linkedin.video.finalize',
       response: finalize,
-      remediationKey: REMEDIATION.mediaInvalid,
+      remediationCode: REMEDIATION.mediaInvalid,
     });
 
     return {
       mediaId: media.mediaId,
+      derivativeId: media.derivativeId,
       providerMediaId: parsed.value.video,
-      providerContainerId: null,
-      uploadUrl: null,
+      containerId: null,
       // LinkedIn processes video after finalize. `getStatus` confirms before we publish.
-      state: 'processing',
-      checksum: media.sha256,
-      variant: 'linkedin:video',
-      metadata: { owner: authorUrn(connection), partCount: etags.length },
+      uploadState: 'processing',
+      derivativeChecksum: media.checksum,
+      byteSize: media.byteSize,
+      altTextApplied: false,
+      publicUrl: null,
+      expiresAt: null,
+      reusedFromPreviousAttempt: false,
     };
   }
 
@@ -372,7 +403,8 @@ export function createLinkedInConnector(deps: ConnectorDeps): SocialConnector {
     request: PublishRequest,
     options: ReturnType<typeof linkedInProviderOptionsSchema.parse>,
   ): Record<string, unknown> {
-    const { connection, draft } = request;
+    const draft = request.draft;
+    const connection = draft.connection;
     const assets = request.preparedMedia
       .map((prepared) => prepared.providerMediaId)
       .filter((value): value is string => value !== null);
@@ -425,45 +457,106 @@ export function createLinkedInConnector(deps: ConnectorDeps): SocialConnector {
         displayName: 'LinkedIn',
         iconToken: 'provider.linkedin',
         accountTypes: ['personal_profile', 'organization'],
-        docsUrl:
+        contractVersion: CONNECTOR_CONTRACT_VERSION,
+        connectorVersion: '1.0.0',
+        label: 'beta',
+        limitationKey: 'connectors.linkedin.review_pending',
+        officialDocsUrl:
           'https://learn.microsoft.com/en-us/linkedin/marketing/community-management/shares/posts-api',
-        policyUrl: 'https://legal.linkedin.com/api-terms-of-use',
+        officialPolicyUrl: 'https://legal.linkedin.com/api-terms-of-use',
         engineeringOwner: 'Backend/Connectors 2',
         policyOwner: 'Policy Owner',
-        lastPolicyReviewAt: SOURCE_VERIFIED_ON,
-        contractVersion: CONNECTOR_CONTRACT_VERSION,
+        lastPolicyReviewAt: `${SOURCE_VERIFIED_ON}T00:00:00.000Z`,
+        nextPolicyReviewAt: '2027-02-04T00:00:00.000Z',
+        features: {
+          ...NOT_IMPLEMENTED_FEATURES,
+          discover_accounts: 'supported',
+          list_destinations: 'supported',
+          search_mentions: 'supported',
+          native_mentions: 'supported',
+          get_capabilities: 'supported',
+          validate_draft: 'supported',
+          prepare_media: 'supported',
+          preview: 'supported',
+          publish: 'supported',
+          get_status: 'supported',
+          delete_post: 'supported',
+          fetch_metrics: 'supported',
+          refresh_credential: 'supported',
+          revoke: 'supported',
+          first_comment: 'supported',
+          // LinkedIn has no thread product: a post is a post.
+          thread_parts: 'unsupported',
+          comment_count: 'supported',
+          comment_replies: 'not_implemented',
+          provider_idempotency: 'unsupported',
+          post_analytics: 'supported',
+          account_analytics: 'supported',
+          privacy_controls: 'supported',
+          ai_disclosure: 'not_implemented',
+          commercial_disclosure: 'not_implemented',
+          alt_text: 'supported',
+          carousel: 'supported',
+          video: 'supported',
+          document: 'supported',
+          metered_cost: 'unsupported',
+        },
       };
     },
 
     authorization(): AuthorizationDefinition {
       return {
-        flavor: 'oauth2_code',
+        flavor: 'oauth2_pkce',
         authorizeUrl: AUTHORIZE_URL,
         tokenUrl: TOKEN_URL,
         revokeUrl: REVOKE_URL,
-        requiresPkce: false,
-        // LinkedIn returns one member token. Organization posting rights come from the
-        // member's Page roles, which we read after the grant.
-        multiStep: true,
         redirectPath: '/oauth/linkedin/callback',
         scopes: [
-          { scope: 'openid', descriptionKey: 'connectors.linkedin.scope.openid' },
-          { scope: 'profile', descriptionKey: 'connectors.linkedin.scope.profile' },
-          { scope: 'w_member_social', descriptionKey: 'connectors.linkedin.scope.w_member_social' },
+          {
+            scope: 'openid',
+            explanationKey: 'connectors.linkedin.scope.openid',
+            usedBy: ['connections'],
+            required: true,
+          },
+          {
+            scope: 'profile',
+            explanationKey: 'connectors.linkedin.scope.profile',
+            usedBy: ['connections', 'composer'],
+            required: true,
+          },
+          {
+            scope: 'w_member_social',
+            explanationKey: 'connectors.linkedin.scope.w_member_social',
+            usedBy: ['composer', 'queue'],
+            required: true,
+          },
           {
             scope: 'w_organization_social',
-            descriptionKey: 'connectors.linkedin.scope.w_organization_social',
+            explanationKey: 'connectors.linkedin.scope.w_organization_social',
+            usedBy: ['composer', 'queue'],
+            required: false,
           },
           {
             scope: 'r_organization_social',
-            descriptionKey: 'connectors.linkedin.scope.r_organization_social',
+            explanationKey: 'connectors.linkedin.scope.r_organization_social',
+            usedBy: ['analytics'],
+            required: false,
           },
           {
             scope: 'rw_organization_admin',
-            descriptionKey: 'connectors.linkedin.scope.rw_organization_admin',
+            explanationKey: 'connectors.linkedin.scope.rw_organization_admin',
+            usedBy: ['connections', 'analytics'],
+            required: false,
           },
         ],
-        notesKey: 'connectors.linkedin.authorization_note',
+        pkceRequired: true,
+        // LinkedIn returns one member token. Organization posting rights come from the
+        // member's Page roles, which we read after the grant.
+        multiStep: true,
+        stepDescriptionKeys: ['connectors.linkedin.authorization_note'],
+        supportsRefresh: true,
+        refreshAtLifetimeFraction: 0.75,
+        extraAuthorizeParameters: {},
       };
     },
 
@@ -473,7 +566,7 @@ export function createLinkedInConnector(deps: ConnectorDeps): SocialConnector {
       const me = await http.request({
         method: 'GET',
         url: USERINFO_URL,
-        headers: { authorization: `Bearer ${grant.accessToken}` },
+        auth: { handle: grant.accessToken },
         accept: 'json',
         provider: PROVIDER,
         operation: 'linkedin.userinfo',
@@ -482,37 +575,41 @@ export function createLinkedInConnector(deps: ConnectorDeps): SocialConnector {
         provider: PROVIDER,
         operation: 'linkedin.userinfo',
         response: me,
-        remediationKey: REMEDIATION.reconnectAccount,
+        remediationCode: REMEDIATION.reconnectAccount,
       });
       const profile = parseProviderBody(linkedInUserInfoSchema, me, {
         provider: PROVIDER,
         operation: 'linkedin.userinfo',
         response: me,
       });
+      const canPostAsMember = grant.grantedScopes.includes('w_member_social');
       accounts.push({
-        externalId: profile.sub,
+        externalAccountId: profile.sub,
         accountType: 'personal_profile',
         displayName: profile.name ?? 'LinkedIn member',
         handle: null,
         avatarUrl: profile.picture ?? null,
+        profileUrl: null,
         parentExternalId: null,
-        connectable: grant.scopes.includes('w_member_social'),
-        blockedReasonKey: grant.scopes.includes('w_member_social')
+        grantedScopes: [...grant.grantedScopes],
+        eligible: canPostAsMember,
+        ineligibleReasonKey: canPostAsMember
           ? null
           : 'connectors.linkedin.member_write_scope_missing',
-        scopes: [...grant.scopes],
+        // LinkedIn issues one member token; there is no separate per account credential.
+        accountAccessToken: null,
         metadata: { memberUrn: memberUrn(profile.sub) },
       });
 
-      if (!grant.scopes.includes('rw_organization_admin')) {
+      if (!grant.grantedScopes.includes('rw_organization_admin')) {
         return accounts;
       }
 
       const acls = await http.request({
         method: 'GET',
         url: `${REST_BASE}/organizationAcls`,
+        auth: { handle: grant.accessToken },
         headers: {
-          authorization: `Bearer ${grant.accessToken}`,
           'linkedin-version': LINKEDIN_API_VERSION,
           'x-restli-protocol-version': '2.0.0',
         },
@@ -537,17 +634,22 @@ export function createLinkedInConnector(deps: ConnectorDeps): SocialConnector {
       for (const element of parsed.elements) {
         const eligible = PUBLISHING_ROLES.has(element.role);
         const organizationId = organizationIdFromUrn(element.organizationalTarget);
+        const canPostAsOrganization =
+          eligible && grant.grantedScopes.includes('w_organization_social');
         accounts.push({
-          externalId: organizationId,
+          externalAccountId: organizationId,
           accountType: 'organization',
           displayName:
             element.organizationalTarget$?.localizedName ?? `Organization ${organizationId}`,
           handle: element.organizationalTarget$?.vanityName ?? null,
           avatarUrl: null,
+          profileUrl: `https://www.linkedin.com/company/${organizationId}/`,
+          // The member whose Page role grants us the right to publish as this organization.
           parentExternalId: profile.sub,
-          connectable: eligible && grant.scopes.includes('w_organization_social'),
-          blockedReasonKey: eligible ? null : 'connectors.linkedin.page_role_required',
-          scopes: [...grant.scopes],
+          grantedScopes: [...grant.grantedScopes],
+          eligible: canPostAsOrganization,
+          ineligibleReasonKey: eligible ? null : 'connectors.linkedin.page_role_required',
+          accountAccessToken: null,
           metadata: { organizationUrn: element.organizationalTarget, role: element.role },
         });
       }
@@ -555,7 +657,7 @@ export function createLinkedInConnector(deps: ConnectorDeps): SocialConnector {
     },
 
     async listDestinations(input: DestinationRequest): Promise<ProviderDestination[]> {
-      const accessToken = await token(input.connection);
+      const accessToken = await accessTokenOf(input.connection);
       const response = await http.request({
         method: 'GET',
         url: `${REST_BASE}/organizationAcls`,
@@ -569,28 +671,34 @@ export function createLinkedInConnector(deps: ConnectorDeps): SocialConnector {
         provider: PROVIDER,
         operation: 'linkedin.list_destinations',
         response,
-        remediationKey: REMEDIATION.pageRoleRequired,
+        remediationCode: REMEDIATION.pageRoleRequired,
       });
       const parsed = parseProviderBody(linkedInOrganizationAclsSchema, response, {
         provider: PROVIDER,
         operation: 'linkedin.list_destinations',
         response,
       });
+      const refreshedAt = nowIso();
+      const expiresAt = new Date(clock.now().getTime() + DESTINATION_TTL_MS).toISOString();
       return parsed.elements
         .filter((element) => PUBLISHING_ROLES.has(element.role))
+        .slice(0, input.limit)
         .map((element) => ({
           externalId: element.organizationalTarget,
           kind: 'organization' as const,
-          label:
+          displayLabel:
             element.organizationalTarget$?.localizedName ??
             `Organization ${organizationIdFromUrn(element.organizationalTarget)}`,
-          description: null,
+          parentExternalId: null,
+          canPost: true,
+          refreshedAt,
+          expiresAt,
           metadata: { role: element.role },
         }));
     },
 
     async searchMentions(input: MentionSearchRequest): Promise<MentionEntity[]> {
-      const accessToken = await token(input.connection);
+      const accessToken = await accessTokenOf(input.connection);
       const vanityName = input.query.replace(/^@/u, '').trim();
       if (vanityName === '') {
         return [];
@@ -616,8 +724,10 @@ export function createLinkedInConnector(deps: ConnectorDeps): SocialConnector {
         operation: 'linkedin.search_mentions',
         response,
       });
+      const resolvedAt = nowIso();
       return parsed.elements
         .filter((organization) => organization.id !== undefined)
+        .slice(0, input.limit)
         .map((organization) => ({
           externalId: `urn:li:organization:${String(organization.id)}`,
           displayLabel: organization.localizedName ?? String(organization.id),
@@ -625,22 +735,25 @@ export function createLinkedInConnector(deps: ConnectorDeps): SocialConnector {
           kind: 'organization' as const,
           avatarUrl: null,
           // A resolved LinkedIn mention carries a real URN, so it is a native tag.
-          resolved: true,
+          resolvedToExternalId: true,
+          resolvedAt,
         }));
     },
 
-    async getCapabilities(connection: ProviderConnection) {
-      return buildLinkedInCapabilities({
-        connection,
-        observedAt: nowIso(),
-        grantedScopes: connection.scopes,
-      });
+    async getCapabilities(connection: ProviderConnection): Promise<CapabilitySnapshot> {
+      return await Promise.resolve(
+        buildLinkedInCapabilities({
+          connection,
+          observedAt: nowIso(),
+          grantedScopes: connection.grantedScopes,
+        }),
+      );
     },
 
     async validateDraft(draft: ProviderDraft): Promise<ValidationResult> {
       const snapshot = draft.capabilities;
       const targetId = draft.connection.connectionId;
-      const options = linkedInProviderOptionsSchema.parse(draft.providerOptions);
+      const options = linkedInProviderOptionsSchema.parse(providerOptionsOf(draft));
       const issues: ValidationIssue[] = [
         ...validateDraftShape(draft, snapshot, { unit: 'utf16', allowMixedMedia: false }),
       ];
@@ -687,7 +800,7 @@ export function createLinkedInConnector(deps: ConnectorDeps): SocialConnector {
 
       if (
         draft.connection.accountType === 'organization' &&
-        !draft.connection.scopes.includes('w_organization_social')
+        !draft.connection.grantedScopes.includes('w_organization_social')
       ) {
         issues.push(
           validationIssue({
@@ -701,11 +814,11 @@ export function createLinkedInConnector(deps: ConnectorDeps): SocialConnector {
         );
       }
 
-      return validationResult({ issues });
+      return await Promise.resolve(validationResult({ issues }));
     },
 
     async prepareMedia(input: MediaPreparationRequest): Promise<PreparedMedia[]> {
-      const accessToken = await token(input.connection);
+      const accessToken = await accessTokenOf(input.connection);
       const prepared: PreparedMedia[] = [];
       for (const media of input.media) {
         if (media.kind === 'video') {
@@ -728,7 +841,8 @@ export function createLinkedInConnector(deps: ConnectorDeps): SocialConnector {
             : draft.media.some((item) => item.kind === 'video')
               ? 'video'
               : 'single';
-      return buildPreview(draft, draft.capabilities, {
+      return await Promise.resolve(
+        buildPreview(draft, draft.capabilities, {
         unit: 'utf16',
         mediaLayout: layout,
         linkRendering: 'card',
@@ -741,39 +855,15 @@ export function createLinkedInConnector(deps: ConnectorDeps): SocialConnector {
           draft.connection.accountType === 'personal_profile'
             ? ['connectors.linkedin.member_analytics_restricted']
             : [],
-      });
+        }),
+      );
     },
 
     async publish(request: PublishRequest): Promise<PublishResult> {
-      const { connection } = request;
-      const accessToken = await token(connection);
-      const options = linkedInProviderOptionsSchema.parse(request.draft.providerOptions);
-
-      const existing = request.resume['postUrn'];
-      if (typeof existing === 'string' && existing !== '') {
-        return {
-          state: 'published',
-          externalPostId: existing,
-          permalink: postPermalink(existing),
-          root: {
-            kind: 'root',
-            order: 0,
-            threadItemId: null,
-            state: 'published',
-            externalPostId: existing,
-            permalink: postPermalink(existing),
-            errorClass: null,
-            errorCode: null,
-            remediationKey: null,
-          },
-          items: [],
-          pollToken: existing,
-          resume: { postUrn: existing },
-          sanitizedProviderResponse: { adopted: true },
-          costMinor: null,
-          currency: null,
-        };
-      }
+      const draft = request.draft;
+      const connection = draft.connection;
+      const accessToken = await accessTokenOf(connection);
+      const options = linkedInProviderOptionsSchema.parse(providerOptionsOf(draft));
 
       const response = await http.request({
         method: 'POST',
@@ -792,7 +882,7 @@ export function createLinkedInConnector(deps: ConnectorDeps): SocialConnector {
       if (response.status === 403) {
         throw new ConnectionActionRequiredError({
           messageKey: 'connectors.linkedin.page_role_required',
-          details: { provider: PROVIDER, remediationKey: REMEDIATION.pageRoleRequired },
+          details: { provider: PROVIDER, remediationCode: REMEDIATION.pageRoleRequired },
         });
       }
       ensureOk(response, {
@@ -801,46 +891,35 @@ export function createLinkedInConnector(deps: ConnectorDeps): SocialConnector {
         response,
       });
 
-      // The created post URN comes back in a header, not in the body.
+      // The created post URN comes back in a header, not in the body. Published means an
+      // external post id and nothing else, so a create with no URN is a failure.
       const postUrn = response.headers['x-restli-id'] ?? response.headers['x-linkedin-id'] ?? null;
       if (postUrn === null) {
         throw providerFailure({
           provider: PROVIDER,
           operation: 'linkedin.create_post',
           response,
-          remediationKey: REMEDIATION.contactSupport,
+          remediationCode: REMEDIATION.contactSupport,
           details: { missing: 'x-restli-id' },
         });
       }
 
-      const root: PublishItemResult = {
-        kind: 'root',
-        order: 0,
-        threadItemId: null,
-        state: 'published',
-        externalPostId: postUrn,
-        permalink: postPermalink(postUrn),
-        errorClass: null,
-        errorCode: null,
-        remediationKey: null,
-      };
+      const publishedAt = nowIso();
+      const items: PublishItemResult[] = [
+        {
+          kind: 'root',
+          order: 0,
+          threadItemId: null,
+          externalPostId: postUrn,
+          permalink: postPermalink(postUrn),
+          publishedAt,
+        },
+      ];
+      const failures: FailedItem[] = [];
 
-      const items: PublishItemResult[] = [];
-      for (const item of request.draft.threadItems) {
-        if (item.kind !== 'comment' || item.delaySeconds > 0) {
-          items.push({
-            kind: item.kind,
-            order: item.order,
-            threadItemId: item.id,
-            state: 'processing',
-            externalPostId: null,
-            permalink: null,
-            errorClass: null,
-            errorCode: null,
-            remediationKey: null,
-          });
-          continue;
-        }
+      // LinkedIn has no thread product, so every follow up item is a comment on the root.
+      // The connector never sleeps: it posts each item it was handed, in order.
+      for (const item of [...draft.threadItems].sort((left, right) => left.order - right.order)) {
         const comment = await http.request({
           method: 'POST',
           url: `${REST_BASE}/socialActions/${encodeURIComponent(postUrn)}/comments`,
@@ -850,41 +929,79 @@ export function createLinkedInConnector(deps: ConnectorDeps): SocialConnector {
           provider: PROVIDER,
           operation: 'linkedin.create_comment',
         });
+        const commentId = comment.headers['x-restli-id'] ?? null;
+        if (!comment.ok || commentId === null) {
+          // A failed comment never invalidates a root post that already exists externally.
+          failures.push({
+            kind: item.kind,
+            order: item.order,
+            threadItemId: item.threadItemId,
+            error: errorSummary({
+              errorClass: 'TRANSIENT_PROVIDER',
+              remediationCode: REMEDIATION.commentFailedRootPublished,
+              messageKey: 'state.partially_published.label',
+              retryable: true,
+            }),
+          });
+          continue;
+        }
         items.push({
           kind: item.kind,
           order: item.order,
-          threadItemId: item.id,
-          state: comment.ok ? 'published' : 'failed',
-          externalPostId: comment.headers['x-restli-id'] ?? null,
+          threadItemId: item.threadItemId,
+          externalPostId: commentId,
           permalink: null,
-          errorClass: null,
-          errorCode: null,
-          remediationKey: comment.ok ? null : REMEDIATION.commentFailedRootPublished,
+          publishedAt,
         });
       }
 
-      const anyFailed = items.some((item) => item.state === 'failed');
-      const anyPending = items.some((item) => item.state === 'processing');
-
+      const sanitizedResponse = { postUrn, commentCount: items.length - 1 };
+      if (failures.length > 0) {
+        return {
+          status: 'partial',
+          externalPostId: postUrn,
+          permalink: postPermalink(postUrn),
+          publishedAt,
+          items,
+          failures,
+          sanitizedResponse,
+          providerRequestId: response.requestId,
+          costMinor: null,
+          currency: null,
+        };
+      }
       return {
-        state: anyFailed ? 'partially_published' : anyPending ? 'processing' : 'published',
+        status: 'published',
         externalPostId: postUrn,
         permalink: postPermalink(postUrn),
-        root,
+        publishedAt,
         items,
-        pollToken: postUrn,
-        resume: { postUrn },
-        sanitizedProviderResponse: { postUrn, commentCount: items.length },
+        sanitizedResponse,
+        providerRequestId: response.requestId,
         costMinor: null,
         currency: null,
       };
     },
 
     async getStatus(input: StatusRequest): Promise<PublishStatus> {
-      const accessToken = await token(input.connection);
+      const postUrn = input.externalPostId ?? input.providerJobId;
+      if (postUrn === null) {
+        // LinkedIn creates directly, so with no post URN there is nothing to poll.
+        return {
+          state: 'unknown',
+          externalPostId: null,
+          permalink: null,
+          publishedAt: null,
+          items: [],
+          error: null,
+          pollAfterSeconds: null,
+          sanitizedResponse: { reason: 'no_post_urn_to_poll' },
+        };
+      }
+      const accessToken = await accessTokenOf(input.connection);
       const response = await http.request({
         method: 'GET',
-        url: `${REST_BASE}/posts/${encodeURIComponent(input.pollToken)}`,
+        url: `${REST_BASE}/posts/${encodeURIComponent(postUrn)}`,
         headers: headers(accessToken),
         accept: 'json',
         provider: PROVIDER,
@@ -895,9 +1012,16 @@ export function createLinkedInConnector(deps: ConnectorDeps): SocialConnector {
           state: 'failed',
           externalPostId: null,
           permalink: null,
-          errorClass: 'PERMANENT_PROVIDER',
-          remediationKey: REMEDIATION.providerRejectedContent,
-          sanitizedProviderResponse: { status: response.status },
+          publishedAt: null,
+          items: [],
+          error: errorSummary({
+            errorClass: 'PERMANENT_PROVIDER',
+            remediationCode: REMEDIATION.providerRejectedContent,
+            messageKey: 'error.provider_content_rejected.message',
+            retryable: false,
+          }),
+          pollAfterSeconds: null,
+          sanitizedResponse: { status: response.status },
         };
       }
       if (!response.ok) {
@@ -905,9 +1029,11 @@ export function createLinkedInConnector(deps: ConnectorDeps): SocialConnector {
           state: 'unknown',
           externalPostId: null,
           permalink: null,
-          errorClass: null,
-          remediationKey: null,
-          sanitizedProviderResponse: { status: response.status },
+          publishedAt: null,
+          items: [],
+          error: null,
+          pollAfterSeconds: null,
+          sanitizedResponse: { status: response.status },
         };
       }
       const parsed = parseProviderBody(linkedInPostSchema, response, {
@@ -916,18 +1042,32 @@ export function createLinkedInConnector(deps: ConnectorDeps): SocialConnector {
         response,
       });
       const published = parsed.lifecycleState === undefined || parsed.lifecycleState === 'PUBLISHED';
+      const publishedAt = nowIso();
       return {
         state: published ? 'published' : 'processing',
         externalPostId: published ? parsed.id : null,
         permalink: published ? postPermalink(parsed.id) : null,
-        errorClass: null,
-        remediationKey: null,
-        sanitizedProviderResponse: { lifecycleState: parsed.lifecycleState ?? 'PUBLISHED' },
+        publishedAt: published ? publishedAt : null,
+        items: published
+          ? [
+              {
+                kind: 'root',
+                order: 0,
+                threadItemId: null,
+                externalPostId: parsed.id,
+                permalink: postPermalink(parsed.id),
+                publishedAt,
+              },
+            ]
+          : [],
+        error: null,
+        pollAfterSeconds: published ? null : 10,
+        sanitizedResponse: { lifecycleState: parsed.lifecycleState ?? 'PUBLISHED' },
       };
     },
 
     async deletePost(input: DeleteRequest): Promise<void> {
-      const accessToken = await token(input.connection);
+      const accessToken = await accessTokenOf(input.connection);
       const response = await http.request({
         method: 'DELETE',
         url: `${REST_BASE}/posts/${encodeURIComponent(input.externalPostId)}`,
@@ -940,7 +1080,7 @@ export function createLinkedInConnector(deps: ConnectorDeps): SocialConnector {
     },
 
     async fetchMetrics(input: MetricsRequest): Promise<MetricObservation[]> {
-      const accessToken = await token(input.connection);
+      const accessToken = await accessTokenOf(input.connection);
       const observedAt = nowIso();
       const isOrganization = input.connection.accountType === 'organization';
 
@@ -998,7 +1138,7 @@ export function createLinkedInConnector(deps: ConnectorDeps): SocialConnector {
       }
 
       const externalPostId = input.externalPostId;
-      if (externalPostId === undefined) {
+      if (externalPostId === null) {
         return mapMetrics({
           provider: PROVIDER,
           scope: 'post',
@@ -1128,20 +1268,23 @@ export function createLinkedInConnector(deps: ConnectorDeps): SocialConnector {
         throw providerFailure({
           provider: PROVIDER,
           operation: 'linkedin.refresh_credential',
-          remediationKey: REMEDIATION.contactSupport,
+          remediationCode: REMEDIATION.contactSupport,
           details: { missingConfig: 'LINKEDIN_CLIENT_ID, LINKEDIN_CLIENT_SECRET' },
         });
       }
-      return refreshOAuth2Token({
-        http,
-        clock,
-        provider: PROVIDER,
-        tokenUrl: TOKEN_URL,
-        clientId,
-        clientSecret,
-        refreshToken: input.refreshToken,
-        basicAuth: false,
-      });
+      return await input.refreshToken.use(
+        async (refreshToken) =>
+          await refreshOAuth2Token({
+            http,
+            clock,
+            provider: PROVIDER,
+            tokenUrl: TOKEN_URL,
+            clientId,
+            clientSecret,
+            refreshToken,
+            basicAuth: false,
+          }),
+      );
     },
 
     async revoke(input: RevokeRequest): Promise<void> {
@@ -1150,15 +1293,17 @@ export function createLinkedInConnector(deps: ConnectorDeps): SocialConnector {
       if (clientId === undefined || clientSecret === undefined) {
         return;
       }
-      const accessToken = await token(input.connection);
-      const response = await http.request({
-        method: 'POST',
-        url: REVOKE_URL,
-        form: { token: accessToken, client_id: clientId, client_secret: clientSecret },
-        accept: 'none',
-        provider: PROVIDER,
-        operation: 'linkedin.revoke',
-      });
+      const response = await input.accessToken.use(
+        async (accessToken) =>
+          await http.request({
+            method: 'POST',
+            url: REVOKE_URL,
+            form: { token: accessToken, client_id: clientId, client_secret: clientSecret },
+            accept: 'none',
+            provider: PROVIDER,
+            operation: 'linkedin.revoke',
+          }),
+      );
       if (!response.ok) {
         logger.warn(
           { provider: PROVIDER, status: response.status },

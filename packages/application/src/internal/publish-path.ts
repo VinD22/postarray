@@ -22,6 +22,7 @@ import { invalid } from './errors.js';
 import { publishJobIdempotencyKey } from './idempotency.js';
 import { toLocalDateTime, toProviderId, toStoredSurface } from './mappers.js';
 import type { ActorSnapshot, Db } from './runtime.js';
+import { toApprovalPolicy } from './storage-enums.js';
 import { resolveTarget } from './stored-content.js';
 
 /**
@@ -342,12 +343,13 @@ export async function runPublishPath(
 
     const created = await db.publishJob.create({
       data: {
+        workspaceId: actor.workspace.id,
         contentItemId: aggregate.itemId,
         contentVersionId,
         postVariantId: variant.id,
         connectionId: variant.connectionId,
         ...(approvalRequest === null ? {} : { approvalRequestId: approvalRequest.id }),
-        approvalPolicy: aggregate.approvalPolicy,
+        approvalPolicy: toApprovalPolicy(aggregate.approvalPolicy),
         scheduledFor: executeAt,
         scheduledTimeZone: schedule.ianaTimeZone,
         state: 'scheduled',

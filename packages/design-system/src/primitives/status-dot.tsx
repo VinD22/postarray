@@ -30,9 +30,7 @@ const providerClass: Record<ProviderKey, string> = {
   tiktok: 'bg-brand-tiktok',
   threads: 'bg-brand-threads',
   bluesky: 'bg-brand-bluesky',
-  pinterest: 'bg-brand-pinterest',
-  reddit: 'bg-brand-reddit',
-  mastodon: 'bg-brand-mastodon',
+  fake: 'bg-brand-fake',
 };
 
 export interface StatusDotProps extends ComponentPropsWithoutRef<'span'> {
@@ -55,7 +53,7 @@ export interface StatusDotProps extends ComponentPropsWithoutRef<'span'> {
  *
  * A dot never communicates on its own. It sits beside a word: the account
  * handle, the connection state, the platform name. Colour without text fails
- * for anyone who cannot distinguish the hues, and this product has eleven
+ * for anyone who cannot distinguish the hues, and this product has nine
  * provider colours that would be indistinguishable in greyscale.
  */
 export const StatusDot = forwardRef<HTMLSpanElement, StatusDotProps>(function StatusDot(

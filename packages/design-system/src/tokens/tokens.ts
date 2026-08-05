@@ -74,9 +74,13 @@ export const PROVIDER_KEYS = [
   'tiktok',
   'threads',
   'bluesky',
-  'pinterest',
-  'reddit',
-  'mastodon',
+  /**
+   * The local development connector. It mirrors `ProviderId` in
+   * `@relay/contracts`, which is the authoritative provider union; the design
+   * system cannot import a product package, so the list is restated here and
+   * must be kept identical to it.
+   */
+  'fake',
 ] as const;
 
 export type ProviderKey = (typeof PROVIDER_KEYS)[number];
@@ -148,9 +152,7 @@ export const lightTheme: ThemeTokens = {
     tiktok: '#111111',
     threads: '#101010',
     bluesky: '#0F5FC0',
-    pinterest: '#BE1F28',
-    reddit: '#C63F16',
-    mastodon: '#4B4CC4',
+    fake: '#6B6560',
   },
 };
 
@@ -209,9 +211,7 @@ export const darkTheme: ThemeTokens = {
     tiktok: '#25F4EE',
     threads: '#EDEDED',
     bluesky: '#6BB0F5',
-    pinterest: '#EE6A72',
-    reddit: '#FF8A60',
-    mastodon: '#9394F2',
+    fake: '#A8A29A',
   },
 };
 

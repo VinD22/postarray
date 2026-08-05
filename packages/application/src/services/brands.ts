@@ -90,6 +90,7 @@ export function createBrandService(deps: ServiceDeps): BrandService {
       return authorized(deps, ctx, 'brand.write', undefined, async (db, actor) => {
         const created = await db.brand.create({
           data: {
+            workspaceId: actor.workspace.id,
             name: input.name,
             slug: input.slug,
             defaultTimeZone: input.defaultTimeZone ?? actor.workspace.defaultTimeZone,

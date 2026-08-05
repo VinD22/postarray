@@ -35,7 +35,7 @@ export const analyticsMessages = {
 
   'analytics.definition.title': 'How {metric} is defined',
   'analytics.definition.provider': 'Reported by {provider} as {providerField}.',
-  'analytics.definition.denominator': 'Denominator: {denominator}.',
+  'analytics.definition.denominator.label': 'Denominator: {denominator}.',
   'analytics.definition.unit': 'Unit: {unit}.',
   'analytics.definition.normalized':
     'Normalized from the provider value. The raw value is kept and available.',

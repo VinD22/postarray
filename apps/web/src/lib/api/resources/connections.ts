@@ -12,12 +12,12 @@ import type {
   ProviderId,
 } from '../types.js';
 
-export interface ConnectionListQuery {
+export type ConnectionListQuery = {
   readonly brandId?: string;
   readonly provider?: ProviderId;
   readonly cursor?: string;
   readonly limit?: number;
-}
+};
 
 function demoConnection(connectionId: string): ConnectionView {
   const found = demoConnections.find((connection) => connection.id === connectionId);
@@ -84,10 +84,14 @@ export const connectionsApi = {
   disconnect: (connectionId: string): Promise<void> =>
     call(`/connections/${connectionId}`, { method: 'DELETE' }, () => undefined),
 
-  /** Pages, boards, communities and channels this connection can publish into. */
+  /**
+   * Pages, boards, communities and channels this connection can publish into.
+   * `q` narrows the list by name, which is what the composer's destination
+   * search sends as the user types.
+   */
   listDestinations: (
     connectionId: string,
-    query: { kind?: string } = {},
+    query: { kind?: string; q?: string } = {},
   ): Promise<Paginated<ConnectionDestination>> =>
     call(`/connections/${connectionId}/destinations`, { query }, () =>
       page<ConnectionDestination>([]),

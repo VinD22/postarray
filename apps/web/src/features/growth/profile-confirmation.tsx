@@ -98,7 +98,7 @@ export function ProfileConfirmation({
                             : t('growth.profile.assumption')}
                         </Badge>
                         <span className="text-body-sm text-text-tertiary">
-                          {t('growth.ui.confirm.confidence', {
+                          {t('growth.ui.confirm.confidence.label', {
                             level: t(
                               `growth.ui.confirm.confidence.${assumption.confidence}`,
                             ),

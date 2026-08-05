@@ -121,31 +121,38 @@ export function providerStatus(
 export interface RegistrationOutcome {
   readonly provider: ProviderId;
   readonly status: string;
-  readonly registered: boolean;
+  /** True when every credential this provider needs is configured. */
+  readonly available: boolean;
 }
 
+/** The slice of the registry this function drives. */
+export type ProviderRegistrar = Pick<ConnectorRegistry, 'register' | 'markUnavailable'>;
+
 /**
- * Register every provider whose credentials are configured, and mark the rest
+ * Register every provider adapter, and mark the ones with missing credentials
  * `disabled:missing <ENV_VAR>` so the admin panel can say exactly what to set.
+ *
+ * Registration comes first even when a provider is unconfigured: `markUnavailable`
+ * describes a registered connector, and a connector that is absent from the registry
+ * cannot tell the capability page why it is unusable. An unconfigured provider is hidden
+ * from user-facing flows by its `disabled:` status, not by being missing.
  *
  * The second argument is the full `ConnectorDeps` rather than only the config, because a
  * factory needs the HTTP client, the vault, the logger and the clock as well. The config it
  * reads is `deps.config`.
  */
 export function registerBuiltInProviders(
-  registry: ConnectorRegistry,
+  registry: ProviderRegistrar,
   deps: ConnectorDeps,
 ): RegistrationOutcome[] {
   const outcomes: RegistrationOutcome[] = [];
   for (const provider of BUILT_IN_PROVIDERS) {
     const status = providerStatus(deps.config, provider);
+    registry.register(PROVIDER_FACTORIES[provider](deps));
     if (status !== 'live') {
       registry.markUnavailable(provider, status);
-      outcomes.push({ provider, status, registered: false });
-      continue;
     }
-    registry.register(PROVIDER_FACTORIES[provider](deps));
-    outcomes.push({ provider, status, registered: true });
+    outcomes.push({ provider, status, available: status === 'live' });
   }
   return outcomes;
 }

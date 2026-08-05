@@ -68,13 +68,13 @@ export function useAnalyticsOverview(input: OverviewInput, enabled = true) {
     enabled,
     staleTime: FIVE_MINUTES,
     queryFn: async (): Promise<AnalyticsOverview> => {
-      const result = await api.analytics.getAccountMetrics({
-        brandId: input.brandId ?? undefined,
-        connectionIds: [...input.connectionIds],
-        start: input.range.start,
-        end: input.range.end,
+      const result = await api.analytics.getOverview({
+        ...(input.brandId === null ? {} : { brandId: input.brandId }),
+        connectionIds: input.connectionIds,
+        from: input.range.start,
+        to: input.range.end,
         metric: input.rankMetric,
-        contentKind: input.format ?? undefined,
+        ...(input.format === null ? {} : { contentKind: input.format }),
       });
       return adapt<AnalyticsOverview>(result);
     },
@@ -87,7 +87,7 @@ export function usePostMetrics(contentItemId: string, enabled = true) {
     enabled,
     staleTime: FIVE_MINUTES,
     queryFn: async (): Promise<PostComparisonRow> =>
-      adapt<PostComparisonRow>(await api.analytics.getPostMetrics({ contentItemId })),
+      adapt<PostComparisonRow>(await api.analytics.getPostMetrics(contentItemId)),
   });
 }
 
@@ -103,11 +103,10 @@ export function useMetricSeries(
     staleTime: FIVE_MINUTES,
     queryFn: async (): Promise<MetricSeriesView> =>
       adapt<MetricSeriesView>(
-        await api.analytics.compare({
-          connectionId,
+        await api.analytics.getMetricSeries(connectionId, {
           metric,
-          start: range.start,
-          end: range.end,
+          from: range.start,
+          to: range.end,
         }),
       ),
   });
@@ -147,7 +146,20 @@ export function useCreateExperiment(workspaceScope: string) {
   const client = useQueryClient();
   return useMutation({
     mutationFn: async (input: CreateExperimentInput): Promise<ExperimentView> =>
-      adapt<ExperimentView>(await api.analytics.createExperiment(input)),
+      adapt<ExperimentView>(
+        await api.analytics.createExperiment(
+          {
+            name: input.name,
+            hypothesis: input.hypothesis,
+            metricName: input.successMetric,
+            connectionIds: input.connectionIds,
+            variants: [...input.variants],
+            measurementWindowDays: input.measurementWindowDays,
+            minimumPostsPerVariant: input.minimumPostsPerVariant,
+          },
+          input.idempotencyKey,
+        ),
+      ),
     onSuccess: () => {
       void client.invalidateQueries({
         queryKey: analyticsKeys.experiments(workspaceScope),

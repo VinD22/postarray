@@ -30,6 +30,7 @@ import { invalid, notFound } from '../internal/errors.js';
 import { withIdempotency } from '../internal/idempotency.js';
 import { pageArgs, toPage } from '../internal/pagination.js';
 import { authorized, guard, runInWorkspace, type Db } from '../internal/runtime.js';
+import { toApprovalPolicy } from '../internal/storage-enums.js';
 import {
   EMPTY_VARIANT_SETTINGS,
   parseVariantSettings,
@@ -215,11 +216,12 @@ export function createContentService(deps: ServiceDeps): ContentService {
 
               const item = await db.contentItem.create({
                 data: {
+                  workspaceId: actor.workspace.id,
                   brandId: input.brandId,
                   campaignId: input.campaignId ?? null,
                   title: input.title ?? null,
                   state: 'draft',
-                  approvalPolicy: input.approvalPolicy ?? 'none',
+                  approvalPolicy: toApprovalPolicy(input.approvalPolicy ?? 'none'),
                   surface: toStoredSurfaceValue(ctx),
                   creationMethod: 'human',
                   ...(actor.userId === null ? {} : { createdByUserId: actor.userId }),

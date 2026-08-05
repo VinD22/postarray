@@ -136,7 +136,13 @@ export function Subheading({
 }: {
   children: ReactNode;
   className?: string;
-  as?: 'h3' | 'h4';
+  /**
+   * The element to render. The visual size is fixed; the level is chosen by
+   * where the section sits in the document outline, so a top-level section on a
+   * marketing page is an `h2` even though it looks identical to an `h3` nested
+   * inside one. Heading order is an accessibility requirement, not a style.
+   */
+  as?: 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
   id?: string;
 }): ReactNode {
   return (

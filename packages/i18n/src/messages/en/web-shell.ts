@@ -63,9 +63,9 @@ export const webShellMessages = {
 
   /* -- Action center ----------------------------------------------------- */
   'actionCenter.open': 'Open the Action center',
-  'actionCenter.group.now': 'Now',
-  'actionCenter.group.soon': 'Soon',
-  'actionCenter.group.watching': 'Watching',
+  'actionCenter.group.now.label': 'Now',
+  'actionCenter.group.soon.label': 'Soon',
+  'actionCenter.group.watching.label': 'Watching',
   'actionCenter.group.now.hint': 'Publishing is at risk until these are handled.',
   'actionCenter.group.soon.hint': 'These have a deadline you can still meet.',
   'actionCenter.group.watching.hint': 'Not urgent. Worth a look this week.',

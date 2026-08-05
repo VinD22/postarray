@@ -19,7 +19,7 @@ const connection = testConnection({
 const capabilities = buildXCapabilities({
   connection,
   observedAt: '2026-08-04T12:00:00.000Z',
-  grantedScopes: connection.scopes,
+  grantedScopes: connection.grantedScopes,
 });
 
 describe('X cost model', () => {

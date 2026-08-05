@@ -21,6 +21,7 @@ import {
 import type {
   BrandedDomain,
   ComposerBootstrap,
+  ComposerState,
   SignatureOption,
   TargetAccount,
   TargetSet,
@@ -124,8 +125,10 @@ function snapshot(seed: SnapshotSeed): CapabilitySnapshot {
     },
     analytics: {
       support: 'supported',
-      postMetrics: ['impressions', 'engagements'],
-      accountMetrics: ['followers'],
+      // Normalized metric names only. Engagement is reported as its parts, and
+      // a follower count is reported as the change over the window.
+      postMetrics: ['impressions', 'likes', 'comments', 'shares'],
+      accountMetrics: ['follower_delta'],
       historyWindowDays: 90,
     },
     deletion: { support: 'supported', windowSeconds: null },
@@ -351,7 +354,7 @@ export const SEED_BOOTSTRAP: ComposerBootstrap = {
 };
 
 /** The state a fresh composer starts in, given a bootstrap payload. */
-export function initialComposerState(bootstrap: ComposerBootstrap) {
+export function initialComposerState(bootstrap: ComposerBootstrap): ComposerState {
   return {
     master: bootstrap.master,
     selectedConnectionIds: [...bootstrap.selectedConnectionIds],

@@ -19,12 +19,12 @@ import type {
   ReceiptSummaryView,
 } from '../types.js';
 
-export interface ContentListQuery {
+export type ContentListQuery = {
   readonly brandId?: string;
   readonly state?: PublishState;
   readonly cursor?: string;
   readonly limit?: number;
-}
+};
 
 const emptyItem: ContentItemView = {
   id: 'content_demo0000000000000',
@@ -177,13 +177,13 @@ export const approvalsApi = {
   > => call('/approvals', { query: { ...query, state: 'requested' } }, () => page<ApprovalRequestView>([])),
 };
 
-export interface CalendarQuery {
+export type CalendarQuery = {
   readonly from: string;
   readonly to: string;
   readonly brandId?: string;
   readonly connectionId?: string;
   readonly state?: PublishState;
-}
+};
 
 export const schedulingApi = {
   schedule: (

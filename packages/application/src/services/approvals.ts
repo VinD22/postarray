@@ -14,6 +14,7 @@ import { invalid, notFound } from '../internal/errors.js';
 import { withIdempotency } from '../internal/idempotency.js';
 import { pageArgs, toPage } from '../internal/pagination.js';
 import { authorized, guard, type Db } from '../internal/runtime.js';
+import { toApprovalPolicy } from '../internal/storage-enums.js';
 
 /**
  * Approvals.
@@ -152,12 +153,14 @@ export function createApprovalService(deps: ServiceDeps): ApprovalService {
               // is what makes "the approver saw exactly this" checkable later.
               const created = await db.approvalRequest.create({
                 data: {
+                  workspaceId: actor.workspace.id,
                   contentItemId: aggregate.itemId,
                   contentVersionId: aggregate.currentVersionId,
-                  policy:
+                  policy: toApprovalPolicy(
                     aggregate.approvalPolicy === 'none'
                       ? 'any_approver'
                       : aggregate.approvalPolicy,
+                  ),
                   state: 'pending',
                   ...(actor.userId === null ? {} : { requestedByUserId: actor.userId }),
                   ...(ctx.actorType === 'service_account'
@@ -256,6 +259,7 @@ export function createApprovalService(deps: ServiceDeps): ApprovalService {
 
             await db.approvalDecision.create({
               data: {
+                workspaceId: actor.workspace.id,
                 approvalRequestId: request.id,
                 decision: input.decision,
                 decidedByUserId: actor.userId,

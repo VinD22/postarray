@@ -719,7 +719,7 @@ export const webSettingsMessages = {
   'growth.ui.confirm.missingTitle': 'Missing',
   'growth.ui.confirm.missingHelp':
     'The plan works around each of these and says so where it matters.',
-  'growth.ui.confirm.confidence': 'Confidence: {level}',
+  'growth.ui.confirm.confidence.label': 'Confidence: {level}',
   'growth.ui.confirm.confidence.low': 'low',
   'growth.ui.confirm.confidence.medium': 'medium',
   'growth.ui.confirm.confidence.high': 'high',

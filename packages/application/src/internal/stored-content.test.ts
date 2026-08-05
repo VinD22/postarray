@@ -52,7 +52,7 @@ describe('the master and override fold', () => {
   it('reports inherited and overridden fields separately', () => {
     const base = master();
     const overrides = storedOverridesSchema.parse({ locale: 'de', body: 'Wir haben geliefert.' });
-    expect(overriddenFields(base, overrides).sort()).toEqual(['body', 'locale']);
+    expect([...overriddenFields(base, overrides)].sort()).toEqual(['body', 'locale']);
     expect(inheritedFields(base, overrides)).not.toContain('body');
     expect(inheritedFields(base, overrides)).toContain('mediaIds');
   });

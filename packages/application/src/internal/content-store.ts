@@ -3,8 +3,10 @@ import type { ApprovalState, PublishState } from '@relay/contracts';
 import type { ContentItemView, PostVariantView } from '../views.js';
 
 import { notFound } from './errors.js';
+import { toJson } from './json.js';
 import { fromStoredAccountType, fromStoredSurface, toIso, toProviderId } from './mappers.js';
 import type { ActorSnapshot, Db } from './runtime.js';
+import { toProviderKind } from './storage-enums.js';
 import {
   EMPTY_VARIANT_SETTINGS,
   computeContentChecksum,
@@ -242,10 +244,11 @@ export async function writeVersion(
 
   const version = await db.contentVersion.create({
     data: {
+      workspaceId: actor.workspace.id,
       contentItemId: input.contentItemId,
       version: revision,
       body: input.master.body,
-      payload: input.master,
+      payload: toJson(input.master),
       contentHash: checksum,
       locale: input.master.locale,
       ...(actor.userId === null ? {} : { createdByUserId: actor.userId }),
@@ -256,14 +259,15 @@ export async function writeVersion(
   for (const { spec, overrides, resolved } of prepared) {
     await db.postVariant.create({
       data: {
+        workspaceId: actor.workspace.id,
         contentItemId: input.contentItemId,
         contentVersionId: version.id,
         connectionId: spec.connectionId,
         destinationId: spec.destinationId,
-        provider: spec.provider,
+        provider: toProviderKind(toProviderId(spec.provider)),
         locale: resolved.values.locale,
         body: resolved.values.body,
-        settings: { ...spec.settings, overrides },
+        settings: toJson({ ...spec.settings, overrides }),
         mediaAssetIds: [...resolved.values.mediaIds],
         mentionEntityIds: spec.settings.mentions.map((mention) => mention.mentionId),
         signatureId: spec.signatureId,

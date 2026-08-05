@@ -23,10 +23,10 @@ import type {
   WorkspaceView,
 } from '../types.js';
 
-export interface ListQuery {
+export type ListQuery = {
   readonly cursor?: string;
   readonly limit?: number;
-}
+};
 
 export const sessionApi = {
   get: (forwardCookie?: string): Promise<SessionView> =>

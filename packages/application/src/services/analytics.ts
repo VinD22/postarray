@@ -325,6 +325,7 @@ export function createAnalyticsService(deps: ServiceDeps): AnalyticsService {
         }
         const created = await db.experiment.create({
           data: {
+            workspaceId: actor.workspace.id,
             name: input.name,
             hypothesis: input.hypothesis,
             successMetric: input.successMetric,

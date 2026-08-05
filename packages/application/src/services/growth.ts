@@ -23,6 +23,7 @@ import { recordAudit } from '../internal/audit.js';
 import { invalid, notFound } from '../internal/errors.js';
 import { withIdempotency } from '../internal/idempotency.js';
 import { authorized, type Db } from '../internal/runtime.js';
+import { asOpportunityKind } from '../internal/storage-enums.js';
 
 /**
  * The Growth Advisor.
@@ -44,10 +45,10 @@ const PROFILE_SELECT = {
   brandId: true,
   version: true,
   productName: true,
-  siteUrl: true,
+  productUrl: true,
   category: true,
   markets: true,
-  contentLocales: true,
+  languages: true,
   objective: true,
   completenessScore: true,
   confirmedAt: true,
@@ -59,10 +60,12 @@ interface ProfileRow {
   brandId: string;
   version: number;
   productName: string | null;
-  siteUrl: string | null;
+  /** Stored as `product_url`. The view calls it `siteUrl`. */
+  productUrl: string | null;
   category: string | null;
   markets: string[];
-  contentLocales: string[];
+  /** Stored as `languages`. The view calls it `contentLocales`. */
+  languages: string[];
   objective: string | null;
   completenessScore: unknown;
   confirmedAt: Date | null;
@@ -82,7 +85,7 @@ function missingFieldKeys(row: ProfileRow): readonly string[] {
   if (row.productName === null || row.productName === '') {
     missing.push('growth.profile.product_name');
   }
-  if (row.siteUrl === null || row.siteUrl === '') {
+  if (row.productUrl === null || row.productUrl === '') {
     missing.push('growth.profile.site_url');
   }
   if (row.category === null || row.category === '') {
@@ -94,7 +97,7 @@ function missingFieldKeys(row: ProfileRow): readonly string[] {
   if (row.markets.length === 0) {
     missing.push('growth.profile.markets');
   }
-  if (row.contentLocales.length === 0) {
+  if (row.languages.length === 0) {
     missing.push('growth.profile.content_locales');
   }
   return missing;
@@ -108,10 +111,10 @@ function toProfileView(row: ProfileRow): BusinessProfileView {
     brandId: row.brandId,
     revision: row.version,
     productName: row.productName ?? '',
-    siteUrl: row.siteUrl ?? '',
+    siteUrl: row.productUrl ?? '',
     category: row.category ?? '',
     markets: [...row.markets],
-    contentLocales: [...row.contentLocales],
+    contentLocales: [...row.languages],
     objective: row.objective ?? '',
     completenessScore:
       (REQUIRED_PROFILE_FIELDS.length - missing.length) / REQUIRED_PROFILE_FIELDS.length,
@@ -213,10 +216,10 @@ export function createGrowthService(
           const data = {
             brandId: input.brandId,
             productName: input.productName,
-            siteUrl: input.siteUrl,
+            productUrl: input.siteUrl,
             category: input.category,
             markets: [...(input.markets ?? [])],
-            contentLocales: [...(input.contentLocales ?? [])],
+            languages: [...(input.contentLocales ?? [])],
             objective: input.objective,
           };
 
@@ -225,7 +228,11 @@ export function createGrowthService(
           const row =
             existing === null || existing.confirmedAt !== null
               ? await db.businessProfile.create({
-                  data: { ...data, version: (existing?.version ?? 0) + 1 },
+                  data: {
+                    ...data,
+                    workspaceId: actor.workspace.id,
+                    version: (existing?.version ?? 0) + 1,
+                  },
                   select: PROFILE_SELECT,
                 })
               : await db.businessProfile.update({
@@ -440,10 +447,16 @@ export function createGrowthService(
       input: { category?: string; region?: string; verifiedAfter?: string } = {},
     ): Promise<readonly OpportunityRecord[]> {
       return authorized(deps, ctx, 'growth.read', undefined, async (db) => {
+        // `category` names an opportunity kind in the catalog. An unrecognised
+        // one is a bad request, not an empty catalog.
+        const kind = input.category === undefined ? undefined : asOpportunityKind(input.category);
+        if (input.category !== undefined && kind === undefined) {
+          throw invalid('errors.unknown_opportunity_kind', { category: input.category });
+        }
         const rows = await db.growthOpportunity.findMany({
           where: {
             state: 'active',
-            ...(input.category === undefined ? {} : { kind: input.category }),
+            ...(kind === undefined ? {} : { kind }),
             ...(input.region === undefined ? {} : { regions: { has: input.region } }),
             ...(input.verifiedAfter === undefined
               ? {}

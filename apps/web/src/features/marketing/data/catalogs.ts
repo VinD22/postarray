@@ -230,7 +230,7 @@ export interface Subprocessor {
 export const SUBPROCESSORS: readonly Subprocessor[] = [
   {
     id: 'supabase',
-    nameKey: 'web.legal.subprocessors.supabase',
+    nameKey: 'web.legal.subprocessors.supabase.label',
     purposeKey: 'web.legal.subprocessors.supabase.purpose',
     dataKey: 'web.legal.subprocessors.supabase.data',
     region: null,
@@ -238,7 +238,7 @@ export const SUBPROCESSORS: readonly Subprocessor[] = [
   },
   {
     id: 'temporal',
-    nameKey: 'web.legal.subprocessors.temporal',
+    nameKey: 'web.legal.subprocessors.temporal.label',
     purposeKey: 'web.legal.subprocessors.temporal.purpose',
     dataKey: 'web.legal.subprocessors.temporal.data',
     region: null,
@@ -246,7 +246,7 @@ export const SUBPROCESSORS: readonly Subprocessor[] = [
   },
   {
     id: 'polar',
-    nameKey: 'web.legal.subprocessors.polar',
+    nameKey: 'web.legal.subprocessors.polar.label',
     purposeKey: 'web.legal.subprocessors.polar.purpose',
     dataKey: 'web.legal.subprocessors.polar.data',
     region: null,
@@ -254,7 +254,7 @@ export const SUBPROCESSORS: readonly Subprocessor[] = [
   },
   {
     id: 'deepseek',
-    nameKey: 'web.legal.subprocessors.deepseek',
+    nameKey: 'web.legal.subprocessors.deepseek.label',
     purposeKey: 'web.legal.subprocessors.deepseek.purpose',
     dataKey: 'web.legal.subprocessors.deepseek.data',
     region: null,
@@ -262,7 +262,7 @@ export const SUBPROCESSORS: readonly Subprocessor[] = [
   },
   {
     id: 'hosting',
-    nameKey: 'web.legal.subprocessors.hosting',
+    nameKey: 'web.legal.subprocessors.hosting.label',
     purposeKey: 'web.legal.subprocessors.hosting.purpose',
     dataKey: 'web.legal.subprocessors.hosting.data',
     region: null,
@@ -270,7 +270,7 @@ export const SUBPROCESSORS: readonly Subprocessor[] = [
   },
   {
     id: 'email',
-    nameKey: 'web.legal.subprocessors.email',
+    nameKey: 'web.legal.subprocessors.email.label',
     purposeKey: 'web.legal.subprocessors.email.purpose',
     dataKey: 'web.legal.subprocessors.email.data',
     region: null,
@@ -278,7 +278,7 @@ export const SUBPROCESSORS: readonly Subprocessor[] = [
   },
   {
     id: 'monitoring',
-    nameKey: 'web.legal.subprocessors.monitoring',
+    nameKey: 'web.legal.subprocessors.monitoring.label',
     purposeKey: 'web.legal.subprocessors.monitoring.purpose',
     dataKey: 'web.legal.subprocessors.monitoring.data',
     region: null,
@@ -295,36 +295,36 @@ export interface RetentionRow {
 export const RETENTION_SCHEDULE: readonly RetentionRow[] = [
   {
     id: 'credentials',
-    dataKey: 'web.legal.retention.credentials',
+    dataKey: 'web.legal.retention.credentials.label',
     periodKey: 'web.legal.retention.credentials.period',
   },
   {
     id: 'oauthState',
-    dataKey: 'web.legal.retention.oauthState',
+    dataKey: 'web.legal.retention.oauthState.label',
     periodKey: 'web.legal.retention.oauthState.period',
   },
-  { id: 'drafts', dataKey: 'web.legal.retention.drafts', periodKey: 'web.legal.retention.drafts.period' },
+  { id: 'drafts', dataKey: 'web.legal.retention.drafts.label', periodKey: 'web.legal.retention.drafts.period' },
   {
     id: 'receipts',
-    dataKey: 'web.legal.retention.receipts',
+    dataKey: 'web.legal.retention.receipts.label',
     periodKey: 'web.legal.retention.receipts.period',
   },
   {
     id: 'rawProvider',
-    dataKey: 'web.legal.retention.rawProvider',
+    dataKey: 'web.legal.retention.rawProvider.label',
     periodKey: 'web.legal.retention.rawProvider.period',
   },
-  { id: 'metrics', dataKey: 'web.legal.retention.metrics', periodKey: 'web.legal.retention.metrics.period' },
+  { id: 'metrics', dataKey: 'web.legal.retention.metrics.label', periodKey: 'web.legal.retention.metrics.period' },
   {
     id: 'securityLogs',
-    dataKey: 'web.legal.retention.securityLogs',
+    dataKey: 'web.legal.retention.securityLogs.label',
     periodKey: 'web.legal.retention.securityLogs.period',
   },
-  { id: 'billing', dataKey: 'web.legal.retention.billing', periodKey: 'web.legal.retention.billing.period' },
+  { id: 'billing', dataKey: 'web.legal.retention.billing.label', periodKey: 'web.legal.retention.billing.period' },
   {
     id: 'deletedAccount',
-    dataKey: 'web.legal.retention.deletedAccount',
+    dataKey: 'web.legal.retention.deletedAccount.label',
     periodKey: 'web.legal.retention.deletedAccount.period',
   },
-  { id: 'backups', dataKey: 'web.legal.retention.backups', periodKey: 'web.legal.retention.backups.period' },
+  { id: 'backups', dataKey: 'web.legal.retention.backups.label', periodKey: 'web.legal.retention.backups.period' },
 ];

@@ -6,10 +6,10 @@ import { call } from '../call.js';
 import { demoGrowthPlan, page } from '../fixtures.js';
 import type { GrowthPlanSummaryView, MetricView, Paginated, ProviderId } from '../types.js';
 
-export interface MetricWindow {
+export type MetricWindow = {
   readonly from: string;
   readonly to: string;
-}
+};
 
 export interface ExperimentView {
   readonly id: string;
@@ -22,7 +22,56 @@ export interface ExperimentView {
   readonly summaryKey: string;
 }
 
+/**
+ * The workspace-wide analytics read behind the overview screen: several
+ * accounts, one normalized ranking metric, one window.
+ */
+export interface AnalyticsOverviewQuery {
+  readonly brandId?: string;
+  readonly connectionIds: readonly string[];
+  readonly from: string;
+  readonly to: string;
+  /** The normalized metric the rows are ranked by. */
+  readonly metric: string;
+  /** Restricts the rows to one content kind when the screen filters by format. */
+  readonly contentKind?: string;
+}
+
+export type MetricSeriesQuery = MetricWindow & {
+  readonly metric: string;
+};
+
 export const analyticsApi = {
+  /**
+   * Everything the overview screen renders: the ranked rows, the per account
+   * freshness and the accounts that returned no data. Assembled by the API so
+   * the browser never fans out one request per connection.
+   *
+   * The payload is returned unknown until `@relay/application` publishes its
+   * analytics query DTOs: the shape belongs to the analytics feature, which
+   * this layer must not import, so the caller narrows it once at its boundary.
+   */
+  getOverview: (query: AnalyticsOverviewQuery): Promise<unknown> =>
+    call(
+      '/analytics/overview',
+      {
+        query: {
+          ...(query.brandId === undefined ? {} : { brandId: query.brandId }),
+          // Repeated ids travel as one comma separated parameter.
+          connectionIds: query.connectionIds.join(','),
+          from: query.from,
+          to: query.to,
+          metric: query.metric,
+          ...(query.contentKind === undefined ? {} : { contentKind: query.contentKind }),
+        },
+      },
+      () => null,
+    ),
+
+  /** One metric for one account, as points over the window rather than totals. */
+  getMetricSeries: (connectionId: string, query: MetricSeriesQuery): Promise<unknown> =>
+    call(`/analytics/accounts/${connectionId}/series`, { query }, () => null),
+
   getPostMetrics: (
     contentItemId: string,
     query: { connectionId?: string } = {},
@@ -57,7 +106,16 @@ export const analyticsApi = {
     call('/analytics/experiments', { query }, () => page<ExperimentView>([])),
 
   createExperiment: (
-    input: { name: string; metricName: string; hypothesis: string },
+    input: {
+      name: string;
+      metricName: string;
+      hypothesis: string;
+      /** The accounts the experiment draws its posts from. */
+      connectionIds?: readonly string[];
+      variants?: readonly { label: string; description: string }[];
+      measurementWindowDays?: number;
+      minimumPostsPerVariant?: number;
+    },
     idempotencyKey: string,
   ): Promise<ExperimentView | null> =>
     call('/analytics/experiments', { method: 'POST', body: input, idempotencyKey }, () => null),

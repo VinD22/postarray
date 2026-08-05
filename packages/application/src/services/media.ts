@@ -12,8 +12,10 @@ import type { MediaAssetView } from '../views.js';
 import { recordAudit } from '../internal/audit.js';
 import { invalid, notFound } from '../internal/errors.js';
 import { withIdempotency } from '../internal/idempotency.js';
+import { toJson } from '../internal/json.js';
 import { pageArgs, toPage } from '../internal/pagination.js';
 import { authorized, type Db } from '../internal/runtime.js';
+import { asMediaKind } from '../internal/storage-enums.js';
 import { assertFetchable } from '../internal/url-safety.js';
 
 /**
@@ -155,6 +157,7 @@ export function createMediaService(deps: ServiceDeps): MediaService {
             (
               await db.mediaAsset.create({
                 data: {
+                  workspaceId: actor.workspace.id,
                   brandId: input.brandId ?? null,
                   kind,
                   storageBucket: 'media',
@@ -165,7 +168,7 @@ export function createMediaService(deps: ServiceDeps): MediaService {
                   originKind: 'upload',
                   scanState: 'pending',
                   ...(actor.userId === null ? {} : { createdByUserId: actor.userId }),
-                  metadata: { filename: input.filename },
+                  metadata: toJson({ filename: input.filename }),
                 },
                 select: { id: true },
               })
@@ -259,11 +262,15 @@ export function createMediaService(deps: ServiceDeps): MediaService {
     ): Promise<Paginated<MediaAssetView>> {
       return authorized(deps, ctx, 'media.read', undefined, async (db) => {
         const args = pageArgs(query);
+        const kind = query.kind === undefined ? undefined : asMediaKind(query.kind);
+        if (query.kind !== undefined && kind === undefined) {
+          throw invalid('errors.unknown_media_kind', { kind: query.kind });
+        }
         const rows = await db.mediaAsset.findMany({
           where: {
             deletedAt: null,
             ...(query.brandId === undefined ? {} : { brandId: query.brandId }),
-            ...(query.kind === undefined ? {} : { kind: query.kind }),
+            ...(kind === undefined ? {} : { kind }),
           },
           orderBy: { id: 'desc' },
           take: args.take,
@@ -318,6 +325,7 @@ export function createMediaService(deps: ServiceDeps): MediaService {
         await db.mediaDerivative.upsert({
           where: { mediaAssetId_presetKey: { mediaAssetId: row.id, presetKey } },
           create: {
+            workspaceId: actor.workspace.id,
             mediaAssetId: row.id,
             kind: derivativeKindFor(input.ops),
             presetKey,
@@ -326,9 +334,9 @@ export function createMediaService(deps: ServiceDeps): MediaService {
             mimeType: row.mimeType,
             byteSize: row.byteSize,
             checksumSha256: row.checksumSha256,
-            metadata: { ops: [...input.ops], pending: true },
+            metadata: toJson({ ops: [...input.ops], pending: true }),
           },
-          update: { metadata: { ops: [...input.ops], pending: true } },
+          update: { metadata: toJson({ ops: [...input.ops], pending: true }) },
         });
 
         await recordAudit(db, actor, {

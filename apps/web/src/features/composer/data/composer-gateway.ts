@@ -6,8 +6,13 @@
  * the shape of `@/lib/api`, which keeps the coupling to one import.
  */
 
-import { api } from '@/lib/api';
-import type { CapabilitySnapshot, MasterDraft } from '@relay/contracts';
+import { api, newIdempotencyKey } from '@/lib/api';
+import {
+  OVERRIDABLE_VARIANT_FIELDS,
+  type CapabilitySnapshot,
+  type MasterDraft,
+  type OverridableVariantField,
+} from '@relay/contracts';
 
 import type { ComposerBootstrap, ComposerState, TargetAccount } from '../types.js';
 import type { ResolvedEntity } from '../components/entity-search-field.js';
@@ -42,7 +47,10 @@ export async function loadComposer(input: {
 
   const master =
     input.contentItemId === null
-      ? ((await api.content.createDraft({ brandId: input.brandId })) as unknown as MasterDraft)
+      ? ((await api.content.createDraft(
+          input.brandId === null ? {} : { brandId: input.brandId },
+          newIdempotencyKey('draft'),
+        )) as unknown as MasterDraft)
       : ((await api.content.get(input.contentItemId)) as unknown as MasterDraft);
 
   return {
@@ -69,10 +77,22 @@ export async function saveComposer(state: ComposerState): Promise<void> {
     connectionIds: [...state.selectedConnectionIds],
   });
   for (const [connectionId, overrides] of Object.entries(state.overrides)) {
-    if (Object.keys(overrides).length === 0) {
-      await api.content.resetVariantToMaster(state.master.id, connectionId);
+    const fields = Object.keys(overrides) as readonly OverridableVariantField[];
+    if (fields.length === 0) {
+      // No overrides left on this target: every overridable field goes back to
+      // inheriting the master rather than keeping a stale copy of it.
+      await api.content.resetVariantToMaster(state.master.id, connectionId, {
+        fields: OVERRIDABLE_VARIANT_FIELDS,
+      });
     } else {
-      await api.content.overrideVariant(state.master.id, connectionId, overrides);
+      // One request per overridden field: the API records the override field by
+      // field, so a rejected field cannot silently discard the others.
+      for (const field of fields) {
+        await api.content.overrideVariant(state.master.id, connectionId, {
+          field,
+          value: overrides[field],
+        });
+      }
     }
   }
 }
@@ -82,8 +102,8 @@ export async function searchDestinations(
   connectionId: string,
   query: string,
 ): Promise<readonly ResolvedEntity[]> {
-  const results = await api.connections.listDestinations(connectionId, { query });
-  return results
+  const results = await api.connections.listDestinations(connectionId, { q: query });
+  return results.data
     .filter((entry) => entry.externalId.length > 0)
     .map((entry) => ({
       externalId: entry.externalId,
@@ -97,7 +117,7 @@ export async function searchMentions(
   connectionId: string,
   query: string,
 ): Promise<readonly ResolvedEntity[]> {
-  const results = await api.connections.searchMentions(connectionId, { query });
+  const results = await api.connections.searchMentions(connectionId, { q: query });
   return results
     .filter((entry) => entry.externalId.length > 0)
     .map((entry) => ({

@@ -43,9 +43,6 @@ const nextConfig: NextConfig = {
     // A type error is a build failure. Never ignore.
     ignoreBuildErrors: false,
   },
-  eslint: {
-    ignoreDuringBuilds: false,
-  },
 };
 
 export default nextConfig;

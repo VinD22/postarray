@@ -10,6 +10,8 @@ import {
 import type {
   MeasurementSettings,
   ParameterValue,
+  RuleActionDraft,
+  RuleConditionDraft,
   RuleDraft,
   RuleEnd,
   RuleState,
@@ -220,7 +222,7 @@ export function parseRule(source: string): ParseResult {
   }
 
   const rawConditions = Array.isArray(value.conditions) ? value.conditions : [];
-  const conditions: RuleDraft['conditions'] = [];
+  const conditions: RuleConditionDraft[] = [];
   for (const [index, entry] of rawConditions.entries()) {
     if (!isRecord(entry) || !RULE_CONDITION_KINDS.includes(entry.kind as RuleConditionKind)) {
       return { ok: false, reason: 'CONDITION_UNKNOWN' };
@@ -233,7 +235,7 @@ export function parseRule(source: string): ParseResult {
   }
 
   const rawActions = Array.isArray(value.actions) ? value.actions : [];
-  const actions: RuleDraft['actions'] = [];
+  const actions: RuleActionDraft[] = [];
   for (const [index, entry] of rawActions.entries()) {
     if (!isRecord(entry) || !RULE_ACTION_KINDS.includes(entry.kind as RuleActionKind)) {
       return { ok: false, reason: 'ACTION_UNKNOWN' };

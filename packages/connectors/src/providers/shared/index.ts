@@ -1,5 +1,6 @@
 /** Helpers shared by the provider adapters. Not part of the package's public API. */
 
+export * from './access.js';
 export * from './capability.js';
 export * from './contract-shape.js';
 export * from './metrics.js';

@@ -179,6 +179,7 @@ export function createShortLinkService(deps: ServiceDeps): ShortLinkService {
               }
               created = await db.shortLink.create({
                 data: {
+                  workspaceId: actor.workspace.id,
                   brandId: input.brandId ?? null,
                   campaignId: input.campaignId ?? null,
                   domain: input.domainId ?? null,

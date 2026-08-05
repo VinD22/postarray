@@ -107,7 +107,7 @@ function gated(noteKey: MessageKey, citation: Citation): CapabilityCell {
 export const CONNECTORS: readonly ConnectorRecord[] = [
   {
     id: 'x',
-    nameKey: 'web.marketing.provider.x',
+    nameKey: 'web.marketing.provider.x.label',
     accountTypesKey: 'web.marketing.provider.x.accountTypes',
     restrictionKey: 'web.marketing.provider.x.restriction',
     costKey: 'web.marketing.provider.x.cost',
@@ -137,7 +137,7 @@ export const CONNECTORS: readonly ConnectorRecord[] = [
   },
   {
     id: 'linkedin',
-    nameKey: 'web.marketing.provider.linkedin',
+    nameKey: 'web.marketing.provider.linkedin.label',
     accountTypesKey: 'web.marketing.provider.linkedin.accountTypes',
     restrictionKey: 'web.marketing.provider.linkedin.restriction',
     costKey: 'web.marketing.provider.linkedin.cost',
@@ -176,7 +176,7 @@ export const CONNECTORS: readonly ConnectorRecord[] = [
   },
   {
     id: 'instagram',
-    nameKey: 'web.marketing.provider.instagram',
+    nameKey: 'web.marketing.provider.instagram.label',
     accountTypesKey: 'web.marketing.provider.instagram.accountTypes',
     restrictionKey: 'web.marketing.provider.instagram.restriction',
     costKey: 'web.marketing.provider.instagram.cost',
@@ -212,7 +212,7 @@ export const CONNECTORS: readonly ConnectorRecord[] = [
   },
   {
     id: 'facebook',
-    nameKey: 'web.marketing.provider.facebook',
+    nameKey: 'web.marketing.provider.facebook.label',
     accountTypesKey: 'web.marketing.provider.facebook.accountTypes',
     restrictionKey: 'web.marketing.provider.facebook.restriction',
     costKey: 'web.marketing.provider.facebook.cost',
@@ -245,7 +245,7 @@ export const CONNECTORS: readonly ConnectorRecord[] = [
   },
   {
     id: 'youtube',
-    nameKey: 'web.marketing.provider.youtube',
+    nameKey: 'web.marketing.provider.youtube.label',
     accountTypesKey: 'web.marketing.provider.youtube.accountTypes',
     restrictionKey: 'web.marketing.provider.youtube.restriction',
     costKey: 'web.marketing.provider.youtube.cost',
@@ -284,7 +284,7 @@ export const CONNECTORS: readonly ConnectorRecord[] = [
   },
   {
     id: 'tiktok',
-    nameKey: 'web.marketing.provider.tiktok',
+    nameKey: 'web.marketing.provider.tiktok.label',
     accountTypesKey: 'web.marketing.provider.tiktok.accountTypes',
     restrictionKey: 'web.marketing.provider.tiktok.restriction',
     costKey: 'web.marketing.provider.tiktok.cost',
@@ -323,7 +323,7 @@ export const CONNECTORS: readonly ConnectorRecord[] = [
   },
   {
     id: 'threads',
-    nameKey: 'web.marketing.provider.threads',
+    nameKey: 'web.marketing.provider.threads.label',
     accountTypesKey: 'web.marketing.provider.threads.accountTypes',
     restrictionKey: 'web.marketing.provider.threads.restriction',
     costKey: 'web.marketing.provider.threads.cost',
@@ -353,7 +353,7 @@ export const CONNECTORS: readonly ConnectorRecord[] = [
   },
   {
     id: 'bluesky',
-    nameKey: 'web.marketing.provider.bluesky',
+    nameKey: 'web.marketing.provider.bluesky.label',
     accountTypesKey: 'web.marketing.provider.bluesky.accountTypes',
     restrictionKey: 'web.marketing.provider.bluesky.restriction',
     costKey: 'web.marketing.provider.bluesky.cost',

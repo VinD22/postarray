@@ -36,6 +36,34 @@ export interface UploadTicket {
   readonly expiresAt: string;
 }
 
+/**
+ * The edit plan the picture editor sends. Null clears a previously applied
+ * step; an omitted key leaves that step as it is.
+ */
+export interface MediaEditInput {
+  readonly crop?: { x: number; y: number; width: number; height: number } | null;
+  readonly resize?: { width: number; height: number } | null;
+  readonly rotateDegrees?: 0 | 90 | 180 | 270;
+  readonly flipHorizontal?: boolean;
+  readonly flipVertical?: boolean;
+  readonly canvas?: { backgroundColor: string; fit: 'cover' | 'contain' } | null;
+  readonly format?: 'image/jpeg' | 'image/png' | 'image/webp';
+  /** 1 to 100. Ignored for PNG, which is lossless. */
+  readonly quality?: number;
+  /** The frame or file used as a video thumbnail, where the platform takes one. */
+  readonly thumbnailMediaId?: string | null;
+  readonly trimMs?: { start: number; end: number } | null;
+  readonly thumbnailAtMs?: number | null;
+}
+
+export interface RightsDeclarationInput {
+  readonly owner: 'workspace' | 'licensed' | 'ugc';
+  readonly licenseReference: string | null;
+  readonly peopleAppear: boolean;
+  readonly peopleConsented: boolean;
+  readonly containsMusic: boolean;
+}
+
 export const mediaApi = {
   /** Step one of a direct upload. The browser then PUTs the bytes itself. */
   createUploadUrl: (
@@ -77,17 +105,40 @@ export const mediaApi = {
 
   /**
    * Crop, trim and thumbnail selection on an uploaded file. This is editing,
-   * not generation: Relay never creates image or video content.
+   * not generation: Relay never creates image or video content. Every field
+   * below changes pixels that are already in the file, which is why there is no
+   * prompt, model or seed anywhere in this shape.
+   *
+   * An edit produces a new version; the original stays addressable and can be
+   * restored with `restoreVersion`.
    */
-  edit: (
-    mediaId: string,
-    input: {
-      crop?: { x: number; y: number; width: number; height: number };
-      trimMs?: { start: number; end: number };
-      thumbnailAtMs?: number;
-    },
-  ): Promise<MediaAssetView | null> =>
+  edit: (mediaId: string, input: MediaEditInput): Promise<MediaAssetView | null> =>
     call(`/media/${mediaId}/edits`, { method: 'PATCH', body: input }, () => null),
+
+  /**
+   * Restore a previous version as the current one. This is a new version that
+   * carries the older bytes, never a destructive rollback.
+   */
+  restoreVersion: (
+    mediaId: string,
+    version: number,
+    idempotencyKey: string,
+  ): Promise<MediaAssetView | null> =>
+    call(
+      `/media/${mediaId}/versions/${version}/restore`,
+      { method: 'POST', idempotencyKey },
+      () => null,
+    ),
+
+  /**
+   * Record who owns the file, under what licence, and whether the people in it
+   * consented. An asset with no declaration cannot be scheduled.
+   */
+  declareRights: (
+    mediaId: string,
+    input: RightsDeclarationInput,
+  ): Promise<MediaAssetView | null> =>
+    call(`/media/${mediaId}/rights`, { method: 'PATCH', body: input }, () => null),
 
   setAltText: (
     mediaId: string,

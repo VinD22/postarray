@@ -49,7 +49,7 @@ export function ComposerHeader({ onClose, onShowShortcuts }: ComposerHeaderProps
 
           <Button variant="ghost" size="sm" onClick={onShowShortcuts}>
             {t.full('composerWeb.shortcuts.open')}
-            <Kbd>?</Kbd>
+            <Kbd keys="?" />
           </Button>
 
           <Button variant="ghost" size="sm" onClick={onClose}>
