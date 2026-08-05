@@ -54,6 +54,9 @@ function harness(records: readonly ShortLinkRecord[] = [record()]): Harness {
     selfHosts: [HOST],
     abuseReportUrl: 'https://app.example/legal/report',
     rateLimit: { requestLimit: 1000, missLimit: 1000 },
+    // Fixtures use RFC 2606 reserved names, which the safety gate correctly
+    // refuses as unroutable in production. Declare them routable for the suite.
+    safety: { additionalPublicSuffixes: ['.example'] },
   });
   return { server, clicks, store, clock };
 }
@@ -151,6 +154,9 @@ describe('refusals are indistinguishable', () => {
       clock,
       selfHosts: [HOST],
       rateLimit: { requestLimit: 1000, missLimit: 1000 },
+    // Fixtures use RFC 2606 reserved names, which the safety gate correctly
+    // refuses as unroutable in production. Declare them routable for the suite.
+    safety: { additionalPublicSuffixes: ['.example'] },
     });
 
     const paths = ['/never-existed', '/off', '/gone', '/bad', '/stale', '/flagged'];
@@ -188,6 +194,9 @@ describe('refusals are indistinguishable', () => {
       clock,
       selfHosts: [HOST],
       rateLimit: { requestLimit: 1000, missLimit: 1000 },
+    // Fixtures use RFC 2606 reserved names, which the safety gate correctly
+    // refuses as unroutable in production. Declare them routable for the suite.
+    safety: { additionalPublicSuffixes: ['.example'] },
     });
     for (const slug of ['ssrf', 'loop', 'phish', 'chain']) {
       const response = await server.app.inject({

@@ -41,6 +41,13 @@ export interface SafetyOptions {
   readonly maxRedirectDepth?: number;
   /** Non-standard ports a destination may use. 80 and 443 are always allowed. */
   readonly allowedPorts?: readonly number[];
+  /**
+   * Suffixes this deployment treats as routable even though they are reserved
+   * or private by default, such as an internal TLD on a self hosted install.
+   * Empty in production. Nothing here bypasses the loopback, private network,
+   * scheme or credential checks.
+   */
+  readonly additionalPublicSuffixes?: readonly string[];
   readonly maxUrlLength?: number;
 }
 
@@ -253,7 +260,10 @@ export function isPrivateIpv6(hostname: string): boolean {
  * single-label names resolve differently on every network, so they are never
  * acceptable as a public redirect target.
  */
-export function isPubliclyRoutableHost(hostname: string): boolean {
+export function isPubliclyRoutableHost(
+  hostname: string,
+  additionalPublicSuffixes: readonly string[] = [],
+): boolean {
   const host = stripBrackets(hostname).toLowerCase().replace(/\.$/, '');
   if (host.length === 0 || host.length > 253) {
     return false;
@@ -261,7 +271,9 @@ export function isPubliclyRoutableHost(hostname: string): boolean {
   if (HOSTNAMES_NOT_PUBLIC.includes(host)) {
     return false;
   }
-  if (SUFFIXES_NOT_PUBLIC.some((suffix) => host.endsWith(suffix))) {
+  const allowed = additionalPublicSuffixes.map((suffix) => suffix.toLowerCase());
+  const blocked = SUFFIXES_NOT_PUBLIC.filter((suffix) => !allowed.includes(suffix));
+  if (blocked.some((suffix) => host.endsWith(suffix))) {
     return false;
   }
   if (isPrivateIpv4(host) || isPrivateIpv6(host)) {
@@ -319,6 +331,7 @@ interface ResolvedOptions {
   readonly maxRedirectDepth: number;
   readonly maxUrlLength: number;
   readonly allowedPorts: readonly number[];
+  additionalPublicSuffixes: readonly string[];
 }
 
 function evaluate(url: string, options: ResolvedOptions, depth: number): SafetyDecision {
@@ -348,7 +361,7 @@ function evaluate(url: string, options: ResolvedOptions, depth: number): SafetyD
   }
   if (parsed.hostname.length === 0) {
     reasons.add('HOST_MISSING');
-  } else if (!isPubliclyRoutableHost(parsed.hostname)) {
+  } else if (!isPubliclyRoutableHost(parsed.hostname, options.additionalPublicSuffixes)) {
     reasons.add(reasonForUnroutableHost(parsed.hostname));
   }
   if (parsed.port.length > 0) {
@@ -385,6 +398,7 @@ function resolveOptions(options: SafetyOptions): ResolvedOptions {
     maxRedirectDepth: options.maxRedirectDepth ?? DEFAULT_MAX_REDIRECT_DEPTH,
     maxUrlLength: options.maxUrlLength ?? DEFAULT_MAX_URL_LENGTH,
     allowedPorts: options.allowedPorts ?? [],
+    additionalPublicSuffixes: options.additionalPublicSuffixes ?? [],
   };
 }
 

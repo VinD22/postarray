@@ -72,11 +72,12 @@ export function createRateLimiter(clock: Clock, options: FixedWindowOptions): Ra
 
       const remaining = Math.max(0, options.limit - bucket.count);
       const retryAfterSeconds = Math.max(1, Math.ceil((start + windowMs - now) / 1000));
-      return {
-        allowed: bucket.count <= options.limit,
-        remaining,
-        retryAfterSeconds,
-      };
+      // A zero cost call is a peek: it asks whether there is budget for at least
+      // one more, so a source that has already spent its whole allowance is
+      // refused. A consuming call asks whether the request it just counted was
+      // within the allowance.
+      const allowed = cost === 0 ? bucket.count < options.limit : bucket.count <= options.limit;
+      return { allowed, remaining, retryAfterSeconds };
     },
     reset(): void {
       buckets.clear();

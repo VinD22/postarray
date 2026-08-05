@@ -53,7 +53,7 @@ describe('classifyBot', () => {
     expect(classifyBot(signals({ userAgent: undefined }))).toBe('suspected_bot');
     expect(classifyBot(signals({ userAgent: '' }))).toBe('suspected_bot');
     expect(classifyBot(signals({ userAgent: 'x' }))).toBe('suspected_bot');
-    expect(classifyBot(signals({ userAgent: 'CustomAgentWithoutMozilla/9' }))).toBe(
+    expect(classifyBot(signals({ userAgent: 'CustomFetcherAgent/9.1 (+https://example.test)' }))).toBe(
       'suspected_bot',
     );
   });
