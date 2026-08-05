@@ -12,8 +12,37 @@ authorization model and one approval policy.
 
 ## Status
 
-Pre-launch. This repository is under active initial construction. No connector
-is "supported" until it satisfies `docs/connectors/definition-of-done.md`.
+Pre-launch. No connector is "supported" until it satisfies
+`docs/connectors/definition-of-done.md`, and none has been through provider
+review yet, so every V1 connector is labelled `beta` with its limitation stated
+in the capability matrix.
+
+### What is verified
+
+`pnpm verify` is green: every package typechecks, lints and passes its tests
+(2,422 of them), every app builds, and the web app serves all 65 of its routes.
+Connectors are covered by contract tests against recorded fixtures and an
+in-process provider simulator that reproduces the documented failure modes.
+Publishing is covered by Temporal replay tests and a chaos suite that asserts
+exactly one external create under worker crash, provider timeout, duplicate
+webhook, revoked token and a DST transition.
+
+### What is not verified yet
+
+These need credentials or services this machine did not have, and none of them
+should be assumed working until someone runs them:
+
+- **Migrations and row level security.** The 82 RLS tests skip without a
+  database. Start Postgres, run `pnpm db:migrate && pnpm --filter @relay/database test`,
+  and treat a failure there as a release blocker rather than a local problem.
+- **Any live provider call.** Every connector has only ever spoken to the
+  simulator. The capability snapshots, error mappings and app-review notes come
+  from official documentation dated 4 August 2026 and must be re-checked against
+  a real sandbox before a connector leaves beta.
+- **Temporal against a real server.** Workflows run through the deterministic
+  test harness and replay tests, not a live cluster.
+- **Polar.** Billing runs against the in-repo simulator. The seven-day trial,
+  conversion, cancellation and failed-payment paths need a sandbox rehearsal.
 
 ## Quick start
 
