@@ -29,7 +29,15 @@ function snapshot(overrides: Partial<CapabilitySnapshot> = {}): CapabilitySnapsh
       maxImages: 4,
       maxVideos: 1,
       allowedMimeTypes: ['image/jpeg', 'image/png', 'video/mp4'],
-      maxBytesByKind: { image: 5_242_880, video: 536_870_912 },
+      // The record is exhaustive on purpose: a connector must state a limit or an
+      // explicit null for every media kind, so "not accepted" is never implied.
+      maxBytesByKind: {
+        image: 5_242_880,
+        video: 536_870_912,
+        gif: 15_728_640,
+        document: null,
+        audio: null,
+      },
       aspectRatios: { min: 0.5, max: 2, recommended: [1] },
       maxDurationSeconds: 140,
       minDurationSeconds: 1,

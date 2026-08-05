@@ -139,7 +139,17 @@ export interface ShortLinkStats {
 
 export const shortLinksApi = {
   create: (
-    input: { destinationUrl: string; domain?: string; campaign?: string },
+    input: {
+      destinationUrl: string;
+      /** A verified branded domain. Absent uses the default isolated domain. */
+      domainId?: string;
+      campaignId?: string;
+      /** A vanity path. Absent lets the service mint one. */
+      slug?: string;
+      utm?: Readonly<Record<string, string>>;
+      /** After this instant the link stops redirecting. */
+      expiresAt?: string;
+    },
     idempotencyKey: string,
   ): Promise<ShortLinkView | null> =>
     call('/links', { method: 'POST', body: input, idempotencyKey }, () => null),

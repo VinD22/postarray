@@ -45,10 +45,50 @@ export interface RuleRunView {
   readonly isTestRun: boolean;
 }
 
-export type RuleInput = Omit<
-  RuleView,
-  'id' | 'state' | 'consecutiveFailures' | 'version' | 'updatedAt' | 'enabled'
->;
+/**
+ * The write shape of a rule.
+ *
+ * It is deliberately not the read model minus a few keys: `state`, `version`,
+ * `consecutiveFailures` and the two guardrail ceilings are decided by the
+ * server, and the editor sends the rule document it round trips through its
+ * JSON view, delay, end condition and cross account settings included.
+ */
+export interface RuleInput {
+  readonly name: string;
+  readonly trigger: RuleView['trigger'];
+  readonly conditions: RuleView['conditions'];
+  readonly actions: RuleView['actions'];
+  readonly affectedConnectionIds: readonly string[];
+  /** How long after the trigger fires the actions run. */
+  readonly delaySeconds?: number;
+  /** When the rule stops on its own. `manual` means it never does. */
+  readonly end?:
+    | { readonly kind: 'manual' }
+    | { readonly kind: 'date'; readonly at: string }
+    | { readonly kind: 'count'; readonly runs: number };
+  /** A rule that acts across two accounts carries the user's authorisation. */
+  readonly crossAccount?: {
+    readonly enabled: boolean;
+    readonly sourceConnectionId: string | null;
+    readonly followUpConnectionId: string | null;
+    readonly preauthorized: boolean;
+  };
+  /**
+   * Guardrail ceilings. Omitted by the editor, in which case the server applies
+   * the workspace plan's defaults rather than a number the browser invented.
+   */
+  readonly maxExternalActionsPerRun?: number;
+  readonly maxRunsPerWeek?: number;
+}
+
+/** What a preflight reports before a rule is allowed to run. */
+export interface RulePreflightView {
+  readonly affectedAccountLabels: readonly string[];
+  readonly maxExternalActions: number;
+  readonly requiresApproval: boolean;
+  readonly estimatedCostMinor: number;
+  readonly currency: string;
+}
 
 export const automationRulesApi = {
   list: (query: { cursor?: string; limit?: number } = {}): Promise<Paginated<RuleView>> =>
@@ -65,18 +105,21 @@ export const automationRulesApi = {
   delete: (ruleId: string): Promise<void> =>
     call(`/rules/${ruleId}`, { method: 'DELETE' }, () => undefined),
   /** What the rule would do, with no external effect at all. */
-  preview: (
-    input: RuleInput,
-  ): Promise<{
-    affectedAccountLabels: readonly string[];
-    maxExternalActions: number;
-    requiresApproval: boolean;
-    estimatedCostMinor: number;
-    currency: string;
-  } | null> => call('/rules/preview', { method: 'POST', body: input, sideEffectFree: true }, () => null),
-  /** A real run against real input that stops before any external action. */
-  testRun: (ruleId: string, idempotencyKey: string): Promise<RuleRunView | null> =>
-    call(`/rules/${ruleId}/test-runs`, { method: 'POST', idempotencyKey }, () => null),
+  preview: (input: RuleInput): Promise<RulePreflightView | null> =>
+    call('/rules/preview', { method: 'POST', body: input, sideEffectFree: true }, () => null),
+  /** The same preflight for a rule that is already saved. */
+  previewSaved: (ruleId: string): Promise<RulePreflightView | null> =>
+    call(`/rules/${ruleId}/preview`, {}, () => null),
+  /**
+   * A real run against real input that stops before any external action. The
+   * sample event stands in for the event that would have triggered the rule.
+   */
+  testRun: (
+    ruleId: string,
+    input: { sampleEvent?: string },
+    idempotencyKey: string,
+  ): Promise<RuleRunView | null> =>
+    call(`/rules/${ruleId}/test-runs`, { method: 'POST', body: input, idempotencyKey }, () => null),
   listRuns: (
     ruleId: string,
     query: { cursor?: string; limit?: number } = {},

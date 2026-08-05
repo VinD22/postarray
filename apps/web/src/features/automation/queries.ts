@@ -2,7 +2,8 @@
 
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
-import { api } from '@/lib/api';
+import { api, newIdempotencyKey } from '@/lib/api';
+import type { RuleInput } from '@/lib/api';
 
 import type { RuleDraft } from './types';
 import type {
@@ -37,6 +38,45 @@ export const automationKeys = {
   feedHealth: (feedId: string) => ['automation', 'feedHealth', feedId] as const,
 };
 
+/**
+ * The editor's draft in the shape the API records.
+ *
+ * The two are not the same declaration: the draft carries the ids the sentence
+ * builder uses to keep rows stable while they are edited, and names each
+ * clause's settings `parameters`, while the API records them as `config`. The
+ * mapping is here, once, so nothing else has to know about it.
+ */
+function toRuleInput(draft: RuleDraft): RuleInput {
+  if (draft.trigger === null) {
+    // The editor only offers save once a trigger is chosen; this keeps a rule
+    // that could never fire from reaching the API as a half written record.
+    throw new Error('RULE_TRIGGER_REQUIRED');
+  }
+  const { kind, parameters, measurement } = draft.trigger;
+  return {
+    name: draft.name,
+    trigger: {
+      kind,
+      config: {
+        ...parameters,
+        ...(measurement === undefined || measurement === null ? {} : { measurement }),
+      },
+    },
+    conditions: draft.conditions.map((condition) => ({
+      kind: condition.kind,
+      config: { ...condition.parameters },
+    })),
+    actions: draft.actions.map((action) => ({
+      kind: action.kind,
+      config: { ...action.parameters },
+    })),
+    affectedConnectionIds: [...draft.connectionIds],
+    delaySeconds: draft.delaySeconds,
+    end: draft.end,
+    crossAccount: draft.crossAccount,
+  };
+}
+
 /** TODO(web): depends on `@/lib/api` publishing typed automation view models. */
 function adapt<T>(value: unknown): T {
   return value as T;
@@ -68,7 +108,7 @@ export function useRuleRuns(ruleId: string, enabled = true) {
     enabled,
     staleTime: THIRTY_SECONDS,
     queryFn: async (): Promise<readonly RuleRunView[]> => {
-      const result = await api.automationRules.listRuns({ ruleId, limit: 20 });
+      const result = await api.automationRules.listRuns(ruleId, { limit: 20 });
       return adapt<{ readonly data: readonly RuleRunView[] }>(result).data;
     },
   });
@@ -79,7 +119,7 @@ export function useRulePreflight(ruleId: string, enabled = true) {
     queryKey: automationKeys.preview(ruleId),
     enabled,
     queryFn: async (): Promise<RulePreflight> =>
-      adapt<RulePreflight>(await api.automationRules.preview({ ruleId })),
+      adapt<RulePreflight>(await api.automationRules.previewSaved(ruleId)),
   });
 }
 
@@ -117,8 +157,8 @@ export function useSaveRule() {
     mutationFn: async (draft: RuleDraft): Promise<RuleDraft> =>
       adapt<RuleDraft>(
         draft.id === null
-          ? await api.automationRules.create(draft)
-          : await api.automationRules.update(draft.id, draft),
+          ? await api.automationRules.create(toRuleInput(draft), newIdempotencyKey('rule'))
+          : await api.automationRules.update(draft.id, toRuleInput(draft)),
       ),
     onSuccess: (saved) => {
       void client.invalidateQueries({ queryKey: automationKeys.rules });
@@ -138,10 +178,10 @@ export function useSetRuleEnabled() {
       readonly enabled: boolean;
     }): Promise<void> => {
       if (input.enabled) {
-        await api.automationRules.enable(input.ruleId);
+        await api.automationRules.enable(input.ruleId, newIdempotencyKey('rule_enable'));
         return;
       }
-      await api.automationRules.disable(input.ruleId);
+      await api.automationRules.disable(input.ruleId, newIdempotencyKey('rule_disable'));
     },
     onSuccess: (_result, input) => {
       void client.invalidateQueries({ queryKey: automationKeys.rule(input.ruleId) });
@@ -156,7 +196,13 @@ export function useTestRule() {
       readonly ruleId: string;
       readonly payload?: string;
     }): Promise<RuleRunPreview> =>
-      adapt<RuleRunPreview>(await api.automationRules.testRun(input)),
+      adapt<RuleRunPreview>(
+        await api.automationRules.testRun(
+          input.ruleId,
+          input.payload === undefined ? {} : { sampleEvent: input.payload },
+          newIdempotencyKey('rule_test'),
+        ),
+      ),
   });
 }
 

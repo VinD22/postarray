@@ -110,7 +110,10 @@ export async function loadCapabilitiesFor(
  */
 export function countCharacters(body: string, snapshot: CapabilitySnapshot): number {
   const counting = snapshot.text.linkCounting;
-  if (counting.mode === 'actual' || counting.charactersPerLink === null) {
+  // Check the mode before charactersPerLink. Mode 'none' also carries a null
+  // charactersPerLink, so testing that first swallowed it and counted links in
+  // full for providers that do not count them at all.
+  if (counting.mode === 'actual') {
     return [...body].length;
   }
   const urls = body.match(/https?:\/\/\S+/g) ?? [];
@@ -120,6 +123,9 @@ export function countCharacters(body: string, snapshot: CapabilitySnapshot): num
       stripped = stripped.replace(url, '');
     }
     return [...stripped].length;
+  }
+  if (counting.charactersPerLink === null) {
+    return [...body].length;
   }
   let total = [...body].length;
   for (const url of urls) {

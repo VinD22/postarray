@@ -2,7 +2,7 @@
 
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
-import { api } from '@/lib/api';
+import { api, newIdempotencyKey } from '@/lib/api';
 
 import { automationKeys } from './queries';
 import type { FeedDraft, FeedHealthView, FeedSummaryView, FeedValidation } from './rss-types';
@@ -59,7 +59,7 @@ export function useCreateFeed() {
   const client = useQueryClient();
   return useMutation({
     mutationFn: async (draft: FeedDraft): Promise<FeedSummaryView> =>
-      adapt<FeedSummaryView>(await api.rss.create(draft)),
+      adapt<FeedSummaryView>(await api.rss.create(draft, newIdempotencyKey('feed'))),
     onSuccess: () => {
       void client.invalidateQueries({ queryKey: automationKeys.feeds });
     },

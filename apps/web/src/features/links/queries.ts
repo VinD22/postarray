@@ -65,10 +65,9 @@ export function useLinkStats(
       readonly measurement: RedirectMeasurement;
     }> =>
       adapt(
-        await api.shortLinks.getStats({
-          shortLinkId: linkId,
-          start: range.start,
-          end: range.end,
+        await api.shortLinks.getStats(linkId, {
+          from: range.start,
+          to: range.end,
         }),
       ),
   });
@@ -88,7 +87,19 @@ export function useCreateLink() {
   const client = useQueryClient();
   return useMutation({
     mutationFn: async (input: CreateLinkInput): Promise<TrackedLinkView> =>
-      adapt<TrackedLinkView>(await api.shortLinks.create(input)),
+      adapt<TrackedLinkView>(
+        await api.shortLinks.create(
+          {
+            destinationUrl: input.destination,
+            ...(input.campaign === null ? {} : { campaignId: input.campaign }),
+            ...(input.domainId === null ? {} : { domainId: input.domainId }),
+            ...(input.slug === null ? {} : { slug: input.slug }),
+            ...(Object.keys(input.utm).length === 0 ? {} : { utm: input.utm }),
+            ...(input.expiresAt === null ? {} : { expiresAt: input.expiresAt }),
+          },
+          input.idempotencyKey,
+        ),
+      ),
     onSuccess: () => {
       void client.invalidateQueries({ queryKey: linkKeys.all });
     },
