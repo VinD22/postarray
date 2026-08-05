@@ -25,10 +25,10 @@ export function TextLink({
     <Link
       href={href}
       className={cn(
-        'text-text-primary underline decoration-border-strong decoration-1 underline-offset-[0.22em]',
+        'text-text-primary decoration-border-strong underline decoration-1 underline-offset-[0.22em]',
         'transition-colors duration-(--duration-fast) ease-(--ease-standard)',
         'hover:text-text-accent hover:decoration-accent',
-        'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-border-focus',
+        'focus-visible:outline-border-focus focus-visible:outline-2 focus-visible:outline-offset-2',
         className,
       )}
     >
@@ -58,10 +58,10 @@ export function ExternalLink({
       target="_blank"
       className={cn(
         'inline-flex items-baseline gap-1',
-        'text-text-primary underline decoration-border-strong decoration-1 underline-offset-[0.22em]',
+        'text-text-primary decoration-border-strong underline decoration-1 underline-offset-[0.22em]',
         'transition-colors duration-(--duration-fast) ease-(--ease-standard)',
         'hover:text-text-accent hover:decoration-accent',
-        'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-border-focus',
+        'focus-visible:outline-border-focus focus-visible:outline-2 focus-visible:outline-offset-2',
         className,
       )}
     >
@@ -89,7 +89,7 @@ export function Cta({
   className?: string;
 }): ReactNode {
   return (
-    <Button asChild variant={variant} className={cn('h-11 px-5 text-body-lg', className)}>
+    <Button asChild variant={variant} className={cn('text-body-lg h-11 px-5', className)}>
       <Link href={href}>{children}</Link>
     </Button>
   );
@@ -108,7 +108,7 @@ export function RowLink({
   meta?: ReactNode;
 }): ReactNode {
   return (
-    <li className="border-b border-border-subtle">
+    <li className="border-border-subtle border-b">
       <Link
         href={href}
         className={cn(
@@ -116,17 +116,17 @@ export function RowLink({
           'sm:grid-cols-[minmax(0,18rem)_minmax(0,1fr)]',
           'transition-colors duration-(--duration-fast) ease-(--ease-standard)',
           'hover:bg-surface-hover',
-          'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-border-focus',
+          'focus-visible:outline-border-focus focus-visible:outline-2 focus-visible:outline-offset-2',
         )}
       >
-        <span className="flex items-baseline gap-2 text-title-sm text-text-primary">
-          <span className="underline decoration-transparent decoration-1 underline-offset-[0.22em] transition-colors duration-(--duration-fast) group-hover:decoration-accent">
+        <span className="text-title-sm text-text-primary flex items-baseline gap-2">
+          <span className="group-hover:decoration-accent underline decoration-transparent decoration-1 underline-offset-[0.22em] transition-colors duration-(--duration-fast)">
             {title}
           </span>
         </span>
         <span className="min-w-0">
           {description ? (
-            <span className="block max-w-[62ch] text-body-md leading-[1.6] text-text-secondary">
+            <span className="text-body-md text-text-secondary block max-w-[62ch] leading-[1.6]">
               {description}
             </span>
           ) : null}

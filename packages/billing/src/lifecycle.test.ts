@@ -4,11 +4,15 @@ import type { PolarConfig } from '@relay/config';
 
 import { createCheckoutSession } from './checkout.js';
 import { createPolarClient } from './client.js';
-import { deriveEntitlement, evaluateEntitlement, scheduledPostDisposition } from './entitlements.js';
+import {
+  deriveEntitlement,
+  evaluateEntitlement,
+  scheduledPostDisposition,
+} from './entitlements.js';
 import type { EntitlementSnapshot } from './entitlements.js';
 import { InMemorySubscriptionStore, InMemoryWebhookInbox } from './inbox.js';
 import { reconcileSubscriptions } from './reconcile.js';
-import { LocalPolarSimulator } from './simulator.js';
+import { type LocalPolarSimulator } from './simulator.js';
 import { cancellationOutcome } from './trial.js';
 import { MutableClock } from './time.js';
 import { createWebhookProcessor } from './webhooks.js';
@@ -189,9 +193,13 @@ describe('failed payment', () => {
     const readOnly = await entitlement();
     expect(scheduledPostDisposition(readOnly.state)).toBe('pause_by_billing');
     expect(
-      evaluateEntitlement(await subscriptions.getByWorkspaceId('ws_01'), 'dispatch_scheduled_post', {
-        now: clock.iso(),
-      }).effect,
+      evaluateEntitlement(
+        await subscriptions.getByWorkspaceId('ws_01'),
+        'dispatch_scheduled_post',
+        {
+          now: clock.iso(),
+        },
+      ).effect,
     ).toBe('read_only');
   });
 

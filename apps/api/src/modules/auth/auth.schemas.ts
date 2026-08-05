@@ -57,7 +57,10 @@ export const verifyOtpSchema = z
   .object({
     identifier: identifierSchema,
     /** Six digits, single use, ten minute expiry. Never in a URL. */
-    code: z.string().trim().regex(/^\d{6}$/),
+    code: z
+      .string()
+      .trim()
+      .regex(/^\d{6}$/),
   })
   .strict();
 
@@ -93,7 +96,10 @@ export const setAliasSchema = z
 export const verifyTotpSchema = z
   .object({
     factorId: z.string().trim().min(1).max(128),
-    code: z.string().trim().regex(/^\d{6}$/),
+    code: z
+      .string()
+      .trim()
+      .regex(/^\d{6}$/),
   })
   .strict();
 

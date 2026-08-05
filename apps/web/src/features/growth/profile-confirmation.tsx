@@ -52,9 +52,9 @@ export function ProfileConfirmation({
             {profile.facts.map((fact) => (
               <li
                 key={fact.id}
-                className="flex items-start gap-2 border-b border-border-subtle py-2.5 last:border-b-0"
+                className="border-border-subtle flex items-start gap-2 border-b py-2.5 last:border-b-0"
               >
-                <Check aria-hidden="true" className="mt-0.5 size-4 shrink-0 text-success-fg" />
+                <Check aria-hidden="true" className="text-success-fg mt-0.5 size-4 shrink-0" />
                 <span className="flex min-w-0 flex-col gap-0.5">
                   <span className="text-body-md text-text-primary">{fact.statement}</span>
                   <span className="text-body-sm text-text-tertiary">
@@ -80,12 +80,12 @@ export function ProfileConfirmation({
               return (
                 <li
                   key={assumption.id}
-                  className="flex flex-col gap-2 border-b border-border-subtle py-3 last:border-b-0"
+                  className="border-border-subtle flex flex-col gap-2 border-b py-3 last:border-b-0"
                 >
                   <div className="flex items-start gap-2">
                     <HelpCircle
                       aria-hidden="true"
-                      className="mt-0.5 size-4 shrink-0 text-warning-fg"
+                      className="text-warning-fg mt-0.5 size-4 shrink-0"
                     />
                     <span className="flex min-w-0 flex-col gap-1">
                       <span className="text-body-md text-text-primary">
@@ -93,15 +93,11 @@ export function ProfileConfirmation({
                       </span>
                       <span className="flex flex-wrap items-center gap-2">
                         <Badge tone={isConfirmed ? 'success' : 'warning'}>
-                          {isConfirmed
-                            ? t('growth.profile.fact')
-                            : t('growth.profile.assumption')}
+                          {isConfirmed ? t('growth.profile.fact') : t('growth.profile.assumption')}
                         </Badge>
                         <span className="text-body-sm text-text-tertiary">
                           {t('growth.ui.confirm.confidence.label', {
-                            level: t(
-                              `growth.ui.confirm.confidence.${assumption.confidence}`,
-                            ),
+                            level: t(`growth.ui.confirm.confidence.${assumption.confidence}`),
                           })}
                         </span>
                       </span>
@@ -120,11 +116,7 @@ export function ProfileConfirmation({
                           }))
                         }
                       />
-                      <Button
-                        variant="secondary"
-                        size="sm"
-                        onClick={() => setCorrecting(null)}
-                      >
+                      <Button variant="secondary" size="sm" onClick={() => setCorrecting(null)}>
                         {t('action.done')}
                       </Button>
                     </div>
@@ -134,9 +126,7 @@ export function ProfileConfirmation({
                         variant="secondary"
                         size="sm"
                         disabled={isConfirmed}
-                        onClick={() =>
-                          setConfirmed((current) => [...current, assumption.id])
-                        }
+                        onClick={() => setConfirmed((current) => [...current, assumption.id])}
                       >
                         {t('growth.ui.confirm.promote')}
                       </Button>
@@ -161,7 +151,7 @@ export function ProfileConfirmation({
         description={t('growth.ui.confirm.missingHelp')}
       >
         <ul className="flex flex-col">
-          <li className="flex items-start gap-2 py-2 text-body-md text-text-secondary">
+          <li className="text-body-md text-text-secondary flex items-start gap-2 py-2">
             <AlertCircle aria-hidden="true" className="mt-0.5 size-4 shrink-0" />
             {profile.proofAssets.length === 0
               ? t('growth.ui.intake.proofNoneEffect')

@@ -37,9 +37,7 @@ export function ReceiptAttempts({ receipt, provider }: ReceiptAttemptsProps): Re
   const failures = attempts.filter((attempt) => attempt.errorCode !== null);
 
   if (attempts.length <= 1 && failures.length === 0) {
-    return (
-      <p className="text-body-md text-text-secondary">{t('web.receipt.attempt.none')}</p>
-    );
+    return <p className="text-body-md text-text-secondary">{t('web.receipt.attempt.none')}</p>;
   }
 
   return (
@@ -54,14 +52,13 @@ export function ReceiptAttempts({ receipt, provider }: ReceiptAttemptsProps): Re
           const duration =
             attempt.finishedAt === null
               ? null
-              : new Date(attempt.finishedAt).getTime() -
-                new Date(attempt.startedAt).getTime();
+              : new Date(attempt.finishedAt).getTime() - new Date(attempt.startedAt).getTime();
 
           return (
             <AccordionItem key={attempt.id} value={attempt.id}>
               <AccordionTrigger>
                 <span className="flex flex-wrap items-center gap-2">
-                  <span className="text-body-md font-medium text-text-primary">
+                  <span className="text-body-md text-text-primary font-medium">
                     {t('web.receipt.attempt.heading', { number: attempt.attemptNumber })}
                   </span>
                   {failed ? (
@@ -69,7 +66,7 @@ export function ReceiptAttempts({ receipt, provider }: ReceiptAttemptsProps): Re
                   ) : (
                     <Badge tone="success">{t(`state.${attempt.resultState}.label`)}</Badge>
                   )}
-                  <span className="text-body-sm tabular-nums text-text-tertiary">
+                  <span className="text-body-sm text-text-tertiary tabular-nums">
                     {format.dateTime(attempt.startedAt)}
                   </span>
                 </span>
@@ -146,13 +143,13 @@ export function ReceiptAttempts({ receipt, provider }: ReceiptAttemptsProps): Re
                   ) : null}
 
                   <details className="flex flex-col gap-1">
-                    <summary className="cursor-pointer text-body-sm text-text-accent">
+                    <summary className="text-body-sm text-text-accent cursor-pointer">
                       {t('web.receipt.attempt.responseSummary')}
                     </summary>
-                    <p className="pt-1 text-body-sm text-text-tertiary">
+                    <p className="text-body-sm text-text-tertiary pt-1">
                       {t('receipt.attempts.responseRedacted')}
                     </p>
-                    <Code block className="mt-1 text-body-sm">
+                    <Code block className="text-body-sm mt-1">
                       {JSON.stringify(attempt.sanitizedResponse, null, 2)}
                     </Code>
                   </details>

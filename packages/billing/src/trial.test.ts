@@ -47,8 +47,9 @@ describe('the seven day trial', () => {
   });
 
   it('rejects a nonsense trial length', () => {
-    expect(() => computeTrialSchedule({ startedAt: CONFIRMED_AT, interval: 'month', trialDays: 0 }))
-      .toThrow(RelayError);
+    expect(() =>
+      computeTrialSchedule({ startedAt: CONFIRMED_AT, interval: 'month', trialDays: 0 }),
+    ).toThrow(RelayError);
   });
 });
 
@@ -157,7 +158,8 @@ describe('cancellation', () => {
   });
 
   it('never requests a refund as a side effect of cancelling', () => {
-    expect(cancellationOutcome({ subscription: subscription(), now: CONFIRMED_AT }).refundRequested)
-      .toBe(false);
+    expect(
+      cancellationOutcome({ subscription: subscription(), now: CONFIRMED_AT }).refundRequested,
+    ).toBe(false);
   });
 });

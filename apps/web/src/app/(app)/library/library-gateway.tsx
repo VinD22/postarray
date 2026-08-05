@@ -134,11 +134,7 @@ export function LibraryGateway(props: LibraryGatewayProps): ReactNode {
         if (props.readOnly) {
           return;
         }
-        await api.media.restoreVersion(
-          assetId,
-          version,
-          newIdempotencyKey('media_restore'),
-        );
+        await api.media.restoreVersion(assetId, version, newIdempotencyKey('media_restore'));
         refresh();
       }}
     />

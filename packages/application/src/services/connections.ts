@@ -8,12 +8,7 @@ import {
   type ProviderId,
 } from '@relay/contracts';
 
-import type {
-  ActorContext,
-  ConnectionService,
-  PageQuery,
-  ServiceDeps,
-} from '../types.js';
+import type { ActorContext, ConnectionService, PageQuery, ServiceDeps } from '../types.js';
 import type {
   ConnectionHealth,
   ConnectionView,
@@ -149,10 +144,7 @@ export function createConnectionService(deps: ServiceDeps): ConnectionService {
       );
     },
 
-    async getCapabilities(
-      ctx: ActorContext,
-      connectionId: string,
-    ): Promise<CapabilitySnapshot> {
+    async getCapabilities(ctx: ActorContext, connectionId: string): Promise<CapabilitySnapshot> {
       return authorized(deps, ctx, 'connection.read', { connectionId }, async (db) => {
         const loaded = await loadCapabilities(db, deps, connectionId);
         if (loaded === null) {
@@ -302,28 +294,22 @@ export function createConnectionService(deps: ServiceDeps): ConnectionService {
     },
 
     async reconnect(ctx: ActorContext, connectionId: string): Promise<ConnectionView> {
-      return authorized(
-        deps,
-        ctx,
-        'connection.reconnect',
-        { connectionId },
-        async (db, actor) => {
-          const before = await requireConnection(db, connectionId);
-          const after = await db.socialConnection.update({
-            where: { id: connectionId },
-            data: { status: 'active', statusReason: null },
-            select: CONNECTION_SELECT,
-          });
-          await recordAudit(db, actor, {
-            action: 'connection.reconnected',
-            targetType: 'social_connection',
-            targetId: connectionId,
-            before: { status: before.status },
-            after: { status: after.status },
-          });
-          return toView(after);
-        },
-      );
+      return authorized(deps, ctx, 'connection.reconnect', { connectionId }, async (db, actor) => {
+        const before = await requireConnection(db, connectionId);
+        const after = await db.socialConnection.update({
+          where: { id: connectionId },
+          data: { status: 'active', statusReason: null },
+          select: CONNECTION_SELECT,
+        });
+        await recordAudit(db, actor, {
+          action: 'connection.reconnected',
+          targetType: 'social_connection',
+          targetId: connectionId,
+          before: { status: before.status },
+          after: { status: after.status },
+        });
+        return toView(after);
+      });
     },
 
     async pause(ctx: ActorContext, connectionId: string): Promise<ConnectionView> {
@@ -371,35 +357,29 @@ export function createConnectionService(deps: ServiceDeps): ConnectionService {
     },
 
     async disconnect(ctx: ActorContext, connectionId: string): Promise<ConnectionView> {
-      return authorized(
-        deps,
-        ctx,
-        'connection.disconnect',
-        { connectionId },
-        async (db, actor) => {
-          const before = await requireConnection(db, connectionId);
-          const after = await db.socialConnection.update({
-            where: { id: connectionId },
-            data: {
-              status: 'disconnected',
-              statusReason: 'connection.disconnected_by_user',
-              disconnectedAt: deps.clock.now(),
-            },
-            select: CONNECTION_SELECT,
-          });
-          // The credential goes now. The connection row stays so receipts and
-          // analytics keep their subject.
-          await db.socialCredential.deleteMany({ where: { connectionId } });
-          await recordAudit(db, actor, {
-            action: 'connection.disconnected',
-            targetType: 'social_connection',
-            targetId: connectionId,
-            before: { status: before.status },
-            after: { status: 'disconnected' },
-          });
-          return toView(after);
-        },
-      );
+      return authorized(deps, ctx, 'connection.disconnect', { connectionId }, async (db, actor) => {
+        const before = await requireConnection(db, connectionId);
+        const after = await db.socialConnection.update({
+          where: { id: connectionId },
+          data: {
+            status: 'disconnected',
+            statusReason: 'connection.disconnected_by_user',
+            disconnectedAt: deps.clock.now(),
+          },
+          select: CONNECTION_SELECT,
+        });
+        // The credential goes now. The connection row stays so receipts and
+        // analytics keep their subject.
+        await db.socialCredential.deleteMany({ where: { connectionId } });
+        await recordAudit(db, actor, {
+          action: 'connection.disconnected',
+          targetType: 'social_connection',
+          targetId: connectionId,
+          before: { status: before.status },
+          after: { status: 'disconnected' },
+        });
+        return toView(after);
+      });
     },
 
     async listDestinations(

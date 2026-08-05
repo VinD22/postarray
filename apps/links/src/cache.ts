@@ -97,7 +97,9 @@ export interface MutableKillSwitch extends KillSwitch {
  * calls `apply`, which is what makes "effective within one request" true in
  * practice: the flag is read from local memory on the hot path, never fetched.
  */
-export function createKillSwitch(initial: KillSwitchState = EMPTY_KILL_SWITCH_STATE): MutableKillSwitch {
+export function createKillSwitch(
+  initial: KillSwitchState = EMPTY_KILL_SWITCH_STATE,
+): MutableKillSwitch {
   let global = initial.global;
   let workspaces = new Set(initial.workspaceIds);
   let links = new Set(initial.linkIds);

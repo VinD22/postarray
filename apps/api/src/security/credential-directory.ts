@@ -369,10 +369,7 @@ export class CredentialDirectory {
   }
 
   async getOAuthClient(clientId: string): Promise<OAuthClientRecord | null> {
-    const record = await this.read(
-      CREDENTIAL_KEYS.oauthClient(clientId),
-      oauthClientRecordSchema,
-    );
+    const record = await this.read(CREDENTIAL_KEYS.oauthClient(clientId), oauthClientRecordSchema);
     if (record === null || record.disabledAt !== null) {
       return null;
     }

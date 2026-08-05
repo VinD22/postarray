@@ -5,7 +5,11 @@ import type { WorkerActivities } from '../activities/types.js';
 import { MESSAGE_KEYS } from '../messages.js';
 import type { ChildWorkflowDescriptor, WorkflowLog, WorkflowStatusView } from '../runtime/types.js';
 
-import { ContinueAsNewRequest, RealtimeWorkflowRuntime, applyInlineSignal } from './realtime-runtime.js';
+import {
+  ContinueAsNewRequest,
+  RealtimeWorkflowRuntime,
+  applyInlineSignal,
+} from './realtime-runtime.js';
 import { nowIso } from '../runtime/clock.js';
 
 /**

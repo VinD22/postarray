@@ -14,9 +14,7 @@ describe('StatusPill', () => {
   it('covers exactly the fifteen documented publish states', () => {
     expect(PUBLISH_STATES).toHaveLength(15);
     expect(new Set(PUBLISH_STATES).size).toBe(15);
-    expect(Object.keys(PUBLISH_STATE_DEFINITIONS).sort()).toEqual(
-      [...PUBLISH_STATES].sort(),
-    );
+    expect(Object.keys(PUBLISH_STATE_DEFINITIONS).sort()).toEqual([...PUBLISH_STATES].sort());
   });
 
   it.each(PUBLISH_STATES)('renders %s with a visible word, not colour alone', (state) => {

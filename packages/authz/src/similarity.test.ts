@@ -10,9 +10,9 @@ import {
 
 describe('normalizeForComparison', () => {
   it('strips links, mentions, hashtags, punctuation and case', () => {
-    expect(
-      normalizeForComparison('Hello @acme! Read https://example.com/a?utm=1 #launch'),
-    ).toBe('hello read');
+    expect(normalizeForComparison('Hello @acme! Read https://example.com/a?utm=1 #launch')).toBe(
+      'hello read',
+    );
   });
 
   it('is stable under unicode normalisation', () => {

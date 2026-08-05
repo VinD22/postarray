@@ -1,5 +1,10 @@
 import { Inject, Injectable } from '@nestjs/common';
-import type { OperationRef, Paginated, WebhookDeliveryLog, WebhookEndpoint } from '@relay/contracts';
+import type {
+  OperationRef,
+  Paginated,
+  WebhookDeliveryLog,
+  WebhookEndpoint,
+} from '@relay/contracts';
 
 import type {
   ActorContext,

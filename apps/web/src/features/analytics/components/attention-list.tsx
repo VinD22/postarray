@@ -57,24 +57,24 @@ export function AttentionList({
         {t('analytics.accounts.title')}
       </h2>
 
-      <ul className="flex flex-col border-t border-border-subtle">
+      <ul className="border-border-subtle flex flex-col border-t">
         {rows.map((row) => {
           const needsReconnect =
             row.reason === 'permission_missing' || row.reason === 'access_expired';
           return (
             <li
               key={`${row.account.connectionId}:${row.reason}`}
-              className="flex flex-col gap-2 border-b border-border-subtle py-3 sm:flex-row sm:items-start sm:justify-between sm:gap-4"
+              className="border-border-subtle flex flex-col gap-2 border-b py-3 sm:flex-row sm:items-start sm:justify-between sm:gap-4"
             >
               <div className="flex min-w-0 flex-col gap-0.5">
-                <span className="flex items-center gap-2 text-body-md text-text-primary">
+                <span className="text-body-md text-text-primary flex items-center gap-2">
                   <StatusDot provider={row.account.provider} />
                   {row.account.displayName}
                   <span className="text-text-tertiary">
                     {t(providerLabelKey(row.account.provider))}
                   </span>
                 </span>
-                <p className="max-w-[70ch] text-body-md text-text-secondary">
+                <p className="text-body-md text-text-secondary max-w-[70ch]">
                   {t(REASON_KEY[row.reason], {
                     date: row.since ? format.date(row.since) : '',
                     relativeTime: row.since ? format.relative(row.since) : '',

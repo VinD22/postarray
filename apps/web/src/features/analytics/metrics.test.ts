@@ -67,9 +67,7 @@ describe('outcome grouping', () => {
 describe('availability mapping', () => {
   it('keeps "provider does not support" and "not built yet" separate', () => {
     expect(toDesignSystemAvailability('unavailable_provider')).toBe('unsupported');
-    expect(toDesignSystemAvailability('unavailable_not_implemented')).toBe(
-      'not_implemented',
-    );
+    expect(toDesignSystemAvailability('unavailable_not_implemented')).toBe('not_implemented');
   });
 
   it('gives every unavailable state a reason key', () => {
@@ -92,9 +90,7 @@ describe('availability mapping', () => {
 
 describe('hasValue', () => {
   it('is false when the metric is unavailable even if a value slipped through', () => {
-    expect(hasValue(reading({ availability: 'unavailable_stale', value: 900 }))).toBe(
-      false,
-    );
+    expect(hasValue(reading({ availability: 'unavailable_stale', value: 900 }))).toBe(false);
   });
 
   it('is false for an available metric with a null value', () => {

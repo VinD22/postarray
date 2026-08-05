@@ -96,10 +96,7 @@ export function scopesSatisfy(granted: readonly string[], required: readonly Sco
 }
 
 /** The subset of `required` that `granted` is missing, in the requested order. */
-export function missingScopes(
-  granted: readonly string[],
-  required: readonly Scope[],
-): Scope[] {
+export function missingScopes(granted: readonly string[], required: readonly Scope[]): Scope[] {
   return required.filter((scope) => !scopeSatisfies(granted, scope));
 }
 

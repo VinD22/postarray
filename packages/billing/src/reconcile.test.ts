@@ -10,7 +10,7 @@ import {
   reconcileSubscriptions,
   reconcileWorkspace,
 } from './reconcile.js';
-import { LocalPolarSimulator } from './simulator.js';
+import { type LocalPolarSimulator } from './simulator.js';
 import { toVerifiedSubscription } from './webhooks.js';
 import { MutableClock } from './time.js';
 
@@ -71,7 +71,7 @@ describe('reconciliation', () => {
     clock.advanceDays(10);
     await client.mutateSilently(created.id, { status: 'unpaid' });
 
-    const report = await reconcileSubscriptions({ client, subscriptions, clock, });
+    const report = await reconcileSubscriptions({ client, subscriptions, clock });
     expect(report.repaired).toBe(1);
     expect(report.drifts[0]?.kinds).toContain('status_changed');
     expect(report.drifts[0]?.kinds).toContain('entitlement_state_changed');

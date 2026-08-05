@@ -28,7 +28,12 @@ import {
   type OAuthClientRecord,
 } from '../security/records.js';
 import { resolveRedirectUri, verifyCodeVerifier } from './pkce.js';
-import type { AuthorizeQuery, ConsentDecision, TokenRequest, TokenResponse } from './oauth.schemas.js';
+import type {
+  AuthorizeQuery,
+  ConsentDecision,
+  TokenRequest,
+  TokenResponse,
+} from './oauth.schemas.js';
 
 /**
  * Relay's own OAuth 2.1 authorization server.
@@ -94,7 +99,10 @@ export class OAuthProviderService {
    * is it safe to redirect at all, which is why an unknown client or an
    * unmatched URI is rendered as an error page rather than as a redirect.
    */
-  async beginAuthorization(query: AuthorizeQuery, subjectUserId: string): Promise<PendingAuthorization> {
+  async beginAuthorization(
+    query: AuthorizeQuery,
+    subjectUserId: string,
+  ): Promise<PendingAuthorization> {
     const client = await this.directory.getOAuthClient(query.client_id);
     if (client === null) {
       throw new ValidationFailedError({ details: { field: 'client_id', reason: 'unknown' } });
@@ -119,9 +127,7 @@ export class OAuthProviderService {
         details: { field: 'scope', reason: 'invalid_scope', scopes: forbidden },
       });
     }
-    const outsideRegistration = requested.filter(
-      (scope) => !client.allowedScopes.includes(scope),
-    );
+    const outsideRegistration = requested.filter((scope) => !client.allowedScopes.includes(scope));
     if (outsideRegistration.length > 0) {
       throw new ValidationFailedError({
         details: { field: 'scope', reason: 'not_registered', scopes: outsideRegistration },
@@ -156,7 +162,10 @@ export class OAuthProviderService {
   }
 
   /** The pending request, for rendering the consent screen. */
-  async describeAuthorization(requestId: string, subjectUserId: string): Promise<PendingAuthorization> {
+  async describeAuthorization(
+    requestId: string,
+    subjectUserId: string,
+  ): Promise<PendingAuthorization> {
     const record = await this.directory.getAuthorizationRequest(requestId);
     if (record === null || record.subjectUserId !== subjectUserId) {
       throw new ValidationFailedError({ details: { field: 'requestId', reason: 'unknown' } });
@@ -299,10 +308,7 @@ export class OAuthProviderService {
       for (const hash of record.issuedTokenHashes) {
         await this.directory.deleteAccessToken(hash);
       }
-      this.logger.warn(
-        { clientId: record.clientId },
-        'security.oauth_code_replay',
-      );
+      this.logger.warn({ clientId: record.clientId }, 'security.oauth_code_replay');
       throw new ForbiddenError({ details: { reason: 'invalid_grant' } });
     }
     if (requireEpochMillis(record.expiresAt) <= this.clock.now().getTime()) {
@@ -379,7 +385,11 @@ export class OAuthProviderService {
         locale: 'en',
       },
       scopes,
-      { grantId: record.grantId, familyId: record.familyId, absoluteExpiresAt: record.absoluteExpiresAt },
+      {
+        grantId: record.grantId,
+        familyId: record.familyId,
+        absoluteExpiresAt: record.absoluteExpiresAt,
+      },
     );
     return issued.response;
   }
@@ -432,7 +442,8 @@ export class OAuthProviderService {
       audience: source.audience,
       issuedAt: now.toISOString(),
       expiresAt: instantAfter(now, REFRESH_SLIDING_TTL_SECONDS),
-      absoluteExpiresAt: existing?.absoluteExpiresAt ?? instantAfter(now, REFRESH_ABSOLUTE_TTL_SECONDS),
+      absoluteExpiresAt:
+        existing?.absoluteExpiresAt ?? instantAfter(now, REFRESH_ABSOLUTE_TTL_SECONDS),
       consumedAt: null,
     });
 

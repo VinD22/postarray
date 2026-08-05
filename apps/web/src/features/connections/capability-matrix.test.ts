@@ -106,7 +106,10 @@ describe('supportFor', () => {
 
   it('surfaces a pending platform review rather than calling it unsupported', () => {
     expect(
-      supportFor(snapshot({ analytics: { ...snapshot().analytics, support: 'requires_review' } }), 'analytics'),
+      supportFor(
+        snapshot({ analytics: { ...snapshot().analytics, support: 'requires_review' } }),
+        'analytics',
+      ),
     ).toBe('requires_review');
   });
 
@@ -143,10 +146,13 @@ describe('buildCapabilityMatrix', () => {
 
   it('keeps the newest snapshot when one provider has two connections', () => {
     const matrix = buildCapabilityMatrix([
-      snapshot({ observedAt: '2026-01-01T00:00:00.000Z', contentKinds: {
-        ...snapshot().contentKinds,
-        carousel: 'not_implemented',
-      } }),
+      snapshot({
+        observedAt: '2026-01-01T00:00:00.000Z',
+        contentKinds: {
+          ...snapshot().contentKinds,
+          carousel: 'not_implemented',
+        },
+      }),
       snapshot({ observedAt: '2026-08-06T08:00:00.000Z' }),
     ]);
     const carousel = matrix.rows.find((row) => row.feature === 'carousel');
@@ -154,7 +160,9 @@ describe('buildCapabilityMatrix', () => {
   });
 
   it('reports one connector version only when every snapshot agrees', () => {
-    expect(buildCapabilityMatrix([snapshot(), snapshot({ provider: 'linkedin' })]).capabilityVersion).toBe('v14');
+    expect(
+      buildCapabilityMatrix([snapshot(), snapshot({ provider: 'linkedin' })]).capabilityVersion,
+    ).toBe('v14');
     expect(
       buildCapabilityMatrix([
         snapshot(),

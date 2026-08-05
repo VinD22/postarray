@@ -32,9 +32,7 @@ export function useControllable<T>({
   const setValue = useCallback(
     (next: T | ((current: T) => T)) => {
       const computed =
-        typeof next === 'function'
-          ? (next as (current: T) => T)(resolvedRef.current)
-          : next;
+        typeof next === 'function' ? (next as (current: T) => T)(resolvedRef.current) : next;
       if (Object.is(computed, resolvedRef.current)) return;
       if (!isControlled) setInternal(computed);
       onChangeRef.current?.(computed);

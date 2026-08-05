@@ -117,9 +117,7 @@ export function AnalyticsToolbar({
         </div>
 
         <div className="flex flex-col gap-1">
-          <span className="text-label text-text-tertiary">
-            {t('analytics.filter.accounts')}
-          </span>
+          <span className="text-label text-text-tertiary">{t('analytics.filter.accounts')}</span>
           <Popover>
             <PopoverTrigger asChild>
               <Button
@@ -135,7 +133,7 @@ export function AnalyticsToolbar({
             </PopoverTrigger>
             <PopoverContent className="w-[min(20rem,calc(100vw-2rem))]">
               <fieldset className="flex flex-col gap-2">
-                <legend className="pb-1 text-label text-text-tertiary">
+                <legend className="text-label text-text-tertiary pb-1">
                   {t('analytics.filter.accounts')}
                 </legend>
                 {accounts.map((account) => {
@@ -149,7 +147,7 @@ export function AnalyticsToolbar({
                       />
                       <Label htmlFor={id} className="text-body-md">
                         {account.displayName}
-                        <span className="ps-1.5 text-text-tertiary">
+                        <span className="text-text-tertiary ps-1.5">
                           {t(providerLabelKey(account.provider))}
                         </span>
                       </Label>
@@ -241,7 +239,7 @@ export function AnalyticsToolbar({
             ))}
           </SelectContent>
         </Select>
-        <p className="max-w-[70ch] text-body-sm text-text-tertiary">
+        <p className="text-body-sm text-text-tertiary max-w-[70ch]">
           {t('analytics.rankMetric.help')}
         </p>
       </div>

@@ -209,7 +209,10 @@ describe('classifyProviderError: YouTube', () => {
       classifyProviderError({
         provider: 'youtube',
         status: 403,
-        body: { error: { errors: [{ reason: 'quotaExceeded' }] }, errors: [{ reason: 'quotaExceeded' }] },
+        body: {
+          error: { errors: [{ reason: 'quotaExceeded' }] },
+          errors: [{ reason: 'quotaExceeded' }],
+        },
       }),
     ).toBe('transient_provider');
   });
@@ -328,9 +331,7 @@ describe('classifyProviderError: Bluesky', () => {
 
 describe('classifyProviderError: unknown provider', () => {
   it('falls back to the generic rules', () => {
-    expect(classifyProviderError({ provider: 'mastodon', status: 429 })).toBe(
-      'transient_provider',
-    );
+    expect(classifyProviderError({ provider: 'mastodon', status: 429 })).toBe('transient_provider');
     expect(classifyProviderError({ provider: 'fake', status: 401 })).toBe('user_action_required');
   });
 });

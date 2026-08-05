@@ -41,7 +41,10 @@ describe('global edit', () => {
 
     expect(x).toBeDefined();
     expect(adapted.length).toBeGreaterThan(0);
-    expect(readCounter(adapted, x!.capabilities).level).not.toBe('over');
+    if (x === undefined) {
+      throw new Error('expected the X seed account');
+    }
+    expect(readCounter(adapted, x.capabilities).level).not.toBe('over');
   });
 
   it('leaves a target that already has its own version alone', () => {

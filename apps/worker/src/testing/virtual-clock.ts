@@ -167,7 +167,9 @@ const MAX_DRIVE_STEPS = 20_000;
  * workflow has nothing left to do in the present.
  */
 export async function drive<T>(clock: VirtualClock, work: Promise<T>): Promise<T> {
-  type Settled<V> = { readonly kind: 'value'; readonly value: V } | { readonly kind: 'error'; readonly error: unknown };
+  type Settled<V> =
+    | { readonly kind: 'value'; readonly value: V }
+    | { readonly kind: 'error'; readonly error: unknown };
   const box: { current: Settled<T> | null } = { current: null };
 
   void work.then(

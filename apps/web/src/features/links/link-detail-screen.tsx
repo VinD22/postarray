@@ -39,7 +39,10 @@ import type { DomainVerificationState } from './types';
  */
 
 const DOMAIN_CAPABILITY: Readonly<
-  Record<DomainVerificationState, 'supported' | 'requires_review' | 'unsupported' | 'not_implemented'>
+  Record<
+    DomainVerificationState,
+    'supported' | 'requires_review' | 'unsupported' | 'not_implemented'
+  >
 > = {
   verified: 'supported',
   pending: 'requires_review',
@@ -60,10 +63,7 @@ function last30Days(): { readonly start: string; readonly end: string } {
   };
 }
 
-export function LinkDetailScreen({
-  linkId,
-  abuseReportHref,
-}: LinkDetailScreenProps): ReactElement {
+export function LinkDetailScreen({ linkId, abuseReportHref }: LinkDetailScreenProps): ReactElement {
   const t = useTranslations();
   const format = useValueFormat();
   const range = useMemo(last30Days, []);
@@ -160,9 +160,7 @@ export function LinkDetailScreen({
             {
               id: 'destination',
               term: t('analytics.links.exactRedirect'),
-              definition: (
-                <span className="break-all">{link.destination}</span>
-              ),
+              definition: <span className="break-all">{link.destination}</span>,
               hint: t('analytics.links.exactRedirectHelp'),
             },
             {
@@ -178,9 +176,7 @@ export function LinkDetailScreen({
                     label={
                       link.domain.state === 'verified'
                         ? t('analytics.links.domainVerified', {
-                            date: link.domain.verifiedAt
-                              ? format.date(link.domain.verifiedAt)
-                              : '',
+                            date: link.domain.verifiedAt ? format.date(link.domain.verifiedAt) : '',
                           })
                         : link.domain.state === 'pending'
                           ? t('analytics.links.domainPending')
@@ -255,13 +251,13 @@ export function LinkDetailScreen({
         <h3 className="text-title-sm text-text-primary">
           {t('analytics.links.destinationHistory')}
         </h3>
-        <ul className="flex flex-col border-t border-border-subtle">
+        <ul className="border-border-subtle flex flex-col border-t">
           {link.destinationHistory.map((version) => (
             <li
               key={version.id}
-              className="flex flex-col gap-0.5 border-b border-border-subtle py-2"
+              className="border-border-subtle flex flex-col gap-0.5 border-b py-2"
             >
-              <span className="break-all text-body-md text-text-primary">
+              <span className="text-body-md text-text-primary break-all">
                 {version.activeTo === null
                   ? t('analytics.links.destinationHistoryCurrent', {
                       destination: version.url,
@@ -292,9 +288,7 @@ export function LinkDetailScreen({
           <p className="text-body-md text-text-secondary">
             {t('analytics.links.measurementExplained')}
           </p>
-          <p className="text-body-sm text-text-tertiary">
-            {t('analytics.links.separateSources')}
-          </p>
+          <p className="text-body-sm text-text-tertiary">{t('analytics.links.separateSources')}</p>
         </div>
 
         {!hasEvents ? (
@@ -312,9 +306,7 @@ export function LinkDetailScreen({
                   id: 'requests',
                   term: t('analytics.links.totalRequests'),
                   definition: (
-                    <span className="tabular-nums">
-                      {format.count(measurement.totalRequests)}
-                    </span>
+                    <span className="tabular-nums">{format.count(measurement.totalRequests)}</span>
                   ),
                 },
                 {
@@ -330,9 +322,7 @@ export function LinkDetailScreen({
                   id: 'bots',
                   term: t('analytics.links.suspectedBots'),
                   definition: (
-                    <span className="tabular-nums">
-                      {format.count(measurement.suspectedBots)}
-                    </span>
+                    <span className="tabular-nums">{format.count(measurement.suspectedBots)}</span>
                   ),
                   hint: t('analytics.links.botsNote', {
                     count: measurement.suspectedBots,
@@ -401,13 +391,11 @@ export function LinkDetailScreen({
                 title={t('analytics.links.country')}
                 entries={measurement.countries}
                 emptyText={t('analytics.links.countryUnknown')}
-                labelFor={(key) =>
-                  key === 'unknown' ? t('analytics.links.countryUnknown') : key
-                }
+                labelFor={(key) => (key === 'unknown' ? t('analytics.links.countryUnknown') : key)}
               />
             </div>
 
-            <p className="max-w-[70ch] text-body-sm text-text-tertiary">
+            <p className="text-body-sm text-text-tertiary max-w-[70ch]">
               {t('analytics.links.privacyNote')}
             </p>
           </>

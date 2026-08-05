@@ -44,16 +44,16 @@ export function SiteHeader(props: SiteHeaderProps): ReactNode {
     href === '/' ? pathname === '/' : pathname === href || pathname.startsWith(`${href}/`);
 
   return (
-    <header className="relative sticky top-0 z-(--z-index-sticky) border-b border-border-default bg-surface-canvas">
+    <header className="border-border-default bg-surface-canvas relative sticky top-0 z-(--z-index-sticky) border-b">
       <Container>
         <div className="flex h-16 items-stretch justify-between gap-4">
           <div className="flex items-center">
             <Link
               href="/"
               className={cn(
-                'font-serif text-[1.4rem] leading-none tracking-[-0.02em] text-text-primary',
+                'text-text-primary font-serif text-[1.4rem] leading-none tracking-[-0.02em]',
                 'flex min-h-11 items-center pe-4',
-                'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-border-focus',
+                'focus-visible:outline-border-focus focus-visible:outline-2 focus-visible:outline-offset-2',
               )}
             >
               {brand}
@@ -70,17 +70,19 @@ export function SiteHeader(props: SiteHeaderProps): ReactNode {
                       href={item.href}
                       aria-current={current ? 'page' : undefined}
                       className={cn(
-                        'relative flex items-center px-3 text-body-md',
+                        'text-body-md relative flex items-center px-3',
                         'transition-colors duration-(--duration-fast) ease-(--ease-standard)',
-                        'focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-border-focus',
-                        current ? 'text-text-primary' : 'text-text-secondary hover:text-text-primary',
+                        'focus-visible:outline-border-focus focus-visible:outline-2 focus-visible:outline-offset-[-2px]',
+                        current
+                          ? 'text-text-primary'
+                          : 'text-text-secondary hover:text-text-primary',
                       )}
                     >
                       {item.label}
                       {current ? (
                         <span
                           aria-hidden="true"
-                          className="absolute bottom-[-1px] start-3 end-3 h-[2px] bg-accent"
+                          className="bg-accent absolute start-3 end-3 bottom-[-1px] h-[2px]"
                         />
                       ) : null}
                     </Link>
@@ -94,9 +96,9 @@ export function SiteHeader(props: SiteHeaderProps): ReactNode {
             <Link
               href={signIn.href}
               className={cn(
-                'flex min-h-11 items-center px-3 text-body-md text-text-secondary',
-                'transition-colors duration-(--duration-fast) ease-(--ease-standard) hover:text-text-primary',
-                'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-border-focus',
+                'text-body-md text-text-secondary flex min-h-11 items-center px-3',
+                'hover:text-text-primary transition-colors duration-(--duration-fast) ease-(--ease-standard)',
+                'focus-visible:outline-border-focus focus-visible:outline-2 focus-visible:outline-offset-2',
               )}
             >
               {signIn.label}
@@ -104,11 +106,11 @@ export function SiteHeader(props: SiteHeaderProps): ReactNode {
             <Link
               href={startTrial.href}
               className={cn(
-                'flex min-h-11 items-center rounded-md border border-transparent bg-accent px-4',
-                'text-body-md font-medium text-accent-on',
+                'bg-accent flex min-h-11 items-center rounded-md border border-transparent px-4',
+                'text-body-md text-accent-on font-medium',
                 'transition-colors duration-(--duration-fast) ease-(--ease-standard)',
                 'hover:bg-accent-hover active:bg-accent-active',
-                'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-border-focus',
+                'focus-visible:outline-border-focus focus-visible:outline-2 focus-visible:outline-offset-2',
               )}
             >
               {startTrial.label}
@@ -119,9 +121,9 @@ export function SiteHeader(props: SiteHeaderProps): ReactNode {
             <summary
               className={cn(
                 'flex min-h-11 min-w-11 cursor-pointer list-none items-center justify-center gap-2',
-                'rounded-md px-2 text-body-md text-text-secondary',
+                'text-body-md text-text-secondary rounded-md px-2',
                 'marker:content-none [&::-webkit-details-marker]:hidden',
-                'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-border-focus',
+                'focus-visible:outline-border-focus focus-visible:outline-2 focus-visible:outline-offset-2',
               )}
             >
               <Menu aria-hidden="true" className="size-5 group-open:hidden" />
@@ -130,22 +132,22 @@ export function SiteHeader(props: SiteHeaderProps): ReactNode {
               <span className="hidden group-open:inline">{closeMenu}</span>
             </summary>
 
-            <div className="absolute start-0 end-0 top-16 border-b border-border-default bg-surface-canvas">
+            <div className="border-border-default bg-surface-canvas absolute start-0 end-0 top-16 border-b">
               <Container>
                 <nav aria-label={navLabel} className="py-2">
-                  <ul className="border-t border-border-subtle">
+                  <ul className="border-border-subtle border-t">
                     {items.map((item) => {
                       const current = isCurrent(item.href);
                       return (
-                        <li key={item.href} className="border-b border-border-subtle">
+                        <li key={item.href} className="border-border-subtle border-b">
                           <Link
                             href={item.href}
                             aria-current={current ? 'page' : undefined}
                             className={cn(
-                              'flex min-h-12 items-center text-body-lg',
-                              'focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-border-focus',
+                              'text-body-lg flex min-h-12 items-center',
+                              'focus-visible:outline-border-focus focus-visible:outline-2 focus-visible:outline-offset-[-2px]',
                               current
-                                ? 'text-text-primary underline decoration-accent decoration-2 underline-offset-[0.3em]'
+                                ? 'text-text-primary decoration-accent underline decoration-2 underline-offset-[0.3em]'
                                 : 'text-text-secondary',
                             )}
                           >
@@ -159,8 +161,8 @@ export function SiteHeader(props: SiteHeaderProps): ReactNode {
                     <Link
                       href={startTrial.href}
                       className={cn(
-                        'flex min-h-11 items-center rounded-md bg-accent px-4 text-body-lg font-medium text-accent-on',
-                        'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-border-focus',
+                        'bg-accent text-body-lg text-accent-on flex min-h-11 items-center rounded-md px-4 font-medium',
+                        'focus-visible:outline-border-focus focus-visible:outline-2 focus-visible:outline-offset-2',
                       )}
                     >
                       {startTrial.label}
@@ -168,8 +170,8 @@ export function SiteHeader(props: SiteHeaderProps): ReactNode {
                     <Link
                       href={signIn.href}
                       className={cn(
-                        'flex min-h-11 items-center rounded-md border border-border-default px-4 text-body-lg text-text-primary',
-                        'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-border-focus',
+                        'border-border-default text-body-lg text-text-primary flex min-h-11 items-center rounded-md border px-4',
+                        'focus-visible:outline-border-focus focus-visible:outline-2 focus-visible:outline-offset-2',
                       )}
                     >
                       {signIn.label}

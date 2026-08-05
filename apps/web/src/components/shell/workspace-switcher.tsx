@@ -45,19 +45,19 @@ export function WorkspaceSwitcher({ className }: { readonly className?: string }
       <DropdownMenuTrigger
         aria-label={t('nav.workspaceSwitcher')}
         className={cn(
-          'flex min-h-11 max-w-56 items-center gap-2 rounded-md border border-border-default',
-          'bg-surface-raised px-2.5 py-1.5 text-body-md text-text-primary md:min-h-9',
+          'border-border-default flex min-h-11 max-w-56 items-center gap-2 rounded-md border',
+          'bg-surface-raised text-body-md text-text-primary px-2.5 py-1.5 md:min-h-9',
           'hover:bg-surface-hover transition-colors duration-(--duration-fast)',
           className,
         )}
       >
         <span className="flex min-w-0 flex-col items-start">
           <span className="truncate font-medium">{workspace.name}</span>
-          <span className="truncate text-label text-text-tertiary">
+          <span className="text-label text-text-tertiary truncate">
             {t('shell.timeZone.label', { timeZone: workspace.timeZone })}
           </span>
         </span>
-        <ChevronsUpDown aria-hidden="true" className="size-4 shrink-0 text-text-tertiary" />
+        <ChevronsUpDown aria-hidden="true" className="text-text-tertiary size-4 shrink-0" />
       </DropdownMenuTrigger>
 
       <DropdownMenuContent align="start" className="w-72">
@@ -73,13 +73,13 @@ export function WorkspaceSwitcher({ className }: { readonly className?: string }
             >
               <span className="flex min-w-0 flex-1 flex-col">
                 <span className="truncate">{candidate.name}</span>
-                <span className="truncate text-label text-text-tertiary">
+                <span className="text-label text-text-tertiary truncate">
                   {t('shell.workspace.role', { role: candidate.role })}
                 </span>
               </span>
               {current ? (
                 <>
-                  <Check aria-hidden="true" className="size-4 text-accent" />
+                  <Check aria-hidden="true" className="text-accent size-4" />
                   <span className="sr-only">
                     {t('shell.workspace.current', { name: candidate.name })}
                   </span>

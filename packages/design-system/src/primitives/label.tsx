@@ -4,8 +4,7 @@ import { forwardRef, type ComponentPropsWithoutRef, type ReactNode } from 'react
 import { Label as LabelPrimitive } from 'radix-ui';
 import { cn } from '../utils/cn.js';
 
-export interface LabelProps
-  extends ComponentPropsWithoutRef<typeof LabelPrimitive.Root> {
+export interface LabelProps extends ComponentPropsWithoutRef<typeof LabelPrimitive.Root> {
   /**
    * Marks the field as required. The marker is decorative; the required state
    * itself is carried by the control's `required` attribute, and the visible
@@ -29,7 +28,7 @@ export const Label = forwardRef<HTMLLabelElement, LabelProps>(function Label(
     <LabelPrimitive.Root
       ref={ref}
       className={cn(
-        'inline-flex items-center gap-1 text-label font-medium text-text-primary',
+        'text-label text-text-primary inline-flex items-center gap-1 font-medium',
         'has-[+_:disabled]:text-text-disabled',
         className,
       )}

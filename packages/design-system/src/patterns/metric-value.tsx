@@ -86,23 +86,14 @@ export function MetricValue({
           {value}
         </p>
       ) : (
-        <p
-          className={cn(
-            'text-text-tertiary',
-            size === 'lg' ? 'text-title-md' : 'text-title-sm',
-          )}
-        >
+        <p className={cn('text-text-tertiary', size === 'lg' ? 'text-title-md' : 'text-title-sm')}>
           {unavailableText}
         </p>
       )}
 
-      {!isAvailable && reason ? (
-        <p className="text-body-sm text-text-secondary">{reason}</p>
-      ) : null}
+      {!isAvailable && reason ? <p className="text-body-sm text-text-secondary">{reason}</p> : null}
 
-      {definition ? (
-        <p className="text-body-sm text-text-tertiary">{definition}</p>
-      ) : null}
+      {definition ? <p className="text-body-sm text-text-tertiary">{definition}</p> : null}
 
       {freshness ? <div className="pt-0.5">{freshness}</div> : null}
     </div>

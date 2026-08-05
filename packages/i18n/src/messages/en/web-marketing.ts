@@ -137,10 +137,12 @@ export const webMarketingMessages = {
   'web.home.example.linkedin.variant': 'Longer master text with the document attached',
   'web.home.example.linkedin.check': 'Organization role, post length, document type',
   'web.home.example.instagram.account': 'Instagram, @northbound.tools',
-  'web.home.example.instagram.variant': 'Square crop of the same image, caption rewritten for the feed',
+  'web.home.example.instagram.variant':
+    'Square crop of the same image, caption rewritten for the feed',
   'web.home.example.instagram.check': 'Professional account type, aspect ratio, alt text present',
   'web.home.example.youtube.account': 'YouTube, Northbound',
-  'web.home.example.youtube.variant': 'The same clip as a Short, with its own title and description',
+  'web.home.example.youtube.variant':
+    'The same clip as a Short, with its own title and description',
   'web.home.example.youtube.check': 'Upload scope, audit state, privacy the upload will land in',
   'web.home.example.bluesky.account': 'Bluesky, northbound.example',
   'web.home.example.bluesky.variant': 'Master text with the link card',
@@ -191,15 +193,20 @@ export const webMarketingMessages = {
   'web.home.surfaces.body':
     'The same use cases, the same tenancy checks, the same validators and the same publishing workflows. A surface is a way in, never a shortcut past a rule.',
   'web.home.surfaces.web': 'Web app',
-  'web.home.surfaces.webBody': 'Composer, calendar, approvals, analytics, connections and settings.',
+  'web.home.surfaces.webBody':
+    'Composer, calendar, approvals, analytics, connections and settings.',
   'web.home.surfaces.api': 'REST API',
-  'web.home.surfaces.apiBody': 'Scoped keys, idempotency keys on every write, cursor pagination, typed errors.',
+  'web.home.surfaces.apiBody':
+    'Scoped keys, idempotency keys on every write, cursor pagination, typed errors.',
   'web.home.surfaces.mcp': 'Remote MCP server',
-  'web.home.surfaces.mcpBody': 'Streamable HTTP, OAuth, per tool scopes and a preview before every consequential call.',
+  'web.home.surfaces.mcpBody':
+    'Streamable HTTP, OAuth, per tool scopes and a preview before every consequential call.',
   'web.home.surfaces.cli': 'CLI',
-  'web.home.surfaces.cliBody': 'Stable machine readable output for scripts and continuous integration.',
+  'web.home.surfaces.cliBody':
+    'Stable machine readable output for scripts and continuous integration.',
   'web.home.surfaces.webhooks': 'Signed webhooks',
-  'web.home.surfaces.webhooksBody': 'Publish results, approval decisions and connection health, with redelivery.',
+  'web.home.surfaces.webhooksBody':
+    'Publish results, approval decisions and connection health, with redelivery.',
 
   'web.home.closing.title': 'Start with one account and one post',
   'web.home.closing.body':
@@ -244,10 +251,13 @@ export const webMarketingMessages = {
   'web.product.states.title': 'The states nobody likes to design',
   'web.product.states.body':
     'A publishing tool is judged on the bad day, not the good one. Every one of these has a designed screen, a plain sentence and a next action.',
-  'web.product.states.partial': 'Partially published: which targets are live, which failed and why.',
+  'web.product.states.partial':
+    'Partially published: which targets are live, which failed and why.',
   'web.product.states.revoked': 'A revoked token found at dispatch time, with the reconnect path.',
-  'web.product.states.rateLimited': 'A platform rate limit, with when it resets and what is queued behind it.',
-  'web.product.states.duplicate': 'A duplicate or cadence block, with the rule that fired and the appeal path.',
+  'web.product.states.rateLimited':
+    'A platform rate limit, with when it resets and what is queued behind it.',
+  'web.product.states.duplicate':
+    'A duplicate or cadence block, with the rule that fired and the appeal path.',
   'web.product.states.offline': 'Offline while composing: nothing you wrote is lost.',
   'web.product.states.permission': 'An action your role does not allow, naming the role that does.',
 
@@ -258,7 +268,8 @@ export const webMarketingMessages = {
   'web.integrations.title': 'Platforms',
   'web.integrations.lede':
     'Relay connects through official platform APIs. Each connector has a named owner, a recorded policy URL and a review date. A connector is not listed as supported until it passes the connector definition of done.',
-  'web.integrations.reviewNotice.title': 'No connector is described as official before the platform approves it',
+  'web.integrations.reviewNotice.title':
+    'No connector is described as official before the platform approves it',
   'web.integrations.reviewNotice.body':
     'Several platforms require an app review before an application may publish on behalf of a customer. Where that review is outstanding, the connector says so and describes exactly what is restricted until it passes.',
   'web.integrations.accountTypes': 'Account types this connector can publish to',
@@ -358,7 +369,8 @@ export const webMarketingMessages = {
   'web.pricing.annualLabel': 'Billed annually',
   'web.pricing.annualDetail': '$300 charged once a year.',
   'web.pricing.monthlyDetail': '$29 charged every month.',
-  'web.pricing.perMonthNote': 'Prices are in US dollars. Polar adds any sales tax or VAT that applies where you are.',
+  'web.pricing.perMonthNote':
+    'Prices are in US dollars. Polar adds any sales tax or VAT that applies where you are.',
 
   'web.pricing.beside.title': 'What you are agreeing to',
   'web.pricing.beside.channels':
@@ -413,15 +425,22 @@ export const webMarketingMessages = {
   'web.resources.title': 'Resources',
   'web.resources.lede':
     'Operational truth about the product, and the research behind anything we claim about a platform.',
-  'web.resources.status.body': 'Current state of every surface and every connector, with incident history.',
-  'web.resources.changelog.body': 'What shipped, what changed for a connector, and what we corrected.',
+  'web.resources.status.body':
+    'Current state of every surface and every connector, with incident history.',
+  'web.resources.changelog.body':
+    'What shipped, what changed for a connector, and what we corrected.',
   'web.resources.docs.body': 'REST API, MCP, CLI and webhook documentation.',
-  'web.resources.methodology.body': 'How we research, date, source and correct every platform claim.',
+  'web.resources.methodology.body':
+    'How we research, date, source and correct every platform claim.',
   'web.resources.compare.body': 'Dated comparisons with other tools, including who each one suits.',
-  'web.resources.capabilities.body': 'Per platform, per capability, generated from the connector definitions.',
-  'web.resources.toolRadar.body': 'Specialist creative tools, dated, with limitations and disclosure.',
-  'web.resources.opportunities.body': 'Curated places to launch, list or contribute, with each destination rules.',
-  'web.resources.legal.body': 'Terms, privacy, acceptable use, AI use, security and the rest of the policy set.',
+  'web.resources.capabilities.body':
+    'Per platform, per capability, generated from the connector definitions.',
+  'web.resources.toolRadar.body':
+    'Specialist creative tools, dated, with limitations and disclosure.',
+  'web.resources.opportunities.body':
+    'Curated places to launch, list or contribute, with each destination rules.',
+  'web.resources.legal.body':
+    'Terms, privacy, acceptable use, AI use, security and the rest of the policy set.',
   'web.resources.guides.title': 'Guides and workflows',
   'web.resources.guides.empty': 'No guide has been published yet',
   'web.resources.guides.emptyBody':
@@ -483,7 +502,8 @@ export const webMarketingMessages = {
   'web.docs.lede':
     'One backend, four ways in. Each section documents the same use cases, so a concept you learn in the REST API is the same concept in MCP and in the CLI.',
   'web.docs.section.start.title': 'Getting started',
-  'web.docs.section.start.body': 'Authentication, workspaces, brands, and your first published post.',
+  'web.docs.section.start.body':
+    'Authentication, workspaces, brands, and your first published post.',
   'web.docs.section.api.title': 'REST API',
   'web.docs.section.api.body': 'Resources, pagination, idempotency, error codes and rate limits.',
   'web.docs.section.mcp.title': 'MCP server',
@@ -491,9 +511,11 @@ export const webMarketingMessages = {
   'web.docs.section.cli.title': 'CLI',
   'web.docs.section.cli.body': 'Install, authenticate, and the machine readable output contract.',
   'web.docs.section.webhooks.title': 'Webhooks',
-  'web.docs.section.webhooks.body': 'Event catalog, signature verification, retries and redelivery.',
+  'web.docs.section.webhooks.body':
+    'Event catalog, signature verification, retries and redelivery.',
   'web.docs.section.connectors.title': 'Connectors',
-  'web.docs.section.connectors.body': 'Per platform requirements, account types, limits and known restrictions.',
+  'web.docs.section.connectors.body':
+    'Per platform requirements, account types, limits and known restrictions.',
   'web.docs.section.errors.title': 'Error reference',
   'web.docs.section.errors.body': 'Every error code, what causes it, and what to do about it.',
   'web.docs.pending': 'Not published yet',
@@ -520,14 +542,18 @@ export const webMarketingMessages = {
   'web.methodology.claims.body':
     'Every claim about what a platform allows comes from that platform own documentation or policy page. We record the URL, the date it was read, the API version where one applies, and the person who owns rechecking it. A claim without those four things does not go on the site.',
   'web.methodology.recheck.title': 'When we recheck',
-  'web.methodology.recheck.beforeConnector': 'Before a connector starts, and again before it carries customer traffic.',
+  'web.methodology.recheck.beforeConnector':
+    'Before a connector starts, and again before it carries customer traffic.',
   'web.methodology.recheck.monthly': 'Every month for platform changelogs and vendor pricing.',
-  'web.methodology.recheck.quarterly': 'Every quarter for competitor plans, community rules and legal documents.',
+  'web.methodology.recheck.quarterly':
+    'Every quarter for competitor plans, community rules and legal documents.',
   'web.methodology.recheck.immediate':
     'Immediately after any platform rejection, enforcement notice, deprecation, or an unexplained change in publishing or analytics behaviour.',
   'web.methodology.comparison.title': 'Comparisons',
-  'web.methodology.comparison.bestFor': 'Every comparison states who each product is best for, including when that is not us.',
-  'web.methodology.comparison.dated': 'Every comparison carries the research date and links the primary pricing and capability sources.',
+  'web.methodology.comparison.bestFor':
+    'Every comparison states who each product is best for, including when that is not us.',
+  'web.methodology.comparison.dated':
+    'Every comparison carries the research date and links the primary pricing and capability sources.',
   'web.methodology.comparison.distinction':
     'A missing capability is labelled either as something we have not built or as something the platform does not allow. These are different sentences and we never merge them.',
   'web.methodology.comparison.noLogos':
@@ -550,9 +576,11 @@ export const webMarketingMessages = {
   'web.compare.lede':
     'These pages are useful even if you pick the other product. That is the standard they have to meet before they publish.',
   'web.compare.rules.title': 'The rules these pages follow',
-  'web.compare.rules.bestFor': 'Each page states who the other product is best for, in its own section, first.',
+  'web.compare.rules.bestFor':
+    'Each page states who the other product is best for, in its own section, first.',
   'web.compare.rules.dated': 'Each claim is dated and links the primary source it came from.',
-  'web.compare.rules.distinction': 'We separate what we have not built from what a platform does not allow.',
+  'web.compare.rules.distinction':
+    'We separate what we have not built from what a platform does not allow.',
   'web.compare.rules.axes':
     'Every page compares the same things: account allowance, posting limits, team and approval, API, MCP and CLI access, content languages, analytics, video handling, embedded use, self hosting, support, and the platform API cost you pay on top.',
   'web.compare.rules.correction': 'Every page carries a correction contact and a review date.',
@@ -572,16 +600,21 @@ export const webMarketingMessages = {
     'Relay does not generate images or video. It does help you decide which specialist tool to use and bring the finished asset in with its rights record intact.',
   'web.toolRadar.record.title': 'What every record has to carry',
   'web.toolRadar.record.url': 'The official URL and the organization that owns the product.',
-  'web.toolRadar.record.useCase': 'The workflow it is being recommended for, and its documented limitations.',
+  'web.toolRadar.record.useCase':
+    'The workflow it is being recommended for, and its documented limitations.',
   'web.toolRadar.record.pricing': 'Its pricing model and the date we checked it.',
-  'web.toolRadar.record.rights': 'Its rights, licensing, retention and privacy caveats, in the vendor own words.',
-  'web.toolRadar.record.disclosure': 'Whether we have any commercial relationship with it. Ranking never depends on that.',
-  'web.toolRadar.record.verified': 'A last verified date, and a visible warning once a record is past its review window.',
+  'web.toolRadar.record.rights':
+    'Its rights, licensing, retention and privacy caveats, in the vendor own words.',
+  'web.toolRadar.record.disclosure':
+    'Whether we have any commercial relationship with it. Ranking never depends on that.',
+  'web.toolRadar.record.verified':
+    'A last verified date, and a visible warning once a record is past its review window.',
   'web.toolRadar.category.title': 'Categories',
   'web.toolRadar.empty': 'The catalog is not populated yet',
   'web.toolRadar.emptyBody':
     'Records are written by a person from the vendor own documentation. We will not fill this page with model generated links that look plausible.',
-  'web.toolRadar.noAffiliateYet': 'There is no affiliate relationship with any tool listed here today.',
+  'web.toolRadar.noAffiliateYet':
+    'There is no affiliate relationship with any tool listed here today.',
 
   /* ---------------------------------------------------------------------- */
   /* Opportunities                                                           */
@@ -597,7 +630,8 @@ export const webMarketingMessages = {
     'Relay never submits a form, scrapes a contact, sends bulk email or posts to a community for you. You do the submission.',
   'web.opportunities.rules.noGuarantee':
     'A listing is not a ranking promise and a link is not a growth strategy. We show fit, audience, effort, cost and disclosure requirements so you can decide whether it is worth your afternoon.',
-  'web.opportunities.rules.stale': 'A record past its review date is labelled or hidden rather than shown as current.',
+  'web.opportunities.rules.stale':
+    'A record past its review date is labelled or hidden rather than shown as current.',
   'web.opportunities.category.title': 'Categories',
   'web.opportunities.empty': 'The catalog is not populated yet',
   'web.opportunities.emptyBody':
@@ -665,31 +699,48 @@ export const webMarketingMessages = {
   'web.legal.privacy.summary':
     'What Relay collects, why, who processes it, how long it is kept, and how to get it out or have it deleted.',
   'web.legal.privacy.collect.title': 'What we hold',
-  'web.legal.privacy.collect.account': 'Account and profile: your name, email, workspace membership and role.',
+  'web.legal.privacy.collect.account':
+    'Account and profile: your name, email, workspace membership and role.',
   'web.legal.privacy.collect.connections':
     'Social connections: the platform account identifier, its display name, its type, the granted scopes and an encrypted access token. Tokens are stored with envelope encryption and are never written to a log.',
-  'web.legal.privacy.collect.content': 'Content and media you create, upload or import, including the rights and provenance you record with it.',
-  'web.legal.privacy.collect.schedules': 'Schedules, approval decisions, publication receipts and audit events.',
-  'web.legal.privacy.collect.analytics': 'Metrics retrieved from platforms about posts you published through Relay.',
-  'web.legal.privacy.collect.billing': 'Billing references held by Polar. Relay does not store your card details.',
-  'web.legal.privacy.collect.technical': 'Device and log data needed to operate and secure the service, redacted by default.',
-  'web.legal.privacy.collect.agent': 'Agent and API activity: which credential took which action, with an input hash rather than the input.',
+  'web.legal.privacy.collect.content':
+    'Content and media you create, upload or import, including the rights and provenance you record with it.',
+  'web.legal.privacy.collect.schedules':
+    'Schedules, approval decisions, publication receipts and audit events.',
+  'web.legal.privacy.collect.analytics':
+    'Metrics retrieved from platforms about posts you published through Relay.',
+  'web.legal.privacy.collect.billing':
+    'Billing references held by Polar. Relay does not store your card details.',
+  'web.legal.privacy.collect.technical':
+    'Device and log data needed to operate and secure the service, redacted by default.',
+  'web.legal.privacy.collect.agent':
+    'Agent and API activity: which credential took which action, with an input hash rather than the input.',
   'web.legal.privacy.minimization.title': 'What we deliberately do not do',
-  'web.legal.privacy.minimization.scopes': 'We request only the platform scopes the features you have enabled actually need.',
-  'web.legal.privacy.minimization.history': 'We do not ingest your entire social history in order to draw a chart.',
-  'web.legal.privacy.minimization.logs': 'Post content is redacted from general logs and from support tooling.',
-  'web.legal.privacy.minimization.training': 'Your content is not used to train our models or anyone models by default.',
+  'web.legal.privacy.minimization.scopes':
+    'We request only the platform scopes the features you have enabled actually need.',
+  'web.legal.privacy.minimization.history':
+    'We do not ingest your entire social history in order to draw a chart.',
+  'web.legal.privacy.minimization.logs':
+    'Post content is redacted from general logs and from support tooling.',
+  'web.legal.privacy.minimization.training':
+    'Your content is not used to train our models or anyone models by default.',
   'web.legal.privacy.subprocessors.title': 'Who else processes it',
   'web.legal.privacy.subprocessors.body':
     'The current subprocessor list is published separately and changes are announced there before they take effect.',
   'web.legal.privacy.retention.title': 'How long we keep it',
   'web.legal.privacy.rights.title': 'Your controls',
-  'web.legal.privacy.rights.export': 'Download your content, receipts and analytics as JSON and CSV with a media archive.',
-  'web.legal.privacy.rights.revoke': 'Disconnect one social account without deleting the workspace. Tokens are revoked at the platform and deleted here.',
-  'web.legal.privacy.rights.delete': 'Delete a brand, a piece of content, a media file or the entire account.',
-  'web.legal.privacy.rights.cancelJobs': 'Cancel scheduled jobs before deleting anything, so nothing publishes after you leave.',
-  'web.legal.privacy.rights.sessions': 'See and revoke active sessions, API keys, agent credentials, webhooks and platform permissions.',
-  'web.legal.privacy.rights.consent': 'Consent preferences are versioned and auditable, so you can see what you agreed to and when.',
+  'web.legal.privacy.rights.export':
+    'Download your content, receipts and analytics as JSON and CSV with a media archive.',
+  'web.legal.privacy.rights.revoke':
+    'Disconnect one social account without deleting the workspace. Tokens are revoked at the platform and deleted here.',
+  'web.legal.privacy.rights.delete':
+    'Delete a brand, a piece of content, a media file or the entire account.',
+  'web.legal.privacy.rights.cancelJobs':
+    'Cancel scheduled jobs before deleting anything, so nothing publishes after you leave.',
+  'web.legal.privacy.rights.sessions':
+    'See and revoke active sessions, API keys, agent credentials, webhooks and platform permissions.',
+  'web.legal.privacy.rights.consent':
+    'Consent preferences are versioned and auditable, so you can see what you agreed to and when.',
   'web.legal.privacy.deletion.title': 'Deleting data held at a platform',
   'web.legal.privacy.deletion.body':
     'Disconnecting an account in Relay revokes the token at the platform and deletes the credential here. Content already published on a platform is governed by that platform and has to be deleted there. Where a platform requires deletion of derived data within a fixed period after revocation, we meet that period. For Google and YouTube data that period is currently 30 days.',
@@ -722,7 +773,8 @@ export const webMarketingMessages = {
     'Bypassing official APIs, rate limits, audits, account controls or platform enforcement using browser automation, cookie replay or scraping.',
   'web.legal.aup.prohibited.restrictedStores':
     'Automated submission to app stores, the Chrome Web Store or other restricted submission systems through unauthorized interfaces.',
-  'web.legal.aup.prohibited.banEvasion': 'Evading an account ban or running coordinated account farms.',
+  'web.legal.aup.prohibited.banEvasion':
+    'Evading an account ban or running coordinated account farms.',
   'web.legal.aup.prohibited.training':
     'Training or evaluating models on third party or other customers content without authorization.',
   'web.legal.aup.controls.title': 'The controls that enforce this',
@@ -732,7 +784,8 @@ export const webMarketingMessages = {
     'Account level and workspace level cadence budgets, plus mention, hashtag, URL and domain volume checks.',
   'web.legal.aup.controls.escalation':
     'New account, new domain and bulk action escalation, and a maximum number of repetitions for any repeating campaign.',
-  'web.legal.aup.controls.linkSafety': 'Destination scanning on short links, with emergency disable and an abuse report channel.',
+  'web.legal.aup.controls.linkSafety':
+    'Destination scanning on short links, with emergency disable and an abuse report channel.',
   'web.legal.aup.controls.workspaceCaps':
     'A workspace owner can set stricter limits than the plan allows. Risk controls cannot be loosened by paying more.',
   'web.legal.aup.enforcement.title': 'Enforcement and appeal',
@@ -747,15 +800,18 @@ export const webMarketingMessages = {
   'web.legal.ai.summary':
     'Which features use a model, what is sent, what is kept, what you stay responsible for, and why Relay does not generate media.',
   'web.legal.ai.features.title': 'Where a model is used',
-  'web.legal.ai.features.text': 'Text assistance in the composer: rewriting, shortening and adapting for a platform.',
-  'web.legal.ai.features.translation': 'Translation and transcreation into your content languages, against your brand glossary.',
+  'web.legal.ai.features.text':
+    'Text assistance in the composer: rewriting, shortening and adapting for a platform.',
+  'web.legal.ai.features.translation':
+    'Translation and transcreation into your content languages, against your brand glossary.',
   'web.legal.ai.features.feedback': 'Content feedback and the four week growth plan.',
   'web.legal.ai.features.provider':
     'These features call DeepSeek. The model identifiers currently in use are published in the documentation and any change is listed on the changelog.',
   'web.legal.ai.data.title': 'What is sent, and what happens to it',
   'web.legal.ai.data.sent':
     'Only the text you asked us to work on, the instruction, and the brand context you chose to attach. Credentials, tokens and other customers content are never in a model context.',
-  'web.legal.ai.data.training': 'Your content is not used to train our models. We configure providers so it is not used to train theirs.',
+  'web.legal.ai.data.training':
+    'Your content is not used to train our models. We configure providers so it is not used to train theirs.',
   'web.legal.ai.data.optOut':
     'Optional AI features can be turned off per workspace. Publishing, scheduling, approvals and analytics do not depend on them.',
   'web.legal.ai.responsibility.title': 'What stays yours',
@@ -767,7 +823,8 @@ export const webMarketingMessages = {
   'web.legal.ai.blocks.title': 'What the AI features refuse',
   'web.legal.ai.blocks.impersonation': 'Impersonating a real person or a public figure.',
   'web.legal.ai.blocks.ncii': 'Non consensual intimate imagery, in any form.',
-  'web.legal.ai.blocks.fabrication': 'Fabricated testimonials, invented customers and invented performance figures.',
+  'web.legal.ai.blocks.fabrication':
+    'Fabricated testimonials, invented customers and invented performance figures.',
   'web.legal.ai.blocks.unverified':
     'Presenting a model generated URL as a verified opportunity. Opportunity and tool recommendations come only from the curated catalog.',
   'web.legal.ai.noMedia.title': 'Why there is no image or video generation',
@@ -839,10 +896,13 @@ export const webMarketingMessages = {
   'web.legal.dmca.scope.body':
     'Relay can remove material stored in our systems, such as a media file or a draft. Content already published on a social platform lives on that platform and has to be reported to it, because we cannot delete a post we do not host. We will tell you which of the two applies to your report.',
   'web.legal.dmca.notice.title': 'Sending a notice',
-  'web.legal.dmca.notice.identify': 'Identify the copyrighted work and the material you say infringes it, with a URL we can reach.',
+  'web.legal.dmca.notice.identify':
+    'Identify the copyrighted work and the material you say infringes it, with a URL we can reach.',
   'web.legal.dmca.notice.contact': 'Give your name, address, telephone number and email.',
-  'web.legal.dmca.notice.goodFaith': 'State that you believe in good faith that the use is not authorized by the rights holder, its agent or the law.',
-  'web.legal.dmca.notice.accuracy': 'State that the information is accurate and, under penalty of perjury, that you are authorized to act for the rights holder.',
+  'web.legal.dmca.notice.goodFaith':
+    'State that you believe in good faith that the use is not authorized by the rights holder, its agent or the law.',
+  'web.legal.dmca.notice.accuracy':
+    'State that the information is accurate and, under penalty of perjury, that you are authorized to act for the rights holder.',
   'web.legal.dmca.notice.signature': 'Sign it, physically or electronically.',
   'web.legal.dmca.counter.title': 'Counter notice',
   'web.legal.dmca.counter.body':
@@ -865,12 +925,18 @@ export const webMarketingMessages = {
   'web.legal.security.publishing.body':
     'Every external write carries an idempotency key and produces an immutable receipt. Duplicate publication is treated as a defect with a target of zero, and the test suite includes worker crashes after platform acceptance, platform timeouts, duplicated webhooks, revoked tokens at dispatch and daylight saving transitions.',
   'web.legal.security.program.title': 'The programme',
-  'web.legal.security.program.threatModel': 'A written threat model covering OAuth, tenancy, publishing, MCP, media, billing and analytics.',
-  'web.legal.security.program.pentest': 'An independent security review focused on token leakage and cross tenant access before paid launch.',
-  'web.legal.security.program.access': 'Least privilege production access, multi factor authentication, and a device and session inventory.',
-  'web.legal.security.program.supplyChain': 'Dependency and container scanning with patch service levels, and signed build provenance where practical.',
-  'web.legal.security.program.logging': 'Centralized logging that redacts by default, with anomaly alerting.',
-  'web.legal.security.program.backups': 'Encrypted backups with tested restoration and a documented rotation.',
+  'web.legal.security.program.threatModel':
+    'A written threat model covering OAuth, tenancy, publishing, MCP, media, billing and analytics.',
+  'web.legal.security.program.pentest':
+    'An independent security review focused on token leakage and cross tenant access before paid launch.',
+  'web.legal.security.program.access':
+    'Least privilege production access, multi factor authentication, and a device and session inventory.',
+  'web.legal.security.program.supplyChain':
+    'Dependency and container scanning with patch service levels, and signed build provenance where practical.',
+  'web.legal.security.program.logging':
+    'Centralized logging that redacts by default, with anomaly alerting.',
+  'web.legal.security.program.backups':
+    'Encrypted backups with tested restoration and a documented rotation.',
   'web.legal.security.disclosure.title': 'Reporting a vulnerability',
   'web.legal.security.disclosure.body':
     'Email us with enough detail to reproduce the issue. We acknowledge within two business days, keep you updated, and credit you when you want the credit. Please do not access another customer data, degrade the service, or run automated scanning against production. Test against your own workspace.',
@@ -888,13 +954,20 @@ export const webMarketingMessages = {
   'web.legal.accessibility.standard.body':
     'Relay targets WCAG 2.2 level AA across the product and this site. Accessibility is a merge requirement here, not a later ticket, and a screen that fails it does not ship.',
   'web.legal.accessibility.measures.title': 'What that means in practice',
-  'web.legal.accessibility.measures.keyboard': 'Everything is operable from the keyboard, with a visible focus ring and a logical focus order. There is no drag only interaction anywhere.',
-  'web.legal.accessibility.measures.contrast': 'Every colour pair in the design system is asserted at 4.5 to 1 for body text and 3 to 1 for large text and control edges, in both the light and the dark theme, by an automated test.',
-  'web.legal.accessibility.measures.colour': 'Status, capability and freshness always carry an icon and a word as well as a colour.',
-  'web.legal.accessibility.measures.announcements': 'Save state, validation changes, upload progress, schedule confirmation and publish results are announced to screen readers.',
-  'web.legal.accessibility.measures.zoom': 'Layouts work at 320 pixels wide and at 200 percent zoom without horizontal page scrolling. Wide tables scroll inside their own container.',
-  'web.legal.accessibility.measures.motion': 'A reduced motion preference removes every non essential transition.',
-  'web.legal.accessibility.measures.targets': 'Touch targets are at least 44 pixels on a coarse pointer.',
+  'web.legal.accessibility.measures.keyboard':
+    'Everything is operable from the keyboard, with a visible focus ring and a logical focus order. There is no drag only interaction anywhere.',
+  'web.legal.accessibility.measures.contrast':
+    'Every colour pair in the design system is asserted at 4.5 to 1 for body text and 3 to 1 for large text and control edges, in both the light and the dark theme, by an automated test.',
+  'web.legal.accessibility.measures.colour':
+    'Status, capability and freshness always carry an icon and a word as well as a colour.',
+  'web.legal.accessibility.measures.announcements':
+    'Save state, validation changes, upload progress, schedule confirmation and publish results are announced to screen readers.',
+  'web.legal.accessibility.measures.zoom':
+    'Layouts work at 320 pixels wide and at 200 percent zoom without horizontal page scrolling. Wide tables scroll inside their own container.',
+  'web.legal.accessibility.measures.motion':
+    'A reduced motion preference removes every non essential transition.',
+  'web.legal.accessibility.measures.targets':
+    'Touch targets are at least 44 pixels on a coarse pointer.',
   'web.legal.accessibility.known.title': 'Known gaps',
   'web.legal.accessibility.known.body':
     'We will list specific known issues here with a fix date as they are found, rather than claiming full conformance. An independent audit is planned before general availability and its findings will be published here.',
@@ -939,11 +1012,16 @@ export const webMarketingMessages = {
   'web.legal.affiliate.honesty.body':
     'A sponsored tutorial contract never requires a positive conclusion. You may publish criticism and still be paid. We do not buy reviews, votes, ratings or installs, and we do not offer an incentive conditional on a positive review.',
   'web.legal.affiliate.prohibited.title': 'Grounds for closing an affiliate account',
-  'web.legal.affiliate.prohibited.brandBidding': 'Bidding on our brand terms in paid search, or running ads that imply you are us.',
-  'web.legal.affiliate.prohibited.spam': 'Unsolicited email, mass community posting, or link dropping in threads that did not ask.',
-  'web.legal.affiliate.prohibited.cookieStuffing': 'Cookie stuffing, forced clicks, self referral and coupon squatting.',
-  'web.legal.affiliate.prohibited.claims': 'Inventing customer results, fabricating a testimonial, or claiming Relay does something it does not, including anything about AI media generation.',
-  'web.legal.affiliate.prohibited.trademark': 'Registering a domain, handle or app listing that uses our name in a way that suggests you are the company.',
+  'web.legal.affiliate.prohibited.brandBidding':
+    'Bidding on our brand terms in paid search, or running ads that imply you are us.',
+  'web.legal.affiliate.prohibited.spam':
+    'Unsolicited email, mass community posting, or link dropping in threads that did not ask.',
+  'web.legal.affiliate.prohibited.cookieStuffing':
+    'Cookie stuffing, forced clicks, self referral and coupon squatting.',
+  'web.legal.affiliate.prohibited.claims':
+    'Inventing customer results, fabricating a testimonial, or claiming Relay does something it does not, including anything about AI media generation.',
+  'web.legal.affiliate.prohibited.trademark':
+    'Registering a domain, handle or app listing that uses our name in a way that suggests you are the company.',
 
   /* ---------------------------------------------------------------------- */
   /* Platform names and per platform facts                                   */
@@ -964,32 +1042,41 @@ export const webMarketingMessages = {
   'web.marketing.provider.x.cost':
     'X charges for each API operation and charges more for a post containing a URL. Relay estimates the cost before you confirm and passes it through without a markup.',
 
-  'web.marketing.provider.linkedin.accountTypes': 'A member profile, or an organization Page where you hold the right role.',
+  'web.marketing.provider.linkedin.accountTypes':
+    'A member profile, or an organization Page where you hold the right role.',
   'web.marketing.provider.linkedin.restriction':
     'Publishing on behalf of an organization needs an approved Community Management product and a verified business identity. Member post analytics depend on a read permission LinkedIn has closed to new applications, so Relay will not offer it.',
-  'web.marketing.provider.linkedin.cost': 'No per operation charge. Application and member daily limits apply.',
+  'web.marketing.provider.linkedin.cost':
+    'No per operation charge. Application and member daily limits apply.',
 
-  'web.marketing.provider.instagram.accountTypes': 'A professional Instagram account, business or creator.',
+  'web.marketing.provider.instagram.accountTypes':
+    'A professional Instagram account, business or creator.',
   'web.marketing.provider.instagram.restriction':
     'Instagram content publishing is available for professional accounts only. A consumer account cannot be published to by any application, including this one. Publishing uses the official container and publish sequence, and Relay confirms the final state rather than reporting the upload as success.',
-  'web.marketing.provider.instagram.cost': 'No per operation charge. Meta app review and business verification are required.',
+  'web.marketing.provider.instagram.cost':
+    'No per operation charge. Meta app review and business verification are required.',
 
   'web.marketing.provider.facebook.accountTypes': 'A Facebook Page you administer.',
   'web.marketing.provider.facebook.restriction':
     'The publishing target is a Page. Automating a personal profile is not offered by the API and Relay does not attempt it.',
-  'web.marketing.provider.facebook.cost': 'No per operation charge. Meta app review and business verification are required.',
+  'web.marketing.provider.facebook.cost':
+    'No per operation charge. Meta app review and business verification are required.',
 
-  'web.marketing.provider.youtube.accountTypes': 'A YouTube channel connected through your Google account.',
+  'web.marketing.provider.youtube.accountTypes':
+    'A YouTube channel connected through your Google account.',
   'web.marketing.provider.youtube.restriction':
     'A project that has not passed the Google API compliance audit can upload only as private. Relay will not describe public uploading as available until that audit passes, and the connection screen states which state your uploads will land in.',
-  'web.marketing.provider.youtube.cost': 'No per operation charge. A daily quota applies and cannot be shared across projects.',
+  'web.marketing.provider.youtube.cost':
+    'No per operation charge. A daily quota applies and cannot be shared across projects.',
 
   'web.marketing.provider.tiktok.accountTypes': 'A TikTok account with Direct Post authorization.',
   'web.marketing.provider.tiktok.restriction':
     'Until the Content Posting API audit passes, posts are private and per account caps apply. At publish time Relay fetches the current creator information, shows the available privacy options without preselecting one, and asks for the comment, duet and stitch settings and the commercial content declaration.',
-  'web.marketing.provider.tiktok.cost': 'No per operation charge. Unaudited mode applies daily posting caps.',
+  'web.marketing.provider.tiktok.cost':
+    'No per operation charge. Unaudited mode applies daily posting caps.',
 
-  'web.marketing.provider.threads.accountTypes': 'A Threads profile linked to a professional Instagram account.',
+  'web.marketing.provider.threads.accountTypes':
+    'A Threads profile linked to a professional Instagram account.',
   'web.marketing.provider.threads.restriction':
     'Publishing follows the Meta container and publish sequence. Capabilities are being verified against the official collection before anything here is called supported.',
   'web.marketing.provider.threads.cost': 'No per operation charge.',
@@ -1016,24 +1103,36 @@ export const webMarketingMessages = {
     'Relay is in build. This table reflects the connector definitions as they stand today, which is why most cells read as not built yet. A cell only becomes supported after that connector passes its definition of done, including contract tests against the recorded platform fixtures. The cells that say a platform does not offer something, or gates it behind a review, are facts about the platform and are already final.',
   'web.capabilities.note.instagramProfessional':
     'Professional accounts only. A consumer account cannot be published to by any application.',
-  'web.capabilities.note.facebookPagesOnly': 'Pages only. The API does not publish to a personal profile.',
-  'web.capabilities.note.youtubeAudit': 'Until the Google API compliance audit passes, uploads land as private.',
-  'web.capabilities.note.tiktokAudit': 'Until the Content Posting API audit passes, posts are private and capped.',
-  'web.capabilities.note.tiktokPrivacy': 'The privacy option is fetched at publish time and must be chosen by a person.',
+  'web.capabilities.note.facebookPagesOnly':
+    'Pages only. The API does not publish to a personal profile.',
+  'web.capabilities.note.youtubeAudit':
+    'Until the Google API compliance audit passes, uploads land as private.',
+  'web.capabilities.note.tiktokAudit':
+    'Until the Content Posting API audit passes, posts are private and capped.',
+  'web.capabilities.note.tiktokPrivacy':
+    'The privacy option is fetched at publish time and must be chosen by a person.',
   'web.capabilities.note.linkedinMemberAnalytics':
     'Member post analytics need a read permission LinkedIn has closed to new applications.',
-  'web.capabilities.note.linkedinOrgAccess': 'Requires an approved Community Management product and a verified business.',
-  'web.capabilities.note.linkedinDocuments': 'LinkedIn is the only connected platform with a document post type.',
+  'web.capabilities.note.linkedinOrgAccess':
+    'Requires an approved Community Management product and a verified business.',
+  'web.capabilities.note.linkedinDocuments':
+    'LinkedIn is the only connected platform with a document post type.',
   'web.capabilities.note.metaReview': 'Requires Meta app review and business verification.',
-  'web.capabilities.note.xConsent': 'Requires recorded consent from the account holder for automated posting.',
-  'web.capabilities.note.xDisclosure': 'The platform provides a made with AI field, which Relay sets from your declaration.',
-  'web.capabilities.note.noDestinations': 'This platform has no destination concept such as a Page, board or community.',
+  'web.capabilities.note.xConsent':
+    'Requires recorded consent from the account holder for automated posting.',
+  'web.capabilities.note.xDisclosure':
+    'The platform provides a made with AI field, which Relay sets from your declaration.',
+  'web.capabilities.note.noDestinations':
+    'This platform has no destination concept such as a Page, board or community.',
   'web.capabilities.note.noThreads': 'This platform has no native multi post sequence.',
   'web.capabilities.note.noDocuments': 'This platform has no document post type.',
   'web.capabilities.note.videoOnly': 'This platform accepts video uploads only.',
-  'web.capabilities.note.noAltText': 'This platform does not accept alt text through its publishing API.',
-  'web.capabilities.note.noPrivacyChoice': 'This platform does not offer a per post privacy option through its API.',
-  'web.capabilities.note.noThumbnail': 'This platform does not accept a custom thumbnail through its API.',
+  'web.capabilities.note.noAltText':
+    'This platform does not accept alt text through its publishing API.',
+  'web.capabilities.note.noPrivacyChoice':
+    'This platform does not offer a per post privacy option through its API.',
+  'web.capabilities.note.noThumbnail':
+    'This platform does not accept a custom thumbnail through its API.',
   'web.capabilities.note.inBuild': 'The platform offers this. Relay has not shipped it yet.',
 
   /* ---------------------------------------------------------------------- */
@@ -1099,26 +1198,38 @@ export const webMarketingMessages = {
   /* ---------------------------------------------------------------------- */
 
   'web.legal.subprocessors.supabase.label': 'Supabase',
-  'web.legal.subprocessors.supabase.purpose': 'Managed PostgreSQL, authentication and object storage.',
-  'web.legal.subprocessors.supabase.data': 'Account records, content, media, schedules, receipts and audit events.',
+  'web.legal.subprocessors.supabase.purpose':
+    'Managed PostgreSQL, authentication and object storage.',
+  'web.legal.subprocessors.supabase.data':
+    'Account records, content, media, schedules, receipts and audit events.',
   'web.legal.subprocessors.temporal.label': 'Temporal Cloud',
-  'web.legal.subprocessors.temporal.purpose': 'Durable execution of publishing, retry and scheduling workflows.',
-  'web.legal.subprocessors.temporal.data': 'Workflow inputs limited to identifiers and minimized payloads.',
+  'web.legal.subprocessors.temporal.purpose':
+    'Durable execution of publishing, retry and scheduling workflows.',
+  'web.legal.subprocessors.temporal.data':
+    'Workflow inputs limited to identifiers and minimized payloads.',
   'web.legal.subprocessors.polar.label': 'Polar',
-  'web.legal.subprocessors.polar.purpose': 'Merchant of record: checkout, subscriptions, taxes, invoices and refunds.',
-  'web.legal.subprocessors.polar.data': 'Name, email, billing address, payment method held by Polar, and subscription state.',
+  'web.legal.subprocessors.polar.purpose':
+    'Merchant of record: checkout, subscriptions, taxes, invoices and refunds.',
+  'web.legal.subprocessors.polar.data':
+    'Name, email, billing address, payment method held by Polar, and subscription state.',
   'web.legal.subprocessors.deepseek.label': 'DeepSeek',
-  'web.legal.subprocessors.deepseek.purpose': 'Text assistance, translation and transcreation, and planning suggestions.',
-  'web.legal.subprocessors.deepseek.data': 'Only the text you submit to an AI feature and the brand context you attached to it.',
+  'web.legal.subprocessors.deepseek.purpose':
+    'Text assistance, translation and transcreation, and planning suggestions.',
+  'web.legal.subprocessors.deepseek.data':
+    'Only the text you submit to an AI feature and the brand context you attached to it.',
   'web.legal.subprocessors.hosting.label': 'Application hosting and content delivery',
-  'web.legal.subprocessors.hosting.purpose': 'Serving the web app, the API and the short link service.',
+  'web.legal.subprocessors.hosting.purpose':
+    'Serving the web app, the API and the short link service.',
   'web.legal.subprocessors.hosting.data': 'Request metadata and redacted logs.',
   'web.legal.subprocessors.email.label': 'Transactional email delivery',
-  'web.legal.subprocessors.email.purpose': 'Sign in links, approval requests, publish result notifications and trial reminders.',
+  'web.legal.subprocessors.email.purpose':
+    'Sign in links, approval requests, publish result notifications and trial reminders.',
   'web.legal.subprocessors.email.data': 'Name, email address and the message content.',
   'web.legal.subprocessors.monitoring.label': 'Error and performance monitoring',
-  'web.legal.subprocessors.monitoring.purpose': 'Diagnosing failures in publishing and in the interface.',
-  'web.legal.subprocessors.monitoring.data': 'Redacted stack traces, request identifiers and workspace identifiers. Post content is stripped.',
+  'web.legal.subprocessors.monitoring.purpose':
+    'Diagnosing failures in publishing and in the interface.',
+  'web.legal.subprocessors.monitoring.data':
+    'Redacted stack traces, request identifiers and workspace identifiers. Post content is stripped.',
   'web.legal.subprocessors.region.pending': 'Region being confirmed',
   'web.legal.subprocessors.vendorPending': 'Vendor being selected',
 
@@ -1130,17 +1241,23 @@ export const webMarketingMessages = {
   'web.legal.retention.oauthState.label': 'OAuth transaction state',
   'web.legal.retention.oauthState.period': 'Minutes, then deleted.',
   'web.legal.retention.drafts.label': 'Drafts and media',
-  'web.legal.retention.drafts.period': 'While the account is active, or your own retention setting, with a trash grace period.',
+  'web.legal.retention.drafts.period':
+    'While the account is active, or your own retention setting, with a trash grace period.',
   'web.legal.retention.receipts.label': 'Publication receipts and audit events',
-  'web.legal.retention.receipts.period': 'Kept for the plan and legal retention period, minimized, and exportable at any time.',
+  'web.legal.retention.receipts.period':
+    'Kept for the plan and legal retention period, minimized, and exportable at any time.',
   'web.legal.retention.rawProvider.label': 'Raw platform responses',
-  'web.legal.retention.rawProvider.period': 'The shortest period needed for debugging and compliance, then minimized or deleted.',
+  'web.legal.retention.rawProvider.period':
+    'The shortest period needed for debugging and compliance, then minimized or deleted.',
   'web.legal.retention.metrics.label': 'Analytics observations',
-  'web.legal.retention.metrics.period': 'The plan retention period, within what the platform terms allow.',
+  'web.legal.retention.metrics.period':
+    'The plan retention period, within what the platform terms allow.',
   'web.legal.retention.securityLogs.label': 'Security logs',
-  'web.legal.retention.securityLogs.period': 'A fixed window between 30 and 180 days depending on the risk of the event.',
+  'web.legal.retention.securityLogs.period':
+    'A fixed window between 30 and 180 days depending on the risk of the event.',
   'web.legal.retention.billing.label': 'Billing records',
-  'web.legal.retention.billing.period': 'The statutory accounting retention period, held by Polar and by us.',
+  'web.legal.retention.billing.period':
+    'The statutory accounting retention period, held by Polar and by us.',
   'web.legal.retention.deletedAccount.label': 'A deleted account',
   'web.legal.retention.deletedAccount.period':
     'Credentials revoked and scheduled work cancelled immediately. Full deletion completes within the published window, apart from lawful billing records.',

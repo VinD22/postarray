@@ -118,7 +118,9 @@ describe('Instagram account discovery', () => {
       ],
     });
     const connector = createInstagramConnector(deps);
-    const accounts = await connector.discoverAccounts(testGrant({ provider: 'instagram', scopes: SCOPES }));
+    const accounts = await connector.discoverAccounts(
+      testGrant({ provider: 'instagram', scopes: SCOPES }),
+    );
     expect(accounts[0]?.eligible).toBe(false);
     expect(accounts[0]?.ineligibleReasonKey).toBe(
       'connectors.instagram.professional_account_required',
@@ -133,7 +135,9 @@ describe('Instagram account discovery', () => {
       ],
     });
     const connector = createInstagramConnector(deps);
-    const accounts = await connector.discoverAccounts(testGrant({ provider: 'instagram', scopes: SCOPES }));
+    const accounts = await connector.discoverAccounts(
+      testGrant({ provider: 'instagram', scopes: SCOPES }),
+    );
     expect(accounts).toHaveLength(1);
     expect(accounts[0]?.eligible).toBe(true);
     expect(accounts[0]?.parentExternalId).toBe('61550000000001');
@@ -185,13 +189,14 @@ describe('Instagram publish', () => {
     });
     const connector = createInstagramConnector(deps);
     const result = await connector.publish(
-      request({ draft: imageDraft, preparedMedia: [preparedWithContainer('17990000000000001')] }) as never,
+      request({
+        draft: imageDraft,
+        preparedMedia: [preparedWithContainer('17990000000000001')],
+      }) as never,
     );
     expect(expectPublished(result).externalPostId).toBe('17880000000000001');
     expect(
-      simulator.calls.filter(
-        (call) => call.method === 'POST' && call.url.endsWith('/media'),
-      ),
+      simulator.calls.filter((call) => call.method === 'POST' && call.url.endsWith('/media')),
     ).toHaveLength(0);
   });
 
@@ -232,12 +237,13 @@ describe('Instagram validation', () => {
         capabilities,
         contentKind: 'image',
         media: [testMedia({ kind: 'image' })],
-        connection: { ...connection, metadata: { ...connection.metadata, providerOptions: { surface: 'STORIES' } } },
+        connection: {
+          ...connection,
+          metadata: { ...connection.metadata, providerOptions: { surface: 'STORIES' } },
+        },
       }),
     );
-    const issue = result.issues.find(
-      (entry) => entry.code === 'INSTAGRAM_STORIES_REQUIRES_REVIEW',
-    );
+    const issue = result.issues.find((entry) => entry.code === 'INSTAGRAM_STORIES_REQUIRES_REVIEW');
     expect(issue?.remediationKey).toBe('awaiting_provider_approval');
   });
 
@@ -249,7 +255,10 @@ describe('Instagram validation', () => {
         capabilities,
         contentKind: 'short_video',
         media: [testMedia({ kind: 'video', width: 1080, height: 1350, durationSeconds: 30 })],
-        connection: { ...connection, metadata: { ...connection.metadata, providerOptions: { surface: 'REELS' } } },
+        connection: {
+          ...connection,
+          metadata: { ...connection.metadata, providerOptions: { surface: 'REELS' } },
+        },
       }),
     );
     expect(result.issues.some((issue) => issue.code === 'REELS_ASPECT_RATIO_INVALID')).toBe(true);
@@ -276,7 +285,9 @@ describe('Instagram metrics', () => {
       routes: [{ method: 'GET', match: '/insights', body: INSTAGRAM_MEDIA_INSIGHTS_FIXTURE }],
     });
     const connector = createInstagramConnector(deps);
-    const observations = await connector.fetchMetrics(testMetricsRequest({ connection, scope: 'post', externalPostId: '17880000000000001' }));
+    const observations = await connector.fetchMetrics(
+      testMetricsRequest({ connection, scope: 'post', externalPostId: '17880000000000001' }),
+    );
     const shares = observations.find((entry) => entry.normalizedName === 'shares');
     expect(shares?.value).toBeNull();
     expect(shares?.availability).toBe('unavailable_provider');
@@ -309,7 +320,9 @@ describe('Instagram metrics', () => {
       routes: [{ method: 'GET', match: '/insights', body: INSTAGRAM_ACCOUNT_INSIGHTS_FIXTURE }],
     });
     const connector = createInstagramConnector(deps);
-    const observations = await connector.fetchMetrics(testMetricsRequest({ connection, scope: 'account' }));
+    const observations = await connector.fetchMetrics(
+      testMetricsRequest({ connection, scope: 'account' }),
+    );
     const reach = observations.find((entry) => entry.normalizedName === 'reach');
     expect(reach?.value).toBe(4310);
     const followerDelta = observations.find((entry) => entry.normalizedName === 'follower_delta');

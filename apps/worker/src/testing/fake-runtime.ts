@@ -192,8 +192,7 @@ export function applySignal(inbox: SignalInbox, name: string, payload?: unknown)
       const requestedAt: unknown = Reflect.get(source, 'requestedAt');
       inbox.onCancel({
         reason: typeof reason === 'string' ? reason : 'user_requested',
-        requestedAt:
-          typeof requestedAt === 'string' ? requestedAt : toIsoInstant(0),
+        requestedAt: typeof requestedAt === 'string' ? requestedAt : toIsoInstant(0),
       });
       return;
     }

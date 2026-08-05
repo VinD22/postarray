@@ -23,7 +23,6 @@ import {
   type ProviderDraft,
   type ProviderIdentity,
   type ProviderMedia,
-  type PublishItemResult,
   type PublishRequest,
   type PublishResult,
   type PublishStatus,
@@ -37,7 +36,11 @@ import { validateDraftShape } from '../../shared/validate.js';
 import { SOURCE_VERIFIED_ON } from '../../shared/verification.js';
 import { createMetaClient, metaContainerSchema, metaPublishSchema } from '../graph.js';
 import { metaAuthorization, refreshMetaCredential } from '../oauth.js';
-import { THREADS_CAROUSEL_MAX, THREADS_CAROUSEL_MIN, buildThreadsCapabilities } from './capabilities.js';
+import {
+  THREADS_CAROUSEL_MAX,
+  THREADS_CAROUSEL_MIN,
+  buildThreadsCapabilities,
+} from './capabilities.js';
 import { accessTokenOf, errorSummary, providerOptionsOf } from '../../shared/access.js';
 import { NOT_IMPLEMENTED_FEATURES } from '../../../contract.js';
 import type { FailedItem, PublishedItem } from '../../../contract.js';
@@ -92,7 +95,7 @@ function readInsights(payload: ThreadsInsights): Record<string, unknown> {
 
 export function createThreadsConnector(deps: ConnectorDeps): SocialConnector {
   const client = createMetaClient(deps, PROVIDER);
-  const { vault, clock } = deps;
+  const { clock } = deps;
 
   async function token(connection: ProviderConnection): Promise<string> {
     return accessTokenOf(connection);
@@ -109,21 +112,14 @@ export function createThreadsConnector(deps: ConnectorDeps): SocialConnector {
     readonly errorMessage: string | null;
   }
 
-  async function containerState(
-    accessToken: string,
-    containerId: string,
-  ): Promise<ContainerState> {
+  async function containerState(accessToken: string, containerId: string): Promise<ContainerState> {
     const response = await client.get({
       path: `/${containerId}`,
       accessToken,
       query: { fields: 'id,status,error_message' },
       operation: 'threads.container_status',
     });
-    const parsed = client.parse(
-      threadsContainerStatusSchema,
-      response,
-      'threads.container_status',
-    );
+    const parsed = client.parse(threadsContainerStatusSchema, response, 'threads.container_status');
     const status = parsed.status ?? 'IN_PROGRESS';
     return {
       ready: READY_STATUSES.has(status),
@@ -280,7 +276,11 @@ export function createThreadsConnector(deps: ConnectorDeps): SocialConnector {
               field: 'media',
               targetId,
               remediationKey: REMEDIATION.mediaInvalid,
-              params: { provider: PROVIDER, count: draft.media.length, minimum: THREADS_CAROUSEL_MIN },
+              params: {
+                provider: PROVIDER,
+                count: draft.media.length,
+                minimum: THREADS_CAROUSEL_MIN,
+              },
             }),
           );
         }
@@ -292,7 +292,11 @@ export function createThreadsConnector(deps: ConnectorDeps): SocialConnector {
               field: 'media',
               targetId,
               remediationKey: REMEDIATION.mediaInvalid,
-              params: { provider: PROVIDER, count: draft.media.length, limit: THREADS_CAROUSEL_MAX },
+              params: {
+                provider: PROVIDER,
+                count: draft.media.length,
+                limit: THREADS_CAROUSEL_MAX,
+              },
             }),
           );
         }
@@ -354,7 +358,6 @@ export function createThreadsConnector(deps: ConnectorDeps): SocialConnector {
       const accessToken = await token(connection);
       const options = threadsProviderOptionsSchema.parse(providerOptionsOf(draft));
       const userId = connection.externalAccountId;
-
 
       // A container created by an earlier attempt is carried on PreparedMedia.
       // Creating a second one is how the same post gets published twice.
@@ -437,8 +440,6 @@ export function createThreadsConnector(deps: ConnectorDeps): SocialConnector {
       const items: PublishedItem[] = [];
       const failures: FailedItem[] = [];
       let previousId = mediaId;
-      let pending = false;
-      let failed = false;
 
       for (const item of [...draft.threadItems].sort((left, right) => left.order - right.order)) {
         if (publishedOrders.has(item.order)) {
@@ -555,10 +556,10 @@ export function createThreadsConnector(deps: ConnectorDeps): SocialConnector {
             state: 'published',
             externalPostId: parsed.id,
             permalink: parsed.permalink,
-          publishedAt: nowIso(),
-          items: [],
-          error: null,
-          pollAfterSeconds: null,
+            publishedAt: nowIso(),
+            items: [],
+            error: null,
+            pollAfterSeconds: null,
             sanitizedResponse: { mediaType: parsed.media_type ?? 'unknown' },
           };
         }
@@ -600,10 +601,10 @@ export function createThreadsConnector(deps: ConnectorDeps): SocialConnector {
         state: 'processing',
         externalPostId: null,
         permalink: null,
-          publishedAt: null,
-          items: [],
-          error: null,
-          pollAfterSeconds: 15,
+        publishedAt: null,
+        items: [],
+        error: null,
+        pollAfterSeconds: 15,
         sanitizedResponse: { status: state.status },
       };
     },

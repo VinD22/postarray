@@ -23,7 +23,7 @@ export const AccordionItem = forwardRef<
   return (
     <AccordionPrimitive.Item
       ref={ref}
-      className={cn('border-b border-border-subtle', className)}
+      className={cn('border-border-subtle border-b', className)}
       {...props}
     />
   );
@@ -39,7 +39,7 @@ export const AccordionTrigger = forwardRef<
         ref={ref}
         className={cn(
           'group flex flex-1 items-center justify-between gap-3 py-3 text-start',
-          'text-body-md font-medium text-text-primary hover:text-text-accent',
+          'text-body-md text-text-primary hover:text-text-accent font-medium',
           focusRing,
           className,
         )}
@@ -49,7 +49,7 @@ export const AccordionTrigger = forwardRef<
         <ChevronDown
           aria-hidden="true"
           className={cn(
-            'size-4 shrink-0 text-text-tertiary',
+            'text-text-tertiary size-4 shrink-0',
             'transition-transform duration-[--duration-fast] ease-[--ease-standard]',
             'motion-reduce:transition-none',
             'group-data-[state=open]:rotate-180',
@@ -68,7 +68,7 @@ export const AccordionContent = forwardRef<
     <AccordionPrimitive.Content
       ref={ref}
       className={cn(
-        'overflow-hidden text-body-md text-text-secondary',
+        'text-body-md text-text-secondary overflow-hidden',
         'data-[state=closed]:hidden',
         className,
       )}

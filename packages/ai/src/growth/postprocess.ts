@@ -115,12 +115,7 @@ function isIdentifierPath(path: string): boolean {
 }
 
 /** Dates that are structurally `YYYY-MM-DD` and inside a plausible range. */
-function checkDate(
-  path: string,
-  value: string,
-  now: Date,
-  violations: GrowthViolation[],
-): void {
+function checkDate(path: string, value: string, now: Date, violations: GrowthViolation[]): void {
   if (!/^\d{4}-\d{2}-\d{2}$/.test(value)) {
     violations.push({ rule: 'R6_INVALID_DATE', path, excerpt: excerpt(value) });
     return;
@@ -155,7 +150,6 @@ export interface PostProcessResult {
   readonly repairInstruction: string;
 }
 
-/* eslint-disable complexity -- one function per rule table keeps the rules auditable in one place. */
 export function postProcessGrowthPlan(input: PostProcessInput): PostProcessResult {
   const { plan, context } = input;
   const violations: GrowthViolation[] = [];
@@ -307,7 +301,12 @@ export function postProcessGrowthPlan(input: PostProcessInput): PostProcessResul
   }
 
   // R6: dates.
-  checkDate('goals_and_metrics.windowStart', plan.goals_and_metrics.windowStart, input.now, violations);
+  checkDate(
+    'goals_and_metrics.windowStart',
+    plan.goals_and_metrics.windowStart,
+    input.now,
+    violations,
+  );
   checkDate('goals_and_metrics.windowEnd', plan.goals_and_metrics.windowEnd, input.now, violations);
   plan.calendar_proposal.forEach((week, weekIndex) => {
     checkDate(`calendar_proposal[${weekIndex}].startDate`, week.startDate, input.now, violations);
@@ -336,7 +335,10 @@ export function postProcessGrowthPlan(input: PostProcessInput): PostProcessResul
 
   // R11: an assumption may shape strategy. It may never be stated as a fact.
   const assumptionStatements = plan.business_snapshot.assumptions.map((assumption) =>
-    assumption.statement.replace(/[.!?]+$/, '').trim().toLowerCase(),
+    assumption.statement
+      .replace(/[.!?]+$/, '')
+      .trim()
+      .toLowerCase(),
   );
   for (const entry of collectStrings(plan)) {
     if (
@@ -348,7 +350,11 @@ export function postProcessGrowthPlan(input: PostProcessInput): PostProcessResul
     }
     const lowered = entry.value.toLowerCase();
     for (const statement of assumptionStatements) {
-      if (statement.length >= 12 && lowered.includes(statement) && !ASSUMPTION_MARKER.test(entry.value)) {
+      if (
+        statement.length >= 12 &&
+        lowered.includes(statement) &&
+        !ASSUMPTION_MARKER.test(entry.value)
+      ) {
         violations.push({
           rule: 'R11_ASSUMPTION_STATED_AS_FACT',
           path: entry.path,
@@ -400,4 +406,3 @@ export function postProcessGrowthPlan(input: PostProcessInput): PostProcessResul
         : `The previous plan broke these rules and was discarded: ${rules.join(', ')}. Fix every one of them.`,
   };
 }
-/* eslint-enable complexity */

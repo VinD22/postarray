@@ -176,9 +176,15 @@ export const oauthClientRecordSchema = z
     name: z.string().min(1).max(120),
     clientType: z.enum(['public', 'confidential']),
     /** Present only for confidential clients. Keyed digest, never plaintext. */
-    secretHash: z.string().regex(/^[0-9a-f]{64}$/).nullable(),
+    secretHash: z
+      .string()
+      .regex(/^[0-9a-f]{64}$/)
+      .nullable(),
     /** Second live secret during a 24 hour rotation overlap. */
-    previousSecretHash: z.string().regex(/^[0-9a-f]{64}$/).nullable(),
+    previousSecretHash: z
+      .string()
+      .regex(/^[0-9a-f]{64}$/)
+      .nullable(),
     previousSecretExpiresAt: isoInstantSchema.nullable(),
     /** Exact match only. No wildcard, no prefix, no subdomain tolerance. */
     redirectUris: z.array(z.string().min(1).max(2048)).min(1).max(5),

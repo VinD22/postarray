@@ -54,9 +54,7 @@ export function PermissionDenied({
           <p>{description}</p>
           {requirements && requirements.length > 0 ? (
             <div className="flex flex-col gap-1">
-              {requirementsLabel ? (
-                <p className="text-text-tertiary">{requirementsLabel}</p>
-              ) : null}
+              {requirementsLabel ? <p className="text-text-tertiary">{requirementsLabel}</p> : null}
               <ul className={cn('flex flex-wrap gap-1.5')}>
                 {requirements.map((requirement) => (
                   <li key={requirement}>

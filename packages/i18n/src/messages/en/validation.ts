@@ -13,7 +13,8 @@ export const validationMessages = {
   'validation.title_required.message': '{provider} needs a title.',
   'validation.title_too_long.message': 'The title is over the {limit} character limit.',
   'validation.description_too_long.message': 'The description is over the {limit} character limit.',
-  'validation.media_required.message': '{provider} needs at least one image or video for this post type.',
+  'validation.media_required.message':
+    '{provider} needs at least one image or video for this post type.',
   'validation.media_count_exceeded.message':
     '{provider} accepts at most {limit, plural, one {# file} other {# files}} here. This post has {count}.',
   'validation.media_type_unsupported.message': '{provider} does not accept {mimeType} files.',
@@ -30,7 +31,8 @@ export const validationMessages = {
     'This file is {actual}. {provider} accepts up to {limit}.',
   'validation.media_mixed_types_unsupported.message':
     '{provider} cannot publish images and video in the same post.',
-  'validation.alt_text_missing.message': 'Alt text is missing on {count, plural, one {# image} other {# images}}.',
+  'validation.alt_text_missing.message':
+    'Alt text is missing on {count, plural, one {# image} other {# images}}.',
   'validation.alt_text_missing.hint': 'Describe the image, or mark it as decorative.',
   'validation.thumbnail_unsupported.message': '{provider} does not accept a custom thumbnail here.',
   'validation.destination_required.message': 'Choose where this publishes on {provider}.',
@@ -47,14 +49,14 @@ export const validationMessages = {
     'The link domain {domain} is not verified for this workspace.',
   'validation.privacy_setting_required.message':
     '{provider} requires an explicit privacy choice before publishing.',
-  'validation.privacy_setting_required.hint':
-    'There is no default. Choose who can see this post.',
+  'validation.privacy_setting_required.hint': 'There is no default. Choose who can see this post.',
   'validation.disclosure_required.message':
     'This post needs a disclosure under the brand rules for {market}.',
   'validation.first_comment_unsupported.message':
     '{provider} does not support a scheduled first comment for this account.',
   'validation.thread_unsupported.message': '{provider} does not support threads for this account.',
-  'validation.repeat_end_required.message': 'A repeating post needs an end date or a number of repeats.',
+  'validation.repeat_end_required.message':
+    'A repeating post needs an end date or a number of repeats.',
   'validation.schedule_in_past.message': 'That time has passed in {timeZone}.',
   'validation.schedule_too_far_ahead.message':
     'This is further ahead than the {limit} look ahead set for this credential.',
@@ -63,8 +65,7 @@ export const validationMessages = {
   'validation.duplicate_within_window.message':
     'Very similar content is already scheduled or published for {account} within {window}.',
   'validation.blocked_term_present.message': 'The text contains a blocked term for {brand}.',
-  'validation.unsupported_claim.message':
-    'This claim is not in the approved claims for {brand}.',
+  'validation.unsupported_claim.message': 'This claim is not in the approved claims for {brand}.',
   'validation.unsupported_claim.hint':
     'Add it to the approved claims with evidence, or reword the sentence.',
   'validation.cadence_exceeded.message':
@@ -77,7 +78,8 @@ export const validationMessages = {
   'validation.severity.warning': 'Check this',
   'validation.severity.info': 'For your information',
   'validation.field.required': 'This field is required.',
-  'validation.field.tooShort': 'Use at least {min, plural, one {# character} other {# characters}}.',
+  'validation.field.tooShort':
+    'Use at least {min, plural, one {# character} other {# characters}}.',
   'validation.field.tooLong': 'Use at most {max, plural, one {# character} other {# characters}}.',
   'validation.field.invalidEmail': 'Enter a valid email address.',
   'validation.field.invalidUrl': 'Enter a full URL, including https.',

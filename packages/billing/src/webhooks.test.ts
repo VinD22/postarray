@@ -138,7 +138,7 @@ describe('the webhook inbox', () => {
     expect(first.result).toBe('applied');
     expect(second.result).toBe('noop');
     expect(second.note).toBe('duplicate_event_id');
-    expect((await harness.inbox.list())).toHaveLength(1);
+    expect(await harness.inbox.list()).toHaveLength(1);
   });
 
   it('stores a forged delivery as rejected and grants nothing', async () => {
@@ -277,7 +277,9 @@ describe('normalisation helpers', () => {
   it('reads the workspace from subscription metadata', () => {
     const subscription = polarSubscriptionSchema.parse(subscriptionPayload());
     expect(workspaceIdOf(subscription)).toBe('ws_01');
-    expect(workspaceIdOf(polarSubscriptionSchema.parse(subscriptionPayload({ metadata: {} })))).toBeNull();
+    expect(
+      workspaceIdOf(polarSubscriptionSchema.parse(subscriptionPayload({ metadata: {} }))),
+    ).toBeNull();
   });
 
   it('normalises a Polar subscription into the record entitlements derive from', () => {

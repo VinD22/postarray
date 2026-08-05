@@ -62,9 +62,7 @@ describe('buildHealthReport', () => {
   });
 
   it('goes down when a check fails', () => {
-    const checks: HealthCheck[] = [
-      { name: 'database.query', status: 'fail', latencyMs: 1200.6 },
-    ];
+    const checks: HealthCheck[] = [{ name: 'database.query', status: 'fail', latencyMs: 1200.6 }];
     const report = buildHealthReport(capabilitiesFor(), checks, { now: fixedNow });
     expect(report.status).toBe('down');
     expect(report.summary.failingChecks).toBe(1);

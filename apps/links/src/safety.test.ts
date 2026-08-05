@@ -119,7 +119,10 @@ describe('checkDestination phishing and open redirect shapes', () => {
     const level3 = `https://c.example/?url=${encodeURIComponent(inner)}`;
     const level2 = `https://b.example/?url=${encodeURIComponent(level3)}`;
     const level1 = `https://a.example/?url=${encodeURIComponent(level2)}`;
-    const decision = checkDestination(level1, { maxRedirectDepth: 2, additionalPublicSuffixes: ['.example'] });
+    const decision = checkDestination(level1, {
+      maxRedirectDepth: 2,
+      additionalPublicSuffixes: ['.example'],
+    });
     expect(decision.safe).toBe(false);
     expect(decision.reasons).toContain('REDIRECT_DEPTH_EXCEEDED');
   });
@@ -131,7 +134,9 @@ describe('checkDestination ports and size', () => {
   });
 
   it('accepts an explicitly allowed port', () => {
-    expect(checkDestination('https://example.com:8443/x', { allowedPorts: [8443] }).safe).toBe(true);
+    expect(checkDestination('https://example.com:8443/x', { allowedPorts: [8443] }).safe).toBe(
+      true,
+    );
   });
 
   it('rejects an oversized URL', () => {

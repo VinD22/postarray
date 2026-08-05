@@ -90,9 +90,7 @@ export function UsagePanel({ usage }: UsagePanelProps): ReactNode {
                       : formatters.money(line.unitPrice)}
                   </TableCell>
                   <TableCell numeric>
-                    {line.amount === null
-                      ? t('common.unavailable')
-                      : formatters.money(line.amount)}
+                    {line.amount === null ? t('common.unavailable') : formatters.money(line.amount)}
                   </TableCell>
                 </TableRow>
               ))}
@@ -103,9 +101,7 @@ export function UsagePanel({ usage }: UsagePanelProps): ReactNode {
                 <TableCell numeric />
                 <TableCell numeric />
                 <TableCell numeric>
-                  {usage.total === null
-                    ? t('common.unavailable')
-                    : formatters.money(usage.total)}
+                  {usage.total === null ? t('common.unavailable') : formatters.money(usage.total)}
                 </TableCell>
               </TableRow>
             </TableFooter>
@@ -148,9 +144,7 @@ export function UsagePanel({ usage }: UsagePanelProps): ReactNode {
           </p>
           <p className="text-body-sm text-text-secondary">{t('billing.ui.spendAlertHelp')}</p>
           {usage.pauseAtAlert ? (
-            <p className="text-body-sm text-text-secondary">
-              {t('billing.ui.spendAlertPause')}
-            </p>
+            <p className="text-body-sm text-text-secondary">{t('billing.ui.spendAlertPause')}</p>
           ) : null}
         </div>
       )}

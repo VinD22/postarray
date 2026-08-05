@@ -25,8 +25,7 @@ export const DATABASE_ERROR_CODES = {
   migrationFailed: 'database.migration_failed',
 } as const;
 
-export type DatabaseErrorCode =
-  (typeof DATABASE_ERROR_CODES)[keyof typeof DATABASE_ERROR_CODES];
+export type DatabaseErrorCode = (typeof DATABASE_ERROR_CODES)[keyof typeof DATABASE_ERROR_CODES];
 
 export class DatabaseError extends Error {
   readonly code: DatabaseErrorCode;

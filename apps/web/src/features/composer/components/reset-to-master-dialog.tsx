@@ -96,10 +96,7 @@ export function ResetToMasterDialog({
         } else {
           dispatch({ type: 'variant/resetField', connectionId, field });
         }
-        announce(
-          t.full('a11y.announce.targetReset', { account: account.displayName }),
-          'polite',
-        );
+        announce(t.full('a11y.announce.targetReset', { account: account.displayName }), 'polite');
         onClose();
       }}
     />

@@ -7,11 +7,7 @@
  */
 
 export { FixedClock, systemClock } from './clock.js';
-export {
-  MemoryKeyValueStore,
-  RedisKeyValueStore,
-  type RedisLikeClient,
-} from './key-value.js';
+export { MemoryKeyValueStore, RedisKeyValueStore, type RedisLikeClient } from './key-value.js';
 export {
   LocalFileStorage,
   MemoryStorage,

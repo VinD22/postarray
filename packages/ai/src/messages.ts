@@ -32,10 +32,7 @@ export function renderVariables(variables: AiVariables): string {
   return JSON.stringify(safe, null, 2);
 }
 
-export function missingVariables(
-  prompt: PromptModule,
-  variables: AiVariables,
-): readonly string[] {
+export function missingVariables(prompt: PromptModule, variables: AiVariables): readonly string[] {
   return prompt.requiredVariables.filter((name) => !Object.hasOwn(variables, name));
 }
 

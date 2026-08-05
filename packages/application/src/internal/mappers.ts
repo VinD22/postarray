@@ -50,7 +50,13 @@ export function toStoredActorType(
 const ACCOUNT_TYPE_TO_STORED: Readonly<
   Record<
     AccountType,
-    'personal_profile' | 'creator_account' | 'business_account' | 'page' | 'organization' | 'channel' | 'group'
+    | 'personal_profile'
+    | 'creator_account'
+    | 'business_account'
+    | 'page'
+    | 'organization'
+    | 'channel'
+    | 'group'
   >
 > = {
   personal_profile: 'personal_profile',
@@ -138,8 +144,7 @@ export function toLocalDateTime(instant: Date, timeZone: string): string {
     minute: '2-digit',
     hourCycle: 'h23',
   }).formatToParts(instant);
-  const lookup = (type: string): string =>
-    parts.find((part) => part.type === type)?.value ?? '00';
+  const lookup = (type: string): string => parts.find((part) => part.type === type)?.value ?? '00';
   return `${lookup('year')}-${lookup('month')}-${lookup('day')}T${lookup('hour')}:${lookup(
     'minute',
   )}`;

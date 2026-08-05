@@ -70,8 +70,7 @@ export const buttonVariants = cva(
 );
 
 export interface ButtonProps
-  extends Omit<ComponentPropsWithoutRef<'button'>, 'color'>,
-    VariantProps<typeof buttonVariants> {
+  extends Omit<ComponentPropsWithoutRef<'button'>, 'color'>, VariantProps<typeof buttonVariants> {
   /**
    * Work is in progress. The label stays in the layout and is only hidden
    * visually, so the button keeps its exact width and the row does not jump.

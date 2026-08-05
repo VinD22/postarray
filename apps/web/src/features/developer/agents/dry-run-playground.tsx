@@ -107,9 +107,7 @@ export function DryRunPlayground({ account }: DryRunPlaygroundProps): ReactNode 
     <div className="flex flex-col gap-4">
       <div className="flex flex-wrap items-center gap-2">
         <Badge tone="info">{t('developer.playground.sandboxBadge')}</Badge>
-        <p className="text-body-md text-text-secondary">
-          {t('developer.ui.playground.help')}
-        </p>
+        <p className="text-body-md text-text-secondary">{t('developer.ui.playground.help')}</p>
       </div>
 
       <div className="grid gap-4 lg:grid-cols-2">
@@ -156,7 +154,7 @@ export function DryRunPlayground({ account }: DryRunPlaygroundProps): ReactNode 
         </div>
 
         <div className="flex flex-col gap-2">
-          <h3 className="text-body-md font-medium text-text-primary">
+          <h3 className="text-body-md text-text-primary font-medium">
             {t('developer.ui.playground.result')}
           </h3>
 

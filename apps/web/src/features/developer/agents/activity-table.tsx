@@ -67,7 +67,7 @@ export function ActivityTable({ rows }: ActivityTableProps): ReactNode {
         />
       ) : null}
 
-      <label className="flex min-h-11 w-fit items-center gap-2 text-body-md text-text-primary">
+      <label className="text-body-md text-text-primary flex min-h-11 w-fit items-center gap-2">
         <Checkbox
           checked={deniedOnly}
           onCheckedChange={(checked) => setDeniedOnly(checked === true)}

@@ -303,7 +303,8 @@ export const webCalendarMessages = {
 
   'web.connection.detail.expiryLabel': 'Access expires',
   'web.connection.health.expiresIn': 'Access expires {relativeTime}, on {date}',
-  'web.connection.health.noExpiry': 'This access does not expire on a schedule {provider} tells us.',
+  'web.connection.health.noExpiry':
+    'This access does not expire on a schedule {provider} tells us.',
   'web.connection.health.checkedAt': 'Health checked {relativeTime}',
 
   'web.connection.action.inspect': 'Inspect permissions',

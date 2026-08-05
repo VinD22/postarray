@@ -51,11 +51,20 @@ export class YouTubeSimulator extends BaseProviderSimulator {
       case 'revoked':
         return google(401, 'authError', 'Token has been expired or revoked.');
       case 'forbidden':
-        return google(403, 'insufficientPermissions', 'Request had insufficient authentication scopes.');
+        return google(
+          403,
+          'insufficientPermissions',
+          'Request had insufficient authentication scopes.',
+        );
       case 'rate_limited':
-        return google(429, 'quotaExceeded', 'The request cannot be completed because the quota is exhausted.', {
-          'retry-after': String(RETRY_AFTER_SECONDS),
-        });
+        return google(
+          429,
+          'quotaExceeded',
+          'The request cannot be completed because the quota is exhausted.',
+          {
+            'retry-after': String(RETRY_AFTER_SECONDS),
+          },
+        );
       case 'server_error':
         return google(500, 'backendError', 'Backend Error.');
       case 'content_invalid':
@@ -227,7 +236,9 @@ export class TikTokSimulator extends BaseProviderSimulator {
     }
 
     if (method === 'POST' && path === '/v2/post/publish/video/init/') {
-      const body = (request.body ?? {}) as { post_info?: { title?: string; privacy_level?: string } };
+      const body = (request.body ?? {}) as {
+        post_info?: { title?: string; privacy_level?: string };
+      };
       if (body.post_info?.privacy_level === undefined) {
         return this.errorFor('content_invalid', request);
       }

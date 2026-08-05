@@ -14,11 +14,10 @@ import type { HealthService, ServiceDeps } from '../types.js';
 
 const PROBE_TIMEOUT_MS = 2000;
 
-async function timed(
-  name: string,
-  probe: () => Promise<void>,
-): Promise<HealthCheck> {
-  const startedAt = Date.now();
+async function timed(name: string, probe: () => Promise<void>): Promise<HealthCheck> {
+  // A duration, not a wall clock reading. performance.now() is monotonic and is
+  // unaffected by a clock change, which is what a latency probe needs.
+  const startedAt = performance.now();
   try {
     await Promise.race([
       probe(),
@@ -26,19 +25,19 @@ async function timed(
         setTimeout(() => reject(new Error('timeout')), PROBE_TIMEOUT_MS).unref?.();
       }),
     ]);
-    return { name, status: 'pass', latencyMs: Date.now() - startedAt };
+    return { name, status: 'pass', latencyMs: Math.round(performance.now() - startedAt) };
   } catch (error) {
     return {
       name,
       status: 'fail',
-      latencyMs: Date.now() - startedAt,
+      latencyMs: Math.round(performance.now() - startedAt),
       detail: error instanceof Error ? error.name : 'unknown',
     };
   }
 }
 
 export function createHealthService(deps: ServiceDeps): HealthService {
-  const startedAt = Date.now();
+  const startedAt = deps.clock.now().getTime();
 
   return {
     async report(): Promise<HealthReport> {

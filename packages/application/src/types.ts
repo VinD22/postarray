@@ -429,10 +429,7 @@ export interface ContentService {
 }
 
 export interface ValidationService {
-  validate(
-    ctx: ActorContext,
-    input: { readonly contentItemId: string },
-  ): Promise<ValidationResult>;
+  validate(ctx: ActorContext, input: { readonly contentItemId: string }): Promise<ValidationResult>;
 }
 
 export interface ApprovalService {

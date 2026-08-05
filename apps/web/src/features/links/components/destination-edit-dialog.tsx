@@ -61,9 +61,7 @@ export function DestinationEditDialog({
       <DialogContent size="md" closeLabel={t('a11y.label.closeDialog')}>
         <DialogHeader>
           <DialogTitle>{t('analytics.links.editDestination')}</DialogTitle>
-          <DialogDescription>
-            {t('analytics.links.editDestinationWarning')}
-          </DialogDescription>
+          <DialogDescription>{t('analytics.links.editDestinationWarning')}</DialogDescription>
         </DialogHeader>
 
         <DialogBody>
@@ -78,9 +76,7 @@ export function DestinationEditDialog({
             }}
           >
             <div className="flex flex-col gap-1">
-              <span className="text-label text-text-tertiary">
-                {t('analytics.links.shortUrl')}
-              </span>
+              <span className="text-label text-text-tertiary">{t('analytics.links.shortUrl')}</span>
               <Code>{link.shortUrl}</Code>
               <span className="text-body-sm text-text-tertiary">
                 {t('analytics.links.usedIn', { count: link.usedInPostCount })}

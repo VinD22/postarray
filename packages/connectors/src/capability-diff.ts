@@ -21,7 +21,12 @@ import { type Clock, epochMillisecondsOf, systemClock } from './ports.js';
  * snapshot.
  */
 
-export const CAPABILITY_DIFF_DECISIONS = ['proceed', 'warn', 'require_reapproval', 'block'] as const;
+export const CAPABILITY_DIFF_DECISIONS = [
+  'proceed',
+  'warn',
+  'require_reapproval',
+  'block',
+] as const;
 export type CapabilityDiffDecision = (typeof CAPABILITY_DIFF_DECISIONS)[number];
 
 export const CHANGE_SEVERITIES = ['info', 'warning', 'blocking'] as const;
@@ -177,9 +182,9 @@ function diffLimits(rules: readonly LimitRule[]): CapabilityChange[] {
   const changes: CapabilityChange[] = [];
   for (const rule of rules) {
     if (rule.before === rule.after) continue;
-    const tightened =
-      rule.after !== null && (rule.before === null || rule.after < rule.before);
-    const violated = tightened && rule.required !== null && rule.after !== null && rule.after < rule.required;
+    const tightened = rule.after !== null && (rule.before === null || rule.after < rule.before);
+    const violated =
+      tightened && rule.required !== null && rule.after !== null && rule.after < rule.required;
     changes.push(
       change({
         path: rule.path,
@@ -412,7 +417,11 @@ export function diffCapabilities(input: DiffCapabilitiesInput): CapabilityDiffRe
 
   // A provider that now demands an explicit privacy choice invalidates content
   // approved without one. We never pick a default on the user's behalf.
-  if (!approved.privacy.mustBeExplicit && live.privacy.mustBeExplicit && usage.privacyValue === null) {
+  if (
+    !approved.privacy.mustBeExplicit &&
+    live.privacy.mustBeExplicit &&
+    usage.privacyValue === null
+  ) {
     changes.push(
       change({
         path: 'privacy.mustBeExplicit',

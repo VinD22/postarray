@@ -43,7 +43,7 @@ export default function ComparePage(): ReactNode {
             example={t.t('web.methodology.comparison.distinction')}
           />
         ) : (
-          <ul className="border-t border-border-default">
+          <ul className="border-border-default border-t">
             {published.map((target) => (
               <RowLink
                 key={target.id}
@@ -60,17 +60,17 @@ export default function ComparePage(): ReactNode {
           aside={
             <div className="space-y-4">
               <Heading>{t.t('web.compare.planned.title')}</Heading>
-              <p className="max-w-[62ch] text-body-lg leading-[1.65] text-text-secondary">
+              <p className="text-body-lg text-text-secondary max-w-[62ch] leading-[1.65]">
                 {t.t('web.compare.planned.body')}
               </p>
             </div>
           }
         >
-          <ul className="border-t border-border-default">
+          <ul className="border-border-default border-t">
             {planned.map((target) => (
               <li
                 key={target.id}
-                className="flex flex-wrap items-baseline justify-between gap-x-8 gap-y-1 border-b border-border-subtle py-4"
+                className="border-border-subtle flex flex-wrap items-baseline justify-between gap-x-8 gap-y-1 border-b py-4"
               >
                 <span className="text-body-lg text-text-primary">{t.format(target.nameKey)}</span>
                 <Badge>{t.t('web.compare.state.factCheckPending')}</Badge>

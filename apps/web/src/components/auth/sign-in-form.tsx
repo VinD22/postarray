@@ -60,10 +60,7 @@ export function SignInForm() {
     setError(null);
     setPending(true);
     try {
-      await api.auth.signInWithPassword(
-        { identifier, password },
-        newIdempotencyKey('signin'),
-      );
+      await api.auth.signInWithPassword({ identifier, password }, newIdempotencyKey('signin'));
       router.push(next);
     } catch (caught) {
       if (ApiError.is(caught) && caught.isOffline) {
@@ -198,8 +195,14 @@ export function SignInForm() {
               )}
             </Field>
 
-            <Button type="submit" variant="primary" size="lg" fullWidth loading={pending}
-              loadingLabel={t('auth.submit.working')}>
+            <Button
+              type="submit"
+              variant="primary"
+              size="lg"
+              fullWidth
+              loading={pending}
+              loadingLabel={t('auth.submit.working')}
+            >
               {t('auth.submit.signIn')}
             </Button>
           </form>
@@ -227,8 +230,14 @@ export function SignInForm() {
               )}
             </Field>
 
-            <Button type="submit" variant="primary" size="lg" fullWidth loading={pending}
-              loadingLabel={t('auth.submit.working')}>
+            <Button
+              type="submit"
+              variant="primary"
+              size="lg"
+              fullWidth
+              loading={pending}
+              loadingLabel={t('auth.submit.working')}
+            >
               {t('auth.magicLink.send')}
             </Button>
           </form>
@@ -271,8 +280,14 @@ export function SignInForm() {
               )}
             </Field>
 
-            <Button type="submit" variant="primary" size="lg" fullWidth loading={pending}
-              loadingLabel={t('auth.submit.working')}>
+            <Button
+              type="submit"
+              variant="primary"
+              size="lg"
+              fullWidth
+              loading={pending}
+              loadingLabel={t('auth.submit.working')}
+            >
               {t('auth.submit.signIn')}
             </Button>
           </form>
@@ -281,7 +296,7 @@ export function SignInForm() {
 
       <p className="text-body-md text-text-secondary">
         {t('auth.noAccount')}{' '}
-        <Link href="/sign-up" className="font-medium text-text-accent hover:underline">
+        <Link href="/sign-up" className="text-text-accent font-medium hover:underline">
           {t('auth.switchToSignUp')}
         </Link>
       </p>

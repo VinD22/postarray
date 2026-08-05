@@ -105,11 +105,7 @@ export function SignUpForm() {
           )}
         </Field>
 
-        <Field
-          label={t('auth.email.label')}
-          description={t('auth.signUp.emailInUseNote')}
-          required
-        >
+        <Field label={t('auth.email.label')} description={t('auth.signUp.emailInUseNote')} required>
           {(control) => (
             <Input
               {...control}
@@ -176,7 +172,7 @@ export function SignUpForm() {
 
       <p className="text-body-md text-text-secondary">
         {t('auth.haveAccount')}{' '}
-        <Link href="/sign-in" className="font-medium text-text-accent hover:underline">
+        <Link href="/sign-in" className="text-text-accent font-medium hover:underline">
           {t('auth.switchToSignIn')}
         </Link>
       </p>

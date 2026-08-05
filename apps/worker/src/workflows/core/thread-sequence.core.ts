@@ -33,8 +33,9 @@ export async function runThreadSequence(
   input: ThreadSequenceWorkflowInput,
 ): Promise<ThreadSequenceWorkflowOutput> {
   const { ctx } = input;
-  const ordered = stableSort(input.items, (item) =>
-    String(item.order).padStart(6, '0') + item.threadItemId,
+  const ordered = stableSort(
+    input.items,
+    (item) => String(item.order).padStart(6, '0') + item.threadItemId,
   );
 
   const outcomes: ThreadSequenceItemOutcome[] = [];

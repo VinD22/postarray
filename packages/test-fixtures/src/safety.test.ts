@@ -162,10 +162,7 @@ describe('no fabricated performance claim', () => {
   });
 
   it('never reports a missing metric as zero', () => {
-    for (const observation of [
-      ...GOLDEN_EXAMPLES.postMetrics,
-      ...GOLDEN_EXAMPLES.accountMetrics,
-    ]) {
+    for (const observation of [...GOLDEN_EXAMPLES.postMetrics, ...GOLDEN_EXAMPLES.accountMetrics]) {
       if (observation.availability !== 'available') {
         expect(observation.value).toBeNull();
       }

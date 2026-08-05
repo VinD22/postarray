@@ -79,9 +79,7 @@ export function CopyableSecret({
 
   if (consumed) {
     return (
-      <p className={cn('text-body-sm text-text-secondary', className)}>
-        {messages.consumedText}
-      </p>
+      <p className={cn('text-body-sm text-text-secondary', className)}>{messages.consumedText}</p>
     );
   }
 
@@ -99,7 +97,7 @@ export function CopyableSecret({
         role="group"
         aria-label={messages.valueLabel}
         className={cn(
-          'flex items-center gap-2 rounded-md border border-border-default',
+          'border-border-default flex items-center gap-2 rounded-md border',
           'bg-surface-sunken px-2.5 py-2',
         )}
       >
@@ -110,13 +108,7 @@ export function CopyableSecret({
           size="sm"
           variant="ghost"
           label={revealed ? messages.hideLabel : messages.revealLabel}
-          icon={
-            revealed ? (
-              <EyeOff aria-hidden="true" />
-            ) : (
-              <Eye aria-hidden="true" />
-            )
-          }
+          icon={revealed ? <EyeOff aria-hidden="true" /> : <Eye aria-hidden="true" />}
           onClick={() => setRevealed((current) => !current)}
         />
         <IconButton

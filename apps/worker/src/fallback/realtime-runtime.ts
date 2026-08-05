@@ -151,11 +151,7 @@ export class RealtimeWorkflowRuntime implements WorkflowRuntime {
 }
 
 /** Apply a signal to an inline inbox by name. Unknown names are ignored. */
-export function applyInlineSignal(
-  inbox: SignalInbox,
-  name: string,
-  payload?: unknown,
-): void {
+export function applyInlineSignal(inbox: SignalInbox, name: string, payload?: unknown): void {
   const record: Record<string, unknown> =
     typeof payload === 'object' && payload !== null ? { ...payload } : {};
   switch (name) {
@@ -194,10 +190,7 @@ export function applyInlineSignal(
           attemptId: typeof record['attemptId'] === 'string' ? record['attemptId'] : null,
           externalPostId,
           permalink: typeof record['permalink'] === 'string' ? record['permalink'] : null,
-          observedAt:
-            typeof record['observedAt'] === 'string'
-              ? record['observedAt']
-              : nowIso(),
+          observedAt: typeof record['observedAt'] === 'string' ? record['observedAt'] : nowIso(),
         });
       }
       return;

@@ -167,10 +167,7 @@ export function applyFilters(
     if (filters.campaignName && (entry.campaignName ?? null) !== filters.campaignName) {
       return false;
     }
-    if (
-      filters.customerGroupId &&
-      (entry.customerGroupId ?? null) !== filters.customerGroupId
-    ) {
+    if (filters.customerGroupId && (entry.customerGroupId ?? null) !== filters.customerGroupId) {
       return false;
     }
     if (filters.attentionOnly && !needsAttention(entry)) return false;

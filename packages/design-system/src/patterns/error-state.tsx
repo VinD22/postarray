@@ -77,13 +77,13 @@ export function ErrorState({
             <p>{description}</p>
             {subject ? (
               <p className="text-text-secondary">
-                <span className="font-medium text-text-primary">{subject.label}</span>
+                <span className="text-text-primary font-medium">{subject.label}</span>
                 <span aria-hidden="true">{': '}</span>
                 {subject.value}
               </p>
             ) : null}
             {reference ? (
-              <p className="flex flex-wrap items-center gap-1.5 text-text-tertiary">
+              <p className="text-text-tertiary flex flex-wrap items-center gap-1.5">
                 {reference.label} <Code>{reference.value}</Code>
               </p>
             ) : null}
@@ -93,12 +93,7 @@ export function ErrorState({
           onRetry || secondaryAction ? (
             <>
               {onRetry && retryLabel ? (
-                <Button
-                  size="sm"
-                  variant="secondary"
-                  loading={retrying}
-                  onClick={onRetry}
-                >
+                <Button size="sm" variant="secondary" loading={retrying} onClick={onRetry}>
                   {retryLabel}
                 </Button>
               ) : null}

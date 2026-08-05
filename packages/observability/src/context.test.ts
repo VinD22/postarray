@@ -16,15 +16,12 @@ import {
 
 describe('runWithContext', () => {
   it('exposes the context to everything inside the call', () => {
-    runWithContext(
-      { correlationId: 'corr_1', workspaceId: 'ws_1', surface: 'api' },
-      () => {
-        expect(getCorrelationId()).toBe('corr_1');
-        expect(getWorkspaceId()).toBe('ws_1');
-        expect(getSurface()).toBe('api');
-        expect(getActor()).toEqual({ type: 'system', id: 'system' });
-      },
-    );
+    runWithContext({ correlationId: 'corr_1', workspaceId: 'ws_1', surface: 'api' }, () => {
+      expect(getCorrelationId()).toBe('corr_1');
+      expect(getWorkspaceId()).toBe('ws_1');
+      expect(getSurface()).toBe('api');
+      expect(getActor()).toEqual({ type: 'system', id: 'system' });
+    });
   });
 
   it('generates a correlation id when the caller has none', () => {

@@ -41,19 +41,14 @@ import { formatCurrency } from '@relay/i18n';
 import { useTranslations } from '@relay/i18n/react';
 import { useCalendarFormat } from '@/features/calendar/format';
 import { AccountIdentity, useAccountTypeName, useProviderName } from './provider';
-import {
-  healthTone,
-  missingPermissionCount,
-  remediationAction,
-  remediationKey,
-} from './health';
+import { healthTone, missingPermissionCount, remediationAction, remediationKey } from './health';
 import { isPaused, needsAction, type ConnectionRow as Row } from './types';
 
 const healthIcon: Record<ReturnType<typeof healthTone>, ReactNode> = {
-  ok: <CheckCircle2 aria-hidden="true" className="size-4 text-success-fg" />,
-  warning: <AlertTriangle aria-hidden="true" className="size-4 text-warning-fg" />,
-  destructive: <CircleSlash aria-hidden="true" className="size-4 text-destructive-fg" />,
-  neutral: <PauseCircle aria-hidden="true" className="size-4 text-text-tertiary" />,
+  ok: <CheckCircle2 aria-hidden="true" className="text-success-fg size-4" />,
+  warning: <AlertTriangle aria-hidden="true" className="text-warning-fg size-4" />,
+  destructive: <CircleSlash aria-hidden="true" className="text-destructive-fg size-4" />,
+  neutral: <PauseCircle aria-hidden="true" className="text-text-tertiary size-4" />,
 };
 
 export interface ConnectionRowProps {
@@ -94,7 +89,7 @@ export function ConnectionRow({
   return (
     <li
       className={cn(
-        'flex flex-col gap-3 border-b border-border-subtle px-4 py-4 md:px-6',
+        'border-border-subtle flex flex-col gap-3 border-b px-4 py-4 md:px-6',
         needsAction(row.health) && 'bg-warning-bg/40',
         isPaused(row.health) && 'bg-surface-sunken',
       )}
@@ -107,7 +102,7 @@ export function ConnectionRow({
             secondary={row.handle ?? undefined}
           />
 
-          <p className="flex flex-wrap items-center gap-x-2 gap-y-1 text-body-sm text-text-secondary">
+          <p className="text-body-sm text-text-secondary flex flex-wrap items-center gap-x-2 gap-y-1">
             <Badge tone="outline">{accountTypeName(row.accountType)}</Badge>
             {groupName ? <Badge tone="neutral">{groupName}</Badge> : null}
             {row.beta ? <Badge tone="warning">{t('web.connection.row.beta')}</Badge> : null}
@@ -169,7 +164,7 @@ export function ConnectionRow({
       </div>
 
       {/* Health, expiry, last successful post, last analytics sync. */}
-      <div className="flex flex-wrap items-center gap-x-4 gap-y-1.5 text-body-sm">
+      <div className="text-body-sm flex flex-wrap items-center gap-x-4 gap-y-1.5">
         <span className="inline-flex items-center gap-1.5">
           {healthIcon[tone]}
           <span
@@ -212,14 +207,14 @@ export function ConnectionRow({
             isoTimestamp={row.lastAnalyticsSyncAt}
           />
         ) : (
-          <span className="inline-flex items-center gap-1 text-text-tertiary">
+          <span className="text-text-tertiary inline-flex items-center gap-1">
             <HelpCircle aria-hidden="true" className="size-3.5" />
             {t('common.unavailable')}
           </span>
         )}
 
         {row.perCreateMinor !== null && row.perCreateMinor !== undefined && row.currency ? (
-          <span className="inline-flex items-center gap-1 text-text-secondary">
+          <span className="text-text-secondary inline-flex items-center gap-1">
             <Clock3 aria-hidden="true" className="size-3.5" />
             {t('web.connection.row.metered', {
               amount: formatCurrency(format.locale, row.perCreateMinor, row.currency),
@@ -271,7 +266,7 @@ export function ConnectionRow({
           type="button"
           aria-expanded={expanded}
           onClick={() => setExpanded((current) => !current)}
-          className="self-start text-body-sm text-text-accent underline-offset-2 hover:underline"
+          className="text-body-sm text-text-accent self-start underline-offset-2 hover:underline"
         >
           {expanded
             ? t('web.connection.row.collapse', { account: row.displayName })
@@ -279,7 +274,7 @@ export function ConnectionRow({
         </button>
 
         {expanded ? (
-          <div className="flex flex-col gap-3 rounded-md border border-border-subtle bg-surface-sunken p-3">
+          <div className="border-border-subtle bg-surface-sunken flex flex-col gap-3 rounded-md border p-3">
             <div className="flex flex-col gap-1">
               <h3 className="text-label text-text-tertiary">
                 {t('web.connection.row.limitationHeading')}
@@ -312,9 +307,7 @@ export function ConnectionRow({
             </div>
 
             <div className="flex flex-col gap-1">
-              <h3 className="text-label text-text-tertiary">
-                {t('connection.permissions.title')}
-              </h3>
+              <h3 className="text-label text-text-tertiary">{t('connection.permissions.title')}</h3>
               {missingPermissions > 0 ? (
                 <p className="text-body-sm text-warning-fg">
                   {t('web.connection.permissions.missingWarning', {

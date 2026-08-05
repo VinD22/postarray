@@ -14,12 +14,7 @@ import type { MessageKey } from '@relay/i18n/translate';
  */
 
 export type StatusLevel =
-  | 'operational'
-  | 'degraded'
-  | 'partial'
-  | 'outage'
-  | 'maintenance'
-  | 'not_live';
+  'operational' | 'degraded' | 'partial' | 'outage' | 'maintenance' | 'not_live';
 
 export const STATUS_LEVEL_LABEL_KEY: Readonly<Record<StatusLevel, MessageKey>> = {
   operational: 'web.status.level.operational',

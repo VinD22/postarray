@@ -1,5 +1,10 @@
 import { Body, Controller, Delete, Get, HttpCode, Param, Patch, Post, Query } from '@nestjs/common';
-import type { OperationRef, Paginated, WebhookDeliveryLog, WebhookEndpoint } from '@relay/contracts';
+import type {
+  OperationRef,
+  Paginated,
+  WebhookDeliveryLog,
+  WebhookEndpoint,
+} from '@relay/contracts';
 
 import type { ActorContext, ContentItemView } from '../../application/port.js';
 import { Actor, Idempotent, RequireScope } from '../../common/decorators.js';
@@ -129,7 +134,10 @@ export class InboundIntegrationController {
   ): Promise<{ draft: ContentItemView | null; operation: OperationRef | null }> {
     const payload = parseBody(inboundIntegrationSchema, body);
     if (payload.draft !== undefined) {
-      return { draft: await this.webhooks.createDraftFromInbound(actor, payload.draft), operation: null };
+      return {
+        draft: await this.webhooks.createDraftFromInbound(actor, payload.draft),
+        operation: null,
+      };
     }
     if (payload.rule !== undefined) {
       const operation = await this.webhooks.startRuleFromInbound(actor, {

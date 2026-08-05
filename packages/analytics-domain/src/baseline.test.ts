@@ -75,9 +75,7 @@ describe('compareToTrailingMedian', () => {
     expect(result.outcome).toBe('refused_incompatible_kinds');
     expect(result.effectSize).toBeNull();
     expect(result.medianValue).toBeNull();
-    expect(result.confounders.map((entry) => entry.code)).toContain(
-      'INCOMPATIBLE_CONTENT_KINDS',
-    );
+    expect(result.confounders.map((entry) => entry.code)).toContain('INCOMPATIBLE_CONTENT_KINDS');
   });
 
   it('compares posts of the same kind on the same platform', () => {

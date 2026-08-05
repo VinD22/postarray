@@ -54,10 +54,10 @@ const ToastContext = createContext<ToastContextValue | null>(null);
 
 const toneIcon: Record<ToastTone, ReactNode> = {
   neutral: null,
-  success: <CheckCircle2 aria-hidden="true" className="size-4 text-success-fg" />,
-  warning: <AlertTriangle aria-hidden="true" className="size-4 text-warning-fg" />,
-  destructive: <XCircle aria-hidden="true" className="size-4 text-destructive-fg" />,
-  info: <Info aria-hidden="true" className="size-4 text-info-fg" />,
+  success: <CheckCircle2 aria-hidden="true" className="text-success-fg size-4" />,
+  warning: <AlertTriangle aria-hidden="true" className="text-warning-fg size-4" />,
+  destructive: <XCircle aria-hidden="true" className="text-destructive-fg size-4" />,
+  info: <Info aria-hidden="true" className="text-info-fg size-4" />,
 };
 
 const toneBorder: Record<ToastTone, string> = {
@@ -112,16 +112,14 @@ export function Toaster({
                 if (!open) dismiss(item.id);
               }}
               className={cn(
-                'flex items-start gap-2.5 rounded-lg border bg-surface-overlay',
-                'p-3 shadow-overlay relay-anim-enter-toast',
+                'bg-surface-overlay flex items-start gap-2.5 rounded-lg border',
+                'shadow-overlay relay-anim-enter-toast p-3',
                 toneBorder[tone],
               )}
             >
-              {toneIcon[tone] ? (
-                <span className="mt-0.5 shrink-0">{toneIcon[tone]}</span>
-              ) : null}
+              {toneIcon[tone] ? <span className="mt-0.5 shrink-0">{toneIcon[tone]}</span> : null}
               <div className="flex min-w-0 flex-1 flex-col gap-0.5">
-                <ToastPrimitive.Title className="text-body-md font-medium text-text-primary">
+                <ToastPrimitive.Title className="text-body-md text-text-primary font-medium">
                   {item.title}
                 </ToastPrimitive.Title>
                 {item.description ? (
@@ -135,8 +133,8 @@ export function Toaster({
                   altText={item.action.label}
                   onClick={item.action.onSelect}
                   className={cn(
-                    'shrink-0 rounded-md border border-border-default px-2 py-1',
-                    'text-body-sm font-medium text-text-primary hover:bg-surface-hover',
+                    'border-border-default shrink-0 rounded-md border px-2 py-1',
+                    'text-body-sm text-text-primary hover:bg-surface-hover font-medium',
                     focusRing,
                   )}
                 >
@@ -146,7 +144,7 @@ export function Toaster({
               <ToastPrimitive.Close
                 aria-label={closeLabel}
                 className={cn(
-                  'shrink-0 rounded-sm p-0.5 text-text-tertiary hover:text-text-primary',
+                  'text-text-tertiary hover:text-text-primary shrink-0 rounded-sm p-0.5',
                   focusRing,
                 )}
               >
@@ -157,7 +155,7 @@ export function Toaster({
         })}
         <ToastPrimitive.Viewport
           className={cn(
-            'fixed bottom-0 end-0 z-(--z-index-toast) flex max-h-dvh w-[min(24rem,calc(100vw-1.5rem))]',
+            'fixed end-0 bottom-0 z-(--z-index-toast) flex max-h-dvh w-[min(24rem,calc(100vw-1.5rem))]',
             'm-0 list-none flex-col gap-2 p-3 outline-none',
           )}
         />
@@ -184,8 +182,8 @@ export const ToastAction = forwardRef<
     <ToastPrimitive.Action
       ref={ref}
       className={cn(
-        'shrink-0 rounded-md border border-border-default px-2 py-1',
-        'text-body-sm font-medium text-text-primary hover:bg-surface-hover',
+        'border-border-default shrink-0 rounded-md border px-2 py-1',
+        'text-body-sm text-text-primary hover:bg-surface-hover font-medium',
         focusRing,
         className,
       )}

@@ -34,13 +34,13 @@ export function SettingsPanel({
   return (
     <section
       id={id}
-      className={cn('flex flex-col gap-3 border-t border-border-subtle pt-6', className)}
+      className={cn('border-border-subtle flex flex-col gap-3 border-t pt-6', className)}
     >
       <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
         <div className="flex min-w-0 flex-col gap-1">
           <h2 className="text-title-sm text-text-primary">{title}</h2>
           {description ? (
-            <p className="max-w-[68ch] text-body-md text-text-secondary">{description}</p>
+            <p className="text-body-md text-text-secondary max-w-[68ch]">{description}</p>
           ) : null}
         </div>
         {actions ? (
@@ -69,22 +69,17 @@ export interface SettingRowProps {
  * on the inline end, stacked below 768px. This is the shape that replaces a
  * grid of small cards.
  */
-export function SettingRow({
-  label,
-  description,
-  control,
-  className,
-}: SettingRowProps): ReactNode {
+export function SettingRow({ label, description, control, className }: SettingRowProps): ReactNode {
   return (
     <div
       className={cn(
-        'flex flex-col gap-2 border-b border-border-subtle py-3 last:border-b-0',
+        'border-border-subtle flex flex-col gap-2 border-b py-3 last:border-b-0',
         'md:flex-row md:items-start md:justify-between md:gap-6',
         className,
       )}
     >
-      <div className="flex min-w-0 max-w-[52ch] flex-col gap-1">
-        <span className="text-body-md font-medium text-text-primary">{label}</span>
+      <div className="flex max-w-[52ch] min-w-0 flex-col gap-1">
+        <span className="text-body-md text-text-primary font-medium">{label}</span>
         {description ? (
           <span className="text-body-sm text-text-secondary">{description}</span>
         ) : null}
@@ -104,9 +99,7 @@ export function SettingsStack({
   children: ReactNode;
   className?: string;
 }): ReactNode {
-  return (
-    <div className={cn('flex flex-col gap-6 px-4 py-6 md:px-6', className)}>{children}</div>
-  );
+  return <div className={cn('flex flex-col gap-6 px-4 py-6 md:px-6', className)}>{children}</div>;
 }
 
 /**
@@ -125,7 +118,7 @@ export function InlineFact({
   return (
     <p className={cn('text-body-md text-text-secondary', className)}>
       <span className="text-text-tertiary">{label}</span>{' '}
-      <span className="font-medium text-text-primary tabular-nums">{value}</span>
+      <span className="text-text-primary font-medium tabular-nums">{value}</span>
     </p>
   );
 }

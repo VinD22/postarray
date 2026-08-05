@@ -49,8 +49,7 @@ export const webAnalyticsMessages = {
   'analytics.outcome.awarenessHelp':
     'How many times the post was delivered or seen. Providers count this differently, so a value is only comparable with itself over time.',
   'analytics.outcome.consumption': 'Consumption',
-  'analytics.outcome.consumptionHelp':
-    'How much of the post people actually watched or read.',
+  'analytics.outcome.consumptionHelp': 'How much of the post people actually watched or read.',
   'analytics.outcome.interaction': 'Interaction',
   'analytics.outcome.interactionHelp':
     'What people did on the platform: likes, comments, shares and saves.',
@@ -100,8 +99,7 @@ export const webAnalyticsMessages = {
   'analytics.evidence.smallSample':
     'With {count, plural, one {# post} other {# posts}} in the baseline, a single unusual post moves the median a long way. Treat this as a signal to test again, not as a result.',
   'analytics.evidence.confounders': 'What this does not account for',
-  'analytics.evidence.confounder.time':
-    'Publish time of day varied across the baseline posts.',
+  'analytics.evidence.confounder.time': 'Publish time of day varied across the baseline posts.',
   'analytics.evidence.confounder.format':
     'Image posts and video posts are not directly comparable here.',
   'analytics.evidence.confounder.followers':
@@ -131,7 +129,8 @@ export const webAnalyticsMessages = {
   'analytics.definition.denominator.none': 'This is a count, not a rate.',
   'analytics.definition.historyWindow':
     '{provider} keeps {days, plural, one {# day} other {# days}} of history for this field.',
-  'analytics.definition.historyWindowNone': '{provider} does not state a history limit for this field.',
+  'analytics.definition.historyWindowNone':
+    '{provider} does not state a history limit for this field.',
 
   'analytics.definition.term.providerField': 'Provider field',
   'analytics.definition.term.unit': 'Unit',
@@ -183,11 +182,13 @@ export const webAnalyticsMessages = {
     'Every connected account returned data in this period. Nothing needs you here.',
   'analytics.accounts.reason.permission':
     'The analytics permission was not granted when this account was connected.',
-  'analytics.accounts.reason.expired': 'Access expired, so no metric has been collected since {date}.',
+  'analytics.accounts.reason.expired':
+    'Access expired, so no metric has been collected since {date}.',
   'analytics.accounts.reason.stale': 'The last successful sync was {relativeTime}.',
   'analytics.accounts.reason.syncFailing':
     '{count, plural, one {# sync attempt} other {# sync attempts}} failed in a row. The reason recorded was {reason}.',
-  'analytics.accounts.reason.noPosts': 'Nothing was published to this account in the selected range.',
+  'analytics.accounts.reason.noPosts':
+    'Nothing was published to this account in the selected range.',
 
   /* ----------------------------------------------------------------------
      Observations and next tests
@@ -241,13 +242,13 @@ export const webAnalyticsMessages = {
   'analytics.experiment.accounts': 'Accounts included',
   'analytics.experiment.windowHelp':
     'Metrics keep moving after a post goes live. Fix the window now so the comparison is not made at a moment that happens to suit one variant.',
-  'analytics.experiment.windowDays': 'Measure for {count, plural, one {# day} other {# days}} after each post publishes',
+  'analytics.experiment.windowDays':
+    'Measure for {count, plural, one {# day} other {# days}} after each post publishes',
   'analytics.experiment.minSample': 'Minimum posts per variant',
   'analytics.experiment.minSampleHelp':
     'Below this count the result is shown as inconclusive rather than as a winner.',
   'analytics.experiment.status.planned': 'Planned',
-  'analytics.experiment.status.collecting':
-    'Collecting. {published} of {target} posts published.',
+  'analytics.experiment.status.collecting': 'Collecting. {published} of {target} posts published.',
   'analytics.experiment.status.inconclusive': 'Complete, no clear difference',
   'analytics.experiment.result.difference':
     '{variant} recorded {percent} more {metric} than {otherVariant}.',
@@ -276,8 +277,7 @@ export const webAnalyticsMessages = {
   'analytics.state.errorTitle': 'Analytics could not be loaded',
   'analytics.state.errorBody':
     'No number is shown rather than a guessed one. Your posts and receipts are unaffected.',
-  'analytics.state.partialTitle':
-    '{loaded} of {total} accounts returned data',
+  'analytics.state.partialTitle': '{loaded} of {total} accounts returned data',
   'analytics.state.partialBody':
     'The accounts that answered are shown with their own freshness. The rest are listed with the reason they did not.',
   'analytics.state.partialSucceeded': 'Returned data',
@@ -305,7 +305,8 @@ export const webAnalyticsMessages = {
     'A tracked link is a short URL Relay redirects through, so you can see clicks even when a platform reports none. The original destination is never changed without an audit entry.',
   'analytics.links.emptyExample':
     'Example: relay.to/a7Kq2 redirects to acme.com/blog/launch with campaign q3-launch.',
-  'analytics.links.table.caption': 'Tracked links in this workspace and their first party click counts.',
+  'analytics.links.table.caption':
+    'Tracked links in this workspace and their first party click counts.',
   'analytics.links.campaign': 'Campaign',
   'analytics.links.created': 'Created',
   'analytics.links.usedIn':
@@ -313,7 +314,8 @@ export const webAnalyticsMessages = {
   'analytics.links.state.active': 'Active',
   'analytics.links.state.expired': 'Expired {date}',
   'analytics.links.state.disabled': 'Disabled',
-  'analytics.links.state.disabledReason': 'Disabled by {actor} on {date}. Reason recorded: {reason}.',
+  'analytics.links.state.disabledReason':
+    'Disabled by {actor} on {date}. Reason recorded: {reason}.',
   'analytics.links.detailTitle': 'Tracked link {slug}',
   'analytics.links.exactRedirect': 'Exact redirect',
   'analytics.links.exactRedirectHelp':
@@ -579,8 +581,7 @@ export const webAnalyticsMessages = {
   /* ----------------------------------------------------------------------
      Preflight
      ---------------------------------------------------------------------- */
-  'automation.preflight.intro':
-    'Everything this rule can do, before it can do any of it.',
+  'automation.preflight.intro': 'Everything this rule can do, before it can do any of it.',
   'automation.preflight.accountsLabel': 'Accounts it can act on',
   'automation.preflight.maxActionsLabel': 'Most external actions per run',
   'automation.preflight.maxActionsPeriod':
@@ -662,7 +663,8 @@ export const webAnalyticsMessages = {
     'The rule stops immediately, in the middle of a run if one is happening. Anything already sent to a platform stays published, because an external post is never rolled back.',
   'automation.kill.confirmPhrase': 'STOP',
   'automation.kill.confirmLabel': 'Type STOP to confirm',
-  'automation.kill.stopped': 'This rule was stopped by {actor} on {date}. It cannot run again until you turn it back on.',
+  'automation.kill.stopped':
+    'This rule was stopped by {actor} on {date}. It cannot run again until you turn it back on.',
 
   /* ----------------------------------------------------------------------
      Automation states
@@ -715,16 +717,19 @@ export const webAnalyticsMessages = {
   'automation.rss.validateBlocked':
     'That address points at a private network, so it was not fetched.',
   'automation.rss.previewTitle': 'Feed preview',
-  'automation.rss.previewMeta': '{title}. {count, plural, one {# item} other {# items}} returned, newest first.',
+  'automation.rss.previewMeta':
+    '{title}. {count, plural, one {# item} other {# items}} returned, newest first.',
   'automation.rss.previewItemPublished': 'Published {dateTime}',
   'automation.rss.previewNoImage': 'No image in this item',
   'automation.rss.previewImageAlt': 'Image from the feed item {title}',
-  'automation.rss.previewNoDate': 'This item has no timestamp, so Relay uses the time it first saw it.',
+  'automation.rss.previewNoDate':
+    'This item has no timestamp, so Relay uses the time it first saw it.',
   'automation.rss.previewFieldsTitle': 'Fields this feed provides',
   'automation.rss.previewFieldMissing': 'Not present in this feed',
 
   'automation.rss.seenTitle': 'What counts as already seen',
-  'automation.rss.seenLatest': 'Treat everything currently in the feed as seen. Only future items are posted.',
+  'automation.rss.seenLatest':
+    'Treat everything currently in the feed as seen. Only future items are posted.',
   'automation.rss.seenAll': 'Treat the newest item as new and post it on the next check.',
   'automation.rss.seenHelp':
     'Most feeds contain old articles. Choosing the first option is how you avoid publishing a backlog.',
@@ -746,8 +751,7 @@ export const webAnalyticsMessages = {
   'automation.rss.adaptWithAi': 'Adapt the text for each target',
   'automation.rss.adaptHelp':
     'The wording is rewritten to fit each platform and shown as a diff you accept or reject. Media comes from the feed item. Relay does not generate images.',
-  'automation.rss.noImageGeneration':
-    'If a feed item has no image, the post goes out without one.',
+  'automation.rss.noImageGeneration': 'If a feed item has no image, the post goes out without one.',
   'automation.rss.imageFromFeed': 'Use the image from the feed item when it has one',
 
   'automation.rss.policyHelp':

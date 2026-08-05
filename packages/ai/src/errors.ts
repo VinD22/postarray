@@ -34,10 +34,7 @@ export function aiUnavailableError(reason: string, context: AiErrorContext = {})
 }
 
 /** The model produced something the schema or the post-processor rejected. */
-export function aiOutputInvalidError(
-  reason: string,
-  context: AiErrorContext = {},
-): RelayError {
+export function aiOutputInvalidError(reason: string, context: AiErrorContext = {}): RelayError {
   return new RelayError(ERROR_CODES.AI_OUTPUT_INVALID, {
     messageKey: AI_MESSAGE_KEYS.outputInvalid,
     details: { reason, ...(context.details ?? {}) },
@@ -47,10 +44,7 @@ export function aiOutputInvalidError(
 }
 
 /** A per-workspace call, token or spend ceiling stopped the call before it ran. */
-export function aiBudgetExceededError(
-  limit: string,
-  context: AiErrorContext = {},
-): RelayError {
+export function aiBudgetExceededError(limit: string, context: AiErrorContext = {}): RelayError {
   return new RelayError(ERROR_CODES.QUOTA_EXCEEDED, {
     messageKey: AI_MESSAGE_KEYS.budgetExceeded,
     retryable: false,
@@ -60,10 +54,7 @@ export function aiBudgetExceededError(
 }
 
 /** Guardrails refused the input or the output. Never surfaced as a model answer. */
-export function aiPolicyBlockedError(
-  rule: string,
-  context: AiErrorContext = {},
-): RelayError {
+export function aiPolicyBlockedError(rule: string, context: AiErrorContext = {}): RelayError {
   return new RelayError(ERROR_CODES.POLICY_BLOCKED, {
     messageKey: AI_MESSAGE_KEYS.outputInvalid,
     details: { rule, ...(context.details ?? {}) },

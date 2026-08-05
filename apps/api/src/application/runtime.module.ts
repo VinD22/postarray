@@ -4,7 +4,14 @@ import type { Logger } from '@relay/observability';
 
 import type { Clock, KeyValueStore, Services } from './port.js';
 import type { IdentityProvider } from '../modules/auth/identity.port.js';
-import { CLOCK, IDENTITY_PROVIDER, KEY_VALUE_STORE, LOGGER, RELAY_CONFIG, SERVICES } from './tokens.js';
+import {
+  CLOCK,
+  IDENTITY_PROVIDER,
+  KEY_VALUE_STORE,
+  LOGGER,
+  RELAY_CONFIG,
+  SERVICES,
+} from './tokens.js';
 
 /**
  * Everything the API is handed at bootstrap.

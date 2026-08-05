@@ -52,12 +52,10 @@ export const analyticsMessages = {
     'The last sync failed. We are retrying and will not show a guessed number.',
   'analytics.freshness.synced': 'Synced {relativeTime}',
   'analytics.freshness.stale': 'Last successful sync {relativeTime}. This may be out of date.',
-  'analytics.freshness.coverage':
-    '{covered} of {total} posts in this range have current data.',
+  'analytics.freshness.coverage': '{covered} of {total} posts in this range have current data.',
 
   'analytics.feedback.title': 'What this suggests',
-  'analytics.feedback.aboveBaseline':
-    'This post received {percent} more {metric} than {baseline}.',
+  'analytics.feedback.aboveBaseline': 'This post received {percent} more {metric} than {baseline}.',
   'analytics.feedback.belowBaseline':
     'This post received {percent} fewer {metric} than {baseline}.',
   'analytics.feedback.notComparableFormats':

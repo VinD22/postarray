@@ -75,28 +75,32 @@ export default function PricingPage(): ReactNode {
           <div className="lg:col-span-5">
             <h2 className="text-label text-text-tertiary">{t.t('web.pricing.intervalHeading')}</h2>
 
-            <dl className="mt-4 border-t border-border-default">
-              <div className="border-b border-border-subtle py-6">
-                <dt className="text-body-md text-text-tertiary">{t.t('web.pricing.monthlyLabel')}</dt>
+            <dl className="border-border-default mt-4 border-t">
+              <div className="border-border-subtle border-b py-6">
+                <dt className="text-body-md text-text-tertiary">
+                  {t.t('web.pricing.monthlyLabel')}
+                </dt>
                 <dd className="mt-1">
-                  <p className="font-serif text-[2.25rem] leading-[1.1] tracking-[-0.02em] tabular-nums text-text-primary">
+                  <p className="text-text-primary font-serif text-[2.25rem] leading-[1.1] tracking-[-0.02em] tabular-nums">
                     {t.t('billing.plan.monthlyPrice')}
                   </p>
-                  <p className="mt-1 text-body-md text-text-secondary">
+                  <p className="text-body-md text-text-secondary mt-1">
                     {t.t('web.pricing.monthlyDetail')}
                   </p>
                 </dd>
               </div>
-              <div className="border-b border-border-subtle py-6">
-                <dt className="text-body-md text-text-tertiary">{t.t('web.pricing.annualLabel')}</dt>
+              <div className="border-border-subtle border-b py-6">
+                <dt className="text-body-md text-text-tertiary">
+                  {t.t('web.pricing.annualLabel')}
+                </dt>
                 <dd className="mt-1">
-                  <p className="font-serif text-[2.25rem] leading-[1.1] tracking-[-0.02em] tabular-nums text-text-primary">
+                  <p className="text-text-primary font-serif text-[2.25rem] leading-[1.1] tracking-[-0.02em] tabular-nums">
                     {t.t('billing.plan.annualPrice')}
                   </p>
-                  <p className="mt-1 text-body-lg text-text-primary">
+                  <p className="text-body-lg text-text-primary mt-1">
                     {t.t('billing.plan.annualFraming')}
                   </p>
-                  <p className="mt-1 text-body-md text-text-secondary">
+                  <p className="text-body-md text-text-secondary mt-1">
                     {t.t('web.pricing.annualDetail')}
                   </p>
                 </dd>
@@ -105,10 +109,10 @@ export default function PricingPage(): ReactNode {
 
             <div className="mt-8 space-y-4">
               <Cta href={ROUTES.signUp}>{t.t('web.cta.startTrial')}</Cta>
-              <p className="max-w-[46ch] text-body-md leading-[1.6] text-text-primary">
+              <p className="text-body-md text-text-primary max-w-[46ch] leading-[1.6]">
                 {t.t('billing.trial.dueToday')}. {t.t('billing.trial.paymentMethodRequired')}
               </p>
-              <p className="max-w-[46ch] text-body-md leading-[1.6] text-text-tertiary">
+              <p className="text-body-md text-text-tertiary max-w-[46ch] leading-[1.6]">
                 {t.t('billing.checkout.hostedBy')} {t.t('billing.checkout.taxNote')}
               </p>
               <Meta>{t.t('web.pricing.perMonthNote')}</Meta>
@@ -134,7 +138,7 @@ export default function PricingPage(): ReactNode {
           }
         >
           <List items={INCLUDED.map((key) => t.format(key))} />
-          <p className="mt-6 max-w-[68ch] text-body-md leading-[1.6] text-text-secondary">
+          <p className="text-body-md text-text-secondary mt-6 max-w-[68ch] leading-[1.6]">
             {t.t('billing.plan.fairUse')}
           </p>
         </Split>
@@ -152,7 +156,7 @@ export default function PricingPage(): ReactNode {
       <Section id="media">
         <Split aside={<Heading>{t.t('billing.mediaGeneration.title')}</Heading>}>
           <Body>{t.t('billing.mediaGeneration.explanation')}</Body>
-          <p className="mt-4 max-w-[68ch] text-body-md leading-[1.6] text-text-tertiary">
+          <p className="text-body-md text-text-tertiary mt-4 max-w-[68ch] leading-[1.6]">
             {t.t('billing.usage.noMediaCredits')}
           </p>
           <p className="mt-4">
@@ -169,19 +173,19 @@ export default function PricingPage(): ReactNode {
 
       <Section id="questions">
         <Heading className="max-w-[28ch]">{t.t('web.pricing.faq.title')}</Heading>
-        <dl className="mt-10 border-t border-border-default">
+        <dl className="border-border-default mt-10 border-t">
           {FAQ.map((item) => (
             <div
               key={item.id}
-              className="grid gap-x-12 gap-y-2 border-b border-border-subtle py-7 lg:grid-cols-12"
+              className="border-border-subtle grid gap-x-12 gap-y-2 border-b py-7 lg:grid-cols-12"
             >
               <dt className="lg:col-span-4">
-                <Subheading as="h3" className="text-pretty text-title-sm">
+                <Subheading as="h3" className="text-title-sm text-pretty">
                   {t.format(item.q)}
                 </Subheading>
               </dt>
               <dd className="min-w-0 lg:col-span-7 lg:col-start-6">
-                <p className="max-w-[68ch] text-body-lg leading-[1.65] text-text-secondary">
+                <p className="text-body-lg text-text-secondary max-w-[68ch] leading-[1.65]">
                   {t.format(item.a)}
                 </p>
               </dd>
@@ -191,7 +195,7 @@ export default function PricingPage(): ReactNode {
       </Section>
 
       <Container>
-        <div className="border-t border-border-default py-8 md:py-10">
+        <div className="border-border-default border-t py-8 md:py-10">
           <ul className="flex flex-wrap gap-x-8 gap-y-2">
             <li>
               <TextLink href={ROUTES.refunds} className="text-body-md">

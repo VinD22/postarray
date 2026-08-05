@@ -59,8 +59,7 @@ const REFUSED_CLIENT_METHODS = new Set([
   '$extends',
 ]);
 
-const UUID_PATTERN =
-  /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+const UUID_PATTERN = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
 /**
  * The Prisma client is a runtime-generated object, so reaching into it needs one
@@ -179,8 +178,7 @@ function wrapDelegate(
       // promise. Prisma operations are thenable, and a synchronous throw would
       // slip past a caller's .catch() and surface somewhere unrelated.
       if (READ_OPERATIONS.has(property) || WHERE_WRITE_OPERATIONS.has(property)) {
-        return async (args?: unknown) =>
-          bound(scopeWhere(args, model, workspaceId, property));
+        return async (args?: unknown) => bound(scopeWhere(args, model, workspaceId, property));
       }
 
       if (CREATE_OPERATIONS.has(property)) {
@@ -281,10 +279,7 @@ function createScopedTransaction(source: ClientRecord, workspaceId: string) {
       { workspaceId },
     );
   }
-  const bound = original.bind(source) as (
-    arg: unknown,
-    options?: unknown,
-  ) => Promise<unknown>;
+  const bound = original.bind(source) as (arg: unknown, options?: unknown) => Promise<unknown>;
 
   return (arg: unknown, options?: unknown): Promise<unknown> => {
     if (typeof arg === 'function') {

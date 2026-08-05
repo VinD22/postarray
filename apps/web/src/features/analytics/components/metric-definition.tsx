@@ -41,9 +41,7 @@ export interface MetricDefinitionBodyProps {
   readonly definition: MetricDefinitionView;
 }
 
-export function MetricDefinitionBody({
-  definition,
-}: MetricDefinitionBodyProps): ReactElement {
+export function MetricDefinitionBody({ definition }: MetricDefinitionBodyProps): ReactElement {
   const t = useTranslations();
   const format = useValueFormat();
 
@@ -124,9 +122,7 @@ export interface MetricDefinitionButtonProps {
   readonly definition: MetricDefinitionView;
 }
 
-export function MetricDefinitionButton({
-  definition,
-}: MetricDefinitionButtonProps): ReactElement {
+export function MetricDefinitionButton({ definition }: MetricDefinitionButtonProps): ReactElement {
   const t = useTranslations();
   const metricName = t(metricLabelKey(definition.normalizedName));
 
@@ -141,7 +137,7 @@ export function MetricDefinitionButton({
         />
       </PopoverTrigger>
       <PopoverContent className="w-[min(26rem,calc(100vw-2rem))]">
-        <h3 className="mb-2 text-title-sm text-text-primary">
+        <h3 className="text-title-sm text-text-primary mb-2">
           {t('analytics.definition.title', { metric: metricName })}
         </h3>
         <MetricDefinitionBody definition={definition} />
@@ -172,15 +168,13 @@ export function MetricDefinitionsPanel({
   return (
     <section
       aria-labelledby="metric-definitions-heading"
-      className="flex flex-col gap-4 border-t border-border-default pt-6"
+      className="border-border-default flex flex-col gap-4 border-t pt-6"
     >
       <div className="flex max-w-[70ch] flex-col gap-1">
         <h2 id="metric-definitions-heading" className="text-title-sm text-text-primary">
           {t('analytics.definition.panelTitle')}
         </h2>
-        <p className="text-body-md text-text-secondary">
-          {t('analytics.definition.panelIntro')}
-        </p>
+        <p className="text-body-md text-text-secondary">{t('analytics.definition.panelIntro')}</p>
       </div>
 
       <ul className="flex flex-col gap-5">
@@ -189,7 +183,7 @@ export function MetricDefinitionsPanel({
             key={`${definition.provider}:${definition.normalizedName}`}
             className="flex flex-col gap-2"
           >
-            <h3 className="text-body-md font-medium text-text-primary">
+            <h3 className="text-body-md text-text-primary font-medium">
               {t('analytics.definition.title', {
                 metric: t(metricLabelKey(definition.normalizedName)),
               })}

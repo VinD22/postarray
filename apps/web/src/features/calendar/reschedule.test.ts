@@ -175,10 +175,7 @@ describe('countNearbyEntries', () => {
     const subject = entry();
     const target = new Date(subject.scheduledAt);
     const count = countNearbyEntries(
-      [
-        subject,
-        entry({ contentItemId: 'post_01j000000000000000000009', state: 'canceled' }),
-      ],
+      [subject, entry({ contentItemId: 'post_01j000000000000000000009', state: 'canceled' })],
       subject,
       target,
       60,

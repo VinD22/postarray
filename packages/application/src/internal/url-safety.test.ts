@@ -61,9 +61,9 @@ describe('assertFetchable', () => {
     await expect(assertFetchable('http://127.0.0.1/admin')).rejects.toMatchObject({
       code: 'SSRF_BLOCKED',
     });
-    await expect(assertFetchable('http://169.254.169.254/latest/meta-data')).rejects.toMatchObject(
-      { code: 'SSRF_BLOCKED' },
-    );
+    await expect(assertFetchable('http://169.254.169.254/latest/meta-data')).rejects.toMatchObject({
+      code: 'SSRF_BLOCKED',
+    });
     await expect(assertFetchable('http://[::1]/')).rejects.toMatchObject({
       code: 'SSRF_BLOCKED',
     });

@@ -16,7 +16,7 @@ export default async function Loading() {
     <div className="p-4 md:p-6">
       <LoadingState label={intl.t.format('loading.default')}>
         <div className="flex flex-col gap-4">
-          <div className="h-7 w-48 animate-pulse rounded-md bg-surface-sunken" />
+          <div className="bg-surface-sunken h-7 w-48 animate-pulse rounded-md" />
           <SkeletonList rows={6} />
         </div>
       </LoadingState>

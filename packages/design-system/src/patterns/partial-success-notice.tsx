@@ -69,11 +69,7 @@ export function PartialSuccessNotice({
           <p>{description}</p>
 
           <div className="grid gap-3 sm:grid-cols-2">
-            <TargetGroup
-              label={succeededLabel}
-              targets={succeeded}
-              outcome="succeeded"
-            />
+            <TargetGroup label={succeededLabel} targets={succeeded} outcome="succeeded" />
             <TargetGroup label={failedLabel} targets={failed} outcome="failed" />
           </div>
         </div>
@@ -103,19 +99,17 @@ function TargetGroup({
             {outcome === 'succeeded' ? (
               <CheckCircle2
                 aria-hidden="true"
-                className="mt-0.5 size-3.5 shrink-0 text-success-fg"
+                className="text-success-fg mt-0.5 size-3.5 shrink-0"
               />
             ) : (
               <XCircle
                 aria-hidden="true"
-                className="mt-0.5 size-3.5 shrink-0 text-destructive-fg"
+                className="text-destructive-fg mt-0.5 size-3.5 shrink-0"
               />
             )}
             <span className={cn('flex min-w-0 flex-col')}>
               <span className="text-text-primary">{target.account}</span>
-              {target.detail ? (
-                <span className="text-text-tertiary">{target.detail}</span>
-              ) : null}
+              {target.detail ? <span className="text-text-tertiary">{target.detail}</span> : null}
             </span>
           </li>
         ))}

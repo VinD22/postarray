@@ -46,10 +46,7 @@ describe('wall clock conversion', () => {
 describe('daylight saving transitions', () => {
   it('keeps the local hour when adding days across the autumn change', () => {
     // 25 October 2026 is the European autumn transition.
-    const before = fromWallClock(
-      { year: 2026, month: 10, day: 24, hour: 9, minute: 30 },
-      BERLIN,
-    );
+    const before = fromWallClock({ year: 2026, month: 10, day: 24, hour: 9, minute: 30 }, BERLIN);
     const after = addDays(before, 1, BERLIN);
     expect(toWallClock(after, BERLIN)).toEqual({
       year: 2026,
@@ -64,10 +61,7 @@ describe('daylight saving transitions', () => {
 
   it('lands on a real instant when the requested local time does not exist', () => {
     // 29 March 2026, 02:30 Europe/Berlin is inside the spring forward gap.
-    const inGap = fromWallClock(
-      { year: 2026, month: 3, day: 29, hour: 2, minute: 30 },
-      BERLIN,
-    );
+    const inGap = fromWallClock({ year: 2026, month: 3, day: 29, hour: 2, minute: 30 }, BERLIN);
     const readBack = toWallClock(inGap, BERLIN);
     expect(readBack.day).toBe(29);
     // The gap pushes the reading to 03:30 local, which is a real time.
@@ -76,10 +70,7 @@ describe('daylight saving transitions', () => {
   });
 
   it('shifts by exact minutes without preserving the wall clock', () => {
-    const before = fromWallClock(
-      { year: 2026, month: 10, day: 25, hour: 2, minute: 30 },
-      BERLIN,
-    );
+    const before = fromWallClock({ year: 2026, month: 10, day: 25, hour: 2, minute: 30 }, BERLIN);
     const later = shiftSchedule(before, BERLIN, { minutes: 60 });
     expect(later.getTime() - before.getTime()).toBe(3_600_000);
   });
@@ -106,10 +97,7 @@ describe('month arithmetic', () => {
 
 describe('week start', () => {
   it('honours a Monday start locale', () => {
-    const wednesday = fromWallClock(
-      { year: 2026, month: 8, day: 5, hour: 15, minute: 0 },
-      BERLIN,
-    );
+    const wednesday = fromWallClock({ year: 2026, month: 8, day: 5, hour: 15, minute: 0 }, BERLIN);
     expect(toWallClock(startOfWeek(wednesday, BERLIN, 1), BERLIN)).toMatchObject({
       day: 3,
       hour: 0,
@@ -118,10 +106,7 @@ describe('week start', () => {
   });
 
   it('honours a Sunday start locale', () => {
-    const wednesday = fromWallClock(
-      { year: 2026, month: 8, day: 5, hour: 15, minute: 0 },
-      BERLIN,
-    );
+    const wednesday = fromWallClock({ year: 2026, month: 8, day: 5, hour: 15, minute: 0 }, BERLIN);
     expect(toWallClock(startOfWeek(wednesday, BERLIN, 0), BERLIN)).toMatchObject({ day: 2 });
   });
 });

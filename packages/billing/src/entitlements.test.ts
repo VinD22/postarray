@@ -267,8 +267,9 @@ describe('scheduled work when a workspace stops paying', () => {
   });
 
   it('has no cancel or delete outcome at all', () => {
-    const outcomes = (['full', 'full_grace', 'full_until_period_end', 'read_only', 'none'] as const)
-      .map((state) => scheduledPostDisposition(state));
+    const outcomes = (
+      ['full', 'full_grace', 'full_until_period_end', 'read_only', 'none'] as const
+    ).map((state) => scheduledPostDisposition(state));
     expect(outcomes).not.toContain('cancel');
     expect(outcomes).not.toContain('delete');
   });

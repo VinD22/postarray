@@ -174,9 +174,7 @@ export function buildBaselineInsights(result: BaselineResult): Insight[] {
 }
 
 /** The observations that explain why a metric is missing, one per reason. */
-export function buildUnavailabilityInsights(
-  metrics: readonly NormalizedMetric[],
-): Insight[] {
+export function buildUnavailabilityInsights(metrics: readonly NormalizedMetric[]): Insight[] {
   const seen = new Set<string>();
   const insights: Insight[] = [];
   for (const metric of metrics) {
@@ -233,9 +231,7 @@ export interface CrossPlatformComparison {
  * metric differently are labelled, and a platform that does not report the
  * metric shows as unavailable rather than dropping out of the table.
  */
-export function compareAcrossPlatforms(
-  request: CrossPlatformRequest,
-): CrossPlatformComparison {
+export function compareAcrossPlatforms(request: CrossPlatformRequest): CrossPlatformComparison {
   const definitions = request.entries.map((entry) => ({
     entry,
     definition: mappingForMetric(entry.provider, 'post', request.metric)?.definition ?? null,

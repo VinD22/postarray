@@ -30,8 +30,8 @@ export const AGENT_ACTION_KINDS = [
 export type AgentActionKind = (typeof AGENT_ACTION_KINDS)[number];
 
 /** The minimum level at which an action kind is even conceivable. */
-export const ACTION_MINIMUM_LEVEL: Readonly<Record<AgentActionKind, ApprovalLevel>> =
-  Object.freeze({
+export const ACTION_MINIMUM_LEVEL: Readonly<Record<AgentActionKind, ApprovalLevel>> = Object.freeze(
+  {
     read: 'level_0_read',
     validate: 'level_0_read',
     draft: 'level_1_draft',
@@ -40,7 +40,8 @@ export const ACTION_MINIMUM_LEVEL: Readonly<Record<AgentActionKind, ApprovalLeve
     reschedule: 'level_2_scheduled',
     cancel: 'level_2_scheduled',
     publish_now: 'level_3_confirm',
-  });
+  },
+);
 
 const LEVEL_RANK: Readonly<Record<ApprovalLevel, number>> = Object.freeze({
   level_0_read: 0,
@@ -194,7 +195,10 @@ function note<Code extends string>(
 }
 
 function normalizedHost(host: string): string {
-  return host.trim().toLowerCase().replace(/^www\./, '');
+  return host
+    .trim()
+    .toLowerCase()
+    .replace(/^www\./, '');
 }
 
 /** `example.com` approves `docs.example.com` but never `notexample.com`. */
@@ -280,8 +284,7 @@ export function detectBulkAction(
 ): boolean {
   return (
     countExternalPublications(targets) > thresholds.maxExternalPublications ||
-    countSimilarAccounts(targets, thresholds.similarityThreshold) >
-      thresholds.maxSimilarAccounts
+    countSimilarAccounts(targets, thresholds.similarityThreshold) > thresholds.maxSimilarAccounts
   );
 }
 
@@ -302,9 +305,7 @@ function checkRestrictions(
 
   const cap = restrictions.maxApprovalLevel;
   if (cap !== undefined && LEVEL_RANK[request.approvalLevel] > LEVEL_RANK[cap]) {
-    blockers.push(
-      note('approval_level_capped', { held: request.approvalLevel, cap }),
-    );
+    blockers.push(note('approval_level_capped', { held: request.approvalLevel, cap }));
   }
 
   const brandIds = restrictions.brandIds ?? [];
@@ -314,11 +315,7 @@ function checkRestrictions(
   const approvedDomains = restrictions.approvedDomains ?? [];
 
   for (const target of request.targets) {
-    if (
-      brandIds.length > 0 &&
-      target.brandId !== null &&
-      !brandIds.includes(target.brandId)
-    ) {
+    if (brandIds.length > 0 && target.brandId !== null && !brandIds.includes(target.brandId)) {
       blockers.push(
         note('brand_not_preauthorized', { brandId: target.brandId }, target.connectionId),
       );
@@ -377,11 +374,7 @@ function checkRestrictions(
         );
       }
       const hours = restrictions.allowedHours;
-      if (
-        hours !== undefined &&
-        hours !== null &&
-        !withinAllowedHours(instant, hours, timeZone)
-      ) {
+      if (hours !== undefined && hours !== null && !withinAllowedHours(instant, hours, timeZone)) {
         blockers.push(
           note(
             'outside_allowed_hours',
@@ -422,10 +415,7 @@ function checkEscalations(
 ): PolicyNote<EscalationCode>[] {
   const escalations: PolicyNote<EscalationCode>[] = [];
   const externalCount = countExternalPublications(request.targets);
-  const similarAccounts = countSimilarAccounts(
-    request.targets,
-    thresholds.similarityThreshold,
-  );
+  const similarAccounts = countSimilarAccounts(request.targets, thresholds.similarityThreshold);
 
   if (request.kind === 'publish_now' && externalCount > 0) {
     escalations.push(note('immediate_publish', { targetCount: externalCount }));
@@ -530,18 +520,14 @@ export function evaluateAgentAction(request: AgentActionRequest): AgentDecision 
   // Restrictions only bind actions that reach outside Relay. Reading and
   // drafting inside a narrowed identity is still allowed.
   const consequential =
-    request.kind === 'schedule' ||
-    request.kind === 'reschedule' ||
-    request.kind === 'publish_now';
+    request.kind === 'schedule' || request.kind === 'reschedule' || request.kind === 'publish_now';
   if (consequential) {
     blockers.push(...checkRestrictions(request, restrictions, timeZone));
   } else if (restrictions.disabled === true) {
     blockers.push(note('service_account_disabled'));
   }
 
-  const escalations = consequential
-    ? checkEscalations(request, thresholds, restrictions)
-    : [];
+  const escalations = consequential ? checkEscalations(request, thresholds, restrictions) : [];
 
   const requiresHumanConfirmation = escalations.length > 0 && request.humanConfirmed !== true;
 

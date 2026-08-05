@@ -118,7 +118,12 @@ describe('LinkedIn account discovery', () => {
     const { deps } = createTestDeps({
       routes: [
         { method: 'GET', match: '/v2/userinfo', body: LINKEDIN_USERINFO_FIXTURE },
-        { method: 'GET', match: '/organizationAcls', status: 403, body: LINKEDIN_ROLE_MISSING_FIXTURE },
+        {
+          method: 'GET',
+          match: '/organizationAcls',
+          status: 403,
+          body: LINKEDIN_ROLE_MISSING_FIXTURE,
+        },
       ],
     });
     const connector = createLinkedInConnector(deps);
@@ -217,8 +222,7 @@ describe('LinkedIn publish', () => {
     await expect(
       connector.publish(testPublishRequest({ draft: organizationDraft() })),
     ).rejects.toSatisfy(
-      (error: unknown) =>
-        RelayError.is(error) && error.code === 'CONNECTION_ACTION_REQUIRED',
+      (error: unknown) => RelayError.is(error) && error.code === 'CONNECTION_ACTION_REQUIRED',
     );
   });
 

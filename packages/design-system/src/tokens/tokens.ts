@@ -411,12 +411,7 @@ export interface ContrastPair {
   readonly purpose: 'body' | 'large-text' | 'ui-boundary';
 }
 
-const SURFACES: readonly (keyof SurfaceTokens)[] = [
-  'canvas',
-  'raised',
-  'sunken',
-  'overlay',
-];
+const SURFACES: readonly (keyof SurfaceTokens)[] = ['canvas', 'raised', 'sunken', 'overlay'];
 
 const textOnSurfacePairs: ContrastPair[] = SURFACES.flatMap((surface) => [
   {

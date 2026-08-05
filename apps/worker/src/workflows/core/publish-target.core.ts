@@ -410,11 +410,7 @@ export async function runPublishTarget(
           retryable: false,
           nextRetryAt: null,
         });
-        return stop(
-          'action_required',
-          ERROR_CODES.UNKNOWN,
-          MESSAGE_KEYS.publish.unconfirmedCreate,
-        );
+        return stop('action_required', ERROR_CODES.UNKNOWN, MESSAGE_KEYS.publish.unconfirmedCreate);
       }
     }
 
@@ -458,7 +454,14 @@ export async function runPublishTarget(
     }
 
     if (result.outcome === 'processing') {
-      const confirmed = await awaitProviderConfirmation(runtime, activities, input, run, attempt, result);
+      const confirmed = await awaitProviderConfirmation(
+        runtime,
+        activities,
+        input,
+        run,
+        attempt,
+        result,
+      );
       if (confirmed !== null) {
         run.publication = confirmed;
         break;
@@ -551,18 +554,13 @@ export async function runPublishTarget(
           retryable: false,
           nextRetryAt: null,
         });
-        return stop(
-          'action_required',
-          ERROR_CODES.UNKNOWN,
-          MESSAGE_KEYS.publish.unconfirmedCreate,
-        );
+        return stop('action_required', ERROR_CODES.UNKNOWN, MESSAGE_KEYS.publish.unconfirmedCreate);
       }
     }
 
     // Transient, or an unknown the connector says is safe to recreate.
     const waitMs =
-      result.retryAfterMs ??
-      backoffMs(`${runtime.workflowId}:retry`, run.attempts, RETRY_BACKOFF);
+      result.retryAfterMs ?? backoffMs(`${runtime.workflowId}:retry`, run.attempts, RETRY_BACKOFF);
     const nextRetryAt = toIsoInstant(runtime.now() + waitMs);
     await activities.finalizeAttempt({
       ctx,
@@ -641,19 +639,17 @@ export async function runPublishTarget(
 
   // 5. Receipt. Idempotent by job and target, so a replay writes one row.
   const receiptItems: ReceiptItemInput[] = [
-    ...sequence.items.map(
-      (item: ThreadSequenceItemOutcome): ReceiptItemInput => ({
-        threadItemId: item.threadItemId,
-        kind: item.kind,
-        order: item.order,
-        state: item.state,
-        externalPostId: item.externalPostId,
-        permalink: item.permalink,
-        delaySeconds: item.delaySeconds,
-        publishedAt: item.publishedAt,
-        errorCode: item.errorCode,
-      }),
-    ),
+    ...sequence.items.map((item: ThreadSequenceItemOutcome): ReceiptItemInput => ({
+      threadItemId: item.threadItemId,
+      kind: item.kind,
+      order: item.order,
+      state: item.state,
+      externalPostId: item.externalPostId,
+      permalink: item.permalink,
+      delaySeconds: item.delaySeconds,
+      publishedAt: item.publishedAt,
+      errorCode: item.errorCode,
+    })),
   ];
   const receipt = await activities.writeReceipt({
     ctx,
@@ -725,9 +721,7 @@ export async function runPublishTarget(
   });
 
   run.lastMessageKey =
-    finalState === 'published'
-      ? MESSAGE_KEYS.publish.published
-      : MESSAGE_KEYS.sequence.itemFailed;
+    finalState === 'published' ? MESSAGE_KEYS.publish.published : MESSAGE_KEYS.sequence.itemFailed;
   publish('completed', finalState);
   return outcomeOf(input, run, finalState, receipt.receiptId, failedSequenceItemIds);
 }

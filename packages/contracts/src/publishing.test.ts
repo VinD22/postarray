@@ -69,9 +69,7 @@ describe('PUBLISH_TRANSITIONS', () => {
   });
 
   it('never re-enters a terminal state from itself and keeps the set minimal', () => {
-    const withoutEdges = PUBLISH_STATES.filter(
-      (state) => PUBLISH_TRANSITIONS[state].length === 0,
-    );
+    const withoutEdges = PUBLISH_STATES.filter((state) => PUBLISH_TRANSITIONS[state].length === 0);
     expect([...withoutEdges].sort()).toEqual([...TERMINAL_PUBLISH_STATES].sort());
   });
 });

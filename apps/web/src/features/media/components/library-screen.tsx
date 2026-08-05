@@ -95,7 +95,10 @@ export function LibraryScreen(props: LibraryScreenProps): ReactNode {
         description={t.full('library.subtitle')}
         toolbar={
           <div className="flex flex-wrap items-center gap-3">
-            <Tabs value={view} onValueChange={(value) => setView(value === 'list' ? 'list' : 'grid')}>
+            <Tabs
+              value={view}
+              onValueChange={(value) => setView(value === 'list' ? 'list' : 'grid')}
+            >
               <TabsList aria-label={t.full('mediaLib.view.label')}>
                 <TabsTrigger value="grid">
                   <LayoutGrid aria-hidden className="me-1.5 size-4" />
@@ -164,11 +167,7 @@ export function LibraryScreen(props: LibraryScreenProps): ReactNode {
           ) : view === 'grid' ? (
             <MediaGrid assets={props.assets} onOpen={setOpenAssetId} />
           ) : (
-            <MediaList
-              assets={props.assets}
-              timeZone={props.timeZone}
-              onOpen={setOpenAssetId}
-            />
+            <MediaList assets={props.assets} timeZone={props.timeZone} onOpen={setOpenAssetId} />
           )}
         </>
       ) : null}
@@ -224,7 +223,7 @@ function MediaGrid({
               type="button"
               onClick={() => onOpen(asset.id)}
               className={cn(
-                'flex w-full flex-col gap-2 rounded-lg border border-border-subtle',
+                'border-border-subtle flex w-full flex-col gap-2 rounded-lg border',
                 'bg-surface-raised p-2 text-start',
                 'transition-colors duration-[var(--duration-fast)] ease-[var(--ease-standard)]',
                 'hover:bg-surface-hover focus-visible:outline-2 focus-visible:outline-offset-2',
@@ -233,10 +232,10 @@ function MediaGrid({
             >
               <span
                 aria-hidden
-                className="block aspect-[4/3] w-full rounded-md border border-border-subtle bg-surface-sunken"
+                className="border-border-subtle bg-surface-sunken block aspect-[4/3] w-full rounded-md border"
               />
-              <span className="truncate text-body-sm text-text-primary">{asset.name}</span>
-              <span className="flex flex-wrap gap-x-2 text-label tabular-nums text-text-tertiary">
+              <span className="text-body-sm text-text-primary truncate">{asset.name}</span>
+              <span className="text-label text-text-tertiary flex flex-wrap gap-x-2 tabular-nums">
                 <span>
                   {asset.width !== null && asset.height !== null
                     ? t.full('library.asset.dimensions', {
@@ -247,10 +246,7 @@ function MediaGrid({
                 </span>
               </span>
               <span
-                className={cn(
-                  'text-label',
-                  missingAlt ? 'text-warning-fg' : 'text-text-tertiary',
-                )}
+                className={cn('text-label', missingAlt ? 'text-warning-fg' : 'text-text-tertiary')}
               >
                 {missingAlt
                   ? t.full('composer.media.altText.missing')
@@ -310,9 +306,7 @@ function MediaList({
                   </Button>
                 </TableCell>
                 <TableCell>{asset.mimeType}</TableCell>
-                <TableCell className="tabular-nums">
-                  {formatBytes(t.locale, asset.bytes)}
-                </TableCell>
+                <TableCell className="tabular-nums">{formatBytes(t.locale, asset.bytes)}</TableCell>
                 <TableCell className={missingAlt ? 'text-warning-fg' : undefined}>
                   {missingAlt
                     ? t.full('composer.media.altText.missing')

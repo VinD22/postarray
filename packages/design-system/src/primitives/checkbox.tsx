@@ -25,7 +25,7 @@ export const Checkbox = forwardRef<HTMLButtonElement, CheckboxProps>(function Ch
         'border-border-strong bg-surface-raised text-accent-on',
         'data-[state=checked]:border-accent data-[state=checked]:bg-accent',
         'data-[state=indeterminate]:border-accent data-[state=indeterminate]:bg-accent',
-        'disabled:cursor-not-allowed disabled:border-border-subtle disabled:bg-surface-sunken',
+        'disabled:border-border-subtle disabled:bg-surface-sunken disabled:cursor-not-allowed',
         'disabled:data-[state=checked]:bg-surface-sunken disabled:text-text-disabled',
         focusRing,
         transitionBase,

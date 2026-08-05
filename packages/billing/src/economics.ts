@@ -237,7 +237,12 @@ export function referredCohortEconomics(
 
 /** The scales the plan reports on. Used by the monthly finance report. */
 export const REPORTED_SCALES: readonly number[] = Object.freeze([
-  250, 500, MARGIN_GATE_SUBSCRIBERS, 1_000, 2_000, 5_000,
+  250,
+  500,
+  MARGIN_GATE_SUBSCRIBERS,
+  1_000,
+  2_000,
+  5_000,
 ]);
 
 export interface MarginTableRow {

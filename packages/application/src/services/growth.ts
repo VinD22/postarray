@@ -11,12 +11,7 @@ import {
   type ToolRecord,
 } from '@relay/contracts';
 
-import type {
-  ActorContext,
-  ContentService,
-  GrowthService,
-  ServiceDeps,
-} from '../types.js';
+import type { ActorContext, ContentService, GrowthService, ServiceDeps } from '../types.js';
 import type { BusinessProfileView, CalendarEntry, ContentItemView } from '../views.js';
 
 import { recordAudit } from '../internal/audit.js';
@@ -175,10 +170,7 @@ async function requirePlan(db: Db, planId: string): Promise<GrowthPlan> {
   return parsed.data;
 }
 
-export function createGrowthService(
-  deps: ServiceDeps,
-  content: ContentService,
-): GrowthService {
+export function createGrowthService(deps: ServiceDeps, content: ContentService): GrowthService {
   return {
     async upsertBusinessProfile(
       ctx: ActorContext,
@@ -285,10 +277,7 @@ export function createGrowthService(
     },
 
     /** Asynchronous: generation runs in the worker under the AI guardrails. */
-    async generatePlan(
-      ctx: ActorContext,
-      input: { profileId: string },
-    ): Promise<OperationRef> {
+    async generatePlan(ctx: ActorContext, input: { profileId: string }): Promise<OperationRef> {
       return withIdempotency(deps.kv, ctx, {
         operation: 'growth.generatePlan',
         body: input,
@@ -333,9 +322,7 @@ export function createGrowthService(
     },
 
     async getPlan(ctx: ActorContext, planId: string): Promise<GrowthPlan> {
-      return authorized(deps, ctx, 'growth.read', undefined, async (db) =>
-        requirePlan(db, planId),
-      );
+      return authorized(deps, ctx, 'growth.read', undefined, async (db) => requirePlan(db, planId));
     },
 
     async exportPlan(

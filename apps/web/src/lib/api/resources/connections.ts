@@ -11,6 +11,7 @@ import type {
   Paginated,
   ProviderId,
 } from '../types.js';
+import { requireFirst } from '@/lib/utils/require-first';
 
 export type ConnectionListQuery = {
   readonly brandId?: string;
@@ -21,7 +22,7 @@ export type ConnectionListQuery = {
 
 function demoConnection(connectionId: string): ConnectionView {
   const found = demoConnections.find((connection) => connection.id === connectionId);
-  return found ?? demoConnections[0]!;
+  return found ?? requireFirst(demoConnections, 'connection');
 }
 
 export const connectionsApi = {

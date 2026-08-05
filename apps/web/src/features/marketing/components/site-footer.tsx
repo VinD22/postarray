@@ -18,7 +18,7 @@ export function SiteFooter(): ReactNode {
   const year = new Date().getUTCFullYear();
 
   return (
-    <footer className="border-t border-border-default bg-surface-sunken">
+    <footer className="border-border-default bg-surface-sunken border-t">
       <Container>
         <div className="py-12 md:py-16">
           <nav
@@ -34,10 +34,10 @@ export function SiteFooter(): ReactNode {
                       <Link
                         href={link.href}
                         className={cn(
-                          'flex min-h-9 items-center text-body-md text-text-secondary',
+                          'text-body-md text-text-secondary flex min-h-9 items-center',
                           'transition-colors duration-(--duration-fast) ease-(--ease-standard)',
                           'hover:text-text-primary',
-                          'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-border-focus',
+                          'focus-visible:outline-border-focus focus-visible:outline-2 focus-visible:outline-offset-2',
                         )}
                       >
                         {t.format(link.labelKey)}
@@ -49,14 +49,14 @@ export function SiteFooter(): ReactNode {
             ))}
           </nav>
 
-          <div className="mt-12 space-y-3 border-t border-border-default pt-8">
-            <p className="max-w-[76ch] text-body-md leading-[1.6] text-text-secondary">
+          <div className="border-border-default mt-12 space-y-3 border-t pt-8">
+            <p className="text-body-md text-text-secondary max-w-[76ch] leading-[1.6]">
               {t.t('web.footer.statement')}
             </p>
-            <p className="max-w-[76ch] text-body-sm leading-[1.6] text-text-tertiary">
+            <p className="text-body-sm text-text-tertiary max-w-[76ch] leading-[1.6]">
               {t.t('web.footer.noAffiliation')}
             </p>
-            <p className="font-mono text-body-sm tabular-nums text-text-tertiary">
+            <p className="text-body-sm text-text-tertiary font-mono tabular-nums">
               {t.t('web.footer.copyright', { year })}
             </p>
           </div>

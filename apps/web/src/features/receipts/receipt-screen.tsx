@@ -40,7 +40,11 @@ import { formatCurrency } from '@relay/i18n';
 import { useTranslations } from '@relay/i18n/react';
 import { ApiError } from '@/lib/api/error';
 import { useCalendarFormat } from '@/features/calendar/format';
-import { AccountIdentity, useAccountTypeName, useProviderName } from '@/features/connections/provider';
+import {
+  AccountIdentity,
+  useAccountTypeName,
+  useProviderName,
+} from '@/features/connections/provider';
 import { ReceiptAttempts } from './receipt-attempts';
 import { ReceiptItems } from './receipt-items';
 import { ReceiptTimeline } from './receipt-timeline';
@@ -54,10 +58,7 @@ export interface ReceiptScreenProps {
   calendarHref: string;
 }
 
-export function ReceiptScreen({
-  contentItemId,
-  calendarHref,
-}: ReceiptScreenProps): ReactNode {
+export function ReceiptScreen({ contentItemId, calendarHref }: ReceiptScreenProps): ReactNode {
   const t = useTranslations();
   const query = usePostDetail(contentItemId);
 
@@ -186,9 +187,10 @@ function PostDocument({
   // The roll-up wins over a single target's state, because a campaign with one
   // failed target is partially published even when the receipt on screen is a
   // success. Never label the whole thing by the target you happen to be on.
-  const state = isCampaign && outcome === 'partially_published'
-    ? ('partially_published' as const)
-    : (receipt?.root.state ?? job?.state ?? item.state);
+  const state =
+    isCampaign && outcome === 'partially_published'
+      ? ('partially_published' as const)
+      : (receipt?.root.state ?? job?.state ?? item.state);
 
   return (
     <article className="flex min-h-full flex-col">
@@ -204,11 +206,7 @@ function PostDocument({
         description={t('receipt.subtitle')}
         actions={
           receipt ? (
-            <ExportControls
-              allowed={exportAllowed}
-              role={detail.viewerRole}
-              receipt={receipt}
-            />
+            <ExportControls allowed={exportAllowed} role={detail.viewerRole} receipt={receipt} />
           ) : null
         }
       />
@@ -216,9 +214,7 @@ function PostDocument({
       <div className="flex flex-col gap-8 px-4 py-6 md:px-6">
         {/* ---- What happened -------------------------------------------- */}
         <section aria-labelledby="receipt-summary" className="flex flex-col gap-3">
-          <SectionHeading id="receipt-summary">
-            {t('web.receipt.section.summary')}
-          </SectionHeading>
+          <SectionHeading id="receipt-summary">{t('web.receipt.section.summary')}</SectionHeading>
 
           <div className="flex flex-wrap items-center gap-3">
             <StatusPill state={state} label={t(`state.${state}.label`)} showActivity />
@@ -265,9 +261,7 @@ function PostDocument({
 
             {/* ---- Root and follow up items ------------------------------ */}
             <section aria-labelledby="receipt-items" className="flex flex-col gap-3">
-              <SectionHeading id="receipt-items">
-                {t('web.receipt.section.items')}
-              </SectionHeading>
+              <SectionHeading id="receipt-items">{t('web.receipt.section.items')}</SectionHeading>
               <ReceiptItems receipt={receipt} provider={providerName(receipt.provider)} />
             </section>
 
@@ -359,9 +353,7 @@ function PostDocument({
 
             {/* ---- Provider usage ---------------------------------------- */}
             <section aria-labelledby="receipt-cost" className="flex flex-col gap-3">
-              <SectionHeading id="receipt-cost">
-                {t('web.receipt.section.cost')}
-              </SectionHeading>
+              <SectionHeading id="receipt-cost">{t('web.receipt.section.cost')}</SectionHeading>
               <CostPanel receipt={receipt} provider={providerName(receipt.provider)} />
             </section>
 
@@ -370,7 +362,7 @@ function PostDocument({
               <SectionHeading id="receipt-analytics">
                 {t('web.receipt.section.analytics')}
               </SectionHeading>
-              <p className="max-w-[70ch] text-body-sm text-text-secondary">
+              <p className="text-body-sm text-text-secondary max-w-[70ch]">
                 {t('web.receipt.analytics.explain')}
               </p>
               {receipt.lastAnalyticsSyncAt ? (
@@ -442,7 +434,7 @@ function PartialSuccess({
               href={target.permalink}
               target="_blank"
               rel="noreferrer noopener"
-              className="inline-flex items-center gap-1 break-all text-text-accent"
+              className="text-text-accent inline-flex items-center gap-1 break-all"
             >
               {target.permalink}
               <ExternalLink aria-hidden="true" className="size-3 shrink-0" />
@@ -465,9 +457,7 @@ function PartialSuccess({
                   variant="secondary"
                   size="sm"
                   iconStart={<RefreshCw aria-hidden="true" className="size-3.5" />}
-                  loading={
-                    onRetry.isPending && onRetry.variables?.variantId === target.variantId
-                  }
+                  loading={onRetry.isPending && onRetry.variables?.variantId === target.variantId}
                   onClick={() =>
                     onRetry.mutate({ publishJobId: jobId, variantId: target.variantId })
                   }
@@ -476,9 +466,7 @@ function PartialSuccess({
                 </Button>
               ))}
             </div>
-            <p className="text-body-sm text-text-secondary">
-              {t('web.receipt.partial.retryHint')}
-            </p>
+            <p className="text-body-sm text-text-secondary">{t('web.receipt.partial.retryHint')}</p>
           </div>
         ) : null
       }
@@ -507,8 +495,7 @@ function CostPanel({
 
   // Money is integer minor units plus an ISO 4217 code. The exponent comes
   // from the runtime, because JPY has none and USD has two.
-  const money = (minor: number): string =>
-    formatCurrency(format.locale, minor, cost.currency);
+  const money = (minor: number): string => formatCurrency(format.locale, minor, cost.currency);
 
   return (
     <DefinitionList
@@ -517,9 +504,7 @@ function CostPanel({
         {
           id: 'estimated',
           term: t('web.receipt.cost.estimatedLabel'),
-          definition: (
-            <span className="tabular-nums">{money(cost.estimatedMinor)}</span>
-          ),
+          definition: <span className="tabular-nums">{money(cost.estimatedMinor)}</span>,
         },
         {
           id: 'actual',
@@ -561,7 +546,7 @@ function ExportControls({
 
   if (!allowed) {
     return (
-      <p className={cn('max-w-[36ch] text-body-sm text-text-tertiary')}>
+      <p className={cn('text-body-sm text-text-tertiary max-w-[36ch]')}>
         {t('web.receipt.export.denied', { role })}
       </p>
     );

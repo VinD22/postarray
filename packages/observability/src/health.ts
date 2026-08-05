@@ -122,9 +122,7 @@ export function buildHealthReport(
   const critical = new Set(options.criticalSubsystems ?? DEFAULT_CRITICAL);
 
   const subsystems = SUBSYSTEM_NAMES.map((name) => toComponent(name, capabilities[name]));
-  const connectors = CONNECTOR_KEYS.map((key) =>
-    toComponent(key, capabilities.connectors[key]),
-  );
+  const connectors = CONNECTOR_KEYS.map((key) => toComponent(key, capabilities.connectors[key]));
   const sanitizedChecks = checks.map(sanitizeCheck);
 
   const components = [...subsystems, ...connectors];
@@ -143,11 +141,8 @@ export function buildHealthReport(
     summary.degraded > 0 ||
     summary.disabled > 0;
 
-  const status: HealthStatus = criticalDown || summary.failingChecks > 0
-    ? 'down'
-    : anyWarning
-      ? 'degraded'
-      : 'ok';
+  const status: HealthStatus =
+    criticalDown || summary.failingChecks > 0 ? 'down' : anyWarning ? 'degraded' : 'ok';
 
   return {
     status,

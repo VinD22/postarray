@@ -50,18 +50,14 @@ export function FreshnessLabel({
   return (
     <p
       data-freshness={level}
-      className={cn(
-        'inline-flex items-center gap-1 text-body-sm',
-        levelClass[level],
-        className,
-      )}
+      className={cn('text-body-sm inline-flex items-center gap-1', levelClass[level], className)}
     >
       {showWarning ? (
         <AlertTriangle aria-hidden="true" className="size-3.5 shrink-0" />
       ) : level === 'syncing' ? (
         <RefreshCw
           aria-hidden="true"
-          className="size-3.5 shrink-0 relay-anim-spin motion-reduce:animate-none"
+          className="relay-anim-spin size-3.5 shrink-0 motion-reduce:animate-none"
         />
       ) : null}
       <time dateTime={isoTimestamp}>{text}</time>

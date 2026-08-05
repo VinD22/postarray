@@ -22,12 +22,7 @@ import {
   TableRowHeader,
   Textarea,
 } from '@relay/design-system/primitives';
-import {
-  DefinitionList,
-  EmptyState,
-  FreshnessLabel,
-  Notice,
-} from '@relay/design-system/patterns';
+import { DefinitionList, EmptyState, FreshnessLabel, Notice } from '@relay/design-system/patterns';
 import { useTranslations } from '@relay/i18n/react';
 import type { GrowthPlan, OpportunityRecord } from '@relay/contracts';
 import { ExternalLink } from 'lucide-react';
@@ -92,7 +87,7 @@ export function OpportunitiesTab({
 
   return (
     <div className="flex flex-col gap-4">
-      <p className="max-w-[68ch] text-body-md text-text-secondary">
+      <p className="text-body-md text-text-secondary max-w-[68ch]">
         {t('growth.opportunities.help')}
       </p>
       <Notice tone="neutral" title={t('growth.opportunities.boundary')} />
@@ -109,18 +104,12 @@ export function OpportunitiesTab({
       <div className="hidden lg:block">
         <TableContainer>
           <Table>
-            <TableCaption className="sr-only">
-              {t('growth.ui.opportunities.caption')}
-            </TableCaption>
+            <TableCaption className="sr-only">{t('growth.ui.opportunities.caption')}</TableCaption>
             <TableHeader>
               <TableRow>
-                <TableHead scope="col">
-                  {t('growth.ui.opportunities.column.opportunity')}
-                </TableHead>
+                <TableHead scope="col">{t('growth.ui.opportunities.column.opportunity')}</TableHead>
                 <TableHead scope="col">{t('growth.ui.opportunities.column.type')}</TableHead>
-                <TableHead scope="col">
-                  {t('growth.ui.opportunities.column.audience')}
-                </TableHead>
+                <TableHead scope="col">{t('growth.ui.opportunities.column.audience')}</TableHead>
                 <TableHead scope="col">{t('growth.ui.opportunities.column.fit')}</TableHead>
                 <TableHead scope="col">
                   {t('growth.ui.opportunities.column.requirements')}
@@ -128,12 +117,8 @@ export function OpportunitiesTab({
                 <TableHead scope="col">{t('growth.ui.opportunities.column.rules')}</TableHead>
                 <TableHead scope="col">{t('growth.ui.opportunities.column.cost')}</TableHead>
                 <TableHead scope="col">{t('growth.ui.opportunities.column.effort')}</TableHead>
-                <TableHead scope="col">
-                  {t('growth.ui.opportunities.column.verified')}
-                </TableHead>
-                <TableHead scope="col">
-                  {t('growth.ui.opportunities.column.actions')}
-                </TableHead>
+                <TableHead scope="col">{t('growth.ui.opportunities.column.verified')}</TableHead>
+                <TableHead scope="col">{t('growth.ui.opportunities.column.actions')}</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -147,7 +132,7 @@ export function OpportunitiesTab({
                   <TableRow key={record.id} attention={stale}>
                     <TableRowHeader>
                       <a
-                        className="inline-flex items-center gap-1 text-text-accent underline underline-offset-2"
+                        className="text-text-accent inline-flex items-center gap-1 underline underline-offset-2"
                         href={record.officialUrl}
                         target="_blank"
                         rel="noreferrer noopener"
@@ -173,9 +158,7 @@ export function OpportunitiesTab({
                       </ul>
                     </TableCell>
                     <TableCell>{costLabel(record)}</TableCell>
-                    <TableCell>
-                      {t(`growth.ui.opportunities.effort.${match.effort}`)}
-                    </TableCell>
+                    <TableCell>{t(`growth.ui.opportunities.effort.${match.effort}`)}</TableCell>
                     <TableCell>
                       <FreshnessLabel
                         level={stale ? 'stale' : 'fresh'}
@@ -189,11 +172,7 @@ export function OpportunitiesTab({
                       <div className="flex flex-col gap-2">
                         <div className="flex flex-wrap gap-2">
                           <Button variant="secondary" size="sm" asChild>
-                            <a
-                              href={record.officialUrl}
-                              target="_blank"
-                              rel="noreferrer noopener"
-                            >
+                            <a href={record.officialUrl} target="_blank" rel="noreferrer noopener">
                               {t('action.open')}
                             </a>
                           </Button>
@@ -264,10 +243,10 @@ export function OpportunitiesTab({
           return (
             <li
               key={record.id}
-              className="flex flex-col gap-2 border-b border-border-subtle py-4 last:border-b-0"
+              className="border-border-subtle flex flex-col gap-2 border-b py-4 last:border-b-0"
             >
               <a
-                className="inline-flex w-fit items-center gap-1 text-body-md font-medium text-text-accent underline underline-offset-2"
+                className="text-body-md text-text-accent inline-flex w-fit items-center gap-1 font-medium underline underline-offset-2"
                 href={record.officialUrl}
                 target="_blank"
                 rel="noreferrer noopener"
@@ -382,9 +361,7 @@ export function OpportunitiesTab({
         })}
       </ul>
 
-      <p className="text-body-sm text-text-tertiary">
-        {t('growth.opportunities.noGuarantee')}
-      </p>
+      <p className="text-body-sm text-text-tertiary">{t('growth.opportunities.noGuarantee')}</p>
 
       <Dialog
         open={preparing !== null}
@@ -399,17 +376,15 @@ export function OpportunitiesTab({
             <DialogTitle>
               {t('growth.ui.opportunities.prepareTitle', { name: preparing?.name ?? '' })}
             </DialogTitle>
-            <DialogDescription>
-              {t('growth.ui.opportunities.prepareManual')}
-            </DialogDescription>
+            <DialogDescription>{t('growth.ui.opportunities.prepareManual')}</DialogDescription>
           </DialogHeader>
           <DialogBody>
             <div className="flex flex-col gap-4">
               <section className="flex flex-col gap-1">
-                <h3 className="text-body-md font-medium text-text-primary">
+                <h3 className="text-body-md text-text-primary font-medium">
                   {t('growth.ui.opportunities.prepareRules')}
                 </h3>
-                <ul className="flex list-disc flex-col gap-1 ps-5 text-body-md text-text-secondary">
+                <ul className="text-body-md text-text-secondary flex list-disc flex-col gap-1 ps-5">
                   {(preparing?.rules ?? []).map((rule) => (
                     <li key={rule}>{rule}</li>
                   ))}
@@ -417,17 +392,16 @@ export function OpportunitiesTab({
               </section>
 
               <section className="flex flex-col gap-1">
-                <h3 className="text-body-md font-medium text-text-primary">
+                <h3 className="text-body-md text-text-primary font-medium">
                   {t('growth.ui.opportunities.prepareChecklist')}
                 </h3>
                 <p className="text-body-md text-text-secondary">
-                  {preparing?.requiredAsset ??
-                    t('growth.ui.opportunities.noRequiredAsset')}
+                  {preparing?.requiredAsset ?? t('growth.ui.opportunities.noRequiredAsset')}
                 </p>
               </section>
 
               <section className="flex flex-col gap-1">
-                <h3 className="text-body-md font-medium text-text-primary">
+                <h3 className="text-body-md text-text-primary font-medium">
                   {t('growth.ui.opportunities.pitchTitle')}
                 </h3>
                 <p className="text-body-sm text-text-secondary">
@@ -437,8 +411,7 @@ export function OpportunitiesTab({
                   aria-label={t('growth.ui.opportunities.pitchTitle')}
                   minRows={6}
                   defaultValue={
-                    matches.find((match) => match.opportunityId === preparing?.id)?.pitchDraft ??
-                    ''
+                    matches.find((match) => match.opportunityId === preparing?.id)?.pitchDraft ?? ''
                   }
                 />
               </section>

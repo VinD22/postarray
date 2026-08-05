@@ -83,8 +83,8 @@ export function PlanStep() {
         <h2 className="text-title-sm text-text-primary">{t('billing.plan.name')}</h2>
         <p className="text-body-md text-text-secondary">{t('billing.plan.single')}</p>
 
-        <fieldset className="flex flex-col gap-0 border-t border-border-subtle pt-3">
-          <legend className="pb-2 text-label uppercase tracking-wide text-text-tertiary">
+        <fieldset className="border-border-subtle flex flex-col gap-0 border-t pt-3">
+          <legend className="text-label text-text-tertiary pb-2 tracking-wide uppercase">
             {t('billing.plan.selectInterval')}
           </legend>
 
@@ -116,7 +116,7 @@ export function PlanStep() {
           {t('onboarding.plan.factsTitle')}
         </h2>
 
-        <dl className="flex flex-col border-t border-border-subtle">
+        <dl className="border-border-subtle flex flex-col border-t">
           <Fact term={t('billing.trial.dueToday')} detail={t('billing.trial.length')} />
           <Fact
             term={t('billing.trial.firstCharge', { amount: formattedAmount, date: formattedDate })}
@@ -175,14 +175,14 @@ function IntervalOption({
   return (
     <div
       className={cn(
-        'flex items-start gap-3 border-b border-border-subtle py-3',
+        'border-border-subtle flex items-start gap-3 border-b py-3',
         selected && 'bg-accent-subtle',
       )}
     >
       <RadioGroupItem value={value} id={id} className="mt-1" />
       <Label htmlFor={id} className="flex min-w-0 flex-col gap-0.5">
-        <span className="text-body-lg font-medium text-text-primary">{title}</span>
-        <span className="text-body-md font-normal text-text-secondary">{detail}</span>
+        <span className="text-body-lg text-text-primary font-medium">{title}</span>
+        <span className="text-body-md text-text-secondary font-normal">{detail}</span>
       </Label>
     </div>
   );
@@ -190,8 +190,8 @@ function IntervalOption({
 
 function Fact({ term, detail }: { readonly term: string; readonly detail: string }) {
   return (
-    <div className="flex flex-col gap-0.5 border-b border-border-subtle py-2.5">
-      <dt className="text-body-md font-medium text-text-primary">{term}</dt>
+    <div className="border-border-subtle flex flex-col gap-0.5 border-b py-2.5">
+      <dt className="text-body-md text-text-primary font-medium">{term}</dt>
       <dd className="prose-measure text-body-sm text-text-secondary">{detail}</dd>
     </div>
   );

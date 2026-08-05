@@ -16,7 +16,10 @@ describe('yaml emitter', () => {
       delta: null,
       list: ['one', 'two'],
       nested: { deep: { deeper: ['x'] } },
-      objects: [{ a: 1, b: 'two' }, { a: 2, b: 'three' }],
+      objects: [
+        { a: 1, b: 'two' },
+        { a: 2, b: 'three' },
+      ],
       empty: [],
       emptyObject: {},
     };

@@ -80,9 +80,7 @@ export function useUploadQueue({
   itemsRef.current = items;
 
   const patch = useCallback((id: string, next: Partial<UploadItem>) => {
-    setItems((current) =>
-      current.map((item) => (item.id === id ? { ...item, ...next } : item)),
-    );
+    setItems((current) => current.map((item) => (item.id === id ? { ...item, ...next } : item)));
   }, []);
 
   const run = useCallback(

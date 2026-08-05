@@ -242,11 +242,7 @@ export type ActionItemKind =
 
 export type ActionItemUrgency = 'now' | 'soon' | 'watching';
 
-export type ActionItemCategory =
-  | 'connections'
-  | 'publishing'
-  | 'automation'
-  | 'billing';
+export type ActionItemCategory = 'connections' | 'publishing' | 'automation' | 'billing';
 
 export interface ActionItemView {
   readonly id: string;

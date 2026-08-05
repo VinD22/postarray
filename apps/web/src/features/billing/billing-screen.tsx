@@ -31,7 +31,6 @@ import { CancelDialog } from './cancel-dialog.js';
 import { TrialSummary } from './trial-summary.js';
 import { UsagePanel } from './usage-panel.js';
 
-
 export function BillingScreen(): ReactNode {
   const t = useTranslations();
   const section = t('settings.ui.section.billing');
@@ -94,8 +93,7 @@ export function BillingScreen(): ReactNode {
           skeletonRows={4}
           skeletonColumns={2}
         >
-          {state === undefined ? null : state.status === 'none' ||
-            state.status === 'incomplete' ? (
+          {state === undefined ? null : state.status === 'none' || state.status === 'incomplete' ? (
             <EmptyState
               title={t('billing.ui.noSubscriptionTitle')}
               description={t('billing.ui.noSubscriptionBody')}
@@ -138,7 +136,7 @@ export function BillingScreen(): ReactNode {
                 title={t('billing.ui.planHeading')}
                 description={t('billing.plan.single')}
               >
-                <ul className="flex max-w-[68ch] list-disc flex-col gap-1 ps-5 text-body-md text-text-secondary">
+                <ul className="text-body-md text-text-secondary flex max-w-[68ch] list-disc flex-col gap-1 ps-5">
                   <li>{t('billing.ui.allowanceChannels')}</li>
                   <li>{t('billing.plan.includes.members')}</li>
                   <li>{t('billing.plan.includes.posts')}</li>
@@ -151,7 +149,7 @@ export function BillingScreen(): ReactNode {
                 </ul>
 
                 <div className="flex flex-col gap-2 pt-2">
-                  <p className="max-w-[68ch] text-body-md text-text-secondary">
+                  <p className="text-body-md text-text-secondary max-w-[68ch]">
                     {t('billing.ui.allowanceFairUse')}{' '}
                     <a
                       className="text-text-accent underline underline-offset-2"
@@ -160,10 +158,10 @@ export function BillingScreen(): ReactNode {
                       {t('billing.ui.readFairUse')}
                     </a>
                   </p>
-                  <p className="max-w-[68ch] text-body-md text-text-secondary">
+                  <p className="text-body-md text-text-secondary max-w-[68ch]">
                     {t('billing.ui.allowanceMetered')}
                   </p>
-                  <p className="max-w-[68ch] text-body-md text-text-secondary">
+                  <p className="text-body-md text-text-secondary max-w-[68ch]">
                     {t('billing.ui.allowanceNoMedia')}
                   </p>
                 </div>
@@ -176,9 +174,7 @@ export function BillingScreen(): ReactNode {
                     })}
                     actions={
                       <Button size="sm" variant="secondary" asChild>
-                        <Link href="/connections">
-                          {t('billing.ui.overChannelLimitAction')}
-                        </Link>
+                        <Link href="/connections">{t('billing.ui.overChannelLimitAction')}</Link>
                       </Button>
                     }
                   />
@@ -196,13 +192,13 @@ export function BillingScreen(): ReactNode {
                   }
                   className="flex flex-col"
                 >
-                  <label className="flex min-h-11 items-start gap-2 py-1 text-body-md text-text-primary">
+                  <label className="text-body-md text-text-primary flex min-h-11 items-start gap-2 py-1">
                     <RadioGroupItem className="mt-1" value="monthly" />
                     <span className="flex flex-col">
                       <span>{t('billing.ui.monthlyOption')}</span>
                     </span>
                   </label>
-                  <label className="flex min-h-11 items-start gap-2 py-1 text-body-md text-text-primary">
+                  <label className="text-body-md text-text-primary flex min-h-11 items-start gap-2 py-1">
                     <RadioGroupItem className="mt-1" value="annual" />
                     <span className="flex flex-col">
                       <span>{t('billing.ui.annualOption')}</span>
@@ -218,9 +214,7 @@ export function BillingScreen(): ReactNode {
                 title={t('billing.ui.usageHeading')}
                 actions={
                   <Button variant="ghost" size="sm" asChild>
-                    <a href="/docs/billing/metered-usage">
-                      {t('billing.ui.readMeteredPolicy')}
-                    </a>
+                    <a href="/docs/billing/metered-usage">{t('billing.ui.readMeteredPolicy')}</a>
                   </Button>
                 }
               >
@@ -256,18 +250,14 @@ export function BillingScreen(): ReactNode {
                         </TableCaption>
                         <TableHeader>
                           <TableRow>
-                            <TableHead scope="col">
-                              {t('billing.ui.invoiceColumn.date')}
-                            </TableHead>
+                            <TableHead scope="col">{t('billing.ui.invoiceColumn.date')}</TableHead>
                             <TableHead scope="col">
                               {t('billing.ui.invoiceColumn.description')}
                             </TableHead>
                             <TableHead scope="col" numeric>
                               {t('billing.ui.invoiceColumn.amount')}
                             </TableHead>
-                            <TableHead scope="col">
-                              {t('billing.ui.invoiceColumn.state')}
-                            </TableHead>
+                            <TableHead scope="col">{t('billing.ui.invoiceColumn.state')}</TableHead>
                           </TableRow>
                         </TableHeader>
                         <TableBody>
@@ -287,16 +277,12 @@ export function BillingScreen(): ReactNode {
                                     rel="noreferrer noopener"
                                   >
                                     {invoice.description}
-                                    <span className="sr-only">
-                                      {t('a11y.label.externalLink')}
-                                    </span>
+                                    <span className="sr-only">{t('a11y.label.externalLink')}</span>
                                   </a>
                                 )}
                               </TableCell>
                               <TableCell numeric>{formatters.money(invoice.amount)}</TableCell>
-                              <TableCell>
-                                {t(`billing.ui.invoiceState.${invoice.state}`)}
-                              </TableCell>
+                              <TableCell>{t(`billing.ui.invoiceState.${invoice.state}`)}</TableCell>
                             </TableRow>
                           ))}
                         </TableBody>

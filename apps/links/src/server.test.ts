@@ -28,10 +28,7 @@ function record(overrides: Partial<ShortLinkRecord> = {}): ShortLinkRecord {
   };
 }
 
-const silentLogger: Logger = createLogger(
-  { service: 'links' },
-  { level: 'silent', pretty: false },
-);
+const silentLogger: Logger = createLogger({ service: 'links' }, { level: 'silent', pretty: false });
 
 interface Harness {
   readonly server: LinksServer;
@@ -154,9 +151,9 @@ describe('refusals are indistinguishable', () => {
       clock,
       selfHosts: [HOST],
       rateLimit: { requestLimit: 1000, missLimit: 1000 },
-    // Fixtures use RFC 2606 reserved names, which the safety gate correctly
-    // refuses as unroutable in production. Declare them routable for the suite.
-    safety: { additionalPublicSuffixes: ['.example'] },
+      // Fixtures use RFC 2606 reserved names, which the safety gate correctly
+      // refuses as unroutable in production. Declare them routable for the suite.
+      safety: { additionalPublicSuffixes: ['.example'] },
     });
 
     const paths = ['/never-existed', '/off', '/gone', '/bad', '/stale', '/flagged'];
@@ -182,8 +179,16 @@ describe('refusals are indistinguishable', () => {
     const store = createMemoryShortLinkStore([
       record({ slug: 'ssrf', destinationUrl: 'http://169.254.169.254/latest/meta-data' }),
       record({ slug: 'loop', linkId: 'lnk_loop', destinationUrl: `https://${HOST}/spring` }),
-      record({ slug: 'phish', linkId: 'lnk_ph', destinationUrl: 'https://bank.example@evil.test/' }),
-      record({ slug: 'chain', linkId: 'lnk_ch', destinationUrl: 'https://ok.example/?url=http://10.0.0.1/' }),
+      record({
+        slug: 'phish',
+        linkId: 'lnk_ph',
+        destinationUrl: 'https://bank.example@evil.test/',
+      }),
+      record({
+        slug: 'chain',
+        linkId: 'lnk_ch',
+        destinationUrl: 'https://ok.example/?url=http://10.0.0.1/',
+      }),
     ]);
     const clicks = createMemoryClickSink();
     const server = createLinksServer({
@@ -194,9 +199,9 @@ describe('refusals are indistinguishable', () => {
       clock,
       selfHosts: [HOST],
       rateLimit: { requestLimit: 1000, missLimit: 1000 },
-    // Fixtures use RFC 2606 reserved names, which the safety gate correctly
-    // refuses as unroutable in production. Declare them routable for the suite.
-    safety: { additionalPublicSuffixes: ['.example'] },
+      // Fixtures use RFC 2606 reserved names, which the safety gate correctly
+      // refuses as unroutable in production. Declare them routable for the suite.
+      safety: { additionalPublicSuffixes: ['.example'] },
     });
     for (const slug of ['ssrf', 'loop', 'phish', 'chain']) {
       const response = await server.app.inject({

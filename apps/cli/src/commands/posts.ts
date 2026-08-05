@@ -181,7 +181,10 @@ async function createDraft(
       method: 'PATCH',
       path: ROUTES.contentVariant(created.data.id, variantId),
       schema: z.unknown(),
-      body: { body: target.body, ...(target.mediaIds === undefined ? {} : { mediaIds: target.mediaIds }) },
+      body: {
+        body: target.body,
+        ...(target.mediaIds === undefined ? {} : { mediaIds: target.mediaIds }),
+      },
     });
   }
 
@@ -270,10 +273,7 @@ export async function postsPreview(
         ['provider', preview.provider],
         ['account', preview.handle ?? preview.displayName],
         ['contentKind', preview.contentKind],
-        [
-          'characters',
-          `${preview.characterCount}/${preview.characterLimit ?? 'unlimited'}`,
-        ],
+        ['characters', `${preview.characterCount}/${preview.characterLimit ?? 'unlimited'}`],
         ['truncated', String(preview.truncated)],
         ['media', String(preview.media.length)],
         ['threadItems', String(preview.threadItems.length)],
@@ -522,9 +522,7 @@ export async function postsPublish(
    */
   if (!options.confirm) {
     const count =
-      options.file === undefined
-        ? 1
-        : externalPublicationCount(await readDraftFile(options.file));
+      options.file === undefined ? 1 : externalPublicationCount(await readDraftFile(options.file));
     throw new RelayError('APPROVAL_REQUIRED', {
       messageKey: 'confirm.publishNow.body',
       details: { reason: 'CONFIRMATION_REQUIRED', flag: '--confirm', publications: count },
@@ -536,12 +534,7 @@ export async function postsPublish(
   let contentItemId = options.contentItemId;
   if (options.file !== undefined) {
     const draft = await readDraftFile(options.file);
-    contentItemId = await createDraft(
-      context,
-      draft,
-      `${idempotencyKey}.draft`,
-      options.brandId,
-    );
+    contentItemId = await createDraft(context, draft, `${idempotencyKey}.draft`, options.brandId);
   }
 
   const published = await context.api().request({

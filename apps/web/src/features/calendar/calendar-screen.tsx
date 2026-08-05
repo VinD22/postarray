@@ -58,12 +58,7 @@ import {
   parseView,
   toSearchParams,
 } from './filters';
-import {
-  buildProposal,
-  collectWarnings,
-  keyboardStep,
-  KEYBOARD_STEP_MINUTES,
-} from './reschedule';
+import { buildProposal, collectWarnings, keyboardStep, KEYBOARD_STEP_MINUTES } from './reschedule';
 import { useCalendarEntries, useRescheduleEntry } from './use-calendar';
 import { EMPTY_FILTERS } from './types';
 import type {
@@ -132,10 +127,7 @@ export function CalendarScreen({
     [query.data],
   );
   const entries = useMemo(() => applyFilters(allEntries, filters), [allEntries, filters]);
-  const attentionCount = useMemo(
-    () => allEntries.filter(needsAttention).length,
-    [allEntries],
-  );
+  const attentionCount = useMemo(() => allEntries.filter(needsAttention).length, [allEntries]);
 
   const options = useMemo(
     () => buildFilterOptions(allEntries, brands, customerGroups),
@@ -301,9 +293,7 @@ export function CalendarScreen({
   // receipt yet, and linking to one that does not exist is worse than no link.
   const hrefForReceipt = useCallback(
     (entry: CalendarEntry) =>
-      entry.publishJobId
-        ? `${postHrefPattern.replace('{id}', entry.contentItemId)}#receipt`
-        : null,
+      entry.publishJobId ? `${postHrefPattern.replace('{id}', entry.contentItemId)}#receipt` : null,
     [postHrefPattern],
   );
   const hrefForDay = useCallback(
@@ -336,7 +326,11 @@ export function CalendarScreen({
         title={t('calendar.title')}
         description={t('web.calendar.description')}
         actions={
-          <Button variant="primary" asChild iconStart={<CalendarPlus aria-hidden="true" className="size-4" />}>
+          <Button
+            variant="primary"
+            asChild
+            iconStart={<CalendarPlus aria-hidden="true" className="size-4" />}
+          >
             <a href={composeHref}>{t('empty.calendar.action')}</a>
           </Button>
         }

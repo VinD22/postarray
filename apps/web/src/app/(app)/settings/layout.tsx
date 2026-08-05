@@ -10,11 +10,7 @@ import { SettingsNav } from '@/features/settings/components/settings-nav';
  * screen never has to open a menu to change section and the page itself never
  * scrolls sideways.
  */
-export default function SettingsLayout({
-  children,
-}: {
-  children: ReactNode;
-}): ReactNode {
+export default function SettingsLayout({ children }: { children: ReactNode }): ReactNode {
   return (
     <div className="mx-auto flex w-full max-w-[90rem] flex-col lg:flex-row lg:items-start">
       <SettingsNav />

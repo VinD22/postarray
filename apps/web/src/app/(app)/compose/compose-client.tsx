@@ -10,7 +10,13 @@
 
 import { useCallback, useMemo, useState, type ReactNode } from 'react';
 import { useRouter } from 'next/navigation';
-import { EmptyState, ErrorState, LoadingState, PermissionDenied, SkeletonList } from '@relay/design-system/patterns';
+import {
+  EmptyState,
+  ErrorState,
+  LoadingState,
+  PermissionDenied,
+  SkeletonList,
+} from '@relay/design-system/patterns';
 import { Button } from '@relay/design-system/primitives';
 import { useTranslations } from '@relay/i18n/react';
 
@@ -23,7 +29,11 @@ import {
   type ScheduleIntent,
 } from '@/features/composer';
 import { MediaPickerDialog, type AccountRule, type MediaAsset } from '@/features/media';
-import { saveComposer, searchDestinations, searchMentions } from '@/features/composer/data/composer-gateway';
+import {
+  saveComposer,
+  searchDestinations,
+  searchMentions,
+} from '@/features/composer/data/composer-gateway';
 
 export type ComposeStatus = 'ready' | 'loading' | 'error' | 'forbidden' | 'no_connections';
 
@@ -174,8 +184,7 @@ function ComposeSurface({
         });
         return;
       }
-      const current =
-        state.overrides[pickerScope]?.mediaIds ?? state.master.mediaIds;
+      const current = state.overrides[pickerScope]?.mediaIds ?? state.master.mediaIds;
       dispatch({
         type: 'variant/override',
         connectionId: pickerScope,

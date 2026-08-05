@@ -57,18 +57,15 @@ export function CalendarMonth({
   return (
     <section aria-label={label} className="relay-scrollbar overflow-x-auto">
       <div className="min-w-[42rem]">
-        <div className="grid grid-cols-7 gap-px border-b border-border-default bg-surface-canvas">
+        <div className="border-border-default bg-surface-canvas grid grid-cols-7 gap-px border-b">
           {weekdayNames.map((day) => (
-            <h3
-              key={day.toISOString()}
-              className="px-2 py-1.5 text-label text-text-secondary"
-            >
+            <h3 key={day.toISOString()} className="text-label text-text-secondary px-2 py-1.5">
               {format.weekdayShort(day)}
             </h3>
           ))}
         </div>
 
-        <div className="grid grid-cols-7 gap-px bg-border-subtle">
+        <div className="bg-border-subtle grid grid-cols-7 gap-px">
           {range.days.map((day) => {
             const wall = toWallClock(day, timeZone);
             const dayEntries = byDay.get(`${wall.year}-${wall.month}-${wall.day}`) ?? [];
@@ -79,7 +76,7 @@ export function CalendarMonth({
             return (
               <div
                 key={day.toISOString()}
-                className="flex min-h-28 flex-col gap-1 bg-surface-canvas p-1.5"
+                className="bg-surface-canvas flex min-h-28 flex-col gap-1 p-1.5"
               >
                 <div className="flex items-baseline justify-between gap-1">
                   <a
@@ -89,7 +86,7 @@ export function CalendarMonth({
                       count: dayEntries.length,
                     })}
                     className={cn(
-                      'rounded-sm px-1 text-body-sm tabular-nums no-underline',
+                      'text-body-sm rounded-sm px-1 tabular-nums no-underline',
                       'text-text-secondary hover:bg-surface-hover hover:text-text-primary',
                       focusRingInset,
                     )}
@@ -97,7 +94,7 @@ export function CalendarMonth({
                     {format.dayNumber(day)}
                   </a>
                   {attention ? (
-                    <span className="rounded-sm border border-warning-border bg-warning-bg px-1 text-label text-warning-fg">
+                    <span className="border-warning-border bg-warning-bg text-label text-warning-fg rounded-sm border px-1">
                       {t('calendar.queue.failed')}
                     </span>
                   ) : null}
@@ -116,7 +113,7 @@ export function CalendarMonth({
                   <a
                     href={hrefForDay(day)}
                     className={cn(
-                      'rounded-sm px-1 py-0.5 text-label text-text-accent no-underline',
+                      'text-label text-text-accent rounded-sm px-1 py-0.5 no-underline',
                       'hover:bg-accent-subtle',
                       focusRingInset,
                     )}

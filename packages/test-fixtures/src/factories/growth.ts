@@ -6,12 +6,7 @@ import {
   opportunityRecordSchema,
   toolRecordSchema,
 } from '@relay/contracts';
-import type {
-  BusinessProfile,
-  GrowthPlan,
-  OpportunityRecord,
-  ToolRecord,
-} from '@relay/contracts';
+import type { BusinessProfile, GrowthPlan, OpportunityRecord, ToolRecord } from '@relay/contracts';
 
 import { FIXTURE_NOW, fixtureId, fixtureUrl } from '../ids.js';
 
@@ -24,9 +19,7 @@ import { FIXTURE_NOW, fixtureId, fixtureUrl } from '../ids.js';
  * a developer, or a test, to somebody else's website.
  */
 
-export function makeBusinessProfile(
-  overrides: Partial<BusinessProfile> = {},
-): BusinessProfile {
+export function makeBusinessProfile(overrides: Partial<BusinessProfile> = {}): BusinessProfile {
   const workspaceId = overrides.workspaceId ?? fixtureId('workspace', 'fixture-workspace');
   return businessProfileSchema.parse({
     id: fixtureId('growthProfile', 'fixture-profile'),
@@ -215,9 +208,21 @@ export function makeGrowthPlan(input: MakeGrowthPlanInput = {}): GrowthPlan {
     },
     content_system: {
       pillars: [
-        { name: 'What we shipped', description: 'Concrete changes, plainly described.', proofAssetIds: ['changelog'] },
-        { name: 'How it works', description: 'One behaviour explained at a time.', proofAssetIds: ['documentation'] },
-        { name: 'What went wrong', description: 'Incidents and what changed afterwards.', proofAssetIds: [] },
+        {
+          name: 'What we shipped',
+          description: 'Concrete changes, plainly described.',
+          proofAssetIds: ['changelog'],
+        },
+        {
+          name: 'How it works',
+          description: 'One behaviour explained at a time.',
+          proofAssetIds: ['documentation'],
+        },
+        {
+          name: 'What went wrong',
+          description: 'Incidents and what changed afterwards.',
+          proofAssetIds: [],
+        },
       ],
       series: [{ name: 'Release notes', cadence: 'weekly' }],
       ctaLibrary: ['growth.cta.readTheDocs', 'growth.cta.startTrial'],

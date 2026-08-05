@@ -19,8 +19,7 @@ export const ROUTES = {
   contentVariant: (contentItemId: string, variantId: string) =>
     `/v1/content/${encodeURIComponent(contentItemId)}/variants/${encodeURIComponent(variantId)}`,
   /** Read only despite being a POST: deterministic preflight plus a cost estimate. */
-  validate: (contentItemId: string) =>
-    `/v1/content/${encodeURIComponent(contentItemId)}/validate`,
+  validate: (contentItemId: string) => `/v1/content/${encodeURIComponent(contentItemId)}/validate`,
   preview: (contentItemId: string) => `/v1/content/${encodeURIComponent(contentItemId)}/preview`,
 
   schedules: () => '/v1/schedules',

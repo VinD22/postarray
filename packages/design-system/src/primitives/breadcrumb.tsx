@@ -31,22 +31,20 @@ export interface BreadcrumbProps {
  * chevron that mirrors in RTL and is hidden from assistive technology, since
  * the list structure already conveys the hierarchy.
  */
-export function Breadcrumb({
-  label,
-  items,
-  renderLink,
-  className,
-}: BreadcrumbProps): ReactNode {
+export function Breadcrumb({ label, items, renderLink, className }: BreadcrumbProps): ReactNode {
   return (
     <nav aria-label={label} className={cn('min-w-0', className)}>
-      <ol className="flex flex-wrap items-center gap-1 text-body-sm text-text-secondary">
+      <ol className="text-body-sm text-text-secondary flex flex-wrap items-center gap-1">
         {items.map((item, index) => {
           const isLast = index === items.length - 1;
           const content = <span className="truncate">{item.label}</span>;
           return (
             <li key={item.id} className="flex min-w-0 items-center gap-1">
               {isLast || !item.href ? (
-                <span aria-current={isLast ? 'page' : undefined} className="truncate text-text-primary">
+                <span
+                  aria-current={isLast ? 'page' : undefined}
+                  className="text-text-primary truncate"
+                >
                   {item.label}
                 </span>
               ) : renderLink ? (
@@ -54,7 +52,7 @@ export function Breadcrumb({
               ) : (
                 <a
                   href={item.href}
-                  className={cn('truncate rounded-sm hover:text-text-primary', focusRing)}
+                  className={cn('hover:text-text-primary truncate rounded-sm', focusRing)}
                 >
                   {item.label}
                 </a>
@@ -62,7 +60,7 @@ export function Breadcrumb({
               {isLast ? null : (
                 <ChevronRight
                   aria-hidden="true"
-                  className="size-3.5 shrink-0 text-text-tertiary rtl:rotate-180"
+                  className="text-text-tertiary size-3.5 shrink-0 rtl:rotate-180"
                 />
               )}
             </li>

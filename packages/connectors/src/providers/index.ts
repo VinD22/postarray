@@ -110,10 +110,7 @@ export function isProviderConfigured(
 }
 
 /** `live`, or `disabled:missing X_CLIENT_ID, X_CLIENT_SECRET`. */
-export function providerStatus(
-  config: ConnectorDeps['config'],
-  provider: BuiltInProvider,
-): string {
+export function providerStatus(config: ConnectorDeps['config'], provider: BuiltInProvider): string {
   const missing = missingCredentials(config, provider);
   return missing.length === 0 ? 'live' : `disabled:missing ${missing.join(', ')}`;
 }

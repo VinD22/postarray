@@ -88,9 +88,7 @@ export const updateMasterSchema = z
   })
   .strict();
 
-export const setTargetsSchema = z
-  .object({ targets: z.array(targetInputSchema).max(200) })
-  .strict();
+export const setTargetsSchema = z.object({ targets: z.array(targetInputSchema).max(200) }).strict();
 
 /**
  * A variant override. An absent key inherits from the master; an explicit

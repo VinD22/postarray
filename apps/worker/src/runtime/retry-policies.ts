@@ -96,13 +96,11 @@ export const PUBLISH_ACTIVITY: ActivityExecutionOptions = {
     initialIntervalMs: 1_000,
     backoffCoefficient: 1,
     maximumAttempts: 1,
-    nonRetryableErrorTypes: codes(
-      CONTENT_FATAL,
-      PROVIDER_FATAL,
-      USER_FIXABLE,
-      BILLING_FATAL,
-      [ERROR_CODES.PROVIDER_TRANSIENT, ERROR_CODES.PROVIDER_UNAVAILABLE, ERROR_CODES.RATE_LIMITED],
-    ),
+    nonRetryableErrorTypes: codes(CONTENT_FATAL, PROVIDER_FATAL, USER_FIXABLE, BILLING_FATAL, [
+      ERROR_CODES.PROVIDER_TRANSIENT,
+      ERROR_CODES.PROVIDER_UNAVAILABLE,
+      ERROR_CODES.RATE_LIMITED,
+    ]),
   },
 };
 

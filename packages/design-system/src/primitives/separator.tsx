@@ -21,7 +21,7 @@ export const Separator = forwardRef<HTMLDivElement, SeparatorProps>(function Sep
       orientation={orientation}
       decorative={decorative}
       className={cn(
-        'shrink-0 bg-border-subtle',
+        'bg-border-subtle shrink-0',
         orientation === 'horizontal' ? 'h-px w-full' : 'h-full w-px',
         className,
       )}

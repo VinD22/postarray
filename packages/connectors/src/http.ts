@@ -1,5 +1,5 @@
 import { type ProviderId } from '@relay/contracts';
-import { z } from 'zod';
+import { type z } from 'zod';
 
 import {
   type ClassifiedProviderError,
@@ -216,8 +216,13 @@ export interface ProviderHttpClientOptions {
   readonly maxRateLimitWaitSeconds?: number;
 }
 
-function buildUrl(base: string | undefined, url: string, query: ProviderHttpRequest<unknown>['query']): string {
-  const resolved = base === undefined || /^https?:\/\//i.test(url) ? url : new URL(url, base).toString();
+function buildUrl(
+  base: string | undefined,
+  url: string,
+  query: ProviderHttpRequest<unknown>['query'],
+): string {
+  const resolved =
+    base === undefined || /^https?:\/\//i.test(url) ? url : new URL(url, base).toString();
   if (query === undefined) {
     return resolved;
   }
@@ -332,7 +337,9 @@ export class ProviderHttpClient {
     const bucket = request.bucket ?? request.operation;
     const maxAttempts = Math.max(
       1,
-      request.idempotent ? (request.maxAttempts ?? this.#options.maxAttempts ?? DEFAULT_MAX_ATTEMPTS) : 1,
+      request.idempotent
+        ? (request.maxAttempts ?? this.#options.maxAttempts ?? DEFAULT_MAX_ATTEMPTS)
+        : 1,
     );
     const startedMs = this.#clock.now().getTime();
     let lastError: ProviderCallError | null = null;
@@ -376,7 +383,12 @@ export class ProviderHttpClient {
 
   #classify(
     operation: ProviderOperation,
-    input: { status?: number; body?: unknown; headers?: Readonly<Record<string, string>>; transportCode?: string },
+    input: {
+      status?: number;
+      body?: unknown;
+      headers?: Readonly<Record<string, string>>;
+      transportCode?: string;
+    },
   ): ClassifiedProviderError {
     return classifyProviderError({
       provider: this.provider,

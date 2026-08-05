@@ -42,5 +42,4 @@ export const controlHeight = {
 export type ControlSize = keyof typeof controlHeight;
 
 /** The one surface recipe: hairline border, tonal fill, small radius, no shadow. */
-export const panelSurface =
-  'bg-surface-raised border border-border-default rounded-lg';
+export const panelSurface = 'bg-surface-raised border border-border-default rounded-lg';

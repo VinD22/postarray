@@ -7,9 +7,7 @@ import type { ComparablePost, ObservedPost } from './types.js';
 
 export const HASH = 'a'.repeat(64);
 
-export function makeObservation(
-  overrides: Partial<MetricObservation> = {},
-): MetricObservation {
+export function makeObservation(overrides: Partial<MetricObservation> = {}): MetricObservation {
   return metricObservationSchema.parse({
     normalizedName: 'impressions',
     provider: 'linkedin',

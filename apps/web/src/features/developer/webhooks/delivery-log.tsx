@@ -80,12 +80,8 @@ export function DeliveryLog({
             </TableCaption>
             <TableHeader>
               <TableRow>
-                <TableHead scope="col">
-                  {t('developer.ui.webhooks.deliveryColumn.time')}
-                </TableHead>
-                <TableHead scope="col">
-                  {t('developer.ui.webhooks.deliveryColumn.event')}
-                </TableHead>
+                <TableHead scope="col">{t('developer.ui.webhooks.deliveryColumn.time')}</TableHead>
+                <TableHead scope="col">{t('developer.ui.webhooks.deliveryColumn.event')}</TableHead>
                 <TableHead scope="col" numeric>
                   {t('developer.ui.webhooks.deliveryColumn.attempt')}
                 </TableHead>
@@ -153,11 +149,11 @@ export function DeliveryLog({
         {deliveries.map((delivery) => (
           <li
             key={`${delivery.id}-${delivery.attempt}`}
-            className="flex flex-col gap-2 border-b border-border-subtle py-3"
+            className="border-border-subtle flex flex-col gap-2 border-b py-3"
           >
             <div className="flex items-start justify-between gap-2">
               <Code>{delivery.eventName}</Code>
-              <span className="flex items-center gap-2 text-body-sm">
+              <span className="text-body-sm flex items-center gap-2">
                 <StatusDot tone={STATUS_TONE[delivery.status]} />
                 {t(`developer.ui.webhooks.deliveryStatus.${delivery.status}`)}
               </span>
@@ -211,7 +207,7 @@ export function DeliveryLog({
           <DialogBody>
             <div className="flex flex-col gap-4">
               <section className="flex flex-col gap-1">
-                <h3 className="text-body-md font-medium text-text-primary">
+                <h3 className="text-body-md text-text-primary font-medium">
                   {t('developer.ui.webhooks.inspectRequest')}
                 </h3>
                 <Code block className="max-h-64 overflow-auto">
@@ -219,12 +215,11 @@ export function DeliveryLog({
                 </Code>
               </section>
               <section className="flex flex-col gap-1">
-                <h3 className="text-body-md font-medium text-text-primary">
+                <h3 className="text-body-md text-text-primary font-medium">
                   {t('developer.ui.webhooks.inspectResponse')}
                 </h3>
                 <Code block className="max-h-64 overflow-auto">
-                  {inspecting?.responseBodyExcerpt ??
-                    t('developer.ui.webhooks.deliveryNoResponse')}
+                  {inspecting?.responseBodyExcerpt ?? t('developer.ui.webhooks.deliveryNoResponse')}
                 </Code>
               </section>
               <p className="text-body-sm text-text-secondary">

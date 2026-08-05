@@ -79,7 +79,8 @@ export function ComposerScreen(props: ComposerScreenProps): ReactNode {
   const [issueIndex, setIssueIndex] = useState<number | null>(null);
 
   const issues = useMemo(() => issueCursorList(summaries), [summaries]);
-  const active = summaries.find((summary) => summary.connectionId === state.activeConnectionId) ?? null;
+  const active =
+    summaries.find((summary) => summary.connectionId === state.activeConnectionId) ?? null;
 
   const moveTarget = useCallback(
     (delta: 1 | -1) => {
@@ -207,8 +208,8 @@ export function ComposerScreen(props: ComposerScreenProps): ReactNode {
                   onClick={() => setStep(entry)}
                   className={
                     step === entry
-                      ? 'min-h-11 rounded-md border border-accent bg-accent-subtle px-3 text-body-sm text-text-primary'
-                      : 'min-h-11 rounded-md border border-border-subtle px-3 text-body-sm text-text-secondary'
+                      ? 'border-accent bg-accent-subtle text-body-sm text-text-primary min-h-11 rounded-md border px-3'
+                      : 'border-border-subtle text-body-sm text-text-secondary min-h-11 rounded-md border px-3'
                   }
                 >
                   {t(`composerWeb.step.${entry === 'variant' ? 'perTarget' : entry}`)}
@@ -255,7 +256,7 @@ export function ComposerScreen(props: ComposerScreenProps): ReactNode {
 
       {/* 768 to 1023: the rail becomes a horizontal strip above the editor. */}
       {isDesktop ? null : (
-        <div className="overflow-x-auto border-b border-border-subtle pb-3">
+        <div className="border-border-subtle overflow-x-auto border-b pb-3">
           <div className="min-w-[36rem]">
             <TargetRail />
           </div>
@@ -272,7 +273,7 @@ export function ComposerScreen(props: ComposerScreenProps): ReactNode {
         }
       >
         {isDesktop ? (
-          <aside className="border-e border-border-subtle pe-4">
+          <aside className="border-border-subtle border-e pe-4">
             <TargetRail />
           </aside>
         ) : null}
@@ -291,8 +292,8 @@ export function ComposerScreen(props: ComposerScreenProps): ReactNode {
             aria-label={t.full('composerWeb.pane.review')}
             className={
               isDesktop
-                ? 'hidden border-s border-border-subtle ps-4 pb-10 xl:block'
-                : 'border-s border-border-subtle ps-4 pb-10'
+                ? 'border-border-subtle hidden border-s ps-4 pb-10 xl:block'
+                : 'border-border-subtle border-s ps-4 pb-10'
             }
           >
             <div className="flex justify-end">
@@ -312,7 +313,7 @@ export function ComposerScreen(props: ComposerScreenProps): ReactNode {
       {showPreview ? (
         <div className={isDesktop ? 'pb-10 xl:hidden' : 'hidden'}>{reviewPane}</div>
       ) : (
-        <div className="flex flex-wrap items-center gap-3 border-t border-border-subtle pt-3 pb-10">
+        <div className="border-border-subtle flex flex-wrap items-center gap-3 border-t pt-3 pb-10">
           <p className="text-body-sm text-text-tertiary">
             {t.full('composerWeb.pane.previewCollapsed')}
           </p>

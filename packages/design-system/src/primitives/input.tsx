@@ -39,7 +39,8 @@ export const inputVariants = cva(
 );
 
 export interface InputProps
-  extends Omit<ComponentPropsWithoutRef<'input'>, 'size'>,
+  extends
+    Omit<ComponentPropsWithoutRef<'input'>, 'size'>,
     Omit<VariantProps<typeof inputVariants>, 'invalid'> {
   invalid?: boolean;
   /** Rendered at the inline start, inside the border. Decorative only. */
@@ -74,14 +75,14 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
       {addonStart ? (
         <span
           aria-hidden="true"
-          className="pointer-events-none absolute start-2.5 flex items-center text-text-tertiary [&_svg]:size-4"
+          className="text-text-tertiary pointer-events-none absolute start-2.5 flex items-center [&_svg]:size-4"
         >
           {addonStart}
         </span>
       ) : null}
       {control}
       {addonEnd ? (
-        <span className="absolute end-2 flex items-center text-text-tertiary [&_svg]:size-4">
+        <span className="text-text-tertiary absolute end-2 flex items-center [&_svg]:size-4">
           {addonEnd}
         </span>
       ) : null}

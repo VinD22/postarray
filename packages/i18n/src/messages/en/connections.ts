@@ -3,8 +3,7 @@ export const connectionMessages = {
   'connection.title': 'Connections',
   'connection.subtitle': 'The accounts, Pages and channels this workspace can publish to.',
   'connection.add': 'Connect an account',
-  'connection.count':
-    '{used, plural, one {# active channel} other {# active channels}} of {limit}',
+  'connection.count': '{used, plural, one {# active channel} other {# active channels}} of {limit}',
   'connection.limitReached':
     'This workspace is using all {limit} channels. Disconnect one before connecting another.',
 

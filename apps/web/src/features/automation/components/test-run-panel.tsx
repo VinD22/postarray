@@ -34,12 +34,7 @@ export interface TestRunPanelProps {
   readonly onRun: (payload: string | undefined) => void;
 }
 
-export function TestRunPanel({
-  result,
-  running,
-  error,
-  onRun,
-}: TestRunPanelProps): ReactElement {
+export function TestRunPanel({ result, running, error, onRun }: TestRunPanelProps): ReactElement {
   const t = useTranslations();
   const format = useValueFormat();
   const [mode, setMode] = useState<'last' | 'payload'>('last');
@@ -76,7 +71,7 @@ export function TestRunPanel({
               {...control}
               spellCheck={false}
               minRows={6}
-              className="font-mono text-mono"
+              className="text-mono font-mono"
               value={payload}
               onChange={(event) => setPayload(event.target.value)}
             />
@@ -105,8 +100,8 @@ export function TestRunPanel({
       ) : null}
 
       {result ? (
-        <div className="flex flex-col gap-3 border-t border-border-subtle pt-4">
-          <h3 className="text-body-md font-medium text-text-primary">
+        <div className="border-border-subtle flex flex-col gap-3 border-t pt-4">
+          <h3 className="text-body-md text-text-primary font-medium">
             {t('automation.test.resultTitle')}
           </h3>
           <p className="text-body-sm text-text-tertiary">
@@ -120,18 +115,15 @@ export function TestRunPanel({
             {result.conditions.map((condition) => (
               <li
                 key={condition.label}
-                className="flex items-start gap-2 text-body-md text-text-secondary"
+                className="text-body-md text-text-secondary flex items-start gap-2"
               >
                 {condition.passed ? (
                   <CheckCircle2
                     aria-hidden="true"
-                    className="mt-0.5 size-4 shrink-0 text-success-fg"
+                    className="text-success-fg mt-0.5 size-4 shrink-0"
                   />
                 ) : (
-                  <XCircle
-                    aria-hidden="true"
-                    className="mt-0.5 size-4 shrink-0 text-warning-fg"
-                  />
+                  <XCircle aria-hidden="true" className="text-warning-fg mt-0.5 size-4 shrink-0" />
                 )}
                 <span>
                   {condition.passed
@@ -143,17 +135,17 @@ export function TestRunPanel({
             {result.actions.map((action) => (
               <li
                 key={action.label}
-                className="flex items-start gap-2 text-body-md text-text-secondary"
+                className="text-body-md text-text-secondary flex items-start gap-2"
               >
                 {action.outcome === 'would_run' ? (
                   <CheckCircle2
                     aria-hidden="true"
-                    className="mt-0.5 size-4 shrink-0 text-success-fg"
+                    className="text-success-fg mt-0.5 size-4 shrink-0"
                   />
                 ) : (
                   <XCircle
                     aria-hidden="true"
-                    className="mt-0.5 size-4 shrink-0 text-text-tertiary"
+                    className="text-text-tertiary mt-0.5 size-4 shrink-0"
                   />
                 )}
                 <span>

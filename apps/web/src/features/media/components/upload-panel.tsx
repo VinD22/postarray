@@ -105,7 +105,7 @@ export function UploadPanel({
             : t.full('mediaLib.upload.checkedAgainst')}
         </p>
         {imageLimit === null ? null : (
-          <p className="text-label tabular-nums text-text-tertiary">
+          <p className="text-label text-text-tertiary tabular-nums">
             {t.full('composerWeb.limits.fileSize', {
               size: formatBytes(t.locale, imageLimit),
             })}
@@ -125,13 +125,13 @@ export function UploadPanel({
             {items.map((item) => (
               <li
                 key={item.id}
-                className="flex flex-col gap-1.5 border-b border-border-subtle py-2.5 last:border-b-0"
+                className="border-border-subtle flex flex-col gap-1.5 border-b py-2.5 last:border-b-0"
               >
                 <div className="flex flex-wrap items-baseline justify-between gap-2">
-                  <span className="min-w-0 truncate text-body-md text-text-primary">
+                  <span className="text-body-md text-text-primary min-w-0 truncate">
                     {item.name}
                   </span>
-                  <span className="shrink-0 text-label tabular-nums text-text-tertiary">
+                  <span className="text-label text-text-tertiary shrink-0 tabular-nums">
                     {t.full('mediaLib.upload.progress', {
                       name: item.name,
                       percent: `${Math.round((item.sentBytes / Math.max(item.bytes, 1)) * 100)}%`,

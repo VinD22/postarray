@@ -107,10 +107,8 @@ export function RescheduleDialog({
             {/* The two times, side by side, with UTC beside each. A reviewer
                 comparing them must never have to hold one in their head. */}
             <dl className="grid grid-cols-1 gap-x-4 gap-y-1 sm:grid-cols-[7rem_1fr]">
-              <dt className="text-label text-text-tertiary">
-                {t('receipt.times.scheduled')}
-              </dt>
-              <dd className="text-body-md tabular-nums text-text-secondary">
+              <dt className="text-label text-text-tertiary">{t('receipt.times.scheduled')}</dt>
+              <dd className="text-body-md text-text-secondary tabular-nums">
                 <time dateTime={proposal.fromInstant}>
                   {t('web.calendar.reschedule.from', {
                     local: format.dateTime(proposal.fromInstant),
@@ -119,7 +117,7 @@ export function RescheduleDialog({
                 </time>
               </dd>
               <dt className="text-label text-text-tertiary">{t('common.now')}</dt>
-              <dd className="text-body-md tabular-nums font-medium text-text-primary">
+              <dd className="text-body-md text-text-primary font-medium tabular-nums">
                 <time dateTime={proposal.toInstant}>
                   {t('web.calendar.reschedule.to', {
                     local: format.dateTime(proposal.toInstant),
@@ -227,9 +225,7 @@ function WarningNotice({ warning }: { warning: RescheduleWarning }): ReactNode {
           description={t('web.calendar.reschedule.leadTimeBody', {
             duration: format.duration(Number(warning.values.availableSeconds ?? 0) * 1000),
             required: format.duration(Number(warning.values.requiredSeconds ?? 0) * 1000),
-            provider: providerName(
-              warning.values.provider as Parameters<typeof providerName>[0],
-            ),
+            provider: providerName(warning.values.provider as Parameters<typeof providerName>[0]),
           })}
         />
       );
@@ -252,8 +248,8 @@ function PublishedChoice({
   const t = useTranslations();
 
   return (
-    <fieldset className="flex flex-col gap-2 rounded-lg border border-warning-border bg-warning-bg p-3">
-      <legend className="px-1 text-body-md font-medium text-warning-fg">
+    <fieldset className="border-warning-border bg-warning-bg flex flex-col gap-2 rounded-lg border p-3">
+      <legend className="text-body-md text-warning-fg px-1 font-medium">
         {t('web.calendar.published.title')}
       </legend>
       <p className="text-body-sm text-text-secondary">
@@ -300,7 +296,7 @@ function ChoiceRow({
   return (
     <div
       className={cn(
-        'flex items-start gap-2 rounded-md border border-border-default',
+        'border-border-default flex items-start gap-2 rounded-md border',
         'bg-surface-raised p-2.5',
       )}
     >

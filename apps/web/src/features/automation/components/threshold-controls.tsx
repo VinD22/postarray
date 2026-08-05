@@ -66,11 +66,7 @@ export function ThresholdControls({
           value={String(value[field])}
           onValueChange={(next) => onChange({ ...value, [field]: Number(next) })}
         >
-          <SelectTrigger
-            id={control.id}
-            size="sm"
-            aria-describedby={control['aria-describedby']}
-          >
+          <SelectTrigger id={control.id} size="sm" aria-describedby={control['aria-describedby']}>
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
@@ -86,14 +82,10 @@ export function ThresholdControls({
   );
 
   return (
-    <section className="flex flex-col gap-4 border-t border-border-subtle pt-4">
+    <section className="border-border-subtle flex flex-col gap-4 border-t pt-4">
       <div className="flex max-w-[70ch] flex-col gap-1">
-        <h3 className="text-title-sm text-text-primary">
-          {t('automation.threshold.title')}
-        </h3>
-        <p className="text-body-md text-text-secondary">
-          {t('automation.threshold.intro')}
-        </p>
+        <h3 className="text-title-sm text-text-primary">{t('automation.threshold.title')}</h3>
+        <p className="text-body-md text-text-secondary">{t('automation.threshold.intro')}</p>
       </div>
 
       <div className="grid gap-4 sm:grid-cols-2">
@@ -108,11 +100,7 @@ export function ThresholdControls({
           t('automation.threshold.cooldownHelp'),
           'cooldownSeconds',
         )}
-        {durationField(
-          t('automation.threshold.staleLimit'),
-          undefined,
-          'staleAfterSeconds',
-        )}
+        {durationField(t('automation.threshold.staleLimit'), undefined, 'staleAfterSeconds')}
 
         <Field label={t('automation.threshold.maxPerPost')} required>
           {(control) => (
@@ -138,7 +126,7 @@ export function ThresholdControls({
         tone="neutral"
         title={t('automation.threshold.defaultsTitle')}
         description={
-          <ul className="flex list-disc flex-col gap-1 ps-5 marker:text-text-tertiary">
+          <ul className="marker:text-text-tertiary flex list-disc flex-col gap-1 ps-5">
             <li>
               {t('automation.threshold.maxExecutions', {
                 count: value.maxExecutionsPerPost,
@@ -155,10 +143,7 @@ export function ThresholdControls({
       />
 
       {providerDelayNote ? (
-        <Notice
-          tone="warning"
-          title={t('automation.threshold.providerNote', providerDelayNote)}
-        />
+        <Notice tone="warning" title={t('automation.threshold.providerNote', providerDelayNote)} />
       ) : null}
     </section>
   );

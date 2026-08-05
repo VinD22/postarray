@@ -2,10 +2,7 @@ import type { WorkerActivities } from '../../activities/types.js';
 import { MESSAGE_KEYS } from '../../messages.js';
 import { backoffMs, toIsoInstant } from '../../runtime/deterministic.js';
 import type { ChildWorkflowDescriptor, WorkflowRuntime } from '../../runtime/types.js';
-import type {
-  WebhookDeliveryWorkflowInput,
-  WebhookDeliveryWorkflowOutput,
-} from '../inputs.js';
+import type { WebhookDeliveryWorkflowInput, WebhookDeliveryWorkflowOutput } from '../inputs.js';
 
 /**
  * One signed delivery to one customer endpoint.

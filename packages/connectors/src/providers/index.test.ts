@@ -67,9 +67,7 @@ describe('registerBuiltInProviders', () => {
 
   it('reports a partially configured provider with only the missing variable', () => {
     const { deps } = createTestDeps({ providers: { linkedin: { clientId: 'set' } } });
-    expect(providerStatus(deps.config, 'linkedin')).toBe(
-      'disabled:missing LINKEDIN_CLIENT_SECRET',
-    );
+    expect(providerStatus(deps.config, 'linkedin')).toBe('disabled:missing LINKEDIN_CLIENT_SECRET');
     expect(missingCredentials(deps.config, 'linkedin')).toEqual(['LINKEDIN_CLIENT_SECRET']);
   });
 

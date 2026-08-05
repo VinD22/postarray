@@ -1,6 +1,13 @@
 import { Injectable, type CanActivate, type ExecutionContext } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
-import { API_HEADERS, ID_PREFIXES, RelayError, ERROR_CODES, isId, type Scope } from '@relay/contracts';
+import {
+  API_HEADERS,
+  ID_PREFIXES,
+  RelayError,
+  ERROR_CODES,
+  isId,
+  type Scope,
+} from '@relay/contracts';
 import type { Request } from 'express';
 
 import { PUBLIC_ROUTE_KEY, WORKSPACE_OPTIONAL_KEY } from '../common/decorators.js';

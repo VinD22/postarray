@@ -92,14 +92,14 @@ export function RuleRuns({ runs, loading, error, onRetry }: RuleRunsProps): Reac
         {t('automation.rules.runs.title')}
       </h2>
 
-      <ul className="flex flex-col border-t border-border-subtle">
+      <ul className="border-border-subtle flex flex-col border-t">
         {runs.map((run) => (
-          <li
-            key={run.id}
-            className="flex flex-col gap-1 border-b border-border-subtle py-3"
-          >
+          <li key={run.id} className="border-border-subtle flex flex-col gap-1 border-b py-3">
             <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
-              <time dateTime={run.startedAt} className="text-body-md text-text-primary tabular-nums">
+              <time
+                dateTime={run.startedAt}
+                className="text-body-md text-text-primary tabular-nums"
+              >
                 {format.dateTime(run.startedAt)}
               </time>
               <Badge tone={OUTCOME_TONE[run.outcome]}>{t(OUTCOME_KEY[run.outcome])}</Badge>
@@ -117,7 +117,7 @@ export function RuleRuns({ runs, loading, error, onRetry }: RuleRunsProps): Reac
             ) : null}
 
             {run.errorCode ? (
-              <p className="flex flex-wrap items-center gap-1.5 text-body-sm text-destructive-fg">
+              <p className="text-body-sm text-destructive-fg flex flex-wrap items-center gap-1.5">
                 {t('automation.runs.outcome.failed')}
                 <Code>{run.errorCode}</Code>
               </p>

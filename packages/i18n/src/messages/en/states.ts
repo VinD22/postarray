@@ -43,7 +43,8 @@ export const stateMessages = {
     'This post is no longer on {provider}. The receipt and the metrics collected before it went are kept.',
 
   'state.approval.not_required.label': 'No approval needed',
-  'state.approval.not_required.description': 'The policy for these targets does not require approval.',
+  'state.approval.not_required.description':
+    'The policy for these targets does not require approval.',
   'state.approval.requested.label': 'Requested',
   'state.approval.requested.description': 'Sent to {approver} {relativeTime}.',
   'state.approval.in_review.label': 'In review',

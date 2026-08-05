@@ -20,7 +20,9 @@ import type { RenderInput } from '../output.js';
  * a config file is the thing people paste into support conversations.
  */
 
-const SETTABLE_KEYS = CONFIG_KEYS.filter((key): key is Exclude<ConfigKey, 'profile'> => key !== 'profile');
+const SETTABLE_KEYS = CONFIG_KEYS.filter(
+  (key): key is Exclude<ConfigKey, 'profile'> => key !== 'profile',
+);
 
 function assertSettable(key: string): Exclude<ConfigKey, 'profile'> {
   const match = SETTABLE_KEYS.find((candidate) => candidate === key);

@@ -104,7 +104,10 @@ function walk(source: string, context: WalkContext): string {
  * ICU quoting: `''` is a literal apostrophe, and `'` starts a quoted run only
  * when the next character is `{`, `}` or `#`.
  */
-function readQuoted(source: string, start: number): { text: string; nextIndex: number } | undefined {
+function readQuoted(
+  source: string,
+  start: number,
+): { text: string; nextIndex: number } | undefined {
   const next = source[start + 1];
   if (next === "'") {
     return { text: "''", nextIndex: start + 2 };

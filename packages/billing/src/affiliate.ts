@@ -183,7 +183,10 @@ export interface CommissionLedgerEntry {
  */
 export interface CommissionLedger {
   append(entry: CommissionLedgerEntry): Promise<void>;
-  list(filter?: { partnerId?: string; referralId?: string }): Promise<readonly CommissionLedgerEntry[]>;
+  list(filter?: {
+    partnerId?: string;
+    referralId?: string;
+  }): Promise<readonly CommissionLedgerEntry[]>;
 }
 
 export class InMemoryCommissionLedger implements CommissionLedger {
@@ -205,7 +208,9 @@ export class InMemoryCommissionLedger implements CommissionLedger {
       });
     }
     this.seen.add(entry.id);
-    this.entries.push(Object.freeze({ ...entry, approverIds: Object.freeze([...entry.approverIds]) }));
+    this.entries.push(
+      Object.freeze({ ...entry, approverIds: Object.freeze([...entry.approverIds]) }),
+    );
   }
 
   async list(
@@ -339,7 +344,10 @@ export function reverseCommission(input: {
   occurredAt: string;
   reason: string;
 }): CommissionLedgerEntry {
-  const amount = Math.min(input.amountMinor ?? input.accrual.amountMinor, input.accrual.amountMinor);
+  const amount = Math.min(
+    input.amountMinor ?? input.accrual.amountMinor,
+    input.accrual.amountMinor,
+  );
   return {
     id: input.entryId,
     partnerId: input.accrual.partnerId,

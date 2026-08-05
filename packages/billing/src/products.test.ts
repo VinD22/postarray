@@ -73,9 +73,7 @@ describe('the presentation object agrees with the English catalog', () => {
   });
 
   it('renders the annual framing in money, exactly as the catalog does', () => {
-    expect(catalog[PRICE_PRESENTATION.annualFraming.framingKey]).toBe(
-      MANDATED_COPY.annualFraming,
-    );
+    expect(catalog[PRICE_PRESENTATION.annualFraming.framingKey]).toBe(MANDATED_COPY.annualFraming);
     expect(PRICE_PRESENTATION.annualFraming.framingText).toBe(
       '$25/month billed annually. Save $48/year.',
     );

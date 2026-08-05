@@ -62,10 +62,7 @@ export {
   runWebhookDelivery,
   webhookDeliveryDescriptor,
 } from './workflows/core/webhook-delivery.core.js';
-export {
-  dataDeletionDescriptor,
-  runDataDeletion,
-} from './workflows/core/data-deletion.core.js';
+export { dataDeletionDescriptor, runDataDeletion } from './workflows/core/data-deletion.core.js';
 
 export type {
   AnalyticsSyncWorkflowInput,
@@ -115,7 +112,13 @@ export {
   type WorkflowStatusView,
 } from './runtime/types.js';
 
-export { backoffMs, hashString, jitterMs, stableSort, unitInterval } from './runtime/deterministic.js';
+export {
+  backoffMs,
+  hashString,
+  jitterMs,
+  stableSort,
+  unitInterval,
+} from './runtime/deterministic.js';
 
 export { MESSAGE_KEYS } from './messages.js';
 

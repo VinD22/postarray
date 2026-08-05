@@ -139,7 +139,10 @@ export function createLinksServer(options: LinksServerOptions): LinksServer {
     });
 
   const sendNotice = (reply: FastifyReply, reference: string): FastifyReply =>
-    reply.code(404).headers({ ...NOTICE_HEADERS }).send(noticePage(reference));
+    reply
+      .code(404)
+      .headers({ ...NOTICE_HEADERS })
+      .send(noticePage(reference));
 
   const recordClick = (request: FastifyRequest, outcome: ResolveOutcome): void => {
     if (outcome.kind !== 'redirect') {
@@ -204,7 +207,10 @@ export function createLinksServer(options: LinksServerOptions): LinksServer {
   app.get('/robots.txt', async (_request, reply) =>
     reply
       .code(200)
-      .headers({ 'content-type': 'text/plain; charset=utf-8', 'cache-control': 'public, max-age=86400' })
+      .headers({
+        'content-type': 'text/plain; charset=utf-8',
+        'cache-control': 'public, max-age=86400',
+      })
       .send(ROBOTS_BODY),
   );
 
@@ -318,7 +324,10 @@ export function createLinksServer(options: LinksServerOptions): LinksServer {
   app.setNotFoundHandler(async (_request, reply) => sendNotice(reply, randomUUID()));
 
   app.setErrorHandler(async (error, _request, reply) => {
-    options.logger.error({ event: 'shortlink.unhandled_error', error }, 'shortlink.unhandled_error');
+    options.logger.error(
+      { event: 'shortlink.unhandled_error', error },
+      'shortlink.unhandled_error',
+    );
     return sendNotice(reply, randomUUID());
   });
 

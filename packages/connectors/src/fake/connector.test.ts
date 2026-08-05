@@ -4,7 +4,7 @@ import { capabilitySnapshotSchema, metricObservationSchema } from '@relay/contra
 
 import { ProviderCallError } from '../errors.js';
 import { fixedClock, recordingSleeper } from '../ports.js';
-import { FakeConnector, createFakeConnector } from './connector.js';
+import { type FakeConnector, createFakeConnector } from './connector.js';
 import {
   fakeConnectionRef,
   fakeDraft,
@@ -158,7 +158,9 @@ describe('validation and preview', () => {
 
   it('refuses a content kind the provider does not offer', async () => {
     const provider = connector();
-    const result = await provider.validateDraft(fakeDraft({ contentKind: 'long_video' }, { clock }));
+    const result = await provider.validateDraft(
+      fakeDraft({ contentKind: 'long_video' }, { clock }),
+    );
     expect(result.ok).toBe(false);
     expect(result.issues[0]?.messageKey).toBe('error.capability_unsupported.message');
   });
@@ -265,7 +267,9 @@ describe('publishing', () => {
   it('reports a permanent rejection without retrying', async () => {
     const provider = connector();
     provider.setFailureMode('content_rejected', 1);
-    const result = await provider.publish(fakePublishRequest(fakeDraft({}, { clock }), {}, { clock }));
+    const result = await provider.publish(
+      fakePublishRequest(fakeDraft({}, { clock }), {}, { clock }),
+    );
     expect(result.status).toBe('failed');
     if (result.status === 'failed') {
       expect(result.error.errorClass).toBe('PERMANENT_PROVIDER');
@@ -316,7 +320,11 @@ describe('status polling', () => {
     expect(pending.status).toBe('pending');
     if (pending.status !== 'pending') return;
 
-    const statusRequest = fakeStatusRequest(draft, { providerJobId: pending.providerJobId }, { clock });
+    const statusRequest = fakeStatusRequest(
+      draft,
+      { providerJobId: pending.providerJobId },
+      { clock },
+    );
     expect((await provider.getStatus(statusRequest)).state).toBe('processing');
     expect((await provider.getStatus(statusRequest)).state).toBe('processing');
     const finished = await provider.getStatus(statusRequest);

@@ -100,7 +100,7 @@ export function VariantEditor({
       ) : (
         <section
           aria-labelledby="override-heading"
-          className="flex flex-col gap-2 border-s-2 border-accent ps-3"
+          className="border-accent flex flex-col gap-2 border-s-2 ps-3"
         >
           <h3 id="override-heading" className="text-title-sm text-text-primary">
             {t.full('composerWeb.override.heading')}
@@ -162,7 +162,7 @@ export function VariantEditor({
         <h3 id="limits-heading" className="text-label text-text-secondary">
           {t.full('composerWeb.limits.heading', { account: summary.account.displayName })}
         </h3>
-        <ul className="flex flex-col gap-0.5 text-body-sm text-text-tertiary">
+        <ul className="text-body-sm text-text-tertiary flex flex-col gap-0.5">
           <li>{t.full('composerWeb.limits.text', { limit: snapshot.text.maxLength })}</li>
           {snapshot.text.linkCounting.mode === 'fixed' &&
           snapshot.text.linkCounting.charactersPerLink !== null ? (
@@ -194,7 +194,9 @@ export function VariantEditor({
               })}
             </li>
           )}
-          {media.requiresThumbnail ? <li>{t.full('composerWeb.limits.thumbnailRequired')}</li> : null}
+          {media.requiresThumbnail ? (
+            <li>{t.full('composerWeb.limits.thumbnailRequired')}</li>
+          ) : null}
           <li>
             {t.full('composerWeb.limits.source', {
               version: snapshot.capabilityVersion,

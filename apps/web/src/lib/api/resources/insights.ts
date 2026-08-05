@@ -1,6 +1,12 @@
 /** Analytics, experiments, tracked links and the growth advisor. */
 
-import type { BusinessProfile, GrowthExportFormat, GrowthPlan, OpportunityRecord, ToolRecord } from '@relay/contracts';
+import type {
+  BusinessProfile,
+  GrowthExportFormat,
+  GrowthPlan,
+  OpportunityRecord,
+  ToolRecord,
+} from '@relay/contracts';
 
 import { call } from '../call.js';
 import { demoGrowthPlan, page } from '../fixtures.js';
@@ -78,10 +84,7 @@ export const analyticsApi = {
   ): Promise<readonly MetricView[]> =>
     call(`/analytics/posts/${contentItemId}`, { query }, () => []),
 
-  getAccountMetrics: (
-    connectionId: string,
-    query: MetricWindow,
-  ): Promise<readonly MetricView[]> =>
+  getAccountMetrics: (connectionId: string, query: MetricWindow): Promise<readonly MetricView[]> =>
     call(`/analytics/accounts/${connectionId}`, { query }, () => []),
 
   /**
@@ -175,14 +178,25 @@ export const growthApi = {
     call('/growth/plans', { method: 'POST', idempotencyKey }, () => null),
 
   getPlan: (planId?: string): Promise<GrowthPlan | null> =>
-    call(planId === undefined ? '/growth/plans/current' : `/growth/plans/${planId}`, {}, () => null),
+    call(
+      planId === undefined ? '/growth/plans/current' : `/growth/plans/${planId}`,
+      {},
+      () => null,
+    ),
 
   /** Home only needs the summary, not the whole plan document. */
   getPlanSummary: (): Promise<GrowthPlanSummaryView> =>
     call('/growth/plans/current/summary', {}, () => demoGrowthPlan),
 
-  exportPlan: (planId: string, format: GrowthExportFormat): Promise<{ downloadUrl: string } | null> =>
-    call(`/growth/plans/${planId}/exports`, { method: 'POST', body: { format }, sideEffectFree: true }, () => null),
+  exportPlan: (
+    planId: string,
+    format: GrowthExportFormat,
+  ): Promise<{ downloadUrl: string } | null> =>
+    call(
+      `/growth/plans/${planId}/exports`,
+      { method: 'POST', body: { format }, sideEffectFree: true },
+      () => null,
+    ),
 
   createDraftFromItem: (
     input: { planId: string; itemId: string },

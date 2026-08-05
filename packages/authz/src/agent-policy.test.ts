@@ -37,18 +37,18 @@ function request(overrides: Partial<AgentActionRequest> = {}): AgentActionReques
 
 describe('approval levels', () => {
   it('lets level 0 read and validate but not draft', () => {
-    expect(evaluateAgentAction(request({ kind: 'read', approvalLevel: 'level_0_read' })).allowed)
-      .toBe(true);
-    const drafting = evaluateAgentAction(
-      request({ kind: 'draft', approvalLevel: 'level_0_read' }),
-    );
+    expect(
+      evaluateAgentAction(request({ kind: 'read', approvalLevel: 'level_0_read' })).allowed,
+    ).toBe(true);
+    const drafting = evaluateAgentAction(request({ kind: 'draft', approvalLevel: 'level_0_read' }));
     expect(drafting.allowed).toBe(false);
     expect(drafting.blockers[0]?.code).toBe('approval_level_too_low');
   });
 
   it('lets level 1 draft but not schedule', () => {
-    expect(evaluateAgentAction(request({ kind: 'draft', approvalLevel: 'level_1_draft' })).allowed)
-      .toBe(true);
+    expect(
+      evaluateAgentAction(request({ kind: 'draft', approvalLevel: 'level_1_draft' })).allowed,
+    ).toBe(true);
     expect(
       evaluateAgentAction(request({ kind: 'schedule', approvalLevel: 'level_1_draft' })).allowed,
     ).toBe(false);
@@ -59,9 +59,7 @@ describe('approval levels', () => {
       request({ kind: 'publish_now', approvalLevel: 'level_2_scheduled' }),
     );
     expect(decision.allowed).toBe(false);
-    expect(decision.blockers.map((blocker) => blocker.code)).toContain(
-      'approval_level_too_low',
-    );
+    expect(decision.blockers.map((blocker) => blocker.code)).toContain('approval_level_too_low');
   });
 
   it('always asks for confirmation before an immediate publish, even at level 3', () => {
@@ -118,17 +116,11 @@ describe('bulk action detection', () => {
   });
 
   it('escalates more than five external publications in one request', () => {
-    const targets = distinct.map((body, index) =>
-      target({ connectionId: `conn-${index}`, body }),
-    );
+    const targets = distinct.map((body, index) => target({ connectionId: `conn-${index}`, body }));
     expect(detectBulkAction(targets)).toBe(true);
-    const decision = evaluateAgentAction(
-      request({ approvalLevel: 'level_2_scheduled', targets }),
-    );
+    const decision = evaluateAgentAction(request({ approvalLevel: 'level_2_scheduled', targets }));
     expect(decision.requiresHumanConfirmation).toBe(true);
-    expect(decision.escalations.map((entry) => entry.code)).toContain(
-      'bulk_publication_count',
-    );
+    expect(decision.escalations.map((entry) => entry.code)).toContain('bulk_publication_count');
   });
 
   it('does not escalate exactly five distinct publications', () => {
@@ -173,9 +165,7 @@ describe('service account restrictions', () => {
       }),
     );
     expect(decision.allowed).toBe(false);
-    expect(decision.blockers.map((entry) => entry.code)).toContain(
-      'connection_not_preauthorized',
-    );
+    expect(decision.blockers.map((entry) => entry.code)).toContain('connection_not_preauthorized');
   });
 
   it('refuses a brand, provider or locale outside the preauthorized lists', () => {
@@ -284,9 +274,7 @@ describe('service account restrictions', () => {
 
 describe('always escalating conditions', () => {
   it('escalates a first use of a connection', () => {
-    const decision = evaluateAgentAction(
-      request({ firstUseConnectionIds: ['conn-1'] }),
-    );
+    const decision = evaluateAgentAction(request({ firstUseConnectionIds: ['conn-1'] }));
     expect(decision.escalations.map((entry) => entry.code)).toContain('first_use_connection');
   });
 
@@ -296,26 +284,18 @@ describe('always escalating conditions', () => {
   });
 
   it('escalates a platform privacy change', () => {
-    const decision = evaluateAgentAction(
-      request({ targets: [target({ privacyChanged: true })] }),
-    );
+    const decision = evaluateAgentAction(request({ targets: [target({ privacyChanged: true })] }));
     expect(decision.escalations.map((entry) => entry.code)).toContain('privacy_change');
   });
 
   it('escalates content changed after approval', () => {
     const decision = evaluateAgentAction(request({ changedAfterApproval: true }));
-    expect(decision.escalations.map((entry) => entry.code)).toContain(
-      'changed_after_approval',
-    );
+    expect(decision.escalations.map((entry) => entry.code)).toContain('changed_after_approval');
   });
 
   it('escalates an estimated provider cost above the threshold', () => {
-    const decision = evaluateAgentAction(
-      request({ estimatedCostMinor: 250, costCurrency: 'USD' }),
-    );
-    expect(decision.escalations.map((entry) => entry.code)).toContain(
-      'cost_threshold_exceeded',
-    );
+    const decision = evaluateAgentAction(request({ estimatedCostMinor: 250, costCurrency: 'USD' }));
+    expect(decision.escalations.map((entry) => entry.code)).toContain('cost_threshold_exceeded');
   });
 
   it('leaves a plain scheduled post alone', () => {

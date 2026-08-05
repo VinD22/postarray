@@ -71,9 +71,7 @@ export function assemblePlan(
   };
 }
 
-export async function generateGrowthPlan(
-  input: GeneratePlanInput,
-): Promise<GeneratePlanResult> {
+export async function generateGrowthPlan(input: GeneratePlanInput): Promise<GeneratePlanResult> {
   async function attempt(repairInstruction: string | undefined): Promise<Attempt> {
     const result = await input.gateway.completeStructured(growthPlanPrompt.schema, {
       context: input.callContext,

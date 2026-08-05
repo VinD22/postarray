@@ -85,7 +85,7 @@ export function SequencePanel({ scope, capabilities }: SequencePanelProps): Reac
       ) : null}
 
       <ol className="flex flex-col">
-        <li className="border-b border-border-subtle py-2">
+        <li className="border-border-subtle border-b py-2">
           <p className="text-body-md text-text-primary">{t.full('composer.sequence.root')}</p>
         </li>
         {items.map((item, index) => (
@@ -166,8 +166,10 @@ function SequenceItem({
       : Math.max(
           1,
           Math.ceil(
-            Math.min(capabilities.firstComment.minDelaySeconds, capabilities.threads.minDelaySeconds) /
-              60,
+            Math.min(
+              capabilities.firstComment.minDelaySeconds,
+              capabilities.threads.minDelaySeconds,
+            ) / 60,
           ),
         );
 
@@ -176,7 +178,7 @@ function SequenceItem({
   };
 
   return (
-    <li className="flex flex-col gap-2.5 border-b border-border-subtle py-3 last:border-b-0">
+    <li className="border-border-subtle flex flex-col gap-2.5 border-b py-3 last:border-b-0">
       <div className="flex items-center justify-between gap-2">
         <p className="text-body-md text-text-primary">
           {t.full('composer.sequence.item', { position: index + 2 })}
@@ -243,11 +245,13 @@ function SequenceItem({
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
-                {DELAY_PRESET_MINUTES.filter((preset) => preset >= minDelayMinutes).map((preset) => (
-                  <SelectItem key={preset} value={String(preset)}>
-                    {t.full('composer.sequence.delayMinutes', { count: preset })}
-                  </SelectItem>
-                ))}
+                {DELAY_PRESET_MINUTES.filter((preset) => preset >= minDelayMinutes).map(
+                  (preset) => (
+                    <SelectItem key={preset} value={String(preset)}>
+                      {t.full('composer.sequence.delayMinutes', { count: preset })}
+                    </SelectItem>
+                  ),
+                )}
                 <SelectItem value={CUSTOM_DELAY}>
                   {t.full('composer.sequence.delayCustom')}
                 </SelectItem>
@@ -266,7 +270,9 @@ function SequenceItem({
                 min={minDelayMinutes}
                 value={minutes}
                 onChange={(event) =>
-                  patch({ delaySeconds: Math.max(minDelayMinutes, Number(event.target.value)) * 60 })
+                  patch({
+                    delaySeconds: Math.max(minDelayMinutes, Number(event.target.value)) * 60,
+                  })
                 }
               />
             )}
@@ -277,9 +283,7 @@ function SequenceItem({
           {(control) => (
             <Select
               value={item.connectionId ?? 'inherit'}
-              onValueChange={(value) =>
-                patch({ connectionId: value === 'inherit' ? null : value })
-              }
+              onValueChange={(value) => patch({ connectionId: value === 'inherit' ? null : value })}
             >
               <SelectTrigger id={control.id}>
                 <SelectValue />

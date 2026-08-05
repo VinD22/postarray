@@ -38,7 +38,13 @@ export type {
 } from './locales.js';
 
 export { CATALOGS, en, loadCatalog, messageKeys } from './messages/index.js';
-export type { Catalog, CatalogLoader, EnglishCatalog, MessageKey, PartialCatalog } from './messages/index.js';
+export type {
+  Catalog,
+  CatalogLoader,
+  EnglishCatalog,
+  MessageKey,
+  PartialCatalog,
+} from './messages/index.js';
 
 export {
   APPROVAL_STATES,

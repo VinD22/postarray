@@ -24,10 +24,10 @@ export default function MarketingLayout({ children }: { children: ReactNode }): 
   }));
 
   return (
-    <div className="flex min-h-screen flex-col bg-surface-canvas">
+    <div className="bg-surface-canvas flex min-h-screen flex-col">
       <a
         href="#main"
-        className="sr-only focus:not-sr-only focus:absolute focus:start-4 focus:top-4 focus:z-(--z-index-toast) focus:rounded-md focus:border focus:border-border-default focus:bg-surface-raised focus:px-4 focus:py-3 focus:text-body-md focus:text-text-primary focus:outline-2 focus:outline-offset-2 focus:outline-border-focus"
+        className="focus:border-border-default focus:bg-surface-raised focus:text-body-md focus:text-text-primary focus:outline-border-focus sr-only focus:not-sr-only focus:absolute focus:start-4 focus:top-4 focus:z-(--z-index-toast) focus:rounded-md focus:border focus:px-4 focus:py-3 focus:outline-2 focus:outline-offset-2"
       >
         {t.t('web.skipToContent')}
       </a>

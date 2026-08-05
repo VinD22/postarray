@@ -77,11 +77,7 @@ export class MemoryKeyValueStore implements KeyValueStore {
  */
 export interface RedisLikeClient {
   get(key: string): Promise<string | null>;
-  set(
-    key: string,
-    value: string,
-    ...args: readonly (string | number)[]
-  ): Promise<string | null>;
+  set(key: string, value: string, ...args: readonly (string | number)[]): Promise<string | null>;
   del(key: string): Promise<number>;
   incrby(key: string, amount: number): Promise<number>;
   expire(key: string, seconds: number): Promise<number>;

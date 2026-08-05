@@ -95,7 +95,7 @@ export function CalendarGrid({
           style={columnTemplate}
           className={cn(
             'sticky top-0 z-(--z-index-sticky) grid gap-px',
-            'border-b border-border-default bg-surface-canvas',
+            'border-border-default bg-surface-canvas border-b',
           )}
         >
           <span aria-hidden="true" />
@@ -109,10 +109,10 @@ export function CalendarGrid({
             <div
               key={band.hour}
               style={columnTemplate}
-              className="grid gap-px border-b border-border-subtle last:border-b-0"
+              className="border-border-subtle grid gap-px border-b last:border-b-0"
             >
               <div className="bg-surface-canvas px-2 py-2 text-end">
-                <span className="text-label tabular-nums text-text-tertiary">
+                <span className="text-label text-text-tertiary tabular-nums">
                   {format.time(hourInstant(days[0] ?? range.start, band.hour, timeZone))}
                 </span>
               </div>
@@ -122,7 +122,7 @@ export function CalendarGrid({
                 return (
                   <div
                     key={`${band.hour}-${day.toISOString()}`}
-                    className="flex min-h-14 flex-col gap-1 bg-surface-canvas p-1"
+                    className="bg-surface-canvas flex min-h-14 flex-col gap-1 p-1"
                   >
                     {cell.length === 0 ? (
                       <span className="sr-only">
@@ -167,7 +167,7 @@ function DayHeading({ day, timeZone }: { day: Date; timeZone: string }): ReactNo
       <span
         className={cn(
           'text-body-md tabular-nums',
-          today && 'rounded-sm bg-accent-subtle px-1.5 font-semibold text-text-accent',
+          today && 'bg-accent-subtle text-text-accent rounded-sm px-1.5 font-semibold',
         )}
       >
         {format.dayNumber(day)}

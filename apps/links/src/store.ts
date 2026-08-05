@@ -86,7 +86,9 @@ export function createSqlShortLinkStore(
 }
 
 /** Batched click writer for the same pool. Runs behind the buffer, never inline. */
-export function createSqlClickWriter(db: SqlQueryable): (events: readonly ClickEvent[]) => Promise<void> {
+export function createSqlClickWriter(
+  db: SqlQueryable,
+): (events: readonly ClickEvent[]) => Promise<void> {
   return async (events: readonly ClickEvent[]): Promise<void> => {
     if (events.length === 0) {
       return;
@@ -123,7 +125,10 @@ export function createMemoryShortLinkStore(
       return byKey.get(keyFor(host, lookup.slug)) ?? byKey.get(keyFor(null, lookup.slug)) ?? null;
     },
     put(record: ShortLinkRecord): void {
-      byKey.set(keyFor(record.domain === null ? null : record.domain.toLowerCase(), record.slug), record);
+      byKey.set(
+        keyFor(record.domain === null ? null : record.domain.toLowerCase(), record.slug),
+        record,
+      );
     },
     clear(): void {
       byKey.clear();

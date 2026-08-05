@@ -32,7 +32,7 @@ export const DialogOverlay = forwardRef<
     <DialogPrimitive.Overlay
       ref={ref}
       className={cn(
-        'fixed inset-0 z-(--z-index-overlay) bg-surface-scrim',
+        'bg-surface-scrim fixed inset-0 z-(--z-index-overlay)',
         'relay-anim-fade-in',
         className,
       )}
@@ -41,8 +41,9 @@ export const DialogOverlay = forwardRef<
   );
 });
 
-export interface DialogContentProps
-  extends ComponentPropsWithoutRef<typeof DialogPrimitive.Content> {
+export interface DialogContentProps extends ComponentPropsWithoutRef<
+  typeof DialogPrimitive.Content
+> {
   /** Accessible name for the close control, from the message catalog. */
   closeLabel: string;
   /** Hide the corner close control when the dialog must be answered. */
@@ -56,57 +57,49 @@ const dialogSize = {
   lg: 'sm:max-w-2xl',
 } as const;
 
-export const DialogContent = forwardRef<HTMLDivElement, DialogContentProps>(
-  function DialogContent(
-    { className, children, closeLabel, hideClose = false, size = 'md', ...props },
-    ref,
-  ) {
-    return (
-      <DialogPortal>
-        <DialogOverlay />
-        <DialogPrimitive.Content
-          ref={ref}
-          className={cn(
-            'fixed z-(--z-index-modal) flex max-h-[calc(100dvh-2rem)] flex-col',
-            'start-4 end-4 top-1/2 -translate-y-1/2',
-            'sm:end-auto sm:start-1/2 sm:-translate-x-1/2 sm:rtl:translate-x-1/2',
-            'sm:w-[calc(100vw-2rem)]',
-            dialogSize[size],
-            'rounded-xl border border-border-default bg-surface-overlay shadow-overlay',
-            'relay-anim-enter-overlay',
-            className,
-          )}
-          {...props}
-        >
-          {children}
-          {hideClose ? null : (
-            <DialogPrimitive.Close
-              aria-label={closeLabel}
-              className={cn(
-                'absolute end-3 top-3 inline-flex size-7 items-center justify-center',
-                'rounded-md text-text-tertiary hover:bg-surface-hover hover:text-text-primary',
-                focusRing,
-              )}
-            >
-              <X aria-hidden="true" className="size-4" />
-            </DialogPrimitive.Close>
-          )}
-        </DialogPrimitive.Content>
-      </DialogPortal>
-    );
-  },
-);
+export const DialogContent = forwardRef<HTMLDivElement, DialogContentProps>(function DialogContent(
+  { className, children, closeLabel, hideClose = false, size = 'md', ...props },
+  ref,
+) {
+  return (
+    <DialogPortal>
+      <DialogOverlay />
+      <DialogPrimitive.Content
+        ref={ref}
+        className={cn(
+          'fixed z-(--z-index-modal) flex max-h-[calc(100dvh-2rem)] flex-col',
+          'start-4 end-4 top-1/2 -translate-y-1/2',
+          'sm:start-1/2 sm:end-auto sm:-translate-x-1/2 sm:rtl:translate-x-1/2',
+          'sm:w-[calc(100vw-2rem)]',
+          dialogSize[size],
+          'border-border-default bg-surface-overlay shadow-overlay rounded-xl border',
+          'relay-anim-enter-overlay',
+          className,
+        )}
+        {...props}
+      >
+        {children}
+        {hideClose ? null : (
+          <DialogPrimitive.Close
+            aria-label={closeLabel}
+            className={cn(
+              'absolute end-3 top-3 inline-flex size-7 items-center justify-center',
+              'text-text-tertiary hover:bg-surface-hover hover:text-text-primary rounded-md',
+              focusRing,
+            )}
+          >
+            <X aria-hidden="true" className="size-4" />
+          </DialogPrimitive.Close>
+        )}
+      </DialogPrimitive.Content>
+    </DialogPortal>
+  );
+});
 
-export function DialogHeader({
-  className,
-  ...props
-}: ComponentPropsWithoutRef<'div'>): ReactNode {
+export function DialogHeader({ className, ...props }: ComponentPropsWithoutRef<'div'>): ReactNode {
   return (
     <div
-      className={cn(
-        'flex flex-col gap-1 border-b border-border-subtle px-5 py-4 pe-12',
-        className,
-      )}
+      className={cn('border-border-subtle flex flex-col gap-1 border-b px-5 py-4 pe-12', className)}
       {...props}
     />
   );
@@ -138,10 +131,7 @@ export const DialogDescription = forwardRef<
   );
 });
 
-export function DialogBody({
-  className,
-  ...props
-}: ComponentPropsWithoutRef<'div'>): ReactNode {
+export function DialogBody({ className, ...props }: ComponentPropsWithoutRef<'div'>): ReactNode {
   return (
     <div
       className={cn('relay-scrollbar min-h-0 flex-1 overflow-y-auto px-5 py-4', className)}
@@ -150,14 +140,11 @@ export function DialogBody({
   );
 }
 
-export function DialogFooter({
-  className,
-  ...props
-}: ComponentPropsWithoutRef<'div'>): ReactNode {
+export function DialogFooter({ className, ...props }: ComponentPropsWithoutRef<'div'>): ReactNode {
   return (
     <div
       className={cn(
-        'flex flex-col-reverse gap-2 border-t border-border-subtle px-5 py-3',
+        'border-border-subtle flex flex-col-reverse gap-2 border-t px-5 py-3',
         'sm:flex-row sm:justify-end',
         className,
       )}

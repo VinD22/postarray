@@ -57,7 +57,10 @@ export function CapabilityMatrix(): ReactNode {
   const footnotes: Footnote[] = [];
   const footnoteIndex = new Map<string, number>();
 
-  const noteFor = (noteKey: MessageKey | undefined, citation: Citation | undefined): number | null => {
+  const noteFor = (
+    noteKey: MessageKey | undefined,
+    citation: Citation | undefined,
+  ): number | null => {
     if (!noteKey) {
       return null;
     }
@@ -105,7 +108,7 @@ export function CapabilityMatrix(): ReactNode {
           <TableBody>
             {rows.map((row) => (
               <TableRow key={row.column}>
-                <TableRowHeader className="align-top text-body-md text-text-primary">
+                <TableRowHeader className="text-body-md text-text-primary align-top">
                   {row.label}
                 </TableRowHeader>
                 {row.cells.map((cell) => (
@@ -118,7 +121,7 @@ export function CapabilityMatrix(): ReactNode {
                       {cell.note ? (
                         <a
                           href={`#capability-note-${cell.note}`}
-                          className="font-mono text-body-sm text-text-accent underline underline-offset-2 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-border-focus"
+                          className="text-body-sm text-text-accent focus-visible:outline-border-focus font-mono underline underline-offset-2 focus-visible:outline-2 focus-visible:outline-offset-2"
                         >
                           <VisuallyHidden>
                             {t.t('web.capabilities.noteRef', { number: cell.note })}
@@ -139,18 +142,21 @@ export function CapabilityMatrix(): ReactNode {
         <h3 id="capability-notes" className="text-title-sm text-text-primary">
           {t.t('web.capabilities.notesTitle')}
         </h3>
-        <ol className="border-t border-border-default">
+        <ol className="border-border-default border-t">
           {footnotes.map((footnote) => (
             <li
               key={footnote.index}
               id={`capability-note-${footnote.index}`}
-              className="grid gap-1 border-b border-border-subtle py-3 scroll-mt-24 sm:grid-cols-[2.5rem_minmax(0,1fr)] sm:gap-4"
+              className="border-border-subtle grid scroll-mt-24 gap-1 border-b py-3 sm:grid-cols-[2.5rem_minmax(0,1fr)] sm:gap-4"
             >
-              <span aria-hidden="true" className="font-mono text-body-sm tabular-nums text-text-tertiary">
+              <span
+                aria-hidden="true"
+                className="text-body-sm text-text-tertiary font-mono tabular-nums"
+              >
                 {footnote.index}
               </span>
               <div className="min-w-0 space-y-1">
-                <p className="max-w-[72ch] text-body-md leading-[1.6] text-text-secondary">
+                <p className="text-body-md text-text-secondary max-w-[72ch] leading-[1.6]">
                   {t.format(footnote.noteKey)}
                 </p>
                 {footnote.citation ? (
@@ -159,7 +165,9 @@ export function CapabilityMatrix(): ReactNode {
                       {t.t('web.label.officialSource')}
                     </ExternalLink>{' '}
                     <Meta>
-                      {t.t('web.label.researchDate', { date: formatDate(footnote.citation.readOn) })}
+                      {t.t('web.label.researchDate', {
+                        date: formatDate(footnote.citation.readOn),
+                      })}
                     </Meta>
                   </p>
                 ) : null}

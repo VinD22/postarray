@@ -55,7 +55,7 @@ export function LegalPage(props: LegalPageProps): ReactNode {
                     <li key={section.id}>
                       <a
                         href={`#${section.id}`}
-                        className="flex min-h-9 items-center text-body-md text-text-secondary transition-colors duration-(--duration-fast) hover:text-text-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-border-focus"
+                        className="text-body-md text-text-secondary hover:text-text-primary focus-visible:outline-border-focus flex min-h-9 items-center transition-colors duration-(--duration-fast) focus-visible:outline-2 focus-visible:outline-offset-2"
                       >
                         {t.format(section.titleKey)}
                       </a>
@@ -63,7 +63,7 @@ export function LegalPage(props: LegalPageProps): ReactNode {
                   ))}
                 </ul>
               </nav>
-              <p className="mt-6 border-t border-border-subtle pt-4">
+              <p className="border-border-subtle mt-6 border-t pt-4">
                 <Meta>{t.t('web.label.lastReviewed', { date: formatDate(reviewed) })}</Meta>
               </p>
             </div>
@@ -72,7 +72,7 @@ export function LegalPage(props: LegalPageProps): ReactNode {
           <div className="min-w-0 lg:col-span-8 lg:col-start-5">
             <article className="space-y-10">
               <header className="space-y-5">
-                <h1 className="font-serif text-[clamp(1.9rem,1.3rem+2.2vw,2.9rem)] leading-[1.1] tracking-[-0.02em] text-pretty text-text-primary">
+                <h1 className="text-text-primary font-serif text-[clamp(1.9rem,1.3rem+2.2vw,2.9rem)] leading-[1.1] tracking-[-0.02em] text-pretty">
                   {t.format(titleKey)}
                 </h1>
                 <Lede>{t.format(summaryKey)}</Lede>
@@ -85,7 +85,10 @@ export function LegalPage(props: LegalPageProps): ReactNode {
                     {t.format(section.titleKey)}
                   </Heading>
                   {section.bodyKeys?.map((key) => (
-                    <p key={key} className="max-w-[70ch] text-body-lg leading-[1.68] text-text-secondary">
+                    <p
+                      key={key}
+                      className="text-body-lg text-text-secondary max-w-[70ch] leading-[1.68]"
+                    >
                       {t.format(key)}
                     </p>
                   ))}
@@ -97,21 +100,24 @@ export function LegalPage(props: LegalPageProps): ReactNode {
               ))}
 
               {contactKeys && contactKeys.length > 0 ? (
-                <section id="contact" className="scroll-mt-24 space-y-3 border-t border-border-default pt-8">
+                <section
+                  id="contact"
+                  className="border-border-default scroll-mt-24 space-y-3 border-t pt-8"
+                >
                   <Subheading as="h3">{t.t('web.legal.contact.title')}</Subheading>
                   <ul className="space-y-1">
                     {contactKeys.map((key) => (
                       <li key={key}>
                         <a
                           href={`mailto:${t.format(key)}`}
-                          className="font-mono text-body-sm text-text-primary underline decoration-border-strong underline-offset-[0.22em] hover:text-text-accent hover:decoration-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-border-focus"
+                          className="text-body-sm text-text-primary decoration-border-strong hover:text-text-accent hover:decoration-accent focus-visible:outline-border-focus font-mono underline underline-offset-[0.22em] focus-visible:outline-2 focus-visible:outline-offset-2"
                         >
                           {t.format(key)}
                         </a>
                       </li>
                     ))}
                   </ul>
-                  <p className="max-w-[70ch] text-body-md leading-[1.6] text-text-tertiary">
+                  <p className="text-body-md text-text-tertiary max-w-[70ch] leading-[1.6]">
                     {t.t('web.legal.entity.pending')}
                   </p>
                 </section>
@@ -119,7 +125,7 @@ export function LegalPage(props: LegalPageProps): ReactNode {
 
               <nav
                 aria-label={t.t('web.legal.title')}
-                className="border-t border-border-default pt-8"
+                className="border-border-default border-t pt-8"
               >
                 <p className="text-body-md text-text-secondary">
                   <TextLink href={ROUTES.legal}>{t.t('web.legal.title')}</TextLink>

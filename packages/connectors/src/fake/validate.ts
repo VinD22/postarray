@@ -6,7 +6,12 @@ import {
   validationResult,
 } from '@relay/contracts';
 
-import type { CanonicalPreview, PreviewEntity, ProviderDraft, ProviderMediaRef } from '../contract.js';
+import type {
+  CanonicalPreview,
+  PreviewEntity,
+  ProviderDraft,
+  ProviderMediaRef,
+} from '../contract.js';
 
 /**
  * Deterministic validation and preview for the fake provider.
@@ -311,7 +316,11 @@ export function validateFakeDraft(draft: ProviderDraft): ValidationResult {
         severity: 'error',
         targetId,
         field: 'threadItems',
-        params: { count: comments.length, limit: capabilities.firstComment.maxItems, provider: 'fake' },
+        params: {
+          count: comments.length,
+          limit: capabilities.firstComment.maxItems,
+          provider: 'fake',
+        },
       }),
     );
   }

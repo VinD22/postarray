@@ -81,7 +81,8 @@ function readString(value: unknown): string | undefined {
 function bodyText(body: unknown): string {
   if (body === undefined || body === null) return '';
   if (typeof body === 'string') return body.slice(0, MAX_TEXT).toLowerCase();
-  if (body instanceof Error) return `${body.name}: ${body.message}`.slice(0, MAX_TEXT).toLowerCase();
+  if (body instanceof Error)
+    return `${body.name}: ${body.message}`.slice(0, MAX_TEXT).toLowerCase();
   try {
     return JSON.stringify(body).slice(0, MAX_TEXT).toLowerCase();
   } catch {
@@ -97,7 +98,8 @@ function bodyText(body: unknown): string {
 function readFacts(input: ProviderErrorInput): ProviderErrorFacts {
   const record = asRecord(input.body);
   const errorNode = record === undefined ? undefined : asRecord(record['error']);
-  const errorsArray = record !== undefined && Array.isArray(record['errors']) ? record['errors'] : [];
+  const errorsArray =
+    record !== undefined && Array.isArray(record['errors']) ? record['errors'] : [];
   const firstError = asRecord(errorsArray[0]);
   const errorString = record === undefined ? undefined : readString(record['error']);
 
@@ -120,8 +122,7 @@ function readFacts(input: ProviderErrorInput): ProviderErrorFacts {
     (errorNode === undefined ? undefined : readString(errorNode['status'])) ??
     (record === undefined ? undefined : readString(record['reason']));
 
-  const transientFlag =
-    errorNode !== undefined && errorNode['is_transient'] === true;
+  const transientFlag = errorNode !== undefined && errorNode['is_transient'] === true;
 
   const transportCode =
     input.code ??
@@ -216,7 +217,9 @@ const classifyLinkedIn: ProviderClassifier = (facts) => {
   if (facts.code === '65600' || facts.code === '65601' || facts.code === '65604') {
     return USER_ACTION_REQUIRED;
   }
-  if (has(facts.text, 'access_denied', 'not enough permissions', 'member does not have permission')) {
+  if (
+    has(facts.text, 'access_denied', 'not enough permissions', 'member does not have permission')
+  ) {
     return USER_ACTION_REQUIRED;
   }
   if (facts.status === 422) return CONTENT_INVALID;
@@ -478,8 +481,7 @@ export interface CaptureContext {
  */
 export function captureException(error: unknown, context: CaptureContext = {}): void {
   const payload = redactRecord({ ...contextFields(), ...context });
-  const normalized =
-    error instanceof Error ? error : new Error(redactString(String(error)));
+  const normalized = error instanceof Error ? error : new Error(redactString(String(error)));
 
   try {
     getRootLogger().error({ ...payload, err: normalized }, 'error.captured');

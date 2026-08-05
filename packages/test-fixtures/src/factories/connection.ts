@@ -130,7 +130,8 @@ export function makeIneligibleInstagramConnection(): ConnectionFixture {
 export interface DestinationFixture {
   readonly id: string;
   readonly connectionId: string;
-  readonly kind: 'none' | 'community' | 'board' | 'group' | 'page' | 'organization' | 'channel' | 'publication';
+  readonly kind:
+    'none' | 'community' | 'board' | 'group' | 'page' | 'organization' | 'channel' | 'publication';
   readonly externalId: string;
   readonly displayLabel: string;
 }

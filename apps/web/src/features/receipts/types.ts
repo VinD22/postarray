@@ -116,9 +116,7 @@ const FINISHED_STATES: readonly PublishState[] = [
  * another did not. It is deliberately checked before `published` and before
  * `failed`, because both of those would be a lie in that situation.
  */
-export function campaignOutcome(
-  targets: readonly CampaignTargetView[],
-): CampaignOutcome {
+export function campaignOutcome(targets: readonly CampaignTargetView[]): CampaignOutcome {
   if (targets.length === 0) return 'in_flight';
   const published = targets.filter((target) => target.hasExternalPost).length;
   const finished = targets.filter((target) => FINISHED_STATES.includes(target.state)).length;

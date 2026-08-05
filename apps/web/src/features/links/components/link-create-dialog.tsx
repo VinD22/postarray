@@ -43,7 +43,8 @@ export interface LinkCreateDialogProps {
   readonly onSubmit: (draft: LinkDraft) => void;
 }
 
-const PRIVATE_HOST = /^(localhost$|127\.|10\.|192\.168\.|172\.(1[6-9]|2\d|3[01])\.|\[::1\]$|.*\.local$)/i;
+const PRIVATE_HOST =
+  /^(localhost$|127\.|10\.|192\.168\.|172\.(1[6-9]|2\d|3[01])\.|\[::1\]$|.*\.local$)/i;
 
 type DestinationProblem = 'scheme' | 'private' | null;
 
@@ -89,9 +90,7 @@ export function LinkCreateDialog({
       <DialogContent size="md" closeLabel={t('a11y.label.closeDialog')}>
         <DialogHeader>
           <DialogTitle>{t('analytics.links.new')}</DialogTitle>
-          <DialogDescription>
-            {t('analytics.links.measurementExplained')}
-          </DialogDescription>
+          <DialogDescription>{t('analytics.links.measurementExplained')}</DialogDescription>
         </DialogHeader>
 
         <DialogBody>

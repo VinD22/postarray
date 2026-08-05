@@ -9,6 +9,8 @@ import {
 } from '@relay/contracts';
 import { z } from 'zod';
 
+import { systemClock } from '../ports/clock.js';
+import type { Clock } from '../types.js';
 import type { ActorContext, KeyValueStore } from '../types.js';
 
 import { invalid } from './errors.js';
@@ -49,19 +51,14 @@ const recordSchema = z
 type IdempotencyRecordShape = z.infer<typeof recordSchema>;
 
 export function fingerprintOf(operation: string, body: unknown): string {
-  return createHash('sha256')
-    .update(canonicalJson({ operation, body }))
-    .digest('hex');
+  return createHash('sha256').update(canonicalJson({ operation, body })).digest('hex');
 }
 
 function storeKey(workspaceId: string, key: string): string {
   return `idempotency:${workspaceId}:${key}`;
 }
 
-async function readRecord(
-  kv: KeyValueStore,
-  key: string,
-): Promise<IdempotencyRecordShape | null> {
+async function readRecord(kv: KeyValueStore, key: string): Promise<IdempotencyRecordShape | null> {
   const raw = await kv.get(key);
   if (raw === null) {
     return null;
@@ -92,6 +89,7 @@ export async function withIdempotency<T>(
   kv: KeyValueStore,
   ctx: ActorContext,
   input: IdempotentRun<T>,
+  clock: Clock = systemClock,
 ): Promise<T> {
   const rawKey = ctx.idempotencyKey;
   if (rawKey === undefined) {
@@ -112,7 +110,7 @@ export async function withIdempotency<T>(
       fingerprint,
       status: 'in_progress',
       operation: input.operation,
-      createdAt: new Date().toISOString(),
+      createdAt: clock.now().toISOString(),
     } satisfies IdempotencyRecordShape),
     { ifAbsent: true, ttlSeconds: IDEMPOTENCY_RETENTION_SECONDS },
   );
@@ -157,7 +155,7 @@ export async function withIdempotency<T>(
         operation: input.operation,
         result: JSON.stringify(result),
         ...(resourceId === undefined ? {} : { resourceId }),
-        createdAt: new Date().toISOString(),
+        createdAt: clock.now().toISOString(),
       } satisfies IdempotencyRecordShape),
       { ttlSeconds: IDEMPOTENCY_RETENTION_SECONDS },
     );

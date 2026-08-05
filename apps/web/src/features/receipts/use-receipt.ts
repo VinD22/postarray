@@ -46,9 +46,7 @@ export function usePostDetail(contentItemId: string): UseQueryResult<PostDetail,
         api.receipts.listRecent({ limit: RECEIPT_SCAN_LIMIT }),
       ]);
 
-      const summaries = recent.data.filter(
-        (summary) => summary.contentItemId === contentItemId,
-      );
+      const summaries = recent.data.filter((summary) => summary.contentItemId === contentItemId);
       const primary = pickPrimarySummary(summaries);
       const receipt = primary ? await api.receipts.get(primary.receiptId) : null;
 

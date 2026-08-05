@@ -54,8 +54,7 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(function 
     const styles = window.getComputedStyle(node);
     const lineHeight = Number.parseFloat(styles.lineHeight) || 21;
     const paddingBlock =
-      Number.parseFloat(styles.paddingBlockStart) +
-      Number.parseFloat(styles.paddingBlockEnd);
+      Number.parseFloat(styles.paddingBlockStart) + Number.parseFloat(styles.paddingBlockEnd);
     const borderBlock =
       Number.parseFloat(styles.borderBlockStartWidth) +
       Number.parseFloat(styles.borderBlockEndWidth);
@@ -84,9 +83,9 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(function 
       }}
       style={style}
       className={cn(
-        'w-full min-w-0 rounded-md border bg-surface-raised px-2.5 py-1.5',
+        'bg-surface-raised w-full min-w-0 rounded-md border px-2.5 py-1.5',
         'text-body-md text-text-primary placeholder:text-text-tertiary',
-        'disabled:cursor-not-allowed disabled:bg-surface-sunken disabled:text-text-disabled',
+        'disabled:bg-surface-sunken disabled:text-text-disabled disabled:cursor-not-allowed',
         'read-only:bg-surface-sunken',
         autoGrow ? 'resize-none' : 'resize-y',
         invalid ? 'border-destructive-border' : 'border-border-strong',

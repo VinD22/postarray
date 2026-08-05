@@ -272,7 +272,9 @@ export function groupOf(key: EnvKey): EnvGroupName {
  * dropped so `SUPABASE_URL=` degrades instead of failing URL validation, and
  * unknown variables are ignored so the process environment can carry anything.
  */
-export function normalizeEnv(env: NodeJS.ProcessEnv | Record<string, unknown>): Record<string, unknown> {
+export function normalizeEnv(
+  env: NodeJS.ProcessEnv | Record<string, unknown>,
+): Record<string, unknown> {
   const normalized: Record<string, unknown> = {};
   for (const key of ENV_KEYS) {
     const value = (env as Record<string, unknown>)[key];

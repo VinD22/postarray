@@ -35,7 +35,11 @@ export const actionCenterApi = {
     input: { until: string },
     idempotencyKey: string,
   ): Promise<ActionItemView | null> =>
-    call(`/action-center/${itemId}/snooze`, { method: 'POST', body: input, idempotencyKey }, () => null),
+    call(
+      `/action-center/${itemId}/snooze`,
+      { method: 'POST', body: input, idempotencyKey },
+      () => null,
+    ),
 
   unsnooze: (itemId: string): Promise<void> =>
     call(`/action-center/${itemId}/snooze`, { method: 'DELETE' }, () => undefined),

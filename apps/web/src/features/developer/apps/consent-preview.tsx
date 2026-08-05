@@ -44,7 +44,7 @@ export function ConsentPreview({
   const withheld = withheldScopes(scopes);
 
   return (
-    <div className="flex flex-col gap-4 rounded-xl border border-border-default bg-surface-raised p-4 sm:p-6">
+    <div className="border-border-default bg-surface-raised flex flex-col gap-4 rounded-xl border p-4 sm:p-6">
       <div className="flex flex-wrap items-center justify-between gap-2">
         <Badge tone="info">{t('developer.ui.apps.consentPreviewSample')}</Badge>
       </div>
@@ -56,7 +56,7 @@ export function ConsentPreview({
         <p className="text-body-sm text-text-secondary">
           {t('developer.consent.developerIdentity', { developer: developerName })}
         </p>
-        <p className="flex flex-wrap gap-x-3 text-body-sm text-text-tertiary">
+        <p className="text-body-sm text-text-tertiary flex flex-wrap gap-x-3">
           <a
             className="underline underline-offset-2"
             href={homepageUrl}
@@ -98,7 +98,7 @@ export function ConsentPreview({
       <Separator />
 
       <section className="flex flex-col gap-4">
-        <h4 className="text-body-md font-medium text-text-primary">
+        <h4 className="text-body-md text-text-primary font-medium">
           {t('developer.consent.willBeAbleTo', { app: appName })}
         </h4>
 
@@ -110,13 +110,13 @@ export function ConsentPreview({
               <p className="text-label text-text-tertiary">{t(group.titleKey)}</p>
               <ul className="flex flex-col gap-1">
                 {group.scopes.map((scope) => (
-                  <li key={scope} className="flex items-start gap-2 text-body-md">
+                  <li key={scope} className="text-body-md flex items-start gap-2">
                     <Check
                       aria-hidden="true"
                       className={
                         group.risk === 'consequential'
-                          ? 'mt-0.5 size-4 shrink-0 text-warning-fg'
-                          : 'mt-0.5 size-4 shrink-0 text-success-fg'
+                          ? 'text-warning-fg mt-0.5 size-4 shrink-0'
+                          : 'text-success-fg mt-0.5 size-4 shrink-0'
                       }
                     />
                     <span className="flex min-w-0 flex-col">
@@ -135,13 +135,13 @@ export function ConsentPreview({
       </section>
 
       <section className="flex flex-col gap-1">
-        <h4 className="text-body-md font-medium text-text-primary">
+        <h4 className="text-body-md text-text-primary font-medium">
           {t('developer.consent.willNotBeAbleTo', { app: appName })}
         </h4>
         <ul className="flex flex-col gap-1">
           {withheld.map((scope) => (
-            <li key={scope} className="flex items-start gap-2 text-body-md text-text-secondary">
-              <Minus aria-hidden="true" className="mt-0.5 size-4 shrink-0 text-text-tertiary" />
+            <li key={scope} className="text-body-md text-text-secondary flex items-start gap-2">
+              <Minus aria-hidden="true" className="text-text-tertiary mt-0.5 size-4 shrink-0" />
               <span>{t(scopeDescriptionKey(scope))}</span>
             </li>
           ))}

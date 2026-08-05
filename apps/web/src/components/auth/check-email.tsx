@@ -64,9 +64,7 @@ export function CheckEmail() {
       </div>
 
       {email === '' ? null : (
-        <p className="text-body-md text-text-primary">
-          {t('auth.checkEmail.body', { email })}
-        </p>
+        <p className="text-body-md text-text-primary">{t('auth.checkEmail.body', { email })}</p>
       )}
 
       {status === 'failed' ? (
@@ -95,7 +93,7 @@ export function CheckEmail() {
       </div>
 
       <p className="text-body-md text-text-secondary">
-        <Link href="/sign-in" className="font-medium text-text-accent hover:underline">
+        <Link href="/sign-in" className="text-text-accent font-medium hover:underline">
           {t('auth.checkEmail.wrongAddress')}
         </Link>
       </p>

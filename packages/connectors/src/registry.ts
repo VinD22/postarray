@@ -109,7 +109,8 @@ export function assertDeclarationMatchesMethods(
   identity: ProviderIdentity,
 ): void {
   for (const [methodName, feature] of Object.entries(OPTIONAL_METHOD_FEATURES)) {
-    const present = typeof (connector as unknown as Record<string, unknown>)[methodName] === 'function';
+    const present =
+      typeof (connector as unknown as Record<string, unknown>)[methodName] === 'function';
     const declared = identity.features[feature];
     if (declared === 'supported' && !present) {
       throw registrationError('CONNECTOR_DECLARES_UNIMPLEMENTED_FEATURE', {
@@ -236,11 +237,13 @@ export class ConnectorRegistry {
     return capabilities.connectors[registration.identity.provider as ConnectorKey];
   }
 
-  #describe(registration: Registration, capabilities: RuntimeCapabilities | undefined): ConnectorDescriptor {
+  #describe(
+    registration: Registration,
+    capabilities: RuntimeCapabilities | undefined,
+  ): ConnectorDescriptor {
     const identity = registration.identity;
     const configuration = this.#configurationOf(registration, capabilities);
-    const overdue =
-      epochMillisecondsOf(identity.nextPolicyReviewAt) < this.#clock.now().getTime();
+    const overdue = epochMillisecondsOf(identity.nextPolicyReviewAt) < this.#clock.now().getTime();
     const features: ConnectorFeatureReport[] = CONNECTOR_FEATURES.map((feature) => {
       const methodName = Object.entries(OPTIONAL_METHOD_FEATURES).find(
         ([, backed]) => backed === feature,
@@ -328,9 +331,7 @@ export class ConnectorRegistry {
    * MCP `get_capabilities` tool. Static declarations only: a live account's
    * limits always come from its `CapabilitySnapshot`.
    */
-  supportMatrix(
-    capabilities?: RuntimeCapabilities,
-  ): readonly {
+  supportMatrix(capabilities?: RuntimeCapabilities): readonly {
     provider: ProviderId;
     label: ConnectorLabel;
     configured: boolean;

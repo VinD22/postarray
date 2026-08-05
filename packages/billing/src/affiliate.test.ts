@@ -52,8 +52,16 @@ describe('attribution', () => {
       workspaceId: 'ws_01',
       signupAt: SIGNUP_AT,
       touches: [
-        { partnerId: 'aff_partner_a', channel: 'partner_content', occurredAt: '2026-07-20T00:00:00.000Z' },
-        { partnerId: 'aff_partner_b', channel: 'referral_link', occurredAt: '2026-08-03T10:00:00.000Z' },
+        {
+          partnerId: 'aff_partner_a',
+          channel: 'partner_content',
+          occurredAt: '2026-07-20T00:00:00.000Z',
+        },
+        {
+          partnerId: 'aff_partner_b',
+          channel: 'referral_link',
+          occurredAt: '2026-08-03T10:00:00.000Z',
+        },
         { partnerId: 'aff_partner_b', channel: 'direct', occurredAt: '2026-08-04T13:00:00.000Z' },
       ],
     });
@@ -70,7 +78,11 @@ describe('attribution', () => {
       workspaceId: 'ws_01',
       signupAt: SIGNUP_AT,
       touches: [
-        { partnerId: 'aff_partner_a', channel: 'referral_link', occurredAt: '2026-01-01T00:00:00.000Z' },
+        {
+          partnerId: 'aff_partner_a',
+          channel: 'referral_link',
+          occurredAt: '2026-01-01T00:00:00.000Z',
+        },
       ],
     });
     expect(result).toEqual({ attributed: false, refusal: 'outside_window' });
@@ -81,7 +93,9 @@ describe('attribution', () => {
       referralId: 'ref_0003',
       workspaceId: 'ws_01',
       signupAt: SIGNUP_AT,
-      touches: [{ partnerId: 'aff_partner_a', channel: 'direct', occurredAt: '2026-08-01T00:00:00.000Z' }],
+      touches: [
+        { partnerId: 'aff_partner_a', channel: 'direct', occurredAt: '2026-08-01T00:00:00.000Z' },
+      ],
     });
     expect(result).toEqual({ attributed: false, refusal: 'direct_only' });
   });
@@ -92,7 +106,11 @@ describe('attribution', () => {
       workspaceId: 'ws_01',
       signupAt: SIGNUP_AT,
       touches: [
-        { partnerId: 'aff_partner_a', channel: 'referral_link', occurredAt: '2026-08-02T00:00:00.000Z' },
+        {
+          partnerId: 'aff_partner_a',
+          channel: 'referral_link',
+          occurredAt: '2026-08-02T00:00:00.000Z',
+        },
       ],
       partnerAdministeredWorkspaceIds: { aff_partner_a: ['ws_01', 'ws_02'] },
     });
@@ -292,9 +310,9 @@ describe('fraud review', () => {
   });
 
   it('holds when more than 30% cancel inside the trial', () => {
-    expect(
-      evaluateFraudTriggers({ ...clean, referralsCanceledInTrial: 7 }).triggered,
-    ).toContain('trial_cancel_rate');
+    expect(evaluateFraudTriggers({ ...clean, referralsCanceledInTrial: 7 }).triggered).toContain(
+      'trial_cancel_rate',
+    );
     expect(
       evaluateFraudTriggers({ ...clean, referralsCanceledInTrial: 6 }).triggered,
     ).not.toContain('trial_cancel_rate');

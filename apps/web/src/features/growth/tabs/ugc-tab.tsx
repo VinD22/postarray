@@ -29,11 +29,11 @@ export function UgcTab({ plan }: UgcTabProps): ReactNode {
       <Notice tone="neutral" title={t('growth.ui.ugc.honesty')} />
 
       <SettingsPanel title={t('growth.ugc.goal')}>
-        <p className="max-w-[68ch] text-body-lg text-text-primary">{ugc.goal}</p>
+        <p className="text-body-lg text-text-primary max-w-[68ch]">{ugc.goal}</p>
       </SettingsPanel>
 
       <SettingsPanel title={t('growth.ugc.participant')}>
-        <p className="max-w-[68ch] text-body-md text-text-primary">{ugc.participantProfile}</p>
+        <p className="text-body-md text-text-primary max-w-[68ch]">{ugc.participantProfile}</p>
       </SettingsPanel>
 
       <SettingsPanel title={t('growth.ugc.prompts')}>
@@ -41,19 +41,19 @@ export function UgcTab({ plan }: UgcTabProps): ReactNode {
           {ugc.promptAngles.map((angle, index) => (
             <li
               key={angle}
-              className="flex flex-col gap-0.5 border-b border-border-subtle py-2.5 last:border-b-0"
+              className="border-border-subtle flex flex-col gap-0.5 border-b py-2.5 last:border-b-0"
             >
               <span className="text-label text-text-tertiary">
                 {t('growth.ui.ugc.promptAngle', { number: index + 1 })}
               </span>
-              <span className="max-w-[68ch] text-body-md text-text-primary">{angle}</span>
+              <span className="text-body-md text-text-primary max-w-[68ch]">{angle}</span>
             </li>
           ))}
         </ol>
       </SettingsPanel>
 
       <SettingsPanel title={t('growth.ugc.brief')}>
-        <p className="max-w-[68ch] whitespace-pre-line text-body-md text-text-primary">
+        <p className="text-body-md text-text-primary max-w-[68ch] whitespace-pre-line">
           {ugc.brief}
         </p>
       </SettingsPanel>
@@ -65,7 +65,7 @@ export function UgcTab({ plan }: UgcTabProps): ReactNode {
         <ul className="flex flex-col">
           {ugc.consentChecklist.map((item) => (
             <li key={item}>
-              <label className="flex min-h-11 items-start gap-2 py-1 text-body-md text-text-primary">
+              <label className="text-body-md text-text-primary flex min-h-11 items-start gap-2 py-1">
                 <Checkbox className="mt-1" />
                 <span className="max-w-[62ch]">{item}</span>
               </label>
@@ -75,7 +75,7 @@ export function UgcTab({ plan }: UgcTabProps): ReactNode {
       </SettingsPanel>
 
       <SettingsPanel title={t('growth.ugc.incentive')}>
-        <p className="max-w-[68ch] text-body-md text-text-primary">
+        <p className="text-body-md text-text-primary max-w-[68ch]">
           {ugc.incentive ?? t('growth.ui.ugc.incentiveNone')}
         </p>
         {ugc.incentive === null ? null : (
@@ -84,13 +84,11 @@ export function UgcTab({ plan }: UgcTabProps): ReactNode {
       </SettingsPanel>
 
       <SettingsPanel title={t('growth.ugc.review')}>
-        <p className="max-w-[68ch] text-body-md text-text-primary">{ugc.reviewWorkflow}</p>
+        <p className="text-body-md text-text-primary max-w-[68ch]">{ugc.reviewWorkflow}</p>
       </SettingsPanel>
 
       <SettingsPanel title={t('growth.ugc.reuse')}>
-        <p className="max-w-[68ch] text-body-md text-text-secondary">
-          {t('growth.ugc.boundary')}
-        </p>
+        <p className="text-body-md text-text-secondary max-w-[68ch]">{t('growth.ugc.boundary')}</p>
       </SettingsPanel>
     </div>
   );

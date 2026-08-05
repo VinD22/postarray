@@ -26,7 +26,12 @@ import type { ValidationIssue } from '@relay/contracts';
 import { composerReducer, type ComposerAction } from './state/composer-reducer.js';
 import { findUrls } from './state/capability-rules.js';
 import { initialComposerState } from './state/seed.js';
-import { summarizeTargets, totalsFor, type DraftTotals, type MediaLookup } from './state/selectors.js';
+import {
+  summarizeTargets,
+  totalsFor,
+  type DraftTotals,
+  type MediaLookup,
+} from './state/selectors.js';
 import type {
   AssistProposal,
   AutosaveState,
@@ -119,10 +124,7 @@ export function ComposerProvider({
     const update = (): void => {
       const next = window.navigator.onLine;
       setOnline(next);
-      announce(
-        next ? t.full('a11y.announce.online') : t.full('a11y.announce.offline'),
-        'polite',
-      );
+      announce(next ? t.full('a11y.announce.online') : t.full('a11y.announce.offline'), 'polite');
     };
     setOnline(window.navigator.onLine);
     window.addEventListener('online', update);
@@ -282,7 +284,5 @@ export function ComposerProvider({
 /** The account currently open in the centre pane, or null for the master. */
 export function useActiveTarget(): TargetSummary | null {
   const { state, summaries } = useComposer();
-  return (
-    summaries.find((summary) => summary.connectionId === state.activeConnectionId) ?? null
-  );
+  return summaries.find((summary) => summary.connectionId === state.activeConnectionId) ?? null;
 }

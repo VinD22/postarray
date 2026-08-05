@@ -87,11 +87,11 @@ export function RuleVersions({ versions, onRestore }: RuleVersionsProps): ReactE
         {t('automation.rules.versionHistory')}
       </h2>
 
-      <ul className="flex flex-col border-t border-border-subtle">
+      <ul className="border-border-subtle flex flex-col border-t">
         {versions.map((version) => (
           <li
             key={version.version}
-            className="flex flex-col gap-2 border-b border-border-subtle py-3 sm:flex-row sm:items-center sm:justify-between"
+            className="border-border-subtle flex flex-col gap-2 border-b py-3 sm:flex-row sm:items-center sm:justify-between"
           >
             <span className="flex min-w-0 flex-wrap items-center gap-2">
               <span className="text-body-md text-text-primary tabular-nums">
@@ -116,9 +116,7 @@ export function RuleVersions({ versions, onRestore }: RuleVersionsProps): ReactE
                     variant="ghost"
                     aria-expanded={comparing === version.version}
                     onClick={() =>
-                      setComparing((value) =>
-                        value === version.version ? null : version.version,
-                      )
+                      setComparing((value) => (value === version.version ? null : version.version))
                     }
                   >
                     {t('automation.versions.compare')}
@@ -137,14 +135,14 @@ export function RuleVersions({ versions, onRestore }: RuleVersionsProps): ReactE
 
       {selected && current ? (
         <div className="flex flex-col gap-2">
-          <h3 className="text-body-md font-medium text-text-primary">
+          <h3 className="text-body-md text-text-primary font-medium">
             {t('automation.versions.diffTitle', {
               from: selected.version,
               to: current.version,
             })}
           </h3>
-          <div className="overflow-x-auto border border-border-subtle bg-surface-sunken">
-            <ol className="min-w-max font-mono text-mono">
+          <div className="border-border-subtle bg-surface-sunken overflow-x-auto border">
+            <ol className="text-mono min-w-max font-mono">
               {toLines(selected.json, current.json).map((line) => (
                 <li
                   key={line.key}
@@ -163,15 +161,18 @@ export function RuleVersions({ versions, onRestore }: RuleVersionsProps): ReactE
                         ? t('action.remove')
                         : ''}
                   </span>
-                  <span aria-hidden="true" className="inline-block w-4 select-none ps-2 text-text-tertiary">
+                  <span
+                    aria-hidden="true"
+                    className="text-text-tertiary inline-block w-4 ps-2 select-none"
+                  >
                     {line.operation === 'insert' ? '+' : line.operation === 'delete' ? '-' : ' '}
                   </span>
-                  <span className="whitespace-pre pe-3">{line.value}</span>
+                  <span className="pe-3 whitespace-pre">{line.value}</span>
                 </li>
               ))}
             </ol>
           </div>
-          <p className="max-w-[70ch] text-body-sm text-text-tertiary">
+          <p className="text-body-sm text-text-tertiary max-w-[70ch]">
             {t('automation.versions.restoreConfirm')}
           </p>
         </div>

@@ -78,11 +78,18 @@ export const mediaEditOpSchema = z.discriminatedUnion('op', [
       height: z.number().int().positive().max(16_384),
     })
     .strict(),
-  z.object({ op: z.literal('rotate'), degrees: z.union([z.literal(90), z.literal(180), z.literal(270)]) }).strict(),
+  z
+    .object({
+      op: z.literal('rotate'),
+      degrees: z.union([z.literal(90), z.literal(180), z.literal(270)]),
+    })
+    .strict(),
   z.object({ op: z.literal('compress'), quality: z.number().int().min(1).max(100) }).strict(),
 ]);
 
-export const editMediaSchema = z.object({ ops: z.array(mediaEditOpSchema).min(1).max(10) }).strict();
+export const editMediaSchema = z
+  .object({ ops: z.array(mediaEditOpSchema).min(1).max(10) })
+  .strict();
 
 /**
  * Alt text. It can be waived, but only explicitly and only with a reason, so

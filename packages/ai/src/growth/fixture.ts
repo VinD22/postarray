@@ -121,7 +121,8 @@ export const GROWTH_PLAN_FIXTURE_BODY: GrowthPlanBody = {
           pillar: 'How the work actually gets done',
           contentKind: 'text',
           locale: 'en',
-          briefSummary: 'Walk through scheduling a week of posts, including choosing the time zone.',
+          briefSummary:
+            'Walk through scheduling a week of posts, including choosing the time zone.',
           ctaKey: null,
           approvalRequired: true,
           measurementTag: 'w1-workflow',
@@ -175,7 +176,8 @@ export const GROWTH_PLAN_FIXTURE_BODY: GrowthPlanBody = {
           pillar: 'How the work actually gets done',
           contentKind: 'document',
           locale: 'en',
-          briefSummary: 'Share the approval checklist the team actually uses, as a one page document.',
+          briefSummary:
+            'Share the approval checklist the team actually uses, as a one page document.',
           ctaKey: null,
           approvalRequired: true,
           measurementTag: 'w4-checklist',

@@ -101,9 +101,7 @@ export const schedulePostTool = defineTool({
         approval_required: job.approvalRequired,
         approval_state: job.approvalState,
       },
-      resourceLinks: [
-        resourceLink(RESOURCE_URIS.job(job.id), 'publish job', 'The scheduled job.'),
-      ],
+      resourceLinks: [resourceLink(RESOURCE_URIS.job(job.id), 'publish job', 'The scheduled job.')],
     };
   },
 });
@@ -252,9 +250,7 @@ export const cancelPostTool = defineTool({
         connection_id: job.connectionId,
         was_scheduled_for: job.scheduledInstant,
       },
-      resourceLinks: [
-        resourceLink(RESOURCE_URIS.job(job.id), 'publish job', 'The cancelled job.'),
-      ],
+      resourceLinks: [resourceLink(RESOURCE_URIS.job(job.id), 'publish job', 'The cancelled job.')],
     };
   },
 });

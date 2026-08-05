@@ -12,9 +12,7 @@ const ERROR = 'Choose a time at least five minutes from now.';
 describe('Field', () => {
   it('associates the label with the control', async () => {
     const user = userEvent.setup();
-    render(
-      <Field label={LABEL}>{(control) => <Input {...control} />}</Field>,
-    );
+    render(<Field label={LABEL}>{(control) => <Input {...control} />}</Field>);
     const input = screen.getByLabelText(LABEL);
     await user.click(screen.getByText(LABEL));
     expect(input).toHaveFocus();

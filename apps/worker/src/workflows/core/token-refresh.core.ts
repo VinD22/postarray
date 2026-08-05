@@ -4,10 +4,7 @@ import type { WorkerActivities } from '../../activities/types.js';
 import { MESSAGE_KEYS } from '../../messages.js';
 import { jitterMs, parseInstant, toIsoInstant } from '../../runtime/deterministic.js';
 import type { ChildWorkflowDescriptor, WorkflowRuntime } from '../../runtime/types.js';
-import type {
-  TokenRefreshWorkflowInput,
-  TokenRefreshWorkflowOutput,
-} from '../inputs.js';
+import type { TokenRefreshWorkflowInput, TokenRefreshWorkflowOutput } from '../inputs.js';
 
 /**
  * Proactive credential refresh.
@@ -40,8 +37,7 @@ export function refreshWaitMs(
     return MAX_REFRESH_WAIT_MS;
   }
   const expiryMs = parseInstant(expiresAt);
-  const lifeMs =
-    lifetimeSeconds === null ? Math.max(0, expiryMs - nowMs) : lifetimeSeconds * 1_000;
+  const lifeMs = lifetimeSeconds === null ? Math.max(0, expiryMs - nowMs) : lifetimeSeconds * 1_000;
   const target = expiryMs - lifeMs * (1 - REFRESH_AT_FRACTION);
   return Math.min(MAX_REFRESH_WAIT_MS, Math.max(MIN_REFRESH_WAIT_MS, target - nowMs));
 }
@@ -66,7 +62,10 @@ export async function runTokenRefresh(
       return finish(MESSAGE_KEYS.connection.reconnectRequired, false);
     }
 
-    const described = await activities.describeCredential({ ctx, connectionId: input.connectionId });
+    const described = await activities.describeCredential({
+      ctx,
+      connectionId: input.connectionId,
+    });
     if (described.revoked) {
       await activities.raiseConnectionIncident({
         ctx,
@@ -87,11 +86,7 @@ export async function runTokenRefresh(
       return finish(MESSAGE_KEYS.connection.refreshNotSupported, false);
     }
 
-    const baseWaitMs = refreshWaitMs(
-      runtime.now(),
-      described.expiresAt,
-      described.lifetimeSeconds,
-    );
+    const baseWaitMs = refreshWaitMs(runtime.now(), described.expiresAt, described.lifetimeSeconds);
     const waitMs = jitterMs(`${input.connectionId}:refresh:${String(refreshCount)}`, baseWaitMs, {
       ratio: 0.05,
     });

@@ -350,9 +350,7 @@ async function collectTargets(
   });
 
   const forwarder = (async (): Promise<void> => {
-    await runtime.awaitCondition(
-      () => progress.finished || runtime.signals.cancelled !== null,
-    );
+    await runtime.awaitCondition(() => progress.finished || runtime.signals.cancelled !== null);
     if (progress.finished || runtime.signals.cancelled === null) {
       return;
     }

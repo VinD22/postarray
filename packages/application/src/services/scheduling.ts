@@ -255,18 +255,14 @@ export function createSchedulingService(
         const rows = await db.publishJob.findMany({
           where: {
             scheduledFor: { gte: from, lte: to },
-            ...(filters.connectionId === undefined
-              ? {}
-              : { connectionId: filters.connectionId }),
+            ...(filters.connectionId === undefined ? {} : { connectionId: filters.connectionId }),
             ...(filters.state === undefined ? {} : { state: filters.state }),
             ...(filters.brandId === undefined && filters.campaignId === undefined
               ? {}
               : {
                   contentItem: {
                     ...(filters.brandId === undefined ? {} : { brandId: filters.brandId }),
-                    ...(filters.campaignId === undefined
-                      ? {}
-                      : { campaignId: filters.campaignId }),
+                    ...(filters.campaignId === undefined ? {} : { campaignId: filters.campaignId }),
                   },
                 }),
           },

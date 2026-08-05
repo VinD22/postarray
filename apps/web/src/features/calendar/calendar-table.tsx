@@ -68,23 +68,23 @@ export function CalendarTable({
       {/* Compact layout: one row per post plus a detail sheet. */}
       <ul className="flex flex-col md:hidden">
         {rows.map((entry) => (
-          <li key={entryKey(entry)} className="border-b border-border-subtle">
+          <li key={entryKey(entry)} className="border-border-subtle border-b">
             <button
               type="button"
               onClick={() => onOpenDetail(entry)}
               className={cn(
-                'flex w-full min-h-11 flex-col gap-1.5 px-4 py-3 text-start',
+                'flex min-h-11 w-full flex-col gap-1.5 px-4 py-3 text-start',
                 'hover:bg-surface-hover',
                 needsAttention(entry) && 'bg-warning-bg hover:bg-warning-bg',
                 focusRingInset,
               )}
             >
               <span className="flex items-baseline gap-2">
-                <span className="tabular-nums text-body-sm text-text-secondary">
+                <span className="text-body-sm text-text-secondary tabular-nums">
                   {format.dateTime(entry.scheduledAt)}
                 </span>
               </span>
-              <span className="text-body-md font-medium text-text-primary">
+              <span className="text-body-md text-text-primary font-medium">
                 {entry.title.trim() || t('web.calendar.entry.untitled')}
               </span>
               <AccountIdentity
@@ -93,11 +93,7 @@ export function CalendarTable({
                 size="sm"
               />
               <span className="flex flex-wrap items-center gap-1.5">
-                <StatusPill
-                  state={entry.state}
-                  label={t(`state.${entry.state}.label`)}
-                  size="sm"
-                />
+                <StatusPill state={entry.state} label={t(`state.${entry.state}.label`)} size="sm" />
               </span>
             </button>
           </li>
@@ -134,10 +130,7 @@ export function CalendarTable({
               return (
                 <TableRow key={entryKey(entry)} attention={needsAttention(entry)}>
                   <TableCell className="whitespace-nowrap">
-                    <time
-                      dateTime={entry.scheduledAt}
-                      className="tabular-nums text-text-secondary"
-                    >
+                    <time dateTime={entry.scheduledAt} className="text-text-secondary tabular-nums">
                       {format.dateTime(entry.scheduledAt)}
                     </time>
                   </TableCell>
@@ -157,7 +150,7 @@ export function CalendarTable({
                     <a
                       href={hrefForEntry(entry)}
                       className={cn(
-                        'block max-w-[28ch] truncate font-medium text-text-primary no-underline',
+                        'text-text-primary block max-w-[28ch] truncate font-medium no-underline',
                         'hover:text-text-accent hover:underline',
                         focusRingInset,
                       )}
@@ -214,11 +207,7 @@ export function CalendarTable({
                         ) : null}
                         {hasExternalPost(entry.state) && entry.permalink ? (
                           <DropdownMenuItem asChild>
-                            <a
-                              href={entry.permalink}
-                              target="_blank"
-                              rel="noreferrer noopener"
-                            >
+                            <a href={entry.permalink} target="_blank" rel="noreferrer noopener">
                               {t('action.openInProvider', {
                                 provider: providerName(entry.provider),
                               })}

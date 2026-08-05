@@ -48,7 +48,8 @@ export const iconButtonVariants = cva(
 );
 
 export interface IconButtonProps
-  extends Omit<ComponentPropsWithoutRef<'button'>, 'color' | 'children'>,
+  extends
+    Omit<ComponentPropsWithoutRef<'button'>, 'color' | 'children'>,
     VariantProps<typeof iconButtonVariants> {
   /** The accessible name, from the message catalog. Required. */
   label: string;
@@ -56,40 +57,28 @@ export interface IconButtonProps
   loading?: boolean;
 }
 
-export const IconButton = forwardRef<HTMLButtonElement, IconButtonProps>(
-  function IconButton(
-    {
-      className,
-      variant,
-      size,
-      label,
-      icon,
-      loading = false,
-      disabled,
-      type = 'button',
-      ...props
-    },
-    ref,
-  ) {
-    return (
-      <button
-        ref={ref}
-        type={type}
-        aria-label={label}
-        aria-busy={loading || undefined}
-        disabled={disabled === true || loading}
-        className={cn(
-          iconButtonVariants({ variant, size }),
-          // Coarse pointers get a 44px target through a pseudo-element so the
-          // painted control keeps its density on a desktop toolbar.
-          'after:absolute after:start-1/2 after:top-1/2 after:-translate-x-1/2 rtl:after:translate-x-1/2 after:-translate-y-1/2',
-          'after:size-11 after:content-[""] after:hidden pointer-coarse:after:block',
-          className,
-        )}
-        {...props}
-      >
-        {loading ? <Spinner size={size === 'lg' ? 'md' : 'sm'} /> : icon}
-      </button>
-    );
-  },
-);
+export const IconButton = forwardRef<HTMLButtonElement, IconButtonProps>(function IconButton(
+  { className, variant, size, label, icon, loading = false, disabled, type = 'button', ...props },
+  ref,
+) {
+  return (
+    <button
+      ref={ref}
+      type={type}
+      aria-label={label}
+      aria-busy={loading || undefined}
+      disabled={disabled === true || loading}
+      className={cn(
+        iconButtonVariants({ variant, size }),
+        // Coarse pointers get a 44px target through a pseudo-element so the
+        // painted control keeps its density on a desktop toolbar.
+        'after:absolute after:start-1/2 after:top-1/2 after:-translate-x-1/2 after:-translate-y-1/2 rtl:after:translate-x-1/2',
+        'after:hidden after:size-11 after:content-[""] pointer-coarse:after:block',
+        className,
+      )}
+      {...props}
+    >
+      {loading ? <Spinner size={size === 'lg' ? 'md' : 'sm'} /> : icon}
+    </button>
+  );
+});

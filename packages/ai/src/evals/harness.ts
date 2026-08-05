@@ -4,13 +4,7 @@ import { getPrompt } from '../prompts/registry.js';
 import type { AiCallContext, AiGateway } from '../types.js';
 import { ALL_SCORERS, outputText } from './scorers.js';
 import { EVAL_DIMENSIONS } from './types.js';
-import type {
-  CaseResult,
-  EvalCase,
-  EvalDimension,
-  Scorer,
-  SuiteReport,
-} from './types.js';
+import type { CaseResult, EvalCase, EvalDimension, Scorer, SuiteReport } from './types.js';
 
 /**
  * The evaluation harness.
@@ -27,10 +21,7 @@ export interface RunSuiteOptions {
   readonly scorers?: readonly Scorer[];
 }
 
-async function runCase(
-  options: RunSuiteOptions,
-  evalCase: EvalCase,
-): Promise<CaseResult> {
+async function runCase(options: RunSuiteOptions, evalCase: EvalCase): Promise<CaseResult> {
   const prompt = getPrompt(evalCase.promptId);
   const scorers = options.scorers ?? ALL_SCORERS;
 
@@ -58,9 +49,7 @@ async function runCase(
     }
 
     const text = outputText(result.output);
-    const scores = scorers.map((scorer) =>
-      scorer.score({ evalCase, output: result.output, text }),
-    );
+    const scores = scorers.map((scorer) => scorer.score({ evalCase, output: result.output, text }));
     return {
       caseId: evalCase.id,
       promptId: evalCase.promptId,
@@ -85,9 +74,7 @@ async function runCase(
   }
 }
 
-function averageByDimension(
-  results: readonly CaseResult[],
-): Record<EvalDimension, number> {
+function averageByDimension(results: readonly CaseResult[]): Record<EvalDimension, number> {
   const totals = new Map<EvalDimension, { sum: number; count: number }>();
   for (const dimension of EVAL_DIMENSIONS) {
     totals.set(dimension, { sum: 0, count: 0 });

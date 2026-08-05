@@ -13,11 +13,7 @@
  *     receipt nobody can debug from.
  */
 
-import type {
-  PublicationReceipt,
-  PublishAttempt,
-  ReceiptItem,
-} from '@relay/contracts';
+import type { PublicationReceipt, PublishAttempt, ReceiptItem } from '@relay/contracts';
 
 /** A step, before any translation or formatting is applied. */
 export interface TimelineStep {

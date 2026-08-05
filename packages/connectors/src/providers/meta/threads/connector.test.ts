@@ -3,7 +3,6 @@ import { describe, expect, it } from 'vitest';
 
 import {
   createTestDeps,
-  expectPartial,
   expectPending,
   expectPublished,
   testConnection,
@@ -99,7 +98,9 @@ describe('Threads publish', () => {
       routes: [{ method: 'GET', match: '/me', body: THREADS_PROFILE_FIXTURE }],
     });
     const connector = createThreadsConnector(deps);
-    const accounts = await connector.discoverAccounts(testGrant({ provider: 'threads', scopes: SCOPES }));
+    const accounts = await connector.discoverAccounts(
+      testGrant({ provider: 'threads', scopes: SCOPES }),
+    );
     expect(accounts).toHaveLength(1);
     expect(accounts[0]?.handle).toBe('sample_studio_fake');
   });
@@ -204,7 +205,9 @@ describe('Threads metrics', () => {
       routes: [{ method: 'GET', match: '/insights', body: THREADS_MEDIA_INSIGHTS_FIXTURE }],
     });
     const connector = createThreadsConnector(deps);
-    const observations = await connector.fetchMetrics(testMetricsRequest({ connection, scope: 'post', externalPostId: '19000000000000001' }));
+    const observations = await connector.fetchMetrics(
+      testMetricsRequest({ connection, scope: 'post', externalPostId: '19000000000000001' }),
+    );
     expect(observations.find((entry) => entry.normalizedName === 'views')?.value).toBe(3120);
     const shares = observations.find((entry) => entry.normalizedName === 'shares');
     expect(shares?.value).toBeNull();
@@ -223,7 +226,9 @@ describe('Threads metrics', () => {
       ],
     });
     const connector = createThreadsConnector(deps);
-    const observations = await connector.fetchMetrics(testMetricsRequest({ connection, scope: 'post', externalPostId: '19000000000000001' }));
+    const observations = await connector.fetchMetrics(
+      testMetricsRequest({ connection, scope: 'post', externalPostId: '19000000000000001' }),
+    );
     expect(observations.every((entry) => entry.availability === 'unavailable_permission')).toBe(
       true,
     );

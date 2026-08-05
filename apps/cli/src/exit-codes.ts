@@ -59,9 +59,7 @@ export function exitCodeFor(code: ErrorCode): number {
 
 /** Reverse lookup, so a wrapper script can be documented from one table. */
 export function errorCodesForExit(exitCode: number): readonly ErrorCode[] {
-  return (Object.keys(EXIT_CODES) as ErrorCode[]).filter(
-    (code) => EXIT_CODES[code] === exitCode,
-  );
+  return (Object.keys(EXIT_CODES) as ErrorCode[]).filter((code) => EXIT_CODES[code] === exitCode);
 }
 
 /** True when trying the exact same command again could plausibly succeed. */

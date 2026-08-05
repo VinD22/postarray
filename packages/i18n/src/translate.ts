@@ -41,10 +41,7 @@ export type MessageArguments<K extends MessageKey> =
   HasArguments<(typeof en)[K]> extends true ? [values: MessageValues] : [values?: MessageValues];
 
 export type MissingMessageReason =
-  | 'missing-translation'
-  | 'unknown-key'
-  | 'parse-error'
-  | 'format-error';
+  'missing-translation' | 'unknown-key' | 'parse-error' | 'format-error';
 
 export interface MissingMessageReport {
   readonly key: string;

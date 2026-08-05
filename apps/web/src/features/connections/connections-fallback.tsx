@@ -10,13 +10,7 @@
  */
 
 import type { ReactNode } from 'react';
-import {
-  Button,
-  ErrorState,
-  LoadingState,
-  PageHeader,
-  SkeletonList,
-} from '@relay/design-system';
+import { Button, ErrorState, LoadingState, PageHeader, SkeletonList } from '@relay/design-system';
 import { useTranslations } from '@relay/i18n/react';
 
 export function ConnectionsRouteFallback(): ReactNode {

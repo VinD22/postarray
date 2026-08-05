@@ -25,7 +25,11 @@ import type {
 } from '@relay/contracts';
 import { z } from 'zod';
 
-import { type ProviderErrorClass, type RemediationCode, providerOperationSchema } from './errors.js';
+import {
+  type ProviderErrorClass,
+  type RemediationCode,
+  providerOperationSchema,
+} from './errors.js';
 import type { HttpClient } from './http.js';
 import type { Clock, ConnectorLogger } from './ports.js';
 import { type ConnectorVault, type SecretHandle, SecretValue } from './vault.js';
@@ -424,7 +428,14 @@ export const previewEntitySchema = z
   .strict();
 export type PreviewEntity = z.infer<typeof previewEntitySchema>;
 
-export const PREVIEW_MEDIA_LAYOUTS = ['none', 'single', 'grid', 'carousel', 'video', 'document'] as const;
+export const PREVIEW_MEDIA_LAYOUTS = [
+  'none',
+  'single',
+  'grid',
+  'carousel',
+  'video',
+  'document',
+] as const;
 export const previewMediaLayoutSchema = z.enum(PREVIEW_MEDIA_LAYOUTS);
 
 export const previewMediaItemSchema = z
@@ -636,7 +647,11 @@ export const publishStatusSchema = z
   .superRefine((status, ctx) => {
     // Published means external evidence, never a 2xx from a container step.
     if (status.state === 'published' && status.externalPostId === null) {
-      ctx.addIssue({ code: 'custom', path: ['externalPostId'], message: 'PUBLISHED_WITHOUT_EVIDENCE' });
+      ctx.addIssue({
+        code: 'custom',
+        path: ['externalPostId'],
+        message: 'PUBLISHED_WITHOUT_EVIDENCE',
+      });
     }
     if (status.state === 'failed' && status.error === null) {
       ctx.addIssue({ code: 'custom', path: ['error'], message: 'FAILED_WITHOUT_ERROR' });

@@ -84,7 +84,11 @@ export const mediaApi = {
     input: { checksum: string; rightsDeclared: boolean },
     idempotencyKey: string,
   ): Promise<MediaAssetView | null> =>
-    call(`/media/uploads/${mediaId}/finalize`, { method: 'POST', body: input, idempotencyKey }, () => null),
+    call(
+      `/media/uploads/${mediaId}/finalize`,
+      { method: 'POST', body: input, idempotencyKey },
+      () => null,
+    ),
 
   importFromUrl: (
     input: { url: string; rightsDeclared: boolean },
@@ -134,10 +138,7 @@ export const mediaApi = {
    * Record who owns the file, under what licence, and whether the people in it
    * consented. An asset with no declaration cannot be scheduled.
    */
-  declareRights: (
-    mediaId: string,
-    input: RightsDeclarationInput,
-  ): Promise<MediaAssetView | null> =>
+  declareRights: (mediaId: string, input: RightsDeclarationInput): Promise<MediaAssetView | null> =>
     call(`/media/${mediaId}/rights`, { method: 'PATCH', body: input }, () => null),
 
   setAltText: (

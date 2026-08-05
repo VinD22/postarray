@@ -23,10 +23,7 @@ export interface FreshnessPanelProps {
   readonly statusHref?: string;
 }
 
-export function FreshnessPanel({
-  rows,
-  statusHref,
-}: FreshnessPanelProps): ReactElement | null {
+export function FreshnessPanel({ rows, statusHref }: FreshnessPanelProps): ReactElement | null {
   const t = useTranslations();
   const format = useValueFormat();
 
@@ -41,9 +38,7 @@ export function FreshnessPanel({
           <h2 id="freshness-heading" className="text-title-sm text-text-primary">
             {t('analytics.freshness.title')}
           </h2>
-          <p className="text-body-md text-text-secondary">
-            {t('analytics.freshness.intro')}
-          </p>
+          <p className="text-body-md text-text-secondary">{t('analytics.freshness.intro')}</p>
         </div>
         {statusHref ? (
           <a
@@ -55,13 +50,13 @@ export function FreshnessPanel({
         ) : null}
       </div>
 
-      <ul className="flex flex-col border-t border-border-subtle">
+      <ul className="border-border-subtle flex flex-col border-t">
         {rows.map((row) => (
           <li
             key={row.account.connectionId}
-            className="flex flex-col gap-1 border-b border-border-subtle py-2.5 sm:flex-row sm:items-baseline sm:justify-between sm:gap-4"
+            className="border-border-subtle flex flex-col gap-1 border-b py-2.5 sm:flex-row sm:items-baseline sm:justify-between sm:gap-4"
           >
-            <span className="flex min-w-0 items-center gap-2 text-body-md text-text-primary">
+            <span className="text-body-md text-text-primary flex min-w-0 items-center gap-2">
               <StatusDot provider={row.account.provider} />
               {t('analytics.freshness.accountRow', {
                 account: row.account.displayName,

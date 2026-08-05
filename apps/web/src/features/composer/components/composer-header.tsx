@@ -25,7 +25,7 @@ export function ComposerHeader({ onClose, onShowShortcuts }: ComposerHeaderProps
   const { state, autosave, savedAt, conflict, resolveConflict, saveNow, dispatch } = useComposer();
 
   return (
-    <header className="flex flex-col gap-2 border-b border-border-subtle pb-3">
+    <header className="border-border-subtle flex flex-col gap-2 border-b pb-3">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <h1 className="text-title-md text-text-primary">{t.full('composer.title')}</h1>
 
@@ -64,7 +64,11 @@ export function ComposerHeader({ onClose, onShowShortcuts }: ComposerHeaderProps
           liveness="status"
           title={t.full('composerWeb.autosave.pinned')}
           actions={
-            <Button variant="secondary" size="sm" onClick={() => dispatch({ type: 'approval/unpin' })}>
+            <Button
+              variant="secondary"
+              size="sm"
+              onClick={() => dispatch({ type: 'approval/unpin' })}
+            >
               {t.full('composerWeb.autosave.pinnedAcknowledge')}
             </Button>
           }

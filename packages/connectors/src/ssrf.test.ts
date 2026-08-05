@@ -2,7 +2,13 @@ import { describe, expect, it } from 'vitest';
 
 import { RelayError } from '@relay/contracts';
 
-import { type DnsResolver, assertSafeUrl, classifyIpAddress, isPublicIpAddress, safeFetch } from './ssrf.js';
+import {
+  type DnsResolver,
+  assertSafeUrl,
+  classifyIpAddress,
+  isPublicIpAddress,
+  safeFetch,
+} from './ssrf.js';
 
 const publicResolver: DnsResolver = async () => [{ address: '93.184.216.34', family: 4 }];
 const privateResolver: DnsResolver = async () => [{ address: '10.0.0.5', family: 4 }];
@@ -74,7 +80,9 @@ describe('assertSafeUrl', () => {
 
   it('refuses credentials in the URL', async () => {
     expect(
-      await reasonOf(assertSafeUrl('https://user:pass@example.invalid/', { resolver: publicResolver })),
+      await reasonOf(
+        assertSafeUrl('https://user:pass@example.invalid/', { resolver: publicResolver }),
+      ),
     ).toBe('credentials_in_url');
   });
 

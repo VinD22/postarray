@@ -146,7 +146,11 @@ function operationObject(operation: OperationSpec): JsonSchema {
     ...(operation.public === true
       ? { security: [] }
       : {
-          security: [{ sessionCookie: [] }, { bearerToken: operation.scopes ?? [] }, { apiKey: [] }],
+          security: [
+            { sessionCookie: [] },
+            { bearerToken: operation.scopes ?? [] },
+            { apiKey: [] },
+          ],
         }),
     ...(operation.requiresStepUp === true
       ? {

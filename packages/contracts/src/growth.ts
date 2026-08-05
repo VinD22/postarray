@@ -220,7 +220,11 @@ const contentSystemSchema = z
       z.object({ locale: localeSchema, notes: z.string().min(1) }).strict(),
     ),
     weeklyCadence: z
-      .array(z.object({ provider: providerIdSchema, postsPerWeek: z.number().int().positive() }).strict())
+      .array(
+        z
+          .object({ provider: providerIdSchema, postsPerWeek: z.number().int().positive() })
+          .strict(),
+      )
       .min(1),
   })
   .strict();
@@ -311,9 +315,7 @@ export const growthPlanSchema = z
     ugc_plan: ugcPlanSchema,
     opportunities: z.array(opportunityMatchSchema).max(MAX_OPPORTUNITIES),
     tool_recommendations: z.array(toolRecommendationSchema).max(MAX_TOOL_RECOMMENDATIONS),
-    calendar_proposal: z
-      .array(calendarWeekSchema)
-      .length(CALENDAR_PROPOSAL_WEEKS),
+    calendar_proposal: z.array(calendarWeekSchema).length(CALENDAR_PROPOSAL_WEEKS),
     risks_and_unknowns: risksAndUnknownsSchema,
   })
   .strict()

@@ -1,8 +1,4 @@
-import {
-  publicationReceiptSchema,
-  publishAttemptSchema,
-  publishJobSchema,
-} from '@relay/contracts';
+import { publicationReceiptSchema, publishAttemptSchema, publishJobSchema } from '@relay/contracts';
 import type {
   ProviderId,
   PublicationReceipt,

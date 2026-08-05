@@ -61,16 +61,16 @@ export function AppShell({ children }: { readonly children: ReactNode }) {
   }, [pathname]);
 
   return (
-    <div className="flex min-h-dvh flex-col bg-surface-canvas">
+    <div className="bg-surface-canvas flex min-h-dvh flex-col">
       <a className="relay-skip-link" href="#main">
         {t('nav.skipToContent')}
       </a>
 
-      <header className="sticky top-0 z-(--z-index-sticky) border-b border-border-default bg-surface-canvas">
+      <header className="border-border-default bg-surface-canvas sticky top-0 z-(--z-index-sticky) border-b">
         <div className="flex items-center gap-2 px-3 py-2 md:px-4">
           <Link
             href="/"
-            className="hidden shrink-0 items-center px-1 text-title-sm text-text-primary md:flex"
+            className="text-title-sm text-text-primary hidden shrink-0 items-center px-1 md:flex"
           >
             {t('shell.appName')}
           </Link>
@@ -83,8 +83,8 @@ export function AppShell({ children }: { readonly children: ReactNode }) {
               setPaletteOpen(true);
             }}
             className={cn(
-              'ms-auto hidden min-h-9 items-center gap-2 rounded-md border border-border-default',
-              'bg-surface-sunken px-2.5 text-body-sm text-text-tertiary lg:flex lg:w-72',
+              'border-border-default ms-auto hidden min-h-9 items-center gap-2 rounded-md border',
+              'bg-surface-sunken text-body-sm text-text-tertiary px-2.5 lg:flex lg:w-72',
               'hover:bg-surface-hover hover:text-text-secondary',
               'transition-colors duration-(--duration-fast)',
             )}
@@ -101,7 +101,7 @@ export function AppShell({ children }: { readonly children: ReactNode }) {
               onClick={() => {
                 setPaletteOpen(true);
               }}
-              className="flex size-11 items-center justify-center rounded-md text-text-secondary hover:bg-surface-hover hover:text-text-primary md:size-9 lg:hidden"
+              className="text-text-secondary hover:bg-surface-hover hover:text-text-primary flex size-11 items-center justify-center rounded-md md:size-9 lg:hidden"
             >
               <Search aria-hidden="true" className="size-4" />
             </button>

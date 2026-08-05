@@ -30,8 +30,7 @@ export const badgeVariants = cva(
 );
 
 export interface BadgeProps
-  extends ComponentPropsWithoutRef<'span'>,
-    VariantProps<typeof badgeVariants> {
+  extends ComponentPropsWithoutRef<'span'>, VariantProps<typeof badgeVariants> {
   icon?: ReactNode;
 }
 

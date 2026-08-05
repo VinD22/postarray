@@ -3,17 +3,21 @@ import type { ReactNode } from 'react';
 import { CapabilityBadge, Notice } from '@relay/design-system/patterns';
 
 import { CapabilityMatrix } from '@/features/marketing/components/capability-matrix';
-import { Container, Fact, FactList, Heading, Meta, Section } from '@/features/marketing/components/layout';
+import {
+  Container,
+  Fact,
+  FactList,
+  Heading,
+  Meta,
+  Section,
+} from '@/features/marketing/components/layout';
 import { TextLink } from '@/features/marketing/components/links';
 import {
   CorrectionNotice,
   PageIntro,
   ReviewStamp,
 } from '@/features/marketing/components/page-parts';
-import {
-  CAPABILITY_SNAPSHOT,
-  capabilityStateCounts,
-} from '@/features/marketing/data/connectors';
+import { CAPABILITY_SNAPSHOT, capabilityStateCounts } from '@/features/marketing/data/connectors';
 import { formatDate, marketingTranslator } from '@/features/marketing/i18n';
 import { breadcrumbJsonLd, pageMetadata } from '@/features/marketing/seo';
 import { JsonLd } from '@/features/marketing/components/json-ld';
@@ -64,7 +68,7 @@ export default function CapabilitiesPage(): ReactNode {
         <div className="grid gap-x-12 gap-y-8 lg:grid-cols-12">
           <div className="lg:col-span-4">
             <Heading>{t.t('web.capabilities.legend.title')}</Heading>
-            <p className="mt-4 max-w-[62ch] text-body-lg leading-[1.65] text-text-secondary">
+            <p className="text-body-lg text-text-secondary mt-4 max-w-[62ch] leading-[1.65]">
               {t.t('web.capabilities.legend.body')}
             </p>
           </div>
@@ -74,10 +78,7 @@ export default function CapabilitiesPage(): ReactNode {
                 <Fact
                   key={state}
                   term={
-                    <CapabilityBadge
-                      state={state}
-                      label={t.format(`capability.level.${state}`)}
-                    />
+                    <CapabilityBadge state={state} label={t.format(`capability.level.${state}`)} />
                   }
                 >
                   {t.format(`capability.explain.${state}`, {
@@ -86,7 +87,7 @@ export default function CapabilitiesPage(): ReactNode {
                 </Fact>
               ))}
             </FactList>
-            <p className="mt-5 max-w-[68ch] text-body-md leading-[1.6] text-text-tertiary">
+            <p className="text-body-md text-text-tertiary mt-5 max-w-[68ch] leading-[1.6]">
               {t.t('web.capabilities.summary', {
                 supported: counts.supported,
                 requiresReview: counts.requires_review,
@@ -100,7 +101,7 @@ export default function CapabilitiesPage(): ReactNode {
 
       <Section id="matrix">
         <CapabilityMatrix />
-        <p className="mt-8 max-w-[70ch] text-body-md leading-[1.6] text-text-secondary">
+        <p className="text-body-md text-text-secondary mt-8 max-w-[70ch] leading-[1.6]">
           {t.t('web.capabilities.sourceNote')}{' '}
           <TextLink href={ROUTES.methodology} className="text-body-md">
             {t.t('nav.public.methodology')}

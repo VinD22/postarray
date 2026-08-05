@@ -37,26 +37,17 @@ export function parseHexColor(hex: string): Rgb {
 
 function channelLuminance(value255: number): number {
   const channel = value255 / 255;
-  return channel <= 0.03928
-    ? channel / 12.92
-    : Math.pow((channel + 0.055) / 1.055, 2.4);
+  return channel <= 0.03928 ? channel / 12.92 : Math.pow((channel + 0.055) / 1.055, 2.4);
 }
 
 /** WCAG relative luminance, 0 (black) to 1 (white). */
 export function relativeLuminance(color: string | Rgb): number {
   const { r, g, b } = typeof color === 'string' ? parseHexColor(color) : color;
-  return (
-    0.2126 * channelLuminance(r) +
-    0.7152 * channelLuminance(g) +
-    0.0722 * channelLuminance(b)
-  );
+  return 0.2126 * channelLuminance(r) + 0.7152 * channelLuminance(g) + 0.0722 * channelLuminance(b);
 }
 
 /** WCAG contrast ratio between two opaque colours. Always >= 1. */
-export function contrastRatio(
-  foreground: string | Rgb,
-  background: string | Rgb,
-): number {
+export function contrastRatio(foreground: string | Rgb, background: string | Rgb): number {
   const a = relativeLuminance(foreground);
   const b = relativeLuminance(background);
   const lighter = Math.max(a, b);
@@ -92,7 +83,5 @@ export function pickReadableForeground(
   candidates: readonly [string, string],
 ): string {
   const [first, second] = candidates;
-  return contrastRatio(first, background) >= contrastRatio(second, background)
-    ? first
-    : second;
+  return contrastRatio(first, background) >= contrastRatio(second, background) ? first : second;
 }

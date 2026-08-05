@@ -58,7 +58,7 @@ export function SocialButtons({
 
   return (
     <div className="flex flex-col gap-4">
-      <h2 className="text-label uppercase tracking-wide text-text-tertiary">
+      <h2 className="text-label text-text-tertiary tracking-wide uppercase">
         {t('auth.provider.title')}
       </h2>
 
@@ -78,10 +78,7 @@ export function SocialButtons({
           >
             {t(provider.labelKey)}
           </Button>
-          <p
-            id={`provider-access-${provider.id}`}
-            className="text-body-sm text-text-tertiary"
-          >
+          <p id={`provider-access-${provider.id}`} className="text-body-sm text-text-tertiary">
             {t(provider.accessKey)}
           </p>
         </div>

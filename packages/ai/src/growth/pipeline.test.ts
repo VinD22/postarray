@@ -58,7 +58,10 @@ describe('buildGrowthContext', () => {
 
   it('passes only active catalog records into the prompt', () => {
     const context = makePlanContext({
-      opportunities: [makeOpportunity(), makeOpportunity({ id: 'opp_00000000000000000000000009', state: 'draft' })],
+      opportunities: [
+        makeOpportunity(),
+        makeOpportunity({ id: 'opp_00000000000000000000000009', state: 'draft' }),
+      ],
     });
 
     expect(context.allowedOpportunityIds.size).toBe(1);

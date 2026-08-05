@@ -1,8 +1,4 @@
-import {
-  validationIssue,
-  type CapabilitySnapshot,
-  type ValidationIssue,
-} from '@relay/contracts';
+import { validationIssue, type CapabilitySnapshot, type ValidationIssue } from '@relay/contracts';
 
 import type { ProviderDraft, ProviderMedia } from './contract-shape.js';
 import { countText, type CountingUnit } from './text.js';
@@ -183,7 +179,10 @@ export function validateMedia(
       );
     }
     const ratio = aspectRatio(item);
-    if (ratio !== null && (ratio < capability.aspectRatios.min || ratio > capability.aspectRatios.max)) {
+    if (
+      ratio !== null &&
+      (ratio < capability.aspectRatios.min || ratio > capability.aspectRatios.max)
+    ) {
       issues.push(
         validationIssue({
           code: 'MEDIA_ASPECT_RATIO_INVALID',

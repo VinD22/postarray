@@ -415,7 +415,10 @@ export interface ShortLinkStats {
   readonly suspectedBotClicks: number;
   readonly series: readonly { readonly bucketStart: string; readonly clicks: number }[];
   readonly topCountries: readonly { readonly countryCode: string; readonly clicks: number }[];
-  readonly topReferrerClasses: readonly { readonly referrerClass: string; readonly clicks: number }[];
+  readonly topReferrerClasses: readonly {
+    readonly referrerClass: string;
+    readonly clicks: number;
+  }[];
   /** First-party redirect measurement, never a provider link-click number. */
   readonly sourceKey: 'analytics.source.first_party_redirect';
 }
@@ -427,8 +430,14 @@ export interface AutomationRuleView {
   readonly name: string;
   readonly state: 'draft' | 'active' | 'paused' | 'disabled' | 'archived';
   readonly trigger: { readonly kind: RuleTriggerKind; readonly config: Record<string, unknown> };
-  readonly conditions: readonly { readonly kind: string; readonly config: Record<string, unknown> }[];
-  readonly actions: readonly { readonly kind: RuleActionKind; readonly config: Record<string, unknown> }[];
+  readonly conditions: readonly {
+    readonly kind: string;
+    readonly config: Record<string, unknown>;
+  }[];
+  readonly actions: readonly {
+    readonly kind: RuleActionKind;
+    readonly config: Record<string, unknown>;
+  }[];
   readonly delaySeconds: number;
   readonly requiresApproval: boolean;
   readonly preauthorizedConnectionIds: readonly string[];

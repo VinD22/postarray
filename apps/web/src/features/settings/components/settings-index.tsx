@@ -24,28 +24,28 @@ export function SettingsIndex(): ReactNode {
       <PageHeader title={t('settings.title')} description={t('settings.ui.subtitle')} />
 
       <SettingsStack>
-        <p className="max-w-[68ch] text-body-md text-text-secondary">
+        <p className="text-body-md text-text-secondary max-w-[68ch]">
           {t('settings.ui.index.help')}
         </p>
 
-        <ul className="flex flex-col border-y border-border-default">
+        <ul className="border-border-default flex flex-col border-y">
           {SETTINGS_SECTIONS.map((section) => (
-            <li key={section.id} className="border-b border-border-subtle last:border-b-0">
+            <li key={section.id} className="border-border-subtle border-b last:border-b-0">
               <Link
                 href={section.href}
-                className="flex min-h-14 items-center justify-between gap-4 py-3 hover:bg-surface-hover focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-border-focus"
+                className="hover:bg-surface-hover focus-visible:outline-border-focus flex min-h-14 items-center justify-between gap-4 py-3 focus-visible:outline-2 focus-visible:outline-offset-2"
               >
                 <span className="flex min-w-0 flex-col gap-0.5">
-                  <span className="text-body-md font-medium text-text-primary">
+                  <span className="text-body-md text-text-primary font-medium">
                     {t(section.titleKey)}
                   </span>
-                  <span className="max-w-[68ch] text-body-sm text-text-secondary">
+                  <span className="text-body-sm text-text-secondary max-w-[68ch]">
                     {t(section.summaryKey)}
                   </span>
                 </span>
                 <ChevronRight
                   aria-hidden="true"
-                  className="size-4 shrink-0 text-text-tertiary rtl:rotate-180"
+                  className="text-text-tertiary size-4 shrink-0 rtl:rotate-180"
                 />
               </Link>
             </li>

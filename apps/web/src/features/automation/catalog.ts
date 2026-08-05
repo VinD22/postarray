@@ -31,15 +31,7 @@ import {
  */
 
 export type ParameterKind =
-  | 'text'
-  | 'number'
-  | 'duration'
-  | 'time'
-  | 'date'
-  | 'select'
-  | 'account'
-  | 'accounts'
-  | 'metric';
+  'text' | 'number' | 'duration' | 'time' | 'date' | 'select' | 'account' | 'accounts' | 'metric';
 
 export interface ParameterSpec {
   readonly name: string;

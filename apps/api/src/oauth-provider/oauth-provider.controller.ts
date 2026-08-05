@@ -3,12 +3,7 @@ import { SCOPES, scopeRisk, type Scope } from '@relay/contracts';
 import type { Response } from 'express';
 
 import type { WorkspaceView } from '../application/port.js';
-import {
-  CurrentPrincipal,
-  Public,
-  RateLimit,
-  WorkspaceOptional,
-} from '../common/decorators.js';
+import { CurrentPrincipal, Public, RateLimit, WorkspaceOptional } from '../common/decorators.js';
 import type { Principal } from '../common/request.types.js';
 import { parseBody, parseQuery } from '../common/zod.js';
 import {
@@ -162,7 +157,10 @@ export class OAuthProviderController {
   @Post('token')
   @RateLimit({ limit: 120, windowSeconds: 60 })
   @HttpCode(200)
-  async token(@Body() body: unknown, @Res({ passthrough: true }) response: Response): Promise<TokenResponse> {
+  async token(
+    @Body() body: unknown,
+    @Res({ passthrough: true }) response: Response,
+  ): Promise<TokenResponse> {
     // A token response must never be cached by anything between us and the
     // client, including a well-meaning proxy.
     response.setHeader('cache-control', 'no-store');

@@ -1,4 +1,10 @@
-import { ianaTimeZoneSchema, isoInstantSchema, providerIdSchema, publishStateSchema, scheduleSpecSchema } from '@relay/contracts';
+import {
+  ianaTimeZoneSchema,
+  isoInstantSchema,
+  providerIdSchema,
+  publishStateSchema,
+  scheduleSpecSchema,
+} from '@relay/contracts';
 import { z } from 'zod';
 
 import { cursorQueryWith } from '../../common/pagination.js';

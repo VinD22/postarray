@@ -93,7 +93,8 @@ export function normalizeRedirectUri(value: string): string {
   }
   const defaultPort = url.protocol === 'https:' ? '443' : '80';
   const port = url.port === defaultPort ? '' : url.port;
-  const authority = isLoopback && port !== '' ? `${host}:${port}` : port === '' ? host : `${host}:${port}`;
+  const authority =
+    isLoopback && port !== '' ? `${host}:${port}` : port === '' ? host : `${host}:${port}`;
   return `${url.protocol}//${authority}${url.pathname}${url.search}`;
 }
 
@@ -123,10 +124,7 @@ export function matchesRegisteredRedirect(registered: string, candidate: string)
   );
 }
 
-export function assertRedirectAllowed(
-  allowlist: readonly string[],
-  candidate: string,
-): string {
+export function assertRedirectAllowed(allowlist: readonly string[], candidate: string): string {
   const match = allowlist.find((registered) => matchesRegisteredRedirect(registered, candidate));
   if (match === undefined) {
     throw new RelayError('VALIDATION_FAILED', {
@@ -295,7 +293,8 @@ async function callTokenEndpoint(input: TokenCallInput): Promise<CredentialResul
           : new SecretValue(payload.refresh_token, 'refresh_token'),
       tokenType: payload.token_type ?? 'Bearer',
       expiresAt: expiresIn === null ? null : instantOf(obtainedAt.getTime() + expiresIn * 1000),
-      grantedScopes: payload.scope === undefined ? [] : payload.scope.split(/[\s,]+/).filter(Boolean),
+      grantedScopes:
+        payload.scope === undefined ? [] : payload.scope.split(/[\s,]+/).filter(Boolean),
       refreshTokenRotated: payload.refresh_token !== undefined,
       obtainedAt: obtainedAt.toISOString(),
     };
@@ -404,9 +403,7 @@ export async function revokeCredential(input: {
           value: {
             token,
             client_id: input.client.clientId,
-            ...(input.tokenTypeHint === undefined
-              ? {}
-              : { token_type_hint: input.tokenTypeHint }),
+            ...(input.tokenTypeHint === undefined ? {} : { token_type_hint: input.tokenTypeHint }),
             ...(input.client.clientSecret === null
               ? {}
               : { client_secret: input.client.clientSecret.reveal() }),

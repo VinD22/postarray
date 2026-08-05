@@ -14,4 +14,4 @@
 @import 'tailwindcss';
 @import './tokens/theme.css';
 
-@source "../src";
+@source '../src';

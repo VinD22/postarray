@@ -235,8 +235,7 @@ function describeError(error: unknown): string {
 }
 
 const invokedDirectly =
-  process.argv[1] !== undefined &&
-  path.resolve(process.argv[1]) === fileURLToPath(import.meta.url);
+  process.argv[1] !== undefined && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url);
 
 if (invokedDirectly) {
   migrate().catch((error: unknown) => {

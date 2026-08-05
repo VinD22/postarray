@@ -4,8 +4,7 @@ import { forwardRef, type ComponentPropsWithoutRef } from 'react';
 import { Progress as ProgressPrimitive } from 'radix-ui';
 import { cn } from '../utils/cn.js';
 
-export interface ProgressProps
-  extends ComponentPropsWithoutRef<typeof ProgressPrimitive.Root> {
+export interface ProgressProps extends ComponentPropsWithoutRef<typeof ProgressPrimitive.Root> {
   /** Accessible name, from the message catalog. Required. */
   label: string;
   /**
@@ -36,9 +35,7 @@ export const Progress = forwardRef<HTMLDivElement, ProgressProps>(function Progr
   ref,
 ) {
   const percentage =
-    value === null || value === undefined
-      ? null
-      : Math.min(100, Math.max(0, (value / max) * 100));
+    value === null || value === undefined ? null : Math.min(100, Math.max(0, (value / max) * 100));
   const indeterminate = percentage === null;
 
   return (
@@ -50,7 +47,7 @@ export const Progress = forwardRef<HTMLDivElement, ProgressProps>(function Progr
       aria-valuetext={valueText}
       className={cn(
         'relative h-1.5 w-full overflow-hidden rounded-full',
-        'border border-border-default bg-surface-sunken',
+        'border-border-default bg-surface-sunken border',
         className,
       )}
       {...props}
@@ -59,7 +56,7 @@ export const Progress = forwardRef<HTMLDivElement, ProgressProps>(function Progr
         className={cn(
           'h-full rounded-full',
           toneClass[tone],
-          indeterminate ? 'w-1/3 relay-anim-pulse' : undefined,
+          indeterminate ? 'relay-anim-pulse w-1/3' : undefined,
           'transition-[inline-size] duration-[--duration-slow] ease-[--ease-standard]',
           'motion-reduce:transition-none',
         )}

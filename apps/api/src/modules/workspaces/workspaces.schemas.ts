@@ -36,9 +36,7 @@ export const inviteMemberSchema = z
 
 export const updateRoleSchema = z.object({ role: roleSchema }).strict();
 
-export const acceptInvitationSchema = z
-  .object({ token: z.string().min(16).max(512) })
-  .strict();
+export const acceptInvitationSchema = z.object({ token: z.string().min(16).max(512) }).strict();
 
 export type CreateWorkspaceInput = z.infer<typeof createWorkspaceSchema>;
 export type UpdateWorkspaceInput = z.infer<typeof updateWorkspaceSchema>;

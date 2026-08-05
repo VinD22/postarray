@@ -47,11 +47,9 @@ export function EvidencePanel({
   const metricName = t(metricLabelKey(baseline.metric));
 
   return (
-    <div className="flex flex-col gap-4 bg-surface-sunken p-4">
+    <div className="bg-surface-sunken flex flex-col gap-4 p-4">
       <div className="flex max-w-[70ch] flex-col gap-1">
-        <h3 className="text-title-sm text-text-primary">
-          {t('analytics.evidence.title')}
-        </h3>
+        <h3 className="text-title-sm text-text-primary">{t('analytics.evidence.title')}</h3>
         <p className="text-body-md text-text-secondary">
           {t('analytics.evidence.baseline', {
             metric: metricName,
@@ -89,17 +87,15 @@ export function EvidencePanel({
       />
 
       <div className="flex flex-col gap-2">
-        <h4 className="text-label text-text-tertiary">
-          {t('analytics.evidence.postsUsed')}
-        </h4>
-        <ul className="flex flex-col divide-y divide-border-subtle">
+        <h4 className="text-label text-text-tertiary">{t('analytics.evidence.postsUsed')}</h4>
+        <ul className="divide-border-subtle flex flex-col divide-y">
           {baseline.comparablePosts.map((post) => (
             <li
               key={post.contentItemId}
               className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-0.5 py-1.5"
             >
-              <span className="min-w-0 text-body-md text-text-primary">{post.title}</span>
-              <span className="flex items-baseline gap-3 text-body-sm text-text-tertiary tabular-nums">
+              <span className="text-body-md text-text-primary min-w-0">{post.title}</span>
+              <span className="text-body-sm text-text-tertiary flex items-baseline gap-3 tabular-nums">
                 <time dateTime={post.publishedAt}>{format.date(post.publishedAt)}</time>
                 <span className="text-text-secondary">
                   {format.valueOf(post.value, row.reading.definition.unit)}
@@ -111,17 +107,15 @@ export function EvidencePanel({
       </div>
 
       {baseline.smallSample ? (
-        <p className="max-w-[70ch] text-body-md text-warning-fg">
+        <p className="text-body-md text-warning-fg max-w-[70ch]">
           {t('analytics.evidence.smallSample', { count: baseline.sampleSize })}
         </p>
       ) : null}
 
       {baseline.confounders.length > 0 ? (
         <div className="flex flex-col gap-1.5">
-          <h4 className="text-label text-text-tertiary">
-            {t('analytics.evidence.confounders')}
-          </h4>
-          <ul className="flex max-w-[70ch] list-disc flex-col gap-1 ps-5 text-body-md text-text-secondary marker:text-text-tertiary">
+          <h4 className="text-label text-text-tertiary">{t('analytics.evidence.confounders')}</h4>
+          <ul className="text-body-md text-text-secondary marker:text-text-tertiary flex max-w-[70ch] list-disc flex-col gap-1 ps-5">
             {baseline.confounders.map((confounder) => (
               <li key={confounder}>
                 {t(CONFOUNDER_KEY[confounder], {

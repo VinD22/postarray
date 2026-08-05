@@ -56,11 +56,7 @@ export class RssController {
     @Param('id') id: string,
     @Body() body: unknown,
   ): Promise<FeedView> {
-    return this.rss.update(
-      actor,
-      parseParams(feedIdSchema, id),
-      parseBody(updateFeedSchema, body),
-    );
+    return this.rss.update(actor, parseParams(feedIdSchema, id), parseBody(updateFeedSchema, body));
   }
 
   /** Last successful fetch, last error, and how many items it produced. */

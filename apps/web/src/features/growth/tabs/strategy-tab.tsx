@@ -42,10 +42,8 @@ export function StrategyTab({ plan, profile }: StrategyTabProps): ReactNode {
       <SettingsPanel title={t('growth.ui.strategy.snapshotTitle')}>
         <div className="flex flex-col gap-3">
           <div className="flex flex-col gap-1">
-            <h3 className="text-label text-text-tertiary">
-              {t('growth.ui.confirm.factsTitle')}
-            </h3>
-            <ul className="flex list-disc flex-col gap-1 ps-5 text-body-md text-text-primary">
+            <h3 className="text-label text-text-tertiary">{t('growth.ui.confirm.factsTitle')}</h3>
+            <ul className="text-body-md text-text-primary flex list-disc flex-col gap-1 ps-5">
               {plan.business_snapshot.facts.map((fact) => (
                 <li key={fact.id}>{fact.statement}</li>
               ))}
@@ -60,7 +58,7 @@ export function StrategyTab({ plan, profile }: StrategyTabProps): ReactNode {
               {plan.business_snapshot.assumptions.map((assumption) => (
                 <li
                   key={assumption.id}
-                  className="flex flex-wrap items-center gap-2 text-body-md text-text-primary"
+                  className="text-body-md text-text-primary flex flex-wrap items-center gap-2"
                 >
                   <Badge tone="warning">{t('growth.profile.assumption')}</Badge>
                   {assumption.statement}
@@ -74,7 +72,7 @@ export function StrategyTab({ plan, profile }: StrategyTabProps): ReactNode {
               <h3 className="text-label text-text-tertiary">
                 {t('growth.ui.confirm.missingTitle')}
               </h3>
-              <ul className="flex list-disc flex-col gap-1 ps-5 text-body-md text-text-secondary">
+              <ul className="text-body-md text-text-secondary flex list-disc flex-col gap-1 ps-5">
                 {plan.business_snapshot.missingInformation.map((entry) => (
                   <li key={entry}>{entry}</li>
                 ))}
@@ -85,7 +83,7 @@ export function StrategyTab({ plan, profile }: StrategyTabProps): ReactNode {
       </SettingsPanel>
 
       <SettingsPanel title={t('growth.strategy.objective')}>
-        <p className="max-w-[68ch] text-body-lg text-text-primary">
+        <p className="text-body-lg text-text-primary max-w-[68ch]">
           {plan.goals_and_metrics.objective}
         </p>
         <p className="text-body-sm text-text-tertiary">
@@ -98,11 +96,9 @@ export function StrategyTab({ plan, profile }: StrategyTabProps): ReactNode {
           {plan.audiences_and_channels.audiences.map((audience) => (
             <li
               key={audience.name}
-              className="flex flex-col gap-0.5 border-b border-border-subtle py-2.5 last:border-b-0"
+              className="border-border-subtle flex flex-col gap-0.5 border-b py-2.5 last:border-b-0"
             >
-              <span className="text-body-md font-medium text-text-primary">
-                {audience.name}
-              </span>
+              <span className="text-body-md text-text-primary font-medium">{audience.name}</span>
               <span className="text-body-md text-text-secondary">{audience.description}</span>
             </li>
           ))}
@@ -114,24 +110,24 @@ export function StrategyTab({ plan, profile }: StrategyTabProps): ReactNode {
           {plan.audiences_and_channels.channels.map((channel) => (
             <li
               key={channel.provider}
-              className="flex flex-col gap-1 border-b border-border-subtle py-3 last:border-b-0"
+              className="border-border-subtle flex flex-col gap-1 border-b py-3 last:border-b-0"
             >
               <span className="flex flex-wrap items-center gap-2">
                 <Badge tone="outline">
                   {t('growth.ui.strategy.channelPriority', { rank: channel.priority })}
                 </Badge>
-                <span className="text-body-md font-medium text-text-primary">
+                <span className="text-body-md text-text-primary font-medium">
                   {channel.provider}
                 </span>
               </span>
-              <span className="max-w-[68ch] text-body-md text-text-secondary">
+              <span className="text-body-md text-text-secondary max-w-[68ch]">
                 <span className="text-text-tertiary">
                   {t('growth.strategy.channelRationale')}:{' '}
                 </span>
                 {channel.rationale}
               </span>
               {channel.limitations.length === 0 ? null : (
-                <span className="max-w-[68ch] text-body-sm text-text-secondary">
+                <span className="text-body-sm text-text-secondary max-w-[68ch]">
                   <span className="text-text-tertiary">
                     {t('growth.strategy.channelLimitation')}:{' '}
                   </span>
@@ -152,10 +148,10 @@ export function StrategyTab({ plan, profile }: StrategyTabProps): ReactNode {
           {plan.content_system.pillars.map((pillar) => (
             <li
               key={pillar.name}
-              className="flex flex-col gap-0.5 border-b border-border-subtle py-3 last:border-b-0"
+              className="border-border-subtle flex flex-col gap-0.5 border-b py-3 last:border-b-0"
             >
-              <span className="text-body-md font-medium text-text-primary">{pillar.name}</span>
-              <span className="max-w-[68ch] text-body-md text-text-secondary">
+              <span className="text-body-md text-text-primary font-medium">{pillar.name}</span>
+              <span className="text-body-md text-text-secondary max-w-[68ch]">
                 {pillar.description}
               </span>
               <span className="text-body-sm text-text-tertiary">
@@ -178,9 +174,7 @@ export function StrategyTab({ plan, profile }: StrategyTabProps): ReactNode {
             </TableCaption>
             <TableHeader>
               <TableRow>
-                <TableHead scope="col">
-                  {t('growth.ui.strategy.cadenceColumn.channel')}
-                </TableHead>
+                <TableHead scope="col">{t('growth.ui.strategy.cadenceColumn.channel')}</TableHead>
                 <TableHead scope="col" numeric>
                   {t('growth.ui.strategy.cadenceColumn.perWeek')}
                 </TableHead>
@@ -224,7 +218,7 @@ export function StrategyTab({ plan, profile }: StrategyTabProps): ReactNode {
       </SettingsPanel>
 
       <SettingsPanel title={t('growth.strategy.ctaLibrary')}>
-        <ul className="flex list-disc flex-col gap-1 ps-5 text-body-md text-text-primary">
+        <ul className="text-body-md text-text-primary flex list-disc flex-col gap-1 ps-5">
           {plan.content_system.ctaLibrary.map((cta) => (
             <li key={cta}>{cta}</li>
           ))}
@@ -234,10 +228,10 @@ export function StrategyTab({ plan, profile }: StrategyTabProps): ReactNode {
             <h3 className="text-label text-text-tertiary">
               {t('growth.ui.strategy.localeAdaptations')}
             </h3>
-            <ul className="flex flex-col gap-1 text-body-md text-text-secondary">
+            <ul className="text-body-md text-text-secondary flex flex-col gap-1">
               {plan.content_system.localeAdaptations.map((entry) => (
                 <li key={entry.locale}>
-                  <span className="font-medium text-text-primary">{entry.locale}</span>{' '}
+                  <span className="text-text-primary font-medium">{entry.locale}</span>{' '}
                   {entry.notes}
                 </li>
               ))}
@@ -247,10 +241,10 @@ export function StrategyTab({ plan, profile }: StrategyTabProps): ReactNode {
       </SettingsPanel>
 
       <SettingsPanel title={t('growth.strategy.measurement')}>
-        <p className="max-w-[68ch] text-body-md text-text-secondary">
+        <p className="text-body-md text-text-secondary max-w-[68ch]">
           {t('growth.ui.strategy.measurementBody')}
         </p>
-        <ul className="flex list-disc flex-col gap-1 ps-5 text-body-md text-text-primary">
+        <ul className="text-body-md text-text-primary flex list-disc flex-col gap-1 ps-5">
           {plan.goals_and_metrics.supportingMetrics.map((metric) => (
             <li key={metric}>{metric}</li>
           ))}
@@ -258,7 +252,7 @@ export function StrategyTab({ plan, profile }: StrategyTabProps): ReactNode {
       </SettingsPanel>
 
       <SettingsPanel title={t('growth.strategy.risks')}>
-        <ul className="flex list-disc flex-col gap-1 ps-5 text-body-md text-text-secondary">
+        <ul className="text-body-md text-text-secondary flex list-disc flex-col gap-1 ps-5">
           {plan.risks_and_unknowns.unsupportedClaims.map((claim) => (
             <li key={claim}>{claim}</li>
           ))}

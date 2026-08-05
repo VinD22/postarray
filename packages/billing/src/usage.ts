@@ -117,8 +117,16 @@ export function createAiTextPriceBook(input: {
   return {
     version: input.version,
     entries: [
-      { ...common, operation: 'ai_text_input_tokens', unitMicroDollars: input.inputMicroPerMillionTokens },
-      { ...common, operation: 'ai_text_output_tokens', unitMicroDollars: input.outputMicroPerMillionTokens },
+      {
+        ...common,
+        operation: 'ai_text_input_tokens',
+        unitMicroDollars: input.inputMicroPerMillionTokens,
+      },
+      {
+        ...common,
+        operation: 'ai_text_output_tokens',
+        unitMicroDollars: input.outputMicroPerMillionTokens,
+      },
     ],
   };
 }
@@ -162,7 +170,11 @@ export function priceBookVerifiedAt(book: PriceBook): string | null {
   return oldest;
 }
 
-export function isPriceBookStale(book: PriceBook, now: string, maxAgeDays = PRICE_BOOK_MAX_AGE_DAYS): boolean {
+export function isPriceBookStale(
+  book: PriceBook,
+  now: string,
+  maxAgeDays = PRICE_BOOK_MAX_AGE_DAYS,
+): boolean {
   const verifiedAt = priceBookVerifiedAt(book);
   if (verifiedAt === null) {
     return true;

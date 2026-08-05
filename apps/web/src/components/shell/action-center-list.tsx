@@ -4,16 +4,11 @@ import Link from 'next/link';
 import { AlertTriangle, Clock, Eye } from 'lucide-react';
 import type { ReactNode } from 'react';
 
-import {
-  EmptyState,
-  ErrorState,
-  LoadingState,
-  SkeletonList,
-} from '@relay/design-system/patterns';
+import { EmptyState, ErrorState, LoadingState, SkeletonList } from '@relay/design-system/patterns';
 import { Button, StatusDot } from '@relay/design-system/primitives';
 import { cn } from '@relay/design-system/utils';
 
-import { ApiError, type ActionItemUrgency, type ActionItemView } from '@/lib/api';
+import { type ApiError, type ActionItemUrgency, type ActionItemView } from '@/lib/api';
 import { useSnoozeActionItem } from '@/lib/api/hooks';
 import { useFormatters, useTranslations } from '@/lib/i18n';
 
@@ -27,9 +22,9 @@ import {
 } from './action-center-catalog';
 
 const URGENCY_MARK: Readonly<Record<ActionItemUrgency, ReactNode>> = {
-  now: <AlertTriangle aria-hidden="true" className="size-4 text-destructive-fg" />,
-  soon: <Clock aria-hidden="true" className="size-4 text-warning-fg" />,
-  watching: <Eye aria-hidden="true" className="size-4 text-text-tertiary" />,
+  now: <AlertTriangle aria-hidden="true" className="text-destructive-fg size-4" />,
+  soon: <Clock aria-hidden="true" className="text-warning-fg size-4" />,
+  watching: <Eye aria-hidden="true" className="text-text-tertiary size-4" />,
 };
 
 export interface ActionCenterListProps {
@@ -113,14 +108,14 @@ export function ActionCenterList({
           <div className="flex flex-col gap-0.5 pb-1.5">
             <h3
               id={`action-group-${group.urgency}`}
-              className="text-label uppercase tracking-wide text-text-tertiary"
+              className="text-label text-text-tertiary tracking-wide uppercase"
             >
               {t(URGENCY_LABEL_KEY[group.urgency])}
             </h3>
             <p className="text-body-sm text-text-tertiary">{t(URGENCY_HINT_KEY[group.urgency])}</p>
           </div>
 
-          <ul className="flex flex-col border-t border-border-subtle">
+          <ul className="border-border-subtle flex flex-col border-t">
             {group.rows.map((item) => {
               const definition = ACTION_KIND_DEFINITIONS[item.kind];
               const dotProvider = providerDotKey(item.provider);
@@ -129,7 +124,7 @@ export function ActionCenterList({
                 <li
                   key={item.id}
                   className={cn(
-                    'flex flex-col gap-2 border-b border-border-subtle py-3',
+                    'border-border-subtle flex flex-col gap-2 border-b py-3',
                     'sm:flex-row sm:items-start sm:gap-4',
                   )}
                 >
@@ -142,15 +137,13 @@ export function ActionCenterList({
                     <p className="text-body-md text-text-primary">
                       {t(definition.messageKey, item.values)}
                     </p>
-                    <p className="flex flex-wrap items-center gap-1.5 text-body-sm text-text-tertiary">
+                    <p className="text-body-sm text-text-tertiary flex flex-wrap items-center gap-1.5">
                       {dotProvider === undefined ? null : (
                         <StatusDot provider={dotProvider} aria-hidden="true" />
                       )}
                       <span>{t('actionCenter.affectedAccount', { account: item.subject })}</span>
                       <span aria-hidden="true">·</span>
-                      <time dateTime={item.createdAt}>
-                        {format.relative(item.createdAt)}
-                      </time>
+                      <time dateTime={item.createdAt}>{format.relative(item.createdAt)}</time>
                       {item.snoozedUntil === null ? null : (
                         <>
                           <span aria-hidden="true">·</span>

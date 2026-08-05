@@ -21,11 +21,7 @@ export interface LoadingStateProps {
  * The announcement is on the wrapper, not on each placeholder, so a list of
  * twenty skeleton rows produces one sentence instead of twenty.
  */
-export function LoadingState({
-  label,
-  children,
-  className,
-}: LoadingStateProps): ReactNode {
+export function LoadingState({ label, children, className }: LoadingStateProps): ReactNode {
   return (
     <div role="status" aria-busy="true" aria-live="polite" className={cn(className)}>
       <span className="sr-only">{label}</span>
@@ -47,17 +43,13 @@ export interface SkeletonListProps {
  * avatar, two lines of text, and a trailing status. Each row is exactly the
  * height of a real row, which is the whole point.
  */
-export function SkeletonList({
-  rows = 5,
-  avatar = true,
-  className,
-}: SkeletonListProps): ReactNode {
+export function SkeletonList({ rows = 5, avatar = true, className }: SkeletonListProps): ReactNode {
   return (
     <ul className={cn('flex flex-col', className)}>
       {Array.from({ length: rows }, (_, index) => (
         <li
           key={index}
-          className="flex items-center gap-3 border-b border-border-subtle px-3 py-2.5"
+          className="border-border-subtle flex items-center gap-3 border-b px-3 py-2.5"
         >
           {avatar ? <Skeleton variant="block" className="size-8 shrink-0" /> : null}
           <div className="flex min-w-0 flex-1 flex-col gap-1.5">
@@ -78,23 +70,16 @@ export interface SkeletonTableProps {
 }
 
 /** A table skeleton that reserves the real cell grid, header included. */
-export function SkeletonTable({
-  rows = 6,
-  columns = 4,
-  className,
-}: SkeletonTableProps): ReactNode {
+export function SkeletonTable({ rows = 6, columns = 4, className }: SkeletonTableProps): ReactNode {
   return (
     <div className={cn('w-full', className)} aria-hidden="true">
-      <div className="flex gap-3 border-b border-border-default px-3 py-2">
+      <div className="border-border-default flex gap-3 border-b px-3 py-2">
         {Array.from({ length: columns }, (_, index) => (
           <Skeleton key={index} className="h-4 flex-1" />
         ))}
       </div>
       {Array.from({ length: rows }, (_, rowIndex) => (
-        <div
-          key={rowIndex}
-          className="flex gap-3 border-b border-border-subtle px-3 py-2.5"
-        >
+        <div key={rowIndex} className="border-border-subtle flex gap-3 border-b px-3 py-2.5">
           {Array.from({ length: columns }, (_, columnIndex) => (
             <Skeleton key={columnIndex} className="flex-1" />
           ))}

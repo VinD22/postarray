@@ -5,11 +5,7 @@ import { FixedClock } from '../ports/clock.js';
 import { MemoryKeyValueStore } from '../ports/key-value.js';
 import type { ActorContext } from '../types.js';
 
-import {
-  fingerprintOf,
-  publishJobIdempotencyKey,
-  withIdempotency,
-} from './idempotency.js';
+import { fingerprintOf, publishJobIdempotencyKey, withIdempotency } from './idempotency.js';
 
 function context(overrides: Partial<ActorContext> = {}): ActorContext {
   return {

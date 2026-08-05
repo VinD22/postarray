@@ -7,7 +7,9 @@ import type { WebhookDeliveryWorkflowInput, WebhookDeliveryWorkflowOutput } from
 
  * Workflow id: `whd:{workspaceId}:{deliveryId}`.
  */
-export async function webhookDeliveryWorkflow(input: WebhookDeliveryWorkflowInput): Promise<WebhookDeliveryWorkflowOutput> {
+export async function webhookDeliveryWorkflow(
+  input: WebhookDeliveryWorkflowInput,
+): Promise<WebhookDeliveryWorkflowOutput> {
   const runtime = createTemporalRuntime();
   return runWebhookDelivery(runtime, workerActivities, input);
 }

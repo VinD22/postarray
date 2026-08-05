@@ -52,9 +52,6 @@ export function nextIncompleteStep(progress: OnboardingProgress): OnboardingStep
 }
 
 /** True when the user may open this step directly. */
-export function isStepReachable(
-  target: OnboardingStepId,
-  progress: OnboardingProgress,
-): boolean {
+export function isStepReachable(target: OnboardingStepId, progress: OnboardingProgress): boolean {
   return stepIndex(target) <= stepIndex(nextIncompleteStep(progress));
 }

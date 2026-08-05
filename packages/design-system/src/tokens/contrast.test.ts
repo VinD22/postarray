@@ -88,26 +88,20 @@ describe('pickReadableForeground', () => {
 describe.each<ThemeName>(['light', 'dark'])('WCAG 2.2 AA gate: %s theme', (themeName) => {
   const theme = themes[themeName];
 
-  const cases: [string, ContrastPair][] = documentedContrastPairs.map((pair) => [
-    pair.id,
-    pair,
-  ]);
+  const cases: [string, ContrastPair][] = documentedContrastPairs.map((pair) => [pair.id, pair]);
 
-  it.each(cases)(
-    '%s',
-    (_id, pair) => {
-      const foreground = pair.foreground(theme);
-      const background = pair.background(theme);
-      const ratio = contrastRatio(foreground, background);
-      const required = CONTRAST_THRESHOLD_AA[pair.purpose];
+  it.each(cases)('%s', (_id, pair) => {
+    const foreground = pair.foreground(theme);
+    const background = pair.background(theme);
+    const ratio = contrastRatio(foreground, background);
+    const required = CONTRAST_THRESHOLD_AA[pair.purpose];
 
-      expect(
-        ratio,
-        `${pair.id} in ${themeName}: ${foreground} on ${background} is ` +
-          `${ratio.toFixed(2)}:1, needs ${required}:1 (${pair.purpose})`,
-      ).toBeGreaterThanOrEqual(required);
-    },
-  );
+    expect(
+      ratio,
+      `${pair.id} in ${themeName}: ${foreground} on ${background} is ` +
+        `${ratio.toFixed(2)}:1, needs ${required}:1 (${pair.purpose})`,
+    ).toBeGreaterThanOrEqual(required);
+  });
 
   it('documents at least one pair for every semantic text token', () => {
     const ids = documentedContrastPairs.map((p) => p.id).join('\n');
@@ -142,24 +136,12 @@ describe.each<ThemeName>(['light', 'dark'])('WCAG 2.2 AA gate: %s theme', (theme
 describe('type scale', () => {
   it('descends monotonically through the title and body ramps', () => {
     const rem = (value: string): number => Number.parseFloat(value);
-    expect(rem(typeScale.display.fontSize)).toBeGreaterThan(
-      rem(typeScale.titleLg.fontSize),
-    );
-    expect(rem(typeScale.titleLg.fontSize)).toBeGreaterThan(
-      rem(typeScale.titleMd.fontSize),
-    );
-    expect(rem(typeScale.titleMd.fontSize)).toBeGreaterThan(
-      rem(typeScale.titleSm.fontSize),
-    );
-    expect(rem(typeScale.bodyLg.fontSize)).toBeGreaterThan(
-      rem(typeScale.bodyMd.fontSize),
-    );
-    expect(rem(typeScale.bodyMd.fontSize)).toBeGreaterThan(
-      rem(typeScale.bodySm.fontSize),
-    );
-    expect(rem(typeScale.bodySm.fontSize)).toBeGreaterThan(
-      rem(typeScale.label.fontSize),
-    );
+    expect(rem(typeScale.display.fontSize)).toBeGreaterThan(rem(typeScale.titleLg.fontSize));
+    expect(rem(typeScale.titleLg.fontSize)).toBeGreaterThan(rem(typeScale.titleMd.fontSize));
+    expect(rem(typeScale.titleMd.fontSize)).toBeGreaterThan(rem(typeScale.titleSm.fontSize));
+    expect(rem(typeScale.bodyLg.fontSize)).toBeGreaterThan(rem(typeScale.bodyMd.fontSize));
+    expect(rem(typeScale.bodyMd.fontSize)).toBeGreaterThan(rem(typeScale.bodySm.fontSize));
+    expect(rem(typeScale.bodySm.fontSize)).toBeGreaterThan(rem(typeScale.label.fontSize));
   });
 
   it('never tracks tighter than -0.04em', () => {

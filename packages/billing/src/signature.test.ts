@@ -87,10 +87,20 @@ describe('standard webhooks signing', () => {
   it('rejects when headers or the secret are missing', async () => {
     const headers = await headersFor();
     await expect(
-      verifyWebhookSignature({ secret: undefined, rawBody: BODY, headers, nowSeconds: NOW_SECONDS }),
+      verifyWebhookSignature({
+        secret: undefined,
+        rawBody: BODY,
+        headers,
+        nowSeconds: NOW_SECONDS,
+      }),
     ).resolves.toMatchObject({ reason: 'missing_secret' });
     await expect(
-      verifyWebhookSignature({ secret: SECRET, rawBody: BODY, headers: {}, nowSeconds: NOW_SECONDS }),
+      verifyWebhookSignature({
+        secret: SECRET,
+        rawBody: BODY,
+        headers: {},
+        nowSeconds: NOW_SECONDS,
+      }),
     ).resolves.toMatchObject({ reason: 'missing_headers' });
   });
 

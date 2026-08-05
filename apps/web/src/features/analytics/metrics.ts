@@ -1,12 +1,7 @@
 import type { NormalizedMetricName } from '@relay/contracts';
 import type { MetricAvailability as DesignSystemAvailability } from '@relay/design-system/patterns';
 
-import type {
-  FreshnessState,
-  MetricAvailabilityCode,
-  MetricReading,
-  OutcomeGroup,
-} from './types';
+import type { FreshnessState, MetricAvailabilityCode, MetricReading, OutcomeGroup } from './types';
 
 /**
  * The rules that decide what a metric looks like on screen.

@@ -10,7 +10,6 @@ export interface Clock {
   now(): Date;
 }
 
-/* eslint-disable no-restricted-globals -- the only sanctioned use of the ambient clock. */
 export const systemClock: Clock = {
   now: () => new Date(),
 };
@@ -31,7 +30,6 @@ export function fixedClock(instant: string): Clock {
 export function fromEpochMs(milliseconds: number): Date {
   return new Date(milliseconds);
 }
-/* eslint-enable no-restricted-globals */
 
 /** ISO instant with an explicit offset, which is what every contract expects. */
 export function nowIso(clock: Clock): string {

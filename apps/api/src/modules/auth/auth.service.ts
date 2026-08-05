@@ -5,7 +5,13 @@ import type { Logger } from '@relay/observability';
 import type { Response } from 'express';
 
 import type { Clock, IdentityContext, Services } from '../../application/port.js';
-import { CLOCK, IDENTITY_PROVIDER, LOGGER, RELAY_CONFIG, SERVICES } from '../../application/tokens.js';
+import {
+  CLOCK,
+  IDENTITY_PROVIDER,
+  LOGGER,
+  RELAY_CONFIG,
+  SERVICES,
+} from '../../application/tokens.js';
 import {
   CSRF_COOKIE,
   REFRESH_COOKIE,

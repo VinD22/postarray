@@ -116,10 +116,7 @@ function payloadHash(payload: unknown): string {
 
 export function createWebhookService(deps: ServiceDeps): WebhookService {
   return {
-    async list(
-      ctx: ActorContext,
-      query: PageQuery = {},
-    ): Promise<Paginated<WebhookEndpointView>> {
+    async list(ctx: ActorContext, query: PageQuery = {}): Promise<Paginated<WebhookEndpointView>> {
       return authorized(deps, ctx, 'webhook.read', undefined, async (db) => {
         const args = pageArgs(query);
         const rows = await db.webhookEndpoint.findMany({
@@ -212,9 +209,7 @@ export function createWebhookService(deps: ServiceDeps): WebhookService {
             ...(patch.connectionScope === undefined
               ? {}
               : { connectionScope: [...patch.connectionScope] }),
-            ...(patch.paused === undefined
-              ? {}
-              : { state: patch.paused ? 'paused' : 'active' }),
+            ...(patch.paused === undefined ? {} : { state: patch.paused ? 'paused' : 'active' }),
           },
           select: ENDPOINT_SELECT,
         });
@@ -245,10 +240,7 @@ export function createWebhookService(deps: ServiceDeps): WebhookService {
     },
 
     /** A test send is flagged so a receiver never treats one as real traffic. */
-    async testDelivery(
-      ctx: ActorContext,
-      endpointId: string,
-    ): Promise<WebhookDeliveryView> {
+    async testDelivery(ctx: ActorContext, endpointId: string): Promise<WebhookDeliveryView> {
       return authorized(deps, ctx, 'webhook.write', undefined, async (db, actor) => {
         const endpoint = await db.webhookEndpoint.findFirst({
           where: { id: endpointId },

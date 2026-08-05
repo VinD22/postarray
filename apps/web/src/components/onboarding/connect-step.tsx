@@ -4,12 +4,19 @@ import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
 import { Notice } from '@relay/design-system/patterns';
-import { Button, Label, RadioGroup, RadioGroupItem, StatusDot } from '@relay/design-system/primitives';
+import {
+  Button,
+  Label,
+  RadioGroup,
+  RadioGroupItem,
+  StatusDot,
+} from '@relay/design-system/primitives';
 import { cn } from '@relay/design-system/utils';
 
 import { ApiError, api, newIdempotencyKey, type ProviderId } from '@/lib/api';
 import { useTranslations } from '@/lib/i18n';
 import { providerDotKey } from '@/components/shell/action-center-catalog';
+import { requireFirst } from '@/lib/utils/require-first';
 
 /**
  * What each platform will be asked for.
@@ -27,7 +34,11 @@ const PROVIDERS: readonly {
   {
     id: 'x',
     name: 'X',
-    permissionKeys: ['capability.feature.text', 'capability.feature.thread', 'capability.feature.image'],
+    permissionKeys: [
+      'capability.feature.text',
+      'capability.feature.thread',
+      'capability.feature.image',
+    ],
   },
   {
     id: 'linkedin',
@@ -73,7 +84,8 @@ export function ConnectStep() {
   const [pending, setPending] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const provider = PROVIDERS.find((entry) => entry.id === selected) ?? PROVIDERS[0]!;
+  const provider =
+    PROVIDERS.find((entry) => entry.id === selected) ?? requireFirst(PROVIDERS, 'provider');
 
   const connect = async () => {
     setPending(true);
@@ -106,7 +118,7 @@ export function ConnectStep() {
       {error === null ? null : <Notice tone="destructive" liveness="alert" title={error} />}
 
       <fieldset className="flex flex-col gap-0">
-        <legend className="pb-2 text-label uppercase tracking-wide text-text-tertiary">
+        <legend className="text-label text-text-tertiary pb-2 tracking-wide uppercase">
           {t('onboarding.connect.chooseProvider')}
         </legend>
 
@@ -115,7 +127,7 @@ export function ConnectStep() {
           onValueChange={(next) => {
             setSelected(next as ProviderId);
           }}
-          className="gap-0 border-t border-border-subtle"
+          className="border-border-subtle gap-0 border-t"
         >
           {PROVIDERS.map((entry) => {
             const id = `provider-${entry.id}`;
@@ -124,7 +136,7 @@ export function ConnectStep() {
               <div
                 key={entry.id}
                 className={cn(
-                  'flex items-center gap-3 border-b border-border-subtle py-3',
+                  'border-border-subtle flex items-center gap-3 border-b py-3',
                   selected === entry.id && 'bg-accent-subtle',
                 )}
               >
@@ -146,11 +158,11 @@ export function ConnectStep() {
         <p className="prose-measure text-body-md text-text-secondary">
           {t('connection.permissions.explainBeforeOAuth', { provider: provider.name })}
         </p>
-        <ul className="flex flex-col border-t border-border-subtle">
+        <ul className="border-border-subtle flex flex-col border-t">
           {provider.permissionKeys.map((key) => (
             <li
               key={key}
-              className="border-b border-border-subtle py-2 text-body-md text-text-primary"
+              className="border-border-subtle text-body-md text-text-primary border-b py-2"
             >
               {t(key)}
             </li>

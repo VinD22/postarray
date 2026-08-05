@@ -61,7 +61,9 @@ const FAR_FUTURE = '2999-12-31T23:59:59.999Z';
 /** Roles whose definition includes reviewing someone else's work. */
 const APPROVAL_ROLES: ReadonlySet<string> = new Set(['owner', 'admin', 'manager', 'approver']);
 
-function moneyOf(value: { amountMinor: number; currency: string } | null | undefined): MoneyView | null {
+function moneyOf(
+  value: { amountMinor: number; currency: string } | null | undefined,
+): MoneyView | null {
   return value == null ? null : { amountMinor: value.amountMinor, currency: value.currency };
 }
 
@@ -152,7 +154,10 @@ export const membersGateway = {
     brandIds: readonly string[];
     canApprove: boolean;
   }): Promise<void> {
-    await api.members.invite({ email: input.email, role: input.role }, newIdempotencyKey('settings'));
+    await api.members.invite(
+      { email: input.email, role: input.role },
+      newIdempotencyKey('settings'),
+    );
     if (input.brandIds.length > 0 || input.canApprove) {
       // TODO(api): fold scope and approval into the invitation body.
       await request('/members/invitations/scope', {
@@ -483,9 +488,9 @@ export const oauthAppsGateway = {
     // TODO(api): `GET /oauth/apps` should embed the identity and limit fields.
     return Promise.all(
       page.data.map(async (app) => {
-        const detail = await request<OAuthAppDetailResponse>(
-          `/oauth/apps/${app.id}/detail`,
-        ).catch(() => ({}) as OAuthAppDetailResponse);
+        const detail = await request<OAuthAppDetailResponse>(`/oauth/apps/${app.id}/detail`).catch(
+          () => ({}) as OAuthAppDetailResponse,
+        );
         return toAppView(app, detail);
       }),
     );
@@ -528,7 +533,11 @@ export const oauthAppsGateway = {
   },
 
   async update(appId: string, patch: Partial<OAuthAppView>): Promise<OAuthAppView> {
-    if (patch.name !== undefined || patch.redirectUris !== undefined || patch.scopes !== undefined) {
+    if (
+      patch.name !== undefined ||
+      patch.redirectUris !== undefined ||
+      patch.scopes !== undefined
+    ) {
       await api.oauthApps.update(appId, {
         ...(patch.name === undefined ? {} : { name: patch.name }),
         ...(patch.redirectUris === undefined ? {} : { redirectUris: patch.redirectUris }),
@@ -582,12 +591,6 @@ export const oauthAppsGateway = {
 };
 
 /* ------------------------------------------------------------- webhooks */
-
-interface WebhookDetailResponse {
-  readonly disabledReason?: WebhookEndpointView['disabledReason'];
-  readonly failureLimit?: number;
-  readonly connectionLabels?: readonly string[];
-}
 
 export const webhooksGateway = {
   async list(): Promise<readonly WebhookEndpointView[]> {
@@ -792,7 +795,10 @@ export const billingGateway = {
 
   async checkout(interval: 'monthly' | 'annual'): Promise<string> {
     const returnUrl = `${window.location.origin}/settings/billing`;
-    const result = await api.billing.createCheckout({ interval, returnUrl }, newIdempotencyKey('settings'));
+    const result = await api.billing.createCheckout(
+      { interval, returnUrl },
+      newIdempotencyKey('settings'),
+    );
     return result.checkoutUrl;
   },
 

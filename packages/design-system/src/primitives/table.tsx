@@ -36,10 +36,7 @@ export const Table = forwardRef<HTMLTableElement, TableProps>(function Table(
     <table
       ref={ref}
       data-density={density}
-      className={cn(
-        'w-full border-collapse text-start text-body-md text-text-primary',
-        className,
-      )}
+      className={cn('text-body-md text-text-primary w-full border-collapse text-start', className)}
       {...props}
     />
   );
@@ -56,7 +53,7 @@ export const TableContainer = forwardRef<HTMLDivElement, ComponentPropsWithoutRe
         ref={ref}
         className={cn(
           'relay-scrollbar relative w-full overflow-auto',
-          'border-y border-border-default',
+          'border-border-default border-y',
           className,
         )}
         {...props}
@@ -72,54 +69,51 @@ export const TableCaption = forwardRef<
   return (
     <caption
       ref={ref}
-      className={cn('px-3 py-2 text-start text-body-sm text-text-secondary', className)}
+      className={cn('text-body-sm text-text-secondary px-3 py-2 text-start', className)}
       {...props}
     />
   );
 });
 
-export const TableHeader = forwardRef<
-  HTMLTableSectionElement,
-  ComponentPropsWithoutRef<'thead'>
->(function TableHeader({ className, ...props }, ref) {
-  return (
-    <thead
-      ref={ref}
-      className={cn(
-        'sticky top-0 z-(--z-index-sticky) bg-surface-canvas',
-        '[&_th]:border-b [&_th]:border-border-default',
-        className,
-      )}
-      {...props}
-    />
-  );
-});
+export const TableHeader = forwardRef<HTMLTableSectionElement, ComponentPropsWithoutRef<'thead'>>(
+  function TableHeader({ className, ...props }, ref) {
+    return (
+      <thead
+        ref={ref}
+        className={cn(
+          'bg-surface-canvas sticky top-0 z-(--z-index-sticky)',
+          '[&_th]:border-border-default [&_th]:border-b',
+          className,
+        )}
+        {...props}
+      />
+    );
+  },
+);
 
-export const TableBody = forwardRef<
-  HTMLTableSectionElement,
-  ComponentPropsWithoutRef<'tbody'>
->(function TableBody({ className, ...props }, ref) {
-  return (
-    <tbody
-      ref={ref}
-      className={cn('[&_tr:not(:last-child)]:border-b [&_tr]:border-border-subtle', className)}
-      {...props}
-    />
-  );
-});
+export const TableBody = forwardRef<HTMLTableSectionElement, ComponentPropsWithoutRef<'tbody'>>(
+  function TableBody({ className, ...props }, ref) {
+    return (
+      <tbody
+        ref={ref}
+        className={cn('[&_tr]:border-border-subtle [&_tr:not(:last-child)]:border-b', className)}
+        {...props}
+      />
+    );
+  },
+);
 
-export const TableFooter = forwardRef<
-  HTMLTableSectionElement,
-  ComponentPropsWithoutRef<'tfoot'>
->(function TableFooter({ className, ...props }, ref) {
-  return (
-    <tfoot
-      ref={ref}
-      className={cn('border-t border-border-default bg-surface-sunken', className)}
-      {...props}
-    />
-  );
-});
+export const TableFooter = forwardRef<HTMLTableSectionElement, ComponentPropsWithoutRef<'tfoot'>>(
+  function TableFooter({ className, ...props }, ref) {
+    return (
+      <tfoot
+        ref={ref}
+        className={cn('border-border-default bg-surface-sunken border-t', className)}
+        {...props}
+      />
+    );
+  },
+);
 
 export interface TableRowProps extends ComponentPropsWithoutRef<'tr'> {
   selected?: boolean;
@@ -159,82 +153,80 @@ export interface TableHeadProps extends ComponentPropsWithoutRef<'th'> {
   sortLabel?: string | undefined;
 }
 
-export const TableHead = forwardRef<HTMLTableCellElement, TableHeadProps>(
-  function TableHead(
-    { className, children, numeric, sortDirection, onSort, sortLabel, ...props },
-    ref,
-  ) {
-    const sortable = typeof onSort === 'function';
-    return (
-      <th
-        ref={ref}
-        scope="col"
-        aria-sort={sortable ? (sortDirection ?? 'none') : undefined}
-        className={cn(
-          'whitespace-nowrap px-3 py-2 text-label font-medium text-text-secondary',
-          numeric ? 'text-end tabular-nums' : 'text-start',
-          className,
-        )}
-        {...props}
-      >
-        {sortable ? (
-          <button
-            type="button"
-            onClick={onSort}
-            aria-label={sortLabel}
-            className={cn(
-              'inline-flex items-center gap-1 rounded-sm hover:text-text-primary',
-              focusRingInset,
-            )}
-          >
-            {children}
-            {sortDirection === 'ascending' ? (
-              <ArrowUp aria-hidden="true" className="size-3" />
-            ) : sortDirection === 'descending' ? (
-              <ArrowDown aria-hidden="true" className="size-3" />
-            ) : (
-              <ChevronsUpDown aria-hidden="true" className="size-3 text-text-tertiary" />
-            )}
-          </button>
-        ) : (
-          children
-        )}
-      </th>
-    );
-  },
-);
+export const TableHead = forwardRef<HTMLTableCellElement, TableHeadProps>(function TableHead(
+  { className, children, numeric, sortDirection, onSort, sortLabel, ...props },
+  ref,
+) {
+  const sortable = typeof onSort === 'function';
+  return (
+    <th
+      ref={ref}
+      scope="col"
+      aria-sort={sortable ? (sortDirection ?? 'none') : undefined}
+      className={cn(
+        'text-label text-text-secondary px-3 py-2 font-medium whitespace-nowrap',
+        numeric ? 'text-end tabular-nums' : 'text-start',
+        className,
+      )}
+      {...props}
+    >
+      {sortable ? (
+        <button
+          type="button"
+          onClick={onSort}
+          aria-label={sortLabel}
+          className={cn(
+            'hover:text-text-primary inline-flex items-center gap-1 rounded-sm',
+            focusRingInset,
+          )}
+        >
+          {children}
+          {sortDirection === 'ascending' ? (
+            <ArrowUp aria-hidden="true" className="size-3" />
+          ) : sortDirection === 'descending' ? (
+            <ArrowDown aria-hidden="true" className="size-3" />
+          ) : (
+            <ChevronsUpDown aria-hidden="true" className="text-text-tertiary size-3" />
+          )}
+        </button>
+      ) : (
+        children
+      )}
+    </th>
+  );
+});
 
 export interface TableCellProps extends ComponentPropsWithoutRef<'td'> {
   numeric?: boolean;
 }
 
-export const TableCell = forwardRef<HTMLTableCellElement, TableCellProps>(
-  function TableCell({ className, numeric, ...props }, ref) {
+export const TableCell = forwardRef<HTMLTableCellElement, TableCellProps>(function TableCell(
+  { className, numeric, ...props },
+  ref,
+) {
+  return (
+    <td
+      ref={ref}
+      className={cn(
+        'px-3 py-2 align-middle',
+        numeric ? 'text-end tabular-nums' : 'text-start',
+        className,
+      )}
+      {...props}
+    />
+  );
+});
+
+/** A row header, for tables whose first column identifies the row. */
+export const TableRowHeader = forwardRef<HTMLTableCellElement, ComponentPropsWithoutRef<'th'>>(
+  function TableRowHeader({ className, ...props }, ref) {
     return (
-      <td
+      <th
         ref={ref}
-        className={cn(
-          'px-3 py-2 align-middle',
-          numeric ? 'text-end tabular-nums' : 'text-start',
-          className,
-        )}
+        scope="row"
+        className={cn('px-3 py-2 text-start align-middle font-medium', className)}
         {...props}
       />
     );
   },
 );
-
-/** A row header, for tables whose first column identifies the row. */
-export const TableRowHeader = forwardRef<
-  HTMLTableCellElement,
-  ComponentPropsWithoutRef<'th'>
->(function TableRowHeader({ className, ...props }, ref) {
-  return (
-    <th
-      ref={ref}
-      scope="row"
-      className={cn('px-3 py-2 text-start font-medium align-middle', className)}
-      {...props}
-    />
-  );
-});

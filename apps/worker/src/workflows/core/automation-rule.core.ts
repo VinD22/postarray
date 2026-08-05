@@ -4,10 +4,7 @@ import type { ExecuteRuleActionResult, WorkerActivities } from '../../activities
 import { MESSAGE_KEYS } from '../../messages.js';
 import { stableSort, toIsoInstant } from '../../runtime/deterministic.js';
 import type { ChildWorkflowDescriptor, WorkflowRuntime } from '../../runtime/types.js';
-import type {
-  AutomationRuleWorkflowInput,
-  AutomationRuleWorkflowOutput,
-} from '../inputs.js';
+import type { AutomationRuleWorkflowInput, AutomationRuleWorkflowOutput } from '../inputs.js';
 
 /**
  * The trigger, condition and action engine.
@@ -130,14 +127,18 @@ export async function runAutomationRule(
     return finish('skipped', reasonKey);
   }
 
-  const ordered = stableSort(rule.actions, (action) =>
-    String(action.order).padStart(6, '0') + action.actionId,
+  const ordered = stableSort(
+    rule.actions,
+    (action) => String(action.order).padStart(6, '0') + action.actionId,
   );
 
   let failed = false;
   for (const action of ordered) {
     if (runtime.signals.killSwitchThrown || runtime.signals.cancelled !== null) {
-      return finish(executedActionIds.length > 0 ? 'succeeded' : 'skipped', MESSAGE_KEYS.rule.killSwitch);
+      return finish(
+        executedActionIds.length > 0 ? 'succeeded' : 'skipped',
+        MESSAGE_KEYS.rule.killSwitch,
+      );
     }
     if (action.delaySeconds > 0) {
       await runtime.awaitCondition(

@@ -28,9 +28,7 @@ describe('action center catalogue', () => {
 
   it('gives every kind a real catalog sentence and a real verb', () => {
     for (const [kind, definition] of Object.entries(ACTION_KIND_DEFINITIONS)) {
-      expect(definition.messageKey, `${kind} message`).toSatisfy(
-        (key: string) => key in en,
-      );
+      expect(definition.messageKey, `${kind} message`).toSatisfy((key: string) => key in en);
       expect(definition.actionKey, `${kind} action`).toSatisfy((key: string) => key in en);
     }
   });

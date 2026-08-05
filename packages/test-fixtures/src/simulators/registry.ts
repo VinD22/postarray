@@ -73,9 +73,7 @@ export class SimulatorRegistry {
 }
 
 /** Every V1 provider plus the `fake` provider used by product tests. */
-export function createSimulatorRegistry(
-  options: SimulatorRegistryOptions = {},
-): SimulatorRegistry {
+export function createSimulatorRegistry(options: SimulatorRegistryOptions = {}): SimulatorRegistry {
   const shared = {
     ...(options.now === undefined ? {} : { now: options.now }),
     ...(options.defaultMode === undefined ? {} : { defaultMode: options.defaultMode }),
@@ -95,9 +93,7 @@ export function createSimulatorRegistry(
 }
 
 /** Base URLs, so a connector can be pointed at the simulator by configuration. */
-export function simulatorBaseUrls(
-  registry: SimulatorRegistry,
-): Readonly<Record<string, string>> {
+export function simulatorBaseUrls(registry: SimulatorRegistry): Readonly<Record<string, string>> {
   return Object.fromEntries(
     registry.all.map((simulator) => [simulator.provider, simulator.baseUrl]),
   );
@@ -146,9 +142,8 @@ async function parseBody(request: Request): Promise<unknown> {
 }
 
 function toResponse(simulated: SimulatedResponse): Response {
-  const body = simulated.body === null || simulated.body === undefined
-    ? null
-    : JSON.stringify(simulated.body);
+  const body =
+    simulated.body === null || simulated.body === undefined ? null : JSON.stringify(simulated.body);
   return new Response(body, {
     status: simulated.status,
     headers: { ...simulated.headers },
@@ -156,10 +151,7 @@ function toResponse(simulated: SimulatedResponse): Response {
 }
 
 /** The shape a connector receives in place of the global `fetch`. */
-export type SimulatorFetch = (
-  input: RequestInfo | URL,
-  init?: RequestInit,
-) => Promise<Response>;
+export type SimulatorFetch = (input: RequestInfo | URL, init?: RequestInit) => Promise<Response>;
 
 /**
  * A `fetch` that never reaches the network. Pass it to a connector under test

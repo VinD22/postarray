@@ -22,6 +22,7 @@ import type {
   UsageView,
   WorkspaceView,
 } from '../types.js';
+import { requireFirst } from '@/lib/utils/require-first';
 
 export type ListQuery = {
   readonly cursor?: string;
@@ -30,11 +31,7 @@ export type ListQuery = {
 
 export const sessionApi = {
   get: (forwardCookie?: string): Promise<SessionView> =>
-    call(
-      '/auth/session',
-      forwardCookie === undefined ? {} : { forwardCookie },
-      () => demoSession,
-    ),
+    call('/auth/session', forwardCookie === undefined ? {} : { forwardCookie }, () => demoSession),
   signOut: (idempotencyKey: string): Promise<void> =>
     call('/auth/session/revoke', { method: 'POST', idempotencyKey }, () => undefined),
 };
@@ -46,7 +43,9 @@ export const brandsApi = {
     call(
       `/brands/${brandId}`,
       {},
-      () => demoSession.brands.find((brand) => brand.id === brandId) ?? demoSession.brands[0]!,
+      () =>
+        demoSession.brands.find((brand) => brand.id === brandId) ??
+        requireFirst(demoSession.brands, 'brand'),
     ),
   create: (input: { name: string }, idempotencyKey: string): Promise<BrandView> =>
     call('/brands', { method: 'POST', body: input, idempotencyKey }, () => ({
@@ -57,7 +56,8 @@ export const brandsApi = {
     })),
   update: (brandId: string, input: { name?: string }): Promise<BrandView> =>
     call(`/brands/${brandId}`, { method: 'PATCH', body: input }, () => ({
-      ...(demoSession.brands.find((brand) => brand.id === brandId) ?? demoSession.brands[0]!),
+      ...(demoSession.brands.find((brand) => brand.id === brandId) ??
+        requireFirst(demoSession.brands, 'brand')),
       ...input,
     })),
 };
@@ -83,10 +83,7 @@ export const workspacesApi = {
 export const membersApi = {
   list: (query: ListQuery = {}): Promise<Paginated<MemberView>> =>
     call('/members', { query }, () => page(demoMembers)),
-  invite: (
-    input: { email: string; role: Role },
-    idempotencyKey: string,
-  ): Promise<MemberView> =>
+  invite: (input: { email: string; role: Role }, idempotencyKey: string): Promise<MemberView> =>
     call('/members/invitations', { method: 'POST', body: input, idempotencyKey }, () => ({
       id: 'user_demo_invited',
       name: input.email,
@@ -96,7 +93,7 @@ export const membersApi = {
     })),
   updateRole: (memberId: string, role: Role): Promise<MemberView> =>
     call(`/members/${memberId}`, { method: 'PATCH', body: { role } }, () => ({
-      ...demoMembers[0]!,
+      ...requireFirst(demoMembers, 'member'),
       role,
     })),
   remove: (memberId: string): Promise<void> =>
@@ -120,8 +117,7 @@ export const billingApi = {
 export const auditApi = {
   list: (
     query: ListQuery & { actorId?: string; action?: string } = {},
-  ): Promise<Paginated<AuditEventView>> =>
-    call('/audit', { query }, () => page(demoAudit)),
+  ): Promise<Paginated<AuditEventView>> => call('/audit', { query }, () => page(demoAudit)),
 };
 
 export const healthApi = {

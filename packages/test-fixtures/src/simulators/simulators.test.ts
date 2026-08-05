@@ -6,7 +6,7 @@ import {
   SIMULATOR_MODES,
   SIMULATOR_MODE_HEADER,
   SimulatedNetworkError,
-  SimulatorRegistry,
+  type SimulatorRegistry,
   createSimulatorFetch,
   createSimulatorRegistry,
   simulatorBaseUrls,
@@ -95,7 +95,10 @@ describe('X', () => {
   });
 
   it('reports 429 with retry-after and the reset headers', async () => {
-    const response = await call('x', '/2/tweets', { method: 'POST', simulatorMode: 'rate_limited' });
+    const response = await call('x', '/2/tweets', {
+      method: 'POST',
+      simulatorMode: 'rate_limited',
+    });
     expect(response.status).toBe(429);
     expect(response.headers.get('retry-after')).toBe('900');
     expect(response.headers.get('x-rate-limit-reset')).not.toBeNull();
@@ -222,15 +225,16 @@ describe('Instagram', () => {
     const container = await json(
       await call('instagram', `/v21.0/${accountId}/media`, {
         method: 'POST',
-        body: JSON.stringify({ caption: 'A fixture caption.', image_url: 'https://example.test/i.jpg' }),
+        body: JSON.stringify({
+          caption: 'A fixture caption.',
+          image_url: 'https://example.test/i.jpg',
+        }),
         headers: { 'content-type': 'application/json' },
       }),
     );
     const creationId = container.id as string;
 
-    const status = await json(
-      await call('instagram', `/v21.0/${creationId}?fields=status_code`),
-    );
+    const status = await json(await call('instagram', `/v21.0/${creationId}?fields=status_code`));
     expect(status.status_code).toBe('FINISHED');
 
     const published = await json(
@@ -286,7 +290,9 @@ describe('Instagram', () => {
 
   it('names a consumer account as the reason, not "authentication failed"', async () => {
     const account = await json(
-      await call('instagram', '/v21.0/fake-instagram-0000000001', { simulatorMode: 'capability_changed' }),
+      await call('instagram', '/v21.0/fake-instagram-0000000001', {
+        simulatorMode: 'capability_changed',
+      }),
     );
     expect(account.account_type).toBe('PERSONAL');
   });
@@ -379,10 +385,9 @@ describe('Bluesky and the fake provider', () => {
     });
     expect(session.status).toBe(200);
 
-    const unauthenticated = await fetchImpl(
-      url('bluesky', '/xrpc/com.atproto.repo.createRecord'),
-      { method: 'POST' },
-    );
+    const unauthenticated = await fetchImpl(url('bluesky', '/xrpc/com.atproto.repo.createRecord'), {
+      method: 'POST',
+    });
     expect(unauthenticated.status).toBe(401);
   });
 
@@ -474,7 +479,10 @@ describe('every provider supports the shared failure modes', () => {
     for (const [mode, status] of expectations) {
       it(`${provider} reports ${mode} as ${status}`, async () => {
         const expected = statusOverrides[provider]?.[mode] ?? status;
-        const response = await call(provider, writePaths[provider], { method: 'POST', simulatorMode: mode });
+        const response = await call(provider, writePaths[provider], {
+          method: 'POST',
+          simulatorMode: mode,
+        });
         expect(response.status).toBe(expected);
       });
     }

@@ -1,11 +1,7 @@
 'use client';
 
 import type { ReactElement, ReactNode } from 'react';
-import {
-  ErrorState,
-  PermissionDenied,
-  RateLimitNotice,
-} from '@relay/design-system/patterns';
+import { ErrorState, PermissionDenied, RateLimitNotice } from '@relay/design-system/patterns';
 import { Button } from '@relay/design-system/primitives';
 import { useTranslations } from '@relay/i18n/react';
 

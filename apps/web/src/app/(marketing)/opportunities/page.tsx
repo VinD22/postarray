@@ -40,11 +40,11 @@ export default function OpportunitiesPage(): ReactNode {
         <Split aside={<Heading>{t.t('web.opportunities.category.title')}</Heading>}>
           {OPPORTUNITY_RECORDS.length === 0 ? (
             <div className="space-y-6">
-              <ul className="border-t border-border-default">
+              <ul className="border-border-default border-t">
                 {OPPORTUNITY_CATEGORIES.map((category) => (
                   <li
                     key={category.id}
-                    className="border-b border-border-subtle py-4 text-body-lg text-text-primary"
+                    className="border-border-subtle text-body-lg text-text-primary border-b py-4"
                   >
                     {t.format(category.nameKey)}
                   </li>
@@ -57,12 +57,12 @@ export default function OpportunitiesPage(): ReactNode {
               />
             </div>
           ) : (
-            <ul className="border-t border-border-default">
+            <ul className="border-border-default border-t">
               {OPPORTUNITY_RECORDS.map((record) => (
-                <li key={record.id} className="space-y-2 border-b border-border-subtle py-6">
+                <li key={record.id} className="border-border-subtle space-y-2 border-b py-6">
                   <h3 className="text-title-sm text-text-primary">{record.name}</h3>
                   <Body>{record.submissionRules}</Body>
-                  <p className="font-mono text-body-sm text-text-tertiary">
+                  <p className="text-body-sm text-text-tertiary font-mono">
                     {t.t('web.label.lastReviewed', { date: formatDate(record.lastVerified) })}
                   </p>
                 </li>

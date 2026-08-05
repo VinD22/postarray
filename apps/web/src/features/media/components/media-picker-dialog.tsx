@@ -68,7 +68,7 @@ export function MediaPickerDialog({
         </DialogHeader>
 
         <DialogBody>
-          <p className="mb-3 text-body-sm text-text-tertiary">
+          <p className="text-body-sm text-text-tertiary mb-3">
             {t.full('mediaLib.picker.description')}
           </p>
 
@@ -95,7 +95,7 @@ export function MediaPickerDialog({
                 return (
                   <li
                     key={asset.id}
-                    className="flex min-h-11 items-start gap-3 border-b border-border-subtle py-2.5 last:border-b-0"
+                    className="border-border-subtle flex min-h-11 items-start gap-3 border-b py-2.5 last:border-b-0"
                   >
                     <Checkbox
                       id={checkboxId}
@@ -104,9 +104,12 @@ export function MediaPickerDialog({
                       disabled={!verdict.usable}
                       onCheckedChange={() => toggle(asset.id)}
                     />
-                    <label htmlFor={checkboxId} className="flex min-w-0 cursor-pointer flex-col gap-0.5">
-                      <span className="truncate text-body-md text-text-primary">{asset.name}</span>
-                      <span className="flex flex-wrap gap-x-3 text-label tabular-nums text-text-tertiary">
+                    <label
+                      htmlFor={checkboxId}
+                      className="flex min-w-0 cursor-pointer flex-col gap-0.5"
+                    >
+                      <span className="text-body-md text-text-primary truncate">{asset.name}</span>
+                      <span className="text-label text-text-tertiary flex flex-wrap gap-x-3 tabular-nums">
                         <span>{asset.mimeType}</span>
                         <span>{formatBytes(t.locale, asset.bytes)}</span>
                       </span>

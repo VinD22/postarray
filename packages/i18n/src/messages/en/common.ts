@@ -55,7 +55,8 @@ export const commonMessages = {
   'library.asset.origin.upload': 'Uploaded by {name}',
   'library.asset.origin.import': 'Imported from {source}',
   'library.asset.origin.api': 'Added through the API',
-  'library.asset.usedInPosts': '{count, plural, =0 {Not used yet} one {Used in # post} other {Used in # posts}}',
+  'library.asset.usedInPosts':
+    '{count, plural, =0 {Not used yet} one {Used in # post} other {Used in # posts}}',
   'library.asset.derivatives': 'Platform versions',
   'library.asset.deleteWarning':
     'This file is used in a published post. Deleting it here does not remove the published post.',

@@ -93,10 +93,9 @@ describe('capability snapshots', () => {
   it('meters only X', () => {
     expect(summarizeCapabilities(makeCapabilitySnapshot({ provider: 'x' })).isMetered).toBe(true);
     for (const provider of PROVIDERS.filter((entry) => entry !== 'x')) {
-      expect(
-        summarizeCapabilities(makeCapabilitySnapshot({ provider })).isMetered,
-        provider,
-      ).toBe(false);
+      expect(summarizeCapabilities(makeCapabilitySnapshot({ provider })).isMetered, provider).toBe(
+        false,
+      );
     }
   });
 
@@ -163,7 +162,9 @@ describe('drafts and variants', () => {
 
   it('freezes a checksummed content version over the master and its variants', async () => {
     const master = makeDraft();
-    const variants = [makePostVariant({ contentItemId: master.id, workspaceId: master.workspaceId })];
+    const variants = [
+      makePostVariant({ contentItemId: master.id, workspaceId: master.workspaceId }),
+    ];
     const version = await makeContentVersion({ master, variants });
     expect(() => contentVersionSchema.parse(version)).not.toThrow();
     expect(version.checksum).toBe(await computeChecksum(checksumPayload(master, variants)));
@@ -181,8 +182,9 @@ describe('jobs and receipts', () => {
     const pending = makePendingApprovalJob();
     expect(pending.approvalState).toBe('requested');
     expect(pending.state).toBe('approval_requested');
-    expect(() => makeJob({ approvalRequired: true, approvalState: 'requested', state: 'dispatching' }))
-      .toThrow();
+    expect(() =>
+      makeJob({ approvalRequired: true, approvalState: 'requested', state: 'dispatching' }),
+    ).toThrow();
   });
 
   it('carries the evidence a receipt needs to prove anything', () => {

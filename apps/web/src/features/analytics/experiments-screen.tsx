@@ -3,12 +3,7 @@
 import { useMemo, useState, type ReactElement } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { useAnnouncer } from '@relay/design-system/hooks';
-import {
-  EmptyState,
-  LoadingState,
-  Notice,
-  SkeletonList,
-} from '@relay/design-system/patterns';
+import { EmptyState, LoadingState, Notice, SkeletonList } from '@relay/design-system/patterns';
 import { Badge, Button, Separator } from '@relay/design-system/primitives';
 import { useTranslations } from '@relay/i18n/react';
 
@@ -83,9 +78,7 @@ export function ExperimentsScreen(): ReactElement {
     <div className="flex flex-col gap-6 px-4 py-6 md:px-6">
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div className="flex max-w-[70ch] flex-col gap-1">
-          <h2 className="text-title-md text-text-primary">
-            {t('analytics.experiment.title')}
-          </h2>
+          <h2 className="text-title-md text-text-primary">{t('analytics.experiment.title')}</h2>
           <p className="text-body-md text-text-secondary">
             {t('analytics.experiment.tagBeforePublishing')}
           </p>
@@ -170,11 +163,7 @@ export function ExperimentsScreen(): ReactElement {
   );
 }
 
-function ExperimentSummary({
-  experiment,
-}: {
-  readonly experiment: ExperimentView;
-}): ReactElement {
+function ExperimentSummary({ experiment }: { readonly experiment: ExperimentView }): ReactElement {
   const t = useTranslations();
   const format = useValueFormat();
   const metricName = t(metricLabelKey(experiment.successMetric));
@@ -184,48 +173,36 @@ function ExperimentSummary({
       ? t('analytics.experiment.status.planned')
       : experiment.status === 'collecting'
         ? t('analytics.experiment.status.collecting', {
-            published: experiment.variants.reduce(
-              (total, variant) => total + variant.postCount,
-              0,
-            ),
+            published: experiment.variants.reduce((total, variant) => total + variant.postCount, 0),
             target: experiment.minimumPostsPerVariant * experiment.variants.length,
           })
         : experiment.status === 'inconclusive'
           ? t('analytics.experiment.status.inconclusive')
           : t('analytics.experiment.status.complete');
 
-  const totalPosts = experiment.variants.reduce(
-    (total, variant) => total + variant.postCount,
-    0,
-  );
+  const totalPosts = experiment.variants.reduce((total, variant) => total + variant.postCount, 0);
 
   return (
-    <article className="flex flex-col gap-3 border-t border-border-default pt-5">
+    <article className="border-border-default flex flex-col gap-3 border-t pt-5">
       <div className="flex flex-wrap items-baseline justify-between gap-2">
         <h3 className="text-title-sm text-text-primary">{experiment.name}</h3>
-        <Badge tone={experiment.status === 'complete' ? 'success' : 'neutral'}>
-          {statusText}
-        </Badge>
+        <Badge tone={experiment.status === 'complete' ? 'success' : 'neutral'}>{statusText}</Badge>
       </div>
 
       {experiment.hypothesis ? (
-        <p className="max-w-[70ch] text-body-md text-text-secondary">
-          {experiment.hypothesis}
-        </p>
+        <p className="text-body-md text-text-secondary max-w-[70ch]">{experiment.hypothesis}</p>
       ) : null}
 
       <p className="text-body-sm text-text-tertiary">
         {t('analytics.experiment.successMetric')}
-        <span className="ps-1.5 text-text-secondary">{metricName}</span>
+        <span className="text-text-secondary ps-1.5">{metricName}</span>
         <span className="ps-3">
           {t('analytics.experiment.windowDays', {
             count: experiment.measurementWindowDays,
           })}
         </span>
         <span className="ps-3">
-          {experiment.accounts
-            .map((account) => t(providerLabelKey(account.provider)))
-            .join(', ')}
+          {experiment.accounts.map((account) => t(providerLabelKey(account.provider))).join(', ')}
         </span>
       </p>
 
@@ -256,9 +233,7 @@ function ExperimentSummary({
           title={t('analytics.experiment.result.title')}
           description={
             <span className="flex flex-col gap-1">
-              <span>
-                {t('analytics.experiment.result.association', { count: totalPosts })}
-              </span>
+              <span>{t('analytics.experiment.result.association', { count: totalPosts })}</span>
               {experiment.excludedPostCount > 0 ? (
                 <span>
                   {t('analytics.experiment.result.unavailable', {

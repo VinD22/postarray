@@ -67,7 +67,7 @@ export function ActionCenterPanel() {
             aria-hidden="true"
             data-numeric
             className={cn(
-              'absolute top-1 end-1 min-w-4 rounded-full px-1',
+              'absolute end-1 top-1 min-w-4 rounded-full px-1',
               'text-label leading-4 font-semibold',
               hasNow
                 ? 'bg-destructive-solid text-destructive-on'

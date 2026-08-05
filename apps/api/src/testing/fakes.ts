@@ -108,10 +108,7 @@ export class FakeIdentityProvider implements IdentityProvider {
     return Promise.resolve({ userId: existing?.userId ?? null });
   }
 
-  signInWithPassword(input: {
-    email: string;
-    password: string;
-  }): Promise<IdentitySession | null> {
+  signInWithPassword(input: { email: string; password: string }): Promise<IdentitySession | null> {
     const identity = this.state.identities.get(input.email.toLowerCase());
     if (identity === undefined || identity.password !== input.password) {
       return Promise.resolve(null);
@@ -201,7 +198,11 @@ export function testConfig(overrides: Partial<RelayConfig> = {}): RelayConfig {
       promptVersion: undefined,
       requestTimeoutMs: 60_000,
       maxMonthlyUsdPerWorkspace: 25,
-      deepseek: { apiKey: undefined, baseUrl: 'https://api.deepseek.com', model: 'deepseek-v4-flash' },
+      deepseek: {
+        apiKey: undefined,
+        baseUrl: 'https://api.deepseek.com',
+        model: 'deepseek-v4-flash',
+      },
     },
     encryption: { kmsKeyId: undefined, localKey: undefined },
     oauth: {
@@ -212,7 +213,11 @@ export function testConfig(overrides: Partial<RelayConfig> = {}): RelayConfig {
     },
     shortLinks: { baseUrl: undefined, hashKey: undefined },
     email: { apiKey: undefined, from: undefined },
-    observability: { sentryDsn: undefined, posthogKey: undefined, otelExporterOtlpEndpoint: undefined },
+    observability: {
+      sentryDsn: undefined,
+      posthogKey: undefined,
+      otelExporterOtlpEndpoint: undefined,
+    },
     providers: {
       x: { clientId: undefined, clientSecret: undefined },
       linkedin: { clientId: undefined, clientSecret: undefined },

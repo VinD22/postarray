@@ -28,10 +28,14 @@ export function RetentionTable(): ReactNode {
   return (
     <TableContainer className="relay-scrollbar">
       <Table density="comfortable" className="min-w-[38rem]">
-        <TableCaption className="text-start">{t.t('web.legal.privacy.retention.title')}</TableCaption>
+        <TableCaption className="text-start">
+          {t.t('web.legal.privacy.retention.title')}
+        </TableCaption>
         <TableHeader>
           <TableRow>
-            <TableHead className="min-w-[16rem]">{t.t('web.legal.retention.column.data')}</TableHead>
+            <TableHead className="min-w-[16rem]">
+              {t.t('web.legal.retention.column.data')}
+            </TableHead>
             <TableHead className="min-w-[22rem]">
               {t.t('web.legal.retention.column.period')}
             </TableHead>
@@ -40,10 +44,10 @@ export function RetentionTable(): ReactNode {
         <TableBody>
           {RETENTION_SCHEDULE.map((row) => (
             <TableRow key={row.id}>
-              <TableRowHeader className="align-top text-body-md text-text-primary">
+              <TableRowHeader className="text-body-md text-text-primary align-top">
                 {t.format(row.dataKey)}
               </TableRowHeader>
-              <TableCell className="align-top whitespace-normal text-text-secondary">
+              <TableCell className="text-text-secondary align-top whitespace-normal">
                 {t.format(row.periodKey)}
               </TableCell>
             </TableRow>
@@ -79,21 +83,21 @@ export function SubprocessorTable(): ReactNode {
         <TableBody>
           {SUBPROCESSORS.map((entry) => (
             <TableRow key={entry.id}>
-              <TableRowHeader className="align-top text-body-md text-text-primary">
+              <TableRowHeader className="text-body-md text-text-primary align-top">
                 {t.format(entry.nameKey)}
                 {entry.vendorPending ? (
-                  <span className="mt-1 block text-body-sm font-normal text-text-tertiary">
+                  <span className="text-body-sm text-text-tertiary mt-1 block font-normal">
                     {t.t('web.legal.subprocessors.vendorPending')}
                   </span>
                 ) : null}
               </TableRowHeader>
-              <TableCell className="align-top whitespace-normal text-text-secondary">
+              <TableCell className="text-text-secondary align-top whitespace-normal">
                 {t.format(entry.purposeKey)}
               </TableCell>
-              <TableCell className="align-top whitespace-normal text-text-secondary">
+              <TableCell className="text-text-secondary align-top whitespace-normal">
                 {t.format(entry.dataKey)}
               </TableCell>
-              <TableCell className="align-top whitespace-normal text-text-secondary">
+              <TableCell className="text-text-secondary align-top whitespace-normal">
                 {entry.region ?? t.t('web.legal.subprocessors.region.pending')}
               </TableCell>
             </TableRow>

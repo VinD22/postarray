@@ -1,4 +1,9 @@
-import { Module, type DynamicModule, type MiddlewareConsumer, type NestModule } from '@nestjs/common';
+import {
+  Module,
+  type DynamicModule,
+  type MiddlewareConsumer,
+  type NestModule,
+} from '@nestjs/common';
 import { APP_FILTER, APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core';
 
 import { RuntimeModule, type RuntimeOptions } from './application/runtime.module.js';

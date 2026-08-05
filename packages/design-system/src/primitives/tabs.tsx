@@ -15,12 +15,11 @@ import { focusRing, transitionBase } from '../utils/style-constants.js';
  * expensive tab without loading it.
  */
 
-export const Tabs = forwardRef<
-  HTMLDivElement,
-  ComponentPropsWithoutRef<typeof TabsPrimitive.Root>
->(function Tabs({ activationMode = 'manual', ...props }, ref) {
-  return <TabsPrimitive.Root ref={ref} activationMode={activationMode} {...props} />;
-});
+export const Tabs = forwardRef<HTMLDivElement, ComponentPropsWithoutRef<typeof TabsPrimitive.Root>>(
+  function Tabs({ activationMode = 'manual', ...props }, ref) {
+    return <TabsPrimitive.Root ref={ref} activationMode={activationMode} {...props} />;
+  },
+);
 
 export const TabsList = forwardRef<
   HTMLDivElement,
@@ -31,7 +30,7 @@ export const TabsList = forwardRef<
       ref={ref}
       className={cn(
         'relay-scrollbar flex items-stretch gap-1 overflow-x-auto',
-        'border-b border-border-default',
+        'border-border-default border-b',
         className,
       )}
       {...props}
@@ -49,10 +48,10 @@ export const TabsTrigger = forwardRef<
       className={cn(
         'relative -mb-px inline-flex shrink-0 items-center gap-2 whitespace-nowrap',
         'border-b-2 border-transparent px-3 py-2',
-        'text-body-md font-medium text-text-secondary',
+        'text-body-md text-text-secondary font-medium',
         'hover:text-text-primary',
         'data-[state=active]:border-accent data-[state=active]:text-text-primary',
-        'data-[disabled]:cursor-not-allowed data-[disabled]:text-text-disabled',
+        'data-[disabled]:text-text-disabled data-[disabled]:cursor-not-allowed',
         focusRing,
         transitionBase,
         className,
@@ -67,10 +66,6 @@ export const TabsContent = forwardRef<
   ComponentPropsWithoutRef<typeof TabsPrimitive.Content>
 >(function TabsContent({ className, ...props }, ref) {
   return (
-    <TabsPrimitive.Content
-      ref={ref}
-      className={cn('pt-4', focusRing, className)}
-      {...props}
-    />
+    <TabsPrimitive.Content ref={ref} className={cn('pt-4', focusRing, className)} {...props} />
   );
 });

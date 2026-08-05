@@ -164,9 +164,7 @@ export function normalizeMetrics(input: NormalizeInput): NormalizedMetric[] {
           mapping,
           input,
           'unavailable_pending',
-          typeof found.value === 'boolean' || typeof found.value === 'string'
-            ? found.value
-            : null,
+          typeof found.value === 'boolean' || typeof found.value === 'string' ? found.value : null,
         ),
       );
       continue;

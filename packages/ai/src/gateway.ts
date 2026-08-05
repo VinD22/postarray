@@ -1,13 +1,8 @@
-import { z } from 'zod';
+import { type z } from 'zod';
 
 import { RelayError } from '@relay/contracts';
 
-import {
-  ASSUMED_PRICING,
-  centsToMicros,
-  estimateCostMicros,
-  estimateTokens,
-} from './budget.js';
+import { ASSUMED_PRICING, centsToMicros, estimateCostMicros, estimateTokens } from './budget.js';
 import type { AiBudgetGuard, TokenPricing } from './budget.js';
 import { createCircuitBreaker } from './circuit-breaker.js';
 import type { CircuitBreaker } from './circuit-breaker.js';
@@ -68,7 +63,9 @@ const DEFAULT_MAX_ATTEMPTS = 2;
 const RETRY_BASE_DELAY_MS = 250;
 
 function isRetryable(error: unknown): boolean {
-  return RelayError.is(error) ? error.retryable : error instanceof Error && error.name === 'AbortError';
+  return RelayError.is(error)
+    ? error.retryable
+    : error instanceof Error && error.name === 'AbortError';
 }
 
 function issuePaths(error: z.ZodError): string[] {
@@ -201,11 +198,7 @@ export function createAiGateway(deps: AiGatewayDeps): AiGateway {
       try {
         const response = await deps.provider.complete(providerRequest);
         circuit.recordSuccess();
-        const costMicros = estimateCostMicros(
-          pricing,
-          response.inputTokens,
-          response.outputTokens,
-        );
+        const costMicros = estimateCostMicros(pricing, response.inputTokens, response.outputTokens);
         await deps.budget.record(request.context.workspaceId, costMicros);
         const meta: AiMeta = {
           provider: deps.provider.name,
@@ -287,7 +280,9 @@ export function createAiGateway(deps: AiGatewayDeps): AiGateway {
     assertUsable(request, prompt);
 
     const first = await callProvider(prompt, request);
-    const parsed = schema.safeParse(parseJsonOutput(first.response.text, request.context.correlationId));
+    const parsed = schema.safeParse(
+      parseJsonOutput(first.response.text, request.context.correlationId),
+    );
     if (parsed.success) {
       assertOutputSafe(parsed.data, prompt.scan, request.context.correlationId);
       return { output: parsed.data, meta: first.meta };

@@ -2,12 +2,7 @@
 
 import { useMemo, type ReactElement } from 'react';
 import type { NormalizedMetricName } from '@relay/contracts';
-import {
-  DefinitionList,
-  LoadingState,
-  Notice,
-  SkeletonText,
-} from '@relay/design-system/patterns';
+import { DefinitionList, LoadingState, Notice, SkeletonText } from '@relay/design-system/patterns';
 import { Button, Separator, StatusDot } from '@relay/design-system/primitives';
 import { useTranslations } from '@relay/i18n/react';
 
@@ -16,7 +11,12 @@ import { MetricDefinitionsPanel } from './components/metric-definition';
 import { MetricFigure } from './components/metric-figure';
 import { QueryErrorState } from './components/query-error-state';
 import { formatLabelKey, providerLabelKey } from './labels';
-import { OUTCOME_GROUPS, outcomeGroupHelpKey, outcomeGroupLabelKey, outcomeGroupOf } from './metrics';
+import {
+  OUTCOME_GROUPS,
+  outcomeGroupHelpKey,
+  outcomeGroupLabelKey,
+  outcomeGroupOf,
+} from './metrics';
 import { usePostMetrics } from './queries';
 import type { MetricReading, OutcomeGroup } from './types';
 import { useValueFormat } from './use-value-format';
@@ -122,7 +122,7 @@ export function PostMetricsScreen({
   return (
     <div className="flex flex-col gap-8 px-4 py-6 md:px-6">
       <section className="flex flex-col gap-3">
-        <h2 className="text-title-md text-balance text-text-primary">{row.title}</h2>
+        <h2 className="text-title-md text-text-primary text-balance">{row.title}</h2>
         <DefinitionList
           layout="columns"
           items={[
@@ -174,12 +174,8 @@ export function PostMetricsScreen({
         return (
           <section key={group} className="flex flex-col gap-3">
             <div className="flex max-w-[70ch] flex-col gap-1">
-              <h3 className="text-title-sm text-text-primary">
-                {t(outcomeGroupLabelKey(group))}
-              </h3>
-              <p className="text-body-md text-text-secondary">
-                {t(outcomeGroupHelpKey(group))}
-              </p>
+              <h3 className="text-title-sm text-text-primary">{t(outcomeGroupLabelKey(group))}</h3>
+              <p className="text-body-md text-text-secondary">{t(outcomeGroupHelpKey(group))}</p>
             </div>
             <div className="grid gap-x-8 gap-y-5 sm:grid-cols-2 lg:grid-cols-3">
               {groupReadings.map((reading) => (

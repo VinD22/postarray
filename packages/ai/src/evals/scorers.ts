@@ -14,11 +14,7 @@ import type { DimensionScore, EvalDimension, Scorer, ScorerInput } from './types
 
 const NUMBER_TOKEN = /\b\d[\d,.]*%?\b/g;
 
-function build(
-  dimension: EvalDimension,
-  score: number,
-  notes: readonly string[],
-): DimensionScore {
+function build(dimension: EvalDimension, score: number, notes: readonly string[]): DimensionScore {
   const bounded = Math.max(0, Math.min(1, score));
   return {
     dimension,
@@ -195,7 +191,9 @@ export const verbosityScorer: Scorer = {
       return build('verbosity', 1, []);
     }
     const ratio = ceiling / total;
-    return build('verbosity', ratio, [`output is ${total} characters against a target of ${ceiling}`]);
+    return build('verbosity', ratio, [
+      `output is ${total} characters against a target of ${ceiling}`,
+    ]);
   },
 };
 

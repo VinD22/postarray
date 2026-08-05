@@ -1,27 +1,14 @@
 export { ConnectionsScreen, type ConnectionsScreenProps } from './connections-screen';
 export { ConnectionsContainer } from './connections-container';
 export { ConnectionDetailScreen } from './connection-detail-screen';
-export {
-  ConnectionsRouteError,
-  ConnectionsRouteFallback,
-} from './connections-fallback';
+export { ConnectionsRouteError, ConnectionsRouteFallback } from './connections-fallback';
 export { ConnectionRow, type ConnectionRowProps } from './connection-row';
 export { ConnectDialog, CONNECTABLE_PROVIDERS } from './connect-dialog';
 export { PermissionsSheet } from './permissions-sheet';
 export { CapabilityMatrixView } from './capability-matrix-view';
 export { GroupList, MoveGroupDialog } from './connection-groups';
-export {
-  AccountIdentity,
-  ProviderMark,
-  useAccountTypeName,
-  useProviderName,
-} from './provider';
-export {
-  badgeState,
-  buildCapabilityMatrix,
-  strongest,
-  supportFor,
-} from './capability-matrix';
+export { AccountIdentity, ProviderMark, useAccountTypeName, useProviderName } from './provider';
+export { badgeState, buildCapabilityMatrix, strongest, supportFor } from './capability-matrix';
 export {
   EXPIRY_WARNING_HOURS,
   deriveHealth,

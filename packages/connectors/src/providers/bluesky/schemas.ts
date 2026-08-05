@@ -48,10 +48,7 @@ export const atprotoRecordRefSchema = z
   .object({
     uri: z.string().min(1),
     cid: z.string().min(1),
-    commit: z
-      .object({ cid: z.string().optional(), rev: z.string().optional() })
-      .loose()
-      .optional(),
+    commit: z.object({ cid: z.string().optional(), rev: z.string().optional() }).loose().optional(),
     validationStatus: z.string().optional(),
   })
   .loose();

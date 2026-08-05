@@ -100,9 +100,7 @@ export function ExperimentFormDialog({
       <DialogContent size="lg" closeLabel={t('a11y.label.closeDialog')}>
         <DialogHeader>
           <DialogTitle>{t('analytics.experiment.new')}</DialogTitle>
-          <DialogDescription>
-            {t('analytics.experiment.tagBeforePublishing')}
-          </DialogDescription>
+          <DialogDescription>{t('analytics.experiment.tagBeforePublishing')}</DialogDescription>
         </DialogHeader>
 
         <DialogBody>
@@ -159,10 +157,7 @@ export function ExperimentFormDialog({
                     }))
                   }
                 >
-                  <SelectTrigger
-                    id={control.id}
-                    aria-describedby={control['aria-describedby']}
-                  >
+                  <SelectTrigger id={control.id} aria-describedby={control['aria-describedby']}>
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
@@ -177,7 +172,7 @@ export function ExperimentFormDialog({
             </Field>
 
             <fieldset className="flex flex-col gap-2">
-              <legend className="pb-1 text-label text-text-tertiary">
+              <legend className="text-label text-text-tertiary pb-1">
                 {t('analytics.experiment.accounts')}
               </legend>
               {accounts.map((account) => {
@@ -190,9 +185,7 @@ export function ExperimentFormDialog({
                       onCheckedChange={() =>
                         setDraft((current) => ({
                           ...current,
-                          connectionIds: current.connectionIds.includes(
-                            account.connectionId,
-                          )
+                          connectionIds: current.connectionIds.includes(account.connectionId)
                             ? current.connectionIds.filter(
                                 (value) => value !== account.connectionId,
                               )
@@ -202,7 +195,7 @@ export function ExperimentFormDialog({
                     />
                     <Label htmlFor={id}>
                       {account.displayName}
-                      <span className="ps-1.5 text-text-tertiary">
+                      <span className="text-text-tertiary ps-1.5">
                         {t(providerLabelKey(account.provider))}
                       </span>
                     </Label>
@@ -213,7 +206,10 @@ export function ExperimentFormDialog({
 
             <div className="flex flex-col gap-3">
               {draft.variants.map((variant, index) => (
-                <div key={index} className="flex flex-col gap-2 border-s-2 border-border-default ps-3">
+                <div
+                  key={`${variant.label}-${String(index)}`}
+                  className="border-border-default flex flex-col gap-2 border-s-2 ps-3"
+                >
                   <Field
                     label={t('analytics.experiment.variantLabel', { index: index + 1 })}
                     required
@@ -231,9 +227,7 @@ export function ExperimentFormDialog({
                       <Input
                         {...control}
                         value={variant.description}
-                        onChange={(event) =>
-                          setVariant(index, { description: event.target.value })
-                        }
+                        onChange={(event) => setVariant(index, { description: event.target.value })}
                       />
                     )}
                   </Field>

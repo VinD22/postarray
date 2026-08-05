@@ -42,9 +42,7 @@ async function createBrand(
   payload: Record<string, unknown>,
   secret: string,
 ): Promise<request.Response> {
-  const call = request(harness.server)
-    .post('/v1/brands')
-    .set('authorization', `Bearer ${secret}`);
+  const call = request(harness.server).post('/v1/brands').set('authorization', `Bearer ${secret}`);
   if (key !== undefined) {
     call.set('idempotency-key', key);
   }
@@ -128,7 +126,14 @@ describe('idempotency', () => {
       .set('idempotency-key', 'idem-cross-route')
       .send({
         brandId: newIdFor('brand'),
-        master: { brandId: null, campaignId: null, title: null, body: 'hello', contentKind: 'text', locale: 'en' },
+        master: {
+          brandId: null,
+          campaignId: null,
+          title: null,
+          body: 'hello',
+          contentKind: 'text',
+          locale: 'en',
+        },
       });
 
     expect(other.status).toBe(409);

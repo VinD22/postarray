@@ -56,9 +56,7 @@ describe('the shipped English catalog', () => {
 
   it('carries the mandated billing copy word for word', () => {
     expect(english['billing.trial.dueToday']).toBe('$0 due today');
-    expect(english['billing.plan.annualFraming']).toBe(
-      '$25/month billed annually. Save $48/year.',
-    );
+    expect(english['billing.plan.annualFraming']).toBe('$25/month billed annually. Save $48/year.');
     expect(english['billing.plan.annualFraming']).not.toContain('%');
     expect(english['billing.mediaGeneration.explanation']).toContain(
       'We do not generate images or video in V1',
@@ -137,7 +135,10 @@ describe('message rules', () => {
       'A game-changing release',
     ]) {
       const result = lintOne('nav.home', phrase);
-      expect(result.findings.map((f) => f.rule), phrase).toContain('no-hype-word');
+      expect(
+        result.findings.map((f) => f.rule),
+        phrase,
+      ).toContain('no-hype-word');
     }
   });
 
@@ -152,9 +153,10 @@ describe('message rules', () => {
       'Published to {{count}} accounts',
       'Published to ${count} accounts',
     ]) {
-      expect(lintOne('nav.home', value).findings.map((f) => f.rule), value).toContain(
-        'no-concatenation-marker',
-      );
+      expect(
+        lintOne('nav.home', value).findings.map((f) => f.rule),
+        value,
+      ).toContain('no-concatenation-marker');
     }
   });
 

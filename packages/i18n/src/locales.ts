@@ -653,7 +653,10 @@ export function canonicalizeLocaleTag(tag: string): string {
   return normalized;
 }
 
-function findSupported(candidate: string, supportedLower: ReadonlyMap<string, string>): string | undefined {
+function findSupported(
+  candidate: string,
+  supportedLower: ReadonlyMap<string, string>,
+): string | undefined {
   return supportedLower.get(candidate.toLowerCase());
 }
 

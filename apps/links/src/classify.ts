@@ -116,7 +116,14 @@ const MOBILE_TOKENS: readonly string[] = [
   'fennec',
 ];
 
-const TABLET_TOKENS: readonly string[] = ['ipad', 'tablet', 'kindle', 'silk', 'playbook', 'nexus 7'];
+const TABLET_TOKENS: readonly string[] = [
+  'ipad',
+  'tablet',
+  'kindle',
+  'silk',
+  'playbook',
+  'nexus 7',
+];
 
 const DESKTOP_TOKENS: readonly string[] = [
   'windows nt',
@@ -208,7 +215,11 @@ export function classifyBot(signals: RequestSignals): BotClass {
     return 'known_bot';
   }
   const purpose = normalize(signals.purpose);
-  if (purpose.includes('prefetch') || purpose.includes('preview') || purpose.includes('prerender')) {
+  if (
+    purpose.includes('prefetch') ||
+    purpose.includes('preview') ||
+    purpose.includes('prerender')
+  ) {
     return 'suspected_bot';
   }
   if (agent.length < 16) {

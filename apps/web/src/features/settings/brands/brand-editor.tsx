@@ -134,10 +134,7 @@ export function BrandEditor({ brand, saving, disabled, onSave }: BrandEditorProp
             )}
           </Field>
 
-          <Field
-            label={t('settings.brands.voice')}
-            description={t('settings.ui.brands.voiceHelp')}
-          >
+          <Field label={t('settings.brands.voice')} description={t('settings.ui.brands.voiceHelp')}>
             {(control) => (
               <Textarea
                 {...control}
@@ -218,8 +215,8 @@ export function BrandEditor({ brand, saving, disabled, onSave }: BrandEditorProp
         </Field>
         <ul className="flex flex-col gap-1">
           {brand.domains.map((domain) => (
-            <li key={domain.domain} className="flex items-center gap-2 text-body-sm">
-              <span className="font-mono text-text-primary">{domain.domain}</span>
+            <li key={domain.domain} className="text-body-sm flex items-center gap-2">
+              <span className="text-text-primary font-mono">{domain.domain}</span>
               <CapabilityBadge
                 state={domain.verifiedAt === null ? 'requires_review' : 'supported'}
                 label={

@@ -32,11 +32,14 @@ export const Kbd = forwardRef<HTMLElement, KbdProps>(function Kbd(
     >
       {parts.map((part, index) => (
         <kbd
+          // A chord is a fixed, ordered list and a repeated key is meaningful, so the
+          // position is part of the identity.
+          // eslint-disable-next-line react/no-array-index-key
           key={`${part}-${index}`}
           className={cn(
             'inline-flex h-4 min-w-4 items-center justify-center rounded-xs px-1',
-            'border border-border-default bg-surface-sunken',
-            'text-[0.6875rem] leading-none text-text-tertiary',
+            'border-border-default bg-surface-sunken border',
+            'text-text-tertiary text-[0.6875rem] leading-none',
           )}
         >
           {part}

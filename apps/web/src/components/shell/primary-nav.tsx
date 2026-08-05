@@ -33,7 +33,7 @@ export function PrimaryNav() {
       aria-label={t('nav.primaryLandmark')}
       className={cn(
         'hidden md:flex md:flex-col md:gap-0.5',
-        'border-e border-border-subtle bg-surface-sunken',
+        'border-border-subtle bg-surface-sunken border-e',
         'px-2 py-3 lg:px-3',
       )}
     >
@@ -50,7 +50,7 @@ export function PrimaryNav() {
               'relative flex min-h-11 items-center gap-3 rounded-md px-2.5 py-2 lg:min-h-9',
               'text-body-md transition-colors duration-(--duration-fast)',
               active
-                ? 'bg-surface-raised font-medium text-text-primary'
+                ? 'bg-surface-raised text-text-primary font-medium'
                 : 'text-text-secondary hover:bg-surface-hover hover:text-text-primary',
             )}
           >

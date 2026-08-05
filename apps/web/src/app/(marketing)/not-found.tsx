@@ -23,7 +23,7 @@ export default function MarketingNotFound(): ReactNode {
         <div className="mt-8">
           <Cta href={ROUTES.home}>{t.t('web.notFound.action')}</Cta>
         </div>
-        <ul className="mt-10 flex flex-wrap gap-x-8 gap-y-2 border-t border-border-default pt-6">
+        <ul className="border-border-default mt-10 flex flex-wrap gap-x-8 gap-y-2 border-t pt-6">
           {RESOURCE_LINKS.slice(0, 5).map((link) => (
             <li key={link.href}>
               <TextLink href={link.href} className="text-body-md">

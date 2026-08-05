@@ -44,11 +44,7 @@ import {
   type SocialConnector,
   type StatusRequest,
 } from '../shared/contract-shape.js';
-import {
-  accessTokenOf,
-  errorSummary,
-  providerOptionsOf,
-} from '../shared/access.js';
+import { accessTokenOf, errorSummary, providerOptionsOf } from '../shared/access.js';
 import { mapMetrics } from '../shared/metrics.js';
 import { buildPreview } from '../shared/preview.js';
 import { validateDraftShape } from '../shared/validate.js';
@@ -843,18 +839,18 @@ export function createLinkedInConnector(deps: ConnectorDeps): SocialConnector {
               : 'single';
       return await Promise.resolve(
         buildPreview(draft, draft.capabilities, {
-        unit: 'utf16',
-        mediaLayout: layout,
-        linkRendering: 'card',
-        resolvesMentionsAtRender: false,
-        privacyLabelKey:
-          draft.privacyValue === 'CONNECTIONS'
-            ? 'connectors.linkedin.visibility.connections'
-            : 'connectors.linkedin.visibility.public',
-        warningKeys:
-          draft.connection.accountType === 'personal_profile'
-            ? ['connectors.linkedin.member_analytics_restricted']
-            : [],
+          unit: 'utf16',
+          mediaLayout: layout,
+          linkRendering: 'card',
+          resolvesMentionsAtRender: false,
+          privacyLabelKey:
+            draft.privacyValue === 'CONNECTIONS'
+              ? 'connectors.linkedin.visibility.connections'
+              : 'connectors.linkedin.visibility.public',
+          warningKeys:
+            draft.connection.accountType === 'personal_profile'
+              ? ['connectors.linkedin.member_analytics_restricted']
+              : [],
         }),
       );
     },
@@ -1041,7 +1037,8 @@ export function createLinkedInConnector(deps: ConnectorDeps): SocialConnector {
         operation: 'linkedin.get_status',
         response,
       });
-      const published = parsed.lifecycleState === undefined || parsed.lifecycleState === 'PUBLISHED';
+      const published =
+        parsed.lifecycleState === undefined || parsed.lifecycleState === 'PUBLISHED';
       const publishedAt = nowIso();
       return {
         state: published ? 'published' : 'processing',

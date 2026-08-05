@@ -7,7 +7,9 @@ import type { ThreadSequenceWorkflowInput, ThreadSequenceWorkflowOutput } from '
 
  * Workflow id: `thread:{workspaceId}:{publishJobId}:{targetId}`.
  */
-export async function threadSequenceWorkflow(input: ThreadSequenceWorkflowInput): Promise<ThreadSequenceWorkflowOutput> {
+export async function threadSequenceWorkflow(
+  input: ThreadSequenceWorkflowInput,
+): Promise<ThreadSequenceWorkflowOutput> {
   const runtime = createTemporalRuntime();
   return runThreadSequence(runtime, workerActivities, input);
 }

@@ -204,11 +204,7 @@ describe('assessBulk', () => {
     const draft = draftDocumentSchema.parse({
       version: 1,
       body: 'x',
-      targets: [
-        { connectionId: 'a' },
-        { connectionId: 'b' },
-        { connectionId: 'c' },
-      ],
+      targets: [{ connectionId: 'a' }, { connectionId: 'b' }, { connectionId: 'c' }],
       threadItems: [
         { kind: 'thread', body: '1' },
         { kind: 'thread', body: '2' },

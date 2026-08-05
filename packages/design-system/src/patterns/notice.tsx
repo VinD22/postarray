@@ -1,13 +1,7 @@
 'use client';
 
 import { forwardRef, type ComponentPropsWithoutRef, type ReactNode } from 'react';
-import {
-  AlertTriangle,
-  CheckCircle2,
-  Info,
-  ShieldAlert,
-  XCircle,
-} from 'lucide-react';
+import { AlertTriangle, CheckCircle2, Info, ShieldAlert, XCircle } from 'lucide-react';
 import { cn } from '../utils/cn.js';
 
 export type NoticeTone = 'info' | 'success' | 'warning' | 'destructive' | 'neutral';
@@ -87,14 +81,10 @@ export const Notice = forwardRef<HTMLDivElement, NoticeProps>(function Notice(
       <span className="mt-0.5 shrink-0">{icon ?? toneIcons[tone]}</span>
       <div className="flex min-w-0 flex-1 flex-col gap-1">
         <p className="text-body-md font-medium">{title}</p>
-        {description ? (
-          <div className="text-body-sm text-text-secondary">{description}</div>
-        ) : null}
+        {description ? <div className="text-body-sm text-text-secondary">{description}</div> : null}
         {children}
       </div>
-      {actions ? (
-        <div className="flex shrink-0 flex-wrap items-center gap-2">{actions}</div>
-      ) : null}
+      {actions ? <div className="flex shrink-0 flex-wrap items-center gap-2">{actions}</div> : null}
     </div>
   );
 });

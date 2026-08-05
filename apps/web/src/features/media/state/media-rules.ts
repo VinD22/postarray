@@ -90,10 +90,7 @@ export function checkFile(file: CandidateFile, rules: readonly AccountRule[]): F
 }
 
 /** The smallest byte ceiling across the selected accounts, for the dropzone copy. */
-export function lowestByteLimit(
-  rules: readonly AccountRule[],
-  kind: MediaKind,
-): number | null {
+export function lowestByteLimit(rules: readonly AccountRule[], kind: MediaKind): number | null {
   const limits = rules
     .map((rule) => rule.capabilities.media.maxBytesByKind[kind] ?? null)
     .filter((limit): limit is number => limit !== null);
@@ -160,10 +157,7 @@ export function describeRatio(ratio: number): string {
 }
 
 /** Which accounts require alt text on this asset before it can be scheduled. */
-export function altTextRequiredBy(
-  asset: MediaAsset,
-  rules: readonly AccountRule[],
-): string[] {
+export function altTextRequiredBy(asset: MediaAsset, rules: readonly AccountRule[]): string[] {
   if (asset.kind === 'video' || asset.altTextWaived || (asset.altText ?? '').length > 0) {
     return [];
   }

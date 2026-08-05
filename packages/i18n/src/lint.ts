@@ -344,7 +344,10 @@ type OptionKind = 'plural' | 'selectordinal' | 'select';
 
 type OptionVisitor = (kind: OptionKind, options: Record<string, unknown>) => void;
 
-function walkOptionArguments(elements: readonly MessageFormatElement[], visit: OptionVisitor): void {
+function walkOptionArguments(
+  elements: readonly MessageFormatElement[],
+  visit: OptionVisitor,
+): void {
   for (const element of elements) {
     const candidate = element as unknown as {
       type: number;
@@ -480,7 +483,8 @@ export function formatLintResult(result: LintResult): string {
     return `${result.keyCount} keys checked for ${result.locale}. No findings.`;
   }
   const lines = result.findings.map(
-    (finding) => `${finding.severity === 'error' ? 'error' : 'warn '}  ${finding.key}  [${finding.rule}]  ${finding.message}`,
+    (finding) =>
+      `${finding.severity === 'error' ? 'error' : 'warn '}  ${finding.key}  [${finding.rule}]  ${finding.message}`,
   );
   return [
     `${result.keyCount} keys checked for ${result.locale}.`,

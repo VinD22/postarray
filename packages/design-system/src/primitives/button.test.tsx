@@ -15,10 +15,7 @@ describe('Button', () => {
 
   it('defaults to type="button" so it never submits a form by accident', () => {
     render(<Button>{LABEL}</Button>);
-    expect(screen.getByRole('button', { name: LABEL })).toHaveAttribute(
-      'type',
-      'button',
-    );
+    expect(screen.getByRole('button', { name: LABEL })).toHaveAttribute('type', 'button');
   });
 
   it('forwards its ref', () => {
@@ -80,9 +77,7 @@ describe('Button', () => {
   });
 
   it('hides decorative icons from assistive technology', () => {
-    render(
-      <Button iconStart={<svg data-testid="icon" />}>{LABEL}</Button>,
-    );
+    render(<Button iconStart={<svg data-testid="icon" />}>{LABEL}</Button>);
     const wrapper = screen.getByTestId('icon').parentElement;
     expect(wrapper).toHaveAttribute('aria-hidden', 'true');
   });

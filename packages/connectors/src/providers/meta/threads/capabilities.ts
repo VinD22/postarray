@@ -93,7 +93,11 @@ export function buildThreadsCapabilities(input: ThreadsCapabilityInput): Capabil
       support: 'supported',
       mustBeExplicit: false,
       options: [
-        { value: 'everyone', labelKey: 'connectors.threads.reply_control.everyone', isDefault: true },
+        {
+          value: 'everyone',
+          labelKey: 'connectors.threads.reply_control.everyone',
+          isDefault: true,
+        },
         {
           value: 'accounts_you_follow',
           labelKey: 'connectors.threads.reply_control.accounts_you_follow',

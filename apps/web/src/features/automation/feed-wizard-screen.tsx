@@ -62,7 +62,16 @@ const CADENCE_OPTIONS: readonly number[] = [3_600, 10_800, 21_600, 43_200, 86_40
 
 interface ConnectionLike {
   readonly id: string;
-  readonly provider: 'x' | 'linkedin' | 'instagram' | 'facebook' | 'youtube' | 'tiktok' | 'threads' | 'bluesky' | 'fake';
+  readonly provider:
+    | 'x'
+    | 'linkedin'
+    | 'instagram'
+    | 'facebook'
+    | 'youtube'
+    | 'tiktok'
+    | 'threads'
+    | 'bluesky'
+    | 'fake';
   readonly displayName?: string;
   readonly accountName?: string;
 }
@@ -107,9 +116,7 @@ export function FeedWizardScreen(): ReactElement {
   const validation = validate.data;
   const canChooseTargets = validation !== undefined;
   const canSave =
-    validation !== undefined &&
-    draft.connectionIds.length > 0 &&
-    draft.template.trim().length > 0;
+    validation !== undefined && draft.connectionIds.length > 0 && draft.template.trim().length > 0;
 
   return (
     <div className="flex flex-col gap-8 px-4 py-6 md:px-6">
@@ -151,9 +158,7 @@ export function FeedWizardScreen(): ReactElement {
                     url: result.resolvedUrl,
                     title: result.title,
                     template:
-                      current.template.trim().length > 0
-                        ? current.template
-                        : '{title}\n\n{link}',
+                      current.template.trim().length > 0 ? current.template : '{title}\n\n{link}',
                   })),
               })
             }
@@ -199,27 +204,32 @@ export function FeedWizardScreen(): ReactElement {
           >
             <span className="flex items-start gap-2">
               <RadioGroupItem value="seen" id="feed-seen" className="mt-1" />
-              <Label htmlFor="feed-seen" className="max-w-[70ch] text-body-md">
+              <Label htmlFor="feed-seen" className="text-body-md max-w-[70ch]">
                 {t('automation.rss.seenLatest')}
               </Label>
             </span>
             <span className="flex items-start gap-2">
               <RadioGroupItem value="new" id="feed-new" className="mt-1" />
-              <Label htmlFor="feed-new" className="max-w-[70ch] text-body-md">
+              <Label htmlFor="feed-new" className="text-body-md max-w-[70ch]">
                 {t('automation.rss.seenAll')}
               </Label>
             </span>
           </RadioGroup>
-          <p className="max-w-[70ch] text-body-sm text-text-tertiary">
+          <p className="text-body-sm text-text-tertiary max-w-[70ch]">
             {t('automation.rss.seenHelp')}
           </p>
           <Notice tone="neutral" title={t('automation.rss.dedupe')} />
         </div>
       </Step>
 
-      <Step index={4} total={6} title={t('automation.rss.step.targets')} disabled={!canChooseTargets}>
+      <Step
+        index={4}
+        total={6}
+        title={t('automation.rss.step.targets')}
+        disabled={!canChooseTargets}
+      >
         <fieldset className="flex flex-col gap-2">
-          <legend className="pb-1 text-body-md text-text-secondary">
+          <legend className="text-body-md text-text-secondary pb-1">
             {t('automation.rss.targetsHelp')}
           </legend>
           {accounts.map((account) => {
@@ -233,14 +243,12 @@ export function FeedWizardScreen(): ReactElement {
                     setDraft((current) => ({
                       ...current,
                       connectionIds: current.connectionIds.includes(account.connectionId)
-                        ? current.connectionIds.filter(
-                            (value) => value !== account.connectionId,
-                          )
+                        ? current.connectionIds.filter((value) => value !== account.connectionId)
                         : [...current.connectionIds, account.connectionId],
                     }))
                   }
                 />
-                <Label htmlFor={id} className="flex items-center gap-2 text-body-md">
+                <Label htmlFor={id} className="text-body-md flex items-center gap-2">
                   <StatusDot provider={account.provider} />
                   {account.displayName}
                   <span className="text-text-tertiary">
@@ -253,7 +261,12 @@ export function FeedWizardScreen(): ReactElement {
         </fieldset>
       </Step>
 
-      <Step index={5} total={6} title={t('automation.rss.step.template')} disabled={!canChooseTargets}>
+      <Step
+        index={5}
+        total={6}
+        title={t('automation.rss.step.template')}
+        disabled={!canChooseTargets}
+      >
         <div className="flex flex-col gap-3">
           <Field
             label={t('automation.rss.template')}
@@ -306,7 +319,7 @@ export function FeedWizardScreen(): ReactElement {
             />
             <Label htmlFor="feed-adapt">{t('automation.rss.adaptWithAi')}</Label>
           </span>
-          <p className="max-w-[70ch] text-body-sm text-text-tertiary">
+          <p className="text-body-sm text-text-tertiary max-w-[70ch]">
             {t('automation.rss.adaptHelp')}
           </p>
 
@@ -320,15 +333,23 @@ export function FeedWizardScreen(): ReactElement {
             />
             <Label htmlFor="feed-image">{t('automation.rss.imageFromFeed')}</Label>
           </span>
-          <p className="max-w-[70ch] text-body-sm text-text-tertiary">
+          <p className="text-body-sm text-text-tertiary max-w-[70ch]">
             {t('automation.rss.noImageGeneration')}
           </p>
         </div>
       </Step>
 
-      <Step index={6} total={6} title={t('automation.rss.step.policy')} disabled={!canChooseTargets}>
+      <Step
+        index={6}
+        total={6}
+        title={t('automation.rss.step.policy')}
+        disabled={!canChooseTargets}
+      >
         <div className="flex flex-col gap-3">
-          <Field label={t('automation.rss.step.policy')} description={t('automation.rss.policyHelp')}>
+          <Field
+            label={t('automation.rss.step.policy')}
+            description={t('automation.rss.policyHelp')}
+          >
             {(control) => (
               <Select
                 value={draft.policy}
@@ -383,11 +404,7 @@ export function FeedWizardScreen(): ReactElement {
           ) : null}
 
           {draft.policy === 'immediate' ? (
-            <Notice
-              tone="warning"
-              liveness="status"
-              title={t('automation.rss.immediateWarning')}
-            />
+            <Notice tone="warning" liveness="status" title={t('automation.rss.immediateWarning')} />
           ) : null}
         </div>
       </Step>
@@ -450,7 +467,7 @@ function Step({
       aria-disabled={disabled || undefined}
       className={disabled ? 'opacity-60' : undefined}
     >
-      <div className="flex flex-col gap-1 border-t border-border-default pt-4">
+      <div className="border-border-default flex flex-col gap-1 border-t pt-4">
         <p className="text-label text-text-tertiary">
           {t('automation.rss.stepOf', { current: index, total })}
         </p>

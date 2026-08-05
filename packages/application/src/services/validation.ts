@@ -250,9 +250,7 @@ function targetIssues(
   if (snapshot.media.requiresThumbnail && videos > 0) {
     const hasThumbnail = attached.some((entry) => entry.kind === 'image');
     if (!hasThumbnail) {
-      issues.push(
-        validationIssue({ code: 'THUMBNAIL_REQUIRED', severity: 'warning', targetId }),
-      );
+      issues.push(validationIssue({ code: 'THUMBNAIL_REQUIRED', severity: 'warning', targetId }));
     }
   }
 
@@ -261,9 +259,7 @@ function targetIssues(
     (destination) => destination.support === 'supported' && destination.kind !== 'none',
   );
   if (requiresDestination && target.variant.destinationId === null) {
-    issues.push(
-      validationIssue({ code: 'DESTINATION_REQUIRED', severity: 'error', targetId }),
-    );
+    issues.push(validationIssue({ code: 'DESTINATION_REQUIRED', severity: 'error', targetId }));
   }
 
   // Mentions. An unresolved handle publishes as plain text, and we say so.
@@ -297,9 +293,7 @@ function targetIssues(
 
   // Privacy and disclosure.
   if (snapshot.privacy.mustBeExplicit && target.variant.settings.privacyValue === null) {
-    issues.push(
-      validationIssue({ code: 'PRIVACY_SETTING_REQUIRED', severity: 'error', targetId }),
-    );
+    issues.push(validationIssue({ code: 'PRIVACY_SETTING_REQUIRED', severity: 'error', targetId }));
   }
   if (
     snapshot.privacy.support === 'supported' &&
@@ -488,10 +482,7 @@ async function cadenceIssues(
 }
 
 /** Blocked destinations, unresolvable URLs and disabled short links. */
-async function linkIssues(
-  db: Db,
-  targets: readonly TargetContext[],
-): Promise<ValidationIssue[]> {
+async function linkIssues(db: Db, targets: readonly TargetContext[]): Promise<ValidationIssue[]> {
   const issues: ValidationIssue[] = [];
   for (const target of targets) {
     const urls = target.body.match(/https?:\/\/\S+/g) ?? [];
@@ -553,10 +544,7 @@ async function linkIssues(
 
 export function createValidationService(deps: ServiceDeps): ValidationService {
   return {
-    async validate(
-      ctx: ActorContext,
-      input: { contentItemId: string },
-    ): Promise<ValidationResult> {
+    async validate(ctx: ActorContext, input: { contentItemId: string }): Promise<ValidationResult> {
       return authorized(deps, ctx, 'content.read', undefined, async (db) => {
         const aggregate = await loadAggregate(db, input.contentItemId);
 
@@ -600,9 +588,7 @@ export function createValidationService(deps: ServiceDeps): ValidationService {
           const snapshot = target.capabilities?.snapshot ?? null;
           const issues = targetIssues(target, snapshot, media);
           const cost =
-            snapshot === null
-              ? null
-              : estimateCreateCostMinor(snapshot, containsUrl(target.body));
+            snapshot === null ? null : estimateCreateCostMinor(snapshot, containsUrl(target.body));
           if (cost === null || snapshot === null || snapshot.cost === null) {
             return validationResult({ issues });
           }

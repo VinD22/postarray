@@ -61,10 +61,7 @@ function memberClaims(userId: string, workspaceId?: string): string {
 }
 
 /** Runs `work` inside a transaction with the given claims, then rolls back. */
-async function asActor<T>(
-  claims: string | null,
-  work: (tx: pg.Client) => Promise<T>,
-): Promise<T> {
+async function asActor<T>(claims: string | null, work: (tx: pg.Client) => Promise<T>): Promise<T> {
   await client.query('BEGIN');
   try {
     if (claims === null) {
@@ -113,16 +110,12 @@ describe.skipIf(!hasDatabase)('row level security', () => {
 
   describe('a request with no claims', () => {
     it('reads no workspaces', async () => {
-      const rows = await asActor(null, async (tx) =>
-        tx.query('SELECT id FROM app.workspaces'),
-      );
+      const rows = await asActor(null, async (tx) => tx.query('SELECT id FROM app.workspaces'));
       expect(rows.rowCount).toBe(0);
     });
 
     it('reads no content', async () => {
-      const rows = await asActor(null, async (tx) =>
-        tx.query('SELECT id FROM app.content_items'),
-      );
+      const rows = await asActor(null, async (tx) => tx.query('SELECT id FROM app.content_items'));
       expect(rows.rowCount).toBe(0);
     });
 
@@ -141,18 +134,14 @@ describe.skipIf(!hasDatabase)('row level security', () => {
 
     it('reads its own workspace content', async () => {
       const rows = await asActor(claims(), async (tx) =>
-        tx.query('SELECT id FROM app.content_items WHERE workspace_id = $1', [
-          FIXTURE.workspaceA,
-        ]),
+        tx.query('SELECT id FROM app.content_items WHERE workspace_id = $1', [FIXTURE.workspaceA]),
       );
       expect(rows.rowCount).toBe(1);
     });
 
     it('cannot read workspace B content', async () => {
       const rows = await asActor(claims(), async (tx) =>
-        tx.query('SELECT id FROM app.content_items WHERE workspace_id = $1', [
-          FIXTURE.workspaceB,
-        ]),
+        tx.query('SELECT id FROM app.content_items WHERE workspace_id = $1', [FIXTURE.workspaceB]),
       );
       expect(rows.rowCount).toBe(0);
     });
@@ -249,9 +238,7 @@ describe.skipIf(!hasDatabase)('row level security', () => {
 
     it('lets an admin change workspace settings', async () => {
       const rows = await asActor(memberClaims(USER_IDS.admin), async (tx) =>
-        tx.query(`UPDATE app.workspaces SET name = 'renamed' WHERE id = $1`, [
-          FIXTURE.workspaceA,
-        ]),
+        tx.query(`UPDATE app.workspaces SET name = 'renamed' WHERE id = $1`, [FIXTURE.workspaceA]),
       );
       expect(rows.rowCount).toBe(1);
     });
@@ -303,17 +290,15 @@ describe.skipIf(!hasDatabase)('row level security', () => {
 
   describe('a pinned workspace claim', () => {
     it('cannot widen access to a workspace the user is not in', async () => {
-      const rows = await asActor(
-        memberClaims(USER_IDS.owner, FIXTURE.workspaceB),
-        async (tx) => tx.query('SELECT id FROM app.content_items'),
+      const rows = await asActor(memberClaims(USER_IDS.owner, FIXTURE.workspaceB), async (tx) =>
+        tx.query('SELECT id FROM app.content_items'),
       );
       expect(rows.rowCount).toBe(0);
     });
 
     it('narrows access to the pinned workspace only', async () => {
-      const rows = await asActor(
-        memberClaims(USER_IDS.owner, FIXTURE.workspaceA),
-        async (tx) => tx.query('SELECT workspace_id FROM app.content_items'),
+      const rows = await asActor(memberClaims(USER_IDS.owner, FIXTURE.workspaceA), async (tx) =>
+        tx.query('SELECT workspace_id FROM app.content_items'),
       );
       expect(rows.rowCount).toBe(1);
       expect(rows.rows[0]).toMatchObject({ workspace_id: FIXTURE.workspaceA });
@@ -362,9 +347,7 @@ describe.skipIf(!hasDatabase)('row level security', () => {
 
     it('can read encrypted credentials', async () => {
       const rows = await asActor(serviceClaims, async (tx) =>
-        tx.query('SELECT id FROM private.social_credentials WHERE id = $1', [
-          FIXTURE.credentialA,
-        ]),
+        tx.query('SELECT id FROM private.social_credentials WHERE id = $1', [FIXTURE.credentialA]),
       );
       expect(rows.rowCount).toBe(1);
     });

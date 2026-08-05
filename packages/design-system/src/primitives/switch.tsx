@@ -25,7 +25,7 @@ export const Switch = forwardRef<HTMLButtonElement, SwitchProps>(function Switch
         'inline-flex h-5 w-9 shrink-0 items-center rounded-full border p-0.5',
         'border-border-strong bg-surface-sunken',
         'data-[state=checked]:border-accent data-[state=checked]:bg-accent',
-        'disabled:cursor-not-allowed disabled:border-border-subtle disabled:bg-surface-sunken',
+        'disabled:border-border-subtle disabled:bg-surface-sunken disabled:cursor-not-allowed',
         focusRing,
         transitionBase,
         className,
@@ -34,9 +34,9 @@ export const Switch = forwardRef<HTMLButtonElement, SwitchProps>(function Switch
     >
       <SwitchPrimitive.Thumb
         className={cn(
-          'block size-4 rounded-full bg-surface-raised',
-          'border border-border-default',
-          'data-[state=checked]:border-transparent data-[state=checked]:bg-accent-on',
+          'bg-surface-raised block size-4 rounded-full',
+          'border-border-default border',
+          'data-[state=checked]:bg-accent-on data-[state=checked]:border-transparent',
           'transition-transform duration-[--duration-fast] ease-[--ease-standard]',
           'motion-reduce:transition-none',
           'data-[state=checked]:translate-x-4 rtl:data-[state=checked]:-translate-x-4',

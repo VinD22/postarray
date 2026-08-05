@@ -42,17 +42,15 @@ export function ScopePicker({
       {groups.map((group) => (
         <fieldset key={group.risk} className="flex flex-col gap-2 border-0 p-0">
           <legend className="flex flex-col gap-0.5 pb-1">
-            <span className="text-body-md font-medium text-text-primary">
-              {t(group.titleKey)}
-            </span>
-            <span className="max-w-[62ch] text-body-sm text-text-secondary">
+            <span className="text-body-md text-text-primary font-medium">{t(group.titleKey)}</span>
+            <span className="text-body-sm text-text-secondary max-w-[62ch]">
               {t(group.helpKey)}
             </span>
           </legend>
           <ul className="flex flex-col">
             {group.scopes.map((scope) => (
               <li key={scope}>
-                <label className="flex min-h-11 items-start gap-2 py-1 text-body-md text-text-primary">
+                <label className="text-body-md text-text-primary flex min-h-11 items-start gap-2 py-1">
                   <Checkbox
                     className="mt-1"
                     disabled={disabled}

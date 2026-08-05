@@ -89,16 +89,10 @@ export function MoveGroupDialog({
 
         <DialogBody>
           <div className="flex flex-col gap-4">
-            <AccountIdentity
-              provider={row.provider}
-              accountLabel={row.displayName}
-              size="sm"
-            />
+            <AccountIdentity provider={row.provider} accountLabel={row.displayName} size="sm" />
 
             <div className="flex flex-col gap-1.5">
-              <Label htmlFor="move-group-select">
-                {t('web.connection.group.moveLabel')}
-              </Label>
+              <Label htmlFor="move-group-select">{t('web.connection.group.moveLabel')}</Label>
               <Select value={selected} onValueChange={setSelected}>
                 <SelectTrigger
                   id="move-group-select"
@@ -117,10 +111,7 @@ export function MoveGroupDialog({
               </Select>
             </div>
 
-            <Notice
-              tone="neutral"
-              title={t('web.connection.group.filterCalendarHint')}
-            />
+            <Notice tone="neutral" title={t('web.connection.group.filterCalendarHint')} />
           </div>
         </DialogBody>
 
@@ -146,12 +137,7 @@ export interface GroupListProps {
   onCreate: (name: string) => void;
 }
 
-export function GroupList({
-  groups,
-  rows,
-  creating,
-  onCreate,
-}: GroupListProps): ReactNode {
+export function GroupList({ groups, rows, creating, onCreate }: GroupListProps): ReactNode {
   const t = useTranslations();
   const [name, setName] = useState('');
 
@@ -159,7 +145,7 @@ export function GroupList({
 
   return (
     <div className="flex flex-col gap-5">
-      <p className="max-w-[70ch] text-body-md text-text-secondary">
+      <p className="text-body-md text-text-secondary max-w-[70ch]">
         {t('connection.group.description')}
       </p>
 
@@ -172,10 +158,7 @@ export function GroupList({
           setName('');
         }}
       >
-        <Field
-          label={t('web.connection.group.nameLabel')}
-          className="min-w-[14rem] flex-1"
-        >
+        <Field label={t('web.connection.group.nameLabel')} className="min-w-[14rem] flex-1">
           {(control) => (
             <Input
               {...control}
@@ -210,7 +193,7 @@ export function GroupList({
             return (
               <li
                 key={group.id}
-                className="flex flex-col gap-2 border-b border-border-subtle py-3 last:border-b-0"
+                className="border-border-subtle flex flex-col gap-2 border-b py-3 last:border-b-0"
               >
                 <div className="flex flex-wrap items-baseline justify-between gap-2">
                   <h3 className="text-title-sm text-text-primary">{group.name}</h3>
@@ -246,11 +229,7 @@ export function GroupList({
           <ul className="flex flex-wrap gap-x-4 gap-y-1.5">
             {ungrouped.map((row) => (
               <li key={row.id}>
-                <AccountIdentity
-                  provider={row.provider}
-                  accountLabel={row.displayName}
-                  size="sm"
-                />
+                <AccountIdentity provider={row.provider} accountLabel={row.displayName} size="sm" />
               </li>
             ))}
           </ul>

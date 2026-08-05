@@ -246,7 +246,11 @@ export function testMedia(options: TestMediaOptions = {}): ProviderMedia {
     width: options.width === undefined ? 1200 : options.width,
     height: options.height === undefined ? 900 : options.height,
     durationSeconds:
-      options.durationSeconds === undefined ? (kind === 'video' ? 20 : null) : options.durationSeconds,
+      options.durationSeconds === undefined
+        ? kind === 'video'
+          ? 20
+          : null
+        : options.durationSeconds,
     altText: options.altText === undefined ? 'A sample photograph.' : options.altText,
     altTextWaived: options.altTextWaived ?? false,
     checksum: 'a'.repeat(64),
@@ -438,7 +442,11 @@ export function testRefreshRequest(
       purpose: 'provider_adapter_test',
     }),
     grantedScopes: [...connection.grantedScopes],
-    client: { clientId, clientSecret: null, redirectUri: 'https://app.relay.invalid/oauth/callback' },
+    client: {
+      clientId,
+      clientSecret: null,
+      redirectUri: 'https://app.relay.invalid/oauth/callback',
+    },
   };
 }
 
@@ -452,7 +460,11 @@ export function testRevokeRequest(
     provider: connection.provider,
     accessToken: connection.accessToken,
     refreshToken: null,
-    client: { clientId, clientSecret: null, redirectUri: 'https://app.relay.invalid/oauth/callback' },
+    client: {
+      clientId,
+      clientSecret: null,
+      redirectUri: 'https://app.relay.invalid/oauth/callback',
+    },
   };
 }
 
@@ -472,14 +484,18 @@ export function expectPublished(
   return result;
 }
 
-export function expectPartial(result: PublishResult): Extract<PublishResult, { status: 'partial' }> {
+export function expectPartial(
+  result: PublishResult,
+): Extract<PublishResult, { status: 'partial' }> {
   if (result.status !== 'partial') {
     throw new Error(`expected a partial result, received "${result.status}"`);
   }
   return result;
 }
 
-export function expectPending(result: PublishResult): Extract<PublishResult, { status: 'pending' }> {
+export function expectPending(
+  result: PublishResult,
+): Extract<PublishResult, { status: 'pending' }> {
   if (result.status !== 'pending') {
     throw new Error(`expected a pending result, received "${result.status}"`);
   }

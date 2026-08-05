@@ -85,9 +85,8 @@ export function Field({
   const hasError = Boolean(error);
 
   const describedBy =
-    [description ? descriptionId : null, hasError ? errorId : null]
-      .filter(Boolean)
-      .join(' ') || undefined;
+    [description ? descriptionId : null, hasError ? errorId : null].filter(Boolean).join(' ') ||
+    undefined;
 
   const control: FieldControlProps = {
     id,
@@ -109,11 +108,7 @@ export function Field({
     <FieldContext.Provider value={context}>
       <div className={cn('flex flex-col gap-1.5', className)} {...props}>
         <div className="flex items-baseline justify-between gap-3">
-          <Label
-            htmlFor={id}
-            required={required}
-            requiredIndicator={requiredIndicator}
-          >
+          <Label htmlFor={id} required={required} requiredIndicator={requiredIndicator}>
             {label}
           </Label>
           {labelAction ? (
@@ -133,10 +128,7 @@ export function Field({
             appears, rather than the container itself being announced. */}
         <div aria-live="polite" className="empty:hidden">
           {hasError ? (
-            <p
-              id={errorId}
-              className="flex items-start gap-1.5 text-body-sm text-destructive-fg"
-            >
+            <p id={errorId} className="text-body-sm text-destructive-fg flex items-start gap-1.5">
               <AlertCircle aria-hidden="true" className="mt-0.5 size-3.5 shrink-0" />
               <span>{error}</span>
             </p>

@@ -109,10 +109,7 @@ export function createMcpHttpService(options: McpHttpOptions): McpHttpService {
   });
   const metadataUrl = new URL(PROTECTED_RESOURCE_PATH, options.resourceUrl).toString();
 
-  const unauthorized = (
-    response: ServerResponse,
-    error: RelayError,
-  ): void => {
+  const unauthorized = (response: ServerResponse, error: RelayError): void => {
     const isScope = error.code === 'SCOPE_INSUFFICIENT';
     sendJson(response, isScope ? 403 : 401, error.toProblemJson(), {
       'www-authenticate': buildAuthenticateChallenge({

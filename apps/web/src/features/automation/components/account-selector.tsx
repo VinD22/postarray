@@ -31,11 +31,9 @@ export function AccountSelector({
   const t = useTranslations();
 
   return (
-    <fieldset className="flex flex-col gap-2 border-t border-border-subtle pt-4">
-      <legend className="text-title-sm text-text-primary">
-        {t('automation.accounts.label')}
-      </legend>
-      <p className="max-w-[70ch] text-body-md text-text-secondary">
+    <fieldset className="border-border-subtle flex flex-col gap-2 border-t pt-4">
+      <legend className="text-title-sm text-text-primary">{t('automation.accounts.label')}</legend>
+      <p className="text-body-md text-text-secondary max-w-[70ch]">
         {t('automation.accounts.help')}
       </p>
 
@@ -58,7 +56,7 @@ export function AccountSelector({
                     )
                   }
                 />
-                <Label htmlFor={id} className="flex items-center gap-2 text-body-md">
+                <Label htmlFor={id} className="text-body-md flex items-center gap-2">
                   <StatusDot provider={account.provider} />
                   {account.displayName}
                   <span className="text-text-tertiary">

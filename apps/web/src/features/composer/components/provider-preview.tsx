@@ -59,31 +59,31 @@ export function ProviderPreview({ summary }: ProviderPreviewProps): ReactNode {
       })}
       className="flex flex-col gap-3"
     >
-      <div className="rounded-lg border border-border-default bg-surface-raised p-3">
+      <div className="border-border-default bg-surface-raised rounded-lg border p-3">
         <ProviderIdentity
           provider={summary.account.provider}
           accountName={summary.account.displayName}
           handle={summary.account.handle}
         />
 
-        <p className="mt-2 whitespace-pre-wrap text-body-lg text-text-primary">
+        <p className="text-body-lg text-text-primary mt-2 whitespace-pre-wrap">
           {body.length > 0 ? body : t.full('composer.master.placeholder')}
         </p>
 
         {settings?.destination ? (
-          <p className="mt-2 text-body-sm text-text-tertiary">
+          <p className="text-body-sm text-text-tertiary mt-2">
             {settings.destination.displayLabel}
           </p>
         ) : null}
 
         {resolved.values.mediaIds.length > 0 ? (
-          <p className="mt-2 text-body-sm text-text-tertiary">
+          <p className="text-body-sm text-text-tertiary mt-2">
             {t.full('composer.media.count', { count: resolved.values.mediaIds.length })}
           </p>
         ) : null}
 
         {summary.publishedUrl ? (
-          <p className="mt-2 break-all font-mono text-mono text-text-secondary">
+          <p className="text-mono text-text-secondary mt-2 font-mono break-all">
             {summary.publishedUrl}
           </p>
         ) : null}
@@ -94,10 +94,10 @@ export function ProviderPreview({ summary }: ProviderPreviewProps): ReactNode {
           {resolved.values.threadItems.map((item, index) => (
             <li
               key={item.id}
-              className="rounded-lg border border-border-subtle bg-surface-sunken p-3"
+              className="border-border-subtle bg-surface-sunken rounded-lg border p-3"
             >
               {/* Two facts, two elements. Never one concatenated sentence. */}
-              <p className="flex flex-wrap gap-x-3 text-label text-text-tertiary">
+              <p className="text-label text-text-tertiary flex flex-wrap gap-x-3">
                 <span>{t.full('composer.sequence.item', { position: index + 2 })}</span>
                 <span>
                   {t.full('composer.sequence.delayMinutes', {
@@ -105,11 +105,11 @@ export function ProviderPreview({ summary }: ProviderPreviewProps): ReactNode {
                   })}
                 </span>
               </p>
-              <p className="mt-1 whitespace-pre-wrap text-body-md text-text-primary">
+              <p className="text-body-md text-text-primary mt-1 whitespace-pre-wrap">
                 {item.body.length > 0 ? item.body : t.full('composer.master.placeholder')}
               </p>
               {itemInstant(timeline, index) === null ? null : (
-                <p className="mt-1 text-body-sm tabular-nums text-text-tertiary">
+                <p className="text-body-sm text-text-tertiary mt-1 tabular-nums">
                   {t.full('composerWeb.summary.scheduledFor', {
                     time: formatDateTime(t.locale, itemInstant(timeline, index) as string, {
                       timeZone,

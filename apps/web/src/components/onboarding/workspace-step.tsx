@@ -75,10 +75,7 @@ export function WorkspaceStep() {
     setPending(true);
     setError(null);
     try {
-      await api.workspaces.create(
-        { name, timeZone, locale: 'en' },
-        newIdempotencyKey('workspace'),
-      );
+      await api.workspaces.create({ name, timeZone, locale: 'en' }, newIdempotencyKey('workspace'));
       router.push('/onboarding/use-case');
     } catch (caught) {
       setPending(false);

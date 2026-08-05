@@ -7,22 +7,11 @@
  * than a fixed list that produces empty placeholders in a published post.
  */
 
-export type FeedPublishPolicy =
-  | 'draft'
-  | 'approval'
-  | 'next_slot'
-  | 'fixed_cadence'
-  | 'immediate';
+export type FeedPublishPolicy = 'draft' | 'approval' | 'next_slot' | 'fixed_cadence' | 'immediate';
 
 export type FeedHealthState = 'ok' | 'stalled' | 'failing' | 'paused';
 
-export type FeedField =
-  | 'title'
-  | 'summary'
-  | 'link'
-  | 'author'
-  | 'published'
-  | 'categories';
+export type FeedField = 'title' | 'summary' | 'link' | 'author' | 'published' | 'categories';
 
 export interface FeedItemPreview {
   readonly id: string;
@@ -77,12 +66,7 @@ export interface FeedSummaryView {
 }
 
 export type FeedItemOutcome =
-  | 'draft'
-  | 'scheduled'
-  | 'published'
-  | 'awaiting_approval'
-  | 'duplicate'
-  | 'failed';
+  'draft' | 'scheduled' | 'published' | 'awaiting_approval' | 'duplicate' | 'failed';
 
 export interface FeedHealthView {
   readonly feedId: string;

@@ -141,7 +141,9 @@ describe('Bluesky publish', () => {
     });
     const connector = createBlueskyConnector(deps);
     const result = await connector.publish(
-      testPublishRequest({ draft: testDraft({ connection, capabilities, body: 'Hello Bluesky.' }) }),
+      testPublishRequest({
+        draft: testDraft({ connection, capabilities, body: 'Hello Bluesky.' }),
+      }),
     );
     expect(result.status).toBe('published');
     if (result.status !== 'published') return;
@@ -208,9 +210,7 @@ describe('Bluesky publish', () => {
       idempotencyKey: 'idem-bluesky-0002',
       capabilities,
     });
-    expect(prepared[0]?.providerMediaId).toBe(
-      'bafkreifakeblobreferencefakeblobreferencefake0001',
-    );
+    expect(prepared[0]?.providerMediaId).toBe('bafkreifakeblobreferencefakeblobreferencefake0001');
     expect(simulator.callsTo('uploadBlob')).toHaveLength(1);
   });
 
@@ -256,10 +256,14 @@ describe('Bluesky reads', () => {
 
   it('reads the account post count', async () => {
     const { deps } = createTestDeps({
-      routes: [{ method: 'GET', match: 'app.bsky.actor.getProfile', body: BLUESKY_PROFILE_FIXTURE }],
+      routes: [
+        { method: 'GET', match: 'app.bsky.actor.getProfile', body: BLUESKY_PROFILE_FIXTURE },
+      ],
     });
     const connector = createBlueskyConnector(deps);
-    const observations = await connector.fetchMetrics(testMetricsRequest({ connection, scope: 'account' }));
+    const observations = await connector.fetchMetrics(
+      testMetricsRequest({ connection, scope: 'account' }),
+    );
     expect(observations.find((entry) => entry.normalizedName === 'published_count')?.value).toBe(
       437,
     );
@@ -299,10 +303,7 @@ describe('Bluesky reads', () => {
 describe('Bluesky permalink', () => {
   it('falls back to the DID in the AT URI when no handle is stored', () => {
     expect(
-      blueskyPermalink(
-        null,
-        'at://did:plc:fakedidfakedidfake01/app.bsky.feed.post/fakerkey0001',
-      ),
+      blueskyPermalink(null, 'at://did:plc:fakedidfakedidfake01/app.bsky.feed.post/fakerkey0001'),
     ).toBe('https://bsky.app/profile/did:plc:fakedidfakedidfake01/post/fakerkey0001');
   });
 });

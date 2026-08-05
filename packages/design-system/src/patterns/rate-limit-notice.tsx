@@ -83,8 +83,8 @@ export function RateLimitNotice({
           ) : null}
 
           <p className="text-text-secondary">
-            <span className="font-medium text-text-primary">{resetLabel}</span>
-            <span aria-hidden="true">{' '}</span>
+            <span className="text-text-primary font-medium">{resetLabel}</span>
+            <span aria-hidden="true"> </span>
             <time>{resetAt}</time>
           </p>
 

@@ -33,9 +33,7 @@ export function HomeSection({
         <h2 id={id} className="text-title-sm text-text-primary">
           {title}
         </h2>
-        {meta === undefined ? null : (
-          <p className="text-body-sm text-text-tertiary">{meta}</p>
-        )}
+        {meta === undefined ? null : <p className="text-body-sm text-text-tertiary">{meta}</p>}
       </div>
 
       {children}
@@ -44,7 +42,7 @@ export function HomeSection({
         <p>
           <Link
             href={link.href}
-            className="inline-flex min-h-9 items-center text-body-sm font-medium text-text-accent hover:underline"
+            className="text-body-sm text-text-accent inline-flex min-h-9 items-center font-medium hover:underline"
           >
             {link.label}
           </Link>

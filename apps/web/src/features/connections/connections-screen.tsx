@@ -119,7 +119,8 @@ export function ConnectionsScreen({
 
   const capabilities = useConnectionCapabilities(permissionsRow?.id ?? null);
 
-  const groupList = groups.data ?? [];
+  // A fresh [] each render would change the identity of every dependent hook.
+  const groupList = useMemo(() => groups.data ?? [], [groups.data]);
 
   const groupById = useMemo(() => {
     const map = new Map<string, string>();
@@ -195,9 +196,7 @@ export function ConnectionsScreen({
         <div className="px-4 md:px-6">
           <TabsList aria-label={t('connection.title')}>
             <TabsTrigger value="accounts">{t('web.connection.tab.accounts')}</TabsTrigger>
-            <TabsTrigger value="capabilities">
-              {t('web.connection.tab.capabilities')}
-            </TabsTrigger>
+            <TabsTrigger value="capabilities">{t('web.connection.tab.capabilities')}</TabsTrigger>
             <TabsTrigger value="groups">{t('web.connection.tab.groups')}</TabsTrigger>
           </TabsList>
         </div>

@@ -40,10 +40,7 @@ export interface ActorContextLike {
   readonly surface: 'web' | 'api' | 'mcp' | 'cli' | 'rss' | 'automation_rule' | 'agent';
   readonly correlationId: string;
   readonly approvalLevel:
-    | 'level_0_read'
-    | 'level_1_draft'
-    | 'level_2_scheduled'
-    | 'level_3_confirm';
+    'level_0_read' | 'level_1_draft' | 'level_2_scheduled' | 'level_3_confirm';
   readonly idempotencyKey?: string;
   readonly locale: string;
 }

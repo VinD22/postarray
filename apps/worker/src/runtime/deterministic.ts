@@ -87,10 +87,9 @@ export function backoffMs(seed: string, attempt: number, options: BackoffOptions
  * is a pure function of replayed state. Centralising the conversion also means
  * a reviewer can grep for `Date` in `workflows/core` and expect no hits.
  */
-// eslint-disable-next-line no-restricted-globals -- the single sanctioned conversion point
+
 export const toIsoInstant = (epochMs: number): string => new Date(epochMs).toISOString();
 
-// eslint-disable-next-line no-restricted-globals -- the single sanctioned parse point
 export const parseInstant = (iso: string): number => Date.parse(iso);
 
 /**

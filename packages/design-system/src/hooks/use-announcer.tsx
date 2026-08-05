@@ -60,9 +60,10 @@ export function AnnouncerProvider({
 }: AnnouncerProviderProps): ReactNode {
   const [polite, setPolite] = useState('');
   const [assertive, setAssertive] = useState('');
-  const timers = useRef<Record<AnnouncementPoliteness, ReturnType<typeof setTimeout> | null>>(
-    { polite: null, assertive: null },
-  );
+  const timers = useRef<Record<AnnouncementPoliteness, ReturnType<typeof setTimeout> | null>>({
+    polite: null,
+    assertive: null,
+  });
 
   const clear = useCallback((politeness?: AnnouncementPoliteness) => {
     if (!politeness || politeness === 'polite') setPolite('');
@@ -98,10 +99,7 @@ export function AnnouncerProvider({
     [],
   );
 
-  const value = useMemo<AnnouncerContextValue>(
-    () => ({ announce, clear }),
-    [announce, clear],
-  );
+  const value = useMemo<AnnouncerContextValue>(() => ({ announce, clear }), [announce, clear]);
 
   return (
     <AnnouncerContext.Provider value={value}>

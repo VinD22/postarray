@@ -69,11 +69,7 @@ async function refreshSession(baseUrl: string): Promise<boolean> {
   return started;
 }
 
-function buildUrl(
-  baseUrl: string,
-  path: string,
-  query: RequestOptions['query'],
-): string {
+function buildUrl(baseUrl: string, path: string, query: RequestOptions['query']): string {
   const url = new URL(`${baseUrl}/${apiConfig.apiVersion}${path}`);
   if (query) {
     for (const [key, value] of Object.entries(query)) {
@@ -86,7 +82,8 @@ function buildUrl(
 }
 
 function parseRetryAfter(response: Response): number | null {
-  const header = response.headers.get('retry-after') ?? response.headers.get(API_HEADERS.rateLimitReset);
+  const header =
+    response.headers.get('retry-after') ?? response.headers.get(API_HEADERS.rateLimitReset);
   if (!header) {
     return null;
   }

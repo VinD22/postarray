@@ -52,7 +52,11 @@ export const instagramInsightsSchema = z
             title: z.string().optional(),
             description: z.string().optional(),
             values: z
-              .array(z.object({ value: z.unknown().optional(), end_time: z.string().optional() }).loose())
+              .array(
+                z
+                  .object({ value: z.unknown().optional(), end_time: z.string().optional() })
+                  .loose(),
+              )
               .default([]),
             total_value: z.object({ value: z.number().optional() }).loose().optional(),
           })

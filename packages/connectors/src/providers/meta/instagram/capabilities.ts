@@ -39,9 +39,7 @@ export interface InstagramCapabilityInput {
   readonly grantedScopes: readonly string[];
 }
 
-export function buildInstagramCapabilities(
-  input: InstagramCapabilityInput,
-): CapabilitySnapshot {
+export function buildInstagramCapabilities(input: InstagramCapabilityInput): CapabilitySnapshot {
   const granted = input.grantedScopes;
   const canPublish = granted.includes('instagram_content_publish');
   const canComment = granted.includes('instagram_manage_comments');
@@ -135,5 +133,7 @@ export function buildInstagramCapabilities(
  * gated behind review rather than promising them.
  */
 export function storiesSupport(grantedScopes: readonly string[]): CapabilitySupport {
-  return grantedScopes.includes('instagram_content_publish') ? 'requires_review' : 'requires_review';
+  return grantedScopes.includes('instagram_content_publish')
+    ? 'requires_review'
+    : 'requires_review';
 }

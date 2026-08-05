@@ -81,7 +81,7 @@ export function ActionCenterScreen() {
         }
       />
 
-      <div className="px-4 py-5 md:px-6 2xl:mx-auto 2xl:max-w-[85rem] 3xl:max-w-[90rem]">
+      <div className="3xl:max-w-[90rem] px-4 py-5 md:px-6 2xl:mx-auto 2xl:max-w-[85rem]">
         <ActionCenterList
           items={items}
           loading={query.isPending}

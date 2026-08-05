@@ -100,7 +100,10 @@ function reasonsFor(input: PlanGlobalEditInput, account: TargetAccount): Incompa
     return checkBodyCompatibility(input.body, snapshot);
   }
   if (input.field === 'mediaIds' && input.mediaFacts !== undefined) {
-    const resolved = resolveVariant(input.state.master, input.state.overrides[account.connectionId] ?? {});
+    const resolved = resolveVariant(
+      input.state.master,
+      input.state.overrides[account.connectionId] ?? {},
+    );
     return checkMediaCompatibility(input.mediaFacts, snapshot, resolved.values.contentKind);
   }
   if (input.field === 'threadItems') {

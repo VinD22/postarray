@@ -19,7 +19,11 @@ function jsonResponse(body: unknown, init: ResponseInit = {}): Response {
 function clientWith(
   responses: readonly (() => Response)[],
   overrides: Partial<ConstructorParameters<typeof ProviderHttpClient>[0]> = {},
-): { client: ProviderHttpClient; calls: () => number; sleeper: ReturnType<typeof recordingSleeper> } {
+): {
+  client: ProviderHttpClient;
+  calls: () => number;
+  sleeper: ReturnType<typeof recordingSleeper>;
+} {
   let index = 0;
   const sleeper = recordingSleeper();
   const client = new ProviderHttpClient({
@@ -72,7 +76,9 @@ describe('ProviderHttpClient', () => {
   });
 
   it('never retries an operation the caller did not declare idempotent', async () => {
-    const { client, calls } = clientWith([() => jsonResponse({ message: 'boom' }, { status: 503 })]);
+    const { client, calls } = clientWith([
+      () => jsonResponse({ message: 'boom' }, { status: 503 }),
+    ]);
     await expect(
       client.request({
         method: 'POST',
@@ -220,7 +226,11 @@ describe('readRateLimitHeaders', () => {
   });
 
   it('returns nulls when the provider sends nothing', () => {
-    expect(readRateLimitHeaders({}, clock)).toEqual({ limit: null, remaining: null, resetAt: null });
+    expect(readRateLimitHeaders({}, clock)).toEqual({
+      limit: null,
+      remaining: null,
+      resetAt: null,
+    });
   });
 });
 

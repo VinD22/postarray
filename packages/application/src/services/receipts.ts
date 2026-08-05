@@ -183,10 +183,7 @@ export function createReceiptService(deps: ServiceDeps): ReceiptService {
       });
     },
 
-    async listForJob(
-      ctx: ActorContext,
-      jobId: string,
-    ): Promise<readonly PublicationReceiptView[]> {
+    async listForJob(ctx: ActorContext, jobId: string): Promise<readonly PublicationReceiptView[]> {
       return authorized(deps, ctx, 'receipt.read', undefined, async (db) => {
         const rows = await readReceipts(db, { publishJobId: jobId });
         return rows.map(toView);

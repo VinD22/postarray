@@ -28,10 +28,7 @@ export const authApi = {
       authorizationUrl: input.returnUrl,
     })),
 
-  signInWithPassword: (
-    input: PasswordCredentials,
-    idempotencyKey: string,
-  ): Promise<SessionView> =>
+  signInWithPassword: (input: PasswordCredentials, idempotencyKey: string): Promise<SessionView> =>
     call('/auth/sign-in', { method: 'POST', body: input, idempotencyKey }, () => demoSession),
 
   signUpWithPassword: (
@@ -53,16 +50,12 @@ export const authApi = {
       resendAfterSeconds: 60,
     })),
 
-  requestPasswordReset: (
-    input: { email: string },
-    idempotencyKey: string,
-  ): Promise<void> =>
+  requestPasswordReset: (input: { email: string }, idempotencyKey: string): Promise<void> =>
     call('/auth/password-reset', { method: 'POST', body: input, idempotencyKey }, () => undefined),
 };
 
 export const onboardingApi = {
-  getState: (): Promise<OnboardingStateView> =>
-    call('/onboarding', {}, () => demoOnboardingState),
+  getState: (): Promise<OnboardingStateView> => call('/onboarding', {}, () => demoOnboardingState),
 
   setUseCase: (input: { useCase: OnboardingUseCase }): Promise<OnboardingStateView> =>
     call('/onboarding/use-case', { method: 'PATCH', body: input }, () => ({

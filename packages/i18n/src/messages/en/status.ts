@@ -23,7 +23,8 @@ export const statusMessages = {
   'empty.automation.body':
     'A rule reacts to something and proposes an action. Every rule shows its limits before you switch it on.',
   'empty.webhooks.title': 'No endpoints',
-  'empty.webhooks.body': 'Add an endpoint to receive signed events about publishing and connections.',
+  'empty.webhooks.body':
+    'Add an endpoint to receive signed events about publishing and connections.',
   'empty.searchResults.title': 'No results for {query}',
   'empty.searchResults.body': 'Check the spelling, or clear a filter.',
   'empty.filtered.title': 'Nothing matches these filters',

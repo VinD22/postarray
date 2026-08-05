@@ -53,11 +53,7 @@ export class AutomationRulesService {
     return this.services.automationRules.testRun(ctx, { ruleId, sampleEvent });
   }
 
-  listRuns(
-    ctx: ActorContext,
-    ruleId: string,
-    query: CursorQuery,
-  ): Promise<Paginated<RuleRunView>> {
+  listRuns(ctx: ActorContext, ruleId: string, query: CursorQuery): Promise<Paginated<RuleRunView>> {
     return this.services.automationRules.listRuns(ctx, { ruleId, ...query });
   }
 }

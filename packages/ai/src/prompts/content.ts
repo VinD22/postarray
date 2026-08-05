@@ -53,7 +53,12 @@ export const draftFromBriefPrompt: PromptModule<DraftFromBriefResult> = {
   fixtures: [
     {
       name: 'plain-announcement',
-      variables: { brief: 'We shipped scheduled publishing.', contentKind: 'text', locale: 'en', brandVoice: 'direct' },
+      variables: {
+        brief: 'We shipped scheduled publishing.',
+        contentKind: 'text',
+        locale: 'en',
+        brandVoice: 'direct',
+      },
       output: {
         title: null,
         body: 'Scheduled publishing is live. Pick a time and a time zone, and the post goes out when you said it would.',
@@ -95,7 +100,12 @@ export const platformVariantPrompt: PromptModule<PlatformVariantResult> = {
   fixtures: [
     {
       name: 'shorten-for-x',
-      variables: { masterBody: 'Scheduled publishing is live.', provider: 'x', characterLimit: 280, accountType: 'business_profile' },
+      variables: {
+        masterBody: 'Scheduled publishing is live.',
+        provider: 'x',
+        characterLimit: 280,
+        accountType: 'business_profile',
+      },
       output: {
         provider: 'x',
         body: 'Scheduled publishing is live.',
@@ -121,7 +131,13 @@ export const transcreatePrompt: PromptModule<TranscreateResult> = {
   timeoutMs: 40_000,
   budgetCents: 6,
   degradation: 'fail_visibly',
-  requiredVariables: ['sourceBody', 'sourceLanguage', 'targetLanguage', 'register', 'protectedTerms'],
+  requiredVariables: [
+    'sourceBody',
+    'sourceLanguage',
+    'targetLanguage',
+    'register',
+    'protectedTerms',
+  ],
   scan: { checkVoice: false },
   instruction: [
     'Transcreate the source text into the target language.',
@@ -184,7 +200,10 @@ export const shortenPrompt: PromptModule<ShortenResult> = {
   fixtures: [
     {
       name: 'trim-filler',
-      variables: { body: 'We are really very excited to announce that scheduled publishing is now live.', targetCharacters: 60 },
+      variables: {
+        body: 'We are really very excited to announce that scheduled publishing is now live.',
+        targetCharacters: 60,
+      },
       output: {
         body: 'Scheduled publishing is live.',
         removedIdeas: ['The excitement framing.'],
@@ -297,11 +316,23 @@ export const hookOptionsPrompt: PromptModule<HookOptionsResult> = {
   fixtures: [
     {
       name: 'three-hooks',
-      variables: { body: 'Scheduled publishing is live.', audience: 'social media managers', provider: 'linkedin' },
+      variables: {
+        body: 'Scheduled publishing is live.',
+        audience: 'social media managers',
+        provider: 'linkedin',
+      },
       output: {
         options: [
-          { hook: 'Scheduling now respects the time zone you picked.', angle: 'Names the concrete change.', evidenceIds: ['body'] },
-          { hook: 'You can stop keeping a posting calendar in a spreadsheet.', angle: 'Speaks to the current workaround.', evidenceIds: ['body'] },
+          {
+            hook: 'Scheduling now respects the time zone you picked.',
+            angle: 'Names the concrete change.',
+            evidenceIds: ['body'],
+          },
+          {
+            hook: 'You can stop keeping a posting calendar in a spreadsheet.',
+            angle: 'Speaks to the current workaround.',
+            evidenceIds: ['body'],
+          },
         ],
         uncertain: false,
         uncertaintyReason: null,
@@ -334,11 +365,23 @@ export const ctaOptionsPrompt: PromptModule<CtaOptionsResult> = {
   fixtures: [
     {
       name: 'signup-ctas',
-      variables: { body: 'Scheduled publishing is live.', objective: 'sign-ups', availableLinkRefs: ['link_primary'] },
+      variables: {
+        body: 'Scheduled publishing is live.',
+        objective: 'sign-ups',
+        availableLinkRefs: ['link_primary'],
+      },
       output: {
         options: [
-          { cta: 'Try it on one post this week.', intent: 'Low commitment trial.', linkRef: 'link_primary' },
-          { cta: 'Tell us which platform you want next.', intent: 'Invite a reply.', linkRef: null },
+          {
+            cta: 'Try it on one post this week.',
+            intent: 'Low commitment trial.',
+            linkRef: 'link_primary',
+          },
+          {
+            cta: 'Tell us which platform you want next.',
+            intent: 'Invite a reply.',
+            linkRef: null,
+          },
         ],
         uncertain: false,
         uncertaintyReason: null,

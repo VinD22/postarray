@@ -14,7 +14,6 @@ import { settingsKey, useWorkspaceId } from '../lib/keys.js';
 import { useSettingsMutation } from '../lib/use-settings-mutation.js';
 import { SettingRow, SettingsPanel, SettingsStack } from '../components/section.js';
 
-
 type ExportFormat = 'json' | 'csv' | 'media';
 
 /**
@@ -113,7 +112,7 @@ export function DataControlsScreen(): ReactNode {
         >
           <fieldset className="flex flex-col gap-1 border-0 p-0">
             <legend className="sr-only">{t('settings.ui.data.exportTitle')}</legend>
-            <label className="flex min-h-11 items-start gap-2 py-1 text-body-md text-text-primary">
+            <label className="text-body-md text-text-primary flex min-h-11 items-start gap-2 py-1">
               <Checkbox
                 className="mt-0.5"
                 checked={formats.includes('json')}
@@ -126,7 +125,7 @@ export function DataControlsScreen(): ReactNode {
                 </span>
               </span>
             </label>
-            <label className="flex min-h-11 items-start gap-2 py-1 text-body-md text-text-primary">
+            <label className="text-body-md text-text-primary flex min-h-11 items-start gap-2 py-1">
               <Checkbox
                 className="mt-0.5"
                 checked={formats.includes('csv')}
@@ -139,7 +138,7 @@ export function DataControlsScreen(): ReactNode {
                 </span>
               </span>
             </label>
-            <label className="flex min-h-11 items-start gap-2 py-1 text-body-md text-text-primary">
+            <label className="text-body-md text-text-primary flex min-h-11 items-start gap-2 py-1">
               <Checkbox
                 className="mt-0.5"
                 checked={formats.includes('media')}
@@ -266,7 +265,7 @@ export function DataControlsScreen(): ReactNode {
           title={t('settings.data.retention')}
           description={t('settings.workspace.deleteWarning')}
         >
-          <p className="max-w-[68ch] text-body-md text-text-secondary">
+          <p className="text-body-md text-text-secondary max-w-[68ch]">
             {t('settings.ui.data.deleteConsequence.published')}
           </p>
         </SettingsPanel>

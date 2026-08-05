@@ -58,14 +58,13 @@ export function ComparisonTable({
   const isWide = useBreakpoint('md');
   const [expanded, setExpanded] = useState<string | null>(null);
 
-  const toggle = (id: string): void =>
-    setExpanded((current) => (current === id ? null : id));
+  const toggle = (id: string): void => setExpanded((current) => (current === id ? null : id));
 
   if (!isWide) {
     return (
-      <ul className="flex flex-col border-t border-border-subtle">
+      <ul className="border-border-subtle flex flex-col border-t">
         {rows.map((row) => (
-          <li key={row.contentItemId} className="border-b border-border-subtle py-3">
+          <li key={row.contentItemId} className="border-border-subtle border-b py-3">
             <MobileRow
               row={row}
               expanded={expanded === row.contentItemId}
@@ -108,7 +107,7 @@ export function ComparisonTable({
                       {onOpenPost ? (
                         <button
                           type="button"
-                          className="text-start text-body-md text-text-primary underline-offset-2 hover:underline"
+                          className="text-body-md text-text-primary text-start underline-offset-2 hover:underline"
                           onClick={() => onOpenPost(row.contentItemId)}
                         >
                           {row.title}
@@ -128,10 +127,10 @@ export function ComparisonTable({
                     <span className="flex items-center gap-2">
                       <StatusDot provider={row.account.provider} />
                       <span className="min-w-0">
-                        <span className="block text-body-md text-text-primary">
+                        <span className="text-body-md text-text-primary block">
                           {row.account.displayName}
                         </span>
-                        <span className="block text-body-sm text-text-tertiary">
+                        <span className="text-body-sm text-text-tertiary block">
                           {t(providerLabelKey(row.account.provider))}
                         </span>
                       </span>
@@ -190,12 +189,7 @@ interface MobileRowProps {
   readonly onOpenPost?: ((contentItemId: string) => void) | undefined;
 }
 
-function MobileRow({
-  row,
-  expanded,
-  onToggle,
-  onOpenPost,
-}: MobileRowProps): ReactElement {
+function MobileRow({ row, expanded, onToggle, onOpenPost }: MobileRowProps): ReactElement {
   const t = useTranslations();
   const valueFormat = useValueFormat();
   const panelId = `evidence-mobile-${row.contentItemId}`;
@@ -206,7 +200,7 @@ function MobileRow({
         {onOpenPost ? (
           <button
             type="button"
-            className="min-h-11 text-start text-body-lg text-text-primary underline-offset-2 hover:underline"
+            className="text-body-lg text-text-primary min-h-11 text-start underline-offset-2 hover:underline"
             onClick={() => onOpenPost(row.contentItemId)}
           >
             {row.title}
@@ -214,7 +208,7 @@ function MobileRow({
         ) : (
           <p className="text-body-lg text-text-primary">{row.title}</p>
         )}
-        <p className="flex flex-wrap items-center gap-x-2 gap-y-0.5 text-body-sm text-text-tertiary">
+        <p className="text-body-sm text-text-tertiary flex flex-wrap items-center gap-x-2 gap-y-0.5">
           <StatusDot provider={row.account.provider} />
           <span>{row.account.displayName}</span>
           <span>{t(formatLabelKey(row.format))}</span>

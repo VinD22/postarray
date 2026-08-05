@@ -74,8 +74,11 @@ export const draftDocumentSchema = z
     threadItems: z.array(draftThreadItemSchema).default([]),
     targets: z.array(draftTargetSchema).min(1),
     schedule: draftScheduleSchema.optional(),
-    disclosure: disclosureFlagsSchema
-      .default({ aiAssisted: false, commercialContent: false, brandedContent: false }),
+    disclosure: disclosureFlagsSchema.default({
+      aiAssisted: false,
+      commercialContent: false,
+      brandedContent: false,
+    }),
     signatureId: z.string().min(1).optional(),
   })
   .strict();

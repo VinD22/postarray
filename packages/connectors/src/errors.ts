@@ -39,21 +39,25 @@ export const providerErrorClassSchema = z.enum(PROVIDER_ERROR_CLASSES);
 export type ProviderErrorClass = z.infer<typeof providerErrorClassSchema>;
 
 /** Only this class may be retried, and only for a declared-safe operation. */
-export const RETRYABLE_PROVIDER_ERROR_CLASSES: readonly ProviderErrorClass[] = ['TRANSIENT_PROVIDER'];
+export const RETRYABLE_PROVIDER_ERROR_CLASSES: readonly ProviderErrorClass[] = [
+  'TRANSIENT_PROVIDER',
+];
 
 export function isRetryableProviderClass(value: ProviderErrorClass): boolean {
   return RETRYABLE_PROVIDER_ERROR_CLASSES.includes(value);
 }
 
 /** Bridge to the lowercase `ErrorClass` stored on `publish_attempts`. */
-export const CONTRACT_ERROR_CLASS: Readonly<Record<ProviderErrorClass, ErrorClass>> = Object.freeze({
-  USER_ACTION_REQUIRED: 'user_action_required',
-  CONTENT_INVALID: 'content_invalid',
-  TRANSIENT_PROVIDER: 'transient_provider',
-  PERMANENT_PROVIDER: 'permanent_provider',
-  INTERNAL: 'internal',
-  UNKNOWN: 'unknown',
-});
+export const CONTRACT_ERROR_CLASS: Readonly<Record<ProviderErrorClass, ErrorClass>> = Object.freeze(
+  {
+    USER_ACTION_REQUIRED: 'user_action_required',
+    CONTENT_INVALID: 'content_invalid',
+    TRANSIENT_PROVIDER: 'transient_provider',
+    PERMANENT_PROVIDER: 'permanent_provider',
+    INTERNAL: 'internal',
+    UNKNOWN: 'unknown',
+  },
+);
 
 export function toContractErrorClass(value: ProviderErrorClass): ErrorClass {
   return CONTRACT_ERROR_CLASS[value];
@@ -503,7 +507,7 @@ export function parseRetryAfterSeconds(
     if (Number.isFinite(asNumber) && asNumber >= 0) {
       return Math.ceil(asNumber);
     }
-    // eslint-disable-next-line no-restricted-globals -- parsing an HTTP date, not reading the clock.
+
     const asDate = Date.parse(retryAfter);
     if (Number.isFinite(asDate)) {
       return Math.max(0, Math.ceil((asDate - clock.now().getTime()) / 1000));
@@ -516,7 +520,9 @@ export function parseRetryAfterSeconds(
     if (!Number.isFinite(asNumber)) continue;
     // A value above one year of seconds is an absolute epoch second, not a delta.
     const nowSeconds = Math.floor(clock.now().getTime() / 1000);
-    return asNumber > 31_536_000 ? Math.max(0, Math.ceil(asNumber - nowSeconds)) : Math.ceil(asNumber);
+    return asNumber > 31_536_000
+      ? Math.max(0, Math.ceil(asNumber - nowSeconds))
+      : Math.ceil(asNumber);
   }
   return undefined;
 }
@@ -604,7 +610,10 @@ function classifyByText(facts: ProviderErrorFacts): Verdict | undefined {
     return { errorClass: 'CONTENT_INVALID', remediationCode: 'choose_privacy_option' };
   }
   if (has(text, 'professional account', 'business account is required', 'creator account')) {
-    return { errorClass: 'USER_ACTION_REQUIRED', remediationCode: 'switch_to_professional_account' };
+    return {
+      errorClass: 'USER_ACTION_REQUIRED',
+      remediationCode: 'switch_to_professional_account',
+    };
   }
   if (has(text, 'page role', 'not an admin of', 'requires the content admin', 'admin role')) {
     return { errorClass: 'USER_ACTION_REQUIRED', remediationCode: 'page_role_required' };
@@ -712,9 +721,7 @@ function classifyByStatus(facts: ProviderErrorFacts): Verdict {
  * // classified.retryAfterSeconds === 90
  * ```
  */
-export function classifyProviderError(
-  input: ClassifyProviderErrorInput,
-): ClassifiedProviderError {
+export function classifyProviderError(input: ClassifyProviderErrorInput): ClassifiedProviderError {
   const clock = input.clock ?? systemClock;
   const facts = readFacts(input, clock);
 
@@ -912,7 +919,9 @@ export function ensureOk(response: ProviderResponseLike, context: ProviderFailur
  * evidence, never a crash and never a silent success.
  */
 export function parseProviderBody<T>(
-  schema: { safeParse(value: unknown): { success: true; data: T } | { success: false; error: unknown } },
+  schema: {
+    safeParse(value: unknown): { success: true; data: T } | { success: false; error: unknown };
+  },
   response: ProviderResponseLike,
   context: ProviderFailureContext,
 ): T {

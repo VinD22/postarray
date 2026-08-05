@@ -76,8 +76,7 @@ export function createEchoProvider(options: EchoProviderOptions = {}): AiProvide
       throw options.failWith;
     }
     const marker = findMarker(request);
-    const override =
-      marker === null ? undefined : options.overrides?.[marker.promptId];
+    const override = marker === null ? undefined : options.overrides?.[marker.promptId];
     const payload =
       override !== undefined
         ? override
@@ -86,7 +85,9 @@ export function createEchoProvider(options: EchoProviderOptions = {}): AiProvide
           : fixtureFor(marker.promptId, marker.fixture);
 
     const text = request.jsonMode
-      ? JSON.stringify(payload === null ? { uncertain: true, uncertaintyReason: 'no fixture' } : payload)
+      ? JSON.stringify(
+          payload === null ? { uncertain: true, uncertaintyReason: 'no fixture' } : payload,
+        )
       : typeof payload === 'string'
         ? payload
         : JSON.stringify(payload);

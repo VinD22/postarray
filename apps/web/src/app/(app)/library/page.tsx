@@ -13,7 +13,12 @@ import { isDemoMode } from '@/lib/api/config';
 import { ApiError } from '@/lib/api/error';
 import { api } from '@/lib/api';
 import { SEED_ACCOUNTS } from '@/features/composer';
-import { SEED_ASSETS, type AccountRule, type LibraryStatus, type MediaAsset } from '@/features/media';
+import {
+  SEED_ASSETS,
+  type AccountRule,
+  type LibraryStatus,
+  type MediaAsset,
+} from '@/features/media';
 
 import { LibraryGateway } from './library-gateway';
 
@@ -38,10 +43,7 @@ export default async function LibraryPage(): Promise<React.ReactElement> {
     }));
   } else {
     try {
-      const [page, connections] = await Promise.all([
-        api.media.list({}),
-        api.connections.list({}),
-      ]);
+      const [page, connections] = await Promise.all([api.media.list({}), api.connections.list({})]);
       assets = page.data as unknown as readonly MediaAsset[];
       rules = await Promise.all(
         connections.data.map(async (connection) => ({

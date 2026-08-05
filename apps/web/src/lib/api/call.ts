@@ -9,11 +9,7 @@
 import { apiConfig } from './config.js';
 import { request, type RequestOptions } from './transport.js';
 
-export async function call<T>(
-  path: string,
-  options: RequestOptions,
-  demo: () => T,
-): Promise<T> {
+export async function call<T>(path: string, options: RequestOptions, demo: () => T): Promise<T> {
   if (apiConfig.mode === 'demo') {
     // A short delay keeps loading states honest during review.
     await new Promise((resolve) => setTimeout(resolve, 120));

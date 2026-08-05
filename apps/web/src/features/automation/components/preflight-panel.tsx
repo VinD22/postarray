@@ -58,15 +58,13 @@ export function PreflightPanel({
   return (
     <section
       aria-labelledby="preflight-heading"
-      className="flex flex-col gap-4 border border-border-default p-4"
+      className="border-border-default flex flex-col gap-4 border p-4"
     >
       <div className="flex max-w-[70ch] flex-col gap-1">
         <h2 id="preflight-heading" className="text-title-sm text-text-primary">
           {t('automation.preflight.title')}
         </h2>
-        <p className="text-body-md text-text-secondary">
-          {t('automation.preflight.intro')}
-        </p>
+        <p className="text-body-md text-text-secondary">{t('automation.preflight.intro')}</p>
       </div>
 
       <DefinitionList
@@ -126,10 +124,10 @@ export function PreflightPanel({
                       <span className="text-text-primary">
                         {t(providerLabelKey(restriction.provider))}
                       </span>
-                      <span className="ps-1.5 text-text-secondary">{restriction.text}</span>
+                      <span className="text-text-secondary ps-1.5">{restriction.text}</span>
                       {restriction.sourceUrl ? (
                         <a
-                          className="ps-1.5 text-text-accent underline underline-offset-2"
+                          className="text-text-accent ps-1.5 underline underline-offset-2"
                           href={restriction.sourceUrl}
                           rel="noreferrer noopener"
                           target="_blank"
@@ -138,7 +136,7 @@ export function PreflightPanel({
                         </a>
                       ) : null}
                       {restriction.verifiedOn ? (
-                        <span className="ps-1.5 text-text-tertiary">
+                        <span className="text-text-tertiary ps-1.5">
                           {t('analytics.definition.verifiedOn', {
                             date: format.date(restriction.verifiedOn),
                           })}
@@ -182,28 +180,23 @@ export function PreflightPanel({
         ]}
       />
 
-      <section className="flex flex-col gap-2 border-t border-border-subtle pt-4">
-        <h3 className="text-body-md font-medium text-text-primary">
+      <section className="border-border-subtle flex flex-col gap-2 border-t pt-4">
+        <h3 className="text-body-md text-text-primary font-medium">
           {t('automation.preflight.exampleLabel')}
         </h3>
         {preflight.example === null ? (
-          <p className="max-w-[70ch] text-body-md text-text-secondary">
+          <p className="text-body-md text-text-secondary max-w-[70ch]">
             {t('automation.preflight.exampleNone')}
           </p>
         ) : (
           <div className="flex flex-col gap-2">
             <p className="text-body-sm text-text-tertiary">
               {t('automation.preflight.exampleIntro')}
-              <time
-                dateTime={preflight.example.triggeredAt}
-                className="ps-1.5 tabular-nums"
-              >
+              <time dateTime={preflight.example.triggeredAt} className="ps-1.5 tabular-nums">
                 {format.dateTime(preflight.example.triggeredAt)}
               </time>
             </p>
-            <p className="text-body-md text-text-primary">
-              {preflight.example.triggerSummary}
-            </p>
+            <p className="text-body-md text-text-primary">{preflight.example.triggerSummary}</p>
             <ul className="flex flex-col gap-1">
               {preflight.example.conditions.map((condition) => (
                 <li key={condition.label} className="text-body-md text-text-secondary">
@@ -233,7 +226,7 @@ export function PreflightPanel({
           liveness="status"
           title={t('automation.preflight.blocked', { count: allBlockers.length })}
           description={
-            <ul className="flex list-disc flex-col gap-1 ps-5 marker:text-text-tertiary">
+            <ul className="marker:text-text-tertiary flex list-disc flex-col gap-1 ps-5">
               {allBlockers.map((blocker) => (
                 <li key={blocker}>{blocker}</li>
               ))}

@@ -61,7 +61,11 @@ export class XSimulator extends BaseProviderSimulator {
       case 'server_error':
         return problem(500, 'Internal Error', 'Something went wrong on our side.');
       case 'content_invalid':
-        return problem(400, 'Invalid Request', 'Your post text exceeds the limit for this account.');
+        return problem(
+          400,
+          'Invalid Request',
+          'Your post text exceeds the limit for this account.',
+        );
       case 'duplicate':
         return problem(403, 'Forbidden', 'You are not allowed to create a duplicate post.');
       case 'not_found':

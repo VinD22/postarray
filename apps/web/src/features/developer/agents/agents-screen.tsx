@@ -38,7 +38,6 @@ import { ActivityTable } from './activity-table.js';
 import { DryRunPlayground } from './dry-run-playground.js';
 import { ServiceAccountForm, type ServiceAccountFormValue } from './service-account-form.js';
 
-
 export function AgentsScreen(): ReactNode {
   const t = useTranslations();
   const section = t('settings.ui.section.agents');
@@ -77,8 +76,7 @@ export function AgentsScreen(): ReactNode {
   });
 
   const contentLocales = useMemo(
-    () =>
-      Array.from(new Set((brands.data ?? []).flatMap((brand) => brand.contentLocales))).sort(),
+    () => Array.from(new Set((brands.data ?? []).flatMap((brand) => brand.contentLocales))).sort(),
     [brands.data],
   );
 
@@ -167,17 +165,17 @@ export function AgentsScreen(): ReactNode {
               />
             ) : (
               <>
-                <ul className="flex flex-col border-y border-border-default">
+                <ul className="border-border-default flex flex-col border-y">
                   {rows.map((agent) => (
                     <li
                       key={agent.id}
-                      className="flex flex-col gap-2 border-b border-border-subtle py-3 last:border-b-0 md:flex-row md:items-start md:justify-between"
+                      className="border-border-subtle flex flex-col gap-2 border-b py-3 last:border-b-0 md:flex-row md:items-start md:justify-between"
                     >
                       <div className="flex min-w-0 flex-col gap-1">
                         <span className="flex flex-wrap items-center gap-2">
                           <button
                             type="button"
-                            className="text-body-md font-medium text-text-accent underline-offset-2 hover:underline"
+                            className="text-body-md text-text-accent font-medium underline-offset-2 hover:underline"
                             aria-current={agent.id === selected?.id ? 'true' : undefined}
                             onClick={() => setSelectedId(agent.id)}
                           >
@@ -265,9 +263,7 @@ export function AgentsScreen(): ReactNode {
                             definition:
                               selected.brandScope.length === 0
                                 ? t('common.all')
-                                : formatters.list(
-                                    selected.brandScope.map((brand) => brand.name),
-                                  ),
+                                : formatters.list(selected.brandScope.map((brand) => brand.name)),
                           },
                           {
                             id: 'accounts',
@@ -346,9 +342,7 @@ export function AgentsScreen(): ReactNode {
 
                     <Tabs defaultValue="activity">
                       <TabsList aria-label={t('developer.ui.agents.detailTitle')}>
-                        <TabsTrigger value="activity">
-                          {t('developer.activity.title')}
-                        </TabsTrigger>
+                        <TabsTrigger value="activity">{t('developer.activity.title')}</TabsTrigger>
                         <TabsTrigger value="setup">{t('developer.setup.title')}</TabsTrigger>
                         <TabsTrigger value="playground">
                           {t('developer.playground.title')}

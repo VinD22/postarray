@@ -90,9 +90,6 @@ export function containsSubsequence(
 }
 
 /** How many times an activity was invoked in a command stream. */
-export function countActivity(
-  commands: readonly WorkflowCommand[],
-  name: string,
-): number {
+export function countActivity(commands: readonly WorkflowCommand[], name: string): number {
   return commands.filter((command) => command.kind === 'activity' && command.name === name).length;
 }

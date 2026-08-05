@@ -40,7 +40,12 @@ export const LINKEDIN_ORGANIZATION_POST_METRICS: readonly MetricFieldMapping[] =
     unit: 'count',
     denominator: 'none',
   },
-  { providerField: 'clickCount', normalizedName: 'link_clicks', unit: 'count', denominator: 'none' },
+  {
+    providerField: 'clickCount',
+    normalizedName: 'link_clicks',
+    unit: 'count',
+    denominator: 'none',
+  },
   { providerField: 'likeCount', normalizedName: 'likes', unit: 'count', denominator: 'none' },
   { providerField: 'commentCount', normalizedName: 'comments', unit: 'count', denominator: 'none' },
   { providerField: 'shareCount', normalizedName: 'shares', unit: 'count', denominator: 'none' },

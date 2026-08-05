@@ -12,7 +12,13 @@
 
 import { useMemo, useState, type ReactNode } from 'react';
 import { Check, Plus, X as RemoveIcon } from 'lucide-react';
-import { Button, IconButton, Input, StatusDot, VisuallyHidden } from '@relay/design-system/primitives';
+import {
+  Button,
+  IconButton,
+  Input,
+  StatusDot,
+  VisuallyHidden,
+} from '@relay/design-system/primitives';
 import { CapabilityBadge } from '@relay/design-system/patterns';
 import { cn } from '@relay/design-system/utils';
 import { useTranslations } from '@relay/i18n/react';
@@ -21,16 +27,17 @@ import { useComposer } from '../composer-context.js';
 import { PROVIDER_LABEL } from './provider-identity.js';
 import type { TargetRailState, TargetSummary } from '../types.js';
 
-const STATE_TONE: Readonly<Record<TargetRailState, 'neutral' | 'accent' | 'warning' | 'destructive'>> =
-  {
-    inherits: 'neutral',
-    override: 'accent',
-    issue: 'warning',
-    blocked: 'destructive',
-    needs_approval: 'accent',
-    not_built: 'neutral',
-    unsupported: 'neutral',
-  };
+const STATE_TONE: Readonly<
+  Record<TargetRailState, 'neutral' | 'accent' | 'warning' | 'destructive'>
+> = {
+  inherits: 'neutral',
+  override: 'accent',
+  issue: 'warning',
+  blocked: 'destructive',
+  needs_approval: 'accent',
+  not_built: 'neutral',
+  unsupported: 'neutral',
+};
 
 function stateLabel(t: ReturnType<typeof useTranslations>, state: TargetRailState): string {
   switch (state) {
@@ -89,7 +96,7 @@ export function TargetRail(): ReactNode {
                     onClick={() => dispatch({ type: 'set/apply', set })}
                     className={cn(
                       'flex min-h-11 w-full items-center justify-between gap-2 rounded-md',
-                      'border border-border-subtle bg-surface-raised px-2.5 py-2 text-start',
+                      'border-border-subtle bg-surface-raised border px-2.5 py-2 text-start',
                       'transition-colors duration-[var(--duration-fast)] ease-[var(--ease-standard)]',
                       'hover:bg-surface-hover focus-visible:outline-2 focus-visible:outline-offset-2',
                       'focus-visible:outline-border-focus',
@@ -97,14 +104,16 @@ export function TargetRail(): ReactNode {
                     )}
                   >
                     <span className="min-w-0">
-                      <span className="block truncate text-body-md text-text-primary">
+                      <span className="text-body-md text-text-primary block truncate">
                         {set.name}
                       </span>
-                      <span className="block truncate text-body-sm text-text-tertiary">
-                        {t.full('composerWeb.set.accountCount', { count: set.connectionIds.length })}
+                      <span className="text-body-sm text-text-tertiary block truncate">
+                        {t.full('composerWeb.set.accountCount', {
+                          count: set.connectionIds.length,
+                        })}
                       </span>
                     </span>
-                    {applied ? <Check aria-hidden className="size-4 text-accent" /> : null}
+                    {applied ? <Check aria-hidden className="text-accent size-4" /> : null}
                   </button>
                 </li>
               );
@@ -118,7 +127,7 @@ export function TargetRail(): ReactNode {
           <h2 id="composer-targets-heading" className="text-label text-text-tertiary">
             {t.full('composerWeb.rail.accountsHeading')}
           </h2>
-          <span className="text-label tabular-nums text-text-tertiary">
+          <span className="text-label text-text-tertiary tabular-nums">
             {t.full('composer.targets.count', { count: totals.targetCount })}
           </span>
         </div>
@@ -126,7 +135,7 @@ export function TargetRail(): ReactNode {
         <MasterRow />
 
         {summaries.length === 0 ? (
-          <p className="rounded-md border border-dashed border-border-default px-3 py-4 text-body-sm text-text-tertiary">
+          <p className="border-border-default text-body-sm text-text-tertiary rounded-md border border-dashed px-3 py-4">
             {t.full('composerWeb.rail.emptyHelp')}
           </p>
         ) : (
@@ -168,7 +177,7 @@ export function TargetRail(): ReactNode {
                 <span className="truncate">
                   {account.displayName} {account.handle ?? ''}
                 </span>
-                <span className="ms-auto text-label text-text-tertiary">
+                <span className="text-label text-text-tertiary ms-auto">
                   {PROVIDER_LABEL[account.provider]}
                 </span>
               </Button>
@@ -193,14 +202,18 @@ function MasterRow(): ReactNode {
       className={cn(
         'flex min-h-11 w-full flex-col items-start gap-0.5 rounded-md border px-2.5 py-2 text-start',
         'transition-colors duration-[var(--duration-fast)] ease-[var(--ease-standard)]',
-        'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-border-focus',
+        'focus-visible:outline-border-focus focus-visible:outline-2 focus-visible:outline-offset-2',
         active
           ? 'border-accent bg-accent-subtle'
           : 'border-border-subtle bg-surface-raised hover:bg-surface-hover',
       )}
     >
-      <span className="text-body-md text-text-primary">{t.full('composerWeb.rail.masterEntry')}</span>
-      <span className="text-body-sm text-text-tertiary">{t.full('composerWeb.rail.masterHint')}</span>
+      <span className="text-body-md text-text-primary">
+        {t.full('composerWeb.rail.masterEntry')}
+      </span>
+      <span className="text-body-sm text-text-tertiary">
+        {t.full('composerWeb.rail.masterHint')}
+      </span>
     </button>
   );
 }
@@ -213,7 +226,7 @@ function TargetRow({ summary }: { readonly summary: TargetSummary }): ReactNode 
   const overLimit = summary.characterCount > summary.characterLimit;
 
   return (
-    <li className="border-b border-border-subtle last:border-b-0">
+    <li className="border-border-subtle border-b last:border-b-0">
       <div className="flex items-stretch gap-1">
         <button
           type="button"
@@ -222,20 +235,22 @@ function TargetRow({ summary }: { readonly summary: TargetSummary }): ReactNode 
           className={cn(
             'flex min-h-11 flex-1 flex-col gap-1 rounded-md px-2.5 py-2 text-start',
             'transition-colors duration-[var(--duration-fast)] ease-[var(--ease-standard)]',
-            'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-border-focus',
+            'focus-visible:outline-border-focus focus-visible:outline-2 focus-visible:outline-offset-2',
             active ? 'bg-accent-subtle' : 'hover:bg-surface-hover',
           )}
         >
-          <VisuallyHidden>{t.full('composerWeb.rail.openTarget', {
-            account: summary.account.displayName,
-          })}</VisuallyHidden>
+          <VisuallyHidden>
+            {t.full('composerWeb.rail.openTarget', {
+              account: summary.account.displayName,
+            })}
+          </VisuallyHidden>
 
           <span className="flex min-w-0 items-center gap-2">
             <StatusDot tone={STATE_TONE[summary.state]} />
-            <span className="min-w-0 truncate text-body-md text-text-primary">
+            <span className="text-body-md text-text-primary min-w-0 truncate">
               {summary.account.displayName}
             </span>
-            <span className="shrink-0 text-label text-text-tertiary">
+            <span className="text-label text-text-tertiary shrink-0">
               {PROVIDER_LABEL[summary.account.provider]}
             </span>
           </span>
@@ -281,7 +296,9 @@ function TargetRow({ summary }: { readonly summary: TargetSummary }): ReactNode 
           ) : null}
 
           {summary.account.paused ? (
-            <span className="text-body-sm text-warning-fg">{t.full('composerWeb.rail.paused')}</span>
+            <span className="text-body-sm text-warning-fg">
+              {t.full('composerWeb.rail.paused')}
+            </span>
           ) : null}
         </button>
 

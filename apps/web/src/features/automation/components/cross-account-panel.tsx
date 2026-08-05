@@ -57,11 +57,9 @@ export function CrossAccountPanel({
     t('automation.param.notSet');
 
   return (
-    <section className="flex flex-col gap-3 border-t border-border-subtle pt-4">
+    <section className="border-border-subtle flex flex-col gap-3 border-t pt-4">
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <h3 className="text-title-sm text-text-primary">
-          {t('automation.crossAccount.title')}
-        </h3>
+        <h3 className="text-title-sm text-text-primary">{t('automation.crossAccount.title')}</h3>
         <span className="flex items-center gap-2">
           <Switch
             id={switchId}
@@ -81,7 +79,7 @@ export function CrossAccountPanel({
 
       {settings.enabled ? (
         <div className="flex flex-col gap-4">
-          <p className="max-w-[70ch] text-body-md text-text-secondary">
+          <p className="text-body-md text-text-secondary max-w-[70ch]">
             {t('automation.crossAccount.body')}
           </p>
 
@@ -125,9 +123,7 @@ export function CrossAccountPanel({
                   </SelectTrigger>
                   <SelectContent>
                     {accounts
-                      .filter(
-                        (account) => account.connectionId !== settings.sourceConnectionId,
-                      )
+                      .filter((account) => account.connectionId !== settings.sourceConnectionId)
                       .map((account) => (
                         <SelectItem key={account.connectionId} value={account.connectionId}>
                           {account.displayName}
@@ -145,14 +141,13 @@ export function CrossAccountPanel({
               className="mt-0.5"
               checked={settings.preauthorized}
               disabled={
-                settings.sourceConnectionId === null ||
-                settings.followUpConnectionId === null
+                settings.sourceConnectionId === null || settings.followUpConnectionId === null
               }
               onCheckedChange={(checked) =>
                 onChange({ ...settings, preauthorized: checked === true })
               }
             />
-            <Label htmlFor={confirmId} className="max-w-[70ch] text-body-md">
+            <Label htmlFor={confirmId} className="text-body-md max-w-[70ch]">
               {t('automation.crossAccount.preauthorize', {
                 sourceAccount: nameOf(settings.sourceConnectionId),
                 followUpAccount: nameOf(settings.followUpConnectionId),
@@ -171,7 +166,7 @@ export function CrossAccountPanel({
           ) : null}
         </div>
       ) : (
-        <p className="max-w-[70ch] text-body-md text-text-secondary">
+        <p className="text-body-md text-text-secondary max-w-[70ch]">
           {t('automation.crossAccount.off')}
         </p>
       )}

@@ -18,9 +18,7 @@ export const tikTokErrorSchema = z
   })
   .loose();
 
-export const tikTokEnvelopeSchema = z
-  .object({ error: tikTokErrorSchema.optional() })
-  .loose();
+export const tikTokEnvelopeSchema = z.object({ error: tikTokErrorSchema.optional() }).loose();
 
 /**
  * Creator info, fetched immediately before compose or publish confirmation. These values

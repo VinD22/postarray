@@ -32,9 +32,10 @@ interface Recorded {
   readonly body: string | undefined;
 }
 
-function fakeFetch(
-  responder: (recorded: Recorded) => { status: number; body: unknown },
-): { fetch: FetchLike; calls: Recorded[] } {
+function fakeFetch(responder: (recorded: Recorded) => { status: number; body: unknown }): {
+  fetch: FetchLike;
+  calls: Recorded[];
+} {
   const calls: Recorded[] = [];
   const fetchImpl: FetchLike = async (url, init) => {
     const recorded: Recorded = {
@@ -261,7 +262,15 @@ describe('consequential command guards', () => {
     const { fetch, calls } = fakeFetch(() => ({ status: 200, body: {} }));
     const dependencies = deps({ fetch });
     const result = await runCli(
-      ['posts', 'publish', '--content-item', 'content_1', '--idempotency-key', 'abcdefgh', '--json'],
+      [
+        'posts',
+        'publish',
+        '--content-item',
+        'content_1',
+        '--idempotency-key',
+        'abcdefgh',
+        '--json',
+      ],
       dependencies,
     );
     expect(result.exitCode).toBe(EXIT_CODES.APPROVAL_REQUIRED);

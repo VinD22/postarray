@@ -177,9 +177,9 @@ export async function makeContentVersion(
   input: MakeContentVersionInput = {},
 ): Promise<ContentVersion> {
   const master = input.master ?? makeDraft();
-  const variants =
-    input.variants ??
-    [makePostVariant({ contentItemId: master.id, workspaceId: master.workspaceId })];
+  const variants = input.variants ?? [
+    makePostVariant({ contentItemId: master.id, workspaceId: master.workspaceId }),
+  ];
   const checksum = await computeChecksum(checksumPayload(master, variants));
   return contentVersionSchema.parse({
     id: fixtureId('contentVersion', `${master.id}:${input.revision ?? 1}`),

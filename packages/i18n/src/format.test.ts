@@ -79,7 +79,9 @@ describe('daylight saving boundaries', () => {
   });
 
   it('keeps the same calendar day across the change', () => {
-    expect(calendarDayNumber(beforeChange, NEW_YORK)).toBe(calendarDayNumber(afterChange, NEW_YORK));
+    expect(calendarDayNumber(beforeChange, NEW_YORK)).toBe(
+      calendarDayNumber(afterChange, NEW_YORK),
+    );
   });
 
   it('labels the zone differently before and after the change', () => {

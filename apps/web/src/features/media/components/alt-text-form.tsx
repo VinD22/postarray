@@ -39,9 +39,7 @@ export function AltTextForm({ asset, rules, onSave, onSuggest }: AltTextFormProp
 
   const limit = altTextLimit(rules);
   const requiredBy = altTextRequiredBy(asset, rules);
-  const unsupportedBy = rules.filter(
-    (rule) => rule.capabilities.media.altText !== 'supported',
-  );
+  const unsupportedBy = rules.filter((rule) => rule.capabilities.media.altText !== 'supported');
 
   const save = (): void => {
     setBusy(true);
@@ -70,9 +68,7 @@ export function AltTextForm({ asset, rules, onSave, onSuggest }: AltTextFormProp
       <Field
         label={t.full('composer.media.altText.label')}
         description={
-          limit === null
-            ? undefined
-            : t.full('mediaLib.alt.count', { used: altText.length, limit })
+          limit === null ? undefined : t.full('mediaLib.alt.count', { used: altText.length, limit })
         }
         disabled={waived}
       >

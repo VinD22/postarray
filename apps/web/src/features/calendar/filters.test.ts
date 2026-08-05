@@ -74,7 +74,12 @@ describe('parsing', () => {
 
 describe('serializing', () => {
   it('omits the default view so a shared link stays short', () => {
-    const params = toSearchParams('week', new Date('2026-08-06T00:00:00.000Z'), EMPTY_FILTERS, 'week');
+    const params = toSearchParams(
+      'week',
+      new Date('2026-08-06T00:00:00.000Z'),
+      EMPTY_FILTERS,
+      'week',
+    );
     expect(params.get('view')).toBeNull();
     expect(params.get('date')).toBe('2026-08-06');
     expect(params.toString()).toBe('date=2026-08-06');

@@ -59,11 +59,7 @@ export function EntryDetailSheet({
       <SheetContent side="inline-end" closeLabel={t('web.calendar.detail.close')}>
         <SheetHeader>
           <SheetTitle>{title}</SheetTitle>
-          <AccountIdentity
-            provider={entry.provider}
-            accountLabel={entry.accountLabel}
-            size="sm"
-          />
+          <AccountIdentity provider={entry.provider} accountLabel={entry.accountLabel} size="sm" />
         </SheetHeader>
 
         <SheetBody>
@@ -104,8 +100,7 @@ export function EntryDetailSheet({
                   definition:
                     entry.approvalState === 'not_required'
                       ? t('web.calendar.table.noApprover')
-                      : (entry.approverName ??
-                        t(`state.approval.${entry.approvalState}.label`)),
+                      : (entry.approverName ?? t(`state.approval.${entry.approvalState}.label`)),
                 },
                 {
                   id: 'campaign',
@@ -120,7 +115,7 @@ export function EntryDetailSheet({
                 href={entry.permalink}
                 target="_blank"
                 rel="noreferrer noopener"
-                className="inline-flex items-center gap-1.5 text-body-md text-text-accent"
+                className="text-body-md text-text-accent inline-flex items-center gap-1.5"
               >
                 {t('action.openInProvider', { provider: providerName(entry.provider) })}
                 <ExternalLink aria-hidden="true" className="size-3.5" />

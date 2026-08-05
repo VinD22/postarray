@@ -1,10 +1,4 @@
-import {
-  SpanStatusCode,
-  trace,
-  type Attributes,
-  type Span,
-  type Tracer,
-} from '@opentelemetry/api';
+import { SpanStatusCode, trace, type Attributes, type Span, type Tracer } from '@opentelemetry/api';
 
 import { getRootLogger } from './logger.js';
 
@@ -74,10 +68,7 @@ export async function startTracing(
     started = true;
     return true;
   } catch (error) {
-    getRootLogger().warn(
-      { err: error, component: 'tracing' },
-      'tracing.start_failed',
-    );
+    getRootLogger().warn({ err: error, component: 'tracing' }, 'tracing.start_failed');
     return false;
   }
 }

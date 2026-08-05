@@ -127,13 +127,7 @@ export interface AspectPreset {
    ------------------------------------------------------------------------- */
 
 export type UploadStatus =
-  | 'queued'
-  | 'uploading'
-  | 'paused'
-  | 'finalizing'
-  | 'done'
-  | 'rejected'
-  | 'failed';
+  'queued' | 'uploading' | 'paused' | 'finalizing' | 'done' | 'rejected' | 'failed';
 
 export interface UploadItem {
   readonly id: string;
@@ -145,6 +139,9 @@ export interface UploadItem {
   /** The resumable session, so a dropped connection continues rather than restarts. */
   readonly uploadUrl: string | null;
   /** Catalog key plus values, so the reason is a real sentence in any locale. */
-  readonly reason: { readonly key: string; readonly values: Record<string, string | number> } | null;
+  readonly reason: {
+    readonly key: string;
+    readonly values: Record<string, string | number>;
+  } | null;
   readonly mediaId: string | null;
 }

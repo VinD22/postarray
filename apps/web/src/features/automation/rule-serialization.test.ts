@@ -105,9 +105,7 @@ describe('parsing hand edited JSON', () => {
   });
 
   it('never trusts hand edited JSON to grant cross account preauthorization implicitly', () => {
-    const result = parseRule(
-      JSON.stringify({ name: 'x', crossAccount: { enabled: true } }),
-    );
+    const result = parseRule(JSON.stringify({ name: 'x', crossAccount: { enabled: true } }));
     expect(result.ok).toBe(true);
     if (result.ok) {
       expect(result.draft.crossAccount.preauthorized).toBe(false);

@@ -1,10 +1,5 @@
 import { Body, Controller, Get, HttpCode, Param, Post, Put, Query, Res } from '@nestjs/common';
-import type {
-  GrowthPlan,
-  OperationRef,
-  OpportunityRecord,
-  ToolRecord,
-} from '@relay/contracts';
+import type { GrowthPlan, OperationRef, OpportunityRecord, ToolRecord } from '@relay/contracts';
 import type { Response } from 'express';
 
 import type {

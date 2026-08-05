@@ -65,7 +65,9 @@ export function AppForm({
   const anyRedirectInvalid = redirectProblems.some((problem) => problem !== null);
 
   function setUri(index: number, value: string): void {
-    setRedirectUris((current) => current.map((uri, position) => (position === index ? value : uri)));
+    setRedirectUris((current) =>
+      current.map((uri, position) => (position === index ? value : uri)),
+    );
   }
 
   function handleSubmit(event: FormEvent<HTMLFormElement>): void {
@@ -105,10 +107,10 @@ export function AppForm({
 
           <fieldset className="flex flex-col gap-1 border-0 p-0">
             <legend className="flex flex-col gap-0.5 pb-1">
-              <span className="text-body-md font-medium text-text-primary">
+              <span className="text-body-md text-text-primary font-medium">
                 {t('developer.apps.type.label')}
               </span>
-              <span className="max-w-[62ch] text-body-sm text-text-secondary">
+              <span className="text-body-sm text-text-secondary max-w-[62ch]">
                 {t('developer.ui.apps.typeHelp')}
               </span>
             </legend>
@@ -119,11 +121,11 @@ export function AppForm({
               }
               className="flex flex-col"
             >
-              <label className="flex min-h-11 items-center gap-2 text-body-md text-text-primary">
+              <label className="text-body-md text-text-primary flex min-h-11 items-center gap-2">
                 <RadioGroupItem value="confidential" />
                 {t('developer.apps.type.confidential')}
               </label>
-              <label className="flex min-h-11 items-center gap-2 text-body-md text-text-primary">
+              <label className="text-body-md text-text-primary flex min-h-11 items-center gap-2">
                 <RadioGroupItem value="public" />
                 {t('developer.apps.type.public')}
               </label>
@@ -208,7 +210,10 @@ export function AppForm({
           {redirectUris.map((uri, index) => {
             const problem = redirectProblems[index];
             return (
-              <li key={index} className="flex items-start gap-2">
+              <li
+                key={uri === '' ? `blank-${String(index)}` : uri}
+                className="flex items-start gap-2"
+              >
                 <Field
                   className="flex-1"
                   label={t('developer.apps.redirectUris')}

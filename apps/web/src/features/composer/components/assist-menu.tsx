@@ -151,8 +151,8 @@ export function AssistProposalPanel(): ReactNode {
       />
 
       {proposal.evidence.length > 0 ? (
-        <details className="rounded-md border border-border-subtle px-3 py-2">
-          <summary className="cursor-pointer text-body-sm text-text-secondary">
+        <details className="border-border-subtle rounded-md border px-3 py-2">
+          <summary className="text-body-sm text-text-secondary cursor-pointer">
             {t.full('composerWeb.assist.evidence')}
           </summary>
           <ul className="mt-2 flex flex-col gap-2">
@@ -164,7 +164,7 @@ export function AssistProposalPanel(): ReactNode {
                 {item.verified && item.sourceUrl ? (
                   <a
                     href={item.sourceUrl}
-                    className="break-all text-body-sm text-text-accent underline"
+                    className="text-body-sm text-text-accent break-all underline"
                     rel="noreferrer noopener"
                     target="_blank"
                   >

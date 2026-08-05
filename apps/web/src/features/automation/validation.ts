@@ -39,7 +39,11 @@ export function saveIssues(draft: RuleDraft): readonly Issue[] {
   const issues: Issue[] = [];
 
   if (draft.name.trim().length === 0) {
-    issues.push({ key: 'automation.editor.error.missingParameter', values: { label: '' }, field: 'name' });
+    issues.push({
+      key: 'automation.editor.error.missingParameter',
+      values: { label: '' },
+      field: 'name',
+    });
   }
 
   if (draft.trigger === null) {
@@ -122,9 +126,7 @@ export function activationBlockers(draft: RuleDraft): readonly Issue[] {
   return blockers;
 }
 
-function measurementIssues(
-  measurement: MeasurementSettings | undefined,
-): readonly Issue[] {
+function measurementIssues(measurement: MeasurementSettings | undefined): readonly Issue[] {
   if (!measurement) {
     return [
       { key: 'automation.threshold.windowRequired', field: 'measurement.windowSeconds' },
@@ -153,7 +155,10 @@ function measurementIssues(
     });
   }
   if (measurement.staleAfterSeconds <= 0) {
-    issues.push({ key: 'automation.threshold.staleMetric', field: 'measurement.staleAfterSeconds' });
+    issues.push({
+      key: 'automation.threshold.staleMetric',
+      field: 'measurement.staleAfterSeconds',
+    });
   }
   return issues;
 }

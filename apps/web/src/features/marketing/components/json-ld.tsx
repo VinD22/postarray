@@ -13,9 +13,6 @@ import { jsonLdScript } from '../seo';
  */
 export function JsonLd({ node }: { node: Readonly<Record<string, unknown>> }): ReactNode {
   return (
-    <script
-      type="application/ld+json"
-      dangerouslySetInnerHTML={{ __html: jsonLdScript(node) }}
-    />
+    <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLdScript(node) }} />
   );
 }

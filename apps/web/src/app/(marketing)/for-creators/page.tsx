@@ -21,7 +21,11 @@ const JOBS = [
     titleKey: 'web.creators.job.languages.title',
     bodyKey: 'web.creators.job.languages.body',
   },
-  { id: 'rights', titleKey: 'web.creators.job.rights.title', bodyKey: 'web.creators.job.rights.body' },
+  {
+    id: 'rights',
+    titleKey: 'web.creators.job.rights.title',
+    bodyKey: 'web.creators.job.rights.body',
+  },
   { id: 'cost', titleKey: 'web.creators.job.cost.title', bodyKey: 'web.creators.job.cost.body' },
 ] as const;
 
@@ -44,11 +48,11 @@ export default function ForCreatorsPage(): ReactNode {
       />
 
       <Section id="jobs">
-        <dl className="border-t border-border-default">
+        <dl className="border-border-default border-t">
           {JOBS.map((job) => (
             <div
               key={job.id}
-              className="grid gap-x-12 gap-y-3 border-b border-border-subtle py-8 lg:grid-cols-12"
+              className="border-border-subtle grid gap-x-12 gap-y-3 border-b py-8 lg:grid-cols-12"
             >
               <dt className="lg:col-span-4">
                 <Subheading as="h2" className="text-pretty">
@@ -56,7 +60,7 @@ export default function ForCreatorsPage(): ReactNode {
                 </Subheading>
               </dt>
               <dd className="min-w-0 lg:col-span-7 lg:col-start-6">
-                <p className="max-w-[68ch] text-body-lg leading-[1.65] text-text-secondary">
+                <p className="text-body-lg text-text-secondary max-w-[68ch] leading-[1.65]">
                   {t.format(job.bodyKey)}
                 </p>
               </dd>
@@ -66,9 +70,7 @@ export default function ForCreatorsPage(): ReactNode {
       </Section>
 
       <Section id="not-for">
-        <Split
-          aside={<Heading>{t.t('web.creators.notFor.title')}</Heading>}
-        >
+        <Split aside={<Heading>{t.t('web.creators.notFor.title')}</Heading>}>
           <Body>{t.t('web.creators.notFor.body')}</Body>
           <p className="mt-4">
             <TextLink href={ROUTES.toolRadar}>{t.t('web.meta.toolRadar.title')}</TextLink>

@@ -114,11 +114,7 @@ export type AltTextResult = z.infer<typeof altTextResultSchema>;
 export const hookOptionsResultSchema = z
   .object({
     options: z
-      .array(
-        z
-          .object({ hook: z.string().min(1).max(280), angle: shortText, evidenceIds })
-          .strict(),
-      )
+      .array(z.object({ hook: z.string().min(1).max(280), angle: shortText, evidenceIds }).strict())
       .min(1)
       .max(5),
     uncertain,
@@ -276,10 +272,7 @@ export const GROWTH_PLAN_PROVENANCE_FIELDS = [
   'promptVersion',
 ] as const;
 
-export type GrowthPlanBody = Omit<
-  GrowthPlan,
-  (typeof GROWTH_PLAN_PROVENANCE_FIELDS)[number]
->;
+export type GrowthPlanBody = Omit<GrowthPlan, (typeof GROWTH_PLAN_PROVENANCE_FIELDS)[number]>;
 
 /**
  * Deliberately permissive: the strict shape lives in `@relay/contracts` and is

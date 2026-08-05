@@ -1,10 +1,7 @@
 import { z } from 'zod';
 
 import { Server } from '@modelcontextprotocol/sdk/server/index.js';
-import {
-  CallToolRequestSchema,
-  ListToolsRequestSchema,
-} from '@modelcontextprotocol/sdk/types.js';
+import { CallToolRequestSchema, ListToolsRequestSchema } from '@modelcontextprotocol/sdk/types.js';
 
 import { describeTool } from './tools/registry.js';
 import type { ToolDefinition, ToolRegistry, ToolResult } from './tools/registry.js';

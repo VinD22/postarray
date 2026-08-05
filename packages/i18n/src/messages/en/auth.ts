@@ -26,11 +26,11 @@ export const authMessages = {
     'If that address has an account, a sign in link is on its way. The link works once and expires in {minutes, plural, one {# minute} other {# minutes}}.',
   'auth.magicLink.checkEmail': 'Check your email',
   'auth.magicLink.resend': 'Send another link',
-  'auth.magicLink.resendIn': 'You can send another link in {seconds, plural, one {# second} other {# seconds}}.',
+  'auth.magicLink.resendIn':
+    'You can send another link in {seconds, plural, one {# second} other {# seconds}}.',
   'auth.forgotPassword': 'Forgot your password?',
   'auth.resetPassword.title': 'Choose a new password',
-  'auth.resetPassword.sent':
-    'If that address has an account, reset instructions are on their way.',
+  'auth.resetPassword.sent': 'If that address has an account, reset instructions are on their way.',
   'auth.resetPassword.done': 'Your password is updated. Sign in with it.',
   'auth.noAccount': 'No account yet?',
   'auth.haveAccount': 'Already have an account?',

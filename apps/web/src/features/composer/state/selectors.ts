@@ -11,23 +11,25 @@ import {
   type ValidationIssue,
 } from '@relay/contracts';
 
-import { countCharacters, findUrls, mediaLimitFor, resolvePublishedUrl } from './capability-rules.js';
+import {
+  countCharacters,
+  findUrls,
+  mediaLimitFor,
+  resolvePublishedUrl,
+} from './capability-rules.js';
 import { validateTarget, type DraftFacts } from './validate-draft.js';
 import type { MediaFacts } from './capability-rules.js';
-import type {
-  ComposerState,
-  TargetAccount,
-  TargetRailState,
-  TargetSummary,
-} from '../types.js';
+import type { ComposerState, TargetAccount, TargetRailState, TargetSummary } from '../types.js';
 
 export interface MediaLookup {
   /** The facts for one media id, or null when the library has not loaded it. */
-  readonly get: (mediaId: string) => (MediaFacts & {
-    readonly altText: string | null;
-    readonly altTextWaived: boolean;
-    readonly rightsDeclared: boolean;
-  }) | null;
+  readonly get: (mediaId: string) =>
+    | (MediaFacts & {
+        readonly altText: string | null;
+        readonly altTextWaived: boolean;
+        readonly rightsDeclared: boolean;
+      })
+    | null;
 }
 
 function railState(
@@ -38,9 +40,7 @@ function railState(
 ): TargetRailState {
   const kindSupport = account.capabilities.contentKinds;
   const anySupported = Object.values(kindSupport).some((value) => value === 'supported');
-  const anyNotImplemented = Object.values(kindSupport).some(
-    (value) => value === 'not_implemented',
-  );
+  const anyNotImplemented = Object.values(kindSupport).some((value) => value === 'not_implemented');
   if (!anySupported) {
     return anyNotImplemented ? 'not_built' : 'unsupported';
   }
@@ -149,7 +149,7 @@ export function totalsFor(summaries: readonly TargetSummary[]): DraftTotals {
     (summary) => summary.estimatedCostMinor !== null && summary.costCurrency !== null,
   );
   const currencies = new Set(priced.map((summary) => summary.costCurrency));
-  const currency = currencies.size === 1 ? [...currencies][0] ?? null : null;
+  const currency = currencies.size === 1 ? ([...currencies][0] ?? null) : null;
   const blockedCount = summaries.filter((summary) => summary.blockingIssueCount > 0).length;
 
   return {

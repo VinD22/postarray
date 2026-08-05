@@ -103,8 +103,7 @@ export const webSettingsMessages = {
   'settings.ui.members.column.lastActive': 'Last active',
   'settings.ui.members.column.actions': 'Actions',
   'settings.ui.members.scopeAll': 'All brands and accounts',
-  'settings.ui.members.scopeLimited':
-    '{count, plural, one {# brand} other {# brands}}: {names}',
+  'settings.ui.members.scopeLimited': '{count, plural, one {# brand} other {# brands}}: {names}',
   'settings.ui.members.approvals.canApprove': 'Can approve',
   'settings.ui.members.approvals.cannotApprove': 'Cannot approve',
   'settings.ui.members.approvals.canApproveOwnBrands': 'Can approve for the brands listed',
@@ -163,7 +162,8 @@ export const webSettingsMessages = {
   'settings.ui.brands.column.locales': 'Content languages',
   'settings.ui.brands.column.accounts': 'Accounts',
   'settings.ui.brands.column.updated': 'Updated',
-  'settings.ui.brands.accountCount': '{count, plural, =0 {No accounts} one {# account} other {# accounts}}',
+  'settings.ui.brands.accountCount':
+    '{count, plural, =0 {No accounts} one {# account} other {# accounts}}',
   'settings.ui.brands.emptyTitle': 'No brands yet',
   'settings.ui.brands.emptyBody':
     'A brand groups accounts, approval rules and language rules. Most teams start with one and add a second when a client or a market needs different rules.',
@@ -255,11 +255,14 @@ export const webSettingsMessages = {
   'settings.ui.data.exportJson': 'Structured JSON',
   'settings.ui.data.exportCsv': 'Spreadsheet CSV',
   'settings.ui.data.exportMedia': 'Media archive',
-  'settings.ui.data.exportJsonHelp': 'One file per record type. Documented and stable across versions.',
+  'settings.ui.data.exportJsonHelp':
+    'One file per record type. Documented and stable across versions.',
   'settings.ui.data.exportCsvHelp': 'Posts, receipts and metrics as flat tables for a spreadsheet.',
-  'settings.ui.data.exportMediaHelp': 'The original files you uploaded or imported, with checksums.',
+  'settings.ui.data.exportMediaHelp':
+    'The original files you uploaded or imported, with checksums.',
   'settings.ui.data.exportStart': 'Prepare export',
-  'settings.ui.data.exportRunning': 'Preparing your export. It keeps running if you close this page.',
+  'settings.ui.data.exportRunning':
+    'Preparing your export. It keeps running if you close this page.',
   'settings.ui.data.exportReady': 'Export ready, prepared {date}',
   'settings.ui.data.exportDownload': 'Download export',
   'settings.ui.data.exportExpires': 'The download link expires {date}.',
@@ -284,8 +287,10 @@ export const webSettingsMessages = {
   'settings.ui.data.cancelJobsFirst': 'Cancel scheduled posts now',
   'settings.ui.data.cancelJobsDone': 'Scheduled posts canceled. Nothing will publish.',
   'settings.ui.data.deleteConfirmPhraseLabel': 'Type the workspace name to confirm',
-  'settings.ui.data.deleteConsequence.jobs': 'Every scheduled post is canceled before anything is removed.',
-  'settings.ui.data.deleteConsequence.connections': 'Every social connection is revoked at the provider.',
+  'settings.ui.data.deleteConsequence.jobs':
+    'Every scheduled post is canceled before anything is removed.',
+  'settings.ui.data.deleteConsequence.connections':
+    'Every social connection is revoked at the provider.',
   'settings.ui.data.deleteConsequence.media': 'Stored media is deleted and cannot be recovered.',
   'settings.ui.data.deleteConsequence.receipts':
     'Publication receipts are kept for the retention period stated in the Terms, then removed.',
@@ -352,7 +357,8 @@ export const webSettingsMessages = {
   'developer.ui.agents.stoppedBody':
     'This account is stopped. Every call it makes is refused with a plain reason. Nothing it created was removed.',
   'developer.ui.agents.killTitle': 'Stop {name}',
-  'developer.ui.agents.killConsequence.calls': 'Every API, MCP and CLI call from this account is refused at once.',
+  'developer.ui.agents.killConsequence.calls':
+    'Every API, MCP and CLI call from this account is refused at once.',
   'developer.ui.agents.killConsequence.scheduled':
     'Posts it already scheduled stay scheduled. Cancel them from the calendar if you want them stopped.',
   'developer.ui.agents.killConsequence.reversible': 'You can start it again later.',
@@ -361,7 +367,8 @@ export const webSettingsMessages = {
   'developer.ui.agents.rotateTitle': 'Rotate the credential for {name}',
   'developer.ui.agents.rotateConsequence.old': 'The current credential stops working immediately.',
   'developer.ui.agents.rotateConsequence.new': 'The new one is shown once, on this page.',
-  'developer.ui.agents.rotateConsequence.clients': 'Anything using the old value fails until you update it.',
+  'developer.ui.agents.rotateConsequence.clients':
+    'Anything using the old value fails until you update it.',
   'developer.ui.agents.credentialStored': 'I have stored this credential',
   'developer.ui.agents.credentialLabel': 'Service account credential',
   'developer.ui.agents.credentialWarning': 'This is the only time this credential is shown',
@@ -467,14 +474,16 @@ export const webSettingsMessages = {
   'developer.ui.apps.secretWarning': 'This is the only time the client secret is shown',
   'developer.ui.apps.secretWarningBody':
     'Store it in your server side secret manager now. We keep only a hash. If you lose it, rotate it: there is no way to reveal it again.',
-  'developer.ui.apps.secretConsumed': 'The secret is no longer displayed. Rotate it if you did not store it.',
+  'developer.ui.apps.secretConsumed':
+    'The secret is no longer displayed. Rotate it if you did not store it.',
   'developer.ui.apps.secretStored': 'I have stored this secret',
   'developer.ui.apps.secretPublicClient':
     'A public client has no secret. It uses the authorization code flow with PKCE.',
   'developer.ui.apps.rotateTitle': 'Rotate the client secret for {app}',
   'developer.ui.apps.rotateConsequence.old': 'The current secret stops working immediately.',
   'developer.ui.apps.rotateConsequence.grants': 'Existing user grants are not revoked.',
-  'developer.ui.apps.rotateConsequence.deploy': 'Your servers fail to refresh tokens until you deploy the new value.',
+  'developer.ui.apps.rotateConsequence.deploy':
+    'Your servers fail to refresh tokens until you deploy the new value.',
   'developer.ui.apps.consentPreviewTitle': 'Consent screen preview',
   'developer.ui.apps.consentPreviewHelp':
     'This is what a user sees. It is generated from the app record, so it cannot promise more than the app asks for.',
@@ -503,8 +512,10 @@ export const webSettingsMessages = {
   'developer.ui.apps.disabledBody':
     'This app is disabled. Existing tokens are refused and no new grant can be started. Grants are kept so you can enable it again.',
   'developer.ui.apps.deleteTitle': 'Delete {app}',
-  'developer.ui.apps.deleteConsequence.grants': 'Every grant is revoked and every token stops working.',
-  'developer.ui.apps.deleteConsequence.logs': 'Request logs are kept for the audit retention period.',
+  'developer.ui.apps.deleteConsequence.grants':
+    'Every grant is revoked and every token stops working.',
+  'developer.ui.apps.deleteConsequence.logs':
+    'Request logs are kept for the audit retention period.',
   'developer.ui.apps.deleteConsequence.irreversible': 'The client ID cannot be reused.',
 
   /* ---------------------------------------------------------------- webhooks */
@@ -543,7 +554,8 @@ export const webSettingsMessages = {
     'After that window only the new secret is used.',
   'developer.ui.webhooks.testDeliveryHelp':
     'Sends one signed example event marked as a test, so your receiver can ignore it safely.',
-  'developer.ui.webhooks.testDeliverySent': 'Test delivery sent. The result appears in the log below.',
+  'developer.ui.webhooks.testDeliverySent':
+    'Test delivery sent. The result appears in the log below.',
   'developer.ui.webhooks.deliveriesCaption': 'Recent deliveries and the response each one received',
   'developer.ui.webhooks.deliveryColumn.time': 'Requested',
   'developer.ui.webhooks.deliveryColumn.event': 'Event',
@@ -575,7 +587,8 @@ export const webSettingsMessages = {
   'developer.ui.webhooks.lastSuccessNever': 'No delivery has ever succeeded',
   'developer.ui.webhooks.deleteTitle': 'Delete this endpoint',
   'developer.ui.webhooks.deleteConsequence.stop': 'Nothing more is sent to this URL.',
-  'developer.ui.webhooks.deleteConsequence.logs': 'Delivery logs are kept for the audit retention period.',
+  'developer.ui.webhooks.deleteConsequence.logs':
+    'Delivery logs are kept for the audit retention period.',
 
   /* ----------------------------------------------------------------- billing */
 
@@ -587,7 +600,8 @@ export const webSettingsMessages = {
   'billing.ui.usageHeading': 'Metered provider usage',
   'billing.ui.invoicesHeading': 'Invoices',
   'billing.ui.cancelHeading': 'Cancellation',
-  'billing.ui.trialDaysRemaining': 'Trial, {count, plural, =0 {ends today} one {# day remaining} other {# days remaining}}',
+  'billing.ui.trialDaysRemaining':
+    'Trial, {count, plural, =0 {ends today} one {# day remaining} other {# days remaining}}',
   'billing.ui.convertsOn': 'Converts on {date} to {amount} per {interval}.',
   'billing.ui.dueToday': '$0 due today',
   'billing.ui.conversionLabel': 'Converts',
@@ -627,7 +641,8 @@ export const webSettingsMessages = {
     'The provider has not returned usage for this period yet. It is normally available within 24 hours.',
   'billing.ui.usageEmpty': 'No metered usage this period.',
   'billing.ui.spendAlert': 'Spend alert',
-  'billing.ui.spendAlertHelp': 'We email you when metered usage passes this amount in a billing period.',
+  'billing.ui.spendAlertHelp':
+    'We email you when metered usage passes this amount in a billing period.',
   'billing.ui.spendAlertPause': 'Also pause metered actions when the alert is reached',
   'billing.ui.balanceLabel': 'Usage balance',
   'billing.ui.balanceHelp': 'Metered usage is drawn from this balance and invoiced by Polar.',
@@ -653,9 +668,11 @@ export const webSettingsMessages = {
     'Cancelling is one action and takes effect at the end of the period you have paid for. There is no call to make and no form to fill in.',
   'billing.ui.cancelStart': 'Cancel subscription',
   'billing.ui.cancelDialogTitle': 'Cancel this subscription',
-  'billing.ui.cancelConsequence.noCharge': 'You will not be charged. Nothing is taken today or on {date}.',
+  'billing.ui.cancelConsequence.noCharge':
+    'You will not be charged. Nothing is taken today or on {date}.',
   'billing.ui.cancelConsequence.accessUntil': 'You keep every feature until {date}.',
-  'billing.ui.cancelConsequence.dataKept': 'Drafts, receipts, media and analytics stay in this workspace.',
+  'billing.ui.cancelConsequence.dataKept':
+    'Drafts, receipts, media and analytics stay in this workspace.',
   'billing.ui.cancelConsequence.scheduled':
     'Posts scheduled after {date} will not publish. Cancel or reschedule them before then.',
   'billing.ui.cancelConsequence.restart': 'You can start the subscription again at any time.',
@@ -695,7 +712,8 @@ export const webSettingsMessages = {
   'growth.ui.intake.marketsHelp': 'Countries or regions. One per line.',
   'growth.ui.intake.localesHelp': 'The languages you will publish in.',
   'growth.ui.intake.objectiveHelp': 'What you want more of in the next quarter.',
-  'growth.ui.intake.conversionHelp': 'The action you can actually measure. A signup, a demo, a purchase.',
+  'growth.ui.intake.conversionHelp':
+    'The action you can actually measure. A signup, a demo, a purchase.',
   'growth.ui.intake.proofHelp':
     'Case studies, benchmarks you ran, screenshots you own, permissions you already hold. One per line.',
   'growth.ui.intake.proofNone': 'I have no approved proof yet',
@@ -772,8 +790,7 @@ export const webSettingsMessages = {
   'growth.ui.fourWeek.approvalNotRequired': 'No approval required for this account',
   'growth.ui.fourWeek.noCta': 'No call to action',
   'growth.ui.fourWeek.weekEmpty': 'No briefs proposed for this week.',
-  'growth.ui.fourWeek.acceptedCount':
-    '{accepted} of {total} briefs accepted as drafts',
+  'growth.ui.fourWeek.acceptedCount': '{accepted} of {total} briefs accepted as drafts',
   'growth.ui.fourWeek.acceptAnnouncement': 'Draft created from this brief.',
   'growth.ui.fourWeek.proposeAnnouncement': 'Calendar proposal added for {date}.',
 
@@ -856,5 +873,4 @@ export const webSettingsMessages = {
   'growth.ui.export.schemaNote':
     'All three formats come from one validated schema, version {version}. The structured views are safe for source control and contain no secrets.',
   'growth.ui.export.previewLabel': 'Export preview',
-
 } as const;

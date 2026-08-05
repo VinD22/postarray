@@ -71,7 +71,10 @@ function videoDraft(overrides: Record<string, unknown> = {}) {
       }),
     ],
     privacyValue: 'private',
-    connection: { ...connection, metadata: { ...connection.metadata, providerOptions: { madeForKids: false } } },
+    connection: {
+      ...connection,
+      metadata: { ...connection.metadata, providerOptions: { madeForKids: false } },
+    },
     ...overrides,
   });
 }
@@ -186,9 +189,22 @@ describe('YouTube validation', () => {
     const connector = createYouTubeConnector(deps);
     const result = await connector.validateDraft(
       videoDraft({
-        connection: { ...connection, metadata: { ...connection.metadata, providerOptions: { madeForKids: false, commentsDisabled: true } } },
+        connection: {
+          ...connection,
+          metadata: {
+            ...connection.metadata,
+            providerOptions: { madeForKids: false, commentsDisabled: true },
+          },
+        },
         threadItems: [
-          { id: 'cmt_test_1', kind: 'comment', order: 1, body: 'First.', media: [], delaySeconds: 0 },
+          {
+            id: 'cmt_test_1',
+            kind: 'comment',
+            order: 1,
+            body: 'First.',
+            media: [],
+            delaySeconds: 0,
+          },
         ],
       }),
     );
@@ -204,9 +220,7 @@ describe('YouTube validation', () => {
       }),
     );
     expect(
-      result.issues.some(
-        (issue) => issue.code === 'YOUTUBE_ALTERED_CONTENT_DECLARATION_REQUIRED',
-      ),
+      result.issues.some((issue) => issue.code === 'YOUTUBE_ALTERED_CONTENT_DECLARATION_REQUIRED'),
     ).toBe(true);
   });
 });
@@ -269,7 +283,9 @@ describe('YouTube upload and publish', () => {
   it('reports a video that is still processing as pending, never published', async () => {
     const { deps } = createTestDeps({
       routes: [
-        { method: 'PUT', match: '/videos', body: {} },{ method: 'GET', match: '/videos', body: YOUTUBE_VIDEO_PROCESSING_FIXTURE }],
+        { method: 'PUT', match: '/videos', body: {} },
+        { method: 'GET', match: '/videos', body: YOUTUBE_VIDEO_PROCESSING_FIXTURE },
+      ],
     });
     const connector = createYouTubeConnector(deps);
     const result = await connector.publish(
@@ -282,7 +298,9 @@ describe('YouTube upload and publish', () => {
   it('reports the video id and watch URL once YouTube finished processing', async () => {
     const { deps } = createTestDeps({
       routes: [
-        { method: 'PUT', match: '/videos', body: {} },{ method: 'GET', match: '/videos', body: YOUTUBE_VIDEO_PROCESSED_FIXTURE }],
+        { method: 'PUT', match: '/videos', body: {} },
+        { method: 'GET', match: '/videos', body: YOUTUBE_VIDEO_PROCESSED_FIXTURE },
+      ],
     });
     const connector = createYouTubeConnector(deps);
     const result = await connector.publish(
@@ -290,16 +308,22 @@ describe('YouTube upload and publish', () => {
     );
     expect(result.status).toBe('published');
     expect(expectPublished(result).externalPostId).toBe('FAKEVIDEOID001');
-    expect(expectPublished(result).permalink).toBe('https://www.youtube.com/watch?v=FAKEVIDEOID001');
+    expect(expectPublished(result).permalink).toBe(
+      'https://www.youtube.com/watch?v=FAKEVIDEOID001',
+    );
   });
 
   it('fails permanently when YouTube rejected the video', async () => {
     const { deps } = createTestDeps({
       routes: [
-        { method: 'PUT', match: '/videos', body: {} },{ method: 'GET', match: '/videos', body: YOUTUBE_VIDEO_REJECTED_FIXTURE }],
+        { method: 'PUT', match: '/videos', body: {} },
+        { method: 'GET', match: '/videos', body: YOUTUBE_VIDEO_REJECTED_FIXTURE },
+      ],
     });
     const connector = createYouTubeConnector(deps);
-    const status = await connector.getStatus(testStatusRequest({ connection, providerJobId: 'FAKEVIDEOID002' }));
+    const status = await connector.getStatus(
+      testStatusRequest({ connection, providerJobId: 'FAKEVIDEOID002' }),
+    );
     expect(status.state).toBe('failed');
     expect(status.error?.remediationCode).toBe('provider_rejected_content');
   });
@@ -342,10 +366,14 @@ describe('YouTube metrics', () => {
   it('maps the statistics YouTube returned', async () => {
     const { deps } = createTestDeps({
       routes: [
-        { method: 'PUT', match: '/videos', body: {} },{ method: 'GET', match: '/videos', body: YOUTUBE_VIDEO_STATISTICS_FIXTURE }],
+        { method: 'PUT', match: '/videos', body: {} },
+        { method: 'GET', match: '/videos', body: YOUTUBE_VIDEO_STATISTICS_FIXTURE },
+      ],
     });
     const connector = createYouTubeConnector(deps);
-    const observations = await connector.fetchMetrics(testMetricsRequest({ connection, scope: 'post', externalPostId: 'FAKEVIDEOID001' }));
+    const observations = await connector.fetchMetrics(
+      testMetricsRequest({ connection, scope: 'post', externalPostId: 'FAKEVIDEOID001' }),
+    );
     expect(observations.find((entry) => entry.normalizedName === 'views')?.value).toBe(15_230);
     expect(observations.find((entry) => entry.normalizedName === 'likes')?.value).toBe(412);
   });
@@ -358,7 +386,9 @@ describe('YouTube metrics', () => {
       ],
     });
     const connector = createYouTubeConnector(deps);
-    const observations = await connector.fetchMetrics(testMetricsRequest({ connection, scope: 'post', externalPostId: 'FAKEVIDEOID003' }));
+    const observations = await connector.fetchMetrics(
+      testMetricsRequest({ connection, scope: 'post', externalPostId: 'FAKEVIDEOID003' }),
+    );
     const likes = observations.find((entry) => entry.normalizedName === 'likes');
     expect(likes?.value).toBeNull();
     expect(likes?.availability).toBe('unavailable_provider');
@@ -369,7 +399,9 @@ describe('YouTube metrics', () => {
       routes: [{ method: 'GET', match: '/channels', body: YOUTUBE_CHANNELS_FIXTURE }],
     });
     const connector = createYouTubeConnector(deps);
-    const accounts = await connector.discoverAccounts(testGrant({ provider: 'youtube', scopes: SCOPES }));
+    const accounts = await connector.discoverAccounts(
+      testGrant({ provider: 'youtube', scopes: SCOPES }),
+    );
     expect(accounts).toHaveLength(1);
     expect(accounts[0]?.externalAccountId).toBe('UCFAKECHANNEL0000000001');
     expect(accounts[0]?.metadata['longUploadsAllowed']).toBe(false);

@@ -242,9 +242,7 @@ export function createOAuthAppService(deps: ServiceDeps): OAuthAppService {
           where: { id: appId },
           data: {
             ...(patch.name === undefined ? {} : { name: patch.name }),
-            ...(patch.redirectUris === undefined
-              ? {}
-              : { redirectUris: [...patch.redirectUris] }),
+            ...(patch.redirectUris === undefined ? {} : { redirectUris: [...patch.redirectUris] }),
             ...(scopes === undefined ? {} : { allowedScopes: [...scopes] }),
             ...(patch.status === undefined ? {} : { status: patch.status }),
           },
@@ -335,10 +333,7 @@ export function createOAuthAppService(deps: ServiceDeps): OAuthAppService {
       });
     },
 
-    async listGrants(
-      ctx: ActorContext,
-      query: PageQuery = {},
-    ): Promise<Paginated<OAuthGrantView>> {
+    async listGrants(ctx: ActorContext, query: PageQuery = {}): Promise<Paginated<OAuthGrantView>> {
       return authorized(deps, ctx, 'developer.manage', undefined, async (db) => {
         const args = pageArgs(query);
         const rows = await db.oAuthGrant.findMany({

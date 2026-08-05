@@ -145,7 +145,12 @@ export function ScheduleSheet({
                   id={control.id}
                   type="time"
                   value={localTime}
-                  onChange={(event) => setLocal(localDate || isoDateIn(new Date().toISOString(), zone), event.target.value)}
+                  onChange={(event) =>
+                    setLocal(
+                      localDate || isoDateIn(new Date().toISOString(), zone),
+                      event.target.value,
+                    )
+                  }
                 />
               )}
             </Field>
@@ -183,7 +188,7 @@ export function ScheduleSheet({
               {t.full('composerWeb.summary.notScheduled')}
             </p>
           ) : (
-            <p className="text-body-sm tabular-nums text-text-secondary">
+            <p className="text-body-sm text-text-secondary tabular-nums">
               {t.full('composer.schedule.localAndUtc', {
                 local: formatDateTime(t.locale, instant, {
                   timeZone: zone,
@@ -239,7 +244,7 @@ export function ScheduleSheet({
                 return (
                   <li
                     key={summary.connectionId}
-                    className="border-b border-border-subtle py-3 last:border-b-0"
+                    className="border-border-subtle border-b py-3 last:border-b-0"
                   >
                     <DefinitionList
                       layout="columns"
@@ -270,8 +275,7 @@ export function ScheduleSheet({
                         {
                           id: 'audience',
                           term: t.full('composerWeb.native.privacy'),
-                          definition:
-                            settings?.privacyValue ?? t.full('common.notSet'),
+                          definition: settings?.privacyValue ?? t.full('common.notSet'),
                         },
                         {
                           id: 'disclosure',
@@ -364,7 +368,7 @@ export function ScheduleSheet({
           >
             {t.full('action.publishNow')}
           </Button>
-          <p className="w-full text-body-sm text-text-tertiary">
+          <p className="text-body-sm text-text-tertiary w-full">
             {t.full('composerWeb.review.publishConfirm', { count: totals.targetCount })}
           </p>
         </SheetFooter>

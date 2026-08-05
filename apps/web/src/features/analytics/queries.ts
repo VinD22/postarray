@@ -35,8 +35,7 @@ export const analyticsKeys = {
   post: (contentItemId: string) => ['analytics', 'post', contentItemId] as const,
   series: (connectionId: string, metric: NormalizedMetricName, range: AnalyticsRange) =>
     ['analytics', 'series', connectionId, metric, range] as const,
-  experiments: (workspaceScope: string) =>
-    ['analytics', 'experiments', workspaceScope] as const,
+  experiments: (workspaceScope: string) => ['analytics', 'experiments', workspaceScope] as const,
   experiment: (experimentId: string) => ['analytics', 'experiment', experimentId] as const,
 };
 

@@ -132,11 +132,7 @@ export interface AccountFreshnessRow {
 }
 
 export type AccountAttentionReason =
-  | 'permission_missing'
-  | 'access_expired'
-  | 'stale'
-  | 'sync_failing'
-  | 'no_posts';
+  'permission_missing' | 'access_expired' | 'stale' | 'sync_failing' | 'no_posts';
 
 export interface AccountAttentionRow {
   readonly account: AccountRef;

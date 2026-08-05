@@ -52,9 +52,7 @@ export interface MakeMetricObservationInput {
 }
 
 /** One available reading. */
-export function makeMetricObservation(
-  input: MakeMetricObservationInput = {},
-): MetricObservation {
+export function makeMetricObservation(input: MakeMetricObservationInput = {}): MetricObservation {
   const normalizedName = input.normalizedName ?? 'impressions';
   const provider = input.provider ?? 'x';
   return metricObservationSchema.parse({
@@ -63,7 +61,10 @@ export function makeMetricObservation(
     providerField: PROVIDER_FIELDS[normalizedName] ?? normalizedName,
     scope: input.scope ?? 'post',
     value: input.value ?? 120,
-    unit: normalizedName === 'watch_time' || normalizedName === 'avg_view_duration' ? 'seconds' : 'count',
+    unit:
+      normalizedName === 'watch_time' || normalizedName === 'avg_view_duration'
+        ? 'seconds'
+        : 'count',
     denominator: 'none',
     availability: 'available',
     observedAt: input.observedAt ?? FIXTURE_NOW,
@@ -140,9 +141,7 @@ export function makeAccountMetrics(provider: ProviderId = 'x'): readonly MetricO
   ];
 }
 
-export function makeMetricDefinition(
-  overrides: Partial<MetricDefinition> = {},
-): MetricDefinition {
+export function makeMetricDefinition(overrides: Partial<MetricDefinition> = {}): MetricDefinition {
   const normalizedName = overrides.normalizedName ?? 'impressions';
   return metricDefinitionSchema.parse({
     provider: 'x',

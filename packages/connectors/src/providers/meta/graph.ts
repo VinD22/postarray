@@ -59,7 +59,10 @@ export type MetaError = z.infer<typeof metaErrorSchema>;
 
 export const metaPagingSchema = z
   .object({
-    cursors: z.object({ before: z.string().optional(), after: z.string().optional() }).loose().optional(),
+    cursors: z
+      .object({ before: z.string().optional(), after: z.string().optional() })
+      .loose()
+      .optional(),
     next: z.string().optional(),
     previous: z.string().optional(),
   })
@@ -108,7 +111,10 @@ export const metaPageSchema = z
       .object({ data: z.object({ url: z.string().optional() }).loose().optional() })
       .loose()
       .optional(),
-    instagram_business_account: z.object({ id: z.string().min(1) }).loose().optional(),
+    instagram_business_account: z
+      .object({ id: z.string().min(1) })
+      .loose()
+      .optional(),
   })
   .loose();
 export type MetaPage = z.infer<typeof metaPageSchema>;

@@ -87,7 +87,8 @@ async function seedMetricDefinitions(tx: RlsTransactionClient): Promise<void> {
     {
       id: SEED_METRIC_IDS.shares,
       providerFieldName: 'repost_count',
-      providerDefinition: 'Simulated reposts. Quote reposts are counted separately and not exposed.',
+      providerDefinition:
+        'Simulated reposts. Quote reposts are counted separately and not exposed.',
       normalizedName: 'shares',
       unit: 'count' as const,
       availability: 'available' as const,
@@ -167,7 +168,8 @@ async function seedToolCatalog(tx: RlsTransactionClient): Promise<void> {
       priceNote: 'Seed record. No price has been verified.',
       rightsCaveats: 'Seed record. Rights terms have not been reviewed.',
       privacyCaveats: 'Seed record. Data handling has not been reviewed.',
-      limitations: 'This entry exists so the empty state can be exercised. It is not a recommendation.',
+      limitations:
+        'This entry exists so the empty state can be exercised. It is not a recommendation.',
       integrations: [],
       isAffiliate: false,
     },

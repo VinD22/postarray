@@ -11,7 +11,10 @@ import { buildOpenApiDocument } from './document.js';
  * exact bytes: a snapshot test here would break on every new route and teach
  * people to re-record it without reading it.
  */
-const document = buildOpenApiDocument({ serverUrl: 'https://api.relay.test', version: API_VERSION });
+const document = buildOpenApiDocument({
+  serverUrl: 'https://api.relay.test',
+  version: API_VERSION,
+});
 
 function operation(path: string, method: string): Record<string, unknown> {
   const paths = document['paths'];
@@ -31,7 +34,9 @@ function operation(path: string, method: string): Record<string, unknown> {
 
 function parameters(path: string, method: string): Record<string, unknown>[] {
   const value = operation(path, method)['parameters'];
-  return Array.isArray(value) ? value.map((entry) => Object.fromEntries(Object.entries(entry))) : [];
+  return Array.isArray(value)
+    ? value.map((entry) => Object.fromEntries(Object.entries(entry)))
+    : [];
 }
 
 describe('openapi document', () => {

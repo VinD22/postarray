@@ -38,8 +38,7 @@ export const billingMessages = {
     'Polar collects a payment method now and charges nothing today.',
   'billing.trial.firstCharge': 'First charge {amount} on {date}',
   'billing.trial.renewal': 'Renews {amount} every {interval} after that',
-  'billing.trial.cancelBefore':
-    'Cancel in Settings before this date and you will not be charged.',
+  'billing.trial.cancelBefore': 'Cancel in Settings before this date and you will not be charged.',
   'billing.trial.reminder': 'Polar emails you three days before the trial converts.',
   'billing.trial.daysRemaining':
     '{count, plural, =0 {Trial ends today} one {Trial, # day remaining} other {Trial, # days remaining}}',
@@ -49,7 +48,8 @@ export const billingMessages = {
     'Repeat trials are limited. If a trial is not available for this account, contact support.',
 
   'billing.checkout.open': 'Continue to checkout',
-  'billing.checkout.hostedBy': 'Checkout and invoices are handled by Polar, our merchant of record.',
+  'billing.checkout.hostedBy':
+    'Checkout and invoices are handled by Polar, our merchant of record.',
   'billing.checkout.taxNote': 'Polar collects and remits any sales tax or VAT that applies.',
   'billing.checkout.notEntitledYet':
     'We grant access after Polar confirms the subscription, not from the browser redirect. This usually takes a few seconds.',

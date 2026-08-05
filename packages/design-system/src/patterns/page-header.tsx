@@ -42,7 +42,7 @@ export function PageHeader({
     <header
       id={id}
       className={cn(
-        'flex flex-col gap-3 border-b border-border-default bg-surface-canvas',
+        'border-border-default bg-surface-canvas flex flex-col gap-3 border-b',
         'px-4 py-4 md:px-6',
         sticky && 'sticky top-0 z-(--z-index-sticky)',
         className,
@@ -52,11 +52,9 @@ export function PageHeader({
 
       <div className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
         <div className="flex min-w-0 flex-col gap-1">
-          <h1 className="text-title-lg text-balance text-text-primary">{title}</h1>
+          <h1 className="text-title-lg text-text-primary text-balance">{title}</h1>
           {description ? (
-            <p className="max-w-[70ch] text-body-md text-text-secondary">
-              {description}
-            </p>
+            <p className="text-body-md text-text-secondary max-w-[70ch]">{description}</p>
           ) : null}
         </div>
         {actions ? (

@@ -184,9 +184,7 @@ describe('the content checksum', () => {
 
   it('changes when the privacy setting changes', async () => {
     const before = await computeContentChecksum(master(), [variant]);
-    const after = await computeContentChecksum(master(), [
-      { ...variant, privacyValue: 'private' },
-    ]);
+    const after = await computeContentChecksum(master(), [{ ...variant, privacyValue: 'private' }]);
     expect(before).not.toBe(after);
   });
 

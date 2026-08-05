@@ -332,7 +332,10 @@ export function scanOutput(text: string, options: OutputScanOptions = {}): Guard
 }
 
 /** Walk every string in a parsed object and scan it. */
-export function scanOutputTree(value: unknown, options: OutputScanOptions = {}): GuardrailFinding[] {
+export function scanOutputTree(
+  value: unknown,
+  options: OutputScanOptions = {},
+): GuardrailFinding[] {
   const findings: GuardrailFinding[] = [];
   const visit = (node: unknown, depth: number): void => {
     if (depth > 12) {

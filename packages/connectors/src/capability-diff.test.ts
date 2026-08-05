@@ -173,7 +173,9 @@ describe('assertSnapshotUsable', () => {
   });
 
   it('refuses a snapshot past its age budget', () => {
-    expect(() => assertSnapshotUsable(snapshot(), { clock, maxAgeSeconds: 10 })).toThrow(RelayError);
+    expect(() => assertSnapshotUsable(snapshot(), { clock, maxAgeSeconds: 10 })).toThrow(
+      RelayError,
+    );
   });
 });
 

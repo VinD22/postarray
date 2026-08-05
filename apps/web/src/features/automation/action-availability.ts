@@ -17,11 +17,7 @@ import { ACTIONS, type ActionSpec } from './catalog';
  * produce different sentences, because they are different facts.
  */
 
-export type CapabilitySupport =
-  | 'supported'
-  | 'unsupported'
-  | 'not_implemented'
-  | 'requires_review';
+export type CapabilitySupport = 'supported' | 'unsupported' | 'not_implemented' | 'requires_review';
 
 export interface ConnectionCapabilities {
   readonly connectionId: string;

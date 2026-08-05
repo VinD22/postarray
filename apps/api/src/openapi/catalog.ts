@@ -115,10 +115,7 @@ import {
   listMediaQuerySchema,
   setAltTextSchema,
 } from '../modules/media/media.schemas.js';
-import {
-  publishNowSchema,
-  retryTargetSchema,
-} from '../modules/publishing/publishing.schemas.js';
+import { publishNowSchema, retryTargetSchema } from '../modules/publishing/publishing.schemas.js';
 import {
   createFeedSchema,
   listFeedsQuerySchema,
@@ -214,8 +211,7 @@ export const OPERATIONS: readonly OperationSpec[] = [
     method: 'post',
     path: '/v1/auth/signup',
     operationId: 'auth.signUp',
-    summary:
-      'Create an identity. Always 202, whether or not the address already exists.',
+    summary: 'Create an identity. Always 202, whether or not the address already exists.',
     tag: 'auth',
     public: true,
     body: signUpSchema,
@@ -505,8 +501,7 @@ export const OPERATIONS: readonly OperationSpec[] = [
     method: 'get',
     path: '/v1/connections/{id}/capabilities',
     operationId: 'connections.capabilities',
-    summary:
-      'What this account can do now. Keeps `unsupported` and `not_implemented` apart.',
+    summary: 'What this account can do now. Keeps `unsupported` and `not_implemented` apart.',
     tag: 'connections',
     scopes: ['accounts:read'],
     pathParams: p('id', connectionIdSchema),
@@ -1440,8 +1435,7 @@ export const OPERATIONS: readonly OperationSpec[] = [
     method: 'post',
     path: '/v1/webhooks/polar',
     operationId: 'billing.polarWebhook',
-    summary:
-      'Polar receiver. Signature is verified over the raw bytes before the body is parsed.',
+    summary: 'Polar receiver. Signature is verified over the raw bytes before the body is parsed.',
     tag: 'billing',
     public: true,
   },

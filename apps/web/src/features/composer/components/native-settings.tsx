@@ -9,7 +9,7 @@
  * forbids one.
  */
 
-import { useCallback, type ReactNode } from 'react';
+import { type ReactNode, useCallback, useMemo } from 'react';
 import {
   Field,
   Select,
@@ -63,7 +63,8 @@ export function NativeSettings({
   const providerName = PROVIDER_LABEL[summary.account.provider];
   const settings = state.settings[summary.connectionId];
   const destinationCapability = snapshot.destinations.find((entry) => entry.kind !== 'none');
-  const mentions = settings?.mentions ?? [];
+  // A fresh [] each render would change the identity of every dependent hook.
+  const mentions = useMemo(() => settings?.mentions ?? [], [settings?.mentions]);
 
   const onDestination = useCallback(
     (entity: ResolvedEntity | null) => {
@@ -170,9 +171,7 @@ export function NativeSettings({
               <SelectTrigger
                 id={control.id}
                 aria-describedby={control['aria-describedby']}
-                invalid={summary.issues.some(
-                  (issue) => issue.code === 'PRIVACY_SETTING_REQUIRED',
-                )}
+                invalid={summary.issues.some((issue) => issue.code === 'PRIVACY_SETTING_REQUIRED')}
               >
                 <SelectValue placeholder={t.full('composerWeb.native.privacyChoose')} />
               </SelectTrigger>
@@ -210,25 +209,23 @@ export function NativeSettings({
             {mentions.map((mention) => (
               <li
                 key={mention.mentionId}
-                className="flex items-center justify-between gap-2 border-b border-border-subtle py-1.5 last:border-b-0"
+                className="border-border-subtle flex items-center justify-between gap-2 border-b py-1.5 last:border-b-0"
               >
-                <span className="min-w-0 truncate text-body-md text-text-primary">
+                <span className="text-body-md text-text-primary min-w-0 truncate">
                   {mention.displayLabel}
                 </span>
-                <span className="shrink-0 font-mono text-mono text-text-tertiary">
+                <span className="text-mono text-text-tertiary shrink-0 font-mono">
                   {mention.externalId}
                 </span>
                 <button
                   type="button"
-                  className="shrink-0 rounded-md px-2 py-1 text-body-sm text-text-secondary hover:bg-surface-hover focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-border-focus"
+                  className="text-body-sm text-text-secondary hover:bg-surface-hover focus-visible:outline-border-focus shrink-0 rounded-md px-2 py-1 focus-visible:outline-2 focus-visible:outline-offset-2"
                   onClick={() =>
                     dispatch({
                       type: 'variant/settings',
                       connectionId: summary.connectionId,
                       patch: {
-                        mentions: mentions.filter(
-                          (entry) => entry.mentionId !== mention.mentionId,
-                        ),
+                        mentions: mentions.filter((entry) => entry.mentionId !== mention.mentionId),
                       },
                     })
                   }
@@ -292,7 +289,7 @@ function DisclosureRow({
 
   if (support !== 'supported') {
     return (
-      <p className="py-1 text-body-sm text-text-tertiary">
+      <p className="text-body-sm text-text-tertiary py-1">
         {t.full('composerWeb.native.disclosureUnsupported', {
           provider: PROVIDER_LABEL[summary.account.provider],
         })}

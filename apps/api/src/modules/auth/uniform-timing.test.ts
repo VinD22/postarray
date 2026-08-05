@@ -69,10 +69,13 @@ describe('withUniformTiming', () => {
         setTimeout(resolve, ms);
       });
     const duration = await elapsed(() =>
-      withUniformTiming(async () => {
-        await sleep(FLOOR_MS * 2);
-        return 'slow';
-      }, { floorMs: FLOOR_MS, jitterMs: 0 }),
+      withUniformTiming(
+        async () => {
+          await sleep(FLOOR_MS * 2);
+          return 'slow';
+        },
+        { floorMs: FLOOR_MS, jitterMs: 0 },
+      ),
     );
     expect(duration).toBeGreaterThanOrEqual(FLOOR_MS * 2 - 5);
   });

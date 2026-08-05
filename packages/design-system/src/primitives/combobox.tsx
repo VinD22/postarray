@@ -169,13 +169,10 @@ export const Combobox = forwardRef<ComboboxHandle, ComboboxProps>(function Combo
         position === -1
           ? (selectableIndexes[direction === 1 ? 0 : selectableIndexes.length - 1] ?? -1)
           : (selectableIndexes[
-              (position + direction + selectableIndexes.length) %
-                selectableIndexes.length
+              (position + direction + selectableIndexes.length) % selectableIndexes.length
             ] ?? -1);
       setActiveIndex(next);
-      const option = listRef.current?.querySelector<HTMLElement>(
-        `[data-index="${next}"]`,
-      );
+      const option = listRef.current?.querySelector<HTMLElement>(`[data-index="${next}"]`);
       option?.scrollIntoView({ block: 'nearest' });
     },
     [activeIndex, selectableIndexes],
@@ -244,10 +241,10 @@ export const Combobox = forwardRef<ComboboxHandle, ComboboxProps>(function Combo
     <div ref={rootRef} className={cn('relative', className)}>
       <div
         className={cn(
-          'flex items-center gap-1 rounded-md border bg-surface-raised',
+          'bg-surface-raised flex items-center gap-1 rounded-md border',
           'h-8 ps-2.5 pe-1',
           invalid ? 'border-destructive-border' : 'border-border-strong',
-          disabled && 'cursor-not-allowed bg-surface-sunken',
+          disabled && 'bg-surface-sunken cursor-not-allowed',
           'focus-within:outline-2 focus-within:outline-offset-2',
           'focus-within:outline-[color:var(--border-focus)]',
           transitionBase,
@@ -284,8 +281,8 @@ export const Combobox = forwardRef<ComboboxHandle, ComboboxProps>(function Combo
           onFocus={() => setOpen(true)}
           onKeyDown={onKeyDown}
           className={cn(
-            'min-w-0 flex-1 bg-transparent text-body-md text-text-primary outline-none',
-            'placeholder:text-text-tertiary disabled:cursor-not-allowed disabled:text-text-disabled',
+            'text-body-md text-text-primary min-w-0 flex-1 bg-transparent outline-none',
+            'placeholder:text-text-tertiary disabled:text-text-disabled disabled:cursor-not-allowed',
           )}
         />
         {status === 'loading' ? <Spinner size="sm" /> : null}
@@ -328,18 +325,14 @@ export const Combobox = forwardRef<ComboboxHandle, ComboboxProps>(function Combo
           aria-label={messages.label}
           className={cn(
             'absolute start-0 end-0 z-(--z-index-dropdown) mt-1 max-h-64 overflow-y-auto',
-            'rounded-lg border border-border-default bg-surface-overlay p-1 shadow-overlay',
+            'border-border-default bg-surface-overlay shadow-overlay rounded-lg border p-1',
             'relay-scrollbar relay-anim-fade-in',
           )}
         >
           {status === 'error' ? (
-            <li className="px-2 py-2 text-body-sm text-destructive-fg">
-              {messages.error}
-            </li>
+            <li className="text-body-sm text-destructive-fg px-2 py-2">{messages.error}</li>
           ) : items.length === 0 && status !== 'loading' ? (
-            <li className="px-2 py-2 text-body-sm text-text-secondary">
-              {messages.empty}
-            </li>
+            <li className="text-body-sm text-text-secondary px-2 py-2">{messages.empty}</li>
           ) : (
             items.map((item, index) => (
               <li
@@ -361,16 +354,14 @@ export const Combobox = forwardRef<ComboboxHandle, ComboboxProps>(function Combo
                   'flex cursor-default items-start gap-2 rounded-sm px-2 py-1.5',
                   'text-body-md text-text-primary',
                   index === activeIndex && 'bg-surface-hover',
-                  item.disabled && 'cursor-not-allowed text-text-disabled',
+                  item.disabled && 'text-text-disabled cursor-not-allowed',
                 )}
               >
-                {item.leading ? (
-                  <span className="mt-0.5 shrink-0">{item.leading}</span>
-                ) : null}
+                {item.leading ? <span className="mt-0.5 shrink-0">{item.leading}</span> : null}
                 <span className="flex min-w-0 flex-col">
                   <span className="truncate">{item.label}</span>
                   {item.description ? (
-                    <span className="truncate text-body-sm text-text-tertiary">
+                    <span className="text-body-sm text-text-tertiary truncate">
                       {item.description}
                     </span>
                   ) : null}

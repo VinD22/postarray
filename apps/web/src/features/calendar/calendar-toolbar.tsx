@@ -35,12 +35,7 @@ import { useTranslations } from '@relay/i18n/react';
 import { useProviderName } from '@/features/connections/provider';
 import { useCalendarFormat } from './format';
 import { countActiveFilters } from './filters';
-import type {
-  CalendarFilterOptions,
-  CalendarFilters,
-  CalendarView,
-  QueueBucket,
-} from './types';
+import type { CalendarFilterOptions, CalendarFilters, CalendarView, QueueBucket } from './types';
 
 const VIEWS: readonly CalendarView[] = ['day', 'week', 'month', 'list'];
 const BUCKETS: readonly QueueBucket[] = ['scheduled', 'draft', 'published', 'failed'];
@@ -80,9 +75,7 @@ export function CalendarToolbar(props: CalendarToolbarProps): ReactNode {
           <TabsList aria-label={t('web.calendar.view.switchLabel')} className="border-b-0">
             {VIEWS.map((view) => (
               <TabsTrigger key={view} value={view}>
-                {view === 'list'
-                  ? t('web.calendar.view.table')
-                  : t(`calendar.view.${view}`)}
+                {view === 'list' ? t('web.calendar.view.table') : t(`calendar.view.${view}`)}
               </TabsTrigger>
             ))}
           </TabsList>
@@ -109,7 +102,7 @@ export function CalendarToolbar(props: CalendarToolbarProps): ReactNode {
         </div>
 
         <div className="flex min-w-0 items-center gap-2">
-          <CalendarDays aria-hidden="true" className="size-4 shrink-0 text-text-tertiary" />
+          <CalendarDays aria-hidden="true" className="text-text-tertiary size-4 shrink-0" />
           <Label htmlFor={dateInputId} className="sr-only">
             {t('calendar.goToDate')}
           </Label>
@@ -119,7 +112,7 @@ export function CalendarToolbar(props: CalendarToolbarProps): ReactNode {
             value={props.anchorIso}
             onChange={(event) => props.onAnchorChange(event.target.value)}
             className={cn(
-              'h-8 rounded-md border border-border-strong bg-surface-raised px-2',
+              'border-border-strong bg-surface-raised h-8 rounded-md border px-2',
               'text-body-md text-text-primary tabular-nums',
               'outline-none focus-visible:outline-2 focus-visible:outline-offset-2',
               'focus-visible:outline-[color:var(--border-focus)]',
@@ -127,7 +120,7 @@ export function CalendarToolbar(props: CalendarToolbarProps): ReactNode {
           />
         </div>
 
-        <p className="min-w-0 text-body-md text-text-secondary">
+        <p className="text-body-md text-text-secondary min-w-0">
           {t('web.calendar.range.label', {
             range: props.rangeLabel,
             timeZone: format.zoneLabel(),
@@ -175,7 +168,7 @@ export function CalendarToolbar(props: CalendarToolbarProps): ReactNode {
         />
       </div>
 
-      <p className="flex items-center gap-1.5 text-body-sm text-text-tertiary md:hidden">
+      <p className="text-body-sm text-text-tertiary flex items-center gap-1.5 md:hidden">
         <Globe aria-hidden="true" className="size-3.5" />
         {t('web.calendar.timeZone.workspace', { timeZone: format.zoneLabel() })}
       </p>
@@ -340,10 +333,7 @@ function FilterSelect({
       <Label htmlFor={id} className="text-label text-text-tertiary">
         {label}
       </Label>
-      <Select
-        value={value ?? ANY}
-        onValueChange={(next) => onChange(next === ANY ? null : next)}
-      >
+      <Select value={value ?? ANY} onValueChange={(next) => onChange(next === ANY ? null : next)}>
         <SelectTrigger id={id} size="sm" aria-label={label}>
           <SelectValue />
         </SelectTrigger>

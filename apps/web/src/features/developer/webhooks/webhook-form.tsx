@@ -105,11 +105,11 @@ export function WebhookForm({
           onValueChange={(value) => setEventMode(value === 'all' ? 'all' : 'selected')}
           className="flex flex-col"
         >
-          <label className="flex min-h-11 items-center gap-2 text-body-md text-text-primary">
+          <label className="text-body-md text-text-primary flex min-h-11 items-center gap-2">
             <RadioGroupItem value="all" />
             {t('developer.ui.webhooks.eventsAll')}
           </label>
-          <label className="flex min-h-11 items-center gap-2 text-body-md text-text-primary">
+          <label className="text-body-md text-text-primary flex min-h-11 items-center gap-2">
             <RadioGroupItem value="selected" />
             {t('developer.ui.webhooks.eventsSelected')}
           </label>
@@ -119,13 +119,13 @@ export function WebhookForm({
           <div className="flex flex-col gap-4 pt-2">
             {groups.map((group) => (
               <fieldset key={group.id} className="flex flex-col gap-1 border-0 p-0">
-                <legend className="pb-1 text-body-md font-medium text-text-primary">
+                <legend className="text-body-md text-text-primary pb-1 font-medium">
                   {t(group.titleKey)}
                 </legend>
                 <ul className="flex flex-col sm:grid sm:grid-cols-2">
                   {group.events.map((event) => (
                     <li key={event}>
-                      <label className="flex min-h-11 items-center gap-2 text-body-md">
+                      <label className="text-body-md flex min-h-11 items-center gap-2">
                         <Checkbox
                           checked={events.includes(event)}
                           onCheckedChange={(checked) => toggleEvent(event, checked === true)}
@@ -150,11 +150,11 @@ export function WebhookForm({
           onValueChange={(value) => setScopeMode(value === 'all' ? 'all' : 'selected')}
           className="flex flex-col"
         >
-          <label className="flex min-h-11 items-center gap-2 text-body-md text-text-primary">
+          <label className="text-body-md text-text-primary flex min-h-11 items-center gap-2">
             <RadioGroupItem value="all" />
             {t('developer.ui.webhooks.scopeAll')}
           </label>
-          <label className="flex min-h-11 items-center gap-2 text-body-md text-text-primary">
+          <label className="text-body-md text-text-primary flex min-h-11 items-center gap-2">
             <RadioGroupItem value="selected" />
             {t('developer.ui.webhooks.scopeSelected')}
           </label>
@@ -164,7 +164,7 @@ export function WebhookForm({
           <ul className="flex flex-col ps-6 sm:grid sm:grid-cols-2">
             {connections.map((connection) => (
               <li key={connection.id}>
-                <label className="flex min-h-11 items-center gap-2 text-body-md text-text-primary">
+                <label className="text-body-md text-text-primary flex min-h-11 items-center gap-2">
                   <Checkbox
                     checked={connectionIds.includes(connection.id)}
                     onCheckedChange={(checked) =>

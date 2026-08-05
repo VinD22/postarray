@@ -58,10 +58,7 @@ export interface FeedDetailScreenProps {
   readonly feedTitle?: string;
 }
 
-export function FeedDetailScreen({
-  feedId,
-  feedTitle,
-}: FeedDetailScreenProps): ReactElement {
+export function FeedDetailScreen({ feedId, feedTitle }: FeedDetailScreenProps): ReactElement {
   const t = useTranslations();
   const router = useRouter();
   const format = useValueFormat();
@@ -116,9 +113,7 @@ export function FeedDetailScreen({
           <Button
             variant="secondary"
             loading={update.isPending}
-            onClick={() =>
-              update.mutate({ feedId, draft: {} })
-            }
+            onClick={() => update.mutate({ feedId, draft: {} })}
           >
             {paused ? t('automation.rss.resumeFeed') : t('automation.rss.pauseFeed')}
           </Button>
@@ -148,9 +143,7 @@ export function FeedDetailScreen({
               id: 'poll',
               term: t('automation.rss.health.lastPollLabel'),
               definition:
-                data.lastPollAt === null
-                  ? t('common.notSet')
-                  : format.relative(data.lastPollAt),
+                data.lastPollAt === null ? t('common.notSet') : format.relative(data.lastPollAt),
               hint:
                 data.nextPollAt === null
                   ? undefined
@@ -200,11 +193,11 @@ export function FeedDetailScreen({
             description={t('automation.rules.runs.empty')}
           />
         ) : (
-          <ul className="flex flex-col border-t border-border-subtle">
+          <ul className="border-border-subtle flex flex-col border-t">
             {data.recentItems.map((item) => (
               <li
                 key={item.id}
-                className="flex flex-col gap-1 border-b border-border-subtle py-3 sm:flex-row sm:items-start sm:justify-between sm:gap-4"
+                className="border-border-subtle flex flex-col gap-1 border-b py-3 sm:flex-row sm:items-start sm:justify-between sm:gap-4"
               >
                 <div className="flex min-w-0 flex-col gap-0.5">
                   <span className="text-body-md text-text-primary">{item.title}</span>

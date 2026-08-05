@@ -1,15 +1,15 @@
-import { createCipheriv, createDecipheriv, createHash, randomBytes, timingSafeEqual } from 'node:crypto';
+import {
+  createCipheriv,
+  createDecipheriv,
+  createHash,
+  randomBytes,
+  timingSafeEqual,
+} from 'node:crypto';
 
 import { RelayError, isoInstantSchema } from '@relay/contracts';
 import { z } from 'zod';
 
-import {
-  type Clock,
-  type ConnectorLogger,
-  instantOf,
-  noopLogger,
-  systemClock,
-} from './ports.js';
+import { type Clock, type ConnectorLogger, instantOf, noopLogger, systemClock } from './ports.js';
 
 /**
  * The credential vault.
@@ -406,7 +406,9 @@ export class CredentialVault {
         details: { reason: 'VAULT_NO_KEY_PROVIDER' },
       });
     }
-    this.#providers = new Map(options.keyProviders.map((provider) => [provider.keyVersion, provider]));
+    this.#providers = new Map(
+      options.keyProviders.map((provider) => [provider.keyVersion, provider]),
+    );
     const highest = [...this.#providers.values()].reduce((best, candidate) =>
       candidate.keyVersion > best.keyVersion ? candidate : best,
     );

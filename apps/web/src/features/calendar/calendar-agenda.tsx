@@ -67,11 +67,9 @@ export function CalendarAgenda({
         const wall = toWallClock(day, timeZone);
         const dayEntries = grouped.get(`${wall.year}-${wall.month}-${wall.day}`) ?? [];
         return (
-          <div key={day.toISOString()} className="border-b border-border-subtle last:border-b-0">
+          <div key={day.toISOString()} className="border-border-subtle border-b last:border-b-0">
             <h3 className="flex items-baseline gap-2 px-4 py-2 md:px-6">
-              <span className="text-title-sm text-text-primary">
-                {format.date(day, 'medium')}
-              </span>
+              <span className="text-title-sm text-text-primary">{format.date(day, 'medium')}</span>
               <span className="text-body-sm text-text-tertiary">
                 {t('calendar.slotCount', { count: dayEntries.length })}
               </span>

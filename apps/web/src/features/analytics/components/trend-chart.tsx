@@ -102,12 +102,7 @@ export interface TrendChartProps {
   readonly unit: MetricSeriesView['unit'];
 }
 
-export function TrendChart({
-  series,
-  title,
-  summary,
-  unit,
-}: TrendChartProps): ReactElement {
+export function TrendChart({ series, title, summary, unit }: TrendChartProps): ReactElement {
   const t = useTranslations();
   const format = useValueFormat();
   const titleId = useId();
@@ -132,7 +127,7 @@ export function TrendChart({
     );
   }
 
-  const hovered = hoverIndex === null ? null : primary.points[hoverIndex] ?? null;
+  const hovered = hoverIndex === null ? null : (primary.points[hoverIndex] ?? null);
 
   const handlePointer = (event: PointerEvent<SVGSVGElement>): void => {
     const bounds = event.currentTarget.getBoundingClientRect();
@@ -172,7 +167,7 @@ export function TrendChart({
           {series.map((entry, entryIndex) => (
             <li
               key={entry.id}
-              className="flex items-center gap-1.5 text-body-sm text-text-secondary"
+              className="text-body-sm text-text-secondary flex items-center gap-1.5"
             >
               <svg
                 aria-hidden="true"
@@ -233,16 +228,14 @@ export function TrendChart({
 
           {series.map((entry, entryIndex) => (
             <g key={entry.id}>
-              {segments(entry.points).map((run, runIndex) => (
+              {segments(entry.points).map((run) => (
                 <polyline
-                  key={runIndex}
+                  key={`${entry.id}-${String(run[0]?.index ?? 'empty')}`}
                   fill="none"
                   strokeWidth="2"
                   strokeLinejoin="round"
                   strokeLinecap="round"
-                  stroke={
-                    entryIndex === 0 ? 'var(--accent-default)' : 'var(--text-tertiary)'
-                  }
+                  stroke={entryIndex === 0 ? 'var(--accent-default)' : 'var(--text-tertiary)'}
                   strokeDasharray={entryIndex === 0 ? undefined : '6 5'}
                   points={run
                     .map((point) => `${scale.x(point.index)},${scale.y(point.value)}`)
@@ -256,9 +249,7 @@ export function TrendChart({
                     cx={scale.x(index)}
                     cy={scale.y(point.value)}
                     r="4"
-                    fill={
-                      entryIndex === 0 ? 'var(--accent-default)' : 'var(--text-tertiary)'
-                    }
+                    fill={entryIndex === 0 ? 'var(--accent-default)' : 'var(--text-tertiary)'}
                     stroke="var(--surface-canvas)"
                     strokeWidth="2"
                   />
@@ -268,9 +259,7 @@ export function TrendChart({
           ))}
 
           {(primary.annotations ?? []).map((annotation) => {
-            const index = primary.points.findIndex(
-              (point) => point.bucketStart >= annotation.at,
-            );
+            const index = primary.points.findIndex((point) => point.bucketStart >= annotation.at);
             if (index < 0) {
               return null;
             }
@@ -291,7 +280,7 @@ export function TrendChart({
 
         {hovered && hoverIndex !== null ? (
           <p
-            className="pointer-events-none absolute z-(--z-index-raised) max-w-[16rem] -translate-x-1/2 rounded-md border border-border-default bg-surface-overlay px-2 py-1 text-body-sm text-text-primary tabular-nums shadow-overlay rtl:translate-x-1/2"
+            className="border-border-default bg-surface-overlay text-body-sm text-text-primary shadow-overlay pointer-events-none absolute z-(--z-index-raised) max-w-[16rem] -translate-x-1/2 rounded-md border px-2 py-1 tabular-nums rtl:translate-x-1/2"
             style={{
               insetBlockStart: 0,
               insetInlineStart: `${(scale.x(hoverIndex) / VIEW_WIDTH) * 100}%`,
@@ -324,7 +313,7 @@ export function TrendChart({
       ) : null}
 
       {hasGap ? (
-        <p className="max-w-[70ch] text-body-sm text-text-secondary">
+        <p className="text-body-sm text-text-secondary max-w-[70ch]">
           {t('analytics.chart.gapExplained')}
         </p>
       ) : null}
@@ -347,9 +336,7 @@ export function TrendChart({
               {primary.points.map((point, index) => (
                 <TableRow key={point.bucketStart}>
                   <TableCell>
-                    <time dateTime={point.bucketStart}>
-                      {format.dateTime(point.bucketStart)}
-                    </time>
+                    <time dateTime={point.bucketStart}>{format.dateTime(point.bucketStart)}</time>
                   </TableCell>
                   {series.map((entry) => {
                     const value = entry.points[index]?.value ?? null;

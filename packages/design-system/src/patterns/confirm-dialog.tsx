@@ -80,8 +80,7 @@ export function ConfirmDialog({
   const [busy, setBusy] = useState(false);
   const phraseId = useId();
 
-  const phraseSatisfied =
-    !confirmationPhrase || typed.trim() === confirmationPhrase.trim();
+  const phraseSatisfied = !confirmationPhrase || typed.trim() === confirmationPhrase.trim();
 
   const handleConfirm = async (): Promise<void> => {
     if (!phraseSatisfied || busy) return;
@@ -116,7 +115,7 @@ export function ConfirmDialog({
                     <li
                       key={consequence.id}
                       className={cn(
-                        'flex gap-2 text-body-md text-text-secondary',
+                        'text-body-md text-text-secondary flex gap-2',
                         'before:mt-2 before:size-1 before:shrink-0 before:rounded-full',
                         'before:bg-text-tertiary before:content-[""]',
                       )}
@@ -145,12 +144,7 @@ export function ConfirmDialog({
         ) : null}
 
         <DialogFooter>
-          <Button
-            variant="secondary"
-            autoFocus
-            onClick={() => onOpenChange(false)}
-            disabled={busy}
-          >
+          <Button variant="secondary" autoFocus onClick={() => onOpenChange(false)} disabled={busy}>
             {cancelLabel}
           </Button>
           <Button

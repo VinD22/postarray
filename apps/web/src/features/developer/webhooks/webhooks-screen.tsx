@@ -23,7 +23,6 @@ import { CredentialPanel } from '../components/credential-panel.js';
 import { DeliveryLog } from './delivery-log.js';
 import { WebhookForm, type WebhookFormValue } from './webhook-form.js';
 
-
 export function WebhooksScreen(): ReactNode {
   const t = useTranslations();
   const section = t('settings.ui.section.webhooks');
@@ -83,8 +82,7 @@ export function WebhooksScreen(): ReactNode {
 
   const testDelivery = useSettingsMutation({
     section,
-    mutationFn: (input: { endpointId: string }) =>
-      webhooksGateway.testDelivery(input.endpointId),
+    mutationFn: (input: { endpointId: string }) => webhooksGateway.testDelivery(input.endpointId),
     invalidate: [WEBHOOKS_KEY],
     successMessage: t('developer.ui.webhooks.testDeliverySent'),
     onSuccess: () => void deliveries.refetch(),
@@ -162,16 +160,16 @@ export function WebhooksScreen(): ReactNode {
               />
             ) : (
               <>
-                <ul className="flex flex-col border-y border-border-default">
+                <ul className="border-border-default flex flex-col border-y">
                   {rows.map((endpoint) => (
                     <li
                       key={endpoint.id}
-                      className="flex flex-col gap-2 border-b border-border-subtle py-3 last:border-b-0 md:flex-row md:items-start md:justify-between"
+                      className="border-border-subtle flex flex-col gap-2 border-b py-3 last:border-b-0 md:flex-row md:items-start md:justify-between"
                     >
                       <div className="flex min-w-0 flex-col gap-1">
                         <button
                           type="button"
-                          className="w-fit text-start font-mono text-body-md text-text-accent underline-offset-2 hover:underline"
+                          className="text-body-md text-text-accent w-fit text-start font-mono underline-offset-2 hover:underline"
                           aria-current={endpoint.id === selected?.id ? 'true' : undefined}
                           onClick={() => setSelectedId(endpoint.id)}
                         >

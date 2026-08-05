@@ -114,7 +114,9 @@ export function createBufferedClickSink(options: BufferedClickSinkOptions): Buff
 }
 
 /** Keeps every event in memory. Used by tests and by the sandbox deployment. */
-export function createMemoryClickSink(): BufferedClickSink & { readonly events: readonly ClickEvent[] } {
+export function createMemoryClickSink(): BufferedClickSink & {
+  readonly events: readonly ClickEvent[];
+} {
   const events: ClickEvent[] = [];
   return {
     record(event: ClickEvent): void {

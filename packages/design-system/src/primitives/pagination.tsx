@@ -48,10 +48,7 @@ export function Pagination({
   return (
     <nav
       aria-label={messages.label}
-      className={cn(
-        'flex flex-wrap items-center justify-between gap-3 px-3 py-2',
-        className,
-      )}
+      className={cn('flex flex-wrap items-center justify-between gap-3 px-3 py-2', className)}
     >
       <p aria-live="polite" className="text-body-sm text-text-secondary tabular-nums">
         {messages.range}

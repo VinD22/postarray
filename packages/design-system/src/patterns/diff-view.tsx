@@ -73,7 +73,7 @@ export function DiffView({
     <section
       aria-labelledby={headingId}
       className={cn(
-        'flex flex-col gap-3 rounded-lg border border-border-default',
+        'border-border-default flex flex-col gap-3 rounded-lg border',
         'bg-surface-raised p-3',
         className,
       )}
@@ -83,7 +83,7 @@ export function DiffView({
       <div className="grid gap-3 md:grid-cols-2">
         <div className="flex min-w-0 flex-col gap-1.5">
           <p className="text-label text-text-tertiary">{messages.beforeLabel}</p>
-          <p className="whitespace-pre-wrap text-body-md text-text-secondary">
+          <p className="text-body-md text-text-secondary whitespace-pre-wrap">
             {before.map((segment) =>
               segment.operation === 'removed' ? (
                 <del
@@ -102,7 +102,7 @@ export function DiffView({
 
         <div className="flex min-w-0 flex-col gap-1.5">
           <p className="text-label text-text-tertiary">{messages.afterLabel}</p>
-          <p className="whitespace-pre-wrap text-body-md text-text-primary">
+          <p className="text-body-md text-text-primary whitespace-pre-wrap">
             {after.map((segment) =>
               segment.operation === 'added' ? (
                 <ins

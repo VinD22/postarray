@@ -23,8 +23,7 @@ export const calendarMessages = {
   'calendar.filter.status': 'Status',
   'calendar.filter.locale': 'Content language',
   'calendar.filter.campaign': 'Campaign',
-  'calendar.filter.applied':
-    '{count, plural, one {# filter applied} other {# filters applied}}',
+  'calendar.filter.applied': '{count, plural, one {# filter applied} other {# filters applied}}',
 
   'calendar.drag.instructions':
     'Drag a post to a new slot, or select it and use the arrow keys to move it.',
@@ -61,16 +60,15 @@ export const calendarMessages = {
     '{account} needs to be reconnected before {date} or scheduled posts will fail.',
   'actionCenter.item.connectionActionRequired':
     '{account} needs attention on {provider} before it can publish again.',
-  'actionCenter.item.validationFailed': 'A draft for {account} does not pass {provider} validation.',
-  'actionCenter.item.approvalOverdue':
-    'An approval request has been waiting since {date}.',
+  'actionCenter.item.validationFailed':
+    'A draft for {account} does not pass {provider} validation.',
+  'actionCenter.item.approvalOverdue': 'An approval request has been waiting since {date}.',
   'actionCenter.item.scheduleConflict': '{account} has posts scheduled close together on {date}.',
   'actionCenter.item.providerIncident':
     '{provider} is reporting a problem. Scheduled posts will retry.',
   'actionCenter.item.commentFailed':
     'The main post published, but a follow up item for {account} failed.',
-  'actionCenter.item.analyticsStale':
-    'Analytics for {account} have not updated since {date}.',
+  'actionCenter.item.analyticsStale': 'Analytics for {account} have not updated since {date}.',
   'actionCenter.item.rssStalled': 'The feed {name} has not returned a valid item since {date}.',
   'actionCenter.item.webhookFailing':
     'Deliveries to {endpoint} have failed {count, plural, one {# time} other {# times}} in a row.',

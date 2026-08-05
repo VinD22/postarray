@@ -50,12 +50,19 @@ export default function IntegrationsPage(): ReactNode {
       </PageIntro>
 
       <Section id="platforms">
-        <ul className="border-t border-border-default">
+        <ul className="border-border-default border-t">
           {CONNECTORS.map((connector) => (
-            <li key={connector.id} id={connector.id} className="scroll-mt-24 border-b border-border-subtle py-10">
+            <li
+              key={connector.id}
+              id={connector.id}
+              className="border-border-subtle scroll-mt-24 border-b py-10"
+            >
               <div className="grid gap-x-12 gap-y-6 lg:grid-cols-12">
                 <div className="lg:col-span-4">
-                  <Subheading as="h2" className="font-serif text-[1.5rem] leading-[1.2] tracking-[-0.016em]">
+                  <Subheading
+                    as="h2"
+                    className="font-serif text-[1.5rem] leading-[1.2] tracking-[-0.016em]"
+                  >
                     {t.format(connector.nameKey)}
                   </Subheading>
                   <p className="mt-4">

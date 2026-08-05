@@ -2,12 +2,7 @@
 
 import Link from 'next/link';
 
-import {
-  EmptyState,
-  ErrorState,
-  LoadingState,
-  SkeletonList,
-} from '@relay/design-system/patterns';
+import { EmptyState, ErrorState, LoadingState, SkeletonList } from '@relay/design-system/patterns';
 import { Button, StatusDot } from '@relay/design-system/primitives';
 import { cn } from '@relay/design-system/utils';
 
@@ -59,9 +54,7 @@ export function ConnectionHealth() {
       id="home-connections"
       title={t('home.connections.title')}
       meta={
-        connections.length === 0
-          ? undefined
-          : t('home.connections.summary', { healthy, attention })
+        connections.length === 0 ? undefined : t('home.connections.summary', { healthy, attention })
       }
       link={{ href: '/connections', label: t('home.connections.viewAll') }}
     >
@@ -93,7 +86,7 @@ export function ConnectionHealth() {
           }
         />
       ) : (
-        <ul className="flex flex-col border-t border-border-subtle">
+        <ul className="border-border-subtle flex flex-col border-t">
           {sorted.map((connection) => {
             const dot = providerDotKey(connection.provider);
             const needsAttention = !HEALTHY_STATES.has(connection.health);
@@ -101,12 +94,12 @@ export function ConnectionHealth() {
             return (
               <li
                 key={connection.id}
-                className="flex flex-wrap items-center gap-x-3 gap-y-1 border-b border-border-subtle py-2.5"
+                className="border-border-subtle flex flex-wrap items-center gap-x-3 gap-y-1 border-b py-2.5"
               >
                 {dot === undefined ? null : <StatusDot provider={dot} aria-hidden="true" />}
                 <Link
                   href={`/connections/${connection.id}`}
-                  className="min-w-0 flex-1 truncate text-body-md text-text-primary hover:underline"
+                  className="text-body-md text-text-primary min-w-0 flex-1 truncate hover:underline"
                 >
                   {connection.displayName}
                 </Link>
@@ -114,7 +107,7 @@ export function ConnectionHealth() {
                 <span
                   className={cn(
                     'text-body-sm',
-                    needsAttention ? 'font-medium text-warning-fg' : 'text-text-secondary',
+                    needsAttention ? 'text-warning-fg font-medium' : 'text-text-secondary',
                   )}
                 >
                   {t(HEALTH_LABEL_KEY[connection.health], {

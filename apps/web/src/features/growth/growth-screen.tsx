@@ -35,7 +35,6 @@ import { StrategyTab } from './tabs/strategy-tab.js';
 import { ToolRadarTab } from './tabs/tool-radar-tab.js';
 import { UgcTab } from './tabs/ugc-tab.js';
 
-
 /**
  * The Growth Advisor.
  *
@@ -115,8 +114,7 @@ export function GrowthScreen(): ReactNode {
   });
 
   const availableLocales = useMemo(
-    () =>
-      Array.from(new Set((brands.data ?? []).flatMap((brand) => brand.contentLocales))).sort(),
+    () => Array.from(new Set((brands.data ?? []).flatMap((brand) => brand.contentLocales))).sort(),
     [brands.data],
   );
 

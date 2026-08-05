@@ -114,9 +114,7 @@ export function AnalyticsOverviewScreen({
     announce(
       t('analytics.filter.applied', {
         count:
-          (next.brandId ? 1 : 0) +
-          (next.format ? 1 : 0) +
-          (next.connectionIds.length > 0 ? 1 : 0),
+          (next.brandId ? 1 : 0) + (next.format ? 1 : 0) + (next.connectionIds.length > 0 ? 1 : 0),
         results: rows.length,
       }),
       'polite',
@@ -124,9 +122,7 @@ export function AnalyticsOverviewScreen({
   };
 
   const partial =
-    query.data && query.data.accountsWithData < query.data.accountsRequested
-      ? query.data
-      : null;
+    query.data && query.data.accountsWithData < query.data.accountsRequested ? query.data : null;
 
   return (
     <div className="flex flex-col gap-8 px-4 py-6 md:px-6">
@@ -150,9 +146,7 @@ export function AnalyticsOverviewScreen({
           <h2 id="baseline-question" className="text-title-md text-text-primary">
             {t('analytics.question.baseline')}
           </h2>
-          <p className="text-body-md text-text-secondary">
-            {t('analytics.question.baselineHelp')}
-          </p>
+          <p className="text-body-md text-text-secondary">{t('analytics.question.baselineHelp')}</p>
           <p className="text-body-sm text-text-tertiary">
             {t('analytics.rankMetric.chosen', { metric: metricName })}
           </p>

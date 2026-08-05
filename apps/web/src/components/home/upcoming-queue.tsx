@@ -78,20 +78,32 @@ export function UpcomingQueue() {
         />
       ) : (
         <div className="relay-scroll-x">
-          <table className="w-full border-collapse text-body-md">
+          <table className="text-body-md w-full border-collapse">
             <caption className="sr-only">{t('home.upcoming.title')}</caption>
             <thead>
-              <tr className="border-y border-border-subtle text-start">
-                <th scope="col" className="py-2 pe-4 text-start text-label font-medium text-text-tertiary">
+              <tr className="border-border-subtle border-y text-start">
+                <th
+                  scope="col"
+                  className="text-label text-text-tertiary py-2 pe-4 text-start font-medium"
+                >
                   {t('home.upcoming.columnTime')}
                 </th>
-                <th scope="col" className="py-2 pe-4 text-start text-label font-medium text-text-tertiary">
+                <th
+                  scope="col"
+                  className="text-label text-text-tertiary py-2 pe-4 text-start font-medium"
+                >
                   {t('home.upcoming.columnAccount')}
                 </th>
-                <th scope="col" className="py-2 pe-4 text-start text-label font-medium text-text-tertiary">
+                <th
+                  scope="col"
+                  className="text-label text-text-tertiary py-2 pe-4 text-start font-medium"
+                >
                   {t('home.upcoming.columnContent')}
                 </th>
-                <th scope="col" className="py-2 text-start text-label font-medium text-text-tertiary">
+                <th
+                  scope="col"
+                  className="text-label text-text-tertiary py-2 text-start font-medium"
+                >
                   {t('home.upcoming.columnStatus')}
                 </th>
               </tr>
@@ -100,25 +112,22 @@ export function UpcomingQueue() {
               {entries.map((entry) => {
                 const dot = providerDotKey(entry.provider);
                 return (
-                  <tr key={entry.contentItemId} className="border-b border-border-subtle align-top">
-                    <td className="py-2.5 pe-4 whitespace-nowrap text-text-primary">
+                  <tr key={entry.contentItemId} className="border-border-subtle border-b align-top">
+                    <td className="text-text-primary py-2.5 pe-4 whitespace-nowrap">
                       <time dateTime={entry.scheduledAt}>{format.time(entry.scheduledAt)}</time>
                     </td>
-                    <td className="py-2.5 pe-4 text-text-secondary">
+                    <td className="text-text-secondary py-2.5 pe-4">
                       <span className="flex items-center gap-1.5">
                         {dot === undefined ? null : <StatusDot provider={dot} aria-hidden="true" />}
                         <span className="truncate">{entry.accountLabel}</span>
                       </span>
                     </td>
-                    <td className="py-2.5 pe-4 text-text-primary">
-                      <Link
-                        href={`/posts/${entry.contentItemId}`}
-                        className="hover:underline"
-                      >
+                    <td className="text-text-primary py-2.5 pe-4">
+                      <Link href={`/posts/${entry.contentItemId}`} className="hover:underline">
                         {entry.title}
                       </Link>
                       {entry.targetCount > 1 ? (
-                        <span className="ps-2 text-body-sm text-text-tertiary">
+                        <span className="text-body-sm text-text-tertiary ps-2">
                           {t('calendar.post.targetCount', { count: entry.targetCount })}
                         </span>
                       ) : null}

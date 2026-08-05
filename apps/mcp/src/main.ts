@@ -1,4 +1,9 @@
-import { detectCapabilities, loadConfigFor, parseBooleanish, requireConfigValue } from '@relay/config';
+import {
+  detectCapabilities,
+  loadConfigFor,
+  parseBooleanish,
+  requireConfigValue,
+} from '@relay/config';
 import { buildHealthReport, createLogger } from '@relay/observability';
 import type { HealthReport } from '@relay/observability';
 
@@ -23,7 +28,6 @@ import type { AuditSink, RelayServicePort } from './ports.js';
 
 const DEFAULT_PORT = 8082;
 
-// eslint-disable-next-line no-restricted-globals -- the one real clock in this app.
 const systemClock = { now: () => Date.now() };
 
 export interface StartOptions {

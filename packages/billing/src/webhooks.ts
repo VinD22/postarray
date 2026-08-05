@@ -2,10 +2,7 @@ import type { Logger } from '@relay/observability';
 
 import { deriveEntitlement, verifiedSubscriptionSchema } from './entitlements.js';
 import type { EntitlementSnapshot, VerifiedSubscription } from './entitlements.js';
-import {
-  InMemorySubscriptionStore,
-  InMemoryWebhookInbox,
-} from './inbox.js';
+import { InMemorySubscriptionStore, InMemoryWebhookInbox } from './inbox.js';
 import type {
   SubscriptionStore,
   WebhookInboxStore,
@@ -118,7 +115,8 @@ export function toVerifiedSubscription(input: ToVerifiedSubscriptionInput): Veri
   const { subscription, previous } = input;
   const pastDueSince =
     subscription.status === 'past_due'
-      ? (previous?.status === 'past_due' ? previous.pastDueSince : null) ?? subscription.modifiedAt
+      ? ((previous?.status === 'past_due' ? previous.pastDueSince : null) ??
+        subscription.modifiedAt)
       : null;
   return verifiedSubscriptionSchema.parse({
     subscriptionId: subscription.id,
@@ -176,7 +174,12 @@ export function createWebhookProcessor(deps: WebhookProcessorDeps): WebhookProce
     eventType: PolarEventType,
     data: unknown,
     receivedAt: string,
-  ): Promise<{ result: WebhookResult; before: EntitlementSnapshot | null; after: EntitlementSnapshot | null; note: string | null }> {
+  ): Promise<{
+    result: WebhookResult;
+    before: EntitlementSnapshot | null;
+    after: EntitlementSnapshot | null;
+    note: string | null;
+  }> {
     const parsed = polarSubscriptionSchema.safeParse(data);
     if (!parsed.success) {
       return { result: 'failed', before: null, after: null, note: 'subscription_payload_invalid' };
@@ -191,8 +194,7 @@ export function createWebhookProcessor(deps: WebhookProcessorDeps): WebhookProce
       // Out of order delivery. The stored state is newer; do not regress it.
       return { result: 'superseded', before: null, after: null, note: 'older_than_stored_state' };
     }
-    const before =
-      previous === null ? null : deriveEntitlement(previous, { now: receivedAt });
+    const before = previous === null ? null : deriveEntitlement(previous, { now: receivedAt });
     const next = toVerifiedSubscription({
       subscription,
       workspaceId,
@@ -258,9 +260,7 @@ export function createWebhookProcessor(deps: WebhookProcessorDeps): WebhookProce
         rawBody: incoming.rawBody,
         headers: incoming.headers,
         nowSeconds,
-        ...(deps.toleranceSeconds === undefined
-          ? {}
-          : { toleranceSeconds: deps.toleranceSeconds }),
+        ...(deps.toleranceSeconds === undefined ? {} : { toleranceSeconds: deps.toleranceSeconds }),
       });
       const bodyHash = await hashBody(incoming.rawBody);
 
@@ -268,8 +268,7 @@ export function createWebhookProcessor(deps: WebhookProcessorDeps): WebhookProce
       // the signature has verified.
       const bodyParse = polarWebhookBodySchema.safeParse(safeJson(incoming.rawBody));
       const eventType = bodyParse.success ? bodyParse.data.type : 'unknown';
-      const providerEventId =
-        verification.webhookId ?? `unsigned_${bodyHash.slice(0, 32)}`;
+      const providerEventId = verification.webhookId ?? `unsigned_${bodyHash.slice(0, 32)}`;
 
       const insertion = await deps.inbox.insert({
         providerEventId,

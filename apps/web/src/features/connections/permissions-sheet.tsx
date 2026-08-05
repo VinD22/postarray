@@ -151,7 +151,7 @@ export function PermissionsSheet({
                       return (
                         <li
                           key={feature}
-                          className="flex flex-wrap items-center justify-between gap-2 border-b border-border-subtle py-1.5 last:border-b-0"
+                          className="border-border-subtle flex flex-wrap items-center justify-between gap-2 border-b py-1.5 last:border-b-0"
                         >
                           <span className="text-body-md text-text-primary">
                             {t(`capability.feature.${feature}`)}

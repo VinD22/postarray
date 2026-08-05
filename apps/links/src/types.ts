@@ -111,5 +111,7 @@ export type AbuseReport = z.infer<typeof abuseReportSchema>;
 
 /** Where abuse reports are handed off. Kept out of the redirect hot path. */
 export interface AbuseReportSink {
-  submit(report: AbuseReport & { readonly receivedAt: string; readonly reference: string }): Promise<void>;
+  submit(
+    report: AbuseReport & { readonly receivedAt: string; readonly reference: string },
+  ): Promise<void>;
 }

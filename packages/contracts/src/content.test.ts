@@ -259,8 +259,16 @@ describe('checksumPayload', () => {
       disclosure: null,
       capabilityVersion: null,
     };
-    const first = { ...base, id: newId(ID_PREFIXES.postVariant), connectionId: newId(ID_PREFIXES.connection) };
-    const second = { ...base, id: newId(ID_PREFIXES.postVariant), connectionId: newId(ID_PREFIXES.connection) };
+    const first = {
+      ...base,
+      id: newId(ID_PREFIXES.postVariant),
+      connectionId: newId(ID_PREFIXES.connection),
+    };
+    const second = {
+      ...base,
+      id: newId(ID_PREFIXES.postVariant),
+      connectionId: newId(ID_PREFIXES.connection),
+    };
     expect(canonicalJson(checksumPayload(draft, [first, second]))).toBe(
       canonicalJson(checksumPayload(draft, [second, first])),
     );

@@ -3,12 +3,7 @@
 import { useState, type ReactElement } from 'react';
 import { useRouter } from 'next/navigation';
 import { useBreakpoint } from '@relay/design-system/hooks';
-import {
-  EmptyState,
-  LoadingState,
-  Notice,
-  SkeletonTable,
-} from '@relay/design-system/patterns';
+import { EmptyState, LoadingState, Notice, SkeletonTable } from '@relay/design-system/patterns';
 import {
   Badge,
   Button,
@@ -76,9 +71,7 @@ export function LinksListScreen(): ReactElement {
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div className="flex max-w-[70ch] flex-col gap-1">
           <h2 className="text-title-md text-text-primary">{t('analytics.links.title')}</h2>
-          <p className="text-body-md text-text-secondary">
-            {t('analytics.links.subtitle')}
-          </p>
+          <p className="text-body-md text-text-secondary">{t('analytics.links.subtitle')}</p>
         </div>
         <Button variant="primary" onClick={() => setDialogOpen(true)}>
           {t('analytics.links.new')}
@@ -152,7 +145,7 @@ export function LinksListScreen(): ReactElement {
                     </button>
                   </TableCell>
                   <TableCell>
-                    <span className="block max-w-[36ch] truncate text-text-secondary">
+                    <span className="text-text-secondary block max-w-[36ch] truncate">
                       {link.destination}
                     </span>
                   </TableCell>
@@ -171,16 +164,16 @@ export function LinksListScreen(): ReactElement {
           </Table>
         </TableContainer>
       ) : (
-        <ul className="flex flex-col border-t border-border-subtle">
+        <ul className="border-border-subtle flex flex-col border-t">
           {links.data.data.map((link) => (
-            <li key={link.id} className="border-b border-border-subtle py-3">
+            <li key={link.id} className="border-border-subtle border-b py-3">
               <button
                 type="button"
                 className="flex min-h-11 w-full flex-col items-start gap-1 text-start"
                 onClick={() => router.push(`/analytics/links/${link.id}`)}
               >
                 <Code>{link.shortUrl}</Code>
-                <span className="w-full truncate text-body-sm text-text-secondary">
+                <span className="text-body-sm text-text-secondary w-full truncate">
                   {link.destination}
                 </span>
                 <span className="flex flex-wrap items-center gap-2">

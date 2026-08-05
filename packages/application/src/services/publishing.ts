@@ -1,11 +1,6 @@
 import { scheduleSpecSchema, type ValidationResult } from '@relay/contracts';
 
-import type {
-  ActorContext,
-  PublishingService,
-  ServiceDeps,
-  ValidationService,
-} from '../types.js';
+import type { ActorContext, PublishingService, ServiceDeps, ValidationService } from '../types.js';
 import type { PublishJobView } from '../views.js';
 
 import { recordAudit } from '../internal/audit.js';
@@ -60,9 +55,7 @@ export function createPublishingService(
                 });
               }
 
-              const instant = new Date(
-                deps.clock.now().getTime() + IMMEDIATE_LEAD_SECONDS * 1000,
-              );
+              const instant = new Date(deps.clock.now().getTime() + IMMEDIATE_LEAD_SECONDS * 1000);
               const spec = scheduleSpecSchema.parse({
                 instant: instant.toISOString(),
                 ianaTimeZone: actor.workspace.defaultTimeZone,

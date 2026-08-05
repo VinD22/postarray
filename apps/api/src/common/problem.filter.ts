@@ -1,4 +1,10 @@
-import { Catch, HttpException, Inject, type ArgumentsHost, type ExceptionFilter } from '@nestjs/common';
+import {
+  Catch,
+  HttpException,
+  Inject,
+  type ArgumentsHost,
+  type ExceptionFilter,
+} from '@nestjs/common';
 import {
   API_HEADERS,
   ERROR_CODES,

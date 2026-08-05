@@ -150,10 +150,7 @@ export function compareToTrailingMedian(input: BaselineInput): BaselineResult {
     comparedReceiptIds: [] as readonly string[],
   } as const;
 
-  if (
-    subject.observation.availability !== 'available' ||
-    subject.observation.value === null
-  ) {
+  if (subject.observation.availability !== 'available' || subject.observation.value === null) {
     return {
       ...base,
       subjectValue: null,
@@ -170,8 +167,7 @@ export function compareToTrailingMedian(input: BaselineInput): BaselineResult {
   const comparable = samePlatform
     .filter((entry) => isComparable(entry.post, subject.post))
     .filter(
-      (entry) =>
-        entry.observation.availability === 'available' && entry.observation.value !== null,
+      (entry) => entry.observation.availability === 'available' && entry.observation.value !== null,
     )
     .sort((left, right) => (left.post.publishedAt < right.post.publishedAt ? 1 : -1))
     .slice(0, historyLimit);

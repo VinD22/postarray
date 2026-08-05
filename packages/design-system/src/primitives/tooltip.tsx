@@ -65,11 +65,7 @@ export function Tooltip({
   onOpenChange,
 }: TooltipProps): ReactNode {
   return (
-    <TooltipRoot
-      delayDuration={delayDuration}
-      open={open}
-      onOpenChange={onOpenChange}
-    >
+    <TooltipRoot delayDuration={delayDuration} open={open} onOpenChange={onOpenChange}>
       <TooltipTrigger asChild>{children}</TooltipTrigger>
       <TooltipContent side={side}>{content}</TooltipContent>
     </TooltipRoot>

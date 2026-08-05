@@ -26,7 +26,6 @@ import { SettingsStack } from '../components/section.js';
 import { BrandEditor } from './brand-editor.js';
 import { NewBrandDialog } from './new-brand-dialog.js';
 
-
 export function BrandsScreen(): ReactNode {
   const t = useTranslations();
   const section = t('settings.ui.section.brands');
@@ -117,7 +116,7 @@ export function BrandsScreen(): ReactNode {
                         <TableRowHeader>
                           <button
                             type="button"
-                            className="text-start font-medium text-text-accent underline-offset-2 hover:underline"
+                            className="text-text-accent text-start font-medium underline-offset-2 hover:underline"
                             aria-current={brand.id === selectedId ? 'true' : undefined}
                             onClick={() => setSelectedId(brand.id)}
                           >

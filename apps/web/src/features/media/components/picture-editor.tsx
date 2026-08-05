@@ -49,7 +49,12 @@ import {
   OutputTab,
   withCrop,
 } from './picture-editor-fields.js';
-import { IDENTITY_EDIT_PLAN, type MediaAsset, type MediaEditPlan, type OutputFormat } from '../types.js';
+import {
+  IDENTITY_EDIT_PLAN,
+  type MediaAsset,
+  type MediaEditPlan,
+  type OutputFormat,
+} from '../types.js';
 
 export interface PictureEditorProps {
   readonly asset: MediaAsset;
@@ -58,12 +63,7 @@ export interface PictureEditorProps {
   readonly onCancel: () => void;
 }
 
-export function PictureEditor({
-  asset,
-  rules,
-  onSave,
-  onCancel,
-}: PictureEditorProps): ReactNode {
+export function PictureEditor({ asset, rules, onSave, onCancel }: PictureEditorProps): ReactNode {
   const t = useTranslations();
   const { announce } = useAnnouncer();
   const [plan, setPlan] = useState<MediaEditPlan>({
@@ -79,7 +79,8 @@ export function PictureEditor({
   const dirty = planChangesAnything(plan, asset.mimeType);
   const nextVersion = asset.currentVersion + 1;
 
-  const patch = (next: Partial<MediaEditPlan>): void => setPlan((current) => ({ ...current, ...next }));
+  const patch = (next: Partial<MediaEditPlan>): void =>
+    setPlan((current) => ({ ...current, ...next }));
 
   const applyPreset = (presetId: string): void => {
     if (presetId === FREE_PRESET || asset.width === null || asset.height === null) {
@@ -144,7 +145,9 @@ export function PictureEditor({
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value={FREE_PRESET}>{t.full('mediaLib.editor.presetFree')}</SelectItem>
+                  <SelectItem value={FREE_PRESET}>
+                    {t.full('mediaLib.editor.presetFree')}
+                  </SelectItem>
                   {presets.map((preset) => (
                     <SelectItem
                       key={preset.id}
@@ -198,8 +201,7 @@ export function PictureEditor({
               value={plan.resize?.width ?? projected?.width ?? 0}
               max={20_000}
               onChange={(value) => {
-                const ratio =
-                  asset.width && asset.height ? asset.height / asset.width : 1;
+                const ratio = asset.width && asset.height ? asset.height / asset.width : 1;
                 patch({
                   resize: {
                     width: value,
@@ -215,8 +217,7 @@ export function PictureEditor({
               value={plan.resize?.height ?? projected?.height ?? 0}
               max={20_000}
               onChange={(value) => {
-                const ratio =
-                  asset.width && asset.height ? asset.width / asset.height : 1;
+                const ratio = asset.width && asset.height ? asset.width / asset.height : 1;
                 patch({
                   resize: {
                     height: value,
@@ -290,8 +291,7 @@ export function PictureEditor({
                   placeholder={asset.thumbnailMediaId ?? ''}
                   onChange={(event) =>
                     patch({
-                      thumbnailMediaId:
-                        event.target.value.length === 0 ? null : event.target.value,
+                      thumbnailMediaId: event.target.value.length === 0 ? null : event.target.value,
                     })
                   }
                 />
@@ -301,10 +301,10 @@ export function PictureEditor({
         ) : null}
       </Tabs>
 
-      <dl className="flex flex-col gap-1 border-t border-border-subtle pt-3">
+      <dl className="border-border-subtle flex flex-col gap-1 border-t pt-3">
         <div className="flex items-baseline justify-between gap-3">
           <dt className="text-label text-text-tertiary">{t.full('mediaLib.column.size')}</dt>
-          <dd className="text-body-sm tabular-nums text-text-primary">
+          <dd className="text-body-sm text-text-primary tabular-nums">
             {estimated === null
               ? t.full('mediaLib.editor.estimatedSizeUnknown')
               : t.full('mediaLib.editor.estimatedSize', {
@@ -318,7 +318,7 @@ export function PictureEditor({
             <dt className="text-label text-text-tertiary">
               {t.full('mediaLib.editor.widthLabel')}
             </dt>
-            <dd className="text-body-sm tabular-nums text-text-primary">
+            <dd className="text-body-sm text-text-primary tabular-nums">
               {t.full('library.asset.dimensions', {
                 width: projected.width,
                 height: projected.height,
@@ -348,7 +348,7 @@ export function PictureEditor({
           {t.full('mediaLib.editor.discard')}
         </Button>
         {dirty ? null : (
-          <span className="self-center text-body-sm text-text-tertiary">
+          <span className="text-body-sm text-text-tertiary self-center">
             {t.full('mediaLib.editor.noChanges')}
           </span>
         )}

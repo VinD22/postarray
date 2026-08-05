@@ -81,8 +81,9 @@ export const RateLimit = (rule: RateLimitRule): MethodDecorator & ClassDecorator
 /* -------------------------------------------------------------------------- */
 
 /** The fully built `ActorContext` for this request. */
-export const Actor = createParamDecorator((_data: unknown, context: ExecutionContext): ActorContext =>
-  requireActorContext(context.switchToHttp().getRequest()),
+export const Actor = createParamDecorator(
+  (_data: unknown, context: ExecutionContext): ActorContext =>
+    requireActorContext(context.switchToHttp().getRequest()),
 );
 
 /** The tenant-free identity context, for routes that precede a workspace. */

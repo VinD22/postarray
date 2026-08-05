@@ -51,7 +51,7 @@ export function StructuredEditor({ draft, onApply }: StructuredEditorProps): Rea
 
   return (
     <div className="flex flex-col gap-3">
-      <p className="max-w-[70ch] text-body-md text-text-secondary">
+      <p className="text-body-md text-text-secondary max-w-[70ch]">
         {t('automation.editor.apiHelp')}
       </p>
 
@@ -67,7 +67,7 @@ export function StructuredEditor({ draft, onApply }: StructuredEditorProps): Rea
             autoCorrect="off"
             minRows={14}
             maxRows={40}
-            className="font-mono text-mono"
+            className="text-mono font-mono"
             value={source}
             onChange={(event) => {
               setSource(event.target.value);
@@ -100,9 +100,7 @@ export function StructuredEditor({ draft, onApply }: StructuredEditorProps): Rea
         ) : null}
       </div>
 
-      {dirty ? (
-        <Notice tone="neutral" title={t('automation.editor.unsaved')} />
-      ) : null}
+      {dirty ? <Notice tone="neutral" title={t('automation.editor.unsaved')} /> : null}
     </div>
   );
 }

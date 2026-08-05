@@ -1,12 +1,7 @@
 import { ROLE_RANK } from '@relay/authz';
 import type { Paginated, Role } from '@relay/contracts';
 
-import type {
-  ActorContext,
-  MembershipService,
-  PageQuery,
-  ServiceDeps,
-} from '../types.js';
+import type { ActorContext, MembershipService, PageQuery, ServiceDeps } from '../types.js';
 import type { MembershipView } from '../views.js';
 
 import { recordAudit } from '../internal/audit.js';
@@ -65,7 +60,11 @@ function toView(row: MembershipRow): MembershipView {
   };
 }
 
-async function assertNotLastOwner(db: Db, workspaceId: string, membershipId: string): Promise<void> {
+async function assertNotLastOwner(
+  db: Db,
+  workspaceId: string,
+  membershipId: string,
+): Promise<void> {
   const membership = await db.membership.findFirst({
     where: { id: membershipId },
     select: { role: true },
@@ -182,11 +181,7 @@ export function createMembershipService(deps: ServiceDeps): MembershipService {
       });
     },
 
-    async changeRole(
-      ctx: ActorContext,
-      membershipId: string,
-      role: Role,
-    ): Promise<MembershipView> {
+    async changeRole(ctx: ActorContext, membershipId: string, role: Role): Promise<MembershipView> {
       return authorized(deps, ctx, 'member.update_role', undefined, async (db, actor) => {
         assertCanGrant(actor.policyActor.role, role);
         const before = await db.membership.findFirst({

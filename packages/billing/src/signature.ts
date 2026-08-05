@@ -109,7 +109,11 @@ export type SignatureFailure = (typeof SIGNATURE_FAILURES)[number];
 
 export type SignatureVerification =
   | { readonly state: 'verified'; readonly webhookId: string; readonly timestampSeconds: number }
-  | { readonly state: 'rejected'; readonly reason: SignatureFailure; readonly webhookId: string | null };
+  | {
+      readonly state: 'rejected';
+      readonly reason: SignatureFailure;
+      readonly webhookId: string | null;
+    };
 
 export interface VerifyWebhookInput {
   readonly secret: string | undefined;

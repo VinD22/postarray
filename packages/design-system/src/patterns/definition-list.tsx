@@ -48,20 +48,13 @@ export function DefinitionList({
     >
       {items.map((item) => (
         <div key={item.id} className={cn('contents')}>
-          <dt
-            className={cn(
-              'text-label text-text-tertiary',
-              columns ? 'sm:pt-px' : undefined,
-            )}
-          >
+          <dt className={cn('text-label text-text-tertiary', columns ? 'sm:pt-px' : undefined)}>
             {item.term}
           </dt>
-          <dd className="min-w-0 text-body-md text-text-primary">
+          <dd className="text-body-md text-text-primary min-w-0">
             {item.definition}
             {item.hint ? (
-              <span className="mt-0.5 block text-body-sm text-text-tertiary">
-                {item.hint}
-              </span>
+              <span className="text-body-sm text-text-tertiary mt-0.5 block">{item.hint}</span>
             ) : null}
           </dd>
         </div>

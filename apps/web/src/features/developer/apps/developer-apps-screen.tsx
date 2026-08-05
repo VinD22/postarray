@@ -42,7 +42,6 @@ import { CredentialPanel } from '../components/credential-panel.js';
 import { AppForm, type AppFormValue } from './app-form.js';
 import { ConsentPreview } from './consent-preview.js';
 
-
 export function DeveloperAppsScreen(): ReactNode {
   const t = useTranslations();
   const section = t('settings.ui.section.apps');
@@ -172,17 +171,17 @@ export function DeveloperAppsScreen(): ReactNode {
               />
             ) : (
               <>
-                <ul className="flex flex-col border-y border-border-default">
+                <ul className="border-border-default flex flex-col border-y">
                   {rows.map((app) => (
                     <li
                       key={app.id}
-                      className="flex flex-col gap-2 border-b border-border-subtle py-3 last:border-b-0 md:flex-row md:items-start md:justify-between"
+                      className="border-border-subtle flex flex-col gap-2 border-b py-3 last:border-b-0 md:flex-row md:items-start md:justify-between"
                     >
                       <div className="flex min-w-0 flex-col gap-1">
                         <span className="flex flex-wrap items-center gap-2">
                           <button
                             type="button"
-                            className="text-body-md font-medium text-text-accent underline-offset-2 hover:underline"
+                            className="text-body-md text-text-accent font-medium underline-offset-2 hover:underline"
                             aria-current={app.id === selected?.id ? 'true' : undefined}
                             onClick={() => setSelectedId(app.id)}
                           >
@@ -199,9 +198,7 @@ export function DeveloperAppsScreen(): ReactNode {
                           >
                             {t(`developer.apps.status.${app.status}`)}
                           </Badge>
-                          <Badge tone="outline">
-                            {t(`developer.apps.type.${app.clientType}`)}
-                          </Badge>
+                          <Badge tone="outline">{t(`developer.apps.type.${app.clientType}`)}</Badge>
                         </span>
                         <span className="text-body-sm text-text-tertiary">
                           {t('developer.apps.grants.count', { count: app.grantCount })}
@@ -370,9 +367,7 @@ export function DeveloperAppsScreen(): ReactNode {
                         <TabsTrigger value="consent">
                           {t('developer.apps.consentPreview')}
                         </TabsTrigger>
-                        <TabsTrigger value="grants">
-                          {t('developer.apps.grants.title')}
-                        </TabsTrigger>
+                        <TabsTrigger value="grants">{t('developer.apps.grants.title')}</TabsTrigger>
                         <TabsTrigger value="logs">{t('developer.activity.title')}</TabsTrigger>
                       </TabsList>
 

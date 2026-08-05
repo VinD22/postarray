@@ -89,8 +89,6 @@ describe('TrendChart', () => {
 
   it('says so plainly when nothing was collected at all', () => {
     renderChart([{ ...withGap, points: [] }]);
-    expect(
-      screen.getByText('No observations were collected in this range.'),
-    ).toBeTruthy();
+    expect(screen.getByText('No observations were collected in this range.')).toBeTruthy();
   });
 });

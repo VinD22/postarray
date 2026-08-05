@@ -53,9 +53,9 @@ describe('classifyBot', () => {
     expect(classifyBot(signals({ userAgent: undefined }))).toBe('suspected_bot');
     expect(classifyBot(signals({ userAgent: '' }))).toBe('suspected_bot');
     expect(classifyBot(signals({ userAgent: 'x' }))).toBe('suspected_bot');
-    expect(classifyBot(signals({ userAgent: 'CustomFetcherAgent/9.1 (+https://example.test)' }))).toBe(
-      'suspected_bot',
-    );
+    expect(
+      classifyBot(signals({ userAgent: 'CustomFetcherAgent/9.1 (+https://example.test)' })),
+    ).toBe('suspected_bot');
   });
 
   it('suspects a prefetch or prerender', () => {
@@ -89,7 +89,9 @@ describe('classifyDevice', () => {
 
   it('says unknown rather than guessing', () => {
     expect(classifyDevice(signals({ userAgent: undefined }), 'suspected_bot')).toBe('unknown');
-    expect(classifyDevice(signals({ userAgent: 'Mozilla/5.0 (Unknown)' }), 'human')).toBe('unknown');
+    expect(classifyDevice(signals({ userAgent: 'Mozilla/5.0 (Unknown)' }), 'human')).toBe(
+      'unknown',
+    );
   });
 });
 

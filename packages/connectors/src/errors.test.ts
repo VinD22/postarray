@@ -197,7 +197,9 @@ describe('parseRetryAfterSeconds', () => {
   });
 
   it('reads an HTTP date', () => {
-    expect(parseRetryAfterSeconds({ 'retry-after': 'Tue, 04 Aug 2026 12:01:00 GMT' }, clock)).toBe(60);
+    expect(parseRetryAfterSeconds({ 'retry-after': 'Tue, 04 Aug 2026 12:01:00 GMT' }, clock)).toBe(
+      60,
+    );
   });
 
   it('reads an absolute epoch reset header', () => {

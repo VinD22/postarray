@@ -31,20 +31,17 @@ export function CapabilityMatrixSummary(): ReactNode {
   const t = marketingTranslator();
 
   return (
-    <dl className="border-t border-border-default">
+    <dl className="border-border-default border-t">
       {CONNECTORS.map((connector, index) => {
         const state = overallState(index);
         return (
           <div
             key={connector.id}
-            className="flex flex-wrap items-baseline justify-between gap-x-8 gap-y-1 border-b border-border-subtle py-4"
+            className="border-border-subtle flex flex-wrap items-baseline justify-between gap-x-8 gap-y-1 border-b py-4"
           >
             <dt className="text-body-lg text-text-primary">{t.format(connector.nameKey)}</dt>
             <dd>
-              <CapabilityBadge
-                state={state}
-                label={t.format(`web.capabilities.short.${state}`)}
-              />
+              <CapabilityBadge state={state} label={t.format(`web.capabilities.short.${state}`)} />
             </dd>
           </div>
         );

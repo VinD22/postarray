@@ -147,7 +147,7 @@ export function OutputTab({ plan, patch }: TabBodyProps): ReactNode {
           aria-label={t.full('mediaLib.editor.qualityLabel')}
           onValueChange={(values) => patch({ quality: values[0] ?? plan.quality })}
         />
-        <span className="text-body-sm tabular-nums text-text-tertiary">
+        <span className="text-body-sm text-text-tertiary tabular-nums">
           {t.full('mediaLib.editor.qualityValue', { value: plan.quality })}
         </span>
       </div>

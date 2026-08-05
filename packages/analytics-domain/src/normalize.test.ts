@@ -1,11 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import {
-  findMetric,
-  normalizeMetrics,
-  presentMetrics,
-  unavailableByReason,
-} from './normalize.js';
+import { findMetric, normalizeMetrics, presentMetrics, unavailableByReason } from './normalize.js';
 import { HASH } from './test-support.js';
 
 const BASE = {

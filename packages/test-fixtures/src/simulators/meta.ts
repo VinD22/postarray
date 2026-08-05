@@ -42,28 +42,76 @@ abstract class GraphSimulator extends BaseProviderSimulator {
 
     switch (kind) {
       case 'unauthorized':
-        return graph(401, 'An access token is required to request this resource.', 'OAuthException', 104, null);
+        return graph(
+          401,
+          'An access token is required to request this resource.',
+          'OAuthException',
+          104,
+          null,
+        );
       case 'expired_token':
-        return graph(401, 'Error validating access token: Session has expired.', 'OAuthException', 190, 463);
+        return graph(
+          401,
+          'Error validating access token: Session has expired.',
+          'OAuthException',
+          190,
+          463,
+        );
       case 'revoked':
-        return graph(401, 'Error validating access token: The user has not authorized application.', 'OAuthException', 190, 458);
+        return graph(
+          401,
+          'Error validating access token: The user has not authorized application.',
+          'OAuthException',
+          190,
+          458,
+        );
       case 'forbidden':
-        return graph(403, 'The user does not have a role on this page.', 'OAuthException', 200, 1_349_003);
+        return graph(
+          403,
+          'The user does not have a role on this page.',
+          'OAuthException',
+          200,
+          1_349_003,
+        );
       case 'rate_limited':
         return graph(429, 'Application request limit reached.', 'OAuthException', 4, null, {
           'retry-after': String(RETRY_AFTER_SECONDS),
           'x-app-usage': '{"call_count":100,"total_time":100,"total_cputime":100}',
         });
       case 'server_error':
-        return graph(500, 'An unexpected error has occurred. Please retry your request later.', 'OAuthException', 2, null);
+        return graph(
+          500,
+          'An unexpected error has occurred. Please retry your request later.',
+          'OAuthException',
+          2,
+          null,
+        );
       case 'content_invalid':
-        return graph(400, 'The caption is longer than the maximum allowed.', 'OAuthException', 100, 2_207_009);
+        return graph(
+          400,
+          'The caption is longer than the maximum allowed.',
+          'OAuthException',
+          100,
+          2_207_009,
+        );
       case 'duplicate':
         return graph(400, 'This media was already published.', 'OAuthException', 100, 2_207_003);
       case 'not_found':
-        return graph(404, `Unknown path components: ${request.path}`, 'GraphMethodException', 2_500, null);
+        return graph(
+          404,
+          `Unknown path components: ${request.path}`,
+          'GraphMethodException',
+          2_500,
+          null,
+        );
       case 'token_echo':
-        return graph(400, `Rejected request with ${this.echoedToken}.`, 'OAuthException', 100, null);
+        return graph(
+          400,
+          `Rejected request with ${this.echoedToken}.`,
+          'OAuthException',
+          100,
+          null,
+        );
     }
   }
 }
@@ -103,7 +151,11 @@ export class InstagramSimulator extends GraphSimulator {
       return this.json(200, { id: container.id });
     }
 
-    if (method === 'GET' && path.startsWith('/v21.0/') && request.query.get('fields') === 'status_code') {
+    if (
+      method === 'GET' &&
+      path.startsWith('/v21.0/') &&
+      request.query.get('fields') === 'status_code'
+    ) {
       const containerId = path.slice('/v21.0/'.length);
       const container = this.pollContainer(containerId);
       if (container === undefined) {

@@ -68,18 +68,14 @@ export function FourWeekTab({
           setDismissed((current) => [...current, id]);
           onDismiss(id, reason, note);
         }}
-        onUndoDismiss={() =>
-          setDismissed((current) => current.filter((entry) => entry !== id))
-        }
+        onUndoDismiss={() => setDismissed((current) => current.filter((entry) => entry !== id))}
       />
     );
   }
 
   return (
     <div className="flex flex-col gap-6">
-      <p className="max-w-[68ch] text-body-md text-text-secondary">
-        {t('growth.fourWeek.help')}
-      </p>
+      <p className="text-body-md text-text-secondary max-w-[68ch]">{t('growth.fourWeek.help')}</p>
 
       {plan.calendar_proposal.map((week) => (
         <SettingsPanel
@@ -88,9 +84,7 @@ export function FourWeekTab({
           description={t('growth.fourWeek.itemCount', { count: week.slots.length })}
         >
           {week.slots.length === 0 ? (
-            <p className="text-body-md text-text-secondary">
-              {t('growth.ui.fourWeek.weekEmpty')}
-            </p>
+            <p className="text-body-md text-text-secondary">{t('growth.ui.fourWeek.weekEmpty')}</p>
           ) : (
             <>
               {/* 1024px and up: the full table. */}
@@ -102,30 +96,16 @@ export function FourWeekTab({
                     </TableCaption>
                     <TableHeader>
                       <TableRow>
-                        <TableHead scope="col">
-                          {t('growth.ui.fourWeek.column.date')}
-                        </TableHead>
-                        <TableHead scope="col">
-                          {t('growth.ui.fourWeek.column.channel')}
-                        </TableHead>
-                        <TableHead scope="col">
-                          {t('growth.ui.fourWeek.column.pillar')}
-                        </TableHead>
-                        <TableHead scope="col">
-                          {t('growth.ui.fourWeek.column.format')}
-                        </TableHead>
-                        <TableHead scope="col">
-                          {t('growth.ui.fourWeek.column.brief')}
-                        </TableHead>
-                        <TableHead scope="col">
-                          {t('growth.ui.fourWeek.column.cta')}
-                        </TableHead>
+                        <TableHead scope="col">{t('growth.ui.fourWeek.column.date')}</TableHead>
+                        <TableHead scope="col">{t('growth.ui.fourWeek.column.channel')}</TableHead>
+                        <TableHead scope="col">{t('growth.ui.fourWeek.column.pillar')}</TableHead>
+                        <TableHead scope="col">{t('growth.ui.fourWeek.column.format')}</TableHead>
+                        <TableHead scope="col">{t('growth.ui.fourWeek.column.brief')}</TableHead>
+                        <TableHead scope="col">{t('growth.ui.fourWeek.column.cta')}</TableHead>
                         <TableHead scope="col">
                           {t('growth.ui.fourWeek.column.measurement')}
                         </TableHead>
-                        <TableHead scope="col">
-                          {t('growth.ui.fourWeek.column.actions')}
-                        </TableHead>
+                        <TableHead scope="col">{t('growth.ui.fourWeek.column.actions')}</TableHead>
                       </TableRow>
                     </TableHeader>
                     <TableBody>
@@ -149,13 +129,9 @@ export function FourWeekTab({
                                 </Badge>
                               </span>
                             </TableCell>
-                            <TableCell>
-                              {slot.ctaKey ?? t('growth.ui.fourWeek.noCta')}
-                            </TableCell>
+                            <TableCell>{slot.ctaKey ?? t('growth.ui.fourWeek.noCta')}</TableCell>
                             <TableCell className="font-mono">{slot.measurementTag}</TableCell>
-                            <TableCell>
-                              {actionsFor(id, slot.date, slot.briefSummary)}
-                            </TableCell>
+                            <TableCell>{actionsFor(id, slot.date, slot.briefSummary)}</TableCell>
                           </TableRow>
                         );
                       })}
@@ -171,7 +147,7 @@ export function FourWeekTab({
                   return (
                     <li
                       key={id}
-                      className="flex flex-col gap-2 border-b border-border-subtle py-3 last:border-b-0"
+                      className="border-border-subtle flex flex-col gap-2 border-b py-3 last:border-b-0"
                     >
                       <p className="text-body-md text-text-primary">{slot.briefSummary}</p>
                       <DefinitionList

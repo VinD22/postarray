@@ -23,7 +23,11 @@ export const metadata: Metadata = pageMetadata(
 );
 
 const STEPS = [
-  { id: 'source', titleKey: 'web.product.step.source.title', bodyKey: 'web.product.step.source.body' },
+  {
+    id: 'source',
+    titleKey: 'web.product.step.source.title',
+    bodyKey: 'web.product.step.source.body',
+  },
   {
     id: 'compose',
     titleKey: 'web.product.step.compose.title',

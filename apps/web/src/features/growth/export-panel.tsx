@@ -1,12 +1,7 @@
 'use client';
 
 import { useMemo, useState, type ReactNode } from 'react';
-import {
-  Button,
-  Code,
-  RadioGroup,
-  RadioGroupItem,
-} from '@relay/design-system/primitives';
+import { Button, Code, RadioGroup, RadioGroupItem } from '@relay/design-system/primitives';
 import { useAnnouncer } from '@relay/design-system/hooks';
 import { useTranslations } from '@relay/i18n/react';
 import {
@@ -114,7 +109,7 @@ export function ExportPanel({ plan }: ExportPanelProps): ReactNode {
       footnote={t('growth.ui.export.schemaNote', { version: GROWTH_PLAN_SCHEMA_VERSION })}
     >
       <fieldset className="flex flex-col gap-1 border-0 p-0">
-        <legend className="pb-1 text-body-md font-medium text-text-primary">
+        <legend className="text-body-md text-text-primary pb-1 font-medium">
           {t('growth.ui.export.formatLabel')}
         </legend>
         <RadioGroup
@@ -125,7 +120,7 @@ export function ExportPanel({ plan }: ExportPanelProps): ReactNode {
           {FORMATS.map((entry) => (
             <label
               key={entry}
-              className="flex min-h-11 items-center gap-2 text-body-md text-text-primary"
+              className="text-body-md text-text-primary flex min-h-11 items-center gap-2"
             >
               <RadioGroupItem value={entry} />
               {t(FORMAT_LABEL_KEYS[entry])}

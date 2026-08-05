@@ -46,9 +46,7 @@ describe('saveIssues', () => {
   });
 
   it('requires at least one action', () => {
-    expect(keys(saveIssues(draft({ actions: [] })))).toContain(
-      'automation.editor.error.noAction',
-    );
+    expect(keys(saveIssues(draft({ actions: [] })))).toContain('automation.editor.error.noAction');
   });
 
   it('requires every required parameter of the chosen action', () => {
@@ -124,9 +122,7 @@ describe('engagement threshold triggers', () => {
 describe('cross account follow up', () => {
   const crossDraft = (preauthorized: boolean): RuleDraft =>
     draft({
-      actions: [
-        { id: 'a1', kind: 'cross_account_follow_up', parameters: { account: 'conn_b' } },
-      ],
+      actions: [{ id: 'a1', kind: 'cross_account_follow_up', parameters: { account: 'conn_b' } }],
       crossAccount: {
         enabled: true,
         sourceConnectionId: 'conn_a',
@@ -149,9 +145,7 @@ describe('cross account follow up', () => {
   it('cannot be activated without both accounts named', () => {
     const blockers = activationBlockers(
       draft({
-        actions: [
-          { id: 'a1', kind: 'cross_account_follow_up', parameters: { account: 'conn_b' } },
-        ],
+        actions: [{ id: 'a1', kind: 'cross_account_follow_up', parameters: { account: 'conn_b' } }],
         crossAccount: {
           enabled: true,
           sourceConnectionId: 'conn_a',

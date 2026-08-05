@@ -146,8 +146,10 @@ export const webShellMessages = {
   'auth.aside.title': 'Publish through official APIs and see exactly what happened.',
   'auth.aside.point.receipts':
     'Every publication produces a receipt: who approved it, when it dispatched, what the platform returned.',
-  'auth.aside.point.approvals': 'Nothing reaches a platform without the approval your policy requires.',
-  'auth.aside.point.surfaces': 'The same workflow from the web app, the REST API, MCP, the CLI and webhooks.',
+  'auth.aside.point.approvals':
+    'Nothing reaches a platform without the approval your policy requires.',
+  'auth.aside.point.surfaces':
+    'The same workflow from the web app, the REST API, MCP, the CLI and webhooks.',
   'auth.provider.title': 'Before you continue',
   'auth.provider.google.access':
     'Google shares your name, email address and profile picture with Relay. Relay cannot read your Gmail, Drive or Calendar.',
@@ -170,8 +172,7 @@ export const webShellMessages = {
     'That email address and password do not match an account. Check both and try again.',
   'auth.failure.usernameCredentials':
     'That username and password do not match an account. Check both and try again.',
-  'auth.failure.noAccountLeak':
-    'For your safety we do not say whether an address is registered.',
+  'auth.failure.noAccountLeak': 'For your safety we do not say whether an address is registered.',
   'auth.failure.provider': 'The sign in with {provider} did not complete. Nothing was changed.',
   'auth.failure.network': 'We could not reach Relay. Check your connection and try again.',
   'auth.signUp.trialNote': 'Seven full trial days. A payment method is required. $0 due today.',

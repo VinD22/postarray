@@ -50,24 +50,21 @@ export function BreakdownList({
             .map((entry) => (
               <li key={entry.key} className="flex flex-col gap-1">
                 <span className="flex items-baseline justify-between gap-3">
-                  <span className="min-w-0 truncate text-body-md text-text-primary">
+                  <span className="text-body-md text-text-primary min-w-0 truncate">
                     {labelFor(entry.key)}
                   </span>
-                  <span className="shrink-0 text-body-sm text-text-secondary tabular-nums">
+                  <span className="text-body-sm text-text-secondary shrink-0 tabular-nums">
                     {format.count(entry.clicks)}
-                    <span className="ps-2 text-text-tertiary">
+                    <span className="text-text-tertiary ps-2">
                       {t('analytics.links.breakdown.share', {
                         percent: format.percent(entry.share),
                       })}
                     </span>
                   </span>
                 </span>
-                <span
-                  aria-hidden="true"
-                  className="h-px w-full bg-border-subtle"
-                >
+                <span aria-hidden="true" className="bg-border-subtle h-px w-full">
                   <span
-                    className="block h-px bg-accent"
+                    className="bg-accent block h-px"
                     style={{ inlineSize: `${Math.max(1, entry.share * 100)}%` }}
                   />
                 </span>

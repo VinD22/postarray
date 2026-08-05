@@ -141,7 +141,7 @@ export function SignaturePanel(): ReactNode {
           <p className="text-label text-text-tertiary">
             {t.full('composerWeb.signature.previewHeading')}
           </p>
-          <p className="whitespace-pre-wrap rounded-md bg-surface-sunken px-2.5 py-2 text-body-sm text-text-primary">
+          <p className="bg-surface-sunken text-body-sm text-text-primary rounded-md px-2.5 py-2 whitespace-pre-wrap">
             {currentOption.text}
           </p>
         </div>

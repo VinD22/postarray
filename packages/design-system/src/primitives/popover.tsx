@@ -33,7 +33,7 @@ export const PopoverContent = forwardRef<
         className={cn(
           'z-(--z-index-popover) w-[min(20rem,calc(100vw-1.5rem))]',
           'max-h-(--radix-popover-content-available-height) overflow-auto',
-          'rounded-lg border border-border-default bg-surface-overlay p-3 shadow-overlay',
+          'border-border-default bg-surface-overlay shadow-overlay rounded-lg border p-3',
           'text-body-md text-text-primary',
           'relay-scrollbar relay-anim-fade-in',
           className,

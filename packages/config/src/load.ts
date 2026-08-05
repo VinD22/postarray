@@ -329,7 +329,9 @@ function sortIssues(issues: readonly ConfigIssue[]): ConfigIssue[] {
  * Validate the whole environment. Use this for tooling and tests. Services
  * should prefer `loadConfigFor` so an unrelated missing key cannot stop a boot.
  */
-export function loadConfig(env: NodeJS.ProcessEnv | Record<string, unknown> = process.env): RelayConfig {
+export function loadConfig(
+  env: NodeJS.ProcessEnv | Record<string, unknown> = process.env,
+): RelayConfig {
   return load(env, GLOBAL_REQUIREMENT, undefined);
 }
 

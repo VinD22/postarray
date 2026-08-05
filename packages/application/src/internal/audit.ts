@@ -29,11 +29,7 @@ export interface AuditInput {
   readonly metadata?: Record<string, unknown>;
 }
 
-export async function recordAudit(
-  db: Db,
-  actor: ActorSnapshot,
-  input: AuditInput,
-): Promise<void> {
+export async function recordAudit(db: Db, actor: ActorSnapshot, input: AuditInput): Promise<void> {
   const ctx = actor.ctx;
   await appendAuditEvent(auditClient(db), {
     workspaceId: ctx.workspaceId,

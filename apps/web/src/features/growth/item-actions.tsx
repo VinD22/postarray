@@ -126,7 +126,7 @@ export function ItemActions({
                     {t('growth.ui.item.explainNoEvidence')}
                   </p>
                 ) : (
-                  <ul className="flex list-disc flex-col gap-1 ps-5 text-body-md text-text-secondary">
+                  <ul className="text-body-md text-text-secondary flex list-disc flex-col gap-1 ps-5">
                     {evidence.map((entry) => (
                       <li key={entry}>{entry}</li>
                     ))}
@@ -152,7 +152,7 @@ export function ItemActions({
           <DialogBody>
             <div className="flex flex-col gap-4">
               <fieldset className="flex flex-col gap-1 border-0 p-0">
-                <legend className="pb-1 text-body-md font-medium text-text-primary">
+                <legend className="text-body-md text-text-primary pb-1 font-medium">
                   {t('growth.ui.item.dismissReasonLabel')}
                 </legend>
                 <RadioGroup
@@ -163,7 +163,7 @@ export function ItemActions({
                   {DISMISS_REASONS.map((entry) => (
                     <label
                       key={entry}
-                      className="flex min-h-11 items-center gap-2 text-body-md text-text-primary"
+                      className="text-body-md text-text-primary flex min-h-11 items-center gap-2"
                     >
                       <RadioGroupItem value={entry} />
                       {t(`growth.ui.item.dismissReason.${entry}`)}

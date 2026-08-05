@@ -11,17 +11,17 @@
 
 @import '@relay/design-system/styles.css';
 
-@source "../";
-@source "../../../../packages/design-system/src";
+@source '../';
+@source '../../../../packages/design-system/src';
 
 @theme inline {
   /* `next/font` writes the real family names into these variables on <html>.
      The design system's fallback stack still applies when a face fails. */
-  --font-sans: var(--font-relay-ui), 'Inter Variable', 'Inter', ui-sans-serif, system-ui,
-    -apple-system, 'Segoe UI', 'Noto Sans', 'Noto Sans Arabic', 'Noto Sans Hebrew',
-    'Noto Sans JP', 'Noto Sans KR', 'Noto Sans SC', sans-serif;
-  --font-serif: var(--font-relay-editorial), 'Source Serif 4', 'Iowan Old Style', Georgia,
-    serif;
+  --font-sans:
+    var(--font-relay-ui), 'Inter Variable', 'Inter', ui-sans-serif, system-ui, -apple-system,
+    'Segoe UI', 'Noto Sans', 'Noto Sans Arabic', 'Noto Sans Hebrew', 'Noto Sans JP', 'Noto Sans KR',
+    'Noto Sans SC', sans-serif;
+  --font-serif: var(--font-relay-editorial), 'Source Serif 4', 'Iowan Old Style', Georgia, serif;
 }
 
 @layer base {

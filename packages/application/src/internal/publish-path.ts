@@ -1,8 +1,4 @@
-import {
-  evaluateAgentAction,
-  type AgentActionKind,
-  type AgentTarget,
-} from '@relay/authz';
+import { evaluateAgentAction, type AgentActionKind, type AgentTarget } from '@relay/authz';
 import {
   ApprovalRequiredError,
   EntitlementRequiredError,

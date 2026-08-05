@@ -142,16 +142,14 @@ export function describeApiError(error: unknown): DescribedError {
     code,
     messageKey: text(shape.messageKey),
     values: scalarValues(details),
-    requirements: [
-      ...stringList(details.requiredScopes),
-      ...stringList(details.requiredRoles),
-    ],
+    requirements: [...stringList(details.requiredScopes), ...stringList(details.requiredRoles)],
     resetAt: text(details.resetAt),
     retryAfterSeconds,
     usedRequests: count(details.used),
     limitRequests: count(details.limit),
     correlationId: text(shape.correlationId) ?? text(details.correlationId),
     retrySafe:
-      offline || (typeof shape.retryable === 'boolean' ? shape.retryable : RETRY_SAFE_CODES.has(code)),
+      offline ||
+      (typeof shape.retryable === 'boolean' ? shape.retryable : RETRY_SAFE_CODES.has(code)),
   };
 }

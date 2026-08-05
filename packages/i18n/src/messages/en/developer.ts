@@ -131,6 +131,7 @@ export const developerMessages = {
   'developer.docs.clients': 'Generated clients',
   'developer.docs.idempotency':
     'Send an idempotency key with every create, schedule and publish request. Repeating a request with the same key returns the original result instead of publishing twice.',
-  'developer.docs.pagination': 'Results are cursor paginated. Times are explicit and include a zone.',
+  'developer.docs.pagination':
+    'Results are cursor paginated. Times are explicit and include a zone.',
   'developer.docs.rateLimits': 'Rate limits apply per workspace, credential, route and connector.',
 } as const;

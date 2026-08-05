@@ -5,7 +5,11 @@ import { EmptyState } from '@relay/design-system/patterns';
 import { Body, Heading, List, Section, Split } from '@/features/marketing/components/layout';
 import { TextLink } from '@/features/marketing/components/links';
 import { PageIntro } from '@/features/marketing/components/page-parts';
-import { RADAR_CATEGORIES, RADAR_RECORDS, RADAR_REQUIREMENTS } from '@/features/marketing/data/catalogs';
+import {
+  RADAR_CATEGORIES,
+  RADAR_RECORDS,
+  RADAR_REQUIREMENTS,
+} from '@/features/marketing/data/catalogs';
 import { formatDate, marketingTranslator } from '@/features/marketing/i18n';
 import { pageMetadata } from '@/features/marketing/seo';
 import { ROUTES } from '@/features/marketing/site';
@@ -26,7 +30,7 @@ export default function ToolRadarPage(): ReactNode {
       <Section id="standard">
         <Split aside={<Heading>{t.t('web.toolRadar.record.title')}</Heading>}>
           <List items={RADAR_REQUIREMENTS.map((key) => t.format(key))} />
-          <p className="mt-6 max-w-[68ch] text-body-md leading-[1.6] text-text-tertiary">
+          <p className="text-body-md text-text-tertiary mt-6 max-w-[68ch] leading-[1.6]">
             {t.t('web.toolRadar.noAffiliateYet')}
           </p>
           <p className="mt-4">
@@ -39,11 +43,11 @@ export default function ToolRadarPage(): ReactNode {
         <Split aside={<Heading>{t.t('web.toolRadar.category.title')}</Heading>}>
           {RADAR_RECORDS.length === 0 ? (
             <div className="space-y-6">
-              <ul className="border-t border-border-default">
+              <ul className="border-border-default border-t">
                 {RADAR_CATEGORIES.map((category) => (
                   <li
                     key={category.id}
-                    className="border-b border-border-subtle py-4 text-body-lg text-text-primary"
+                    className="border-border-subtle text-body-lg text-text-primary border-b py-4"
                   >
                     {t.format(category.nameKey)}
                   </li>
@@ -56,12 +60,12 @@ export default function ToolRadarPage(): ReactNode {
               />
             </div>
           ) : (
-            <ul className="border-t border-border-default">
+            <ul className="border-border-default border-t">
               {RADAR_RECORDS.map((record) => (
-                <li key={record.id} className="space-y-2 border-b border-border-subtle py-6">
+                <li key={record.id} className="border-border-subtle space-y-2 border-b py-6">
                   <h3 className="text-title-sm text-text-primary">{record.name}</h3>
                   <Body>{record.useCase}</Body>
-                  <p className="font-mono text-body-sm text-text-tertiary">
+                  <p className="text-body-sm text-text-tertiary font-mono">
                     {t.t('web.label.lastReviewed', { date: formatDate(record.lastVerified) })}
                   </p>
                 </li>

@@ -17,12 +17,7 @@ import { ROUTES } from '../site';
 /* -------------------------------------------------------------------------- */
 
 export type ChangelogKind =
-  | 'shipped'
-  | 'changed'
-  | 'fixed'
-  | 'connector'
-  | 'correction'
-  | 'security';
+  'shipped' | 'changed' | 'fixed' | 'connector' | 'correction' | 'security';
 
 export const CHANGELOG_KIND_LABEL_KEY: Readonly<Record<ChangelogKind, MessageKey>> = {
   shipped: 'web.changelog.kind.shipped',
@@ -182,9 +177,24 @@ export const DOC_SECTIONS: readonly DocSection[] = [
     bodyKey: 'web.docs.section.start.body',
     href: null,
   },
-  { id: 'api', titleKey: 'web.docs.section.api.title', bodyKey: 'web.docs.section.api.body', href: null },
-  { id: 'mcp', titleKey: 'web.docs.section.mcp.title', bodyKey: 'web.docs.section.mcp.body', href: null },
-  { id: 'cli', titleKey: 'web.docs.section.cli.title', bodyKey: 'web.docs.section.cli.body', href: null },
+  {
+    id: 'api',
+    titleKey: 'web.docs.section.api.title',
+    bodyKey: 'web.docs.section.api.body',
+    href: null,
+  },
+  {
+    id: 'mcp',
+    titleKey: 'web.docs.section.mcp.title',
+    bodyKey: 'web.docs.section.mcp.body',
+    href: null,
+  },
+  {
+    id: 'cli',
+    titleKey: 'web.docs.section.cli.title',
+    bodyKey: 'web.docs.section.cli.body',
+    href: null,
+  },
   {
     id: 'webhooks',
     titleKey: 'web.docs.section.webhooks.title',
@@ -303,7 +313,11 @@ export const RETENTION_SCHEDULE: readonly RetentionRow[] = [
     dataKey: 'web.legal.retention.oauthState.label',
     periodKey: 'web.legal.retention.oauthState.period',
   },
-  { id: 'drafts', dataKey: 'web.legal.retention.drafts.label', periodKey: 'web.legal.retention.drafts.period' },
+  {
+    id: 'drafts',
+    dataKey: 'web.legal.retention.drafts.label',
+    periodKey: 'web.legal.retention.drafts.period',
+  },
   {
     id: 'receipts',
     dataKey: 'web.legal.retention.receipts.label',
@@ -314,17 +328,29 @@ export const RETENTION_SCHEDULE: readonly RetentionRow[] = [
     dataKey: 'web.legal.retention.rawProvider.label',
     periodKey: 'web.legal.retention.rawProvider.period',
   },
-  { id: 'metrics', dataKey: 'web.legal.retention.metrics.label', periodKey: 'web.legal.retention.metrics.period' },
+  {
+    id: 'metrics',
+    dataKey: 'web.legal.retention.metrics.label',
+    periodKey: 'web.legal.retention.metrics.period',
+  },
   {
     id: 'securityLogs',
     dataKey: 'web.legal.retention.securityLogs.label',
     periodKey: 'web.legal.retention.securityLogs.period',
   },
-  { id: 'billing', dataKey: 'web.legal.retention.billing.label', periodKey: 'web.legal.retention.billing.period' },
+  {
+    id: 'billing',
+    dataKey: 'web.legal.retention.billing.label',
+    periodKey: 'web.legal.retention.billing.period',
+  },
   {
     id: 'deletedAccount',
     dataKey: 'web.legal.retention.deletedAccount.label',
     periodKey: 'web.legal.retention.deletedAccount.period',
   },
-  { id: 'backups', dataKey: 'web.legal.retention.backups.label', periodKey: 'web.legal.retention.backups.period' },
+  {
+    id: 'backups',
+    dataKey: 'web.legal.retention.backups.label',
+    periodKey: 'web.legal.retention.backups.period',
+  },
 ];

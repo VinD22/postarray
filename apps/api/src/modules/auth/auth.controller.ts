@@ -259,7 +259,10 @@ export class AuthController {
   @RequireStepUp()
   @RateLimit({ limit: 3, windowSeconds: 60 * 60 * 24 * 30 })
   @HttpCode(200)
-  setAlias(@Identity() identity: IdentityContext, @Body() body: unknown): Promise<{ alias: string }> {
+  setAlias(
+    @Identity() identity: IdentityContext,
+    @Body() body: unknown,
+  ): Promise<{ alias: string }> {
     const { alias } = parseBody(setAliasSchema, body);
     return this.auth.setAlias(identity, alias);
   }

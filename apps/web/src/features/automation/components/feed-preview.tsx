@@ -62,18 +62,21 @@ export function FeedPreview({ validation }: FeedPreviewProps): ReactElement {
         </p>
       </div>
 
-      <ul className="flex flex-col border-t border-border-subtle">
+      <ul className="border-border-subtle flex flex-col border-t">
         {validation.items.slice(0, 5).map((item) => (
-          <li key={item.id} className="flex gap-3 border-b border-border-subtle py-3">
+          <li key={item.id} className="border-border-subtle flex gap-3 border-b py-3">
             {item.imageUrl ? (
+              // A feed thumbnail is a remote URL from an arbitrary publisher. next/image
+              // would require allowlisting every host a customer might subscribe to.
+              // eslint-disable-next-line @next/next/no-img-element
               <img
                 src={item.imageUrl}
                 alt={item.imageAlt ?? t('automation.rss.previewImageAlt', { title: item.title })}
-                className="size-16 shrink-0 rounded-md border border-border-subtle object-cover"
+                className="border-border-subtle size-16 shrink-0 rounded-md border object-cover"
                 loading="lazy"
               />
             ) : (
-              <span className="flex size-16 shrink-0 items-center justify-center rounded-md border border-dashed border-border-default p-1 text-center text-label text-text-tertiary">
+              <span className="border-border-default text-label text-text-tertiary flex size-16 shrink-0 items-center justify-center rounded-md border border-dashed p-1 text-center">
                 {t('automation.rss.previewNoImage')}
               </span>
             )}
@@ -81,7 +84,7 @@ export function FeedPreview({ validation }: FeedPreviewProps): ReactElement {
             <div className="flex min-w-0 flex-col gap-0.5">
               <span className="text-body-md text-text-primary">{item.title}</span>
               {item.summary ? (
-                <span className="line-clamp-2 text-body-sm text-text-secondary">
+                <span className="text-body-sm text-text-secondary line-clamp-2">
                   {item.summary}
                 </span>
               ) : null}
@@ -102,9 +105,7 @@ export function FeedPreview({ validation }: FeedPreviewProps): ReactElement {
       </ul>
 
       <div className="flex flex-col gap-2">
-        <h4 className="text-label text-text-tertiary">
-          {t('automation.rss.previewFieldsTitle')}
-        </h4>
+        <h4 className="text-label text-text-tertiary">{t('automation.rss.previewFieldsTitle')}</h4>
         <ul className="flex flex-wrap gap-2">
           {ALL_FIELDS.map((field) => {
             const present = validation.availableFields.includes(field);
@@ -113,9 +114,7 @@ export function FeedPreview({ validation }: FeedPreviewProps): ReactElement {
                 <Badge tone={present ? 'success' : 'neutral'}>
                   {t(FIELD_KEY[field])}
                   {present ? null : (
-                    <span className="ps-1.5">
-                      {t('automation.rss.previewFieldMissing')}
-                    </span>
+                    <span className="ps-1.5">{t('automation.rss.previewFieldMissing')}</span>
                   )}
                 </Badge>
               </li>

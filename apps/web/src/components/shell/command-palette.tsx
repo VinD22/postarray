@@ -256,8 +256,8 @@ export function CommandPalette({
           <DialogDescription>{t('palette.description')}</DialogDescription>
         </VisuallyHidden>
 
-        <div className="flex items-center gap-2 border-b border-border-subtle px-3">
-          <Search aria-hidden="true" className="size-4 shrink-0 text-text-tertiary" />
+        <div className="border-border-subtle flex items-center gap-2 border-b px-3">
+          <Search aria-hidden="true" className="text-text-tertiary size-4 shrink-0" />
           <input
             ref={inputRef}
             type="text"
@@ -276,24 +276,29 @@ export function CommandPalette({
             onKeyDown={onKeyDown}
             placeholder={t('palette.placeholder')}
             className={cn(
-              'h-12 w-full bg-transparent text-body-lg text-text-primary',
+              'text-body-lg text-text-primary h-12 w-full bg-transparent',
               'placeholder:text-text-tertiary focus-visible:outline-none',
             )}
           />
         </div>
 
-        <div className="max-h-80 overflow-y-auto p-2 relay-scrollbar">
+        <div className="relay-scrollbar max-h-80 overflow-y-auto p-2">
           {results.length === 0 ? (
-            <p className="px-2 py-6 text-center text-body-md text-text-secondary">
+            <p className="text-body-md text-text-secondary px-2 py-6 text-center">
               {t('palette.empty', { query })}
             </p>
           ) : (
-            <ul id={listId} role="listbox" aria-label={t('palette.title')} className="flex flex-col">
+            <ul
+              id={listId}
+              role="listbox"
+              aria-label={t('palette.title')}
+              className="flex flex-col"
+            >
               {grouped.map((section) => (
                 <li key={section.group} role="presentation">
                   <p
                     role="presentation"
-                    className="px-2 pt-3 pb-1 text-label uppercase tracking-wide text-text-tertiary"
+                    className="text-label text-text-tertiary px-2 pt-3 pb-1 tracking-wide uppercase"
                   >
                     {section.group}
                   </p>
@@ -310,16 +315,14 @@ export function CommandPalette({
                         onClick={command.run}
                         className={cn(
                           'flex min-h-11 cursor-pointer items-center justify-between gap-3',
-                          'rounded-md px-2 py-2 text-body-md',
+                          'text-body-md rounded-md px-2 py-2',
                           index === activeIndex
                             ? 'bg-accent-subtle text-text-primary'
                             : 'text-text-secondary',
                         )}
                       >
                         <span className="truncate">{command.label}</span>
-                        {command.shortcut === undefined ? null : (
-                          <Kbd keys={command.shortcut} />
-                        )}
+                        {command.shortcut === undefined ? null : <Kbd keys={command.shortcut} />}
                       </li>
                     ))}
                   </ul>
@@ -329,7 +332,7 @@ export function CommandPalette({
           )}
         </div>
 
-        <div className="flex flex-wrap items-center gap-x-4 gap-y-1 border-t border-border-subtle px-3 py-2 text-body-sm text-text-tertiary">
+        <div className="border-border-subtle text-body-sm text-text-tertiary flex flex-wrap items-center gap-x-4 gap-y-1 border-t px-3 py-2">
           <span>{t('palette.hint.navigate')}</span>
           <span>{t('palette.hint.select')}</span>
           <span>{t('palette.hint.close')}</span>

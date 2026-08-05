@@ -29,9 +29,7 @@ export function ReceiptTimeline({ steps, provider }: ReceiptTimelineProps): Reac
   const events: TimelineEvent[] = steps.map((step) => ({
     id: step.id,
     title: t(step.messageKey, formatValues(step, format)),
-    ...(step.at
-      ? { timestamp: format.dateTime(step.at), isoTimestamp: step.at }
-      : {}),
+    ...(step.at ? { timestamp: format.dateTime(step.at), isoTimestamp: step.at } : {}),
     outcome: step.outcome,
     ...(step.detail ? { detail: <StepDetail step={step} provider={provider} /> } : {}),
   }));
@@ -78,7 +76,7 @@ function StepDetail({ step, provider }: { step: TimelineStep; provider: string }
             href={detail.permalink}
             target="_blank"
             rel="noreferrer noopener"
-            className="inline-flex items-center gap-1 break-all text-text-accent"
+            className="text-text-accent inline-flex items-center gap-1 break-all"
           >
             {detail.permalink}
             <ExternalLink aria-hidden="true" className="size-3 shrink-0" />
@@ -122,7 +120,7 @@ function StepDetail({ step, provider }: { step: TimelineStep; provider: string }
 
       {detail.httpStatus === undefined ? null : (
         <Row term={t('web.receipt.attempt.httpStatus')}>
-          <span className="tabular-nums text-text-secondary">{detail.httpStatus}</span>
+          <span className="text-text-secondary tabular-nums">{detail.httpStatus}</span>
         </Row>
       )}
 
@@ -134,7 +132,7 @@ function StepDetail({ step, provider }: { step: TimelineStep; provider: string }
 
       {detail.nextRetryAt ? (
         <Row term={t('web.receipt.attempt.nextRetryLabel')}>
-          <time dateTime={detail.nextRetryAt} className="tabular-nums text-text-secondary">
+          <time dateTime={detail.nextRetryAt} className="text-text-secondary tabular-nums">
             {format.dateTime(detail.nextRetryAt)}
           </time>
         </Row>
@@ -146,8 +144,8 @@ function StepDetail({ step, provider }: { step: TimelineStep; provider: string }
 function Row({ term, children }: { term: string; children: ReactNode }): ReactNode {
   return (
     <div className="flex flex-col gap-0.5 sm:flex-row sm:gap-2">
-      <dt className="shrink-0 text-label text-text-tertiary sm:w-40">{term}</dt>
-      <dd className="min-w-0 text-body-sm">{children}</dd>
+      <dt className="text-label text-text-tertiary shrink-0 sm:w-40">{term}</dt>
+      <dd className="text-body-sm min-w-0">{children}</dd>
     </div>
   );
 }

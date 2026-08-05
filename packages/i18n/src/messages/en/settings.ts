@@ -65,7 +65,8 @@ export const settingsMessages = {
   'settings.sets.title': 'Sets',
   'settings.sets.description':
     'A reusable group of targets, variants, settings, comments and delays. Applying a Set creates an independent draft.',
-  'settings.sets.editNote': 'Editing a Set does not change posts that are already approved or scheduled.',
+  'settings.sets.editNote':
+    'Editing a Set does not change posts that are already approved or scheduled.',
   'settings.signatures.title': 'Signatures',
   'settings.signatures.description':
     'Closing text, hashtags, links or disclosures, scoped by brand, platform and language.',

@@ -36,7 +36,9 @@ function kinds(
   return record;
 }
 
-function bytes(overrides: Partial<Record<MediaKind, number | null>>): Record<MediaKind, number | null> {
+function bytes(
+  overrides: Partial<Record<MediaKind, number | null>>,
+): Record<MediaKind, number | null> {
   return {
     image: 5 * 1024 * 1024,
     video: 512 * 1024 * 1024,
@@ -381,13 +383,15 @@ export function makeCapabilitySnapshot(
       minLeadSeconds: 60,
     },
     privacy: {
-      support: profile.privacyOptions.length > 0 ? ('supported' as const) : ('unsupported' as const),
+      support:
+        profile.privacyOptions.length > 0 ? ('supported' as const) : ('unsupported' as const),
       mustBeExplicit: profile.privacyMustBeExplicit,
       options: profile.privacyOptions.map((option) => ({ ...option })),
     },
     disclosure: {
       aiLabel: 'not_implemented' as const,
-      commercialContent: provider === 'tiktok' ? ('supported' as const) : ('not_implemented' as const),
+      commercialContent:
+        provider === 'tiktok' ? ('supported' as const) : ('not_implemented' as const),
       brandedContent: provider === 'tiktok' ? ('supported' as const) : ('not_implemented' as const),
     },
     analytics: {

@@ -11,11 +11,7 @@ import { Actor, Idempotent, RequireScope, RequireStepUp } from '../../common/dec
 import { cursorQuerySchema } from '../../common/pagination.js';
 import { ruleIdSchema } from '../../common/schemas.js';
 import { parseBody, parseParams, parseQuery } from '../../common/zod.js';
-import {
-  createRuleSchema,
-  testRunSchema,
-  updateRuleSchema,
-} from './automation-rules.schemas.js';
+import { createRuleSchema, testRunSchema, updateRuleSchema } from './automation-rules.schemas.js';
 import { AutomationRulesService } from './automation-rules.service.js';
 
 /**

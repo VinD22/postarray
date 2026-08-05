@@ -101,7 +101,7 @@ export function ConnectDialog({
         <DialogBody>
           <div className="flex flex-col gap-5">
             <fieldset className="flex flex-col gap-2">
-              <legend className="pb-1 text-label text-text-tertiary">
+              <legend className="text-label text-text-tertiary pb-1">
                 {t('web.connection.connect.chooseProvider')}
               </legend>
               <RadioGroup
@@ -146,22 +146,20 @@ export function ConnectDialog({
               </h3>
 
               {permissions.length === 0 ? (
-                <p className="text-body-md text-text-secondary">
-                  {t('common.unavailable')}
-                </p>
+                <p className="text-body-md text-text-secondary">{t('common.unavailable')}</p>
               ) : (
                 <ul className="flex flex-col gap-2">
                   {permissions.map((permission) => (
                     <li
                       key={permission.scope}
-                      className="flex gap-2 rounded-md border border-border-subtle bg-surface-sunken p-2.5"
+                      className="border-border-subtle bg-surface-sunken flex gap-2 rounded-md border p-2.5"
                     >
                       <ShieldCheck
                         aria-hidden="true"
-                        className="mt-0.5 size-4 shrink-0 text-text-tertiary"
+                        className="text-text-tertiary mt-0.5 size-4 shrink-0"
                       />
                       <span className="flex min-w-0 flex-col gap-0.5">
-                        <span className="font-mono text-code text-text-primary">
+                        <span className="text-code text-text-primary font-mono">
                           {permission.scope}
                         </span>
                         <span className="text-body-sm text-text-secondary">

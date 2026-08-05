@@ -176,7 +176,8 @@ export function metaAuthorization(surface: MetaSurface): AuthorizationDefinition
     authorizeUrl: FACEBOOK_OAUTH_BASE,
     tokenUrl: FACEBOOK_TOKEN_URL,
     revokeUrl: `${GRAPH_BASE}/me/permissions`,
-    redirectPath: surface === 'instagram' ? '/oauth/instagram/callback' : '/oauth/facebook/callback',
+    redirectPath:
+      surface === 'instagram' ? '/oauth/instagram/callback' : '/oauth/facebook/callback',
     scopes: surface === 'instagram' ? [...INSTAGRAM_SCOPES] : [...FACEBOOK_SCOPES],
     pkceRequired: false,
     // Meta returns a user token from which we exchange Page tokens, and for Instagram we

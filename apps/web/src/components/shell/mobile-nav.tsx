@@ -52,7 +52,7 @@ export function MobileNav() {
         aria-label={t('nav.primaryLandmark')}
         className={cn(
           'fixed inset-x-0 bottom-0 z-(--z-index-sticky) md:hidden',
-          'grid grid-cols-5 items-end gap-1 border-t border-border-default',
+          'border-border-default grid grid-cols-5 items-end gap-1 border-t',
           'bg-surface-raised px-2 pt-1',
           'pb-[max(0.25rem,env(safe-area-inset-bottom))]',
         )}
@@ -117,9 +117,9 @@ export function MobileNav() {
                       setMenuOpen(false);
                     }}
                     aria-current={isNavItemActive(item, pathname) ? 'page' : undefined}
-                    className="flex min-h-11 items-center gap-3 border-b border-border-subtle px-1 text-body-md text-text-primary"
+                    className="border-border-subtle text-body-md text-text-primary flex min-h-11 items-center gap-3 border-b px-1"
                   >
-                    <item.icon aria-hidden="true" className="size-4 text-text-tertiary" />
+                    <item.icon aria-hidden="true" className="text-text-tertiary size-4" />
                     {t(item.labelKey)}
                   </Link>
                 </li>
@@ -131,7 +131,7 @@ export function MobileNav() {
                     onClick={() => {
                       setMenuOpen(false);
                     }}
-                    className="flex min-h-11 items-center px-1 text-body-md text-text-secondary"
+                    className="text-body-md text-text-secondary flex min-h-11 items-center px-1"
                   >
                     {t(link.labelKey)}
                   </Link>
@@ -159,8 +159,8 @@ function BottomLink({
       href={href}
       aria-current={active ? 'page' : undefined}
       className={cn(
-        'flex min-h-11 flex-col items-center justify-center gap-0.5 rounded-md text-label',
-        active ? 'font-medium text-text-primary' : 'text-text-secondary',
+        'text-label flex min-h-11 flex-col items-center justify-center gap-0.5 rounded-md',
+        active ? 'text-text-primary font-medium' : 'text-text-secondary',
       )}
     >
       {children}

@@ -97,12 +97,7 @@ export type PublishedMoveMode = 'local_record_only' | 'schedule_new_post';
 
 export interface RescheduleWarning {
   readonly id: string;
-  readonly kind:
-    | 'dst'
-    | 'account_conflict'
-    | 'campaign_window'
-    | 'short_lead_time'
-    | 'in_the_past';
+  readonly kind: 'dst' | 'account_conflict' | 'campaign_window' | 'short_lead_time' | 'in_the_past';
   /** Values the sentence interpolates. Already formatted where it must be. */
   readonly values: Readonly<Record<string, string | number>>;
   /** A warning blocks the move outright when true. */

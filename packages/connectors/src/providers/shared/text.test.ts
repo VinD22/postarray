@@ -14,8 +14,14 @@ import {
   truncationIndex,
 } from './text.js';
 
-const FIXED_23 = { unit: 'weighted' as const, linkCounting: { mode: 'fixed' as const, charactersPerLink: 23 } };
-const ACTUAL = { unit: 'grapheme' as const, linkCounting: { mode: 'actual' as const, charactersPerLink: null } };
+const FIXED_23 = {
+  unit: 'weighted' as const,
+  linkCounting: { mode: 'fixed' as const, charactersPerLink: 23 },
+};
+const ACTUAL = {
+  unit: 'grapheme' as const,
+  linkCounting: { mode: 'actual' as const, charactersPerLink: null },
+};
 
 describe('URL detection', () => {
   it('finds every URL with its exact slice', () => {

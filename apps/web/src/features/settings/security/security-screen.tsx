@@ -28,7 +28,6 @@ import { useSettingsMutation } from '../lib/use-settings-mutation.js';
 import type { OAuthGrantView } from '../lib/view-models.js';
 import { InlineFact, SettingRow, SettingsPanel, SettingsStack } from '../components/section.js';
 
-
 export function SecurityScreen(): ReactNode {
   const t = useTranslations();
   const section = t('settings.ui.section.security');
@@ -221,21 +220,17 @@ export function SecurityScreen(): ReactNode {
             skeletonColumns={3}
           >
             {keyRows.length === 0 ? (
-              <p className="text-body-md text-text-secondary">
-                {t('developer.activity.empty')}
-              </p>
+              <p className="text-body-md text-text-secondary">{t('developer.activity.empty')}</p>
             ) : (
               <ul className="flex flex-col">
                 {keyRows.map((key) => (
                   <li
                     key={key.id}
-                    className="flex flex-col gap-2 border-b border-border-subtle py-3 last:border-b-0 md:flex-row md:items-center md:justify-between"
+                    className="border-border-subtle flex flex-col gap-2 border-b py-3 last:border-b-0 md:flex-row md:items-center md:justify-between"
                   >
                     <div className="flex min-w-0 flex-col gap-1">
-                      <span className="text-body-md font-medium text-text-primary">
-                        {key.name}
-                      </span>
-                      <span className="flex flex-wrap items-center gap-2 text-body-sm text-text-tertiary">
+                      <span className="text-body-md text-text-primary font-medium">{key.name}</span>
+                      <span className="text-body-sm text-text-tertiary flex flex-wrap items-center gap-2">
                         <Code>{key.prefix}</Code>
                         {t('developer.credential.created', {
                           date: formatters.date(key.createdAt),
@@ -325,10 +320,10 @@ export function SecurityScreen(): ReactNode {
                 {grantRows.map((grant) => (
                   <li
                     key={grant.id}
-                    className="flex flex-col gap-2 border-b border-border-subtle py-3 last:border-b-0 md:flex-row md:items-start md:justify-between"
+                    className="border-border-subtle flex flex-col gap-2 border-b py-3 last:border-b-0 md:flex-row md:items-start md:justify-between"
                   >
                     <div className="flex min-w-0 flex-col gap-1">
-                      <span className="text-body-md font-medium text-text-primary">
+                      <span className="text-body-md text-text-primary font-medium">
                         {grant.appName}
                       </span>
                       <span className="text-body-sm text-text-secondary">
@@ -347,9 +342,7 @@ export function SecurityScreen(): ReactNode {
                             })}`}
                       </span>
                       <span className="flex flex-wrap gap-1 pt-1">
-                        <span className="sr-only">
-                          {t('settings.ui.security.grantScopes')}
-                        </span>
+                        <span className="sr-only">{t('settings.ui.security.grantScopes')}</span>
                         {grant.scopes.map((scope) => (
                           <Code key={scope}>{scope}</Code>
                         ))}
@@ -381,9 +374,9 @@ export function SecurityScreen(): ReactNode {
               {(connections.data ?? []).map((connection) => (
                 <li
                   key={connection.id}
-                  className="flex flex-col gap-1 border-b border-border-subtle py-3 last:border-b-0"
+                  className="border-border-subtle flex flex-col gap-1 border-b py-3 last:border-b-0"
                 >
-                  <span className="text-body-md font-medium text-text-primary">
+                  <span className="text-body-md text-text-primary font-medium">
                     {connection.accountLabel}
                   </span>
                   <span className="text-body-sm text-text-secondary">

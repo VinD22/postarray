@@ -45,8 +45,19 @@ export const FAKE_CAPABILITY_SNAPSHOT = {
   version: '2026-08-04.1',
   text: { maxLength: 480, supportsLineBreaks: true, supportsHashtags: true },
   media: {
-    image: { state: 'supported', maxCount: 4, maxBytes: 8_000_000, mimeTypes: ['image/jpeg', 'image/png', 'image/webp'] },
-    video: { state: 'supported', maxCount: 1, maxBytes: 200_000_000, maxDurationSeconds: 180, mimeTypes: ['video/mp4'] },
+    image: {
+      state: 'supported',
+      maxCount: 4,
+      maxBytes: 8_000_000,
+      mimeTypes: ['image/jpeg', 'image/png', 'image/webp'],
+    },
+    video: {
+      state: 'supported',
+      maxCount: 1,
+      maxBytes: 200_000_000,
+      maxDurationSeconds: 180,
+      mimeTypes: ['video/mp4'],
+    },
     document: { state: 'unsupported', reason: 'The fake provider has no document post type.' },
     carousel: { state: 'supported', minItems: 2, maxItems: 4 },
     altText: { state: 'supported', required: false, maxLength: 400 },
@@ -61,7 +72,10 @@ export const FAKE_CAPABILITY_SNAPSHOT = {
   scheduling: { providerSideScheduling: 'unsupported' },
   deletePost: { state: 'supported' },
   analytics: { state: 'supported', postLevel: true, accountLevel: false, freshnessMinutes: 60 },
-  aiDisclosure: { state: 'not_implemented', reason: 'No disclosure field is exposed by this simulator yet.' },
+  aiDisclosure: {
+    state: 'not_implemented',
+    reason: 'No disclosure field is exposed by this simulator yet.',
+  },
   costPerCreate: { minor: 0, currency: 'USD' },
 };
 
@@ -76,9 +90,24 @@ export async function seedTenantCore(tx: RlsTransactionClient): Promise<void> {
 
 async function seedPeopleAndWorkspace(tx: RlsTransactionClient): Promise<void> {
   const people = [
-    { id: SEED_IDS.ownerUser, email: 'owner@example.test', displayName: 'Ada Okafor', handle: 'ada' },
-    { id: SEED_IDS.editorUser, email: 'editor@example.test', displayName: 'Ben Marsh', handle: 'ben' },
-    { id: SEED_IDS.approverUser, email: 'approver@example.test', displayName: 'Chloe Dupont', handle: 'chloe' },
+    {
+      id: SEED_IDS.ownerUser,
+      email: 'owner@example.test',
+      displayName: 'Ada Okafor',
+      handle: 'ada',
+    },
+    {
+      id: SEED_IDS.editorUser,
+      email: 'editor@example.test',
+      displayName: 'Ben Marsh',
+      handle: 'ben',
+    },
+    {
+      id: SEED_IDS.approverUser,
+      email: 'approver@example.test',
+      displayName: 'Chloe Dupont',
+      handle: 'chloe',
+    },
   ];
 
   for (const person of people) {
@@ -220,7 +249,9 @@ async function seedBrands(tx: RlsTransactionClient): Promise<void> {
       domains: ['northwind.example.test'],
       defaultTimeZone: 'Europe/Lisbon',
       defaultShortLinkOn: true,
-      disclosureDefaults: { paidPartnership: 'Paid partnership disclosure required for sponsored posts.' },
+      disclosureDefaults: {
+        paidPartnership: 'Paid partnership disclosure required for sponsored posts.',
+      },
     },
     update: {},
   });
@@ -259,7 +290,11 @@ async function seedBrands(tx: RlsTransactionClient): Promise<void> {
       objective: 'Repeat orders from existing customers.',
       conversionEvent: 'checkout_completed',
       provenClaims: [
-        { claim: 'Ships within two working days', evidence: 'Internal fulfilment report', confirmed: true },
+        {
+          claim: 'Ships within two working days',
+          evidence: 'Internal fulfilment report',
+          confirmed: true,
+        },
       ],
       prohibitedClaims: ['cheapest anywhere', 'guaranteed delivery date'],
       weeklyCapacityHours: 4,
@@ -520,7 +555,9 @@ async function seedGrowthPlan(tx: RlsTransactionClient): Promise<void> {
       },
       measurementPlan: { primary: 'reach', secondary: 'comments', window_weeks: 4 },
       risksAndUnknowns: [
-        { risk: 'No baseline exists, so the first four weeks establish one rather than prove anything.' },
+        {
+          risk: 'No baseline exists, so the first four weeks establish one rather than prove anything.',
+        },
       ],
       evidenceIds: [SEED_IDS.businessProfile],
     },
@@ -624,7 +661,9 @@ async function seedBilling(tx: RlsTransactionClient): Promise<void> {
         ...(entitlement.numericValue === undefined
           ? {}
           : { numericValue: entitlement.numericValue }),
-        ...(entitlement.booleanValue === undefined ? {} : { booleanValue: entitlement.booleanValue }),
+        ...(entitlement.booleanValue === undefined
+          ? {}
+          : { booleanValue: entitlement.booleanValue }),
         source: 'polar_webhook',
       },
       update: {},

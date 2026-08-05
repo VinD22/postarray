@@ -48,13 +48,12 @@ export type MetricMapping = z.infer<typeof metricMappingSchema>;
 export type UnavailableReason = Exclude<MetricAvailability, 'available'>;
 
 /** i18n keys the UI renders for each reason. No English lives in this package. */
-export const UNAVAILABLE_REASON_KEYS: Readonly<Record<UnavailableReason, string>> =
-  Object.freeze({
-    unavailable_provider: 'analytics.value.unavailableReason.unsupported',
-    unavailable_permission: 'analytics.value.unavailableReason.permission',
-    unavailable_pending: 'analytics.value.unavailableReason.tooEarly',
-    unavailable_stale: 'analytics.value.unavailableReason.syncFailed',
-  });
+export const UNAVAILABLE_REASON_KEYS: Readonly<Record<UnavailableReason, string>> = Object.freeze({
+  unavailable_provider: 'analytics.value.unavailableReason.unsupported',
+  unavailable_permission: 'analytics.value.unavailableReason.permission',
+  unavailable_pending: 'analytics.value.unavailableReason.tooEarly',
+  unavailable_stale: 'analytics.value.unavailableReason.syncFailed',
+});
 
 /** A reading plus everything needed to explain it. */
 export interface NormalizedMetric {
@@ -133,5 +132,12 @@ export function isIncompatibleKind(left: ContentKind, right: ContentKind): boole
   return kindFamily(left) !== kindFamily(right);
 }
 
-export type { ContentKind, MetricAvailability, MetricDefinition, MetricObservation, NormalizedMetricName, ProviderId };
+export type {
+  ContentKind,
+  MetricAvailability,
+  MetricDefinition,
+  MetricObservation,
+  NormalizedMetricName,
+  ProviderId,
+};
 export { contentKindSchema, normalizedMetricNameSchema, providerIdSchema };

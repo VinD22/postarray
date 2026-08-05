@@ -38,7 +38,7 @@ export function ShortcutsDialog({
             {SHORTCUTS.map((entry) => (
               <div
                 key={entry.keys}
-                className="flex items-center justify-between gap-4 border-b border-border-subtle py-2 last:border-b-0"
+                className="border-border-subtle flex items-center justify-between gap-4 border-b py-2 last:border-b-0"
               >
                 <dt className="text-body-md text-text-primary">{t(entry.labelKey)}</dt>
                 <dd>
@@ -47,7 +47,7 @@ export function ShortcutsDialog({
               </div>
             ))}
           </dl>
-          <p className="pt-3 text-body-sm text-text-tertiary">{t('a11y.keyboard.hint.dialog')}</p>
+          <p className="text-body-sm text-text-tertiary pt-3">{t('a11y.keyboard.hint.dialog')}</p>
         </DialogBody>
       </DialogContent>
     </Dialog>

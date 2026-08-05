@@ -8,10 +8,7 @@ describe('line editing', () => {
   });
 
   it('trims surrounding space, which is what a paste from a document carries', () => {
-    expect(fromLines('  guaranteed  \n\tbest in class ')).toEqual([
-      'guaranteed',
-      'best in class',
-    ]);
+    expect(fromLines('  guaranteed  \n\tbest in class ')).toEqual(['guaranteed', 'best in class']);
   });
 
   it('round trips a list without changing its order', () => {

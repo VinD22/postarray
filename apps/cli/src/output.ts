@@ -1,4 +1,4 @@
-import { API_VERSION, RelayError } from '@relay/contracts';
+import { API_VERSION, type RelayError } from '@relay/contracts';
 import type { ProblemJson } from '@relay/contracts';
 import { DEFAULT_LOCALE, createTranslator, en } from '@relay/i18n';
 import type { Translator } from '@relay/i18n';

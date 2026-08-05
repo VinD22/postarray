@@ -49,10 +49,8 @@ export const composerMessages = {
   'composer.editor.characterCount': '{used} of {limit} characters',
   'composer.editor.characterCountOver': '{over} characters over the {limit} character limit',
   'composer.editor.characterCountUnknown': 'Character limit unavailable for this account',
-  'composer.editor.remaining':
-    '{count, plural, one {# character left} other {# characters left}}',
-  'composer.editor.hashtagCount':
-    '{count, plural, one {# hashtag} other {# hashtags}}',
+  'composer.editor.remaining': '{count, plural, one {# character left} other {# characters left}}',
+  'composer.editor.hashtagCount': '{count, plural, one {# hashtag} other {# hashtags}}',
   'composer.editor.formatting': 'Formatting',
   'composer.editor.emoji': 'Emoji',
   'composer.editor.mention': 'Mention',

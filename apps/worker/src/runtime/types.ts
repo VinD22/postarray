@@ -41,11 +41,7 @@ export interface ChildWorkflowHandle<TOutput> {
  */
 export interface ChildWorkflowDescriptor<TInput, TOutput> {
   readonly name: string;
-  run(
-    runtime: WorkflowRuntime,
-    activities: WorkerActivities,
-    input: TInput,
-  ): Promise<TOutput>;
+  run(runtime: WorkflowRuntime, activities: WorkerActivities, input: TInput): Promise<TOutput>;
   /**
    * Parses the value Temporal hands back when this workflow is started by name.
    * Required for any descriptor actually used as a child; a descriptor that is

@@ -90,7 +90,7 @@ export function MediaDetail({
           {
             id: 'checksum',
             term: t.full('library.asset.checksum'),
-            definition: <span className="break-all font-mono text-mono">{asset.checksum}</span>,
+            definition: <span className="text-mono font-mono break-all">{asset.checksum}</span>,
           },
           {
             id: 'usage',
@@ -132,9 +132,7 @@ export function MediaDetail({
                   {
                     id: 'source',
                     term: t.full('mediaLib.provenance.sourceUrl'),
-                    definition: (
-                      <span className="break-all">{asset.provenance.sourceUrl}</span>
-                    ),
+                    definition: <span className="break-all">{asset.provenance.sourceUrl}</span>,
                   },
                 ]),
             ...(asset.provenance.fetchedAt === null
@@ -207,7 +205,7 @@ export function MediaDetail({
             {asset.versions.map((version) => (
               <li
                 key={version.version}
-                className="flex flex-wrap items-center justify-between gap-2 border-b border-border-subtle py-2 last:border-b-0"
+                className="border-border-subtle flex flex-wrap items-center justify-between gap-2 border-b py-2 last:border-b-0"
               >
                 <span className="flex min-w-0 flex-col">
                   <span className="text-body-md text-text-primary">

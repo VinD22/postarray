@@ -99,9 +99,7 @@ describe('redactString', () => {
   });
 
   it('leaves ordinary text untouched', () => {
-    expect(redactString('published 3 posts to 2 accounts')).toBe(
-      'published 3 posts to 2 accounts',
-    );
+    expect(redactString('published 3 posts to 2 accounts')).toBe('published 3 posts to 2 accounts');
   });
 });
 
@@ -189,10 +187,10 @@ describe('redact', () => {
   });
 
   it('honours extra key patterns from the call site', () => {
-    const result = redact({ prompt: 'private user content' }, { extraKeys: [/^prompt$/] }) as Record<
-      string,
-      unknown
-    >;
+    const result = redact(
+      { prompt: 'private user content' },
+      { extraKeys: [/^prompt$/] },
+    ) as Record<string, unknown>;
     expect(result['prompt']).toBe(REDACTION_MASK);
   });
 });

@@ -80,8 +80,9 @@ export function isRedactedKey(key: string): boolean {
 /** Mask secret-looking substrings inside free text. */
 export function redactString(value: string): string {
   return value
-    .replace(URL_CREDENTIALS_PATTERN, (_match, scheme: string, user: string) =>
-      `${scheme}${user}:${REDACTION_MASK}@`,
+    .replace(
+      URL_CREDENTIALS_PATTERN,
+      (_match, scheme: string, user: string) => `${scheme}${user}:${REDACTION_MASK}@`,
     )
     .replace(QUERY_SECRET_PATTERN, (_match, prefix: string) => `${prefix}${REDACTION_MASK}`)
     .replace(JWT_PATTERN, REDACTION_MASK)
@@ -165,9 +166,7 @@ export function redact<T>(value: T, options: RedactOptions = {}): unknown {
         const output: Record<string, unknown> = {};
         for (const [key, entry] of input) {
           const name = String(key);
-          output[name] = shouldMaskKey(name, extra)
-            ? REDACTION_MASK
-            : walk(entry, depth + 1);
+          output[name] = shouldMaskKey(name, extra) ? REDACTION_MASK : walk(entry, depth + 1);
         }
         return output;
       }

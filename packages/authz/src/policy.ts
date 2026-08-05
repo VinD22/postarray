@@ -1,16 +1,8 @@
 import type { ApprovalLevel, Role, Scope } from '@relay/contracts';
 
 import { PERMISSIONS, isPermission, isReadPermission, type Permission } from './permissions.js';
-import {
-  effectivePermissions,
-  minimumRoleFor,
-  type RolePermissionOverride,
-} from './roles.js';
-import {
-  isDelegable,
-  scopeGrantsPermission,
-  scopesForPermission,
-} from './scopes.js';
+import { effectivePermissions, minimumRoleFor, type RolePermissionOverride } from './roles.js';
+import { isDelegable, scopeGrantsPermission, scopesForPermission } from './scopes.js';
 
 /**
  * `can(actor, permission, resource?)`.
@@ -196,10 +188,7 @@ function withinBrandScope(actor: PolicyActor, resource: PolicyResource | undefin
   return scope.includes(brandId);
 }
 
-function withinConnectionScope(
-  actor: PolicyActor,
-  resource: PolicyResource | undefined,
-): boolean {
+function withinConnectionScope(actor: PolicyActor, resource: PolicyResource | undefined): boolean {
   const scope = actor.connectionScope;
   if (scope === undefined || scope.length === 0) {
     return true;

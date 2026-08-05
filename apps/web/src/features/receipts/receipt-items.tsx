@@ -73,7 +73,7 @@ export function ReceiptItems({ receipt, provider }: ReceiptItemsProps): ReactNod
                         ? t('web.receipt.item.root')
                         : t(`web.receipt.item.${item.kind}`, { position: item.order })}
                     </span>
-                    <span className="text-body-sm font-normal text-text-tertiary">
+                    <span className="text-body-sm text-text-tertiary font-normal">
                       {item.delaySeconds === 0
                         ? t('web.receipt.item.noDelay')
                         : t('web.receipt.item.delay', {
@@ -83,15 +83,11 @@ export function ReceiptItems({ receipt, provider }: ReceiptItemsProps): ReactNod
                   </span>
                 </TableRowHeader>
                 <TableCell>
-                  <StatusPill
-                    state={item.state}
-                    label={t(`state.${item.state}.label`)}
-                    size="sm"
-                  />
+                  <StatusPill state={item.state} label={t(`state.${item.state}.label`)} size="sm" />
                 </TableCell>
                 <TableCell>
                   {item.publishedAt ? (
-                    <time dateTime={item.publishedAt} className="tabular-nums text-text-secondary">
+                    <time dateTime={item.publishedAt} className="text-text-secondary tabular-nums">
                       {format.dateTime(item.publishedAt)}
                     </time>
                   ) : (
@@ -111,7 +107,7 @@ export function ReceiptItems({ receipt, provider }: ReceiptItemsProps): ReactNod
                       href={item.permalink}
                       target="_blank"
                       rel="noreferrer noopener"
-                      className="inline-flex items-center gap-1 text-text-accent"
+                      className="text-text-accent inline-flex items-center gap-1"
                     >
                       {t('action.open')}
                       <ExternalLink aria-hidden="true" className="size-3" />

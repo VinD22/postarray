@@ -29,9 +29,10 @@ import type { ConnectionRow, CustomerGroup } from './types';
 export { useBeginConnection, usePauseConnection, useResumeConnection };
 
 /** The connection list, widened to the row shape this screen renders. */
-export function useConnectionRows(
-  filter: { brandId?: string; provider?: ProviderId } = {},
-): { readonly query: ReturnType<typeof useConnectionsPage>; readonly rows: readonly ConnectionRow[] } {
+export function useConnectionRows(filter: { brandId?: string; provider?: ProviderId } = {}): {
+  readonly query: ReturnType<typeof useConnectionsPage>;
+  readonly rows: readonly ConnectionRow[];
+} {
   const query = useConnectionsPage(filter);
   return { query, rows: (query.data?.data ?? []) as readonly ConnectionRow[] };
 }

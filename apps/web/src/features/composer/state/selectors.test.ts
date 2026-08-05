@@ -19,22 +19,34 @@ function summarize(state = initialComposerState(SEED_BOOTSTRAP)) {
   });
 }
 
+/** A seeded account the suite depends on, failing loudly if the seed changes. */
+function requireSeed(connectionId: string) {
+  const account = SEED_ACCOUNTS.find((entry) => entry.connectionId === connectionId);
+  if (account === undefined) {
+    throw new Error(`expected a seeded account for ${connectionId}`);
+  }
+  return account;
+}
+
 describe('counters', () => {
   it('charges a fixed cost per link where the provider does', () => {
-    const x = SEED_ACCOUNTS.find((account) => account.connectionId === X)!;
-    const withLink = countCharacters('See https://example.com/a/very/long/path/indeed', x.capabilities);
+    const x = requireSeed(X);
+    const withLink = countCharacters(
+      'See https://example.com/a/very/long/path/indeed',
+      x.capabilities,
+    );
     const withoutLink = countCharacters('See ', x.capabilities);
     expect(withLink).toBe(withoutLink + 23);
   });
 
   it('counts the real length where the provider counts characters', () => {
-    const linkedin = SEED_ACCOUNTS.find((account) => account.connectionId === LINKEDIN)!;
+    const linkedin = requireSeed(LINKEDIN);
     const text = 'See https://example.com/a/very/long/path/indeed';
     expect(countCharacters(text, linkedin.capabilities)).toBe([...text].length);
   });
 
   it('warns at ninety percent and blocks past the limit', () => {
-    const x = SEED_ACCOUNTS.find((account) => account.connectionId === X)!;
+    const x = requireSeed(X);
     expect(readCounter('a'.repeat(100), x.capabilities).level).toBe('ok');
     expect(readCounter('a'.repeat(260), x.capabilities).level).toBe('near');
     expect(readCounter('a'.repeat(281), x.capabilities).level).toBe('over');

@@ -73,13 +73,8 @@ export function makeWebhookEnvelope(input: MakeWebhookEnvelopeInput = {}): Webho
   });
 }
 
-export function makeWebhookEndpoint(
-  overrides: Partial<WebhookEndpoint> = {},
-): WebhookEndpoint {
-  const events: readonly WebhookEventName[] = overrides.events ?? [
-    'post.published',
-    'post.failed',
-  ];
+export function makeWebhookEndpoint(overrides: Partial<WebhookEndpoint> = {}): WebhookEndpoint {
+  const events: readonly WebhookEventName[] = overrides.events ?? ['post.published', 'post.failed'];
   return webhookEndpointSchema.parse({
     id: fixtureId('webhookEndpoint', 'fixture-endpoint'),
     workspaceId: fixtureId('workspace', 'fixture-workspace'),
@@ -117,9 +112,7 @@ export function makeValidationResult(
 ): ValidationResult {
   return validationResult({
     issues,
-    ...(estimatedCostMinor === undefined
-      ? {}
-      : { estimatedCostMinor, currency: 'USD' }),
+    ...(estimatedCostMinor === undefined ? {} : { estimatedCostMinor, currency: 'USD' }),
   });
 }
 

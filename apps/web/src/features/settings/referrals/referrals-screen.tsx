@@ -25,7 +25,6 @@ import { useFormatters } from '../lib/formatters.js';
 import { settingsKey, useWorkspaceId } from '../lib/keys.js';
 import { SettingsPanel, SettingsStack } from '../components/section.js';
 
-
 const STATE_KEYS = {
   pending: 'billing.referral.commissionPending',
   approved: 'billing.referral.commissionApproved',
@@ -107,7 +106,9 @@ export function ReferralsScreen(): ReactNode {
                 <MetricValue
                   label={t('settings.ui.referral.balance')}
                   availability={data.approvedTotal === null ? 'pending' : 'available'}
-                  value={data.approvedTotal === null ? undefined : formatters.money(data.approvedTotal)}
+                  value={
+                    data.approvedTotal === null ? undefined : formatters.money(data.approvedTotal)
+                  }
                   unavailableText={t('common.unavailable')}
                   reason={
                     data.approvedTotal === null
@@ -139,9 +140,7 @@ export function ReferralsScreen(): ReactNode {
                           <TableHead scope="col">
                             {t('settings.ui.referral.column.signup')}
                           </TableHead>
-                          <TableHead scope="col">
-                            {t('settings.ui.referral.column.date')}
-                          </TableHead>
+                          <TableHead scope="col">{t('settings.ui.referral.column.date')}</TableHead>
                           <TableHead scope="col">
                             {t('settings.ui.referral.column.state')}
                           </TableHead>

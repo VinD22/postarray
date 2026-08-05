@@ -15,7 +15,8 @@ export const webComposerMessages = {
   'composerWeb.pane.review': 'Preview, validation, cost and approval',
   'composerWeb.pane.showPreview': 'Show preview',
   'composerWeb.pane.hidePreview': 'Hide preview',
-  'composerWeb.pane.previewCollapsed': 'The preview panel is hidden. Open it to check the final post.',
+  'composerWeb.pane.previewCollapsed':
+    'The preview panel is hidden. Open it to check the final post.',
 
   'composerWeb.step.targets': 'Targets',
   'composerWeb.step.write': 'Write',
@@ -25,9 +26,9 @@ export const webComposerMessages = {
   'composerWeb.step.legend': 'Composer steps',
 
   'composerWeb.summary.label': 'Draft summary',
-  'composerWeb.summary.targets': '{count, plural, =0 {No targets} one {# target} other {# targets}}',
-  'composerWeb.summary.issues':
-    '{count, plural, =0 {No issues} one {# issue} other {# issues}}',
+  'composerWeb.summary.targets':
+    '{count, plural, =0 {No targets} one {# target} other {# targets}}',
+  'composerWeb.summary.issues': '{count, plural, =0 {No issues} one {# issue} other {# issues}}',
   'composerWeb.summary.notScheduled': 'No time chosen',
   'composerWeb.summary.scheduledFor': '{time}',
   'composerWeb.summary.costUnknown': 'Cost not priced yet',
@@ -80,7 +81,8 @@ export const webComposerMessages = {
     '{account} publishes plain text. The formatting marks would appear as characters.',
   'composerWeb.globalEdit.adaptedPreview': 'What {account} gets instead',
   'composerWeb.globalEdit.confirm': 'Apply and create the versions',
-  'composerWeb.globalEdit.nothingToApply': 'Nothing changes. The master draft already has this value.',
+  'composerWeb.globalEdit.nothingToApply':
+    'Nothing changes. The master draft already has this value.',
   'composerWeb.globalEdit.announced':
     '{applied, plural, one {Change applied to # target} other {Change applied to # targets}}. {adapted, plural, =0 {No target needed an adapted version} one {# target got an adapted version} other {# targets got adapted versions}}.',
 
@@ -110,8 +112,10 @@ export const webComposerMessages = {
   'composerWeb.limits.text': 'Text up to {limit} characters',
   'composerWeb.limits.linkCost':
     'A link counts as {count, plural, one {# character} other {# characters}} whatever its length.',
-  'composerWeb.limits.images': '{count, plural, =0 {No images} one {# image} other {up to # images}}',
-  'composerWeb.limits.videos': '{count, plural, =0 {No video} one {# video} other {up to # videos}}',
+  'composerWeb.limits.images':
+    '{count, plural, =0 {No images} one {# image} other {up to # images}}',
+  'composerWeb.limits.videos':
+    '{count, plural, =0 {No video} one {# video} other {up to # videos}}',
   'composerWeb.limits.duration': 'Video up to {duration}',
   'composerWeb.limits.aspect': 'Aspect ratio between {min} and {max}',
   'composerWeb.limits.fileSize': 'Files up to {size}',
@@ -231,7 +235,8 @@ export const webComposerMessages = {
   'composerWeb.assist.removed': 'removed',
   'composerWeb.assist.evidence': 'Evidence and sources',
   'composerWeb.assist.claimChecked': '{claim}',
-  'composerWeb.assist.claimUnverified': 'No source found for this claim. Check it before publishing.',
+  'composerWeb.assist.claimUnverified':
+    'No source found for this claim. Check it before publishing.',
   'composerWeb.assist.failed': 'The assist request did not complete. Your text is unchanged.',
   'composerWeb.assist.noMediaGeneration':
     'Relay does not create images or video. Bring finished files into the library and publish them here.',
@@ -316,8 +321,7 @@ export const webComposerMessages = {
   'mediaLib.empty.title': 'No media yet',
   'mediaLib.empty.body':
     'Upload the images and video you already have, or import a file from a URL. Relay checks the type and size against each account you publish to.',
-  'mediaLib.empty.example':
-    'Example: launch_hero.jpg, 1600 by 900, alt text set, used in 2 posts.',
+  'mediaLib.empty.example': 'Example: launch_hero.jpg, 1600 by 900, alt text set, used in 2 posts.',
   'mediaLib.error.title': 'The library could not be loaded',
   'mediaLib.error.body': 'Your files are safe. Nothing was changed by this failure.',
   'mediaLib.loading': 'Loading your media library',
@@ -327,7 +331,8 @@ export const webComposerMessages = {
 
   'mediaLib.upload.heading': 'Add media',
   'mediaLib.upload.browse': 'Choose files',
-  'mediaLib.upload.dropHint': 'Drag files here, or choose them. Uploads resume if the connection drops.',
+  'mediaLib.upload.dropHint':
+    'Drag files here, or choose them. Uploads resume if the connection drops.',
   'mediaLib.upload.queueHeading': 'Uploads',
   'mediaLib.upload.progress': '{name}, {percent} of {size} sent',
   'mediaLib.upload.paused': 'Paused. {sent} of {size} is already stored.',
@@ -338,9 +343,12 @@ export const webComposerMessages = {
   'mediaLib.upload.finalizing': 'Finishing {name}',
   'mediaLib.upload.done': '{name} is in your library',
   'mediaLib.upload.failed': '{name} did not finish. {reason}',
-  'mediaLib.upload.offline': 'Offline. Uploads continue from where they stopped when you reconnect.',
-  'mediaLib.upload.rejectedType': '{name} is {mimeType}, which none of your selected accounts accept.',
-  'mediaLib.upload.rejectedSize': '{name} is {size}. The lowest limit across your accounts is {limit}.',
+  'mediaLib.upload.offline':
+    'Offline. Uploads continue from where they stopped when you reconnect.',
+  'mediaLib.upload.rejectedType':
+    '{name} is {mimeType}, which none of your selected accounts accept.',
+  'mediaLib.upload.rejectedSize':
+    '{name} is {size}. The lowest limit across your accounts is {limit}.',
   'mediaLib.upload.acceptedBy':
     '{count, plural, one {Accepted by # of your accounts} other {Accepted by # of your accounts}}',
   'mediaLib.upload.rejectedBy': 'Not accepted by {accounts}',
@@ -358,7 +366,8 @@ export const webComposerMessages = {
   'mediaLib.alt.waiveHelp':
     'Use this only for decoration. A waived image publishes with an empty description where the platform allows it.',
   'mediaLib.alt.waived': 'Waived by {name} on {date}. Reason: {reason}',
-  'mediaLib.alt.unsupported': '{provider} does not accept alt text through its API for this account.',
+  'mediaLib.alt.unsupported':
+    '{provider} does not accept alt text through its API for this account.',
   'mediaLib.alt.missingCount':
     '{count, plural, one {# file has no alt text} other {# files have no alt text}}',
 

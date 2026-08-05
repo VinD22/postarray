@@ -62,7 +62,9 @@ export function RepeatPanel(): ReactNode {
       </h3>
 
       {schedule === null ? (
-        <p className="text-body-sm text-text-tertiary">{t.full('composerWeb.summary.notScheduled')}</p>
+        <p className="text-body-sm text-text-tertiary">
+          {t.full('composerWeb.summary.notScheduled')}
+        </p>
       ) : (
         <>
           <SwitchRow
@@ -113,7 +115,11 @@ export function RepeatPanel(): ReactNode {
                     repeat:
                       value === 'count'
                         ? { ...repeat, endDate: null, count: repeat.count ?? 4 }
-                        : { ...repeat, count: null, endDate: repeat.endDate ?? isoDatePlusDays(30) },
+                        : {
+                            ...repeat,
+                            count: null,
+                            endDate: repeat.endDate ?? isoDatePlusDays(30),
+                          },
                   })
                 }
                 className="flex flex-col"
@@ -188,7 +194,7 @@ export function RepeatPanel(): ReactNode {
                   </p>
                   <ul className="flex flex-col gap-0.5">
                     {occurrences.slice(0, PREVIEW_LIMIT).map((instant) => (
-                      <li key={instant} className="text-body-sm tabular-nums text-text-secondary">
+                      <li key={instant} className="text-body-sm text-text-secondary tabular-nums">
                         {formatDate(t.locale, instant, { timeZone: zone, dateStyle: 'full' })}
                       </li>
                     ))}

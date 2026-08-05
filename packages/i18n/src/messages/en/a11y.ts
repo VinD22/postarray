@@ -21,7 +21,8 @@ export const a11yMessages = {
   'a11y.announce.validationCount':
     '{count, plural, =0 {No validation issues} one {# validation issue} other {# validation issues}}',
   'a11y.announce.validationCleared': 'All validation issues resolved',
-  'a11y.announce.targetSelected': '{account} selected. {count, plural, one {# target} other {# targets}} in total.',
+  'a11y.announce.targetSelected':
+    '{account} selected. {count, plural, one {# target} other {# targets}} in total.',
   'a11y.announce.targetOverridden': '{account} now has its own version',
   'a11y.announce.targetReset': '{account} reset to the master draft',
   'a11y.announce.uploadProgress': '{name}, {percent} uploaded',
@@ -57,7 +58,8 @@ export const a11yMessages = {
   'a11y.label.mediaPreview': 'Preview of {name}',
   'a11y.label.playVideo': 'Play {name}',
   'a11y.label.pauseVideo': 'Pause {name}',
-  'a11y.label.calendarCell': '{date}, {count, plural, =0 {nothing scheduled} one {# post} other {# posts}}',
+  'a11y.label.calendarCell':
+    '{date}, {count, plural, =0 {nothing scheduled} one {# post} other {# posts}}',
   'a11y.label.postSummary': '{account} on {provider}, {state}, {time}',
   'a11y.label.characterCount': '{used} of {limit} characters used',
   'a11y.label.requiredField': 'Required',

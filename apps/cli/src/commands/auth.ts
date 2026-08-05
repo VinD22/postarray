@@ -160,7 +160,12 @@ export async function authWhoAmI(context: CliContext, render: RenderInput): Prom
 
   renderSuccess(
     { ...render, correlationId: response.correlationId },
-    { principal, credential: local, profile: context.profileName, workspaceId: context.workspaceId },
+    {
+      principal,
+      credential: local,
+      profile: context.profileName,
+      workspaceId: context.workspaceId,
+    },
     [
       ...renderTable(
         ['field', 'value'],

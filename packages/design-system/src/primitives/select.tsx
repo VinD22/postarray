@@ -17,8 +17,9 @@ export const Select = SelectPrimitive.Root;
 export const SelectGroup = SelectPrimitive.Group;
 export const SelectValue = SelectPrimitive.Value;
 
-export interface SelectTriggerProps
-  extends ComponentPropsWithoutRef<typeof SelectPrimitive.Trigger> {
+export interface SelectTriggerProps extends ComponentPropsWithoutRef<
+  typeof SelectPrimitive.Trigger
+> {
   invalid?: boolean;
   size?: 'sm' | 'md' | 'lg';
 }
@@ -39,7 +40,7 @@ export const SelectTrigger = forwardRef<HTMLButtonElement, SelectTriggerProps>(
           'inline-flex w-full items-center justify-between gap-2 rounded-md border',
           'bg-surface-raised text-text-primary',
           'data-[placeholder]:text-text-tertiary',
-          'disabled:cursor-not-allowed disabled:bg-surface-sunken disabled:text-text-disabled',
+          'disabled:bg-surface-sunken disabled:text-text-disabled disabled:cursor-not-allowed',
           invalid ? 'border-destructive-border' : 'border-border-strong',
           triggerSize[size],
           focusRing,
@@ -50,84 +51,80 @@ export const SelectTrigger = forwardRef<HTMLButtonElement, SelectTriggerProps>(
       >
         <span className="truncate text-start">{children}</span>
         <SelectPrimitive.Icon asChild>
-          <ChevronDown aria-hidden="true" className="size-4 shrink-0 text-text-tertiary" />
+          <ChevronDown aria-hidden="true" className="text-text-tertiary size-4 shrink-0" />
         </SelectPrimitive.Icon>
       </SelectPrimitive.Trigger>
     );
   },
 );
 
-export type SelectContentProps = ComponentPropsWithoutRef<
-  typeof SelectPrimitive.Content
->;
+export type SelectContentProps = ComponentPropsWithoutRef<typeof SelectPrimitive.Content>;
 
-export const SelectContent = forwardRef<HTMLDivElement, SelectContentProps>(
-  function SelectContent(
-    { className, children, position = 'popper', ...props },
-    ref,
-  ) {
-    return (
-      <SelectPrimitive.Portal>
-        <SelectPrimitive.Content
-          ref={ref}
-          position={position}
-          className={cn(
-            'relative z-(--z-index-dropdown) max-h-[min(24rem,var(--radix-select-content-available-height))]',
-            'min-w-(--radix-select-trigger-width) overflow-hidden rounded-lg',
-            'border border-border-default bg-surface-overlay shadow-overlay',
-            'relay-anim-fade-in',
-            className,
-          )}
-          {...props}
-        >
-          <SelectPrimitive.ScrollUpButton className="flex h-6 items-center justify-center text-text-tertiary">
-            <ChevronUp aria-hidden="true" className="size-4" />
-          </SelectPrimitive.ScrollUpButton>
-          <SelectPrimitive.Viewport className="p-1">{children}</SelectPrimitive.Viewport>
-          <SelectPrimitive.ScrollDownButton className="flex h-6 items-center justify-center text-text-tertiary">
-            <ChevronDown aria-hidden="true" className="size-4" />
-          </SelectPrimitive.ScrollDownButton>
-        </SelectPrimitive.Content>
-      </SelectPrimitive.Portal>
-    );
-  },
-);
-
-export interface SelectItemProps
-  extends ComponentPropsWithoutRef<typeof SelectPrimitive.Item> {
-  /** Secondary line, for example the resolved account handle. */
-  description?: ReactNode;
-}
-
-export const SelectItem = forwardRef<HTMLDivElement, SelectItemProps>(
-  function SelectItem({ className, children, description, ...props }, ref) {
-    return (
-      <SelectPrimitive.Item
+export const SelectContent = forwardRef<HTMLDivElement, SelectContentProps>(function SelectContent(
+  { className, children, position = 'popper', ...props },
+  ref,
+) {
+  return (
+    <SelectPrimitive.Portal>
+      <SelectPrimitive.Content
         ref={ref}
+        position={position}
         className={cn(
-          'relative flex cursor-default select-none items-start gap-2 rounded-sm',
-          'py-1.5 pe-2 ps-7 text-body-md text-text-primary outline-none',
-          'data-[highlighted]:bg-surface-hover',
-          'data-[disabled]:cursor-not-allowed data-[disabled]:text-text-disabled',
+          'relative z-(--z-index-dropdown) max-h-[min(24rem,var(--radix-select-content-available-height))]',
+          'min-w-(--radix-select-trigger-width) overflow-hidden rounded-lg',
+          'border-border-default bg-surface-overlay shadow-overlay border',
+          'relay-anim-fade-in',
           className,
         )}
         {...props}
       >
-        <span className="absolute start-2 top-1.5 flex size-4 items-center justify-center">
-          <SelectPrimitive.ItemIndicator>
-            <Check aria-hidden="true" className="size-3.5 text-accent" />
-          </SelectPrimitive.ItemIndicator>
-        </span>
-        <span className="flex min-w-0 flex-col">
-          <SelectPrimitive.ItemText>{children}</SelectPrimitive.ItemText>
-          {description ? (
-            <span className="text-body-sm text-text-tertiary">{description}</span>
-          ) : null}
-        </span>
-      </SelectPrimitive.Item>
-    );
-  },
-);
+        <SelectPrimitive.ScrollUpButton className="text-text-tertiary flex h-6 items-center justify-center">
+          <ChevronUp aria-hidden="true" className="size-4" />
+        </SelectPrimitive.ScrollUpButton>
+        <SelectPrimitive.Viewport className="p-1">{children}</SelectPrimitive.Viewport>
+        <SelectPrimitive.ScrollDownButton className="text-text-tertiary flex h-6 items-center justify-center">
+          <ChevronDown aria-hidden="true" className="size-4" />
+        </SelectPrimitive.ScrollDownButton>
+      </SelectPrimitive.Content>
+    </SelectPrimitive.Portal>
+  );
+});
+
+export interface SelectItemProps extends ComponentPropsWithoutRef<typeof SelectPrimitive.Item> {
+  /** Secondary line, for example the resolved account handle. */
+  description?: ReactNode;
+}
+
+export const SelectItem = forwardRef<HTMLDivElement, SelectItemProps>(function SelectItem(
+  { className, children, description, ...props },
+  ref,
+) {
+  return (
+    <SelectPrimitive.Item
+      ref={ref}
+      className={cn(
+        'relative flex cursor-default items-start gap-2 rounded-sm select-none',
+        'text-body-md text-text-primary py-1.5 ps-7 pe-2 outline-none',
+        'data-[highlighted]:bg-surface-hover',
+        'data-[disabled]:text-text-disabled data-[disabled]:cursor-not-allowed',
+        className,
+      )}
+      {...props}
+    >
+      <span className="absolute start-2 top-1.5 flex size-4 items-center justify-center">
+        <SelectPrimitive.ItemIndicator>
+          <Check aria-hidden="true" className="text-accent size-3.5" />
+        </SelectPrimitive.ItemIndicator>
+      </span>
+      <span className="flex min-w-0 flex-col">
+        <SelectPrimitive.ItemText>{children}</SelectPrimitive.ItemText>
+        {description ? (
+          <span className="text-body-sm text-text-tertiary">{description}</span>
+        ) : null}
+      </span>
+    </SelectPrimitive.Item>
+  );
+});
 
 export const SelectLabel = forwardRef<
   HTMLDivElement,
@@ -136,7 +133,7 @@ export const SelectLabel = forwardRef<
   return (
     <SelectPrimitive.Label
       ref={ref}
-      className={cn('px-2 py-1.5 text-label text-text-tertiary', className)}
+      className={cn('text-label text-text-tertiary px-2 py-1.5', className)}
       {...props}
     />
   );
@@ -149,7 +146,7 @@ export const SelectSeparator = forwardRef<
   return (
     <SelectPrimitive.Separator
       ref={ref}
-      className={cn('my-1 h-px bg-border-subtle', className)}
+      className={cn('bg-border-subtle my-1 h-px', className)}
       {...props}
     />
   );

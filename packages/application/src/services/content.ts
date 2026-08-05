@@ -151,8 +151,7 @@ function variantSpecsFrom(
     const settings: StoredVariantSettings = {
       overrides: previous.overrides,
       mentions: spec?.mentions === undefined ? previous.mentions : [...spec.mentions],
-      privacyValue:
-        spec?.privacyValue === undefined ? previous.privacyValue : spec.privacyValue,
+      privacyValue: spec?.privacyValue === undefined ? previous.privacyValue : spec.privacyValue,
       disclosure: spec?.disclosure === undefined ? previous.disclosure : spec.disclosure,
       accountType: target.accountType,
     };
@@ -195,72 +194,66 @@ export function createContentService(deps: ServiceDeps): ContentService {
         body: input,
         resourceIdOf: (view) => view.id,
         run: async () =>
-          authorized(
-            deps,
-            ctx,
-            'content.write',
-            { brandId: input.brandId },
-            async (db, actor) => {
-              const brand = await db.brand.findFirst({
-                where: { id: input.brandId },
-                select: { id: true },
-              });
-              if (brand === null) {
-                throw notFound('brand', input.brandId);
-              }
+          authorized(deps, ctx, 'content.write', { brandId: input.brandId }, async (db, actor) => {
+            const brand = await db.brand.findFirst({
+              where: { id: input.brandId },
+              select: { id: true },
+            });
+            if (brand === null) {
+              throw notFound('brand', input.brandId);
+            }
 
-              const targets = await resolveTargets(db, input.targets ?? []);
-              for (const target of targets) {
-                guard(actor, 'content.write', { connectionId: target.connectionId });
-              }
+            const targets = await resolveTargets(db, input.targets ?? []);
+            for (const target of targets) {
+              guard(actor, 'content.write', { connectionId: target.connectionId });
+            }
 
-              const item = await db.contentItem.create({
-                data: {
-                  workspaceId: actor.workspace.id,
-                  brandId: input.brandId,
-                  campaignId: input.campaignId ?? null,
-                  title: input.title ?? null,
-                  state: 'draft',
-                  approvalPolicy: toApprovalPolicy(input.approvalPolicy ?? 'none'),
-                  surface: toStoredSurfaceValue(ctx),
-                  creationMethod: 'human',
-                  ...(actor.userId === null ? {} : { createdByUserId: actor.userId }),
-                  ...(ctx.actorType === 'service_account'
-                    ? { createdByServiceAccountId: ctx.actorId }
-                    : {}),
-                  correlationId: ctx.correlationId,
-                },
-                select: { id: true },
-              });
-
-              const master = buildMaster({
-                id: item.id,
-                workspaceId: ctx.workspaceId,
+            const item = await db.contentItem.create({
+              data: {
+                workspaceId: actor.workspace.id,
                 brandId: input.brandId,
                 campaignId: input.campaignId ?? null,
-                draft: input,
-                defaultLocale: actor.workspace.defaultLocale,
-                surface: ctx.surface,
-              });
+                title: input.title ?? null,
+                state: 'draft',
+                approvalPolicy: toApprovalPolicy(input.approvalPolicy ?? 'none'),
+                surface: toStoredSurfaceValue(ctx),
+                creationMethod: 'human',
+                ...(actor.userId === null ? {} : { createdByUserId: actor.userId }),
+                ...(ctx.actorType === 'service_account'
+                  ? { createdByServiceAccountId: ctx.actorId }
+                  : {}),
+                correlationId: ctx.correlationId,
+              },
+              select: { id: true },
+            });
 
-              const written = await writeVersion(db, actor, {
-                contentItemId: item.id,
-                master,
-                variants: variantSpecsFrom(targets, input.targets ?? [], new Map()),
-                previousRevision: 0,
-              });
+            const master = buildMaster({
+              id: item.id,
+              workspaceId: ctx.workspaceId,
+              brandId: input.brandId,
+              campaignId: input.campaignId ?? null,
+              draft: input,
+              defaultLocale: actor.workspace.defaultLocale,
+              surface: ctx.surface,
+            });
 
-              await recordAudit(db, actor, {
-                action: 'content.drafted',
-                targetType: 'content_item',
-                targetId: item.id,
-                after: { checksum: written.checksum, targetCount: targets.length },
-                metadata: { brandId: input.brandId, revision: written.revision },
-              });
+            const written = await writeVersion(db, actor, {
+              contentItemId: item.id,
+              master,
+              variants: variantSpecsFrom(targets, input.targets ?? [], new Map()),
+              previousRevision: 0,
+            });
 
-              return toContentItemView(await loadAggregate(db, item.id));
-            },
-          ),
+            await recordAudit(db, actor, {
+              action: 'content.drafted',
+              targetType: 'content_item',
+              targetId: item.id,
+              after: { checksum: written.checksum, targetCount: targets.length },
+              metadata: { brandId: input.brandId, revision: written.revision },
+            });
+
+            return toContentItemView(await loadAggregate(db, item.id));
+          }),
       });
     },
 
@@ -296,7 +289,12 @@ export function createContentService(deps: ServiceDeps): ContentService {
         for (const row of rows) {
           views.push(toContentItemView(await loadAggregate(db, row.id)));
         }
-        return toPage(views, args, (view) => view.id, (view) => view);
+        return toPage(
+          views,
+          args,
+          (view) => view.id,
+          (view) => view,
+        );
       });
     },
 
@@ -323,9 +321,7 @@ export function createContentService(deps: ServiceDeps): ContentService {
               ...(patch.mediaIds === undefined ? {} : { mediaIds: [...patch.mediaIds] }),
               ...(patch.links === undefined ? {} : { links: [...patch.links] }),
               ...(patch.signature === undefined ? {} : { signature: patch.signature }),
-              ...(patch.threadItems === undefined
-                ? {}
-                : { threadItems: [...patch.threadItems] }),
+              ...(patch.threadItems === undefined ? {} : { threadItems: [...patch.threadItems] }),
               ...(patch.schedule === undefined ? {} : { schedule: patch.schedule }),
               ...(patch.disclosure === undefined ? {} : { disclosure: patch.disclosure }),
               ...(patch.campaignId === undefined ? {} : { campaignId: patch.campaignId }),
@@ -631,10 +627,7 @@ export function createContentService(deps: ServiceDeps): ContentService {
       });
     },
 
-    async freezeVersion(
-      ctx: ActorContext,
-      contentItemId: string,
-    ): Promise<ContentVersionView> {
+    async freezeVersion(ctx: ActorContext, contentItemId: string): Promise<ContentVersionView> {
       return authorized(deps, ctx, 'content.write', undefined, async (db, actor) => {
         const aggregate = await loadAggregate(db, contentItemId);
         const version = await db.contentVersion.findFirst({
@@ -691,7 +684,7 @@ export function createContentService(deps: ServiceDeps): ContentService {
         }
         await db.contentItem.update({
           where: { id: contentItemId },
-          data: { state: 'canceled', canceledAt: new Date() },
+          data: { state: 'canceled', canceledAt: deps.clock.now() },
         });
         await recordAudit(db, actor, {
           action: 'post.canceled',

@@ -101,7 +101,10 @@ describe('the estimate shown before the action', () => {
 describe('recording and reconciling the actual', () => {
   const book = X_PRICE_BOOK;
 
-  function record(operation: 'post_create' | 'post_create_with_url', quantity: number): UsageRecord {
+  function record(
+    operation: 'post_create' | 'post_create_with_url',
+    quantity: number,
+  ): UsageRecord {
     return recordUsage({
       id: `usage_${operation}_${quantity}`,
       workspaceId: 'ws_01',

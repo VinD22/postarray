@@ -11,7 +11,10 @@ const RESOURCE = 'https://mcp.relay.example/mcp';
 const INTROSPECTION = 'https://api.relay.example/oauth/introspect';
 const NOW = Date.parse('2026-08-04T12:00:00.000Z');
 
-function transportReturning(body: unknown, status = 200): IntrospectionTransport & {
+function transportReturning(
+  body: unknown,
+  status = 200,
+): IntrospectionTransport & {
   calls: { url: string; form: Record<string, string> }[];
 } {
   const calls: { url: string; form: Record<string, string> }[] = [];
@@ -59,18 +62,14 @@ describe('audience binding', () => {
   it('rejects a token minted for another service', async () => {
     const other = { ...ACTIVE, aud: ['https://someone-else.example/mcp'] };
     await expect(verifier(transportReturning(other)).verify('token')).rejects.toSatisfy(
-      (error: unknown) =>
-        RelayError.is(error) && error.details['reason'] === 'AUDIENCE_MISMATCH',
+      (error: unknown) => RelayError.is(error) && error.details['reason'] === 'AUDIENCE_MISMATCH',
     );
   });
 
   it('rejects a token with no audience at all', async () => {
     const { aud: _aud, ...withoutAudience } = ACTIVE;
-    await expect(
-      verifier(transportReturning(withoutAudience)).verify('token'),
-    ).rejects.toSatisfy(
-      (error: unknown) =>
-        RelayError.is(error) && error.details['reason'] === 'AUDIENCE_MISMATCH',
+    await expect(verifier(transportReturning(withoutAudience)).verify('token')).rejects.toSatisfy(
+      (error: unknown) => RelayError.is(error) && error.details['reason'] === 'AUDIENCE_MISMATCH',
     );
   });
 

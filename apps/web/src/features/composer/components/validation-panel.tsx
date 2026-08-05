@@ -34,7 +34,7 @@ export function ValidationPanel({ focusedIssueIndex }: ValidationPanelProps): Re
         <h3 id="composer-validation-heading" className="text-title-sm text-text-primary">
           {t.full('composer.validation.title')}
         </h3>
-        <span className="text-label tabular-nums text-text-tertiary">
+        <span className="text-label text-text-tertiary tabular-nums">
           {t.full('composer.validation.issueCount', {
             count: totals.issueCount,
             targets: totals.targetCount,
@@ -59,7 +59,7 @@ export function ValidationPanel({ focusedIssueIndex }: ValidationPanelProps): Re
                     }
                     className={cn(
                       'flex min-h-11 w-full items-start gap-2 rounded-md px-2 py-2 text-start',
-                      'border-b border-border-subtle',
+                      'border-border-subtle border-b',
                       'transition-colors duration-[var(--duration-fast)] ease-[var(--ease-standard)]',
                       'hover:bg-surface-hover focus-visible:outline-2 focus-visible:outline-offset-2',
                       'focus-visible:outline-border-focus',
@@ -102,10 +102,10 @@ export function ValidationPanel({ focusedIssueIndex }: ValidationPanelProps): Re
 
 function SeverityIcon({ severity }: { readonly severity: ValidationIssue['severity'] }): ReactNode {
   if (severity === 'error') {
-    return <CircleAlert aria-hidden className="mt-0.5 size-4 shrink-0 text-destructive-fg" />;
+    return <CircleAlert aria-hidden className="text-destructive-fg mt-0.5 size-4 shrink-0" />;
   }
   if (severity === 'warning') {
-    return <AlertTriangle aria-hidden className="mt-0.5 size-4 shrink-0 text-warning-fg" />;
+    return <AlertTriangle aria-hidden className="text-warning-fg mt-0.5 size-4 shrink-0" />;
   }
-  return <Info aria-hidden className="mt-0.5 size-4 shrink-0 text-info-fg" />;
+  return <Info aria-hidden className="text-info-fg mt-0.5 size-4 shrink-0" />;
 }

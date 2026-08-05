@@ -80,7 +80,7 @@ export function HomeScreen() {
         }
       />
 
-      <div className="flex flex-col gap-8 px-4 py-5 md:px-6 md:py-6 2xl:mx-auto 2xl:max-w-[85rem] 3xl:max-w-[90rem]">
+      <div className="3xl:max-w-[90rem] flex flex-col gap-8 px-4 py-5 md:px-6 md:py-6 2xl:mx-auto 2xl:max-w-[85rem]">
         <TrialBanner />
 
         <HomeSection

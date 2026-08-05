@@ -49,6 +49,7 @@ export async function getTranslations(
   namespace?: string,
 ): Promise<(key: string, values?: Record<string, string | number | boolean | Date>) => string> {
   const intl = await getRequestIntl();
-  const prefix = namespace === undefined ? '' : namespace.endsWith('.') ? namespace : `${namespace}.`;
+  const prefix =
+    namespace === undefined ? '' : namespace.endsWith('.') ? namespace : `${namespace}.`;
   return (key, values) => intl.t.format(`${prefix}${key}`, values);
 }

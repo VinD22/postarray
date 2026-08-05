@@ -49,13 +49,17 @@ export const keys = {
 
   analyticsPost: (workspaceId: string, contentItemId: string) =>
     ['ws', workspaceId, 'analytics', 'post', contentItemId] as const,
-  analyticsAccount: (workspaceId: string, connectionId: string, window: { from: string; to: string }) =>
-    ['ws', workspaceId, 'analytics', 'account', connectionId, window] as const,
+  analyticsAccount: (
+    workspaceId: string,
+    connectionId: string,
+    window: { from: string; to: string },
+  ) => ['ws', workspaceId, 'analytics', 'account', connectionId, window] as const,
   experiments: (workspaceId: string) => ['ws', workspaceId, 'experiments'] as const,
 
   rules: (workspaceId: string) => ['ws', workspaceId, 'rules'] as const,
   rule: (workspaceId: string, ruleId: string) => ['ws', workspaceId, 'rule', ruleId] as const,
-  ruleRuns: (workspaceId: string, ruleId: string) => ['ws', workspaceId, 'rule', ruleId, 'runs'] as const,
+  ruleRuns: (workspaceId: string, ruleId: string) =>
+    ['ws', workspaceId, 'rule', ruleId, 'runs'] as const,
 
   feeds: (workspaceId: string) => ['ws', workspaceId, 'feeds'] as const,
   shortLinks: (workspaceId: string) => ['ws', workspaceId, 'links'] as const,

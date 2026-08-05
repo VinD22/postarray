@@ -252,8 +252,7 @@ describe('postProcessGrowthPlan', () => {
         audiences: [
           {
             name: 'Writers',
-            description:
-              'Assumption: the buyer is the person who also writes the posts.',
+            description: 'Assumption: the buyer is the person who also writes the posts.',
             priority: 1,
           },
         ],

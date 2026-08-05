@@ -13,8 +13,10 @@ const sizeClass: Record<AvatarSize, string> = {
   lg: 'size-10 text-body-md',
 };
 
-export interface AvatarProps
-  extends Omit<ComponentPropsWithoutRef<typeof AvatarPrimitive.Root>, 'children'> {
+export interface AvatarProps extends Omit<
+  ComponentPropsWithoutRef<typeof AvatarPrimitive.Root>,
+  'children'
+> {
   src?: string | undefined;
   /**
    * The full alternative text, from the message catalog. For a connected
@@ -49,29 +51,25 @@ export const Avatar = forwardRef<HTMLSpanElement, AvatarProps>(function Avatar(
       <AvatarPrimitive.Root
         ref={ref}
         className={cn(
-          'inline-flex shrink-0 select-none items-center justify-center overflow-hidden',
-          'rounded-md border border-border-subtle bg-surface-sunken',
+          'inline-flex shrink-0 items-center justify-center overflow-hidden select-none',
+          'border-border-subtle bg-surface-sunken rounded-md border',
           sizeClass[size],
           className,
         )}
         {...props}
       >
         {src ? (
-          <AvatarPrimitive.Image
-            src={src}
-            alt={alt}
-            className="size-full object-cover"
-          />
+          <AvatarPrimitive.Image src={src} alt={alt} className="size-full object-cover" />
         ) : null}
         <AvatarPrimitive.Fallback
           delayMs={src ? 200 : 0}
-          className="flex size-full items-center justify-center font-medium text-text-secondary"
+          className="text-text-secondary flex size-full items-center justify-center font-medium"
         >
           {src ? fallback : <span aria-label={alt}>{fallback}</span>}
         </AvatarPrimitive.Fallback>
       </AvatarPrimitive.Root>
       {badge ? (
-        <span className="absolute -bottom-0.5 -end-0.5 flex items-center justify-center rounded-full bg-surface-canvas p-0.5">
+        <span className="bg-surface-canvas absolute -end-0.5 -bottom-0.5 flex items-center justify-center rounded-full p-0.5">
           {badge}
         </span>
       ) : null}

@@ -66,7 +66,8 @@ export const BARE_DOMAIN_PATTERN =
 
 export const EMAIL_PATTERN = /\b[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}\b/i;
 
-export const PHONE_PATTERN = /(?:\+\d{1,3}[\s.-]?)?(?:\(\d{2,4}\)[\s.-]?)?\d{3,4}[\s.-]\d{3,4}(?:[\s.-]\d{2,4})?/;
+export const PHONE_PATTERN =
+  /(?:\+\d{1,3}[\s.-]?)?(?:\(\d{2,4}\)[\s.-]?)?\d{3,4}[\s.-]\d{3,4}(?:[\s.-]\d{2,4})?/;
 
 /** Markup and metadata channels that can smuggle a destination past a reader. */
 export const MARKUP_EXFILTRATION_PATTERNS: readonly RegExp[] = [

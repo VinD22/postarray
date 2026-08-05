@@ -276,7 +276,9 @@ export async function receiptsGet(
  * Reporting an unread metric as zero is how a person concludes a post failed
  * when it did not. The provider's own definition travels with the number.
  */
-function metricRows(observations: readonly MetricObservationView[]): readonly (readonly string[])[] {
+function metricRows(
+  observations: readonly MetricObservationView[],
+): readonly (readonly string[])[] {
   return observations.map((observation) => [
     observation.normalizedName,
     observation.availability === 'available' && observation.value !== null
@@ -404,12 +406,10 @@ export async function growthPlanExport(
 
 /** JSON and YAML come back as documents; Markdown comes back as text. */
 function growthPlanExportSchema(format: GrowthExportFormat) {
-  return z
-    .unknown()
-    .transform((value) => ({
-      format,
-      body: typeof value === 'string' ? value : JSON.stringify(value, null, 2),
-    }));
+  return z.unknown().transform((value) => ({
+    format,
+    body: typeof value === 'string' ? value : JSON.stringify(value, null, 2),
+  }));
 }
 
 export async function rulesList(

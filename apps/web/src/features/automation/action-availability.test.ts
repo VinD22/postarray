@@ -16,9 +16,7 @@ const everything: Readonly<Record<string, 'supported'>> = {
   first_comment: 'supported',
 };
 
-function connection(
-  overrides: Partial<ConnectionCapabilities> = {},
-): ConnectionCapabilities {
+function connection(overrides: Partial<ConnectionCapabilities> = {}): ConnectionCapabilities {
   return {
     connectionId: 'conn_a',
     provider: 'x',

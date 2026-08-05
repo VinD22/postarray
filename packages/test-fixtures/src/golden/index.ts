@@ -88,9 +88,8 @@ export const GOLDEN_RECEIPTS: Readonly<Record<string, PublicationReceipt>> = dee
 export const GOLDEN_POST_METRICS: readonly MetricObservation[] = deepFreeze(makePostMetrics());
 
 /** Account metrics, including one that is still pending. */
-export const GOLDEN_ACCOUNT_METRICS: readonly MetricObservation[] = deepFreeze(
-  makeAccountMetrics(),
-);
+export const GOLDEN_ACCOUNT_METRICS: readonly MetricObservation[] =
+  deepFreeze(makeAccountMetrics());
 
 /** A complete nine section growth plan with a four week calendar. */
 export const GOLDEN_GROWTH_PLAN: GrowthPlan = deepFreeze(makeGrowthPlan());

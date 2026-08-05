@@ -106,7 +106,10 @@ export function EntitySearchField({
     return (
       <div className="flex flex-col gap-1.5">
         <p className="text-label text-text-secondary">{label}</p>
-        <CapabilityBadge state="not_implemented" label={t.full('composerWeb.rail.state.notBuilt')} />
+        <CapabilityBadge
+          state="not_implemented"
+          label={t.full('composerWeb.rail.state.notBuilt')}
+        />
         <p className="text-body-sm text-text-secondary">
           {t.full('composerWeb.entity.lookupNotBuilt', { provider: PROVIDER_LABEL[provider] })}
         </p>
@@ -147,8 +150,7 @@ export function EntitySearchField({
           empty: t.full('composer.mentions.noResults', { provider: PROVIDER_LABEL[provider] }),
           error: t.full('composerWeb.assist.failed'),
           toggle: t.full('action.search'),
-          resultCount: (count: number) =>
-            t.full('composerWeb.entity.resultCount', { count }),
+          resultCount: (count: number) => t.full('composerWeb.entity.resultCount', { count }),
         }}
       />
 
@@ -159,7 +161,7 @@ export function EntitySearchField({
           <span className="text-success-fg">
             {t.full('composerWeb.entity.resolvedHeading', { provider: PROVIDER_LABEL[provider] })}
           </span>{' '}
-          <span className="font-mono text-mono">
+          <span className="text-mono font-mono">
             {t.full('composerWeb.entity.resolvedId', { externalId: value.externalId })}
           </span>
         </p>

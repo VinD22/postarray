@@ -156,7 +156,10 @@ export class SupabaseIdentityProvider implements IdentityProvider {
     if (parsed.success) {
       return { userId: parsed.data.user.id };
     }
-    const userOnly = z.object({ id: z.string().min(1) }).loose().safeParse(result.body);
+    const userOnly = z
+      .object({ id: z.string().min(1) })
+      .loose()
+      .safeParse(result.body);
     return { userId: userOnly.success ? userOnly.data.id : null };
   }
 

@@ -45,7 +45,7 @@ export function ShortcutsDialog({ open, onOpenChange }: ShortcutsDialogProps): R
             {rows.map(([label, keys]) => (
               <div
                 key={label}
-                className="flex items-center justify-between gap-4 border-b border-border-subtle py-2 last:border-b-0"
+                className="border-border-subtle flex items-center justify-between gap-4 border-b py-2 last:border-b-0"
               >
                 <dt className="text-body-sm text-text-secondary">{label}</dt>
                 <dd className="flex shrink-0 items-center gap-1">
@@ -54,7 +54,7 @@ export function ShortcutsDialog({ open, onOpenChange }: ShortcutsDialogProps): R
               </div>
             ))}
           </dl>
-          <p className="mt-3 text-body-sm text-text-tertiary">
+          <p className="text-body-sm text-text-tertiary mt-3">
             {t.full('a11y.keyboard.hint.composer')}
           </p>
         </DialogBody>

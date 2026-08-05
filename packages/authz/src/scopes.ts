@@ -80,10 +80,7 @@ export function scopesForPermission(permission: Permission): readonly Scope[] {
 }
 
 /** True when at least one granted scope unlocks `permission`. */
-export function scopeGrantsPermission(
-  granted: readonly Scope[],
-  permission: Permission,
-): boolean {
+export function scopeGrantsPermission(granted: readonly Scope[], permission: Permission): boolean {
   const accepted = PERMISSION_SCOPES[permission];
   if (accepted.length === 0) {
     return false;

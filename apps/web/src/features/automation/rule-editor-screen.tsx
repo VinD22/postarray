@@ -255,9 +255,7 @@ export function RuleEditorScreen({ ruleId }: RuleEditorScreenProps): ReactElemen
           )
           .join(' ')}`;
 
-  const requiresCross = draft.actions.some(
-    (action) => action.kind === 'cross_account_follow_up',
-  );
+  const requiresCross = draft.actions.some((action) => action.kind === 'cross_account_follow_up');
 
   const thresholdTrigger =
     draft.trigger !== null && triggerSpec(draft.trigger.kind).requiresMeasurement;
@@ -304,9 +302,7 @@ export function RuleEditorScreen({ ruleId }: RuleEditorScreenProps): ReactElemen
             <Button
               variant="secondary"
               loading={setEnabled.isPending}
-              onClick={() =>
-                ruleId && setEnabled.mutate({ ruleId, enabled: false })
-              }
+              onClick={() => ruleId && setEnabled.mutate({ ruleId, enabled: false })}
             >
               {t('action.pause')}
             </Button>
@@ -332,7 +328,7 @@ export function RuleEditorScreen({ ruleId }: RuleEditorScreenProps): ReactElemen
         />
       ) : null}
 
-      <p className="max-w-[80ch] text-body-lg text-text-primary">{sentence}</p>
+      <p className="text-body-lg text-text-primary max-w-[80ch]">{sentence}</p>
 
       {issues.length > 0 ? (
         <Notice
@@ -340,7 +336,7 @@ export function RuleEditorScreen({ ruleId }: RuleEditorScreenProps): ReactElemen
           liveness="status"
           title={t('automation.editor.error.summary', { count: issues.length })}
           description={
-            <ul className="flex list-disc flex-col gap-1 ps-5 marker:text-text-tertiary">
+            <ul className="marker:text-text-tertiary flex list-disc flex-col gap-1 ps-5">
               {issues.map((issue) => (
                 <li key={`${issue.key}-${issue.field ?? ''}`}>{t(issue.key, issue.values)}</li>
               ))}
@@ -352,9 +348,7 @@ export function RuleEditorScreen({ ruleId }: RuleEditorScreenProps): ReactElemen
       <Tabs defaultValue="sentence">
         <TabsList aria-label={t('automation.editor.view.label')}>
           <TabsTrigger value="sentence">{t('automation.editor.view.sentence')}</TabsTrigger>
-          <TabsTrigger value="structured">
-            {t('automation.editor.view.structured')}
-          </TabsTrigger>
+          <TabsTrigger value="structured">{t('automation.editor.view.structured')}</TabsTrigger>
           <TabsTrigger value="api">{t('automation.editor.view.api')}</TabsTrigger>
         </TabsList>
 
@@ -378,7 +372,7 @@ export function RuleEditorScreen({ ruleId }: RuleEditorScreenProps): ReactElemen
 
         <TabsContent value="structured">
           <div className="flex flex-col gap-3">
-            <p className="max-w-[70ch] text-body-md text-text-secondary">
+            <p className="text-body-md text-text-secondary max-w-[70ch]">
               {t('automation.editor.structuredHelp')}
             </p>
             <SentenceBuilder

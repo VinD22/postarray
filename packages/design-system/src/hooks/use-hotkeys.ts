@@ -31,8 +31,8 @@ export type HotkeyMap = Record<string, HotkeyHandler>;
 const isApplePlatform = (): boolean => {
   if (typeof navigator === 'undefined') return false;
   const platform =
-    (navigator as Navigator & { userAgentData?: { platform?: string } })
-      .userAgentData?.platform ?? navigator.platform;
+    (navigator as Navigator & { userAgentData?: { platform?: string } }).userAgentData?.platform ??
+    navigator.platform;
   return /mac|iphone|ipad|ipod/i.test(platform ?? '');
 };
 
@@ -53,9 +53,7 @@ function normalizeBinding(binding: string, apple: boolean): string {
     else if (part === 'alt' || part === 'option') modifiers.add('alt');
     else key = part;
   }
-  return [...['ctrl', 'meta', 'alt', 'shift'].filter((m) => modifiers.has(m)), key].join(
-    '+',
-  );
+  return [...['ctrl', 'meta', 'alt', 'shift'].filter((m) => modifiers.has(m)), key].join('+');
 }
 
 function eventBinding(event: KeyboardEvent): string {
@@ -75,12 +73,7 @@ function isFormField(target: EventTarget | null): boolean {
 }
 
 export function useHotkeys(map: HotkeyMap, options: HotkeyOptions = {}): void {
-  const {
-    enableInFormFields = false,
-    preventDefault = true,
-    enabled = true,
-    target,
-  } = options;
+  const { enableInFormFields = false, preventDefault = true, enabled = true, target } = options;
 
   const mapRef = useRef(map);
   mapRef.current = map;

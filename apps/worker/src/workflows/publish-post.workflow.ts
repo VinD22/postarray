@@ -10,7 +10,9 @@ import type { PublishPostWorkflowInput, PublishPostWorkflowOutput } from './inpu
  * second post. The body is the deterministic core; this file only wires the
  * signal handlers and the status query.
  */
-export async function publishPostWorkflow(input: PublishPostWorkflowInput): Promise<PublishPostWorkflowOutput> {
+export async function publishPostWorkflow(
+  input: PublishPostWorkflowInput,
+): Promise<PublishPostWorkflowOutput> {
   const runtime = createTemporalRuntime();
   return runPublishPost(runtime, workerActivities, input);
 }

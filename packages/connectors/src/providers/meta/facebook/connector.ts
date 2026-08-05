@@ -23,7 +23,6 @@ import {
   type ProviderConnection,
   type ProviderDraft,
   type ProviderIdentity,
-  type PublishItemResult,
   type PublishRequest,
   type PublishResult,
   type PublishStatus,
@@ -117,7 +116,7 @@ function readEngagement(body: unknown): Record<string, unknown> {
 
 export function createFacebookConnector(deps: ConnectorDeps): SocialConnector {
   const client = createMetaClient(deps, PROVIDER);
-  const { vault, clock } = deps;
+  const { clock } = deps;
 
   async function token(connection: ProviderConnection): Promise<string> {
     return accessTokenOf(connection);
@@ -186,7 +185,9 @@ export function createFacebookConnector(deps: ConnectorDeps): SocialConnector {
         accountAccessToken:
           page.access_token === undefined ? null : new SecretValue(page.access_token),
         eligible: canPublishToPage(page),
-        ineligibleReasonKey: canPublishToPage(page) ? null : 'connectors.facebook.page_role_required',
+        ineligibleReasonKey: canPublishToPage(page)
+          ? null
+          : 'connectors.facebook.page_role_required',
         grantedScopes: [...grant.grantedScopes],
         // The tasks are recorded so a later role change is detectable, not only expiry.
         metadata: { tasks: page.tasks ?? [], category: page.category ?? null },
@@ -272,16 +273,16 @@ export function createFacebookConnector(deps: ConnectorDeps): SocialConnector {
         const photo = client.parse(facebookPostSchema, response, 'facebook.upload_photo');
         prepared.push({
           mediaId: media.mediaId,
-            derivativeId: media.derivativeId,
+          derivativeId: media.derivativeId,
           providerMediaId: photo.id,
           containerId: null,
           uploadState: 'ready',
           derivativeChecksum: media.checksum,
-            byteSize: media.byteSize,
-            altTextApplied: media.altText !== null,
-            publicUrl: null,
-            expiresAt: null,
-            reusedFromPreviousAttempt: false,
+          byteSize: media.byteSize,
+          altTextApplied: media.altText !== null,
+          publicUrl: null,
+          expiresAt: null,
+          reusedFromPreviousAttempt: false,
         });
       }
       return prepared;
@@ -375,7 +376,8 @@ export function createFacebookConnector(deps: ConnectorDeps): SocialConnector {
         operation: 'facebook.read_permalink',
       });
       const permalink = lookup.ok
-        ? (client.parse(facebookPostSchema, lookup, 'facebook.read_permalink').permalink_url ?? null)
+        ? (client.parse(facebookPostSchema, lookup, 'facebook.read_permalink').permalink_url ??
+          null)
         : null;
 
       const publishedAt = nowIso();

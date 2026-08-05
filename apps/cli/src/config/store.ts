@@ -108,7 +108,10 @@ export function createMemoryConfigStore(initial: CliConfig = EMPTY_CONFIG): Conf
   };
 }
 
-export function resolveProfile(config: CliConfig, requested?: string): { name: string; profile: Profile } {
+export function resolveProfile(
+  config: CliConfig,
+  requested?: string,
+): { name: string; profile: Profile } {
   const name = requested ?? config.defaultProfile;
   return { name, profile: config.profiles[name] ?? {} };
 }
@@ -138,7 +141,10 @@ export function unsetProfileValue(
   };
 }
 
-export function getProfileValue(profile: Profile, key: Exclude<ConfigKey, 'profile'>): string | null {
+export function getProfileValue(
+  profile: Profile,
+  key: Exclude<ConfigKey, 'profile'>,
+): string | null {
   const value = profile[key];
   return value === undefined ? null : value;
 }

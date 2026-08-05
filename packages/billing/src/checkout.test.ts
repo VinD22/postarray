@@ -139,11 +139,7 @@ describe('creating a checkout session', () => {
 
   it('refuses to guess a product id when Polar is live and none is configured', () => {
     expect(() =>
-      resolveProductId(
-        { ...simulatorConfig, accessToken: 'polar_at_example' },
-        'month',
-        false,
-      ),
+      resolveProductId({ ...simulatorConfig, accessToken: 'polar_at_example' }, 'month', false),
     ).toThrow(RelayError);
     expect(resolveProductId(simulatorConfig, 'year', true)).toBe('sim_prod_annual');
   });

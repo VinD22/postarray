@@ -8,8 +8,4 @@ export {
   buildThreadsCapabilities,
   type ThreadsCapabilityInput,
 } from './capabilities.js';
-export {
-  THREADS_ACCOUNT_METRICS,
-  THREADS_MEDIA_FIELDS,
-  THREADS_POST_METRICS,
-} from './metrics.js';
+export { THREADS_ACCOUNT_METRICS, THREADS_MEDIA_FIELDS, THREADS_POST_METRICS } from './metrics.js';

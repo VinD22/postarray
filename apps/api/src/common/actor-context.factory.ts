@@ -1,5 +1,10 @@
 import { Injectable } from '@nestjs/common';
-import { normalizeScopes, type ApprovalLevel, type CreationSurface, type Scope } from '@relay/contracts';
+import {
+  normalizeScopes,
+  type ApprovalLevel,
+  type CreationSurface,
+  type Scope,
+} from '@relay/contracts';
 import { canonicalizeLocaleTag, isActiveLocale, resolveLocale } from '@relay/i18n';
 
 import type { ActorContext, IdentityContext } from '../application/port.js';

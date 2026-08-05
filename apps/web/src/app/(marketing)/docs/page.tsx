@@ -24,11 +24,11 @@ export default function DocsPage(): ReactNode {
       <PageIntro title={t.t('web.docs.title')} lede={t.t('web.docs.lede')} />
 
       <Section id="sections">
-        <ul className="border-t border-border-default">
+        <ul className="border-border-default border-t">
           {DOC_SECTIONS.map((section) => (
             <li
               key={section.id}
-              className="grid gap-x-12 gap-y-2 border-b border-border-subtle py-7 lg:grid-cols-12"
+              className="border-border-subtle grid gap-x-12 gap-y-2 border-b py-7 lg:grid-cols-12"
             >
               <div className="lg:col-span-4">
                 <Subheading as="h2">
@@ -40,13 +40,13 @@ export default function DocsPage(): ReactNode {
                 </Subheading>
               </div>
               <div className="min-w-0 space-y-2 lg:col-span-7 lg:col-start-6">
-                <p className="max-w-[68ch] text-body-lg leading-[1.65] text-text-secondary">
+                <p className="text-body-lg text-text-secondary max-w-[68ch] leading-[1.65]">
                   {t.format(section.bodyKey)}
                 </p>
                 {section.href ? null : (
                   <p className="flex flex-wrap items-center gap-2">
                     <Badge>{t.t('web.docs.pending')}</Badge>
-                    <span className="max-w-[60ch] text-body-md leading-[1.6] text-text-tertiary">
+                    <span className="text-body-md text-text-tertiary max-w-[60ch] leading-[1.6]">
                       {t.t('web.docs.pendingBody')}
                     </span>
                   </p>

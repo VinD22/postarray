@@ -21,11 +21,7 @@ import { cn } from '../utils/cn.js';
  * Collapsing the middle two into "unavailable" would tell a customer that a
  * platform cannot do something when the truth is that we have not shipped it.
  */
-export type CapabilityState =
-  | 'supported'
-  | 'unsupported'
-  | 'not_implemented'
-  | 'requires_review';
+export type CapabilityState = 'supported' | 'unsupported' | 'not_implemented' | 'requires_review';
 
 const stateClass: Record<CapabilityState, string> = {
   supported: 'border-success-border bg-success-bg text-success-fg',
@@ -60,7 +56,7 @@ export function CapabilityBadge({
     <span
       data-capability={state}
       className={cn(
-        'inline-flex items-center gap-1.5 rounded-md border px-2 py-1 text-body-sm',
+        'text-body-sm inline-flex items-center gap-1.5 rounded-md border px-2 py-1',
         stateClass[state],
         className,
       )}

@@ -26,7 +26,12 @@ import { addDays, daysUntil, isAtOrAfter, isBefore } from './time.js';
  * scheduled work is paused rather than cancelled.
  */
 
-export const SUBSCRIPTION_SOURCES = ['webhook', 'reconciliation', 'redirect', 'unverified'] as const;
+export const SUBSCRIPTION_SOURCES = [
+  'webhook',
+  'reconciliation',
+  'redirect',
+  'unverified',
+] as const;
 export const subscriptionSourceSchema = z.enum(SUBSCRIPTION_SOURCES);
 export type SubscriptionSource = z.infer<typeof subscriptionSourceSchema>;
 

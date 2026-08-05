@@ -19,7 +19,10 @@ function request(): ProviderRequest {
   };
 }
 
-function jsonFetch(body: unknown, status = 200): {
+function jsonFetch(
+  body: unknown,
+  status = 200,
+): {
   fetchImpl: typeof globalThis.fetch;
   calls: { url: string; init: RequestInit | undefined }[];
 } {
@@ -36,7 +39,9 @@ function jsonFetch(body: unknown, status = 200): {
 
 const OK_BODY = {
   model: 'deepseek-v4-flash',
-  choices: [{ index: 0, message: { role: 'assistant', content: '{"ok":true}' }, finish_reason: 'stop' }],
+  choices: [
+    { index: 0, message: { role: 'assistant', content: '{"ok":true}' }, finish_reason: 'stop' },
+  ],
   usage: { prompt_tokens: 42, completion_tokens: 7 },
 };
 
@@ -107,7 +112,11 @@ describe('deepseek adapter', () => {
             role: 'assistant',
             content: null,
             tool_calls: [
-              { id: 'call_1', type: 'function', function: { name: 'lookup', arguments: '{"q":1}' } },
+              {
+                id: 'call_1',
+                type: 'function',
+                function: { name: 'lookup', arguments: '{"q":1}' },
+              },
             ],
           },
           finish_reason: 'tool_calls',

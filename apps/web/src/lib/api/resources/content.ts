@@ -58,10 +58,7 @@ export const contentApi = {
   list: (query: ContentListQuery = {}): Promise<Paginated<ContentItemView>> =>
     call('/content', { query }, () => page<ContentItemView>([])),
 
-  updateMaster: (
-    contentItemId: string,
-    input: Partial<MasterDraft>,
-  ): Promise<ContentItemView> =>
+  updateMaster: (contentItemId: string, input: Partial<MasterDraft>): Promise<ContentItemView> =>
     call(`/content/${contentItemId}/master`, { method: 'PATCH', body: input }, () => ({
       ...emptyItem,
       id: contentItemId,
@@ -93,10 +90,14 @@ export const contentApi = {
     contentItemId: string,
     input: { connectionIds: readonly string[] },
   ): Promise<ContentItemView> =>
-    call(`/content/${contentItemId}/targets`, { method: 'PUT', body: input, sideEffectFree: true }, () => ({
-      ...emptyItem,
-      id: contentItemId,
-    })),
+    call(
+      `/content/${contentItemId}/targets`,
+      { method: 'PUT', body: input, sideEffectFree: true },
+      () => ({
+        ...emptyItem,
+        id: contentItemId,
+      }),
+    ),
 
   applySet: (contentItemId: string, setId: string): Promise<ContentItemView> =>
     call(
@@ -172,9 +173,12 @@ export const approvalsApi = {
       }),
     ),
 
-  listPending: (query: { cursor?: string; limit?: number } = {}): Promise<
-    Paginated<ApprovalRequestView>
-  > => call('/approvals', { query: { ...query, state: 'requested' } }, () => page<ApprovalRequestView>([])),
+  listPending: (
+    query: { cursor?: string; limit?: number } = {},
+  ): Promise<Paginated<ApprovalRequestView>> =>
+    call('/approvals', { query: { ...query, state: 'requested' } }, () =>
+      page<ApprovalRequestView>([]),
+    ),
 };
 
 export type CalendarQuery = {
@@ -203,24 +207,20 @@ export const schedulingApi = {
     input: { scheduledAt: string; timeZone: string },
     idempotencyKey: string,
   ): Promise<ContentItemView> =>
-    call(
-      `/schedules/${contentItemId}`,
-      { method: 'PUT', body: input, idempotencyKey },
-      () => ({
-        ...emptyItem,
-        id: contentItemId,
-        state: 'scheduled' as const,
-        scheduledAt: input.scheduledAt,
-        scheduledTimeZone: input.timeZone,
-      }),
-    ),
+    call(`/schedules/${contentItemId}`, { method: 'PUT', body: input, idempotencyKey }, () => ({
+      ...emptyItem,
+      id: contentItemId,
+      state: 'scheduled' as const,
+      scheduledAt: input.scheduledAt,
+      scheduledTimeZone: input.timeZone,
+    })),
 
   cancel: (contentItemId: string, idempotencyKey: string): Promise<ContentItemView> =>
-    call(
-      `/schedules/${contentItemId}/cancel`,
-      { method: 'POST', idempotencyKey },
-      () => ({ ...emptyItem, id: contentItemId, state: 'canceled' as const }),
-    ),
+    call(`/schedules/${contentItemId}/cancel`, { method: 'POST', idempotencyKey }, () => ({
+      ...emptyItem,
+      id: contentItemId,
+      state: 'canceled' as const,
+    })),
 
   getCalendar: (query: CalendarQuery): Promise<Paginated<CalendarEntryView>> =>
     call('/calendar', { query }, () => page(demoCalendar)),
@@ -240,15 +240,18 @@ export const publishingApi = {
   ): Promise<PublishJob | null> =>
     call('/publish', { method: 'POST', body: input, idempotencyKey }, () => null),
 
-  getJob: (jobId: string): Promise<PublishJob | null> =>
-    call(`/publish/${jobId}`, {}, () => null),
+  getJob: (jobId: string): Promise<PublishJob | null> => call(`/publish/${jobId}`, {}, () => null),
 
   retryTarget: (
     jobId: string,
     variantId: string,
     idempotencyKey: string,
   ): Promise<PublishJob | null> =>
-    call(`/publish/${jobId}/targets/${variantId}/retry`, { method: 'POST', idempotencyKey }, () => null),
+    call(
+      `/publish/${jobId}/targets/${variantId}/retry`,
+      { method: 'POST', idempotencyKey },
+      () => null,
+    ),
 };
 
 export const receiptsApi = {

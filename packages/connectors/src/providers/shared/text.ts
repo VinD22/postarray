@@ -122,11 +122,7 @@ export function countText(body: string, options: CountOptions): number {
   return countRaw(remainder, options.unit) + urls.length * charactersPerLink;
 }
 
-export function countForCapability(
-  body: string,
-  text: TextCapability,
-  unit: CountingUnit,
-): number {
+export function countForCapability(body: string, text: TextCapability, unit: CountingUnit): number {
   return countText(body, { unit, linkCounting: text.linkCounting });
 }
 
@@ -134,11 +130,7 @@ export function countForCapability(
  * The index at which the provider visually truncates, or null when the whole body fits.
  * The index is a UTF-16 offset so a renderer can slice the string directly.
  */
-export function truncationIndex(
-  body: string,
-  limit: number,
-  options: CountOptions,
-): number | null {
+export function truncationIndex(body: string, limit: number, options: CountOptions): number | null {
   if (countText(body, options) <= limit) {
     return null;
   }
@@ -191,7 +183,11 @@ export function normalizeForSimilarity(body: string): string {
 }
 
 function tokenSet(body: string): Set<string> {
-  return new Set(normalizeForSimilarity(body).split(' ').filter((token) => token !== ''));
+  return new Set(
+    normalizeForSimilarity(body)
+      .split(' ')
+      .filter((token) => token !== ''),
+  );
 }
 
 /** Jaccard similarity over token sets. 1 means identical after normalization. */

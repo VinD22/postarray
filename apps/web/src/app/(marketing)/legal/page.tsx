@@ -23,7 +23,7 @@ export default function LegalIndexPage(): ReactNode {
       <PageIntro title={t.t('web.legal.title')} lede={t.t('web.legal.lede')} />
 
       <Section id="documents">
-        <ul className="border-t border-border-default">
+        <ul className="border-border-default border-t">
           {LEGAL_DOCUMENTS.map((doc) => (
             <RowLink
               key={doc.href}

@@ -67,25 +67,19 @@ export function createCredentialVaultService(deps: ServiceDeps): CredentialVault
     },
 
     async revoke(ctx: ActorContext, connectionId: string): Promise<void> {
-      await authorized(
-        deps,
-        ctx,
-        'connection.disconnect',
-        { connectionId },
-        async (db, actor) => {
-          const removed = await db.socialCredential.deleteMany({ where: { connectionId } });
-          await db.socialConnection.update({
-            where: { id: connectionId },
-            data: { status: 'revoked', statusReason: 'connection.revoked_by_user' },
-          });
-          await recordAudit(db, actor, {
-            action: 'credential.revoked',
-            targetType: 'social_credential',
-            targetId: connectionId,
-            after: { removed: removed.count },
-          });
-        },
-      );
+      await authorized(deps, ctx, 'connection.disconnect', { connectionId }, async (db, actor) => {
+        const removed = await db.socialCredential.deleteMany({ where: { connectionId } });
+        await db.socialConnection.update({
+          where: { id: connectionId },
+          data: { status: 'revoked', statusReason: 'connection.revoked_by_user' },
+        });
+        await recordAudit(db, actor, {
+          action: 'credential.revoked',
+          targetType: 'social_credential',
+          targetId: connectionId,
+          after: { removed: removed.count },
+        });
+      });
     },
   };
 }

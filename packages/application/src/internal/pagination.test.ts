@@ -51,7 +51,12 @@ describe('pageArgs', () => {
 describe('toPage', () => {
   it('trims the lookahead row and returns a next cursor', () => {
     const args = pageArgs({ limit: 4 });
-    const page = toPage(rows, args, (row) => row.id, (row) => row.name);
+    const page = toPage(
+      rows,
+      args,
+      (row) => row.id,
+      (row) => row.name,
+    );
     expect(page.data).toEqual(['Row 0', 'Row 1', 'Row 2', 'Row 3']);
     expect(page.pageInfo.hasMore).toBe(true);
     expect(decodeCursor(page.pageInfo.nextCursor ?? undefined)).toBe('row-3');
@@ -59,7 +64,12 @@ describe('toPage', () => {
 
   it('reports the end of the list honestly', () => {
     const args = pageArgs({ limit: 10 });
-    const page = toPage(rows, args, (row) => row.id, (row) => row.name);
+    const page = toPage(
+      rows,
+      args,
+      (row) => row.id,
+      (row) => row.name,
+    );
     expect(page.data).toHaveLength(5);
     expect(page.pageInfo.hasMore).toBe(false);
     expect(page.pageInfo.nextCursor).toBeNull();
@@ -67,7 +77,12 @@ describe('toPage', () => {
 
   it('handles an empty result', () => {
     const args = pageArgs({});
-    const page = toPage([], args, (row: Row) => row.id, (row: Row) => row.name);
+    const page = toPage(
+      [],
+      args,
+      (row: Row) => row.id,
+      (row: Row) => row.name,
+    );
     expect(page.data).toEqual([]);
     expect(page.pageInfo.hasMore).toBe(false);
     expect(page.pageInfo.limit).toBe(DEFAULT_PAGE_SIZE);

@@ -17,10 +17,7 @@ import type { RuleDraft, RuleEnd } from './types';
  * because "A, B and C" is not the same in every language.
  */
 
-export type Translate = (
-  key: string,
-  values?: Readonly<Record<string, string | number>>,
-) => string;
+export type Translate = (key: string, values?: Readonly<Record<string, string | number>>) => string;
 
 export interface SentenceLabels {
   /** Resolves a parameter value to something a person recognises. */
@@ -78,7 +75,11 @@ export function delayClause(draft: RuleDraft, t: Translate, locale: string): str
   return formatDuration(locale, draft.delaySeconds * 1000, { maxUnits: 2 });
 }
 
-export function endClause(end: RuleEnd, t: Translate, resolveDate: (iso: string) => string): string {
+export function endClause(
+  end: RuleEnd,
+  t: Translate,
+  resolveDate: (iso: string) => string,
+): string {
   switch (end.kind) {
     case 'date':
       return resolveDate(end.at);
@@ -98,12 +99,7 @@ export interface RuleSentenceInput {
 }
 
 /** The whole rule in one sentence. */
-export function ruleSentence({
-  draft,
-  t,
-  labels,
-  resolveDate,
-}: RuleSentenceInput): string {
+export function ruleSentence({ draft, t, labels, resolveDate }: RuleSentenceInput): string {
   const conditions = conditionClauses(draft, t, labels);
   const actions = actionClauses(draft, t, labels);
   const shared = {

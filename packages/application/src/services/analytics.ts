@@ -1,11 +1,6 @@
 import type { MetricUnit, NormalizedMetricName, Paginated } from '@relay/contracts';
 
-import type {
-  ActorContext,
-  AnalyticsService,
-  PageQuery,
-  ServiceDeps,
-} from '../types.js';
+import type { ActorContext, AnalyticsService, PageQuery, ServiceDeps } from '../types.js';
 import type {
   ComparisonReport,
   ComparisonRow,
@@ -86,10 +81,7 @@ function toObservationView(row: ObservationRow, now: Date): MetricObservationVie
     unit: row.metricDefinition.unit as MetricUnit,
     availability,
     observedAt: row.observedAt.toISOString(),
-    freshnessSeconds: Math.max(
-      0,
-      Math.round((now.getTime() - row.observedAt.getTime()) / 1000),
-    ),
+    freshnessSeconds: Math.max(0, Math.round((now.getTime() - row.observedAt.getTime()) / 1000)),
     derivationRestricted: row.metricDefinition.derivationRestricted,
   };
 }
@@ -108,10 +100,7 @@ function median(values: readonly number[]): number | null {
   return low === undefined || high === undefined ? null : (low + high) / 2;
 }
 
-async function observationsFor(
-  db: Db,
-  where: Record<string, unknown>,
-): Promise<ObservationRow[]> {
+async function observationsFor(db: Db, where: Record<string, unknown>): Promise<ObservationRow[]> {
   return db.metricObservation.findMany({
     where,
     orderBy: { observedAt: 'desc' },
@@ -182,9 +171,7 @@ export function createAnalyticsService(deps: ServiceDeps): AnalyticsService {
           input.receiptIds !== undefined && input.receiptIds.length > 0
             ? { receiptId: { in: [...input.receiptIds] } }
             : {
-                ...(input.connectionId === undefined
-                  ? {}
-                  : { connectionId: input.connectionId }),
+                ...(input.connectionId === undefined ? {} : { connectionId: input.connectionId }),
                 ...(input.period === undefined
                   ? {}
                   : {
@@ -253,7 +240,9 @@ export function createAnalyticsService(deps: ServiceDeps): AnalyticsService {
 
         return {
           subjectLabel:
-            input.receiptIds !== undefined ? 'analytics.label.selected_posts' : 'analytics.label.period',
+            input.receiptIds !== undefined
+              ? 'analytics.label.selected_posts'
+              : 'analytics.label.period',
           baselineLabel:
             input.baseline === 'trailing_median'
               ? 'analytics.label.trailing_median'

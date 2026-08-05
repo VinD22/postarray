@@ -1,7 +1,3 @@
-/* eslint-disable no-restricted-globals -- this file is the single documented
-   boundary where the ambient system clock is read. Everything else in this
-   package takes a `Clock` so tests can fake time. */
-
 /**
  * The small ports every other module in this package depends on.
  *

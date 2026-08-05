@@ -43,7 +43,7 @@ export function AccountMenu() {
     <DropdownMenu>
       <DropdownMenuTrigger
         aria-label={t('nav.account')}
-        className="flex size-11 items-center justify-center rounded-md hover:bg-surface-hover md:size-9"
+        className="hover:bg-surface-hover flex size-11 items-center justify-center rounded-md md:size-9"
       >
         <Avatar
           alt={session.user.name}
@@ -56,8 +56,8 @@ export function AccountMenu() {
       <DropdownMenuContent align="end" className="w-64">
         <DropdownMenuLabel>
           <span className="flex flex-col">
-            <span className="truncate text-text-primary">{session.user.name}</span>
-            <span className="truncate text-label font-normal text-text-tertiary">
+            <span className="text-text-primary truncate">{session.user.name}</span>
+            <span className="text-label text-text-tertiary truncate font-normal">
               {t('shell.signedInAs', { email: session.user.email })}
             </span>
           </span>

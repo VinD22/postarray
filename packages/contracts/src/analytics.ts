@@ -162,9 +162,7 @@ export interface UnavailableObservationInput {
 }
 
 /** Build a reading for a metric the provider did not return. */
-export function unavailableObservation(
-  input: UnavailableObservationInput,
-): MetricObservation {
+export function unavailableObservation(input: UnavailableObservationInput): MetricObservation {
   return metricObservationSchema.parse({
     normalizedName: input.normalizedName,
     provider: input.provider,

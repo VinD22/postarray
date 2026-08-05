@@ -25,5 +25,4 @@ export const BILLING_MESSAGE_KEYS = Object.freeze({
   internal: 'error.internal.message',
 });
 
-export type BillingMessageKey =
-  (typeof BILLING_MESSAGE_KEYS)[keyof typeof BILLING_MESSAGE_KEYS];
+export type BillingMessageKey = (typeof BILLING_MESSAGE_KEYS)[keyof typeof BILLING_MESSAGE_KEYS];

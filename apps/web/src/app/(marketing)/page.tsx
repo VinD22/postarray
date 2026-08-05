@@ -139,7 +139,7 @@ export default function HomePage(): ReactNode {
               {t.t('nav.public.product')}
             </Cta>
           </div>
-          <p className="mt-6 max-w-[64ch] text-body-md leading-[1.6] text-text-tertiary">
+          <p className="text-body-md text-text-tertiary mt-6 max-w-[64ch] leading-[1.6]">
             {t.t('web.home.summaryLine')}{' '}
             <TextLink href={ROUTES.pricing} className="text-body-md">
               {t.t('nav.public.pricing')}
@@ -177,13 +177,13 @@ export default function HomePage(): ReactNode {
               <TableBody>
                 {EXAMPLE_ROWS.map((row) => (
                   <TableRow key={row.id}>
-                    <TableRowHeader className="align-top text-body-md text-text-primary">
+                    <TableRowHeader className="text-body-md text-text-primary align-top">
                       {t.format(row.accountKey)}
                     </TableRowHeader>
-                    <TableCell className="align-top whitespace-normal text-text-secondary">
+                    <TableCell className="text-text-secondary align-top whitespace-normal">
                       {t.format(row.variantKey)}
                     </TableCell>
-                    <TableCell className="align-top whitespace-normal text-text-secondary">
+                    <TableCell className="text-text-secondary align-top whitespace-normal">
                       {t.format(row.checkKey)}
                     </TableCell>
                   </TableRow>
@@ -197,11 +197,11 @@ export default function HomePage(): ReactNode {
       {/* The five proof pillars, as rows rather than as a card wall. */}
       <Section id="pillars">
         <Heading className="max-w-[24ch]">{t.t('web.home.pillars.title')}</Heading>
-        <dl className="mt-10 border-t border-border-default">
+        <dl className="border-border-default mt-10 border-t">
           {PILLARS.map((pillar) => (
             <div
               key={pillar.id}
-              className="grid gap-x-12 gap-y-3 border-b border-border-subtle py-8 lg:grid-cols-12"
+              className="border-border-subtle grid gap-x-12 gap-y-3 border-b py-8 lg:grid-cols-12"
             >
               <dt className="lg:col-span-4">
                 <Subheading as="h3" className="text-pretty">
@@ -209,10 +209,10 @@ export default function HomePage(): ReactNode {
                 </Subheading>
               </dt>
               <dd className="min-w-0 space-y-3 lg:col-span-7 lg:col-start-6">
-                <p className="max-w-[68ch] text-body-lg leading-[1.65] text-text-secondary">
+                <p className="text-body-lg text-text-secondary max-w-[68ch] leading-[1.65]">
                   {t.format(pillar.bodyKey)}
                 </p>
-                <p className="max-w-[68ch] text-body-md leading-[1.6] text-text-tertiary">
+                <p className="text-body-md text-text-tertiary max-w-[68ch] leading-[1.6]">
                   {t.format(pillar.proofKey)}
                 </p>
               </dd>
@@ -272,7 +272,7 @@ export default function HomePage(): ReactNode {
               {t.t('web.cta.seeCapabilities')}
             </Cta>
           </div>
-          <p className="max-w-[62ch] text-body-md leading-[1.6] text-text-tertiary">
+          <p className="text-body-md text-text-tertiary max-w-[62ch] leading-[1.6]">
             {t.t('web.cta.trialFootnote')}
           </p>
         </div>

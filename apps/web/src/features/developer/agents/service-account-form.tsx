@@ -130,17 +130,9 @@ export function ServiceAccountForm({
         description={t('developer.ui.agents.description')}
       >
         <div className="flex flex-col gap-4">
-          <Field
-            label={t('developer.serviceAccount.name')}
-            required
-            error={nameError ?? undefined}
-          >
+          <Field label={t('developer.serviceAccount.name')} required error={nameError ?? undefined}>
             {(control) => (
-              <Input
-                {...control}
-                value={name}
-                onChange={(event) => setName(event.target.value)}
-              />
+              <Input {...control} value={name} onChange={(event) => setName(event.target.value)} />
             )}
           </Field>
           <Field
@@ -166,13 +158,13 @@ export function ServiceAccountForm({
       >
         <div className="flex flex-col gap-5">
           <fieldset className="flex flex-col gap-1 border-0 p-0">
-            <legend className="pb-1 text-body-md font-medium text-text-primary">
+            <legend className="text-body-md text-text-primary pb-1 font-medium">
               {t('developer.serviceAccount.scopeBrands')}
             </legend>
             <ul className="flex flex-col sm:grid sm:grid-cols-2">
               {brands.map((brand) => (
                 <li key={brand.id}>
-                  <label className="flex min-h-11 items-center gap-2 text-body-md text-text-primary">
+                  <label className="text-body-md text-text-primary flex min-h-11 items-center gap-2">
                     <Checkbox
                       checked={brandIds.includes(brand.id)}
                       onCheckedChange={(checked) =>
@@ -187,13 +179,13 @@ export function ServiceAccountForm({
           </fieldset>
 
           <fieldset className="flex flex-col gap-1 border-0 p-0">
-            <legend className="pb-1 text-body-md font-medium text-text-primary">
+            <legend className="text-body-md text-text-primary pb-1 font-medium">
               {t('developer.serviceAccount.scopePlatforms')}
             </legend>
             <ul className="flex flex-col sm:grid sm:grid-cols-2">
               {connections.map((connection) => (
                 <li key={connection.id}>
-                  <label className="flex min-h-11 items-center gap-2 text-body-md text-text-primary">
+                  <label className="text-body-md text-text-primary flex min-h-11 items-center gap-2">
                     <Checkbox
                       checked={connectionIds.includes(connection.id)}
                       onCheckedChange={(checked) =>
@@ -208,13 +200,13 @@ export function ServiceAccountForm({
           </fieldset>
 
           <fieldset className="flex flex-col gap-1 border-0 p-0">
-            <legend className="pb-1 text-body-md font-medium text-text-primary">
+            <legend className="text-body-md text-text-primary pb-1 font-medium">
               {t('developer.serviceAccount.scopeLocales')}
             </legend>
             <ul className="flex flex-wrap gap-x-4">
               {contentLocales.map((locale) => (
                 <li key={locale}>
-                  <label className="flex min-h-11 items-center gap-2 text-body-md text-text-primary">
+                  <label className="text-body-md text-text-primary flex min-h-11 items-center gap-2">
                     <Checkbox
                       checked={locales.includes(locale)}
                       onCheckedChange={(checked) =>
@@ -318,10 +310,7 @@ export function ServiceAccountForm({
             )}
           </Field>
 
-          <Field
-            label={t('developer.serviceAccount.scopeDomains')}
-            className="sm:col-span-2"
-          >
+          <Field label={t('developer.serviceAccount.scopeDomains')} className="sm:col-span-2">
             {(control) => (
               <Textarea
                 {...control}
@@ -347,12 +336,12 @@ export function ServiceAccountForm({
           {APPROVAL_LEVELS.map((level) => (
             <label
               key={level}
-              className="flex min-h-11 items-start gap-2 py-2 text-body-md text-text-primary"
+              className="text-body-md text-text-primary flex min-h-11 items-start gap-2 py-2"
             >
               <RadioGroupItem className="mt-1" value={String(level)} />
               <span className="flex flex-col gap-0.5">
                 <span className="font-medium">{t(`developer.approvalLevel.${level}`)}</span>
-                <span className="max-w-[62ch] text-body-sm text-text-secondary">
+                <span className="text-body-sm text-text-secondary max-w-[62ch]">
                   {t(`developer.approvalLevel.description.${level}`)}
                 </span>
               </span>
@@ -370,9 +359,7 @@ export function ServiceAccountForm({
               definition:
                 selectedConnections.length === 0
                   ? t('common.none')
-                  : selectedConnections
-                      .map((connection) => connection.accountLabel)
-                      .join(', '),
+                  : selectedConnections.map((connection) => connection.accountLabel).join(', '),
             },
             {
               id: 'max',

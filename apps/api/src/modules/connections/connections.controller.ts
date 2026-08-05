@@ -23,7 +23,12 @@ import type {
   ProviderDestination,
 } from '../../application/port.js';
 import { CLOCK, RELAY_CONFIG } from '../../application/tokens.js';
-import { OAUTH_STATE_COOKIE, expireCookie, parseCookies, serializeCookie } from '../../common/cookies.js';
+import {
+  OAUTH_STATE_COOKIE,
+  expireCookie,
+  parseCookies,
+  serializeCookie,
+} from '../../common/cookies.js';
 import {
   Actor,
   Idempotent,
@@ -46,10 +51,7 @@ import {
   searchMentionsQuerySchema,
 } from './connections.schemas.js';
 import { ConnectionsService } from './connections.service.js';
-import {
-  OAUTH_TRANSACTION_TTL_SECONDS,
-  OAuthTransactionStore,
-} from './oauth-transaction.store.js';
+import { OAUTH_TRANSACTION_TTL_SECONDS, OAuthTransactionStore } from './oauth-transaction.store.js';
 
 /**
  * Connected social accounts, and the OAuth handshake that creates them.

@@ -126,9 +126,7 @@ export function createBrandService(deps: ServiceDeps): BrandService {
             ...(patch.approvedClaims === undefined
               ? {}
               : { approvedClaims: [...patch.approvedClaims] }),
-            ...(patch.blockedTerms === undefined
-              ? {}
-              : { blockedTerms: [...patch.blockedTerms] }),
+            ...(patch.blockedTerms === undefined ? {} : { blockedTerms: [...patch.blockedTerms] }),
             ...(patch.domains === undefined ? {} : { domains: [...patch.domains] }),
             ...(patch.defaultTimeZone === undefined
               ? {}

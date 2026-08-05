@@ -23,7 +23,7 @@ export default function ResourcesPage(): ReactNode {
       <PageIntro title={t.t('web.resources.title')} lede={t.t('web.resources.lede')} />
 
       <Section id="index">
-        <ul className="border-t border-border-default">
+        <ul className="border-border-default border-t">
           {RESOURCE_LINKS.map((link) => (
             <RowLink
               key={link.href}

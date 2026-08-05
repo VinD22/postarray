@@ -120,7 +120,11 @@ function settingsFor(state: ComposerState, connectionId: string): VariantSetting
 }
 
 /** Rebuild the link list from the URLs currently in the text plus the plan. */
-function buildLinks(urls: readonly string[], plan: LinkPlan, existing: readonly LinkSpec[]): LinkSpec[] {
+function buildLinks(
+  urls: readonly string[],
+  plan: LinkPlan,
+  existing: readonly LinkSpec[],
+): LinkSpec[] {
   return urls.map((url) => {
     const previous = existing.find((link) => link.originalUrl === url);
     const tracked = plan.mode === 'tracked';

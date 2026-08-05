@@ -336,10 +336,9 @@ export const getAnalyticsTool = defineTool({
       from: z.string().min(1).optional(),
       to: z.string().min(1).optional(),
     })
-    .refine(
-      (input) => (input.receipt_id === undefined) !== (input.connection_id === undefined),
-      { error: 'PROVIDE_EITHER_RECEIPT_ID_OR_CONNECTION_ID' },
-    ),
+    .refine((input) => (input.receipt_id === undefined) !== (input.connection_id === undefined), {
+      error: 'PROVIDE_EITHER_RECEIPT_ID_OR_CONNECTION_ID',
+    }),
   async run(context, input): Promise<ToolResult> {
     if (input.receipt_id !== undefined) {
       const observations = await context.services.analytics.getPostMetrics(context.actor, {

@@ -63,20 +63,19 @@ export function MediaStrip({
       ) : (
         <ul className="flex flex-col">
           {files.map((asset) => {
-            const missingAlt =
-              asset.kind !== 'video' && !asset.altTextWaived && !asset.altText;
+            const missingAlt = asset.kind !== 'video' && !asset.altTextWaived && !asset.altText;
             return (
               <li
                 key={asset.id}
-                className="flex items-center gap-3 border-b border-border-subtle py-2 last:border-b-0"
+                className="border-border-subtle flex items-center gap-3 border-b py-2 last:border-b-0"
               >
                 <span
                   aria-hidden
-                  className="size-10 shrink-0 rounded-md border border-border-subtle bg-surface-sunken"
+                  className="border-border-subtle bg-surface-sunken size-10 shrink-0 rounded-md border"
                 />
                 <span className="flex min-w-0 flex-col gap-0.5">
-                  <span className="truncate text-body-md text-text-primary">{asset.name}</span>
-                  <span className="flex flex-wrap gap-x-3 text-label text-text-tertiary">
+                  <span className="text-body-md text-text-primary truncate">{asset.name}</span>
+                  <span className="text-label text-text-tertiary flex flex-wrap gap-x-3">
                     <span>
                       {asset.width !== null && asset.height !== null
                         ? t.full('library.asset.dimensions', {

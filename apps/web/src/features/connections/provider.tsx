@@ -111,12 +111,10 @@ export function AccountIdentity({
           )}
         >
           <span className="text-text-secondary">{providerName(provider)}</span>
-          <span className="min-w-0 truncate font-medium text-text-primary">
-            {accountLabel}
-          </span>
+          <span className="text-text-primary min-w-0 truncate font-medium">{accountLabel}</span>
         </span>
         {secondary ? (
-          <span className="truncate text-body-sm text-text-tertiary">{secondary}</span>
+          <span className="text-body-sm text-text-tertiary truncate">{secondary}</span>
         ) : null}
       </span>
     </span>

@@ -75,7 +75,8 @@ export function redirectUriMatches(presented: string, registered: string): boole
   if (left.pathname !== right.pathname || left.search !== right.search) {
     return false;
   }
-  const loopback = left.hostname === '127.0.0.1' || left.hostname === '[::1]' || left.hostname === '::1';
+  const loopback =
+    left.hostname === '127.0.0.1' || left.hostname === '[::1]' || left.hostname === '::1';
   return loopback || left.port === right.port;
 }
 

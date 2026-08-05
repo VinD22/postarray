@@ -43,11 +43,11 @@ export function SetupSnippets(props: SetupSnippetsProps): ReactNode {
   return (
     <div className="flex flex-col gap-4">
       <div className="grid gap-3 sm:grid-cols-2">
-        <label className="flex flex-col gap-1 text-body-sm text-text-secondary">
+        <label className="text-body-sm text-text-secondary flex flex-col gap-1">
           {t('developer.setup.mcpEndpoint')}
           <Input readOnly value={props.mcpEndpoint} className="font-mono" />
         </label>
-        <label className="flex flex-col gap-1 text-body-sm text-text-secondary">
+        <label className="text-body-sm text-text-secondary flex flex-col gap-1">
           {t('developer.setup.apiBaseUrl')}
           <Input readOnly value={props.apiBaseUrl} className="font-mono" />
         </label>
@@ -74,20 +74,14 @@ export function SetupSnippets(props: SetupSnippetsProps): ReactNode {
                   <p className="text-body-sm text-text-tertiary">
                     {client.filename === null ? t('developer.setup.cli') : client.filename}
                   </p>
-                  <Button
-                    size="sm"
-                    variant="secondary"
-                    onClick={() => void copy(snippet, label)}
-                  >
+                  <Button size="sm" variant="secondary" onClick={() => void copy(snippet, label)}>
                     {t('developer.ui.setup.copySnippet', { client: label })}
                   </Button>
                 </div>
                 <Code block className="overflow-x-auto">
                   {snippet}
                 </Code>
-                <p className="text-body-sm text-text-secondary">
-                  {t('developer.ui.setup.help')}
-                </p>
+                <p className="text-body-sm text-text-secondary">{t('developer.ui.setup.help')}</p>
               </div>
             </TabsContent>
           );

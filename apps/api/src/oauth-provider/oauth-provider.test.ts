@@ -4,7 +4,6 @@ import { newIdFor } from '@relay/contracts';
 import request from 'supertest';
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 
-import { instantAfter } from '../common/instant.js';
 import { oauthClientRecordSchema } from '../security/records.js';
 import {
   TEST_ACCEPT_LANGUAGE,
@@ -29,7 +28,11 @@ const CLIENT_ID = 'rly_pk_testclient';
 const REDIRECT_URI = 'https://partner.example/callback';
 
 async function registerClient(
-  overrides: Partial<{ redirectUris: string[]; clientType: 'public' | 'confidential'; allowedScopes: string[] }> = {},
+  overrides: Partial<{
+    redirectUris: string[];
+    clientType: 'public' | 'confidential';
+    allowedScopes: string[];
+  }> = {},
 ): Promise<void> {
   await harness.directory.putOAuthClient(
     oauthClientRecordSchema.parse({
@@ -191,15 +194,17 @@ describe('authorization code flow with PKCE', () => {
     const { verifier, challenge } = pkcePair();
 
     const authorize = await authed(
-      request(harness.server).get('/oauth/authorize').query({
-        response_type: 'code',
-        client_id: CLIENT_ID,
-        redirect_uri: REDIRECT_URI,
-        scope: 'drafts:read',
-        state: randomBytes(16).toString('base64url'),
-        code_challenge: challenge,
-        code_challenge_method: 'S256',
-      }),
+      request(harness.server)
+        .get('/oauth/authorize')
+        .query({
+          response_type: 'code',
+          client_id: CLIENT_ID,
+          redirect_uri: REDIRECT_URI,
+          scope: 'drafts:read',
+          state: randomBytes(16).toString('base64url'),
+          code_challenge: challenge,
+          code_challenge_method: 'S256',
+        }),
       session,
     );
     const requestId = new URL(redirectLocation(authorize), TEST_ORIGIN).searchParams.get(
@@ -252,15 +257,17 @@ describe('authorization code flow with PKCE', () => {
     const wrong = pkcePair().verifier;
 
     const authorize = await authed(
-      request(harness.server).get('/oauth/authorize').query({
-        response_type: 'code',
-        client_id: CLIENT_ID,
-        redirect_uri: REDIRECT_URI,
-        scope: 'drafts:read',
-        state: randomBytes(16).toString('base64url'),
-        code_challenge: challenge,
-        code_challenge_method: 'S256',
-      }),
+      request(harness.server)
+        .get('/oauth/authorize')
+        .query({
+          response_type: 'code',
+          client_id: CLIENT_ID,
+          redirect_uri: REDIRECT_URI,
+          scope: 'drafts:read',
+          state: randomBytes(16).toString('base64url'),
+          code_challenge: challenge,
+          code_challenge_method: 'S256',
+        }),
       session,
     );
     const requestId = new URL(redirectLocation(authorize), TEST_ORIGIN).searchParams.get(
@@ -279,13 +286,15 @@ describe('authorization code flow with PKCE', () => {
       consentVersionHash: 'b'.repeat(64),
     });
 
-    const token = await request(harness.server).post('/oauth/token').send({
-      grant_type: 'authorization_code',
-      code: new URL(consent.body.redirectTo).searchParams.get('code'),
-      redirect_uri: REDIRECT_URI,
-      client_id: CLIENT_ID,
-      code_verifier: wrong,
-    });
+    const token = await request(harness.server)
+      .post('/oauth/token')
+      .send({
+        grant_type: 'authorization_code',
+        code: new URL(consent.body.redirectTo).searchParams.get('code'),
+        redirect_uri: REDIRECT_URI,
+        client_id: CLIENT_ID,
+        code_verifier: wrong,
+      });
 
     expect(token.status).toBe(403);
   });
@@ -294,15 +303,17 @@ describe('authorization code flow with PKCE', () => {
     const session = await seedSession(harness, { scopes: ['drafts:read'] });
 
     const response = await authed(
-      request(harness.server).get('/oauth/authorize').query({
-        response_type: 'code',
-        client_id: CLIENT_ID,
-        redirect_uri: REDIRECT_URI,
-        scope: 'drafts:read',
-        state: randomBytes(16).toString('base64url'),
-        code_challenge: pkcePair().challenge,
-        code_challenge_method: 'plain',
-      }),
+      request(harness.server)
+        .get('/oauth/authorize')
+        .query({
+          response_type: 'code',
+          client_id: CLIENT_ID,
+          redirect_uri: REDIRECT_URI,
+          scope: 'drafts:read',
+          state: randomBytes(16).toString('base64url'),
+          code_challenge: pkcePair().challenge,
+          code_challenge_method: 'plain',
+        }),
       session,
     );
 
@@ -319,15 +330,17 @@ describe('authorization code flow with PKCE', () => {
       'https://partner.example/callback2',
     ]) {
       const response = await authed(
-        request(harness.server).get('/oauth/authorize').query({
-          response_type: 'code',
-          client_id: CLIENT_ID,
-          redirect_uri: candidate,
-          scope: 'drafts:read',
-          state: randomBytes(16).toString('base64url'),
-          code_challenge: pkcePair().challenge,
-          code_challenge_method: 'S256',
-        }),
+        request(harness.server)
+          .get('/oauth/authorize')
+          .query({
+            response_type: 'code',
+            client_id: CLIENT_ID,
+            redirect_uri: candidate,
+            scope: 'drafts:read',
+            state: randomBytes(16).toString('base64url'),
+            code_challenge: pkcePair().challenge,
+            code_challenge_method: 'S256',
+          }),
         session,
       );
       expect(response.status).toBe(422);
@@ -339,15 +352,17 @@ describe('authorization code flow with PKCE', () => {
     const session = await seedSession(harness, { scopes: ['drafts:read'] });
 
     const response = await authed(
-      request(harness.server).get('/oauth/authorize').query({
-        response_type: 'code',
-        client_id: CLIENT_ID,
-        redirect_uri: REDIRECT_URI,
-        scope: 'posts:publish',
-        state: randomBytes(16).toString('base64url'),
-        code_challenge: pkcePair().challenge,
-        code_challenge_method: 'S256',
-      }),
+      request(harness.server)
+        .get('/oauth/authorize')
+        .query({
+          response_type: 'code',
+          client_id: CLIENT_ID,
+          redirect_uri: REDIRECT_URI,
+          scope: 'posts:publish',
+          state: randomBytes(16).toString('base64url'),
+          code_challenge: pkcePair().challenge,
+          code_challenge_method: 'S256',
+        }),
       session,
     );
 
@@ -382,15 +397,17 @@ describe('authorization code flow with PKCE', () => {
     const session = await seedSession(harness, { scopes: ['drafts:read'] });
 
     const response = await authed(
-      request(harness.server).get('/oauth/authorize').query({
-        response_type: 'code',
-        client_id: CLIENT_ID,
-        redirect_uri: REDIRECT_URI,
-        scope: 'connections:admin',
-        state: randomBytes(16).toString('base64url'),
-        code_challenge: pkcePair().challenge,
-        code_challenge_method: 'S256',
-      }),
+      request(harness.server)
+        .get('/oauth/authorize')
+        .query({
+          response_type: 'code',
+          client_id: CLIENT_ID,
+          redirect_uri: REDIRECT_URI,
+          scope: 'connections:admin',
+          state: randomBytes(16).toString('base64url'),
+          code_challenge: pkcePair().challenge,
+          code_challenge_method: 'S256',
+        }),
       session,
     );
 
@@ -405,15 +422,17 @@ describe('refresh rotation', () => {
     const { verifier, challenge } = pkcePair();
 
     const authorize = await authed(
-      request(harness.server).get('/oauth/authorize').query({
-        response_type: 'code',
-        client_id: CLIENT_ID,
-        redirect_uri: REDIRECT_URI,
-        scope: 'drafts:read',
-        state: randomBytes(16).toString('base64url'),
-        code_challenge: challenge,
-        code_challenge_method: 'S256',
-      }),
+      request(harness.server)
+        .get('/oauth/authorize')
+        .query({
+          response_type: 'code',
+          client_id: CLIENT_ID,
+          redirect_uri: REDIRECT_URI,
+          scope: 'drafts:read',
+          state: randomBytes(16).toString('base64url'),
+          code_challenge: challenge,
+          code_challenge_method: 'S256',
+        }),
       session,
     );
     const requestId = new URL(redirectLocation(authorize), TEST_ORIGIN).searchParams.get(
@@ -431,13 +450,15 @@ describe('refresh rotation', () => {
       grantedScopes: ['drafts:read'],
       consentVersionHash: 'b'.repeat(64),
     });
-    const issued = await request(harness.server).post('/oauth/token').send({
-      grant_type: 'authorization_code',
-      code: new URL(consent.body.redirectTo).searchParams.get('code'),
-      redirect_uri: REDIRECT_URI,
-      client_id: CLIENT_ID,
-      code_verifier: verifier,
-    });
+    const issued = await request(harness.server)
+      .post('/oauth/token')
+      .send({
+        grant_type: 'authorization_code',
+        code: new URL(consent.body.redirectTo).searchParams.get('code'),
+        redirect_uri: REDIRECT_URI,
+        client_id: CLIENT_ID,
+        code_verifier: verifier,
+      });
 
     const rotated = await request(harness.server).post('/oauth/token').send({
       grant_type: 'refresh_token',

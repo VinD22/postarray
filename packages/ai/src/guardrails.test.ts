@@ -155,9 +155,7 @@ describe('scanOutput', () => {
     const findings = scanOutput('I doubled my reach in a week.', {
       consentAssetId: 'media_1',
     });
-    expect(findings.map((finding) => finding.rule)).not.toContain(
-      'testimonial_without_consent',
-    );
+    expect(findings.map((finding) => finding.rule)).not.toContain('testimonial_without_consent');
   });
 
   it('flags banned voice words and em dashes only when voice is checked', () => {

@@ -88,9 +88,14 @@ describe('ConnectorRegistry', () => {
   it('refuses a connector built against another contract version', () => {
     const registry = new ConnectorRegistry({ clock });
     expect(() =>
-      registry.register(lyingConnector({ contractVersion: '0.0.1', features: {
-        ...NOT_IMPLEMENTED_FEATURES,
-      } })),
+      registry.register(
+        lyingConnector({
+          contractVersion: '0.0.1',
+          features: {
+            ...NOT_IMPLEMENTED_FEATURES,
+          },
+        }),
+      ),
     ).toThrow(RelayError);
     expect(CONNECTOR_CONTRACT_VERSION).toBe('1.0.0');
   });

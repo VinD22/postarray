@@ -37,11 +37,11 @@ export default function ChangelogPage(): ReactNode {
             }
           />
         ) : (
-          <ol className="border-t border-border-default">
+          <ol className="border-border-default border-t">
             {CHANGELOG.map((entry) => (
               <li
                 key={entry.id}
-                className="grid gap-x-12 gap-y-3 border-b border-border-subtle py-8 lg:grid-cols-12"
+                className="border-border-subtle grid gap-x-12 gap-y-3 border-b py-8 lg:grid-cols-12"
               >
                 <div className="space-y-2 lg:col-span-4">
                   <Meta>{formatDate(entry.date)}</Meta>
@@ -51,7 +51,7 @@ export default function ChangelogPage(): ReactNode {
                 </div>
                 <div className="min-w-0 space-y-2 lg:col-span-7 lg:col-start-6">
                   <h2 className="text-title-sm text-text-primary">{entry.title}</h2>
-                  <p className="max-w-[68ch] text-body-lg leading-[1.65] text-text-secondary">
+                  <p className="text-body-lg text-text-secondary max-w-[68ch] leading-[1.65]">
                     {entry.body}
                   </p>
                   {entry.href ? (

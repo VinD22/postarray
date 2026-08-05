@@ -4,12 +4,7 @@ import type { ReactElement } from 'react';
 import { useTranslations } from '@relay/i18n/react';
 
 import { providerLabelKey } from '../labels';
-import {
-  freshnessStateOf,
-  hasValue,
-  metricLabelKey,
-  unavailableReasonKey,
-} from '../metrics';
+import { freshnessStateOf, hasValue, metricLabelKey, unavailableReasonKey } from '../metrics';
 import type { MetricReading } from '../types';
 import { useValueFormat } from '../use-value-format';
 import { MetricDefinitionButton } from './metric-definition';
@@ -49,10 +44,8 @@ export function MetricCell({ reading, showLabel = false }: MetricCellProps): Rea
             {t(metricLabelKey(reading.normalizedName))}
           </span>
         ) : null}
-        <span className="text-body-md text-text-secondary">
-          {t('analytics.value.unavailable')}
-        </span>
-        <span className="max-w-[36ch] text-body-sm text-text-tertiary">
+        <span className="text-body-md text-text-secondary">{t('analytics.value.unavailable')}</span>
+        <span className="text-body-sm text-text-tertiary max-w-[36ch]">
           {t(reasonKey, {
             provider: providerName,
             time: format.relative(reading.observedAt),
@@ -77,9 +70,7 @@ export function MetricCell({ reading, showLabel = false }: MetricCellProps): Rea
       </span>
       <span
         className={
-          freshness === 'stale'
-            ? 'text-body-sm text-warning-fg'
-            : 'text-body-sm text-text-tertiary'
+          freshness === 'stale' ? 'text-body-sm text-warning-fg' : 'text-body-sm text-text-tertiary'
         }
       >
         {freshness === 'stale'

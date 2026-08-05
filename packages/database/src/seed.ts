@@ -48,9 +48,7 @@ export async function seed(options: SeedOptions = {}): Promise<void> {
   const prisma =
     options.prisma ??
     createPrismaClient(
-      options.databaseUrl === undefined
-        ? { logger }
-        : { logger, databaseUrl: options.databaseUrl },
+      options.databaseUrl === undefined ? { logger } : { logger, databaseUrl: options.databaseUrl },
     );
 
   const startedAt = Date.now();
@@ -83,8 +81,7 @@ export { SEED_IDS } from './seed/tenant-core.js';
 export { SEED_OPPORTUNITY_IDS, SEED_TOOL_IDS, SEED_METRIC_IDS } from './seed/catalog.js';
 
 const invokedDirectly =
-  process.argv[1] !== undefined &&
-  path.resolve(process.argv[1]) === fileURLToPath(import.meta.url);
+  process.argv[1] !== undefined && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url);
 
 if (invokedDirectly) {
   seed().catch((error: unknown) => {

@@ -8,7 +8,9 @@ import type { RepeatPostWorkflowInput, RepeatPostWorkflowOutput } from './inputs
  * Workflow id: `repeat:{workspaceId}:{seriesId}`. Rolls its history over with
  * `continueAsNew` after every occurrence.
  */
-export async function repeatPostWorkflow(input: RepeatPostWorkflowInput): Promise<RepeatPostWorkflowOutput> {
+export async function repeatPostWorkflow(
+  input: RepeatPostWorkflowInput,
+): Promise<RepeatPostWorkflowOutput> {
   const runtime = createTemporalRuntime();
   return runRepeatPost(runtime, workerActivities, input);
 }

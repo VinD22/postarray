@@ -47,8 +47,7 @@ export interface RlsContextOptions {
   readonly maxWaitMs?: number;
 }
 
-const UUID_PATTERN =
-  /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+const UUID_PATTERN = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
 /**
  * Runs `handler` inside one transaction whose RLS claims are `claims`.
@@ -96,8 +95,7 @@ export async function withWorkspaceContext<T>(
       ...(input.userId === undefined ? {} : { userId: input.userId }),
       role: input.role ?? 'service_role',
     },
-    async (tx) =>
-      handler(withWorkspace(tx as unknown as RelayPrismaClient, input.workspaceId)),
+    async (tx) => handler(withWorkspace(tx as unknown as RelayPrismaClient, input.workspaceId)),
     options,
   );
 }

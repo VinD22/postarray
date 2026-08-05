@@ -49,7 +49,10 @@ import type {
 const FAKE_PROVIDER = 'fake';
 export const SANDBOX_BRAND_ID = 'brand_sandbox';
 
-export function fakeCapabilitySnapshot(connectionId: string, observedAt: string): CapabilitySnapshot {
+export function fakeCapabilitySnapshot(
+  connectionId: string,
+  observedAt: string,
+): CapabilitySnapshot {
   return capabilitySnapshotSchema.parse({
     capabilityVersion: 'fake@2026-08-04',
     observedAt,
@@ -320,7 +323,10 @@ export function createSandboxServices(options: SandboxOptions): SandboxServices 
     },
 
     scheduling: {
-      async schedule(ctx, input: { contentItemId: string; scheduleSpec: ScheduleSpecLike }): Promise<PublishJobSummary> {
+      async schedule(
+        ctx,
+        input: { contentItemId: string; scheduleSpec: ScheduleSpecLike },
+      ): Promise<PublishJobSummary> {
         assertWorkspace(ctx);
         if (!state.contentItems.has(input.contentItemId)) {
           throw notFound('CONTENT_ITEM_NOT_FOUND');

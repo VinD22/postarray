@@ -266,7 +266,11 @@ export interface ContentService {
     ctx: ActorContext,
     query: CursorQuery & { state?: PublishState; brandId?: string; campaignId?: string },
   ): Promise<Paginated<ContentItemView>>;
-  updateMaster(ctx: ActorContext, contentItemId: string, patch: ViewModel): Promise<ContentItemView>;
+  updateMaster(
+    ctx: ActorContext,
+    contentItemId: string,
+    patch: ViewModel,
+  ): Promise<ContentItemView>;
   overrideVariant(
     ctx: ActorContext,
     input: { contentItemId: string; targetId: string; patch: ViewModel },
@@ -411,7 +415,10 @@ export interface AutomationRuleService {
   disable(ctx: ActorContext, ruleId: string): Promise<AutomationRuleView>;
   delete(ctx: ActorContext, ruleId: string): Promise<void>;
   preview(ctx: ActorContext, ruleId: string): Promise<RulePreview>;
-  testRun(ctx: ActorContext, input: { ruleId: string; sampleEvent: ViewModel }): Promise<RuleRunView>;
+  testRun(
+    ctx: ActorContext,
+    input: { ruleId: string; sampleEvent: ViewModel },
+  ): Promise<RuleRunView>;
   listRuns(
     ctx: ActorContext,
     input: CursorQuery & { ruleId: string },

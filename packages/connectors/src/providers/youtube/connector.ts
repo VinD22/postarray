@@ -28,7 +28,6 @@ import {
   type ProviderDestination,
   type ProviderDraft,
   type ProviderIdentity,
-  type PublishItemResult,
   type PublishRequest,
   type PublishResult,
   type PublishStatus,
@@ -41,7 +40,12 @@ import { mapMetrics } from '../shared/metrics.js';
 import { buildPreview } from '../shared/preview.js';
 import { validateDraftShape } from '../shared/validate.js';
 import { SOURCE_VERIFIED_ON } from '../shared/verification.js';
-import { accessTokenOf, errorSummary, providerOptionsOf, providerOptionsOfConnection } from '../shared/access.js';
+import {
+  accessTokenOf,
+  errorSummary,
+  providerOptionsOf,
+  providerOptionsOfConnection,
+} from '../shared/access.js';
 import { NOT_IMPLEMENTED_FEATURES } from '../../contract.js';
 import type { FailedItem, PublishedItem } from '../../contract.js';
 import {
@@ -116,7 +120,7 @@ function toNumberRecord(source: Readonly<Record<string, unknown>>): Record<strin
 }
 
 export function createYouTubeConnector(deps: ConnectorDeps): SocialConnector {
-  const { http, vault, clock, config, logger } = deps;
+  const { http, clock, config, logger } = deps;
 
   async function token(connection: ProviderConnection): Promise<string> {
     return accessTokenOf(connection);
@@ -173,7 +177,8 @@ export function createYouTubeConnector(deps: ConnectorDeps): SocialConnector {
         iconToken: 'provider.youtube',
         accountTypes: ['channel'],
         officialDocsUrl: 'https://developers.google.com/youtube/v3/docs/videos/insert',
-        officialPolicyUrl: 'https://developers.google.com/youtube/terms/api-services-terms-of-service',
+        officialPolicyUrl:
+          'https://developers.google.com/youtube/terms/api-services-terms-of-service',
         engineeringOwner: 'Backend/Connectors 2',
         policyOwner: 'Policy Owner',
         lastPolicyReviewAt: `${SOURCE_VERIFIED_ON}T00:00:00.000Z`,
@@ -434,7 +439,9 @@ export function createYouTubeConnector(deps: ConnectorDeps): SocialConnector {
 
     async prepareMedia(input: MediaPreparationRequest): Promise<PreparedMedia[]> {
       const accessToken = await token(input.connection);
-      const options = youTubeProviderOptionsSchema.parse(providerOptionsOfConnection(input.connection));
+      const options = youTubeProviderOptionsSchema.parse(
+        providerOptionsOfConnection(input.connection),
+      );
       const media = input.media[0];
       if (media === undefined) {
         return [];
@@ -588,9 +595,7 @@ export function createYouTubeConnector(deps: ConnectorDeps): SocialConnector {
 
       // The resumable upload is what creates the video. `publish` confirms it exists,
       // applies the thumbnail and posts the first comment.
-      const uploaded = request.preparedMedia.find(
-        (prepared) => prepared.providerMediaId !== null,
-      );
+      const uploaded = request.preparedMedia.find((prepared) => prepared.providerMediaId !== null);
       const resumeVideoId = undefined;
       const videoId =
         (typeof resumeVideoId === 'string' && resumeVideoId !== '' ? resumeVideoId : null) ??
@@ -615,7 +620,11 @@ export function createYouTubeConnector(deps: ConnectorDeps): SocialConnector {
         provider: PROVIDER,
         operation: 'youtube.confirm_upload',
       });
-      ensureOk(lookup, { provider: PROVIDER, operation: 'youtube.confirm_upload', response: lookup });
+      ensureOk(lookup, {
+        provider: PROVIDER,
+        operation: 'youtube.confirm_upload',
+        response: lookup,
+      });
       const list = parseProviderBody(youTubeVideoListSchema, lookup, {
         provider: PROVIDER,
         operation: 'youtube.confirm_upload',
@@ -688,7 +697,11 @@ export function createYouTubeConnector(deps: ConnectorDeps): SocialConnector {
         provider: PROVIDER,
         operation: 'youtube.update_metadata',
       });
-      ensureOk(update, { provider: PROVIDER, operation: 'youtube.update_metadata', response: update });
+      ensureOk(update, {
+        provider: PROVIDER,
+        operation: 'youtube.update_metadata',
+        response: update,
+      });
 
       if (options.thumbnailMediaId !== undefined) {
         const thumbnail = await http.request({
@@ -759,7 +772,6 @@ export function createYouTubeConnector(deps: ConnectorDeps): SocialConnector {
           });
         }
       }
-
 
       const publishedAt = nowIso();
       const allItems: PublishedItem[] = [
@@ -1038,7 +1050,10 @@ export function createYouTubeConnector(deps: ConnectorDeps): SocialConnector {
         operation: 'youtube.revoke',
       });
       if (!response.ok) {
-        logger.warn({ provider: PROVIDER, status: response.status }, 'youtube revoke did not succeed');
+        logger.warn(
+          { provider: PROVIDER, status: response.status },
+          'youtube revoke did not succeed',
+        );
       }
     },
   };

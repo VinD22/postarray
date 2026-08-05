@@ -31,12 +31,7 @@ import {
 } from '../lib/view-models.js';
 
 /** Roles that include a review step and can therefore hold approval rights. */
-const APPROVAL_CAPABLE_ROLES: readonly WorkspaceRole[] = [
-  'owner',
-  'admin',
-  'manager',
-  'approver',
-];
+const APPROVAL_CAPABLE_ROLES: readonly WorkspaceRole[] = ['owner', 'admin', 'manager', 'approver'];
 
 export interface MemberFormValue {
   readonly email: string;
@@ -127,9 +122,7 @@ export function MemberDialog({
               : t('settings.ui.members.inviteTitle')}
           </DialogTitle>
           <DialogDescription>
-            {editing
-              ? t('settings.ui.members.description')
-              : t('settings.ui.members.inviteBody')}
+            {editing ? t('settings.ui.members.description') : t('settings.ui.members.inviteBody')}
           </DialogDescription>
         </DialogHeader>
 
@@ -179,21 +172,19 @@ export function MemberDialog({
             </Field>
 
             <fieldset className="flex flex-col gap-2 border-0 p-0">
-              <legend className="pb-1 text-body-md font-medium text-text-primary">
+              <legend className="text-body-md text-text-primary pb-1 font-medium">
                 {t('settings.ui.members.inviteScope')}
               </legend>
               <RadioGroup
                 value={scopeMode}
-                onValueChange={(value) =>
-                  setScopeMode(value === 'selected' ? 'selected' : 'all')
-                }
+                onValueChange={(value) => setScopeMode(value === 'selected' ? 'selected' : 'all')}
                 className="flex flex-col gap-1"
               >
-                <label className="flex min-h-11 items-center gap-2 text-body-md text-text-primary">
+                <label className="text-body-md text-text-primary flex min-h-11 items-center gap-2">
                   <RadioGroupItem value="all" />
                   {t('settings.ui.members.inviteScopeAll')}
                 </label>
-                <label className="flex min-h-11 items-center gap-2 text-body-md text-text-primary">
+                <label className="text-body-md text-text-primary flex min-h-11 items-center gap-2">
                   <RadioGroupItem value="selected" />
                   {t('settings.ui.members.inviteScopeSelected')}
                 </label>
@@ -203,7 +194,7 @@ export function MemberDialog({
                 <ul className="flex flex-col ps-6">
                   {brands.map((brand) => (
                     <li key={brand.id}>
-                      <label className="flex min-h-11 items-center gap-2 text-body-md text-text-primary">
+                      <label className="text-body-md text-text-primary flex min-h-11 items-center gap-2">
                         <Checkbox
                           checked={brandIds.includes(brand.id)}
                           onCheckedChange={(checked) => toggleBrand(brand.id, checked === true)}
@@ -216,7 +207,7 @@ export function MemberDialog({
               ) : null}
             </fieldset>
 
-            <label className="flex min-h-11 items-start gap-2 py-1 text-body-md text-text-primary">
+            <label className="text-body-md text-text-primary flex min-h-11 items-start gap-2 py-1">
               <Checkbox
                 className="mt-0.5"
                 checked={canApprove}

@@ -77,10 +77,7 @@ export function hasErrors(issues: readonly ValidationIssue[]): boolean {
   return issues.some((issue) => issue.severity === 'error');
 }
 
-export function issuesFor(
-  issues: readonly ValidationIssue[],
-  targetId: string,
-): ValidationIssue[] {
+export function issuesFor(issues: readonly ValidationIssue[], targetId: string): ValidationIssue[] {
   return issues.filter((issue) => issue.targetId === targetId);
 }
 
@@ -106,9 +103,7 @@ export function validationResult(input: ValidationResultInput): ValidationResult
  * Combine per-target results into one. Costs are summed only when every priced
  * part agrees on a currency, otherwise the total is omitted rather than guessed.
  */
-export function mergeValidationResults(
-  results: readonly ValidationResult[],
-): ValidationResult {
+export function mergeValidationResults(results: readonly ValidationResult[]): ValidationResult {
   const issues = results.flatMap((result) => result.issues);
   const priced = results.filter((result) => result.estimatedCostMinor !== undefined);
   const currencies = new Set(priced.map((result) => result.currency));
@@ -122,7 +117,10 @@ export function mergeValidationResults(
   return validationResult({
     issues,
     currency,
-    estimatedCostMinor: priced.reduce((total, result) => total + (result.estimatedCostMinor ?? 0), 0),
+    estimatedCostMinor: priced.reduce(
+      (total, result) => total + (result.estimatedCostMinor ?? 0),
+      0,
+    ),
   });
 }
 

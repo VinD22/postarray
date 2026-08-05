@@ -55,9 +55,7 @@ export function MetricFigure({
   const label = (
     <span className="flex items-center gap-1">
       {metricName}
-      {hideDefinitionButton ? null : (
-        <MetricDefinitionButton definition={reading.definition} />
-      )}
+      {hideDefinitionButton ? null : <MetricDefinitionButton definition={reading.definition} />}
     </span>
   );
 
@@ -70,9 +68,7 @@ export function MetricFigure({
       value={
         <span className="flex flex-wrap items-baseline gap-2">
           {format.value(reading)}
-          {reading.estimate ? (
-            <Badge tone="warning">{t('analytics.value.estimated')}</Badge>
-          ) : null}
+          {reading.estimate ? <Badge tone="warning">{t('analytics.value.estimated')}</Badge> : null}
         </span>
       }
       unavailableText={t('analytics.value.unavailable')}
@@ -93,9 +89,7 @@ export function MetricFigure({
             })}
           </span>
           {reading.estimate ? (
-            <span>
-              {t('analytics.value.estimatedMethod', { method: reading.estimate.method })}
-            </span>
+            <span>{t('analytics.value.estimatedMethod', { method: reading.estimate.method })}</span>
           ) : null}
         </span>
       }

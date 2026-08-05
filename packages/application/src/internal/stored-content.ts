@@ -154,10 +154,7 @@ export function asMasterDraft(master: StoredMaster): MasterDraft {
   return master;
 }
 
-export function resolveTarget(
-  master: StoredMaster,
-  overrides: VariantOverrides,
-): ResolvedVariant {
+export function resolveTarget(master: StoredMaster, overrides: VariantOverrides): ResolvedVariant {
   return resolveVariant(asMasterDraft(master), overrides);
 }
 

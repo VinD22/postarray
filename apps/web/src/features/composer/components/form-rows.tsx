@@ -25,7 +25,7 @@ function RowShell({ control, id, label, description, className }: RowShellProps)
     <div className={cn('flex min-h-11 items-start gap-2.5 py-1', className)}>
       <span className="mt-0.5 flex size-4 shrink-0 items-center justify-center">{control}</span>
       <span className="flex min-w-0 flex-col gap-0.5">
-        <Label htmlFor={id} className="cursor-pointer text-body-md text-text-primary">
+        <Label htmlFor={id} className="text-body-md text-text-primary cursor-pointer">
           {label}
         </Label>
         {description ? (

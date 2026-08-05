@@ -22,11 +22,7 @@ export interface TrialSummaryProps {
  * from the billing service, and if the service has not told us an amount we
  * say so rather than showing a plausible one.
  */
-export function TrialSummary({
-  state,
-  onOpenPortal,
-  openingPortal,
-}: TrialSummaryProps): ReactNode {
+export function TrialSummary({ state, onOpenPortal, openingPortal }: TrialSummaryProps): ReactNode {
   const t = useTranslations();
   const formatters = useFormatters();
 

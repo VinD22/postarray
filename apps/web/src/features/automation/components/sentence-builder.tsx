@@ -15,20 +15,10 @@ import {
 } from '@relay/design-system/primitives';
 import { useI18n, useTranslations } from '@relay/i18n/react';
 
-import type {
-  RuleActionKind,
-  RuleConditionKind,
-  RuleTriggerKind,
-} from '@relay/contracts';
+import type { RuleActionKind, RuleConditionKind, RuleTriggerKind } from '@relay/contracts';
 import { formatDuration } from '@relay/i18n';
 
-import {
-  CONDITIONS,
-  TRIGGERS,
-  actionSpec,
-  conditionSpec,
-  triggerSpec,
-} from '../catalog';
+import { CONDITIONS, TRIGGERS, actionSpec, conditionSpec, triggerSpec } from '../catalog';
 import type { ActionSpec } from '../catalog';
 import { actionClauses, conditionClauses, triggerClause } from '../rule-sentence';
 import type { ParameterValue, RuleDraft } from '../types';
@@ -101,19 +91,37 @@ export function SentenceBuilder({
 
   const triggerOptions: readonly PickerOption[] = TRIGGERS.map((spec) => ({
     id: spec.kind,
-    label: t(spec.sentenceKey, blankParameters(spec.parameters.map((p) => p.name), t)),
+    label: t(
+      spec.sentenceKey,
+      blankParameters(
+        spec.parameters.map((p) => p.name),
+        t,
+      ),
+    ),
     group: t(spec.groupKey),
   }));
 
   const conditionOptions: readonly PickerOption[] = CONDITIONS.map((spec) => ({
     id: spec.kind,
-    label: t(spec.sentenceKey, blankParameters(spec.parameters.map((p) => p.name), t)),
+    label: t(
+      spec.sentenceKey,
+      blankParameters(
+        spec.parameters.map((p) => p.name),
+        t,
+      ),
+    ),
     group: t(spec.groupKey),
   }));
 
   const actionOptions: readonly PickerOption[] = availableActions.map((spec) => ({
     id: spec.kind,
-    label: t(spec.sentenceKey, blankParameters(spec.parameters.map((p) => p.name), t)),
+    label: t(
+      spec.sentenceKey,
+      blankParameters(
+        spec.parameters.map((p) => p.name),
+        t,
+      ),
+    ),
     group: t(spec.groupKey),
     consequential: spec.consequential,
   }));
@@ -134,7 +142,7 @@ export function SentenceBuilder({
         )}
       </Field>
 
-      <p className="max-w-[70ch] text-body-md text-text-secondary">
+      <p className="text-body-md text-text-secondary max-w-[70ch]">
         {t('automation.editor.readBack')}
       </p>
 
@@ -146,9 +154,7 @@ export function SentenceBuilder({
             </span>
             <ItemPicker
               title={t('automation.picker.triggerTitle')}
-              triggerLabel={
-                draft.trigger ? t('action.edit') : t('automation.editor.chooseTrigger')
-              }
+              triggerLabel={draft.trigger ? t('action.edit') : t('automation.editor.chooseTrigger')}
               triggerVariant="ghost"
               options={triggerOptions}
               onSelect={(kind) =>
@@ -182,9 +188,7 @@ export function SentenceBuilder({
               {draft.conditions.map((condition, index) => (
                 <li key={condition.id} className="flex flex-col gap-2">
                   <div className="flex items-start justify-between gap-2">
-                    <span className="text-body-lg text-text-primary">
-                      {conditionText[index]}
-                    </span>
+                    <span className="text-body-lg text-text-primary">{conditionText[index]}</span>
                     <IconButton
                       size="sm"
                       variant="ghost"
@@ -195,9 +199,7 @@ export function SentenceBuilder({
                       onClick={() =>
                         onChange({
                           ...draft,
-                          conditions: draft.conditions.filter(
-                            (entry) => entry.id !== condition.id,
-                          ),
+                          conditions: draft.conditions.filter((entry) => entry.id !== condition.id),
                         })
                       }
                     />
@@ -250,9 +252,7 @@ export function SentenceBuilder({
       <Clause label={t('automation.editor.then')}>
         <div className="flex flex-col gap-3">
           {draft.actions.length === 0 ? (
-            <p className="text-body-md text-warning-fg">
-              {t('automation.editor.noActions')}
-            </p>
+            <p className="text-body-md text-warning-fg">{t('automation.editor.noActions')}</p>
           ) : (
             <>
               <p className="text-body-sm text-text-tertiary">
@@ -268,13 +268,9 @@ export function SentenceBuilder({
                         <span className="flex flex-wrap items-center gap-2">
                           <span className="text-body-lg text-text-primary">{label}</span>
                           {spec.consequential ? (
-                            <Badge tone="warning">
-                              {t('automation.picker.consequential')}
-                            </Badge>
+                            <Badge tone="warning">{t('automation.picker.consequential')}</Badge>
                           ) : (
-                            <Badge tone="neutral">
-                              {t('automation.picker.internalOnly')}
-                            </Badge>
+                            <Badge tone="neutral">{t('automation.picker.internalOnly')}</Badge>
                           )}
                         </span>
                         <span className="flex shrink-0 items-center">
@@ -302,9 +298,7 @@ export function SentenceBuilder({
                             onClick={() =>
                               onChange({
                                 ...draft,
-                                actions: draft.actions.filter(
-                                  (entry) => entry.id !== action.id,
-                                ),
+                                actions: draft.actions.filter((entry) => entry.id !== action.id),
                               })
                             }
                           />
@@ -474,7 +468,7 @@ function Clause({
   readonly children: ReactNode;
 }): ReactElement {
   return (
-    <section className="grid gap-2 border-t border-border-subtle pt-4 sm:grid-cols-[5rem_1fr] sm:gap-4">
+    <section className="border-border-subtle grid gap-2 border-t pt-4 sm:grid-cols-[5rem_1fr] sm:gap-4">
       <h3 className="text-label text-text-tertiary sm:pt-1">{label}</h3>
       <div className="min-w-0">{children}</div>
     </section>

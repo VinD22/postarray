@@ -1,7 +1,12 @@
 import type { CapabilitySnapshot } from '@relay/contracts';
 
 import { connectionMetadataString, mentionOffset } from './access.js';
-import type { CanonicalPreview, PreviewEntityRange, ProviderDraft, ProviderMedia } from './contract-shape.js';
+import type {
+  CanonicalPreview,
+  PreviewEntityRange,
+  ProviderDraft,
+  ProviderMedia,
+} from './contract-shape.js';
 import { countText, detectUrls, truncationIndex, type CountingUnit } from './text.js';
 
 /**

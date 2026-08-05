@@ -45,9 +45,7 @@ export const ERROR_CODES = {
 
 export type ErrorCode = (typeof ERROR_CODES)[keyof typeof ERROR_CODES];
 
-export const errorCodeSchema = z.enum(
-  Object.values(ERROR_CODES) as [ErrorCode, ...ErrorCode[]],
-);
+export const errorCodeSchema = z.enum(Object.values(ERROR_CODES) as [ErrorCode, ...ErrorCode[]]);
 
 export const ERROR_STATUS: Readonly<Record<ErrorCode, number>> = {
   AUTH_REQUIRED: 401,

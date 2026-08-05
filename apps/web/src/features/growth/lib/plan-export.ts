@@ -41,9 +41,7 @@ function yamlValue(value: unknown, indent: number): string {
     return value
       .map((entry) => {
         const rendered = yamlValue(entry, indent + 1);
-        return rendered.startsWith('\n')
-          ? `${pad}-${rendered}`
-          : `${pad}- ${rendered.trimStart()}`;
+        return rendered.startsWith('\n') ? `${pad}-${rendered}` : `${pad}- ${rendered.trimStart()}`;
       })
       .join('\n')
       .replace(/^/, '\n');
@@ -56,9 +54,7 @@ function yamlValue(value: unknown, indent: number): string {
     return entries
       .map(([key, entryValue]) => {
         const rendered = yamlValue(entryValue, indent + 1);
-        return rendered.startsWith('\n')
-          ? `${pad}${key}:${rendered}`
-          : `${pad}${key}: ${rendered}`;
+        return rendered.startsWith('\n') ? `${pad}${key}:${rendered}` : `${pad}${key}: ${rendered}`;
       })
       .join('\n')
       .replace(/^/, '\n');

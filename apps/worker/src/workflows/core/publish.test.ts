@@ -8,7 +8,11 @@ import {
 } from '../../testing/fixtures.js';
 import { TEST_EPOCH_MS, runWorkflow } from '../../testing/harness.js';
 
-import { classifyThrownPublish, errorCodeOf, publishTargetDescriptor } from './publish-target.core.js';
+import {
+  classifyThrownPublish,
+  errorCodeOf,
+  publishTargetDescriptor,
+} from './publish-target.core.js';
 import { publishPostDescriptor } from './publish-post.core.js';
 import { threadSequenceDescriptor } from './thread-sequence.core.js';
 
@@ -231,8 +235,18 @@ describe('publish campaign', () => {
     const run = await runWorkflow(publishPostDescriptor, input, {
       workflowId: CAMPAIGN_WORKFLOW_ID,
       signals: [
-        { afterMs: 60_000, apply: (inbox) => { inbox.onPause(); } },
-        { afterMs: 7_200_000, apply: (inbox) => { inbox.onResume(); } },
+        {
+          afterMs: 60_000,
+          apply: (inbox) => {
+            inbox.onPause();
+          },
+        },
+        {
+          afterMs: 7_200_000,
+          apply: (inbox) => {
+            inbox.onResume();
+          },
+        },
       ],
     });
 

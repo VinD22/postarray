@@ -267,10 +267,7 @@ function masterValue(master: MasterDraft, field: OverridableVariantField): unkno
  * Fold the master and a target's overrides into the exact values that will be
  * validated, previewed and published, plus the inheritance state per field.
  */
-export function resolveVariant(
-  master: MasterDraft,
-  overrides: VariantOverrides,
-): ResolvedVariant {
+export function resolveVariant(master: MasterDraft, overrides: VariantOverrides): ResolvedVariant {
   const inherited: OverridableVariantField[] = [];
   const overridden: OverridableVariantField[] = [];
   const values: Record<string, unknown> = {};

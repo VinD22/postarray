@@ -30,14 +30,18 @@ export class LinkedInSimulator extends BaseProviderSimulator {
       message: string,
       serviceErrorCode: number,
       headers: Record<string, string> = {},
-    ): SimulatedResponse =>
-      this.json(status, { status, code, message, serviceErrorCode }, headers);
+    ): SimulatedResponse => this.json(status, { status, code, message, serviceErrorCode }, headers);
 
     switch (kind) {
       case 'unauthorized':
         return error(401, 'UNAUTHORIZED', 'Empty oauth2 access token.', 65600);
       case 'expired_token':
-        return error(401, 'EXPIRED_ACCESS_TOKEN', 'The token used in the request has expired.', 65601);
+        return error(
+          401,
+          'EXPIRED_ACCESS_TOKEN',
+          'The token used in the request has expired.',
+          65601,
+        );
       case 'revoked':
         return error(401, 'REVOKED_ACCESS_TOKEN', 'The member revoked the permissions.', 65602);
       case 'forbidden':
@@ -49,9 +53,19 @@ export class LinkedInSimulator extends BaseProviderSimulator {
       case 'server_error':
         return error(500, 'INTERNAL_SERVER_ERROR', 'Internal server error.', 0);
       case 'content_invalid':
-        return error(422, 'INVALID_CONTENT', 'The post commentary exceeds the allowed length.', 1000);
+        return error(
+          422,
+          'INVALID_CONTENT',
+          'The post commentary exceeds the allowed length.',
+          1000,
+        );
       case 'duplicate':
-        return error(422, 'DUPLICATE_POST', 'A post with identical content was created recently.', 1001);
+        return error(
+          422,
+          'DUPLICATE_POST',
+          'A post with identical content was created recently.',
+          1001,
+        );
       case 'not_found':
         return error(404, 'NOT_FOUND', `No resource at ${request.path}.`, 404);
       case 'token_echo':
@@ -77,7 +91,13 @@ export class LinkedInSimulator extends BaseProviderSimulator {
             ? // The member lost their administrator role on the page, which is
               // a real reason a previously valid plan stops being publishable.
               []
-            : [{ organizationalTarget: ORGANIZATION_URN, role: 'ADMINISTRATOR', state: 'APPROVED' }],
+            : [
+                {
+                  organizationalTarget: ORGANIZATION_URN,
+                  role: 'ADMINISTRATOR',
+                  state: 'APPROVED',
+                },
+              ],
       });
     }
 

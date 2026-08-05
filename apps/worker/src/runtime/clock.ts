@@ -9,9 +9,9 @@
  */
 
 /** Epoch milliseconds, right now. */
-// eslint-disable-next-line no-restricted-globals -- the sanctioned wall-clock read
+
 export const nowMs = (): number => Date.now();
 
 /** The current instant as an ISO 8601 string with an offset. */
-// eslint-disable-next-line no-restricted-globals -- the sanctioned wall-clock read
+
 export const nowIso = (): string => new Date().toISOString();

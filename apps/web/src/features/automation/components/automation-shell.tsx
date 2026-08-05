@@ -20,11 +20,7 @@ const SECTIONS = [
   { href: '/automation/rss', labelKey: 'automation.tab.feeds', exact: false },
 ] as const;
 
-export function AutomationShell({
-  children,
-}: {
-  readonly children: ReactNode;
-}): ReactElement {
+export function AutomationShell({ children }: { readonly children: ReactNode }): ReactElement {
   const t = useTranslations();
   const pathname = usePathname();
 
@@ -46,12 +42,12 @@ export function AutomationShell({
                       href={section.href}
                       aria-current={active ? 'page' : undefined}
                       className={cn(
-                        'inline-flex min-h-11 items-center border-b-2 px-3 text-body-md',
+                        'text-body-md inline-flex min-h-11 items-center border-b-2 px-3',
                         'transition-colors duration-(--duration-fast)',
-                        'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-border-focus',
+                        'focus-visible:outline-border-focus focus-visible:outline-2 focus-visible:outline-offset-2',
                         active
                           ? 'border-accent text-text-primary'
-                          : 'border-transparent text-text-secondary hover:text-text-primary',
+                          : 'text-text-secondary hover:text-text-primary border-transparent',
                       )}
                     >
                       {t(section.labelKey)}

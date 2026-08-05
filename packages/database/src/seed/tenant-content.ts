@@ -99,7 +99,12 @@ async function createItemWithVersion(
   });
 
   await tx.postVariant.upsert({
-    where: { contentVersionId_connectionId: { contentVersionId: versionId, connectionId: SEED_IDS.connection } },
+    where: {
+      contentVersionId_connectionId: {
+        contentVersionId: versionId,
+        connectionId: SEED_IDS.connection,
+      },
+    },
     create: {
       id: seedId(`post_variant:${spec.key}`),
       workspaceId: SEED_IDS.workspace,
@@ -265,12 +270,11 @@ async function seedPublishedPosts(tx: RlsTransactionClient): Promise<void> {
     const publishedAt = hoursAgo(post.hoursAgoPublished);
     const approvedAt = hoursAgo(post.hoursAgoPublished + 3);
 
-    const { itemId, versionId, hash } = await createItemWithVersion(
-      tx,
-      post.spec,
-      'published',
-      { publishedAt, approvedAt, approvalPolicy: 'single_approver' },
-    );
+    const { itemId, versionId, hash } = await createItemWithVersion(tx, post.spec, 'published', {
+      publishedAt,
+      approvedAt,
+      approvalPolicy: 'single_approver',
+    });
 
     const approvalRequestId = seedId(`approval_request:${post.spec.key}`);
 
@@ -341,7 +345,10 @@ async function seedPublishedPosts(tx: RlsTransactionClient): Promise<void> {
         attemptNumber: 1,
         outcome: 'succeeded',
         sanitizedResponse: { externalPostId: post.externalId, simulated: true },
-        requestMetadata: { endpoint: 'simulator://posts.create', idempotencyToken: `seed-${post.spec.key}-1` },
+        requestMetadata: {
+          endpoint: 'simulator://posts.create',
+          idempotencyToken: `seed-${post.spec.key}-1`,
+        },
         httpStatus: 201,
         startedAt: new Date(publishedAt.getTime() - 4_000),
         endedAt: publishedAt,
@@ -455,11 +462,21 @@ async function seedAutomation(tx: RlsTransactionClient): Promise<void> {
       trigger: { kind: 'post_published', filter: { campaignId: SEED_IDS.campaign } },
       conditions: [
         { kind: 'connection_healthy', connectionId: SEED_IDS.connection },
-        { kind: 'quiet_hours', start: '20:00', end: '07:00', timeZone: 'Europe/Lisbon', invert: true },
+        {
+          kind: 'quiet_hours',
+          start: '20:00',
+          end: '07:00',
+          timeZone: 'Europe/Lisbon',
+          invert: true,
+        },
       ],
       actions: [
         { kind: 'request_approval' },
-        { kind: 'publish_follow_up_comment', connectionId: SEED_IDS.connection, template: 'restock-list' },
+        {
+          kind: 'publish_follow_up_comment',
+          connectionId: SEED_IDS.connection,
+          template: 'restock-list',
+        },
       ],
       delaySeconds: 300,
       endCondition: { kind: 'max_executions', value: 20 },
@@ -506,7 +523,12 @@ async function seedAutomation(tx: RlsTransactionClient): Promise<void> {
   const feedId = seedId('rss_feed:supplier-notes');
 
   await tx.rssFeed.upsert({
-    where: { workspaceId_feedUrl: { workspaceId: SEED_IDS.workspace, feedUrl: 'https://feeds.example.test/supplier-notes.xml' } },
+    where: {
+      workspaceId_feedUrl: {
+        workspaceId: SEED_IDS.workspace,
+        feedUrl: 'https://feeds.example.test/supplier-notes.xml',
+      },
+    },
     create: {
       id: feedId,
       workspaceId: SEED_IDS.workspace,
@@ -558,7 +580,11 @@ async function seedLinks(tx: RlsTransactionClient): Promise<void> {
       domain: 'nw.example.test',
       slug: 'spring-list',
       destinationUrl: 'https://northwind.example.test/restock/spring',
-      utmParameters: { utm_source: 'social', utm_medium: 'organic', utm_campaign: 'spring-restock' },
+      utmParameters: {
+        utm_source: 'social',
+        utm_medium: 'organic',
+        utm_campaign: 'spring-restock',
+      },
       state: 'active',
       safetyScan: { scheme: 'https', privateNetwork: false, openRedirect: false, verdict: 'allow' },
       safetyScannedAt: hoursAgo(30),
@@ -568,10 +594,38 @@ async function seedLinks(tx: RlsTransactionClient): Promise<void> {
   });
 
   const clicks = [
-    { key: 'a', hours: 24, country: 'PT', device: 'mobile', referrer: 'social', bot: 'human' as const },
-    { key: 'b', hours: 23, country: 'PT', device: 'desktop', referrer: 'social', bot: 'human' as const },
-    { key: 'c', hours: 22, country: 'ES', device: 'mobile', referrer: 'direct', bot: 'human' as const },
-    { key: 'd', hours: 22, country: 'US', device: 'unknown', referrer: 'unknown', bot: 'suspected_bot' as const },
+    {
+      key: 'a',
+      hours: 24,
+      country: 'PT',
+      device: 'mobile',
+      referrer: 'social',
+      bot: 'human' as const,
+    },
+    {
+      key: 'b',
+      hours: 23,
+      country: 'PT',
+      device: 'desktop',
+      referrer: 'social',
+      bot: 'human' as const,
+    },
+    {
+      key: 'c',
+      hours: 22,
+      country: 'ES',
+      device: 'mobile',
+      referrer: 'direct',
+      bot: 'human' as const,
+    },
+    {
+      key: 'd',
+      hours: 22,
+      country: 'US',
+      device: 'unknown',
+      referrer: 'unknown',
+      bot: 'suspected_bot' as const,
+    },
   ];
 
   for (const click of clicks) {
@@ -657,10 +711,34 @@ async function seedFeedbackLoop(tx: RlsTransactionClient): Promise<void> {
 
 async function seedAuditTrail(tx: RlsTransactionClient): Promise<void> {
   const events = [
-    { key: 'workspace', action: 'workspace.created', targetType: 'workspace', targetId: SEED_IDS.workspace, hours: 720 },
-    { key: 'connection', action: 'connection.connected', targetType: 'social_connection', targetId: SEED_IDS.connection, hours: 700 },
-    { key: 'approval', action: 'approval.decided', targetType: 'approval_request', targetId: seedId('approval_request:published-lathe-rebuild'), hours: 29 },
-    { key: 'published', action: 'post.published', targetType: 'publication_receipt', targetId: seedId('receipt:published-lathe-rebuild'), hours: 26 },
+    {
+      key: 'workspace',
+      action: 'workspace.created',
+      targetType: 'workspace',
+      targetId: SEED_IDS.workspace,
+      hours: 720,
+    },
+    {
+      key: 'connection',
+      action: 'connection.connected',
+      targetType: 'social_connection',
+      targetId: SEED_IDS.connection,
+      hours: 700,
+    },
+    {
+      key: 'approval',
+      action: 'approval.decided',
+      targetType: 'approval_request',
+      targetId: seedId('approval_request:published-lathe-rebuild'),
+      hours: 29,
+    },
+    {
+      key: 'published',
+      action: 'post.published',
+      targetType: 'publication_receipt',
+      targetId: seedId('receipt:published-lathe-rebuild'),
+      hours: 26,
+    },
   ];
 
   for (const event of events) {

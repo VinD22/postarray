@@ -48,8 +48,8 @@ export function EmptyState({
   return (
     <section
       className={cn(
-        'flex flex-col items-start gap-3 rounded-lg border border-border-default',
-        'border-dashed bg-surface-canvas p-6',
+        'border-border-default flex flex-col items-start gap-3 rounded-lg border',
+        'bg-surface-canvas border-dashed p-6',
         compact ? 'py-5' : 'py-10',
         className,
       )}
@@ -68,8 +68,8 @@ export function EmptyState({
       {example ? (
         <div
           className={cn(
-            'w-full max-w-[60ch] rounded-md border border-border-subtle',
-            'bg-surface-sunken p-3 text-body-sm text-text-secondary',
+            'border-border-subtle w-full max-w-[60ch] rounded-md border',
+            'bg-surface-sunken text-body-sm text-text-secondary p-3',
           )}
         >
           {example}

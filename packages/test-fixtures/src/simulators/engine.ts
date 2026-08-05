@@ -170,7 +170,10 @@ export abstract class BaseProviderSimulator implements ProviderSimulator {
       id: input.id ?? this.nextId('container'),
       provider: this.provider,
       accountId: input.accountId,
-      state: input.mode === 'stuck_container' || input.mode === 'slow_media' ? 'in_progress' : 'finished',
+      state:
+        input.mode === 'stuck_container' || input.mode === 'slow_media'
+          ? 'in_progress'
+          : 'finished',
       pollsRemaining:
         input.mode === 'stuck_container'
           ? Number.POSITIVE_INFINITY
@@ -230,7 +233,11 @@ export abstract class BaseProviderSimulator implements ProviderSimulator {
     return FAKE_BEARER_TOKEN;
   }
 
-  protected json(status: number, body: unknown, headers: Record<string, string> = {}): SimulatedResponse {
+  protected json(
+    status: number,
+    body: unknown,
+    headers: Record<string, string> = {},
+  ): SimulatedResponse {
     return { status, headers: { 'content-type': 'application/json', ...headers }, body };
   }
 

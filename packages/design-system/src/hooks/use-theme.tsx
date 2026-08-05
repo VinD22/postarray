@@ -77,16 +77,11 @@ export interface ThemeProviderProps {
   forcedPreference?: ThemePreference | undefined;
 }
 
-export function ThemeProvider({
-  children,
-  forcedPreference,
-}: ThemeProviderProps): ReactNode {
+export function ThemeProvider({ children, forcedPreference }: ThemeProviderProps): ReactNode {
   // The server cannot know the preference, so it renders the neutral default
   // and the bootstrap script has already corrected the DOM by the time this
   // mounts. Reading storage in an effect keeps hydration deterministic.
-  const [preference, setPreferenceState] = useState<ThemePreference>(
-    forcedPreference ?? 'system',
-  );
+  const [preference, setPreferenceState] = useState<ThemePreference>(forcedPreference ?? 'system');
   const [resolvedTheme, setResolvedTheme] = useState<ResolvedTheme>('light');
 
   useIsomorphicLayoutEffect(() => {

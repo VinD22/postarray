@@ -27,13 +27,13 @@ export default async function OnboardingLayout({ children }: { readonly children
 
   return (
     <SessionProvider session={session}>
-      <div className="min-h-dvh bg-surface-canvas">
-        <header className="border-b border-border-default">
+      <div className="bg-surface-canvas min-h-dvh">
+        <header className="border-border-default border-b">
           <div className="mx-auto flex max-w-5xl items-center justify-between gap-4 px-4 py-3 md:px-6">
             <p className="text-title-sm text-text-primary">{intl.t.format('shell.appName')}</p>
             <Link
               href="/"
-              className="min-h-9 text-body-sm text-text-secondary hover:text-text-primary hover:underline"
+              className="text-body-sm text-text-secondary hover:text-text-primary min-h-9 hover:underline"
             >
               {intl.t.format('onboarding.exit')}
             </Link>
@@ -42,7 +42,7 @@ export default async function OnboardingLayout({ children }: { readonly children
 
         <div className="mx-auto grid max-w-5xl gap-8 px-4 py-8 md:px-6 lg:grid-cols-[14rem_minmax(0,1fr)] lg:gap-12">
           <div className="lg:pt-1">
-            <p className="pb-4 text-body-md text-text-secondary">
+            <p className="text-body-md text-text-secondary pb-4">
               {intl.t.format('onboarding.goal')}
             </p>
             <OnboardingStepList />

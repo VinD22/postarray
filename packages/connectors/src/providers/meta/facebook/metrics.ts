@@ -22,7 +22,12 @@ export const FACEBOOK_POST_METRICS: readonly MetricFieldMapping[] = Object.freez
     unit: 'count',
     denominator: 'none',
   },
-  { providerField: 'post_clicks', normalizedName: 'link_clicks', unit: 'count', denominator: 'none' },
+  {
+    providerField: 'post_clicks',
+    normalizedName: 'link_clicks',
+    unit: 'count',
+    denominator: 'none',
+  },
   {
     providerField: 'post_video_views',
     normalizedName: 'views',
@@ -61,7 +66,12 @@ export const FACEBOOK_ACCOUNT_METRICS: readonly MetricFieldMapping[] = Object.fr
 /** Like, comment and share counts come from the post object rather than from insights. */
 export const FACEBOOK_ENGAGEMENT_METRICS: readonly MetricFieldMapping[] = Object.freeze([
   { providerField: 'like_count', normalizedName: 'likes', unit: 'count', denominator: 'none' },
-  { providerField: 'comment_count', normalizedName: 'comments', unit: 'count', denominator: 'none' },
+  {
+    providerField: 'comment_count',
+    normalizedName: 'comments',
+    unit: 'count',
+    denominator: 'none',
+  },
   { providerField: 'share_count', normalizedName: 'shares', unit: 'count', denominator: 'none' },
 ]);
 

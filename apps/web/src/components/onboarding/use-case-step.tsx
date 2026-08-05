@@ -65,7 +65,7 @@ export function UseCaseStep() {
           setUseCase(next as OnboardingUseCase);
         }}
         aria-label={t('onboarding.role.title')}
-        className="gap-0 border-t border-border-subtle"
+        className="border-border-subtle gap-0 border-t"
       >
         {USE_CASES.map((entry) => {
           const id = `use-case-${entry.id}`;
@@ -74,7 +74,7 @@ export function UseCaseStep() {
             <div
               key={entry.id}
               className={cn(
-                'flex items-center gap-3 border-b border-border-subtle py-3',
+                'border-border-subtle flex items-center gap-3 border-b py-3',
                 selected && 'bg-accent-subtle',
               )}
             >

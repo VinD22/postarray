@@ -518,8 +518,12 @@ export class FakeConnector implements SocialConnector {
     }
 
     const items: PublishedItem[] = [root];
-    const failures: { kind: 'comment' | 'thread'; order: number; threadItemId: string | null; error: unknown }[] =
-      [];
+    const failures: {
+      kind: 'comment' | 'thread';
+      order: number;
+      threadItemId: string | null;
+      error: unknown;
+    }[] = [];
     let previousPostId = root.externalPostId;
 
     for (const item of input.draft.threadItems) {
@@ -563,8 +567,7 @@ export class FakeConnector implements SocialConnector {
     }
 
     const cost = input.draft.capabilities.cost;
-    const containsUrl =
-      input.draft.links.length > 0 || /https?:\/\//i.test(input.draft.body);
+    const containsUrl = input.draft.links.length > 0 || /https?:\/\//i.test(input.draft.body);
     const costMinor =
       cost === null
         ? null
@@ -692,7 +695,8 @@ export class FakeConnector implements SocialConnector {
           threadItemId: null,
           parentPostId: null,
         });
-      const permalink = post.permalink === '' ? `https://fake.invalid/p/${post.externalPostId}` : post.permalink;
+      const permalink =
+        post.permalink === '' ? `https://fake.invalid/p/${post.externalPostId}` : post.permalink;
       return publishStatusSchema.parse({
         state: 'published',
         externalPostId: post.externalPostId,

@@ -50,7 +50,7 @@ export function Section({
     <section
       id={id}
       aria-label={ariaLabel}
-      className={cn(divided && 'border-t border-border-default', className)}
+      className={cn(divided && 'border-border-default border-t', className)}
     >
       <Container>
         <div className="py-14 md:py-20 lg:py-24">{children}</div>
@@ -94,7 +94,7 @@ export function Display({
     <Component
       className={cn(
         'font-serif text-[clamp(2.05rem,1.15rem+3.4vw,3.75rem)] leading-[1.06]',
-        'tracking-[-0.022em] text-pretty text-text-primary',
+        'text-text-primary tracking-[-0.022em] text-pretty',
         className,
       )}
     >
@@ -119,7 +119,7 @@ export function Heading({
       id={id}
       className={cn(
         'font-serif text-[clamp(1.45rem,1.15rem+0.95vw,2rem)] leading-[1.16]',
-        'tracking-[-0.016em] text-pretty text-text-primary',
+        'text-text-primary tracking-[-0.016em] text-pretty',
         className,
       )}
     >
@@ -146,20 +146,23 @@ export function Subheading({
   id?: string;
 }): ReactNode {
   return (
-    <Component
-      id={id}
-      className={cn('text-title-md text-text-primary', className)}
-    >
+    <Component id={id} className={cn('text-title-md text-text-primary', className)}>
       {children}
     </Component>
   );
 }
 
-export function Lede({ children, className }: { children: ReactNode; className?: string }): ReactNode {
+export function Lede({
+  children,
+  className,
+}: {
+  children: ReactNode;
+  className?: string;
+}): ReactNode {
   return (
     <p
       className={cn(
-        'max-w-[58ch] text-[1.0625rem] leading-[1.62] text-text-secondary md:text-[1.125rem]',
+        'text-text-secondary max-w-[58ch] text-[1.0625rem] leading-[1.62] md:text-[1.125rem]',
         className,
       )}
     >
@@ -168,18 +171,30 @@ export function Lede({ children, className }: { children: ReactNode; className?:
   );
 }
 
-export function Body({ children, className }: { children: ReactNode; className?: string }): ReactNode {
+export function Body({
+  children,
+  className,
+}: {
+  children: ReactNode;
+  className?: string;
+}): ReactNode {
   return (
-    <p className={cn('max-w-[68ch] text-body-lg leading-[1.65] text-text-secondary', className)}>
+    <p className={cn('text-body-lg text-text-secondary max-w-[68ch] leading-[1.65]', className)}>
       {children}
     </p>
   );
 }
 
 /** A short monospaced fact: a date, a version, a price, an identifier. */
-export function Meta({ children, className }: { children: ReactNode; className?: string }): ReactNode {
+export function Meta({
+  children,
+  className,
+}: {
+  children: ReactNode;
+  className?: string;
+}): ReactNode {
   return (
-    <span className={cn('font-mono text-body-sm tabular-nums text-text-tertiary', className)}>
+    <span className={cn('text-body-sm text-text-tertiary font-mono tabular-nums', className)}>
       {children}
     </span>
   );
@@ -199,9 +214,7 @@ export function FactList({
   children: ReactNode;
   className?: string;
 }): ReactNode {
-  return (
-    <dl className={cn('border-t border-border-default', className)}>{children}</dl>
-  );
+  return <dl className={cn('border-border-default border-t', className)}>{children}</dl>;
 }
 
 export function Fact({
@@ -216,13 +229,13 @@ export function Fact({
   return (
     <div
       className={cn(
-        'grid gap-1 border-b border-border-subtle py-4',
+        'border-border-subtle grid gap-1 border-b py-4',
         'sm:grid-cols-[minmax(0,15rem)_minmax(0,1fr)] sm:gap-8',
         className,
       )}
     >
       <dt className="text-body-md text-text-tertiary">{term}</dt>
-      <dd className="min-w-0 text-body-lg leading-[1.6] text-text-primary">{children}</dd>
+      <dd className="text-body-lg text-text-primary min-w-0 leading-[1.6]">{children}</dd>
     </div>
   );
 }
@@ -232,7 +245,7 @@ export function Fact({
  * this site is the publishing sequence and nothing else.
  */
 export function Steps({ children }: { children: ReactNode }): ReactNode {
-  return <ol className="border-t border-border-default">{children}</ol>;
+  return <ol className="border-border-default border-t">{children}</ol>;
 }
 
 export function Step({
@@ -245,13 +258,13 @@ export function Step({
   children: ReactNode;
 }): ReactNode {
   return (
-    <li className="grid gap-2 border-b border-border-subtle py-6 sm:grid-cols-[3rem_minmax(0,1fr)] sm:gap-6">
-      <span aria-hidden="true" className="font-mono text-body-sm tabular-nums text-text-tertiary">
+    <li className="border-border-subtle grid gap-2 border-b py-6 sm:grid-cols-[3rem_minmax(0,1fr)] sm:gap-6">
+      <span aria-hidden="true" className="text-body-sm text-text-tertiary font-mono tabular-nums">
         {String(index).padStart(2, '0')}
       </span>
       <div className="min-w-0 space-y-2">
         <Subheading as="h3">{title}</Subheading>
-        <p className="max-w-[68ch] text-body-lg leading-[1.65] text-text-secondary">{children}</p>
+        <p className="text-body-lg text-text-secondary max-w-[68ch] leading-[1.65]">{children}</p>
       </div>
     </li>
   );
@@ -269,12 +282,12 @@ export function List({
     <ul className={cn('space-y-3', className)}>
       {items.map((item, index) => (
         // eslint-disable-next-line react/no-array-index-key -- static editorial copy
-        <li key={index} className="flex gap-3 text-body-lg leading-[1.6] text-text-secondary">
+        <li key={index} className="text-body-lg text-text-secondary flex gap-3 leading-[1.6]">
           <span
             aria-hidden="true"
-            className="mt-[0.6em] size-[5px] shrink-0 rounded-full bg-border-strong"
+            className="bg-border-strong mt-[0.6em] size-[5px] shrink-0 rounded-full"
           />
-          <span className="min-w-0 max-w-[66ch]">{item}</span>
+          <span className="max-w-[66ch] min-w-0">{item}</span>
         </li>
       ))}
     </ul>

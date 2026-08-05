@@ -111,10 +111,10 @@ function parseJson(body: string): unknown {
 function oauthError(body: string, fallback: string): RelayError {
   const parsed = tokenErrorSchema.safeParse(parseJson(body));
   const reason = parsed.success ? parsed.data.error : fallback;
-  const code = reason === 'access_denied' || reason === 'invalid_grant' ? 'FORBIDDEN' : 'AUTH_REQUIRED';
+  const code =
+    reason === 'access_denied' || reason === 'invalid_grant' ? 'FORBIDDEN' : 'AUTH_REQUIRED';
   return new RelayError(code, {
-    messageKey:
-      code === 'FORBIDDEN' ? 'error.forbidden.message' : 'error.unauthenticated.message',
+    messageKey: code === 'FORBIDDEN' ? 'error.forbidden.message' : 'error.unauthenticated.message',
     details: { oauthError: reason },
   });
 }

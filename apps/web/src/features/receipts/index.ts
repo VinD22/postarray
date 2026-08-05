@@ -1,9 +1,5 @@
 export { ReceiptScreen, type ReceiptScreenProps } from './receipt-screen';
-export {
-  ReceiptNotFound,
-  ReceiptRouteError,
-  ReceiptRouteFallback,
-} from './receipt-fallback';
+export { ReceiptNotFound, ReceiptRouteError, ReceiptRouteFallback } from './receipt-fallback';
 export { ReceiptTimeline } from './receipt-timeline';
 export { ReceiptItems } from './receipt-items';
 export { ReceiptAttempts } from './receipt-attempts';

@@ -2,7 +2,10 @@
 
 export { SettingsIndex } from './components/settings-index.js';
 export { SettingsNav } from './components/settings-nav.js';
-export { SETTINGS_SECTIONS, type SettingsSectionDescriptor } from './components/settings-sections.js';
+export {
+  SETTINGS_SECTIONS,
+  type SettingsSectionDescriptor,
+} from './components/settings-sections.js';
 export { InlineFact, SettingRow, SettingsPanel, SettingsStack } from './components/section.js';
 export { MembersScreen } from './members/members-screen.js';
 export { BrandsScreen } from './brands/brands-screen.js';

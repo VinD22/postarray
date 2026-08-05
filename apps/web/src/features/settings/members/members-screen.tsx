@@ -40,7 +40,6 @@ import { SettingsPanel, SettingsStack } from '../components/section.js';
 import { MemberDialog, type MemberFormValue } from './member-dialog.js';
 import { RoleReference } from './role-reference.js';
 
-
 export function MembersScreen(): ReactNode {
   const t = useTranslations();
   const section = t('settings.ui.section.members');
@@ -240,9 +239,7 @@ export function MembersScreen(): ReactNode {
                     </TableCaption>
                     <TableHeader>
                       <TableRow>
-                        <TableHead scope="col">
-                          {t('settings.ui.members.column.person')}
-                        </TableHead>
+                        <TableHead scope="col">{t('settings.ui.members.column.person')}</TableHead>
                         <TableHead scope="col">{t('settings.ui.members.column.role')}</TableHead>
                         <TableHead scope="col">{t('settings.ui.members.column.scope')}</TableHead>
                         <TableHead scope="col">
@@ -252,9 +249,7 @@ export function MembersScreen(): ReactNode {
                           {t('settings.ui.members.column.lastActive')}
                         </TableHead>
                         <TableHead scope="col">
-                          <span className="sr-only">
-                            {t('settings.ui.members.column.actions')}
-                          </span>
+                          <span className="sr-only">{t('settings.ui.members.column.actions')}</span>
                         </TableHead>
                       </TableRow>
                     </TableHeader>
@@ -263,7 +258,7 @@ export function MembersScreen(): ReactNode {
                         <TableRow key={member.id}>
                           <TableRowHeader>
                             <span className="flex flex-col">
-                              <span className="font-medium text-text-primary">{member.name}</span>
+                              <span className="text-text-primary font-medium">{member.name}</span>
                               <span className="text-body-sm text-text-tertiary">
                                 {member.email}
                               </span>
@@ -293,11 +288,11 @@ export function MembersScreen(): ReactNode {
                 {rows.map((member) => (
                   <li
                     key={member.id}
-                    className="flex flex-col gap-2 border-b border-border-subtle py-3"
+                    className="border-border-subtle flex flex-col gap-2 border-b py-3"
                   >
                     <div className="flex items-start justify-between gap-3">
                       <div className="flex min-w-0 flex-col">
-                        <span className="text-body-md font-medium text-text-primary">
+                        <span className="text-body-md text-text-primary font-medium">
                           {member.name}
                         </span>
                         <span className="text-body-sm text-text-tertiary">{member.email}</span>

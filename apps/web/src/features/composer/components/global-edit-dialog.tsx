@@ -52,10 +52,7 @@ export function GlobalEditDialog({ open, onOpenChange }: GlobalEditDialogProps):
   const accountLabel = useMemo(() => {
     const map = new Map<string, string>();
     for (const account of bootstrap.accounts) {
-      map.set(
-        account.connectionId,
-        `${account.displayName} (${PROVIDER_LABEL[account.provider]})`,
-      );
+      map.set(account.connectionId, `${account.displayName} (${PROVIDER_LABEL[account.provider]})`);
     }
     return map;
   }, [bootstrap.accounts]);
@@ -129,10 +126,7 @@ export function GlobalEditDialog({ open, onOpenChange }: GlobalEditDialogProps):
                 {plan.incompatible.map((entry) => {
                   const label = accountLabel.get(entry.connectionId) ?? entry.connectionId;
                   return (
-                    <li
-                      key={entry.connectionId}
-                      className="border-s-2 border-warning-border ps-3"
-                    >
+                    <li key={entry.connectionId} className="border-warning-border border-s-2 ps-3">
                       <p className="text-body-md text-text-primary">{label}</p>
                       <ul className="mt-1 flex flex-col gap-1">
                         {entry.reasons.map((reason) => (
@@ -149,7 +143,7 @@ export function GlobalEditDialog({ open, onOpenChange }: GlobalEditDialogProps):
                           <p className="text-label text-text-tertiary">
                             {t.full('composerWeb.globalEdit.adaptedPreview', { account: label })}
                           </p>
-                          <p className="mt-1 whitespace-pre-wrap rounded-md bg-surface-sunken px-2.5 py-2 text-body-sm text-text-primary">
+                          <p className="bg-surface-sunken text-body-sm text-text-primary mt-1 rounded-md px-2.5 py-2 whitespace-pre-wrap">
                             {entry.adaptedBody}
                           </p>
                         </div>

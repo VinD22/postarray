@@ -254,7 +254,9 @@ function toolRecommendations(plan: GrowthPlan, catalog: PlanCatalog): string[] {
         ? '_record unavailable_'
         : catalogLink(record.name, record.officialUrl, record.lastVerifiedAt, record.state);
     const price = record === undefined ? '' : escapeCell(record.priceModel);
-    const affiliate = match.affiliate.isAffiliate ? 'Affiliate link. It does not change the ranking.' : '';
+    const affiliate = match.affiliate.isAffiliate
+      ? 'Affiliate link. It does not change the ranking.'
+      : '';
     return `| ${link} | ${escapeCell(match.taskFit)} | ${escapeCell(match.limitations.join('; '))} | ${price} | ${affiliate} |`;
   });
   return [
@@ -334,5 +336,8 @@ export function toMarkdown(plan: GrowthPlan, catalog: PlanCatalog): string {
     ...calendarProposal(plan),
     ...risksAndUnknowns(plan),
   ];
-  return `${lines.join('\n').replace(/\n{3,}/g, '\n\n').trimEnd()}\n`;
+  return `${lines
+    .join('\n')
+    .replace(/\n{3,}/g, '\n\n')
+    .trimEnd()}\n`;
 }

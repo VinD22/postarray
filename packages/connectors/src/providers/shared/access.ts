@@ -1,4 +1,9 @@
-import type { ConnectionRef, ProviderDraft, ProviderErrorSummary, RemediationCode } from './contract-shape.js';
+import type {
+  ConnectionRef,
+  ProviderDraft,
+  ProviderErrorSummary,
+  RemediationCode,
+} from './contract-shape.js';
 
 /**
  * Small translations between a connector's own vocabulary and the contract.
@@ -36,10 +41,7 @@ export function parentExternalIdOf(connection: ConnectionRef): string | null {
 }
 
 /** A string field from the connection metadata, or null when it is absent. */
-export function connectionMetadataString(
-  connection: ConnectionRef,
-  key: string,
-): string | null {
+export function connectionMetadataString(connection: ConnectionRef, key: string): string | null {
   const value = connection.metadata[key];
   return typeof value === 'string' && value !== '' ? value : null;
 }
@@ -83,12 +85,19 @@ export function errorSummary(input: {
 }
 
 /** Locate a mention in the body so the preview can highlight the exact slice. */
-export function mentionOffset(body: string, mention: { handle: string | null; displayLabel: string }): {
+export function mentionOffset(
+  body: string,
+  mention: { handle: string | null; displayLabel: string },
+): {
   offset: number;
   length: number;
 } | null {
   const candidates = [
-    mention.handle === null ? null : mention.handle.startsWith('@') ? mention.handle : `@${mention.handle}`,
+    mention.handle === null
+      ? null
+      : mention.handle.startsWith('@')
+        ? mention.handle
+        : `@${mention.handle}`,
     mention.handle,
     mention.displayLabel,
   ].filter((value): value is string => value !== null && value !== '');

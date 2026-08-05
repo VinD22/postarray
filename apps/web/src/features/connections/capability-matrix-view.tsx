@@ -68,10 +68,10 @@ export function CapabilityMatrixView({
   return (
     <div className="flex flex-col gap-4">
       <div className="flex flex-col gap-1">
-        <p className="max-w-[70ch] text-body-md text-text-secondary">
+        <p className="text-body-md text-text-secondary max-w-[70ch]">
           {t('capability.matrix.subtitle')}
         </p>
-        <p className="flex flex-wrap items-center gap-x-3 gap-y-1 text-body-sm text-text-tertiary">
+        <p className="text-body-sm text-text-tertiary flex flex-wrap items-center gap-x-3 gap-y-1">
           {matrix.capabilityVersion ? (
             <span className="inline-flex items-center gap-1.5">
               {t('web.connection.capability.versionLabel')}
@@ -94,7 +94,7 @@ export function CapabilityMatrixView({
       {/* Legend. Four sentences, not four colours. */}
       <section
         aria-label={t('web.connection.capability.legendTitle')}
-        className="flex flex-col gap-2 rounded-lg border border-border-default bg-surface-sunken p-3"
+        className="border-border-default bg-surface-sunken flex flex-col gap-2 rounded-lg border p-3"
       >
         <h3 className="text-label text-text-tertiary">
           {t('web.connection.capability.legendTitle')}
@@ -103,7 +103,7 @@ export function CapabilityMatrixView({
           {LEGEND_STATES.map((state) => (
             <li key={state} className="flex flex-wrap items-baseline gap-2">
               <CapabilityBadge state={state} label={t(`capability.level.${state}`)} />
-              <span className="max-w-[60ch] text-body-sm text-text-secondary">
+              <span className="text-body-sm text-text-secondary max-w-[60ch]">
                 {t(`web.connection.capability.legend.${state}`)}
               </span>
             </li>

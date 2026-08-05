@@ -4,10 +4,7 @@ import type { WorkerActivities } from '../../activities/types.js';
 import { MESSAGE_KEYS } from '../../messages.js';
 import { jitterMs, parseInstant, toIsoInstant } from '../../runtime/deterministic.js';
 import type { ChildWorkflowDescriptor, WorkflowRuntime } from '../../runtime/types.js';
-import type {
-  AnalyticsSyncWorkflowInput,
-  AnalyticsSyncWorkflowOutput,
-} from '../inputs.js';
+import type { AnalyticsSyncWorkflowInput, AnalyticsSyncWorkflowOutput } from '../inputs.js';
 
 /**
  * Analytics polling on provider appropriate intervals.
@@ -73,11 +70,9 @@ export async function runAnalyticsSync(
               nextOffset -
               runtime.now(),
           );
-    const waitMs = jitterMs(
-      `${input.connectionId}:${String(total)}`,
-      baseWaitMs,
-      { ratio: ANALYTICS_JITTER_RATIO },
-    );
+    const waitMs = jitterMs(`${input.connectionId}:${String(total)}`, baseWaitMs, {
+      ratio: ANALYTICS_JITTER_RATIO,
+    });
     if (waitMs > 0) {
       await runtime.awaitCondition(
         () => runtime.signals.cancelled !== null || runtime.signals.killSwitchThrown,

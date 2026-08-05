@@ -2,7 +2,11 @@ import type { Logger } from '@relay/observability';
 
 import type { PolarClient } from './client.js';
 import { deriveEntitlement } from './entitlements.js';
-import type { EntitlementSnapshot, EntitlementState, VerifiedSubscription } from './entitlements.js';
+import type {
+  EntitlementSnapshot,
+  EntitlementState,
+  VerifiedSubscription,
+} from './entitlements.js';
 import { isFullAccess } from './entitlements.js';
 import type { SubscriptionStore } from './inbox.js';
 import { toVerifiedSubscription, workspaceIdOf } from './webhooks.js';
@@ -100,10 +104,7 @@ function classifyDrift(
   if (stored.currentPeriodEnd !== next.currentPeriodEnd) {
     kinds.push('period_changed');
   }
-  if (
-    stored.cancelAtPeriodEnd !== next.cancelAtPeriodEnd ||
-    stored.endedAt !== next.endedAt
-  ) {
+  if (stored.cancelAtPeriodEnd !== next.cancelAtPeriodEnd || stored.endedAt !== next.endedAt) {
     kinds.push('cancellation_changed');
   }
   return kinds;
@@ -175,8 +176,7 @@ export async function reconcileSubscriptions(
         verifiedAt: startedAt,
         previous: stored,
       });
-      const storedSnapshot =
-        stored === null ? null : deriveEntitlement(stored, { now: startedAt });
+      const storedSnapshot = stored === null ? null : deriveEntitlement(stored, { now: startedAt });
       const nextSnapshot = deriveEntitlement(next, { now: startedAt });
       const kinds = classifyDrift(stored, next, storedSnapshot, nextSnapshot);
       if (kinds.length === 0) {

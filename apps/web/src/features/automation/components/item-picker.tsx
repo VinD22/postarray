@@ -105,20 +105,18 @@ export function ItemPicker({
 
           <div className="max-h-80 overflow-y-auto">
             {groups.length === 0 ? (
-              <p className="text-body-md text-text-secondary">
-                {t('automation.picker.noResults')}
-              </p>
+              <p className="text-body-md text-text-secondary">{t('automation.picker.noResults')}</p>
             ) : (
               <ul className="flex flex-col gap-4">
                 {groups.map(([group, groupOptions]) => (
                   <li key={group}>
-                    <p className="pb-1 text-label text-text-tertiary">{group}</p>
+                    <p className="text-label text-text-tertiary pb-1">{group}</p>
                     <ul className="flex flex-col">
                       {groupOptions.map((option) => (
                         <li key={option.id}>
                           <button
                             type="button"
-                            className="flex min-h-11 w-full items-center justify-between gap-2 rounded-md px-2 text-start text-body-md text-text-primary hover:bg-surface-hover focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-border-focus"
+                            className="text-body-md text-text-primary hover:bg-surface-hover focus-visible:outline-border-focus flex min-h-11 w-full items-center justify-between gap-2 rounded-md px-2 text-start focus-visible:outline-2 focus-visible:outline-offset-2"
                             onClick={() => {
                               onSelect(option.id);
                               setOpen(false);
@@ -127,9 +125,7 @@ export function ItemPicker({
                           >
                             <span className="min-w-0">{option.label}</span>
                             {option.consequential ? (
-                              <Badge tone="warning">
-                                {t('automation.picker.consequential')}
-                              </Badge>
+                              <Badge tone="warning">{t('automation.picker.consequential')}</Badge>
                             ) : null}
                           </button>
                         </li>
@@ -142,7 +138,7 @@ export function ItemPicker({
           </div>
 
           {unavailableNote ? (
-            <p className="border-t border-border-subtle pt-2 text-body-sm text-text-secondary">
+            <p className="border-border-subtle text-body-sm text-text-secondary border-t pt-2">
               {unavailableNote}
             </p>
           ) : null}

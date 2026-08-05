@@ -28,7 +28,11 @@ import { type Clock, type ConnectorLogger, instantOf, noopLogger, systemClock } 
 export const ALREADY_PUBLISHED_DECISIONS = ['proceed', 'adopt', 'block'] as const;
 export type AlreadyPublishedDecision = (typeof ALREADY_PUBLISHED_DECISIONS)[number];
 
-export const ADOPTION_SOURCES = ['provider_status', 'external_id_lookup', 'provider_idempotency'] as const;
+export const ADOPTION_SOURCES = [
+  'provider_status',
+  'external_id_lookup',
+  'provider_idempotency',
+] as const;
 export type AdoptionSource = (typeof ADOPTION_SOURCES)[number];
 
 export interface AlreadyPublishedResult {
@@ -110,7 +114,10 @@ export interface EnsureNotAlreadyPublishedInput {
 }
 
 function result(
-  partial: Partial<AlreadyPublishedResult> & { decision: AlreadyPublishedDecision; checkedAt: string },
+  partial: Partial<AlreadyPublishedResult> & {
+    decision: AlreadyPublishedDecision;
+    checkedAt: string;
+  },
 ): AlreadyPublishedResult {
   return {
     externalPostId: null,
@@ -149,7 +156,11 @@ export async function ensureNotAlreadyPublished(
   const logger = input.logger ?? noopLogger;
   const checkedAt = instantOf(clock.now().getTime());
 
-  if (input.attemptNumber <= 1 && (input.providerJobId ?? null) === null && (input.externalPostId ?? null) === null) {
+  if (
+    input.attemptNumber <= 1 &&
+    (input.providerJobId ?? null) === null &&
+    (input.externalPostId ?? null) === null
+  ) {
     return result({ decision: 'proceed', checkedAt });
   }
 
@@ -213,9 +224,10 @@ export async function ensureNotAlreadyPublished(
       externalPostId: status.externalPostId,
       permalink: status.permalink,
       publishedAt: status.publishedAt,
-      source: input.externalPostId !== null && input.externalPostId !== undefined
-        ? 'external_id_lookup'
-        : 'provider_status',
+      source:
+        input.externalPostId !== null && input.externalPostId !== undefined
+          ? 'external_id_lookup'
+          : 'provider_status',
       status,
     });
   }

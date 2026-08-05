@@ -1,10 +1,12 @@
 /** Automation rules, RSS autopost, webhooks and inbound integrations. */
 export const automationMessages = {
   'automation.title': 'Automation',
-  'automation.subtitle': 'Rules, feeds and webhooks, with the limits stated before you switch them on.',
+  'automation.subtitle':
+    'Rules, feeds and webhooks, with the limits stated before you switch them on.',
   'automation.rules.title': 'Automation rules',
   'automation.rules.create': 'New rule',
-  'automation.rules.empty': 'No rules yet. A rule reacts to something and proposes or performs an action.',
+  'automation.rules.empty':
+    'No rules yet. A rule reacts to something and proposes or performs an action.',
   'automation.rules.sentence':
     'When {trigger}, if {conditions}, then {actions}, after {delay}, until {endCondition}.',
   'automation.rules.sentenceNoConditions':

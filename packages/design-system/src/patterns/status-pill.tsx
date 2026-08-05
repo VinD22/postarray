@@ -91,9 +91,7 @@ interface StateDefinition {
 
 const iconClass = 'size-3.5 shrink-0';
 
-export const PUBLISH_STATE_DEFINITIONS: Readonly<
-  Record<PublishState, StateDefinition>
-> = {
+export const PUBLISH_STATE_DEFINITIONS: Readonly<Record<PublishState, StateDefinition>> = {
   draft: {
     tone: 'neutral',
     icon: <FileText aria-hidden="true" className={iconClass} />,
@@ -185,37 +183,35 @@ export interface StatusPillProps extends ComponentPropsWithoutRef<'span'> {
   showActivity?: boolean;
 }
 
-export const StatusPill = forwardRef<HTMLSpanElement, StatusPillProps>(
-  function StatusPill(
-    { className, state, label, detail, size = 'md', showActivity = false, ...props },
-    ref,
-  ) {
-    const definition = PUBLISH_STATE_DEFINITIONS[state];
-    const spinning = showActivity && definition.inFlight;
+export const StatusPill = forwardRef<HTMLSpanElement, StatusPillProps>(function StatusPill(
+  { className, state, label, detail, size = 'md', showActivity = false, ...props },
+  ref,
+) {
+  const definition = PUBLISH_STATE_DEFINITIONS[state];
+  const spinning = showActivity && definition.inFlight;
 
-    return (
-      <span
-        ref={ref}
-        data-state={state}
-        className={cn(
-          'inline-flex items-center gap-1.5 rounded-md border whitespace-nowrap',
-          size === 'sm' ? 'px-1.5 py-0.5 text-label' : 'px-2 py-1 text-body-sm',
-          toneClasses[definition.tone],
-          className,
-        )}
-        {...props}
-      >
-        {spinning ? (
-          <Loader
-            aria-hidden="true"
-            className={cn(iconClass, 'relay-anim-spin motion-reduce:animate-none')}
-          />
-        ) : (
-          definition.icon
-        )}
-        <span className="font-medium">{label}</span>
-        {detail ? <span className="text-text-secondary">{detail}</span> : null}
-      </span>
-    );
-  },
-);
+  return (
+    <span
+      ref={ref}
+      data-state={state}
+      className={cn(
+        'inline-flex items-center gap-1.5 rounded-md border whitespace-nowrap',
+        size === 'sm' ? 'text-label px-1.5 py-0.5' : 'text-body-sm px-2 py-1',
+        toneClasses[definition.tone],
+        className,
+      )}
+      {...props}
+    >
+      {spinning ? (
+        <Loader
+          aria-hidden="true"
+          className={cn(iconClass, 'relay-anim-spin motion-reduce:animate-none')}
+        />
+      ) : (
+        definition.icon
+      )}
+      <span className="font-medium">{label}</span>
+      {detail ? <span className="text-text-secondary">{detail}</span> : null}
+    </span>
+  );
+});

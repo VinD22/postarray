@@ -54,9 +54,7 @@ export function createWorkspaceService(deps: ServiceDeps): WorkspaceService {
           where: { id: ctx.workspaceId },
           data: {
             ...(patch.name === undefined ? {} : { name: patch.name }),
-            ...(patch.defaultLocale === undefined
-              ? {}
-              : { defaultLocale: patch.defaultLocale }),
+            ...(patch.defaultLocale === undefined ? {} : { defaultLocale: patch.defaultLocale }),
             ...(patch.defaultTimeZone === undefined
               ? {}
               : { defaultTimeZone: patch.defaultTimeZone }),

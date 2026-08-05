@@ -53,7 +53,10 @@ export function LinkControls(): ReactNode {
           <RadioGroup
             value={state.linkPlan.mode}
             onValueChange={(value) =>
-              dispatch({ type: 'links/plan', plan: { mode: value === 'tracked' ? 'tracked' : 'original' } })
+              dispatch({
+                type: 'links/plan',
+                plan: { mode: value === 'tracked' ? 'tracked' : 'original' },
+              })
             }
             aria-label={t.full('composerWeb.links.modeLabel')}
             className="flex flex-col gap-2"
@@ -117,7 +120,8 @@ export function LinkControls(): ReactNode {
                           plan: {
                             utm: {
                               ...state.linkPlan.utm,
-                              [key]: event.target.value.length === 0 ? undefined : event.target.value,
+                              [key]:
+                                event.target.value.length === 0 ? undefined : event.target.value,
                             },
                           },
                         })
@@ -135,10 +139,10 @@ export function LinkControls(): ReactNode {
                 <span className="text-label text-text-tertiary">
                   {t.full('composerWeb.links.original')}
                 </span>
-                <span className="break-all font-mono text-mono text-text-secondary">
+                <span className="text-mono text-text-secondary font-mono break-all">
                   {link.originalUrl}
                 </span>
-                <span className="break-all text-body-sm text-text-primary">
+                <span className="text-body-sm text-text-primary break-all">
                   {t.full('composer.links.finalUrl', {
                     url: link.publishedUrl ?? link.originalUrl,
                   })}

@@ -1,11 +1,7 @@
 import { ERROR_CODES } from '@relay/contracts';
 import { describe, expect, it } from 'vitest';
 
-import {
-  ACTIVITY_OPTIONS,
-  isNonRetryable,
-  toTemporalActivityOptions,
-} from './retry-policies.js';
+import { ACTIVITY_OPTIONS, isNonRetryable, toTemporalActivityOptions } from './retry-policies.js';
 
 describe('activity retry policies', () => {
   it('never lets Temporal retry the provider create call', () => {

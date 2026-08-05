@@ -4,13 +4,7 @@ import { forwardRef, type ComponentPropsWithoutRef } from 'react';
 import { cn } from '../utils/cn.js';
 import type { ProviderKey } from '../tokens/tokens.js';
 
-export type StatusDotTone =
-  | 'neutral'
-  | 'accent'
-  | 'success'
-  | 'warning'
-  | 'destructive'
-  | 'info';
+export type StatusDotTone = 'neutral' | 'accent' | 'success' | 'warning' | 'destructive' | 'info';
 
 const toneClass: Record<StatusDotTone, string> = {
   neutral: 'bg-text-tertiary',

@@ -10,7 +10,16 @@
  */
 
 import { useState, type ReactNode } from 'react';
-import { Button, Field, Input, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@relay/design-system/primitives';
+import {
+  Button,
+  Field,
+  Input,
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@relay/design-system/primitives';
 import { useTranslations } from '@relay/i18n/react';
 
 import { useComposer } from '../composer-context.js';
@@ -53,10 +62,7 @@ export function MasterPanel({
     capabilities: summary.account.capabilities,
   }));
 
-  const mediaLimit = Math.max(
-    1,
-    ...summaries.map((summary) => summary.mediaLimit),
-  );
+  const mediaLimit = Math.max(1, ...summaries.map((summary) => summary.mediaLimit));
 
   return (
     <div className="flex flex-col gap-6">
@@ -118,7 +124,9 @@ export function MasterPanel({
           {(control) => (
             <Select
               value={state.master.locale}
-              onValueChange={(value) => dispatch({ type: 'master/patch', patch: { locale: value } })}
+              onValueChange={(value) =>
+                dispatch({ type: 'master/patch', patch: { locale: value } })
+              }
             >
               <SelectTrigger id={control.id} aria-describedby={control['aria-describedby']}>
                 <SelectValue />
@@ -168,7 +176,7 @@ export function MasterPanel({
             {state.master.links.map((link) => (
               <li
                 key={link.originalUrl}
-                className="break-all font-mono text-mono text-text-secondary"
+                className="text-mono text-text-secondary font-mono break-all"
               >
                 {link.originalUrl}
               </li>

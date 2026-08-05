@@ -119,7 +119,8 @@ function snapshot(seed: SnapshotSeed): CapabilitySnapshot {
       options: [...seed.privacyOptions],
     },
     disclosure: {
-      aiLabel: seed.provider === 'youtube' || seed.provider === 'tiktok' ? 'supported' : 'unsupported',
+      aiLabel:
+        seed.provider === 'youtube' || seed.provider === 'tiktok' ? 'supported' : 'unsupported',
       commercialContent: seed.provider === 'instagram' ? 'supported' : 'unsupported',
       brandedContent: seed.provider === 'instagram' ? 'supported' : 'unsupported',
     },

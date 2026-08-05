@@ -64,9 +64,7 @@ export function supportFor(
  * does not support boards.
  */
 function summarizeDestinations(snapshot: CapabilitySnapshot): CapabilitySupport {
-  const relevant = snapshot.destinations.filter(
-    (destination) => destination.kind !== 'none',
-  );
+  const relevant = snapshot.destinations.filter((destination) => destination.kind !== 'none');
   if (relevant.length === 0) return 'unsupported';
   return strongest(relevant.map((destination) => destination.support));
 }
@@ -102,9 +100,7 @@ export function strongest(values: readonly CapabilitySupport[]): CapabilitySuppo
 }
 
 /** Build the whole matrix from one snapshot per provider. */
-export function buildCapabilityMatrix(
-  snapshots: readonly CapabilitySnapshot[],
-): CapabilityMatrix {
+export function buildCapabilityMatrix(snapshots: readonly CapabilitySnapshot[]): CapabilityMatrix {
   const byProvider = new Map<ProviderId, CapabilitySnapshot>();
   for (const snapshot of snapshots) {
     const existing = byProvider.get(snapshot.provider);

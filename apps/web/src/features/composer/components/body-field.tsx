@@ -97,9 +97,9 @@ export function BodyField({
           return (
             <li
               key={target.connectionId}
-              className="flex items-baseline justify-between gap-3 text-label"
+              className="text-label flex items-baseline justify-between gap-3"
             >
-              <span className="min-w-0 truncate text-text-tertiary">{target.accountLabel}</span>
+              <span className="text-text-tertiary min-w-0 truncate">{target.accountLabel}</span>
               <span
                 className={cn(
                   'shrink-0 tabular-nums',

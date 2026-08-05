@@ -1,7 +1,14 @@
 import type { Metadata } from 'next';
 import type { ReactNode } from 'react';
 
-import { Body, Container, Heading, List, Section, Split } from '@/features/marketing/components/layout';
+import {
+  Body,
+  Container,
+  Heading,
+  List,
+  Section,
+  Split,
+} from '@/features/marketing/components/layout';
 import { TextLink } from '@/features/marketing/components/links';
 import { CorrectionNotice, PageIntro } from '@/features/marketing/components/page-parts';
 import { marketingTranslator } from '@/features/marketing/i18n';

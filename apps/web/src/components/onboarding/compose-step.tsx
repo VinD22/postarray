@@ -6,13 +6,7 @@ import { useEffect, useMemo, useState } from 'react';
 
 import { useAnnouncer } from '@relay/design-system/hooks';
 import { EmptyState, LoadingState, Notice, SkeletonList } from '@relay/design-system/patterns';
-import {
-  Button,
-  Field,
-  Input,
-  StatusDot,
-  Textarea,
-} from '@relay/design-system/primitives';
+import { Button, Field, Input, StatusDot, Textarea } from '@relay/design-system/primitives';
 import { cn } from '@relay/design-system/utils';
 
 import { ApiError, api, newIdempotencyKey, type ValidationResult } from '@/lib/api';
@@ -87,10 +81,7 @@ export function ComposeStep() {
         .then((result) => {
           setValidation(result);
           if (result) {
-            announce(
-              t('a11y.announce.validationCount', { count: result.issues.length }),
-              'polite',
-            );
+            announce(t('a11y.announce.validationCount', { count: result.issues.length }), 'polite');
           }
         })
         .catch(() => {
@@ -182,7 +173,7 @@ export function ComposeStep() {
 
       {error === null ? null : <Notice tone="destructive" liveness="alert" title={error} />}
 
-      <p className="flex items-center gap-2 border-y border-border-subtle py-2 text-body-md text-text-primary">
+      <p className="border-border-subtle text-body-md text-text-primary flex items-center gap-2 border-y py-2">
         {dot === undefined ? null : <StatusDot provider={dot} aria-hidden="true" />}
         {connection.displayName}
       </p>
@@ -220,18 +211,16 @@ export function ComposeStep() {
         <section aria-label={t('a11y.region.preview')} className="flex flex-col gap-2">
           <h2 className="text-title-sm text-text-primary">{t('onboarding.preview.title')}</h2>
           <p className="text-body-sm text-text-tertiary">{t('onboarding.preview.help')}</p>
-          <div className="rounded-lg border border-border-default bg-surface-raised p-3">
+          <div className="border-border-default bg-surface-raised rounded-lg border p-3">
             <p className="text-body-sm text-text-tertiary">{connection.displayName}</p>
-            <p className="whitespace-pre-wrap pt-1 text-body-md text-text-primary">
+            <p className="text-body-md text-text-primary pt-1 whitespace-pre-wrap">
               {body.length === 0 ? ' ' : body}
             </p>
           </div>
 
           <div aria-label={t('a11y.region.validation')} className="flex flex-col gap-1 pt-2">
             {validation === null ? null : validation.issues.length === 0 ? (
-              <p className="text-body-sm text-success-fg">
-                {t('a11y.announce.validationCleared')}
-              </p>
+              <p className="text-body-sm text-success-fg">{t('a11y.announce.validationCleared')}</p>
             ) : (
               <ul className="flex flex-col gap-1">
                 {validation.issues.map((issue) => (
@@ -278,7 +267,12 @@ export function ComposeStep() {
           size="lg"
           loading={pending}
           loadingLabel={t('loading.savingDraft')}
-          disabled={body.trim().length === 0 || scheduledLocal === '' || overLimit || blockingIssues.length > 0}
+          disabled={
+            body.trim().length === 0 ||
+            scheduledLocal === '' ||
+            overLimit ||
+            blockingIssues.length > 0
+          }
           onClick={() => {
             void schedule();
           }}

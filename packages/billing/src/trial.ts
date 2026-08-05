@@ -153,7 +153,10 @@ export function assertTrialConfiguration(input: {
   configuredTrialDays: number;
   productId: string;
 }): void {
-  if (input.polarTrialDays !== input.configuredTrialDays || input.configuredTrialDays !== TRIAL_DAYS) {
+  if (
+    input.polarTrialDays !== input.configuredTrialDays ||
+    input.configuredTrialDays !== TRIAL_DAYS
+  ) {
     throw new RelayError('CONFLICT', {
       messageKey: BILLING_MESSAGE_KEYS.conflict,
       details: {

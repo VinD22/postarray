@@ -1,13 +1,7 @@
 'use client';
 
 import { useState, type FormEvent, type ReactNode } from 'react';
-import {
-  Button,
-  Checkbox,
-  Field,
-  Input,
-  Textarea,
-} from '@relay/design-system/primitives';
+import { Button, Checkbox, Field, Input, Textarea } from '@relay/design-system/primitives';
 import { Notice } from '@relay/design-system/patterns';
 import { useTranslations } from '@relay/i18n/react';
 
@@ -207,7 +201,7 @@ export function IntakeForm({
 
           <fieldset className="flex flex-col gap-1 border-0 p-0">
             <legend className="flex flex-col gap-0.5 pb-1">
-              <span className="text-body-md font-medium text-text-primary">
+              <span className="text-body-md text-text-primary font-medium">
                 {t('common.language')}
               </span>
               <span className="text-body-sm text-text-secondary">
@@ -217,7 +211,7 @@ export function IntakeForm({
             <ul className="flex flex-wrap gap-x-4">
               {availableLocales.map((locale) => (
                 <li key={locale}>
-                  <label className="flex min-h-11 items-center gap-2 text-body-md text-text-primary">
+                  <label className="text-body-md text-text-primary flex min-h-11 items-center gap-2">
                     <Checkbox
                       checked={locales.includes(locale)}
                       onCheckedChange={(checked) =>
@@ -234,9 +228,7 @@ export function IntakeForm({
               ))}
             </ul>
             {showErrors && locales.length === 0 ? (
-              <p className="text-body-sm text-destructive-fg">
-                {t('validation.field.required')}
-              </p>
+              <p className="text-body-sm text-destructive-fg">{t('validation.field.required')}</p>
             ) : null}
           </fieldset>
         </div>
@@ -292,7 +284,7 @@ export function IntakeForm({
             )}
           </Field>
 
-          <label className="flex min-h-11 items-start gap-2 text-body-md text-text-primary">
+          <label className="text-body-md text-text-primary flex min-h-11 items-start gap-2">
             <Checkbox
               className="mt-0.5"
               checked={noProof}
@@ -312,7 +304,7 @@ export function IntakeForm({
         <div className="flex flex-col gap-4">
           <fieldset className="flex flex-col gap-1 border-0 p-0">
             <legend className="flex flex-col gap-0.5 pb-1">
-              <span className="text-body-md font-medium text-text-primary">
+              <span className="text-body-md text-text-primary font-medium">
                 {t('growth.profile.existingChannels')}
               </span>
               <span className="text-body-sm text-text-secondary">
@@ -322,7 +314,7 @@ export function IntakeForm({
             <ul className="flex flex-col sm:grid sm:grid-cols-2">
               {availableChannels.map((channel) => (
                 <li key={channel.id}>
-                  <label className="flex min-h-11 items-center gap-2 text-body-md text-text-primary">
+                  <label className="text-body-md text-text-primary flex min-h-11 items-center gap-2">
                     <Checkbox
                       checked={channels.includes(channel.id)}
                       onCheckedChange={(checked) =>
@@ -409,11 +401,7 @@ export function IntakeForm({
       </SettingsPanel>
 
       {showErrors && missingRequired ? (
-        <Notice
-          tone="warning"
-          liveness="alert"
-          title={t('growth.ui.intake.requiredMissing')}
-        />
+        <Notice tone="warning" liveness="alert" title={t('growth.ui.intake.requiredMissing')} />
       ) : null}
 
       <div>

@@ -80,7 +80,10 @@ export function toProviderKind(provider: ProviderId): ProviderKind {
   return PROVIDER_KIND_BY_ID[provider];
 }
 
-function lookup<T extends string>(table: Readonly<Record<string, T>>, value: string): T | undefined {
+function lookup<T extends string>(
+  table: Readonly<Record<string, T>>,
+  value: string,
+): T | undefined {
   for (const member of Object.values(table)) {
     if (member === value) {
       return member;

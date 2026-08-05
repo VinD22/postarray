@@ -210,7 +210,11 @@ function parseBlock(lines: readonly YamlLine[], start: number, indent: number): 
     let index = start;
     while (index < lines.length) {
       const line = lines[index];
-      if (line === undefined || line.indent !== indent || !(line.text === '-' || line.text.startsWith('- '))) {
+      if (
+        line === undefined ||
+        line.indent !== indent ||
+        !(line.text === '-' || line.text.startsWith('- '))
+      ) {
         break;
       }
       const content = line.text === '-' ? '' : line.text.slice(2);

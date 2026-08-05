@@ -112,7 +112,8 @@ export const platformFitCheckPrompt: PromptModule<PlatformFitCheckResult> = {
           {
             code: 'OPENING_LACKS_SUBSTANCE',
             severity: 'warning',
-            explanation: 'The first line does not say what changed, so the preview gives readers nothing.',
+            explanation:
+              'The first line does not say what changed, so the preview gives readers nothing.',
             suggestion: 'Name the change in the opening line.',
           },
         ],
@@ -148,7 +149,10 @@ export const duplicateCheckPrompt: PromptModule<DuplicateCheckResult> = {
   fixtures: [
     {
       name: 'distinct',
-      variables: { body: 'Scheduled publishing is live.', candidateSummaries: ['content_a: media library update'] },
+      variables: {
+        body: 'Scheduled publishing is live.',
+        candidateSummaries: ['content_a: media library update'],
+      },
       output: {
         similarContentIds: [],
         similarityScore: 0.1,
@@ -187,7 +191,12 @@ export const accessibilityCheckPrompt: PromptModule<AccessibilityCheckResult> = 
   fixtures: [
     {
       name: 'hashtag-casing',
-      variables: { body: 'Now live #scheduledpublishing', hasMedia: false, altTextPresent: false, locale: 'en' },
+      variables: {
+        body: 'Now live #scheduledpublishing',
+        hasMedia: false,
+        altTextPresent: false,
+        locale: 'en',
+      },
       output: {
         findings: [
           {

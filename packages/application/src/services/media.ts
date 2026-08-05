@@ -319,7 +319,12 @@ export function createMediaService(deps: ServiceDeps): MediaService {
         }
 
         const presetKey = input.ops
-          .map((op) => `${op.kind}:${Object.entries(op.params).map(([k, v]) => `${k}=${v}`).join(',')}`)
+          .map(
+            (op) =>
+              `${op.kind}:${Object.entries(op.params)
+                .map(([k, v]) => `${k}=${v}`)
+                .join(',')}`,
+          )
           .join('|');
 
         await db.mediaDerivative.upsert({

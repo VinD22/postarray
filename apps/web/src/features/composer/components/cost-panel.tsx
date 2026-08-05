@@ -60,12 +60,12 @@ export function CostPanel(): ReactNode {
           .map((summary) => (
             <li
               key={summary.connectionId}
-              className="flex items-baseline justify-between gap-3 border-b border-border-subtle py-1.5 text-body-sm last:border-b-0"
+              className="border-border-subtle text-body-sm flex items-baseline justify-between gap-3 border-b py-1.5 last:border-b-0"
             >
-              <span className="min-w-0 truncate text-text-secondary">
+              <span className="text-text-secondary min-w-0 truncate">
                 {summary.account.displayName}
               </span>
-              <span className="shrink-0 tabular-nums text-text-primary">
+              <span className="text-text-primary shrink-0 tabular-nums">
                 {formatCurrency(
                   t.locale,
                   summary.estimatedCostMinor ?? 0,
@@ -97,8 +97,7 @@ export function CostPanel(): ReactNode {
           {
             id: 'approver',
             term: t.full('composer.schedule.approverLabel'),
-            definition:
-              bootstrap.approverName ?? t.full('composerWeb.review.approverNone'),
+            definition: bootstrap.approverName ?? t.full('composerWeb.review.approverNone'),
           },
           ...(bootstrap.approvalPolicy === null
             ? []

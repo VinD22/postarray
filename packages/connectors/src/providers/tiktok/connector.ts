@@ -113,7 +113,7 @@ export interface TikTokConnector extends SocialConnector {
 }
 
 export function createTikTokConnector(deps: ConnectorDeps): TikTokConnector {
-  const { http, vault, clock, config, logger } = deps;
+  const { http, clock, config, logger } = deps;
 
   async function token(connection: ProviderConnection): Promise<string> {
     return accessTokenOf(connection);
@@ -174,10 +174,10 @@ export function createTikTokConnector(deps: ConnectorDeps): TikTokConnector {
         state: 'unknown',
         externalPostId: null,
         permalink: null,
-          publishedAt: null,
-          items: [],
-          error: null,
-          pollAfterSeconds: 30,
+        publishedAt: null,
+        items: [],
+        error: null,
+        pollAfterSeconds: 30,
         sanitizedResponse: { status: response.status },
       };
     }
@@ -228,10 +228,10 @@ export function createTikTokConnector(deps: ConnectorDeps): TikTokConnector {
       state: 'processing',
       externalPostId: null,
       permalink: null,
-          publishedAt: null,
-          items: [],
-          error: null,
-          pollAfterSeconds: 15,
+      publishedAt: null,
+      items: [],
+      error: null,
+      pollAfterSeconds: 15,
       sanitizedResponse: { status },
     };
   }
@@ -308,7 +308,6 @@ export function createTikTokConnector(deps: ConnectorDeps): TikTokConnector {
             required: true,
           },
         ],
-
       };
     },
 
@@ -342,7 +341,8 @@ export function createTikTokConnector(deps: ConnectorDeps): TikTokConnector {
           displayName: user.display_name ?? user.username ?? 'TikTok creator',
           handle: user.username ?? null,
           avatarUrl: user.avatar_url ?? null,
-          profileUrl: user.username === undefined ? null : `https://www.tiktok.com/@${user.username}`,
+          profileUrl:
+            user.username === undefined ? null : `https://www.tiktok.com/@${user.username}`,
           accountAccessToken: null,
           parentExternalId: null,
           eligible: canPublish,
@@ -548,12 +548,6 @@ export function createTikTokConnector(deps: ConnectorDeps): TikTokConnector {
       const accessToken = await token(connection);
       const options = tikTokProviderOptionsSchema.parse(providerOptionsOf(draft));
 
-      const existing = undefined;
-      if (typeof existing === 'string' && existing !== '') {
-        // Never re-initialize a publish we already started.
-        const status = await readStatus(connection, existing);
-      }
-
       // Creator info is re-fetched at dispatch. A post scheduled far in advance must not
       // publish with an option that is no longer available.
       // Creator info is fetched and shown before the user consents at initialization.
@@ -584,7 +578,6 @@ export function createTikTokConnector(deps: ConnectorDeps): TikTokConnector {
             details: { provider: PROVIDER, remediationCode: REMEDIATION.choosePrivacyOption },
           });
         }
-
       }
 
       const media = draft.media[0];
@@ -631,7 +624,7 @@ export function createTikTokConnector(deps: ConnectorDeps): TikTokConnector {
         publishId = carriedPublishId;
         uploadUrl = undefined;
       } else {
-      const init = await http.request({
+        const init = await http.request({
           method: 'POST',
           url: `${API_BASE}/post/publish/video/init/`,
           headers: bearer(accessToken),
@@ -819,7 +812,10 @@ export function createTikTokConnector(deps: ConnectorDeps): TikTokConnector {
         operation: 'tiktok.revoke',
       });
       if (!response.ok) {
-        logger.warn({ provider: PROVIDER, status: response.status }, 'tiktok revoke did not succeed');
+        logger.warn(
+          { provider: PROVIDER, status: response.status },
+          'tiktok revoke did not succeed',
+        );
       }
     },
   };

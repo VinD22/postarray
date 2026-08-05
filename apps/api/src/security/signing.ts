@@ -31,7 +31,9 @@ export function signatureBase(timestamp: string, rawBody: Buffer | string): stri
 
 /** Produce the hex signature for a payload. Used for outbound deliveries. */
 export function signPayload(secret: string, timestamp: string, rawBody: Buffer | string): string {
-  return createHmac('sha256', secret).update(signatureBase(timestamp, rawBody), 'utf8').digest('hex');
+  return createHmac('sha256', secret)
+    .update(signatureBase(timestamp, rawBody), 'utf8')
+    .digest('hex');
 }
 
 export interface VerifyInput {
@@ -84,10 +86,7 @@ export function verifySignature(input: VerifyInput): SignatureVerification {
 
   let matched = false;
   for (const secret of input.secrets) {
-    const expected = Buffer.from(
-      signPayload(secret, input.timestampHeader, input.rawBody),
-      'hex',
-    );
+    const expected = Buffer.from(signPayload(secret, input.timestampHeader, input.rawBody), 'hex');
     for (const candidate of candidates) {
       const presented = Buffer.from(candidate, 'hex');
       if (presented.length === expected.length && timingSafeEqual(presented, expected)) {

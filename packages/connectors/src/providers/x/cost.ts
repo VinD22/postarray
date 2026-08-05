@@ -58,7 +58,11 @@ export function microToMinor(microUnits: number): number {
  */
 export function estimateCost(draft: ProviderDraft): XCostEstimate {
   const operations: XCostOperation[] = [
-    { kind: containsUrl(draft.body) ? 'url_create' : 'create', label: 'root', microUnits: microFor(draft.body) },
+    {
+      kind: containsUrl(draft.body) ? 'url_create' : 'create',
+      label: 'root',
+      microUnits: microFor(draft.body),
+    },
   ];
   for (const item of draft.threadItems) {
     operations.push({

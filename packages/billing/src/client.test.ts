@@ -166,7 +166,10 @@ describe('the official SDK adapter', () => {
       checkouts: { create: async () => ({}), get: async () => ({}) },
       subscriptions: {
         get: async () => subscriptionBody,
-        list: async () => ({ items: [subscriptionBody], pagination: { total_count: 1, max_page: 1 } }),
+        list: async () => ({
+          items: [subscriptionBody],
+          pagination: { total_count: 1, max_page: 1 },
+        }),
         update: async () => subscriptionBody,
       },
       orders: { get: async () => ({}), list: async () => ({ items: [] }) },

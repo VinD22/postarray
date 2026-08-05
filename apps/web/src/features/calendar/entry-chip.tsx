@@ -15,14 +15,7 @@
  */
 
 import type { CSSProperties, ReactNode } from 'react';
-import {
-  FileText,
-  Film,
-  Image as ImageIcon,
-  Images,
-  Type as TypeIcon,
-  Move,
-} from 'lucide-react';
+import { FileText, Film, Image as ImageIcon, Images, Type as TypeIcon, Move } from 'lucide-react';
 import { Badge, StatusPill, cn, focusRingInset } from '@relay/design-system';
 import { useTranslations } from '@relay/i18n/react';
 import { ProviderMark, useProviderName } from '@/features/connections/provider';
@@ -101,18 +94,16 @@ export function EntryChip({
       >
         <span className="flex min-w-0 items-center gap-1.5">
           <ProviderMark provider={entry.provider} />
-          <span className="shrink-0 tabular-nums text-label text-text-secondary">
+          <span className="text-label text-text-secondary shrink-0 tabular-nums">
             {format.time(entry.scheduledAt)}
           </span>
-          <span className="min-w-0 flex-1 truncate text-body-sm font-medium text-text-primary">
+          <span className="text-body-sm text-text-primary min-w-0 flex-1 truncate font-medium">
             {title}
           </span>
         </span>
 
         {density === 'compact' ? null : (
-          <span className="truncate text-body-sm text-text-secondary">
-            {entry.accountLabel}
-          </span>
+          <span className="text-body-sm text-text-secondary truncate">{entry.accountLabel}</span>
         )}
       </a>
 

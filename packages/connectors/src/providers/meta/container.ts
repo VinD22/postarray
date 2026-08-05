@@ -78,7 +78,9 @@ export function containerStatusToPublishStatus(
       sanitizedResponse: {
         surface,
         statusCode: status.statusCode,
-        ...(status.errorMessage === null ? {} : { providerMessage: status.errorMessage.slice(0, 300) }),
+        ...(status.errorMessage === null
+          ? {}
+          : { providerMessage: status.errorMessage.slice(0, 300) }),
       },
     };
   }
@@ -111,7 +113,9 @@ export function assertContainerReady(
       : REMEDIATION.providerRateLimited,
     details: {
       statusCode: status.statusCode,
-      ...(status.errorMessage === null ? {} : { providerMessage: status.errorMessage.slice(0, 300) }),
+      ...(status.errorMessage === null
+        ? {}
+        : { providerMessage: status.errorMessage.slice(0, 300) }),
     },
   });
 }

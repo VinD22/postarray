@@ -8,12 +8,7 @@
  */
 
 export type RedirectUriProblem =
-  | 'not-a-url'
-  | 'not-https'
-  | 'has-wildcard'
-  | 'has-query'
-  | 'has-fragment'
-  | 'has-credentials';
+  'not-a-url' | 'not-https' | 'has-wildcard' | 'has-query' | 'has-fragment' | 'has-credentials';
 
 /** Null means the URI is acceptable exactly as written. */
 export function checkRedirectUri(value: string, allowLoopback = true): RedirectUriProblem | null {
@@ -29,8 +24,7 @@ export function checkRedirectUri(value: string, allowLoopback = true): RedirectU
     return 'not-a-url';
   }
 
-  const loopback =
-    allowLoopback && (url.hostname === 'localhost' || url.hostname === '127.0.0.1');
+  const loopback = allowLoopback && (url.hostname === 'localhost' || url.hostname === '127.0.0.1');
   if (url.protocol !== 'https:' && !(loopback && url.protocol === 'http:')) {
     return 'not-https';
   }

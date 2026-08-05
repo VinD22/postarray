@@ -26,7 +26,6 @@ import { fromLines, toLines } from '../lib/lines.js';
 import { useSettingsMutation } from '../lib/use-settings-mutation.js';
 import { SettingRow, SettingsPanel, SettingsStack } from '../components/section.js';
 
-
 /** A fixed sample instant, so the preview never depends on when it is read. */
 const PREVIEW_INSTANT = '2026-08-11T14:30:00.000Z';
 
@@ -92,10 +91,7 @@ export function LocalizationScreen(): ReactNode {
                 title={t('settings.localization.interfaceLocale')}
                 description={t('settings.localization.interfaceLocaleHelp')}
               >
-                <Notice
-                  tone="neutral"
-                  title={t('settings.ui.localization.interfaceOnlyEnglish')}
-                />
+                <Notice tone="neutral" title={t('settings.ui.localization.interfaceOnlyEnglish')} />
                 <div className="flex flex-col">
                   <SettingRow
                     label={t('settings.localization.interfaceLocale')}
@@ -129,7 +125,7 @@ export function LocalizationScreen(): ReactNode {
                     const checked = current.contentLocales.includes(locale.bcp47);
                     return (
                       <li key={locale.bcp47}>
-                        <label className="flex min-h-11 items-center gap-2 text-body-md text-text-primary">
+                        <label className="text-body-md text-text-primary flex min-h-11 items-center gap-2">
                           <Checkbox
                             checked={checked}
                             onCheckedChange={(next) =>
@@ -145,7 +141,7 @@ export function LocalizationScreen(): ReactNode {
                           />
                           <span className="min-w-0">
                             {locale.name}
-                            <span className="ms-1 text-body-sm text-text-tertiary">
+                            <span className="text-body-sm text-text-tertiary ms-1">
                               {locale.endonym}
                             </span>
                           </span>

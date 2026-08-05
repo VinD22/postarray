@@ -33,7 +33,8 @@ export const growthMessages = {
   'growth.plan.title': 'Plan',
   'growth.plan.version': 'Version {version}, created {date}',
   'growth.plan.generating': 'Building your plan',
-  'growth.plan.approved': 'Approved on {date}. A refresh creates a new version and leaves this one intact.',
+  'growth.plan.approved':
+    'Approved on {date}. A refresh creates a new version and leaves this one intact.',
   'growth.plan.refresh': 'Create a new version',
   'growth.plan.tab.strategy': 'Strategy',
   'growth.plan.tab.fourWeek': 'Four week plan',

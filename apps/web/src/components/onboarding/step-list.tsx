@@ -45,7 +45,7 @@ export function OnboardingStepList() {
               <span
                 aria-hidden="true"
                 className={cn(
-                  'flex size-5 shrink-0 items-center justify-center rounded-full border text-label',
+                  'text-label flex size-5 shrink-0 items-center justify-center rounded-full border',
                   done && 'border-success-border bg-success-bg text-success-fg',
                   current && 'border-accent bg-accent-subtle text-text-accent',
                   !done && !current && 'border-border-default bg-surface-sunken text-text-tertiary',
@@ -58,16 +58,12 @@ export function OnboardingStepList() {
                 {...(current ? { 'aria-current': 'step' as const } : {})}
                 className={cn(
                   'text-body-sm',
-                  current ? 'font-medium text-text-primary' : 'text-text-secondary',
+                  current ? 'text-text-primary font-medium' : 'text-text-secondary',
                 )}
               >
                 {t(step.labelKey)}
-                {done ? (
-                  <span className="sr-only"> {t('onboarding.stepComplete')}</span>
-                ) : null}
-                {current ? (
-                  <span className="sr-only"> {t('onboarding.stepCurrent')}</span>
-                ) : null}
+                {done ? <span className="sr-only"> {t('onboarding.stepComplete')}</span> : null}
+                {current ? <span className="sr-only"> {t('onboarding.stepCurrent')}</span> : null}
               </span>
             </li>
           );

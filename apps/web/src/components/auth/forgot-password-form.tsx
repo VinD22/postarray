@@ -43,7 +43,7 @@ export function ForgotPasswordForm() {
         <h1 className="text-title-lg text-text-primary">{t('auth.resetPassword.title')}</h1>
         <Notice tone="info" liveness="status" title={t('auth.resetPassword.sent')} />
         <p className="text-body-md text-text-secondary">
-          <Link href="/sign-in" className="font-medium text-text-accent hover:underline">
+          <Link href="/sign-in" className="text-text-accent font-medium hover:underline">
             {t('action.signIn')}
           </Link>
         </p>
@@ -86,7 +86,7 @@ export function ForgotPasswordForm() {
       </Button>
 
       <p className="text-body-md text-text-secondary">
-        <Link href="/sign-in" className="font-medium text-text-accent hover:underline">
+        <Link href="/sign-in" className="text-text-accent font-medium hover:underline">
           {t('auth.switchToSignIn')}
         </Link>
       </p>

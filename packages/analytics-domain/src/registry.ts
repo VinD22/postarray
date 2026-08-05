@@ -502,10 +502,7 @@ export function supportedMetrics(
  * True when two providers define the same normalized metric differently enough
  * that a side by side number needs a warning next to it.
  */
-export function definitionsDiffer(
-  left: MetricDefinition,
-  right: MetricDefinition,
-): boolean {
+export function definitionsDiffer(left: MetricDefinition, right: MetricDefinition): boolean {
   return (
     left.denominator !== right.denominator ||
     left.unit !== right.unit ||

@@ -3,12 +3,7 @@
 import type { ReactElement } from 'react';
 import { useRouter } from 'next/navigation';
 import { useBreakpoint } from '@relay/design-system/hooks';
-import {
-  EmptyState,
-  LoadingState,
-  Notice,
-  SkeletonTable,
-} from '@relay/design-system/patterns';
+import { EmptyState, LoadingState, Notice, SkeletonTable } from '@relay/design-system/patterns';
 import {
   Badge,
   Button,
@@ -68,12 +63,8 @@ export function RulesListScreen(): ReactElement {
     <div className="flex flex-col gap-6 px-4 py-6 md:px-6">
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div className="flex max-w-[70ch] flex-col gap-1">
-          <h2 className="text-title-md text-text-primary">
-            {t('automation.rules.title')}
-          </h2>
-          <p className="text-body-md text-text-secondary">
-            {t('automation.preflight.intro')}
-          </p>
+          <h2 className="text-title-md text-text-primary">{t('automation.rules.title')}</h2>
+          <p className="text-body-md text-text-secondary">{t('automation.preflight.intro')}</p>
         </div>
         <Button variant="primary" onClick={() => router.push('/automation/rules/new')}>
           {t('automation.rules.create')}
@@ -132,12 +123,12 @@ export function RulesListScreen(): ReactElement {
                     <div className="flex min-w-0 flex-col gap-0.5">
                       <button
                         type="button"
-                        className="text-start text-body-md text-text-primary underline-offset-2 hover:underline"
+                        className="text-body-md text-text-primary text-start underline-offset-2 hover:underline"
                         onClick={() => router.push(`/automation/rules/${rule.id}`)}
                       >
                         {rule.name}
                       </button>
-                      <span className="max-w-[60ch] text-body-sm text-text-secondary">
+                      <span className="text-body-sm text-text-secondary max-w-[60ch]">
                         {rule.sentence}
                       </span>
                     </div>
@@ -163,9 +154,9 @@ export function RulesListScreen(): ReactElement {
           </Table>
         </TableContainer>
       ) : (
-        <ul className="flex flex-col border-t border-border-subtle">
+        <ul className="border-border-subtle flex flex-col border-t">
           {rules.data.map((rule) => (
-            <li key={rule.id} className="border-b border-border-subtle py-3">
+            <li key={rule.id} className="border-border-subtle border-b py-3">
               <button
                 type="button"
                 className="flex min-h-11 w-full flex-col items-start gap-1 text-start"

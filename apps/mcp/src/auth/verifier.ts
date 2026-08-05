@@ -110,9 +110,7 @@ function audienceMatches(audience: readonly string[], resourceUrl: string): bool
   return audience.some((entry) => normalize(entry) === expected);
 }
 
-export function createIntrospectionVerifier(
-  options: IntrospectionVerifierOptions,
-): TokenVerifier {
+export function createIntrospectionVerifier(options: IntrospectionVerifierOptions): TokenVerifier {
   const ttlMs = (options.cacheTtlSeconds ?? DEFAULT_VERIFICATION_CACHE_TTL_SECONDS) * 1000;
   const cache = new Map<string, { grant: VerifiedGrant; expiresAtMs: number }>();
 
@@ -184,9 +182,7 @@ export function createIntrospectionVerifier(
         approvalLevel: toApprovalLevel(parsed.data.approval_level),
         audience,
         expiresAt: new globalThis.Date(
-          expiresAtSeconds === undefined
-            ? options.clock.now() + ttlMs
-            : expiresAtSeconds * 1000,
+          expiresAtSeconds === undefined ? options.clock.now() + ttlMs : expiresAtSeconds * 1000,
         ).toISOString(),
         locale: parsed.data.locale ?? 'en',
         killed: parsed.data.killed ?? false,

@@ -43,18 +43,10 @@ export function paginatedSchema<T extends z.ZodType>(item: T) {
 }
 
 /** Create, schedule, publish and cancel requests must carry an idempotency key. */
-export const idempotentRequestSchema = z
-  .object({ idempotencyKey: idempotencyKeySchema })
-  .strict();
+export const idempotentRequestSchema = z.object({ idempotencyKey: idempotencyKeySchema }).strict();
 export type IdempotentRequest = z.infer<typeof idempotentRequestSchema>;
 
-export const OPERATION_STATUSES = [
-  'queued',
-  'running',
-  'succeeded',
-  'failed',
-  'canceled',
-] as const;
+export const OPERATION_STATUSES = ['queued', 'running', 'succeeded', 'failed', 'canceled'] as const;
 export const operationStatusSchema = z.enum(OPERATION_STATUSES);
 export type OperationStatus = z.infer<typeof operationStatusSchema>;
 

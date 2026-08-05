@@ -208,7 +208,9 @@ export function createBlueskyConnector(deps: ConnectorDeps): SocialConnector {
     if (blobs.length === 0) {
       return null;
     }
-    const video = blobs.find((item) => draft.media.find((media) => media.mediaId === item.mediaId)?.kind === 'video');
+    const video = blobs.find(
+      (item) => draft.media.find((media) => media.mediaId === item.mediaId)?.kind === 'video',
+    );
     if (video !== undefined) {
       return {
         $type: 'app.bsky.embed.video',
@@ -388,11 +390,15 @@ export function createBlueskyConnector(deps: ConnectorDeps): SocialConnector {
         response,
         remediationCode: REMEDIATION.reconnectAccount,
       });
-      const session = parseProviderBody(atprotoSessionSchema.partial({ accessJwt: true, refreshJwt: true }), response, {
-        provider: PROVIDER,
-        operation: 'bluesky.get_session',
+      const session = parseProviderBody(
+        atprotoSessionSchema.partial({ accessJwt: true, refreshJwt: true }),
         response,
-      });
+        {
+          provider: PROVIDER,
+          operation: 'bluesky.get_session',
+          response,
+        },
+      );
       return [
         {
           externalAccountId: session.did,
@@ -404,7 +410,8 @@ export function createBlueskyConnector(deps: ConnectorDeps): SocialConnector {
           parentExternalId: null,
           grantedScopes: [...grant.grantedScopes],
           eligible: session.active !== false,
-          ineligibleReasonKey: session.active === false ? 'connectors.bluesky.account_inactive' : null,
+          ineligibleReasonKey:
+            session.active === false ? 'connectors.bluesky.account_inactive' : null,
           accountAccessToken: null,
           metadata: { handle: session.handle, serviceUrl: serviceUrl(deps) },
         },
@@ -586,13 +593,10 @@ export function createBlueskyConnector(deps: ConnectorDeps): SocialConnector {
         try {
           const created = await createRecord(
             connection,
-            postRecord(
-              { ...draft, media: [], mentions: [] },
-              item.body,
-              [],
-              options,
-              { root: rootRef, parent },
-            ),
+            postRecord({ ...draft, media: [], mentions: [] }, item.body, [], options, {
+              root: rootRef,
+              parent,
+            }),
             'bluesky.create_reply',
           );
           parent = { uri: created.uri, cid: created.cid };

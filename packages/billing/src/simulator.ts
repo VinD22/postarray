@@ -455,9 +455,10 @@ export class LocalPolarSimulator implements PolarClient {
     record.canceledAt = this.now();
     if (atPeriodEnd) {
       record.cancelAtPeriodEnd = true;
-      record.endsAt = record.trialEnd !== null && record.status === 'trialing'
-        ? record.trialEnd
-        : record.currentPeriodEnd;
+      record.endsAt =
+        record.trialEnd !== null && record.status === 'trialing'
+          ? record.trialEnd
+          : record.currentPeriodEnd;
       this.touch(record);
       await this.emitSubscription('subscription.canceled', record);
     } else {
@@ -501,9 +502,7 @@ export class LocalPolarSimulator implements PolarClient {
     return this.toPolarSubscription(record);
   }
 
-  async createCustomerPortalSession(input: {
-    customerId: string;
-  }): Promise<PolarCustomerSession> {
+  async createCustomerPortalSession(input: { customerId: string }): Promise<PolarCustomerSession> {
     return polarCustomerSessionSchema.parse({
       id: this.nextId('cs'),
       token: this.nextId('token'),
@@ -530,7 +529,9 @@ export class LocalPolarSimulator implements PolarClient {
       .map((order) => this.toPolarOrder(order));
   }
 
-  async listBenefitGrants(input: { subscriptionId: string }): Promise<readonly PolarBenefitGrant[]> {
+  async listBenefitGrants(input: {
+    subscriptionId: string;
+  }): Promise<readonly PolarBenefitGrant[]> {
     return [...this.benefitGrants.values()].filter(
       (grant) => grant.subscriptionId === input.subscriptionId,
     );
@@ -694,16 +695,12 @@ export class LocalPolarSimulator implements PolarClient {
       if (record.endedAt !== null) {
         continue;
       }
-      if (
-        record.cancelAtPeriodEnd &&
-        record.endsAt !== null &&
-        isAtOrAfter(now, record.endsAt)
-      ) {
+      if (record.cancelAtPeriodEnd && record.endsAt !== null && isAtOrAfter(now, record.endsAt)) {
         record.status = 'canceled';
         record.endedAt = record.endsAt;
         this.touch(record);
         await this.emitSubscription('subscription.revoked', record);
-      await this.revokeBenefitGrants(record.id);
+        await this.revokeBenefitGrants(record.id);
         changes += 1;
         continue;
       }

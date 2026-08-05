@@ -34,12 +34,7 @@ export {
 export { Switch, type SwitchProps } from './switch.js';
 export { Slider, type SliderProps } from './slider.js';
 export { Label, type LabelProps } from './label.js';
-export {
-  Field,
-  useFieldControl,
-  type FieldProps,
-  type FieldControlProps,
-} from './field.js';
+export { Field, useFieldControl, type FieldProps, type FieldControlProps } from './field.js';
 export {
   Dialog,
   DialogTrigger,
@@ -67,13 +62,7 @@ export {
   type SheetContentProps,
   type SheetSide,
 } from './sheet.js';
-export {
-  Popover,
-  PopoverTrigger,
-  PopoverAnchor,
-  PopoverClose,
-  PopoverContent,
-} from './popover.js';
+export { Popover, PopoverTrigger, PopoverAnchor, PopoverClose, PopoverContent } from './popover.js';
 export {
   Tooltip,
   TooltipProvider,
@@ -99,12 +88,7 @@ export {
   type DropdownMenuItemProps,
 } from './dropdown-menu.js';
 export { Tabs, TabsList, TabsTrigger, TabsContent } from './tabs.js';
-export {
-  Accordion,
-  AccordionItem,
-  AccordionTrigger,
-  AccordionContent,
-} from './accordion.js';
+export { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from './accordion.js';
 export { Badge, badgeVariants, type BadgeProps } from './badge.js';
 export { StatusDot, type StatusDotProps, type StatusDotTone } from './status-dot.js';
 export { Avatar, type AvatarProps, type AvatarSize } from './avatar.js';
@@ -138,11 +122,7 @@ export {
   type TableCellProps,
   type TableSortDirection,
 } from './table.js';
-export {
-  Pagination,
-  type PaginationProps,
-  type PaginationMessages,
-} from './pagination.js';
+export { Pagination, type PaginationProps, type PaginationMessages } from './pagination.js';
 export { Breadcrumb, type BreadcrumbProps, type BreadcrumbItem } from './breadcrumb.js';
 export { Kbd, type KbdProps } from './kbd.js';
 export { Code, type CodeProps } from './code.js';

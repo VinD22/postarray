@@ -2,12 +2,7 @@
 
 import type { ReactNode } from 'react';
 import { Badge, Button } from '@relay/design-system/primitives';
-import {
-  DefinitionList,
-  EmptyState,
-  FreshnessLabel,
-  Notice,
-} from '@relay/design-system/patterns';
+import { DefinitionList, EmptyState, FreshnessLabel, Notice } from '@relay/design-system/patterns';
 import { useTranslations } from '@relay/i18n/react';
 import { MAX_TOOL_RECOMMENDATIONS, type GrowthPlan, type ToolRecord } from '@relay/contracts';
 import { ExternalLink } from 'lucide-react';
@@ -40,7 +35,7 @@ export function ToolRadarTab({ plan, records }: ToolRadarTabProps): ReactNode {
   return (
     <div className="flex flex-col gap-6">
       <div className="flex flex-col gap-2">
-        <p className="max-w-[68ch] text-body-md text-text-secondary">{t('growth.tools.help')}</p>
+        <p className="text-body-md text-text-secondary max-w-[68ch]">{t('growth.tools.help')}</p>
         <p className="text-body-sm text-text-tertiary">
           {t('growth.ui.tools.shown', {
             shown: recommendations.length,
@@ -91,9 +86,7 @@ export function ToolRadarTab({ plan, records }: ToolRadarTabProps): ReactNode {
                 </Button>
               }
               footnote={
-                record.affiliate.isAffiliate
-                  ? t('growth.tools.affiliateDisclosure')
-                  : undefined
+                record.affiliate.isAffiliate ? t('growth.tools.affiliateDisclosure') : undefined
               }
             >
               <DefinitionList
@@ -173,7 +166,7 @@ export function ToolRadarTab({ plan, records }: ToolRadarTabProps): ReactNode {
       )}
 
       <SettingsPanel title={t('billing.mediaGeneration.title')}>
-        <p className="max-w-[68ch] text-body-md text-text-secondary">
+        <p className="text-body-md text-text-secondary max-w-[68ch]">
           {t('billing.mediaGeneration.explanation')}
         </p>
       </SettingsPanel>

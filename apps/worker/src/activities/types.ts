@@ -175,12 +175,7 @@ export interface PublishTargetInput {
 }
 
 export type PublishOutcomeKind =
-  | 'published'
-  | 'processing'
-  | 'transient'
-  | 'action_required'
-  | 'permanent'
-  | 'unknown';
+  'published' | 'processing' | 'transient' | 'action_required' | 'permanent' | 'unknown';
 
 export interface PublishTargetResult {
   readonly outcome: PublishOutcomeKind;
@@ -554,12 +549,7 @@ export interface ReserveRuleExecutionInput {
 }
 
 export type RuleReservationVerdict =
-  | 'allowed'
-  | 'cooldown'
-  | 'expired'
-  | 'max_executions'
-  | 'duplicate_source'
-  | 'disabled';
+  'allowed' | 'cooldown' | 'expired' | 'max_executions' | 'duplicate_source' | 'disabled';
 
 export interface ReserveRuleExecutionResult {
   readonly verdict: RuleReservationVerdict;

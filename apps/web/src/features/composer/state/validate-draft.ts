@@ -49,10 +49,7 @@ export interface DraftFacts {
 }
 
 /** Every issue this target has right now, ordered blocking first. */
-export function validateTarget(
-  account: TargetAccount,
-  facts: DraftFacts,
-): ValidationIssue[] {
+export function validateTarget(account: TargetAccount, facts: DraftFacts): ValidationIssue[] {
   const snapshot = account.capabilities;
   const targetId = account.connectionId;
   const provider = account.provider;

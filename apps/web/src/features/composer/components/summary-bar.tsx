@@ -33,10 +33,10 @@ export function SummaryBar({ onOpenReview }: SummaryBarProps): ReactNode {
       role="region"
       className={cn(
         'sticky bottom-0 z-(--z-index-sticky) flex flex-wrap items-center gap-x-4 gap-y-1',
-        'border-t border-border-default bg-surface-raised px-4 py-2.5',
+        'border-border-default bg-surface-raised border-t px-4 py-2.5',
       )}
     >
-      <span className="text-label tabular-nums text-text-secondary">
+      <span className="text-label text-text-secondary tabular-nums">
         {t.full('composerWeb.summary.targets', { count: totals.targetCount })}
       </span>
 
@@ -53,7 +53,7 @@ export function SummaryBar({ onOpenReview }: SummaryBarProps): ReactNode {
         {t.full('composerWeb.summary.issues', { count: totals.issueCount })}
       </span>
 
-      <span className="text-label tabular-nums text-text-secondary">
+      <span className="text-label text-text-secondary tabular-nums">
         {schedule === null
           ? t.full('composerWeb.summary.notScheduled')
           : t.full('composerWeb.summary.scheduledFor', {
@@ -65,18 +65,13 @@ export function SummaryBar({ onOpenReview }: SummaryBarProps): ReactNode {
             })}
       </span>
 
-      <span className="text-label tabular-nums text-text-secondary">
+      <span className="text-label text-text-secondary tabular-nums">
         {totals.estimatedCostMinor === null || totals.costCurrency === null
           ? t.full('composerWeb.summary.costUnknown')
           : formatCurrency(t.locale, totals.estimatedCostMinor, totals.costCurrency)}
       </span>
 
-      <Button
-        variant="primary"
-        size="md"
-        className="ms-auto scroll-mb-24"
-        onClick={onOpenReview}
-      >
+      <Button variant="primary" size="md" className="ms-auto scroll-mb-24" onClick={onOpenReview}>
         {t.full('composerWeb.summary.openReview')}
       </Button>
     </div>

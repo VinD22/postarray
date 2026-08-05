@@ -54,8 +54,7 @@ export const errorMessages = {
   'error.trial_expired.action': 'Start the subscription to continue publishing.',
   'error.entitlement_missing.message': 'This workspace does not have access to that feature.',
   'error.entitlement_missing.action': 'Check the billing settings, or contact support.',
-  'error.channel_limit_reached.message':
-    'This workspace already uses all {limit} active channels.',
+  'error.channel_limit_reached.message': 'This workspace already uses all {limit} active channels.',
   'error.channel_limit_reached.action': 'Disconnect a channel before connecting another one.',
   'error.connection_not_found.message': 'That connection is no longer in this workspace.',
   'error.connection_not_found.action': 'Connect the account again to keep publishing to it.',
@@ -96,7 +95,8 @@ export const errorMessages = {
     'Change the text, or publish it later. Platforms restrict duplicate posts.',
   'error.cadence_limit_reached.message':
     '{account} has reached the posting cadence set for this workspace.',
-  'error.cadence_limit_reached.action': 'Schedule this for a later slot, or raise the cadence limit.',
+  'error.cadence_limit_reached.action':
+    'Schedule this for a later slot, or raise the cadence limit.',
   'error.media_invalid.message': 'This file cannot be published to {provider}.',
   'error.media_invalid.action': 'The exact limit is shown next to the file.',
   'error.media_too_large.message': 'This file is larger than {provider} accepts.',
@@ -114,15 +114,15 @@ export const errorMessages = {
   'error.approval_expired.action': 'Request approval again.',
   'error.schedule_in_past.message': 'That time has already passed in {timeZone}.',
   'error.schedule_in_past.action': 'Choose a later time, or publish now.',
-  'error.schedule_conflict.message':
-    '{account} already has a post within {duration} of this time.',
+  'error.schedule_conflict.message': '{account} already has a post within {duration} of this time.',
   'error.schedule_conflict.action': 'Move one of them, or continue if that spacing is intended.',
   'error.time_zone_invalid.message': 'We do not recognise the time zone {timeZone}.',
   'error.time_zone_invalid.action': 'Choose a zone from the list.',
   'error.destination_unavailable.message':
     'The destination {destination} is no longer available on {provider}.',
   'error.destination_unavailable.action': 'Refresh the destination list and choose another one.',
-  'error.mention_unresolved.message': 'A mention has not been matched to a real {provider} account.',
+  'error.mention_unresolved.message':
+    'A mention has not been matched to a real {provider} account.',
   'error.mention_unresolved.action':
     'Search and select the account, or remove the mention. We never publish a fake native tag.',
   'error.provider_transient.message': '{provider} could not process this right now.',
@@ -145,12 +145,14 @@ export const errorMessages = {
   'error.short_link_domain_unverified.message': 'The domain {domain} is not verified yet.',
   'error.short_link_domain_unverified.action': 'Add the DNS record shown in settings, then verify.',
   'error.rss_feed_invalid.message': 'That URL did not return a valid RSS or Atom feed.',
-  'error.rss_feed_invalid.action': 'Check the address. We fetch it safely and follow no private redirects.',
+  'error.rss_feed_invalid.action':
+    'Check the address. We fetch it safely and follow no private redirects.',
   'error.webhook_signature_invalid.message': 'The signature on that webhook did not verify.',
   'error.webhook_signature_invalid.action':
     'Check that the sender uses the current signing secret. The payload was not processed.',
   'error.webhook_delivery_failed.message': 'Delivery to {endpoint} failed.',
-  'error.webhook_delivery_failed.action': 'We retry with backoff. The delivery log has the response.',
+  'error.webhook_delivery_failed.action':
+    'We retry with backoff. The delivery log has the response.',
   'error.automation_rule_not_permitted.message':
     'That rule would break a platform rule, so it cannot be created.',
   'error.automation_rule_not_permitted.action':
@@ -160,7 +162,8 @@ export const errorMessages = {
   'error.ai_output_invalid.message': 'The assistant returned something we could not validate.',
   'error.ai_output_invalid.action': 'Nothing was applied to your draft. Try again.',
   'error.ai_budget_exceeded.message': 'This workspace reached its assistant limit for now.',
-  'error.ai_budget_exceeded.action': 'The limit resets {relativeTime}. Writing by hand still works.',
+  'error.ai_budget_exceeded.action':
+    'The limit resets {relativeTime}. Writing by hand still works.',
   'error.storage_unavailable.message': 'We could not reach media storage.',
   'error.storage_unavailable.action': 'Your text is saved. Try the upload again in a moment.',
   'error.export_unavailable.message': 'That export could not be produced.',

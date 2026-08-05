@@ -548,10 +548,7 @@ export async function runCli(argv: readonly string[], deps: CliDeps): Promise<Ru
       return { exitCode: error.exitCode === 0 ? EXIT_OK : EXIT_USAGE };
     }
     const relayError = RelayError.fromUnknown(error);
-    renderFailure(
-      { command: 'relay', json: state.json, writer },
-      relayError,
-    );
+    renderFailure({ command: 'relay', json: state.json, writer }, relayError);
     return { exitCode: exitCodeFor(relayError.code) };
   }
 }

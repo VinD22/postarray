@@ -35,7 +35,7 @@ export function HelpMenu({ onOpenShortcuts }: { readonly onOpenShortcuts: () => 
     <DropdownMenu>
       <DropdownMenuTrigger
         aria-label={t('nav.help')}
-        className="flex size-11 items-center justify-center rounded-md text-text-secondary hover:bg-surface-hover hover:text-text-primary md:size-9"
+        className="text-text-secondary hover:bg-surface-hover hover:text-text-primary flex size-11 items-center justify-center rounded-md md:size-9"
       >
         <CircleHelp aria-hidden="true" className="size-4" />
       </DropdownMenuTrigger>
@@ -53,7 +53,7 @@ export function HelpMenu({ onOpenShortcuts }: { readonly onOpenShortcuts: () => 
           <DropdownMenuItem key={link.id} asChild>
             <a href={link.href} target="_blank" rel="noreferrer noopener">
               <span className="flex-1">{t(link.labelKey)}</span>
-              <ExternalLink aria-hidden="true" className="size-3.5 text-text-tertiary" />
+              <ExternalLink aria-hidden="true" className="text-text-tertiary size-3.5" />
               <span className="sr-only">{t('a11y.label.externalLink')}</span>
             </a>
           </DropdownMenuItem>

@@ -39,10 +39,7 @@ export function healthTone(health: ConnectionHealth): HealthTone {
  * Instagram app before reconnecting can possibly work, and telling somebody to
  * "reconnect" first wastes their time and produces the same failure twice.
  */
-export function remediationKey(
-  health: ConnectionHealth,
-  provider: ProviderId,
-): string | null {
+export function remediationKey(health: ConnectionHealth, provider: ProviderId): string | null {
   switch (health) {
     case 'expired':
     case 'revoked':
@@ -87,10 +84,7 @@ export function remediationAction(health: ConnectionHealth): RemediationAction {
  * not fine. Saying "Working" about something we cannot check is exactly the
  * kind of confident wrongness that costs somebody a launch post.
  */
-export function deriveHealth(
-  expiresAt: string | null,
-  now: Date = new Date(),
-): ConnectionHealth {
+export function deriveHealth(expiresAt: string | null, now: Date = new Date()): ConnectionHealth {
   if (expiresAt === null) return 'unknown';
   const remainingMs = new Date(expiresAt).getTime() - now.getTime();
   if (Number.isNaN(remainingMs)) return 'unknown';

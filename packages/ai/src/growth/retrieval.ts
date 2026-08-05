@@ -107,7 +107,9 @@ export function buildGrowthContext(input: GrowthContextInput): GrowthPlanContext
   const activeOpportunities = input.opportunities.filter(isCustomerVisible);
   const activeTools = input.tools.filter(isCustomerVisible);
   const excluded = [
-    ...input.opportunities.filter((record) => !isCustomerVisible(record)).map((record) => record.id),
+    ...input.opportunities
+      .filter((record) => !isCustomerVisible(record))
+      .map((record) => record.id),
     ...input.tools.filter((record) => !isCustomerVisible(record)).map((record) => record.id),
   ];
 

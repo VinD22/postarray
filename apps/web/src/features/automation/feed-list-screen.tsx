@@ -2,11 +2,7 @@
 
 import type { ReactElement } from 'react';
 import { useRouter } from 'next/navigation';
-import {
-  EmptyState,
-  LoadingState,
-  SkeletonList,
-} from '@relay/design-system/patterns';
+import { EmptyState, LoadingState, SkeletonList } from '@relay/design-system/patterns';
 import { Badge, Button } from '@relay/design-system/primitives';
 import { useTranslations } from '@relay/i18n/react';
 
@@ -68,9 +64,7 @@ export function FeedListScreen(): ReactElement {
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div className="flex max-w-[70ch] flex-col gap-1">
           <h2 className="text-title-md text-text-primary">{t('automation.rss.title')}</h2>
-          <p className="text-body-md text-text-secondary">
-            {t('automation.rss.subtitle')}
-          </p>
+          <p className="text-body-md text-text-secondary">{t('automation.rss.subtitle')}</p>
         </div>
         <Button variant="primary" onClick={() => router.push('/automation/rss/new')}>
           {t('automation.rss.add')}
@@ -111,18 +105,16 @@ export function FeedListScreen(): ReactElement {
           }
         />
       ) : (
-        <ul className="flex flex-col border-t border-border-subtle">
+        <ul className="border-border-subtle flex flex-col border-t">
           {feeds.data.map((feed) => (
-            <li key={feed.id} className="border-b border-border-subtle py-3">
+            <li key={feed.id} className="border-border-subtle border-b py-3">
               <button
                 type="button"
                 className="flex min-h-11 w-full flex-col items-start gap-1 text-start"
                 onClick={() => router.push(`/automation/rss/${feed.id}`)}
               >
                 <span className="text-body-lg text-text-primary">{feed.title}</span>
-                <span className="w-full truncate text-body-sm text-text-secondary">
-                  {feed.url}
-                </span>
+                <span className="text-body-sm text-text-secondary w-full truncate">{feed.url}</span>
                 <span className="flex flex-wrap items-center gap-2 pt-1">
                   <Badge tone={HEALTH_TONE[feed.health]}>
                     {healthLabel(feed.health, feed.lastNewItemAt)}

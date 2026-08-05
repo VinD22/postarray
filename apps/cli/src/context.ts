@@ -42,12 +42,10 @@ export interface Clock {
   now(): number;
 }
 
-// eslint-disable-next-line no-restricted-globals -- the one real clock in the CLI.
 export const systemClock: Clock = { now: () => Date.now() };
 
 /** ISO instant for an epoch millisecond value. */
 export function toIsoInstant(epochMs: number): string {
-  // eslint-disable-next-line no-restricted-globals -- formatting only.
   return new Date(epochMs).toISOString();
 }
 
@@ -113,13 +111,9 @@ function requireApiUrl(candidate: string | undefined): string {
   }
 }
 
-export async function createContext(
-  options: GlobalOptions,
-  deps: CliDeps,
-): Promise<CliContext> {
+export async function createContext(options: GlobalOptions, deps: CliDeps): Promise<CliContext> {
   const config = await deps.configStore.read();
-  const profileName =
-    options.profile ?? deps.env.RELAY_PROFILE ?? config.defaultProfile;
+  const profileName = options.profile ?? deps.env.RELAY_PROFILE ?? config.defaultProfile;
   const { profile } = resolveProfile(config, profileName);
   const credential = await deps.credentialStore.get(profileName);
 

@@ -42,11 +42,7 @@ export {
   type DefinitionListProps,
   type DefinitionItem,
 } from './definition-list.js';
-export {
-  MetricValue,
-  type MetricValueProps,
-  type MetricAvailability,
-} from './metric-value.js';
+export { MetricValue, type MetricValueProps, type MetricAvailability } from './metric-value.js';
 export {
   FreshnessLabel,
   type FreshnessLabelProps,

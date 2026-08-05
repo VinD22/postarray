@@ -36,9 +36,7 @@ export function BaselineDelta({ baseline }: BaselineDeltaProps): ReactElement {
   if (baseline === null) {
     return (
       <div className="flex min-w-0 flex-col gap-0.5">
-        <p className="text-body-md text-text-secondary">
-          {t('analytics.table.noBaseline')}
-        </p>
+        <p className="text-body-md text-text-secondary">{t('analytics.table.noBaseline')}</p>
         <p className="text-body-sm text-text-tertiary">
           {t('analytics.table.noBaselineReason', { required: MINIMUM_BASELINE_SAMPLE })}
         </p>
@@ -67,7 +65,7 @@ export function BaselineDelta({ baseline }: BaselineDeltaProps): ReactElement {
       <p className="text-body-sm text-text-tertiary tabular-nums">
         {t('analytics.table.sampleSize', { count: baseline.sampleSize })}
         {baseline.smallSample ? (
-          <span className="ps-2 text-warning-fg">
+          <span className="text-warning-fg ps-2">
             {t('analytics.evidence.smallSample', { count: baseline.sampleSize })}
           </span>
         ) : null}

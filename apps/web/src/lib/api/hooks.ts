@@ -42,10 +42,9 @@ import type {
    Reads
    ------------------------------------------------------------------------- */
 
-export function useConnections(filter: { brandId?: string; provider?: ProviderId } = {}): UseQueryResult<
-  Paginated<ConnectionView>,
-  ApiError
-> {
+export function useConnections(
+  filter: { brandId?: string; provider?: ProviderId } = {},
+): UseQueryResult<Paginated<ConnectionView>, ApiError> {
   const workspaceId = useWorkspaceId();
   return useQuery({
     queryKey: keys.connections(workspaceId, filter),
@@ -87,7 +86,9 @@ export function useCalendar(range: {
   });
 }
 
-export function useRecentReceipts(limit = 5): UseQueryResult<Paginated<ReceiptSummaryView>, ApiError> {
+export function useRecentReceipts(
+  limit = 5,
+): UseQueryResult<Paginated<ReceiptSummaryView>, ApiError> {
   const workspaceId = useWorkspaceId();
   return useQuery({
     queryKey: [...keys.receipts(workspaceId), limit],

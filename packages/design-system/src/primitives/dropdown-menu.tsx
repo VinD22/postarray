@@ -52,8 +52,7 @@ export const DropdownMenuContent = forwardRef<
   );
 });
 
-export interface DropdownMenuItemProps
-  extends ComponentPropsWithoutRef<typeof MenuPrimitive.Item> {
+export interface DropdownMenuItemProps extends ComponentPropsWithoutRef<typeof MenuPrimitive.Item> {
   destructive?: boolean;
   /** Shown at the inline end. Use the Kbd primitive. */
   shortcut?: ReactNode;
@@ -85,14 +84,10 @@ export const DropdownMenuCheckboxItem = forwardRef<
   ComponentPropsWithoutRef<typeof MenuPrimitive.CheckboxItem>
 >(function DropdownMenuCheckboxItem({ className, children, ...props }, ref) {
   return (
-    <MenuPrimitive.CheckboxItem
-      ref={ref}
-      className={cn(itemClasses, 'ps-7', className)}
-      {...props}
-    >
+    <MenuPrimitive.CheckboxItem ref={ref} className={cn(itemClasses, 'ps-7', className)} {...props}>
       <span className="absolute start-2 flex size-4 items-center justify-center">
         <MenuPrimitive.ItemIndicator>
-          <Check aria-hidden="true" className="size-3.5 text-accent" />
+          <Check aria-hidden="true" className="text-accent size-3.5" />
         </MenuPrimitive.ItemIndicator>
       </span>
       {children}
@@ -105,14 +100,10 @@ export const DropdownMenuRadioItem = forwardRef<
   ComponentPropsWithoutRef<typeof MenuPrimitive.RadioItem>
 >(function DropdownMenuRadioItem({ className, children, ...props }, ref) {
   return (
-    <MenuPrimitive.RadioItem
-      ref={ref}
-      className={cn(itemClasses, 'ps-7', className)}
-      {...props}
-    >
+    <MenuPrimitive.RadioItem ref={ref} className={cn(itemClasses, 'ps-7', className)} {...props}>
       <span className="absolute start-2 flex size-4 items-center justify-center">
         <MenuPrimitive.ItemIndicator>
-          <Circle aria-hidden="true" className="size-2 fill-current text-accent" />
+          <Circle aria-hidden="true" className="text-accent size-2 fill-current" />
         </MenuPrimitive.ItemIndicator>
       </span>
       {children}
@@ -127,7 +118,7 @@ export const DropdownMenuLabel = forwardRef<
   return (
     <MenuPrimitive.Label
       ref={ref}
-      className={cn('px-2 py-1.5 text-label text-text-tertiary', className)}
+      className={cn('text-label text-text-tertiary px-2 py-1.5', className)}
       {...props}
     />
   );
@@ -140,7 +131,7 @@ export const DropdownMenuSeparator = forwardRef<
   return (
     <MenuPrimitive.Separator
       ref={ref}
-      className={cn('my-1 h-px bg-border-subtle', className)}
+      className={cn('bg-border-subtle my-1 h-px', className)}
       {...props}
     />
   );
@@ -168,11 +159,7 @@ export const DropdownMenuSubContent = forwardRef<
 >(function DropdownMenuSubContent({ className, ...props }, ref) {
   return (
     <MenuPrimitive.Portal>
-      <MenuPrimitive.SubContent
-        ref={ref}
-        className={cn(contentClasses, className)}
-        {...props}
-      />
+      <MenuPrimitive.SubContent ref={ref} className={cn(contentClasses, className)} {...props} />
     </MenuPrimitive.Portal>
   );
 });

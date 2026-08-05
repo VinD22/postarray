@@ -408,13 +408,11 @@
 
   /* --- Typography -------------------------------------------------------- */
   --font-sans:
-    'Inter Variable', 'Inter', ui-sans-serif, system-ui, -apple-system,
-    'Segoe UI', 'Noto Sans', 'Noto Sans Arabic', 'Noto Sans Hebrew',
-    'Noto Sans JP', 'Noto Sans KR', 'Noto Sans SC', sans-serif;
+    'Inter Variable', 'Inter', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', 'Noto Sans',
+    'Noto Sans Arabic', 'Noto Sans Hebrew', 'Noto Sans JP', 'Noto Sans KR', 'Noto Sans SC',
+    sans-serif;
   --font-serif: 'Source Serif 4', 'Iowan Old Style', Georgia, serif;
-  --font-mono:
-    'JetBrains Mono', ui-monospace, 'SFMono-Regular', 'Menlo', 'Consolas',
-    monospace;
+  --font-mono: 'JetBrains Mono', ui-monospace, 'SFMono-Regular', 'Menlo', 'Consolas', monospace;
 
   /* A closed scale. Nine steps, each with a line height and tracking. */
   --text-display: 2.5rem; /* 40px */
@@ -668,13 +666,11 @@
   }
 
   .relay-anim-enter-overlay {
-    animation: relay-slide-in-block-start var(--duration-base)
-      var(--ease-entrance);
+    animation: relay-slide-in-block-start var(--duration-base) var(--ease-entrance);
   }
 
   .relay-anim-enter-toast {
-    animation: relay-slide-in-inline-end var(--duration-base)
-      var(--ease-entrance);
+    animation: relay-slide-in-inline-end var(--duration-base) var(--ease-entrance);
   }
 
   /* RTL: the toast enters from the inline end, whichever side that is. */

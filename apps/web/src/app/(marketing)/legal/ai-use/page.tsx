@@ -26,7 +26,7 @@ export default function AiUsePage(): ReactNode {
         'web.legal.ai.features.feedback',
       ],
       content: (
-        <p className="max-w-[70ch] text-body-lg leading-[1.68] text-text-secondary">
+        <p className="text-body-lg text-text-secondary max-w-[70ch] leading-[1.68]">
           {t.t('web.legal.ai.features.provider')}
         </p>
       ),

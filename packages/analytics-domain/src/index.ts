@@ -52,12 +52,7 @@ export {
   supportedMetrics,
 } from './registry.js';
 
-export {
-  findMetric,
-  normalizeMetrics,
-  presentMetrics,
-  unavailableByReason,
-} from './normalize.js';
+export { findMetric, normalizeMetrics, presentMetrics, unavailableByReason } from './normalize.js';
 export type { NormalizeInput } from './normalize.js';
 
 export {

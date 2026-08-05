@@ -77,4 +77,9 @@ export {
 
 export { refreshOAuth2Token, type OAuth2RefreshInput } from '../../oauth.js';
 
-export { SecretValue, type ConnectorVault, type CredentialRef, type SecretHandle } from '../../vault.js';
+export {
+  SecretValue,
+  type ConnectorVault,
+  type CredentialRef,
+  type SecretHandle,
+} from '../../vault.js';

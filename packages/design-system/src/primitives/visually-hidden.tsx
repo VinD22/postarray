@@ -11,19 +11,18 @@ import { cn } from '../utils/cn.js';
  * also carried by colour and icon. Never use it to hide information that a
  * sighted user needs.
  */
-export const VisuallyHidden = forwardRef<
-  HTMLSpanElement,
-  ComponentPropsWithoutRef<'span'>
->(function VisuallyHidden({ className, ...props }, ref) {
-  return (
-    <span
-      ref={ref}
-      className={cn(
-        'absolute m-[-1px] h-px w-px overflow-hidden whitespace-nowrap border-0 p-0',
-        '[clip-path:inset(50%)]',
-        className,
-      )}
-      {...props}
-    />
-  );
-});
+export const VisuallyHidden = forwardRef<HTMLSpanElement, ComponentPropsWithoutRef<'span'>>(
+  function VisuallyHidden({ className, ...props }, ref) {
+    return (
+      <span
+        ref={ref}
+        className={cn(
+          'absolute m-[-1px] h-px w-px overflow-hidden border-0 p-0 whitespace-nowrap',
+          '[clip-path:inset(50%)]',
+          className,
+        )}
+        {...props}
+      />
+    );
+  },
+);

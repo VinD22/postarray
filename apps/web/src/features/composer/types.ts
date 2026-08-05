@@ -60,13 +60,7 @@ export interface SignatureOption {
  * `not_built` and `unsupported` are never merged.
  */
 export type TargetRailState =
-  | 'inherits'
-  | 'override'
-  | 'issue'
-  | 'blocked'
-  | 'needs_approval'
-  | 'not_built'
-  | 'unsupported';
+  'inherits' | 'override' | 'issue' | 'blocked' | 'needs_approval' | 'not_built' | 'unsupported';
 
 /** Everything the rail row and the review list need for one target. */
 export interface TargetSummary {
@@ -146,11 +140,7 @@ export interface ComposerState {
 
 /** The verbs the assistant offers. There is no image or video action here. */
 export type AssistAction =
-  | 'make_concise'
-  | 'adapt_for_platform'
-  | 'transcreate'
-  | 'check_claims'
-  | 'write_alt_text';
+  'make_concise' | 'adapt_for_platform' | 'transcreate' | 'check_claims' | 'write_alt_text';
 
 export interface AssistProposal {
   readonly action: AssistAction;

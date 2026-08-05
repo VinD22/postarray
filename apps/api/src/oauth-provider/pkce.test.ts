@@ -76,7 +76,9 @@ describe('redirect URI matching', () => {
   });
 
   it('resolves against a list and returns null when nothing matches', () => {
-    expect(resolveRedirectUri(registered, ['https://other.example/cb', registered])).toBe(registered);
+    expect(resolveRedirectUri(registered, ['https://other.example/cb', registered])).toBe(
+      registered,
+    );
     expect(resolveRedirectUri('https://nope.example/cb', [registered])).toBeNull();
   });
 });

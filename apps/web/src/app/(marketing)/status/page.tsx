@@ -3,7 +3,14 @@ import type { ReactNode } from 'react';
 import { EmptyState, Notice } from '@relay/design-system/patterns';
 import { StatusDot, type StatusDotTone } from '@relay/design-system/primitives';
 
-import { Body, Container, Heading, Meta, Section, Split } from '@/features/marketing/components/layout';
+import {
+  Body,
+  Container,
+  Heading,
+  Meta,
+  Section,
+  Split,
+} from '@/features/marketing/components/layout';
 import { TextLink } from '@/features/marketing/components/links';
 import { CorrectionNotice, PageIntro } from '@/features/marketing/components/page-parts';
 import { CapabilityMatrixSummary } from '@/features/marketing/components/connector-status';
@@ -62,14 +69,14 @@ export default function StatusPage(): ReactNode {
             </div>
           }
         >
-          <dl className="border-t border-border-default">
+          <dl className="border-border-default border-t">
             {SURFACE_STATUS.map((entry) => (
               <div
                 key={entry.id}
-                className="flex flex-wrap items-baseline justify-between gap-x-8 gap-y-1 border-b border-border-subtle py-4"
+                className="border-border-subtle flex flex-wrap items-baseline justify-between gap-x-8 gap-y-1 border-b py-4"
               >
                 <dt className="text-body-lg text-text-primary">{t.format(entry.nameKey)}</dt>
-                <dd className="flex items-center gap-2 text-body-md text-text-secondary">
+                <dd className="text-body-md text-text-secondary flex items-center gap-2">
                   <StatusDot aria-hidden="true" tone={LEVEL_TONE[entry.level]} />
                   {t.format(STATUS_LEVEL_LABEL_KEY[entry.level])}
                 </dd>
@@ -104,9 +111,9 @@ export default function StatusPage(): ReactNode {
               example={t.t('web.status.incident.followUp')}
             />
           ) : (
-            <ol className="border-t border-border-default">
+            <ol className="border-border-default border-t">
               {INCIDENTS.map((incident) => (
-                <li key={incident.id} className="space-y-2 border-b border-border-subtle py-6">
+                <li key={incident.id} className="border-border-subtle space-y-2 border-b py-6">
                   <h3 className="text-title-sm text-text-primary">{incident.title}</h3>
                   <p className="flex flex-wrap gap-x-6 gap-y-1">
                     <Meta>
@@ -122,21 +129,21 @@ export default function StatusPage(): ReactNode {
                       </Meta>
                     ) : null}
                   </p>
-                  <dl className="space-y-1 text-body-md text-text-secondary">
+                  <dl className="text-body-md text-text-secondary space-y-1">
                     <div>
-                      <dt className="inline text-text-tertiary">
+                      <dt className="text-text-tertiary inline">
                         {t.t('web.status.incident.impact')}
                       </dt>{' '}
                       <dd className="inline">{incident.impact}</dd>
                     </div>
                     <div>
-                      <dt className="inline text-text-tertiary">
+                      <dt className="text-text-tertiary inline">
                         {t.t('web.status.incident.cause')}
                       </dt>{' '}
                       <dd className="inline">{incident.cause}</dd>
                     </div>
                     <div>
-                      <dt className="inline text-text-tertiary">
+                      <dt className="text-text-tertiary inline">
                         {t.t('web.status.incident.followUp')}
                       </dt>{' '}
                       <dd className="inline">{incident.followUp}</dd>

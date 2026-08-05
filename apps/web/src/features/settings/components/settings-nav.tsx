@@ -24,8 +24,8 @@ export function SettingsNav(): ReactNode {
     <nav
       aria-label={t('settings.ui.nav.label')}
       className={cn(
-        'relay-scrollbar border-b border-border-subtle bg-surface-canvas',
-        'lg:sticky lg:top-0 lg:h-fit lg:border-b-0 lg:border-e lg:border-border-subtle',
+        'relay-scrollbar border-border-subtle bg-surface-canvas border-b',
+        'lg:border-border-subtle lg:sticky lg:top-0 lg:h-fit lg:border-e lg:border-b-0',
         'lg:w-60 lg:shrink-0 lg:self-start lg:py-4',
       )}
     >
@@ -43,7 +43,7 @@ export function SettingsNav(): ReactNode {
                 href={section.href}
                 aria-current={active ? 'page' : undefined}
                 className={cn(
-                  'flex min-h-11 items-center rounded-md px-3 py-2 text-body-md',
+                  'text-body-md flex min-h-11 items-center rounded-md px-3 py-2',
                   'whitespace-nowrap lg:whitespace-normal',
                   'text-text-secondary hover:bg-surface-hover hover:text-text-primary',
                   'focus-visible:outline-2 focus-visible:outline-offset-2',
@@ -51,7 +51,7 @@ export function SettingsNav(): ReactNode {
                   'transition-colors duration-[--duration-fast] ease-[--ease-standard]',
                   'motion-reduce:transition-none',
                   active &&
-                    'bg-accent-subtle font-medium text-text-accent hover:bg-accent-subtle-hover',
+                    'bg-accent-subtle text-text-accent hover:bg-accent-subtle-hover font-medium',
                 )}
               >
                 {t(section.titleKey)}

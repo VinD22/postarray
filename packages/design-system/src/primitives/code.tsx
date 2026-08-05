@@ -26,10 +26,10 @@ export const Code = forwardRef<HTMLElement, CodeProps>(function Code(
       ref={ref}
       dir="ltr"
       className={cn(
-        'font-mono text-code [unicode-bidi:isolate]',
+        'text-code font-mono [unicode-bidi:isolate]',
         block
-          ? 'block whitespace-pre p-3'
-          : 'rounded-xs border border-border-subtle bg-surface-sunken px-1 py-0.5',
+          ? 'block p-3 whitespace-pre'
+          : 'border-border-subtle bg-surface-sunken rounded-xs border px-1 py-0.5',
         className,
       )}
       {...props}
@@ -39,7 +39,7 @@ export const Code = forwardRef<HTMLElement, CodeProps>(function Code(
   if (!block) return element;
 
   return (
-    <pre className="relay-scrollbar overflow-x-auto rounded-md border border-border-default bg-surface-sunken text-text-primary">
+    <pre className="relay-scrollbar border-border-default bg-surface-sunken text-text-primary overflow-x-auto rounded-md border">
       {element}
     </pre>
   );

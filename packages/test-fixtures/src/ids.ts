@@ -75,11 +75,7 @@ export interface FixtureIdOptions {
  * `fixtureId('workspace', 'acme')` is the same string on every machine and in
  * every run, so a golden file can contain it and a diff stays readable.
  */
-export function fixtureId(
-  entity: IdEntity,
-  seed: string,
-  options: FixtureIdOptions = {},
-): string {
+export function fixtureId(entity: IdEntity, seed: string, options: FixtureIdOptions = {}): string {
   const prefix = ID_PREFIXES[entity];
   const timestamp = BigInt(FIXTURE_EPOCH_MS + (options.offsetMs ?? 0));
   const entropy = fnv1a64(`${prefix}:${seed}`) & ENTROPY_MASK;

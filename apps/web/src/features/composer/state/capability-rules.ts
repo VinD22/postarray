@@ -185,7 +185,10 @@ export function checkSequenceCompatibility(
 export function adaptBodyFor(body: string, snapshot: CapabilitySnapshot): string {
   let candidate = body;
   if (!allowsLinkInBody(snapshot)) {
-    candidate = candidate.replace(URL_PATTERN, '').replace(/[ \t]{2,}/g, ' ').trim();
+    candidate = candidate
+      .replace(URL_PATTERN, '')
+      .replace(/[ \t]{2,}/g, ' ')
+      .trim();
   }
   if (!snapshot.text.supportsMarkdown) {
     candidate = candidate.replace(/\*\*|__/g, '').replace(/^#{1,6}\s/gm, '');
@@ -222,8 +225,6 @@ export function appendUtm(url: string, utm: LinkSpec['utm']): string {
     return url;
   }
   const separator = url.includes('?') ? '&' : '?';
-  const query = entries
-    .map(([key, value]) => `utm_${key}=${encodeURIComponent(value)}`)
-    .join('&');
+  const query = entries.map(([key, value]) => `utm_${key}=${encodeURIComponent(value)}`).join('&');
   return `${url}${separator}${query}`;
 }

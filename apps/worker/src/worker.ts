@@ -98,7 +98,8 @@ async function connectToTemporal(config: RelayConfig): Promise<NativeConnection>
 export async function startWorker(options: WorkerStartOptions): Promise<RunningWorker> {
   const config = options.config ?? loadConfigFor(WORKER_SERVICE_NAME);
   const logger =
-    options.logger ?? createLogger({ service: WORKER_SERVICE_NAME }, { level: config.core.logLevel });
+    options.logger ??
+    createLogger({ service: WORKER_SERVICE_NAME }, { level: config.core.logLevel });
   const activities: WorkerActivities = createActivities({
     gateway: options.gateway,
     logger,
@@ -106,9 +107,7 @@ export async function startWorker(options: WorkerStartOptions): Promise<RunningW
   });
   const taskQueue = config.temporal.taskQueue;
   const capabilities = detectCapabilities(config);
-  const allowFallback = config.core.isProduction
-    ? false
-    : (options.allowInlineFallback ?? true);
+  const allowFallback = config.core.isProduction ? false : (options.allowInlineFallback ?? true);
 
   const checks: HealthCheck[] = [];
 
@@ -123,7 +122,9 @@ export async function startWorker(options: WorkerStartOptions): Promise<RunningW
 
   if (connection === null) {
     if (!allowFallback) {
-      throw new Error(`Temporal is unreachable and the inline fallback is not permitted: ${failure ?? 'unknown'}`);
+      throw new Error(
+        `Temporal is unreachable and the inline fallback is not permitted: ${failure ?? 'unknown'}`,
+      );
     }
     const scheduler = new InlineScheduler({
       activities,

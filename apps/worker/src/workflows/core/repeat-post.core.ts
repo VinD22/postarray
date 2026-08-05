@@ -2,10 +2,7 @@ import type { WorkerActivities } from '../../activities/types.js';
 import { MESSAGE_KEYS } from '../../messages.js';
 import { parseInstant, toIsoInstant } from '../../runtime/deterministic.js';
 import type { ChildWorkflowDescriptor, WorkflowRuntime } from '../../runtime/types.js';
-import type {
-  RepeatPostWorkflowInput,
-  RepeatPostWorkflowOutput,
-} from '../inputs.js';
+import type { RepeatPostWorkflowInput, RepeatPostWorkflowOutput } from '../inputs.js';
 
 import { publishPostDescriptor } from './publish-post.core.js';
 

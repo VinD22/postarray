@@ -18,7 +18,10 @@ export interface RuleView {
   readonly name: string;
   readonly enabled: boolean;
   readonly state: 'draft' | 'running' | 'paused' | 'killed';
-  readonly trigger: { readonly kind: RuleTriggerKind; readonly config: Readonly<Record<string, unknown>> };
+  readonly trigger: {
+    readonly kind: RuleTriggerKind;
+    readonly config: Readonly<Record<string, unknown>>;
+  };
   readonly conditions: readonly {
     readonly kind: RuleConditionKind;
     readonly config: Readonly<Record<string, unknown>>;
@@ -123,7 +126,8 @@ export const automationRulesApi = {
   listRuns: (
     ruleId: string,
     query: { cursor?: string; limit?: number } = {},
-  ): Promise<Paginated<RuleRunView>> => call(`/rules/${ruleId}/runs`, { query }, () => page<RuleRunView>([])),
+  ): Promise<Paginated<RuleRunView>> =>
+    call(`/rules/${ruleId}/runs`, { query }, () => page<RuleRunView>([])),
 };
 
 export interface FeedView {
@@ -161,12 +165,15 @@ export interface FeedInput {
 }
 
 export const rssApi = {
-  validateFeed: (input: { url: string }): Promise<{
+  validateFeed: (input: {
+    url: string;
+  }): Promise<{
     valid: boolean;
     itemCount: number;
     latestItemAt: string | null;
     problemKey: string | null;
-  } | null> => call('/rss/validate', { method: 'POST', body: input, sideEffectFree: true }, () => null),
+  } | null> =>
+    call('/rss/validate', { method: 'POST', body: input, sideEffectFree: true }, () => null),
   create: (input: FeedInput, idempotencyKey: string): Promise<FeedView | null> =>
     call('/rss', { method: 'POST', body: input, idempotencyKey }, () => null),
   update: (feedId: string, input: Partial<FeedInput>): Promise<FeedView | null> =>

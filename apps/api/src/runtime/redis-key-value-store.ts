@@ -119,10 +119,7 @@ export class RedisKeyValueStore implements DisconnectableKeyValueStore {
    * per-replica approximation of "this key was already used" is how a retry
    * publishes twice.
    */
-  static async connect(
-    config: RelayConfig,
-    logger: Logger,
-  ): Promise<DisconnectableKeyValueStore> {
+  static async connect(config: RelayConfig, logger: Logger): Promise<DisconnectableKeyValueStore> {
     const url = config.redis.url;
     if (url === undefined) {
       if (config.core.isProduction) {

@@ -38,7 +38,8 @@ const BRANDED: ReadonlySet<ProviderId> = new Set<ProviderId>([
   'bluesky',
 ]);
 
-type BrandedProvider = 'x' | 'linkedin' | 'instagram' | 'facebook' | 'youtube' | 'tiktok' | 'threads' | 'bluesky';
+type BrandedProvider =
+  'x' | 'linkedin' | 'instagram' | 'facebook' | 'youtube' | 'tiktok' | 'threads' | 'bluesky';
 
 export interface ProviderIdentityProps {
   readonly provider: ProviderId;
@@ -70,12 +71,12 @@ export function ProviderIdentity({
   return (
     <span className={cn('flex min-w-0 items-center gap-2', className)}>
       {dot}
-      <span className="min-w-0 truncate text-body-md text-text-primary">{accountName}</span>
+      <span className="text-body-md text-text-primary min-w-0 truncate">{accountName}</span>
       {handle ? (
-        <span className="min-w-0 truncate text-body-sm text-text-tertiary">{handle}</span>
+        <span className="text-body-sm text-text-tertiary min-w-0 truncate">{handle}</span>
       ) : null}
       {hideProviderName ? null : (
-        <span className="shrink-0 text-label text-text-tertiary">{name}</span>
+        <span className="text-label text-text-tertiary shrink-0">{name}</span>
       )}
     </span>
   );

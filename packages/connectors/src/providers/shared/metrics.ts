@@ -129,8 +129,6 @@ export function allUnavailable(
 }
 
 /** The normalized names a mapping table covers, for the capability snapshot. */
-export function normalizedNames(
-  mappings: readonly MetricFieldMapping[],
-): NormalizedMetricName[] {
+export function normalizedNames(mappings: readonly MetricFieldMapping[]): NormalizedMetricName[] {
   return [...new Set(mappings.map((mapping) => mapping.normalizedName))];
 }

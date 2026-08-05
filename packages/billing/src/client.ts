@@ -108,7 +108,10 @@ export interface PolarClient {
     returnUrl?: string;
   }): Promise<PolarCustomerSession>;
   getOrder(orderId: string): Promise<PolarOrder | null>;
-  listOrders(input: { subscriptionId?: string; customerId?: string }): Promise<readonly PolarOrder[]>;
+  listOrders(input: {
+    subscriptionId?: string;
+    customerId?: string;
+  }): Promise<readonly PolarOrder[]>;
   listBenefitGrants(input: { subscriptionId: string }): Promise<readonly PolarBenefitGrant[]>;
   ingestUsage(events: readonly UsageEventInput[]): Promise<{ accepted: number }>;
 }
@@ -306,16 +309,24 @@ export class HttpPolarClient implements PolarClient {
       polarSubscriptionSchema,
       {
         body: atPeriodEnd
-          ? { cancel_at_period_end: true, ...(input.reason === undefined ? {} : { customer_cancellation_reason: input.reason }) }
+          ? {
+              cancel_at_period_end: true,
+              ...(input.reason === undefined ? {} : { customer_cancellation_reason: input.reason }),
+            }
           : { revoke: true },
       },
     );
   }
 
   async uncancelSubscription(subscriptionId: string): Promise<PolarSubscription> {
-    return this.requireRequest('PATCH', `/v1/subscriptions/${subscriptionId}`, polarSubscriptionSchema, {
-      body: { cancel_at_period_end: false },
-    });
+    return this.requireRequest(
+      'PATCH',
+      `/v1/subscriptions/${subscriptionId}`,
+      polarSubscriptionSchema,
+      {
+        body: { cancel_at_period_end: false },
+      },
+    );
   }
 
   async changeSubscriptionProduct(input: {
@@ -330,9 +341,7 @@ export class HttpPolarClient implements PolarClient {
     );
   }
 
-  async createCustomerPortalSession(input: {
-    customerId: string;
-  }): Promise<PolarCustomerSession> {
+  async createCustomerPortalSession(input: { customerId: string }): Promise<PolarCustomerSession> {
     return this.requireRequest('POST', '/v1/customer-sessions/', polarCustomerSessionSchema, {
       body: { customer_id: input.customerId },
     });
@@ -346,17 +355,24 @@ export class HttpPolarClient implements PolarClient {
     subscriptionId?: string;
     customerId?: string;
   }): Promise<readonly PolarOrder[]> {
-    const parsed = await this.requireRequest('GET', '/v1/orders/', polarListSchema(polarOrderSchema), {
-      query: {
-        ...(input.subscriptionId === undefined ? {} : { subscription_id: input.subscriptionId }),
-        ...(input.customerId === undefined ? {} : { customer_id: input.customerId }),
-        limit: 100,
+    const parsed = await this.requireRequest(
+      'GET',
+      '/v1/orders/',
+      polarListSchema(polarOrderSchema),
+      {
+        query: {
+          ...(input.subscriptionId === undefined ? {} : { subscription_id: input.subscriptionId }),
+          ...(input.customerId === undefined ? {} : { customer_id: input.customerId }),
+          limit: 100,
+        },
       },
-    });
+    );
     return parsed.items;
   }
 
-  async listBenefitGrants(input: { subscriptionId: string }): Promise<readonly PolarBenefitGrant[]> {
+  async listBenefitGrants(input: {
+    subscriptionId: string;
+  }): Promise<readonly PolarBenefitGrant[]> {
     const parsed = await this.requireRequest(
       'GET',
       '/v1/benefit-grants/',
@@ -503,7 +519,10 @@ export function polarClientFromSdk(
       return parseOrThrow(polarCheckoutSchema, await sdk.checkouts.get({ id: checkoutId }));
     },
     async getSubscription(subscriptionId) {
-      return parseOrThrow(polarSubscriptionSchema, await sdk.subscriptions.get({ id: subscriptionId }));
+      return parseOrThrow(
+        polarSubscriptionSchema,
+        await sdk.subscriptions.get({ id: subscriptionId }),
+      );
     },
     async listSubscriptions(input) {
       const page = input.page ?? 1;
@@ -557,7 +576,10 @@ export function polarClientFromSdk(
     async listOrders(input) {
       const parsed = parseOrThrow(
         polarListSchema(polarOrderSchema),
-        await sdk.orders.list({ subscriptionId: input.subscriptionId, customerId: input.customerId }),
+        await sdk.orders.list({
+          subscriptionId: input.subscriptionId,
+          customerId: input.customerId,
+        }),
       );
       return parsed.items;
     },

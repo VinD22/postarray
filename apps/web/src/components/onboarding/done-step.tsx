@@ -76,17 +76,17 @@ export function DoneStep() {
 
       <section className="flex flex-col gap-3">
         <h2 className="text-title-sm text-text-primary">{t('onboarding.done.nextStep.title')}</h2>
-        <ul className="flex flex-col border-t border-border-subtle">
+        <ul className="border-border-subtle flex flex-col border-t">
           {[
             { href: '/connections/new', labelKey: 'onboarding.done.nextStep.connectMore' },
             { href: '/settings/members', labelKey: 'onboarding.done.nextStep.inviteTeam' },
             { href: '/settings/brands', labelKey: 'onboarding.done.nextStep.setApproval' },
             { href: '/settings/agents', labelKey: 'onboarding.done.nextStep.exploreApi' },
           ].map((entry) => (
-            <li key={entry.href} className="border-b border-border-subtle">
+            <li key={entry.href} className="border-border-subtle border-b">
               <Link
                 href={entry.href}
-                className="flex min-h-11 items-center text-body-md text-text-primary hover:underline"
+                className="text-body-md text-text-primary flex min-h-11 items-center hover:underline"
               >
                 {t(entry.labelKey)}
               </Link>

@@ -74,10 +74,7 @@ export async function loadCapabilities(
       capabilityVersion: parsed.capabilityVersion,
     };
   } catch (error) {
-    deps.logger.warn(
-      { connectionId, provider, error: String(error) },
-      'capabilities.unavailable',
-    );
+    deps.logger.warn({ connectionId, provider, error: String(error) }, 'capabilities.unavailable');
     return {
       connectionId: row.id,
       provider,

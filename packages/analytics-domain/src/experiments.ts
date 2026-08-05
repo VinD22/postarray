@@ -160,7 +160,11 @@ export interface ExperimentSummary {
   readonly caveats: readonly Insight[];
 }
 
-function caveat(code: string, messageKey: string, params: Record<string, string | number>): Insight {
+function caveat(
+  code: string,
+  messageKey: string,
+  params: Record<string, string | number>,
+): Insight {
   return {
     kind: 'caveat',
     code,

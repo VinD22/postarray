@@ -34,9 +34,7 @@ import {
 export const cancelSignal = wf.defineSignal<[CancelRequest]>(WORKFLOW_SIGNALS.cancel);
 export const pauseSignal = wf.defineSignal<[]>(WORKFLOW_SIGNALS.pause);
 export const resumeSignal = wf.defineSignal<[]>(WORKFLOW_SIGNALS.resume);
-export const rescheduleSignal = wf.defineSignal<[RescheduleRequest]>(
-  WORKFLOW_SIGNALS.reschedule,
-);
+export const rescheduleSignal = wf.defineSignal<[RescheduleRequest]>(WORKFLOW_SIGNALS.reschedule);
 export const killSwitchSignal = wf.defineSignal<[]>(WORKFLOW_SIGNALS.killSwitch);
 export const providerConfirmationSignal = wf.defineSignal<[ProviderConfirmation]>(
   WORKFLOW_SIGNALS.providerConfirmation,
@@ -106,9 +104,9 @@ const metricsProxy = wf.proxyActivities<Group<'fetchPostMetrics' | 'fetchAccount
   toTemporalActivityOptions(ACTIVITY_OPTIONS.fetchMetrics),
 );
 
-const credentialProxy = wf.proxyActivities<
-  Group<'refreshCredential' | 'revokeProviderConnection'>
->(toTemporalActivityOptions(ACTIVITY_OPTIONS.credential));
+const credentialProxy = wf.proxyActivities<Group<'refreshCredential' | 'revokeProviderConnection'>>(
+  toTemporalActivityOptions(ACTIVITY_OPTIONS.credential),
+);
 
 const externalProxy = wf.proxyActivities<Group<'fetchFeed'>>(
   toTemporalActivityOptions(ACTIVITY_OPTIONS.fetchExternal),
@@ -206,7 +204,6 @@ class TemporalWorkflowRuntime implements WorkflowRuntime {
   now(): number {
     // Temporal patches Date.now() inside a workflow so it is constant for the duration of
     // a Workflow Task and identical on replay. It is the SDK's documented safe clock.
-    // eslint-disable-next-line no-restricted-globals
     return Date.now();
   }
 
@@ -250,9 +247,7 @@ class TemporalWorkflowRuntime implements WorkflowRuntime {
       ...(options.executionTimeoutMs === undefined
         ? {}
         : { workflowExecutionTimeout: options.executionTimeoutMs }),
-      ...(options.searchAttributes === undefined
-        ? {}
-        : { memo: { ...options.searchAttributes } }),
+      ...(options.searchAttributes === undefined ? {} : { memo: { ...options.searchAttributes } }),
     });
     return {
       workflowId: options.workflowId,

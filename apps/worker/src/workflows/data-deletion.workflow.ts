@@ -8,7 +8,9 @@ import type { DataDeletionWorkflowInput, DataDeletionWorkflowOutput } from './in
  * Workflow id: `delete:{workspaceId}:{requestId}`. A `cancel` signal during the
  * grace period aborts cleanly and destroys nothing.
  */
-export async function dataDeletionWorkflow(input: DataDeletionWorkflowInput): Promise<DataDeletionWorkflowOutput> {
+export async function dataDeletionWorkflow(
+  input: DataDeletionWorkflowInput,
+): Promise<DataDeletionWorkflowOutput> {
   const runtime = createTemporalRuntime();
   return runDataDeletion(runtime, workerActivities, input);
 }

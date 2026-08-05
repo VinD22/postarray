@@ -2,11 +2,7 @@ import { describe, expect, it } from 'vitest';
 
 import { en } from './messages/en/index.js';
 import type { PartialCatalog } from './messages/index.js';
-import {
-  createCollectingReporter,
-  createTranslator,
-  scopeTranslator,
-} from './translate.js';
+import { createCollectingReporter, createTranslator, scopeTranslator } from './translate.js';
 
 const english = en as PartialCatalog;
 

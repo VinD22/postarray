@@ -58,7 +58,10 @@ const client: OAuthClientConfig = {
   redirectUri: 'https://app.invalid/v1/connections/callback/fake',
 };
 
-function httpReturning(body: unknown, status = 200): { http: ProviderHttpClient; bodies: string[] } {
+function httpReturning(
+  body: unknown,
+  status = 200,
+): { http: ProviderHttpClient; bodies: string[] } {
   const bodies: string[] = [];
   const http = new ProviderHttpClient({
     provider: 'fake',
@@ -124,33 +127,33 @@ describe('redirect matching', () => {
   });
 
   it('matches exactly, with no prefix or wildcard tolerance', () => {
-    expect(
-      matchesRegisteredRedirect('https://app.invalid/cb', 'https://app.invalid/cb'),
-    ).toBe(true);
+    expect(matchesRegisteredRedirect('https://app.invalid/cb', 'https://app.invalid/cb')).toBe(
+      true,
+    );
     expect(
       matchesRegisteredRedirect('https://app.invalid/cb', 'https://app.invalid/cb/extra'),
     ).toBe(false);
-    expect(
-      matchesRegisteredRedirect('https://app.invalid/cb', 'https://evil.invalid/cb'),
-    ).toBe(false);
-    expect(
-      matchesRegisteredRedirect('https://app.invalid/cb', 'https://app.invalid.evil/cb'),
-    ).toBe(false);
+    expect(matchesRegisteredRedirect('https://app.invalid/cb', 'https://evil.invalid/cb')).toBe(
+      false,
+    );
+    expect(matchesRegisteredRedirect('https://app.invalid/cb', 'https://app.invalid.evil/cb')).toBe(
+      false,
+    );
   });
 
   it('ignores the loopback port for a native client', () => {
-    expect(
-      matchesRegisteredRedirect('http://127.0.0.1:1234/cb', 'http://127.0.0.1:56789/cb'),
-    ).toBe(true);
+    expect(matchesRegisteredRedirect('http://127.0.0.1:1234/cb', 'http://127.0.0.1:56789/cb')).toBe(
+      true,
+    );
     expect(
       matchesRegisteredRedirect('http://127.0.0.1:1234/cb', 'http://127.0.0.1:56789/other'),
     ).toBe(false);
   });
 
   it('throws when the candidate is not registered', () => {
-    expect(() => assertRedirectAllowed(['https://app.invalid/cb'], 'https://evil.invalid/cb')).toThrow(
-      RelayError,
-    );
+    expect(() =>
+      assertRedirectAllowed(['https://app.invalid/cb'], 'https://evil.invalid/cb'),
+    ).toThrow(RelayError);
     expect(assertRedirectAllowed(['https://app.invalid/cb'], 'https://app.invalid/cb')).toBe(
       'https://app.invalid/cb',
     );
@@ -164,9 +167,7 @@ describe('createAuthorizationRequest', () => {
     expect(url.searchParams.get('response_type')).toBe('code');
     expect(url.searchParams.get('client_id')).toBe('fake-client-id');
     expect(url.searchParams.get('code_challenge_method')).toBe('S256');
-    expect(url.searchParams.get('code_challenge')).toBe(
-      createCodeChallenge(request.codeVerifier),
-    );
+    expect(url.searchParams.get('code_challenge')).toBe(createCodeChallenge(request.codeVerifier));
     expect(url.searchParams.get('scope')).toBe('fake.read');
     expect(url.searchParams.get('prompt')).toBe('consent');
     expect(request.expiresAt).toBe('2026-08-04T12:10:00.000Z');

@@ -13,6 +13,8 @@ import type { ActorContext, ServiceDeps } from '../types.js';
 
 import { decisionToError, notFound, toRelayError } from './errors.js';
 import { toProviderId } from './mappers.js';
+import { systemClock } from '../ports/clock.js';
+import type { Clock } from '../types.js';
 
 export type Db = WorkspaceScopedClient;
 
@@ -89,7 +91,11 @@ async function loadRoleFor(
   db: Db,
   workspaceId: string,
   userId: string,
-): Promise<{ role: Role | null; state: 'invited' | 'active' | 'suspended' | 'removed'; brandScope: readonly string[] }> {
+): Promise<{
+  role: Role | null;
+  state: 'invited' | 'active' | 'suspended' | 'removed';
+  brandScope: readonly string[];
+}> {
   const membership = await db.membership.findFirst({
     where: { workspaceId, userId },
     select: { role: true, state: true, brandScope: true },
@@ -134,13 +140,17 @@ async function loadRoleOverrides(
  * granting user and the narrowing come from; the decision that follows is the
  * same code for all of them.
  */
-export async function loadActor(db: Db, ctx: ActorContext): Promise<ActorSnapshot> {
+export async function loadActor(
+  db: Db,
+  ctx: ActorContext,
+  clock: Clock = systemClock,
+): Promise<ActorSnapshot> {
   const workspace = await loadWorkspace(db, ctx.workspaceId);
   const scopes: readonly Scope[] = normalizeScopes(ctx.scopes);
 
   let userId: string | null = null;
   let role: Role | null = null;
-  let membershipState: 'invited' | 'active' | 'suspended' | 'removed' = 'removed';
+  let membershipState: 'invited' | 'active' | 'suspended' | 'removed';
   let brandScope: readonly string[] = [];
   let connectionScope: readonly string[] = [];
   let grantRevoked = false;
@@ -217,7 +227,7 @@ export async function loadActor(db: Db, ctx: ActorContext): Promise<ActorSnapsho
     connectionScope = grant.connectionScope;
     grantRevoked = grant.revokedAt !== null;
     credentialExpired =
-      grant.expiresAt !== null && grant.expiresAt.getTime() <= Date.now();
+      grant.expiresAt !== null && grant.expiresAt.getTime() <= clock.now().getTime();
     restrictions = {
       brandIds: brandScope,
       connectionIds: grant.connectionScope,

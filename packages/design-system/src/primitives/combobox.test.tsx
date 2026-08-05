@@ -101,9 +101,7 @@ describe('Combobox', () => {
     await user.click(input);
     await user.keyboard('{Enter}');
 
-    expect(onValueChange).toHaveBeenCalledWith(
-      expect.objectContaining({ id: 'ext_1' }),
-    );
+    expect(onValueChange).toHaveBeenCalledWith(expect.objectContaining({ id: 'ext_1' }));
     expect(input).toHaveValue('Relay HQ');
     expect(screen.queryByRole('listbox')).not.toBeInTheDocument();
   });

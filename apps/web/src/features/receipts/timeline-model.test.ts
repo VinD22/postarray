@@ -1,15 +1,7 @@
 import { describe, expect, it } from 'vitest';
-import type {
-  PublicationReceipt,
-  PublishAttempt,
-  ReceiptItem,
-} from '@relay/contracts';
+import type { PublicationReceipt, PublishAttempt, ReceiptItem } from '@relay/contracts';
 
-import {
-  buildTimeline,
-  dispatchLatencyMs,
-  hasFailedFollowUp,
-} from './timeline-model';
+import { buildTimeline, dispatchLatencyMs, hasFailedFollowUp } from './timeline-model';
 import { buildCampaignTargets, campaignOutcome, canExportReceipt } from './types';
 import type { CampaignTargetView } from './types';
 import type { ContentTargetView, ReceiptSummaryView } from '@/lib/api/types';
@@ -234,9 +226,7 @@ describe('derived facts', () => {
   it('detects a failed follow up while the root is live', () => {
     expect(hasFailedFollowUp(receipt())).toBe(false);
     expect(
-      hasFailedFollowUp(
-        receipt({ items: [item({ order: 2, errorCode: 'PROVIDER_PERMANENT' })] }),
-      ),
+      hasFailedFollowUp(receipt({ items: [item({ order: 2, errorCode: 'PROVIDER_PERMANENT' })] })),
     ).toBe(true);
   });
 
@@ -297,9 +287,9 @@ describe('campaignOutcome', () => {
   });
 
   it('is in flight while a target is still running', () => {
-    expect(
-      campaignOutcome([target({ state: 'dispatching', hasExternalPost: false })]),
-    ).toBe('in_flight');
+    expect(campaignOutcome([target({ state: 'dispatching', hasExternalPost: false })])).toBe(
+      'in_flight',
+    );
   });
 
   it('is in flight when there is nothing to roll up yet', () => {
@@ -341,7 +331,10 @@ describe('buildCampaignTargets', () => {
 
   it('keeps a target that has no receipt yet rather than hiding it', () => {
     const result = buildCampaignTargets(
-      [contentTarget(), contentTarget({ variantId: 'var_2', accountLabel: 'Acme EU', provider: 'linkedin' })],
+      [
+        contentTarget(),
+        contentTarget({ variantId: 'var_2', accountLabel: 'Acme EU', provider: 'linkedin' }),
+      ],
       [summary()],
     );
     expect(result).toHaveLength(2);

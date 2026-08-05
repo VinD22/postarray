@@ -23,7 +23,12 @@ export type {
   RightsDeclarationInput,
   UploadTicket,
 } from './resources/media.js';
-export type { ExperimentView, MetricWindow, ShortLinkStats, ShortLinkView } from './resources/insights.js';
+export type {
+  ExperimentView,
+  MetricWindow,
+  ShortLinkStats,
+  ShortLinkView,
+} from './resources/insights.js';
 export type {
   ApiKeyView,
   FeedInput,

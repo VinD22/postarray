@@ -7,7 +7,9 @@ import type { TokenRefreshWorkflowInput, TokenRefreshWorkflowOutput } from './in
 
  * Workflow id: `token:{workspaceId}:{connectionId}`.
  */
-export async function tokenRefreshWorkflow(input: TokenRefreshWorkflowInput): Promise<TokenRefreshWorkflowOutput> {
+export async function tokenRefreshWorkflow(
+  input: TokenRefreshWorkflowInput,
+): Promise<TokenRefreshWorkflowOutput> {
   const runtime = createTemporalRuntime();
   return runTokenRefresh(runtime, workerActivities, input);
 }

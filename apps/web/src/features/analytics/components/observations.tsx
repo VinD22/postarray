@@ -66,9 +66,7 @@ export function Observations({
         <h2 id="observations-heading" className="text-title-sm text-text-primary">
           {t('analytics.observations.title')}
         </h2>
-        <p className="text-body-md text-text-secondary">
-          {t('analytics.observations.intro')}
-        </p>
+        <p className="text-body-md text-text-secondary">{t('analytics.observations.intro')}</p>
       </div>
 
       {observations.length === 0 ? (
@@ -81,7 +79,7 @@ export function Observations({
         <ol className="flex flex-col gap-4">
           {observations.map((observation) => (
             <li key={observation.id} className="flex flex-col gap-1.5">
-              <p className="max-w-[70ch] text-body-lg text-text-primary">
+              <p className="text-body-lg text-text-primary max-w-[70ch]">
                 {t(OBSERVATION_KEY[observation.kind], observation.values)}
               </p>
 
@@ -96,23 +94,21 @@ export function Observations({
               </p>
 
               {observation.kind === 'association' ? (
-                <p className="max-w-[70ch] text-body-md text-text-secondary">
+                <p className="text-body-md text-text-secondary max-w-[70ch]">
                   {t('analytics.feedback.doNotInfer')}
                 </p>
               ) : null}
 
               {observation.confounders.length > 0 ? (
-                <ul className="flex max-w-[70ch] list-disc flex-col gap-1 ps-5 text-body-md text-text-secondary marker:text-text-tertiary">
+                <ul className="text-body-md text-text-secondary marker:text-text-tertiary flex max-w-[70ch] list-disc flex-col gap-1 ps-5">
                   {observation.confounders.map((confounder) => (
-                    <li key={confounder}>
-                      {t(CONFOUNDER_KEY[confounder], observation.values)}
-                    </li>
+                    <li key={confounder}>{t(CONFOUNDER_KEY[confounder], observation.values)}</li>
                   ))}
                 </ul>
               ) : null}
 
               {observation.sampleSize > 0 && observation.sampleSize < 10 ? (
-                <p className="max-w-[70ch] text-body-md text-warning-fg">
+                <p className="text-body-md text-warning-fg max-w-[70ch]">
                   {t('analytics.feedback.smallSample')}
                 </p>
               ) : null}
@@ -121,12 +117,12 @@ export function Observations({
         </ol>
       )}
 
-      <div className="flex flex-col gap-2 border-t border-border-subtle pt-4">
-        <h3 className="text-body-md font-medium text-text-primary">
+      <div className="border-border-subtle flex flex-col gap-2 border-t pt-4">
+        <h3 className="text-body-md text-text-primary font-medium">
           {t('analytics.observations.nextTestTitle')}
         </h3>
         {nextTest ? (
-          <p className="max-w-[70ch] text-body-md text-text-secondary">
+          <p className="text-body-md text-text-secondary max-w-[70ch]">
             {t('analytics.observations.nextTestBody', {
               count: nextTest.postCount,
               account: nextTest.accountName,
@@ -134,11 +130,11 @@ export function Observations({
             })}
           </p>
         ) : (
-          <p className="max-w-[70ch] text-body-md text-text-secondary">
+          <p className="text-body-md text-text-secondary max-w-[70ch]">
             {t('analytics.experiment.tagBeforePublishing')}
           </p>
         )}
-        <p className="max-w-[70ch] text-body-sm text-text-tertiary">
+        <p className="text-body-sm text-text-tertiary max-w-[70ch]">
           {t('analytics.feedback.noScore')}
         </p>
         {onTagExperiment ? (

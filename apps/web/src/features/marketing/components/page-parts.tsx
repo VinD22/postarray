@@ -56,7 +56,7 @@ export function SourceNote({
 }): ReactNode {
   const t = marketingTranslator();
   return (
-    <p className={cn('text-body-sm leading-[1.6] text-text-tertiary', className)}>
+    <p className={cn('text-body-sm text-text-tertiary leading-[1.6]', className)}>
       <ExternalLink href={citation.url}>{label}</ExternalLink>{' '}
       <Meta>{t.t('web.label.researchDate', { date: formatDate(citation.readOn) })}</Meta>
     </p>
@@ -88,18 +88,18 @@ export function ReviewStamp({
 export function CorrectionNotice(): ReactNode {
   const t = marketingTranslator();
   return (
-    <div className="border-t border-border-default pt-6">
+    <div className="border-border-default border-t pt-6">
       <h2 className="text-title-sm text-text-primary">{t.t('web.correction.title')}</h2>
-      <p className="mt-2 max-w-[64ch] text-body-md leading-[1.6] text-text-secondary">
+      <p className="text-body-md text-text-secondary mt-2 max-w-[64ch] leading-[1.6]">
         {t.t('web.correction.body')}
       </p>
       <p className="mt-2">
         <a
           href={`mailto:${t.t('web.correction.email')}`}
           className={cn(
-            'font-mono text-body-sm text-text-primary underline decoration-border-strong',
-            'underline-offset-[0.22em] hover:text-text-accent hover:decoration-accent',
-            'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-border-focus',
+            'text-body-sm text-text-primary decoration-border-strong font-mono underline',
+            'hover:text-text-accent hover:decoration-accent underline-offset-[0.22em]',
+            'focus-visible:outline-border-focus focus-visible:outline-2 focus-visible:outline-offset-2',
           )}
         >
           {t.t('web.correction.email')}
@@ -140,7 +140,7 @@ export function ProductShot({
           alt={alt}
           loading="lazy"
           decoding="async"
-          className="w-full rounded-[var(--radius-editorial)] border border-border-default"
+          className="border-border-default w-full rounded-[var(--radius-editorial)] border"
         />
       ) : (
         <div
@@ -149,19 +149,24 @@ export function ProductShot({
             'border-border-default bg-surface-sunken p-6',
           )}
         >
-          <Camera aria-hidden="true" className="mt-0.5 size-5 shrink-0 text-text-tertiary" />
+          <Camera aria-hidden="true" className="text-text-tertiary mt-0.5 size-5 shrink-0" />
           <div className="min-w-0 space-y-1">
             <p className="text-title-sm text-text-primary">{t.t('web.product.shot.pending')}</p>
-            <p className="max-w-[60ch] text-body-md leading-[1.6] text-text-secondary">
+            <p className="text-body-md text-text-secondary max-w-[60ch] leading-[1.6]">
               {t.t('web.product.shot.pendingReason')}
             </p>
-            <p className="max-w-[60ch] text-body-sm leading-[1.6] text-text-tertiary">{alt}</p>
+            <p className="text-body-sm text-text-tertiary max-w-[60ch] leading-[1.6]">{alt}</p>
           </div>
         </div>
       )}
-      <figcaption className="max-w-[64ch] text-body-sm leading-[1.6] text-text-tertiary">
+      <figcaption className="text-body-sm text-text-tertiary max-w-[64ch] leading-[1.6]">
         {caption}
-        {capturedOn ? <> <Meta>{formatDate(capturedOn)}</Meta></> : null}
+        {capturedOn ? (
+          <>
+            {' '}
+            <Meta>{formatDate(capturedOn)}</Meta>
+          </>
+        ) : null}
       </figcaption>
     </figure>
   );

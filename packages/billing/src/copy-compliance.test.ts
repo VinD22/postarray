@@ -88,9 +88,9 @@ describe('the annual framing', () => {
     expect(PRICE_PRESENTATION.annualFraming.effectiveMonthlyMinor * 12).toBe(
       PRICE_PRESENTATION.year.priceMinor,
     );
-    expect(
-      PRICE_PRESENTATION.month.priceMinor * 12 - PRICE_PRESENTATION.year.priceMinor,
-    ).toBe(PRICE_PRESENTATION.annualFraming.savingMinor);
+    expect(PRICE_PRESENTATION.month.priceMinor * 12 - PRICE_PRESENTATION.year.priceMinor).toBe(
+      PRICE_PRESENTATION.annualFraming.savingMinor,
+    );
   });
 });
 

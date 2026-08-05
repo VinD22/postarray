@@ -157,9 +157,7 @@ export const deletionCapabilitySchema = z
   .strict();
 export type DeletionCapability = z.infer<typeof deletionCapabilitySchema>;
 
-export const draftsCapabilitySchema = z
-  .object({ support: capabilitySupportSchema })
-  .strict();
+export const draftsCapabilitySchema = z.object({ support: capabilitySupportSchema }).strict();
 export type DraftsCapability = z.infer<typeof draftsCapabilitySchema>;
 
 export const rateLimitCapabilitySchema = z
@@ -314,10 +312,7 @@ export function summarizeCapabilities(snapshot: CapabilitySnapshot): CapabilityS
 }
 
 /** True when the connection can post this content kind right now. */
-export function supportsContentKind(
-  snapshot: CapabilitySnapshot,
-  kind: ContentKind,
-): boolean {
+export function supportsContentKind(snapshot: CapabilitySnapshot, kind: ContentKind): boolean {
   return snapshot.contentKinds[kind] === 'supported';
 }
 

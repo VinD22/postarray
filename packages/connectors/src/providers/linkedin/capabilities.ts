@@ -136,7 +136,9 @@ export function buildLinkedInCapabilities(input: LinkedInCapabilityInput): Capab
     destinations: [
       {
         kind: 'organization',
-        support: has(input.grantedScopes, 'w_organization_social') ? 'supported' : 'requires_review',
+        support: has(input.grantedScopes, 'w_organization_social')
+          ? 'supported'
+          : 'requires_review',
         searchable: true,
       },
     ],
@@ -177,9 +179,7 @@ export function buildLinkedInCapabilities(input: LinkedInCapabilityInput): Capab
     analytics: {
       support: analyticsSupport,
       postMetrics,
-      accountMetrics: isOrganization
-        ? normalizedNames(LINKEDIN_ORGANIZATION_ACCOUNT_METRICS)
-        : [],
+      accountMetrics: isOrganization ? normalizedNames(LINKEDIN_ORGANIZATION_ACCOUNT_METRICS) : [],
       historyWindowDays: null,
     },
     deletion: { support: writeState, windowSeconds: null },

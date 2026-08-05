@@ -1,11 +1,6 @@
 import type { Paginated } from '@relay/contracts';
 
-import type {
-  ActorContext,
-  ApprovalService,
-  PageQuery,
-  ServiceDeps,
-} from '../types.js';
+import type { ActorContext, ApprovalService, PageQuery, ServiceDeps } from '../types.js';
 import type { ApprovalRequestView } from '../views.js';
 
 import { recordAudit } from '../internal/audit.js';
@@ -136,64 +131,56 @@ export function createApprovalService(deps: ServiceDeps): ApprovalService {
         body: input,
         resourceIdOf: (view) => view.id,
         run: async () =>
-          authorized(
-            deps,
-            ctx,
-            'content.request_approval',
-            undefined,
-            async (db, actor) => {
-              const aggregate = await loadAggregate(db, input.contentItemId);
-              if (aggregate.variants.length === 0) {
-                throw invalid('errors.no_targets_selected', {
-                  contentItemId: input.contentItemId,
-                });
-              }
-
-              // Approval binds to the current immutable version. Freezing here
-              // is what makes "the approver saw exactly this" checkable later.
-              const created = await db.approvalRequest.create({
-                data: {
-                  workspaceId: actor.workspace.id,
-                  contentItemId: aggregate.itemId,
-                  contentVersionId: aggregate.currentVersionId,
-                  policy: toApprovalPolicy(
-                    aggregate.approvalPolicy === 'none'
-                      ? 'any_approver'
-                      : aggregate.approvalPolicy,
-                  ),
-                  state: 'pending',
-                  ...(actor.userId === null ? {} : { requestedByUserId: actor.userId }),
-                  ...(ctx.actorType === 'service_account'
-                    ? { requestedByServiceAccountId: ctx.actorId }
-                    : {}),
-                  assignedUserIds: [...(input.approverIds ?? [])],
-                  ...(input.note === undefined ? {} : { note: input.note }),
-                },
-                select: { id: true },
+          authorized(deps, ctx, 'content.request_approval', undefined, async (db, actor) => {
+            const aggregate = await loadAggregate(db, input.contentItemId);
+            if (aggregate.variants.length === 0) {
+              throw invalid('errors.no_targets_selected', {
+                contentItemId: input.contentItemId,
               });
+            }
 
-              await db.contentItem.update({
-                where: { id: aggregate.itemId },
-                data: { state: 'approval_requested' },
-              });
+            // Approval binds to the current immutable version. Freezing here
+            // is what makes "the approver saw exactly this" checkable later.
+            const created = await db.approvalRequest.create({
+              data: {
+                workspaceId: actor.workspace.id,
+                contentItemId: aggregate.itemId,
+                contentVersionId: aggregate.currentVersionId,
+                policy: toApprovalPolicy(
+                  aggregate.approvalPolicy === 'none' ? 'any_approver' : aggregate.approvalPolicy,
+                ),
+                state: 'pending',
+                ...(actor.userId === null ? {} : { requestedByUserId: actor.userId }),
+                ...(ctx.actorType === 'service_account'
+                  ? { requestedByServiceAccountId: ctx.actorId }
+                  : {}),
+                assignedUserIds: [...(input.approverIds ?? [])],
+                ...(input.note === undefined ? {} : { note: input.note }),
+              },
+              select: { id: true },
+            });
 
-              await recordAudit(db, actor, {
-                action: 'approval.requested',
-                targetType: 'approval_request',
-                targetId: created.id,
-                after: {
-                  contentVersionId: aggregate.currentVersionId,
-                  checksum: aggregate.checksum,
-                },
-                metadata: {
-                  contentItemId: aggregate.itemId,
-                  approverCount: input.approverIds?.length ?? 0,
-                },
-              });
+            await db.contentItem.update({
+              where: { id: aggregate.itemId },
+              data: { state: 'approval_requested' },
+            });
 
-              return reload(db, created.id);
-            },
-          ),
+            await recordAudit(db, actor, {
+              action: 'approval.requested',
+              targetType: 'approval_request',
+              targetId: created.id,
+              after: {
+                contentVersionId: aggregate.currentVersionId,
+                checksum: aggregate.checksum,
+              },
+              metadata: {
+                contentItemId: aggregate.itemId,
+                approverCount: input.approverIds?.length ?? 0,
+              },
+            });
+
+            return reload(db, created.id);
+          }),
       });
     },
 

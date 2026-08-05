@@ -170,9 +170,9 @@ describe('loadConfigFor', () => {
   });
 
   it('still validates the format of an optional variable that is present', () => {
-    expect(() => loadConfigFor('cli', { API_URL: 'http://localhost:3001', REDIS_URL: 'nope' })).toThrow(
-      ConfigValidationError,
-    );
+    expect(() =>
+      loadConfigFor('cli', { API_URL: 'http://localhost:3001', REDIS_URL: 'nope' }),
+    ).toThrow(ConfigValidationError);
   });
 });
 

@@ -1,6 +1,11 @@
 import pg from 'pg';
 
-import { detectCapabilities, loadConfigFor, parseBooleanish, requireConfigValue } from '@relay/config';
+import {
+  detectCapabilities,
+  loadConfigFor,
+  parseBooleanish,
+  requireConfigValue,
+} from '@relay/config';
 import { buildHealthReport, createLogger } from '@relay/observability';
 import type { HealthReport } from '@relay/observability';
 

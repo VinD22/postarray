@@ -43,7 +43,10 @@ describe('credential minting', () => {
 
   it('mints distinct credentials', () => {
     const values = new Set(
-      Array.from({ length: 200 }, () => issueCredential(CREDENTIAL_PREFIXES.accessToken, PEPPER).plaintext),
+      Array.from(
+        { length: 200 },
+        () => issueCredential(CREDENTIAL_PREFIXES.accessToken, PEPPER).plaintext,
+      ),
     );
     expect(values.size).toBe(200);
   });

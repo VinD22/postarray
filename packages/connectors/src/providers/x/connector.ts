@@ -222,10 +222,7 @@ export function createXConnector(deps: ConnectorDeps): XConnector {
     return match === undefined ? null : match.id;
   }
 
-  async function uploadOne(
-    accessToken: string,
-    media: ProviderMedia,
-  ): Promise<PreparedMedia> {
+  async function uploadOne(accessToken: string, media: ProviderMedia): Promise<PreparedMedia> {
     const category =
       media.kind === 'video' ? 'tweet_video' : media.kind === 'gif' ? 'tweet_gif' : 'tweet_image';
 
@@ -997,7 +994,10 @@ export function createXConnector(deps: ConnectorDeps): XConnector {
         mappings: X_POST_METRICS,
         values: { ...(post?.public_metrics ?? {}), ...(post?.non_public_metrics ?? {}) },
         observedAt,
-        rawPayload: { public: post?.public_metrics ?? {}, nonPublic: post?.non_public_metrics ?? {} },
+        rawPayload: {
+          public: post?.public_metrics ?? {},
+          nonPublic: post?.non_public_metrics ?? {},
+        },
       });
     },
 

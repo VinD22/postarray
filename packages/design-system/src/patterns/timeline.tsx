@@ -1,23 +1,11 @@
 'use client';
 
 import type { ReactNode } from 'react';
-import {
-  AlertTriangle,
-  Check,
-  Circle,
-  Clock,
-  RotateCcw,
-  X,
-} from 'lucide-react';
+import { AlertTriangle, Check, Circle, Clock, RotateCcw, X } from 'lucide-react';
 import { cn } from '../utils/cn.js';
 
 export type TimelineOutcome =
-  | 'completed'
-  | 'current'
-  | 'pending'
-  | 'retried'
-  | 'warning'
-  | 'failed';
+  'completed' | 'current' | 'pending' | 'retried' | 'warning' | 'failed';
 
 export interface TimelineEvent {
   readonly id: string;
@@ -88,15 +76,13 @@ export function Timeline({ label, events, className }: TimelineProps): ReactNode
                 {outcomeIcon[event.outcome]}
               </span>
               {isLast ? null : (
-                <span aria-hidden="true" className="w-px flex-1 bg-border-default" />
+                <span aria-hidden="true" className="bg-border-default w-px flex-1" />
               )}
             </div>
 
             <div className={cn('flex min-w-0 flex-1 flex-col gap-0.5', isLast ? 'pb-0' : 'pb-4')}>
               <div className="flex flex-wrap items-baseline gap-x-2 gap-y-0.5">
-                <p className="text-body-md font-medium text-text-primary">
-                  {event.title}
-                </p>
+                <p className="text-body-md text-text-primary font-medium">{event.title}</p>
                 {event.timestamp ? (
                   <time
                     dateTime={event.isoTimestamp}

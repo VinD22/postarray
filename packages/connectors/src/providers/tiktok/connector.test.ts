@@ -43,7 +43,10 @@ const capabilities = buildTikTokCapabilities({
   connection,
   observedAt: '2026-08-04T12:00:00.000Z',
   grantedScopes: SCOPES,
-  creatorInfo: { ...TIKTOK_CREATOR_INFO_FIXTURE.data, privacy_level_options: [...TIKTOK_CREATOR_INFO_FIXTURE.data.privacy_level_options] },
+  creatorInfo: {
+    ...TIKTOK_CREATOR_INFO_FIXTURE.data,
+    privacy_level_options: [...TIKTOK_CREATOR_INFO_FIXTURE.data.privacy_level_options],
+  },
 });
 
 const COMPLETE_OPTIONS = {
@@ -71,7 +74,10 @@ function videoDraft(overrides: Record<string, unknown> = {}) {
         durationSeconds: 30,
       }),
     ],
-    connection: { ...connection, metadata: { ...connection.metadata, providerOptions: COMPLETE_OPTIONS } },
+    connection: {
+      ...connection,
+      metadata: { ...connection.metadata, providerOptions: COMPLETE_OPTIONS },
+    },
     ...overrides,
   });
 }
@@ -131,7 +137,13 @@ describe('TikTok privacy rules', () => {
     const connector = createTikTokConnector(deps);
     const result = await connector.validateDraft(
       videoDraft({
-        connection: { ...connection, metadata: { ...connection.metadata, providerOptions: { ...COMPLETE_OPTIONS, privacyLevel: undefined } } },
+        connection: {
+          ...connection,
+          metadata: {
+            ...connection.metadata,
+            providerOptions: { ...COMPLETE_OPTIONS, privacyLevel: undefined },
+          },
+        },
         privacyValue: null,
       }),
     );
@@ -157,7 +169,12 @@ describe('TikTok capability snapshot', () => {
       connection,
       observedAt: '2026-08-04T12:00:00.000Z',
       grantedScopes: SCOPES,
-      creatorInfo: { ...TIKTOK_CREATOR_INFO_PRIVATE_ONLY_FIXTURE.data, privacy_level_options: [...TIKTOK_CREATOR_INFO_PRIVATE_ONLY_FIXTURE.data.privacy_level_options] },
+      creatorInfo: {
+        ...TIKTOK_CREATOR_INFO_PRIVATE_ONLY_FIXTURE.data,
+        privacy_level_options: [
+          ...TIKTOK_CREATOR_INFO_PRIVATE_ONLY_FIXTURE.data.privacy_level_options,
+        ],
+      },
     });
     expect(restricted.media.maxDurationSeconds).toBe(60);
     expect(capabilities.media.maxDurationSeconds).toBe(600);
@@ -179,12 +196,18 @@ describe('TikTok validation', () => {
     const connector = createTikTokConnector(deps);
     const result = await connector.validateDraft(
       videoDraft({
-        connection: { ...connection, metadata: { ...connection.metadata, providerOptions: {
-          privacyLevel: 'SELF_ONLY',
-          commercialContent: false,
-          musicRightsConfirmed: true,
-          consentConfirmed: true,
-        } } },
+        connection: {
+          ...connection,
+          metadata: {
+            ...connection.metadata,
+            providerOptions: {
+              privacyLevel: 'SELF_ONLY',
+              commercialContent: false,
+              musicRightsConfirmed: true,
+              consentConfirmed: true,
+            },
+          },
+        },
       }),
     );
     const interaction = result.issues.filter(
@@ -198,7 +221,13 @@ describe('TikTok validation', () => {
     const connector = createTikTokConnector(deps);
     const missing = await connector.validateDraft(
       videoDraft({
-        connection: { ...connection, metadata: { ...connection.metadata, providerOptions: { ...COMPLETE_OPTIONS, commercialContent: undefined } } },
+        connection: {
+          ...connection,
+          metadata: {
+            ...connection.metadata,
+            providerOptions: { ...COMPLETE_OPTIONS, commercialContent: undefined },
+          },
+        },
       }),
     );
     expect(
@@ -207,7 +236,13 @@ describe('TikTok validation', () => {
 
     const unkinded = await connector.validateDraft(
       videoDraft({
-        connection: { ...connection, metadata: { ...connection.metadata, providerOptions: { ...COMPLETE_OPTIONS, commercialContent: true } } },
+        connection: {
+          ...connection,
+          metadata: {
+            ...connection.metadata,
+            providerOptions: { ...COMPLETE_OPTIONS, commercialContent: true },
+          },
+        },
       }),
     );
     expect(unkinded.issues.some((issue) => issue.code === 'TIKTOK_COMMERCIAL_KIND_REQUIRED')).toBe(
@@ -220,11 +255,17 @@ describe('TikTok validation', () => {
     const connector = createTikTokConnector(deps);
     const result = await connector.validateDraft(
       videoDraft({
-        connection: { ...connection, metadata: { ...connection.metadata, providerOptions: {
-          ...COMPLETE_OPTIONS,
-          musicRightsConfirmed: undefined,
-          consentConfirmed: undefined,
-        } } },
+        connection: {
+          ...connection,
+          metadata: {
+            ...connection.metadata,
+            providerOptions: {
+              ...COMPLETE_OPTIONS,
+              musicRightsConfirmed: undefined,
+              consentConfirmed: undefined,
+            },
+          },
+        },
       }),
     );
     expect(
@@ -239,7 +280,14 @@ describe('TikTok validation', () => {
     const result = await connector.validateDraft(
       videoDraft({
         threadItems: [
-          { id: 'cmt_test_1', kind: 'comment', order: 1, body: 'First.', media: [], delaySeconds: 0 },
+          {
+            id: 'cmt_test_1',
+            kind: 'comment',
+            order: 1,
+            body: 'First.',
+            media: [],
+            delaySeconds: 0,
+          },
         ],
       }),
     );
@@ -272,7 +320,13 @@ describe('TikTok publish', () => {
       connector.publish(
         request({
           draft: videoDraft({
-            connection: { ...connection, metadata: { ...connection.metadata, providerOptions: { ...COMPLETE_OPTIONS, privacyLevel: 'PUBLIC_TO_EVERYONE' } } },
+            connection: {
+              ...connection,
+              metadata: {
+                ...connection.metadata,
+                providerOptions: { ...COMPLETE_OPTIONS, privacyLevel: 'PUBLIC_TO_EVERYONE' },
+              },
+            },
           }),
         }) as never,
       ),
@@ -322,7 +376,9 @@ describe('TikTok publish', () => {
       routes: [{ method: 'POST', match: '/status/fetch/', body: TIKTOK_STATUS_FAILED_FIXTURE }],
     });
     const connector = createTikTokConnector(deps);
-    const status = await connector.getStatus(testStatusRequest({ connection, providerJobId: 'v_pub_fake~publish.id.0000000001' }));
+    const status = await connector.getStatus(
+      testStatusRequest({ connection, providerJobId: 'v_pub_fake~publish.id.0000000001' }),
+    );
     expect(status.state).toBe('failed');
     expect(status.error?.remediationCode).toBe('provider_rejected_content');
   });
@@ -357,7 +413,9 @@ describe('TikTok metrics and discovery', () => {
   it('returns no observations rather than zeros while no insights product is approved', async () => {
     const { deps } = createTestDeps();
     const connector = createTikTokConnector(deps);
-    const observations = await connector.fetchMetrics(testMetricsRequest({ connection, scope: 'post' }));
+    const observations = await connector.fetchMetrics(
+      testMetricsRequest({ connection, scope: 'post' }),
+    );
     expect(observations).toEqual([]);
   });
 
@@ -366,7 +424,9 @@ describe('TikTok metrics and discovery', () => {
       routes: [{ method: 'GET', match: '/user/info/', body: TIKTOK_USER_INFO_FIXTURE }],
     });
     const connector = createTikTokConnector(deps);
-    const accounts = await connector.discoverAccounts(testGrant({ provider: 'tiktok', scopes: SCOPES }));
+    const accounts = await connector.discoverAccounts(
+      testGrant({ provider: 'tiktok', scopes: SCOPES }),
+    );
     expect(accounts).toHaveLength(1);
     expect(accounts[0]?.handle).toBe('sample_studio_fake');
     expect(accounts[0]?.metadata['unaudited']).toBe(true);

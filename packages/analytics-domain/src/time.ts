@@ -8,7 +8,6 @@ export interface Clock {
   now(): Date;
 }
 
-/* eslint-disable no-restricted-globals -- the only sanctioned use of the ambient clock. */
 export const systemClock: Clock = {
   now: () => new Date(),
 };
@@ -23,7 +22,6 @@ export function fixedClock(instant: string): Clock {
   const frozen = new Date(instant);
   return { now: () => new Date(frozen.getTime()) };
 }
-/* eslint-enable no-restricted-globals */
 
 /** Whole seconds between two instants, floored at zero. */
 export function secondsBetween(earlierMs: number, laterMs: number): number {

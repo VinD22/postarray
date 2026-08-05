@@ -18,7 +18,11 @@ import {
   duplicateCheckPrompt,
   platformFitCheckPrompt,
 } from './review.js';
-import { analyticsSummaryPrompt, experimentSuggestionPrompt, growthPlanPrompt } from './analysis.js';
+import {
+  analyticsSummaryPrompt,
+  experimentSuggestionPrompt,
+  growthPlanPrompt,
+} from './analysis.js';
 
 /**
  * The prompt registry.

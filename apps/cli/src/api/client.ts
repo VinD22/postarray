@@ -1,6 +1,6 @@
 import { randomUUID } from 'node:crypto';
 
-import { z } from 'zod';
+import { type z } from 'zod';
 import { API_HEADERS, API_VERSION, RelayError, problemJsonSchema } from '@relay/contracts';
 import type { ErrorCode } from '@relay/contracts';
 

@@ -3,7 +3,13 @@ import { describe, expect, it } from 'vitest';
 import { TEST_CALL_CONTEXT, createTestGateway } from '../test-support.js';
 import { EN_EVAL_CASES, casesForLocale } from './dataset.js';
 import { formatReport, runSuite } from './harness.js';
-import { groundingScorer, harmScorer, outputText, verbosityScorer, voiceScorer } from './scorers.js';
+import {
+  groundingScorer,
+  harmScorer,
+  outputText,
+  verbosityScorer,
+  voiceScorer,
+} from './scorers.js';
 import { EVAL_DIMENSIONS, EVAL_GATES } from './types.js';
 import type { EvalCase } from './types.js';
 
@@ -26,9 +32,9 @@ describe('scorers', () => {
     const bad = { body: 'It saved 42 hours.', evidenceIds: ['invented'] };
 
     expect(groundingScorer.score({ evalCase, output: good, text: outputText(good) }).score).toBe(1);
-    expect(
-      groundingScorer.score({ evalCase, output: bad, text: outputText(bad) }).passed,
-    ).toBe(false);
+    expect(groundingScorer.score({ evalCase, output: bad, text: outputText(bad) }).passed).toBe(
+      false,
+    );
   });
 
   it('scores voice by banned words and em dashes', () => {
