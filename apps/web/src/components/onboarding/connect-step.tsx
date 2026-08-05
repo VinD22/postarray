@@ -1,0 +1,197 @@
+'use client';
+
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
+
+import { Notice } from '@relay/design-system/patterns';
+import { Button, Label, RadioGroup, RadioGroupItem, StatusDot } from '@relay/design-system/primitives';
+import { cn } from '@relay/design-system/utils';
+
+import { ApiError, api, newIdempotencyKey, type ProviderId } from '@/lib/api';
+import { useTranslations } from '@/lib/i18n';
+import { providerDotKey } from '@/components/shell/action-center-catalog';
+
+/**
+ * What each platform will be asked for.
+ *
+ * These are permission purposes in plain language, not raw scope strings: the
+ * exact scope names are shown on the connection's capability panel after it is
+ * connected. The point of this list is that nobody arrives at a provider
+ * consent screen without knowing what it will ask for.
+ */
+const PROVIDERS: readonly {
+  readonly id: ProviderId;
+  readonly name: string;
+  readonly permissionKeys: readonly string[];
+}[] = [
+  {
+    id: 'x',
+    name: 'X',
+    permissionKeys: ['capability.feature.text', 'capability.feature.thread', 'capability.feature.image'],
+  },
+  {
+    id: 'linkedin',
+    name: 'LinkedIn',
+    permissionKeys: [
+      'capability.feature.text',
+      'capability.feature.image',
+      'capability.feature.document',
+    ],
+  },
+  {
+    id: 'instagram',
+    name: 'Instagram',
+    permissionKeys: [
+      'capability.feature.image',
+      'capability.feature.carousel',
+      'capability.feature.video',
+      'capability.feature.firstComment',
+    ],
+  },
+  {
+    id: 'facebook',
+    name: 'Facebook',
+    permissionKeys: [
+      'capability.feature.text',
+      'capability.feature.image',
+      'capability.feature.destinations',
+    ],
+  },
+];
+
+/**
+ * Step 5: connect one account.
+ *
+ * One is enough to reach a first post. The permission list is on the page,
+ * before the handoff, and the button says where it is about to send you.
+ */
+export function ConnectStep() {
+  const t = useTranslations();
+  const router = useRouter();
+
+  const [selected, setSelected] = useState<ProviderId>('x');
+  const [pending, setPending] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const provider = PROVIDERS.find((entry) => entry.id === selected) ?? PROVIDERS[0]!;
+
+  const connect = async () => {
+    setPending(true);
+    setError(null);
+    try {
+      const { authorizationUrl } = await api.connections.beginOAuth(
+        { provider: selected, returnUrl: `${window.location.origin}/onboarding/compose` },
+        newIdempotencyKey('oauth'),
+      );
+      window.location.assign(authorizationUrl);
+    } catch (caught) {
+      setPending(false);
+      setError(
+        ApiError.is(caught)
+          ? t(caught.messageKey, caught.messageValues)
+          : t('error.internal.message'),
+      );
+    }
+  };
+
+  return (
+    <div className="flex flex-col gap-8">
+      <div className="flex flex-col gap-1">
+        <h1 className="text-title-lg text-text-primary">{t('onboarding.connect.title')}</h1>
+        <p className="prose-measure text-body-md text-text-secondary">
+          {t('onboarding.connect.help')}
+        </p>
+      </div>
+
+      {error === null ? null : <Notice tone="destructive" liveness="alert" title={error} />}
+
+      <fieldset className="flex flex-col gap-0">
+        <legend className="pb-2 text-label uppercase tracking-wide text-text-tertiary">
+          {t('onboarding.connect.chooseProvider')}
+        </legend>
+
+        <RadioGroup
+          value={selected}
+          onValueChange={(next) => {
+            setSelected(next as ProviderId);
+          }}
+          className="gap-0 border-t border-border-subtle"
+        >
+          {PROVIDERS.map((entry) => {
+            const id = `provider-${entry.id}`;
+            const dot = providerDotKey(entry.id);
+            return (
+              <div
+                key={entry.id}
+                className={cn(
+                  'flex items-center gap-3 border-b border-border-subtle py-3',
+                  selected === entry.id && 'bg-accent-subtle',
+                )}
+              >
+                <RadioGroupItem value={entry.id} id={id} />
+                {dot === undefined ? null : <StatusDot provider={dot} aria-hidden="true" />}
+                <Label htmlFor={id} className="text-body-md text-text-primary">
+                  {entry.name}
+                </Label>
+              </div>
+            );
+          })}
+        </RadioGroup>
+      </fieldset>
+
+      <section aria-live="polite" className="flex flex-col gap-2">
+        <h2 className="text-title-sm text-text-primary">
+          {t('onboarding.connect.permissionsTitle', { provider: provider.name })}
+        </h2>
+        <p className="prose-measure text-body-md text-text-secondary">
+          {t('connection.permissions.explainBeforeOAuth', { provider: provider.name })}
+        </p>
+        <ul className="flex flex-col border-t border-border-subtle">
+          {provider.permissionKeys.map((key) => (
+            <li
+              key={key}
+              className="border-b border-border-subtle py-2 text-body-md text-text-primary"
+            >
+              {t(key)}
+            </li>
+          ))}
+        </ul>
+        <p className="prose-measure text-body-sm text-text-tertiary">
+          {t('onboarding.connect.permissionsFooter')}
+        </p>
+      </section>
+
+      <div className="flex flex-col gap-3">
+        <div className="flex flex-wrap gap-2">
+          <Button
+            variant="primary"
+            size="lg"
+            loading={pending}
+            loadingLabel={t('loading.connecting', { provider: provider.name })}
+            onClick={() => {
+              void connect();
+            }}
+          >
+            {t('action.connect')}
+          </Button>
+          <Button
+            variant="ghost"
+            size="lg"
+            onClick={() => {
+              router.push('/onboarding/compose');
+            }}
+          >
+            {t('onboarding.skipForNow')}
+          </Button>
+        </div>
+
+        <p className="text-body-sm text-text-tertiary">
+          {t('onboarding.connect.opensProvider', { provider: provider.name })}
+        </p>
+        <p className="prose-measure text-body-sm text-text-tertiary">
+          {t('onboarding.connect.skipNote')}
+        </p>
+      </div>
+    </div>
+  );
+}

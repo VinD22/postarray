@@ -1,0 +1,185 @@
+'use client';
+
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { useState, type FormEvent } from 'react';
+
+import { useAnnouncer } from '@relay/design-system/hooks';
+import { Notice } from '@relay/design-system/patterns';
+import { Button, Field, Input, Separator } from '@relay/design-system/primitives';
+
+import { ApiError, api, newIdempotencyKey } from '@/lib/api';
+import { useTranslations } from '@/lib/i18n';
+
+import { SocialButtons } from './social-buttons';
+
+const MIN_PASSWORD_LENGTH = 12;
+
+/**
+ * Create an account.
+ *
+ * The trial facts appear before the button, not after it. The form never says
+ * whether an address is already registered: if it is, the API emails a sign in
+ * link instead, and the copy under the field says so up front so the behaviour
+ * is not a surprise.
+ */
+export function SignUpForm() {
+  const t = useTranslations();
+  const router = useRouter();
+  const { announce } = useAnnouncer();
+
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [pending, setPending] = useState(false);
+
+  const tooShort = password.length > 0 && password.length < MIN_PASSWORD_LENGTH;
+
+  const fail = (message: string) => {
+    setError(message);
+    announce(message, 'assertive');
+  };
+
+  const submit = async (event: FormEvent) => {
+    event.preventDefault();
+    if (tooShort) {
+      return;
+    }
+    setError(null);
+    setPending(true);
+    try {
+      await api.auth.signUpWithPassword({ email, password, name }, newIdempotencyKey('signup'));
+      router.push('/onboarding');
+    } catch (caught) {
+      if (ApiError.is(caught) && caught.isOffline) {
+        fail(t('auth.failure.network'));
+      } else if (ApiError.is(caught) && caught.isRateLimited) {
+        fail(t('auth.rateLimited', { minutes: Math.ceil((caught.retryAfterSeconds ?? 60) / 60) }));
+      } else {
+        fail(t('auth.genericFailure'));
+      }
+    } finally {
+      setPending(false);
+    }
+  };
+
+  return (
+    <div className="flex flex-col gap-8">
+      <div className="flex flex-col gap-1">
+        <h1 className="text-title-lg text-text-primary">{t('auth.signUp.title')}</h1>
+        <p className="text-body-md text-text-secondary">{t('auth.signUp.subtitle')}</p>
+      </div>
+
+      {error === null ? null : (
+        <Notice
+          tone="destructive"
+          liveness="alert"
+          title={error}
+          description={t('auth.failure.noAccountLeak')}
+        />
+      )}
+
+      <SocialButtons intent="sign-up" onError={fail} />
+
+      <div className="flex items-center gap-3">
+        <Separator className="flex-1" />
+        <span className="text-body-sm text-text-tertiary">{t('auth.orUseEmail')}</span>
+        <Separator className="flex-1" />
+      </div>
+
+      <form onSubmit={submit} className="flex flex-col gap-4">
+        <Field label={t('common.name')} required>
+          {(control) => (
+            <Input
+              {...control}
+              type="text"
+              name="name"
+              autoComplete="name"
+              value={name}
+              onChange={(event) => {
+                setName(event.target.value);
+              }}
+            />
+          )}
+        </Field>
+
+        <Field
+          label={t('auth.email.label')}
+          description={t('auth.signUp.emailInUseNote')}
+          required
+        >
+          {(control) => (
+            <Input
+              {...control}
+              type="email"
+              name="email"
+              autoComplete="email"
+              placeholder={t('auth.email.placeholder')}
+              value={email}
+              onChange={(event) => {
+                setEmail(event.target.value);
+              }}
+            />
+          )}
+        </Field>
+
+        <Field
+          label={t('auth.password.label')}
+          description={t('auth.password.requirements')}
+          error={tooShort ? t('auth.password.strength.weak') : undefined}
+          required
+        >
+          {(control) => (
+            <Input
+              {...control}
+              type={showPassword ? 'text' : 'password'}
+              name="password"
+              autoComplete="new-password"
+              value={password}
+              onChange={(event) => {
+                setPassword(event.target.value);
+              }}
+              addonEnd={
+                <button
+                  type="button"
+                  onClick={() => {
+                    setShowPassword((current) => !current);
+                  }}
+                  className="text-body-sm text-text-secondary hover:text-text-primary"
+                >
+                  {showPassword ? t('auth.password.hide') : t('auth.password.show')}
+                </button>
+              }
+            />
+          )}
+        </Field>
+
+        <p className="text-body-sm text-text-secondary">{t('auth.signUp.trialNote')}</p>
+
+        <Button
+          type="submit"
+          variant="primary"
+          size="lg"
+          fullWidth
+          loading={pending}
+          loadingLabel={t('auth.submit.working')}
+        >
+          {t('auth.submit.signUp')}
+        </Button>
+
+        <p className="text-body-sm text-text-tertiary">
+          {t('auth.terms.accept', { version: '2026-08-04' })}
+        </p>
+      </form>
+
+      <p className="text-body-md text-text-secondary">
+        {t('auth.haveAccount')}{' '}
+        <Link href="/sign-in" className="font-medium text-text-accent hover:underline">
+          {t('auth.switchToSignIn')}
+        </Link>
+      </p>
+    </div>
+  );
+}

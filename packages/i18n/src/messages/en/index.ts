@@ -18,6 +18,12 @@ import { settingsMessages } from './settings.js';
 import { stateMessages } from './states.js';
 import { statusMessages } from './status.js';
 import { validationMessages } from './validation.js';
+import { webMarketingMessages } from './web-marketing.js';
+import { webAnalyticsMessages } from './web-analytics.js';
+import { webCalendarMessages } from './web-calendar.js';
+import { webComposerMessages } from './web-composer.js';
+import { webSettingsMessages } from './web-settings.js';
+import { webShellMessages } from './web-shell.js';
 
 /**
  * The English catalog. This is the source of truth for every user visible
@@ -31,11 +37,14 @@ export const en = {
   ...actionMessages,
   ...commonMessages,
   ...composerMessages,
+  ...webComposerMessages,
   ...calendarMessages,
   ...receiptMessages,
   ...connectionMessages,
+  ...webCalendarMessages,
   ...analyticsMessages,
   ...automationMessages,
+  ...webAnalyticsMessages,
   ...growthMessages,
   ...billingMessages,
   ...settingsMessages,
@@ -47,6 +56,9 @@ export const en = {
   ...stateMessages,
   ...statusMessages,
   ...a11yMessages,
+  ...webMarketingMessages,
+  ...webSettingsMessages,
+  ...webShellMessages,
 } as const;
 
 /** Every message key in the product. */
@@ -76,4 +88,10 @@ export {
   stateMessages,
   statusMessages,
   validationMessages,
+  webMarketingMessages,
+  webSettingsMessages,
+  webShellMessages,
+  webComposerMessages,
+  webCalendarMessages,
+  webAnalyticsMessages,
 };

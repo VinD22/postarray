@@ -1,0 +1,50 @@
+/**
+ * Provider simulators.
+ *
+ * One in-process HTTP-level simulator per V1 provider, plus the `fake` provider
+ * used by product tests. They mimic the real request and response shapes, the
+ * container and polling lifecycles and the error bodies, and they can produce
+ * every deterministic failure mode a connector has to survive.
+ *
+ * No simulator, and no test using `createSimulatorFetch`, can reach the
+ * network: an unregistered host throws.
+ */
+
+export { BaseProviderSimulator, type BaseSimulatorOptions } from './engine.js';
+
+export { BlueskySimulator, FakeProviderSimulator } from './atproto.js';
+export { LinkedInSimulator } from './linkedin.js';
+export { FacebookSimulator, InstagramSimulator, ThreadsSimulator } from './meta.js';
+export { TikTokSimulator, YouTubeSimulator } from './video.js';
+export { XSimulator } from './x.js';
+
+export {
+  SimulatorRegistry,
+  createSimulatorFetch,
+  createSimulatorRegistry,
+  simulatorBaseUrls,
+  type SimulatorFetch,
+  type SimulatorFetchOptions,
+  type SimulatorRegistryOptions,
+} from './registry.js';
+
+export {
+  CONTAINER_STATES,
+  DEFERRED_ID_POLLS,
+  FAILURE_KINDS,
+  RETRY_AFTER_SECONDS,
+  SIMULATOR_MODES,
+  SIMULATOR_MODE_HEADER,
+  SLOW_ACCEPT_DELAY_MS,
+  SLOW_MEDIA_POLLS,
+  SimulatedNetworkError,
+  isSimulatorMode,
+  type ContainerState,
+  type FailureKind,
+  type ProviderSimulator,
+  type SimulatedContainer,
+  type SimulatedPost,
+  type SimulatedRequest,
+  type SimulatedResponse,
+  type SimulatorMode,
+} from './types.js';

@@ -1,0 +1,84 @@
+/*
+ * The app stylesheet.
+ *
+ * Everything visual comes from `@relay/design-system`. This file adds only what
+ * a Next.js app has to add: where Tailwind should scan, the font variables that
+ * `next/font` produces, and three app-level layout primitives the shell needs.
+ *
+ * Rules that hold here as everywhere: no colour literals, no `dark:` variants,
+ * no physical direction properties.
+ */
+
+@import '@relay/design-system/styles.css';
+
+@source "../";
+@source "../../../../packages/design-system/src";
+
+@theme inline {
+  /* `next/font` writes the real family names into these variables on <html>.
+     The design system's fallback stack still applies when a face fails. */
+  --font-sans: var(--font-relay-ui), 'Inter Variable', 'Inter', ui-sans-serif, system-ui,
+    -apple-system, 'Segoe UI', 'Noto Sans', 'Noto Sans Arabic', 'Noto Sans Hebrew',
+    'Noto Sans JP', 'Noto Sans KR', 'Noto Sans SC', sans-serif;
+  --font-serif: var(--font-relay-editorial), 'Source Serif 4', 'Iowan Old Style', Georgia,
+    serif;
+}
+
+@layer base {
+  /* Tabular figures everywhere a number is compared: tables, counters,
+     receipts, the queue. A proportional 1 next to a proportional 8 makes a
+     column of times unreadable. */
+  table,
+  time,
+  [data-numeric] {
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* The shell has a sticky top bar. Without this, tabbing to a row scrolls it
+     under the bar, which is WCAG 2.2 SC 2.4.11. */
+  :where(a, button, input, select, textarea, [tabindex]) {
+    scroll-margin-block: 5rem 2rem;
+  }
+
+  /* A publishing desk is read, not skimmed. Long copy never runs past a
+     comfortable measure, and the limit is character based so a 40 percent
+     longer translation still wraps sensibly. */
+  .prose-measure {
+    max-inline-size: 68ch;
+  }
+}
+
+@layer components {
+  /*
+   * The skip link. Present on every page, first in the tab order, invisible
+   * until focused. It is a component rather than a utility stack because it is
+   * one of the few things that must be identical on every screen.
+   */
+  .relay-skip-link {
+    position: absolute;
+    inset-block-start: 0;
+    inset-inline-start: 0;
+    z-index: var(--z-index-toast);
+    transform: translateY(-120%);
+    padding: 0.625rem 1rem;
+    background-color: var(--surface-raised);
+    color: var(--text-primary);
+    border: var(--border-width-hairline) solid var(--border-strong);
+    border-start-start-radius: 0;
+    border-end-end-radius: var(--radius-md);
+    font-size: var(--text-body-md);
+    font-weight: 550;
+    transition: transform var(--duration-fast) var(--ease-entrance);
+  }
+
+  .relay-skip-link:focus-visible {
+    transform: translateY(0);
+  }
+
+  /* Wide content scrolls inside itself. The page never scrolls sideways, at
+     any width or zoom level. */
+  .relay-scroll-x {
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+  }
+}

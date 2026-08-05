@@ -1,0 +1,96 @@
+import { Body, Controller, Get, HttpCode, Param, Post, Query } from '@nestjs/common';
+import type { IanaTimeZone, IsoInstant, Paginated, PublishJob } from '@relay/contracts';
+
+import type { ActorContext, CalendarEntry } from '../../application/port.js';
+import { Actor, Idempotent, RequireScope } from '../../common/decorators.js';
+import { publishJobIdSchema } from '../../common/schemas.js';
+import { parseBody, parseParams, parseQuery } from '../../common/zod.js';
+import {
+  calendarQuerySchema,
+  cancelRequestSchema,
+  nextSlotQuerySchema,
+  rescheduleRequestSchema,
+  scheduleRequestSchema,
+} from './scheduling.schemas.js';
+import { SchedulingService } from './scheduling.service.js';
+
+/**
+ * Scheduling and the calendar.
+ *
+ * `posts:schedule` never implies `posts:publish`. A scheduled post still runs
+ * through the approval policy when it dispatches, so scheduling is not a way to
+ * publish later without review.
+ */
+@Controller('v1')
+export class SchedulingController {
+  constructor(private readonly scheduling: SchedulingService) {}
+
+  /**
+   * Schedule a content item. Returns the publish job with the resolved instant
+   * and the zone it was chosen in, so a client never has to guess either.
+   */
+  @Post('schedules')
+  @RequireScope('posts:schedule')
+  @Idempotent()
+  @HttpCode(202)
+  schedule(@Actor() actor: ActorContext, @Body() body: unknown): Promise<PublishJob> {
+    return this.scheduling.schedule(actor, parseBody(scheduleRequestSchema, body));
+  }
+
+  /**
+   * Move a scheduled job. When the new local time is ambiguous or does not
+   * exist because of a daylight saving transition, the application layer
+   * refuses until the client sends `confirmDst`, rather than picking one of the
+   * two possible instants on the user's behalf.
+   */
+  @Post('schedules/:id/reschedule')
+  @RequireScope('posts:schedule')
+  @Idempotent()
+  @HttpCode(200)
+  reschedule(
+    @Actor() actor: ActorContext,
+    @Param('id') id: string,
+    @Body() body: unknown,
+  ): Promise<PublishJob> {
+    const input = parseBody(rescheduleRequestSchema, body);
+    return this.scheduling.reschedule(actor, {
+      jobId: parseParams(publishJobIdSchema, id),
+      scheduleSpec: input.scheduleSpec,
+      ...(input.confirmDst === undefined ? {} : { confirmDst: input.confirmDst }),
+    });
+  }
+
+  @Post('schedules/:id/cancel')
+  @RequireScope('posts:cancel')
+  @Idempotent()
+  @HttpCode(200)
+  cancel(
+    @Actor() actor: ActorContext,
+    @Param('id') id: string,
+    @Body() body: unknown,
+  ): Promise<PublishJob> {
+    const { reason } = parseBody(cancelRequestSchema, body);
+    return this.scheduling.cancel(actor, parseParams(publishJobIdSchema, id), reason);
+  }
+
+  /** The calendar window. Cursor paginated, and always zone-qualified. */
+  @Get('calendar')
+  @RequireScope('drafts:read')
+  calendar(
+    @Actor() actor: ActorContext,
+    @Query() query: unknown,
+  ): Promise<Paginated<CalendarEntry>> {
+    return this.scheduling.getCalendar(actor, parseQuery(calendarQuerySchema, query));
+  }
+
+  /** The next slot that respects the brand's cadence and quiet hours. */
+  @Get('calendar/next-slot')
+  @RequireScope('drafts:read')
+  nextSlot(
+    @Actor() actor: ActorContext,
+    @Query() query: unknown,
+  ): Promise<{ instant: IsoInstant; ianaTimeZone: IanaTimeZone }> {
+    const input = parseQuery(nextSlotQuerySchema, query);
+    return this.scheduling.nextAvailableSlot(actor, input);
+  }
+}

@@ -1,0 +1,879 @@
+import type {
+  ApprovalLevel,
+  CapabilitySnapshot,
+  ContentKind,
+  CreationSurface,
+  DisclosureFlags,
+  GrowthExportFormat,
+  GrowthPlan,
+  LinkSpec,
+  Locale,
+  MentionRef,
+  OperationRef,
+  OpportunityRecord,
+  Paginated,
+  ProviderId,
+  PublishState,
+  Role,
+  RuleActionKind,
+  RuleTriggerKind,
+  ScheduleSpec,
+  Scope,
+  SignatureRef,
+  ThreadItem,
+  ToolRecord,
+  UtmParameters,
+  ValidationResult,
+  VariantOverrides,
+  WebhookEventName,
+} from '@relay/contracts';
+import type { RelayConfig } from '@relay/config';
+import type { RelayPrismaClient } from '@relay/database';
+import type { HealthReport, Logger } from '@relay/observability';
+
+import type {
+  ApiKeyView,
+  ApprovalRequestView,
+  AuditEventView,
+  AutomationRuleView,
+  BrandView,
+  BusinessProfileView,
+  CalendarEntry,
+  CanonicalPreview,
+  ComparisonReport,
+  ConnectionView,
+  ContentItemView,
+  ContentVersionView,
+  CreatedApiKeyView,
+  CreatedOAuthAppView,
+  ExperimentView,
+  FeedHealthView,
+  FeedPreview,
+  MediaAssetView,
+  MembershipView,
+  MentionEntityView,
+  MetricObservationView,
+  OAuthAppView,
+  OAuthGrantView,
+  PostVariantView,
+  ProviderDestinationView,
+  PublicationReceiptView,
+  PublishJobView,
+  RssFeedView,
+  RulePreview,
+  RuleRunView,
+  ShortLinkStats,
+  ShortLinkView,
+  WebhookDeliveryView,
+  WebhookEndpointView,
+  WorkspaceView,
+} from './views.js';
+
+export * from './views.js';
+
+/**
+ * The shared application service contract.
+ *
+ * The web app, the REST API, the worker, the MCP server and the CLI are five
+ * equal callers of exactly these methods. None of them may re-implement a
+ * validation, an approval check, an idempotency rule or a tenancy filter. If a
+ * behaviour is not reachable through this interface, it does not exist.
+ */
+
+export interface ActorContext {
+  readonly actorType: 'user' | 'service_account' | 'oauth_app' | 'system';
+  readonly actorId: string;
+  readonly workspaceId: string;
+  readonly scopes: readonly Scope[];
+  readonly surface: CreationSurface;
+  readonly correlationId: string;
+  readonly approvalLevel: ApprovalLevel;
+  readonly idempotencyKey?: string;
+  readonly locale: string;
+  /** Set by the surface when the human explicitly confirmed a level 3 action. */
+  readonly humanConfirmed?: boolean;
+  /** The developer application the call arrived through, when there is one. */
+  readonly clientId?: string;
+  readonly ipAddress?: string;
+  readonly userAgent?: string;
+}
+
+// ---------------------------------------------------------------------------
+// Ports
+// ---------------------------------------------------------------------------
+
+export interface Clock {
+  now(): Date;
+}
+
+export interface KeyValueSetOptions {
+  readonly ttlSeconds?: number;
+  /** Fail rather than overwrite. Used by the idempotency reservation. */
+  readonly ifAbsent?: boolean;
+}
+
+export interface KeyValueStore {
+  get(key: string): Promise<string | null>;
+  /** Returns false when `ifAbsent` was requested and the key already existed. */
+  set(key: string, value: string, options?: KeyValueSetOptions): Promise<boolean>;
+  delete(key: string): Promise<void>;
+  increment(key: string, amount?: number, ttlSeconds?: number): Promise<number>;
+  close(): Promise<void>;
+}
+
+export interface StoredObject {
+  readonly key: string;
+  readonly byteSize: number;
+  readonly contentType: string;
+  readonly checksumSha256: string;
+}
+
+export interface UploadTicket {
+  readonly uploadUrl: string;
+  readonly method: 'PUT' | 'POST';
+  readonly headers: Readonly<Record<string, string>>;
+  readonly expiresAt: string;
+  readonly storageKey: string;
+}
+
+export interface StoragePort {
+  createUploadTicket(input: {
+    readonly workspaceId: string;
+    readonly key: string;
+    readonly contentType: string;
+    readonly byteSize: number;
+    readonly checksumSha256: string;
+  }): Promise<UploadTicket>;
+  head(key: string): Promise<StoredObject | null>;
+  read(key: string): Promise<Uint8Array>;
+  write(key: string, bytes: Uint8Array, contentType: string): Promise<StoredObject>;
+  remove(key: string): Promise<void>;
+  createDownloadUrl(key: string, ttlSeconds: number): Promise<string>;
+}
+
+export interface MailMessage {
+  readonly to: readonly string[];
+  /** i18n key. The mailer renders it; no English literal ever reaches here. */
+  readonly subjectKey: string;
+  readonly bodyKey: string;
+  readonly params: Readonly<Record<string, string | number | boolean | null>>;
+  readonly locale: string;
+  readonly workspaceId: string;
+}
+
+export interface MailerPort {
+  send(message: MailMessage): Promise<void>;
+}
+
+export interface SchedulerPort {
+  schedulePublish(input: {
+    readonly jobId: string;
+    readonly workspaceId: string;
+    readonly executeAt: Date;
+    readonly idempotencyKey: string;
+  }): Promise<{ readonly workflowId: string; readonly runId: string }>;
+  cancelPublish(input: { readonly jobId: string; readonly reason: string }): Promise<void>;
+  reschedulePublish(input: { readonly jobId: string; readonly executeAt: Date }): Promise<void>;
+  signalPublish(input: {
+    readonly jobId: string;
+    readonly signal: string;
+    readonly payload?: Record<string, unknown>;
+  }): Promise<void>;
+  scheduleAnalyticsSync(input: {
+    readonly connectionId: string;
+    readonly receiptId?: string;
+    readonly at: Date;
+  }): Promise<void>;
+  startRuleRun(input: {
+    readonly ruleId: string;
+    readonly workspaceId: string;
+    readonly event: Record<string, unknown>;
+  }): Promise<{ readonly workflowId: string }>;
+  describe(
+    jobId: string,
+  ): Promise<{ readonly status: string; readonly historyLength: number } | null>;
+}
+
+/**
+ * The connector registry and the AI, billing gateways are owned by other
+ * packages. The application depends on the narrow surface it actually calls, so
+ * a change in a connector adapter cannot ripple into a use case.
+ */
+export interface ConnectorRegistry {
+  has(provider: ProviderId): boolean;
+  capabilitiesFor(input: {
+    readonly provider: ProviderId;
+    readonly connectionId: string;
+    readonly accountType: string;
+  }): Promise<CapabilitySnapshot>;
+}
+
+export interface AiGateway {
+  isAvailable(): boolean;
+}
+
+export interface EntitlementCheck {
+  readonly allowed: boolean;
+  /** i18n key naming the entitlement that blocked the action. */
+  readonly reasonKey: string | null;
+  readonly limit: number | null;
+  readonly used: number | null;
+}
+
+export interface BillingService {
+  checkEntitlement(input: {
+    readonly workspaceId: string;
+    readonly key: string;
+    readonly requested?: number;
+  }): Promise<EntitlementCheck>;
+  recordUsage(input: {
+    readonly workspaceId: string;
+    readonly key: string;
+    readonly quantity: number;
+    readonly idempotencyKey: string;
+  }): Promise<void>;
+}
+
+export interface ServiceDeps {
+  readonly prisma: RelayPrismaClient;
+  readonly kv: KeyValueStore;
+  readonly connectors: ConnectorRegistry;
+  readonly ai: AiGateway;
+  readonly billing: BillingService;
+  readonly scheduler: SchedulerPort;
+  readonly storage: StoragePort;
+  readonly mailer: MailerPort;
+  readonly logger: Logger;
+  readonly clock: Clock;
+  readonly config: RelayConfig;
+}
+
+// ---------------------------------------------------------------------------
+// Inputs
+// ---------------------------------------------------------------------------
+
+export interface PageQuery {
+  readonly cursor?: string;
+  readonly limit?: number;
+}
+
+export interface TargetSpec {
+  readonly connectionId: string;
+  readonly destinationId?: string | null;
+  readonly privacyValue?: string | null;
+  readonly disclosure?: DisclosureFlags | null;
+  readonly mentions?: readonly MentionRef[];
+}
+
+export interface CreateDraftInput {
+  readonly brandId: string;
+  readonly campaignId?: string | null;
+  readonly title?: string | null;
+  readonly body: string;
+  readonly contentKind?: ContentKind;
+  readonly locale?: Locale;
+  readonly mediaIds?: readonly string[];
+  readonly links?: readonly LinkSpec[];
+  readonly signature?: SignatureRef | null;
+  readonly threadItems?: readonly ThreadItem[];
+  readonly schedule?: ScheduleSpec | null;
+  readonly disclosure?: DisclosureFlags;
+  readonly targets?: readonly TargetSpec[];
+  readonly approvalPolicy?: string;
+}
+
+export interface MasterDraftPatch {
+  readonly title?: string | null;
+  readonly body?: string;
+  readonly contentKind?: ContentKind;
+  readonly locale?: Locale;
+  readonly mediaIds?: readonly string[];
+  readonly links?: readonly LinkSpec[];
+  readonly signature?: SignatureRef | null;
+  readonly threadItems?: readonly ThreadItem[];
+  readonly schedule?: ScheduleSpec | null;
+  readonly disclosure?: DisclosureFlags;
+  readonly campaignId?: string | null;
+  /**
+   * Fields a target has overridden are preserved by default. Set this to move a
+   * named field back onto the master for every target, which is an explicit,
+   * audited act rather than a silent overwrite.
+   */
+  readonly releaseOverridesFor?: readonly string[];
+}
+
+// ---------------------------------------------------------------------------
+// Services
+// ---------------------------------------------------------------------------
+
+export interface WorkspaceService {
+  get(ctx: ActorContext): Promise<WorkspaceView>;
+  update(
+    ctx: ActorContext,
+    patch: {
+      readonly name?: string;
+      readonly defaultLocale?: string;
+      readonly defaultTimeZone?: string;
+    },
+  ): Promise<WorkspaceView>;
+  engageKillSwitch(ctx: ActorContext, reasonKey: string): Promise<WorkspaceView>;
+  releaseKillSwitch(ctx: ActorContext): Promise<WorkspaceView>;
+}
+
+export interface MembershipService {
+  list(ctx: ActorContext, query?: PageQuery): Promise<Paginated<MembershipView>>;
+  get(ctx: ActorContext, membershipId: string): Promise<MembershipView>;
+  invite(
+    ctx: ActorContext,
+    input: { readonly email: string; readonly role: Role; readonly brandScope?: readonly string[] },
+  ): Promise<MembershipView>;
+  changeRole(ctx: ActorContext, membershipId: string, role: Role): Promise<MembershipView>;
+  remove(ctx: ActorContext, membershipId: string): Promise<void>;
+}
+
+export interface BrandService {
+  list(ctx: ActorContext, query?: PageQuery): Promise<Paginated<BrandView>>;
+  get(ctx: ActorContext, brandId: string): Promise<BrandView>;
+  create(
+    ctx: ActorContext,
+    input: { readonly name: string; readonly slug: string; readonly defaultTimeZone?: string },
+  ): Promise<BrandView>;
+  update(ctx: ActorContext, brandId: string, patch: Partial<BrandView>): Promise<BrandView>;
+  archive(ctx: ActorContext, brandId: string): Promise<BrandView>;
+}
+
+export interface ConnectionService {
+  list(
+    ctx: ActorContext,
+    query?: PageQuery & { readonly brandId?: string; readonly provider?: ProviderId },
+  ): Promise<Paginated<ConnectionView>>;
+  get(ctx: ActorContext, connectionId: string): Promise<ConnectionView>;
+  getCapabilities(ctx: ActorContext, connectionId: string): Promise<CapabilitySnapshot>;
+  beginOAuth(
+    ctx: ActorContext,
+    input: {
+      readonly provider: ProviderId;
+      readonly brandId?: string | null;
+      readonly redirectTo: string;
+    },
+  ): Promise<{ readonly authorizationUrl: string; readonly transactionId: string }>;
+  completeOAuth(
+    ctx: ActorContext,
+    input: { readonly transactionId: string; readonly code: string; readonly state: string },
+  ): Promise<readonly ConnectionView[]>;
+  reconnect(ctx: ActorContext, connectionId: string): Promise<ConnectionView>;
+  pause(ctx: ActorContext, connectionId: string): Promise<ConnectionView>;
+  resume(ctx: ActorContext, connectionId: string): Promise<ConnectionView>;
+  disconnect(ctx: ActorContext, connectionId: string): Promise<ConnectionView>;
+  listDestinations(
+    ctx: ActorContext,
+    connectionId: string,
+    input: { readonly kind: string; readonly query?: string },
+  ): Promise<readonly ProviderDestinationView[]>;
+  searchMentions(
+    ctx: ActorContext,
+    connectionId: string,
+    input: { readonly query: string },
+  ): Promise<readonly MentionEntityView[]>;
+}
+
+export interface ContentService {
+  createDraft(ctx: ActorContext, input: CreateDraftInput): Promise<ContentItemView>;
+  get(ctx: ActorContext, contentItemId: string): Promise<ContentItemView>;
+  list(
+    ctx: ActorContext,
+    query?: PageQuery & {
+      readonly state?: PublishState;
+      readonly brandId?: string;
+      readonly campaignId?: string;
+    },
+  ): Promise<Paginated<ContentItemView>>;
+  updateMaster(
+    ctx: ActorContext,
+    contentItemId: string,
+    patch: MasterDraftPatch,
+  ): Promise<ContentItemView>;
+  overrideVariant(
+    ctx: ActorContext,
+    input: {
+      readonly contentItemId: string;
+      readonly targetId: string;
+      readonly patch: VariantOverrides;
+    },
+  ): Promise<PostVariantView>;
+  resetVariantToMaster(
+    ctx: ActorContext,
+    input: {
+      readonly contentItemId: string;
+      readonly targetId: string;
+      readonly fields?: readonly string[];
+    },
+  ): Promise<PostVariantView>;
+  setTargets(
+    ctx: ActorContext,
+    contentItemId: string,
+    targets: readonly TargetSpec[],
+  ): Promise<ContentItemView>;
+  applySet(ctx: ActorContext, contentItemId: string, setId: string): Promise<ContentItemView>;
+  applySignature(
+    ctx: ActorContext,
+    contentItemId: string,
+    signatureId: string,
+  ): Promise<ContentItemView>;
+  freezeVersion(ctx: ActorContext, contentItemId: string): Promise<ContentVersionView>;
+  preview(
+    ctx: ActorContext,
+    input: { readonly contentItemId: string; readonly targetId: string },
+  ): Promise<CanonicalPreview>;
+  delete(ctx: ActorContext, contentItemId: string): Promise<void>;
+}
+
+export interface ValidationService {
+  validate(
+    ctx: ActorContext,
+    input: { readonly contentItemId: string },
+  ): Promise<ValidationResult>;
+}
+
+export interface ApprovalService {
+  request(
+    ctx: ActorContext,
+    input: {
+      readonly contentItemId: string;
+      readonly approverIds?: readonly string[];
+      readonly note?: string;
+    },
+  ): Promise<ApprovalRequestView>;
+  decide(
+    ctx: ActorContext,
+    input: {
+      readonly approvalId: string;
+      readonly decision: 'approve' | 'request_changes' | 'reject';
+      readonly note?: string;
+    },
+  ): Promise<ApprovalRequestView>;
+  listPending(ctx: ActorContext, query?: PageQuery): Promise<Paginated<ApprovalRequestView>>;
+}
+
+export interface SchedulingService {
+  schedule(
+    ctx: ActorContext,
+    input: { readonly contentItemId: string; readonly scheduleSpec: ScheduleSpec },
+  ): Promise<PublishJobView>;
+  reschedule(
+    ctx: ActorContext,
+    input: {
+      readonly jobId: string;
+      readonly scheduleSpec: ScheduleSpec;
+      readonly confirmDst?: boolean;
+    },
+  ): Promise<PublishJobView>;
+  cancel(
+    ctx: ActorContext,
+    input: { readonly jobId: string; readonly reason: string },
+  ): Promise<PublishJobView>;
+  getCalendar(
+    ctx: ActorContext,
+    input: PageQuery & {
+      readonly from: string;
+      readonly to: string;
+      readonly filters?: {
+        readonly brandId?: string;
+        readonly campaignId?: string;
+        readonly connectionId?: string;
+        readonly state?: PublishState;
+      };
+    },
+  ): Promise<Paginated<CalendarEntry>>;
+  nextAvailableSlot(
+    ctx: ActorContext,
+    input: { readonly brandId: string; readonly after?: string },
+  ): Promise<{ readonly instant: string; readonly ianaTimeZone: string }>;
+}
+
+export interface PublishingService {
+  publishNow(
+    ctx: ActorContext,
+    input: { readonly contentItemId: string; readonly confirmation: boolean },
+  ): Promise<PublishJobView>;
+  getJob(ctx: ActorContext, jobId: string): Promise<PublishJobView>;
+  retryTarget(
+    ctx: ActorContext,
+    input: { readonly jobId: string; readonly targetId: string },
+  ): Promise<PublishJobView>;
+}
+
+export interface ReceiptService {
+  get(ctx: ActorContext, receiptId: string): Promise<PublicationReceiptView>;
+  listForJob(ctx: ActorContext, jobId: string): Promise<readonly PublicationReceiptView[]>;
+}
+
+export interface MediaEditOperation {
+  readonly kind: 'crop' | 'resize' | 'rotate' | 'compress' | 'convert';
+  readonly params: Readonly<Record<string, number | string>>;
+}
+
+export interface MediaService {
+  createUploadUrl(
+    ctx: ActorContext,
+    input: {
+      readonly filename: string;
+      readonly mimeType: string;
+      readonly byteSize: number;
+      readonly sha256: string;
+      readonly brandId?: string | null;
+    },
+  ): Promise<{
+    readonly uploadUrl: string;
+    readonly mediaId: string;
+    readonly headers: Readonly<Record<string, string>>;
+  }>;
+  finalizeUpload(ctx: ActorContext, mediaId: string): Promise<MediaAssetView>;
+  importFromUrl(
+    ctx: ActorContext,
+    input: { readonly url: string; readonly brandId?: string | null },
+  ): Promise<OperationRef>;
+  list(
+    ctx: ActorContext,
+    query?: PageQuery & { readonly brandId?: string; readonly kind?: string },
+  ): Promise<Paginated<MediaAssetView>>;
+  get(ctx: ActorContext, mediaId: string): Promise<MediaAssetView>;
+  delete(ctx: ActorContext, mediaId: string): Promise<void>;
+  edit(
+    ctx: ActorContext,
+    input: { readonly mediaId: string; readonly ops: readonly MediaEditOperation[] },
+  ): Promise<MediaAssetView>;
+  setAltText(
+    ctx: ActorContext,
+    input: { readonly mediaId: string; readonly altText: string | null; readonly waived?: boolean },
+  ): Promise<MediaAssetView>;
+}
+
+export interface AnalyticsService {
+  getPostMetrics(
+    ctx: ActorContext,
+    input: { readonly receiptId: string },
+  ): Promise<readonly MetricObservationView[]>;
+  getAccountMetrics(
+    ctx: ActorContext,
+    input: {
+      readonly connectionId: string;
+      readonly range: { readonly from: string; readonly to: string };
+    },
+  ): Promise<readonly MetricObservationView[]>;
+  compare(
+    ctx: ActorContext,
+    input: {
+      readonly receiptIds?: readonly string[];
+      readonly period?: { readonly from: string; readonly to: string };
+      readonly baseline: 'trailing_median' | 'previous_period';
+      readonly connectionId?: string;
+    },
+  ): Promise<ComparisonReport>;
+  listExperiments(ctx: ActorContext, query?: PageQuery): Promise<Paginated<ExperimentView>>;
+  createExperiment(
+    ctx: ActorContext,
+    input: {
+      readonly name: string;
+      readonly hypothesis: string;
+      readonly successMetric: string;
+      readonly windowStart: string;
+      readonly windowEnd: string;
+      readonly campaignId?: string | null;
+    },
+  ): Promise<ExperimentView>;
+}
+
+export interface ShortLinkService {
+  create(
+    ctx: ActorContext,
+    input: {
+      readonly destinationUrl: string;
+      readonly campaignId?: string | null;
+      readonly domainId?: string | null;
+      readonly brandId?: string | null;
+      readonly utm?: UtmParameters;
+      readonly expiresAt?: string | null;
+    },
+  ): Promise<ShortLinkView>;
+  /** No ActorContext: the redirect service is unauthenticated by design. */
+  resolve(
+    slug: string,
+    domain?: string | null,
+  ): Promise<{ readonly destinationUrl: string; readonly linkId: string } | null>;
+  /** No ActorContext, for the same reason. Fire and forget from the edge. */
+  recordClick(input: {
+    readonly linkId: string;
+    readonly occurredAt: string;
+    readonly dedupeKey: string;
+    readonly countryCode?: string | null;
+    readonly deviceClass?: string | null;
+    readonly referrerClass?: string | null;
+    readonly botClass?: 'human' | 'suspected_bot' | 'known_bot' | 'unknown';
+  }): Promise<void>;
+  getStats(
+    ctx: ActorContext,
+    input: {
+      readonly linkId: string;
+      readonly range: { readonly from: string; readonly to: string };
+    },
+  ): Promise<ShortLinkStats>;
+  disable(ctx: ActorContext, linkId: string): Promise<ShortLinkView>;
+}
+
+export interface AutomationRuleInput {
+  readonly brandId: string;
+  readonly name: string;
+  readonly trigger: { readonly kind: RuleTriggerKind; readonly config?: Record<string, unknown> };
+  readonly conditions?: readonly {
+    readonly kind: string;
+    readonly config?: Record<string, unknown>;
+  }[];
+  readonly actions: readonly {
+    readonly kind: RuleActionKind;
+    readonly config?: Record<string, unknown>;
+  }[];
+  readonly delaySeconds?: number;
+  readonly requiresApproval?: boolean;
+  readonly preauthorizedConnectionIds?: readonly string[];
+  readonly maxExecutions?: number | null;
+  readonly cooldownSeconds?: number | null;
+  readonly measurementWindowSeconds?: number | null;
+}
+
+export interface AutomationRuleService {
+  list(ctx: ActorContext, query?: PageQuery): Promise<Paginated<AutomationRuleView>>;
+  get(ctx: ActorContext, ruleId: string): Promise<AutomationRuleView>;
+  create(ctx: ActorContext, input: AutomationRuleInput): Promise<AutomationRuleView>;
+  update(
+    ctx: ActorContext,
+    ruleId: string,
+    input: Partial<AutomationRuleInput>,
+  ): Promise<AutomationRuleView>;
+  enable(ctx: ActorContext, ruleId: string): Promise<AutomationRuleView>;
+  disable(ctx: ActorContext, ruleId: string, reasonKey?: string): Promise<AutomationRuleView>;
+  delete(ctx: ActorContext, ruleId: string): Promise<void>;
+  preview(ctx: ActorContext, ruleId: string): Promise<RulePreview>;
+  testRun(
+    ctx: ActorContext,
+    input: { readonly ruleId: string; readonly sampleEvent: Record<string, unknown> },
+  ): Promise<RuleRunView>;
+  listRuns(
+    ctx: ActorContext,
+    input: PageQuery & { readonly ruleId: string },
+  ): Promise<Paginated<RuleRunView>>;
+}
+
+export interface RssService {
+  validateFeed(ctx: ActorContext, input: { readonly url: string }): Promise<FeedPreview>;
+  create(
+    ctx: ActorContext,
+    input: {
+      readonly brandId: string;
+      readonly title: string;
+      readonly feedUrl: string;
+      readonly connectionIds?: readonly string[];
+      readonly publishPolicy?: string;
+      readonly pollIntervalSeconds?: number;
+    },
+  ): Promise<RssFeedView>;
+  update(
+    ctx: ActorContext,
+    feedId: string,
+    patch: {
+      readonly title?: string;
+      readonly connectionIds?: readonly string[];
+      readonly publishPolicy?: string;
+      readonly pollIntervalSeconds?: number;
+      readonly paused?: boolean;
+    },
+  ): Promise<RssFeedView>;
+  list(ctx: ActorContext, query?: PageQuery): Promise<Paginated<RssFeedView>>;
+  delete(ctx: ActorContext, feedId: string): Promise<void>;
+  getHealth(ctx: ActorContext, feedId: string): Promise<FeedHealthView>;
+}
+
+export interface GrowthService {
+  upsertBusinessProfile(
+    ctx: ActorContext,
+    input: {
+      readonly profileId?: string;
+      readonly brandId: string;
+      readonly productName: string;
+      readonly siteUrl: string;
+      readonly description: string;
+      readonly category: string;
+      readonly markets?: readonly string[];
+      readonly contentLocales?: readonly string[];
+      readonly objective: string;
+      readonly conversionEvent?: string;
+    },
+  ): Promise<BusinessProfileView>;
+  confirmBusinessProfile(ctx: ActorContext, profileId: string): Promise<BusinessProfileView>;
+  generatePlan(ctx: ActorContext, input: { readonly profileId: string }): Promise<OperationRef>;
+  getPlan(ctx: ActorContext, planId: string): Promise<GrowthPlan>;
+  exportPlan(
+    ctx: ActorContext,
+    input: { readonly planId: string; readonly format: GrowthExportFormat },
+  ): Promise<{ readonly contentType: string; readonly body: string }>;
+  createDraftFromItem(
+    ctx: ActorContext,
+    input: { readonly planId: string; readonly itemId: string },
+  ): Promise<ContentItemView>;
+  proposeSlotFromItem(
+    ctx: ActorContext,
+    input: { readonly planId: string; readonly itemId: string },
+  ): Promise<CalendarEntry>;
+  listOpportunities(
+    ctx: ActorContext,
+    input?: {
+      readonly category?: string;
+      readonly region?: string;
+      readonly verifiedAfter?: string;
+    },
+  ): Promise<readonly OpportunityRecord[]>;
+  listTools(
+    ctx: ActorContext,
+    input?: { readonly workflow?: string; readonly verifiedAfter?: string },
+  ): Promise<readonly ToolRecord[]>;
+}
+
+export interface WebhookService {
+  list(ctx: ActorContext, query?: PageQuery): Promise<Paginated<WebhookEndpointView>>;
+  create(
+    ctx: ActorContext,
+    input: {
+      readonly name: string;
+      readonly url: string;
+      readonly events: readonly WebhookEventName[];
+      readonly connectionScope?: readonly string[];
+    },
+  ): Promise<{ readonly endpoint: WebhookEndpointView; readonly signingSecret: string }>;
+  update(
+    ctx: ActorContext,
+    endpointId: string,
+    patch: {
+      readonly url?: string;
+      readonly events?: readonly WebhookEventName[];
+      readonly connectionScope?: readonly string[];
+      readonly paused?: boolean;
+    },
+  ): Promise<WebhookEndpointView>;
+  delete(ctx: ActorContext, endpointId: string): Promise<void>;
+  testDelivery(ctx: ActorContext, endpointId: string): Promise<WebhookDeliveryView>;
+  listDeliveries(
+    ctx: ActorContext,
+    input: PageQuery & { readonly endpointId: string },
+  ): Promise<Paginated<WebhookDeliveryView>>;
+  redeliver(ctx: ActorContext, deliveryId: string): Promise<WebhookDeliveryView>;
+  /** Internal, called by the worker. Fans an event out to matching endpoints. */
+  emit(
+    event: WebhookEventName,
+    payload: Record<string, unknown>,
+    options: {
+      readonly workspaceId: string;
+      readonly connectionId?: string | null;
+      readonly correlationId?: string | null;
+      readonly isTest?: boolean;
+    },
+  ): Promise<readonly WebhookDeliveryView[]>;
+}
+
+export interface CredentialVaultService {
+  /** Never returns plaintext. Reports whether a usable credential exists. */
+  status(
+    ctx: ActorContext,
+    connectionId: string,
+  ): Promise<{
+    readonly present: boolean;
+    readonly accessTokenExpiresAt: string | null;
+    readonly refreshTokenExpiresAt: string | null;
+    readonly lastRefreshedAt: string | null;
+    readonly needsAction: boolean;
+  }>;
+  revoke(ctx: ActorContext, connectionId: string): Promise<void>;
+}
+
+export interface ApiKeyService {
+  list(ctx: ActorContext, query?: PageQuery): Promise<Paginated<ApiKeyView>>;
+  create(
+    ctx: ActorContext,
+    input: {
+      readonly name: string;
+      readonly scopes: readonly Scope[];
+      readonly expiresAt: string;
+      readonly serviceAccountId?: string | null;
+    },
+  ): Promise<CreatedApiKeyView>;
+  revoke(ctx: ActorContext, apiKeyId: string): Promise<ApiKeyView>;
+}
+
+export interface OAuthAppService {
+  list(ctx: ActorContext, query?: PageQuery): Promise<Paginated<OAuthAppView>>;
+  create(
+    ctx: ActorContext,
+    input: {
+      readonly name: string;
+      readonly clientType: 'public' | 'confidential';
+      readonly redirectUris: readonly string[];
+      readonly allowedScopes: readonly Scope[];
+    },
+  ): Promise<CreatedOAuthAppView>;
+  update(
+    ctx: ActorContext,
+    appId: string,
+    patch: {
+      readonly name?: string;
+      readonly redirectUris?: readonly string[];
+      readonly allowedScopes?: readonly Scope[];
+      readonly status?: 'active' | 'sandbox' | 'disabled';
+    },
+  ): Promise<OAuthAppView>;
+  rotateSecret(ctx: ActorContext, appId: string): Promise<CreatedOAuthAppView>;
+  delete(ctx: ActorContext, appId: string): Promise<void>;
+  listGrants(ctx: ActorContext, query?: PageQuery): Promise<Paginated<OAuthGrantView>>;
+  revokeGrant(ctx: ActorContext, grantId: string): Promise<OAuthGrantView>;
+}
+
+export interface AuditService {
+  list(
+    ctx: ActorContext,
+    input?: PageQuery & {
+      readonly action?: string;
+      readonly targetType?: string;
+      readonly targetId?: string;
+      readonly actorId?: string;
+      readonly from?: string;
+      readonly to?: string;
+    },
+  ): Promise<Paginated<AuditEventView>>;
+}
+
+export interface HealthService {
+  report(): Promise<HealthReport>;
+}
+
+export interface Services {
+  readonly workspaces: WorkspaceService;
+  readonly members: MembershipService;
+  readonly brands: BrandService;
+  readonly connections: ConnectionService;
+  readonly content: ContentService;
+  readonly validation: ValidationService;
+  readonly approvals: ApprovalService;
+  readonly scheduling: SchedulingService;
+  readonly publishing: PublishingService;
+  readonly receipts: ReceiptService;
+  readonly media: MediaService;
+  readonly analytics: AnalyticsService;
+  readonly shortLinks: ShortLinkService;
+  readonly automationRules: AutomationRuleService;
+  readonly rss: RssService;
+  readonly growth: GrowthService;
+  readonly webhooks: WebhookService;
+  readonly credentials: CredentialVaultService;
+  readonly apiKeys: ApiKeyService;
+  readonly oauthApps: OAuthAppService;
+  readonly audit: AuditService;
+  readonly health: HealthService;
+}

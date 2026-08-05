@@ -1,0 +1,28 @@
+export { createYouTubeConnector } from './connector.js';
+export {
+  YOUTUBE_CAPABILITY_REVISION,
+  YOUTUBE_DAILY_QUOTA_UNITS,
+  YOUTUBE_INSERT_QUOTA_UNITS,
+  YOUTUBE_MAX_DESCRIPTION_LENGTH,
+  YOUTUBE_MAX_TAGS,
+  YOUTUBE_MAX_TITLE_LENGTH,
+  YOUTUBE_MAX_UPLOAD_BYTES,
+  YOUTUBE_PRIVACY_PRIVATE,
+  YOUTUBE_SCOPES,
+  YOUTUBE_SHORTS_MAX_DURATION_SECONDS,
+  YOUTUBE_UNVERIFIED_MAX_DURATION_SECONDS,
+  YOUTUBE_UPLOADS_PER_DAY,
+  YOUTUBE_VERIFIED_MAX_DURATION_SECONDS,
+  buildYouTubeCapabilities,
+  isUnaudited as isYouTubeProjectUnaudited,
+  thumbnailCapability,
+  youTubePrivacyOptions,
+  type ThumbnailCapability,
+  type YouTubeCapabilityInput,
+} from './capabilities.js';
+export {
+  YOUTUBE_ACCOUNT_METRICS,
+  YOUTUBE_CHANNEL_PARTS,
+  YOUTUBE_POST_METRICS,
+  YOUTUBE_VIDEO_PARTS,
+} from './metrics.js';
