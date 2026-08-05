@@ -53,6 +53,8 @@ import {
 import { metaAuthorization, refreshMetaCredential } from '../oauth.js';
 import { accessTokenOf, errorSummary, providerOptionsOf, providerOptionsOfConnection } from '../../shared/access.js';
 import { NOT_IMPLEMENTED_FEATURES } from '../../../contract.js';
+import { SecretValue } from '../../../vault.js';
+import type { FailedItem, PublishedItem } from '../../../contract.js';
 import {
   INSTAGRAM_CAROUSEL_MAX,
   INSTAGRAM_CAROUSEL_MIN,
@@ -246,7 +248,7 @@ export function createInstagramConnector(deps: ConnectorDeps): SocialConnector {
         }
         const profile = await client.get({
           path: `/${linked.id}`,
-          accessToken: page.access_token ?? grant.accessToken,
+          accessToken: page.access_token ?? (await grant.accessToken.use((plaintext) => plaintext)),
           query: { fields: 'id,username,name,profile_picture_url,account_type' },
           operation: 'instagram.read_account',
         });
@@ -266,6 +268,12 @@ export function createInstagramConnector(deps: ConnectorDeps): SocialConnector {
           displayName: account.name ?? account.username ?? page.name,
           handle: account.username ?? null,
           avatarUrl: account.profile_picture_url ?? null,
+          profileUrl:
+            account.username === undefined
+              ? null
+              : `https://www.instagram.com/${account.username}`,
+          accountAccessToken:
+            page.access_token === undefined ? null : new SecretValue(page.access_token),
           parentExternalId: page.id,
           eligible: professional && canPublishToPage(page),
           // Blocked before OAuth completes rather than after a publish fails.
@@ -404,12 +412,16 @@ export function createInstagramConnector(deps: ConnectorDeps): SocialConnector {
           : null;
         prepared.push({
           mediaId: media.mediaId,
+          derivativeId: media.derivativeId,
           providerMediaId: null,
-          containerId: containerId,
-          state: containerId === null ? 'ready' : 'processing',
+          containerId,
+          uploadState: containerId === null ? 'ready' : 'processing',
           derivativeChecksum: media.checksum,
-          variant: `instagram:${surface.toLowerCase()}`,
-          metadata: { surface, sourceUrlHost: new URL(media.sourceUrl).host },
+          byteSize: media.byteSize,
+          altTextApplied: media.altText !== null,
+          publicUrl: null,
+          expiresAt: null,
+          reusedFromPreviousAttempt: false,
         });
       }
       return prepared;
@@ -445,34 +457,6 @@ export function createInstagramConnector(deps: ConnectorDeps): SocialConnector {
 
       // If a previous attempt already published, adopt the media id rather than
       // republishing the container.
-      const publishedId = undefined;
-      if (typeof publishedId === 'string' && publishedId !== '') {
-        const status = await statusOf(connection, publishedId);
-        if (status.state === 'published' && status.externalPostId !== null) {
-          return {
-            state: 'published',
-            externalPostId: status.externalPostId,
-            permalink: status.permalink,
-            root: {
-              kind: 'root',
-              order: 0,
-              threadItemId: null,
-              state: 'published',
-              externalPostId: status.externalPostId,
-              permalink: status.permalink,
-              errorClass: null,
-              errorCode: null,
-              remediationCode: null,
-            },
-            items: [],
-            pollToken: status.externalPostId,
-            resume: { mediaId: status.externalPostId },
-            sanitizedResponse: { adopted: true },
-            costMinor: null,
-            currency: null,
-          };
-        }
-      }
 
       // Reuse a stored container. Never create a second one.
       let containerId = null;
@@ -553,26 +537,12 @@ export function createInstagramConnector(deps: ConnectorDeps): SocialConnector {
         // Container accepted but still building. This is provider processing, not a
         // publication, and the caller polls with the stored container id.
         return {
-          uploadState: 'processing',
-          externalPostId: null,
-          permalink: null,
-          root: {
-            kind: 'root',
-            order: 0,
-            threadItemId: null,
-            uploadState: 'processing',
-            externalPostId: null,
-            permalink: null,
-            errorClass: null,
-            errorCode: null,
-            remediationCode: null,
-          },
-          items: [],
-          pollToken: containerId,
-          resume: { containerId },
-          sanitizedResponse: { statusCode: status.statusCode },
-          costMinor: null,
-          currency: null,
+          status: 'pending',
+          providerJobId: containerId,
+          pollAfterSeconds: 15,
+          giveUpAt: new Date(clock.now().getTime() + 60 * 60 * 1000).toISOString(),
+          sanitizedResponse: { surface },
+          providerRequestId: null,
         };
       }
 
@@ -595,20 +565,11 @@ export function createInstagramConnector(deps: ConnectorDeps): SocialConnector {
         ? (client.parse(instagramMediaSchema, media, 'instagram.read_permalink').permalink ?? null)
         : null;
 
-      const items: PublishItemResult[] = [];
+      const items: PublishedItem[] = [];
+      const failures: FailedItem[] = [];
       for (const item of draft.threadItems) {
+        // A delayed comment belongs to the thread sequence workflow.
         if (item.kind !== 'comment' || item.delaySeconds > 0) {
-          items.push({
-            kind: item.kind,
-            order: item.order,
-            threadItemId: item.threadItemId,
-            uploadState: 'processing',
-            externalPostId: null,
-            permalink: null,
-            errorClass: null,
-            errorCode: null,
-            remediationCode: null,
-          });
           continue;
         }
         const comment = await client.post({
@@ -617,50 +578,92 @@ export function createInstagramConnector(deps: ConnectorDeps): SocialConnector {
           json: { message: item.body },
           operation: 'instagram.create_comment',
         });
-        items.push({
-          kind: item.kind,
-          order: item.order,
-          threadItemId: item.threadItemId,
-          state: comment.ok ? 'published' : 'failed',
-          externalPostId: comment.ok
-            ? client.parse(instagramCommentSchema, comment, 'instagram.create_comment').id
-            : null,
-          permalink: null,
-          errorClass: null,
-          errorCode: null,
-          remediationCode: comment.ok ? null : REMEDIATION.commentFailedRootPublished,
-        });
+        if (comment.ok) {
+          items.push({
+            kind: item.kind,
+            order: item.order,
+            threadItemId: item.threadItemId,
+            externalPostId: client.parse(
+              instagramCommentSchema,
+              comment,
+              'instagram.create_comment',
+            ).id,
+            permalink: null,
+            publishedAt: nowIso(),
+          });
+        } else {
+          // The media is already live, so a failed comment is a partial success.
+          failures.push({
+            kind: item.kind,
+            order: item.order,
+            threadItemId: item.threadItemId,
+            error: errorSummary({
+              errorClass: 'PERMANENT_PROVIDER',
+              remediationCode: REMEDIATION.commentFailedRootPublished,
+              messageKey: 'connectors.instagram.comment_failed',
+              retryable: false,
+            }),
+          });
+        }
       }
 
-      const anyFailed = items.some((item) => item.state === 'failed');
-      const anyPending = items.some((item) => item.state === 'processing');
 
-      return {
-        state: anyFailed ? 'partially_published' : anyPending ? 'processing' : 'published',
-        externalPostId: mediaId,
-        permalink,
-        root: {
+      const publishedAt = nowIso();
+      const allItems: PublishedItem[] = [
+        {
           kind: 'root',
           order: 0,
           threadItemId: null,
-          state: 'published',
           externalPostId: mediaId,
           permalink,
-          errorClass: null,
-          errorCode: null,
-          remediationCode: null,
+          publishedAt,
         },
-        items,
-        pollToken: mediaId,
-        resume: { containerId, mediaId },
-        sanitizedResponse: { mediaId, containerConsumed: true },
+        ...items,
+      ];
+      const sanitizedResponse = { mediaId, itemCount: allItems.length };
+      if (failures.length > 0) {
+        return {
+          status: 'partial',
+          externalPostId: mediaId,
+          permalink,
+          publishedAt,
+          items: allItems,
+          failures,
+          sanitizedResponse,
+          providerRequestId: null,
+          costMinor: null,
+          currency: null,
+        };
+      }
+      return {
+        status: 'published',
+        externalPostId: mediaId,
+        permalink,
+        publishedAt,
+        items: allItems,
+        sanitizedResponse,
+        providerRequestId: null,
         costMinor: null,
         currency: null,
       };
     },
 
     async getStatus(input: StatusRequest): Promise<PublishStatus> {
-      return statusOf(input.connection, input.providerJobId);
+      // Either a container id or an already known media id is enough to answer.
+      const target = input.providerJobId ?? input.externalPostId;
+      if (target === null) {
+        return {
+          state: 'unknown',
+          externalPostId: null,
+          permalink: null,
+          publishedAt: null,
+          items: [],
+          error: null,
+          pollAfterSeconds: 30,
+          sanitizedResponse: { reason: 'no_container_or_post_id' },
+        };
+      }
+      return statusOf(input.connection, target);
     },
 
     async fetchMetrics(input: MetricsRequest): Promise<MetricObservation[]> {
@@ -744,7 +747,7 @@ export function createInstagramConnector(deps: ConnectorDeps): SocialConnector {
     },
 
     async refreshCredential(input: RefreshRequest): Promise<CredentialResult> {
-      const current = await token(input.connection);
+      const current = await input.refreshToken.use((plaintext) => plaintext);
       return refreshMetaCredential(deps, PROVIDER, current);
     },
   };
@@ -760,7 +763,7 @@ export async function findRecentInstagramMedia(
   caption: string,
 ): Promise<string | null> {
   const client = createMetaClient(deps, PROVIDER);
-  const accessToken = await deps.accessTokenOf(connection);
+  const accessToken = await accessTokenOf(connection);
   const response = await client.get({
     path: `/${connection.externalAccountId}/media`,
     accessToken,
