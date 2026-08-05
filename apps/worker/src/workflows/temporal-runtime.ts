@@ -204,7 +204,10 @@ class TemporalWorkflowRuntime implements WorkflowRuntime {
   }
 
   now(): number {
-    return wf.now();
+    // Temporal patches Date.now() inside a workflow so it is constant for the duration of
+    // a Workflow Task and identical on replay. It is the SDK's documented safe clock.
+    // eslint-disable-next-line no-restricted-globals
+    return Date.now();
   }
 
   async sleep(ms: number): Promise<void> {

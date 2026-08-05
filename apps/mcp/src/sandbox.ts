@@ -217,7 +217,7 @@ export function createSandboxServices(options: SandboxOptions): SandboxServices 
     connections: {
       async list(ctx, input): Promise<PageLike<ConnectionSummary>> {
         assertWorkspace(ctx);
-        const limit = input.limit ?? 10;
+        const limit = input?.limit ?? 10;
         const data = state.connections.slice(0, limit);
         return {
           data,

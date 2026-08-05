@@ -12,15 +12,15 @@ import { getRootLogger } from './logger.js';
  * the six error classes the product reasons about, using a per provider
  * override table on top of the generic HTTP rules.
  *
- * Only `TRANSIENT_PROVIDER` is safe to retry automatically.
+ * Only `transient_provider` is safe to retry automatically.
  */
 
-const USER_ACTION_REQUIRED: ErrorClass = 'USER_ACTION_REQUIRED';
-const CONTENT_INVALID: ErrorClass = 'CONTENT_INVALID';
-const TRANSIENT_PROVIDER: ErrorClass = 'TRANSIENT_PROVIDER';
-const PERMANENT_PROVIDER: ErrorClass = 'PERMANENT_PROVIDER';
-const INTERNAL: ErrorClass = 'INTERNAL';
-const UNKNOWN: ErrorClass = 'UNKNOWN';
+const USER_ACTION_REQUIRED: ErrorClass = 'user_action_required';
+const CONTENT_INVALID: ErrorClass = 'content_invalid';
+const TRANSIENT_PROVIDER: ErrorClass = 'transient_provider';
+const PERMANENT_PROVIDER: ErrorClass = 'permanent_provider';
+const INTERNAL: ErrorClass = 'internal';
+const UNKNOWN: ErrorClass = 'unknown';
 
 export const RETRYABLE_ERROR_CLASSES: readonly ErrorClass[] = [TRANSIENT_PROVIDER];
 

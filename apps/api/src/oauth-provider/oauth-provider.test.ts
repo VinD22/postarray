@@ -84,6 +84,15 @@ function pkcePair(): { verifier: string; challenge: string } {
   return { verifier, challenge: deriveChallenge(verifier) };
 }
 
+/** Reads the Location header of a redirect, failing the test if it is absent. */
+function redirectLocation(response: { headers: Record<string, string | undefined> }): string {
+  const location = response.headers['location'];
+  if (location === undefined) {
+    throw new Error('expected a Location header on this redirect response');
+  }
+  return location;
+}
+
 describe('discovery', () => {
   it('publishes authorization server metadata advertising S256 only', async () => {
     const response = await request(harness.server).get('/.well-known/oauth-authorization-server');
@@ -124,7 +133,7 @@ describe('authorization code flow with PKCE', () => {
     );
 
     expect(authorize.status).toBe(302);
-    const requestId = new URL(authorize.headers['location'], TEST_ORIGIN).searchParams.get(
+    const requestId = new URL(redirectLocation(authorize), TEST_ORIGIN).searchParams.get(
       'request_id',
     );
     expect(requestId).not.toBeNull();
@@ -193,7 +202,7 @@ describe('authorization code flow with PKCE', () => {
       }),
       session,
     );
-    const requestId = new URL(authorize.headers['location'], TEST_ORIGIN).searchParams.get(
+    const requestId = new URL(redirectLocation(authorize), TEST_ORIGIN).searchParams.get(
       'request_id',
     );
     const consentData = await authed(
@@ -254,7 +263,7 @@ describe('authorization code flow with PKCE', () => {
       }),
       session,
     );
-    const requestId = new URL(authorize.headers['location'], TEST_ORIGIN).searchParams.get(
+    const requestId = new URL(redirectLocation(authorize), TEST_ORIGIN).searchParams.get(
       'request_id',
     );
     const consentData = await authed(
@@ -407,7 +416,7 @@ describe('refresh rotation', () => {
       }),
       session,
     );
-    const requestId = new URL(authorize.headers['location'], TEST_ORIGIN).searchParams.get(
+    const requestId = new URL(redirectLocation(authorize), TEST_ORIGIN).searchParams.get(
       'request_id',
     );
     const consentData = await authed(

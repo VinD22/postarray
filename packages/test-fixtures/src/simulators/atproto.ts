@@ -19,7 +19,7 @@ export class BlueskySimulator extends BaseProviderSimulator {
   readonly provider: ProviderId = 'bluesky';
   readonly host = 'bluesky.sim.example.test';
 
-  protected isPublicPath(path: string): boolean {
+  protected override isPublicPath(path: string): boolean {
     return path === '/xrpc/com.atproto.server.createSession';
   }
 

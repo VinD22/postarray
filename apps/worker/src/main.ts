@@ -72,7 +72,7 @@ export async function loadGateway(moduleName: string): Promise<WorkerActivities>
       details: { module: moduleName, missingExport: GATEWAY_FACTORY },
     });
   }
-  const build: (...args: readonly unknown[]) => unknown = factory;
+  const build = factory as (...args: readonly unknown[]) => unknown;
   return adoptGateway(await Promise.resolve(build()));
 }
 

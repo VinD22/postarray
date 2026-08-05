@@ -25,14 +25,14 @@ function url(provider: ProviderId, path: string): string {
 async function call(
   provider: ProviderId,
   path: string,
-  init: RequestInit & { mode?: SimulatorMode } = {},
+  init: RequestInit & { simulatorMode?: SimulatorMode } = {},
 ): Promise<Response> {
-  const { mode, ...rest } = init;
+  const { simulatorMode, ...rest } = init;
   return fetchImpl(url(provider, path), {
     ...rest,
     headers: {
       ...AUTH,
-      ...(mode === undefined ? {} : { [SIMULATOR_MODE_HEADER]: mode }),
+      ...(simulatorMode === undefined ? {} : { [SIMULATOR_MODE_HEADER]: simulatorMode }),
       ...((rest.headers as Record<string, string>) ?? {}),
     },
   });
@@ -95,7 +95,7 @@ describe('X', () => {
   });
 
   it('reports 429 with retry-after and the reset headers', async () => {
-    const response = await call('x', '/2/tweets', { method: 'POST', mode: 'rate_limited' });
+    const response = await call('x', '/2/tweets', { method: 'POST', simulatorMode: 'rate_limited' });
     expect(response.status).toBe(429);
     expect(response.headers.get('retry-after')).toBe('900');
     expect(response.headers.get('x-rate-limit-reset')).not.toBeNull();
@@ -103,9 +103,9 @@ describe('X', () => {
   });
 
   it('fails once then succeeds in flaky mode, which is what proves retries work', async () => {
-    const first = await call('x', '/2/tweets', { method: 'POST', mode: 'flaky' });
+    const first = await call('x', '/2/tweets', { method: 'POST', simulatorMode: 'flaky' });
     expect(first.status).toBe(500);
-    const second = await call('x', '/2/tweets', { method: 'POST', mode: 'flaky' });
+    const second = await call('x', '/2/tweets', { method: 'POST', simulatorMode: 'flaky' });
     expect(second.status).toBe(201);
   });
 
@@ -113,7 +113,7 @@ describe('X', () => {
     await expect(
       call('x', '/2/tweets', {
         method: 'POST',
-        mode: 'lost_response',
+        simulatorMode: 'lost_response',
         body: JSON.stringify({ text: 'Accepted but never acknowledged.' }),
         headers: { 'content-type': 'application/json' },
       }),
@@ -134,7 +134,7 @@ describe('X', () => {
   it('accepts a create whose external id only arrives on a later poll', async () => {
     const accepted = await call('x', '/2/tweets', {
       method: 'POST',
-      mode: 'deferred_external_id',
+      simulatorMode: 'deferred_external_id',
       body: JSON.stringify({ text: 'Accepted now, identified later.' }),
       headers: { 'content-type': 'application/json' },
     });
@@ -152,14 +152,14 @@ describe('X', () => {
   it('rejects a thread item while the root stands, in partial_success', async () => {
     const root = await call('x', '/2/tweets', {
       method: 'POST',
-      mode: 'partial_success',
+      simulatorMode: 'partial_success',
       body: JSON.stringify({ text: 'Root.' }),
       headers: { 'content-type': 'application/json' },
     });
     expect(root.status).toBe(201);
     const reply = await call('x', '/2/tweets', {
       method: 'POST',
-      mode: 'partial_success',
+      simulatorMode: 'partial_success',
       body: JSON.stringify({ text: 'Reply.', reply: { in_reply_to_tweet_id: 'x' } }),
       headers: { 'content-type': 'application/json' },
     });
@@ -199,7 +199,7 @@ describe('LinkedIn', () => {
     const before = await json(await call('linkedin', '/rest/organizationAcls'));
     expect((before.elements as unknown[]).length).toBe(1);
     const after = await json(
-      await call('linkedin', '/rest/organizationAcls', { mode: 'capability_changed' }),
+      await call('linkedin', '/rest/organizationAcls', { simulatorMode: 'capability_changed' }),
     );
     expect((after.elements as unknown[]).length).toBe(0);
   });
@@ -207,7 +207,7 @@ describe('LinkedIn', () => {
   it('uses its own error envelope', async () => {
     const response = await call('linkedin', '/rest/posts', {
       method: 'POST',
-      mode: 'expired_token',
+      simulatorMode: 'expired_token',
     });
     expect(response.status).toBe(401);
     const body = await json(response);
@@ -248,7 +248,7 @@ describe('Instagram', () => {
     const container = await json(
       await call('instagram', `/v21.0/${accountId}/media`, {
         method: 'POST',
-        mode: 'stuck_container',
+        simulatorMode: 'stuck_container',
         body: JSON.stringify({ caption: 'Never finishes.' }),
         headers: { 'content-type': 'application/json' },
       }),
@@ -257,7 +257,7 @@ describe('Instagram', () => {
     for (let poll = 0; poll < 10; poll += 1) {
       const status = await json(
         await call('instagram', `/v21.0/${creationId}?fields=status_code`, {
-          mode: 'stuck_container',
+          simulatorMode: 'stuck_container',
         }),
       );
       expect(status.status_code).toBe('IN_PROGRESS');
@@ -269,7 +269,7 @@ describe('Instagram', () => {
     const container = await json(
       await call('instagram', `/v21.0/${accountId}/media`, {
         method: 'POST',
-        mode: 'slow_media',
+        simulatorMode: 'slow_media',
         body: JSON.stringify({ caption: 'Slow but finishes.' }),
         headers: { 'content-type': 'application/json' },
       }),
@@ -286,7 +286,7 @@ describe('Instagram', () => {
 
   it('names a consumer account as the reason, not "authentication failed"', async () => {
     const account = await json(
-      await call('instagram', '/v21.0/fake-instagram-0000000001', { mode: 'capability_changed' }),
+      await call('instagram', '/v21.0/fake-instagram-0000000001', { simulatorMode: 'capability_changed' }),
     );
     expect(account.account_type).toBe('PERSONAL');
   });
@@ -294,7 +294,7 @@ describe('Instagram', () => {
   it('uses the Graph error envelope with a subcode', async () => {
     const response = await call('instagram', '/v21.0/fake-instagram-0000000001/media', {
       method: 'POST',
-      mode: 'duplicate',
+      simulatorMode: 'duplicate',
     });
     const error = (await json(response)).error as Record<string, unknown>;
     expect(error.type).toBe('OAuthException');
@@ -361,7 +361,7 @@ describe('YouTube and TikTok', () => {
     const changed = await json(
       await call('tiktok', '/v2/post/publish/creator_info/query/', {
         method: 'POST',
-        mode: 'capability_changed',
+        simulatorMode: 'capability_changed',
       }),
     );
     expect((changed.data as { privacy_level_options: string[] }).privacy_level_options).toEqual([
@@ -401,7 +401,7 @@ describe('Bluesky and the fake provider', () => {
   it('reports rate limits with a reset timestamp rather than retry-after', async () => {
     const response = await call('bluesky', '/xrpc/com.atproto.repo.createRecord', {
       method: 'POST',
-      mode: 'rate_limited',
+      simulatorMode: 'rate_limited',
     });
     expect(response.status).toBe(429);
     expect(response.headers.get('ratelimit-reset')).not.toBeNull();
@@ -461,7 +461,7 @@ describe('every provider supports the shared failure modes', () => {
   for (const provider of providers) {
     for (const [mode, status] of expectations) {
       it(`${provider} reports ${mode} as ${status}`, async () => {
-        const response = await call(provider, writePaths[provider], { method: 'POST', mode });
+        const response = await call(provider, writePaths[provider], { method: 'POST', simulatorMode: mode });
         expect(response.status).toBe(status);
       });
     }
@@ -473,19 +473,19 @@ describe('every provider supports the shared failure modes', () => {
 
     it(`${provider} returns a body that fails a schema in malformed mode`, async () => {
       const body = await json(
-        await call(provider, writePaths[provider], { method: 'POST', mode: 'malformed' }),
+        await call(provider, writePaths[provider], { method: 'POST', simulatorMode: 'malformed' }),
       );
       expect(body.unexpected).toBe('shape');
     });
 
     it(`${provider} echoes a token-shaped string only in token_echo mode`, async () => {
       const echoed = await (
-        await call(provider, writePaths[provider], { method: 'POST', mode: 'token_echo' })
+        await call(provider, writePaths[provider], { method: 'POST', simulatorMode: 'token_echo' })
       ).text();
       expect(echoed).toContain('FAKE-TOKEN-FOR-TESTS-DO-NOT-USE');
 
       const normal = await (
-        await call(provider, writePaths[provider], { method: 'POST', mode: 'happy' })
+        await call(provider, writePaths[provider], { method: 'POST', simulatorMode: 'happy' })
       ).text();
       expect(normal).not.toContain('FAKE-TOKEN-FOR-TESTS-DO-NOT-USE');
     });
@@ -518,7 +518,7 @@ describe('every provider supports the shared failure modes', () => {
   it('marks a slow accept without making the test wait for it', async () => {
     const response = await call('x', '/2/tweets', {
       method: 'POST',
-      mode: 'slow_accept',
+      simulatorMode: 'slow_accept',
       body: JSON.stringify({ text: 'Slow to acknowledge.' }),
       headers: { 'content-type': 'application/json' },
     });

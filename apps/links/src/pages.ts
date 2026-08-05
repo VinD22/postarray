@@ -60,11 +60,11 @@ small{color:#8b857c}
  * TODO(i18n): add `shortLink.notice.title` and `shortLink.notice.body`.
  */
 export function renderNoticePage(input: NoticePageInput): string {
-  const { translator: t } = input;
-  const title = t('common.unavailable');
-  const body = t('error.not_found.message');
-  const reportLabel = t('error.reportToSupport');
-  const referenceLine = t('error.reference', { correlationId: input.reference });
+  const { translator } = input;
+  const title = translator.t('common.unavailable');
+  const body = translator.t('error.not_found.message');
+  const reportLabel = translator.t('error.reportToSupport');
+  const referenceLine = translator.t('error.reference', { correlationId: input.reference });
 
   const reportLink =
     input.abuseReportUrl === null
@@ -97,9 +97,9 @@ export function renderNoticePage(input: NoticePageInput): string {
 
 /** Shown when a source is asking for far too many slugs. */
 export function renderRateLimitedPage(input: NoticePageInput): string {
-  const { translator: t } = input;
-  const title = t('rateLimit.title');
-  const body = t('error.rate_limited.message');
+  const { translator } = input;
+  const title = translator.t('rateLimit.title');
+  const body = translator.t('error.rate_limited.message');
   return [
     '<!doctype html>',
     `<html lang="${escapeHtml(input.locale)}" dir="${input.direction}">`,
@@ -115,7 +115,7 @@ export function renderRateLimitedPage(input: NoticePageInput): string {
     '<main>',
     `<h1>${escapeHtml(title)}</h1>`,
     `<p>${escapeHtml(body)}</p>`,
-    `<small>${escapeHtml(t('error.reference', { correlationId: input.reference }))}</small>`,
+    `<small>${escapeHtml(translator.t('error.reference', { correlationId: input.reference }))}</small>`,
     '</main>',
     '</body>',
     '</html>',

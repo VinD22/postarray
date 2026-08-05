@@ -25,7 +25,7 @@ async function bootstrap(): Promise<void> {
   const config = loadConfigFor('api');
   const logger = createLogger({ service: 'api' });
 
-  await startTracing({ serviceName: 'relay-api' });
+  await startTracing('relay-api');
 
   const kv = await RedisKeyValueStore.connect(config, logger);
   const services = await resolveServices({ config, logger, kv, clock: systemClock });
