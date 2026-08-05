@@ -15,6 +15,7 @@ export const webAnalyticsMessages = {
   /* ======================================================================
      Analytics shell
      ====================================================================== */
+  'analytics.chart.legend': 'Series shown in this chart',
   'analytics.tab.overview': 'Overview',
   'analytics.tab.experiments': 'Experiments',
   'analytics.tab.links': 'Tracked links',

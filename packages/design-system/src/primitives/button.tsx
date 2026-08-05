@@ -132,7 +132,16 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button
           {iconStart}
         </span>
       ) : null}
-      <span className={cn('truncate', loading && 'invisible')}>{children}</span>
+      {/*
+        With `asChild`, Slot needs to know which child is the element to merge
+        onto, because the icons and the spinner are siblings. Slottable marks it
+        and Radix moves the decorations inside the rendered child.
+      */}
+      {asChild ? (
+        <Slot.Slottable>{children}</Slot.Slottable>
+      ) : (
+        <span className={cn('truncate', loading && 'invisible')}>{children}</span>
+      )}
       {iconEnd ? (
         <span aria-hidden="true" className={cn('shrink-0', loading && 'invisible')}>
           {iconEnd}

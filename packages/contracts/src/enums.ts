@@ -243,6 +243,10 @@ export const CONSEQUENTIAL_RULE_ACTION_KINDS: readonly RuleActionKind[] = [
   'quote_post',
   'follow_up_comment',
   'cross_account_follow_up',
+  // Continuing a thread or comment sequence creates further public posts. It
+  // belongs here for the same reason the others do: without it a level 2 agent
+  // could keep a sequence running without the confirmation an external post needs.
+  'continue_sequence',
 ];
 
 /** Admin catalog lifecycle, shared by opportunities and the tool radar. */

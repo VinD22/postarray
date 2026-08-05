@@ -165,7 +165,10 @@ export function TrendChart({
       </div>
 
       {series.length > 1 ? (
-        <ul className="flex flex-wrap items-center gap-x-4 gap-y-1">
+        <ul
+          aria-label={t('analytics.chart.legend')}
+          className="flex flex-wrap items-center gap-x-4 gap-y-1"
+        >
           {series.map((entry, entryIndex) => (
             <li
               key={entry.id}

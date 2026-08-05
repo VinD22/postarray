@@ -80,8 +80,11 @@ describe('TrendChart', () => {
         label: 'Deduplicated clicks',
       },
     ]);
-    expect(screen.getByText('Deduplicated clicks')).toBeTruthy();
-    expect(screen.getByText('Impressions')).toBeTruthy();
+    // Each series name also appears in the chart's sentence summary for screen
+    // readers, so the assertion is scoped to the legend itself.
+    const legend = screen.getByRole('list', { name: /series shown/i });
+    expect(within(legend).getByText('Deduplicated clicks')).toBeTruthy();
+    expect(within(legend).getByText('Impressions')).toBeTruthy();
   });
 
   it('says so plainly when nothing was collected at all', () => {

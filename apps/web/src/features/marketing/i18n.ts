@@ -36,9 +36,16 @@ export function formatDate(isoDate: string): string {
   return dateFormatter.format(new Date(isoDate));
 }
 
+// `dateStyle` and `timeStyle` cannot be combined with individual component
+// options such as `timeZoneName`; Intl throws on the mix. The components are
+// spelled out so the zone can still be shown, which matters because every
+// verification date on these pages is stated in UTC.
 const dateTimeFormatter = new Intl.DateTimeFormat(DEFAULT_LOCALE, {
-  dateStyle: 'long',
-  timeStyle: 'short',
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+  hour: 'numeric',
+  minute: '2-digit',
   timeZone: 'UTC',
   timeZoneName: 'short',
 });

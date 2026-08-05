@@ -85,7 +85,11 @@ export function buildProposal(input: ProposalInput): RescheduleProposal {
   const fromOffset = getTimeZoneOffsetMinutes(input.timeZone, from);
   const toOffset = getTimeZoneOffsetMinutes(input.timeZone, to);
   const elapsedMinutes = Math.round((to.getTime() - from.getTime()) / 60_000);
-  const wallClockDelta = elapsedMinutes + (fromOffset - toOffset);
+  // Local time is UTC plus the offset east of UTC, so the wall clock delta is the
+  // elapsed time plus the change in offset. Getting this sign backwards only shows
+  // up when the move crosses a daylight saving boundary, which is exactly when the
+  // confirmation dialog's claim about keeping the local time has to be right.
+  const wallClockDelta = elapsedMinutes + (toOffset - fromOffset);
 
   return {
     entry: input.entry,
