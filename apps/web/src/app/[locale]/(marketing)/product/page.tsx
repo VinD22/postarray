@@ -156,7 +156,7 @@ export default async function ProductPage({
             >
               <span
                 aria-hidden="true"
-                className="font-display text-display-lg text-text-primary leading-none opacity-30"
+                className="font-display text-display-lg text-text-primary leading-none opacity-45"
               >
                 {String(index + 1).padStart(2, '0')}
               </span>

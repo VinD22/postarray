@@ -2,14 +2,7 @@
 
 import { useMemo, useState, type ReactNode } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import {
-  Badge,
-  Button,
-  Tabs,
-  TabsContent,
-  TabsList,
-  TabsTrigger,
-} from '@relay/design-system/primitives';
+import { Badge, Button, TabsContent } from '@relay/design-system/primitives';
 import {
   EmptyState,
   LoadingState,
@@ -28,7 +21,9 @@ import { settingsKey, useWorkspaceId } from '../settings/lib/keys';
 import { useSettingsMutation } from '../settings/lib/use-settings-mutation';
 import { ExportPanel } from './export-panel';
 import { IntakeForm, type IntakeValue } from './intake-form';
+import { GrowthPlanTabs } from './plan-tabs';
 import { ProfileConfirmation } from './profile-confirmation';
+import { GrowthStepTransition } from './step-transition';
 import { FourWeekTab } from './tabs/four-week-tab';
 import { OpportunitiesTab } from './tabs/opportunities-tab';
 import { StrategyTab } from './tabs/strategy-tab';
@@ -78,6 +73,7 @@ export function GrowthScreen(): ReactNode {
 
   const [busyItemId, setBusyItemId] = useState<string | null>(null);
   const [submitted, setSubmitted] = useState<Record<string, string>>({});
+  const [planTab, setPlanTab] = useState('strategy');
 
   const saveProfile = useSettingsMutation({
     section,
@@ -184,174 +180,177 @@ export function GrowthScreen(): ReactNode {
           }}
           skeletonRows={6}
         >
-          {step === 'intake' ? (
-            <IntakeForm
-              availableLocales={availableLocales}
-              availableChannels={availableChannels}
-              saving={saveProfile.isSaving}
-              onSubmit={submitIntake}
-            />
-          ) : null}
+          <GrowthStepTransition activeKey={step} className="flex flex-col gap-6">
+            {step === 'intake' ? (
+              <IntakeForm
+                availableLocales={availableLocales}
+                availableChannels={availableChannels}
+                saving={saveProfile.isSaving}
+                onSubmit={submitIntake}
+              />
+            ) : null}
 
-          {step === 'confirm' && profile.data != null ? (
-            <>
-              {generate.isSaving ? (
-                <LoadingState label={t('growth.plan.generating')}>
-                  <div className="flex flex-col gap-2">
-                    <p className="text-body-md text-text-secondary">
-                      {t('growth.ui.plan.generatingBody')}
-                    </p>
-                    <SkeletonText lines={4} />
-                  </div>
-                </LoadingState>
-              ) : (
-                <ProfileConfirmation
-                  profile={profile.data}
-                  saving={confirmProfile.isSaving}
-                  onConfirm={(input) => void confirmProfile.run(input)}
-                />
-              )}
-            </>
-          ) : null}
-
-          {step === 'plan' && currentPlan !== null ? (
-            <>
-              <div className="flex flex-wrap items-center gap-2">
-                <Badge tone={currentPlan.state === 'approved' ? 'success' : 'neutral'}>
-                  {t(
-                    currentPlan.state === 'approved'
-                      ? 'growth.ui.plan.stateApproved'
-                      : currentPlan.state === 'superseded'
-                        ? 'growth.ui.plan.stateSuperseded'
-                        : 'growth.ui.plan.stateDraft',
-                  )}
-                </Badge>
-                <span className="text-body-sm text-text-tertiary">
-                  {t('growth.plan.version', {
-                    version: currentPlan.revision,
-                    date: formatters.date(currentPlan.generatedAt),
-                  })}
-                </span>
-              </div>
-
-              {currentPlan.state === 'approved' ? (
-                <Notice
-                  tone="neutral"
-                  title={t('growth.plan.approved', {
-                    date: formatters.date(currentPlan.generatedAt),
-                  })}
-                  description={t('growth.ui.plan.newVersionNotice', {
-                    version: currentPlan.revision + 1,
-                  })}
-                />
-              ) : null}
-
-              <Tabs defaultValue="strategy">
-                <TabsList aria-label={t('growth.ui.plan.tabsLabel')}>
-                  <TabsTrigger value="strategy">{t('growth.plan.tab.strategy')}</TabsTrigger>
-                  <TabsTrigger value="four-week">{t('growth.plan.tab.fourWeek')}</TabsTrigger>
-                  <TabsTrigger value="ugc">{t('growth.plan.tab.ugc')}</TabsTrigger>
-                  <TabsTrigger value="opportunities">
-                    {t('growth.plan.tab.opportunities')}
-                  </TabsTrigger>
-                  <TabsTrigger value="tools">{t('growth.plan.tab.tools')}</TabsTrigger>
-                </TabsList>
-
-                <TabsContent value="strategy">
-                  <StrategyTab plan={currentPlan} profile={profile.data ?? null} />
-                </TabsContent>
-
-                <TabsContent value="four-week">
-                  <FourWeekTab
-                    plan={currentPlan}
-                    busyItemId={busyItemId}
-                    onAccept={(itemId) => {
-                      setBusyItemId(itemId);
-                      void createDraft.run({ planId: currentPlan.id, itemId });
-                    }}
-                    onPropose={(itemId, date) => {
-                      setBusyItemId(itemId);
-                      announce(t('growth.ui.fourWeek.proposeAnnouncement', { date }));
-                      void proposeSlot.run({ planId: currentPlan.id, itemId });
-                    }}
-                    onDismiss={() => undefined}
+            {step === 'confirm' && profile.data != null ? (
+              <>
+                {generate.isSaving ? (
+                  <LoadingState label={t('growth.plan.generating')}>
+                    <div className="flex flex-col gap-2">
+                      <p className="text-body-md text-text-secondary">
+                        {t('growth.ui.plan.generatingBody')}
+                      </p>
+                      <SkeletonText lines={4} />
+                    </div>
+                  </LoadingState>
+                ) : (
+                  <ProfileConfirmation
+                    profile={profile.data}
+                    saving={confirmProfile.isSaving}
+                    onConfirm={(input) => void confirmProfile.run(input)}
                   />
-                </TabsContent>
+                )}
+              </>
+            ) : null}
 
-                <TabsContent value="ugc">
-                  <UgcTab plan={currentPlan} />
-                </TabsContent>
+            {step === 'plan' && currentPlan !== null ? (
+              <>
+                <div className="flex flex-wrap items-center gap-2">
+                  <Badge tone={currentPlan.state === 'approved' ? 'success' : 'neutral'}>
+                    {t(
+                      currentPlan.state === 'approved'
+                        ? 'growth.ui.plan.stateApproved'
+                        : currentPlan.state === 'superseded'
+                          ? 'growth.ui.plan.stateSuperseded'
+                          : 'growth.ui.plan.stateDraft',
+                    )}
+                  </Badge>
+                  <span className="text-body-sm text-text-tertiary">
+                    {t('growth.plan.version', {
+                      version: currentPlan.revision,
+                      date: formatters.date(currentPlan.generatedAt),
+                    })}
+                  </span>
+                </div>
 
-                <TabsContent value="opportunities">
-                  <AsyncBoundary
-                    section={t('growth.opportunities.title')}
-                    isPending={opportunities.isPending}
-                    error={opportunities.error}
-                    onRetry={() => void opportunities.refetch()}
-                  >
-                    <OpportunitiesTab
+                {currentPlan.state === 'approved' ? (
+                  <Notice
+                    tone="neutral"
+                    title={t('growth.plan.approved', {
+                      date: formatters.date(currentPlan.generatedAt),
+                    })}
+                    description={t('growth.ui.plan.newVersionNotice', {
+                      version: currentPlan.revision + 1,
+                    })}
+                  />
+                ) : null}
+
+                <GrowthPlanTabs
+                  value={planTab}
+                  onValueChange={setPlanTab}
+                  label={t('growth.ui.plan.tabsLabel')}
+                  tabs={[
+                    { value: 'strategy', label: t('growth.plan.tab.strategy') },
+                    { value: 'four-week', label: t('growth.plan.tab.fourWeek') },
+                    { value: 'ugc', label: t('growth.plan.tab.ugc') },
+                    { value: 'opportunities', label: t('growth.plan.tab.opportunities') },
+                    { value: 'tools', label: t('growth.plan.tab.tools') },
+                  ]}
+                >
+                  <TabsContent value="strategy">
+                    <StrategyTab plan={currentPlan} profile={profile.data ?? null} />
+                  </TabsContent>
+
+                  <TabsContent value="four-week">
+                    <FourWeekTab
                       plan={currentPlan}
-                      records={opportunities.data ?? []}
-                      submitted={submitted}
                       busyItemId={busyItemId}
-                      onCreatePitchDraft={(opportunityId) => {
-                        setBusyItemId(opportunityId);
-                        void createDraft.run({
-                          planId: currentPlan.id,
-                          itemId: opportunityId,
-                        });
+                      onAccept={(itemId) => {
+                        setBusyItemId(itemId);
+                        void createDraft.run({ planId: currentPlan.id, itemId });
                       }}
-                      onMarkSubmitted={(opportunityId) =>
-                        setSubmitted((current) => ({
-                          ...current,
-                          [opportunityId]: currentPlan.generatedAt,
-                        }))
-                      }
+                      onPropose={(itemId, date) => {
+                        setBusyItemId(itemId);
+                        announce(t('growth.ui.fourWeek.proposeAnnouncement', { date }));
+                        void proposeSlot.run({ planId: currentPlan.id, itemId });
+                      }}
                       onDismiss={() => undefined}
                     />
-                  </AsyncBoundary>
-                </TabsContent>
+                  </TabsContent>
 
-                <TabsContent value="tools">
-                  <AsyncBoundary
-                    section={t('growth.tools.title')}
-                    isPending={tools.isPending}
-                    error={tools.error}
-                    onRetry={() => void tools.refetch()}
+                  <TabsContent value="ugc">
+                    <UgcTab plan={currentPlan} />
+                  </TabsContent>
+
+                  <TabsContent value="opportunities">
+                    <AsyncBoundary
+                      section={t('growth.opportunities.title')}
+                      isPending={opportunities.isPending}
+                      error={opportunities.error}
+                      onRetry={() => void opportunities.refetch()}
+                    >
+                      <OpportunitiesTab
+                        plan={currentPlan}
+                        records={opportunities.data ?? []}
+                        submitted={submitted}
+                        busyItemId={busyItemId}
+                        onCreatePitchDraft={(opportunityId) => {
+                          setBusyItemId(opportunityId);
+                          void createDraft.run({
+                            planId: currentPlan.id,
+                            itemId: opportunityId,
+                          });
+                        }}
+                        onMarkSubmitted={(opportunityId) =>
+                          setSubmitted((current) => ({
+                            ...current,
+                            [opportunityId]: currentPlan.generatedAt,
+                          }))
+                        }
+                        onDismiss={() => undefined}
+                      />
+                    </AsyncBoundary>
+                  </TabsContent>
+
+                  <TabsContent value="tools">
+                    <AsyncBoundary
+                      section={t('growth.tools.title')}
+                      isPending={tools.isPending}
+                      error={tools.error}
+                      onRetry={() => void tools.refetch()}
+                    >
+                      <ToolRadarTab plan={currentPlan} records={tools.data ?? []} />
+                    </AsyncBoundary>
+                  </TabsContent>
+                </GrowthPlanTabs>
+
+                <ExportPanel plan={currentPlan} />
+
+                <p className="text-body-sm text-text-tertiary">
+                  {t('growth.ui.plan.modelNote', {
+                    model: currentPlan.model,
+                    promptVersion: currentPlan.promptVersion,
+                    date: formatters.date(currentPlan.generatedAt),
+                  })}
+                </p>
+              </>
+            ) : null}
+
+            {step === 'plan' && currentPlan === null ? (
+              <EmptyState
+                title={t('growth.ui.plan.emptyTitle')}
+                description={t('growth.ui.plan.emptyBody')}
+                example={t('growth.ui.plan.emptyExample')}
+                action={
+                  <Button
+                    variant="primary"
+                    loading={generate.isSaving}
+                    onClick={() => void generate.run(undefined)}
                   >
-                    <ToolRadarTab plan={currentPlan} records={tools.data ?? []} />
-                  </AsyncBoundary>
-                </TabsContent>
-              </Tabs>
-
-              <ExportPanel plan={currentPlan} />
-
-              <p className="text-body-sm text-text-tertiary">
-                {t('growth.ui.plan.modelNote', {
-                  model: currentPlan.model,
-                  promptVersion: currentPlan.promptVersion,
-                  date: formatters.date(currentPlan.generatedAt),
-                })}
-              </p>
-            </>
-          ) : null}
-
-          {step === 'plan' && currentPlan === null ? (
-            <EmptyState
-              title={t('growth.ui.plan.emptyTitle')}
-              description={t('growth.ui.plan.emptyBody')}
-              example={t('growth.ui.plan.emptyExample')}
-              action={
-                <Button
-                  variant="primary"
-                  loading={generate.isSaving}
-                  onClick={() => void generate.run(undefined)}
-                >
-                  {t('growth.ui.confirm.generate')}
-                </Button>
-              }
-            />
-          ) : null}
+                    {t('growth.ui.confirm.generate')}
+                  </Button>
+                }
+              />
+            ) : null}
+          </GrowthStepTransition>
         </AsyncBoundary>
       </SettingsStack>
     </>

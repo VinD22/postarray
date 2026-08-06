@@ -104,61 +104,78 @@ export function TestRunPanel({ result, running, error, onRun }: TestRunPanelProp
           <h3 className="text-body-md text-text-primary font-medium">
             {t('automation.test.resultTitle')}
           </h3>
-          <p className="text-body-sm text-text-tertiary">
-            <time dateTime={result.triggeredAt} className="tabular-nums">
-              {format.dateTime(result.triggeredAt)}
-            </time>
-            <span className="ps-2">{result.triggerSummary}</span>
-          </p>
 
-          <ol className="flex flex-col gap-1.5">
-            {result.conditions.map((condition) => (
-              <li
-                key={condition.label}
-                className="text-body-md text-text-secondary flex items-start gap-2"
-              >
-                {condition.passed ? (
-                  <CheckCircle2
-                    aria-hidden="true"
-                    className="text-success-fg mt-0.5 size-4 shrink-0"
-                  />
-                ) : (
-                  <XCircle aria-hidden="true" className="text-warning-fg mt-0.5 size-4 shrink-0" />
-                )}
-                <span>
-                  {condition.passed
-                    ? t('automation.test.conditionPassed', { condition: condition.label })
-                    : t('automation.test.conditionFailed', { condition: condition.label })}
-                </span>
-              </li>
-            ))}
-            {result.actions.map((action) => (
-              <li
-                key={action.label}
-                className="text-body-md text-text-secondary flex items-start gap-2"
-              >
-                {action.outcome === 'would_run' ? (
-                  <CheckCircle2
-                    aria-hidden="true"
-                    className="text-success-fg mt-0.5 size-4 shrink-0"
-                  />
-                ) : (
-                  <XCircle
-                    aria-hidden="true"
-                    className="text-text-tertiary mt-0.5 size-4 shrink-0"
-                  />
-                )}
-                <span>
-                  {action.outcome === 'would_run'
-                    ? t('automation.test.actionSimulated', { action: action.label })
-                    : t('automation.test.actionSkipped', {
-                        action: action.label,
-                        reason: action.reason ?? '',
-                      })}
-                </span>
-              </li>
-            ))}
-          </ol>
+          {/* A mono terminal card, the same "ink bar + three dots" header used
+              for the CLI surface elsewhere in the loud system — this is a
+              simulation transcript, and the terminal framing says so at a
+              glance before anyone reads a line of it. */}
+          <div className="border-border-bold overflow-hidden rounded-lg border-2">
+            <div aria-hidden="true" className="bg-surface-inverted flex items-center gap-1.5 px-3 py-2.5">
+              <span className="bg-text-inverted/70 size-2 rounded-full" />
+              <span className="bg-text-inverted/50 size-2 rounded-full" />
+              <span className="bg-text-inverted/30 size-2 rounded-full" />
+            </div>
+            <div className="bg-surface-sunken flex flex-col gap-3 p-4">
+              <p className="text-body-sm text-text-tertiary font-mono">
+                <time dateTime={result.triggeredAt} className="tabular-nums">
+                  {format.dateTime(result.triggeredAt)}
+                </time>
+                <span className="ps-2">{result.triggerSummary}</span>
+              </p>
+
+              <ol className="flex flex-col gap-1.5">
+                {result.conditions.map((condition) => (
+                  <li
+                    key={condition.label}
+                    className="text-body-md text-text-secondary flex items-start gap-2 font-mono"
+                  >
+                    {condition.passed ? (
+                      <CheckCircle2
+                        aria-hidden="true"
+                        className="text-success-fg mt-0.5 size-4 shrink-0"
+                      />
+                    ) : (
+                      <XCircle
+                        aria-hidden="true"
+                        className="text-warning-fg mt-0.5 size-4 shrink-0"
+                      />
+                    )}
+                    <span>
+                      {condition.passed
+                        ? t('automation.test.conditionPassed', { condition: condition.label })
+                        : t('automation.test.conditionFailed', { condition: condition.label })}
+                    </span>
+                  </li>
+                ))}
+                {result.actions.map((action) => (
+                  <li
+                    key={action.label}
+                    className="text-body-md text-text-secondary flex items-start gap-2 font-mono"
+                  >
+                    {action.outcome === 'would_run' ? (
+                      <CheckCircle2
+                        aria-hidden="true"
+                        className="text-success-fg mt-0.5 size-4 shrink-0"
+                      />
+                    ) : (
+                      <XCircle
+                        aria-hidden="true"
+                        className="text-text-tertiary mt-0.5 size-4 shrink-0"
+                      />
+                    )}
+                    <span>
+                      {action.outcome === 'would_run'
+                        ? t('automation.test.actionSimulated', { action: action.label })
+                        : t('automation.test.actionSkipped', {
+                            action: action.label,
+                            reason: action.reason ?? '',
+                          })}
+                    </span>
+                  </li>
+                ))}
+              </ol>
+            </div>
+          </div>
 
           <Notice tone="success" title={t('automation.test.noExternalEffect')} />
         </div>

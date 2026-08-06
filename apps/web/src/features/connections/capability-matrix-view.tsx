@@ -94,7 +94,7 @@ export function CapabilityMatrixView({
       {/* Legend. Four sentences, not four colours. */}
       <section
         aria-label={t('web.connection.capability.legendTitle')}
-        className="border-border-default bg-surface-sunken flex flex-col gap-2 rounded-lg border p-3"
+        className="border-border-bold bg-surface-sunken flex flex-col gap-2 rounded-lg border-2 p-3"
       >
         <h3 className="text-label text-text-tertiary">
           {t('web.connection.capability.legendTitle')}

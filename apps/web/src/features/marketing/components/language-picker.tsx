@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo, useRef, useState, type KeyboardEvent, type ReactNode } from 'react';
+import { useId, useMemo, useRef, useState, type KeyboardEvent, type ReactNode } from 'react';
 import { Globe2 } from 'lucide-react';
 import { usePathname } from 'next/navigation';
 import {
@@ -71,6 +71,8 @@ export function LanguagePicker(): ReactNode {
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState('');
   const optionRefs = useRef(new Map<string, HTMLAnchorElement>());
+  const triggerDescriptionId = useId();
+  const triggerCurrentId = useId();
 
   const currentPath = unprefixedLocalePath(pathname);
   const current =
@@ -112,7 +114,7 @@ export function LanguagePicker(): ReactNode {
   return (
     <DropdownMenu open={open} onOpenChange={setMenuOpen}>
       <DropdownMenuTrigger
-        aria-label={t('a11y.languagePicker.label')}
+        aria-labelledby={`${triggerDescriptionId} ${triggerCurrentId}`}
         aria-haspopup="menu"
         aria-expanded={open}
         className={cn(
@@ -122,7 +124,20 @@ export function LanguagePicker(): ReactNode {
         )}
       >
         <Globe2 aria-hidden="true" className="size-4 shrink-0" />
-        <span className="max-w-32 truncate">{current?.endonym ?? currentLocale}</span>
+        {/*
+          The accessible name is built from this hidden description plus the
+          visible endonym below (`aria-labelledby`, not `aria-label`) so the
+          visible text is always a substring of the accessible name — WCAG
+          2.5.3 Label in Name. An `aria-label` here previously replaced the
+          name outright, so "English" on screen announced only as "Choose
+          interface language" (WP-12 axe finding).
+        */}
+        <span id={triggerDescriptionId} className="sr-only">
+          {t('a11y.languagePicker.label')}
+        </span>
+        <span id={triggerCurrentId} className="max-w-32 truncate">
+          {current?.endonym ?? currentLocale}
+        </span>
       </DropdownMenuTrigger>
 
       <DropdownMenuContent align="end" className="w-[min(24rem,calc(100vw-2rem))]">

@@ -46,12 +46,19 @@ export interface ComparisonTableProps {
   /** Already translated name of the metric the table is ranked by. */
   readonly metricName: string;
   readonly onOpenPost?: (contentItemId: string) => void;
+  /**
+   * Tween each row's metric value in from 0. Set only for the screen's first
+   * successful data load, never on a filter change — see
+   * `AnalyticsOverviewScreen`.
+   */
+  readonly animateCounts?: boolean;
 }
 
 export function ComparisonTable({
   rows,
   metricName,
   onOpenPost,
+  animateCounts = false,
 }: ComparisonTableProps): ReactElement {
   const t = useTranslations();
   const valueFormat = useValueFormat();
@@ -70,6 +77,7 @@ export function ComparisonTable({
               expanded={expanded === row.contentItemId}
               onToggle={() => toggle(row.contentItemId)}
               onOpenPost={onOpenPost}
+              animateCounts={animateCounts}
             />
           </li>
         ))}
@@ -138,7 +146,7 @@ export function ComparisonTable({
                   </TableCell>
                   <TableCell>{t(formatLabelKey(row.format))}</TableCell>
                   <TableCell numeric>
-                    <MetricCell reading={row.reading} />
+                    <MetricCell reading={row.reading} animate={animateCounts} />
                   </TableCell>
                   <TableCell>
                     <BaselineDelta baseline={row.baseline} />
@@ -187,9 +195,16 @@ interface MobileRowProps {
   readonly expanded: boolean;
   readonly onToggle: () => void;
   readonly onOpenPost?: ((contentItemId: string) => void) | undefined;
+  readonly animateCounts: boolean;
 }
 
-function MobileRow({ row, expanded, onToggle, onOpenPost }: MobileRowProps): ReactElement {
+function MobileRow({
+  row,
+  expanded,
+  onToggle,
+  onOpenPost,
+  animateCounts,
+}: MobileRowProps): ReactElement {
   const t = useTranslations();
   const valueFormat = useValueFormat();
   const panelId = `evidence-mobile-${row.contentItemId}`;
@@ -219,7 +234,7 @@ function MobileRow({ row, expanded, onToggle, onOpenPost }: MobileRowProps): Rea
       </div>
 
       <div className="flex flex-col gap-2">
-        <MetricCell reading={row.reading} showLabel />
+        <MetricCell reading={row.reading} showLabel animate={animateCounts} />
         <BaselineDelta baseline={row.baseline} />
       </div>
 

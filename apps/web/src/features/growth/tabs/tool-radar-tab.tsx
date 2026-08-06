@@ -3,6 +3,7 @@
 import type { ReactNode } from 'react';
 import { Badge, Button } from '@relay/design-system/primitives';
 import { DefinitionList, EmptyState, FreshnessLabel, Notice } from '@relay/design-system/patterns';
+import { cn, panelPoster } from '@relay/design-system/utils';
 import { useTranslations } from '@relay/i18n/react';
 import { MAX_TOOL_RECOMMENDATIONS, type GrowthPlan, type ToolRecord } from '@relay/contracts';
 import { ExternalLink } from 'lucide-react';
@@ -23,6 +24,13 @@ export interface ToolRadarTabProps {
  * The affiliate disclosure sits on the row, not in a page footer, and the
  * media generation boundary is reproduced verbatim at the end so the reason
  * this list exists is stated rather than implied.
+ *
+ * Each recommendation is a poster card (`panelPoster`) rather than the
+ * quiet document `SettingsPanel` the rest of Growth's plan uses — this is
+ * the one screen whose whole subject is "which five, in what order", so the
+ * rank is drawn as a numeral chip rather than left implicit in list order.
+ * The numeral is `aria-hidden`: the heading level and DOM order already
+ * carry the same rank for assistive technology.
  */
 export function ToolRadarTab({ plan, records }: ToolRadarTabProps): ReactNode {
   const t = useTranslations();
@@ -57,22 +65,30 @@ export function ToolRadarTab({ plan, records }: ToolRadarTabProps): ReactNode {
           example={t('growth.ui.tools.emptyExample')}
         />
       ) : (
-        recommendations.map((recommendation) => {
+        recommendations.map((recommendation, index) => {
           const record = byId.get(recommendation.toolId);
           if (record === undefined) {
             return null;
           }
           const stale = staleIds.has(record.id);
           return (
-            <SettingsPanel
-              key={record.id}
-              title={
-                <span className="flex flex-wrap items-center gap-2">
-                  {record.name}
-                  {stale ? <Badge tone="warning">{t('growth.ui.tools.stale')}</Badge> : null}
-                </span>
-              }
-              actions={
+            <article key={record.id} className={cn(panelPoster, 'flex flex-col gap-4 p-5')}>
+              <div className="flex flex-wrap items-start justify-between gap-3">
+                <div className="flex min-w-0 items-start gap-3">
+                  <span
+                    aria-hidden="true"
+                    className={cn(
+                      'border-border-bold font-display text-title-sm flex size-9 shrink-0 -rotate-3 items-center justify-center rounded-full border-2',
+                      index === 0 ? 'bg-cta text-cta-on' : 'bg-surface-sunken text-text-secondary',
+                    )}
+                  >
+                    {String(index + 1).padStart(2, '0')}
+                  </span>
+                  <h3 className="text-title-sm text-text-primary flex min-w-0 flex-wrap items-center gap-2 pt-1">
+                    {record.name}
+                    {stale ? <Badge tone="warning">{t('growth.ui.tools.stale')}</Badge> : null}
+                  </h3>
+                </div>
                 <Button variant="secondary" size="sm" asChild>
                   <a href={record.officialUrl} target="_blank" rel="noreferrer noopener">
                     <span className="inline-flex items-center gap-1">
@@ -84,11 +100,8 @@ export function ToolRadarTab({ plan, records }: ToolRadarTabProps): ReactNode {
                     </span>
                   </a>
                 </Button>
-              }
-              footnote={
-                record.affiliate.isAffiliate ? t('growth.tools.affiliateDisclosure') : undefined
-              }
-            >
+              </div>
+
               <DefinitionList
                 items={[
                   {
@@ -160,7 +173,13 @@ export function ToolRadarTab({ plan, records }: ToolRadarTabProps): ReactNode {
                   },
                 ]}
               />
-            </SettingsPanel>
+
+              {record.affiliate.isAffiliate ? (
+                <p className="text-body-sm text-text-tertiary border-border-subtle border-t pt-3">
+                  {t('growth.tools.affiliateDisclosure')}
+                </p>
+              ) : null}
+            </article>
           );
         })
       )}

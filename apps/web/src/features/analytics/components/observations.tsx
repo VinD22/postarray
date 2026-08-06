@@ -5,6 +5,8 @@ import { EmptyState } from '@relay/design-system/patterns';
 import { Button } from '@relay/design-system/primitives';
 import { useTranslations } from '@relay/i18n/react';
 
+import { StaggerList } from '@/components/motion';
+
 import type { ConfounderCode, Observation } from '../types';
 import { useValueFormat } from '../use-value-format';
 
@@ -23,6 +25,10 @@ import { useValueFormat } from '../use-value-format';
  *   variable to change. Nothing here predicts a number.
  *
  * There is no score, no grade and no ranking against other workspaces.
+ *
+ * The list itself mounts with a one-time stagger (`<StaggerList>`) as it
+ * scrolls into view — motion only, never a reason the sample size or the
+ * period would be visible any later than the sentence beside it.
  */
 
 const OBSERVATION_KEY: Readonly<Record<Observation['kind'], string>> = {
@@ -76,45 +82,47 @@ export function Observations({
           description={t('analytics.observations.empty')}
         />
       ) : (
-        <ol className="flex flex-col gap-4">
-          {observations.map((observation) => (
-            <li key={observation.id} className="flex flex-col gap-1.5">
-              <p className="text-body-lg text-text-primary max-w-[70ch]">
-                {t(OBSERVATION_KEY[observation.kind], observation.values)}
-              </p>
-
-              <p className="text-body-sm text-text-tertiary tabular-nums">
-                {t('analytics.table.sampleSize', { count: observation.sampleSize })}
-                <span className="ps-2">
-                  {t('analytics.observations.citedPeriod', {
-                    start: format.date(observation.periodStart),
-                    end: format.date(observation.periodEnd),
-                  })}
-                </span>
-              </p>
-
-              {observation.kind === 'association' ? (
-                <p className="text-body-md text-text-secondary max-w-[70ch]">
-                  {t('analytics.feedback.doNotInfer')}
+        <StaggerList>
+          <ol className="flex flex-col gap-4">
+            {observations.map((observation) => (
+              <li key={observation.id} data-stagger-item className="flex flex-col gap-1.5">
+                <p className="text-body-lg text-text-primary max-w-[70ch]">
+                  {t(OBSERVATION_KEY[observation.kind], observation.values)}
                 </p>
-              ) : null}
 
-              {observation.confounders.length > 0 ? (
-                <ul className="text-body-md text-text-secondary marker:text-text-tertiary flex max-w-[70ch] list-disc flex-col gap-1 ps-5">
-                  {observation.confounders.map((confounder) => (
-                    <li key={confounder}>{t(CONFOUNDER_KEY[confounder], observation.values)}</li>
-                  ))}
-                </ul>
-              ) : null}
-
-              {observation.sampleSize > 0 && observation.sampleSize < 10 ? (
-                <p className="text-body-md text-warning-fg max-w-[70ch]">
-                  {t('analytics.feedback.smallSample')}
+                <p className="text-body-sm text-text-tertiary tabular-nums">
+                  {t('analytics.table.sampleSize', { count: observation.sampleSize })}
+                  <span className="ps-2">
+                    {t('analytics.observations.citedPeriod', {
+                      start: format.date(observation.periodStart),
+                      end: format.date(observation.periodEnd),
+                    })}
+                  </span>
                 </p>
-              ) : null}
-            </li>
-          ))}
-        </ol>
+
+                {observation.kind === 'association' ? (
+                  <p className="text-body-md text-text-secondary max-w-[70ch]">
+                    {t('analytics.feedback.doNotInfer')}
+                  </p>
+                ) : null}
+
+                {observation.confounders.length > 0 ? (
+                  <ul className="text-body-md text-text-secondary marker:text-text-tertiary flex max-w-[70ch] list-disc flex-col gap-1 ps-5">
+                    {observation.confounders.map((confounder) => (
+                      <li key={confounder}>{t(CONFOUNDER_KEY[confounder], observation.values)}</li>
+                    ))}
+                  </ul>
+                ) : null}
+
+                {observation.sampleSize > 0 && observation.sampleSize < 10 ? (
+                  <p className="text-body-md text-warning-fg max-w-[70ch]">
+                    {t('analytics.feedback.smallSample')}
+                  </p>
+                ) : null}
+              </li>
+            ))}
+          </ol>
+        </StaggerList>
       )}
 
       <div className="border-border-subtle flex flex-col gap-2 border-t pt-4">

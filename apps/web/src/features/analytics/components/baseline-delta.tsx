@@ -1,6 +1,8 @@
 'use client';
 
 import type { ReactElement } from 'react';
+import { ArrowDownRight, ArrowUpRight } from 'lucide-react';
+import { cn } from '@relay/design-system/utils';
 import { useTranslations } from '@relay/i18n/react';
 
 import { MINIMUM_BASELINE_SAMPLE } from '../baseline';
@@ -11,15 +13,19 @@ import { useValueFormat } from '../use-value-format';
 /**
  * How far one post sits from its author's own baseline.
  *
- * Three decisions worth stating.
+ * Decisions worth stating.
  *
  * There is no red or green here. Colour would claim that above is good and
  * below is bad, which is untrue for plenty of metrics and unreadable for anyone
  * who cannot separate the two hues. The direction is a word, and the word is
  * what a screen reader announces.
  *
- * There is no arrow glyph either. An arrow says "trend" and this is not a
- * trend, it is one post measured against a median.
+ * The small `aria-hidden` chip beside the sentence is decorative reinforcement,
+ * never the only carrier of the direction: it uses the two neutral brand hues
+ * (blue "up", pink "down") rather than success/danger, so it still never claims
+ * one direction is good and the other bad. Pink never renders as bare text or a
+ * bare icon fill on the canvas (it fails contrast on its own) — the "down" chip
+ * is always the mandatory ink-on-fill, 2px-bordered pink surface.
  *
  * A comparison that does not exist says so and says why. It never renders an
  * empty cell, a dash or a zero, all three of which read as "no movement".
@@ -54,7 +60,24 @@ export function BaselineDelta({ baseline }: BaselineDeltaProps): ReactElement {
 
   return (
     <div className="flex min-w-0 flex-col gap-0.5">
-      <p className="text-body-md text-text-primary">
+      <p className="text-body-md text-text-primary flex items-center">
+        {baseline.direction === 'level' ? null : (
+          <span
+            aria-hidden="true"
+            className={cn(
+              'me-1.5 inline-flex size-5 shrink-0 items-center justify-center rounded-full',
+              baseline.direction === 'above'
+                ? 'bg-accent-subtle text-text-accent'
+                : 'border-border-bold bg-blush text-blush-on border-2',
+            )}
+          >
+            {baseline.direction === 'above' ? (
+              <ArrowUpRight className="size-3.5" />
+            ) : (
+              <ArrowDownRight className="size-3.5" />
+            )}
+          </span>
+        )}
         {baseline.direction === 'level' ? null : (
           <span className="pe-1.5 font-medium tabular-nums">
             {format.signedPercent(baseline.deltaRatio)}

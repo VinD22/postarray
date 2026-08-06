@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo, useState, type ReactElement } from 'react';
+import { useMemo, useRef, useState, type ReactElement } from 'react';
 import type { ContentKind } from '@relay/contracts';
 import { useAnnouncer } from '@relay/design-system/hooks';
 import {
@@ -109,6 +109,17 @@ export function AnalyticsOverviewScreen({
     return [...seen.values()];
   }, [query.data?.rows]);
 
+  // The comparison table's values count up once, on the very first
+  // successful load of this screen — never on a filter change, which the
+  // `analytics.filter.applied` announcement below already covers. A ref
+  // (not state) is deliberate: it must not force an extra render, or the
+  // count-up would mount already "used up" and never animate at all.
+  const hasAnimatedCountsRef = useRef(false);
+  const animateCounts = query.data !== undefined && !hasAnimatedCountsRef.current;
+  if (query.data !== undefined && !hasAnimatedCountsRef.current) {
+    hasAnimatedCountsRef.current = true;
+  }
+
   const handleFilters = (next: AnalyticsFilters): void => {
     setFilters(next);
     announce(
@@ -209,7 +220,12 @@ export function AnalyticsOverviewScreen({
           />
         ) : (
           <>
-            <ComparisonTable rows={rows} metricName={metricName} onOpenPost={onOpenPost} />
+            <ComparisonTable
+              rows={rows}
+              metricName={metricName}
+              onOpenPost={onOpenPost}
+              animateCounts={animateCounts}
+            />
             <Notice
               tone="neutral"
               title={t('analytics.outcome.separateNote')}

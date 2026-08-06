@@ -145,7 +145,10 @@ export function SignUpForm() {
                   onClick={() => {
                     setShowPassword((current) => !current);
                   }}
-                  className="text-body-sm text-text-secondary hover:text-text-primary"
+                  /* Visual size is unchanged (`-my-3.5` cancels `py-3.5`); the
+                     padding only grows the tap target to the DoD's 44px
+                     minimum height (was 19px — WP-12 Lighthouse finding). */
+                  className="text-body-sm text-text-secondary hover:text-text-primary -my-3.5 flex items-center py-3.5"
                 >
                   {showPassword ? t('auth.password.hide') : t('auth.password.show')}
                 </button>

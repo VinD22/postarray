@@ -2,7 +2,7 @@
 
 import type { ReactElement } from 'react';
 import { EmptyState, LoadingState, SkeletonList } from '@relay/design-system/patterns';
-import { Badge, Code } from '@relay/design-system/primitives';
+import { Badge, Code, StatusDot } from '@relay/design-system/primitives';
 import { useTranslations } from '@relay/i18n/react';
 
 import { QueryErrorState } from '@/features/analytics/components/query-error-state';
@@ -95,10 +95,11 @@ export function RuleRuns({ runs, loading, error, onRetry }: RuleRunsProps): Reac
       <ul className="border-border-subtle flex flex-col border-t">
         {runs.map((run) => (
           <li key={run.id} className="border-border-subtle flex flex-col gap-1 border-b py-3">
-            <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+            <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
+              <StatusDot tone={OUTCOME_TONE[run.outcome]} />
               <time
                 dateTime={run.startedAt}
-                className="text-body-md text-text-primary tabular-nums"
+                className="text-body-md text-text-primary font-mono tabular-nums"
               >
                 {format.dateTime(run.startedAt)}
               </time>

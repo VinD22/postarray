@@ -3,6 +3,8 @@
 import type { ReactElement } from 'react';
 import { useTranslations } from '@relay/i18n/react';
 
+import { CountUp } from '@/components/motion';
+
 import { providerLabelKey } from '../labels';
 import { freshnessStateOf, hasValue, metricLabelKey, unavailableReasonKey } from '../metrics';
 import type { MetricReading } from '../types';
@@ -27,9 +29,20 @@ export interface MetricCellProps {
   readonly reading: MetricReading;
   /** Show the metric name too. Used in the narrow layout where there is no header row. */
   readonly showLabel?: boolean;
+  /**
+   * Tween the value in from 0 once. Reserved for the comparison table's first
+   * successful data load — the caller is responsible for turning this off
+   * again after that first render (see `AnalyticsOverviewScreen`), so a
+   * filter change never replays the count.
+   */
+  readonly animate?: boolean;
 }
 
-export function MetricCell({ reading, showLabel = false }: MetricCellProps): ReactElement {
+export function MetricCell({
+  reading,
+  showLabel = false,
+  animate = false,
+}: MetricCellProps): ReactElement {
   const t = useTranslations();
   const format = useValueFormat();
   const providerName = t(providerLabelKey(reading.provider));
@@ -63,9 +76,17 @@ export function MetricCell({ reading, showLabel = false }: MetricCellProps): Rea
         </span>
       ) : null}
       <span className="flex items-center gap-1">
-        <span className="text-body-md text-text-primary tabular-nums">
-          {format.valueOf(reading.value, reading.definition.unit)}
-        </span>
+        {animate ? (
+          <CountUp
+            value={reading.value}
+            format={(value) => format.valueOf(value, reading.definition.unit)}
+            className="text-body-md text-text-primary tabular-nums"
+          />
+        ) : (
+          <span className="text-body-md text-text-primary tabular-nums">
+            {format.valueOf(reading.value, reading.definition.unit)}
+          </span>
+        )}
         <MetricDefinitionButton definition={reading.definition} />
       </span>
       <span

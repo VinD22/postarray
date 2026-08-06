@@ -3,6 +3,7 @@
 import type { ReactElement } from 'react';
 import { EmptyState } from '@relay/design-system/patterns';
 import { Button, StatusDot } from '@relay/design-system/primitives';
+import { cn } from '@relay/design-system/utils';
 import { useTranslations } from '@relay/i18n/react';
 
 import { providerLabelKey } from '../labels';
@@ -17,6 +18,13 @@ import { useValueFormat } from '../use-value-format';
  * reconnect, an account with no posts is not a problem at all and gets no
  * button, and a failing sync links to the connection where the failure is
  * recorded. A list of problems with no verb on it is a list nobody acts on.
+ *
+ * The fix action is the same accent-filled `primary` button the Connections
+ * screen uses for its own reconnect action (`features/connections/connection-row.tsx`,
+ * WP-9) — one consistent "this needs you, here is the one button" affordance
+ * across both screens. Rows that are genuinely a problem (not `no_posts`,
+ * which the file comment above says is not one) carry a warning-tone
+ * inline-start bar, the same technique as that row's own health tint.
  */
 
 const REASON_KEY: Readonly<Record<AccountAttentionReason, string>> = {
@@ -61,10 +69,19 @@ export function AttentionList({
         {rows.map((row) => {
           const needsReconnect =
             row.reason === 'permission_missing' || row.reason === 'access_expired';
+          const isIssue = row.reason !== 'no_posts';
           return (
             <li
               key={`${row.account.connectionId}:${row.reason}`}
-              className="border-border-subtle flex flex-col gap-2 border-b py-3 sm:flex-row sm:items-start sm:justify-between sm:gap-4"
+              className={cn(
+                'border-border-subtle flex flex-col gap-2 border-b py-3 sm:flex-row sm:items-start sm:justify-between sm:gap-4',
+                // Same "this needs a person" tint as the Connections row
+                // (`features/connections/connection-row.tsx`, WP-9) — never
+                // the only signal, since the sentence beside it already
+                // names the reason and `no_posts` rows (not a real problem)
+                // stay untinted.
+                isIssue && 'bg-warning-bg/30',
+              )}
             >
               <div className="flex min-w-0 flex-col gap-0.5">
                 <span className="text-body-md text-text-primary flex items-center gap-2">
@@ -88,7 +105,7 @@ export function AttentionList({
                 {needsReconnect && onReconnect ? (
                   <Button
                     size="sm"
-                    variant="secondary"
+                    variant="primary"
                     onClick={() => onReconnect(row.account.connectionId)}
                   >
                     {t('action.reconnect')}

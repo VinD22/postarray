@@ -16,7 +16,7 @@
  */
 
 import { useState, type ReactNode } from 'react';
-import { ExternalLink, ShieldCheck } from 'lucide-react';
+import { Check, ExternalLink, ShieldCheck } from 'lucide-react';
 import {
   Button,
   Dialog,
@@ -107,28 +107,48 @@ export function ConnectDialog({
               <RadioGroup
                 value={provider}
                 onValueChange={(next) => setProvider(next as ProviderId)}
-                className="grid grid-cols-1 gap-1.5 sm:grid-cols-2"
+                className="grid grid-cols-1 gap-2 sm:grid-cols-2"
               >
-                {CONNECTABLE_PROVIDERS.map((candidate) => (
-                  <div
-                    key={candidate}
-                    className={cn(
-                      'flex min-h-11 items-center gap-2 rounded-md border p-2.5',
-                      candidate === provider
-                        ? 'border-accent bg-accent-subtle'
-                        : 'border-border-default bg-surface-raised',
-                    )}
-                  >
-                    <RadioGroupItem id={`connect-${candidate}`} value={candidate} />
-                    <ProviderMark provider={candidate} />
-                    <Label
-                      htmlFor={`connect-${candidate}`}
-                      className="text-body-md text-text-primary"
+                {CONNECTABLE_PROVIDERS.map((candidate) => {
+                  const selected = candidate === provider;
+                  return (
+                    <div
+                      key={candidate}
+                      className={cn(
+                        'relative flex min-h-11 items-center gap-2 rounded-lg border-2 p-2.5',
+                        'transition-[translate,box-shadow,border-color,background-color]',
+                        'duration-(--duration-fast) ease-(--ease-out-back) motion-reduce:transition-none',
+                        selected
+                          ? 'border-border-bold bg-accent-subtle shadow-hard-sm'
+                          : [
+                              'border-border-default bg-surface-raised',
+                              'hover:border-border-bold hover:-translate-y-0.5 hover:shadow-hard-sm',
+                            ],
+                      )}
                     >
-                      {providerName(candidate)}
-                    </Label>
-                  </div>
-                ))}
+                      <RadioGroupItem id={`connect-${candidate}`} value={candidate} />
+                      <ProviderMark provider={candidate} />
+                      <Label
+                        htmlFor={`connect-${candidate}`}
+                        className="text-body-md text-text-primary flex-1"
+                      >
+                        {providerName(candidate)}
+                      </Label>
+                      {/* A one-time stroke draw-in, never a static icon: it
+                          is the same "just confirmed" signal `check-email`
+                          uses, scoped to the single tile that just became
+                          the selection. */}
+                      {selected ? (
+                        <span
+                          aria-hidden="true"
+                          className="border-border-bold bg-cta text-cta-on relay-icon-draw motion-reduce:animate-none inline-flex size-5 shrink-0 items-center justify-center rounded-full border-2"
+                        >
+                          <Check className="size-3" strokeWidth={3} />
+                        </span>
+                      ) : null}
+                    </div>
+                  );
+                })}
               </RadioGroup>
             </fieldset>
 

@@ -53,3 +53,6 @@ Thumbs.db
 
 # Browser tooling session logs
 .playwright-cli/
+
+# Local design-skill scratch state
+.commandcode/

@@ -1,7 +1,8 @@
 'use client';
 
-import { useState, type ReactNode } from 'react';
+import { useEffect, useRef, useState, type ReactNode } from 'react';
 import { useQuery } from '@tanstack/react-query';
+import { Check } from 'lucide-react';
 import {
   Button,
   Input,
@@ -17,13 +18,20 @@ import {
 } from '@relay/design-system/primitives';
 import { EmptyState, MetricValue, Notice, PageHeader } from '@relay/design-system/patterns';
 import { useAnnouncer } from '@relay/design-system/hooks';
+import { cn } from '@relay/design-system/utils';
 import { useTranslations } from '@relay/i18n/react';
+
+import { Sticker } from '@/features/marketing/components/loud/sticker';
+import { useMotionOk } from '@/lib/motion/use-motion-ok';
 
 import { AsyncBoundary } from '../lib/async-boundary';
 import { billingGateway } from '../lib/gateway';
 import { useFormatters } from '../lib/formatters';
 import { settingsKey, useWorkspaceId } from '../lib/keys';
 import { SettingsPanel, SettingsStack } from '../components/section';
+
+/** How long the "Copied" confirmation stays up before it reverts. */
+const COPIED_VISIBLE_MS = 1500;
 
 const STATE_KEYS = {
   pending: 'billing.referral.commissionPending',
@@ -41,6 +49,18 @@ export function ReferralsScreen(): ReactNode {
 
   const referral = useQuery({ queryKey: REFERRAL_KEY, queryFn: () => billingGateway.referral() });
   const [copyFailed, setCopyFailed] = useState(false);
+  const [copied, setCopied] = useState(false);
+  const motionOk = useMotionOk();
+  const copiedTimer = useRef<number | null>(null);
+
+  useEffect(
+    () => () => {
+      if (copiedTimer.current !== null) {
+        window.clearTimeout(copiedTimer.current);
+      }
+    },
+    [],
+  );
 
   const data = referral.data;
 
@@ -52,6 +72,19 @@ export function ReferralsScreen(): ReactNode {
       await navigator.clipboard.writeText(data.link);
       setCopyFailed(false);
       announce(t('a11y.announce.copiedToClipboard'));
+      // The referral link is the one playful moment WP-11 allows on an
+      // otherwise calm settings surface: the button's own label
+      // check-morphs and a "Copied" `Sticker` pops in beside it for a
+      // beat, then both revert — the same transient, self-clearing
+      // confirmation pattern as the composer's `Mod+s` "Saved" flash.
+      setCopied(true);
+      if (copiedTimer.current !== null) {
+        window.clearTimeout(copiedTimer.current);
+      }
+      copiedTimer.current = window.setTimeout(() => {
+        setCopied(false);
+        copiedTimer.current = null;
+      }, COPIED_VISIBLE_MS);
     } catch {
       setCopyFailed(true);
     }
@@ -94,8 +127,32 @@ export function ReferralsScreen(): ReactNode {
                     className="font-mono sm:max-w-lg"
                   />
                   <Button variant="secondary" onClick={() => void copyLink()}>
-                    {t('action.copyLink')}
+                    {copied ? (
+                      <span
+                        className={cn(
+                          'flex items-center gap-2',
+                          motionOk && 'relay-pop-in',
+                        )}
+                      >
+                        <Check aria-hidden="true" className="size-4" />
+                        {t('settings.ui.referral.linkCopied')}
+                      </span>
+                    ) : (
+                      t('action.copyLink')
+                    )}
                   </Button>
+                  {copied ? (
+                    // Purely decorative: `announce()` above already puts the
+                    // "copied" fact in the accessible live region, so this
+                    // visual echo does not get a second one.
+                    <Sticker
+                      tone="cta"
+                      ariaHidden
+                      className={motionOk ? 'relay-pop-in' : undefined}
+                    >
+                      {t('settings.ui.referral.linkCopied')}
+                    </Sticker>
+                  ) : null}
                 </div>
                 {copyFailed ? (
                   <p className="text-body-sm text-warning-fg">{t('settings.ui.copyFailed')}</p>

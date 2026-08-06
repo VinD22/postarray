@@ -447,3 +447,58 @@
 .relay-slow-spin {
   animation: relay-slow-spin 18s linear infinite;
 }
+
+/*
+ * Automation rule-sentence syntax-highlight chips (WP-11,
+ * `features/automation/components/sentence-builder.tsx`). The trigger,
+ * condition and action clauses each get a distinct, low-key tint rather than
+ * a solid fill: a solid `--color-cta`/`--color-blush` fill on running body
+ * text would violate "yellow/pink never text" (`--cta-on`/`--accent-blush-on`
+ * both assume a large, deliberately-loud surface, not a sentence chip), so
+ * this mixes each hue at 12% into the canvas colour instead and leaves the
+ * text in its ordinary `text-primary`/`text-secondary` tone on top. Because
+ * the result is dominated (88%) by the already-AA-verified canvas colour, the
+ * already-verified text-on-canvas contrast pairs in `contrast.test.ts` carry
+ * over without a new pair to verify. `--color-accent`/`--color-cta`/
+ * `--color-blush` already carry their own light/dark values, so one
+ * declaration (not the OS-preference/`data-theme` duplication `.relay-band-*`
+ * needs) covers both themes correctly at this small a fill.
+ */
+.relay-chip-trigger {
+  background-color: color-mix(in srgb, var(--color-accent) 12%, var(--color-surface-canvas));
+  border: var(--border-width-hairline) solid
+    color-mix(in srgb, var(--color-accent) 35%, var(--color-surface-canvas));
+}
+
+.relay-chip-condition {
+  background-color: color-mix(in srgb, var(--color-blush) 16%, var(--color-surface-canvas));
+  border: var(--border-width-hairline) solid
+    color-mix(in srgb, var(--color-blush) 40%, var(--color-surface-canvas));
+}
+
+.relay-chip-action {
+  background-color: color-mix(in srgb, var(--color-cta) 16%, var(--color-surface-canvas));
+  border: var(--border-width-hairline) solid
+    color-mix(in srgb, var(--color-cta) 45%, var(--color-surface-canvas));
+}
+
+/*
+ * Sentence-builder clause insert (WP-11): a 150ms pop, scale 0.95 to 1, that
+ * plays once when a new condition or action clause mounts. Applied
+ * unconditionally to every `<li>` in the conditions/actions lists — existing
+ * rows keep their stable `key` and never remount, so only the row that was
+ * just added actually plays it. The global 1ms `prefers-reduced-motion`
+ * override (theme.css) collapses it to a no-op for reduced-motion visitors.
+ */
+@keyframes relay-clause-pop {
+  from {
+    scale: 0.95;
+  }
+  to {
+    scale: 1;
+  }
+}
+
+.relay-clause-pop {
+  animation: relay-clause-pop 150ms var(--ease-out-back);
+}

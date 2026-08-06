@@ -48,12 +48,23 @@ export function PinnedScene({ scenes, scrub = true, className }: PinnedSceneProp
         },
       });
 
+      // Each scene gets its own full scroll unit (see `end` above), but the
+      // crossfade itself only runs across the LAST 30% of that unit. A
+      // full-unit-duration blend (the previous behavior) meant the two
+      // scenes were partially visible across the *entire* scroll range
+      // between them, so a frame was almost never fully "settled" — the
+      // outgoing frame's absolutely-positioned content (e.g. a fixed-width
+      // card row) stayed visibly layered under the incoming one for most of
+      // the scroll, reading as duplicated/ghosted cards. A short, end-weighted
+      // crossfade gives each scene a real settled dwell time.
+      const CROSSFADE_DURATION = 0.3;
       for (let index = 1; index < sceneEls.length; index += 1) {
         const previous = sceneEls[index - 1];
         const current = sceneEls[index];
         if (!previous || !current) continue;
-        timeline.to(previous, { autoAlpha: 0, duration: 1 }, index - 1);
-        timeline.to(current, { autoAlpha: 1, duration: 1 }, index - 1);
+        const start = index - CROSSFADE_DURATION;
+        timeline.to(previous, { autoAlpha: 0, duration: CROSSFADE_DURATION }, start);
+        timeline.to(current, { autoAlpha: 1, duration: CROSSFADE_DURATION }, start);
       }
     },
     { scope, dependencies: [motionOk, scenes.length, scrub] },

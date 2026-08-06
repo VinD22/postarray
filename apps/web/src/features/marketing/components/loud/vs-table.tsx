@@ -125,10 +125,14 @@ export function VsTable({
                         <span>{trueLabel}</span>
                       </span>
                     ) : cell === false ? (
+                      // Pink (`--color-blush`) is a fill colour and is never
+                      // legible as text — see theme.css's own contrast header
+                      // ("NEITHER IS EVER TEXT"; pink on paper is 1.55:1).
+                      // `destructive-fg` is AA-verified as text on canvas.
                       <span
                         className={cn(
                           'inline-flex items-center gap-1.5',
-                          column.tone === 'cta' ? 'text-cta-on' : 'text-blush',
+                          column.tone === 'cta' ? 'text-cta-on' : 'text-destructive-fg',
                         )}
                       >
                         <X aria-hidden="true" className="size-4" strokeWidth={3} />

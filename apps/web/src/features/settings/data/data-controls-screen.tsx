@@ -235,6 +235,7 @@ export function DataControlsScreen(): ReactNode {
           title={t('settings.ui.data.deleteTitle')}
           description={t('settings.ui.data.deleteBody')}
           footnote={t('settings.ui.data.exportFirst')}
+          tone="danger"
         >
           <div className="flex flex-col">
             {DELETION_OPTIONS.map((option) => (

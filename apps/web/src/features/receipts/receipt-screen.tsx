@@ -228,11 +228,18 @@ function PostDocument({
           </div>
 
           {isCampaign && outcome === 'partially_published' ? (
-            <PartialSuccess
-              targets={targets}
-              onRetry={retry}
-              jobId={receipt?.publishJobId ?? job?.id ?? null}
-            />
+            // The 2px warning border lives here, outside the primitive, for
+            // the same reason `attention-bar.tsx` keeps its own emphasis
+            // outside `Notice`: this is the single most consequential state
+            // in the publishing flow, and it earns the loud poster outline
+            // that `Notice` deliberately does not carry everywhere else.
+            <div className="border-warning-border overflow-hidden rounded-lg border-2">
+              <PartialSuccess
+                targets={targets}
+                onRetry={retry}
+                jobId={receipt?.publishJobId ?? job?.id ?? null}
+              />
+            </div>
           ) : null}
 
           {!receipt ? (
@@ -283,34 +290,34 @@ function PostDocument({
                 items={[
                   {
                     id: 'surface',
-                    term: t('receipt.surface.label'),
+                    term: <Term>{t('receipt.surface.label')}</Term>,
                     definition: t(`receipt.surface.${surfaceKey(receipt.creationSurface)}`),
                   },
                   {
                     id: 'author',
-                    term: t('common.createdBy'),
+                    term: <Term>{t('common.createdBy')}</Term>,
                     definition: item.createdByName,
                     hint: t('common.createdOn', { date: format.date(item.createdAt) }),
                   },
                   {
                     id: 'version',
-                    term: t('receipt.contentVersion'),
+                    term: <Term>{t('receipt.contentVersion')}</Term>,
                     definition: <Code>{receipt.contentVersionId}</Code>,
                   },
                   {
                     id: 'checksum',
-                    term: t('receipt.contentHash'),
+                    term: <Term>{t('receipt.contentHash')}</Term>,
                     definition: <Code className="break-all">{receipt.contentVersionChecksum}</Code>,
                   },
                   {
                     id: 'capability',
-                    term: t('web.receipt.provenance.capabilityVersion'),
+                    term: <Term>{t('web.receipt.provenance.capabilityVersion')}</Term>,
                     definition: <Code>{receipt.capabilityVersion}</Code>,
                     hint: t('web.receipt.provenance.capabilityHint'),
                   },
                   {
                     id: 'idempotency',
-                    term: t('receipt.idempotencyKey'),
+                    term: <Term>{t('receipt.idempotencyKey')}</Term>,
                     definition: job ? (
                       <Code className="break-all">{job.idempotencyKey}</Code>
                     ) : (
@@ -319,12 +326,12 @@ function PostDocument({
                   },
                   {
                     id: 'account',
-                    term: t('web.receipt.provenance.externalAccount'),
+                    term: <Term>{t('web.receipt.provenance.externalAccount')}</Term>,
                     definition: <Code>{receipt.externalAccountId}</Code>,
                   },
                   {
                     id: 'approval',
-                    term: t('approval.title'),
+                    term: <Term>{t('approval.title')}</Term>,
                     definition:
                       receipt.approval.state === 'not_required'
                         ? t('web.receipt.approval.notRequired')
@@ -340,7 +347,7 @@ function PostDocument({
                   },
                   {
                     id: 'written',
-                    term: t('web.receipt.provenance.writtenLabel'),
+                    term: <Term>{t('web.receipt.provenance.writtenLabel')}</Term>,
                     definition: (
                       <time dateTime={receipt.createdAt} className="tabular-nums">
                         {format.dateTime(receipt.createdAt)}
@@ -392,6 +399,15 @@ function SectionHeading({ id, children }: { id: string; children: ReactNode }): 
       {children}
     </h2>
   );
+}
+
+/**
+ * A provenance fact's term, in the display face. This is the document a
+ * person forwards to a client: "what, where, when" reads like a receipt's
+ * own printed labels, not a generic settings row.
+ */
+function Term({ children }: { children: ReactNode }): ReactNode {
+  return <span className="font-display text-label tracking-wide">{children}</span>;
 }
 
 function PartialSuccess({

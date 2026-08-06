@@ -14,7 +14,7 @@
  */
 
 import { useMemo, useState, type ReactNode } from 'react';
-import { Plus } from 'lucide-react';
+import { Plug, Plus } from 'lucide-react';
 import {
   Button,
   ConfirmDialog,
@@ -32,10 +32,7 @@ import {
   SelectTrigger,
   SelectValue,
   SkeletonList,
-  Tabs,
   TabsContent,
-  TabsList,
-  TabsTrigger,
   useAnnouncer,
 } from '@relay/design-system';
 import { useTranslations } from '@relay/i18n/react';
@@ -45,6 +42,7 @@ import { CapabilityMatrixView } from './capability-matrix-view';
 import { buildCapabilityMatrix } from './capability-matrix';
 import { ConnectDialog } from './connect-dialog';
 import { ConnectionRow } from './connection-row';
+import { ConnectionsTabs } from './connections-tabs';
 import { GroupList, MoveGroupDialog } from './connection-groups';
 import { PermissionsSheet } from './permissions-sheet';
 import { useProviderName } from './provider';
@@ -107,6 +105,7 @@ export function ConnectionsScreen({
   const createGroup = useCreateGroup();
   const moveGroup = useMoveConnectionGroup();
 
+  const [activeTab, setActiveTab] = useState<string>('accounts');
   const [providerFilter, setProviderFilter] = useState<string>(ANY);
   const [healthFilter, setHealthFilter] = useState<string>(ANY);
   const [groupFilter, setGroupFilter] = useState<string>(ANY);
@@ -192,15 +191,18 @@ export function ConnectionsScreen({
         }
       />
 
-      <Tabs defaultValue="accounts" className="flex flex-1 flex-col">
-        <div className="px-4 md:px-6">
-          <TabsList aria-label={t('connection.title')}>
-            <TabsTrigger value="accounts">{t('web.connection.tab.accounts')}</TabsTrigger>
-            <TabsTrigger value="capabilities">{t('web.connection.tab.capabilities')}</TabsTrigger>
-            <TabsTrigger value="groups">{t('web.connection.tab.groups')}</TabsTrigger>
-          </TabsList>
-        </div>
-
+      <ConnectionsTabs
+        value={activeTab}
+        onValueChange={setActiveTab}
+        label={t('connection.title')}
+        className="flex flex-1 flex-col"
+        listWrapperClassName="px-4 md:px-6"
+        tabs={[
+          { value: 'accounts', label: t('web.connection.tab.accounts') },
+          { value: 'capabilities', label: t('web.connection.tab.capabilities') },
+          { value: 'groups', label: t('web.connection.tab.groups') },
+        ]}
+      >
         <TabsContent value="accounts" className="flex flex-1 flex-col">
           <div className="flex flex-wrap items-end gap-3 px-4 pb-3 md:px-6">
             <FilterSelect
@@ -287,7 +289,7 @@ export function ConnectionsScreen({
             />
           )}
         </TabsContent>
-      </Tabs>
+      </ConnectionsTabs>
 
       {/* ---- Dialogs and sheets ------------------------------------------ */}
 
@@ -487,11 +489,16 @@ function ConnectionsBody(props: ConnectionsBodyProps): ReactNode {
       <div className="px-4 md:px-6">
         {props.totalCount === 0 ? (
           <EmptyState
+            illustration={
+              <span className="border-border-strong inline-flex size-12 items-center justify-center rounded-full border-2 border-dashed">
+                <Plug aria-hidden="true" className="size-5" />
+              </span>
+            }
             title={t('empty.connections.title')}
             description={t('empty.connections.body')}
             example={t('web.connection.empty.example')}
             action={
-              <Button variant="primary" onClick={props.onConnect}>
+              <Button variant="cta" onClick={props.onConnect}>
                 {t('empty.connections.action')}
               </Button>
             }

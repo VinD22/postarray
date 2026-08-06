@@ -83,6 +83,12 @@ export interface AccountIdentityProps {
   secondary?: ReactNode;
   size?: 'sm' | 'md';
   className?: string;
+  /**
+   * Omits the leading dot. For a caller that already shows the platform
+   * another way beside this identity — an `Avatar`'s corner badge, for
+   * instance — so the platform is not named twice in the same row.
+   */
+  hideMark?: boolean;
 }
 
 /**
@@ -98,11 +104,12 @@ export function AccountIdentity({
   secondary,
   size = 'md',
   className,
+  hideMark = false,
 }: AccountIdentityProps): ReactNode {
   const providerName = useProviderName();
   return (
     <span className={cn('flex min-w-0 items-center gap-2', className)}>
-      <ProviderMark provider={provider} />
+      {hideMark ? null : <ProviderMark provider={provider} />}
       <span className="flex min-w-0 flex-col">
         <span
           className={cn(

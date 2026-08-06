@@ -149,7 +149,7 @@ export function SentenceBuilder({
       <Clause label={t('automation.editor.when')}>
         <div className="flex flex-col gap-3">
           <div className="flex flex-wrap items-center gap-2">
-            <span className="text-body-lg text-text-primary">
+            <span className="relay-chip-trigger text-body-lg text-text-primary rounded-md px-2.5 py-1">
               {triggerClause(draft, t, labels)}
             </span>
             <ItemPicker
@@ -186,9 +186,11 @@ export function SentenceBuilder({
           ) : (
             <ul className="flex flex-col gap-3">
               {draft.conditions.map((condition, index) => (
-                <li key={condition.id} className="flex flex-col gap-2">
+                <li key={condition.id} className="relay-clause-pop flex flex-col gap-2">
                   <div className="flex items-start justify-between gap-2">
-                    <span className="text-body-lg text-text-primary">{conditionText[index]}</span>
+                    <span className="relay-chip-condition text-body-lg text-text-primary rounded-md px-2.5 py-1">
+                      {conditionText[index]}
+                    </span>
                     <IconButton
                       size="sm"
                       variant="ghost"
@@ -263,10 +265,12 @@ export function SentenceBuilder({
                   const spec = actionSpec(action.kind);
                   const label = actionText[index] ?? '';
                   return (
-                    <li key={action.id} className="flex flex-col gap-2">
+                    <li key={action.id} className="relay-clause-pop flex flex-col gap-2">
                       <div className="flex items-start justify-between gap-2">
                         <span className="flex flex-wrap items-center gap-2">
-                          <span className="text-body-lg text-text-primary">{label}</span>
+                          <span className="relay-chip-action text-body-lg text-text-primary rounded-md px-2.5 py-1">
+                            {label}
+                          </span>
                           {spec.consequential ? (
                             <Badge tone="warning">{t('automation.picker.consequential')}</Badge>
                           ) : (

@@ -19,7 +19,10 @@ import {
 } from '@relay/design-system/primitives';
 import { EmptyState, Notice, PageHeader } from '@relay/design-system/patterns';
 import { useAnnouncer } from '@relay/design-system/hooks';
-import { useTranslations } from '@relay/i18n/react';
+import { useI18n, useTranslations } from '@relay/i18n/react';
+
+import { BigNumber } from '@/features/marketing/components/loud/big-number';
+import { PosterCard } from '@/features/marketing/components/loud/poster-card';
 
 import { SettingsPanel, SettingsStack } from '../settings/components/section';
 import { AsyncBoundary } from '../settings/lib/async-boundary';
@@ -33,6 +36,7 @@ import { UsagePanel } from './usage-panel';
 
 export function BillingScreen(): ReactNode {
   const t = useTranslations();
+  const { locale } = useI18n();
   const section = t('settings.ui.section.billing');
   const formatters = useFormatters();
   const { announce } = useAnnouncer();
@@ -136,6 +140,36 @@ export function BillingScreen(): ReactNode {
                 title={t('billing.ui.planHeading')}
                 description={t('billing.plan.single')}
               >
+                {/*
+                  The read-only poster price block (WP-11): the same
+                  `PosterCard` + `BigNumber` pairing WP-2's pricing page and
+                  the onboarding plan step build the price around, minus
+                  their interval toggle and checkout action — this is a
+                  statement of what the workspace is already paying, not a
+                  purchase surface, so there is nothing here to choose. The
+                  figure only renders once the billing service has actually
+                  quoted a next-charge amount; an estimate computed from the
+                  interval alone would not be a fact anyone could rely on.
+                */}
+                {state.conversionAmount !== null ? (
+                  <PosterCard tone="paper" className="max-w-xs">
+                    <BigNumber
+                      value={state.conversionAmount.amountMinor / 100}
+                      locale={locale}
+                      formatOptions={{
+                        style: 'currency',
+                        currency: state.conversionAmount.currency,
+                        maximumFractionDigits: 0,
+                      }}
+                      label={
+                        state.interval === 'annual'
+                          ? t('billing.plan.interval.annual')
+                          : t('billing.plan.interval.monthly')
+                      }
+                    />
+                  </PosterCard>
+                ) : null}
+
                 <ul className="text-body-md text-text-secondary flex max-w-[68ch] list-disc flex-col gap-1 ps-5">
                   <li>{t('billing.ui.allowanceChannels')}</li>
                   <li>{t('billing.plan.includes.members')}</li>

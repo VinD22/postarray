@@ -12,15 +12,25 @@ export interface SettingsPanelProps {
   children: ReactNode;
   id?: string;
   className?: string;
+  /**
+   * `danger` marks a panel that can destroy data (workspace deletion, key
+   * revocation with no undo): a 2px destructive-toned border instead of the
+   * ordinary `--border-bold` outline, so the one section on the page that can
+   * do irreversible harm reads as visibly different before anyone reads a
+   * word of it. Still no shadow, no motion — a danger zone is precise and
+   * quiet, not loud.
+   */
+  tone?: 'default' | 'danger';
 }
 
 /**
  * One block of a settings screen.
  *
- * A panel is a heading, a sentence and content separated by a hairline rule.
- * There is no card, no shadow and no nesting: settings are a document, and a
- * document with twelve floating rectangles is harder to scan than a document
- * with twelve headings.
+ * A panel is a heading, a sentence and its content inside a 2px-outlined
+ * card (WP-11's "calm pass" — the loud system's hard-outlined boundary
+ * without its hard shadow or any motion). Settings stays a document read
+ * top to bottom; the border only tells the eye where one setting's content
+ * ends and the next one's begins on a page with a dozen of them.
  */
 export function SettingsPanel({
   title,
@@ -30,15 +40,20 @@ export function SettingsPanel({
   children,
   id,
   className,
+  tone = 'default',
 }: SettingsPanelProps): ReactNode {
   return (
     <section
       id={id}
-      className={cn('border-border-subtle flex flex-col gap-3 border-t pt-6', className)}
+      className={cn(
+        'bg-surface-raised flex flex-col gap-3 rounded-lg border-2 p-4 md:p-6',
+        tone === 'danger' ? 'border-destructive-border' : 'border-border-bold',
+        className,
+      )}
     >
       <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
         <div className="flex min-w-0 flex-col gap-1">
-          <h2 className="text-title-sm text-text-primary">{title}</h2>
+          <h2 className="text-title-sm text-text-primary font-display font-bold">{title}</h2>
           {description ? (
             <p className="text-body-md text-text-secondary max-w-[68ch]">{description}</p>
           ) : null}

@@ -58,7 +58,7 @@ export function PreflightPanel({
   return (
     <section
       aria-labelledby="preflight-heading"
-      className="border-border-default flex flex-col gap-4 border p-4"
+      className="border-border-bold bg-surface-raised flex flex-col gap-4 rounded-lg border-2 p-4 md:p-6"
     >
       <div className="flex max-w-[70ch] flex-col gap-1">
         <h2 id="preflight-heading" className="text-title-sm text-text-primary">

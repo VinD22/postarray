@@ -1,6 +1,7 @@
 'use client';
 
 import type { ReactElement } from 'react';
+import { Clock } from 'lucide-react';
 import { FreshnessLabel } from '@relay/design-system/patterns';
 import { StatusDot } from '@relay/design-system/primitives';
 import { useTranslations } from '@relay/i18n/react';
@@ -16,6 +17,11 @@ import { useValueFormat } from '../use-value-format';
  * account read down a column. It is also not optional chrome: a screen full of
  * figures with no date on them invites the reader to assume they are live, and
  * none of them are.
+ *
+ * The instant itself renders in the monospace face with tabular figures, and
+ * a small `aria-hidden` clock marks the whole "when" group — both purely
+ * typographic reinforcement of what the sentence already says, never a
+ * replacement for it.
  */
 
 export interface FreshnessPanelProps {
@@ -65,12 +71,18 @@ export function FreshnessPanel({ rows, statusHref }: FreshnessPanelProps): React
             </span>
 
             <span className="flex flex-wrap items-baseline gap-x-3 gap-y-0.5">
+              <Clock aria-hidden="true" className="text-text-tertiary size-3.5 self-center" />
               {row.lastSuccessAt === null ? (
-                <FreshnessLabel level="never" text={t('analytics.freshness.never')} />
+                <FreshnessLabel
+                  level="never"
+                  text={t('analytics.freshness.never')}
+                  className="font-mono tabular-nums"
+                />
               ) : (
                 <FreshnessLabel
                   level={row.state}
                   isoTimestamp={row.lastSuccessAt}
+                  className="font-mono tabular-nums"
                   text={
                     row.state === 'stale'
                       ? t('analytics.freshness.stale', {
@@ -83,7 +95,7 @@ export function FreshnessPanel({ rows, statusHref }: FreshnessPanelProps): React
                 />
               )}
               {row.nextAttemptAt ? (
-                <span className="text-body-sm text-text-tertiary">
+                <span className="text-body-sm text-text-tertiary font-mono tabular-nums">
                   {t('analytics.freshness.nextAttempt', {
                     relativeTime: format.relative(row.nextAttemptAt),
                   })}

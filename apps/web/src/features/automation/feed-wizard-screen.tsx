@@ -29,6 +29,7 @@ import { QueryErrorState } from '@/features/analytics/components/query-error-sta
 import { providerLabelKey } from '@/features/analytics/labels';
 
 import { FeedPreview } from './components/feed-preview';
+import { RssStepReveal } from './components/rss-step-reveal';
 import { useCreateFeed, useValidateFeed } from './rss-queries';
 import type { FeedDraft, FeedPublishPolicy } from './rss-types';
 
@@ -228,37 +229,41 @@ export function FeedWizardScreen(): ReactElement {
         title={t('automation.rss.step.targets')}
         disabled={!canChooseTargets}
       >
-        <fieldset className="flex flex-col gap-2">
-          <legend className="text-body-md text-text-secondary pb-1">
-            {t('automation.rss.targetsHelp')}
-          </legend>
-          {accounts.map((account) => {
-            const id = `feed-account-${account.connectionId}`;
-            return (
-              <span key={account.connectionId} className="flex min-h-11 items-center gap-2">
-                <Checkbox
-                  id={id}
-                  checked={draft.connectionIds.includes(account.connectionId)}
-                  onCheckedChange={() =>
-                    setDraft((current) => ({
-                      ...current,
-                      connectionIds: current.connectionIds.includes(account.connectionId)
-                        ? current.connectionIds.filter((value) => value !== account.connectionId)
-                        : [...current.connectionIds, account.connectionId],
-                    }))
-                  }
-                />
-                <Label htmlFor={id} className="text-body-md flex items-center gap-2">
-                  <StatusDot provider={account.provider} />
-                  {account.displayName}
-                  <span className="text-text-tertiary">
-                    {t(providerLabelKey(account.provider))}
-                  </span>
-                </Label>
-              </span>
-            );
-          })}
-        </fieldset>
+        <RssStepReveal active={canChooseTargets}>
+          <fieldset className="flex flex-col gap-2">
+            <legend className="text-body-md text-text-secondary pb-1">
+              {t('automation.rss.targetsHelp')}
+            </legend>
+            {accounts.map((account) => {
+              const id = `feed-account-${account.connectionId}`;
+              return (
+                <span key={account.connectionId} className="flex min-h-11 items-center gap-2">
+                  <Checkbox
+                    id={id}
+                    checked={draft.connectionIds.includes(account.connectionId)}
+                    onCheckedChange={() =>
+                      setDraft((current) => ({
+                        ...current,
+                        connectionIds: current.connectionIds.includes(account.connectionId)
+                          ? current.connectionIds.filter(
+                              (value) => value !== account.connectionId,
+                            )
+                          : [...current.connectionIds, account.connectionId],
+                      }))
+                    }
+                  />
+                  <Label htmlFor={id} className="text-body-md flex items-center gap-2">
+                    <StatusDot provider={account.provider} />
+                    {account.displayName}
+                    <span className="text-text-tertiary">
+                      {t(providerLabelKey(account.provider))}
+                    </span>
+                  </Label>
+                </span>
+              );
+            })}
+          </fieldset>
+        </RssStepReveal>
       </Step>
 
       <Step
@@ -267,6 +272,7 @@ export function FeedWizardScreen(): ReactElement {
         title={t('automation.rss.step.template')}
         disabled={!canChooseTargets}
       >
+        <RssStepReveal active={canChooseTargets}>
         <div className="flex flex-col gap-3">
           <Field
             label={t('automation.rss.template')}
@@ -337,6 +343,7 @@ export function FeedWizardScreen(): ReactElement {
             {t('automation.rss.noImageGeneration')}
           </p>
         </div>
+        </RssStepReveal>
       </Step>
 
       <Step
@@ -345,6 +352,7 @@ export function FeedWizardScreen(): ReactElement {
         title={t('automation.rss.step.policy')}
         disabled={!canChooseTargets}
       >
+        <RssStepReveal active={canChooseTargets}>
         <div className="flex flex-col gap-3">
           <Field
             label={t('automation.rss.step.policy')}
@@ -407,6 +415,7 @@ export function FeedWizardScreen(): ReactElement {
             <Notice tone="warning" liveness="status" title={t('automation.rss.immediateWarning')} />
           ) : null}
         </div>
+        </RssStepReveal>
       </Step>
 
       {create.isError ? (

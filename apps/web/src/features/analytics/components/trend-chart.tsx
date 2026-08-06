@@ -1,6 +1,6 @@
 'use client';
 
-import { useId, useMemo, useState, type PointerEvent, type ReactElement } from 'react';
+import { useId, useMemo, useRef, useState, type PointerEvent, type ReactElement } from 'react';
 import {
   Button,
   Table,
@@ -12,19 +12,27 @@ import {
   TableHeader,
   TableRow,
 } from '@relay/design-system/primitives';
+import { cn, panelPoster } from '@relay/design-system/utils';
 import { useTranslations } from '@relay/i18n/react';
+
+import { EASE_OUT_EXPO, EXPRESSIVE_MD } from '@/lib/motion/constants';
+import { gsap, useGSAP } from '@/lib/motion/gsap';
+import { useMotionOk } from '@/lib/motion/use-motion-ok';
 
 import type { MetricSeriesView, SeriesPoint } from '../types';
 import { useValueFormat } from '../use-value-format';
 
 /**
- * A small time series, drawn once and read immediately.
+ * A small time series, read immediately.
  *
  * What this chart deliberately does not do:
  *
- * - It does not animate in. A drawn-in line delays reading and implies the data
- *   arrived while you watched, which is false for a metric a provider
- *   aggregated hours ago.
+ * - It does not delay reading. Server HTML renders the finished line at full
+ *   opacity and full length — see the header comment in `lib/motion/gsap.ts`.
+ *   The one-time stroke draw-in below is a client-side enhancement layered on
+ *   top of that finished line with `useGSAP`, never a substitute for it: a
+ *   no-JS visitor, a search crawler and a reduced-motion visitor all see the
+ *   complete line on first paint, exactly as before.
  * - It does not carry a second y axis. Two measures on different scales are two
  *   charts, because a dual axis lets the author choose the crossing point and
  *   therefore choose the conclusion.
@@ -109,6 +117,8 @@ export function TrendChart({ series, title, summary, unit }: TrendChartProps): R
   const tableId = useId();
   const [tableVisible, setTableVisible] = useState(false);
   const [hoverIndex, setHoverIndex] = useState<number | null>(null);
+  const svgRef = useRef<SVGSVGElement>(null);
+  const motionOk = useMotionOk();
 
   const primary = series[0];
   const pointCount = primary?.points.length ?? 0;
@@ -116,18 +126,64 @@ export function TrendChart({ series, title, summary, unit }: TrendChartProps): R
 
   const hasGap = series.some((entry) => entry.points.some((point) => point.value === null));
 
+  // The one-time stroke draw-in. The primary line is already the finished,
+  // full-length polyline in server HTML (see the header comment); this only
+  // ever adds a dash pattern from inside `useGSAP`, so a no-JS or
+  // reduced-motion visitor never sees anything but that complete line.
+  useGSAP(
+    () => {
+      if (!motionOk || !svgRef.current) return;
+      const lines = gsap.utils.toArray<SVGGeometryElement>('[data-primary-line]', svgRef.current);
+      if (lines.length === 0) return;
+
+      for (const line of lines) {
+        // Not every DOM implementation ships `getTotalLength` (jsdom in
+        // tests does not); skip the draw-in rather than throw when it is
+        // unavailable, and let the already-complete line stand as-is.
+        if (typeof line.getTotalLength !== 'function') continue;
+        const length = line.getTotalLength();
+        gsap.set(line, { strokeDasharray: length, strokeDashoffset: length });
+        gsap.to(line, {
+          strokeDashoffset: 0,
+          duration: EXPRESSIVE_MD,
+          ease: EASE_OUT_EXPO,
+          scrollTrigger: { trigger: svgRef.current, start: 'top 85%', once: true },
+        });
+      }
+    },
+    { scope: svgRef, dependencies: [motionOk, series, pointCount] },
+  );
+
   if (!primary || pointCount === 0) {
     return (
       <section aria-labelledby={titleId} className="flex flex-col gap-2">
         <h3 id={titleId} className="text-title-sm text-text-primary">
           {title}
         </h3>
-        <p className="text-body-md text-text-secondary">{t('analytics.chart.empty')}</p>
+        <p className="text-body-md text-text-secondary flex items-center gap-2">
+          <svg aria-hidden="true" viewBox="0 0 64 28" className="text-text-tertiary h-7 w-16">
+            <polyline
+              points="2,24 18,12 32,18 48,6 62,10"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeDasharray="4 4"
+            />
+          </svg>
+          {t('analytics.chart.empty')}
+        </p>
       </section>
     );
   }
 
   const hovered = hoverIndex === null ? null : (primary.points[hoverIndex] ?? null);
+  const latestPrimary = [...primary.points]
+    .map((point, index) => ({ point, index }))
+    .reverse()
+    .find((entry) => entry.point.value !== null);
+  const baselineY = scale.y(0);
 
   const handlePointer = (event: PointerEvent<SVGSVGElement>): void => {
     const bounds = event.currentTarget.getBoundingClientRect();
@@ -193,6 +249,7 @@ export function TrendChart({ series, title, summary, unit }: TrendChartProps): R
 
       <div className="relative">
         <svg
+          ref={svgRef}
           role="img"
           aria-label={summary}
           viewBox={`0 0 ${VIEW_WIDTH} ${VIEW_HEIGHT}`}
@@ -200,7 +257,10 @@ export function TrendChart({ series, title, summary, unit }: TrendChartProps): R
           onPointerMove={handlePointer}
           onPointerLeave={() => setHoverIndex(null)}
         >
-          {[0, 0.5, 1].map((fraction) => {
+          {/* Reference lines at half and full scale stay quiet; the zero
+              baseline is the one bold "ink" axis a reader actually anchors
+              numbers against. */}
+          {[0.5, 1].map((fraction) => {
             const y = scale.y(scale.max * fraction);
             return (
               <line
@@ -214,6 +274,32 @@ export function TrendChart({ series, title, summary, unit }: TrendChartProps): R
               />
             );
           })}
+
+          {/* The 8% brand area fill under the primary series only — a second
+              filled series would make the overlap unreadable, so this stays
+              a single-series treatment. */}
+          {segments(primary.points).map((run) => (
+            <polygon
+              key={`area-${String(run[0]?.index ?? 'empty')}`}
+              fill="var(--accent-default)"
+              fillOpacity="0.08"
+              stroke="none"
+              points={[
+                ...run.map((point) => `${scale.x(point.index)},${scale.y(point.value)}`),
+                `${scale.x(run[run.length - 1]?.index ?? 0)},${baselineY}`,
+                `${scale.x(run[0]?.index ?? 0)},${baselineY}`,
+              ].join(' ')}
+            />
+          ))}
+
+          <line
+            x1={PADDING_INLINE}
+            x2={VIEW_WIDTH - PADDING_INLINE}
+            y1={baselineY}
+            y2={baselineY}
+            stroke="var(--border-strong)"
+            strokeWidth="1.5"
+          />
 
           {hoverIndex !== null ? (
             <line
@@ -231,6 +317,7 @@ export function TrendChart({ series, title, summary, unit }: TrendChartProps): R
               {segments(entry.points).map((run) => (
                 <polyline
                   key={`${entry.id}-${String(run[0]?.index ?? 'empty')}`}
+                  data-primary-line={entryIndex === 0 ? '' : undefined}
                   fill="none"
                   strokeWidth="2"
                   strokeLinejoin="round"
@@ -258,6 +345,20 @@ export function TrendChart({ series, title, summary, unit }: TrendChartProps): R
             </g>
           ))}
 
+          {/* The latest primary reading, marked permanently in the cta
+              yellow so "where things stand right now" reads at a glance
+              without hovering. */}
+          {latestPrimary && latestPrimary.point.value !== null ? (
+            <circle
+              cx={scale.x(latestPrimary.index)}
+              cy={scale.y(latestPrimary.point.value)}
+              r="5"
+              fill="var(--cta-bg)"
+              stroke="var(--border-bold)"
+              strokeWidth="2"
+            />
+          ) : null}
+
           {(primary.annotations ?? []).map((annotation) => {
             const index = primary.points.findIndex((point) => point.bucketStart >= annotation.at);
             if (index < 0) {
@@ -280,7 +381,11 @@ export function TrendChart({ series, title, summary, unit }: TrendChartProps): R
 
         {hovered && hoverIndex !== null ? (
           <p
-            className="border-border-default bg-surface-overlay text-body-sm text-text-primary shadow-overlay pointer-events-none absolute z-(--z-index-raised) max-w-[16rem] -translate-x-1/2 rounded-md border px-2 py-1 tabular-nums rtl:translate-x-1/2"
+            className={cn(
+              panelPoster,
+              'text-body-sm text-text-primary pointer-events-none absolute z-(--z-index-raised)',
+              'max-w-[16rem] -translate-x-1/2 px-2 py-1 tabular-nums rtl:translate-x-1/2',
+            )}
             style={{
               insetBlockStart: 0,
               insetInlineStart: `${(scale.x(hoverIndex) / VIEW_WIDTH) * 100}%`,

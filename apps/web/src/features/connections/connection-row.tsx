@@ -25,6 +25,7 @@ import {
   PauseCircle,
 } from 'lucide-react';
 import {
+  Avatar,
   Badge,
   Button,
   DropdownMenu,
@@ -40,7 +41,9 @@ import {
 import { formatCurrency } from '@relay/i18n';
 import { useTranslations } from '@relay/i18n/react';
 import { useCalendarFormat } from '@/features/calendar/format';
-import { AccountIdentity, useAccountTypeName, useProviderName } from './provider';
+import { initialsOf } from '@/lib/utils/initials';
+import type { ProviderId } from '@/lib/api/types';
+import { AccountIdentity, ProviderMark, useAccountTypeName, useProviderName } from './provider';
 import { healthTone, missingPermissionCount, remediationAction, remediationKey } from './health';
 import { isPaused, needsAction, type ConnectionRow as Row } from './types';
 
@@ -49,6 +52,25 @@ const healthIcon: Record<ReturnType<typeof healthTone>, ReactNode> = {
   warning: <AlertTriangle aria-hidden="true" className="text-warning-fg size-4" />,
   destructive: <CircleSlash aria-hidden="true" className="text-destructive-fg size-4" />,
   neutral: <PauseCircle aria-hidden="true" className="text-text-tertiary size-4" />,
+};
+
+/**
+ * The provider's identity colour, reused here as a decorative inline-start
+ * bar (the same technique as the calendar's entry chip). It is never the
+ * only carrier of the platform: the avatar badge and `AccountIdentity`'s
+ * text beside it already name the platform for assistive technology, so
+ * this bar is `aria-hidden` and purely reinforces what they already say.
+ */
+const providerBarClass: Record<ProviderId, string> = {
+  x: 'bg-brand-x',
+  linkedin: 'bg-brand-linkedin',
+  instagram: 'bg-brand-instagram',
+  facebook: 'bg-brand-facebook',
+  youtube: 'bg-brand-youtube',
+  tiktok: 'bg-brand-tiktok',
+  threads: 'bg-brand-threads',
+  bluesky: 'bg-brand-bluesky',
+  fake: 'bg-brand-fake',
 };
 
 export interface ConnectionRowProps {
@@ -89,40 +111,69 @@ export function ConnectionRow({
   return (
     <li
       className={cn(
-        'border-border-subtle flex flex-col gap-3 border-b px-4 py-4 md:px-6',
+        'border-border-subtle relative flex flex-col gap-3 border-b px-4 py-4 md:px-6',
         needsAction(row.health) && 'bg-warning-bg/40',
         isPaused(row.health) && 'bg-surface-sunken',
       )}
     >
+      {/* The platform's identity colour as a decorative inline-start bar —
+          the calendar entry chip's technique. Never the only carrier: the
+          avatar's corner badge and `AccountIdentity`'s own text already
+          name the platform for assistive technology. */}
+      <span
+        aria-hidden="true"
+        className={cn(
+          'pointer-events-none absolute inset-y-1 start-0.5 w-[3px] rounded-full',
+          providerBarClass[row.provider],
+        )}
+      />
+
       <div className="flex flex-wrap items-start justify-between gap-3">
-        <div className="flex min-w-0 flex-col gap-1.5">
-          <AccountIdentity
-            provider={row.provider}
-            accountLabel={row.displayName}
-            secondary={row.handle ?? undefined}
+        <div className="flex min-w-0 items-start gap-3">
+          <Avatar
+            alt={row.displayName}
+            src={row.avatarUrl ?? undefined}
+            fallback={initialsOf(row.displayName)}
+            badge={<ProviderMark provider={row.provider} labelledBySibling={false} name={providerName(row.provider)} />}
           />
 
-          <p className="text-body-sm text-text-secondary flex flex-wrap items-center gap-x-2 gap-y-1">
-            <Badge tone="outline">{accountTypeName(row.accountType)}</Badge>
-            {groupName ? <Badge tone="neutral">{groupName}</Badge> : null}
-            {row.beta ? <Badge tone="warning">{t('web.connection.row.beta')}</Badge> : null}
-            <span>
-              {t('connection.connectedBy', {
-                name: row.connectedByName,
-                date: format.date(row.connectedAt),
-              })}
-            </span>
-          </p>
+          <div className="flex min-w-0 flex-col gap-1.5">
+            <AccountIdentity
+              provider={row.provider}
+              accountLabel={row.displayName}
+              secondary={row.handle ?? undefined}
+              hideMark
+            />
+
+            <p className="text-body-sm text-text-secondary flex flex-wrap items-center gap-x-2 gap-y-1">
+              <Badge tone="outline">{accountTypeName(row.accountType)}</Badge>
+              {groupName ? <Badge tone="neutral">{groupName}</Badge> : null}
+              {row.beta ? <Badge tone="warning">{t('web.connection.row.beta')}</Badge> : null}
+              <span>
+                {t('connection.connectedBy', {
+                  name: row.connectedByName,
+                  date: format.date(row.connectedAt),
+                })}
+              </span>
+            </p>
+          </div>
         </div>
 
         <div className="flex shrink-0 flex-wrap items-center gap-2">
+          {/* The needs-a-person action reads as a slab, not a quiet button:
+              this is the one thing standing between the account and its
+              scheduled posts. Several can be on screen at once because each
+              names a different account, unlike a page-level primary action —
+              see `attention-bar.tsx` for the aggregate-banner case, which
+              deliberately keeps its own actions quiet for the same reason
+              in reverse. */}
           {action === 'reconnect' ? (
-            <Button variant="primary" size="sm" onClick={() => onReconnect(row)}>
+            <Button variant="cta" size="sm" onClick={() => onReconnect(row)}>
               {t('action.reconnect')}
             </Button>
           ) : null}
           {action === 'resume' ? (
-            <Button variant="primary" size="sm" onClick={() => onResume(row)}>
+            <Button variant="cta" size="sm" onClick={() => onResume(row)}>
               {t('action.resume')}
             </Button>
           ) : null}
@@ -166,7 +217,18 @@ export function ConnectionRow({
       {/* Health, expiry, last successful post, last analytics sync. */}
       <div className="text-body-sm flex flex-wrap items-center gap-x-4 gap-y-1.5">
         <span className="inline-flex items-center gap-1.5">
-          {healthIcon[tone]}
+          <span
+            className={cn(
+              'inline-flex',
+              // A healthy row settles once, on mount, the same "just checked
+              // and it is fine" pulse `ConnectionHealth` uses on Home. A row
+              // that needs a person stays still: motion is reserved for good
+              // news here, never for drawing the eye to a problem twice.
+              tone === 'ok' && 'relay-dot-settle motion-reduce:animate-none',
+            )}
+          >
+            {healthIcon[tone]}
+          </span>
           <span
             className={cn(
               'font-medium',

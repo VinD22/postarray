@@ -3,6 +3,7 @@
 import { useState, type ReactElement } from 'react';
 import { EmptyState } from '@relay/design-system/patterns';
 import { Badge, Button } from '@relay/design-system/primitives';
+import { cn } from '@relay/design-system/utils';
 import { useTranslations } from '@relay/i18n/react';
 
 import { useValueFormat } from '@/features/analytics/use-value-format';
@@ -87,51 +88,70 @@ export function RuleVersions({ versions, onRestore }: RuleVersionsProps): ReactE
         {t('automation.rules.versionHistory')}
       </h2>
 
-      <ul className="border-border-subtle flex flex-col border-t">
-        {versions.map((version) => (
-          <li
-            key={version.version}
-            className="border-border-subtle flex flex-col gap-2 border-b py-3 sm:flex-row sm:items-center sm:justify-between"
-          >
-            <span className="flex min-w-0 flex-wrap items-center gap-2">
-              <span className="text-body-md text-text-primary tabular-nums">
-                {`v${version.version}`}
+      {/*
+        A vertical timeline: the ink line is one continuous element behind the
+        list rather than per-row borders, and each version gets its own node
+        on it — the current version's node is filled, every earlier one is
+        hollow. `start-*`/`ps-*` only, so the line and its nodes mirror
+        correctly under `dir="rtl"` with no separate rule.
+      */}
+      <div className="relative ps-5">
+        <span aria-hidden="true" className="border-border-bold absolute inset-y-0 start-[3px] border-s-2" />
+        <ol className="flex flex-col">
+          {versions.map((version) => (
+            <li
+              key={version.version}
+              className="border-border-subtle relative flex flex-col gap-2 border-b py-3 last:border-b-0 sm:flex-row sm:items-center sm:justify-between"
+            >
+              <span
+                aria-hidden="true"
+                className={cn(
+                  'border-border-bold absolute start-[-5px] top-[1.15rem] size-2.5 rounded-full border-2',
+                  version.isCurrent ? 'bg-accent' : 'bg-surface-canvas',
+                )}
+              />
+              <span className="ps-3 flex min-w-0 flex-wrap items-center gap-2">
+                <span className="text-body-md text-text-primary tabular-nums">
+                  {`v${version.version}`}
+                </span>
+                {version.isCurrent ? (
+                  <Badge tone="accent">{t('automation.versions.current')}</Badge>
+                ) : null}
+                <span className="text-body-sm text-text-secondary">
+                  {t('automation.versions.savedBy', {
+                    actor: version.savedByName,
+                    date: format.dateTime(version.savedAt),
+                  })}
+                </span>
               </span>
-              {version.isCurrent ? (
-                <Badge tone="accent">{t('automation.versions.current')}</Badge>
-              ) : null}
-              <span className="text-body-sm text-text-secondary">
-                {t('automation.versions.savedBy', {
-                  actor: version.savedByName,
-                  date: format.dateTime(version.savedAt),
-                })}
-              </span>
-            </span>
 
-            <span className="flex shrink-0 gap-2">
-              {version.isCurrent ? null : (
-                <>
-                  <Button
-                    size="sm"
-                    variant="ghost"
-                    aria-expanded={comparing === version.version}
-                    onClick={() =>
-                      setComparing((value) => (value === version.version ? null : version.version))
-                    }
-                  >
-                    {t('automation.versions.compare')}
-                  </Button>
-                  {onRestore ? (
-                    <Button size="sm" variant="secondary" onClick={() => onRestore(version)}>
-                      {t('automation.versions.restore')}
+              <span className="ps-3 flex shrink-0 gap-2 sm:ps-0">
+                {version.isCurrent ? null : (
+                  <>
+                    <Button
+                      size="sm"
+                      variant="ghost"
+                      aria-expanded={comparing === version.version}
+                      onClick={() =>
+                        setComparing((value) =>
+                          value === version.version ? null : version.version,
+                        )
+                      }
+                    >
+                      {t('automation.versions.compare')}
                     </Button>
-                  ) : null}
-                </>
-              )}
-            </span>
-          </li>
-        ))}
-      </ul>
+                    {onRestore ? (
+                      <Button size="sm" variant="secondary" onClick={() => onRestore(version)}>
+                        {t('automation.versions.restore')}
+                      </Button>
+                    ) : null}
+                  </>
+                )}
+              </span>
+            </li>
+          ))}
+        </ol>
+      </div>
 
       {selected && current ? (
         <div className="flex flex-col gap-2">

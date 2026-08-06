@@ -223,9 +223,11 @@ function MediaGrid({
               type="button"
               onClick={() => onOpen(asset.id)}
               className={cn(
-                'border-border-subtle flex w-full flex-col gap-2 rounded-lg border',
+                'border-border-default flex w-full flex-col gap-2 rounded-lg border',
                 'bg-surface-raised p-2 text-start',
-                'transition-colors duration-[var(--duration-fast)] ease-[var(--ease-standard)]',
+                'transition-[background-color,border-color,box-shadow,translate]',
+                'duration-[var(--duration-fast)] ease-[var(--ease-out-back)] motion-reduce:transition-none',
+                'hover:border-border-bold hover:shadow-hard-sm hover:-translate-y-0.5',
                 'hover:bg-surface-hover focus-visible:outline-2 focus-visible:outline-offset-2',
                 'focus-visible:outline-border-focus',
               )}

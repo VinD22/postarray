@@ -184,8 +184,16 @@ export default async function HomePage({
         className="relative flex min-h-[90dvh] items-center overflow-hidden"
         containerClassName="py-20 md:py-28"
       >
-        <div className="relative max-w-[64rem]">
-          <LoudDisplay as="h1" size="2xl" kinetic split="words">
+        <div className="relative max-w-[76rem]">
+          {/*
+           * `size="2xl"` (clamp up to 9rem) is right for a short punch line
+           * (see the closing CtaSlab below), but `web.home.promise` is a full
+           * sentence — at 2xl it wrapped to 6-7 lines and pushed the CTA
+           * below the fold on common viewport heights. `xl` (clamp up to
+           * 6rem) keeps the display-font impact while fitting the actual
+           * copy length.
+           */}
+          <LoudDisplay as="h1" size="xl" kinetic split="words">
             {t.t('web.home.promise')}
           </LoudDisplay>
 
@@ -336,39 +344,35 @@ export default async function HomePage({
         </p>
       </Section>
 
-      {/* 6. The boundaries. The signature anti-hype moment: copy verbatim,
-          each line stamped with an X. */}
-      <Band tone="ink" id="boundaries">
-        <LoudDisplay as="h2" size="lg" className="max-w-[24ch]">
-          {t.t('web.home.honest.title')}
-        </LoudDisplay>
-        <p className="text-body-lg mt-4 max-w-[62ch] leading-[1.65]">
+      {/* 6. The boundaries. Kept honest — the copy is unchanged — but
+          deliberately staged as a quiet disclosure, not a hero moment. It
+          was originally a full-bleed ink band with each two-sentence
+          boundary set in display type up to 64px: four screens' worth of
+          "No ..." in a row reads as apologetic rather than confident, and
+          this is a sales page for what Relay DOES do. A compact two-column
+          list in the page's normal editorial register (same Heading/Section
+          components as the quieter marketing pages) says the same true
+          things without asking a visitor to spend most of a scroll session
+          reading about what they can't have. */}
+      <Section id="boundaries">
+        <Heading as="h2">{t.t('web.home.honest.title')}</Heading>
+        <p className="text-body-md text-text-secondary mt-3 max-w-[62ch]">
           {t.t('web.home.honest.lede')}
         </p>
-        <StaggerList className="mt-10 space-y-6">
+        <ul className="mt-6 grid gap-x-10 gap-y-3 sm:grid-cols-2">
           {BOUNDARIES.map((key) => (
-            <div key={key} data-stagger-item className="flex items-start gap-4">
-              <X aria-hidden="true" className="text-blush mt-1 size-7 shrink-0 md:size-9" />
-              <p className="font-display text-title-lg md:text-display-lg leading-[1.05] text-pretty">
+            <li key={key} className="flex items-start gap-2.5">
+              <X aria-hidden="true" className="text-text-tertiary mt-0.5 size-4 shrink-0" />
+              <p className="text-body-sm text-text-secondary leading-[1.5] text-pretty">
                 {t.format(key)}
               </p>
-            </div>
+            </li>
           ))}
-        </StaggerList>
-        <p className="mt-10">
-          <Link
-            href={ROUTES.changelog}
-            className={[
-              'inline-flex items-center gap-1 decoration-current',
-              'text-body-md underline decoration-1 underline-offset-[0.22em]',
-              'opacity-90 transition-opacity duration-(--duration-fast) hover:opacity-100',
-              'focus-visible:outline-border-focus focus-visible:outline-2 focus-visible:outline-offset-2',
-            ].join(' ')}
-          >
-            {t.t('nav.public.changelog')}
-          </Link>
+        </ul>
+        <p className="mt-6">
+          <TextLink href={ROUTES.changelog}>{t.t('nav.public.changelog')}</TextLink>
         </p>
-      </Band>
+      </Section>
 
       {/* 7. Pricing teaser. Both figures shown here are already stated,
           verbatim, in `billing.plan.monthlyPrice` / `billing.plan.single`. */}

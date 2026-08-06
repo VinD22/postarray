@@ -39,7 +39,10 @@ export interface VariantSceneProps {
  * five variants: real `<dt>`/`<dd>` pairs, `sr-only`, identical on every
  * device and every motion preference. This is deliberately a second, simpler
  * source of truth rather than trying to make the scrubbed, absolutely
- * positioned scene itself fully screen-reader navigable.
+ * positioned scene itself fully screen-reader navigable. `masterLabel` reads
+ * first as its own `sr-only` paragraph, outside the `<dl>` — it is a caption
+ * for the list, not a term/definition pair, so folding it into a lone `<dt>`
+ * with no matching `<dd>` produced a malformed list (WP-12 axe finding).
  *
  * `PinnedScene` only mounts at `lg` (1024px) and up — its own ~300vh scrub is
  * wasted screen-estate below that width — and only once `useBreakpoint`
@@ -76,8 +79,8 @@ export function VariantScene({
         )}
       </div>
 
+      <p className="sr-only">{masterLabel}</p>
       <dl className="sr-only">
-        <dt>{masterLabel}</dt>
         {rows.map((row) => (
           <div key={row.id}>
             <dt>{row.account}</dt>
@@ -104,12 +107,32 @@ function Frame({
   return (
     <div className="flex h-full flex-col items-center justify-center gap-8 px-6">
       <p className="text-label text-text-secondary font-mono tracking-wide">{progressLabel}</p>
+      {/*
+       * Every frame reserves the SAME five slots (rows.length), revealing
+       * or hiding a slot's opacity rather than adding/removing it from the
+       * flex flow. `justify-center` on a row whose total width changes
+       * frame-to-frame (the old `rows.slice(0, revealCount)` shape) recenters
+       * the whole row each time — including the master card — so during the
+       * scrubbed crossfade the outgoing and incoming frames show the SAME
+       * card at two different x-positions ("MASTER DRAFT" appearing twice).
+       * A fixed slot count keeps every card's on-screen position identical
+       * across all five frames, so the crossfade is a plain opacity blend.
+       */}
       <div className="flex w-full max-w-[68rem] flex-wrap items-start justify-center gap-6">
         <PosterCard tone="ink" className="w-60 shrink-0">
           <p className="text-label tracking-wide uppercase">{masterLabel}</p>
         </PosterCard>
-        {rows.slice(0, revealCount).map((row) => (
-          <VariantCard key={row.id} row={row} />
+        {rows.map((row, index) => (
+          <div
+            key={row.id}
+            aria-hidden={index >= revealCount}
+            className={cn(
+              'transition-opacity duration-300',
+              index < revealCount ? 'opacity-100' : 'opacity-0',
+            )}
+          >
+            <VariantCard row={row} />
+          </div>
         ))}
       </div>
     </div>

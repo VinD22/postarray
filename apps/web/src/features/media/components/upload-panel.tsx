@@ -73,9 +73,12 @@ export function UploadPanel({
           onFiles([...event.dataTransfer.files]);
         }}
         className={cn(
-          'flex flex-col items-start gap-2 rounded-lg border border-dashed px-4 py-5',
-          'transition-colors duration-[var(--duration-fast)] ease-[var(--ease-standard)]',
-          dragging ? 'border-accent bg-accent-subtle' : 'border-border-default bg-surface-sunken',
+          'flex flex-col items-start gap-2 rounded-lg border-2 border-dashed px-4 py-5',
+          'transition-[color,background-color,border-color,scale] duration-[var(--duration-fast)]',
+          'ease-[var(--ease-standard)] motion-reduce:transition-none',
+          dragging
+            ? 'border-accent bg-accent-subtle scale-[1.01] motion-reduce:scale-100'
+            : 'border-border-bold bg-surface-sunken',
         )}
       >
         <p className="text-body-sm text-text-secondary">{t.full('mediaLib.upload.dropHint')}</p>

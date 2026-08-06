@@ -14,6 +14,7 @@ import { CapabilityBadge, Notice } from '@relay/design-system/patterns';
 import { useTranslations } from '@relay/i18n/react';
 import { formatDate } from '@relay/i18n';
 
+import { Sticker } from '@/features/marketing/components/loud/sticker';
 import { altTextLimit, altTextRequiredBy, type AccountRule } from '../state/media-rules';
 import { CheckRow } from '../../composer/components/form-rows';
 import type { MediaAsset } from '../types';
@@ -52,9 +53,16 @@ export function AltTextForm({ asset, rules, onSave, onSuggest }: AltTextFormProp
 
   return (
     <section aria-labelledby="alt-text-heading" className="flex flex-col gap-3">
-      <h3 id="alt-text-heading" className="text-title-sm text-text-primary">
-        {t.full('mediaLib.alt.heading')}
-      </h3>
+      <div className="flex flex-wrap items-center gap-2">
+        <h3 id="alt-text-heading" className="text-title-sm text-text-primary">
+          {t.full('mediaLib.alt.heading')}
+        </h3>
+        {altText.trim().length === 0 && !waived ? (
+          <Sticker tone="pop" rotate={-3}>
+            {t.full('mediaLib.alt.nudge')}
+          </Sticker>
+        ) : null}
+      </div>
       <p className="text-body-sm text-text-secondary">{t.full('mediaLib.alt.help')}</p>
 
       {requiredBy.length > 0 ? (
