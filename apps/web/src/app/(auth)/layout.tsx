@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import type { ReactNode } from 'react';
 
-import { getRequestIntl } from '@/lib/i18n/server';
+import { getStaticIntl } from '@/lib/i18n/server';
 
 /**
  * The signed-out frame.
@@ -13,8 +13,15 @@ import { getRequestIntl } from '@/lib/i18n/server';
  */
 export const metadata: Metadata = { robots: { index: false, follow: false } };
 
+/**
+ * The signed-out shell is the same for everyone: a form, and copy that reads the
+ * same whoever is looking at it. Nothing here depends on the request, so it is
+ * prerendered rather than rendered per visit.
+ */
+export const dynamic = 'force-static';
+
 export default async function AuthLayout({ children }: { readonly children: ReactNode }) {
-  const intl = await getRequestIntl();
+  const intl = await getStaticIntl();
 
   return (
     <div className="grid min-h-dvh grid-cols-1 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">

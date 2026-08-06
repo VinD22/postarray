@@ -5,7 +5,7 @@ import type { ReactNode } from 'react';
 import { themeBootstrapScript } from '@relay/design-system/hooks';
 
 import { Providers } from '@/components/providers';
-import { getRequestIntl } from '@/lib/i18n/server';
+import { getStaticIntl } from '@/lib/i18n/server';
 
 import './globals.css';
 
@@ -49,7 +49,8 @@ export const viewport: Viewport = {
 };
 
 export default async function RootLayout({ children }: { readonly children: ReactNode }) {
-  const intl = await getRequestIntl();
+  // Static on purpose. The signed-in tree re-resolves per request; see (app)/layout.
+  const intl = await getStaticIntl();
 
   return (
     <html

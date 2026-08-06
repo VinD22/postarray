@@ -15,6 +15,17 @@ import { PRIMARY_NAV, ROUTES } from '@/features/marketing/site';
  * JavaScript: no data fetching, no query client, no theme flash, and a first
  * paint that is the finished page.
  */
+/**
+ * The public site is prerendered.
+ *
+ * Next 16 renders on demand unless a segment opts in, and every page in this
+ * group is the same bytes for every visitor: no session, no request input, no
+ * per-reader data. Serving them from cache is the difference between a CDN hit
+ * and a server render per visit. A page here that genuinely needs freshness
+ * overrides this with its own `dynamic` export, as `/status` does.
+ */
+export const dynamic = 'force-static';
+
 export default function MarketingLayout({ children }: { children: ReactNode }): ReactNode {
   const t = marketingTranslator();
 

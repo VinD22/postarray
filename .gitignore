@@ -47,3 +47,6 @@ Thumbs.db
 .vscode/*
 !.vscode/extensions.json
 !.vscode/settings.recommended.json
+
+# Local agent harness settings
+.claude/settings.local.json

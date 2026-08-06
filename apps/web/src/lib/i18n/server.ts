@@ -5,6 +5,7 @@ import { cookies, headers } from 'next/headers';
 import { createTranslator, loadCatalog, type PartialCatalog, type Translator } from '@relay/i18n';
 
 import { LOCALE_COOKIE, negotiateLocale, resolveTimeZone, TIME_ZONE_COOKIE } from './routing';
+import { ACTIVE_LOCALE_CODES, DEFAULT_LOCALE, getLocale } from '@relay/i18n';
 
 /** Everything a server component needs to render text for this request. */
 export interface RequestIntl {
@@ -14,6 +15,36 @@ export interface RequestIntl {
   readonly catalog: PartialCatalog;
   readonly t: Translator;
 }
+
+/**
+ * The locale a page gets when it does not read the request.
+ *
+ * Reading `cookies()` or `headers()` in the root layout opts the entire route
+ * tree out of static rendering, including the marketing and legal pages, which
+ * are the same bytes for everyone. Those pages use this instead.
+ *
+ * While one locale is active the two answers are identical, so nothing is lost.
+ * When a second locale ships, a page that must vary per visitor moves to
+ * `getRequestIntl` and pays for the dynamic render deliberately, rather than
+ * every page paying for it silently.
+ */
+export async function getStaticIntl(): Promise<RequestIntl> {
+  const locale = DEFAULT_LOCALE;
+  const direction = getLocale(locale)?.direction ?? 'ltr';
+  const catalog = await loadCatalog(locale);
+  return {
+    locale,
+    direction,
+    // A static page cannot know the reader's zone. Anything date-shaped on these
+    // pages states its zone explicitly; the product resolves the real one below.
+    timeZone: 'UTC',
+    catalog,
+    t: createTranslator(locale, catalog),
+  };
+}
+
+/** True while exactly one locale is active, so negotiation cannot change the answer. */
+export const localeNegotiationIsMeaningful = ACTIVE_LOCALE_CODES.length > 1;
 
 /**
  * Resolve the locale, the direction, the time zone and the catalog for the

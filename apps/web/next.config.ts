@@ -39,7 +39,15 @@ const nextConfig: NextConfig = {
   },
 
   experimental: {
-    optimizePackageImports: ['lucide-react', '@relay/design-system'],
+    // Barrel packages: without this every import pulls the whole module graph
+    // into the route's bundle.
+    optimizePackageImports: [
+      'lucide-react',
+      'radix-ui',
+      '@tanstack/react-query',
+      '@relay/design-system',
+      '@relay/i18n',
+    ],
   },
 
   typescript: {

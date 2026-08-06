@@ -1,3 +1,7 @@
+// Incident state has to be current, so this page opts back out of the group's
+// static rendering.
+export const dynamic = 'force-dynamic';
+
 import type { Metadata } from 'next';
 import type { ReactNode } from 'react';
 import { EmptyState, Notice } from '@relay/design-system/patterns';

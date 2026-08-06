@@ -244,7 +244,7 @@ importers:
         specifier: ^0.468.0
         version: 0.468.0(react@19.2.8)
       next:
-        specifier: ^16.0.0
+        specifier: ^16.3.0
         version: 16.3.0(@babel/core@7.29.7)(@opentelemetry/api@1.9.1)(@types/node@22.20.1)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
       react:
         specifier: ^19.2.8
