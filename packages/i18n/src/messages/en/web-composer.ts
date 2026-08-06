@@ -364,6 +364,7 @@ export const webComposerMessages = {
   'mediaLib.alt.heading': 'Alt text',
   'mediaLib.alt.help':
     'Describe what matters in the image for someone who cannot see it. One or two sentences is usually enough.',
+  'mediaLib.alt.nudge': 'Alt text helps everyone',
   'mediaLib.alt.count': '{used} of {limit} characters',
   'mediaLib.alt.requiredBy': 'Required by {accounts}',
   'mediaLib.alt.waive': 'This image carries no information',

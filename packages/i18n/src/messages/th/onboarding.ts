@@ -46,6 +46,5 @@ export const onboardingMessages = {
   'onboarding.checklist.inviteTeammate': 'เชิญเพื่อนร่วมทีม',
   'onboarding.checklist.setBrandVoice': 'อธิบายเสียงของแบรนด์ของคุณ',
   'onboarding.checklist.tryAutomation': 'ลองใช้กฎอัตโนมัติ',
-  'onboarding.checklist.remaining':
-    '{count, plural, =0 {เสร็จแล้ว} หนึ่ง {เหลือ # ก้าว} อีก {# ก้าวที่เหลือ}}',
+  "onboarding.checklist.remaining": "{count, plural, =0 {All done} one {# step left} other {# steps left}}",
 } as const;

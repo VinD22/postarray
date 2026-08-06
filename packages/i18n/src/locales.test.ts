@@ -64,7 +64,7 @@ describe('locale registry', () => {
     expect(new Set(codes).size).toBe(codes.length);
   });
 
-  it('ships the validated first three multilingual rollout waves', () => {
+  it('ships all four multilingual rollout waves', () => {
     expect(ACTIVE_LOCALES.map((locale) => locale.bcp47)).toEqual([
       'en',
       'es',
@@ -83,14 +83,24 @@ describe('locale registry', () => {
       'ar',
       'he',
       'hi',
+      'id',
+      'vi',
+      'th',
+      'fil',
+      'zh-Hans',
+      'zh-Hant',
+      'ja',
+      'ko',
     ]);
-    expect(PLANNED_LOCALES.length).toBe(ALL_LOCALES.length - 17);
+    expect(PLANNED_LOCALES.length).toBe(ALL_LOCALES.length - 25);
     expect(isActiveLocale(DEFAULT_LOCALE)).toBe(true);
     expect(isActiveLocale('de')).toBe(true);
     expect(isActiveLocale('pl')).toBe(true);
     expect(isActiveLocale('ru')).toBe(true);
     expect(isActiveLocale('ar')).toBe(true);
     expect(isActiveLocale('he')).toBe(true);
+    expect(isActiveLocale('zh-Hans')).toBe(true);
+    expect(isActiveLocale('zh-Hant')).toBe(true);
   });
 
   it('marks every locale beta until its human review is complete', () => {

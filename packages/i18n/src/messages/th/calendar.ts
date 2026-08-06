@@ -13,8 +13,8 @@ export const calendarMessages = {
   'calendar.timeZoneNote': 'เวลาแสดงเป็น {timeZone}',
   'calendar.weekOf': 'สัปดาห์ที่ {date}',
   'calendar.dayHeading': '{weekday}, {date}',
-  'calendar.slotCount': '{count, plural, =0 {ไม่มีกำหนดการ} หนึ่ง {# โพสต์} อื่นๆ {# โพสต์}}',
-  'calendar.slotOverflow': '{นับ พหูพจน์ หนึ่ง {# เพิ่มเติม} อื่นๆ {# เพิ่มเติม}}',
+  "calendar.slotCount": "{count, plural, =0 {Nothing scheduled} one {# post} other {# posts}}",
+  "calendar.slotOverflow": "{count, plural, one {# more} other {# more}}",
   'calendar.newPostAt': 'โพสต์ใหม่ที่ {time}',
   'calendar.filter.brand': 'Brand',
   'calendar.filter.account': 'บัญชี',
@@ -22,16 +22,14 @@ export const calendarMessages = {
   'calendar.filter.status': 'สถานะ',
   'calendar.filter.locale': 'ภาษาเนื้อหา',
   'calendar.filter.campaign': 'แคมเปญ',
-  'calendar.filter.applied':
-    '{นับ, พหูพจน์, หนึ่งรายการ {ใช้ตัวกรอง # รายการ} อื่นๆ {ใช้ตัวกรอง # รายการ}}',
+  "calendar.filter.applied": "{count, plural, one {# filter applied} other {# filters applied}}",
   'calendar.drag.instructions': 'ลากโพสต์ไปยังช่องใหม่ หรือเลือกโพสต์แล้วใช้ปุ่มลูกศรเพื่อย้าย',
   'calendar.drag.confirmTitle': 'ย้ายโพสต์นี้?',
   'calendar.drag.confirmBody': 'จาก {from} ถึง {to} ใน {timeZone}',
   'calendar.drag.dstNotice': 'นาฬิกาเปลี่ยนระหว่างเวลาเหล่านี้ใน {timeZone} เวลาใหม่คือ {utc} UTC',
   'calendar.drag.publishedNotice':
     'โพสต์นี้ถูกเผยแพร่แล้ว การย้ายจะเปลี่ยนเฉพาะบันทึกในเครื่องเท่านั้น การเผยแพร่อีกครั้งเป็นการดำเนินการแยกต่างหาก',
-  'calendar.drag.conflictNotice':
-    '{account} มี {count, plural, หนึ่ง {# โพสต์} อื่น ๆ {# โพสต์}} แล้วภายในหนึ่งชั่วโมงของเวลาใหม่',
+  "calendar.drag.conflictNotice": "{account} already has {count, plural, one {# post} other {# posts}} within an hour of the new time.",
   'calendar.queue.title': 'คิว',
   'calendar.queue.upcoming': 'ที่กำลังจะมีขึ้น',
   'calendar.queue.needsApproval': 'รอการอนุมัติ',
@@ -41,7 +39,7 @@ export const calendarMessages = {
   'calendar.queue.nextSlot': 'ช่องฟรีถัดไปคือ {time}',
   'calendar.post.publishesAt': 'เผยแพร่ {time} ใน {timeZone}',
   'calendar.post.publishedAt': 'เผยแพร่แล้ว {time}',
-  'calendar.post.targetCount': '{นับ พหูพจน์ หนึ่ง {# บัญชี} อื่นๆ {# บัญชี}}',
+  "calendar.post.targetCount": "{count, plural, one {# account} other {# accounts}}",
   'calendar.post.mediaType.text': 'ข้อความ',
   'calendar.post.mediaType.image': 'รูปภาพ',
   'calendar.post.mediaType.carousel': 'ม้าหมุน',
@@ -64,8 +62,7 @@ export const calendarMessages = {
     'โพสต์หลักเผยแพร่แล้ว แต่รายการติดตามผลสำหรับ {account} ล้มเหลว',
   'actionCenter.item.analyticsStale': 'การวิเคราะห์สำหรับ {account} ยังไม่ได้อัปเดตตั้งแต่ {date}',
   'actionCenter.item.rssStalled': 'ฟีด {name} ไม่ได้ส่งคืนรายการที่ถูกต้องตั้งแต่ {date}',
-  'actionCenter.item.webhookFailing':
-    'การส่งมอบไปยัง {endpoint} ล้มเหลว {count, plural, one {# time} other {# times}} ติดต่อกัน',
+  "actionCenter.item.webhookFailing": "Deliveries to {endpoint} have failed {count, plural, one {# time} other {# times}} in a row.",
   'actionCenter.item.usageBalance':
     'การดำเนินการแบบคิดค่าบริการตามปริมาณข้อมูลสำหรับ {provider} จำเป็นต้องมียอดคงเหลือการใช้งานก่อนจึงจะสามารถทำงานได้',
   'approval.title': 'การอนุมัติ',

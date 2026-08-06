@@ -65,10 +65,8 @@ export const navMessages = {
   'shell.brand.label': 'Brand',
   'shell.brand.all': 'ทุกยี่ห้อ',
   'shell.timeZone.label': 'เวลาที่แสดงใน {timeZone}',
-  'shell.notifications.count':
-    '{count, plural, =0 {ไม่มีการแจ้งเตือนใหม่} หนึ่งรายการ {# การแจ้งเตือนใหม่} other {# การแจ้งเตือนใหม่}}',
-  'shell.actionCenter.count':
-    '{count, plural, =0 {ไม่มีอะไรต้องการความสนใจ} หนึ่งรายการ {# รายการต้องการความสนใจ} อื่นๆ {# รายการต้องการความสนใจ}}',
+  "shell.notifications.count": "{count, plural, =0 {No new notifications} one {# new notification} other {# new notifications}}",
+  "shell.actionCenter.count": "{count, plural, =0 {Nothing needs attention} one {# item needs attention} other {# items need attention}}",
   'shell.feedback.open': 'ส่งคำติชม',
   'shell.feedback.correlationId': 'ข้อมูลอ้างอิงการวินิจฉัย: {correlationId}',
   'shell.signedInAs': 'ลงชื่อเข้าใช้เป็น {email}',

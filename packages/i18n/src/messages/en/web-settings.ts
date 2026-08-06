@@ -303,6 +303,7 @@ export const webSettingsMessages = {
   'settings.ui.referral.description':
     'Share Relay with a disclosed link. Commission is never conditional on a positive review.',
   'settings.ui.referral.linkLabel': 'Your referral link',
+  'settings.ui.referral.linkCopied': 'Copied',
   'settings.ui.referral.tableCaption': 'Attributed signups and their commission state',
   'settings.ui.referral.column.signup': 'Signup',
   'settings.ui.referral.column.date': 'Date',

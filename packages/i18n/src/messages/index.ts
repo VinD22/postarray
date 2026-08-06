@@ -42,6 +42,14 @@ export const CATALOGS: Readonly<Record<string, CatalogLoader>> = {
   ar: async () => (await import('./ar/index')).ar,
   he: async () => (await import('./he/index')).he,
   hi: async () => (await import('./hi/index')).hi,
+  id: async () => (await import('./id/index')).id,
+  vi: async () => (await import('./vi/index')).vi,
+  th: async () => (await import('./th/index')).th,
+  fil: async () => (await import('./fil/index')).fil,
+  'zh-Hans': async () => (await import('./zh-Hans/index')).zhHans,
+  'zh-Hant': async () => (await import('./zh-Hant/index')).zhHant,
+  ja: async () => (await import('./ja/index')).ja,
+  ko: async () => (await import('./ko/index')).ko,
 };
 
 /** Load a catalog by tag. Unknown or untranslated tags resolve to English. */

@@ -21,8 +21,7 @@ export const stateMessages = {
   'state.published.label': 'เผยแพร่แล้ว',
   'state.published.description': 'ถ่ายทอดสดบน {provider} ตั้งแต่ {time}.',
   'state.partially_published.label': 'เผยแพร่แล้วบางส่วน',
-  'state.partially_published.description':
-    '{เผยแพร่แล้ว พหูพจน์ หนึ่งรายการ {# เป้าหมายที่เผยแพร่} อื่นๆ {# เป้าหมายที่เผยแพร่}} {ล้มเหลว พหูพจน์ หนึ่งรายการ {# ล้มเหลว} อื่นๆ {# ล้มเหลว}} โพสต์ที่เผยแพร่นั้นแสดงสดและไม่ได้ถูกย้อนกลับ',
+  "state.partially_published.description": "{published, plural, one {# target published} other {# targets published}}, {failed, plural, one {# failed} other {# failed}}. The published posts are live and were not rolled back.",
   'state.action_required.label': 'จำเป็นต้องดำเนินการ',
   'state.action_required.description': 'สิ่งนี้ไม่สามารถดำเนินต่อไปได้จนกว่าคุณจะทำอะไรบางอย่าง',
   'state.retry_scheduled.label': 'ลองกำหนดเวลาอีกครั้ง',
@@ -53,7 +52,6 @@ export const stateMessages = {
   'state.approval.expired.description': 'คำขอนี้หมดอายุเมื่อ {date} โดยไม่มีการตัดสินใจ',
   'state.approval.withdrawn.label': 'ถอนออกแล้ว',
   'state.approval.withdrawn.description': 'ผู้เขียนถอนคำขอนี้เมื่อ {date}',
-  'state.summary.targets':
-    '{พร้อม พหูพจน์ หนึ่งรายการ {# เป้าหมายพร้อมแล้ว} อื่น ๆ {# เป้าหมายพร้อมแล้ว}} {บล็อกแล้ว พหูพจน์ =0 {ไม่มีถูกบล็อก} หนึ่งรายการ {# ถูกบล็อก} อื่น ๆ {# ถูกบล็อก}}',
+  "state.summary.targets": "{ready, plural, one {# target ready} other {# targets ready}}, {blocked, plural, =0 {none blocked} one {# blocked} other {# blocked}}",
   'state.changedAt': 'เปลี่ยนแล้ว {relativeTime}',
 } as const;

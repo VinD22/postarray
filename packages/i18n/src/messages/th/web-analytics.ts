@@ -17,8 +17,7 @@ export const webAnalyticsMessages = {
   'analytics.filter.format': 'รูปแบบเนื้อหา',
   'analytics.filter.allFormats': 'ทุกรูปแบบ',
   'analytics.filter.comparePrevious': 'เปรียบเทียบกับช่วงก่อนหน้า',
-  'analytics.filter.applied':
-    '{count, plural, =0 {ไม่มีตัวกรอง} หนึ่งรายการ {# filter} อื่นๆ {# ตัวกรอง}} ใช้แล้ว {results, plural, =0 {ไม่มีโพสต์ที่ตรงกัน} หนึ่ง {# โพสต์ที่ตรงกัน} อื่นๆ {# โพสต์ที่ตรงกัน}}',
+  "analytics.filter.applied": "{count, plural, =0 {No filters} one {# filter} other {# filters}} applied. {results, plural, =0 {No posts match} one {# post matches} other {# posts match}}.",
   'analytics.rankMetric.label': 'จัดอันดับกระทู้โดย',
   'analytics.rankMetric.help':
     'ไม่มีคะแนนรวมใน Relay เลือกหนึ่งหน่วยเมตริกที่มีคำจำกัดความที่คุณเชื่อถือ และตารางจะเรียงลำดับตามหน่วยเมตริกนั้นเพียงอย่างเดียว',
@@ -61,15 +60,12 @@ export const webAnalyticsMessages = {
   'analytics.delta.level': 'สอดคล้องกับบรรทัดฐาน',
   'analytics.delta.unavailable': 'ไม่มีการเปรียบเทียบ',
   'analytics.evidence.title': 'การเปรียบเทียบนี้เกิดขึ้นได้อย่างไร',
-  'analytics.evidence.baseline':
-    'เส้นฐาน: ค่ามัธยฐาน {metric} ของ {count, plural, one {# comparison post} other {# comparison post}} ก่อนหน้าใน {account}',
+  "analytics.evidence.baseline": "Baseline: the median {metric} of the previous {count, plural, one {# comparable post} other {# comparable posts}} on {account}.",
   'analytics.evidence.comparableBy':
     'การเปรียบเทียบหมายถึงบัญชีเดียวกัน รูปแบบเนื้อหาเดียวกัน ({format}) และเวลาเผยแพร่ภายในช่วงเวลาเดียวกัน',
   'analytics.evidence.postsUsed': 'กระทู้ที่ใช้เป็นหลัก',
-  'analytics.evidence.excluded':
-    '{count, plural, =0 {ไม่มีการยกเว้นโพสต์} หนึ่งรายการ {# โพสต์ถูกยกเว้น} อื่นๆ {# โพสต์ถูกยกเว้น}} เนื่องจากเมตริกไม่พร้อมใช้งานสำหรับพวกเขา',
-  'analytics.evidence.smallSample':
-    'ด้วย {count, พหูพจน์, หนึ่ง {# โพสต์} other {# โพสต์}} ในบรรทัดฐาน การโพสต์ที่ผิดปกติเพียงรายการเดียวจะย้ายค่ามัธยฐานไปไกล ถือว่านี่เป็นสัญญาณให้ทดสอบอีกครั้ง ไม่ใช่เป็นผล',
+  "analytics.evidence.excluded": "{count, plural, =0 {No posts were excluded} one {# post was excluded} other {# posts were excluded}} because the metric was unavailable for them.",
+  "analytics.evidence.smallSample": "With {count, plural, one {# post} other {# posts}} in the baseline, a single unusual post moves the median a long way. Treat this as a signal to test again, not as a result.",
   'analytics.evidence.confounders': 'สิ่งนี้ไม่ได้คำนึงถึงอะไร',
   'analytics.evidence.confounder.time': 'เวลาในการเผยแพร่ของวันแตกต่างกันไปตามโพสต์พื้นฐาน',
   'analytics.evidence.confounder.format':
@@ -95,8 +91,7 @@ export const webAnalyticsMessages = {
   'analytics.definition.aggregation.delta': 'การเปลี่ยนแปลงระหว่างการสังเกตครั้งแรกและครั้งสุดท้าย',
   'analytics.definition.aggregation.none': 'รายงานเป็นข้อสังเกตเดียว',
   'analytics.definition.denominator.none': 'นี่คือการนับไม่ใช่อัตรา',
-  'analytics.definition.historyWindow':
-    '{provider} เก็บ {days, พหูพจน์, อีก {# วัน} อีก {# วัน}} ของประวัติสำหรับฟิลด์นี้',
+  "analytics.definition.historyWindow": "{provider} keeps {days, plural, one {# day} other {# days}} of history for this field.",
   'analytics.definition.historyWindowNone': '{provider} ไม่ได้ระบุขีดจำกัดประวัติสำหรับฟิลด์นี้',
   'analytics.definition.term.providerField': 'ฟิลด์ผู้ให้บริการ',
   'analytics.definition.term.unit': 'หน่วย',
@@ -142,8 +137,7 @@ export const webAnalyticsMessages = {
   'analytics.accounts.reason.expired':
     'การเข้าถึงหมดอายุ ดังนั้นจึงไม่มีการรวบรวมตัวชี้วัดตั้งแต่ {date}',
   'analytics.accounts.reason.stale': 'การซิงค์สำเร็จครั้งล่าสุดคือ {relativeTime}',
-  'analytics.accounts.reason.syncFailing':
-    '{count, พหูพจน์, หนึ่ง {ความพยายามในการซิงค์ # ครั้ง} และอีก {ความพยายามในการซิงค์ # ครั้ง}} ล้มเหลวติดต่อกัน เหตุผลที่บันทึกไว้คือ {reason}',
+  "analytics.accounts.reason.syncFailing": "{count, plural, one {# sync attempt} other {# sync attempts}} failed in a row. The reason recorded was {reason}.",
   'analytics.accounts.reason.noPosts': 'ไม่มีการเผยแพร่ไปยังบัญชีนี้ในช่วงที่เลือก',
   'analytics.observations.title': 'ข้อสังเกต',
   'analytics.observations.intro':
@@ -153,12 +147,10 @@ export const webAnalyticsMessages = {
   'analytics.observations.citedPosts': 'ขึ้นอยู่กับ',
   'analytics.observations.citedPeriod': 'ระยะเวลา: {start} ถึง {end}',
   'analytics.observations.nextTestTitle': 'การทดสอบที่คุณสามารถดำเนินการต่อไป',
-  'analytics.observations.nextTestBody':
-    'เผยแพร่ {count, plural, one {# more post} other {# more post}} บน {account} เปลี่ยนเพียง {variable} จากนั้นเปรียบเทียบเมตริกเดียวกัน แท็กเป็นการทดลองก่อนเผยแพร่ จึงมีการวางแผนการเปรียบเทียบแทนที่จะพบในภายหลัง',
+  "analytics.observations.nextTestBody": "Publish {count, plural, one {# more post} other {# more posts}} on {account} changing only {variable}, then compare the same metric. Tag it as an experiment before publishing so the comparison is planned rather than found afterwards.",
   'analytics.observations.tagFirst': 'แท็กการทดสอบ',
   'analytics.chart.title': '{metric} เมื่อเวลาผ่านไป',
-  'analytics.chart.summary':
-    '{metric} บน {account}, {count, พหูพจน์, หนึ่ง {# point} อื่นๆ {# point}} จาก {start} ถึง {end}',
+  "analytics.chart.summary": "{metric} on {account}, {count, plural, one {# point} other {# points}} from {start} to {end}.",
   'analytics.chart.showTable': 'แสดงเป็นตาราง',
   'analytics.chart.hideTable': 'ซ่อนโต๊ะ',
   'analytics.chart.tableCaption': 'ชุดเดียวกับตาราง',
@@ -186,8 +178,7 @@ export const webAnalyticsMessages = {
   'analytics.experiment.accounts': 'รวมบัญชีแล้ว',
   'analytics.experiment.windowHelp':
     'ตัวชี้วัดจะเคลื่อนไหวต่อไปหลังจากที่โพสต์เผยแพร่แล้ว แก้ไขหน้าต่างทันทีเพื่อไม่ให้มีการเปรียบเทียบให้เหมาะกับตัวแปรหนึ่งในขณะนั้น',
-  'analytics.experiment.windowDays':
-    'วัดสำหรับ {count, พหูพจน์, หนึ่ง {# วัน} อื่นๆ {# วัน}} หลังจากแต่ละโพสต์เผยแพร่',
+  "analytics.experiment.windowDays": "Measure for {count, plural, one {# day} other {# days}} after each post publishes",
   'analytics.experiment.minSample': 'โพสต์ขั้นต่ำต่อตัวแปร',
   'analytics.experiment.minSampleHelp':
     'ด้านล่างจำนวนนี้ ผลลัพธ์จะแสดงว่าไม่สามารถสรุปได้แทนที่จะเป็นผู้ชนะ',
@@ -198,10 +189,8 @@ export const webAnalyticsMessages = {
     '{variant} บันทึก {percent} มากกว่า {metric} มากกว่า {otherVariant}',
   'analytics.experiment.result.noDifference':
     'ตัวแปรทั้งสองอยู่ภายใน {percent} จากกันใน {metric} ซึ่งอยู่ในช่วงโพสต์เหล่านี้แตกต่างกันไป',
-  'analytics.experiment.result.association':
-    'นี่คือการเชื่อมโยงที่วัดจาก {count, พหูพจน์, หนึ่ง {# โพสต์} อื่นๆ {# โพสต์}} ไม่ได้พิสูจน์ว่าการเปลี่ยนแปลงทำให้เกิดความแตกต่าง',
-  'analytics.experiment.result.unavailable':
-    '{metric} ไม่พร้อมใช้งานสำหรับ {count, plural, หนึ่ง {# โพสต์} อื่นๆ {# โพสต์}} ในการทดสอบนี้ ดังนั้นโพสต์เหล่านั้นจะถูกยกเว้นแทนที่จะนับเป็นศูนย์',
+  "analytics.experiment.result.association": "This is an association measured on {count, plural, one {# post} other {# posts}}. It does not prove that the change caused the difference.",
+  "analytics.experiment.result.unavailable": "{metric} was unavailable for {count, plural, one {# post} other {# posts}} in this experiment, so those posts are excluded rather than counted as zero.",
   'analytics.experiment.result.title': 'ผลลัพธ์',
   'analytics.experiment.completeNow': 'ปิดการทดลองนี้',
   'analytics.experiment.completeConfirm': 'ปิดการรวบรวมหยุด โพสต์ยังคงเผยแพร่และตัวเลขยังคงอยู่',
@@ -242,8 +231,7 @@ export const webAnalyticsMessages = {
   'analytics.links.table.caption': 'ลิงก์ที่ติดตามในพื้นที่ทำงานนี้และจำนวนการคลิกของบุคคลที่หนึ่ง',
   'analytics.links.campaign': 'แคมเปญ',
   'analytics.links.created': 'สร้างแล้ว',
-  'analytics.links.usedIn':
-    '{count, plural, =0 {ยังไม่ได้ใช้ในโพสต์} หนึ่ง {ใช้ใน # โพสต์} other {ใช้ใน # โพสต์}}',
+  "analytics.links.usedIn": "{count, plural, =0 {Not used in a post yet} one {Used in # post} other {Used in # posts}}",
   'analytics.links.state.active': 'ใช้งานอยู่',
   'analytics.links.state.expired': 'หมดอายุ {date}',
   'analytics.links.state.disabled': 'ปิดการใช้งาน',
@@ -285,8 +273,7 @@ export const webAnalyticsMessages = {
   'analytics.links.measurementLabel': 'การวัดการเปลี่ยนเส้นทางจากบุคคลที่หนึ่ง',
   'analytics.links.measurementExplained':
     'Relay นับคำขอเมื่อมีการขอบริการเปลี่ยนเส้นทางสำหรับ URL นี้ การคลิกที่กรองข้อมูลที่ซ้ำกันจะลบคำขอซ้ำจากผู้เข้าชมรายเดิมภายในหน้าต่างสั้นๆ และคำขอที่ตรงกับรูปแบบการรวบรวมข้อมูลที่รู้จักจะถูกแยกออกแทนที่จะถูกลบออก',
-  'analytics.links.botsNote':
-    '{count, พหูพจน์, หนึ่ง {# คำขอ} อื่น ๆ {# คำขอ}} ถูกจัดประเภทเป็นแบบอัตโนมัติและแยกออกจากการนับที่กรองออกแล้ว',
+  "analytics.links.botsNote": "{count, plural, one {# request} other {# requests}} were classified as automated and are excluded from the deduplicated count.",
   'analytics.links.series.title': 'คำขอและการคลิกที่กรองข้อมูลที่ซ้ำกันเมื่อเวลาผ่านไป',
   'analytics.links.series.requests': 'คำขอทั้งหมด',
   'analytics.links.series.clicks': 'การคลิกที่ซ้ำซ้อน',
@@ -333,8 +320,7 @@ export const webAnalyticsMessages = {
   'automation.rules.neverRun': 'ยังไม่วิ่ง.',
   'automation.rules.emptyExample':
     'ตัวอย่าง: เมื่อมีรายการใหม่ปรากฏในฟีดบล็อกของ Acme หากเป็นภาษาอังกฤษ ให้สร้างแบบร่างจากเทมเพลตประกาศของบล็อกและขออนุมัติ',
-  'automation.rules.summaryAccounts':
-    '{count, plural, =0 {ไม่มีบัญชีที่เลือก} หนึ่ง {# บัญชี} อื่นๆ {# บัญชี}}',
+  "automation.rules.summaryAccounts": "{count, plural, =0 {No accounts selected} one {# account} other {# accounts}}",
   'automation.rules.openRule': 'เปิด {name}',
   'automation.rules.duplicateRule': 'ซ้ำกัน {name}',
   'automation.rules.deleteTitle': 'ลบ {name} ใช่ไหม',
@@ -400,7 +386,7 @@ export const webAnalyticsMessages = {
   'automation.editor.endLabel': 'เมื่อกฎนี้สิ้นสุดลง',
   'automation.editor.end.manual': 'ฉันปิดสิ่งนี้',
   'automation.editor.end.date': 'วันที่ฉันเลือก',
-  'automation.editor.end.count': 'มันวิ่งไปแล้ว {นับ พหูพจน์ หนึ่งครั้ง {# ครั้ง} อื่นๆ {# ครั้ง}}',
+  "automation.editor.end.count": "it has run {count, plural, one {# time} other {# times}}",
   'automation.editor.end.dateValue': 'หยุดเลย',
   'automation.editor.end.countValue': 'หยุดหลังจากวิ่งมาหลายรอบแล้ว',
   'automation.editor.parameterFor': 'การตั้งค่าสำหรับ {label}',
@@ -421,8 +407,7 @@ export const webAnalyticsMessages = {
   'automation.editor.error.noTrigger': 'เลือกทริกเกอร์ก่อนบันทึก',
   'automation.editor.error.noAccounts': 'เลือกอย่างน้อยหนึ่งบัญชีที่กฎนี้อาจดำเนินการ',
   'automation.editor.error.missingParameter': '{label} ต้องการค่า',
-  'automation.editor.error.summary':
-    '{count, พหูพจน์, one {# สิ่งต้องการความสนใจของคุณ} other {# สิ่งต้องการความสนใจของคุณ}} ก่อนที่จะสามารถบันทึกกฎนี้ได้',
+  "automation.editor.error.summary": "{count, plural, one {# thing needs your attention} other {# things need your attention}} before this rule can be saved.",
   'automation.picker.triggerTitle': 'สิ่งที่เริ่มต้นกฎนี้',
   'automation.picker.conditionTitle': 'เพิ่มเงื่อนไข',
   'automation.picker.actionTitle': 'เพิ่มการกระทำ',
@@ -435,8 +420,7 @@ export const webAnalyticsMessages = {
   'automation.picker.groupSchedule': 'เวลา',
   'automation.picker.groupExternal': 'เหตุการณ์ภายนอก',
   'automation.picker.groupMeasurement': 'การวัด',
-  'automation.picker.hiddenForProvider':
-    '{count, plural, one {# action is} other {# actions are}} ไม่อยู่ในรายการเนื่องจากบัญชีที่เลือกไม่สามารถดำเนินการได้',
+  "automation.picker.hiddenForProvider": "{count, plural, one {# action is} other {# actions are}} not listed because the selected accounts cannot perform them.",
   'automation.picker.hiddenDetail': '{action} ไม่พร้อมใช้งานสำหรับ {provider} {reason}',
   'automation.picker.consequential': 'สร้างบางสิ่งบางอย่างบนแพลตฟอร์ม',
   'automation.picker.internalOnly': 'อยู่ภายใน Relay',
@@ -480,8 +464,7 @@ export const webAnalyticsMessages = {
   'automation.preflight.intro': 'ทุกสิ่งที่กฎนี้สามารถทำได้ ก่อนที่จะสามารถทำสิ่งใดๆ ได้',
   'automation.preflight.accountsLabel': 'บัญชีที่สามารถดำเนินการได้',
   'automation.preflight.maxActionsLabel': 'การกระทำภายนอกส่วนใหญ่ต่อการวิ่ง',
-  'automation.preflight.maxActionsPeriod':
-    'มากที่สุด {count, พหูพจน์, หนึ่ง {# การกระทำภายนอก} อีก {# การกระทำภายนอก}} ใน {period}',
+  "automation.preflight.maxActionsPeriod": "At most {count, plural, one {# external action} other {# external actions}} in {period}.",
   'automation.preflight.approvalLabel': 'การอนุมัติ',
   'automation.preflight.approvalNone':
     'ไม่มีการดำเนินการใดในกฎนี้ที่สร้างสิ่งใดบนแพลตฟอร์ม ดังนั้นจึงไม่มีการอนุมัติ',
@@ -496,8 +479,7 @@ export const webAnalyticsMessages = {
   'automation.preflight.cadenceBody':
     'การตรวจสอบซ้ำและจังหวะจะทำงานก่อนทุกการกระทำ การดำเนินการที่จะเกินงบประมาณจังหวะสำหรับบัญชีจะถูกข้ามและบันทึก ไม่ใช่อยู่ในคิว',
   'automation.preflight.failureLabel': 'หากการวิ่งล้มเหลว',
-  'automation.preflight.failure.pauseAfter':
-    'กฎหยุดชั่วคราวหลังจาก {count, พหูพจน์, หนึ่ง {# ความล้มเหลวติดต่อกัน} อื่น ๆ {# ความล้มเหลวติดต่อกัน}} และบันทึกรายการการดำเนินการ',
+  "automation.preflight.failure.pauseAfter": "The rule pauses after {count, plural, one {# consecutive failure} other {# consecutive failures}} and files an action item.",
   'automation.preflight.failure.continue':
     'กฎยังคงทำงานต่อไปและความล้มเหลวแต่ละรายการจะถูกบันทึกไว้ในบันทึกการทำงาน',
   'automation.preflight.exampleLabel': 'ตัวอย่างการรัน',
@@ -508,8 +490,7 @@ export const webAnalyticsMessages = {
   'automation.preflight.activateConfirmTitle': 'เปิด {name} ไหม',
   'automation.preflight.activateConfirmBody':
     'จากนี้ไปกฎนี้จะมีผลโดยไม่ขอให้คุณทราบก่อน ภายในขีดจำกัดที่ระบุไว้ข้างต้น',
-  'automation.preflight.blocked':
-    'กฎนี้ยังไม่สามารถเปิดได้ {count, plural, one {# item} other {# items}} ข้างต้นจำเป็นต้องได้รับการตัดสินใจ',
+  "automation.preflight.blocked": "This rule cannot be turned on yet. {count, plural, one {# item} other {# items}} above needs a decision.",
   'automation.test.title': 'กิจกรรมทดสอบ',
   'automation.test.body':
     'การทดสอบจะประเมินทั้งประโยคและแสดงให้เห็นว่าประโยคนั้นจะทำอะไร ไม่เคยเผยแพร่ ไม่เคยโพสต์ความคิดเห็น และไม่เคยส่ง webhook ไปยังปลายทางจริง',
@@ -533,8 +514,7 @@ export const webAnalyticsMessages = {
   'automation.runs.outcome.skipped': 'ข้ามไป',
   'automation.runs.outcome.failed': 'ล้มเหลว',
   'automation.runs.outcome.testMode': 'โหมดทดสอบ',
-  'automation.runs.actionCount':
-    '{count, พหูพจน์, =0 {ไม่มีการกระทำภายนอก} หนึ่งรายการ {# การกระทำภายนอก} อื่นๆ {# การกระทำภายนอก}}',
+  "automation.runs.actionCount": "{count, plural, =0 {No external action} one {# external action} other {# external actions}}",
   'automation.runs.skippedReason': 'ข้ามเพราะ {reason}',
   'automation.runs.openDetail': 'เปิดรันตั้งแต่{time}',
   'automation.runs.createdItems': 'สร้างแล้ว',
@@ -594,8 +574,7 @@ export const webAnalyticsMessages = {
   'automation.rss.validateFailedReason': 'สิ่งที่เราได้รับกลับมา: {reason}',
   'automation.rss.validateBlocked': 'ที่อยู่นั้นชี้ไปที่เครือข่ายส่วนตัว ดังนั้นจึงไม่ถูกดึงข้อมูล',
   'automation.rss.previewTitle': 'ดูตัวอย่างฟีด',
-  'automation.rss.previewMeta':
-    '{title}. {count, plural, one {# item} other {# items}} ถูกส่งคืน, ใหม่ที่สุดก่อน.',
+  "automation.rss.previewMeta": "{title}. {count, plural, one {# item} other {# items}} returned, newest first.",
   'automation.rss.previewItemPublished': 'เผยแพร่แล้ว {dateTime}',
   'automation.rss.previewNoImage': 'ไม่มีรูปภาพในรายการนี้',
   'automation.rss.previewImageAlt': 'รูปภาพจากรายการฟีด {title}',
@@ -637,13 +616,10 @@ export const webAnalyticsMessages = {
   'automation.rss.healthTitle': 'ให้อาหารสุขภาพ',
   'automation.rss.healthOk': 'ทำงาน',
   'automation.rss.healthStalled': 'ไม่มีของใหม่ {duration}',
-  'automation.rss.healthFailing':
-    '{count, พหูพจน์, {check} อื่นๆ อีก {# checks}} ครั้งล่าสุดล้มเหลว',
+  "automation.rss.healthFailing": "The last {count, plural, one {check} other {# checks}} failed",
   'automation.rss.health.nextPoll': 'ตรวจสอบครั้งต่อไป {relativeTime}',
-  'automation.rss.health.itemsProcessed':
-    '{count, plural, =0 {ยังไม่มีรายการประมวลผลเลย} หนึ่งรายการ {# รายการประมวลผล} other {# รายการประมวลผล}}',
-  'automation.rss.health.duplicatesSkipped':
-    '{count, plural, =0 {ไม่มีการข้ามรายการที่ซ้ำกัน} หนึ่งรายการ {# ซ้ำข้าม} อื่น ๆ {# ซ้ำข้าม}}',
+  "automation.rss.health.itemsProcessed": "{count, plural, =0 {No items processed yet} one {# item processed} other {# items processed}}",
+  "automation.rss.health.duplicatesSkipped": "{count, plural, =0 {No duplicates skipped} one {# duplicate skipped} other {# duplicates skipped}}",
   'automation.rss.health.lastPollLabel': 'ตรวจสอบครั้งล่าสุด',
   'automation.rss.health.lastItemLabel': 'รายการใหม่ล่าสุดในฟีด',
   'automation.rss.health.lastPostLabel': 'ร่างหรือโพสต์ล่าสุดที่สร้างขึ้น',

@@ -17,7 +17,7 @@ export const settingsMessages = {
   'settings.members.inviteEmail': 'ที่อยู่อีเมล',
   'settings.members.inviteSent': 'ส่งคำเชิญไปที่ {email}',
   'settings.members.pending': 'เชิญแล้วยังไม่ตอบรับ',
-  'settings.members.count': '{นับ พหูพจน์ หนึ่ง {# สมาชิก} อื่น ๆ {# สมาชิก}}',
+  "settings.members.count": "{count, plural, one {# member} other {# members}}",
   'settings.members.removeConfirm':
     'ลบ {name} ออกจากพื้นที่ทำงานนี้หรือไม่ การกระทำที่ผ่านมาจะยังคงอยู่ในบันทึกการตรวจสอบ',
   'settings.role.owner.label': 'เจ้าของ',

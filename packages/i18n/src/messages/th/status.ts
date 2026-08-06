@@ -80,7 +80,6 @@ export const statusMessages = {
   'confirm.cancelScheduled.body':
     'ก็จะไม่เผยแพร่ ฉบับร่างจะอยู่ที่นี่เพื่อให้คุณสามารถกำหนดเวลาได้อีกครั้ง',
   'confirm.publishNow.title': 'เผยแพร่ตอนนี้?',
-  'confirm.publishNow.body':
-    '{นับ พหูพจน์ หนึ่ง {เผยแพร่ไปยัง # บัญชีทันที} other {เผยแพร่ไปยัง # บัญชีทันที}} ไม่สามารถเรียกคืนได้จาก Relay',
+  "confirm.publishNow.body": "{count, plural, one {This publishes to # account immediately} other {This publishes to # accounts immediately}}. It cannot be recalled from Relay.",
   'confirm.typeToConfirm': 'พิมพ์ {word} เพื่อยืนยัน',
 } as const;

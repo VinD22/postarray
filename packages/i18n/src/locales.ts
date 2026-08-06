@@ -336,7 +336,7 @@ const LOCALE_METADATA = [
     defaultDateFormat: 'd MMM y',
     weekStartsOn: 0,
     hourCycle: 'h23',
-    status: 'planned',
+    status: 'active',
   },
   {
     bcp47: 'ms',
@@ -360,7 +360,7 @@ const LOCALE_METADATA = [
     defaultDateFormat: 'd MMM, y',
     weekStartsOn: 1,
     hourCycle: 'h23',
-    status: 'planned',
+    status: 'active',
   },
   {
     bcp47: 'th',
@@ -372,7 +372,7 @@ const LOCALE_METADATA = [
     defaultDateFormat: 'd MMM y',
     weekStartsOn: 0,
     hourCycle: 'h23',
-    status: 'planned',
+    status: 'active',
   },
   {
     bcp47: 'fil',
@@ -384,7 +384,7 @@ const LOCALE_METADATA = [
     defaultDateFormat: 'MMM d, y',
     weekStartsOn: 0,
     hourCycle: 'h12',
-    status: 'planned',
+    status: 'active',
   },
   {
     bcp47: 'zh-Hans',
@@ -396,7 +396,7 @@ const LOCALE_METADATA = [
     defaultDateFormat: 'y/M/d',
     weekStartsOn: 0,
     hourCycle: 'h12',
-    status: 'planned',
+    status: 'active',
   },
   {
     bcp47: 'zh-Hant',
@@ -408,7 +408,7 @@ const LOCALE_METADATA = [
     defaultDateFormat: 'y/M/d',
     weekStartsOn: 0,
     hourCycle: 'h12',
-    status: 'planned',
+    status: 'active',
   },
   {
     bcp47: 'ja',
@@ -420,7 +420,7 @@ const LOCALE_METADATA = [
     defaultDateFormat: 'y/M/d',
     weekStartsOn: 0,
     hourCycle: 'h23',
-    status: 'planned',
+    status: 'active',
   },
   {
     bcp47: 'ko',
@@ -432,7 +432,7 @@ const LOCALE_METADATA = [
     defaultDateFormat: 'y. M. d.',
     weekStartsOn: 0,
     hourCycle: 'h12',
-    status: 'planned',
+    status: 'active',
   },
 ] as const satisfies readonly (LocaleFormatting & { readonly status: LocaleStatus })[];
 

@@ -55,6 +55,12 @@ export const BETA_ENGLISH_FALLBACK_KEYS = [
   'web.agencies.v2.membersSticker',
   'web.developers.v2.terminal.title',
   'web.notFound.v2.line',
+  // WP-11 automation + settings (loud system pass): new strings, English
+  // only until translated.
+  'settings.ui.referral.linkCopied',
+  // WP-9 connections/receipts/library/action center (loud system pass): new
+  // strings, English only until translated.
+  'mediaLib.alt.nudge',
 ] as const;
 
 export function isBetaEnglishFallbackKey(key: string): boolean {

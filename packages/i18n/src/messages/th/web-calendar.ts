@@ -46,14 +46,12 @@ export const webCalendarMessages = {
   'web.calendar.bucket.draft': 'ร่างและการอนุมัติ',
   'web.calendar.bucket.published': 'เผยแพร่แล้ว',
   'web.calendar.bucket.failed': 'ต้องการความสนใจ',
-  'web.calendar.filter.summary':
-    '{count, plural, =0 {ไม่มีตัวกรอง} หนึ่งรายการ {# filter} other {# filter}}, {results, plural, =0 {ไม่มีโพสต์} หนึ่ง {# โพสต์} other {# โพสต์}}',
+  "web.calendar.filter.summary": "{count, plural, =0 {No filters} one {# filter} other {# filters}}, {results, plural, =0 {no posts} one {# post} other {# posts}}",
   'web.calendar.grid.label': 'ตารางกำหนดการสำหรับ {range}',
   'web.calendar.grid.hourLabel': '{time}',
   'web.calendar.grid.emptySlot': 'ไม่มีอะไรที่ {time} บน {date}',
   'web.calendar.grid.dayColumn': '{weekday} {day}',
-  'web.calendar.grid.overflow':
-    '{นับ พหูพจน์ หนึ่ง {แสดง # โพสต์เพิ่มเติม} other {แสดง # โพสต์เพิ่มเติม}}',
+  "web.calendar.grid.overflow": "{count, plural, one {Show # more post} other {Show # more posts}}",
   'web.calendar.month.label': 'ตารางเดือนสำหรับ {month}',
   'web.calendar.agenda.label': 'วาระการประชุมสำหรับ {range}',
   'web.calendar.agenda.dayHeading': '{weekday}, {date}',
@@ -95,8 +93,7 @@ export const webCalendarMessages = {
   'web.calendar.reschedule.dstBody':
     'ค่าชดเชยใน {timeZone} คือ {fromOffset} ในเวลาเดิม และ {toOffset} ในเวลาใหม่ ชั่วโมงท้องถิ่นที่คุณเลือกจะถูกเก็บไว้ ดังนั้น UTC จะเปลี่ยนทันที',
   'web.calendar.reschedule.conflictTitle': 'กระทู้อื่นก็ใกล้เวลานี้แล้ว',
-  'web.calendar.reschedule.conflictBody':
-    '{account} มี {count, พหูพจน์, หนึ่ง {# โพสต์} อื่น ๆ {# โพสต์}} ภายใน {window} ของเวลาใหม่',
+  "web.calendar.reschedule.conflictBody": "{account} already has {count, plural, one {# post} other {# posts}} within {window} of the new time.",
   'web.calendar.reschedule.campaignTitle': 'ความขัดแย้งของแคมเปญ',
   'web.calendar.reschedule.campaignBody':
     'แคมเปญ {campaign} เริ่มตั้งแต่ {start} ถึง {end} เวลาใหม่อยู่นอกหน้าต่างนั้น',
@@ -115,8 +112,7 @@ export const webCalendarMessages = {
   'web.calendar.published.optionNewHint':
     'ซึ่งจะสร้างโพสต์ที่สองที่แยกจากกันภายนอก อันที่ {provider} แล้วยังคงออนไลน์อยู่',
   'web.calendar.published.optionLabel': 'อะไรจะเกิดขึ้น',
-  'web.calendar.attention.title':
-    '{นับ พหูพจน์ หนึ่ง {# โพสต์ต้องการการตัดสินใจหรือแก้ไข} อื่นๆ {# โพสต์ต้องการการตัดสินใจหรือแก้ไข}}',
+  "web.calendar.attention.title": "{count, plural, one {# post needs a decision or a fix} other {# posts need a decision or a fix}}",
   'web.calendar.attention.body': 'พวกเขาอยู่ที่นี่และในศูนย์ปฏิบัติการจนกว่าพวกเขาจะได้รับการแก้ไข',
   'web.calendar.attention.open': 'เปิดศูนย์ปฏิบัติการ',
   'web.calendar.attention.showOnly': 'แสดงเฉพาะสิ่งเหล่านี้',
@@ -259,8 +255,7 @@ export const webCalendarMessages = {
   'web.connection.resume.body':
     'โพสต์ตามกำหนดการสำหรับบัญชีนี้จะเริ่มเผยแพร่อีกครั้งตามเวลาที่วางแผนไว้ โพสต์ที่เวลาผ่านไปแล้วจะไม่มีผลย้อนหลัง',
   'web.connection.disconnect.confirmWord': 'ตัดการเชื่อมต่อ',
-  'web.connection.disconnect.consequence.scheduled':
-    '{count, plural, one {# โพสต์ตามกำหนดเวลา} other {# โพสต์ตามกำหนดเวลา}} สำหรับบัญชีนี้จะไม่เผยแพร่',
+  "web.connection.disconnect.consequence.scheduled": "{count, plural, one {# scheduled post} other {# scheduled posts}} for this account will not publish.",
   'web.connection.disconnect.consequence.published':
     'โพสต์ที่เผยแพร่แล้วยังคงอยู่ใน {provider} Relay จะไม่ลบโพสต์เหล่านั้น',
   'web.connection.disconnect.consequence.analytics':
@@ -306,8 +301,7 @@ export const webCalendarMessages = {
   'web.connection.permissions.scopeColumn': 'การอนุญาต',
   'web.connection.permissions.stateColumn': 'รัฐ',
   'web.connection.permissions.purposeColumn': 'Relay ใช้ทำอะไร',
-  'web.connection.permissions.missingWarning':
-    '{count, พหูพจน์, หนึ่งรายการ {# สิทธิ์ขาดหายไป} อื่นๆ {# สิทธิ์ขาดหายไป}} เชื่อมต่อใหม่และยอมรับเพื่อคืนค่าคุณสมบัติด้านล่าง',
+  "web.connection.permissions.missingWarning": "{count, plural, one {# permission is missing} other {# permissions are missing}}. Reconnect and accept it to restore the features below.",
   'web.connection.permissions.snapshot': 'อ่านจาก {provider} {relativeTime}',
   'web.connection.capability.title': 'เมทริกซ์ความสามารถ',
   'web.connection.capability.subtitle':
@@ -332,8 +326,7 @@ export const webCalendarMessages = {
   'web.connection.capability.cellLabel': '{feature} บน {provider}: {state}',
   'web.connection.group.title': 'กลุ่มลูกค้า',
   'web.connection.group.listLabel': 'กลุ่มลูกค้า',
-  'web.connection.group.accountCount':
-    '{count, plural, =0 {ไม่มีบัญชี} หนึ่ง {# บัญชี} อื่นๆ {# บัญชี}}',
+  "web.connection.group.accountCount": "{count, plural, =0 {No accounts} one {# account} other {# accounts}}",
   'web.connection.group.create': 'สร้างกลุ่ม',
   'web.connection.group.nameLabel': 'ชื่อกลุ่ม',
   'web.connection.group.namePlaceholder': 'แอคมีอียู',
@@ -348,7 +341,6 @@ export const webCalendarMessages = {
     'กลุ่มคือลูกค้าหรือแบรนด์ จัดกลุ่มบัญชีเพื่อกรองปฏิทินและการวิเคราะห์ตามลูกค้า',
   'web.connection.incident.title': 'บัญชีนี้ต้องการความสนใจ',
   'web.connection.incident.remediationHeading': 'จะทำอย่างไร',
-  'web.connection.incident.scheduledOnHold':
-    '{count, plural, one {# โพสต์ที่กำหนดเวลาไว้ถูกระงับ} อีก {# โพสต์ที่กำหนดเวลาไว้ถูกระงับ}} สำหรับบัญชีนี้',
+  "web.connection.incident.scheduledOnHold": "{count, plural, one {# scheduled post is on hold} other {# scheduled posts are on hold}} for this account.",
   'web.connection.incident.nothingLost': 'ไม่มีอะไรสูญหายและไม่มีอะไรซ้ำซ้อน',
 } as const;

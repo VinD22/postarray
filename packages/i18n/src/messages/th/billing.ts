@@ -30,8 +30,7 @@ export const billingMessages = {
   'billing.trial.renewal': 'ต่ออายุ {amount} ทุก ๆ {interval} หลังจากนั้น',
   'billing.trial.cancelBefore': 'ยกเลิกในการตั้งค่าก่อนวันที่นี้ และคุณจะไม่ถูกเรียกเก็บเงิน',
   'billing.trial.reminder': 'Polar ส่งอีเมลถึงคุณสามวันก่อนการแปลงรุ่นทดลองใช้',
-  'billing.trial.daysRemaining':
-    '{count, plural, =0 {การทดลองใช้สิ้นสุดวันนี้} หนึ่ง {การทดลอง เหลืออีก # วัน} other {การทดลอง เหลืออีก # วัน}}',
+  "billing.trial.daysRemaining": "{count, plural, =0 {Trial ends today} one {Trial, # day remaining} other {Trial, # days remaining}}",
   'billing.trial.converted': 'รุ่นทดลองใช้ของคุณแปลงเมื่อ {date}',
   'billing.trial.canceled': 'การทดลองใช้ของคุณถูกยกเลิก คุณจะไม่ถูกเรียกเก็บเงิน',
   'billing.trial.abusePrevention':
@@ -77,8 +76,7 @@ export const billingMessages = {
   'billing.usage.periodTotal': '{amount} ใช้ตั้งแต่ {date}',
   'billing.usage.noMediaCredits':
     'ไม่มีเครดิตการสร้างรูปภาพหรือวิดีโอ เนื่องจาก Relay ไม่ได้สร้างสื่อ',
-  'billing.downgrade.overLimit':
-    'พื้นที่ทำงานนี้มี {count, พหูพจน์, หนึ่ง {# channel} อื่นๆ {# ช่อง}} เกินขีดจำกัด การดำเนินการใหม่ในช่องเหล่านั้นถูกบล็อก ไม่มีอะไรถูกตัดการเชื่อมต่อสำหรับคุณ',
+  "billing.downgrade.overLimit": "This workspace has {count, plural, one {# channel} other {# channels}} over the limit. New actions on those channels are blocked. Nothing is disconnected for you.",
   'billing.mediaGeneration.title': 'เหตุใดเราไม่สร้างภาพหรือวิดีโอ',
   'billing.mediaGeneration.explanation':
     'เรามุ่งเน้นที่การช่วยคุณวางแผน อนุมัติ เผยแพร่ และเรียนรู้ เราไม่สร้างรูปภาพหรือวิดีโอใน V1 เนื่องจากสื่อที่พร้อมสำหรับแบรนด์ต้องการมากกว่าข้อความแจ้งสั้นๆ แต่ต้องการระบบภาพที่สมบูรณ์ รายละเอียดสินค้าที่ถูกต้อง ทรัพย์สินที่ได้รับอนุญาต ผู้คนและการอนุญาตการใช้งาน และการตรวจสอบอย่างรอบคอบ โมเดลเชิงสร้างสรรค์ก็เปลี่ยนแปลงอย่างรวดเร็วเช่นกัน เราขอแนะนำเครื่องมือผู้เชี่ยวชาญที่ได้รับการยืนยันในปัจจุบัน และทำให้ง่ายต่อการนำงานที่เสร็จแล้วมาสู่แคมเปญของคุณในขณะที่คุณควบคุมการสร้างสรรค์',
@@ -86,8 +84,7 @@ export const billingMessages = {
   'billing.referral.disclosure':
     'ลิงก์ผู้อ้างอิงจะต้องเปิดเผยทุกที่ที่คุณแชร์ ค่าคอมมิชชันไม่มีเงื่อนไขในการทบทวนเชิงบวก',
   'billing.referral.link': 'ลิงค์ผู้อ้างอิงของคุณ',
-  'billing.referral.attributed':
-    '{count, พหูพจน์, หนึ่งรายการ {# การสมัครที่มีแอตทริบิวต์} other {# การสมัครที่มีแอตทริบิวต์}}',
+  "billing.referral.attributed": "{count, plural, one {# attributed signup} other {# attributed signups}}",
   'billing.referral.commissionPending': 'รอดำเนินการ ระงับไว้จนกว่าหน้าต่างการคืนเงินจะปิดลง',
   'billing.referral.commissionApproved': 'อนุมัติแล้ว',
   'billing.referral.commissionReversed': 'ย้อนกลับหลังจากการคืนเงิน',
