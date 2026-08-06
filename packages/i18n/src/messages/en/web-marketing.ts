@@ -1113,6 +1113,63 @@ export const webMarketingMessages = {
     'An open protocol with no application review step. Rate limits and record size limits still apply and are enforced before dispatch.',
   'web.marketing.provider.bluesky.cost': 'No per operation charge.',
 
+  'web.marketing.provider.mastodon.label': 'Mastodon',
+  'web.marketing.provider.mastodon.accountTypes': 'A Mastodon account on any instance.',
+  'web.marketing.provider.mastodon.restriction':
+    'An open protocol with no application review step. The character limit is set by each instance, and per instance rate limits apply and are enforced before dispatch.',
+  'web.marketing.provider.mastodon.cost': 'No per operation charge.',
+
+  'web.marketing.provider.telegram.label': 'Telegram',
+  'web.marketing.provider.telegram.accountTypes':
+    'A Telegram bot you control, posting into a channel or group.',
+  'web.marketing.provider.telegram.restriction':
+    'A bot can only post where it has been added. The bot token is an application credential and the target chat is chosen per connection.',
+  'web.marketing.provider.telegram.cost': 'No per operation charge.',
+
+  'web.marketing.provider.reddit.label': 'Reddit',
+  'web.marketing.provider.reddit.accountTypes': 'A Reddit account authorized for posting.',
+  'web.marketing.provider.reddit.restriction':
+    'Writing to Reddit requires an approved application. Posts are self or link posts into subreddits you may post to; no automated comments or votes are built.',
+  'web.marketing.provider.reddit.cost': 'No per operation charge.',
+
+  'web.marketing.provider.wordpress.label': 'WordPress',
+  'web.marketing.provider.wordpress.accountTypes': 'A WordPress site with an application password.',
+  'web.marketing.provider.wordpress.restriction':
+    'Posts publish through the site REST API as the connected user. Image and video upload are not built yet.',
+  'web.marketing.provider.wordpress.cost': 'No per operation charge.',
+
+  'web.marketing.provider.medium.label': 'Medium',
+  'web.marketing.provider.medium.accountTypes': 'A Medium author profile connected through OAuth.',
+  'web.marketing.provider.medium.restriction':
+    'Posts publish as public stories in Markdown. The integration API has no delete endpoint, so deletion is not offered.',
+  'web.marketing.provider.medium.cost': 'No per operation charge.',
+
+  'web.marketing.provider.devto.label': 'Dev.to',
+  'web.marketing.provider.devto.accountTypes': 'A Dev.to profile connected through its API key.',
+  'web.marketing.provider.devto.restriction':
+    'Articles publish as public Markdown posts. Image upload and engagement analytics are not built yet.',
+  'web.marketing.provider.devto.cost': 'No per operation charge.',
+
+  'web.marketing.provider.pinterest.label': 'Pinterest',
+  'web.marketing.provider.pinterest.accountTypes':
+    'A Pinterest business account connected through OAuth.',
+  'web.marketing.provider.pinterest.restriction':
+    'A pin requires an image and a board you own. Writing to Pinterest requires app review and the board list is read at connect time.',
+  'web.marketing.provider.pinterest.cost': 'No per operation charge.',
+
+  'web.marketing.provider.discord.label': 'Discord',
+  'web.marketing.provider.discord.accountTypes':
+    'A Discord bot you control, posting into text channels.',
+  'web.marketing.provider.discord.restriction':
+    'The bot can only post into channels it can see. Text messages are supported; file attachments are not built yet.',
+  'web.marketing.provider.discord.cost': 'No per operation charge.',
+
+  'web.marketing.provider.slack.label': 'Slack',
+  'web.marketing.provider.slack.accountTypes': 'A Slack workspace connected through an OAuth app.',
+  'web.marketing.provider.slack.restriction':
+    'Messages post into public and private channels the app is in. File uploads and engagement analytics are not built yet.',
+  'web.marketing.provider.slack.cost': 'No per operation charge.',
+
   /* ---------------------------------------------------------------------- */
   /* Capability matrix notes                                                 */
   /* ---------------------------------------------------------------------- */
@@ -1161,6 +1218,21 @@ export const webMarketingMessages = {
   'web.capabilities.note.noThumbnail':
     'This platform does not accept a custom thumbnail through its API.',
   'web.capabilities.note.inBuild': 'The platform offers this. Relay has not shipped it yet.',
+  'web.capabilities.note.noCarousel': 'The platform does not offer a swipeable carousel product.',
+  'web.capabilities.note.noDisclosure':
+    'The platform has no disclosure field for AI or commercial content.',
+  'web.capabilities.note.noAnalytics':
+    'The platform exposes no engagement metrics through its official API.',
+  'web.capabilities.note.redditReview':
+    'Writing to Reddit requires an approved data API application.',
+  'web.capabilities.note.redditMedia': 'Image and video posts are not built yet for Reddit.',
+  'web.capabilities.note.mediumImages': 'The integration API does not accept image attachments.',
+  'web.capabilities.note.mediumNoDelete': 'The integration API has no delete endpoint.',
+  'web.capabilities.note.devtoImages':
+    'The API accepts article bodies only; image upload is not built yet.',
+  'web.capabilities.note.pinterestNeedsImage':
+    'A pin requires an image; text only pins do not exist.',
+  'web.capabilities.note.pinterestReview': 'Writing to Pinterest requires approved app access.',
 
   /* ---------------------------------------------------------------------- */
   /* Status page surfaces                                                    */

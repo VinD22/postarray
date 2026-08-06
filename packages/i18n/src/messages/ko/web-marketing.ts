@@ -918,6 +918,53 @@ export const webMarketingMessages = {
   'web.marketing.provider.bluesky.restriction':
     '신청서 검토 단계가 없는 개방형 프로토콜입니다. 속도 제한 및 레코드 크기 제한은 여전히 ​​적용되며 발송 전에 시행됩니다.',
   'web.marketing.provider.bluesky.cost': '작업 당 요금이 부과되지 않습니다.',
+  'web.marketing.provider.mastodon.label': 'Mastodon',
+  'web.marketing.provider.mastodon.accountTypes': '모든 인스턴스의 Mastodon 계정.',
+  'web.marketing.provider.mastodon.restriction':
+    '앱 검토가 없는 개방형 프로토콜입니다. 문자 제한은 각 인스턴스가 정하며 속도 제한을 준수합니다.',
+  'web.marketing.provider.mastodon.cost': '작업당 요금 없음.',
+  'web.marketing.provider.telegram.label': 'Telegram',
+  'web.marketing.provider.telegram.accountTypes':
+    '사용자가 제어하고 채널이나 그룹에 게시하는 텔레그램 봇.',
+  'web.marketing.provider.telegram.restriction':
+    '봇은 추가된 곳에서만 게시할 수 있습니다. 토큰은 앱 자격 증명이며 대상 채팅은 연결별로 선택합니다.',
+  'web.marketing.provider.telegram.cost': '작업당 요금 없음.',
+  'web.marketing.provider.reddit.label': 'Reddit',
+  'web.marketing.provider.reddit.accountTypes': '게시가 허용된 Reddit 계정.',
+  'web.marketing.provider.reddit.restriction':
+    'Reddit에 쓰려면 승인된 앱이 필요합니다. 게시물은 허용된 서브레딧의 텍스트 또는 링크이며 자동 댓글·투표가 없습니다.',
+  'web.marketing.provider.reddit.cost': '작업당 요금 없음.',
+  'web.marketing.provider.wordpress.label': 'WordPress',
+  'web.marketing.provider.wordpress.accountTypes': '앱 비밀번호가 있는 WordPress 사이트.',
+  'web.marketing.provider.wordpress.restriction':
+    '게시물은 사이트 REST API를 통해 연결된 사용자로 게시됩니다. 이미지·동영상 업로드는 아직 미구현입니다.',
+  'web.marketing.provider.wordpress.cost': '작업당 요금 없음.',
+  'web.marketing.provider.medium.label': 'Medium',
+  'web.marketing.provider.medium.accountTypes': 'OAuth로 연결된 Medium 작가 프로필.',
+  'web.marketing.provider.medium.restriction':
+    '게시물은 Markdown 공개 스토리로 게시됩니다. 통합 API에 삭제 기능이 없어 제공하지 않습니다.',
+  'web.marketing.provider.medium.cost': '작업당 요금 없음.',
+  'web.marketing.provider.devto.label': 'Dev.to',
+  'web.marketing.provider.devto.accountTypes': 'API 키로 연결된 Dev.to 프로필.',
+  'web.marketing.provider.devto.restriction':
+    '기사는 공개 Markdown 게시물로 게시됩니다. 이미지 업로드와 분석은 아직 미구현입니다.',
+  'web.marketing.provider.devto.cost': '작업당 요금 없음.',
+  'web.marketing.provider.pinterest.label': 'Pinterest',
+  'web.marketing.provider.pinterest.accountTypes': 'OAuth로 연결된 Pinterest 비즈니스 계정.',
+  'web.marketing.provider.pinterest.restriction':
+    '핀에는 이미지와 본인 보드가 필요합니다. 쓰기에는 앱 검토가 필요하며 보드는 연결 시 읽어옵니다.',
+  'web.marketing.provider.pinterest.cost': '작업당 요금 없음.',
+  'web.marketing.provider.discord.label': 'Discord',
+  'web.marketing.provider.discord.accountTypes':
+    '사용자가 제어하고 텍스트 채널에 게시하는 디스코드 봇.',
+  'web.marketing.provider.discord.restriction':
+    '봇은 볼 수 있는 채널에서만 게시할 수 있습니다. 텍스트 메시지는 지원되며 첨부 파일은 아직입니다.',
+  'web.marketing.provider.discord.cost': '작업당 요금 없음.',
+  'web.marketing.provider.slack.label': 'Slack',
+  'web.marketing.provider.slack.accountTypes': 'OAuth 앱으로 연결된 Slack 워크스페이스.',
+  'web.marketing.provider.slack.restriction':
+    '메시지는 앱이 있는 공개·비공개 채널로 전송됩니다. 파일 업로드와 분석은 아직 미구현입니다.',
+  'web.marketing.provider.slack.cost': '작업당 요금 없음.',
   'web.capabilities.short.supported': '지원됨',
   'web.capabilities.short.unsupported': '플랫폼은 그것을 제공하지 않습니다',
   'web.capabilities.short.not_implemented': '아직 구축되지 않음',
@@ -959,6 +1006,18 @@ export const webMarketingMessages = {
     '이 플랫폼은 API를 통해 게시물별 개인 정보 보호 옵션을 제공하지 않습니다.',
   'web.capabilities.note.noThumbnail': '이 플랫폼은 API를 통해 맞춤 썸네일을 허용하지 않습니다.',
   'web.capabilities.note.inBuild': '플랫폼은 이것을 제공합니다. Relay은 아직 배송하지 않았습니다.',
+  'web.capabilities.note.noCarousel': '플랫폼이 스와이프 캐러셀을 제공하지 않습니다.',
+  'web.capabilities.note.noDisclosure': '플랫폼에 AI 또는 상업 콘텐츠 공개 필드가 없습니다.',
+  'web.capabilities.note.noAnalytics': '플랫폼이 공식 API를 통해 참여 지표를 제공하지 않습니다.',
+  'web.capabilities.note.redditReview': 'Reddit에 쓰려면 승인된 데이터 API 앱이 필요합니다.',
+  'web.capabilities.note.redditMedia': 'Reddit용 이미지·동영상 게시물은 아직 미구현입니다.',
+  'web.capabilities.note.mediumImages': '통합 API가 이미지 첨부를 허용하지 않습니다.',
+  'web.capabilities.note.mediumNoDelete': '통합 API에 삭제 엔드포인트가 없습니다.',
+  'web.capabilities.note.devtoImages':
+    'API는 기사 본문만 허용하며 이미지 업로드는 아직 미구현입니다.',
+  'web.capabilities.note.pinterestNeedsImage':
+    '핀에는 이미지가 필요하며 텍스트 전용 핀은 없습니다.',
+  'web.capabilities.note.pinterestReview': 'Pinterest에 쓰려면 승인된 앱 액세스가 필요합니다.',
   'web.status.surface.web': '웹 앱',
   'web.status.surface.api': 'REST API',
   'web.status.surface.mcp': 'MCP 서버',

@@ -8,6 +8,32 @@ export const webCalendarMessages = {
   'web.provider.tiktok': 'TikTok',
   'web.provider.threads': 'Threads',
   'web.provider.bluesky': 'Bluesky',
+  'web.provider.mastodon': 'Mastodon',
+  'web.provider.telegram': 'Telegram',
+  'web.provider.reddit': 'Reddit',
+  'web.provider.wordpress': 'WordPress',
+  'web.provider.medium': 'Medium',
+  'web.provider.devto': 'Dev.to',
+  'web.provider.pinterest': 'Pinterest',
+  'web.provider.discord': 'Discord',
+  'web.provider.slack': 'Slack',
+  'web.connection.requirement.mastodon':
+    'Mastodon은 사용자 자신의 인스턴스에서 만든 액세스 토큰으로 연결되며 비밀번호가 아닙니다.',
+  'web.connection.requirement.telegram':
+    'Relay는 봇으로 게시합니다. 게시하려는 채널이나 그룹에 봇을 추가하세요.',
+  'web.connection.requirement.reddit':
+    'Reddit에 쓰려면 승인된 앱이 필요하며 각 게시물에는 제목과 서브레딧이 필요합니다.',
+  'web.connection.requirement.wordpress':
+    'Relay는 WordPress에서 만든 앱 비밀번호로 사이트 REST API를 통해 게시합니다.',
+  'web.connection.requirement.medium':
+    'Medium은 OAuth로 연결되며 Relay는 Markdown으로 공개 스토리를 게시합니다.',
+  'web.connection.requirement.devto': 'Dev.to는 Dev.to 설정에서 만든 API 키로 연결됩니다.',
+  'web.connection.requirement.pinterest':
+    'Pinterest에 쓰려면 승인된 앱 액세스가 필요하며 핀에는 이미지와 자신의 보드가 필요합니다.',
+  'web.connection.requirement.discord':
+    'Relay는 봇으로 게시합니다. 게시하려는 서버와 채널에 봇을 추가하세요.',
+  'web.connection.requirement.slack':
+    'Relay는 앱으로 게시합니다. 게시하려는 채널에 앱을 추가하세요.',
   'web.provider.fake': '테스트 커넥터',
   'web.accountType.personal_profile': '개인 프로필',
   'web.accountType.creator_profile': '크리에이터 계정',

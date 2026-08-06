@@ -27,6 +27,33 @@ export const webCalendarMessages = {
   'web.provider.tiktok': 'TikTok',
   'web.provider.threads': 'Vlákna',
   'web.provider.bluesky': 'Bluesky',
+  'web.provider.mastodon': 'Mastodon',
+  'web.provider.telegram': 'Telegram',
+  'web.provider.reddit': 'Reddit',
+  'web.provider.wordpress': 'WordPress',
+  'web.provider.medium': 'Medium',
+  'web.provider.devto': 'Dev.to',
+  'web.provider.pinterest': 'Pinterest',
+  'web.provider.discord': 'Discord',
+  'web.provider.slack': 'Slack',
+  'web.connection.requirement.mastodon':
+    'Mastodon se připojuje přístupovým tokenem vytvořeným na vaší instanci, ne heslem.',
+  'web.connection.requirement.telegram':
+    'Relay publikuje jako bot. Přidejte bota do kanálu nebo skupiny, kam chcete publikovat.',
+  'web.connection.requirement.reddit':
+    'Psaní na Redditu vyžaduje schválenou aplikaci a každý příspěvek potřebuje nadpis a subreddit.',
+  'web.connection.requirement.wordpress':
+    'Relay publikuje přes REST API webu s heslem aplikace vytvořeným ve WordPressu.',
+  'web.connection.requirement.medium':
+    'Medium se připojuje přes OAuth a Relay publikuje veřejné příběhy v Markdownu.',
+  'web.connection.requirement.devto':
+    'Dev.to se připojuje klíčem API vytvořeným v nastavení Dev.to.',
+  'web.connection.requirement.pinterest':
+    'Psaní na Pinterestu vyžaduje schválený přístup aplikace a pin potřebuje obrázek a vlastní nástěnku.',
+  'web.connection.requirement.discord':
+    'Relay publikuje jako bot. Přidejte bota na servery a kanály, kam chcete publikovat.',
+  'web.connection.requirement.slack':
+    'Relay publikuje jako aplikace. Přidejte aplikaci do kanálů, kam chcete publikovat.',
   'web.provider.fake': 'Testovací konektor',
 
   'web.accountType.personal_profile': 'Osobní profil',

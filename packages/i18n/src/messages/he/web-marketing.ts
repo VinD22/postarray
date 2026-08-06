@@ -890,6 +890,51 @@ export const webMarketingMessages = withHebrewPluralForms({
   'web.marketing.provider.bluesky.restriction':
     'פרוטוקול פתוח ללא שלב סקירת אפליקציה. מגבלות תעריף ומגבלות גודל רשומות עדיין חלות והן נאכפות לפני המשלוח.',
   'web.marketing.provider.bluesky.cost': 'ללא תשלום לכל פעולה.',
+  'web.marketing.provider.mastodon.label': 'Mastodon',
+  'web.marketing.provider.mastodon.accountTypes': 'חשבון מסטודון בכל שרת.',
+  'web.marketing.provider.mastodon.restriction':
+    'פרוטוקול פתוח ללא בדיקת אפליקציה. מגבלת התווים נקבעת על ידי כל שרת ומגבלות הקצב שלו מכובדות.',
+  'web.marketing.provider.mastodon.cost': 'אין עלות לכל פעולה.',
+  'web.marketing.provider.telegram.label': 'Telegram',
+  'web.marketing.provider.telegram.accountTypes': 'בוט טלגרם שבשליטתך, המפרסם בערוץ או בקבוצה.',
+  'web.marketing.provider.telegram.restriction':
+    "בוט יכול לפרסם רק היכן שנוסף. הטוקן הוא אישור אפליקציה והצ'אט היעד נבחר לכל חיבור.",
+  'web.marketing.provider.telegram.cost': 'אין עלות לכל פעולה.',
+  'web.marketing.provider.reddit.label': 'Reddit',
+  'web.marketing.provider.reddit.accountTypes': 'חשבון רדיט המורשה לפרסום.',
+  'web.marketing.provider.reddit.restriction':
+    'כתיבה לרדיט דורשת אפליקציה מאושרת. הפוסטים הם טקסט או קישור בסובדיטים מורשים; ללא תגובות או הצבעות אוטומטיות.',
+  'web.marketing.provider.reddit.cost': 'אין עלות לכל פעולה.',
+  'web.marketing.provider.wordpress.label': 'WordPress',
+  'web.marketing.provider.wordpress.accountTypes': 'אתר וורדפרס עם סיסמת אפליקציה.',
+  'web.marketing.provider.wordpress.restriction':
+    'הפוסטים מתפרסמים דרך ה-API של האתר כמשתמש המחובר. העלאת תמונות ווידאו עדיין לא נבנתה.',
+  'web.marketing.provider.wordpress.cost': 'אין עלות לכל פעולה.',
+  'web.marketing.provider.medium.label': 'Medium',
+  'web.marketing.provider.medium.accountTypes': 'פרופיל מחבר מידיום המחובר דרך OAuth.',
+  'web.marketing.provider.medium.restriction':
+    'הפוסטים מתפרסמים כסיפורים ציבוריים במרקדאון. ל-API אין מחיקה, ולכן היא לא מוצעת.',
+  'web.marketing.provider.medium.cost': 'אין עלות לכל פעולה.',
+  'web.marketing.provider.devto.label': 'Dev.to',
+  'web.marketing.provider.devto.accountTypes': 'פרופיל דב טו המחובר עם מפתח ה-API שלו.',
+  'web.marketing.provider.devto.restriction':
+    'המאמרים מתפרסמים כפוסטים ציבוריים במרקדאון. העלאת תמונות ואנליטיקה עדיין לא נבנו.',
+  'web.marketing.provider.devto.cost': 'אין עלות לכל פעולה.',
+  'web.marketing.provider.pinterest.label': 'Pinterest',
+  'web.marketing.provider.pinterest.accountTypes': 'חשבון עסקי של פינטרסט המחובר דרך OAuth.',
+  'web.marketing.provider.pinterest.restriction':
+    'פין דורש תמונה ולוח משלך. כתיבה דורשת בדיקת אפליקציה; הלוחות נקראים בעת החיבור.',
+  'web.marketing.provider.pinterest.cost': 'אין עלות לכל פעולה.',
+  'web.marketing.provider.discord.label': 'Discord',
+  'web.marketing.provider.discord.accountTypes': 'בוט דיסקורד שבשליטתך, המפרסם בערוצי טקסט.',
+  'web.marketing.provider.discord.restriction':
+    'הבוט יכול לפרסם רק בערוצים שהוא רואה. הודעות טקסט נתמכות; קבצים מצורפים עדיין לא.',
+  'web.marketing.provider.discord.cost': 'אין עלות לכל פעולה.',
+  'web.marketing.provider.slack.label': 'Slack',
+  'web.marketing.provider.slack.accountTypes': 'מרחב עבודה של סלאק המחובר דרך אפליקציית OAuth.',
+  'web.marketing.provider.slack.restriction':
+    'ההודעות נשלחות לערוצים ציבוריים ופרטיים שבהם נמצאת האפליקציה. העלאת קבצים ואנליטיקה עדיין לא נבנו.',
+  'web.marketing.provider.slack.cost': 'אין עלות לכל פעולה.',
   'web.capabilities.short.supported': 'נתמך',
   'web.capabilities.short.unsupported': 'הפלטפורמה לא מציעה את זה',
   'web.capabilities.short.not_implemented': 'עדיין לא נבנה',
@@ -929,6 +974,16 @@ export const webMarketingMessages = withHebrewPluralForms({
   'web.capabilities.note.noThumbnail':
     'פלטפורמה זו אינה מקבלת תמונה ממוזערת מותאמת אישית דרך ה-API שלה.',
   'web.capabilities.note.inBuild': 'הפלטפורמה מציעה זאת. ממסר לא שלח אותו עדיין.',
+  'web.capabilities.note.noCarousel': 'הפלטפורמה אינה מציעה קרוסלה החלקה.',
+  'web.capabilities.note.noDisclosure': 'לפלטפורמה אין שדה גילוי לתוכן AI או מסחרי.',
+  'web.capabilities.note.noAnalytics': 'הפלטפורמה אינה חושפת מדדי מעורבות דרך ה-API הרשמי.',
+  'web.capabilities.note.redditReview': 'כתיבה לרדיט דורשת אפליקציית data API מאושרת.',
+  'web.capabilities.note.redditMedia': 'פוסטים עם תמונות ווידאו עדיין לא נבנו לרדיט.',
+  'web.capabilities.note.mediumImages': 'API האינטגרציה אינו מקבל קבצי תמונה.',
+  'web.capabilities.note.mediumNoDelete': 'ל-API האינטגרציה אין נקודת קצה למחיקה.',
+  'web.capabilities.note.devtoImages': 'ה-API מקבל רק גוף מאמר; העלאת תמונות עדיין לא נבנתה.',
+  'web.capabilities.note.pinterestNeedsImage': 'פין דורש תמונה; פינים עם טקסט בלבד לא קיימים.',
+  'web.capabilities.note.pinterestReview': 'כתיבה לפינטרסט דורשת גישת אפליקציה מאושרת.',
   'web.status.surface.web': 'אפליקציית אינטרנט',
   'web.status.surface.api': 'REST API',
   'web.status.surface.mcp': 'שרת MCP',

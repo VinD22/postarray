@@ -27,6 +27,33 @@ export const webCalendarMessages = {
   'web.provider.tiktok': 'TikTok',
   'web.provider.threads': 'Threads',
   'web.provider.bluesky': 'Bluesky',
+  'web.provider.mastodon': 'Mastodon',
+  'web.provider.telegram': 'Telegram',
+  'web.provider.reddit': 'Reddit',
+  'web.provider.wordpress': 'WordPress',
+  'web.provider.medium': 'Medium',
+  'web.provider.devto': 'Dev.to',
+  'web.provider.pinterest': 'Pinterest',
+  'web.provider.discord': 'Discord',
+  'web.provider.slack': 'Slack',
+  'web.connection.requirement.mastodon':
+    'Mastodon підключається за токеном доступу, створеним на вашому сервері, а не за паролем.',
+  'web.connection.requirement.telegram':
+    'Relay публікує від імені бота. Додайте бота в канал або групу, куди хочете публікувати.',
+  'web.connection.requirement.reddit':
+    'Запис у Reddit вимагає схваленого застосунку, а кожній публікації потрібні заголовок і сабредит.',
+  'web.connection.requirement.wordpress':
+    'Relay публікує через REST API сайту з паролем застосунку, створеним у WordPress.',
+  'web.connection.requirement.medium':
+    'Medium підключається через OAuth, і Relay публікує відкриті історії в Markdown.',
+  'web.connection.requirement.devto':
+    'Dev.to підключається за API-ключем, створеним у налаштуваннях Dev.to.',
+  'web.connection.requirement.pinterest':
+    'Запис у Pinterest вимагає схваленого доступу застосунку, а піну потрібні зображення і власна дошка.',
+  'web.connection.requirement.discord':
+    'Relay публікує від імені бота. Додайте бота на сервери й у канали, куди хочете публікувати.',
+  'web.connection.requirement.slack':
+    'Relay публікує від імені застосунку. Додайте застосунок у канали, куди хочете публікувати.',
   'web.provider.fake': "Тестовий роз'єм",
 
   'web.accountType.personal_profile': 'Особистий профіль',

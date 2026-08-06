@@ -1105,6 +1105,57 @@ export const webMarketingMessages = {
   'web.marketing.provider.bluesky.restriction':
     'Ein offenes Protokoll ohne Antragsprüfungsschritt. Es gelten weiterhin Raten- und Datensatzgrößenbeschränkungen, die vor dem Versand durchgesetzt werden.',
   'web.marketing.provider.bluesky.cost': 'Keine Gebühr pro Vorgang.',
+  'web.marketing.provider.mastodon.label': 'Mastodon',
+  'web.marketing.provider.mastodon.accountTypes':
+    'Ein Mastodon-Konto auf einer beliebigen Instanz.',
+  'web.marketing.provider.mastodon.restriction':
+    'Ein offenes Protokoll ohne App-Prüfung. Die Zeichenbegrenzung setzt jede Instanz selbst, deren Ratenlimits werden eingehalten.',
+  'web.marketing.provider.mastodon.cost': 'Keine Gebühr pro Vorgang.',
+  'web.marketing.provider.telegram.label': 'Telegram',
+  'web.marketing.provider.telegram.accountTypes':
+    'Ein Telegram-Bot, den Sie kontrollieren, der in einen Kanal oder eine Gruppe postet.',
+  'web.marketing.provider.telegram.restriction':
+    'Ein Bot kann nur dort posten, wo er hinzugefügt wurde. Das Token ist eine Anwendungsanmeldedaten und der Ziel-Chat wird pro Verbindung gewählt.',
+  'web.marketing.provider.telegram.cost': 'Keine Gebühr pro Vorgang.',
+  'web.marketing.provider.reddit.label': 'Reddit',
+  'web.marketing.provider.reddit.accountTypes': 'Ein Reddit-Konto, das zum Posten berechtigt ist.',
+  'web.marketing.provider.reddit.restriction':
+    'Das Schreiben auf Reddit erfordert eine genehmigte App. Gepostet wird als Text- oder Linkbeitrag in erlaubten Subreddits; keine automatisierten Kommentare oder Stimmen.',
+  'web.marketing.provider.reddit.cost': 'Keine Gebühr pro Vorgang.',
+  'web.marketing.provider.wordpress.label': 'WordPress',
+  'web.marketing.provider.wordpress.accountTypes': 'Eine WordPress-Site mit App-Passwort.',
+  'web.marketing.provider.wordpress.restriction':
+    'Beiträge erscheinen über die REST-API der Site als verbundener Benutzer. Bild- und Video-Upload ist noch nicht gebaut.',
+  'web.marketing.provider.wordpress.cost': 'Keine Gebühr pro Vorgang.',
+  'web.marketing.provider.medium.label': 'Medium',
+  'web.marketing.provider.medium.accountTypes': 'Ein Medium-Autorenprofil, verbunden per OAuth.',
+  'web.marketing.provider.medium.restriction':
+    'Beiträge erscheinen als öffentliche Geschichten in Markdown. Die Integrations-API hat kein Löschen, daher wird es nicht angeboten.',
+  'web.marketing.provider.medium.cost': 'Keine Gebühr pro Vorgang.',
+  'web.marketing.provider.devto.label': 'Dev.to',
+  'web.marketing.provider.devto.accountTypes':
+    'Ein Dev.to-Profil, verbunden mit seinem API-Schlüssel.',
+  'web.marketing.provider.devto.restriction':
+    'Artikel erscheinen als öffentliche Markdown-Beiträge. Bild-Upload und Analysen sind noch nicht gebaut.',
+  'web.marketing.provider.devto.cost': 'Keine Gebühr pro Vorgang.',
+  'web.marketing.provider.pinterest.label': 'Pinterest',
+  'web.marketing.provider.pinterest.accountTypes':
+    'Ein Pinterest-Geschäftskonto, verbunden per OAuth.',
+  'web.marketing.provider.pinterest.restriction':
+    'Ein Pin erfordert ein Bild und ein eigenes Board. Schreiben erfordert eine App-Prüfung; die Boards werden beim Verbinden gelesen.',
+  'web.marketing.provider.pinterest.cost': 'Keine Gebühr pro Vorgang.',
+  'web.marketing.provider.discord.label': 'Discord',
+  'web.marketing.provider.discord.accountTypes':
+    'Ein Discord-Bot, den Sie kontrollieren, der in Textkanäle postet.',
+  'web.marketing.provider.discord.restriction':
+    'Der Bot kann nur in Kanäle posten, die er sieht. Textnachrichten werden unterstützt; Dateianhänge noch nicht.',
+  'web.marketing.provider.discord.cost': 'Keine Gebühr pro Vorgang.',
+  'web.marketing.provider.slack.label': 'Slack',
+  'web.marketing.provider.slack.accountTypes':
+    'Ein Slack-Workspace, verbunden über eine OAuth-App.',
+  'web.marketing.provider.slack.restriction':
+    'Nachrichten gehen in öffentliche und private Kanäle, in denen die App ist. Datei-Upload und Analysen sind noch nicht gebaut.',
+  'web.marketing.provider.slack.cost': 'Keine Gebühr pro Vorgang.',
 
   /* ---------------------------------------------------------------------- */
   /* Capability matrix notes                                                 */
@@ -1157,6 +1208,22 @@ export const webMarketingMessages = {
     'Diese Plattform akzeptiert über ihre API keine benutzerdefinierten Miniaturansichten.',
   'web.capabilities.note.inBuild':
     'Die Plattform bietet dies an. Relay hat es noch nicht versendet.',
+  'web.capabilities.note.noCarousel': 'Die Plattform bietet kein wischbares Karussell.',
+  'web.capabilities.note.noDisclosure':
+    'Die Plattform hat kein Offenlegungsfeld für KI- oder kommerzielle Inhalte.',
+  'web.capabilities.note.noAnalytics':
+    'Die Plattform stellt über ihre offizielle API keine Engagement-Kennzahlen bereit.',
+  'web.capabilities.note.redditReview':
+    'Das Schreiben auf Reddit erfordert eine genehmigte Daten-API-Anwendung.',
+  'web.capabilities.note.redditMedia': 'Bild- und Videobeiträge sind für Reddit noch nicht gebaut.',
+  'web.capabilities.note.mediumImages': 'Die Integrations-API akzeptiert keine Bildanhänge.',
+  'web.capabilities.note.mediumNoDelete': 'Die Integrations-API hat keinen Lösch-Endpunkt.',
+  'web.capabilities.note.devtoImages':
+    'Die API akzeptiert nur Artikeltexte; Bild-Upload ist noch nicht gebaut.',
+  'web.capabilities.note.pinterestNeedsImage':
+    'Ein Pin erfordert ein Bild; reine Text-Pins gibt es nicht.',
+  'web.capabilities.note.pinterestReview':
+    'Das Schreiben auf Pinterest erfordert genehmigten App-Zugriff.',
 
   /* ---------------------------------------------------------------------- */
   /* Status page surfaces                                                    */

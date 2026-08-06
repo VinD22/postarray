@@ -27,6 +27,33 @@ export const webCalendarMessages = {
   'web.provider.tiktok': 'TikTok',
   'web.provider.threads': 'Trådar',
   'web.provider.bluesky': 'Bluesky',
+  'web.provider.mastodon': 'Mastodon',
+  'web.provider.telegram': 'Telegram',
+  'web.provider.reddit': 'Reddit',
+  'web.provider.wordpress': 'WordPress',
+  'web.provider.medium': 'Medium',
+  'web.provider.devto': 'Dev.to',
+  'web.provider.pinterest': 'Pinterest',
+  'web.provider.discord': 'Discord',
+  'web.provider.slack': 'Slack',
+  'web.connection.requirement.mastodon':
+    'Mastodon ansluter med en åtkomsttoken du skapar på din egen instans, inte med ditt lösenord.',
+  'web.connection.requirement.telegram':
+    'Relay publicerar som en bot. Lägg till boten i kanalen eller gruppen där du vill publicera.',
+  'web.connection.requirement.reddit':
+    'Att skriva på Reddit kräver en godkänd app och varje inlägg behöver en titel och en subreddit.',
+  'web.connection.requirement.wordpress':
+    'Relay publicerar via webbplatsens REST API med ett applösenord du skapar i WordPress.',
+  'web.connection.requirement.medium':
+    'Medium ansluter via OAuth och Relay publicerar offentliga berättelser i Markdown.',
+  'web.connection.requirement.devto':
+    'Dev.to ansluter med en API-nyckel skapad i dina Dev.to-inställningar.',
+  'web.connection.requirement.pinterest':
+    'Att skriva på Pinterest kräver godkänd appåtkomst och en pin behöver en bild och en egen anslagstavla.',
+  'web.connection.requirement.discord':
+    'Relay publicerar som en bot. Lägg till boten i servrarna och kanalerna där du vill publicera.',
+  'web.connection.requirement.slack':
+    'Relay publicerar som en app. Lägg till appen i kanalerna där du vill publicera.',
   'web.provider.fake': 'Testa kontakten',
 
   'web.accountType.personal_profile': 'Personlig profil',

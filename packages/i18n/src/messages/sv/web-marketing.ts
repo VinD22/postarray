@@ -1109,6 +1109,54 @@ export const webMarketingMessages = {
   'web.marketing.provider.bluesky.restriction':
     'Ett öppet protokoll utan applikationsgranskningssteg. Prisgränser och poststorleksgränser gäller fortfarande och tillämpas före avsändning.',
   'web.marketing.provider.bluesky.cost': 'Ingen avgift per operation.',
+  'web.marketing.provider.mastodon.label': 'Mastodon',
+  'web.marketing.provider.mastodon.accountTypes': 'Ett Mastodon-konto på vilken instans som helst.',
+  'web.marketing.provider.mastodon.restriction':
+    'Ett öppet protokoll utan appgranskning. Teckenbegränsningen bestäms av varje instans och dess hastighetsgränser respekteras.',
+  'web.marketing.provider.mastodon.cost': 'Ingen kostnad per åtgärd.',
+  'web.marketing.provider.telegram.label': 'Telegram',
+  'web.marketing.provider.telegram.accountTypes':
+    'En Telegram-bot du kontrollerar som publicerar i en kanal eller grupp.',
+  'web.marketing.provider.telegram.restriction':
+    'En bot kan bara publicera där den har lagts till. Token är en applikationsuppgift och målchatten väljs per anslutning.',
+  'web.marketing.provider.telegram.cost': 'Ingen kostnad per åtgärd.',
+  'web.marketing.provider.reddit.label': 'Reddit',
+  'web.marketing.provider.reddit.accountTypes': 'Ett Reddit-konto som får publicera.',
+  'web.marketing.provider.reddit.restriction':
+    'Att skriva på Reddit kräver en godkänd app. Inlägg är text- eller länkinlägg i tillåtna subreddits; inga automatiska kommentarer eller röster.',
+  'web.marketing.provider.reddit.cost': 'Ingen kostnad per åtgärd.',
+  'web.marketing.provider.wordpress.label': 'WordPress',
+  'web.marketing.provider.wordpress.accountTypes': 'En WordPress-webbplats med applösenord.',
+  'web.marketing.provider.wordpress.restriction':
+    'Inlägg publiceras via webbplatsens REST API som den anslutna användaren. Uppladdning av bilder och video är inte byggd ännu.',
+  'web.marketing.provider.wordpress.cost': 'Ingen kostnad per åtgärd.',
+  'web.marketing.provider.medium.label': 'Medium',
+  'web.marketing.provider.medium.accountTypes': 'En Medium-författarprofil ansluten via OAuth.',
+  'web.marketing.provider.medium.restriction':
+    'Inlägg publiceras som offentliga berättelser i Markdown. Integrations-API:et har ingen radering, så den erbjuds inte.',
+  'web.marketing.provider.medium.cost': 'Ingen kostnad per åtgärd.',
+  'web.marketing.provider.devto.label': 'Dev.to',
+  'web.marketing.provider.devto.accountTypes': 'En Dev.to-profil ansluten med dess API-nyckel.',
+  'web.marketing.provider.devto.restriction':
+    'Artiklar publiceras som offentliga Markdown-inlägg. Bilduppladdning och analys är inte byggda ännu.',
+  'web.marketing.provider.devto.cost': 'Ingen kostnad per åtgärd.',
+  'web.marketing.provider.pinterest.label': 'Pinterest',
+  'web.marketing.provider.pinterest.accountTypes':
+    'Ett Pinterest-företagskonto anslutet via OAuth.',
+  'web.marketing.provider.pinterest.restriction':
+    'En pin kräver en bild och en egen anslagstavla. Att skriva kräver appgranskning; tavlorna läses vid anslutning.',
+  'web.marketing.provider.pinterest.cost': 'Ingen kostnad per åtgärd.',
+  'web.marketing.provider.discord.label': 'Discord',
+  'web.marketing.provider.discord.accountTypes':
+    'En Discord-bot du kontrollerar som publicerar i textkanaler.',
+  'web.marketing.provider.discord.restriction':
+    'Boten kan bara publicera i kanaler den ser. Textmeddelanden stöds; bilagor inte ännu.',
+  'web.marketing.provider.discord.cost': 'Ingen kostnad per åtgärd.',
+  'web.marketing.provider.slack.label': 'Slack',
+  'web.marketing.provider.slack.accountTypes': 'En Slack-arbetsyta ansluten via en OAuth-app.',
+  'web.marketing.provider.slack.restriction':
+    'Meddelanden går till offentliga och privata kanaler där appen finns. Filuppladdning och analys är inte byggda ännu.',
+  'web.marketing.provider.slack.cost': 'Ingen kostnad per åtgärd.',
 
   /* ---------------------------------------------------------------------- */
   /* Capability matrix notes                                                 */
@@ -1158,6 +1206,19 @@ export const webMarketingMessages = {
   'web.capabilities.note.noThumbnail':
     'Den här plattformen accepterar inte en anpassad miniatyrbild via sitt API.',
   'web.capabilities.note.inBuild': 'Plattformen erbjuder detta. Relay har inte skickat den än.',
+  'web.capabilities.note.noCarousel': 'Plattformen erbjuder ingen svepbar karusell.',
+  'web.capabilities.note.noDisclosure':
+    'Plattformen har inget fält för avslöjande av AI- eller kommersiellt innehåll.',
+  'web.capabilities.note.noAnalytics':
+    'Plattformen exponerar inga engagemangsmått via sitt officiella API.',
+  'web.capabilities.note.redditReview': 'Att skriva på Reddit kräver en godkänd data-API-app.',
+  'web.capabilities.note.redditMedia': 'Bild- och videoinlägg är inte byggda för Reddit ännu.',
+  'web.capabilities.note.mediumImages': 'Integrations-API:et accepterar inte bildbilagor.',
+  'web.capabilities.note.mediumNoDelete': 'Integrations-API:et har ingen raderingsslutpunkt.',
+  'web.capabilities.note.devtoImages':
+    'API:et accepterar endast artikeltexter; bilduppladdning är inte byggd ännu.',
+  'web.capabilities.note.pinterestNeedsImage': 'En pin kräver en bild; textonly-pins finns inte.',
+  'web.capabilities.note.pinterestReview': 'Att skriva på Pinterest kräver godkänd appåtkomst.',
 
   /* ---------------------------------------------------------------------- */
   /* Status page surfaces                                                    */

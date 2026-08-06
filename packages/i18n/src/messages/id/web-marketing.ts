@@ -952,6 +952,56 @@ export const webMarketingMessages = {
   'web.marketing.provider.bluesky.restriction':
     'Protokol terbuka tanpa langkah peninjauan aplikasi. Batasan tarif dan batas ukuran catatan masih berlaku dan diberlakukan sebelum pengiriman.',
   'web.marketing.provider.bluesky.cost': 'Tidak ada biaya per operasi.',
+  'web.marketing.provider.mastodon.label': 'Mastodon',
+  'web.marketing.provider.mastodon.accountTypes': 'Akun Mastodon di instance mana pun.',
+  'web.marketing.provider.mastodon.restriction':
+    'Protokol terbuka tanpa peninjauan aplikasi. Batas karakter ditetapkan oleh setiap instance dan batas kecepatannya dihormati.',
+  'web.marketing.provider.mastodon.cost': 'Tanpa biaya per operasi.',
+  'web.marketing.provider.telegram.label': 'Telegram',
+  'web.marketing.provider.telegram.accountTypes':
+    'Bot Telegram yang Anda kendalikan, memposting ke saluran atau grup.',
+  'web.marketing.provider.telegram.restriction':
+    'Bot hanya dapat memposting ke tempat ia ditambahkan. Token adalah kredensial aplikasi dan chat tujuan dipilih per koneksi.',
+  'web.marketing.provider.telegram.cost': 'Tanpa biaya per operasi.',
+  'web.marketing.provider.reddit.label': 'Reddit',
+  'web.marketing.provider.reddit.accountTypes': 'Akun Reddit yang diizinkan memposting.',
+  'web.marketing.provider.reddit.restriction':
+    'Menulis ke Reddit memerlukan aplikasi yang disetujui. Postingan berupa teks atau tautan di subreddit yang diizinkan; tanpa komentar atau suara otomatis.',
+  'web.marketing.provider.reddit.cost': 'Tanpa biaya per operasi.',
+  'web.marketing.provider.wordpress.label': 'WordPress',
+  'web.marketing.provider.wordpress.accountTypes': 'Situs WordPress dengan kata sandi aplikasi.',
+  'web.marketing.provider.wordpress.restriction':
+    'Postingan keluar melalui REST API situs sebagai pengguna yang terhubung. Unggah gambar dan video belum dibangun.',
+  'web.marketing.provider.wordpress.cost': 'Tanpa biaya per operasi.',
+  'web.marketing.provider.medium.label': 'Medium',
+  'web.marketing.provider.medium.accountTypes':
+    'Profil penulis Medium yang terhubung melalui OAuth.',
+  'web.marketing.provider.medium.restriction':
+    'Postingan keluar sebagai cerita publik dalam Markdown. API integrasi tidak memiliki penghapusan, jadi tidak ditawarkan.',
+  'web.marketing.provider.medium.cost': 'Tanpa biaya per operasi.',
+  'web.marketing.provider.devto.label': 'Dev.to',
+  'web.marketing.provider.devto.accountTypes': 'Profil Dev.to yang terhubung dengan kunci API-nya.',
+  'web.marketing.provider.devto.restriction':
+    'Artikel keluar sebagai postingan Markdown publik. Unggah gambar dan analitik belum dibangun.',
+  'web.marketing.provider.devto.cost': 'Tanpa biaya per operasi.',
+  'web.marketing.provider.pinterest.label': 'Pinterest',
+  'web.marketing.provider.pinterest.accountTypes':
+    'Akun bisnis Pinterest yang terhubung melalui OAuth.',
+  'web.marketing.provider.pinterest.restriction':
+    'Pin memerlukan gambar dan papan milik Anda. Menulis memerlukan peninjauan aplikasi; papan dibaca saat menghubungkan.',
+  'web.marketing.provider.pinterest.cost': 'Tanpa biaya per operasi.',
+  'web.marketing.provider.discord.label': 'Discord',
+  'web.marketing.provider.discord.accountTypes':
+    'Bot Discord yang Anda kendalikan, memposting ke saluran teks.',
+  'web.marketing.provider.discord.restriction':
+    'Bot hanya dapat memposting ke saluran yang terlihat. Pesan teks didukung; lampiran file belum.',
+  'web.marketing.provider.discord.cost': 'Tanpa biaya per operasi.',
+  'web.marketing.provider.slack.label': 'Slack',
+  'web.marketing.provider.slack.accountTypes':
+    'Ruang kerja Slack yang terhubung melalui aplikasi OAuth.',
+  'web.marketing.provider.slack.restriction':
+    'Pesan keluar ke saluran publik dan privat tempat aplikasi berada. Unggah file dan analitik belum dibangun.',
+  'web.marketing.provider.slack.cost': 'Tanpa biaya per operasi.',
   'web.capabilities.short.supported': 'Didukung',
   'web.capabilities.short.unsupported': 'Platform tidak menawarkannya',
   'web.capabilities.short.not_implemented': 'Belum dibangun',
@@ -996,6 +1046,21 @@ export const webMarketingMessages = {
   'web.capabilities.note.noThumbnail':
     'Platform ini tidak menerima thumbnail khusus melalui API-nya.',
   'web.capabilities.note.inBuild': 'Platform ini menawarkan hal ini. Relay belum mengirimkannya.',
+  'web.capabilities.note.noCarousel': 'Platform tidak menawarkan karousel geser.',
+  'web.capabilities.note.noDisclosure':
+    'Platform tidak memiliki bidang pengungkapan untuk konten AI atau komersial.',
+  'web.capabilities.note.noAnalytics':
+    'Platform tidak mengekspos metrik keterlibatan melalui API resminya.',
+  'web.capabilities.note.redditReview':
+    'Menulis ke Reddit memerlukan aplikasi data API yang disetujui.',
+  'web.capabilities.note.redditMedia': 'Postingan gambar dan video belum dibangun untuk Reddit.',
+  'web.capabilities.note.mediumImages': 'API integrasi tidak menerima lampiran gambar.',
+  'web.capabilities.note.mediumNoDelete': 'API integrasi tidak memiliki endpoint penghapusan.',
+  'web.capabilities.note.devtoImages':
+    'API hanya menerima isi artikel; unggah gambar belum dibangun.',
+  'web.capabilities.note.pinterestNeedsImage': 'Pin memerlukan gambar; pin teks saja tidak ada.',
+  'web.capabilities.note.pinterestReview':
+    'Menulis ke Pinterest memerlukan akses aplikasi yang disetujui.',
   'web.status.surface.web': 'aplikasi web',
   'web.status.surface.api': 'API REST',
   'web.status.surface.mcp': 'server MCP',

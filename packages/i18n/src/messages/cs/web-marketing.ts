@@ -1085,6 +1085,54 @@ export const webMarketingMessages = {
   'web.marketing.provider.bluesky.restriction':
     'Otevřený protokol bez kroku kontroly aplikace. Limity sazeb a limity velikosti záznamu stále platí a jsou uplatňovány před odesláním.',
   'web.marketing.provider.bluesky.cost': 'Žádný poplatek za operaci.',
+  'web.marketing.provider.mastodon.label': 'Mastodon',
+  'web.marketing.provider.mastodon.accountTypes': 'Účet Mastodon na libovolné instanci.',
+  'web.marketing.provider.mastodon.restriction':
+    'Otevřený protokol bez schvalování aplikací. Limit znaků určuje každá instance a její limity rychlosti jsou respektovány.',
+  'web.marketing.provider.mastodon.cost': 'Žádný poplatek za operaci.',
+  'web.marketing.provider.telegram.label': 'Telegram',
+  'web.marketing.provider.telegram.accountTypes':
+    'Bot Telegramu, který ovládáte a který publikuje do kanálu nebo skupiny.',
+  'web.marketing.provider.telegram.restriction':
+    'Bot může publikovat pouze tam, kam byl přidán. Token je přihlašovací údaj aplikace a cílový chat se volí pro připojení.',
+  'web.marketing.provider.telegram.cost': 'Žádný poplatek za operaci.',
+  'web.marketing.provider.reddit.label': 'Reddit',
+  'web.marketing.provider.reddit.accountTypes': 'Účet Reddit s oprávněním publikovat.',
+  'web.marketing.provider.reddit.restriction':
+    'Psaní na Redditu vyžaduje schválenou aplikaci. Příspěvky jsou textové nebo odkazové v povolených subredditech; žádné automatické komentáře ani hlasy.',
+  'web.marketing.provider.reddit.cost': 'Žádný poplatek za operaci.',
+  'web.marketing.provider.wordpress.label': 'WordPress',
+  'web.marketing.provider.wordpress.accountTypes': 'Web WordPress s heslem aplikace.',
+  'web.marketing.provider.wordpress.restriction':
+    'Příspěvky vycházejí přes REST API webu jako připojený uživatel. Nahrávání obrázků a videí zatím není postaveno.',
+  'web.marketing.provider.wordpress.cost': 'Žádný poplatek za operaci.',
+  'web.marketing.provider.medium.label': 'Medium',
+  'web.marketing.provider.medium.accountTypes': 'Profil autora Medium připojený přes OAuth.',
+  'web.marketing.provider.medium.restriction':
+    'Příspěvky vycházejí jako veřejné příběhy v Markdownu. Integrační API nemá mazání, takže se nenabízí.',
+  'web.marketing.provider.medium.cost': 'Žádný poplatek za operaci.',
+  'web.marketing.provider.devto.label': 'Dev.to',
+  'web.marketing.provider.devto.accountTypes': 'Profil Dev.to připojený pomocí jeho API klíče.',
+  'web.marketing.provider.devto.restriction':
+    'Články vycházejí jako veřejné příspěvky v Markdownu. Nahrávání obrázků a analytika zatím nejsou postaveny.',
+  'web.marketing.provider.devto.cost': 'Žádný poplatek za operaci.',
+  'web.marketing.provider.pinterest.label': 'Pinterest',
+  'web.marketing.provider.pinterest.accountTypes': 'Obchodní účet Pinterest připojený přes OAuth.',
+  'web.marketing.provider.pinterest.restriction':
+    'Pin vyžaduje obrázek a vlastní nástěnku. Psaní vyžaduje schválení aplikace; nástěnky se načítají při připojení.',
+  'web.marketing.provider.pinterest.cost': 'Žádný poplatek za operaci.',
+  'web.marketing.provider.discord.label': 'Discord',
+  'web.marketing.provider.discord.accountTypes':
+    'Bot Discord, který ovládáte a který publikuje do textových kanálů.',
+  'web.marketing.provider.discord.restriction':
+    'Bot může publikovat pouze do kanálů, které vidí. Textové zprávy jsou podporovány; přílohy zatím ne.',
+  'web.marketing.provider.discord.cost': 'Žádný poplatek za operaci.',
+  'web.marketing.provider.slack.label': 'Slack',
+  'web.marketing.provider.slack.accountTypes':
+    'Pracovní prostor Slack připojený přes OAuth aplikaci.',
+  'web.marketing.provider.slack.restriction':
+    'Zprávy jdou do veřejných a soukromých kanálů, kde aplikace je. Nahrávání souborů a analytika zatím nejsou postaveny.',
+  'web.marketing.provider.slack.cost': 'Žádný poplatek za operaci.',
 
   /* ---------------------------------------------------------------------- */
   /* Capability matrix notes                                                 */
@@ -1134,6 +1182,22 @@ export const webMarketingMessages = {
   'web.capabilities.note.noThumbnail':
     'Tato platforma nepřijímá vlastní miniaturu prostřednictvím svého rozhraní API.',
   'web.capabilities.note.inBuild': 'Toto platforma nabízí. Relé jej ještě nedodalo.',
+  'web.capabilities.note.noCarousel': 'Platforma nenabízí posuvný karusel.',
+  'web.capabilities.note.noDisclosure':
+    'Platforma nemá pole pro zveřejnění AI nebo komerčního obsahu.',
+  'web.capabilities.note.noAnalytics':
+    'Platforma nezveřejňuje metriky zapojení přes své oficiální API.',
+  'web.capabilities.note.redditReview': 'Psaní na Redditu vyžaduje schválenou aplikaci data API.',
+  'web.capabilities.note.redditMedia':
+    'Příspěvky s obrázky a videem zatím nejsou pro Reddit postaveny.',
+  'web.capabilities.note.mediumImages': 'Integrační API nepřijímá přílohy obrázků.',
+  'web.capabilities.note.mediumNoDelete': 'Integrační API nemá koncový bod pro mazání.',
+  'web.capabilities.note.devtoImages':
+    'API přijímá pouze tělo článku; nahrávání obrázků zatím není postaveno.',
+  'web.capabilities.note.pinterestNeedsImage':
+    'Pin vyžaduje obrázek; piny pouze s textem neexistují.',
+  'web.capabilities.note.pinterestReview':
+    'Psaní na Pinterestu vyžaduje schválený přístup aplikace.',
 
   /* ---------------------------------------------------------------------- */
   /* Status page surfaces                                                    */

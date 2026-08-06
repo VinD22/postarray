@@ -9,6 +9,32 @@ export const webCalendarMessages = withHebrewPluralForms({
   'web.provider.tiktok': 'TikTok',
   'web.provider.threads': 'חוטים',
   'web.provider.bluesky': 'בלוסקי',
+  'web.provider.mastodon': 'Mastodon',
+  'web.provider.telegram': 'Telegram',
+  'web.provider.reddit': 'Reddit',
+  'web.provider.wordpress': 'WordPress',
+  'web.provider.medium': 'Medium',
+  'web.provider.devto': 'Dev.to',
+  'web.provider.pinterest': 'Pinterest',
+  'web.provider.discord': 'Discord',
+  'web.provider.slack': 'Slack',
+  'web.connection.requirement.mastodon':
+    'מסטודון מתחבר עם טוקן גישה שיצרת בשרת שלך, לא עם הסיסמה שלך.',
+  'web.connection.requirement.telegram':
+    'Relay מפרסם כבוט. הוסף את הבוט לערוץ או לקבוצה שבה תרצה לפרסם.',
+  'web.connection.requirement.reddit':
+    'כתיבה לרדיט דורשת אפליקציה מאושרת, וכל פוסט צריך כותרת וסובדיט.',
+  'web.connection.requirement.wordpress':
+    'Relay מפרסם דרך ה-API של האתר עם סיסמת אפליקציה שיצרת בוורדפרס.',
+  'web.connection.requirement.medium':
+    'מידיום מתחבר דרך OAuth ו-Relay מפרסם סיפורים ציבוריים במרקדאון.',
+  'web.connection.requirement.devto': 'דב טו מתחבר עם מפתח API שיצרת בהגדרות דב טו.',
+  'web.connection.requirement.pinterest':
+    'כתיבה לפינטרסט דורשת גישת אפליקציה מאושרת, ופין צריך תמונה ולוח משלך.',
+  'web.connection.requirement.discord':
+    'Relay מפרסם כבוט. הוסף את הבוט לשרתים ולערוצים שבהם תרצה לפרסם.',
+  'web.connection.requirement.slack':
+    'Relay מפרסם כאפליקציה. הוסף את האפליקציה לערוצים שבהם תרצה לפרסם.',
   'web.provider.fake': 'בדוק מחבר',
   'web.accountType.personal_profile': 'פרופיל אישי',
   'web.accountType.creator_profile': 'חשבון יוצר',

@@ -27,6 +27,33 @@ export const webCalendarMessages = {
   'web.provider.tiktok': 'TikTok',
   'web.provider.threads': 'Threads',
   'web.provider.bluesky': 'Bluesky',
+  'web.provider.mastodon': 'Mastodon',
+  'web.provider.telegram': 'Telegram',
+  'web.provider.reddit': 'Reddit',
+  'web.provider.wordpress': 'WordPress',
+  'web.provider.medium': 'Medium',
+  'web.provider.devto': 'Dev.to',
+  'web.provider.pinterest': 'Pinterest',
+  'web.provider.discord': 'Discord',
+  'web.provider.slack': 'Slack',
+  'web.connection.requirement.mastodon':
+    'Mastodon подключается по токену доступа, созданному на вашем сервере, а не по паролю.',
+  'web.connection.requirement.telegram':
+    'Relay публикует от имени бота. Добавьте бота в канал или группу, куда хотите публиковать.',
+  'web.connection.requirement.reddit':
+    'Запись в Reddit требует одобренного приложения, а каждой публикации нужны заголовок и сабреддит.',
+  'web.connection.requirement.wordpress':
+    'Relay публикует через REST API сайта с паролем приложения, созданным в WordPress.',
+  'web.connection.requirement.medium':
+    'Medium подключается через OAuth, и Relay публикует открытые истории в Markdown.',
+  'web.connection.requirement.devto':
+    'Dev.to подключается по API-ключу, созданному в настройках Dev.to.',
+  'web.connection.requirement.pinterest':
+    'Запись в Pinterest требует одобренного доступа приложения, а пину нужны изображение и собственная доска.',
+  'web.connection.requirement.discord':
+    'Relay публикует от имени бота. Добавьте бота на серверы и в каналы, куда хотите публиковать.',
+  'web.connection.requirement.slack':
+    'Relay публикует от имени приложения. Добавьте приложение в каналы, куда хотите публиковать.',
   'web.provider.fake': 'Тестовый разъем',
 
   'web.accountType.personal_profile': 'Личный профиль',

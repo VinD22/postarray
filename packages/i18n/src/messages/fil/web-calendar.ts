@@ -27,6 +27,33 @@ export const webCalendarMessages = {
   'web.provider.tiktok': 'TikTok',
   'web.provider.threads': 'Threads',
   'web.provider.bluesky': 'Bluesky',
+  'web.provider.mastodon': 'Mastodon',
+  'web.provider.telegram': 'Telegram',
+  'web.provider.reddit': 'Reddit',
+  'web.provider.wordpress': 'WordPress',
+  'web.provider.medium': 'Medium',
+  'web.provider.devto': 'Dev.to',
+  'web.provider.pinterest': 'Pinterest',
+  'web.provider.discord': 'Discord',
+  'web.provider.slack': 'Slack',
+  'web.connection.requirement.mastodon':
+    'Kumokonekta ang Mastodon gamit ang access token na ginawa mo sa iyong sariling instance, hindi ang iyong password.',
+  'web.connection.requirement.telegram':
+    'Nagpo-post ang Relay bilang bot. Idagdag ang bot sa channel o grupo kung saan mo gustong mag-post.',
+  'web.connection.requirement.reddit':
+    'Ang pagsulat sa Reddit ay nangangailangan ng aprubadong app, at bawat post ay nangangailangan ng titulo at subreddit.',
+  'web.connection.requirement.wordpress':
+    'Nagpapublish ang Relay sa pamamagitan ng REST API ng site gamit ang app password na ginawa mo sa WordPress.',
+  'web.connection.requirement.medium':
+    'Kumokonekta ang Medium sa pamamagitan ng OAuth at nagpapublish ang Relay ng pampublikong kwento sa Markdown.',
+  'web.connection.requirement.devto':
+    'Kumokonekta ang Dev.to gamit ang API key na ginawa sa iyong mga setting ng Dev.to.',
+  'web.connection.requirement.pinterest':
+    'Ang pagsulat sa Pinterest ay nangangailangan ng aprubadong access ng app, at ang pin ay nangangailangan ng larawan at sariling board.',
+  'web.connection.requirement.discord':
+    'Nagpo-post ang Relay bilang bot. Idagdag ang bot sa mga server at channel kung saan mo gustong mag-post.',
+  'web.connection.requirement.slack':
+    'Nagpo-post ang Relay bilang app. Idagdag ang app sa mga channel kung saan mo gustong mag-post.',
   'web.provider.fake': 'Subukan ang connector',
 
   'web.accountType.personal_profile': 'Personal na profile',

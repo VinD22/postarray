@@ -1107,6 +1107,54 @@ export const webMarketingMessages = {
   'web.marketing.provider.bluesky.restriction':
     'Een open protocol zonder stap voor het beoordelen van aanvragen. Tarieflimieten en limieten voor de recordgrootte zijn nog steeds van toepassing en worden vóór verzending gehandhaafd.',
   'web.marketing.provider.bluesky.cost': 'Geen kosten per operatie.',
+  'web.marketing.provider.mastodon.label': 'Mastodon',
+  'web.marketing.provider.mastodon.accountTypes': 'Een Mastodon-account op elke instance.',
+  'web.marketing.provider.mastodon.restriction':
+    'Een open protocol zonder app-review. De tekenlimiet wordt per instance bepaald en de snelheidslimieten worden gerespecteerd.',
+  'web.marketing.provider.mastodon.cost': 'Geen kosten per bewerking.',
+  'web.marketing.provider.telegram.label': 'Telegram',
+  'web.marketing.provider.telegram.accountTypes':
+    'Een Telegram-bot die jij beheert en die post in een kanaal of groep.',
+  'web.marketing.provider.telegram.restriction':
+    'Een bot kan alleen posten waar hij is toegevoegd. De token is een applicatiegeheim en de doelchat wordt per verbinding gekozen.',
+  'web.marketing.provider.telegram.cost': 'Geen kosten per bewerking.',
+  'web.marketing.provider.reddit.label': 'Reddit',
+  'web.marketing.provider.reddit.accountTypes': 'Een Reddit-account dat mag publiceren.',
+  'web.marketing.provider.reddit.restriction':
+    'Schrijven op Reddit vereist een goedgekeurde app. Posts zijn tekst- of linkposts in toegestane subreddits; geen automatische reacties of stemmen.',
+  'web.marketing.provider.reddit.cost': 'Geen kosten per bewerking.',
+  'web.marketing.provider.wordpress.label': 'WordPress',
+  'web.marketing.provider.wordpress.accountTypes': 'Een WordPress-site met een app-wachtwoord.',
+  'web.marketing.provider.wordpress.restriction':
+    'Posts gaan via de REST API van de site als de verbonden gebruiker. Upload van afbeeldingen en video is nog niet gebouwd.',
+  'web.marketing.provider.wordpress.cost': 'Geen kosten per bewerking.',
+  'web.marketing.provider.medium.label': 'Medium',
+  'web.marketing.provider.medium.accountTypes': 'Een Medium-auteursprofiel verbonden via OAuth.',
+  'web.marketing.provider.medium.restriction':
+    'Posts verschijnen als openbare verhalen in Markdown. De integratie-API heeft geen verwijderen, dus dat wordt niet aangeboden.',
+  'web.marketing.provider.medium.cost': 'Geen kosten per bewerking.',
+  'web.marketing.provider.devto.label': 'Dev.to',
+  'web.marketing.provider.devto.accountTypes': 'Een Dev.to-profiel verbonden met de API-sleutel.',
+  'web.marketing.provider.devto.restriction':
+    'Artikelen verschijnen als openbare Markdown-posts. Upload van afbeeldingen en analyses zijn nog niet gebouwd.',
+  'web.marketing.provider.devto.cost': 'Geen kosten per bewerking.',
+  'web.marketing.provider.pinterest.label': 'Pinterest',
+  'web.marketing.provider.pinterest.accountTypes':
+    'Een Pinterest-bedrijfsaccount verbonden via OAuth.',
+  'web.marketing.provider.pinterest.restriction':
+    'Een pin vereist een afbeelding en een eigen bord. Schrijven vereist app-review; de borden worden bij het verbinden gelezen.',
+  'web.marketing.provider.pinterest.cost': 'Geen kosten per bewerking.',
+  'web.marketing.provider.discord.label': 'Discord',
+  'web.marketing.provider.discord.accountTypes':
+    'Een Discord-bot die jij beheert en die post in tekstkanalen.',
+  'web.marketing.provider.discord.restriction':
+    'De bot kan alleen posten in kanalen die hij kan zien. Tekstberichten worden ondersteund; bijlagen nog niet.',
+  'web.marketing.provider.discord.cost': 'Geen kosten per bewerking.',
+  'web.marketing.provider.slack.label': 'Slack',
+  'web.marketing.provider.slack.accountTypes': 'Een Slack-werkruimte verbonden via een OAuth-app.',
+  'web.marketing.provider.slack.restriction':
+    'Berichten gaan naar openbare en privékanalen waar de app is. Upload van bestanden en analyses zijn nog niet gebouwd.',
+  'web.marketing.provider.slack.cost': 'Geen kosten per bewerking.',
 
   /* ---------------------------------------------------------------------- */
   /* Capability matrix notes                                                 */
@@ -1156,6 +1204,23 @@ export const webMarketingMessages = {
   'web.capabilities.note.noThumbnail':
     'Dit platform accepteert geen aangepaste thumbnail via de API.',
   'web.capabilities.note.inBuild': 'Het platform biedt dit. Relay heeft het nog niet verzonden.',
+  'web.capabilities.note.noCarousel': 'Het platform biedt geen veegbare carrousel.',
+  'web.capabilities.note.noDisclosure':
+    'Het platform heeft geen openbaarmakingsveld voor AI- of commerciële inhoud.',
+  'web.capabilities.note.noAnalytics':
+    'Het platform stelt geen betrokkenheidsstatistieken beschikbaar via zijn officiële API.',
+  'web.capabilities.note.redditReview':
+    'Schrijven op Reddit vereist een goedgekeurde data-API-app.',
+  'web.capabilities.note.redditMedia':
+    'Afbeeldings- en videoposts zijn nog niet gebouwd voor Reddit.',
+  'web.capabilities.note.mediumImages': 'De integratie-API accepteert geen afbeeldingsbijlagen.',
+  'web.capabilities.note.mediumNoDelete': 'De integratie-API heeft geen verwijder-endpoint.',
+  'web.capabilities.note.devtoImages':
+    'De API accepteert alleen artikelteksten; afbeeldingsupload is nog niet gebouwd.',
+  'web.capabilities.note.pinterestNeedsImage':
+    'Een pin vereist een afbeelding; alleen-tekst-pins bestaan niet.',
+  'web.capabilities.note.pinterestReview':
+    'Schrijven op Pinterest vereist goedgekeurde app-toegang.',
 
   /* ---------------------------------------------------------------------- */
   /* Status page surfaces                                                    */

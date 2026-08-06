@@ -8,6 +8,33 @@ export const webCalendarMessages = {
   'web.provider.tiktok': 'TikTok',
   'web.provider.threads': 'Threads',
   'web.provider.bluesky': 'Bluesky',
+  'web.provider.mastodon': 'Mastodon',
+  'web.provider.telegram': 'Telegram',
+  'web.provider.reddit': 'Reddit',
+  'web.provider.wordpress': 'WordPress',
+  'web.provider.medium': 'Medium',
+  'web.provider.devto': 'Dev.to',
+  'web.provider.pinterest': 'Pinterest',
+  'web.provider.discord': 'Discord',
+  'web.provider.slack': 'Slack',
+  'web.connection.requirement.mastodon':
+    'Mastodon terhubung dengan token akses yang Anda buat di instance Anda sendiri, bukan dengan kata sandi Anda.',
+  'web.connection.requirement.telegram':
+    'Relay memposting sebagai bot. Tambahkan bot ke saluran atau grup tempat Anda ingin memposting.',
+  'web.connection.requirement.reddit':
+    'Menulis ke Reddit memerlukan aplikasi yang disetujui, dan setiap postingan memerlukan judul dan subreddit.',
+  'web.connection.requirement.wordpress':
+    'Relay mempublikasikan melalui REST API situs dengan kata sandi aplikasi yang Anda buat di WordPress.',
+  'web.connection.requirement.medium':
+    'Medium terhubung melalui OAuth dan Relay mempublikasikan cerita publik dalam Markdown.',
+  'web.connection.requirement.devto':
+    'Dev.to terhubung dengan kunci API yang dibuat di pengaturan Dev.to Anda.',
+  'web.connection.requirement.pinterest':
+    'Menulis ke Pinterest memerlukan akses aplikasi yang disetujui, dan pin memerlukan gambar dan papan milik Anda.',
+  'web.connection.requirement.discord':
+    'Relay memposting sebagai bot. Tambahkan bot ke server dan saluran tempat Anda ingin memposting.',
+  'web.connection.requirement.slack':
+    'Relay memposting sebagai aplikasi. Tambahkan aplikasi ke saluran tempat Anda ingin memposting.',
   'web.provider.fake': 'Konektor uji',
   'web.accountType.personal_profile': 'Profil pribadi',
   'web.accountType.creator_profile': 'Akun pencipta',

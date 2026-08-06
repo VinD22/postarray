@@ -937,6 +937,53 @@ export const webMarketingMessages = {
   'web.marketing.provider.bluesky.restriction':
     '申請審査ステップのないオープンプロトコル。レート制限とレコード サイズ制限は引き続き適用され、発送前に強制されます。',
   'web.marketing.provider.bluesky.cost': '操作ごとの料金はかかりません。',
+  'web.marketing.provider.mastodon.label': 'Mastodon',
+  'web.marketing.provider.mastodon.accountTypes': '任意のインスタンス上のMastodonアカウント。',
+  'web.marketing.provider.mastodon.restriction':
+    'アプリ審査のないオープンなプロトコル。文字数制限は各インスタンスが定め、そのレート制限が尊重されます。',
+  'web.marketing.provider.mastodon.cost': '操作ごとの料金はありません。',
+  'web.marketing.provider.telegram.label': 'Telegram',
+  'web.marketing.provider.telegram.accountTypes':
+    'あなたが管理し、チャンネルやグループに投稿するTelegramボット。',
+  'web.marketing.provider.telegram.restriction':
+    'ボットは追加された場所にのみ投稿できます。トークンはアプリケーションの認証情報で、対象チャットは接続ごとに選択します。',
+  'web.marketing.provider.telegram.cost': '操作ごとの料金はありません。',
+  'web.marketing.provider.reddit.label': 'Reddit',
+  'web.marketing.provider.reddit.accountTypes': '投稿が許可されたRedditアカウント。',
+  'web.marketing.provider.reddit.restriction':
+    'Redditへの書き込みには承認済みアプリが必要です。投稿は許可されたサブレディットへのテキストまたはリンク投稿で、自動コメントや投票はありません。',
+  'web.marketing.provider.reddit.cost': '操作ごとの料金はありません。',
+  'web.marketing.provider.wordpress.label': 'WordPress',
+  'web.marketing.provider.wordpress.accountTypes': 'アプリパスワードを持つWordPressサイト。',
+  'web.marketing.provider.wordpress.restriction':
+    '投稿はサイトのREST APIを通じて接続ユーザーとして公開されます。画像・動画のアップロードはまだ未実装です。',
+  'web.marketing.provider.wordpress.cost': '操作ごとの料金はありません。',
+  'web.marketing.provider.medium.label': 'Medium',
+  'web.marketing.provider.medium.accountTypes': 'OAuthで接続したMediumの著者プロフィール。',
+  'web.marketing.provider.medium.restriction':
+    '投稿はMarkdownの公開記事として公開されます。統合APIに削除がないため、削除は提供しません。',
+  'web.marketing.provider.medium.cost': '操作ごとの料金はありません。',
+  'web.marketing.provider.devto.label': 'Dev.to',
+  'web.marketing.provider.devto.accountTypes': 'APIキーで接続したDev.toプロフィール。',
+  'web.marketing.provider.devto.restriction':
+    '記事は公開Markdown投稿として公開されます。画像アップロードと分析はまだ未実装です。',
+  'web.marketing.provider.devto.cost': '操作ごとの料金はありません。',
+  'web.marketing.provider.pinterest.label': 'Pinterest',
+  'web.marketing.provider.pinterest.accountTypes': 'OAuthで接続したPinterestビジネスアカウント。',
+  'web.marketing.provider.pinterest.restriction':
+    'ピンには画像と自分のボードが必要です。書き込みにはアプリ審査が必要で、ボードは接続時に読み取ります。',
+  'web.marketing.provider.pinterest.cost': '操作ごとの料金はありません。',
+  'web.marketing.provider.discord.label': 'Discord',
+  'web.marketing.provider.discord.accountTypes':
+    'あなたが管理し、テキストチャンネルに投稿するDiscordボット。',
+  'web.marketing.provider.discord.restriction':
+    'ボットは見えるチャンネルにのみ投稿できます。テキストメッセージは対応済み、添付ファイルは未対応です。',
+  'web.marketing.provider.discord.cost': '操作ごとの料金はありません。',
+  'web.marketing.provider.slack.label': 'Slack',
+  'web.marketing.provider.slack.accountTypes': 'OAuthアプリで接続したSlackワークスペース。',
+  'web.marketing.provider.slack.restriction':
+    'メッセージはアプリがいる公開・プライベートチャンネルに送信されます。ファイルアップロードと分析はまだ未実装です。',
+  'web.marketing.provider.slack.cost': '操作ごとの料金はありません。',
   'web.capabilities.short.supported': 'サポートされています',
   'web.capabilities.short.unsupported': 'プラットフォームが提供していない',
   'web.capabilities.short.not_implemented': 'まだ構築されていません',
@@ -984,6 +1031,22 @@ export const webMarketingMessages = {
     'このプラットフォームは、API を介してカスタム サムネイルを受け入れません。',
   'web.capabilities.note.inBuild':
     'プラットフォームはこれを提供します。 Relay はまだ出荷されていません。',
+  'web.capabilities.note.noCarousel':
+    'このプラットフォームはスワイプ式カルーセルを提供していません。',
+  'web.capabilities.note.noDisclosure':
+    'このプラットフォームにはAI・商業コンテンツの開示欄がありません。',
+  'web.capabilities.note.noAnalytics':
+    'このプラットフォームは公式APIでエンゲージメント指標を公開していません。',
+  'web.capabilities.note.redditReview': 'Redditへの書き込みには承認済みデータAPIアプリが必要です。',
+  'web.capabilities.note.redditMedia': 'Redditの画像・動画投稿はまだ未実装です。',
+  'web.capabilities.note.mediumImages': '統合APIは画像添付を受け付けません。',
+  'web.capabilities.note.mediumNoDelete': '統合APIに削除エンドポイントはありません。',
+  'web.capabilities.note.devtoImages':
+    'APIは記事本文のみ受け付けます。画像アップロードはまだ未実装です。',
+  'web.capabilities.note.pinterestNeedsImage':
+    'ピンには画像が必要です。テキストのみのピンは存在しません。',
+  'web.capabilities.note.pinterestReview':
+    'Pinterestへの書き込みには承認済みアプリアクセスが必要です。',
   'web.status.surface.web': 'ウェブアプリ',
   'web.status.surface.api': 'REST API',
   'web.status.surface.mcp': 'MCPサーバー',

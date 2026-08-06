@@ -8,6 +8,32 @@ export const webCalendarMessages = {
   'web.provider.tiktok': 'TikTok',
   'web.provider.threads': 'Threads',
   'web.provider.bluesky': 'Bluesky',
+  'web.provider.mastodon': 'Mastodon',
+  'web.provider.telegram': 'Telegram',
+  'web.provider.reddit': 'Reddit',
+  'web.provider.wordpress': 'WordPress',
+  'web.provider.medium': 'Medium',
+  'web.provider.devto': 'Dev.to',
+  'web.provider.pinterest': 'Pinterest',
+  'web.provider.discord': 'Discord',
+  'web.provider.slack': 'Slack',
+  'web.connection.requirement.mastodon':
+    'Mastodonは自分のインスタンスで作成したアクセストークンで接続します。パスワードではありません。',
+  'web.connection.requirement.telegram':
+    'Relayはボットとして投稿します。投稿したいチャンネルまたはグループにボットを追加してください。',
+  'web.connection.requirement.reddit':
+    'Redditへの書き込みには承認済みアプリが必要で、各投稿にはタイトルとサブレディットが必要です。',
+  'web.connection.requirement.wordpress':
+    'RelayはWordPressで作成したアプリパスワードでサイトのREST APIを通じて公開します。',
+  'web.connection.requirement.medium':
+    'MediumはOAuthで接続し、RelayはMarkdownで公開記事を公開します。',
+  'web.connection.requirement.devto': 'Dev.toはDev.to設定で作成したAPIキーで接続します。',
+  'web.connection.requirement.pinterest':
+    'Pinterestへの書き込みには承認済みアプリアクセスが必要で、ピンには画像と自分のボードが必要です。',
+  'web.connection.requirement.discord':
+    'Relayはボットとして投稿します。投稿したいサーバーとチャンネルにボットを追加してください。',
+  'web.connection.requirement.slack':
+    'Relayはアプリとして投稿します。投稿したいチャンネルにアプリを追加してください。',
   'web.provider.fake': 'テストコネクタ',
   'web.accountType.personal_profile': '個人プロフィール',
   'web.accountType.creator_profile': 'クリエイターアカウント',

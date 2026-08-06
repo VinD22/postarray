@@ -27,6 +27,33 @@ export const webCalendarMessages = {
   'web.provider.tiktok': 'TikTok',
   'web.provider.threads': 'Wątki',
   'web.provider.bluesky': 'Błękitne niebo',
+  'web.provider.mastodon': 'Mastodon',
+  'web.provider.telegram': 'Telegram',
+  'web.provider.reddit': 'Reddit',
+  'web.provider.wordpress': 'WordPress',
+  'web.provider.medium': 'Medium',
+  'web.provider.devto': 'Dev.to',
+  'web.provider.pinterest': 'Pinterest',
+  'web.provider.discord': 'Discord',
+  'web.provider.slack': 'Slack',
+  'web.connection.requirement.mastodon':
+    'Mastodon łączy się z tokenem dostępu utworzonym na Twojej instancji, nie z hasłem.',
+  'web.connection.requirement.telegram':
+    'Relay publikuje jako bot. Dodaj bota do kanału lub grupy, gdzie chcesz publikować.',
+  'web.connection.requirement.reddit':
+    'Pisanie na Reddicie wymaga zatwierdzonej aplikacji, a każdy post potrzebuje tytułu i subreddita.',
+  'web.connection.requirement.wordpress':
+    'Relay publikuje przez REST API witryny z hasłem aplikacji utworzonym w WordPressie.',
+  'web.connection.requirement.medium':
+    'Medium łączy się przez OAuth, a Relay publikuje publiczne historie w Markdown.',
+  'web.connection.requirement.devto':
+    'Dev.to łączy się z kluczem API utworzonym w ustawieniach Dev.to.',
+  'web.connection.requirement.pinterest':
+    'Pisanie na Pintereście wymaga zatwierdzonego dostępu aplikacji, a pin potrzebuje obrazu i własnej tablicy.',
+  'web.connection.requirement.discord':
+    'Relay publikuje jako bot. Dodaj bota do serwerów i kanałów, gdzie chcesz publikować.',
+  'web.connection.requirement.slack':
+    'Relay publikuje jako aplikacja. Dodaj aplikację do kanałów, gdzie chcesz publikować.',
   'web.provider.fake': 'Złącze testowe',
 
   'web.accountType.personal_profile': 'Profil osobisty',

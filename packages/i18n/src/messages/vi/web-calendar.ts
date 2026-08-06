@@ -8,6 +8,33 @@ export const webCalendarMessages = {
   'web.provider.tiktok': 'TikTok',
   'web.provider.threads': 'Threads',
   'web.provider.bluesky': 'Bluesky',
+  'web.provider.mastodon': 'Mastodon',
+  'web.provider.telegram': 'Telegram',
+  'web.provider.reddit': 'Reddit',
+  'web.provider.wordpress': 'WordPress',
+  'web.provider.medium': 'Medium',
+  'web.provider.devto': 'Dev.to',
+  'web.provider.pinterest': 'Pinterest',
+  'web.provider.discord': 'Discord',
+  'web.provider.slack': 'Slack',
+  'web.connection.requirement.mastodon':
+    'Mastodon kết nối bằng mã truy cập bạn tạo trên máy chủ của mình, không phải mật khẩu của bạn.',
+  'web.connection.requirement.telegram':
+    'Relay đăng với tư cách bot. Thêm bot vào kênh hoặc nhóm nơi bạn muốn đăng.',
+  'web.connection.requirement.reddit':
+    'Viết lên Reddit yêu cầu ứng dụng được phê duyệt và mỗi bài đăng cần tiêu đề và subreddit.',
+  'web.connection.requirement.wordpress':
+    'Relay xuất bản qua REST API của trang bằng mật khẩu ứng dụng bạn tạo trong WordPress.',
+  'web.connection.requirement.medium':
+    'Medium kết nối qua OAuth và Relay xuất bản bài viết công khai bằng Markdown.',
+  'web.connection.requirement.devto':
+    'Dev.to kết nối bằng khóa API tạo trong cài đặt Dev.to của bạn.',
+  'web.connection.requirement.pinterest':
+    'Viết lên Pinterest yêu cầu quyền truy cập ứng dụng được phê duyệt và một pin cần hình ảnh và bảng của bạn.',
+  'web.connection.requirement.discord':
+    'Relay đăng với tư cách bot. Thêm bot vào máy chủ và kênh nơi bạn muốn đăng.',
+  'web.connection.requirement.slack':
+    'Relay đăng với tư cách ứng dụng. Thêm ứng dụng vào các kênh nơi bạn muốn đăng.',
   'web.provider.fake': 'Đầu nối thử nghiệm',
   'web.accountType.personal_profile': 'Hồ sơ cá nhân',
   'web.accountType.creator_profile': 'Tài khoản người sáng tạo',

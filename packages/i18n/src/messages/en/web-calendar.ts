@@ -27,6 +27,15 @@ export const webCalendarMessages = {
   'web.provider.tiktok': 'TikTok',
   'web.provider.threads': 'Threads',
   'web.provider.bluesky': 'Bluesky',
+  'web.provider.mastodon': 'Mastodon',
+  'web.provider.telegram': 'Telegram',
+  'web.provider.reddit': 'Reddit',
+  'web.provider.wordpress': 'WordPress',
+  'web.provider.medium': 'Medium',
+  'web.provider.devto': 'Dev.to',
+  'web.provider.pinterest': 'Pinterest',
+  'web.provider.discord': 'Discord',
+  'web.provider.slack': 'Slack',
   'web.provider.fake': 'Test connector',
 
   'web.accountType.personal_profile': 'Personal profile',
@@ -350,6 +359,24 @@ export const webCalendarMessages = {
     'Threads publishing uses the account linked to your Instagram professional account.',
   'web.connection.requirement.bluesky':
     'Bluesky connects with an app password created in your Bluesky settings, not your account password.',
+  'web.connection.requirement.mastodon':
+    'Mastodon connects with an access token you create on your own instance, not your account password.',
+  'web.connection.requirement.telegram':
+    'Relay posts as a bot. Add the bot to the channel or group you want to publish into.',
+  'web.connection.requirement.reddit':
+    'Writing to Reddit requires an approved application, and every post needs a title and a subreddit.',
+  'web.connection.requirement.wordpress':
+    'Relay publishes through the site REST API with an application password you create in WordPress.',
+  'web.connection.requirement.medium':
+    'Medium connects through OAuth and Relay publishes public stories in Markdown.',
+  'web.connection.requirement.devto':
+    'Dev.to connects with an API key created in your Dev.to settings.',
+  'web.connection.requirement.pinterest':
+    'Writing to Pinterest requires approved app access, and a pin needs an image and a board you own.',
+  'web.connection.requirement.discord':
+    'Relay posts as a bot. Add the bot to the servers and channels you want to publish into.',
+  'web.connection.requirement.slack':
+    'Relay posts as an app. Add the app to the channels you want to publish into.',
   'web.connection.requirement.generic':
     'You need permission to post on this account from the platform itself. Relay cannot grant it.',
 

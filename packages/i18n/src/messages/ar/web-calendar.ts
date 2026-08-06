@@ -27,6 +27,32 @@ export const webCalendarMessages = {
   'web.provider.tiktok': 'TikTok',
   'web.provider.threads': 'Threads',
   'web.provider.bluesky': 'Bluesky',
+  'web.provider.mastodon': 'Mastodon',
+  'web.provider.telegram': 'Telegram',
+  'web.provider.reddit': 'Reddit',
+  'web.provider.wordpress': 'WordPress',
+  'web.provider.medium': 'Medium',
+  'web.provider.devto': 'Dev.to',
+  'web.provider.pinterest': 'Pinterest',
+  'web.provider.discord': 'Discord',
+  'web.provider.slack': 'Slack',
+  'web.connection.requirement.mastodon':
+    'يتصل ماستودون برمز وصول تنشئه على خادمك الخاص، وليس بكلمة مرورك.',
+  'web.connection.requirement.telegram':
+    'ينشر Relay كبوت. أضف البوت إلى القناة أو المجموعة التي تريد النشر فيها.',
+  'web.connection.requirement.reddit':
+    'الكتابة في ريديت تتطلب تطبيقاً معتمداً، وكل منشور يحتاج عنواناً ومجتمعاً.',
+  'web.connection.requirement.wordpress':
+    'ينشر Relay عبر واجهة REST للموقع بكلمة مرور تطبيق تنشئها في ووردبريس.',
+  'web.connection.requirement.medium':
+    'يتصل ميديوم عبر OAuth وينشر Relay قصصاً عامة بصيغة ماركداون.',
+  'web.connection.requirement.devto': 'يتصل ديف تو بمفتاح واجهة تنشئه في إعدادات ديف تو.',
+  'web.connection.requirement.pinterest':
+    'الكتابة في بينترست تتطلب وصول تطبيق معتمداً، والدبوس يحتاج صورة ولوحة خاصة بك.',
+  'web.connection.requirement.discord':
+    'ينشر Relay كبوت. أضف البوت إلى الخوادم والقنوات التي تريد النشر فيها.',
+  'web.connection.requirement.slack':
+    'ينشر Relay كتطبيق. أضف التطبيق إلى القنوات التي تريد النشر فيها.',
   'web.provider.fake': 'موصل الاختبار',
 
   'web.accountType.personal_profile': 'الملف الشخصي',

@@ -1111,6 +1111,55 @@ export const webMarketingMessages = {
   'web.marketing.provider.bluesky.restriction':
     'Uygulama inceleme adımı olmayan açık bir protokol. Hız sınırları ve kayıt boyutu sınırları hala geçerlidir ve sevkıyattan önce uygulanır.',
   'web.marketing.provider.bluesky.cost': 'İşlem başına ücret yoktur.',
+  'web.marketing.provider.mastodon.label': 'Mastodon',
+  'web.marketing.provider.mastodon.accountTypes': 'Herhangi bir sunucudaki Mastodon hesabı.',
+  'web.marketing.provider.mastodon.restriction':
+    'Uygulama incelemesi gerektirmeyen açık bir protokol. Karakter sınırını her sunucu belirler ve hız sınırlarına uyulur.',
+  'web.marketing.provider.mastodon.cost': 'İşlem başına ücret yok.',
+  'web.marketing.provider.telegram.label': 'Telegram',
+  'web.marketing.provider.telegram.accountTypes':
+    'Kontrol ettiğiniz ve bir kanala veya gruba gönderen Telegram botu.',
+  'web.marketing.provider.telegram.restriction':
+    'Bir bot yalnızca eklendiği yerlere gönderim yapabilir. Token bir uygulama kimliğidir ve hedef sohbet bağlantı başına seçilir.',
+  'web.marketing.provider.telegram.cost': 'İşlem başına ücret yok.',
+  'web.marketing.provider.reddit.label': 'Reddit',
+  'web.marketing.provider.reddit.accountTypes': 'Gönderim yapmaya yetkili bir Reddit hesabı.',
+  'web.marketing.provider.reddit.restriction':
+    "Reddit'e yazmak onaylı bir uygulama gerektirir. Gönderiler izin verilen subreddit'lere metin veya bağlantı olarak gider; otomatik yorum veya oy yoktur.",
+  'web.marketing.provider.reddit.cost': 'İşlem başına ücret yok.',
+  'web.marketing.provider.wordpress.label': 'WordPress',
+  'web.marketing.provider.wordpress.accountTypes': 'Uygulama parolası olan bir WordPress sitesi.',
+  'web.marketing.provider.wordpress.restriction':
+    "Gönderiler sitenin REST API'si üzerinden bağlı kullanıcı olarak yayınlanır. Görsel ve video yükleme henüz geliştirilmedi.",
+  'web.marketing.provider.wordpress.cost': 'İşlem başına ücret yok.',
+  'web.marketing.provider.medium.label': 'Medium',
+  'web.marketing.provider.medium.accountTypes': 'OAuth ile bağlanan bir Medium yazar profili.',
+  'web.marketing.provider.medium.restriction':
+    "Gönderiler Markdown ile herkese açık hikayeler olarak yayınlanır. Entegrasyon API'sinde silme yoktur, bu yüzden sunulmaz.",
+  'web.marketing.provider.medium.cost': 'İşlem başına ücret yok.',
+  'web.marketing.provider.devto.label': 'Dev.to',
+  'web.marketing.provider.devto.accountTypes': 'API anahtarıyla bağlanan bir Dev.to profili.',
+  'web.marketing.provider.devto.restriction':
+    'Makaleler herkese açık Markdown gönderileri olarak yayınlanır. Görsel yükleme ve analitik henüz geliştirilmedi.',
+  'web.marketing.provider.devto.cost': 'İşlem başına ücret yok.',
+  'web.marketing.provider.pinterest.label': 'Pinterest',
+  'web.marketing.provider.pinterest.accountTypes':
+    'OAuth ile bağlanan bir Pinterest işletme hesabı.',
+  'web.marketing.provider.pinterest.restriction':
+    'Bir pin görsel ve size ait bir pano gerektirir. Gönderim uygulama incelemesi gerektirir; panolar bağlantıda okunur.',
+  'web.marketing.provider.pinterest.cost': 'İşlem başına ücret yok.',
+  'web.marketing.provider.discord.label': 'Discord',
+  'web.marketing.provider.discord.accountTypes':
+    'Kontrol ettiğiniz ve metin kanallarına gönderen Discord botu.',
+  'web.marketing.provider.discord.restriction':
+    'Bot yalnızca görebildiği kanallara gönderim yapabilir. Metin mesajları desteklenir; dosya ekleri henüz değil.',
+  'web.marketing.provider.discord.cost': 'İşlem başına ücret yok.',
+  'web.marketing.provider.slack.label': 'Slack',
+  'web.marketing.provider.slack.accountTypes':
+    'Bir OAuth uygulamasıyla bağlanan Slack çalışma alanı.',
+  'web.marketing.provider.slack.restriction':
+    'Mesajlar uygulamanın bulunduğu açık ve özel kanallara gider. Dosya yükleme ve analitik henüz geliştirilmedi.',
+  'web.marketing.provider.slack.cost': 'İşlem başına ücret yok.',
 
   /* ---------------------------------------------------------------------- */
   /* Capability matrix notes                                                 */
@@ -1160,6 +1209,22 @@ export const webMarketingMessages = {
   'web.capabilities.note.noThumbnail':
     "Bu platform, API'si aracılığıyla özel bir küçük resmi kabul etmez.",
   'web.capabilities.note.inBuild': 'Platform bunu sunuyor. Röle henüz göndermedi.',
+  'web.capabilities.note.noCarousel': 'Platform kaydırmalı bir karusel sunmuyor.',
+  'web.capabilities.note.noDisclosure':
+    'Platformun yapay zeka veya ticari içerik için açıklama alanı yok.',
+  'web.capabilities.note.noAnalytics':
+    'Platform resmi API üzerinden etkileşim metrikleri sunmuyor.',
+  'web.capabilities.note.redditReview':
+    "Reddit'e yazmak onaylı bir veri API uygulaması gerektirir.",
+  'web.capabilities.note.redditMedia':
+    'Reddit için görsel ve video gönderimleri henüz geliştirilmedi.',
+  'web.capabilities.note.mediumImages': "Entegrasyon API'si görsel eki kabul etmiyor.",
+  'web.capabilities.note.mediumNoDelete': "Entegrasyon API'sinde silme uç noktası yok.",
+  'web.capabilities.note.devtoImages':
+    'API yalnızca makale gövdesi kabul eder; görsel yükleme henüz geliştirilmedi.',
+  'web.capabilities.note.pinterestNeedsImage':
+    'Bir pin görsel gerektirir; yalnızca metin pinleri yoktur.',
+  'web.capabilities.note.pinterestReview': "Pinterest'e yazmak onaylı uygulama erişimi gerektirir.",
 
   /* ---------------------------------------------------------------------- */
   /* Status page surfaces                                                    */

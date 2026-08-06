@@ -1105,6 +1105,56 @@ export const webMarketingMessages = {
   'web.marketing.provider.bluesky.restriction':
     "Un protocole ouvert sans étape d’examen des candidatures. Les limites de débit et de taille d'enregistrement s'appliquent toujours et sont appliquées avant l'expédition.",
   'web.marketing.provider.bluesky.cost': 'Pas de frais par opération.',
+  'web.marketing.provider.mastodon.label': 'Mastodon',
+  'web.marketing.provider.mastodon.accountTypes':
+    'Un compte Mastodon sur n’importe quelle instance.',
+  'web.marketing.provider.mastodon.restriction':
+    'Un protocole ouvert sans étape de revue d’application. La limite de caractères est fixée par chaque instance et ses limites de rythme sont respectées.',
+  'web.marketing.provider.mastodon.cost': 'Pas de frais par opération.',
+  'web.marketing.provider.telegram.label': 'Telegram',
+  'web.marketing.provider.telegram.accountTypes':
+    'Un bot Telegram que vous contrôlez, publiant dans un canal ou un groupe.',
+  'web.marketing.provider.telegram.restriction':
+    'Un bot ne publie que là où il a été ajouté. Le jeton est une identifiants d’application et le chat cible est choisi par connexion.',
+  'web.marketing.provider.telegram.cost': 'Pas de frais par opération.',
+  'web.marketing.provider.reddit.label': 'Reddit',
+  'web.marketing.provider.reddit.accountTypes': 'Un compte Reddit autorisé à publier.',
+  'web.marketing.provider.reddit.restriction':
+    'Écrire sur Reddit exige une application approuvée. Les publications sont des posts texte ou lien dans les subreddits autorisés ; aucun commentaire ni vote automatique.',
+  'web.marketing.provider.reddit.cost': 'Pas de frais par opération.',
+  'web.marketing.provider.wordpress.label': 'WordPress',
+  'web.marketing.provider.wordpress.accountTypes':
+    'Un site WordPress avec un mot de passe d’application.',
+  'web.marketing.provider.wordpress.restriction':
+    'Les publications sortent par l’API REST du site en tant qu’utilisateur connecté. L’upload d’images et de vidéos n’est pas encore construit.',
+  'web.marketing.provider.wordpress.cost': 'Pas de frais par opération.',
+  'web.marketing.provider.medium.label': 'Medium',
+  'web.marketing.provider.medium.accountTypes': 'Un profil d’auteur Medium connecté via OAuth.',
+  'web.marketing.provider.medium.restriction':
+    'Les publications sortent en histoires publiques en Markdown. L’API d’intégration n’a pas de suppression, donc elle n’est pas offerte.',
+  'web.marketing.provider.medium.cost': 'Pas de frais par opération.',
+  'web.marketing.provider.devto.label': 'Dev.to',
+  'web.marketing.provider.devto.accountTypes': 'Un profil Dev.to connecté avec sa clé API.',
+  'web.marketing.provider.devto.restriction':
+    'Les articles sortent en posts Markdown publics. L’upload d’images et les analyses ne sont pas encore construits.',
+  'web.marketing.provider.devto.cost': 'Pas de frais par opération.',
+  'web.marketing.provider.pinterest.label': 'Pinterest',
+  'web.marketing.provider.pinterest.accountTypes':
+    'Un compte professionnel Pinterest connecté via OAuth.',
+  'web.marketing.provider.pinterest.restriction':
+    'Un pin exige une image et un tableau qui vous appartient. Écrire exige une revue d’application et les tableaux sont lus à la connexion.',
+  'web.marketing.provider.pinterest.cost': 'Pas de frais par opération.',
+  'web.marketing.provider.discord.label': 'Discord',
+  'web.marketing.provider.discord.accountTypes':
+    'Un bot Discord que vous contrôlez, publiant dans des canaux texte.',
+  'web.marketing.provider.discord.restriction':
+    'Le bot ne publie que dans les canaux qu’il voit. Les messages texte sont pris en charge ; les pièces jointes pas encore.',
+  'web.marketing.provider.discord.cost': 'Pas de frais par opération.',
+  'web.marketing.provider.slack.label': 'Slack',
+  'web.marketing.provider.slack.accountTypes': 'Un espace Slack connecté via une app OAuth.',
+  'web.marketing.provider.slack.restriction':
+    'Les messages sortent vers les canaux publics et privés où se trouve l’app. L’upload de fichiers et les analyses ne sont pas encore construits.',
+  'web.marketing.provider.slack.cost': 'Pas de frais par opération.',
 
   /* ---------------------------------------------------------------------- */
   /* Capability matrix notes                                                 */
@@ -1157,6 +1207,24 @@ export const webMarketingMessages = {
   'web.capabilities.note.noThumbnail':
     "Cette plateforme n'accepte pas de vignette personnalisée via son API.",
   'web.capabilities.note.inBuild': 'La plateforme propose cela. Relay ne l’a pas encore expédié.',
+  'web.capabilities.note.noCarousel': 'La plateforme n’offre pas de carrousel balayable.',
+  'web.capabilities.note.noDisclosure':
+    'La plateforme n’a pas de champ de divulgation pour le contenu IA ou commercial.',
+  'web.capabilities.note.noAnalytics':
+    'La plateforme n’expose pas de métriques d’engagement via son API officielle.',
+  'web.capabilities.note.redditReview':
+    'Écrire sur Reddit exige une application approuvée pour l’API de données.',
+  'web.capabilities.note.redditMedia':
+    'Les posts image et vidéo ne sont pas encore construits pour Reddit.',
+  'web.capabilities.note.mediumImages':
+    'L’API d’intégration n’accepte pas de pièces jointes d’image.',
+  'web.capabilities.note.mediumNoDelete': 'L’API d’intégration n’a pas d’endpoint de suppression.',
+  'web.capabilities.note.devtoImages':
+    'L’API n’accepte que les corps d’article ; l’upload d’images n’est pas encore construit.',
+  'web.capabilities.note.pinterestNeedsImage':
+    'Un pin exige une image ; les pins texte seul n’existent pas.',
+  'web.capabilities.note.pinterestReview':
+    'Écrire sur Pinterest exige un accès d’application approuvé.',
 
   /* ---------------------------------------------------------------------- */
   /* Status page surfaces                                                    */

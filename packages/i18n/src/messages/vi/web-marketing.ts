@@ -953,6 +953,55 @@ export const webMarketingMessages = {
   'web.marketing.provider.bluesky.restriction':
     'Một giao thức mở không có bước xem xét ứng dụng. Giới hạn tỷ lệ và giới hạn kích thước bản ghi vẫn được áp dụng và được thực thi trước khi gửi đi.',
   'web.marketing.provider.bluesky.cost': 'Không tính phí cho mỗi hoạt động.',
+  'web.marketing.provider.mastodon.label': 'Mastodon',
+  'web.marketing.provider.mastodon.accountTypes': 'Tài khoản Mastodon trên bất kỳ máy chủ nào.',
+  'web.marketing.provider.mastodon.restriction':
+    'Giao thức mở không cần duyệt ứng dụng. Giới hạn ký tự do từng máy chủ đặt ra và giới hạn tần suất của máy chủ được tôn trọng.',
+  'web.marketing.provider.mastodon.cost': 'Không tính phí mỗi thao tác.',
+  'web.marketing.provider.telegram.label': 'Telegram',
+  'web.marketing.provider.telegram.accountTypes':
+    'Bot Telegram bạn kiểm soát, đăng vào kênh hoặc nhóm.',
+  'web.marketing.provider.telegram.restriction':
+    'Bot chỉ đăng được nơi nó được thêm vào. Token là thông tin ứng dụng và cuộc trò chuyện đích được chọn theo từng kết nối.',
+  'web.marketing.provider.telegram.cost': 'Không tính phí mỗi thao tác.',
+  'web.marketing.provider.reddit.label': 'Reddit',
+  'web.marketing.provider.reddit.accountTypes': 'Tài khoản Reddit được phép đăng bài.',
+  'web.marketing.provider.reddit.restriction':
+    'Viết lên Reddit yêu cầu ứng dụng được phê duyệt. Bài đăng là văn bản hoặc liên kết trong các subreddit được phép; không có bình luận hoặc bỏ phiếu tự động.',
+  'web.marketing.provider.reddit.cost': 'Không tính phí mỗi thao tác.',
+  'web.marketing.provider.wordpress.label': 'WordPress',
+  'web.marketing.provider.wordpress.accountTypes': 'Trang WordPress có mật khẩu ứng dụng.',
+  'web.marketing.provider.wordpress.restriction':
+    'Bài đăng xuất ra qua REST API của trang với tư cách người dùng đã kết nối. Tải ảnh và video chưa được xây dựng.',
+  'web.marketing.provider.wordpress.cost': 'Không tính phí mỗi thao tác.',
+  'web.marketing.provider.medium.label': 'Medium',
+  'web.marketing.provider.medium.accountTypes': 'Hồ sơ tác giả Medium kết nối qua OAuth.',
+  'web.marketing.provider.medium.restriction':
+    'Bài đăng xuất ra dưới dạng bài viết công khai bằng Markdown. API tích hợp không có xóa, nên không được cung cấp.',
+  'web.marketing.provider.medium.cost': 'Không tính phí mỗi thao tác.',
+  'web.marketing.provider.devto.label': 'Dev.to',
+  'web.marketing.provider.devto.accountTypes': 'Hồ sơ Dev.to kết nối bằng khóa API của nó.',
+  'web.marketing.provider.devto.restriction':
+    'Bài viết xuất ra dưới dạng bài đăng Markdown công khai. Tải ảnh và phân tích chưa được xây dựng.',
+  'web.marketing.provider.devto.cost': 'Không tính phí mỗi thao tác.',
+  'web.marketing.provider.pinterest.label': 'Pinterest',
+  'web.marketing.provider.pinterest.accountTypes':
+    'Tài khoản doanh nghiệp Pinterest kết nối qua OAuth.',
+  'web.marketing.provider.pinterest.restriction':
+    'Một pin cần hình ảnh và một bảng của bạn. Viết yêu cầu duyệt ứng dụng; các bảng được đọc khi kết nối.',
+  'web.marketing.provider.pinterest.cost': 'Không tính phí mỗi thao tác.',
+  'web.marketing.provider.discord.label': 'Discord',
+  'web.marketing.provider.discord.accountTypes':
+    'Bot Discord bạn kiểm soát, đăng vào các kênh văn bản.',
+  'web.marketing.provider.discord.restriction':
+    'Bot chỉ đăng vào các kênh nó nhìn thấy. Tin nhắn văn bản được hỗ trợ; tệp đính kèm chưa.',
+  'web.marketing.provider.discord.cost': 'Không tính phí mỗi thao tác.',
+  'web.marketing.provider.slack.label': 'Slack',
+  'web.marketing.provider.slack.accountTypes':
+    'Không gian làm việc Slack kết nối qua ứng dụng OAuth.',
+  'web.marketing.provider.slack.restriction':
+    'Tin nhắn đi đến các kênh công khai và riêng tư nơi ứng dụng hiện diện. Tải tệp và phân tích chưa được xây dựng.',
+  'web.marketing.provider.slack.cost': 'Không tính phí mỗi thao tác.',
   'web.capabilities.short.supported': 'Được hỗ trợ',
   'web.capabilities.short.unsupported': 'Nền tảng không cung cấp nó',
   'web.capabilities.short.not_implemented': 'Chưa được xây dựng',
@@ -997,6 +1046,21 @@ export const webMarketingMessages = {
   'web.capabilities.note.noThumbnail':
     'Nền tảng này không chấp nhận hình thu nhỏ tùy chỉnh thông qua API của nó.',
   'web.capabilities.note.inBuild': 'Nền tảng cung cấp điều này. Relay vẫn chưa xuất xưởng.',
+  'web.capabilities.note.noCarousel': 'Nền tảng không cung cấp băng chuyền vuốt.',
+  'web.capabilities.note.noDisclosure':
+    'Nền tảng không có trường công bố cho nội dung AI hoặc thương mại.',
+  'web.capabilities.note.noAnalytics':
+    'Nền tảng không cung cấp chỉ số tương tác qua API chính thức.',
+  'web.capabilities.note.redditReview': 'Viết lên Reddit yêu cầu ứng dụng data API được phê duyệt.',
+  'web.capabilities.note.redditMedia': 'Bài đăng hình ảnh và video chưa được xây dựng cho Reddit.',
+  'web.capabilities.note.mediumImages': 'API tích hợp không chấp nhận tệp đính kèm hình ảnh.',
+  'web.capabilities.note.mediumNoDelete': 'API tích hợp không có điểm cuối xóa.',
+  'web.capabilities.note.devtoImages':
+    'API chỉ chấp nhận nội dung bài viết; tải ảnh chưa được xây dựng.',
+  'web.capabilities.note.pinterestNeedsImage':
+    'Một pin cần hình ảnh; pin chỉ văn bản không tồn tại.',
+  'web.capabilities.note.pinterestReview':
+    'Viết lên Pinterest yêu cầu quyền truy cập ứng dụng được phê duyệt.',
   'web.status.surface.web': 'Ứng dụng web',
   'web.status.surface.api': 'API REST',
   'web.status.surface.mcp': 'máy chủ MCP',

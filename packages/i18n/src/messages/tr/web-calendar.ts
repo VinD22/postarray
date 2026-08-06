@@ -27,6 +27,33 @@ export const webCalendarMessages = {
   'web.provider.tiktok': 'Tiktok',
   'web.provider.threads': 'Konular',
   'web.provider.bluesky': 'Mavi gökyüzü',
+  'web.provider.mastodon': 'Mastodon',
+  'web.provider.telegram': 'Telegram',
+  'web.provider.reddit': 'Reddit',
+  'web.provider.wordpress': 'WordPress',
+  'web.provider.medium': 'Medium',
+  'web.provider.devto': 'Dev.to',
+  'web.provider.pinterest': 'Pinterest',
+  'web.provider.discord': 'Discord',
+  'web.provider.slack': 'Slack',
+  'web.connection.requirement.mastodon':
+    'Mastodon, kendi sunucunuzda oluşturduğunuz erişim belirteciyle bağlanır, şifrenizle değil.',
+  'web.connection.requirement.telegram':
+    'Relay bir bot olarak yayınlar. Gönderim yapmak istediğiniz kanala veya gruba botu ekleyin.',
+  'web.connection.requirement.reddit':
+    "Reddit'e yazmak onaylı bir uygulama gerektirir ve her gönderinin bir başlığa ve subreddit'e ihtiyacı vardır.",
+  'web.connection.requirement.wordpress':
+    "Relay, WordPress'te oluşturduğunuz bir uygulama parolasıyla sitenin REST API'si üzerinden yayınlar.",
+  'web.connection.requirement.medium':
+    'Medium OAuth ile bağlanır ve Relay Markdown ile herkese açık hikayeler yayınlar.',
+  'web.connection.requirement.devto':
+    'Dev.to, Dev.to ayarlarınızda oluşturulan bir API anahtarıyla bağlanır.',
+  'web.connection.requirement.pinterest':
+    "Pinterest'e yazmak onaylı uygulama erişimi gerektirir ve bir pin görsel ve size ait bir pano gerektirir.",
+  'web.connection.requirement.discord':
+    'Relay bir bot olarak yayınlar. Gönderim yapmak istediğiniz sunuculara ve kanallara botu ekleyin.',
+  'web.connection.requirement.slack':
+    'Relay bir uygulama olarak yayınlar. Gönderim yapmak istediğiniz kanallara uygulamayı ekleyin.',
   'web.provider.fake': 'Test konektörü',
 
   'web.accountType.personal_profile': 'Kişisel profil',

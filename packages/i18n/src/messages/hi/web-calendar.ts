@@ -27,6 +27,33 @@ export const webCalendarMessages = {
   'web.provider.tiktok': 'ZZZप्रोटेक्टेड6ZZZ',
   'web.provider.threads': 'Threads',
   'web.provider.bluesky': 'Bluesky',
+  'web.provider.mastodon': 'Mastodon',
+  'web.provider.telegram': 'Telegram',
+  'web.provider.reddit': 'Reddit',
+  'web.provider.wordpress': 'WordPress',
+  'web.provider.medium': 'Medium',
+  'web.provider.devto': 'Dev.to',
+  'web.provider.pinterest': 'Pinterest',
+  'web.provider.discord': 'Discord',
+  'web.provider.slack': 'Slack',
+  'web.connection.requirement.mastodon':
+    'Mastodon आपके अपने इंस्टेंस पर बनाए गए एक्सेस टोकन से जुड़ता है, आपके पासवर्ड से नहीं।',
+  'web.connection.requirement.telegram':
+    'Relay एक बॉट के रूप में पोस्ट करता है। जिस चैनल या ग्रुप में पोस्ट करना है उसमें बॉट जोड़ें।',
+  'web.connection.requirement.reddit':
+    'Reddit पर लिखने के लिए अनुमोदित ऐप आवश्यक है, और हर पोस्ट को शीर्षक और सबरेडिट चाहिए।',
+  'web.connection.requirement.wordpress':
+    'Relay वर्डप्रेस में बनाए गए ऐप पासवर्ड से साइट के REST API के माध्यम से प्रकाशित करता है।',
+  'web.connection.requirement.medium':
+    'Medium OAuth से जुड़ता है और Relay मार्कडाउन में सार्वजनिक कहानियाँ प्रकाशित करता है।',
+  'web.connection.requirement.devto':
+    'Dev.to आपकी Dev.to सेटिंग्स में बनाई गई API कुंजी से जुड़ता है।',
+  'web.connection.requirement.pinterest':
+    'Pinterest पर लिखने के लिए अनुमोदित ऐप पहुँच आवश्यक है, और पिन को छवि और अपना बोर्ड चाहिए।',
+  'web.connection.requirement.discord':
+    'Relay एक बॉट के रूप में पोस्ट करता है। जिन सर्वरों और चैनलों में पोस्ट करना है उनमें बॉट जोड़ें।',
+  'web.connection.requirement.slack':
+    'Relay एक ऐप के रूप में पोस्ट करता है। जिन चैनलों में पोस्ट करना है उनमें ऐप जोड़ें।',
   'web.provider.fake': 'कनेक्टर का परीक्षण करें',
 
   'web.accountType.personal_profile': 'व्यक्तिगत प्रोफ़ाइल',

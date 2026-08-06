@@ -1102,6 +1102,53 @@ export const webMarketingMessages = {
   'web.marketing.provider.bluesky.restriction':
     'एक खुला प्रोटोकॉल जिसमें कोई एप्लिकेशन समीक्षा चरण नहीं है। दर सीमाएँ और रिकॉर्ड आकार सीमाएँ अभी भी लागू होती हैं और प्रेषण से पहले लागू की जाती हैं।',
   'web.marketing.provider.bluesky.cost': 'प्रति ऑपरेशन कोई शुल्क नहीं.',
+  'web.marketing.provider.mastodon.label': 'Mastodon',
+  'web.marketing.provider.mastodon.accountTypes': 'किसी भी इंस्टेंस पर एक मास्टोडॉन खाता।',
+  'web.marketing.provider.mastodon.restriction':
+    'एक खुला प्रोटोकॉल जिसमें ऐप समीक्षा की आवश्यकता नहीं है। अक्षर सीमा प्रत्येक इंस्टेंस तय करता है और उसकी दर सीमाएँ मानी जाती हैं।',
+  'web.marketing.provider.mastodon.cost': 'प्रति कार्य कोई शुल्क नहीं।',
+  'web.marketing.provider.telegram.label': 'Telegram',
+  'web.marketing.provider.telegram.accountTypes':
+    'आपका नियंत्रित टेलीग्राम बॉट, जो किसी चैनल या ग्रुप में पोस्ट करता है।',
+  'web.marketing.provider.telegram.restriction':
+    'बॉट केवल वहीं पोस्ट कर सकता है जहाँ उसे जोड़ा गया है। टोकन एक ऐप क्रेडेंशियल है और लक्ष्य चैट प्रत्येक कनेक्शन के लिए चुनी जाती है।',
+  'web.marketing.provider.telegram.cost': 'प्रति कार्य कोई शुल्क नहीं।',
+  'web.marketing.provider.reddit.label': 'Reddit',
+  'web.marketing.provider.reddit.accountTypes': 'पोस्ट करने के लिए अधिकृत रेडिट खाता।',
+  'web.marketing.provider.reddit.restriction':
+    'रेडिट पर लिखने के लिए अनुमोदित ऐप आवश्यक है। पोस्ट स्वीकृत सबरेडिट्स में टेक्स्ट या लिंक होते हैं; कोई स्वचालित टिप्पणी या वोट नहीं।',
+  'web.marketing.provider.reddit.cost': 'प्रति कार्य कोई शुल्क नहीं।',
+  'web.marketing.provider.wordpress.label': 'WordPress',
+  'web.marketing.provider.wordpress.accountTypes': 'ऐप पासवर्ड वाली वर्डप्रेस साइट।',
+  'web.marketing.provider.wordpress.restriction':
+    'पोस्ट साइट के REST API से जुड़े उपयोगकर्ता के रूप में प्रकाशित होते हैं। छवि और वीडियो अपलोड अभी नहीं बना है।',
+  'web.marketing.provider.wordpress.cost': 'प्रति कार्य कोई शुल्क नहीं।',
+  'web.marketing.provider.medium.label': 'Medium',
+  'web.marketing.provider.medium.accountTypes': 'OAuth से जुड़ी मीडियम लेखक प्रोफ़ाइल।',
+  'web.marketing.provider.medium.restriction':
+    'पोस्ट मार्कडाउन में सार्वजनिक कहानियों के रूप में प्रकाशित होते हैं। इंटीग्रेशन API में हटाना नहीं है, इसलिए यह नहीं दिया जाता।',
+  'web.marketing.provider.medium.cost': 'प्रति कार्य कोई शुल्क नहीं।',
+  'web.marketing.provider.devto.label': 'Dev.to',
+  'web.marketing.provider.devto.accountTypes': 'अपनी API कुंजी से जुड़ी डेव.टू प्रोफ़ाइल।',
+  'web.marketing.provider.devto.restriction':
+    'लेख सार्वजनिक मार्कडाउन पोस्ट के रूप में प्रकाशित होते हैं। छवि अपलोड और एनालिटिक्स अभी नहीं बने हैं।',
+  'web.marketing.provider.devto.cost': 'प्रति कार्य कोई शुल्क नहीं।',
+  'web.marketing.provider.pinterest.label': 'Pinterest',
+  'web.marketing.provider.pinterest.accountTypes': 'OAuth से जुड़ा पिनटेरेस्ट व्यावसायिक खाता।',
+  'web.marketing.provider.pinterest.restriction':
+    'पिन के लिए एक छवि और आपका अपना बोर्ड आवश्यक है। लिखने के लिए ऐप समीक्षा आवश्यक है; बोर्ड कनेक्शन पर पढ़े जाते हैं।',
+  'web.marketing.provider.pinterest.cost': 'प्रति कार्य कोई शुल्क नहीं।',
+  'web.marketing.provider.discord.label': 'Discord',
+  'web.marketing.provider.discord.accountTypes':
+    'आपका नियंत्रित डिस्कॉर्ड बॉट, जो टेक्स्ट चैनलों में पोस्ट करता है।',
+  'web.marketing.provider.discord.restriction':
+    'बॉट केवल उन्हीं चैनलों में पोस्ट कर सकता है जिन्हें वह देख सकता है। टेक्स्ट संदेश समर्थित हैं; फ़ाइलें अभी नहीं।',
+  'web.marketing.provider.discord.cost': 'प्रति कार्य कोई शुल्क नहीं।',
+  'web.marketing.provider.slack.label': 'Slack',
+  'web.marketing.provider.slack.accountTypes': 'OAuth ऐप से जुड़ा स्लैक कार्यक्षेत्र।',
+  'web.marketing.provider.slack.restriction':
+    'संदेश उन सार्वजनिक और निजी चैनलों में जाते हैं जहाँ ऐप है। फ़ाइल अपलोड और एनालिटिक्स अभी नहीं बने हैं।',
+  'web.marketing.provider.slack.cost': 'प्रति कार्य कोई शुल्क नहीं।',
 
   /* ---------------------------------------------------------------------- */
   /* Capability matrix notes                                                 */
@@ -1151,6 +1198,20 @@ export const webMarketingMessages = {
   'web.capabilities.note.noThumbnail':
     'यह प्लेटफ़ॉर्म अपने API के माध्यम से कस्टम थंबनेल स्वीकार नहीं करता है।',
   'web.capabilities.note.inBuild': 'मंच यह पेशकश करता है. Relay ने इसे अभी तक शिप नहीं किया है।',
+  'web.capabilities.note.noCarousel': 'प्लेटफ़ॉर्म स्वाइप-कार्यशील कैरोसेल प्रदान नहीं करता।',
+  'web.capabilities.note.noDisclosure':
+    'प्लेटफ़ॉर्म के पास AI या व्यावसायिक सामग्री के लिए खुलासा क्षेत्र नहीं है।',
+  'web.capabilities.note.noAnalytics':
+    'प्लेटफ़ॉर्म अपनी आधिकारिक API से सहभागिता मेट्रिक्स नहीं देता।',
+  'web.capabilities.note.redditReview': 'Reddit पर लिखने के लिए अनुमोदित डेटा API ऐप आवश्यक है।',
+  'web.capabilities.note.redditMedia': 'Reddit के लिए छवि और वीडियो पोस्ट अभी नहीं बने हैं।',
+  'web.capabilities.note.mediumImages': 'एकीकरण API छवि अनुलग्नक स्वीकार नहीं करता।',
+  'web.capabilities.note.mediumNoDelete': 'एकीकरण API में हटाने का एंडपॉइंट नहीं है।',
+  'web.capabilities.note.devtoImages':
+    'API केवल लेख की बॉडी स्वीकार करता है; छवि अपलोड अभी नहीं बना है।',
+  'web.capabilities.note.pinterestNeedsImage':
+    'पिन के लिए छवि आवश्यक है; केवल-पाठ पिन मौजूद नहीं हैं।',
+  'web.capabilities.note.pinterestReview': 'Pinterest पर लिखने के लिए अनुमोदित ऐप पहुँच आवश्यक है।',
 
   /* ---------------------------------------------------------------------- */
   /* Status page surfaces                                                    */

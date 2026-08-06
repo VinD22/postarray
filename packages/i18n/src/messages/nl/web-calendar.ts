@@ -27,6 +27,33 @@ export const webCalendarMessages = {
   'web.provider.tiktok': 'TikTok',
   'web.provider.threads': 'Threads',
   'web.provider.bluesky': 'Bluesky',
+  'web.provider.mastodon': 'Mastodon',
+  'web.provider.telegram': 'Telegram',
+  'web.provider.reddit': 'Reddit',
+  'web.provider.wordpress': 'WordPress',
+  'web.provider.medium': 'Medium',
+  'web.provider.devto': 'Dev.to',
+  'web.provider.pinterest': 'Pinterest',
+  'web.provider.discord': 'Discord',
+  'web.provider.slack': 'Slack',
+  'web.connection.requirement.mastodon':
+    'Mastodon verbindt met een toegangstoken die je op je eigen instance maakt, niet met je wachtwoord.',
+  'web.connection.requirement.telegram':
+    'Relay plaatst als bot. Voeg de bot toe aan het kanaal of de groep waar je wilt publiceren.',
+  'web.connection.requirement.reddit':
+    'Schrijven op Reddit vereist een goedgekeurde app en elke post heeft een titel en een subreddit nodig.',
+  'web.connection.requirement.wordpress':
+    'Relay publiceert via de REST API van de site met een app-wachtwoord dat je in WordPress maakt.',
+  'web.connection.requirement.medium':
+    'Medium verbindt via OAuth en Relay publiceert openbare verhalen in Markdown.',
+  'web.connection.requirement.devto':
+    'Dev.to verbindt met een API-sleutel uit je Dev.to-instellingen.',
+  'web.connection.requirement.pinterest':
+    'Schrijven op Pinterest vereist goedgekeurde app-toegang en een pin heeft een afbeelding en een eigen bord nodig.',
+  'web.connection.requirement.discord':
+    'Relay plaatst als bot. Voeg de bot toe aan de servers en kanalen waar je wilt publiceren.',
+  'web.connection.requirement.slack':
+    'Relay plaatst als app. Voeg de app toe aan de kanalen waar je wilt publiceren.',
   'web.provider.fake': 'Testconnector',
 
   'web.accountType.personal_profile': 'Persoonlijk profiel',

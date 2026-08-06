@@ -1081,6 +1081,51 @@ export const webMarketingMessages = {
   'web.marketing.provider.bluesky.restriction':
     'بروتوكول مفتوح بدون أي خطوة لمراجعة الطلب. لا تزال حدود الأسعار وحدود حجم السجل مطبقة ويتم فرضها قبل الإرسال.',
   'web.marketing.provider.bluesky.cost': 'لا توجد رسوم لكل عملية.',
+  'web.marketing.provider.mastodon.label': 'Mastodon',
+  'web.marketing.provider.mastodon.accountTypes': 'حساب ماستودون على أي خادم.',
+  'web.marketing.provider.mastodon.restriction':
+    'بروتوكول مفتوح دون مراجعة تطبيق. حد الأحرف تحدده كل نسخة وتُحترم حدود السرعة الخاصة بها.',
+  'web.marketing.provider.mastodon.cost': 'لا رسوم لكل عملية.',
+  'web.marketing.provider.telegram.label': 'Telegram',
+  'web.marketing.provider.telegram.accountTypes': 'بوت تيليجرام تتحكم به وينشر في قناة أو مجموعة.',
+  'web.marketing.provider.telegram.restriction':
+    'يمكن للبوت النشر فقط حيث أُضيف. الرمز المميز هو بيانات تطبيق ويُختار المحادث الهدف لكل اتصال.',
+  'web.marketing.provider.telegram.cost': 'لا رسوم لكل عملية.',
+  'web.marketing.provider.reddit.label': 'Reddit',
+  'web.marketing.provider.reddit.accountTypes': 'حساب ريديت مصرح له بالنشر.',
+  'web.marketing.provider.reddit.restriction':
+    'الكتابة في ريديت تتطلب تطبيقاً معتمداً. المنشورات نصية أو روابط في المجتمعات المسموح بها؛ لا تعليقات أو أصوات آلية.',
+  'web.marketing.provider.reddit.cost': 'لا رسوم لكل عملية.',
+  'web.marketing.provider.wordpress.label': 'WordPress',
+  'web.marketing.provider.wordpress.accountTypes': 'موقع ووردبريس مع كلمة مرور تطبيق.',
+  'web.marketing.provider.wordpress.restriction':
+    'تُنشر المنشورات عبر واجهة REST للموقع كمستخدم متصل. رفع الصور والفيديو غير مبني بعد.',
+  'web.marketing.provider.wordpress.cost': 'لا رسوم لكل عملية.',
+  'web.marketing.provider.medium.label': 'Medium',
+  'web.marketing.provider.medium.accountTypes': 'ملف مؤلف ميديوم متصل عبر OAuth.',
+  'web.marketing.provider.medium.restriction':
+    'تُنشر المنشورات كقصص عامة بصيغة ماركداون. واجهة التكامل لا توفر حذفاً، لذا لا يُقدم.',
+  'web.marketing.provider.medium.cost': 'لا رسوم لكل عملية.',
+  'web.marketing.provider.devto.label': 'Dev.to',
+  'web.marketing.provider.devto.accountTypes': 'ملف ديف تو متصل بمفتاح واجهته.',
+  'web.marketing.provider.devto.restriction':
+    'تُنشر المقالات كمنشورات ماركداون عامة. رفع الصور والتحليلات غير مبنية بعد.',
+  'web.marketing.provider.devto.cost': 'لا رسوم لكل عملية.',
+  'web.marketing.provider.pinterest.label': 'Pinterest',
+  'web.marketing.provider.pinterest.accountTypes': 'حساب بينترست تجاري متصل عبر OAuth.',
+  'web.marketing.provider.pinterest.restriction':
+    'تتطلب الدبوس صورة ولوحة خاصة بك. الكتابة تتطلب مراجعة تطبيق وتُقرأ اللوحات عند الاتصال.',
+  'web.marketing.provider.pinterest.cost': 'لا رسوم لكل عملية.',
+  'web.marketing.provider.discord.label': 'Discord',
+  'web.marketing.provider.discord.accountTypes': 'بوت ديسكورد تتحكم به وينشر في قنوات نصية.',
+  'web.marketing.provider.discord.restriction':
+    'يمكن للبوت النشر فقط في القنوات التي يراها. الرسائل النصية مدعومة؛ المرفقات غير مدعومة بعد.',
+  'web.marketing.provider.discord.cost': 'لا رسوم لكل عملية.',
+  'web.marketing.provider.slack.label': 'Slack',
+  'web.marketing.provider.slack.accountTypes': 'مساحة سلاك متصلة عبر تطبيق OAuth.',
+  'web.marketing.provider.slack.restriction':
+    'تذهب الرسائل إلى القنوات العامة والخاصة حيث يوجد التطبيق. رفع الملفات والتحليلات غير مبنيين بعد.',
+  'web.marketing.provider.slack.cost': 'لا رسوم لكل عملية.',
 
   /* ---------------------------------------------------------------------- */
   /* Capability matrix notes                                                 */
@@ -1128,6 +1173,17 @@ export const webMarketingMessages = {
   'web.capabilities.note.noThumbnail':
     'لا يقبل هذا النظام الأساسي صورة مصغرة مخصصة من خلال واجهة برمجة التطبيقات (API) الخاصة به.',
   'web.capabilities.note.inBuild': 'المنصة تقدم هذا. Relay لم يتم شحنه بعد.',
+  'web.capabilities.note.noCarousel': 'لا تقدم المنصة دائرة صور قابلة للتمرير.',
+  'web.capabilities.note.noDisclosure':
+    'لا تملك المنصة حقل إفصاح للمحتوى بالذكاء الاصطناعي أو التجاري.',
+  'web.capabilities.note.noAnalytics': 'لا تقدم المنصة مقاييس تفاعل عبر واجهتها الرسمية.',
+  'web.capabilities.note.redditReview': 'الكتابة في ريديت تتطلب تطبيق واجهة بيانات معتمداً.',
+  'web.capabilities.note.redditMedia': 'منشورات الصور والفيديو غير مبنية بعد لريديت.',
+  'web.capabilities.note.mediumImages': 'واجهة التكامل لا تقبل مرفقات الصور.',
+  'web.capabilities.note.mediumNoDelete': 'واجهة التكامل لا تملك نقطة حذف.',
+  'web.capabilities.note.devtoImages': 'تقبل الواجهة نصوص المقالات فقط؛ رفع الصور غير مبني بعد.',
+  'web.capabilities.note.pinterestNeedsImage': 'تتطلب الدبوس صورة؛ لا توجد دبابيس نصية فقط.',
+  'web.capabilities.note.pinterestReview': 'الكتابة في بينترست تتطلب وصول تطبيق معتمداً.',
 
   /* ---------------------------------------------------------------------- */
   /* Status page surfaces                                                    */

@@ -1131,6 +1131,57 @@ export const webMarketingMessages = {
   'web.marketing.provider.bluesky.restriction':
     'Isang bukas na protocol na walang hakbang sa pagsusuri ng aplikasyon. Nalalapat pa rin ang mga limitasyon sa rate at mga limitasyon sa laki ng talaan at ipinapatupad bago ipadala.',
   'web.marketing.provider.bluesky.cost': 'Walang bayad sa bawat operasyon.',
+  'web.marketing.provider.mastodon.label': 'Mastodon',
+  'web.marketing.provider.mastodon.accountTypes': 'Isang Mastodon account sa anumang instance.',
+  'web.marketing.provider.mastodon.restriction':
+    'Isang bukas na protocol na walang review ng app. Ang limit sa karakter ay itinatakda ng bawat instance at iginagalang ang mga rate limit nito.',
+  'web.marketing.provider.mastodon.cost': 'Walang bayad bawat operasyon.',
+  'web.marketing.provider.telegram.label': 'Telegram',
+  'web.marketing.provider.telegram.accountTypes':
+    'Isang Telegram bot na kontrolado mo, nagpo-post sa channel o grupo.',
+  'web.marketing.provider.telegram.restriction':
+    'Makapagpo-post lang ang bot kung saan ito idinagdag. Ang token ay credential ng app at pinipili ang target chat bawat koneksyon.',
+  'web.marketing.provider.telegram.cost': 'Walang bayad bawat operasyon.',
+  'web.marketing.provider.reddit.label': 'Reddit',
+  'web.marketing.provider.reddit.accountTypes': 'Isang Reddit account na pinapayagang mag-post.',
+  'web.marketing.provider.reddit.restriction':
+    'Ang pagsulat sa Reddit ay nangangailangan ng aprubadong app. Ang mga post ay text o link sa mga pinapayagang subreddit; walang awtomatikong komento o boto.',
+  'web.marketing.provider.reddit.cost': 'Walang bayad bawat operasyon.',
+  'web.marketing.provider.wordpress.label': 'WordPress',
+  'web.marketing.provider.wordpress.accountTypes': 'Isang WordPress site na may password ng app.',
+  'web.marketing.provider.wordpress.restriction':
+    'Lumalabas ang mga post sa REST API ng site bilang konektadong user. Hindi pa itinatayo ang pag-upload ng larawan at video.',
+  'web.marketing.provider.wordpress.cost': 'Walang bayad bawat operasyon.',
+  'web.marketing.provider.medium.label': 'Medium',
+  'web.marketing.provider.medium.accountTypes':
+    'Isang profile ng may-akda sa Medium na konektado sa pamamagitan ng OAuth.',
+  'web.marketing.provider.medium.restriction':
+    'Lumalabas ang mga post bilang pampublikong kuwento sa Markdown. Walang pagtanggal ang integration API, kaya hindi ito inaalok.',
+  'web.marketing.provider.medium.cost': 'Walang bayad bawat operasyon.',
+  'web.marketing.provider.devto.label': 'Dev.to',
+  'web.marketing.provider.devto.accountTypes':
+    'Isang Dev.to profile na konektado gamit ang API key nito.',
+  'web.marketing.provider.devto.restriction':
+    'Lumalabas ang mga artikulo bilang pampublikong Markdown post. Hindi pa itinatayo ang pag-upload ng larawan at analytics.',
+  'web.marketing.provider.devto.cost': 'Walang bayad bawat operasyon.',
+  'web.marketing.provider.pinterest.label': 'Pinterest',
+  'web.marketing.provider.pinterest.accountTypes':
+    'Isang Pinterest business account na konektado sa pamamagitan ng OAuth.',
+  'web.marketing.provider.pinterest.restriction':
+    'Ang pin ay nangangailangan ng larawan at sariling board. Nangangailangan ng review ng app ang pagsulat; binabasa ang mga board sa koneksyon.',
+  'web.marketing.provider.pinterest.cost': 'Walang bayad bawat operasyon.',
+  'web.marketing.provider.discord.label': 'Discord',
+  'web.marketing.provider.discord.accountTypes':
+    'Isang Discord bot na kontrolado mo, nagpo-post sa mga text channel.',
+  'web.marketing.provider.discord.restriction':
+    'Makapagpo-post lang ang bot sa mga channel na nakikita nito. Suportado ang mga text message; hindi pa ang mga attachment.',
+  'web.marketing.provider.discord.cost': 'Walang bayad bawat operasyon.',
+  'web.marketing.provider.slack.label': 'Slack',
+  'web.marketing.provider.slack.accountTypes':
+    'Isang Slack workspace na konektado sa pamamagitan ng OAuth app.',
+  'web.marketing.provider.slack.restriction':
+    'Napupunta ang mga mensahe sa pampubliko at pribadong channel kung nasaan ang app. Hindi pa itinatayo ang pag-upload ng file at analytics.',
+  'web.marketing.provider.slack.cost': 'Walang bayad bawat operasyon.',
 
   /* ---------------------------------------------------------------------- */
   /* Capability matrix notes                                                 */
@@ -1184,6 +1235,23 @@ export const webMarketingMessages = {
     'Ang platform na ito ay hindi tumatanggap ng custom na thumbnail sa pamamagitan ng API nito.',
   'web.capabilities.note.inBuild':
     'Ang platform ay nag-aalok nito. Hindi pa ito naipapadala ng Relay.',
+  'web.capabilities.note.noCarousel': 'Hindi nag-aalok ang platform ng swipeable carousel.',
+  'web.capabilities.note.noDisclosure':
+    'Walang patlang sa platform para sa paglalahad ng AI o komersyal na nilalaman.',
+  'web.capabilities.note.noAnalytics':
+    'Hindi naglalabas ang platform ng engagement metrics sa opisyal na API nito.',
+  'web.capabilities.note.redditReview':
+    'Ang pagsulat sa Reddit ay nangangailangan ng aprubadong data API app.',
+  'web.capabilities.note.redditMedia': 'Hindi pa itinatayo ang image at video post para sa Reddit.',
+  'web.capabilities.note.mediumImages':
+    'Hindi tumatanggap ang integration API ng mga attachment na larawan.',
+  'web.capabilities.note.mediumNoDelete': 'Walang delete endpoint ang integration API.',
+  'web.capabilities.note.devtoImages':
+    'Tumatanggap lang ang API ng katawan ng artikulo; hindi pa itinatayo ang pag-upload ng larawan.',
+  'web.capabilities.note.pinterestNeedsImage':
+    'Ang pin ay nangangailangan ng larawan; walang text-only pin.',
+  'web.capabilities.note.pinterestReview':
+    'Ang pagsulat sa Pinterest ay nangangailangan ng aprubadong access ng app.',
 
   /* ---------------------------------------------------------------------- */
   /* Status page surfaces                                                    */
