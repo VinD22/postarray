@@ -11,11 +11,16 @@ export class AuditService {
   constructor(@Inject(SERVICES) private readonly services: Services) {}
 
   list(ctx: ActorContext, query: ListAuditQuery): Promise<Paginated<AuditEventView>> {
-    const { cursor, limit, ...filters } = query;
+    const { cursor, limit, resourceType, resourceId, subjectUserId, ...filters } = query;
     return this.services.audit.list(ctx, {
-      filters,
+      ...filters,
+      ...(resourceType === undefined ? {} : { targetType: resourceType }),
+      ...(resourceId === undefined ? {} : { targetId: resourceId }),
+      ...(filters.actorId === undefined && subjectUserId !== undefined
+        ? { actorId: subjectUserId }
+        : {}),
       ...(cursor === undefined ? {} : { cursor }),
-      limit,
+      ...(limit === undefined ? {} : { limit }),
     });
   }
 }

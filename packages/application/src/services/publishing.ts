@@ -4,12 +4,19 @@ import {
   type ValidationResult,
 } from '@relay/contracts';
 
-import type { ActorContext, PublishingService, ServiceDeps, ValidationService } from '../types';
+import type {
+  ActorContext,
+  PublishConfirmationEvidence,
+  PublishingService,
+  ServiceDeps,
+  ValidationService,
+} from '../types';
 import type { PublishJobView } from '../views';
 
 import { loadAggregate } from '../internal/content-store';
 import { invalid, notFound } from '../internal/errors';
 import { withIdempotency } from '../internal/idempotency';
+import { confirmationMatchesContent } from '../internal/publish-confirmation';
 import { PUBLISH_JOB_SELECT, jobToView, runPublishPath } from '../internal/publish-path';
 import { authorized, guard } from '../internal/runtime';
 
@@ -31,17 +38,11 @@ export function createPublishingService(
   return {
     async publishNow(
       ctx: ActorContext,
-      input: { contentItemId: string; confirmation: boolean },
+      input: { contentItemId: string; confirmation: PublishConfirmationEvidence },
     ): Promise<PublishJobView> {
-      if (input.confirmation !== true) {
-        throw invalid('errors.human_confirmation_required', {
-          contentItemId: input.contentItemId,
-        });
-      }
-
       return withIdempotency(deps.kv, ctx, {
         operation: 'publishing.publishNow',
-        body: { contentItemId: input.contentItemId },
+        body: { contentItemId: input.contentItemId, confirmation: input.confirmation },
         resourceIdOf: (view) => view.id,
         run: async () =>
           authorized(
@@ -51,6 +52,22 @@ export function createPublishingService(
             undefined,
             async (db, actor) => {
               const aggregate = await loadAggregate(db, input.contentItemId);
+              if (
+                !confirmationMatchesContent(input.confirmation, {
+                  targetCount: aggregate.variants.length,
+                  checksum: aggregate.checksum,
+                })
+              ) {
+                throw invalid('errors.human_confirmation_required', {
+                  contentItemId: input.contentItemId,
+                  reason: 'stale_confirmation',
+                  expectedTargetCount: aggregate.variants.length,
+                  acknowledgedTargetCount: input.confirmation.acknowledgedTargetCount,
+                  expectedVersionChecksum: aggregate.checksum,
+                  acknowledgedVersionChecksum:
+                    input.confirmation.acknowledgedVersionChecksum,
+                });
+              }
               for (const variant of aggregate.variants) {
                 guard(actor, 'post.publish_now', {
                   brandId: aggregate.brandId,
@@ -69,7 +86,7 @@ export function createPublishingService(
                 contentItemId: input.contentItemId,
                 scheduleSpec: spec,
                 kind: 'publish_now',
-                confirmation: true,
+                confirmation: input.confirmation,
                 validate: async (): Promise<ValidationResult> =>
                   validation.validate(ctx, { contentItemId: input.contentItemId }),
               });

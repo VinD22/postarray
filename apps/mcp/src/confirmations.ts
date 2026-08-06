@@ -43,6 +43,7 @@ export interface PendingConfirmation {
 
 export interface ConfirmationSummary {
   readonly contentItemId: string;
+  readonly versionChecksum: string;
   readonly accountCount: number;
   readonly externalPublicationCount: number;
   readonly providers: readonly string[];
@@ -87,6 +88,7 @@ export const DEFAULT_CONFIRMATION_TTL_SECONDS = 15 * 60;
 export function fingerprintSummary(summary: ConfirmationSummary): string {
   const canonical = JSON.stringify({
     contentItemId: summary.contentItemId,
+    versionChecksum: summary.versionChecksum,
     externalPublicationCount: summary.externalPublicationCount,
     accounts: [...summary.accounts]
       .map((account) => account.connectionId)

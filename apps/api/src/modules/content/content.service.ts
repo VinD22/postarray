@@ -1,14 +1,19 @@
 import { Inject, Injectable } from '@nestjs/common';
-import type { ContentVersion, Paginated, PublishState, ValidationResult } from '@relay/contracts';
+import type {
+  Paginated,
+  PublishState,
+  ValidationResult,
+  VariantOverrides,
+} from '@relay/contracts';
 
 import type {
   ActorContext,
   CanonicalPreview,
   ContentItemView,
+  ContentVersionView,
   CursorQuery,
   PostVariantView,
   Services,
-  ViewModel,
 } from '../../application/port';
 import { SERVICES } from '../../application/tokens';
 import type { CreateDraftInput, TargetInput, UpdateMasterInput } from './content.schemas';
@@ -51,7 +56,7 @@ export class ContentService {
 
   overrideVariant(
     ctx: ActorContext,
-    input: { contentItemId: string; targetId: string; patch: ViewModel },
+    input: { contentItemId: string; targetId: string; patch: VariantOverrides },
   ): Promise<PostVariantView> {
     return this.services.content.overrideVariant(ctx, input);
   }
@@ -72,17 +77,17 @@ export class ContentService {
   }
 
   applySet(ctx: ActorContext, contentItemId: string, setId: string): Promise<ContentItemView> {
-    return this.services.content.applySet(ctx, { contentItemId, setId });
+    return this.services.content.applySet(ctx, contentItemId, setId);
   }
 
   applySignature(
     ctx: ActorContext,
     input: { contentItemId: string; signatureId: string; targetId?: string },
   ): Promise<ContentItemView> {
-    return this.services.content.applySignature(ctx, input);
+    return this.services.content.applySignature(ctx, input.contentItemId, input.signatureId);
   }
 
-  freezeVersion(ctx: ActorContext, contentItemId: string): Promise<ContentVersion> {
+  freezeVersion(ctx: ActorContext, contentItemId: string): Promise<ContentVersionView> {
     return this.services.content.freezeVersion(ctx, contentItemId);
   }
 

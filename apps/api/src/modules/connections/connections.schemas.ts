@@ -20,7 +20,7 @@ export const beginOAuthSchema = z
      * the configured app origin at the callback, never followed blindly: an
      * unchecked return path is an open redirect with a fresh session attached.
      */
-    redirectTo: z.string().min(1).max(2048).optional(),
+    redirectTo: z.string().min(1).max(2048),
   })
   .strict();
 
@@ -51,3 +51,4 @@ export const listDestinationsQuerySchema = z
 export const searchMentionsQuerySchema = z.object({ query: shortTextSchema }).strict();
 
 export type BeginOAuthInput = z.infer<typeof beginOAuthSchema>;
+export type ListConnectionsQuery = z.infer<typeof listConnectionsQuerySchema>;

@@ -103,6 +103,7 @@ export const contentItemViewSchema = z.object({
   locale: z.string().min(1),
   contentKind: contentKindSchema,
   variants: z.array(postVariantViewSchema),
+  currentChecksum: z.string().regex(/^[0-9a-f]{64}$/).nullable(),
   reapprovalRequired: z.boolean(),
   createdVia: creationSurfaceSchema,
   createdAt: isoInstantSchema,

@@ -537,12 +537,31 @@ export async function postsPublish(
     contentItemId = await createDraft(context, draft, `${idempotencyKey}.draft`, options.brandId);
   }
 
+  const item = await context.api().request({
+    method: 'GET',
+    path: ROUTES.contentItem(contentItemId ?? ''),
+    schema: contentItemViewSchema,
+  });
+  if (item.data.currentChecksum === null) {
+    throw new RelayError('VALIDATION_FAILED', {
+      messageKey: 'error.request_invalid.message',
+      details: { reason: 'CONTENT_VERSION_NOT_FROZEN', contentItemId },
+    });
+  }
+
   const published = await context.api().request({
     method: 'POST',
     path: ROUTES.publications(),
     schema: publishJobViewSchema,
     idempotencyKey,
-    body: { contentItemId, confirmation: true },
+    body: {
+      contentItemId,
+      confirmation: {
+        acknowledgedTargetCount: item.data.variants.length,
+        acknowledgedVersionChecksum: item.data.currentChecksum,
+        acknowledgedEscalations: ['immediate_publish'],
+      },
+    },
   });
 
   renderSuccess(

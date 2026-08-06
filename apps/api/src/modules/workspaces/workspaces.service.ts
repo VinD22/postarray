@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
-import type { Paginated } from '@relay/contracts';
+import type { Paginated, Role } from '@relay/contracts';
 
 import type {
   ActorContext,
@@ -57,7 +57,7 @@ export class WorkspacesService {
     return this.services.members.list(ctx, query);
   }
 
-  updateRole(ctx: ActorContext, membershipId: string, role: string): Promise<MembershipView> {
+  updateRole(ctx: ActorContext, membershipId: string, role: Role): Promise<MembershipView> {
     return this.services.members.updateRole(ctx, membershipId, role);
   }
 

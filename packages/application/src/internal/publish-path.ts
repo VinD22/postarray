@@ -8,7 +8,7 @@ import {
   type ValidationResult,
 } from '@relay/contracts';
 
-import type { ActorContext, ServiceDeps } from '../types';
+import type { ActorContext, PublishConfirmationEvidence, ServiceDeps } from '../types';
 import type { PublishJobView } from '../views';
 
 import { recordAudit } from './audit';
@@ -18,6 +18,7 @@ import { loadAggregate, type ContentAggregate } from './content-store';
 import { invalid } from './errors';
 import { publishJobIdempotencyKey } from './idempotency';
 import { toLocalDateTime, toProviderId, toStoredSurface } from './mappers';
+import { confirmationMatchesEscalations } from './publish-confirmation';
 import type { ActorSnapshot, Db } from './runtime';
 import { toApprovalPolicy } from './storage-enums';
 import { resolveTarget } from './stored-content';
@@ -37,7 +38,7 @@ export interface PublishPathInput {
   readonly contentItemId: string;
   readonly scheduleSpec: ScheduleSpec;
   readonly kind: Extract<AgentActionKind, 'schedule' | 'publish_now'>;
-  readonly confirmation: boolean;
+  readonly confirmation: PublishConfirmationEvidence | false;
   readonly validate: () => Promise<ValidationResult>;
 }
 
@@ -276,7 +277,9 @@ export async function runPublishPath(
       ? {}
       : { estimatedCostMinor: validation.estimatedCostMinor }),
     ...(validation.currency === undefined ? {} : { costCurrency: validation.currency }),
-    humanConfirmed: input.confirmation || ctx.humanConfirmed === true,
+    // Confirmation evidence is checked against the decision below. Passing a
+    // non-empty object must never collapse into a trusted boolean here.
+    humanConfirmed: false,
   });
 
   if (!decision.allowed) {
@@ -288,15 +291,27 @@ export async function runPublishPath(
       },
     });
   }
-  if (decision.requiresHumanConfirmation) {
-    throw new ApprovalRequiredError({
-      messageKey: 'errors.human_confirmation_required',
-      details: {
-        escalations: decision.escalations.map((escalation) => escalation.code),
-        externalPublicationCount: decision.externalPublicationCount,
-        similarAccountCount: decision.similarAccountCount,
-      },
-    });
+  if (decision.requiresHumanConfirmation && ctx.humanConfirmed !== true) {
+    const requiredEscalations = [
+      ...new Set(decision.escalations.map((escalation) => escalation.code)),
+    ].sort();
+    const acknowledgedEscalations =
+      input.confirmation === false ? [] : input.confirmation.acknowledgedEscalations;
+    const evidenceMatches =
+      input.confirmation !== false &&
+      confirmationMatchesEscalations(input.confirmation, requiredEscalations);
+
+    if (!evidenceMatches) {
+      throw new ApprovalRequiredError({
+        messageKey: 'errors.human_confirmation_required',
+        details: {
+          escalations: requiredEscalations,
+          acknowledgedEscalations,
+          externalPublicationCount: decision.externalPublicationCount,
+          similarAccountCount: decision.similarAccountCount,
+        },
+      });
+    }
   }
 
   // 5. Freeze. The version is already immutable; binding the job to it by id is
@@ -443,6 +458,8 @@ export async function runPublishPath(
         localTime: toLocalDateTime(executeAt, schedule.ianaTimeZone),
         containsUrl: containsUrl(resolved.values.body),
         estimatedCostMinor: validation.estimatedCostMinor ?? null,
+        acknowledgedEscalations:
+          input.confirmation === false ? [] : input.confirmation.acknowledgedEscalations,
       },
     });
   }

@@ -10,12 +10,13 @@ import {
   Put,
   Query,
 } from '@nestjs/common';
-import type { ContentVersion, Paginated, ValidationResult } from '@relay/contracts';
+import type { Paginated, ValidationResult } from '@relay/contracts';
 
 import type {
   ActorContext,
   CanonicalPreview,
   ContentItemView,
+  ContentVersionView,
   PostVariantView,
 } from '../../application/port';
 import { Actor, Idempotent, RequireScope } from '../../common/decorators';
@@ -163,7 +164,7 @@ export class ContentController {
   @RequireScope('drafts:write')
   @Idempotent()
   @HttpCode(201)
-  freeze(@Actor() actor: ActorContext, @Param('id') id: string): Promise<ContentVersion> {
+  freeze(@Actor() actor: ActorContext, @Param('id') id: string): Promise<ContentVersionView> {
     return this.content.freezeVersion(actor, parseParams(contentItemIdSchema, id));
   }
 

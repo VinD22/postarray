@@ -1,12 +1,10 @@
 import {
   ID_PREFIXES,
   contentKindSchema,
-  destinationRefSchema,
   disclosureFlagsSchema,
   idSchema,
   linkSpecSchema,
   localeSchema,
-  masterDraftSchema,
   mentionRefSchema,
   publishStateSchema,
   scheduleSpecSchema,
@@ -38,25 +36,11 @@ import {
  * field cannot exist in one and be missing from the other.
  */
 
-const masterInputSchema = masterDraftSchema
-  .omit({ id: true, workspaceId: true, createdVia: true })
-  .partial({
-    title: true,
-    campaignId: true,
-    mediaIds: true,
-    links: true,
-    signature: true,
-    threadItems: true,
-    schedule: true,
-    disclosure: true,
-  })
-  .strict();
-
 /** One target: an account, optionally a native destination inside it. */
 export const targetInputSchema = z
   .object({
     connectionId: connectionIdSchema,
-    destination: destinationRefSchema.nullable().optional(),
+    destinationId: z.string().trim().min(1).max(128).nullable().optional(),
     mentions: z.array(mentionRefSchema).max(50).optional(),
     privacyValue: z.string().min(1).max(64).nullable().optional(),
     disclosure: disclosureFlagsSchema.nullable().optional(),
@@ -67,8 +51,18 @@ export const createDraftSchema = z
   .object({
     brandId: brandIdSchema,
     campaignId: campaignIdSchema.nullable().optional(),
-    master: masterInputSchema,
+    title: z.string().max(300).nullable().optional(),
+    body: z.string().max(100_000).default(''),
+    contentKind: contentKindSchema.optional(),
+    locale: localeSchema.optional(),
+    mediaIds: z.array(idSchema(ID_PREFIXES.media)).max(50).optional(),
+    links: z.array(linkSpecSchema).max(50).optional(),
+    signature: signatureRefSchema.nullable().optional(),
+    threadItems: z.array(threadItemSchema).max(100).optional(),
+    schedule: scheduleSpecSchema.nullable().optional(),
+    disclosure: disclosureFlagsSchema.optional(),
     targets: z.array(targetInputSchema).max(200).optional(),
+    approvalPolicy: z.string().trim().min(1).max(64).optional(),
   })
   .strict();
 

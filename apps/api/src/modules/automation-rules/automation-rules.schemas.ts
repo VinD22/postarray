@@ -6,7 +6,13 @@ import {
 import { z } from 'zod';
 
 import { cursorQuerySchema } from '../../common/pagination';
-import { passthroughObjectSchema, ruleIdSchema, shortTextSchema } from '../../common/schemas';
+import {
+  brandIdSchema,
+  connectionIdSchema,
+  passthroughObjectSchema,
+  ruleIdSchema,
+  shortTextSchema,
+} from '../../common/schemas';
 
 /**
  * Automation Rule payloads.
@@ -37,13 +43,17 @@ export const ruleActionSchema = z
 
 export const createRuleSchema = z
   .object({
+    brandId: brandIdSchema,
     name: shortTextSchema,
-    description: z.string().trim().max(2000).optional(),
     trigger: ruleTriggerSchema,
     conditions: z.array(ruleConditionSchema).max(30).default([]),
     actions: z.array(ruleActionSchema).min(1).max(20),
-    /** A rule is created disabled. Enabling it is a separate, audited act. */
-    enabled: z.literal(false).optional(),
+    delaySeconds: z.number().int().nonnegative().max(31_536_000).optional(),
+    requiresApproval: z.boolean().optional(),
+    preauthorizedConnectionIds: z.array(connectionIdSchema).max(200).optional(),
+    maxExecutions: z.number().int().positive().nullable().optional(),
+    cooldownSeconds: z.number().int().nonnegative().nullable().optional(),
+    measurementWindowSeconds: z.number().int().positive().nullable().optional(),
   })
   .strict();
 

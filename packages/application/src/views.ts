@@ -118,6 +118,7 @@ export interface BrandView {
   readonly defaultTimeZone: string | null;
   readonly defaultShortLinkOn: boolean;
   readonly archived: boolean;
+  readonly connectionIds: readonly string[];
 }
 
 export const CONNECTION_HEALTH = [

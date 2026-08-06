@@ -1,7 +1,9 @@
 import { Body, Controller, Get, HttpCode, Param, Post } from '@nestjs/common';
-import type { PublicationReceipt, PublishJob } from '@relay/contracts';
-
-import type { ActorContext } from '../../application/port';
+import type {
+  ActorContext,
+  PublicationReceiptView,
+  PublishJobView,
+} from '../../application/port';
 import { Actor, Idempotent, RateLimit, RequireScope } from '../../common/decorators';
 import { publishJobIdSchema, receiptIdSchema } from '../../common/schemas';
 import { parseBody, parseParams } from '../../common/zod';
@@ -35,14 +37,14 @@ export class PublishingController {
   @Idempotent()
   @RateLimit({ limit: 30, windowSeconds: 60, cost: 5, connectorBudget: true })
   @HttpCode(202)
-  publishNow(@Actor() actor: ActorContext, @Body() body: unknown): Promise<PublishJob> {
+  publishNow(@Actor() actor: ActorContext, @Body() body: unknown): Promise<PublishJobView> {
     return this.publishing.publishNow(actor, parseBody(publishNowSchema, body));
   }
 
   /** Job status, including every attempt and its classified error. */
   @Get('jobs/:id')
   @RequireScope('drafts:read')
-  getJob(@Actor() actor: ActorContext, @Param('id') id: string): Promise<PublishJob> {
+  getJob(@Actor() actor: ActorContext, @Param('id') id: string): Promise<PublishJobView> {
     return this.publishing.getJob(actor, parseParams(publishJobIdSchema, id));
   }
 
@@ -56,7 +58,7 @@ export class PublishingController {
     @Actor() actor: ActorContext,
     @Param('id') id: string,
     @Body() body: unknown,
-  ): Promise<PublishJob> {
+  ): Promise<PublishJobView> {
     const { targetId } = parseBody(retryTargetSchema, body);
     return this.publishing.retryTarget(actor, parseParams(publishJobIdSchema, id), targetId);
   }
@@ -67,7 +69,7 @@ export class PublishingController {
   async listReceipts(
     @Actor() actor: ActorContext,
     @Param('id') id: string,
-  ): Promise<{ data: readonly PublicationReceipt[] }> {
+  ): Promise<{ data: readonly PublicationReceiptView[] }> {
     return {
       data: await this.publishing.listReceiptsForJob(actor, parseParams(publishJobIdSchema, id)),
     };
@@ -75,7 +77,10 @@ export class PublishingController {
 
   @Get('receipts/:id')
   @RequireScope('analytics:read')
-  getReceipt(@Actor() actor: ActorContext, @Param('id') id: string): Promise<PublicationReceipt> {
+  getReceipt(
+    @Actor() actor: ActorContext,
+    @Param('id') id: string,
+  ): Promise<PublicationReceiptView> {
     return this.publishing.getReceipt(actor, parseParams(receiptIdSchema, id));
   }
 }

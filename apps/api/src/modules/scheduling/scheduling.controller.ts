@@ -1,7 +1,7 @@
 import { Body, Controller, Get, HttpCode, Param, Post, Query } from '@nestjs/common';
-import type { IanaTimeZone, IsoInstant, Paginated, PublishJob } from '@relay/contracts';
+import type { IanaTimeZone, IsoInstant, Paginated } from '@relay/contracts';
 
-import type { ActorContext, CalendarEntry } from '../../application/port';
+import type { ActorContext, CalendarEntry, PublishJobView } from '../../application/port';
 import { Actor, Idempotent, RequireScope } from '../../common/decorators';
 import { publishJobIdSchema } from '../../common/schemas';
 import { parseBody, parseParams, parseQuery } from '../../common/zod';
@@ -33,7 +33,7 @@ export class SchedulingController {
   @RequireScope('posts:schedule')
   @Idempotent()
   @HttpCode(202)
-  schedule(@Actor() actor: ActorContext, @Body() body: unknown): Promise<PublishJob> {
+  schedule(@Actor() actor: ActorContext, @Body() body: unknown): Promise<PublishJobView> {
     return this.scheduling.schedule(actor, parseBody(scheduleRequestSchema, body));
   }
 
@@ -51,7 +51,7 @@ export class SchedulingController {
     @Actor() actor: ActorContext,
     @Param('id') id: string,
     @Body() body: unknown,
-  ): Promise<PublishJob> {
+  ): Promise<PublishJobView> {
     const input = parseBody(rescheduleRequestSchema, body);
     return this.scheduling.reschedule(actor, {
       jobId: parseParams(publishJobIdSchema, id),
@@ -68,7 +68,7 @@ export class SchedulingController {
     @Actor() actor: ActorContext,
     @Param('id') id: string,
     @Body() body: unknown,
-  ): Promise<PublishJob> {
+  ): Promise<PublishJobView> {
     const { reason } = parseBody(cancelRequestSchema, body);
     return this.scheduling.cancel(actor, parseParams(publishJobIdSchema, id), reason);
   }

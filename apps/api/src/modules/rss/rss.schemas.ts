@@ -1,7 +1,12 @@
 import { z } from 'zod';
 
 import { cursorQuerySchema } from '../../common/pagination';
-import { brandIdSchema, feedIdSchema, ruleIdSchema, shortTextSchema } from '../../common/schemas';
+import {
+  brandIdSchema,
+  connectionIdSchema,
+  feedIdSchema,
+  shortTextSchema,
+} from '../../common/schemas';
 
 /**
  * RSS and Atom feed payloads.
@@ -18,21 +23,21 @@ import { brandIdSchema, feedIdSchema, ruleIdSchema, shortTextSchema } from '../.
  */
 export const createFeedSchema = z
   .object({
-    url: z.string().trim().min(1).max(2048),
     brandId: brandIdSchema,
-    name: shortTextSchema,
-    /** Which rule turns an item into a draft. Absent uses the default mapping. */
-    ruleId: ruleIdSchema.optional(),
-    /** How often we poll, in minutes. Bounded so a feed cannot be hammered. */
-    pollIntervalMinutes: z.number().int().min(15).max(1440).default(60),
-    /** Place produced drafts on the calendar. Approval still applies. */
-    autoSchedule: z.boolean().default(false),
-    /** Only items published after this instant are considered on first run. */
-    backfillFrom: z.string().min(1).max(64).optional(),
+    title: shortTextSchema,
+    feedUrl: z.string().trim().url().max(2048),
+    connectionIds: z.array(connectionIdSchema).max(200).optional(),
+    publishPolicy: z.string().trim().min(1).max(64).optional(),
+    /** Bounded so a feed cannot be hammered or accidentally disabled for days. */
+    pollIntervalSeconds: z.number().int().min(900).max(86_400).optional(),
   })
   .strict();
 
-export const updateFeedSchema = createFeedSchema.partial().strict();
+export const updateFeedSchema = createFeedSchema
+  .pick({ title: true, connectionIds: true, publishPolicy: true, pollIntervalSeconds: true })
+  .partial()
+  .extend({ paused: z.boolean().optional() })
+  .strict();
 
 export const validateFeedSchema = z.object({ url: z.string().trim().min(1).max(2048) }).strict();
 
@@ -41,3 +46,4 @@ export const listFeedsQuerySchema = cursorQuerySchema;
 export const feedParamsSchema = z.object({ id: feedIdSchema }).strict();
 
 export type CreateFeedInput = z.infer<typeof createFeedSchema>;
+export type UpdateFeedInput = z.infer<typeof updateFeedSchema>;

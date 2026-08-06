@@ -14,6 +14,7 @@ import type {
   ViewModel,
 } from '../../application/port';
 import { SERVICES } from '../../application/tokens';
+import type { CreateDraftInput } from '../content/content.schemas';
 import type { CreateWebhookEndpointInput, UpdateWebhookEndpointInput } from './webhooks.schemas';
 
 function toEndpoint(view: import('../../application/port').WebhookEndpointView): WebhookEndpoint {
@@ -117,7 +118,7 @@ export class WebhooksService {
     return this.services.webhooks.redeliver(ctx, deliveryId).then(toDelivery);
   }
 
-  createDraftFromInbound(ctx: ActorContext, draft: ViewModel): Promise<ContentItemView> {
+  createDraftFromInbound(ctx: ActorContext, draft: CreateDraftInput): Promise<ContentItemView> {
     return this.services.content.createDraft(ctx, draft);
   }
 

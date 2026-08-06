@@ -8,9 +8,9 @@ import type {
   RulePreview,
   RuleRunView,
   Services,
-  ViewModel,
 } from '../../application/port';
 import { SERVICES } from '../../application/tokens';
+import type { CreateRuleInput, UpdateRuleInput } from './automation-rules.schemas';
 
 /** Transport-level delegation for Automation Rules. */
 @Injectable()
@@ -25,11 +25,11 @@ export class AutomationRulesService {
     return this.services.automationRules.get(ctx, ruleId);
   }
 
-  create(ctx: ActorContext, input: ViewModel): Promise<AutomationRuleView> {
+  create(ctx: ActorContext, input: CreateRuleInput): Promise<AutomationRuleView> {
     return this.services.automationRules.create(ctx, input);
   }
 
-  update(ctx: ActorContext, ruleId: string, patch: ViewModel): Promise<AutomationRuleView> {
+  update(ctx: ActorContext, ruleId: string, patch: UpdateRuleInput): Promise<AutomationRuleView> {
     return this.services.automationRules.update(ctx, ruleId, patch);
   }
 
@@ -49,7 +49,11 @@ export class AutomationRulesService {
     return this.services.automationRules.preview(ctx, ruleId);
   }
 
-  testRun(ctx: ActorContext, ruleId: string, sampleEvent: ViewModel): Promise<RuleRunView> {
+  testRun(
+    ctx: ActorContext,
+    ruleId: string,
+    sampleEvent: Record<string, unknown>,
+  ): Promise<RuleRunView> {
     return this.services.automationRules.testRun(ctx, { ruleId, sampleEvent });
   }
 

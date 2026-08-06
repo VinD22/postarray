@@ -496,7 +496,7 @@ export interface BrandService {
   get(ctx: ActorContext, brandId: string): Promise<BrandView>;
   create(
     ctx: ActorContext,
-    input: { readonly name: string; readonly slug: string; readonly defaultTimeZone?: string },
+    input: { readonly name: string; readonly defaultTimeZone?: string },
   ): Promise<BrandView>;
   update(ctx: ActorContext, brandId: string, patch: Partial<BrandView>): Promise<BrandView>;
   archive(ctx: ActorContext, brandId: string): Promise<BrandView>;
@@ -652,13 +652,27 @@ export interface SchedulingService {
 export interface PublishingService {
   publishNow(
     ctx: ActorContext,
-    input: { readonly contentItemId: string; readonly confirmation: boolean },
+    input: {
+      readonly contentItemId: string;
+      readonly confirmation: PublishConfirmationEvidence;
+    },
   ): Promise<PublishJobView>;
   getJob(ctx: ActorContext, jobId: string): Promise<PublishJobView>;
   retryTarget(
     ctx: ActorContext,
     input: { readonly jobId: string; readonly targetId: string },
   ): Promise<PublishJobView>;
+}
+
+/**
+ * Evidence that a person reviewed the exact version and publication blast
+ * radius. This is deliberately richer than a boolean so a caller cannot reuse
+ * a stale confirmation after content or targets change.
+ */
+export interface PublishConfirmationEvidence {
+  readonly acknowledgedTargetCount: number;
+  readonly acknowledgedVersionChecksum: string;
+  readonly acknowledgedEscalations: readonly string[];
 }
 
 export interface ReceiptService {

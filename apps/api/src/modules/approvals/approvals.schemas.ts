@@ -23,7 +23,7 @@ export const requestApprovalSchema = z
 
 export const decideApprovalSchema = z
   .object({
-    decision: z.enum(['approved', 'rejected']),
+    decision: z.enum(['approve', 'request_changes', 'reject']),
     note: noteSchema.optional(),
   })
   .strict();

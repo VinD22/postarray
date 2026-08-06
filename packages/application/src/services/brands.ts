@@ -7,6 +7,7 @@ import { recordAudit } from '../internal/audit';
 import { notFound } from '../internal/errors';
 import { pageArgs, toPage } from '../internal/pagination';
 import { authorized } from '../internal/runtime';
+import { workspaceSlug } from '../internal/workspace-slug';
 
 /** Brands: voice, claims, blocked terms, domains and scheduling defaults. */
 
@@ -23,6 +24,7 @@ const BRAND_SELECT = {
   defaultTimeZone: true,
   defaultShortLinkOn: true,
   archivedAt: true,
+  socialConnections: { select: { id: true } },
 } as const;
 
 interface BrandRow {
@@ -38,6 +40,7 @@ interface BrandRow {
   defaultTimeZone: string | null;
   defaultShortLinkOn: boolean;
   archivedAt: Date | null;
+  socialConnections: readonly { id: string }[];
 }
 
 function toView(row: BrandRow): BrandView {
@@ -54,6 +57,7 @@ function toView(row: BrandRow): BrandView {
     defaultTimeZone: row.defaultTimeZone,
     defaultShortLinkOn: row.defaultShortLinkOn,
     archived: row.archivedAt !== null,
+    connectionIds: row.socialConnections.map((connection) => connection.id),
   };
 }
 
@@ -85,14 +89,14 @@ export function createBrandService(deps: ServiceDeps): BrandService {
 
     async create(
       ctx: ActorContext,
-      input: { name: string; slug: string; defaultTimeZone?: string },
+      input: { name: string; defaultTimeZone?: string },
     ): Promise<BrandView> {
       return authorized(deps, ctx, 'brand.write', undefined, async (db, actor) => {
         const created = await db.brand.create({
           data: {
             workspaceId: actor.workspace.id,
             name: input.name,
-            slug: input.slug,
+            slug: workspaceSlug(input.name),
             defaultTimeZone: input.defaultTimeZone ?? actor.workspace.defaultTimeZone,
           },
           select: BRAND_SELECT,

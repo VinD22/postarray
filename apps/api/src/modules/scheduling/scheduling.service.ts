@@ -1,9 +1,18 @@
 import { Inject, Injectable } from '@nestjs/common';
-import type { IanaTimeZone, IsoInstant, Paginated, PublishJob } from '@relay/contracts';
+import type { IanaTimeZone, IsoInstant, Paginated } from '@relay/contracts';
 
-import type { ActorContext, CalendarEntry, Services, ViewModel } from '../../application/port';
+import type {
+  ActorContext,
+  CalendarEntry,
+  PublishJobView,
+  Services,
+} from '../../application/port';
 import { SERVICES } from '../../application/tokens';
-import type { CalendarQueryInput } from './scheduling.schemas';
+import type {
+  CalendarQueryInput,
+  RescheduleRequestInput,
+  ScheduleRequestInput,
+} from './scheduling.schemas';
 
 /**
  * Transport-level delegation for scheduling and the calendar.
@@ -16,21 +25,18 @@ import type { CalendarQueryInput } from './scheduling.schemas';
 export class SchedulingService {
   constructor(@Inject(SERVICES) private readonly services: Services) {}
 
-  schedule(
-    ctx: ActorContext,
-    input: { contentItemId: string; scheduleSpec: ViewModel },
-  ): Promise<PublishJob> {
+  schedule(ctx: ActorContext, input: ScheduleRequestInput): Promise<PublishJobView> {
     return this.services.scheduling.schedule(ctx, input);
   }
 
   reschedule(
     ctx: ActorContext,
-    input: { jobId: string; scheduleSpec: ViewModel; confirmDst?: boolean },
-  ): Promise<PublishJob> {
+    input: RescheduleRequestInput & { jobId: string },
+  ): Promise<PublishJobView> {
     return this.services.scheduling.reschedule(ctx, input);
   }
 
-  cancel(ctx: ActorContext, jobId: string, reason: string): Promise<PublishJob> {
+  cancel(ctx: ActorContext, jobId: string, reason: string): Promise<PublishJobView> {
     return this.services.scheduling.cancel(ctx, { jobId, reason });
   }
 
@@ -41,7 +47,7 @@ export class SchedulingService {
       to,
       filters,
       ...(cursor === undefined ? {} : { cursor }),
-      limit,
+      ...(limit === undefined ? {} : { limit }),
     });
   }
 

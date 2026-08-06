@@ -70,4 +70,5 @@ export const nextSlotQuerySchema = z
   .strict();
 
 export type ScheduleRequestInput = z.infer<typeof scheduleRequestSchema>;
+export type RescheduleRequestInput = z.infer<typeof rescheduleRequestSchema>;
 export type CalendarQueryInput = z.infer<typeof calendarQuerySchema>;

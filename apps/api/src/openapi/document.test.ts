@@ -58,8 +58,9 @@ describe('openapi document', () => {
     const schema = JSON.stringify(body);
     // These fields exist in the document because they exist in the validator,
     // not because someone wrote them down twice.
+    expect(schema).toContain('name');
     expect(schema).toContain('ianaTimeZone');
-    expect(schema).toContain('defaultLocale');
+    expect(schema).not.toContain('defaultLocale');
   });
 
   it('marks the idempotency header required exactly on the routes that need it', () => {

@@ -1,24 +1,24 @@
 import { Inject, Injectable } from '@nestjs/common';
-import type { MetricObservation, Paginated } from '@relay/contracts';
+import type { Paginated } from '@relay/contracts';
 
 import type {
   ActorContext,
   ComparisonReport,
   CursorQuery,
   ExperimentView,
+  MetricObservationView,
   Services,
   TimeRange,
-  ViewModel,
 } from '../../application/port';
 import { SERVICES } from '../../application/tokens';
-import type { CompareRequestInput } from './analytics.schemas';
+import type { CompareRequestInput, CreateExperimentInput } from './analytics.schemas';
 
 /** Transport-level delegation for analytics. Normalization is not done here. */
 @Injectable()
 export class AnalyticsService {
   constructor(@Inject(SERVICES) private readonly services: Services) {}
 
-  getPostMetrics(ctx: ActorContext, receiptId: string): Promise<readonly MetricObservation[]> {
+  getPostMetrics(ctx: ActorContext, receiptId: string): Promise<readonly MetricObservationView[]> {
     return this.services.analytics.getPostMetrics(ctx, { receiptId });
   }
 
@@ -26,7 +26,7 @@ export class AnalyticsService {
     ctx: ActorContext,
     connectionId: string,
     range: TimeRange,
-  ): Promise<readonly MetricObservation[]> {
+  ): Promise<readonly MetricObservationView[]> {
     return this.services.analytics.getAccountMetrics(ctx, { connectionId, range });
   }
 
@@ -38,7 +38,7 @@ export class AnalyticsService {
     return this.services.analytics.listExperiments(ctx, query);
   }
 
-  createExperiment(ctx: ActorContext, input: ViewModel): Promise<ExperimentView> {
+  createExperiment(ctx: ActorContext, input: CreateExperimentInput): Promise<ExperimentView> {
     return this.services.analytics.createExperiment(ctx, input);
   }
 }

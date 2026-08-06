@@ -8,10 +8,13 @@ import type {
   OAuthAppView,
   OAuthGrantView,
   Services,
-  ViewModel,
 } from '../../application/port';
 import { SERVICES } from '../../application/tokens';
 import { CredentialDirectory } from '../../security/credential-directory';
+import type {
+  CreateOAuthAppInput,
+  UpdateOAuthAppInput,
+} from './developer-apps.schemas';
 
 /**
  * Developer OAuth application management.
@@ -36,11 +39,11 @@ export class DeveloperAppsService {
     return this.services.oauthApps.get(ctx, appId);
   }
 
-  create(ctx: ActorContext, input: ViewModel): Promise<CreatedOAuthAppView> {
+  create(ctx: ActorContext, input: CreateOAuthAppInput): Promise<CreatedOAuthAppView> {
     return this.services.oauthApps.create(ctx, input);
   }
 
-  update(ctx: ActorContext, appId: string, patch: ViewModel): Promise<OAuthAppView> {
+  update(ctx: ActorContext, appId: string, patch: UpdateOAuthAppInput): Promise<OAuthAppView> {
     return this.services.oauthApps.update(ctx, appId, patch);
   }
 

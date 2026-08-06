@@ -3,7 +3,6 @@ import { z } from 'zod';
 import { cursorQuerySchema, timeRangeSchema, timeRangeShape } from '../../common/pagination';
 import {
   connectionIdSchema,
-  contentItemIdSchema,
   receiptIdSchema,
   shortTextSchema,
 } from '../../common/schemas';
@@ -28,9 +27,10 @@ export const accountMetricsQuerySchema = z
 /** Compare either a named set of receipts, or a period against a baseline. */
 export const compareRequestSchema = z
   .object({
-    baseline: z.enum(['previous_period', 'brand_median', 'account_median']),
+    baseline: z.enum(['previous_period', 'trailing_median']),
     receiptIds: z.array(receiptIdSchema).min(2).max(50).optional(),
     period: timeRangeSchema.optional(),
+    connectionId: connectionIdSchema.optional(),
   })
   .strict()
   .refine((value) => value.receiptIds !== undefined || value.period !== undefined, {
@@ -43,12 +43,13 @@ export const createExperimentSchema = z
   .object({
     name: shortTextSchema,
     hypothesis: z.string().trim().min(1).max(2000),
-    contentItemIds: z.array(contentItemIdSchema).min(2).max(20),
-    /** What the experiment reads to decide. Named up front, not after the fact. */
-    primaryMetric: z.string().trim().min(1).max(64),
-    period: timeRangeSchema,
+    successMetric: z.string().trim().min(1).max(64),
+    windowStart: timeRangeShape.from,
+    windowEnd: timeRangeShape.to,
+    campaignId: z.string().trim().min(1).max(128).nullable().optional(),
   })
   .strict();
 
 export type AccountMetricsQuery = z.infer<typeof accountMetricsQuerySchema>;
 export type CompareRequestInput = z.infer<typeof compareRequestSchema>;
+export type CreateExperimentInput = z.infer<typeof createExperimentSchema>;

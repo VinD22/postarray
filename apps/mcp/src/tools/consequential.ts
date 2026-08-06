@@ -35,12 +35,19 @@ function buildConfirmationSummary(
   item: ContentItemSummary,
   labels: ReadonlyMap<string, string>,
 ): ConfirmationSummary {
+  if (item.currentChecksum === null) {
+    throw new RelayError('VALIDATION_FAILED', {
+      messageKey: 'error.request_invalid.message',
+      details: { reason: 'CONTENT_VERSION_NOT_FROZEN', contentItemId: item.id },
+    });
+  }
   const accounts = item.variants.map((variant) => ({
     connectionId: variant.connectionId,
     label: labels.get(variant.connectionId) ?? variant.connectionId,
   }));
   return {
     contentItemId: item.id,
+    versionChecksum: item.currentChecksum,
     accountCount: accounts.length,
     externalPublicationCount: accounts.length,
     providers: [...new Set(item.variants.map((variant) => variant.provider))],
@@ -169,15 +176,13 @@ export const publishPostTool = defineTool({
       summary,
     });
 
-    /**
-     * The application boundary takes a boolean. It is only ever `true` here
-     * because a server-minted, single-use confirmation was just consumed, and
-     * that confirmation was approved by a person in Relay rather than claimed
-     * by the agent host.
-     */
     const job = await context.services.publishing.publishNow(context.actor, {
       contentItemId: input.content_item_id,
-      confirmation: true,
+      confirmation: {
+        acknowledgedTargetCount: summary.externalPublicationCount,
+        acknowledgedVersionChecksum: summary.versionChecksum,
+        acknowledgedEscalations: ['immediate_publish'],
+      },
     });
     const receipts = await context.services.receipts.listForJob(context.actor, job.id);
 

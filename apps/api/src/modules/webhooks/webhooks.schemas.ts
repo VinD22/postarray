@@ -8,6 +8,7 @@ import {
   shortTextSchema,
   webhookEndpointIdSchema,
 } from '../../common/schemas';
+import { createDraftSchema } from '../content/content.schemas';
 
 /**
  * Outbound endpoint management, and the inbound integration payload.
@@ -51,7 +52,7 @@ export const inboundIntegrationSchema = z
   .object({
     /** The caller's own id for this event, used for deduplication. */
     externalEventId: z.string().trim().min(1).max(256),
-    draft: passthroughObjectSchema.optional(),
+    draft: createDraftSchema.optional(),
     rule: z
       .object({
         name: shortTextSchema,

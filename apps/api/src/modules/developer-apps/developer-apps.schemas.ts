@@ -87,3 +87,4 @@ export const listAppsQuerySchema = cursorQuerySchema;
 export const listGrantsQuerySchema = cursorQuerySchema;
 
 export type CreateOAuthAppInput = z.infer<typeof createOAuthAppSchema>;
+export type UpdateOAuthAppInput = z.infer<typeof updateOAuthAppSchema>;

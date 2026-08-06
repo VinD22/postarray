@@ -6,9 +6,9 @@ import {
 import { z } from 'zod';
 
 import {
+  brandIdSchema,
   growthPlanIdSchema,
   growthProfileIdSchema,
-  passthroughObjectSchema,
   shortTextSchema,
 } from '../../common/schemas';
 
@@ -31,13 +31,16 @@ import {
 
 export const businessProfileInputSchema = z
   .object({
-    name: shortTextSchema,
-    /** What the business does, in the owner's own words. */
-    summary: z.string().trim().min(1).max(4000),
-    audience: z.string().trim().min(1).max(2000),
-    region: z.string().trim().min(1).max(120),
-    /** Structured intake answers. Validated in full by the growth service. */
-    answers: passthroughObjectSchema.default({}),
+    profileId: growthProfileIdSchema.optional(),
+    brandId: brandIdSchema,
+    productName: shortTextSchema,
+    siteUrl: z.string().trim().url().max(2048),
+    description: z.string().trim().min(1).max(4000),
+    category: shortTextSchema,
+    markets: z.array(z.string().trim().min(1).max(120)).max(100).optional(),
+    contentLocales: z.array(z.string().trim().min(1).max(35)).max(25).optional(),
+    objective: z.string().trim().min(1).max(2000),
+    conversionEvent: shortTextSchema.optional(),
   })
   .strict();
 

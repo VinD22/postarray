@@ -4,13 +4,12 @@ import type { CapabilitySnapshot, Paginated } from '@relay/contracts';
 import type {
   ActorContext,
   ConnectionView,
-  CursorQuery,
   MentionEntity,
   ProviderDestination,
   Services,
 } from '../../application/port';
 import { SERVICES } from '../../application/tokens';
-import type { BeginOAuthInput } from './connections.schemas';
+import type { BeginOAuthInput, ListConnectionsQuery } from './connections.schemas';
 
 /**
  * Transport-level delegation for connections.
@@ -25,7 +24,7 @@ export class ConnectionsService {
 
   list(
     ctx: ActorContext,
-    query: CursorQuery & { brandId?: string; provider?: string },
+    query: ListConnectionsQuery,
   ): Promise<Paginated<ConnectionView>> {
     return this.services.connections.list(ctx, query);
   }

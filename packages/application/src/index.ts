@@ -46,6 +46,7 @@ export type {
   OAuthAppService,
   PageQuery,
   PublishingService,
+  PublishConfirmationEvidence,
   PublishWorkflowInput,
   PublishWorkflowTarget,
   PortalLinkView,

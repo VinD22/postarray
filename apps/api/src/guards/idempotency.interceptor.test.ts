@@ -24,7 +24,21 @@ beforeEach(async () => {
         ...base.brands,
         create: () => {
           created += 1;
-          return Promise.resolve({ id: 'brand_fixed_for_assertions', sequence: created });
+          return Promise.resolve({
+            id: newIdFor('brand'),
+            workspaceId: newIdFor('workspace'),
+            name: `Acme ${created}`,
+            slug: `acme-${created}`,
+            voice: null,
+            audience: null,
+            approvedClaims: [],
+            blockedTerms: [],
+            domains: [],
+            defaultTimeZone: 'Europe/Berlin',
+            defaultShortLinkOn: false,
+            archived: false,
+            connectionIds: [],
+          });
         },
       },
     }),
@@ -35,7 +49,7 @@ afterEach(async () => {
   await harness.close();
 });
 
-const body = { name: 'Acme', ianaTimeZone: 'Europe/Berlin', defaultLocale: 'en' };
+const body = { name: 'Acme', ianaTimeZone: 'Europe/Berlin' };
 
 async function createBrand(
   key: string | undefined,

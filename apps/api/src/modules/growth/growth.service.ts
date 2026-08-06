@@ -13,16 +13,16 @@ import type {
   CalendarEntry,
   ContentItemView,
   Services,
-  ViewModel,
 } from '../../application/port';
 import { SERVICES } from '../../application/tokens';
+import type { BusinessProfileInput } from './growth.schemas';
 
 /** Transport-level delegation for the Growth Advisor. */
 @Injectable()
 export class GrowthService {
   constructor(@Inject(SERVICES) private readonly services: Services) {}
 
-  upsertProfile(ctx: ActorContext, input: ViewModel): Promise<BusinessProfileView> {
+  upsertProfile(ctx: ActorContext, input: BusinessProfileInput): Promise<BusinessProfileView> {
     return this.services.growth.upsertBusinessProfile(ctx, input);
   }
 

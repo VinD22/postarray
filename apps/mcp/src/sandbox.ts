@@ -1,4 +1,4 @@
-import { randomUUID } from 'node:crypto';
+import { createHash, randomUUID } from 'node:crypto';
 
 import {
   NOT_IMPLEMENTED_CONTENT_KINDS,
@@ -249,6 +249,7 @@ export function createSandboxServices(options: SandboxOptions): SandboxServices 
           locale: input.locale ?? 'en',
           contentKind: input.contentKind ?? 'text',
           reapprovalRequired: false,
+          currentChecksum: createHash('sha256').update(input.body).digest('hex'),
           variants: (input.targets ?? []).map((target) => ({
             connectionId: target.connectionId,
             provider: FAKE_PROVIDER,
@@ -467,6 +468,7 @@ export function createSandboxServices(options: SandboxOptions): SandboxServices 
           locale: 'en',
           contentKind: 'text',
           reapprovalRequired: false,
+          currentChecksum: createHash('sha256').update('Sandbox plan item').digest('hex'),
           variants: [
             {
               connectionId: 'conn_sandbox_1',

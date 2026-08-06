@@ -13,7 +13,6 @@
  */
 
 import type {
-  BusinessProfile,
   CapabilitySnapshot,
   ContentVersion,
   CreationSurface,
@@ -22,12 +21,9 @@ import type {
   GrowthPlan,
   IanaTimeZone,
   IsoInstant,
-  MetricObservation,
   OperationRef,
   OpportunityRecord,
   Paginated,
-  PublicationReceipt,
-  PublishJob,
   PublishState,
   Scope,
   ToolRecord,
@@ -37,11 +33,49 @@ import type {
 import type { HealthReport, Logger } from '@relay/observability';
 import type { RelayConfig } from '@relay/config';
 import type {
+  ApiKeyView as ApplicationApiKeyView,
+  ApprovalRequestView as ApplicationApprovalRequestView,
+  AuditEventView as ApplicationAuditEventView,
+  AutomationRuleView as ApplicationAutomationRuleView,
+  BrandView as ApplicationBrandView,
+  BusinessProfileView as ApplicationBusinessProfileView,
+  CalendarEntry as ApplicationCalendarEntry,
+  CanonicalPreview as ApplicationCanonicalPreview,
+  CheckoutSessionView as ApplicationCheckoutSessionView,
+  ComparisonReport as ApplicationComparisonReport,
+  ConnectionView as ApplicationConnectionView,
+  ContentItemView as ApplicationContentItemView,
+  ContentVersionView as ApplicationContentVersionView,
+  CreatedApiKeyView as ApplicationCreatedApiKeyView,
+  CreatedOAuthAppView as ApplicationCreatedOAuthAppView,
+  EntitlementStateView as ApplicationEntitlementStateView,
+  ExperimentView as ApplicationExperimentView,
+  FeedHealthView as ApplicationFeedHealthView,
+  FeedPreview as ApplicationFeedPreview,
+  InvitationView as ApplicationInvitationView,
   MediaAssetView as ApplicationMediaAssetView,
   MediaEditOperation as ApplicationMediaEditOperation,
+  MembershipView as ApplicationMembershipView,
+  MentionEntityView as ApplicationMentionEntityView,
+  MetricObservationView as ApplicationMetricObservationView,
+  OAuthAppView as ApplicationOAuthAppView,
+  OAuthGrantView as ApplicationOAuthGrantView,
+  PortalLinkView as ApplicationPortalLinkView,
+  PostVariantView as ApplicationPostVariantView,
+  ProviderDestinationView as ApplicationProviderDestinationView,
+  PublicationReceiptView as ApplicationPublicationReceiptView,
+  PublishJobView as ApplicationPublishJobView,
+  RssFeedView as ApplicationRssFeedView,
+  RulePreview as ApplicationRulePreview,
+  RuleRunView as ApplicationRuleRunView,
   SessionView as ApplicationSessionView,
+  Services as ApplicationServices,
+  ShortLinkStats as ApplicationShortLinkStats,
+  ShortLinkView as ApplicationShortLinkView,
+  UsageSummaryView as ApplicationUsageSummaryView,
   WebhookDeliveryView as ApplicationWebhookDeliveryView,
   WebhookEndpointView as ApplicationWebhookEndpointView,
+  WorkspaceView as ApplicationWorkspaceView,
 } from '@relay/application';
 
 /* -------------------------------------------------------------------------- */
@@ -146,61 +180,47 @@ export interface SchedulerPort {
  */
 export type ViewModel = Readonly<Record<string, unknown>>;
 
-export type WorkspaceView = ViewModel;
-export type MembershipView = ViewModel;
-export type InvitationView = ViewModel;
-export type BrandView = ViewModel;
-export type ConnectionView = ViewModel;
-export type ProviderDestination = ViewModel;
-export type MentionEntity = ViewModel;
-export type ContentItemView = ViewModel;
-export type PostVariantView = ViewModel;
-export type CanonicalPreview = ViewModel;
-export type ApprovalRequestView = ViewModel;
-export type CalendarEntry = ViewModel;
+export type WorkspaceView = ApplicationWorkspaceView;
+export type MembershipView = ApplicationMembershipView;
+export type InvitationView = ApplicationInvitationView;
+export type BrandView = ApplicationBrandView;
+export type ConnectionView = ApplicationConnectionView;
+export type ProviderDestination = ApplicationProviderDestinationView;
+export type MentionEntity = ApplicationMentionEntityView;
+export type ContentItemView = ApplicationContentItemView;
+export type ContentVersionView = ApplicationContentVersionView;
+export type PostVariantView = ApplicationPostVariantView;
+export type CanonicalPreview = ApplicationCanonicalPreview;
+export type ApprovalRequestView = ApplicationApprovalRequestView;
+export type CalendarEntry = ApplicationCalendarEntry;
 export type MediaAssetView = ApplicationMediaAssetView;
 export type MediaEditOperation = ApplicationMediaEditOperation;
-export type ComparisonReport = ViewModel;
-export type ExperimentView = ViewModel;
-export type ShortLinkView = ViewModel;
-export type ShortLinkStats = ViewModel;
-export type AutomationRuleView = ViewModel;
-export type RulePreview = ViewModel;
-export type RuleRunView = ViewModel;
-export type FeedView = ViewModel;
-export type FeedPreview = ViewModel;
-export type FeedHealth = ViewModel;
-export type BusinessProfileView = BusinessProfile;
+export type ComparisonReport = ApplicationComparisonReport;
+export type ExperimentView = ApplicationExperimentView;
+export type ShortLinkView = ApplicationShortLinkView;
+export type ShortLinkStats = ApplicationShortLinkStats;
+export type AutomationRuleView = ApplicationAutomationRuleView;
+export type RulePreview = ApplicationRulePreview;
+export type RuleRunView = ApplicationRuleRunView;
+export type FeedView = ApplicationRssFeedView;
+export type FeedPreview = ApplicationFeedPreview;
+export type FeedHealth = ApplicationFeedHealthView;
+export type BusinessProfileView = ApplicationBusinessProfileView;
 export type WebhookEndpointView = ApplicationWebhookEndpointView;
 export type WebhookDeliveryView = ApplicationWebhookDeliveryView;
-export interface ApiKeyView extends ViewModel {
-  readonly id: string;
-  readonly workspaceId: string;
-  readonly name: string;
-  readonly prefix: string;
-  readonly scopes: readonly Scope[];
-  readonly createdByUserId: string;
-  readonly serviceAccountId: string | null;
-  readonly expiresAt: string | null;
-  readonly lastUsedAt: string | null;
-  readonly revokedAt: string | null;
-  readonly createdAt: string;
-}
-export interface CreatedApiKeyView extends ViewModel {
-  readonly key: ApiKeyView;
-  readonly plaintext: string;
-}
-export type OAuthAppView = ViewModel;
-export type CreatedOAuthAppView = ViewModel;
-export type OAuthGrantView = ViewModel;
-export type AuditEventView = ViewModel;
-export type PublishJobView = PublishJob;
-export type PublicationReceiptView = PublicationReceipt;
-export type MetricObservationView = MetricObservation;
-export type EntitlementStateView = ViewModel;
-export type UsageSummaryView = ViewModel;
-export type CheckoutSessionView = ViewModel;
-export type PortalLinkView = ViewModel;
+export type ApiKeyView = ApplicationApiKeyView;
+export type CreatedApiKeyView = ApplicationCreatedApiKeyView;
+export type OAuthAppView = ApplicationOAuthAppView;
+export type CreatedOAuthAppView = ApplicationCreatedOAuthAppView;
+export type OAuthGrantView = ApplicationOAuthGrantView;
+export type AuditEventView = ApplicationAuditEventView;
+export type PublishJobView = ApplicationPublishJobView;
+export type PublicationReceiptView = ApplicationPublicationReceiptView;
+export type MetricObservationView = ApplicationMetricObservationView;
+export type EntitlementStateView = ApplicationEntitlementStateView;
+export type UsageSummaryView = ApplicationUsageSummaryView;
+export type CheckoutSessionView = ApplicationCheckoutSessionView;
+export type PortalLinkView = ApplicationPortalLinkView;
 export type SessionView = ApplicationSessionView;
 
 /* -------------------------------------------------------------------------- */
@@ -649,32 +669,7 @@ export interface HealthService {
   report(): Promise<HealthReport>;
 }
 
-export interface Services {
-  readonly workspaces: WorkspaceService;
-  readonly members: MembershipService;
-  readonly brands: BrandService;
-  readonly connections: ConnectionService;
-  readonly content: ContentService;
-  readonly validation: ValidationService;
-  readonly approvals: ApprovalService;
-  readonly scheduling: SchedulingService;
-  readonly publishing: PublishingService;
-  readonly receipts: ReceiptService;
-  readonly media: MediaService;
-  readonly analytics: AnalyticsService;
-  readonly shortLinks: ShortLinkService;
-  readonly automationRules: AutomationRuleService;
-  readonly rss: RssService;
-  readonly growth: GrowthService;
-  readonly webhooks: WebhookService;
-  readonly credentials: CredentialVaultService;
-  readonly apiKeys: ApiKeyService;
-  readonly oauthApps: OAuthAppService;
-  readonly billing: BillingService;
-  readonly identity: IdentityService;
-  readonly audit: AuditService;
-  readonly health: HealthService;
-}
+export type Services = ApplicationServices;
 
 /** The dependencies `createServices` is constructed with. */
 export interface ServiceDepsShape {

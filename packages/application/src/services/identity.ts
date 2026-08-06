@@ -291,6 +291,13 @@ export function createIdentityService(deps: ServiceDeps): IdentityService {
                   acceptedAt: deps.clock.now(),
                 },
               },
+              brands: {
+                create: {
+                  name: input.displayName,
+                  slug: workspaceSlug(input.displayName),
+                  defaultTimeZone: input.timeZone,
+                },
+              },
             },
           });
         }

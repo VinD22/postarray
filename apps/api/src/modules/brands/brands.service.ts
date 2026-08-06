@@ -19,11 +19,17 @@ export class BrandsService {
   }
 
   create(ctx: ActorContext, input: CreateBrandInput): Promise<BrandView> {
-    return this.services.brands.create(ctx, input);
+    return this.services.brands.create(ctx, {
+      name: input.name,
+      ...(input.ianaTimeZone === undefined ? {} : { defaultTimeZone: input.ianaTimeZone }),
+    });
   }
 
   update(ctx: ActorContext, brandId: string, patch: UpdateBrandInput): Promise<BrandView> {
-    return this.services.brands.update(ctx, brandId, patch);
+    return this.services.brands.update(ctx, brandId, {
+      ...(patch.name === undefined ? {} : { name: patch.name }),
+      ...(patch.ianaTimeZone === undefined ? {} : { defaultTimeZone: patch.ianaTimeZone }),
+    });
   }
 
   delete(ctx: ActorContext, brandId: string): Promise<void> {

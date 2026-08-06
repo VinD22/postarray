@@ -78,6 +78,7 @@ export interface ContentItemSummary {
   readonly locale: string;
   readonly contentKind: ContentKind;
   readonly reapprovalRequired: boolean;
+  readonly currentChecksum: string | null;
   readonly variants: readonly VariantSummary[];
   readonly updatedAt: string;
 }
@@ -183,6 +184,12 @@ export interface ScheduleSpecLike {
   readonly repeat: null;
 }
 
+export interface PublishConfirmationEvidenceLike {
+  readonly acknowledgedTargetCount: number;
+  readonly acknowledgedVersionChecksum: string;
+  readonly acknowledgedEscalations: readonly string[];
+}
+
 export interface RelayServicePort {
   readonly connections: {
     list(
@@ -246,14 +253,12 @@ export interface RelayServicePort {
   };
 
   readonly publishing: {
-    /**
-     * `confirmation` is a boolean on the application boundary. This server only
-     * ever passes `true` after consuming a server-minted, single-use, human
-     * approved confirmation. See `confirmations.ts`.
-     */
     publishNow(
       ctx: ActorContextLike,
-      input: { readonly contentItemId: string; readonly confirmation: boolean },
+      input: {
+        readonly contentItemId: string;
+        readonly confirmation: PublishConfirmationEvidenceLike;
+      },
     ): Promise<PublishJobSummary>;
     getJob(ctx: ActorContextLike, jobId: string): Promise<PublishJobSummary>;
   };

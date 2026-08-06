@@ -32,7 +32,23 @@ beforeEach(async () => {
         ...base.brands,
         list: () =>
           Promise.resolve({
-            data: [{ id: newIdFor('brand'), name: 'Acme' }],
+            data: [
+              {
+                id: newIdFor('brand'),
+                workspaceId: newIdFor('workspace'),
+                name: 'Acme',
+                slug: 'acme',
+                voice: null,
+                audience: null,
+                approvedClaims: [],
+                blockedTerms: [],
+                domains: [],
+                defaultTimeZone: 'UTC',
+                defaultShortLinkOn: false,
+                archived: false,
+                connectionIds: [],
+              },
+            ],
             pageInfo: { nextCursor: null, hasMore: false, limit: 25 },
           }),
       },

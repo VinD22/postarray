@@ -30,9 +30,13 @@ export function createRefusingServices(): Services {
       create: refuse('workspace'),
       update: refuse('workspace'),
       listForUser: () => Promise.resolve([]),
+      engageKillSwitch: refuse('workspace'),
+      releaseKillSwitch: refuse('workspace'),
     },
     members: {
       list: page,
+      get: refuse('membership'),
+      changeRole: refuse('membership'),
       updateRole: refuse('membership'),
       remove: refuse('membership'),
       invite: refuse('invitation'),
@@ -45,6 +49,7 @@ export function createRefusingServices(): Services {
       get: refuse('brand'),
       create: refuse('brand'),
       update: refuse('brand'),
+      archive: refuse('brand'),
       delete: refuse('brand'),
     },
     connections: {
@@ -99,6 +104,7 @@ export function createRefusingServices(): Services {
       edit: refuse('media'),
       setAltText: refuse('media'),
       declareRights: refuse('media'),
+      purgeExpired: refuse('media'),
     },
     analytics: {
       getPostMetrics: refuse('receipt'),
@@ -113,6 +119,7 @@ export function createRefusingServices(): Services {
       resolve: () => Promise.resolve(null),
       recordClick: () => Promise.resolve(),
       getStats: refuse('short_link'),
+      disable: refuse('short_link'),
     },
     automationRules: {
       list: page,
@@ -154,9 +161,13 @@ export function createRefusingServices(): Services {
       testDelivery: refuse('endpoint'),
       listDeliveries: page,
       redeliver: refuse('delivery'),
-      emit: () => Promise.resolve(),
+      emit: () => Promise.resolve([]),
     },
-    credentials: { describe: refuse('connection') },
+    credentials: {
+      status: refuse('connection'),
+      describe: refuse('connection'),
+      revoke: refuse('connection'),
+    },
     apiKeys: { list: page, create: refuse('api_key'), revoke: refuse('api_key') },
     oauthApps: {
       list: page,

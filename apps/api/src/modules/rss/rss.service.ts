@@ -8,9 +8,9 @@ import type {
   FeedPreview,
   FeedView,
   Services,
-  ViewModel,
 } from '../../application/port';
 import { SERVICES } from '../../application/tokens';
+import type { CreateFeedInput, UpdateFeedInput } from './rss.schemas';
 
 /** Transport-level delegation for RSS feeds. */
 @Injectable()
@@ -21,11 +21,11 @@ export class RssService {
     return this.services.rss.validateFeed(ctx, { url });
   }
 
-  create(ctx: ActorContext, input: ViewModel): Promise<FeedView> {
+  create(ctx: ActorContext, input: CreateFeedInput): Promise<FeedView> {
     return this.services.rss.create(ctx, input);
   }
 
-  update(ctx: ActorContext, feedId: string, patch: ViewModel): Promise<FeedView> {
+  update(ctx: ActorContext, feedId: string, patch: UpdateFeedInput): Promise<FeedView> {
     return this.services.rss.update(ctx, feedId, patch);
   }
 
