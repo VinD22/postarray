@@ -9,6 +9,9 @@ import type { NextConfig } from 'next';
 const workspacePackages = ['@relay/design-system', '@relay/i18n', '@relay/contracts'];
 
 const nextConfig: NextConfig = {
+  // Next writes its own AGENTS.md and CLAUDE.md into this app on dev start.
+  // The project contract lives in the repository root and must not be shadowed.
+  agentRules: false,
   reactStrictMode: true,
   // The Docker runtime stage copies .next/standalone and runs server.js.
   output: 'standalone',
