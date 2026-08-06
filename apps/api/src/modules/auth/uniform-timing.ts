@@ -26,6 +26,8 @@ export interface TimingOptions {
   readonly jitterMs?: number;
   /** Injected so a test can run the suite without waiting in real time. */
   readonly sleep?: (ms: number) => Promise<void>;
+  /** Monotonic test seam. Production always uses `performance.now`. */
+  readonly now?: () => number;
 }
 
 const defaultSleep = (ms: number): Promise<void> =>
@@ -47,7 +49,8 @@ export async function withUniformTiming<T>(
   const floor = options.floorMs ?? UNIFORM_RESPONSE_FLOOR_MS;
   const jitterCeiling = options.jitterMs ?? UNIFORM_RESPONSE_JITTER_MS;
   const sleep = options.sleep ?? defaultSleep;
-  const startedAt = performance.now();
+  const now = options.now ?? performance.now.bind(performance);
+  const startedAt = now();
 
   let result: T;
   let failure: unknown;
@@ -59,7 +62,7 @@ export async function withUniformTiming<T>(
   }
 
   const jitter = jitterCeiling > 0 ? randomInt(0, jitterCeiling) : 0;
-  const remaining = floor + jitter - (performance.now() - startedAt);
+  const remaining = floor + jitter - (now() - startedAt);
   if (remaining > 0) {
     await sleep(remaining);
   }

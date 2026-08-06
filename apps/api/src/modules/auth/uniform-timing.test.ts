@@ -5,45 +5,67 @@ import { withUniformTiming } from './uniform-timing';
 /**
  * Response timing uniformity.
  *
- * The floor here is deliberately tiny so the suite stays fast. What is being
- * tested is the shape of the control, not the production constant: that both
- * the fast path and the slow path leave through the same floor, and that a
- * failure is padded exactly like a success. A fast rejection is itself a signal
- * that an identifier does not exist.
+ * A fake monotonic clock keeps these security assertions deterministic under
+ * parallel CI load. What is being tested is the shape of the control: both the
+ * fast path and the slow path leave through the same floor, and a failure is
+ * padded exactly like a success. A fast rejection is itself a signal that an
+ * identifier does not exist.
  */
 const FLOOR_MS = 40;
 
-async function elapsed(work: () => Promise<unknown>): Promise<number> {
-  const startedAt = performance.now();
-  try {
-    await work();
-  } catch {
-    // Measured either way: the padding must apply to failures too.
-  }
-  return performance.now() - startedAt;
+function timingHarness() {
+  let nowMs = 0;
+  const sleeps: number[] = [];
+
+  return {
+    now: () => nowMs,
+    sleep: async (ms: number) => {
+      sleeps.push(ms);
+      nowMs += ms;
+    },
+    advance: (ms: number) => {
+      nowMs += ms;
+    },
+    elapsed: () => nowMs,
+    sleeps,
+  };
 }
 
 describe('withUniformTiming', () => {
   it('pads a fast path up to the floor', async () => {
-    const duration = await elapsed(() =>
-      withUniformTiming(() => Promise.resolve('found'), { floorMs: FLOOR_MS, jitterMs: 0 }),
-    );
-    expect(duration).toBeGreaterThanOrEqual(FLOOR_MS - 5);
+    const timing = timingHarness();
+    await withUniformTiming(() => Promise.resolve('found'), {
+      floorMs: FLOOR_MS,
+      jitterMs: 0,
+      now: timing.now,
+      sleep: timing.sleep,
+    });
+
+    expect(timing.elapsed()).toBe(FLOOR_MS);
+    expect(timing.sleeps).toEqual([FLOOR_MS]);
   });
 
   it('pads a failure the same way it pads a success', async () => {
-    const failure = await elapsed(() =>
+    const failureTiming = timingHarness();
+    await expect(
       withUniformTiming(() => Promise.reject(new Error('no such identity')), {
         floorMs: FLOOR_MS,
         jitterMs: 0,
+        now: failureTiming.now,
+        sleep: failureTiming.sleep,
       }),
-    );
-    const success = await elapsed(() =>
-      withUniformTiming(() => Promise.resolve('found'), { floorMs: FLOOR_MS, jitterMs: 0 }),
-    );
+    ).rejects.toThrow('no such identity');
 
-    expect(failure).toBeGreaterThanOrEqual(FLOOR_MS - 5);
-    expect(Math.abs(failure - success)).toBeLessThan(FLOOR_MS);
+    const successTiming = timingHarness();
+    await withUniformTiming(() => Promise.resolve('found'), {
+      floorMs: FLOOR_MS,
+      jitterMs: 0,
+      now: successTiming.now,
+      sleep: successTiming.sleep,
+    });
+
+    expect(failureTiming.sleeps).toEqual(successTiming.sleeps);
+    expect(failureTiming.elapsed()).toBe(successTiming.elapsed());
   });
 
   it('still rejects with the original error after padding', async () => {
@@ -64,19 +86,21 @@ describe('withUniformTiming', () => {
   });
 
   it('does not shorten work that already took longer than the floor', async () => {
-    const sleep = (ms: number): Promise<void> =>
-      new Promise((resolve) => {
-        setTimeout(resolve, ms);
-      });
-    const duration = await elapsed(() =>
-      withUniformTiming(
-        async () => {
-          await sleep(FLOOR_MS * 2);
-          return 'slow';
-        },
-        { floorMs: FLOOR_MS, jitterMs: 0 },
-      ),
+    const timing = timingHarness();
+    await withUniformTiming(
+      () => {
+        timing.advance(FLOOR_MS * 2);
+        return Promise.resolve('slow');
+      },
+      {
+        floorMs: FLOOR_MS,
+        jitterMs: 0,
+        now: timing.now,
+        sleep: timing.sleep,
+      },
     );
-    expect(duration).toBeGreaterThanOrEqual(FLOOR_MS * 2 - 5);
+
+    expect(timing.elapsed()).toBe(FLOOR_MS * 2);
+    expect(timing.sleeps).toEqual([]);
   });
 });
