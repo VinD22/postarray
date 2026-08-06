@@ -20,7 +20,7 @@ function withLocaleRewrite(request: NextRequest, locale: string, pathname: strin
  * URLs. Browser language is deliberately not consulted: explicit URLs are
  * crawlable and stable, including for Googlebot.
  */
-export function middleware(request: NextRequest): NextResponse {
+export function proxy(request: NextRequest): NextResponse {
   const { pathname } = request.nextUrl;
   const segments = pathname.split('/');
   const firstSegment = segments[1] ?? '';

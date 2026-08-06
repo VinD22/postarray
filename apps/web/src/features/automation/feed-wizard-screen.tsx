@@ -24,7 +24,7 @@ import {
 import { formatDuration } from '@relay/i18n';
 import { useI18n, useTranslations } from '@relay/i18n/react';
 
-import { api } from '@/lib/api';
+import { api, type ProviderId } from '@/lib/api';
 import { QueryErrorState } from '@/features/analytics/components/query-error-state';
 import { providerLabelKey } from '@/features/analytics/labels';
 
@@ -63,16 +63,7 @@ const CADENCE_OPTIONS: readonly number[] = [3_600, 10_800, 21_600, 43_200, 86_40
 
 interface ConnectionLike {
   readonly id: string;
-  readonly provider:
-    | 'x'
-    | 'linkedin'
-    | 'instagram'
-    | 'facebook'
-    | 'youtube'
-    | 'tiktok'
-    | 'threads'
-    | 'bluesky'
-    | 'fake';
+  readonly provider: ProviderId;
   readonly displayName?: string;
   readonly accountName?: string;
 }
@@ -245,9 +236,7 @@ export function FeedWizardScreen(): ReactElement {
                       setDraft((current) => ({
                         ...current,
                         connectionIds: current.connectionIds.includes(account.connectionId)
-                          ? current.connectionIds.filter(
-                              (value) => value !== account.connectionId,
-                            )
+                          ? current.connectionIds.filter((value) => value !== account.connectionId)
                           : [...current.connectionIds, account.connectionId],
                       }))
                     }
@@ -273,76 +262,76 @@ export function FeedWizardScreen(): ReactElement {
         disabled={!canChooseTargets}
       >
         <RssStepReveal active={canChooseTargets}>
-        <div className="flex flex-col gap-3">
-          <Field
-            label={t('automation.rss.template')}
-            description={t('automation.rss.templateHelp')}
-            required
-          >
-            {(control) => (
-              <Textarea
-                {...control}
-                autoGrow
-                minRows={4}
-                value={draft.template}
-                onChange={(event) =>
-                  setDraft((current) => ({ ...current, template: event.target.value }))
+          <div className="flex flex-col gap-3">
+            <Field
+              label={t('automation.rss.template')}
+              description={t('automation.rss.templateHelp')}
+              required
+            >
+              {(control) => (
+                <Textarea
+                  {...control}
+                  autoGrow
+                  minRows={4}
+                  value={draft.template}
+                  onChange={(event) =>
+                    setDraft((current) => ({ ...current, template: event.target.value }))
+                  }
+                />
+              )}
+            </Field>
+
+            {validation ? (
+              <div className="flex flex-wrap items-center gap-2">
+                <span className="text-label text-text-tertiary">
+                  {t('automation.rss.templateFields')}
+                </span>
+                {validation.availableFields.map((field) => (
+                  <Button
+                    key={field}
+                    size="sm"
+                    variant="ghost"
+                    onClick={() =>
+                      setDraft((current) => ({
+                        ...current,
+                        template: `${current.template}{${field}}`,
+                      }))
+                    }
+                  >
+                    {t('automation.rss.templateInsert', { field })}
+                  </Button>
+                ))}
+              </div>
+            ) : null}
+
+            <span className="flex items-center gap-2">
+              <Switch
+                id="feed-adapt"
+                checked={draft.adaptText}
+                onCheckedChange={(checked) =>
+                  setDraft((current) => ({ ...current, adaptText: checked === true }))
                 }
               />
-            )}
-          </Field>
+              <Label htmlFor="feed-adapt">{t('automation.rss.adaptWithAi')}</Label>
+            </span>
+            <p className="text-body-sm text-text-tertiary max-w-[70ch]">
+              {t('automation.rss.adaptHelp')}
+            </p>
 
-          {validation ? (
-            <div className="flex flex-wrap items-center gap-2">
-              <span className="text-label text-text-tertiary">
-                {t('automation.rss.templateFields')}
-              </span>
-              {validation.availableFields.map((field) => (
-                <Button
-                  key={field}
-                  size="sm"
-                  variant="ghost"
-                  onClick={() =>
-                    setDraft((current) => ({
-                      ...current,
-                      template: `${current.template}{${field}}`,
-                    }))
-                  }
-                >
-                  {t('automation.rss.templateInsert', { field })}
-                </Button>
-              ))}
-            </div>
-          ) : null}
-
-          <span className="flex items-center gap-2">
-            <Switch
-              id="feed-adapt"
-              checked={draft.adaptText}
-              onCheckedChange={(checked) =>
-                setDraft((current) => ({ ...current, adaptText: checked === true }))
-              }
-            />
-            <Label htmlFor="feed-adapt">{t('automation.rss.adaptWithAi')}</Label>
-          </span>
-          <p className="text-body-sm text-text-tertiary max-w-[70ch]">
-            {t('automation.rss.adaptHelp')}
-          </p>
-
-          <span className="flex items-center gap-2">
-            <Switch
-              id="feed-image"
-              checked={draft.useFeedImage}
-              onCheckedChange={(checked) =>
-                setDraft((current) => ({ ...current, useFeedImage: checked === true }))
-              }
-            />
-            <Label htmlFor="feed-image">{t('automation.rss.imageFromFeed')}</Label>
-          </span>
-          <p className="text-body-sm text-text-tertiary max-w-[70ch]">
-            {t('automation.rss.noImageGeneration')}
-          </p>
-        </div>
+            <span className="flex items-center gap-2">
+              <Switch
+                id="feed-image"
+                checked={draft.useFeedImage}
+                onCheckedChange={(checked) =>
+                  setDraft((current) => ({ ...current, useFeedImage: checked === true }))
+                }
+              />
+              <Label htmlFor="feed-image">{t('automation.rss.imageFromFeed')}</Label>
+            </span>
+            <p className="text-body-sm text-text-tertiary max-w-[70ch]">
+              {t('automation.rss.noImageGeneration')}
+            </p>
+          </div>
         </RssStepReveal>
       </Step>
 
@@ -353,68 +342,72 @@ export function FeedWizardScreen(): ReactElement {
         disabled={!canChooseTargets}
       >
         <RssStepReveal active={canChooseTargets}>
-        <div className="flex flex-col gap-3">
-          <Field
-            label={t('automation.rss.step.policy')}
-            description={t('automation.rss.policyHelp')}
-          >
-            {(control) => (
-              <Select
-                value={draft.policy}
-                onValueChange={(value) =>
-                  setDraft((current) => ({
-                    ...current,
-                    policy: value as FeedPublishPolicy,
-                    cadenceSeconds:
-                      value === 'fixed_cadence' ? (current.cadenceSeconds ?? 21_600) : null,
-                  }))
-                }
-              >
-                <SelectTrigger id={control.id} className="min-w-64">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  {(Object.keys(POLICY_KEY) as FeedPublishPolicy[]).map((policy) => (
-                    <SelectItem key={policy} value={policy}>
-                      {t(POLICY_KEY[policy])}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            )}
-          </Field>
-
-          {draft.policy === 'fixed_cadence' ? (
+          <div className="flex flex-col gap-3">
             <Field
-              label={t('automation.rss.cadenceInterval')}
-              description={t('automation.rss.cadenceHelp')}
+              label={t('automation.rss.step.policy')}
+              description={t('automation.rss.policyHelp')}
             >
               {(control) => (
                 <Select
-                  value={String(draft.cadenceSeconds ?? 21_600)}
+                  value={draft.policy}
                   onValueChange={(value) =>
-                    setDraft((current) => ({ ...current, cadenceSeconds: Number(value) }))
+                    setDraft((current) => ({
+                      ...current,
+                      policy: value as FeedPublishPolicy,
+                      cadenceSeconds:
+                        value === 'fixed_cadence' ? (current.cadenceSeconds ?? 21_600) : null,
+                    }))
                   }
                 >
-                  <SelectTrigger id={control.id} className="min-w-48">
+                  <SelectTrigger id={control.id} className="min-w-64">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    {CADENCE_OPTIONS.map((seconds) => (
-                      <SelectItem key={seconds} value={String(seconds)}>
-                        {formatDuration(locale, seconds * 1000, { maxUnits: 1 })}
+                    {(Object.keys(POLICY_KEY) as FeedPublishPolicy[]).map((policy) => (
+                      <SelectItem key={policy} value={policy}>
+                        {t(POLICY_KEY[policy])}
                       </SelectItem>
                     ))}
                   </SelectContent>
                 </Select>
               )}
             </Field>
-          ) : null}
 
-          {draft.policy === 'immediate' ? (
-            <Notice tone="warning" liveness="status" title={t('automation.rss.immediateWarning')} />
-          ) : null}
-        </div>
+            {draft.policy === 'fixed_cadence' ? (
+              <Field
+                label={t('automation.rss.cadenceInterval')}
+                description={t('automation.rss.cadenceHelp')}
+              >
+                {(control) => (
+                  <Select
+                    value={String(draft.cadenceSeconds ?? 21_600)}
+                    onValueChange={(value) =>
+                      setDraft((current) => ({ ...current, cadenceSeconds: Number(value) }))
+                    }
+                  >
+                    <SelectTrigger id={control.id} className="min-w-48">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {CADENCE_OPTIONS.map((seconds) => (
+                        <SelectItem key={seconds} value={String(seconds)}>
+                          {formatDuration(locale, seconds * 1000, { maxUnits: 1 })}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                )}
+              </Field>
+            ) : null}
+
+            {draft.policy === 'immediate' ? (
+              <Notice
+                tone="warning"
+                liveness="status"
+                title={t('automation.rss.immediateWarning')}
+              />
+            ) : null}
+          </div>
         </RssStepReveal>
       </Step>
 

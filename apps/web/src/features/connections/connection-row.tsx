@@ -71,6 +71,15 @@ const providerBarClass: Record<ProviderId, string> = {
   threads: 'bg-brand-threads',
   bluesky: 'bg-brand-bluesky',
   fake: 'bg-brand-fake',
+  mastodon: 'bg-brand-mastodon',
+  telegram: 'bg-brand-telegram',
+  reddit: 'bg-brand-reddit',
+  wordpress: 'bg-brand-wordpress',
+  medium: 'bg-brand-medium',
+  devto: 'bg-brand-devto',
+  pinterest: 'bg-brand-pinterest',
+  discord: 'bg-brand-discord',
+  slack: 'bg-brand-slack',
 };
 
 export interface ConnectionRowProps {
@@ -134,7 +143,13 @@ export function ConnectionRow({
             alt={row.displayName}
             src={row.avatarUrl ?? undefined}
             fallback={initialsOf(row.displayName)}
-            badge={<ProviderMark provider={row.provider} labelledBySibling={false} name={providerName(row.provider)} />}
+            badge={
+              <ProviderMark
+                provider={row.provider}
+                labelledBySibling={false}
+                name={providerName(row.provider)}
+              />
+            }
           />
 
           <div className="flex min-w-0 flex-col gap-1.5">

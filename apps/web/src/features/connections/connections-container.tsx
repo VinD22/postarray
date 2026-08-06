@@ -99,6 +99,46 @@ const PERMISSIONS: Readonly<Record<string, readonly PermissionView[]>> = {
   bluesky: [
     { scope: 'app-password', granted: false, purposeKey: 'web.connection.purpose.publish' },
   ],
+  mastodon: [
+    { scope: 'read', granted: false, purposeKey: 'web.connection.purpose.identity' },
+    { scope: 'write:statuses', granted: false, purposeKey: 'web.connection.purpose.publish' },
+  ],
+  telegram: [{ scope: 'bot', granted: false, purposeKey: 'web.connection.purpose.publish' }],
+  reddit: [
+    { scope: 'identity', granted: false, purposeKey: 'web.connection.purpose.identity' },
+    { scope: 'submit', granted: false, purposeKey: 'web.connection.purpose.publish' },
+    {
+      scope: 'mysubreddits',
+      granted: false,
+      purposeKey: 'web.connection.purpose.chooseDestination',
+    },
+  ],
+  wordpress: [{ scope: 'posts', granted: false, purposeKey: 'web.connection.purpose.publish' }],
+  medium: [
+    { scope: 'basicProfile', granted: false, purposeKey: 'web.connection.purpose.identity' },
+    { scope: 'publishPost', granted: false, purposeKey: 'web.connection.purpose.publish' },
+  ],
+  devto: [{ scope: 'article', granted: false, purposeKey: 'web.connection.purpose.publish' }],
+  pinterest: [
+    { scope: 'user_accounts:read', granted: false, purposeKey: 'web.connection.purpose.identity' },
+    {
+      scope: 'boards:read',
+      granted: false,
+      purposeKey: 'web.connection.purpose.chooseDestination',
+    },
+    { scope: 'pins:read', granted: false, purposeKey: 'web.connection.purpose.readPosts' },
+    { scope: 'pins:write', granted: false, purposeKey: 'web.connection.purpose.publish' },
+  ],
+  discord: [{ scope: 'bot', granted: false, purposeKey: 'web.connection.purpose.publish' }],
+  slack: [
+    { scope: 'users:read', granted: false, purposeKey: 'web.connection.purpose.identity' },
+    {
+      scope: 'channels:read',
+      granted: false,
+      purposeKey: 'web.connection.purpose.chooseDestination',
+    },
+    { scope: 'chat:write', granted: false, purposeKey: 'web.connection.purpose.publish' },
+  ],
 };
 
 export function ConnectionsContainer(): ReactNode {

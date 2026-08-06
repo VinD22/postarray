@@ -28,8 +28,8 @@ export interface StaggerListProps {
  */
 export function StaggerList({
   selector = '[data-stagger-item]',
-  stagger = 0.06,
-  y = 16,
+  stagger = 0.04,
+  y = 14,
   className,
   children,
 }: StaggerListProps) {

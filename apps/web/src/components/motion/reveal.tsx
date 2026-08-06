@@ -27,7 +27,7 @@ export interface RevealProps {
  * ever set inside `useGSAP`, scoped to this component's container, so
  * no-JS and reduced-motion visitors never see anything but the final layout.
  */
-export function Reveal({ as, y = 24, delay, once = true, className, children }: RevealProps) {
+export function Reveal({ as, y = 16, delay, once = true, className, children }: RevealProps) {
   const Tag = (as ?? 'div') as ElementType;
   const scope = useRef<HTMLElement>(null);
   const motionOk = useMotionOk();

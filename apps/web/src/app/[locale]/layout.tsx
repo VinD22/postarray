@@ -1,9 +1,9 @@
 import { notFound } from 'next/navigation';
 import type { Metadata, Viewport } from 'next';
-import { Bricolage_Grotesque, Inter, JetBrains_Mono } from 'next/font/google';
+import { Fraunces, Inter, JetBrains_Mono } from 'next/font/google';
 import type { ReactNode } from 'react';
 
-import { themeBootstrapScript } from '@relay/design-system/hooks';
+import { themeBootstrapScript } from '@relay/design-system/theme-bootstrap';
 
 import { Providers } from '@/components/providers';
 import { STATIC_WEB_LOCALE_CODES, isWebLocale } from '@/lib/i18n/development-pseudo-locales';
@@ -19,12 +19,13 @@ const uiFont = Inter({
   weight: ['400', '500', '600', '700', '800'],
 });
 
-/** The display face carries hierarchy across the marketing and product surfaces. */
-const displayFont = Bricolage_Grotesque({
+/** The editorial serif display face. Carries hierarchy across marketing and
+ * product surfaces with a warm, high-contrast, book-like voice. */
+const displayFont = Fraunces({
   subsets: ['latin', 'latin-ext'],
   variable: '--font-relay-display',
   display: 'swap',
-  axes: ['opsz', 'wdth'],
+  axes: ['opsz'],
 });
 
 /** The monospace face is reserved for timestamps, tokens, and fixed-width reads. */

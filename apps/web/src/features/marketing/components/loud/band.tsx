@@ -6,34 +6,28 @@ import { Container } from '../layout';
 /**
  * The full-bleed, color-blocked section.
  *
- * `Band` is the loud system's answer to `Section`: instead of a hairline
- * dividing two quiet columns, a `Band` is an edge-to-edge block of one of the
- * five brand tones. `data-tone` carries the choice onto the DOM so a future
- * surface can key off it without a second prop, and every tone maps only to
- * semantic tokens, never to a literal color, so both themes stay correct
- * automatically:
+ * `Band` is the editorial answer to `Section`: instead of a hairline dividing
+ * two quiet columns, a `Band` is an edge-to-edge block of one of the brand
+ * tones. `data-tone` carries the choice onto the DOM so a future surface can
+ * key off it without a second prop, and every tone maps only to semantic
+ * tokens, never to a literal color, so both themes stay correct automatically:
  *
  *   paper  -> `surface-canvas` / `text-primary`   the quiet default
- *   brand  -> `accent` / `accent-on`               electric blue block
- *   cta    -> `cta` / `cta-on`                      sunshine yellow block
- *   pop    -> `blush` / `blush-on`                  bubblegum pink block
+ *   brand  -> `accent` / `accent-on`               ink block (light) / paper block (dark)
+ *   cta    -> `cta` / `cta-on`                      warm paper-tint block
+ *   pop    -> `blush` / `blush-on`                  warm paper-tint block
  *   ink    -> `surface-inverted` / `text-inverted`  the honesty/boundary tone
  *
- * `cta` and `pop` are full-viewport fills of what are otherwise small-control
- * colors. A whole screen of unmodified sunshine yellow reads as blinding
- * rather than confident, especially in the dark theme where every other
- * surface is a low-luminance ink. `.relay-band-cta` / `.relay-band-pop` in
- * `globals.css` fold the fill toward the theme's own canvas with
- * `color-mix()` under `[data-theme='dark']` only — light keeps the literal
- * token color, dark gets a deep, saturated version of the same hue. `brand`
- * and `ink` need no such remap: `accent` and `surface-inverted` are already
- * designed per-theme (see theme.css's "designed, not inverted" dark layer),
- * so the raw semantic token is correct as-is in both themes.
+ * `cta` and `pop` are full-viewport fills of warm paper tints. In dark theme
+ * `.relay-band-cta` / `.relay-band-pop` in `globals.css` fold the fill toward
+ * the dark canvas with `color-mix()` so a full-bleed tint reads as confident,
+ * not washed out. `brand` and `ink` need no such remap: `accent` and
+ * `surface-inverted` are already designed per-theme, so the raw semantic
+ * token is correct as-is in both themes.
  *
  * `divider="zigzag"` stamps a torn-paper edge at the band's block-end, in the
- * `--border-bold` ink outline color, for the poster-cut-out look the loud
- * system uses between bands (see `ZigzagEdge`, also used standalone by
- * `SiteFooter` at its block-start).
+ * `--border-bold` ink outline color, between bands (see `ZigzagEdge`, also
+ * used standalone by `SiteFooter` at its block-start).
  */
 
 export type BandTone = 'paper' | 'brand' | 'cta' | 'pop' | 'ink';

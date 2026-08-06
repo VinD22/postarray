@@ -46,6 +46,15 @@ const PROVIDER_BAR_CLASS: Partial<Record<ProviderId, string>> = {
   tiktok: 'bg-brand-tiktok',
   threads: 'bg-brand-threads',
   bluesky: 'bg-brand-bluesky',
+  mastodon: 'bg-brand-mastodon',
+  telegram: 'bg-brand-telegram',
+  reddit: 'bg-brand-reddit',
+  wordpress: 'bg-brand-wordpress',
+  medium: 'bg-brand-medium',
+  devto: 'bg-brand-devto',
+  pinterest: 'bg-brand-pinterest',
+  discord: 'bg-brand-discord',
+  slack: 'bg-brand-slack',
 };
 
 const MASTER_ROW_KEY = 'master';

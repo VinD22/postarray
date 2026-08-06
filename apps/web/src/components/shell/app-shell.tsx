@@ -67,7 +67,7 @@ export function AppShell({ children }: { readonly children: ReactNode }) {
         {t('nav.skipToContent')}
       </a>
 
-      <header className="border-border-bold bg-surface-canvas sticky top-0 z-(--z-index-sticky) border-b-2">
+      <header className="border-border-default bg-surface-canvas sticky top-0 z-(--z-index-sticky) border-b">
         <div className="flex items-center gap-2 px-(--layout-gutter) py-2">
           <Link
             href="/"

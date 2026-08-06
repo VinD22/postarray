@@ -21,12 +21,10 @@
     var(--font-relay-ui), 'Inter Variable', 'Inter', ui-sans-serif, system-ui, -apple-system,
     'Segoe UI', 'Noto Sans', 'Noto Sans Arabic', 'Noto Sans Hebrew', 'Noto Sans JP', 'Noto Sans KR',
     'Noto Sans SC', sans-serif;
-  /* Source Serif 4 is no longer loaded. This keeps existing `font-serif`
-     usages rendering (on the system serif) until they migrate to
-     `font-display`. */
-  --font-serif: 'Iowan Old Style', Georgia, serif;
-  --font-display:
-    var(--font-relay-display), 'Bricolage Grotesque', var(--font-relay-ui), sans-serif;
+  /* The editorial serif. `font-display` and `font-serif` resolve to the same
+     Fraunces face so display headlines and pull quotes share one voice. */
+  --font-serif: var(--font-relay-display), 'Fraunces', 'Iowan Old Style', Georgia, serif;
+  --font-display: var(--font-relay-display), 'Fraunces', Georgia, serif;
   --font-mono: var(--font-relay-mono), 'JetBrains Mono', ui-monospace, monospace;
 }
 

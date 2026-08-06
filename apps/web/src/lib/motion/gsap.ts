@@ -29,6 +29,14 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { SplitText } from 'gsap/SplitText';
 import { Flip } from 'gsap/Flip';
 
-gsap.registerPlugin(useGSAP, ScrollTrigger, SplitText, Flip);
+// ScrollTrigger owns a browser-global synchronization timer. Registering it in
+// Vitest leaves that timer alive after JSDOM is torn down, where its next tick
+// no longer has requestAnimationFrame. Component tests exercise the accessible
+// finished state, not scroll position, so keep that browser lifecycle out of
+// the test runtime while retaining the same imports and types.
+gsap.registerPlugin(useGSAP, SplitText, Flip);
+if (process.env.NODE_ENV !== 'test') {
+  gsap.registerPlugin(ScrollTrigger);
+}
 
 export { gsap, useGSAP, ScrollTrigger, SplitText, Flip };

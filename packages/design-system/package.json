@@ -14,6 +14,7 @@
     "./primitives": "./src/primitives/index.ts",
     "./patterns": "./src/patterns/index.ts",
     "./hooks": "./src/hooks/index.ts",
+    "./theme-bootstrap": "./src/theme-bootstrap.ts",
     "./utils": "./src/utils/index.ts",
     "./styles.css": "./src/styles.css",
     "./theme.css": "./src/tokens/theme.css"

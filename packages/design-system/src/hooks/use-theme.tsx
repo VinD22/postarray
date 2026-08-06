@@ -9,15 +9,12 @@ import {
   useState,
   type ReactNode,
 } from 'react';
+
+import { THEME_MEDIA_QUERY, THEME_STORAGE_KEY, themeBootstrapScript } from '../theme-bootstrap';
 import { useIsomorphicLayoutEffect } from './use-isomorphic-layout-effect';
 
 export type ThemePreference = 'light' | 'dark' | 'system';
 export type ResolvedTheme = 'light' | 'dark';
-
-/** The key the bootstrap script and the React runtime agree on. */
-export const THEME_STORAGE_KEY = 'relay.theme';
-
-const MEDIA = '(prefers-color-scheme: dark)';
 
 function isPreference(value: unknown): value is ThemePreference {
   return value === 'light' || value === 'dark' || value === 'system';
@@ -36,7 +33,7 @@ function readStoredPreference(): ThemePreference {
 
 function systemTheme(): ResolvedTheme {
   if (typeof window === 'undefined' || !window.matchMedia) return 'light';
-  return window.matchMedia(MEDIA).matches ? 'dark' : 'light';
+  return window.matchMedia(THEME_MEDIA_QUERY).matches ? 'dark' : 'light';
 }
 
 function applyTheme(preference: ThemePreference): ResolvedTheme {
@@ -46,20 +43,6 @@ function applyTheme(preference: ThemePreference): ResolvedTheme {
   root.style.colorScheme = resolved;
   return resolved;
 }
-
-/**
- * The inline bootstrap script, as a string of first-party JavaScript.
- *
- * Inject it as the first `<script>` inside `<head>` so it runs before first
- * paint: the correct theme is on the root element before any pixel is drawn,
- * which is what removes the flash of the wrong theme. It is dependency free,
- * wrapped in try/catch, idempotent, and contains no interpolated input.
- */
-export const themeBootstrapScript = `(function(){try{var k=${JSON.stringify(
-  THEME_STORAGE_KEY,
-)};var p=localStorage.getItem(k);if(p!=="light"&&p!=="dark"&&p!=="system"){p="system"}var t=p;if(p==="system"){t=window.matchMedia&&window.matchMedia(${JSON.stringify(
-  MEDIA,
-)}).matches?"dark":"light"}var r=document.documentElement;r.setAttribute("data-theme",t);r.style.colorScheme=t}catch(e){}})();`;
 
 export interface ThemeContextValue {
   /** What the user chose. */
@@ -93,7 +76,7 @@ export function ThemeProvider({ children, forcedPreference }: ThemeProviderProps
   useEffect(() => {
     if (preference !== 'system') return undefined;
     if (typeof window === 'undefined' || !window.matchMedia) return undefined;
-    const list = window.matchMedia(MEDIA);
+    const list = window.matchMedia(THEME_MEDIA_QUERY);
     const onChange = (): void => setResolvedTheme(applyTheme('system'));
     list.addEventListener('change', onChange);
     return () => list.removeEventListener('change', onChange);
@@ -116,6 +99,8 @@ export function ThemeProvider({ children, forcedPreference }: ThemeProviderProps
 
   return <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>;
 }
+
+export { THEME_STORAGE_KEY, themeBootstrapScript };
 
 export function useTheme(): ThemeContextValue {
   const context = useContext(ThemeContext);

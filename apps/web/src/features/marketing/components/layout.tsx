@@ -73,7 +73,7 @@ export function Section({
       className={cn(divided && 'border-border-default border-t', className)}
     >
       <Container>
-        <div className="py-14 md:py-20 lg:py-24">{children}</div>
+        <div className="py-16 md:py-24 lg:py-32">{children}</div>
       </Container>
     </section>
   );
@@ -94,7 +94,7 @@ export function Split({
   className?: string;
 }): ReactNode {
   return (
-    <div className={cn('grid gap-x-12 gap-y-8 lg:grid-cols-12 lg:gap-y-0', className)}>
+    <div className={cn('grid gap-x-12 gap-y-8 lg:grid-cols-12 lg:gap-x-16 lg:gap-y-0', className)}>
       <div className="lg:col-span-4">{aside}</div>
       <div className="min-w-0 lg:col-span-7 lg:col-start-6">{children}</div>
     </div>
@@ -113,8 +113,8 @@ export function Display({
   return (
     <Component
       className={cn(
-        'font-serif text-[clamp(2.05rem,1.15rem+3.4vw,3.75rem)] leading-[1.06]',
-        'text-text-primary tracking-[-0.022em] text-pretty',
+        'font-display text-[clamp(2.5rem,1.2rem+4.4vw,4.5rem)] leading-[1.02]',
+        'text-text-primary font-medium tracking-[-0.02em] text-pretty',
         className,
       )}
     >
@@ -138,8 +138,8 @@ export function Heading({
     <Component
       id={id}
       className={cn(
-        'font-serif text-[clamp(1.45rem,1.15rem+0.95vw,2rem)] leading-[1.16]',
-        'text-text-primary tracking-[-0.016em] text-pretty',
+        'font-display text-[clamp(1.6rem,1.15rem+1.2vw,2.25rem)] leading-[1.12]',
+        'text-text-primary font-medium tracking-[-0.015em] text-pretty',
         className,
       )}
     >

@@ -24,6 +24,15 @@ export const PROVIDER_LABEL: Readonly<Record<ProviderId, string>> = {
   threads: 'Threads',
   bluesky: 'Bluesky',
   fake: 'Relay sandbox',
+  mastodon: 'Mastodon',
+  telegram: 'Telegram',
+  reddit: 'Reddit',
+  wordpress: 'WordPress',
+  medium: 'Medium',
+  devto: 'Dev.to',
+  pinterest: 'Pinterest',
+  discord: 'Discord',
+  slack: 'Slack',
 };
 
 /** The design system carries a colour for every provider it knows about. */
@@ -36,10 +45,35 @@ const BRANDED: ReadonlySet<ProviderId> = new Set<ProviderId>([
   'tiktok',
   'threads',
   'bluesky',
+  'mastodon',
+  'telegram',
+  'reddit',
+  'wordpress',
+  'medium',
+  'devto',
+  'pinterest',
+  'discord',
+  'slack',
 ]);
 
 type BrandedProvider =
-  'x' | 'linkedin' | 'instagram' | 'facebook' | 'youtube' | 'tiktok' | 'threads' | 'bluesky';
+  | 'x'
+  | 'linkedin'
+  | 'instagram'
+  | 'facebook'
+  | 'youtube'
+  | 'tiktok'
+  | 'threads'
+  | 'bluesky'
+  | 'mastodon'
+  | 'telegram'
+  | 'reddit'
+  | 'wordpress'
+  | 'medium'
+  | 'devto'
+  | 'pinterest'
+  | 'discord'
+  | 'slack';
 
 export interface ProviderIdentityProps {
   readonly provider: ProviderId;

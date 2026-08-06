@@ -3,7 +3,7 @@
 import { useRef, type ElementType, type Ref, type RefObject } from 'react';
 
 import { useDirectionAttributes } from '@/lib/i18n';
-import { EASE_OUT_BACK, EXPRESSIVE_MD } from '@/lib/motion/constants';
+import { EASE_OUT_EXPO, EXPRESSIVE_MD } from '@/lib/motion/constants';
 import { gsap, SplitText, useGSAP } from '@/lib/motion/gsap';
 import { useMotionOk } from '@/lib/motion/use-motion-ok';
 
@@ -23,7 +23,8 @@ export interface KineticHeadlineProps {
 }
 
 /**
- * Splits its text and animates each unit in with a rise + rotate.
+ * Splits its text and animates each unit in with a clean rise (no rotation —
+ * editorial headlines stay level).
  *
  * Reduced motion renders the plain, unsplit heading — see the header
  * comment in `lib/motion/gsap.ts`. `SplitText` rewrites the DOM to wrap each
@@ -62,10 +63,9 @@ export function KineticHeadline({
       gsap.from(units, {
         opacity: 0,
         yPercent: 100,
-        rotate: 6,
-        stagger: 0.03,
+        stagger: 0.025,
         duration: EXPRESSIVE_MD,
-        ease: EASE_OUT_BACK,
+        ease: EASE_OUT_EXPO,
         scrollTrigger: {
           trigger: trigger?.current ?? scope.current,
           start: 'top 85%',

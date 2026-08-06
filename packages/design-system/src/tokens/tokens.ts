@@ -25,9 +25,8 @@ export interface BorderTokens {
   readonly default: string;
   readonly strong: string;
   readonly focus: string;
-  /** The 2px poster outline. Mandatory boundary for cta/blush fills, which
-   * fail contrast as a sole edge on light surfaces (see documentedContrastPairs
-   * comment below). */
+  /** The strong 2px editorial outline used to frame poster-style surfaces and
+   * the CTA/blush fills. */
   readonly bold: string;
 }
 
@@ -95,6 +94,15 @@ export const PROVIDER_KEYS = [
   'tiktok',
   'threads',
   'bluesky',
+  'mastodon',
+  'telegram',
+  'reddit',
+  'wordpress',
+  'medium',
+  'devto',
+  'pinterest',
+  'discord',
+  'slack',
   /**
    * The local development connector. It mirrors `ProviderId` in
    * `@relay/contracts`, which is the authoritative provider union; the design
@@ -122,64 +130,64 @@ export interface ThemeTokens {
 
 export const lightTheme: ThemeTokens = {
   surface: {
-    canvas: '#F7F7F6',
+    canvas: '#FFFCF8',
     raised: '#FFFFFF',
-    sunken: '#EFEFEC',
+    sunken: '#F5F0E8',
     overlay: '#FFFFFF',
-    hover: '#EFEFEC',
-    active: '#E9E9E5',
-    inverted: '#131313',
+    hover: '#F5F0E8',
+    active: '#EDE8E0',
+    inverted: '#141413',
   },
   border: {
-    subtle: '#ECECE9',
-    default: '#DFDFDB',
-    strong: '#6F6F6B',
-    focus: '#2951E6',
-    bold: '#131313',
+    subtle: '#EBE7DF',
+    default: '#E0DBD1',
+    strong: '#6B6866',
+    focus: '#141413',
+    bold: '#141413',
   },
   text: {
-    primary: '#131313',
-    secondary: '#454545',
-    tertiary: '#5C5C5A',
-    disabled: '#83837F',
-    inverted: '#F7F7F6',
-    accent: '#2951E6',
+    primary: '#141413',
+    secondary: '#2E2E2E',
+    tertiary: '#6B6866',
+    disabled: '#8A8784',
+    inverted: '#FFFCF8',
+    accent: '#141413',
   },
   accent: {
-    default: '#2951E6',
-    hover: '#1E3FC4',
-    active: '#16309B',
-    subtleBg: '#DDE5FC',
-    subtleBgHover: '#D6E0FB',
+    default: '#141413',
+    hover: '#0A0A0A',
+    active: '#000000',
+    subtleBg: '#F2EDE6',
+    subtleBgHover: '#EDE8E0',
     onAccent: '#FFFFFF',
   },
   cta: {
-    bg: '#FAD84C',
-    bgHover: '#F2CB2F',
-    bgActive: '#E8BE1D',
-    on: '#131313',
+    bg: '#EDE8E0',
+    bgHover: '#E8E2D6',
+    bgActive: '#D6CEC0',
+    on: '#141413',
   },
   blush: {
-    bg: '#F7B7D4',
-    bgHover: '#F2A2C8',
-    on: '#131313',
+    bg: '#EDE8E0',
+    bgHover: '#E8E2D6',
+    on: '#141413',
   },
   status: {
-    success: { fg: '#0E6B31', bg: '#DCF3E1', border: '#2E9E54' },
-    warning: { fg: '#805200', bg: '#FCEFC7', border: '#B98300' },
+    success: { fg: '#1A5A2E', bg: '#E8F0E6', border: '#3D7A4A' },
+    warning: { fg: '#7A4A00', bg: '#F5ECD0', border: '#9A6B00' },
     destructive: {
-      fg: '#C81E12',
-      bg: '#FBE5E2',
-      border: '#D9564B',
-      solid: '#C81E12',
-      solidHover: '#A81409',
-      solidActive: '#8C0F06',
+      fg: '#8B1E1A',
+      bg: '#F5E6E2',
+      border: '#B54A3A',
+      solid: '#8B1E1A',
+      solidHover: '#6E1612',
+      solidActive: '#4F0F0C',
       on: '#FFFFFF',
     },
-    info: { fg: '#6636D6', bg: '#EAE3FB', border: '#8B66E0' },
+    info: { fg: '#5A3DB0', bg: '#ECE8F5', border: '#7A5EC0' },
   },
   brand: {
-    x: '#0F0F0F',
+    x: '#0F0F0E',
     linkedin: '#0A66C2',
     instagram: '#C31E68',
     facebook: '#1466D2',
@@ -187,71 +195,80 @@ export const lightTheme: ThemeTokens = {
     tiktok: '#111111',
     threads: '#101010',
     bluesky: '#0F5FC0',
+    mastodon: '#6364FF',
+    telegram: '#1A8AB8',
+    reddit: '#FF4500',
+    wordpress: '#21759B',
+    medium: '#292929',
+    devto: '#0A0A0A',
+    pinterest: '#E60023',
+    discord: '#5865F2',
+    slack: '#4A154B',
     fake: '#6B6560',
   },
 };
 
 export const darkTheme: ThemeTokens = {
   surface: {
-    canvas: '#0D0F1E',
-    raised: '#15182C',
-    sunken: '#080911',
-    overlay: '#1B1F38',
-    hover: '#1F2340',
-    active: '#262B4C',
-    inverted: '#F2F2EF',
+    canvas: '#0F0F0E',
+    raised: '#1C1C1A',
+    sunken: '#080807',
+    overlay: '#1E1E1C',
+    hover: '#252520',
+    active: '#2E2E2E',
+    inverted: '#FFFCF8',
   },
   border: {
-    subtle: '#232741',
-    default: '#2E3354',
-    strong: '#7D8199',
-    focus: '#8FA5FF',
-    bold: '#E4E6EE',
+    subtle: '#2A2A28',
+    default: '#3A3936',
+    strong: '#8A8784',
+    focus: '#E8E2D6',
+    bold: '#E8E2D6',
   },
   text: {
-    primary: '#F2F2EF',
-    secondary: '#B9BCC8',
-    tertiary: '#969AAB',
-    disabled: '#6C7085',
-    inverted: '#131313',
-    accent: '#8FA5FF',
+    primary: '#FFFCF8',
+    secondary: '#D6D0C4',
+    tertiary: '#A8A29A',
+    disabled: '#7A7672',
+    inverted: '#141413',
+    accent: '#E8E2D6',
   },
   accent: {
-    default: '#8FA5FF',
-    hover: '#A9BAFF',
-    active: '#7B93FA',
-    subtleBg: '#1C2350',
-    subtleBgHover: '#232C60',
-    onAccent: '#131313',
+    default: '#E8E2D6',
+    hover: '#E8E2D6',
+    active: '#D6CEC0',
+    subtleBg: '#1A1A18',
+    subtleBgHover: '#252520',
+    onAccent: '#141413',
   },
   /* CTA / blush — identical to light; see comment in theme.css section 2. */
   cta: {
-    bg: '#FAD84C',
-    bgHover: '#F2CB2F',
-    bgActive: '#E8BE1D',
-    on: '#131313',
+    bg: '#EDE8E0',
+    bgHover: '#E8E2D6',
+    bgActive: '#D6CEC0',
+    on: '#141413',
   },
   blush: {
-    bg: '#F7B7D4',
-    bgHover: '#F2A2C8',
-    on: '#131313',
+    bg: '#EDE8E0',
+    bgHover: '#E8E2D6',
+    on: '#141413',
   },
   status: {
-    success: { fg: '#57C97C', bg: '#0E2417', border: '#379A5C' },
-    warning: { fg: '#E9B949', bg: '#2A2108', border: '#A98416' },
+    success: { fg: '#7AC48A', bg: '#0E1F14', border: '#4A8A5A' },
+    warning: { fg: '#E8B84A', bg: '#221E0A', border: '#9A7A1A' },
     destructive: {
-      fg: '#FF7A6E',
-      bg: '#2D100C',
-      border: '#C05248',
-      solid: '#FF7A6E',
-      solidHover: '#FF958B',
-      solidActive: '#F0655A',
-      on: '#131313',
+      fg: '#E85D4D',
+      bg: '#25120F',
+      border: '#A84A3A',
+      solid: '#E85D4D',
+      solidHover: '#F07060',
+      solidActive: '#D95A48',
+      on: '#141413',
     },
-    info: { fg: '#B79BFF', bg: '#1F1640', border: '#8468C9' },
+    info: { fg: '#B8A0F0', bg: '#1A1430', border: '#7A5EC0' },
   },
   brand: {
-    x: '#E8E8E8',
+    x: '#FFFCF8',
     linkedin: '#5AA5EC',
     instagram: '#F0629B',
     facebook: '#6BADF7',
@@ -259,6 +276,15 @@ export const darkTheme: ThemeTokens = {
     tiktok: '#25F4EE',
     threads: '#EDEDED',
     bluesky: '#6BB0F5',
+    mastodon: '#9DA0FF',
+    telegram: '#7CCBFF',
+    reddit: '#FF784D',
+    wordpress: '#6FB5D8',
+    medium: '#B5B5B5',
+    devto: '#D6D0C4',
+    pinterest: '#FF5A5F',
+    discord: '#8B93F7',
+    slack: '#E8A0C0',
     fake: '#A8A29A',
   },
 };
@@ -293,10 +319,10 @@ export type TypeScaleKey =
 
 export const typeScale: Readonly<Record<TypeScaleKey, TypeStep>> = {
   display: {
-    fontSize: '2.5rem',
-    lineHeight: '2.75rem',
+    fontSize: '2.75rem',
+    lineHeight: '3rem',
     letterSpacing: '-0.022em',
-    fontWeight: 700,
+    fontWeight: 600,
   },
   titleLg: {
     fontSize: '1.75rem',
@@ -318,7 +344,7 @@ export const typeScale: Readonly<Record<TypeScaleKey, TypeStep>> = {
   },
   bodyLg: {
     fontSize: '1rem',
-    lineHeight: '1.5rem',
+    lineHeight: '1.625rem',
     letterSpacing: '-0.003em',
     fontWeight: 400,
   },
@@ -359,12 +385,11 @@ export const fontFamilies = {
     "'Inter Variable', 'Inter', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', " +
     "'Noto Sans', 'Noto Sans Arabic', 'Noto Sans Hebrew', 'Noto Sans JP', " +
     "'Noto Sans KR', 'Noto Sans SC', sans-serif",
-  // The Source Serif 4 webfont is no longer loaded; this is the system serif
-  // fallback stack that `font-serif` usages render on until they migrate to
-  // `font-display`.
-  serif: "'Iowan Old Style', Georgia, serif",
+  // The editorial serif. Fraunces is loaded by the app; this stack falls back
+  // to a system serif if the face is unavailable.
+  serif: "'Fraunces', 'Iowan Old Style', Georgia, serif",
   mono: "'JetBrains Mono', ui-monospace, 'SFMono-Regular', 'Menlo', 'Consolas', monospace",
-  display: "'Bricolage Grotesque', 'Inter Variable', 'Inter', ui-sans-serif, system-ui, sans-serif",
+  display: "'Fraunces', Georgia, serif",
 } as const;
 
 /* --------------------------------------------------------------------------
@@ -400,8 +425,8 @@ export const radii = {
   md: '4px',
   lg: '6px',
   xl: '8px',
-  /** Marketing imagery / poster-style panels only. Product controls stay at
-   * 2-8px — the "sharpened" near-square scale is the loud aesthetic's edge. */
+  /** Marketing imagery only. Product controls stay tight at 2-8px so dense
+   * editorial surfaces keep their crisp, printed feel. */
   editorial: '20px',
   /** Alias of `editorial`, matching `--radius-poster` in theme.css. */
   poster: '20px',
@@ -649,15 +674,11 @@ export const documentedContrastPairs: readonly ContrastPair[] = [
     purpose: 'body',
   },
   /*
-   * CTA (yellow) and blush (pink) fills. These are documented as fg/bg pairs
-   * ONLY for their own ink-on-fill foreground (`cta.on` / `blush.on`) and for
-   * the mandatory `border.bold` outline against the canvas/raised surfaces it
-   * sits on. We deliberately do NOT add `cta.bg` / `blush.bg` as a foreground
-   * (or a border) directly against `surface.*` — yellow on paper is 1.30:1
-   * and pink on paper is 1.54:1, both well under the 3:1 ui-boundary floor.
-   * That failure is by design: cta/blush fills are never a standalone edge:
-   * every cta/blush surface ships with the 2px `--border-bold` outline as its
-   * actual boundary, which is what the `border.bold` pairs below verify.
+   * CTA and blush fills. In the editorial system these are warm paper tints
+   * (not neon yellow/pink), so ink text on them clears body-text contrast by
+   * a wide margin. They are documented as fg/bg pairs for their own
+   * ink-on-fill foreground (`cta.on` / `blush.on`) plus the `border.bold`
+   * outline against the canvas/raised surfaces it sits on.
    */
   {
     id: 'cta.on on cta.bg',

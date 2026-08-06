@@ -50,6 +50,15 @@ export const CONNECTABLE_PROVIDERS: readonly ProviderId[] = [
   'tiktok',
   'threads',
   'bluesky',
+  'mastodon',
+  'telegram',
+  'reddit',
+  'wordpress',
+  'medium',
+  'devto',
+  'pinterest',
+  'discord',
+  'slack',
 ];
 
 const REQUIREMENT_KEY: Readonly<Record<ProviderId, string>> = {
@@ -61,6 +70,15 @@ const REQUIREMENT_KEY: Readonly<Record<ProviderId, string>> = {
   tiktok: 'web.connection.requirement.tiktok',
   threads: 'web.connection.requirement.threads',
   bluesky: 'web.connection.requirement.bluesky',
+  mastodon: 'web.connection.requirement.mastodon',
+  telegram: 'web.connection.requirement.telegram',
+  reddit: 'web.connection.requirement.reddit',
+  wordpress: 'web.connection.requirement.wordpress',
+  medium: 'web.connection.requirement.medium',
+  devto: 'web.connection.requirement.devto',
+  pinterest: 'web.connection.requirement.pinterest',
+  discord: 'web.connection.requirement.discord',
+  slack: 'web.connection.requirement.slack',
   fake: 'web.connection.requirement.generic',
 };
 
@@ -122,7 +140,7 @@ export function ConnectDialog({
                           ? 'border-border-bold bg-accent-subtle shadow-hard-sm'
                           : [
                               'border-border-default bg-surface-raised',
-                              'hover:border-border-bold hover:-translate-y-0.5 hover:shadow-hard-sm',
+                              'hover:border-border-bold hover:shadow-hard-sm hover:-translate-y-0.5',
                             ],
                       )}
                     >
@@ -141,7 +159,7 @@ export function ConnectDialog({
                       {selected ? (
                         <span
                           aria-hidden="true"
-                          className="border-border-bold bg-cta text-cta-on relay-icon-draw motion-reduce:animate-none inline-flex size-5 shrink-0 items-center justify-center rounded-full border-2"
+                          className="border-border-bold bg-cta text-cta-on relay-icon-draw inline-flex size-5 shrink-0 items-center justify-center rounded-full border-2 motion-reduce:animate-none"
                         >
                           <Check className="size-3" strokeWidth={3} />
                         </span>

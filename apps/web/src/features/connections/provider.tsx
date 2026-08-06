@@ -33,6 +33,15 @@ const BRANDED_PROVIDERS: Readonly<Record<ProviderId, ProviderKey | null>> = {
   tiktok: 'tiktok',
   threads: 'threads',
   bluesky: 'bluesky',
+  mastodon: 'mastodon',
+  telegram: 'telegram',
+  reddit: 'reddit',
+  wordpress: 'wordpress',
+  medium: 'medium',
+  devto: 'devto',
+  pinterest: 'pinterest',
+  discord: 'discord',
+  slack: 'slack',
   fake: null,
 };
 
