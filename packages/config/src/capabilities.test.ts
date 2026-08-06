@@ -158,7 +158,7 @@ describe('capability helpers', () => {
 
   it('lists every capability for the admin panel', () => {
     const entries = listCapabilities(capabilitiesFor());
-    expect(entries).toHaveLength(14 + 9);
+    expect(entries).toHaveLength(14 + 18);
     const billing = entries.find((entry) => entry.name === 'billing');
     expect(billing?.level).toBe('disabled');
     expect(billing?.requiredEnvVars).toEqual(['POLAR_ACCESS_TOKEN']);

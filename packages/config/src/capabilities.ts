@@ -52,6 +52,15 @@ export const CONNECTOR_KEYS = [
   'youtube',
   'tiktok',
   'bluesky',
+  'mastodon',
+  'telegram',
+  'reddit',
+  'wordpress',
+  'medium',
+  'devto',
+  'pinterest',
+  'discord',
+  'slack',
   'fake',
 ] as const;
 
@@ -243,6 +252,33 @@ function detectConnectors(config: RelayConfig): Record<ConnectorKey, CapabilityS
     // Bluesky authenticates per connection through the AT Protocol service, so
     // there is no application level credential to configure.
     bluesky: 'live',
+    mastodon: allOrNothing([
+      ['MASTODON_CLIENT_ID', config.providers.mastodon.clientId],
+      ['MASTODON_CLIENT_SECRET', config.providers.mastodon.clientSecret],
+    ]),
+    telegram: allOrNothing([['TELEGRAM_BOT_TOKEN', config.providers.telegram.botToken]]),
+    reddit: allOrNothing([
+      ['REDDIT_CLIENT_ID', config.providers.reddit.clientId],
+      ['REDDIT_CLIENT_SECRET', config.providers.reddit.clientSecret],
+    ]),
+    wordpress: allOrNothing([
+      ['WORDPRESS_CLIENT_ID', config.providers.wordpress.clientId],
+      ['WORDPRESS_CLIENT_SECRET', config.providers.wordpress.clientSecret],
+    ]),
+    medium: allOrNothing([
+      ['MEDIUM_CLIENT_ID', config.providers.medium.clientId],
+      ['MEDIUM_CLIENT_SECRET', config.providers.medium.clientSecret],
+    ]),
+    devto: allOrNothing([['DEVTO_API_KEY', config.providers.devto.apiKey]]),
+    pinterest: allOrNothing([
+      ['PINTEREST_CLIENT_ID', config.providers.pinterest.clientId],
+      ['PINTEREST_CLIENT_SECRET', config.providers.pinterest.clientSecret],
+    ]),
+    discord: allOrNothing([['DISCORD_BOT_TOKEN', config.providers.discord.botToken]]),
+    slack: allOrNothing([
+      ['SLACK_CLIENT_ID', config.providers.slack.clientId],
+      ['SLACK_CLIENT_SECRET', config.providers.slack.clientSecret],
+    ]),
     fake: 'live',
   };
 }

@@ -60,7 +60,7 @@ const OPPORTUNITY_KINDS = {
 } as const satisfies Record<OpportunityKind, OpportunityKind>;
 
 /**
- * Providers carry the same nine names on both sides. The map proves it: it must
+ * Providers carry the same names on both sides. The map proves it: it must
  * cover every `ProviderId`, and every value it produces must be a real
  * `ProviderKind`, so a divergence in either package fails the build.
  */
@@ -73,6 +73,15 @@ const PROVIDER_KIND_BY_ID = {
   tiktok: 'tiktok',
   threads: 'threads',
   bluesky: 'bluesky',
+  mastodon: 'mastodon',
+  telegram: 'telegram',
+  reddit: 'reddit',
+  wordpress: 'wordpress',
+  medium: 'medium',
+  devto: 'devto',
+  pinterest: 'pinterest',
+  discord: 'discord',
+  slack: 'slack',
   fake: 'fake',
 } as const satisfies Record<ProviderId, ProviderKind>;
 

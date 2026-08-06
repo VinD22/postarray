@@ -75,7 +75,7 @@ export {
   type RemediationCode,
 } from '../../errors';
 
-export { refreshOAuth2Token, type OAuth2RefreshInput } from '../../oauth';
+export { refreshOAuth2Token, revokeCredential, type OAuth2RefreshInput } from '../../oauth';
 
 export {
   SecretValue,

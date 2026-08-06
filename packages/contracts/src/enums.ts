@@ -11,6 +11,15 @@ export const PROVIDER_IDS = [
   'tiktok',
   'threads',
   'bluesky',
+  'mastodon',
+  'telegram',
+  'reddit',
+  'wordpress',
+  'medium',
+  'devto',
+  'pinterest',
+  'discord',
+  'slack',
   'fake',
 ] as const;
 export const providerIdSchema = z.enum(PROVIDER_IDS);

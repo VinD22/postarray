@@ -4,6 +4,7 @@ export * from './access';
 export * from './capability';
 export * from './contract-shape';
 export * from './metrics';
+export * from './multipart';
 export * from './preview';
 export * from './text';
 export * from './validate';

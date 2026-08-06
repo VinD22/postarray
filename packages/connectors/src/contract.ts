@@ -801,6 +801,19 @@ export interface ConnectorConfig {
     readonly google: { readonly clientId?: string; readonly clientSecret?: string };
     readonly tiktok: { readonly clientKey?: string; readonly clientSecret?: string };
     readonly bluesky: { readonly serviceUrl?: string };
+    readonly mastodon: {
+      readonly clientId?: string;
+      readonly clientSecret?: string;
+      readonly instanceUrl?: string;
+    };
+    readonly telegram: { readonly botToken?: string };
+    readonly reddit: { readonly clientId?: string; readonly clientSecret?: string };
+    readonly wordpress: { readonly clientId?: string; readonly clientSecret?: string };
+    readonly medium: { readonly clientId?: string; readonly clientSecret?: string };
+    readonly devto: { readonly apiKey?: string };
+    readonly pinterest: { readonly clientId?: string; readonly clientSecret?: string };
+    readonly discord: { readonly botToken?: string };
+    readonly slack: { readonly clientId?: string; readonly clientSecret?: string };
   };
 }
 

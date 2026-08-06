@@ -2,11 +2,20 @@ import type { ProviderId } from '@relay/contracts';
 
 import type { ConnectorDeps, ConnectorRegistry, SocialConnector } from './shared/contract-shape';
 import { createBlueskyConnector } from './bluesky/index';
+import { createDevtoConnector } from './devto/index';
+import { createDiscordConnector } from './discord/index';
 import { createFacebookConnector } from './meta/facebook/index';
 import { createInstagramConnector } from './meta/instagram/index';
 import { createLinkedInConnector } from './linkedin/index';
+import { createMastodonConnector } from './mastodon/index';
+import { createMediumConnector } from './medium/index';
+import { createPinterestConnector } from './pinterest/index';
+import { createRedditConnector } from './reddit/index';
+import { createSlackConnector } from './slack/index';
+import { createTelegramConnector } from './telegram/index';
 import { createThreadsConnector } from './meta/threads/index';
 import { createTikTokConnector } from './tiktok/index';
+import { createWordpressConnector } from './wordpress/index';
 import { createXConnector } from './x/index';
 import { createYouTubeConnector } from './youtube/index';
 
@@ -24,6 +33,15 @@ export * from './meta/index';
 export * from './youtube/index';
 export * from './tiktok/index';
 export * from './bluesky/index';
+export * from './mastodon/index';
+export * from './telegram/index';
+export * from './reddit/index';
+export * from './wordpress/index';
+export * from './medium/index';
+export * from './devto/index';
+export * from './pinterest/index';
+export * from './discord/index';
+export * from './slack/index';
 
 /** Every provider this package ships an adapter for. */
 export const BUILT_IN_PROVIDERS = [
@@ -35,6 +53,15 @@ export const BUILT_IN_PROVIDERS = [
   'youtube',
   'tiktok',
   'bluesky',
+  'mastodon',
+  'telegram',
+  'reddit',
+  'wordpress',
+  'medium',
+  'devto',
+  'pinterest',
+  'discord',
+  'slack',
 ] as const;
 export type BuiltInProvider = (typeof BUILT_IN_PROVIDERS)[number];
 
@@ -50,6 +77,15 @@ export const PROVIDER_FACTORIES: Readonly<
   youtube: createYouTubeConnector,
   tiktok: createTikTokConnector,
   bluesky: createBlueskyConnector,
+  mastodon: createMastodonConnector,
+  telegram: createTelegramConnector,
+  reddit: createRedditConnector,
+  wordpress: createWordpressConnector,
+  medium: createMediumConnector,
+  devto: createDevtoConnector,
+  pinterest: createPinterestConnector,
+  discord: createDiscordConnector,
+  slack: createSlackConnector,
 });
 
 /**
@@ -67,6 +103,15 @@ export const PROVIDER_REQUIRED_ENV: Readonly<Record<BuiltInProvider, readonly st
     youtube: ['GOOGLE_CLIENT_ID', 'GOOGLE_CLIENT_SECRET'],
     tiktok: ['TIKTOK_CLIENT_KEY', 'TIKTOK_CLIENT_SECRET'],
     bluesky: [],
+    mastodon: ['MASTODON_CLIENT_ID', 'MASTODON_CLIENT_SECRET'],
+    telegram: ['TELEGRAM_BOT_TOKEN'],
+    reddit: ['REDDIT_CLIENT_ID', 'REDDIT_CLIENT_SECRET'],
+    wordpress: ['WORDPRESS_CLIENT_ID', 'WORDPRESS_CLIENT_SECRET'],
+    medium: ['MEDIUM_CLIENT_ID', 'MEDIUM_CLIENT_SECRET'],
+    devto: ['DEVTO_API_KEY'],
+    pinterest: ['PINTEREST_CLIENT_ID', 'PINTEREST_CLIENT_SECRET'],
+    discord: ['DISCORD_BOT_TOKEN'],
+    slack: ['SLACK_CLIENT_ID', 'SLACK_CLIENT_SECRET'],
   });
 
 function configuredValues(
@@ -89,6 +134,24 @@ function configuredValues(
       return [providers.tiktok.clientKey, providers.tiktok.clientSecret];
     case 'bluesky':
       return [];
+    case 'mastodon':
+      return [providers.mastodon.clientId, providers.mastodon.clientSecret];
+    case 'telegram':
+      return [providers.telegram.botToken];
+    case 'reddit':
+      return [providers.reddit.clientId, providers.reddit.clientSecret];
+    case 'wordpress':
+      return [providers.wordpress.clientId, providers.wordpress.clientSecret];
+    case 'medium':
+      return [providers.medium.clientId, providers.medium.clientSecret];
+    case 'devto':
+      return [providers.devto.apiKey];
+    case 'pinterest':
+      return [providers.pinterest.clientId, providers.pinterest.clientSecret];
+    case 'discord':
+      return [providers.discord.botToken];
+    case 'slack':
+      return [providers.slack.clientId, providers.slack.clientSecret];
   }
 }
 

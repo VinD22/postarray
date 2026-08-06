@@ -109,6 +109,15 @@ const PROVIDER_IDS: readonly ProviderId[] = [
   'tiktok',
   'threads',
   'bluesky',
+  'mastodon',
+  'telegram',
+  'reddit',
+  'wordpress',
+  'medium',
+  'devto',
+  'pinterest',
+  'discord',
+  'slack',
   'fake',
 ];
 

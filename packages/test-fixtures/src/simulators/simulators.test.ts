@@ -431,7 +431,14 @@ describe('Bluesky and the fake provider', () => {
 });
 
 describe('every provider supports the shared failure modes', () => {
-  const providers: readonly ProviderId[] = [
+  /**
+   * The simulators this package ships. The connectors added later (Mastodon,
+   * Telegram, Reddit, WordPress, Medium, Dev.to, Pinterest, Discord, Slack)
+   * are contract tested against the scripted per adapter simulator in
+   * `@relay/connectors/src/providers/shared/testing.ts`; their definition of
+   * done will add dedicated simulators here provider by provider.
+   */
+  const simulated = [
     'x',
     'linkedin',
     'instagram',
@@ -441,9 +448,9 @@ describe('every provider supports the shared failure modes', () => {
     'threads',
     'bluesky',
     'fake',
-  ];
+  ] as const;
 
-  const writePaths: Readonly<Record<ProviderId, string>> = {
+  const writePaths: Readonly<Record<(typeof simulated)[number], string>> = {
     x: '/2/tweets',
     linkedin: '/rest/posts',
     instagram: '/v21.0/fake-instagram-0000000001/media',
@@ -475,7 +482,7 @@ describe('every provider supports the shared failure modes', () => {
     bluesky: { expired_token: 400, revoked: 400 },
   };
 
-  for (const provider of providers) {
+  for (const provider of simulated) {
     for (const [mode, status] of expectations) {
       it(`${provider} reports ${mode} as ${status}`, async () => {
         const expected = statusOverrides[provider]?.[mode] ?? status;

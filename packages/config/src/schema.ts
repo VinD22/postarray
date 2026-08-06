@@ -229,6 +229,22 @@ const providersShape = {
   TIKTOK_CLIENT_KEY: identifier.optional(),
   TIKTOK_CLIENT_SECRET: identifier.optional(),
   BLUESKY_SERVICE_URL: httpUrl.default('https://bsky.social'),
+  MASTODON_CLIENT_ID: identifier.optional(),
+  MASTODON_CLIENT_SECRET: identifier.optional(),
+  MASTODON_INSTANCE_URL: httpUrl.default('https://mastodon.social'),
+  TELEGRAM_BOT_TOKEN: identifier.optional(),
+  REDDIT_CLIENT_ID: identifier.optional(),
+  REDDIT_CLIENT_SECRET: identifier.optional(),
+  WORDPRESS_CLIENT_ID: identifier.optional(),
+  WORDPRESS_CLIENT_SECRET: identifier.optional(),
+  MEDIUM_CLIENT_ID: identifier.optional(),
+  MEDIUM_CLIENT_SECRET: identifier.optional(),
+  DEVTO_API_KEY: identifier.optional(),
+  PINTEREST_CLIENT_ID: identifier.optional(),
+  PINTEREST_CLIENT_SECRET: identifier.optional(),
+  DISCORD_BOT_TOKEN: identifier.optional(),
+  SLACK_CLIENT_ID: identifier.optional(),
+  SLACK_CLIENT_SECRET: identifier.optional(),
 };
 
 export const envSchema = z.object({

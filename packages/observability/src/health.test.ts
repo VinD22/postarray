@@ -29,7 +29,7 @@ describe('buildHealthReport', () => {
     const report = buildHealthReport(capabilitiesFor(), [], { now: fixedNow });
 
     expect(report.subsystems).toHaveLength(14);
-    expect(report.connectors).toHaveLength(9);
+    expect(report.connectors).toHaveLength(18);
 
     const redis = report.subsystems.find((component) => component.name === 'redis');
     expect(redis).toEqual({
@@ -47,7 +47,7 @@ describe('buildHealthReport', () => {
   it('counts live, degraded and disabled components', () => {
     const report = buildHealthReport(capabilitiesFor(), [], { now: fixedNow });
     const total = report.summary.live + report.summary.degraded + report.summary.disabled;
-    expect(total).toBe(14 + 9);
+    expect(total).toBe(14 + 18);
     expect(report.summary.failingChecks).toBe(0);
   });
 
@@ -113,6 +113,21 @@ describe('buildHealthReport', () => {
       GOOGLE_CLIENT_SECRET: 'google-secret',
       TIKTOK_CLIENT_KEY: 'tiktok-key',
       TIKTOK_CLIENT_SECRET: 'tiktok-secret',
+      MASTODON_CLIENT_ID: 'mastodon-id',
+      MASTODON_CLIENT_SECRET: 'mastodon-secret',
+      TELEGRAM_BOT_TOKEN: 'placeholder-telegram-bot-token',
+      REDDIT_CLIENT_ID: 'reddit-id',
+      REDDIT_CLIENT_SECRET: 'reddit-secret',
+      WORDPRESS_CLIENT_ID: 'wordpress-id',
+      WORDPRESS_CLIENT_SECRET: 'wordpress-secret',
+      MEDIUM_CLIENT_ID: 'medium-id',
+      MEDIUM_CLIENT_SECRET: 'medium-secret',
+      DEVTO_API_KEY: 'placeholder-devto-api-key',
+      PINTEREST_CLIENT_ID: 'pinterest-id',
+      PINTEREST_CLIENT_SECRET: 'pinterest-secret',
+      DISCORD_BOT_TOKEN: 'placeholder-discord-bot-token',
+      SLACK_CLIENT_ID: 'slack-id',
+      SLACK_CLIENT_SECRET: 'slack-secret',
     });
     const report = buildHealthReport(capabilities, [{ name: 'database.query', status: 'pass' }], {
       now: fixedNow,

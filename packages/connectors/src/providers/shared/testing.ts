@@ -50,6 +50,7 @@ export interface RecordedCall {
   readonly operation: string;
   readonly json: unknown;
   readonly query: Readonly<Record<string, unknown>> | undefined;
+  readonly form: Readonly<Record<string, string>> | undefined;
 }
 
 export interface SimulatorHandle {
@@ -101,6 +102,7 @@ export function createSimulator(initial: readonly ScriptedRoute[] = []): {
         operation: input.operation,
         json: input.json ?? null,
         query: input.query,
+        form: input.form,
       });
       const route = routes.find(
         (candidate) =>
@@ -149,6 +151,19 @@ const DEFAULT_PROVIDERS: ConnectorDeps['config']['providers'] = {
   google: { clientId: 'test-google-client', clientSecret: 'test-google-secret' },
   tiktok: { clientKey: 'test-tiktok-key', clientSecret: 'test-tiktok-secret' },
   bluesky: { serviceUrl: 'https://bsky.invalid' },
+  mastodon: {
+    clientId: 'test-mastodon-client',
+    clientSecret: 'test-mastodon-secret',
+    instanceUrl: 'https://mastodon.invalid',
+  },
+  telegram: { botToken: 'test-telegram-bot-token' },
+  reddit: { clientId: 'test-reddit-client', clientSecret: 'test-reddit-secret' },
+  wordpress: { clientId: 'test-wordpress-client', clientSecret: 'test-wordpress-secret' },
+  medium: { clientId: 'test-medium-client', clientSecret: 'test-medium-secret' },
+  devto: { apiKey: 'test-devto-api-key' },
+  pinterest: { clientId: 'test-pinterest-client', clientSecret: 'test-pinterest-secret' },
+  discord: { botToken: 'test-discord-bot-token' },
+  slack: { clientId: 'test-slack-client', clientSecret: 'test-slack-secret' },
 };
 
 /** The obviously fake token every scripted connection reveals. */
@@ -500,4 +515,18 @@ export function expectPending(
     throw new Error(`expected a pending result, received "${result.status}"`);
   }
   return result;
+}
+
+/**
+ * Call an optional connector method in a test, failing loudly when the connector did not
+ * implement it. Avoids the non-null assertion the lint forbids while keeping types.
+ */
+export function mustImplement<Args extends unknown[], Result>(
+  method: ((...args: Args) => Promise<Result>) | undefined,
+  name: string,
+): (...args: Args) => Promise<Result> {
+  if (method === undefined) {
+    throw new Error(`connector did not implement ${name}`);
+  }
+  return method;
 }

@@ -53,6 +53,15 @@ const DEFAULT_SCOPES: Readonly<Record<ProviderId, readonly string[]>> = {
   tiktok: ['video.publish', 'video.upload', 'user.info.basic'],
   threads: ['threads_basic', 'threads_content_publish'],
   bluesky: ['app-password'],
+  mastodon: ['read', 'write:statuses'],
+  telegram: ['bot'],
+  reddit: ['identity', 'submit', 'mysubreddits'],
+  wordpress: ['posts'],
+  medium: ['basicProfile', 'publishPost'],
+  devto: ['article'],
+  pinterest: ['user_accounts:read', 'boards:read', 'pins:read', 'pins:write'],
+  discord: ['bot'],
+  slack: ['users:read', 'channels:read', 'chat:write'],
   fake: ['fake.read', 'fake.write'],
 };
 

@@ -151,6 +151,34 @@ export interface ProvidersConfig {
     readonly clientSecret: string | undefined;
   };
   readonly bluesky: { readonly serviceUrl: string };
+  readonly mastodon: {
+    readonly clientId: string | undefined;
+    readonly clientSecret: string | undefined;
+    readonly instanceUrl: string;
+  };
+  readonly telegram: { readonly botToken: string | undefined };
+  readonly reddit: {
+    readonly clientId: string | undefined;
+    readonly clientSecret: string | undefined;
+  };
+  readonly wordpress: {
+    readonly clientId: string | undefined;
+    readonly clientSecret: string | undefined;
+  };
+  readonly medium: {
+    readonly clientId: string | undefined;
+    readonly clientSecret: string | undefined;
+  };
+  readonly devto: { readonly apiKey: string | undefined };
+  readonly pinterest: {
+    readonly clientId: string | undefined;
+    readonly clientSecret: string | undefined;
+  };
+  readonly discord: { readonly botToken: string | undefined };
+  readonly slack: {
+    readonly clientId: string | undefined;
+    readonly clientSecret: string | undefined;
+  };
 }
 
 export interface RelayConfig {
@@ -296,6 +324,25 @@ function toConfig(
       google: { clientId: env.GOOGLE_CLIENT_ID, clientSecret: env.GOOGLE_CLIENT_SECRET },
       tiktok: { clientKey: env.TIKTOK_CLIENT_KEY, clientSecret: env.TIKTOK_CLIENT_SECRET },
       bluesky: { serviceUrl: env.BLUESKY_SERVICE_URL },
+      mastodon: {
+        clientId: env.MASTODON_CLIENT_ID,
+        clientSecret: env.MASTODON_CLIENT_SECRET,
+        instanceUrl: env.MASTODON_INSTANCE_URL,
+      },
+      telegram: { botToken: env.TELEGRAM_BOT_TOKEN },
+      reddit: { clientId: env.REDDIT_CLIENT_ID, clientSecret: env.REDDIT_CLIENT_SECRET },
+      wordpress: {
+        clientId: env.WORDPRESS_CLIENT_ID,
+        clientSecret: env.WORDPRESS_CLIENT_SECRET,
+      },
+      medium: { clientId: env.MEDIUM_CLIENT_ID, clientSecret: env.MEDIUM_CLIENT_SECRET },
+      devto: { apiKey: env.DEVTO_API_KEY },
+      pinterest: {
+        clientId: env.PINTEREST_CLIENT_ID,
+        clientSecret: env.PINTEREST_CLIENT_SECRET,
+      },
+      discord: { botToken: env.DISCORD_BOT_TOKEN },
+      slack: { clientId: env.SLACK_CLIENT_ID, clientSecret: env.SLACK_CLIENT_SECRET },
     },
     presentKeys: present,
   };
