@@ -120,6 +120,7 @@ export type {
   RssFeedView,
   RulePreview,
   RuleRunView,
+  SessionView,
   ShortLinkStats,
   ShortLinkView,
   WebhookDeliveryView,

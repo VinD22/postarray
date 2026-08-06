@@ -137,6 +137,12 @@ async function performOnce(
   if (options.forwardCookie !== undefined) {
     headers['cookie'] = options.forwardCookie;
   }
+  const cookieSource =
+    options.forwardCookie ?? (typeof document === 'undefined' ? undefined : document.cookie);
+  const workspaceId = readCookie(cookieSource, 'relay_ws');
+  if (workspaceId !== undefined) {
+    headers[API_HEADERS.workspaceId] = workspaceId;
+  }
 
   const controller = new AbortController();
   const timeout = setTimeout(() => {
@@ -157,6 +163,25 @@ async function performOnce(
   } finally {
     clearTimeout(timeout);
   }
+}
+
+function readCookie(source: string | undefined, name: string): string | undefined {
+  if (source === undefined) {
+    return undefined;
+  }
+  for (const part of source.split(';')) {
+    const separator = part.indexOf('=');
+    if (separator < 0 || part.slice(0, separator).trim() !== name) {
+      continue;
+    }
+    const value = part.slice(separator + 1).trim();
+    try {
+      return decodeURIComponent(value);
+    } catch {
+      return undefined;
+    }
+  }
+  return undefined;
 }
 
 /**

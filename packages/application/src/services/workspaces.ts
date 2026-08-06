@@ -1,5 +1,3 @@
-import { randomUUID } from 'node:crypto';
-
 import type { Locale, Paginated } from '@relay/contracts';
 import { appendAuditEvent, withRlsContext } from '@relay/database';
 
@@ -17,6 +15,7 @@ import { invalid, notFound } from '../internal/errors';
 import { toStoredSurface } from '../internal/mappers';
 import { pageArgs, toPage } from '../internal/pagination';
 import { authorized, type Db } from '../internal/runtime';
+import { workspaceSlug } from '../internal/workspace-slug';
 
 /** Workspace settings and the operator kill switch. */
 
@@ -47,16 +46,6 @@ async function readWorkspace(db: Db, workspaceId: string): Promise<WorkspaceView
     killSwitchEngaged: row.killSwitchAt !== null,
     createdAt: row.createdAt.toISOString(),
   };
-}
-
-function workspaceSlug(name: string): string {
-  const base = name
-    .normalize('NFKD')
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/^-+|-+$/g, '')
-    .slice(0, 48);
-  return `${base.length === 0 ? 'workspace' : base}-${randomUUID().slice(0, 8)}`;
 }
 
 export function createWorkspaceService(deps: ServiceDeps): WorkspaceService {

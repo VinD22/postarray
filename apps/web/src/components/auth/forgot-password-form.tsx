@@ -27,7 +27,10 @@ export function ForgotPasswordForm() {
     event.preventDefault();
     setPending(true);
     try {
-      await api.auth.requestPasswordReset({ email }, newIdempotencyKey('reset'));
+      await api.auth.requestPasswordReset(
+        { identifier: email, locale: t.locale },
+        newIdempotencyKey('reset'),
+      );
     } catch {
       // Deliberately swallowed. Reporting a failure here would leak whether the
       // address exists, and the API has already recorded the attempt.

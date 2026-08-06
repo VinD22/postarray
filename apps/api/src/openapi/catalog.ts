@@ -279,6 +279,14 @@ export const OPERATIONS: readonly OperationSpec[] = [
     workspaceOptional: true,
   },
   {
+    method: 'get',
+    path: '/v1/auth/session',
+    operationId: 'auth.session',
+    summary: 'The sanitized browser bootstrap view for the selected workspace.',
+    tag: 'auth',
+    workspaceOptional: true,
+  },
+  {
     method: 'post',
     path: '/v1/auth/alias',
     operationId: 'auth.setAlias',

@@ -63,6 +63,7 @@ import type {
   RssFeedView,
   RulePreview,
   RuleRunView,
+  SessionView,
   ShortLinkStats,
   ShortLinkView,
   WebhookDeliveryView,
@@ -1062,10 +1063,13 @@ export interface UserSecurityProfile {
 export interface IdentityService {
   resolveLoginIdentifier(identifier: string): Promise<{ userId: string; email: string } | null>;
   getSecurityProfile(identitySubjectOrUserId: string): Promise<UserSecurityProfile | null>;
+  getSessionView(userId: string, preferredWorkspaceId?: string): Promise<SessionView | null>;
   recordSignupConsent(input: {
     readonly identitySubjectId: string;
     readonly email: string;
+    readonly displayName: string;
     readonly locale: string;
+    readonly timeZone: string;
     readonly termsVersionHash: string;
     readonly privacyVersionHash: string;
     readonly countryCode: string | null;

@@ -4,6 +4,9 @@ export const authMessages = {
   'auth.signIn.subtitle': 'Publish, approve and see exactly what happened.',
   'auth.signUp.title': 'Create your account',
   'auth.signUp.subtitle': 'Seven days with every feature. $0 due today.',
+  'auth.emailOnly.title': 'Email sign in is available now',
+  'auth.emailOnly.description':
+    'Google and Facebook sign in are not available in this prelaunch. Use your email and password or a one-time code.',
   'auth.continueWithGoogle': 'Continue with Google',
   'auth.continueWithFacebook': 'Continue with Facebook',
   'auth.orUseEmail': 'Or use your email',
@@ -28,6 +31,18 @@ export const authMessages = {
   'auth.magicLink.resend': 'Send another link',
   'auth.magicLink.resendIn':
     'You can send another link in {seconds, plural, one {# second} other {# seconds}}.',
+  'auth.otp.send': 'Email me a one-time code',
+  'auth.otp.title': 'Enter your one-time code',
+  'auth.otp.sent':
+    'If that address has an account, a six digit code is on its way. It works once and expires in {minutes, plural, one {# minute} other {# minutes}}.',
+  'auth.otp.address': 'Code sent to {email}',
+  'auth.otp.label': 'Six digit code',
+  'auth.otp.verify': 'Verify and sign in',
+  'auth.otp.invalid': 'That code is invalid or expired. Request a new code and try again.',
+  'auth.otp.resend': 'Send another code',
+  'auth.otp.resendIn':
+    'You can send another code in {seconds, plural, one {# second} other {# seconds}}.',
+  'auth.otp.wrongAddress': 'Use a different address',
   'auth.forgotPassword': 'Forgot your password?',
   'auth.resetPassword.title': 'Choose a new password',
   'auth.resetPassword.sent': 'If that address has an account, reset instructions are on their way.',

@@ -1,6 +1,6 @@
 'use client';
 
-import { createContext, useContext, useMemo, type ReactNode } from 'react';
+import { createContext, useContext, useInsertionEffect, useMemo, type ReactNode } from 'react';
 
 import type { BrandView, SessionView, WorkspaceView } from '@/lib/api/types';
 
@@ -30,6 +30,10 @@ export function SessionProvider({
   readonly session: SessionView;
   readonly children: ReactNode;
 }) {
+  useInsertionEffect(() => {
+    document.cookie = `relay_ws=${encodeURIComponent(session.workspace.id)}; path=/; SameSite=Lax`;
+  }, [session.workspace.id]);
+
   const value = useMemo<SessionContextValue>(() => {
     const scopes = new Set(session.scopes);
     return {

@@ -33,6 +33,7 @@ export type IdentitySession = z.infer<typeof identitySessionSchema>;
 export interface SignUpInput {
   readonly email: string;
   readonly password: string;
+  readonly displayName: string;
   readonly locale: string;
 }
 

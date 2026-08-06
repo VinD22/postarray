@@ -15,7 +15,7 @@ import { ActorContextFactory } from '../common/actor-context.factory';
 import { relayState } from '../common/request.types';
 
 /** The header a client uses to pin the workspace for this request. */
-export const WORKSPACE_HEADER = 'x-relay-workspace-id';
+export const WORKSPACE_HEADER = API_HEADERS.workspaceId;
 
 /**
  * Resolves and pins exactly one workspace, then builds the `ActorContext`.

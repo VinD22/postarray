@@ -164,6 +164,7 @@ export const API_HEADERS = {
   webhookTimestamp: 'x-relay-timestamp',
   rateLimitRemaining: 'x-ratelimit-remaining',
   rateLimitReset: 'x-ratelimit-reset',
+  workspaceId: 'x-relay-workspace-id',
 } as const;
 
 export const PROBLEM_JSON_CONTENT_TYPE = 'application/problem+json';

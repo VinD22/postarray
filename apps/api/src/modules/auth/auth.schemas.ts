@@ -1,4 +1,4 @@
-import { localeSchema } from '@relay/contracts';
+import { ianaTimeZoneSchema, localeSchema } from '@relay/contracts';
 import { z } from 'zod';
 
 /**
@@ -31,7 +31,9 @@ export const signUpSchema = z
   .object({
     email: z.string().trim().min(3).max(320).toLowerCase(),
     password: passwordSchema,
+    displayName: z.string().trim().min(1).max(100),
     locale: localeSchema.default('en'),
+    timeZone: ianaTimeZoneSchema.default('UTC'),
     /** Exact version hashes of the documents the person actually saw. */
     termsVersionHash: z.string().regex(/^[0-9a-f]{64}$/),
     privacyVersionHash: z.string().regex(/^[0-9a-f]{64}$/),

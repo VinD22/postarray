@@ -33,7 +33,11 @@ export const sessionApi = {
   get: (forwardCookie?: string): Promise<SessionView> =>
     call('/auth/session', forwardCookie === undefined ? {} : { forwardCookie }, () => demoSession),
   signOut: (idempotencyKey: string): Promise<void> =>
-    call('/auth/session/revoke', { method: 'POST', idempotencyKey }, () => undefined),
+    call(
+      '/auth/signout',
+      { method: 'POST', body: { scope: 'current' }, idempotencyKey },
+      () => undefined,
+    ),
 };
 
 export const brandsApi = {

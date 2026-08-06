@@ -91,6 +91,10 @@ export class FakeIdentityProvider implements IdentityProvider {
 
   constructor(private readonly state: FakeIdentityState) {}
 
+  seedIdentity(input: { userId: string; email: string; password: string }): void {
+    this.state.identities.set(input.email.toLowerCase(), input);
+  }
+
   private session(userId: string, email: string): IdentitySession {
     return {
       userId,

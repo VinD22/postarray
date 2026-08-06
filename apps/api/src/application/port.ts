@@ -39,6 +39,7 @@ import type { RelayConfig } from '@relay/config';
 import type {
   MediaAssetView as ApplicationMediaAssetView,
   MediaEditOperation as ApplicationMediaEditOperation,
+  SessionView as ApplicationSessionView,
   WebhookDeliveryView as ApplicationWebhookDeliveryView,
   WebhookEndpointView as ApplicationWebhookEndpointView,
 } from '@relay/application';
@@ -200,6 +201,7 @@ export type EntitlementStateView = ViewModel;
 export type UsageSummaryView = ViewModel;
 export type CheckoutSessionView = ViewModel;
 export type PortalLinkView = ViewModel;
+export type SessionView = ApplicationSessionView;
 
 /* -------------------------------------------------------------------------- */
 /* Common input shapes                                                        */
@@ -620,11 +622,14 @@ export interface IdentityService {
    */
   resolveLoginIdentifier(identifier: string): Promise<{ userId: string; email: string } | null>;
   getSecurityProfile(userId: string): Promise<UserSecurityProfile | null>;
+  getSessionView(userId: string, preferredWorkspaceId?: string): Promise<SessionView | null>;
   /** Append-only consent evidence: policy version hashes, instant, country. */
   recordSignupConsent(input: {
     identitySubjectId: string;
     email: string;
+    displayName: string;
     locale: string;
+    timeZone: string;
     termsVersionHash: string;
     privacyVersionHash: string;
     countryCode: string | null;

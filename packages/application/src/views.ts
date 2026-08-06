@@ -47,6 +47,41 @@ export interface WorkspaceView {
   readonly createdAt: string;
 }
 
+export interface SessionWorkspaceView {
+  readonly id: string;
+  readonly name: string;
+  readonly slug: string;
+  readonly timeZone: string;
+  readonly locale: string;
+  readonly role: Role;
+  readonly readOnly: boolean;
+}
+
+export interface SessionBrandView {
+  readonly id: string;
+  readonly workspaceId: string;
+  readonly name: string;
+  readonly connectionIds: readonly string[];
+}
+
+/** The complete, sanitized browser bootstrap view for one authenticated user. */
+export interface SessionView {
+  readonly user: {
+    readonly id: string;
+    readonly name: string;
+    readonly email: string;
+    readonly username: string | null;
+    readonly avatarUrl: string | null;
+    readonly locale: string;
+    readonly timeZone: string;
+  };
+  readonly workspace: SessionWorkspaceView;
+  readonly workspaces: readonly SessionWorkspaceView[];
+  readonly brands: readonly SessionBrandView[];
+  readonly scopes: readonly Scope[];
+  readonly onboardingComplete: boolean;
+}
+
 export interface MembershipView {
   readonly id: string;
   readonly userId: string;

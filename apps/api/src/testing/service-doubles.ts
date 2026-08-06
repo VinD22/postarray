@@ -179,6 +179,7 @@ export function createRefusingServices(): Services {
     identity: {
       resolveLoginIdentifier: () => Promise.resolve(null),
       getSecurityProfile: () => Promise.resolve(null),
+      getSessionView: () => Promise.resolve(null),
       recordSignupConsent: () => Promise.resolve(),
       setUsernameAlias: refuse('alias'),
     },

@@ -7,10 +7,15 @@
  */
 
 import { call } from '../call';
-import { demoOnboardingState, demoSession } from '../fixtures';
-import type { OnboardingStateView, OnboardingUseCase, SessionView } from '../types';
+import { demoOnboardingState } from '../fixtures';
+import type { OnboardingStateView, OnboardingUseCase } from '../types';
 
-export type SocialAuthProvider = 'google' | 'facebook';
+export interface EstablishedSession {
+  readonly userId: string;
+  readonly workspaceIds: readonly string[];
+  readonly csrfToken: string;
+  readonly expiresAt: string;
+}
 
 export interface PasswordCredentials {
   /** Either an email address or a sign-in alias. The API resolves both. */
@@ -19,39 +24,64 @@ export interface PasswordCredentials {
 }
 
 export const authApi = {
-  /** Returns the provider consent URL and the exact data the provider shares. */
-  beginSocial: (
-    input: { provider: SocialAuthProvider; returnUrl: string; intent: 'sign-in' | 'sign-up' },
+  signInWithPassword: (
+    input: PasswordCredentials,
     idempotencyKey: string,
-  ): Promise<{ authorizationUrl: string }> =>
-    call('/auth/social/begin', { method: 'POST', body: input, idempotencyKey }, () => ({
-      authorizationUrl: input.returnUrl,
+  ): Promise<EstablishedSession> =>
+    call('/auth/signin', { method: 'POST', body: input, idempotencyKey }, () => ({
+      userId: 'user_demo000000000000000001',
+      workspaceIds: ['ws_demo0000000000000000001'],
+      csrfToken: 'demo-csrf',
+      expiresAt: new Date(Date.now() + 3_600_000).toISOString(),
     })),
 
-  signInWithPassword: (input: PasswordCredentials, idempotencyKey: string): Promise<SessionView> =>
-    call('/auth/sign-in', { method: 'POST', body: input, idempotencyKey }, () => demoSession),
-
   signUpWithPassword: (
-    input: { email: string; password: string; name: string },
+    input: {
+      email: string;
+      password: string;
+      displayName: string;
+      locale: string;
+      timeZone: string;
+      termsVersionHash: string;
+      privacyVersionHash: string;
+      acceptedTerms: true;
+    },
     idempotencyKey: string,
-  ): Promise<SessionView> =>
-    call('/auth/sign-up', { method: 'POST', body: input, idempotencyKey }, () => demoSession),
+  ): Promise<{ status: 'accepted' }> =>
+    call('/auth/signup', { method: 'POST', body: input, idempotencyKey }, () => ({
+      status: 'accepted',
+    })),
 
   /**
    * Always resolves. The response never reveals whether the address is
    * registered, which is why the confirmation copy is conditional.
    */
   sendMagicLink: (
-    input: { email: string; returnUrl: string },
+    input: { identifier: string; locale: string },
     idempotencyKey: string,
-  ): Promise<{ expiresInMinutes: number; resendAfterSeconds: number }> =>
+  ): Promise<{ status: 'accepted' }> =>
     call('/auth/magic-link', { method: 'POST', body: input, idempotencyKey }, () => ({
-      expiresInMinutes: 15,
-      resendAfterSeconds: 60,
+      status: 'accepted',
     })),
 
-  requestPasswordReset: (input: { email: string }, idempotencyKey: string): Promise<void> =>
-    call('/auth/password-reset', { method: 'POST', body: input, idempotencyKey }, () => undefined),
+  verifyOneTimeCode: (
+    input: { identifier: string; code: string },
+    idempotencyKey: string,
+  ): Promise<EstablishedSession> =>
+    call('/auth/magic-link/verify', { method: 'POST', body: input, idempotencyKey }, () => ({
+      userId: 'user_demo000000000000000001',
+      workspaceIds: ['ws_demo0000000000000000001'],
+      csrfToken: 'demo-csrf',
+      expiresAt: new Date(Date.now() + 3_600_000).toISOString(),
+    })),
+
+  requestPasswordReset: (
+    input: { identifier: string; locale: string },
+    idempotencyKey: string,
+  ): Promise<{ status: 'accepted' }> =>
+    call('/auth/password-reset', { method: 'POST', body: input, idempotencyKey }, () => ({
+      status: 'accepted',
+    })),
 };
 
 export const onboardingApi = {

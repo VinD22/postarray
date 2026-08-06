@@ -6,13 +6,16 @@ import { useState, type FormEvent } from 'react';
 
 import { useAnnouncer } from '@relay/design-system/hooks';
 import { Notice } from '@relay/design-system/patterns';
-import { Button, Field, Input, Separator } from '@relay/design-system/primitives';
+import { Button, Field, Input } from '@relay/design-system/primitives';
 import { cn } from '@relay/design-system/utils';
 
 import { ApiError, api, newIdempotencyKey } from '@/lib/api';
 import { useTranslations } from '@/lib/i18n';
-
-import { SocialButtons } from './social-buttons';
+import {
+  LEGAL_VERSION,
+  PRIVACY_VERSION_HASH,
+  TERMS_VERSION_HASH,
+} from '@/lib/legal-versions';
 
 const MIN_PASSWORD_LENGTH = 12;
 
@@ -51,8 +54,20 @@ export function SignUpForm() {
     setError(null);
     setPending(true);
     try {
-      await api.auth.signUpWithPassword({ email, password, name }, newIdempotencyKey('signup'));
-      router.push('/onboarding');
+      await api.auth.signUpWithPassword(
+        {
+          email,
+          password,
+          displayName: name,
+          locale: t.locale,
+          timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone || 'UTC',
+          termsVersionHash: TERMS_VERSION_HASH,
+          privacyVersionHash: PRIVACY_VERSION_HASH,
+          acceptedTerms: true,
+        },
+        newIdempotencyKey('signup'),
+      );
+      router.push(`/check-email?email=${encodeURIComponent(email)}`);
     } catch (caught) {
       if (ApiError.is(caught) && caught.isOffline) {
         fail(t('auth.failure.network'));
@@ -82,13 +97,11 @@ export function SignUpForm() {
         />
       )}
 
-      <SocialButtons intent="sign-up" onError={fail} />
-
-      <div className="flex items-center gap-3">
-        <Separator className="flex-1" />
-        <span className="text-body-sm text-text-tertiary">{t('auth.orUseEmail')}</span>
-        <Separator className="flex-1" />
-      </div>
+      <Notice
+        tone="info"
+        title={t('auth.emailOnly.title')}
+        description={t('auth.emailOnly.description')}
+      />
 
       <form onSubmit={submit} className="flex flex-col gap-4">
         <Field label={t('common.name')} required>
@@ -171,7 +184,7 @@ export function SignUpForm() {
         </Button>
 
         <p className="text-body-sm text-text-tertiary">
-          {t('auth.terms.accept', { version: '2026-08-04' })}
+          {t('auth.terms.accept', { version: LEGAL_VERSION })}
         </p>
       </form>
 

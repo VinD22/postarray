@@ -1,7 +1,14 @@
 import { delegableScopes } from '@relay/authz';
 import { ERROR_CODES, RelayError, type ApprovalLevel, type Role } from '@relay/contracts';
 
-import type { IdentityContext, IdentityService, ServiceDeps, UserSecurityProfile } from '../types';
+import type {
+  IdentityContext,
+  IdentityService,
+  ServiceDeps,
+  SessionView,
+  UserSecurityProfile,
+} from '../types';
+import { workspaceSlug } from '../internal/workspace-slug';
 
 const ASCII_ALIAS = /^[a-z][a-z0-9._-]{2,29}$/;
 const RESERVED_ALIASES = new Set([
@@ -139,6 +146,102 @@ export function createIdentityService(deps: ServiceDeps): IdentityService {
       };
     },
 
+    async getSessionView(
+      userId: string,
+      preferredWorkspaceId?: string,
+    ): Promise<SessionView | null> {
+      const user = await deps.prisma.user.findFirst({
+        where: { id: userId, status: 'active' },
+        select: {
+          id: true,
+          email: true,
+          displayName: true,
+          avatarUrl: true,
+          locale: true,
+          timeZone: true,
+          aliases: {
+            where: { isPrimary: true, verifiedAt: { not: null } },
+            orderBy: { createdAt: 'desc' },
+            take: 1,
+            select: { handle: true },
+          },
+          memberships: {
+            where: {
+              state: 'active',
+              workspace: { status: { notIn: ['suspended', 'deleted'] } },
+            },
+            orderBy: { createdAt: 'asc' },
+            select: {
+              role: true,
+              workspace: {
+                select: {
+                  id: true,
+                  name: true,
+                  slug: true,
+                  status: true,
+                  defaultLocale: true,
+                  defaultTimeZone: true,
+                  brands: {
+                    where: { archivedAt: null },
+                    orderBy: { createdAt: 'asc' },
+                    select: {
+                      id: true,
+                      name: true,
+                      socialConnections: { select: { id: true } },
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
+      });
+      if (user === null || user.memberships.length === 0) {
+        return null;
+      }
+
+      const activeMembership =
+        user.memberships.find(
+          (membership) => membership.workspace.id === preferredWorkspaceId,
+        ) ?? user.memberships[0];
+      if (activeMembership === undefined) {
+        return null;
+      }
+      const toWorkspace = (
+        membership: (typeof user.memberships)[number],
+      ): SessionView['workspace'] => ({
+        id: membership.workspace.id,
+        name: membership.workspace.name,
+        slug: membership.workspace.slug,
+        timeZone: membership.workspace.defaultTimeZone,
+        locale: membership.workspace.defaultLocale,
+        role: membership.role,
+        readOnly: !['active', 'trialing'].includes(membership.workspace.status),
+      });
+
+      return {
+        user: {
+          id: user.id,
+          name: user.displayName,
+          email: user.email,
+          username: user.aliases[0]?.handle ?? null,
+          avatarUrl: user.avatarUrl,
+          locale: user.locale,
+          timeZone: user.timeZone,
+        },
+        workspace: toWorkspace(activeMembership),
+        workspaces: user.memberships.map(toWorkspace),
+        brands: activeMembership.workspace.brands.map((brand) => ({
+          id: brand.id,
+          workspaceId: activeMembership.workspace.id,
+          name: brand.name,
+          connectionIds: brand.socialConnections.map((connection) => connection.id),
+        })),
+        scopes: delegableScopes(activeMembership.role),
+        onboardingComplete: true,
+      };
+    },
+
     async recordSignupConsent(input): Promise<void> {
       await deps.prisma.$transaction(async (tx) => {
         const existing = await tx.user.findUnique({
@@ -151,8 +254,9 @@ export function createIdentityService(deps: ServiceDeps): IdentityService {
                 data: {
                   authSubjectId: input.identitySubjectId,
                   email: input.email.trim().toLowerCase(),
-                  displayName: input.email.trim().toLowerCase(),
+                  displayName: input.displayName,
                   locale: input.locale,
+                  timeZone: input.timeZone,
                   status: 'active',
                 },
                 select: { id: true },
@@ -164,10 +268,32 @@ export function createIdentityService(deps: ServiceDeps): IdentityService {
                     ? { authSubjectId: input.identitySubjectId }
                     : {}),
                   locale: input.locale,
+                  timeZone: input.timeZone,
                   status: 'active',
                 },
                 select: { id: true },
               });
+
+        const memberships = await tx.membership.count({ where: { userId: user.id } });
+        if (memberships === 0) {
+          await tx.workspace.create({
+            data: {
+              name: input.displayName,
+              slug: workspaceSlug(input.displayName),
+              ownerUserId: user.id,
+              defaultLocale: input.locale,
+              defaultTimeZone: input.timeZone,
+              memberships: {
+                create: {
+                  userId: user.id,
+                  role: 'owner',
+                  state: 'active',
+                  acceptedAt: deps.clock.now(),
+                },
+              },
+            },
+          });
+        }
 
         await tx.consent.createMany({
           data: [

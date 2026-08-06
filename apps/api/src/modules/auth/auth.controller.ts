@@ -6,7 +6,7 @@ import {
 } from '@relay/contracts';
 import type { Request, Response } from 'express';
 
-import type { IdentityContext, Services } from '../../application/port';
+import type { IdentityContext, Services, SessionView } from '../../application/port';
 import { SERVICES } from '../../application/tokens';
 import { REFRESH_COOKIE, SESSION_COOKIE, parseCookies } from '../../common/cookies';
 import {
@@ -19,6 +19,7 @@ import {
 } from '../../common/decorators';
 import type { Principal } from '../../common/request.types';
 import { parseBody } from '../../common/zod';
+import { WORKSPACE_HEADER } from '../../guards/workspace.guard';
 import { clientFingerprint } from '../../security/csrf';
 import { AuthService, type EstablishedSession } from './auth.service';
 import {
@@ -72,18 +73,22 @@ export class AuthController {
       const created = await this.auth.provider.signUp({
         email: input.email,
         password: input.password,
+        displayName: input.displayName,
         locale: input.locale,
       });
       if (created.userId !== null) {
         await this.auth.recordConsent({
           identitySubjectId: created.userId,
           email: input.email,
+          displayName: input.displayName,
           locale: input.locale,
+          timeZone: input.timeZone,
           termsVersionHash: input.termsVersionHash,
           privacyVersionHash: input.privacyVersionHash,
           countryCode: null,
         });
       }
+      await this.auth.provider.sendMagicLink({ email: input.email, locale: input.locale });
       // Identical for a new address and for one that already exists.
       return { status: 'accepted' as const };
     });
@@ -244,6 +249,28 @@ export class AuthController {
       emailVerified: principal.emailVerified,
       locale: principal.locale,
     };
+  }
+
+  /** Complete browser bootstrap for the selected workspace. */
+  @Get('session')
+  @WorkspaceOptional()
+  async session(
+    @CurrentPrincipal() principal: Principal,
+    @Req() request: Request,
+  ): Promise<SessionView> {
+    if (principal.userId === undefined) {
+      throw new AuthRequiredError({ details: { reason: 'human_session_required' } });
+    }
+    const selected = request.headers[WORKSPACE_HEADER];
+    const preferredWorkspaceId = typeof selected === 'string' ? selected.trim() : undefined;
+    const session = await this.services.identity.getSessionView(
+      principal.userId,
+      preferredWorkspaceId === '' ? undefined : preferredWorkspaceId,
+    );
+    if (session === null) {
+      throw new AuthRequiredError({ details: { reason: 'profile_unavailable' } });
+    }
+    return session;
   }
 
   /**

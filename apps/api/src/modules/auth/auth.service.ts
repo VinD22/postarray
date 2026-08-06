@@ -272,7 +272,9 @@ export class AuthService {
   recordConsent(input: {
     identitySubjectId: string;
     email: string;
+    displayName: string;
     locale: string;
+    timeZone: string;
     termsVersionHash: string;
     privacyVersionHash: string;
     countryCode: string | null;

@@ -36,11 +36,6 @@ interface ProviderResponse {
   readonly sessionCookie: string | null;
 }
 
-function displayNameFor(email: string): string {
-  const localPart = email.split('@')[0]?.trim() ?? '';
-  return (localPart.length > 0 ? localPart : email).slice(0, 120);
-}
-
 function sessionCookieFrom(headers: Headers, body: unknown): string | null {
   const withGetSetCookie = headers as Headers & { getSetCookie?: () => string[] };
   const values = withGetSetCookie.getSetCookie?.() ?? [];
@@ -148,7 +143,7 @@ export class NeonIdentityProvider implements IdentityProvider {
       body: {
         email: input.email,
         password: input.password,
-        name: displayNameFor(input.email),
+        name: input.displayName,
         locale: input.locale,
       },
     });

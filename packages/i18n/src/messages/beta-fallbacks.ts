@@ -8,6 +8,10 @@ export const BETA_ENGLISH_FALLBACK_PREFIXES = [
   // Transactional security and invitation mail stays in reviewed English
   // until each beta locale has a human-reviewed delivery template.
   'email.',
+  // New authentication security copy remains English in beta locales until
+  // the code-entry and provider-availability wording is human reviewed.
+  'auth.emailOnly.',
+  'auth.otp.',
   'settings.data.',
   'web.legal.',
   'web.meta.legal.',

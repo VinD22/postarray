@@ -10,7 +10,6 @@ import {
   Button,
   Field,
   Input,
-  Separator,
   Tabs,
   TabsContent,
   TabsList,
@@ -20,8 +19,6 @@ import { cn } from '@relay/design-system/utils';
 
 import { ApiError, api, newIdempotencyKey } from '@/lib/api';
 import { useTranslations } from '@/lib/i18n';
-
-import { SocialButtons } from './social-buttons';
 
 type Method = 'password' | 'magic-link' | 'username';
 
@@ -86,10 +83,12 @@ export function SignInForm() {
     setPending(true);
     try {
       await api.auth.sendMagicLink(
-        { email: identifier, returnUrl: `${window.location.origin}${next}` },
+        { identifier, locale: t.locale },
         newIdempotencyKey('magiclink'),
       );
-      router.push(`/check-email?email=${encodeURIComponent(identifier)}`);
+      router.push(
+        `/check-email?email=${encodeURIComponent(identifier)}&next=${encodeURIComponent(next)}`,
+      );
     } catch (caught) {
       fail(
         ApiError.is(caught) && caught.isOffline
@@ -119,13 +118,11 @@ export function SignInForm() {
         />
       )}
 
-      <SocialButtons intent="sign-in" onError={fail} />
-
-      <div className="flex items-center gap-3">
-        <Separator className="flex-1" />
-        <span className="text-body-sm text-text-tertiary">{t('auth.orUseEmail')}</span>
-        <Separator className="flex-1" />
-      </div>
+      <Notice
+        tone="info"
+        title={t('auth.emailOnly.title')}
+        description={t('auth.emailOnly.description')}
+      />
 
       <Tabs
         value={method}
@@ -246,7 +243,7 @@ export function SignInForm() {
               loading={pending}
               loadingLabel={t('auth.submit.working')}
             >
-              {t('auth.magicLink.send')}
+                {t('auth.otp.send')}
             </Button>
           </form>
         </TabsContent>

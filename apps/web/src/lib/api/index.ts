@@ -40,4 +40,4 @@ export type {
   RuleRunView,
   RuleView,
 } from './resources/platform';
-export type { PasswordCredentials, SocialAuthProvider } from './resources/auth';
+export type { EstablishedSession, PasswordCredentials } from './resources/auth';
