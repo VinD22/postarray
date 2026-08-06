@@ -2,7 +2,9 @@
 
 Research date: 4 August 2026. Primary/official sources are preferred. Founder statements and third-party revenue data are labeled rather than presented as platform guarantees.
 
-## Postiz product, pricing, stack, and business
+## Postiz product, pricing, and business
+
+Clean-room boundary: do not use the Postiz repository, package manifests, deployment files, schemas, or implementation source as research inputs. Competitor research is limited to public product behavior, user-supplied observations, official product documentation, and public business statements.
 
 | Source | Type | Used for |
 | --- | --- | --- |
@@ -13,17 +15,6 @@ Research date: 4 August 2026. Primary/official sources are preferred. Founder st
 | [Postiz enterprise/white-label](https://postiz.com/enterprise) | Official product page | Embedded scheduling offer and current capacity tiers/availability |
 | [Postiz MCP introduction](https://docs.postiz.com/mcp/introduction) | Official docs | MCP clients, tool count, agent scheduling capabilities |
 | [Postiz provider overview](https://docs.postiz.com/providers/overview) | Official docs | Provider architecture and documented connectors |
-| [Postiz GitHub repository](https://github.com/gitroomhq/postiz-app) | Official public source | AGPL license, source tree, top-level stack |
-| [Pinned Postiz package manifest](https://github.com/gitroomhq/postiz-app/blob/1e4c8dd5c4f70c4d0abd01e23cc42d5b533d1ab9/package.json) | Official public source snapshot | Framework/runtime/library versions at researched commit |
-| [Pinned Postiz Docker Compose](https://github.com/gitroomhq/postiz-app/blob/1e4c8dd5c4f70c4d0abd01e23cc42d5b533d1ab9/docker-compose.yaml) | Official public source snapshot | PostgreSQL, Redis, Temporal, Elasticsearch deployment components |
-| [Pinned Postiz i18n configuration](https://github.com/gitroomhq/postiz-app/blob/1e4c8dd5c4f70c4d0abd01e23cc42d5b533d1ab9/libraries/react-shared-libraries/src/translation/i18n.config.ts) | Official public source snapshot | Active UI language configuration |
-| [Pinned calendar context](https://github.com/gitroomhq/postiz-app/blob/1e4c8dd5c4f70c4d0abd01e23cc42d5b533d1ab9/apps/frontend/src/components/launches/calendar.context.tsx) | Official public source snapshot | Day/week/month/list views, filters, post states, date changes |
-| [Pinned calendar implementation](https://github.com/gitroomhq/postiz-app/blob/1e4c8dd5c4f70c4d0abd01e23cc42d5b533d1ab9/apps/frontend/src/components/launches/calendar.tsx) | Official public source snapshot | Drag-reschedule, preview and list behavior |
-| [Pinned repeat behavior](https://github.com/gitroomhq/postiz-app/blob/1e4c8dd5c4f70c4d0abd01e23cc42d5b533d1ab9/apps/frontend/src/components/launches/repeat.component.tsx) | Official public source snapshot | Repeat cadence choices |
-| [Pinned comment-delay behavior](https://github.com/gitroomhq/postiz-app/blob/1e4c8dd5c4f70c4d0abd01e23cc42d5b533d1ab9/apps/frontend/src/components/new-launch/delay.component.tsx) | Official public source snapshot | Preset and custom comment/thread delays |
-| [Pinned RSS autopost UI](https://github.com/gitroomhq/postiz-app/blob/1e4c8dd5c4f70c4d0abd01e23cc42d5b533d1ab9/apps/frontend/src/components/autopost/autopost.tsx) | Official public source snapshot | Feed validation, target choice, sync latest item, slot/immediate behavior |
-| [Pinned webhook UI](https://github.com/gitroomhq/postiz-app/blob/1e4c8dd5c4f70c4d0abd01e23cc42d5b533d1ab9/apps/frontend/src/components/webhooks/webhooks.tsx) | Official public source snapshot | All/specific integration targeting and test delivery |
-| [Pinned platform analytics UI](https://github.com/gitroomhq/postiz-app/blob/1e4c8dd5c4f70c4d0abd01e23cc42d5b533d1ab9/apps/frontend/src/components/platform-analytics/platform.analytics.tsx) | Official public source snapshot | Supported analytics providers and 7/30/90-day window logic |
 | [Postiz terms](https://postiz.com/terms-of-service) | Official legal page | Competitor policy context only; not a template |
 | [TrustMRR Postiz profile](https://trustmrr.com/startup/postiz) | Third-party, Stripe-verified display | MRR, active subscriptions, all-time revenue, founder, date updated |
 

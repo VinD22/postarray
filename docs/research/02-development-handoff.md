@@ -71,7 +71,7 @@ All interfaces call the same application services, authorization rules, validato
 - Supabase Realtime only for collaborative UI updates, job status, and presence, not as the scheduler.
 - Temporal Cloud or separately operated Temporal for durable workflows.
 - Managed Redis/Valkey for rate limits, cache, short locks, and idempotency acceleration.
-- Prisma for server-side type-safe data access if matching the Postiz-style stack is important. Keep RLS and grants in reviewed SQL migrations because an ORM cannot replace security policy.
+- Prisma for server-side type-safe data access. Keep RLS and grants in reviewed SQL migrations because an ORM cannot replace security policy.
 - OpenTelemetry plus Sentry for tracing/errors, and PostHog for consent-aware product analytics.
 - Resend or equivalent for transactional email.
 

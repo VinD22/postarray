@@ -63,20 +63,20 @@ V1 intentionally does not generate images or video. A scheduler rarely knows eno
 
 ## The files
 
-- [01-postiz-research.md](./01-postiz-research.md): product, stack, channels, revenue, founder strategy, business model, limitations, and lessons.
+- [01-postiz-research.md](./01-postiz-research.md): public product behavior, channels, revenue, founder strategy, business model, limitations, and lessons.
 - [02-development-handoff.md](./02-development-handoff.md): architecture, data model, APIs, connector contracts, security, scheduling, analytics, AI, billing, testing, and roadmap.
 - [03-product-ux-and-localization.md](./03-product-ux-and-localization.md): information architecture, core flows, design system, accessibility, responsive behavior, and 30-language implementation.
 - [04-marketing-and-growth.md](./04-marketing-and-growth.md): positioning, ICP, content and UGC engine, distribution, launch, partnerships, comparisons, metrics, and a 180-day plan.
 - [05-trust-safety-and-legal.md](./05-trust-safety-and-legal.md): platform rules, anti-spam controls, AI-agent safeguards, privacy/security, and the required policy suite.
 - [06-source-register.md](./06-source-register.md): dated primary and supporting sources used in the research.
-- [07-feature-parity-and-product-behavior.md](./07-feature-parity-and-product-behavior.md): exact Postiz feature parity, observed product workflow, our one-plan entitlements, and feature acceptance criteria.
+- [07-feature-parity-and-product-behavior.md](./07-feature-parity-and-product-behavior.md): public-feature comparison, observed product workflow, our one-plan entitlements, and feature acceptance criteria.
 
 ## Instructions to the developer
 
 1. The owner will add every production key later. Commit only `.env.example` files with placeholders. Never put credentials, OAuth secrets, signing keys, or tokens in source control.
 2. Expected placeholders include Supabase, Redis, Temporal, Polar, DeepSeek, encryption/KMS, email, storage, monitoring, and every social provider. The app must boot in a safe local mode when optional providers are absent.
 3. Use the loaded design skills before implementing public pages. The interface must feel intentionally designed, not like an AI-generated dashboard template. Follow [03-product-ux-and-localization.md](./03-product-ux-and-localization.md).
-4. Do not copy Postiz source code. Its public repository is AGPL-3.0. This brief is a clean-room product and architecture study based on public behavior, public documentation, and high-level stack inspection.
+4. Do not inspect or copy Postiz source code. Its public repository is AGPL-3.0. This brief is a clean-room product study based only on public product behavior, user-supplied observations, official product documentation, and official provider documentation. Relay architecture and implementation are independently designed.
 5. Build one connector contract and add platforms behind it. Do not scatter platform-specific conditionals through controllers or React components.
 6. Human review, exact previews, idempotency, audit logs, and truthful failure states are product features, not cleanup work.
 7. No browser automation, cookie replay, scraping, or unofficial posting endpoints to bypass official APIs or review processes.

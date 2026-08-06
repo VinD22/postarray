@@ -29,7 +29,7 @@ Postiz's enterprise page advertises white-label/headless scheduling tiers from $
 
 ## Platform coverage
 
-The public site currently lists or the repository implements providers for:
+The public product pages and official documentation advertise providers including:
 
 - Mainstream: X, LinkedIn profiles and Pages, Instagram, Facebook Pages, YouTube, TikTok, Threads, Pinterest, Reddit.
 - Open/decentralized: Bluesky, Mastodon/custom Mastodon, Nostr, Farcaster/Warpcast, Lemmy.
@@ -53,43 +53,13 @@ Postiz exposes the same core workflow through several surfaces:
 
 Its MCP documentation currently exposes eight tools and can list integrations, discover provider schemas, schedule posts, and generate media. The public messaging emphasizes keeping a human in the loop. That is a good baseline, though our design should use finer scopes and explicit risk-based approvals.
 
-## Current technical architecture
-
-The following is based on the public repository at commit `1e4c8dd5c4f70c4d0abd01e23cc42d5b533d1ab9` and should be treated as a snapshot, not a promise about production hosting.
-
-### Core stack
-
-- pnpm monorepo; Node 22 range.
-- Next.js 16 and React 19 frontend.
-- NestJS 11 API/backend plus an orchestrator service.
-- TypeScript throughout most application code.
-- Prisma 6 with PostgreSQL.
-- Redis.
-- Temporal server and SDK for durable workflows.
-- S3-compatible storage, including Cloudflare R2/local options.
-- Tiptap for rich text, Uppy for uploads, and Polotno for visual editing.
-- i18next for localization.
-- Stripe billing, Resend/nodemailer, Sentry, PostHog, Plausible, and Dub.
-- AI libraries include OpenAI-facing packages and orchestration libraries such as CopilotKit, Mastra, and LangGraph.
-- Separate API, MCP, CLI, and browser-extension related code.
-
-### Data model themes
-
-The public Prisma schema centers on organizations, users, membership, social integrations, posts, media, subscriptions, webhooks, automated posts, sets, errors, and plug/repost features. Post creation is attributed to web, MCP, API, autopost, or CLI. Attribution by creation surface is worth copying conceptually because it improves auditability and product analytics.
-
-### Scheduling lesson
+## Independent architecture lesson
 
 Nevo David publicly described moving from a Redis queue to Temporal as one of the best technical decisions in Postiz's growth. This is consistent with the domain: scheduled social publishing needs persistent timers, retries, idempotency, human pauses, refresh-token recovery, platform-specific media processing, and long-running analytics collection. A basic cron table is not enough for the reliable product we want.
 
-### Authentication and localization gaps
-
-The public repository includes local, Google, GitHub, Farcaster, wallet, and generic OAuth authentication providers. It does not provide the exact user-facing mix requested here out of the box.
-
-Its active i18n configuration currently lists 14 UI locales: English, Hebrew, Russian, Chinese, French, Spanish, Portuguese, German, Italian, Japanese, Korean, Arabic, Turkish, and Vietnamese. Bengali and Georgian translation files also appear in the repository but are not active in that configuration. A complete 30-language product, with RTL support and human quality assurance, can be a credible differentiator.
-
 ## License and clean-room warning
 
-Postiz is AGPL-3.0. Copying, adapting, or linking network-served derivative code may trigger obligations to offer corresponding source under the AGPL. Do not copy its code into a proprietary product based on this brief. Recreate behavior from independent product requirements and official platform specifications. Have counsel review any plan to incorporate AGPL components.
+Postiz is AGPL-3.0. Relay must not inspect, copy, adapt, translate, or otherwise derive implementation details from its source. Product behavior may be studied only through public product surfaces, user-supplied observations, official Postiz documentation, and official social-provider documentation. Relay's architecture, data model, interface contracts, and code must remain independently designed. Have counsel review any proposal to incorporate AGPL components.
 
 ## Business model
 

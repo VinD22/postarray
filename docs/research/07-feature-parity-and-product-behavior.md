@@ -1,8 +1,8 @@
-# Postiz Feature Parity and Product Behavior
+# Public-Feature Comparison and Product Behavior
 
 Research and product inspection date: 4 August 2026.
 
-This document is the authoritative feature-scope update. It reflects the current Postiz pricing page, public site/demo surface, official docs, and a clean-room inspection of the public repository at commit `1e4c8dd5c4f70c4d0abd01e23cc42d5b533d1ab9`.
+This document is the authoritative feature-scope update. Competitor observations come only from the current pricing page, public site and demo, official documentation, and user-supplied screenshots. Relay's architecture and implementation are independently designed.
 
 ## Final product decision
 
@@ -65,7 +65,7 @@ The current app is centered on the Calendar/Launches surface:
 6. Creation opens a full-screen composer. A global/master editor can write across the selected accounts, while selecting an individual channel enables a copy, formatting or media override without changing the master or other targets. The active target has a native-style preview and platform limit counter.
 7. The walkthrough demonstrates provider-native destinations and identity behavior including LinkedIn company tagging and X community selection. Saved Sets can preserve account groups, destination defaults and reusable text.
 8. Posts can include the main item plus subsequent thread/comment items. Each subsequent item can have an individual delay such as 1, 2, 5, 10, 15, 30, 60, 120, or custom minutes. A different connected account can be selected for a follow-up where the provider allows it.
-9. A post can repeat every 1, 2, 3, 4, 5, 6, 7, 14, or 30 days in the current implementation.
+9. Repeating posts need clear cadence, end-date or count controls, and independent receipts for every occurrence.
 10. Plugs can observe an engagement milestone and trigger a repost or follow-up comment. These are useful but can become manipulative, so our equivalent is capability- and policy-gated.
 11. Postiz can shorten links and report link clicks. This is a distinct first-party analytics source from social-network insights.
 12. RSS autopost can validate a feed, sync its current latest item, target all or selected integrations, publish immediately or in the next free slot, and either generate/use templated text. Postiz also offers picture generation, which we will omit.
