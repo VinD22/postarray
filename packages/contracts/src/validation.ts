@@ -65,7 +65,7 @@ export function validationIssue(input: ValidationIssueInput): ValidationIssue {
   return {
     code: input.code,
     severity: input.severity,
-    messageKey: input.messageKey ?? `validation.${input.code.toLowerCase()}`,
+    messageKey: input.messageKey ?? `validation.${input.code.toLowerCase()}.message`,
     params: { ...(input.params ?? {}) },
     ...(input.field === undefined ? {} : { field: input.field }),
     ...(input.targetId === undefined ? {} : { targetId: input.targetId }),

@@ -49,6 +49,7 @@ function jsonResponse(body: unknown, status = 200): Response {
 
 describe('choosing an implementation', () => {
   const base: PolarConfig = {
+    checkoutEnabled: false,
     accessToken: undefined,
     webhookSecret: undefined,
     server: 'sandbox',

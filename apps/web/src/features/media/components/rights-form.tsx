@@ -47,7 +47,7 @@ export function RightsForm({ asset, onSave }: RightsFormProps): ReactNode {
       {existing ? (
         <p className="text-body-sm text-text-tertiary">
           {t.full('mediaLib.rights.declared', {
-            name: existing.declaredByName,
+            name: existing.declaredByName ?? t.full('common.unavailable'),
             date: formatDate(t.locale, existing.declaredAt, {
               timeZone: 'UTC',
               dateStyle: 'medium',

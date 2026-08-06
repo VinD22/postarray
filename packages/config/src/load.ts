@@ -66,13 +66,17 @@ export interface DatabaseConfig {
   readonly directUrl: string | undefined;
 }
 
-export interface SupabaseConfig {
-  readonly url: string | undefined;
-  readonly anonKey: string | undefined;
-  /** Server only. Must never reach a browser bundle. */
-  readonly serviceRoleKey: string | undefined;
-  readonly jwtSecret: string | undefined;
+export interface NeonConfig {
+  readonly authBaseUrl: string | undefined;
+  /** Server only. Signs the short-lived local Neon session cache. */
+  readonly authCookieSecret: string | undefined;
+  readonly authJwksUrl: string | undefined;
+  readonly storageEndpoint: string | undefined;
+  readonly storageRegion: string;
   readonly storageBucket: string;
+  readonly storageAccessKeyId: string | undefined;
+  /** Server only. Must never reach a browser bundle. */
+  readonly storageSecretAccessKey: string | undefined;
 }
 
 export interface RedisConfig {
@@ -87,6 +91,7 @@ export interface TemporalConfig {
 }
 
 export interface PolarConfig {
+  readonly checkoutEnabled: boolean;
   readonly accessToken: string | undefined;
   readonly webhookSecret: string | undefined;
   readonly server: PolarServer;
@@ -125,6 +130,7 @@ export interface ShortLinksConfig {
 }
 
 export interface EmailConfig {
+  readonly apiUrl: string;
   readonly apiKey: string | undefined;
   readonly from: string | undefined;
 }
@@ -185,7 +191,7 @@ export interface RelayConfig {
   readonly service: RelayService | undefined;
   readonly core: CoreConfig;
   readonly database: DatabaseConfig;
-  readonly supabase: SupabaseConfig;
+  readonly neon: NeonConfig;
   readonly redis: RedisConfig;
   readonly temporal: TemporalConfig;
   readonly polar: PolarConfig;
@@ -265,12 +271,15 @@ function toConfig(
       url: env.DATABASE_URL,
       directUrl: env.DIRECT_DATABASE_URL ?? env.DATABASE_URL,
     },
-    supabase: {
-      url: env.SUPABASE_URL,
-      anonKey: env.SUPABASE_ANON_KEY,
-      serviceRoleKey: env.SUPABASE_SERVICE_ROLE_KEY,
-      jwtSecret: env.SUPABASE_JWT_SECRET,
-      storageBucket: env.STORAGE_BUCKET,
+    neon: {
+      authBaseUrl: env.NEON_AUTH_BASE_URL,
+      authCookieSecret: env.NEON_AUTH_COOKIE_SECRET,
+      authJwksUrl: env.NEON_AUTH_JWKS_URL,
+      storageEndpoint: env.NEON_STORAGE_ENDPOINT,
+      storageRegion: env.NEON_STORAGE_REGION,
+      storageBucket: env.NEON_STORAGE_BUCKET,
+      storageAccessKeyId: env.NEON_STORAGE_ACCESS_KEY_ID,
+      storageSecretAccessKey: env.NEON_STORAGE_SECRET_ACCESS_KEY,
     },
     redis: { url: env.REDIS_URL },
     temporal: {
@@ -280,6 +289,7 @@ function toConfig(
       apiKey: env.TEMPORAL_API_KEY,
     },
     polar: {
+      checkoutEnabled: env.BILLING_CHECKOUT_ENABLED,
       accessToken: env.POLAR_ACCESS_TOKEN,
       webhookSecret: env.POLAR_WEBHOOK_SECRET,
       server: env.POLAR_SERVER,
@@ -311,7 +321,7 @@ function toConfig(
       baseUrl: env.SHORT_LINK_BASE_URL,
       hashKey: env.SHORT_LINK_HASH_KEY,
     },
-    email: { apiKey: env.EMAIL_API_KEY, from: env.EMAIL_FROM },
+    email: { apiUrl: env.EMAIL_API_URL, apiKey: env.EMAIL_API_KEY, from: env.EMAIL_FROM },
     observability: {
       sentryDsn: env.SENTRY_DSN,
       posthogKey: env.POSTHOG_KEY,

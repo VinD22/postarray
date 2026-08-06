@@ -34,7 +34,7 @@ describe('detectCapabilities', () => {
     expect(capabilities.storage).toBe('degraded:local-filesystem');
     expect(capabilities.email).toBe('degraded:console');
     expect(capabilities.errorReporting).toBe('degraded:logs-only');
-    expect(capabilities.billing).toBe('disabled:missing POLAR_ACCESS_TOKEN');
+    expect(capabilities.billing).toBe('disabled:checkout-not-enabled');
     expect(capabilities.ai).toBe('disabled:missing DEEPSEEK_API_KEY');
     expect(capabilities.tracing).toBe('disabled:missing OTEL_EXPORTER_OTLP_ENDPOINT');
     expect(capabilities.productAnalytics).toBe('disabled:missing POSTHOG_KEY');
@@ -82,10 +82,11 @@ describe('detectCapabilities', () => {
     const capabilities = capabilitiesFor({
       REDIS_URL: 'redis://localhost:6379',
       TEMPORAL_ADDRESS: 'localhost:7233',
-      SUPABASE_URL: 'https://project.supabase.co',
-      SUPABASE_ANON_KEY: 'placeholder-anon',
-      SUPABASE_SERVICE_ROLE_KEY: 'placeholder-service-role',
-      SUPABASE_JWT_SECRET: 'placeholder-jwt-secret',
+      NEON_AUTH_BASE_URL: 'https://project.neonauth.us-east-2.aws.neon.tech/neondb/auth',
+      NEON_AUTH_COOKIE_SECRET: 'placeholder-cookie-secret-at-least-32-characters',
+      NEON_STORAGE_ENDPOINT: 'https://storage.example.neon.tech',
+      NEON_STORAGE_ACCESS_KEY_ID: 'placeholder-storage-access-key',
+      NEON_STORAGE_SECRET_ACCESS_KEY: 'placeholder-storage-secret',
       DEEPSEEK_API_KEY: 'placeholder-ai-key',
       EMAIL_API_KEY: 'placeholder-email-key',
       EMAIL_FROM: 'Relay <no-reply@example.test>',
@@ -105,7 +106,10 @@ describe('detectCapabilities', () => {
   });
 
   it('degrades billing when the access token exists but the rest does not', () => {
-    const capabilities = capabilitiesFor({ POLAR_ACCESS_TOKEN: 'placeholder-token' });
+    const capabilities = capabilitiesFor({
+      BILLING_CHECKOUT_ENABLED: 'true',
+      POLAR_ACCESS_TOKEN: 'placeholder-token',
+    });
     expect(capabilities.billing).toBe(
       'degraded:missing POLAR_WEBHOOK_SECRET, POLAR_MONTHLY_PRODUCT_ID, POLAR_ANNUAL_PRODUCT_ID',
     );
@@ -161,7 +165,7 @@ describe('capability helpers', () => {
     expect(entries).toHaveLength(14 + 18);
     const billing = entries.find((entry) => entry.name === 'billing');
     expect(billing?.level).toBe('disabled');
-    expect(billing?.requiredEnvVars).toEqual(['POLAR_ACCESS_TOKEN']);
+    expect(billing?.requiredEnvVars).toEqual([]);
   });
 });
 

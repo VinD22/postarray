@@ -16,7 +16,7 @@
  */
 
 import { useMemo, type ReactNode } from 'react';
-import { Download, ExternalLink, Printer, RefreshCw } from 'lucide-react';
+import { Download, ExternalLink, Printer } from 'lucide-react';
 import {
   Badge,
   Button,
@@ -49,7 +49,7 @@ import { ReceiptAttempts } from './receipt-attempts';
 import { ReceiptItems } from './receipt-items';
 import { ReceiptTimeline } from './receipt-timeline';
 import { buildTimeline, dispatchLatencyMs } from './timeline-model';
-import { usePostDetail, useRetryTarget } from './use-receipt';
+import { usePostDetail } from './use-receipt';
 import { buildCampaignTargets, campaignOutcome, canExportReceipt } from './types';
 import type { CampaignTargetView, PostDetail } from './types';
 
@@ -153,7 +153,6 @@ function PostDocument({
   const format = useCalendarFormat();
   const providerName = useProviderName();
   const accountTypeName = useAccountTypeName();
-  const retry = useRetryTarget();
 
   const { receipt, job, item } = detail;
   const targets = useMemo(
@@ -234,11 +233,7 @@ function PostDocument({
             // in the publishing flow, and it earns the loud poster outline
             // that `Notice` deliberately does not carry everywhere else.
             <div className="border-warning-border overflow-hidden rounded-lg border-2">
-              <PartialSuccess
-                targets={targets}
-                onRetry={retry}
-                jobId={receipt?.publishJobId ?? job?.id ?? null}
-              />
+              <PartialSuccess targets={targets} />
             </div>
           ) : null}
 
@@ -410,15 +405,7 @@ function Term({ children }: { children: ReactNode }): ReactNode {
   return <span className="font-display text-label tracking-wide">{children}</span>;
 }
 
-function PartialSuccess({
-  targets,
-  onRetry,
-  jobId,
-}: {
-  targets: readonly CampaignTargetView[];
-  onRetry: ReturnType<typeof useRetryTarget>;
-  jobId: string | null;
-}): ReactNode {
+function PartialSuccess({ targets }: { targets: readonly CampaignTargetView[] }): ReactNode {
   const t = useTranslations();
   const providerName = useProviderName();
 
@@ -464,26 +451,12 @@ function PartialSuccess({
         ),
       }))}
       actions={
-        jobId && failed.length > 0 ? (
-          <div className="flex flex-col items-start gap-1">
-            <div className="flex flex-wrap gap-2">
-              {failed.map((target) => (
-                <Button
-                  key={target.variantId}
-                  variant="secondary"
-                  size="sm"
-                  iconStart={<RefreshCw aria-hidden="true" className="size-3.5" />}
-                  loading={onRetry.isPending && onRetry.variables?.variantId === target.variantId}
-                  onClick={() =>
-                    onRetry.mutate({ publishJobId: jobId, variantId: target.variantId })
-                  }
-                >
-                  {t('action.retryTarget', { account: target.accountLabel })}
-                </Button>
-              ))}
-            </div>
-            <p className="text-body-sm text-text-secondary">{t('web.receipt.partial.retryHint')}</p>
-          </div>
+        failed.length > 0 ? (
+          <Notice
+            tone="info"
+            title={t('web.receipt.partial.retryUnavailable.title')}
+            description={t('web.receipt.partial.retryUnavailable.body')}
+          />
         ) : null
       }
     />

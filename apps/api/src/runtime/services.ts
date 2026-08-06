@@ -1,35 +1,10 @@
+import type { KeyValueStore as ApplicationKeyValueStore } from '@relay/application';
 import type { RelayConfig } from '@relay/config';
 import { ERROR_CODES, RelayError } from '@relay/contracts';
 import type { Logger } from '@relay/observability';
+import { createApplicationRuntime } from '@relay/runtime';
 
 import type { Clock, KeyValueStore, Services } from '../application/port';
-
-/**
- * Load the application services.
- *
- * TODO(api): depends on `@relay/application`, which is being written in
- * parallel. The module is resolved through a computed specifier so this app
- * compiles and its whole HTTP surface stays testable before that package
- * exists. When it lands, this becomes a static import and the guard below
- * becomes unnecessary.
- *
- * The result is **validated, not cast**. A module boundary resolved at runtime
- * is an external boundary like any other, and this is the one place in the API
- * where a value crosses into a typed shape without a zod schema, because zod
- * cannot describe a bag of methods. The guard below is the substitute: it
- * checks that every service named in the shared contract is present and is an
- * object, so a partially built or renamed package fails at boot with a clear
- * message rather than at 03:00 with `undefined is not a function`.
- *
- * The API deliberately passes only the dependencies it owns: the key value
- * store it also uses for edge credentials, the clock, the config and the
- * logger. It does not construct a Prisma client, a connector registry, an AI
- * gateway or a Temporal client, because a transport layer that assembles the
- * data plane is a transport layer that can bypass it. `createServices` builds
- * those from the config it is handed, in the package that owns them.
- */
-
-const APPLICATION_MODULE = '@relay/application';
 
 /** Every service the shared contract promises. Order matches `Services`. */
 const REQUIRED_SERVICES = [
@@ -59,7 +34,6 @@ const REQUIRED_SERVICES = [
   'health',
 ] as const;
 
-/** Narrow an unknown value to a plain record without casting. */
 function asRecord(value: unknown): Readonly<Record<string, unknown>> | null {
   if (typeof value !== 'object' || value === null || Array.isArray(value)) {
     return null;
@@ -69,16 +43,15 @@ function asRecord(value: unknown): Readonly<Record<string, unknown>> | null {
 
 function isServices(value: unknown): value is Services {
   const candidate = asRecord(value);
-  if (candidate === null) {
-    return false;
-  }
-  return REQUIRED_SERVICES.every((name) => {
-    const service = candidate[name];
-    return typeof service === 'object' && service !== null;
-  });
+  return (
+    candidate !== null &&
+    REQUIRED_SERVICES.every((name) => {
+      const service = candidate[name];
+      return typeof service === 'object' && service !== null;
+    })
+  );
 }
 
-/** Which services are missing, for an error message an operator can act on. */
 function missingServices(value: unknown): readonly string[] {
   const candidate = asRecord(value);
   if (candidate === null) {
@@ -90,6 +63,57 @@ function missingServices(value: unknown): readonly string[] {
   });
 }
 
+/**
+ * The edge and application KV contracts have different convenience methods,
+ * but identical semantics. The API owns the connection lifecycle, so close is
+ * deliberately a no-op here.
+ */
+class ApplicationKvAdapter implements ApplicationKeyValueStore {
+  constructor(private readonly edge: KeyValueStore) {}
+
+  get(key: string): Promise<string | null> {
+    return this.edge.get(key);
+  }
+
+  async set(
+    key: string,
+    value: string,
+    options: { readonly ttlSeconds?: number; readonly ifAbsent?: boolean } = {},
+  ): Promise<boolean> {
+    const edgeOptions =
+      options.ttlSeconds === undefined ? undefined : { ttlSeconds: options.ttlSeconds };
+    if (options.ifAbsent === true) {
+      return this.edge.setIfAbsent(key, value, edgeOptions);
+    }
+    await this.edge.set(key, value, edgeOptions);
+    return true;
+  }
+
+  delete(key: string): Promise<void> {
+    return this.edge.delete(key);
+  }
+
+  async increment(key: string, amount = 1, ttlSeconds?: number): Promise<number> {
+    if (!Number.isInteger(amount) || amount < 1) {
+      throw new RelayError(ERROR_CODES.VALIDATION_FAILED, {
+        details: { field: 'amount', reason: 'positive_integer_required' },
+      });
+    }
+    let value = 0;
+    for (let index = 0; index < amount; index += 1) {
+      value = await this.edge.increment(
+        key,
+        ttlSeconds === undefined ? undefined : { ttlSeconds },
+      );
+    }
+    return value;
+  }
+
+  close(): Promise<void> {
+    return Promise.resolve();
+  }
+}
+
 export interface ResolveServicesInput {
   readonly config: RelayConfig;
   readonly logger: Logger;
@@ -97,28 +121,24 @@ export interface ResolveServicesInput {
   readonly clock: Clock;
 }
 
-export async function resolveServices(input: ResolveServicesInput): Promise<Services> {
-  const specifier: string = APPLICATION_MODULE;
-  const loaded: unknown = await import(specifier);
+export interface ResolvedServices {
+  readonly services: Services;
+  close(): Promise<void>;
+}
 
-  const factory = asRecord(loaded)?.['createServices'];
-  if (typeof factory !== 'function') {
-    throw new RelayError(ERROR_CODES.INTERNAL, {
-      details: { module: APPLICATION_MODULE, reason: 'createServices_missing' },
-    });
-  }
-
-  const services: unknown = await factory({
-    kv: input.kv,
-    clock: input.clock,
+/** Build the one canonical application graph and expose its lifecycle. */
+export function resolveServices(input: ResolveServicesInput): ResolvedServices {
+  const runtime = createApplicationRuntime({
     config: input.config,
     logger: input.logger,
+    clock: input.clock,
+    adapters: { kv: new ApplicationKvAdapter(input.kv) },
   });
-
+  const services: unknown = runtime.services;
   if (!isServices(services)) {
     throw new RelayError(ERROR_CODES.INTERNAL, {
-      details: { module: APPLICATION_MODULE, missing: missingServices(services) },
+      details: { module: '@relay/runtime', missing: missingServices(services) },
     });
   }
-  return services;
+  return { services, close: () => runtime.close() };
 }

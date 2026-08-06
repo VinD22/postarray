@@ -33,6 +33,7 @@ const API_KEY_SELECT = {
   name: true,
   prefix: true,
   scopes: true,
+  createdByUserId: true,
   serviceAccountId: true,
   expiresAt: true,
   lastUsedAt: true,
@@ -46,6 +47,7 @@ interface ApiKeyRow {
   name: string;
   prefix: string;
   scopes: string[];
+  createdByUserId: string;
   serviceAccountId: string | null;
   expiresAt: Date | null;
   lastUsedAt: Date | null;
@@ -60,6 +62,7 @@ function toView(row: ApiKeyRow): ApiKeyView {
     name: row.name,
     prefix: row.prefix,
     scopes: normalizeScopes(row.scopes),
+    createdByUserId: row.createdByUserId,
     serviceAccountId: row.serviceAccountId,
     expiresAt: row.expiresAt?.toISOString() ?? null,
     lastUsedAt: row.lastUsedAt?.toISOString() ?? null,
@@ -143,8 +146,11 @@ export function createApiKeyService(deps: ServiceDeps): ApiKeyService {
           });
         }
 
-        const prefix = `${KEY_PREFIX}_${randomBytes(6).toString('base64url').slice(0, 8)}`;
-        const secret = randomBytes(32).toString('base64url');
+        // Hex stays inside the public credential grammar used by every edge.
+        // base64url may contain '-' or '_', which makes separator parsing
+        // ambiguous and previously produced intermittently unusable keys.
+        const prefix = `${KEY_PREFIX}_${randomBytes(6).toString('hex').slice(0, 8)}`;
+        const secret = randomBytes(32).toString('hex');
         const salt = randomBytes(16).toString('base64url');
 
         const created = await db.apiKey.create({

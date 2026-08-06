@@ -18,7 +18,6 @@ import {
   type AccountRule,
   type LibraryStatus,
   type MediaAsset,
-  type MediaEditPlan,
   type RightsDeclaration,
   type UploadTransport,
 } from '@/features/media';
@@ -38,8 +37,6 @@ export interface LibraryClientProps {
     assetId: string,
     declaration: Omit<RightsDeclaration, 'declaredByName' | 'declaredAt'>,
   ) => Promise<void>;
-  readonly onSaveEdit: (assetId: string, plan: MediaEditPlan) => Promise<void>;
-  readonly onRestoreVersion: (assetId: string, version: number) => Promise<void>;
   readonly onRefresh: () => void;
 }
 
@@ -96,8 +93,6 @@ export function LibraryClient(props: LibraryClientProps): ReactNode {
       onRetryUpload={queue.retry}
       onSaveAltText={props.onSaveAltText}
       onSaveRights={props.onSaveRights}
-      onSaveEdit={props.onSaveEdit}
-      onRestoreVersion={props.onRestoreVersion}
       {...(props.errorReference ? { errorReference: props.errorReference } : {})}
     />
   );

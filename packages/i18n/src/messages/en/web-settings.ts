@@ -618,7 +618,7 @@ export const webSettingsMessages = {
     'Changing the interval takes effect at the next renewal. Polar prorates it and shows the exact amount before you confirm.',
   'billing.ui.intervalChangedAnnouncement': 'Billing interval set to {interval}.',
   'billing.ui.allowanceChannels':
-    '30 active social channels. A channel is one connected account, page or channel.',
+    '10 active social channels. A channel is one connected account, page or channel.',
   'billing.ui.allowanceChannelsUsage': '{used} of {limit} active channels',
   'billing.ui.allowanceFairUse':
     'Fair use means anti spam, rate and provider cost controls. They apply the same way to every subscriber and are published, not discretionary.',

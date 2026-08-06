@@ -26,7 +26,7 @@ import {
 export const createWebhookEndpointSchema = z
   .object({
     url: z.string().trim().min(1).max(2048),
-    name: shortTextSchema,
+    name: shortTextSchema.optional(),
     events: z.array(webhookEventNameSchema).min(1).max(32),
     /** Empty means every connection in the workspace. */
     connectionIds: z.array(connectionIdSchema).max(200).default([]),
@@ -66,4 +66,5 @@ export const inboundIntegrationSchema = z
   });
 
 export type CreateWebhookEndpointInput = z.infer<typeof createWebhookEndpointSchema>;
+export type UpdateWebhookEndpointInput = z.infer<typeof updateWebhookEndpointSchema>;
 export type InboundIntegrationInput = z.infer<typeof inboundIntegrationSchema>;

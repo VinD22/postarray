@@ -1,4 +1,4 @@
-import type { Clock, SchedulerPort } from '../types';
+import type { Clock, PublishWorkflowInput, SchedulerPort } from '../types';
 
 import { systemClock } from './clock';
 
@@ -15,6 +15,7 @@ export interface RecordedPublish {
   readonly workspaceId: string;
   readonly executeAt: Date;
   readonly idempotencyKey: string;
+  readonly workflowInput: PublishWorkflowInput;
   readonly workflowId: string;
   canceled: boolean;
   cancelReason: string | null;
@@ -25,22 +26,23 @@ export function publishWorkflowId(workspaceId: string, jobId: string): string {
   return `publish:${workspaceId}:${jobId}`;
 }
 
+export function ruleWorkflowId(workspaceId: string, ruleId: string, runId: string): string {
+  return `rule:${workspaceId}:${ruleId}:${runId}`;
+}
+
 export class InMemoryScheduler implements SchedulerPort {
   readonly publishes = new Map<string, RecordedPublish>();
   readonly analyticsSyncs: { connectionId: string; receiptId: string | null; at: Date }[] = [];
   readonly ruleRuns: { ruleId: string; workspaceId: string; workflowId: string }[] = [];
   readonly signals: { jobId: string; signal: string }[] = [];
-  readonly #clock: Clock;
-
-  constructor(clock: Clock = systemClock) {
-    this.#clock = clock;
-  }
+  constructor(_clock: Clock = systemClock) {}
 
   async schedulePublish(input: {
     readonly jobId: string;
     readonly workspaceId: string;
     readonly executeAt: Date;
     readonly idempotencyKey: string;
+    readonly workflowInput: PublishWorkflowInput;
   }): Promise<{ readonly workflowId: string; readonly runId: string }> {
     const workflowId = publishWorkflowId(input.workspaceId, input.jobId);
     const existing = this.publishes.get(input.jobId);
@@ -52,6 +54,7 @@ export class InMemoryScheduler implements SchedulerPort {
       workspaceId: input.workspaceId,
       executeAt: input.executeAt,
       idempotencyKey: input.idempotencyKey,
+      workflowInput: input.workflowInput,
       workflowId,
       canceled: false,
       cancelReason: null,
@@ -59,7 +62,11 @@ export class InMemoryScheduler implements SchedulerPort {
     return { workflowId, runId: `${workflowId}:1` };
   }
 
-  async cancelPublish(input: { readonly jobId: string; readonly reason: string }): Promise<void> {
+  async cancelPublish(input: {
+    readonly jobId: string;
+    readonly workspaceId: string;
+    readonly reason: string;
+  }): Promise<void> {
     const existing = this.publishes.get(input.jobId);
     if (existing !== undefined) {
       existing.canceled = true;
@@ -69,7 +76,9 @@ export class InMemoryScheduler implements SchedulerPort {
 
   async reschedulePublish(input: {
     readonly jobId: string;
+    readonly workspaceId: string;
     readonly executeAt: Date;
+    readonly ianaTimeZone: string;
   }): Promise<void> {
     const existing = this.publishes.get(input.jobId);
     if (existing !== undefined) {
@@ -77,13 +86,21 @@ export class InMemoryScheduler implements SchedulerPort {
     }
   }
 
-  async signalPublish(input: { readonly jobId: string; readonly signal: string }): Promise<void> {
+  async signalPublish(input: {
+    readonly jobId: string;
+    readonly workspaceId: string;
+    readonly signal: string;
+  }): Promise<void> {
     this.signals.push({ jobId: input.jobId, signal: input.signal });
   }
 
   async scheduleAnalyticsSync(input: {
+    readonly ctx: Parameters<SchedulerPort['scheduleAnalyticsSync']>[0]['ctx'];
+    readonly workspaceId: string;
     readonly connectionId: string;
+    readonly provider: Parameters<SchedulerPort['scheduleAnalyticsSync']>[0]['provider'];
     readonly receiptId?: string;
+    readonly publishedAt?: string;
     readonly at: Date;
   }): Promise<void> {
     this.analyticsSyncs.push({
@@ -94,20 +111,24 @@ export class InMemoryScheduler implements SchedulerPort {
   }
 
   async startRuleRun(input: {
+    readonly ctx: Parameters<SchedulerPort['startRuleRun']>[0]['ctx'];
     readonly ruleId: string;
     readonly workspaceId: string;
+    readonly runId: string;
+    readonly sourceKey: string;
+    readonly event: Record<string, unknown>;
+    readonly dryRun?: boolean;
   }): Promise<{ readonly workflowId: string }> {
-    const workflowId = `rule:${input.workspaceId}:${input.ruleId}:${this.#clock
-      .now()
-      .toISOString()}`;
+    const workflowId = ruleWorkflowId(input.workspaceId, input.ruleId, input.runId);
     this.ruleRuns.push({ ruleId: input.ruleId, workspaceId: input.workspaceId, workflowId });
     return { workflowId };
   }
 
-  async describe(
-    jobId: string,
-  ): Promise<{ readonly status: string; readonly historyLength: number } | null> {
-    const existing = this.publishes.get(jobId);
+  async describe(input: {
+    readonly jobId: string;
+    readonly workspaceId: string;
+  }): Promise<{ readonly status: string; readonly historyLength: number } | null> {
+    const existing = this.publishes.get(input.jobId);
     if (existing === undefined) {
       return null;
     }

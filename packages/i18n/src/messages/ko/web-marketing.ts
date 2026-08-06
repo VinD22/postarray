@@ -1056,10 +1056,9 @@ export const webMarketingMessages = {
   'web.opportunities.category.partner': '파트너 생태계 및 통합 디렉터리',
   'web.opportunities.category.editorial': '게스트 튜토리얼, 팟캐스트, 뉴스레터',
   'web.opportunities.category.openSource': '오픈 소스 목록 및 문서 리소스',
-  'web.legal.subprocessors.supabase.label': '수파베이스',
-  'web.legal.subprocessors.supabase.purpose': '관리형 PostgreSQL, 인증 및 객체 스토리지.',
-  'web.legal.subprocessors.supabase.data':
-    '계정 기록, 콘텐츠, 미디어, 일정, 영수증 및 감사 이벤트.',
+  'web.legal.subprocessors.neon.label': 'Neon',
+  'web.legal.subprocessors.neon.purpose': '관리형 PostgreSQL, 인증 및 객체 스토리지.',
+  'web.legal.subprocessors.neon.data': '계정 기록, 콘텐츠, 미디어, 일정, 영수증 및 감사 이벤트.',
   'web.legal.subprocessors.temporal.label': '임시 구름',
   'web.legal.subprocessors.temporal.purpose':
     '게시, 재시도 및 예약 워크플로를 지속적으로 실행합니다.',

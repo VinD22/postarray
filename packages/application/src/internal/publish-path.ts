@@ -12,6 +12,7 @@ import type { ActorContext, ServiceDeps } from '../types';
 import type { PublishJobView } from '../views';
 
 import { recordAudit } from './audit';
+import { enqueueWorkflowOutbox } from './enqueue-outbox';
 import { containsUrl, linkHosts, loadCapabilitiesFor } from './capabilities';
 import { loadAggregate, type ContentAggregate } from './content-store';
 import { invalid } from './errors';
@@ -20,6 +21,7 @@ import { toLocalDateTime, toProviderId, toStoredSurface } from './mappers';
 import type { ActorSnapshot, Db } from './runtime';
 import { toApprovalPolicy } from './storage-enums';
 import { resolveTarget } from './stored-content';
+import { publishWorkflowId } from '../ports/scheduler';
 
 /**
  * The one path to an external publication.
@@ -212,8 +214,7 @@ export async function runPublishPath(
   //    frozen, so the user is not left with a version they cannot send.
   const entitlement = await deps.billing.checkEntitlement({
     workspaceId: ctx.workspaceId,
-    key: 'publications.monthly',
-    requested: aggregate.variants.length,
+    key: 'publishing.enabled',
   });
   if (!entitlement.allowed) {
     throw new EntitlementRequiredError({
@@ -355,18 +356,57 @@ export async function runPublishPath(
       select: { id: true },
     });
 
-    // 7. Hand it to the durable scheduler. The workflow id is deterministic,
-    //    so a retry of this whole request cannot start a second workflow.
-    const started = await deps.scheduler.schedulePublish({
-      jobId: created.id,
-      workspaceId: ctx.workspaceId,
-      executeAt,
-      idempotencyKey,
-    });
-
-    await db.publishJob.update({
-      where: { id: created.id },
-      data: { temporalWorkflowId: started.workflowId, temporalRunId: started.runId },
+    // 7. Commit workflow intent in the same transaction as the job. The
+    //    dispatcher starts Temporal only after this transaction commits.
+    await enqueueWorkflowOutbox(db, {
+      kind: 'start_publish',
+      dedupeKey: `start-publish:${created.id}`,
+      payload: {
+        jobId: created.id,
+        workspaceId: ctx.workspaceId,
+        executeAt: executeAt.toISOString(),
+        idempotencyKey,
+        workflowInput: {
+          ctx: {
+            workspaceId: ctx.workspaceId,
+            correlationId: ctx.correlationId,
+            actorId: ctx.actorId,
+            actorType: ctx.actorType,
+            surface: ctx.surface,
+            approvalLevel: ctx.approvalLevel,
+            locale: ctx.locale,
+          },
+          publishJobId: created.id,
+          contentItemId: aggregate.itemId,
+          contentVersionId,
+          contentVersionChecksum: aggregate.checksum,
+          idempotencyKey,
+          executeAt: executeAt.toISOString(),
+          scheduledLocalTime: toLocalDateTime(executeAt, schedule.ianaTimeZone),
+          ianaTimeZone: schedule.ianaTimeZone,
+          targets: [
+            {
+              targetId: variant.id,
+              connectionId: variant.connectionId,
+              provider: toProviderId(variant.provider),
+              approvedCapabilityVersion: capability?.capabilityVersion ?? 'unavailable',
+              threadItemIds: resolved.values.threadItems
+                .filter(
+                  (item) =>
+                    item.connectionId === null || item.connectionId === variant.connectionId,
+                )
+                .map((item) => item.id),
+              threadDelaysSeconds: resolved.values.threadItems
+                .filter(
+                  (item) =>
+                    item.connectionId === null || item.connectionId === variant.connectionId,
+                )
+                .map((item) => item.delaySeconds),
+            },
+          ],
+          immediate: input.kind === 'publish_now',
+        },
+      },
     });
 
     await db.postVariant.update({
@@ -399,7 +439,7 @@ export async function runPublishPath(
       metadata: {
         contentItemId: aggregate.itemId,
         idempotencyKey,
-        workflowId: started.workflowId,
+        workflowId: publishWorkflowId(ctx.workspaceId, created.id),
         localTime: toLocalDateTime(executeAt, schedule.ianaTimeZone),
         containsUrl: containsUrl(resolved.values.body),
         estimatedCostMinor: validation.estimatedCostMinor ?? null,

@@ -20,3 +20,4 @@ export * from './publishing';
 export * from './growth';
 export * from './api';
 export * from './scopes';
+export * from './plan-limits';

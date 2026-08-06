@@ -1,8 +1,21 @@
-import type { ActorContext, ServiceDeps, WorkspaceService } from '../types';
+import { randomUUID } from 'node:crypto';
+
+import type { Locale, Paginated } from '@relay/contracts';
+import { appendAuditEvent, withRlsContext } from '@relay/database';
+
+import type {
+  ActorContext,
+  IdentityContext,
+  PageQuery,
+  ServiceDeps,
+  WorkspaceService,
+} from '../types';
 import type { WorkspaceView } from '../views';
 
 import { recordAudit } from '../internal/audit';
-import { notFound } from '../internal/errors';
+import { invalid, notFound } from '../internal/errors';
+import { toStoredSurface } from '../internal/mappers';
+import { pageArgs, toPage } from '../internal/pagination';
 import { authorized, type Db } from '../internal/runtime';
 
 /** Workspace settings and the operator kill switch. */
@@ -36,39 +49,183 @@ async function readWorkspace(db: Db, workspaceId: string): Promise<WorkspaceView
   };
 }
 
+function workspaceSlug(name: string): string {
+  const base = name
+    .normalize('NFKD')
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '')
+    .slice(0, 48);
+  return `${base.length === 0 ? 'workspace' : base}-${randomUUID().slice(0, 8)}`;
+}
+
 export function createWorkspaceService(deps: ServiceDeps): WorkspaceService {
   return {
-    async get(ctx: ActorContext): Promise<WorkspaceView> {
+    async list(ctx: ActorContext, query: PageQuery = {}): Promise<Paginated<WorkspaceView>> {
+      return authorized(deps, ctx, 'workspace.read', undefined, async (db) => {
+        const args = pageArgs(query);
+        const workspace = await readWorkspace(db, ctx.workspaceId);
+        return toPage([workspace], args, (row) => row.id, (row) => row);
+      });
+    },
+
+    async get(ctx: ActorContext, workspaceId?: string): Promise<WorkspaceView> {
+      const requestedId = workspaceId ?? ctx.workspaceId;
+      if (requestedId !== ctx.workspaceId) {
+        throw notFound('workspace', requestedId);
+      }
       return authorized(deps, ctx, 'workspace.read', undefined, async (db) =>
-        readWorkspace(db, ctx.workspaceId),
+        readWorkspace(db, requestedId),
       );
+    },
+
+    async create(
+      ctx: IdentityContext,
+      input: { name: string; ianaTimeZone: string; defaultLocale: Locale },
+    ): Promise<WorkspaceView> {
+      if (ctx.userId === undefined) {
+        throw invalid('errors.auth_profile_required');
+      }
+      const userId = ctx.userId;
+      return withRlsContext(deps.prisma, { role: 'service_role' }, async (tx) => {
+        const user = await tx.user.findUnique({
+          where: { id: userId },
+          select: { id: true },
+        });
+        if (user === null) {
+          throw notFound('user', userId);
+        }
+        const created = await tx.workspace.create({
+          data: {
+            name: input.name,
+            slug: workspaceSlug(input.name),
+            ownerUserId: user.id,
+            defaultLocale: input.defaultLocale,
+            defaultTimeZone: input.ianaTimeZone,
+            memberships: {
+              create: {
+                userId: user.id,
+                role: 'owner',
+                state: 'active',
+                acceptedAt: deps.clock.now(),
+              },
+            },
+          },
+          select: {
+            id: true,
+            name: true,
+            slug: true,
+            status: true,
+            defaultLocale: true,
+            defaultTimeZone: true,
+            killSwitchAt: true,
+            createdAt: true,
+          },
+        });
+        await appendAuditEvent(tx, {
+          workspaceId: created.id,
+          actor: { type: 'user', id: user.id },
+          surface: toStoredSurface(ctx.surface),
+          action: 'workspace.created',
+          target: { type: 'workspace', id: created.id },
+          after: {
+            name: created.name,
+            defaultLocale: created.defaultLocale,
+            defaultTimeZone: created.defaultTimeZone,
+          },
+          metadata: { contractSurface: ctx.surface },
+          correlationId: ctx.correlationId,
+        });
+        return {
+          id: created.id,
+          name: created.name,
+          slug: created.slug,
+          status: created.status,
+          defaultLocale: created.defaultLocale,
+          defaultTimeZone: created.defaultTimeZone,
+          killSwitchEngaged: created.killSwitchAt !== null,
+          createdAt: created.createdAt.toISOString(),
+        };
+      });
     },
 
     async update(
       ctx: ActorContext,
-      patch: { name?: string; defaultLocale?: string; defaultTimeZone?: string },
+      workspaceIdOrPatch:
+        | string
+        | {
+            name?: string;
+            defaultLocale?: string;
+            defaultTimeZone?: string;
+            ianaTimeZone?: string;
+          },
+      suppliedPatch?: {
+        name?: string;
+        defaultLocale?: string;
+        defaultTimeZone?: string;
+        ianaTimeZone?: string;
+      },
     ): Promise<WorkspaceView> {
+      const workspaceId =
+        typeof workspaceIdOrPatch === 'string' ? workspaceIdOrPatch : ctx.workspaceId;
+      const patch = typeof workspaceIdOrPatch === 'string' ? (suppliedPatch ?? {}) : workspaceIdOrPatch;
+      if (workspaceId !== ctx.workspaceId) {
+        throw notFound('workspace', workspaceId);
+      }
       return authorized(deps, ctx, 'workspace.update', undefined, async (db, actor) => {
-        const before = await readWorkspace(db, ctx.workspaceId);
+        const before = await readWorkspace(db, workspaceId);
         await db.workspace.update({
-          where: { id: ctx.workspaceId },
+          where: { id: workspaceId },
           data: {
             ...(patch.name === undefined ? {} : { name: patch.name }),
             ...(patch.defaultLocale === undefined ? {} : { defaultLocale: patch.defaultLocale }),
-            ...(patch.defaultTimeZone === undefined
+            ...(patch.defaultTimeZone === undefined && patch.ianaTimeZone === undefined
               ? {}
-              : { defaultTimeZone: patch.defaultTimeZone }),
+              : { defaultTimeZone: patch.defaultTimeZone ?? patch.ianaTimeZone }),
           },
         });
-        const after = await readWorkspace(db, ctx.workspaceId);
+        const after = await readWorkspace(db, workspaceId);
         await recordAudit(db, actor, {
           action: 'workspace.updated',
           targetType: 'workspace',
-          targetId: ctx.workspaceId,
+          targetId: workspaceId,
           before,
           after,
         });
         return after;
+      });
+    },
+
+    async listForUser(userId: string): Promise<readonly WorkspaceView[]> {
+      return withRlsContext(deps.prisma, { role: 'service_role' }, async (tx) => {
+        const memberships = await tx.membership.findMany({
+          where: { userId, state: 'active' },
+          orderBy: { workspace: { createdAt: 'asc' } },
+          select: {
+            workspace: {
+              select: {
+                id: true,
+                name: true,
+                slug: true,
+                status: true,
+                defaultLocale: true,
+                defaultTimeZone: true,
+                killSwitchAt: true,
+                createdAt: true,
+              },
+            },
+          },
+        });
+        return memberships.map(({ workspace }) => ({
+          id: workspace.id,
+          name: workspace.name,
+          slug: workspace.slug,
+          status: workspace.status,
+          defaultLocale: workspace.defaultLocale,
+          defaultTimeZone: workspace.defaultTimeZone,
+          killSwitchEngaged: workspace.killSwitchAt !== null,
+          createdAt: workspace.createdAt.toISOString(),
+        }));
       });
     },
 

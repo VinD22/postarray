@@ -1099,10 +1099,9 @@ export const webMarketingMessages = {
   'web.opportunities.category.partner': 'Hệ sinh thái đối tác và thư mục tích hợp',
   'web.opportunities.category.editorial': 'Hướng dẫn dành cho khách, podcast và bản tin',
   'web.opportunities.category.openSource': 'Danh sách nguồn mở và tài nguyên tài liệu',
-  'web.legal.subprocessors.supabase.label': 'Supabase',
-  'web.legal.subprocessors.supabase.purpose':
-    'PostgreSQL được quản lý, xác thực và lưu trữ đối tượng.',
-  'web.legal.subprocessors.supabase.data':
+  'web.legal.subprocessors.neon.label': 'Neon',
+  'web.legal.subprocessors.neon.purpose': 'PostgreSQL được quản lý, xác thực và lưu trữ đối tượng.',
+  'web.legal.subprocessors.neon.data':
     'Hồ sơ tài khoản, nội dung, phương tiện truyền thông, lịch trình, biên lai và sự kiện kiểm toán.',
   'web.legal.subprocessors.temporal.label': 'Đám mây tạm thời',
   'web.legal.subprocessors.temporal.purpose':

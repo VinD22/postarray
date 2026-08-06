@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { ACTIVE_CHANNEL_LIMIT, WORKSPACE_MEMBER_LIMIT } from '@relay/contracts';
 
 import { formatMoneyMinor, USD } from './money';
 
@@ -54,7 +55,10 @@ export const POLAR_TRIAL_REMINDER_DAY = TRIAL_DAYS - POLAR_TRIAL_REMINDER_LEAD_D
 export const RELAY_TRIAL_SUMMARY_DAY = TRIAL_DAYS - 1;
 
 /** Active connections a workspace may hold. Never enforced by disconnecting. */
-export const ACTIVE_CHANNEL_ALLOWANCE = 30;
+export const ACTIVE_CHANNEL_ALLOWANCE = ACTIVE_CHANNEL_LIMIT;
+
+/** Workspace owner plus five invited teammates. */
+export const MEMBER_ALLOWANCE = WORKSPACE_MEMBER_LIMIT;
 
 /** Days of full access after a failed payment before the workspace is read only. */
 export const GRACE_PERIOD_DAYS = 7;
@@ -232,6 +236,7 @@ export const PRICE_PRESENTATION: PricePresentation = Object.freeze({
   trialDueTodayText: MANDATED_COPY.dueToday,
   trialDueTodayKey: 'billing.trial.dueToday',
   activeChannelAllowance: ACTIVE_CHANNEL_ALLOWANCE,
+  memberAllowance: MEMBER_ALLOWANCE,
   inclusionKeys: PLAN_INCLUSION_KEYS,
   fairUseKey: 'billing.plan.fairUse',
   mediaGenerationBoundaryKey: 'billing.mediaGeneration.explanation',

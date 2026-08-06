@@ -1,13 +1,13 @@
 'use client';
 
 /**
- * A resumable upload queue.
+ * A retryable upload queue.
  *
  * Two behaviours matter here. First, a file is validated against the accounts
  * in play before a single byte leaves the browser, so a rejection is a sentence
  * rather than a failed request. Second, a paused or dropped upload keeps its
- * session URL and its sent byte count, so reconnecting continues instead of
- * starting again.
+ * signed session URL and media reservation, so a failed transfer can retry
+ * without creating duplicate database rows.
  */
 
 import { useCallback, useRef, useState } from 'react';
@@ -18,8 +18,11 @@ import { checkFile, type AccountRule } from '../state/media-rules';
 import type { UploadItem } from '../types';
 
 export interface UploadTransport {
-  /** Reserve a resumable session. Returns the URL bytes are sent to. */
-  createUploadUrl: (file: File) => Promise<{ uploadUrl: string; uploadId: string }>;
+  /** Reserve a signed upload session. Returns the URL bytes are sent to. */
+  createUploadUrl: (
+    file: File,
+    signal: AbortSignal,
+  ) => Promise<{ uploadUrl: string; uploadId: string }>;
   /** Send one chunk. Resolves with the total bytes the server now holds. */
   sendChunk: (
     uploadUrl: string,
@@ -100,12 +103,15 @@ export function useUploadQueue({
         );
 
         let session = itemsRef.current.find((item) => item.id === id)?.uploadUrl ?? null;
-        let uploadId = id;
+        let uploadId = itemsRef.current.find((item) => item.id === id)?.uploadId ?? null;
         if (session === null) {
-          const created = await transport.createUploadUrl(file);
+          const created = await transport.createUploadUrl(file, controller.signal);
           session = created.uploadUrl;
           uploadId = created.uploadId;
-          patch(id, { uploadUrl: session });
+          patch(id, { uploadUrl: session, uploadId });
+        }
+        if (uploadId === null) {
+          throw new Error('UPLOAD_RESERVATION_MISSING');
         }
 
         let offset = itemsRef.current.find((item) => item.id === id)?.sentBytes ?? 0;
@@ -162,6 +168,7 @@ export function useUploadQueue({
           sentBytes: 0,
           status: verdict.usable ? 'queued' : 'rejected',
           uploadUrl: null,
+          uploadId: null,
           reason:
             verdict.usable || firstRejection === undefined
               ? null

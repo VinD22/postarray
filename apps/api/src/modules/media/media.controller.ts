@@ -7,10 +7,12 @@ import { mediaIdSchema } from '../../common/schemas';
 import { parseBody, parseParams, parseQuery } from '../../common/zod';
 import {
   createUploadUrlSchema,
+  declareRightsSchema,
   editMediaSchema,
   importFromUrlSchema,
   listMediaQuerySchema,
   setAltTextSchema,
+  toMediaEditOperations,
 } from './media.schemas';
 import { MediaService } from './media.service';
 
@@ -54,7 +56,14 @@ export class MediaController {
   createUploadUrl(
     @Actor() actor: ActorContext,
     @Body() body: unknown,
-  ): Promise<{ uploadUrl: string; mediaId: string; headers: Readonly<Record<string, string>> }> {
+  ): Promise<{
+    uploadUrl: string;
+    mediaId: string;
+    method: 'PUT' | 'POST';
+    headers: Readonly<Record<string, string>>;
+    expiresAt: string;
+    retentionExpiresAt: string;
+  }> {
     return this.media.createUploadUrl(actor, parseBody(createUploadUrlSchema, body));
   }
 
@@ -92,8 +101,8 @@ export class MediaController {
     @Param('id') id: string,
     @Body() body: unknown,
   ): Promise<MediaAssetView> {
-    const { ops } = parseBody(editMediaSchema, body);
-    return this.media.edit(actor, parseParams(mediaIdSchema, id), ops);
+    const input = parseBody(editMediaSchema, body);
+    return this.media.edit(actor, parseParams(mediaIdSchema, id), toMediaEditOperations(input));
   }
 
   @Put(':id/alt-text')
@@ -105,6 +114,20 @@ export class MediaController {
   ): Promise<MediaAssetView> {
     const input = parseBody(setAltTextSchema, body);
     return this.media.setAltText(actor, parseParams(mediaIdSchema, id), input);
+  }
+
+  @Put(':id/rights')
+  @RequireScope('media:write')
+  declareRights(
+    @Actor() actor: ActorContext,
+    @Param('id') id: string,
+    @Body() body: unknown,
+  ): Promise<MediaAssetView> {
+    return this.media.declareRights(
+      actor,
+      parseParams(mediaIdSchema, id),
+      parseBody(declareRightsSchema, body),
+    );
   }
 
   @Delete(':id')

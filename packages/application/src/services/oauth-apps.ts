@@ -149,6 +149,19 @@ export function createOAuthAppService(deps: ServiceDeps): OAuthAppService {
       });
     },
 
+    async get(ctx: ActorContext, appId: string): Promise<OAuthAppView> {
+      return authorized(deps, ctx, 'developer.manage', undefined, async (db) => {
+        const row = await db.oAuthClient.findFirst({
+          where: { id: appId, status: { not: 'deleted' } },
+          select: APP_SELECT,
+        });
+        if (row === null) {
+          throw notFound('oauth_client', appId);
+        }
+        return toAppView(row);
+      });
+    },
+
     async create(
       ctx: ActorContext,
       input: {

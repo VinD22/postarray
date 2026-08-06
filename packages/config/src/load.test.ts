@@ -23,16 +23,24 @@ describe('loadConfig', () => {
 
   it('applies the documented defaults', () => {
     const config = loadConfig(minimal);
-    expect(config.supabase.storageBucket).toBe('relay-media');
+    expect(config.neon.storageBucket).toBe('relay-media');
+    expect(config.neon.storageRegion).toBe('us-east-2');
     expect(config.temporal.namespace).toBe('default');
     expect(config.temporal.taskQueue).toBe('relay-publishing');
     expect(config.polar.server).toBe('sandbox');
+    expect(config.polar.checkoutEnabled).toBe(false);
     expect(config.polar.trialDays).toBe(7);
     expect(config.ai.provider).toBe('deepseek');
     expect(config.ai.deepseek.baseUrl).toBe('https://api.deepseek.com');
     expect(config.ai.deepseek.model).toBe('deepseek-v4-flash');
     expect(config.ai.requestTimeoutMs).toBe(60_000);
     expect(config.ai.maxMonthlyUsdPerWorkspace).toBe(25);
+  });
+
+  it('requires an explicit commercial checkout switch', () => {
+    expect(loadConfig({ ...minimal, BILLING_CHECKOUT_ENABLED: 'true' }).polar.checkoutEnabled).toBe(
+      true,
+    );
   });
 
   it('coerces numeric variables', () => {
@@ -48,8 +56,8 @@ describe('loadConfig', () => {
   });
 
   it('treats an empty value as unset', () => {
-    const config = loadConfig({ ...minimal, SUPABASE_URL: '', REDIS_URL: '   ' });
-    expect(config.supabase.url).toBeUndefined();
+    const config = loadConfig({ ...minimal, NEON_AUTH_BASE_URL: '', REDIS_URL: '   ' });
+    expect(config.neon.authBaseUrl).toBeUndefined();
     expect(config.redis.url).toBeUndefined();
   });
 

@@ -188,33 +188,35 @@ export const rssApi = {
 
 export const webhooksApi = {
   list: (query: { cursor?: string; limit?: number } = {}): Promise<Paginated<WebhookEndpoint>> =>
-    call('/webhooks', { query }, () => page<WebhookEndpoint>([])),
+    call('/webhooks/endpoints', { query }, () => page<WebhookEndpoint>([])),
   create: (
     input: { url: string; events: readonly WebhookEventName[]; connectionIds?: readonly string[] },
     idempotencyKey: string,
   ): Promise<{ endpoint: WebhookEndpoint; signingSecret: string } | null> =>
-    call('/webhooks', { method: 'POST', body: input, idempotencyKey }, () => null),
+    call('/webhooks/endpoints', { method: 'POST', body: input, idempotencyKey }, () => null),
   update: (
     endpointId: string,
     input: Partial<{ url: string; events: readonly WebhookEventName[]; enabled: boolean }>,
   ): Promise<WebhookEndpoint | null> =>
-    call(`/webhooks/${endpointId}`, { method: 'PATCH', body: input }, () => null),
+    call(`/webhooks/endpoints/${endpointId}`, { method: 'PATCH', body: input }, () => null),
   delete: (endpointId: string): Promise<void> =>
-    call(`/webhooks/${endpointId}`, { method: 'DELETE' }, () => undefined),
+    call(`/webhooks/endpoints/${endpointId}`, { method: 'DELETE' }, () => undefined),
   testDelivery: (endpointId: string, idempotencyKey: string): Promise<WebhookDeliveryLog | null> =>
-    call(`/webhooks/${endpointId}/test`, { method: 'POST', idempotencyKey }, () => null),
+    call(`/webhooks/endpoints/${endpointId}/test`, { method: 'POST', idempotencyKey }, () => null),
   listDeliveries: (
     endpointId: string,
     query: { cursor?: string; limit?: number } = {},
   ): Promise<Paginated<WebhookDeliveryLog>> =>
-    call(`/webhooks/${endpointId}/deliveries`, { query }, () => page<WebhookDeliveryLog>([])),
+    call(`/webhooks/endpoints/${endpointId}/deliveries`, { query }, () =>
+      page<WebhookDeliveryLog>([]),
+    ),
   redeliver: (
     endpointId: string,
     deliveryId: string,
     idempotencyKey: string,
   ): Promise<WebhookDeliveryLog | null> =>
     call(
-      `/webhooks/${endpointId}/deliveries/${deliveryId}/redeliver`,
+      `/webhooks/deliveries/${deliveryId}/redeliver`,
       { method: 'POST', idempotencyKey },
       () => null,
     ),

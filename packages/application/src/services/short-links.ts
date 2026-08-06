@@ -1,6 +1,6 @@
 import { createHash, randomBytes } from 'node:crypto';
 
-import type { UtmParameters } from '@relay/contracts';
+import type { Paginated, UtmParameters } from '@relay/contracts';
 
 import type { ActorContext, ServiceDeps, ShortLinkService } from '../types';
 import type { ShortLinkView, ShortLinkStats } from '../views';
@@ -8,6 +8,7 @@ import type { ShortLinkView, ShortLinkStats } from '../views';
 import { recordAudit } from '../internal/audit';
 import { invalid, notFound } from '../internal/errors';
 import { withIdempotency } from '../internal/idempotency';
+import { pageArgs, toPage } from '../internal/pagination';
 import { authorized, type Db } from '../internal/runtime';
 import { assertFetchable } from '../internal/url-safety';
 
@@ -141,6 +142,20 @@ export function createShortLinkService(deps: ServiceDeps): ShortLinkService {
   }
 
   return {
+    async list(ctx: ActorContext, query = {}): Promise<Paginated<ShortLinkView>> {
+      return authorized(deps, ctx, 'link.read', undefined, async (db) => {
+        const args = pageArgs(query);
+        const rows = await db.shortLink.findMany({
+          orderBy: { id: 'desc' },
+          take: args.take,
+          skip: args.skip,
+          ...(args.cursor === undefined ? {} : { cursor: args.cursor }),
+          select: SHORT_LINK_SELECT,
+        });
+        return toPage(rows, args, (row) => row.id, (row) => toView(row, baseUrl));
+      });
+    },
+
     async create(
       ctx: ActorContext,
       input: {

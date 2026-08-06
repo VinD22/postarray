@@ -56,7 +56,7 @@ export {
   type RelayService,
   type ServiceRequirement,
   type ShortLinksConfig,
-  type SupabaseConfig,
+  type NeonConfig,
   type TemporalConfig,
 } from './load';
 

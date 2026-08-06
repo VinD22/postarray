@@ -98,6 +98,7 @@ export function createRefusingServices(): Services {
       delete: refuse('media'),
       edit: refuse('media'),
       setAltText: refuse('media'),
+      declareRights: refuse('media'),
     },
     analytics: {
       getPostMetrics: refuse('receipt'),

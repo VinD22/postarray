@@ -1099,10 +1099,10 @@ export const webMarketingMessages = {
   'web.opportunities.category.partner': 'Ekosistem mitra dan direktori integrasi',
   'web.opportunities.category.editorial': 'Tutorial tamu, podcast, dan buletin',
   'web.opportunities.category.openSource': 'Daftar sumber terbuka dan sumber dokumentasi',
-  'web.legal.subprocessors.supabase.label': 'Supabase',
-  'web.legal.subprocessors.supabase.purpose':
+  'web.legal.subprocessors.neon.label': 'Neon',
+  'web.legal.subprocessors.neon.purpose':
     'PostgreSQL yang dikelola, otentikasi dan penyimpanan objek.',
-  'web.legal.subprocessors.supabase.data':
+  'web.legal.subprocessors.neon.data':
     'Catatan akun, konten, media, jadwal, tanda terima, dan acara audit.',
   'web.legal.subprocessors.temporal.label': 'Awan Sementara',
   'web.legal.subprocessors.temporal.purpose':

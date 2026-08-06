@@ -56,13 +56,84 @@ interface TargetContext {
   readonly capabilities: ConnectionCapabilities | undefined;
 }
 
+export interface MediaLifecycleFacts {
+  readonly scanState: string;
+  readonly rights: string;
+  readonly retentionExpiresAt: Date;
+  readonly storageDeletedAt: Date | null;
+}
+
+export function mediaLifecycleIssues(
+  mediaIds: readonly string[],
+  media: ReadonlyMap<string, MediaLifecycleFacts>,
+  now: Date,
+  targetId: string,
+): ValidationIssue[] {
+  const issues: ValidationIssue[] = [];
+  for (const mediaId of new Set(mediaIds)) {
+    const entry = media.get(mediaId);
+    if (entry === undefined) {
+      issues.push(
+        validationIssue({
+          code: 'MEDIA_UNAVAILABLE',
+          severity: 'error',
+          targetId,
+          params: { reason: 'missing' },
+        }),
+      );
+      continue;
+    }
+    if (entry.storageDeletedAt !== null || entry.retentionExpiresAt.getTime() <= now.getTime()) {
+      issues.push(
+        validationIssue({
+          code: 'MEDIA_UNAVAILABLE',
+          severity: 'error',
+          targetId,
+          params: { reason: 'retention_expired' },
+        }),
+      );
+    }
+    if (entry.rights === 'unverified') {
+      issues.push(
+        validationIssue({ code: 'MEDIA_RIGHTS_UNDECLARED', severity: 'error', targetId }),
+      );
+    }
+    if (entry.scanState === 'infected' || entry.scanState === 'suspicious') {
+      issues.push(
+        validationIssue({
+          code: 'MEDIA_SCAN_BLOCKED',
+          severity: 'error',
+          targetId,
+          params: { scanState: entry.scanState },
+        }),
+      );
+    } else if (entry.scanState !== 'clean') {
+      issues.push(
+        validationIssue({
+          code: 'MEDIA_NOT_READY',
+          severity: 'error',
+          targetId,
+          params: { scanState: entry.scanState },
+        }),
+      );
+    }
+  }
+  return issues;
+}
+
 function targetIssues(
   target: TargetContext,
   snapshot: CapabilitySnapshot | null,
   media: ReadonlyMap<string, MediaFacts>,
+  now: Date,
 ): ValidationIssue[] {
   const issues: ValidationIssue[] = [];
   const targetId = target.variant.id;
+  const attached = target.mediaIds
+    .map((id) => media.get(id))
+    .filter((entry): entry is MediaFacts => entry !== undefined);
+
+  issues.push(...mediaLifecycleIssues(target.mediaIds, media, now, targetId));
 
   if (target.body.trim() === '' && target.mediaIds.length === 0) {
     issues.push(
@@ -74,9 +145,9 @@ function targetIssues(
     issues.push(
       validationIssue({
         code: 'CAPABILITY_UNAVAILABLE',
-        severity: 'warning',
+        severity: 'error',
         targetId,
-        messageKey: 'validation.capability_unavailable',
+        messageKey: 'validation.capability_unavailable.message',
         params: { connectionId: target.variant.connectionId },
       }),
     );
@@ -117,7 +188,7 @@ function targetIssues(
         code: 'CONTENT_KIND_UNSUPPORTED',
         severity: 'error',
         targetId,
-        messageKey: 'validation.content_kind_unsupported',
+        messageKey: 'validation.content_kind_unsupported.message',
         params: { contentKind: target.contentKind, provider: snapshot.provider },
       }),
     );
@@ -127,7 +198,7 @@ function targetIssues(
         code: 'CONTENT_KIND_NOT_IMPLEMENTED',
         severity: 'error',
         targetId,
-        messageKey: 'validation.content_kind_not_implemented',
+        messageKey: 'validation.content_kind_not_implemented.message',
         params: { contentKind: target.contentKind, provider: snapshot.provider },
       }),
     );
@@ -135,18 +206,15 @@ function targetIssues(
     issues.push(
       validationIssue({
         code: 'CONTENT_KIND_REQUIRES_REVIEW',
-        severity: 'warning',
+        severity: 'error',
         targetId,
-        messageKey: 'validation.content_kind_requires_review',
+        messageKey: 'validation.content_kind_requires_review.message',
         params: { contentKind: target.contentKind },
       }),
     );
   }
 
   // Media counts, types, size and alt text.
-  const attached = target.mediaIds
-    .map((id) => media.get(id))
-    .filter((entry): entry is MediaFacts => entry !== undefined);
   const images = attached.filter((entry) => entry.kind === 'image').length;
   const videos = attached.filter((entry) => entry.kind === 'video').length;
 
@@ -229,19 +297,8 @@ function targetIssues(
           code: 'ALT_TEXT_MISSING',
           severity: 'warning',
           targetId,
-          params: { mediaId: entry.id },
-          remediationKey: 'validation.alt_text_missing.remediation',
-        }),
-      );
-    }
-    if (entry.scanState === 'infected' || entry.scanState === 'suspicious') {
-      issues.push(
-        validationIssue({
-          code: 'MEDIA_SCAN_BLOCKED',
-          severity: 'error',
-          targetId,
-          messageKey: 'validation.media_scan_blocked',
-          params: { mediaId: entry.id, scanState: entry.scanState },
+          params: { count: 1 },
+          remediationKey: 'validation.alt_text_missing.hint',
         }),
       );
     }
@@ -282,7 +339,7 @@ function targetIssues(
         code: 'MENTION_COUNT_EXCEEDED',
         severity: 'error',
         targetId,
-        messageKey: 'validation.mention_count_exceeded',
+        messageKey: 'validation.mention_count_exceeded.message',
         params: {
           count: target.variant.settings.mentions.length,
           limit: snapshot.mentions.maxMentions,
@@ -307,7 +364,7 @@ function targetIssues(
         code: 'PRIVACY_VALUE_UNSUPPORTED',
         severity: 'error',
         targetId,
-        messageKey: 'validation.privacy_value_unsupported',
+        messageKey: 'validation.privacy_value_unsupported.message',
         params: { value: target.variant.settings.privacyValue },
       }),
     );
@@ -316,7 +373,7 @@ function targetIssues(
   return issues;
 }
 
-interface MediaFacts {
+interface MediaFacts extends MediaLifecycleFacts {
   readonly id: string;
   readonly kind: MediaKind;
   readonly mimeType: string;
@@ -324,7 +381,6 @@ interface MediaFacts {
   readonly durationMs: number | null;
   readonly altText: string | null;
   readonly altTextWaived: boolean;
-  readonly scanState: string;
 }
 
 async function loadMediaFacts(
@@ -346,6 +402,9 @@ async function loadMediaFacts(
       altText: true,
       altTextWaivedAt: true,
       scanState: true,
+      rights: true,
+      retentionExpiresAt: true,
+      storageDeletedAt: true,
     },
   });
   return new Map(
@@ -360,6 +419,9 @@ async function loadMediaFacts(
         altText: row.altText,
         altTextWaived: row.altTextWaivedAt !== null,
         scanState: row.scanState,
+        rights: row.rights,
+        retentionExpiresAt: row.retentionExpiresAt,
+        storageDeletedAt: row.storageDeletedAt,
       } satisfies MediaFacts,
     ]),
   );
@@ -403,7 +465,7 @@ async function duplicateIssues(
             code: 'SIMILAR_WITHIN_WINDOW',
             severity: 'warning',
             targetId: target.variant.id,
-            messageKey: 'validation.similar_within_window',
+            messageKey: 'validation.similar_within_window.message',
             params: { windowHours: DUPLICATE_WINDOW_HOURS, receiptId: receipt.id },
           }),
         );
@@ -426,7 +488,7 @@ async function duplicateIssues(
             code: 'CROSS_ACCOUNT_SIMILARITY',
             severity: 'warning',
             targetId: second.variant.id,
-            messageKey: 'validation.cross_account_similarity',
+            messageKey: 'validation.cross_account_similarity.message',
             params: { otherTargetId: first.variant.id },
             remediationKey: 'validation.cross_account_similarity.remediation',
           }),
@@ -496,7 +558,7 @@ async function linkIssues(db: Db, targets: readonly TargetContext[]): Promise<Va
             code: 'LINK_MALFORMED',
             severity: 'error',
             targetId: target.variant.id,
-            messageKey: 'validation.link_malformed',
+            messageKey: 'validation.link_malformed.message',
             params: { url },
           }),
         );
@@ -554,7 +616,7 @@ export function createValidationService(deps: ServiceDeps): ValidationService {
               validationIssue({
                 code: 'NO_TARGETS_SELECTED',
                 severity: 'error',
-                messageKey: 'validation.no_targets_selected',
+                messageKey: 'validation.no_targets_selected.message',
               }),
             ],
           });
@@ -583,10 +645,11 @@ export function createValidationService(deps: ServiceDeps): ValidationService {
           db,
           targets.flatMap((target) => [...target.mediaIds]),
         );
+        const now = deps.clock.now();
 
         const perTarget = targets.map((target) => {
           const snapshot = target.capabilities?.snapshot ?? null;
-          const issues = targetIssues(target, snapshot, media);
+          const issues = targetIssues(target, snapshot, media, now);
           const cost =
             snapshot === null ? null : estimateCreateCostMinor(snapshot, containsUrl(target.body));
           if (cost === null || snapshot === null || snapshot.cost === null) {
@@ -599,7 +662,6 @@ export function createValidationService(deps: ServiceDeps): ValidationService {
           });
         });
 
-        const now = deps.clock.now();
         const since = new Date(now.getTime() - DUPLICATE_WINDOW_HOURS * 3_600_000);
 
         const [duplicates, cadence, links] = await Promise.all([

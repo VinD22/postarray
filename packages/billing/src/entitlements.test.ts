@@ -230,15 +230,15 @@ describe('evaluateEntitlement', () => {
     ).toBe('allow');
   });
 
-  it('denies a thirty first channel and never disconnects one', () => {
+  it('denies an eleventh channel and never disconnects one', () => {
     const decision = evaluateEntitlement(subscription(), 'connect_channel', {
       now: NOW,
-      activeChannelCount: 30,
+        activeChannelCount: 10,
     });
     expect(decision.effect).toBe('deny');
     expect(decision.reason).toBe('channel_allowance_exceeded');
-    expect(channelAllowanceExceeded(31)).toBe(true);
-    expect(channelAllowanceExceeded(30)).toBe(false);
+    expect(channelAllowanceExceeded(11)).toBe(true);
+    expect(channelAllowanceExceeded(10)).toBe(false);
   });
 
   it('produces a RelayError with a code and a message key', () => {

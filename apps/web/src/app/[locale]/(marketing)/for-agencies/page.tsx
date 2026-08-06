@@ -28,7 +28,7 @@ import { ROUTES } from '@/features/marketing/site';
  * `@relay/billing`, the same duplication precedent as `pricing/page.tsx`'s
  * `MONTHLY_PRICE_DOLLARS`.
  */
-const ACTIVE_CHANNEL_ALLOWANCE = 30;
+const ACTIVE_CHANNEL_ALLOWANCE = 10;
 
 /** The approval flow, in order: what an agency's draft actually goes through. */
 const FLOW_STEPS = [

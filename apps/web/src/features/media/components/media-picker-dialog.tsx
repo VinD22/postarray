@@ -81,9 +81,10 @@ export function MediaPickerDialog({
           ) : (
             <ul className="flex flex-col">
               {assets.map((asset) => {
+                const assetName = asset.name ?? t.full('common.unavailable');
                 const verdict = checkFile(
                   {
-                    name: asset.name,
+                    name: assetName,
                     mimeType: asset.mimeType,
                     bytes: asset.bytes,
                     kind: asset.kind,
@@ -108,7 +109,7 @@ export function MediaPickerDialog({
                       htmlFor={checkboxId}
                       className="flex min-w-0 cursor-pointer flex-col gap-0.5"
                     >
-                      <span className="text-body-md text-text-primary truncate">{asset.name}</span>
+                      <span className="text-body-md text-text-primary truncate">{assetName}</span>
                       <span className="text-label text-text-tertiary flex flex-wrap gap-x-3 tabular-nums">
                         <span>{asset.mimeType}</span>
                         <span>{formatBytes(t.locale, asset.bytes)}</span>

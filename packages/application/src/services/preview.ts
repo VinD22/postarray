@@ -71,7 +71,7 @@ export async function previewFor(
       code: 'CAPABILITY_UNAVAILABLE',
       severity: 'warning',
       targetId: variant.id,
-      messageKey: 'validation.capability_unavailable',
+      messageKey: 'validation.capability_unavailable.message',
       params: { connectionId: variant.connectionId },
     });
   }

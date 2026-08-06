@@ -29,8 +29,8 @@ import { createHmac, randomBytes, timingSafeEqual } from 'node:crypto';
  * database dump still cannot verify a guess. A memory-hard function on this
  * path would add latency to every request and buy nothing.
  *
- * User passwords are not in this file. They are Supabase Auth's job, and
- * Supabase does use a password hash. See `modules/auth`.
+ * User passwords are not in this file. They are Neon Auth's job, and Neon Auth
+ * uses Better Auth's password handling. See `modules/auth`.
  */
 
 export const CREDENTIAL_PREFIXES = {

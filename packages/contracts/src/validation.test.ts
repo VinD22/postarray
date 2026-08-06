@@ -13,7 +13,7 @@ import {
 describe('validationIssue', () => {
   it('derives a message key from the code', () => {
     const issue = validationIssue({ code: 'TEXT_TOO_LONG', severity: 'error' });
-    expect(issue.messageKey).toBe('validation.text_too_long');
+    expect(issue.messageKey).toBe('validation.text_too_long.message');
     expect(issue.params).toEqual({});
   });
 

@@ -49,6 +49,7 @@ import type {
   ExperimentView,
   FeedHealthView,
   FeedPreview,
+  InvitationView,
   MediaAssetView,
   MembershipView,
   MentionEntityView,
@@ -96,6 +97,17 @@ export interface ActorContext {
   readonly clientId?: string;
   readonly ipAddress?: string;
   readonly userAgent?: string;
+}
+
+/** An authenticated person before a workspace has been selected or created. */
+export interface IdentityContext {
+  readonly actorType: 'user' | 'service_account' | 'oauth_app' | 'system';
+  readonly actorId: string;
+  readonly userId: string | undefined;
+  readonly surface: CreationSurface;
+  readonly correlationId: string;
+  readonly idempotencyKey?: string;
+  readonly locale: string;
 }
 
 // ---------------------------------------------------------------------------
@@ -165,33 +177,87 @@ export interface MailerPort {
   send(message: MailMessage): Promise<void>;
 }
 
+/** Safe workflow context. It may be persisted in Temporal history. */
+export interface WorkflowActorContext {
+  readonly workspaceId: string;
+  readonly correlationId: string;
+  readonly actorId: string;
+  readonly actorType: 'user' | 'service_account' | 'oauth_app' | 'system';
+  readonly surface: CreationSurface;
+  readonly approvalLevel: ApprovalLevel;
+  readonly locale: string;
+}
+
+export interface PublishWorkflowTarget {
+  readonly targetId: string;
+  readonly connectionId: string;
+  readonly provider: ProviderId;
+  readonly approvedCapabilityVersion: string;
+  readonly threadItemIds: readonly string[];
+  readonly threadDelaysSeconds: readonly number[];
+}
+
+export interface PublishWorkflowInput {
+  readonly ctx: WorkflowActorContext;
+  readonly publishJobId: string;
+  readonly contentItemId: string;
+  readonly contentVersionId: string;
+  readonly contentVersionChecksum: string;
+  readonly idempotencyKey: string;
+  readonly executeAt: string;
+  readonly scheduledLocalTime: string;
+  readonly ianaTimeZone: string;
+  readonly targets: readonly PublishWorkflowTarget[];
+  readonly immediate: boolean;
+}
+
 export interface SchedulerPort {
   schedulePublish(input: {
     readonly jobId: string;
     readonly workspaceId: string;
     readonly executeAt: Date;
     readonly idempotencyKey: string;
+    readonly workflowInput: PublishWorkflowInput;
   }): Promise<{ readonly workflowId: string; readonly runId: string }>;
-  cancelPublish(input: { readonly jobId: string; readonly reason: string }): Promise<void>;
-  reschedulePublish(input: { readonly jobId: string; readonly executeAt: Date }): Promise<void>;
+  cancelPublish(input: {
+    readonly jobId: string;
+    readonly workspaceId: string;
+    readonly reason: string;
+  }): Promise<void>;
+  reschedulePublish(input: {
+    readonly jobId: string;
+    readonly workspaceId: string;
+    readonly executeAt: Date;
+    readonly ianaTimeZone: string;
+  }): Promise<void>;
   signalPublish(input: {
     readonly jobId: string;
+    readonly workspaceId: string;
     readonly signal: string;
     readonly payload?: Record<string, unknown>;
   }): Promise<void>;
   scheduleAnalyticsSync(input: {
+    readonly ctx: WorkflowActorContext;
+    readonly workspaceId: string;
     readonly connectionId: string;
+    readonly provider: ProviderId;
     readonly receiptId?: string;
+    readonly publishedAt?: string;
     readonly at: Date;
   }): Promise<void>;
   startRuleRun(input: {
+    readonly ctx: WorkflowActorContext;
     readonly ruleId: string;
     readonly workspaceId: string;
+    readonly runId: string;
+    readonly sourceKey: string;
     readonly event: Record<string, unknown>;
+    readonly dryRun?: boolean;
   }): Promise<{ readonly workflowId: string }>;
-  describe(
-    jobId: string,
-  ): Promise<{ readonly status: string; readonly historyLength: number } | null>;
+  describe(input: {
+    readonly jobId: string;
+    readonly workspaceId: string;
+  }): Promise<{ readonly status: string; readonly historyLength: number } | null>;
 }
 
 /**
@@ -220,7 +286,51 @@ export interface EntitlementCheck {
   readonly used: number | null;
 }
 
-export interface BillingService {
+export interface MoneyView {
+  readonly amountMinor: number;
+  readonly currency: string;
+}
+
+export interface EntitlementStateView {
+  readonly status:
+    'none' | 'incomplete' | 'trialing' | 'active' | 'past_due' | 'canceled' | 'unpaid';
+  readonly interval: 'monthly' | 'annual' | null;
+  readonly trialEndsAt: string | null;
+  readonly firstChargeAt: string | null;
+  readonly firstChargeAmount: MoneyView | null;
+  readonly renewalAmount: MoneyView | null;
+  readonly portalUrl: string | null;
+  readonly activeChannelCount: number;
+  readonly channelLimit: number;
+  readonly activeMemberCount: number;
+  readonly memberLimit: number;
+}
+
+export interface UsageSummaryView {
+  readonly periodStart: string;
+  readonly total: MoneyView;
+  readonly lines: readonly {
+    readonly provider: ProviderId | null;
+    readonly operation: string;
+    readonly count: number;
+    readonly unitAmount: MoneyView;
+    readonly amount: MoneyView;
+  }[];
+}
+
+export interface CheckoutSessionView {
+  readonly checkoutId: string;
+  readonly checkoutUrl: string;
+  /** A return redirect never grants access. Only a verified webhook can. */
+  readonly grantsEntitlement: false;
+}
+
+export interface PortalLinkView {
+  readonly portalUrl: string;
+}
+
+/** Infrastructure gateway. Customer authorization stays in the service below. */
+export interface BillingGateway {
   checkEntitlement(input: {
     readonly workspaceId: string;
     readonly key: string;
@@ -232,6 +342,32 @@ export interface BillingService {
     readonly quantity: number;
     readonly idempotencyKey: string;
   }): Promise<void>;
+  getEntitlements(workspaceId: string): Promise<EntitlementStateView>;
+  getUsage(
+    workspaceId: string,
+    range?: { readonly from: string; readonly to: string; readonly ianaTimeZone: string },
+  ): Promise<UsageSummaryView>;
+  createCheckout(input: {
+    readonly workspaceId: string;
+    readonly actorType: ActorContext['actorType'];
+    readonly actorId: string;
+    readonly surface: CreationSurface;
+    readonly correlationId: string;
+    readonly locale: string;
+    readonly idempotencyKey: string;
+    readonly interval: 'monthly' | 'annual';
+    readonly successUrl: string;
+  }): Promise<CheckoutSessionView>;
+  createPortalLink(input: {
+    readonly workspaceId: string;
+    readonly returnUrl: string;
+  }): Promise<PortalLinkView>;
+  handleProviderWebhook(input: {
+    readonly eventId: string;
+    readonly eventType: string;
+    readonly bodyHash: string;
+    readonly payload: Readonly<Record<string, unknown>>;
+  }): Promise<{ readonly processed: boolean; readonly duplicate: boolean }>;
 }
 
 export interface ServiceDeps {
@@ -239,7 +375,7 @@ export interface ServiceDeps {
   readonly kv: KeyValueStore;
   readonly connectors: ConnectorRegistry;
   readonly ai: AiGateway;
-  readonly billing: BillingService;
+  readonly billing: BillingGateway;
   readonly scheduler: SchedulerPort;
   readonly storage: StoragePort;
   readonly mailer: MailerPort;
@@ -307,15 +443,34 @@ export interface MasterDraftPatch {
 // ---------------------------------------------------------------------------
 
 export interface WorkspaceService {
-  get(ctx: ActorContext): Promise<WorkspaceView>;
+  list(ctx: ActorContext, query?: PageQuery): Promise<Paginated<WorkspaceView>>;
+  get(ctx: ActorContext, workspaceId?: string): Promise<WorkspaceView>;
+  create(
+    ctx: IdentityContext,
+    input: {
+      readonly name: string;
+      readonly ianaTimeZone: string;
+      readonly defaultLocale: Locale;
+    },
+  ): Promise<WorkspaceView>;
   update(
     ctx: ActorContext,
-    patch: {
+    workspaceIdOrPatch:
+      | string
+      | {
+          readonly name?: string;
+          readonly defaultLocale?: string;
+          readonly defaultTimeZone?: string;
+          readonly ianaTimeZone?: string;
+        },
+    patch?: {
       readonly name?: string;
       readonly defaultLocale?: string;
       readonly defaultTimeZone?: string;
+      readonly ianaTimeZone?: string;
     },
   ): Promise<WorkspaceView>;
+  listForUser(userId: string): Promise<readonly WorkspaceView[]>;
   engageKillSwitch(ctx: ActorContext, reasonKey: string): Promise<WorkspaceView>;
   releaseKillSwitch(ctx: ActorContext): Promise<WorkspaceView>;
 }
@@ -325,9 +480,13 @@ export interface MembershipService {
   get(ctx: ActorContext, membershipId: string): Promise<MembershipView>;
   invite(
     ctx: ActorContext,
-    input: { readonly email: string; readonly role: Role; readonly brandScope?: readonly string[] },
-  ): Promise<MembershipView>;
+    input: { readonly email: string; readonly role: Role; readonly note?: string },
+  ): Promise<InvitationView>;
+  listInvitations(ctx: ActorContext, query?: PageQuery): Promise<Paginated<InvitationView>>;
+  revokeInvitation(ctx: ActorContext, invitationId: string): Promise<void>;
+  acceptInvitation(ctx: IdentityContext, token: string): Promise<MembershipView>;
   changeRole(ctx: ActorContext, membershipId: string, role: Role): Promise<MembershipView>;
+  updateRole(ctx: ActorContext, membershipId: string, role: Role): Promise<MembershipView>;
   remove(ctx: ActorContext, membershipId: string): Promise<void>;
 }
 
@@ -340,6 +499,7 @@ export interface BrandService {
   ): Promise<BrandView>;
   update(ctx: ActorContext, brandId: string, patch: Partial<BrandView>): Promise<BrandView>;
   archive(ctx: ActorContext, brandId: string): Promise<BrandView>;
+  delete(ctx: ActorContext, brandId: string): Promise<void>;
 }
 
 export interface ConnectionService {
@@ -523,7 +683,10 @@ export interface MediaService {
   ): Promise<{
     readonly uploadUrl: string;
     readonly mediaId: string;
+    readonly method: 'PUT' | 'POST';
     readonly headers: Readonly<Record<string, string>>;
+    readonly expiresAt: string;
+    readonly retentionExpiresAt: string;
   }>;
   finalizeUpload(ctx: ActorContext, mediaId: string): Promise<MediaAssetView>;
   importFromUrl(
@@ -542,8 +705,27 @@ export interface MediaService {
   ): Promise<MediaAssetView>;
   setAltText(
     ctx: ActorContext,
-    input: { readonly mediaId: string; readonly altText: string | null; readonly waived?: boolean },
+    input: {
+      readonly mediaId: string;
+      readonly altText: string | null;
+      readonly waived?: boolean;
+      readonly waivedReason?: string | null;
+    },
   ): Promise<MediaAssetView>;
+  declareRights(
+    ctx: ActorContext,
+    input: {
+      readonly mediaId: string;
+      readonly owner: 'workspace' | 'licensed' | 'ugc';
+      readonly licenseReference: string | null;
+      readonly peopleAppear: boolean;
+      readonly peopleConsented: boolean;
+      readonly containsMusic: boolean;
+      readonly confirmed: true;
+    },
+  ): Promise<MediaAssetView>;
+  /** Worker-only retention sweep. Object deletion is idempotent and retryable. */
+  purgeExpired(ctx: ActorContext, limit?: number): Promise<{ readonly purged: number }>;
 }
 
 export interface AnalyticsService {
@@ -593,6 +775,7 @@ export interface ShortLinkService {
       readonly expiresAt?: string | null;
     },
   ): Promise<ShortLinkView>;
+  list(ctx: ActorContext, query?: PageQuery): Promise<Paginated<ShortLinkView>>;
   /** No ActorContext: the redirect service is unauthenticated by design. */
   resolve(
     slug: string,
@@ -659,6 +842,10 @@ export interface AutomationRuleService {
     ctx: ActorContext,
     input: PageQuery & { readonly ruleId: string },
   ): Promise<Paginated<RuleRunView>>;
+  triggerFromInbound(
+    ctx: ActorContext,
+    input: { readonly ruleName: string; readonly event: Record<string, unknown> },
+  ): Promise<OperationRef>;
 }
 
 export interface RssService {
@@ -788,6 +975,16 @@ export interface CredentialVaultService {
     readonly lastRefreshedAt: string | null;
     readonly needsAction: boolean;
   }>;
+  describe(
+    ctx: ActorContext,
+    connectionId: string,
+  ): Promise<{
+    readonly present: boolean;
+    readonly accessTokenExpiresAt: string | null;
+    readonly refreshTokenExpiresAt: string | null;
+    readonly lastRefreshedAt: string | null;
+    readonly needsAction: boolean;
+  }>;
   revoke(ctx: ActorContext, connectionId: string): Promise<void>;
 }
 
@@ -807,6 +1004,7 @@ export interface ApiKeyService {
 
 export interface OAuthAppService {
   list(ctx: ActorContext, query?: PageQuery): Promise<Paginated<OAuthAppView>>;
+  get(ctx: ActorContext, appId: string): Promise<OAuthAppView>;
   create(
     ctx: ActorContext,
     input: {
@@ -850,6 +1048,61 @@ export interface HealthService {
   report(): Promise<HealthReport>;
 }
 
+export interface UserSecurityProfile {
+  readonly userId: string;
+  readonly email: string;
+  readonly emailVerified: boolean;
+  readonly locale: string;
+  readonly approvalLevel: ApprovalLevel;
+  readonly workspaceIds: readonly string[];
+  readonly scopesByWorkspace: Readonly<Record<string, readonly Scope[]>>;
+  readonly mfaEnrolled: boolean;
+}
+
+export interface IdentityService {
+  resolveLoginIdentifier(identifier: string): Promise<{ userId: string; email: string } | null>;
+  getSecurityProfile(identitySubjectOrUserId: string): Promise<UserSecurityProfile | null>;
+  recordSignupConsent(input: {
+    readonly identitySubjectId: string;
+    readonly email: string;
+    readonly locale: string;
+    readonly termsVersionHash: string;
+    readonly privacyVersionHash: string;
+    readonly countryCode: string | null;
+  }): Promise<void>;
+  setUsernameAlias(ctx: IdentityContext, alias: string): Promise<{ alias: string }>;
+}
+
+export interface CustomerBillingService {
+  getEntitlements(ctx: ActorContext): Promise<EntitlementStateView>;
+  getUsage(
+    ctx: ActorContext,
+    input: {
+      readonly range?: {
+        readonly from: string;
+        readonly to: string;
+        readonly ianaTimeZone: string;
+      };
+    },
+  ): Promise<UsageSummaryView>;
+  createCheckout(
+    ctx: ActorContext,
+    input: { readonly interval: 'monthly' | 'annual'; readonly successUrl: string },
+  ): Promise<CheckoutSessionView>;
+  createPortalLink(
+    ctx: ActorContext,
+    input: { readonly returnUrl: string },
+  ): Promise<PortalLinkView>;
+  /** The transport verifies the signature over raw bytes before calling this. */
+  handleProviderWebhook(input: {
+    readonly eventId: string;
+    readonly eventType: string;
+    readonly bodyHash: string;
+    readonly payload: Readonly<Record<string, unknown>>;
+  }): Promise<{ readonly processed: boolean; readonly duplicate: boolean }>;
+  hasEntitlement(ctx: ActorContext, entitlement: string): Promise<boolean>;
+}
+
 export interface Services {
   readonly workspaces: WorkspaceService;
   readonly members: MembershipService;
@@ -871,6 +1124,8 @@ export interface Services {
   readonly credentials: CredentialVaultService;
   readonly apiKeys: ApiKeyService;
   readonly oauthApps: OAuthAppService;
+  readonly billing: CustomerBillingService;
+  readonly identity: IdentityService;
   readonly audit: AuditService;
   readonly health: HealthService;
 }

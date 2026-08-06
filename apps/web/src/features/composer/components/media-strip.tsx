@@ -64,6 +64,7 @@ export function MediaStrip({
         <ul className="flex flex-col">
           {files.map((asset) => {
             const missingAlt = asset.kind !== 'video' && !asset.altTextWaived && !asset.altText;
+            const assetName = asset.name ?? t.full('common.unavailable');
             return (
               <li
                 key={asset.id}
@@ -74,7 +75,7 @@ export function MediaStrip({
                   className="border-border-subtle bg-surface-sunken size-10 shrink-0 rounded-md border"
                 />
                 <span className="flex min-w-0 flex-col gap-0.5">
-                  <span className="text-body-md text-text-primary truncate">{asset.name}</span>
+                  <span className="text-body-md text-text-primary truncate">{assetName}</span>
                   <span className="text-label text-text-tertiary flex flex-wrap gap-x-3">
                     <span>
                       {asset.width !== null && asset.height !== null
@@ -112,14 +113,14 @@ export function MediaStrip({
                   <IconButton
                     variant="ghost"
                     size="sm"
-                    label={t.full('a11y.label.editAltText', { name: asset.name })}
+                    label={t.full('a11y.label.editAltText', { name: assetName })}
                     icon={<Pencil aria-hidden />}
                     onClick={() => onEdit(asset.id)}
                   />
                   <IconButton
                     variant="ghost"
                     size="sm"
-                    label={t.full('a11y.label.removeMedia', { name: asset.name })}
+                    label={t.full('a11y.label.removeMedia', { name: assetName })}
                     icon={<X aria-hidden />}
                     disabled={disabled}
                     onClick={() => onRemove(asset.id)}

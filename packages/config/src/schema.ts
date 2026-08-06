@@ -14,7 +14,7 @@ import { z } from 'zod';
 export const ENV_GROUP_NAMES = [
   'core',
   'database',
-  'supabase',
+  'neon',
   'redis',
   'temporal',
   'polar',
@@ -152,12 +152,18 @@ const databaseShape = {
   DIRECT_DATABASE_URL: postgresUrl.optional(),
 };
 
-const supabaseShape = {
-  SUPABASE_URL: httpUrl.optional(),
-  SUPABASE_ANON_KEY: identifier.optional(),
-  SUPABASE_SERVICE_ROLE_KEY: identifier.optional(),
-  SUPABASE_JWT_SECRET: secret.optional(),
-  STORAGE_BUCKET: identifier.default('relay-media'),
+const neonShape = {
+  NEON_AUTH_BASE_URL: httpUrl.optional(),
+  NEON_AUTH_COOKIE_SECRET: z
+    .string()
+    .min(32, { message: 'expected at least 32 characters' })
+    .optional(),
+  NEON_AUTH_JWKS_URL: httpUrl.optional(),
+  NEON_STORAGE_ENDPOINT: httpUrl.optional(),
+  NEON_STORAGE_REGION: identifier.default('us-east-2'),
+  NEON_STORAGE_BUCKET: identifier.default('relay-media'),
+  NEON_STORAGE_ACCESS_KEY_ID: identifier.optional(),
+  NEON_STORAGE_SECRET_ACCESS_KEY: secret.optional(),
 };
 
 const redisShape = {
@@ -172,6 +178,11 @@ const temporalShape = {
 };
 
 const polarShape = {
+  /**
+   * Commercial kill switch. Credentials alone must never make a checkout
+   * reachable before the merchant identity and legal copy are approved.
+   */
+  BILLING_CHECKOUT_ENABLED: booleanish().default(false),
   POLAR_ACCESS_TOKEN: identifier.optional(),
   POLAR_WEBHOOK_SECRET: secret.optional(),
   POLAR_SERVER: z.enum(POLAR_SERVERS).default('sandbox'),
@@ -207,6 +218,7 @@ const shortLinksShape = {
 };
 
 const emailShape = {
+  EMAIL_API_URL: httpUrl.default('https://api.resend.com/emails'),
   EMAIL_API_KEY: identifier.optional(),
   EMAIL_FROM: identifier.optional(),
 };
@@ -250,7 +262,7 @@ const providersShape = {
 export const envSchema = z.object({
   ...coreShape,
   ...databaseShape,
-  ...supabaseShape,
+  ...neonShape,
   ...redisShape,
   ...temporalShape,
   ...polarShape,
@@ -275,7 +287,7 @@ const keysOf = (shape: Record<string, unknown>): readonly EnvKey[] =>
 export const ENV_GROUPS: Record<EnvGroupName, readonly EnvKey[]> = {
   core: keysOf(coreShape),
   database: keysOf(databaseShape),
-  supabase: keysOf(supabaseShape),
+  neon: keysOf(neonShape),
   redis: keysOf(redisShape),
   temporal: keysOf(temporalShape),
   polar: keysOf(polarShape),
@@ -299,7 +311,7 @@ export function groupOf(key: EnvKey): EnvGroupName {
 
 /**
  * An empty string in a shell environment means "not set". Blank values are
- * dropped so `SUPABASE_URL=` degrades instead of failing URL validation, and
+ * dropped so `NEON_AUTH_BASE_URL=` degrades instead of failing URL validation, and
  * unknown variables are ignored so the process environment can carry anything.
  */
 export function normalizeEnv(

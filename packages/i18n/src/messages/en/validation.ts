@@ -5,6 +5,14 @@
  * account, so the fix is obvious without opening a provider document.
  */
 export const validationMessages = {
+  'validation.capability_unavailable.message':
+    'Publishing limits are unavailable for this account. Reconnect it or try again later.',
+  'validation.content_kind_unsupported.message':
+    '{provider} does not offer {contentKind} publishing for this account.',
+  'validation.content_kind_not_implemented.message':
+    'Relay has not implemented {contentKind} publishing for {provider}.',
+  'validation.content_kind_requires_review.message':
+    '{contentKind} publishing is waiting for a provider policy review.',
   'validation.text_required.message': '{provider} needs some text for this post type.',
   'validation.text_too_long.message':
     '{over, plural, one {# character over the limit for {account}} other {# characters over the limit for {account}}}',
@@ -31,6 +39,14 @@ export const validationMessages = {
     'This file is {actual}. {provider} accepts up to {limit}.',
   'validation.media_mixed_types_unsupported.message':
     '{provider} cannot publish images and video in the same post.',
+  'validation.media_unavailable.message':
+    'An attached file is no longer available. Remove it from the post or upload it again.',
+  'validation.media_rights_undeclared.message':
+    'Declare the rights and consent for every attached file before publishing.',
+  'validation.media_not_ready.message':
+    'An attached file has not passed processing and safety checks yet.',
+  'validation.media_scan_blocked.message':
+    'An attached file did not pass its safety check and cannot be published.',
   'validation.alt_text_missing.message':
     'Alt text is missing on {count, plural, one {# image} other {# images}}.',
   'validation.alt_text_missing.hint': 'Describe the image, or mark it as decorative.',
@@ -42,6 +58,8 @@ export const validationMessages = {
     '{count, plural, one {# mention has not been matched to a real account} other {# mentions have not been matched to real accounts}}.',
   'validation.mention_unresolved.hint':
     'Select the account from the search results, or remove the mention. Plain text never publishes as a native tag.',
+  'validation.mention_count_exceeded.message':
+    'This post has {count} mentions. This account accepts at most {limit}.',
   'validation.hashtag_count_exceeded.message':
     '{count} hashtags. {provider} counts more than {limit} as spam.',
   'validation.link_not_allowed.message': '{provider} does not allow links in this field.',
@@ -50,6 +68,8 @@ export const validationMessages = {
   'validation.privacy_setting_required.message':
     '{provider} requires an explicit privacy choice before publishing.',
   'validation.privacy_setting_required.hint': 'There is no default. Choose who can see this post.',
+  'validation.privacy_value_unsupported.message':
+    'The privacy choice {value} is not available for this account.',
   'validation.disclosure_required.message':
     'This post needs a disclosure under the brand rules for {market}.',
   'validation.first_comment_unsupported.message':
@@ -64,6 +84,14 @@ export const validationMessages = {
     'This falls inside the quiet hours set for {brand}.',
   'validation.duplicate_within_window.message':
     'Very similar content is already scheduled or published for {account} within {window}.',
+  'validation.similar_within_window.message':
+    'Very similar content was published to this account within the last {windowHours} hours.',
+  'validation.cross_account_similarity.message':
+    'Another selected account has very similar text.',
+  'validation.cross_account_similarity.remediation':
+    'Adjust one version so each account receives a platform-native post.',
+  'validation.link_malformed.message': 'A link is incomplete or malformed. Enter a full https URL.',
+  'validation.no_targets_selected.message': 'Choose at least one connected account.',
   'validation.blocked_term_present.message': 'The text contains a blocked term for {brand}.',
   'validation.unsupported_claim.message': 'This claim is not in the approved claims for {brand}.',
   'validation.unsupported_claim.hint':

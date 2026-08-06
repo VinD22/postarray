@@ -1,4 +1,5 @@
 import type { RlsTransactionClient } from '../tenancy/rls-context';
+import { ACTIVE_CHANNEL_LIMIT, WORKSPACE_MEMBER_LIMIT } from '@relay/contracts';
 
 import { SEED_OPPORTUNITY_IDS } from './catalog';
 import { SEED_WORKSPACE_ID, hoursAgo, seedId } from './ids';
@@ -115,7 +116,7 @@ async function seedPeopleAndWorkspace(tx: RlsTransactionClient): Promise<void> {
       where: { id: person.id },
       create: {
         id: person.id,
-        // Local seed identities have no Supabase subject: nobody can sign in as
+        // Local seed identities have no Neon Auth subject: nobody can sign in as
         // them until a real auth user is linked.
         email: person.email,
         emailVerifiedAt: hoursAgo(720),
@@ -639,11 +640,13 @@ async function seedBilling(tx: RlsTransactionClient): Promise<void> {
     readonly booleanValue?: boolean;
   }
 
-  // One public plan, no feature tiers. `team.members.max` is deliberately absent
-  // rather than a large number: unlimited is the absence of a limit.
+  // One public plan, no feature tiers. Limits mirror the public contract so a
+  // local environment cannot advertise or exercise a plan that production
+  // would refuse.
   const entitlements: readonly EntitlementSeed[] = [
-    { key: 'channels.active.max', kind: 'numeric_limit', numericValue: 30 },
-    { key: 'team.members.max', kind: 'numeric_limit' },
+    { key: 'channels.active.max', kind: 'numeric_limit', numericValue: ACTIVE_CHANNEL_LIMIT },
+    { key: 'team.members.max', kind: 'numeric_limit', numericValue: WORKSPACE_MEMBER_LIMIT },
+    { key: 'publishing.enabled', kind: 'boolean_flag', booleanValue: true },
     { key: 'api.enabled', kind: 'boolean_flag', booleanValue: true },
     { key: 'mcp.enabled', kind: 'boolean_flag', booleanValue: true },
     { key: 'ai.text.enabled', kind: 'boolean_flag', booleanValue: true },

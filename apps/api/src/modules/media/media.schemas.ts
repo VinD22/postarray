@@ -1,5 +1,12 @@
-import { checksumSchema, mediaKindSchema } from '@relay/contracts';
+import {
+  IMAGE_UPLOAD_LIMIT_BYTES,
+  UPLOADABLE_MEDIA_MIME_TYPES,
+  VIDEO_UPLOAD_LIMIT_BYTES,
+  checksumSchema,
+  mediaKindSchema,
+} from '@relay/contracts';
 import { z } from 'zod';
+import type { MediaEditOperation } from '../../application/port';
 
 import { cursorQueryWith } from '../../common/pagination';
 import { brandIdSchema, mediaIdSchema } from '../../common/schemas';
@@ -20,21 +27,9 @@ import { brandIdSchema, mediaIdSchema } from '../../common/schemas';
  */
 
 /** Accepted upload types. Deliberately an allowlist, never a denylist. */
-export const UPLOADABLE_MIME_TYPES = [
-  'image/jpeg',
-  'image/png',
-  'image/webp',
-  'image/gif',
-  'image/avif',
-  'video/mp4',
-  'video/quicktime',
-  'video/webm',
-  'audio/mpeg',
-  'audio/mp4',
-  'application/pdf',
-] as const;
+export const UPLOADABLE_MIME_TYPES = UPLOADABLE_MEDIA_MIME_TYPES;
 
-export const MAX_UPLOAD_BYTES = 5 * 1024 * 1024 * 1024;
+export const MAX_UPLOAD_BYTES = VIDEO_UPLOAD_LIMIT_BYTES;
 
 export const createUploadUrlSchema = z
   .object({
@@ -44,7 +39,22 @@ export const createUploadUrlSchema = z
     /** Computed by the client. Re-verified server side after the upload. */
     sha256: checksumSchema,
   })
-  .strict();
+  .strict()
+  .superRefine((value, context) => {
+    const limit = value.mimeType.startsWith('video/')
+      ? VIDEO_UPLOAD_LIMIT_BYTES
+      : IMAGE_UPLOAD_LIMIT_BYTES;
+    if (value.byteSize > limit) {
+      context.addIssue({
+        code: 'too_big',
+        maximum: limit,
+        inclusive: true,
+        origin: 'number',
+        path: ['byteSize'],
+        message: 'MEDIA_SIZE_LIMIT_EXCEEDED',
+      });
+    }
+  });
 
 /**
  * Import by URL. Asynchronous and SSRF-safe: the fetch resolves DNS itself,
@@ -56,7 +66,7 @@ export const createUploadUrlSchema = z
 export const importFromUrlSchema = z
   .object({
     url: z.string().trim().min(1).max(2048),
-    brandId: brandIdSchema,
+    brandId: brandIdSchema.nullable().optional(),
   })
   .strict();
 
@@ -97,13 +107,41 @@ export const editMediaSchema = z
  */
 export const setAltTextSchema = z
   .object({
-    altText: z.string().trim().max(1000).nullable(),
+    altText: z.string().trim().min(1).max(1000).nullable(),
     waived: z.boolean().optional(),
+    waivedReason: z.string().trim().min(1).max(500).nullable().optional(),
   })
   .strict()
   .refine((value) => value.altText !== null || value.waived === true, {
     error: 'ALT_TEXT_REQUIRED_OR_WAIVED',
     path: ['altText'],
+  })
+  .refine((value) => value.altText === null || value.waived !== true, {
+    error: 'ALT_TEXT_AND_WAIVER_CONFLICT',
+    path: ['waived'],
+  })
+  .refine((value) => value.waived !== true || (value.waivedReason?.trim().length ?? 0) > 0, {
+    error: 'ALT_TEXT_WAIVER_REASON_REQUIRED',
+    path: ['waivedReason'],
+  });
+
+export const declareRightsSchema = z
+  .object({
+    owner: z.enum(['workspace', 'licensed', 'ugc']),
+    licenseReference: z.string().trim().min(1).max(500).nullable(),
+    peopleAppear: z.boolean(),
+    peopleConsented: z.boolean(),
+    containsMusic: z.boolean(),
+    confirmed: z.literal(true),
+  })
+  .strict()
+  .refine((value) => value.owner !== 'licensed' || value.licenseReference !== null, {
+    error: 'MEDIA_LICENSE_REFERENCE_REQUIRED',
+    path: ['licenseReference'],
+  })
+  .refine((value) => !value.peopleAppear || value.peopleConsented, {
+    error: 'MEDIA_PEOPLE_CONSENT_REQUIRED',
+    path: ['peopleConsented'],
   });
 
 export const listMediaQuerySchema = cursorQueryWith({
@@ -115,3 +153,36 @@ export const finalizeParamsSchema = z.object({ id: mediaIdSchema }).strict();
 
 export type CreateUploadUrlInput = z.infer<typeof createUploadUrlSchema>;
 export type EditMediaInput = z.infer<typeof editMediaSchema>;
+export type DeclareRightsInput = z.infer<typeof declareRightsSchema>;
+
+export function toMediaEditOperations(input: EditMediaInput): readonly MediaEditOperation[] {
+  return input.ops.map((operation): MediaEditOperation => {
+    switch (operation.op) {
+      case 'crop':
+        return {
+          kind: operation.op,
+          params: {
+            x: operation.x,
+            y: operation.y,
+            width: operation.width,
+            height: operation.height,
+          },
+        } satisfies MediaEditOperation;
+      case 'resize':
+        return {
+          kind: operation.op,
+          params: { width: operation.width, height: operation.height },
+        } satisfies MediaEditOperation;
+      case 'rotate':
+        return {
+          kind: operation.op,
+          params: { degrees: operation.degrees },
+        } satisfies MediaEditOperation;
+      case 'compress':
+        return {
+          kind: operation.op,
+          params: { quality: operation.quality },
+        } satisfies MediaEditOperation;
+    }
+  });
+}

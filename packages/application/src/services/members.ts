@@ -1,11 +1,21 @@
-import { ROLE_RANK } from '@relay/authz';
-import type { Paginated, Role } from '@relay/contracts';
+import { createHash, randomBytes } from 'node:crypto';
 
-import type { ActorContext, MembershipService, PageQuery, ServiceDeps } from '../types';
-import type { MembershipView } from '../views';
+import { ROLE_RANK } from '@relay/authz';
+import { WORKSPACE_MEMBER_LIMIT, type Paginated, type Role } from '@relay/contracts';
+import { appendAuditEvent, withRlsContext } from '@relay/database';
+
+import type {
+  ActorContext,
+  IdentityContext,
+  MembershipService,
+  PageQuery,
+  ServiceDeps,
+} from '../types';
+import type { InvitationView, MembershipView } from '../views';
 
 import { recordAudit } from '../internal/audit';
 import { invalid, notFound } from '../internal/errors';
+import { toStoredSurface } from '../internal/mappers';
 import { pageArgs, toPage } from '../internal/pagination';
 import { authorized, type Db } from '../internal/runtime';
 
@@ -40,6 +50,51 @@ interface MembershipRow {
   acceptedAt: Date | null;
   user: { email: string; displayName: string };
 }
+
+const INVITATION_SELECT = {
+  id: true,
+  workspaceId: true,
+  email: true,
+  role: true,
+  state: true,
+  expiresAt: true,
+  createdAt: true,
+} as const;
+
+interface InvitationRow {
+  id: string;
+  workspaceId: string;
+  email: string;
+  role: Role;
+  state: string;
+  expiresAt: Date;
+  createdAt: Date;
+}
+
+function toInvitationView(row: InvitationRow): InvitationView {
+  const state =
+    row.state === 'pending' ||
+    row.state === 'accepted' ||
+    row.state === 'revoked' ||
+    row.state === 'expired'
+      ? row.state
+      : 'expired';
+  return {
+    id: row.id,
+    workspaceId: row.workspaceId,
+    email: row.email,
+    role: row.role,
+    state,
+    expiresAt: row.expiresAt.toISOString(),
+    createdAt: row.createdAt.toISOString(),
+  };
+}
+
+function invitationTokenHash(token: string): string {
+  return createHash('sha256').update(token).digest('hex');
+}
+
+const INVITATION_LIFETIME_MS = 7 * 24 * 60 * 60 * 1000;
 
 function toView(row: MembershipRow): MembershipView {
   const state = row.state;
@@ -121,63 +176,216 @@ export function createMembershipService(deps: ServiceDeps): MembershipService {
 
     async invite(
       ctx: ActorContext,
-      input: { email: string; role: Role; brandScope?: readonly string[] },
-    ): Promise<MembershipView> {
+      input: { email: string; role: Role; note?: string },
+    ): Promise<InvitationView> {
       return authorized(deps, ctx, 'member.invite', undefined, async (db, actor) => {
         assertCanGrant(actor.policyActor.role, input.role);
+        if (actor.userId === null) {
+          throw invalid('errors.human_actor_required');
+        }
 
         const email = input.email.trim().toLowerCase();
         const existingUser = await db.user.findUnique({
           where: { email },
           select: { id: true },
         });
-        const userId =
-          existingUser?.id ??
-          (
-            await db.user.create({
-              data: { email, displayName: email, status: 'invited' },
-              select: { id: true },
-            })
-          ).id;
-
-        const already = await db.membership.findFirst({
-          where: { workspaceId: ctx.workspaceId, userId },
-          select: { id: true },
-        });
-        if (already !== null) {
+        if (
+          existingUser !== null &&
+          (await db.membership.findFirst({
+            where: { userId: existingUser.id, state: { in: ['invited', 'active'] } },
+            select: { id: true },
+          })) !== null
+        ) {
           throw invalid('errors.member_already_invited', { email });
         }
 
-        const created = await db.membership.create({
+        await db.invitation.updateMany({
+          where: { state: 'pending', expiresAt: { lte: deps.clock.now() } },
+          data: { state: 'expired' },
+        });
+        const existingInvitation = await db.invitation.findFirst({
+          where: { email, state: 'pending', expiresAt: { gt: deps.clock.now() } },
+          select: { id: true },
+        });
+        if (existingInvitation !== null) {
+          throw invalid('errors.member_already_invited', { email });
+        }
+
+        const [memberCount, invitationCount] = await Promise.all([
+          db.membership.count({ where: { state: { in: ['invited', 'active'] } } }),
+          db.invitation.count({
+            where: { state: 'pending', expiresAt: { gt: deps.clock.now() } },
+          }),
+        ]);
+        if (memberCount + invitationCount >= WORKSPACE_MEMBER_LIMIT) {
+          throw invalid('errors.member_limit_reached', {
+            limit: WORKSPACE_MEMBER_LIMIT,
+            used: memberCount + invitationCount,
+          });
+        }
+
+        const token = randomBytes(32).toString('base64url');
+        const expiresAt = new Date(deps.clock.now().getTime() + INVITATION_LIFETIME_MS);
+        const created = await db.invitation.create({
           data: {
-            workspaceId: actor.workspace.id,
-            userId,
+            workspaceId: ctx.workspaceId,
+            email,
             role: input.role,
-            state: 'invited',
-            brandScope: [...(input.brandScope ?? [])],
-            ...(actor.userId === null ? {} : { invitedByUserId: actor.userId }),
-            invitedAt: deps.clock.now(),
+            invitedByUserId: actor.userId,
+            tokenHash: invitationTokenHash(token),
+            expiresAt,
+            ...(input.note === undefined ? {} : { note: input.note }),
           },
-          select: MEMBERSHIP_SELECT,
+          select: INVITATION_SELECT,
         });
 
         await recordAudit(db, actor, {
           action: 'membership.invited',
-          targetType: 'membership',
+          targetType: 'invitation',
           targetId: created.id,
-          after: { role: input.role, brandScope: created.brandScope },
+          after: { role: input.role, expiresAt },
         });
 
+        const appUrl = deps.config.core.appUrl;
+        if (appUrl === undefined) {
+          throw invalid('errors.app_url_required');
+        }
+        const invitationUrl = new URL('/invitations/accept', appUrl);
+        invitationUrl.searchParams.set('token', token);
         await deps.mailer.send({
           to: [email],
           subjectKey: 'email.invitation.subject',
           bodyKey: 'email.invitation.body',
-          params: { workspaceName: actor.workspace.name, role: input.role },
+          params: {
+            workspaceName: actor.workspace.name,
+            role: input.role,
+            invitationUrl: invitationUrl.toString(),
+            expiresAt: expiresAt.toISOString(),
+          },
           locale: ctx.locale,
           workspaceId: ctx.workspaceId,
         });
 
-        return toView(created);
+        return toInvitationView(created);
+      });
+    },
+
+    async listInvitations(
+      ctx: ActorContext,
+      query: PageQuery = {},
+    ): Promise<Paginated<InvitationView>> {
+      return authorized(deps, ctx, 'member.read', undefined, async (db) => {
+        await db.invitation.updateMany({
+          where: { state: 'pending', expiresAt: { lte: deps.clock.now() } },
+          data: { state: 'expired' },
+        });
+        const args = pageArgs(query);
+        const rows = await db.invitation.findMany({
+          orderBy: { id: 'asc' },
+          take: args.take,
+          skip: args.skip,
+          ...(args.cursor === undefined ? {} : { cursor: args.cursor }),
+          select: INVITATION_SELECT,
+        });
+        return toPage(rows, args, (row) => row.id, toInvitationView);
+      });
+    },
+
+    async revokeInvitation(ctx: ActorContext, invitationId: string): Promise<void> {
+      await authorized(deps, ctx, 'member.invite', undefined, async (db, actor) => {
+        const invitation = await db.invitation.findFirst({
+          where: { id: invitationId },
+          select: INVITATION_SELECT,
+        });
+        if (invitation === null) {
+          throw notFound('invitation', invitationId);
+        }
+        if (invitation.state === 'pending') {
+          await db.invitation.update({
+            where: { id: invitationId },
+            data: { state: 'revoked', revokedAt: deps.clock.now() },
+          });
+          await recordAudit(db, actor, {
+            action: 'membership.invitation_revoked',
+            targetType: 'invitation',
+            targetId: invitationId,
+            before: { state: invitation.state },
+            after: { state: 'revoked' },
+          });
+        }
+      });
+    },
+
+    async acceptInvitation(ctx: IdentityContext, token: string): Promise<MembershipView> {
+      if (ctx.userId === undefined) {
+        throw invalid('errors.auth_profile_required');
+      }
+      return withRlsContext(deps.prisma, { role: 'service_role' }, async (tx) => {
+        const invitation = await tx.invitation.findUnique({
+          where: { tokenHash: invitationTokenHash(token) },
+        });
+        if (invitation === null || invitation.state !== 'pending') {
+          throw invalid('errors.invitation_invalid');
+        }
+        if (invitation.expiresAt <= deps.clock.now()) {
+          await tx.invitation.update({
+            where: { id: invitation.id },
+            data: { state: 'expired' },
+          });
+          throw invalid('errors.invitation_expired');
+        }
+        const user = await tx.user.findUnique({
+          where: { id: ctx.userId },
+          select: { id: true, email: true },
+        });
+        if (user === null || user.email.toLowerCase() !== invitation.email.toLowerCase()) {
+          throw invalid('errors.invitation_email_mismatch');
+        }
+        const existing = await tx.membership.findUnique({
+          where: {
+            workspaceId_userId: { workspaceId: invitation.workspaceId, userId: user.id },
+          },
+          select: { id: true, state: true },
+        });
+        if (existing !== null && existing.state === 'active') {
+          throw invalid('errors.member_already_joined');
+        }
+        const membership = await tx.membership.upsert({
+          where: {
+            workspaceId_userId: { workspaceId: invitation.workspaceId, userId: user.id },
+          },
+          create: {
+            workspaceId: invitation.workspaceId,
+            userId: user.id,
+            role: invitation.role,
+            state: 'active',
+            invitedByUserId: invitation.invitedByUserId,
+            invitedAt: invitation.createdAt,
+            acceptedAt: deps.clock.now(),
+          },
+          update: {
+            role: invitation.role,
+            state: 'active',
+            removedAt: null,
+            acceptedAt: deps.clock.now(),
+          },
+          select: MEMBERSHIP_SELECT,
+        });
+        await tx.invitation.update({
+          where: { id: invitation.id },
+          data: { state: 'accepted', acceptedAt: deps.clock.now() },
+        });
+        await appendAuditEvent(tx, {
+          workspaceId: invitation.workspaceId,
+          actor: { type: 'user', id: user.id },
+          surface: toStoredSurface(ctx.surface),
+          action: 'membership.invitation_accepted',
+          target: { type: 'membership', id: membership.id },
+          after: { role: membership.role, state: membership.state },
+          metadata: { contractSurface: ctx.surface },
+          correlationId: ctx.correlationId,
+        });
+        return toView(membership);
       });
     },
 
@@ -211,6 +419,10 @@ export function createMembershipService(deps: ServiceDeps): MembershipService {
 
         return toView(after);
       });
+    },
+
+    async updateRole(ctx: ActorContext, membershipId: string, role: Role): Promise<MembershipView> {
+      return this.changeRole(ctx, membershipId, role);
     },
 
     async remove(ctx: ActorContext, membershipId: string): Promise<void> {

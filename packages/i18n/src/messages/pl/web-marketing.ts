@@ -1273,10 +1273,10 @@ export const webMarketingMessages = {
   /* Subprocessors and retention                                             */
   /* ---------------------------------------------------------------------- */
 
-  'web.legal.subprocessors.supabase.label': 'Supabase',
-  'web.legal.subprocessors.supabase.purpose':
+  'web.legal.subprocessors.neon.label': 'Neon',
+  'web.legal.subprocessors.neon.purpose':
     'Zarządzany PostgreSQL, uwierzytelnianie i przechowywanie obiektów.',
-  'web.legal.subprocessors.supabase.data':
+  'web.legal.subprocessors.neon.data':
     'Zapisy konta, treść, multimedia, harmonogramy, rachunki i zdarzenia audytu.',
   'web.legal.subprocessors.temporal.label': 'Chmura tymczasowa',
   'web.legal.subprocessors.temporal.purpose':

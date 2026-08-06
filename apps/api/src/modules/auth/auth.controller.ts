@@ -76,7 +76,9 @@ export class AuthController {
       });
       if (created.userId !== null) {
         await this.auth.recordConsent({
-          userId: created.userId,
+          identitySubjectId: created.userId,
+          email: input.email,
+          locale: input.locale,
           termsVersionHash: input.termsVersionHash,
           privacyVersionHash: input.privacyVersionHash,
           countryCode: null,

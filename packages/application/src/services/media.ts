@@ -1,4 +1,13 @@
-import { newIdFor, type OperationRef, type Paginated } from '@relay/contracts';
+import {
+  CapabilityNotImplementedError,
+  ForbiddenError,
+  IMAGE_UPLOAD_LIMIT_BYTES,
+  MEDIA_RETENTION_DAYS,
+  VIDEO_UPLOAD_LIMIT_BYTES,
+  type OperationRef,
+  type Paginated,
+} from '@relay/contracts';
+import { z } from 'zod';
 
 import type {
   ActorContext,
@@ -11,12 +20,10 @@ import type { MediaAssetView } from '../views';
 
 import { recordAudit } from '../internal/audit';
 import { invalid, notFound } from '../internal/errors';
-import { withIdempotency } from '../internal/idempotency';
 import { toJson } from '../internal/json';
 import { pageArgs, toPage } from '../internal/pagination';
 import { authorized, type Db } from '../internal/runtime';
 import { asMediaKind } from '../internal/storage-enums';
-import { assertFetchable } from '../internal/url-safety';
 
 /**
  * Media.
@@ -41,9 +48,16 @@ const MEDIA_SELECT = {
   durationMs: true,
   altText: true,
   altTextWaivedAt: true,
+  altTextWaivedReason: true,
+  altTextWaivedByName: true,
   rights: true,
+  rightsNote: true,
   scanState: true,
   originKind: true,
+  originUrl: true,
+  metadata: true,
+  retentionExpiresAt: true,
+  storageDeletedAt: true,
   createdAt: true,
 } as const;
 
@@ -60,10 +74,63 @@ interface MediaRow {
   durationMs: number | null;
   altText: string | null;
   altTextWaivedAt: Date | null;
+  altTextWaivedReason: string | null;
+  altTextWaivedByName: string | null;
   rights: string;
+  rightsNote: string | null;
   scanState: string;
   originKind: string;
+  originUrl: string | null;
+  metadata: unknown;
+  retentionExpiresAt: Date;
+  storageDeletedAt: Date | null;
   createdAt: Date;
+}
+
+const mediaMetadataSchema = z
+  .object({ filename: z.string().trim().min(1).max(255).optional() })
+  .passthrough();
+
+const rightsDeclarationSchema = z
+  .object({
+    owner: z.enum(['workspace', 'licensed', 'ugc']),
+    licenseReference: z.string().nullable(),
+    peopleAppear: z.boolean(),
+    peopleConsented: z.boolean(),
+    containsMusic: z.boolean(),
+    declaredByName: z.string().nullable(),
+    declaredAt: z.string().datetime(),
+  })
+  .strict();
+
+function fileNameFrom(metadata: unknown): string | null {
+  const parsed = mediaMetadataSchema.safeParse(metadata);
+  return parsed.success ? (parsed.data.filename ?? null) : null;
+}
+
+function rightsDeclarationFrom(note: string | null): MediaAssetView['rightsDeclaration'] {
+  if (note === null) {
+    return null;
+  }
+  try {
+    const parsed = rightsDeclarationSchema.safeParse(JSON.parse(note));
+    return parsed.success ? parsed.data : null;
+  } catch {
+    return null;
+  }
+}
+
+function rightsFrom(value: string): MediaAssetView['rights'] {
+  switch (value) {
+    case 'owned_original':
+    case 'licensed':
+    case 'public_domain':
+    case 'user_generated_with_consent':
+    case 'unverified':
+      return value;
+    default:
+      return 'unverified';
+  }
 }
 
 function toView(row: MediaRow): MediaAssetView {
@@ -78,11 +145,18 @@ function toView(row: MediaRow): MediaAssetView {
     width: row.width,
     height: row.height,
     durationMs: row.durationMs,
+    fileName: fileNameFrom(row.metadata),
     altText: row.altText,
     altTextWaived: row.altTextWaivedAt !== null,
-    rights: row.rights,
+    altTextWaivedReason: row.altTextWaivedReason,
+    altTextWaivedByName: row.altTextWaivedByName,
+    rights: rightsFrom(row.rights),
+    rightsDeclaration: rightsDeclarationFrom(row.rightsNote),
     scanState: row.scanState,
     originKind: row.originKind,
+    originUrl: row.originUrl,
+    retentionExpiresAt: row.retentionExpiresAt.toISOString(),
+    storageAvailable: row.storageDeletedAt === null,
     createdAt: row.createdAt.toISOString(),
   };
 }
@@ -101,12 +175,19 @@ function kindForMimeType(mimeType: string): 'image' | 'video' | 'document' | 'au
   return 'document';
 }
 
-const MAX_UPLOAD_BYTES = 2 * 1024 * 1024 * 1024;
 const SHA256_PATTERN = /^[0-9a-f]{64}$/;
 
-async function requireMedia(db: Db, mediaId: string): Promise<MediaRow> {
+export function uploadLimitForMimeType(mimeType: string): number {
+  return mimeType.startsWith('video/') ? VIDEO_UPLOAD_LIMIT_BYTES : IMAGE_UPLOAD_LIMIT_BYTES;
+}
+
+function retentionExpiry(now: Date): Date {
+  return new Date(now.getTime() + MEDIA_RETENTION_DAYS * 24 * 60 * 60 * 1_000);
+}
+
+async function requireMedia(db: Db, mediaId: string, now: Date): Promise<MediaRow> {
   const row = await db.mediaAsset.findFirst({
-    where: { id: mediaId, deletedAt: null },
+    where: { id: mediaId, deletedAt: null, retentionExpiresAt: { gt: now } },
     select: MEDIA_SELECT,
   });
   if (row === null) {
@@ -126,8 +207,15 @@ export function createMediaService(deps: ServiceDeps): MediaService {
         sha256: string;
         brandId?: string | null;
       },
-    ): Promise<{ uploadUrl: string; mediaId: string; headers: Record<string, string> }> {
-      return authorized(
+    ): Promise<{
+      uploadUrl: string;
+      mediaId: string;
+      method: 'PUT' | 'POST';
+      headers: Record<string, string>;
+      expiresAt: string;
+      retentionExpiresAt: string;
+    }> {
+      const prepared = await authorized(
         deps,
         ctx,
         'media.write',
@@ -138,78 +226,137 @@ export function createMediaService(deps: ServiceDeps): MediaService {
           if (!SHA256_PATTERN.test(input.sha256)) {
             throw invalid('errors.media_checksum_invalid', {});
           }
-          if (input.byteSize <= 0 || input.byteSize > MAX_UPLOAD_BYTES) {
+          const uploadLimit = uploadLimitForMimeType(input.mimeType);
+          if (input.byteSize <= 0 || input.byteSize > uploadLimit) {
             throw invalid('errors.media_too_large', {
               byteSize: input.byteSize,
-              limit: MAX_UPLOAD_BYTES,
+              limit: uploadLimit,
             });
           }
 
+          const retainedUntil = retentionExpiry(deps.clock.now());
+
           // Content-addressed: the same bytes uploaded twice are one asset.
           const existing = await db.mediaAsset.findFirst({
-            where: { checksumSha256: input.sha256, deletedAt: null },
+            where: { checksumSha256: input.sha256 },
             select: { id: true },
           });
 
           const kind = kindForMimeType(input.mimeType);
           const mediaId =
-            existing?.id ??
-            (
-              await db.mediaAsset.create({
-                data: {
-                  workspaceId: actor.workspace.id,
-                  brandId: input.brandId ?? null,
-                  kind,
-                  storageBucket: 'media',
-                  storageKey: `${ctx.workspaceId}/${input.sha256}`,
-                  mimeType: input.mimeType,
-                  byteSize: BigInt(input.byteSize),
-                  checksumSha256: input.sha256,
-                  originKind: 'upload',
-                  scanState: 'pending',
-                  ...(actor.userId === null ? {} : { createdByUserId: actor.userId }),
-                  metadata: toJson({ filename: input.filename }),
-                },
-                select: { id: true },
-              })
-            ).id;
+            existing === null
+              ? (
+                  await db.mediaAsset.create({
+                    data: {
+                      workspaceId: actor.workspace.id,
+                      brandId: input.brandId ?? null,
+                      kind,
+                      storageBucket: deps.config.neon.storageBucket,
+                      storageKey: `${ctx.workspaceId}/${input.sha256}`,
+                      mimeType: input.mimeType,
+                      byteSize: BigInt(input.byteSize),
+                      checksumSha256: input.sha256,
+                      originKind: 'upload',
+                      scanState: 'pending',
+                      retentionExpiresAt: retainedUntil,
+                      ...(actor.userId === null ? {} : { createdByUserId: actor.userId }),
+                      metadata: toJson({ filename: input.filename }),
+                    },
+                    select: { id: true },
+                  })
+                ).id
+              : (
+                  await db.mediaAsset.update({
+                    where: { id: existing.id },
+                    data: {
+                      brandId: input.brandId ?? null,
+                      kind,
+                      mimeType: input.mimeType,
+                      byteSize: BigInt(input.byteSize),
+                      scanState: 'pending',
+                      scanNote: null,
+                      deletedAt: null,
+                      storageDeletedAt: null,
+                      retentionExpiresAt: retainedUntil,
+                      metadata: toJson({ filename: input.filename }),
+                    },
+                    select: { id: true },
+                  })
+                ).id;
 
-          const ticket = await deps.storage.createUploadTicket({
-            workspaceId: ctx.workspaceId,
-            key: `${ctx.workspaceId}/${input.sha256}`,
-            contentType: input.mimeType,
-            byteSize: input.byteSize,
-            checksumSha256: input.sha256,
-          });
-
-          return {
-            uploadUrl: ticket.uploadUrl,
-            mediaId,
-            headers: { ...ticket.headers },
-          };
+          return { mediaId, retainedUntil };
         },
       );
+      const ticket = await deps.storage.createUploadTicket({
+        workspaceId: ctx.workspaceId,
+        key: `${ctx.workspaceId}/${input.sha256}`,
+        contentType: input.mimeType,
+        byteSize: input.byteSize,
+        checksumSha256: input.sha256,
+      });
+      return {
+        uploadUrl: ticket.uploadUrl,
+        mediaId: prepared.mediaId,
+        method: ticket.method,
+        headers: { ...ticket.headers },
+        expiresAt: ticket.expiresAt,
+        retentionExpiresAt: prepared.retainedUntil.toISOString(),
+      };
     },
 
     async finalizeUpload(ctx: ActorContext, mediaId: string): Promise<MediaAssetView> {
-      return authorized(deps, ctx, 'media.write', undefined, async (db, actor) => {
-        const row = await requireMedia(db, mediaId);
-        const object = await deps.storage.head(`${ctx.workspaceId}/${row.checksumSha256}`);
-        if (object === null) {
-          throw invalid('errors.media_upload_missing', { mediaId });
-        }
-        // The bytes are what they claimed to be, or the asset does not exist.
-        if (object.checksumSha256 !== row.checksumSha256) {
+      const row = await authorized(deps, ctx, 'media.write', undefined, async (db) => {
+        const media = await requireMedia(db, mediaId, deps.clock.now());
+        return { checksumSha256: media.checksumSha256, mimeType: media.mimeType };
+      });
+      const storageKey = `${ctx.workspaceId}/${row.checksumSha256}`;
+      const object = await deps.storage.head(storageKey);
+      if (object === null) {
+        throw invalid('errors.media_upload_missing', { mediaId });
+      }
+
+      if (object.checksumSha256 !== row.checksumSha256) {
+        await authorized(deps, ctx, 'media.write', undefined, async (db) => {
           await db.mediaAsset.update({
             where: { id: mediaId },
             data: { scanState: 'failed', scanNote: 'media.checksum_mismatch' },
           });
-          throw invalid('errors.media_checksum_mismatch', { mediaId });
-        }
+        });
+        throw invalid('errors.media_checksum_mismatch', { mediaId });
+      }
 
+      const uploadLimit = uploadLimitForMimeType(row.mimeType);
+      if (object.byteSize > uploadLimit) {
+        await authorized(deps, ctx, 'media.write', undefined, async (db) => {
+          await db.mediaAsset.update({
+            where: { id: mediaId },
+            data: {
+              scanState: 'failed',
+              scanNote: 'media.size_limit_exceeded',
+            },
+          });
+        });
+        await deps.storage.remove(storageKey);
+        await authorized(deps, ctx, 'media.write', undefined, async (db) => {
+          await db.mediaAsset.update({
+            where: { id: mediaId },
+            data: { storageDeletedAt: deps.clock.now() },
+          });
+        });
+        throw invalid('errors.media_too_large', {
+          byteSize: object.byteSize,
+          limit: uploadLimit,
+        });
+      }
+
+      return authorized(deps, ctx, 'media.write', undefined, async (db, actor) => {
         const updated = await db.mediaAsset.update({
           where: { id: mediaId },
-          data: { byteSize: BigInt(object.byteSize), scanState: 'clean' },
+          data: {
+            byteSize: BigInt(object.byteSize),
+            scanState: 'pending',
+            scanNote: 'media.safety_scan_pending',
+          },
           select: MEDIA_SELECT,
         });
 
@@ -217,7 +364,11 @@ export function createMediaService(deps: ServiceDeps): MediaService {
           action: 'workspace.updated',
           targetType: 'media_asset',
           targetId: mediaId,
-          after: { checksum: row.checksumSha256, byteSize: object.byteSize },
+          after: {
+            checksum: row.checksumSha256,
+            byteSize: object.byteSize,
+            scanState: 'pending',
+          },
         });
 
         return toView(updated);
@@ -229,30 +380,11 @@ export function createMediaService(deps: ServiceDeps): MediaService {
       ctx: ActorContext,
       input: { url: string; brandId?: string | null },
     ): Promise<OperationRef> {
-      return withIdempotency(deps.kv, ctx, {
-        operation: 'media.importFromUrl',
-        body: input,
-        run: async () =>
-          authorized(deps, ctx, 'media.write', undefined, async (db, actor) => {
-            await assertFetchable(input.url);
-            const operationId = newIdFor('operation');
-            await recordAudit(db, actor, {
-              action: 'workspace.updated',
-              targetType: 'media_import',
-              targetId: operationId,
-              after: { host: new URL(input.url).hostname },
-              metadata: { brandId: input.brandId ?? null },
-            });
-            return {
-              operationId,
-              status: 'queued',
-              resourceType: 'media_asset',
-              resourceId: null,
-              createdAt: deps.clock.now().toISOString(),
-              completedAt: null,
-              error: null,
-            } satisfies OperationRef;
-          }),
+      return authorized(deps, ctx, 'media.write', undefined, async () => {
+        throw new CapabilityNotImplementedError({
+          messageKey: 'errors.media_url_import_not_implemented',
+          details: { capability: 'media_url_import', hasBrandScope: input.brandId != null },
+        });
       });
     },
 
@@ -269,6 +401,7 @@ export function createMediaService(deps: ServiceDeps): MediaService {
         const rows = await db.mediaAsset.findMany({
           where: {
             deletedAt: null,
+            retentionExpiresAt: { gt: deps.clock.now() },
             ...(query.brandId === undefined ? {} : { brandId: query.brandId }),
             ...(kind === undefined ? {} : { kind }),
           },
@@ -284,13 +417,13 @@ export function createMediaService(deps: ServiceDeps): MediaService {
 
     async get(ctx: ActorContext, mediaId: string): Promise<MediaAssetView> {
       return authorized(deps, ctx, 'media.read', undefined, async (db) =>
-        toView(await requireMedia(db, mediaId)),
+        toView(await requireMedia(db, mediaId, deps.clock.now())),
       );
     },
 
     async delete(ctx: ActorContext, mediaId: string): Promise<void> {
       await authorized(deps, ctx, 'media.delete', undefined, async (db, actor) => {
-        await requireMedia(db, mediaId);
+        await requireMedia(db, mediaId, deps.clock.now());
         await db.mediaAsset.update({
           where: { id: mediaId },
           data: { deletedAt: deps.clock.now() },
@@ -304,6 +437,46 @@ export function createMediaService(deps: ServiceDeps): MediaService {
       });
     },
 
+    async purgeExpired(ctx: ActorContext, limit = 100): Promise<{ readonly purged: number }> {
+      if (ctx.actorType !== 'system') {
+        throw new ForbiddenError({ details: { reason: 'media_retention_worker_only' } });
+      }
+      const batchSize = Math.max(1, Math.min(500, Math.trunc(limit)));
+      const expired = await authorized(deps, ctx, 'media.delete', undefined, async (db) =>
+        db.mediaAsset.findMany({
+          where: {
+            retentionExpiresAt: { lte: deps.clock.now() },
+            storageDeletedAt: null,
+          },
+          orderBy: { retentionExpiresAt: 'asc' },
+          take: batchSize,
+          select: { id: true, storageKey: true, retentionExpiresAt: true },
+        }),
+      );
+
+      let purged = 0;
+      for (const asset of expired) {
+        // Delete first. If the database update fails, the next sweep repeats
+        // the idempotent object deletion and then records completion.
+        await deps.storage.remove(asset.storageKey);
+        await authorized(deps, ctx, 'media.delete', undefined, async (db, actor) => {
+          await db.mediaAsset.update({
+            where: { id: asset.id },
+            data: { storageDeletedAt: deps.clock.now(), deletedAt: deps.clock.now() },
+          });
+          await recordAudit(db, actor, {
+            action: 'deletion.executed',
+            targetType: 'media_asset',
+            targetId: asset.id,
+            after: { storageDeleted: true },
+            metadata: { retentionExpiresAt: asset.retentionExpiresAt.toISOString() },
+          });
+        });
+        purged += 1;
+      }
+      return { purged };
+    },
+
     /**
      * Non-generative editing only. The original is preserved: an edit produces
      * a derivative, and platform validation reruns against the result.
@@ -312,64 +485,54 @@ export function createMediaService(deps: ServiceDeps): MediaService {
       ctx: ActorContext,
       input: { mediaId: string; ops: readonly MediaEditOperation[] },
     ): Promise<MediaAssetView> {
-      return authorized(deps, ctx, 'media.write', undefined, async (db, actor) => {
-        const row = await requireMedia(db, input.mediaId);
-        if (input.ops.length === 0) {
-          return toView(row);
-        }
-
-        const presetKey = input.ops
-          .map(
-            (op) =>
-              `${op.kind}:${Object.entries(op.params)
-                .map(([k, v]) => `${k}=${v}`)
-                .join(',')}`,
-          )
-          .join('|');
-
-        await db.mediaDerivative.upsert({
-          where: { mediaAssetId_presetKey: { mediaAssetId: row.id, presetKey } },
-          create: {
-            workspaceId: actor.workspace.id,
-            mediaAssetId: row.id,
-            kind: derivativeKindFor(input.ops),
-            presetKey,
-            storageBucket: 'media',
-            storageKey: `${ctx.workspaceId}/${row.checksumSha256}/${encodeURIComponent(presetKey)}`,
-            mimeType: row.mimeType,
-            byteSize: row.byteSize,
-            checksumSha256: row.checksumSha256,
-            metadata: toJson({ ops: [...input.ops], pending: true }),
+      return authorized(deps, ctx, 'media.write', undefined, async () => {
+        throw new CapabilityNotImplementedError({
+          messageKey: 'errors.media_editing_not_implemented',
+          details: {
+            capability: 'media_editing',
+            operationCount: input.ops.length,
           },
-          update: { metadata: toJson({ ops: [...input.ops], pending: true }) },
         });
-
-        await recordAudit(db, actor, {
-          action: 'workspace.updated',
-          targetType: 'media_derivative',
-          targetId: row.id,
-          after: { presetKey, opCount: input.ops.length },
-          metadata: { generative: false },
-        });
-
-        return toView(row);
       });
     },
 
     async setAltText(
       ctx: ActorContext,
-      input: { mediaId: string; altText: string | null; waived?: boolean },
+      input: {
+        mediaId: string;
+        altText: string | null;
+        waived?: boolean;
+        waivedReason?: string | null;
+      },
     ): Promise<MediaAssetView> {
       return authorized(deps, ctx, 'media.write', undefined, async (db, actor) => {
-        const before = await requireMedia(db, input.mediaId);
+        const before = await requireMedia(db, input.mediaId, deps.clock.now());
         if (input.altText === null && input.waived !== true) {
           throw invalid('errors.alt_text_required', { mediaId: input.mediaId });
         }
+        if (input.altText !== null && input.waived === true) {
+          throw invalid('errors.alt_text_waiver_conflict', { mediaId: input.mediaId });
+        }
+        const waivedReason = input.waived === true ? input.waivedReason?.trim() : undefined;
+        if (input.waived === true && !waivedReason) {
+          throw invalid('errors.alt_text_waiver_reason_required', { mediaId: input.mediaId });
+        }
+        const displayName =
+          actor.userId === null
+            ? null
+            : ((
+                await db.user.findUnique({
+                  where: { id: actor.userId },
+                  select: { displayName: true },
+                })
+              )?.displayName ?? null);
         const after = await db.mediaAsset.update({
           where: { id: input.mediaId },
           data: {
             altText: input.altText,
             altTextWaivedAt: input.waived === true ? deps.clock.now() : null,
+            altTextWaivedReason: input.waived === true ? waivedReason : null,
+            altTextWaivedByName: input.waived === true ? displayName : null,
           },
           select: MEDIA_SELECT,
         });
@@ -383,23 +546,73 @@ export function createMediaService(deps: ServiceDeps): MediaService {
         return toView(after);
       });
     },
-  };
-}
 
-function derivativeKindFor(
-  ops: readonly MediaEditOperation[],
-): 'transcode' | 'crop' | 'resize' | 'thumbnail' | 'format_conversion' | 'compressed' {
-  const last = ops.at(-1);
-  switch (last?.kind) {
-    case 'crop':
-      return 'crop';
-    case 'resize':
-      return 'resize';
-    case 'compress':
-      return 'compressed';
-    case 'convert':
-      return 'format_conversion';
-    default:
-      return 'transcode';
-  }
+    async declareRights(
+      ctx: ActorContext,
+      input: {
+        mediaId: string;
+        owner: 'workspace' | 'licensed' | 'ugc';
+        licenseReference: string | null;
+        peopleAppear: boolean;
+        peopleConsented: boolean;
+        containsMusic: boolean;
+        confirmed: true;
+      },
+    ): Promise<MediaAssetView> {
+      return authorized(deps, ctx, 'media.write', undefined, async (db, actor) => {
+        const before = await requireMedia(db, input.mediaId, deps.clock.now());
+        const licenseReference = input.licenseReference?.trim() || null;
+        if (input.owner === 'licensed' && licenseReference === null) {
+          throw invalid('errors.media_license_reference_required', { mediaId: input.mediaId });
+        }
+        if (input.peopleAppear && !input.peopleConsented) {
+          throw invalid('errors.media_people_consent_required', { mediaId: input.mediaId });
+        }
+
+        const declaredAt = deps.clock.now();
+        const declaredByName =
+          actor.userId === null
+            ? null
+            : ((
+                await db.user.findUnique({
+                  where: { id: actor.userId },
+                  select: { displayName: true },
+                })
+              )?.displayName ?? null);
+        const rights =
+          input.owner === 'workspace'
+            ? 'owned_original'
+            : input.owner === 'licensed'
+              ? 'licensed'
+              : 'user_generated_with_consent';
+        const declaration = {
+          owner: input.owner,
+          licenseReference,
+          peopleAppear: input.peopleAppear,
+          peopleConsented: input.peopleConsented,
+          containsMusic: input.containsMusic,
+          declaredByName,
+          declaredAt: declaredAt.toISOString(),
+        } as const;
+        const after = await db.mediaAsset.update({
+          where: { id: input.mediaId },
+          data: { rights, rightsNote: JSON.stringify(declaration) },
+          select: MEDIA_SELECT,
+        });
+        await recordAudit(db, actor, {
+          action: 'workspace.updated',
+          targetType: 'media_asset',
+          targetId: input.mediaId,
+          before: { rights: before.rights },
+          after: {
+            rights,
+            peopleAppear: input.peopleAppear,
+            peopleConsented: input.peopleConsented,
+            containsMusic: input.containsMusic,
+          },
+        });
+        return toView(after);
+      });
+    },
+  };
 }

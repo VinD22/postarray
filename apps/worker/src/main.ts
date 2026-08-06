@@ -1,7 +1,12 @@
+import { systemClock } from '@relay/application';
+import { loadConfigFor } from '@relay/config';
 import { InternalError } from '@relay/contracts';
+import { createPrismaClient } from '@relay/database';
 import { createLogger } from '@relay/observability';
+import { OutboxDispatcher } from '@relay/runtime';
 
 import { ACTIVITY_NAMES, type WorkerActivities } from './activities/types';
+import { WorkerScheduler } from './outbox-scheduler';
 import { installShutdownHandlers, startWorker, WORKER_SERVICE_NAME } from './worker';
 
 /**
@@ -77,11 +82,35 @@ export async function loadGateway(moduleName: string): Promise<WorkerActivities>
 }
 
 export async function main(): Promise<void> {
-  const logger = createLogger({ service: WORKER_SERVICE_NAME });
+  const config = loadConfigFor(WORKER_SERVICE_NAME);
+  const logger = createLogger({ service: WORKER_SERVICE_NAME }, { level: config.core.logLevel });
   const moduleName = process.env['RELAY_WORKER_GATEWAY_MODULE'] ?? DEFAULT_GATEWAY_MODULE;
   const gateway = await loadGateway(moduleName);
-  const worker = await startWorker({ gateway });
-  installShutdownHandlers(worker, logger);
+  const worker = await startWorker({ gateway, config, logger });
+  const prisma = createPrismaClient({
+    ...(config.database.url === undefined ? {} : { databaseUrl: config.database.url }),
+  });
+  const scheduler = new WorkerScheduler({ worker, config, clock: systemClock, logger });
+  const outbox = new OutboxDispatcher({
+    prisma,
+    scheduler,
+    clock: systemClock,
+    logger,
+  });
+  outbox.start();
+
+  installShutdownHandlers(
+    {
+      ...worker,
+      shutdown: async () => {
+        await outbox.stop();
+        await scheduler.close();
+        await prisma.$disconnect();
+        await worker.shutdown();
+      },
+    },
+    logger,
+  );
   logger.info({ mode: worker.mode, taskQueue: worker.taskQueue }, 'worker.ready');
 }
 

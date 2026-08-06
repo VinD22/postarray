@@ -1,8 +1,10 @@
 import { requiredApprovalLevel } from '@relay/authz';
 import {
   CONSEQUENTIAL_RULE_ACTION_KINDS,
+  newIdFor,
   ruleActionKindSchema,
   ruleTriggerKindSchema,
+  type OperationRef,
   type Paginated,
   type RuleActionKind,
 } from '@relay/contracts';
@@ -19,10 +21,12 @@ import type { AutomationRuleView, RulePreview, RuleRunView } from '../views';
 
 import { recordAudit } from '../internal/audit';
 import { loadCapabilitiesFor } from '../internal/capabilities';
+import { enqueueWorkflowOutbox } from '../internal/enqueue-outbox';
 import { invalid, notFound } from '../internal/errors';
 import { toJson } from '../internal/json';
 import { toProviderId } from '../internal/mappers';
 import { pageArgs, toPage } from '../internal/pagination';
+import { ruleWorkflowId } from '../ports/scheduler';
 import { authorized, guard, type Db } from '../internal/runtime';
 
 /**
@@ -505,6 +509,59 @@ export function createAutomationRuleService(deps: ServiceDeps): AutomationRuleSe
           select: RUN_SELECT,
         });
         return toPage(rows, args, (row) => row.id, toRunView);
+      });
+    },
+
+    async triggerFromInbound(
+      ctx: ActorContext,
+      input: { ruleName: string; event: Record<string, unknown> },
+    ): Promise<OperationRef> {
+      return authorized(deps, ctx, 'rule.run', undefined, async (db, actor) => {
+        const rule = await db.automationRule.findFirst({
+          where: { name: input.ruleName, state: 'active' },
+          select: { id: true },
+        });
+        if (rule === null) {
+          throw notFound('automation_rule', input.ruleName);
+        }
+        const ruleRunId = newIdFor('ruleRun');
+        const workflowId = ruleWorkflowId(ctx.workspaceId, rule.id, ruleRunId);
+        await enqueueWorkflowOutbox(db, {
+          kind: 'start_rule_run',
+          dedupeKey: `start-rule-run:${ruleRunId}`,
+          payload: {
+            ctx: {
+              workspaceId: ctx.workspaceId,
+              correlationId: ctx.correlationId,
+              actorId: ctx.actorId,
+              actorType: ctx.actorType,
+              surface: ctx.surface,
+              approvalLevel: ctx.approvalLevel,
+              locale: ctx.locale,
+            },
+            ruleId: rule.id,
+            workspaceId: ctx.workspaceId,
+            runId: ruleRunId,
+            sourceKey: ctx.idempotencyKey ?? `inbound:${ctx.correlationId}`,
+            event: input.event,
+          },
+        });
+        const operationId = newIdFor('operation');
+        await recordAudit(db, actor, {
+          action: 'automation_rule.activated',
+          targetType: 'automation_rule',
+          targetId: rule.id,
+          after: { workflowId, source: 'inbound' },
+        });
+        return {
+          operationId,
+          status: 'queued',
+          resourceType: 'automation_rule',
+          resourceId: rule.id,
+          createdAt: deps.clock.now().toISOString(),
+          completedAt: null,
+          error: null,
+        };
       });
     },
   };

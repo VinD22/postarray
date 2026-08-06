@@ -11,12 +11,12 @@ import type {
 import { CLOCK, SERVICES } from '../../application/tokens';
 import { instantAfter } from '../../common/instant';
 import { CredentialDirectory } from '../../security/credential-directory';
-import { CREDENTIAL_PREFIXES, issueCredential } from '../../security/credentials';
+import { hashSecret, parseCredential } from '../../security/credentials';
 import { apiKeyRecordSchema } from '../../security/records';
 import type { CreateApiKeyInput } from './api-keys.schemas';
 
 export interface CreatedApiKey {
-  readonly apiKey: ApiKeyView;
+  readonly key: ApiKeyView;
   /**
    * The full credential, shown exactly once. It is never stored, never logged
    * and cannot be recovered. A key the server can read back is a key the server
@@ -48,36 +48,28 @@ export class ApiKeysService {
   }
 
   async create(ctx: ActorContext, input: CreateApiKeyInput): Promise<CreatedApiKey> {
-    const issued = issueCredential(CREDENTIAL_PREFIXES.apiKey, this.directory.pepper);
     const now = this.clock.now();
     const expiresAt = instantAfter(now, input.expiresInDays * 24 * 60 * 60);
 
     const created = await this.services.apiKeys.create(ctx, {
       name: input.name,
       scopes: input.scopes,
-      approvalLevel: input.approvalLevel,
-      brandIds: input.brandIds,
-      connectionIds: input.connectionIds,
-      ipAllowlist: input.ipAllowlist,
       expiresAt,
-      publicPrefix: issued.publicPrefix,
-      secretHash: issued.secretHash,
     });
-
-    const apiKeyId = created['id'];
-    if (typeof apiKeyId !== 'string' || !isId(ID_PREFIXES.apiKey, apiKeyId)) {
+    const parsed = parseCredential(created.plaintext);
+    if (parsed === null || !isId(ID_PREFIXES.apiKey, created.key.id)) {
       throw new NotFoundError({ details: { resource: 'api_key' } });
     }
 
     await this.directory.putApiKey(
       apiKeyRecordSchema.parse({
-        apiKeyId,
+        apiKeyId: created.key.id,
         workspaceId: ctx.workspaceId,
-        createdByUserId: created['createdByUserId'],
+        createdByUserId: created.key.createdByUserId,
         name: input.name,
-        publicPrefix: issued.publicPrefix,
-        secretHash: issued.secretHash,
-        scopes: input.scopes,
+        publicPrefix: parsed.publicPrefix,
+        secretHash: hashSecret(parsed.secret, this.directory.pepper),
+        scopes: created.key.scopes,
         approvalLevel: input.approvalLevel,
         brandIds: input.brandIds,
         connectionIds: input.connectionIds,
@@ -88,7 +80,7 @@ export class ApiKeysService {
       }),
     );
 
-    return { apiKey: created, secret: issued.plaintext };
+    return { key: created.key, secret: created.plaintext };
   }
 
   async revoke(ctx: ActorContext, apiKeyId: string): Promise<void> {
@@ -96,7 +88,10 @@ export class ApiKeysService {
     // fails, the key is already marked revoked and the next lookup refuses it;
     // the reverse order would leave a revoked key briefly usable, which is the
     // one failure mode a revocation may never have.
-    const { publicPrefix } = await this.services.apiKeys.revoke(ctx, apiKeyId);
-    await this.directory.revokeApiKey(publicPrefix);
+    const revoked = await this.services.apiKeys.revoke(ctx, apiKeyId);
+    const match = /^rly_ak_([0-9A-Za-z]{8})$/.exec(revoked.prefix);
+    if (match?.[1] !== undefined) {
+      await this.directory.revokeApiKey(match[1]);
+    }
   }
 }

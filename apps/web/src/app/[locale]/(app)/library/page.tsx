@@ -15,6 +15,7 @@ import { api } from '@/lib/api';
 import { SEED_ACCOUNTS } from '@/features/composer';
 import {
   SEED_ASSETS,
+  mediaAssetFromApi,
   type AccountRule,
   type LibraryStatus,
   type MediaAsset,
@@ -44,7 +45,7 @@ export default async function LibraryPage(): Promise<React.ReactElement> {
   } else {
     try {
       const [page, connections] = await Promise.all([api.media.list({}), api.connections.list({})]);
-      assets = page.data as unknown as readonly MediaAsset[];
+      assets = page.data.map(mediaAssetFromApi);
       rules = await Promise.all(
         connections.data.map(async (connection) => ({
           connectionId: connection.id,

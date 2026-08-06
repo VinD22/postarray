@@ -19,7 +19,7 @@ export type { CalendarQuery, ContentListQuery } from './resources/content';
 export type { ActionCenterQuery } from './resources/action-center';
 export type {
   MediaAssetView,
-  MediaEditInput,
+  MediaEditOperation,
   RightsDeclarationInput,
   UploadTicket,
 } from './resources/media';

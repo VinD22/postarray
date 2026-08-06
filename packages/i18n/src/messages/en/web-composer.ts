@@ -325,8 +325,8 @@ export const webComposerMessages = {
 
   'mediaLib.empty.title': 'No media yet',
   'mediaLib.empty.body':
-    'Upload the images and video you already have, or import a file from a URL. Relay checks the type and size against each account you publish to.',
-  'mediaLib.empty.example': 'Example: launch_hero.jpg, 1600 by 900, alt text set, used in 2 posts.',
+    'Upload images, video, audio or documents you already have. Files stay in storage for 30 days.',
+  'mediaLib.empty.example': 'Example: launch_hero.jpg, 1600 by 900, with alt text set.',
   'mediaLib.error.title': 'The library could not be loaded',
   'mediaLib.error.body': 'Your files are safe. Nothing was changed by this failure.',
   'mediaLib.loading': 'Loading your media library',
@@ -337,10 +337,10 @@ export const webComposerMessages = {
   'mediaLib.upload.heading': 'Add media',
   'mediaLib.upload.browse': 'Choose files',
   'mediaLib.upload.dropHint':
-    'Drag files here, or choose them. Uploads resume if the connection drops.',
+    'Drag files here, or choose them. A failed upload can be retried without creating a duplicate library item.',
   'mediaLib.upload.queueHeading': 'Uploads',
   'mediaLib.upload.progress': '{name}, {percent} of {size} sent',
-  'mediaLib.upload.paused': 'Paused. {sent} of {size} is already stored.',
+  'mediaLib.upload.paused': 'Paused at {sent} of {size}. Resuming sends this file again.',
   'mediaLib.upload.resume': 'Resume upload',
   'mediaLib.upload.pause': 'Pause upload',
   'mediaLib.upload.cancel': 'Cancel this upload',
@@ -360,6 +360,25 @@ export const webComposerMessages = {
   'mediaLib.upload.checkedAgainst': 'Checked against the accounts selected in this draft.',
   'mediaLib.upload.noTargets':
     'No accounts are selected, so the file is checked against the workspace defaults only.',
+  'mediaLib.retention.title': 'Uploaded files are kept for 30 days',
+  'mediaLib.retention.body':
+    'We permanently delete each uploaded file from our storage 30 days after upload. Your post text, publication receipts and audit history remain.',
+  'mediaLib.retention.limits':
+    'Images, audio and PDF files can be up to 20 MiB. Videos can be up to 500 MiB.',
+  'mediaLib.retention.expiresLabel': 'File deletion date',
+  'mediaLib.retention.deleted': 'Permanently deleted',
+  'mediaLib.retention.deletedTitle': 'This stored file has been deleted',
+  'mediaLib.retention.deletedBody':
+    'The 30-day storage period ended. The post text, publication receipts and audit history remain.',
+  'mediaLib.processing.unavailableTitle': 'This file is not ready to publish',
+  'mediaLib.processing.unavailableBody':
+    'Processing or a safety check is still pending, or it did not pass. Upload the file again if this state does not clear.',
+  'mediaLib.processing.pendingTitle': 'Safety scanning is not available in prelaunch',
+  'mediaLib.processing.pendingBody':
+    'The file is stored for 30 days, but it cannot be attached to a published post until safety scanning is enabled.',
+  'mediaLib.processing.blockedTitle': 'This file cannot be published',
+  'mediaLib.processing.blockedBody':
+    'The file did not pass processing or a safety check. Upload a different file.',
 
   'mediaLib.alt.heading': 'Alt text',
   'mediaLib.alt.help':
@@ -438,6 +457,9 @@ export const webComposerMessages = {
     'Saving rechecks this file against every account in the drafts that use it.',
   'mediaLib.editor.noGeneration':
     'This editor changes the file you uploaded. It does not create new imagery.',
+  'mediaLib.editor.unavailable.title': 'File editing is not implemented in prelaunch',
+  'mediaLib.editor.unavailable.body':
+    'Prepare the file before uploading it. Your original upload is never changed.',
 
   'mediaLib.versions.heading': 'Versions',
   'mediaLib.versions.original': 'Original upload',

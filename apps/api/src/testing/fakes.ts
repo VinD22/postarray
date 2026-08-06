@@ -171,12 +171,15 @@ export function testConfig(overrides: Partial<RelayConfig> = {}): RelayConfig {
       logLevel: 'silent' as const,
     },
     database: { url: undefined, directUrl: undefined },
-    supabase: {
-      url: 'https://supabase.relay.test',
-      anonKey: 'test-anon-key',
-      serviceRoleKey: 'test-service-role-key',
-      jwtSecret: 'test-jwt-secret',
+    neon: {
+      authBaseUrl: 'https://auth.relay.test',
+      authCookieSecret: 'test-neon-cookie-secret-at-least-32-characters',
+      authJwksUrl: 'https://auth.relay.test/jwks',
+      storageEndpoint: undefined,
+      storageRegion: 'us-east-2',
       storageBucket: 'relay-media',
+      storageAccessKeyId: undefined,
+      storageSecretAccessKey: undefined,
     },
     redis: { url: undefined },
     temporal: {
@@ -186,6 +189,7 @@ export function testConfig(overrides: Partial<RelayConfig> = {}): RelayConfig {
       apiKey: undefined,
     },
     polar: {
+      checkoutEnabled: false,
       accessToken: undefined,
       // Not a real secret: a fixed string the suite signs its own fixtures with.
       webhookSecret: 'test-polar-webhook-secret',
@@ -213,7 +217,11 @@ export function testConfig(overrides: Partial<RelayConfig> = {}): RelayConfig {
       signingLocalKey: 'dGVzdC1zaWduaW5nLWtleS10ZXN0LXNpZ25pbmcta2V5LTEyMzQ=',
     },
     shortLinks: { baseUrl: undefined, hashKey: undefined },
-    email: { apiKey: undefined, from: undefined },
+    email: {
+      apiUrl: 'https://api.resend.test/emails',
+      apiKey: undefined,
+      from: undefined,
+    },
     observability: {
       sentryDsn: undefined,
       posthogKey: undefined,

@@ -5,11 +5,11 @@ import type {
   ActorContext,
   CursorQuery,
   MediaAssetView,
+  MediaEditOperation,
   Services,
-  ViewModel,
 } from '../../application/port';
 import { SERVICES } from '../../application/tokens';
-import type { CreateUploadUrlInput } from './media.schemas';
+import type { CreateUploadUrlInput, DeclareRightsInput } from './media.schemas';
 
 /** Transport-level delegation for the media library. */
 @Injectable()
@@ -19,7 +19,14 @@ export class MediaService {
   createUploadUrl(
     ctx: ActorContext,
     input: CreateUploadUrlInput,
-  ): Promise<{ uploadUrl: string; mediaId: string; headers: Readonly<Record<string, string>> }> {
+  ): Promise<{
+    uploadUrl: string;
+    mediaId: string;
+    method: 'PUT' | 'POST';
+    headers: Readonly<Record<string, string>>;
+    expiresAt: string;
+    retentionExpiresAt: string;
+  }> {
     return this.services.media.createUploadUrl(ctx, input);
   }
 
@@ -27,7 +34,10 @@ export class MediaService {
     return this.services.media.finalizeUpload(ctx, mediaId);
   }
 
-  importFromUrl(ctx: ActorContext, input: { url: string; brandId: string }): Promise<OperationRef> {
+  importFromUrl(
+    ctx: ActorContext,
+    input: { url: string; brandId?: string | null },
+  ): Promise<OperationRef> {
     return this.services.media.importFromUrl(ctx, input);
   }
 
@@ -46,15 +56,31 @@ export class MediaService {
     return this.services.media.delete(ctx, mediaId);
   }
 
-  edit(ctx: ActorContext, mediaId: string, ops: readonly ViewModel[]): Promise<MediaAssetView> {
+  edit(
+    ctx: ActorContext,
+    mediaId: string,
+    ops: readonly MediaEditOperation[],
+  ): Promise<MediaAssetView> {
     return this.services.media.edit(ctx, { mediaId, ops });
   }
 
   setAltText(
     ctx: ActorContext,
     mediaId: string,
-    input: { altText: string | null; waived?: boolean },
+    input: {
+      altText: string | null;
+      waived?: boolean;
+      waivedReason?: string | null;
+    },
   ): Promise<MediaAssetView> {
     return this.services.media.setAltText(ctx, { mediaId, ...input });
+  }
+
+  declareRights(
+    ctx: ActorContext,
+    mediaId: string,
+    input: DeclareRightsInput,
+  ): Promise<MediaAssetView> {
+    return this.services.media.declareRights(ctx, { mediaId, ...input });
   }
 }

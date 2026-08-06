@@ -106,8 +106,8 @@ describe('the presentation object agrees with the English catalog', () => {
     }
   });
 
-  it('states the 30 active channel allowance', () => {
-    expect(PRICE_PRESENTATION.activeChannelAllowance).toBe(30);
-    expect(catalog['billing.plan.includes.channels']).toContain('30');
+  it('states the 10 active channel allowance', () => {
+    expect(PRICE_PRESENTATION.activeChannelAllowance).toBe(10);
+    expect(catalog['billing.plan.includes.channels']).toContain('10');
   });
 });

@@ -1086,10 +1086,9 @@ export const webMarketingMessages = {
   'web.opportunities.category.editorial':
     'ゲストによるチュートリアル、ポッドキャスト、ニュースレター',
   'web.opportunities.category.openSource': 'オープンソースのリストとドキュメント リソース',
-  'web.legal.subprocessors.supabase.label': 'スーパーベース',
-  'web.legal.subprocessors.supabase.purpose':
-    'マネージド PostgreSQL、認証、オブジェクト ストレージ。',
-  'web.legal.subprocessors.supabase.data':
+  'web.legal.subprocessors.neon.label': 'Neon',
+  'web.legal.subprocessors.neon.purpose': 'マネージド PostgreSQL、認証、オブジェクト ストレージ。',
+  'web.legal.subprocessors.neon.data':
     'アカウント記録、コンテンツ、メディア、スケジュール、領収書、監査イベント。',
   'web.legal.subprocessors.temporal.label': '時間的な雲',
   'web.legal.subprocessors.temporal.purpose':

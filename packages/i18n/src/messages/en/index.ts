@@ -9,6 +9,7 @@ import { commonMessages } from './common';
 import { composerMessages } from './composer';
 import { connectionMessages } from './connections';
 import { developerMessages } from './developer';
+import { emailMessages } from './email';
 import { errorMessages } from './errors';
 import { growthMessages } from './growth';
 import { navMessages } from './nav';
@@ -49,6 +50,7 @@ export const en = {
   ...billingMessages,
   ...settingsMessages,
   ...developerMessages,
+  ...emailMessages,
   ...authMessages,
   ...onboardingMessages,
   ...errorMessages,
@@ -79,6 +81,7 @@ export {
   composerMessages,
   connectionMessages,
   developerMessages,
+  emailMessages,
   errorMessages,
   growthMessages,
   navMessages,

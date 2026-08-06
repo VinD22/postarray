@@ -107,6 +107,7 @@ import {
 } from '../modules/growth/growth.schemas';
 import {
   createUploadUrlSchema,
+  declareRightsSchema,
   editMediaSchema,
   importFromUrlSchema,
   listMediaQuerySchema,
@@ -963,6 +964,17 @@ export const OPERATIONS: readonly OperationSpec[] = [
     response: view,
   },
   {
+    method: 'put',
+    path: '/v1/media/{id}/rights',
+    operationId: 'media.declareRights',
+    summary: 'Record file ownership, permission and consent.',
+    tag: 'media',
+    scopes: ['media:write'],
+    pathParams: p('id', mediaIdSchema),
+    body: declareRightsSchema,
+    response: view,
+  },
+  {
     method: 'delete',
     path: '/v1/media/{id}',
     operationId: 'media.delete',
@@ -1358,7 +1370,9 @@ export const OPERATIONS: readonly OperationSpec[] = [
     requiresIdempotencyKey: true,
     body: createWebhookEndpointSchema,
     successStatus: 201,
-    response: webhookEndpointSchema,
+    response: z
+      .object({ endpoint: webhookEndpointSchema, signingSecret: z.string().min(20) })
+      .strict(),
   },
   {
     method: 'patch',
@@ -1505,6 +1519,7 @@ export const OPERATIONS: readonly OperationSpec[] = [
     requiresIdempotencyKey: true,
     body: createApiKeySchema,
     successStatus: 201,
+    response: z.object({ key: view, secret: z.string().min(20) }).strict(),
   },
   {
     method: 'delete',

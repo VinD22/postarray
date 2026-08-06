@@ -1,60 +1,11 @@
-/** The media library: uploads, imports, derivatives and alt text. */
+/** The media library: uploads, provenance, rights and alt text. */
+
+import type { MediaKind, OperationRef, Paginated } from '@relay/contracts';
 
 import { call } from '../call';
 import { page } from '../fixtures';
-import type { MediaKind, Paginated } from '@relay/contracts';
 
 export type { MediaKind };
-
-export interface MediaAssetView {
-  readonly id: string;
-  readonly workspaceId: string;
-  readonly kind: MediaKind;
-  readonly fileName: string;
-  readonly mimeType: string;
-  readonly byteSize: number;
-  readonly width: number | null;
-  readonly height: number | null;
-  readonly durationMs: number | null;
-  readonly checksum: string;
-  readonly altText: string | null;
-  readonly altTextWaivedReason: string | null;
-  readonly originKind: 'upload' | 'import' | 'api';
-  readonly originLabel: string;
-  readonly rightsDeclared: boolean;
-  readonly scanState: 'pending' | 'clean' | 'rejected';
-  readonly previewUrl: string | null;
-  readonly createdAt: string;
-  readonly usedInPostCount: number;
-}
-
-export interface UploadTicket {
-  readonly mediaId: string;
-  readonly uploadUrl: string;
-  readonly method: 'PUT' | 'POST';
-  readonly headers: Readonly<Record<string, string>>;
-  readonly expiresAt: string;
-}
-
-/**
- * The edit plan the picture editor sends. Null clears a previously applied
- * step; an omitted key leaves that step as it is.
- */
-export interface MediaEditInput {
-  readonly crop?: { x: number; y: number; width: number; height: number } | null;
-  readonly resize?: { width: number; height: number } | null;
-  readonly rotateDegrees?: 0 | 90 | 180 | 270;
-  readonly flipHorizontal?: boolean;
-  readonly flipVertical?: boolean;
-  readonly canvas?: { backgroundColor: string; fit: 'cover' | 'contain' } | null;
-  readonly format?: 'image/jpeg' | 'image/png' | 'image/webp';
-  /** 1 to 100. Ignored for PNG, which is lossless. */
-  readonly quality?: number;
-  /** The frame or file used as a video thumbnail, where the platform takes one. */
-  readonly thumbnailMediaId?: string | null;
-  readonly trimMs?: { start: number; end: number } | null;
-  readonly thumbnailAtMs?: number | null;
-}
 
 export interface RightsDeclarationInput {
   readonly owner: 'workspace' | 'licensed' | 'ugc';
@@ -64,10 +15,60 @@ export interface RightsDeclarationInput {
   readonly containsMusic: boolean;
 }
 
+export interface MediaAssetView {
+  readonly id: string;
+  readonly workspaceId: string;
+  readonly brandId: string | null;
+  readonly kind: MediaKind;
+  readonly fileName: string | null;
+  readonly mimeType: string;
+  readonly byteSize: number;
+  readonly width: number | null;
+  readonly height: number | null;
+  readonly durationMs: number | null;
+  readonly checksumSha256: string;
+  readonly altText: string | null;
+  readonly altTextWaived: boolean;
+  readonly altTextWaivedReason: string | null;
+  readonly altTextWaivedByName: string | null;
+  readonly rights:
+    'owned_original' | 'licensed' | 'public_domain' | 'user_generated_with_consent' | 'unverified';
+  readonly rightsDeclaration:
+    | (RightsDeclarationInput & {
+        readonly declaredByName: string | null;
+        readonly declaredAt: string;
+      })
+    | null;
+  readonly scanState: 'pending' | 'clean' | 'suspicious' | 'infected' | 'failed';
+  readonly originKind: string;
+  readonly originUrl: string | null;
+  readonly retentionExpiresAt: string;
+  readonly storageAvailable: boolean;
+  readonly createdAt: string;
+}
+
+export interface UploadTicket {
+  readonly mediaId: string;
+  readonly uploadUrl: string;
+  readonly method: 'PUT' | 'POST';
+  readonly headers: Readonly<Record<string, string>>;
+  readonly expiresAt: string;
+  readonly retentionExpiresAt: string;
+}
+
+export interface MediaEditOperation {
+  readonly op: 'crop' | 'resize' | 'rotate' | 'compress';
+  readonly x?: number;
+  readonly y?: number;
+  readonly width?: number;
+  readonly height?: number;
+  readonly degrees?: 90 | 180 | 270;
+  readonly quality?: number;
+}
+
 export const mediaApi = {
-  /** Step one of a direct upload. The browser then PUTs the bytes itself. */
   createUploadUrl: (
-    input: { fileName: string; mimeType: string; byteSize: number },
+    input: { filename: string; mimeType: string; byteSize: number; sha256: string },
     idempotencyKey: string,
   ): Promise<UploadTicket> =>
     call('/media/uploads', { method: 'POST', body: input, idempotencyKey }, () => ({
@@ -76,25 +77,25 @@ export const mediaApi = {
       method: 'PUT' as const,
       headers: {},
       expiresAt: new Date(Date.now() + 900_000).toISOString(),
+      retentionExpiresAt: new Date(Date.now() + 30 * 24 * 60 * 60_000).toISOString(),
     })),
 
-  /** Step two. The asset is not usable until this returns. */
-  finalizeUpload: (
-    mediaId: string,
-    input: { checksum: string; rightsDeclared: boolean },
-    idempotencyKey: string,
-  ): Promise<MediaAssetView | null> =>
-    call(
-      `/media/uploads/${mediaId}/finalize`,
-      { method: 'POST', body: input, idempotencyKey },
-      () => null,
-    ),
+  finalizeUpload: (mediaId: string, idempotencyKey: string): Promise<MediaAssetView | null> =>
+    call(`/media/${mediaId}/finalize`, { method: 'POST', idempotencyKey }, () => null),
 
   importFromUrl: (
-    input: { url: string; rightsDeclared: boolean },
+    input: { url: string; brandId?: string | null },
     idempotencyKey: string,
-  ): Promise<MediaAssetView | null> =>
-    call('/media/imports', { method: 'POST', body: input, idempotencyKey }, () => null),
+  ): Promise<OperationRef> =>
+    call('/media/imports', { method: 'POST', body: input, idempotencyKey }, () => ({
+      operationId: 'op_demo_media_import',
+      status: 'queued',
+      resourceType: 'media_asset',
+      resourceId: null,
+      createdAt: new Date().toISOString(),
+      completedAt: null,
+      error: null,
+    })),
 
   list: (
     query: { kind?: MediaKind; cursor?: string; limit?: number } = {},
@@ -107,43 +108,24 @@ export const mediaApi = {
   delete: (mediaId: string): Promise<void> =>
     call(`/media/${mediaId}`, { method: 'DELETE' }, () => undefined),
 
-  /**
-   * Crop, trim and thumbnail selection on an uploaded file. This is editing,
-   * not generation: Relay never creates image or video content. Every field
-   * below changes pixels that are already in the file, which is why there is no
-   * prompt, model or seed anywhere in this shape.
-   *
-   * An edit produces a new version; the original stays addressable and can be
-   * restored with `restoreVersion`.
-   */
-  edit: (mediaId: string, input: MediaEditInput): Promise<MediaAssetView | null> =>
-    call(`/media/${mediaId}/edits`, { method: 'PATCH', body: input }, () => null),
-
-  /**
-   * Restore a previous version as the current one. This is a new version that
-   * carries the older bytes, never a destructive rollback.
-   */
-  restoreVersion: (
+  /** Reserved endpoint. The application currently returns `not_implemented`. */
+  edit: (
     mediaId: string,
-    version: number,
+    ops: readonly MediaEditOperation[],
     idempotencyKey: string,
   ): Promise<MediaAssetView | null> =>
+    call(`/media/${mediaId}/edits`, { method: 'POST', body: { ops }, idempotencyKey }, () => null),
+
+  declareRights: (mediaId: string, input: RightsDeclarationInput): Promise<MediaAssetView | null> =>
     call(
-      `/media/${mediaId}/versions/${version}/restore`,
-      { method: 'POST', idempotencyKey },
+      `/media/${mediaId}/rights`,
+      { method: 'PUT', body: { ...input, confirmed: true } },
       () => null,
     ),
 
-  /**
-   * Record who owns the file, under what licence, and whether the people in it
-   * consented. An asset with no declaration cannot be scheduled.
-   */
-  declareRights: (mediaId: string, input: RightsDeclarationInput): Promise<MediaAssetView | null> =>
-    call(`/media/${mediaId}/rights`, { method: 'PATCH', body: input }, () => null),
-
   setAltText: (
     mediaId: string,
-    input: { altText: string | null; waivedReason?: string },
+    input: { altText: string | null; waived: boolean; waivedReason?: string | null },
   ): Promise<MediaAssetView | null> =>
-    call(`/media/${mediaId}/alt-text`, { method: 'PATCH', body: input }, () => null),
+    call(`/media/${mediaId}/alt-text`, { method: 'PUT', body: input }, () => null),
 };

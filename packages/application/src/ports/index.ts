@@ -15,4 +15,9 @@ export {
   type LocalStorageOptions,
 } from './storage';
 export { LoggingMailer, RecordingMailer } from './mailer';
-export { InMemoryScheduler, publishWorkflowId, type RecordedPublish } from './scheduler';
+export {
+  InMemoryScheduler,
+  publishWorkflowId,
+  ruleWorkflowId,
+  type RecordedPublish,
+} from './scheduler';

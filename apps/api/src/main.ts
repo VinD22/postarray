@@ -5,7 +5,7 @@ import { createLogger, startTracing } from '@relay/observability';
 
 import { createApiApp } from './bootstrap';
 import { systemClock } from './common/instant';
-import { SupabaseIdentityProvider } from './modules/auth/supabase-identity.provider';
+import { NeonIdentityProvider } from './modules/auth/neon-identity.provider';
 import { RedisKeyValueStore } from './runtime/redis-key-value-store';
 import { resolveServices } from './runtime/services';
 
@@ -28,15 +28,15 @@ async function bootstrap(): Promise<void> {
   await startTracing('relay-api');
 
   const kv = await RedisKeyValueStore.connect(config, logger);
-  const services = await resolveServices({ config, logger, kv, clock: systemClock });
+  const runtime = resolveServices({ config, logger, kv, clock: systemClock });
 
   const app = await createApiApp({
-    services,
+    services: runtime.services,
     kv,
     clock: systemClock,
     config,
     logger,
-    identityProvider: new SupabaseIdentityProvider(config, logger),
+    identityProvider: new NeonIdentityProvider(config, logger),
     corsOrigins: [config.core.appUrl].filter(
       (origin): origin is string => typeof origin === 'string' && origin.length > 0,
     ),
@@ -71,6 +71,7 @@ async function bootstrap(): Promise<void> {
 
     void app
       .close()
+      .then(() => runtime.close())
       .then(() => kv.disconnect())
       .then(() => {
         logger.info({ signal }, 'api_shutdown_complete');

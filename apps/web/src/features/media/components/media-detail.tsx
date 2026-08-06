@@ -5,17 +5,16 @@
  * rights, plus the picture editor. A row of facts, not a wall of cards.
  */
 
-import { useState, type ReactNode } from 'react';
-import { Button, Tabs, TabsContent, TabsList, TabsTrigger } from '@relay/design-system/primitives';
+import type { ReactNode } from 'react';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@relay/design-system/primitives';
 import { DefinitionList, Notice } from '@relay/design-system/patterns';
 import { useTranslations } from '@relay/i18n/react';
 import { formatBytes, formatDateTime, formatDuration } from '@relay/i18n';
 
 import { AltTextForm } from './alt-text-form';
-import { PictureEditor } from './picture-editor';
 import { RightsForm } from './rights-form';
 import type { AccountRule } from '../state/media-rules';
-import type { MediaAsset, MediaEditPlan, RightsDeclaration } from '../types';
+import type { MediaAsset, RightsDeclaration } from '../types';
 
 export interface MediaDetailProps {
   readonly asset: MediaAsset;
@@ -29,8 +28,6 @@ export interface MediaDetailProps {
   readonly onSaveRights: (
     declaration: Omit<RightsDeclaration, 'declaredByName' | 'declaredAt'>,
   ) => Promise<void>;
-  readonly onSaveEdit: (plan: MediaEditPlan) => Promise<void>;
-  readonly onRestoreVersion: (version: number) => Promise<void>;
   readonly onSuggestAltText?: () => Promise<string>;
 }
 
@@ -40,12 +37,9 @@ export function MediaDetail({
   timeZone,
   onSaveAltText,
   onSaveRights,
-  onSaveEdit,
-  onRestoreVersion,
   onSuggestAltText,
 }: MediaDetailProps): ReactNode {
   const t = useTranslations();
-  const [editing, setEditing] = useState(false);
 
   return (
     <div className="flex flex-col gap-5">
@@ -100,7 +94,20 @@ export function MediaDetail({
               dateStyle: 'medium',
               timeStyle: 'short',
             }),
-            hint: t.full('library.asset.usedInPosts', { count: asset.usedInPostCount }),
+            ...(asset.usedInPostCount === null
+              ? {}
+              : { hint: t.full('library.asset.usedInPosts', { count: asset.usedInPostCount }) }),
+          },
+          {
+            id: 'retention',
+            term: t.full('mediaLib.retention.expiresLabel'),
+            definition: asset.storageAvailable
+              ? formatDateTime(t.locale, asset.retentionExpiresAt, {
+                  timeZone,
+                  dateStyle: 'medium',
+                  timeStyle: 'short',
+                })
+              : t.full('mediaLib.retention.deleted'),
           },
         ]}
       />
@@ -123,7 +130,7 @@ export function MediaDetail({
                   : asset.provenance.origin === 'api'
                     ? t.full('library.asset.origin.api')
                     : t.full('library.asset.origin.upload', {
-                        name: asset.provenance.addedByName,
+                        name: asset.provenance.addedByName ?? t.full('common.unavailable'),
                       }),
             },
             ...(asset.provenance.sourceUrl === null
@@ -180,6 +187,26 @@ export function MediaDetail({
         ) : null}
       </section>
 
+      {asset.scanState === 'clean' && asset.storageAvailable ? null : (
+        <Notice
+          tone="warning"
+          title={t.full(
+            !asset.storageAvailable
+              ? 'mediaLib.retention.deletedTitle'
+              : asset.scanState === 'pending'
+                ? 'mediaLib.processing.pendingTitle'
+                : 'mediaLib.processing.blockedTitle',
+          )}
+          description={t.full(
+            !asset.storageAvailable
+              ? 'mediaLib.retention.deletedBody'
+              : asset.scanState === 'pending'
+                ? 'mediaLib.processing.pendingBody'
+                : 'mediaLib.processing.blockedBody',
+          )}
+        />
+      )}
+
       <Tabs defaultValue="alt">
         <TabsList>
           <TabsTrigger value="alt">{t.full('mediaLib.alt.heading')}</TabsTrigger>
@@ -234,15 +261,6 @@ export function MediaDetail({
                     </span>
                   ) : null}
                 </span>
-                {version.version === asset.currentVersion ? null : (
-                  <Button
-                    variant="secondary"
-                    size="sm"
-                    onClick={() => void onRestoreVersion(version.version)}
-                  >
-                    {t.full('mediaLib.versions.restore', { version: version.version })}
-                  </Button>
-                )}
               </li>
             ))}
           </ul>
@@ -252,21 +270,11 @@ export function MediaDetail({
         </TabsContent>
       </Tabs>
 
-      {editing ? (
-        <PictureEditor
-          asset={asset}
-          rules={rules}
-          onSave={async (plan) => {
-            await onSaveEdit(plan);
-            setEditing(false);
-          }}
-          onCancel={() => setEditing(false)}
-        />
-      ) : (
-        <Button variant="secondary" onClick={() => setEditing(true)}>
-          {t.full('mediaLib.editor.heading')}
-        </Button>
-      )}
+      <Notice
+        tone="info"
+        title={t.full('mediaLib.editor.unavailable.title')}
+        description={t.full('mediaLib.editor.unavailable.body')}
+      />
     </div>
   );
 }

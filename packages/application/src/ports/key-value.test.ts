@@ -102,6 +102,28 @@ describe('RecordingMailer', () => {
 });
 
 describe('InMemoryScheduler', () => {
+  const workflowInput = {
+    ctx: {
+      workspaceId: 'ws-1',
+      correlationId: 'corr-1',
+      actorId: 'user-1',
+      actorType: 'user' as const,
+      surface: 'web' as const,
+      approvalLevel: 'level_3_confirm' as const,
+      locale: 'en',
+    },
+    publishJobId: 'job-1',
+    contentItemId: 'content-1',
+    contentVersionId: 'version-1',
+    contentVersionChecksum: 'a'.repeat(64),
+    idempotencyKey: 'pj_abc',
+    executeAt: '2026-08-05T09:00:00.000Z',
+    scheduledLocalTime: '2026-08-05T09:00:00',
+    ianaTimeZone: 'UTC',
+    targets: [],
+    immediate: false,
+  } as const;
+
   it('mints a deterministic workflow id', async () => {
     const scheduler = new InMemoryScheduler(new FixedClock());
     const started = await scheduler.schedulePublish({
@@ -109,6 +131,7 @@ describe('InMemoryScheduler', () => {
       workspaceId: 'ws-1',
       executeAt: new Date('2026-08-05T09:00:00.000Z'),
       idempotencyKey: 'pj_abc',
+      workflowInput,
     });
     expect(started.workflowId).toBe(publishWorkflowId('ws-1', 'job-1'));
   });
@@ -120,6 +143,7 @@ describe('InMemoryScheduler', () => {
       workspaceId: 'ws-1',
       executeAt: new Date('2026-08-05T09:00:00.000Z'),
       idempotencyKey: 'pj_abc',
+      workflowInput,
     };
     const first = await scheduler.schedulePublish(input);
     const second = await scheduler.schedulePublish({
@@ -140,10 +164,15 @@ describe('InMemoryScheduler', () => {
       workspaceId: 'ws-1',
       executeAt: new Date('2026-08-05T09:00:00.000Z'),
       idempotencyKey: 'pj_abc',
+      workflowInput,
     });
-    await scheduler.cancelPublish({ jobId: 'job-1', reason: 'user_canceled' });
+    await scheduler.cancelPublish({
+      jobId: 'job-1',
+      workspaceId: 'ws-1',
+      reason: 'user_canceled',
+    });
     expect(scheduler.publishes.get('job-1')?.canceled).toBe(true);
-    expect(await scheduler.describe('job-1')).toEqual({
+    expect(await scheduler.describe({ jobId: 'job-1', workspaceId: 'ws-1' })).toEqual({
       status: 'CANCELED',
       historyLength: 1,
     });
@@ -151,6 +180,6 @@ describe('InMemoryScheduler', () => {
 
   it('reports nothing for a job it never saw', async () => {
     const scheduler = new InMemoryScheduler(new FixedClock());
-    expect(await scheduler.describe('job-unknown')).toBeNull();
+    expect(await scheduler.describe({ jobId: 'job-unknown', workspaceId: 'ws-1' })).toBeNull();
   });
 });

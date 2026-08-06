@@ -31,7 +31,7 @@ export interface RuntimeOptions {
   readonly logger: Logger;
   /**
    * Bound here rather than inside `AuthModule` so there is exactly one binding
-   * site. A deployment passes `SupabaseIdentityProvider`; a test passes its own
+   * site. A deployment passes `NeonIdentityProvider`; a test passes its own
    * implementation, so no auth route ever reaches a network.
    */
   readonly identityProvider: IdentityProvider;

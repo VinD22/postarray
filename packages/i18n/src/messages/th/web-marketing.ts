@@ -1067,10 +1067,10 @@ export const webMarketingMessages = {
   'web.opportunities.category.partner': 'ระบบนิเวศของคู่ค้าและไดเร็กทอรีการบูรณาการ',
   'web.opportunities.category.editorial': 'บทแนะนำสำหรับแขก พอดแคสต์ และจดหมายข่าว',
   'web.opportunities.category.openSource': 'รายการโอเพ่นซอร์สและทรัพยากรเอกสาร',
-  'web.legal.subprocessors.supabase.label': 'ซูปาเบส',
-  'web.legal.subprocessors.supabase.purpose':
+  'web.legal.subprocessors.neon.label': 'Neon',
+  'web.legal.subprocessors.neon.purpose':
     'PostgreSQL ที่มีการจัดการ การรับรองความถูกต้อง และพื้นที่จัดเก็บอ็อบเจ็กต์',
-  'web.legal.subprocessors.supabase.data':
+  'web.legal.subprocessors.neon.data':
     'บันทึกทางบัญชี เนื้อหา สื่อ กำหนดการ ใบเสร็จรับเงิน และเหตุการณ์การตรวจสอบ',
   'web.legal.subprocessors.temporal.label': 'เมฆชั่วคราว',
   'web.legal.subprocessors.temporal.purpose':

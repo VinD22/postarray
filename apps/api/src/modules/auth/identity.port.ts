@@ -3,13 +3,13 @@ import { z } from 'zod';
 /**
  * The identity provider port.
  *
- * Supabase Auth is the identity provider for all four real login methods. This
+ * Neon Auth is the identity provider for all four real login methods. This
  * interface is what `apps/api` needs from it, so the transport layer can be
  * tested without a network and so a provider migration is one implementation
  * rather than a rewrite of every route.
  *
  * What this port deliberately does **not** carry: a third-party provider token.
- * Supabase hands one back during a social login and we discard it. A
+ * The provider may hand one back during a social login and we discard it. A
  * login-scoped Google token is not a YouTube publishing credential, and reusing
  * it as one is both a policy violation and a design that breaks the first time
  * a scope changes (`04-auth-oauth-and-security.md`, section 6).
@@ -64,7 +64,7 @@ export interface IdentityProvider {
    */
   verifyDummyCredential(): Promise<void>;
 
-  /** Send a magic link or one-time code. Always reports success to the caller. */
+  /** Send a one-time email code. Always reports success to the caller. */
   sendMagicLink(input: { email: string; locale: string }): Promise<void>;
 
   /** Exchange a one-time code for a session. Null on any failure. */

@@ -30,12 +30,12 @@ export const webMarketingMessages = {
   'web.nav.closeMenu': 'Close the menu',
   'web.nav.footerLabel': 'Footer navigation',
 
-  'web.cta.startTrial': 'Start the 7 day trial',
+  'web.cta.startTrial': 'Join the public prelaunch',
   'web.cta.seePricing': 'See the price',
   'web.cta.seeCapabilities': 'Read the capability matrix',
   'web.cta.readDocs': 'Read the documentation',
   'web.cta.trialFootnote':
-    'Polar collects a payment method, charges $0 today, and shows the exact first charge date before you confirm.',
+    'Prelaunch access is free. Checkout stays closed until connector, reliability and legal gates pass.',
 
   'web.label.lastReviewed': 'Last reviewed {date}',
   'web.label.nextReview': 'Next review {date}',
@@ -82,7 +82,7 @@ export const webMarketingMessages = {
     'One backend behind the web app, the REST API, a remote MCP server, the CLI and signed webhooks. Same approval rules on every surface.',
   'web.meta.pricing.title': 'Pricing',
   'web.meta.pricing.description':
-    'One plan. $29 a month, or $300 a year which is $25 a month billed annually. 30 active channels, unlimited team members, no feature tiers.',
+    'Planned paid pricing is $29 a month or $300 a year. The plan includes 10 active channels and an owner plus 5 teammates. Checkout is closed during prelaunch.',
   'web.meta.resources.title': 'Resources',
   'web.meta.resources.description':
     'Status, changelog, documentation, methodology, comparisons, the tool radar and the opportunity catalog.',
@@ -120,7 +120,7 @@ export const webMarketingMessages = {
   'web.home.lede':
     'Relay is a publishing desk for people who are accountable for what goes out. You write once, adapt per platform, see the real limits before you schedule, get the approval you need, publish through official platform APIs, and keep a receipt for every post.',
   'web.home.summaryLine':
-    'One plan at $29 a month or $300 a year. 30 active social channels, unlimited team members, no feature tiers. The seven day trial collects a payment method and charges $0 at checkout.',
+    'Public prelaunch access is free. Planned paid pricing is $29 a month or $300 a year for 10 active social channels and an owner plus 5 teammates.',
 
   'web.home.example.title': 'One idea, five platform-native versions',
   'web.home.example.body':
@@ -171,7 +171,7 @@ export const webMarketingMessages = {
     'An agent cannot bypass an approval policy by using a different surface, because the policy is enforced in the service, not in the interface.',
   'web.home.pillars.economics.title': 'Economics you can predict',
   'web.home.pillars.economics.body':
-    'One price, every shipped feature, 30 active channels and unlimited team members. Platform usage that a provider charges per operation is passed through at cost and shown before you confirm the action.',
+    'One price, every shipped feature, 10 active channels and an owner plus 5 teammates. Platform usage that a provider charges per operation is passed through at cost and shown before you confirm the action.',
   'web.home.pillars.economics.proof':
     'There is no image or video generation credit system, because Relay does not generate media.',
 
@@ -220,7 +220,7 @@ export const webMarketingMessages = {
    * `web.home.pillars.economics.*` above.
    */
   'web.home.v2.heroTemplate': 'Native, on-brand posts for {platform}.',
-  'web.home.v2.sticker.trial': '7 day trial',
+  'web.home.v2.sticker.trial': 'Public prelaunch',
   'web.home.v2.sticker.official': 'Official APIs only',
   'web.home.v2.marqueeCaption': 'Official APIs only.',
   'web.home.v2.surfacesStat': 'Surfaces on one shared backend',
@@ -342,10 +342,10 @@ export const webMarketingMessages = {
     'Every publication produces an immutable receipt with the external post ID and the full attempt history. When a client asks whether something went out at nine, the answer has a timestamp and a platform identifier attached.',
   'web.agencies.job.roles.title': 'Roles that match how the work is split',
   'web.agencies.job.roles.body':
-    'Owner, admin, manager, editor, approver, analyst and viewer, scoped per brand and per account. Unlimited team members, because charging per seat makes agencies share logins and that is a security problem.',
+    'Owner, admin, editor, approver, analyst and viewer, scoped per brand and per account. Each workspace includes the owner and up to 5 teammates. Every action is attributed to the person who completed it.',
   'web.agencies.limits.title': 'The boundary, stated plainly',
   'web.agencies.limits.body':
-    'One plan covers 30 active social channels. A channel is one social account, Page, profile, group or publication connection. If you need more than 30, tell us what you need and we will give you a straight answer rather than a hidden tier.',
+    'One plan covers 10 active social channels. A channel is one social account, Page, profile, group or publication connection. Disconnect a channel before adding another when all 10 are active.',
 
   'web.developers.title': 'For developers',
   'web.developers.lede':
@@ -379,7 +379,7 @@ export const webMarketingMessages = {
 
   'web.pricing.title': 'One plan',
   'web.pricing.lede':
-    'There are no feature tiers, so there is no comparison table to read. Both billing intervals unlock every shipped feature.',
+    'There are no feature tiers. Checkout is closed during public prelaunch, so no payment method is collected yet. These are the planned paid terms.',
   'web.pricing.intervalHeading': 'Choose how you pay',
   'web.pricing.monthlyLabel': 'Billed monthly',
   'web.pricing.annualLabel': 'Billed annually',
@@ -390,9 +390,9 @@ export const webMarketingMessages = {
 
   'web.pricing.beside.title': 'What you are agreeing to',
   'web.pricing.beside.channels':
-    '30 active social channels. A channel is one social account, Page, profile, group or publication connection.',
+    '10 active social channels. A channel is one social account, Page, profile, group or publication connection.',
   'web.pricing.beside.members':
-    'Unlimited team members, workspaces and brand groups. There is no per seat charge.',
+    'One owner and up to 5 teammates in each workspace. There is no separate per-seat charge within that limit.',
   'web.pricing.beside.fairUse':
     'Unlimited drafts, scheduled posts and stored receipts under a published fair use and anti spam policy. Those controls exist to protect your connected accounts and they apply identically to every subscriber.',
   'web.pricing.beside.metered':
@@ -400,11 +400,11 @@ export const webMarketingMessages = {
   'web.pricing.beside.noMedia':
     'AI image generation and AI video generation are not included and are not sold. There are no media credits, because Relay does not generate media.',
   'web.pricing.beside.trial':
-    'The trial runs for seven days with every feature. Polar collects a payment method at checkout and charges $0 today. The exact first charge amount and date are shown next to the start action before you confirm.',
+    'When paid access opens, the trial will run for seven days with every shipped feature. Polar will show the exact first charge amount and date before you confirm.',
   'web.pricing.beside.conversion':
-    'If you do nothing, the trial converts on day seven to the interval you chose and Polar charges the amount shown at checkout. Polar emails a reminder three days before that happens.',
+    'When checkout opens, an uncanceled trial will convert on day seven to the interval you chose. Polar will email a reminder three days before that happens.',
   'web.pricing.beside.cancel':
-    'Cancel from Settings at any time without contacting support. Cancel before the trial converts and no charge is attempted. Cancel after that and you keep access until the paid period ends.',
+    'Paid access is not active during prelaunch. When it opens, you will be able to cancel from Settings without contacting support.',
   'web.pricing.beside.data':
     'Nothing is deleted when a subscription ends. You can export your content, receipts and analytics, and you can delete them yourself.',
 
@@ -418,9 +418,9 @@ export const webMarketingMessages = {
     'A quote goes up only when the customer wrote it, gave written permission for it, and we can point to the work it describes. Until then an empty space is more honest than a wall of invented praise.',
 
   'web.pricing.faq.title': 'Questions people ask before paying',
-  'web.pricing.faq.channels.q': 'What happens if I go over 30 channels',
+  'web.pricing.faq.channels.q': 'What happens if I reach 10 channels',
   'web.pricing.faq.channels.a':
-    'Nothing is disconnected and nothing is deleted. Channels over the limit become read only, you choose which ones stay active, and we tell you before it happens.',
+    'Nothing is disconnected and nothing is deleted. A new connection is not activated until you disconnect one of the 10 active channels.',
   'web.pricing.faq.refund.q': 'Do you refund',
   'web.pricing.faq.refund.a':
     'Yes, under the published refund and cancellation policy, and always where consumer law requires it. Billing is handled by Polar as merchant of record and refunds are issued through Polar.',
@@ -1296,10 +1296,9 @@ export const webMarketingMessages = {
   /* Subprocessors and retention                                             */
   /* ---------------------------------------------------------------------- */
 
-  'web.legal.subprocessors.supabase.label': 'Supabase',
-  'web.legal.subprocessors.supabase.purpose':
-    'Managed PostgreSQL, authentication and object storage.',
-  'web.legal.subprocessors.supabase.data':
+  'web.legal.subprocessors.neon.label': 'Neon',
+  'web.legal.subprocessors.neon.purpose': 'Managed PostgreSQL, authentication and object storage.',
+  'web.legal.subprocessors.neon.data':
     'Account records, content, media, schedules, receipts and audit events.',
   'web.legal.subprocessors.temporal.label': 'Temporal Cloud',
   'web.legal.subprocessors.temporal.purpose':
@@ -1339,9 +1338,9 @@ export const webMarketingMessages = {
     'Encrypted while the connection is active. Revoked at the platform and deleted here as soon as you disconnect.',
   'web.legal.retention.oauthState.label': 'OAuth transaction state',
   'web.legal.retention.oauthState.period': 'Minutes, then deleted.',
-  'web.legal.retention.drafts.label': 'Drafts and media',
+  'web.legal.retention.drafts.label': 'Draft text and uploaded media',
   'web.legal.retention.drafts.period':
-    'While the account is active, or your own retention setting, with a trash grace period.',
+    'Draft text stays while the account is active. Each uploaded file is permanently deleted from our storage 30 days after upload.',
   'web.legal.retention.receipts.label': 'Publication receipts and audit events',
   'web.legal.retention.receipts.period':
     'Kept for the plan and legal retention period, minimized, and exportable at any time.',
@@ -1391,7 +1390,7 @@ export const webMarketingMessages = {
   /** Reused by every WP-3 page whose closing band has no page-specific copy. */
   'web.marketing.v2.closing.title': 'Try it on your own accounts',
   'web.marketing.v2.closing.body':
-    'Seven days, real connectors, no staged demo data. Cancel any time before it converts.',
+    'Join the public prelaunch. Connector availability is shown account by account, and checkout stays closed until the launch gates pass.',
 
   'web.product.v2.demo.title': 'One brief, five platform-native drafts',
   'web.product.v2.demo.body':
@@ -1406,7 +1405,7 @@ export const webMarketingMessages = {
   'web.creators.v2.phone.caption': 'One brief, adapted to the platform it lands on.',
 
   'web.agencies.v2.channelsLabel': 'Active social channels, one plan',
-  'web.agencies.v2.membersSticker': 'Unlimited team members',
+  'web.agencies.v2.membersSticker': 'Owner plus 5 teammates',
 
   'web.developers.v2.terminal.title': 'Two commands, machine readable',
 

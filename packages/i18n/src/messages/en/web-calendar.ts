@@ -260,6 +260,9 @@ export const webCalendarMessages = {
   'web.receipt.partial.retryFailedOnly': 'Retry only the targets that failed',
   'web.receipt.partial.retryHint':
     'A retry never touches a target that already produced an external post.',
+  'web.receipt.partial.retryUnavailable.title': 'Retry is not available in prelaunch',
+  'web.receipt.partial.retryUnavailable.body':
+    'Schedule the failed account again as a new post. Accounts that already published will not be touched.',
 
   'web.receipt.remediation.user_action_required':
     'This needs a change in Relay or on {provider} before it can run again.',

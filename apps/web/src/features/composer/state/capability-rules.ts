@@ -135,7 +135,7 @@ export function checkBodyCompatibility(
 
 export interface MediaFacts {
   readonly id: string;
-  readonly name: string;
+  readonly name: string | null;
   readonly mimeType: string;
   readonly kind: MediaKind;
   readonly bytes: number;
@@ -158,7 +158,7 @@ export function checkMediaCompatibility(
     if (!acceptsMimeType(snapshot, file.mimeType)) {
       reasons.push({
         code: 'media_kind_unsupported',
-        params: { mimeType: file.mimeType, name: file.name },
+        params: { mimeType: file.mimeType, name: file.name ?? file.mimeType },
       });
     }
   }

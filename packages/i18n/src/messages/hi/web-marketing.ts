@@ -1275,9 +1275,9 @@ export const webMarketingMessages = {
   /* Subprocessors and retention                                             */
   /* ---------------------------------------------------------------------- */
 
-  'web.legal.subprocessors.supabase.label': 'सुपाबेस',
-  'web.legal.subprocessors.supabase.purpose': 'प्रबंधित PostgreSQL, प्रमाणीकरण और ऑब्जेक्ट भंडारण।',
-  'web.legal.subprocessors.supabase.data':
+  'web.legal.subprocessors.neon.label': 'Neon',
+  'web.legal.subprocessors.neon.purpose': 'प्रबंधित PostgreSQL, प्रमाणीकरण और ऑब्जेक्ट भंडारण।',
+  'web.legal.subprocessors.neon.data':
     'खाता रिकॉर्ड, सामग्री, मीडिया, शेड्यूल, रसीदें और ऑडिट इवेंट।',
   'web.legal.subprocessors.temporal.label': 'अस्थायी बादल',
   'web.legal.subprocessors.temporal.purpose':

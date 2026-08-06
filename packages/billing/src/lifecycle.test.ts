@@ -23,6 +23,7 @@ import type { OrderEvent, WebhookProcessor } from './webhooks';
 const START = '2026-08-04T14:00:00.000Z';
 
 const config: PolarConfig = {
+  checkoutEnabled: false,
   accessToken: undefined,
   webhookSecret: undefined,
   server: 'sandbox',

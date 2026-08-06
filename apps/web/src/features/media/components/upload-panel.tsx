@@ -12,7 +12,7 @@
 import { useRef, useState, type ReactNode } from 'react';
 import { Upload } from 'lucide-react';
 import { Button, Progress } from '@relay/design-system/primitives';
-import { OfflineBanner } from '@relay/design-system/patterns';
+import { Notice, OfflineBanner } from '@relay/design-system/patterns';
 import { useTranslations } from '@relay/i18n/react';
 import { formatBytes } from '@relay/i18n';
 import { cn } from '@relay/design-system/utils';
@@ -60,6 +60,11 @@ export function UploadPanel({
           description={t.full('mediaLib.upload.offline')}
         />
       )}
+
+      <Notice tone="info" title={t.full('mediaLib.retention.title')}>
+        <p>{t.full('mediaLib.retention.body')}</p>
+        <p>{t.full('mediaLib.retention.limits')}</p>
+      </Notice>
 
       <div
         onDragOver={(event) => {

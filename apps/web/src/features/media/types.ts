@@ -16,7 +16,7 @@ export interface RightsDeclaration {
   readonly peopleAppear: boolean;
   readonly peopleConsented: boolean;
   readonly containsMusic: boolean;
-  readonly declaredByName: string;
+  readonly declaredByName: string | null;
   readonly declaredAt: string;
 }
 
@@ -28,7 +28,7 @@ export interface MediaProvenance {
   readonly declaredLicense: string | null;
   /** Embedded C2PA style credentials, when the file carries any. */
   readonly contentCredentials: string | null;
-  readonly addedByName: string;
+  readonly addedByName: string | null;
 }
 
 export interface MediaVersion {
@@ -44,7 +44,7 @@ export interface MediaVersion {
 
 export interface MediaAsset {
   readonly id: string;
-  readonly name: string;
+  readonly name: string | null;
   readonly kind: MediaKind;
   readonly mimeType: string;
   readonly bytes: number;
@@ -53,6 +53,9 @@ export interface MediaAsset {
   readonly durationSeconds: number | null;
   readonly checksum: string;
   readonly createdAt: string;
+  readonly scanState: 'pending' | 'clean' | 'suspicious' | 'infected' | 'failed';
+  readonly retentionExpiresAt: string;
+  readonly storageAvailable: boolean;
   readonly altText: string | null;
   readonly altTextWaived: boolean;
   readonly altTextWaivedReason: string | null;
@@ -62,7 +65,8 @@ export interface MediaAsset {
   readonly provenance: MediaProvenance;
   readonly versions: readonly MediaVersion[];
   readonly currentVersion: number;
-  readonly usedInPostCount: number;
+  /** Null means the API did not supply usage data. It must never be rendered as zero. */
+  readonly usedInPostCount: number | null;
   readonly thumbnailMediaId: string | null;
 }
 
@@ -138,6 +142,8 @@ export interface UploadItem {
   readonly status: UploadStatus;
   /** The resumable session, so a dropped connection continues rather than restarts. */
   readonly uploadUrl: string | null;
+  /** The durable media reservation returned with the upload ticket. */
+  readonly uploadId: string | null;
   /** Catalog key plus values, so the reason is a real sentence in any locale. */
   readonly reason: {
     readonly key: string;

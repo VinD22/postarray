@@ -12,13 +12,8 @@ import { useCallback, useMemo, type ReactNode } from 'react';
 import { useRouter } from 'next/navigation';
 
 import { api, newIdempotencyKey } from '@/lib/api';
-import type {
-  AccountRule,
-  LibraryStatus,
-  MediaAsset,
-  MediaEditPlan,
-  UploadTransport,
-} from '@/features/media';
+import type { AccountRule, LibraryStatus, MediaAsset, UploadTransport } from '@/features/media';
+import { sha256File } from '@/features/media/state/file-checksum';
 
 import { LibraryClient } from './library-client';
 
@@ -36,51 +31,49 @@ export function LibraryGateway(props: LibraryGatewayProps): ReactNode {
   const router = useRouter();
   const refresh = useCallback(() => router.refresh(), [router]);
 
-  const transport = useMemo<UploadTransport>(
-    () => ({
-      createUploadUrl: async (file) => {
+  const transport = useMemo<UploadTransport>(() => {
+    const headersByUrl = new Map<string, Readonly<Record<string, string>>>();
+    return {
+      createUploadUrl: async (file, signal) => {
+        const sha256 = await sha256File(file, signal);
         const created = await api.media.createUploadUrl(
           {
-            fileName: file.name,
+            filename: file.name,
             mimeType: file.type,
             byteSize: file.size,
+            sha256,
           },
           newIdempotencyKey('media_upload'),
         );
+        headersByUrl.set(created.uploadUrl, created.headers);
         // The reserved media id is the handle the resumable session is
         // finalized against, so it travels with the queue item as its upload id.
         return { uploadUrl: created.uploadUrl, uploadId: created.mediaId };
       },
-      // One chunk per call, resumable: the offset is authoritative, so a retry
-      // after a dropped connection continues rather than duplicating bytes.
+      // Neon accepts one signed PUT. A retry reuses the media reservation but
+      // sends the current file again; the UI does not claim byte-level resume.
       sendChunk: async (uploadUrl, file, offset, signal) => {
-        const end = Math.min(offset + 4 * 1024 * 1024, file.size);
+        if (offset > 0) {
+          return file.size;
+        }
         const response = await fetch(uploadUrl, {
-          method: 'PATCH',
+          method: 'PUT',
           headers: {
-            'content-type': 'application/offset+octet-stream',
-            'upload-offset': String(offset),
+            ...headersByUrl.get(uploadUrl),
           },
-          body: file.slice(offset, end),
+          body: file,
           signal,
         });
         if (!response.ok) {
           throw new Error('UPLOAD_CHUNK_FAILED');
         }
-        const confirmed = Number(response.headers.get('upload-offset') ?? end);
-        return Number.isFinite(confirmed) ? confirmed : end;
+        return file.size;
       },
-      // The checksum is computed over the file the browser actually holds, so
-      // the server can reject a session whose stored bytes drifted from it.
-      finalize: async (uploadId, file) => {
-        const digest = await crypto.subtle.digest('SHA-256', await file.arrayBuffer());
-        const checksum = Array.from(new Uint8Array(digest))
-          .map((byte) => byte.toString(16).padStart(2, '0'))
-          .join('');
+      // Finalization re-reads object metadata and verifies it against the
+      // checksum recorded when the ticket was created.
+      finalize: async (uploadId, _file) => {
         const finalized = await api.media.finalizeUpload(
           uploadId,
-          // Rights are declared on the asset afterwards, on the rights form.
-          { checksum, rightsDeclared: false },
           newIdempotencyKey('media_finalize'),
         );
         if (finalized === null) {
@@ -88,9 +81,8 @@ export function LibraryGateway(props: LibraryGatewayProps): ReactNode {
         }
         return { mediaId: finalized.id };
       },
-    }),
-    [],
-  );
+    };
+  }, []);
 
   return (
     <LibraryClient
@@ -111,6 +103,7 @@ export function LibraryGateway(props: LibraryGatewayProps): ReactNode {
             : undefined;
         await api.media.setAltText(assetId, {
           altText: input.altText,
+          waived: input.waived,
           ...(waivedReason === undefined ? {} : { waivedReason }),
         });
         refresh();
@@ -120,21 +113,6 @@ export function LibraryGateway(props: LibraryGatewayProps): ReactNode {
           return;
         }
         await api.media.declareRights(assetId, declaration);
-        refresh();
-      }}
-      onSaveEdit={async (assetId, plan: MediaEditPlan) => {
-        if (props.readOnly) {
-          return;
-        }
-        // The edit creates a new version. The original is never overwritten.
-        await api.media.edit(assetId, plan);
-        refresh();
-      }}
-      onRestoreVersion={async (assetId, version) => {
-        if (props.readOnly) {
-          return;
-        }
-        await api.media.restoreVersion(assetId, version, newIdempotencyKey('media_restore'));
         refresh();
       }}
     />

@@ -60,6 +60,16 @@ export interface MembershipView {
   readonly acceptedAt: string | null;
 }
 
+export interface InvitationView {
+  readonly id: string;
+  readonly workspaceId: string;
+  readonly email: string;
+  readonly role: Role;
+  readonly state: 'pending' | 'accepted' | 'revoked' | 'expired';
+  readonly expiresAt: string;
+  readonly createdAt: string;
+}
+
 export interface BrandView {
   readonly id: string;
   readonly workspaceId: string;
@@ -341,11 +351,28 @@ export interface MediaAssetView {
   readonly width: number | null;
   readonly height: number | null;
   readonly durationMs: number | null;
+  /** Original client filename. Null for legacy/imported assets that did not record one. */
+  readonly fileName: string | null;
   readonly altText: string | null;
   readonly altTextWaived: boolean;
-  readonly rights: string;
+  readonly altTextWaivedReason: string | null;
+  readonly altTextWaivedByName: string | null;
+  readonly rights:
+    'owned_original' | 'licensed' | 'public_domain' | 'user_generated_with_consent' | 'unverified';
+  readonly rightsDeclaration: {
+    readonly owner: 'workspace' | 'licensed' | 'ugc';
+    readonly licenseReference: string | null;
+    readonly peopleAppear: boolean;
+    readonly peopleConsented: boolean;
+    readonly containsMusic: boolean;
+    readonly declaredByName: string | null;
+    readonly declaredAt: string;
+  } | null;
   readonly scanState: string;
   readonly originKind: string;
+  readonly originUrl: string | null;
+  readonly retentionExpiresAt: string;
+  readonly storageAvailable: boolean;
   readonly createdAt: string;
 }
 
@@ -569,6 +596,7 @@ export interface ApiKeyView {
   readonly name: string;
   readonly prefix: string;
   readonly scopes: readonly Scope[];
+  readonly createdByUserId: string;
   readonly serviceAccountId: string | null;
   readonly expiresAt: string | null;
   readonly lastUsedAt: string | null;

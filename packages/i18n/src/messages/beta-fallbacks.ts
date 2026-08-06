@@ -5,6 +5,9 @@
  */
 export const BETA_ENGLISH_FALLBACK_PREFIXES = [
   'billing.',
+  // Transactional security and invitation mail stays in reviewed English
+  // until each beta locale has a human-reviewed delivery template.
+  'email.',
   'settings.data.',
   'web.legal.',
   'web.meta.legal.',
@@ -18,6 +21,12 @@ export const BETA_ENGLISH_FALLBACK_PREFIXES = [
   'billing.ui.',
   'settings.ui.data.',
   'growth.ui.ugc.',
+  'mediaLib.retention.',
+  'mediaLib.processing.',
+  'validation.media_unavailable.',
+  'validation.media_rights_undeclared.',
+  'validation.media_not_ready.',
+  'validation.media_scan_blocked.',
 ] as const;
 
 /** B5-controlled keys whose namespace also contains ordinary interface copy. */
@@ -61,6 +70,23 @@ export const BETA_ENGLISH_FALLBACK_KEYS = [
   // WP-9 connections/receipts/library/action center (loud system pass): new
   // strings, English only until translated.
   'mediaLib.alt.nudge',
+  'mediaLib.editor.unavailable.title',
+  'mediaLib.editor.unavailable.body',
+  'web.agencies.job.roles.body',
+  'web.agencies.limits.body',
+  'web.receipt.partial.retryUnavailable.title',
+  'web.receipt.partial.retryUnavailable.body',
+  'validation.capability_unavailable.message',
+  'validation.content_kind_unsupported.message',
+  'validation.content_kind_not_implemented.message',
+  'validation.content_kind_requires_review.message',
+  'validation.mention_count_exceeded.message',
+  'validation.privacy_value_unsupported.message',
+  'validation.similar_within_window.message',
+  'validation.cross_account_similarity.message',
+  'validation.cross_account_similarity.remediation',
+  'validation.link_malformed.message',
+  'validation.no_targets_selected.message',
 ] as const;
 
 export function isBetaEnglishFallbackKey(key: string): boolean {

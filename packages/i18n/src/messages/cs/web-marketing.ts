@@ -1262,10 +1262,9 @@ export const webMarketingMessages = {
   /* Subprocessors and retention                                             */
   /* ---------------------------------------------------------------------- */
 
-  'web.legal.subprocessors.supabase.label': 'Supabase',
-  'web.legal.subprocessors.supabase.purpose':
-    'Spravovaný PostgreSQL, autentizace a úložiště objektů.',
-  'web.legal.subprocessors.supabase.data':
+  'web.legal.subprocessors.neon.label': 'Neon',
+  'web.legal.subprocessors.neon.purpose': 'Spravovaný PostgreSQL, autentizace a úložiště objektů.',
+  'web.legal.subprocessors.neon.data':
     'Záznamy účtů, obsah, média, plány, účtenky a auditní události.',
   'web.legal.subprocessors.temporal.label': 'Dočasný mrak',
   'web.legal.subprocessors.temporal.purpose':

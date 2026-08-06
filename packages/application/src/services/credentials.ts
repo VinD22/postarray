@@ -66,6 +66,10 @@ export function createCredentialVaultService(deps: ServiceDeps): CredentialVault
       });
     },
 
+    async describe(ctx: ActorContext, connectionId: string) {
+      return this.status(ctx, connectionId);
+    },
+
     async revoke(ctx: ActorContext, connectionId: string): Promise<void> {
       await authorized(deps, ctx, 'connection.disconnect', { connectionId }, async (db, actor) => {
         const removed = await db.socialCredential.deleteMany({ where: { connectionId } });

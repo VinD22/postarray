@@ -239,10 +239,10 @@ export interface Subprocessor {
 
 export const SUBPROCESSORS: readonly Subprocessor[] = [
   {
-    id: 'supabase',
-    nameKey: 'web.legal.subprocessors.supabase.label',
-    purposeKey: 'web.legal.subprocessors.supabase.purpose',
-    dataKey: 'web.legal.subprocessors.supabase.data',
+    id: 'neon',
+    nameKey: 'web.legal.subprocessors.neon.label',
+    purposeKey: 'web.legal.subprocessors.neon.purpose',
+    dataKey: 'web.legal.subprocessors.neon.data',
     region: null,
     vendorPending: false,
   },

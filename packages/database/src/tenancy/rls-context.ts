@@ -8,9 +8,8 @@ import { withWorkspace, type WorkspaceScopedClient } from './workspace-scope';
 /**
  * Row level security for server-side connections.
  *
- * Browser traffic reaches Postgres through the Supabase pooler, which sets the
- * `request.jwt.claims` GUC from the bearer token. A worker, the Nest API and the
- * CLI hold a direct connection and no pooler sets anything for them, so without
+ * Data API traffic reaches Postgres with Neon Auth claims. A worker, the Nest
+ * API and the CLI hold a direct connection and no proxy sets claims for them, so without
  * this helper their queries would run with empty claims. Because every policy in
  * `0020_rls_policies.sql` denies on empty claims, that fails closed rather than
  * open, but it also means nothing works. This is how a server-side caller says
@@ -32,7 +31,7 @@ export interface RlsClaims {
    */
   readonly workspaceId?: string;
   readonly role?: RlsRole;
-  /** Supabase auth subject, when the Relay user id has not been resolved yet. */
+  /** Neon Auth subject, when the Relay user id has not been resolved yet. */
   readonly authSubjectId?: string;
   /** The developer application acting on the user's behalf, for the audit line. */
   readonly clientId?: string;
@@ -126,7 +125,7 @@ export function buildClaimsPayload(claims: RlsClaims): string {
   }
 
   if (claims.authSubjectId !== undefined) {
-    assertUuid(claims.authSubjectId, 'authSubjectId');
+    assertAuthSubject(claims.authSubjectId);
     payload['sub'] = claims.authSubjectId;
   }
 
@@ -136,6 +135,20 @@ export function buildClaimsPayload(claims: RlsClaims): string {
   }
 
   return JSON.stringify(payload);
+}
+
+function assertAuthSubject(value: string): void {
+  const hasControlCharacter = [...value].some((character) => {
+    const codePoint = character.codePointAt(0) ?? 0;
+    return codePoint <= 31 || codePoint === 127;
+  });
+  if (value.length < 1 || value.length > 128 || /\s/u.test(value) || hasControlCharacter) {
+    throw new DatabaseError(
+      DATABASE_ERROR_CODES.invalidRlsContext,
+      'RLS claim "authSubjectId" must be an opaque identifier.',
+      { field: 'authSubjectId' },
+    );
+  }
 }
 
 function assertUuid(value: string, field: string): void {

@@ -45,7 +45,10 @@ export class WebhooksController {
   @RequireScope('webhooks:manage')
   @Idempotent()
   @HttpCode(201)
-  create(@Actor() actor: ActorContext, @Body() body: unknown): Promise<WebhookEndpoint> {
+  create(
+    @Actor() actor: ActorContext,
+    @Body() body: unknown,
+  ): Promise<{ endpoint: WebhookEndpoint; signingSecret: string }> {
     return this.webhooks.create(actor, parseBody(createWebhookEndpointSchema, body));
   }
 

@@ -5,12 +5,14 @@ import { createApiKeyService } from './api-keys';
 import { createApprovalService } from './approvals';
 import { createAuditService } from './audit';
 import { createAutomationRuleService } from './automation-rules';
+import { createBillingService } from './billing';
 import { createBrandService } from './brands';
 import { createConnectionService } from './connections';
 import { createContentService } from './content';
 import { createCredentialVaultService } from './credentials';
 import { createGrowthService } from './growth';
 import { createHealthService } from './health';
+import { createIdentityService } from './identity';
 import { createMediaService } from './media';
 import { createMembershipService } from './members';
 import { createOAuthAppService } from './oauth-apps';
@@ -58,6 +60,8 @@ export function createServices(deps: ServiceDeps): Services {
     credentials: createCredentialVaultService(deps),
     apiKeys: createApiKeyService(deps),
     oauthApps: createOAuthAppService(deps),
+    billing: createBillingService(deps),
+    identity: createIdentityService(deps),
     audit: createAuditService(deps),
     health: createHealthService(deps),
   };

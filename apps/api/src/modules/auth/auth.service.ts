@@ -84,7 +84,7 @@ export class AuthService {
    * Turn a provider session into ours, and set the cookies.
    *
    * The membership snapshot is read here rather than trusted from the provider:
-   * Supabase knows who the person is, and only the application layer knows what
+   * Neon Auth knows who the person is, and only the application layer knows what
    * they may currently do.
    */
   async establishSession(
@@ -270,7 +270,9 @@ export class AuthService {
   }
 
   recordConsent(input: {
-    userId: string;
+    identitySubjectId: string;
+    email: string;
+    locale: string;
     termsVersionHash: string;
     privacyVersionHash: string;
     countryCode: string | null;

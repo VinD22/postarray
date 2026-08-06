@@ -8,6 +8,7 @@
 export { LibraryScreen } from './components/library-screen';
 export type { LibraryScreenProps, LibraryStatus } from './components/library-screen';
 export { MediaDetail } from './components/media-detail';
+export { mediaAssetFromApi } from './state/from-api';
 export { MediaPickerDialog } from './components/media-picker-dialog';
 export { PictureEditor } from './components/picture-editor';
 export { UploadPanel } from './components/upload-panel';

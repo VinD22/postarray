@@ -30,9 +30,9 @@ describe('buildClaimsPayload', () => {
     });
   });
 
-  it('emits the Supabase subject under `sub`', () => {
-    const payload: unknown = JSON.parse(buildClaimsPayload({ authSubjectId: USER }));
-    expect(payload).toMatchObject({ sub: USER });
+  it('emits the opaque Neon Auth subject under `sub`', () => {
+    const payload: unknown = JSON.parse(buildClaimsPayload({ authSubjectId: 'neon_user_01ABC' }));
+    expect(payload).toMatchObject({ sub: 'neon_user_01ABC' });
   });
 
   it('rejects a non-UUID user id rather than sending a claim that silently denies', () => {
@@ -41,6 +41,10 @@ describe('buildClaimsPayload', () => {
 
   it('rejects a non-UUID workspace id', () => {
     expect(() => buildClaimsPayload({ workspaceId: 'ws_123' })).toThrowError(DatabaseError);
+  });
+
+  it('rejects an auth subject containing whitespace or control characters', () => {
+    expect(() => buildClaimsPayload({ authSubjectId: 'neon user' })).toThrowError(DatabaseError);
   });
 });
 

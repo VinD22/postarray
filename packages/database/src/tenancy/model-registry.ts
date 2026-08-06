@@ -14,6 +14,7 @@
 export const TENANT_MODELS = new Set<string>([
   // Identity and tenancy
   'membership',
+  'invitation',
   'rolePermission',
   'serviceAccount',
   'apiKey',
@@ -51,6 +52,8 @@ export const TENANT_MODELS = new Set<string>([
   'oAuthTransaction',
   'oAuthClient',
   'oAuthGrant',
+  'outboxEvent',
+  'outboxDeadLetter',
   'mediaAsset',
   'mediaDerivative',
   'publishJob',

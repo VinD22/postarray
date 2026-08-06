@@ -81,6 +81,16 @@ enum MembershipState {
   @@schema("app")
 }
 
+enum InvitationState {
+  pending
+  accepted
+  revoked
+  expired
+
+  @@map("invitation_state")
+  @@schema("private")
+}
+
 enum ActorType {
   user
   service_account
@@ -163,6 +173,7 @@ enum CreationSurface {
   cli
   rss
   automation_rule
+  agent
   import
 
   @@map("creation_surface")
@@ -731,9 +742,9 @@ enum SessionState {
 
 model User {
   id             String     @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  /// Supabase `auth.users.id`. Authentication is Supabase's job; this row is
-  /// our profile and tenancy anchor.
-  authSubjectId  String?    @unique @map("auth_subject_id") @db.Uuid
+  /// Neon Auth / Better Auth user id. Provider ids are opaque strings, while
+  /// this row remains our profile and tenancy anchor.
+  authSubjectId   String?    @unique @map("auth_subject_id")
   email          String     @unique @db.Citext
   emailVerifiedAt DateTime? @map("email_verified_at") @db.Timestamptz(6)
   displayName    String     @map("display_name")
@@ -821,6 +832,8 @@ model Workspace {
   oauthTransactions       OAuthTransaction[]
   oauthClients            OAuthClient[]
   oauthGrants             OAuthGrant[]
+  outboxEvents            OutboxEvent[]
+  outboxDeadLetters       OutboxDeadLetter[]
   mediaAssets             MediaAsset[]
   mediaDerivatives        MediaDerivative[]
   publishJobs             PublishJob[]
@@ -880,6 +893,30 @@ model Membership {
   @@index([workspaceId, role, state])
   @@map("memberships")
   @@schema("app")
+}
+
+/// Invitation bearer tokens are never stored. Only a SHA-256 digest is kept,
+/// and accepting also requires ownership of the invited email address.
+model Invitation {
+  id              String          @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  workspaceId     String          @map("workspace_id") @db.Uuid
+  email           String          @db.Citext
+  role            WorkspaceRole
+  note            String?
+  tokenHash       String          @unique @map("token_hash")
+  state           InvitationState @default(pending)
+  invitedByUserId String          @map("invited_by_user_id") @db.Uuid
+  expiresAt       DateTime        @map("expires_at") @db.Timestamptz(6)
+  acceptedAt      DateTime?       @map("accepted_at") @db.Timestamptz(6)
+  revokedAt       DateTime?       @map("revoked_at") @db.Timestamptz(6)
+  createdAt       DateTime        @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt       DateTime        @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  @@index([workspaceId])
+  @@index([workspaceId, state, expiresAt])
+  @@index([email, state])
+  @@map("invitations")
+  @@schema("private")
 }
 
 /// Built-in roles are code. This table stores per-workspace grants and denials
@@ -992,7 +1029,7 @@ model AuditEvent {
   @@schema("private")
 }
 
-/// Session metadata only. The session secret lives in Supabase Auth; this row
+/// Session metadata only. The provider session secret lives in Neon Auth; this row
 /// exists so a user can review and revoke devices and so privileged reads are
 /// attributable.
 model UserSession {
@@ -1025,6 +1062,7 @@ model Consent {
   kind            ConsentKind
   state           ConsentState @default(granted)
   documentVersion String       @map("document_version")
+  countryCode     String?      @map("country_code") @db.Char(2)
   grantedAt       DateTime     @default(now()) @map("granted_at") @db.Timestamptz(6)
   withdrawnAt     DateTime?    @map("withdrawn_at") @db.Timestamptz(6)
   ipAddress       String?      @map("ip_address") @db.Inet
@@ -1860,6 +1898,51 @@ model OAuthGrant {
   @@schema("private")
 }
 
+/// Transactional handoff from a database commit to Temporal. A dispatcher
+/// claims rows with SKIP LOCKED and every payload is independently idempotent.
+model OutboxEvent {
+  id             String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  workspaceId    String    @map("workspace_id") @db.Uuid
+  kind           String
+  dedupeKey      String    @map("dedupe_key")
+  payload        Json
+  availableAt    DateTime  @default(now()) @map("available_at") @db.Timestamptz(6)
+  attempts       Int       @default(0)
+  lastErrorCode  String?   @map("last_error_code")
+  claimedAt      DateTime? @map("claimed_at") @db.Timestamptz(6)
+  dispatchedAt   DateTime? @map("dispatched_at") @db.Timestamptz(6)
+  deadLetteredAt DateTime? @map("dead_lettered_at") @db.Timestamptz(6)
+  createdAt      DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
+
+  workspace Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+
+  @@unique([workspaceId, dedupeKey])
+  @@index([availableAt, id])
+  @@index([workspaceId])
+  @@map("outbox")
+  @@schema("private")
+}
+
+/// Immutable evidence for an outbox item that exhausted its dispatch budget.
+model OutboxDeadLetter {
+  id            String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  workspaceId   String   @map("workspace_id") @db.Uuid
+  outboxEventId String   @unique @map("outbox_event_id") @db.Uuid
+  kind          String
+  dedupeKey     String   @map("dedupe_key")
+  payload       Json
+  attempts      Int
+  errorCode     String   @map("error_code")
+  failedAt      DateTime @map("failed_at") @db.Timestamptz(6)
+  createdAt     DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+
+  workspace Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+
+  @@index([workspaceId, failedAt(sort: Desc)])
+  @@map("outbox_dead_letter")
+  @@schema("private")
+}
+
 model MediaAsset {
   id             String            @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   workspaceId    String            @map("workspace_id") @db.Uuid
@@ -1877,6 +1960,8 @@ model MediaAsset {
   frameRate      Float?            @map("frame_rate")
   altText        String?           @map("alt_text")
   altTextWaivedAt DateTime?        @map("alt_text_waived_at") @db.Timestamptz(6)
+  altTextWaivedReason String?           @map("alt_text_waived_reason")
+  altTextWaivedByName String?           @map("alt_text_waived_by_name")
   rights         RightsDeclaration @default(unverified)
   rightsNote     String?           @map("rights_note")
   /// Where the file came from, kept for provenance. An imported asset keeps the
@@ -1888,6 +1973,8 @@ model MediaAsset {
   metadata       Json              @default("{}")
   createdByUserId String?          @map("created_by_user_id") @db.Uuid
   deletedAt      DateTime?         @map("deleted_at") @db.Timestamptz(6)
+  retentionExpiresAt  DateTime          @map("retention_expires_at") @db.Timestamptz(6)
+  storageDeletedAt    DateTime?         @map("storage_deleted_at") @db.Timestamptz(6)
   createdAt      DateTime          @default(now()) @map("created_at") @db.Timestamptz(6)
   updatedAt      DateTime          @updatedAt @map("updated_at") @db.Timestamptz(6)
 
@@ -1897,6 +1984,7 @@ model MediaAsset {
   @@unique([workspaceId, checksumSha256])
   @@index([workspaceId])
   @@index([workspaceId, kind, createdAt(sort: Desc)])
+  @@index([retentionExpiresAt, storageDeletedAt])
   @@map("media_assets")
   @@schema("app")
 }

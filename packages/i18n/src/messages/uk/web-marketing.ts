@@ -1287,10 +1287,10 @@ export const webMarketingMessages = {
   /* Subprocessors and retention                                             */
   /* ---------------------------------------------------------------------- */
 
-  'web.legal.subprocessors.supabase.label': 'Надбаза',
-  'web.legal.subprocessors.supabase.purpose':
+  'web.legal.subprocessors.neon.label': 'Neon',
+  'web.legal.subprocessors.neon.purpose':
     'Керований PostgreSQL, автентифікація та зберігання об’єктів.',
-  'web.legal.subprocessors.supabase.data':
+  'web.legal.subprocessors.neon.data':
     'Облікові записи, вміст, медіа, графіки, квитанції та події аудиту.',
   'web.legal.subprocessors.temporal.label': 'Скронева хмара',
   'web.legal.subprocessors.temporal.purpose':

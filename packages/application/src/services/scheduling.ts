@@ -17,6 +17,7 @@ import type { CalendarEntry, PublishJobView } from '../views';
 
 import { recordAudit } from '../internal/audit';
 import { loadAggregate } from '../internal/content-store';
+import { enqueueWorkflowOutbox } from '../internal/enqueue-outbox';
 import { invalid, notFound } from '../internal/errors';
 import { withIdempotency } from '../internal/idempotency';
 import { toLocalDateTime, toProviderId } from '../internal/mappers';
@@ -157,7 +158,16 @@ export function createSchedulingService(
                 state: 'scheduled',
               },
             });
-            await deps.scheduler.reschedulePublish({ jobId: job.id, executeAt: next });
+            await enqueueWorkflowOutbox(db, {
+              kind: 'reschedule_publish',
+              dedupeKey: `reschedule-publish:${job.id}:${ctx.idempotencyKey ?? spec.instant}`,
+              payload: {
+                jobId: job.id,
+                workspaceId: ctx.workspaceId,
+                executeAt: next.toISOString(),
+                ianaTimeZone: spec.ianaTimeZone,
+              },
+            });
 
             await recordAudit(db, actor, {
               action: 'post.rescheduled',
@@ -205,10 +215,18 @@ export function createSchedulingService(
               throw invalid('errors.job_already_published', { jobId: job.id });
             }
 
-            await deps.scheduler.cancelPublish({ jobId: job.id, reason: input.reason });
             await db.publishJob.update({
               where: { id: job.id },
               data: { state: 'canceled', canceledAt: deps.clock.now() },
+            });
+            await enqueueWorkflowOutbox(db, {
+              kind: 'cancel_publish',
+              dedupeKey: `cancel-publish:${job.id}:${ctx.idempotencyKey ?? input.reason}`,
+              payload: {
+                jobId: job.id,
+                workspaceId: ctx.workspaceId,
+                reason: input.reason,
+              },
             });
             await recordAudit(db, actor, {
               action: 'post.canceled',

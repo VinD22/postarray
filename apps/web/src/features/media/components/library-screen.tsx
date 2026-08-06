@@ -43,7 +43,7 @@ import { cn } from '@relay/design-system/utils';
 import { MediaDetail } from './media-detail';
 import { UploadPanel } from './upload-panel';
 import type { AccountRule } from '../state/media-rules';
-import type { MediaAsset, MediaEditPlan, RightsDeclaration, UploadItem } from '../types';
+import type { MediaAsset, RightsDeclaration, UploadItem } from '../types';
 
 export type LibraryStatus = 'loading' | 'ready' | 'error' | 'forbidden';
 
@@ -70,8 +70,6 @@ export interface LibraryScreenProps {
     assetId: string,
     declaration: Omit<RightsDeclaration, 'declaredByName' | 'declaredAt'>,
   ) => Promise<void>;
-  readonly onSaveEdit: (assetId: string, plan: MediaEditPlan) => Promise<void>;
-  readonly onRestoreVersion: (assetId: string, version: number) => Promise<void>;
 }
 
 export function LibraryScreen(props: LibraryScreenProps): ReactNode {
@@ -184,7 +182,7 @@ export function LibraryScreen(props: LibraryScreenProps): ReactNode {
           {openAsset ? (
             <>
               <SheetHeader>
-                <SheetTitle>{openAsset.name}</SheetTitle>
+                <SheetTitle>{openAsset.name ?? t.full('common.unavailable')}</SheetTitle>
               </SheetHeader>
               <SheetBody>
                 <MediaDetail
@@ -193,8 +191,6 @@ export function LibraryScreen(props: LibraryScreenProps): ReactNode {
                   timeZone={props.timeZone}
                   onSaveAltText={(input) => props.onSaveAltText(openAsset.id, input)}
                   onSaveRights={(declaration) => props.onSaveRights(openAsset.id, declaration)}
-                  onSaveEdit={(plan) => props.onSaveEdit(openAsset.id, plan)}
-                  onRestoreVersion={(version) => props.onRestoreVersion(openAsset.id, version)}
                 />
               </SheetBody>
             </>
@@ -236,7 +232,9 @@ function MediaGrid({
                 aria-hidden
                 className="border-border-subtle bg-surface-sunken block aspect-[4/3] w-full rounded-md border"
               />
-              <span className="text-body-sm text-text-primary truncate">{asset.name}</span>
+              <span className="text-body-sm text-text-primary truncate">
+                {asset.name ?? t.full('common.unavailable')}
+              </span>
               <span className="text-label text-text-tertiary flex flex-wrap gap-x-2 tabular-nums">
                 <span>
                   {asset.width !== null && asset.height !== null
@@ -304,7 +302,7 @@ function MediaList({
                     className="max-w-full justify-start"
                     onClick={() => onOpen(asset.id)}
                   >
-                    <span className="truncate">{asset.name}</span>
+                    <span className="truncate">{asset.name ?? t.full('common.unavailable')}</span>
                   </Button>
                 </TableCell>
                 <TableCell>{asset.mimeType}</TableCell>

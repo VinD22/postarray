@@ -143,24 +143,28 @@ function detectTemporal(config: RelayConfig): CapabilityStatus {
 }
 
 function detectStorage(config: RelayConfig): CapabilityStatus {
-  if (config.supabase.url === undefined || config.supabase.serviceRoleKey === undefined) {
-    return 'degraded:local-filesystem';
-  }
+  const absent = absentKeys([
+    ['NEON_STORAGE_ENDPOINT', config.neon.storageEndpoint],
+    ['NEON_STORAGE_ACCESS_KEY_ID', config.neon.storageAccessKeyId],
+    ['NEON_STORAGE_SECRET_ACCESS_KEY', config.neon.storageSecretAccessKey],
+  ]);
+  if (absent.length === 3) return 'degraded:local-filesystem';
+  if (absent.length > 0) return partial(...absent);
   return 'live';
 }
 
 function detectAuth(config: RelayConfig): CapabilityStatus {
   const absent = absentKeys([
-    ['SUPABASE_URL', config.supabase.url],
-    ['SUPABASE_ANON_KEY', config.supabase.anonKey],
-    ['SUPABASE_JWT_SECRET', config.supabase.jwtSecret],
+    ['NEON_AUTH_BASE_URL', config.neon.authBaseUrl],
+    ['NEON_AUTH_COOKIE_SECRET', config.neon.authCookieSecret],
   ]);
-  if (absent.length === 3) return missing(...absent);
+  if (absent.length === 2) return missing(...absent);
   if (absent.length > 0) return partial(...absent);
   return 'live';
 }
 
 function detectBilling(config: RelayConfig): CapabilityStatus {
+  if (!config.polar.checkoutEnabled) return 'disabled:checkout-not-enabled';
   if (config.polar.accessToken === undefined) return missing('POLAR_ACCESS_TOKEN');
   const absent = absentKeys([
     ['POLAR_WEBHOOK_SECRET', config.polar.webhookSecret],

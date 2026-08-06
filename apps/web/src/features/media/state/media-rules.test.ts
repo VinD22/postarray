@@ -32,6 +32,9 @@ const ASSET: MediaAsset = {
   durationSeconds: null,
   checksum: 'sha256:0000',
   createdAt: '2026-08-04T09:00:00.000Z',
+  scanState: 'clean',
+  retentionExpiresAt: '2026-09-03T09:00:00.000Z',
+  storageAvailable: true,
   altText: null,
   altTextWaived: false,
   altTextWaivedReason: null,
@@ -88,6 +91,16 @@ describe('checkFile', () => {
 });
 
 describe('limits derived from the selected accounts', () => {
+  it('uses workspace defaults before an account is connected', () => {
+    expect(lowestByteLimit([], 'image')).toBe(20 * 1024 * 1024);
+    expect(lowestByteLimit([], 'video')).toBe(500 * 1024 * 1024);
+    expect(acceptedMimeTypes([])).toContain('image/jpeg');
+    expect(
+      checkFile({ name: 'hero.jpg', mimeType: 'image/jpeg', bytes: 2_000_000, kind: 'image' }, [])
+        .usable,
+    ).toBe(true);
+  });
+
   it('takes the smallest byte ceiling', () => {
     expect(lowestByteLimit(RULES, 'image')).toBe(5_242_880);
   });

@@ -6,7 +6,13 @@
  * because "too large" without a limit is not something anyone can act on.
  */
 
-import type { CapabilitySnapshot, MediaKind } from '@relay/contracts';
+import {
+  IMAGE_UPLOAD_LIMIT_BYTES,
+  UPLOADABLE_MEDIA_MIME_TYPES,
+  VIDEO_UPLOAD_LIMIT_BYTES,
+  type CapabilitySnapshot,
+  type MediaKind,
+} from '@relay/contracts';
 
 import type { AspectPreset, MediaAsset, MediaEditPlan } from '../types';
 
@@ -41,6 +47,39 @@ export interface FileVerdict {
 }
 
 export function checkFile(file: CandidateFile, rules: readonly AccountRule[]): FileVerdict {
+  if (rules.length === 0) {
+    if (!UPLOADABLE_MEDIA_MIME_TYPES.some((mimeType) => mimeType === file.mimeType)) {
+      return {
+        acceptedBy: [],
+        rejections: [
+          {
+            connectionId: 'workspace-default',
+            accountLabel: 'workspace-default',
+            key: 'mediaLib.upload.rejectedType',
+            values: { name: file.name, mimeType: file.mimeType },
+          },
+        ],
+        usable: false,
+      };
+    }
+    const limit = file.kind === 'video' ? VIDEO_UPLOAD_LIMIT_BYTES : IMAGE_UPLOAD_LIMIT_BYTES;
+    if (file.bytes > limit) {
+      return {
+        acceptedBy: [],
+        rejections: [
+          {
+            connectionId: 'workspace-default',
+            accountLabel: 'workspace-default',
+            key: 'mediaLib.upload.rejectedSize',
+            values: { name: file.name, size: file.bytes, limit },
+          },
+        ],
+        usable: false,
+      };
+    }
+    return { acceptedBy: [], rejections: [], usable: true };
+  }
+
   const acceptedBy: string[] = [];
   const rejections: FileRejection[] = [];
 
@@ -91,6 +130,9 @@ export function checkFile(file: CandidateFile, rules: readonly AccountRule[]): F
 
 /** The smallest byte ceiling across the selected accounts, for the dropzone copy. */
 export function lowestByteLimit(rules: readonly AccountRule[], kind: MediaKind): number | null {
+  if (rules.length === 0) {
+    return kind === 'video' ? VIDEO_UPLOAD_LIMIT_BYTES : IMAGE_UPLOAD_LIMIT_BYTES;
+  }
   const limits = rules
     .map((rule) => rule.capabilities.media.maxBytesByKind[kind] ?? null)
     .filter((limit): limit is number => limit !== null);
@@ -99,6 +141,9 @@ export function lowestByteLimit(rules: readonly AccountRule[], kind: MediaKind):
 
 /** Every MIME type at least one selected account accepts. */
 export function acceptedMimeTypes(rules: readonly AccountRule[]): string[] {
+  if (rules.length === 0) {
+    return [...UPLOADABLE_MEDIA_MIME_TYPES];
+  }
   const types = new Set<string>();
   for (const rule of rules) {
     for (const mimeType of rule.capabilities.media.allowedMimeTypes) {

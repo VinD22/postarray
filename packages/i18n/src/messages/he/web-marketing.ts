@@ -1022,9 +1022,9 @@ export const webMarketingMessages = withHebrewPluralForms({
   'web.opportunities.category.partner': 'מערכות אקולוגיות וספריות אינטגרציה של שותפים',
   'web.opportunities.category.editorial': 'הדרכות אורחים, פודקאסטים וניוזלטרים',
   'web.opportunities.category.openSource': 'רשימות קוד פתוח ומשאבי תיעוד',
-  'web.legal.subprocessors.supabase.label': 'Supabase',
-  'web.legal.subprocessors.supabase.purpose': 'מנוהל PostgreSQL, אימות ואחסון אובייקטים.',
-  'web.legal.subprocessors.supabase.data':
+  'web.legal.subprocessors.neon.label': 'Neon',
+  'web.legal.subprocessors.neon.purpose': 'מנוהל PostgreSQL, אימות ואחסון אובייקטים.',
+  'web.legal.subprocessors.neon.data':
     'רישומי חשבון, תוכן, מדיה, לוחות זמנים, קבלות ואירועי ביקורת.',
   'web.legal.subprocessors.temporal.label': 'ענן זמני',
   'web.legal.subprocessors.temporal.purpose':

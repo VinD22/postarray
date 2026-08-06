@@ -20,6 +20,7 @@ import { MutableClock } from './time';
 const CONFIRMED_AT = '2026-08-04T14:00:00.000Z';
 
 const simulatorConfig: PolarConfig = {
+  checkoutEnabled: false,
   accessToken: undefined,
   webhookSecret: undefined,
   server: 'sandbox',
@@ -69,7 +70,7 @@ describe('the checkout disclosure', () => {
     expect(ids).toContain('fair_use');
     expect(ids).toContain('metered_x_usage');
     expect(ids).toContain('no_media_generation');
-    expect(disclosure.activeChannelAllowance).toBe(30);
+    expect(disclosure.activeChannelAllowance).toBe(10);
   });
 
   it('carries a cancellation path', () => {

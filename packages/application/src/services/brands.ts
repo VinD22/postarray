@@ -164,5 +164,24 @@ export function createBrandService(deps: ServiceDeps): BrandService {
         return toView(row);
       });
     },
+
+    async delete(ctx: ActorContext, brandId: string): Promise<void> {
+      await authorized(deps, ctx, 'brand.delete', { brandId }, async (db, actor) => {
+        const row = await db.brand.findFirst({ where: { id: brandId }, select: { id: true } });
+        if (row === null) {
+          throw notFound('brand', brandId);
+        }
+        await db.brand.update({
+          where: { id: brandId },
+          data: { archivedAt: deps.clock.now() },
+        });
+        await recordAudit(db, actor, {
+          action: 'workspace.updated',
+          targetType: 'brand',
+          targetId: brandId,
+          after: { archived: true },
+        });
+      });
+    },
   };
 }

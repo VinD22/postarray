@@ -32,12 +32,16 @@ import type {
   Scope,
   ToolRecord,
   ValidationResult,
-  WebhookDeliveryLog,
-  WebhookEndpoint,
   WebhookEventName,
 } from '@relay/contracts';
 import type { HealthReport, Logger } from '@relay/observability';
 import type { RelayConfig } from '@relay/config';
+import type {
+  MediaAssetView as ApplicationMediaAssetView,
+  MediaEditOperation as ApplicationMediaEditOperation,
+  WebhookDeliveryView as ApplicationWebhookDeliveryView,
+  WebhookEndpointView as ApplicationWebhookEndpointView,
+} from '@relay/application';
 
 /* -------------------------------------------------------------------------- */
 /* Actor context                                                              */
@@ -153,7 +157,8 @@ export type PostVariantView = ViewModel;
 export type CanonicalPreview = ViewModel;
 export type ApprovalRequestView = ViewModel;
 export type CalendarEntry = ViewModel;
-export type MediaAssetView = ViewModel;
+export type MediaAssetView = ApplicationMediaAssetView;
+export type MediaEditOperation = ApplicationMediaEditOperation;
 export type ComparisonReport = ViewModel;
 export type ExperimentView = ViewModel;
 export type ShortLinkView = ViewModel;
@@ -165,10 +170,25 @@ export type FeedView = ViewModel;
 export type FeedPreview = ViewModel;
 export type FeedHealth = ViewModel;
 export type BusinessProfileView = BusinessProfile;
-export type WebhookEndpointView = WebhookEndpoint;
-export type WebhookDeliveryView = WebhookDeliveryLog;
-export type ApiKeyView = ViewModel;
-export type CreatedApiKeyView = ViewModel;
+export type WebhookEndpointView = ApplicationWebhookEndpointView;
+export type WebhookDeliveryView = ApplicationWebhookDeliveryView;
+export interface ApiKeyView extends ViewModel {
+  readonly id: string;
+  readonly workspaceId: string;
+  readonly name: string;
+  readonly prefix: string;
+  readonly scopes: readonly Scope[];
+  readonly createdByUserId: string;
+  readonly serviceAccountId: string | null;
+  readonly expiresAt: string | null;
+  readonly lastUsedAt: string | null;
+  readonly revokedAt: string | null;
+  readonly createdAt: string;
+}
+export interface CreatedApiKeyView extends ViewModel {
+  readonly key: ApiKeyView;
+  readonly plaintext: string;
+}
 export type OAuthAppView = ViewModel;
 export type CreatedOAuthAppView = ViewModel;
 export type OAuthGrantView = ViewModel;
@@ -357,9 +377,19 @@ export interface MediaService {
   createUploadUrl(
     ctx: ActorContext,
     input: { filename: string; mimeType: string; byteSize: number; sha256: string },
-  ): Promise<{ uploadUrl: string; mediaId: string; headers: Readonly<Record<string, string>> }>;
+  ): Promise<{
+    uploadUrl: string;
+    mediaId: string;
+    method: 'PUT' | 'POST';
+    headers: Readonly<Record<string, string>>;
+    expiresAt: string;
+    retentionExpiresAt: string;
+  }>;
   finalizeUpload(ctx: ActorContext, mediaId: string): Promise<MediaAssetView>;
-  importFromUrl(ctx: ActorContext, input: { url: string; brandId: string }): Promise<OperationRef>;
+  importFromUrl(
+    ctx: ActorContext,
+    input: { url: string; brandId?: string | null },
+  ): Promise<OperationRef>;
   list(
     ctx: ActorContext,
     query: CursorQuery & { brandId?: string; kind?: string },
@@ -368,11 +398,28 @@ export interface MediaService {
   delete(ctx: ActorContext, mediaId: string): Promise<void>;
   edit(
     ctx: ActorContext,
-    input: { mediaId: string; ops: readonly ViewModel[] },
+    input: { mediaId: string; ops: readonly MediaEditOperation[] },
   ): Promise<MediaAssetView>;
   setAltText(
     ctx: ActorContext,
-    input: { mediaId: string; altText: string | null; waived?: boolean },
+    input: {
+      mediaId: string;
+      altText: string | null;
+      waived?: boolean;
+      waivedReason?: string | null;
+    },
+  ): Promise<MediaAssetView>;
+  declareRights(
+    ctx: ActorContext,
+    input: {
+      mediaId: string;
+      owner: 'workspace' | 'licensed' | 'ugc';
+      licenseReference: string | null;
+      peopleAppear: boolean;
+      peopleConsented: boolean;
+      containsMusic: boolean;
+      confirmed: true;
+    },
   ): Promise<MediaAssetView>;
 }
 
@@ -468,7 +515,10 @@ export interface GrowthService {
 
 export interface WebhookService {
   list(ctx: ActorContext, query: CursorQuery): Promise<Paginated<WebhookEndpointView>>;
-  create(ctx: ActorContext, input: ViewModel): Promise<WebhookEndpointView>;
+  create(
+    ctx: ActorContext,
+    input: ViewModel,
+  ): Promise<{ endpoint: WebhookEndpointView; signingSecret: string }>;
   update(ctx: ActorContext, endpointId: string, patch: ViewModel): Promise<WebhookEndpointView>;
   delete(ctx: ActorContext, endpointId: string): Promise<void>;
   testDelivery(ctx: ActorContext, endpointId: string): Promise<WebhookDeliveryView>;
@@ -498,7 +548,7 @@ export interface ApiKeyService {
    * scan, and a revocation that needs a scan is a revocation that can be slow
    * exactly when it must not be.
    */
-  revoke(ctx: ActorContext, apiKeyId: string): Promise<{ publicPrefix: string }>;
+  revoke(ctx: ActorContext, apiKeyId: string): Promise<ApiKeyView>;
 }
 
 export interface OAuthAppService {
@@ -572,7 +622,9 @@ export interface IdentityService {
   getSecurityProfile(userId: string): Promise<UserSecurityProfile | null>;
   /** Append-only consent evidence: policy version hashes, instant, country. */
   recordSignupConsent(input: {
-    userId: string;
+    identitySubjectId: string;
+    email: string;
+    locale: string;
     termsVersionHash: string;
     privacyVersionHash: string;
     countryCode: string | null;
