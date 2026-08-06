@@ -1,9 +1,9 @@
 /**
  * The single seam between live requests and seeded demo data.
  *
- * Every resource method calls `call`, passing the demo value it would return if
- * the API is not reachable. That keeps the demo behaviour next to the real
- * behaviour instead of in a parallel mock layer that drifts.
+ * Every resource method calls `call`, passing the value available in explicit
+ * local demo mode. An absent or unreachable production API always follows the
+ * typed error path and never returns fixtures.
  */
 
 import { apiConfig } from './config';

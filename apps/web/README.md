@@ -15,11 +15,10 @@ pnpm --filter @relay/web dev
 
 Open <http://localhost:3000>.
 
-**With no API running, the app serves seeded demo data** and shows a persistent
-"Demo data" notice in the shell. That is deliberate: the whole product is
-reviewable on day one, and it is never possible to mistake an example workspace
-for a real one. Point `NEXT_PUBLIC_RELAY_API_URL` at the API and restart to use
-live data. See `.env.example`.
+Set `NEXT_PUBLIC_RELAY_DEMO_MODE=true` during local development to review the
+app with seeded data and a persistent "Demo data" notice. Point
+`NEXT_PUBLIC_RELAY_API_URL` at the API and restart to use live data. Production
+never falls back to seeded fixtures. See `.env.example`.
 
 ## Environment
 

@@ -1,8 +1,8 @@
 /**
  * Seeded demo data.
  *
- * Served only when `NEXT_PUBLIC_RELAY_API_URL` is unset, so the whole product
- * is reviewable before the API runs. Every screen that renders this data also
+ * Served only when `NEXT_PUBLIC_RELAY_DEMO_MODE=true` is explicitly enabled in
+ * a non-production environment. Every screen that renders this data also
  * renders the "Demo data" notice from the shell: this is example content, not a
  * fake dashboard pretending to be real.
  *
