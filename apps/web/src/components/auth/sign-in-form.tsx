@@ -1,6 +1,6 @@
 'use client';
 
-import Link from 'next/link';
+import { Link } from '@/components/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useState, type FormEvent } from 'react';
 
@@ -16,6 +16,7 @@ import {
   TabsList,
   TabsTrigger,
 } from '@relay/design-system/primitives';
+import { cn } from '@relay/design-system/utils';
 
 import { ApiError, api, newIdempotencyKey } from '@/lib/api';
 import { useTranslations } from '@/lib/i18n';
@@ -103,7 +104,7 @@ export function SignInForm() {
   const identifierIsUsername = method === 'username';
 
   return (
-    <div className="flex flex-col gap-8">
+    <div className={cn('flex flex-col gap-8', error !== null && 'relay-auth-invalid-pulse')}>
       <div className="flex flex-col gap-1">
         <h1 className="text-title-lg text-text-primary">{t('auth.signIn.title')}</h1>
         <p className="text-body-md text-text-secondary">{t('auth.signIn.subtitle')}</p>
@@ -197,7 +198,7 @@ export function SignInForm() {
 
             <Button
               type="submit"
-              variant="primary"
+              variant="cta"
               size="lg"
               fullWidth
               loading={pending}
@@ -232,7 +233,7 @@ export function SignInForm() {
 
             <Button
               type="submit"
-              variant="primary"
+              variant="cta"
               size="lg"
               fullWidth
               loading={pending}
@@ -282,7 +283,7 @@ export function SignInForm() {
 
             <Button
               type="submit"
-              variant="primary"
+              variant="cta"
               size="lg"
               fullWidth
               loading={pending}

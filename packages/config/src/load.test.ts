@@ -63,6 +63,22 @@ describe('loadConfig', () => {
     expect(config.oauth.issuerUrl).toBe('http://localhost:3001');
   });
 
+  it('accepts a public site origin without a development default', () => {
+    const configured = 'https://app.example.test';
+    const config = loadConfig({ ...minimal, NEXT_PUBLIC_SITE_ORIGIN: configured });
+    expect(config.core.siteOrigin).toBe(configured);
+    expect(loadConfig(minimal).core.siteOrigin).toBeUndefined();
+  });
+
+  it('rejects a public site origin that is not an exact origin', () => {
+    expect(() =>
+      loadConfig({ ...minimal, NEXT_PUBLIC_SITE_ORIGIN: 'https://app.example.test/marketing' }),
+    ).toThrow(ConfigValidationError);
+    expect(() =>
+      loadConfig({ ...minimal, NEXT_PUBLIC_SITE_ORIGIN: 'https://app.example.test/' }),
+    ).toThrow(ConfigValidationError);
+  });
+
   it('returns a deeply frozen object', () => {
     const config = loadConfig(minimal);
     expect(Object.isFrozen(config)).toBe(true);

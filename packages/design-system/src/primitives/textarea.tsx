@@ -83,7 +83,7 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(function 
       }}
       style={style}
       className={cn(
-        'bg-surface-raised w-full min-w-0 rounded-md border px-2.5 py-1.5',
+        'bg-surface-raised w-full min-w-0 rounded-md border-[1.5px] px-2.5 py-1.5',
         'text-body-md text-text-primary placeholder:text-text-tertiary',
         'disabled:bg-surface-sunken disabled:text-text-disabled disabled:cursor-not-allowed',
         'read-only:bg-surface-sunken',

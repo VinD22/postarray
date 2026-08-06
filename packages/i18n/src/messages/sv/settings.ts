@@ -1,0 +1,133 @@
+/** Workspace settings: members, roles, brands, localization, security, data. */
+export const settingsMessages = {
+  'settings.title': 'Inställningar',
+  'settings.saved': 'Sparad',
+  'settings.unsavedChanges': 'Du har osparade ändringar.',
+
+  'settings.workspace.title': 'Arbetsyta',
+  'settings.workspace.name': 'Arbetsytans namn',
+  'settings.workspace.defaultTimeZone': 'Standardtidszon',
+  'settings.workspace.defaultLocale': 'Standardgränssnittsspråk',
+  'settings.workspace.defaultContentLocale': 'Standardspråk för innehåll',
+  'settings.workspace.transferOwnership': 'Överlåta ägande',
+  'settings.workspace.delete': 'Ta bort arbetsyta',
+  'settings.workspace.deleteWarning':
+    'Att ta bort en arbetsyta avbryter schemalagda inlägg, återkallar anslutningar och tar bort lagrade media. Kvitton bevaras under den lagringsperiod som anges i Villkoren.',
+
+  'settings.members.title': 'Medlemmar och roller',
+  'settings.members.invite': 'Bjud in folk',
+  'settings.members.inviteEmail': 'E-postadress',
+  'settings.members.inviteSent': 'Inbjudan skickad till {email}.',
+  'settings.members.pending': 'Inbjuden, inte accepterad ännu',
+  'settings.members.count': '{count, plural, one {# medlem} other {# medlemmar}}',
+  'settings.members.removeConfirm':
+    'Ta bort {name} från den här arbetsytan? Deras tidigare handlingar finns kvar i granskningsloggen.',
+  'settings.role.owner.label': 'Ägare',
+  'settings.role.admin.label': 'Admin',
+  'settings.role.manager.label': 'Chef',
+  'settings.role.editor.label': 'Redaktör',
+  'settings.role.approver.label': 'Godkännare',
+  'settings.role.analyst.label': 'analytiker',
+  'settings.role.viewer.label': 'Tittare',
+  'settings.role.owner.description': 'Allt, inklusive fakturering, säkerhet och radering.',
+  'settings.role.admin.description': 'Allt utom fakturering och borttagning av arbetsyta.',
+  'settings.role.manager.description': 'Hantera varumärken, kopplingar, scheman och regler.',
+  'settings.role.editor.description': 'Skapa och redigera innehåll, begär godkännande.',
+  'settings.role.approver.description':
+    'Godkänn eller avvisa innehåll och schemalägg vad som godkänns.',
+  'settings.role.analyst.description': 'Läs analyser och kvitton.',
+  'settings.role.viewer.description': 'Endast läs.',
+  'settings.role.scopeLabel': 'Begränsa till varumärken och konton',
+  'settings.role.mfaRequired': 'Ägare måste använda tvåfaktorsautentisering.',
+
+  'settings.brands.title': 'Varumärken',
+  'settings.brands.add': 'Lägg till ett varumärke',
+  'settings.brands.voice': 'Röst',
+  'settings.brands.audience': 'Publik',
+  'settings.brands.approvedClaims': 'Godkända anspråk',
+  'settings.brands.blockedTerms': 'Blockerade villkor',
+  'settings.brands.disclosureDefaults': 'Disclosure defaults',
+  'settings.brands.domains': 'Domäner',
+  'settings.brands.glossary.title': 'Ordlista',
+  'settings.brands.glossary.term': 'Termin',
+  'settings.brands.glossary.preferred': 'Föredragen översättning',
+  'settings.brands.glossary.prohibited': 'Översätt inte som',
+  'settings.brands.glossary.context': 'Sammanhang',
+  'settings.brands.glossary.keepUntranslated': 'Behåll oöversatt',
+  'settings.brands.localeRules.title': 'Lokala regler',
+  'settings.brands.localeRules.formality': 'Formalitet',
+  'settings.brands.localeRules.pronouns': 'Pronomen och hedersbeteckningar',
+  'settings.brands.localeRules.idioms': 'Idiom att undvika',
+  'settings.brands.localeRules.emoji': 'Emoji och hashtag-normer',
+  'settings.brands.localeRules.legal': 'Regional legal disclosures',
+  'settings.brands.localeRules.cta': 'Uppmaning till handling efter marknad',
+  'settings.brands.localeRules.reviewedExamples': 'Exempel godkända av en inbyggd granskare',
+
+  'settings.sets.title': 'Uppsättningar',
+  'settings.sets.description':
+    'En återanvändbar grupp av mål, varianter, inställningar, kommentarer och förseningar. Genom att tillämpa en uppsättning skapas ett oberoende utkast.',
+  'settings.sets.editNote':
+    'Att redigera en uppsättning ändrar inte inlägg som redan är godkända eller schemalagda.',
+  'settings.signatures.title': 'Signaturer',
+  'settings.signatures.description':
+    'Avslutningstext, hashtags, länkar eller avslöjanden, avgränsat efter varumärke, plattform och språk.',
+  'settings.signatures.autoApply': 'Lägg till automatiskt när sammanhanget matchar',
+
+  'settings.localization.title': 'Lokalisering',
+  'settings.localization.interfaceLocale': 'Gränssnittsspråk',
+  'settings.localization.interfaceLocaleHelp':
+    'Språket för denna app för dig. Det ändrar inte språket i dina inlägg.',
+  'settings.localization.contentLocales': 'Innehållsspråk',
+  'settings.localization.contentLocalesHelp':
+    'Språken du publicerar på. Varje varumärke kan sätta regler och en ordlista per språk.',
+  'settings.localization.marketLocales': 'Publikmarknader',
+  'settings.localization.beta': 'Betaöversättning',
+  'settings.localization.betaHelp':
+    'Det här språket är maskinassisterat och inte helt granskat av en person ännu. Oöversatt text faller tillbaka till engelska.',
+  'settings.localization.humanReviewed': 'Recenserad av en infödd talare',
+  'settings.localization.timeZone': 'Tidszon',
+  'settings.localization.weekStart': 'Första dagen i veckan',
+  'settings.localization.hourCycle.label': 'Tidsformat',
+  'settings.localization.hourCycle.h12': '12 timmar',
+  'settings.localization.hourCycle.h23': '24 timmar',
+
+  'settings.notifications.title': 'Aviseringar',
+  'settings.notifications.email': 'E-post',
+  'settings.notifications.inApp': 'I app',
+  'settings.notifications.approvalRequests': 'Begäran om godkännande',
+  'settings.notifications.publishResults': 'Publicera resultat',
+  'settings.notifications.connectionHealth': 'Anslutningshälsa',
+  'settings.notifications.ruleFailures': 'Automatiseringsfel',
+  'settings.notifications.weeklySummary': 'Veckosammanfattning',
+  'settings.notifications.digestOnly': 'Gruppera dessa i ett dagligt meddelande',
+
+  'settings.security.title': 'Säkerhet',
+  'settings.security.mfa': 'Tvåfaktorsautentisering',
+  'settings.security.mfaEnable': 'Aktivera tvåfaktorsautentisering',
+  'settings.security.mfaRequiredFor':
+    'Krävs för faktureringsändringar, tjänstekonton, återansluta ett konto och återkalla autentiseringsuppgifter.',
+  'settings.security.passkeys': 'Nyckelnycklar',
+  'settings.security.sessions': 'Aktiva sessioner',
+  'settings.security.sessionRevoke': 'Logga ut denna session',
+  'settings.security.auditLog.title': 'Revisionslogg',
+  'settings.security.auditLog.description':
+    'Varje åtgärd, vem eller vad som utförde den och när. Kan exporteras av ägare och administratörer.',
+  'settings.security.killSwitch': 'Nödstopp',
+  'settings.security.killSwitchBody':
+    'Stoppar omedelbart varje schemalagd publicering och automatisering i denna arbetsyta. Ingenting raderas. Du kan stänga av den igen.',
+  'settings.security.killSwitchActive': 'Nödstopp är på. Inget inlägg kommer att publiceras.',
+
+  'settings.data.title': 'Data controls',
+  'settings.data.export': 'Export your data',
+  'settings.data.exportPreparing': 'Preparing your export. We will email you when it is ready.',
+  'settings.data.deletionRequest': 'Request deletion',
+  'settings.data.deletionExplain':
+    'Deletion cancels scheduled workflows, revokes provider access, removes stored media and tombstones analytics where the provider requires it.',
+  'settings.data.retention': 'Retention',
+  'settings.data.consents': 'Consents',
+  'settings.data.consent.productAnalytics': 'Product analytics',
+  'settings.data.consent.diagnostics': 'Share diagnostics with support',
+  'settings.data.consent.aiImprovement':
+    'Use my content to improve the assistant. This is off unless you turn it on.',
+  'settings.data.consent.marketingEmail': 'Product news by email',
+} as const;

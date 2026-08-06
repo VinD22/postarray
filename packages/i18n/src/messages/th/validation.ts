@@ -1,0 +1,88 @@
+/** th beta catalog namespace. */
+export const validationMessages = {
+  'validation.text_required.message': '{provider} ต้องการข้อความสำหรับโพสต์ประเภทนี้',
+  'validation.text_too_long.message':
+    '{เกิน พหูพจน์ หนึ่งตัว {# อักขระเกินขีดจำกัดสำหรับ {account}} อีก {# อักขระเกินขีดจำกัดสำหรับ {account}}}',
+  'validation.text_too_long.hint': '{provider} อนุญาต {limit} อักขระสำหรับบัญชีนี้',
+  'validation.text_too_short.message': '{provider} ต้องมีอักขระอย่างน้อย {min} ตัวที่นี่',
+  'validation.title_required.message': '{provider} ต้องมีชื่อ',
+  'validation.title_too_long.message': 'ชื่อมีความยาวเกินจำนวนอักขระสูงสุด {limit} ตัว',
+  'validation.description_too_long.message': 'คำอธิบายมีความยาวเกินขีดจำกัดอักขระ {limit} ตัว',
+  'validation.media_required.message':
+    '{provider} ต้องมีรูปภาพหรือวิดีโออย่างน้อยหนึ่งภาพสำหรับโพสต์ประเภทนี้',
+  'validation.media_count_exceeded.message':
+    '{provider} ยอมรับได้สูงสุด {limit, plural, one {# file} other {# files}} ที่นี่ โพสต์นี้มี {count}.',
+  'validation.media_type_unsupported.message': '{provider} ไม่ยอมรับไฟล์ {mimeType}',
+  'validation.media_aspect_ratio_unsupported.message':
+    'ไฟล์นี้คือ {actual} {provider} ต้องมีอัตราส่วนระหว่าง {min} และ {max}',
+  'validation.media_aspect_ratio_unsupported.hint':
+    'ครอบตัดด้วยแพลตฟอร์มที่ตั้งไว้ล่วงหน้าเพื่อแก้ไขปัญหานี้',
+  'validation.media_resolution_too_low.message':
+    'ไฟล์นี้คือ {actual} {provider} ต้องการอย่างน้อย {required}',
+  'validation.media_duration_too_long.message':
+    'วิดีโอนี้คือ {actual} {provider} ยอมรับได้ถึง {limit} สำหรับบัญชีนี้',
+  'validation.media_duration_too_short.message':
+    'วิดีโอนี้คือ {actual} {provider} ต้องการอย่างน้อย {limit}',
+  'validation.media_file_too_large.message': 'ไฟล์นี้คือ {actual} {provider} ยอมรับได้ถึง {limit}',
+  'validation.media_mixed_types_unsupported.message':
+    '{provider} ไม่สามารถเผยแพร่รูปภาพและวิดีโอในโพสต์เดียวกันได้',
+  'validation.alt_text_missing.message':
+    'ข้อความแสดงแทนหายไปใน {count, plural, one {# image} other {# image}}',
+  'validation.alt_text_missing.hint': 'อธิบายภาพหรือทำเครื่องหมายเป็นการตกแต่ง',
+  'validation.thumbnail_unsupported.message': '{provider} ไม่ยอมรับภาพขนาดย่อที่กำหนดเองที่นี่',
+  'validation.destination_required.message': 'เลือกว่าจะเผยแพร่ที่ใดใน {provider}',
+  'validation.destination_unsupported.message':
+    '{destination} ไม่ยอมรับการโพสต์ประเภทนี้ใน {provider}',
+  'validation.mention_unresolved.message':
+    '{count, พหูพจน์, หนึ่งรายการ {การกล่าวถึง # รายการไม่ได้รับการจับคู่กับบัญชีจริง} อื่นๆ {การกล่าวถึง # รายการยังไม่ได้รับการจับคู่กับบัญชีจริง}}',
+  'validation.mention_unresolved.hint':
+    'เลือกบัญชีจากผลการค้นหา หรือลบการกล่าวถึง ข้อความธรรมดาจะไม่เผยแพร่เป็นแท็กเนทิฟ',
+  'validation.hashtag_count_exceeded.message':
+    'แฮชแท็ก {count} {provider} นับมากกว่า {limit} ว่าเป็นสแปม',
+  'validation.link_not_allowed.message': '{provider} ไม่อนุญาตให้มีลิงก์ในช่องนี้',
+  'validation.link_destination_unverified.message':
+    'โดเมนลิงก์ {domain} ไม่ได้รับการตรวจสอบสำหรับพื้นที่ทำงานนี้',
+  'validation.privacy_setting_required.message':
+    '{provider} จำเป็นต้องมีตัวเลือกความเป็นส่วนตัวที่ชัดเจนก่อนที่จะเผยแพร่',
+  'validation.privacy_setting_required.hint': 'ไม่มีค่าเริ่มต้น เลือกผู้ที่สามารถเห็นโพสต์นี้',
+  'validation.disclosure_required.message':
+    'โพสต์นี้จำเป็นต้องเปิดเผยภายใต้กฎของแบรนด์สำหรับ {market}',
+  'validation.first_comment_unsupported.message':
+    '{provider} ไม่สนับสนุนการแสดงความคิดเห็นแรกตามกำหนดการสำหรับบัญชีนี้',
+  'validation.thread_unsupported.message': '{provider} ไม่รองรับเธรดสำหรับบัญชีนี้',
+  'validation.repeat_end_required.message': 'โพสต์ที่ซ้ำต้องมีวันที่สิ้นสุดหรือจำนวนการโพสต์ซ้ำ',
+  'validation.schedule_in_past.message': 'เวลานั้นผ่านไปแล้วใน {timeZone}.',
+  'validation.schedule_too_far_ahead.message':
+    'สิ่งนี้อยู่ข้างหน้ามากกว่า {limit} look ข้างหน้าที่ตั้งไว้สำหรับข้อมูลรับรองนี้',
+  'validation.schedule_outside_quiet_hours.message':
+    'ซึ่งอยู่ภายในชั่วโมงเงียบที่กำหนดไว้สำหรับ {brand}',
+  'validation.duplicate_within_window.message':
+    'เนื้อหาที่คล้ายกันมากได้รับการกำหนดเวลาหรือเผยแพร่แล้วสำหรับ {account} ภายใน {window}',
+  'validation.blocked_term_present.message': 'ข้อความนี้มีคำที่ถูกบล็อกสำหรับ {brand}',
+  'validation.unsupported_claim.message':
+    'การอ้างสิทธิ์นี้ไม่อยู่ในการอ้างสิทธิ์ที่ได้รับอนุมัติสำหรับ {brand}',
+  'validation.unsupported_claim.hint':
+    'เพิ่มลงในคำกล่าวอ้างที่ได้รับอนุมัติพร้อมหลักฐาน หรือเปลี่ยนประโยคใหม่',
+  'validation.cadence_exceeded.message':
+    '{account} จะเผยแพร่ {count, พหูพจน์, หนึ่ง {# ครั้ง} อื่นๆ {# ครั้ง}} ในวันนั้น เกินขีดจำกัด {limit}',
+  'validation.connection_paused.message': '{account} ถูกหยุดชั่วคราวและจะไม่เผยแพร่',
+  'validation.account_type_invalid.message':
+    '{account} ไม่ใช่ประเภทบัญชี {provider} ที่จำเป็นสำหรับประเภทโพสต์นี้',
+  'validation.severity.error': 'ต้องแก้ไข',
+  'validation.severity.warning': 'ตรวจสอบสิ่งนี้',
+  'validation.severity.info': 'สำหรับข้อมูลของคุณ',
+  'validation.field.required': 'ต้องระบุข้อมูลในช่องนี้',
+  'validation.field.tooShort':
+    'ใช้อย่างน้อย {นาที พหูพจน์ หนึ่งตัว {# character} อื่น ๆ {# character}}',
+  'validation.field.tooLong':
+    'ใช้สูงสุด {max, พหูพจน์, หนึ่งตัว {# character} อื่นๆ {# character}}',
+  'validation.field.invalidEmail': 'ป้อนที่อยู่อีเมลที่ถูกต้อง',
+  'validation.field.invalidUrl': 'ป้อน URL แบบเต็ม รวมถึง https',
+  'validation.field.invalidDate': 'ป้อนวันที่ที่ถูกต้อง',
+  'validation.field.invalidTime': 'ป้อนเวลาที่ถูกต้อง',
+  'validation.field.invalidNumber': 'ป้อนตัวเลข',
+  'validation.field.outOfRange': 'ป้อนค่าระหว่าง {min} ถึง {max}',
+  'validation.field.mustMatch': 'ค่าทั้งสองนี้จะต้องตรงกัน',
+  'validation.field.alreadyTaken': 'นั้นมีการใช้งานอยู่แล้ว',
+  'validation.field.unsafeValue': 'ไม่อนุญาตให้ใช้ค่าดังกล่าวที่นี่',
+} as const;

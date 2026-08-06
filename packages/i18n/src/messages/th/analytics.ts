@@ -1,0 +1,97 @@
+/** th beta catalog namespace. */
+export const analyticsMessages = {
+  'analytics.title': 'การวิเคราะห์',
+  'analytics.subtitle': 'เกิดอะไรขึ้น ความสดแค่ไหน และสิ่งที่ควรค่าแก่การทดสอบต่อไป',
+  'analytics.range.7d': '7 วันที่ผ่านมา',
+  'analytics.range.30d': '30 วันที่ผ่านมา',
+  'analytics.range.90d': '90 วันที่ผ่านมา',
+  'analytics.range.custom': 'ช่วงที่กำหนดเอง',
+  'analytics.range.limitedByProvider':
+    '{provider} ส่งคืนประวัติสูงสุด {days, พหูพจน์, หนึ่ง {# วัน} อื่นๆ อีก {# วัน}} ของประวัติสำหรับบัญชีนี้',
+  'analytics.account.select': 'เลือกบัญชี',
+  'analytics.compareTo': 'เมื่อเทียบกับ {baseline}',
+  'analytics.baseline.trailingMedian':
+    'ค่ามัธยฐานของ {count, พหูพจน์, หนึ่ง {# โพสต์เทียบเคียง} other {# โพสต์เทียบเคียง}}',
+  'analytics.metric.followers': 'ผู้ติดตาม',
+  'analytics.metric.subscribers': 'สมาชิก',
+  'analytics.metric.profileViews': 'การดูโปรไฟล์',
+  'analytics.metric.impressions': 'ความประทับใจ',
+  'analytics.metric.reach': 'เข้าถึง',
+  'analytics.metric.views': 'จำนวนการดู',
+  'analytics.metric.videoViews': 'การดูวิดีโอ',
+  'analytics.metric.watchTime': 'เวลาดู',
+  'analytics.metric.averageViewDuration': 'ระยะเวลาการดูเฉลี่ย',
+  'analytics.metric.averageViewPercentage': 'เปอร์เซ็นต์การดูโดยเฉลี่ย',
+  'analytics.metric.likes': 'ความชอบและปฏิกิริยา',
+  'analytics.metric.comments': 'ความคิดเห็นและการตอบกลับ',
+  'analytics.metric.shares': 'การแชร์ การโพสต์ซ้ำ และคำพูด',
+  'analytics.metric.saves': 'บันทึกและบุ๊กมาร์ก',
+  'analytics.metric.linkClicks': 'การคลิกลิงก์',
+  'analytics.metric.clickThroughRate': 'อัตราการคลิกผ่าน',
+  'analytics.metric.engagementRate': 'อัตราการมีส่วนร่วม',
+  'analytics.metric.publishedCount': 'โพสต์ที่เผยแพร่',
+  'analytics.metric.followerChange': 'การเปลี่ยนแปลงผู้ติดตาม',
+  'analytics.definition.title': '{metric} ถูกกำหนดไว้อย่างไร',
+  'analytics.definition.provider': 'รายงานโดย {provider} เป็น {providerField}',
+  'analytics.definition.denominator.label': 'ตัวส่วน: {denominator}.',
+  'analytics.definition.unit': 'หน่วย: {unit}.',
+  'analytics.definition.normalized':
+    'ทำให้เป็นมาตรฐานจากค่าของผู้ให้บริการ มูลค่าดิบจะถูกเก็บไว้และพร้อมใช้งาน',
+  'analytics.definition.notComparable':
+    '{provider} และ {otherProvider} กำหนดสิ่งนี้แตกต่างออกไป เปรียบเทียบด้วยความระมัดระวัง',
+  'analytics.value.unavailable': 'ไม่พร้อมใช้งาน',
+  'analytics.value.unavailableReason.permission': 'บัญชีนี้ไม่ได้ให้สิทธิ์ที่จำเป็นสำหรับเมตริกนี้',
+  'analytics.value.unavailableReason.unsupported': '{provider} ไม่รายงานการวัดนี้',
+  'analytics.value.unavailableReason.tooEarly':
+    '{provider} เผยแพร่การวัดนี้ในภายหลัง ตรวจสอบอีกครั้งหลังจาก {time}',
+  'analytics.value.unavailableReason.syncFailed':
+    'การซิงค์ครั้งล่าสุดล้มเหลว เรากำลังลองอีกครั้งและจะไม่แสดงตัวเลขที่เดาได้',
+  'analytics.freshness.synced': 'ซิงค์แล้ว {relativeTime}',
+  'analytics.freshness.stale': 'การซิงค์สำเร็จครั้งล่าสุด {relativeTime} ซึ่งอาจล้าสมัย',
+  'analytics.freshness.coverage': '{covered} จาก {total} โพสต์ในช่วงนี้มีข้อมูลปัจจุบัน',
+  'analytics.feedback.title': 'สิ่งนี้บ่งบอกถึงอะไร',
+  'analytics.feedback.aboveBaseline':
+    'โพสต์นี้ได้รับ {percent} มากกว่า {metric} มากกว่า {baseline}',
+  'analytics.feedback.belowBaseline':
+    'โพสต์นี้ได้รับ {percent} น้อยกว่า {metric} มากกว่า {baseline}',
+  'analytics.feedback.notComparableFormats':
+    'โพสต์รูปภาพและโพสต์วิดีโอไม่สามารถเปรียบเทียบได้โดยตรงที่นี่',
+  'analytics.feedback.smallSample': 'ตัวอย่างมีขนาดเล็ก ทดสอบเบ็ดเดิมอีกครั้งก่อนที่จะสรุปผล',
+  'analytics.feedback.association':
+    'ความคิดเห็นเพิ่มขึ้นหลังจากความล่าช้าในการแสดงความคิดเห็นครั้งแรกเปลี่ยนจาก {before} เป็น {after} นี่คือการเชื่อมโยง ไม่ใช่ข้อพิสูจน์สาเหตุ',
+  'analytics.feedback.nextTest': 'ต่อไปจะทดสอบอะไร.',
+  'analytics.feedback.doNotInfer': 'สิ่งนี้ไม่แสดง',
+  'analytics.feedback.noScore':
+    'ไม่มีคะแนนข้ามแพลตฟอร์มเดียวที่นี่ เลือกเมตริกที่มีคำจำกัดความที่คุณเชื่อถือ',
+  'analytics.experiment.title': 'การทดลอง',
+  'analytics.experiment.hypothesis': 'สมมติฐาน',
+  'analytics.experiment.variants': 'สายพันธุ์',
+  'analytics.experiment.successMetric': 'ตัวชี้วัดความสำเร็จ',
+  'analytics.experiment.window': 'หน้าต่างการวัด',
+  'analytics.experiment.status.running': 'ทำงานจนถึง {date}',
+  'analytics.experiment.status.complete': 'เสร็จสมบูรณ์',
+  'analytics.experiment.tagBeforePublishing':
+    'ติดแท็กการทดสอบก่อนเผยแพร่ เพื่อไม่ให้มีการเปรียบเทียบภายหลังข้อเท็จจริง',
+  'analytics.experiment.caveats': 'คำเตือน',
+  'analytics.export.title': 'ส่งออก',
+  'analytics.export.csv': 'ดาวน์โหลด CSV',
+  'analytics.export.json': 'ดาวน์โหลด JSON',
+  'analytics.export.providerRestriction':
+    '{provider} จำกัดวิธีการรวมหรือจัดเก็บข้อมูล ไม่รวมบางช่อง',
+  'analytics.links.title': 'ลิงค์ที่ติดตาม',
+  'analytics.links.subtitle':
+    'การวัดการเปลี่ยนเส้นทางของบุคคลที่หนึ่ง เหล่านี้เป็นซีรีส์แยกต่างหากจากลิงก์ที่คลิกแพลตฟอร์มรายงาน',
+  'analytics.links.destination': 'จุดหมายปลายทาง',
+  'analytics.links.shortUrl': 'URL แบบสั้น',
+  'analytics.links.totalRequests': 'คำขอทั้งหมด',
+  'analytics.links.humanClicks': 'การคลิกที่ซ้ำซ้อน',
+  'analytics.links.suspectedBots': 'บอทที่น่าสงสัย',
+  'analytics.links.referrerClass': 'ผู้อ้างอิง',
+  'analytics.links.deviceClass': 'อุปกรณ์',
+  'analytics.links.country': 'ประเทศ',
+  'analytics.links.lastEvent': 'คลิกสุดท้าย {relativeTime}',
+  'analytics.links.privacyNote':
+    'เราเก็บตำแหน่งคร่าวๆ และคลาสอุปกรณ์ไว้เท่านั้น ที่อยู่ IP แบบ Raw จะถูกเก็บไว้เพียงช่วงสั้นๆ เพื่อใช้ในทางที่ผิดและการตรวจจับซ้ำ จากนั้นจึงละทิ้ง',
+  'analytics.links.separateSources':
+    'อย่าเพิ่มการคลิกเหล่านี้ไปยังหมายเลขที่รายงานของแพลตฟอร์ม พวกเขานับสิ่งต่าง ๆ',
+} as const;

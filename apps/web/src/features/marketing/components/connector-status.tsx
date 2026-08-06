@@ -27,8 +27,8 @@ function overallState(connectorIndex: number): CapabilityState {
   return 'not_implemented';
 }
 
-export function CapabilityMatrixSummary(): ReactNode {
-  const t = marketingTranslator();
+export async function CapabilityMatrixSummary({ locale }: { locale?: string }): Promise<ReactNode> {
+  const t = await marketingTranslator(locale);
 
   return (
     <dl className="border-border-default border-t">

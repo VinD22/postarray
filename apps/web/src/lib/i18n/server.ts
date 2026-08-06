@@ -4,8 +4,9 @@ import { cookies, headers } from 'next/headers';
 
 import { createTranslator, loadCatalog, type PartialCatalog, type Translator } from '@relay/i18n';
 
+import { getWebLocaleDirection, isWebLocale } from './development-pseudo-locales';
 import { LOCALE_COOKIE, negotiateLocale, resolveTimeZone, TIME_ZONE_COOKIE } from './routing';
-import { ACTIVE_LOCALE_CODES, DEFAULT_LOCALE, getLocale } from '@relay/i18n';
+import { ACTIVE_LOCALE_CODES, DEFAULT_LOCALE } from '@relay/i18n';
 
 /** Everything a server component needs to render text for this request. */
 export interface RequestIntl {
@@ -23,23 +24,21 @@ export interface RequestIntl {
  * tree out of static rendering, including the marketing and legal pages, which
  * are the same bytes for everyone. Those pages use this instead.
  *
- * While one locale is active the two answers are identical, so nothing is lost.
- * When a second locale ships, a page that must vary per visitor moves to
- * `getRequestIntl` and pays for the dynamic render deliberately, rather than
- * every page paying for it silently.
+ * Static pages pass their explicit route locale. Pages that must vary per
+ * visitor use `getRequestIntl` and pay for the dynamic render deliberately.
  */
-export async function getStaticIntl(): Promise<RequestIntl> {
-  const locale = DEFAULT_LOCALE;
-  const direction = getLocale(locale)?.direction ?? 'ltr';
-  const catalog = await loadCatalog(locale);
+export async function getStaticIntl(locale = DEFAULT_LOCALE): Promise<RequestIntl> {
+  const resolvedLocale = isWebLocale(locale) ? locale : DEFAULT_LOCALE;
+  const direction = getWebLocaleDirection(resolvedLocale);
+  const catalog = await loadCatalog(resolvedLocale);
   return {
-    locale,
+    locale: resolvedLocale,
     direction,
     // A static page cannot know the reader's zone. Anything date-shaped on these
     // pages states its zone explicitly; the product resolves the real one below.
     timeZone: 'UTC',
     catalog,
-    t: createTranslator(locale, catalog),
+    t: createTranslator(resolvedLocale, catalog),
   };
 }
 
@@ -56,10 +55,14 @@ export const localeNegotiationIsMeaningful = ACTIVE_LOCALE_CODES.length > 1;
 export async function getRequestIntl(workspaceTimeZone?: string): Promise<RequestIntl> {
   const [cookieStore, headerList] = await Promise.all([cookies(), headers()]);
 
-  const { locale, direction } = negotiateLocale({
-    cookieValue: cookieStore.get(LOCALE_COOKIE)?.value,
-    acceptLanguage: headerList.get('accept-language') ?? undefined,
-  });
+  const pathLocale = headerList.get('x-relay-locale');
+  const { locale, direction } =
+    pathLocale !== null && isWebLocale(pathLocale)
+      ? { locale: pathLocale, direction: getWebLocaleDirection(pathLocale) }
+      : negotiateLocale({
+          cookieValue: cookieStore.get(LOCALE_COOKIE)?.value,
+          acceptLanguage: headerList.get('accept-language') ?? undefined,
+        });
 
   const timeZone = resolveTimeZone({
     workspaceTimeZone,

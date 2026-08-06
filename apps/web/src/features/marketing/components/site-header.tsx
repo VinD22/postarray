@@ -1,12 +1,16 @@
 'use client';
 
 import type { ReactNode } from 'react';
-import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Menu, X } from 'lucide-react';
 import { cn } from '@relay/design-system/utils';
+import { useI18n } from '@relay/i18n/react';
+
+import { Link } from '@/components/link';
+import { localizedHref } from '@/lib/i18n/routing';
 
 import { Container } from './layout';
+import { LanguagePicker } from './language-picker';
 
 export interface HeaderLink {
   readonly href: string;
@@ -39,9 +43,14 @@ export interface SiteHeaderProps {
 export function SiteHeader(props: SiteHeaderProps): ReactNode {
   const { brand, navLabel, items, signIn, startTrial, openMenu, closeMenu } = props;
   const pathname = usePathname();
+  const { locale } = useI18n();
 
-  const isCurrent = (href: string): boolean =>
-    href === '/' ? pathname === '/' : pathname === href || pathname.startsWith(`${href}/`);
+  const isCurrent = (href: string): boolean => {
+    const localizedPath = localizedHref(href, locale);
+    return localizedPath === '/'
+      ? pathname === '/'
+      : pathname === localizedPath || pathname.startsWith(`${localizedPath}/`);
+  };
 
   return (
     <header className="border-border-default bg-surface-canvas relative sticky top-0 z-(--z-index-sticky) border-b">
@@ -93,6 +102,7 @@ export function SiteHeader(props: SiteHeaderProps): ReactNode {
           </nav>
 
           <div className="hidden items-center gap-1 lg:flex">
+            <LanguagePicker />
             <Link
               href={signIn.href}
               className={cn(
@@ -158,6 +168,7 @@ export function SiteHeader(props: SiteHeaderProps): ReactNode {
                     })}
                   </ul>
                   <div className="flex flex-wrap items-center gap-3 py-4">
+                    <LanguagePicker />
                     <Link
                       href={startTrial.href}
                       className={cn(

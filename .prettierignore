@@ -11,3 +11,4 @@ next-env.d.ts
 
 # Local harness settings, not project source.
 .claude/
+.playwright-cli/

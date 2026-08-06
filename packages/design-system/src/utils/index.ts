@@ -8,5 +8,7 @@ export {
   touchTarget,
   controlHeight,
   panelSurface,
+  panelPoster,
+  pressable,
   type ControlSize,
 } from './style-constants';

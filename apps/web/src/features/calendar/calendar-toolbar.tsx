@@ -26,15 +26,13 @@ import {
   SheetContent,
   SheetHeader,
   SheetTitle,
-  Tabs,
-  TabsList,
-  TabsTrigger,
   cn,
 } from '@relay/design-system';
 import { useTranslations } from '@relay/i18n/react';
 import { useProviderName } from '@/features/connections/provider';
 import { useCalendarFormat } from './format';
 import { countActiveFilters } from './filters';
+import { CalendarViewSwitch } from './view-switch';
 import type { CalendarFilterOptions, CalendarFilters, CalendarView, QueueBucket } from './types';
 
 const VIEWS: readonly CalendarView[] = ['day', 'week', 'month', 'list'];
@@ -68,18 +66,15 @@ export function CalendarToolbar(props: CalendarToolbarProps): ReactNode {
   return (
     <div className="flex flex-col gap-3">
       <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
-        <Tabs
+        <CalendarViewSwitch
+          views={VIEWS}
           value={props.view}
-          onValueChange={(value) => props.onViewChange(value as CalendarView)}
-        >
-          <TabsList aria-label={t('web.calendar.view.switchLabel')} className="border-b-0">
-            {VIEWS.map((view) => (
-              <TabsTrigger key={view} value={view}>
-                {view === 'list' ? t('web.calendar.view.table') : t(`calendar.view.${view}`)}
-              </TabsTrigger>
-            ))}
-          </TabsList>
-        </Tabs>
+          onValueChange={props.onViewChange}
+          label={t('web.calendar.view.switchLabel')}
+          labelFor={(view) =>
+            view === 'list' ? t('web.calendar.view.table') : t(`calendar.view.${view}`)
+          }
+        />
 
         <div className="flex items-center gap-1">
           <IconButton

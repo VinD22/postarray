@@ -50,3 +50,6 @@ Thumbs.db
 
 # Local agent harness settings
 .claude/settings.local.json
+
+# Browser tooling session logs
+.playwright-cli/

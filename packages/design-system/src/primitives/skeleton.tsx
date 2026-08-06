@@ -18,9 +18,12 @@ export interface SkeletonProps extends ComponentPropsWithoutRef<'div'> {
  * arrives. A skeleton that is a different height than the row it replaces is
  * worse than an empty space.
  *
- * It pulses in opacity rather than sweeping a gradient, and it is always
+ * It sweeps an accent-subtle shimmer across a sunken fill, and it is always
  * hidden from assistive technology: the surrounding region announces the
- * loading state in words once, not per placeholder.
+ * loading state in words once, not per placeholder. The sweep is a plain CSS
+ * animation, so the global reduced-motion override (1ms duration) already
+ * neutralizes it; `motion-reduce:animate-none` is kept as a second, explicit
+ * guard.
  */
 export const Skeleton = forwardRef<HTMLDivElement, SkeletonProps>(function Skeleton(
   { className, variant = 'text', width, style, ...props },
@@ -33,7 +36,7 @@ export const Skeleton = forwardRef<HTMLDivElement, SkeletonProps>(function Skele
       data-skeleton=""
       style={width ? { ...style, inlineSize: width } : style}
       className={cn(
-        'relay-anim-pulse bg-surface-sunken motion-reduce:animate-none',
+        'relay-shimmer motion-reduce:animate-none',
         variant === 'text' && 'h-[1.3125rem] rounded-sm',
         variant === 'block' && 'rounded-md',
         variant === 'circle' && 'rounded-full',

@@ -1,8 +1,10 @@
 import type { Metadata } from 'next';
+import { ACTIVE_LOCALE_CODES, DEFAULT_LOCALE } from '@relay/i18n';
 import type { MessageKey } from '@relay/i18n/translate';
 
 import { marketingTranslator } from './i18n';
 import { ROUTES, SITE_ORIGIN } from './site';
+import { localizedHref } from '@/lib/i18n/routing';
 
 /**
  * Metadata and structured data for the public site.
@@ -14,26 +16,93 @@ import { ROUTES, SITE_ORIGIN } from './site';
  * and marking up ratings we do not have is both dishonest and a policy breach.
  */
 
-export function pageMetadata(
+export interface LocaleAlternates {
+  readonly canonical: string;
+  readonly languages: Readonly<Record<string, string>>;
+}
+
+/** Build an absolute URL for an indexable marketing route in an interface locale. */
+export function absoluteUrl(path: string, locale: string = DEFAULT_LOCALE): string {
+  return new URL(localizedHref(path, locale), SITE_ORIGIN).toString();
+}
+
+/**
+ * The complete reciprocal hreflang cluster for one marketing route.
+ *
+ * The canonical deliberately points to the current locale. A localized page
+ * canonicalizing to English would remove that language from search results.
+ */
+export function localeAlternates(path: string, locale: string = DEFAULT_LOCALE): LocaleAlternates {
+  return {
+    canonical: absoluteUrl(path, locale),
+    languages: {
+      ...Object.fromEntries(
+        ACTIVE_LOCALE_CODES.map((activeLocale) => [activeLocale, absoluteUrl(path, activeLocale)]),
+      ),
+      'x-default': absoluteUrl(path, DEFAULT_LOCALE),
+    },
+  };
+}
+
+/**
+ * Convert a BCP-47 interface locale into the underscore format Open Graph
+ * expects. `es-419` is a region grouping, not an Open Graph locale, so it is
+ * intentionally omitted instead of publishing an invalid value.
+ */
+export function toOpenGraphLocale(locale: string): string | undefined {
+  if (locale === 'es-419') {
+    return undefined;
+  }
+
+  let maximized: Intl.Locale;
+  try {
+    maximized = new Intl.Locale(locale).maximize();
+  } catch {
+    // Metadata can be evaluated before the locale layout rejects a malformed
+    // dynamic segment. Omitting Open Graph locale is safe; failing the route
+    // is not.
+    return undefined;
+  }
+
+  return maximized.region === undefined
+    ? maximized.language
+    : `${maximized.language}_${maximized.region}`;
+}
+
+export async function pageMetadata(
   titleKey: MessageKey,
   descriptionKey: MessageKey,
   path: string,
-): Metadata {
-  const t = marketingTranslator();
+  locale: string = DEFAULT_LOCALE,
+): Promise<Metadata> {
+  const t = await marketingTranslator(locale);
   const title = t.format(titleKey);
   const description = t.format(descriptionKey);
-  const url = new URL(path, SITE_ORIGIN).toString();
+  const url = absoluteUrl(path, locale);
+  const alternates = localeAlternates(path, locale);
+  const openGraphLocale = toOpenGraphLocale(locale);
+  const alternateOpenGraphLocales = [
+    ...new Set(
+      ACTIVE_LOCALE_CODES.filter((activeLocale) => activeLocale !== locale)
+        .map(toOpenGraphLocale)
+        .filter((activeLocale): activeLocale is string => activeLocale !== undefined),
+    ),
+  ];
 
   return {
     title,
     description,
-    alternates: { canonical: url },
+    alternates,
     openGraph: {
       type: 'website',
       url,
       title,
       description,
       siteName: t.t('web.brand.name'),
+      ...(openGraphLocale === undefined ? {} : { locale: openGraphLocale }),
+      ...(alternateOpenGraphLocales.length === 0
+        ? {}
+        : { alternateLocale: alternateOpenGraphLocales }),
     },
     twitter: {
       card: 'summary_large_image',
@@ -47,13 +116,13 @@ interface JsonLdNode {
   readonly [key: string]: unknown;
 }
 
-export function organizationJsonLd(): JsonLdNode {
-  const t = marketingTranslator();
+export async function organizationJsonLd(locale: string = DEFAULT_LOCALE): Promise<JsonLdNode> {
+  const t = await marketingTranslator(locale);
   return {
     '@context': 'https://schema.org',
     '@type': 'Organization',
     name: t.t('web.brand.name'),
-    url: SITE_ORIGIN,
+    url: absoluteUrl(ROUTES.home, locale),
     description: t.t('web.brand.tagline'),
     contactPoint: [
       {
@@ -77,8 +146,8 @@ export function organizationJsonLd(): JsonLdNode {
  * consumer of this markup sees exactly the two things a buyer sees, with no
  * invented "from" price and no struck through original.
  */
-export function offerJsonLd(): JsonLdNode {
-  const t = marketingTranslator();
+export async function offerJsonLd(locale: string = DEFAULT_LOCALE): Promise<JsonLdNode> {
+  const t = await marketingTranslator(locale);
   return {
     '@context': 'https://schema.org',
     '@type': 'SoftwareApplication',
@@ -86,14 +155,15 @@ export function offerJsonLd(): JsonLdNode {
     applicationCategory: 'BusinessApplication',
     operatingSystem: 'Web',
     description: t.t('web.meta.home.description'),
-    url: SITE_ORIGIN,
+    inLanguage: locale,
+    url: absoluteUrl(ROUTES.home, locale),
     offers: [
       {
         '@type': 'Offer',
         name: t.t('web.pricing.monthlyLabel'),
         price: '29.00',
         priceCurrency: 'USD',
-        url: new URL(ROUTES.pricing, SITE_ORIGIN).toString(),
+        url: absoluteUrl(ROUTES.pricing, locale),
         availability: 'https://schema.org/InStock',
         priceSpecification: {
           '@type': 'UnitPriceSpecification',
@@ -108,7 +178,7 @@ export function offerJsonLd(): JsonLdNode {
         name: t.t('web.pricing.annualLabel'),
         price: '300.00',
         priceCurrency: 'USD',
-        url: new URL(ROUTES.pricing, SITE_ORIGIN).toString(),
+        url: absoluteUrl(ROUTES.pricing, locale),
         availability: 'https://schema.org/InStock',
         priceSpecification: {
           '@type': 'UnitPriceSpecification',
@@ -122,10 +192,14 @@ export function offerJsonLd(): JsonLdNode {
   };
 }
 
-export function faqJsonLd(entries: readonly { question: string; answer: string }[]): JsonLdNode {
+export function faqJsonLd(
+  entries: readonly { question: string; answer: string }[],
+  locale: string = DEFAULT_LOCALE,
+): JsonLdNode {
   return {
     '@context': 'https://schema.org',
     '@type': 'FAQPage',
+    inLanguage: locale,
     mainEntity: entries.map((entry) => ({
       '@type': 'Question',
       name: entry.question,
@@ -136,6 +210,7 @@ export function faqJsonLd(entries: readonly { question: string; answer: string }
 
 export function breadcrumbJsonLd(
   trail: readonly { readonly name: string; readonly path: string }[],
+  locale: string = DEFAULT_LOCALE,
 ): JsonLdNode {
   return {
     '@context': 'https://schema.org',
@@ -144,7 +219,7 @@ export function breadcrumbJsonLd(
       '@type': 'ListItem',
       position: index + 1,
       name: item.name,
-      item: new URL(item.path, SITE_ORIGIN).toString(),
+      item: absoluteUrl(item.path, locale),
     })),
   };
 }

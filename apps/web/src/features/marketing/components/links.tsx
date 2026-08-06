@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react';
-import Link from 'next/link';
+import { Link } from '@/components/link';
 import { ArrowUpRight } from 'lucide-react';
 import { Button } from '@relay/design-system/primitives';
 import { cn } from '@relay/design-system/utils';

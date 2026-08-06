@@ -6,6 +6,7 @@ import { Notice } from '@relay/design-system/patterns';
 import { Button, Label, RadioGroup, RadioGroupItem } from '@relay/design-system/primitives';
 import { cn } from '@relay/design-system/utils';
 
+import { PosterCard } from '@/features/marketing/components/loud/poster-card';
 import { ApiError, api, newIdempotencyKey } from '@/lib/api';
 import { useFormatters, useTranslations } from '@/lib/i18n';
 
@@ -35,6 +36,12 @@ const AMOUNTS: Readonly<
  * card: nothing due today, seven full trial days, the exact first charge date
  * and amount, the renewal interval, the payment method requirement, when the
  * reminder arrives, and how to cancel without being charged.
+ *
+ * The block itself reuses the loud system's `PosterCard` (WP-4, shared with
+ * WP-2's pricing page) for the hard-outlined poster treatment, but not WP-2's
+ * segmented interval toggle: two named radio options are already keyboard-
+ * and screen-reader-simple, and a one-time setup step is not where a second,
+ * more elaborate control earns its keep.
  */
 export function PlanStep() {
   const t = useTranslations();
@@ -79,83 +86,91 @@ export function PlanStep() {
 
       {error === null ? null : <Notice tone="destructive" liveness="alert" title={error} />}
 
-      <section className="flex flex-col gap-3">
-        <h2 className="text-title-sm text-text-primary">{t('billing.plan.name')}</h2>
-        <p className="text-body-md text-text-secondary">{t('billing.plan.single')}</p>
+      <PosterCard tone="paper" className="flex flex-col gap-6 p-6 sm:p-8">
+        <section className="flex flex-col gap-3">
+          <h2 className="font-display text-title-md text-text-primary font-bold">
+            {t('billing.plan.name')}
+          </h2>
+          <p className="text-body-md text-text-secondary">{t('billing.plan.single')}</p>
 
-        <fieldset className="border-border-subtle flex flex-col gap-0 border-t pt-3">
-          <legend className="text-label text-text-tertiary pb-2 tracking-wide uppercase">
-            {t('billing.plan.selectInterval')}
-          </legend>
+          <fieldset className="border-border-subtle flex flex-col gap-0 border-t pt-3">
+            <legend className="text-label text-text-tertiary pb-2 tracking-wide uppercase">
+              {t('billing.plan.selectInterval')}
+            </legend>
 
-          <RadioGroup
-            value={interval}
-            onValueChange={(next) => {
-              setInterval(next as Interval);
+            <RadioGroup
+              value={interval}
+              onValueChange={(next) => {
+                setInterval(next as Interval);
+              }}
+              className="gap-0"
+            >
+              <IntervalOption
+                value="monthly"
+                selected={interval === 'monthly'}
+                title={t('billing.plan.monthlyPrice')}
+                detail={t('billing.plan.interval.monthly')}
+              />
+              <IntervalOption
+                value="annual"
+                selected={interval === 'annual'}
+                title={t('billing.plan.annualPrice')}
+                detail={t('billing.plan.annualFraming')}
+              />
+            </RadioGroup>
+          </fieldset>
+        </section>
+
+        <section aria-labelledby="plan-facts" className="flex flex-col gap-3">
+          <h2 id="plan-facts" className="text-title-sm text-text-primary">
+            {t('onboarding.plan.factsTitle')}
+          </h2>
+
+          <dl className="border-border-subtle flex flex-col border-t">
+            <Fact term={t('billing.trial.dueToday')} detail={t('billing.trial.length')} />
+            <Fact
+              term={t('billing.trial.firstCharge', {
+                amount: formattedAmount,
+                date: formattedDate,
+              })}
+              detail={t('billing.trial.renewal', {
+                amount: formattedAmount,
+                interval:
+                  interval === 'monthly'
+                    ? t('billing.plan.interval.monthly')
+                    : t('billing.plan.interval.annual'),
+              })}
+            />
+            <Fact
+              term={t('billing.trial.paymentMethodRequired')}
+              detail={t('billing.trial.reminder')}
+            />
+            <Fact term={t('billing.trial.cancelBefore')} detail={t('billing.checkout.hostedBy')} />
+          </dl>
+        </section>
+
+        <div className="flex flex-col gap-3">
+          <Button
+            variant="cta"
+            size="lg"
+            fullWidth
+            loading={pending}
+            loadingLabel={t('billing.checkout.returning')}
+            onClick={() => {
+              void continueToCheckout();
             }}
-            className="gap-0"
           >
-            <IntervalOption
-              value="monthly"
-              selected={interval === 'monthly'}
-              title={t('billing.plan.monthlyPrice')}
-              detail={t('billing.plan.interval.monthly')}
-            />
-            <IntervalOption
-              value="annual"
-              selected={interval === 'annual'}
-              title={t('billing.plan.annualPrice')}
-              detail={t('billing.plan.annualFraming')}
-            />
-          </RadioGroup>
-        </fieldset>
-      </section>
+            {t('billing.checkout.open')}
+          </Button>
 
-      <section aria-labelledby="plan-facts" className="flex flex-col gap-3">
-        <h2 id="plan-facts" className="text-title-sm text-text-primary">
-          {t('onboarding.plan.factsTitle')}
-        </h2>
-
-        <dl className="border-border-subtle flex flex-col border-t">
-          <Fact term={t('billing.trial.dueToday')} detail={t('billing.trial.length')} />
-          <Fact
-            term={t('billing.trial.firstCharge', { amount: formattedAmount, date: formattedDate })}
-            detail={t('billing.trial.renewal', {
-              amount: formattedAmount,
-              interval:
-                interval === 'monthly'
-                  ? t('billing.plan.interval.monthly')
-                  : t('billing.plan.interval.annual'),
-            })}
-          />
-          <Fact
-            term={t('billing.trial.paymentMethodRequired')}
-            detail={t('billing.trial.reminder')}
-          />
-          <Fact term={t('billing.trial.cancelBefore')} detail={t('billing.checkout.hostedBy')} />
-        </dl>
-      </section>
-
-      <div className="flex flex-col gap-3">
-        <Button
-          variant="primary"
-          size="lg"
-          loading={pending}
-          loadingLabel={t('billing.checkout.returning')}
-          onClick={() => {
-            void continueToCheckout();
-          }}
-        >
-          {t('billing.checkout.open')}
-        </Button>
-
-        <p className="prose-measure text-body-sm text-text-tertiary">
-          {t('onboarding.plan.checkoutHint')}
-        </p>
-        <p className="prose-measure text-body-sm text-text-tertiary">
-          {t('billing.checkout.taxNote')}
-        </p>
-      </div>
+          <p className="prose-measure text-body-sm text-text-tertiary">
+            {t('onboarding.plan.checkoutHint')}
+          </p>
+          <p className="prose-measure text-body-sm text-text-tertiary">
+            {t('billing.checkout.taxNote')}
+          </p>
+        </div>
+      </PosterCard>
     </div>
   );
 }

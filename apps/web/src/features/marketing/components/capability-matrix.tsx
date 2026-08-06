@@ -50,8 +50,8 @@ function shortStateKey(state: CapabilityState): MessageKey {
   return `web.capabilities.short.${state}` as MessageKey;
 }
 
-export function CapabilityMatrix(): ReactNode {
-  const t = marketingTranslator();
+export async function CapabilityMatrix({ locale }: { locale?: string }): Promise<ReactNode> {
+  const t = await marketingTranslator(locale);
 
   /* Footnotes are numbered in reading order, deduplicated by note and source. */
   const footnotes: Footnote[] = [];
@@ -90,11 +90,11 @@ export function CapabilityMatrix(): ReactNode {
 
   return (
     <div className="space-y-8">
-      <TableContainer className="relay-scrollbar">
+      <TableContainer className="relay-scrollbar border-border-bold border-y-2">
         <Table density="comfortable" className="min-w-[62rem]">
           <TableCaption className="text-start">{t.t('web.capabilities.tableCaption')}</TableCaption>
           <TableHeader>
-            <TableRow>
+            <TableRow className="border-border-bold border-b-2">
               <TableHead className="w-[14rem] min-w-[12rem]">
                 {t.t('web.label.capability')}
               </TableHead>
@@ -166,7 +166,7 @@ export function CapabilityMatrix(): ReactNode {
                     </ExternalLink>{' '}
                     <Meta>
                       {t.t('web.label.researchDate', {
-                        date: formatDate(footnote.citation.readOn),
+                        date: formatDate(footnote.citation.readOn, locale),
                       })}
                     </Meta>
                   </p>

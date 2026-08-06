@@ -9,10 +9,12 @@ import { focusRing, transitionBase } from '../utils/style-constants';
  * Tabs for peer views of the same subject: the composer's per-target variants,
  * the Growth Advisor's five sections, an analytics breakdown.
  *
- * The selected tab is marked by a solid inline rule under the label and by a
- * weight change, not by colour alone. Activation is manual: arrow keys move
- * focus and Enter or Space selects, so a keyboard user can pass over an
- * expensive tab without loading it.
+ * The selected tab is marked by a solid 3px accent rule under the label and
+ * by a weight change, not by colour alone. It's a static per-trigger border
+ * in this package (CSS-only, transitions on colour); a sliding indicator
+ * that tracks the active tab across triggers needs Flip and lives app-side.
+ * Activation is manual: arrow keys move focus and Enter or Space selects, so
+ * a keyboard user can pass over an expensive tab without loading it.
  */
 
 export const Tabs = forwardRef<HTMLDivElement, ComponentPropsWithoutRef<typeof TabsPrimitive.Root>>(
@@ -47,7 +49,7 @@ export const TabsTrigger = forwardRef<
       ref={ref}
       className={cn(
         'relative -mb-px inline-flex shrink-0 items-center gap-2 whitespace-nowrap',
-        'border-b-2 border-transparent px-3 py-2',
+        'border-b-[3px] border-transparent px-3 py-2',
         'text-body-md text-text-secondary font-medium',
         'hover:text-text-primary',
         'data-[state=active]:border-accent data-[state=active]:text-text-primary',

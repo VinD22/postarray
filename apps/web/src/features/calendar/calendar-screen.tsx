@@ -15,7 +15,7 @@
  *  5. Keep work that needs a person visible above the grid until it is done.
  */
 
-import { useCallback, useEffect, useMemo, useState, type ReactNode } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { CalendarPlus } from 'lucide-react';
 import {
@@ -42,6 +42,7 @@ import { CalendarGrid } from './calendar-grid';
 import { CalendarMonth } from './calendar-month';
 import { CalendarTable } from './calendar-table';
 import { CalendarToolbar } from './calendar-toolbar';
+import { CalendarViewTransition } from './calendar-view-transition';
 import { AttentionBar } from './attention-bar';
 import { EntryDetailSheet } from './entry-detail-sheet';
 import { RescheduleDialog } from './reschedule-dialog';
@@ -398,6 +399,7 @@ export function CalendarScreen({
           attentionCount={attentionCount}
           filtersActive={countActiveFilters(filters) > 0}
           grabbedKey={grabbed ? entryKey(grabbed) : null}
+          proposal={grabbed ? proposal : null}
           onPickUp={beginMove}
           onReschedule={openRescheduleFor}
           onOpenDetail={setDetailEntry}
@@ -452,6 +454,7 @@ interface CalendarBodyProps {
   attentionCount: number;
   filtersActive: boolean;
   grabbedKey: string | null;
+  proposal: RescheduleProposal | null;
   onPickUp: (entry: CalendarEntry) => void;
   onReschedule: (entry: CalendarEntry) => void;
   onOpenDetail: (entry: CalendarEntry) => void;
@@ -466,7 +469,21 @@ interface CalendarBodyProps {
 function CalendarBody(props: CalendarBodyProps): ReactNode {
   const t = useTranslations();
   const format = useCalendarFormat();
+  const { direction } = useI18n();
   const { query, view } = props;
+
+  // Which way the visible range moved since the last render, for the period
+  // step slide below. `null` on the first render and on a view switch, both
+  // of which play a plain crossfade instead of a directional slide. Reading
+  // and writing a ref during render (rather than in an effect) is what lets
+  // this be ready in time for the transition's own first effect, with no
+  // extra render in between.
+  const previousRef = useRef<{ view: CalendarView; startMs: number } | null>(null);
+  const previous = previousRef.current;
+  const startMs = props.range.start.getTime();
+  const stepDirection: -1 | 0 | 1 =
+    previous && previous.view === view ? (Math.sign(startMs - previous.startMs) as -1 | 0 | 1) : 0;
+  previousRef.current = { view, startMs };
 
   if (query.isPending) {
     return (
@@ -560,8 +577,17 @@ function CalendarBody(props: CalendarBodyProps): ReactNode {
         title={t('empty.calendar.title')}
         description={t('empty.calendar.body')}
         example={t('web.calendar.empty.example')}
+        illustration={
+          <span className="border-border-strong inline-flex size-12 items-center justify-center rounded-full border-2 border-dashed">
+            <CalendarPlus aria-hidden="true" className="size-5" />
+          </span>
+        }
         action={
-          <Button variant="primary" asChild>
+          <Button
+            variant="cta"
+            asChild
+            iconStart={<CalendarPlus aria-hidden="true" className="size-4" />}
+          >
             <a href={props.composeHref}>{t('empty.calendar.action')}</a>
           </Button>
         }
@@ -578,52 +604,60 @@ function CalendarBody(props: CalendarBodyProps): ReactNode {
         onShowOnlyAttention={props.onShowOnlyAttention}
       />
 
-      {view === 'list' ? (
-        <CalendarTable
-          entries={props.entries}
-          rangeLabel={props.rangeLabel}
-          hrefForEntry={props.hrefForEntry}
-          hrefForReceipt={props.hrefForReceipt}
-          onReschedule={props.onReschedule}
-          onOpenDetail={props.onOpenDetail}
-        />
-      ) : view === 'month' ? (
-        <CalendarMonth
-          range={props.range}
-          entries={props.entries}
-          timeZone={format.timeZone}
-          hrefForEntry={props.hrefForEntry}
-          hrefForDay={props.hrefForDay}
-          label={t('web.calendar.month.label', { month: props.rangeLabel })}
-        />
-      ) : (
-        <>
-          {/* The grid on a real screen, the agenda on a phone. Both render, one
-              is hidden, so no layout shift when the media query settles. */}
-          <div className="hidden md:block">
-            <CalendarGrid
-              range={props.range}
-              entries={props.entries}
-              timeZone={format.timeZone}
-              hrefForEntry={props.hrefForEntry}
-              grabbedKey={props.grabbedKey}
-              onPickUp={props.onPickUp}
-              label={t('web.calendar.grid.label', { range: props.rangeLabel })}
-            />
-          </div>
-          <div className="md:hidden">
-            <CalendarAgenda
-              range={props.range}
-              entries={props.entries}
-              timeZone={format.timeZone}
-              hrefForEntry={props.hrefForEntry}
-              grabbedKey={props.grabbedKey}
-              onPickUp={props.onPickUp}
-              label={t('web.calendar.agenda.label', { range: props.rangeLabel })}
-            />
-          </div>
-        </>
-      )}
+      <CalendarViewTransition
+        transitionKey={`${view}:${startMs}`}
+        direction={stepDirection}
+        isRtl={direction === 'rtl'}
+      >
+        {view === 'list' ? (
+          <CalendarTable
+            entries={props.entries}
+            rangeLabel={props.rangeLabel}
+            hrefForEntry={props.hrefForEntry}
+            hrefForReceipt={props.hrefForReceipt}
+            onReschedule={props.onReschedule}
+            onOpenDetail={props.onOpenDetail}
+          />
+        ) : view === 'month' ? (
+          <CalendarMonth
+            range={props.range}
+            entries={props.entries}
+            timeZone={format.timeZone}
+            hrefForEntry={props.hrefForEntry}
+            hrefForDay={props.hrefForDay}
+            label={t('web.calendar.month.label', { month: props.rangeLabel })}
+          />
+        ) : (
+          <>
+            {/* The grid on a real screen, the agenda on a phone. Both render, one
+                is hidden, so no layout shift when the media query settles. */}
+            <div className="hidden md:block">
+              <CalendarGrid
+                range={props.range}
+                entries={props.entries}
+                timeZone={format.timeZone}
+                hrefForEntry={props.hrefForEntry}
+                grabbedKey={props.grabbedKey}
+                onPickUp={props.onPickUp}
+                proposal={props.proposal}
+                label={t('web.calendar.grid.label', { range: props.rangeLabel })}
+              />
+            </div>
+            <div className="md:hidden">
+              <CalendarAgenda
+                range={props.range}
+                entries={props.entries}
+                timeZone={format.timeZone}
+                hrefForEntry={props.hrefForEntry}
+                grabbedKey={props.grabbedKey}
+                onPickUp={props.onPickUp}
+                proposal={props.proposal}
+                label={t('web.calendar.agenda.label', { range: props.rangeLabel })}
+              />
+            </div>
+          </>
+        )}
+      </CalendarViewTransition>
     </>
   );
 }

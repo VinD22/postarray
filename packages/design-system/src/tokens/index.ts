@@ -35,6 +35,8 @@ export {
   type StatusTokens,
   type StatusTone,
   type DestructiveTone,
+  type CtaTokens,
+  type BlushTokens,
   type BrandTokens,
   type ProviderKey,
   type TypeStep,

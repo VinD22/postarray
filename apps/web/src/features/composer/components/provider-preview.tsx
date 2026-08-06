@@ -9,12 +9,17 @@
  * the platform's rules rather than a rendering by the platform itself.
  */
 
-import { type ReactNode } from 'react';
+import { useRef, type ReactNode } from 'react';
 import { Notice } from '@relay/design-system/patterns';
+import { cn } from '@relay/design-system/utils';
 import { useTranslations } from '@relay/i18n/react';
 import { resolveVariant } from '@relay/contracts';
 import { formatDateTime } from '@relay/i18n';
 
+import { PosterCard } from '@/features/marketing/components/loud/poster-card';
+import { DURATION_FAST, EASE_STANDARD } from '@/lib/motion/constants';
+import { gsap, useGSAP } from '@/lib/motion/gsap';
+import { useMotionOk } from '@/lib/motion/use-motion-ok';
 import { useComposer } from '../composer-context';
 import { sequenceTimeline } from '../state/selectors';
 import { PROVIDER_LABEL, ProviderIdentity } from './provider-identity';
@@ -37,6 +42,7 @@ export function ProviderPreview({ summary }: ProviderPreviewProps): ReactNode {
   const resolved = resolveVariant(state.master, state.overrides[summary.connectionId] ?? {});
   const settings = state.settings[summary.connectionId];
   const providerName = PROVIDER_LABEL[summary.account.provider];
+  const motionOk = useMotionOk();
 
   const body = resolved.values.signature
     ? `${resolved.values.body}\n\n${resolved.values.signature.appliedText}`
@@ -51,15 +57,36 @@ export function ProviderPreview({ summary }: ProviderPreviewProps): ReactNode {
   const supportsKind =
     summary.account.capabilities.contentKinds[resolved.values.contentKind] === 'supported';
 
+  const overLimit = summary.characterCount > summary.characterLimit;
+  const nearLimit = summary.characterCount >= summary.characterLimit * 0.9;
+
+  // The frame crossfades to the newly opened target rather than cutting —
+  // opacity only, no slide (the slide belongs to the pane switch around this
+  // component, `pane-transition.tsx`; stacking a second directional motion
+  // on top of it here would read as two things moving at once).
+  const scope = useRef<HTMLDivElement>(null);
+  const previousConnectionId = useRef(summary.connectionId);
+
+  useGSAP(
+    () => {
+      if (!motionOk || !scope.current) return;
+      if (previousConnectionId.current === summary.connectionId) return;
+      previousConnectionId.current = summary.connectionId;
+      gsap.from(scope.current, { opacity: 0, duration: DURATION_FAST, ease: EASE_STANDARD });
+    },
+    { scope, dependencies: [motionOk, summary.connectionId] },
+  );
+
   return (
     <section
+      ref={scope}
       aria-label={t.full('composer.preview.forAccount', {
         account: summary.account.displayName,
         provider: providerName,
       })}
       className="flex flex-col gap-3"
     >
-      <div className="border-border-default bg-surface-raised rounded-lg border p-3">
+      <PosterCard tone="paper" className="p-4">
         <ProviderIdentity
           provider={summary.account.provider}
           accountName={summary.account.displayName}
@@ -68,6 +95,22 @@ export function ProviderPreview({ summary }: ProviderPreviewProps): ReactNode {
 
         <p className="text-body-lg text-text-primary mt-2 whitespace-pre-wrap">
           {body.length > 0 ? body : t.full('composer.master.placeholder')}
+        </p>
+
+        <p
+          className={cn(
+            'text-label mt-2 tabular-nums',
+            overLimit
+              ? 'text-destructive-fg'
+              : nearLimit
+                ? 'text-warning-fg'
+                : 'text-text-secondary',
+          )}
+        >
+          {t.full('composerWeb.rail.counter', {
+            used: summary.characterCount,
+            limit: summary.characterLimit,
+          })}
         </p>
 
         {settings?.destination ? (
@@ -87,7 +130,7 @@ export function ProviderPreview({ summary }: ProviderPreviewProps): ReactNode {
             {summary.publishedUrl}
           </p>
         ) : null}
-      </div>
+      </PosterCard>
 
       {resolved.values.threadItems.length > 0 ? (
         <ol className="flex flex-col gap-2">

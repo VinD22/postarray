@@ -12,6 +12,7 @@
 import type { ReactNode } from 'react';
 import { Button, Notice } from '@relay/design-system';
 import { useTranslations } from '@relay/i18n/react';
+import { Sticker } from '@/features/marketing/components/loud/sticker';
 
 export interface AttentionBarProps {
   count: number;
@@ -30,23 +31,35 @@ export function AttentionBar({
   if (count === 0) return null;
 
   return (
-    <Notice
-      tone="warning"
-      liveness="status"
-      title={t('web.calendar.attention.title', { count })}
-      description={t('web.calendar.attention.body')}
-      actions={
-        <>
-          {showingOnlyAttention ? null : (
-            <Button variant="secondary" size="sm" onClick={onShowOnlyAttention}>
-              {t('web.calendar.attention.showOnly')}
+    // The extra 2px inline-start border is this band's own emphasis, kept
+    // outside `Notice` on purpose: that primitive is documented to stay a
+    // flat tinted rectangle with no accent bar everywhere else it appears.
+    <div className="border-warning-border overflow-hidden rounded-lg border-s-2">
+      <Notice
+        tone="warning"
+        liveness="status"
+        title={
+          <span className="flex flex-wrap items-center gap-2">
+            <Sticker tone="cta" rotate={-3} ariaHidden>
+              {count}
+            </Sticker>
+            {t('web.calendar.attention.title', { count })}
+          </span>
+        }
+        description={t('web.calendar.attention.body')}
+        actions={
+          <>
+            {showingOnlyAttention ? null : (
+              <Button variant="secondary" size="sm" onClick={onShowOnlyAttention}>
+                {t('web.calendar.attention.showOnly')}
+              </Button>
+            )}
+            <Button variant="secondary" size="sm" asChild>
+              <a href={actionCenterHref}>{t('web.calendar.attention.open')}</a>
             </Button>
-          )}
-          <Button variant="secondary" size="sm" asChild>
-            <a href={actionCenterHref}>{t('web.calendar.attention.open')}</a>
-          </Button>
-        </>
-      }
-    />
+          </>
+        }
+      />
+    </div>
   );
 }

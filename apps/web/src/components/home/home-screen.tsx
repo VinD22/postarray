@@ -1,16 +1,18 @@
 'use client';
 
-import Link from 'next/link';
+import { Link } from '@/components/link';
+import { Coffee } from 'lucide-react';
 import { useEffect, useRef } from 'react';
 
 import { useAnnouncer } from '@relay/design-system/hooks';
-import { PageHeader } from '@relay/design-system/patterns';
-import { Button, Separator } from '@relay/design-system/primitives';
+import { EmptyState, PageHeader } from '@relay/design-system/patterns';
+import { Badge, Button, Separator } from '@relay/design-system/primitives';
 
 import { ApiError } from '@/lib/api';
 import { useActionCenter, useCalendar } from '@/lib/api/hooks';
 import { useSession } from '@/lib/auth/session-context';
 import { useTranslations } from '@/lib/i18n';
+import { StaggerList } from '@/components/motion';
 import { ActionCenterList } from '@/components/shell/action-center-list';
 
 import { ConnectionHealth } from './connection-health';
@@ -37,6 +39,7 @@ export function HomeScreen() {
 
   const actionQuery = useActionCenter();
   const actionItems = actionQuery.data?.data ?? [];
+  const needsYouEmpty = !actionQuery.isPending && !actionQuery.error && actionItems.length === 0;
 
   const now = new Date();
   const upcomingQuery = useCalendar({
@@ -80,29 +83,49 @@ export function HomeScreen() {
         }
       />
 
-      <div className="3xl:max-w-[90rem] flex flex-col gap-8 px-4 py-5 md:px-6 md:py-6 2xl:mx-auto 2xl:max-w-[85rem]">
+      <StaggerList className="relay-page flex flex-col gap-8 py-5 md:py-6" stagger={0.06} y={16}>
         <TrialBanner />
 
         <HomeSection
           id="home-needs-you"
+          emphasis
           title={t('home.needsYou.title')}
-          meta={t('actionCenter.itemCount', { count: actionItems.length })}
+          meta={
+            actionItems.length > 0 ? (
+              <Badge tone="pop">{t('actionCenter.itemCount', { count: actionItems.length })}</Badge>
+            ) : undefined
+          }
           link={
             actionItems.length > 0
               ? { href: '/action-center', label: t('home.needsYou.viewAll') }
               : undefined
           }
         >
-          <ActionCenterList
-            items={actionItems}
-            loading={actionQuery.isPending}
-            error={ApiError.is(actionQuery.error) ? actionQuery.error : null}
-            onRetry={() => {
-              void actionQuery.refetch();
-            }}
-            maxItems={5}
-            showSnooze={false}
-          />
+          {needsYouEmpty ? (
+            <EmptyState
+              compact
+              illustration={
+                <span className="border-border-strong inline-flex size-12 items-center justify-center rounded-full border-2 border-dashed">
+                  <Coffee aria-hidden="true" className="size-5" />
+                </span>
+              }
+              title={t('actionCenter.empty')}
+              description={t('home.needsYou.emptyQuiet')}
+            />
+          ) : (
+            <div className={actionItems.length > 0 ? 'border-cta border-s-[3px] ps-4' : undefined}>
+              <ActionCenterList
+                items={actionItems}
+                loading={actionQuery.isPending}
+                error={ApiError.is(actionQuery.error) ? actionQuery.error : null}
+                onRetry={() => {
+                  void actionQuery.refetch();
+                }}
+                maxItems={5}
+                showSnooze={false}
+              />
+            </div>
+          )}
         </HomeSection>
 
         <Separator />
@@ -123,7 +146,7 @@ export function HomeScreen() {
         <p className="text-body-sm text-text-tertiary">
           {t('shell.workspace.current', { name: session.workspace.name })}
         </p>
-      </div>
+      </StaggerList>
     </>
   );
 }

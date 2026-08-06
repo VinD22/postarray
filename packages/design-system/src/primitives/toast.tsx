@@ -113,7 +113,7 @@ export function Toaster({
               }}
               className={cn(
                 'bg-surface-overlay flex items-start gap-2.5 rounded-lg border',
-                'shadow-overlay relay-anim-enter-toast p-3',
+                'shadow-overlay relay-toast-bounce p-3',
                 toneBorder[tone],
               )}
             >

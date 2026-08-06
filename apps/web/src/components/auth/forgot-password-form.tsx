@@ -1,6 +1,6 @@
 'use client';
 
-import Link from 'next/link';
+import { Link } from '@/components/link';
 import { useState, type FormEvent } from 'react';
 
 import { Notice } from '@relay/design-system/patterns';
@@ -76,7 +76,7 @@ export function ForgotPasswordForm() {
 
       <Button
         type="submit"
-        variant="primary"
+        variant="cta"
         size="lg"
         fullWidth
         loading={pending}

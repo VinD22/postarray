@@ -21,6 +21,14 @@ reviewable on day one, and it is never possible to mistake an example workspace
 for a real one. Point `NEXT_PUBLIC_RELAY_API_URL` at the API and restart to use
 live data. See `.env.example`.
 
+## Environment
+
+`NEXT_PUBLIC_SITE_ORIGIN` is the public canonical origin for this web
+deployment. It supplies canonical URLs, structured data, `hreflang`
+alternates, and the sitemap. Set it to the exact HTTPS origin for each deployed
+environment, without a trailing slash. For local development it is
+`http://localhost:3000`.
+
 ```bash
 pnpm --filter @relay/web typecheck
 pnpm --filter @relay/web lint

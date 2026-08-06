@@ -23,6 +23,7 @@ import {
 } from '@relay/design-system/primitives';
 import { cn } from '@relay/design-system/utils';
 
+import { StaggerList } from '@/components/motion';
 import { useSession } from '@/lib/auth/session-context';
 import { useTranslations } from '@/lib/i18n';
 
@@ -288,47 +289,57 @@ export function CommandPalette({
               {t('palette.empty', { query })}
             </p>
           ) : (
-            <ul
-              id={listId}
-              role="listbox"
-              aria-label={t('palette.title')}
-              className="flex flex-col"
-            >
-              {grouped.map((section) => (
-                <li key={section.group} role="presentation">
-                  <p
-                    role="presentation"
-                    className="text-label text-text-tertiary px-2 pt-3 pb-1 tracking-wide uppercase"
-                  >
-                    {section.group}
-                  </p>
-                  <ul role="group" aria-label={section.group} className="flex flex-col">
-                    {section.entries.map(({ command, index }) => (
-                      <li
-                        key={command.id}
-                        id={`${listId}-option-${index}`}
-                        role="option"
-                        aria-selected={index === activeIndex}
-                        onMouseEnter={() => {
-                          setActiveIndex(index);
-                        }}
-                        onClick={command.run}
-                        className={cn(
-                          'flex min-h-11 cursor-pointer items-center justify-between gap-3',
-                          'text-body-md rounded-md px-2 py-2',
-                          index === activeIndex
-                            ? 'bg-accent-subtle text-text-primary'
-                            : 'text-text-secondary',
-                        )}
-                      >
-                        <span className="truncate">{command.label}</span>
-                        {command.shortcut === undefined ? null : <Kbd keys={command.shortcut} />}
-                      </li>
-                    ))}
-                  </ul>
-                </li>
-              ))}
-            </ul>
+            <StaggerList selector="[data-stagger-item]" stagger={0.015} y={8}>
+              <ul
+                id={listId}
+                role="listbox"
+                aria-label={t('palette.title')}
+                className="flex flex-col"
+              >
+                {grouped.map((section) => (
+                  <li key={section.group} role="presentation">
+                    <p
+                      role="presentation"
+                      className="text-label text-text-tertiary font-display px-2 pt-3 pb-1 tracking-wide uppercase"
+                    >
+                      {section.group}
+                    </p>
+                    <ul role="group" aria-label={section.group} className="flex flex-col">
+                      {section.entries.map(({ command, index }) => (
+                        <li
+                          key={command.id}
+                          id={`${listId}-option-${index}`}
+                          role="option"
+                          aria-selected={index === activeIndex}
+                          data-stagger-item
+                          onMouseEnter={() => {
+                            setActiveIndex(index);
+                          }}
+                          onClick={command.run}
+                          className={cn(
+                            'relative flex min-h-11 cursor-pointer items-center justify-between gap-3',
+                            'text-body-md rounded-md py-2 ps-3.5 pe-2',
+                            index === activeIndex
+                              ? 'bg-accent-subtle text-text-primary'
+                              : 'text-text-secondary',
+                          )}
+                        >
+                          <span
+                            aria-hidden="true"
+                            className={cn(
+                              'absolute inset-y-0 start-0 my-1.5 w-0.5 rounded-full',
+                              index === activeIndex ? 'bg-accent' : 'bg-transparent',
+                            )}
+                          />
+                          <span className="truncate">{command.label}</span>
+                          {command.shortcut === undefined ? null : <Kbd keys={command.shortcut} />}
+                        </li>
+                      ))}
+                    </ul>
+                  </li>
+                ))}
+              </ul>
+            </StaggerList>
           )}
         </div>
 

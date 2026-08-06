@@ -1,6 +1,6 @@
 'use client';
 
-import Link from 'next/link';
+import { Link } from '@/components/link';
 import { AlertTriangle, Clock, Eye } from 'lucide-react';
 import type { ReactNode } from 'react';
 
@@ -126,6 +126,8 @@ export function ActionCenterList({
                   className={cn(
                     'border-border-subtle flex flex-col gap-2 border-b py-3',
                     'sm:flex-row sm:items-start sm:gap-4',
+                    'transition-[translate,border-color] duration-[--duration-fast] ease-[--ease-standard]',
+                    'hover:border-accent hover:-translate-y-0.5 motion-reduce:transition-none',
                   )}
                 >
                   <span className="mt-0.5 flex shrink-0 items-center gap-1.5">
@@ -158,13 +160,19 @@ export function ActionCenterList({
                   </div>
 
                   <div className="flex shrink-0 items-center gap-2">
-                    <Button variant="secondary" size="sm" asChild>
+                    <Button
+                      variant="secondary"
+                      size="sm"
+                      asChild
+                      className="active:scale-[0.97] motion-reduce:active:scale-100"
+                    >
                       <Link href={item.href}>{t(definition.actionKey)}</Link>
                     </Button>
                     {showSnooze && item.snoozedUntil === null ? (
                       <Button
                         variant="ghost"
                         size="sm"
+                        className="active:scale-[0.97] motion-reduce:active:scale-100"
                         loading={snooze.isPending && snooze.variables?.itemId === item.id}
                         loadingLabel={t('loading.default')}
                         onClick={() => {

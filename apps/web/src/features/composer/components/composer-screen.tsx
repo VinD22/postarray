@@ -21,7 +21,9 @@ import { issueCursorList } from '../state/selectors';
 import { ComposerHeader } from './composer-header';
 import { CostPanel } from './cost-panel';
 import { MasterPanel } from './master-panel';
+import { PaneTransition } from './pane-transition';
 import { ProviderPreview } from './provider-preview';
+import { SavedFlash, useSavedFlash } from './saved-flash';
 import { ScheduleSheet, type ScheduleIntent } from './schedule-sheet';
 import { ShortcutsDialog } from './shortcuts-dialog';
 import { SummaryBar } from './summary-bar';
@@ -77,6 +79,7 @@ export function ComposerScreen(props: ComposerScreenProps): ReactNode {
   const [scheduleOpen, setScheduleOpen] = useState(false);
   const [shortcutsOpen, setShortcutsOpen] = useState(false);
   const [issueIndex, setIssueIndex] = useState<number | null>(null);
+  const savedFlash = useSavedFlash();
 
   const issues = useMemo(() => issueCursorList(summaries), [summaries]);
   const active =
@@ -128,7 +131,10 @@ export function ComposerScreen(props: ComposerScreenProps): ReactNode {
       'Ctrl+[': () => moveTarget(-1),
       'Ctrl+i': () => moveIssue(1),
       'Ctrl+Shift+i': () => moveIssue(-1),
-      'Mod+s': () => saveNow(),
+      'Mod+s': () => {
+        saveNow();
+        savedFlash.flash();
+      },
       'Mod+Enter': () => setScheduleOpen(true),
     },
     { enableInFormFields: true },
@@ -225,12 +231,12 @@ export function ComposerScreen(props: ComposerScreenProps): ReactNode {
           </ol>
         </nav>
 
-        <div className="flex-1 pb-4">
+        <PaneTransition panelKey={step} className="flex-1 pb-4">
           {step === 'targets' ? <TargetRail /> : null}
           {step === 'write' ? masterPane : null}
           {step === 'variant' ? editorPane : null}
           {step === 'review' ? reviewPane : null}
-        </div>
+        </PaneTransition>
 
         <SummaryBar
           onOpenReview={() => {
@@ -246,6 +252,7 @@ export function ComposerScreen(props: ComposerScreenProps): ReactNode {
           {...(props.scheduleWarnings ? { warnings: props.scheduleWarnings } : {})}
         />
         <ShortcutsDialog open={shortcutsOpen} onOpenChange={setShortcutsOpen} />
+        <SavedFlash visible={savedFlash.visible} />
       </div>
     );
   }
@@ -284,7 +291,9 @@ export function ComposerScreen(props: ComposerScreenProps): ReactNode {
           }
           className="min-w-0 pb-10"
         >
-          {active ? editorPane : masterPane}
+          <PaneTransition panelKey={active ? active.connectionId : 'master'}>
+            {active ? editorPane : masterPane}
+          </PaneTransition>
         </main>
 
         {showPreview ? (
@@ -337,6 +346,7 @@ export function ComposerScreen(props: ComposerScreenProps): ReactNode {
         {...(props.scheduleWarnings ? { warnings: props.scheduleWarnings } : {})}
       />
       <ShortcutsDialog open={shortcutsOpen} onOpenChange={setShortcutsOpen} />
+      <SavedFlash visible={savedFlash.visible} />
     </div>
   );
 }

@@ -1,6 +1,6 @@
 'use client';
 
-import Link from 'next/link';
+import { Link } from '@/components/link';
 import { usePathname } from 'next/navigation';
 import { Search } from 'lucide-react';
 import { useEffect, useState, type ReactNode } from 'react';
@@ -9,6 +9,7 @@ import { useHotkeys } from '@relay/design-system/hooks';
 import { Kbd } from '@relay/design-system/primitives';
 import { cn } from '@relay/design-system/utils';
 
+import { PageTransitionProvider } from '@/components/motion';
 import { useTranslations } from '@/lib/i18n';
 
 import { AccountMenu } from './account-menu';
@@ -66,11 +67,11 @@ export function AppShell({ children }: { readonly children: ReactNode }) {
         {t('nav.skipToContent')}
       </a>
 
-      <header className="border-border-default bg-surface-canvas sticky top-0 z-(--z-index-sticky) border-b">
-        <div className="flex items-center gap-2 px-3 py-2 md:px-4">
+      <header className="border-border-bold bg-surface-canvas sticky top-0 z-(--z-index-sticky) border-b-2">
+        <div className="flex items-center gap-2 px-(--layout-gutter) py-2">
           <Link
             href="/"
-            className="text-title-sm text-text-primary hidden shrink-0 items-center px-1 md:flex"
+            className="text-title-sm text-text-primary font-display hidden shrink-0 items-center px-1 font-bold md:flex"
           >
             {t('shell.appName')}
           </Link>
@@ -86,7 +87,8 @@ export function AppShell({ children }: { readonly children: ReactNode }) {
               'border-border-default ms-auto hidden min-h-9 items-center gap-2 rounded-md border',
               'bg-surface-sunken text-body-sm text-text-tertiary px-2.5 lg:flex lg:w-72',
               'hover:bg-surface-hover hover:text-text-secondary',
-              'transition-colors duration-(--duration-fast)',
+              'focus-visible:border-border-bold lg:focus-visible:w-80',
+              'transition-[background-color,color,border-color,width] duration-(--duration-fast)',
             )}
           >
             <Search aria-hidden="true" className="size-4" />
@@ -121,7 +123,7 @@ export function AppShell({ children }: { readonly children: ReactNode }) {
         <ConnectivityBanner />
       </header>
 
-      <div className="grid flex-1 grid-cols-1 md:grid-cols-[3.5rem_1fr] lg:grid-cols-[15rem_1fr]">
+      <div className="grid flex-1 grid-cols-1 md:grid-cols-[3.5rem_1fr] lg:grid-cols-[13.5rem_1fr]">
         <PrimaryNav />
 
         <main
@@ -130,7 +132,7 @@ export function AppShell({ children }: { readonly children: ReactNode }) {
           tabIndex={-1}
           className="min-w-0 pb-20 md:pb-0"
         >
-          {children}
+          <PageTransitionProvider tier="app">{children}</PageTransitionProvider>
         </main>
       </div>
 

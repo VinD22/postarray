@@ -4,18 +4,13 @@ import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
 import { Notice } from '@relay/design-system/patterns';
-import {
-  Button,
-  Label,
-  RadioGroup,
-  RadioGroupItem,
-  StatusDot,
-} from '@relay/design-system/primitives';
+import { Button, Label, RadioGroup, RadioGroupItem } from '@relay/design-system/primitives';
 import { cn } from '@relay/design-system/utils';
 
 import { ApiError, api, newIdempotencyKey, type ProviderId } from '@/lib/api';
 import { useTranslations } from '@/lib/i18n';
-import { providerDotKey } from '@/components/shell/action-center-catalog';
+import { PosterCard } from '@/features/marketing/components/loud/poster-card';
+import { ProviderMark } from '@/features/connections/provider';
 import { requireFirst } from '@/lib/utils/require-first';
 
 /**
@@ -75,6 +70,12 @@ const PROVIDERS: readonly {
  *
  * One is enough to reach a first post. The permission list is on the page,
  * before the handoff, and the button says where it is about to send you.
+ *
+ * Each provider is a hover-lift `PosterCard` (WP-4) rather than a plain radio
+ * row: `RadioGroup` renders with `display: contents` so its own layout
+ * disappears and the cards become direct items of the surrounding CSS grid,
+ * while the underlying `role="radiogroup"` / `role="radio"` semantics (and
+ * `Label`'s `htmlFor` association) are unchanged from the plain-row version.
  */
 export function ConnectStep() {
   const t = useTranslations();
@@ -117,38 +118,44 @@ export function ConnectStep() {
 
       {error === null ? null : <Notice tone="destructive" liveness="alert" title={error} />}
 
-      <fieldset className="flex flex-col gap-0">
-        <legend className="text-label text-text-tertiary pb-2 tracking-wide uppercase">
+      <fieldset className="flex flex-col gap-3">
+        <legend className="text-label text-text-tertiary pb-1 tracking-wide uppercase">
           {t('onboarding.connect.chooseProvider')}
         </legend>
 
-        <RadioGroup
-          value={selected}
-          onValueChange={(next) => {
-            setSelected(next as ProviderId);
-          }}
-          className="border-border-subtle gap-0 border-t"
-        >
-          {PROVIDERS.map((entry) => {
-            const id = `provider-${entry.id}`;
-            const dot = providerDotKey(entry.id);
-            return (
-              <div
-                key={entry.id}
-                className={cn(
-                  'border-border-subtle flex items-center gap-3 border-b py-3',
-                  selected === entry.id && 'bg-accent-subtle',
-                )}
-              >
-                <RadioGroupItem value={entry.id} id={id} />
-                {dot === undefined ? null : <StatusDot provider={dot} aria-hidden="true" />}
-                <Label htmlFor={id} className="text-body-md text-text-primary">
-                  {entry.name}
-                </Label>
-              </div>
-            );
-          })}
-        </RadioGroup>
+        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+          <RadioGroup
+            value={selected}
+            onValueChange={(next) => {
+              setSelected(next as ProviderId);
+            }}
+            className="contents"
+          >
+            {PROVIDERS.map((entry) => {
+              const id = `provider-${entry.id}`;
+              const isSelected = selected === entry.id;
+              return (
+                <PosterCard
+                  key={entry.id}
+                  tone="paper"
+                  className={cn(
+                    'flex min-h-11 items-center gap-3 p-4',
+                    isSelected && 'border-accent shadow-hard-lg',
+                  )}
+                >
+                  <RadioGroupItem value={entry.id} id={id} />
+                  <ProviderMark provider={entry.id} />
+                  <Label
+                    htmlFor={id}
+                    className="text-body-md text-text-primary flex-1 cursor-pointer font-medium"
+                  >
+                    {entry.name}
+                  </Label>
+                </PosterCard>
+              );
+            })}
+          </RadioGroup>
+        </div>
       </fieldset>
 
       <section aria-live="polite" className="flex flex-col gap-2">

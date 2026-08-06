@@ -7,22 +7,30 @@ import { cn } from '../utils/cn';
 /**
  * A small, low-emphasis label: a locale code, a surface of origin, a count.
  *
- * Badges are rectangular with a 4px radius, not pills. Publish state has its
+ * Badges are rectangular with a 2px radius, not pills. Publish state has its
  * own component (StatusPill) so the two are never confused, and a screen full
  * of identical rounded pills never happens.
+ *
+ * `pop` and `blush` are the loud, decorative tones (cta yellow / blush pink).
+ * Both carry the mandatory 2px `--border-bold` outline instead of a hairline
+ * border — a yellow or pink fill is never trusted to read as a boundary on
+ * its own. Ink text on either fill clears AA by a wide margin; never swap it
+ * for white.
  */
 export const badgeVariants = cva(
-  'inline-flex items-center gap-1 rounded-sm border px-1.5 py-0.5 text-label whitespace-nowrap',
+  'inline-flex items-center gap-1 rounded-sm px-1.5 py-0.5 text-label uppercase tracking-wide whitespace-nowrap',
   {
     variants: {
       tone: {
-        neutral: 'border-border-default bg-surface-sunken text-text-secondary',
-        accent: 'border-accent-subtle bg-accent-subtle text-text-accent',
-        success: 'border-success-border bg-success-bg text-success-fg',
-        warning: 'border-warning-border bg-warning-bg text-warning-fg',
-        destructive: 'border-destructive-border bg-destructive-bg text-destructive-fg',
-        info: 'border-info-border bg-info-bg text-info-fg',
-        outline: 'border-border-default bg-transparent text-text-secondary',
+        neutral: 'border border-border-default bg-surface-sunken text-text-secondary',
+        accent: 'border border-accent-subtle bg-accent-subtle text-text-accent',
+        success: 'border border-success-border bg-success-bg text-success-fg',
+        warning: 'border border-warning-border bg-warning-bg text-warning-fg',
+        destructive: 'border border-destructive-border bg-destructive-bg text-destructive-fg',
+        info: 'border border-info-border bg-info-bg text-info-fg',
+        outline: 'border border-border-default bg-transparent text-text-secondary',
+        pop: 'border-2 border-border-bold bg-cta text-cta-on',
+        blush: 'border-2 border-border-bold bg-blush text-blush-on',
       },
     },
     defaultVariants: { tone: 'neutral' },

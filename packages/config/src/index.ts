@@ -12,6 +12,7 @@ export {
   groupOf,
   isBase64Key,
   isHostPort,
+  isHttpOrigin,
   isHttpUrl,
   isPostgresUrl,
   isRedisUrl,

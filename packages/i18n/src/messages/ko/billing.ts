@@ -1,0 +1,91 @@
+/** Korean beta catalog. */
+export const billingMessages = {
+  'billing.title': '청구',
+  'billing.plan.name': 'Relay',
+  'billing.plan.single': '하나의 계획. 모든 기능. 등급이 없습니다.',
+  'billing.plan.monthlyPrice': '$29/월',
+  'billing.plan.annualPrice': '$300/년',
+  'billing.plan.annualFraming': '매년 청구되는 월 $25. 연간 $48를 절약하세요.',
+  'billing.plan.interval.monthly': '월간 간행물',
+  'billing.plan.interval.annual': '연간',
+  'billing.plan.selectInterval': '청구 간격 선택',
+  'billing.plan.includes.title': '무엇이 포함되어 있나요?',
+  'billing.plan.includes.channels': '최대 30개의 활성 소셜 채널',
+  'billing.plan.includes.members': '팀원 수 무제한',
+  'billing.plan.includes.posts': '공정 사용에 따른 무제한 초안 및 예약 게시물',
+  'billing.plan.includes.connectors': '승인된 모든 커넥터',
+  'billing.plan.includes.analytics': '계정을 연결한 날부터 분석이 유지됩니다.',
+  'billing.plan.includes.api': 'REST API, 원격 MCP 서버, CLI 및 웹후크',
+  'billing.plan.includes.automation': '자동화 규칙, RSS 자동 게시 및 추적된 링크',
+  'billing.plan.includes.ai': '남용 및 비용 제한에 따른 DeepSeek 텍스트 지원',
+  'billing.plan.includes.support': '이메일 및 앱 내 지원',
+  'billing.plan.fairUse':
+    '공정한 사용은 귀하의 계정을 보호하는 스팸 방지, 요금 및 공급자 비용 통제를 의미합니다. 모든 가입자에게 동일하게 작동합니다.',
+  'billing.trial.length': '모든 기능을 갖춘 7일 평가판',
+  'billing.trial.dueToday': '오늘 결제 금액은 0달러입니다.',
+  'billing.trial.paymentMethodRequired':
+    'Polar는 지금 결제 방법을 수집하고 오늘은 비용을 청구하지 않습니다.',
+  'billing.trial.firstCharge': '첫 번째 충전{amount}~에{date}',
+  'billing.trial.renewal': '갱신{amount}모든{interval}이후',
+  'billing.trial.cancelBefore': '이 날짜 이전에 설정에서 취소하면 요금이 청구되지 않습니다.',
+  'billing.trial.reminder': 'Polar는 평가판이 전환되기 3일 전에 이메일을 보냅니다.',
+  'billing.trial.daysRemaining': '{count, plural, other {평가판, #일 남음}}',
+  'billing.trial.converted': '평가판이 변환된 날짜{date}.',
+  'billing.trial.canceled': '평가판이 취소되었습니다. 비용은 청구되지 않습니다.',
+  'billing.trial.abusePrevention':
+    '반복 시도는 제한됩니다. 이 계정에 평가판을 사용할 수 없는 경우 지원팀에 문의하세요.',
+  'billing.checkout.open': '결제 계속하기',
+  'billing.checkout.hostedBy': '결제 및 청구서는 당사의 기록 판매자인 Polar에서 처리합니다.',
+  'billing.checkout.taxNote': 'Polar는 적용되는 모든 판매세 또는 VAT를 징수하고 납부합니다.',
+  'billing.checkout.notEntitledYet':
+    '브라우저 리디렉션이 아닌 Polar가 구독을 확인한 후에 액세스 권한을 부여합니다. 이 작업은 일반적으로 몇 초 정도 걸립니다.',
+  'billing.checkout.returning': 'Polar 구독 확인',
+  'billing.subscription.status.trialing': '재판',
+  'billing.subscription.status.active': '활동적인',
+  'billing.subscription.status.pastDue': '지불 연체',
+  'billing.subscription.status.canceled': '취소',
+  'billing.subscription.status.unpaid': '미지급',
+  'billing.subscription.status.none': '구독하지 않음',
+  'billing.subscription.renewsOn': '갱신{amount}~에{date}',
+  'billing.subscription.endsOn': '액세스는 다음까지 계속됩니다.{date}',
+  'billing.subscription.pastDueBody':
+    '마지막 결제가 이루어지지 않았습니다. 계속 게시하려면 결제 수단을 업데이트하세요. 유예 기간이 지나면 작업공간은 읽기 전용이 되고 예약된 게시물은 중지됩니다.',
+  'billing.subscription.readOnly':
+    '이 작업공간은 읽기 전용입니다. 콘텐츠, 영수증, 연결은 그대로 유지됩니다.',
+  'billing.subscription.portal': 'Polar 고객 포털 열기',
+  'billing.subscription.invoices': '송장',
+  'billing.subscription.paymentMethod': '결제수단',
+  'billing.subscription.managedByPolar': 'Polar에서 관리함',
+  'billing.cancel.title': '구독 취소',
+  'billing.cancel.beforeTrialEnd':
+    '지금 취소하면 비용이 청구되지 않습니다. 까지 모든 기능을 유지합니다.{date}.',
+  'billing.cancel.afterTrial':
+    '다음 날짜까지 계속 액세스할 수 있습니다.{date}. 종료되면 아무것도 삭제되지 않습니다.',
+  'billing.cancel.confirm': '구독 취소',
+  'billing.cancel.confirmed': '취소. 비용은 청구되지 않습니다.',
+  'billing.cancel.keepData': '초안, 영수증 및 분석은 이 작업 공간에 유지됩니다.',
+  'billing.usage.title': '용법',
+  'billing.usage.meteredNote':
+    '공급자가 작업당 비용을 청구하기 때문에 일부 공급자 비용은 원가로 전달됩니다.',
+  'billing.usage.xCharges':
+    '각 게시물에 대해 X 요금이 부과됩니다. URL이 포함된 게시물은 일반 텍스트보다 비용이 더 많이 듭니다.',
+  'billing.usage.balance': '사용량 잔액{amount}',
+  'billing.usage.estimatedBeforeAction': '이 작업의 예상 금액은 다음과 같습니다.{amount}.',
+  'billing.usage.periodTotal': '{amount}이후 사용{date}',
+  'billing.usage.noMediaCredits':
+    'Relay은 미디어를 생성하지 않으므로 이미지 또는 비디오 생성 크레딧이 없습니다.',
+  'billing.downgrade.overLimit':
+    '이 작업공간에는{count, plural, other {채널 #개}}한도를 초과했습니다. 해당 채널의 새로운 작업은 차단됩니다. 당신을 위해 연결이 끊어진 것은 없습니다.',
+  'billing.mediaGeneration.title': '이미지나 비디오를 생성하지 않는 이유',
+  'billing.mediaGeneration.explanation':
+    '우리는 귀하의 계획, 승인, 출판 및 학습을 돕는 데 중점을 두고 있습니다. 브랜드 레디 미디어에는 짧은 프롬프트 이상의 것이 필요하기 때문에 V1에서는 이미지나 비디오를 생성하지 않습니다. 즉, 완전한 시각적 시스템, 정확한 제품 세부 정보, 라이센스 자산, 사람 및 사용 권한, 신중한 검토가 필요합니다. 창의적인 모델도 빠르게 변화합니다. 현재 검증된 전문가 도구를 권장하며 창의적인 제어를 유지하면서 완성된 작업을 캠페인에 쉽게 가져올 수 있습니다.',
+  'billing.referral.title': '추천',
+  'billing.referral.disclosure':
+    '추천 링크를 공유할 때마다 공개해야 합니다. 커미션은 결코 긍정적인 리뷰를 조건으로 하지 않습니다.',
+  'billing.referral.link': '귀하의 추천 링크',
+  'billing.referral.attributed': '{count, plural, other {# 기여 가입}}',
+  'billing.referral.commissionPending': '보류 중, 환불 기간이 종료될 때까지 보관됨',
+  'billing.referral.commissionApproved': '승인됨',
+  'billing.referral.commissionReversed': '환불 후 취소됨',
+  'billing.referral.payout': '지급 실행{schedule}.',
+} as const;

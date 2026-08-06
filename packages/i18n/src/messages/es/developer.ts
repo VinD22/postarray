@@ -1,0 +1,140 @@
+/** Developer surfaces: API keys, service accounts, MCP, CLI, OAuth apps. */
+export const developerMessages = {
+  'developer.title': 'Agentes y API',
+  'developer.subtitle':
+    'La API, el servidor MCP y la CLI utilizan los mismos permisos, política de aprobación y recibos que la aplicación.',
+
+  'developer.serviceAccount.title': 'cuentas de servicio',
+  'developer.serviceAccount.create': 'Crear una cuenta de servicio',
+  'developer.serviceAccount.name': 'Nombre',
+  'developer.serviceAccount.scopeBrands': 'Marcas y cuentas que puede utilizar',
+  'developer.serviceAccount.scopePlatforms': 'Plataformas',
+  'developer.serviceAccount.scopeLocales': 'Idiomas del contenido',
+  'developer.serviceAccount.scopeDomains': 'Dominios de enlace permitidos',
+  'developer.serviceAccount.scopeHours': 'Horas permitidas',
+  'developer.serviceAccount.scopeCadence': 'Publicaciones máximas por día',
+  'developer.serviceAccount.scopeLookAhead': '¿Con qué anticipación puede programar?',
+  'developer.serviceAccount.approvalLevel': 'Nivel de aprobación',
+  'developer.serviceAccount.killSwitch': 'Detener a este agente',
+
+  'developer.approvalLevel.0': 'Sólo leer y validar',
+  'developer.approvalLevel.1': 'Crear y editar borradores',
+  'developer.approvalLevel.2': 'Horario dentro de los límites establecidos anteriormente',
+  'developer.approvalLevel.3': 'Pregúntale a una persona antes de publicar',
+  'developer.approvalLevel.description.0':
+    'El agente puede consultar cuentas, capacidades, calendarios y análisis. No cambia nada.',
+  'developer.approvalLevel.description.1':
+    'El agente puede escribir borradores. Una persona todavía programa y publica.',
+  'developer.approvalLevel.description.2':
+    'El agente puede programar dentro de las cuentas, horas, cadencia, idiomas, dominios y anticipación que usted establezca. Todo lo que esté fuera de esos límites necesita una persona.',
+  'developer.approvalLevel.description.3':
+    'La publicación inmediata, una nueva cuenta o dominio, una acción masiva, contenido sensible o un cambio en la configuración de privacidad siempre necesitan una confirmación explícita de una persona.',
+  'developer.bulkThreshold':
+    'Masivo significa más than {publications, plural, one {# publicación externa} many {# publicaciones externas} other {# publicaciones externas}} en una solicitud, o el mismo contenido en más than {accounts, plural, one {# cuenta} many {# cuentas} other {# cuentas}}.',
+
+  'developer.credential.title': 'Credenciales',
+  'developer.credential.create': 'Crear una clave API',
+  'developer.credential.shownOnce':
+    'Esta credencial se muestra una vez. Cópialo ahora. Almacenamos solo un hash del mismo.',
+  'developer.credential.prefix': 'Prefijo',
+  'developer.credential.created': 'Created {date} by {name}',
+  'developer.credential.lastUsed': 'Último used {relativeTime}',
+  'developer.credential.neverUsed': 'Nunca usado',
+  'developer.credential.expires': 'Expires {date}',
+  'developer.credential.revokeConfirm':
+    '¿Revocar esta credencial? Cualquier cosa que lo use deja de funcionar inmediatamente.',
+
+  'developer.scope.title': 'Alcances',
+  'developer.scope.accountsRead': 'Leer cuentas conectadas y sus capacidades',
+  'developer.scope.draftsWrite': 'Crear y editar borradores',
+  'developer.scope.postsSchedule': 'Programar contenido aprobado',
+  'developer.scope.postsPublish': 'Publicar inmediatamente',
+  'developer.scope.analyticsRead': 'Leer análisis',
+  'developer.scope.receiptsRead': 'Leer recibos de publicación',
+  'developer.scope.webhooksWrite': 'Administrar webhooks',
+  'developer.scope.connectionsAdmin': 'Conectar y desconectar cuentas',
+  'developer.scope.billingRead': 'Leer estado de facturación',
+  'developer.scope.consequential': 'Consecuente',
+  'developer.scope.readOnly': 'Sólo lectura',
+
+  'developer.setup.title': 'Conectar un cliente',
+  'developer.setup.claudeCode': 'Código Claude',
+  'developer.setup.codex': 'Códice',
+  'developer.setup.hermes': 'Hermes',
+  'developer.setup.buzz': 'Flujo de trabajo de Buzz',
+  'developer.setup.cli': 'CLI',
+  'developer.setup.genericMcp': 'Cualquier cliente MCP',
+  'developer.setup.copyConfig': 'Copiar configuración',
+  'developer.setup.mcpEndpoint': 'Punto final MCP',
+  'developer.setup.apiBaseUrl': 'URL base de API',
+
+  'developer.playground.title': 'Ejecución en seco',
+  'developer.playground.description':
+    'Ejecute herramientas con datos inicializados. Nada llega a una plataforma real.',
+  'developer.playground.run': 'correr',
+  'developer.playground.sandboxBadge': 'Caja de arena',
+
+  'developer.activity.title': 'Actividad reciente',
+  'developer.activity.toolCall': '{tool} llamado by {actor} {relativeTime}',
+  'developer.activity.denied': 'Rechazado: {reason}',
+  'developer.activity.empty': 'Aún no hay llamadas.',
+  'developer.activity.redacted': 'Los cuerpos de solicitud y respuesta se almacenan sin secretos.',
+
+  'developer.apps.title': 'Aplicaciones para desarrolladores',
+  'developer.apps.subtitle':
+    'Dejar actuar a otro producto a través de Relay con los permisos que le otorga un usuario.',
+  'developer.apps.create': 'Registrar una aplicación',
+  'developer.apps.name': 'Nombre de la aplicación',
+  'developer.apps.type.label': 'Tipo de cliente',
+  'developer.apps.type.public': 'Público, no se puede guardar un secreto.',
+  'developer.apps.type.confidential': 'Confidencial, se ejecuta en un servidor.',
+  'developer.apps.homepage': 'URL de la página de inicio',
+  'developer.apps.privacyUrl': 'URL de la política de privacidad',
+  'developer.apps.termsUrl': 'URL de términos',
+  'developer.apps.logo': 'Logotipo',
+  'developer.apps.redirectUris': 'Redireccionar URI',
+  'developer.apps.redirectUrisHelp':
+    'Sólo coincidencias exactas. Se rechazan los comodines y las rutas parciales.',
+  'developer.apps.clientId': 'ID de cliente',
+  'developer.apps.clientSecret': 'secreto del cliente',
+  'developer.apps.secretShownOnce':
+    'El secreto se muestra una vez. Gírelo si lo pierde. No lo volveremos a mostrar.',
+  'developer.apps.status.draft': 'Borrador',
+  'developer.apps.status.active': 'Activo',
+  'developer.apps.status.disabled': 'Discapacitado',
+  'developer.apps.consentPreview': 'Vista previa de la pantalla de consentimiento',
+  'developer.apps.grants.title': 'Subvenciones activas',
+  'developer.apps.grants.count':
+    '{count, plural, one {# subvención} many {# subvención} other {# subvención}}',
+  'developer.apps.deleteConfirm':
+    '¿Eliminar esta aplicación? Cada subvención se revoca y sus tokens dejan de funcionar.',
+
+  'developer.consent.title': '{app} quiere acceder a tu espacio de trabajo',
+  'developer.consent.workspace': 'Workspace',
+  'developer.consent.brands': 'Marcas y cuentas',
+  'developer.consent.willBeAbleTo': '{app} podrá',
+  'developer.consent.willNotBeAbleTo': '{app} no podrá',
+  'developer.consent.approvalStillApplies':
+    'Su política de aprobación aún se aplica. Esta aplicación no puede publicar a su alrededor.',
+  'developer.consent.revokeAnyTime':
+    'Puedes revocar esto desde Configuración en cualquier momento.',
+  'developer.consent.allow': 'Permitir acceso',
+  'developer.consent.deny': 'no permitir',
+  'developer.consent.developerIdentity': 'Publicado by {developer}',
+
+  'developer.grants.title': 'Aplicaciones con acceso',
+  'developer.grants.grantedOn': 'Granted {date}',
+  'developer.grants.lastUsed': 'Último used {relativeTime}',
+  'developer.grants.revoke': 'Revocar acceso',
+  'developer.grants.revoked':
+    'Acceso revocado. Tus propias conexiones y publicaciones programadas no se ven afectadas.',
+
+  'developer.docs.openapi': 'Documento OpenAPI',
+  'developer.docs.clients': 'Clientes generados',
+  'developer.docs.idempotency':
+    'Envíe una clave de idempotencia con cada solicitud de creación, programación y publicación. Repetir una solicitud con la misma clave devuelve el resultado original en lugar de publicarla dos veces.',
+  'developer.docs.pagination':
+    'Los resultados están paginados con el cursor. Los tiempos son explícitos e incluyen una zona.',
+  'developer.docs.rateLimits':
+    'Se aplican límites de tarifas por espacio de trabajo, credencial, ruta y conector.',
+} as const;

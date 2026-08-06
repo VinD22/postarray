@@ -1,0 +1,91 @@
+/** Japanese beta catalog. */
+export const billingMessages = {
+  'billing.title': '請求する',
+  'billing.plan.name': 'Relay',
+  'billing.plan.single': '一つの計画。あらゆる機能。階層はありません。',
+  'billing.plan.monthlyPrice': '$29/月',
+  'billing.plan.annualPrice': '300ドル/年',
+  'billing.plan.annualFraming': '月額 25 ドルが毎年請求されます。年間 48 ドル節約できます。',
+  'billing.plan.interval.monthly': '毎月',
+  'billing.plan.interval.annual': '年間',
+  'billing.plan.selectInterval': '請求間隔を選択してください',
+  'billing.plan.includes.title': '含まれるもの',
+  'billing.plan.includes.channels': '最大 30 のアクティブなソーシャル チャネル',
+  'billing.plan.includes.members': '無制限のチームメンバー',
+  'billing.plan.includes.posts': 'フェアユースに基づく無制限の下書きと予約済み投稿',
+  'billing.plan.includes.connectors': 'すべての承認されたコネクタ',
+  'billing.plan.includes.analytics': 'アカウントを接続した日から分析が維持されます',
+  'billing.plan.includes.api': 'REST API、リモート MCP サーバー、CLI、および Webhook',
+  'billing.plan.includes.automation': '自動化ルール、RSS 自動投稿、追跡されたリンク',
+  'billing.plan.includes.ai': '悪用とコスト制限の下での DeepSeek テキスト支援',
+  'billing.plan.includes.support': '電子メールとアプリ内サポート',
+  'billing.plan.fairUse':
+    'フェアユースとは、アカウントを保護するスパム対策、料金およびプロバイダーのコスト管理を意味します。これらはすべての加入者に対して同じように機能します。',
+  'billing.trial.length': 'すべての機能を利用できる 7 日間のトライアル',
+  'billing.trial.dueToday': '今日の期限は $0',
+  'billing.trial.paymentMethodRequired':
+    'Polar は現在支払い方法を徴収しており、今日は料金を請求しません。',
+  'billing.trial.firstCharge': '初回充電{amount}の上{date}',
+  'billing.trial.renewal': '更新します{amount}毎{interval}その後',
+  'billing.trial.cancelBefore': 'この日付より前に設定でキャンセルすると料金は発生しません。',
+  'billing.trial.reminder': 'Polar は、トライアルが変換される 3 日前に電子メールを送信します。',
+  'billing.trial.daysRemaining': '{count, plural, other {トライアル、残り # 日}}',
+  'billing.trial.converted': 'トライアルが変換された日{date}。',
+  'billing.trial.canceled': 'トライアルはキャンセルされました。料金はかかりません。',
+  'billing.trial.abusePrevention':
+    '繰り返しのトライアルには制限があります。このアカウントで試用版を利用できない場合は、サポートにお問い合わせください。',
+  'billing.checkout.open': 'チェックアウトを続ける',
+  'billing.checkout.hostedBy':
+    'チェックアウトと請求書は、当社の登録販売者である Polar によって処理されます。',
+  'billing.checkout.taxNote': 'Polar は、適用される消費税または VAT を徴収し、納付します。',
+  'billing.checkout.notEntitledYet':
+    'ブラウザのリダイレクトからではなく、Polar がサブスクリプションを確認した後にアクセスを許可します。通常、これには数秒かかります。',
+  'billing.checkout.returning': 'Polar でのサブスクリプションの確認',
+  'billing.subscription.status.trialing': 'トライアル',
+  'billing.subscription.status.active': 'アクティブ',
+  'billing.subscription.status.pastDue': '支払い期限切れ',
+  'billing.subscription.status.canceled': 'キャンセル',
+  'billing.subscription.status.unpaid': '未払い',
+  'billing.subscription.status.none': '購読なし',
+  'billing.subscription.renewsOn': '更新します{amount}の上{date}',
+  'billing.subscription.endsOn': 'までアクセスが継続されます{date}',
+  'billing.subscription.pastDueBody':
+    '最後の支払いが完了しませんでした。公開を続けるには支払い方法を更新してください。猶予期間が経過すると、ワークスペースは読み取り専用になり、スケジュールされた投稿は停止します。',
+  'billing.subscription.readOnly':
+    'このワークスペースは読み取り専用です。コンテンツ、領収書、接続はそのままです。',
+  'billing.subscription.portal': 'Polar カスタマーポータルを開く',
+  'billing.subscription.invoices': '請求書',
+  'billing.subscription.paymentMethod': '支払方法',
+  'billing.subscription.managedByPolar': 'ポラールが管理',
+  'billing.cancel.title': 'サブスクリプションをキャンセルする',
+  'billing.cancel.beforeTrialEnd':
+    '今すぐキャンセルすれば料金はかかりません。まですべての機能を維持します{date}。',
+  'billing.cancel.afterTrial': 'までアクセスを維持します{date}。終了しても何も削除されません。',
+  'billing.cancel.confirm': 'サブスクリプションをキャンセルする',
+  'billing.cancel.confirmed': 'キャンセル。料金はかかりません。',
+  'billing.cancel.keepData': '下書き、領収書、分析はこのワークスペースに残ります。',
+  'billing.usage.title': '使用法',
+  'billing.usage.meteredNote':
+    'プロバイダーは操作ごとに料金を請求するため、プロバイダーのコストの一部は原価で転嫁されます。',
+  'billing.usage.xCharges':
+    'X は投稿ごとに料金がかかります。 URL を含む投稿は、プレーン テキストよりも料金が高くなります。',
+  'billing.usage.balance': '利用残高{amount}',
+  'billing.usage.estimatedBeforeAction': 'このアクションは次のように推定されます{amount}。',
+  'billing.usage.periodTotal': '{amount}以来使用されています{date}',
+  'billing.usage.noMediaCredits':
+    'Relay はメディアを生成しないため、画像やビデオの生成クレジットはありません。',
+  'billing.downgrade.overLimit':
+    'このワークスペースには、{count, plural, other {# チャンネル}}限界を超えています。これらのチャネルでの新しいアクションはブロックされます。あなたにとって切断されるものは何もありません。',
+  'billing.mediaGeneration.title': '画像やビデオを生成しない理由',
+  'billing.mediaGeneration.explanation':
+    '私たちは、お客様の計画、承認、公開、学習を支援することに重点を置いています。ブランド対応メディアには短いプロンプト以上のものが必要であるため、V1 では画像やビデオは生成されません。完全なビジュアル システム、正確な製品の詳細、ライセンスされたアセット、人物と使用許可、および慎重なレビューが必要です。クリエイティブモデルも急速に変化します。現在検証済みの専門ツールを推奨し、クリエイティブなコントロールを維持しながら、完成した作品をキャンペーンに簡単に取り込めるようにします。',
+  'billing.referral.title': '紹介',
+  'billing.referral.disclosure':
+    '紹介リンクは、共有する場合は必ず開示する必要があります。委員会は肯定的なレビューを条件とすることは決してありません。',
+  'billing.referral.link': 'あなたの紹介リンク',
+  'billing.referral.attributed': '{count, plural, other {# 属性のサインアップ}}',
+  'billing.referral.commissionPending': '保留中、返金期間が終了するまで保留されます',
+  'billing.referral.commissionApproved': '承認された',
+  'billing.referral.commissionReversed': '返金後に取り消された',
+  'billing.referral.payout': '支払いの実行{schedule}。',
+} as const;

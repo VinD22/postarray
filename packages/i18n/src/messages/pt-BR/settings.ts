@@ -1,0 +1,117 @@
+/** Workspace settings: members, roles, brands, localization, security, data. */
+export const settingsMessages = {
+  'settings.title': 'Configurações',
+  'settings.saved': 'Salvo',
+  'settings.unsavedChanges': 'Você tem alterações não salvas.',
+
+  'settings.workspace.title': 'Workspace',
+  'settings.workspace.name': 'Workspace nome',
+  'settings.workspace.defaultTimeZone': 'Fuso horário padrão',
+  'settings.workspace.defaultLocale': 'Idioma de interface padrão',
+  'settings.workspace.defaultContentLocale': 'Idioma de conteúdo padrão',
+  'settings.workspace.transferOwnership': 'Transferir propriedade',
+  'settings.workspace.delete': 'Excluir espaço de trabalho',
+  'settings.workspace.deleteWarning':
+    'Excluir um espaço de trabalho cancela publicações agendadas, revoga conexões e remove mídia armazenada. Os recibos são mantidos durante o período de retenção indicado nos Termos.',
+
+  'settings.members.title': 'Membros e funções',
+  'settings.members.invite': 'Convide pessoas',
+  'settings.members.inviteEmail': 'Endereço de e-mail',
+  'settings.members.inviteSent': 'Convite enviado para {email}.',
+  'settings.members.pending': 'Convidado, ainda não aceito',
+  'settings.members.count': '{count, plural, one {# membro} other {# membros} many {# membros}}',
+  'settings.members.removeConfirm':
+    'Remover {name} deste espaço de trabalho? Suas ações anteriores permanecem no log de auditoria.',
+  'settings.role.owner.label': 'Proprietário',
+  'settings.role.admin.label': 'Administrador',
+  'settings.role.manager.label': 'Gerente',
+  'settings.role.editor.label': 'Editor',
+  'settings.role.approver.label': 'Aprovador',
+  'settings.role.analyst.label': 'Analista',
+  'settings.role.viewer.label': 'Visualizador',
+  'settings.role.owner.description': 'Tudo, incluindo faturamento, segurança e exclusão.',
+  'settings.role.admin.description': 'Tudo, exceto faturamento e exclusão de espaço de trabalho.',
+  'settings.role.manager.description': 'Gerencie marcas, conexões, horários e regras.',
+  'settings.role.editor.description': 'Crie e edite conteúdo, solicite aprovação.',
+  'settings.role.approver.description': 'Aprove ou rejeite conteúdo e agende o que for aprovado.',
+  'settings.role.analyst.description': 'Leia análises e recibos.',
+  'settings.role.viewer.description': 'Somente leitura.',
+  'settings.role.scopeLabel': 'Limite a marcas e contas',
+  'settings.role.mfaRequired': 'Os proprietários devem usar autenticação de dois fatores.',
+
+  'settings.brands.title': 'Brands',
+  'settings.brands.add': 'Adicione uma marca',
+  'settings.brands.voice': 'Voz',
+  'settings.brands.audience': 'Público',
+  'settings.brands.approvedClaims': 'Reivindicações aprovadas',
+  'settings.brands.blockedTerms': 'Termos bloqueados',
+  'settings.brands.domains': 'Domínios',
+  'settings.brands.glossary.title': 'Glossário',
+  'settings.brands.glossary.term': 'Termo',
+  'settings.brands.glossary.preferred': 'Tradução preferida',
+  'settings.brands.glossary.prohibited': 'Não traduza como',
+  'settings.brands.glossary.context': 'Contexto',
+  'settings.brands.glossary.keepUntranslated': 'Manter sem traduzir',
+  'settings.brands.localeRules.title': 'Regras locais',
+  'settings.brands.localeRules.formality': 'Formalidade',
+  'settings.brands.localeRules.pronouns': 'Pronomes e títulos honoríficos',
+  'settings.brands.localeRules.idioms': 'Idiomas a serem evitados',
+  'settings.brands.localeRules.emoji': 'Normas de emoji e hashtag',
+  'settings.brands.localeRules.cta': 'Apelo à ação por mercado',
+  'settings.brands.localeRules.reviewedExamples': 'Exemplos aprovados por um revisor nativo',
+
+  'settings.sets.title': 'Conjuntos',
+  'settings.sets.description':
+    'Um grupo reutilizável de alvos, variantes, configurações, comentários e atrasos. Aplicar um Conjunto cria um rascunho independente.',
+  'settings.sets.editNote':
+    'Editar um conjunto não altera publicações que já foram aprovadas ou agendadas.',
+  'settings.signatures.title': 'Assinaturas',
+  'settings.signatures.description':
+    'Texto de fechamento, hashtags, links ou divulgações, com escopo definido por marca, plataforma e idioma.',
+  'settings.signatures.autoApply': 'Adicionar automaticamente quando o contexto corresponder',
+
+  'settings.localization.title': 'Localização',
+  'settings.localization.interfaceLocale': 'Idioma da interface',
+  'settings.localization.interfaceLocaleHelp':
+    'O idioma deste aplicativo para você. Isso não altera o idioma de suas publicações.',
+  'settings.localization.contentLocales': 'Idiomas do conteúdo',
+  'settings.localization.contentLocalesHelp':
+    'Os idiomas em que você publica. Cada marca pode definir regras e um glossário por idioma.',
+  'settings.localization.marketLocales': 'Mercados de público',
+  'settings.localization.beta': 'Tradução beta',
+  'settings.localization.betaHelp':
+    'Esta linguagem é assistida por máquina e ainda não foi totalmente revisada por uma pessoa. O texto não traduzido volta para o inglês.',
+  'settings.localization.humanReviewed': 'Revisado por um falante nativo',
+  'settings.localization.timeZone': 'Fuso horário',
+  'settings.localization.weekStart': 'Primeiro dia da semana',
+  'settings.localization.hourCycle.label': 'Formato de hora',
+  'settings.localization.hourCycle.h12': '12 horas',
+  'settings.localization.hourCycle.h23': '24 horas',
+
+  'settings.notifications.title': 'Notificações',
+  'settings.notifications.email': 'E-mail',
+  'settings.notifications.inApp': 'No aplicativo',
+  'settings.notifications.approvalRequests': 'Solicitações de aprovação',
+  'settings.notifications.publishResults': 'Publicar resultados',
+  'settings.notifications.connectionHealth': 'Saúde da conexão',
+  'settings.notifications.ruleFailures': 'Falhas de automação',
+  'settings.notifications.weeklySummary': 'Resumo semanal',
+  'settings.notifications.digestOnly': 'Agrupe-os em uma mensagem diária',
+
+  'settings.security.title': 'Segurança',
+  'settings.security.mfa': 'Autenticação de dois fatores',
+  'settings.security.mfaEnable': 'Ative a autenticação de dois fatores',
+  'settings.security.mfaRequiredFor':
+    'Obrigatório para alterações de faturamento, contas de serviço, reconexão de uma conta e revogação de credenciais.',
+  'settings.security.passkeys': 'Chaves de acesso',
+  'settings.security.sessions': 'Sessões ativas',
+  'settings.security.sessionRevoke': 'Sair desta sessão',
+  'settings.security.auditLog.title': 'Registro de auditoria',
+  'settings.security.auditLog.description':
+    'Cada ação, quem ou o que a executou e quando. Exportável por proprietários e administradores.',
+  'settings.security.killSwitch': 'Parada de emergência',
+  'settings.security.killSwitchBody':
+    'Interrompe imediatamente todas as publicações e automações programadas neste espaço de trabalho. Nada é excluído. Você pode desligá-lo novamente.',
+  'settings.security.killSwitchActive':
+    'Parada de emergência ativada. Nenhuma publicação será publicada.',
+} as const;

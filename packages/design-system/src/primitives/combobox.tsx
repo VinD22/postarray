@@ -241,7 +241,7 @@ export const Combobox = forwardRef<ComboboxHandle, ComboboxProps>(function Combo
     <div ref={rootRef} className={cn('relative', className)}>
       <div
         className={cn(
-          'bg-surface-raised flex items-center gap-1 rounded-md border',
+          'bg-surface-raised flex items-center gap-1 rounded-md border-[1.5px]',
           'h-8 ps-2.5 pe-1',
           invalid ? 'border-destructive-border' : 'border-border-strong',
           disabled && 'bg-surface-sunken cursor-not-allowed',

@@ -1,0 +1,97 @@
+/** vi beta catalog namespace. */
+export const calendarMessages = {
+  'calendar.title': 'Lịch',
+  'calendar.view.day': 'ngày',
+  'calendar.view.week': 'Tuần',
+  'calendar.view.month': 'Tháng',
+  'calendar.view.list': 'Danh sách',
+  'calendar.view.label': 'Xem lịch',
+  'calendar.today': 'hôm nay',
+  'calendar.goToDate': 'Đi đến ngày',
+  'calendar.previousPeriod': 'Kỳ trước',
+  'calendar.nextPeriod': 'Kỳ tiếp theo',
+  'calendar.timeZoneNote': 'Thời gian được hiển thị trong {timeZone}.',
+  'calendar.weekOf': 'Tuần {date}',
+  'calendar.dayHeading': '{weekday}, {date}',
+  'calendar.slotCount': '{count, plural, =0 {Nothing scheduled} one {# post} other {# posts}}',
+  'calendar.slotOverflow': '{count, plural, one {# more} other {# more}}',
+  'calendar.newPostAt': 'Bài đăng mới tại {time}',
+  'calendar.filter.brand': 'Brand',
+  'calendar.filter.account': 'Tài khoản',
+  'calendar.filter.platform': 'Nền tảng',
+  'calendar.filter.status': 'Trạng thái',
+  'calendar.filter.locale': 'Ngôn ngữ nội dung',
+  'calendar.filter.campaign': 'Chiến dịch',
+  'calendar.filter.applied': '{count, plural, one {# filter applied} other {# filters applied}}',
+  'calendar.drag.instructions':
+    'Kéo bài đăng vào vị trí mới hoặc chọn bài đăng đó và sử dụng các phím mũi tên để di chuyển bài đăng đó.',
+  'calendar.drag.confirmTitle': 'Di chuyển bài đăng này?',
+  'calendar.drag.confirmBody': 'Từ {from} đến {to} trong {timeZone}.',
+  'calendar.drag.dstNotice':
+    'Đồng hồ thay đổi giữa các thời điểm này trong {timeZone}. Thời gian mới là {utc} UTC.',
+  'calendar.drag.publishedNotice':
+    'Bài đăng này đã được xuất bản. Di chuyển nó chỉ thay đổi bản ghi cục bộ. Xuất bản lại nó là một hành động riêng biệt.',
+  'calendar.drag.conflictNotice':
+    '{account} already has {count, plural, one {# post} other {# posts}} within an hour of the new time.',
+  'calendar.queue.title': 'Hàng đợi',
+  'calendar.queue.upcoming': 'Sắp tới',
+  'calendar.queue.needsApproval': 'Đang chờ phê duyệt',
+  'calendar.queue.drafts': 'Bản nháp',
+  'calendar.queue.published': 'Đã xuất bản',
+  'calendar.queue.failed': 'thất bại',
+  'calendar.queue.nextSlot': 'Khe miễn phí tiếp theo là {time}.',
+  'calendar.post.publishesAt': 'Xuất bản {time} trong {timeZone}',
+  'calendar.post.publishedAt': 'Đã xuất bản {time}',
+  'calendar.post.targetCount': '{count, plural, one {# account} other {# accounts}}',
+  'calendar.post.mediaType.text': 'văn bản',
+  'calendar.post.mediaType.image': 'Hình ảnh',
+  'calendar.post.mediaType.carousel': 'băng chuyền',
+  'calendar.post.mediaType.video': 'Video',
+  'calendar.post.mediaType.document': 'tài liệu',
+  'actionCenter.title': 'Trung tâm hành động',
+  'actionCenter.description':
+    'Mọi thứ cần đưa ra quyết định hoặc sửa chữa đều được xếp cùng một lúc.',
+  'actionCenter.empty': 'Không có gì cần quan tâm lúc này.',
+  'actionCenter.item.connectionExpiring':
+    '{account} cần được kết nối lại trước {date}, nếu không các bài đăng đã lên lịch sẽ không thành công.',
+  'actionCenter.item.connectionActionRequired':
+    '{account} cần chú ý đến {provider} trước khi có thể xuất bản lại.',
+  'actionCenter.item.validationFailed':
+    'Bản nháp cho {account} không vượt qua quá trình xác thực {provider}.',
+  'actionCenter.item.approvalOverdue': 'Yêu cầu phê duyệt đã được chờ đợi kể từ {date}.',
+  'actionCenter.item.scheduleConflict':
+    '{account} có các bài đăng được lên lịch gần nhau trên {date}.',
+  'actionCenter.item.providerIncident':
+    '{provider} đang báo cáo sự cố. Các bài đăng đã lên lịch sẽ thử lại.',
+  'actionCenter.item.commentFailed':
+    'Bài đăng chính đã được xuất bản nhưng mục tiếp theo dành cho {account} không thành công.',
+  'actionCenter.item.analyticsStale': 'Phân tích cho {account} chưa được cập nhật kể từ {date}.',
+  'actionCenter.item.rssStalled':
+    'Nguồn cấp dữ liệu {name} đã không trả lại một mục hợp lệ kể từ {date}.',
+  'actionCenter.item.webhookFailing':
+    'Deliveries to {endpoint} have failed {count, plural, one {# time} other {# times}} in a row.',
+  'actionCenter.item.usageBalance':
+    'Hành động được đo lường cho {provider} cần có số dư sử dụng trước khi có thể chạy.',
+  'approval.title': 'Phê duyệt',
+  'approval.requestTitle': 'Yêu cầu phê duyệt',
+  'approval.requestedBy': 'Được yêu cầu bởi {name} {relativeTime}',
+  'approval.requestedFrom': 'Đang chờ {name}',
+  'approval.policy.none': 'Không cần phê duyệt cho các mục tiêu này.',
+  'approval.policy.anyApprover': 'Bất kỳ người phê duyệt nào cũng có thể phê duyệt điều này.',
+  'approval.policy.namedApprover': '{name} phải phê duyệt điều này.',
+  'approval.policy.everyApprover': 'Mọi người phê duyệt đều phải phê duyệt điều này.',
+  'approval.decision.approvedBy': 'Được phê duyệt bởi {name} trên {date}',
+  'approval.decision.rejectedBy': 'Bị từ chối bởi {name} trên {date}',
+  'approval.decision.changesRequestedBy': 'Những thay đổi được yêu cầu bởi {name} trên {date}',
+  'approval.comment.label': 'Lưu ý cho tác giả',
+  'approval.comment.placeholder': 'Nói những gì cần thay đổi và tại sao.',
+  'approval.reapproval.needed':
+    'Bài đăng này đã thay đổi sau khi được phê duyệt. Nó cần được phê duyệt lại trước khi có thể xuất bản.',
+  'approval.reapproval.reason.content': 'Nội dung đã thay đổi.',
+  'approval.reapproval.reason.account': 'Các tài khoản mục tiêu đã thay đổi.',
+  'approval.reapproval.reason.media': 'Các phương tiện truyền thông đã thay đổi.',
+  'approval.reapproval.reason.schedule': 'Thời gian xuất bản đã thay đổi.',
+  'approval.reapproval.reason.privacy': 'Cài đặt quyền riêng tư hoặc tiết lộ đã thay đổi.',
+  'approval.reapproval.reason.locale': 'Ngôn ngữ nội dung đã thay đổi.',
+  'approval.expiresAt': 'Yêu cầu này hết hạn vào {date}.',
+} as const;

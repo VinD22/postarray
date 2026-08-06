@@ -72,8 +72,8 @@ export const DialogContent = forwardRef<HTMLDivElement, DialogContentProps>(func
           'sm:start-1/2 sm:end-auto sm:-translate-x-1/2 sm:rtl:translate-x-1/2',
           'sm:w-[calc(100vw-2rem)]',
           dialogSize[size],
-          'border-border-default bg-surface-overlay shadow-overlay rounded-xl border',
-          'relay-anim-enter-overlay',
+          'bg-surface-overlay border-border-bold shadow-hard-lg rounded-xl border-2',
+          'relay-pop-in',
           className,
         )}
         {...props}

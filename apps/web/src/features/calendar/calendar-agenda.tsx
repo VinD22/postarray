@@ -11,12 +11,13 @@
  */
 
 import { useMemo, type ReactNode } from 'react';
+import { cn } from '@relay/design-system';
 import { useTranslations } from '@relay/i18n/react';
 import { EntryChip } from './entry-chip';
 import { useCalendarFormat } from './format';
 import { entryKey, sortEntries } from './filters';
-import { toWallClock } from './date-range';
-import type { CalendarEntry, CalendarRange } from './types';
+import { isSameDay, toWallClock } from './date-range';
+import type { CalendarEntry, CalendarRange, RescheduleProposal } from './types';
 
 export interface CalendarAgendaProps {
   range: CalendarRange;
@@ -25,6 +26,8 @@ export interface CalendarAgendaProps {
   hrefForEntry: (entry: CalendarEntry) => string;
   grabbedKey: string | null;
   onPickUp: (entry: CalendarEntry) => void;
+  /** The in-progress keyboard move, when one is active. See `CalendarGrid`. */
+  proposal?: RescheduleProposal | null;
   label: string;
   /** Days with nothing on them are dropped once the list gets long. */
   hideEmptyDays?: boolean;
@@ -37,11 +40,13 @@ export function CalendarAgenda({
   hrefForEntry,
   grabbedKey,
   onPickUp,
+  proposal = null,
   label,
   hideEmptyDays = false,
 }: CalendarAgendaProps): ReactNode {
   const t = useTranslations();
   const format = useCalendarFormat();
+  const targetInstant = proposal ? new Date(proposal.toInstant) : null;
 
   const grouped = useMemo(() => {
     const map = new Map<string, CalendarEntry[]>();
@@ -66,8 +71,15 @@ export function CalendarAgenda({
       {days.map((day) => {
         const wall = toWallClock(day, timeZone);
         const dayEntries = grouped.get(`${wall.year}-${wall.month}-${wall.day}`) ?? [];
+        const isTarget = targetInstant !== null && isSameDay(day, targetInstant, timeZone);
         return (
-          <div key={day.toISOString()} className="border-border-subtle border-b last:border-b-0">
+          <div
+            key={day.toISOString()}
+            className={cn(
+              'border-border-subtle border-b last:border-b-0',
+              isTarget && 'outline-accent outline-2 outline-offset-[-2px] outline-dashed',
+            )}
+          >
             <h3 className="flex items-baseline gap-2 px-4 py-2 md:px-6">
               <span className="text-title-sm text-text-primary">{format.date(day, 'medium')}</span>
               <span className="text-body-sm text-text-tertiary">

@@ -14,6 +14,9 @@ export type TextDirection = 'ltr' | 'rtl';
 
 export type LocaleStatus = 'active' | 'planned';
 
+/** Translation-review state shown wherever an interface locale is selected. */
+export type LocaleReviewStatus = 'beta' | 'reviewed';
+
 /** CLDR cardinal plural categories. */
 export type PluralCategory = 'zero' | 'one' | 'two' | 'few' | 'many' | 'other';
 
@@ -42,9 +45,11 @@ export interface LocaleFormatting {
 
 export interface LocaleDescriptor extends LocaleFormatting {
   readonly status: LocaleStatus;
+  /** `reviewed` requires the complete human-review checklist in the i18n README. */
+  readonly reviewStatus: LocaleReviewStatus;
 }
 
-const LOCALE_LIST = [
+const LOCALE_METADATA = [
   {
     bcp47: 'en',
     name: 'English',
@@ -67,7 +72,7 @@ const LOCALE_LIST = [
     defaultDateFormat: 'd MMM y',
     weekStartsOn: 1,
     hourCycle: 'h23',
-    status: 'planned',
+    status: 'active',
   },
   {
     bcp47: 'es-419',
@@ -79,7 +84,7 @@ const LOCALE_LIST = [
     defaultDateFormat: 'd MMM y',
     weekStartsOn: 0,
     hourCycle: 'h12',
-    status: 'planned',
+    status: 'active',
   },
   {
     bcp47: 'pt-BR',
@@ -91,7 +96,7 @@ const LOCALE_LIST = [
     defaultDateFormat: 'd MMM y',
     weekStartsOn: 0,
     hourCycle: 'h23',
-    status: 'planned',
+    status: 'active',
   },
   {
     bcp47: 'pt-PT',
@@ -115,7 +120,7 @@ const LOCALE_LIST = [
     defaultDateFormat: 'd MMM y',
     weekStartsOn: 1,
     hourCycle: 'h23',
-    status: 'planned',
+    status: 'active',
   },
   {
     bcp47: 'de',
@@ -127,7 +132,7 @@ const LOCALE_LIST = [
     defaultDateFormat: 'd. MMM y',
     weekStartsOn: 1,
     hourCycle: 'h23',
-    status: 'planned',
+    status: 'active',
   },
   {
     bcp47: 'it',
@@ -139,7 +144,7 @@ const LOCALE_LIST = [
     defaultDateFormat: 'd MMM y',
     weekStartsOn: 1,
     hourCycle: 'h23',
-    status: 'planned',
+    status: 'active',
   },
   {
     bcp47: 'nl',
@@ -151,7 +156,7 @@ const LOCALE_LIST = [
     defaultDateFormat: 'd MMM y',
     weekStartsOn: 1,
     hourCycle: 'h23',
-    status: 'planned',
+    status: 'active',
   },
   {
     bcp47: 'pl',
@@ -163,7 +168,7 @@ const LOCALE_LIST = [
     defaultDateFormat: 'd MMM y',
     weekStartsOn: 1,
     hourCycle: 'h23',
-    status: 'planned',
+    status: 'active',
   },
   {
     bcp47: 'cs',
@@ -175,7 +180,7 @@ const LOCALE_LIST = [
     defaultDateFormat: 'd. M. y',
     weekStartsOn: 1,
     hourCycle: 'h23',
-    status: 'planned',
+    status: 'active',
   },
   {
     bcp47: 'sv',
@@ -187,7 +192,7 @@ const LOCALE_LIST = [
     defaultDateFormat: 'd MMM y',
     weekStartsOn: 1,
     hourCycle: 'h23',
-    status: 'planned',
+    status: 'active',
   },
   {
     bcp47: 'nb',
@@ -235,7 +240,7 @@ const LOCALE_LIST = [
     defaultDateFormat: 'd MMM y',
     weekStartsOn: 1,
     hourCycle: 'h23',
-    status: 'planned',
+    status: 'active',
   },
   {
     bcp47: 'ru',
@@ -247,7 +252,7 @@ const LOCALE_LIST = [
     defaultDateFormat: 'd MMM y',
     weekStartsOn: 1,
     hourCycle: 'h23',
-    status: 'planned',
+    status: 'active',
   },
   {
     bcp47: 'uk',
@@ -259,7 +264,7 @@ const LOCALE_LIST = [
     defaultDateFormat: 'd MMM y',
     weekStartsOn: 1,
     hourCycle: 'h23',
-    status: 'planned',
+    status: 'active',
   },
   {
     bcp47: 'ar',
@@ -271,7 +276,7 @@ const LOCALE_LIST = [
     defaultDateFormat: 'd MMM y',
     weekStartsOn: 6,
     hourCycle: 'h12',
-    status: 'planned',
+    status: 'active',
   },
   {
     bcp47: 'he',
@@ -283,7 +288,7 @@ const LOCALE_LIST = [
     defaultDateFormat: 'd MMM y',
     weekStartsOn: 0,
     hourCycle: 'h23',
-    status: 'planned',
+    status: 'active',
   },
   {
     bcp47: 'hi',
@@ -295,7 +300,7 @@ const LOCALE_LIST = [
     defaultDateFormat: 'd MMM y',
     weekStartsOn: 0,
     hourCycle: 'h12',
-    status: 'planned',
+    status: 'active',
   },
   {
     bcp47: 'bn',
@@ -429,7 +434,12 @@ const LOCALE_LIST = [
     hourCycle: 'h12',
     status: 'planned',
   },
-] as const satisfies readonly LocaleDescriptor[];
+] as const satisfies readonly (LocaleFormatting & { readonly status: LocaleStatus })[];
+
+const LOCALE_LIST = LOCALE_METADATA.map((locale) => ({
+  ...locale,
+  reviewStatus: 'beta' as const,
+})) satisfies readonly LocaleDescriptor[];
 
 /** Every locale in the plan, active and planned. */
 export const ALL_LOCALES: readonly LocaleDescriptor[] = LOCALE_LIST;

@@ -1,6 +1,8 @@
 import type { ReactNode } from 'react';
 import type { MessageKey } from '@relay/i18n/translate';
 
+import { Reveal } from '@/components/motion';
+
 import { formatDate, marketingTranslator } from '../i18n';
 import { LEGAL_DOCUMENTS, ROUTES } from '../site';
 import { Container, Heading, Lede, List, Meta, Subheading } from './layout';
@@ -15,6 +17,13 @@ import { TextLink } from './links';
  * furniture at all. Where the binding wording is still with counsel the page
  * says that at the top, in a warning that names what is already accurate and
  * what is not.
+ *
+ * WP-3 brand-only pass: the page title picks up the display font and the
+ * major rules thicken to the loud system's 2px ink outline, but the body
+ * itself stays exactly the quiet, `font-serif` reading grammar it always
+ * was — `layout.tsx`'s `Heading`/`Body` are deliberately untouched (see that
+ * file's own doc comment) because a legal document is read, not performed.
+ * The one animation is the intro's single `Reveal`; nothing below it moves.
  */
 
 export interface LegalSectionSpec {
@@ -29,6 +38,7 @@ export interface LegalSectionSpec {
 }
 
 export interface LegalPageProps {
+  readonly locale?: string;
   readonly titleKey: MessageKey;
   readonly summaryKey: MessageKey;
   readonly counselPending: boolean;
@@ -38,9 +48,9 @@ export interface LegalPageProps {
   readonly contactKeys?: readonly MessageKey[];
 }
 
-export function LegalPage(props: LegalPageProps): ReactNode {
-  const { titleKey, summaryKey, counselPending, reviewed, sections, contactKeys } = props;
-  const t = marketingTranslator();
+export async function LegalPage(props: LegalPageProps): Promise<ReactNode> {
+  const { titleKey, summaryKey, counselPending, reviewed, sections, contactKeys, locale } = props;
+  const t = await marketingTranslator(locale);
 
   return (
     <Container>
@@ -64,20 +74,20 @@ export function LegalPage(props: LegalPageProps): ReactNode {
                 </ul>
               </nav>
               <p className="border-border-subtle mt-6 border-t pt-4">
-                <Meta>{t.t('web.label.lastReviewed', { date: formatDate(reviewed) })}</Meta>
+                <Meta>{t.t('web.label.lastReviewed', { date: formatDate(reviewed, locale) })}</Meta>
               </p>
             </div>
           </div>
 
           <div className="min-w-0 lg:col-span-8 lg:col-start-5">
             <article className="space-y-10">
-              <header className="space-y-5">
-                <h1 className="text-text-primary font-serif text-[clamp(1.9rem,1.3rem+2.2vw,2.9rem)] leading-[1.1] tracking-[-0.02em] text-pretty">
+              <Reveal as="header" className="space-y-5">
+                <h1 className="text-text-primary font-display text-[clamp(1.9rem,1.3rem+2.2vw,2.9rem)] leading-[1.1] tracking-[-0.02em] text-pretty">
                   {t.format(titleKey)}
                 </h1>
                 <Lede>{t.format(summaryKey)}</Lede>
-                {counselPending ? <CounselPendingBanner /> : null}
-              </header>
+                {counselPending ? <CounselPendingBanner locale={locale} /> : null}
+              </Reveal>
 
               {sections.map((section) => (
                 <section key={section.id} id={section.id} className="scroll-mt-24 space-y-4">
@@ -102,7 +112,7 @@ export function LegalPage(props: LegalPageProps): ReactNode {
               {contactKeys && contactKeys.length > 0 ? (
                 <section
                   id="contact"
-                  className="border-border-default scroll-mt-24 space-y-3 border-t pt-8"
+                  className="border-border-bold scroll-mt-24 space-y-3 border-t-2 pt-8"
                 >
                   <Subheading as="h3">{t.t('web.legal.contact.title')}</Subheading>
                   <ul className="space-y-1">
@@ -125,7 +135,7 @@ export function LegalPage(props: LegalPageProps): ReactNode {
 
               <nav
                 aria-label={t.t('web.legal.title')}
-                className="border-border-default border-t pt-8"
+                className="border-border-bold border-t-2 pt-8"
               >
                 <p className="text-body-md text-text-secondary">
                   <TextLink href={ROUTES.legal}>{t.t('web.legal.title')}</TextLink>

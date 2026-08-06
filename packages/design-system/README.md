@@ -31,15 +31,16 @@ A theme switch is one attribute on `<html>`.
 
 ### The character
 
-A calm publishing desk. A warm neutral canvas, one accent, and semantic
-warning, destructive, success and info. Hierarchy comes from typography and
-from tonal surface steps separated by hairline borders, not from shadows.
-Product controls sit at 6-10px radii and tight, predictable density.
+A loud publishing desk: paper, electric blue and a sunshine CTA, with a
+blush accent held in reserve. Hierarchy comes from huge display type, 2px ink
+outlines and hard offset shadows, not from soft elevation. Product controls
+still sit at tight, predictable density; the poster energy is in type, color
+and the hard-shadow press, not in spacing.
 
-Dark is designed, not inverted. Its surfaces are warm charcoals with a smaller
-step delta, its accent is lifted so it reads on a dark ground, and its
-destructive solid is a light coral carrying dark text instead of a dark red
-carrying white text.
+Dark is designed, not inverted. It is an inky navy-black canvas carrying the
+same neons: the accent lifts to a lighter blue so it reads on a dark ground,
+and its destructive solid is a light coral carrying dark text instead of a
+dark red carrying white text.
 
 ### Provider brand colours
 
@@ -50,8 +51,12 @@ the dot.
 
 ### Motion
 
-120-200ms, functional only, three named easings. Nothing animates for
-spectacle and nothing animates data. `prefers-reduced-motion: reduce` collapses
+Two tiers. Functional, in-app motion stays 120-200ms, three named easings,
+nothing animates for spectacle and nothing animates data. Expressive motion
+(400-900ms) is reserved for marketing and overlay entrances/exits. **GSAP is
+banned in this package** — it lives only in `apps/web/src/lib/motion`; this
+package stays CSS-only so `@relay/design-system` keeps its `react` +
+`@relay/i18n` dependency surface. `prefers-reduced-motion: reduce` collapses
 every transition and animation to 1ms globally, and `usePrefersReducedMotion`
 covers the cases CSS cannot reach.
 
@@ -90,23 +95,45 @@ WCAG 2.2 AA is a merge requirement here, not a follow-up ticket.
 
 These are not style preferences. A review rejects them.
 
-- Purple or blue neon gradients, glowing orbs, glass panels, grid or dot
-  backgrounds.
+**Still banned:**
+
+- Emoji as iconography. Icons come from `lucide-react`, one set, one weight.
 - Gradient headline text. Emphasis is weight and size.
+- Glowing orbs and glass panels.
+- Fake dashboards, invented metrics, fabricated testimonials, placeholder logos.
+- Animation that slows down composing, reviewing or scheduling.
+- Color alone carrying status, capability or freshness. Every state also
+  carries an icon and a word.
+- Sub-AA color pairs. Every documented pair clears 4.5:1 (body text) or 3:1
+  (large text and control boundaries) in both themes.
+- Physical direction props and utilities (`left`, `right`, `ml-`, `pr-`).
+  Logical properties only.
+- `dark:` Tailwind variants anywhere. Themes are redefined CSS vars under
+  `[data-theme]`.
+- Yellow or pink used as text color. Yellow is the CTA fill (`--cta-*`, ink
+  text on it); pink is the decorative blush accent (`--accent-blush-*`, ink
+  text on it). Neither is ever a text color itself.
 - A row of three identical icon-plus-heading-plus-text cards.
 - A card for something that reads better as a row, a table, a timeline or a
   sentence. Six facts about one post are a `DefinitionList`, not six cards.
-- Oversized rounded rectangles everywhere. Product controls stay at 6-10px.
 - Pill-shaped status overload, and deeply rounded table containers. Tables have
   no rounded wrapper at all.
-- Heavy drop shadows. Elevation is a border plus a surface step. Only overlays
-  get a shadow, and it carries an offset and a blur.
 - Decorative score widgets, gauges, progress rings and sparklines standing in
   for content.
-- Emoji as iconography. Icons come from `lucide-react`, one set, one weight.
-- Fake dashboards, invented metrics, fabricated testimonials, placeholder logos.
-- Animation that slows down composing, reviewing or scheduling.
 - An eyebrow or kicker above a heading.
+
+**Newly allowed:**
+
+- Hard offset shadows, through the `--shadow-hard*` tokens only (never a
+  hand-rolled `box-shadow`).
+- Sharp 0-6px radii on product controls, plus the 20px poster radius
+  (`--radius-editorial` / `--radius-poster`) for marketing surfaces.
+- Loud CTA fills (`bg-cta`, `text-cta-on`) with the mandatory 2px
+  `--border-bold` outline.
+- Kinetic, decorative marketing motion, always behind a
+  `prefers-reduced-motion` gate.
+- Marquees.
+- Big display type.
 
 ## No English in this package
 

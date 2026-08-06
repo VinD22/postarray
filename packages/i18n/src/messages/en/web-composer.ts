@@ -281,6 +281,11 @@ export const webComposerMessages = {
   'composerWeb.review.publishConfirm':
     'This publishes to {count, plural, one {# account} other {# accounts}} straight away. It cannot be undone from here.',
 
+  // ------------------------------------------------------- loud system (WP-8)
+  'composerWeb.savedFlash': 'Saved',
+  'composerWeb.validation.clear.v2': 'Nothing blocking.',
+  'composerWeb.schedule.confirmed': 'Scheduled',
+
   // ------------------------------------------------------------ page-level
   'composerWeb.page.newDraft': 'New draft',
   'composerWeb.page.loading': 'Loading the draft, its targets and their limits',

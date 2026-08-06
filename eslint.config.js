@@ -152,6 +152,7 @@ export default tseslint.config(
 
   {
     files: ['apps/web/**/*.{ts,tsx}'],
+    ignores: ['apps/web/src/components/link.tsx'],
     rules: {
       'no-restricted-imports': [
         'error',
@@ -170,6 +171,11 @@ export default tseslint.config(
             {
               group: ['**/src/**'],
               message: 'Import a package public entrypoint, not its internals.',
+            },
+            {
+              group: ['next/link'],
+              message:
+                'Use @/components/link so internal navigation preserves the current interface locale.',
             },
           ],
         },

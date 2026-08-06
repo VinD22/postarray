@@ -1,0 +1,59 @@
+/** th beta catalog namespace. */
+export const stateMessages = {
+  'state.draft.label': 'ร่าง',
+  'state.draft.description': 'มีเพียงคนในพื้นที่ทำงานนี้เท่านั้นที่สามารถเห็นได้ ไม่มีอะไรกำหนดไว้',
+  'state.validation_needed.label': 'จำเป็นต้องมีการตรวจสอบ',
+  'state.validation_needed.description':
+    'เป้าหมายอย่างน้อย 1 รายการมีปัญหาที่ต้องแก้ไขก่อนจึงจะสามารถกำหนดเวลาได้',
+  'state.approval_requested.label': 'ขออนุมัติแล้ว',
+  'state.approval_requested.description': 'รอ{approver}ตัดสินใจครับ',
+  'state.approved.label': 'อนุมัติแล้ว',
+  'state.approved.description': 'อนุมัติโดย {approver} สามารถกำหนดเวลาหรือเผยแพร่ได้แล้ว',
+  'state.scheduled.label': 'กำหนดเวลาแล้ว',
+  'state.scheduled.description': 'เผยแพร่ {time} ใน {timeZone}',
+  'state.preparing_media.label': 'การเตรียมสื่อ',
+  'state.preparing_media.description': 'การอัพโหลดและแปลงไฟล์สำหรับแพลตฟอร์ม',
+  'state.dispatching.label': 'กำลังจัดส่ง',
+  'state.dispatching.description': 'ส่งไปที่ {provider} แล้วครับ.',
+  'state.provider_processing.label': 'การประมวลผลของผู้ให้บริการ',
+  'state.provider_processing.description':
+    '{provider} ยอมรับการอัปโหลดและยังคงประมวลผลอยู่ เรายืนยันเมื่อมีการถ่ายทอดสด',
+  'state.published.label': 'เผยแพร่แล้ว',
+  'state.published.description': 'ถ่ายทอดสดบน {provider} ตั้งแต่ {time}.',
+  'state.partially_published.label': 'เผยแพร่แล้วบางส่วน',
+  'state.partially_published.description':
+    '{เผยแพร่แล้ว พหูพจน์ หนึ่งรายการ {# เป้าหมายที่เผยแพร่} อื่นๆ {# เป้าหมายที่เผยแพร่}} {ล้มเหลว พหูพจน์ หนึ่งรายการ {# ล้มเหลว} อื่นๆ {# ล้มเหลว}} โพสต์ที่เผยแพร่นั้นแสดงสดและไม่ได้ถูกย้อนกลับ',
+  'state.action_required.label': 'จำเป็นต้องดำเนินการ',
+  'state.action_required.description': 'สิ่งนี้ไม่สามารถดำเนินต่อไปได้จนกว่าคุณจะทำอะไรบางอย่าง',
+  'state.retry_scheduled.label': 'ลองกำหนดเวลาอีกครั้ง',
+  'state.retry_scheduled.description':
+    'ความพยายาม {attempt} จาก {max} จะทำงานที่ {time} ไม่มีอะไรซ้ำกัน',
+  'state.failed_permanently.label': 'ล้มเหลว',
+  'state.failed_permanently.description':
+    'สิ่งนี้จะไม่ถูกลองอีกครั้ง เนื้อหาของคุณจะถูกเก็บรักษาไว้และเหตุผลอยู่ที่ใบเสร็จรับเงิน',
+  'state.canceled.label': 'ยกเลิกแล้ว',
+  'state.canceled.description': 'ยกเลิกโดย {actor} เมื่อ {date} ไม่มีการเผยแพร่',
+  'state.deleted_externally.label': 'ลบบนแพลตฟอร์มแล้ว',
+  'state.deleted_externally.description':
+    'โพสต์นี้ไม่ได้อยู่ใน {provider} อีกต่อไป ใบเสร็จรับเงินและหน่วยวัดที่รวบรวมก่อนที่จะไปจะถูกเก็บไว้',
+  'state.approval.not_required.label': 'ไม่จำเป็นต้องได้รับการอนุมัติ',
+  'state.approval.not_required.description':
+    'นโยบายสำหรับเป้าหมายเหล่านี้ไม่จำเป็นต้องได้รับการอนุมัติ',
+  'state.approval.requested.label': 'ร้องขอ',
+  'state.approval.requested.description': 'ส่งไปที่ {approver} {relativeTime}.',
+  'state.approval.in_review.label': 'ในการตรวจสอบ',
+  'state.approval.in_review.description': '{approver} กำลังดูสิ่งนี้อยู่ตอนนี้',
+  'state.approval.approved.label': 'อนุมัติแล้ว',
+  'state.approval.approved.description': 'อนุมัติโดย {approver} เมื่อ {date}',
+  'state.approval.changes_requested.label': 'ร้องขอการเปลี่ยนแปลง',
+  'state.approval.changes_requested.description': '{approver} ถามถึงการเปลี่ยนแปลงใน {date}',
+  'state.approval.rejected.label': 'ถูกปฏิเสธ',
+  'state.approval.rejected.description': 'ถูกปฏิเสธโดย {approver} เมื่อ {date}',
+  'state.approval.expired.label': 'หมดอายุแล้ว',
+  'state.approval.expired.description': 'คำขอนี้หมดอายุเมื่อ {date} โดยไม่มีการตัดสินใจ',
+  'state.approval.withdrawn.label': 'ถอนออกแล้ว',
+  'state.approval.withdrawn.description': 'ผู้เขียนถอนคำขอนี้เมื่อ {date}',
+  'state.summary.targets':
+    '{พร้อม พหูพจน์ หนึ่งรายการ {# เป้าหมายพร้อมแล้ว} อื่น ๆ {# เป้าหมายพร้อมแล้ว}} {บล็อกแล้ว พหูพจน์ =0 {ไม่มีถูกบล็อก} หนึ่งรายการ {# ถูกบล็อก} อื่น ๆ {# ถูกบล็อก}}',
+  'state.changedAt': 'เปลี่ยนแล้ว {relativeTime}',
+} as const;

@@ -1,5 +1,16 @@
 # 06. Product UX and Design System
 
+> **Superseded in part — 6 August 2026.** The visual direction below (warm
+> neutral canvas, restrained single accent, 6-10px radii, soft elevation) has
+> been replaced by the redesign in `packages/design-system/README.md`: paper +
+> electric blue + sunshine CTA + blush accent, huge display type, 2px ink
+> outlines, hard offset shadows, and an inky navy-black dark theme carrying the
+> same neons. The hard constraints here (WCAG 2.2 AA as a merge gate, logical
+> properties only, no `dark:` variants, no hardcoded English, lucide-react
+> icons only, honest copy) all survive unchanged. Treat the new README as
+> authoritative for palette, radii, shadows and motion tiers; a full rewrite of
+> this document is out of scope for this change.
+
 **Status:** authoritative for design. Referenced by `AGENTS.md`.
 **Owner:** Design Lead. **Co-owners:** Product Lead (IA and copy), Web Lead (tokens and components).
 **Compiled:** 4 August 2026. Derived from `docs/research/03-product-ux-and-localization.md`,

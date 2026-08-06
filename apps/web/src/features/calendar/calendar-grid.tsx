@@ -20,8 +20,8 @@ import { useTranslations } from '@relay/i18n/react';
 import { EntryChip } from './entry-chip';
 import { useCalendarFormat } from './format';
 import { entryKey, sortEntries } from './filters';
-import { fromWallClock, toWallClock } from './date-range';
-import type { CalendarEntry, CalendarRange } from './types';
+import { fromWallClock, isSameDay, toWallClock } from './date-range';
+import type { CalendarEntry, CalendarRange, RescheduleProposal } from './types';
 
 const DEFAULT_FIRST_HOUR = 8;
 const DEFAULT_LAST_HOUR = 20;
@@ -33,6 +33,12 @@ export interface CalendarGridProps {
   hrefForEntry: (entry: CalendarEntry) => string;
   grabbedKey: string | null;
   onPickUp: (entry: CalendarEntry) => void;
+  /**
+   * The in-progress keyboard move, when one is active. Its `toInstant` draws
+   * a dashed outline on the one cell the post would land in, so a step is
+   * visible without moving or animating the chip itself.
+   */
+  proposal?: RescheduleProposal | null;
   /** Accessible name for the grid region. */
   label: string;
 }
@@ -49,11 +55,17 @@ export function CalendarGrid({
   hrefForEntry,
   grabbedKey,
   onPickUp,
+  proposal = null,
   label,
 }: CalendarGridProps): ReactNode {
   const t = useTranslations();
   const format = useCalendarFormat();
   const days = range.days;
+
+  // The proposed landing slot for an active keyboard move, if any. Computed
+  // once per render rather than per cell.
+  const targetInstant = proposal ? new Date(proposal.toInstant) : null;
+  const targetHour = targetInstant ? toWallClock(targetInstant, timeZone).hour : null;
 
   const bands = useMemo<readonly Band[]>(() => {
     const byDayHour = new Map<string, CalendarEntry[]>();
@@ -119,10 +131,20 @@ export function CalendarGrid({
 
               {band.cells.map((cell, index) => {
                 const day = days[index] ?? range.start;
+                const isTarget =
+                  targetInstant !== null &&
+                  band.hour === targetHour &&
+                  isSameDay(day, targetInstant, timeZone);
                 return (
                   <div
                     key={`${band.hour}-${day.toISOString()}`}
-                    className="bg-surface-canvas flex min-h-14 flex-col gap-1 p-1"
+                    className={cn(
+                      'bg-surface-canvas flex min-h-14 flex-col gap-1 p-1',
+                      // No transition here on purpose: the outline is the
+                      // only thing that should change as the arrow keys step
+                      // through slots, and it should snap, not animate.
+                      isTarget && 'outline-accent outline-2 outline-offset-[-2px] outline-dashed',
+                    )}
                   >
                     {cell.length === 0 ? (
                       <span className="sr-only">
@@ -155,7 +177,7 @@ export function CalendarGrid({
 
 function DayHeading({ day, timeZone }: { day: Date; timeZone: string }): ReactNode {
   const format = useCalendarFormat();
-  const today = isToday(day, timeZone);
+  const today = isSameDay(day, new Date(), timeZone);
   return (
     <h3
       className={cn(
@@ -180,10 +202,4 @@ function DayHeading({ day, timeZone }: { day: Date; timeZone: string }): ReactNo
 function hourInstant(day: Date, hour: number, timeZone: string): Date {
   const wall = toWallClock(day, timeZone);
   return fromWallClock({ ...wall, hour, minute: 0 }, timeZone);
-}
-
-function isToday(day: Date, timeZone: string): boolean {
-  const left = toWallClock(day, timeZone);
-  const right = toWallClock(new Date(), timeZone);
-  return left.year === right.year && left.month === right.month && left.day === right.day;
 }

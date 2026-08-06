@@ -30,6 +30,7 @@ export const ENV_GROUP_NAMES = [
 export type EnvGroupName = (typeof ENV_GROUP_NAMES)[number];
 
 const ABSOLUTE_HTTP_MESSAGE = 'expected an absolute http(s) URL';
+const HTTP_ORIGIN_MESSAGE = 'expected an absolute http(s) origin without a trailing slash';
 const POSTGRES_MESSAGE = 'expected a postgresql:// connection string';
 const REDIS_MESSAGE = 'expected a redis:// or rediss:// connection string';
 const HOST_PORT_MESSAGE = 'expected a host:port pair';
@@ -44,6 +45,16 @@ export function isHttpUrl(value: string): boolean {
     return false;
   }
   return parsed.protocol === 'http:' || parsed.protocol === 'https:';
+}
+
+/**
+ * A public site origin is an origin, not an arbitrary URL. Keeping it exact
+ * prevents canonical URLs from gaining a path, query, fragment, or duplicate
+ * separator when application code builds paths with `new URL()`.
+ */
+export function isHttpOrigin(value: string): boolean {
+  if (!isHttpUrl(value)) return false;
+  return value === new URL(value).origin;
 }
 
 export function isPostgresUrl(value: string): boolean {
@@ -100,6 +111,7 @@ export function parseBooleanish(value: unknown): boolean | undefined {
 export const booleanish = () => z.preprocess(parseBooleanish, z.boolean());
 
 const httpUrl = z.string().refine(isHttpUrl, { message: ABSOLUTE_HTTP_MESSAGE });
+const httpOrigin = z.string().refine(isHttpOrigin, { message: HTTP_ORIGIN_MESSAGE });
 const postgresUrl = z.string().refine(isPostgresUrl, { message: POSTGRES_MESSAGE });
 const redisUrl = z.string().refine(isRedisUrl, { message: REDIS_MESSAGE });
 const hostPort = z.string().refine(isHostPort, { message: HOST_PORT_MESSAGE });
@@ -130,6 +142,8 @@ const coreShape = {
   NODE_ENV: z.enum(NODE_ENVIRONMENTS).default('development'),
   APP_URL: httpUrl.optional(),
   API_URL: httpUrl.optional(),
+  NEXT_PUBLIC_SITE_ORIGIN: httpOrigin.optional(),
+  NEXT_PUBLIC_ENABLE_PSEUDO_LOCALES: booleanish().default(false),
   LOG_LEVEL: z.enum(LOG_LEVELS).default('info'),
 };
 

@@ -2,6 +2,7 @@
 
 import { useState, type ReactNode } from 'react';
 import { useQuery } from '@tanstack/react-query';
+import { usePathname, useRouter } from 'next/navigation';
 import {
   Button,
   Checkbox,
@@ -16,7 +17,7 @@ import {
 } from '@relay/design-system/primitives';
 import { DefinitionList, Notice, PageHeader } from '@relay/design-system/patterns';
 import { ACTIVE_LOCALES, ALL_LOCALES, toDate } from '@relay/i18n';
-import { useTranslations } from '@relay/i18n/react';
+import { useI18n, useTranslations } from '@relay/i18n/react';
 
 import { AsyncBoundary } from '../lib/async-boundary';
 import { workspaceGateway, type WorkspaceLocalizationView } from '../lib/gateway';
@@ -25,6 +26,7 @@ import { settingsKey, useWorkspaceId } from '../lib/keys';
 import { fromLines, toLines } from '../lib/lines';
 import { useSettingsMutation } from '../lib/use-settings-mutation';
 import { SettingRow, SettingsPanel, SettingsStack } from '../components/section';
+import { LOCALE_COOKIE, localizedHref } from '@/lib/i18n/routing';
 
 /** A fixed sample instant, so the preview never depends on when it is read. */
 const PREVIEW_INSTANT = '2026-08-11T14:30:00.000Z';
@@ -41,6 +43,9 @@ const WEEK_START_SAMPLES = [
 
 export function LocalizationScreen(): ReactNode {
   const t = useTranslations();
+  const { locale } = useI18n();
+  const pathname = usePathname();
+  const router = useRouter();
   const section = t('settings.ui.section.localization');
   const formatters = useFormatters();
   const workspaceId = useWorkspaceId();
@@ -59,10 +64,32 @@ export function LocalizationScreen(): ReactNode {
 
   const [markets, setMarkets] = useState<string | null>(null);
   const current = settings.data;
+  const currentInterfaceLocale = ACTIVE_LOCALES.find(
+    (candidate) => candidate.bcp47 === current?.interfaceLocale,
+  );
   const marketValue = markets ?? toLines(current?.markets ?? []);
 
   function update(patch: Partial<WorkspaceLocalizationView>): void {
     void save.run(patch);
+  }
+
+  async function updateInterfaceLocale(nextLocale: string): Promise<void> {
+    if (nextLocale === current?.interfaceLocale) {
+      return;
+    }
+
+    const saved = await save.run({ interfaceLocale: nextLocale });
+    if (saved === undefined) {
+      return;
+    }
+
+    document.cookie = `${LOCALE_COOKIE}=${encodeURIComponent(nextLocale)}; path=/; SameSite=Lax; max-age=31536000`;
+    const pathWithoutLocale = pathname.startsWith(`/${locale}/`)
+      ? pathname.slice(locale.length + 1)
+      : pathname === `/${locale}`
+        ? '/'
+        : pathname;
+    router.push(localizedHref(pathWithoutLocale, nextLocale));
   }
 
   function weekdayName(iso: string): string {
@@ -91,12 +118,19 @@ export function LocalizationScreen(): ReactNode {
                 title={t('settings.localization.interfaceLocale')}
                 description={t('settings.localization.interfaceLocaleHelp')}
               >
-                <Notice tone="neutral" title={t('settings.ui.localization.interfaceOnlyEnglish')} />
+                {currentInterfaceLocale?.reviewStatus === 'beta' ? (
+                  <Notice tone="neutral" title={t('settings.localization.betaHelp')} />
+                ) : null}
                 <div className="flex flex-col">
                   <SettingRow
                     label={t('settings.localization.interfaceLocale')}
                     control={
-                      <Select value={current.interfaceLocale} disabled>
+                      <Select
+                        value={current.interfaceLocale}
+                        onValueChange={(value) => {
+                          void updateInterfaceLocale(value);
+                        }}
+                      >
                         <SelectTrigger
                           className="min-w-48"
                           aria-label={t('settings.localization.interfaceLocale')}

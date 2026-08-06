@@ -1,0 +1,96 @@
+/** Screen level states: empty, loading, offline, permission and rate limits. */
+export const statusMessages = {
+  'empty.calendar.title': 'Nada programado aún',
+  'empty.calendar.body':
+    'Escribe tu primera publicación y elige una hora. Puedes cambiarlo más tarde.',
+  'empty.calendar.action': 'Redactar una publicación',
+  'empty.drafts.title': 'Sin borradores',
+  'empty.drafts.body': 'Los borradores que guarda aparecen aquí con sus objetivos y problemas.',
+  'empty.connections.title': 'No hay cuentas conectadas',
+  'empty.connections.body':
+    'Conecte una cuenta para publicar en ella. Primero le mostramos los permisos exactos.',
+  'empty.connections.action': 'Conectar una cuenta',
+  'empty.analytics.title': 'Aún no hay métricas',
+  'empty.analytics.body':
+    'Las métricas aparecen después de que su primera publicación haya estado activa el tiempo suficiente para que la plataforma informe sobre ella.',
+  'empty.analytics.noPermission':
+    'Esta cuenta no ha otorgado acceso a análisis. Vuelva a conectarse para agregarlo.',
+  'empty.approvals.title': 'Nada esperándote',
+  'empty.approvals.body': 'Las solicitudes de aprobación para sus marcas aparecen aquí.',
+  'empty.library.title': 'Tu biblioteca está vacía',
+  'empty.library.body': 'Cargue imágenes y videos, o impórtelos desde una URL o la API.',
+  'empty.library.action': 'Subir medios',
+  'empty.automation.title': 'Aún no hay reglas',
+  'empty.automation.body':
+    'Una regla reacciona ante algo y propone una acción. Cada regla muestra sus límites antes de activarla.',
+  'empty.webhooks.title': 'Sin puntos finales',
+  'empty.webhooks.body':
+    'Agregue un punto final para recibir eventos firmados sobre publicaciones y conexiones.',
+  'empty.searchResults.title': 'Sin resultados for {query}',
+  'empty.searchResults.body': 'Revise la ortografía o borre un filtro.',
+  'empty.filtered.title': 'Nada coincide con estos filtros',
+  'empty.filtered.action': 'Limpiar filtros',
+  'empty.auditLog.title': 'Aún no hay actividad',
+  'empty.receipts.title': 'Aún no hay recibos',
+  'empty.receipts.body': 'Cada publicación produce un recibo que puede inspeccionar y compartir.',
+
+  'loading.default': 'Cargando',
+  'loading.calendar': 'Cargando tu calendario',
+  'loading.analytics': 'Cargando métricas',
+  'loading.preview': 'Construyendo la vista previa',
+  'loading.validating': 'Verificación de los límites actuales de la plataforma',
+  'loading.publishing': 'Publicación to {provider}',
+  'loading.uploading': 'Uploading {name}',
+  'loading.uploadProgress': '{percent} subido',
+  'loading.connecting': 'Conectando to {provider}',
+  'loading.savingDraft': 'Guardando tu borrador',
+  'loading.generatingPlan': 'Construyendo tu plan',
+  'loading.longRunning': 'Esto está tardando más de lo habitual. Todavía está funcionando.',
+
+  'offline.banner': 'Estás desconectado. Los cambios se guardan en este dispositivo.',
+  'offline.draftSafe': 'Tu borrador está a salvo. Se sincroniza cuando vuelves a estar en línea.',
+  'offline.publishDisabled':
+    'La publicación necesita una conexión. Esto no se pondrá en cola en silencio.',
+  'offline.scheduleQueued':
+    'Esta solicitud de programación está en cola en este dispositivo y se enviará cuando vuelva a estar en línea.',
+  'offline.reconnected': 'De nuevo en línea. Sincronizando sus cambios.',
+  'offline.syncConflict':
+    'Algunos cambios no se pudieron fusionar automáticamente. Revíselos antes de guardar.',
+
+  'permission.denied.title': 'No tienes acceso a esto.',
+  'permission.denied.role': 'Esto necesita el rol the {role}. Tú are {currentRole}.',
+  'permission.denied.scope': 'Esta credencial necesita el scope {scope}.',
+  'permission.denied.contactOwner': 'Ask {owner} para concederlo.',
+  'permission.denied.brandScope': 'Su acceso es limitado to {brands}.',
+  'permission.readOnly': 'Este espacio de trabajo es de solo lectura en este momento.',
+  'permission.mfaRequired': 'Confirme con autenticación de dos factores para continuar.',
+
+  'rateLimit.title': 'Baja la velocidad por un momento',
+  'rateLimit.body': 'Tienes made {count} solicitudes in {window}. El límite is {limit}.',
+  'rateLimit.resetsAt': 'Esto restablece at {time}.',
+  'rateLimit.cheaperAlternative': 'Programar en lugar de publicar ahora evita este límite.',
+  'rateLimit.providerCost': '{provider} cargos por operación. Esta acción se estima at {amount}.',
+
+  'incident.providerDegraded':
+    '{provider} está teniendo problemas. Las publicaciones programadas siguen intentándolo.',
+  'incident.providerDown': '{provider} no está disponible. Nada se pierde y nada se duplica.',
+  'incident.isolated': 'Otras plataformas no se ven afectadas.',
+  'incident.statusPage': 'Estado en vivo por conector y superficie',
+  'incident.startedAt': 'Started {relativeTime}',
+
+  'translation.incomplete':
+    'Parte del texto de esta pantalla aún no está traducido into {language} y se muestra en inglés.',
+  'translation.beta': 'Este idioma está en versión beta. Informe cualquier cosa que se lea mal.',
+
+  'confirm.discardChanges.title': '¿Descartar tus cambios?',
+  'confirm.discardChanges.body': 'Esto no se puede deshacer.',
+  'confirm.deleteItem.title': 'Delete {name}?',
+  'confirm.deleteItem.body': 'Esto no se puede deshacer.',
+  'confirm.cancelScheduled.title': '¿Cancelar esta publicación programada?',
+  'confirm.cancelScheduled.body':
+    'No se publicará. El borrador permanece aquí para que puedas programarlo nuevamente.',
+  'confirm.publishNow.title': '¿Publicar ahora?',
+  'confirm.publishNow.body':
+    '{count, plural, one {Esto se publica en # cuenta inmediatamente} many {Esto se publica en # cuentas inmediatamente} other {Esto se publica en # cuentas inmediatamente}}. No se puede recuperar desde Relay.',
+  'confirm.typeToConfirm': 'Type {word} para confirmar.',
+} as const;

@@ -1,11 +1,13 @@
 'use client';
 
-import Link from 'next/link';
+import { Link } from '@/components/link';
 import { useSearchParams } from 'next/navigation';
 
 import { Timeline, type TimelineEvent } from '@relay/design-system/patterns';
 import { Button, Separator } from '@relay/design-system/primitives';
 
+import { KineticHeadline, MagneticButton } from '@/components/motion';
+import { ConfettiBurst } from './confetti-burst';
 import { useSession } from '@/lib/auth/session-context';
 import { useFormatters, useTranslations } from '@/lib/i18n';
 
@@ -16,6 +18,13 @@ import { useFormatters, useTranslations } from '@/lib/i18n';
  * steps have happened, the rest are pending, and they are labelled pending
  * rather than hidden, because the point of the receipt is that a person can see
  * what is still to come.
+ *
+ * The one deliberately celebratory moment in the signed-in product (WP-4):
+ * the heading rises in via `KineticHeadline` and a one-time confetti burst
+ * plays behind it, both named exceptions to those components' marketing-tier
+ * default (see `components/motion/README.md`). Everything else on this
+ * screen — the timeline, the facts, the next-step list — stays exactly as
+ * plain and honest as every other receipt in the product.
  */
 export function DoneStep() {
   const t = useTranslations();
@@ -63,8 +72,12 @@ export function DoneStep() {
 
   return (
     <div className="flex flex-col gap-8">
+      <ConfettiBurst />
+
       <div className="flex flex-col gap-1">
-        <h1 className="text-title-lg text-text-primary">{t('onboarding.receipt.title')}</h1>
+        <KineticHeadline as="h1" className="text-title-lg text-text-primary">
+          {t('onboarding.receipt.title')}
+        </KineticHeadline>
         <p className="prose-measure text-body-md text-text-secondary">
           {t('onboarding.receipt.body')}
         </p>
@@ -96,9 +109,9 @@ export function DoneStep() {
       </section>
 
       <div className="flex flex-wrap gap-2">
-        <Button variant="primary" size="lg" asChild>
+        <MagneticButton variant="primary" size="lg" asChild>
           <Link href="/">{t('onboarding.receipt.goHome')}</Link>
-        </Button>
+        </MagneticButton>
         {contentItemId === null ? null : (
           <Button variant="secondary" size="lg" asChild>
             <Link href={`/posts/${contentItemId}/receipt`}>{t('action.viewReceipt')}</Link>

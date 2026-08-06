@@ -21,7 +21,13 @@
     var(--font-relay-ui), 'Inter Variable', 'Inter', ui-sans-serif, system-ui, -apple-system,
     'Segoe UI', 'Noto Sans', 'Noto Sans Arabic', 'Noto Sans Hebrew', 'Noto Sans JP', 'Noto Sans KR',
     'Noto Sans SC', sans-serif;
-  --font-serif: var(--font-relay-editorial), 'Source Serif 4', 'Iowan Old Style', Georgia, serif;
+  /* Source Serif 4 is no longer loaded. This keeps existing `font-serif`
+     usages rendering (on the system serif) until they migrate to
+     `font-display`. */
+  --font-serif: 'Iowan Old Style', Georgia, serif;
+  --font-display:
+    var(--font-relay-display), 'Bricolage Grotesque', var(--font-relay-ui), sans-serif;
+  --font-mono: var(--font-relay-mono), 'JetBrains Mono', ui-monospace, monospace;
 }
 
 @layer base {
@@ -81,4 +87,363 @@
     overflow-x: auto;
     overscroll-behavior-x: contain;
   }
+
+  /* The standard app page container: centered, capped at the app's max
+     inline size, with a gutter that scales with viewport width. Per-screen
+     adoption happens as each screen is touched; this just makes the
+     primitive available. */
+  .relay-page {
+    inline-size: 100%;
+    max-inline-size: var(--layout-app-max);
+    margin-inline: auto;
+    padding-inline: var(--layout-gutter);
+  }
+
+  /* Opt out of the width cap for screens that want to use the full
+     viewport (calendar, analytics boards). */
+  .relay-page-bleed {
+    max-inline-size: none;
+  }
+
+  /*
+   * The loud system's full-viewport tone fills (WP-1, `loud/band.tsx`).
+   * `cta`/`pop` are small-control colours (`--color-cta`/`--color-blush`)
+   * stretched to a whole screen; unmodified in light, that reads fine on a
+   * warm paper canvas, but in dark theme every other surface is a
+   * low-luminance ink, so a full-bleed literal yellow or pink block reads as
+   * blinding rather than confident. The dark override folds the fill toward
+   * the dark canvas with `color-mix()`, at a ratio hand-verified against the
+   * WCAG formula in `contrast.test.ts` to keep the mandatory ink `cta-on` /
+   * `blush-on` text at 6:1+ (comfortably above the 4.5:1 AA floor) on the
+   * mixed colour: 65% tone / 35% canvas gives 6.0:1 (cta) and 5.2:1 (blush).
+   * Declared twice for the same reason the semantic layer in
+   * `theme.css` is: once for the OS-level `prefers-color-scheme` and once for
+   * the explicit `data-theme` toggle, and the two must stay identical.
+   */
+  .relay-band-cta {
+    background-color: var(--color-cta);
+  }
+
+  .relay-band-pop {
+    background-color: var(--color-blush);
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) .relay-band-cta {
+    background-color: color-mix(in srgb, var(--color-cta) 65%, var(--color-surface-canvas));
+  }
+
+  :root:not([data-theme='light']) .relay-band-pop {
+    background-color: color-mix(in srgb, var(--color-blush) 65%, var(--color-surface-canvas));
+  }
+}
+
+:root[data-theme='dark'] .relay-band-cta {
+  background-color: color-mix(in srgb, var(--color-cta) 65%, var(--color-surface-canvas));
+}
+
+:root[data-theme='dark'] .relay-band-pop {
+  background-color: color-mix(in srgb, var(--color-blush) 65%, var(--color-surface-canvas));
+}
+
+/*
+ * The loud poster card's hover lift (WP-1, `loud/poster-card.tsx`). Moves the
+ * card up and away from its own hard shadow on hover, revealing more of it,
+ * the same physical idea as `.relay-pressable` in `theme.css` but inverted;
+ * a press (or a lingering hover-then-press) collapses it straight back to
+ * flush. The horizontal component mirrors `--shadow-hard-x`, which itself
+ * flips under `[dir='rtl']`, so this never needs a second, RTL-specific
+ * rule.
+ */
+.relay-poster-card {
+  translate: 0 0;
+  transition:
+    translate var(--duration-fast) var(--ease-standard),
+    box-shadow var(--duration-fast) var(--ease-standard);
+}
+
+.relay-poster-card:hover,
+.relay-poster-card:focus-visible {
+  translate: calc(var(--shadow-hard-x) * -1) -4px;
+}
+
+.relay-poster-card:active {
+  translate: 0 0;
+}
+
+/*
+ * The hero's decorative corner stickers (WP-1). A slow, purely CSS float —
+ * neutralized for free by the global `prefers-reduced-motion` override in
+ * `theme.css` (`*, *::before, *::after { animation-duration: 1ms !important
+ * }`), so this file never needs its own reduced-motion branch.
+ */
+@keyframes relay-sticker-float {
+  0%,
+  100% {
+    translate: 0 0;
+  }
+  50% {
+    translate: 0 -6px;
+  }
+}
+
+.relay-sticker-float {
+  animation: relay-sticker-float 5s var(--ease-standard) infinite;
+}
+
+@layer utilities {
+  /*
+   * Home (WP-6): a status dot's one-time settle-in, played once whenever a
+   * connection first paints as healthy. It never loops — a looping dot reads
+   * as "still checking", not "confirmed good" — so it is a plain CSS
+   * `animation` with no `infinite`, which means the shell's global 1ms
+   * `prefers-reduced-motion` override (theme.css) already collapses it to a
+   * no-op; callers still add `motion-reduce:animate-none` as a second,
+   * explicit guard (see `connection-health.tsx`).
+   */
+  @keyframes relay-dot-settle {
+    0% {
+      scale: 0.5;
+      opacity: 0.5;
+    }
+    60% {
+      scale: 1.25;
+      opacity: 1;
+    }
+    100% {
+      scale: 1;
+      opacity: 1;
+    }
+  }
+
+  .relay-dot-settle {
+    animation: relay-dot-settle var(--duration-expressive-sm) var(--ease-out-back);
+  }
+}
+
+/*
+ * The shell's compose action (WP-5). It is already `relay-pressable`
+ * (collapses onto its own hard shadow on `:active`, mirroring under RTL for
+ * free via `--shadow-hard-x`); this adds the resting hover lift on the same
+ * `--press-y` custom property. `:not(:active)` keeps the two states from
+ * fighting when the pointer presses while hovering, so a press still
+ * resolves to the pressable recipe's own flush state instead of stacking
+ * offsets. Left unlayered (not `@layer components`) so it reliably wins
+ * over `.relay-pressable`'s own unconditional `--press-y: 0px`, which lives
+ * in the design system's higher-priority `utilities` layer.
+ */
+.relay-compose-cta:hover:not(:active) {
+  --press-y: -2px;
+}
+
+/*
+ * Auth aside "post preview" cards trading places (WP-4, `components/auth/
+ * aside-scene.tsx`). Each card owns its own named keyframe so it has a
+ * distinct resting position (front/middle/back) at its own 0%/100% frame —
+ * when the global `prefers-reduced-motion` override (theme.css) collapses
+ * `animation-duration` to 1ms, every card freezes at ITS OWN starting frame
+ * instead of all three snapping to the same spot. The horizontal offset is
+ * carried by custom properties that flip under `[dir='rtl']`, the same
+ * technique `--shadow-hard-x` uses elsewhere, so the stack reads correctly
+ * mirrored rather than sliding the wrong way.
+ */
+:root {
+  --relay-aside-shuffle-x-1: 14px;
+  --relay-aside-shuffle-x-2: 28px;
+}
+
+[dir='rtl'] {
+  --relay-aside-shuffle-x-1: -14px;
+  --relay-aside-shuffle-x-2: -28px;
+}
+
+@keyframes relay-aside-card-a {
+  0%,
+  100% {
+    translate: 0 0;
+    rotate: -2deg;
+    z-index: 3;
+  }
+  33% {
+    translate: var(--relay-aside-shuffle-x-1) 18px;
+    rotate: 2deg;
+    z-index: 2;
+  }
+  66% {
+    translate: var(--relay-aside-shuffle-x-2) 36px;
+    rotate: 4deg;
+    z-index: 1;
+  }
+}
+
+@keyframes relay-aside-card-b {
+  0%,
+  100% {
+    translate: var(--relay-aside-shuffle-x-1) 18px;
+    rotate: 2deg;
+    z-index: 2;
+  }
+  33% {
+    translate: var(--relay-aside-shuffle-x-2) 36px;
+    rotate: 4deg;
+    z-index: 1;
+  }
+  66% {
+    translate: 0 0;
+    rotate: -2deg;
+    z-index: 3;
+  }
+}
+
+@keyframes relay-aside-card-c {
+  0%,
+  100% {
+    translate: var(--relay-aside-shuffle-x-2) 36px;
+    rotate: 4deg;
+    z-index: 1;
+  }
+  33% {
+    translate: 0 0;
+    rotate: -2deg;
+    z-index: 3;
+  }
+  66% {
+    translate: var(--relay-aside-shuffle-x-1) 18px;
+    rotate: 2deg;
+    z-index: 2;
+  }
+}
+
+.relay-aside-card-a {
+  animation: relay-aside-card-a 9s var(--ease-standard) infinite;
+}
+
+.relay-aside-card-b {
+  animation: relay-aside-card-b 9s var(--ease-standard) infinite;
+}
+
+.relay-aside-card-c {
+  animation: relay-aside-card-c 9s var(--ease-standard) infinite;
+}
+
+/*
+ * Sign in / sign up invalid-state pulse (WP-4, `components/auth/
+ * sign-in-form.tsx` and `sign-up-form.tsx`). The component adds this class
+ * only while a live error is showing (removed and re-added — never left on —
+ * so a second, different failure replays the pulse instead of a class that
+ * was already there doing nothing). "Border-color pulse only" per the plan:
+ * an `outline-color` oscillation, no shake, no translate. Two finite
+ * iterations settle on a solid destructive outline for as long as the class
+ * is applied, which doubles as a persistent invalid indicator. The global
+ * 1ms `prefers-reduced-motion` override (theme.css) collapses the sequence
+ * straight to that same settled frame, so reduced-motion visitors still see
+ * the (static) signal.
+ */
+@keyframes relay-auth-invalid-pulse {
+  0%,
+  100% {
+    outline-color: var(--color-destructive-border);
+  }
+  50% {
+    outline-color: transparent;
+  }
+}
+
+.relay-auth-invalid-pulse {
+  outline: 2px solid var(--color-destructive-border);
+  outline-offset: 6px;
+  border-radius: var(--radius-lg);
+  animation: relay-auth-invalid-pulse 500ms var(--ease-standard) 2;
+}
+
+/*
+ * One-time SVG stroke draw-in for a lucide icon (WP-4; `check-email.tsx`'s
+ * `MailCheck`). Targets every vector child of a lucide icon rather than the
+ * `<svg>` itself, since `stroke-dasharray`/`stroke-dashoffset` only apply to
+ * the shape elements. The dash length is a generous, hand-picked estimate
+ * (lucide keeps every icon on a 24x24 grid, which keeps path perimeters in a
+ * similar range), not a per-icon exact measurement: over-estimating just
+ * means the path finishes drawing slightly before the animation's own end,
+ * which is invisible. `forwards` holds the fully-drawn end state; the global
+ * 1ms reduced-motion override collapses straight to that end state.
+ */
+@keyframes relay-icon-draw {
+  from {
+    stroke-dashoffset: 64;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+.relay-icon-draw :where(path, circle, polyline, line, rect, polygon) {
+  stroke-dasharray: 64;
+  stroke-dashoffset: 64;
+  animation: relay-icon-draw 700ms var(--ease-out-expo) forwards;
+}
+
+/*
+ * Onboarding step rail fill (WP-4, `components/onboarding/step-list.tsx`).
+ * The fill's `block-size` is set inline, per render, to the percentage of
+ * steps completed — that is data, not styling, so only the transition lives
+ * here. The global 1ms reduced-motion override makes a step change land on
+ * the new fill instantly instead of animating toward it.
+ */
+.relay-step-rail-fill {
+  background-color: var(--color-accent);
+  transition: block-size var(--duration-expressive-sm) var(--ease-standard);
+}
+
+/*
+ * Onboarding done-step confetti burst (WP-4, `components/onboarding/
+ * confetti-burst.tsx`). Twenty pieces radiate from a fixed point in a
+ * deterministic pattern (never `Math.random()`, so this never mismatches
+ * between server and client) using the brand/cta/pop trio via
+ * `--confetti-x`/`--confetti-y`/`--confetti-delay`, set per piece by the
+ * component. The component itself renders nothing at all under
+ * `prefers-reduced-motion` (see its own header comment) rather than relying
+ * on this animation being neutralized — the real guard is that the DOM never
+ * mounts, not the global 1ms override.
+ */
+@keyframes relay-confetti-burst {
+  0% {
+    translate: 0 0;
+    opacity: 1;
+    scale: 1;
+  }
+  100% {
+    translate: var(--confetti-x, 0) var(--confetti-y, -60px);
+    opacity: 0;
+    scale: 0.5;
+  }
+}
+
+.relay-confetti-piece {
+  position: absolute;
+  inset-block-start: 0;
+  inset-inline-start: 0;
+  inline-size: 8px;
+  block-size: 14px;
+  border-radius: var(--radius-xs);
+  animation: relay-confetti-burst 1.2s var(--ease-out-expo) forwards;
+  animation-delay: var(--confetti-delay, 0ms);
+}
+
+/*
+ * A slow, purely decorative full rotation (WP-3, remaining marketing pages).
+ * Shared by the tool radar's ring and the marketing 404's dashed zero — both
+ * `aria-hidden`, both fine with a direction-agnostic `rotate`, so neither
+ * needs an RTL-specific rule. Neutralized for free by the global 1ms
+ * `prefers-reduced-motion` override in `theme.css`, same as
+ * `relay-sticker-float` above.
+ */
+@keyframes relay-slow-spin {
+  to {
+    rotate: 360deg;
+  }
+}
+
+.relay-slow-spin {
+  animation: relay-slow-spin 18s linear infinite;
 }

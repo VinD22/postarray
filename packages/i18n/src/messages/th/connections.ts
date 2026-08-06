@@ -1,0 +1,108 @@
+/** th beta catalog namespace. */
+export const connectionMessages = {
+  'connection.title': 'การเชื่อมต่อ',
+  'connection.subtitle': 'บัญชี เพจ และช่องทางพื้นที่ทำงานนี้สามารถเผยแพร่ได้',
+  'connection.add': 'เชื่อมต่อบัญชี',
+  'connection.count':
+    '{ใช้แล้ว พหูพจน์ หนึ่ง {# ช่องที่ใช้งานอยู่} other {# ช่องที่ใช้งานอยู่}} จาก {limit}',
+  'connection.limitReached':
+    'เวิร์กสเปซนี้ใช้แชนเนล {limit} ทั้งหมด ตัดการเชื่อมต่อหนึ่งก่อนที่จะเชื่อมต่ออีกอันหนึ่ง',
+  'connection.account.label': 'บัญชี',
+  'connection.account.type.profile': 'โปรไฟล์',
+  'connection.account.type.page': 'หน้า',
+  'connection.account.type.channel': 'ช่อง',
+  'connection.account.type.group': 'กลุ่ม',
+  'connection.account.type.organization': 'องค์กร',
+  'connection.account.type.business': 'บัญชีธุรกิจ',
+  'connection.account.type.creator': 'บัญชีผู้สร้าง',
+  'connection.connectedBy': 'เชื่อมต่อโดย {name} บน {date}',
+  'connection.lastPublished': 'เผยแพร่ครั้งล่าสุด {relativeTime}',
+  'connection.lastPublishedNever': 'ยังไม่มีการเผยแพร่จากบัญชีนี้',
+  'connection.lastAnalyticsSync': 'การวิเคราะห์ซิงค์แล้ว {relativeTime}',
+  'connection.status.healthy': 'ทำงาน',
+  'connection.status.expiringSoon': 'หมดอายุ {relativeTime}',
+  'connection.status.expired': 'การเข้าถึงหมดอายุแล้ว',
+  'connection.status.revoked': 'การเข้าถึงถูกเพิกถอน',
+  'connection.status.paused': 'หยุดชั่วคราว',
+  'connection.status.permissionMissing': 'ขาดการอนุญาต',
+  'connection.status.reviewPending': 'รอการตรวจสอบแพลตฟอร์ม',
+  'connection.status.unknown': 'สุขภาพไม่พร้อมใช้งาน',
+  'connection.token.expiresAt': 'การเข้าถึงหมดอายุ {date}',
+  'connection.token.expiryUnknown': '{provider} ไม่ได้แจ้งให้เราทราบเมื่อการเข้าถึงนี้หมดอายุ',
+  'connection.permissions.title': 'สิทธิ์',
+  'connection.permissions.granted': 'ได้รับ',
+  'connection.permissions.missing': 'ไม่ได้รับ',
+  'connection.permissions.explainBeforeOAuth':
+    'Relay จะถาม {provider} สำหรับการอนุญาตเหล่านี้ คุณสามารถยกเลิกการเชื่อมต่อได้ตลอดเวลา',
+  'connection.permissions.whyNeeded': 'เหตุใดจึงจำเป็น',
+  'connection.reconnect.title': 'เชื่อมต่อ {account} อีกครั้ง',
+  'connection.reconnect.body':
+    'โพสต์ตามกำหนดการสำหรับบัญชีนี้จะถูกระงับจนกว่าจะมีการเชื่อมต่ออีกครั้ง ไม่มีอะไรสูญหาย',
+  'connection.disconnect.title': 'ตัดการเชื่อมต่อ {account}?',
+  'connection.disconnect.body':
+    'โพสต์ตามกำหนดเวลาสำหรับบัญชีนี้จะไม่เผยแพร่ ใบเสร็จรับเงินและการวิเคราะห์ที่รวบรวมไว้แล้วจะยังคงอยู่ในพื้นที่ทำงานนี้',
+  'connection.pause.body':
+    'บัญชีที่หยุดชั่วคราวจะเก็บประวัติและกำหนดการไว้ แต่จะไม่เผยแพร่จนกว่าคุณจะดำเนินการต่อ',
+  'connection.incident.invalidToken':
+    '{provider} ปฏิเสธการเข้าถึงที่เก็บไว้สำหรับ {account} เชื่อมต่อใหม่เพื่อคืนค่าการเผยแพร่',
+  'connection.incident.permissionLost':
+    '{account} ไม่ให้สิทธิ์ {permission} อีกต่อไป เชื่อมต่อใหม่และยอมรับการอนุญาตนั้น',
+  'connection.incident.roleLost':
+    'ผู้ใช้ {provider} ของคุณไม่มีบทบาทใน {account} อีกต่อไป ขอให้ผู้ดูแลระบบของเพจนั้นกู้คืน',
+  'connection.incident.accountTypeInvalid':
+    'Instagram ต้องการบัญชีแบบมืออาชีพ สลับ {account} เป็นบัญชีธุรกิจหรือผู้สร้าง แล้วเชื่อมต่อใหม่',
+  'connection.incident.reviewRestricted':
+    '{provider} ได้จำกัดแอปนี้ไว้ระหว่างการตรวจสอบ โพสต์จาก {account} เผยแพร่แบบส่วนตัวจนกว่าการตรวจสอบจะเสร็จสิ้น',
+  'connection.group.title': 'กลุ่มลูกค้า',
+  'connection.group.description': 'จัดกลุ่มบัญชีตามลูกค้าหรือแบรนด์เพื่อกรองทุกหน้าจอ',
+  'connection.group.assign': 'ย้ายไปกลุ่ม',
+  'connection.group.none': 'ไม่ได้จัดกลุ่ม',
+  'connection.group.moveNote': 'การย้ายบัญชีจะเก็บโพสต์ ใบเสร็จรับเงิน และการวิเคราะห์ไว้',
+  'connection.oauth.starting': 'เปิด {provider}',
+  'connection.oauth.returned': 'สิ้นสุดการเชื่อมต่อ',
+  'connection.oauth.chooseAccounts': 'เลือกบัญชีที่จะเชื่อมต่อ',
+  'connection.oauth.noEligibleAccounts':
+    'ไม่สามารถเชื่อมต่อบัญชีในการเข้าสู่ระบบ {provider} นี้ {reason}',
+  'connection.oauth.canceled': 'การเชื่อมต่อถูกยกเลิกเมื่อ {provider} ไม่มีอะไรเปลี่ยนแปลง',
+  'connection.oauth.alreadyConnected': '{account} เชื่อมต่อกับพื้นที่ทำงานนี้แล้ว',
+  'connection.oauth.connectedToAnotherWorkspace':
+    '{account} เชื่อมต่อกับพื้นที่ทำงานอื่น ยกเลิกการเชื่อมต่อที่นั่นก่อน',
+  'capability.title': 'สิ่งที่บัญชีนี้รองรับ',
+  'capability.matrix.title': 'ความสามารถของแพลตฟอร์ม',
+  'capability.matrix.subtitle': 'สร้างจากคำจำกัดความของตัวเชื่อมต่อที่เราดูแลและตรวจสอบด้วยมือ',
+  'capability.level.supported': 'รองรับ',
+  'capability.level.unsupported': 'ไม่ได้นำเสนอโดยแพลตฟอร์ม',
+  'capability.level.not_implemented': 'ยังไม่ได้สร้าง',
+  'capability.level.requires_review': 'ต้องการการตรวจสอบแพลตฟอร์ม',
+  'capability.level.beta': 'เบต้า',
+  'capability.level.unknown': 'ไม่พร้อมใช้งาน',
+  'capability.explain.supported': 'Relay สามารถทำได้สำหรับบัญชีนี้วันนี้',
+  'capability.explain.unsupported':
+    '{provider} ไม่ได้นำเสนอสิ่งนี้ผ่าน API อย่างเป็นทางการ ดังนั้นจึงไม่มีเครื่องมือใดที่สามารถทำได้อย่างปลอดภัย',
+  'capability.explain.not_implemented':
+    '{provider} เสนอสิ่งนี้ แต่ Relay ยังไม่ได้สร้างมันขึ้นมา อยู่ในแผนงานการเชื่อมต่อ',
+  'capability.explain.requires_review':
+    '{provider} ให้สิทธิ์นี้เฉพาะหลังจากที่ตรวจสอบแอปหรือบัญชีแล้วเท่านั้น จะไม่สามารถใช้งานได้จนกว่าการตรวจสอบจะผ่าน',
+  'capability.explain.beta':
+    'วิธีนี้ใช้ได้ โดยมีข้อจำกัดที่เรายังตรวจสอบไม่เสร็จ ตรวจสอบผลลัพธ์ก่อนที่จะวางใจ',
+  'capability.explain.unknown':
+    'เราไม่สามารถอ่านสิทธิ์ปัจจุบันสำหรับบัญชีนี้ได้ เชื่อมต่อใหม่เพื่อรีเฟรช',
+  'capability.lastChecked': 'ตรวจสอบแล้ว {relativeTime}',
+  'capability.feature.text': 'โพสต์ข้อความ',
+  'capability.feature.image': 'รูปภาพ',
+  'capability.feature.carousel': 'ม้าหมุน',
+  'capability.feature.video': 'วีดีโอ',
+  'capability.feature.document': 'เอกสาร',
+  'capability.feature.firstComment': 'กำหนดการแสดงความคิดเห็นครั้งแรก',
+  'capability.feature.thread': 'Threads',
+  'capability.feature.mentions': 'การกล่าวถึงพื้นเมือง',
+  'capability.feature.destinations': 'การเลือกจุดหมายปลายทาง',
+  'capability.feature.privacy': 'การควบคุมความเป็นส่วนตัว',
+  'capability.feature.thumbnail': 'ภาพขนาดย่อที่กำหนดเอง',
+  'capability.feature.altText': 'ข้อความแสดงแทน',
+  'capability.feature.analytics': 'การวิเคราะห์',
+  'capability.feature.delete': 'ลบโพสต์ที่เผยแพร่',
+  'capability.feature.commentCount': 'ความคิดเห็นนับ',
+  'capability.feature.commentReplies': 'การอ่านและการตอบกลับความคิดเห็น',
+  'capability.feature.disclosure': 'การเปิดเผยข้อมูลอัตโนมัติ',
+} as const;

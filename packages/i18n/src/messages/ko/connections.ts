@@ -1,0 +1,108 @@
+/** Korean beta catalog. */
+export const connectionMessages = {
+  'connection.title': '사이',
+  'connection.subtitle': '이 워크스페이스를 게시할 수 있는 계정, 페이지 및 채널입니다.',
+  'connection.add': '계정 연결',
+  'connection.count': '{used, plural, other {# 활성 채널}}~의{limit}',
+  'connection.limitReached':
+    '이 작업공간은 모두 사용 중입니다.{limit}채널. 다른 하나를 연결하기 전에 하나를 연결 해제하십시오.',
+  'connection.account.label': '계정',
+  'connection.account.type.profile': '윤곽',
+  'connection.account.type.page': '페이지',
+  'connection.account.type.channel': '채널',
+  'connection.account.type.group': '그룹',
+  'connection.account.type.organization': '조직',
+  'connection.account.type.business': '비즈니스 계정',
+  'connection.account.type.creator': '크리에이터 계정',
+  'connection.connectedBy': '연결자:{name}~에{date}',
+  'connection.lastPublished': '마지막으로 게시됨{relativeTime}',
+  'connection.lastPublishedNever': '이 계정에는 아직 게시된 내용이 없습니다.',
+  'connection.lastAnalyticsSync': '분석이 동기화되었습니다.{relativeTime}',
+  'connection.status.healthy': '일하고 있는',
+  'connection.status.expiringSoon': '만료{relativeTime}',
+  'connection.status.expired': '액세스가 만료되었습니다.',
+  'connection.status.revoked': '액세스가 취소되었습니다.',
+  'connection.status.paused': '일시중지됨',
+  'connection.status.permissionMissing': '권한이 누락되었습니다.',
+  'connection.status.reviewPending': '플랫폼 검토를 기다리는 중',
+  'connection.status.unknown': '건강 상태를 알 수 없음',
+  'connection.token.expiresAt': '액세스 만료{date}',
+  'connection.token.expiryUnknown': '{provider}이 액세스가 언제 만료되는지 알려주지 않습니다.',
+  'connection.permissions.title': '권한',
+  'connection.permissions.granted': '부여된',
+  'connection.permissions.missing': '부여되지 않음',
+  'connection.permissions.explainBeforeOAuth':
+    'Relay이 물어볼 것입니다{provider}이러한 권한을 위해. 언제든지 연결을 끊을 수 있습니다.',
+  'connection.permissions.whyNeeded': '이것이 필요한 이유',
+  'connection.reconnect.title': '다시 연결{account}',
+  'connection.reconnect.body':
+    '이 계정의 예정된 게시물은 다시 연결될 때까지 보류됩니다. 아무것도 손실되지 않습니다.',
+  'connection.disconnect.title': '연결 끊기{account}?',
+  'connection.disconnect.body':
+    '이 계정의 예약된 게시물은 게시되지 않습니다. 이미 수집된 영수증 및 분석은 이 작업 공간에 유지됩니다.',
+  'connection.pause.body':
+    '일시중지된 계정은 기록과 일정을 유지하지만 재개할 때까지 게시되지 않습니다.',
+  'connection.incident.invalidToken':
+    '{provider}다음에 대한 저장된 액세스를 거부했습니다.{account}. 게시를 복원하려면 다시 연결하세요.',
+  'connection.incident.permissionLost':
+    '{account}더 이상 부여하지 않습니다{permission}. 다시 연결하고 해당 권한을 수락하세요.',
+  'connection.incident.roleLost':
+    '당신의{provider}사용자는 더 이상 역할을 갖고 있지 않습니다.{account}. 해당 페이지의 관리자에게 복원을 요청하세요.',
+  'connection.incident.accountTypeInvalid':
+    'Instagram에는 전문 계정이 필요합니다. 스위치{account}비즈니스 또는 크리에이터 계정에 연결한 후 다시 연결하세요.',
+  'connection.incident.reviewRestricted':
+    '{provider}검토 대기 중으로 이 앱을 제한했습니다. 다음의 게시물{account}검토가 완료될 때까지 비공개로 게시하세요.',
+  'connection.group.title': '고객 그룹',
+  'connection.group.description':
+    '클라이언트 또는 브랜드별로 계정을 그룹화하여 모든 화면을 필터링합니다.',
+  'connection.group.assign': '그룹으로 이동',
+  'connection.group.none': '그룹 해제됨',
+  'connection.group.moveNote': '계정을 이동해도 게시물, 영수증, 분석이 유지됩니다.',
+  'connection.oauth.starting': '열기{provider}',
+  'connection.oauth.returned': '연결 마무리',
+  'connection.oauth.chooseAccounts': '연결할 계정을 선택하세요',
+  'connection.oauth.noEligibleAccounts':
+    '이 항목에 대한 계정이 없습니다.{provider}로그인 연결이 가능합니다.{reason}',
+  'connection.oauth.canceled': '연결이 취소되었습니다.{provider}. 아무것도 바뀌지 않았습니다.',
+  'connection.oauth.alreadyConnected': '{account}이 작업공간에 이미 연결되어 있습니다.',
+  'connection.oauth.connectedToAnotherWorkspace':
+    '{account}다른 작업공간에 연결되어 있습니다. 먼저 거기서 연결을 끊으세요.',
+  'capability.title': '이 계정이 지원하는 것',
+  'capability.matrix.title': '플랫폼 기능',
+  'capability.matrix.subtitle': '우리가 직접 유지 관리하고 검토한 커넥터 정의에서 생성됩니다.',
+  'capability.level.supported': '지원됨',
+  'capability.level.unsupported': '플랫폼에서 제공되지 않음',
+  'capability.level.not_implemented': '아직 구축되지 않음',
+  'capability.level.requires_review': '플랫폼 검토 필요',
+  'capability.level.beta': '베타',
+  'capability.level.unknown': '없는',
+  'capability.explain.supported': 'Relay은 오늘 이 계정에 대해 이 작업을 수행할 수 있습니다.',
+  'capability.explain.unsupported':
+    '{provider}공식 API를 통해 이를 제공하지 않으므로 어떤 도구도 이를 안전하게 수행할 수 없습니다.',
+  'capability.explain.not_implemented':
+    '{provider}이것을 제공하지만 Relay은 아직 이를 구축하지 않았습니다. 커넥터 로드맵에 있습니다.',
+  'capability.explain.requires_review':
+    '{provider}앱이나 계정을 검토한 후에만 이를 부여합니다. 해당 검토가 통과될 때까지 사용할 수 없습니다.',
+  'capability.explain.beta':
+    '이는 작동하지만 제한 확인이 완료되지 않았습니다. 의존하기 전에 결과를 확인하십시오.',
+  'capability.explain.unknown':
+    '이 계정의 현재 권한을 읽을 수 없습니다. 새로고침하려면 다시 연결하세요.',
+  'capability.lastChecked': '체크됨{relativeTime}',
+  'capability.feature.text': '텍스트 게시물',
+  'capability.feature.image': '이미지',
+  'capability.feature.carousel': '캐러셀',
+  'capability.feature.video': '동영상',
+  'capability.feature.document': '서류',
+  'capability.feature.firstComment': '첫 번째 댓글 예약됨',
+  'capability.feature.thread': 'Threads',
+  'capability.feature.mentions': '네이티브 언급',
+  'capability.feature.destinations': '목적지 선택',
+  'capability.feature.privacy': '개인 정보 보호 제어',
+  'capability.feature.thumbnail': '맞춤 미리보기 이미지',
+  'capability.feature.altText': '대체 텍스트',
+  'capability.feature.analytics': '해석학',
+  'capability.feature.delete': '게시된 게시물 삭제',
+  'capability.feature.commentCount': '댓글 수',
+  'capability.feature.commentReplies': '댓글 읽기 및 답변하기',
+  'capability.feature.disclosure': '자동화 공개',
+} as const;

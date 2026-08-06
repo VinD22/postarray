@@ -35,7 +35,7 @@ export const PopoverContent = forwardRef<
           'max-h-(--radix-popover-content-available-height) overflow-auto',
           'border-border-default bg-surface-overlay shadow-overlay rounded-lg border p-3',
           'text-body-md text-text-primary',
-          'relay-scrollbar relay-anim-fade-in',
+          'relay-scrollbar relay-pop-in',
           className,
         )}
         {...props}

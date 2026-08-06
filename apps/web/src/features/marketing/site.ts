@@ -49,6 +49,17 @@ export const ROUTES = {
   signUp: '/sign-up',
 } as const;
 
+/**
+ * Every indexable route owned by the marketing surface.
+ *
+ * Sign-in and sign-up share the public origin but belong to the auth surface,
+ * which is intentionally noindexed. Keeping this derived from `ROUTES` makes
+ * the sitemap follow the source-of-truth route map as pages are added.
+ */
+export const MARKETING_ROUTES = Object.values(ROUTES).filter(
+  (route) => route !== ROUTES.signIn && route !== ROUTES.signUp,
+);
+
 /** The seven navigation items, in the order the IA specifies. */
 export const PRIMARY_NAV: readonly SiteLink[] = [
   { href: ROUTES.product, labelKey: 'nav.public.product' },

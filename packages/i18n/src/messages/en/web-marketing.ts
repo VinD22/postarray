@@ -158,7 +158,7 @@ export const webMarketingMessages = {
   'web.home.pillars.adapt.body':
     'Per platform variants that you can override one account at a time, and transcreation rather than literal translation, with a brand glossary and a named reviewer per language.',
   'web.home.pillars.adapt.proof':
-    'The interface ships in English in V1. Content adaptation covers 30 content languages and every one of them is reviewable before it publishes.',
+    'The interface is available in selected languages. Content adaptation covers 30 content languages and every one of them is reviewable before it publishes.',
   'web.home.pillars.loop.title': 'Close the loop',
   'web.home.pillars.loop.body':
     'Analytics that name the metric, the platform that reported it, the denominator and when it was last refreshed. Where a platform does not report something, Relay says so instead of showing a zero.',
@@ -211,6 +211,22 @@ export const webMarketingMessages = {
   'web.home.closing.title': 'Start with one account and one post',
   'web.home.closing.body':
     'Connect one account, draft one post, watch the validation run, schedule it and read the receipt. That is the whole product in about ten minutes.',
+
+  /*
+   * Home v2 (WP-1, loud system). Additive only: every key above this block
+   * still renders somewhere on the page. B5 English-fallback exemption for
+   * this whole prefix is recorded in `beta-fallbacks.ts`, matching the
+   * existing precedent for `web.home.summaryLine` and
+   * `web.home.pillars.economics.*` above.
+   */
+  'web.home.v2.heroTemplate': 'Native, on-brand posts for {platform}.',
+  'web.home.v2.sticker.trial': '7 day trial',
+  'web.home.v2.sticker.official': 'Official APIs only',
+  'web.home.v2.marqueeCaption': 'Official APIs only.',
+  'web.home.v2.surfacesStat': 'Surfaces on one shared backend',
+  'web.home.v2.pricingTeaser.title': 'What it costs',
+  'web.home.v2.variantScene.masterLabel': 'Master draft',
+  'web.home.v2.variantScene.progress': '{revealed} of {total}',
 
   /* ---------------------------------------------------------------------- */
   /* Product                                                                 */
@@ -417,6 +433,17 @@ export const webMarketingMessages = {
   'web.pricing.faq.trialAbuse.q': 'Can I start a second trial',
   'web.pricing.faq.trialAbuse.a':
     'Repeat trials are limited by Polar. If you have a legitimate reason, contact support and a person will look at it.',
+
+  /*
+   * Pricing v2 (WP-2, loud system). Additive only: every key above this
+   * block still renders somewhere on the page. B5 English-fallback
+   * exemption for this whole prefix is recorded in `beta-fallbacks.ts`,
+   * matching the existing precedent for `web.pricing.*` above and
+   * `web.home.v2.*` on the landing page.
+   */
+  'web.pricing.v2.closing.title': 'Seven days to try it, on your own accounts',
+  'web.pricing.v2.closing.body':
+    'Start the trial, connect the accounts you actually run, and see how validation and scheduling feel before anything is charged.',
 
   /* ---------------------------------------------------------------------- */
   /* Resources index                                                         */
@@ -1279,4 +1306,37 @@ export const webMarketingMessages = {
   'web.footer.noAffiliation':
     'Platform names and marks belong to their owners. Their use here identifies a connector and does not imply endorsement or partnership.',
   'web.footer.copyright': 'Relay {year}',
+
+  /* ---------------------------------------------------------------------- */
+  /* WP-3 (loud system) — remaining marketing pages. Additive only: every    */
+  /* key above this block still renders somewhere on its page. New keys are */
+  /* appended here rather than inlined into their page's own section so a   */
+  /* concurrent edit to this file never has to merge inside this block.     */
+  /* B5 English-fallback exemption for each key is recorded individually in */
+  /* `beta-fallbacks.ts`, matching the `web.home.v2.*` precedent above.     */
+  /* ---------------------------------------------------------------------- */
+
+  /** Reused by every WP-3 page whose closing band has no page-specific copy. */
+  'web.marketing.v2.closing.title': 'Try it on your own accounts',
+  'web.marketing.v2.closing.body':
+    'Seven days, real connectors, no staged demo data. Cancel any time before it converts.',
+
+  'web.product.v2.demo.title': 'One brief, five platform-native drafts',
+  'web.product.v2.demo.body':
+    'The same scene from the home page, scoped to what the compose step actually produces.',
+
+  'web.integrations.v2.marqueeCaption':
+    'Every connector on this page, publishing through its official API.',
+
+  /** The compare index's single honest claim: no invented competitor numbers. */
+  'web.compare.v2.honest': 'No fabricated numbers',
+
+  'web.creators.v2.phone.caption': 'One brief, adapted to the platform it lands on.',
+
+  'web.agencies.v2.channelsLabel': 'Active social channels, one plan',
+  'web.agencies.v2.membersSticker': 'Unlimited team members',
+
+  'web.developers.v2.terminal.title': 'Two commands, machine readable',
+
+  'web.notFound.v2.line': 'No link on this site points here on purpose.',
 } as const;

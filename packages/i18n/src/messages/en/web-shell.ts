@@ -109,6 +109,8 @@ export const webShellMessages = {
   'home.needsYou.emptyBody':
     'Connection health, approvals and failed publishes appear here the moment they happen.',
   'home.needsYou.viewAll': 'Open the Action center',
+  'home.needsYou.emptyQuiet':
+    'Enjoy the quiet. Anything that needs a decision shows up here the moment it does.',
   'home.upcoming.title': 'Next 24 hours',
   'home.upcoming.empty': 'Nothing is scheduled in the next 24 hours.',
   'home.upcoming.emptyBody': 'Write a post and pick a time. You can change it later.',
@@ -204,7 +206,7 @@ export const webShellMessages = {
   'onboarding.workspace.help':
     'A workspace holds your brands, connected accounts, drafts and receipts. You can create more later.',
   'onboarding.workspace.localeNote':
-    'The interface is English in this version. Content languages are chosen per post and are separate from this setting.',
+    'Your interface language changes this app. Content languages are chosen per post and are separate from this setting.',
   'onboarding.workspace.timeZoneDetected': 'Detected from this device: {timeZone}',
   'onboarding.connect.permissionsTitle': 'What {provider} will be asked for',
   'onboarding.connect.permissionsFooter':

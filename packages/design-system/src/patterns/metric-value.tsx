@@ -78,8 +78,9 @@ export function MetricValue({
 
       {isAvailable ? (
         <p
+          data-numeric=""
           className={cn(
-            'text-text-primary tabular-nums',
+            'text-text-primary font-display tabular-nums',
             size === 'lg' ? 'text-title-lg' : 'text-title-md',
           )}
         >

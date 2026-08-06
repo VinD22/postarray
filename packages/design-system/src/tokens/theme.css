@@ -28,48 +28,71 @@
  * merge gate). Threshold: 4.5:1 for body text, 3:1 for large text and for the
  * visual boundary of interactive controls.
  *
+ * Regenerated for the "Loud & Alive" palette (plan section F1b, contrast merge
+ * gate) from the same formula as tokens.ts / contrast.test.ts. Every number
+ * below is live — the 188-case gate in contrast.test.ts is green against it.
+ *
  * LIGHT THEME                                canvas  raised  sunken  overlay
- *   text.primary       #1B1917               16.66   17.53   15.25   17.53
- *   text.secondary     #524C45                8.05    8.47    7.37    8.47
- *   text.tertiary      #6E675F                5.30    5.57    4.85    5.57
- *   text.accent        #12585F                7.72    8.12    7.06    8.12
- *   border.strong      #8C857A                3.47    3.65    3.18    3.65
- *   accent.on   #FFFFFF on accent   #12585F  = 8.12
- *   accent.on   #FFFFFF on hover    #0E4A50  = 9.93
- *   accent.on   #FFFFFF on active   #0A3B40  = 12.26
- *   accent      #12585F on subtle   #E2EFEF  = 6.89
- *   destructive.on #FFFFFF on solid #9A2016  = 8.10 (hover 10.02, active 12.19)
- *   status fg on its own tinted bg:  success 6.93  warning 7.00
- *                                    destructive 6.92  info 7.62
- *   status fg on canvas:             success 7.64  warning 7.52
- *                                    destructive 7.70  info 8.40
- *   status border on canvas:         success 3.85  warning 3.67
- *                                    destructive 4.12  info 3.52
- *   text.disabled      #8C857A                3.47    3.65    3.18    3.65
- *   text.inverted #FAF9F7 on surface.inverted #211E1B = 15.76
+ *   text.primary       #131313               17.33   18.58   16.13   18.58
+ *   text.secondary     #454545                8.94    9.59    8.32    9.59
+ *   text.tertiary      #5C5C5A                6.25    6.70    5.82    6.70
+ *   text.accent        #2951E6                5.74    6.15    5.34    6.15
+ *   border.strong      #6F6F6B                4.71    5.05    4.38    5.05
+ *   text.disabled      #83837F                3.55    3.81    3.30    3.81
+ *   accent.on   #FFFFFF on accent   #2951E6  = 6.15
+ *   accent.on   #FFFFFF on hover    #1E3FC4  = 8.19
+ *   accent.on   #FFFFFF on active   #16309B  = 10.88
+ *   accent      #2951E6 on subtle   #DDE5FC  = 4.89
+ *   destructive.on #FFFFFF on solid #C81E12  = 5.75 (hover 7.58, active 9.61)
+ *   status fg on its own tinted bg:  success 5.67  warning 5.86
+ *                                    destructive 4.77  info 5.51
+ *   status fg on canvas:             success 6.19  warning 6.27
+ *                                    destructive 5.37  info 6.39
+ *   status border on canvas:         success 3.19  warning 3.10
+ *                                    destructive 3.64  info 3.86
+ *   text.inverted #F7F7F6 on surface.inverted #131313 = 17.33
+ *   cta.on      #131313 on cta.bg      #FAD84C = 13.26 (hover 11.82, active 10.45)
+ *   blush.on    #131313 on blush.bg    #F7B7D4 = 11.22 (hover 9.54)
+ *   border.bold #131313 on canvas #F7F7F6 = 17.33; on raised #FFFFFF = 18.58
  *
  * DARK THEME                                 canvas  raised  sunken  overlay
- *   text.primary       #F2EFE9               15.58   14.45   16.44   13.58
- *   text.secondary     #B5AEA3                8.13    7.54    8.58    7.09
- *   text.tertiary      #9A9184                5.75    5.34    6.06    5.01
- *   text.accent        #4FB6A8                7.31    6.78    7.71    6.37
- *   border.strong      #7A7168                3.74    3.47    3.94    3.26
- *   accent.on   #0A2422 on accent   #4FB6A8  = 6.67
- *   accent.on   #0A2422 on hover    #68C7BA  = 8.12
- *   accent.on   #0A2422 on active   #3C9E91  = 5.04
- *   accent      #4FB6A8 on subtle   #16302E  = 5.74
- *   destructive.on #170F0D on solid #DC7365  = 6.02 (hover 7.39, active 4.92)
- *   status fg on its own tinted bg:  success 7.74  warning 7.81
- *                                    destructive 6.76  info 7.42
- *   status fg on canvas:             success 8.94  warning 8.84
- *                                    destructive 7.35  info 8.43
- *   status border on canvas:         success 4.79  warning 4.20
- *                                    destructive 3.88  info 4.23
- *   text.disabled      #7A7168                3.74    3.47    3.94    3.26
- *   text.inverted #17150F on surface.inverted #F2EFE9 = 15.90
+ *   text.primary       #F2F2EF               16.96   15.62   17.70   14.41
+ *   text.secondary     #B9BCC8               10.04    9.25   10.49    8.53
+ *   text.tertiary      #969AAB                6.80    6.26    7.10    5.78
+ *   text.accent        #8FA5FF                8.15    7.50    8.50    6.92
+ *   border.strong      #7D8199                4.96    4.56    5.17    4.21
+ *   text.disabled      #6C7085                3.89    3.58    4.06    3.30
+ *   accent.on   #131313 on accent   #8FA5FF  = 7.96
+ *   accent.on   #131313 on hover    #A9BAFF  = 9.87
+ *   accent.on   #131313 on active   #7B93FA  = 6.54
+ *   accent      #8FA5FF on subtle   #1C2350  = 6.40
+ *   destructive.on #131313 on solid #FF7A6E  = 7.31 (hover 8.78, active 5.94)
+ *   status fg on its own tinted bg:  success 7.83  warning 8.72
+ *                                    destructive 6.94  info 7.33
+ *   status fg on canvas:             success 9.10  warning 10.42
+ *                                    destructive 7.48  info 8.28
+ *   status border on canvas:         success 5.38  warning 5.43
+ *                                    destructive 4.11  info 4.35
+ *   text.inverted #131313 on surface.inverted #F2F2EF = 16.57
+ *   cta.on      #131313 on cta.bg      #FAD84C = 13.26 (hover 11.82, active 10.45)
+ *   blush.on    #131313 on blush.bg    #F7B7D4 = 11.22 (hover 9.54)
+ *   border.bold #E4E6EE on canvas #0D0F1E = 15.26; on raised #15182C = 14.06
  *
  * Provider identity dots clear 3:1 against their own theme canvas in both
- * themes (lowest: facebook 5.17 light, youtube 5.25 dark).
+ * themes (lowest: facebook 5.07 light, youtube 5.59 dark).
+ *
+ * CTA (yellow) / blush (pink) — read this before styling anything with them:
+ *   - Yellow on paper is 1.31:1 and pink on paper is 1.55:1 — both fail the
+ *     3:1 ui-boundary floor. NEITHER IS EVER TEXT, and neither is ever used
+ *     as a sole boundary on a light surface (no yellow/pink 1px hairlines).
+ *     The only legible foreground for a cta/blush fill is ink (`cta.on` /
+ *     `accent-blush-on`, both verified above at 9.5:1+), and the only
+ *     boundary a cta/blush surface may rely on is the mandatory 2px
+ *     `--border-bold` outline (verified above at 14:1+ in both themes).
+ *   - Blue accent text/icons over a yellow cta.bg fill is 4.39:1 in light
+ *     theme (1.67:1 in dark, where the accent lightens toward yellow) — both
+ *     under the 4.5:1 body floor. This combination is DISPLAY-SIZE GRAPHICS
+ *     ONLY (≥24px / large-text threshold), never body copy.
  * ---------------------------------------------------------------------------
  */
 
@@ -78,128 +101,179 @@
    ========================================================================== */
 
 :root {
-  /* Warm neutral ramp. Hue drifts slightly red-yellow so the canvas reads as
-     paper rather than as a cold screen grey. */
-  --relay-sand-50: #faf9f7;
-  --relay-sand-100: #f1efea;
-  --relay-sand-150: #e9e6e0;
-  --relay-sand-200: #dcd7cf;
-  --relay-sand-300: #c3bcb1;
-  --relay-sand-500: #8c857a;
-  --relay-sand-600: #6e675f;
-  --relay-sand-700: #524c45;
-  --relay-sand-800: #322d28;
-  --relay-sand-850: #272320;
-  --relay-sand-900: #211e1b;
-  --relay-sand-950: #191715;
-  --relay-sand-990: #121110;
-  --relay-ink: #1b1917;
-  --relay-paper: #ffffff;
+  /* Paper. The light-theme neutral ramp — a true paper white, not a warm
+     sand. */
+  --relay-paper-0: #ffffff; /* raised */
+  --relay-paper-50: #f7f7f6; /* canvas */
+  --relay-paper-100: #efefec; /* sunken / hover */
+  --relay-paper-150: #e9e9e5; /* active */
+  --relay-paper-200: #dfdfdb; /* border default */
+  --relay-paper-250: #ecece9; /* border subtle */
 
-  /* Petrol teal. The single accent. */
-  --relay-petrol-050: #e2efef;
-  --relay-petrol-100: #d3e5e5;
-  --relay-petrol-500: #12585f;
-  --relay-petrol-600: #0e4a50;
-  --relay-petrol-700: #0a3b40;
-  --relay-petrol-300: #4fb6a8;
-  --relay-petrol-200: #68c7ba;
-  --relay-petrol-400: #3c9e91;
-  --relay-petrol-900: #16302e;
-  --relay-petrol-880: #1d3e3b;
-  --relay-petrol-990: #0a2422;
+  /* Ink. The light-theme text/border-strong ramp. */
+  --relay-ink: #131313;
+  --relay-ink-700: #454545; /* secondary text */
+  --relay-ink-600: #5c5c5a; /* tertiary text */
+  --relay-ink-500: #83837f; /* disabled text */
+  --relay-ink-450: #6f6f6b; /* border strong */
 
-  /* Semantic hues. Muted, never neon. */
-  --relay-moss-100: #e5f1e9;
-  --relay-moss-400: #4f8a6b;
-  --relay-moss-700: #1c5b3c;
-  --relay-moss-300: #7cc79b;
-  --relay-moss-500: #57906f;
-  --relay-moss-950: #16281e;
+  /* Electric blue. The single primary interactive accent. */
+  --relay-blue-100: #dde5fc;
+  --relay-blue-150: #d6e0fb;
+  --relay-blue-250: #a9baff;
+  --relay-blue-300: #8fa5ff;
+  --relay-blue-400: #7b93fa;
+  --relay-blue-600: #2951e6;
+  --relay-blue-700: #1e3fc4;
+  --relay-blue-800: #16309b;
+  --relay-blue-850: #232c60;
+  --relay-blue-900: #1c2350;
 
-  --relay-amber-100: #fbf0da;
-  --relay-amber-500: #a9791f;
-  --relay-amber-800: #7a4400;
-  --relay-amber-300: #e0ae5e;
-  --relay-amber-600: #977540;
-  --relay-amber-950: #2b2114;
+  /* Sunshine yellow. CTA fills only — never text (1.30:1 on paper). */
+  --relay-yellow-400: #fad84c;
+  --relay-yellow-500: #f2cb2f; /* hover */
+  --relay-yellow-600: #e8be1d; /* active */
 
-  --relay-clay-100: #fce9e6;
-  --relay-clay-400: #c05b4c;
-  --relay-clay-700: #9a2016;
-  --relay-clay-800: #82190f;
-  --relay-clay-900: #6b1309;
-  --relay-clay-300: #f08a7c;
-  --relay-clay-350: #dc7365;
-  --relay-clay-250: #e9877a;
-  --relay-clay-450: #ce6154;
-  --relay-clay-500: #ac6053;
-  --relay-clay-950: #2e1a17;
-  --relay-clay-990: #170f0d;
+  /* Bubblegum pink. Decorative "blush" fills and badges only — never text
+     (1.54:1 on paper). */
+  --relay-pink-300: #f7b7d4;
+  --relay-pink-400: #f2a2c8; /* hover */
+  --relay-pink-900: #3c1f31; /* dark blush bg candidate — re-verify before use */
 
-  --relay-slate-100: #e8eff6;
-  --relay-slate-400: #6388ae;
-  --relay-slate-700: #2a4c72;
-  --relay-slate-300: #8fb6dd;
-  --relay-slate-500: #5c7f9b;
-  --relay-slate-950: #182430;
+  /* Navy. The dark-theme neutral ramp — inky navy-black, not a warm
+     charcoal. */
+  --relay-navy-950: #080911; /* sunken */
+  --relay-navy-900: #0d0f1e; /* canvas */
+  --relay-navy-850: #15182c; /* raised */
+  --relay-navy-800: #1b1f38; /* overlay */
+  --relay-navy-780: #1f2340; /* hover */
+  --relay-navy-770: #232741; /* border subtle (interpolated step: plan gives
+    #232741 for dark border-subtle without naming a ramp step; placed between
+    -780 and -750 by luminance) */
+  --relay-navy-750: #262b4c; /* active */
+  --relay-navy-600: #2e3354; /* border default */
+  --relay-navy-500: #7d8199; /* border strong */
+  --relay-navy-text-1: #f2f2ef; /* primary text */
+  --relay-navy-text-2: #b9bcc8; /* secondary text */
+  --relay-navy-text-3: #969aab; /* tertiary text */
+  --relay-navy-text-4: #6c7085; /* disabled text */
+
+  /* Poster hard-shadow offset. Theme-invariant; direction-dependent (see the
+     `:root[dir='rtl']` override below section 3). */
+  --shadow-hard-x: 4px;
+
+  /* Status ramps. Success, warning, destructive, and info (violet — blue is
+     now the primary interactive accent, so info moved off blue to stay
+     distinguishable from it). */
+  --relay-green-fg: #0e6b31;
+  --relay-green-bg: #dcf3e1;
+  --relay-green-border: #2e9e54;
+  --relay-green-fg-dark: #57c97c;
+  --relay-green-bg-dark: #0e2417;
+  --relay-green-border-dark: #379a5c;
+
+  --relay-amber-fg: #805200;
+  --relay-amber-bg: #fcefc7;
+  --relay-amber-border: #b98300;
+  --relay-amber-fg-dark: #e9b949;
+  --relay-amber-bg-dark: #2a2108;
+  --relay-amber-border-dark: #a98416;
+
+  --relay-red-fg: #c81e12;
+  --relay-red-bg: #fbe5e2;
+  --relay-red-border: #d9564b;
+  --relay-red-solid: #c81e12;
+  --relay-red-solid-hover: #a81409;
+  --relay-red-solid-active: #8c0f06;
+  --relay-red-fg-dark: #ff7a6e;
+  --relay-red-bg-dark: #2d100c;
+  --relay-red-border-dark: #c05248;
+  --relay-red-solid-dark: #ff7a6e;
+  --relay-red-solid-hover-dark: #ff958b;
+  --relay-red-solid-active-dark: #f0655a;
+
+  --relay-violet-fg: #6636d6;
+  --relay-violet-bg: #eae3fb;
+  --relay-violet-border: #8b66e0;
+  --relay-violet-fg-dark: #b79bff;
+  --relay-violet-bg-dark: #1f1640;
+  --relay-violet-border-dark: #8468c9;
 }
 
 /* ==========================================================================
-   2. Semantic layer, light theme (default).
+   2. Semantic layer, light theme (default). Names are unchanged from the
+      prior palette so the 289 files that already reference them keep
+      working — only the values move.
    ========================================================================== */
 
 :root,
 :root[data-theme='light'] {
   color-scheme: light;
 
-  --surface-canvas: var(--relay-sand-50);
-  --surface-raised: var(--relay-paper);
-  --surface-sunken: var(--relay-sand-100);
-  --surface-overlay: var(--relay-paper);
-  --surface-hover: var(--relay-sand-100);
-  --surface-active: var(--relay-sand-150);
-  --surface-inverted: var(--relay-sand-900);
-  --surface-scrim: rgb(27 25 23 / 0.44);
+  --surface-canvas: var(--relay-paper-50);
+  --surface-raised: var(--relay-paper-0);
+  --surface-sunken: var(--relay-paper-100);
+  --surface-overlay: var(--relay-paper-0);
+  --surface-hover: var(--relay-paper-100);
+  --surface-active: var(--relay-paper-150);
+  --surface-inverted: var(--relay-ink);
+  --surface-scrim: rgb(19 19 19 / 0.5);
 
-  --border-subtle: #efece6;
-  --border-default: var(--relay-sand-200);
-  --border-strong: var(--relay-sand-500);
-  --border-focus: var(--relay-petrol-500);
+  --border-subtle: var(--relay-paper-250);
+  --border-default: var(--relay-paper-200);
+  --border-strong: var(--relay-ink-450);
+  --border-focus: var(--relay-blue-600);
 
   --text-primary: var(--relay-ink);
-  --text-secondary: var(--relay-sand-700);
-  --text-tertiary: var(--relay-sand-600);
-  --text-disabled: var(--relay-sand-500);
-  --text-inverted: var(--relay-sand-50);
-  --text-accent: var(--relay-petrol-500);
+  --text-secondary: var(--relay-ink-700);
+  --text-tertiary: var(--relay-ink-600);
+  --text-disabled: var(--relay-ink-500);
+  --text-inverted: var(--relay-paper-50);
+  --text-accent: var(--relay-blue-600);
 
-  --accent-default: var(--relay-petrol-500);
-  --accent-hover: var(--relay-petrol-600);
-  --accent-active: var(--relay-petrol-700);
-  --accent-subtle-bg: var(--relay-petrol-050);
-  --accent-subtle-bg-hover: var(--relay-petrol-100);
-  --accent-on-accent: var(--relay-paper);
+  --accent-default: var(--relay-blue-600);
+  --accent-hover: var(--relay-blue-700);
+  --accent-active: var(--relay-blue-800);
+  --accent-subtle-bg: var(--relay-blue-100);
+  --accent-subtle-bg-hover: var(--relay-blue-150);
+  --accent-on-accent: var(--relay-paper-0);
 
-  --status-success-fg: var(--relay-moss-700);
-  --status-success-bg: var(--relay-moss-100);
-  --status-success-border: var(--relay-moss-400);
+  /* CTA (sunshine yellow) and blush (bubblegum pink) — additive, decorative /
+     call-to-action groups. Identical in both themes: the fills stay loud in
+     dark mode too, and ink reads on them regardless of surface. Never used
+     as text; the 2px --border-bold outline is the mandatory boundary since
+     yellow/pink fail contrast as a sole edge on light surfaces. */
+  --cta-bg: var(--relay-yellow-400);
+  --cta-bg-hover: var(--relay-yellow-500);
+  --cta-bg-active: var(--relay-yellow-600);
+  --cta-on: var(--relay-ink);
 
-  --status-warning-fg: var(--relay-amber-800);
-  --status-warning-bg: var(--relay-amber-100);
-  --status-warning-border: var(--relay-amber-500);
+  --accent-blush-bg: var(--relay-pink-300);
+  --accent-blush-bg-hover: var(--relay-pink-400);
+  --accent-blush-on: var(--relay-ink);
 
-  --status-destructive-fg: var(--relay-clay-700);
-  --status-destructive-bg: var(--relay-clay-100);
-  --status-destructive-border: var(--relay-clay-400);
-  --status-destructive-solid: var(--relay-clay-700);
-  --status-destructive-solid-hover: var(--relay-clay-800);
-  --status-destructive-solid-active: var(--relay-clay-900);
-  --status-destructive-on: var(--relay-paper);
+  --border-bold: var(--relay-ink);
+  --shadow-hard-color: var(--relay-ink);
 
-  --status-info-fg: var(--relay-slate-700);
-  --status-info-bg: var(--relay-slate-100);
-  --status-info-border: var(--relay-slate-400);
+  --status-success-fg: var(--relay-green-fg);
+  --status-success-bg: var(--relay-green-bg);
+  --status-success-border: var(--relay-green-border);
+
+  --status-warning-fg: var(--relay-amber-fg);
+  --status-warning-bg: var(--relay-amber-bg);
+  --status-warning-border: var(--relay-amber-border);
+
+  --status-destructive-fg: var(--relay-red-fg);
+  --status-destructive-bg: var(--relay-red-bg);
+  --status-destructive-border: var(--relay-red-border);
+  --status-destructive-solid: var(--relay-red-solid);
+  --status-destructive-solid-hover: var(--relay-red-solid-hover);
+  --status-destructive-solid-active: var(--relay-red-solid-active);
+  --status-destructive-on: var(--relay-paper-0);
+
+  --status-info-fg: var(--relay-violet-fg);
+  --status-info-bg: var(--relay-violet-bg);
+  --status-info-border: var(--relay-violet-border);
 
   /* Provider identity. Dots and 1px rules only, never a surface. */
   --brand-x: #0f0f0f;
@@ -215,59 +289,81 @@
 
 /* ==========================================================================
    3. Semantic layer, dark theme. Designed, not inverted.
+
+   ⚠️ Declared TWICE on purpose — once for the OS-level system preference
+   (`@media (prefers-color-scheme: dark)` scoped to `:root:not([data-theme=
+   'light'])`, so a user who has not chosen an explicit theme still gets dark)
+   and once for the explicit `data-theme='dark'` attribute the in-app toggle
+   sets (which must win over the system preference in both directions). Every
+   value in this section MUST be kept identical in both blocks below — a
+   change in only one silently desyncs system-preference users from users who
+   toggled explicitly.
    ========================================================================== */
 
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme='light']) {
     color-scheme: dark;
 
-    --surface-canvas: var(--relay-sand-950);
-    --surface-raised: var(--relay-sand-900);
-    --surface-sunken: var(--relay-sand-990);
-    --surface-overlay: var(--relay-sand-850);
-    --surface-hover: #2a2622;
-    --surface-active: var(--relay-sand-800);
-    --surface-inverted: #f2efe9;
-    --surface-scrim: rgb(9 8 7 / 0.62);
+    --surface-canvas: var(--relay-navy-900);
+    --surface-raised: var(--relay-navy-850);
+    --surface-sunken: var(--relay-navy-950);
+    --surface-overlay: var(--relay-navy-800);
+    --surface-hover: var(--relay-navy-780);
+    --surface-active: var(--relay-navy-750);
+    --surface-inverted: var(--relay-navy-text-1);
+    --surface-scrim: rgb(4 5 10 / 0.7);
 
-    --border-subtle: #2a2723;
-    --border-default: #3a352f;
-    --border-strong: #7a7168;
-    --border-focus: var(--relay-petrol-300);
+    --border-subtle: var(--relay-navy-770);
+    --border-default: var(--relay-navy-600);
+    --border-strong: var(--relay-navy-500);
+    --border-focus: var(--relay-blue-300);
 
-    --text-primary: #f2efe9;
-    --text-secondary: #b5aea3;
-    --text-tertiary: #9a9184;
-    --text-disabled: #7a7168;
-    --text-inverted: #17150f;
-    --text-accent: var(--relay-petrol-300);
+    --text-primary: var(--relay-navy-text-1);
+    --text-secondary: var(--relay-navy-text-2);
+    --text-tertiary: var(--relay-navy-text-3);
+    --text-disabled: var(--relay-navy-text-4);
+    --text-inverted: var(--relay-ink);
+    --text-accent: var(--relay-blue-300);
 
-    --accent-default: var(--relay-petrol-300);
-    --accent-hover: var(--relay-petrol-200);
-    --accent-active: var(--relay-petrol-400);
-    --accent-subtle-bg: var(--relay-petrol-900);
-    --accent-subtle-bg-hover: var(--relay-petrol-880);
-    --accent-on-accent: var(--relay-petrol-990);
+    --accent-default: var(--relay-blue-300);
+    --accent-hover: var(--relay-blue-250);
+    --accent-active: var(--relay-blue-400);
+    --accent-subtle-bg: var(--relay-blue-900);
+    --accent-subtle-bg-hover: var(--relay-blue-850);
+    --accent-on-accent: var(--relay-ink);
 
-    --status-success-fg: var(--relay-moss-300);
-    --status-success-bg: var(--relay-moss-950);
-    --status-success-border: var(--relay-moss-500);
+    /* CTA / blush — identical to light; see comment in section 2. */
+    --cta-bg: var(--relay-yellow-400);
+    --cta-bg-hover: var(--relay-yellow-500);
+    --cta-bg-active: var(--relay-yellow-600);
+    --cta-on: var(--relay-ink);
 
-    --status-warning-fg: var(--relay-amber-300);
-    --status-warning-bg: var(--relay-amber-950);
-    --status-warning-border: var(--relay-amber-600);
+    --accent-blush-bg: var(--relay-pink-300);
+    --accent-blush-bg-hover: var(--relay-pink-400);
+    --accent-blush-on: var(--relay-ink);
 
-    --status-destructive-fg: var(--relay-clay-300);
-    --status-destructive-bg: var(--relay-clay-950);
-    --status-destructive-border: var(--relay-clay-500);
-    --status-destructive-solid: var(--relay-clay-350);
-    --status-destructive-solid-hover: var(--relay-clay-250);
-    --status-destructive-solid-active: var(--relay-clay-450);
-    --status-destructive-on: var(--relay-clay-990);
+    --border-bold: #e4e6ee;
+    --shadow-hard-color: rgb(0 0 0 / 0.85);
 
-    --status-info-fg: var(--relay-slate-300);
-    --status-info-bg: var(--relay-slate-950);
-    --status-info-border: var(--relay-slate-500);
+    --status-success-fg: var(--relay-green-fg-dark);
+    --status-success-bg: var(--relay-green-bg-dark);
+    --status-success-border: var(--relay-green-border-dark);
+
+    --status-warning-fg: var(--relay-amber-fg-dark);
+    --status-warning-bg: var(--relay-amber-bg-dark);
+    --status-warning-border: var(--relay-amber-border-dark);
+
+    --status-destructive-fg: var(--relay-red-fg-dark);
+    --status-destructive-bg: var(--relay-red-bg-dark);
+    --status-destructive-border: var(--relay-red-border-dark);
+    --status-destructive-solid: var(--relay-red-solid-dark);
+    --status-destructive-solid-hover: var(--relay-red-solid-hover-dark);
+    --status-destructive-solid-active: var(--relay-red-solid-active-dark);
+    --status-destructive-on: var(--relay-ink);
+
+    --status-info-fg: var(--relay-violet-fg-dark);
+    --status-info-bg: var(--relay-violet-bg-dark);
+    --status-info-border: var(--relay-violet-border-dark);
 
     --brand-x: #e8e8e8;
     --brand-linkedin: #5aa5ec;
@@ -285,53 +381,66 @@
 :root[data-theme='dark'] {
   color-scheme: dark;
 
-  --surface-canvas: var(--relay-sand-950);
-  --surface-raised: var(--relay-sand-900);
-  --surface-sunken: var(--relay-sand-990);
-  --surface-overlay: var(--relay-sand-850);
-  --surface-hover: #2a2622;
-  --surface-active: var(--relay-sand-800);
-  --surface-inverted: #f2efe9;
-  --surface-scrim: rgb(9 8 7 / 0.62);
+  --surface-canvas: var(--relay-navy-900);
+  --surface-raised: var(--relay-navy-850);
+  --surface-sunken: var(--relay-navy-950);
+  --surface-overlay: var(--relay-navy-800);
+  --surface-hover: var(--relay-navy-780);
+  --surface-active: var(--relay-navy-750);
+  --surface-inverted: var(--relay-navy-text-1);
+  --surface-scrim: rgb(4 5 10 / 0.7);
 
-  --border-subtle: #2a2723;
-  --border-default: #3a352f;
-  --border-strong: #7a7168;
-  --border-focus: var(--relay-petrol-300);
+  --border-subtle: var(--relay-navy-770);
+  --border-default: var(--relay-navy-600);
+  --border-strong: var(--relay-navy-500);
+  --border-focus: var(--relay-blue-300);
 
-  --text-primary: #f2efe9;
-  --text-secondary: #b5aea3;
-  --text-tertiary: #9a9184;
-  --text-disabled: #7a7168;
-  --text-inverted: #17150f;
-  --text-accent: var(--relay-petrol-300);
+  --text-primary: var(--relay-navy-text-1);
+  --text-secondary: var(--relay-navy-text-2);
+  --text-tertiary: var(--relay-navy-text-3);
+  --text-disabled: var(--relay-navy-text-4);
+  --text-inverted: var(--relay-ink);
+  --text-accent: var(--relay-blue-300);
 
-  --accent-default: var(--relay-petrol-300);
-  --accent-hover: var(--relay-petrol-200);
-  --accent-active: var(--relay-petrol-400);
-  --accent-subtle-bg: var(--relay-petrol-900);
-  --accent-subtle-bg-hover: var(--relay-petrol-880);
-  --accent-on-accent: var(--relay-petrol-990);
+  --accent-default: var(--relay-blue-300);
+  --accent-hover: var(--relay-blue-250);
+  --accent-active: var(--relay-blue-400);
+  --accent-subtle-bg: var(--relay-blue-900);
+  --accent-subtle-bg-hover: var(--relay-blue-850);
+  --accent-on-accent: var(--relay-ink);
 
-  --status-success-fg: var(--relay-moss-300);
-  --status-success-bg: var(--relay-moss-950);
-  --status-success-border: var(--relay-moss-500);
+  /* CTA / blush — identical to light; see comment in section 2. */
+  --cta-bg: var(--relay-yellow-400);
+  --cta-bg-hover: var(--relay-yellow-500);
+  --cta-bg-active: var(--relay-yellow-600);
+  --cta-on: var(--relay-ink);
 
-  --status-warning-fg: var(--relay-amber-300);
-  --status-warning-bg: var(--relay-amber-950);
-  --status-warning-border: var(--relay-amber-600);
+  --accent-blush-bg: var(--relay-pink-300);
+  --accent-blush-bg-hover: var(--relay-pink-400);
+  --accent-blush-on: var(--relay-ink);
 
-  --status-destructive-fg: var(--relay-clay-300);
-  --status-destructive-bg: var(--relay-clay-950);
-  --status-destructive-border: var(--relay-clay-500);
-  --status-destructive-solid: var(--relay-clay-350);
-  --status-destructive-solid-hover: var(--relay-clay-250);
-  --status-destructive-solid-active: var(--relay-clay-450);
-  --status-destructive-on: var(--relay-clay-990);
+  --border-bold: #e4e6ee;
+  --shadow-hard-color: rgb(0 0 0 / 0.85);
 
-  --status-info-fg: var(--relay-slate-300);
-  --status-info-bg: var(--relay-slate-950);
-  --status-info-border: var(--relay-slate-500);
+  --status-success-fg: var(--relay-green-fg-dark);
+  --status-success-bg: var(--relay-green-bg-dark);
+  --status-success-border: var(--relay-green-border-dark);
+
+  --status-warning-fg: var(--relay-amber-fg-dark);
+  --status-warning-bg: var(--relay-amber-bg-dark);
+  --status-warning-border: var(--relay-amber-border-dark);
+
+  --status-destructive-fg: var(--relay-red-fg-dark);
+  --status-destructive-bg: var(--relay-red-bg-dark);
+  --status-destructive-border: var(--relay-red-border-dark);
+  --status-destructive-solid: var(--relay-red-solid-dark);
+  --status-destructive-solid-hover: var(--relay-red-solid-hover-dark);
+  --status-destructive-solid-active: var(--relay-red-solid-active-dark);
+  --status-destructive-on: var(--relay-ink);
+
+  --status-info-fg: var(--relay-violet-fg-dark);
+  --status-info-bg: var(--relay-violet-bg-dark);
+  --status-info-border: var(--relay-violet-border-dark);
 
   --brand-x: #e8e8e8;
   --brand-linkedin: #5aa5ec;
@@ -342,6 +451,16 @@
   --brand-threads: #ededed;
   --brand-bluesky: #6bb0f5;
   --brand-fake: #a8a29a;
+}
+
+/* Hard-shadow direction. Theme-invariant (4px in both themes — see section 1)
+   but direction-dependent. `box-shadow` offsets are physical, so this is the
+   one variable that flips under `dir='rtl'`; every hard-shadow consumer reads
+   it instead of hardcoding an offset. The `:root` prefix matches the
+   specificity of the `:root[data-theme='…']` blocks above so this override
+   reliably wins over them regardless of theme or source order. */
+:root[dir='rtl'] {
+  --shadow-hard-x: -4px;
 }
 
 /* ==========================================================================
@@ -364,6 +483,7 @@
   --color-border-default: var(--border-default);
   --color-border-strong: var(--border-strong);
   --color-border-focus: var(--border-focus);
+  --color-border-bold: var(--border-bold);
 
   --color-text-primary: var(--text-primary);
   --color-text-secondary: var(--text-secondary);
@@ -378,6 +498,15 @@
   --color-accent-subtle: var(--accent-subtle-bg);
   --color-accent-subtle-hover: var(--accent-subtle-bg-hover);
   --color-accent-on: var(--accent-on-accent);
+
+  --color-cta: var(--cta-bg);
+  --color-cta-hover: var(--cta-bg-hover);
+  --color-cta-active: var(--cta-bg-active);
+  --color-cta-on: var(--cta-on);
+
+  --color-blush: var(--accent-blush-bg);
+  --color-blush-hover: var(--accent-blush-bg-hover);
+  --color-blush-on: var(--accent-blush-on);
 
   --color-success-fg: var(--status-success-fg);
   --color-success-bg: var(--status-success-bg);
@@ -413,12 +542,13 @@
     sans-serif;
   --font-serif: 'Source Serif 4', 'Iowan Old Style', Georgia, serif;
   --font-mono: 'JetBrains Mono', ui-monospace, 'SFMono-Regular', 'Menlo', 'Consolas', monospace;
+  --font-display: 'Bricolage Grotesque', var(--font-sans);
 
   /* A closed scale. Nine steps, each with a line height and tracking. */
   --text-display: 2.5rem; /* 40px */
   --text-display--line-height: 2.75rem; /* 44px */
   --text-display--letter-spacing: -0.022em;
-  --text-display--font-weight: 620;
+  --text-display--font-weight: 700;
 
   --text-title-lg: 1.75rem; /* 28px */
   --text-title-lg--line-height: 2.125rem; /* 34px */
@@ -460,18 +590,37 @@
   --text-mono--line-height: 1.25rem;
   --text-mono--letter-spacing: 0.005em;
 
+  /* Fluid marketing display steps. Kinetic, poster-scale headlines — used by
+     `font-display` surfaces only (marketing hero/section headers), never the
+     product-app type scale above. */
+  --text-display-2xl: clamp(3.5rem, 2rem + 6.5vw, 9rem);
+  --text-display-2xl--line-height: 0.95;
+  --text-display-2xl--letter-spacing: -0.03em;
+  --text-display-2xl--font-weight: 800;
+
+  --text-display-xl: clamp(2.75rem, 1.75rem + 4vw, 6rem);
+  --text-display-xl--line-height: 0.95;
+  --text-display-xl--letter-spacing: -0.03em;
+  --text-display-xl--font-weight: 800;
+
+  --text-display-lg: clamp(2rem, 1.5rem + 2.5vw, 4rem);
+  --text-display-lg--line-height: 0.95;
+  --text-display-lg--letter-spacing: -0.03em;
+  --text-display-lg--font-weight: 800;
+
   /* --- Space ------------------------------------------------------------- */
   --spacing: 0.25rem; /* the 4px base for p-*, gap-*, m-* */
   --spacing-hairline: 1px;
   --spacing-touch: 2.75rem; /* 44px minimum touch target */
 
-  /* --- Radius ------------------------------------------------------------ */
-  --radius-xs: 3px;
-  --radius-sm: 4px;
-  --radius-md: 6px;
-  --radius-lg: 8px;
-  --radius-xl: 10px;
-  --radius-editorial: 14px; /* marketing imagery only */
+  /* --- Radius (sharpened: near-square corners + one poster-scale radius) - */
+  --radius-xs: 0px;
+  --radius-sm: 2px;
+  --radius-md: 4px;
+  --radius-lg: 6px;
+  --radius-xl: 8px;
+  --radius-editorial: 20px; /* marketing imagery only */
+  --radius-poster: 20px; /* alias of --radius-editorial for poster-style panels */
   --radius-full: 9999px;
 
   /* --- Border widths ----------------------------------------------------- */
@@ -479,19 +628,30 @@
   --border-width-emphasis: 1.5px;
   --border-width-focus: 2px;
 
-  /* --- Elevation. Tonal, not theatrical. --------------------------------- */
+  /* --- Elevation. Tonal by default; hard offset shadows are the loud,
+     poster-style alternative gated behind the --border-bold outline. ------ */
   --shadow-raised: 0 1px 2px rgb(27 25 23 / 0.05);
   --shadow-overlay: 0 6px 20px -6px rgb(27 25 23 / 0.16);
   --shadow-none: none;
+  --shadow-hard-sm: calc(var(--shadow-hard-x) / 2) 2px 0 0 var(--shadow-hard-color);
+  --shadow-hard: var(--shadow-hard-x) 4px 0 0 var(--shadow-hard-color);
+  --shadow-hard-lg: calc(var(--shadow-hard-x) * 2) 8px 0 0 var(--shadow-hard-color);
 
-  /* --- Motion ------------------------------------------------------------ */
+  /* --- Motion -------------------------------------------------------------
+     Functional tier (unchanged, in-app): 80–200ms. Expressive tier (new,
+     marketing/overlay choreography): 400–900ms with overshoot/expo eases. */
   --duration-instant: 80ms;
   --duration-fast: 120ms;
   --duration-base: 160ms;
   --duration-slow: 200ms;
+  --duration-expressive-sm: 400ms;
+  --duration-expressive-md: 650ms;
+  --duration-expressive-lg: 900ms;
   --ease-standard: cubic-bezier(0.2, 0, 0.15, 1);
   --ease-entrance: cubic-bezier(0.05, 0.7, 0.1, 1);
   --ease-exit: cubic-bezier(0.3, 0, 0.8, 0.15);
+  --ease-out-back: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
 
   /* --- Z layers ---------------------------------------------------------- */
   --z-index-base: 0;
@@ -504,6 +664,14 @@
   --z-index-popover: 70;
   --z-index-toast: 80;
   --z-index-tooltip: 90;
+  --z-index-cursor: 100;
+
+  /* --- Layout -------------------------------------------------------------
+     Full-width containers for the redesign (F3 consumes these; declared here
+     so the token exists ahead of that work package). */
+  --layout-app-max: 110rem;
+  --layout-marketing-max: 100rem;
+  --layout-gutter: clamp(1.25rem, 3vw, 4rem);
 
   /* --- Breakpoints matching the responsive test matrix ------------------- */
   --breakpoint-xs: 22.5rem; /* 360 */
@@ -515,7 +683,10 @@
   --breakpoint-3xl: 120rem; /* 1920 */
 }
 
-/* Dark theme elevation needs less ink and more contrast than light. */
+/* Dark theme elevation needs less ink and more contrast than light.
+
+   ⚠️ Declared TWICE for the same reason as section 3 (OS preference vs
+   explicit attribute) — keep both blocks identical. */
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme='light']) {
     --shadow-raised: 0 1px 2px rgb(0 0 0 / 0.4);
@@ -699,5 +870,206 @@
 
   .relay-scrollbar::-webkit-scrollbar-track {
     background: transparent;
+  }
+
+  /* --------------------------------------------------------------------
+     Expressive-tier motion utilities (F1). CSS-only, so the global 1ms
+     reduced-motion override above neutralizes every one of these for free
+     — no JS branch needed for these specific classes. GSAP-driven motion
+     (apps/web/src/lib/motion) is separate and must branch explicitly on
+     usePrefersReducedMotion(), since rAF-driven inline styles are not
+     touched by the CSS override.
+     -------------------------------------------------------------------- */
+
+  /* Dialog/popover entrance: scale up from 96% + fade, with a slight
+     overshoot so it feels like it "arrives" rather than fades in. */
+  @keyframes relay-pop-in {
+    from {
+      opacity: 0;
+      scale: 0.96;
+    }
+    to {
+      opacity: 1;
+      scale: 1;
+    }
+  }
+
+  .relay-pop-in {
+    animation: relay-pop-in var(--duration-expressive-sm) var(--ease-out-back);
+  }
+
+  /* Sheet entrance (F6 Batch B): slides in from its logical anchor edge with
+     a pronounced deceleration rather than a snap fade. One custom property
+     per axis carries the offset so the same keyframe serves all three
+     `data-side` values and mirrors under RTL the same way --shadow-hard-x
+     does, instead of duplicating the keyframe per direction. */
+  @keyframes relay-sheet-enter {
+    from {
+      opacity: 0;
+      translate: var(--relay-sheet-enter-x, 0) var(--relay-sheet-enter-y, 0);
+    }
+    to {
+      opacity: 1;
+      translate: 0 0;
+    }
+  }
+
+  .relay-anim-enter-sheet {
+    animation: relay-sheet-enter var(--duration-expressive-sm) var(--ease-out-expo);
+  }
+
+  .relay-anim-enter-sheet[data-side='inline-end'] {
+    --relay-sheet-enter-x: 100%;
+  }
+
+  .relay-anim-enter-sheet[data-side='inline-start'] {
+    --relay-sheet-enter-x: -100%;
+  }
+
+  .relay-anim-enter-sheet[data-side='block-end'] {
+    --relay-sheet-enter-y: 100%;
+  }
+
+  [dir='rtl'] .relay-anim-enter-sheet[data-side='inline-end'] {
+    --relay-sheet-enter-x: -100%;
+  }
+
+  [dir='rtl'] .relay-anim-enter-sheet[data-side='inline-start'] {
+    --relay-sheet-enter-x: 100%;
+  }
+
+  /* Toast entrance: slides in from the inline end with a spring overshoot.
+     Mirrors via a custom property (the same technique as --shadow-hard-x)
+     rather than translateX, since `translate` offsets are physical. */
+  @keyframes relay-toast-bounce {
+    from {
+      opacity: 0;
+      translate: var(--relay-toast-bounce-start, 24px) 0;
+    }
+    60% {
+      opacity: 1;
+      translate: var(--relay-toast-bounce-overshoot, -4px) 0;
+    }
+    to {
+      opacity: 1;
+      translate: 0 0;
+    }
+  }
+
+  .relay-toast-bounce {
+    animation: relay-toast-bounce var(--duration-expressive-sm) var(--ease-out-back);
+  }
+
+  [dir='rtl'] .relay-toast-bounce {
+    --relay-toast-bounce-start: -24px;
+    --relay-toast-bounce-overshoot: 4px;
+  }
+
+  /* Skeleton shimmer: an accent-subtle sweep instead of a plain pulse.
+     Batch C (F6) repoints Skeleton's class here. */
+  @keyframes relay-shimmer {
+    0% {
+      background-position: -150% 0;
+    }
+    100% {
+      background-position: 150% 0;
+    }
+  }
+
+  .relay-shimmer {
+    background-image: linear-gradient(
+      90deg,
+      var(--surface-sunken) 0%,
+      var(--accent-subtle-bg) 50%,
+      var(--surface-sunken) 100%
+    );
+    background-size: 200% 100%;
+    animation: relay-shimmer 1.6s var(--ease-standard) infinite;
+  }
+
+  /* Pressable poster controls: the hard shadow "collapses" as the control
+     is pressed, so the offset shadow itself carries the press affordance.
+     Press direction follows --shadow-hard-x, so RTL mirrors for free. */
+  .relay-pressable {
+    --press-x: 0px;
+    --press-y: 0px;
+    translate: var(--press-x) var(--press-y);
+    transition:
+      translate var(--duration-fast) var(--ease-standard),
+      box-shadow var(--duration-fast) var(--ease-standard);
+  }
+
+  .relay-pressable:active {
+    --press-x: var(--shadow-hard-x);
+    --press-y: 4px;
+    box-shadow: none;
+  }
+}
+
+/* ==========================================================================
+   7. Custom cursor (F5). Marketing-only: `<CustomCursor>` renders `null`
+   unless (pointer: fine) AND (hover: hover) AND not reduced-motion, so this
+   CSS only ever matters when a real custom cursor is on screen — touch,
+   coarse-pointer and reduced-motion visitors never load it.
+   ========================================================================== */
+
+@layer base {
+  /* The native cursor is never globally hidden — only on the specific
+     elements the custom cursor replaces (links/buttons), and only while the
+     custom cursor is actually active. Inputs keep their native i-beam. */
+  [data-cursor-active] :where(a, button) {
+    cursor: none;
+  }
+}
+
+@layer utilities {
+  .relay-cursor {
+    position: fixed;
+    inset-block-start: 0;
+    inset-inline-start: 0;
+    z-index: var(--z-index-cursor);
+    pointer-events: none;
+    opacity: 1;
+    transition: opacity var(--duration-fast) var(--ease-standard);
+  }
+
+  /* Keyboard modality (Tab / :focus-visible) fades the cursor and restores
+     the native one until the next pointermove. */
+  .relay-cursor[data-cursor-hidden='true'] {
+    opacity: 0;
+  }
+
+  .relay-cursor-dot {
+    position: absolute;
+    inset-block-start: 0;
+    inset-inline-start: 0;
+    inline-size: 6px;
+    block-size: 6px;
+    border-radius: var(--radius-full);
+    background-color: var(--color-text-primary);
+    will-change: transform;
+  }
+
+  .relay-cursor-ring {
+    position: absolute;
+    inset-block-start: 0;
+    inset-inline-start: 0;
+    inline-size: 28px;
+    block-size: 28px;
+    border-radius: var(--radius-full);
+    border: var(--border-width-emphasis) solid var(--color-text-primary);
+    /* Difference blend keeps the ring visible over any brand colour or the
+       dark theme's ink surfaces, without a per-surface colour override. */
+    mix-blend-mode: difference;
+    scale: 1;
+    will-change: transform;
+    transition: scale var(--duration-fast) var(--ease-out-back);
+  }
+
+  /* Event-delegated hover state: `data-cursor="link"|"button"|"media"`
+     targets scale the ring. The cursor only scales — magnetic pull is
+     `<Magnetic>`'s job, not the cursor's. */
+  .relay-cursor-ring[data-cursor-hover='true'] {
+    scale: 1.6;
   }
 }

@@ -64,11 +64,37 @@ describe('locale registry', () => {
     expect(new Set(codes).size).toBe(codes.length);
   });
 
-  it('ships English only in V1', () => {
-    expect(ACTIVE_LOCALES.map((locale) => locale.bcp47)).toEqual(['en']);
-    expect(PLANNED_LOCALES.length).toBe(ALL_LOCALES.length - 1);
+  it('ships the validated first three multilingual rollout waves', () => {
+    expect(ACTIVE_LOCALES.map((locale) => locale.bcp47)).toEqual([
+      'en',
+      'es',
+      'es-419',
+      'pt-BR',
+      'fr',
+      'de',
+      'it',
+      'nl',
+      'pl',
+      'cs',
+      'sv',
+      'tr',
+      'ru',
+      'uk',
+      'ar',
+      'he',
+      'hi',
+    ]);
+    expect(PLANNED_LOCALES.length).toBe(ALL_LOCALES.length - 17);
     expect(isActiveLocale(DEFAULT_LOCALE)).toBe(true);
-    expect(isActiveLocale('de')).toBe(false);
+    expect(isActiveLocale('de')).toBe(true);
+    expect(isActiveLocale('pl')).toBe(true);
+    expect(isActiveLocale('ru')).toBe(true);
+    expect(isActiveLocale('ar')).toBe(true);
+    expect(isActiveLocale('he')).toBe(true);
+  });
+
+  it('marks every locale beta until its human review is complete', () => {
+    expect(ALL_LOCALES.every((locale) => locale.reviewStatus === 'beta')).toBe(true);
   });
 
   it('declares metadata the runtime can actually use', () => {
@@ -171,8 +197,8 @@ describe('canonicalizeLocaleTag', () => {
 describe('resolveLocale', () => {
   const supported = ['en', 'de', 'pt-BR', 'zh-Hant', 'es-419'];
 
-  it('falls back to English when nothing matches', () => {
-    expect(resolveLocale('fr-CA,fr;q=0.9')).toBe('en');
+  it('matches an active locale before falling back to English', () => {
+    expect(resolveLocale('fr-CA,fr;q=0.9')).toBe('fr');
     expect(resolveLocale(null)).toBe('en');
     expect(resolveLocale('', supported)).toBe('en');
   });
@@ -211,6 +237,6 @@ describe('resolveLocale', () => {
   });
 
   it('defaults to the active locale list', () => {
-    expect(resolveLocale('de,en;q=0.5')).toBe('en');
+    expect(resolveLocale('de,en;q=0.5')).toBe('de');
   });
 });

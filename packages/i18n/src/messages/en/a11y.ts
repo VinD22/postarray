@@ -67,6 +67,9 @@ export const a11yMessages = {
   'a11y.label.loadingRegion': 'Loading content',
   'a11y.label.expandRow': 'Show details for {name}',
   'a11y.label.collapseRow': 'Hide details for {name}',
+  'a11y.languagePicker.label': 'Choose interface language',
+  'a11y.languagePicker.filterLabel': 'Filter languages',
+  'a11y.languagePicker.announceChanged': 'Interface language changed to {language}',
 
   'a11y.keyboard.hint.calendar':
     'Use the arrow keys to move between slots. Press Enter to open a post. Press Space then the arrow keys to reschedule.',

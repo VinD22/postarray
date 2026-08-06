@@ -23,16 +23,16 @@ import { RETENTION_SCHEDULE, SUBPROCESSORS } from '../data/catalogs';
  * instead of inventing one.
  */
 
-export function RetentionTable(): ReactNode {
-  const t = marketingTranslator();
+export async function RetentionTable({ locale }: { locale?: string }): Promise<ReactNode> {
+  const t = await marketingTranslator(locale);
   return (
-    <TableContainer className="relay-scrollbar">
+    <TableContainer className="relay-scrollbar border-border-bold border-y-2">
       <Table density="comfortable" className="min-w-[38rem]">
         <TableCaption className="text-start">
           {t.t('web.legal.privacy.retention.title')}
         </TableCaption>
         <TableHeader>
-          <TableRow>
+          <TableRow className="border-border-bold border-b-2">
             <TableHead className="min-w-[16rem]">
               {t.t('web.legal.retention.column.data')}
             </TableHead>
@@ -58,14 +58,14 @@ export function RetentionTable(): ReactNode {
   );
 }
 
-export function SubprocessorTable(): ReactNode {
-  const t = marketingTranslator();
+export async function SubprocessorTable({ locale }: { locale?: string }): Promise<ReactNode> {
+  const t = await marketingTranslator(locale);
   return (
-    <TableContainer className="relay-scrollbar">
+    <TableContainer className="relay-scrollbar border-border-bold border-y-2">
       <Table density="comfortable" className="min-w-[52rem]">
         <TableCaption className="text-start">{t.t('web.legal.subprocessors.summary')}</TableCaption>
         <TableHeader>
-          <TableRow>
+          <TableRow className="border-border-bold border-b-2">
             <TableHead className="min-w-[14rem]">
               {t.t('web.legal.subprocessors.column.name')}
             </TableHead>

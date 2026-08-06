@@ -1,8 +1,10 @@
 'use client';
 
-import Link from 'next/link';
+import { Link } from '@/components/link';
 import { useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
+
+import { MailCheck } from 'lucide-react';
 
 import { Notice } from '@relay/design-system/patterns';
 import { Button } from '@relay/design-system/primitives';
@@ -56,6 +58,13 @@ export function CheckEmail() {
 
   return (
     <div className="flex flex-col gap-6">
+      <span
+        aria-hidden="true"
+        className="relay-icon-draw border-border-bold bg-accent-subtle text-text-accent shadow-hard-sm inline-flex size-12 items-center justify-center rounded-full border-2"
+      >
+        <MailCheck className="size-6" strokeWidth={2} />
+      </span>
+
       <div className="flex flex-col gap-1">
         <h1 className="text-title-lg text-text-primary">{t('auth.magicLink.checkEmail')}</h1>
         <p className="text-body-md text-text-secondary">

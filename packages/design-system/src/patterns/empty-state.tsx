@@ -48,40 +48,60 @@ export function EmptyState({
   return (
     <section
       className={cn(
-        'border-border-default flex flex-col items-start gap-3 rounded-lg border',
+        'border-border-default relative flex flex-col items-start gap-3 overflow-hidden rounded-lg border',
         'bg-surface-canvas border-dashed p-6',
         compact ? 'py-5' : 'py-10',
         className,
       )}
     >
-      {illustration ? (
-        <div aria-hidden="true" className="text-text-tertiary">
-          {illustration}
-        </div>
-      ) : null}
+      {/* Decorative poster shapes. Pure CSS, no motion, aria-hidden — the
+          "nothing here yet" screen still gets the loud brand accent, it just
+          never competes with the one real illustration slot below. */}
+      <span
+        aria-hidden="true"
+        className={cn(
+          'bg-blush border-border-bold pointer-events-none absolute end-6 -top-3 z-0',
+          'size-9 rotate-6 rounded-md border-2',
+        )}
+      />
+      <span
+        aria-hidden="true"
+        className={cn(
+          'bg-cta border-border-bold pointer-events-none absolute end-16 top-4 z-0',
+          'size-4 -rotate-12 rounded-full border-2',
+        )}
+      />
 
-      <div className="flex max-w-[60ch] flex-col gap-1.5">
-        <h2 className="text-title-sm text-text-primary">{title}</h2>
-        <p className="text-body-md text-text-secondary">{description}</p>
+      <div className="relative z-10 flex flex-col items-start gap-3">
+        {illustration ? (
+          <div aria-hidden="true" className="text-text-tertiary">
+            {illustration}
+          </div>
+        ) : null}
+
+        <div className="flex max-w-[60ch] flex-col gap-1.5">
+          <h2 className="text-title-sm text-text-primary">{title}</h2>
+          <p className="text-body-md text-text-secondary">{description}</p>
+        </div>
+
+        {example ? (
+          <div
+            className={cn(
+              'border-border-subtle w-full max-w-[60ch] rounded-md border',
+              'bg-surface-sunken text-body-sm text-text-secondary p-3',
+            )}
+          >
+            {example}
+          </div>
+        ) : null}
+
+        {action || secondaryAction ? (
+          <div className="flex flex-wrap items-center gap-2 pt-1">
+            {action}
+            {secondaryAction}
+          </div>
+        ) : null}
       </div>
-
-      {example ? (
-        <div
-          className={cn(
-            'border-border-subtle w-full max-w-[60ch] rounded-md border',
-            'bg-surface-sunken text-body-sm text-text-secondary p-3',
-          )}
-        >
-          {example}
-        </div>
-      ) : null}
-
-      {action || secondaryAction ? (
-        <div className="flex flex-wrap items-center gap-2 pt-1">
-          {action}
-          {secondaryAction}
-        </div>
-      ) : null}
     </section>
   );
 }

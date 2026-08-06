@@ -37,7 +37,7 @@ export const SelectTrigger = forwardRef<HTMLButtonElement, SelectTriggerProps>(
         ref={ref}
         aria-invalid={invalid || undefined}
         className={cn(
-          'inline-flex w-full items-center justify-between gap-2 rounded-md border',
+          'inline-flex w-full items-center justify-between gap-2 rounded-md border-[1.5px]',
           'bg-surface-raised text-text-primary',
           'data-[placeholder]:text-text-tertiary',
           'disabled:bg-surface-sunken disabled:text-text-disabled disabled:cursor-not-allowed',

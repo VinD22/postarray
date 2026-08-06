@@ -10,7 +10,7 @@
  * their own version, and each row says so on its own.
  */
 
-import { useMemo, useState, type ReactNode } from 'react';
+import { useMemo, useRef, useState, type ReactNode } from 'react';
 import { Check, Plus, X as RemoveIcon } from 'lucide-react';
 import {
   Button,
@@ -22,10 +22,33 @@ import {
 import { CapabilityBadge } from '@relay/design-system/patterns';
 import { cn } from '@relay/design-system/utils';
 import { useTranslations } from '@relay/i18n/react';
+import type { ProviderId } from '@relay/contracts';
 
 import { useComposer } from '../composer-context';
+import { DURATION_FAST, EASE_STANDARD } from '@/lib/motion/constants';
+import { Flip, useGSAP } from '@/lib/motion/gsap';
+import { useMotionOk } from '@/lib/motion/use-motion-ok';
 import { PROVIDER_LABEL } from './provider-identity';
 import type { TargetRailState, TargetSummary } from '../types';
+
+/**
+ * A purely decorative inline-start accent bar, coloured with the same
+ * `--brand-*` identity token as each row's `ProviderMark` dot — never the
+ * sole identifier (the dot and `PROVIDER_LABEL` text beside it stay the real
+ * identification), the same rule `provider-identity.tsx` documents.
+ */
+const PROVIDER_BAR_CLASS: Partial<Record<ProviderId, string>> = {
+  x: 'bg-brand-x',
+  linkedin: 'bg-brand-linkedin',
+  instagram: 'bg-brand-instagram',
+  facebook: 'bg-brand-facebook',
+  youtube: 'bg-brand-youtube',
+  tiktok: 'bg-brand-tiktok',
+  threads: 'bg-brand-threads',
+  bluesky: 'bg-brand-bluesky',
+};
+
+const MASTER_ROW_KEY = 'master';
 
 const STATE_TONE: Readonly<
   Record<TargetRailState, 'neutral' | 'accent' | 'warning' | 'destructive'>
@@ -62,6 +85,7 @@ export function TargetRail(): ReactNode {
   const t = useTranslations();
   const { bootstrap, state, dispatch, summaries, totals } = useComposer();
   const [query, setQuery] = useState('');
+  const motionOk = useMotionOk();
 
   const unselected = useMemo(
     () =>
@@ -74,6 +98,50 @@ export function TargetRail(): ReactNode {
               .includes(query.toLowerCase())),
       ),
     [bootstrap.accounts, query, state.selectedConnectionIds],
+  );
+
+  // Same technique as the primary nav's rail marker (WP-5, `primary-nav.tsx`):
+  // one shared indicator slides between the master row and the target rows
+  // with GSAP Flip instead of every row drawing its own bar. It never
+  // animates on first mount and jumps straight to position with no tween
+  // when `useMotionOk()` is false.
+  const activeKey = state.activeConnectionId ?? MASTER_ROW_KEY;
+  const listRef = useRef<HTMLDivElement>(null);
+  const indicatorRef = useRef<HTMLSpanElement>(null);
+  const rowRefs = useRef(new Map<string, HTMLElement>());
+  const hasPositioned = useRef(false);
+
+  const registerRow = (key: string) => (element: HTMLElement | null) => {
+    if (element) {
+      rowRefs.current.set(key, element);
+    } else {
+      rowRefs.current.delete(key);
+    }
+  };
+
+  useGSAP(
+    () => {
+      const list = listRef.current;
+      const indicator = indicatorRef.current;
+      const activeEl = rowRefs.current.get(activeKey);
+      if (!list || !indicator || !activeEl) {
+        return;
+      }
+
+      const shouldAnimate = hasPositioned.current && motionOk;
+      const flipState = shouldAnimate ? Flip.getState(indicator) : null;
+
+      const listRect = list.getBoundingClientRect();
+      const rowRect = activeEl.getBoundingClientRect();
+      indicator.style.top = `${rowRect.top - listRect.top + rowRect.height * 0.15}px`;
+      indicator.style.height = `${rowRect.height * 0.7}px`;
+
+      if (flipState) {
+        Flip.from(flipState, { duration: DURATION_FAST, ease: EASE_STANDARD });
+      }
+      hasPositioned.current = true;
+    },
+    { scope: listRef, dependencies: [activeKey, motionOk, summaries.length] },
   );
 
   return (
@@ -132,19 +200,31 @@ export function TargetRail(): ReactNode {
           </span>
         </div>
 
-        <MasterRow />
+        <div ref={listRef} className="relative flex flex-col gap-1">
+          <span
+            ref={indicatorRef}
+            aria-hidden="true"
+            className="bg-accent pointer-events-none absolute start-0 z-10 w-0.5 rounded-full"
+          />
 
-        {summaries.length === 0 ? (
-          <p className="border-border-default text-body-sm text-text-tertiary rounded-md border border-dashed px-3 py-4">
-            {t.full('composerWeb.rail.emptyHelp')}
-          </p>
-        ) : (
-          <ul className="flex flex-col">
-            {summaries.map((summary) => (
-              <TargetRow key={summary.connectionId} summary={summary} />
-            ))}
-          </ul>
-        )}
+          <MasterRow registerRef={registerRow(MASTER_ROW_KEY)} />
+
+          {summaries.length === 0 ? (
+            <p className="border-border-default text-body-sm text-text-tertiary rounded-md border border-dashed px-3 py-4">
+              {t.full('composerWeb.rail.emptyHelp')}
+            </p>
+          ) : (
+            <ul className="flex flex-col">
+              {summaries.map((summary) => (
+                <TargetRow
+                  key={summary.connectionId}
+                  summary={summary}
+                  registerRef={registerRow(summary.connectionId)}
+                />
+              ))}
+            </ul>
+          )}
+        </div>
 
         {totals.divergentCount > 0 ? (
           <p className="text-body-sm text-text-secondary">
@@ -189,13 +269,18 @@ export function TargetRail(): ReactNode {
   );
 }
 
-function MasterRow(): ReactNode {
+function MasterRow({
+  registerRef,
+}: {
+  readonly registerRef: (element: HTMLElement | null) => void;
+}): ReactNode {
   const t = useTranslations();
   const { state, dispatch } = useComposer();
   const active = state.activeConnectionId === null;
 
   return (
     <button
+      ref={registerRef}
       type="button"
       aria-current={active ? 'true' : undefined}
       onClick={() => dispatch({ type: 'target/open', connectionId: null })}
@@ -218,16 +303,43 @@ function MasterRow(): ReactNode {
   );
 }
 
-function TargetRow({ summary }: { readonly summary: TargetSummary }): ReactNode {
+function TargetRow({
+  summary,
+  registerRef,
+}: {
+  readonly summary: TargetSummary;
+  readonly registerRef: (element: HTMLElement | null) => void;
+}): ReactNode {
   const t = useTranslations();
   const { state, dispatch } = useComposer();
   const active = state.activeConnectionId === summary.connectionId;
   const label = stateLabel(t, summary.state);
   const overLimit = summary.characterCount > summary.characterLimit;
+  const motionOk = useMotionOk();
+
+  // The validation dot plays one settle-in pulse whenever this target's
+  // issue count *grows* (never on resolution, which would fire on every
+  // keystroke that clears the last issue) — derived during render, not an
+  // effect, so it costs nothing beyond a ref comparison on the composer's
+  // hottest path.
+  const issueCount = summary.blockingIssueCount + summary.warningIssueCount;
+  const previousIssueCount = useRef(issueCount);
+  const pulseGenerationRef = useRef(0);
+  if (issueCount > previousIssueCount.current) {
+    pulseGenerationRef.current += 1;
+  }
+  previousIssueCount.current = issueCount;
 
   return (
-    <li className="border-border-subtle border-b last:border-b-0">
-      <div className="flex items-stretch gap-1">
+    <li ref={registerRef} className="border-border-subtle relative border-b last:border-b-0">
+      <span
+        aria-hidden="true"
+        className={cn(
+          'absolute inset-y-0 start-0 w-1',
+          PROVIDER_BAR_CLASS[summary.account.provider] ?? 'bg-transparent',
+        )}
+      />
+      <div className="flex items-stretch gap-1 ps-2">
         <button
           type="button"
           aria-current={active ? 'true' : undefined}
@@ -246,7 +358,15 @@ function TargetRow({ summary }: { readonly summary: TargetSummary }): ReactNode 
           </VisuallyHidden>
 
           <span className="flex min-w-0 items-center gap-2">
-            <StatusDot tone={STATE_TONE[summary.state]} />
+            <span
+              key={pulseGenerationRef.current}
+              className={cn(
+                'inline-flex',
+                motionOk && 'relay-dot-settle motion-reduce:animate-none',
+              )}
+            >
+              <StatusDot tone={STATE_TONE[summary.state]} />
+            </span>
             <span className="text-body-md text-text-primary min-w-0 truncate">
               {summary.account.displayName}
             </span>

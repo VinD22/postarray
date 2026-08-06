@@ -167,6 +167,7 @@ export function testConfig(overrides: Partial<RelayConfig> = {}): RelayConfig {
       isTest: true,
       appUrl: 'https://app.relay.test',
       apiUrl: 'https://api.relay.test',
+      siteOrigin: 'https://relay.test',
       logLevel: 'silent' as const,
     },
     database: { url: undefined, directUrl: undefined },

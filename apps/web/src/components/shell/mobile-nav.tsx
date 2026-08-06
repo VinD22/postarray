@@ -1,9 +1,9 @@
 'use client';
 
-import Link from 'next/link';
+import { Link } from '@/components/link';
 import { usePathname } from 'next/navigation';
-import { Menu, PenLine } from 'lucide-react';
-import { useState, type ReactNode } from 'react';
+import { Menu, PenSquare } from 'lucide-react';
+import { useRef, useState, type ReactNode } from 'react';
 
 import {
   Sheet,
@@ -14,6 +14,9 @@ import {
 } from '@relay/design-system/primitives';
 import { cn } from '@relay/design-system/utils';
 
+import { DURATION_FAST, EASE_STANDARD } from '@/lib/motion/constants';
+import { Flip, useGSAP } from '@/lib/motion/gsap';
+import { useMotionOk } from '@/lib/motion/use-motion-ok';
 import { useSession } from '@/lib/auth/session-context';
 import { useTranslations } from '@/lib/i18n';
 
@@ -31,8 +34,12 @@ const SETTINGS_LINKS = [
  * The compact bottom bar, below 768px.
  *
  * Four destinations plus a menu, with Compose raised in the middle as the
- * primary action. This is not a squeezed desktop rail: the items are the ones
- * a person uses on a phone, and everything else lives behind the menu.
+ * primary action — a 56px circular yellow slab, physically above the rest of
+ * the bar, so it reads as the one thing this bar most wants a thumb to find.
+ *
+ * The active tab carries a small dot that slides between destinations with
+ * GSAP Flip (same technique as `primary-nav.tsx`'s indicator): no animation
+ * on first mount, and an instant jump with no tween under reduced motion.
  *
  * Every target is at least 44px. The bar sits above the safe area inset so it
  * is not covered by a home indicator.
@@ -42,23 +49,78 @@ export function MobileNav() {
   const pathname = usePathname();
   const { canPublish } = useSession();
   const [menuOpen, setMenuOpen] = useState(false);
+  const motionOk = useMotionOk();
+
+  const navRef = useRef<HTMLElement>(null);
+  const dotRef = useRef<HTMLSpanElement>(null);
+  const itemRefs = useRef(new Map<string, HTMLAnchorElement>());
+  const hasPositioned = useRef(false);
 
   const barItems = NAV_ITEMS.filter((item) => item.inBottomBar);
   const menuItems = NAV_ITEMS.filter((item) => !item.inBottomBar);
+  const activeItem = barItems.find((item) => isNavItemActive(item, pathname));
+
+  useGSAP(
+    () => {
+      const nav = navRef.current;
+      const dot = dotRef.current;
+      const activeEl = activeItem ? itemRefs.current.get(activeItem.id) : undefined;
+      if (!nav || !dot || !activeEl) {
+        return;
+      }
+
+      const shouldAnimate = hasPositioned.current && motionOk;
+      const state = shouldAnimate ? Flip.getState(dot) : null;
+
+      const isRtl = nav.ownerDocument.documentElement.getAttribute('dir') === 'rtl';
+      const navRect = nav.getBoundingClientRect();
+      const itemRect = activeEl.getBoundingClientRect();
+      const inlineStart = isRtl ? navRect.right - itemRect.right : itemRect.left - navRect.left;
+      dot.style.insetInlineStart = `${inlineStart + itemRect.width / 2 - 2}px`;
+
+      if (state) {
+        Flip.from(state, { duration: DURATION_FAST, ease: EASE_STANDARD });
+      }
+      hasPositioned.current = true;
+    },
+    { scope: navRef, dependencies: [pathname, motionOk, activeItem?.id] },
+  );
 
   return (
     <>
       <nav
+        ref={navRef}
         aria-label={t('nav.primaryLandmark')}
         className={cn(
           'fixed inset-x-0 bottom-0 z-(--z-index-sticky) md:hidden',
-          'border-border-default grid grid-cols-5 items-end gap-1 border-t',
+          'border-border-default relative grid grid-cols-5 items-end gap-1 border-t',
           'bg-surface-raised px-2 pt-1',
           'pb-[max(0.25rem,env(safe-area-inset-bottom))]',
         )}
       >
+        <span
+          ref={dotRef}
+          aria-hidden="true"
+          className={cn(
+            'bg-accent pointer-events-none absolute top-0.5 size-1 rounded-full',
+            'transition-opacity duration-(--duration-fast)',
+            activeItem ? 'opacity-100' : 'opacity-0',
+          )}
+        />
+
         {barItems.slice(0, 2).map((item) => (
-          <BottomLink key={item.id} href={item.href} active={isNavItemActive(item, pathname)}>
+          <BottomLink
+            key={item.id}
+            href={item.href}
+            active={isNavItemActive(item, pathname)}
+            registerRef={(element) => {
+              if (element) {
+                itemRefs.current.set(item.id, element);
+              } else {
+                itemRefs.current.delete(item.id);
+              }
+            }}
+          >
             <item.icon aria-hidden="true" className="size-5" />
             {t(item.labelKey)}
           </BottomLink>
@@ -69,19 +131,29 @@ export function MobileNav() {
             href={canPublish ? '/compose' : '/settings/members'}
             aria-disabled={canPublish ? undefined : true}
             className={cn(
-              'flex size-12 flex-col items-center justify-center rounded-xl',
-              'bg-accent text-accent-on shadow-raised',
-              'transition-colors duration-(--duration-fast)',
-              canPublish ? 'hover:bg-accent-hover' : 'pointer-events-none opacity-60',
+              'relay-pressable flex size-14 -translate-y-3 flex-col items-center justify-center rounded-full',
+              'bg-cta text-cta-on border-border-bold shadow-hard border-2',
+              canPublish ? 'hover:bg-cta-hover' : 'pointer-events-none opacity-60',
             )}
           >
-            <PenLine aria-hidden="true" className="size-5" />
+            <PenSquare aria-hidden="true" className="size-5" />
             <span className="sr-only">{t('nav.compose')}</span>
           </Link>
         </div>
 
         {barItems.slice(2).map((item) => (
-          <BottomLink key={item.id} href={item.href} active={isNavItemActive(item, pathname)}>
+          <BottomLink
+            key={item.id}
+            href={item.href}
+            active={isNavItemActive(item, pathname)}
+            registerRef={(element) => {
+              if (element) {
+                itemRefs.current.set(item.id, element);
+              } else {
+                itemRefs.current.delete(item.id);
+              }
+            }}
+          >
             <item.icon aria-hidden="true" className="size-5" />
             {t(item.labelKey)}
           </BottomLink>
@@ -148,14 +220,17 @@ export function MobileNav() {
 function BottomLink({
   href,
   active,
+  registerRef,
   children,
 }: {
   readonly href: string;
   readonly active: boolean;
+  readonly registerRef: (element: HTMLAnchorElement | null) => void;
   readonly children: ReactNode;
 }) {
   return (
     <Link
+      ref={registerRef}
       href={href}
       aria-current={active ? 'page' : undefined}
       className={cn(

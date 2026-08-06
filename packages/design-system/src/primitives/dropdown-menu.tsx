@@ -59,10 +59,14 @@ export interface DropdownMenuItemProps extends ComponentPropsWithoutRef<typeof M
 }
 
 export const DropdownMenuItem = forwardRef<HTMLDivElement, DropdownMenuItemProps>(
-  function DropdownMenuItem({ className, destructive, shortcut, children, ...props }, ref) {
+  function DropdownMenuItem(
+    { className, destructive, shortcut, children, asChild = false, ...props },
+    ref,
+  ) {
     return (
       <MenuPrimitive.Item
         ref={ref}
+        asChild={asChild}
         data-destructive={destructive || undefined}
         className={cn(
           itemClasses,
@@ -72,8 +76,14 @@ export const DropdownMenuItem = forwardRef<HTMLDivElement, DropdownMenuItemProps
         )}
         {...props}
       >
-        <span className="flex min-w-0 flex-1 items-center gap-2">{children}</span>
-        {shortcut ? <span className="ms-auto ps-4">{shortcut}</span> : null}
+        {asChild ? (
+          children
+        ) : (
+          <>
+            <span className="flex min-w-0 flex-1 items-center gap-2">{children}</span>
+            {shortcut ? <span className="ms-auto ps-4">{shortcut}</span> : null}
+          </>
+        )}
       </MenuPrimitive.Item>
     );
   },

@@ -1,7 +1,7 @@
 'use client';
 
 import type { ReactNode } from 'react';
-import Link from 'next/link';
+import { Link } from '@/components/link';
 import { ChevronRight } from 'lucide-react';
 import { PageHeader } from '@relay/design-system/patterns';
 import { useTranslations } from '@relay/i18n/react';

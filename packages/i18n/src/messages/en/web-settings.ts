@@ -196,7 +196,7 @@ export const webSettingsMessages = {
   'settings.ui.localization.description':
     'Three separate settings: the language of this app, the languages you publish in, and the markets you are writing for. Changing one never changes another.',
   'settings.ui.localization.interfaceOnlyEnglish':
-    'English is the only interface language in this version. Content languages are separate and already available.',
+    'Choose an interface language for this app. Content languages are separate and already available.',
   'settings.ui.localization.marketHelp':
     'A market changes examples, legal disclosures and calls to action. It does not change the language of a post.',
   'settings.ui.localization.previewTitle': 'How dates and numbers will read',

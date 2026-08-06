@@ -44,49 +44,53 @@ export function PageIntro({
 }
 
 /** A dated citation to the official documentation a claim came from. */
-export function SourceNote({
+export async function SourceNote({
   citation,
   label,
   className,
+  locale,
 }: {
   citation: Citation;
   /** Human readable destination, for example the platform doc title. */
   label: string;
   className?: string;
-}): ReactNode {
-  const t = marketingTranslator();
+  locale?: string;
+}): Promise<ReactNode> {
+  const t = await marketingTranslator(locale);
   return (
     <p className={cn('text-body-sm text-text-tertiary leading-[1.6]', className)}>
       <ExternalLink href={citation.url}>{label}</ExternalLink>{' '}
-      <Meta>{t.t('web.label.researchDate', { date: formatDate(citation.readOn) })}</Meta>
+      <Meta>{t.t('web.label.researchDate', { date: formatDate(citation.readOn, locale) })}</Meta>
     </p>
   );
 }
 
 /** The review stamp shown under a page that makes dated claims. */
-export function ReviewStamp({
+export async function ReviewStamp({
   reviewedOn,
   nextReviewOn,
   className,
+  locale,
 }: {
   reviewedOn: string;
   nextReviewOn?: string;
   className?: string;
-}): ReactNode {
-  const t = marketingTranslator();
+  locale?: string;
+}): Promise<ReactNode> {
+  const t = await marketingTranslator(locale);
   return (
     <p className={cn('flex flex-wrap gap-x-5 gap-y-1', className)}>
-      <Meta>{t.t('web.label.lastReviewed', { date: formatDate(reviewedOn) })}</Meta>
+      <Meta>{t.t('web.label.lastReviewed', { date: formatDate(reviewedOn, locale) })}</Meta>
       {nextReviewOn ? (
-        <Meta>{t.t('web.label.nextReview', { date: formatDate(nextReviewOn) })}</Meta>
+        <Meta>{t.t('web.label.nextReview', { date: formatDate(nextReviewOn, locale) })}</Meta>
       ) : null}
     </p>
   );
 }
 
 /** Every page that makes a dated claim ends with a way to challenge it. */
-export function CorrectionNotice(): ReactNode {
-  const t = marketingTranslator();
+export async function CorrectionNotice({ locale }: { locale?: string }): Promise<ReactNode> {
+  const t = await marketingTranslator(locale);
   return (
     <div className="border-border-default border-t pt-6">
       <h2 className="text-title-sm text-text-primary">{t.t('web.correction.title')}</h2>
@@ -118,18 +122,20 @@ export function CorrectionNotice(): ReactNode {
  * fabricated screenshot, which this project treats as fraud rather than as
  * marketing licence.
  */
-export function ProductShot({
+export async function ProductShot({
   src,
   alt,
   caption,
   capturedOn,
+  locale,
 }: {
   src?: string;
   alt: string;
   caption: ReactNode;
   capturedOn?: string;
-}): ReactNode {
-  const t = marketingTranslator();
+  locale?: string;
+}): Promise<ReactNode> {
+  const t = await marketingTranslator(locale);
 
   return (
     <figure className="space-y-3">
@@ -164,7 +170,7 @@ export function ProductShot({
         {capturedOn ? (
           <>
             {' '}
-            <Meta>{formatDate(capturedOn)}</Meta>
+            <Meta>{formatDate(capturedOn, locale)}</Meta>
           </>
         ) : null}
       </figcaption>
@@ -173,8 +179,8 @@ export function ProductShot({
 }
 
 /** The banner on a legal page whose binding wording is still with counsel. */
-export function CounselPendingBanner(): ReactNode {
-  const t = marketingTranslator();
+export async function CounselPendingBanner({ locale }: { locale?: string }): Promise<ReactNode> {
+  const t = await marketingTranslator(locale);
   return (
     <Notice
       tone="warning"

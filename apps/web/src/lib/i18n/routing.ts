@@ -1,21 +1,21 @@
 /**
  * Locale routing.
  *
- * V1 ships English only, so no locale segment is written into a URL. The
- * negotiation, the direction, the time zone and the catalog are already
- * resolved per request through this module, which means adding a language is a
- * catalog file plus flipping its status to `active` in `@relay/i18n`. No route
- * changes, no component changes.
+ * The default locale has no URL prefix. Other active locales are represented by
+ * their BCP-47 tag at the start of the path. Request negotiation remains a
+ * fallback for the bare root and for locale suggestions; an explicit locale in
+ * a URL always wins.
  */
 
 import {
   ACTIVE_LOCALE_CODES,
   DEFAULT_LOCALE,
   getDirection,
-  isActiveLocale,
   resolveLocale,
   type TextDirection,
 } from '@relay/i18n';
+
+import { isWebLocale } from './development-pseudo-locales';
 
 export const LOCALE_COOKIE = 'relay_locale';
 export const TIME_ZONE_COOKIE = 'relay_tz';
@@ -37,21 +37,38 @@ export interface ResolvedLocale {
 }
 
 /**
+ * Return a path at the URL for an interface locale.
+ *
+ * English remains unprefixed. The root path is special-cased so its localized
+ * form is `/de`, not `/de/`; all other trailing slashes are deliberately
+ * preserved because routing may distinguish them.
+ */
+export function localizedHref(path: string, locale: string): string {
+  if (locale === DEFAULT_LOCALE) {
+    return path;
+  }
+
+  return path === '/' ? `/${locale}` : `/${locale}${path}`;
+}
+
+/**
  * Pick the locale for a request.
  *
- * Order: an explicit choice the user stored, then the browser's
- * Accept-Language, then the default. An inactive locale never wins, so a half
- * translated catalog cannot leak into production by way of a header.
+ * This is a fallback only. A locale explicitly present in the URL takes
+ * precedence before this function is called. For a URL without a locale, pick
+ * an explicit stored choice, then the browser's Accept-Language, then the
+ * default. An inactive locale never wins, so a half translated catalog cannot
+ * leak into production by way of a header.
  */
 export function negotiateLocale(input: {
   readonly cookieValue?: string | undefined;
   readonly acceptLanguage?: string | undefined;
 }): ResolvedLocale {
   const chosen =
-    input.cookieValue !== undefined && isActiveLocale(input.cookieValue)
+    input.cookieValue !== undefined && isWebLocale(input.cookieValue)
       ? input.cookieValue
       : resolveLocale(input.acceptLanguage ?? null);
-  const locale = isActiveLocale(chosen) ? chosen : DEFAULT_LOCALE;
+  const locale = isWebLocale(chosen) ? chosen : DEFAULT_LOCALE;
   return { locale, direction: getDirection(locale) };
 }
 

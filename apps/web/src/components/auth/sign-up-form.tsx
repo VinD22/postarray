@@ -1,12 +1,13 @@
 'use client';
 
-import Link from 'next/link';
+import { Link } from '@/components/link';
 import { useRouter } from 'next/navigation';
 import { useState, type FormEvent } from 'react';
 
 import { useAnnouncer } from '@relay/design-system/hooks';
 import { Notice } from '@relay/design-system/patterns';
 import { Button, Field, Input, Separator } from '@relay/design-system/primitives';
+import { cn } from '@relay/design-system/utils';
 
 import { ApiError, api, newIdempotencyKey } from '@/lib/api';
 import { useTranslations } from '@/lib/i18n';
@@ -66,7 +67,7 @@ export function SignUpForm() {
   };
 
   return (
-    <div className="flex flex-col gap-8">
+    <div className={cn('flex flex-col gap-8', error !== null && 'relay-auth-invalid-pulse')}>
       <div className="flex flex-col gap-1">
         <h1 className="text-title-lg text-text-primary">{t('auth.signUp.title')}</h1>
         <p className="text-body-md text-text-secondary">{t('auth.signUp.subtitle')}</p>
@@ -133,6 +134,7 @@ export function SignUpForm() {
               type={showPassword ? 'text' : 'password'}
               name="password"
               autoComplete="new-password"
+              invalid={tooShort}
               value={password}
               onChange={(event) => {
                 setPassword(event.target.value);
@@ -156,7 +158,7 @@ export function SignUpForm() {
 
         <Button
           type="submit"
-          variant="primary"
+          variant="cta"
           size="lg"
           fullWidth
           loading={pending}

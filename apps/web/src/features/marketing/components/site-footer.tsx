@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react';
-import Link from 'next/link';
+import { Link } from '@/components/link';
 import { cn } from '@relay/design-system/utils';
 
 import { marketingTranslator } from '../i18n';
@@ -13,8 +13,8 @@ import { Container } from './layout';
  * publishes on someone behalf: what we actually do, and that a platform name
  * appearing here identifies a connector rather than claiming a partnership.
  */
-export function SiteFooter(): ReactNode {
-  const t = marketingTranslator();
+export async function SiteFooter({ locale }: { locale?: string }): Promise<ReactNode> {
+  const t = await marketingTranslator(locale);
   const year = new Date().getUTCFullYear();
 
   return (

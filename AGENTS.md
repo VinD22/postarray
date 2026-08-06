@@ -132,16 +132,22 @@ Forbidden imports (enforced by lint):
 
 ## Design
 
-`docs/planning/06-product-ux-and-design-system.md` is authoritative. Summary of
-the traps to avoid: no purple/blue neon gradients, no glowing orbs, no glass
-panels, no grid backgrounds, no three-identical-feature-card rows, no gradient
-headline text, no fake dashboards or invented metrics, no decorative score
-widgets, no card for something that reads better as a row or a sentence.
+`docs/planning/06-product-ux-and-design-system.md` is authoritative (see its
+superseded-in-part note for the current direction). Paper + electric blue
++ sunshine CTA + blush accent, hierarchy from huge display type, 2px ink
+outlines and hard offset shadows; dark is inky navy-black carrying the same
+neons. Still banned: no emoji iconography, no gradient headline text, no
+glowing orbs or glass panels, no fake dashboards or invented metrics, no
+animation that slows composing, no color-alone status, no sub-AA pairs, no
+physical direction props, no `dark:` variants, no yellow or pink as text.
+Also still banned: three-identical-feature-card rows, a card for something
+that reads better as a row or a sentence, decorative score widgets.
 
-Warm neutral canvas, one controlled accent, semantic warning and destructive
-colors only. Typography carries hierarchy. Fine borders and tonal surfaces
-rather than heavy shadows. 6-10px radii on product controls. Motion is
-functional: 120-200ms, respects `prefers-reduced-motion`.
+Semantic warning and destructive colors only for status. Typography carries
+hierarchy. Product controls stay at tight, predictable density. Motion is two
+tiers: functional 120-200ms in-app, expressive 400-900ms for marketing and
+overlays, both respecting `prefers-reduced-motion`. GSAP only in
+`apps/web/src/lib/motion` — never inside `packages/design-system`.
 
 Every screen designs its loading, empty, error, partial-success, offline,
 permission-denied and rate-limited states. WCAG 2.2 AA is a merge requirement,

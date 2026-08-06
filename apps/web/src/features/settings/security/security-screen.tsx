@@ -2,7 +2,7 @@
 
 import { useState, type ReactNode } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import Link from 'next/link';
+import { Link } from '@/components/link';
 import {
   Badge,
   Button,

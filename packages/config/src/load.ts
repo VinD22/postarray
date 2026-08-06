@@ -55,6 +55,8 @@ export interface CoreConfig {
   readonly isTest: boolean;
   readonly appUrl: string | undefined;
   readonly apiUrl: string | undefined;
+  /** Public canonical origin used by the web surface's SEO metadata. */
+  readonly siteOrigin: string | undefined;
   readonly logLevel: LogLevel;
 }
 
@@ -228,6 +230,7 @@ function toConfig(
       isTest: env.NODE_ENV === 'test',
       appUrl: env.APP_URL,
       apiUrl: env.API_URL,
+      siteOrigin: env.NEXT_PUBLIC_SITE_ORIGIN,
       logLevel: env.LOG_LEVEL,
     },
     database: {

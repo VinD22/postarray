@@ -4,20 +4,24 @@ import { forwardRef, type ComponentPropsWithoutRef, type ReactNode } from 'react
 import { Slot } from 'radix-ui';
 import { cva, type VariantProps } from 'class-variance-authority';
 import { cn } from '../utils/cn';
-import { focusRing, transitionBase } from '../utils/style-constants';
+import { focusRing, pressable, transitionBase } from '../utils/style-constants';
 import { Spinner } from './spinner';
 
 /**
  * The button.
  *
- * Four intents, three sizes. Primary is the single accent path on a screen;
- * if two primaries appear side by side, one of them is a secondary. Ghost is
- * for toolbar and row-level actions. Destructive is a solid semantic fill and
- * is never used for a merely irreversible-feeling action, only for one that
- * removes or disconnects something.
+ * Five intents, three sizes. Primary is the single accent path on a screen;
+ * if two primaries appear side by side, one of them is a secondary. CTA is
+ * the loud yellow commit action — the signature "sign up", "start trial",
+ * "schedule" moment; there is at most one per screen. Ghost is for toolbar
+ * and row-level actions. Destructive is a solid semantic fill and is never
+ * used for a merely irreversible-feeling action, only for one that removes
+ * or disconnects something.
  *
- * Shape is a 6px radius, a hairline border and a tonal fill. There is no
- * shadow: elevation in this product is a border and a surface step.
+ * Shape is a 6px radius, a hairline border and a tonal fill for the quiet
+ * variants. Primary and CTA add a physical press: they translate toward
+ * their own hard offset shadow on `:active` via `relay-pressable`, so the
+ * direction mirrors for free under `dir="rtl"`.
  */
 export const buttonVariants = cva(
   [
@@ -32,11 +36,17 @@ export const buttonVariants = cva(
       variant: {
         primary: [
           'border-transparent bg-accent text-accent-on',
-          'hover:bg-accent-hover active:bg-accent-active',
-          'disabled:bg-surface-sunken disabled:text-text-disabled disabled:border-border-subtle',
+          'hover:bg-accent-hover hover:shadow-hard-sm active:bg-accent-active',
+          pressable,
+          'disabled:bg-surface-sunken disabled:text-text-disabled disabled:border-border-subtle disabled:shadow-none',
+        ].join(' '),
+        cta: [
+          'bg-cta text-cta-on border-2 border-border-bold shadow-hard hover:bg-cta-hover',
+          pressable,
+          'disabled:bg-surface-sunken disabled:text-text-disabled disabled:border-border-subtle disabled:shadow-none',
         ].join(' '),
         secondary: [
-          'border-border-default bg-surface-raised text-text-primary',
+          'border-border-strong bg-surface-raised text-text-primary',
           'hover:bg-surface-hover active:bg-surface-active',
           'disabled:bg-surface-sunken disabled:text-text-disabled disabled:border-border-subtle',
         ].join(' '),

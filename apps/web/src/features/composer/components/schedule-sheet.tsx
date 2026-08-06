@@ -11,6 +11,7 @@
  */
 
 import { useMemo, useState, type ReactNode } from 'react';
+import { Check } from 'lucide-react';
 import {
   Button,
   Field,
@@ -30,16 +31,21 @@ import {
 } from '@relay/design-system/primitives';
 import { DefinitionList, Notice } from '@relay/design-system/patterns';
 import { useAnnouncer } from '@relay/design-system/hooks';
+import { cn } from '@relay/design-system/utils';
 import { useTranslations } from '@relay/i18n/react';
 import { crossesOffsetChange, formatCurrency, formatDateTime } from '@relay/i18n';
 import { resolveVariant } from '@relay/contracts';
 
+import { useMotionOk } from '@/lib/motion/use-motion-ok';
 import { useComposer } from '../composer-context';
 import { PROVIDER_LABEL } from './provider-identity';
 import { RepeatPanel } from './repeat-panel';
 import { isoDateIn, isoTimeIn, zonedToInstant } from '../state/time';
 
 export type ScheduleIntent = 'draft' | 'approval' | 'schedule' | 'publish';
+
+/** How long the check-morph confirmation shows before the sheet closes. */
+const CHECK_MORPH_MS = 550;
 
 export interface ScheduleSheetProps {
   readonly open: boolean;
@@ -59,6 +65,8 @@ export function ScheduleSheet({
   const { announce } = useAnnouncer();
   const { bootstrap, state, dispatch, summaries, totals, online } = useComposer();
   const [busy, setBusy] = useState<ScheduleIntent | null>(null);
+  const [justScheduled, setJustScheduled] = useState(false);
+  const motionOk = useMotionOk();
 
   const schedule = state.master.schedule;
   const zone = schedule?.ianaTimeZone ?? bootstrap.workspaceTimeZone;
@@ -103,12 +111,29 @@ export function ScheduleSheet({
         if (intent === 'publish') {
           announce(t.full('a11y.announce.publishing'), 'polite');
         }
+
+        // The one loud commit action gets a beat of confirmation — a check
+        // swapped in for the label — before the sheet closes, instead of
+        // vanishing the instant the request resolves. Reduced motion skips
+        // straight to closing; there is nothing to show a beat of if it
+        // cannot move.
+        if (intent === 'schedule' && motionOk) {
+          setJustScheduled(true);
+          window.setTimeout(() => {
+            setJustScheduled(false);
+            setBusy(null);
+            onOpenChange(false);
+          }, CHECK_MORPH_MS);
+          return;
+        }
+
         onOpenChange(false);
+        setBusy(null);
       })
       .catch(() => {
         announce(t.full('a11y.announce.publishFailed'), 'assertive');
-      })
-      .finally(() => setBusy(null));
+        setBusy(null);
+      });
   };
 
   const localDate = instant === null ? '' : isoDateIn(instant, zone);
@@ -351,13 +376,20 @@ export function ScheduleSheet({
             {t.full('action.requestApproval')}
           </Button>
           <Button
-            variant="primary"
-            disabled={!online || !totals.canSchedule || instant === null || inPast}
-            loading={busy === 'schedule'}
+            variant="cta"
+            disabled={justScheduled || !online || !totals.canSchedule || instant === null || inPast}
+            loading={busy === 'schedule' && !justScheduled}
             loadingLabel={t.full('composer.autosave.saving')}
             onClick={() => commit('schedule')}
           >
-            {t.full('action.schedule')}
+            {justScheduled ? (
+              <span className={cn('flex items-center gap-2', motionOk && 'relay-pop-in')}>
+                <Check aria-hidden className="size-4" />
+                {t.full('composerWeb.schedule.confirmed')}
+              </span>
+            ) : (
+              t.full('action.schedule')
+            )}
           </Button>
           <Button
             variant="secondary"

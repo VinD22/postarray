@@ -1,6 +1,6 @@
 'use client';
 
-import Link from 'next/link';
+import { Link } from '@/components/link';
 
 import { EmptyState, ErrorState, LoadingState, SkeletonList } from '@relay/design-system/patterns';
 import { Button, StatusDot } from '@relay/design-system/primitives';
@@ -96,10 +96,21 @@ export function ConnectionHealth() {
                 key={connection.id}
                 className="border-border-subtle flex flex-wrap items-center gap-x-3 gap-y-1 border-b py-2.5"
               >
-                {dot === undefined ? null : <StatusDot provider={dot} aria-hidden="true" />}
+                {dot === undefined ? null : (
+                  <StatusDot
+                    provider={dot}
+                    aria-hidden="true"
+                    className={cn(!needsAttention && 'relay-dot-settle motion-reduce:animate-none')}
+                  />
+                )}
                 <Link
                   href={`/connections/${connection.id}`}
-                  className="text-body-md text-text-primary min-w-0 flex-1 truncate hover:underline"
+                  className={cn(
+                    'text-body-md min-w-0 flex-1 truncate hover:underline',
+                    needsAttention
+                      ? 'text-text-primary decoration-warning-border underline underline-offset-2'
+                      : 'text-text-primary',
+                  )}
                 >
                   {connection.displayName}
                 </Link>

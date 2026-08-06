@@ -43,3 +43,17 @@ export type ControlSize = keyof typeof controlHeight;
 
 /** The one surface recipe: hairline border, tonal fill, small radius, no shadow. */
 export const panelSurface = 'bg-surface-raised border border-border-default rounded-lg';
+
+/**
+ * The poster surface recipe: bold 2px ink outline, hard offset shadow. Used
+ * where a control should read as a physical, cut-out panel rather than a
+ * quiet tonal one — the CTA button, poster cards and other "loud" surfaces.
+ */
+export const panelPoster = 'bg-surface-raised border-2 border-border-bold rounded-lg shadow-hard';
+
+/**
+ * Physical press feedback: the surface translates toward its own hard shadow
+ * on `:active` instead of the shadow moving, so the offset direction mirrors
+ * for free under `[dir='rtl']` (see `--shadow-hard-x` in theme.css).
+ */
+export const pressable = 'relay-pressable';

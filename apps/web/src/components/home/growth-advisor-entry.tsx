@@ -1,6 +1,6 @@
 'use client';
 
-import Link from 'next/link';
+import { Link } from '@/components/link';
 
 import { LoadingState, SkeletonText } from '@relay/design-system/patterns';
 import { Button } from '@relay/design-system/primitives';

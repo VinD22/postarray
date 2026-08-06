@@ -18,6 +18,8 @@ import type { CSSProperties, ReactNode } from 'react';
 import { FileText, Film, Image as ImageIcon, Images, Type as TypeIcon, Move } from 'lucide-react';
 import { Badge, StatusPill, cn, focusRingInset } from '@relay/design-system';
 import { useTranslations } from '@relay/i18n/react';
+import { useMotionOk } from '@/lib/motion/use-motion-ok';
+import type { ProviderId } from '@/lib/api/types';
 import { ProviderMark, useProviderName } from '@/features/connections/provider';
 import { useCalendarFormat } from './format';
 import { entryKey, needsAttention } from './filters';
@@ -30,6 +32,25 @@ const mediaIcon: Record<CalendarEntry['mediaKind'], ReactNode> = {
   carousel: <Images aria-hidden="true" className="size-3" />,
   video: <Film aria-hidden="true" className="size-3" />,
   document: <FileText aria-hidden="true" className="size-3" />,
+};
+
+/**
+ * The provider's identity colour, reused here as a decorative inline-start
+ * bar. It is never the only carrier of the platform: `ProviderMark` beside
+ * the time already names the platform for assistive technology, so this bar
+ * is `aria-hidden` and purely reinforces what the mark and the account label
+ * already say.
+ */
+const providerBarClass: Record<ProviderId, string> = {
+  x: 'bg-brand-x',
+  linkedin: 'bg-brand-linkedin',
+  instagram: 'bg-brand-instagram',
+  facebook: 'bg-brand-facebook',
+  youtube: 'bg-brand-youtube',
+  tiktok: 'bg-brand-tiktok',
+  threads: 'bg-brand-threads',
+  bluesky: 'bg-brand-bluesky',
+  fake: 'bg-brand-fake',
 };
 
 export interface EntryChipProps {
@@ -56,6 +77,7 @@ export function EntryChip({
   const t = useTranslations();
   const format = useCalendarFormat();
   const providerName = useProviderName();
+  const motionOk = useMotionOk();
   const attention = needsAttention(entry);
   const movable = canReschedule(entry.state) && onPickUp !== undefined;
 
@@ -78,11 +100,26 @@ export function EntryChip({
         'bg-surface-raised',
         attention ? 'border-warning-border' : 'border-border-default',
         grabbed && 'border-accent ring-2 ring-[color:var(--border-focus)] ring-offset-1',
-        'transition-colors duration-[--duration-fast] motion-reduce:transition-none',
-        density === 'compact' ? 'gap-0 px-1.5 py-1' : 'gap-1 px-2 py-1.5',
+        // Picked up for a keyboard move: rotate and lift, transform-only so it
+        // never triggers layout. Reduced motion keeps only the ring above,
+        // which already says "picked up" without moving anything.
+        grabbed && motionOk && 'shadow-hard scale-[1.02] rotate-[1.5deg]',
+        // Hover lift on the whole card, not just the link text underneath.
+        'hover:shadow-hard-sm hover:-translate-y-px',
+        'transition-[background-color,border-color,color,box-shadow,translate,rotate,scale]',
+        'duration-(--duration-base) ease-(--ease-out-back) motion-reduce:transition-none',
+        density === 'compact' ? 'gap-0 py-1 ps-2.5 pe-1.5' : 'gap-1 py-1.5 ps-3 pe-2',
         className,
       )}
     >
+      <span
+        aria-hidden="true"
+        className={cn(
+          'pointer-events-none absolute inset-y-1 start-0.5 w-[3px] rounded-full',
+          providerBarClass[entry.provider],
+        )}
+      />
+
       <a
         href={href}
         aria-label={accessibleName}

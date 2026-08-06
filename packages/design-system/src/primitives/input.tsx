@@ -15,7 +15,7 @@ import { focusRing, transitionBase } from '../utils/style-constants';
  */
 export const inputVariants = cva(
   [
-    'w-full min-w-0 rounded-md border bg-surface-raised text-text-primary',
+    'w-full min-w-0 rounded-md border-[1.5px] bg-surface-raised text-text-primary',
     'placeholder:text-text-tertiary',
     'disabled:cursor-not-allowed disabled:bg-surface-sunken disabled:text-text-disabled',
     'read-only:bg-surface-sunken',

@@ -21,13 +21,35 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
+  VisuallyHidden,
 } from '@relay/design-system/primitives';
 import { DiffView, Notice, type DiffSegment } from '@relay/design-system/patterns';
 import { useTranslations } from '@relay/i18n/react';
 
+import { StaggerList } from '@/components/motion';
 import { useComposer } from '../composer-context';
 import { PROVIDER_LABEL } from './provider-identity';
 import type { AssistAction, AssistProposal } from '../types';
+
+/**
+ * Three dots, pulsing in sequence — the brand's own "thinking" indicator
+ * instead of a generic spinner, per WP-8. Pure CSS (Tailwind's built-in
+ * `animate-bounce`, staggered per dot via `animation-delay`), so it costs
+ * nothing beyond the app shell's existing reduced-motion handling.
+ */
+function ThinkingDots(): ReactNode {
+  return (
+    <span aria-hidden="true" className="inline-flex items-center gap-0.5">
+      {[0, 1, 2].map((index) => (
+        <span
+          key={index}
+          className="bg-accent size-1 animate-bounce rounded-full motion-reduce:animate-none"
+          style={{ animationDelay: `${index * 0.15}s` }}
+        />
+      ))}
+    </span>
+  );
+}
 
 export interface AssistMenuProps {
   /** `null` targets the master draft. */
@@ -73,37 +95,42 @@ export function AssistMenu({ scope, currentText, runAssist }: AssistMenuProps): 
           <Button
             variant="ghost"
             size="sm"
-            loading={busy}
-            loadingLabel={t.full('composer.ai.working')}
-            iconStart={<Sparkle aria-hidden />}
+            disabled={busy}
+            iconStart={busy ? <ThinkingDots /> : <Sparkle aria-hidden />}
           >
-            {t.full('composer.ai.title')}
+            {busy ? t.full('composer.ai.working') : t.full('composer.ai.title')}
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
-          <DropdownMenuLabel>{t.full('composerWeb.assist.menuLabel')}</DropdownMenuLabel>
-          <DropdownMenuItem onSelect={() => run('make_concise')}>
-            {t.full('composer.ai.makeConcise')}
-          </DropdownMenuItem>
-          {account ? (
-            <DropdownMenuItem onSelect={() => run('adapt_for_platform')}>
-              {t.full('composer.ai.adaptForPlatform', {
-                provider: PROVIDER_LABEL[account.provider],
-              })}
-            </DropdownMenuItem>
-          ) : null}
-          <DropdownMenuItem onSelect={() => run('transcreate')}>
-            {t.full('composer.ai.transcreate', { language: 'ja' })}
-          </DropdownMenuItem>
-          <DropdownMenuSeparator />
-          <DropdownMenuItem onSelect={() => run('check_claims')}>
-            {t.full('composer.ai.checkClaims')}
-          </DropdownMenuItem>
-          <DropdownMenuItem onSelect={() => run('write_alt_text')}>
-            {t.full('composer.ai.writeAltText')}
-          </DropdownMenuItem>
+          <StaggerList selector="[data-stagger-item]" stagger={0.02} y={6}>
+            <>
+              <DropdownMenuLabel>{t.full('composerWeb.assist.menuLabel')}</DropdownMenuLabel>
+              <DropdownMenuItem data-stagger-item onSelect={() => run('make_concise')}>
+                {t.full('composer.ai.makeConcise')}
+              </DropdownMenuItem>
+              {account ? (
+                <DropdownMenuItem data-stagger-item onSelect={() => run('adapt_for_platform')}>
+                  {t.full('composer.ai.adaptForPlatform', {
+                    provider: PROVIDER_LABEL[account.provider],
+                  })}
+                </DropdownMenuItem>
+              ) : null}
+              <DropdownMenuItem data-stagger-item onSelect={() => run('transcreate')}>
+                {t.full('composer.ai.transcreate', { language: 'ja' })}
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem data-stagger-item onSelect={() => run('check_claims')}>
+                {t.full('composer.ai.checkClaims')}
+              </DropdownMenuItem>
+              <DropdownMenuItem data-stagger-item onSelect={() => run('write_alt_text')}>
+                {t.full('composer.ai.writeAltText')}
+              </DropdownMenuItem>
+            </>
+          </StaggerList>
         </DropdownMenuContent>
       </DropdownMenu>
+
+      {busy ? <VisuallyHidden role="status">{t.full('composer.ai.working')}</VisuallyHidden> : null}
 
       {failed ? (
         <span className="text-body-sm text-destructive-fg">

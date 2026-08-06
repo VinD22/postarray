@@ -25,6 +25,10 @@ export interface BorderTokens {
   readonly default: string;
   readonly strong: string;
   readonly focus: string;
+  /** The 2px poster outline. Mandatory boundary for cta/blush fills, which
+   * fail contrast as a sole edge on light surfaces (see documentedContrastPairs
+   * comment below). */
+  readonly bold: string;
 }
 
 export interface TextTokens {
@@ -49,6 +53,23 @@ export interface StatusTone {
   readonly fg: string;
   readonly bg: string;
   readonly border: string;
+}
+
+/** Sunshine-yellow CTA fills. Never used as text — ink (`on`) is the only
+ * legible foreground for this family. Identical in both themes. */
+export interface CtaTokens {
+  readonly bg: string;
+  readonly bgHover: string;
+  readonly bgActive: string;
+  readonly on: string;
+}
+
+/** Bubblegum-pink decorative/badge fills. Never used as text — ink (`on`) is
+ * the only legible foreground for this family. Identical in both themes. */
+export interface BlushTokens {
+  readonly bg: string;
+  readonly bgHover: string;
+  readonly on: string;
 }
 
 export interface DestructiveTone extends StatusTone {
@@ -92,6 +113,8 @@ export interface ThemeTokens {
   readonly border: BorderTokens;
   readonly text: TextTokens;
   readonly accent: AccentTokens;
+  readonly cta: CtaTokens;
+  readonly blush: BlushTokens;
   readonly status: StatusTokens;
   /** Provider identity. Permitted on 8px dots and 1px rules. Never a surface. */
   readonly brand: BrandTokens;
@@ -99,49 +122,61 @@ export interface ThemeTokens {
 
 export const lightTheme: ThemeTokens = {
   surface: {
-    canvas: '#FAF9F7',
+    canvas: '#F7F7F6',
     raised: '#FFFFFF',
-    sunken: '#F1EFEA',
+    sunken: '#EFEFEC',
     overlay: '#FFFFFF',
-    hover: '#F1EFEA',
-    active: '#E9E6E0',
-    inverted: '#211E1B',
+    hover: '#EFEFEC',
+    active: '#E9E9E5',
+    inverted: '#131313',
   },
   border: {
-    subtle: '#EFECE6',
-    default: '#DCD7CF',
-    strong: '#8C857A',
-    focus: '#12585F',
+    subtle: '#ECECE9',
+    default: '#DFDFDB',
+    strong: '#6F6F6B',
+    focus: '#2951E6',
+    bold: '#131313',
   },
   text: {
-    primary: '#1B1917',
-    secondary: '#524C45',
-    tertiary: '#6E675F',
-    disabled: '#8C857A',
-    inverted: '#FAF9F7',
-    accent: '#12585F',
+    primary: '#131313',
+    secondary: '#454545',
+    tertiary: '#5C5C5A',
+    disabled: '#83837F',
+    inverted: '#F7F7F6',
+    accent: '#2951E6',
   },
   accent: {
-    default: '#12585F',
-    hover: '#0E4A50',
-    active: '#0A3B40',
-    subtleBg: '#E2EFEF',
-    subtleBgHover: '#D3E5E5',
+    default: '#2951E6',
+    hover: '#1E3FC4',
+    active: '#16309B',
+    subtleBg: '#DDE5FC',
+    subtleBgHover: '#D6E0FB',
     onAccent: '#FFFFFF',
   },
+  cta: {
+    bg: '#FAD84C',
+    bgHover: '#F2CB2F',
+    bgActive: '#E8BE1D',
+    on: '#131313',
+  },
+  blush: {
+    bg: '#F7B7D4',
+    bgHover: '#F2A2C8',
+    on: '#131313',
+  },
   status: {
-    success: { fg: '#1C5B3C', bg: '#E5F1E9', border: '#4F8A6B' },
-    warning: { fg: '#7A4400', bg: '#FBF0DA', border: '#A9791F' },
+    success: { fg: '#0E6B31', bg: '#DCF3E1', border: '#2E9E54' },
+    warning: { fg: '#805200', bg: '#FCEFC7', border: '#B98300' },
     destructive: {
-      fg: '#9A2016',
-      bg: '#FCE9E6',
-      border: '#C05B4C',
-      solid: '#9A2016',
-      solidHover: '#82190F',
-      solidActive: '#6B1309',
+      fg: '#C81E12',
+      bg: '#FBE5E2',
+      border: '#D9564B',
+      solid: '#C81E12',
+      solidHover: '#A81409',
+      solidActive: '#8C0F06',
       on: '#FFFFFF',
     },
-    info: { fg: '#2A4C72', bg: '#E8EFF6', border: '#6388AE' },
+    info: { fg: '#6636D6', bg: '#EAE3FB', border: '#8B66E0' },
   },
   brand: {
     x: '#0F0F0F',
@@ -158,49 +193,62 @@ export const lightTheme: ThemeTokens = {
 
 export const darkTheme: ThemeTokens = {
   surface: {
-    canvas: '#191715',
-    raised: '#211E1B',
-    sunken: '#121110',
-    overlay: '#272320',
-    hover: '#2A2622',
-    active: '#322D28',
-    inverted: '#F2EFE9',
+    canvas: '#0D0F1E',
+    raised: '#15182C',
+    sunken: '#080911',
+    overlay: '#1B1F38',
+    hover: '#1F2340',
+    active: '#262B4C',
+    inverted: '#F2F2EF',
   },
   border: {
-    subtle: '#2A2723',
-    default: '#3A352F',
-    strong: '#7A7168',
-    focus: '#4FB6A8',
+    subtle: '#232741',
+    default: '#2E3354',
+    strong: '#7D8199',
+    focus: '#8FA5FF',
+    bold: '#E4E6EE',
   },
   text: {
-    primary: '#F2EFE9',
-    secondary: '#B5AEA3',
-    tertiary: '#9A9184',
-    disabled: '#7A7168',
-    inverted: '#17150F',
-    accent: '#4FB6A8',
+    primary: '#F2F2EF',
+    secondary: '#B9BCC8',
+    tertiary: '#969AAB',
+    disabled: '#6C7085',
+    inverted: '#131313',
+    accent: '#8FA5FF',
   },
   accent: {
-    default: '#4FB6A8',
-    hover: '#68C7BA',
-    active: '#3C9E91',
-    subtleBg: '#16302E',
-    subtleBgHover: '#1D3E3B',
-    onAccent: '#0A2422',
+    default: '#8FA5FF',
+    hover: '#A9BAFF',
+    active: '#7B93FA',
+    subtleBg: '#1C2350',
+    subtleBgHover: '#232C60',
+    onAccent: '#131313',
+  },
+  /* CTA / blush — identical to light; see comment in theme.css section 2. */
+  cta: {
+    bg: '#FAD84C',
+    bgHover: '#F2CB2F',
+    bgActive: '#E8BE1D',
+    on: '#131313',
+  },
+  blush: {
+    bg: '#F7B7D4',
+    bgHover: '#F2A2C8',
+    on: '#131313',
   },
   status: {
-    success: { fg: '#7CC79B', bg: '#16281E', border: '#57906F' },
-    warning: { fg: '#E0AE5E', bg: '#2B2114', border: '#977540' },
+    success: { fg: '#57C97C', bg: '#0E2417', border: '#379A5C' },
+    warning: { fg: '#E9B949', bg: '#2A2108', border: '#A98416' },
     destructive: {
-      fg: '#F08A7C',
-      bg: '#2E1A17',
-      border: '#AC6053',
-      solid: '#DC7365',
-      solidHover: '#E9877A',
-      solidActive: '#CE6154',
-      on: '#170F0D',
+      fg: '#FF7A6E',
+      bg: '#2D100C',
+      border: '#C05248',
+      solid: '#FF7A6E',
+      solidHover: '#FF958B',
+      solidActive: '#F0655A',
+      on: '#131313',
     },
-    info: { fg: '#8FB6DD', bg: '#182430', border: '#5C7F9B' },
+    info: { fg: '#B79BFF', bg: '#1F1640', border: '#8468C9' },
   },
   brand: {
     x: '#E8E8E8',
@@ -248,7 +296,7 @@ export const typeScale: Readonly<Record<TypeScaleKey, TypeStep>> = {
     fontSize: '2.5rem',
     lineHeight: '2.75rem',
     letterSpacing: '-0.022em',
-    fontWeight: 620,
+    fontWeight: 700,
   },
   titleLg: {
     fontSize: '1.75rem',
@@ -311,8 +359,12 @@ export const fontFamilies = {
     "'Inter Variable', 'Inter', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', " +
     "'Noto Sans', 'Noto Sans Arabic', 'Noto Sans Hebrew', 'Noto Sans JP', " +
     "'Noto Sans KR', 'Noto Sans SC', sans-serif",
-  serif: "'Source Serif 4', 'Iowan Old Style', Georgia, serif",
+  // The Source Serif 4 webfont is no longer loaded; this is the system serif
+  // fallback stack that `font-serif` usages render on until they migrate to
+  // `font-display`.
+  serif: "'Iowan Old Style', Georgia, serif",
   mono: "'JetBrains Mono', ui-monospace, 'SFMono-Regular', 'Menlo', 'Consolas', monospace",
+  display: "'Bricolage Grotesque', 'Inter Variable', 'Inter', ui-sans-serif, system-ui, sans-serif",
 } as const;
 
 /* --------------------------------------------------------------------------
@@ -343,13 +395,16 @@ export const SPACING_BASE_PX = 4;
 export const TOUCH_TARGET_MIN_PX = 44;
 
 export const radii = {
-  xs: '3px',
-  sm: '4px',
-  md: '6px',
-  lg: '8px',
-  xl: '10px',
-  /** Marketing imagery only. Product controls stay at 6-10px. */
-  editorial: '14px',
+  xs: '0px',
+  sm: '2px',
+  md: '4px',
+  lg: '6px',
+  xl: '8px',
+  /** Marketing imagery / poster-style panels only. Product controls stay at
+   * 2-8px — the "sharpened" near-square scale is the loud aesthetic's edge. */
+  editorial: '20px',
+  /** Alias of `editorial`, matching `--radius-poster` in theme.css. */
+  poster: '20px',
   full: '9999px',
 } as const;
 
@@ -370,19 +425,28 @@ export const zIndex = {
   popover: 70,
   toast: 80,
   tooltip: 90,
+  /** The custom cursor dot/ring on marketing. Above everything else. */
+  cursor: 100,
 } as const;
 
+/** Functional tier (unchanged, in-app): 80-200ms. Expressive tier (marketing /
+ * overlay choreography): 400-900ms with overshoot/expo eases below. */
 export const durations = {
   instant: 80,
   fast: 120,
   base: 160,
   slow: 200,
+  expressiveSm: 400,
+  expressiveMd: 650,
+  expressiveLg: 900,
 } as const;
 
 export const easings = {
   standard: 'cubic-bezier(0.2, 0, 0.15, 1)',
   entrance: 'cubic-bezier(0.05, 0.7, 0.1, 1)',
   exit: 'cubic-bezier(0.3, 0, 0.8, 0.15)',
+  outBack: 'cubic-bezier(0.34, 1.56, 0.64, 1)',
+  outExpo: 'cubic-bezier(0.16, 1, 0.3, 1)',
 } as const;
 
 /** The widths every screen is designed and tested at. */
@@ -583,5 +647,58 @@ export const documentedContrastPairs: readonly ContrastPair[] = [
     foreground: (t) => t.text.secondary,
     background: (t) => t.surface.hover,
     purpose: 'body',
+  },
+  /*
+   * CTA (yellow) and blush (pink) fills. These are documented as fg/bg pairs
+   * ONLY for their own ink-on-fill foreground (`cta.on` / `blush.on`) and for
+   * the mandatory `border.bold` outline against the canvas/raised surfaces it
+   * sits on. We deliberately do NOT add `cta.bg` / `blush.bg` as a foreground
+   * (or a border) directly against `surface.*` — yellow on paper is 1.30:1
+   * and pink on paper is 1.54:1, both well under the 3:1 ui-boundary floor.
+   * That failure is by design: cta/blush fills are never a standalone edge:
+   * every cta/blush surface ships with the 2px `--border-bold` outline as its
+   * actual boundary, which is what the `border.bold` pairs below verify.
+   */
+  {
+    id: 'cta.on on cta.bg',
+    foreground: (t) => t.cta.on,
+    background: (t) => t.cta.bg,
+    purpose: 'body',
+  },
+  {
+    id: 'cta.on on cta.bgHover',
+    foreground: (t) => t.cta.on,
+    background: (t) => t.cta.bgHover,
+    purpose: 'body',
+  },
+  {
+    id: 'cta.on on cta.bgActive',
+    foreground: (t) => t.cta.on,
+    background: (t) => t.cta.bgActive,
+    purpose: 'body',
+  },
+  {
+    id: 'blush.on on blush.bg',
+    foreground: (t) => t.blush.on,
+    background: (t) => t.blush.bg,
+    purpose: 'body',
+  },
+  {
+    id: 'blush.on on blush.bgHover',
+    foreground: (t) => t.blush.on,
+    background: (t) => t.blush.bgHover,
+    purpose: 'body',
+  },
+  {
+    id: 'border.bold on surface.canvas',
+    foreground: (t) => t.border.bold,
+    background: (t) => t.surface.canvas,
+    purpose: 'ui-boundary',
+  },
+  {
+    id: 'border.bold on surface.raised',
+    foreground: (t) => t.border.bold,
+    background: (t) => t.surface.raised,
+    purpose: 'ui-boundary',
   },
 ];

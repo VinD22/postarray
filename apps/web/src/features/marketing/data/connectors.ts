@@ -1,6 +1,8 @@
 import type { CapabilityState } from '@relay/design-system/patterns';
 import type { MessageKey } from '@relay/i18n/translate';
 
+import type { ProviderId } from '@/lib/api/types';
+
 /**
  * The public connector capability data.
  *
@@ -69,7 +71,9 @@ export interface CapabilityCell {
 }
 
 export interface ConnectorRecord {
-  readonly id: string;
+  /** The provider this record documents. Typed so the page cannot name one we
+   *  do not have a connector for. */
+  readonly id: ProviderId;
   readonly nameKey: MessageKey;
   readonly accountTypesKey: MessageKey;
   readonly restrictionKey: MessageKey;

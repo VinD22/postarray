@@ -1,5 +1,6 @@
 import { en } from './en/index';
 import type { EnglishCatalog, MessageKey } from './en/index';
+import { createPseudoCatalog, isPseudoLocale } from '../pseudo';
 
 export { en };
 export type { EnglishCatalog, MessageKey };
@@ -25,10 +26,30 @@ export type CatalogLoader = () => Promise<PartialCatalog>;
  */
 export const CATALOGS: Readonly<Record<string, CatalogLoader>> = {
   en: async () => en,
+  es: async () => (await import('./es/index')).es,
+  'es-419': async () => (await import('./es-419/index')).es419,
+  'pt-BR': async () => (await import('./pt-BR/index')).ptBR,
+  fr: async () => (await import('./fr/index')).fr,
+  de: async () => (await import('./de/index')).de,
+  it: async () => (await import('./it/index')).it,
+  nl: async () => (await import('./nl/index')).nl,
+  pl: async () => (await import('./pl/index')).pl,
+  cs: async () => (await import('./cs/index')).cs,
+  sv: async () => (await import('./sv/index')).sv,
+  tr: async () => (await import('./tr/index')).tr,
+  ru: async () => (await import('./ru/index')).ru,
+  uk: async () => (await import('./uk/index')).uk,
+  ar: async () => (await import('./ar/index')).ar,
+  he: async () => (await import('./he/index')).he,
+  hi: async () => (await import('./hi/index')).hi,
 };
 
 /** Load a catalog by tag. Unknown or untranslated tags resolve to English. */
 export async function loadCatalog(locale: string): Promise<PartialCatalog> {
+  if (isPseudoLocale(locale)) {
+    return createPseudoCatalog(locale.toLowerCase() === 'en-xb' ? 'bidi' : 'accented');
+  }
+
   const loader = CATALOGS[locale] ?? CATALOGS[locale.split('-')[0] ?? ''];
   if (!loader) {
     return en;

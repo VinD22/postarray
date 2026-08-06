@@ -15,7 +15,7 @@ import { useTranslations } from '@relay/i18n/react';
 import { EntryChip } from './entry-chip';
 import { useCalendarFormat } from './format';
 import { entryKey, needsAttention, sortEntries } from './filters';
-import { toWallClock } from './date-range';
+import { isSameDay, toWallClock } from './date-range';
 import type { CalendarEntry, CalendarRange } from './types';
 
 const VISIBLE_PER_CELL = 3;
@@ -72,6 +72,7 @@ export function CalendarMonth({
             const visible = dayEntries.slice(0, VISIBLE_PER_CELL);
             const overflow = dayEntries.length - visible.length;
             const attention = dayEntries.some(needsAttention);
+            const today = isSameDay(day, new Date(), timeZone);
 
             return (
               <div
@@ -86,8 +87,10 @@ export function CalendarMonth({
                       count: dayEntries.length,
                     })}
                     className={cn(
-                      'text-body-sm rounded-sm px-1 tabular-nums no-underline',
-                      'text-text-secondary hover:bg-surface-hover hover:text-text-primary',
+                      'text-body-sm rounded-full px-1.5 tabular-nums no-underline',
+                      today
+                        ? 'bg-cta text-cta-on border-border-bold border-2 font-semibold'
+                        : 'text-text-secondary hover:bg-surface-hover hover:text-text-primary',
                       focusRingInset,
                     )}
                   >

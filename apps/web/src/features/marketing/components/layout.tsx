@@ -23,10 +23,30 @@ export function Container({
   className?: string;
 }): ReactNode {
   return (
-    <div className={cn('mx-auto w-full max-w-[82rem] px-5 sm:px-7 lg:px-10 2xl:px-14', className)}>
+    <div
+      className={cn(
+        'mx-auto w-full max-w-[var(--layout-marketing-max)] px-[var(--layout-gutter)]',
+        className,
+      )}
+    >
       {children}
     </div>
   );
+}
+
+/**
+ * A container that opts out of the marketing width cap entirely — for
+ * marquees and pinned scenes that need the full viewport, not the editorial
+ * measure the rest of the site holds to.
+ */
+export function FullBleed({
+  children,
+  className,
+}: {
+  children: ReactNode;
+  className?: string;
+}): ReactNode {
+  return <div className={cn('w-full', className)}>{children}</div>;
 }
 
 export interface SectionProps {

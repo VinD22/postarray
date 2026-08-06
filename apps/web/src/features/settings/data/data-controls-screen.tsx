@@ -2,7 +2,7 @@
 
 import { useState, type ReactNode } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import Link from 'next/link';
+import { Link } from '@/components/link';
 import { Button, Checkbox } from '@relay/design-system/primitives';
 import { ConfirmDialog, Notice, PageHeader } from '@relay/design-system/patterns';
 import { useTranslations } from '@relay/i18n/react';

@@ -52,7 +52,7 @@ export const SheetContent = forwardRef<HTMLDivElement, SheetContentProps>(functi
         className={cn(
           'fixed z-(--z-index-modal) flex flex-col',
           'border-border-default bg-surface-overlay shadow-overlay',
-          'relay-anim-fade-in',
+          'relay-anim-enter-sheet',
           sideClasses[side],
           className,
         )}

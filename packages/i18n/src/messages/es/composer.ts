@@ -1,0 +1,213 @@
+/** Composer: master draft, per target overrides, previews, validation, cost. */
+export const composerMessages = {
+  'composer.title': 'componer',
+  'composer.titleWithBrand': 'Redactar for {brand}',
+  'composer.master.label': 'borrador maestro',
+  'composer.master.description':
+    'Escribe una vez aquí. Los cambios compatibles llegan a todos los objetivos seleccionados. Abra un objetivo para escribir una versión que solo recibirá esa cuenta.',
+  'composer.master.globalEdit': 'Edición global',
+  'composer.master.placeholder': '¿Qué quieres publicar?',
+  'composer.brief.label': 'Breve',
+  'composer.brief.placeholder': 'Describe la idea, la audiencia y el resultado que deseas.',
+  'composer.sources.label': 'Referencias fuente',
+  'composer.sources.empty': 'No se adjuntan fuentes.',
+  'composer.campaign.label': 'Campaña',
+  'composer.campaign.none': 'Sin campaña',
+  'composer.contentLocale.label': 'Idioma del contenido',
+  'composer.contentLocale.help':
+    'El idioma de la publicación. Esto es independiente del idioma de su interfaz.',
+  'composer.market.label': 'Mercado de audiencia',
+
+  'composer.targets.title': 'Objetivos',
+  'composer.targets.count':
+    '{count, plural, =0 {No hay cuentas seleccionadas} one {# cuenta} many {# cuentas} other {# cuentas}}',
+  'composer.targets.publishSummary':
+    '{count, plural, one {Esto se publicará en # cuenta} many {Esto se publicará en # cuentas} other {Esto se publicará en # cuentas}} {when, select, now {now} scheduled {a la hora programada} other {}}',
+  'composer.targets.add': 'Agregar cuentas',
+  'composer.targets.empty': 'Seleccione al menos una cuenta para publicar.',
+  'composer.targets.state.ready': 'Listo',
+  'composer.targets.state.inherited': 'Heredado del maestro',
+  'composer.targets.state.overridden': 'Anulado',
+  'composer.targets.state.warning': 'Comprobar antes de publicar',
+  'composer.targets.state.error': 'Necesita una solución',
+  'composer.targets.state.approvalNeeded': 'Aprobación necesaria',
+  'composer.targets.overrideBadge': 'Anular',
+  'composer.targets.resetConfirm.title': '¿Restablecer este objetivo al borrador maestro?',
+  'composer.targets.resetConfirm.body':
+    'La copia, los medios y la configuración que cambió for {account} serán reemplazados por el borrador maestro. Otros objetivos no se ven afectados.',
+  'composer.targets.divergence':
+    '{count, plural, one {# objetivo difiere del borrador maestro} many {# objetivos difieren del borrador maestro} other {# objetivos difieren del borrador maestro}}',
+
+  'composer.applyToAll.title': 'Aplicar a todos los objetivos',
+  'composer.applyToAll.compatible':
+    '{count, plural, one {# campo es compatible con cada objetivo seleccionado} many {# campos son compatibles con cada objetivo seleccionado} other {# campos son compatibles con cada objetivo seleccionado}}',
+  'composer.applyToAll.incompatible':
+    '{count, plural, one {# campo no se puede aplicar y permanece por objetivo} many {# campos no se puede aplicar y permanece por objetivo} other {# campos no se puede aplicar y permanece por objetivo}}',
+  'composer.applyToAll.creates': 'La aplicación crea una versión explícita para cada objetivo.',
+
+  'composer.editor.label': 'Publicar texto',
+  'composer.editor.characterCount': '{used} of {limit} caracteres',
+  'composer.editor.characterCountOver': '{over} caracteres más de the {limit} límite de caracteres',
+  'composer.editor.characterCountUnknown': 'Límite de caracteres no disponible para esta cuenta',
+  'composer.editor.remaining':
+    '{count, plural, one {# caracteres restantes} many {# caracteres restantes} other {# caracteres restantes}}',
+  'composer.editor.hashtagCount':
+    '{count, plural, one {# hashtag} many {# hashtags} other {# hashtags}}',
+  'composer.editor.formatting': 'Formato',
+  'composer.editor.emoji': 'emojis',
+  'composer.editor.mention': 'Mención',
+  'composer.editor.link': 'Enlace',
+
+  'composer.mentions.search': 'Buscar personas, páginas y empresas',
+  'composer.mentions.searching': 'Searching {provider}',
+  'composer.mentions.resolved': 'Tagged {label} on {provider}',
+  'composer.mentions.unresolved':
+    'Esta mención aún no se ha relacionado con la cuenta a {provider}. Se publicará como texto sin formato hasta que seleccione un resultado.',
+  'composer.mentions.noResults': 'No hay cuentas coincidentes on {provider}.',
+  'composer.mentions.unsupported': 'El etiquetado nativo no está disponible para esta cuenta.',
+
+  'composer.destination.label': 'Destino',
+  'composer.destination.placeholder': 'Elige donde se publica',
+  'composer.destination.community': 'Comunidad',
+  'composer.destination.board': 'tablero',
+  'composer.destination.group': 'grupo',
+  'composer.destination.page': 'Página',
+  'composer.destination.organization': 'Organización',
+  'composer.destination.channel': 'canal',
+  'composer.destination.refresh': 'Actualizar destinos',
+  'composer.destination.lastRefreshed': 'Destinos refreshed {relativeTime}',
+
+  'composer.media.title': 'Medios',
+  'composer.media.count': '{count, plural, one {# archivo} many {# archivos} other {# archivos}}',
+  'composer.media.dropHint': 'Arrastre archivos aquí o explore su biblioteca.',
+  'composer.media.inheritFromMaster': 'Usando los medios maestros',
+  'composer.media.overridden': 'Este objetivo utiliza sus propios medios.',
+  'composer.media.altText.label': 'Texto alternativo',
+  'composer.media.altText.placeholder':
+    'Describe la imagen para las personas que usan un lector de pantalla.',
+  'composer.media.altText.missing': 'Falta el texto alternativo.',
+  'composer.media.altText.waive': 'Esta imagen no necesita texto alternativo.',
+  'composer.media.altText.generate': 'Escribir texto alternativo',
+  'composer.media.crop': 'Cultivo',
+  'composer.media.resize': 'Cambiar tamaño',
+  'composer.media.rotate': 'rotar',
+  'composer.media.compress': 'Comprimir',
+  'composer.media.convertFormat': 'Convertir formato',
+  'composer.media.thumbnail': 'Miniatura',
+  'composer.media.aspectPreset': 'Preajuste de plataforma',
+  'composer.media.original': 'Originales',
+  'composer.media.originalPreserved':
+    'Se conserva el archivo original. Las ediciones crean una nueva versión.',
+  'composer.media.uploading': 'Uploading {name}',
+  'composer.media.processing': 'Preparing {name}',
+  'composer.media.rights.label': 'Derechos y consentimiento',
+  'composer.media.rights.confirm':
+    'Tengo los derechos para publicar este medio, incluidas las personas, la música, los logotipos y las marcas que contiene.',
+
+  'composer.sequence.title': 'Comentarios e hilo',
+  'composer.sequence.root': 'Publicación principal',
+  'composer.sequence.item': 'Item {position}',
+  'composer.sequence.add': 'Agregar comentario o elemento del hilo',
+  'composer.sequence.delayLabel': 'Retraso después del elemento anterior',
+  'composer.sequence.delayImmediate': 'Inmediatamente',
+  'composer.sequence.delayMinutes':
+    '{count, plural, one {# minutos} many {# minutos} other {# minutos}}',
+  'composer.sequence.delayCustom': 'Retraso personalizado',
+  'composer.sequence.accountLabel': 'Publicar este artículo como',
+  'composer.sequence.unsupported': 'Esta cuenta no admite elementos de seguimiento programados.',
+
+  'composer.repeat.title': 'repetir',
+  'composer.repeat.off': 'no repetir',
+  'composer.repeat.everyDays':
+    '{count, plural, one {Todos los días} many {Cada # días} other {Cada # días}}',
+  'composer.repeat.endLabel': 'deja de repetir',
+  'composer.repeat.endOnDate': 'en una cita',
+  'composer.repeat.endAfterCount': 'Después de varias publicaciones',
+  'composer.repeat.endRequired': 'Elija una fecha de finalización o un número de repeticiones.',
+  'composer.repeat.summary':
+    'Repeats {cadence} until {end}. Cada ocurrencia obtiene su propia aprobación y recibo.',
+
+  'composer.links.title': 'Enlaces',
+  'composer.links.keepOriginal': 'Mantener la URL original',
+  'composer.links.track': 'Reemplazar con un enlace corto rastreado',
+  'composer.links.utm': 'Parámetros UTM',
+  'composer.links.domain': 'Dominio de enlace',
+  'composer.links.finalUrl': 'Esto publicará as {url}',
+  'composer.links.frozenAtApproval':
+    'La URL corta exacta y el destino están congelados en la versión aprobada.',
+
+  'composer.signature.title': 'Firma',
+  'composer.signature.none': 'Sin firma',
+  'composer.signature.autoApplied': 'Signature {name} se agregó automáticamente. Puedes cambiarlo.',
+
+  'composer.set.title': 'Conjuntos',
+  'composer.set.startFrom': 'Empezar desde un conjunto',
+  'composer.set.continueWithout': 'Continuar sin un conjunto',
+  'composer.set.applied': 'Aplicado Set {name}. Este borrador ahora es independiente del Conjunto.',
+
+  'composer.validation.title': 'Validación',
+  'composer.validation.clean': 'No se encontraron problemas para los objetivos seleccionados.',
+  'composer.validation.issueCount':
+    '{count, plural, one {# problema} many {# problemas} other {# problemas}} across {targets, plural, one {# objetivo} many {# objetivos} other {# objetivos}}',
+  'composer.validation.blocking': 'Esto debe solucionarse antes de programar.',
+  'composer.validation.warning': 'Comprueba esto antes de publicar.',
+  'composer.validation.revalidated':
+    'Se volvió a verificar con la plataforma actual limits {relativeTime}.',
+
+  'composer.preview.title': 'Vista previa',
+  'composer.preview.forAccount': 'Vista previa for {account} on {provider}',
+  'composer.preview.approximate':
+    'Esta vista previa utiliza las reglas de la plataforma que hemos registrado. La publicación publicada puede diferir si cambia la plataforma.',
+  'composer.preview.unavailable': 'Una vista previa real aún no está disponible para esta cuenta.',
+
+  'composer.cost.title': 'Costo estimado del proveedor',
+  'composer.cost.estimate': '{provider} estimates {amount} de uso de API para esta publicación.',
+  'composer.cost.linkSurcharge':
+    '{provider} cobra más por las publicaciones que contienen una URL. Eliminar el enlace reduce la estimación.',
+  'composer.cost.bulkWarning':
+    '{count, plural, one {# publicación} many {# publicaciones} other {# publicaciones}} en una sola acción. Revise el presupuesto antes de continuar.',
+  'composer.cost.reconciled': 'El uso real se concilia después de la publicación.',
+  'composer.cost.none': 'No hay costo de proveedor medido para esta publicación.',
+
+  'composer.autosave.saving': 'Ahorro',
+  'composer.autosave.saved': 'Saved {relativeTime}',
+  'composer.autosave.offline':
+    'Sin conexión. Su borrador se guarda en este dispositivo y se sincronizará.',
+  'composer.autosave.conflict':
+    '{name} editó este borrador mientras escribías. Revise ambas versiones antes de guardar.',
+  'composer.autosave.failed': 'No se pudo guardar. Tu texto todavía está aquí. Reintentando.',
+
+  'composer.ai.title': 'ayudar',
+  'composer.ai.makeConcise': 'Hazlo más conciso',
+  'composer.ai.adaptForPlatform': 'Adaptar for {provider}',
+  'composer.ai.transcreate': 'Transcrear to {language}',
+  'composer.ai.checkClaims': 'Consultar reclamaciones',
+  'composer.ai.writeAltText': 'Escribir texto alternativo',
+  'composer.ai.suggestHooks': 'Sugerir ganchos',
+  'composer.ai.suggestCta': 'Sugerir un llamado a la acción',
+  'composer.ai.diffTitle': 'Cambio propuesto',
+  'composer.ai.diffHelp': 'Nada cambia hasta que lo aceptas.',
+  'composer.ai.working': 'trabajando en ello',
+  'composer.ai.sources':
+    'Basado en on {count, plural, one {# fuente} many {# fuentes} other {# fuentes}} que aprobó',
+  'composer.ai.uncertain':
+    'Esta frase no tiene un equivalente limpio in {language}. Revíselo con un hablante nativo antes de publicarlo.',
+
+  'composer.schedule.title': 'Horario',
+  'composer.schedule.dateLabel': 'Fecha',
+  'composer.schedule.timeLabel': 'tiempo',
+  'composer.schedule.timeZoneLabel': 'Zona horaria',
+  'composer.schedule.nextFreeSlot': 'Próximo espacio libre',
+  'composer.schedule.localAndUtc': '{local} in {timeZone}. {utc} UTC.',
+  'composer.schedule.dstWarning':
+    'Los relojes cambian in {timeZone} en esta fecha. Esta publicación se ejecuta at {local}, que is {utc} UTC.',
+  'composer.schedule.pastWarning': 'Ese tiempo ha pasado. Elija un momento posterior.',
+  'composer.schedule.confirmTitle': 'Confirmar antes de programar',
+  'composer.schedule.confirmPublishNow': 'Confirmar antes de publicar ahora',
+  'composer.schedule.approverLabel': 'Aprobador',
+  'composer.schedule.policyLabel': 'Política de aprobación',
+  'composer.schedule.duplicateWarning':
+    'Se publicó contenido similar el to {account} {relativeTime}. Publicarlo nuevamente puede infringir las reglas de la plataforma sobre contenido duplicado.',
+  'composer.schedule.cadenceWarning':
+    '{account} ya has {count, plural, one {# post} many {# posts} other {# posts}} programados para ese día.',
+} as const;

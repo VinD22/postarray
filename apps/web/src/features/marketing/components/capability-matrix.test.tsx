@@ -5,8 +5,8 @@ import { CapabilityMatrix } from './capability-matrix';
 import { CAPABILITY_COLUMNS, CONNECTORS } from '../data/connectors';
 
 describe('CapabilityMatrix', () => {
-  it('renders a real table with a caption, column headers and row headers', () => {
-    render(<CapabilityMatrix />);
+  it('renders a real table with a caption, column headers and row headers', async () => {
+    render(await CapabilityMatrix({ locale: 'en' }));
 
     const table = screen.getByRole('table');
     expect(within(table).getByText(/Each cell names its state in words/i)).toBeInTheDocument();
@@ -16,8 +16,8 @@ describe('CapabilityMatrix', () => {
     expect(within(table).getAllByRole('rowheader')).toHaveLength(CAPABILITY_COLUMNS.length);
   });
 
-  it('states every cell in words rather than by colour alone', () => {
-    render(<CapabilityMatrix />);
+  it('states every cell in words rather than by colour alone', async () => {
+    render(await CapabilityMatrix({ locale: 'en' }));
 
     const cells = screen.getAllByRole('cell');
     expect(cells).toHaveLength(CONNECTORS.length * CAPABILITY_COLUMNS.length);
@@ -26,15 +26,15 @@ describe('CapabilityMatrix', () => {
     }
   });
 
-  it('separates what a platform does not offer from what is not built yet', () => {
-    render(<CapabilityMatrix />);
+  it('separates what a platform does not offer from what is not built yet', async () => {
+    render(await CapabilityMatrix({ locale: 'en' }));
 
     expect(screen.getAllByText('Not built yet').length).toBeGreaterThan(0);
     expect(screen.getAllByText('Platform does not offer it').length).toBeGreaterThan(0);
   });
 
-  it('links every qualified cell to a numbered note that exists on the page', () => {
-    const { container } = render(<CapabilityMatrix />);
+  it('links every qualified cell to a numbered note that exists on the page', async () => {
+    const { container } = render(await CapabilityMatrix({ locale: 'en' }));
 
     const references = Array.from(container.querySelectorAll('a[href^="#capability-note-"]'));
     expect(references.length).toBeGreaterThan(0);

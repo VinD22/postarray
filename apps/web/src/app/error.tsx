@@ -4,9 +4,14 @@ import { useEffect } from 'react';
 
 import { ErrorState } from '@relay/design-system/patterns';
 import { Button } from '@relay/design-system/primitives';
+import { createTranslator, en } from '@relay/i18n';
 
 import { ApiError } from '@/lib/api';
-import { useTranslations } from '@/lib/i18n';
+
+// Next renders this boundary outside the route layout that mounts I18nProvider.
+// It must therefore use the controlling catalog directly, otherwise a real
+// route failure is hidden by a second “provider missing” failure.
+const fallbackTranslator = createTranslator('en', en);
 
 /**
  * The route error boundary.
@@ -22,7 +27,7 @@ export default function RouteError({
   readonly error: Error & { digest?: string };
   readonly reset: () => void;
 }) {
-  const t = useTranslations();
+  const t = fallbackTranslator.format;
 
   useEffect(() => {
     // The server already logged this with its correlation id. Re-logging the

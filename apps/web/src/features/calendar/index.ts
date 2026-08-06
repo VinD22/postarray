@@ -6,6 +6,11 @@ export { CalendarGrid } from './calendar-grid';
 export { CalendarMonth } from './calendar-month';
 export { CalendarTable } from './calendar-table';
 export { CalendarToolbar } from './calendar-toolbar';
+export { CalendarViewSwitch, type CalendarViewSwitchProps } from './view-switch';
+export {
+  CalendarViewTransition,
+  type CalendarViewTransitionProps,
+} from './calendar-view-transition';
 export { AttentionBar } from './attention-bar';
 export { EntryChip } from './entry-chip';
 export { EntryDetailSheet } from './entry-detail-sheet';
