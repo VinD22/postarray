@@ -5,9 +5,9 @@ import { oauthFailureReason } from './oauth-result';
 
 describe('oauthFailureReason', () => {
   it('keeps capability limitations distinct from provider failures', () => {
-    expect(
-      oauthFailureReason(new RelayError(ERROR_CODES.CAPABILITY_NOT_IMPLEMENTED)),
-    ).toBe('not_implemented');
+    expect(oauthFailureReason(new RelayError(ERROR_CODES.CAPABILITY_NOT_IMPLEMENTED))).toBe(
+      'not_implemented',
+    );
     expect(oauthFailureReason(new RelayError(ERROR_CODES.CAPABILITY_UNSUPPORTED))).toBe(
       'unsupported',
     );
