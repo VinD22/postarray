@@ -5,19 +5,17 @@ import { useRouter } from 'next/navigation';
 import {
   ConfirmDialog,
   DefinitionList,
-  EmptyState,
   LoadingState,
   Notice,
   SkeletonText,
 } from '@relay/design-system/patterns';
-import { Badge, Button } from '@relay/design-system/primitives';
+import { Button } from '@relay/design-system/primitives';
 import { useTranslations } from '@relay/i18n/react';
 
 import { QueryErrorState } from '@/features/analytics/components/query-error-state';
 import { useValueFormat } from '@/features/analytics/use-value-format';
 
 import { useDeleteFeed, useFeedHealth, useUpdateFeed } from './rss-queries';
-import type { FeedItemOutcome } from './rss-types';
 
 /**
  * One feed, its health and what it has actually produced.
@@ -32,26 +30,6 @@ import type { FeedItemOutcome } from './rss-types';
  * evidence that fingerprinting is doing its job rather than the feed being
  * quiet.
  */
-
-const OUTCOME_KEY: Readonly<Record<FeedItemOutcome, string>> = {
-  draft: 'automation.rss.itemOutcome.draft',
-  scheduled: 'automation.rss.itemOutcome.scheduled',
-  published: 'automation.rss.itemOutcome.published',
-  awaiting_approval: 'automation.rss.itemOutcome.awaitingApproval',
-  duplicate: 'automation.rss.itemOutcome.duplicate',
-  failed: 'automation.rss.itemOutcome.failed',
-};
-
-const OUTCOME_TONE: Readonly<
-  Record<FeedItemOutcome, 'neutral' | 'accent' | 'success' | 'warning' | 'destructive'>
-> = {
-  draft: 'neutral',
-  scheduled: 'accent',
-  published: 'success',
-  awaiting_approval: 'warning',
-  duplicate: 'neutral',
-  failed: 'destructive',
-};
 
 export interface FeedDetailScreenProps {
   readonly feedId: string;
@@ -103,7 +81,7 @@ export function FeedDetailScreen({ feedId, feedTitle }: FeedDetailScreenProps): 
 
   const data = health.data;
   const title = feedTitle ?? t('automation.rss.healthTitle');
-  const paused = data.state === 'paused';
+  const paused = data.paused;
 
   return (
     <div className="flex flex-col gap-6 px-4 py-6 md:px-6">
@@ -113,7 +91,7 @@ export function FeedDetailScreen({ feedId, feedTitle }: FeedDetailScreenProps): 
           <Button
             variant="secondary"
             loading={update.isPending}
-            onClick={() => update.mutate({ feedId, draft: {} })}
+            onClick={() => update.mutate({ feedId, draft: { paused: !paused } })}
           >
             {paused ? t('automation.rss.resumeFeed') : t('automation.rss.pauseFeed')}
           </Button>
@@ -123,11 +101,11 @@ export function FeedDetailScreen({ feedId, feedTitle }: FeedDetailScreenProps): 
         </div>
       </div>
 
-      {data.lastErrorReason ? (
+      {data.issueKeys.length > 0 && !paused ? (
         <Notice
           tone="warning"
           liveness="status"
-          title={t('automation.rss.health.error', { reason: data.lastErrorReason })}
+          title={t('automation.rss.errorTitle')}
           description={t('automation.rss.errorBody')}
         />
       ) : null}
@@ -144,12 +122,6 @@ export function FeedDetailScreen({ feedId, feedTitle }: FeedDetailScreenProps): 
               term: t('automation.rss.health.lastPollLabel'),
               definition:
                 data.lastPollAt === null ? t('common.notSet') : format.relative(data.lastPollAt),
-              hint:
-                data.nextPollAt === null
-                  ? undefined
-                  : t('automation.rss.health.nextPoll', {
-                      relativeTime: format.relative(data.nextPollAt),
-                    }),
             },
             {
               id: 'item',
@@ -160,67 +132,17 @@ export function FeedDetailScreen({ feedId, feedTitle }: FeedDetailScreenProps): 
                   : format.relative(data.lastNewItemAt),
             },
             {
-              id: 'post',
-              term: t('automation.rss.health.lastPostLabel'),
-              definition:
-                data.lastCreatedDraftAt === null
-                  ? t('common.notSet')
-                  : format.relative(data.lastCreatedDraftAt),
-            },
-            {
               id: 'processed',
               term: t('automation.rss.health.processedLabel'),
               definition: t('automation.rss.health.itemsProcessed', {
-                count: data.itemsProcessed,
-              }),
-              hint: t('automation.rss.health.duplicatesSkipped', {
-                count: data.duplicatesSkipped,
+                count: data.itemsLast30Days,
               }),
             },
           ]}
         />
       </section>
 
-      <section aria-labelledby="feed-items-heading" className="flex flex-col gap-3">
-        <h3 id="feed-items-heading" className="text-title-sm text-text-primary">
-          {t('automation.rss.recentItems')}
-        </h3>
-
-        {data.recentItems.length === 0 ? (
-          <EmptyState
-            compact
-            title={t('automation.rss.recentItems')}
-            description={t('automation.rules.runs.empty')}
-          />
-        ) : (
-          <ul className="border-border-subtle flex flex-col border-t">
-            {data.recentItems.map((item) => (
-              <li
-                key={item.id}
-                className="border-border-subtle flex flex-col gap-1 border-b py-3 sm:flex-row sm:items-start sm:justify-between sm:gap-4"
-              >
-                <div className="flex min-w-0 flex-col gap-0.5">
-                  <span className="text-body-md text-text-primary">{item.title}</span>
-                  <time
-                    dateTime={item.seenAt}
-                    className="text-body-sm text-text-tertiary tabular-nums"
-                  >
-                    {format.dateTime(item.seenAt)}
-                  </time>
-                </div>
-                <Badge tone={OUTCOME_TONE[item.outcome]}>
-                  {t(OUTCOME_KEY[item.outcome], {
-                    time: item.scheduledFor ? format.dateTime(item.scheduledFor) : '',
-                    reason: item.failureReason ?? '',
-                  })}
-                </Badge>
-              </li>
-            ))}
-          </ul>
-        )}
-
-        <Notice tone="neutral" title={t('automation.rss.dedupe')} />
-      </section>
+      <Notice tone="neutral" title={t('automation.rss.dedupe')} />
 
       <ConfirmDialog
         open={deleteOpen}

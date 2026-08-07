@@ -1,6 +1,8 @@
 /** Automation rules, RSS sources, webhooks, API keys and developer apps. */
 
 import type {
+  ApprovalLevel,
+  ProviderId,
   RuleActionKind,
   RuleConditionKind,
   RuleTriggerKind,
@@ -15,9 +17,10 @@ import type { Paginated } from '../types';
 
 export interface RuleView {
   readonly id: string;
+  readonly workspaceId: string;
+  readonly brandId: string;
   readonly name: string;
-  readonly enabled: boolean;
-  readonly state: 'draft' | 'running' | 'paused' | 'killed';
+  readonly state: 'draft' | 'active' | 'paused' | 'disabled' | 'archived';
   readonly trigger: {
     readonly kind: RuleTriggerKind;
     readonly config: Readonly<Record<string, unknown>>;
@@ -30,22 +33,32 @@ export interface RuleView {
     readonly kind: RuleActionKind;
     readonly config: Readonly<Record<string, unknown>>;
   }[];
-  readonly affectedConnectionIds: readonly string[];
-  readonly maxExternalActionsPerRun: number;
-  readonly maxRunsPerWeek: number;
-  readonly consecutiveFailures: number;
+  readonly delaySeconds: number;
+  readonly endCondition:
+    { readonly kind: 'manual' } | { readonly kind: 'count'; readonly runs: number };
+  readonly requiresApproval: boolean;
+  readonly preauthorizedConnectionIds: readonly string[];
   readonly version: number;
-  readonly updatedAt: string;
+  readonly executionCount: number;
+  readonly maxExecutionsPerSource: number | null;
+  readonly maxExecutions: number | null;
+  readonly lastRunAt: string | null;
+  readonly pausedReasonKey: string | null;
 }
 
 export interface RuleRunView {
   readonly id: string;
   readonly ruleId: string;
+  readonly ruleVersion: number;
+  readonly state: 'pending' | 'running' | 'succeeded' | 'failed' | 'skipped' | 'blocked_by_policy';
+  readonly isTest: boolean;
+  readonly sourceKind: string;
+  readonly sourceId: string | null;
+  readonly performedActions: readonly { readonly kind: string; readonly outcome: string }[];
+  readonly blockedReasonKey: string | null;
+  readonly errorCode: string | null;
   readonly startedAt: string;
-  readonly outcome: 'created' | 'skipped' | 'failed';
-  readonly summaryKey: string;
-  readonly createdDraftCount: number;
-  readonly isTestRun: boolean;
+  readonly endedAt: string | null;
 }
 
 /**
@@ -53,91 +66,95 @@ export interface RuleRunView {
  *
  * It is deliberately not the read model minus a few keys: `state`, `version`,
  * `consecutiveFailures` and the two guardrail ceilings are decided by the
- * server, and the editor sends the rule document it round trips through its
- * JSON view, delay, end condition and cross account settings included.
+ * server. The editor sends the persisted rule document, including delay,
+ * lifetime end and per-source threshold guards.
  */
 export interface RuleInput {
+  readonly brandId: string;
   readonly name: string;
   readonly trigger: RuleView['trigger'];
   readonly conditions: RuleView['conditions'];
   readonly actions: RuleView['actions'];
-  readonly affectedConnectionIds: readonly string[];
-  /** How long after the trigger fires the actions run. */
+  readonly preauthorizedConnectionIds?: readonly string[];
   readonly delaySeconds?: number;
-  /** When the rule stops on its own. `manual` means it never does. */
-  readonly end?:
-    | { readonly kind: 'manual' }
-    | { readonly kind: 'date'; readonly at: string }
-    | { readonly kind: 'count'; readonly runs: number };
-  /** A rule that acts across two accounts carries the user's authorisation. */
-  readonly crossAccount?: {
-    readonly enabled: boolean;
-    readonly sourceConnectionId: string | null;
-    readonly followUpConnectionId: string | null;
-    readonly preauthorized: boolean;
-  };
-  /**
-   * Guardrail ceilings. Omitted by the editor, in which case the server applies
-   * the workspace plan's defaults rather than a number the browser invented.
-   */
-  readonly maxExternalActionsPerRun?: number;
-  readonly maxRunsPerWeek?: number;
+  readonly endCondition?: RuleView['endCondition'];
+  readonly requiresApproval?: boolean;
+  readonly maxExecutionsPerSource?: number | null;
+  readonly cooldownSeconds?: number | null;
+  readonly measurementWindowSeconds?: number | null;
 }
 
 /** What a preflight reports before a rule is allowed to run. */
 export interface RulePreflightView {
-  readonly affectedAccountLabels: readonly string[];
-  readonly maxExternalActions: number;
+  readonly ruleId: string;
+  readonly connections: readonly {
+    readonly connectionId: string;
+    readonly provider: ProviderId;
+    readonly displayName: string;
+  }[];
+  readonly maxExternalActionsPerRun: number;
   readonly requiresApproval: boolean;
-  readonly estimatedCostMinor: number;
-  readonly currency: string;
+  readonly requiredApprovalLevel: ApprovalLevel;
+  readonly providerRestrictionKeys: readonly string[];
+  readonly estimatedCostMinor: number | null;
+  readonly costCurrency: string | null;
+  readonly cadenceImpactPerDay: number;
+  readonly duplicateRiskKey: string | null;
+  readonly blockedReasonKeys: readonly string[];
 }
 
 export const automationRulesApi = {
   list: (query: { cursor?: string; limit?: number } = {}): Promise<Paginated<RuleView>> =>
-    call('/rules', { query }, () => page<RuleView>([])),
-  get: (ruleId: string): Promise<RuleView | null> => call(`/rules/${ruleId}`, {}, () => null),
+    call('/automation-rules', { query }, () => page<RuleView>([])),
+  get: (ruleId: string): Promise<RuleView | null> =>
+    call(`/automation-rules/${ruleId}`, {}, () => null),
   create: (input: RuleInput, idempotencyKey: string): Promise<RuleView | null> =>
-    call('/rules', { method: 'POST', body: input, idempotencyKey }, () => null),
+    call('/automation-rules', { method: 'POST', body: input, idempotencyKey }, () => null),
   update: (ruleId: string, input: Partial<RuleInput>): Promise<RuleView | null> =>
-    call(`/rules/${ruleId}`, { method: 'PATCH', body: input }, () => null),
+    call(`/automation-rules/${ruleId}`, { method: 'PATCH', body: input }, () => null),
   enable: (ruleId: string, idempotencyKey: string): Promise<RuleView | null> =>
-    call(`/rules/${ruleId}/enable`, { method: 'POST', idempotencyKey }, () => null),
+    call(`/automation-rules/${ruleId}/enable`, { method: 'POST', idempotencyKey }, () => null),
   disable: (ruleId: string, idempotencyKey: string): Promise<RuleView | null> =>
-    call(`/rules/${ruleId}/disable`, { method: 'POST', idempotencyKey }, () => null),
+    call(`/automation-rules/${ruleId}/disable`, { method: 'POST', idempotencyKey }, () => null),
   delete: (ruleId: string): Promise<void> =>
-    call(`/rules/${ruleId}`, { method: 'DELETE' }, () => undefined),
-  /** What the rule would do, with no external effect at all. */
-  preview: (input: RuleInput): Promise<RulePreflightView | null> =>
-    call('/rules/preview', { method: 'POST', body: input, sideEffectFree: true }, () => null),
+    call(`/automation-rules/${ruleId}`, { method: 'DELETE' }, () => undefined),
   /** The same preflight for a rule that is already saved. */
   previewSaved: (ruleId: string): Promise<RulePreflightView | null> =>
-    call(`/rules/${ruleId}/preview`, {}, () => null),
+    call(`/automation-rules/${ruleId}/preview`, {}, () => null),
   /**
    * A real run against real input that stops before any external action. The
    * sample event stands in for the event that would have triggered the rule.
    */
   testRun: (
     ruleId: string,
-    input: { sampleEvent?: string },
+    input: { sampleEvent: Readonly<Record<string, unknown>> },
     idempotencyKey: string,
   ): Promise<RuleRunView | null> =>
-    call(`/rules/${ruleId}/test-runs`, { method: 'POST', body: input, idempotencyKey }, () => null),
+    call(
+      `/automation-rules/${ruleId}/test-runs`,
+      { method: 'POST', body: input, idempotencyKey },
+      () => null,
+    ),
   listRuns: (
     ruleId: string,
     query: { cursor?: string; limit?: number } = {},
   ): Promise<Paginated<RuleRunView>> =>
-    call(`/rules/${ruleId}/runs`, { query }, () => page<RuleRunView>([])),
+    call(`/automation-rules/${ruleId}/runs`, { query }, () => page<RuleRunView>([])),
 };
 
 export interface FeedView {
   readonly id: string;
-  readonly name: string;
-  readonly url: string;
-  readonly enabled: boolean;
-  readonly lastItemAt: string | null;
-  readonly lastCheckedAt: string | null;
-  readonly health: 'ok' | 'invalid' | 'stalled' | 'unreachable';
+  readonly workspaceId: string;
+  readonly brandId: string;
+  readonly title: string;
+  readonly feedUrl: string;
+  readonly health: 'healthy' | 'degraded' | 'invalid' | 'stalled';
+  readonly connectionIds: readonly string[];
+  readonly publishPolicy: 'draft' | 'approval';
+  readonly pollIntervalSeconds: number;
+  readonly lastPolledAt: string | null;
+  readonly lastNewItemAt: string | null;
+  readonly paused: boolean;
 }
 
 /**
@@ -146,44 +163,59 @@ export interface FeedView {
  * goes past validation and approval.
  */
 export interface FeedInput {
-  readonly name: string;
-  readonly url: string;
-  /** True treats everything currently in the feed as seen. */
-  readonly markExistingAsSeen?: boolean;
-  /** The accounts items are drafted for. */
+  readonly brandId: string;
+  readonly title: string;
+  readonly feedUrl: string;
   readonly connectionIds?: readonly string[];
-  readonly targetGroupId?: string | null;
-  readonly template?: string;
-  /** Rewrite the wording per platform, shown as a diff to accept or reject. */
-  readonly adaptText?: boolean;
-  /** Use the image the feed item carries. Relay never generates one. */
-  readonly useFeedImage?: boolean;
-  readonly policy?: 'draft' | 'approval' | 'next_slot' | 'fixed_cadence' | 'immediate';
-  /** Only meaningful with `fixed_cadence`. Seconds between items. */
-  readonly cadenceSeconds?: number | null;
-  readonly enabled?: boolean;
+  readonly publishPolicy?: FeedView['publishPolicy'];
+  readonly pollIntervalSeconds?: number;
+}
+
+export interface FeedPreviewView {
+  readonly url: string;
+  readonly title: string | null;
+  readonly itemCount: number;
+  readonly latestItemAt: string | null;
+  readonly reachable: boolean;
+  readonly issueKeys: readonly string[];
+  readonly sampleItems: readonly {
+    readonly guid: string;
+    readonly title: string | null;
+    readonly link: string | null;
+    readonly publishedAt: string | null;
+  }[];
+}
+
+export interface FeedHealthView {
+  readonly feedId: string;
+  readonly health: 'healthy' | 'degraded' | 'invalid' | 'stalled';
+  readonly lastPolledAt: string | null;
+  readonly lastNewItemAt: string | null;
+  readonly consecutiveFailures: number;
+  readonly issueKeys: readonly string[];
+  readonly itemsLast30Days: number;
 }
 
 export const rssApi = {
-  validateFeed: (input: {
-    url: string;
-  }): Promise<{
-    valid: boolean;
-    itemCount: number;
-    latestItemAt: string | null;
-    problemKey: string | null;
-  } | null> =>
-    call('/rss/validate', { method: 'POST', body: input, sideEffectFree: true }, () => null),
+  validateFeed: (input: { url: string }): Promise<FeedPreviewView | null> =>
+    call('/rss/feeds/validate', { method: 'POST', body: input, sideEffectFree: true }, () => null),
   create: (input: FeedInput, idempotencyKey: string): Promise<FeedView | null> =>
-    call('/rss', { method: 'POST', body: input, idempotencyKey }, () => null),
-  update: (feedId: string, input: Partial<FeedInput>): Promise<FeedView | null> =>
-    call(`/rss/${feedId}`, { method: 'PATCH', body: input }, () => null),
+    call('/rss/feeds', { method: 'POST', body: input, idempotencyKey }, () => null),
+  update: (
+    feedId: string,
+    input: Partial<
+      Pick<FeedInput, 'title' | 'connectionIds' | 'publishPolicy' | 'pollIntervalSeconds'>
+    > & {
+      readonly paused?: boolean;
+    },
+  ): Promise<FeedView | null> =>
+    call(`/rss/feeds/${feedId}`, { method: 'PATCH', body: input }, () => null),
   list: (query: { cursor?: string; limit?: number } = {}): Promise<Paginated<FeedView>> =>
-    call('/rss', { query }, () => page<FeedView>([])),
+    call('/rss/feeds', { query }, () => page<FeedView>([])),
   delete: (feedId: string): Promise<void> =>
-    call(`/rss/${feedId}`, { method: 'DELETE' }, () => undefined),
-  getHealth: (feedId: string): Promise<FeedView | null> =>
-    call(`/rss/${feedId}/health`, {}, () => null),
+    call(`/rss/feeds/${feedId}`, { method: 'DELETE' }, () => undefined),
+  getHealth: (feedId: string): Promise<FeedHealthView | null> =>
+    call(`/rss/feeds/${feedId}/health`, {}, () => null),
 };
 
 export const webhooksApi = {

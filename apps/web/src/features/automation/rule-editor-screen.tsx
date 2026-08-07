@@ -25,7 +25,6 @@ import { useI18n, useTranslations } from '@relay/i18n/react';
 import { api } from '@/lib/api';
 import { QueryErrorState } from '@/features/analytics/components/query-error-state';
 import { useOnlineStatus } from '@/features/analytics/use-online-status';
-import { useValueFormat } from '@/features/analytics/use-value-format';
 
 import {
   hiddenReasonKey,
@@ -36,7 +35,6 @@ import { AccountSelector } from './components/account-selector';
 import { CrossAccountPanel } from './components/cross-account-panel';
 import { PreflightPanel } from './components/preflight-panel';
 import { RuleRuns } from './components/rule-runs';
-import { RuleVersions } from './components/rule-versions';
 import { SentenceBuilder } from './components/sentence-builder';
 import { StructuredEditor } from './components/structured-editor';
 import { TestRunPanel } from './components/test-run-panel';
@@ -46,7 +44,6 @@ import {
   useAutomationRule,
   useRulePreflight,
   useRuleRuns,
-  useRuleVersions,
   useSaveRule,
   useSetRuleEnabled,
   useTestRule,
@@ -105,7 +102,6 @@ export interface RuleEditorScreenProps {
 export function RuleEditorScreen({ ruleId }: RuleEditorScreenProps): ReactElement {
   const t = useTranslations();
   const { locale } = useI18n();
-  const format = useValueFormat();
   const router = useRouter();
   const { announce } = useAnnouncer();
   const online = useOnlineStatus();
@@ -115,7 +111,6 @@ export function RuleEditorScreen({ ruleId }: RuleEditorScreenProps): ReactElemen
 
   const loaded = useAutomationRule(ruleId ?? '', ruleId !== null);
   const runs = useRuleRuns(ruleId ?? '', ruleId !== null);
-  const versions = useRuleVersions(ruleId ?? '', ruleId !== null);
   const preflight = useRulePreflight(ruleId ?? '', ruleId !== null);
   const save = useSaveRule();
   const setEnabled = useSetRuleEnabled();
@@ -237,7 +232,6 @@ export function RuleEditorScreen({ ruleId }: RuleEditorScreenProps): ReactElemen
     draft,
     t,
     labels: { locale, resolve: resolveLabel },
-    resolveDate: (iso) => format.date(iso),
   });
 
   const unavailableNote =
@@ -467,12 +461,10 @@ export function RuleEditorScreen({ ruleId }: RuleEditorScreenProps): ReactElemen
 
       <Separator />
 
-      <RuleVersions
-        versions={versions.data}
-        onRestore={(version) => {
-          const restored = JSON.parse(version.json) as RuleDraft;
-          update({ ...restored, id: draft.id, state: draft.state });
-        }}
+      <Notice
+        tone="neutral"
+        title={t('error.capability_not_implemented.message')}
+        description={t('error.capability_not_implemented.action')}
       />
 
       <ConfirmDialog

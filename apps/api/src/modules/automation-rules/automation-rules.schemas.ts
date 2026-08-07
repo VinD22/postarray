@@ -41,6 +41,11 @@ export const ruleActionSchema = z
   .object({ kind: ruleActionKindSchema, config: passthroughObjectSchema.default({}) })
   .strict();
 
+export const ruleEndConditionSchema = z.discriminatedUnion('kind', [
+  z.object({ kind: z.literal('manual') }).strict(),
+  z.object({ kind: z.literal('count'), runs: z.number().int().positive() }).strict(),
+]);
+
 export const createRuleSchema = z
   .object({
     brandId: brandIdSchema,
@@ -49,9 +54,10 @@ export const createRuleSchema = z
     conditions: z.array(ruleConditionSchema).max(30).default([]),
     actions: z.array(ruleActionSchema).min(1).max(20),
     delaySeconds: z.number().int().nonnegative().max(31_536_000).optional(),
+    endCondition: ruleEndConditionSchema.optional(),
     requiresApproval: z.boolean().optional(),
     preauthorizedConnectionIds: z.array(connectionIdSchema).max(200).optional(),
-    maxExecutions: z.number().int().positive().nullable().optional(),
+    maxExecutionsPerSource: z.number().int().positive().nullable().optional(),
     cooldownSeconds: z.number().int().nonnegative().nullable().optional(),
     measurementWindowSeconds: z.number().int().positive().nullable().optional(),
   })

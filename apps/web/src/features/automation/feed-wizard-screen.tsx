@@ -10,19 +10,14 @@ import {
   Field,
   Input,
   Label,
-  RadioGroup,
-  RadioGroupItem,
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
   StatusDot,
-  Switch,
-  Textarea,
 } from '@relay/design-system/primitives';
-import { formatDuration } from '@relay/i18n';
-import { useI18n, useTranslations } from '@relay/i18n/react';
+import { useTranslations } from '@relay/i18n/react';
 
 import { api, type ProviderId } from '@/lib/api';
 import { QueryErrorState } from '@/features/analytics/components/query-error-state';
@@ -36,16 +31,15 @@ import type { FeedDraft, FeedPublishPolicy } from './rss-types';
 /**
  * Adding an RSS or Atom feed.
  *
- * Six sections in the order the decision is actually made, and each one is
+ * Four sections in the order the decision is actually made, and each one is
  * disabled until the one before it can answer its question. That is not
  * ceremony: the template cannot offer fields until the server has parsed the
  * feed, and the publishing policy cannot be evaluated until the targets are
  * known.
  *
- * The two decisions people get wrong are given the most room. "Treat everything
- * currently in the feed as seen" is the default, because the alternative
- * publishes a backlog. And immediate publishing is described as what it is: a
- * post reaching a platform without a person reading it first.
+ * Existing items are always treated as seen, which prevents a new feed from
+ * flooding the calendar with its backlog. The only V1 outcomes create a draft
+ * or create a draft and request approval.
  *
  * There is no image generation anywhere in this flow. An item without an image
  * publishes without one, and the copy says so.
@@ -54,12 +48,7 @@ import type { FeedDraft, FeedPublishPolicy } from './rss-types';
 const POLICY_KEY: Readonly<Record<FeedPublishPolicy, string>> = {
   draft: 'automation.rss.policy.draft',
   approval: 'automation.rss.policy.approval',
-  next_slot: 'automation.rss.policy.nextSlot',
-  fixed_cadence: 'automation.rss.policy.cadence',
-  immediate: 'automation.rss.policy.immediate',
 };
-
-const CADENCE_OPTIONS: readonly number[] = [3_600, 10_800, 21_600, 43_200, 86_400];
 
 interface ConnectionLike {
   readonly id: string;
@@ -71,19 +60,12 @@ interface ConnectionLike {
 const EMPTY_DRAFT: FeedDraft = {
   url: '',
   title: '',
-  markExistingAsSeen: true,
   connectionIds: [],
-  targetGroupId: null,
-  template: '',
-  adaptText: false,
-  useFeedImage: true,
   policy: 'approval',
-  cadenceSeconds: null,
 };
 
 export function FeedWizardScreen(): ReactElement {
   const t = useTranslations();
-  const { locale } = useI18n();
   const router = useRouter();
   const [draft, setDraft] = useState<FeedDraft>(EMPTY_DRAFT);
   const [url, setUrl] = useState('');
@@ -106,9 +88,8 @@ export function FeedWizardScreen(): ReactElement {
   }, [connections.data]);
 
   const validation = validate.data;
-  const canChooseTargets = validation !== undefined;
-  const canSave =
-    validation !== undefined && draft.connectionIds.length > 0 && draft.template.trim().length > 0;
+  const canChooseTargets = validation?.reachable === true && validation.items.length > 0;
+  const canSave = canChooseTargets && draft.connectionIds.length > 0;
 
   return (
     <div className="flex flex-col gap-8 px-4 py-6 md:px-6">
@@ -117,7 +98,7 @@ export function FeedWizardScreen(): ReactElement {
         <p className="text-body-md text-text-secondary">{t('automation.rss.subtitle')}</p>
       </div>
 
-      <Step index={1} total={6} title={t('automation.rss.step.url')}>
+      <Step index={1} total={4} title={t('automation.rss.step.url')}>
         <div className="flex flex-col gap-3">
           <Field
             label={t('automation.rss.urlLabel')}
@@ -149,8 +130,6 @@ export function FeedWizardScreen(): ReactElement {
                     ...current,
                     url: result.resolvedUrl,
                     title: result.title,
-                    template:
-                      current.template.trim().length > 0 ? current.template : '{title}\n\n{link}',
                   })),
               })
             }
@@ -177,46 +156,29 @@ export function FeedWizardScreen(): ReactElement {
         </div>
       </Step>
 
-      <Step index={2} total={6} title={t('automation.rss.step.preview')}>
+      <Step index={2} total={4} title={t('automation.rss.step.preview')}>
         {validation ? (
-          <FeedPreview validation={validation} />
+          <div className="flex flex-col gap-3">
+            <FeedPreview validation={validation} />
+            {!validation.reachable || validation.issueKeys.length > 0 ? (
+              <Notice
+                tone="warning"
+                liveness="status"
+                title={t('automation.rss.errorTitle')}
+                description={t('automation.rss.errorBody')}
+              />
+            ) : (
+              <Notice tone="neutral" title={t('automation.rss.seenLatest')} />
+            )}
+          </div>
         ) : (
           <p className="text-body-md text-text-secondary">{t('automation.rss.urlHelp')}</p>
         )}
       </Step>
 
-      <Step index={3} total={6} title={t('automation.rss.step.seen')}>
-        <div className="flex flex-col gap-3">
-          <RadioGroup
-            value={draft.markExistingAsSeen ? 'seen' : 'new'}
-            onValueChange={(value) =>
-              setDraft((current) => ({ ...current, markExistingAsSeen: value === 'seen' }))
-            }
-            className="flex flex-col gap-2"
-          >
-            <span className="flex items-start gap-2">
-              <RadioGroupItem value="seen" id="feed-seen" className="mt-1" />
-              <Label htmlFor="feed-seen" className="text-body-md max-w-[70ch]">
-                {t('automation.rss.seenLatest')}
-              </Label>
-            </span>
-            <span className="flex items-start gap-2">
-              <RadioGroupItem value="new" id="feed-new" className="mt-1" />
-              <Label htmlFor="feed-new" className="text-body-md max-w-[70ch]">
-                {t('automation.rss.seenAll')}
-              </Label>
-            </span>
-          </RadioGroup>
-          <p className="text-body-sm text-text-tertiary max-w-[70ch]">
-            {t('automation.rss.seenHelp')}
-          </p>
-          <Notice tone="neutral" title={t('automation.rss.dedupe')} />
-        </div>
-      </Step>
-
       <Step
-        index={4}
-        total={6}
+        index={3}
+        total={4}
         title={t('automation.rss.step.targets')}
         disabled={!canChooseTargets}
       >
@@ -256,88 +218,8 @@ export function FeedWizardScreen(): ReactElement {
       </Step>
 
       <Step
-        index={5}
-        total={6}
-        title={t('automation.rss.step.template')}
-        disabled={!canChooseTargets}
-      >
-        <RssStepReveal active={canChooseTargets}>
-          <div className="flex flex-col gap-3">
-            <Field
-              label={t('automation.rss.template')}
-              description={t('automation.rss.templateHelp')}
-              required
-            >
-              {(control) => (
-                <Textarea
-                  {...control}
-                  autoGrow
-                  minRows={4}
-                  value={draft.template}
-                  onChange={(event) =>
-                    setDraft((current) => ({ ...current, template: event.target.value }))
-                  }
-                />
-              )}
-            </Field>
-
-            {validation ? (
-              <div className="flex flex-wrap items-center gap-2">
-                <span className="text-label text-text-tertiary">
-                  {t('automation.rss.templateFields')}
-                </span>
-                {validation.availableFields.map((field) => (
-                  <Button
-                    key={field}
-                    size="sm"
-                    variant="ghost"
-                    onClick={() =>
-                      setDraft((current) => ({
-                        ...current,
-                        template: `${current.template}{${field}}`,
-                      }))
-                    }
-                  >
-                    {t('automation.rss.templateInsert', { field })}
-                  </Button>
-                ))}
-              </div>
-            ) : null}
-
-            <span className="flex items-center gap-2">
-              <Switch
-                id="feed-adapt"
-                checked={draft.adaptText}
-                onCheckedChange={(checked) =>
-                  setDraft((current) => ({ ...current, adaptText: checked === true }))
-                }
-              />
-              <Label htmlFor="feed-adapt">{t('automation.rss.adaptWithAi')}</Label>
-            </span>
-            <p className="text-body-sm text-text-tertiary max-w-[70ch]">
-              {t('automation.rss.adaptHelp')}
-            </p>
-
-            <span className="flex items-center gap-2">
-              <Switch
-                id="feed-image"
-                checked={draft.useFeedImage}
-                onCheckedChange={(checked) =>
-                  setDraft((current) => ({ ...current, useFeedImage: checked === true }))
-                }
-              />
-              <Label htmlFor="feed-image">{t('automation.rss.imageFromFeed')}</Label>
-            </span>
-            <p className="text-body-sm text-text-tertiary max-w-[70ch]">
-              {t('automation.rss.noImageGeneration')}
-            </p>
-          </div>
-        </RssStepReveal>
-      </Step>
-
-      <Step
-        index={6}
-        total={6}
+        index={4}
+        total={4}
         title={t('automation.rss.step.policy')}
         disabled={!canChooseTargets}
       >
@@ -354,8 +236,6 @@ export function FeedWizardScreen(): ReactElement {
                     setDraft((current) => ({
                       ...current,
                       policy: value as FeedPublishPolicy,
-                      cadenceSeconds:
-                        value === 'fixed_cadence' ? (current.cadenceSeconds ?? 21_600) : null,
                     }))
                   }
                 >
@@ -373,40 +253,7 @@ export function FeedWizardScreen(): ReactElement {
               )}
             </Field>
 
-            {draft.policy === 'fixed_cadence' ? (
-              <Field
-                label={t('automation.rss.cadenceInterval')}
-                description={t('automation.rss.cadenceHelp')}
-              >
-                {(control) => (
-                  <Select
-                    value={String(draft.cadenceSeconds ?? 21_600)}
-                    onValueChange={(value) =>
-                      setDraft((current) => ({ ...current, cadenceSeconds: Number(value) }))
-                    }
-                  >
-                    <SelectTrigger id={control.id} className="min-w-48">
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {CADENCE_OPTIONS.map((seconds) => (
-                        <SelectItem key={seconds} value={String(seconds)}>
-                          {formatDuration(locale, seconds * 1000, { maxUnits: 1 })}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                )}
-              </Field>
-            ) : null}
-
-            {draft.policy === 'immediate' ? (
-              <Notice
-                tone="warning"
-                liveness="status"
-                title={t('automation.rss.immediateWarning')}
-              />
-            ) : null}
+            <Notice tone="neutral" title={t('automation.rss.dedupe')} />
           </div>
         </RssStepReveal>
       </Step>

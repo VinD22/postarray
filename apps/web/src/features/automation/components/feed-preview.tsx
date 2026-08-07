@@ -57,7 +57,7 @@ export function FeedPreview({ validation }: FeedPreviewProps): ReactElement {
         <p className="text-body-md text-text-secondary">
           {t('automation.rss.previewMeta', {
             title: validation.title,
-            count: validation.items.length,
+            count: validation.itemCount,
           })}
         </p>
       </div>

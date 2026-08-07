@@ -520,6 +520,7 @@ export interface RuleDefinitionView {
   readonly cooldownSeconds: number;
   readonly expiresAt: string | null;
   readonly maxExecutions: number | null;
+  readonly maxExecutionsPerSource: number | null;
   readonly executionCount: number;
   /** Default true: a source post triggers a rule at most once, ever. */
   readonly oncePerSourcePost: boolean;

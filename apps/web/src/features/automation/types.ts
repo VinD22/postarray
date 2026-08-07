@@ -57,9 +57,7 @@ export interface RuleActionDraft {
 }
 
 export type RuleEnd =
-  | { readonly kind: 'manual' }
-  | { readonly kind: 'date'; readonly at: string }
-  | { readonly kind: 'count'; readonly runs: number };
+  { readonly kind: 'manual' } | { readonly kind: 'count'; readonly runs: number };
 
 export interface CrossAccountSettings {
   readonly enabled: boolean;
@@ -91,56 +89,34 @@ export interface RulePreflight {
     readonly displayName: string;
   }[];
   readonly maxExternalActionsPerRun: number;
-  readonly maxExternalActionsPerPeriod: number;
-  /** Already translated period, for example "a week". */
-  readonly periodLabel: string;
-  /** Named approval policy every consequential action still passes through. */
-  readonly approvalPolicyName: string | null;
-  readonly providerRestrictions: readonly {
-    readonly provider: ProviderId;
-    readonly text: string;
-    readonly sourceUrl?: string | undefined;
-    readonly verifiedOn?: string | undefined;
-  }[];
-  readonly estimatedCost: {
-    readonly formatted: string | null;
-    readonly pricedOn: string | null;
-  };
-  readonly failureBehaviour: {
-    readonly kind: 'pause_after' | 'continue';
-    readonly consecutiveFailures: number;
-  };
-  /** The most recent event this trigger would have matched, if there is one. */
-  readonly example: RuleRunPreview | null;
+  readonly cadenceImpactPerDay: number;
+  readonly requiresApproval: boolean;
+  readonly requiredApprovalLevel: string;
+  readonly providerRestrictionKeys: readonly string[];
+  readonly estimatedCostMinor: number | null;
+  readonly costCurrency: string | null;
+  readonly duplicateRiskKey: string | null;
   /** Anything that must be resolved before the rule can be turned on. */
   readonly blockers: readonly string[];
 }
 
 export interface RuleRunPreview {
   readonly triggeredAt: string;
-  readonly triggerSummary: string;
-  readonly conditions: readonly {
-    readonly label: string;
-    readonly passed: boolean;
-  }[];
-  readonly actions: readonly {
-    readonly label: string;
-    readonly outcome: 'would_run' | 'would_skip';
-    readonly reason?: string | undefined;
-  }[];
+  readonly outcome: RuleRunOutcome;
+  readonly externalActionCount: number;
+  readonly skippedReason: string | null;
+  readonly errorCode: string | null;
 }
 
-export type RuleRunOutcome = 'completed' | 'skipped' | 'failed' | 'test';
+export type RuleRunOutcome = 'pending' | 'running' | 'completed' | 'skipped' | 'failed' | 'test';
 
 export interface RuleRunView {
   readonly id: string;
   readonly startedAt: string;
   readonly outcome: RuleRunOutcome;
   readonly externalActionCount: number;
-  readonly triggerSummary: string;
   readonly skippedReason: string | null;
   readonly errorCode: string | null;
-  readonly createdItems: readonly { readonly id: string; readonly label: string }[];
 }
 
 export interface RuleVersionView {
@@ -156,9 +132,7 @@ export interface RuleSummaryView {
   readonly id: string;
   readonly name: string;
   readonly state: RuleState;
-  readonly sentence: string;
+  readonly draft: RuleDraft;
   readonly connectionCount: number;
   readonly lastRunAt: string | null;
-  readonly lastRunOutcome: RuleRunOutcome | null;
-  readonly nextCheckAt: string | null;
 }

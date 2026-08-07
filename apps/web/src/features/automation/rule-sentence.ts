@@ -75,14 +75,8 @@ export function delayClause(draft: RuleDraft, t: Translate, locale: string): str
   return formatDuration(locale, draft.delaySeconds * 1000, { maxUnits: 2 });
 }
 
-export function endClause(
-  end: RuleEnd,
-  t: Translate,
-  resolveDate: (iso: string) => string,
-): string {
+export function endClause(end: RuleEnd, t: Translate): string {
   switch (end.kind) {
-    case 'date':
-      return resolveDate(end.at);
     case 'count':
       return t('automation.editor.end.count', { count: end.runs });
     case 'manual':
@@ -95,11 +89,10 @@ export interface RuleSentenceInput {
   readonly draft: RuleDraft;
   readonly t: Translate;
   readonly labels: SentenceLabels;
-  readonly resolveDate: (iso: string) => string;
 }
 
 /** The whole rule in one sentence. */
-export function ruleSentence({ draft, t, labels, resolveDate }: RuleSentenceInput): string {
+export function ruleSentence({ draft, t, labels }: RuleSentenceInput): string {
   const conditions = conditionClauses(draft, t, labels);
   const actions = actionClauses(draft, t, labels);
   const shared = {
@@ -109,7 +102,7 @@ export function ruleSentence({ draft, t, labels, resolveDate }: RuleSentenceInpu
         ? t('automation.editor.noActions')
         : formatList(labels.locale, [...actions]),
     delay: delayClause(draft, t, labels.locale),
-    endCondition: endClause(draft.end, t, resolveDate),
+    endCondition: endClause(draft.end, t),
   };
 
   if (conditions.length === 0) {

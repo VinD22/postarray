@@ -31,7 +31,9 @@ export type {
 } from './resources/insights';
 export type {
   ApiKeyView,
+  FeedHealthView,
   FeedInput,
+  FeedPreviewView,
   FeedView,
   OAuthAppView,
   OAuthGrantView,

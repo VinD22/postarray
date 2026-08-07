@@ -724,6 +724,7 @@ export class ActivitySimulator implements WorkerActivities {
       cooldownSeconds: 3_600,
       expiresAt: null,
       maxExecutions: null,
+      maxExecutionsPerSource: 1,
       executionCount: 0,
       oncePerSourcePost: true,
       requiresApproval: false,

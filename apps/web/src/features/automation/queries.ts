@@ -3,16 +3,17 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 import { api, newIdempotencyKey } from '@/lib/api';
-import type { RuleInput } from '@/lib/api';
+import { useSession } from '@/lib/auth/session-context';
 
+import {
+  parseSampleEvent,
+  toRuleDraft,
+  toRuleInput,
+  toRulePreflight,
+  toRuleRun,
+} from './rule-api-adapters';
 import type { RuleDraft } from './types';
-import type {
-  RulePreflight,
-  RuleRunPreview,
-  RuleRunView,
-  RuleSummaryView,
-  RuleVersionView,
-} from './types';
+import type { RulePreflight, RuleRunPreview, RuleRunView, RuleSummaryView } from './types';
 
 /**
  * Reads and writes for automation rules and RSS feeds.
@@ -31,55 +32,15 @@ export const automationKeys = {
   rules: ['automation', 'rules'] as const,
   rule: (ruleId: string) => ['automation', 'rule', ruleId] as const,
   runs: (ruleId: string) => ['automation', 'runs', ruleId] as const,
-  versions: (ruleId: string) => ['automation', 'versions', ruleId] as const,
   preview: (ruleId: string) => ['automation', 'preview', ruleId] as const,
   feeds: ['automation', 'feeds'] as const,
   feed: (feedId: string) => ['automation', 'feed', feedId] as const,
   feedHealth: (feedId: string) => ['automation', 'feedHealth', feedId] as const,
 };
 
-/**
- * The editor's draft in the shape the API records.
- *
- * The two are not the same declaration: the draft carries the ids the sentence
- * builder uses to keep rows stable while they are edited, and names each
- * clause's settings `parameters`, while the API records them as `config`. The
- * mapping is here, once, so nothing else has to know about it.
- */
-function toRuleInput(draft: RuleDraft): RuleInput {
-  if (draft.trigger === null) {
-    // The editor only offers save once a trigger is chosen; this keeps a rule
-    // that could never fire from reaching the API as a half written record.
-    throw new Error('RULE_TRIGGER_REQUIRED');
-  }
-  const { kind, parameters, measurement } = draft.trigger;
-  return {
-    name: draft.name,
-    trigger: {
-      kind,
-      config: {
-        ...parameters,
-        ...(measurement === undefined || measurement === null ? {} : { measurement }),
-      },
-    },
-    conditions: draft.conditions.map((condition) => ({
-      kind: condition.kind,
-      config: { ...condition.parameters },
-    })),
-    actions: draft.actions.map((action) => ({
-      kind: action.kind,
-      config: { ...action.parameters },
-    })),
-    affectedConnectionIds: [...draft.connectionIds],
-    delaySeconds: draft.delaySeconds,
-    end: draft.end,
-    crossAccount: draft.crossAccount,
-  };
-}
-
-/** TODO(web): depends on `@/lib/api` publishing typed automation view models. */
-function adapt<T>(value: unknown): T {
-  return value as T;
+function requireValue<T>(value: T | null, code: string): T {
+  if (value === null) throw new Error(code);
+  return value;
 }
 
 export function useAutomationRules() {
@@ -88,7 +49,17 @@ export function useAutomationRules() {
     staleTime: THIRTY_SECONDS,
     queryFn: async (): Promise<readonly RuleSummaryView[]> => {
       const result = await api.automationRules.list({});
-      return adapt<{ readonly data: readonly RuleSummaryView[] }>(result).data;
+      return result.data.map((rule): RuleSummaryView => {
+        const draft = toRuleDraft(rule);
+        return {
+          id: rule.id,
+          name: rule.name,
+          state: draft.state,
+          draft,
+          connectionCount: rule.preauthorizedConnectionIds.length,
+          lastRunAt: rule.lastRunAt,
+        };
+      });
     },
   });
 }
@@ -98,7 +69,7 @@ export function useAutomationRule(ruleId: string, enabled = true) {
     queryKey: automationKeys.rule(ruleId),
     enabled,
     queryFn: async (): Promise<RuleDraft> =>
-      adapt<RuleDraft>(await api.automationRules.get(ruleId)),
+      toRuleDraft(requireValue(await api.automationRules.get(ruleId), 'RULE_NOT_AVAILABLE')),
   });
 }
 
@@ -109,7 +80,7 @@ export function useRuleRuns(ruleId: string, enabled = true) {
     staleTime: THIRTY_SECONDS,
     queryFn: async (): Promise<readonly RuleRunView[]> => {
       const result = await api.automationRules.listRuns(ruleId, { limit: 20 });
-      return adapt<{ readonly data: readonly RuleRunView[] }>(result).data;
+      return result.data.map(toRuleRun);
     },
   });
 }
@@ -119,47 +90,25 @@ export function useRulePreflight(ruleId: string, enabled = true) {
     queryKey: automationKeys.preview(ruleId),
     enabled,
     queryFn: async (): Promise<RulePreflight> =>
-      adapt<RulePreflight>(await api.automationRules.previewSaved(ruleId)),
-  });
-}
-
-/**
- * Version history.
- *
- * Not exposed by the shared client yet, and declared as an optional member
- * rather than faked from the rule itself, so an empty history is never
- * presented as "this rule has only ever had one version".
- *
- * TODO(web): depends on `@/lib/api` exposing `automationRules.listVersions`.
- */
-type AutomationApi = typeof api.automationRules & {
-  readonly listVersions?: (input: { readonly ruleId: string }) => Promise<unknown>;
-};
-
-export function useRuleVersions(ruleId: string, enabled = true) {
-  return useQuery({
-    queryKey: automationKeys.versions(ruleId),
-    enabled,
-    queryFn: async (): Promise<readonly RuleVersionView[]> => {
-      const listVersions = (api.automationRules as AutomationApi).listVersions;
-      if (!listVersions) {
-        throw new Error('automationRules.listVersions is not available in this client build');
-      }
-      const result = await listVersions({ ruleId });
-      return adapt<{ readonly data: readonly RuleVersionView[] }>(result).data;
-    },
+      toRulePreflight(
+        requireValue(await api.automationRules.previewSaved(ruleId), 'RULE_PREVIEW_NOT_AVAILABLE'),
+      ),
   });
 }
 
 export function useSaveRule() {
   const client = useQueryClient();
+  const { brands } = useSession();
   return useMutation({
-    mutationFn: async (draft: RuleDraft): Promise<RuleDraft> =>
-      adapt<RuleDraft>(
+    mutationFn: async (draft: RuleDraft): Promise<RuleDraft> => {
+      const brandId = brands[0]?.id;
+      if (brandId === undefined) throw new Error('ACTIVE_BRAND_REQUIRED');
+      const saved =
         draft.id === null
-          ? await api.automationRules.create(toRuleInput(draft), newIdempotencyKey('rule'))
-          : await api.automationRules.update(draft.id, toRuleInput(draft)),
-      ),
+          ? await api.automationRules.create(toRuleInput(draft, brandId), newIdempotencyKey('rule'))
+          : await api.automationRules.update(draft.id, toRuleInput(draft, brandId));
+      return toRuleDraft(requireValue(saved, 'RULE_SAVE_NOT_AVAILABLE'));
+    },
     onSuccess: (saved) => {
       void client.invalidateQueries({ queryKey: automationKeys.rules });
       if (saved.id) {
@@ -195,14 +144,19 @@ export function useTestRule() {
     mutationFn: async (input: {
       readonly ruleId: string;
       readonly payload?: string;
-    }): Promise<RuleRunPreview> =>
-      adapt<RuleRunPreview>(
+    }): Promise<RuleRunPreview> => {
+      const sampleEvent = parseSampleEvent(input.payload);
+      const run = requireValue(
         await api.automationRules.testRun(
           input.ruleId,
-          input.payload === undefined ? {} : { sampleEvent: input.payload },
+          { sampleEvent },
           newIdempotencyKey('rule_test'),
         ),
-      ),
+        'RULE_TEST_NOT_AVAILABLE',
+      );
+      const adapted = toRuleRun(run);
+      return { ...adapted, triggeredAt: adapted.startedAt };
+    },
   });
 }
 

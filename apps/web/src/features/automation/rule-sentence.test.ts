@@ -14,8 +14,6 @@ const labels = {
     Array.isArray(value) ? value.join(', ') : String(value),
 };
 
-const resolveDate = (iso: string): string => iso.slice(0, 10);
-
 function draft(overrides: Partial<RuleDraft> = {}): RuleDraft {
   return {
     id: null,
@@ -42,7 +40,7 @@ function draft(overrides: Partial<RuleDraft> = {}): RuleDraft {
 
 describe('ruleSentence', () => {
   it('reads as one sentence naming the trigger, the condition and every action', () => {
-    const sentence = ruleSentence({ draft: draft(), t, labels, resolveDate });
+    const sentence = ruleSentence({ draft: draft(), t, labels });
     expect(sentence).toContain('a new item appears in Acme blog');
     expect(sentence).toContain('the content language is English');
     expect(sentence).toContain('create a draft from Blog announce');
@@ -51,12 +49,12 @@ describe('ruleSentence', () => {
   });
 
   it('uses the no conditions phrasing rather than an empty clause', () => {
-    const sentence = ruleSentence({ draft: draft({ conditions: [] }), t, labels, resolveDate });
+    const sentence = ruleSentence({ draft: draft({ conditions: [] }), t, labels });
     expect(sentence.startsWith('When a new item appears in Acme blog, then')).toBe(true);
   });
 
   it('joins several actions with a locale aware list, not a bare comma', () => {
-    const sentence = ruleSentence({ draft: draft(), t, labels, resolveDate });
+    const sentence = ruleSentence({ draft: draft(), t, labels });
     expect(sentence).toContain('and request human approval');
   });
 
@@ -65,7 +63,6 @@ describe('ruleSentence', () => {
       draft: draft({ trigger: { kind: 'rss_item', parameters: { feed: null } } }),
       t,
       labels,
-      resolveDate,
     });
     expect(sentence).toContain('not set');
   });
@@ -75,7 +72,6 @@ describe('ruleSentence', () => {
       draft: draft({ end: { kind: 'count', runs: 12 } }),
       t,
       labels,
-      resolveDate,
     });
     expect(sentence).toContain('it has run 12 times');
   });
@@ -85,13 +81,12 @@ describe('ruleSentence', () => {
       draft: draft({ delaySeconds: 5400 }),
       t,
       labels,
-      resolveDate,
     });
     expect(sentence).toMatch(/1 hr/);
   });
 
   it('never renders a raw message key', () => {
-    const sentence = ruleSentence({ draft: draft(), t, labels, resolveDate });
+    const sentence = ruleSentence({ draft: draft(), t, labels });
     expect(sentence).not.toMatch(/automation\./);
   });
 });

@@ -455,7 +455,7 @@ export async function rulesTest(
     method: 'POST',
     path: ROUTES.automationRuleTestRun(ruleId),
     schema: ruleRunViewSchema,
-    body: { sampleEvent: null },
+    body: { sampleEvent: {} },
   });
   const run = response.data;
 

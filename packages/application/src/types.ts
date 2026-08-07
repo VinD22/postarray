@@ -855,9 +855,11 @@ export interface AutomationRuleInput {
     readonly config?: Record<string, unknown>;
   }[];
   readonly delaySeconds?: number;
+  readonly endCondition?:
+    { readonly kind: 'manual' } | { readonly kind: 'count'; readonly runs: number };
   readonly requiresApproval?: boolean;
   readonly preauthorizedConnectionIds?: readonly string[];
-  readonly maxExecutions?: number | null;
+  readonly maxExecutionsPerSource?: number | null;
   readonly cooldownSeconds?: number | null;
   readonly measurementWindowSeconds?: number | null;
 }
@@ -898,7 +900,7 @@ export interface RssService {
       readonly title: string;
       readonly feedUrl: string;
       readonly connectionIds?: readonly string[];
-      readonly publishPolicy?: string;
+      readonly publishPolicy?: 'draft' | 'approval';
       readonly pollIntervalSeconds?: number;
     },
   ): Promise<RssFeedView>;
@@ -908,7 +910,7 @@ export interface RssService {
     patch: {
       readonly title?: string;
       readonly connectionIds?: readonly string[];
-      readonly publishPolicy?: string;
+      readonly publishPolicy?: 'draft' | 'approval';
       readonly pollIntervalSeconds?: number;
       readonly paused?: boolean;
     },

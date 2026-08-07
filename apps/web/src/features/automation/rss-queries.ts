@@ -3,7 +3,13 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 import { api, newIdempotencyKey } from '@/lib/api';
-import type { FeedInput } from '@/lib/api';
+import type {
+  FeedHealthView as ApiFeedHealthView,
+  FeedInput,
+  FeedPreviewView,
+  FeedView,
+} from '@/lib/api';
+import { useSession } from '@/lib/auth/session-context';
 
 import { automationKeys } from './queries';
 import type { FeedDraft, FeedHealthView, FeedSummaryView, FeedValidation } from './rss-types';
@@ -22,19 +28,107 @@ import type { FeedDraft, FeedHealthView, FeedSummaryView, FeedValidation } from 
  * The wizard's draft in the shape the API records. The wizard calls the feed's
  * name its title, which is the only place the two shapes disagree.
  */
-function toFeedInput(draft: FeedDraft): FeedInput {
-  const { title, ...rest } = draft;
-  return { name: title, ...rest };
+export function toFeedInput(draft: FeedDraft, brandId: string): FeedInput {
+  return {
+    brandId,
+    title: draft.title,
+    feedUrl: draft.url,
+    connectionIds: [...draft.connectionIds],
+    publishPolicy: draft.policy,
+    pollIntervalSeconds: 900,
+  };
 }
 
-function toPartialFeedInput(draft: Partial<FeedDraft>): Partial<FeedInput> {
-  const { title, ...rest } = draft;
-  return { ...(title === undefined ? {} : { name: title }), ...rest };
+function toPartialFeedInput(draft: Partial<FeedDraft> & { readonly paused?: boolean }): Partial<
+  Pick<FeedInput, 'title' | 'connectionIds' | 'publishPolicy' | 'pollIntervalSeconds'>
+> & {
+  readonly paused?: boolean;
+} {
+  return {
+    ...(draft.title === undefined ? {} : { title: draft.title }),
+    ...(draft.connectionIds === undefined ? {} : { connectionIds: [...draft.connectionIds] }),
+    ...(draft.policy === undefined ? {} : { publishPolicy: draft.policy }),
+    ...(draft.paused === undefined ? {} : { paused: draft.paused }),
+  };
 }
 
-/** TODO(web): depends on `@/lib/api` publishing typed RSS view models. */
-function adapt<T>(value: unknown): T {
-  return value as T;
+function requireValue<T>(value: T | null, code: string): T {
+  if (value === null) throw new Error(code);
+  return value;
+}
+
+function feedState(
+  health: FeedView['health'] | ApiFeedHealthView['health'],
+  paused: boolean,
+): FeedSummaryView['health'] {
+  if (paused) return 'paused';
+  if (health === 'healthy') return 'ok';
+  if (health === 'stalled') return 'stalled';
+  return 'failing';
+}
+
+export function toFeedSummary(feed: FeedView): FeedSummaryView {
+  return {
+    id: feed.id,
+    title: feed.title,
+    url: feed.feedUrl,
+    policy: feed.publishPolicy === 'approval' ? 'approval' : 'draft',
+    health: feedState(feed.health, feed.paused),
+    paused: feed.paused,
+    lastPollAt: feed.lastPolledAt,
+    lastNewItemAt: feed.lastNewItemAt,
+  };
+}
+
+export function toFeedValidation(preview: FeedPreviewView): FeedValidation {
+  const items = preview.sampleItems.flatMap((item, index) =>
+    item.link === null
+      ? []
+      : [
+          {
+            id: item.guid || `${item.link}:${String(index)}`,
+            title: item.title ?? item.link,
+            summary: null,
+            link: item.link,
+            author: null,
+            publishedAt: item.publishedAt,
+            imageUrl: null,
+            imageAlt: null,
+            categories: [],
+          },
+        ],
+  );
+  const availableFields: FeedValidation['availableFields'] = [
+    ...(preview.sampleItems.some((item) => item.title !== null) ? (['title'] as const) : []),
+    ...(preview.sampleItems.some((item) => item.link !== null) ? (['link'] as const) : []),
+    ...(preview.sampleItems.some((item) => item.publishedAt !== null)
+      ? (['published'] as const)
+      : []),
+  ];
+  return {
+    url: preview.url,
+    resolvedUrl: preview.url,
+    title: preview.title ?? preview.url,
+    itemCount: preview.itemCount,
+    items,
+    availableFields,
+    reachable: preview.reachable,
+    issueKeys: preview.issueKeys,
+  };
+}
+
+export function toFeedHealth(health: ApiFeedHealthView): FeedHealthView {
+  const paused = health.issueKeys.includes('rss.issue.paused');
+  return {
+    feedId: health.feedId,
+    state: feedState(health.health, paused),
+    lastPollAt: health.lastPolledAt,
+    lastNewItemAt: health.lastNewItemAt,
+    consecutiveFailures: health.consecutiveFailures,
+    issueKeys: health.issueKeys,
+    itemsLast30Days: health.itemsLast30Days,
+    paused,
+  };
 }
 
 export function useFeeds() {
@@ -42,7 +136,7 @@ export function useFeeds() {
     queryKey: automationKeys.feeds,
     queryFn: async (): Promise<readonly FeedSummaryView[]> => {
       const result = await api.rss.list({});
-      return adapt<{ readonly data: readonly FeedSummaryView[] }>(result).data;
+      return result.data.map(toFeedSummary);
     },
   });
 }
@@ -52,7 +146,7 @@ export function useFeedHealth(feedId: string, enabled = true) {
     queryKey: automationKeys.feedHealth(feedId),
     enabled,
     queryFn: async (): Promise<FeedHealthView> =>
-      adapt<FeedHealthView>(await api.rss.getHealth(feedId)),
+      toFeedHealth(requireValue(await api.rss.getHealth(feedId), 'FEED_HEALTH_NOT_AVAILABLE')),
   });
 }
 
@@ -66,15 +160,26 @@ export function useFeedHealth(feedId: string, enabled = true) {
 export function useValidateFeed() {
   return useMutation({
     mutationFn: async (url: string): Promise<FeedValidation> =>
-      adapt<FeedValidation>(await api.rss.validateFeed({ url })),
+      toFeedValidation(
+        requireValue(await api.rss.validateFeed({ url }), 'FEED_PREVIEW_NOT_AVAILABLE'),
+      ),
   });
 }
 
 export function useCreateFeed() {
   const client = useQueryClient();
+  const { brands } = useSession();
   return useMutation({
-    mutationFn: async (draft: FeedDraft): Promise<FeedSummaryView> =>
-      adapt<FeedSummaryView>(await api.rss.create(toFeedInput(draft), newIdempotencyKey('feed'))),
+    mutationFn: async (draft: FeedDraft): Promise<FeedSummaryView> => {
+      const brandId = brands[0]?.id;
+      if (brandId === undefined) throw new Error('ACTIVE_BRAND_REQUIRED');
+      return toFeedSummary(
+        requireValue(
+          await api.rss.create(toFeedInput(draft, brandId), newIdempotencyKey('feed')),
+          'FEED_SAVE_NOT_AVAILABLE',
+        ),
+      );
+    },
     onSuccess: () => {
       void client.invalidateQueries({ queryKey: automationKeys.feeds });
     },
@@ -86,9 +191,14 @@ export function useUpdateFeed() {
   return useMutation({
     mutationFn: async (input: {
       readonly feedId: string;
-      readonly draft: Partial<FeedDraft>;
+      readonly draft: Partial<FeedDraft> & { readonly paused?: boolean };
     }): Promise<FeedSummaryView> =>
-      adapt<FeedSummaryView>(await api.rss.update(input.feedId, toPartialFeedInput(input.draft))),
+      toFeedSummary(
+        requireValue(
+          await api.rss.update(input.feedId, toPartialFeedInput(input.draft)),
+          'FEED_SAVE_NOT_AVAILABLE',
+        ),
+      ),
     onSuccess: (_result, input) => {
       void client.invalidateQueries({ queryKey: automationKeys.feeds });
       void client.invalidateQueries({ queryKey: automationKeys.feed(input.feedId) });

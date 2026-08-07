@@ -509,6 +509,9 @@ export interface ShortLinkStats {
   readonly sourceKey: 'analytics.source.first_party_redirect';
 }
 
+export type RuleEndCondition =
+  { readonly kind: 'manual' } | { readonly kind: 'count'; readonly runs: number };
+
 export interface AutomationRuleView {
   readonly id: string;
   readonly workspaceId: string;
@@ -525,10 +528,12 @@ export interface AutomationRuleView {
     readonly config: Record<string, unknown>;
   }[];
   readonly delaySeconds: number;
+  readonly endCondition: RuleEndCondition;
   readonly requiresApproval: boolean;
   readonly preauthorizedConnectionIds: readonly string[];
   readonly version: number;
   readonly executionCount: number;
+  readonly maxExecutionsPerSource: number | null;
   readonly maxExecutions: number | null;
   readonly lastRunAt: string | null;
   readonly pausedReasonKey: string | null;
@@ -590,7 +595,7 @@ export interface RssFeedView {
   readonly feedUrl: string;
   readonly health: 'healthy' | 'degraded' | 'invalid' | 'stalled';
   readonly connectionIds: readonly string[];
-  readonly publishPolicy: string;
+  readonly publishPolicy: 'draft' | 'approval';
   readonly pollIntervalSeconds: number;
   readonly lastPolledAt: string | null;
   readonly lastNewItemAt: string | null;

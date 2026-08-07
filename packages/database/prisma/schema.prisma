@@ -2227,6 +2227,7 @@ model AutomationRule {
   /// Engagement-threshold rules require a window, cooldown and execution cap.
   measurementWindowSeconds Int?       @map("measurement_window_seconds")
   cooldownSeconds Int?                @map("cooldown_seconds")
+  maxExecutionsPerSource Int?         @map("max_executions_per_source")
   maxExecutions   Int?                @map("max_executions")
   executionCount  Int                 @default(0) @map("execution_count")
   runOncePerSource Boolean            @default(true) @map("run_once_per_source")

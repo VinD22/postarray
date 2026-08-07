@@ -7,7 +7,7 @@
  * than a fixed list that produces empty placeholders in a published post.
  */
 
-export type FeedPublishPolicy = 'draft' | 'approval' | 'next_slot' | 'fixed_cadence' | 'immediate';
+export type FeedPublishPolicy = 'draft' | 'approval';
 
 export type FeedHealthState = 'ok' | 'stalled' | 'failing' | 'paused';
 
@@ -29,28 +29,21 @@ export interface FeedItemPreview {
 export interface FeedValidation {
   readonly url: string;
   readonly title: string;
+  readonly itemCount: number;
   readonly items: readonly FeedItemPreview[];
   /** Fields at least one item in this feed actually provides. */
   readonly availableFields: readonly FeedField[];
-  /** The canonical URL after the server followed any permitted redirect. */
+  /** The URL the server fetched after applying its network safety checks. */
   readonly resolvedUrl: string;
+  readonly reachable: boolean;
+  readonly issueKeys: readonly string[];
 }
 
 export interface FeedDraft {
   readonly url: string;
   readonly title: string;
-  /** True treats everything currently in the feed as seen. */
-  readonly markExistingAsSeen: boolean;
   readonly connectionIds: readonly string[];
-  readonly targetGroupId: string | null;
-  readonly template: string;
-  /** Rewrite the wording per platform, shown as a diff to accept or reject. */
-  readonly adaptText: boolean;
-  /** Use the image the feed item carries. Relay never generates one. */
-  readonly useFeedImage: boolean;
   readonly policy: FeedPublishPolicy;
-  /** Only meaningful with `fixed_cadence`. Seconds between items. */
-  readonly cadenceSeconds: number | null;
 }
 
 export interface FeedSummaryView {
@@ -62,30 +55,15 @@ export interface FeedSummaryView {
   readonly paused: boolean;
   readonly lastPollAt: string | null;
   readonly lastNewItemAt: string | null;
-  readonly lastCreatedDraftAt: string | null;
 }
-
-export type FeedItemOutcome =
-  'draft' | 'scheduled' | 'published' | 'awaiting_approval' | 'duplicate' | 'failed';
 
 export interface FeedHealthView {
   readonly feedId: string;
   readonly state: FeedHealthState;
   readonly lastPollAt: string | null;
-  readonly nextPollAt: string | null;
   readonly lastNewItemAt: string | null;
-  readonly lastCreatedDraftAt: string | null;
   readonly consecutiveFailures: number;
-  /** A sanitized reason. Never a raw upstream response. */
-  readonly lastErrorReason: string | null;
-  readonly itemsProcessed: number;
-  readonly duplicatesSkipped: number;
-  readonly recentItems: readonly {
-    readonly id: string;
-    readonly title: string;
-    readonly seenAt: string;
-    readonly outcome: FeedItemOutcome;
-    readonly scheduledFor: string | null;
-    readonly failureReason: string | null;
-  }[];
+  readonly issueKeys: readonly string[];
+  readonly itemsLast30Days: number;
+  readonly paused: boolean;
 }

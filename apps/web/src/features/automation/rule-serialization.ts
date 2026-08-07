@@ -155,9 +155,6 @@ function readMeasurement(value: unknown): MeasurementSettings | null {
 
 function readEnd(value: unknown): RuleEnd {
   if (isRecord(value)) {
-    if (value.kind === 'date' && typeof value.at === 'string') {
-      return { kind: 'date', at: value.at };
-    }
     if (value.kind === 'count' && typeof value.runs === 'number') {
       return { kind: 'count', runs: value.runs };
     }

@@ -16,13 +16,14 @@ import {
   TableHeader,
   TableRow,
 } from '@relay/design-system/primitives';
-import { useTranslations } from '@relay/i18n/react';
+import { useI18n, useTranslations } from '@relay/i18n/react';
 
 import { QueryErrorState } from '@/features/analytics/components/query-error-state';
 import { useValueFormat } from '@/features/analytics/use-value-format';
 
 import { useAutomationRules } from './queries';
-import type { RuleState } from './types';
+import { ruleSentence } from './rule-sentence';
+import type { RuleState, RuleSummaryView } from './types';
 
 /**
  * Every rule in the workspace, with its sentence.
@@ -54,10 +55,21 @@ const STATE_TONE: Readonly<
 
 export function RulesListScreen(): ReactElement {
   const t = useTranslations();
+  const { locale } = useI18n();
   const router = useRouter();
   const format = useValueFormat();
   const isWide = useBreakpoint('md');
   const rules = useAutomationRules();
+  const sentenceFor = (rule: RuleSummaryView): string =>
+    ruleSentence({
+      draft: rule.draft,
+      t,
+      labels: {
+        locale,
+        resolve: (_name, value) =>
+          Array.isArray(value) ? value.map(String).join(', ') : String(value),
+      },
+    });
 
   return (
     <div className="flex flex-col gap-6 px-4 py-6 md:px-6">
@@ -129,7 +141,7 @@ export function RulesListScreen(): ReactElement {
                         {rule.name}
                       </button>
                       <span className="text-body-sm text-text-secondary max-w-[60ch]">
-                        {rule.sentence}
+                        {sentenceFor(rule)}
                       </span>
                     </div>
                   </TableCell>
@@ -163,7 +175,7 @@ export function RulesListScreen(): ReactElement {
                 onClick={() => router.push(`/automation/rules/${rule.id}`)}
               >
                 <span className="text-body-lg text-text-primary">{rule.name}</span>
-                <span className="text-body-sm text-text-secondary">{rule.sentence}</span>
+                <span className="text-body-sm text-text-secondary">{sentenceFor(rule)}</span>
                 <span className="flex flex-wrap items-center gap-2 pt-1">
                   <Badge tone={STATE_TONE[rule.state]}>{t(STATE_KEY[rule.state])}</Badge>
                   <span className="text-body-sm text-text-tertiary">

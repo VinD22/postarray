@@ -396,12 +396,7 @@ export function SentenceBuilder({
                 onValueChange={(value) =>
                   onChange({
                     ...draft,
-                    end:
-                      value === 'date'
-                        ? { kind: 'date', at: new Date().toISOString().slice(0, 10) }
-                        : value === 'count'
-                          ? { kind: 'count', runs: 10 }
-                          : { kind: 'manual' },
+                    end: value === 'count' ? { kind: 'count', runs: 10 } : { kind: 'manual' },
                   })
                 }
               >
@@ -415,7 +410,6 @@ export function SentenceBuilder({
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="manual">{t('automation.editor.end.manual')}</SelectItem>
-                  <SelectItem value="date">{t('automation.editor.end.date')}</SelectItem>
                   <SelectItem value="count">
                     {t('automation.editor.end.count', { count: 10 })}
                   </SelectItem>
@@ -423,21 +417,6 @@ export function SentenceBuilder({
               </Select>
             )}
           </Field>
-
-          {draft.end.kind === 'date' ? (
-            <Field label={t('automation.editor.end.dateValue')} required>
-              {(control) => (
-                <Input
-                  {...control}
-                  type="date"
-                  value={draft.end.kind === 'date' ? draft.end.at.slice(0, 10) : ''}
-                  onChange={(event) =>
-                    onChange({ ...draft, end: { kind: 'date', at: event.target.value } })
-                  }
-                />
-              )}
-            </Field>
-          ) : null}
 
           {draft.end.kind === 'count' ? (
             <Field label={t('automation.editor.end.countValue')} required>

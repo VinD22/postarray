@@ -27,7 +27,7 @@ export const createFeedSchema = z
     title: shortTextSchema,
     feedUrl: z.string().trim().url().max(2048),
     connectionIds: z.array(connectionIdSchema).max(200).optional(),
-    publishPolicy: z.string().trim().min(1).max(64).optional(),
+    publishPolicy: z.enum(['draft', 'approval']).optional(),
     /** Bounded so a feed cannot be hammered or accidentally disabled for days. */
     pollIntervalSeconds: z.number().int().min(900).max(86_400).optional(),
   })

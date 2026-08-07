@@ -1,6 +1,7 @@
 'use client';
 
 import type { ReactElement } from 'react';
+import { formatCurrency } from '@relay/i18n';
 import { DefinitionList, LoadingState, Notice, SkeletonText } from '@relay/design-system/patterns';
 import { Button, StatusDot } from '@relay/design-system/primitives';
 import { useTranslations } from '@relay/i18n/react';
@@ -97,128 +98,50 @@ export function PreflightPanel({
               count: preflight.maxExternalActionsPerRun,
             }),
             hint: t('automation.preflight.maxActionsPeriod', {
-              count: preflight.maxExternalActionsPerPeriod,
-              period: preflight.periodLabel,
+              count: preflight.cadenceImpactPerDay,
+              period: format.duration(86_400),
             }),
           },
           {
             id: 'approval',
             term: t('automation.preflight.approvalLabel'),
-            definition:
-              preflight.approvalPolicyName === null
-                ? t('automation.preflight.approvalNone')
-                : t('automation.preflight.approval', {
-                    policy: preflight.approvalPolicyName,
-                  }),
+            definition: !preflight.requiresApproval
+              ? t('automation.preflight.approvalNone')
+              : t('automation.preflight.approval', {
+                  policy: t('approval.policy.anyApprover'),
+                }),
           },
           {
             id: 'provider',
             term: t('automation.preflight.providerLabel'),
             definition:
-              preflight.providerRestrictions.length === 0 ? (
-                t('automation.preflight.providerNone')
-              ) : (
-                <ul className="flex flex-col gap-1.5">
-                  {preflight.providerRestrictions.map((restriction) => (
-                    <li key={`${restriction.provider}-${restriction.text}`}>
-                      <span className="text-text-primary">
-                        {t(providerLabelKey(restriction.provider))}
-                      </span>
-                      <span className="text-text-secondary ps-1.5">{restriction.text}</span>
-                      {restriction.sourceUrl ? (
-                        <a
-                          className="text-text-accent ps-1.5 underline underline-offset-2"
-                          href={restriction.sourceUrl}
-                          rel="noreferrer noopener"
-                          target="_blank"
-                        >
-                          {t('analytics.definition.sourceLink')}
-                        </a>
-                      ) : null}
-                      {restriction.verifiedOn ? (
-                        <span className="text-text-tertiary ps-1.5">
-                          {t('analytics.definition.verifiedOn', {
-                            date: format.date(restriction.verifiedOn),
-                          })}
-                        </span>
-                      ) : null}
-                    </li>
-                  ))}
-                </ul>
-              ),
+              preflight.providerRestrictionKeys.length === 0
+                ? t('automation.preflight.providerNone')
+                : t('automation.picker.hiddenForProvider', {
+                    count: preflight.providerRestrictionKeys.length,
+                  }),
           },
           {
             id: 'cost',
             term: t('automation.preflight.costLabel'),
             definition:
-              preflight.estimatedCost.formatted === null
+              preflight.estimatedCostMinor === null || preflight.costCurrency === null
                 ? t('automation.preflight.costUnknown')
                 : t('automation.preflight.estimatedCost', {
-                    amount: preflight.estimatedCost.formatted,
+                    amount: formatCurrency(
+                      format.locale,
+                      preflight.estimatedCostMinor,
+                      preflight.costCurrency,
+                    ),
                   }),
-            hint: preflight.estimatedCost.pricedOn
-              ? t('automation.preflight.costMethod', {
-                  date: format.date(preflight.estimatedCost.pricedOn),
-                })
-              : undefined,
           },
           {
             id: 'cadence',
             term: t('automation.preflight.cadenceLabel'),
             definition: t('automation.preflight.cadenceBody'),
           },
-          {
-            id: 'failure',
-            term: t('automation.preflight.failureLabel'),
-            definition:
-              preflight.failureBehaviour.kind === 'pause_after'
-                ? t('automation.preflight.failure.pauseAfter', {
-                    count: preflight.failureBehaviour.consecutiveFailures,
-                  })
-                : t('automation.preflight.failure.continue'),
-          },
         ]}
       />
-
-      <section className="border-border-subtle flex flex-col gap-2 border-t pt-4">
-        <h3 className="text-body-md text-text-primary font-medium">
-          {t('automation.preflight.exampleLabel')}
-        </h3>
-        {preflight.example === null ? (
-          <p className="text-body-md text-text-secondary max-w-[70ch]">
-            {t('automation.preflight.exampleNone')}
-          </p>
-        ) : (
-          <div className="flex flex-col gap-2">
-            <p className="text-body-sm text-text-tertiary">
-              {t('automation.preflight.exampleIntro')}
-              <time dateTime={preflight.example.triggeredAt} className="ps-1.5 tabular-nums">
-                {format.dateTime(preflight.example.triggeredAt)}
-              </time>
-            </p>
-            <p className="text-body-md text-text-primary">{preflight.example.triggerSummary}</p>
-            <ul className="flex flex-col gap-1">
-              {preflight.example.conditions.map((condition) => (
-                <li key={condition.label} className="text-body-md text-text-secondary">
-                  {condition.passed
-                    ? t('automation.test.conditionPassed', { condition: condition.label })
-                    : t('automation.test.conditionFailed', { condition: condition.label })}
-                </li>
-              ))}
-              {preflight.example.actions.map((action) => (
-                <li key={action.label} className="text-body-md text-text-secondary">
-                  {action.outcome === 'would_run'
-                    ? t('automation.test.actionSimulated', { action: action.label })
-                    : t('automation.test.actionSkipped', {
-                        action: action.label,
-                        reason: action.reason ?? '',
-                      })}
-                </li>
-              ))}
-            </ul>
-          </div>
-        )}
-      </section>
 
       {allBlockers.length > 0 ? (
         <Notice
@@ -228,7 +151,7 @@ export function PreflightPanel({
           description={
             <ul className="marker:text-text-tertiary flex list-disc flex-col gap-1 ps-5">
               {allBlockers.map((blocker) => (
-                <li key={blocker}>{blocker}</li>
+                <li key={blocker}>{t(blocker)}</li>
               ))}
             </ul>
           }

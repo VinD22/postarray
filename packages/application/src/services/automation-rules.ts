@@ -17,7 +17,7 @@ import type {
   PageQuery,
   ServiceDeps,
 } from '../types';
-import type { AutomationRuleView, RulePreview, RuleRunView } from '../views';
+import type { AutomationRuleView, RuleEndCondition, RulePreview, RuleRunView } from '../views';
 
 import { recordAudit } from '../internal/audit';
 import { loadCapabilitiesFor } from '../internal/capabilities';
@@ -63,10 +63,12 @@ const RULE_SELECT = {
   conditions: true,
   actions: true,
   delaySeconds: true,
+  endCondition: true,
   requiresApproval: true,
   preauthorizedConnectionIds: true,
   version: true,
   executionCount: true,
+  maxExecutionsPerSource: true,
   maxExecutions: true,
   lastRunAt: true,
   pausedReason: true,
@@ -84,10 +86,12 @@ interface RuleRow {
   conditions: unknown;
   actions: unknown;
   delaySeconds: number;
+  endCondition: unknown;
   requiresApproval: boolean;
   preauthorizedConnectionIds: string[];
   version: number;
   executionCount: number;
+  maxExecutionsPerSource: number | null;
   maxExecutions: number | null;
   lastRunAt: Date | null;
   pausedReason: string | null;
@@ -116,6 +120,21 @@ function parseActions(value: unknown): AutomationRuleView['actions'] {
     : [];
 }
 
+const endConditionSchema = z.discriminatedUnion('kind', [
+  z.object({ kind: z.literal('manual') }).strict(),
+  z.object({ kind: z.literal('count'), runs: z.number().int().positive() }).strict(),
+]);
+
+function parseEndCondition(value: unknown): RuleEndCondition {
+  const parsed = endConditionSchema.safeParse(value);
+  return parsed.success ? parsed.data : { kind: 'manual' };
+}
+
+function hasReachedEnd(endCondition: unknown, executionCount: number): boolean {
+  const end = parseEndCondition(endCondition);
+  return end.kind === 'count' && executionCount >= end.runs;
+}
+
 function toView(row: RuleRow): AutomationRuleView {
   return {
     id: row.id,
@@ -127,10 +146,12 @@ function toView(row: RuleRow): AutomationRuleView {
     conditions: parseConditions(row.conditions),
     actions: parseActions(row.actions),
     delaySeconds: row.delaySeconds,
+    endCondition: parseEndCondition(row.endCondition),
     requiresApproval: row.requiresApproval,
     preauthorizedConnectionIds: [...row.preauthorizedConnectionIds],
     version: row.version,
     executionCount: row.executionCount,
+    maxExecutionsPerSource: row.maxExecutionsPerSource,
     maxExecutions: row.maxExecutions,
     lastRunAt: row.lastRunAt?.toISOString() ?? null,
     pausedReasonKey: row.pausedReason,
@@ -207,8 +228,8 @@ function assertThresholdGuards(input: AutomationRuleInput): void {
     input.measurementWindowSeconds === null ||
     input.cooldownSeconds === undefined ||
     input.cooldownSeconds === null ||
-    input.maxExecutions === undefined ||
-    input.maxExecutions === null
+    input.maxExecutionsPerSource === undefined ||
+    input.maxExecutionsPerSource === null
   ) {
     throw invalid('errors.rule_threshold_guards_required', {});
   }
@@ -289,9 +310,11 @@ export function createAutomationRuleService(deps: ServiceDeps): AutomationRuleSe
               })),
             ),
             delaySeconds: input.delaySeconds ?? 0,
+            endCondition: toJson(input.endCondition ?? { kind: 'manual' }),
             requiresApproval: input.requiresApproval ?? true,
             preauthorizedConnectionIds: [...(input.preauthorizedConnectionIds ?? [])],
-            maxExecutions: input.maxExecutions ?? null,
+            maxExecutionsPerSource: input.maxExecutionsPerSource ?? null,
+            maxExecutions: input.endCondition?.kind === 'count' ? input.endCondition.runs : null,
             cooldownSeconds: input.cooldownSeconds ?? null,
             measurementWindowSeconds: input.measurementWindowSeconds ?? null,
             createdByUserId: actor.userId,
@@ -324,12 +347,19 @@ export function createAutomationRuleService(deps: ServiceDeps): AutomationRuleSe
           conditions: input.conditions ?? parseConditions(before.conditions),
           actions: input.actions ?? parseActions(before.actions),
           ...(input.delaySeconds === undefined ? {} : { delaySeconds: input.delaySeconds }),
+          endCondition: input.endCondition ?? parseEndCondition(before.endCondition),
           preauthorizedConnectionIds:
             input.preauthorizedConnectionIds ?? before.preauthorizedConnectionIds,
-          maxExecutions: input.maxExecutions ?? before.maxExecutions,
-          cooldownSeconds: input.cooldownSeconds ?? before.cooldownSeconds,
+          maxExecutionsPerSource:
+            input.maxExecutionsPerSource === undefined
+              ? before.maxExecutionsPerSource
+              : input.maxExecutionsPerSource,
+          cooldownSeconds:
+            input.cooldownSeconds === undefined ? before.cooldownSeconds : input.cooldownSeconds,
           measurementWindowSeconds:
-            input.measurementWindowSeconds ?? before.measurementWindowSeconds,
+            input.measurementWindowSeconds === undefined
+              ? before.measurementWindowSeconds
+              : input.measurementWindowSeconds,
         };
         assertThresholdGuards(merged);
         assertPreauthorized(merged);
@@ -354,11 +384,13 @@ export function createAutomationRuleService(deps: ServiceDeps): AutomationRuleSe
               })),
             ),
             ...(input.delaySeconds === undefined ? {} : { delaySeconds: input.delaySeconds }),
+            endCondition: toJson(merged.endCondition ?? { kind: 'manual' }),
             ...(input.requiresApproval === undefined
               ? {}
               : { requiresApproval: input.requiresApproval }),
             preauthorizedConnectionIds: [...(merged.preauthorizedConnectionIds ?? [])],
-            maxExecutions: merged.maxExecutions ?? null,
+            maxExecutionsPerSource: merged.maxExecutionsPerSource ?? null,
+            maxExecutions: merged.endCondition?.kind === 'count' ? merged.endCondition.runs : null,
             cooldownSeconds: merged.cooldownSeconds ?? null,
             measurementWindowSeconds: merged.measurementWindowSeconds ?? null,
             version: before.version + 1,
@@ -519,10 +551,17 @@ export function createAutomationRuleService(deps: ServiceDeps): AutomationRuleSe
       return authorized(deps, ctx, 'rule.run', undefined, async (db, actor) => {
         const rule = await db.automationRule.findFirst({
           where: { name: input.ruleName, state: 'active' },
-          select: { id: true },
+          select: { id: true, endCondition: true, executionCount: true },
         });
         if (rule === null) {
           throw notFound('automation_rule', input.ruleName);
+        }
+        if (hasReachedEnd(rule.endCondition, rule.executionCount)) {
+          await db.automationRule.update({
+            where: { id: rule.id },
+            data: { state: 'paused', pausedReason: 'rule.paused.execution_limit_reached' },
+          });
+          throw invalid('errors.rule_execution_limit_reached', {});
         }
         const ruleRunId = newIdFor('ruleRun');
         const workflowId = ruleWorkflowId(ctx.workspaceId, rule.id, ruleRunId);
@@ -580,6 +619,9 @@ async function buildPreview(db: Db, deps: ServiceDeps, rule: RuleRow): Promise<R
   const capabilities = await loadCapabilitiesFor(db, deps, connectionIds);
 
   const blocked: string[] = [];
+  if (hasReachedEnd(rule.endCondition, rule.executionCount)) {
+    blocked.push('rule.blocked.execution_limit_reached');
+  }
   if (consequential.length > 0 && connectionIds.length === 0) {
     blocked.push('rule.blocked.no_preauthorized_connections');
   }

@@ -24,9 +24,6 @@ import type { FeedHealthState, FeedPublishPolicy } from './rss-types';
 const POLICY_KEY: Readonly<Record<FeedPublishPolicy, string>> = {
   draft: 'automation.rss.policy.draft',
   approval: 'automation.rss.policy.approval',
-  next_slot: 'automation.rss.policy.nextSlot',
-  fixed_cadence: 'automation.rss.policy.cadence',
-  immediate: 'automation.rss.policy.immediate',
 };
 
 const HEALTH_TONE: Readonly<
@@ -56,7 +53,7 @@ export function FeedListScreen(): ReactElement {
         duration: lastNewItemAt ? format.relative(lastNewItemAt) : t('common.unknown'),
       });
     }
-    return t('automation.rss.healthFailing', { count: 3 });
+    return t('automation.rss.errorTitle');
   };
 
   return (

@@ -22,6 +22,8 @@ import type { RuleRunOutcome, RuleRunView } from '../types';
  */
 
 const OUTCOME_KEY: Readonly<Record<RuleRunOutcome, string>> = {
+  pending: 'automation.test.running',
+  running: 'automation.test.running',
   completed: 'automation.runs.outcome.completed',
   skipped: 'automation.runs.outcome.skipped',
   failed: 'automation.runs.outcome.failed',
@@ -31,6 +33,8 @@ const OUTCOME_KEY: Readonly<Record<RuleRunOutcome, string>> = {
 const OUTCOME_TONE: Readonly<
   Record<RuleRunOutcome, 'success' | 'neutral' | 'destructive' | 'info'>
 > = {
+  pending: 'info',
+  running: 'info',
   completed: 'success',
   skipped: 'neutral',
   failed: 'destructive',
@@ -109,11 +113,9 @@ export function RuleRuns({ runs, loading, error, onRetry }: RuleRunsProps): Reac
               </span>
             </div>
 
-            <p className="text-body-md text-text-secondary">{run.triggerSummary}</p>
-
             {run.skippedReason ? (
               <p className="text-body-md text-text-secondary">
-                {t('automation.runs.skippedReason', { reason: run.skippedReason })}
+                {t('automation.runs.outcome.skipped')}
               </p>
             ) : null}
 
@@ -121,15 +123,6 @@ export function RuleRuns({ runs, loading, error, onRetry }: RuleRunsProps): Reac
               <p className="text-body-sm text-destructive-fg flex flex-wrap items-center gap-1.5">
                 {t('automation.runs.outcome.failed')}
                 <Code>{run.errorCode}</Code>
-              </p>
-            ) : null}
-
-            {run.createdItems.length > 0 ? (
-              <p className="text-body-sm text-text-tertiary">
-                {t('automation.runs.createdItems')}
-                <span className="ps-1.5">
-                  {run.createdItems.map((item) => item.label).join(', ')}
-                </span>
               </p>
             ) : null}
           </li>

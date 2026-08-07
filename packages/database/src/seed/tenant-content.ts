@@ -479,7 +479,7 @@ async function seedAutomation(tx: RlsTransactionClient): Promise<void> {
         },
       ],
       delaySeconds: 300,
-      endCondition: { kind: 'max_executions', value: 20 },
+      endCondition: { kind: 'count', runs: 20 },
       cooldownSeconds: 3_600,
       maxExecutions: 20,
       runOncePerSource: true,
