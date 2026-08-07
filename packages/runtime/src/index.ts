@@ -18,6 +18,16 @@ export {
   createVerifiedConnectorRegistry,
   VerifiedConnectorRegistry,
 } from './verified-connectors';
+export {
+  ConnectorExecutionGateway,
+  createWorkspaceCredentialResolver,
+  type ConnectionDetails,
+  type ConnectorExecutionGatewayOptions,
+  type LeasedConnection,
+  type PublishExecutionInput,
+  type PublishExecutionResult,
+  type WorkspaceCredentialResolver,
+} from './connector-execution';
 export { NeonObjectStorage, base64ChecksumToHex, type NeonStorageOptions } from './neon-storage';
 export { LocalDataExportEncryption } from './data-export-encryption';
 export {

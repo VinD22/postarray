@@ -8,6 +8,8 @@ import {
   registerBuiltInProviders,
   type ConnectorLogger,
   type AuthorizationDefinition,
+  type ConnectorFeature,
+  type SocialConnector,
 } from '@relay/connectors';
 import {
   detectCapabilities,
@@ -18,6 +20,7 @@ import {
   ERROR_CODES,
   RelayError,
   type CapabilitySnapshot,
+  type CapabilitySupport,
   type ProviderId,
 } from '@relay/contracts';
 import type { Clock, ConnectorRegistry as ApplicationConnectorRegistry } from '@relay/application';
@@ -146,6 +149,56 @@ export class VerifiedConnectorRegistry implements ApplicationConnectorRegistry {
     } catch {
       return false;
     }
+  }
+
+  /**
+   * Return an adapter only after both production gates have passed:
+   * configuration is usable and the connector is explicitly verified. The
+   * execution gateway uses this method instead of reaching into the registry,
+   * which keeps an accidentally registered beta adapter from receiving a
+   * credential or making an external call.
+   */
+  verifiedConnector(provider: ProviderId, feature: ConnectorFeature): SocialConnector {
+    if (!this.has(provider)) {
+      throw new RelayError(ERROR_CODES.CAPABILITY_NOT_IMPLEMENTED, {
+        messageKey: 'errors.capability_not_implemented',
+        details: {
+          reason: 'connector_not_verified',
+          capability: feature,
+          provider,
+        },
+      });
+    }
+
+    const support = this.#registry.featureSupport(provider, feature);
+    if (support === 'unsupported') {
+      throw new RelayError(ERROR_CODES.CAPABILITY_UNSUPPORTED, {
+        messageKey: 'error.capability_unsupported.message',
+        details: { capability: feature, provider },
+      });
+    }
+    if (support !== 'supported') {
+      throw new RelayError(ERROR_CODES.CAPABILITY_NOT_IMPLEMENTED, {
+        messageKey: 'errors.capability_not_implemented',
+        details: { capability: feature, provider, support },
+      });
+    }
+    return this.#registry.get(provider);
+  }
+
+  /** Read a feature declaration only through the same verified-provider gate. */
+  verifiedFeatureSupport(provider: ProviderId, feature: ConnectorFeature): CapabilitySupport {
+    if (!this.has(provider)) {
+      throw new RelayError(ERROR_CODES.CAPABILITY_NOT_IMPLEMENTED, {
+        messageKey: 'errors.capability_not_implemented',
+        details: {
+          reason: 'connector_not_verified',
+          capability: feature,
+          provider,
+        },
+      });
+    }
+    return this.#registry.featureSupport(provider, feature);
   }
 
   async beginOAuth(input: {
