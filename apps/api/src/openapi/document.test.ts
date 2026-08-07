@@ -107,4 +107,12 @@ describe('openapi document', () => {
     expect(operation('/v1/api-keys', 'post')['x-relay-step-up']).toBe(true);
     expect(operation('/v1/brands', 'post')['x-relay-step-up']).toBeUndefined();
   });
+
+  it('publishes the action center queue and its idempotent snooze contract', () => {
+    expect(operation('/v1/action-center', 'get')['responses']).toBeDefined();
+    const snooze = parameters('/v1/action-center/{id}/snooze', 'post').find(
+      (parameter) => parameter['name'] === 'idempotency-key',
+    );
+    expect(snooze?.['required']).toBe(true);
+  });
 });

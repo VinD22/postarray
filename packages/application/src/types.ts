@@ -32,6 +32,8 @@ import type { RelayPrismaClient } from '@relay/database';
 import type { HealthReport, Logger } from '@relay/observability';
 
 import type {
+  ActionItemCategory,
+  ActionItemView,
   ApiKeyView,
   ApprovalRequestView,
   AuditEventView,
@@ -691,6 +693,18 @@ export interface ReceiptService {
   listRecent(ctx: ActorContext, query?: PageQuery): Promise<Paginated<ReceiptSummaryView>>;
 }
 
+export interface ActionCenterService {
+  list(
+    ctx: ActorContext,
+    query?: PageQuery & {
+      readonly category?: ActionItemCategory;
+      readonly includeSnoozed?: boolean;
+    },
+  ): Promise<Paginated<ActionItemView>>;
+  snooze(ctx: ActorContext, itemId: string, until: string): Promise<ActionItemView>;
+  unsnooze(ctx: ActorContext, itemId: string): Promise<void>;
+}
+
 export interface MediaEditOperation {
   readonly kind: 'crop' | 'resize' | 'rotate' | 'compress' | 'convert';
   readonly params: Readonly<Record<string, number | string>>;
@@ -1143,6 +1157,7 @@ export interface Services {
   readonly scheduling: SchedulingService;
   readonly publishing: PublishingService;
   readonly receipts: ReceiptService;
+  readonly actionCenter: ActionCenterService;
   readonly media: MediaService;
   readonly analytics: AnalyticsService;
   readonly shortLinks: ShortLinkService;

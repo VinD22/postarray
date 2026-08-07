@@ -20,6 +20,7 @@ import { ScopeGuard } from './guards/scope.guard';
 import { StepUpGuard } from './guards/step-up.guard';
 import { WorkspaceGuard } from './guards/workspace.guard';
 import { AnalyticsModule } from './modules/analytics/analytics.module';
+import { ActionCenterModule } from './modules/action-center/action-center.module';
 import { ApiKeysModule } from './modules/api-keys/api-keys.module';
 import { ApprovalsModule } from './modules/approvals/approvals.module';
 import { AuditModule } from './modules/audit/audit.module';
@@ -84,6 +85,7 @@ export class AppModule implements NestModule {
         ConnectionsModule,
         ContentModule,
         ApprovalsModule,
+        ActionCenterModule,
         SchedulingModule,
         PublishingModule,
         MediaModule,

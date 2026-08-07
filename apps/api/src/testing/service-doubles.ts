@@ -95,6 +95,11 @@ export function createRefusingServices(): Services {
       retryTarget: refuse('job'),
     },
     receipts: { get: refuse('receipt'), listForJob: refuse('job'), listRecent: page },
+    actionCenter: {
+      list: page,
+      snooze: refuse('action_item'),
+      unsnooze: refuse('action_item'),
+    },
     media: {
       createUploadUrl: refuse('media'),
       finalizeUpload: refuse('media'),

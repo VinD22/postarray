@@ -10,6 +10,10 @@
 export { createServices } from './services/index';
 
 export type {
+  ActionItemCategory,
+  ActionItemKind,
+  ActionItemUrgency,
+  ActionItemView,
   ActorContext,
   AiGateway,
   AnalyticsService,

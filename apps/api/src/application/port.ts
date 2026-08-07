@@ -36,6 +36,7 @@ import type { RelayConfig } from '@relay/config';
 
 export type { Paginated } from '@relay/contracts';
 import type {
+  ActionItemView as ApplicationActionItemView,
   ApiKeyView as ApplicationApiKeyView,
   ApprovalRequestView as ApplicationApprovalRequestView,
   AuditEventView as ApplicationAuditEventView,
@@ -227,6 +228,7 @@ export type UsageSummaryView = ApplicationUsageSummaryView;
 export type CheckoutSessionView = ApplicationCheckoutSessionView;
 export type PortalLinkView = ApplicationPortalLinkView;
 export type SessionView = ApplicationSessionView;
+export type ActionItemView = ApplicationActionItemView;
 
 /* -------------------------------------------------------------------------- */
 /* Common input shapes                                                        */

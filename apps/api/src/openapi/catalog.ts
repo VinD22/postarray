@@ -44,6 +44,11 @@ import {
   requestApprovalSchema,
 } from '../modules/approvals/approvals.schemas';
 import {
+  actionCenterQuerySchema,
+  actionItemSchema,
+  snoozeActionSchema,
+} from '../modules/action-center/action-center.schemas';
+import {
   accountMetricsQuerySchema,
   compareRequestSchema,
   createExperimentSchema,
@@ -786,6 +791,40 @@ export const OPERATIONS: readonly OperationSpec[] = [
     pathParams: p('id', approvalIdSchema),
     body: decideApprovalSchema,
     response: view,
+  },
+
+  /* --------------------------------------------------------- action center */
+  {
+    method: 'get',
+    path: '/v1/action-center',
+    operationId: 'actionCenter.list',
+    summary: 'Evidence-backed situations that need a person in the current workspace.',
+    tag: 'action-center',
+    scopes: ['drafts:read'],
+    query: actionCenterQuerySchema,
+    response: paginatedSchema(actionItemSchema),
+  },
+  {
+    method: 'post',
+    path: '/v1/action-center/{id}/snooze',
+    operationId: 'actionCenter.snooze',
+    summary: 'Hide one action item until a future instant.',
+    tag: 'action-center',
+    scopes: ['drafts:read'],
+    requiresIdempotencyKey: true,
+    pathParams: p('id', z.string().min(1).max(255)),
+    body: snoozeActionSchema,
+    response: actionItemSchema,
+  },
+  {
+    method: 'delete',
+    path: '/v1/action-center/{id}/snooze',
+    operationId: 'actionCenter.unsnooze',
+    summary: 'Return a snoozed action item to the queue.',
+    tag: 'action-center',
+    scopes: ['drafts:read'],
+    pathParams: p('id', z.string().min(1).max(255)),
+    successStatus: 204,
   },
 
   /* ------------------------------------------------------------ scheduling */

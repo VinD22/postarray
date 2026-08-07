@@ -18,6 +18,7 @@ const REQUIRED_SERVICES = [
   'scheduling',
   'publishing',
   'receipts',
+  'actionCenter',
   'media',
   'analytics',
   'shortLinks',

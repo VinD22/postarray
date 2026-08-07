@@ -366,6 +366,37 @@ export interface ReceiptSummaryView {
   readonly failedItemCount: number;
 }
 
+export type ActionItemKind =
+  | 'connection_expiring'
+  | 'connection_action_required'
+  | 'validation_failed'
+  | 'approval_overdue'
+  | 'schedule_conflict'
+  | 'provider_incident'
+  | 'comment_failed'
+  | 'analytics_stale'
+  | 'rss_stalled'
+  | 'webhook_failing'
+  | 'usage_balance';
+
+export type ActionItemUrgency = 'now' | 'soon' | 'watching';
+export type ActionItemCategory = 'connections' | 'publishing' | 'automation' | 'billing';
+
+/** One evidence-backed situation that needs a person, with one remediation route. */
+export interface ActionItemView {
+  readonly id: string;
+  readonly kind: ActionItemKind;
+  readonly urgency: ActionItemUrgency;
+  readonly category: ActionItemCategory;
+  readonly subject: string;
+  readonly provider: ProviderId | null;
+  readonly createdAt: string;
+  readonly dueAt: string | null;
+  readonly snoozedUntil: string | null;
+  readonly href: string;
+  readonly values: Readonly<Record<string, string | number>>;
+}
+
 export interface MediaAssetView {
   readonly id: string;
   readonly workspaceId: string;
