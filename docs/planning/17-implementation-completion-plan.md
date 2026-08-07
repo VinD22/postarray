@@ -2,6 +2,10 @@
 
 Status date: 7 August 2026
 
+The team-ready execution handoff is [18-team-release-handoff.md](18-team-release-handoff.md).
+Use that companion document for owner assignments, dependencies, evidence and
+release sequencing.
+
 This is the developer handoff for finishing Relay from the current repository
 checkpoint. It is deliberately execution-oriented. `16-launch-recovery-and-
 release-gates.md` remains the release authority; this document turns its open
