@@ -1,4 +1,11 @@
-import type { ErrorCode, ProviderId, PublishState, WebhookEventName } from '@relay/contracts';
+import type {
+  DataExportFormat,
+  DataExportScope,
+  ErrorCode,
+  ProviderId,
+  PublishState,
+  WebhookEventName,
+} from '@relay/contracts';
 
 import type { ActivityContext, PublishTargetDescriptor } from '../activities/types';
 
@@ -216,6 +223,20 @@ export interface WebhookDeliveryWorkflowOutput {
   readonly attempts: number;
   readonly deadLettered: boolean;
   readonly endpointDisabled: boolean;
+}
+
+export interface DataExportWorkflowInput {
+  readonly ctx: ActivityContext;
+  readonly exportId: string;
+  readonly scope: DataExportScope;
+  readonly format: DataExportFormat;
+}
+
+export interface DataExportWorkflowOutput {
+  readonly exportId: string;
+  readonly state: 'ready' | 'failed';
+  readonly byteSize: number | null;
+  readonly checksumSha256: string | null;
 }
 
 export interface DataDeletionWorkflowInput {

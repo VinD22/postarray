@@ -2,6 +2,7 @@ import type {
   AnalyticsSyncWorkflowInput,
   AutomationRuleWorkflowInput,
   DataDeletionWorkflowInput,
+  DataExportWorkflowInput,
   PublishPostWorkflowInput,
   PublishTargetPlan,
   PublishTargetWorkflowInput,
@@ -183,6 +184,18 @@ export function makeDeletionInput(
     ctx: TEST_CONTEXT,
     requestId: 'op_delete_1',
     graceMs: 24 * 60 * 60_000,
+    ...overrides,
+  };
+}
+
+export function makeDataExportInput(
+  overrides: Partial<DataExportWorkflowInput> = {},
+): DataExportWorkflowInput {
+  return {
+    ctx: TEST_CONTEXT,
+    exportId: 'export_1',
+    scope: 'workspace',
+    format: 'json',
     ...overrides,
   };
 }

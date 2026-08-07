@@ -4,7 +4,7 @@ import { FixedClock } from './clock';
 import { MemoryKeyValueStore } from './key-value';
 import { MemoryStorage } from './storage';
 import { RecordingMailer } from './mailer';
-import { InMemoryScheduler, publishWorkflowId } from './scheduler';
+import { dataExportWorkflowId, InMemoryScheduler, publishWorkflowId } from './scheduler';
 
 describe('MemoryKeyValueStore', () => {
   it('round trips a value', async () => {
@@ -181,5 +181,34 @@ describe('InMemoryScheduler', () => {
   it('reports nothing for a job it never saw', async () => {
     const scheduler = new InMemoryScheduler(new FixedClock());
     expect(await scheduler.describe({ jobId: 'job-unknown', workspaceId: 'ws-1' })).toBeNull();
+  });
+
+  it('deduplicates export workflows by workspace and export id', async () => {
+    const scheduler = new InMemoryScheduler(new FixedClock());
+    const workflowInput = {
+      ctx: {
+        workspaceId: 'ws-1',
+        correlationId: 'corr-1',
+        actorId: 'user-1',
+        actorType: 'user' as const,
+        surface: 'web' as const,
+        approvalLevel: 'level_3_confirm' as const,
+        locale: 'en',
+      },
+      exportId: 'export-1',
+      scope: 'workspace' as const,
+      format: 'json' as const,
+    };
+    const input = {
+      exportId: 'export-1',
+      workspaceId: 'ws-1',
+      executeAt: new Date('2026-08-05T09:00:00.000Z'),
+      workflowInput,
+    };
+    const first = await scheduler.scheduleDataExport(input);
+    const second = await scheduler.scheduleDataExport(input);
+    expect(first.workflowId).toBe(dataExportWorkflowId('ws-1', 'export-1'));
+    expect(second.workflowId).toBe(first.workflowId);
+    expect(scheduler.dataExports.size).toBe(1);
   });
 });

@@ -53,6 +53,7 @@ import type {
   ContentVersionView as ApplicationContentVersionView,
   CreatedApiKeyView as ApplicationCreatedApiKeyView,
   CreatedOAuthAppView as ApplicationCreatedOAuthAppView,
+  DataExportView as ApplicationDataExportView,
   EntitlementStateView as ApplicationEntitlementStateView,
   ExperimentView as ApplicationExperimentView,
   FeedHealthView as ApplicationFeedHealthView,
@@ -233,6 +234,7 @@ export type PortalLinkView = ApplicationPortalLinkView;
 export type SessionView = ApplicationSessionView;
 export type ActionItemView = ApplicationActionItemView;
 export type AgentConfirmationView = ApplicationAgentConfirmationView;
+export type DataExportView = ApplicationDataExportView;
 
 /* -------------------------------------------------------------------------- */
 /* Common input shapes                                                        */

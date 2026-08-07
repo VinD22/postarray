@@ -18,6 +18,7 @@ export * from './content';
 export * from './validation';
 export * from './publishing';
 export * from './growth';
+export * from './data';
 export * from './api';
 export * from './scopes';
 export * from './plan-limits';

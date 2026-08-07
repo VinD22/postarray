@@ -44,3 +44,4 @@ export type {
   RuleView,
 } from './resources/platform';
 export type { EstablishedSession, PasswordCredentials } from './resources/auth';
+export type { DataExportDownload } from './resources/data';

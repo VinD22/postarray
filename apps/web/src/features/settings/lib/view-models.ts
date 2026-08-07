@@ -308,8 +308,8 @@ export interface ReferralView {
 }
 
 export interface ExportJobView {
-  readonly id: string;
-  readonly state: 'idle' | 'running' | 'ready';
+  readonly id: string | null;
+  readonly state: 'idle' | 'running' | 'ready' | 'failed';
   readonly preparedAt: string | null;
   readonly expiresAt: string | null;
   readonly downloadUrl: string | null;

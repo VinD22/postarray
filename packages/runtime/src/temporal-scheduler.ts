@@ -9,6 +9,7 @@ import {
 
 import {
   publishWorkflowId,
+  dataExportWorkflowId,
   ruleWorkflowId,
   type Clock,
   type SchedulerPort,
@@ -20,6 +21,7 @@ import type { Logger } from '@relay/observability';
 const PUBLISH_WORKFLOW = 'publishPostWorkflow';
 const ANALYTICS_WORKFLOW = 'analyticsSyncWorkflow';
 const RULE_WORKFLOW = 'automationRuleWorkflow';
+const DATA_EXPORT_WORKFLOW = 'dataExportWorkflow';
 const SIX_HOURS_MS = 6 * 60 * 60_000;
 
 export interface TemporalSchedulerOptions {
@@ -122,6 +124,17 @@ export class TemporalScheduler implements SchedulerPort {
       dryRun: input.dryRun ?? false,
     });
     return { workflowId };
+  }
+
+  async scheduleDataExport(input: Parameters<SchedulerPort['scheduleDataExport']>[0]) {
+    const workflowId = dataExportWorkflowId(input.workspaceId, input.exportId);
+    await this.#startUnique(
+      DATA_EXPORT_WORKFLOW,
+      workflowId,
+      { ...input.workflowInput },
+      input.executeAt,
+    );
+    return { workflowId, runId: `${workflowId}:1` };
   }
 
   async describe(input: Parameters<SchedulerPort['describe']>[0]) {

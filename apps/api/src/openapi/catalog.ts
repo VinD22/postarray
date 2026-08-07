@@ -22,6 +22,7 @@ import {
   brandIdSchema,
   connectionIdSchema,
   contentItemIdSchema,
+  dataExportIdSchema,
   feedIdSchema,
   growthPlanIdSchema,
   growthProfileIdSchema,
@@ -145,6 +146,13 @@ import {
   updateShortLinkDestinationSchema,
 } from '../modules/short-links/short-links.schemas';
 import { listAuditQuerySchema } from '../modules/audit/audit.schemas';
+import {
+  dataExportDownloadSchema,
+  dataExportPageSchema,
+  dataExportViewSchemaForApi,
+  listDataExportsQuerySchema,
+  requestDataExportSchema,
+} from '../modules/data/data.schemas';
 import {
   createWebhookEndpointSchema,
   inboundIntegrationSchema,
@@ -1816,6 +1824,51 @@ export const OPERATIONS: readonly OperationSpec[] = [
     scopes: ['connections:admin'],
     pathParams: p('id', oauthGrantIdSchema),
     successStatus: 204,
+  },
+
+  /* ----------------------------------------------------------------- audit */
+  /* --------------------------------------------------------------- data */
+  {
+    method: 'get',
+    path: '/v1/data/exports',
+    operationId: 'dataExports.list',
+    summary: 'List portable workspace export jobs and their retention state.',
+    tag: 'data',
+    scopes: ['analytics:read'],
+    query: listDataExportsQuerySchema,
+    response: dataExportPageSchema,
+  },
+  {
+    method: 'post',
+    path: '/v1/data/exports',
+    operationId: 'dataExports.request',
+    summary: 'Request a sanitized JSON workspace export.',
+    tag: 'data',
+    scopes: ['analytics:read'],
+    body: requestDataExportSchema,
+    response: dataExportViewSchemaForApi,
+    successStatus: 202,
+    requiresIdempotencyKey: true,
+  },
+  {
+    method: 'get',
+    path: '/v1/data/exports/{id}',
+    operationId: 'dataExports.get',
+    summary: 'Read the state of one workspace export job.',
+    tag: 'data',
+    scopes: ['analytics:read'],
+    pathParams: p('id', dataExportIdSchema),
+    response: dataExportViewSchemaForApi,
+  },
+  {
+    method: 'get',
+    path: '/v1/data/exports/{id}/download',
+    operationId: 'dataExports.download',
+    summary: 'Mint a short-lived signed URL for a ready export.',
+    tag: 'data',
+    scopes: ['analytics:read'],
+    pathParams: p('id', dataExportIdSchema),
+    response: dataExportDownloadSchema,
   },
 
   /* ----------------------------------------------------------------- audit */

@@ -5,6 +5,9 @@ import type {
   Assumption,
   ContentKind,
   CreationSurface,
+  DataExportFormat,
+  DataExportScope,
+  DataExportState,
   DisclosureFlags,
   Fact,
   LinkSpec,
@@ -53,6 +56,21 @@ export interface WorkspaceView {
   readonly weekStart: 0 | 1 | 6;
   readonly hourCycle: 'h12' | 'h23';
   readonly killSwitchEngaged: boolean;
+  readonly createdAt: string;
+}
+
+/** A sanitized workspace export job. Credentials and provider payloads never leave the worker. */
+export interface DataExportView {
+  readonly id: string;
+  readonly workspaceId: string;
+  readonly scope: DataExportScope;
+  readonly format: DataExportFormat;
+  readonly state: DataExportState;
+  readonly preparedAt: string | null;
+  readonly expiresAt: string | null;
+  readonly byteSize: number | null;
+  readonly checksumSha256: string | null;
+  readonly downloadUrl: string | null;
   readonly createdAt: string;
 }
 

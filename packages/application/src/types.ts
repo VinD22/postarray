@@ -3,6 +3,8 @@ import type {
   CapabilitySnapshot,
   ContentKind,
   CreationSurface,
+  DataExportFormat,
+  DataExportScope,
   DisclosureFlags,
   GrowthExportFormat,
   GrowthPlan,
@@ -50,6 +52,7 @@ import type {
   ContentVersionView,
   CreatedApiKeyView,
   CreatedOAuthAppView,
+  DataExportView,
   ExperimentView,
   FeedHealthView,
   FeedPreview,
@@ -218,6 +221,14 @@ export interface PublishWorkflowInput {
   readonly immediate: boolean;
 }
 
+/** Safe, PII-free input persisted in workflow history while an export builds. */
+export interface DataExportWorkflowInput {
+  readonly ctx: WorkflowActorContext;
+  readonly exportId: string;
+  readonly scope: DataExportScope;
+  readonly format: DataExportFormat;
+}
+
 export interface SchedulerPort {
   schedulePublish(input: {
     readonly jobId: string;
@@ -261,6 +272,12 @@ export interface SchedulerPort {
     readonly event: Record<string, unknown>;
     readonly dryRun?: boolean;
   }): Promise<{ readonly workflowId: string }>;
+  scheduleDataExport(input: {
+    readonly exportId: string;
+    readonly workspaceId: string;
+    readonly executeAt: Date;
+    readonly workflowInput: DataExportWorkflowInput;
+  }): Promise<{ readonly workflowId: string; readonly runId: string }>;
   describe(input: {
     readonly jobId: string;
     readonly workspaceId: string;
@@ -1146,6 +1163,19 @@ export interface AuditService {
   ): Promise<Paginated<AuditEventView>>;
 }
 
+export interface DataExportService {
+  request(
+    ctx: ActorContext,
+    input: { readonly scope?: DataExportScope; readonly format?: DataExportFormat },
+  ): Promise<DataExportView>;
+  list(ctx: ActorContext, query?: PageQuery): Promise<Paginated<DataExportView>>;
+  get(ctx: ActorContext, exportId: string): Promise<DataExportView>;
+  download(
+    ctx: ActorContext,
+    exportId: string,
+  ): Promise<{ readonly downloadUrl: string; readonly expiresAt: string }>;
+}
+
 export interface HealthService {
   report(): Promise<HealthReport>;
 }
@@ -1234,5 +1264,6 @@ export interface Services {
   readonly billing: CustomerBillingService;
   readonly identity: IdentityService;
   readonly audit: AuditService;
+  readonly dataExports: DataExportService;
   readonly health: HealthService;
 }

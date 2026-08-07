@@ -12,6 +12,7 @@ import { createBrandService } from './brands';
 import { createConnectionService } from './connections';
 import { createContentService } from './content';
 import { createCredentialVaultService } from './credentials';
+import { createDataExportService } from './data-exports';
 import { createGrowthService } from './growth';
 import { createHealthService } from './health';
 import { createIdentityService } from './identity';
@@ -67,6 +68,7 @@ export function createServices(deps: ServiceDeps): Services {
     billing: createBillingService(deps),
     identity: createIdentityService(deps),
     audit: createAuditService(deps),
+    dataExports: createDataExportService(deps),
     health: createHealthService(deps),
   };
 }

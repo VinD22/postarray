@@ -1,5 +1,6 @@
 import {
   publishWorkflowId,
+  dataExportWorkflowId,
   ruleWorkflowId,
   type Clock,
   type SchedulerPort,
@@ -11,6 +12,7 @@ import { TemporalScheduler } from '@relay/runtime';
 
 import { analyticsSyncDescriptor } from './workflows/core/analytics-sync.core';
 import { automationRuleDescriptor } from './workflows/core/automation-rule.core';
+import { dataExportDescriptor } from './workflows/core/data-export.core';
 import { publishPostDescriptor } from './workflows/core/publish-post.core';
 import type { RunningWorker } from './worker';
 
@@ -116,6 +118,13 @@ export class WorkerScheduler implements SchedulerPort {
       dryRun: input.dryRun ?? false,
     });
     return { workflowId };
+  }
+
+  async scheduleDataExport(input: Parameters<SchedulerPort['scheduleDataExport']>[0]) {
+    if (this.#temporal !== null) return this.#temporal.scheduleDataExport(input);
+    const workflowId = dataExportWorkflowId(input.workspaceId, input.exportId);
+    this.#inline().startWorkflow(dataExportDescriptor, workflowId, input.workflowInput);
+    return { workflowId, runId: `${workflowId}:inline` };
   }
 
   async describe(input: Parameters<SchedulerPort['describe']>[0]) {

@@ -27,9 +27,62 @@ API and Security screen work, including provider-session and refresh-family
 revocation. The edge-backed inventory is intentionally identified as interim
 in the Auth workstream below until durable Auth session linkage is available.
 
+The next checkpoint adds the first end-to-end data-rights slice. Workspace
+export requests now have a contract, workspace-scoped application service,
+durable idempotency key, REST routes, OpenAPI entries, a shared Temporal
+workflow/activity seam, and a Settings state machine. V1 is intentionally
+JSON-only. The worker's built-in prelaunch gateway still rejects the build
+activity, so this is a verified contract and UX seam, not production export
+evidence. The production gateway must be completed and the new migration
+`0060_data_export_idempotency.sql` must be applied to the real Relay Neon
+release branch. The MCP-connected `ldr-app` project is not the Relay database
+and must not be modified.
+
 The branch is still a prelaunch product. Local green status does not prove a
 Neon/Auth/Storage deployment, a live provider connector, a paid checkout or a
 production-authenticated browser pass.
+
+## Immediate execution queue
+
+Run these tracks in parallel only after the dependency in the second column is
+green. Each owner attaches code, tests and an evidence artifact to the release
+issue. No track is complete because its local tests pass; it is complete when
+the production-like evidence is reproducible from the release commit.
+
+| Priority | Owner | Dependency | Deliverable and acceptance evidence |
+| --- | --- | --- | --- |
+| P0 | Release captain | None | Freeze origin, legal/support contacts, feature flags and public capability copy. Produce a signed release decision and claim scan. |
+| P0 | Database and tenancy | Release captain | Create an isolated Relay Neon branch, apply migrations through `0059` and `0060`, verify the ledger, exercise RLS with two workspaces, and record backup/restore evidence. |
+| P0 | Storage and data rights | Database and tenancy | Replace the prelaunch `buildDataExport` gateway with a real allow-listed reader. Write an encrypted JSON archive to private Neon Storage, set `building → ready/failed`, persist byte size/checksum/expiry, mint a bounded signed URL, and add expiry/purge retries. Evidence: fixture archive with secrets absent, checksum verification, object purge transcript, and two replayed failure cases. |
+| P0 | Worker and application | Storage and data rights | Make export and deletion workflows resumable and idempotent across worker crash, timeout, duplicate start, revoked access and storage failure. Add DB state-transition/audit tests and Temporal replay histories. |
+| P0 | Integrations | Worker and application | Promote one official connector through its definition of done, including OAuth review/scopes, capability snapshot, publish/read-back, revoked-token and duplicate-publication canaries. Keep every other connector explicitly `not_implemented`, `awaiting provider review` or `unsupported`. |
+| P0 | Frontend and accessibility | Worker and integrations | Run authenticated browser journeys for compose, approval, schedule, publish, receipt, export, session revoke and permission denial. Verify loading, empty, offline, rate-limit, partial-success, provider-limitation, RTL, pseudo-locale, keyboard and axe evidence. |
+| P0 | API, MCP and CLI | Worker and integrations | Diff OpenAPI, replay the authorization matrix through REST/MCP/CLI, verify stable `--json` output, signed webhook replay/dead-letter behavior and no secret/provider-payload leakage. |
+| P1 | Identity and account lifecycle | Database and tenancy | Link durable Auth sessions, verify recovery and refresh rotation, add owner-only account closure with cooling-off/cancel, and keep MFA/passkeys visibly unavailable until their provider contracts are real. |
+| P1 | Billing and operations | Release captain, database, API | Keep checkout disabled until merchant, legal and Polar webhook evidence is signed. Provision Redis/Temporal/mail/observability and run restore, secret-scan, dependency and performance drills. |
+
+### Data export definition of done
+
+The export slice is a release blocker until every item below is witnessed on an
+isolated release environment:
+
+1. The requester is an authorized workspace member and the same idempotency key
+   returns the same export row without scheduling a second workflow.
+2. The archive contains only an explicit allow-list: workspace metadata,
+   membership metadata, text/content metadata, publication receipts and
+   audit references. It contains no provider credentials, access tokens, raw
+   provider payloads, signed URLs or internal secrets.
+3. The archive is encrypted at rest, stored under a tenant-scoped key, carries
+   a verified SHA-256 checksum and expires according to the published policy.
+4. `requested`, `building`, `ready`, `delivered`, `expired` and `failed` are
+   durable, auditable states. Every retry is safe after a crash at each side
+   of the storage write or database update.
+5. Download authorization is workspace-scoped, the URL is short-lived, and an
+   expired/missing object gives a clear recoverable message rather than a 0-byte
+   or fabricated success state.
+6. The UI explains that V1 is JSON-only and that uploaded media follows the
+   separate one-month storage policy. CSV and media archives remain visibly
+   unavailable until implemented and tested.
 
 ## Work allocation
 

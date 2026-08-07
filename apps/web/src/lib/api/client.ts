@@ -29,6 +29,7 @@ import {
 } from './resources/core';
 import { analyticsApi, growthApi, shortLinksApi } from './resources/insights';
 import { mediaApi } from './resources/media';
+import { dataExportsApi } from './resources/data';
 import {
   apiKeysApi,
   automationRulesApi,
@@ -49,6 +50,7 @@ export const api = {
   publishing: publishingApi,
   receipts: receiptsApi,
   media: mediaApi,
+  dataExports: dataExportsApi,
   analytics: analyticsApi,
   shortLinks: shortLinksApi,
   automationRules: automationRulesApi,

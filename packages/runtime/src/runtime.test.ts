@@ -61,6 +61,7 @@ describe('createApplicationRuntime', () => {
           signalPublish: vi.fn(),
           scheduleAnalyticsSync: vi.fn(),
           startRuleRun: vi.fn(),
+          scheduleDataExport: vi.fn(),
           describe: vi.fn(),
         },
         storage: new MemoryStorage(clock),

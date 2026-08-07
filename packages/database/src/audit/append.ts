@@ -56,6 +56,9 @@ export const AUDIT_ACTIONS = {
   subscriptionChanged: 'subscription.changed',
   deletionRequested: 'deletion.requested',
   deletionExecuted: 'deletion.executed',
+  dataExportRequested: 'data.export.requested',
+  dataExportDownloaded: 'data.export.downloaded',
+  dataExportExpired: 'data.export.expired',
   dataExported: 'data.exported',
 } as const;
 

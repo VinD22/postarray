@@ -31,6 +31,7 @@ import { BillingModule } from './modules/billing/billing.module';
 import { BrandsModule } from './modules/brands/brands.module';
 import { ConnectionsModule } from './modules/connections/connections.module';
 import { ContentModule } from './modules/content/content.module';
+import { DataModule } from './modules/data/data.module';
 import { DeveloperAppsModule } from './modules/developer-apps/developer-apps.module';
 import { GrowthModule } from './modules/growth/growth.module';
 import { HealthModule } from './modules/health/health.module';
@@ -85,6 +86,7 @@ export class AppModule implements NestModule {
         BrandsModule,
         ConnectionsModule,
         ContentModule,
+        DataModule,
         ApprovalsModule,
         AgentConfirmationsModule,
         ActionCenterModule,

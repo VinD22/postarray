@@ -2935,6 +2935,7 @@ model DataExport {
   id              String          @id @default(dbgenerated("app.new_id('export')"))
   workspaceId     String          @map("workspace_id")
   requestedByUserId String        @map("requested_by_user_id")
+  idempotencyKey  String?         @map("idempotency_key")
   scope           String
   format          String          @default("json")
   state           DataExportState @default(requested)
@@ -2952,6 +2953,7 @@ model DataExport {
 
   @@index([workspaceId])
   @@index([state, expiresAt])
+  @@unique([workspaceId, idempotencyKey])
   @@map("data_exports")
   @@schema("app")
 }

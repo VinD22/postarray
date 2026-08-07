@@ -737,14 +737,54 @@ export const billingGateway = {
 
 export const dataGateway = {
   async exportJob(): Promise<ExportJobView> {
-    return notImplemented('workspace_exports');
+    const page = await api.dataExports.list({ limit: 1 });
+    const latest = page.data[0];
+    if (latest === undefined) {
+      return {
+        id: null,
+        state: 'idle',
+        preparedAt: null,
+        expiresAt: null,
+        downloadUrl: null,
+      };
+    }
+    return {
+      id: latest.id,
+      state:
+        latest.state === 'ready' || latest.state === 'delivered'
+          ? 'ready'
+          : latest.state === 'failed' || latest.state === 'expired'
+            ? 'failed'
+            : 'running',
+      preparedAt: latest.preparedAt,
+      expiresAt: latest.expiresAt,
+      downloadUrl: null,
+    };
   },
 
   async startExport(input: {
     formats: readonly ('json' | 'csv' | 'media')[];
   }): Promise<ExportJobView> {
-    void input;
-    return notImplemented('workspace_exports');
+    if (!input.formats.includes('json')) {
+      return notImplemented('workspace_exports_non_json');
+    }
+    const requested = await api.dataExports.request(
+      { scope: 'workspace', format: 'json' },
+      newIdempotencyKey('workspace_export'),
+    );
+    return {
+      id: requested.id,
+      state: 'running',
+      preparedAt: requested.preparedAt,
+      expiresAt: requested.expiresAt,
+      downloadUrl: requested.downloadUrl,
+    };
+  },
+
+  async download(
+    exportId: string,
+  ): Promise<{ readonly downloadUrl: string; readonly expiresAt: string }> {
+    return api.dataExports.download(exportId);
   },
 
   async scheduledJobCount(): Promise<number> {

@@ -60,6 +60,7 @@ export {
   webhookDeliveryDescriptor,
 } from './workflows/core/webhook-delivery.core';
 export { dataDeletionDescriptor, runDataDeletion } from './workflows/core/data-deletion.core';
+export { dataExportDescriptor, runDataExport } from './workflows/core/data-export.core';
 
 export type {
   AnalyticsSyncWorkflowInput,
@@ -68,6 +69,8 @@ export type {
   AutomationRuleWorkflowOutput,
   DataDeletionWorkflowInput,
   DataDeletionWorkflowOutput,
+  DataExportWorkflowInput,
+  DataExportWorkflowOutput,
   PublishPostWorkflowInput,
   PublishPostWorkflowOutput,
   PublishTargetOutcome,

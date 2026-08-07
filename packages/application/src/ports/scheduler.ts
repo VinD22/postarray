@@ -1,4 +1,4 @@
-import type { Clock, PublishWorkflowInput, SchedulerPort } from '../types';
+import type { Clock, DataExportWorkflowInput, PublishWorkflowInput, SchedulerPort } from '../types';
 
 import { systemClock } from './clock';
 
@@ -21,6 +21,14 @@ export interface RecordedPublish {
   cancelReason: string | null;
 }
 
+export interface RecordedDataExport {
+  readonly exportId: string;
+  readonly workspaceId: string;
+  readonly executeAt: Date;
+  readonly workflowInput: DataExportWorkflowInput;
+  readonly workflowId: string;
+}
+
 /** Deterministic, so a replay of the same job never starts a second workflow. */
 export function publishWorkflowId(workspaceId: string, jobId: string): string {
   return `publish:${workspaceId}:${jobId}`;
@@ -30,10 +38,15 @@ export function ruleWorkflowId(workspaceId: string, ruleId: string, runId: strin
   return `rule:${workspaceId}:${ruleId}:${runId}`;
 }
 
+export function dataExportWorkflowId(workspaceId: string, exportId: string): string {
+  return `export:${workspaceId}:${exportId}`;
+}
+
 export class InMemoryScheduler implements SchedulerPort {
   readonly publishes = new Map<string, RecordedPublish>();
   readonly analyticsSyncs: { connectionId: string; receiptId: string | null; at: Date }[] = [];
   readonly ruleRuns: { ruleId: string; workspaceId: string; workflowId: string }[] = [];
+  readonly dataExports = new Map<string, RecordedDataExport>();
   readonly signals: { jobId: string; signal: string }[] = [];
   constructor(_clock: Clock = systemClock) {}
 
@@ -122,6 +135,24 @@ export class InMemoryScheduler implements SchedulerPort {
     const workflowId = ruleWorkflowId(input.workspaceId, input.ruleId, input.runId);
     this.ruleRuns.push({ ruleId: input.ruleId, workspaceId: input.workspaceId, workflowId });
     return { workflowId };
+  }
+
+  async scheduleDataExport(
+    input: Parameters<SchedulerPort['scheduleDataExport']>[0],
+  ): Promise<{ readonly workflowId: string; readonly runId: string }> {
+    const workflowId = dataExportWorkflowId(input.workspaceId, input.exportId);
+    const existing = this.dataExports.get(input.exportId);
+    if (existing !== undefined) {
+      return { workflowId: existing.workflowId, runId: `${workflowId}:1` };
+    }
+    this.dataExports.set(input.exportId, {
+      exportId: input.exportId,
+      workspaceId: input.workspaceId,
+      executeAt: input.executeAt,
+      workflowInput: input.workflowInput,
+      workflowId,
+    });
+    return { workflowId, runId: `${workflowId}:1` };
   }
 
   async describe(input: {

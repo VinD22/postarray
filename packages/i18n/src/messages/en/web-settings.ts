@@ -317,11 +317,15 @@ export const webSettingsMessages = {
   'settings.ui.data.exportMediaHelp':
     'The original files you uploaded or imported, with checksums.',
   'settings.ui.data.exportStart': 'Prepare export',
+  'settings.ui.data.exportJsonOnly':
+    'V1 exports are structured JSON. CSV and media archives are not available yet.',
   'settings.ui.data.exportRunning':
     'Preparing your export. It keeps running if you close this page.',
   'settings.ui.data.exportReady': 'Export ready, prepared {date}',
   'settings.ui.data.exportDownload': 'Download export',
   'settings.ui.data.exportExpires': 'The download link expires {date}.',
+  'settings.ui.data.exportFailed':
+    'The export could not be prepared. Your workspace data is unchanged. Try again or contact support with the reference.',
   'settings.ui.data.deleteTitle': 'Delete',
   'settings.ui.data.deleteBody':
     'Choose the smallest thing that solves your problem. Each option below says what survives.',

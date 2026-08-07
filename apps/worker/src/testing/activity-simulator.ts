@@ -6,6 +6,8 @@ import type {
   ActivityName,
   BeginPublishAttemptInput,
   BeginPublishAttemptResult,
+  BuildDataExportInput,
+  BuildDataExportResult,
   CancelScheduledJobInput,
   ConnectionIncidentInput,
   CreateOccurrenceJobInput,
@@ -122,6 +124,7 @@ export interface SimulatorOptions {
   readonly credential?: Partial<DescribeCredentialResult>;
   readonly refreshThrows?: boolean;
   readonly deletionScope?: Partial<DeletionScope>;
+  readonly dataExport?: Partial<BuildDataExportResult>;
   readonly repeatPlan?: Partial<PlanRepeatOccurrenceResult>;
   readonly occurrenceTargets?: CreateOccurrenceJobResult['targets'];
   readonly metrics?: Partial<FetchMetricsResult>;
@@ -884,5 +887,15 @@ export class ActivitySimulator implements WorkerActivities {
   finalizeDeletion(input: FinalizeDeletionInput): Promise<void> {
     this.record('finalizeDeletion', input);
     return Promise.resolve();
+  }
+
+  buildDataExport(input: BuildDataExportInput): Promise<BuildDataExportResult> {
+    this.record('buildDataExport', input);
+    return Promise.resolve({
+      state: 'ready',
+      byteSize: 128,
+      checksumSha256: 'a'.repeat(64),
+      ...this.options.dataExport,
+    });
   }
 }

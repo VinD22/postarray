@@ -696,6 +696,23 @@ export interface FinalizeDeletionInput {
 }
 
 // ---------------------------------------------------------------------------
+// Data export
+// ---------------------------------------------------------------------------
+
+export interface BuildDataExportInput {
+  readonly ctx: ActivityContext;
+  readonly exportId: string;
+  readonly scope: 'workspace';
+  readonly format: 'json';
+}
+
+export interface BuildDataExportResult {
+  readonly state: 'ready' | 'failed';
+  readonly byteSize: number | null;
+  readonly checksumSha256: string | null;
+}
+
+// ---------------------------------------------------------------------------
 // The complete activity surface
 // ---------------------------------------------------------------------------
 
@@ -745,6 +762,7 @@ export interface WorkerActivities {
   deleteStoredObjects(input: DeleteObjectsInput): Promise<DeleteObjectsResult>;
   tombstoneAnalytics(input: TombstoneAnalyticsInput): Promise<void>;
   finalizeDeletion(input: FinalizeDeletionInput): Promise<void>;
+  buildDataExport(input: BuildDataExportInput): Promise<BuildDataExportResult>;
 }
 
 export type ActivityName = keyof WorkerActivities;
@@ -794,4 +812,5 @@ export const ACTIVITY_NAMES: readonly ActivityName[] = [
   'deleteStoredObjects',
   'tombstoneAnalytics',
   'finalizeDeletion',
+  'buildDataExport',
 ];
