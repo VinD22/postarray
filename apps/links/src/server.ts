@@ -124,9 +124,8 @@ export function createLinksServer(options: LinksServerOptions): LinksServer {
   const app = Fastify({
     logger: false,
     trustProxy,
-    disableRequestLogging: true,
     bodyLimit: 16 * 1024,
-    ignoreTrailingSlash: true,
+    routerOptions: { ignoreTrailingSlash: true },
   });
 
   const noticePage = (reference: string): string =>

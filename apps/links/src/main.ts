@@ -110,10 +110,12 @@ export async function main(): Promise<void> {
     dedupeHashKey: hashKey,
     killSwitch,
     selfHosts: selfHost === null ? [] : [selfHost],
-    abuseReportUrl:
-      config.core.appUrl === undefined
-        ? null
-        : `${config.core.appUrl.replace(/\/$/, '')}/legal/report`,
+    // The product-domain report form is a launch gate because its destination
+    // depends on the still-pending public name and legal contact. Do not send a
+    // visitor to an invented or missing route in the meantime. The machine
+    // shaped, rate-limited POST /_abuse intake remains available to an approved
+    // external form once that channel is provisioned.
+    abuseReportUrl: null,
     hitTtlSeconds: LOOKUP_HIT_TTL_SECONDS,
     missTtlSeconds: LOOKUP_MISS_TTL_SECONDS,
     health,
