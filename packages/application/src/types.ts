@@ -814,9 +814,11 @@ export interface ShortLinkService {
       readonly brandId?: string | null;
       readonly utm?: UtmParameters;
       readonly expiresAt?: string | null;
+      readonly slug?: string | null;
     },
   ): Promise<ShortLinkView>;
   list(ctx: ActorContext, query?: PageQuery): Promise<Paginated<ShortLinkView>>;
+  get(ctx: ActorContext, linkId: string): Promise<ShortLinkView>;
   /** No ActorContext: the redirect service is unauthenticated by design. */
   resolve(
     slug: string,
@@ -839,7 +841,16 @@ export interface ShortLinkService {
       readonly range: { readonly from: string; readonly to: string };
     },
   ): Promise<ShortLinkStats>;
-  disable(ctx: ActorContext, linkId: string): Promise<ShortLinkView>;
+  updateDestination(
+    ctx: ActorContext,
+    linkId: string,
+    input: { readonly destinationUrl: string; readonly reason: string },
+  ): Promise<ShortLinkView>;
+  setEnabled(
+    ctx: ActorContext,
+    linkId: string,
+    input: { readonly enabled: boolean; readonly reason: string },
+  ): Promise<ShortLinkView>;
 }
 
 export interface AutomationRuleInput {

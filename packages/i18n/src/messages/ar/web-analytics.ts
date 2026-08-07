@@ -307,6 +307,11 @@ export const webAnalyticsMessages = {
   'analytics.links.state.active': 'نشط',
   'analytics.links.state.expired': 'انتهت الصلاحية {date}',
   'analytics.links.state.disabled': 'معطل',
+  'analytics.links.state.disabledAt':
+    'تم التعطيل في {date}. لم يعد عنوان URL المختصر هذا يعيد التوجيه.',
+  'analytics.links.state.blocked': 'محظور لأسباب أمنية',
+  'analytics.links.state.blockedBody':
+    'إعادة التوجيه هذه غير متاحة لأن الوجهة لم تجتز فحص الأمان. غيّر الوجهة أو تواصل مع الدعم.',
   'analytics.links.state.disabledReason':
     'تم التعطيل بواسطة {actor} على {date}. سبب التسجيل: {reason}.',
   'analytics.links.detailTitle': 'رابط تتبع {slug}',

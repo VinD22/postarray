@@ -2,7 +2,6 @@
 
 import { useMemo, useState, type ReactElement } from 'react';
 import {
-  CapabilityBadge,
   ConfirmDialog,
   DefinitionList,
   EmptyState,
@@ -21,7 +20,6 @@ import { useValueFormat } from '@/features/analytics/use-value-format';
 import { BreakdownList } from './components/breakdown-list';
 import { DestinationEditDialog } from './components/destination-edit-dialog';
 import { useLinkStats, useSetLinkEnabled, useUpdateDestination } from './queries';
-import type { DomainVerificationState } from './types';
 
 /**
  * One tracked link, its exact behaviour and its first party measurements.
@@ -38,20 +36,9 @@ import type { DomainVerificationState } from './types';
  * being auditable.
  */
 
-const DOMAIN_CAPABILITY: Readonly<
-  Record<
-    DomainVerificationState,
-    'supported' | 'requires_review' | 'unsupported' | 'not_implemented'
-  >
-> = {
-  verified: 'supported',
-  pending: 'requires_review',
-  failed: 'unsupported',
-  default: 'supported',
-};
-
 export interface LinkDetailScreenProps {
   readonly linkId: string;
+  readonly ianaTimeZone: string;
   readonly abuseReportHref?: string;
 }
 
@@ -63,11 +50,15 @@ function last30Days(): { readonly start: string; readonly end: string } {
   };
 }
 
-export function LinkDetailScreen({ linkId, abuseReportHref }: LinkDetailScreenProps): ReactElement {
+export function LinkDetailScreen({
+  linkId,
+  ianaTimeZone,
+  abuseReportHref,
+}: LinkDetailScreenProps): ReactElement {
   const t = useTranslations();
   const format = useValueFormat();
   const range = useMemo(last30Days, []);
-  const stats = useLinkStats(linkId, range);
+  const stats = useLinkStats(linkId, range, ianaTimeZone);
   const updateDestination = useUpdateDestination();
   const setEnabled = useSetLinkEnabled();
   const [editOpen, setEditOpen] = useState(false);
@@ -124,11 +115,13 @@ export function LinkDetailScreen({ linkId, abuseReportHref }: LinkDetailScreenPr
             tone="destructive"
             liveness="status"
             title={t('analytics.links.state.disabled')}
-            description={t('analytics.links.state.disabledReason', {
-              actor: link.disabledByName ?? t('common.unknown'),
-              date: link.disabledAt ? format.date(link.disabledAt) : t('common.unknown'),
-              reason: link.disabledReason ?? t('common.notSet'),
-            })}
+            description={
+              link.disabledAt === null
+                ? t('analytics.links.disableBody')
+                : t('analytics.links.state.disabledAt', {
+                    date: format.dateTime(link.disabledAt),
+                  })
+            }
             actions={
               <Button
                 size="sm"
@@ -149,6 +142,15 @@ export function LinkDetailScreen({ linkId, abuseReportHref }: LinkDetailScreenPr
           />
         ) : null}
 
+        {link.state === 'blocked' ? (
+          <Notice
+            tone="destructive"
+            liveness="status"
+            title={t('analytics.links.state.blocked')}
+            description={t('analytics.links.state.blockedBody')}
+          />
+        ) : null}
+
         <DefinitionList
           layout="columns"
           items={[
@@ -166,42 +168,7 @@ export function LinkDetailScreen({ linkId, abuseReportHref }: LinkDetailScreenPr
             {
               id: 'domain',
               term: t('analytics.links.domainLabel'),
-              definition: (
-                <span className="flex flex-wrap items-center gap-2">
-                  {link.domain.state === 'default'
-                    ? t('analytics.links.domainDefault')
-                    : link.domain.host}
-                  <CapabilityBadge
-                    state={DOMAIN_CAPABILITY[link.domain.state]}
-                    label={
-                      link.domain.state === 'verified'
-                        ? t('analytics.links.domainVerified', {
-                            date: link.domain.verifiedAt ? format.date(link.domain.verifiedAt) : '',
-                          })
-                        : link.domain.state === 'pending'
-                          ? t('analytics.links.domainPending')
-                          : link.domain.state === 'failed'
-                            ? t('analytics.links.domainFailed', {
-                                date: link.domain.lastCheckedAt
-                                  ? format.date(link.domain.lastCheckedAt)
-                                  : '',
-                              })
-                            : t('analytics.links.domainDefault')
-                    }
-                  />
-                </span>
-              ),
-              hint:
-                link.domain.state === 'pending' && link.domain.dnsRecordValue ? (
-                  <span className="flex flex-col gap-1">
-                    <span>
-                      {t('analytics.links.domainPendingHelp', { domain: link.domain.host })}
-                    </span>
-                    <Code block>
-                      {link.domain.dnsRecordName} TXT {link.domain.dnsRecordValue}
-                    </Code>
-                  </span>
-                ) : undefined,
+              definition: link.domain ?? t('analytics.links.domainDefault'),
             },
             {
               id: 'campaign',
@@ -216,11 +183,6 @@ export function LinkDetailScreen({ linkId, abuseReportHref }: LinkDetailScreenPr
                 : t('analytics.links.expiryNone'),
               hint: t('analytics.links.expiryHelp'),
             },
-            {
-              id: 'usage',
-              term: t('common.details'),
-              definition: t('analytics.links.usedIn', { count: link.usedInPostCount }),
-            },
           ]}
         />
 
@@ -228,7 +190,7 @@ export function LinkDetailScreen({ linkId, abuseReportHref }: LinkDetailScreenPr
           <Button size="sm" variant="secondary" onClick={() => setEditOpen(true)}>
             {t('analytics.links.editDestination')}
           </Button>
-          {link.state !== 'disabled' ? (
+          {link.state === 'active' ? (
             <Button size="sm" variant="destructive" onClick={() => setDisableOpen(true)}>
               {t('analytics.links.disable')}
             </Button>
@@ -239,12 +201,6 @@ export function LinkDetailScreen({ linkId, abuseReportHref }: LinkDetailScreenPr
             </Button>
           ) : null}
         </div>
-
-        {link.domain.state === 'pending' ? (
-          <Button size="sm" variant="ghost" className="self-start">
-            {t('analytics.links.domainCheck')}
-          </Button>
-        ) : null}
       </section>
 
       <section className="flex flex-col gap-2">
@@ -254,7 +210,7 @@ export function LinkDetailScreen({ linkId, abuseReportHref }: LinkDetailScreenPr
         <ul className="border-border-subtle flex flex-col border-t">
           {link.destinationHistory.map((version) => (
             <li
-              key={version.id}
+              key={`${version.activeFrom}:${version.url}`}
               className="border-border-subtle flex flex-col gap-0.5 border-b py-2"
             >
               <span className="text-body-md text-text-primary break-all">
@@ -271,7 +227,7 @@ export function LinkDetailScreen({ linkId, abuseReportHref }: LinkDetailScreenPr
               </span>
               <span className="text-body-sm text-text-tertiary">
                 {t('common.createdBy')}
-                <span className="ps-1.5">{version.changedByName}</span>
+                <span className="ps-1.5">{version.changedByActorId}</span>
               </span>
             </li>
           ))}
@@ -360,17 +316,6 @@ export function LinkDetailScreen({ linkId, abuseReportHref }: LinkDetailScreenPr
                     value: point.requests,
                   })),
                 },
-                {
-                  id: 'clicks',
-                  normalizedName: 'link_clicks',
-                  unit: 'count',
-                  label: t('analytics.links.series.clicks'),
-                  points: measurement.series.map((point) => ({
-                    bucketStart: point.bucketStart,
-                    bucketSeconds: point.bucketSeconds,
-                    value: point.clicks,
-                  })),
-                },
               ]}
             />
 
@@ -426,13 +371,7 @@ export function LinkDetailScreen({ linkId, abuseReportHref }: LinkDetailScreenPr
         tone="destructive"
         title={t('analytics.links.disableTitle', { slug: link.slug })}
         description={t('analytics.links.disableBody')}
-        consequences={[
-          {
-            id: 'posts',
-            text: t('analytics.links.usedIn', { count: link.usedInPostCount }),
-          },
-          { id: 'audit', text: t('analytics.links.editDestinationAudit') },
-        ]}
+        consequences={[{ id: 'audit', text: t('analytics.links.editDestinationAudit') }]}
         confirmLabel={t('action.disable')}
         cancelLabel={t('action.cancel')}
         closeLabel={t('a11y.label.closeDialog')}

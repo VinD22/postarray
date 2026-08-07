@@ -316,6 +316,11 @@ export const webAnalyticsMessages = {
   'analytics.links.state.active': 'Aktywny',
   'analytics.links.state.expired': 'Wygasło {date}',
   'analytics.links.state.disabled': 'Wyłączone',
+  'analytics.links.state.disabledAt':
+    'Wyłączono {date}. Ten krótki adres URL już nie przekierowuje.',
+  'analytics.links.state.blocked': 'Zablokowano ze względów bezpieczeństwa',
+  'analytics.links.state.blockedBody':
+    'To przekierowanie jest niedostępne, ponieważ miejsce docelowe nie przeszło kontroli bezpieczeństwa. Zmień miejsce docelowe lub skontaktuj się z pomocą techniczną.',
   'analytics.links.state.disabledReason':
     'Wyłączone przez {actor} na {date}. Powód nagrania: {reason}.',
   'analytics.links.detailTitle': 'Śledzony link {slug}',

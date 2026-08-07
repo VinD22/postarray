@@ -478,12 +478,13 @@ export function buildProgram(deps: CliDeps, state: ProgramState): Command {
     .command('stats <link-id>')
     .description('first-party redirect measurements. Risk: read')
     .option('--from <instant>')
-    .option('--to <instant>');
+    .option('--to <instant>')
+    .option('--time-zone <iana-zone>', 'reporting time zone', 'UTC');
   attach(linksStatsCommand, {
     name: 'links stats',
     run: async (context, render) => {
       const [linkId] = linksStatsCommand.args;
-      const options = linksStatsCommand.opts<{ from?: string; to?: string }>();
+      const options = linksStatsCommand.opts<{ from?: string; to?: string; timeZone?: string }>();
       await linksStats(context, render, linkId ?? '', options);
     },
   });

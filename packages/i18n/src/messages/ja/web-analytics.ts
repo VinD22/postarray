@@ -249,6 +249,11 @@ export const webAnalyticsMessages = {
   'analytics.links.state.active': 'アクティブ',
   'analytics.links.state.expired': '期限切れ{date}',
   'analytics.links.state.disabled': '無効',
+  'analytics.links.state.disabledAt':
+    '{date} に無効化されました。この短縮 URL はリダイレクトしません。',
+  'analytics.links.state.blocked': '安全上の理由でブロック済み',
+  'analytics.links.state.blockedBody':
+    'リンク先が安全性チェックに合格しなかったため、このリダイレクトは利用できません。リンク先を変更するか、サポートにお問い合わせください。',
   'analytics.links.state.disabledReason': '無効化者{actor}の上{date}。記録された理由:{reason}。',
   'analytics.links.detailTitle': '追跡されたリンク{slug}',
   'analytics.links.exactRedirect': '正確なリダイレクト',

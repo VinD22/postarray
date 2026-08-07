@@ -314,6 +314,11 @@ export const webAnalyticsMessages = {
   'analytics.links.state.active': 'Активний',
   'analytics.links.state.expired': 'Термін дії минув{date}',
   'analytics.links.state.disabled': 'Вимкнено',
+  'analytics.links.state.disabledAt':
+    'Вимкнено {date}. Це коротке посилання більше не переспрямовує.',
+  'analytics.links.state.blocked': 'Заблоковано з міркувань безпеки',
+  'analytics.links.state.blockedBody':
+    'Переспрямування недоступне, оскільки адреса призначення не пройшла перевірку безпеки. Змініть адресу або зверніться до підтримки.',
   'analytics.links.state.disabledReason': 'Вимкнено {actor} на {date}. Записано причину: {reason}.',
   'analytics.links.detailTitle': 'Відстежене посилання{slug}',
   'analytics.links.exactRedirect': 'Точне перенаправлення',

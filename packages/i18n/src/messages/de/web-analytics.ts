@@ -320,6 +320,11 @@ export const webAnalyticsMessages = {
   'analytics.links.state.active': 'Aktiv',
   'analytics.links.state.expired': 'Abgelaufen {date}',
   'analytics.links.state.disabled': 'Deaktiviert',
+  'analytics.links.state.disabledAt':
+    'Am {date} deaktiviert. Diese Kurz-URL leitet nicht mehr weiter.',
+  'analytics.links.state.blocked': 'Aus Sicherheitsgründen blockiert',
+  'analytics.links.state.blockedBody':
+    'Diese Weiterleitung ist nicht verfügbar, weil ihr Ziel eine Sicherheitsprüfung nicht bestanden hat. Ändere das Ziel oder kontaktiere den Support.',
   'analytics.links.state.disabledReason':
     'Deaktiviert durch {actor} auf {date}. Erfasster Grund: {reason}.',
   'analytics.links.detailTitle': 'Verfolgter Link {slug}',

@@ -315,6 +315,11 @@ export const webAnalyticsMessages = {
   'analytics.links.state.active': 'Активный',
   'analytics.links.state.expired': 'Срок действия истёк {date}',
   'analytics.links.state.disabled': 'Отключено',
+  'analytics.links.state.disabledAt':
+    'Отключено {date}. Эта короткая ссылка больше не перенаправляет.',
+  'analytics.links.state.blocked': 'Заблокировано из соображений безопасности',
+  'analytics.links.state.blockedBody':
+    'Перенаправление недоступно, потому что адрес назначения не прошел проверку безопасности. Измените адрес или обратитесь в поддержку.',
   'analytics.links.state.disabledReason': 'Отключено {actor} на {date}. Причина записи: {reason}.',
   'analytics.links.detailTitle': 'Отслеживаемая ссылка {slug}',
   'analytics.links.exactRedirect': 'Точное перенаправление',

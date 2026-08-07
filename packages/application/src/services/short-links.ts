@@ -1,6 +1,13 @@
 import { createHash, randomBytes } from 'node:crypto';
 
-import type { Paginated, UtmParameters } from '@relay/contracts';
+import {
+  CapabilityNotImplementedError,
+  isoInstantSchema,
+  type Paginated,
+  type UtmParameters,
+} from '@relay/contracts';
+import { Prisma } from '@relay/database';
+import { z } from 'zod';
 
 import type { ActorContext, ServiceDeps, ShortLinkService } from '../types';
 import type { ShortLinkView, ShortLinkStats } from '../views';
@@ -27,6 +34,21 @@ const SLUG_ALPHABET = '23456789abcdefghjkmnpqrstuvwxyz';
 const SLUG_LENGTH = 7;
 const RESOLVE_CACHE_TTL_SECONDS = 300;
 const RESOLVE_NEGATIVE_TTL_SECONDS = 30;
+const CUSTOM_SLUG_PATTERN = /^[A-Za-z0-9][A-Za-z0-9_-]{3,63}$/;
+
+const destinationHistorySchema = z.array(
+  z
+    .object({
+      url: z.string().min(1),
+      activeFrom: isoInstantSchema,
+      activeTo: isoInstantSchema.nullable(),
+      changedByActorId: z.string().min(1),
+    })
+    .strict(),
+);
+const utmSchema = z.record(z.string(), z.string());
+
+type DestinationHistory = z.infer<typeof destinationHistorySchema>;
 
 function mintSlug(): string {
   const bytes = randomBytes(SLUG_LENGTH);
@@ -48,8 +70,12 @@ const SHORT_LINK_SELECT = {
   domain: true,
   destinationUrl: true,
   campaignId: true,
+  utmParameters: true,
   state: true,
   expiresAt: true,
+  disabledAt: true,
+  destinationHistory: true,
+  createdByUserId: true,
   createdAt: true,
 } as const;
 
@@ -60,13 +86,19 @@ interface ShortLinkRow {
   domain: string | null;
   destinationUrl: string;
   campaignId: string | null;
+  utmParameters: unknown;
   state: string;
   expiresAt: Date | null;
+  disabledAt: Date | null;
+  destinationHistory: unknown;
+  createdByUserId: string;
   createdAt: Date;
 }
 
-function toView(row: ShortLinkRow, baseUrl: string): ShortLinkView {
+function toView(row: ShortLinkRow, baseUrl: string, now: Date): ShortLinkView {
   const host = row.domain ?? baseUrl.replace(/^https?:\/\//, '').replace(/\/+$/, '');
+  const parsedUtm = utmSchema.safeParse(row.utmParameters);
+  const parsedHistory = destinationHistorySchema.safeParse(row.destinationHistory);
   return {
     id: row.id,
     workspaceId: row.workspaceId,
@@ -75,10 +107,22 @@ function toView(row: ShortLinkRow, baseUrl: string): ShortLinkView {
     shortUrl: `https://${host}/${row.slug}`,
     destinationUrl: row.destinationUrl,
     campaignId: row.campaignId,
-    state: row.state as ShortLinkView['state'],
+    utm: parsedUtm.success ? parsedUtm.data : {},
+    state:
+      row.state === 'active' && row.expiresAt !== null && row.expiresAt.getTime() <= now.getTime()
+        ? 'expired'
+        : (row.state as ShortLinkView['state']),
     expiresAt: row.expiresAt?.toISOString() ?? null,
+    disabledAt: row.disabledAt?.toISOString() ?? null,
+    destinationHistory: parsedHistory.success ? parsedHistory.data : [],
+    createdByUserId: row.createdByUserId,
     createdAt: row.createdAt.toISOString(),
   };
+}
+
+function parseHistory(value: unknown): DestinationHistory {
+  const parsed = destinationHistorySchema.safeParse(value);
+  return parsed.success ? parsed.data : [];
 }
 
 function applyUtm(destination: string, utm: UtmParameters | undefined): string {
@@ -152,7 +196,25 @@ export function createShortLinkService(deps: ServiceDeps): ShortLinkService {
           ...(args.cursor === undefined ? {} : { cursor: args.cursor }),
           select: SHORT_LINK_SELECT,
         });
-        return toPage(rows, args, (row) => row.id, (row) => toView(row, baseUrl));
+        return toPage(
+          rows,
+          args,
+          (row) => row.id,
+          (row) => toView(row, baseUrl, deps.clock.now()),
+        );
+      });
+    },
+
+    async get(ctx: ActorContext, linkId: string): Promise<ShortLinkView> {
+      return authorized(deps, ctx, 'link.read', undefined, async (db) => {
+        const row = await db.shortLink.findFirst({
+          where: { id: linkId },
+          select: SHORT_LINK_SELECT,
+        });
+        if (row === null) {
+          throw notFound('short_link', linkId);
+        }
+        return toView(row, baseUrl, deps.clock.now());
       });
     },
 
@@ -165,6 +227,7 @@ export function createShortLinkService(deps: ServiceDeps): ShortLinkService {
         brandId?: string | null;
         utm?: UtmParameters;
         expiresAt?: string | null;
+        slug?: string | null;
       },
     ): Promise<ShortLinkView> {
       return withIdempotency(deps.kv, ctx, {
@@ -178,36 +241,66 @@ export function createShortLinkService(deps: ServiceDeps): ShortLinkService {
             const checked = await assertFetchable(input.destinationUrl);
             const destination = applyUtm(checked.url.toString(), input.utm);
 
+            if (input.domainId !== undefined && input.domainId !== null) {
+              throw new CapabilityNotImplementedError({
+                messageKey: 'errors.short_link_custom_domain_not_implemented',
+                details: { capability: 'custom_short_link_domain' },
+              });
+            }
+            if (
+              input.slug !== undefined &&
+              input.slug !== null &&
+              !CUSTOM_SLUG_PATTERN.test(input.slug)
+            ) {
+              throw invalid('errors.short_link_slug_invalid', {});
+            }
+            const expiresAt =
+              input.expiresAt === undefined || input.expiresAt === null
+                ? null
+                : new Date(input.expiresAt);
+            if (expiresAt !== null && expiresAt.getTime() <= deps.clock.now().getTime()) {
+              throw invalid('errors.short_link_expiry_in_past', {});
+            }
+
             if (actor.userId === null) {
               throw invalid('errors.short_link_requires_user', {});
             }
 
             let created: ShortLinkRow | null = null;
             for (let attempt = 0; attempt < 5 && created === null; attempt += 1) {
-              const slug = mintSlug();
+              const slug = input.slug ?? mintSlug();
               const clash = await db.shortLink.findFirst({
-                where: { slug, domain: input.domainId ?? null },
+                where: { slug, domain: null },
                 select: { id: true },
               });
               if (clash !== null) {
+                if (input.slug !== undefined && input.slug !== null) {
+                  throw invalid('errors.short_link_slug_taken', {});
+                }
                 continue;
               }
+              const createdAt = deps.clock.now();
               created = await db.shortLink.create({
                 data: {
                   workspaceId: actor.workspace.id,
                   brandId: input.brandId ?? null,
                   campaignId: input.campaignId ?? null,
-                  domain: input.domainId ?? null,
+                  domain: null,
                   slug,
                   destinationUrl: destination,
                   utmParameters: input.utm === undefined ? {} : { ...input.utm },
                   state: 'active',
                   safetyScan: { blocked: false, checkedAddresses: [...checked.addresses] },
-                  safetyScannedAt: deps.clock.now(),
-                  expiresAt:
-                    input.expiresAt === undefined || input.expiresAt === null
-                      ? null
-                      : new Date(input.expiresAt),
+                  safetyScannedAt: createdAt,
+                  expiresAt,
+                  destinationHistory: [
+                    {
+                      url: destination,
+                      activeFrom: createdAt.toISOString(),
+                      activeTo: null,
+                      changedByActorId: actor.ctx.actorId,
+                    },
+                  ],
                   createdByUserId: actor.userId,
                 },
                 select: SHORT_LINK_SELECT,
@@ -225,7 +318,7 @@ export function createShortLinkService(deps: ServiceDeps): ShortLinkService {
               after: { destinationHost: checked.url.hostname, slug: created.slug },
             });
 
-            return toView(created, baseUrl);
+            return toView(created, baseUrl, deps.clock.now());
           }),
       });
     },
@@ -308,9 +401,12 @@ export function createShortLinkService(deps: ServiceDeps): ShortLinkService {
             dedupeExpiresAt: new Date(deps.clock.now().getTime() + 86_400_000),
           },
         });
-      } catch {
+      } catch (error) {
         // The unique index on (short_link_id, dedupe_key) is the deduplication.
         // A repeat click inside the window is expected, not an error.
+        if (!(error instanceof Prisma.PrismaClientKnownRequestError) || error.code !== 'P2002') {
+          throw error;
+        }
       }
     },
 
@@ -319,6 +415,15 @@ export function createShortLinkService(deps: ServiceDeps): ShortLinkService {
       input: { linkId: string; range: { from: string; to: string } },
     ): Promise<ShortLinkStats> {
       return authorized(deps, ctx, 'link.read', undefined, async (db) => {
+        const fromResult = isoInstantSchema.safeParse(input.range.from);
+        const toResult = isoInstantSchema.safeParse(input.range.to);
+        if (
+          !fromResult.success ||
+          !toResult.success ||
+          new Date(fromResult.data).getTime() > new Date(toResult.data).getTime()
+        ) {
+          throw invalid('errors.analytics_range_invalid', {});
+        }
         const link = await db.shortLink.findFirst({
           where: { id: input.linkId },
           select: { id: true },
@@ -326,14 +431,15 @@ export function createShortLinkService(deps: ServiceDeps): ShortLinkService {
         if (link === null) {
           throw notFound('short_link', input.linkId);
         }
-        const from = new Date(input.range.from);
-        const to = new Date(input.range.to);
+        const from = new Date(fromResult.data);
+        const to = new Date(toResult.data);
         const clicks = await db.shortLinkClick.findMany({
           where: { shortLinkId: input.linkId, occurredAt: { gte: from, lte: to } },
           orderBy: { occurredAt: 'asc' },
           select: {
             occurredAt: true,
             countryCode: true,
+            deviceClass: true,
             referrerClass: true,
             botClass: true,
           },
@@ -342,20 +448,24 @@ export function createShortLinkService(deps: ServiceDeps): ShortLinkService {
         const series = new Map<string, number>();
         const countries = new Map<string, number>();
         const referrers = new Map<string, number>();
+        const devices = new Map<string, number>();
         let human = 0;
         let bots = 0;
 
         for (const click of clicks) {
           const bucket = click.occurredAt.toISOString();
           series.set(bucket, (series.get(bucket) ?? 0) + 1);
-          if (click.countryCode !== null) {
-            countries.set(click.countryCode, (countries.get(click.countryCode) ?? 0) + 1);
-          }
-          if (click.referrerClass !== null) {
-            referrers.set(click.referrerClass, (referrers.get(click.referrerClass) ?? 0) + 1);
-          }
           if (click.botClass === 'human') {
             human += 1;
+            if (click.countryCode !== null) {
+              countries.set(click.countryCode, (countries.get(click.countryCode) ?? 0) + 1);
+            }
+            if (click.referrerClass !== null) {
+              referrers.set(click.referrerClass, (referrers.get(click.referrerClass) ?? 0) + 1);
+            }
+            if (click.deviceClass !== null) {
+              devices.set(click.deviceClass, (devices.get(click.deviceClass) ?? 0) + 1);
+            }
           } else if (click.botClass === 'suspected_bot' || click.botClass === 'known_bot') {
             bots += 1;
           }
@@ -366,7 +476,8 @@ export function createShortLinkService(deps: ServiceDeps): ShortLinkService {
           totalClicks: clicks.length,
           humanClicks: human,
           suspectedBotClicks: bots,
-          series: [...series].map(([bucketStart, count]) => ({ bucketStart, clicks: count })),
+          lastEventAt: clicks.at(-1)?.occurredAt.toISOString() ?? null,
+          series: [...series].map(([bucketStart, count]) => ({ bucketStart, requests: count })),
           topCountries: rank(countries).map(([countryCode, count]) => ({
             countryCode,
             clicks: count,
@@ -375,12 +486,20 @@ export function createShortLinkService(deps: ServiceDeps): ShortLinkService {
             referrerClass,
             clicks: count,
           })),
+          topDeviceClasses: rank(devices).map(([deviceClass, count]) => ({
+            deviceClass,
+            clicks: count,
+          })),
           sourceKey: 'analytics.source.first_party_redirect',
         };
       });
     },
 
-    async disable(ctx: ActorContext, linkId: string): Promise<ShortLinkView> {
+    async updateDestination(
+      ctx: ActorContext,
+      linkId: string,
+      input: { destinationUrl: string; reason: string },
+    ): Promise<ShortLinkView> {
       return authorized(deps, ctx, 'link.write', undefined, async (db, actor) => {
         const before = await db.shortLink.findFirst({
           where: { id: linkId },
@@ -389,9 +508,67 @@ export function createShortLinkService(deps: ServiceDeps): ShortLinkService {
         if (before === null) {
           throw notFound('short_link', linkId);
         }
+        const checked = await assertFetchable(input.destinationUrl);
+        const changedAt = deps.clock.now();
+        const history = parseHistory(before.destinationHistory).map((entry) =>
+          entry.activeTo === null ? { ...entry, activeTo: changedAt.toISOString() } : entry,
+        );
+        history.push({
+          url: checked.url.toString(),
+          activeFrom: changedAt.toISOString(),
+          activeTo: null,
+          changedByActorId: actor.ctx.actorId,
+        });
         const after = await db.shortLink.update({
           where: { id: linkId },
-          data: { state: 'disabled', disabledAt: deps.clock.now() },
+          data: {
+            destinationUrl: checked.url.toString(),
+            destinationHistory: history,
+            safetyScan: { blocked: false, checkedAddresses: [...checked.addresses] },
+            safetyScannedAt: changedAt,
+          },
+          select: SHORT_LINK_SELECT,
+        });
+        await deps.kv.delete(cacheKey(before.domain, before.slug));
+        await recordAudit(db, actor, {
+          action: 'short_link.destination_changed',
+          targetType: 'short_link',
+          targetId: linkId,
+          before: { destinationHost: new URL(before.destinationUrl).hostname },
+          after: { destinationHost: checked.url.hostname },
+          metadata: { reason: input.reason },
+        });
+        return toView(after, baseUrl, deps.clock.now());
+      });
+    },
+
+    async setEnabled(
+      ctx: ActorContext,
+      linkId: string,
+      input: { enabled: boolean; reason: string },
+    ): Promise<ShortLinkView> {
+      return authorized(deps, ctx, 'link.write', undefined, async (db, actor) => {
+        const before = await db.shortLink.findFirst({
+          where: { id: linkId },
+          select: SHORT_LINK_SELECT,
+        });
+        if (before === null) {
+          throw notFound('short_link', linkId);
+        }
+        if (input.enabled && before.state === 'blocked') {
+          throw invalid('errors.short_link_blocked', {});
+        }
+        if (
+          input.enabled &&
+          before.expiresAt !== null &&
+          before.expiresAt.getTime() <= deps.clock.now().getTime()
+        ) {
+          throw invalid('errors.short_link_expired', {});
+        }
+        const nextState = input.enabled ? 'active' : 'disabled';
+        const after = await db.shortLink.update({
+          where: { id: linkId },
+          data: { state: nextState, disabledAt: input.enabled ? null : deps.clock.now() },
           select: SHORT_LINK_SELECT,
         });
         await deps.kv.delete(cacheKey(before.domain, before.slug));
@@ -400,9 +577,10 @@ export function createShortLinkService(deps: ServiceDeps): ShortLinkService {
           targetType: 'short_link',
           targetId: linkId,
           before: { state: before.state },
-          after: { state: 'disabled' },
+          after: { state: nextState },
+          metadata: { reason: input.reason },
         });
-        return toView(after, baseUrl);
+        return toView(after, baseUrl, deps.clock.now());
       });
     },
   };

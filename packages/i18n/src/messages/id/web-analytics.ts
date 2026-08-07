@@ -253,7 +253,12 @@ export const webAnalyticsMessages = {
     '{count, plural, =0 {Not used in a post yet} one {Used in # post} other {Used in # posts}}',
   'analytics.links.state.active': 'Aktif',
   'analytics.links.state.expired': 'Kadaluwarsa {date}',
-  'analytics.links.state.disabled': 'Dengan disabilitas',
+  'analytics.links.state.disabled': 'Dinonaktifkan',
+  'analytics.links.state.disabledAt':
+    'Dinonaktifkan pada {date}. URL pendek ini tidak lagi mengalihkan.',
+  'analytics.links.state.blocked': 'Diblokir demi keamanan',
+  'analytics.links.state.blockedBody':
+    'Pengalihan ini tidak tersedia karena tujuannya gagal dalam pemeriksaan keamanan. Ubah tujuan atau hubungi dukungan.',
   'analytics.links.state.disabledReason':
     'Dinonaktifkan oleh {actor} di {date}. Alasan dicatat: {reason}.',
   'analytics.links.detailTitle': 'Tautan terlacak {slug}',

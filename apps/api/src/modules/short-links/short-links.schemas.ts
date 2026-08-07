@@ -1,7 +1,7 @@
-import { utmParametersSchema } from '@relay/contracts';
+import { isoInstantSchema, utmParametersSchema } from '@relay/contracts';
 import { z } from 'zod';
 
-import { cursorQuerySchema, timeRangeShape } from '../../common/pagination';
+import { cursorQuerySchema, timeRangeSchema } from '../../common/pagination';
 import { campaignIdSchema, shortLinkIdSchema } from '../../common/schemas';
 
 /**
@@ -22,14 +22,32 @@ export const createShortLinkSchema = z
     campaignId: campaignIdSchema.optional(),
     /** A verified branded domain. Absent uses the default isolated domain. */
     domainId: z.string().trim().min(1).max(128).optional(),
+    slug: z
+      .string()
+      .regex(/^[A-Za-z0-9][A-Za-z0-9_-]{3,63}$/)
+      .optional(),
     utm: utmParametersSchema.optional(),
+    expiresAt: isoInstantSchema.optional(),
   })
+  .strict();
+
+export const updateShortLinkDestinationSchema = z
+  .object({
+    destinationUrl: z.string().trim().min(1).max(2048),
+    reason: z.string().trim().min(1).max(500),
+  })
+  .strict();
+
+export const setShortLinkEnabledSchema = z
+  .object({ enabled: z.boolean(), reason: z.string().trim().max(500).default('') })
   .strict();
 
 export const listShortLinksQuerySchema = cursorQuerySchema;
 
-export const shortLinkStatsQuerySchema = z.object(timeRangeShape).strict();
+export const shortLinkStatsQuerySchema = timeRangeSchema;
 
 export const shortLinkParamsSchema = z.object({ id: shortLinkIdSchema }).strict();
 
 export type CreateShortLinkInput = z.infer<typeof createShortLinkSchema>;
+export type UpdateShortLinkDestinationInput = z.infer<typeof updateShortLinkDestinationSchema>;
+export type SetShortLinkEnabledInput = z.infer<typeof setShortLinkEnabledSchema>;

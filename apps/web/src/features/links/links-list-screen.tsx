@@ -42,6 +42,7 @@ const STATE_TONE: Readonly<Record<LinkState, 'neutral' | 'warning' | 'destructiv
   active: 'neutral',
   expired: 'warning',
   disabled: 'destructive',
+  blocked: 'destructive',
 };
 
 export function LinksListScreen(): ReactElement {
@@ -55,6 +56,9 @@ export function LinksListScreen(): ReactElement {
   const create = useCreateLink();
 
   const stateLabel = (link: TrackedLinkView): string => {
+    if (link.state === 'blocked') {
+      return t('analytics.links.state.blocked');
+    }
     if (link.state === 'disabled') {
       return t('analytics.links.state.disabled');
     }

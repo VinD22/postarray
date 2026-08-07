@@ -314,6 +314,10 @@ export const webAnalyticsMessages = {
   'analytics.links.state.active': 'Active',
   'analytics.links.state.expired': 'Expired {date}',
   'analytics.links.state.disabled': 'Disabled',
+  'analytics.links.state.disabledAt': 'Disabled {date}. This short URL no longer redirects.',
+  'analytics.links.state.blocked': 'Blocked for safety',
+  'analytics.links.state.blockedBody':
+    'This redirect is unavailable because its destination failed a safety check. Change the destination or contact support.',
   'analytics.links.state.disabledReason':
     'Disabled by {actor} on {date}. Reason recorded: {reason}.',
   'analytics.links.detailTitle': 'Tracked link {slug}',
@@ -355,7 +359,7 @@ export const webAnalyticsMessages = {
     'Relay counts a request when the redirect service is asked for this URL. A deduplicated click removes repeat requests from the same visitor inside a short window, and requests matching known crawler patterns are excluded rather than deleted.',
   'analytics.links.botsNote':
     '{count, plural, one {# request} other {# requests}} were classified as automated and are excluded from the deduplicated count.',
-  'analytics.links.series.title': 'Requests and deduplicated clicks over time',
+  'analytics.links.series.title': 'Requests over time',
   'analytics.links.series.requests': 'Total requests',
   'analytics.links.series.clicks': 'Deduplicated clicks',
   'analytics.links.breakdownTitle': 'Where the clicks came from',

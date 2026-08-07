@@ -132,18 +132,40 @@ export const analyticsApi = {
 
 export interface ShortLinkView {
   readonly id: string;
+  readonly workspaceId: string;
+  readonly slug: string;
   readonly shortUrl: string;
   readonly destinationUrl: string;
-  readonly domain: string;
-  readonly campaign: string | null;
+  readonly domain: string | null;
+  readonly campaignId: string | null;
+  readonly utm: Readonly<Record<string, string>>;
+  readonly state: 'active' | 'disabled' | 'expired' | 'blocked';
+  readonly expiresAt: string | null;
+  readonly disabledAt: string | null;
+  readonly destinationHistory: readonly {
+    readonly url: string;
+    readonly activeFrom: string;
+    readonly activeTo: string | null;
+    readonly changedByActorId: string;
+  }[];
+  readonly createdByUserId: string;
   readonly createdAt: string;
 }
 
 export interface ShortLinkStats {
+  readonly linkId: string;
   readonly totalClicks: number;
-  readonly deduplicatedClicks: number;
-  readonly botFilteredClicks: number;
+  readonly humanClicks: number;
+  readonly suspectedBotClicks: number;
   readonly lastEventAt: string | null;
+  readonly series: readonly { readonly bucketStart: string; readonly requests: number }[];
+  readonly topCountries: readonly { readonly countryCode: string; readonly clicks: number }[];
+  readonly topReferrerClasses: readonly {
+    readonly referrerClass: string;
+    readonly clicks: number;
+  }[];
+  readonly topDeviceClasses: readonly { readonly deviceClass: string; readonly clicks: number }[];
+  readonly sourceKey: 'analytics.source.first_party_redirect';
 }
 
 export const shortLinksApi = {
@@ -153,21 +175,46 @@ export const shortLinksApi = {
       /** A verified branded domain. Absent uses the default isolated domain. */
       domainId?: string;
       campaignId?: string;
-      /** A vanity path. Absent lets the service mint one. */
       slug?: string;
       utm?: Readonly<Record<string, string>>;
-      /** After this instant the link stops redirecting. */
       expiresAt?: string;
     },
     idempotencyKey: string,
   ): Promise<ShortLinkView | null> =>
-    call('/links', { method: 'POST', body: input, idempotencyKey }, () => null),
+    call('/short-links', { method: 'POST', body: input, idempotencyKey }, () => null),
 
-  getStats: (linkId: string, query: MetricWindow): Promise<ShortLinkStats | null> =>
-    call(`/links/${linkId}/stats`, { query }, () => null),
+  get: (linkId: string): Promise<ShortLinkView | null> =>
+    call(`/short-links/${linkId}`, {}, () => null),
+
+  getStats: (
+    linkId: string,
+    query: MetricWindow & { readonly ianaTimeZone: string },
+  ): Promise<ShortLinkStats | null> => call(`/short-links/${linkId}/stats`, { query }, () => null),
 
   list: (query: { cursor?: string; limit?: number } = {}): Promise<Paginated<ShortLinkView>> =>
-    call('/links', { query }, () => page<ShortLinkView>([])),
+    call('/short-links', { query }, () => page<ShortLinkView>([])),
+
+  updateDestination: (
+    linkId: string,
+    input: { destinationUrl: string; reason: string },
+    idempotencyKey: string,
+  ): Promise<ShortLinkView | null> =>
+    call(
+      `/short-links/${linkId}/destination`,
+      { method: 'PATCH', body: input, idempotencyKey },
+      () => null,
+    ),
+
+  setEnabled: (
+    linkId: string,
+    input: { enabled: boolean; reason: string },
+    idempotencyKey: string,
+  ): Promise<ShortLinkView | null> =>
+    call(
+      `/short-links/${linkId}/state`,
+      { method: 'PATCH', body: input, idempotencyKey },
+      () => null,
+    ),
 };
 
 export const growthApi = {
@@ -226,11 +273,7 @@ export const growthApi = {
     planId: string,
     format: GrowthExportFormat,
   ): Promise<{ downloadUrl: string } | null> =>
-    call(
-      `/growth/plans/${encodeURIComponent(planId)}/export`,
-      { query: { format } },
-      () => null,
-    ),
+    call(`/growth/plans/${encodeURIComponent(planId)}/export`, { query: { format } }, () => null),
 
   createDraftFromItem: (
     input: { planId: string; itemId: string },

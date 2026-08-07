@@ -245,7 +245,12 @@ export const webAnalyticsMessages = {
   'analytics.links.usedIn': '{count, plural, other {게시물 #개에 사용됨}}',
   'analytics.links.state.active': '활동적인',
   'analytics.links.state.expired': '만료됨{date}',
-  'analytics.links.state.disabled': '장애가 있는',
+  'analytics.links.state.disabled': '비활성화됨',
+  'analytics.links.state.disabledAt':
+    '{date}에 비활성화되었습니다. 이 단축 URL은 더 이상 리디렉션하지 않습니다.',
+  'analytics.links.state.blocked': '안전을 위해 차단됨',
+  'analytics.links.state.blockedBody':
+    '대상 주소가 안전 검사를 통과하지 못해 이 리디렉션을 사용할 수 없습니다. 대상 주소를 변경하거나 지원팀에 문의하세요.',
   'analytics.links.state.disabledReason':
     '다음에 의해 비활성화됨{actor}~에{date}. 기록된 이유:{reason}.',
   'analytics.links.detailTitle': '추적된 링크{slug}',

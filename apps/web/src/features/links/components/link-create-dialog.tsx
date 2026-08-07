@@ -77,7 +77,6 @@ export function LinkCreateDialog({
   const t = useTranslations();
   const formId = useId();
   const [destination, setDestination] = useState('');
-  const [campaign, setCampaign] = useState('');
   const [slug, setSlug] = useState('');
   const [utmSource, setUtmSource] = useState('');
   const [utmMedium, setUtmMedium] = useState('');
@@ -103,11 +102,11 @@ export function LinkCreateDialog({
                 return;
               }
               const utm: Record<string, string> = {};
-              if (utmSource.trim()) utm.utm_source = utmSource.trim();
-              if (utmMedium.trim()) utm.utm_medium = utmMedium.trim();
+              if (utmSource.trim()) utm.source = utmSource.trim();
+              if (utmMedium.trim()) utm.medium = utmMedium.trim();
               onSubmit({
                 destination: destination.trim(),
-                campaign: campaign.trim() === '' ? null : campaign.trim(),
+                campaign: null,
                 slug: slug.trim() === '' ? null : slug.trim(),
                 domainId: null,
                 utm,
@@ -135,16 +134,6 @@ export function LinkCreateDialog({
                   autoComplete="off"
                   value={destination}
                   onChange={(event) => setDestination(event.target.value)}
-                />
-              )}
-            </Field>
-
-            <Field label={t('analytics.links.createCampaign')}>
-              {(control) => (
-                <Input
-                  {...control}
-                  value={campaign}
-                  onChange={(event) => setCampaign(event.target.value)}
                 />
               )}
             </Field>

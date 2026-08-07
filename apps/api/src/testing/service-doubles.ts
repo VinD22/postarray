@@ -122,10 +122,12 @@ export function createRefusingServices(): Services {
     shortLinks: {
       create: refuse('short_link'),
       list: page,
+      get: refuse('short_link'),
       resolve: () => Promise.resolve(null),
       recordClick: () => Promise.resolve(),
       getStats: refuse('short_link'),
-      disable: refuse('short_link'),
+      updateDestination: refuse('short_link'),
+      setEnabled: refuse('short_link'),
     },
     automationRules: {
       list: page,

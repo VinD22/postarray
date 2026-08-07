@@ -474,16 +474,16 @@ export interface AnalyticsService {
 }
 
 export interface ShortLinkService {
-  create(
-    ctx: ActorContext,
-    input: { destinationUrl: string; campaignId?: string; domainId?: string; utm?: ViewModel },
-  ): Promise<ShortLinkView>;
+  create(ctx: ActorContext, input: ViewModel): Promise<ShortLinkView>;
   list(ctx: ActorContext, query: CursorQuery): Promise<Paginated<ShortLinkView>>;
+  get(ctx: ActorContext, linkId: string): Promise<ShortLinkView>;
   /** No actor context: this is called by the isolated redirect service. */
   resolve(slug: string): Promise<{ destinationUrl: string; linkId: string } | null>;
   /** No actor context: click ingestion is unauthenticated by design. */
   recordClick(input: ViewModel): Promise<void>;
   getStats(ctx: ActorContext, input: { linkId: string; range: TimeRange }): Promise<ShortLinkStats>;
+  updateDestination(ctx: ActorContext, linkId: string, input: ViewModel): Promise<ShortLinkView>;
+  setEnabled(ctx: ActorContext, linkId: string, input: ViewModel): Promise<ShortLinkView>;
 }
 
 export interface AutomationRuleService {

@@ -312,6 +312,10 @@ export const webAnalyticsMessages = {
   'analytics.links.state.active': 'Aktivní',
   'analytics.links.state.expired': 'Platnost vypršela {date}',
   'analytics.links.state.disabled': 'Zakázáno',
+  'analytics.links.state.disabledAt': 'Zakázáno {date}. Tato krátká adresa URL již nepřesměrovává.',
+  'analytics.links.state.blocked': 'Zablokováno z bezpečnostních důvodů',
+  'analytics.links.state.blockedBody':
+    'Toto přesměrování není dostupné, protože cíl neprošel bezpečnostní kontrolou. Změňte cíl nebo kontaktujte podporu.',
   'analytics.links.state.disabledReason':
     'Zakázáno uživatelem {actor} na {date}. Důvod zaznamenaný: {reason}.',
   'analytics.links.detailTitle': 'Sledovaný odkaz {slug}',

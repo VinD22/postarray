@@ -314,6 +314,11 @@ export const webAnalyticsMessages = {
   'analytics.links.state.active': 'Aktif',
   'analytics.links.state.expired': 'Süresi dolmuş {date}',
   'analytics.links.state.disabled': 'Devre dışı',
+  'analytics.links.state.disabledAt':
+    '{date} tarihinde devre dışı bırakıldı. Bu kısa URL artık yönlendirmiyor.',
+  'analytics.links.state.blocked': 'Güvenlik nedeniyle engellendi',
+  'analytics.links.state.blockedBody':
+    'Hedefi güvenlik kontrolünden geçemediği için bu yönlendirme kullanılamıyor. Hedefi değiştirin veya destek ekibiyle iletişime geçin.',
   'analytics.links.state.disabledReason':
     '{date} tarihinde {actor} tarafından devre dışı bırakılır. Kaydedilme nedeni: {reason}.',
   'analytics.links.detailTitle': 'Takip edilen bağlantı {slug}',

@@ -317,7 +317,11 @@ export const webAnalyticsMessages = {
     '{count, plural, =0 {Aún no se usa en una publicación} one {Usado en # publicación} many {Usado en # publicaciones} other {Usado en # publicaciones}}',
   'analytics.links.state.active': 'Activo',
   'analytics.links.state.expired': 'Expired {date}',
-  'analytics.links.state.disabled': 'Discapacitado',
+  'analytics.links.state.disabled': 'Desactivado',
+  'analytics.links.state.disabledAt': 'Desactivado el {date}. Esta URL corta ya no redirige.',
+  'analytics.links.state.blocked': 'Bloqueado por seguridad',
+  'analytics.links.state.blockedBody':
+    'Esta redirección no está disponible porque su destino no superó una comprobación de seguridad. Cambia el destino o contacta con soporte.',
   'analytics.links.state.disabledReason':
     'Deshabilitado by {actor} on {date}. Motivo registrado: {reason}.',
   'analytics.links.detailTitle': 'Seguimiento link {slug}',

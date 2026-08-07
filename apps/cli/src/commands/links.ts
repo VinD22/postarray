@@ -1,4 +1,4 @@
-import { RelayError, webUrlSchema } from '@relay/contracts';
+import { RelayError, ianaTimeZoneSchema, isoInstantSchema, webUrlSchema } from '@relay/contracts';
 
 import { ROUTES } from '../api/routes';
 import { shortLinkStatsSchema, shortLinkViewSchema } from '../api/schemas';
@@ -54,9 +54,9 @@ export async function linksCreate(
   const utm = utmFrom(options);
   const body = {
     destinationUrl: destination.data,
-    campaignId: options.campaignId ?? null,
-    domainId: options.domainId ?? null,
-    utm,
+    ...(options.campaignId === undefined ? {} : { campaignId: options.campaignId }),
+    ...(options.domainId === undefined ? {} : { domainId: options.domainId }),
+    ...(utm === null ? {} : { utm }),
   };
 
   if (context.options.dryRun) {
@@ -117,13 +117,34 @@ export async function linksStats(
   context: CliContext,
   render: RenderInput,
   linkId: string,
-  options: { readonly from?: string | undefined; readonly to?: string | undefined },
+  options: {
+    readonly from?: string | undefined;
+    readonly to?: string | undefined;
+    readonly timeZone?: string | undefined;
+  },
 ): Promise<void> {
+  const toResult = isoInstantSchema.safeParse(options.to ?? new Date().toISOString());
+  const zoneResult = ianaTimeZoneSchema.safeParse(options.timeZone ?? 'UTC');
+  if (!toResult.success || !zoneResult.success) {
+    throw new RelayError('VALIDATION_FAILED', {
+      messageKey: 'error.request_invalid.message',
+      details: { reason: 'LINK_STATS_WINDOW_INVALID' },
+    });
+  }
+  const fromResult = isoInstantSchema.safeParse(
+    options.from ?? new Date(new Date(toResult.data).getTime() - 30 * 86_400_000).toISOString(),
+  );
+  if (!fromResult.success) {
+    throw new RelayError('VALIDATION_FAILED', {
+      messageKey: 'error.request_invalid.message',
+      details: { reason: 'LINK_STATS_WINDOW_INVALID' },
+    });
+  }
   const response = await context.api().request({
     method: 'GET',
     path: ROUTES.shortLinkStats(linkId),
     schema: shortLinkStatsSchema,
-    query: { from: options.from, to: options.to },
+    query: { from: fromResult.data, to: toResult.data, ianaTimeZone: zoneResult.data },
   });
   const stats = response.data;
 
@@ -155,8 +176,8 @@ export async function linksStats(
     ),
     '',
     ...renderTable(
-      ['bucketStart', 'clicks'],
-      stats.series.map((row) => [row.bucketStart, String(row.clicks)]),
+      ['bucketStart', 'requests'],
+      stats.series.map((row) => [row.bucketStart, String(row.requests)]),
     ),
   ]);
 }

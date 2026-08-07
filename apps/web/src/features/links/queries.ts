@@ -3,6 +3,7 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 import { api } from '@/lib/api';
+import type { ShortLinkStats, ShortLinkView } from '@/lib/api';
 
 import type { RedirectMeasurement, TrackedLinkView } from './types';
 
@@ -22,19 +23,78 @@ export const linkKeys = {
   all: ['links'] as const,
   list: (query: LinkListQuery) => ['links', 'list', query] as const,
   detail: (linkId: string) => ['links', 'detail', linkId] as const,
-  stats: (linkId: string, range: { readonly start: string; readonly end: string }) =>
-    ['links', 'stats', linkId, range] as const,
+  stats: (
+    linkId: string,
+    range: { readonly start: string; readonly end: string },
+    ianaTimeZone: string,
+  ) => ['links', 'detail', linkId, range, ianaTimeZone] as const,
 };
 
 export interface LinkListQuery {
-  readonly campaign?: string | undefined;
   readonly cursor?: string | undefined;
   readonly limit?: number | undefined;
 }
 
-/** TODO(web): depends on `@/lib/api` publishing typed short link view models. */
-function adapt<T>(value: unknown): T {
-  return value as T;
+function adaptLink(value: ShortLinkView): TrackedLinkView {
+  return {
+    id: value.id,
+    slug: value.slug,
+    shortUrl: value.shortUrl,
+    domain: value.domain,
+    destination: value.destinationUrl,
+    destinationHistory: value.destinationHistory,
+    campaign: value.campaignId,
+    utm: value.utm,
+    state: value.state,
+    createdAt: value.createdAt,
+    createdByUserId: value.createdByUserId,
+    expiresAt: value.expiresAt,
+    disabledAt: value.disabledAt,
+  };
+}
+
+function breakdown(
+  rows: readonly { readonly key: string; readonly clicks: number }[],
+  total: number,
+) {
+  return rows.map((row) => ({
+    key: row.key,
+    clicks: row.clicks,
+    share: total === 0 ? 0 : row.clicks / total,
+  }));
+}
+
+function adaptMeasurement(
+  value: ShortLinkStats,
+  range: { readonly start: string; readonly end: string },
+): RedirectMeasurement {
+  return {
+    linkId: value.linkId,
+    periodStart: range.start,
+    periodEnd: range.end,
+    totalRequests: value.totalClicks,
+    deduplicatedClicks: value.humanClicks,
+    suspectedBots: value.suspectedBotClicks,
+    lastEventAt: value.lastEventAt,
+    referrers: breakdown(
+      value.topReferrerClasses.map((row) => ({ key: row.referrerClass, clicks: row.clicks })),
+      value.humanClicks,
+    ),
+    devices: breakdown(
+      value.topDeviceClasses.map((row) => ({ key: row.deviceClass, clicks: row.clicks })),
+      value.humanClicks,
+    ),
+    countries: breakdown(
+      value.topCountries.map((row) => ({ key: row.countryCode, clicks: row.clicks })),
+      value.humanClicks,
+    ),
+    series: value.series.map((point) => ({
+      bucketStart: point.bucketStart,
+      bucketSeconds: 3600,
+      requests: point.requests,
+      clicks: null,
+    })),
+  };
 }
 
 export function useTrackedLinks(query: LinkListQuery = {}) {
@@ -43,10 +103,7 @@ export function useTrackedLinks(query: LinkListQuery = {}) {
     staleTime: ONE_MINUTE,
     queryFn: async () => {
       const result = await api.shortLinks.list(query);
-      return adapt<{
-        readonly data: readonly TrackedLinkView[];
-        readonly pageInfo: { readonly nextCursor: string | null; readonly hasMore: boolean };
-      }>(result);
+      return { ...result, data: result.data.map(adaptLink) };
     },
   });
 }
@@ -54,22 +111,27 @@ export function useTrackedLinks(query: LinkListQuery = {}) {
 export function useLinkStats(
   linkId: string,
   range: { readonly start: string; readonly end: string },
+  ianaTimeZone: string,
   enabled = true,
 ) {
   return useQuery({
-    queryKey: linkKeys.stats(linkId, range),
+    queryKey: linkKeys.stats(linkId, range, ianaTimeZone),
     enabled,
     staleTime: ONE_MINUTE,
-    queryFn: async (): Promise<{
-      readonly link: TrackedLinkView;
-      readonly measurement: RedirectMeasurement;
-    }> =>
-      adapt(
-        await api.shortLinks.getStats(linkId, {
+    queryFn: async () => {
+      const [link, measurement] = await Promise.all([
+        api.shortLinks.get(linkId),
+        api.shortLinks.getStats(linkId, {
           from: range.start,
           to: range.end,
+          ianaTimeZone,
         }),
-      ),
+      ]);
+      if (link === null || measurement === null) {
+        throw new Error('SHORT_LINK_NOT_AVAILABLE');
+      }
+      return { link: adaptLink(link), measurement: adaptMeasurement(measurement, range) };
+    },
   });
 }
 
@@ -86,45 +148,27 @@ export interface CreateLinkInput {
 export function useCreateLink() {
   const client = useQueryClient();
   return useMutation({
-    mutationFn: async (input: CreateLinkInput): Promise<TrackedLinkView> =>
-      adapt<TrackedLinkView>(
-        await api.shortLinks.create(
-          {
-            destinationUrl: input.destination,
-            ...(input.campaign === null ? {} : { campaignId: input.campaign }),
-            ...(input.domainId === null ? {} : { domainId: input.domainId }),
-            ...(input.slug === null ? {} : { slug: input.slug }),
-            ...(Object.keys(input.utm).length === 0 ? {} : { utm: input.utm }),
-            ...(input.expiresAt === null ? {} : { expiresAt: input.expiresAt }),
-          },
-          input.idempotencyKey,
-        ),
-      ),
+    mutationFn: async (input: CreateLinkInput): Promise<TrackedLinkView> => {
+      const created = await api.shortLinks.create(
+        {
+          destinationUrl: input.destination,
+          ...(input.campaign === null ? {} : { campaignId: input.campaign }),
+          ...(input.domainId === null ? {} : { domainId: input.domainId }),
+          ...(input.slug === null ? {} : { slug: input.slug }),
+          ...(Object.keys(input.utm).length === 0 ? {} : { utm: input.utm }),
+          ...(input.expiresAt === null ? {} : { expiresAt: input.expiresAt }),
+        },
+        input.idempotencyKey,
+      );
+      if (created === null) {
+        throw new Error('SHORT_LINK_NOT_CREATED');
+      }
+      return adaptLink(created);
+    },
     onSuccess: () => {
       void client.invalidateQueries({ queryKey: linkKeys.all });
     },
   });
-}
-
-/**
- * Editing a destination and disabling a link are audited operations that the
- * shared client has not surfaced yet.
- *
- * They are declared here as optional members rather than called through a cast
- * onto `create`, because calling the wrong endpoint would mint a second short
- * link instead of editing the one the user is looking at. Until the method
- * lands the mutation fails loudly with a state the screen already renders.
- *
- * TODO(web): depends on `@/lib/api` exposing `shortLinks.update` and
- * `shortLinks.setEnabled`.
- */
-type ShortLinksApi = typeof api.shortLinks & {
-  readonly update?: (input: UpdateDestinationInput) => Promise<unknown>;
-  readonly setEnabled?: (input: SetLinkEnabledInput) => Promise<unknown>;
-};
-
-function shortLinks(): ShortLinksApi {
-  return api.shortLinks as ShortLinksApi;
 }
 
 export interface UpdateDestinationInput {
@@ -146,11 +190,15 @@ export function useUpdateDestination() {
   const client = useQueryClient();
   return useMutation({
     mutationFn: async (input: UpdateDestinationInput): Promise<TrackedLinkView> => {
-      const update = shortLinks().update;
-      if (!update) {
-        throw new Error('shortLinks.update is not available in this client build');
+      const updated = await api.shortLinks.updateDestination(
+        input.shortLinkId,
+        { destinationUrl: input.destination, reason: input.reason },
+        input.idempotencyKey,
+      );
+      if (updated === null) {
+        throw new Error('SHORT_LINK_NOT_UPDATED');
       }
-      return adapt<TrackedLinkView>(await update(input));
+      return adaptLink(updated);
     },
     onSuccess: (_data, variables) => {
       void client.invalidateQueries({ queryKey: linkKeys.detail(variables.shortLinkId) });
@@ -170,11 +218,15 @@ export function useSetLinkEnabled() {
   const client = useQueryClient();
   return useMutation({
     mutationFn: async (input: SetLinkEnabledInput): Promise<TrackedLinkView> => {
-      const setEnabled = shortLinks().setEnabled;
-      if (!setEnabled) {
-        throw new Error('shortLinks.setEnabled is not available in this client build');
+      const updated = await api.shortLinks.setEnabled(
+        input.shortLinkId,
+        { enabled: input.enabled, reason: input.reason },
+        input.idempotencyKey,
+      );
+      if (updated === null) {
+        throw new Error('SHORT_LINK_STATE_NOT_UPDATED');
       }
-      return adapt<TrackedLinkView>(await setEnabled(input));
+      return adaptLink(updated);
     },
     onSuccess: (_data, variables) => {
       void client.invalidateQueries({ queryKey: linkKeys.detail(variables.shortLinkId) });

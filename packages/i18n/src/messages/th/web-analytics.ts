@@ -235,6 +235,11 @@ export const webAnalyticsMessages = {
   'analytics.links.state.active': 'ใช้งานอยู่',
   'analytics.links.state.expired': 'หมดอายุ {date}',
   'analytics.links.state.disabled': 'ปิดการใช้งาน',
+  'analytics.links.state.disabledAt':
+    'ปิดใช้งานเมื่อ {date} URL แบบสั้นนี้จะไม่เปลี่ยนเส้นทางอีกต่อไป',
+  'analytics.links.state.blocked': 'ถูกบล็อกเพื่อความปลอดภัย',
+  'analytics.links.state.blockedBody':
+    'การเปลี่ยนเส้นทางนี้ไม่พร้อมใช้งานเนื่องจากปลายทางไม่ผ่านการตรวจสอบความปลอดภัย โปรดเปลี่ยนปลายทางหรือติดต่อฝ่ายสนับสนุน',
   'analytics.links.state.disabledReason': 'ปิดใช้งานโดย {actor} บน {date} บันทึกเหตุผล: {reason}',
   'analytics.links.detailTitle': 'ติดตามลิงค์ {slug}',
   'analytics.links.exactRedirect': 'การเปลี่ยนเส้นทางที่แน่นอน',

@@ -138,7 +138,9 @@ import {
 import {
   createShortLinkSchema,
   listShortLinksQuerySchema,
+  setShortLinkEnabledSchema,
   shortLinkStatsQuerySchema,
+  updateShortLinkDestinationSchema,
 } from '../modules/short-links/short-links.schemas';
 import { listAuditQuerySchema } from '../modules/audit/audit.schemas';
 import {
@@ -1133,6 +1135,16 @@ export const OPERATIONS: readonly OperationSpec[] = [
   },
   {
     method: 'get',
+    path: '/v1/short-links/{id}',
+    operationId: 'shortLinks.get',
+    summary: 'One short link and its destination history.',
+    tag: 'short-links',
+    scopes: ['analytics:read'],
+    pathParams: p('id', shortLinkIdSchema),
+    response: view,
+  },
+  {
+    method: 'get',
     path: '/v1/short-links/{id}/stats',
     operationId: 'shortLinks.stats',
     summary: 'Total requests and deduplicated human clicks, reported separately.',
@@ -1140,6 +1152,30 @@ export const OPERATIONS: readonly OperationSpec[] = [
     scopes: ['analytics:read'],
     pathParams: p('id', shortLinkIdSchema),
     query: shortLinkStatsQuerySchema,
+    response: view,
+  },
+  {
+    method: 'patch',
+    path: '/v1/short-links/{id}/destination',
+    operationId: 'shortLinks.updateDestination',
+    summary: 'Change the audited destination behind a short link.',
+    tag: 'short-links',
+    scopes: ['drafts:write'],
+    requiresIdempotencyKey: true,
+    pathParams: p('id', shortLinkIdSchema),
+    body: updateShortLinkDestinationSchema,
+    response: view,
+  },
+  {
+    method: 'patch',
+    path: '/v1/short-links/{id}/state',
+    operationId: 'shortLinks.setEnabled',
+    summary: 'Enable or disable a short link.',
+    tag: 'short-links',
+    scopes: ['drafts:write'],
+    requiresIdempotencyKey: true,
+    pathParams: p('id', shortLinkIdSchema),
+    body: setShortLinkEnabledSchema,
     response: view,
   },
 

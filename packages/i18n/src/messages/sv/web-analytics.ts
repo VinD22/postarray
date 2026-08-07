@@ -316,6 +316,11 @@ export const webAnalyticsMessages = {
   'analytics.links.state.active': 'Aktiv',
   'analytics.links.state.expired': 'Utgått {date}',
   'analytics.links.state.disabled': 'Inaktiverad',
+  'analytics.links.state.disabledAt':
+    'Inaktiverad {date}. Den här korta webbadressen omdirigerar inte längre.',
+  'analytics.links.state.blocked': 'Blockerad av säkerhetsskäl',
+  'analytics.links.state.blockedBody':
+    'Omdirigeringen är inte tillgänglig eftersom målet inte klarade en säkerhetskontroll. Ändra målet eller kontakta supporten.',
   'analytics.links.state.disabledReason':
     'Inaktiverad av {actor} på {date}. Antecknad orsak: {reason}.',
   'analytics.links.detailTitle': 'Spårad länk {slug}',

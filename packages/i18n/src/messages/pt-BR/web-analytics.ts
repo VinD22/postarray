@@ -318,6 +318,10 @@ export const webAnalyticsMessages = {
   'analytics.links.state.active': 'Ativo',
   'analytics.links.state.expired': 'Expirado {date}',
   'analytics.links.state.disabled': 'Desativado',
+  'analytics.links.state.disabledAt': 'Desativado em {date}. Este link curto não redireciona mais.',
+  'analytics.links.state.blocked': 'Bloqueado por segurança',
+  'analytics.links.state.blockedBody':
+    'Este redirecionamento não está disponível porque o destino falhou em uma verificação de segurança. Altere o destino ou fale com o suporte.',
   'analytics.links.state.disabledReason':
     'Desativado por {actor} em {date}. Motivo registrado: {reason}.',
   'analytics.links.detailTitle': 'Link rastreado {slug}',

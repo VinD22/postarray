@@ -321,6 +321,11 @@ export const webAnalyticsMessages = {
   'analytics.links.state.active': 'Actief',
   'analytics.links.state.expired': 'Verlopen {date}',
   'analytics.links.state.disabled': 'Uitgeschakeld',
+  'analytics.links.state.disabledAt':
+    'Uitgeschakeld op {date}. Deze korte URL verwijst niet meer door.',
+  'analytics.links.state.blocked': 'Geblokkeerd voor veiligheid',
+  'analytics.links.state.blockedBody':
+    'Deze omleiding is niet beschikbaar omdat de bestemming niet door een veiligheidscontrole kwam. Wijzig de bestemming of neem contact op met support.',
   'analytics.links.state.disabledReason':
     'Uitgeschakeld door {actor} op {date}. Reden geregistreerd: {reason}.',
   'analytics.links.detailTitle': 'Bijgehouden link {slug}',

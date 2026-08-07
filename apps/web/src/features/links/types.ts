@@ -9,24 +9,11 @@
  * a single visitor.
  */
 
-export type LinkState = 'active' | 'expired' | 'disabled';
+export type LinkState = 'active' | 'expired' | 'disabled' | 'blocked';
 
 export type ReferrerClass = 'direct' | 'social' | 'search' | 'email' | 'other';
 
 export type DeviceClass = 'mobile' | 'desktop' | 'tablet' | 'unknown';
-
-export type DomainVerificationState = 'verified' | 'pending' | 'failed' | 'default';
-
-export interface ShortDomainView {
-  readonly id: string;
-  readonly host: string;
-  readonly state: DomainVerificationState;
-  readonly verifiedAt: string | null;
-  readonly lastCheckedAt: string | null;
-  /** The exact DNS record the user must publish. Never a secret. */
-  readonly dnsRecordName: string | null;
-  readonly dnsRecordValue: string | null;
-}
 
 /**
  * One destination and the window it was live for.
@@ -37,11 +24,10 @@ export interface ShortDomainView {
  * the clicks were counted.
  */
 export interface DestinationVersion {
-  readonly id: string;
   readonly url: string;
   readonly activeFrom: string;
   readonly activeTo: string | null;
-  readonly changedByName: string;
+  readonly changedByActorId: string;
 }
 
 export interface TrackedLinkView {
@@ -50,19 +36,16 @@ export interface TrackedLinkView {
   readonly slug: string;
   /** The whole public URL exactly as it publishes. */
   readonly shortUrl: string;
-  readonly domain: ShortDomainView;
+  readonly domain: string | null;
   readonly destination: string;
   readonly destinationHistory: readonly DestinationVersion[];
   readonly campaign: string | null;
   readonly utm: Readonly<Record<string, string>>;
   readonly state: LinkState;
   readonly createdAt: string;
-  readonly createdByName: string;
+  readonly createdByUserId: string;
   readonly expiresAt: string | null;
   readonly disabledAt: string | null;
-  readonly disabledByName: string | null;
-  readonly disabledReason: string | null;
-  readonly usedInPostCount: number;
 }
 
 export interface BreakdownEntry {

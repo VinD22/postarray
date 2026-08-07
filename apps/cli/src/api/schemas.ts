@@ -103,7 +103,10 @@ export const contentItemViewSchema = z.object({
   locale: z.string().min(1),
   contentKind: contentKindSchema,
   variants: z.array(postVariantViewSchema),
-  currentChecksum: z.string().regex(/^[0-9a-f]{64}$/).nullable(),
+  currentChecksum: z
+    .string()
+    .regex(/^[0-9a-f]{64}$/)
+    .nullable(),
   reapprovalRequired: z.boolean(),
   createdVia: creationSurfaceSchema,
   createdAt: isoInstantSchema,
@@ -162,7 +165,7 @@ export const shortLinkStatsSchema = z.object({
   humanClicks: z.number().int().nonnegative(),
   suspectedBotClicks: z.number().int().nonnegative(),
   series: z.array(
-    z.object({ bucketStart: z.string().min(1), clicks: z.number().int().nonnegative() }),
+    z.object({ bucketStart: z.string().min(1), requests: z.number().int().nonnegative() }),
   ),
   topCountries: z.array(
     z.object({ countryCode: z.string(), clicks: z.number().int().nonnegative() }),

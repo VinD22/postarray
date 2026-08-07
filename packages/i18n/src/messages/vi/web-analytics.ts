@@ -256,6 +256,10 @@ export const webAnalyticsMessages = {
   'analytics.links.state.active': 'Đang hoạt động',
   'analytics.links.state.expired': '{date} đã hết hạn',
   'analytics.links.state.disabled': 'Đã tắt',
+  'analytics.links.state.disabledAt': 'Đã tắt vào {date}. URL rút gọn này không còn chuyển hướng.',
+  'analytics.links.state.blocked': 'Bị chặn vì lý do an toàn',
+  'analytics.links.state.blockedBody':
+    'Chuyển hướng này không khả dụng vì đích đến không vượt qua kiểm tra an toàn. Hãy đổi đích đến hoặc liên hệ hỗ trợ.',
   'analytics.links.state.disabledReason': 'Bị tắt bởi {actor} trên {date}. Lý do ghi: {reason}.',
   'analytics.links.detailTitle': 'Liên kết được theo dõi {slug}',
   'analytics.links.exactRedirect': 'Chuyển hướng chính xác',

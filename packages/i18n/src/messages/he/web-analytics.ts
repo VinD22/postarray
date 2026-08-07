@@ -242,6 +242,10 @@ export const webAnalyticsMessages = withHebrewPluralForms({
   'analytics.links.state.active': 'פעיל',
   'analytics.links.state.expired': 'פג תוקף {date}',
   'analytics.links.state.disabled': 'מושבת',
+  'analytics.links.state.disabledAt': 'הושבת בתאריך {date}. כתובת ה-URL המקוצרת הזו כבר לא מפנה.',
+  'analytics.links.state.blocked': 'נחסם מטעמי אבטחה',
+  'analytics.links.state.blockedBody':
+    'ההפניה אינה זמינה כי היעד לא עבר בדיקת אבטחה. יש לשנות את היעד או לפנות לתמיכה.',
   'analytics.links.state.disabledReason':
     'מושבת על ידי {actor} בתאריך {date}. הסיבה שנרשמה: {reason}.',
   'analytics.links.detailTitle': 'קישור במעקב {slug}',

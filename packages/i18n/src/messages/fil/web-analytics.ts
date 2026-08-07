@@ -320,6 +320,11 @@ export const webAnalyticsMessages = {
   'analytics.links.state.active': 'Aktibo',
   'analytics.links.state.expired': 'Nag-expire na {date}',
   'analytics.links.state.disabled': 'Hindi pinagana',
+  'analytics.links.state.disabledAt':
+    'Hindi pinagana noong {date}. Hindi na nagre-redirect ang maikling URL na ito.',
+  'analytics.links.state.blocked': 'Na-block para sa kaligtasan',
+  'analytics.links.state.blockedBody':
+    'Hindi available ang redirect na ito dahil hindi pumasa sa safety check ang destinasyon. Palitan ang destinasyon o makipag-ugnayan sa support.',
   'analytics.links.state.disabledReason':
     'Hindi pinagana ng {actor} sa {date}. Naitala ang dahilan: {reason}.',
   'analytics.links.detailTitle': 'Sinusubaybayang link {slug}',

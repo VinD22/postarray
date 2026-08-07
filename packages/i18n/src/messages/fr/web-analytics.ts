@@ -323,6 +323,10 @@ export const webAnalyticsMessages = {
   'analytics.links.state.active': 'Actif',
   'analytics.links.state.expired': 'Expiré {date}',
   'analytics.links.state.disabled': 'Désactivé',
+  'analytics.links.state.disabledAt': 'Désactivé le {date}. Cette URL courte ne redirige plus.',
+  'analytics.links.state.blocked': 'Bloqué pour des raisons de sécurité',
+  'analytics.links.state.blockedBody':
+    'Cette redirection est indisponible car sa destination a échoué à un contrôle de sécurité. Modifiez la destination ou contactez le support.',
   'analytics.links.state.disabledReason':
     'Désactivé par {actor} sur {date}. Raison enregistrée : {reason}.',
   'analytics.links.detailTitle': 'Lien suivi {slug}',

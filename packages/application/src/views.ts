@@ -489,8 +489,17 @@ export interface ShortLinkView {
   readonly shortUrl: string;
   readonly destinationUrl: string;
   readonly campaignId: string | null;
+  readonly utm: Readonly<Record<string, string>>;
   readonly state: 'active' | 'disabled' | 'expired' | 'blocked';
   readonly expiresAt: string | null;
+  readonly disabledAt: string | null;
+  readonly destinationHistory: readonly {
+    readonly url: string;
+    readonly activeFrom: string;
+    readonly activeTo: string | null;
+    readonly changedByActorId: string;
+  }[];
+  readonly createdByUserId: string;
   readonly createdAt: string;
 }
 
@@ -499,12 +508,14 @@ export interface ShortLinkStats {
   readonly totalClicks: number;
   readonly humanClicks: number;
   readonly suspectedBotClicks: number;
-  readonly series: readonly { readonly bucketStart: string; readonly clicks: number }[];
+  readonly lastEventAt: string | null;
+  readonly series: readonly { readonly bucketStart: string; readonly requests: number }[];
   readonly topCountries: readonly { readonly countryCode: string; readonly clicks: number }[];
   readonly topReferrerClasses: readonly {
     readonly referrerClass: string;
     readonly clicks: number;
   }[];
+  readonly topDeviceClasses: readonly { readonly deviceClass: string; readonly clicks: number }[];
   /** First-party redirect measurement, never a provider link-click number. */
   readonly sourceKey: 'analytics.source.first_party_redirect';
 }

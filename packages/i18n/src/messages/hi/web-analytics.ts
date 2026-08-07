@@ -313,7 +313,12 @@ export const webAnalyticsMessages = {
     '{count, plural, =0 {Not used in a post yet} one {Used in # post} other {Used in # posts}}',
   'analytics.links.state.active': 'सक्रिय',
   'analytics.links.state.expired': 'Expired {date}',
-  'analytics.links.state.disabled': 'विकलांग',
+  'analytics.links.state.disabled': 'बंद',
+  'analytics.links.state.disabledAt':
+    '{date} को बंद किया गया। यह छोटा URL अब रीडायरेक्ट नहीं करता।',
+  'analytics.links.state.blocked': 'सुरक्षा के लिए ब्लॉक किया गया',
+  'analytics.links.state.blockedBody':
+    'यह रीडायरेक्ट उपलब्ध नहीं है क्योंकि गंतव्य सुरक्षा जांच में विफल रहा। गंतव्य बदलें या सहायता से संपर्क करें।',
   'analytics.links.state.disabledReason':
     'Disabled by {actor} on {date}. Reason recorded: {reason}.',
   'analytics.links.detailTitle': 'Tracked link {slug}',

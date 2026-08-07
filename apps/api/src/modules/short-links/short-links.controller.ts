@@ -1,4 +1,4 @@
-import { Body, Controller, Get, HttpCode, Param, Post, Query } from '@nestjs/common';
+import { Body, Controller, Get, HttpCode, Param, Patch, Post, Query } from '@nestjs/common';
 import type { Paginated } from '@relay/contracts';
 
 import type { ActorContext, ShortLinkStats, ShortLinkView } from '../../application/port';
@@ -8,7 +8,9 @@ import { parseBody, parseParams, parseQuery } from '../../common/zod';
 import {
   createShortLinkSchema,
   listShortLinksQuerySchema,
+  setShortLinkEnabledSchema,
   shortLinkStatsQuerySchema,
+  updateShortLinkDestinationSchema,
 } from './short-links.schemas';
 import { ShortLinksService } from './short-links.service';
 
@@ -39,6 +41,12 @@ export class ShortLinksController {
     return this.shortLinks.create(actor, parseBody(createShortLinkSchema, body));
   }
 
+  @Get(':id')
+  @RequireScope('analytics:read')
+  get(@Actor() actor: ActorContext, @Param('id') id: string): Promise<ShortLinkView> {
+    return this.shortLinks.get(actor, parseParams(shortLinkIdSchema, id));
+  }
+
   @Get(':id/stats')
   @RequireScope('analytics:read')
   stats(
@@ -50,6 +58,36 @@ export class ShortLinksController {
       actor,
       parseParams(shortLinkIdSchema, id),
       parseQuery(shortLinkStatsQuerySchema, query),
+    );
+  }
+
+  @Patch(':id/destination')
+  @RequireScope('drafts:write')
+  @Idempotent()
+  updateDestination(
+    @Actor() actor: ActorContext,
+    @Param('id') id: string,
+    @Body() body: unknown,
+  ): Promise<ShortLinkView> {
+    return this.shortLinks.updateDestination(
+      actor,
+      parseParams(shortLinkIdSchema, id),
+      parseBody(updateShortLinkDestinationSchema, body),
+    );
+  }
+
+  @Patch(':id/state')
+  @RequireScope('drafts:write')
+  @Idempotent()
+  setEnabled(
+    @Actor() actor: ActorContext,
+    @Param('id') id: string,
+    @Body() body: unknown,
+  ): Promise<ShortLinkView> {
+    return this.shortLinks.setEnabled(
+      actor,
+      parseParams(shortLinkIdSchema, id),
+      parseBody(setShortLinkEnabledSchema, body),
     );
   }
 }
