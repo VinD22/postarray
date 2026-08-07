@@ -1,47 +1,97 @@
 import { createHash } from 'node:crypto';
 
+import { ID_PREFIXES, type IdPrefix } from '@relay/contracts';
+
 /**
- * Deterministic identifiers for seed data.
+ * Deterministic identifiers for unmistakably synthetic seed data.
  *
- * Seeding has to be repeatable: run it twice and you get the same workspace,
- * the same connection and the same receipt IDs, so a fixture, a screenshot or a
- * reviewer's bookmark stays valid. These are RFC 4122 version 5 UUIDs derived
- * from a fixed namespace, which means they are stable, obviously synthetic and
- * cannot collide with a production UUIDv7.
+ * The body is a stable 128-bit digest encoded in Relay's 26-character
+ * Crockford representation. The label category selects the same entity prefix
+ * production rows use, so seeded data exercises every boundary validator.
  */
 
-/** A fixed namespace UUID. Not a secret, and not used for anything else. */
-const SEED_NAMESPACE = '5f1d0f2c-9a7b-5c3e-8d41-0b2e6a4f7c19';
+const CROCKFORD_ALPHABET = '0123456789abcdefghjkmnpqrstvwxyz';
+
+const SEED_PREFIXES = {
+  alias: ID_PREFIXES.userAlias,
+  approval_decision: ID_PREFIXES.approvalDecision,
+  approval_request: ID_PREFIXES.approval,
+  api_key: ID_PREFIXES.apiKey,
+  audit: ID_PREFIXES.auditEvent,
+  automation_rule: ID_PREFIXES.rule,
+  automation_rule_run: ID_PREFIXES.ruleRun,
+  brand: ID_PREFIXES.brand,
+  business_profile: ID_PREFIXES.growthProfile,
+  campaign: ID_PREFIXES.campaign,
+  comment: ID_PREFIXES.comment,
+  connection: ID_PREFIXES.connection,
+  consent: ID_PREFIXES.consent,
+  content_item: ID_PREFIXES.contentItem,
+  content_version: ID_PREFIXES.contentVersion,
+  credential: ID_PREFIXES.credential,
+  destination: ID_PREFIXES.destination,
+  entitlement: ID_PREFIXES.entitlement,
+  experiment: ID_PREFIXES.experiment,
+  glossary: ID_PREFIXES.glossaryTerm,
+  growth_plan: ID_PREFIXES.growthPlan,
+  incident: ID_PREFIXES.connectionIncident,
+  insight: ID_PREFIXES.insight,
+  match: ID_PREFIXES.opportunityMatch,
+  membership: ID_PREFIXES.membership,
+  mention: ID_PREFIXES.mention,
+  metric: ID_PREFIXES.metricDefinition,
+  observation: ID_PREFIXES.metricObservation,
+  opportunity: ID_PREFIXES.opportunity,
+  polar_customer: ID_PREFIXES.polarCustomer,
+  post_variant: ID_PREFIXES.postVariant,
+  posting_set: ID_PREFIXES.set,
+  provider_limit: ID_PREFIXES.providerLimit,
+  publish_attempt: ID_PREFIXES.publishAttempt,
+  publish_job: ID_PREFIXES.publishJob,
+  receipt: ID_PREFIXES.receipt,
+  rss_feed: ID_PREFIXES.feed,
+  rss_feed_item: ID_PREFIXES.feedItem,
+  service_account: ID_PREFIXES.serviceAccount,
+  short_link: ID_PREFIXES.shortLink,
+  short_link_click: ID_PREFIXES.shortLinkClick,
+  signature: ID_PREFIXES.signature,
+  subscription: ID_PREFIXES.subscription,
+  tool: ID_PREFIXES.tool,
+  user: ID_PREFIXES.user,
+  webhook_endpoint: ID_PREFIXES.webhookEndpoint,
+  workspace: ID_PREFIXES.workspace,
+} as const satisfies Readonly<Record<string, IdPrefix>>;
+
+type SeedKind = keyof typeof SEED_PREFIXES;
+
+function isSeedKind(value: string): value is SeedKind {
+  return Object.prototype.hasOwnProperty.call(SEED_PREFIXES, value);
+}
+
+function encodeSeedBody(label: string): string {
+  let value = BigInt(`0x${createHash('sha256').update(label).digest('hex').slice(0, 32)}`);
+  const characters = new Array<string>(26);
+  for (let index = characters.length - 1; index >= 0; index -= 1) {
+    const character = CROCKFORD_ALPHABET[Number(value & 31n)];
+    if (character === undefined) throw new RangeError('SEED_ID_ENCODING_OUT_OF_RANGE');
+    characters[index] = character;
+    value >>= 5n;
+  }
+  return characters.join('');
+}
 
 export function seedId(label: string): string {
-  const namespaceBytes = Buffer.from(SEED_NAMESPACE.replace(/-/g, ''), 'hex');
-  const digest = createHash('sha1')
-    .update(namespaceBytes)
-    .update(Buffer.from(label, 'utf8'))
-    .digest();
-
-  const bytes = Buffer.from(digest.subarray(0, 16));
-  // Version 5, RFC 4122 variant.
-  bytes[6] = ((bytes[6] ?? 0) & 0x0f) | 0x50;
-  bytes[8] = ((bytes[8] ?? 0) & 0x3f) | 0x80;
-
-  const hex = bytes.toString('hex');
-  return [
-    hex.slice(0, 8),
-    hex.slice(8, 12),
-    hex.slice(12, 16),
-    hex.slice(16, 20),
-    hex.slice(20, 32),
-  ].join('-');
+  const kind = label.split(':', 1)[0];
+  if (kind === undefined || !isSeedKind(kind)) {
+    throw new RangeError(`SEED_ID_KIND_UNREGISTERED:${kind ?? ''}`);
+  }
+  return `${SEED_PREFIXES[kind]}_${encodeSeedBody(label)}`;
 }
 
 /** The one seeded workspace. Everything else hangs off it. */
 export const SEED_WORKSPACE_ID = seedId('workspace:northwind');
 
-/**
- * The seed clock. Fixed so relative offsets in the data are stable, and set in
- * the past so scheduled items are genuinely in the future when you run it.
- */
+/** The seed clock remains live so scheduled examples stay in the future. */
 export function seedNow(): Date {
   return new Date();
 }

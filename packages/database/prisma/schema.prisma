@@ -7,12 +7,11 @@
 //   * Two physical schemas. `app` is safe to expose through a Data API with RLS.
 //     `private` holds credentials, billing, OAuth and audit and is never granted
 //     to `anon` or `authenticated`.
-//   * Primary keys are UUIDs. The application supplies sortable UUIDv7 values;
-//     `gen_random_uuid()` is the fallback so raw SQL and migrations still work.
-//     Prefixed public identifiers (`post_...`) are a presentation concern and
-//     never reach a column.
+//   * Relay-owned primary and foreign keys are sortable prefixed identifiers.
+//     PostgreSQL and every application surface use the same representation, so
+//     RLS claims compare directly to tenant columns without an adapter layer.
 //   * Actor columns such as `createdByUserId` are deliberately plain indexed
-//     UUIDs rather than declared relations. They point at `app.users` through a
+//     identifiers rather than declared relations. They point at `app.users` through a
 //     foreign key added in SQL; keeping them out of the Prisma relation graph
 //     avoids ~120 back-relation fields on `User` that nothing would traverse.
 //   * Money is integer minor units plus an ISO 4217 code. Never a float.
@@ -741,7 +740,7 @@ enum SessionState {
 // ---------------------------------------------------------------------------
 
 model User {
-  id             String     @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  id             String     @id @default(dbgenerated("app.new_id('user')"))
   /// Neon Auth / Better Auth user id. Provider ids are opaque strings, while
   /// this row remains our profile and tenancy anchor.
   authSubjectId   String?    @unique @map("auth_subject_id")
@@ -771,8 +770,8 @@ model User {
 /// by itself. `normalizedHandle` is NFKC + conservative lowercase so confusables
 /// collapse before the unique index is consulted.
 model UserAlias {
-  id               String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  userId           String    @map("user_id") @db.Uuid
+  id               String    @id @default(dbgenerated("app.new_id('alias')"))
+  userId           String    @map("user_id")
   handle           String
   normalizedHandle String    @unique @map("normalized_handle") @db.Citext
   verifiedAt       DateTime? @map("verified_at") @db.Timestamptz(6)
@@ -789,10 +788,10 @@ model UserAlias {
 }
 
 model Workspace {
-  id              String          @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  id              String          @id @default(dbgenerated("app.new_id('ws')"))
   name            String
   slug            String          @unique @db.Citext
-  ownerUserId     String          @map("owner_user_id") @db.Uuid
+  ownerUserId     String          @map("owner_user_id")
   status          WorkspaceStatus @default(trialing)
   defaultLocale   String          @default("en") @map("default_locale")
   defaultTimeZone String          @default("UTC") @map("default_time_zone")
@@ -870,14 +869,14 @@ model Workspace {
 }
 
 model Membership {
-  id            String          @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  workspaceId   String          @map("workspace_id") @db.Uuid
-  userId        String          @map("user_id") @db.Uuid
+  id            String          @id @default(dbgenerated("app.new_id('membership')"))
+  workspaceId   String          @map("workspace_id")
+  userId        String          @map("user_id")
   role          WorkspaceRole
   state         MembershipState @default(invited)
   /// Empty means "every brand in the workspace".
-  brandScope    String[]        @default([]) @map("brand_scope") @db.Uuid
-  invitedByUserId String?       @map("invited_by_user_id") @db.Uuid
+  brandScope    String[]        @default([]) @map("brand_scope")
+  invitedByUserId String?       @map("invited_by_user_id")
   invitedAt     DateTime?       @map("invited_at") @db.Timestamptz(6)
   acceptedAt    DateTime?       @map("accepted_at") @db.Timestamptz(6)
   removedAt     DateTime?       @map("removed_at") @db.Timestamptz(6)
@@ -898,14 +897,14 @@ model Membership {
 /// Invitation bearer tokens are never stored. Only a SHA-256 digest is kept,
 /// and accepting also requires ownership of the invited email address.
 model Invitation {
-  id              String          @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  workspaceId     String          @map("workspace_id") @db.Uuid
+  id              String          @id @default(dbgenerated("app.new_id('invitation')"))
+  workspaceId     String          @map("workspace_id")
   email           String          @db.Citext
   role            WorkspaceRole
   note            String?
   tokenHash       String          @unique @map("token_hash")
   state           InvitationState @default(pending)
-  invitedByUserId String          @map("invited_by_user_id") @db.Uuid
+  invitedByUserId String          @map("invited_by_user_id")
   expiresAt       DateTime        @map("expires_at") @db.Timestamptz(6)
   acceptedAt      DateTime?       @map("accepted_at") @db.Timestamptz(6)
   revokedAt       DateTime?       @map("revoked_at") @db.Timestamptz(6)
@@ -922,8 +921,8 @@ model Invitation {
 /// Built-in roles are code. This table stores per-workspace grants and denials
 /// layered on top, which is what a future custom role becomes.
 model RolePermission {
-  id          String        @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  workspaceId String        @map("workspace_id") @db.Uuid
+  id          String        @id @default(dbgenerated("app.new_id('roleperm')"))
+  workspaceId String        @map("workspace_id")
   role        WorkspaceRole
   permission  String
   effect      String        @default("allow")
@@ -938,13 +937,13 @@ model RolePermission {
 }
 
 model ServiceAccount {
-  id                  String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  workspaceId         String   @map("workspace_id") @db.Uuid
+  id                  String   @id @default(dbgenerated("app.new_id('svc')"))
+  workspaceId         String   @map("workspace_id")
   name                String
   description         String?
   scopes              String[] @default([])
-  brandScope          String[] @default([]) @map("brand_scope") @db.Uuid
-  connectionScope     String[] @default([]) @map("connection_scope") @db.Uuid
+  brandScope          String[] @default([]) @map("brand_scope")
+  connectionScope     String[] @default([]) @map("connection_scope")
   providerScope       ProviderKind[] @default([]) @map("provider_scope")
   localeScope         String[] @default([]) @map("locale_scope")
   approvedDomains     String[] @default([]) @map("approved_domains")
@@ -953,7 +952,7 @@ model ServiceAccount {
   /// 0 read, 1 draft, 2 schedule within preapproval, 3 human confirmation.
   maxApprovalLevel    Int      @default(1) @map("max_approval_level")
   disabledAt          DateTime? @map("disabled_at") @db.Timestamptz(6)
-  createdByUserId     String   @map("created_by_user_id") @db.Uuid
+  createdByUserId     String   @map("created_by_user_id")
   createdAt           DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
   updatedAt           DateTime @updatedAt @map("updated_at") @db.Timestamptz(6)
 
@@ -969,9 +968,9 @@ model ServiceAccount {
 /// Only the hash is stored. `prefix` is the short public fragment shown in the
 /// UI so a key can be identified without revealing it.
 model ApiKey {
-  id               String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  workspaceId      String    @map("workspace_id") @db.Uuid
-  serviceAccountId String?   @map("service_account_id") @db.Uuid
+  id               String    @id @default(dbgenerated("app.new_id('key')"))
+  workspaceId      String    @map("workspace_id")
+  serviceAccountId String?   @map("service_account_id")
   name             String
   prefix           String    @unique
   secretHash       String    @map("secret_hash")
@@ -980,7 +979,7 @@ model ApiKey {
   expiresAt        DateTime? @map("expires_at") @db.Timestamptz(6)
   lastUsedAt       DateTime? @map("last_used_at") @db.Timestamptz(6)
   revokedAt        DateTime? @map("revoked_at") @db.Timestamptz(6)
-  createdByUserId  String    @map("created_by_user_id") @db.Uuid
+  createdByUserId  String    @map("created_by_user_id")
   createdAt        DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
 
   workspace      Workspace       @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
@@ -995,16 +994,16 @@ model ApiKey {
 /// Append only. `0040_audit.sql` installs a trigger that rejects UPDATE and
 /// DELETE, including for the owner role.
 model AuditEvent {
-  id             String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  workspaceId    String    @map("workspace_id") @db.Uuid
+  id             String    @id @default(dbgenerated("app.new_id('aud')"))
+  workspaceId    String    @map("workspace_id")
   actorType      ActorType @map("actor_type")
-  actorId        String?   @map("actor_id") @db.Uuid
+  actorId        String?   @map("actor_id")
   /// Set when the action arrived through a third-party developer application.
-  actorClientId  String?   @map("actor_client_id") @db.Uuid
+  actorClientId  String?   @map("actor_client_id")
   surface        CreationSurface
   action         String
   targetType     String    @map("target_type")
-  targetId       String?   @map("target_id") @db.Uuid
+  targetId       String?   @map("target_id")
   beforeHash     String?   @map("before_hash")
   afterHash      String?   @map("after_hash")
   /// Sanitized. Never a token, provider payload or raw request body.
@@ -1033,9 +1032,9 @@ model AuditEvent {
 /// exists so a user can review and revoke devices and so privileged reads are
 /// attributable.
 model UserSession {
-  id             String       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  userId         String       @map("user_id") @db.Uuid
-  workspaceId    String?      @map("workspace_id") @db.Uuid
+  id             String       @id @default(dbgenerated("app.new_id('session')"))
+  userId         String       @map("user_id")
+  workspaceId    String?      @map("workspace_id")
   state          SessionState @default(active)
   authMethod     String       @map("auth_method")
   mfaSatisfiedAt DateTime?    @map("mfa_satisfied_at") @db.Timestamptz(6)
@@ -1056,9 +1055,9 @@ model UserSession {
 }
 
 model Consent {
-  id              String       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  userId          String       @map("user_id") @db.Uuid
-  workspaceId     String?      @map("workspace_id") @db.Uuid
+  id              String       @id @default(dbgenerated("app.new_id('consent')"))
+  userId          String       @map("user_id")
+  workspaceId     String?      @map("workspace_id")
   kind            ConsentKind
   state           ConsentState @default(granted)
   documentVersion String       @map("document_version")
@@ -1083,8 +1082,8 @@ model Consent {
 // ---------------------------------------------------------------------------
 
 model Brand {
-  id                  String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  workspaceId         String   @map("workspace_id") @db.Uuid
+  id                  String   @id @default(dbgenerated("app.new_id('brand')"))
+  workspaceId         String   @map("workspace_id")
   name                String
   slug                String   @db.Citext
   voice               String?
@@ -1125,9 +1124,9 @@ model Brand {
 /// Versioned. A new revision never overwrites the confirmed one, because an
 /// approved growth plan points at the exact profile version it was built from.
 model BusinessProfile {
-  id                 String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  workspaceId        String    @map("workspace_id") @db.Uuid
-  brandId            String    @map("brand_id") @db.Uuid
+  id                 String    @id @default(dbgenerated("app.new_id('bprof')"))
+  workspaceId        String    @map("workspace_id")
+  brandId            String    @map("brand_id")
   version            Int       @default(1)
   /// What the thing being marketed is called. Required before a growth plan can
   /// be generated, so the plan can name the product rather than the brand.
@@ -1151,7 +1150,7 @@ model BusinessProfile {
   /// 0-100. Drives the "missing information" warnings in a generated plan.
   completenessScore  Int       @default(0) @map("completeness_score")
   confirmedAt        DateTime? @map("confirmed_at") @db.Timestamptz(6)
-  confirmedByUserId  String?   @map("confirmed_by_user_id") @db.Uuid
+  confirmedByUserId  String?   @map("confirmed_by_user_id")
   createdAt          DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
   updatedAt          DateTime  @updatedAt @map("updated_at") @db.Timestamptz(6)
 
@@ -1167,9 +1166,9 @@ model BusinessProfile {
 }
 
 model BrandSource {
-  id            String             @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  workspaceId   String             @map("workspace_id") @db.Uuid
-  brandId       String             @map("brand_id") @db.Uuid
+  id            String             @id @default(dbgenerated("app.new_id('bsrc')"))
+  workspaceId   String             @map("workspace_id")
+  brandId       String             @map("brand_id")
   kind          BrandSourceKind
   label         String
   sourceUrl     String?            @map("source_url")
@@ -1182,7 +1181,7 @@ model BrandSource {
   /// reaches a model and can never change tool policy.
   extractedText String?            @map("extracted_text")
   retrievedAt   DateTime?          @map("retrieved_at") @db.Timestamptz(6)
-  createdByUserId String           @map("created_by_user_id") @db.Uuid
+  createdByUserId String           @map("created_by_user_id")
   createdAt     DateTime           @default(now()) @map("created_at") @db.Timestamptz(6)
   updatedAt     DateTime           @updatedAt @map("updated_at") @db.Timestamptz(6)
 
@@ -1196,9 +1195,9 @@ model BrandSource {
 }
 
 model GlossaryTerm {
-  id                   String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  workspaceId          String   @map("workspace_id") @db.Uuid
-  brandId              String   @map("brand_id") @db.Uuid
+  id                   String   @id @default(dbgenerated("app.new_id('term')"))
+  workspaceId          String   @map("workspace_id")
+  brandId              String   @map("brand_id")
   locale               String
   term                 String
   preferredTranslation String?  @map("preferred_translation")
@@ -1218,9 +1217,9 @@ model GlossaryTerm {
 }
 
 model Campaign {
-  id             String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  workspaceId    String    @map("workspace_id") @db.Uuid
-  brandId        String    @map("brand_id") @db.Uuid
+  id             String    @id @default(dbgenerated("app.new_id('campaign')"))
+  workspaceId    String    @map("workspace_id")
+  brandId        String    @map("brand_id")
   name           String
   objective      String?
   tags           String[]  @default([])
@@ -1228,7 +1227,7 @@ model Campaign {
   startsAt       DateTime? @map("starts_at") @db.Timestamptz(6)
   endsAt         DateTime? @map("ends_at") @db.Timestamptz(6)
   archivedAt     DateTime? @map("archived_at") @db.Timestamptz(6)
-  createdByUserId String   @map("created_by_user_id") @db.Uuid
+  createdByUserId String   @map("created_by_user_id")
   createdAt      DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
   updatedAt      DateTime  @updatedAt @map("updated_at") @db.Timestamptz(6)
 
@@ -1247,17 +1246,17 @@ model Campaign {
 /// The canonical idea. Copy lives in immutable `ContentVersion` rows; per-target
 /// output lives in `PostVariant`.
 model ContentItem {
-  id               String          @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  workspaceId      String          @map("workspace_id") @db.Uuid
-  brandId          String          @map("brand_id") @db.Uuid
-  campaignId       String?         @map("campaign_id") @db.Uuid
-  postingSetId     String?         @map("posting_set_id") @db.Uuid
+  id               String          @id @default(dbgenerated("app.new_id('content')"))
+  workspaceId      String          @map("workspace_id")
+  brandId          String          @map("brand_id")
+  campaignId       String?         @map("campaign_id")
+  postingSetId     String?         @map("posting_set_id")
   title            String?
   brief            String?
   state            PublishState    @default(draft)
   approvalPolicy   ApprovalPolicy  @default(none) @map("approval_policy")
-  currentVersionId String?         @unique @map("current_version_id") @db.Uuid
-  approvedVersionId String?        @map("approved_version_id") @db.Uuid
+  currentVersionId String?         @unique @map("current_version_id")
+  approvedVersionId String?        @map("approved_version_id")
   /// Wall-clock intent plus its zone. The UTC instant lives on `PublishJob`.
   scheduledAt      DateTime?       @map("scheduled_at") @db.Timestamptz(6)
   scheduledTimeZone String?        @map("scheduled_time_zone")
@@ -1268,11 +1267,11 @@ model ContentItem {
   repeatEveryDays  Int?            @map("repeat_every_days")
   repeatUntil      DateTime?       @map("repeat_until") @db.Timestamptz(6)
   repeatCount      Int?            @map("repeat_count")
-  repeatOfItemId   String?         @map("repeat_of_item_id") @db.Uuid
+  repeatOfItemId   String?         @map("repeat_of_item_id")
   surface          CreationSurface @default(web)
   creationMethod   CreationMethod  @default(human) @map("creation_method")
-  createdByUserId  String?         @map("created_by_user_id") @db.Uuid
-  createdByServiceAccountId String? @map("created_by_service_account_id") @db.Uuid
+  createdByUserId  String?         @map("created_by_user_id")
+  createdByServiceAccountId String? @map("created_by_service_account_id")
   correlationId    String?         @map("correlation_id")
   createdAt        DateTime        @default(now()) @map("created_at") @db.Timestamptz(6)
   updatedAt        DateTime        @updatedAt @map("updated_at") @db.Timestamptz(6)
@@ -1302,9 +1301,9 @@ model ContentItem {
 /// Immutable. `0030_constraints.sql` installs a trigger that rejects UPDATE.
 /// Every publish attempt references exactly one of these rows.
 model ContentVersion {
-  id             String         @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  workspaceId    String         @map("workspace_id") @db.Uuid
-  contentItemId  String         @map("content_item_id") @db.Uuid
+  id             String         @id @default(dbgenerated("app.new_id('cver')"))
+  workspaceId    String         @map("workspace_id")
+  contentItemId  String         @map("content_item_id")
   version        Int
   body           String
   /// The canonical master payload: blocks, media references, link decisions,
@@ -1316,8 +1315,8 @@ model ContentVersion {
   creationMethod CreationMethod @default(human) @map("creation_method")
   aiModel        String?        @map("ai_model")
   aiPromptVersion String?       @map("ai_prompt_version")
-  sourceIds      String[]       @default([]) @map("source_ids") @db.Uuid
-  createdByUserId String?       @map("created_by_user_id") @db.Uuid
+  sourceIds      String[]       @default([]) @map("source_ids")
+  createdByUserId String?       @map("created_by_user_id")
   createdAt      DateTime       @default(now()) @map("created_at") @db.Timestamptz(6)
 
   workspace   Workspace   @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
@@ -1340,21 +1339,21 @@ model ContentVersion {
 /// One platform target. `inheritedFields` records what still tracks the master
 /// so the composer can show inherited versus overridden without guessing.
 model PostVariant {
-  id               String       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  workspaceId      String       @map("workspace_id") @db.Uuid
-  contentItemId    String       @map("content_item_id") @db.Uuid
-  contentVersionId String       @map("content_version_id") @db.Uuid
-  connectionId     String       @map("connection_id") @db.Uuid
-  destinationId    String?      @map("destination_id") @db.Uuid
+  id               String       @id @default(dbgenerated("app.new_id('pv')"))
+  workspaceId      String       @map("workspace_id")
+  contentItemId    String       @map("content_item_id")
+  contentVersionId String       @map("content_version_id")
+  connectionId     String       @map("connection_id")
+  destinationId    String?      @map("destination_id")
   provider         ProviderKind
   locale           String       @default("en")
   body             String
   /// Provider-specific settings: privacy, comment/duet/stitch toggles, title,
   /// description, thumbnail choice, category, alt text.
   settings         Json         @default("{}")
-  mediaAssetIds    String[]     @default([]) @map("media_asset_ids") @db.Uuid
-  mentionEntityIds String[]     @default([]) @map("mention_entity_ids") @db.Uuid
-  signatureId      String?      @map("signature_id") @db.Uuid
+  mediaAssetIds    String[]     @default([]) @map("media_asset_ids")
+  mentionEntityIds String[]     @default([]) @map("mention_entity_ids")
+  signatureId      String?      @map("signature_id")
   inheritedFields  String[]     @default([]) @map("inherited_fields")
   overriddenFields String[]     @default([]) @map("overridden_fields")
   state            PublishState @default(draft)
@@ -1391,20 +1390,20 @@ model PostVariant {
 /// Applying a Set produces an independent draft; later Set edits never rewrite
 /// an approved or scheduled post.
 model PostingSet {
-  id              String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  workspaceId     String   @map("workspace_id") @db.Uuid
-  brandId         String   @map("brand_id") @db.Uuid
+  id              String   @id @default(dbgenerated("app.new_id('set')"))
+  workspaceId     String   @map("workspace_id")
+  brandId         String   @map("brand_id")
   name            String
   description     String?
-  connectionIds   String[] @default([]) @map("connection_ids") @db.Uuid
+  connectionIds   String[] @default([]) @map("connection_ids")
   /// Per-provider placeholder copy, media placement rules and settings.
   targetDefaults  Json     @default("{}") @map("target_defaults")
   commentSkeleton Json     @default("[]") @map("comment_skeleton")
-  signatureId     String?  @map("signature_id") @db.Uuid
+  signatureId     String?  @map("signature_id")
   approvalPolicy  ApprovalPolicy @default(none) @map("approval_policy")
   slotBehavior    String   @default("next_free_slot") @map("slot_behavior")
   archivedAt      DateTime? @map("archived_at") @db.Timestamptz(6)
-  createdByUserId String   @map("created_by_user_id") @db.Uuid
+  createdByUserId String   @map("created_by_user_id")
   createdAt       DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
   updatedAt       DateTime @updatedAt @map("updated_at") @db.Timestamptz(6)
 
@@ -1421,9 +1420,9 @@ model PostingSet {
 }
 
 model Signature {
-  id           String        @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  workspaceId  String        @map("workspace_id") @db.Uuid
-  brandId      String        @map("brand_id") @db.Uuid
+  id           String        @id @default(dbgenerated("app.new_id('sig')"))
+  workspaceId  String        @map("workspace_id")
+  brandId      String        @map("brand_id")
   name         String
   body         String
   locale       String        @default("en")
@@ -1448,9 +1447,9 @@ model Signature {
 /// Communities, boards, groups, organizations, Pages, channels and publications
 /// discovered through the provider API for one connection.
 model ProviderDestination {
-  id                 String          @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  workspaceId        String          @map("workspace_id") @db.Uuid
-  connectionId       String          @map("connection_id") @db.Uuid
+  id                 String          @id @default(dbgenerated("app.new_id('dest')"))
+  workspaceId        String          @map("workspace_id")
+  connectionId       String          @map("connection_id")
   provider           ProviderKind
   kind               DestinationKind
   externalId         String          @map("external_id")
@@ -1478,9 +1477,9 @@ model ProviderDestination {
 /// native tag; without a resolved `externalId` the composer falls back to plain
 /// text and says so.
 model MentionEntity {
-  id           String            @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  workspaceId  String            @map("workspace_id") @db.Uuid
-  connectionId String            @map("connection_id") @db.Uuid
+  id           String            @id @default(dbgenerated("app.new_id('mention')"))
+  workspaceId  String            @map("workspace_id")
+  connectionId String            @map("connection_id")
   provider     ProviderKind
   kind         MentionEntityKind
   externalId   String            @map("external_id")
@@ -1502,15 +1501,15 @@ model MentionEntity {
 }
 
 model ApprovalRequest {
-  id               String        @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  workspaceId      String        @map("workspace_id") @db.Uuid
-  contentItemId    String        @map("content_item_id") @db.Uuid
-  contentVersionId String        @map("content_version_id") @db.Uuid
+  id               String        @id @default(dbgenerated("app.new_id('approval')"))
+  workspaceId      String        @map("workspace_id")
+  contentItemId    String        @map("content_item_id")
+  contentVersionId String        @map("content_version_id")
   policy           ApprovalPolicy
   state            ApprovalState @default(pending)
-  requestedByUserId String?      @map("requested_by_user_id") @db.Uuid
-  requestedByServiceAccountId String? @map("requested_by_service_account_id") @db.Uuid
-  assignedUserIds  String[]      @default([]) @map("assigned_user_ids") @db.Uuid
+  requestedByUserId String?      @map("requested_by_user_id")
+  requestedByServiceAccountId String? @map("requested_by_service_account_id")
+  assignedUserIds  String[]      @default([]) @map("assigned_user_ids")
   note             String?
   dueAt            DateTime?     @map("due_at") @db.Timestamptz(6)
   /// Set the moment the request reaches `approved`. `0030_constraints.sql`
@@ -1534,11 +1533,11 @@ model ApprovalRequest {
 }
 
 model ApprovalDecision {
-  id                String               @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  workspaceId       String               @map("workspace_id") @db.Uuid
-  approvalRequestId String               @map("approval_request_id") @db.Uuid
+  id                String               @id @default(dbgenerated("app.new_id('apdecision')"))
+  workspaceId       String               @map("workspace_id")
+  approvalRequestId String               @map("approval_request_id")
   decision          ApprovalDecisionKind
-  decidedByUserId   String               @map("decided_by_user_id") @db.Uuid
+  decidedByUserId   String               @map("decided_by_user_id")
   comment           String?
   /// Hash of the exact version the approver saw. If it differs at dispatch the
   /// job stops and reapproval is required.
@@ -1557,17 +1556,17 @@ model ApprovalDecision {
 /// A first comment or an ordered thread segment. A failed segment never
 /// retroactively fails the root post that already published.
 model CommentThreadItem {
-  id             String       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  workspaceId    String       @map("workspace_id") @db.Uuid
-  postVariantId  String       @map("post_variant_id") @db.Uuid
+  id             String       @id @default(dbgenerated("app.new_id('cmt')"))
+  workspaceId    String       @map("workspace_id")
+  postVariantId  String       @map("post_variant_id")
   position       Int
   body           String
-  mediaAssetIds  String[]     @default([]) @map("media_asset_ids") @db.Uuid
+  mediaAssetIds  String[]     @default([]) @map("media_asset_ids")
   /// Presets are 1, 2, 5, 10, 15, 30, 60 and 120 minutes, or a custom value.
   delayMinutes   Int          @default(0) @map("delay_minutes")
   /// A follow-up may be authored by a different owned connection where the
   /// provider allows it.
-  authorConnectionId String?  @map("author_connection_id") @db.Uuid
+  authorConnectionId String?  @map("author_connection_id")
   state          PublishState @default(draft)
   settings       Json         @default("{}")
   createdAt      DateTime     @default(now()) @map("created_at") @db.Timestamptz(6)
@@ -1591,10 +1590,10 @@ model CommentThreadItem {
 /// The versioned `GrowthPlan` document. `sections` holds the nine required
 /// sections validated against one schema shared by UI, API, MCP and exports.
 model GrowthPlan {
-  id                String          @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  workspaceId       String          @map("workspace_id") @db.Uuid
-  brandId           String          @map("brand_id") @db.Uuid
-  businessProfileId String          @map("business_profile_id") @db.Uuid
+  id                String          @id @default(dbgenerated("app.new_id('plan')"))
+  workspaceId       String          @map("workspace_id")
+  brandId           String          @map("brand_id")
+  businessProfileId String          @map("business_profile_id")
   version           Int             @default(1)
   state             GrowthPlanState @default(draft)
   objective         String?
@@ -1608,10 +1607,10 @@ model GrowthPlan {
   risksAndUnknowns  Json            @default("[]") @map("risks_and_unknowns")
   aiModel           String?         @map("ai_model")
   aiPromptVersion   String?         @map("ai_prompt_version")
-  evidenceIds       String[]        @default([]) @map("evidence_ids") @db.Uuid
-  supersededByPlanId String?        @map("superseded_by_plan_id") @db.Uuid
+  evidenceIds       String[]        @default([]) @map("evidence_ids")
+  supersededByPlanId String?        @map("superseded_by_plan_id")
   approvedAt        DateTime?       @map("approved_at") @db.Timestamptz(6)
-  approvedByUserId  String?         @map("approved_by_user_id") @db.Uuid
+  approvedByUserId  String?         @map("approved_by_user_id")
   createdAt         DateTime        @default(now()) @map("created_at") @db.Timestamptz(6)
   updatedAt         DateTime        @updatedAt @map("updated_at") @db.Timestamptz(6)
 
@@ -1631,7 +1630,7 @@ model GrowthPlan {
 /// Operator-curated and global, not tenant owned. Readable by any authenticated
 /// user only while `state = active`; writes are service-role only.
 model GrowthOpportunity {
-  id              String          @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  id              String          @id @default(dbgenerated("app.new_id('opp')"))
   kind            OpportunityKind
   name            String
   officialUrl     String          @map("official_url")
@@ -1651,7 +1650,7 @@ model GrowthOpportunity {
   state           CatalogState    @default(draft)
   lastVerifiedAt  DateTime?       @map("last_verified_at") @db.Timestamptz(6)
   nextReviewAt    DateTime?       @map("next_review_at") @db.Timestamptz(6)
-  verifiedByUserId String?        @map("verified_by_user_id") @db.Uuid
+  verifiedByUserId String?        @map("verified_by_user_id")
   changeLog       Json            @default("[]") @map("change_log")
   createdAt       DateTime        @default(now()) @map("created_at") @db.Timestamptz(6)
   updatedAt       DateTime        @updatedAt @map("updated_at") @db.Timestamptz(6)
@@ -1667,18 +1666,18 @@ model GrowthOpportunity {
 
 /// A suggestion. Never a promised backlink, ranking or placement.
 model StrategyOpportunityMatch {
-  id            String        @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  workspaceId   String        @map("workspace_id") @db.Uuid
-  growthPlanId  String        @map("growth_plan_id") @db.Uuid
-  opportunityId String        @map("opportunity_id") @db.Uuid
+  id            String        @id @default(dbgenerated("app.new_id('oppmatch')"))
+  workspaceId   String        @map("workspace_id")
+  growthPlanId  String        @map("growth_plan_id")
+  opportunityId String        @map("opportunity_id")
   rank          Int
   fitExplanation String       @map("fit_explanation")
   suggestedAsset String?      @map("suggested_asset")
   suggestedPitch String?      @map("suggested_pitch")
   estimatedEffort String?     @map("estimated_effort")
-  evidenceIds   String[]      @default([]) @map("evidence_ids") @db.Uuid
+  evidenceIds   String[]      @default([]) @map("evidence_ids")
   decision      MatchDecision @default(proposed)
-  decidedByUserId String?     @map("decided_by_user_id") @db.Uuid
+  decidedByUserId String?     @map("decided_by_user_id")
   decidedAt     DateTime?     @map("decided_at") @db.Timestamptz(6)
   outcomeNote   String?       @map("outcome_note")
   createdAt     DateTime      @default(now()) @map("created_at") @db.Timestamptz(6)
@@ -1698,7 +1697,7 @@ model StrategyOpportunityMatch {
 /// Operator-curated and global. The Creative Tool Radar may only recommend rows
 /// from here, and shows `lastVerifiedAt` rather than guessing when it is stale.
 model ToolCatalogEntry {
-  id             String       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  id             String       @id @default(dbgenerated("app.new_id('tool')"))
   name           String
   officialUrl    String       @map("official_url")
   category       ToolCategory
@@ -1717,7 +1716,7 @@ model ToolCatalogEntry {
   state          CatalogState @default(draft)
   lastVerifiedAt DateTime?    @map("last_verified_at") @db.Timestamptz(6)
   nextReviewAt   DateTime?    @map("next_review_at") @db.Timestamptz(6)
-  verifiedByUserId String?    @map("verified_by_user_id") @db.Uuid
+  verifiedByUserId String?    @map("verified_by_user_id")
   changeLog      Json         @default("[]") @map("change_log")
   createdAt      DateTime     @default(now()) @map("created_at") @db.Timestamptz(6)
   updatedAt      DateTime     @updatedAt @map("updated_at") @db.Timestamptz(6)
@@ -1734,9 +1733,9 @@ model ToolCatalogEntry {
 // ---------------------------------------------------------------------------
 
 model SocialConnection {
-  id                String              @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  workspaceId       String              @map("workspace_id") @db.Uuid
-  brandId           String?             @map("brand_id") @db.Uuid
+  id                String              @id @default(dbgenerated("app.new_id('conn')"))
+  workspaceId       String              @map("workspace_id")
+  brandId           String?             @map("brand_id")
   provider          ProviderKind
   externalAccountId String              @map("external_account_id")
   accountType       ExternalAccountType @map("account_type")
@@ -1755,7 +1754,7 @@ model SocialConnection {
   lastSuccessfulActionAt DateTime?      @map("last_successful_action_at") @db.Timestamptz(6)
   connectedAt       DateTime            @default(now()) @map("connected_at") @db.Timestamptz(6)
   disconnectedAt    DateTime?           @map("disconnected_at") @db.Timestamptz(6)
-  createdByUserId   String?             @map("created_by_user_id") @db.Uuid
+  createdByUserId   String?             @map("created_by_user_id")
   createdAt         DateTime            @default(now()) @map("created_at") @db.Timestamptz(6)
   updatedAt         DateTime            @updatedAt @map("updated_at") @db.Timestamptz(6)
 
@@ -1789,9 +1788,9 @@ model SocialConnection {
 /// path. Workers decrypt immediately before a provider request and never place
 /// a token in a Temporal history, log, trace or client payload.
 model SocialCredential {
-  id                    String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  workspaceId           String    @map("workspace_id") @db.Uuid
-  connectionId          String    @unique @map("connection_id") @db.Uuid
+  id                    String    @id @default(dbgenerated("app.new_id('cred')"))
+  workspaceId           String    @map("workspace_id")
+  connectionId          String    @unique @map("connection_id")
   accessTokenCiphertext Bytes     @map("access_token_ciphertext")
   accessTokenNonce      Bytes     @map("access_token_nonce")
   refreshTokenCiphertext Bytes?   @map("refresh_token_ciphertext")
@@ -1819,8 +1818,8 @@ model SocialCredential {
 /// Short lived. `state` is unpredictable, the redirect must match the exact
 /// allowlist, and the row is consumed once.
 model OAuthTransaction {
-  id             String                  @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  workspaceId    String                  @map("workspace_id") @db.Uuid
+  id             String                  @id @default(dbgenerated("app.new_id('oauth')"))
+  workspaceId    String                  @map("workspace_id")
   purpose        OAuthTransactionPurpose
   provider       ProviderKind?
   stateHash      String                  @unique @map("state_hash")
@@ -1828,9 +1827,9 @@ model OAuthTransaction {
   codeChallengeMethod String?            @map("code_challenge_method")
   redirectUri    String                  @map("redirect_uri")
   requestedScopes String[]               @default([]) @map("requested_scopes")
-  initiatedByUserId String?              @map("initiated_by_user_id") @db.Uuid
-  oauthClientId  String?                 @map("oauth_client_id") @db.Uuid
-  reconnectConnectionId String?          @map("reconnect_connection_id") @db.Uuid
+  initiatedByUserId String?              @map("initiated_by_user_id")
+  oauthClientId  String?                 @map("oauth_client_id")
+  reconnectConnectionId String?          @map("reconnect_connection_id")
   consumedAt     DateTime?               @map("consumed_at") @db.Timestamptz(6)
   expiresAt      DateTime                @map("expires_at") @db.Timestamptz(6)
   createdAt      DateTime                @default(now()) @map("created_at") @db.Timestamptz(6)
@@ -1845,8 +1844,8 @@ model OAuthTransaction {
 
 /// A third-party developer application registered in our own OAuth console.
 model OAuthClient {
-  id               String            @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  workspaceId      String            @map("workspace_id") @db.Uuid
+  id               String            @id @default(dbgenerated("app.new_id('app')"))
+  workspaceId      String            @map("workspace_id")
   name             String
   clientId         String            @unique @map("client_id")
   clientType       OAuthClientType   @map("client_type")
@@ -1860,7 +1859,7 @@ model OAuthClient {
   termsUrl         String?           @map("terms_url")
   logoUrl          String?           @map("logo_url")
   status           OAuthClientStatus @default(sandbox)
-  createdByUserId  String            @map("created_by_user_id") @db.Uuid
+  createdByUserId  String            @map("created_by_user_id")
   createdAt        DateTime          @default(now()) @map("created_at") @db.Timestamptz(6)
   updatedAt        DateTime          @updatedAt @map("updated_at") @db.Timestamptz(6)
 
@@ -1873,20 +1872,20 @@ model OAuthClient {
 }
 
 model OAuthGrant {
-  id                 String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  workspaceId        String    @map("workspace_id") @db.Uuid
-  oauthClientId      String    @map("oauth_client_id") @db.Uuid
-  subjectUserId      String    @map("subject_user_id") @db.Uuid
+  id                 String    @id @default(dbgenerated("app.new_id('grant')"))
+  workspaceId        String    @map("workspace_id")
+  oauthClientId      String    @map("oauth_client_id")
+  subjectUserId      String    @map("subject_user_id")
   scopes             String[]  @default([])
-  brandScope         String[]  @default([]) @map("brand_scope") @db.Uuid
-  connectionScope    String[]  @default([]) @map("connection_scope") @db.Uuid
+  brandScope         String[]  @default([]) @map("brand_scope")
+  connectionScope    String[]  @default([]) @map("connection_scope")
   refreshTokenHash   String?   @unique @map("refresh_token_hash")
   refreshTokenRotatedAt DateTime? @map("refresh_token_rotated_at") @db.Timestamptz(6)
   consentedAt        DateTime  @default(now()) @map("consented_at") @db.Timestamptz(6)
   lastUsedAt         DateTime? @map("last_used_at") @db.Timestamptz(6)
   expiresAt          DateTime? @map("expires_at") @db.Timestamptz(6)
   revokedAt          DateTime? @map("revoked_at") @db.Timestamptz(6)
-  revokedByUserId    String?   @map("revoked_by_user_id") @db.Uuid
+  revokedByUserId    String?   @map("revoked_by_user_id")
 
   workspace   Workspace   @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
   oauthClient OAuthClient @relation(fields: [oauthClientId], references: [id], onDelete: Cascade)
@@ -1901,8 +1900,8 @@ model OAuthGrant {
 /// Transactional handoff from a database commit to Temporal. A dispatcher
 /// claims rows with SKIP LOCKED and every payload is independently idempotent.
 model OutboxEvent {
-  id             String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  workspaceId    String    @map("workspace_id") @db.Uuid
+  id             String    @id @default(dbgenerated("app.new_id('outbox')"))
+  workspaceId    String    @map("workspace_id")
   kind           String
   dedupeKey      String    @map("dedupe_key")
   payload        Json
@@ -1925,9 +1924,9 @@ model OutboxEvent {
 
 /// Immutable evidence for an outbox item that exhausted its dispatch budget.
 model OutboxDeadLetter {
-  id            String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  workspaceId   String   @map("workspace_id") @db.Uuid
-  outboxEventId String   @unique @map("outbox_event_id") @db.Uuid
+  id            String   @id @default(dbgenerated("app.new_id('outboxdl')"))
+  workspaceId   String   @map("workspace_id")
+  outboxEventId String   @unique @map("outbox_event_id")
   kind          String
   dedupeKey     String   @map("dedupe_key")
   payload       Json
@@ -1944,9 +1943,9 @@ model OutboxDeadLetter {
 }
 
 model MediaAsset {
-  id             String            @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  workspaceId    String            @map("workspace_id") @db.Uuid
-  brandId        String?           @map("brand_id") @db.Uuid
+  id             String            @id @default(dbgenerated("app.new_id('media')"))
+  workspaceId    String            @map("workspace_id")
+  brandId        String?           @map("brand_id")
   kind           MediaKind
   storageBucket  String            @map("storage_bucket")
   storageKey     String            @map("storage_key")
@@ -1971,7 +1970,7 @@ model MediaAsset {
   scanState      MediaScanState    @default(pending) @map("scan_state")
   scanNote       String?           @map("scan_note")
   metadata       Json              @default("{}")
-  createdByUserId String?          @map("created_by_user_id") @db.Uuid
+  createdByUserId String?          @map("created_by_user_id")
   deletedAt      DateTime?         @map("deleted_at") @db.Timestamptz(6)
   retentionExpiresAt  DateTime          @map("retention_expires_at") @db.Timestamptz(6)
   storageDeletedAt    DateTime?         @map("storage_deleted_at") @db.Timestamptz(6)
@@ -1990,9 +1989,9 @@ model MediaAsset {
 }
 
 model MediaDerivative {
-  id             String         @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  workspaceId    String         @map("workspace_id") @db.Uuid
-  mediaAssetId   String         @map("media_asset_id") @db.Uuid
+  id             String         @id @default(dbgenerated("app.new_id('mder')"))
+  workspaceId    String         @map("workspace_id")
+  mediaAssetId   String         @map("media_asset_id")
   kind           DerivativeKind
   provider       ProviderKind?
   presetKey      String         @map("preset_key")
@@ -2019,14 +2018,14 @@ model MediaDerivative {
 /// One durable unit of external work. `idempotencyKey` is unique per workspace
 /// and `temporalWorkflowId` is deterministic, so a replay cannot create twice.
 model PublishJob {
-  id                  String       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  workspaceId         String       @map("workspace_id") @db.Uuid
-  contentItemId       String       @map("content_item_id") @db.Uuid
-  contentVersionId    String       @map("content_version_id") @db.Uuid
-  postVariantId       String?      @map("post_variant_id") @db.Uuid
-  commentThreadItemId String?      @map("comment_thread_item_id") @db.Uuid
-  connectionId        String       @map("connection_id") @db.Uuid
-  approvalRequestId   String?      @map("approval_request_id") @db.Uuid
+  id                  String       @id @default(dbgenerated("app.new_id('job')"))
+  workspaceId         String       @map("workspace_id")
+  contentItemId       String       @map("content_item_id")
+  contentVersionId    String       @map("content_version_id")
+  postVariantId       String?      @map("post_variant_id")
+  commentThreadItemId String?      @map("comment_thread_item_id")
+  connectionId        String       @map("connection_id")
+  approvalRequestId   String?      @map("approval_request_id")
   approvalPolicy      ApprovalPolicy @default(none) @map("approval_policy")
   /// The instant that actually executes, always UTC.
   scheduledFor        DateTime     @map("scheduled_for") @db.Timestamptz(6)
@@ -2071,11 +2070,11 @@ model PublishJob {
 /// Always references the exact immutable content version that was sent. A
 /// sanitized response only: no token, no full provider payload.
 model PublishAttempt {
-  id                String         @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  workspaceId       String         @map("workspace_id") @db.Uuid
-  publishJobId      String         @map("publish_job_id") @db.Uuid
-  contentVersionId  String         @map("content_version_id") @db.Uuid
-  connectionId      String         @map("connection_id") @db.Uuid
+  id                String         @id @default(dbgenerated("app.new_id('att')"))
+  workspaceId       String         @map("workspace_id")
+  publishJobId      String         @map("publish_job_id")
+  contentVersionId  String         @map("content_version_id")
+  connectionId      String         @map("connection_id")
   attemptNumber     Int            @map("attempt_number")
   outcome           AttemptOutcome @default(pending)
   errorClass        ErrorClass?    @map("error_class")
@@ -2111,11 +2110,11 @@ model PublishAttempt {
 /// "Published" requires an external ID or provider evidence, never a bare 2xx
 /// from a media container step.
 model PublicationReceipt {
-  id               String       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  workspaceId      String       @map("workspace_id") @db.Uuid
-  publishJobId     String       @unique @map("publish_job_id") @db.Uuid
-  contentVersionId String       @map("content_version_id") @db.Uuid
-  connectionId     String       @map("connection_id") @db.Uuid
+  id               String       @id @default(dbgenerated("app.new_id('receipt')"))
+  workspaceId      String       @map("workspace_id")
+  publishJobId     String       @unique @map("publish_job_id")
+  contentVersionId String       @map("content_version_id")
+  connectionId     String       @map("connection_id")
   provider         ProviderKind
   externalPostId   String       @map("external_post_id")
   permalink        String?
@@ -2128,7 +2127,7 @@ model PublicationReceipt {
   scheduledFor     DateTime?    @map("scheduled_for") @db.Timestamptz(6)
   scheduledTimeZone String?     @map("scheduled_time_zone")
   surface          CreationSurface
-  approvedByUserId String?      @map("approved_by_user_id") @db.Uuid
+  approvedByUserId String?      @map("approved_by_user_id")
   approvalPolicy   ApprovalPolicy @default(none) @map("approval_policy")
   costActualMinor  Int?         @map("cost_actual_minor")
   costCurrency     String?      @map("cost_currency")
@@ -2153,9 +2152,9 @@ model PublicationReceipt {
 }
 
 model ProviderLimit {
-  id            String       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  workspaceId   String       @map("workspace_id") @db.Uuid
-  connectionId  String?      @map("connection_id") @db.Uuid
+  id            String       @id @default(dbgenerated("app.new_id('limit')"))
+  workspaceId   String       @map("workspace_id")
+  connectionId  String?      @map("connection_id")
   provider      ProviderKind
   resource      String
   windowSeconds Int          @map("window_seconds")
@@ -2175,9 +2174,9 @@ model ProviderLimit {
 }
 
 model ConnectionIncident {
-  id             String        @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  workspaceId    String        @map("workspace_id") @db.Uuid
-  connectionId   String        @map("connection_id") @db.Uuid
+  id             String        @id @default(dbgenerated("app.new_id('incident')"))
+  workspaceId    String        @map("workspace_id")
+  connectionId   String        @map("connection_id")
   kind           IncidentKind
   state          IncidentState @default(open)
   /// A stable i18n key. The message itself lives in packages/i18n.
@@ -2186,7 +2185,7 @@ model ConnectionIncident {
   detectedAt     DateTime      @default(now()) @map("detected_at") @db.Timestamptz(6)
   acknowledgedAt DateTime?     @map("acknowledged_at") @db.Timestamptz(6)
   resolvedAt     DateTime?     @map("resolved_at") @db.Timestamptz(6)
-  resolvedByUserId String?     @map("resolved_by_user_id") @db.Uuid
+  resolvedByUserId String?     @map("resolved_by_user_id")
 
   workspace  Workspace        @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
   connection SocialConnection @relation(fields: [connectionId], references: [id], onDelete: Cascade)
@@ -2204,9 +2203,9 @@ model ConnectionIncident {
 /// Our policy-aware replacement for Plugs. A rule can never activate a
 /// disallowed platform action; the policy check runs at save and at every run.
 model AutomationRule {
-  id              String              @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  workspaceId     String              @map("workspace_id") @db.Uuid
-  brandId         String              @map("brand_id") @db.Uuid
+  id              String              @id @default(dbgenerated("app.new_id('rule')"))
+  workspaceId     String              @map("workspace_id")
+  brandId         String              @map("brand_id")
   name            String
   state           AutomationRuleState @default(draft)
   /// When [trigger], if [conditions], then [actions], after [delay], until [end].
@@ -2223,11 +2222,11 @@ model AutomationRule {
   runOncePerSource Boolean            @default(true) @map("run_once_per_source")
   skipWhenMetricStale Boolean         @default(true) @map("skip_when_metric_stale")
   requiresApproval Boolean            @default(true) @map("requires_approval")
-  preauthorizedConnectionIds String[] @default([]) @map("preauthorized_connection_ids") @db.Uuid
+  preauthorizedConnectionIds String[] @default([]) @map("preauthorized_connection_ids")
   version         Int                 @default(1)
   lastRunAt       DateTime?           @map("last_run_at") @db.Timestamptz(6)
   pausedReason    String?             @map("paused_reason")
-  createdByUserId String              @map("created_by_user_id") @db.Uuid
+  createdByUserId String              @map("created_by_user_id")
   createdAt       DateTime            @default(now()) @map("created_at") @db.Timestamptz(6)
   updatedAt       DateTime            @updatedAt @map("updated_at") @db.Timestamptz(6)
 
@@ -2244,9 +2243,9 @@ model AutomationRule {
 }
 
 model AutomationRuleRun {
-  id               String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  workspaceId      String   @map("workspace_id") @db.Uuid
-  automationRuleId String   @map("automation_rule_id") @db.Uuid
+  id               String   @id @default(dbgenerated("app.new_id('rulerun')"))
+  workspaceId      String   @map("workspace_id")
+  automationRuleId String   @map("automation_rule_id")
   ruleVersion      Int      @map("rule_version")
   state            RunState @default(pending)
   isTest           Boolean  @default(false) @map("is_test")
@@ -2274,15 +2273,15 @@ model AutomationRuleRun {
 }
 
 model RssFeed {
-  id                String     @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  workspaceId       String     @map("workspace_id") @db.Uuid
-  brandId           String     @map("brand_id") @db.Uuid
+  id                String     @id @default(dbgenerated("app.new_id('rss')"))
+  workspaceId       String     @map("workspace_id")
+  brandId           String     @map("brand_id")
   title             String
   feedUrl           String     @map("feed_url")
   health            FeedHealth @default(healthy)
   /// SSRF-safe fetch only: HTTP(S) scheme, DNS and IP checks before and after
   /// every redirect, private ranges denied, size and time limits.
-  connectionIds     String[]   @default([]) @map("connection_ids") @db.Uuid
+  connectionIds     String[]   @default([]) @map("connection_ids")
   /// draft, approval, next_free_slot, fixed_cadence or immediate.
   publishPolicy     String     @default("draft") @map("publish_policy")
   templateBody      String?    @map("template_body")
@@ -2293,7 +2292,7 @@ model RssFeed {
   lastNewItemAt     DateTime?  @map("last_new_item_at") @db.Timestamptz(6)
   lastError         String?    @map("last_error")
   pausedAt          DateTime?  @map("paused_at") @db.Timestamptz(6)
-  createdByUserId   String     @map("created_by_user_id") @db.Uuid
+  createdByUserId   String     @map("created_by_user_id")
   createdAt         DateTime   @default(now()) @map("created_at") @db.Timestamptz(6)
   updatedAt         DateTime   @updatedAt @map("updated_at") @db.Timestamptz(6)
 
@@ -2310,9 +2309,9 @@ model RssFeed {
 }
 
 model RssFeedItem {
-  id            String       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  workspaceId   String       @map("workspace_id") @db.Uuid
-  rssFeedId     String       @map("rss_feed_id") @db.Uuid
+  id            String       @id @default(dbgenerated("app.new_id('rssitem')"))
+  workspaceId   String       @map("workspace_id")
+  rssFeedId     String       @map("rss_feed_id")
   /// GUID, link and content are all fingerprinted so the same item never
   /// republishes because a feed rewrote one field.
   guid          String
@@ -2323,7 +2322,7 @@ model RssFeedItem {
   imageUrl      String?      @map("image_url")
   publishedAt   DateTime?    @map("published_at") @db.Timestamptz(6)
   state         RssItemState @default(seen)
-  contentItemId String?      @map("content_item_id") @db.Uuid
+  contentItemId String?      @map("content_item_id")
   error         String?
   createdAt     DateTime     @default(now()) @map("created_at") @db.Timestamptz(6)
 
@@ -2339,8 +2338,8 @@ model RssFeedItem {
 
 /// Holds a signing secret, so it lives in `private`.
 model WebhookEndpoint {
-  id               String               @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  workspaceId      String               @map("workspace_id") @db.Uuid
+  id               String               @id @default(dbgenerated("app.new_id('whep')"))
+  workspaceId      String               @map("workspace_id")
   name             String
   url              String
   state            WebhookEndpointState @default(active)
@@ -2349,11 +2348,11 @@ model WebhookEndpoint {
   keyVersion       String               @map("key_version")
   secretRotatedAt  DateTime?            @map("secret_rotated_at") @db.Timestamptz(6)
   subscribedEvents String[]             @default([]) @map("subscribed_events")
-  brandScope       String[]             @default([]) @map("brand_scope") @db.Uuid
-  connectionScope  String[]             @default([]) @map("connection_scope") @db.Uuid
+  brandScope       String[]             @default([]) @map("brand_scope")
+  connectionScope  String[]             @default([]) @map("connection_scope")
   consecutiveFailures Int               @default(0) @map("consecutive_failures")
   disabledReason   String?              @map("disabled_reason")
-  createdByUserId  String               @map("created_by_user_id") @db.Uuid
+  createdByUserId  String               @map("created_by_user_id")
   createdAt        DateTime             @default(now()) @map("created_at") @db.Timestamptz(6)
   updatedAt        DateTime             @updatedAt @map("updated_at") @db.Timestamptz(6)
 
@@ -2368,10 +2367,10 @@ model WebhookEndpoint {
 }
 
 model WebhookDelivery {
-  id                String               @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  workspaceId       String               @map("workspace_id") @db.Uuid
-  webhookEndpointId String               @map("webhook_endpoint_id") @db.Uuid
-  eventId           String               @map("event_id") @db.Uuid
+  id                String               @id @default(dbgenerated("app.new_id('whd')"))
+  workspaceId       String               @map("workspace_id")
+  webhookEndpointId String               @map("webhook_endpoint_id")
+  eventId           String               @map("event_id")
   eventType         String               @map("event_type")
   state             WebhookDeliveryState @default(pending)
   attemptCount      Int                  @default(0) @map("attempt_count")
@@ -2402,7 +2401,7 @@ model WebhookDelivery {
 /// Global reference data. The provider's own field name and definition are kept
 /// verbatim so a normalized label never hides an incompatible denominator.
 model MetricDefinition {
-  id                 String             @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  id                 String             @id @default(dbgenerated("app.new_id('metric')"))
   provider           ProviderKind
   providerFieldName  String             @map("provider_field_name")
   providerDefinition String             @map("provider_definition")
@@ -2432,11 +2431,11 @@ model MetricDefinition {
 /// A missing permission or unsupported metric is stored with a null `rawValue`
 /// and an explicit `availability`. It is never written as zero.
 model MetricObservation {
-  id                 String             @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  workspaceId        String             @map("workspace_id") @db.Uuid
-  metricDefinitionId String             @map("metric_definition_id") @db.Uuid
-  receiptId          String?            @map("receipt_id") @db.Uuid
-  connectionId       String             @map("connection_id") @db.Uuid
+  id                 String             @id @default(dbgenerated("app.new_id('observation')"))
+  workspaceId        String             @map("workspace_id")
+  metricDefinitionId String             @map("metric_definition_id")
+  receiptId          String?            @map("receipt_id")
+  connectionId       String             @map("connection_id")
   provider           ProviderKind
   externalPostId     String?            @map("external_post_id")
   observedAt         DateTime           @map("observed_at") @db.Timestamptz(6)
@@ -2448,7 +2447,7 @@ model MetricObservation {
   unavailableReason  String?            @map("unavailable_reason")
   /// Hash of the provider response this value came from, for auditability.
   sourceResponseHash String?            @map("source_response_hash")
-  syncRunId          String?            @map("sync_run_id") @db.Uuid
+  syncRunId          String?            @map("sync_run_id")
   createdAt          DateTime           @default(now()) @map("created_at") @db.Timestamptz(6)
 
   workspace        Workspace           @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
@@ -2466,9 +2465,9 @@ model MetricObservation {
 }
 
 model AnalyticsSyncRun {
-  id            String       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  workspaceId   String       @map("workspace_id") @db.Uuid
-  connectionId  String       @map("connection_id") @db.Uuid
+  id            String       @id @default(dbgenerated("app.new_id('sync')"))
+  workspaceId   String       @map("workspace_id")
+  connectionId  String       @map("connection_id")
   provider      ProviderKind
   state         RunState     @default(pending)
   scope         String
@@ -2497,9 +2496,9 @@ model AnalyticsSyncRun {
 
 /// Tagged before publishing so analysis is not entirely post hoc.
 model Experiment {
-  id            String          @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  workspaceId   String          @map("workspace_id") @db.Uuid
-  campaignId    String?         @map("campaign_id") @db.Uuid
+  id            String          @id @default(dbgenerated("app.new_id('exp')"))
+  workspaceId   String          @map("workspace_id")
+  campaignId    String?         @map("campaign_id")
   name          String
   hypothesis    String
   variants      Json            @default("[]")
@@ -2511,7 +2510,7 @@ model Experiment {
   /// reported as causation.
   caveats       String?
   conclusion    String?
-  createdByUserId String        @map("created_by_user_id") @db.Uuid
+  createdByUserId String        @map("created_by_user_id")
   createdAt     DateTime        @default(now()) @map("created_at") @db.Timestamptz(6)
   updatedAt     DateTime        @updatedAt @map("updated_at") @db.Timestamptz(6)
 
@@ -2527,21 +2526,21 @@ model Experiment {
 }
 
 model Insight {
-  id            String       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  workspaceId   String       @map("workspace_id") @db.Uuid
-  contentItemId String?      @map("content_item_id") @db.Uuid
-  experimentId  String?      @map("experiment_id") @db.Uuid
+  id            String       @id @default(dbgenerated("app.new_id('insight')"))
+  workspaceId   String       @map("workspace_id")
+  contentItemId String?      @map("content_item_id")
+  experimentId  String?      @map("experiment_id")
   /// A stable i18n key plus its ICU arguments. No English lives in this table.
   messageKey    String       @map("message_key")
   messageArgs   Json         @default("{}") @map("message_args")
-  evidenceIds   String[]     @default([]) @map("evidence_ids") @db.Uuid
+  evidenceIds   String[]     @default([]) @map("evidence_ids")
   /// low, moderate or high. Wording, never a fabricated probability.
   confidence    String       @default("low")
   sampleSize    Int?         @map("sample_size")
   state         InsightState @default(new)
   aiModel       String?      @map("ai_model")
   aiPromptVersion String?    @map("ai_prompt_version")
-  decidedByUserId String?    @map("decided_by_user_id") @db.Uuid
+  decidedByUserId String?    @map("decided_by_user_id")
   decidedAt     DateTime?    @map("decided_at") @db.Timestamptz(6)
   createdAt     DateTime     @default(now()) @map("created_at") @db.Timestamptz(6)
 
@@ -2558,10 +2557,10 @@ model Insight {
 /// First-party redirect measurement. Deliberately a different data series from
 /// provider-reported link clicks; neither substitutes for the other.
 model ShortLink {
-  id             String         @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  workspaceId    String         @map("workspace_id") @db.Uuid
-  brandId        String?        @map("brand_id") @db.Uuid
-  campaignId     String?        @map("campaign_id") @db.Uuid
+  id             String         @id @default(dbgenerated("app.new_id('lnk')"))
+  workspaceId    String         @map("workspace_id")
+  brandId        String?        @map("brand_id")
+  campaignId     String?        @map("campaign_id")
   /// Null means the default isolated redirect domain.
   domain         String?
   slug           String
@@ -2576,7 +2575,7 @@ model ShortLink {
   disabledAt     DateTime?      @map("disabled_at") @db.Timestamptz(6)
   /// Every destination change is an audited action and never rewrites history.
   destinationHistory Json       @default("[]") @map("destination_history")
-  createdByUserId String        @map("created_by_user_id") @db.Uuid
+  createdByUserId String        @map("created_by_user_id")
   createdAt      DateTime       @default(now()) @map("created_at") @db.Timestamptz(6)
   updatedAt      DateTime       @updatedAt @map("updated_at") @db.Timestamptz(6)
 
@@ -2596,9 +2595,9 @@ model ShortLink {
 /// No raw IP column. `dedupeKey` is a keyed hash with a short retention window,
 /// which is enough for bot classification and deduplication and nothing more.
 model ShortLinkClick {
-  id             String            @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  workspaceId    String            @map("workspace_id") @db.Uuid
-  shortLinkId    String            @map("short_link_id") @db.Uuid
+  id             String            @id @default(dbgenerated("app.new_id('click')"))
+  workspaceId    String            @map("workspace_id")
+  shortLinkId    String            @map("short_link_id")
   /// Truncated to the hour.
   occurredAt     DateTime          @map("occurred_at") @db.Timestamptz(6)
   countryCode    String?           @map("country_code")
@@ -2625,8 +2624,8 @@ model ShortLinkClick {
 // ---------------------------------------------------------------------------
 
 model PolarCustomer {
-  id               String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  workspaceId      String   @unique @map("workspace_id") @db.Uuid
+  id               String   @id @default(dbgenerated("app.new_id('customer')"))
+  workspaceId      String   @unique @map("workspace_id")
   polarCustomerId  String   @unique @map("polar_customer_id")
   billingEmail     String   @map("billing_email") @db.Citext
   portalUrl        String?  @map("portal_url")
@@ -2644,9 +2643,9 @@ model PolarCustomer {
 /// redirect. Both intervals carry a seven-day trial that charges zero at
 /// checkout and converts only if the customer has not canceled.
 model Subscription {
-  id                 String             @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  workspaceId        String             @map("workspace_id") @db.Uuid
-  polarCustomerId    String             @map("polar_customer_id") @db.Uuid
+  id                 String             @id @default(dbgenerated("app.new_id('sub')"))
+  workspaceId        String             @map("workspace_id")
+  polarCustomerId    String             @map("polar_customer_id")
   polarSubscriptionId String            @unique @map("polar_subscription_id")
   polarProductId     String             @map("polar_product_id")
   status             SubscriptionStatus
@@ -2679,9 +2678,9 @@ model Subscription {
 
 /// One public plan, no feature tiers. A limit is a number here, not a plan name.
 model Entitlement {
-  id             String          @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  workspaceId    String          @map("workspace_id") @db.Uuid
-  subscriptionId String?         @map("subscription_id") @db.Uuid
+  id             String          @id @default(dbgenerated("app.new_id('entitlement')"))
+  workspaceId    String          @map("workspace_id")
+  subscriptionId String?         @map("subscription_id")
   key            String
   kind           EntitlementKind
   booleanValue   Boolean?        @map("boolean_value")
@@ -2704,8 +2703,8 @@ model Entitlement {
 /// Metered pass-through: managed X operations and AI text tokens. No media
 /// generation meter exists in V1.
 model UsageEvent {
-  id            String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  workspaceId   String   @map("workspace_id") @db.Uuid
+  id            String   @id @default(dbgenerated("app.new_id('usage')"))
+  workspaceId   String   @map("workspace_id")
   meterKey      String   @map("meter_key")
   quantity      Decimal  @db.Decimal(20, 6)
   unit          String
@@ -2713,7 +2712,7 @@ model UsageEvent {
   costCurrency  String?  @map("cost_currency")
   provider      ProviderKind?
   referenceType String?  @map("reference_type")
-  referenceId   String?  @map("reference_id") @db.Uuid
+  referenceId   String?  @map("reference_id")
   /// Unique per workspace so a retried report cannot double-charge.
   idempotencyKey String  @map("idempotency_key")
   reportedToPolarAt DateTime? @map("reported_to_polar_at") @db.Timestamptz(6)
@@ -2732,7 +2731,7 @@ model UsageEvent {
 /// Global. Signature verification happens before any side effect, and the body
 /// hash plus event ID make reprocessing idempotent.
 model BillingWebhookInbox {
-  id             String               @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  id             String               @id @default(dbgenerated("app.new_id('billingevent')"))
   provider       String               @default("polar")
   eventId        String               @map("event_id")
   eventType      String               @map("event_type")
@@ -2753,9 +2752,9 @@ model BillingWebhookInbox {
 /// Disclosure acceptance is mandatory. No commission is ever conditional on a
 /// positive review.
 model AffiliatePartner {
-  id                  String                @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  workspaceId         String                @map("workspace_id") @db.Uuid
-  contactUserId       String                @map("contact_user_id") @db.Uuid
+  id                  String                @id @default(dbgenerated("app.new_id('aff')"))
+  workspaceId         String                @map("workspace_id")
+  contactUserId       String                @map("contact_user_id")
   displayName         String                @map("display_name")
   referralCode        String                @unique @map("referral_code") @db.Citext
   state               AffiliatePartnerState @default(applied)
@@ -2781,10 +2780,10 @@ model AffiliatePartner {
 }
 
 model ReferralAttribution {
-  id                  String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  id                  String    @id @default(dbgenerated("app.new_id('referral')"))
   /// The referred workspace, which is the tenant that owns this row.
-  workspaceId         String    @map("workspace_id") @db.Uuid
-  affiliatePartnerId  String    @map("affiliate_partner_id") @db.Uuid
+  workspaceId         String    @map("workspace_id")
+  affiliatePartnerId  String    @map("affiliate_partner_id")
   referralCode        String    @map("referral_code") @db.Citext
   landingUrl          String?   @map("landing_url")
   referrerClass       String?   @map("referrer_class")
@@ -2808,17 +2807,17 @@ model ReferralAttribution {
 
 /// Immutable in spirit: a correction is a new offsetting row, never an edit.
 model CommissionLedger {
-  id                    String          @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  workspaceId           String          @map("workspace_id") @db.Uuid
-  affiliatePartnerId    String          @map("affiliate_partner_id") @db.Uuid
-  referralAttributionId String          @map("referral_attribution_id") @db.Uuid
-  payoutBatchId         String?         @map("payout_batch_id") @db.Uuid
+  id                    String          @id @default(dbgenerated("app.new_id('commission')"))
+  workspaceId           String          @map("workspace_id")
+  affiliatePartnerId    String          @map("affiliate_partner_id")
+  referralAttributionId String          @map("referral_attribution_id")
+  payoutBatchId         String?         @map("payout_batch_id")
   polarOrderId          String          @map("polar_order_id")
   amountMinor           Int             @map("amount_minor")
   currency              String          @default("USD")
   state                 CommissionState @default(pending)
   holdUntil             DateTime?       @map("hold_until") @db.Timestamptz(6)
-  reversalOfId          String?         @map("reversal_of_id") @db.Uuid
+  reversalOfId          String?         @map("reversal_of_id")
   note                  String?
   createdAt             DateTime        @default(now()) @map("created_at") @db.Timestamptz(6)
 
@@ -2836,7 +2835,7 @@ model CommissionLedger {
 
 /// Operator level, not tenant owned. Service role only.
 model PayoutBatch {
-  id            String           @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  id            String           @id @default(dbgenerated("app.new_id('payout')"))
   reference     String           @unique
   state         PayoutBatchState @default(open)
   periodStart   DateTime         @map("period_start") @db.Timestamptz(6)
@@ -2861,11 +2860,11 @@ model PayoutBatch {
 /// Executing a deletion also cancels Temporal workflows, revokes provider
 /// grants, deletes stored objects and tombstones analytics where required.
 model DeletionRequest {
-  id              String               @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  workspaceId     String               @map("workspace_id") @db.Uuid
-  requestedByUserId String             @map("requested_by_user_id") @db.Uuid
+  id              String               @id @default(dbgenerated("app.new_id('deletion')"))
+  workspaceId     String               @map("workspace_id")
+  requestedByUserId String             @map("requested_by_user_id")
   scope           String
-  subjectUserId   String?              @map("subject_user_id") @db.Uuid
+  subjectUserId   String?              @map("subject_user_id")
   state           DeletionRequestState @default(requested)
   reason          String?
   /// Cooling-off window before anything is destroyed.
@@ -2887,9 +2886,9 @@ model DeletionRequest {
 }
 
 model DataExport {
-  id              String          @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  workspaceId     String          @map("workspace_id") @db.Uuid
-  requestedByUserId String        @map("requested_by_user_id") @db.Uuid
+  id              String          @id @default(dbgenerated("app.new_id('export')"))
+  workspaceId     String          @map("workspace_id")
+  requestedByUserId String        @map("requested_by_user_id")
   scope           String
   format          String          @default("json")
   state           DataExportState @default(requested)

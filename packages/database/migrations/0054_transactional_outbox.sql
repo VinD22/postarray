@@ -1,49 +1,29 @@
 -- 0054_transactional_outbox.sql
 -- Commit domain changes and durable workflow intent atomically. Dispatch is
--- at least once; Temporal workflow ids and signals remain idempotent.
+-- at least once; Temporal workflow ids and signals remain idempotent. Tables,
+-- ordinary indexes and workspace foreign keys live in the core schema.
 
-CREATE TABLE private.outbox (
-  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
-  workspace_id uuid NOT NULL REFERENCES app.workspaces(id) ON DELETE CASCADE,
-  kind text NOT NULL CHECK (kind IN (
+ALTER TABLE private.outbox
+  DROP CONSTRAINT IF EXISTS outbox_kind_supported,
+  ADD CONSTRAINT outbox_kind_supported CHECK (kind IN (
     'start_publish',
     'cancel_publish',
     'reschedule_publish',
     'start_rule_run'
   )),
-  dedupe_key text NOT NULL,
-  payload jsonb NOT NULL,
-  available_at timestamptz NOT NULL DEFAULT now(),
-  attempts integer NOT NULL DEFAULT 0 CHECK (attempts >= 0),
-  last_error_code text,
-  claimed_at timestamptz,
-  dispatched_at timestamptz,
-  dead_lettered_at timestamptz,
-  created_at timestamptz NOT NULL DEFAULT now(),
-  UNIQUE (workspace_id, dedupe_key)
-);
+  DROP CONSTRAINT IF EXISTS outbox_attempts_nonnegative,
+  ADD CONSTRAINT outbox_attempts_nonnegative CHECK (attempts >= 0);
 
-CREATE INDEX outbox_available_idx
+CREATE INDEX IF NOT EXISTS outbox_available_idx
   ON private.outbox (available_at, id)
   WHERE dispatched_at IS NULL AND dead_lettered_at IS NULL;
 
-CREATE INDEX outbox_workspace_idx ON private.outbox (workspace_id);
-
-CREATE TABLE private.outbox_dead_letter (
-  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
-  workspace_id uuid NOT NULL REFERENCES app.workspaces(id) ON DELETE CASCADE,
-  outbox_event_id uuid NOT NULL UNIQUE REFERENCES private.outbox(id) ON DELETE RESTRICT,
-  kind text NOT NULL,
-  dedupe_key text NOT NULL,
-  payload jsonb NOT NULL,
-  attempts integer NOT NULL CHECK (attempts > 0),
-  error_code text NOT NULL,
-  failed_at timestamptz NOT NULL,
-  created_at timestamptz NOT NULL DEFAULT now()
-);
-
-CREATE INDEX outbox_dead_letter_workspace_failed_idx
-  ON private.outbox_dead_letter (workspace_id, failed_at DESC);
+ALTER TABLE private.outbox_dead_letter
+  DROP CONSTRAINT IF EXISTS outbox_dead_letter_event_fkey,
+  ADD CONSTRAINT outbox_dead_letter_event_fkey
+    FOREIGN KEY (outbox_event_id) REFERENCES private.outbox(id) ON DELETE RESTRICT,
+  DROP CONSTRAINT IF EXISTS outbox_dead_letter_attempts_positive,
+  ADD CONSTRAINT outbox_dead_letter_attempts_positive CHECK (attempts > 0);
 
 SELECT private.apply_tenant_policies(
   'private', 'outbox', 'workspace_id',

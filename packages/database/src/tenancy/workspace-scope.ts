@@ -1,3 +1,5 @@
+import { ID_PREFIXES, isId } from '@relay/contracts';
+
 import { DATABASE_ERROR_CODES, DatabaseError } from '../errors';
 import type { RelayPrismaClient } from '../client';
 
@@ -58,8 +60,6 @@ const REFUSED_CLIENT_METHODS = new Set([
   '$executeRawUnsafe',
   '$extends',
 ]);
-
-const UUID_PATTERN = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
 /**
  * The Prisma client is a runtime-generated object, so reaching into it needs one
@@ -147,10 +147,10 @@ function assertUsableWorkspaceId(workspaceId: string): void {
       'withWorkspace requires a workspace id.',
     );
   }
-  if (!UUID_PATTERN.test(workspaceId)) {
+  if (!isId(ID_PREFIXES.workspace, workspaceId)) {
     throw new DatabaseError(
       DATABASE_ERROR_CODES.workspaceScopeMissing,
-      'withWorkspace requires a UUID workspace id. A prefixed public identifier must be decoded first.',
+      'withWorkspace requires a valid Relay workspace identifier.',
       { workspaceId },
     );
   }

@@ -42,7 +42,7 @@ COMMENT ON FUNCTION app.jwt_claims() IS
 -- ---------------------------------------------------------------------------
 
 CREATE OR REPLACE FUNCTION app.current_user_id()
-RETURNS uuid
+RETURNS text
 LANGUAGE plpgsql
 STABLE
 SECURITY DEFINER
@@ -52,11 +52,11 @@ DECLARE
   claims       jsonb := app.jwt_claims();
   direct_id    text  := claims ->> 'relay_user_id';
   auth_subject text  := claims ->> 'sub';
-  resolved     uuid;
+  resolved     text;
 BEGIN
   IF direct_id IS NOT NULL AND direct_id <> '' THEN
     BEGIN
-      RETURN direct_id::uuid;
+      RETURN direct_id::text;
     EXCEPTION WHEN invalid_text_representation THEN
       RETURN NULL;
     END;
@@ -69,7 +69,7 @@ BEGIN
   BEGIN
     SELECT u.id INTO resolved
     FROM app.users u
-    WHERE u.auth_subject_id = auth_subject::uuid
+    WHERE u.auth_subject_id = auth_subject::text
       AND u.status = 'active'::app.user_status;
   EXCEPTION WHEN invalid_text_representation THEN
     RETURN NULL;
@@ -112,24 +112,24 @@ COMMENT ON FUNCTION app.is_service_role() IS
 -- ---------------------------------------------------------------------------
 
 CREATE OR REPLACE FUNCTION app.current_workspace_ids()
-RETURNS uuid[]
+RETURNS text[]
 LANGUAGE plpgsql
 STABLE
 SECURITY DEFINER
 SET search_path = app, pg_catalog, pg_temp
 AS $$
 DECLARE
-  uid          uuid := app.current_user_id();
+  uid          text := app.current_user_id();
   claims       jsonb := app.jwt_claims();
   pinned_raw   text := claims ->> 'relay_workspace_id';
-  pinned       uuid;
-  workspace_ids uuid[];
+  pinned       text;
+  workspace_ids text[];
 BEGIN
   IF uid IS NULL THEN
-    RETURN ARRAY[]::uuid[];
+    RETURN ARRAY[]::text[];
   END IF;
 
-  SELECT COALESCE(array_agg(m.workspace_id), ARRAY[]::uuid[])
+  SELECT COALESCE(array_agg(m.workspace_id), ARRAY[]::text[])
     INTO workspace_ids
   FROM app.memberships m
   JOIN app.workspaces w ON w.id = m.workspace_id
@@ -139,16 +139,16 @@ BEGIN
 
   IF pinned_raw IS NOT NULL AND pinned_raw <> '' THEN
     BEGIN
-      pinned := pinned_raw::uuid;
+      pinned := pinned_raw::text;
     EXCEPTION WHEN invalid_text_representation THEN
-      RETURN ARRAY[]::uuid[];
+      RETURN ARRAY[]::text[];
     END;
 
     IF pinned = ANY (workspace_ids) THEN
       RETURN ARRAY[pinned];
     END IF;
 
-    RETURN ARRAY[]::uuid[];
+    RETURN ARRAY[]::text[];
   END IF;
 
   RETURN workspace_ids;
@@ -165,7 +165,7 @@ COMMENT ON FUNCTION app.current_workspace_ids() IS
 --   app.has_workspace_role(workspace_id, ARRAY['owner','admin'])
 -- ---------------------------------------------------------------------------
 
-CREATE OR REPLACE FUNCTION app.has_workspace_role(ws uuid, roles text[])
+CREATE OR REPLACE FUNCTION app.has_workspace_role(ws text, roles text[])
 RETURNS boolean
 LANGUAGE plpgsql
 STABLE
@@ -173,7 +173,7 @@ SECURITY DEFINER
 SET search_path = app, pg_catalog, pg_temp
 AS $$
 DECLARE
-  uid uuid := app.current_user_id();
+  uid text := app.current_user_id();
 BEGIN
   IF ws IS NULL OR uid IS NULL OR roles IS NULL OR cardinality(roles) = 0 THEN
     RETURN false;
@@ -194,14 +194,14 @@ BEGIN
 END;
 $$;
 
-COMMENT ON FUNCTION app.has_workspace_role(uuid, text[]) IS
+COMMENT ON FUNCTION app.has_workspace_role(text, text[]) IS
   'Membership role check. Requires an active membership in a live workspace.';
 
 -- ---------------------------------------------------------------------------
 -- Convenience predicates used by almost every policy.
 -- ---------------------------------------------------------------------------
 
-CREATE OR REPLACE FUNCTION app.is_workspace_member(ws uuid)
+CREATE OR REPLACE FUNCTION app.is_workspace_member(ws text)
 RETURNS boolean
 LANGUAGE sql
 STABLE
@@ -212,7 +212,7 @@ AS $$
 $$;
 
 -- Roles allowed to change content, connections and automation.
-CREATE OR REPLACE FUNCTION app.can_write(ws uuid)
+CREATE OR REPLACE FUNCTION app.can_write(ws text)
 RETURNS boolean
 LANGUAGE sql
 STABLE
@@ -223,7 +223,7 @@ AS $$
 $$;
 
 -- Roles allowed to decide an approval.
-CREATE OR REPLACE FUNCTION app.can_approve(ws uuid)
+CREATE OR REPLACE FUNCTION app.can_approve(ws text)
 RETURNS boolean
 LANGUAGE sql
 STABLE
@@ -234,7 +234,7 @@ AS $$
 $$;
 
 -- Roles allowed to change membership, billing and workspace settings.
-CREATE OR REPLACE FUNCTION app.can_administer(ws uuid)
+CREATE OR REPLACE FUNCTION app.can_administer(ws text)
 RETURNS boolean
 LANGUAGE sql
 STABLE
@@ -253,18 +253,18 @@ GRANT EXECUTE ON FUNCTION app.jwt_claims()                       TO anon, authen
 GRANT EXECUTE ON FUNCTION app.current_user_id()                  TO anon, authenticated, service_role;
 GRANT EXECUTE ON FUNCTION app.is_service_role()                  TO anon, authenticated, service_role;
 GRANT EXECUTE ON FUNCTION app.current_workspace_ids()            TO anon, authenticated, service_role;
-GRANT EXECUTE ON FUNCTION app.has_workspace_role(uuid, text[])   TO anon, authenticated, service_role;
-GRANT EXECUTE ON FUNCTION app.is_workspace_member(uuid)          TO anon, authenticated, service_role;
-GRANT EXECUTE ON FUNCTION app.can_write(uuid)                    TO anon, authenticated, service_role;
-GRANT EXECUTE ON FUNCTION app.can_approve(uuid)                  TO anon, authenticated, service_role;
-GRANT EXECUTE ON FUNCTION app.can_administer(uuid)               TO anon, authenticated, service_role;
+GRANT EXECUTE ON FUNCTION app.has_workspace_role(text, text[])   TO anon, authenticated, service_role;
+GRANT EXECUTE ON FUNCTION app.is_workspace_member(text)          TO anon, authenticated, service_role;
+GRANT EXECUTE ON FUNCTION app.can_write(text)                    TO anon, authenticated, service_role;
+GRANT EXECUTE ON FUNCTION app.can_approve(text)                  TO anon, authenticated, service_role;
+GRANT EXECUTE ON FUNCTION app.can_administer(text)               TO anon, authenticated, service_role;
 
 REVOKE ALL ON FUNCTION app.jwt_claims() FROM PUBLIC;
 REVOKE ALL ON FUNCTION app.current_user_id() FROM PUBLIC;
 REVOKE ALL ON FUNCTION app.is_service_role() FROM PUBLIC;
 REVOKE ALL ON FUNCTION app.current_workspace_ids() FROM PUBLIC;
-REVOKE ALL ON FUNCTION app.has_workspace_role(uuid, text[]) FROM PUBLIC;
-REVOKE ALL ON FUNCTION app.is_workspace_member(uuid) FROM PUBLIC;
-REVOKE ALL ON FUNCTION app.can_write(uuid) FROM PUBLIC;
-REVOKE ALL ON FUNCTION app.can_approve(uuid) FROM PUBLIC;
-REVOKE ALL ON FUNCTION app.can_administer(uuid) FROM PUBLIC;
+REVOKE ALL ON FUNCTION app.has_workspace_role(text, text[]) FROM PUBLIC;
+REVOKE ALL ON FUNCTION app.is_workspace_member(text) FROM PUBLIC;
+REVOKE ALL ON FUNCTION app.can_write(text) FROM PUBLIC;
+REVOKE ALL ON FUNCTION app.can_approve(text) FROM PUBLIC;
+REVOKE ALL ON FUNCTION app.can_administer(text) FROM PUBLIC;

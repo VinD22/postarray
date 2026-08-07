@@ -36,8 +36,8 @@ AS $$
 DECLARE
   req_state       app.approval_state;
   req_resolved_at timestamptz;
-  req_workspace   uuid;
-  req_version     uuid;
+  req_workspace   text;
+  req_version     text;
 BEGIN
   IF NEW.approval_policy = 'none'::app.approval_policy THEN
     RETURN NEW;

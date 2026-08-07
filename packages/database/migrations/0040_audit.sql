@@ -97,22 +97,22 @@ COMMENT ON FUNCTION private.prune_audit_events(timestamptz) IS
 -- ---------------------------------------------------------------------------
 
 CREATE OR REPLACE FUNCTION private.record_privileged_read(
-  p_workspace_id  uuid,
+  p_workspace_id  text,
   p_actor_type    app.actor_type,
-  p_actor_id      uuid,
+  p_actor_id      text,
   p_surface       app.creation_surface,
   p_target_type   text,
-  p_target_id     uuid,
+  p_target_id     text,
   p_reason        text,
   p_correlation_id text
 )
-RETURNS uuid
+RETURNS text
 LANGUAGE plpgsql
 SECURITY DEFINER
 SET search_path = private, app, pg_catalog, pg_temp
 AS $$
 DECLARE
-  new_id uuid;
+  new_id text;
 BEGIN
   IF p_reason IS NULL OR length(btrim(p_reason)) = 0 THEN
     RAISE EXCEPTION 'a privileged read must state a reason'
@@ -134,10 +134,10 @@ BEGIN
 END;
 $$;
 
-REVOKE ALL ON FUNCTION private.record_privileged_read(uuid, app.actor_type, uuid, app.creation_surface, text, uuid, text, text) FROM PUBLIC;
-GRANT EXECUTE ON FUNCTION private.record_privileged_read(uuid, app.actor_type, uuid, app.creation_surface, text, uuid, text, text) TO service_role;
+REVOKE ALL ON FUNCTION private.record_privileged_read(text, app.actor_type, text, app.creation_surface, text, text, text, text) FROM PUBLIC;
+GRANT EXECUTE ON FUNCTION private.record_privileged_read(text, app.actor_type, text, app.creation_surface, text, text, text, text) TO service_role;
 
-COMMENT ON FUNCTION private.record_privileged_read(uuid, app.actor_type, uuid, app.creation_surface, text, uuid, text, text) IS
+COMMENT ON FUNCTION private.record_privileged_read(text, app.actor_type, text, app.creation_surface, text, text, text, text) IS
   'Records a read of credentials or customer data. A reason is mandatory, because an audit line nobody can interpret is not an audit line.';
 
 -- ---------------------------------------------------------------------------

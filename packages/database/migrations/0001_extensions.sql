@@ -4,9 +4,8 @@
 -- already exists (Supabase creates it), otherwise into `public`, so the same
 -- file runs on a bare Postgres 16 container and on Supabase.
 --
--- pgcrypto: gen_random_uuid() for column defaults and digest() for hashing in
---           migrations. Application code generates sortable UUIDv7 values; the
---           default only covers raw SQL and seed paths.
+-- pgcrypto: entropy for sortable prefixed ids and digest() for hashing in
+--           migrations.
 -- citext:   case-insensitive email, slug and handle columns so uniqueness is
 --           decided the same way a human would decide it.
 
@@ -27,7 +26,7 @@ END
 $$;
 
 -- Make the extension schema resolvable for every session on this database so
--- `gen_random_uuid()` in a column default works without qualification.
+-- pgcrypto functions resolve without qualification.
 DO $$
 DECLARE
   current_db text := current_database();

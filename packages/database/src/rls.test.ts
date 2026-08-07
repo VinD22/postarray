@@ -1,4 +1,5 @@
 import pg from 'pg';
+import { newIdFor } from '@relay/contracts';
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 
 /**
@@ -21,32 +22,32 @@ const DATABASE_URL = process.env['DIRECT_DATABASE_URL'] ?? process.env['DATABASE
 const hasDatabase = DATABASE_URL !== undefined && DATABASE_URL !== '';
 
 const FIXTURE = {
-  workspaceA: '00000000-0000-4000-8000-0000000000a1',
-  workspaceB: '00000000-0000-4000-8000-0000000000b1',
-  brandA: '00000000-0000-4000-8000-0000000000a2',
-  brandB: '00000000-0000-4000-8000-0000000000b2',
-  itemA: '00000000-0000-4000-8000-0000000000a3',
-  itemB: '00000000-0000-4000-8000-0000000000b3',
-  versionA: '00000000-0000-4000-8000-0000000000a4',
-  connectionA: '00000000-0000-4000-8000-0000000000a5',
-  credentialA: '00000000-0000-4000-8000-0000000000a6',
-  auditA: '00000000-0000-4000-8000-0000000000a7',
+  workspaceA: newIdFor('workspace'),
+  workspaceB: newIdFor('workspace'),
+  brandA: newIdFor('brand'),
+  brandB: newIdFor('brand'),
+  itemA: newIdFor('contentItem'),
+  itemB: newIdFor('contentItem'),
+  versionA: newIdFor('contentVersion'),
+  connectionA: newIdFor('connection'),
+  credentialA: newIdFor('credential'),
+  auditA: newIdFor('auditEvent'),
 } as const;
 
 const ROLES = ['owner', 'admin', 'manager', 'editor', 'approver', 'analyst', 'viewer'] as const;
 type Role = (typeof ROLES)[number];
 
 const USER_IDS: Record<Role, string> = {
-  owner: '00000000-0000-4000-8000-00000000c001',
-  admin: '00000000-0000-4000-8000-00000000c002',
-  manager: '00000000-0000-4000-8000-00000000c003',
-  editor: '00000000-0000-4000-8000-00000000c004',
-  approver: '00000000-0000-4000-8000-00000000c005',
-  analyst: '00000000-0000-4000-8000-00000000c006',
-  viewer: '00000000-0000-4000-8000-00000000c007',
+  owner: newIdFor('user'),
+  admin: newIdFor('user'),
+  manager: newIdFor('user'),
+  editor: newIdFor('user'),
+  approver: newIdFor('user'),
+  analyst: newIdFor('user'),
+  viewer: newIdFor('user'),
 };
 
-const OUTSIDER_USER_ID = '00000000-0000-4000-8000-00000000c008';
+const OUTSIDER_USER_ID = newIdFor('user');
 
 let client: pg.Client;
 

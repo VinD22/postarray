@@ -1,4 +1,3 @@
-import { spawnSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
 import { readdir, readFile } from 'node:fs/promises';
 import path from 'node:path';
@@ -18,22 +17,17 @@ import { createStderrLogger, type DatabaseLogger } from './logger';
  * `migrations/`, and this runner applies them in order inside a transaction
  * against a `_relay_migrations` ledger.
  *
- * Order matters and is not purely numeric:
- *
- *   1. Files numbered below 0010 run first. They create the extensions, the two
- *      schemas and the roles, none of which Prisma knows about.
- *   2. `prisma db push` then syncs tables, columns, enums and indexes from
- *      `schema.prisma` into those schemas.
- *   3. Files numbered 0010 and above run last, because a policy, a grant and a
- *      trigger all need their table to exist first.
+ * Files run strictly in numeric order. The reviewed `0004_core_schema.sql`
+ * baseline contains the Prisma-expressible tables, enums, indexes and foreign
+ * keys. Later files add RLS, grants, triggers and cross-row constraints. The
+ * deploy path never invokes `prisma db push` and therefore cannot accept data
+ * loss implicitly.
  *
  * Every file runs inside its own transaction together with its ledger row, so a
  * failure leaves neither a half-applied policy nor a lie about it in the ledger.
  * A file whose checksum has changed since it was applied is a hard error: a
  * reviewed security migration is not something to quietly edit in place.
  */
-
-const SCHEMA_SYNC_BOUNDARY = 10;
 
 const LEDGER_DDL = `
 CREATE TABLE IF NOT EXISTS public._relay_migrations (
@@ -48,8 +42,6 @@ export interface MigrateOptions {
   readonly databaseUrl?: string;
   readonly migrationsDir?: string;
   readonly logger?: DatabaseLogger;
-  /** Skip `prisma db push`. Useful when the tables are already in sync. */
-  readonly skipSchemaSync?: boolean;
 }
 
 interface MigrationFile {
@@ -65,32 +57,15 @@ export async function migrate(options: MigrateOptions = {}): Promise<void> {
   const migrationsDir = options.migrationsDir ?? defaultMigrationsDir();
 
   const files = await loadMigrationFiles(migrationsDir);
-  const preSchema = files.filter((file) => file.order < SCHEMA_SYNC_BOUNDARY);
-  const postSchema = files.filter((file) => file.order >= SCHEMA_SYNC_BOUNDARY);
-
   const client = new pg.Client({ connectionString: databaseUrl });
   await client.connect();
 
   try {
     await client.query(LEDGER_DDL);
     const applied = await readLedger(client);
-
-    await applyAll(client, preSchema, applied, logger);
+    await applyAll(client, files, applied, logger);
   } finally {
     await client.end();
-  }
-
-  if (options.skipSchemaSync !== true) {
-    runSchemaSync(databaseUrl, logger);
-  }
-
-  const second = new pg.Client({ connectionString: databaseUrl });
-  await second.connect();
-  try {
-    const applied = await readLedger(second);
-    await applyAll(second, postSchema, applied, logger);
-  } finally {
-    await second.end();
   }
 
   logger.info('db.migrate.complete', { files: files.length });
@@ -175,39 +150,6 @@ async function loadMigrationFiles(directory: string): Promise<MigrationFile[]> {
   }
 
   return files.sort((left, right) => left.order - right.order);
-}
-
-function runSchemaSync(databaseUrl: string, logger: DatabaseLogger): void {
-  const schemaPath = path.join(packageRoot(), 'prisma', 'schema.prisma');
-  logger.info('db.migrate.schema_sync', { schema: schemaPath });
-
-  const result = spawnSync(
-    'prisma',
-    ['db', 'push', '--schema', schemaPath, '--skip-generate', '--accept-data-loss'],
-    {
-      stdio: 'inherit',
-      shell: process.platform === 'win32',
-      env: {
-        ...process.env,
-        DATABASE_URL: databaseUrl,
-        DIRECT_DATABASE_URL: process.env['DIRECT_DATABASE_URL'] ?? databaseUrl,
-      },
-    },
-  );
-
-  if (result.error !== undefined) {
-    throw new DatabaseError(
-      DATABASE_ERROR_CODES.migrationFailed,
-      `prisma db push could not be started: ${result.error.message}`,
-    );
-  }
-
-  if (result.status !== 0) {
-    throw new DatabaseError(
-      DATABASE_ERROR_CODES.migrationFailed,
-      `prisma db push exited with status ${String(result.status)}`,
-    );
-  }
 }
 
 function resolveDatabaseUrl(explicit?: string): string {

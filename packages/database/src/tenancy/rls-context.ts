@@ -1,4 +1,5 @@
 import type { Prisma } from '@prisma/client';
+import { ID_PREFIXES, isId } from '@relay/contracts';
 
 import { DATABASE_ERROR_CODES, DatabaseError } from '../errors';
 import type { RelayPrismaClient } from '../client';
@@ -45,8 +46,6 @@ export interface RlsContextOptions {
   /** Time to wait for a connection before giving up. Prisma default is 2000. */
   readonly maxWaitMs?: number;
 }
-
-const UUID_PATTERN = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
 /**
  * Runs `handler` inside one transaction whose RLS claims are `claims`.
@@ -115,12 +114,12 @@ export function buildClaimsPayload(claims: RlsClaims): string {
   };
 
   if (claims.userId !== undefined) {
-    assertUuid(claims.userId, 'userId');
+    assertRelayId(claims.userId, ID_PREFIXES.user, 'userId');
     payload['relay_user_id'] = claims.userId;
   }
 
   if (claims.workspaceId !== undefined) {
-    assertUuid(claims.workspaceId, 'workspaceId');
+    assertRelayId(claims.workspaceId, ID_PREFIXES.workspace, 'workspaceId');
     payload['relay_workspace_id'] = claims.workspaceId;
   }
 
@@ -130,7 +129,7 @@ export function buildClaimsPayload(claims: RlsClaims): string {
   }
 
   if (claims.clientId !== undefined) {
-    assertUuid(claims.clientId, 'clientId');
+    assertRelayId(claims.clientId, ID_PREFIXES.oauthClient, 'clientId');
     payload['relay_client_id'] = claims.clientId;
   }
 
@@ -151,11 +150,11 @@ function assertAuthSubject(value: string): void {
   }
 }
 
-function assertUuid(value: string, field: string): void {
-  if (!UUID_PATTERN.test(value)) {
+function assertRelayId(value: string, prefix: string, field: string): void {
+  if (!isId(prefix, value)) {
     throw new DatabaseError(
       DATABASE_ERROR_CODES.invalidRlsContext,
-      `RLS claim "${field}" must be a UUID.`,
+      `RLS claim "${field}" must be a valid Relay identifier.`,
       { field },
     );
   }

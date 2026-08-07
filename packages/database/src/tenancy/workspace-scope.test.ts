@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest';
+import { newIdFor } from '@relay/contracts';
 
 import { DATABASE_ERROR_CODES, DatabaseError } from '../errors';
 import type { RelayPrismaClient } from '../client';
@@ -12,8 +13,8 @@ import { assertWorkspaceScoped, withWorkspace } from './workspace-scope';
  * would have stopped the query anyway is `rls.test.ts`.
  */
 
-const WORKSPACE = '11111111-1111-4111-8111-111111111111';
-const OTHER_WORKSPACE = '22222222-2222-4222-8222-222222222222';
+const WORKSPACE = newIdFor('workspace');
+const OTHER_WORKSPACE = newIdFor('workspace');
 
 interface RecordedCall {
   model: string;
@@ -58,7 +59,7 @@ function createFakeClient(): { client: RelayPrismaClient; calls: RecordedCall[] 
 }
 
 describe('withWorkspace', () => {
-  it('rejects a workspace id that is not a UUID', () => {
+  it('rejects a malformed workspace id', () => {
     const { client } = createFakeClient();
     expect(() => withWorkspace(client, 'ws_not_a_uuid')).toThrowError(DatabaseError);
   });

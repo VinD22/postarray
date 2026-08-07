@@ -1,6 +1,7 @@
 -- 0051_neon_identity.sql
 -- Neon Auth is based on Better Auth, whose user identifiers are opaque strings
--- rather than UUIDs. Relay user and workspace ids remain UUIDs.
+-- rather than Relay ids. Relay user and workspace ids remain sortable,
+-- prefixed identifiers.
 
 ALTER TABLE app.users
   ALTER COLUMN auth_subject_id TYPE text
@@ -10,7 +11,7 @@ COMMENT ON COLUMN app.users.auth_subject_id IS
   'Opaque Neon Auth / Better Auth user id. Never parsed or exposed as a Relay id.';
 
 CREATE OR REPLACE FUNCTION app.current_user_id()
-RETURNS uuid
+RETURNS text
 LANGUAGE plpgsql
 STABLE
 SECURITY DEFINER
@@ -20,11 +21,11 @@ DECLARE
   claims       jsonb := app.jwt_claims();
   direct_id    text  := claims ->> 'relay_user_id';
   auth_subject text  := claims ->> 'sub';
-  resolved     uuid;
+  resolved     text;
 BEGIN
   IF direct_id IS NOT NULL AND direct_id <> '' THEN
     BEGIN
-      RETURN direct_id::uuid;
+      RETURN direct_id::text;
     EXCEPTION WHEN invalid_text_representation THEN
       RETURN NULL;
     END;
