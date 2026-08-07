@@ -71,11 +71,20 @@ This is production-shaped code, not production evidence. The release now has a
 KMS-backed encryption adapter and authenticated plaintext export route in the
 codebase. It still needs a private Relay Neon Storage bucket, an isolated Relay
 Neon branch with migrations through
-`0061_deletion_request_idempotency.sql`, live Temporal replay and crash
+`0062_oauth_and_credential_invariants.sql`, live Temporal replay and crash
 evidence, verified provider-side revoke adapters, and an authenticated browser
 pass.
 The MCP-connected `ldr-app` project is not the Relay database and must not be
 modified.
+
+The latest integrations checkpoint (`40972fd`) composes the complete built-in
+adapter matrix behind one code-reviewed verified-provider allow-list. It fixes
+the social callback URI/state split, stores the short-lived PKCE verifier under
+the transaction ID, atomically consumes the API callback transaction, and makes
+incomplete OAuth fail closed instead of redirecting with a false connection.
+Provider exchange, account selection, encrypted credential persistence and the
+worker execution gateway remain deliberately unavailable until a connector
+passes its definition-of-done evidence.
 
 The branch is still a prelaunch product. Local green status does not prove a
 Neon/Auth/Storage deployment, a live provider connector, a paid checkout or a
@@ -91,7 +100,7 @@ the production-like evidence is reproducible from the release commit.
 | Priority | Owner | Dependency | Deliverable and acceptance evidence |
 | --- | --- | --- | --- |
 | P0 | Release captain | None | Freeze origin, legal/support contacts, feature flags and public capability copy. Produce a signed release decision and claim scan. |
-| P0 | Database and tenancy | Release captain | Create an isolated Relay Neon branch, apply migrations through `0061`, verify the ledger, exercise RLS with two workspaces, and record backup/restore evidence. |
+| P0 | Database and tenancy | Release captain | Create an isolated Relay Neon branch, apply migrations through `0062`, verify the ledger, exercise RLS with two workspaces, and record backup/restore evidence. |
 | P0 | Storage and data rights | Database and tenancy | Promote the local export builder to production with a KMS-backed encryption adapter, private Neon Storage, checksum verification, expiry/purge retries, and a deployment smoke. Evidence: fixture archive with secrets absent, envelope decrypt test, object purge transcript, and two replayed failure cases. |
 | P0 | Worker and application | Storage and data rights | Make export and deletion workflows resumable and idempotent across worker crash, timeout, duplicate start, revoked access and storage failure. Add DB state-transition/audit tests and Temporal replay histories. The local deletion request lifecycle, cancellation and failure state are now wired; production evidence and remaining activity promotion are still required. |
 | P0 | Integrations | Worker and application | Promote one official connector through its definition of done, including OAuth review/scopes, capability snapshot, publish/read-back, revoked-token and duplicate-publication canaries. Keep every other connector explicitly `not_implemented`, `awaiting provider review` or `unsupported`. |
