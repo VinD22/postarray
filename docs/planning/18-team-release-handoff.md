@@ -6,6 +6,9 @@ This is the execution handoff for the next engineering cycle. It is written for
 multiple owners working from the same release branch. The operational source of
 truth is `docs/planning/16-launch-recovery-and-release-gates.md`. The detailed
 implementation inventory is `docs/planning/17-implementation-completion-plan.md`.
+Platform operations should use `docs/runbooks/ops-secrets-and-keys-handoff.md`
+when provisioning Neon, Auth, storage, Temporal, Polar, observability, and social
+provider credentials for engineering.
 When an older document disagrees with either of those two files, stop and update
 the stale document before using its copy, limit or infrastructure assumption.
 
