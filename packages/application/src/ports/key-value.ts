@@ -34,6 +34,12 @@ export class MemoryKeyValueStore implements KeyValueStore {
     return this.#live(key)?.value ?? null;
   }
 
+  async getAndDelete(key: string): Promise<string | null> {
+    const value = this.#live(key)?.value ?? null;
+    this.#entries.delete(key);
+    return value;
+  }
+
   async set(key: string, value: string, options: KeyValueSetOptions = {}): Promise<boolean> {
     if (options.ifAbsent === true && this.#live(key) !== null) {
       return false;
@@ -77,6 +83,7 @@ export class MemoryKeyValueStore implements KeyValueStore {
  */
 export interface RedisLikeClient {
   get(key: string): Promise<string | null>;
+  getdel(key: string): Promise<string | null>;
   set(key: string, value: string, ...args: readonly (string | number)[]): Promise<string | null>;
   del(key: string): Promise<number>;
   incrby(key: string, amount: number): Promise<number>;
@@ -100,6 +107,10 @@ export class RedisKeyValueStore implements KeyValueStore {
 
   async get(key: string): Promise<string | null> {
     return this.#client.get(this.#key(key));
+  }
+
+  async getAndDelete(key: string): Promise<string | null> {
+    return this.#client.getdel(this.#key(key));
   }
 
   async set(key: string, value: string, options: KeyValueSetOptions = {}): Promise<boolean> {

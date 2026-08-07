@@ -58,6 +58,17 @@ describe('MemoryKeyValueStore', () => {
     await kv.delete('a');
     expect(await kv.get('a')).toBeNull();
   });
+
+  it('atomically returns and removes a single-use value', async () => {
+    const kv = new MemoryKeyValueStore(new FixedClock());
+    await kv.set('oauth-verifier', 'one-use');
+    const [first, second] = await Promise.all([
+      kv.getAndDelete('oauth-verifier'),
+      kv.getAndDelete('oauth-verifier'),
+    ]);
+    expect([first, second].filter((value) => value === 'one-use')).toHaveLength(1);
+    expect([first, second].filter((value) => value === null)).toHaveLength(1);
+  });
 });
 
 describe('MemoryStorage', () => {

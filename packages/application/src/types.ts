@@ -147,6 +147,8 @@ export interface KeyValueSetOptions {
 
 export interface KeyValueStore {
   get(key: string): Promise<string | null>;
+  /** Atomically read and remove a single-use value. */
+  getAndDelete(key: string): Promise<string | null>;
   /** Returns false when `ifAbsent` was requested and the key already existed. */
   set(key: string, value: string, options?: KeyValueSetOptions): Promise<boolean>;
   delete(key: string): Promise<void>;
