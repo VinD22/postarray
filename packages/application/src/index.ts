@@ -8,7 +8,11 @@
  */
 
 export { createServices } from './services/index';
-export { createOAuthGateway, type OAuthGateway } from './services/oauth-gateway';
+export {
+  createOAuthGateway,
+  selectOAuthAccounts,
+  type OAuthGateway,
+} from './services/oauth-gateway';
 export {
   fromSocialCredentialStorageRow,
   toSocialCredentialStorageWrite,

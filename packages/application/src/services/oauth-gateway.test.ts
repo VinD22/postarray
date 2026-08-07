@@ -7,7 +7,7 @@ import {
 import { ProviderHttpClient } from '@relay/connectors';
 import { describe, expect, it } from 'vitest';
 
-import { createOAuthGateway } from './oauth-gateway';
+import { createOAuthGateway, selectOAuthAccounts } from './oauth-gateway';
 
 const clock = {
   now: () => new Date('2026-08-07T12:00:00.000Z'),
@@ -137,5 +137,94 @@ describe('application OAuth gateway', () => {
         redirectUri,
       }),
     ).rejects.toMatchObject({ code: 'CAPABILITY_NOT_IMPLEMENTED' });
+  });
+});
+
+describe('selectOAuthAccounts', () => {
+  it('returns only the selected eligible accounts in selection order', () => {
+    const discovered = [
+      {
+        externalAccountId: 'account-a',
+        accountType: 'personal_profile' as const,
+        displayName: 'A',
+        handle: '@a',
+        avatarUrl: null,
+        profileUrl: null,
+        parentExternalId: null,
+        grantedScopes: [],
+        eligible: true,
+        ineligibleReasonKey: null,
+        accountAccessToken: null,
+        metadata: {},
+      },
+      {
+        externalAccountId: 'account-b',
+        accountType: 'personal_profile' as const,
+        displayName: 'B',
+        handle: '@b',
+        avatarUrl: null,
+        profileUrl: null,
+        parentExternalId: null,
+        grantedScopes: [],
+        eligible: true,
+        ineligibleReasonKey: null,
+        accountAccessToken: null,
+        metadata: {},
+      },
+    ];
+    expect(
+      selectOAuthAccounts(discovered, ['account-b', 'account-a']).map(
+        (account) => account.externalAccountId,
+      ),
+    ).toEqual(['account-b', 'account-a']);
+  });
+
+  it('rejects empty, duplicate, unknown and ineligible selections', () => {
+    const account = {
+      externalAccountId: 'account-a',
+      accountType: 'personal_profile' as const,
+      displayName: 'A',
+      handle: '@a',
+      avatarUrl: null,
+      profileUrl: null,
+      parentExternalId: null,
+      grantedScopes: [],
+      eligible: true,
+      ineligibleReasonKey: null,
+      accountAccessToken: null,
+      metadata: {},
+    };
+    expect(() => selectOAuthAccounts([account], [])).toThrowError(
+      expect.objectContaining({ code: 'VALIDATION_FAILED' }),
+    );
+    expect(() => selectOAuthAccounts([account], ['account-a', 'account-a'])).toThrowError(
+      expect.objectContaining({ code: 'VALIDATION_FAILED' }),
+    );
+    expect(() => selectOAuthAccounts([account], ['missing'])).toThrowError(
+      expect.objectContaining({ code: 'NOT_FOUND' }),
+    );
+    expect(() =>
+      selectOAuthAccounts([{ ...account, eligible: false }], ['account-a']),
+    ).toThrowError(expect.objectContaining({ code: 'VALIDATION_FAILED' }));
+  });
+
+  it('rejects duplicate IDs from provider discovery instead of guessing', () => {
+    const account = {
+      externalAccountId: 'account-a',
+      accountType: 'personal_profile' as const,
+      displayName: 'A',
+      handle: null,
+      avatarUrl: null,
+      profileUrl: null,
+      parentExternalId: null,
+      grantedScopes: [],
+      eligible: true,
+      ineligibleReasonKey: null,
+      accountAccessToken: null,
+      metadata: {},
+    };
+    expect(() => selectOAuthAccounts([account, account], ['account-a'])).toThrowError(
+      expect.objectContaining({ code: 'INTERNAL' }),
+    );
   });
 });

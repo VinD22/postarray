@@ -3,7 +3,13 @@ import {
   exchangeAndDiscoverAccounts,
   normalizeRedirectUri,
 } from '@relay/connectors';
-import { CapabilityNotImplementedError, RelayError, type ProviderId } from '@relay/contracts';
+import {
+  CapabilityNotImplementedError,
+  ERROR_CODES,
+  RelayError,
+  type ProviderId,
+} from '@relay/contracts';
+import type { ExternalAccount } from '@relay/connectors';
 
 import type {
   ConnectorRegistry,
@@ -18,6 +24,63 @@ type CompleteOAuth = NonNullable<ConnectorRegistry['completeOAuth']>;
 export interface OAuthGateway {
   readonly beginOAuth: BeginOAuth;
   readonly completeOAuth: CompleteOAuth;
+}
+
+/**
+ * Validate the account IDs a person selected after discovery. Providers can
+ * return several Pages, organizations or profiles from one grant, so callers
+ * must never silently attach every eligible account to a workspace. This
+ * helper is deliberately pure and provider-neutral; the persistence layer can
+ * call it immediately before encrypting and writing the selected credentials.
+ */
+export function selectOAuthAccounts(
+  accounts: readonly ExternalAccount[],
+  selectedExternalAccountIds: readonly string[],
+): readonly ExternalAccount[] {
+  if (selectedExternalAccountIds.length === 0) {
+    throw new RelayError(ERROR_CODES.VALIDATION_FAILED, {
+      messageKey: 'error.request_invalid.message',
+      details: { reason: 'OAUTH_ACCOUNT_SELECTION_EMPTY' },
+    });
+  }
+
+  const byExternalId = new Map<string, ExternalAccount>();
+  for (const account of accounts) {
+    if (byExternalId.has(account.externalAccountId)) {
+      throw new RelayError(ERROR_CODES.INTERNAL, {
+        messageKey: 'error.internal.message',
+        details: { reason: 'OAUTH_DISCOVERY_DUPLICATE_ACCOUNT_ID' },
+      });
+    }
+    byExternalId.set(account.externalAccountId, account);
+  }
+
+  const selected = new Set<string>();
+  const result: ExternalAccount[] = [];
+  for (const externalAccountId of selectedExternalAccountIds) {
+    if (selected.has(externalAccountId)) {
+      throw new RelayError(ERROR_CODES.VALIDATION_FAILED, {
+        messageKey: 'error.request_invalid.message',
+        details: { reason: 'OAUTH_ACCOUNT_SELECTION_DUPLICATE' },
+      });
+    }
+    selected.add(externalAccountId);
+    const account = byExternalId.get(externalAccountId);
+    if (account === undefined) {
+      throw new RelayError(ERROR_CODES.NOT_FOUND, {
+        messageKey: 'error.not_found.message',
+        details: { resource: 'oauth_account' },
+      });
+    }
+    if (!account.eligible) {
+      throw new RelayError(ERROR_CODES.VALIDATION_FAILED, {
+        messageKey: 'error.request_invalid.message',
+        details: { reason: 'OAUTH_ACCOUNT_INELIGIBLE' },
+      });
+    }
+    result.push(account);
+  }
+  return result;
 }
 
 function unavailable(provider: ProviderId, capability: string): CapabilityNotImplementedError {
