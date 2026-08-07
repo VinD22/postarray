@@ -2,6 +2,7 @@ import { detectCapabilities } from '@relay/config';
 import { buildHealthReport, type HealthCheck, type HealthReport } from '@relay/observability';
 
 import type { HealthService, ServiceDeps } from '../types';
+import { probeKeyValueRoundtrip } from './health-probes';
 
 /**
  * Health.
@@ -46,9 +47,7 @@ export function createHealthService(deps: ServiceDeps): HealthService {
           await deps.prisma.$queryRaw`select 1`;
         }),
         timed('keyvalue.roundtrip', async () => {
-          const probeKey = 'health:probe';
-          await deps.kv.set(probeKey, '1', { ttlSeconds: 5 });
-          await deps.kv.get(probeKey);
+          await probeKeyValueRoundtrip(deps.kv);
         }),
         timed('storage.head', async () => {
           await deps.storage.head('health/probe');
