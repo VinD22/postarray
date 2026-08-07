@@ -9,6 +9,8 @@ import {
   getCapability,
   listCapabilities,
   missingEnvVars,
+  VERIFIED_DEVELOPMENT_TEST_CONNECTORS,
+  VERIFIED_PRODUCTION_CONNECTORS,
 } from './capabilities';
 import { CapabilityUnavailableError } from './errors';
 import { loadConfig } from './load';
@@ -210,5 +212,12 @@ describe('assertCapability', () => {
     expect(typed.requiredEnvVars).toEqual(['TIKTOK_CLIENT_KEY', 'TIKTOK_CLIENT_SECRET']);
     expect(typed.message).toContain('TIKTOK_CLIENT_KEY');
     expect(typed.message).toContain('.env');
+  });
+});
+
+describe('verified connector allow-lists', () => {
+  it('keeps production empty while additional adapters run only in the contract harness', () => {
+    expect(VERIFIED_PRODUCTION_CONNECTORS).toEqual([]);
+    expect(VERIFIED_DEVELOPMENT_TEST_CONNECTORS).toEqual(['bluesky']);
   });
 });

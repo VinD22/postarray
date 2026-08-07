@@ -142,9 +142,11 @@ inside a workflow.
 
 ### 7. Run the shared contract suite unmodified
 
-`src/contract.test.ts` runs against the fake provider today and against every
-adapter as it lands. If your adapter needs the suite changed, the contract is
-wrong: raise it, do not override it locally.
+`src/contract.test.ts` runs against the fake provider and every adapter listed in
+`src/contract.harness.ts` (`CONTRACT_HARNESS_PROVIDERS`). That harness does not
+change the production or development verified allow-lists in `@relay/config`.
+If your adapter needs the suite changed, the contract is wrong: raise it, do not
+override it locally.
 
 Add your own tests for the scenarios in
 `docs/planning/05-social-connectors.md` section 5.3: happy path, 429 with and

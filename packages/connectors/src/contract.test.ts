@@ -14,34 +14,10 @@ import {
   publishResultSchema,
   publishStatusSchema,
 } from './contract';
-import { createFakeConnector } from './fake/connector';
 import {
-  fakeConnectionRef,
-  fakeDraft,
-  fakeImageAsset,
-  fakeMediaPreparationRequest,
-  fakeMetricsRequest,
-  fakePublishRequest,
-  fakeStatusRequest,
-  fakeThreadItem,
-} from './fake/fixtures';
-import { fixedClock } from './ports';
-import {
-  createTestDeps,
-  testConnection,
-  testDraft,
-  testGrant,
-  testMetricsRequest,
-  testPublishRequest,
-  testStatusRequest,
-} from './providers/shared/testing';
-import { createBlueskyConnector } from './providers/bluesky/connector';
-import { buildBlueskyCapabilities } from './providers/bluesky/capabilities';
-import {
-  BLUESKY_CREATE_RECORD_FIXTURE,
-  BLUESKY_POST_THREAD_FIXTURE,
-  BLUESKY_SESSION_FIXTURE,
-} from './providers/bluesky/__fixtures__/index';
+  buildConnectorContractCases,
+  CONTRACT_HARNESS_PROVIDERS,
+} from './contract.harness';
 
 /**
  * The shared connector contract suite.
@@ -49,8 +25,6 @@ import {
  * Every connector runs this unmodified. If a connector needs it changed, the
  * contract is wrong and that is a discussion, not a local override.
  */
-
-const clock = fixedClock('2026-08-04T12:00:00.000Z');
 
 describe('the contract itself', () => {
   it('is versioned', () => {
@@ -124,79 +98,14 @@ describe('publishResult schema', () => {
   });
 });
 
-const fakeConnector = createFakeConnector({ clock, instant: true });
-const fakeConnection = fakeConnectionRef({}, { clock });
-const fakeContractDraft = fakeDraft(
-  { contentKind: 'image', media: [fakeImageAsset()], threadItems: [fakeThreadItem()] },
-  { clock, connection: fakeConnection },
-);
-
-const blueskyConnection = testConnection({
-  provider: 'bluesky',
-  externalAccountId: 'did:plc:fakedidfakedidfake01',
-  metadata: { handle: 'sample-studio.fake.invalid', serviceUrl: 'https://bsky.invalid' },
-});
-const { deps: blueskyDeps } = createTestDeps({
-  routes: [
-    { method: 'GET', match: 'com.atproto.server.getSession', body: BLUESKY_SESSION_FIXTURE },
-    { method: 'POST', match: 'com.atproto.repo.createRecord', body: BLUESKY_CREATE_RECORD_FIXTURE },
-    { method: 'GET', match: 'app.bsky.feed.getPostThread', body: BLUESKY_POST_THREAD_FIXTURE },
-  ],
-});
-const blueskyConnector = createBlueskyConnector(blueskyDeps);
-const blueskyContractDraft = testDraft({
-  connection: blueskyConnection,
-  capabilities: buildBlueskyCapabilities({
-    connection: blueskyConnection,
-    observedAt: '2026-08-04T12:00:00.000Z',
-  }),
-  contentKind: 'text',
+describe('connector contract harness', () => {
+  it('runs the shared suite against every registered harness provider', () => {
+    const providers = buildConnectorContractCases().map((entry) => entry.provider);
+    expect(providers).toEqual([...CONTRACT_HARNESS_PROVIDERS]);
+  });
 });
 
-const connectorContractCases = [
-  {
-    provider: 'fake',
-    connector: fakeConnector,
-    connection: fakeConnection,
-    draft: fakeContractDraft,
-    grant: {
-      provider: 'fake' as const,
-      workspaceId: 'ws_1',
-      accessToken: fakeConnection.accessToken,
-      refreshToken: null,
-      grantedScopes: ['fake.read'] as string[],
-      obtainedAt: '2026-08-04T12:00:00.000Z',
-      accessTokenExpiresAt: null,
-      grantMetadata: {},
-    },
-    mediaRequest: fakeMediaPreparationRequest(fakeContractDraft),
-    publishRequest: fakePublishRequest(fakeContractDraft, {}, { clock }),
-    statusRequest: fakeStatusRequest(fakeContractDraft, {}, { clock }),
-    metricsRequest: fakeMetricsRequest(fakeContractDraft, 'fkp_anything'),
-    forbiddenSecret: 'fake-access-token-for-local-development',
-  },
-  {
-    provider: 'bluesky',
-    connector: blueskyConnector,
-    connection: blueskyConnection,
-    draft: blueskyContractDraft,
-    grant: testGrant({ provider: 'bluesky' }),
-    mediaRequest: fakeMediaPreparationRequest(blueskyContractDraft),
-    publishRequest: testPublishRequest({ draft: blueskyContractDraft }),
-    statusRequest: testStatusRequest({
-      connection: blueskyConnection,
-      externalPostId: BLUESKY_CREATE_RECORD_FIXTURE.uri,
-    }),
-    metricsRequest: testMetricsRequest({
-      connection: blueskyConnection,
-      scope: 'post',
-      externalPostId: BLUESKY_CREATE_RECORD_FIXTURE.uri,
-    }),
-    forbiddenSecret: 'fake-test-access-token-not-a-real-credential',
-  },
-] as const;
-
-describe.each(connectorContractCases)('$provider connector satisfies the contract', (contract) => {
+describe.each(buildConnectorContractCases())('$provider connector satisfies the contract', (contract) => {
   const { connector, connection, draft } = contract;
 
   it('returns a schema valid identity and authorization definition', () => {
