@@ -215,6 +215,18 @@ describe('refusals are indistinguishable', () => {
     expect(clicks.events).toHaveLength(0);
     await server.app.close();
   });
+
+  it('negotiates a translated RTL notice without changing the refusal status', async () => {
+    const response = await get('/never-existed', {
+      'accept-language': 'ar-SA,es;q=0.8,en;q=0.5',
+    });
+
+    expect(response.statusCode).toBe(404);
+    expect(response.headers['content-language']).toBe('ar');
+    expect(response.headers['vary']).toBe('accept-language');
+    expect(response.body).toContain('<html lang="ar" dir="rtl">');
+    expect(response.body).toContain('غير متاح');
+  });
 });
 
 describe('kill switch', () => {
@@ -267,6 +279,31 @@ describe('enumeration', () => {
     const throttled = await probe(99);
     expect(throttled.statusCode).toBe(429);
     expect(throttled.headers['retry-after']).toBeDefined();
+    await server.app.close();
+  });
+
+  it('localizes the throttling page from Accept-Language', async () => {
+    const server = createLinksServer({
+      store: createMemoryShortLinkStore([record()]),
+      clickSink: createMemoryClickSink(),
+      logger: silentLogger,
+      dedupeHashKey: 'k',
+      clock: fixedClock(NOW),
+      rateLimit: { missLimit: 1000, requestLimit: 1 },
+    });
+    const request = () =>
+      server.app.inject({
+        method: 'GET',
+        url: '/missing',
+        headers: { host: HOST, 'accept-language': 'es-MX,es;q=0.9' },
+      });
+
+    expect((await request()).statusCode).toBe(404);
+    const throttled = await request();
+    expect(throttled.statusCode).toBe(429);
+    expect(throttled.headers['content-language']).toBe('es-419');
+    expect(throttled.body).toContain('<html lang="es-419" dir="ltr">');
+    expect(throttled.body).toContain('Baja la velocidad por un momento');
     await server.app.close();
   });
 

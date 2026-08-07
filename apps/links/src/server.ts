@@ -5,7 +5,15 @@ import type { FastifyInstance, FastifyReply, FastifyRequest } from 'fastify';
 
 import { childLogger, healthHttpStatus } from '@relay/observability';
 import type { HealthReport, Logger } from '@relay/observability';
-import { DEFAULT_LOCALE, createTranslator, en, getDirection } from '@relay/i18n';
+import {
+  ACTIVE_LOCALE_CODES,
+  DEFAULT_LOCALE,
+  createTranslator,
+  en,
+  getDirection,
+  loadCatalog,
+  resolveLocale,
+} from '@relay/i18n';
 import type { Translator } from '@relay/i18n';
 
 import { systemClock, toIsoInstant, truncateToHour } from './clock';
@@ -66,6 +74,12 @@ export interface LinksServer {
 const SLUG_ROUTE = '/:slug';
 const ROBOTS_BODY = 'User-agent: *\nDisallow: /\n';
 
+interface NoticeLocale {
+  readonly translator: Translator;
+  readonly locale: string;
+  readonly direction: 'ltr' | 'rtl';
+}
+
 function firstHeader(value: string | string[] | undefined): string | undefined {
   if (value === undefined) {
     return undefined;
@@ -106,9 +120,44 @@ export function createLinksServer(options: LinksServerOptions): LinksServer {
   const selfHosts = options.selfHosts ?? [];
   const startedAt = options.startedAt ?? clock.now();
   const abuseReportUrl = options.abuseReportUrl ?? null;
+  const localeCache = new Map<string, Promise<NoticeLocale>>();
 
-  const translator: Translator = createTranslator(DEFAULT_LOCALE, en);
-  const direction = getDirection(DEFAULT_LOCALE);
+  const noticeLocale = async (request: FastifyRequest): Promise<NoticeLocale> => {
+    const locale = resolveLocale(
+      firstHeader(request.headers['accept-language']),
+      ACTIVE_LOCALE_CODES,
+      DEFAULT_LOCALE,
+    );
+    const cached = localeCache.get(locale);
+    if (cached !== undefined) return cached;
+
+    const loading = loadCatalog(locale)
+      .then((catalog) => ({
+        translator: createTranslator(locale, catalog, {
+          reporter: (report) => {
+            options.logger.warn(
+              { event: 'shortlink.translation_fallback', ...report },
+              'shortlink.translation_fallback',
+            );
+          },
+        }),
+        locale,
+        direction: getDirection(locale),
+      }))
+      .catch((error: unknown) => {
+        options.logger.error(
+          { event: 'shortlink.catalog_load_failed', locale, error },
+          'shortlink.catalog_load_failed',
+        );
+        return {
+          translator: createTranslator(DEFAULT_LOCALE, en),
+          locale: DEFAULT_LOCALE,
+          direction: getDirection(DEFAULT_LOCALE),
+        };
+      });
+    localeCache.set(locale, loading);
+    return loading;
+  };
 
   const resolver = createResolver({
     store: options.store,
@@ -128,20 +177,29 @@ export function createLinksServer(options: LinksServerOptions): LinksServer {
     routerOptions: { ignoreTrailingSlash: true },
   });
 
-  const noticePage = (reference: string): string =>
-    renderNoticePage({
-      translator,
-      reference,
-      abuseReportUrl,
-      locale: DEFAULT_LOCALE,
-      direction,
-    });
-
-  const sendNotice = (reply: FastifyReply, reference: string): FastifyReply =>
-    reply
+  const sendNotice = async (
+    request: FastifyRequest,
+    reply: FastifyReply,
+    reference: string,
+  ): Promise<FastifyReply> => {
+    const localized = await noticeLocale(request);
+    return reply
       .code(404)
-      .headers({ ...NOTICE_HEADERS })
-      .send(noticePage(reference));
+      .headers({
+        ...NOTICE_HEADERS,
+        'content-language': localized.locale,
+        vary: 'accept-language',
+      })
+      .send(
+        renderNoticePage({
+          translator: localized.translator,
+          reference,
+          abuseReportUrl,
+          locale: localized.locale,
+          direction: localized.direction,
+        }),
+      );
+  };
 
   const recordClick = (request: FastifyRequest, outcome: ResolveOutcome): void => {
     if (outcome.kind !== 'redirect') {
@@ -265,16 +323,22 @@ export function createLinksServer(options: LinksServerOptions): LinksServer {
     const source = rateLimitSource(request, trustProxy);
     const limited = guard.checkRequest(source);
     if (!limited.allowed) {
+      const localized = await noticeLocale(request);
       return reply
         .code(429)
-        .headers({ ...NOTICE_HEADERS, 'retry-after': String(limited.retryAfterSeconds) })
+        .headers({
+          ...NOTICE_HEADERS,
+          'content-language': localized.locale,
+          vary: 'accept-language',
+          'retry-after': String(limited.retryAfterSeconds),
+        })
         .send(
           renderRateLimitedPage({
-            translator,
+            translator: localized.translator,
             reference,
             abuseReportUrl,
-            locale: DEFAULT_LOCALE,
-            direction,
+            locale: localized.locale,
+            direction: localized.direction,
           }),
         );
     }
@@ -302,7 +366,7 @@ export function createLinksServer(options: LinksServerOptions): LinksServer {
         },
         'shortlink.refused',
       );
-      return sendNotice(reply, reference);
+      return sendNotice(request, reply, reference);
     }
 
     recordClick(request, outcome);
@@ -320,14 +384,14 @@ export function createLinksServer(options: LinksServerOptions): LinksServer {
       .send('');
   });
 
-  app.setNotFoundHandler(async (_request, reply) => sendNotice(reply, randomUUID()));
+  app.setNotFoundHandler(async (request, reply) => sendNotice(request, reply, randomUUID()));
 
-  app.setErrorHandler(async (error, _request, reply) => {
+  app.setErrorHandler(async (error, request, reply) => {
     options.logger.error(
       { event: 'shortlink.unhandled_error', error },
       'shortlink.unhandled_error',
     );
-    return sendNotice(reply, randomUUID());
+    return sendNotice(request, reply, randomUUID());
   });
 
   app.addHook('onClose', async () => {

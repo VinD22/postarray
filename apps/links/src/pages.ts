@@ -54,11 +54,7 @@ small{color:#8b857c}
 }
 `.trim();
 
-/**
- * `common.unavailable` and `error.not_found.*` are the closest existing intents
- * in the catalog. A dedicated public notice key belongs in `@relay/i18n`.
- * TODO(i18n): add `shortLink.notice.title` and `shortLink.notice.body`.
- */
+/** Uses neutral catalog intents so blocked, expired and unknown links stay indistinguishable. */
 export function renderNoticePage(input: NoticePageInput): string {
   const { translator } = input;
   const title = translator.t('common.unavailable');
