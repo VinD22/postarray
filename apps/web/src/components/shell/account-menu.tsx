@@ -1,7 +1,6 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
-import { LogOut, Settings, UserRound } from 'lucide-react';
+import { LogOut, Settings } from 'lucide-react';
 
 import { useTheme } from '@relay/design-system/hooks';
 import {
@@ -18,7 +17,7 @@ import {
 
 import { api, newIdempotencyKey } from '@/lib/api';
 import { useSession } from '@/lib/auth/session-context';
-import { useTranslations } from '@/lib/i18n';
+import { useLocalizedRouter, useTranslations } from '@/lib/i18n';
 import { initialsOf } from '@/lib/utils/initials';
 
 /**
@@ -30,7 +29,7 @@ import { initialsOf } from '@/lib/utils/initials';
  */
 export function AccountMenu() {
   const t = useTranslations();
-  const router = useRouter();
+  const router = useLocalizedRouter();
   const { session } = useSession();
   const { preference, setPreference } = useTheme();
 
@@ -65,14 +64,6 @@ export function AccountMenu() {
 
         <DropdownMenuSeparator />
 
-        <DropdownMenuItem
-          onSelect={() => {
-            router.push('/settings/profile');
-          }}
-        >
-          <UserRound aria-hidden="true" className="size-4" />
-          {t('shell.account.profile')}
-        </DropdownMenuItem>
         <DropdownMenuItem
           onSelect={() => {
             router.push('/settings');

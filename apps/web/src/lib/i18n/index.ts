@@ -22,6 +22,7 @@ export {
 
 export { useFormatters, type Formatters } from './formatters';
 export { IntlProvider } from './provider';
+export { useLocalizedRouter } from './use-localized-router';
 export {
   LOCALE_COOKIE,
   TIME_ZONE_COOKIE,

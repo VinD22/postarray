@@ -1,7 +1,7 @@
 'use client';
 
 import { Link } from '@/components/link';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
 import { useState, type FormEvent } from 'react';
 
 import { useAnnouncer } from '@relay/design-system/hooks';
@@ -18,7 +18,8 @@ import {
 import { cn } from '@relay/design-system/utils';
 
 import { ApiError, api, newIdempotencyKey } from '@/lib/api';
-import { useTranslations } from '@/lib/i18n';
+import { useLocalizedRouter, useTranslations } from '@/lib/i18n';
+import { safeReturnPath } from '@/lib/navigation/safe-return-path';
 
 type Method = 'password' | 'magic-link' | 'username';
 
@@ -35,7 +36,7 @@ type Method = 'password' | 'magic-link' | 'username';
  */
 export function SignInForm() {
   const t = useTranslations();
-  const router = useRouter();
+  const router = useLocalizedRouter();
   const searchParams = useSearchParams();
   const { announce } = useAnnouncer();
 
@@ -46,7 +47,7 @@ export function SignInForm() {
   const [error, setError] = useState<string | null>(null);
   const [pending, setPending] = useState(false);
 
-  const next = searchParams.get('next') ?? '/';
+  const next = safeReturnPath(searchParams.get('next'));
 
   const fail = (message: string) => {
     setError(message);

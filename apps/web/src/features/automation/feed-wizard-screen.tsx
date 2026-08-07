@@ -1,7 +1,6 @@
 'use client';
 
 import { useMemo, useState, type ReactElement, type ReactNode } from 'react';
-import { useRouter } from 'next/navigation';
 import { useQuery } from '@tanstack/react-query';
 import { Notice } from '@relay/design-system/patterns';
 import {
@@ -22,6 +21,7 @@ import { useTranslations } from '@relay/i18n/react';
 import { api, type ProviderId } from '@/lib/api';
 import { QueryErrorState } from '@/features/analytics/components/query-error-state';
 import { providerLabelKey } from '@/features/analytics/labels';
+import { useLocalizedRouter } from '@/lib/i18n';
 
 import { FeedPreview } from './components/feed-preview';
 import { RssStepReveal } from './components/rss-step-reveal';
@@ -66,7 +66,7 @@ const EMPTY_DRAFT: FeedDraft = {
 
 export function FeedWizardScreen(): ReactElement {
   const t = useTranslations();
-  const router = useRouter();
+  const router = useLocalizedRouter();
   const [draft, setDraft] = useState<FeedDraft>(EMPTY_DRAFT);
   const [url, setUrl] = useState('');
 

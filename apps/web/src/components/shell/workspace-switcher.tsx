@@ -1,6 +1,5 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
 import { Check, ChevronsUpDown, Plus } from 'lucide-react';
 
 import {
@@ -15,7 +14,7 @@ import { cn } from '@relay/design-system/utils';
 
 import { useInvalidateWorkspace } from '@/lib/api/hooks';
 import { useSession } from '@/lib/auth/session-context';
-import { useTranslations } from '@/lib/i18n';
+import { useLocalizedRouter, useTranslations } from '@/lib/i18n';
 
 /**
  * The workspace switcher.
@@ -27,7 +26,7 @@ import { useTranslations } from '@/lib/i18n';
  */
 export function WorkspaceSwitcher({ className }: { readonly className?: string }) {
   const t = useTranslations();
-  const router = useRouter();
+  const router = useLocalizedRouter();
   const { session, workspace } = useSession();
   const invalidateWorkspace = useInvalidateWorkspace();
 
@@ -92,7 +91,7 @@ export function WorkspaceSwitcher({ className }: { readonly className?: string }
         <DropdownMenuSeparator />
         <DropdownMenuItem
           onSelect={() => {
-            router.push('/settings/workspace');
+            router.push('/settings');
           }}
         >
           {t('shell.workspace.manage')}

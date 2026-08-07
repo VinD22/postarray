@@ -115,18 +115,9 @@ export async function LegalPage(props: LegalPageProps): Promise<ReactNode> {
                   className="border-border-bold scroll-mt-24 space-y-3 border-t-2 pt-8"
                 >
                   <Subheading as="h3">{t.t('web.legal.contact.title')}</Subheading>
-                  <ul className="space-y-1">
-                    {contactKeys.map((key) => (
-                      <li key={key}>
-                        <a
-                          href={`mailto:${t.format(key)}`}
-                          className="text-body-sm text-text-primary decoration-border-strong hover:text-text-accent hover:decoration-accent focus-visible:outline-border-focus font-mono underline underline-offset-[0.22em] focus-visible:outline-2 focus-visible:outline-offset-2"
-                        >
-                          {t.format(key)}
-                        </a>
-                      </li>
-                    ))}
-                  </ul>
+                  <p className="text-body-md text-text-secondary max-w-[70ch] leading-[1.6]">
+                    {t.t('web.legal.contact.prelaunch')}
+                  </p>
                   <p className="text-body-md text-text-tertiary max-w-[70ch] leading-[1.6]">
                     {t.t('web.legal.entity.pending')}
                   </p>

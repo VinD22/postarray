@@ -169,8 +169,18 @@ describe('loadConfigFor', () => {
     const config = loadConfigFor('web', {
       APP_URL: 'http://localhost:3000',
       API_URL: 'http://localhost:3001',
+      NEXT_PUBLIC_SITE_ORIGIN: 'http://localhost:3000',
     });
     expect(config.encryption.localKey).toBeUndefined();
+  });
+
+  it('requires the canonical public origin for the web app', () => {
+    expect(() =>
+      loadConfigFor('web', {
+        APP_URL: 'http://localhost:3000',
+        API_URL: 'http://localhost:3001',
+      }),
+    ).toThrow(ConfigValidationError);
   });
 
   it('requires the short link base url for the links service', () => {

@@ -95,19 +95,7 @@ export async function CorrectionNotice({ locale }: { locale?: string }): Promise
     <div className="border-border-default border-t pt-6">
       <h2 className="text-title-sm text-text-primary">{t.t('web.correction.title')}</h2>
       <p className="text-body-md text-text-secondary mt-2 max-w-[64ch] leading-[1.6]">
-        {t.t('web.correction.body')}
-      </p>
-      <p className="mt-2">
-        <a
-          href={`mailto:${t.t('web.correction.email')}`}
-          className={cn(
-            'text-body-sm text-text-primary decoration-border-strong font-mono underline',
-            'hover:text-text-accent hover:decoration-accent underline-offset-[0.22em]',
-            'focus-visible:outline-border-focus focus-visible:outline-2 focus-visible:outline-offset-2',
-          )}
-        >
-          {t.t('web.correction.email')}
-        </a>
+        {t.t('web.legal.contact.prelaunch')}
       </p>
     </div>
   );

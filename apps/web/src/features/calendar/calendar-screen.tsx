@@ -36,6 +36,8 @@ import {
   useHotkeys,
 } from '@relay/design-system';
 import { useI18n, useTranslations } from '@relay/i18n/react';
+
+import { Link } from '@/components/link';
 import { ApiError } from '@/lib/api/error';
 import { CalendarAgenda } from './calendar-agenda';
 import { CalendarGrid } from './calendar-grid';
@@ -332,7 +334,7 @@ export function CalendarScreen({
             asChild
             iconStart={<CalendarPlus aria-hidden="true" className="size-4" />}
           >
-            <a href={composeHref}>{t('empty.calendar.action')}</a>
+            <Link href={composeHref}>{t('empty.calendar.action')}</Link>
           </Button>
         }
         toolbar={
@@ -588,7 +590,7 @@ function CalendarBody(props: CalendarBodyProps): ReactNode {
             asChild
             iconStart={<CalendarPlus aria-hidden="true" className="size-4" />}
           >
-            <a href={props.composeHref}>{t('empty.calendar.action')}</a>
+            <Link href={props.composeHref}>{t('empty.calendar.action')}</Link>
           </Button>
         }
       />

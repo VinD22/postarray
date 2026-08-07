@@ -38,6 +38,8 @@ import {
 } from '@relay/design-system';
 import { formatCurrency } from '@relay/i18n';
 import { useTranslations } from '@relay/i18n/react';
+
+import { Link } from '@/components/link';
 import { ApiError } from '@/lib/api/error';
 import { useCalendarFormat } from '@/features/calendar/format';
 import {
@@ -113,7 +115,7 @@ export function ReceiptScreen({ contentItemId, calendarHref }: ReceiptScreenProp
             description={t('web.receipt.notFound.body')}
             action={
               <Button variant="secondary" asChild>
-                <a href={calendarHref}>{t('calendar.title')}</a>
+                <Link href={calendarHref}>{t('calendar.title')}</Link>
               </Button>
             }
           />

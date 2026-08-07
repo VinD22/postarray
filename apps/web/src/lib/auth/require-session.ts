@@ -4,6 +4,8 @@ import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 
 import { ApiError, api, type SessionView } from '@/lib/api';
+import { localizedHref } from '@/lib/i18n/routing';
+import { getRequestIntl } from '@/lib/i18n/server';
 
 /**
  * Resolve the session on the server.
@@ -41,11 +43,13 @@ export async function requireSession(currentPath: string): Promise<SessionView> 
   const session = await getSession();
 
   if (session === null) {
-    redirect(`/sign-in?next=${encodeURIComponent(currentPath)}`);
+    const { locale } = await getRequestIntl();
+    redirect(localizedHref(`/sign-in?next=${encodeURIComponent(currentPath)}`, locale));
   }
 
   if (!session.onboardingComplete) {
-    redirect('/onboarding');
+    const { locale } = await getRequestIntl(session.workspace.timeZone);
+    redirect(localizedHref('/onboarding', locale));
   }
 
   return session;

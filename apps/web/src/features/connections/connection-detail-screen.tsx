@@ -26,6 +26,8 @@ import {
 } from '@relay/design-system';
 import { useTranslations } from '@relay/i18n/react';
 import { useQuery } from '@tanstack/react-query';
+
+import { Link } from '@/components/link';
 import { api, keys, type ApiError } from '@/lib/api';
 import { useWorkspaceId } from '@/lib/auth/session-context';
 import { useCalendarFormat } from '@/features/calendar/format';
@@ -85,7 +87,7 @@ export function ConnectionDetailScreen({
             retryLabel={t('action.retry')}
             secondaryAction={
               <Button variant="ghost" size="sm" asChild>
-                <a href={listHref}>{t('connection.title')}</a>
+                <Link href={listHref}>{t('connection.title')}</Link>
               </Button>
             }
           />

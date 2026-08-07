@@ -91,7 +91,7 @@ export function DoneStep() {
         <h2 className="text-title-sm text-text-primary">{t('onboarding.done.nextStep.title')}</h2>
         <ul className="border-border-subtle flex flex-col border-t">
           {[
-            { href: '/connections/new', labelKey: 'onboarding.done.nextStep.connectMore' },
+            { href: '/connections', labelKey: 'onboarding.done.nextStep.connectMore' },
             { href: '/settings/members', labelKey: 'onboarding.done.nextStep.inviteTeam' },
             { href: '/settings/brands', labelKey: 'onboarding.done.nextStep.setApproval' },
             { href: '/settings/agents', labelKey: 'onboarding.done.nextStep.exploreApi' },
@@ -110,11 +110,11 @@ export function DoneStep() {
 
       <div className="flex flex-wrap gap-2">
         <MagneticButton variant="primary" size="lg" asChild>
-          <Link href="/">{t('onboarding.receipt.goHome')}</Link>
+          <Link href="/home">{t('onboarding.receipt.goHome')}</Link>
         </MagneticButton>
         {contentItemId === null ? null : (
           <Button variant="secondary" size="lg" asChild>
-            <Link href={`/posts/${contentItemId}/receipt`}>{t('action.viewReceipt')}</Link>
+            <Link href={`/posts/${contentItemId}`}>{t('action.viewReceipt')}</Link>
           </Button>
         )}
       </div>

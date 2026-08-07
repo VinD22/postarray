@@ -19,7 +19,7 @@ export function CalendarContainer(): ReactNode {
   return (
     <CalendarScreen
       composeHref="/compose"
-      actionCenterHref="/?panel=actions"
+      actionCenterHref="/action-center"
       postHrefPattern="/posts/{id}"
       brands={brands.map((brand) => ({ id: brand.id, name: brand.name }))}
       customerGroups={brands.map((brand) => ({ id: brand.id, name: brand.name }))}

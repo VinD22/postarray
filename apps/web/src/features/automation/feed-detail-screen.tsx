@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, type ReactElement } from 'react';
-import { useRouter } from 'next/navigation';
 import {
   ConfirmDialog,
   DefinitionList,
@@ -14,6 +13,7 @@ import { useTranslations } from '@relay/i18n/react';
 
 import { QueryErrorState } from '@/features/analytics/components/query-error-state';
 import { useValueFormat } from '@/features/analytics/use-value-format';
+import { useLocalizedRouter } from '@/lib/i18n';
 
 import { useDeleteFeed, useFeedHealth, useUpdateFeed } from './rss-queries';
 
@@ -38,7 +38,7 @@ export interface FeedDetailScreenProps {
 
 export function FeedDetailScreen({ feedId, feedTitle }: FeedDetailScreenProps): ReactElement {
   const t = useTranslations();
-  const router = useRouter();
+  const router = useLocalizedRouter();
   const format = useValueFormat();
   const health = useFeedHealth(feedId);
   const update = useUpdateFeed();

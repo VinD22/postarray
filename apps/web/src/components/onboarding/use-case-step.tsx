@@ -1,6 +1,5 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
 import { Notice } from '@relay/design-system/patterns';
@@ -8,7 +7,7 @@ import { Button, Label, RadioGroup, RadioGroupItem } from '@relay/design-system/
 import { cn } from '@relay/design-system/utils';
 
 import { ApiError, api, type OnboardingUseCase } from '@/lib/api';
-import { useTranslations } from '@/lib/i18n';
+import { useLocalizedRouter, useTranslations } from '@/lib/i18n';
 
 const USE_CASES: readonly { readonly id: OnboardingUseCase; readonly labelKey: string }[] = [
   { id: 'creator', labelKey: 'onboarding.role.creator' },
@@ -26,7 +25,7 @@ const USE_CASES: readonly { readonly id: OnboardingUseCase; readonly labelKey: s
  */
 export function UseCaseStep() {
   const t = useTranslations();
-  const router = useRouter();
+  const router = useLocalizedRouter();
 
   const [useCase, setUseCase] = useState<OnboardingUseCase>('creator');
   const [pending, setPending] = useState(false);

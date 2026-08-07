@@ -686,6 +686,8 @@ export const webMarketingMessages = {
   'web.legal.contact.copyright': 'copyright@relay.example',
   'web.legal.contact.affiliates': 'affiliates@relay.example',
   'web.legal.contact.accessibility': 'accessibility@relay.example',
+  'web.legal.contact.prelaunch':
+    'Contact channels will be published here before general availability. No legal or support inbox is operating during this preview.',
   'web.legal.entity.pending':
     'The contracting entity, its registered address and the governing jurisdiction are an open decision and will be named here before launch.',
   'web.legal.index.updated': 'Updated {date}',

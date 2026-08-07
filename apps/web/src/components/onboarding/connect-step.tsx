@@ -1,6 +1,5 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
 import { useEffect, useMemo, useState } from 'react';
 
 import { Notice } from '@relay/design-system/patterns';
@@ -9,7 +8,7 @@ import { cn } from '@relay/design-system/utils';
 
 import { ApiError, api, newIdempotencyKey, type ProviderId } from '@/lib/api';
 import { useAvailableProviders } from '@/lib/api/hooks';
-import { useTranslations } from '@/lib/i18n';
+import { useLocalizedRouter, useTranslations } from '@/lib/i18n';
 import { useSession } from '@/lib/auth/session-context';
 import { PosterCard } from '@/features/marketing/components/loud/poster-card';
 import { ProviderMark } from '@/features/connections/provider';
@@ -81,7 +80,7 @@ const PROVIDERS: readonly {
  */
 export function ConnectStep() {
   const t = useTranslations();
-  const router = useRouter();
+  const router = useLocalizedRouter();
   const { brands } = useSession();
   const availableProviders = useAvailableProviders();
 

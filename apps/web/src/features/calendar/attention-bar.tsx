@@ -12,6 +12,8 @@
 import type { ReactNode } from 'react';
 import { Button, Notice } from '@relay/design-system';
 import { useTranslations } from '@relay/i18n/react';
+
+import { Link } from '@/components/link';
 import { Sticker } from '@/features/marketing/components/loud/sticker';
 
 export interface AttentionBarProps {
@@ -55,7 +57,7 @@ export function AttentionBar({
               </Button>
             )}
             <Button variant="secondary" size="sm" asChild>
-              <a href={actionCenterHref}>{t('web.calendar.attention.open')}</a>
+              <Link href={actionCenterHref}>{t('web.calendar.attention.open')}</Link>
             </Button>
           </>
         }

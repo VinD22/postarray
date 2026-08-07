@@ -124,18 +124,6 @@ export async function organizationJsonLd(locale: string = DEFAULT_LOCALE): Promi
     name: t.t('web.brand.name'),
     url: absoluteUrl(ROUTES.home, locale),
     description: t.t('web.brand.tagline'),
-    contactPoint: [
-      {
-        '@type': 'ContactPoint',
-        contactType: 'security',
-        email: t.t('web.legal.contact.security'),
-      },
-      {
-        '@type': 'ContactPoint',
-        contactType: 'privacy',
-        email: t.t('web.legal.contact.privacy'),
-      },
-    ],
   };
 }
 

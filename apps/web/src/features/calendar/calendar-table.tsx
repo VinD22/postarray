@@ -35,6 +35,8 @@ import {
   focusRingInset,
 } from '@relay/design-system';
 import { useTranslations } from '@relay/i18n/react';
+
+import { Link } from '@/components/link';
 import { AccountIdentity, useProviderName } from '@/features/connections/provider';
 import { useCalendarFormat } from './format';
 import { entryKey, needsAttention, sortEntries } from './filters';
@@ -147,7 +149,7 @@ export function CalendarTable({
                     />
                   </TableCell>
                   <TableCell>
-                    <a
+                    <Link
                       href={hrefForEntry(entry)}
                       className={cn(
                         'text-text-primary block max-w-[28ch] truncate font-medium no-underline',
@@ -156,7 +158,7 @@ export function CalendarTable({
                       )}
                     >
                       {title}
-                    </a>
+                    </Link>
                   </TableCell>
                   <TableCell className="text-text-secondary">
                     {entry.contentLocale ?? t('common.notSet')}
@@ -201,7 +203,7 @@ export function CalendarTable({
                           <>
                             <DropdownMenuSeparator />
                             <DropdownMenuItem asChild>
-                              <a href={receiptHref}>{t('action.viewReceipt')}</a>
+                              <Link href={receiptHref}>{t('action.viewReceipt')}</Link>
                             </DropdownMenuItem>
                           </>
                         ) : null}

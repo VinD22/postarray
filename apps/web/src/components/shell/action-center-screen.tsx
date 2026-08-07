@@ -91,7 +91,7 @@ export function ActionCenterScreen() {
           }}
           emptyAction={
             <Button variant="secondary" asChild>
-              <Link href="/">{t('nav.home')}</Link>
+              <Link href="/home">{t('nav.home')}</Link>
             </Button>
           }
         />

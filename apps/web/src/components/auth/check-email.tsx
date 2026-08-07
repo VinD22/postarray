@@ -1,7 +1,7 @@
 'use client';
 
 import { Link } from '@/components/link';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
 import { useEffect, useState, type FormEvent } from 'react';
 
 import { MailCheck } from 'lucide-react';
@@ -10,7 +10,8 @@ import { Notice } from '@relay/design-system/patterns';
 import { Button, Field, Input } from '@relay/design-system/primitives';
 
 import { ApiError, api, newIdempotencyKey } from '@/lib/api';
-import { useTranslations } from '@/lib/i18n';
+import { useLocalizedRouter, useTranslations } from '@/lib/i18n';
+import { safeReturnPath } from '@/lib/navigation/safe-return-path';
 
 const MAGIC_LINK_MINUTES = 15;
 const RESEND_SECONDS = 60;
@@ -24,10 +25,10 @@ const RESEND_SECONDS = 60;
  */
 export function CheckEmail() {
   const t = useTranslations();
-  const router = useRouter();
+  const router = useLocalizedRouter();
   const searchParams = useSearchParams();
   const email = searchParams.get('email') ?? '';
-  const next = searchParams.get('next') ?? '/';
+  const next = safeReturnPath(searchParams.get('next'));
 
   const [secondsLeft, setSecondsLeft] = useState(RESEND_SECONDS);
   const [status, setStatus] = useState<'idle' | 'sending' | 'failed'>('idle');

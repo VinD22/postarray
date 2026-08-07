@@ -17,6 +17,7 @@ const nextConfig: NextConfig = {
   output: 'standalone',
   outputFileTracingRoot: fileURLToPath(new URL('../../', import.meta.url)),
   poweredByHeader: false,
+  typedRoutes: true,
   transpilePackages: workspacePackages,
 
   // The app is a control plane for other people's accounts. Nothing here is

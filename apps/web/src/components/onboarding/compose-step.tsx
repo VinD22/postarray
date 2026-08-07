@@ -1,7 +1,6 @@
 'use client';
 
 import { Link } from '@/components/link';
-import { useRouter } from 'next/navigation';
 import { useEffect, useMemo, useState } from 'react';
 
 import { useAnnouncer } from '@relay/design-system/hooks';
@@ -12,7 +11,7 @@ import { cn } from '@relay/design-system/utils';
 import { ApiError, api, newIdempotencyKey, type ValidationResult } from '@/lib/api';
 import { useConnections } from '@/lib/api/hooks';
 import { useSession } from '@/lib/auth/session-context';
-import { useFormatters, useTranslations } from '@/lib/i18n';
+import { useFormatters, useLocalizedRouter, useTranslations } from '@/lib/i18n';
 import { providerDotKey } from '@/components/shell/action-center-catalog';
 
 const VALIDATION_DEBOUNCE_MS = 300;
@@ -32,7 +31,7 @@ const VALIDATION_DEBOUNCE_MS = 300;
 export function ComposeStep() {
   const t = useTranslations();
   const format = useFormatters();
-  const router = useRouter();
+  const router = useLocalizedRouter();
   const { workspace, brands } = useSession();
   const { announce } = useAnnouncer();
 

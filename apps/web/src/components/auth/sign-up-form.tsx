@@ -1,7 +1,6 @@
 'use client';
 
 import { Link } from '@/components/link';
-import { useRouter } from 'next/navigation';
 import { useState, type FormEvent } from 'react';
 
 import { useAnnouncer } from '@relay/design-system/hooks';
@@ -10,7 +9,7 @@ import { Button, Field, Input } from '@relay/design-system/primitives';
 import { cn } from '@relay/design-system/utils';
 
 import { ApiError, api, newIdempotencyKey } from '@/lib/api';
-import { useTranslations } from '@/lib/i18n';
+import { useLocalizedRouter, useTranslations } from '@/lib/i18n';
 import {
   LEGAL_VERSION,
   PRIVACY_VERSION_HASH,
@@ -29,7 +28,7 @@ const MIN_PASSWORD_LENGTH = 12;
  */
 export function SignUpForm() {
   const t = useTranslations();
-  const router = useRouter();
+  const router = useLocalizedRouter();
   const { announce } = useAnnouncer();
 
   const [name, setName] = useState('');

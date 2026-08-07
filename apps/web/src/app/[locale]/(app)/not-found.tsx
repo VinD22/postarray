@@ -52,7 +52,7 @@ export default async function AppNotFound() {
 
       <div>
         <Button variant="cta" asChild>
-          <Link href="/">{t.t('nav.home')}</Link>
+          <Link href="/home">{t.t('nav.home')}</Link>
         </Button>
       </div>
     </div>

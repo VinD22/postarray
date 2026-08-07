@@ -1,6 +1,5 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
 import { Search } from 'lucide-react';
 import {
   useCallback,
@@ -25,7 +24,7 @@ import { cn } from '@relay/design-system/utils';
 
 import { StaggerList } from '@/components/motion';
 import { useSession } from '@/lib/auth/session-context';
-import { useTranslations } from '@/lib/i18n';
+import { useLocalizedRouter, useTranslations } from '@/lib/i18n';
 
 import { NAV_ITEMS } from './nav-items';
 
@@ -57,7 +56,7 @@ export function CommandPalette({
   readonly onOpenChange: (open: boolean) => void;
 }) {
   const t = useTranslations();
-  const router = useRouter();
+  const router = useLocalizedRouter();
   const { session, workspace, canPublish } = useSession();
   const listId = useId();
   const inputRef = useRef<HTMLInputElement>(null);
@@ -105,7 +104,7 @@ export function CommandPalette({
         label: t('palette.action.connectAccount'),
         group: actionGroup,
         run: () => {
-          go('/connections/new');
+          go('/connections');
         },
       },
       {
@@ -129,7 +128,7 @@ export function CommandPalette({
         label: t('palette.action.createRule'),
         group: actionGroup,
         run: () => {
-          go('/automation/new');
+          go('/automation/rules/new');
         },
       },
     );

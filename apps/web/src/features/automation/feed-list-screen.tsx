@@ -1,13 +1,13 @@
 'use client';
 
 import type { ReactElement } from 'react';
-import { useRouter } from 'next/navigation';
 import { EmptyState, LoadingState, SkeletonList } from '@relay/design-system/patterns';
 import { Badge, Button } from '@relay/design-system/primitives';
 import { useTranslations } from '@relay/i18n/react';
 
 import { QueryErrorState } from '@/features/analytics/components/query-error-state';
 import { useValueFormat } from '@/features/analytics/use-value-format';
+import { useLocalizedRouter } from '@/lib/i18n';
 
 import { useFeeds } from './rss-queries';
 import type { FeedHealthState, FeedPublishPolicy } from './rss-types';
@@ -37,7 +37,7 @@ const HEALTH_TONE: Readonly<
 
 export function FeedListScreen(): ReactElement {
   const t = useTranslations();
-  const router = useRouter();
+  const router = useLocalizedRouter();
   const format = useValueFormat();
   const feeds = useFeeds();
 

@@ -73,7 +73,7 @@ export default function AppRouteError({
           </Button>
         ) : null}
         <Button variant="ghost" asChild>
-          <Link href="/">{t('nav.home')}</Link>
+          <Link href="/home">{t('nav.home')}</Link>
         </Button>
       </div>
     </div>

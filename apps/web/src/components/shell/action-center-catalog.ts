@@ -116,7 +116,6 @@ export function providerDotKey(provider: ProviderId | null): ProviderKey | undef
 }
 
 interface ActionValueFormatters {
-  readonly relative: (value: string) => string;
   readonly dateTime: (value: string) => string;
 }
 
@@ -134,6 +133,6 @@ export function formatActionItemValues(
 
   return {
     ...values,
-    date: item.kind === 'schedule_conflict' ? format.dateTime(date) : format.relative(date),
+    date: format.dateTime(date),
   };
 }

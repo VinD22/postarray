@@ -187,13 +187,7 @@ export function BillingScreen(): ReactNode {
 
                 <div className="flex flex-col gap-2 pt-2">
                   <p className="text-body-md text-text-secondary max-w-[68ch]">
-                    {t('billing.ui.allowanceFairUse')}{' '}
-                    <a
-                      className="text-text-accent underline underline-offset-2"
-                      href="/legal/fair-use"
-                    >
-                      {t('billing.ui.readFairUse')}
-                    </a>
+                    {t('billing.ui.allowanceFairUse')}
                   </p>
                   <p className="text-body-md text-text-secondary max-w-[68ch]">
                     {t('billing.ui.allowanceMetered')}
@@ -253,7 +247,7 @@ export function BillingScreen(): ReactNode {
                 title={t('billing.ui.usageHeading')}
                 actions={
                   <Button variant="ghost" size="sm" asChild>
-                    <a href="/docs/billing/metered-usage">{t('billing.ui.readMeteredPolicy')}</a>
+                    <Link href="/docs">{t('billing.ui.readMeteredPolicy')}</Link>
                   </Button>
                 }
               >

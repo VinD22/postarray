@@ -22,6 +22,8 @@ import {
 } from '@relay/design-system';
 import { useTranslations } from '@relay/i18n/react';
 
+import { Link } from '@/components/link';
+
 export function ReceiptRouteFallback(): ReactNode {
   const t = useTranslations();
 
@@ -64,7 +66,7 @@ export function ReceiptRouteError({
             : {})}
           secondaryAction={
             <Button variant="ghost" size="sm" asChild>
-              <a href="/calendar">{t('calendar.title')}</a>
+              <Link href="/calendar">{t('calendar.title')}</Link>
             </Button>
           }
         />
@@ -85,7 +87,7 @@ export function ReceiptNotFound(): ReactNode {
           description={t('web.receipt.notFound.body')}
           action={
             <Button variant="secondary" asChild>
-              <a href="/calendar">{t('calendar.title')}</a>
+              <Link href="/calendar">{t('calendar.title')}</Link>
             </Button>
           }
         />

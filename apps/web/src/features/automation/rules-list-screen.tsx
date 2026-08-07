@@ -1,7 +1,6 @@
 'use client';
 
 import type { ReactElement } from 'react';
-import { useRouter } from 'next/navigation';
 import { useBreakpoint } from '@relay/design-system/hooks';
 import { EmptyState, LoadingState, Notice, SkeletonTable } from '@relay/design-system/patterns';
 import {
@@ -20,6 +19,7 @@ import { useI18n, useTranslations } from '@relay/i18n/react';
 
 import { QueryErrorState } from '@/features/analytics/components/query-error-state';
 import { useValueFormat } from '@/features/analytics/use-value-format';
+import { useLocalizedRouter } from '@/lib/i18n';
 
 import { useAutomationRules } from './queries';
 import { ruleSentence } from './rule-sentence';
@@ -56,7 +56,7 @@ const STATE_TONE: Readonly<
 export function RulesListScreen(): ReactElement {
   const t = useTranslations();
   const { locale } = useI18n();
-  const router = useRouter();
+  const router = useLocalizedRouter();
   const format = useValueFormat();
   const isWide = useBreakpoint('md');
   const rules = useAutomationRules();

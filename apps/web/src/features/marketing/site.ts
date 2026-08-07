@@ -265,5 +265,11 @@ export const FOOTER_COLUMNS: readonly {
   },
 ];
 
-/** Public origin. Overridden per environment, never guessed at render time. */
-export const SITE_ORIGIN = process.env.NEXT_PUBLIC_SITE_ORIGIN ?? 'https://relay.example';
+/** Public origin. Deployments validate this separately; local builds stay reproducible. */
+function resolveSiteOrigin(): string {
+  const configured = process.env.NEXT_PUBLIC_SITE_ORIGIN;
+  if (configured !== undefined && configured.trim() !== '') return configured;
+  return 'http://localhost:3000';
+}
+
+export const SITE_ORIGIN = resolveSiteOrigin();

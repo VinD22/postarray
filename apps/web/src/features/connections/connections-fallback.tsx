@@ -13,6 +13,8 @@ import type { ReactNode } from 'react';
 import { Button, ErrorState, LoadingState, PageHeader, SkeletonList } from '@relay/design-system';
 import { useTranslations } from '@relay/i18n/react';
 
+import { Link } from '@/components/link';
+
 export function ConnectionsRouteFallback(): ReactNode {
   const t = useTranslations();
 
@@ -51,7 +53,7 @@ export function ConnectionsRouteError({
             : {})}
           secondaryAction={
             <Button variant="ghost" size="sm" asChild>
-              <a href="/">{t('nav.home')}</a>
+              <Link href="/home">{t('nav.home')}</Link>
             </Button>
           }
         />

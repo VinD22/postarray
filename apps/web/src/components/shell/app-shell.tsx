@@ -70,7 +70,7 @@ export function AppShell({ children }: { readonly children: ReactNode }) {
       <header className="border-border-default bg-surface-canvas sticky top-0 z-(--z-index-sticky) border-b">
         <div className="flex items-center gap-2 px-(--layout-gutter) py-2">
           <Link
-            href="/"
+            href="/home"
             className="text-title-sm text-text-primary font-display hidden shrink-0 items-center px-1 font-bold md:flex"
           >
             {t('shell.appName')}

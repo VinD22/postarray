@@ -200,7 +200,7 @@ export const demoActionItems: readonly ActionItemView[] = [
     dueAt: at(2 * DAY),
     snoozedUntil: null,
     href: '/connections/conn_demo00000000000000002',
-    values: { account: 'Example Studio EU', date: 'in 2 days' },
+    values: { account: 'Example Studio EU', date: at(2 * DAY) },
   },
   {
     id: 'act_demo02',
@@ -223,10 +223,10 @@ export const demoActionItems: readonly ActionItemView[] = [
     provider: 'linkedin',
     subject: 'Case study, Example Studio EU',
     createdAt: at(-26 * HOUR),
-    dueAt: at(3 * HOUR),
+    dueAt: at(-2 * HOUR),
     snoozedUntil: null,
     href: '/approvals/approval_demo000000000001',
-    values: { date: 'yesterday' },
+    values: { date: at(-2 * HOUR) },
   },
   {
     id: 'act_demo04',
@@ -239,7 +239,7 @@ export const demoActionItems: readonly ActionItemView[] = [
     dueAt: null,
     snoozedUntil: null,
     href: '/analytics?account=conn_demo00000000000000003',
-    values: { account: 'example.studio', date: '9 hours ago' },
+    values: { account: 'example.studio', date: at(-9 * HOUR) },
   },
   {
     id: 'act_demo05',
@@ -252,7 +252,7 @@ export const demoActionItems: readonly ActionItemView[] = [
     dueAt: null,
     snoozedUntil: null,
     href: '/automation/rss/rss_demo0000000000000001',
-    values: { name: 'Example Studio blog', date: '14 days ago' },
+    values: { name: 'Example Studio blog', date: at(-14 * DAY) },
   },
   {
     id: 'act_demo06',

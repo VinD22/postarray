@@ -8,6 +8,7 @@ import {
   jsonLdScript,
   localeAlternates,
   offerJsonLd,
+  organizationJsonLd,
   pageMetadata,
   toOpenGraphLocale,
 } from './seo';
@@ -73,5 +74,14 @@ describe('localized metadata and structured data', () => {
     expect(offer.inLanguage).toBe('de');
     expect(offer.offers).toBeUndefined();
     expect(faq.inLanguage).toBe('de');
+  });
+
+  it('does not advertise placeholder contact channels during public prelaunch', async () => {
+    const organization = JSON.parse(jsonLdScript(await organizationJsonLd('en'))) as {
+      readonly contactPoint?: readonly unknown[];
+    };
+
+    expect(organization.contactPoint).toBeUndefined();
+    expect(JSON.stringify(organization)).not.toContain('@relay.example');
   });
 });

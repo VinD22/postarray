@@ -14,7 +14,6 @@ export default async function TrackedLinkPage({
     <LinkDetailScreen
       linkId={linkId}
       ianaTimeZone={session.workspace.timeZone}
-      abuseReportHref="/support/abuse"
     />
   );
 }

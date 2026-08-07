@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, type ReactElement } from 'react';
-import { useRouter } from 'next/navigation';
 import { useBreakpoint } from '@relay/design-system/hooks';
 import { EmptyState, LoadingState, Notice, SkeletonTable } from '@relay/design-system/patterns';
 import {
@@ -21,6 +20,7 @@ import { useTranslations } from '@relay/i18n/react';
 
 import { QueryErrorState } from '@/features/analytics/components/query-error-state';
 import { useValueFormat } from '@/features/analytics/use-value-format';
+import { useLocalizedRouter } from '@/lib/i18n';
 
 import { LinkCreateDialog } from './components/link-create-dialog';
 import { useCreateLink, useTrackedLinks } from './queries';
@@ -47,7 +47,7 @@ const STATE_TONE: Readonly<Record<LinkState, 'neutral' | 'warning' | 'destructiv
 
 export function LinksListScreen(): ReactElement {
   const t = useTranslations();
-  const router = useRouter();
+  const router = useLocalizedRouter();
   const format = useValueFormat();
   const isWide = useBreakpoint('md');
   const [dialogOpen, setDialogOpen] = useState(false);

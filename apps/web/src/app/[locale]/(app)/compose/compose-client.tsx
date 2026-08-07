@@ -9,7 +9,6 @@
  */
 
 import { useCallback, useMemo, useState, type ReactNode } from 'react';
-import { useRouter } from 'next/navigation';
 import {
   EmptyState,
   ErrorState,
@@ -29,6 +28,7 @@ import {
   type ScheduleIntent,
 } from '@/features/composer';
 import { MediaPickerDialog, type AccountRule, type MediaAsset } from '@/features/media';
+import { useLocalizedRouter } from '@/lib/i18n';
 import {
   saveComposer,
   searchDestinations,
@@ -49,7 +49,7 @@ export interface ComposeClientProps {
 
 export function ComposeClient(props: ComposeClientProps): ReactNode {
   const t = useTranslations();
-  const router = useRouter();
+  const router = useLocalizedRouter();
 
   if (props.status === 'loading' || props.bootstrap === null) {
     if (props.status === 'forbidden') {
@@ -158,7 +158,7 @@ function ComposeSurface({
   readonly assets: readonly MediaAsset[];
   readonly contentLocales: readonly string[];
 }): ReactNode {
-  const router = useRouter();
+  const router = useLocalizedRouter();
   const { bootstrap, state, dispatch, summaries, saveNow } = useComposer();
   const [pickerScope, setPickerScope] = useState<string | null | 'closed'>('closed');
 

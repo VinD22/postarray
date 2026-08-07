@@ -21,6 +21,8 @@ import {
 } from '@relay/design-system';
 import { useTranslations } from '@relay/i18n/react';
 
+import { Link } from '@/components/link';
+
 export function CalendarRouteFallback(): ReactNode {
   const t = useTranslations();
 
@@ -69,7 +71,7 @@ export function CalendarRouteError({
             : {})}
           secondaryAction={
             <Button variant="ghost" size="sm" asChild>
-              <a href="/">{t('nav.home')}</a>
+              <Link href="/home">{t('nav.home')}</Link>
             </Button>
           }
         />

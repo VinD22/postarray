@@ -37,7 +37,10 @@ export const GLOBAL_REQUIREMENT: ServiceRequirement = {
 };
 
 export const SERVICE_REQUIREMENTS: Record<RelayService, ServiceRequirement> = {
-  web: { required: ['APP_URL', 'API_URL'], requiredAnyOf: [] },
+  web: {
+    required: ['APP_URL', 'API_URL', 'NEXT_PUBLIC_SITE_ORIGIN'],
+    requiredAnyOf: [],
+  },
   api: {
     required: ['APP_URL', 'API_URL', 'DATABASE_URL'],
     requiredAnyOf: [ENCRYPTION_ANY_OF],

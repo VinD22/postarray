@@ -81,7 +81,7 @@ export function ConnectionHealth() {
           description={t('empty.connections.body')}
           action={
             <Button variant="primary" size="sm" asChild>
-              <Link href="/connections/new">{t('empty.connections.action')}</Link>
+              <Link href="/connections">{t('empty.connections.action')}</Link>
             </Button>
           }
         />

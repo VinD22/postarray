@@ -66,13 +66,13 @@ describe('action center catalogue', () => {
       values: { account: 'Example account', date: '2026-08-08T08:00:00.000Z' },
     };
     const format = {
-      relative: (value: string) => (value.startsWith('2026-08-08') ? 'in 2 days' : value),
-      dateTime: (value: string) => value,
+      dateTime: (value: string) =>
+        value.startsWith('2026-08-08') ? 'August 8, 2026 at 08:00' : value,
     };
 
     expect(formatActionItemValues(item, format, 'Unavailable')).toEqual({
       account: 'Example account',
-      date: 'in 2 days',
+      date: 'August 8, 2026 at 08:00',
     });
     expect(
       formatActionItemValues({ ...item, values: { ...item.values, date: 'in 2 days' } }, format, 'Unavailable'),

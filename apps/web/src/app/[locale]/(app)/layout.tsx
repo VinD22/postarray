@@ -18,7 +18,7 @@ import { getRequestIntl } from '@/lib/i18n/server';
 export const metadata: Metadata = { robots: { index: false, follow: false } };
 
 export default async function AppLayout({ children }: { readonly children: ReactNode }) {
-  const session = await requireSession('/');
+  const session = await requireSession('/home');
   // This tree is already per request because of the session, so resolving the
   // reader's locale and the workspace time zone here costs nothing extra. The
   // inner provider overrides the static default set in the root layout.

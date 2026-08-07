@@ -40,6 +40,8 @@ import {
 } from '@relay/design-system';
 import { formatCurrency } from '@relay/i18n';
 import { useTranslations } from '@relay/i18n/react';
+
+import { Link } from '@/components/link';
 import { useCalendarFormat } from '@/features/calendar/format';
 import { initialsOf } from '@/lib/utils/initials';
 import type { ProviderId } from '@/lib/api/types';
@@ -206,7 +208,7 @@ export function ConnectionRow({
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
               <DropdownMenuItem asChild>
-                <a href={detailHref}>{t('web.connection.action.viewCapabilities')}</a>
+                <Link href={detailHref}>{t('web.connection.action.viewCapabilities')}</Link>
               </DropdownMenuItem>
               <DropdownMenuItem onSelect={() => onMoveGroup(row)}>
                 {t('web.connection.action.moveGroup')}

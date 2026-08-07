@@ -23,6 +23,8 @@ import {
   StatusPill,
 } from '@relay/design-system';
 import { useTranslations } from '@relay/i18n/react';
+
+import { Link } from '@/components/link';
 import { AccountIdentity, useProviderName } from '@/features/connections/provider';
 import { useCalendarFormat } from './format';
 import { canReschedule, hasExternalPost } from './reschedule';
@@ -128,7 +130,7 @@ export function EntryDetailSheet({
         <SheetFooter>
           {receiptHref ? (
             <Button variant="secondary" asChild>
-              <a href={receiptHref}>{t('action.viewReceipt')}</a>
+              <Link href={receiptHref}>{t('action.viewReceipt')}</Link>
             </Button>
           ) : null}
           {canReschedule(entry.state) ? (
@@ -143,7 +145,7 @@ export function EntryDetailSheet({
             </Button>
           ) : null}
           <Button variant="primary" asChild>
-            <a href={hrefForEntry(entry)}>{t('action.viewDetails')}</a>
+            <Link href={hrefForEntry(entry)}>{t('action.viewDetails')}</Link>
           </Button>
         </SheetFooter>
       </SheetContent>

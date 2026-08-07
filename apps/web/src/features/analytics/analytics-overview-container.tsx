@@ -1,12 +1,12 @@
 'use client';
 
 import { useMemo, type ReactElement } from 'react';
-import { useRouter } from 'next/navigation';
 import { useQuery } from '@tanstack/react-query';
 import { LoadingState, SkeletonTable } from '@relay/design-system/patterns';
 import { useTranslations } from '@relay/i18n/react';
 
 import { api } from '@/lib/api';
+import { useLocalizedRouter } from '@/lib/i18n';
 
 import { AnalyticsOverviewScreen } from './analytics-overview-screen';
 import type { AnalyticsFilters } from './components/analytics-toolbar';
@@ -37,7 +37,7 @@ interface ConnectionLike {
 
 export function AnalyticsOverviewContainer(): ReactElement {
   const t = useTranslations();
-  const router = useRouter();
+  const router = useLocalizedRouter();
 
   const brands = useQuery({
     queryKey: ['brands', 'list'],

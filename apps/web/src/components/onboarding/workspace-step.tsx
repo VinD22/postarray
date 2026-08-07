@@ -1,6 +1,5 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
 import { useMemo, useState, type FormEvent } from 'react';
 
 import { Notice } from '@relay/design-system/patterns';
@@ -18,7 +17,7 @@ import {
 import { ACTIVE_LOCALES } from '@relay/i18n';
 
 import { ApiError, api, newIdempotencyKey } from '@/lib/api';
-import { useFormatters, useTranslations } from '@/lib/i18n';
+import { useFormatters, useLocalizedRouter, useTranslations } from '@/lib/i18n';
 
 /**
  * A short, honest list of zones plus whatever the device reports.
@@ -50,7 +49,7 @@ const COMMON_TIME_ZONES = [
 export function WorkspaceStep() {
   const t = useTranslations();
   const format = useFormatters();
-  const router = useRouter();
+  const router = useLocalizedRouter();
 
   const detected = useMemo(() => {
     try {

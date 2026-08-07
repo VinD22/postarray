@@ -1,7 +1,6 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
-import { CircleHelp, ExternalLink } from 'lucide-react';
+import { CircleHelp } from 'lucide-react';
 
 import {
   DropdownMenu,
@@ -14,11 +13,12 @@ import {
 } from '@relay/design-system/primitives';
 
 import { useTranslations } from '@/lib/i18n';
+import { Link } from '@/components/link';
 
-const EXTERNAL_LINKS = [
-  { id: 'docs', href: 'https://docs.relay.example', labelKey: 'shell.help.documentation' },
-  { id: 'status', href: 'https://status.relay.example', labelKey: 'shell.help.platformStatus' },
-  { id: 'changelog', href: 'https://relay.example/changelog', labelKey: 'shell.help.whatChanged' },
+const HELP_LINKS = [
+  { id: 'docs', href: '/docs', labelKey: 'shell.help.documentation' },
+  { id: 'status', href: '/status', labelKey: 'shell.help.platformStatus' },
+  { id: 'changelog', href: '/changelog', labelKey: 'shell.help.whatChanged' },
 ] as const;
 
 /**
@@ -29,7 +29,6 @@ const EXTERNAL_LINKS = [
  */
 export function HelpMenu({ onOpenShortcuts }: { readonly onOpenShortcuts: () => void }) {
   const t = useTranslations();
-  const router = useRouter();
 
   return (
     <DropdownMenu>
@@ -49,25 +48,11 @@ export function HelpMenu({ onOpenShortcuts }: { readonly onOpenShortcuts: () => 
 
         <DropdownMenuSeparator />
 
-        {EXTERNAL_LINKS.map((link) => (
+        {HELP_LINKS.map((link) => (
           <DropdownMenuItem key={link.id} asChild>
-            <a href={link.href} target="_blank" rel="noreferrer noopener">
-              <span className="flex-1">{t(link.labelKey)}</span>
-              <ExternalLink aria-hidden="true" className="text-text-tertiary size-3.5" />
-              <span className="sr-only">{t('a11y.label.externalLink')}</span>
-            </a>
+            <Link href={link.href}>{t(link.labelKey)}</Link>
           </DropdownMenuItem>
         ))}
-
-        <DropdownMenuSeparator />
-
-        <DropdownMenuItem
-          onSelect={() => {
-            router.push('/support');
-          }}
-        >
-          {t('shell.help.contactSupport')}
-        </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   );

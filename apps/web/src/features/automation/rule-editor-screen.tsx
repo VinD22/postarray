@@ -1,7 +1,6 @@
 'use client';
 
 import { useMemo, useState, type ReactElement } from 'react';
-import { useRouter } from 'next/navigation';
 import { useQuery } from '@tanstack/react-query';
 import { useAnnouncer } from '@relay/design-system/hooks';
 import {
@@ -25,6 +24,7 @@ import { useI18n, useTranslations } from '@relay/i18n/react';
 import { api } from '@/lib/api';
 import { QueryErrorState } from '@/features/analytics/components/query-error-state';
 import { useOnlineStatus } from '@/features/analytics/use-online-status';
+import { useLocalizedRouter } from '@/lib/i18n';
 
 import {
   hiddenReasonKey,
@@ -102,7 +102,7 @@ export interface RuleEditorScreenProps {
 export function RuleEditorScreen({ ruleId }: RuleEditorScreenProps): ReactElement {
   const t = useTranslations();
   const { locale } = useI18n();
-  const router = useRouter();
+  const router = useLocalizedRouter();
   const { announce } = useAnnouncer();
   const online = useOnlineStatus();
 
