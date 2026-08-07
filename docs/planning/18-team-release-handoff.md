@@ -49,17 +49,20 @@ Current founder limits in force:
 
 ## 2. Audit snapshot at handoff
 
-The baseline commit is `c08492a` (`docs(plan): record deletion release gates`)
-after the owner-only deletion slice in `274914f`. The working tree may contain
-follow-up data-export and KMS changes; those changes are not release evidence
-until committed and verified.
+The deletion checkpoint is `c08492a` (`docs(plan): record deletion release
+gates`) after the owner-only deletion slice in `274914f`. Follow-up work is now
+committed as `0ef0257` (KMS envelope encryption and authenticated plaintext
+export download), `67e3cc2` (static trial status and truthful export copy) and
+the current handoff commit (this handoff and the connector audit). These commits are locally
+verified code, not proof of a provisioned Neon, Storage, Temporal, Auth or
+provider environment.
 
 | Area | What exists locally | What is still unproven or incomplete |
 | --- | --- | --- |
 | Architecture | Shared application services are used by the five product surfaces. Production guards reject fake connectors, local storage, in-memory coordination and inline scheduling. | Deployed environment must prove every surface resolves the same policy, idempotency and workflow path. |
 | Publishing | Approval, preflight, idempotency, receipts, audit events and simulator duplicate-publication tests exist. | Live provider canary, crash/timeout/revoked-token evidence and read-back are still required per connector. |
 | Media | Upload reservations, checksums, MIME/size validation, 20/500 MiB limits and a 30-day purge path exist. | Private Neon Storage, sentinel, signed operations, deletion retries and authenticated browser evidence are missing. |
-| Data export | Workspace-scoped request, idempotency, JSON archive builder, checksum, expiry and local AES envelope exist. | Production KMS envelope/decryption, plaintext authenticated download, private object access and replay/crash evidence must be committed and witnessed. |
+| Data export | Workspace-scoped request, idempotency, JSON archive builder, checksum, expiry, local AES envelope, KMS envelope/decryption and authenticated plaintext download exist locally. | KMS rotation, private object access, real expiry/purge and replay/crash evidence must be witnessed in the release environment. |
 | Workspace deletion | Owner-only step-up, exact name confirmation, seven-day cooling-off request, cancellation, failure state, durable idempotency and local worker gateway exist. | Real Prisma/RLS/Storage/Temporal run, provider revoke evidence, all failure-point replays and retention-bound cleanup are missing. |
 | Identity | Authenticated session inventory and revoke-other-sessions routes and Settings controls exist. | Neon Auth is not provisioned; durable provider session linkage, recovery, rotation and authenticated closure journey are pending. |
 | Connectors | Capability states, fake simulator and contract scaffolding exist. | No production connector may be called supported until its definition-of-done packet and isolated canary are signed. |

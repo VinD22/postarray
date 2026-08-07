@@ -67,9 +67,10 @@ expires export objects, tombstones analytics and soft-deletes the workspace so
 retention-bound audit and publication evidence can remain addressable. Published
 posts are never represented as removed from their platforms.
 
-This is production-shaped code, not production evidence. The release still
-needs a KMS-backed encryption adapter, a private Relay Neon Storage bucket, an
-isolated Relay Neon branch with migrations through
+This is production-shaped code, not production evidence. The release now has a
+KMS-backed encryption adapter and authenticated plaintext export route in the
+codebase. It still needs a private Relay Neon Storage bucket, an isolated Relay
+Neon branch with migrations through
 `0061_deletion_request_idempotency.sql`, live Temporal replay and crash
 evidence, verified provider-side revoke adapters, and an authenticated browser
 pass.
@@ -109,8 +110,8 @@ the release commit on an isolated environment.
 | ID | Owner | Scope | Acceptance gate |
 | --- | --- | --- | --- |
 | REL-001 | Database and tenancy | Create the isolated Relay Neon release branch, apply migrations through `0061`, verify checksums, seed two workspaces and run the full RLS matrix. | Cross-workspace reads and writes fail for every tenant table, including export and deletion requests; backup and restore report is attached; `pnpm release:check` is green against the branch. |
-| REL-002 | Security/platform | Implement the production KMS adapter for `DataExportEncryptionPort`, including key version metadata, rotation, access policy and startup fail-closed behavior. | A key rotation decrypts old envelopes and encrypts new ones; no local key or plaintext appears in production logs, fixtures or object metadata. |
-| REL-003 | Storage/data rights | Provision private Neon Storage, run the health sentinel, exercise signed upload/head/read/delete, and promote the export builder from local AES to KMS. | Export fixture contains the documented allow-list only, checksum matches the object, expiry and purge are deterministic, and missing objects produce a recoverable error. |
+| REL-002 | Security/platform | Verify and promote the KMS adapter for `DataExportEncryptionPort`, including key version metadata, rotation, access policy and startup fail-closed behavior. | A key rotation decrypts old envelopes and encrypts new ones; no local key or plaintext appears in production logs, fixtures or object metadata. |
+| REL-003 | Storage/data rights | Provision private Neon Storage, run the health sentinel, exercise signed upload/head/read/delete, and promote the export builder's KMS path. | Export fixture contains the documented allow-list only, checksum matches the object, expiry and purge are deterministic, and missing objects produce a recoverable error. |
 | REL-004 | Application/worker | Promote the owner-only deletion request lifecycle in `274914f` to the isolated environment. Validate real Prisma/RLS, step-up and workspace-name confirmation, idempotency races, storage failures, cancellation races, media derivatives, automation/feed cleanup and the distinction between Relay credential revocation and provider-side revoke. | A witnessed request exposes a seven-day status and cancel path, then a replayed deletion leaves no Relay credential or tenant storage object behind, expires export objects, revokes memberships/sessions, records tombstones and audit events, resumes after every injected failure point, and reports provider revoke as unavailable until its connector gate is signed. |
 | REL-005 | Temporal/reliability | Add export and deletion replay histories plus crash points before storage write, after storage write and before/after the durable state update. | Duplicate workflow starts produce one workflow; retries produce one receipt and one effective object; all replay histories pass on the pinned worker build. |
 | REL-006 | Integrations | Promote one official provider, starting with LinkedIn, through `docs/connectors/definition-of-done.md`. Keep all other providers explicitly unavailable. | OAuth review/scopes, account discovery, capability snapshot, text/media publish, read-back, revoked-token and duplicate-publication canaries are signed. |
@@ -263,7 +264,7 @@ Owner: platform engineer. Dependencies: B and C.
 2. Create and check the checksum-bearing `health/probe` sentinel. Test both
    upload size classes, MIME validation, checksum mismatch, suspicious scan,
    expired-object purge and retry after a database write failure.
-3. Promote the export workflow already present in `d32de43`. Supply the
+3. Promote the export workflow already present in `d32de43`. Verify the
    KMS-backed encryption port, apply the idempotency migration, verify the
    private bucket and run crash/retry/replay cases. The workflow must snapshot
    text, post metadata, receipts, audit references and membership metadata,
