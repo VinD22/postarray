@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
-import type { DataExportView, DeletionRequestView } from '@relay/application';
+import type { DataExportContent, DataExportView, DeletionRequestView } from '@relay/application';
 import type { Paginated } from '@relay/contracts';
 
 import type { ActorContext, CursorQuery, Services } from '../../application/port';
@@ -27,6 +27,10 @@ export class DataService {
     exportId: string,
   ): Promise<{ readonly downloadUrl: string; readonly expiresAt: string }> {
     return this.services.dataExports.download(ctx, exportId);
+  }
+
+  content(ctx: ActorContext, exportId: string): Promise<DataExportContent> {
+    return this.services.dataExports.content(ctx, exportId);
   }
 
   requestDeletion(ctx: ActorContext, input: RequestDeletionInput): Promise<DeletionRequestView> {

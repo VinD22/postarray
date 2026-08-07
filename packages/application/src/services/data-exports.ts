@@ -6,9 +6,11 @@ import {
   type DataExportScope,
   type Paginated,
 } from '@relay/contracts';
+import { createHash } from 'node:crypto';
 
 import type {
   ActorContext,
+  DataExportContent,
   DataExportService,
   DataExportView,
   PageQuery,
@@ -24,6 +26,7 @@ import { authorized } from '../internal/runtime';
 import { createDataExportBuilder } from './data-export-builder';
 
 const EXPORT_LINK_TTL_SECONDS = 15 * 60;
+const EXPORT_CONTENT_TYPE = 'application/json' as const;
 
 const DATA_EXPORT_SELECT = {
   id: true,
@@ -55,6 +58,13 @@ type DataExportRow = {
   updatedAt: Date;
 };
 
+type StoredExportRow = DataExportRow & {
+  storageKey: string;
+  byteSize: bigint;
+  checksumSha256: string;
+  expiresAt: Date;
+};
+
 function toView(row: DataExportRow): DataExportView {
   return {
     id: row.id,
@@ -84,6 +94,28 @@ function workflowContext(ctx: ActorContext): WorkflowActorContext {
     approvalLevel: ctx.approvalLevel,
     locale: ctx.locale,
   };
+}
+
+function contentUrl(apiUrl: string | undefined, workspaceId: string, exportId: string): string {
+  if (apiUrl === undefined) {
+    throw invalid('errors.export_unavailable', { reason: 'api_url_missing' });
+  }
+  return `${apiUrl.replace(/\/+$/u, '')}/v1/workspaces/${encodeURIComponent(workspaceId)}/data/exports/${encodeURIComponent(exportId)}/content`;
+}
+
+function assertStoredExport(row: DataExportRow, now: Date): asserts row is StoredExportRow {
+  if (
+    (row.state !== 'ready' && row.state !== 'delivered') ||
+    row.storageKey === null ||
+    row.byteSize === null ||
+    row.checksumSha256 === null ||
+    row.expiresAt === null
+  ) {
+    throw invalid('errors.export_not_ready', { exportId: row.id });
+  }
+  if (row.expiresAt.getTime() <= now.getTime()) {
+    throw invalid('errors.export_expired', { exportId: row.id });
+  }
 }
 
 /** Workspace data rights, with a strict allow-list enforced by the worker. */
@@ -212,32 +244,84 @@ export function createDataExportService(deps: ServiceDeps): DataExportService {
         if (row === null) {
           throw notFound('data_export', exportId);
         }
-        if (
-          (row.state !== 'ready' && row.state !== 'delivered') ||
-          row.storageKey === null ||
-          row.expiresAt === null
-        ) {
-          throw invalid('errors.export_not_ready', { exportId });
+        const now = deps.clock.now();
+        try {
+          assertStoredExport(row, now);
+        } catch (error) {
+          if (row.expiresAt !== null && row.expiresAt.getTime() <= now.getTime()) {
+            await db.dataExport.update({ where: { id: row.id }, data: { state: 'expired' } });
+            await recordAudit(db, actor, {
+              action: 'data.export.expired',
+              targetType: 'data_export',
+              targetId: row.id,
+            });
+          }
+          throw error;
         }
+
+        return {
+          downloadUrl: contentUrl(deps.config.core.apiUrl, ctx.workspaceId, row.id),
+          expiresAt: row.expiresAt.toISOString(),
+        };
+      });
+    },
+
+    async content(ctx: ActorContext, exportId: string): Promise<DataExportContent> {
+      return authorized(deps, ctx, 'analytics.export', undefined, async (db, actor) => {
+        const row = await db.dataExport.findFirst({
+          where: { id: exportId },
+          select: DATA_EXPORT_SELECT,
+        });
+        if (row === null) throw notFound('data_export', exportId);
 
         const now = deps.clock.now();
-        if (row.expiresAt.getTime() <= now.getTime()) {
-          await db.dataExport.update({
-            where: { id: row.id },
-            data: { state: 'expired' },
-          });
-          await recordAudit(db, actor, {
-            action: 'data.export.expired',
-            targetType: 'data_export',
-            targetId: row.id,
-          });
-          throw invalid('errors.export_expired', { exportId });
+        try {
+          assertStoredExport(row, now);
+        } catch (error) {
+          if (row.expiresAt !== null && row.expiresAt.getTime() <= now.getTime()) {
+            await db.dataExport.update({ where: { id: row.id }, data: { state: 'expired' } });
+            await recordAudit(db, actor, {
+              action: 'data.export.expired',
+              targetType: 'data_export',
+              targetId: row.id,
+            });
+          }
+          throw error;
         }
 
-        const downloadUrl = await deps.storage.createDownloadUrl(
-          row.storageKey,
-          EXPORT_LINK_TTL_SECONDS,
-        );
+        const stored = await deps.storage.head(row.storageKey);
+        if (
+          stored === null ||
+          stored.byteSize !== Number(row.byteSize) ||
+          stored.checksumSha256 !== row.checksumSha256
+        ) {
+          throw invalid('errors.export_unavailable', { reason: 'object_integrity' });
+        }
+        const encrypted = await deps.storage.read(row.storageKey);
+        if (
+          encrypted.byteLength !== Number(row.byteSize) ||
+          createHash('sha256').update(encrypted).digest('hex') !== row.checksumSha256
+        ) {
+          throw invalid('errors.export_unavailable', { reason: 'object_integrity' });
+        }
+        const encryption = deps.exportEncryption;
+        if (encryption === undefined) {
+          throw invalid('errors.export_unavailable', { reason: 'export_encryption_unavailable' });
+        }
+        const plaintext = await encryption.decrypt({
+          workspaceId: ctx.workspaceId,
+          exportId: row.id,
+          bytes: encrypted,
+        });
+        try {
+          const parsed: unknown = JSON.parse(Buffer.from(plaintext).toString('utf8'));
+          if (typeof parsed !== 'object' || parsed === null || Array.isArray(parsed)) {
+            throw new Error('archive_not_object');
+          }
+        } catch {
+          throw invalid('errors.export_unavailable', { reason: 'archive_invalid' });
+        }
+
         await db.dataExport.update({
           where: { id: row.id },
           data: { state: 'delivered', downloadedAt: now },
@@ -246,10 +330,15 @@ export function createDataExportService(deps: ServiceDeps): DataExportService {
           action: 'data.export.downloaded',
           targetType: 'data_export',
           targetId: row.id,
-          metadata: { linkTtlSeconds: EXPORT_LINK_TTL_SECONDS },
+          metadata: { linkTtlSeconds: EXPORT_LINK_TTL_SECONDS, contentType: EXPORT_CONTENT_TYPE },
         });
 
-        return { downloadUrl, expiresAt: row.expiresAt.toISOString() };
+        return {
+          bytes: plaintext,
+          contentType: EXPORT_CONTENT_TYPE,
+          filename: `relay-workspace-export-${row.id}.json`,
+          expiresAt: row.expiresAt.toISOString(),
+        };
       });
     },
   };

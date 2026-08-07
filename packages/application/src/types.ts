@@ -331,6 +331,18 @@ export interface DataExportEncryptionPort {
     readonly exportId: string;
     readonly plaintext: Uint8Array;
   }): Promise<{ readonly bytes: Uint8Array; readonly keyVersion: string }>;
+  decrypt(input: {
+    readonly workspaceId: string;
+    readonly exportId: string;
+    readonly bytes: Uint8Array;
+  }): Promise<Uint8Array>;
+}
+
+export interface DataExportContent {
+  readonly bytes: Uint8Array;
+  readonly contentType: 'application/json';
+  readonly filename: string;
+  readonly expiresAt: string;
 }
 
 export interface SchedulerPort {
@@ -1296,6 +1308,7 @@ export interface DataExportService {
     ctx: ActorContext,
     exportId: string,
   ): Promise<{ readonly downloadUrl: string; readonly expiresAt: string }>;
+  content(ctx: ActorContext, exportId: string): Promise<DataExportContent>;
 }
 
 export interface HealthService {

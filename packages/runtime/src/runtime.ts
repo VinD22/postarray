@@ -40,6 +40,7 @@ import type { Logger } from '@relay/observability';
 
 import { NeonObjectStorage } from './neon-storage';
 import { LocalDataExportEncryption } from './data-export-encryption';
+import { AwsDataExportKmsClient, KmsDataExportEncryption } from './kms-data-export-encryption';
 import { ResendMailer } from './resend-mailer';
 import { TemporalScheduler } from './temporal-scheduler';
 
@@ -684,15 +685,19 @@ function configuredStorage(config: RelayConfig, clock: Clock): StoragePort | nul
 }
 
 function configuredDataExportEncryption(config: RelayConfig): DataExportEncryptionPort | null {
-  // A KMS key id without a KMS adapter is deliberately not treated as
-  // encryption. The export activity fails closed until the deployment supplies
-  // the provider-backed adapter.
   if (config.encryption.kmsKeyId !== undefined) {
-    return null;
+    return new KmsDataExportEncryption({
+      keyId: config.encryption.kmsKeyId,
+      client: new AwsDataExportKmsClient({ region: config.encryption.kmsRegion }),
+    });
   }
   return config.encryption.localKey === undefined
     ? null
     : new LocalDataExportEncryption(config.encryption.localKey);
+}
+
+function hasConfiguredDataExportEncryption(config: RelayConfig): boolean {
+  return config.encryption.kmsKeyId !== undefined || config.encryption.localKey !== undefined;
 }
 
 function configuredMailer(config: RelayConfig, logger: Logger): MailerPort | null {
@@ -764,8 +769,7 @@ export function createApplicationRuntime(options: ApplicationRuntimeOptions): Ap
       adapters.mailer === undefined &&
       (options.config.email.apiKey === undefined || options.config.email.from === undefined);
     const exportEncryptionMissing =
-      adapters.exportEncryption === undefined &&
-      configuredDataExportEncryption(options.config) === null;
+      adapters.exportEncryption === undefined && !hasConfiguredDataExportEncryption(options.config);
     if (
       missing.length > 0 ||
       storageMissing ||
@@ -838,6 +842,9 @@ export function createApplicationRuntime(options: ApplicationRuntimeOptions): Ap
       }
       if (scheduler instanceof TemporalScheduler) {
         await scheduler.close();
+      }
+      if (exportEncryption instanceof KmsDataExportEncryption) {
+        exportEncryption.close();
       }
       if (ownsPrisma) {
         await prisma.$disconnect();

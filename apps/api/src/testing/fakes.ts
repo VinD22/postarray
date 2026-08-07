@@ -213,7 +213,7 @@ export function testConfig(overrides: Partial<RelayConfig> = {}): RelayConfig {
         model: 'deepseek-v4-flash',
       },
     },
-    encryption: { kmsKeyId: undefined, localKey: undefined },
+    encryption: { kmsKeyId: undefined, kmsRegion: 'us-east-2', localKey: undefined },
     oauth: {
       issuerUrl: 'https://api.relay.test',
       signingKmsKeyId: undefined,

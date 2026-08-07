@@ -232,6 +232,7 @@ export function createRefusingServices(): Services {
       get: refuse('data_export'),
       build: refuse('data_export'),
       download: refuse('data_export'),
+      content: refuse('data_export'),
     },
     dataLifecycle: {
       request: refuse('deletion_request'),

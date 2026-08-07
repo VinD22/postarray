@@ -1,10 +1,56 @@
-import { createCipheriv, randomBytes } from 'node:crypto';
+import { createCipheriv, createDecipheriv, randomBytes } from 'node:crypto';
 
 import type { DataExportEncryptionPort } from '@relay/application';
 import { RelayError } from '@relay/contracts';
+import { z } from 'zod';
 
 const KEY_BYTES = 32;
 const NONCE_BYTES = 12;
+const AUTH_TAG_BYTES = 16;
+
+const base64 = z
+  .string()
+  .min(1)
+  .regex(/^[A-Za-z0-9+/]+={0,2}$/u);
+const localEnvelopeSchema = z
+  .object({
+    format: z.literal('relay-export-encrypted-v1'),
+    algorithm: z.literal('aes-256-gcm'),
+    keyVersion: z.string().min(1),
+    nonce: base64,
+    authTag: base64,
+    ciphertext: base64,
+  })
+  .strict();
+
+type LocalEnvelope = z.infer<typeof localEnvelopeSchema>;
+
+function invalidEnvelope(cause?: unknown): RelayError {
+  return new RelayError('INTERNAL', {
+    messageKey: 'errors.export_unavailable',
+    details: { reason: 'export_envelope_invalid' },
+    ...(cause === undefined ? {} : { cause }),
+  });
+}
+
+function parseEnvelope(bytes: Uint8Array): LocalEnvelope {
+  try {
+    return localEnvelopeSchema.parse(JSON.parse(Buffer.from(bytes).toString('utf8')));
+  } catch (cause) {
+    throw invalidEnvelope(cause);
+  }
+}
+
+function decodePart(value: string, expectedMinBytes: number, reason: string): Buffer {
+  const decoded = Buffer.from(value, 'base64');
+  if (decoded.length < expectedMinBytes) {
+    throw new RelayError('INTERNAL', {
+      messageKey: 'errors.export_unavailable',
+      details: { reason },
+    });
+  }
+  return decoded;
+}
 
 /** Envelope written to private object storage. Plaintext never leaves memory. */
 export class LocalDataExportEncryption implements DataExportEncryptionPort {
@@ -40,5 +86,24 @@ export class LocalDataExportEncryption implements DataExportEncryptionPort {
       ciphertext: ciphertext.toString('base64'),
     };
     return { bytes: Buffer.from(JSON.stringify(envelope), 'utf8'), keyVersion: this.#keyVersion };
+  }
+
+  async decrypt(input: {
+    readonly workspaceId: string;
+    readonly exportId: string;
+    readonly bytes: Uint8Array;
+  }): Promise<Uint8Array> {
+    const envelope = parseEnvelope(input.bytes);
+    const nonce = decodePart(envelope.nonce, NONCE_BYTES, 'export_nonce_invalid');
+    const authTag = decodePart(envelope.authTag, AUTH_TAG_BYTES, 'export_auth_tag_invalid');
+    const ciphertext = decodePart(envelope.ciphertext, 1, 'export_ciphertext_invalid');
+    try {
+      const decipher = createDecipheriv('aes-256-gcm', this.#key, nonce);
+      decipher.setAAD(Buffer.from(`${input.workspaceId}|${input.exportId}`, 'utf8'));
+      decipher.setAuthTag(authTag);
+      return Buffer.concat([decipher.update(ciphertext), decipher.final()]);
+    } catch (cause) {
+      throw invalidEnvelope(cause);
+    }
   }
 }

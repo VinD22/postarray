@@ -21,6 +21,7 @@ const requestExport = vi.fn();
 const listExports = vi.fn();
 const getExport = vi.fn();
 const downloadExport = vi.fn();
+const contentExport = vi.fn();
 const requestDeletion = vi.fn();
 const currentDeletion = vi.fn();
 const getDeletion = vi.fn();
@@ -61,6 +62,7 @@ beforeEach(async () => {
   listExports.mockReset();
   getExport.mockReset();
   downloadExport.mockReset();
+  contentExport.mockReset();
   requestDeletion.mockReset();
   currentDeletion.mockReset();
   getDeletion.mockReset();
@@ -74,6 +76,7 @@ beforeEach(async () => {
         list: listExports,
         get: getExport,
         download: downloadExport,
+        content: contentExport,
       },
       dataLifecycle: {
         ...base.dataLifecycle,
@@ -172,6 +175,38 @@ describe('data export routes', () => {
     );
     expect(cancelDeletion).toHaveBeenCalledWith(
       expect.objectContaining({ idempotencyKey: 'delete_cancel_intent' }),
+      view.id,
+    );
+  });
+
+  it('streams a workspace-scoped decrypted export with download headers', async () => {
+    const session = await seedSession(harness, { scopes: ['analytics:read'] });
+    const view = exportView(session.workspaceId);
+    const body = Buffer.from('{"ok":true}', 'utf8');
+    contentExport.mockResolvedValue({
+      bytes: body,
+      contentType: 'application/json',
+      filename: 'relay-export.json',
+      expiresAt: '2026-08-08T00:00:00.000Z',
+    });
+
+    const response = await request(harness.server)
+      .get(`/v1/workspaces/${session.workspaceId}/data/exports/${view.id}/content`)
+      .set('cookie', session.cookie)
+      .set('user-agent', TEST_USER_AGENT)
+      .set('accept-language', TEST_ACCEPT_LANGUAGE);
+
+    expect(response.status).toBe(200);
+    expect(response.headers['content-type']).toContain('application/json');
+    expect(response.headers['content-disposition']).toBe(
+      'attachment; filename="relay-export.json"',
+    );
+    expect(response.headers['cache-control']).toBe('private, no-store');
+    expect(response.body).toEqual({ ok: true });
+    expect(contentExport).toHaveBeenCalledWith(
+      expect.objectContaining({
+        workspaceId: session.workspaceId,
+      }),
       view.id,
     );
   });

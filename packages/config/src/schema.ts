@@ -203,6 +203,7 @@ const aiShape = {
 
 const encryptionShape = {
   TOKEN_ENCRYPTION_KMS_KEY_ID: identifier.optional(),
+  TOKEN_ENCRYPTION_KMS_REGION: identifier.default('us-east-2'),
   TOKEN_ENCRYPTION_LOCAL_KEY: base64Key32.optional(),
 };
 

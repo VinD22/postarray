@@ -117,6 +117,7 @@ export interface AiConfig {
 
 export interface EncryptionConfig {
   readonly kmsKeyId: string | undefined;
+  readonly kmsRegion: string;
   /** Local development only. Production uses envelope encryption via KMS. */
   readonly localKey: string | undefined;
 }
@@ -313,6 +314,7 @@ function toConfig(
     },
     encryption: {
       kmsKeyId: env.TOKEN_ENCRYPTION_KMS_KEY_ID,
+      kmsRegion: env.TOKEN_ENCRYPTION_KMS_REGION,
       localKey: env.TOKEN_ENCRYPTION_LOCAL_KEY,
     },
     oauth: {

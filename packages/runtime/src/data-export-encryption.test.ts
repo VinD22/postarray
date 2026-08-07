@@ -1,5 +1,3 @@
-import { createDecipheriv } from 'node:crypto';
-
 import type { RelayError } from '@relay/contracts';
 import { describe, expect, it } from 'vitest';
 
@@ -37,15 +35,16 @@ describe('LocalDataExportEncryption', () => {
       keyVersion: 'test-v1',
     });
     expect(Buffer.from(first.bytes).toString('utf8')).not.toContain(plaintext.toString('utf8'));
-
-    const decipher = createDecipheriv('aes-256-gcm', key, Buffer.from(envelope.nonce, 'base64'));
-    decipher.setAAD(Buffer.from('ws_123|export_123', 'utf8'));
-    decipher.setAuthTag(Buffer.from(envelope.authTag, 'base64'));
-    const recovered = Buffer.concat([
-      decipher.update(Buffer.from(envelope.ciphertext, 'base64')),
-      decipher.final(),
-    ]);
-    expect(recovered.equals(plaintext)).toBe(true);
+    expect(
+      await encryption.decrypt({
+        workspaceId: 'ws_123',
+        exportId: 'export_123',
+        bytes: first.bytes,
+      }),
+    ).toEqual(plaintext);
+    await expect(
+      encryption.decrypt({ workspaceId: 'ws_other', exportId: 'export_123', bytes: first.bytes }),
+    ).rejects.toMatchObject({ code: 'INTERNAL' });
   });
 
   it('rejects keys that cannot provide AES-256 encryption', () => {

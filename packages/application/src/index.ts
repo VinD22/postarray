@@ -41,6 +41,7 @@ export type {
   ContentService,
   DataExportService,
   DataExportBuildResult,
+  DataExportContent,
   DataExportEncryptionPort,
   DataExportWorkflowInput,
   CreateDraftInput,
