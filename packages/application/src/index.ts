@@ -8,6 +8,7 @@
  */
 
 export { createServices } from './services/index';
+export { oauthCompletionReady } from './services/connections';
 export {
   createOAuthGateway,
   selectOAuthAccounts,
@@ -57,6 +58,7 @@ export type {
   DataExportWorkflowInput,
   CreateDraftInput,
   CredentialVaultService,
+  CredentialVaultPort,
   EntitlementCheck,
   EntitlementStateView,
   GrowthService,

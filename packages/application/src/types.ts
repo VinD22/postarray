@@ -33,7 +33,9 @@ import type {
 import type { RelayConfig } from '@relay/config';
 import type {
   ClientAuthMethod,
+  CredentialAad,
   CredentialResult,
+  EncryptedCredential,
   ExternalAccount,
   OAuthClientConfig,
   ProviderHttpClient,
@@ -42,6 +44,8 @@ import type {
 } from '@relay/connectors';
 import type { RelayPrismaClient } from '@relay/database';
 import type { HealthReport, Logger } from '@relay/observability';
+
+import type { CredentialStorePort } from './ports/credentials';
 
 import type {
   ActionItemCategory,
@@ -583,6 +587,14 @@ export interface ServiceDeps {
   readonly prisma: RelayPrismaClient;
   readonly kv: KeyValueStore;
   readonly connectors: ConnectorRegistry;
+  /**
+   * Envelope encryption is injected at the composition root. Keeping it out
+   * of the application package prevents a callback from ever persisting a
+   * plaintext provider token or silently falling back to an unsafe key.
+   */
+  readonly credentialVault?: CredentialVaultPort;
+  /** Workspace-scoped and transaction-bound in production composition. */
+  readonly credentialStore?: CredentialStorePort;
   readonly ai: AiGateway;
   readonly billing: BillingGateway;
   readonly scheduler: SchedulerPort;
@@ -592,6 +604,14 @@ export interface ServiceDeps {
   readonly logger: Logger;
   readonly clock: Clock;
   readonly config: RelayConfig;
+}
+
+export interface CredentialVaultPort {
+  encrypt(input: {
+    readonly secret: SecretValue | string;
+    readonly aad: CredentialAad;
+    readonly purpose?: string;
+  }): Promise<EncryptedCredential>;
 }
 
 // ---------------------------------------------------------------------------

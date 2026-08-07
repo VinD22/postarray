@@ -147,6 +147,21 @@ export function oauthVerifierKey(transactionId: string): string {
   return `${OAUTH_VERIFIER_KEY_PREFIX}${transactionId}`;
 }
 
+/**
+ * OAuth completion is a composed capability, not a provider-configured flag.
+ * All three pieces are required before a callback may exchange a code or
+ * claim a connection row.
+ */
+export function oauthCompletionReady(
+  deps: Pick<ServiceDeps, 'connectors' | 'credentialVault' | 'credentialStore'>,
+): boolean {
+  return (
+    deps.connectors.completeOAuth !== undefined &&
+    deps.credentialVault !== undefined &&
+    deps.credentialStore !== undefined
+  );
+}
+
 /** Every connected row except an explicit disconnect occupies a plan slot. */
 export const CHANNEL_SLOT_STATUSES = [
   'active',
@@ -345,6 +360,26 @@ export function createConnectionService(deps: ServiceDeps): ConnectionService {
       input: { transactionId: string; code: string; state: string },
     ): Promise<readonly ConnectionView[]> {
       return authorized(deps, ctx, 'connection.connect', undefined, async (db) => {
+        // A callback must never exchange a code or claim a connection until
+        // the composition root provides both the connector completion port and
+        // transaction-bound envelope persistence. The runtime currently keeps
+        // this path unavailable rather than reporting a false connection.
+        if (!oauthCompletionReady(deps)) {
+          throw new CapabilityNotImplementedError({
+            messageKey: 'errors.capability_not_implemented',
+            details: {
+              capability: 'oauth_completion_persistence',
+              reason: 'credential_persistence_adapter_unavailable',
+            },
+          });
+        }
+        if (deps.connectors.completeOAuth === undefined) {
+          throw new CapabilityNotImplementedError({
+            messageKey: 'errors.capability_not_implemented',
+            details: { capability: 'oauth_completion' },
+          });
+        }
+
         const stateHash = createHash('sha256').update(input.state).digest('hex');
         const transaction = await db.oAuthTransaction.findFirst({
           where: { id: input.transactionId },
@@ -373,16 +408,14 @@ export function createConnectionService(deps: ServiceDeps): ConnectionService {
           throw invalid('errors.oauth_state_mismatch', {});
         }
 
-        // Never consume a transaction or report a connection until a provider
-        // adapter has exchanged the code, discovered eligible accounts and
-        // persisted an encrypted credential. Returning existing rows here used
-        // to create a false “connected” redirect and allowed a callback to look
-        // successful even though no provider call occurred.
+        // Discovery, account selection and encrypted upsert are intentionally
+        // staged behind this seam. Until their transaction-bound implementation
+        // is wired, do not consume the application OAuth row or return views.
         throw new CapabilityNotImplementedError({
           messageKey: 'errors.capability_not_implemented',
           details: {
             provider: transaction.provider,
-            capability: 'oauth_completion',
+            capability: 'oauth_completion_persistence',
             transactionId: transaction.id,
           },
         });
