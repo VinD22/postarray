@@ -294,6 +294,23 @@ export const OPERATIONS: readonly OperationSpec[] = [
   },
   {
     method: 'get',
+    path: '/v1/auth/sessions',
+    operationId: 'auth.sessions',
+    summary: 'List the active browser sessions for this identity.',
+    tag: 'auth',
+    workspaceOptional: true,
+  },
+  {
+    method: 'post',
+    path: '/v1/auth/sessions/revoke-others',
+    operationId: 'auth.revokeOtherSessions',
+    summary: 'Sign out every browser session except the current one.',
+    tag: 'auth',
+    workspaceOptional: true,
+    requiresIdempotencyKey: true,
+  },
+  {
+    method: 'get',
     path: '/v1/auth/me',
     operationId: 'auth.me',
     summary: 'The caller, and the workspaces this credential may address.',

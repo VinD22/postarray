@@ -78,4 +78,24 @@ describe('browser authentication contract', () => {
       '/auth/magic-link/verify',
     ]);
   });
+
+  it('uses the session inventory routes for account security controls', async () => {
+    callMock.mockResolvedValue({ data: [] });
+    await authApi.sessions();
+    await authApi.revokeOtherSessions('idem-revoke-sessions');
+
+    expect(callMock).toHaveBeenNthCalledWith(
+      1,
+      '/auth/sessions',
+      {},
+      expect.any(Function),
+      expect.any(Function),
+    );
+    expect(callMock).toHaveBeenNthCalledWith(
+      2,
+      '/auth/sessions/revoke-others',
+      expect.objectContaining({ method: 'POST', idempotencyKey: 'idem-revoke-sessions' }),
+      expect.any(Function),
+    );
+  });
 });

@@ -117,3 +117,23 @@ export function clientFingerprint(
     .digest('hex')
     .slice(0, 32);
 }
+
+/**
+ * Return a deliberately coarse device code for the session inventory.
+ *
+ * The raw user agent is never persisted. The code is only a recovery aid for
+ * a person reviewing their own sessions, and the web catalog translates it
+ * before rendering.
+ */
+export function deviceCode(
+  userAgent: string | undefined,
+): 'iphone' | 'ipad' | 'android' | 'windows' | 'mac' | 'linux' | 'browser' {
+  const value = userAgent ?? '';
+  if (/ipad/i.test(value)) return 'ipad';
+  if (/iphone/i.test(value)) return 'iphone';
+  if (/android/i.test(value)) return 'android';
+  if (/windows/i.test(value)) return 'windows';
+  if (/macintosh|mac os x/i.test(value)) return 'mac';
+  if (/linux/i.test(value)) return 'linux';
+  return 'browser';
+}

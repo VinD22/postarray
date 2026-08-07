@@ -119,6 +119,16 @@ export interface SessionView {
   readonly onboardingComplete: boolean;
 }
 
+export type SessionDevice = 'iphone' | 'ipad' | 'android' | 'windows' | 'mac' | 'linux' | 'browser';
+
+export interface ManagedSessionView {
+  readonly id: string;
+  readonly device: SessionDevice;
+  readonly location: string | null;
+  readonly lastSeenAt: string;
+  readonly isCurrent: boolean;
+}
+
 /* -------------------------------------------------------------------------
    Connections
    ------------------------------------------------------------------------- */

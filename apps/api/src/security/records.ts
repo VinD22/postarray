@@ -38,6 +38,10 @@ export const sessionRecordSchema = z
     refreshFamilyId: z.string().min(8).max(128),
     /** Coarse client fingerprint. A mismatch forces reauthentication. */
     clientFingerprint: z.string().min(8).max(128),
+    /** Coarse platform label shown in the signed-in session inventory. */
+    device: z
+      .enum(['iphone', 'ipad', 'android', 'windows', 'mac', 'linux', 'browser'])
+      .default('browser'),
     /** The identity provider's own access token id, for provider sign-out. */
     providerSessionId: z.string().min(1).max(512).nullable(),
     csrfSecret: z.string().min(16).max(128),

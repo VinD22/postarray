@@ -281,7 +281,7 @@ export const securityGateway = {
   },
 
   async sessions(): Promise<readonly SessionView[]> {
-    return notImplemented('session_management');
+    return api.auth.sessions();
   },
 
   async apiKeys(): Promise<readonly ApiKeyView[]> {
@@ -316,7 +316,7 @@ export const securityGateway = {
   },
 
   async revokeOtherSessions(): Promise<void> {
-    return notImplemented('session_management');
+    await api.auth.revokeOtherSessions(newIdempotencyKey('settings'));
   },
 
   async revokeApiKey(keyId: string): Promise<void> {

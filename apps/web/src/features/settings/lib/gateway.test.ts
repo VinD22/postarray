@@ -1,17 +1,10 @@
 import { describe, expect, it } from 'vitest';
 
-import {
-  agentsGateway,
-  billingGateway,
-  dataGateway,
-  securityGateway,
-  webhooksGateway,
-} from './gateway';
+import { agentsGateway, billingGateway, dataGateway, webhooksGateway } from './gateway';
 
 describe('settings capability truth', () => {
   it.each([
     ['service accounts', () => agentsGateway.list()],
-    ['session management', () => securityGateway.sessions()],
     ['referrals', () => billingGateway.referral()],
     ['workspace exports', () => dataGateway.exportJob()],
     ['webhook secret rotation', () => webhooksGateway.rotateSecret('wh_ep_test')],

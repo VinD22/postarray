@@ -7,6 +7,10 @@ export async function openReadyPage(page: Page, path: string): Promise<void> {
   expect(response?.ok(), `Navigation to ${path} should succeed`).toBe(true);
   await expect(page.locator('main')).toHaveCount(1);
   await expect(page.locator('main')).toBeVisible();
+  const hydrationMarker = page.locator('main[data-relay-hydrated]');
+  if ((await hydrationMarker.count()) > 0) {
+    await expect(hydrationMarker).toHaveAttribute('data-relay-hydrated', 'true');
+  }
 }
 
 export async function expectNoHorizontalPageOverflow(page: Page): Promise<void> {

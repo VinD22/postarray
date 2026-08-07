@@ -226,16 +226,29 @@ export const webSettingsMessages = {
     'Review the credentials and permissions that can act in this workspace. Missing controls are labelled instead of shown as empty.',
   'settings.ui.security.accountProtectionTitle': 'Account protection',
   'settings.ui.security.accountProtectionUnavailable':
-    'Session management, two factor setup and passkeys are not built in this interface yet. Sign out on a shared device and change your password if access may be compromised.',
+    'Two factor setup and passkeys are not built in this interface yet. Use a strong password and sign out on a shared device if access may be compromised.',
+  'settings.ui.security.mfaUnavailable':
+    'Two factor setup is not available until the identity provider enables it. Session inventory and sign-out controls are available below.',
   'settings.ui.security.killSwitchUnavailable':
     'A workspace-wide emergency stop is not built yet. Pause each social connection under Connections to stop new publications.',
   'settings.ui.security.sessionsCaption': 'Signed in sessions for your account',
+  'settings.ui.security.sessionsBody':
+    'Review where your account is signed in. Device labels are approximate and no precise location is stored.',
   'settings.ui.security.sessionColumn.device': 'Device and browser',
   'settings.ui.security.sessionColumn.location': 'Approximate location',
   'settings.ui.security.sessionColumn.lastSeen': 'Last used',
   'settings.ui.security.sessionCurrent': 'This session',
   'settings.ui.security.sessionRevokeAll': 'Sign out every other session',
+  'settings.ui.security.sessionRevokeSuccess': 'Other sessions were signed out.',
+  'settings.ui.security.sessionLastUsed': 'Last used {relativeTime}',
   'settings.ui.security.sessionLocationUnknown': 'Location not recorded',
+  'settings.ui.security.sessionDevice.iphone': 'iPhone',
+  'settings.ui.security.sessionDevice.ipad': 'iPad',
+  'settings.ui.security.sessionDevice.android': 'Android device',
+  'settings.ui.security.sessionDevice.windows': 'Windows browser',
+  'settings.ui.security.sessionDevice.mac': 'Mac browser',
+  'settings.ui.security.sessionDevice.linux': 'Linux browser',
+  'settings.ui.security.sessionDevice.browser': 'Browser',
   'settings.ui.security.mfaOn': 'Two factor authentication is on',
   'settings.ui.security.mfaOff': 'Two factor authentication is off',
   'settings.ui.security.mfaBody':

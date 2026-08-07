@@ -11,6 +11,9 @@ import {
   seedSession,
   type Harness,
 } from '../../testing/harness';
+import { instantAfter } from '../../common/instant';
+import { issueCsrfToken, clientFingerprint } from '../../security/csrf';
+import { sessionRecordSchema } from '../../security/records';
 
 let harness: Harness;
 let selectedWorkspace: string | undefined;
@@ -124,6 +127,92 @@ describe('authentication routes', () => {
     expect(response.status).toBe(200);
     expect(selectedWorkspace).toBe(workspaceB);
     expect(response.body.workspace.id).toBe(workspaceB);
+  });
+
+  it('lists active browser sessions without exposing provider session handles', async () => {
+    const session = await seedSession(harness);
+    const now = harness.clock.now();
+    const otherSessionId = `session_${newIdFor('user')}`;
+    await harness.directory.putSession(
+      sessionRecordSchema.parse({
+        sessionId: otherSessionId,
+        userId: session.userId,
+        emailVerified: true,
+        locale: 'en',
+        mfaSatisfiedAt: null,
+        workspaceIds: [session.workspaceId],
+        scopesByWorkspace: { [session.workspaceId]: [] },
+        approvalLevel: 'level_0_read',
+        refreshFamilyId: `family_${otherSessionId}`,
+        clientFingerprint: clientFingerprint('Mozilla/5.0 (Windows NT 10.0; Win64; x64)', 'en-US'),
+        device: 'windows',
+        providerSessionId: 'provider-session-other',
+        csrfSecret: issueCsrfToken().secret,
+        createdAt: new Date(now.getTime() - 60_000).toISOString(),
+        lastSeenAt: new Date(now.getTime() - 10_000).toISOString(),
+        absoluteExpiresAt: instantAfter(now, 3_600),
+      }),
+    );
+
+    const response = await request(harness.server)
+      .get('/v1/auth/sessions')
+      .set('cookie', session.cookie)
+      .set('user-agent', TEST_USER_AGENT)
+      .set('accept-language', TEST_ACCEPT_LANGUAGE);
+
+    expect(response.status).toBe(200);
+    expect(response.body.data).toHaveLength(2);
+    expect(response.body.data).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({ id: otherSessionId, device: 'windows', isCurrent: false }),
+        expect.objectContaining({ id: session.sessionId, isCurrent: true }),
+      ]),
+    );
+    expect(
+      response.body.data.find((entry: { id: string }) => entry.id === otherSessionId),
+    ).not.toHaveProperty('providerSessionId');
+  });
+
+  it('signs out every other session and its provider session', async () => {
+    const session = await seedSession(harness);
+    const now = harness.clock.now();
+    const otherSessionId = `session_${newIdFor('user')}`;
+    await harness.directory.putSession(
+      sessionRecordSchema.parse({
+        sessionId: otherSessionId,
+        userId: session.userId,
+        emailVerified: true,
+        locale: 'en',
+        mfaSatisfiedAt: null,
+        workspaceIds: [session.workspaceId],
+        scopesByWorkspace: { [session.workspaceId]: [] },
+        approvalLevel: 'level_0_read',
+        refreshFamilyId: `family_${otherSessionId}`,
+        clientFingerprint: clientFingerprint('Mozilla/5.0 (Windows NT 10.0; Win64; x64)', 'en-US'),
+        device: 'windows',
+        providerSessionId: 'provider-session-other',
+        csrfSecret: issueCsrfToken().secret,
+        createdAt: new Date(now.getTime() - 60_000).toISOString(),
+        lastSeenAt: new Date(now.getTime() - 10_000).toISOString(),
+        absoluteExpiresAt: instantAfter(now, 3_600),
+      }),
+    );
+
+    const response = await request(harness.server)
+      .post('/v1/auth/sessions/revoke-others')
+      .set('cookie', `${session.cookie}; relay_csrf=${session.csrfToken}`)
+      .set(API_HEADERS.csrfToken, session.csrfToken)
+      .set(API_HEADERS.idempotencyKey, 'revoke-other-sessions-test')
+      .set('origin', TEST_ORIGIN)
+      .set('user-agent', TEST_USER_AGENT)
+      .set('accept-language', TEST_ACCEPT_LANGUAGE)
+      .send({});
+
+    expect(response.status).toBe(200);
+    expect(response.body).toEqual({ terminatedSessions: 1 });
+    expect(await harness.directory.getSession(otherSessionId)).toBeNull();
+    expect(await harness.directory.getSession(session.sessionId)).not.toBeNull();
+    expect(harness.identity.signOuts).toContain('provider-session-other');
   });
 
   it('re-verifies the current password and marks the existing session stepped up', async () => {

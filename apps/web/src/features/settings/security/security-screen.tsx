@@ -28,11 +28,13 @@ export function SecurityScreen(): ReactNode {
   const workspaceId = useWorkspaceId();
   const KEYS_KEY = settingsKey(workspaceId, 'security', 'api-keys');
   const GRANTS_KEY = settingsKey(workspaceId, 'security', 'grants');
+  const SESSIONS_KEY = settingsKey(workspaceId, 'security', 'sessions');
   const WEBHOOKS_KEY = settingsKey(workspaceId, 'webhooks');
   const CONNECTIONS_KEY = settingsKey(workspaceId, 'security', 'connections');
 
   const apiKeys = useQuery({ queryKey: KEYS_KEY, queryFn: () => securityGateway.apiKeys() });
   const grants = useQuery({ queryKey: GRANTS_KEY, queryFn: () => securityGateway.grants() });
+  const sessions = useQuery({ queryKey: SESSIONS_KEY, queryFn: () => securityGateway.sessions() });
   const endpoints = useQuery({ queryKey: WEBHOOKS_KEY, queryFn: () => webhooksGateway.list() });
   const connections = useQuery({
     queryKey: CONNECTIONS_KEY,
@@ -53,6 +55,13 @@ export function SecurityScreen(): ReactNode {
     invalidate: [GRANTS_KEY],
     onSuccess: () => setPendingGrant(null),
     successMessage: t('developer.grants.revoked'),
+  });
+
+  const revokeOtherSessions = useSettingsMutation<void, void>({
+    section,
+    mutationFn: securityGateway.revokeOtherSessions,
+    invalidate: [SESSIONS_KEY],
+    successMessage: t('settings.ui.security.sessionRevokeSuccess'),
   });
 
   const revokeKey = useSettingsMutation({
@@ -98,8 +107,71 @@ export function SecurityScreen(): ReactNode {
           <Notice
             tone="info"
             title={t('settings.ui.state.notBuiltTitle')}
-            description={t('settings.ui.security.accountProtectionUnavailable')}
+            description={t('settings.ui.security.mfaUnavailable')}
           />
+        </SettingsPanel>
+
+        <SettingsPanel
+          title={t('settings.ui.security.sessionsCaption')}
+          description={t('settings.ui.security.sessionsBody')}
+          actions={
+            (sessions.data ?? []).some((session) => !session.isCurrent) ? (
+              <Button
+                variant="secondary"
+                size="sm"
+                loading={revokeOtherSessions.isSaving}
+                onClick={() => void revokeOtherSessions.run(undefined)}
+              >
+                {t('settings.ui.security.sessionRevokeAll')}
+              </Button>
+            ) : null
+          }
+        >
+          <AsyncBoundary
+            section={t('settings.ui.security.sessionsCaption')}
+            isPending={sessions.isPending}
+            error={sessions.error}
+            onRetry={() => void sessions.refetch()}
+            skeletonRows={2}
+            skeletonColumns={3}
+          >
+            {(sessions.data ?? []).length === 0 ? (
+              <p className="text-body-md text-text-secondary">
+                {t('settings.ui.security.emptySessions')}
+              </p>
+            ) : (
+              <ul className="flex flex-col">
+                {(sessions.data ?? []).map((session) => (
+                  <li
+                    key={session.id}
+                    className="border-border-subtle flex flex-col gap-2 border-b py-3 last:border-b-0 sm:flex-row sm:items-center sm:justify-between"
+                  >
+                    <div className="flex min-w-0 flex-col gap-1">
+                      <span className="text-body-md text-text-primary font-medium">
+                        {t(`settings.ui.security.sessionDevice.${session.device}` as const)}
+                        {session.isCurrent ? (
+                          <span className="text-body-sm text-text-secondary ms-2 font-normal">
+                            {t('settings.ui.security.sessionCurrent')}
+                          </span>
+                        ) : null}
+                      </span>
+                      <span className="text-body-sm text-text-tertiary flex flex-wrap gap-x-2 gap-y-1">
+                        <span>
+                          {session.location ?? t('settings.ui.security.sessionLocationUnknown')}
+                        </span>
+                        <span aria-hidden="true">·</span>
+                        <span>
+                          {t('settings.ui.security.sessionLastUsed', {
+                            relativeTime: formatters.relative(session.lastSeenAt),
+                          })}
+                        </span>
+                      </span>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </AsyncBoundary>
         </SettingsPanel>
 
         <SettingsPanel

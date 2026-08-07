@@ -155,20 +155,31 @@ export class CredentialDirectory {
     return record;
   }
 
+  /** Return the live sessions indexed for one identity, newest first. */
+  async listSessionsForUser(userId: string): Promise<readonly SessionRecord[]> {
+    const ids = await this.readIndex(CREDENTIAL_KEYS.sessionsForUser(userId));
+    const records = await Promise.all(ids.map((id) => this.getSession(id)));
+    return records
+      .filter((record): record is SessionRecord => record !== null && record.userId === userId)
+      .sort((left, right) => right.createdAt.localeCompare(left.createdAt));
+  }
+
   async deleteSession(sessionId: string): Promise<void> {
     await this.kv.delete(CREDENTIAL_KEYS.session(sessionId));
   }
 
   /** Sign out everywhere: every session this identity holds, including this one. */
   async deleteAllSessionsForUser(userId: string): Promise<number> {
-    const index = await this.kv.get(CREDENTIAL_KEYS.sessionsForUser(userId));
-    if (index === null) {
+    const records = await this.listSessionsForUser(userId);
+    if (records.length === 0) {
+      await this.kv.delete(CREDENTIAL_KEYS.sessionsForUser(userId));
       return 0;
     }
-    const ids = index.split(',').filter((id) => id.length > 0);
-    await Promise.all(ids.map((id) => this.kv.delete(CREDENTIAL_KEYS.session(id))));
+    await Promise.all(
+      records.map((record) => this.kv.delete(CREDENTIAL_KEYS.session(record.sessionId))),
+    );
     await this.kv.delete(CREDENTIAL_KEYS.sessionsForUser(userId));
-    return ids.length;
+    return records.length;
   }
 
   private async indexSessionForUser(

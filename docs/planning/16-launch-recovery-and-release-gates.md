@@ -56,9 +56,10 @@ connector. Those were planning assumptions, not launch facts.
   connection limit also has a database trigger in migration `0059`.
 - Media limits and the 30-day retention rule are enforced in the application.
   The worker has the scheduled purge job.
-- Settings no longer probe imagined endpoints. Unbuilt MFA, session
-  management, service accounts, exports, bulk cancellation, referrals,
-  workspace closure and webhook-secret rotation are labelled as not built.
+- Settings no longer probe imagined endpoints. Session inventory and
+  sign-out-other-sessions are implemented through the authenticated session
+  directory. MFA, service accounts, exports, bulk cancellation, referrals,
+  workspace closure and webhook-secret rotation remain labelled as not built.
 - API key creation and revocation require password step-up. New credentials are
   shown once.
 

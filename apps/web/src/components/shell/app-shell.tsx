@@ -39,6 +39,7 @@ export function AppShell({ children }: { readonly children: ReactNode }) {
   const pathname = usePathname();
   const [paletteOpen, setPaletteOpen] = useState(false);
   const [shortcutsOpen, setShortcutsOpen] = useState(false);
+  const [hydrated, setHydrated] = useState(false);
 
   useHotkeys(
     {
@@ -60,6 +61,10 @@ export function AppShell({ children }: { readonly children: ReactNode }) {
   useEffect(() => {
     setPaletteOpen(false);
   }, [pathname]);
+
+  useEffect(() => {
+    setHydrated(true);
+  }, []);
 
   return (
     <div className="bg-surface-canvas flex min-h-dvh flex-col">
@@ -141,6 +146,7 @@ export function AppShell({ children }: { readonly children: ReactNode }) {
         <main
           id="main"
           aria-label={t('a11y.region.main')}
+          data-relay-hydrated={hydrated ? 'true' : 'false'}
           tabIndex={-1}
           className="min-w-0 pb-20 md:pb-0"
         >

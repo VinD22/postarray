@@ -16,7 +16,7 @@ import {
 import { instantAfter } from '../../common/instant';
 import { CredentialDirectory, tokenLookupHash } from '../../security/credential-directory';
 import { randomToken } from '../../security/credentials';
-import { csrfTokenFor, issueCsrfToken } from '../../security/csrf';
+import { csrfTokenFor, deviceCode, issueCsrfToken } from '../../security/csrf';
 import { sessionRecordSchema, sessionRefreshRecordSchema } from '../../security/records';
 import type { IdentityProvider, IdentitySession } from './identity.port';
 
@@ -45,6 +45,14 @@ export interface EstablishedSession {
   readonly workspaceIds: readonly string[];
   readonly csrfToken: string;
   readonly expiresAt: string;
+}
+
+export interface ManagedSession {
+  readonly id: string;
+  readonly device: 'iphone' | 'ipad' | 'android' | 'windows' | 'mac' | 'linux' | 'browser';
+  readonly location: null;
+  readonly lastSeenAt: string;
+  readonly isCurrent: boolean;
 }
 
 @Injectable()
@@ -91,6 +99,7 @@ export class AuthService {
     session: IdentitySession,
     response: Response,
     fingerprint: string,
+    userAgent?: string,
   ): Promise<EstablishedSession> {
     const profile = await this.services.identity.getSecurityProfile(session.userId);
     if (profile === null) {
@@ -114,6 +123,7 @@ export class AuthService {
       approvalLevel: profile.approvalLevel,
       refreshFamilyId: familyId,
       clientFingerprint: fingerprint,
+      device: deviceCode(userAgent),
       providerSessionId: session.providerSessionId,
       csrfSecret: csrf.secret,
       createdAt: now.toISOString(),
@@ -159,6 +169,7 @@ export class AuthService {
     presented: string,
     response: Response,
     fingerprint: string,
+    userAgent?: string,
   ): Promise<EstablishedSession> {
     const hash = tokenLookupHash(presented);
     const record = await this.directory.getSessionRefresh(hash);
@@ -206,6 +217,7 @@ export class AuthService {
       approvalLevel: profile.approvalLevel,
       refreshFamilyId: record.familyId,
       clientFingerprint: fingerprint,
+      device: deviceCode(userAgent),
       providerSessionId: previous?.providerSessionId ?? null,
       csrfSecret,
       createdAt: now.toISOString(),
@@ -243,18 +255,54 @@ export class AuthService {
   /** End this session, or every session this identity holds. */
   async signOut(sessionId: string, scope: 'current' | 'all', response: Response): Promise<number> {
     const record = await this.directory.getSession(sessionId);
-    if (record !== null && record.providerSessionId !== null) {
-      await this.identity.signOut(record.providerSessionId);
-    }
     let terminated = 1;
     if (scope === 'all' && record !== null) {
-      terminated = await this.directory.deleteAllSessionsForUser(record.userId);
-      await this.directory.revokeSessionRefreshFamily(record.refreshFamilyId);
+      const records = await this.directory.listSessionsForUser(record.userId);
+      for (const session of records) {
+        if (session.providerSessionId !== null) {
+          await this.identity.signOut(session.providerSessionId);
+        }
+        await this.directory.revokeSessionRefreshFamily(session.refreshFamilyId);
+      }
+      terminated = records.length;
+      await this.directory.deleteAllSessionsForUser(record.userId);
     } else {
+      if (record !== null && record.providerSessionId !== null) {
+        await this.identity.signOut(record.providerSessionId);
+      }
+      if (record !== null) {
+        await this.directory.revokeSessionRefreshFamily(record.refreshFamilyId);
+      }
       await this.directory.deleteSession(sessionId);
     }
     this.clearSessionCookies(response);
     return terminated;
+  }
+
+  /** Read the live edge session inventory for the signed-in identity. */
+  async listSessions(userId: string, currentSessionId: string): Promise<readonly ManagedSession[]> {
+    const records = await this.directory.listSessionsForUser(userId);
+    return records.map((record) => ({
+      id: record.sessionId,
+      device: record.device,
+      location: null,
+      lastSeenAt: record.lastSeenAt,
+      isCurrent: record.sessionId === currentSessionId,
+    }));
+  }
+
+  /** Sign out every other session, including its provider-side session. */
+  async revokeOtherSessions(userId: string, currentSessionId: string): Promise<number> {
+    const records = await this.directory.listSessionsForUser(userId);
+    const others = records.filter((record) => record.sessionId !== currentSessionId);
+    for (const record of others) {
+      if (record.providerSessionId !== null) {
+        await this.identity.signOut(record.providerSessionId);
+      }
+      await this.directory.revokeSessionRefreshFamily(record.refreshFamilyId);
+      await this.directory.deleteSession(record.sessionId);
+    }
+    return others.length;
   }
 
   /** Record that a second factor or password re-entry just succeeded. */

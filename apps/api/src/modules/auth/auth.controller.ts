@@ -12,6 +12,7 @@ import { REFRESH_COOKIE, SESSION_COOKIE, parseCookies } from '../../common/cooki
 import {
   CurrentPrincipal,
   Identity,
+  Idempotent,
   Public,
   RateLimit,
   RequireStepUp,
@@ -116,7 +117,12 @@ export class AuthController {
       if (session === null) {
         throw new AuthRequiredError({ details: { reason: 'invalid_credentials' } });
       }
-      return this.auth.establishSession(session, response, fingerprintOf(request));
+      return this.auth.establishSession(
+        session,
+        response,
+        fingerprintOf(request),
+        request.headers['user-agent'],
+      );
     });
   }
 
@@ -167,7 +173,12 @@ export class AuthController {
       if (session === null) {
         throw new AuthRequiredError({ details: { reason: 'invalid_credentials' } });
       }
-      return this.auth.establishSession(session, response, fingerprintOf(request));
+      return this.auth.establishSession(
+        session,
+        response,
+        fingerprintOf(request),
+        request.headers['user-agent'],
+      );
     });
   }
 
@@ -209,7 +220,12 @@ export class AuthController {
     if (presented === undefined) {
       throw new AuthRequiredError({ details: { reason: 'refresh_missing' } });
     }
-    return this.auth.refreshSession(presented, response, fingerprintOf(request));
+    return this.auth.refreshSession(
+      presented,
+      response,
+      fingerprintOf(request),
+      request.headers['user-agent'],
+    );
   }
 
   /** End this session, or every session this identity holds. */
@@ -227,6 +243,44 @@ export class AuthController {
       throw new AuthRequiredError({ details: { reason: 'no_session' } });
     }
     return { terminatedSessions: await this.auth.signOut(sessionId, scope, response) };
+  }
+
+  /** The live sessions for this identity, with opaque ids only. */
+  @Get('sessions')
+  @WorkspaceOptional()
+  async sessions(
+    @CurrentPrincipal() principal: Principal,
+    @Req() request: Request,
+  ): Promise<{ data: Awaited<ReturnType<AuthService['listSessions']>> }> {
+    if (principal.userId === undefined) {
+      throw new AuthRequiredError({ details: { reason: 'human_session_required' } });
+    }
+    const sessionId = parseCookies(request.headers.cookie)[SESSION_COOKIE];
+    if (sessionId === undefined) {
+      throw new AuthRequiredError({ details: { reason: 'no_session' } });
+    }
+    return { data: await this.auth.listSessions(principal.userId, sessionId) };
+  }
+
+  /** Sign out every other browser session while keeping this one alive. */
+  @Post('sessions/revoke-others')
+  @WorkspaceOptional()
+  @Idempotent()
+  @HttpCode(200)
+  async revokeOtherSessions(
+    @CurrentPrincipal() principal: Principal,
+    @Req() request: Request,
+  ): Promise<{ terminatedSessions: number }> {
+    if (principal.userId === undefined) {
+      throw new AuthRequiredError({ details: { reason: 'human_session_required' } });
+    }
+    const sessionId = parseCookies(request.headers.cookie)[SESSION_COOKIE];
+    if (sessionId === undefined) {
+      throw new AuthRequiredError({ details: { reason: 'no_session' } });
+    }
+    return {
+      terminatedSessions: await this.auth.revokeOtherSessions(principal.userId, sessionId),
+    };
   }
 
   /** Who am I, and which workspaces can I address right now. */

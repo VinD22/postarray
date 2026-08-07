@@ -8,7 +8,7 @@
 
 import { call } from '../call';
 import { demoOnboardingState } from '../fixtures';
-import type { OnboardingStateView, OnboardingUseCase } from '../types';
+import type { ManagedSessionView, OnboardingStateView, OnboardingUseCase } from '../types';
 
 export interface EstablishedSession {
   readonly userId: string;
@@ -30,6 +30,27 @@ export const authApi = {
       { method: 'POST', body: { password }, sideEffectFree: true },
       () => ({ verified: true }),
     ),
+
+  sessions: (): Promise<readonly ManagedSessionView[]> =>
+    call<{ readonly data: readonly ManagedSessionView[] }, readonly ManagedSessionView[]>(
+      '/auth/sessions',
+      {},
+      () => [
+        {
+          id: 'session_demo_current',
+          device: 'mac',
+          location: null,
+          lastSeenAt: new Date().toISOString(),
+          isCurrent: true,
+        },
+      ],
+      ({ data }) => data,
+    ),
+
+  revokeOtherSessions: (idempotencyKey: string): Promise<{ terminatedSessions: number }> =>
+    call('/auth/sessions/revoke-others', { method: 'POST', body: {}, idempotencyKey }, () => ({
+      terminatedSessions: 0,
+    })),
 
   signInWithPassword: (
     input: PasswordCredentials,
