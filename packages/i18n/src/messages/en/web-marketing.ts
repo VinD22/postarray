@@ -138,7 +138,7 @@ export const webMarketingMessages = {
   'web.home.example.linkedin.check': 'Organization role, post length, document type',
   'web.home.example.instagram.account': 'Instagram, @northbound.tools',
   'web.home.example.instagram.variant':
-    'Square crop of the same image, caption rewritten for the feed',
+    'The same image selected, with a caption rewritten for the feed',
   'web.home.example.instagram.check': 'Professional account type, aspect ratio, alt text present',
   'web.home.example.youtube.account': 'YouTube, Northbound',
   'web.home.example.youtube.variant':
@@ -238,10 +238,10 @@ export const webMarketingMessages = {
 
   'web.product.step.source.title': 'Source',
   'web.product.step.source.body':
-    'Start from a brief, a file you already have, an RSS item or a request from an agent. Imported media keeps the provenance you gave it, including where it came from and who holds the rights.',
+    'Start from a brief, a file you upload, an RSS item or a request from an agent. Uploaded media keeps the provenance you gave it, including where it came from and who holds the rights. Importing a file from a URL is not built yet.',
   'web.product.step.compose.title': 'Compose once, then override',
   'web.product.step.compose.body':
-    'A master version drives every target. Selecting one account opens an override for that account only: its own text, its own media crop, its own settings, its own live limit counter and its own preview. Resetting an override restores the master in one action and shows you the difference first.',
+    'A master version drives every target. Selecting one account opens an override for that account only: its own text, media selection, settings, live limit counter and preview. Resetting an override restores the master in one action and shows you the difference first. In-app media editing is not built yet.',
   'web.product.step.validate.title': 'Validate before anything is queued',
   'web.product.step.validate.body':
     'Validation is deterministic and runs on the server. It checks the platform limits from the versioned capability snapshot, the account type, alt text, media rights, duplicate and cadence rules, mention and destination resolution, and the estimated platform usage cost. Every issue names the target it belongs to and how to fix it.',
@@ -311,10 +311,10 @@ export const webMarketingMessages = {
 
   'web.creators.title': 'For creators',
   'web.creators.lede':
-    'You publish the same idea in several formats, sometimes in more than one language, and you are the whole team. The work Relay removes is the retyping, the re-cropping and the checking.',
+    'You publish the same idea in several formats, sometimes in more than one language, and you are the whole team. Relay keeps the text variants, media selection and platform checks together.',
   'web.creators.job.adapt.title': 'Write it once, ship five native versions',
   'web.creators.job.adapt.body':
-    'The master version carries the idea. Each account gets the length, the crop, the settings and the tone that platform expects, and you can see all of them side by side before you commit.',
+    'The master version carries the idea. Each account gets its own length, media selection, settings and tone, and you can see the variants side by side before you commit.',
   'web.creators.job.languages.title': 'Publish in another language without guessing',
   'web.creators.job.languages.body':
     'Transcreation keeps the intent rather than the words, uses your brand glossary, and marks whether a native reviewer has read it. Nothing publishes in a language you cannot vouch for unless you say so.',
@@ -364,11 +364,11 @@ export const webMarketingMessages = {
     'Publish results, approval decisions, connection health and validation outcomes, signed, replay resistant and redeliverable from the dashboard.',
   'web.developers.safety.title': 'The agent safety model',
   'web.developers.safety.body':
-    'An agent credential is a scoped service account, not a copy of a person session. It carries per brand, per account, per locale, per domain, per cadence and per look ahead restrictions, and the server reauthorizes every call rather than trusting the agent host.',
+    'A scoped API key is not a copy of a browser session. The server reauthorizes every call, records the actor and never trusts an agent host to approve its own action. Dedicated service accounts are not built yet.',
   'web.developers.safety.injection':
     'Web pages, feeds, comments and platform responses are treated as untrusted data. Model output is revalidated deterministically, because a model saying a post is fine is not a security decision.',
   'web.developers.safety.killSwitch':
-    'Every agent and every workspace has a kill switch that stops pending work without deleting it.',
+    'Revoke an API key to stop future calls. Pause a social connection to stop new work for that account. A workspace-wide kill switch is not built yet.',
   'web.developers.openSource.title': 'Open pieces',
   'web.developers.openSource.body':
     'The connector contract, the CLI, schema examples, MCP tool definitions and the provider simulator are the parts you need to build against Relay without a sandbox account. Where a repository is not published yet, this page says so rather than linking to nothing.',
@@ -831,7 +831,8 @@ export const webMarketingMessages = {
     'Text assistance in the composer: rewriting, shortening and adapting for a platform.',
   'web.legal.ai.features.translation':
     'Translation and transcreation into your content languages, against your brand glossary.',
-  'web.legal.ai.features.feedback': 'Content feedback and the four week growth plan.',
+  'web.legal.ai.features.feedback':
+    'Content feedback in the composer. Generated four week growth plans are not available in prelaunch.',
   'web.legal.ai.features.provider':
     'These features call DeepSeek. The model identifiers currently in use are published in the documentation and any change is listed on the changelog.',
   'web.legal.ai.data.title': 'What is sent, and what happens to it',

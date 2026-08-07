@@ -93,6 +93,15 @@ export const BETA_ENGLISH_FALLBACK_KEYS = [
   'mediaLib.editor.unavailable.body',
   'web.agencies.job.roles.body',
   'web.agencies.limits.body',
+  // Public launch-truth copy. Beta locales must not retain older claims about
+  // media editing, service accounts or workspace-wide controls.
+  'web.home.example.instagram.variant',
+  'web.product.step.source.body',
+  'web.product.step.compose.body',
+  'web.creators.lede',
+  'web.creators.job.adapt.body',
+  'web.developers.safety.body',
+  'web.developers.safety.killSwitch',
   'web.receipt.partial.retryUnavailable.title',
   'web.receipt.partial.retryUnavailable.body',
   'validation.capability_unavailable.message',
