@@ -140,11 +140,11 @@ export async function organizationJsonLd(locale: string = DEFAULT_LOCALE): Promi
 }
 
 /**
- * The product and its single offer.
+ * Product metadata during public prelaunch.
  *
- * `price` is the monthly figure and the annual figure is a second offer, so a
- * consumer of this markup sees exactly the two things a buyer sees, with no
- * invented "from" price and no struck through original.
+ * Checkout is closed, so the structured data deliberately has no `Offer` and
+ * cannot tell a search engine that a paid product is in stock. The planned
+ * prices remain visible as ordinary, clearly labelled page copy.
  */
 export async function offerJsonLd(locale: string = DEFAULT_LOCALE): Promise<JsonLdNode> {
   const t = await marketingTranslator(locale);
@@ -157,38 +157,6 @@ export async function offerJsonLd(locale: string = DEFAULT_LOCALE): Promise<Json
     description: t.t('web.meta.home.description'),
     inLanguage: locale,
     url: absoluteUrl(ROUTES.home, locale),
-    offers: [
-      {
-        '@type': 'Offer',
-        name: t.t('web.pricing.monthlyLabel'),
-        price: '29.00',
-        priceCurrency: 'USD',
-        url: absoluteUrl(ROUTES.pricing, locale),
-        availability: 'https://schema.org/InStock',
-        priceSpecification: {
-          '@type': 'UnitPriceSpecification',
-          price: '29.00',
-          priceCurrency: 'USD',
-          billingIncrement: 1,
-          unitCode: 'MON',
-        },
-      },
-      {
-        '@type': 'Offer',
-        name: t.t('web.pricing.annualLabel'),
-        price: '300.00',
-        priceCurrency: 'USD',
-        url: absoluteUrl(ROUTES.pricing, locale),
-        availability: 'https://schema.org/InStock',
-        priceSpecification: {
-          '@type': 'UnitPriceSpecification',
-          price: '300.00',
-          priceCurrency: 'USD',
-          billingIncrement: 1,
-          unitCode: 'ANN',
-        },
-      },
-    ],
   };
 }
 

@@ -26,9 +26,11 @@ import { keys } from './keys';
 import type {
   ActionItemCategory,
   ActionItemView,
+  ApprovalRequestView,
   BillingStateView,
   CalendarEntryView,
   ConnectionView,
+  ContentItemView,
   GrowthPlanSummaryView,
   HealthView,
   MemberView,
@@ -103,6 +105,30 @@ export function useRecentReceipts(
   return useQuery({
     queryKey: [...keys.receipts(workspaceId), limit],
     queryFn: () => api.receipts.listRecent({ limit }),
+  });
+}
+
+export function useApprovalRequest(
+  approvalId: string,
+): UseQueryResult<ApprovalRequestView | null, ApiError> {
+  const workspaceId = useWorkspaceId();
+  return useQuery({
+    queryKey: keys.approval(workspaceId, approvalId),
+    queryFn: async () => {
+      const pending = await api.approvals.listPending({ limit: 100 });
+      return pending.data.find((approval) => approval.id === approvalId) ?? null;
+    },
+  });
+}
+
+export function useContentItem(
+  contentItemId: string | null,
+): UseQueryResult<ContentItemView, ApiError> {
+  const workspaceId = useWorkspaceId();
+  return useQuery({
+    queryKey: keys.contentItem(workspaceId, contentItemId ?? 'pending'),
+    queryFn: () => api.content.get(contentItemId ?? ''),
+    enabled: contentItemId !== null,
   });
 }
 
@@ -209,6 +235,35 @@ export function useResumeConnection(): UseMutationResult<ConnectionView, ApiErro
     onSuccess: (_data, connectionId) => {
       void queryClient.invalidateQueries({ queryKey: keys.connection(workspaceId, connectionId) });
       void queryClient.invalidateQueries({ queryKey: ['ws', workspaceId, 'connections'] });
+    },
+  });
+}
+
+export function useDecideApproval(): UseMutationResult<
+  ApprovalRequestView,
+  ApiError,
+  {
+    readonly approvalId: string;
+    readonly decision: 'approve' | 'request_changes' | 'reject';
+    readonly note?: string;
+  }
+> {
+  const workspaceId = useWorkspaceId();
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: ({ approvalId, decision, note }) =>
+      api.approvals.decide(
+        approvalId,
+        { decision, ...(note === undefined ? {} : { note }) },
+        newIdempotencyKey('approval_decision'),
+      ),
+    onSuccess: (approval) => {
+      queryClient.setQueryData(keys.approval(workspaceId, approval.id), approval);
+      void queryClient.invalidateQueries({ queryKey: keys.approvalsPending(workspaceId) });
+      void queryClient.invalidateQueries({ queryKey: ['ws', workspaceId, 'action-center'] });
+      void queryClient.invalidateQueries({
+        queryKey: keys.contentItem(workspaceId, approval.contentItemId),
+      });
     },
   });
 }

@@ -385,10 +385,14 @@ export const webMarketingMessages = {
   'web.pricing.annualLabel': 'Billed annually',
   'web.pricing.annualDetail': '$300 charged once a year.',
   'web.pricing.monthlyDetail': '$29 charged every month.',
+  'web.pricing.prelaunch.primaryNote':
+    'Public prelaunch access is free. No card or payment method is collected.',
+  'web.pricing.prelaunch.secondaryNote':
+    'Paid checkout, invoices and trial conversion stay unavailable until the commercial launch gates pass.',
   'web.pricing.perMonthNote':
-    'Prices are in US dollars. Polar adds any sales tax or VAT that applies where you are.',
+    'Planned prices are in US dollars. Taxes and merchant terms will be shown before checkout opens.',
 
-  'web.pricing.beside.title': 'What you are agreeing to',
+  'web.pricing.beside.title': 'Planned paid terms',
   'web.pricing.beside.channels':
     '10 active social channels. A channel is one social account, Page, profile, group or publication connection.',
   'web.pricing.beside.members':
@@ -406,7 +410,7 @@ export const webMarketingMessages = {
   'web.pricing.beside.cancel':
     'Paid access is not active during prelaunch. When it opens, you will be able to cancel from Settings without contacting support.',
   'web.pricing.beside.data':
-    'Nothing is deleted when a subscription ends. You can export your content, receipts and analytics, and you can delete them yourself.',
+    'Post text, receipts and audit history remain under the data policy. Uploaded files are permanently deleted 30 days after upload. Workspace export is not built yet.',
 
   'web.pricing.included.title': 'Included, in both intervals',
   'web.pricing.compare.title': 'Why there is no comparison table here',
@@ -441,9 +445,9 @@ export const webMarketingMessages = {
    * matching the existing precedent for `web.pricing.*` above and
    * `web.home.v2.*` on the landing page.
    */
-  'web.pricing.v2.closing.title': 'Seven days to try it, on your own accounts',
+  'web.pricing.v2.closing.title': 'Join before paid checkout opens',
   'web.pricing.v2.closing.body':
-    'Start the trial, connect the accounts you actually run, and see how validation and scheduling feel before anything is charged.',
+    'Use the public prelaunch, see which connectors are available for your account and tell us where the workflow needs polish. No card is collected.',
 
   /* ---------------------------------------------------------------------- */
   /* Resources index                                                         */

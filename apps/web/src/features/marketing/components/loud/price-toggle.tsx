@@ -149,7 +149,7 @@ function ToggleOption({
 
 /**
  * The full interactive plan block: toggle, giant poster price card, commit
- * action and the checkout disclosures next to it. The one client leaf the
+ * action and the current access disclosures next to it. The one client leaf the
  * pricing page needs — everything it receives is already-translated text
  * and plain numbers, so the async Server Component page itself never
  * becomes a client boundary.
@@ -175,11 +175,9 @@ export interface PricePlanBlockProps {
   readonly annualFraming: string;
   readonly ctaHref: string;
   readonly ctaLabel: string;
-  readonly dueToday: string;
-  readonly paymentMethodRequired: string;
-  readonly hostedBy: string;
-  readonly taxNote: string;
-  readonly perMonthNote: string;
+  readonly primaryNote: string;
+  readonly secondaryNote: string;
+  readonly footerNote: string;
   readonly className?: string;
 }
 
@@ -195,11 +193,9 @@ export function PricePlanBlock({
   annualFraming,
   ctaHref,
   ctaLabel,
-  dueToday,
-  paymentMethodRequired,
-  hostedBy,
-  taxNote,
-  perMonthNote,
+  primaryNote,
+  secondaryNote,
+  footerNote,
   className,
 }: PricePlanBlockProps): ReactNode {
   const [billingInterval, setBillingInterval] = useState<BillingInterval>('month');
@@ -245,12 +241,12 @@ export function PricePlanBlock({
           <Link href={ctaHref}>{ctaLabel}</Link>
         </MagneticButton>
         <p className="text-body-md text-text-primary max-w-[46ch] leading-[1.6]">
-          {dueToday}. {paymentMethodRequired}
+          {primaryNote}
         </p>
         <p className="text-body-md text-text-tertiary max-w-[46ch] leading-[1.6]">
-          {hostedBy} {taxNote}
+          {secondaryNote}
         </p>
-        <p className="text-body-sm text-text-tertiary font-mono tabular-nums">{perMonthNote}</p>
+        <p className="text-body-sm text-text-tertiary font-mono tabular-nums">{footerNote}</p>
       </div>
     </PosterCard>
   );

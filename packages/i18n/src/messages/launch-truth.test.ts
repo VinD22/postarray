@@ -23,6 +23,10 @@ describe('launch truth', () => {
     expect(en['web.developers.safety.body']).toContain('not built yet');
     expect(en['web.developers.safety.killSwitch']).toContain('not built yet');
     expect(en['web.legal.ai.features.feedback']).toContain('not available in prelaunch');
+    expect(en['web.pricing.prelaunch.primaryNote']).toContain('No card');
+    expect(en['web.pricing.prelaunch.secondaryNote']).toContain('unavailable');
+    expect(en['web.pricing.beside.data']).toContain('not built yet');
+    expect(en['web.pricing.v2.closing.title']).toContain('before paid checkout opens');
     expect(en['mediaLib.retention.body']).toContain('30 days after upload');
     expect(en['mediaLib.retention.limits']).toContain('20 MiB');
     expect(en['mediaLib.retention.limits']).toContain('500 MiB');

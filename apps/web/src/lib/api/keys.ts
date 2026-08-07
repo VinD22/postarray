@@ -33,6 +33,8 @@ export const keys = {
     ['ws', workspaceId, 'calendar', range] as const,
 
   approvalsPending: (workspaceId: string) => ['ws', workspaceId, 'approvals', 'pending'] as const,
+  approval: (workspaceId: string, approvalId: string) =>
+    ['ws', workspaceId, 'approval', approvalId] as const,
 
   receipts: (workspaceId: string) => ['ws', workspaceId, 'receipts'] as const,
   receipt: (workspaceId: string, receiptId: string) =>

@@ -40,6 +40,11 @@ export const BETA_ENGLISH_FALLBACK_PREFIXES = [
   'validation.media_rights_undeclared.',
   'validation.media_not_ready.',
   'validation.media_scan_blocked.',
+  // The approval review surface is safety-critical. New copy remains in the
+  // reviewed English source until each beta locale has a human review.
+  'approval.content.',
+  'approval.changed.',
+  'approval.notFound.',
 ] as const;
 
 /** B5-controlled keys whose namespace also contains ordinary interface copy. */
@@ -115,6 +120,15 @@ export const BETA_ENGLISH_FALLBACK_KEYS = [
   'validation.cross_account_similarity.remediation',
   'validation.link_malformed.message',
   'validation.no_targets_selected.message',
+  'approval.reviewDescription',
+  'approval.comment.optional',
+  'approval.comment.required',
+  'approval.noteFromAuthor',
+  'approval.decision.title',
+  'approval.decision.description',
+  'approval.decision.approved',
+  'approval.decision.changesRequested',
+  'approval.decision.rejected',
 ] as const;
 
 export function isBetaEnglishFallbackKey(key: string): boolean {

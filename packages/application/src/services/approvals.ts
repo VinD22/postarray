@@ -24,7 +24,7 @@ import { toApprovalPolicy } from '../internal/storage-enums';
 const APPROVAL_STATE_TO_VIEW = {
   pending: 'requested',
   approved: 'approved',
-  changes_requested: 'rejected',
+  changes_requested: 'changes_requested',
   rejected: 'rejected',
   expired: 'expired',
   canceled: 'not_required',

@@ -38,6 +38,7 @@ import type {
   Role,
   SubscriptionStatus,
 } from '@relay/contracts';
+import type { ApprovalRequestView as ApplicationApprovalRequestView } from '@relay/application';
 
 export type {
   AccountType,
@@ -183,13 +184,34 @@ export interface ContentTargetView {
   readonly blockingIssueCount: number;
 }
 
+export interface ContentReviewVariantView {
+  readonly variantId: string;
+  readonly provider: ProviderId;
+  readonly accountLabel: string;
+  readonly body: string;
+  readonly locale: string;
+  readonly contentKind: ContentKind;
+  readonly mediaIds: readonly string[];
+  readonly destinationLabel: string | null;
+  readonly privacyValue: string | null;
+  readonly scheduledAt: IsoInstant | null;
+  readonly scheduledTimeZone: string | null;
+  readonly estimatedCost: Money | null;
+}
+
 export interface ContentItemView {
   readonly id: string;
   readonly workspaceId: string;
   readonly brandId: string | null;
   readonly title: string;
+  readonly body: string;
+  readonly locale: string;
+  readonly contentKind: ContentKind;
+  readonly mediaIds: readonly string[];
   readonly state: PublishState;
   readonly approvalState: ApprovalState;
+  readonly reapprovalRequired: boolean;
+  readonly currentVersionId: string | null;
   readonly createdSurface: CreationSurface;
   readonly createdByName: string;
   readonly createdAt: IsoInstant;
@@ -197,6 +219,7 @@ export interface ContentItemView {
   readonly scheduledAt: IsoInstant | null;
   readonly scheduledTimeZone: string | null;
   readonly targets: readonly ContentTargetView[];
+  readonly reviewVariants: readonly ContentReviewVariantView[];
 }
 
 export interface CalendarEntryView {
@@ -213,16 +236,7 @@ export interface CalendarEntryView {
   readonly mediaKind: 'text' | 'image' | 'carousel' | 'video' | 'document';
 }
 
-export interface ApprovalRequestView {
-  readonly id: string;
-  readonly contentItemId: string;
-  readonly title: string;
-  readonly requestedByName: string;
-  readonly requestedAt: IsoInstant;
-  readonly dueAt: IsoInstant | null;
-  readonly state: ApprovalState;
-  readonly accountLabel: string;
-}
+export type ApprovalRequestView = ApplicationApprovalRequestView;
 
 export interface ReceiptSummaryView {
   readonly receiptId: string;

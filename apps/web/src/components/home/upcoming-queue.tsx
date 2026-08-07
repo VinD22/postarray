@@ -1,5 +1,7 @@
 'use client';
 
+import { useMemo } from 'react';
+
 import { Link } from '@/components/link';
 
 import {
@@ -34,11 +36,13 @@ export function UpcomingQueue() {
   const format = useFormatters();
   const { workspace } = useSession();
 
-  const now = new Date();
-  const range = {
-    from: now.toISOString(),
-    to: new Date(now.getTime() + DAY_MS).toISOString(),
-  };
+  const range = useMemo(() => {
+    const now = new Date();
+    return {
+      from: now.toISOString(),
+      to: new Date(now.getTime() + DAY_MS).toISOString(),
+    };
+  }, []);
   const query = useCalendar(range);
   const entries = query.data?.data ?? [];
 

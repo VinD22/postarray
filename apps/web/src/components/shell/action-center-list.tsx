@@ -15,6 +15,7 @@ import { useMotionOk } from '@/lib/motion/use-motion-ok';
 
 import {
   ACTION_KIND_DEFINITIONS,
+  formatActionItemValues,
   providerDotKey,
   URGENCY_HINT_KEY,
   URGENCY_LABEL_KEY,
@@ -184,7 +185,10 @@ export function ActionCenterList({
 
                   <div className="flex min-w-0 flex-1 flex-col gap-1">
                     <p className="text-body-md text-text-primary">
-                      {t(definition.messageKey, item.values)}
+                      {t(
+                        definition.messageKey,
+                        formatActionItemValues(item, format, t('common.unavailable')),
+                      )}
                     </p>
                     <p className="text-body-sm text-text-tertiary flex flex-wrap items-center gap-1.5">
                       {dotProvider === undefined ? null : (
@@ -256,6 +260,7 @@ export function ActionCenterList({
  */
 function ResolvingRow({ item }: { readonly item: ActionItemView }): ReactNode {
   const t = useTranslations();
+  const format = useFormatters();
   const definition = ACTION_KIND_DEFINITIONS[item.kind];
   const [collapsed, setCollapsed] = useState(false);
 
@@ -275,7 +280,10 @@ function ResolvingRow({ item }: { readonly item: ActionItemView }): ReactNode {
     >
       <span className="overflow-hidden">
         <span className="text-body-sm text-text-tertiary flex min-h-11 items-center gap-2 py-3 line-through">
-          {t(definition.messageKey, item.values)}
+          {t(
+            definition.messageKey,
+            formatActionItemValues(item, format, t('common.unavailable')),
+          )}
         </span>
       </span>
     </li>

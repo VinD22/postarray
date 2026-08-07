@@ -212,7 +212,7 @@ function remainingItems(evidence: Awaited<ReturnType<typeof loadEvidence>>, now:
       id: itemId('comment_failed', row.id), kind: 'comment_failed', urgency: 'now',
       category: 'publishing', subject, provider: toProviderId(row.provider),
       createdAt: row.publishedAt.toISOString(), dueAt: null, snoozedUntil: null,
-      href: `/posts/${row.publishJob.contentItemId}/receipt`,
+      href: `/posts/${row.publishJob.contentItemId}`,
       values: { account: row.publishJob.connection.displayName },
     });
   }
@@ -230,8 +230,8 @@ function remainingItems(evidence: Awaited<ReturnType<typeof loadEvidence>>, now:
     items.push({
       id: itemId('webhook_failing', row.id), kind: 'webhook_failing', urgency: 'watching',
       category: 'automation', subject, provider: null, createdAt: row.updatedAt.toISOString(),
-      dueAt: null, snoozedUntil: null, href: '/settings/developer/webhooks',
-      values: { name: subject, count: row.consecutiveFailures },
+      dueAt: null, snoozedUntil: null, href: '/settings/webhooks',
+      values: { endpoint: subject, count: row.consecutiveFailures },
     });
   }
   return items;

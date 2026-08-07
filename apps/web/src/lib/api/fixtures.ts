@@ -15,6 +15,7 @@
 
 import type {
   ActionItemView,
+  ApprovalRequestView,
   AuditEventView,
   BillingStateView,
   CalendarEntryView,
@@ -211,7 +212,7 @@ export const demoActionItems: readonly ActionItemView[] = [
     createdAt: at(-5 * HOUR),
     dueAt: null,
     snoozedUntil: null,
-    href: '/posts/content_demo0000000000001/receipt',
+    href: '/posts/content_demo0000000000001',
     values: { account: '@example_studio' },
   },
   {
@@ -263,7 +264,7 @@ export const demoActionItems: readonly ActionItemView[] = [
     createdAt: at(-2 * HOUR),
     dueAt: null,
     snoozedUntil: null,
-    href: '/settings/webhooks/whep_demo000000000000001',
+    href: '/settings/webhooks',
     values: { endpoint: 'hooks.example-studio.test', count: 3 },
   },
 ];
@@ -323,6 +324,23 @@ export const demoCalendar: readonly CalendarEntryView[] = [
   },
 ];
 
+export const demoApprovals: readonly ApprovalRequestView[] = [
+  {
+    id: 'approval_demo000000000001',
+    contentItemId: 'content_demo0000000000003',
+    contentVersionId: 'version_demo0000000000000001',
+    policy: 'any_approver',
+    state: 'requested',
+    requestedBy: 'user_demo000000000000000001',
+    assignedUserIds: ['user_demo000000000000000002'],
+    note: 'Please check the migration figures and the LinkedIn wording before this goes out.',
+    dueAt: at(3 * HOUR),
+    resolvedAt: null,
+    decisions: [],
+    createdAt: at(-26 * HOUR),
+  },
+];
+
 export const demoReceipts: readonly ReceiptSummaryView[] = [
   {
     receiptId: 'receipt_demo00000000000001',
@@ -360,15 +378,15 @@ export const demoReceipts: readonly ReceiptSummaryView[] = [
 ];
 
 export const demoBilling: BillingStateView = {
-  status: 'trialing',
-  interval: 'monthly',
-  trialEndsAt: at(4 * DAY),
-  firstChargeAt: at(4 * DAY),
-  firstChargeAmount: { currency: 'USD', amountMinor: 2900 },
-  renewalAmount: { currency: 'USD', amountMinor: 2900 },
+  status: 'none',
+  interval: null,
+  trialEndsAt: null,
+  firstChargeAt: null,
+  firstChargeAmount: null,
+  renewalAmount: null,
   portalUrl: null,
   activeChannelCount: 4,
-  channelLimit: 30,
+  channelLimit: 10,
 };
 
 export const demoUsage: UsageView = {

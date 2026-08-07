@@ -109,7 +109,7 @@ export default async function PricingPage({
       {/*
         2 & 3. The price and everything a buyer is agreeing to sit in one
         band, side by side. The allowance, the fair use boundary, the
-        metered platform usage, the trial conversion and the cancellation
+        metered platform usage, the planned trial and the cancellation
         path are next to the button, not behind a link and not below the
         fold. `PricePlanBlock` keeps both intervals' prices in the server
         HTML regardless of which one the toggle currently shows — see its
@@ -130,11 +130,9 @@ export default async function PricingPage({
               annualFraming={t.t('billing.plan.annualFraming')}
               ctaHref={ROUTES.signUp}
               ctaLabel={t.t('web.cta.startTrial')}
-              dueToday={t.t('billing.trial.dueToday')}
-              paymentMethodRequired={t.t('billing.trial.paymentMethodRequired')}
-              hostedBy={t.t('billing.checkout.hostedBy')}
-              taxNote={t.t('billing.checkout.taxNote')}
-              perMonthNote={t.t('web.pricing.perMonthNote')}
+              primaryNote={t.t('web.pricing.prelaunch.primaryNote')}
+              secondaryNote={t.t('web.pricing.prelaunch.secondaryNote')}
+              footerNote={t.t('web.pricing.perMonthNote')}
             />
           </div>
 

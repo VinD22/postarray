@@ -1,6 +1,6 @@
 import type { ProviderKey } from '@relay/design-system/tokens';
 
-import type { ActionItemKind, ActionItemUrgency, ProviderId } from '@/lib/api';
+import type { ActionItemKind, ActionItemUrgency, ActionItemView, ProviderId } from '@/lib/api';
 
 /**
  * The Action center catalogue.
@@ -113,4 +113,27 @@ export function providerDotKey(provider: ProviderId | null): ProviderKey | undef
     return undefined;
   }
   return provider as ProviderKey;
+}
+
+interface ActionValueFormatters {
+  readonly relative: (value: string) => string;
+  readonly dateTime: (value: string) => string;
+}
+
+/** Convert service instants into human text before they enter an ICU sentence. */
+export function formatActionItemValues(
+  item: ActionItemView,
+  format: ActionValueFormatters,
+  unavailable: string,
+): Readonly<Record<string, string | number>> {
+  const values = { ...item.values };
+  const date = values.date;
+  if (typeof date !== 'string') return values;
+  if (date === 'unavailable') return { ...values, date: unavailable };
+  if (Number.isNaN(Date.parse(date))) return values;
+
+  return {
+    ...values,
+    date: item.kind === 'schedule_conflict' ? format.dateTime(date) : format.relative(date),
+  };
 }

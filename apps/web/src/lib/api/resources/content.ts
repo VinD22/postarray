@@ -18,7 +18,7 @@ import { ERROR_CODES } from '@relay/contracts';
 
 import { call } from '../call';
 import { ApiError } from '../error';
-import { demoCalendar, demoReceipts, page } from '../fixtures';
+import { demoApprovals, demoCalendar, demoReceipts, page } from '../fixtures';
 import type {
   ApprovalRequestView,
   CalendarEntryView,
@@ -40,8 +40,14 @@ const emptyItem: ContentItemView = {
   workspaceId: 'ws_demo0000000000000000001',
   brandId: null,
   title: '',
+  body: '',
+  locale: 'en',
+  contentKind: 'text',
+  mediaIds: [],
   state: 'draft',
   approvalState: 'not_required',
+  reapprovalRequired: false,
+  currentVersionId: null,
   createdSurface: 'web',
   createdByName: 'Ana Ruiz',
   createdAt: new Date().toISOString(),
@@ -49,6 +55,7 @@ const emptyItem: ContentItemView = {
   scheduledAt: null,
   scheduledTimeZone: null,
   targets: [],
+  reviewVariants: [],
 };
 
 type MasterPatch = Pick<
@@ -88,8 +95,14 @@ function toContentItem(item: ApplicationContentItemView): ContentItemView {
     workspaceId: item.workspaceId,
     brandId: item.brandId,
     title: item.title ?? '',
+    body: item.body,
+    locale: item.locale,
+    contentKind: item.contentKind,
+    mediaIds: item.mediaIds,
     state: item.state,
     approvalState: item.approvalState,
+    reapprovalRequired: item.reapprovalRequired,
+    currentVersionId: item.currentVersionId,
     createdSurface: item.createdVia,
     createdByName: item.createdByUserId ?? '',
     createdAt: item.createdAt,
@@ -97,6 +110,26 @@ function toContentItem(item: ApplicationContentItemView): ContentItemView {
     scheduledAt: item.schedule?.instant ?? null,
     scheduledTimeZone: item.schedule?.ianaTimeZone ?? null,
     targets: item.variants.map(toTarget),
+    reviewVariants: item.variants.map((variant) => ({
+      variantId: variant.id,
+      provider: variant.provider,
+      accountLabel: variant.accountHandle ?? variant.accountDisplayName,
+      body: variant.body,
+      locale: variant.locale,
+      contentKind: variant.contentKind,
+      mediaIds: variant.mediaIds,
+      destinationLabel: variant.destination?.displayLabel ?? null,
+      privacyValue: variant.privacyValue,
+      scheduledAt: variant.schedule?.instant ?? null,
+      scheduledTimeZone: variant.schedule?.ianaTimeZone ?? null,
+      estimatedCost:
+        variant.estimatedCostMinor === null || variant.estimatedCostCurrency === null
+          ? null
+          : {
+              amountMinor: variant.estimatedCostMinor,
+              currency: variant.estimatedCostCurrency,
+            },
+    })),
   };
 }
 
@@ -148,7 +181,50 @@ export const contentApi = {
     call<ApplicationContentItemView, ContentItemView>(
       `/content/${contentItemId}`,
       {},
-      () => ({ ...emptyItem, id: contentItemId }),
+      () =>
+        contentItemId === 'content_demo0000000000003'
+          ? {
+              ...emptyItem,
+              id: contentItemId,
+              title: 'Case study, migrating a 40 account workspace',
+              body: 'Forty social accounts used to mean forty separate checks. We moved the workspace in four stages: connection inventory, policy mapping, approval rehearsal, then scheduled cutover. Nothing published until every owner signed off.',
+              state: 'approval_requested',
+              approvalState: 'requested',
+              currentVersionId: 'version_demo0000000000000001',
+              targets: [
+                {
+                  variantId: 'variant_demo0000000000000001',
+                  connectionId: 'conn_demo00000000000000002',
+                  provider: 'linkedin',
+                  accountLabel: 'Example Studio EU',
+                  inherits: true,
+                  state: 'approval_requested',
+                  characterCount: 238,
+                  characterLimit: 3000,
+                  issueCount: 0,
+                  blockingIssueCount: 0,
+                },
+              ],
+              reviewVariants: [
+                {
+                  variantId: 'variant_demo0000000000000001',
+                  provider: 'linkedin',
+                  accountLabel: 'Example Studio EU',
+                  body: 'Forty social accounts used to mean forty separate checks. We moved the workspace in four stages: connection inventory, policy mapping, approval rehearsal, then scheduled cutover. Nothing published until every owner signed off.',
+                  locale: 'en',
+                  contentKind: 'text',
+                  mediaIds: [],
+                  destinationLabel: null,
+                  privacyValue: 'public',
+                  scheduledAt:
+                    demoCalendar.find((entry) => entry.contentItemId === contentItemId)
+                      ?.scheduledAt ?? null,
+                  scheduledTimeZone: 'Europe/Berlin',
+                  estimatedCost: null,
+                },
+              ],
+            }
+          : { ...emptyItem, id: contentItemId },
       toContentItem,
     ),
 
@@ -237,18 +313,22 @@ export const validationApi = {
 
 export const approvalsApi = {
   request: (
-    input: { contentItemId: string; approverId?: string; note?: string },
+    input: { contentItemId: string; approverIds?: readonly string[]; note?: string },
     idempotencyKey: string,
   ): Promise<ApprovalRequestView> =>
     call('/approvals', { method: 'POST', body: input, idempotencyKey }, () => ({
       id: 'approval_demo_new',
       contentItemId: input.contentItemId,
-      title: '',
-      requestedByName: 'Ana Ruiz',
-      requestedAt: new Date().toISOString(),
+      contentVersionId: 'version_demo_new',
+      policy: 'any_approver',
+      requestedBy: 'user_demo000000000000000001',
+      assignedUserIds: [...(input.approverIds ?? [])],
+      note: input.note ?? null,
       dueAt: null,
       state: 'requested' as const,
-      accountLabel: '',
+      resolvedAt: null,
+      decisions: [],
+      createdAt: new Date().toISOString(),
     })),
 
   decide: (
@@ -260,21 +340,34 @@ export const approvalsApi = {
       `/approvals/${approvalId}/decision`,
       { method: 'POST', body: input, idempotencyKey },
       () => ({
+        ...(demoApprovals.find((approval) => approval.id === approvalId) ??
+          demoApprovals[0] ?? {
+            id: approvalId,
+            contentItemId: 'content_demo0000000000000',
+            contentVersionId: 'version_demo0000000000000000',
+            policy: 'any_approver',
+            requestedBy: null,
+            assignedUserIds: [],
+            note: null,
+            dueAt: null,
+            decisions: [],
+            createdAt: new Date().toISOString(),
+          }),
         id: approvalId,
-        contentItemId: '',
-        title: '',
-        requestedByName: 'Ana Ruiz',
-        requestedAt: new Date().toISOString(),
-        dueAt: null,
-        state: input.decision === 'approve' ? ('approved' as const) : ('rejected' as const),
-        accountLabel: '',
+        state:
+          input.decision === 'approve'
+            ? ('approved' as const)
+            : input.decision === 'request_changes'
+              ? ('changes_requested' as const)
+              : ('rejected' as const),
+        resolvedAt: new Date().toISOString(),
       }),
     ),
 
   listPending: (
     query: { cursor?: string; limit?: number } = {},
   ): Promise<Paginated<ApprovalRequestView>> =>
-    call('/approvals/pending', { query }, () => page<ApprovalRequestView>([])),
+    call('/approvals/pending', { query }, () => page(demoApprovals)),
 };
 
 export type CalendarQuery = {

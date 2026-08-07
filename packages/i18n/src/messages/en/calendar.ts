@@ -57,7 +57,7 @@ export const calendarMessages = {
   'actionCenter.description': 'Everything that needs a decision or a fix, in one queue.',
   'actionCenter.empty': 'Nothing needs attention right now.',
   'actionCenter.item.connectionExpiring':
-    '{account} needs to be reconnected before {date} or scheduled posts will fail.',
+    '{account} needs to be reconnected {date} or scheduled posts will fail.',
   'actionCenter.item.connectionActionRequired':
     '{account} needs attention on {provider} before it can publish again.',
   'actionCenter.item.validationFailed':
@@ -77,6 +77,8 @@ export const calendarMessages = {
 
   'approval.title': 'Approvals',
   'approval.requestTitle': 'Approval request',
+  'approval.reviewDescription':
+    'Review the exact platform variants below. Your decision is recorded against this version.',
   'approval.requestedBy': 'Requested by {name} {relativeTime}',
   'approval.requestedFrom': 'Waiting on {name}',
   'approval.policy.none': 'No approval required for these targets.',
@@ -88,6 +90,32 @@ export const calendarMessages = {
   'approval.decision.changesRequestedBy': 'Changes requested by {name} on {date}',
   'approval.comment.label': 'Note for the author',
   'approval.comment.placeholder': 'Say what needs to change and why.',
+  'approval.comment.optional': 'Optional when approving. Required when requesting changes or rejecting.',
+  'approval.comment.required': 'Add a clear note so the author knows what to change.',
+  'approval.content.title': 'Platform variants',
+  'approval.content.master': 'Master draft',
+  'approval.content.language': 'Content language',
+  'approval.content.media': 'Media',
+  'approval.content.mediaCount':
+    '{count, plural, =0 {No uploaded files} one {# uploaded file} other {# uploaded files}}',
+  'approval.content.destination': 'Destination',
+  'approval.content.privacy': 'Visibility',
+  'approval.content.schedule': 'Publish time',
+  'approval.content.cost': 'Estimated platform cost',
+  'approval.content.costUnavailable': 'Unavailable',
+  'approval.noteFromAuthor': 'Note from the author',
+  'approval.decision.title': 'Record your decision',
+  'approval.decision.description':
+    'Approving unlocks scheduling for this exact version. Any later content change requires approval again.',
+  'approval.decision.approved': 'Approval recorded. This version can move to scheduling.',
+  'approval.decision.changesRequested': 'Changes requested. The post returned to draft.',
+  'approval.decision.rejected': 'Rejection recorded. The post returned to draft.',
+  'approval.changed.title': 'The post changed after this request',
+  'approval.changed.body':
+    'This screen is showing a newer version. Do not decide this request. Ask the author to submit it again.',
+  'approval.notFound.title': 'This approval is no longer waiting',
+  'approval.notFound.body':
+    'It may already have a decision, may have expired, or may not be available to your role.',
   'approval.reapproval.needed':
     'This post changed after approval. It needs approval again before it can publish.',
   'approval.reapproval.reason.content': 'The content changed.',

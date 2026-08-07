@@ -92,6 +92,7 @@ export const APPROVAL_STATES = [
   'not_required',
   'requested',
   'approved',
+  'changes_requested',
   'rejected',
   'expired',
 ] as const;

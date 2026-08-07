@@ -63,17 +63,15 @@ describe('localized metadata and structured data', () => {
     expect(metadata.openGraph?.locale).toBe('de_DE');
   });
 
-  it('sets a language on application and FAQ markup without changing the charged currency', async () => {
+  it('sets a language on application and FAQ markup without advertising a closed offer', async () => {
     const offer = JSON.parse(jsonLdScript(await offerJsonLd('de'))) as {
       readonly inLanguage: string;
-      readonly offers: readonly { readonly priceCurrency: string }[];
+      readonly offers?: readonly unknown[];
     };
     const faq = JSON.parse(jsonLdScript(faqJsonLd([], 'de'))) as { readonly inLanguage: string };
 
     expect(offer.inLanguage).toBe('de');
-    expect(offer.offers).toEqual(
-      expect.arrayContaining([expect.objectContaining({ priceCurrency: 'USD' })]),
-    );
+    expect(offer.offers).toBeUndefined();
     expect(faq.inLanguage).toBe('de');
   });
 });

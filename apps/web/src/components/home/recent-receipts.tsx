@@ -35,7 +35,7 @@ export function RecentReceipts() {
   const events: TimelineEvent[] = receipts.map((receipt) => ({
     id: receipt.receiptId,
     title: (
-      <Link href={`/posts/${receipt.contentItemId}/receipt`} className="hover:underline">
+      <Link href={`/posts/${receipt.contentItemId}`} className="hover:underline">
         {receipt.title}
       </Link>
     ),
@@ -62,7 +62,7 @@ export function RecentReceipts() {
     <HomeSection
       id="home-receipts"
       title={t('home.receipts.title')}
-      link={{ href: '/receipts', label: t('home.receipts.viewAll') }}
+      link={{ href: '/calendar', label: t('home.upcoming.viewAll') }}
     >
       {query.isPending ? (
         <LoadingState label={t('loading.default')}>
