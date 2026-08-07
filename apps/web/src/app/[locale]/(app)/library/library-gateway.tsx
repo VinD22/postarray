@@ -23,6 +23,7 @@ export interface LibraryGatewayProps {
   readonly rules: readonly AccountRule[];
   readonly timeZone: string;
   readonly errorReference?: string;
+  readonly rateLimitResetAt?: string;
   /** True when no API is configured and the screen is showing seeded content. */
   readonly readOnly: boolean;
 }
@@ -90,6 +91,7 @@ export function LibraryGateway(props: LibraryGatewayProps): ReactNode {
       assets={props.assets}
       rules={props.rules}
       timeZone={props.timeZone}
+      {...(props.rateLimitResetAt ? { rateLimitResetAt: props.rateLimitResetAt } : {})}
       transport={transport}
       onRefresh={refresh}
       {...(props.errorReference ? { errorReference: props.errorReference } : {})}

@@ -32,8 +32,10 @@ import {
   EmptyState,
   ErrorState,
   LoadingState,
+  OfflineBanner,
   PageHeader,
   PermissionDenied,
+  RateLimitNotice,
   SkeletonTable,
 } from '@relay/design-system/patterns';
 import { useTranslations } from '@relay/i18n/react';
@@ -48,7 +50,7 @@ import type { MediaAsset, RightsDeclaration, UploadItem } from '../types';
 /** Library uploads are admitted against storage limits, before targets exist. */
 const WORKSPACE_UPLOAD_RULES: readonly AccountRule[] = [];
 
-export type LibraryStatus = 'loading' | 'ready' | 'error' | 'forbidden';
+export type LibraryStatus = 'loading' | 'ready' | 'error' | 'forbidden' | 'offline' | 'rate_limited';
 
 export interface LibraryScreenProps {
   readonly status: LibraryStatus;
@@ -59,6 +61,7 @@ export interface LibraryScreenProps {
   readonly timeZone: string;
   readonly errorMessage?: string;
   readonly errorReference?: string;
+  readonly rateLimitResetAt?: string;
   readonly onRetry?: () => void;
   readonly onFiles: (files: readonly File[]) => void;
   readonly onPauseUpload: (id: string) => void;
@@ -137,6 +140,45 @@ export function LibraryScreen(props: LibraryScreenProps): ReactNode {
           {...(props.errorReference
             ? { reference: { label: t.full('common.details'), value: props.errorReference } }
             : {})}
+        />
+      ) : null}
+
+      {props.status === 'offline' ? (
+        <OfflineBanner
+          title={t.full('mediaLib.offline.title')}
+          description={t.full('mediaLib.offline.body')}
+          actions={
+            props.onRetry ? (
+              <Button variant="secondary" size="sm" onClick={props.onRetry}>
+                {t.full('action.retry')}
+              </Button>
+            ) : null
+          }
+        />
+      ) : null}
+
+      {props.status === 'rate_limited' ? (
+        <RateLimitNotice
+          title={t.full('mediaLib.rateLimited.title')}
+          cause={t.full('mediaLib.rateLimited.cause')}
+          resetLabel={t.full('mediaLib.rateLimited.resetLabel')}
+          resetAt={
+            props.rateLimitResetAt === undefined
+              ? t.full('common.unknown')
+              : formatDateTime(t.locale, props.rateLimitResetAt, {
+                  timeZone: props.timeZone,
+                  dateStyle: 'medium',
+                  timeStyle: 'short',
+                })
+          }
+          alternative={t.full('mediaLib.rateLimited.alternative')}
+          actions={
+            props.onRetry ? (
+              <Button variant="secondary" size="sm" onClick={props.onRetry}>
+                {t.full('action.retry')}
+              </Button>
+            ) : null
+          }
         />
       ) : null}
 

@@ -325,10 +325,19 @@ export const webComposerMessages = {
 
   'mediaLib.empty.title': 'No media yet',
   'mediaLib.empty.body':
-    'Upload images, video, audio or documents you already have. Files stay in storage for 30 days after upload.',
+    'Upload images, video, audio or documents you already have. Attached files stay in storage for 30 days after the post is created.',
   'mediaLib.empty.example': 'Example: launch_hero.jpg, 1600 by 900, with alt text set.',
   'mediaLib.error.title': 'The library could not be loaded',
   'mediaLib.error.body': 'Your files are safe. Nothing was changed by this failure.',
+  'mediaLib.offline.title': 'The library is unavailable offline',
+  'mediaLib.offline.body':
+    'We cannot refresh the library without a connection. Files already on this screen are unchanged. Reconnect, then try again.',
+  'mediaLib.rateLimited.title': 'The library needs a short pause',
+  'mediaLib.rateLimited.cause':
+    'The API asked us to slow down while loading your files. Your stored media is safe.',
+  'mediaLib.rateLimited.resetLabel': 'Try again after',
+  'mediaLib.rateLimited.alternative':
+    'You can keep drafting locally, but uploads and library changes wait until the limit resets.',
   'mediaLib.loading': 'Loading your media library',
   'mediaLib.permission.title': 'You cannot see this workspace library',
   'mediaLib.permission.body':

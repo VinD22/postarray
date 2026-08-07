@@ -40,6 +40,8 @@ export const BETA_ENGLISH_FALLBACK_PREFIXES = [
   'settings.ui.security.apiKey',
   'growth.ui.ugc.',
   'mediaLib.retention.',
+  'mediaLib.offline.',
+  'mediaLib.rateLimited.',
   'mediaLib.processing.',
   'validation.media_unavailable.',
   'validation.media_rights_undeclared.',

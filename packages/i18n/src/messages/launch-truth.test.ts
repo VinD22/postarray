@@ -29,8 +29,8 @@ describe('launch truth', () => {
     expect(en['web.pricing.v2.closing.title']).toContain('before paid checkout opens');
     expect(en['mediaLib.retention.title']).toContain('30 days after the post is created');
     expect(en['mediaLib.retention.body']).toContain('upload date as a cleanup fallback');
-    expect(en['mediaLib.retention.limits']).toContain('20 MiB');
-    expect(en['mediaLib.retention.limits']).toContain('500 MiB');
+    expect(en['mediaLib.retention.limits']).toContain('{imageSize}');
+    expect(en['mediaLib.retention.limits']).toContain('{videoSize}');
   });
 
   it('forces changed capability claims through the reviewed beta fallback', async () => {

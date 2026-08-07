@@ -36,6 +36,7 @@ export default async function LibraryPage(): Promise<React.ReactElement> {
   let assets: readonly MediaAsset[] = [];
   let rules: readonly AccountRule[] = [];
   let errorReference: string | undefined;
+  let rateLimitResetAt: string | undefined;
 
   if (isDemoMode) {
     assets = SEED_ASSETS;
@@ -59,8 +60,19 @@ export default async function LibraryPage(): Promise<React.ReactElement> {
       );
     } catch (error) {
       const apiError = ApiError.fromUnknown(error, null);
-      status = apiError.isAuthorization ? 'forbidden' : 'error';
+      status = apiError.isAuthorization
+        ? 'forbidden'
+        : apiError.isOffline
+          ? 'offline'
+          : apiError.isRateLimited
+            ? 'rate_limited'
+            : 'error';
       errorReference = apiError.correlationId ?? undefined;
+      if (apiError.retryAfterSeconds !== null) {
+        rateLimitResetAt = new Date(
+          Date.now() + apiError.retryAfterSeconds * 1_000,
+        ).toISOString();
+      }
     }
   }
 
@@ -72,6 +84,7 @@ export default async function LibraryPage(): Promise<React.ReactElement> {
       timeZone="UTC"
       readOnly={isDemoMode}
       {...(errorReference ? { errorReference } : {})}
+      {...(rateLimitResetAt ? { rateLimitResetAt } : {})}
     />
   );
 }

@@ -31,6 +31,7 @@ export interface LibraryClientProps {
   readonly rules: readonly AccountRule[];
   readonly timeZone: string;
   readonly errorReference?: string;
+  readonly rateLimitResetAt?: string;
   readonly transport: UploadTransport;
   readonly onSaveAltText: (
     assetId: string,
@@ -88,6 +89,7 @@ export function LibraryClient(props: LibraryClientProps): ReactNode {
       uploads={queue.items}
       online={online}
       timeZone={props.timeZone}
+      {...(props.rateLimitResetAt ? { rateLimitResetAt: props.rateLimitResetAt } : {})}
       onRetry={props.onRefresh}
       onFiles={queue.enqueue}
       onPauseUpload={queue.pause}
