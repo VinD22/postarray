@@ -1,4 +1,5 @@
 import { beforeEach, describe, expect, it } from 'vitest';
+import { z } from 'zod';
 
 import { createLogger } from '@relay/observability';
 import type { Scope } from '@relay/contracts';
@@ -9,7 +10,7 @@ import { createDispatcher, createWorkspaceKillSwitch } from './dispatch';
 import type { Dispatcher } from './dispatch';
 import { createSandboxServices } from './sandbox';
 import type { SandboxServices } from './sandbox';
-import { createToolRegistry } from './tools/index';
+import { createRegistry, createToolRegistry, defineTool } from './tools/index';
 import type { VerifiedGrant } from './auth/verifier';
 
 const WORKSPACE = 'ws_sandbox';
@@ -139,6 +140,58 @@ describe('scope enforcement', () => {
     if (!second.ok) {
       expect(second.problem.code).toBe('FORBIDDEN');
     }
+  });
+});
+
+describe('application actor identity', () => {
+  it('passes the grant id and client id to the shared authorization layer', async () => {
+    const identityTool = defineTool({
+      name: 'inspect_actor_for_test',
+      risk: 'read',
+      summary: 'Return the normalized actor in a test.',
+      sideEffects: 'none',
+      scopes: ['accounts:read'],
+      approvalLevel: 'level_0_read',
+      requiresIdempotencyKey: false,
+      requiresHumanConfirmation: false,
+      inputSchema: z.object({}),
+      async run(context) {
+        return { data: context.actor, resourceLinks: [] };
+      },
+    });
+    const dispatcher = createDispatcher({
+      registry: createRegistry([identityTool]),
+      services: current.services,
+      auditSink: current.services.auditSink,
+      confirmations: current.confirmations,
+      logger: createLogger({ service: 'mcp' }, { level: 'silent', pretty: false }),
+      clock: { now: () => NOW },
+      killSwitch: current.killSwitch,
+      sandbox: false,
+    });
+
+    const outcome = await dispatcher.call({
+      toolName: identityTool.name,
+      grant: grantOf(),
+      rawArguments: {},
+      correlationId: 'corr_identity',
+    });
+
+    expect(outcome.ok).toBe(true);
+    if (!outcome.ok) {
+      return;
+    }
+    expect(outcome.result.data).toEqual({
+      actorType: 'oauth_app',
+      actorId: 'grant_01',
+      workspaceId: WORKSPACE,
+      scopes: ALL_GRANTED,
+      surface: 'mcp',
+      correlationId: 'corr_identity',
+      approvalLevel: 'level_3_confirm',
+      locale: 'en',
+      clientId: 'rly_pk_agent',
+    });
   });
 });
 

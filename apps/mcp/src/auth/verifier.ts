@@ -158,8 +158,14 @@ export function createIntrospectionVerifier(options: IntrospectionVerifierOption
 
       const subject = parsed.data.sub;
       const clientId = parsed.data.client_id;
+      const grantId = parsed.data.grant_id;
       const workspaceId = parsed.data.workspace_id;
-      if (subject === undefined || clientId === undefined || workspaceId === undefined) {
+      if (
+        subject === undefined ||
+        clientId === undefined ||
+        grantId === undefined ||
+        workspaceId === undefined
+      ) {
         throw authRequired('TOKEN_INCOMPLETE');
       }
 
@@ -176,7 +182,7 @@ export function createIntrospectionVerifier(options: IntrospectionVerifierOption
         active: true,
         subject,
         clientId,
-        grantId: parsed.data.grant_id ?? clientId,
+        grantId,
         workspaceId,
         scopes,
         approvalLevel: toApprovalLevel(parsed.data.approval_level),

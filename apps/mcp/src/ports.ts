@@ -43,6 +43,7 @@ export interface ActorContextLike {
     'level_0_read' | 'level_1_draft' | 'level_2_scheduled' | 'level_3_confirm';
   readonly idempotencyKey?: string;
   readonly locale: string;
+  readonly clientId?: string;
 }
 
 export interface PageLike<T> {

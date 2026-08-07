@@ -108,6 +108,13 @@ describe('token state', () => {
     );
   });
 
+  it('rejects an active token that does not identify its exact grant', async () => {
+    const { grant_id: _grantId, ...withoutGrantId } = ACTIVE;
+    await expect(verifier(transportReturning(withoutGrantId)).verify('t')).rejects.toSatisfy(
+      (error: unknown) => RelayError.is(error) && error.details['reason'] === 'TOKEN_INCOMPLETE',
+    );
+  });
+
   it('rejects an empty token without calling the issuer', async () => {
     const transport = transportReturning(ACTIVE);
     await expect(verifier(transport).verify('   ')).rejects.toThrow();

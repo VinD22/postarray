@@ -62,10 +62,12 @@ function buildActor(
   idempotencyKey: string | undefined,
 ): ActorContextLike {
   return {
-    // The actor is the granting user acting through a registered app, never the
-    // agent host, which we cannot authenticate and do not name in an audit row.
+    // The application layer resolves the granting user, membership and current
+    // narrowing from this exact grant on every call. Passing the subject here
+    // would make it look for an OAuth grant whose id is a user id and would
+    // break the real MCP surface while the in-memory sandbox kept working.
     actorType: 'oauth_app',
-    actorId: grant.subject,
+    actorId: grant.grantId,
     workspaceId: grant.workspaceId,
     scopes: grant.scopes,
     surface: 'mcp',
@@ -73,6 +75,7 @@ function buildActor(
     approvalLevel: grant.approvalLevel,
     ...(idempotencyKey === undefined ? {} : { idempotencyKey }),
     locale: grant.locale,
+    clientId: grant.clientId,
   };
 }
 
