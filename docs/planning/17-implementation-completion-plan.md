@@ -9,7 +9,7 @@ gates into work packages with owners, dependencies and evidence.
 
 ## Current checkpoint
 
-Commit `ba5d781` is the verified local browser checkpoint. It includes:
+Commit `d32de43` is the verified local checkpoint. It includes:
 
 - 27 Playwright checks covering axe, keyboard navigation, reduced motion,
   pseudo-locale expansion, RTL and critical-route smoke states;
@@ -27,16 +27,22 @@ API and Security screen work, including provider-session and refresh-family
 revocation. The edge-backed inventory is intentionally identified as interim
 in the Auth workstream below until durable Auth session linkage is available.
 
-The next checkpoint adds the first end-to-end data-rights slice. Workspace
-export requests now have a contract, workspace-scoped application service,
-durable idempotency key, REST routes, OpenAPI entries, a shared Temporal
-workflow/activity seam, and a Settings state machine. V1 is intentionally
-JSON-only. The worker's built-in prelaunch gateway still rejects the build
-activity, so this is a verified contract and UX seam, not production export
-evidence. The production gateway must be completed and the new migration
-`0060_data_export_idempotency.sql` must be applied to the real Relay Neon
-release branch. The MCP-connected `ldr-app` project is not the Relay database
-and must not be modified.
+The current checkpoint also completes the local end-to-end data-rights build.
+Workspace export requests have a contract, workspace-scoped application
+service, durable idempotency key, REST routes, OpenAPI entries, a shared
+Temporal workflow/activity seam, and a Settings state machine. The worker's
+built-in gateway now defers the export activity to the canonical application
+service. The builder reads an explicit allow-list, excludes credentials and
+raw provider evidence, encrypts the JSON envelope with AES-256-GCM when a
+local key is configured, writes a tenant-scoped object, persists checksum and
+expiry, and records auditable state transitions. V1 remains JSON-only.
+
+This is production-shaped code, not production evidence. The release still
+needs a KMS-backed encryption adapter, a private Relay Neon Storage bucket, an
+isolated Relay Neon branch with migration `0060_data_export_idempotency.sql`,
+live Temporal replay and crash evidence, and an authenticated browser pass.
+The MCP-connected `ldr-app` project is not the Relay database and must not be
+modified.
 
 The branch is still a prelaunch product. Local green status does not prove a
 Neon/Auth/Storage deployment, a live provider connector, a paid checkout or a
@@ -53,13 +59,44 @@ the production-like evidence is reproducible from the release commit.
 | --- | --- | --- | --- |
 | P0 | Release captain | None | Freeze origin, legal/support contacts, feature flags and public capability copy. Produce a signed release decision and claim scan. |
 | P0 | Database and tenancy | Release captain | Create an isolated Relay Neon branch, apply migrations through `0059` and `0060`, verify the ledger, exercise RLS with two workspaces, and record backup/restore evidence. |
-| P0 | Storage and data rights | Database and tenancy | Replace the prelaunch `buildDataExport` gateway with a real allow-listed reader. Write an encrypted JSON archive to private Neon Storage, set `building → ready/failed`, persist byte size/checksum/expiry, mint a bounded signed URL, and add expiry/purge retries. Evidence: fixture archive with secrets absent, checksum verification, object purge transcript, and two replayed failure cases. |
-| P0 | Worker and application | Storage and data rights | Make export and deletion workflows resumable and idempotent across worker crash, timeout, duplicate start, revoked access and storage failure. Add DB state-transition/audit tests and Temporal replay histories. |
+| P0 | Storage and data rights | Database and tenancy | Promote the local export builder to production with a KMS-backed encryption adapter, private Neon Storage, checksum verification, expiry/purge retries, and a deployment smoke. Evidence: fixture archive with secrets absent, envelope decrypt test, object purge transcript, and two replayed failure cases. |
+| P0 | Worker and application | Storage and data rights | Make export and deletion workflows resumable and idempotent across worker crash, timeout, duplicate start, revoked access and storage failure. Add DB state-transition/audit tests and Temporal replay histories. The default worker now has the export activity; remaining activities stay fail-closed until their own gates pass. |
 | P0 | Integrations | Worker and application | Promote one official connector through its definition of done, including OAuth review/scopes, capability snapshot, publish/read-back, revoked-token and duplicate-publication canaries. Keep every other connector explicitly `not_implemented`, `awaiting provider review` or `unsupported`. |
 | P0 | Frontend and accessibility | Worker and integrations | Run authenticated browser journeys for compose, approval, schedule, publish, receipt, export, session revoke and permission denial. Verify loading, empty, offline, rate-limit, partial-success, provider-limitation, RTL, pseudo-locale, keyboard and axe evidence. |
 | P0 | API, MCP and CLI | Worker and integrations | Diff OpenAPI, replay the authorization matrix through REST/MCP/CLI, verify stable `--json` output, signed webhook replay/dead-letter behavior and no secret/provider-payload leakage. |
 | P1 | Identity and account lifecycle | Database and tenancy | Link durable Auth sessions, verify recovery and refresh rotation, add owner-only account closure with cooling-off/cancel, and keep MFA/passkeys visibly unavailable until their provider contracts are real. |
 | P1 | Billing and operations | Release captain, database, API | Keep checkout disabled until merchant, legal and Polar webhook evidence is signed. Provision Redis/Temporal/mail/observability and run restore, secret-scan, dependency and performance drills. |
+
+## From this checkpoint: developer board
+
+The rows below are the next issues to hand to developers. Each issue owns its
+implementation, tests, documentation and evidence. A row is not done when a
+mock passes. It is done when the acceptance artifact can be reproduced from
+the release commit on an isolated environment.
+
+| ID | Owner | Scope | Acceptance gate |
+| --- | --- | --- | --- |
+| REL-001 | Database and tenancy | Create the isolated Relay Neon release branch, apply migrations through `0060`, verify checksums, seed two workspaces and run the full RLS matrix. | Cross-workspace reads and writes fail for every tenant table; backup and restore report is attached; `pnpm release:check` is green against the branch. |
+| REL-002 | Security/platform | Implement the production KMS adapter for `DataExportEncryptionPort`, including key version metadata, rotation, access policy and startup fail-closed behavior. | A key rotation decrypts old envelopes and encrypts new ones; no local key or plaintext appears in production logs, fixtures or object metadata. |
+| REL-003 | Storage/data rights | Provision private Neon Storage, run the health sentinel, exercise signed upload/head/read/delete, and promote the export builder from local AES to KMS. | Export fixture contains the documented allow-list only, checksum matches the object, expiry and purge are deterministic, and missing objects produce a recoverable error. |
+| REL-004 | Application/worker | Finish deletion activities against real Prisma and Storage ports. Preserve resumability across page boundaries, revoked grants, canceled work and partial object deletion. | A replayed deletion leaves no credential or media object behind, records tombstones and audit events, and can resume after every injected failure point. |
+| REL-005 | Temporal/reliability | Add export and deletion replay histories plus crash points before storage write, after storage write and before/after the durable state update. | Duplicate workflow starts produce one workflow; retries produce one receipt and one effective object; all replay histories pass on the pinned worker build. |
+| REL-006 | Integrations | Promote one official provider, starting with LinkedIn, through `docs/connectors/definition-of-done.md`. Keep all other providers explicitly unavailable. | OAuth review/scopes, account discovery, capability snapshot, text/media publish, read-back, revoked-token and duplicate-publication canaries are signed. |
+| REL-007 | Product frontend | Make connector capabilities and provider limitations visible before compose and schedule. Complete partial-success, rate-limit, offline and permission-denied states. | Every enabled capability has a recovery action and an i18n key; unavailable is never rendered as zero; axe, keyboard, RTL and pseudo-locale checks stay green. |
+| REL-008 | Web QA/accessibility | Run authenticated browser journeys for onboarding, compose, approval, schedule, publish, receipt, export, session revoke and permission denial. | Playwright report includes both themes, reduced motion, RTL, pseudo-locale expansion, storage expiry and a provider limitation state. |
+| REL-009 | API/MCP/CLI | Diff OpenAPI and run the same authorization, tenancy and idempotency probes across REST, MCP and CLI. Verify signed webhook replay/dead-letter behavior. | Stable CLI `--json`, machine-safe MCP errors, no secrets/provider payloads, and identical policy decisions on all five surfaces. |
+| REL-010 | Identity/security | Replace the interim edge session inventory with durable Auth linkage when the provider contract is available. Verify recovery, refresh rotation, revoke-other-sessions and owner-only account closure. | Authenticated browser and API evidence covers current-session revoke, family revoke, recovery and cooling-off cancellation. MFA/passkeys remain clearly unavailable until implemented. |
+| REL-011 | Operations/billing | Provision Redis or Valkey, Temporal, mail, observability, deploy pipelines and restore drills. Keep checkout disabled until merchant and Polar evidence is signed. | Health checks, dependency audit, secret scan, latency budget, restore drill, payment/refund reconciliation and incident runbook are attached. |
+| REL-012 | Release captain | Conduct the final claim scan, capability review, legal/support review and go/no-go meeting. | The signed release record names the exact commit, enabled providers, rollback owner, support coverage and every accepted limitation. |
+
+Critical path: `REL-001 → REL-002/003 → REL-004/005 → REL-006 →
+REL-007/008/009 → REL-011 → REL-012`. REL-010 may run in parallel, but the
+interim session inventory must remain clearly labeled until it is replaced.
+
+V1 explicitly does not include AI image or video generation, CSV/media export,
+browser automation, unofficial provider endpoints, auto-engagement, passkeys,
+bulk cancellation, referral tracking or service-account expansion. These are
+separate post-launch projects and must not be smuggled into a release ticket.
 
 ### Data export definition of done
 
@@ -72,8 +109,10 @@ isolated release environment:
    membership metadata, text/content metadata, publication receipts and
    audit references. It contains no provider credentials, access tokens, raw
    provider payloads, signed URLs or internal secrets.
-3. The archive is encrypted at rest, stored under a tenant-scoped key, carries
-   a verified SHA-256 checksum and expires according to the published policy.
+3. The archive is encrypted at rest, stored under a tenant-scoped KMS key in
+   production, carries a verified SHA-256 checksum and expires according to
+   the published policy. The local AES adapter is for development and
+   controlled test environments only.
 4. `requested`, `building`, `ready`, `delivered`, `expired` and `failed` are
    durable, auditable states. Every retry is safe after a crash at each side
    of the storage write or database update.
@@ -156,10 +195,12 @@ Owner: platform engineer. Dependencies: B and C.
 2. Create and check the checksum-bearing `health/probe` sentinel. Test both
    upload size classes, MIME validation, checksum mismatch, suspicious scan,
    expired-object purge and retry after a database write failure.
-3. Add the export workflow. It must create a `DataExport` record, snapshot
+3. Promote the export workflow already present in `d32de43`. Supply the
+   KMS-backed encryption port, apply the idempotency migration, verify the
+   private bucket and run crash/retry/replay cases. The workflow must snapshot
    text, post metadata, receipts, audit references and membership metadata,
    exclude provider secrets, write an encrypted short-lived object, expose a
-   one-time download URL, and expire it deterministically.
+   bounded download URL, and expire it deterministically.
 4. Finish the existing deletion workflow gateway against the real database and
    storage ports. Every page is resumable and idempotent. Record canceled jobs,
    revoked grants, deleted objects, tombstoned receipts and final state.
@@ -174,8 +215,10 @@ fixture, deletion replay test, and a user-visible retention test.
 
 Owner: application/worker engineer. Dependencies: B and D.
 
-1. Replace the prelaunch worker activity gateway with the production gateway
-   only for connectors that have passed their definition of done.
+1. Keep the export activity wired through the canonical application service,
+   then replace the remaining prelaunch activity stubs only for connectors
+   that have passed their definition of done. No unverified provider call may
+   be enabled as part of the export release.
 2. Wire deletion and export workflow scheduling through the shared scheduler;
    no controller starts a Temporal workflow directly.
 3. Verify publication idempotency after provider acceptance, timeout, worker
