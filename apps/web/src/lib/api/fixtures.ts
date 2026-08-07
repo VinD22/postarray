@@ -383,24 +383,33 @@ export const demoGrowthPlan: GrowthPlanSummaryView = {
 export const demoMembers: readonly MemberView[] = [
   {
     id: 'user_demo000000000000000001',
+    userId: 'user_demo000000000000000001',
     name: 'Ana Ruiz',
     email: 'ana@example-studio.test',
     role: 'owner',
     invitePending: false,
+    brandScope: [],
+    invitedAt: null,
   },
   {
     id: 'user_demo000000000000000002',
+    userId: 'user_demo000000000000000002',
     name: 'Dana Ito',
     email: 'dana@example-studio.test',
     role: 'approver',
     invitePending: false,
+    brandScope: [],
+    invitedAt: null,
   },
   {
     id: 'user_demo000000000000000003',
+    userId: null,
     name: 'Sam Okafor',
     email: 'sam@example-studio.test',
     role: 'editor',
     invitePending: true,
+    brandScope: [],
+    invitedAt: at(-2 * DAY),
   },
 ];
 

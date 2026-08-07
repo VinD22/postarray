@@ -95,6 +95,7 @@ export class BillingController {
   @Post('portal')
   @RequireScope('billing:read')
   @RequireStepUp()
+  @Idempotent()
   @HttpCode(201)
   portal(@Actor() actor: ActorContext, @Body() body: unknown): Promise<PortalLinkView> {
     const { returnUrl } = parseBody(createPortalLinkSchema, body);

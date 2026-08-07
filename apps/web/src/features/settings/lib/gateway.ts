@@ -128,21 +128,27 @@ export const workspaceGateway = {
 
 export const membersGateway = {
   async list(): Promise<readonly MemberView[]> {
-    const [page, session] = await Promise.all([api.members.list(), api.session.get()]);
-    return page.data.map((member) => ({
+    const [members, invitations, session, brands] = await Promise.all([
+      api.members.list(),
+      api.members.listInvitations(),
+      api.session.get(),
+      api.brands.list({ limit: 100 }),
+    ]);
+    const brandNames = new Map(brands.data.map((brand) => [brand.id, brand.name]));
+    return [...members.data, ...invitations.data].map((member) => ({
       id: member.id,
-      userId: member.id,
+      userId: member.userId,
       name: member.name,
       email: member.email,
       role: member.role as WorkspaceRole,
       status: member.invitePending ? ('invited' as const) : ('active' as const),
-      // TODO(api): the members resource does not return the brand scope or the
-      // approval right yet. Until it does, a member is shown at workspace scope
-      // and the approval column reflects what the role itself allows.
-      brandScope: [],
+      brandScope: member.brandScope.flatMap((id) => {
+        const name = brandNames.get(id);
+        return name === undefined ? [] : [{ id, name }];
+      }),
       canApprove: APPROVAL_ROLES.has(member.role),
       lastActiveAt: null,
-      invitedAt: null,
+      invitedAt: member.invitedAt,
       invitedByName: null,
       isCurrentUser: member.email === session.user.email,
     }));
@@ -158,13 +164,6 @@ export const membersGateway = {
       { email: input.email, role: input.role },
       newIdempotencyKey('settings'),
     );
-    if (input.brandIds.length > 0 || input.canApprove) {
-      // TODO(api): fold scope and approval into the invitation body.
-      await request('/members/invitations/scope', {
-        method: 'PATCH',
-        body: { email: input.email, brandIds: input.brandIds, canApprove: input.canApprove },
-      }).catch(() => undefined);
-    }
   },
 
   async updateRole(input: {
@@ -174,15 +173,14 @@ export const membersGateway = {
     canApprove: boolean;
   }): Promise<void> {
     await api.members.updateRole(input.memberId, input.role);
-    // TODO(api): scope and approval belong in the same PATCH.
-    await request(`/members/${input.memberId}/scope`, {
-      method: 'PATCH',
-      body: { brandIds: input.brandIds, canApprove: input.canApprove },
-    }).catch(() => undefined);
   },
 
-  async remove(memberId: string): Promise<void> {
-    await api.members.remove(memberId);
+  async remove(member: { memberId: string; invited: boolean }): Promise<void> {
+    if (member.invited) {
+      await api.members.revokeInvitation(member.memberId);
+      return;
+    }
+    await api.members.remove(member.memberId);
   },
 };
 
@@ -763,8 +761,8 @@ export const billingGateway = {
       periodStart: usage.periodStart,
       periodEnd: detail.periodEnd ?? usage.periodStart,
       lines: usage.lines.map((line, index) => ({
-        id: `${line.provider}-${line.operation}-${index}`,
-        label: `${line.provider} ${line.operation}`,
+        id: `${line.provider ?? 'workspace'}-${line.operation}-${index}`,
+        label: line.provider === null ? line.operation : `${line.provider} ${line.operation}`,
         quantity: line.count,
         unitPrice: moneyOf(line.unitAmount),
         amount: moneyOf(line.amount),
@@ -786,7 +784,11 @@ export const billingGateway = {
   },
 
   async portalLink(): Promise<string> {
-    const result = await api.billing.getPortalLink();
+    const returnUrl = `${window.location.origin}/settings/billing`;
+    const result = await api.billing.getPortalLink(
+      returnUrl,
+      newIdempotencyKey('settings'),
+    );
     if (result.portalUrl === null) {
       throw new Error('PORTAL_UNAVAILABLE');
     }

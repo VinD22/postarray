@@ -43,7 +43,7 @@ export interface BrandRef {
 
 export interface MemberView {
   readonly id: string;
-  readonly userId: string;
+  readonly userId: string | null;
   readonly name: string;
   readonly email: string;
   readonly role: WorkspaceRole;

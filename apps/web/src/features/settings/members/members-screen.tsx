@@ -373,7 +373,10 @@ export function MembersScreen(): ReactNode {
         closeLabel={t('a11y.label.closeDialog')}
         onConfirm={() => {
           if (pendingRemoval !== null) {
-            void remove.run(pendingRemoval.id);
+            void remove.run({
+              memberId: pendingRemoval.id,
+              invited: pendingRemoval.status === 'invited',
+            });
           }
         }}
       >

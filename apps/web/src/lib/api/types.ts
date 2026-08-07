@@ -278,7 +278,7 @@ export interface MetricView {
 }
 
 export interface BillingStateView {
-  readonly status: SubscriptionStatus;
+  readonly status: SubscriptionStatus | 'none';
   readonly interval: 'monthly' | 'annual' | null;
   readonly trialEndsAt: IsoInstant | null;
   readonly firstChargeAt: IsoInstant | null;
@@ -293,7 +293,7 @@ export interface UsageView {
   readonly periodStart: IsoInstant;
   readonly total: Money;
   readonly lines: readonly {
-    readonly provider: ProviderId;
+    readonly provider: ProviderId | null;
     readonly operation: string;
     readonly count: number;
     readonly unitAmount: Money;
@@ -303,10 +303,13 @@ export interface UsageView {
 
 export interface MemberView {
   readonly id: string;
+  readonly userId: string | null;
   readonly name: string;
   readonly email: string;
   readonly role: Role;
   readonly invitePending: boolean;
+  readonly brandScope: readonly string[];
+  readonly invitedAt: IsoInstant | null;
 }
 
 export interface AuditEventView {

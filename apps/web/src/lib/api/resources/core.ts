@@ -1,6 +1,16 @@
 /** Session, workspaces, brands, members, billing, audit and health. */
 
 import { call } from '../call';
+import type {
+  AuditEventView as ApplicationAuditEventView,
+  EntitlementStateView,
+  InvitationView,
+  MembershipView,
+  PortalLinkView,
+  UsageSummaryView,
+  WorkspaceView as ApplicationWorkspaceView,
+} from '@relay/application';
+import type { Paginated as ContractPaginated } from '@relay/contracts';
 import {
   demoAudit,
   demoBilling,
@@ -20,7 +30,6 @@ import type {
   Role,
   SessionView,
   UsageView,
-  WorkspaceView,
 } from '../types';
 import { requireFirst } from '@/lib/utils/require-first';
 
@@ -67,63 +76,173 @@ export const brandsApi = {
 };
 
 export const workspacesApi = {
-  list: (): Promise<readonly WorkspaceView[]> =>
-    call('/workspaces', {}, () => demoSession.workspaces),
+  list: (): Promise<readonly ApplicationWorkspaceView[]> =>
+    call<{ readonly data: readonly ApplicationWorkspaceView[] }, readonly ApplicationWorkspaceView[]>(
+      '/workspaces',
+      {},
+      () => [],
+      ({ data }) => data,
+    ),
   create: (
     input: { name: string; timeZone: string; locale: string },
     idempotencyKey: string,
-  ): Promise<WorkspaceView> =>
-    call('/workspaces', { method: 'POST', body: input, idempotencyKey }, () => ({
-      id: 'ws_demo_new',
-      name: input.name,
-      slug: input.name.toLowerCase().replace(/[^a-z0-9]+/g, '-'),
-      timeZone: input.timeZone,
-      locale: input.locale,
-      role: 'owner' as Role,
-      readOnly: false,
-    })),
+  ): Promise<ApplicationWorkspaceView> =>
+    call<ApplicationWorkspaceView>(
+      '/workspaces',
+      {
+        method: 'POST',
+        body: {
+          name: input.name,
+          ianaTimeZone: input.timeZone,
+          defaultLocale: input.locale,
+        },
+        idempotencyKey,
+      },
+      () => ({
+        id: 'ws_demo_new',
+        name: input.name,
+        slug: input.name.toLowerCase().replace(/[^a-z0-9]+/g, '-'),
+        status: 'trialing',
+        defaultLocale: input.locale,
+        defaultTimeZone: input.timeZone,
+        killSwitchEngaged: false,
+        createdAt: new Date().toISOString(),
+      }),
+    ),
 };
 
 export const membersApi = {
   list: (query: ListQuery = {}): Promise<Paginated<MemberView>> =>
-    call('/members', { query }, () => page(demoMembers)),
+    call<ContractPaginated<MembershipView>, Paginated<MemberView>>(
+      '/workspaces/current/members',
+      { query },
+      () => page(demoMembers.filter((member) => !member.invitePending)),
+      (result) => ({ ...result, data: result.data.map(toMemberView) }),
+    ),
+  listInvitations: (query: ListQuery = {}): Promise<Paginated<MemberView>> =>
+    call<ContractPaginated<InvitationView>, Paginated<MemberView>>(
+      '/workspaces/current/invitations',
+      { query },
+      () => page(demoMembers.filter((member) => member.invitePending)),
+      (result) => ({ ...result, data: result.data.map(toInvitationMemberView) }),
+    ),
   invite: (input: { email: string; role: Role }, idempotencyKey: string): Promise<MemberView> =>
-    call('/members/invitations', { method: 'POST', body: input, idempotencyKey }, () => ({
-      id: 'user_demo_invited',
-      name: input.email,
-      email: input.email,
-      role: input.role,
-      invitePending: true,
-    })),
+    call<InvitationView, MemberView>(
+      '/workspaces/current/invitations',
+      { method: 'POST', body: input, idempotencyKey },
+      () => ({
+        id: 'inv_demo_invited',
+        userId: null,
+        name: input.email,
+        email: input.email,
+        role: input.role,
+        invitePending: true,
+        brandScope: [],
+        invitedAt: new Date().toISOString(),
+      }),
+      toInvitationMemberView,
+    ),
   updateRole: (memberId: string, role: Role): Promise<MemberView> =>
-    call(`/members/${memberId}`, { method: 'PATCH', body: { role } }, () => ({
-      ...requireFirst(demoMembers, 'member'),
-      role,
-    })),
+    call<MembershipView, MemberView>(
+      `/workspaces/current/members/${memberId}`,
+      { method: 'PATCH', body: { role } },
+      () => ({ ...requireFirst(demoMembers, 'member'), role }),
+      toMemberView,
+    ),
   remove: (memberId: string): Promise<void> =>
-    call(`/members/${memberId}`, { method: 'DELETE' }, () => undefined),
+    call(`/workspaces/current/members/${memberId}`, { method: 'DELETE' }, () => undefined),
+  revokeInvitation: (invitationId: string): Promise<void> =>
+    call(
+      `/workspaces/current/invitations/${invitationId}`,
+      { method: 'DELETE' },
+      () => undefined,
+    ),
 };
 
 export const billingApi = {
-  getState: (): Promise<BillingStateView> => call('/billing/state', {}, () => demoBilling),
+  getState: (): Promise<BillingStateView> =>
+    call<EntitlementStateView, BillingStateView>(
+      '/billing/entitlements',
+      {},
+      () => demoBilling,
+      (state) => state,
+    ),
   createCheckout: (
     input: { interval: 'monthly' | 'annual'; returnUrl: string },
     idempotencyKey: string,
   ): Promise<{ checkoutUrl: string }> =>
-    call('/billing/checkout', { method: 'POST', body: input, idempotencyKey }, () => ({
-      checkoutUrl: input.returnUrl,
-    })),
-  getPortalLink: (): Promise<{ portalUrl: string | null }> =>
-    call('/billing/portal', {}, () => ({ portalUrl: null })),
-  getUsage: (): Promise<UsageView> => call('/billing/usage', {}, () => demoUsage),
+    call(
+      '/billing/checkout',
+      {
+        method: 'POST',
+        body: { interval: input.interval, successUrl: input.returnUrl },
+        idempotencyKey,
+      },
+      () => ({ checkoutUrl: input.returnUrl }),
+    ),
+  getPortalLink: (
+    returnUrl: string,
+    idempotencyKey: string,
+  ): Promise<{ portalUrl: string | null }> =>
+    call<PortalLinkView, { portalUrl: string | null }>(
+      '/billing/portal',
+      { method: 'POST', body: { returnUrl }, idempotencyKey },
+      () => ({ portalUrl: null }),
+      (result) => result,
+    ),
+  getUsage: (): Promise<UsageView> =>
+    call<UsageSummaryView, UsageView>('/billing/usage', {}, () => demoUsage, (usage) => usage),
 };
 
 export const auditApi = {
   list: (
     query: ListQuery & { actorId?: string; action?: string } = {},
-  ): Promise<Paginated<AuditEventView>> => call('/audit', { query }, () => page(demoAudit)),
+  ): Promise<Paginated<AuditEventView>> =>
+    call<ContractPaginated<ApplicationAuditEventView>, Paginated<AuditEventView>>(
+      '/audit-events',
+      { query },
+      () => page(demoAudit),
+      (result) => ({ ...result, data: result.data.map(toAuditEventView) }),
+    ),
 };
 
 export const healthApi = {
   get: (): Promise<HealthView> => call('/health', {}, () => demoHealth),
 };
+
+function toMemberView(member: MembershipView): MemberView {
+  return {
+    id: member.id,
+    userId: member.userId,
+    name: member.displayName,
+    email: member.email,
+    role: member.role,
+    invitePending: member.state === 'invited',
+    brandScope: member.brandScope,
+    invitedAt: member.invitedAt,
+  };
+}
+
+function toInvitationMemberView(invitation: InvitationView): MemberView {
+  return {
+    id: invitation.id,
+    userId: null,
+    name: invitation.email,
+    email: invitation.email,
+    role: invitation.role,
+    invitePending: true,
+    brandScope: [],
+    invitedAt: invitation.createdAt,
+  };
+}
+
+function toAuditEventView(event: ApplicationAuditEventView): AuditEventView {
+  return {
+    id: event.id,
+    at: event.createdAt,
+    actorName: event.actorType,
+    surface: event.surface,
+    action: event.action,
+    subject: event.targetType,
+  };
+}
