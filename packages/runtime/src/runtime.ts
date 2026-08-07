@@ -10,6 +10,8 @@ import {
   type BillingGateway,
   type Clock,
   type ConnectorRegistry,
+  type CredentialStorePort,
+  type CredentialVaultPort,
   type DataExportEncryptionPort,
   type KeyValueStore,
   type MailerPort,
@@ -44,6 +46,8 @@ import { AwsDataExportKmsClient, KmsDataExportEncryption } from './kms-data-expo
 import { ResendMailer } from './resend-mailer';
 import { TemporalScheduler } from './temporal-scheduler';
 import { createVerifiedConnectorRegistry } from './verified-connectors';
+import { createCredentialStore } from './credential-store';
+import { createConfiguredCredentialVault } from './credential-vault';
 
 const REQUIRED_PRODUCTION_ADAPTERS = ['kv'] as const;
 type RequiredProductionAdapter = (typeof REQUIRED_PRODUCTION_ADAPTERS)[number];
@@ -723,6 +727,8 @@ export interface RuntimeAdapterOverrides {
   readonly prisma?: RelayPrismaClient;
   readonly kv?: KeyValueStore;
   readonly connectors?: ConnectorRegistry;
+  readonly credentialVault?: CredentialVaultPort;
+  readonly credentialStore?: CredentialStorePort;
   readonly ai?: AiGateway;
   readonly billing?: BillingGateway;
   readonly scheduler?: SchedulerPort;
@@ -805,6 +811,16 @@ export function createApplicationRuntime(options: ApplicationRuntimeOptions): Ap
     adapters.mailer ??
     configuredMailer(options.config, options.logger) ??
     new LoggingMailer(options.logger);
+  const configuredVault =
+    adapters.credentialVault === undefined
+      ? createConfiguredCredentialVault({
+          config: options.config,
+          logger: options.logger,
+          clock,
+        })
+      : null;
+  const credentialVault = adapters.credentialVault ?? configuredVault?.vault;
+  const credentialStore = adapters.credentialStore ?? createCredentialStore(prisma);
 
   const services = createServices({
     prisma,
@@ -812,6 +828,8 @@ export function createApplicationRuntime(options: ApplicationRuntimeOptions): Ap
     connectors:
       adapters.connectors ??
       createVerifiedConnectorRegistry({ config: options.config, logger: options.logger, clock }),
+    ...(credentialVault === undefined ? {} : { credentialVault }),
+    ...(credentialStore === undefined ? {} : { credentialStore }),
     ai: adapters.ai ?? aiAdapter(options.config, options.logger, clock),
     billing: adapters.billing ?? new DatabaseBillingGateway(prisma, clock, options.config),
     scheduler,
@@ -837,6 +855,7 @@ export function createApplicationRuntime(options: ApplicationRuntimeOptions): Ap
       if (exportEncryption instanceof KmsDataExportEncryption) {
         exportEncryption.close();
       }
+      configuredVault?.close();
       if (ownsPrisma) {
         await prisma.$disconnect();
       }
