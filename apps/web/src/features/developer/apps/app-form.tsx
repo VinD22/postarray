@@ -25,6 +25,7 @@ export interface AppFormValue {
   readonly homepageUrl: string;
   readonly privacyUrl: string;
   readonly termsUrl: string;
+  readonly supportEmail: string;
   readonly redirectUris: readonly string[];
   readonly scopes: readonly Scope[];
 }
@@ -51,6 +52,7 @@ export function AppForm({
   const [homepageUrl, setHomepageUrl] = useState('');
   const [privacyUrl, setPrivacyUrl] = useState('');
   const [termsUrl, setTermsUrl] = useState('');
+  const [supportEmail, setSupportEmail] = useState('');
   const [redirectUris, setRedirectUris] = useState<readonly string[]>(['']);
   const [scopes, setScopes] = useState<readonly Scope[]>(['accounts:read']);
   const [showErrors, setShowErrors] = useState(false);
@@ -63,6 +65,7 @@ export function AppForm({
     (url) => checkRedirectUri(url, false) === 'not-a-url' || url.trim().length === 0,
   );
   const anyRedirectInvalid = redirectProblems.some((problem) => problem !== null);
+  const supportEmailInvalid = !/^\S+@\S+\.\S+$/.test(supportEmail.trim());
 
   function setUri(index: number, value: string): void {
     setRedirectUris((current) =>
@@ -72,7 +75,7 @@ export function AppForm({
 
   function handleSubmit(event: FormEvent<HTMLFormElement>): void {
     event.preventDefault();
-    if (nameInvalid || linksInvalid || anyRedirectInvalid) {
+    if (nameInvalid || linksInvalid || supportEmailInvalid || anyRedirectInvalid) {
       setShowErrors(true);
       return;
     }
@@ -83,6 +86,7 @@ export function AppForm({
       homepageUrl: homepageUrl.trim(),
       privacyUrl: privacyUrl.trim(),
       termsUrl: termsUrl.trim(),
+      supportEmail: supportEmail.trim(),
       redirectUris: redirectUris.map((uri) => uri.trim()).filter((uri) => uri.length > 0),
       scopes,
     });
@@ -141,7 +145,7 @@ export function AppForm({
         title={t('developer.ui.apps.linksTitle')}
         description={t('developer.ui.apps.linksHelp')}
       >
-        <div className="grid gap-4 sm:grid-cols-3">
+        <div className="grid gap-4 sm:grid-cols-2">
           <Field
             label={t('developer.apps.homepage')}
             required
@@ -196,6 +200,24 @@ export function AppForm({
                 inputMode="url"
                 value={termsUrl}
                 onChange={(event) => setTermsUrl(event.target.value)}
+              />
+            )}
+          </Field>
+          <Field
+            label={t('auth.email.label')}
+            required
+            error={
+              showErrors && supportEmailInvalid ? t('validation.field.invalidEmail') : undefined
+            }
+          >
+            {(control) => (
+              <Input
+                {...control}
+                type="email"
+                inputMode="email"
+                autoComplete="email"
+                value={supportEmail}
+                onChange={(event) => setSupportEmail(event.target.value)}
               />
             )}
           </Field>

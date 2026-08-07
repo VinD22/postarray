@@ -326,14 +326,9 @@ export function SecurityScreen(): ReactNode {
                       <span className="text-body-md text-text-primary font-medium">
                         {grant.appName}
                       </span>
-                      <span className="text-body-sm text-text-secondary">
-                        {t('developer.consent.developerIdentity', {
-                          developer: grant.developerName,
-                        })}
-                      </span>
                       <span className="text-body-sm text-text-tertiary">
                         {t('developer.grants.grantedOn', {
-                          date: formatters.date(grant.grantedAt),
+                          date: formatters.date(grant.consentedAt),
                         })}
                         {grant.lastUsedAt === null
                           ? null

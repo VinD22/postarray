@@ -279,43 +279,81 @@ export const apiKeysApi = {
 
 export interface OAuthAppView {
   readonly id: string;
+  readonly workspaceId: string;
   readonly name: string;
   readonly clientId: string;
+  readonly clientType: 'public' | 'confidential';
   readonly redirectUris: readonly string[];
-  readonly scopes: readonly string[];
+  readonly allowedScopes: readonly string[];
+  readonly homepageUrl: string;
+  readonly privacyPolicyUrl: string;
+  readonly termsUrl: string;
+  readonly logoUrl: string | null;
+  readonly supportEmail: string;
+  readonly status: 'active' | 'sandbox' | 'disabled' | 'deleted';
+  readonly secretRotatedAt: string | null;
   readonly createdAt: string;
 }
 
 export interface OAuthGrantView {
   readonly id: string;
-  readonly appName: string;
-  readonly grantedByName: string;
-  readonly grantedAt: string;
+  readonly oauthClientId: string;
+  readonly clientName: string;
+  readonly subjectUserId: string;
   readonly scopes: readonly string[];
+  readonly brandScope: readonly string[];
+  readonly connectionScope: readonly string[];
+  readonly consentedAt: string;
+  readonly lastUsedAt: string | null;
+  readonly revokedAt: string | null;
 }
 
 export const oauthAppsApi = {
   list: (query: { cursor?: string; limit?: number } = {}): Promise<Paginated<OAuthAppView>> =>
-    call('/oauth/apps', { query }, () => page<OAuthAppView>([])),
+    call('/developer/apps', { query }, () => page<OAuthAppView>([])),
+  get: (appId: string): Promise<OAuthAppView | null> =>
+    call(`/developer/apps/${appId}`, {}, () => null),
   create: (
-    input: { name: string; redirectUris: readonly string[]; scopes: readonly string[] },
+    input: {
+      name: string;
+      clientType: 'public' | 'confidential';
+      homepageUrl: string;
+      privacyPolicyUrl: string;
+      termsUrl: string;
+      supportEmail: string;
+      logoUrl?: string | null;
+      redirectUris: readonly string[];
+      allowedScopes: readonly string[];
+    },
     idempotencyKey: string,
-  ): Promise<{ app: OAuthAppView; clientSecret: string } | null> =>
-    call('/oauth/apps', { method: 'POST', body: input, idempotencyKey }, () => null),
+  ): Promise<{ app: OAuthAppView; clientSecret: string | null } | null> =>
+    call('/developer/apps', { method: 'POST', body: input, idempotencyKey }, () => null),
   update: (
     appId: string,
-    input: Partial<{ name: string; redirectUris: readonly string[]; scopes: readonly string[] }>,
+    input: Partial<{
+      name: string;
+      homepageUrl: string;
+      privacyPolicyUrl: string;
+      termsUrl: string;
+      supportEmail: string;
+      logoUrl: string | null;
+      redirectUris: readonly string[];
+      allowedScopes: readonly string[];
+      status: 'active' | 'sandbox' | 'disabled';
+    }>,
   ): Promise<OAuthAppView | null> =>
-    call(`/oauth/apps/${appId}`, { method: 'PATCH', body: input }, () => null),
-  rotateSecret: (appId: string, idempotencyKey: string): Promise<{ clientSecret: string } | null> =>
-    call(`/oauth/apps/${appId}/secret`, { method: 'POST', idempotencyKey }, () => null),
-  delete: (appId: string): Promise<void> =>
-    call(`/oauth/apps/${appId}`, { method: 'DELETE' }, () => undefined),
-  listGrants: (
+    call(`/developer/apps/${appId}`, { method: 'PATCH', body: input }, () => null),
+  rotateSecret: (
     appId: string,
+    idempotencyKey: string,
+  ): Promise<{ app: OAuthAppView; clientSecret: string | null } | null> =>
+    call(`/developer/apps/${appId}/secret`, { method: 'POST', idempotencyKey }, () => null),
+  delete: (appId: string): Promise<void> =>
+    call(`/developer/apps/${appId}`, { method: 'DELETE' }, () => undefined),
+  listGrants: (
     query: { cursor?: string; limit?: number } = {},
   ): Promise<Paginated<OAuthGrantView>> =>
-    call(`/oauth/apps/${appId}/grants`, { query }, () => page<OAuthGrantView>([])),
-  revokeGrant: (appId: string, grantId: string): Promise<void> =>
-    call(`/oauth/apps/${appId}/grants/${grantId}`, { method: 'DELETE' }, () => undefined),
+    call('/developer/grants', { query }, () => page<OAuthGrantView>([])),
+  revokeGrant: (grantId: string): Promise<void> =>
+    call(`/developer/grants/${grantId}`, { method: 'DELETE' }, () => undefined),
 };

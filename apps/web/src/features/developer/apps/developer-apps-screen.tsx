@@ -20,15 +20,7 @@ import {
   TabsList,
   TabsTrigger,
 } from '@relay/design-system/primitives';
-import {
-  CapabilityBadge,
-  ConfirmDialog,
-  DefinitionList,
-  EmptyState,
-  Notice,
-  PageHeader,
-  RateLimitNotice,
-} from '@relay/design-system/patterns';
+import { ConfirmDialog, DefinitionList, EmptyState, Notice, PageHeader } from '@relay/design-system/patterns';
 import { useTranslations } from '@relay/i18n/react';
 
 import { SettingsPanel, SettingsStack } from '../../settings/components/section';
@@ -69,12 +61,6 @@ export function DeveloperAppsScreen(): ReactNode {
   const grants = useQuery({
     queryKey: settingsKey(workspaceId, 'developer-apps', selected?.id ?? 'none', 'grants'),
     queryFn: () => oauthAppsGateway.grants(selected?.id ?? ''),
-    enabled: selected !== null,
-  });
-
-  const logs = useQuery({
-    queryKey: settingsKey(workspaceId, 'developer-apps', selected?.id ?? 'none', 'logs'),
-    queryFn: () => oauthAppsGateway.requestLogs(selected?.id ?? ''),
     enabled: selected !== null,
   });
 
@@ -201,7 +187,7 @@ export function DeveloperAppsScreen(): ReactNode {
                           <Badge tone="outline">{t(`developer.apps.type.${app.clientType}`)}</Badge>
                         </span>
                         <span className="text-body-sm text-text-tertiary">
-                          {t('developer.apps.grants.count', { count: app.grantCount })}
+                          {formatters.date(app.createdAt)}
                         </span>
                       </div>
                       <Code>{app.clientId}</Code>
@@ -216,16 +202,6 @@ export function DeveloperAppsScreen(): ReactNode {
                         tone="warning"
                         title={t('developer.apps.status.disabled')}
                         description={t('developer.ui.apps.disabledBody')}
-                      />
-                    ) : null}
-
-                    {selected.unreachableUrls.length > 0 && selected.linksCheckedAt !== null ? (
-                      <Notice
-                        tone="warning"
-                        title={t('developer.ui.apps.linkUnreachable', {
-                          date: formatters.date(selected.linksCheckedAt),
-                        })}
-                        description={formatters.list([...selected.unreachableUrls])}
                       />
                     ) : null}
 
@@ -248,13 +224,13 @@ export function DeveloperAppsScreen(): ReactNode {
                             onClick={() =>
                               void setStatus.run({
                                 appId: selected.id,
-                                status: selected.status === 'disabled' ? 'active' : 'disabled',
+                                status: selected.status === 'active' ? 'disabled' : 'active',
                               })
                             }
                           >
-                            {selected.status === 'disabled'
-                              ? t('developer.ui.apps.enable')
-                              : t('developer.ui.apps.disable')}
+                            {selected.status === 'active'
+                              ? t('developer.ui.apps.disable')
+                              : t('developer.ui.apps.enable')}
                           </Button>
                           <Button
                             variant="destructive"
@@ -297,21 +273,10 @@ export function DeveloperAppsScreen(): ReactNode {
                             id: 'links',
                             term: t('developer.ui.apps.linksTitle'),
                             definition: (
-                              <span className="flex flex-wrap gap-2">
-                                <CapabilityBadge
-                                  state={
-                                    selected.unreachableUrls.length === 0
-                                      ? 'supported'
-                                      : 'requires_review'
-                                  }
-                                  label={
-                                    selected.linksCheckedAt === null
-                                      ? t('common.unknown')
-                                      : t('developer.ui.apps.linkReachable', {
-                                          date: formatters.date(selected.linksCheckedAt),
-                                        })
-                                  }
-                                />
+                              <span className="flex flex-col gap-1">
+                                <Code>{selected.homepageUrl}</Code>
+                                <Code>{selected.privacyUrl}</Code>
+                                <Code>{selected.termsUrl}</Code>
                               </span>
                             ),
                           },
@@ -327,40 +292,13 @@ export function DeveloperAppsScreen(): ReactNode {
                             ),
                           },
                           {
-                            id: 'sandbox',
-                            term: t('developer.ui.apps.sandboxTitle'),
-                            definition: <Code>{selected.sandboxClientId}</Code>,
-                            hint: t('developer.ui.apps.sandboxBody'),
+                            id: 'support',
+                            term: t('auth.email.label'),
+                            definition: selected.supportEmail,
                           },
                         ]}
                       />
                     </SettingsPanel>
-
-                    {selected.rateLimitUsed / Math.max(selected.rateLimitPerHour, 1) >= 0.8 ? (
-                      <RateLimitNotice
-                        title={t('developer.ui.apps.rateLimitLabel')}
-                        cause={t('developer.docs.rateLimits')}
-                        resetLabel={t('settings.ui.state.rateLimitReset')}
-                        resetAt={t('common.now')}
-                        usage={{
-                          used: selected.rateLimitUsed,
-                          limit: selected.rateLimitPerHour,
-                          label: t('developer.ui.apps.rateLimitLabel'),
-                          text: t('developer.ui.apps.rateLimitUsage', {
-                            used: formatters.number(selected.rateLimitUsed),
-                            limit: formatters.number(selected.rateLimitPerHour),
-                          }),
-                        }}
-                        alternative={t('developer.docs.pagination')}
-                      />
-                    ) : (
-                      <p className="text-body-sm text-text-tertiary">
-                        {t('developer.ui.apps.rateLimitUsage', {
-                          used: formatters.number(selected.rateLimitUsed),
-                          limit: formatters.number(selected.rateLimitPerHour),
-                        })}
-                      </p>
-                    )}
 
                     <Tabs defaultValue="consent">
                       <TabsList aria-label={selected.name}>
@@ -368,13 +306,12 @@ export function DeveloperAppsScreen(): ReactNode {
                           {t('developer.apps.consentPreview')}
                         </TabsTrigger>
                         <TabsTrigger value="grants">{t('developer.apps.grants.title')}</TabsTrigger>
-                        <TabsTrigger value="logs">{t('developer.activity.title')}</TabsTrigger>
                       </TabsList>
 
                       <TabsContent value="consent">
                         <ConsentPreview
                           appName={selected.name}
-                          developerName={selected.developerName}
+                          developerName={developerName}
                           workspaceName={workspaceName}
                           brandNames={[]}
                           scopes={selected.scopes}
@@ -404,7 +341,7 @@ export function DeveloperAppsScreen(): ReactNode {
                                 <TableHeader>
                                   <TableRow>
                                     <TableHead scope="col">
-                                      {t('developer.ui.apps.grantColumn.workspace')}
+                                      {t('settings.members.title')}
                                     </TableHead>
                                     <TableHead scope="col">
                                       {t('developer.ui.apps.grantColumn.scopes')}
@@ -420,7 +357,7 @@ export function DeveloperAppsScreen(): ReactNode {
                                 <TableBody>
                                   {(grants.data ?? []).map((grant) => (
                                     <TableRow key={grant.id}>
-                                      <TableRowHeader>{grant.workspaceName}</TableRowHeader>
+                                      <TableRowHeader>{grant.subjectUserId}</TableRowHeader>
                                       <TableCell>
                                         <span className="flex flex-wrap gap-1">
                                           {grant.scopes.map((scope) => (
@@ -428,7 +365,7 @@ export function DeveloperAppsScreen(): ReactNode {
                                           ))}
                                         </span>
                                       </TableCell>
-                                      <TableCell>{formatters.date(grant.grantedAt)}</TableCell>
+                                      <TableCell>{formatters.date(grant.consentedAt)}</TableCell>
                                       <TableCell>
                                         {grant.lastUsedAt === null
                                           ? t('developer.credential.neverUsed')
@@ -443,61 +380,6 @@ export function DeveloperAppsScreen(): ReactNode {
                         </AsyncBoundary>
                       </TabsContent>
 
-                      <TabsContent value="logs">
-                        <AsyncBoundary
-                          section={t('developer.activity.title')}
-                          isPending={logs.isPending}
-                          error={logs.error}
-                          onRetry={() => void logs.refetch()}
-                        >
-                          {(logs.data ?? []).length === 0 ? (
-                            <p className="text-body-md text-text-secondary">
-                              {t('developer.activity.empty')}
-                            </p>
-                          ) : (
-                            <div className="flex flex-col gap-2">
-                              <TableContainer className="max-h-96">
-                                <Table>
-                                  <TableCaption className="sr-only">
-                                    {t('developer.ui.apps.logsCaption')}
-                                  </TableCaption>
-                                  <TableHeader>
-                                    <TableRow>
-                                      <TableHead scope="col">
-                                        {t('developer.ui.apps.logColumn.time')}
-                                      </TableHead>
-                                      <TableHead scope="col">
-                                        {t('developer.ui.apps.logColumn.route')}
-                                      </TableHead>
-                                      <TableHead scope="col" numeric>
-                                        {t('developer.ui.apps.logColumn.status')}
-                                      </TableHead>
-                                      <TableHead scope="col">
-                                        {t('developer.ui.apps.logColumn.workspace')}
-                                      </TableHead>
-                                    </TableRow>
-                                  </TableHeader>
-                                  <TableBody>
-                                    {(logs.data ?? []).map((log) => (
-                                      <TableRow key={log.id}>
-                                        <TableRowHeader className="whitespace-nowrap tabular-nums">
-                                          {formatters.dateTime(log.occurredAt)}
-                                        </TableRowHeader>
-                                        <TableCell className="font-mono">{log.route}</TableCell>
-                                        <TableCell numeric>{log.status}</TableCell>
-                                        <TableCell>{log.workspaceName}</TableCell>
-                                      </TableRow>
-                                    ))}
-                                  </TableBody>
-                                </Table>
-                              </TableContainer>
-                              <p className="text-body-sm text-text-tertiary">
-                                {t('developer.ui.apps.logsRedacted')}
-                              </p>
-                            </div>
-                          )}
-                        </AsyncBoundary>
-                      </TabsContent>
                     </Tabs>
                   </>
                 )}

@@ -1868,6 +1868,7 @@ model OAuthClient {
   privacyPolicyUrl String?           @map("privacy_policy_url")
   termsUrl         String?           @map("terms_url")
   logoUrl          String?           @map("logo_url")
+  supportEmail     String?           @map("support_email")
   status           OAuthClientStatus @default(sandbox)
   createdByUserId  String            @map("created_by_user_id")
   createdAt        DateTime          @default(now()) @map("created_at") @db.Timestamptz(6)

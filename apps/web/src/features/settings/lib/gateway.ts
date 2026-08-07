@@ -17,7 +17,7 @@
  *   webhook delivery redelivery by delivery id.
  */
 
-import { api, newIdempotencyKey, request } from '@/lib/api';
+import { api, newIdempotencyKey, request, type OAuthAppView as ApiOAuthAppView } from '@/lib/api';
 import type { BusinessProfileView } from '@/lib/api/types';
 import type {
   GrowthExportFormat,
@@ -31,7 +31,6 @@ import type {
 import type {
   AgentActivityView,
   ApiKeyView,
-  AppRequestLogView,
   ApprovalLevel,
   BillingStateView,
   BrandView,
@@ -345,14 +344,23 @@ export const securityGateway = {
   },
 
   async grants(): Promise<readonly OAuthGrantView[]> {
-    // TODO(api): a workspace wide grant list, rather than one per app.
-    const raw = await request<readonly OAuthGrantView[]>('/oauth/grants').catch(() => []);
-    return raw;
+    const result = await api.oauthApps.listGrants();
+    return result.data.map((grant) => ({
+      id: grant.id,
+      subjectUserId: grant.subjectUserId,
+      scopes: grant.scopes as readonly Scope[],
+      brandScope: grant.brandScope,
+      connectionScope: grant.connectionScope,
+      consentedAt: grant.consentedAt,
+      lastUsedAt: grant.lastUsedAt,
+      appName: grant.clientName,
+      appId: grant.oauthClientId,
+      revokedAt: grant.revokedAt,
+    }));
   },
 
   async revokeGrant(grantId: string): Promise<void> {
-    // TODO(api): revoke by grant id without needing the app id.
-    await request(`/oauth/grants/${grantId}`, { method: 'DELETE' });
+    await api.oauthApps.revokeGrant(grantId);
   },
 
   async connections(): Promise<readonly ConnectionSummaryView[]> {
@@ -454,66 +462,30 @@ export const agentsGateway = {
 
 /* -------------------------------------------------------- developer apps */
 
-interface OAuthAppDetailResponse {
-  readonly clientType?: 'public' | 'confidential';
-  readonly status?: OAuthAppView['status'];
-  readonly homepageUrl?: string;
-  readonly privacyUrl?: string;
-  readonly termsUrl?: string;
-  readonly developerName?: string;
-  readonly linksCheckedAt?: string | null;
-  readonly unreachableUrls?: readonly string[];
-  readonly grantCount?: number;
-  readonly rateLimitPerHour?: number;
-  readonly rateLimitUsed?: number;
-  readonly sandboxClientId?: string;
-}
-
-function toAppView(
-  base: {
-    id: string;
-    name: string;
-    clientId: string;
-    redirectUris: readonly string[];
-    scopes: readonly string[];
-    createdAt: string;
-  },
-  detail: OAuthAppDetailResponse,
-): OAuthAppView {
+function toAppView(base: ApiOAuthAppView): OAuthAppView {
   return {
     id: base.id,
+    workspaceId: base.workspaceId,
     name: base.name,
     clientId: base.clientId,
-    clientType: detail.clientType ?? 'confidential',
-    status: detail.status ?? 'active',
-    homepageUrl: detail.homepageUrl ?? '',
-    privacyUrl: detail.privacyUrl ?? '',
-    termsUrl: detail.termsUrl ?? '',
-    developerName: detail.developerName ?? '',
+    clientType: base.clientType,
+    status: base.status === 'sandbox' ? 'draft' : base.status === 'deleted' ? 'disabled' : base.status,
+    homepageUrl: base.homepageUrl,
+    privacyUrl: base.privacyPolicyUrl,
+    termsUrl: base.termsUrl,
+    supportEmail: base.supportEmail,
+    logoUrl: base.logoUrl,
     redirectUris: base.redirectUris,
-    scopes: base.scopes as readonly Scope[],
-    linksCheckedAt: detail.linksCheckedAt ?? null,
-    unreachableUrls: detail.unreachableUrls ?? [],
-    grantCount: detail.grantCount ?? 0,
-    rateLimitPerHour: detail.rateLimitPerHour ?? 1000,
-    rateLimitUsed: detail.rateLimitUsed ?? 0,
-    sandboxClientId: detail.sandboxClientId ?? '',
+    scopes: base.allowedScopes as readonly Scope[],
+    secretRotatedAt: base.secretRotatedAt,
     createdAt: base.createdAt,
   };
 }
 
 export const oauthAppsGateway = {
   async list(): Promise<readonly OAuthAppView[]> {
-    const page = await api.oauthApps.list();
-    // TODO(api): `GET /oauth/apps` should embed the identity and limit fields.
-    return Promise.all(
-      page.data.map(async (app) => {
-        const detail = await request<OAuthAppDetailResponse>(`/oauth/apps/${app.id}/detail`).catch(
-          () => ({}) as OAuthAppDetailResponse,
-        );
-        return toAppView(app, detail);
-      }),
-    );
+    const result = await api.oauthApps.list();
+    return result.data.map(toAppView);
   },
 
   async create(input: {
@@ -522,31 +494,31 @@ export const oauthAppsGateway = {
     homepageUrl: string;
     privacyUrl: string;
     termsUrl: string;
+    supportEmail: string;
     redirectUris: readonly string[];
     scopes: readonly Scope[];
   }): Promise<{ app: OAuthAppView; secret: OneTimeCredential | null }> {
     const created = await api.oauthApps.create(
-      { name: input.name, redirectUris: input.redirectUris, scopes: input.scopes },
+      {
+        name: input.name,
+        clientType: input.clientType,
+        homepageUrl: input.homepageUrl,
+        privacyPolicyUrl: input.privacyUrl,
+        termsUrl: input.termsUrl,
+        supportEmail: input.supportEmail,
+        logoUrl: null,
+        redirectUris: input.redirectUris,
+        allowedScopes: input.scopes,
+      },
       newIdempotencyKey('settings'),
     );
     if (created === null) {
       throw new Error('OAUTH_APP_NOT_CREATED');
     }
-    // TODO(api): the create body should carry the identity fields directly.
-    await request(`/oauth/apps/${created.app.id}/detail`, {
-      method: 'PATCH',
-      body: {
-        clientType: input.clientType,
-        homepageUrl: input.homepageUrl,
-        privacyUrl: input.privacyUrl,
-        termsUrl: input.termsUrl,
-      },
-    }).catch(() => undefined);
-
     return {
-      app: toAppView(created.app, { clientType: input.clientType }),
+      app: toAppView(created.app),
       secret:
-        input.clientType === 'confidential'
+        input.clientType === 'confidential' && created.clientSecret !== null
           ? { value: created.clientSecret, expiresAt: null }
           : null,
     };
@@ -556,34 +528,47 @@ export const oauthAppsGateway = {
     if (
       patch.name !== undefined ||
       patch.redirectUris !== undefined ||
-      patch.scopes !== undefined
+      patch.scopes !== undefined ||
+      patch.status !== undefined ||
+      patch.homepageUrl !== undefined ||
+      patch.privacyUrl !== undefined ||
+      patch.termsUrl !== undefined ||
+      patch.supportEmail !== undefined ||
+      patch.logoUrl !== undefined
     ) {
-      await api.oauthApps.update(appId, {
+      const updated = await api.oauthApps.update(appId, {
         ...(patch.name === undefined ? {} : { name: patch.name }),
         ...(patch.redirectUris === undefined ? {} : { redirectUris: patch.redirectUris }),
-        ...(patch.scopes === undefined ? {} : { scopes: patch.scopes }),
+        ...(patch.scopes === undefined ? {} : { allowedScopes: patch.scopes }),
+        ...(patch.status === undefined
+          ? {}
+          : { status: patch.status === 'draft' ? ('sandbox' as const) : patch.status }),
+        ...(patch.homepageUrl === undefined ? {} : { homepageUrl: patch.homepageUrl }),
+        ...(patch.privacyUrl === undefined
+          ? {}
+          : { privacyPolicyUrl: patch.privacyUrl }),
+        ...(patch.termsUrl === undefined ? {} : { termsUrl: patch.termsUrl }),
+        ...(patch.supportEmail === undefined ? {} : { supportEmail: patch.supportEmail }),
+        ...(patch.logoUrl === undefined ? {} : { logoUrl: patch.logoUrl }),
       });
+      if (updated === null) {
+        throw new Error('OAUTH_APP_NOT_UPDATED');
+      }
+      return toAppView(updated);
     }
-    // TODO(api): status and identity fields belong in the same PATCH.
-    await request(`/oauth/apps/${appId}/detail`, { method: 'PATCH', body: patch }).catch(
-      () => undefined,
-    );
-    const [base, detail] = await Promise.all([
-      api.oauthApps.list(),
-      request<OAuthAppDetailResponse>(`/oauth/apps/${appId}/detail`).catch(
-        () => ({}) as OAuthAppDetailResponse,
-      ),
-    ]);
-    const found = base.data.find((app) => app.id === appId);
-    if (found === undefined) {
+    const found = await api.oauthApps.get(appId);
+    if (found === null) {
       throw new Error('OAUTH_APP_NOT_FOUND');
     }
-    return toAppView(found, detail);
+    return toAppView(found);
   },
 
   async rotateSecret(appId: string): Promise<OneTimeCredential> {
     const rotated = await api.oauthApps.rotateSecret(appId, newIdempotencyKey('settings'));
-    return { value: rotated?.clientSecret ?? '', expiresAt: null };
+    if (rotated?.clientSecret === null || rotated?.clientSecret === undefined) {
+      throw new Error('OAUTH_SECRET_NOT_ROTATED');
+    }
+    return { value: rotated.clientSecret, expiresAt: null };
   },
 
   async remove(appId: string): Promise<void> {
@@ -591,22 +576,19 @@ export const oauthAppsGateway = {
   },
 
   async grants(appId: string): Promise<readonly OAuthGrantView[]> {
-    const page = await api.oauthApps.listGrants(appId);
-    return page.data.map((grant) => ({
+    const page = await api.oauthApps.listGrants();
+    return page.data.filter((grant) => grant.oauthClientId === appId).map((grant) => ({
       id: grant.id,
-      workspaceName: grant.grantedByName,
+      subjectUserId: grant.subjectUserId,
       scopes: grant.scopes as readonly Scope[],
-      grantedAt: grant.grantedAt,
-      lastUsedAt: null,
-      appName: grant.appName,
+      brandScope: grant.brandScope,
+      connectionScope: grant.connectionScope,
+      consentedAt: grant.consentedAt,
+      lastUsedAt: grant.lastUsedAt,
+      appName: grant.clientName,
       appId,
-      developerName: grant.grantedByName,
+      revokedAt: grant.revokedAt,
     }));
-  },
-
-  async requestLogs(appId: string): Promise<readonly AppRequestLogView[]> {
-    // TODO(api): `api.oauthApps.listRequestLogs`.
-    return request<readonly AppRequestLogView[]>(`/oauth/apps/${appId}/requests`).catch(() => []);
   },
 };
 

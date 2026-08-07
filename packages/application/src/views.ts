@@ -705,6 +705,11 @@ export interface OAuthAppView {
   readonly clientType: 'public' | 'confidential';
   readonly redirectUris: readonly string[];
   readonly allowedScopes: readonly Scope[];
+  readonly homepageUrl: string;
+  readonly privacyPolicyUrl: string;
+  readonly termsUrl: string;
+  readonly logoUrl: string | null;
+  readonly supportEmail: string;
   readonly status: 'active' | 'sandbox' | 'disabled' | 'deleted';
   readonly secretRotatedAt: string | null;
   readonly createdAt: string;

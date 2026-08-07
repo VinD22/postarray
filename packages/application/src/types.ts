@@ -1072,6 +1072,11 @@ export interface OAuthAppService {
       readonly clientType: 'public' | 'confidential';
       readonly redirectUris: readonly string[];
       readonly allowedScopes: readonly Scope[];
+      readonly homepageUrl: string;
+      readonly privacyPolicyUrl: string;
+      readonly termsUrl: string;
+      readonly logoUrl?: string | null;
+      readonly supportEmail: string;
     },
   ): Promise<CreatedOAuthAppView>;
   update(
@@ -1081,6 +1086,11 @@ export interface OAuthAppService {
       readonly name?: string;
       readonly redirectUris?: readonly string[];
       readonly allowedScopes?: readonly Scope[];
+      readonly homepageUrl?: string;
+      readonly privacyPolicyUrl?: string;
+      readonly termsUrl?: string;
+      readonly logoUrl?: string | null;
+      readonly supportEmail?: string;
       readonly status?: 'active' | 'sandbox' | 'disabled';
     },
   ): Promise<OAuthAppView>;

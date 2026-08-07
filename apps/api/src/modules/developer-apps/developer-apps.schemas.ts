@@ -58,15 +58,28 @@ export const redirectUriSchema = z
   .max(2048)
   .refine(isAcceptableRedirectUri, { error: 'REDIRECT_URI_NOT_ACCEPTABLE' });
 
+const publishedHttpsUrlSchema = z
+  .string()
+  .trim()
+  .min(1)
+  .max(2048)
+  .refine((candidate) => {
+    try {
+      return new URL(candidate).protocol === 'https:';
+    } catch {
+      return false;
+    }
+  }, { error: 'HTTPS_URL_REQUIRED' });
+
 export const createOAuthAppSchema = z
   .object({
     name: shortTextSchema,
     clientType: z.enum(['public', 'confidential']),
-    homepageUrl: z.string().trim().min(1).max(2048),
-    privacyPolicyUrl: z.string().trim().min(1).max(2048),
-    termsUrl: z.string().trim().min(1).max(2048),
-    supportEmail: z.string().trim().min(3).max(320),
-    logoUrl: z.string().trim().min(1).max(2048).nullable().default(null),
+    homepageUrl: publishedHttpsUrlSchema,
+    privacyPolicyUrl: publishedHttpsUrlSchema,
+    termsUrl: publishedHttpsUrlSchema,
+    supportEmail: z.email().trim().max(320),
+    logoUrl: publishedHttpsUrlSchema.nullable().default(null),
     redirectUris: z.array(redirectUriSchema).min(1).max(MAX_REDIRECT_URIS),
     /**
      * The maximum set this app may ever request. `billing:read` may be granted;
@@ -79,8 +92,12 @@ export const createOAuthAppSchema = z
   .strict();
 
 export const updateOAuthAppSchema = createOAuthAppSchema
-  .omit({ clientType: true })
+  .omit({ clientType: true, logoUrl: true })
   .partial()
+  .extend({
+    logoUrl: publishedHttpsUrlSchema.nullable().optional(),
+    status: z.enum(['active', 'sandbox', 'disabled']).optional(),
+  })
   .strict();
 
 export const listAppsQuerySchema = cursorQuerySchema;

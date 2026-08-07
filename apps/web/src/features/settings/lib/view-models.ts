@@ -160,6 +160,7 @@ export interface OneTimeCredential {
 
 export interface OAuthAppView {
   readonly id: string;
+  readonly workspaceId: string;
   readonly name: string;
   readonly clientId: string;
   readonly clientType: 'public' | 'confidential';
@@ -167,27 +168,25 @@ export interface OAuthAppView {
   readonly homepageUrl: string;
   readonly privacyUrl: string;
   readonly termsUrl: string;
-  readonly developerName: string;
+  readonly supportEmail: string;
+  readonly logoUrl: string | null;
   readonly redirectUris: readonly string[];
   readonly scopes: readonly Scope[];
-  readonly linksCheckedAt: string | null;
-  readonly unreachableUrls: readonly string[];
-  readonly grantCount: number;
-  readonly rateLimitPerHour: number;
-  readonly rateLimitUsed: number;
-  readonly sandboxClientId: string;
+  readonly secretRotatedAt: string | null;
   readonly createdAt: string;
 }
 
 export interface OAuthGrantView {
   readonly id: string;
-  readonly workspaceName: string;
+  readonly subjectUserId: string;
   readonly scopes: readonly Scope[];
-  readonly grantedAt: string;
+  readonly brandScope: readonly string[];
+  readonly connectionScope: readonly string[];
+  readonly consentedAt: string;
   readonly lastUsedAt: string | null;
   readonly appName: string;
   readonly appId: string;
-  readonly developerName: string;
+  readonly revokedAt: string | null;
 }
 
 export interface AppRequestLogView {

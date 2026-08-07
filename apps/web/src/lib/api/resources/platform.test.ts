@@ -4,7 +4,7 @@ const callMock = vi.hoisted(() => vi.fn());
 
 vi.mock('../call', () => ({ call: callMock }));
 
-import { automationRulesApi, rssApi } from './platform';
+import { automationRulesApi, oauthAppsApi, rssApi } from './platform';
 
 describe('browser automation resource contracts', () => {
   beforeEach(() => {
@@ -58,5 +58,23 @@ describe('browser automation resource contracts', () => {
       expect.objectContaining({ method: 'PATCH', body: { paused: true } }),
       expect.any(Function),
     );
+  });
+
+  it('uses the developer app and workspace grant routes', async () => {
+    await oauthAppsApi.list({ limit: 10 });
+    await oauthAppsApi.get('app_01');
+    await oauthAppsApi.update('app_01', { status: 'active' });
+    await oauthAppsApi.rotateSecret('app_01', 'idem-rotate');
+    await oauthAppsApi.listGrants({ limit: 10 });
+    await oauthAppsApi.revokeGrant('grant_01');
+
+    expect(callMock.mock.calls.map((entry) => entry[0])).toEqual([
+      '/developer/apps',
+      '/developer/apps/app_01',
+      '/developer/apps/app_01',
+      '/developer/apps/app_01/secret',
+      '/developer/grants',
+      '/developer/grants/grant_01',
+    ]);
   });
 });
