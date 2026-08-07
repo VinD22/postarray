@@ -37,6 +37,7 @@ async function keyValueStore(): Promise<KeyValueStore> {
   await client.connect();
   return {
     get: (key) => client.get(key),
+    getAndDelete: (key) => client.getdel(key),
     async set(key: string, value: string, options: KeyValueSetOptions = {}) {
       const ttl = options.ttlSeconds === undefined ? undefined : Math.max(1, options.ttlSeconds);
       const result =
