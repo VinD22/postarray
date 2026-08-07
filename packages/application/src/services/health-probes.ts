@@ -1,12 +1,19 @@
 import { randomUUID } from 'node:crypto';
 
-import type { KeyValueStore } from '../types';
+import type { KeyValueStore, StoragePort } from '../types';
 
 type KeyValueProbePort = Pick<KeyValueStore, 'delete' | 'get' | 'set'>;
+type StorageProbePort = Pick<StoragePort, 'head'>;
 
 function probeError(name: 'KeyValueRoundtripMismatch' | 'KeyValueWriteRejected'): Error {
   const error = new Error(name);
   error.name = name;
+  return error;
+}
+
+function missingStorageProbeError(): Error {
+  const error = new Error('StorageProbeMissing');
+  error.name = 'StorageProbeMissing';
   return error;
 }
 
@@ -28,4 +35,13 @@ export async function probeKeyValueRoundtrip(
   } finally {
     if (created) await kv.delete(key);
   }
+}
+
+/** Prove that the configured private bucket contains the release sentinel. */
+export async function probeStorageHead(
+  storage: StorageProbePort,
+  key = 'health/probe',
+): Promise<void> {
+  const object = await storage.head(key);
+  if (object === null) throw missingStorageProbeError();
 }

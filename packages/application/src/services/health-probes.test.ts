@@ -1,9 +1,10 @@
 import { describe, expect, it } from 'vitest';
 
-import type { KeyValueStore } from '../types';
-import { probeKeyValueRoundtrip } from './health-probes';
+import type { KeyValueStore, StoragePort } from '../types';
+import { probeKeyValueRoundtrip, probeStorageHead } from './health-probes';
 
 type KeyValueProbePort = Pick<KeyValueStore, 'delete' | 'get' | 'set'>;
+type StorageProbePort = Pick<StoragePort, 'head'>;
 
 function nonceSequence(...values: readonly string[]): () => string {
   let index = 0;
@@ -74,5 +75,34 @@ describe('probeKeyValueRoundtrip', () => {
       probeKeyValueRoundtrip(kv, nonceSequence('collision', 'probe-value')),
     ).rejects.toMatchObject({ name: 'KeyValueWriteRejected' });
     expect(deleted).toBe(false);
+  });
+});
+
+describe('probeStorageHead', () => {
+  it('passes only when the configured bucket returns the release sentinel', async () => {
+    const storage: StorageProbePort = {
+      async head(key) {
+        return {
+          key,
+          byteSize: 1,
+          contentType: 'application/octet-stream',
+          checksumSha256: '00'.repeat(32),
+        };
+      },
+    };
+
+    await expect(probeStorageHead(storage)).resolves.toBeUndefined();
+  });
+
+  it('fails when the sentinel, bucket or readable metadata is unavailable', async () => {
+    const storage: StorageProbePort = {
+      async head() {
+        return null;
+      },
+    };
+
+    await expect(probeStorageHead(storage)).rejects.toMatchObject({
+      name: 'StorageProbeMissing',
+    });
   });
 });

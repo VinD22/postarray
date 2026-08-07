@@ -2,7 +2,7 @@ import { detectCapabilities } from '@relay/config';
 import { buildHealthReport, type HealthCheck, type HealthReport } from '@relay/observability';
 
 import type { HealthService, ServiceDeps } from '../types';
-import { probeKeyValueRoundtrip } from './health-probes';
+import { probeKeyValueRoundtrip, probeStorageHead } from './health-probes';
 
 /**
  * Health.
@@ -50,7 +50,7 @@ export function createHealthService(deps: ServiceDeps): HealthService {
           await probeKeyValueRoundtrip(deps.kv);
         }),
         timed('storage.head', async () => {
-          await deps.storage.head('health/probe');
+          await probeStorageHead(deps.storage);
         }),
       ]);
 

@@ -129,8 +129,9 @@ passed its provider gate.
 - [ ] Verify sign-up, sign-in, verification, password reset, sign-out and
       revoked-session behavior before reproducing the configuration on main.
 - [ ] Provision the media bucket, verify private access and signed operations,
-      upload both size classes, then prove the purge path removes an expired
-      object and its database state.
+      create the checksum-bearing `health/probe` sentinel, upload both size
+      classes, then prove the purge path removes an expired object and its
+      database state.
 - [ ] Deploy Redis/Valkey, Temporal, transactional email, the API, worker, MCP,
       links service and web app. Production must fail to boot if a mandatory
       adapter is missing.
