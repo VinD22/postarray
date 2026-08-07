@@ -60,8 +60,9 @@ boundary validation), `39b2435` (shared PKCE exchange and discovery),
 `9e2c0b3` (atomic application KV consumption), `99c8e3e` (account-selection
 validation), `a6638b3` (format cleanup), `040d9ca` (unhealthy Temporal worker
 run detection), `ab8c449` (localized OAuth callback outcome notices) and
-`642384f` (credential-port readiness gate), alongside the current handoff and
-connector audit. These commits are locally
+`642384f` (credential-port readiness gate), `74a1d30` (atomic MCP key-value
+consumption) and `9e2f3bb` (checkpoint documentation), alongside the current
+handoff and connector audit. These commits are locally
 verified code, not proof of a provisioned Neon, Storage, Temporal, Auth or
 provider environment.
 

@@ -13,10 +13,10 @@ gates into work packages with owners, dependencies and evidence.
 
 ## Current checkpoint
 
-Commit `642384f` is the latest verified local checkpoint. It includes the
+Commit `9e2f3bb` is the latest verified local checkpoint. It includes the
 earlier deletion and export work plus the integration hardening commits
 `40972fd`, `4082148`, `85d9819`, `39b2435`, `5a4d47d`, `9e2c0b3`, `99c8e3e`,
-`a6638b3`, `040d9ca`, `ab8c449` and `642384f`. The current checkpoint includes:
+`a6638b3`, `040d9ca`, `ab8c449`, `642384f`, `74a1d30` and `9e2f3bb`. The current checkpoint includes:
 
 - 27 Playwright checks covering axe, keyboard navigation, reduced motion,
   pseudo-locale expansion, RTL and critical-route smoke states;
