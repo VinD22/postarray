@@ -46,6 +46,7 @@ import { ConnectionRow } from './connection-row';
 import { ConnectionsTabs } from './connections-tabs';
 import { GroupList, MoveGroupDialog } from './connection-groups';
 import { PermissionsSheet } from './permissions-sheet';
+import { OAuthCallbackNotice } from './oauth-callback-notice';
 import { useProviderName } from './provider';
 import { sortByUrgency } from './health';
 import {
@@ -196,6 +197,10 @@ export function ConnectionsScreen({
           </Button>
         }
       />
+
+      <div className="px-4 pt-4 md:px-6">
+        <OAuthCallbackNotice />
+      </div>
 
       <ConnectionsTabs
         value={activeTab}
