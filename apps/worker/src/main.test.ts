@@ -62,4 +62,64 @@ describe('worker gateway bootstrap', () => {
       });
     }
   });
+
+  it('allows the runtime to replace the deletion activities as one gateway', async () => {
+    const dataDeletion = {
+      loadDeletionScope: async () => ({
+        publishJobIds: [],
+        connectionIds: [],
+        receiptIds: [],
+        objectPrefixes: [],
+        ruleIds: [],
+        feedIds: [],
+      }),
+      cancelScheduledJob: async () => undefined,
+      revokeProviderConnection: async () => undefined,
+      deleteStoredObjects: async () => ({ deletedCount: 0, nextCursor: null }),
+      tombstoneAnalytics: async () => undefined,
+      finalizeDeletion: async () => undefined,
+    };
+    const gateway = await loadGateway('built-in-prelaunch-gateway', { dataDeletion });
+
+    await expect(
+      gateway.loadDeletionScope({
+        ctx: {
+          workspaceId: 'ws_1',
+          correlationId: 'corr_1',
+          actorId: 'worker',
+          actorType: 'system',
+          surface: 'automation_rule',
+          approvalLevel: 'level_3_confirm',
+          locale: 'en',
+        },
+        requestId: 'deletion_1',
+      }),
+    ).resolves.toMatchObject({ objectPrefixes: [] });
+    await expect(
+      gateway.deleteStoredObjects({
+        ctx: {
+          workspaceId: 'ws_1',
+          correlationId: 'corr_1',
+          actorId: 'worker',
+          actorType: 'system',
+          surface: 'automation_rule',
+          approvalLevel: 'level_3_confirm',
+          locale: 'en',
+        },
+        requestId: 'deletion_1',
+        prefix: 'ws_1/',
+        cursor: null,
+      }),
+    ).resolves.toEqual({
+      deletedCount: 0,
+      nextCursor: null,
+    });
+    const publishTarget: unknown = Reflect.get(gateway, 'publishTarget');
+    expect(publishTarget).toBeTypeOf('function');
+    if (typeof publishTarget === 'function') {
+      await expect(publishTarget({})).rejects.toMatchObject({
+        code: ERROR_CODES.CAPABILITY_NOT_IMPLEMENTED,
+      });
+    }
+  });
 });

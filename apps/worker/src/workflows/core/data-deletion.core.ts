@@ -10,7 +10,8 @@ import type { DataDeletionWorkflowInput, DataDeletionWorkflowOutput } from '../i
  * 1. Wait out the grace period, during which a `cancel` signal aborts cleanly.
  * 2. Cancel every scheduled publish job, so nothing publishes into a workspace
  *    that is being erased.
- * 3. Revoke every provider grant, so our access ends at the provider too.
+ * 3. Revoke every Relay credential. A provider-side revoke is only reported
+ *    complete when the verified connector adapter implements that operation.
  * 4. Delete stored objects, page by page, resumable through a cursor.
  * 5. Tombstone analytics. Rows are replaced with a tombstone rather than
  *    dropped, so aggregate history stays honest and a deleted post is reported
@@ -113,6 +114,8 @@ export async function runDataDeletion(
     deletedObjectCount,
     canceledJobCount,
     revokedConnectionCount,
+    ruleIds: stableSort(scope.ruleIds, (id) => id),
+    feedIds: stableSort(scope.feedIds, (id) => id),
   });
   await activities.notify({
     ctx,

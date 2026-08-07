@@ -12,6 +12,7 @@ import { createBrandService } from './brands';
 import { createConnectionService } from './connections';
 import { createContentService } from './content';
 import { createCredentialVaultService } from './credentials';
+import { createDataDeletionService } from './data-deletion';
 import { createDataExportService } from './data-exports';
 import { createGrowthService } from './growth';
 import { createHealthService } from './health';
@@ -69,6 +70,7 @@ export function createServices(deps: ServiceDeps): Services {
     identity: createIdentityService(deps),
     audit: createAuditService(deps),
     dataExports: createDataExportService(deps),
+    dataDeletion: createDataDeletionService(deps),
     health: createHealthService(deps),
   };
 }

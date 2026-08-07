@@ -233,6 +233,14 @@ export function createRefusingServices(): Services {
       build: refuse('data_export'),
       download: refuse('data_export'),
     },
+    dataDeletion: {
+      loadDeletionScope: refuse('deletion_request'),
+      cancelScheduledJob: refuse('publish_job'),
+      revokeProviderConnection: refuse('connection'),
+      deleteStoredObjects: refuse('storage'),
+      tombstoneAnalytics: refuse('deletion_request'),
+      finalizeDeletion: refuse('deletion_request'),
+    },
     health: refuseHealth(),
   };
 }

@@ -2,13 +2,20 @@ import {
   DeleteObjectCommand,
   GetObjectCommand,
   HeadObjectCommand,
+  ListObjectsV2Command,
   PutObjectCommand,
   S3Client,
 } from '@aws-sdk/client-s3';
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
 import { createHash } from 'node:crypto';
 
-import type { Clock, StoragePort, StoredObject, UploadTicket } from '@relay/application';
+import type {
+  Clock,
+  StorageObjectPage,
+  StoragePort,
+  StoredObject,
+  UploadTicket,
+} from '@relay/application';
 import { ERROR_CODES, MediaInvalidError, RelayError } from '@relay/contracts';
 
 const UPLOAD_TICKET_SECONDS = 15 * 60;
@@ -35,6 +42,12 @@ export function base64ChecksumToHex(value: string): string | null {
 function assertStorageKey(workspaceId: string, key: string): void {
   if (!key.startsWith(`${workspaceId}/`) || key.includes('..') || /[\r\n]/u.test(key)) {
     throw new MediaInvalidError({ details: { reason: 'invalid_storage_key' } });
+  }
+}
+
+function assertStoragePrefix(workspaceId: string, prefix: string): void {
+  if (!prefix.startsWith(`${workspaceId}/`) || prefix.includes('..') || /[\r\n]/u.test(prefix)) {
+    throw new MediaInvalidError({ details: { reason: 'invalid_storage_prefix' } });
   }
 }
 
@@ -170,6 +183,45 @@ export class NeonObjectStorage implements StoragePort {
 
   async remove(key: string): Promise<void> {
     await this.#client.send(new DeleteObjectCommand({ Bucket: this.#bucket, Key: key }));
+  }
+
+  async list(input: {
+    readonly workspaceId: string;
+    readonly prefix: string;
+    readonly cursor: string | null;
+    readonly limit: number;
+  }): Promise<StorageObjectPage> {
+    assertStoragePrefix(input.workspaceId, input.prefix);
+    if (input.cursor !== null && /[\r\n]/u.test(input.cursor)) {
+      throw new MediaInvalidError({ details: { reason: 'invalid_storage_cursor' } });
+    }
+    try {
+      const result = await this.#client.send(
+        new ListObjectsV2Command({
+          Bucket: this.#bucket,
+          Prefix: input.prefix,
+          MaxKeys: Number.isFinite(input.limit)
+            ? Math.max(1, Math.min(1_000, Math.trunc(input.limit)))
+            : 1,
+          ...(input.cursor === null ? {} : { ContinuationToken: input.cursor }),
+        }),
+      );
+      const keys = (result.Contents ?? [])
+        .map((entry) => entry.Key)
+        .filter((key): key is string => key !== undefined)
+        .filter((key) => key.startsWith(input.prefix))
+        .sort((left, right) => left.localeCompare(right));
+      return {
+        keys,
+        nextCursor: result.IsTruncated ? (result.NextContinuationToken ?? null) : null,
+      };
+    } catch (cause: unknown) {
+      if (cause instanceof RelayError) throw cause;
+      throw new RelayError(ERROR_CODES.PROVIDER_UNAVAILABLE, {
+        details: { subsystem: 'storage', operation: 'list' },
+        cause,
+      });
+    }
   }
 
   async createDownloadUrl(key: string, ttlSeconds: number): Promise<string> {

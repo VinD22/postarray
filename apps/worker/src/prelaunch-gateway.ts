@@ -20,6 +20,15 @@ type UnavailableActivity = (input: unknown) => Promise<never>;
 export function createWorkerGateway(
   options: {
     readonly buildDataExport?: WorkerActivities['buildDataExport'];
+    readonly dataDeletion?: Pick<
+      WorkerActivities,
+      | 'loadDeletionScope'
+      | 'cancelScheduledJob'
+      | 'revokeProviderConnection'
+      | 'deleteStoredObjects'
+      | 'tombstoneAnalytics'
+      | 'finalizeDeletion'
+    >;
   } = {},
 ): WorkerActivities {
   const unavailable = Object.fromEntries(
@@ -42,5 +51,6 @@ export function createWorkerGateway(
   return {
     ...unavailable,
     ...(options.buildDataExport === undefined ? {} : { buildDataExport: options.buildDataExport }),
+    ...(options.dataDeletion ?? {}),
   } as unknown as WorkerActivities;
 }

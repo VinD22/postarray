@@ -150,6 +150,12 @@ export interface StoredObject {
   readonly checksumSha256: string;
 }
 
+export interface StorageObjectPage {
+  readonly keys: readonly string[];
+  /** Pass this value back to continue. `null` means the prefix is drained. */
+  readonly nextCursor: string | null;
+}
+
 export interface UploadTicket {
   readonly uploadUrl: string;
   readonly method: 'PUT' | 'POST';
@@ -170,6 +176,12 @@ export interface StoragePort {
   read(key: string): Promise<Uint8Array>;
   write(key: string, bytes: Uint8Array, contentType: string): Promise<StoredObject>;
   remove(key: string): Promise<void>;
+  list(input: {
+    readonly workspaceId: string;
+    readonly prefix: string;
+    readonly cursor: string | null;
+    readonly limit: number;
+  }): Promise<StorageObjectPage>;
   createDownloadUrl(key: string, ttlSeconds: number): Promise<string>;
 }
 
@@ -234,6 +246,54 @@ export interface DataExportBuildResult {
   readonly state: 'ready' | 'failed';
   readonly byteSize: number | null;
   readonly checksumSha256: string | null;
+}
+
+/** PII-free scope captured before a deletion workflow starts. */
+export interface DataDeletionScope {
+  readonly publishJobIds: readonly string[];
+  readonly connectionIds: readonly string[];
+  readonly receiptIds: readonly string[];
+  readonly objectPrefixes: readonly string[];
+  readonly ruleIds: readonly string[];
+  readonly feedIds: readonly string[];
+}
+
+/** Application-owned deletion activities used by the Temporal worker. */
+export interface DataDeletionService {
+  loadDeletionScope(input: {
+    readonly ctx: WorkflowActorContext;
+    readonly requestId: string;
+  }): Promise<DataDeletionScope>;
+  cancelScheduledJob(input: {
+    readonly ctx: WorkflowActorContext;
+    readonly publishJobId: string;
+    readonly reasonKey: string;
+  }): Promise<void>;
+  revokeProviderConnection(input: {
+    readonly ctx: WorkflowActorContext;
+    readonly connectionId: string;
+  }): Promise<void>;
+  deleteStoredObjects(input: {
+    readonly ctx: WorkflowActorContext;
+    readonly requestId: string;
+    readonly prefix: string;
+    readonly cursor: string | null;
+  }): Promise<{ readonly deletedCount: number; readonly nextCursor: string | null }>;
+  tombstoneAnalytics(input: {
+    readonly ctx: WorkflowActorContext;
+    readonly requestId: string;
+    readonly receiptIds: readonly string[];
+  }): Promise<void>;
+  finalizeDeletion(input: {
+    readonly ctx: WorkflowActorContext;
+    readonly requestId: string;
+    readonly completedAt: string;
+    readonly deletedObjectCount: number;
+    readonly canceledJobCount: number;
+    readonly revokedConnectionCount: number;
+    readonly ruleIds: readonly string[];
+    readonly feedIds: readonly string[];
+  }): Promise<void>;
 }
 
 /** Infrastructure seam for encrypting an export before it reaches object storage. */
@@ -1288,5 +1348,6 @@ export interface Services {
   readonly identity: IdentityService;
   readonly audit: AuditService;
   readonly dataExports: DataExportService;
+  readonly dataDeletion: DataDeletionService;
   readonly health: HealthService;
 }

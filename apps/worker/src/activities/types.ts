@@ -693,6 +693,8 @@ export interface FinalizeDeletionInput {
   readonly deletedObjectCount: number;
   readonly canceledJobCount: number;
   readonly revokedConnectionCount: number;
+  readonly ruleIds: readonly string[];
+  readonly feedIds: readonly string[];
 }
 
 // ---------------------------------------------------------------------------

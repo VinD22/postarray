@@ -1,10 +1,10 @@
 import { createHash } from 'node:crypto';
-import { mkdir, readFile, rm, stat, writeFile } from 'node:fs/promises';
-import { dirname, join, normalize, resolve, sep } from 'node:path';
+import { mkdir, readFile, readdir, rm, stat, writeFile } from 'node:fs/promises';
+import { dirname, join, normalize, relative, resolve, sep } from 'node:path';
 
 import { MediaInvalidError, RelayError } from '@relay/contracts';
 
-import type { Clock, StoragePort, StoredObject, UploadTicket } from '../types';
+import type { Clock, StorageObjectPage, StoragePort, StoredObject, UploadTicket } from '../types';
 
 import { systemClock } from './clock';
 
@@ -19,6 +19,41 @@ import { systemClock } from './clock';
 
 const CONTENT_TYPE_HEADER = 'content-type';
 const CHECKSUM_HEADER = 'x-relay-content-sha256';
+const MAX_LIST_LIMIT = 1_000;
+
+function assertListInput(input: {
+  readonly workspaceId: string;
+  readonly prefix: string;
+  readonly cursor: string | null;
+}): void {
+  const workspacePrefix = `${input.workspaceId}/`;
+  if (
+    !input.prefix.startsWith(workspacePrefix) ||
+    input.prefix.includes('..') ||
+    /[\r\n]/u.test(input.prefix) ||
+    (input.cursor !== null &&
+      (!input.cursor.startsWith(workspacePrefix) || input.cursor.includes('..')))
+  ) {
+    throw new MediaInvalidError({ details: { reason: 'invalid_storage_prefix' } });
+  }
+}
+
+function pageForKeys(
+  keys: readonly string[],
+  cursor: string | null,
+  requestedLimit: number,
+): StorageObjectPage {
+  const limit = Number.isFinite(requestedLimit)
+    ? Math.max(1, Math.min(MAX_LIST_LIMIT, Math.trunc(requestedLimit)))
+    : 1;
+  const next = cursor === null ? 0 : keys.findIndex((key) => key > cursor);
+  const start = next === -1 ? keys.length : next;
+  const page = keys.slice(start, start + limit);
+  return {
+    keys: page,
+    nextCursor: start + page.length < keys.length ? (page.at(-1) ?? null) : null,
+  };
+}
 
 export interface LocalStorageOptions {
   readonly rootDirectory: string;
@@ -123,6 +158,49 @@ export class LocalFileStorage implements StoragePort {
     await rm(this.#pathFor(key), { force: true });
   }
 
+  async list(input: {
+    readonly workspaceId: string;
+    readonly prefix: string;
+    readonly cursor: string | null;
+    readonly limit: number;
+  }): Promise<StorageObjectPage> {
+    assertListInput(input);
+    const root = this.#pathFor(input.prefix);
+    const keys = (await this.#fileKeys(root)).sort((left, right) => left.localeCompare(right));
+    return pageForKeys(keys, input.cursor, input.limit);
+  }
+
+  async #fileKeys(directory: string): Promise<string[]> {
+    let entries;
+    try {
+      entries = await readdir(directory, { withFileTypes: true });
+    } catch (cause: unknown) {
+      if (
+        typeof cause === 'object' &&
+        cause !== null &&
+        'code' in cause &&
+        cause.code === 'ENOENT'
+      ) {
+        return [];
+      }
+      throw new RelayError('PROVIDER_UNAVAILABLE', {
+        details: { subsystem: 'storage', operation: 'list' },
+        cause,
+      });
+    }
+
+    const keys: string[] = [];
+    for (const entry of entries) {
+      const path = join(directory, entry.name);
+      if (entry.isDirectory()) {
+        keys.push(...(await this.#fileKeys(path)));
+      } else if (entry.isFile()) {
+        keys.push(relative(this.#root, path).split(sep).join('/'));
+      }
+    }
+    return keys;
+  }
+
   async createDownloadUrl(key: string, ttlSeconds: number): Promise<string> {
     const expires = Math.floor(this.#clock.now().getTime() / 1000) + Math.max(1, ttlSeconds);
     return `${this.#downloadBaseUrl}/${encodeURI(key)}?expires=${expires}`;
@@ -189,6 +267,19 @@ export class MemoryStorage implements StoragePort {
 
   async remove(key: string): Promise<void> {
     this.#objects.delete(key);
+  }
+
+  async list(input: {
+    readonly workspaceId: string;
+    readonly prefix: string;
+    readonly cursor: string | null;
+    readonly limit: number;
+  }): Promise<StorageObjectPage> {
+    assertListInput(input);
+    const keys = [...this.#objects.keys()]
+      .filter((key) => key.startsWith(input.prefix))
+      .sort((left, right) => left.localeCompare(right));
+    return pageForKeys(keys, input.cursor, input.limit);
   }
 
   async createDownloadUrl(key: string, ttlSeconds: number): Promise<string> {

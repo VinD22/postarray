@@ -33,6 +33,15 @@ import { startMediaRetentionSweep } from './media-retention';
 
 const DEFAULT_GATEWAY_MODULE = 'built-in-prelaunch-gateway';
 const GATEWAY_FACTORY = 'createWorkerGateway';
+type DataDeletionActivities = Pick<
+  WorkerActivities,
+  | 'loadDeletionScope'
+  | 'cancelScheduledJob'
+  | 'revokeProviderConnection'
+  | 'deleteStoredObjects'
+  | 'tombstoneAnalytics'
+  | 'finalizeDeletion'
+>;
 
 function requireObject(value: unknown, what: string): object {
   if (typeof value !== 'object' || value === null) {
@@ -79,7 +88,10 @@ export function adoptGateway(loaded: unknown): WorkerActivities {
 /** Load the configured module, or use the honest built-in prelaunch gateway. */
 export async function loadGateway(
   moduleName: string,
-  options: { readonly buildDataExport?: WorkerActivities['buildDataExport'] } = {},
+  options: {
+    readonly buildDataExport?: WorkerActivities['buildDataExport'];
+    readonly dataDeletion?: DataDeletionActivities;
+  } = {},
 ): Promise<WorkerActivities> {
   if (moduleName === DEFAULT_GATEWAY_MODULE) {
     return adoptGateway(createWorkerGateway(options));
@@ -132,9 +144,29 @@ export async function main(): Promise<void> {
   });
   const deferredDataExportBuilder: WorkerActivities['buildDataExport'] = (input) =>
     dataExportBuilderReady.then((builder) => builder(input));
+  let resolveDataDeletionActivities: ((activities: DataDeletionActivities) => void) | undefined;
+  const dataDeletionActivitiesReady = new Promise<DataDeletionActivities>((resolve) => {
+    resolveDataDeletionActivities = resolve;
+  });
+  const deferredDataDeletion: DataDeletionActivities = {
+    loadDeletionScope: (input) =>
+      dataDeletionActivitiesReady.then((activities) => activities.loadDeletionScope(input)),
+    cancelScheduledJob: (input) =>
+      dataDeletionActivitiesReady.then((activities) => activities.cancelScheduledJob(input)),
+    revokeProviderConnection: (input) =>
+      dataDeletionActivitiesReady.then((activities) => activities.revokeProviderConnection(input)),
+    deleteStoredObjects: (input) =>
+      dataDeletionActivitiesReady.then((activities) => activities.deleteStoredObjects(input)),
+    tombstoneAnalytics: (input) =>
+      dataDeletionActivitiesReady.then((activities) => activities.tombstoneAnalytics(input)),
+    finalizeDeletion: (input) =>
+      dataDeletionActivitiesReady.then((activities) => activities.finalizeDeletion(input)),
+  };
   const gateway = await loadGateway(
     moduleName,
-    moduleName === DEFAULT_GATEWAY_MODULE ? { buildDataExport: deferredDataExportBuilder } : {},
+    moduleName === DEFAULT_GATEWAY_MODULE
+      ? { buildDataExport: deferredDataExportBuilder, dataDeletion: deferredDataDeletion }
+      : {},
   );
   const worker = await startWorker({ gateway, config, logger });
   const prisma = createPrismaClient({
@@ -151,6 +183,15 @@ export async function main(): Promise<void> {
       adapters: { prisma, kv, scheduler },
     });
     resolveDataExportBuilder?.((input) => runtime.services.dataExports.build(input));
+    resolveDataDeletionActivities?.({
+      loadDeletionScope: (input) => runtime.services.dataDeletion.loadDeletionScope(input),
+      cancelScheduledJob: (input) => runtime.services.dataDeletion.cancelScheduledJob(input),
+      revokeProviderConnection: (input) =>
+        runtime.services.dataDeletion.revokeProviderConnection(input),
+      deleteStoredObjects: (input) => runtime.services.dataDeletion.deleteStoredObjects(input),
+      tombstoneAnalytics: (input) => runtime.services.dataDeletion.tombstoneAnalytics(input),
+      finalizeDeletion: (input) => runtime.services.dataDeletion.finalizeDeletion(input),
+    });
   } catch (error: unknown) {
     await kv?.close();
     await scheduler.close();
