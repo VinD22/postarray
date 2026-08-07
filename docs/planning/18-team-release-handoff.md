@@ -58,7 +58,9 @@ export download), `67e3cc2` (static trial status and truthful export copy), and
 boundary validation), `39b2435` (shared PKCE exchange and discovery),
 `5a4d47d` (authenticated credential envelopes and brand-tenanted OAuth rows),
 `9e2c0b3` (atomic application KV consumption), `99c8e3e` (account-selection
-validation) and `a6638b3` (format cleanup), alongside the current handoff and
+validation), `a6638b3` (format cleanup), `040d9ca` (unhealthy Temporal worker
+run detection), `ab8c449` (localized OAuth callback outcome notices) and
+`642384f` (credential-port readiness gate), alongside the current handoff and
 connector audit. These commits are locally
 verified code, not proof of a provisioned Neon, Storage, Temporal, Auth or
 provider environment.
@@ -71,8 +73,8 @@ provider environment.
 | Data export | Workspace-scoped request, idempotency, JSON archive builder, checksum, expiry, local AES envelope, KMS envelope/decryption and authenticated plaintext download exist locally. | KMS rotation, private object access, real expiry/purge and replay/crash evidence must be witnessed in the release environment. |
 | Workspace deletion | Owner-only step-up, exact name confirmation, seven-day cooling-off request, cancellation, failure state, durable idempotency and local worker gateway exist. | Real Prisma/RLS/Storage/Temporal run, provider revoke evidence, all failure-point replays and retention-bound cleanup are missing. |
 | Identity | Authenticated session inventory and revoke-other-sessions routes and Settings controls exist. | Neon Auth is not provisioned; durable provider session linkage, recovery, rotation and authenticated closure journey are pending. |
-| Connectors | Capability states, fake simulator, contract scaffolding and a runtime registry that keeps every unverified adapter unavailable exist. Social OAuth now shares one state, canonical callback, application-owned PKCE, atomic edge/application single-use values, strict discovery selection and brand-tenanted transaction rows. | Provider connection creation, account-selection persistence, encrypted credential upsert and the worker execution gateway are not wired. No production connector may be called supported until its definition-of-done packet and isolated canary are signed. |
-| Web UX | Paper/electric-blue/ink design direction, localized routes, loading/empty/error/unavailable states and local accessibility checks exist. | Authenticated production journeys, provider limitations before scheduling, offline/rate-limit/partial-success coverage and retention disclosure pass are pending. |
+| Connectors | Capability states, fake simulator, contract scaffolding and a runtime registry that keeps every unverified adapter unavailable exist. Social OAuth now shares one state, canonical callback, application-owned PKCE, atomic edge/application single-use values, strict discovery selection, brand-tenanted transaction rows and an explicit credential-vault/store readiness seam. | Provider connection creation, account-selection persistence, encrypted credential upsert and the worker execution gateway are not wired. No production connector may be called supported until its definition-of-done packet and isolated canary are signed. |
+| Web UX | Paper/electric-blue/ink design direction, localized routes, loading/empty/error/unavailable states and local accessibility checks exist. OAuth cancellation and safe failure notices now render on both the connections and onboarding return routes. | Authenticated production journeys, provider limitations before scheduling, offline/rate-limit/partial-success coverage and retention disclosure pass are pending. |
 | API/MCP/CLI/webhooks | Shared contracts and route/service layers exist. | OpenAPI diff, five-surface authorization matrix, stable CLI JSON, signed webhook replay/dead-letter and leakage checks are pending. |
 | Billing | Polar simulator lifecycle and fail-closed checkout flag exist. | Merchant identity, products, trial/cancellation/refund/past-due webhook evidence and reconciliation are missing. |
 | Operations | Runtime capability detection and fail-closed startup checks exist. | Neon branch, Redis/Valkey, Temporal, mail, observability, deployment, restore, latency and secret-scan evidence are missing. |

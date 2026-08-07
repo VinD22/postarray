@@ -13,10 +13,10 @@ gates into work packages with owners, dependencies and evidence.
 
 ## Current checkpoint
 
-Commit `a6638b3` is the latest verified local checkpoint. It includes the
+Commit `642384f` is the latest verified local checkpoint. It includes the
 earlier deletion and export work plus the integration hardening commits
-`40972fd`, `4082148`, `85d9819`, `39b2435`, `5a4d47d`, `9e2c0b3`, `99c8e3e`
-and `a6638b3`. The current checkpoint includes:
+`40972fd`, `4082148`, `85d9819`, `39b2435`, `5a4d47d`, `9e2c0b3`, `99c8e3e`,
+`a6638b3`, `040d9ca`, `ab8c449` and `642384f`. The current checkpoint includes:
 
 - 27 Playwright checks covering axe, keyboard navigation, reduced motion,
   pseudo-locale expansion, RTL and critical-route smoke states;
@@ -90,9 +90,13 @@ and make incomplete OAuth fail closed instead of redirecting with a false
 connection. Worker activity inputs now validate tenancy and idempotency before
 gateway execution. Credential envelope columns and strict AAD/key-version
 mappers are present through migration `0063_credential_envelope_v1.sql`.
-Provider connection creation, account-selection persistence, encrypted vault
-upsert and the provider execution gateway remain deliberately unavailable until
-a connector passes its definition-of-done evidence.
+The application now exposes an explicit credential-vault/store readiness seam
+and refuses completion until all three boundaries are composed. The worker
+marks an unexpected Temporal run exit unhealthy, and the web app renders
+localized, safe OAuth cancellation and failure outcomes on both connection
+return routes. Provider connection creation, account-selection persistence,
+encrypted vault upsert and the provider execution gateway remain deliberately
+unavailable until a connector passes its definition-of-done evidence.
 
 The branch is still a prelaunch product. Local green status does not prove a
 Neon/Auth/Storage deployment, a live provider connector, a paid checkout or a
