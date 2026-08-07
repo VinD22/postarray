@@ -53,9 +53,13 @@ The deletion checkpoint is `c08492a` (`docs(plan): record deletion release
 gates`) after the owner-only deletion slice in `274914f`. Follow-up work is now
 committed as `0ef0257` (KMS envelope encryption and authenticated plaintext
 export download), `67e3cc2` (static trial status and truthful export copy), and
-`40972fd` (verified connector composition, OAuth state hardening, atomic
-callback consumption and database integrity constraints), alongside the
-current handoff and connector audit. These commits are locally
+`40972fd` (verified connector composition and OAuth state hardening),
+`4082148` (safe browser callback failure feedback), `85d9819` (worker activity
+boundary validation), `39b2435` (shared PKCE exchange and discovery),
+`5a4d47d` (authenticated credential envelopes and brand-tenanted OAuth rows),
+`9e2c0b3` (atomic application KV consumption), `99c8e3e` (account-selection
+validation) and `a6638b3` (format cleanup), alongside the current handoff and
+connector audit. These commits are locally
 verified code, not proof of a provisioned Neon, Storage, Temporal, Auth or
 provider environment.
 
@@ -67,7 +71,7 @@ provider environment.
 | Data export | Workspace-scoped request, idempotency, JSON archive builder, checksum, expiry, local AES envelope, KMS envelope/decryption and authenticated plaintext download exist locally. | KMS rotation, private object access, real expiry/purge and replay/crash evidence must be witnessed in the release environment. |
 | Workspace deletion | Owner-only step-up, exact name confirmation, seven-day cooling-off request, cancellation, failure state, durable idempotency and local worker gateway exist. | Real Prisma/RLS/Storage/Temporal run, provider revoke evidence, all failure-point replays and retention-bound cleanup are missing. |
 | Identity | Authenticated session inventory and revoke-other-sessions routes and Settings controls exist. | Neon Auth is not provisioned; durable provider session linkage, recovery, rotation and authenticated closure journey are pending. |
-| Connectors | Capability states, fake simulator, contract scaffolding and a runtime registry that keeps every unverified adapter unavailable exist. Social OAuth now shares one state, canonical callback and atomic edge transaction consumption. | Provider exchange, account selection, encrypted credential persistence and the worker gateway are not wired. No production connector may be called supported until its definition-of-done packet and isolated canary are signed. |
+| Connectors | Capability states, fake simulator, contract scaffolding and a runtime registry that keeps every unverified adapter unavailable exist. Social OAuth now shares one state, canonical callback, application-owned PKCE, atomic edge/application single-use values, strict discovery selection and brand-tenanted transaction rows. | Provider connection creation, account-selection persistence, encrypted credential upsert and the worker execution gateway are not wired. No production connector may be called supported until its definition-of-done packet and isolated canary are signed. |
 | Web UX | Paper/electric-blue/ink design direction, localized routes, loading/empty/error/unavailable states and local accessibility checks exist. | Authenticated production journeys, provider limitations before scheduling, offline/rate-limit/partial-success coverage and retention disclosure pass are pending. |
 | API/MCP/CLI/webhooks | Shared contracts and route/service layers exist. | OpenAPI diff, five-surface authorization matrix, stable CLI JSON, signed webhook replay/dead-letter and leakage checks are pending. |
 | Billing | Polar simulator lifecycle and fail-closed checkout flag exist. | Merchant identity, products, trial/cancellation/refund/past-due webhook evidence and reconciliation are missing. |
@@ -136,7 +140,7 @@ Tasks:
    `ldr-app` project as Relay data; its inspected branches have no Relay
    migration ledger or product tables.
 2. Apply the reviewed migration set through
-   `0062_oauth_and_credential_invariants.sql`. Verify checksums and ledger without
+   `0063_credential_envelope_v1.sql`. Verify checksums and ledger without
    applying migrations from application startup.
 3. Seed two workspaces and execute cross-workspace read/write attempts for
    every tenant table, including credentials, media, exports, deletion,

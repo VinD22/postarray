@@ -13,7 +13,10 @@ gates into work packages with owners, dependencies and evidence.
 
 ## Current checkpoint
 
-Commit `274914f` is the verified local checkpoint. It includes:
+Commit `a6638b3` is the latest verified local checkpoint. It includes the
+earlier deletion and export work plus the integration hardening commits
+`40972fd`, `4082148`, `85d9819`, `39b2435`, `5a4d47d`, `9e2c0b3`, `99c8e3e`
+and `a6638b3`. The current checkpoint includes:
 
 - 27 Playwright checks covering axe, keyboard navigation, reduced motion,
   pseudo-locale expansion, RTL and critical-route smoke states;
@@ -77,14 +80,19 @@ pass.
 The MCP-connected `ldr-app` project is not the Relay database and must not be
 modified.
 
-The latest integrations checkpoint (`40972fd`) composes the complete built-in
-adapter matrix behind one code-reviewed verified-provider allow-list. It fixes
-the social callback URI/state split, stores the short-lived PKCE verifier under
-the transaction ID, atomically consumes the API callback transaction, and makes
-incomplete OAuth fail closed instead of redirecting with a false connection.
-Provider exchange, account selection, encrypted credential persistence and the
-worker execution gateway remain deliberately unavailable until a connector
-passes its definition-of-done evidence.
+The latest integrations checkpoints compose the complete built-in adapter
+matrix behind one code-reviewed verified-provider allow-list. They fix the
+social callback URI/state split, store the short-lived PKCE verifier under the
+transaction ID, atomically consume both edge and application single-use values,
+construct provider URLs from application-owned PKCE material, validate
+discovered account selections, bind OAuth transactions to a workspace brand,
+and make incomplete OAuth fail closed instead of redirecting with a false
+connection. Worker activity inputs now validate tenancy and idempotency before
+gateway execution. Credential envelope columns and strict AAD/key-version
+mappers are present through migration `0063_credential_envelope_v1.sql`.
+Provider connection creation, account-selection persistence, encrypted vault
+upsert and the provider execution gateway remain deliberately unavailable until
+a connector passes its definition-of-done evidence.
 
 The branch is still a prelaunch product. Local green status does not prove a
 Neon/Auth/Storage deployment, a live provider connector, a paid checkout or a
@@ -100,7 +108,7 @@ the production-like evidence is reproducible from the release commit.
 | Priority | Owner | Dependency | Deliverable and acceptance evidence |
 | --- | --- | --- | --- |
 | P0 | Release captain | None | Freeze origin, legal/support contacts, feature flags and public capability copy. Produce a signed release decision and claim scan. |
-| P0 | Database and tenancy | Release captain | Create an isolated Relay Neon branch, apply migrations through `0062`, verify the ledger, exercise RLS with two workspaces, and record backup/restore evidence. |
+| P0 | Database and tenancy | Release captain | Create an isolated Relay Neon branch, apply migrations through `0063`, verify the ledger, exercise RLS with two workspaces, and record backup/restore evidence. |
 | P0 | Storage and data rights | Database and tenancy | Promote the local export builder to production with a KMS-backed encryption adapter, private Neon Storage, checksum verification, expiry/purge retries, and a deployment smoke. Evidence: fixture archive with secrets absent, envelope decrypt test, object purge transcript, and two replayed failure cases. |
 | P0 | Worker and application | Storage and data rights | Make export and deletion workflows resumable and idempotent across worker crash, timeout, duplicate start, revoked access and storage failure. Add DB state-transition/audit tests and Temporal replay histories. The local deletion request lifecycle, cancellation and failure state are now wired; production evidence and remaining activity promotion are still required. |
 | P0 | Integrations | Worker and application | Promote one official connector through its definition of done, including OAuth review/scopes, capability snapshot, publish/read-back, revoked-token and duplicate-publication canaries. Keep every other connector explicitly `not_implemented`, `awaiting provider review` or `unsupported`. |
@@ -118,7 +126,7 @@ the release commit on an isolated environment.
 
 | ID | Owner | Scope | Acceptance gate |
 | --- | --- | --- | --- |
-| REL-001 | Database and tenancy | Create the isolated Relay Neon release branch, apply migrations through `0061`, verify checksums, seed two workspaces and run the full RLS matrix. | Cross-workspace reads and writes fail for every tenant table, including export and deletion requests; backup and restore report is attached; `pnpm release:check` is green against the branch. |
+| REL-001 | Database and tenancy | Create the isolated Relay Neon release branch, apply migrations through `0063`, verify checksums, seed two workspaces and run the full RLS matrix. | Cross-workspace reads and writes fail for every tenant table, including export, deletion, OAuth transactions and credentials; backup and restore report is attached; `pnpm release:check` is green against the branch. |
 | REL-002 | Security/platform | Verify and promote the KMS adapter for `DataExportEncryptionPort`, including key version metadata, rotation, access policy and startup fail-closed behavior. | A key rotation decrypts old envelopes and encrypts new ones; no local key or plaintext appears in production logs, fixtures or object metadata. |
 | REL-003 | Storage/data rights | Provision private Neon Storage, run the health sentinel, exercise signed upload/head/read/delete, and promote the export builder's KMS path. | Export fixture contains the documented allow-list only, checksum matches the object, expiry and purge are deterministic, and missing objects produce a recoverable error. |
 | REL-004 | Application/worker | Promote the owner-only deletion request lifecycle in `274914f` to the isolated environment. Validate real Prisma/RLS, step-up and workspace-name confirmation, idempotency races, storage failures, cancellation races, media derivatives, automation/feed cleanup and the distinction between Relay credential revocation and provider-side revoke. | A witnessed request exposes a seven-day status and cancel path, then a replayed deletion leaves no Relay credential or tenant storage object behind, expires export objects, revokes memberships/sessions, records tombstones and audit events, resumes after every injected failure point, and reports provider revoke as unavailable until its connector gate is signed. |
