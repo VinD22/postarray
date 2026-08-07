@@ -7,22 +7,23 @@ import { OutboxDispatcher } from '@relay/runtime';
 
 import { ACTIVITY_NAMES, type WorkerActivities } from './activities/types';
 import { WorkerScheduler } from './outbox-scheduler';
+import { createWorkerGateway } from './prelaunch-gateway';
 import { installShutdownHandlers, startWorker, WORKER_SERVICE_NAME } from './worker';
 
 /**
  * The process entry point.
  *
  * The worker owns durable execution. It does not own the domain, so the
- * implementation of every activity comes from `@relay/application`, which is
- * loaded here and nowhere else. Keeping the seam to one file means the worker
- * is unit testable with no application package present at all, and it means a
- * change to the application's factory name is a one line edit.
+ * implementation of every activity comes from the process composition layer.
+ * Keeping the seam to one file means the worker remains unit testable and an
+ * integration deployment can replace the prelaunch gateway without changing
+ * workflow code.
  *
  * `RELAY_WORKER_GATEWAY_MODULE` overrides the module, which is how an
  * integration test points the worker at a stub without touching this file.
  */
 
-const DEFAULT_GATEWAY_MODULE = '@relay/application';
+const DEFAULT_GATEWAY_MODULE = 'built-in-prelaunch-gateway';
 const GATEWAY_FACTORY = 'createWorkerGateway';
 
 function requireObject(value: unknown, what: string): object {
@@ -67,8 +68,11 @@ export function adoptGateway(loaded: unknown): WorkerActivities {
   return loaded as WorkerActivities;
 }
 
-/** Load the application module and build the gateway from its factory. */
+/** Load the configured module, or use the honest built-in prelaunch gateway. */
 export async function loadGateway(moduleName: string): Promise<WorkerActivities> {
+  if (moduleName === DEFAULT_GATEWAY_MODULE) {
+    return adoptGateway(createWorkerGateway());
+  }
   const loaded: unknown = await import(moduleName);
   const module = requireObject(loaded, 'module');
   const factory: unknown = Reflect.get(module, GATEWAY_FACTORY);

@@ -129,3 +129,5 @@ export {
   type WorkerMode,
   type WorkerStartOptions,
 } from './worker';
+
+export { createWorkerGateway } from './prelaunch-gateway';
