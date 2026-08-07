@@ -53,6 +53,7 @@ import {
 import { ConnectionsService } from './connections.service';
 import { OAUTH_TRANSACTION_TTL_SECONDS, OAuthTransactionStore } from './oauth-transaction.store';
 import { stateFromAuthorizationUrl } from './oauth-state';
+import { oauthFailureReason } from './oauth-result';
 
 /**
  * Connected social accounts, and the OAuth handshake that creates them.
@@ -218,11 +219,25 @@ export class ConnectionsController {
     const actor = this.transactions.toActorContext(transaction);
     relayState(request).workspaceId = transaction.workspaceId;
 
-    const connections = await this.connections.completeOAuth(actor, {
-      transactionId,
-      code: callback.code,
-      state: callback.state,
-    });
+    let connections: readonly ConnectionView[];
+    try {
+      connections = await this.connections.completeOAuth(actor, {
+        transactionId,
+        code: callback.code,
+        state: callback.state,
+      });
+    } catch (error) {
+      // The provider code is single use and the server-side transaction has
+      // already been claimed. Return the browser to a trusted app path with a
+      // small, localizable reason rather than a raw JSON 501/502 page. The
+      // user can start a fresh connection attempt without seeing internals.
+      this.redirect(response, transaction.redirectTo, {
+        status: 'failed',
+        provider,
+        reason: oauthFailureReason(error),
+      });
+      return;
+    }
 
     // The final URL carries no code, no state and no token: a credential in a
     // URL ends up in browser history, a referrer header and a proxy log.
