@@ -84,7 +84,8 @@ connector. Those were planning assumptions, not launch facts.
 | Localized route generation | Green | 1,629 pages in the Next.js build |
 | Connector simulator and contract suites | Green locally | No live provider network in tests |
 | RLS integration suite | Not run against Neon | A migrated isolated branch and cross-workspace test run |
-| Browser smoke and accessibility pass | Pending | Authenticated critical journeys, pseudo-locale and keyboard checks |
+| Browser smoke and accessibility baseline | Green locally | Demo-mode critical routes in both themes, keyboard skip link, reduced motion, pseudo-locale and RTL checks |
+| Production-authenticated browser pass | Pending | Authenticated critical journeys against the deployed release environment |
 | Performance budget | Pending | Production-like Lighthouse and API latency evidence |
 | Production dependency scan | Green locally | `pnpm audit --prod --audit-level high`; CI repeats it |
 | Full-history secret scan | Pending for release | Gitleaks CI artifact against the release commit and history |
@@ -94,9 +95,10 @@ The final repository gate is `pnpm release:check`. It requires
 release branch and
 `RELAY_RELEASE_DATABASE_TEST_WRITES=confirm-isolated-branch`. It verifies the
 remote migration ledger and checksums without changing schema, forces a fresh
-RLS-backed test run and production build, checks formatting, rejects enabled
-prelaunch checkout and audits production dependencies. Applying migrations is
-intentionally a separate reviewed operation.
+RLS-backed test run and production build, runs the browser accessibility and
+pseudo-locale baseline, checks formatting, rejects enabled prelaunch checkout
+and audits production dependencies. Applying migrations is intentionally a
+separate reviewed operation.
 
 ## Neon state discovered through MCP
 

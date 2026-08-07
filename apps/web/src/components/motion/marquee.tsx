@@ -83,7 +83,14 @@ export function Marquee({
 
   if (!motionOk) {
     return (
-      <div className={cn('overflow-x-auto', className)}>
+      <div
+        tabIndex={0}
+        className={cn(
+          'overflow-x-auto outline-none focus-visible:outline-2 focus-visible:outline-offset-2',
+          'focus-visible:outline-[color:var(--border-focus)]',
+          className,
+        )}
+      >
         <div className="flex w-max">{children}</div>
       </div>
     );

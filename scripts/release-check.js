@@ -30,6 +30,10 @@ const steps = [
     args: ['exec', 'turbo', 'run', 'typecheck', 'lint', 'test', '--force'],
   },
   {
+    label: 'Run browser smoke, accessibility and pseudo-locale gates',
+    args: ['--filter', '@relay/web', 'test:e2e'],
+  },
+  {
     label: 'Build every production surface from a fresh task run',
     args: ['exec', 'turbo', 'run', 'build', '--force'],
   },

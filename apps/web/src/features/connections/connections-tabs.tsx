@@ -105,7 +105,7 @@ export function ConnectionsTabs({
               value={tab.value}
               className={cn(
                 'relative z-10 flex items-center justify-center rounded-sm border-b-0 px-3 py-1.5',
-                'data-[state=active]:text-cta-on data-[state=active]:border-b-0',
+                'data-[state=active]:bg-cta data-[state=active]:text-cta-on data-[state=active]:border-b-0',
                 touchTarget,
               )}
             >

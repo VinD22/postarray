@@ -6,21 +6,20 @@
  * Day, week, month and list are peer layouts of the same schedule, not four
  * destinations, so this reads as a segmented control: one ink-bordered
  * track, one sliding yellow thumb that tracks the active choice with GSAP
- * Flip. It is built on the design system's `Tabs` for the roving-tabindex
- * and `aria-selected` keyboard behaviour that primitive already gets right
- * (arrow keys move focus, activation is manual) — only the per-trigger
- * underline it draws by default is turned off, because the thumb is this
- * control's only indicator. `tabs.tsx` itself notes that a sliding indicator
- * needs Flip and belongs app-side; this is that app-side piece, and the
- * primary nav rail's indicator (`components/shell/primary-nav.tsx`) is the
- * same technique turned ninety degrees.
+ * Flip. It is a radio group because selecting a view changes the presentation
+ * immediately and there is no tabpanel owned by this control. Arrow keys move
+ * and select in one step, Home and End reach the edges, and the active choice
+ * remains the one tab stop. The primary nav rail's indicator
+ * (`components/shell/primary-nav.tsx`) uses the same measured Flip technique
+ * turned ninety degrees.
  *
  * The thumb never animates on first mount and jumps straight to position
  * with no tween when `usePrefersReducedMotion()` is true.
  */
 
-import { useRef, type ReactNode } from 'react';
-import { Tabs, TabsList, TabsTrigger, cn, touchTarget } from '@relay/design-system';
+import { useRef, type KeyboardEvent, type ReactNode } from 'react';
+import { cn, focusRing, touchTarget, transitionBase } from '@relay/design-system';
+import { useDirectionAttributes } from '@/lib/i18n';
 import { DURATION_FAST, EASE_STANDARD } from '@/lib/motion/constants';
 import { Flip, useGSAP } from '@/lib/motion/gsap';
 import { useMotionOk } from '@/lib/motion/use-motion-ok';
@@ -49,6 +48,42 @@ export function CalendarViewSwitch({
   const itemRefs = useRef(new Map<CalendarView, HTMLButtonElement>());
   const hasPositioned = useRef(false);
   const motionOk = useMotionOk();
+  const { dir } = useDirectionAttributes();
+
+  const moveSelection = (event: KeyboardEvent<HTMLButtonElement>, current: CalendarView): void => {
+    const currentIndex = views.indexOf(current);
+    if (currentIndex < 0) return;
+
+    let nextIndex: number;
+    switch (event.key) {
+      case 'ArrowRight':
+        nextIndex = currentIndex + (dir === 'rtl' ? -1 : 1);
+        break;
+      case 'ArrowLeft':
+        nextIndex = currentIndex + (dir === 'rtl' ? 1 : -1);
+        break;
+      case 'ArrowDown':
+        nextIndex = currentIndex + 1;
+        break;
+      case 'ArrowUp':
+        nextIndex = currentIndex - 1;
+        break;
+      case 'Home':
+        nextIndex = 0;
+        break;
+      case 'End':
+        nextIndex = views.length - 1;
+        break;
+      default:
+        return;
+    }
+
+    event.preventDefault();
+    const next = views[(nextIndex + views.length) % views.length];
+    if (next === undefined) return;
+    onValueChange(next);
+    itemRefs.current.get(next)?.focus();
+  };
 
   useGSAP(
     () => {
@@ -77,13 +112,14 @@ export function CalendarViewSwitch({
   );
 
   return (
-    <Tabs value={value} onValueChange={(next) => onValueChange(next as CalendarView)}>
-      <TabsList
+    <div className={className}>
+      <div
         ref={listRef}
+        role="radiogroup"
         aria-label={label}
         className={cn(
           'border-border-bold bg-surface-sunken relative gap-0.5 rounded-md border-2 p-1',
-          className,
+          'relay-scrollbar flex items-stretch overflow-x-auto',
         )}
       >
         <span
@@ -95,23 +131,32 @@ export function CalendarViewSwitch({
           )}
         />
         {views.map((view) => (
-          <TabsTrigger
+          <button
             key={view}
+            type="button"
+            role="radio"
+            aria-checked={view === value}
+            tabIndex={view === value ? 0 : -1}
+            data-state={view === value ? 'checked' : 'unchecked'}
             ref={(element) => {
               if (element) itemRefs.current.set(view, element);
               else itemRefs.current.delete(view);
             }}
-            value={view}
+            onClick={() => onValueChange(view)}
+            onKeyDown={(event) => moveSelection(event, view)}
             className={cn(
-              'relative z-10 flex items-center justify-center rounded-sm border-b-0 px-3 py-1.5',
-              'data-[state=active]:text-cta-on data-[state=active]:border-b-0',
+              'text-body-md text-text-secondary relative z-10 flex shrink-0 items-center',
+              'justify-center rounded-sm px-3 py-1.5 font-medium whitespace-nowrap',
+              'hover:text-text-primary data-[state=checked]:bg-cta data-[state=checked]:text-cta-on',
+              focusRing,
+              transitionBase,
               touchTarget,
             )}
           >
             {labelFor(view)}
-          </TabsTrigger>
+          </button>
         ))}
-      </TabsList>
-    </Tabs>
+      </div>
+    </div>
   );
 }

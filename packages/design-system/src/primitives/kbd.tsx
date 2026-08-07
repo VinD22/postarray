@@ -1,6 +1,6 @@
 'use client';
 
-import { forwardRef, type ComponentPropsWithoutRef } from 'react';
+import { forwardRef, useEffect, useState, type ComponentPropsWithoutRef } from 'react';
 import { cn } from '../utils/cn';
 import { formatHotkey } from '../hooks/use-hotkeys';
 
@@ -15,15 +15,26 @@ export interface KbdProps extends Omit<ComponentPropsWithoutRef<'kbd'>, 'childre
 /**
  * A keyboard shortcut rendered as real `<kbd>` elements.
  *
- * Shortcut symbols are not translated: Command is ⌘ in every locale. The
- * component is decorative next to a labelled action, so the surrounding
+ * Shortcut symbols are not translated. The server and first client render use
+ * the portable Ctrl label, then the client upgrades it to the platform symbol
+ * after hydration so the shortcut hint never causes a hydration mismatch.
+ * The component is decorative next to a labelled action, so the surrounding
  * control still carries the accessible name.
  */
 export const Kbd = forwardRef<HTMLElement, KbdProps>(function Kbd(
   { className, keys, ...props },
   ref,
 ) {
-  const parts = formatHotkey(keys);
+  const [apple, setApple] = useState(false);
+
+  useEffect(() => {
+    const platform =
+      (navigator as Navigator & { userAgentData?: { platform?: string } }).userAgentData
+        ?.platform ?? navigator.platform;
+    setApple(/mac|iphone|ipad|ipod/i.test(platform ?? ''));
+  }, []);
+
+  const parts = formatHotkey(keys, apple);
   return (
     <kbd
       ref={ref}

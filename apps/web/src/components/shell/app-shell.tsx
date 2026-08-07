@@ -63,7 +63,19 @@ export function AppShell({ children }: { readonly children: ReactNode }) {
 
   return (
     <div className="bg-surface-canvas flex min-h-dvh flex-col">
-      <a className="relay-skip-link" href="#main">
+      <a
+        className="relay-skip-link"
+        href="#main"
+        onClick={(event) => {
+          const main = document.getElementById('main');
+          if (!main) return;
+
+          event.preventDefault();
+          main.focus({ preventScroll: true });
+          main.scrollIntoView({ block: 'start' });
+          window.history.replaceState(null, '', '#main');
+        }}
+      >
         {t('nav.skipToContent')}
       </a>
 

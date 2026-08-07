@@ -115,8 +115,7 @@ export function useHotkeys(map: HotkeyMap, options: HotkeyOptions = {}): void {
  * symbols. The returned segments are symbols and key names, not sentences, so
  * they are safe to render without a translation catalog.
  */
-export function formatHotkey(binding: string): string[] {
-  const apple = isApplePlatform();
+export function formatHotkey(binding: string, apple = isApplePlatform()): string[] {
   return binding
     .toLowerCase()
     .split('+')

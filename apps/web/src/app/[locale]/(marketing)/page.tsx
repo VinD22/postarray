@@ -286,7 +286,7 @@ export default async function HomePage({
             <div className="grid gap-6 lg:grid-cols-12 lg:items-start lg:gap-12">
               <span
                 aria-hidden="true"
-                className="font-display text-display-xl leading-none opacity-40 lg:col-span-3"
+                className="font-display text-display-xl leading-none lg:col-span-3"
               >
                 {String(index + 1).padStart(2, '0')}
               </span>

@@ -18,8 +18,10 @@
     "next-env.d.ts",
     "src/**/*.ts",
     "src/**/*.tsx",
+    "e2e/**/*.ts",
     ".next/types/**/*.ts",
     "next.config.ts",
+    "playwright.config.ts",
     "vitest.config.ts"
   ],
   "exclude": ["node_modules", ".next", "coverage"]
