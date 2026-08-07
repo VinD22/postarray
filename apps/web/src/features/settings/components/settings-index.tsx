@@ -3,7 +3,7 @@
 import type { ReactNode } from 'react';
 import { Link } from '@/components/link';
 import { ChevronRight } from 'lucide-react';
-import { PageHeader } from '@relay/design-system/patterns';
+import { CapabilityBadge, PageHeader } from '@relay/design-system/patterns';
 import { useTranslations } from '@relay/i18n/react';
 
 import { SettingsStack } from './section';
@@ -36,8 +36,16 @@ export function SettingsIndex(): ReactNode {
                 className="hover:bg-surface-hover focus-visible:outline-border-focus flex min-h-14 items-center justify-between gap-4 py-3 focus-visible:outline-2 focus-visible:outline-offset-2"
               >
                 <span className="flex min-w-0 flex-col gap-0.5">
-                  <span className="text-body-md text-text-primary font-medium">
-                    {t(section.titleKey)}
+                  <span className="flex flex-wrap items-center gap-2">
+                    <span className="text-body-md text-text-primary font-medium">
+                      {t(section.titleKey)}
+                    </span>
+                    {section.availability === 'not_implemented' ? (
+                      <CapabilityBadge
+                        state="not_implemented"
+                        label={t('settings.ui.state.notBuiltShort')}
+                      />
+                    ) : null}
                   </span>
                   <span className="text-body-sm text-text-secondary max-w-[68ch]">
                     {t(section.summaryKey)}

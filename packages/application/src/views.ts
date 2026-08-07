@@ -128,6 +128,8 @@ export interface BrandView {
   readonly defaultShortLinkOn: boolean;
   readonly archived: boolean;
   readonly connectionIds: readonly string[];
+  readonly createdAt: string;
+  readonly updatedAt: string;
 }
 
 export const CONNECTION_HEALTH = [

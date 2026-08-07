@@ -94,7 +94,18 @@ export interface BrandView {
   readonly id: string;
   readonly workspaceId: string;
   readonly name: string;
+  readonly slug: string;
+  readonly voice: string | null;
+  readonly audience: string | null;
+  readonly approvedClaims: readonly string[];
+  readonly blockedTerms: readonly string[];
+  readonly domains: readonly string[];
+  readonly defaultTimeZone: string | null;
+  readonly defaultShortLinkOn: boolean;
+  readonly archived: boolean;
   readonly connectionIds: readonly string[];
+  readonly createdAt: string;
+  readonly updatedAt: string;
 }
 
 export interface SessionView {

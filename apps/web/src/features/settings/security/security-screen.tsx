@@ -3,51 +3,36 @@
 import { useState, type ReactNode } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { Link } from '@/components/link';
-import {
-  Badge,
-  Button,
-  Code,
-  Table,
-  TableBody,
-  TableCaption,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableHeader,
-  TableRow,
-  TableRowHeader,
-} from '@relay/design-system/primitives';
+import { Button, Code } from '@relay/design-system/primitives';
 import { ConfirmDialog, Notice, PageHeader } from '@relay/design-system/patterns';
 import { useTranslations } from '@relay/i18n/react';
+import type { Scope } from '@relay/contracts';
+
+import { api } from '@/lib/api';
+import { CredentialPanel } from '@/features/developer/components/credential-panel';
 
 import { AsyncBoundary } from '../lib/async-boundary';
-import { agentsGateway, securityGateway, webhooksGateway } from '../lib/gateway';
+import { securityGateway, webhooksGateway } from '../lib/gateway';
 import { useFormatters } from '../lib/formatters';
 import { settingsKey, useWorkspaceId } from '../lib/keys';
 import { useSettingsMutation } from '../lib/use-settings-mutation';
-import type { OAuthGrantView } from '../lib/view-models';
-import { InlineFact, SettingRow, SettingsPanel, SettingsStack } from '../components/section';
+import type { ApiKeyView, OAuthGrantView } from '../lib/view-models';
+import { InlineFact, SettingsPanel, SettingsStack } from '../components/section';
+import { ApiKeyDialog } from './api-key-dialog';
+import { RevokeApiKeyDialog } from './revoke-api-key-dialog';
 
 export function SecurityScreen(): ReactNode {
   const t = useTranslations();
   const section = t('settings.ui.section.security');
   const formatters = useFormatters();
   const workspaceId = useWorkspaceId();
-  const SESSIONS_KEY = settingsKey(workspaceId, 'security', 'sessions');
   const KEYS_KEY = settingsKey(workspaceId, 'security', 'api-keys');
   const GRANTS_KEY = settingsKey(workspaceId, 'security', 'grants');
-  const AGENTS_KEY = settingsKey(workspaceId, 'agents');
   const WEBHOOKS_KEY = settingsKey(workspaceId, 'webhooks');
   const CONNECTIONS_KEY = settingsKey(workspaceId, 'security', 'connections');
 
-  const sessions = useQuery({ queryKey: SESSIONS_KEY, queryFn: () => securityGateway.sessions() });
-  const mfa = useQuery({
-    queryKey: settingsKey(workspaceId, 'security', 'mfa'),
-    queryFn: () => securityGateway.mfaEnabled(),
-  });
   const apiKeys = useQuery({ queryKey: KEYS_KEY, queryFn: () => securityGateway.apiKeys() });
   const grants = useQuery({ queryKey: GRANTS_KEY, queryFn: () => securityGateway.grants() });
-  const agents = useQuery({ queryKey: AGENTS_KEY, queryFn: () => agentsGateway.list() });
   const endpoints = useQuery({ queryKey: WEBHOOKS_KEY, queryFn: () => webhooksGateway.list() });
   const connections = useQuery({
     queryKey: CONNECTIONS_KEY,
@@ -55,6 +40,12 @@ export function SecurityScreen(): ReactNode {
   });
 
   const [pendingGrant, setPendingGrant] = useState<OAuthGrantView | null>(null);
+  const [creatingKey, setCreatingKey] = useState(false);
+  const [pendingKey, setPendingKey] = useState<ApiKeyView | null>(null);
+  const [credential, setCredential] = useState<{
+    readonly value: string;
+    readonly expiresAt: string | null;
+  } | null>(null);
 
   const revokeGrant = useSettingsMutation({
     section,
@@ -64,19 +55,33 @@ export function SecurityScreen(): ReactNode {
     successMessage: t('developer.grants.revoked'),
   });
 
-  const revokeOtherSessions = useSettingsMutation({
-    section,
-    mutationFn: securityGateway.revokeOtherSessions,
-    invalidate: [SESSIONS_KEY],
-  });
-
   const revokeKey = useSettingsMutation({
     section,
-    mutationFn: securityGateway.revokeApiKey,
+    mutationFn: async (input: { apiKeyId: string; password: string }) => {
+      await api.auth.stepUpWithPassword(input.password);
+      await securityGateway.revokeApiKey(input.apiKeyId);
+    },
     invalidate: [KEYS_KEY],
+    onSuccess: () => setPendingKey(null),
   });
 
-  const sessionRows = sessions.data ?? [];
+  const createKey = useSettingsMutation({
+    section,
+    mutationFn: async (input: {
+      name: string;
+      scopes: readonly Scope[];
+      password: string;
+    }) => {
+      await api.auth.stepUpWithPassword(input.password);
+      return securityGateway.createApiKey({ name: input.name, scopes: input.scopes });
+    },
+    invalidate: [KEYS_KEY],
+    onSuccess: (created) => {
+      setCredential(created);
+      setCreatingKey(false);
+    },
+  });
+
   const keyRows = apiKeys.data ?? [];
   const grantRows = grants.data ?? [];
 
@@ -85,129 +90,28 @@ export function SecurityScreen(): ReactNode {
       <PageHeader title={section} description={t('settings.ui.security.description')} />
 
       <SettingsStack>
-        <SettingsPanel
-          title={t('settings.security.mfa')}
-          description={t('settings.ui.security.mfaBody')}
-        >
-          <div className="flex flex-col">
-            <SettingRow
-              label={
-                mfa.data === null || mfa.data === undefined
-                  ? t('settings.security.mfa')
-                  : mfa.data
-                    ? t('settings.ui.security.mfaOn')
-                    : t('settings.ui.security.mfaOff')
-              }
-              description={t('settings.security.mfaRequiredFor')}
-              control={
-                mfa.data === true ? null : (
-                  <Button variant="primary" size="sm">
-                    {t('settings.security.mfaEnable')}
-                  </Button>
-                )
-              }
-            />
-            <SettingRow
-              label={t('settings.security.passkeys')}
-              control={
-                <Button variant="secondary" size="sm">
-                  {t('action.add')}
-                </Button>
-              }
-            />
-          </div>
-        </SettingsPanel>
+        {credential === null ? null : (
+          <CredentialPanel
+            credential={credential}
+            kind="api-key"
+            onAcknowledge={() => setCredential(null)}
+          />
+        )}
 
-        <SettingsPanel title={t('settings.security.sessions')}>
-          <AsyncBoundary
-            section={t('settings.security.sessions')}
-            isPending={sessions.isPending}
-            error={sessions.error}
-            onRetry={() => void sessions.refetch()}
-            skeletonRows={3}
-            skeletonColumns={3}
-          >
-            {sessionRows.length <= 1 ? (
-              <p className="text-body-md text-text-secondary">
-                {t('settings.ui.security.emptySessions')}
-              </p>
-            ) : (
-              <TableContainer>
-                <Table>
-                  <TableCaption className="sr-only">
-                    {t('settings.ui.security.sessionsCaption')}
-                  </TableCaption>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead scope="col">
-                        {t('settings.ui.security.sessionColumn.device')}
-                      </TableHead>
-                      <TableHead scope="col">
-                        {t('settings.ui.security.sessionColumn.location')}
-                      </TableHead>
-                      <TableHead scope="col">
-                        {t('settings.ui.security.sessionColumn.lastSeen')}
-                      </TableHead>
-                      <TableHead scope="col">
-                        <span className="sr-only">{t('common.details')}</span>
-                      </TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {sessionRows.map((entry) => (
-                      <TableRow key={entry.id}>
-                        <TableRowHeader>
-                          <span className="flex flex-wrap items-center gap-2">
-                            {entry.device}
-                            {entry.isCurrent ? (
-                              <Badge tone="accent">
-                                {t('settings.ui.security.sessionCurrent')}
-                              </Badge>
-                            ) : null}
-                          </span>
-                        </TableRowHeader>
-                        <TableCell>
-                          {entry.location ?? t('settings.ui.security.sessionLocationUnknown')}
-                        </TableCell>
-                        <TableCell>{formatters.relative(entry.lastSeenAt)}</TableCell>
-                        <TableCell className="text-end">
-                          {entry.isCurrent ? null : (
-                            <Button variant="ghost" size="sm">
-                              {t('settings.security.sessionRevoke')}
-                            </Button>
-                          )}
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </TableContainer>
-            )}
-          </AsyncBoundary>
-          {sessionRows.length > 1 ? (
-            <div>
-              <Button
-                variant="secondary"
-                size="sm"
-                loading={revokeOtherSessions.isSaving}
-                onClick={() => void revokeOtherSessions.run(undefined)}
-              >
-                {t('settings.ui.security.sessionRevokeAll')}
-              </Button>
-            </div>
-          ) : null}
+        <SettingsPanel title={t('settings.ui.security.accountProtectionTitle')}>
+          <Notice
+            tone="info"
+            title={t('settings.ui.state.notBuiltTitle')}
+            description={t('settings.ui.security.accountProtectionUnavailable')}
+          />
         </SettingsPanel>
 
         <SettingsPanel
           title={t('settings.ui.security.credentialsTitle')}
           description={t('settings.ui.security.credentialsBody')}
           actions={
-            <Button variant="secondary" size="sm" asChild>
-              <Link href="/settings/agents">
-                {t('settings.ui.security.viewInSection', {
-                  section: t('settings.ui.section.agents'),
-                })}
-              </Link>
+            <Button variant="primary" size="sm" onClick={() => setCreatingKey(true)}>
+              {t('settings.ui.security.apiKeyCreate')}
             </Button>
           }
         >
@@ -252,7 +156,7 @@ export function SecurityScreen(): ReactNode {
                       variant="ghost"
                       size="sm"
                       loading={revokeKey.isSaving}
-                      onClick={() => void revokeKey.run(key.id)}
+                      onClick={() => setPendingKey(key)}
                     >
                       {t('action.revoke')}
                     </Button>
@@ -261,24 +165,6 @@ export function SecurityScreen(): ReactNode {
               </ul>
             )}
           </AsyncBoundary>
-        </SettingsPanel>
-
-        <SettingsPanel
-          title={t('settings.ui.security.agentsTitle')}
-          actions={
-            <Button variant="secondary" size="sm" asChild>
-              <Link href="/settings/agents">
-                {t('settings.ui.security.viewInSection', {
-                  section: t('settings.ui.section.agents'),
-                })}
-              </Link>
-            </Button>
-          }
-        >
-          <InlineFact
-            label={t('common.results', { count: (agents.data ?? []).length })}
-            value={formatters.list((agents.data ?? []).map((agent) => agent.name))}
-          />
         </SettingsPanel>
 
         <SettingsPanel
@@ -376,7 +262,7 @@ export function SecurityScreen(): ReactNode {
                   </span>
                   <span className="text-body-sm text-text-secondary">
                     {connection.grantedCapabilities.length === 0
-                      ? t('common.none')
+                      ? t('common.unavailable')
                       : formatters.list([...connection.grantedCapabilities])}
                   </span>
                 </li>
@@ -386,14 +272,9 @@ export function SecurityScreen(): ReactNode {
         </SettingsPanel>
 
         <Notice
-          tone="warning"
+          tone="info"
           title={t('settings.security.killSwitch')}
-          description={t('settings.security.killSwitchBody')}
-          actions={
-            <Button variant="secondary" size="sm">
-              {t('settings.security.killSwitch')}
-            </Button>
-          }
+          description={t('settings.ui.security.killSwitchUnavailable')}
         />
       </SettingsStack>
 
@@ -420,6 +301,22 @@ export function SecurityScreen(): ReactNode {
             void revokeGrant.run(pendingGrant.id);
           }
         }}
+      />
+
+      <ApiKeyDialog
+        open={creatingKey}
+        saving={createKey.isSaving}
+        onOpenChange={setCreatingKey}
+        onSubmit={(input) => void createKey.run(input)}
+      />
+
+      <RevokeApiKeyDialog
+        apiKey={pendingKey}
+        saving={revokeKey.isSaving}
+        onOpenChange={(open) => {
+          if (!open) setPendingKey(null);
+        }}
+        onSubmit={(input) => void revokeKey.run(input)}
       />
     </>
   );

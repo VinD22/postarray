@@ -53,10 +53,14 @@ export function UsagePanel({ usage }: UsagePanelProps): ReactNode {
   return (
     <div className="flex flex-col gap-3">
       <p className="text-body-sm text-text-tertiary">
-        {t('billing.ui.usagePeriod', {
-          start: formatters.date(usage.periodStart),
-          end: formatters.date(usage.periodEnd),
-        })}
+        {usage.periodEnd === null
+          ? t('billing.ui.usagePeriodUnavailable', {
+              start: formatters.date(usage.periodStart),
+            })
+          : t('billing.ui.usagePeriod', {
+              start: formatters.date(usage.periodStart),
+              end: formatters.date(usage.periodEnd),
+            })}
       </p>
 
       {usage.lines.length === 0 ? (

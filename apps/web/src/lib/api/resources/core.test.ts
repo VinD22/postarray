@@ -4,7 +4,7 @@ const callMock = vi.hoisted(() => vi.fn());
 
 vi.mock('../call', () => ({ call: callMock }));
 
-import { auditApi, billingApi, membersApi, workspacesApi } from './core';
+import { auditApi, billingApi, healthApi, membersApi, workspacesApi } from './core';
 
 describe('browser core resource contracts', () => {
   beforeEach(() => {
@@ -133,5 +133,11 @@ describe('browser core resource contracts', () => {
       expect.any(Function),
       expect.any(Function),
     );
+  });
+
+  it('reads the public deployment capability gate before showing checkout', async () => {
+    await healthApi.capabilities();
+
+    expect(callMock).toHaveBeenCalledWith('/capabilities', {}, expect.any(Function));
   });
 });

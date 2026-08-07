@@ -4,6 +4,7 @@ import type { ReactNode } from 'react';
 import { Link } from '@/components/link';
 import { usePathname } from 'next/navigation';
 import { cn } from '@relay/design-system/utils';
+import { CircleDashed } from 'lucide-react';
 import { useTranslations } from '@relay/i18n/react';
 
 import { SETTINGS_SECTIONS } from './settings-sections';
@@ -54,7 +55,15 @@ export function SettingsNav(): ReactNode {
                     'bg-accent-subtle text-text-accent hover:bg-accent-subtle-hover font-medium',
                 )}
               >
-                {t(section.titleKey)}
+                <span className="flex items-center gap-2">
+                  <span>{t(section.titleKey)}</span>
+                  {section.availability === 'not_implemented' ? (
+                    <CircleDashed
+                      aria-label={t('settings.ui.state.notBuiltShort')}
+                      className="text-info-fg size-3.5 shrink-0"
+                    />
+                  ) : null}
+                </span>
               </Link>
             </li>
           );

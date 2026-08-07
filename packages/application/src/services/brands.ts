@@ -24,6 +24,8 @@ const BRAND_SELECT = {
   defaultTimeZone: true,
   defaultShortLinkOn: true,
   archivedAt: true,
+  createdAt: true,
+  updatedAt: true,
   socialConnections: { select: { id: true } },
 } as const;
 
@@ -40,6 +42,8 @@ interface BrandRow {
   defaultTimeZone: string | null;
   defaultShortLinkOn: boolean;
   archivedAt: Date | null;
+  createdAt: Date;
+  updatedAt: Date;
   socialConnections: readonly { id: string }[];
 }
 
@@ -58,6 +62,8 @@ function toView(row: BrandRow): BrandView {
     defaultShortLinkOn: row.defaultShortLinkOn,
     archived: row.archivedAt !== null,
     connectionIds: row.socialConnections.map((connection) => connection.id),
+    createdAt: row.createdAt.toISOString(),
+    updatedAt: row.updatedAt.toISOString(),
   };
 }
 

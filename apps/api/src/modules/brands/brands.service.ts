@@ -29,6 +29,11 @@ export class BrandsService {
     return this.services.brands.update(ctx, brandId, {
       ...(patch.name === undefined ? {} : { name: patch.name }),
       ...(patch.ianaTimeZone === undefined ? {} : { defaultTimeZone: patch.ianaTimeZone }),
+      ...(patch.voice === undefined ? {} : { voice: patch.voice }),
+      ...(patch.audience === undefined ? {} : { audience: patch.audience }),
+      ...(patch.approvedClaims === undefined ? {} : { approvedClaims: patch.approvedClaims }),
+      ...(patch.blockedTerms === undefined ? {} : { blockedTerms: patch.blockedTerms }),
+      ...(patch.domains === undefined ? {} : { domains: patch.domains }),
     });
   }
 

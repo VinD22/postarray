@@ -262,6 +262,7 @@ export interface ApiKeyView {
   readonly createdAt: string;
   readonly lastUsedAt: string | null;
   readonly revokedAt: string | null;
+  readonly expiresAt: string | null;
 }
 
 export const apiKeysApi = {

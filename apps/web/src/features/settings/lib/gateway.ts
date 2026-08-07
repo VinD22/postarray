@@ -6,19 +6,14 @@
  *
  *  1. Its view models are adapted into the richer ones in `view-models.ts`
  *     that these screens read. Components never cast.
- *  2. Where the typed client has not modelled a documented REST resource yet,
- *     the call goes through the exported `request` helper with a `TODO(api)`
- *     naming the resource. Those are the only places, they are listed below,
- *     and each one moves to `api.<resource>` in a single edit.
- *
- * TODO(api): resources the typed client does not expose yet:
- *   service accounts, sessions, data export and deletion, workspace
- *   localization preferences, referrals, webhook signing secret rotation and
- *   webhook delivery redelivery by delivery id.
+ *  2. A product surface with no application service fails locally with the
+ *     stable not-implemented error. It never probes an imagined HTTP route or
+ *     turns a 404 into an empty state.
  */
 
-import { api, newIdempotencyKey, request, type OAuthAppView as ApiOAuthAppView } from '@/lib/api';
+import { ApiError, api, newIdempotencyKey, type OAuthAppView as ApiOAuthAppView } from '@/lib/api';
 import type { BusinessProfileView } from '@/lib/api/types';
+import { ERROR_CODES } from '@relay/contracts';
 import type {
   GrowthExportFormat,
   GrowthPlan,
@@ -36,7 +31,6 @@ import type {
   BrandView,
   ConnectionSummaryView,
   ExportJobView,
-  InvoiceView,
   MemberView,
   MoneyView,
   OAuthAppView,
@@ -59,6 +53,18 @@ const FAR_FUTURE = '2999-12-31T23:59:59.999Z';
 
 /** Roles whose definition includes reviewing someone else's work. */
 const APPROVAL_ROLES: ReadonlySet<string> = new Set(['owner', 'admin', 'manager', 'approver']);
+
+function notImplemented(feature: string): never {
+  throw new ApiError({
+    code: ERROR_CODES.CAPABILITY_NOT_IMPLEMENTED,
+    status: 501,
+    messageCode: 'not_implemented',
+    retryable: false,
+    details: { feature },
+    correlationId: null,
+    retryAfterSeconds: null,
+  });
+}
 
 function moneyOf(
   value: { amountMinor: number; currency: string } | null | undefined,
@@ -92,16 +98,13 @@ export interface WorkspaceLocalizationView {
 export const workspaceGateway = {
   async identity(): Promise<WorkspaceIdentityView> {
     const session = await api.session.get();
-    const endpoints = await request<{ mcpEndpoint: string; apiBaseUrl: string }>(
-      '/workspaces/current/endpoints',
-    ).catch(() => ({ mcpEndpoint: '', apiBaseUrl: '' }));
     return {
       id: session.workspace.id,
       name: session.workspace.name,
       timeZone: session.workspace.timeZone,
       developerName: session.workspace.name,
-      mcpEndpoint: endpoints.mcpEndpoint,
-      apiBaseUrl: endpoints.apiBaseUrl,
+      mcpEndpoint: '',
+      apiBaseUrl: '',
       readOnly: session.workspace.readOnly,
       currentUserId: session.user.id,
     };
@@ -207,79 +210,64 @@ export const membersGateway = {
 
 /* --------------------------------------------------------------- brands */
 
-/** The brand rules resource, which the typed client models only by name today. */
-interface BrandRulesResponse {
-  readonly voice?: string;
-  readonly audience?: string;
-  readonly approvedClaims?: readonly string[];
-  readonly blockedTerms?: readonly string[];
-  readonly contentLocales?: readonly string[];
-  readonly localeRules?: BrandView['localeRules'];
-  readonly domains?: BrandView['domains'];
-  readonly disclosureDefaults?: BrandView['disclosureDefaults'];
-  readonly glossary?: BrandView['glossary'];
-  readonly updatedAt?: string;
-  readonly updatedByName?: string | null;
-}
-
 function toBrandView(
-  base: { id: string; name: string; connectionIds: readonly string[] },
-  rules: BrandRulesResponse,
+  base: {
+    id: string;
+    name: string;
+    voice: string | null;
+    audience: string | null;
+    approvedClaims: readonly string[];
+    blockedTerms: readonly string[];
+    domains: readonly string[];
+    connectionIds: readonly string[];
+    updatedAt: string;
+  },
 ): BrandView {
   return {
     id: base.id,
     name: base.name,
-    voice: rules.voice ?? '',
-    audience: rules.audience ?? '',
-    approvedClaims: rules.approvedClaims ?? [],
-    blockedTerms: rules.blockedTerms ?? [],
-    contentLocales: rules.contentLocales ?? [],
-    localeRules: rules.localeRules ?? [],
-    domains: rules.domains ?? [],
-    disclosureDefaults: rules.disclosureDefaults ?? [],
-    glossary: rules.glossary ?? [],
+    voice: base.voice ?? '',
+    audience: base.audience ?? '',
+    approvedClaims: base.approvedClaims,
+    blockedTerms: base.blockedTerms,
+    contentLocales: [],
+    localeRules: [],
+    domains: base.domains.map((domain) => ({ domain, verifiedAt: null })),
+    disclosureDefaults: [],
+    glossary: [],
     connectionCount: base.connectionIds.length,
-    updatedAt: rules.updatedAt ?? EPOCH_START,
-    updatedByName: rules.updatedByName ?? null,
+    updatedAt: base.updatedAt,
+    updatedByName: null,
   };
 }
 
 export const brandsGateway = {
   async list(): Promise<readonly BrandView[]> {
     const page = await api.brands.list();
-    // TODO(api): `GET /brands` should embed the rules so this is one request.
-    return Promise.all(
-      page.data.map(async (brand) => {
-        const rules = await request<BrandRulesResponse>(`/brands/${brand.id}/rules`).catch(
-          () => ({}) as BrandRulesResponse,
-        );
-        return toBrandView(brand, rules);
-      }),
-    );
+    return page.data.map(toBrandView);
   },
 
   async get(brandId: string): Promise<BrandView> {
-    const [brand, rules] = await Promise.all([
-      api.brands.get(brandId),
-      request<BrandRulesResponse>(`/brands/${brandId}/rules`).catch(
-        () => ({}) as BrandRulesResponse,
-      ),
-    ]);
-    return toBrandView(brand, rules);
+    return toBrandView(await api.brands.get(brandId));
   },
 
   async update(brandId: string, patch: Partial<BrandView>): Promise<BrandView> {
-    if (patch.name !== undefined) {
-      await api.brands.update(brandId, { name: patch.name });
-    }
-    // TODO(api): `api.brands.updateRules`.
-    await request(`/brands/${brandId}/rules`, { method: 'PATCH', body: patch });
-    return brandsGateway.get(brandId);
+    const updated = await api.brands.update(brandId, {
+      ...(patch.name === undefined ? {} : { name: patch.name }),
+      ...(patch.voice === undefined ? {} : { voice: patch.voice }),
+      ...(patch.audience === undefined ? {} : { audience: patch.audience }),
+      ...(patch.approvedClaims === undefined ? {} : { approvedClaims: patch.approvedClaims }),
+      ...(patch.blockedTerms === undefined ? {} : { blockedTerms: patch.blockedTerms }),
+      ...(patch.domains === undefined
+        ? {}
+        : { domains: patch.domains.map((entry) => entry.domain) }),
+    });
+    return toBrandView(updated);
   },
 
   async create(input: { name: string }): Promise<BrandView> {
     const brand = await api.brands.create(input, newIdempotencyKey('settings'));
-    return toBrandView(brand, {});
+    return toBrandView(brand);
   },
 };
 
@@ -293,14 +281,11 @@ export const securityGateway = {
    * knowing is worse than one that says nothing.
    */
   async mfaEnabled(): Promise<boolean | null> {
-    // TODO(api): `api.auth.getMfaState`.
-    const state = await request<{ enabled: boolean }>('/auth/mfa').catch(() => null);
-    return state === null ? null : state.enabled;
+    return notImplemented('mfa_state');
   },
 
   async sessions(): Promise<readonly SessionView[]> {
-    // TODO(api): `api.session.list`.
-    return request<readonly SessionView[]>('/auth/sessions').catch(() => []);
+    return notImplemented('session_management');
   },
 
   async apiKeys(): Promise<readonly ApiKeyView[]> {
@@ -316,7 +301,7 @@ export const securityGateway = {
         // TODO(api): the resource does not name the creator yet.
         createdByName: '',
         lastUsedAt: key.lastUsedAt,
-        expiresAt: null,
+        expiresAt: key.expiresAt,
       }));
   },
 
@@ -328,15 +313,14 @@ export const securityGateway = {
       { name: input.name, scopes: input.scopes },
       newIdempotencyKey('settings'),
     );
-    return { value: created?.secret ?? '', expiresAt: null };
+    if (created === null || created.secret.length === 0) {
+      throw new Error('API_KEY_NOT_CREATED');
+    }
+    return { value: created.secret, expiresAt: created.key.expiresAt };
   },
 
   async revokeOtherSessions(): Promise<void> {
-    // TODO(api): `api.session.revokeOthers`.
-    await request('/auth/sessions/revoke-others', {
-      method: 'POST',
-      idempotencyKey: newIdempotencyKey('settings'),
-    });
+    return notImplemented('session_management');
   },
 
   async revokeApiKey(keyId: string): Promise<void> {
@@ -380,14 +364,9 @@ export const securityGateway = {
 
 /* -------------------------------------------------------- service accounts */
 
-interface ServiceAccountResponse extends Omit<ServiceAccountView, 'brandScope'> {
-  readonly brandScope: readonly { readonly id: string; readonly name: string }[];
-}
-
 export const agentsGateway = {
   async list(): Promise<readonly ServiceAccountView[]> {
-    // TODO(api): `api.serviceAccounts.list`.
-    return request<readonly ServiceAccountResponse[]>('/service-accounts').catch(() => []);
+    return notImplemented('service_accounts');
   },
 
   async create(input: {
@@ -405,28 +384,19 @@ export const agentsGateway = {
     approvalLevel: ApprovalLevel;
     expiresInDays: number | null;
   }): Promise<OneTimeCredential> {
-    // TODO(api): `api.serviceAccounts.create`.
-    return request<OneTimeCredential>('/service-accounts', {
-      method: 'POST',
-      body: input,
-      idempotencyKey: newIdempotencyKey('settings'),
-    });
+    void input;
+    return notImplemented('service_accounts');
   },
 
   async rotate(serviceAccountId: string): Promise<OneTimeCredential> {
-    // TODO(api): `api.serviceAccounts.rotateCredential`.
-    return request<OneTimeCredential>(`/service-accounts/${serviceAccountId}/credential`, {
-      method: 'POST',
-      idempotencyKey: newIdempotencyKey('settings'),
-    });
+    void serviceAccountId;
+    return notImplemented('service_accounts');
   },
 
   async setEnabled(serviceAccountId: string, enabled: boolean): Promise<void> {
-    // TODO(api): `api.serviceAccounts.stop` and `.resume`.
-    await request(`/service-accounts/${serviceAccountId}`, {
-      method: 'PATCH',
-      body: { enabled },
-    });
+    void serviceAccountId;
+    void enabled;
+    return notImplemented('service_accounts');
   },
 
   async activity(serviceAccountId: string): Promise<readonly AgentActivityView[]> {
@@ -450,13 +420,8 @@ export const agentsGateway = {
     tool: string;
     args: unknown;
   }): Promise<{ outcome: 'ok' | 'denied'; body: unknown; reason: string | null }> {
-    // TODO(api): `api.serviceAccounts.dryRun`. Marked side effect free because
-    // the sandbox never contacts a provider.
-    return request('/service-accounts/dry-runs', {
-      method: 'POST',
-      body: input,
-      sideEffectFree: true,
-    });
+    void input;
+    return notImplemented('service_accounts');
   },
 };
 
@@ -663,12 +628,8 @@ export const webhooksGateway = {
   },
 
   async rotateSecret(endpointId: string): Promise<OneTimeCredential> {
-    // TODO(api): `api.webhooks.rotateSigningSecret`.
-    const rotated = await request<{ signingSecret: string }>(
-      `/webhooks/${endpointId}/signing-secret`,
-      { method: 'POST', idempotencyKey: newIdempotencyKey('settings') },
-    );
-    return { value: rotated.signingSecret, expiresAt: null };
+    void endpointId;
+    return notImplemented('webhook_secret_rotation');
   },
 
   async remove(endpointId: string): Promise<void> {
@@ -703,67 +664,38 @@ export const webhooksGateway = {
 
 /* -------------------------------------------------------------- billing */
 
-interface BillingDetailResponse {
-  readonly cancelAt?: string | null;
-  readonly canceledAt?: string | null;
-  readonly accessUntil?: string | null;
-  readonly graceEndsAt?: string | null;
-  readonly trialDaysRemaining?: number | null;
-  readonly paymentMethod?: BillingStateView['paymentMethod'];
-  readonly readOnly?: boolean;
-}
-
 export const billingGateway = {
   async state(): Promise<BillingStateView> {
-    const [state, session, detail] = await Promise.all([
+    const [state, session, capabilities] = await Promise.all([
       api.billing.getState(),
       api.session.get(),
-      // TODO(api): cancellation dates, grace window and the payment method
-      // descriptor belong on `GET /billing/state`.
-      request<BillingDetailResponse>('/billing/state/detail').catch(
-        () => ({}) as BillingDetailResponse,
-      ),
+      api.health.capabilities(),
     ]);
 
     return {
       status: state.status,
       interval: state.interval,
-      trialDaysRemaining: detail.trialDaysRemaining ?? null,
+      trialDaysRemaining: null,
       conversionAt: state.firstChargeAt ?? state.trialEndsAt,
       conversionAmount: moneyOf(state.firstChargeAmount ?? state.renewalAmount),
-      cancelAt: detail.cancelAt ?? null,
-      canceledAt: detail.canceledAt ?? null,
-      accessUntil: detail.accessUntil ?? null,
-      graceEndsAt: detail.graceEndsAt ?? null,
-      paymentMethod: detail.paymentMethod ?? null,
+      cancelAt: null,
+      canceledAt: null,
+      accessUntil: null,
+      graceEndsAt: null,
+      paymentMethod: null,
       activeChannels: state.activeChannelCount,
       channelAllowance: state.channelLimit,
       portalUrl: state.portalUrl,
-      readOnly: detail.readOnly ?? session.workspace.readOnly,
+      readOnly: session.workspace.readOnly,
+      checkoutAvailable: capabilities.billing === 'live',
     };
   },
 
   async usage(): Promise<UsageView> {
     const usage = await api.billing.getUsage();
-    // TODO(api): reconciliation, the price source date, the balance and the
-    // spend alert belong on `GET /billing/usage`.
-    interface UsageDetail {
-      periodEnd?: string;
-      reconciledAt?: string | null;
-      priceSourceVerifiedAt?: string | null;
-      balance?: MoneyView | null;
-      spendAlert?: MoneyView | null;
-      pauseAtAlert?: boolean;
-    }
-    // The endpoint is optional today, so an absent detail falls back to the
-    // fields `GET /billing/usage` does return rather than failing the screen.
-    const detail = await request<UsageDetail>('/billing/usage/detail').catch(
-      (): UsageDetail => ({}),
-    );
-
     return {
       periodStart: usage.periodStart,
-      periodEnd: detail.periodEnd ?? usage.periodStart,
+      periodEnd: null,
       lines: usage.lines.map((line, index) => ({
         id: `${line.provider ?? 'workspace'}-${line.operation}-${index}`,
         label: line.provider === null ? line.operation : `${line.provider} ${line.operation}`,
@@ -772,19 +704,13 @@ export const billingGateway = {
         amount: moneyOf(line.amount),
       })),
       total: moneyOf(usage.total),
-      balance: detail.balance ?? null,
-      reconciledAt: detail.reconciledAt ?? null,
-      priceSourceVerifiedAt: detail.priceSourceVerifiedAt ?? null,
+      balance: null,
+      reconciledAt: null,
+      priceSourceVerifiedAt: null,
       available: true,
-      spendAlert: detail.spendAlert ?? null,
-      pauseAtAlert: detail.pauseAtAlert ?? false,
+      spendAlert: null,
+      pauseAtAlert: false,
     };
-  },
-
-  async invoices(): Promise<readonly InvoiceView[]> {
-    // TODO(api): `api.billing.listInvoices`. Polar owns the documents, so this
-    // returns the metadata plus the portal link for each one.
-    return request<readonly InvoiceView[]>('/billing/invoices').catch(() => []);
   },
 
   async portalLink(): Promise<string> {
@@ -809,8 +735,7 @@ export const billingGateway = {
   },
 
   async referral(): Promise<ReferralView> {
-    // TODO(api): `api.referrals.get`.
-    return request<ReferralView>('/referrals');
+    return notImplemented('referrals');
   },
 };
 
@@ -818,25 +743,14 @@ export const billingGateway = {
 
 export const dataGateway = {
   async exportJob(): Promise<ExportJobView> {
-    // TODO(api): `api.data.getExport`.
-    return request<ExportJobView>('/data/exports/current').catch(() => ({
-      id: '',
-      state: 'idle' as const,
-      preparedAt: null,
-      expiresAt: null,
-      downloadUrl: null,
-    }));
+    return notImplemented('workspace_exports');
   },
 
   async startExport(input: {
     formats: readonly ('json' | 'csv' | 'media')[];
   }): Promise<ExportJobView> {
-    // TODO(api): `api.data.startExport`.
-    return request<ExportJobView>('/data/exports', {
-      method: 'POST',
-      body: input,
-      idempotencyKey: newIdempotencyKey('settings'),
-    });
+    void input;
+    return notImplemented('workspace_exports');
   },
 
   async scheduledJobCount(): Promise<number> {
@@ -849,11 +763,7 @@ export const dataGateway = {
   },
 
   async cancelScheduledJobs(): Promise<void> {
-    // TODO(api): a workspace wide cancel, rather than one call per job.
-    await request('/scheduling/cancel-all', {
-      method: 'POST',
-      idempotencyKey: newIdempotencyKey('settings'),
-    });
+    return notImplemented('bulk_schedule_cancellation');
   },
 
   /**
@@ -862,11 +772,7 @@ export const dataGateway = {
    * after the confirmation window stated in the Terms.
    */
   async requestWorkspaceDeletion(): Promise<void> {
-    // TODO(api): `api.data.requestDeletion`.
-    await request('/data/deletion-requests', {
-      method: 'POST',
-      idempotencyKey: newIdempotencyKey('settings'),
-    });
+    return notImplemented('workspace_closure');
   },
 };
 

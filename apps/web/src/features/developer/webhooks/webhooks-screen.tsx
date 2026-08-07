@@ -40,7 +40,6 @@ export function WebhooksScreen(): ReactNode {
   const [creating, setCreating] = useState(false);
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [secret, setSecret] = useState<OneTimeCredential | null>(null);
-  const [pendingRotate, setPendingRotate] = useState<WebhookEndpointView | null>(null);
   const [pendingDelete, setPendingDelete] = useState<WebhookEndpointView | null>(null);
 
   const rows = endpoints.data ?? [];
@@ -60,16 +59,6 @@ export function WebhooksScreen(): ReactNode {
       setSecret(result.secret);
       setSelectedId(result.endpoint.id);
       setCreating(false);
-    },
-  });
-
-  const rotate = useSettingsMutation({
-    section,
-    mutationFn: webhooksGateway.rotateSecret,
-    invalidate: [WEBHOOKS_KEY],
-    onSuccess: (result) => {
-      setSecret(result);
-      setPendingRotate(null);
     },
   });
 
@@ -238,13 +227,6 @@ export function WebhooksScreen(): ReactNode {
                           <Button
                             variant="secondary"
                             size="sm"
-                            onClick={() => setPendingRotate(selected)}
-                          >
-                            {t('action.rotateSecret')}
-                          </Button>
-                          <Button
-                            variant="secondary"
-                            size="sm"
                             loading={setEnabled.isSaving}
                             onClick={() =>
                               void setEnabled.run({
@@ -264,7 +246,7 @@ export function WebhooksScreen(): ReactNode {
                           </Button>
                         </>
                       }
-                      footnote={t('developer.ui.webhooks.secretBody')}
+                      footnote={t('developer.ui.webhooks.secretRotationUnavailable')}
                     >
                       <DefinitionList
                         items={[
@@ -333,32 +315,6 @@ export function WebhooksScreen(): ReactNode {
           </AsyncBoundary>
         )}
       </SettingsStack>
-
-      <ConfirmDialog
-        open={pendingRotate !== null}
-        onOpenChange={(open) => {
-          if (!open) {
-            setPendingRotate(null);
-          }
-        }}
-        title={t('developer.ui.webhooks.secretRotateTitle')}
-        description={t('developer.ui.webhooks.secretBody')}
-        consequences={[
-          {
-            id: 'overlap',
-            text: t('developer.ui.webhooks.secretRotateConsequence.overlap'),
-          },
-          { id: 'after', text: t('developer.ui.webhooks.secretRotateConsequence.after') },
-        ]}
-        confirmLabel={t('action.rotateSecret')}
-        cancelLabel={t('action.cancel')}
-        closeLabel={t('a11y.label.closeDialog')}
-        onConfirm={() => {
-          if (pendingRotate !== null) {
-            void rotate.run(pendingRotate.id);
-          }
-        }}
-      />
 
       <ConfirmDialog
         open={pendingDelete !== null}

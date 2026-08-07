@@ -28,10 +28,10 @@ export const webSettingsMessages = {
   'settings.ui.section.membersSummary': 'Who is in this workspace and what each person can do.',
   'settings.ui.section.brands': 'Brands',
   'settings.ui.section.brandsSummary':
-    'Voice, audience, approved claims, blocked terms, locale rules, domains and the glossary.',
+    'Voice, audience, approved claims, blocked terms and domains.',
   'settings.ui.section.agents': 'Agents and API',
   'settings.ui.section.agentsSummary':
-    'Service accounts, scopes, limits, credentials, activity and the dry run playground.',
+    'Planned service accounts, scopes, credentials, activity and a dry run playground.',
   'settings.ui.section.apps': 'Developer apps',
   'settings.ui.section.appsSummary':
     'Third party OAuth applications, redirect allowlists, consent and grants.',
@@ -43,16 +43,16 @@ export const webSettingsMessages = {
     'Plan, trial, interval, metered provider usage, invoices and cancellation.',
   'settings.ui.section.referrals': 'Referral and affiliate',
   'settings.ui.section.referralsSummary':
-    'Your disclosed referral link, attributed signups and commission status.',
+    'Planned referral links, attributed signups and commission status.',
   'settings.ui.section.localization': 'Localization',
   'settings.ui.section.localizationSummary':
     'Interface language, content languages, markets, time zone and time format.',
   'settings.ui.section.security': 'Security',
   'settings.ui.section.securitySummary':
-    'Sessions, two factor authentication, credentials, agents, webhooks and app grants.',
+    'API credentials, outbound webhooks, connected apps and social account permissions.',
   'settings.ui.section.data': 'Data controls',
   'settings.ui.section.dataSummary':
-    'Export, revoke a connection, delete a brand, delete content or close the account.',
+    'Find the correct place to disconnect an account, archive a brand or delete content.',
 
   /* ------------------------------------------------------- shared UI states */
 
@@ -86,6 +86,13 @@ export const webSettingsMessages = {
     'Billing is past due. Your content, receipts and connections are intact. Settings can be read but not changed.',
 
   'settings.ui.state.referenceLabel': 'Support reference',
+  'settings.ui.state.notBuiltShort': 'Not built yet',
+  'settings.ui.state.notBuiltTitle': 'This is not built yet',
+
+  'settings.ui.agents.notBuiltBody':
+    'Service accounts are not available in this prelaunch. Personal API keys and OAuth apps remain available under Security and Developer apps.',
+  'settings.ui.referral.notBuiltBody':
+    'Referral tracking and payouts are not available in this prelaunch. No link or commission balance has been created for this workspace.',
 
   'settings.ui.attribution': 'Changed by {name} {relativeTime}',
   'settings.ui.attributionNever': 'Not changed since it was created',
@@ -180,6 +187,13 @@ export const webSettingsMessages = {
     'Domains this brand may link to and shorten through. Only verified domains can be selected in the composer.',
   'settings.ui.brands.domainVerified': 'Verified {date}',
   'settings.ui.brands.domainPending': 'DNS record not seen yet',
+  'settings.ui.brands.domainVerificationUnavailable': 'Verification is not built yet',
+  'settings.ui.brands.disclosureUnavailable':
+    'Per-channel disclosure defaults are not built yet. Add the required disclosure in the post until this ships.',
+  'settings.ui.brands.glossaryUnavailable':
+    'The workspace glossary is not built yet. Voice, audience, approved claims and blocked terms above are saved and enforced.',
+  'settings.ui.brands.localeRulesUnavailable':
+    'Per-locale writing rules are not built yet. Workspace languages and markets remain available under Localization.',
   'settings.ui.brands.disclosureHelp':
     'Applied by default in the composer for the platforms you choose here. It can be changed per post before approval.',
   'settings.ui.brands.glossaryHelp':
@@ -209,7 +223,12 @@ export const webSettingsMessages = {
   /* ---------------------------------------------------------------- security */
 
   'settings.ui.security.description':
-    'Everything that can act on this workspace, in one place: your sessions, credentials, agents, webhooks and the apps you have granted access to.',
+    'Review the credentials and permissions that can act in this workspace. Missing controls are labelled instead of shown as empty.',
+  'settings.ui.security.accountProtectionTitle': 'Account protection',
+  'settings.ui.security.accountProtectionUnavailable':
+    'Session management, two factor setup and passkeys are not built in this interface yet. Sign out on a shared device and change your password if access may be compromised.',
+  'settings.ui.security.killSwitchUnavailable':
+    'A workspace-wide emergency stop is not built yet. Pause each social connection under Connections to stop new publications.',
   'settings.ui.security.sessionsCaption': 'Signed in sessions for your account',
   'settings.ui.security.sessionColumn.device': 'Device and browser',
   'settings.ui.security.sessionColumn.location': 'Approximate location',
@@ -224,6 +243,28 @@ export const webSettingsMessages = {
   'settings.ui.security.credentialsTitle': 'API keys',
   'settings.ui.security.credentialsBody':
     'Keys owned by this workspace. They are separate from app grants and from your own session.',
+  'settings.ui.security.apiKeyCreate': 'Create API key',
+  'settings.ui.security.apiKeyCreateBody':
+    'Choose only the permissions this integration needs. The credential expires after 90 days and is shown once.',
+  'settings.ui.security.apiKeyName': 'Key name',
+  'settings.ui.security.apiKeyExpiry': 'This key expires 90 days after creation.',
+  'settings.ui.security.apiKeyScopeRequired': 'Choose at least one permission.',
+  'settings.ui.security.apiKeyPassword': 'Current password',
+  'settings.ui.security.apiKeyPasswordHelp':
+    'Re-enter your password to protect this consequential action.',
+  'settings.ui.security.apiKeyPasswordRequired': 'Enter your current password.',
+  'settings.ui.security.apiKeyCredentialLabel': 'API key',
+  'settings.ui.security.apiKeyCredentialWarning': 'This is the only time this API key is shown',
+  'settings.ui.security.apiKeyCredentialWarningBody':
+    'Copy it into your secret store now. Relay keeps only a hash and cannot show it again.',
+  'settings.ui.security.apiKeyCredentialConsumed':
+    'The API key is no longer displayed. Revoke it and create another if you did not store it.',
+  'settings.ui.security.apiKeyCredentialStored': 'I have stored this API key',
+  'settings.ui.security.apiKeyRevokeTitle': 'Revoke {name}',
+  'settings.ui.security.apiKeyRevokeBody':
+    'Re-enter your password to confirm that this credential should stop working.',
+  'settings.ui.security.apiKeyRevokeConsequence':
+    'Every API, MCP or CLI request using this key will be refused immediately.',
   'settings.ui.security.agentsTitle': 'Service accounts',
   'settings.ui.security.webhooksTitle': 'Webhook endpoints',
   'settings.ui.security.grantsTitle': 'Apps you have allowed',
@@ -248,10 +289,12 @@ export const webSettingsMessages = {
   /* ----------------------------------------------------------- data controls */
 
   'settings.ui.data.description':
-    'Take your data out, remove one thing, or close the account. Every destructive action names exactly what it touches first.',
+    'Find the supported control for each kind of data, with unavailable actions labelled clearly.',
   'settings.ui.data.exportTitle': 'Export',
   'settings.ui.data.exportBody':
     'A portable archive of content, schedules, receipts, analytics and audit events, plus your uploaded media.',
+  'settings.ui.data.exportUnavailable':
+    'Workspace exports are not built yet. Your content remains available in the library, and publication receipts remain available in each post.',
   'settings.ui.data.exportJson': 'Structured JSON',
   'settings.ui.data.exportCsv': 'Spreadsheet CSV',
   'settings.ui.data.exportMedia': 'Media archive',
@@ -274,14 +317,17 @@ export const webSettingsMessages = {
     'Removes Relay access to that account. The workspace, its content and its receipts stay.',
   'settings.ui.data.deleteBrand': 'Delete a brand',
   'settings.ui.data.deleteBrandHelp':
-    'Removes the brand, its rules and its glossary. Content published under it keeps its receipts.',
+    'Open Brands to archive that posting identity. Content published under it keeps its receipts.',
   'settings.ui.data.deleteContent': 'Delete content and media',
   'settings.ui.data.deleteContentHelp':
     'Removes drafts and stored files. It does not remove anything already published on a platform.',
   'settings.ui.data.deleteAccount': 'Close this workspace',
   'settings.ui.data.deleteAccountHelp':
-    'Cancels scheduled jobs, revokes every connection, removes stored media and closes the workspace.',
+    'Workspace closure requests are not built yet. Disconnect accounts and remove content individually.',
   'settings.ui.data.scheduledJobsTitle': 'Scheduled work that will be canceled first',
+  'settings.ui.data.bulkCancelUnavailableTitle': 'Bulk cancellation is not built yet',
+  'settings.ui.data.bulkCancelUnavailableBody':
+    'Open Calendar to review and cancel scheduled posts one at a time. This avoids hiding a failed bulk request behind an empty state.',
   'settings.ui.data.scheduledJobsCount':
     '{count, plural, =0 {Nothing is scheduled right now} one {# scheduled post} other {# scheduled posts}}',
   'settings.ui.data.cancelJobsFirst': 'Cancel scheduled posts now',
@@ -548,6 +594,8 @@ export const webSettingsMessages = {
   'developer.ui.webhooks.secretTitle': 'Signing secret',
   'developer.ui.webhooks.secretBody':
     'Verify the signature header before you parse a body. Deduplicate on the delivery id, which is stable across retries.',
+  'developer.ui.webhooks.secretRotationUnavailable':
+    'Signing-secret rotation is not built yet. Delete and recreate the endpoint if a secret may be compromised.',
   'developer.ui.webhooks.secretRotateTitle': 'Rotate the signing secret',
   'developer.ui.webhooks.secretRotateConsequence.overlap':
     'Both secrets are accepted for 24 hours so you can deploy without dropping a delivery.',
@@ -594,7 +642,12 @@ export const webSettingsMessages = {
   /* ----------------------------------------------------------------- billing */
 
   'billing.ui.description':
-    'One plan, two intervals. Polar is the merchant of record: it holds the payment method, issues invoices and handles cancellation.',
+    'Plan limits, usage and subscription controls. Checkout stays closed until the commercial launch gates pass.',
+  'billing.ui.prelaunchTitle': 'Checkout is closed during public prelaunch',
+  'billing.ui.prelaunchBody':
+    'No payment method is collected and this workspace cannot start a paid subscription yet.',
+  'billing.ui.prelaunchTerms':
+    'Planned paid access is $29 a month or $300 a year for 10 active channels and an owner plus 5 teammates.',
   'billing.ui.statusHeading': 'Current status',
   'billing.ui.planHeading': 'Plan',
   'billing.ui.intervalHeading': 'Billing interval',
@@ -635,6 +688,7 @@ export const webSettingsMessages = {
   'billing.ui.usageColumn.amount': 'Amount',
   'billing.ui.usageTotal': 'Total this period',
   'billing.ui.usagePeriod': 'Period {start} to {end}',
+  'billing.ui.usagePeriodUnavailable': 'Period started {start}. The end date is unavailable.',
   'billing.ui.usageSource': 'Prices published by the provider. Verified {date}.',
   'billing.ui.usageReconciled': 'Reconciled against the provider invoice on {date}.',
   'billing.ui.usagePending': 'Not reconciled yet. The final amount can move slightly.',
@@ -658,6 +712,9 @@ export const webSettingsMessages = {
   'billing.ui.invoiceState.refunded': 'Refunded',
   'billing.ui.invoicesEmpty': 'No invoice yet. The first one is issued when the trial converts.',
   'billing.ui.invoicesInPortal': 'Every invoice and receipt is available in the Polar portal.',
+  'billing.ui.invoicesUnavailableTitle': 'No billing portal is available',
+  'billing.ui.invoicesUnavailableBody':
+    'This workspace has no active paid subscription, so Polar has not created an invoice portal.',
   'billing.ui.portalHelp':
     'The portal is where you change the payment method, download invoices and cancel. It opens in a new tab.',
   'billing.ui.pastDueHeading': 'Payment overdue',

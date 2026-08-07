@@ -7,15 +7,6 @@ import {
   Button,
   RadioGroup,
   RadioGroupItem,
-  Table,
-  TableBody,
-  TableCaption,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableHeader,
-  TableRow,
-  TableRowHeader,
 } from '@relay/design-system/primitives';
 import { EmptyState, Notice, PageHeader } from '@relay/design-system/patterns';
 import { useAnnouncer } from '@relay/design-system/hooks';
@@ -43,11 +34,9 @@ export function BillingScreen(): ReactNode {
   const workspaceId = useWorkspaceId();
   const BILLING_KEY = settingsKey(workspaceId, 'billing');
   const USAGE_KEY = settingsKey(workspaceId, 'billing', 'usage');
-  const INVOICES_KEY = settingsKey(workspaceId, 'billing', 'invoices');
 
   const billing = useQuery({ queryKey: BILLING_KEY, queryFn: () => billingGateway.state() });
   const usage = useQuery({ queryKey: USAGE_KEY, queryFn: () => billingGateway.usage() });
-  const invoices = useQuery({ queryKey: INVOICES_KEY, queryFn: () => billingGateway.invoices() });
 
   const [cancelling, setCancelling] = useState(false);
 
@@ -99,17 +88,31 @@ export function BillingScreen(): ReactNode {
         >
           {state === undefined ? null : state.status === 'none' || state.status === 'incomplete' ? (
             <EmptyState
-              title={t('billing.ui.noSubscriptionTitle')}
-              description={t('billing.ui.noSubscriptionBody')}
-              example={t('billing.ui.noSubscriptionExample')}
+              title={
+                state.checkoutAvailable
+                  ? t('billing.ui.noSubscriptionTitle')
+                  : t('billing.ui.prelaunchTitle')
+              }
+              description={
+                state.checkoutAvailable
+                  ? t('billing.ui.noSubscriptionBody')
+                  : t('billing.ui.prelaunchBody')
+              }
+              example={
+                state.checkoutAvailable
+                  ? t('billing.ui.noSubscriptionExample')
+                  : t('billing.ui.prelaunchTerms')
+              }
               action={
-                <Button
-                  variant="primary"
-                  loading={startCheckout.isSaving}
-                  onClick={() => chooseInterval('monthly')}
-                >
-                  {t('action.upgrade')}
-                </Button>
+                state.checkoutAvailable ? (
+                  <Button
+                    variant="primary"
+                    loading={startCheckout.isSaving}
+                    onClick={() => chooseInterval('monthly')}
+                  >
+                    {t('action.upgrade')}
+                  </Button>
+                ) : undefined
               }
             />
           ) : (
@@ -215,34 +218,36 @@ export function BillingScreen(): ReactNode {
                 ) : null}
               </SettingsPanel>
 
-              <SettingsPanel
-                title={t('billing.ui.intervalHeading')}
-                description={t('billing.ui.intervalChangeHelp')}
-              >
-                <RadioGroup
-                  value={state.interval ?? 'monthly'}
-                  onValueChange={(value) =>
-                    chooseInterval(value === 'annual' ? 'annual' : 'monthly')
-                  }
-                  className="flex flex-col"
+              {state.checkoutAvailable ? (
+                <SettingsPanel
+                  title={t('billing.ui.intervalHeading')}
+                  description={t('billing.ui.intervalChangeHelp')}
                 >
-                  <label className="text-body-md text-text-primary flex min-h-11 items-start gap-2 py-1">
-                    <RadioGroupItem className="mt-1" value="monthly" />
-                    <span className="flex flex-col">
-                      <span>{t('billing.ui.monthlyOption')}</span>
-                    </span>
-                  </label>
-                  <label className="text-body-md text-text-primary flex min-h-11 items-start gap-2 py-1">
-                    <RadioGroupItem className="mt-1" value="annual" />
-                    <span className="flex flex-col">
-                      <span>{t('billing.ui.annualOption')}</span>
-                      <span className="text-body-sm text-text-secondary">
-                        {t('billing.ui.annualFraming')}
+                  <RadioGroup
+                    value={state.interval ?? 'monthly'}
+                    onValueChange={(value) =>
+                      chooseInterval(value === 'annual' ? 'annual' : 'monthly')
+                    }
+                    className="flex flex-col"
+                  >
+                    <label className="text-body-md text-text-primary flex min-h-11 items-start gap-2 py-1">
+                      <RadioGroupItem className="mt-1" value="monthly" />
+                      <span className="flex flex-col">
+                        <span>{t('billing.ui.monthlyOption')}</span>
                       </span>
-                    </span>
-                  </label>
-                </RadioGroup>
-              </SettingsPanel>
+                    </label>
+                    <label className="text-body-md text-text-primary flex min-h-11 items-start gap-2 py-1">
+                      <RadioGroupItem className="mt-1" value="annual" />
+                      <span className="flex flex-col">
+                        <span>{t('billing.ui.annualOption')}</span>
+                        <span className="text-body-sm text-text-secondary">
+                          {t('billing.ui.annualFraming')}
+                        </span>
+                      </span>
+                    </label>
+                  </RadioGroup>
+                </SettingsPanel>
+              ) : null}
 
               <SettingsPanel
                 title={t('billing.ui.usageHeading')}
@@ -266,64 +271,21 @@ export function BillingScreen(): ReactNode {
                 title={t('billing.ui.invoicesHeading')}
                 footnote={t('billing.ui.invoicesInPortal')}
               >
-                <AsyncBoundary
-                  section={t('billing.ui.invoicesHeading')}
-                  isPending={invoices.isPending}
-                  error={invoices.error}
-                  onRetry={() => void invoices.refetch()}
-                >
-                  {(invoices.data ?? []).length === 0 ? (
-                    <p className="text-body-md text-text-secondary">
-                      {t('billing.ui.invoicesEmpty')}
-                    </p>
-                  ) : (
-                    <TableContainer>
-                      <Table>
-                        <TableCaption className="sr-only">
-                          {t('billing.ui.invoicesCaption')}
-                        </TableCaption>
-                        <TableHeader>
-                          <TableRow>
-                            <TableHead scope="col">{t('billing.ui.invoiceColumn.date')}</TableHead>
-                            <TableHead scope="col">
-                              {t('billing.ui.invoiceColumn.description')}
-                            </TableHead>
-                            <TableHead scope="col" numeric>
-                              {t('billing.ui.invoiceColumn.amount')}
-                            </TableHead>
-                            <TableHead scope="col">{t('billing.ui.invoiceColumn.state')}</TableHead>
-                          </TableRow>
-                        </TableHeader>
-                        <TableBody>
-                          {(invoices.data ?? []).map((invoice) => (
-                            <TableRow key={invoice.id}>
-                              <TableRowHeader className="whitespace-nowrap">
-                                {formatters.date(invoice.issuedAt)}
-                              </TableRowHeader>
-                              <TableCell>
-                                {invoice.url === null ? (
-                                  invoice.description
-                                ) : (
-                                  <a
-                                    className="text-text-accent underline underline-offset-2"
-                                    href={invoice.url}
-                                    target="_blank"
-                                    rel="noreferrer noopener"
-                                  >
-                                    {invoice.description}
-                                    <span className="sr-only">{t('a11y.label.externalLink')}</span>
-                                  </a>
-                                )}
-                              </TableCell>
-                              <TableCell numeric>{formatters.money(invoice.amount)}</TableCell>
-                              <TableCell>{t(`billing.ui.invoiceState.${invoice.state}`)}</TableCell>
-                            </TableRow>
-                          ))}
-                        </TableBody>
-                      </Table>
-                    </TableContainer>
-                  )}
-                </AsyncBoundary>
+                {state.portalUrl === null ? (
+                  <Notice
+                    tone="info"
+                    title={t('billing.ui.invoicesUnavailableTitle')}
+                    description={t('billing.ui.invoicesUnavailableBody')}
+                  />
+                ) : (
+                  <Button
+                    variant="secondary"
+                    loading={openPortal.isSaving}
+                    onClick={() => void openPortal.run(undefined)}
+                  >
+                    {t('billing.subscription.portal')}
+                  </Button>
+                )}
               </SettingsPanel>
 
               <SettingsPanel

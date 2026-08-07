@@ -26,6 +26,13 @@ export const BETA_ENGLISH_FALLBACK_PREFIXES = [
   'web.resources.legal.',
   'billing.ui.',
   'settings.ui.data.',
+  // Launch-truth and credential copy stays in reviewed English until each
+  // beta locale receives a human security review.
+  'settings.ui.state.notBuilt',
+  'settings.ui.agents.notBuilt',
+  'settings.ui.referral.notBuilt',
+  'settings.ui.security.accountProtection',
+  'settings.ui.security.apiKey',
   'growth.ui.ugc.',
   'mediaLib.retention.',
   'mediaLib.processing.',
@@ -51,6 +58,12 @@ export const BETA_ENGLISH_FALLBACK_KEYS = [
   'settings.ui.section.billing',
   'settings.ui.section.billingSummary',
   'settings.ui.brands.disclosureHelp',
+  'settings.ui.brands.domainVerificationUnavailable',
+  'settings.ui.brands.disclosureUnavailable',
+  'settings.ui.brands.glossaryUnavailable',
+  'settings.ui.brands.localeRulesUnavailable',
+  'settings.ui.security.killSwitchUnavailable',
+  'developer.ui.webhooks.secretRotationUnavailable',
   'actionCenter.filter.billing',
   // WP-8 composer redesign (loud system pass): new strings, English only
   // until translated.

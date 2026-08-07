@@ -47,6 +47,8 @@ beforeEach(async () => {
                 defaultShortLinkOn: false,
                 archived: false,
                 connectionIds: [],
+                createdAt: '2026-01-01T00:00:00.000Z',
+                updatedAt: '2026-01-01T00:00:00.000Z',
               },
             ],
             pageInfo: { nextCursor: null, hasMore: false, limit: 25 },

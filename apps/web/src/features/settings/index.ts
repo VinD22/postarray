@@ -2,6 +2,7 @@
 
 export { SettingsIndex } from './components/settings-index';
 export { SettingsNav } from './components/settings-nav';
+export { UnavailableSettingsScreen } from './components/unavailable-settings-screen';
 export { SETTINGS_SECTIONS, type SettingsSectionDescriptor } from './components/settings-sections';
 export { InlineFact, SettingRow, SettingsPanel, SettingsStack } from './components/section';
 export { MembersScreen } from './members/members-screen';

@@ -2,29 +2,15 @@
 
 import { useEffect, useState, type FormEvent, type ReactNode } from 'react';
 import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
   Button,
-  Checkbox,
   Field,
   Input,
-  Table,
-  TableBody,
-  TableCaption,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableHeader,
-  TableRow,
-  TableRowHeader,
   Textarea,
 } from '@relay/design-system/primitives';
 import { CapabilityBadge, Notice } from '@relay/design-system/patterns';
 import { useTranslations } from '@relay/i18n/react';
 
-import { SettingRow, SettingsPanel } from '../components/section';
+import { SettingsPanel } from '../components/section';
 import { useFormatters } from '../lib/formatters';
 import { fromLines, toLines } from '../lib/lines';
 import type { BrandView } from '../lib/view-models';
@@ -218,14 +204,8 @@ export function BrandEditor({ brand, saving, disabled, onSave }: BrandEditorProp
             <li key={domain.domain} className="text-body-sm flex items-center gap-2">
               <span className="text-text-primary font-mono">{domain.domain}</span>
               <CapabilityBadge
-                state={domain.verifiedAt === null ? 'requires_review' : 'supported'}
-                label={
-                  domain.verifiedAt === null
-                    ? t('settings.ui.brands.domainPending')
-                    : t('settings.ui.brands.domainVerified', {
-                        date: formatters.date(domain.verifiedAt),
-                      })
-                }
+                state="not_implemented"
+                label={t('settings.ui.brands.domainVerificationUnavailable')}
               />
             </li>
           ))}
@@ -236,123 +216,33 @@ export function BrandEditor({ brand, saving, disabled, onSave }: BrandEditorProp
         title={t('settings.brands.disclosureDefaults')}
         description={t('settings.ui.brands.disclosureHelp')}
       >
-        {brand.disclosureDefaults.length === 0 ? (
-          <p className="text-body-md text-text-secondary">{t('common.notSet')}</p>
-        ) : (
-          <div className="flex flex-col">
-            {brand.disclosureDefaults.map((entry) => (
-              <SettingRow
-                key={entry.provider}
-                label={entry.provider}
-                control={<span className="text-body-md text-text-primary">{entry.text}</span>}
-              />
-            ))}
-          </div>
-        )}
+        <Notice
+          tone="info"
+          title={t('settings.ui.state.notBuiltTitle')}
+          description={t('settings.ui.brands.disclosureUnavailable')}
+        />
       </SettingsPanel>
 
       <SettingsPanel
         title={t('settings.brands.glossary.title')}
         description={t('settings.ui.brands.glossaryHelp')}
       >
-        {brand.glossary.length === 0 ? (
-          <p className="text-body-md text-text-secondary">
-            {t('settings.ui.brands.glossaryEmpty')}
-          </p>
-        ) : (
-          <TableContainer>
-            <Table>
-              <TableCaption className="sr-only">
-                {t('settings.ui.brands.glossaryCaption')}
-              </TableCaption>
-              <TableHeader>
-                <TableRow>
-                  <TableHead scope="col">{t('settings.brands.glossary.term')}</TableHead>
-                  <TableHead scope="col">{t('common.language')}</TableHead>
-                  <TableHead scope="col">{t('settings.brands.glossary.preferred')}</TableHead>
-                  <TableHead scope="col">{t('settings.brands.glossary.prohibited')}</TableHead>
-                  <TableHead scope="col">
-                    {t('settings.brands.glossary.keepUntranslated')}
-                  </TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {brand.glossary.map((entry) => (
-                  <TableRow key={entry.id}>
-                    <TableRowHeader>{entry.term}</TableRowHeader>
-                    <TableCell>{entry.locale}</TableCell>
-                    <TableCell>{entry.preferred ?? t('common.notSet')}</TableCell>
-                    <TableCell>
-                      {entry.prohibited.length === 0
-                        ? t('common.none')
-                        : formatters.list([...entry.prohibited])}
-                    </TableCell>
-                    <TableCell>
-                      <Checkbox checked={entry.keepUntranslated} disabled aria-readonly />
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
-        )}
+        <Notice
+          tone="info"
+          title={t('settings.ui.state.notBuiltTitle')}
+          description={t('settings.ui.brands.glossaryUnavailable')}
+        />
       </SettingsPanel>
 
       <SettingsPanel
         title={t('settings.brands.localeRules.title')}
         description={t('settings.ui.brands.localeRulesHelp')}
       >
-        {brand.localeRules.length === 0 ? (
-          <p className="text-body-md text-text-secondary">{t('common.notSet')}</p>
-        ) : (
-          <Accordion type="multiple" className="flex flex-col">
-            {brand.localeRules.map((rule) => (
-              <AccordionItem key={rule.locale} value={rule.locale}>
-                <AccordionTrigger>{rule.locale}</AccordionTrigger>
-                <AccordionContent>
-                  <div className="flex flex-col">
-                    <SettingRow
-                      label={t('settings.brands.localeRules.formality')}
-                      control={rule.formality}
-                    />
-                    <SettingRow
-                      label={t('settings.brands.localeRules.pronouns')}
-                      control={rule.pronouns}
-                    />
-                    <SettingRow
-                      label={t('settings.brands.localeRules.idioms')}
-                      control={
-                        rule.avoidIdioms.length === 0
-                          ? t('common.none')
-                          : formatters.list([...rule.avoidIdioms])
-                      }
-                    />
-                    <SettingRow
-                      label={t('settings.brands.localeRules.emoji')}
-                      control={rule.emojiNorms}
-                    />
-                    <SettingRow
-                      label={t('settings.brands.localeRules.legal')}
-                      control={rule.legalDisclosure}
-                    />
-                    <SettingRow
-                      label={t('settings.brands.localeRules.cta')}
-                      control={rule.callToAction}
-                    />
-                    <SettingRow
-                      label={t('settings.brands.localeRules.reviewedExamples')}
-                      control={
-                        rule.reviewedExamples.length === 0
-                          ? t('common.none')
-                          : rule.reviewedExamples.join(' / ')
-                      }
-                    />
-                  </div>
-                </AccordionContent>
-              </AccordionItem>
-            ))}
-          </Accordion>
-        )}
+        <Notice
+          tone="info"
+          title={t('settings.ui.state.notBuiltTitle')}
+          description={t('settings.ui.brands.localeRulesUnavailable')}
+        />
       </SettingsPanel>
 
       <div className="flex items-center gap-2">

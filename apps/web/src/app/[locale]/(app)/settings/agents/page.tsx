@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 
-import { AgentsScreen } from '@/features/developer/agents/agents-screen';
+import { UnavailableSettingsScreen } from '@/features/settings';
 
 /**
  * Server component. It renders the screen and nothing else: every string on
@@ -8,5 +8,11 @@ import { AgentsScreen } from '@/features/developer/agents/agents-screen';
  * no English literal here and no metadata to keep in sync with it.
  */
 export default function Page(): ReactNode {
-  return <AgentsScreen />;
+  return (
+    <UnavailableSettingsScreen
+      titleKey="settings.ui.section.agents"
+      summaryKey="settings.ui.section.agentsSummary"
+      detailKey="settings.ui.agents.notBuiltBody"
+    />
+  );
 }

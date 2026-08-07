@@ -258,6 +258,7 @@ export interface BillingStateView {
   readonly channelAllowance: number;
   readonly portalUrl: string | null;
   readonly readOnly: boolean;
+  readonly checkoutAvailable: boolean;
 }
 
 export interface UsageLineView {
@@ -270,7 +271,7 @@ export interface UsageLineView {
 
 export interface UsageView {
   readonly periodStart: string;
-  readonly periodEnd: string;
+  readonly periodEnd: string | null;
   readonly lines: readonly UsageLineView[];
   readonly total: MoneyView | null;
   readonly balance: MoneyView | null;

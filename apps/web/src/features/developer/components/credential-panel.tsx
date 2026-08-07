@@ -10,7 +10,7 @@ import type { OneTimeCredential } from '../../settings/lib/view-models';
 export interface CredentialPanelProps {
   credential: OneTimeCredential;
   /** Distinguishes an agent credential from an OAuth client secret. */
-  kind: 'service-account' | 'client-secret' | 'signing-secret';
+  kind: 'service-account' | 'api-key' | 'client-secret' | 'signing-secret';
   onAcknowledge: () => void;
 }
 
@@ -21,6 +21,13 @@ const COPY_KEYS = {
     warningBody: 'developer.ui.agents.credentialWarningBody',
     consumed: 'developer.ui.agents.credentialConsumed',
     acknowledge: 'developer.ui.agents.credentialStored',
+  },
+  'api-key': {
+    label: 'settings.ui.security.apiKeyCredentialLabel',
+    warningTitle: 'settings.ui.security.apiKeyCredentialWarning',
+    warningBody: 'settings.ui.security.apiKeyCredentialWarningBody',
+    consumed: 'settings.ui.security.apiKeyCredentialConsumed',
+    acknowledge: 'settings.ui.security.apiKeyCredentialStored',
   },
   'client-secret': {
     label: 'developer.apps.clientSecret',

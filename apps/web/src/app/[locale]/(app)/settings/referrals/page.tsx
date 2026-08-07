@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 
-import { ReferralsScreen } from '@/features/settings/referrals/referrals-screen';
+import { UnavailableSettingsScreen } from '@/features/settings';
 
 /**
  * Server component. It renders the screen and nothing else: every string on
@@ -8,5 +8,11 @@ import { ReferralsScreen } from '@/features/settings/referrals/referrals-screen'
  * no English literal here and no metadata to keep in sync with it.
  */
 export default function Page(): ReactNode {
-  return <ReferralsScreen />;
+  return (
+    <UnavailableSettingsScreen
+      titleKey="settings.ui.section.referrals"
+      summaryKey="settings.ui.section.referralsSummary"
+      detailKey="settings.ui.referral.notBuiltBody"
+    />
+  );
 }

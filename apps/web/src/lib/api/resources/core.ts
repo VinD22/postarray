@@ -65,13 +65,33 @@ export const brandsApi = {
       id: 'brand_demo_new',
       workspaceId: demoSession.workspace.id,
       name: input.name,
+      slug: input.name.toLowerCase().replace(/[^a-z0-9]+/g, '-'),
+      voice: null,
+      audience: null,
+      approvedClaims: [],
+      blockedTerms: [],
+      domains: [],
+      defaultTimeZone: demoSession.workspace.timeZone,
+      defaultShortLinkOn: false,
+      archived: false,
       connectionIds: [],
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
     })),
-  update: (brandId: string, input: { name?: string }): Promise<BrandView> =>
+  update: (
+    brandId: string,
+    input: Partial<
+      Pick<
+        BrandView,
+        'name' | 'voice' | 'audience' | 'approvedClaims' | 'blockedTerms' | 'domains'
+      >
+    >,
+  ): Promise<BrandView> =>
     call(`/brands/${brandId}`, { method: 'PATCH', body: input }, () => ({
       ...(demoSession.brands.find((brand) => brand.id === brandId) ??
         requireFirst(demoSession.brands, 'brand')),
       ...input,
+      updatedAt: new Date().toISOString(),
     })),
 };
 
@@ -252,6 +272,8 @@ export const auditApi = {
 
 export const healthApi = {
   get: (): Promise<HealthView> => call('/health', {}, () => demoHealth),
+  capabilities: (): Promise<{ readonly billing: string }> =>
+    call('/capabilities', {}, () => ({ billing: 'disabled:demo-mode' })),
 };
 
 function toMemberView(member: MembershipView): MemberView {
