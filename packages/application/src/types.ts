@@ -1686,6 +1686,15 @@ export interface IdentityService {
     readonly countryCode: string | null;
   }): Promise<void>;
   setUsernameAlias(ctx: IdentityContext, alias: string): Promise<{ alias: string }>;
+  /**
+   * Bind a Neon Auth subject to a durable Relay user on sign-in.
+   * Returns the Relay user id, or null when no row can be linked safely.
+   */
+  linkProviderIdentity(input: {
+    readonly identitySubjectId: string;
+    readonly email: string;
+    readonly emailVerified: boolean;
+  }): Promise<string | null>;
 }
 
 export interface CustomerBillingService {

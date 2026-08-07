@@ -23,7 +23,8 @@
     "db:seed": "pnpm --filter @relay/database seed",
     "db:reset": "pnpm --filter @relay/database reset",
     "release:check": "node scripts/release-check.js",
-    "verify": "turbo run typecheck lint test"
+    "verify": "turbo run typecheck lint test",
+    "generate:marketing-states": "pnpm --filter @relay/connectors generate:marketing-states"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",

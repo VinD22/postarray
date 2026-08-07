@@ -227,6 +227,7 @@ export function createRefusingServices(): Services {
       getSessionView: () => Promise.resolve(null),
       recordSignupConsent: () => Promise.resolve(),
       setUsernameAlias: refuse('alias'),
+      linkProviderIdentity: () => Promise.resolve(null),
     },
     audit: { list: page },
     dataExports: {

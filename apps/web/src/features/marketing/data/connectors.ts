@@ -3,6 +3,8 @@ import type { MessageKey } from '@relay/i18n/translate';
 
 import type { ProviderId } from '@/lib/api/types';
 
+import { REGISTRY_MARKETING_CAPABILITY_STATES } from './registry-capability-states';
+
 /**
  * The public connector capability data.
  *
@@ -25,8 +27,8 @@ import type { ProviderId } from '@/lib/api/types';
  * Every `unsupported` and `requires_review` cell carries the official source
  * it came from and the date that source was read.
  *
- * TODO(web): generate this file from `@relay/connectors` definitions once that
- * package exports a public snapshot. `apps/web` may not import it directly.
+ * Platform `not_implemented` cells sync from `@relay/connectors` through
+ * `registry-capability-states.ts` (`pnpm generate:marketing-states`).
  */
 
 export const CAPABILITY_COLUMNS = [
@@ -108,7 +110,44 @@ function gated(noteKey: MessageKey, citation: Citation): CapabilityCell {
   return { state: 'not_implemented', noteKey, citation };
 }
 
-export const CONNECTORS: readonly ConnectorRecord[] = [
+function registryState(provider: ProviderId, column: CapabilityColumn): CapabilityState | undefined {
+  if (!(provider in REGISTRY_MARKETING_CAPABILITY_STATES)) {
+    return undefined;
+  }
+  const providerStates =
+    REGISTRY_MARKETING_CAPABILITY_STATES[
+      provider as keyof typeof REGISTRY_MARKETING_CAPABILITY_STATES
+    ];
+  return providerStates[column as keyof typeof providerStates];
+}
+
+function effectiveCell(
+  provider: ProviderId,
+  column: CapabilityColumn,
+  hand: CapabilityCell,
+): CapabilityCell {
+  if (hand.state !== 'not_implemented') {
+    return hand;
+  }
+  const fromRegistry = registryState(provider, column);
+  if (
+    fromRegistry === undefined ||
+    fromRegistry === hand.state ||
+    fromRegistry === 'supported'
+  ) {
+    return hand;
+  }
+  if (
+    (fromRegistry === 'unsupported' || fromRegistry === 'requires_review') &&
+    hand.noteKey === undefined &&
+    hand.citation === undefined
+  ) {
+    return hand;
+  }
+  return { ...hand, state: fromRegistry };
+}
+
+export const CONNECTOR_SOURCE: readonly ConnectorRecord[] = [
   {
     id: 'x',
     nameKey: 'web.marketing.provider.x.label',
@@ -665,6 +704,16 @@ export const CONNECTORS: readonly ConnectorRecord[] = [
     },
   },
 ];
+
+export const CONNECTORS: readonly ConnectorRecord[] = CONNECTOR_SOURCE.map((connector) => ({
+  ...connector,
+  capabilities: Object.fromEntries(
+    CAPABILITY_COLUMNS.map((column) => [
+      column,
+      effectiveCell(connector.id, column, connector.capabilities[column]),
+    ]),
+  ) as ConnectorRecord['capabilities'],
+}));
 
 /** Counts used by the matrix summary line. Computed, never hand written. */
 export function capabilityStateCounts(): Readonly<Record<CapabilityState, number>> {

@@ -241,6 +241,45 @@ export function createIdentityService(deps: ServiceDeps): IdentityService {
       };
     },
 
+    async linkProviderIdentity(input): Promise<string | null> {
+      const email = input.email.trim().toLowerCase();
+      const bySubject = await deps.prisma.user.findFirst({
+        where: { authSubjectId: input.identitySubjectId, status: 'active' },
+        select: { id: true, email: true, authSubjectId: true },
+      });
+      if (bySubject !== null) {
+        return bySubject.email === email ? bySubject.id : null;
+      }
+
+      const byEmail = await deps.prisma.user.findFirst({
+        where: { email, status: 'active' },
+        select: { id: true, authSubjectId: true, emailVerifiedAt: true },
+      });
+      if (byEmail === null) {
+        return null;
+      }
+      if (
+        byEmail.authSubjectId !== null &&
+        byEmail.authSubjectId !== input.identitySubjectId
+      ) {
+        return null;
+      }
+
+      const verifiedAt =
+        input.emailVerified && byEmail.emailVerifiedAt === null ? deps.clock.now() : undefined;
+      const updated = await deps.prisma.user.update({
+        where: { id: byEmail.id },
+        data: {
+          ...(byEmail.authSubjectId === null
+            ? { authSubjectId: input.identitySubjectId }
+            : {}),
+          ...(verifiedAt === undefined ? {} : { emailVerifiedAt: verifiedAt }),
+        },
+        select: { id: true },
+      });
+      return updated.id;
+    },
+
     async recordSignupConsent(input): Promise<void> {
       await deps.prisma.$transaction(async (tx) => {
         const existing = await tx.user.findUnique({

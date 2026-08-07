@@ -101,7 +101,13 @@ export class AuthService {
     fingerprint: string,
     userAgent?: string,
   ): Promise<EstablishedSession> {
-    const profile = await this.services.identity.getSecurityProfile(session.userId);
+    const relayUserId =
+      (await this.services.identity.linkProviderIdentity({
+        identitySubjectId: session.userId,
+        email: session.email,
+        emailVerified: session.emailVerified,
+      })) ?? session.userId;
+    const profile = await this.services.identity.getSecurityProfile(relayUserId);
     if (profile === null) {
       throw new AuthRequiredError({ details: { reason: 'profile_unavailable' } });
     }

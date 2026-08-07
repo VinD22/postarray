@@ -703,6 +703,11 @@ export interface IdentityService {
   }): Promise<void>;
   /** Claim or change the alias. One active alias per identity; never reissued. */
   setUsernameAlias(ctx: IdentityContext, alias: string): Promise<{ alias: string }>;
+  linkProviderIdentity(input: {
+    identitySubjectId: string;
+    email: string;
+    emailVerified: boolean;
+  }): Promise<string | null>;
 }
 
 export interface AuditService {
