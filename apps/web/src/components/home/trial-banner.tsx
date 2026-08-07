@@ -5,7 +5,6 @@ import { Link } from '@/components/link';
 import { Button } from '@relay/design-system/primitives';
 import { cn, panelPoster } from '@relay/design-system/utils';
 
-import { CountUp } from '@/components/motion';
 import { useBillingState } from '@/lib/api/hooks';
 import { useFormatters, useTranslations } from '@/lib/i18n';
 
@@ -17,9 +16,10 @@ const DAY_MS = 86_400_000;
  * It states the remaining days, the exact conversion date and the exact amount,
  * and it disappears the moment the subscription is active. No countdown
  * animation on the words themselves, no urgency styling on the sentence: it
- * is a fact, not a nudge. The one loud element is decorative — a large
- * `aria-hidden` numeral that counts up to the same day count on first mount —
- * so a screen reader still hears the fact exactly once, from the sentence.
+ * is a fact, not a nudge. The one loud element is decorative, a large
+ * `aria-hidden` numeral that mirrors the same day count, so a screen reader
+ * still hears the fact exactly once, from the sentence. The numeral is static:
+ * data should be readable immediately, not animated on arrival.
  */
 export function TrialBanner() {
   const t = useTranslations();
@@ -51,11 +51,9 @@ export function TrialBanner() {
       <span aria-hidden="true" className="bg-blush absolute inset-y-0 start-0 w-1.5" />
 
       <div aria-hidden="true" className="flex shrink-0 flex-col items-start">
-        <CountUp
-          value={days}
-          format={format.number}
-          className="font-display text-display-md text-text-primary leading-none"
-        />
+        <span data-numeric className="font-display text-display-md text-text-primary leading-none">
+          {format.number(days)}
+        </span>
         <span className="text-label text-text-tertiary tracking-wide uppercase">
           {t('billing.trial.daysRemaining', { count: days })}
         </span>

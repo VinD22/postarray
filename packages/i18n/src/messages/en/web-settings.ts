@@ -305,17 +305,17 @@ export const webSettingsMessages = {
     'Find the supported control for each kind of data, with unavailable actions labelled clearly.',
   'settings.ui.data.exportTitle': 'Export',
   'settings.ui.data.exportBody':
-    'A portable archive of content, schedules, receipts, analytics and audit events, plus your uploaded media.',
+    'A portable structured JSON archive of content, schedules, receipts, analytics and audit events, plus metadata for uploaded media. Uploaded files follow the 30-day storage policy and are not included as a media archive in V1.',
   'settings.ui.data.exportUnavailable':
-    'Workspace exports are not built yet. Your content remains available in the library, and publication receipts remain available in each post.',
+    'CSV and media archives are not available yet. Your content remains available in the library, and publication receipts remain available in each post.',
   'settings.ui.data.exportJson': 'Structured JSON',
   'settings.ui.data.exportCsv': 'Spreadsheet CSV',
   'settings.ui.data.exportMedia': 'Media archive',
   'settings.ui.data.exportJsonHelp':
-    'One file per record type. Documented and stable across versions.',
-  'settings.ui.data.exportCsvHelp': 'Posts, receipts and metrics as flat tables for a spreadsheet.',
+    'One structured JSON file with documented workspace records. The format is stable across versions.',
+  'settings.ui.data.exportCsvHelp': 'CSV archives are not available in V1.',
   'settings.ui.data.exportMediaHelp':
-    'The original files you uploaded or imported, with checksums.',
+    'Media archives are not available in V1. Uploaded files follow the 30-day storage policy.',
   'settings.ui.data.exportStart': 'Prepare export',
   'settings.ui.data.exportJsonOnly':
     'V1 exports are structured JSON. CSV and media archives are not available yet.',

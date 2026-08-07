@@ -410,7 +410,7 @@ export const webMarketingMessages = {
   'web.pricing.beside.cancel':
     'Paid access is not active during prelaunch. When it opens, you will be able to cancel from Settings without contacting support.',
   'web.pricing.beside.data':
-    'Post text, receipts and audit history remain under the data policy. Uploaded files are permanently deleted 30 days after upload. Workspace export is not built yet.',
+    'Post text, receipts and audit history remain under the data policy. Uploaded files are permanently deleted 30 days after upload. Workspace export is available as structured JSON; CSV and media archives are not available yet.',
 
   'web.pricing.included.title': 'Included, in both intervals',
   'web.pricing.compare.title': 'Why there is no comparison table here',
