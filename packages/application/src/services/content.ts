@@ -1,4 +1,9 @@
-import { OVERRIDABLE_VARIANT_FIELDS, type ContentKind, type Paginated } from '@relay/contracts';
+import {
+  MEDIA_RETENTION_DAYS,
+  OVERRIDABLE_VARIANT_FIELDS,
+  type ContentKind,
+  type Paginated,
+} from '@relay/contracts';
 
 import type {
   ActorContext,
@@ -55,6 +60,40 @@ import { previewFor } from './preview';
  */
 
 const CONTENT_TARGET_LIMIT = 50;
+const MEDIA_RETENTION_MS = MEDIA_RETENTION_DAYS * 24 * 60 * 60 * 1_000;
+
+/**
+ * The upload ticket has a bounded cleanup fallback, but an attached asset is
+ * retained for one month from the post's creation time. Keeping this update
+ * monotonic means reusing an asset in a newer post cannot shorten the window
+ * established by an older post.
+ */
+export function mediaRetentionExpiryFromPostCreatedAt(createdAt: Date): Date {
+  return new Date(createdAt.getTime() + MEDIA_RETENTION_MS);
+}
+
+async function anchorMediaRetentionToPost(
+  db: Db,
+  workspaceId: string,
+  mediaIds: readonly string[],
+  postCreatedAt: Date,
+): Promise<void> {
+  const uniqueMediaIds = [...new Set(mediaIds)];
+  if (uniqueMediaIds.length === 0) {
+    return;
+  }
+
+  await db.mediaAsset.updateMany({
+    where: {
+      workspaceId,
+      id: { in: uniqueMediaIds },
+      deletedAt: null,
+      storageDeletedAt: null,
+      retentionExpiresAt: { lt: mediaRetentionExpiryFromPostCreatedAt(postCreatedAt) },
+    },
+    data: { retentionExpiresAt: mediaRetentionExpiryFromPostCreatedAt(postCreatedAt) },
+  });
+}
 
 interface TargetResolution {
   readonly connectionId: string;
@@ -184,6 +223,12 @@ export function createContentService(deps: ServiceDeps): ContentService {
       variants,
       previousRevision: aggregate.revision,
     });
+    await anchorMediaRetentionToPost(
+      db,
+      aggregate.workspaceId,
+      master.mediaIds,
+      aggregate.createdAt,
+    );
     return toContentItemView(await loadAggregate(db, aggregate.itemId));
   }
 
@@ -224,7 +269,7 @@ export function createContentService(deps: ServiceDeps): ContentService {
                   : {}),
                 correlationId: ctx.correlationId,
               },
-              select: { id: true },
+              select: { id: true, createdAt: true },
             });
 
             const master = buildMaster({
@@ -243,6 +288,13 @@ export function createContentService(deps: ServiceDeps): ContentService {
               variants: variantSpecsFrom(targets, input.targets ?? [], new Map()),
               previousRevision: 0,
             });
+
+            await anchorMediaRetentionToPost(
+              db,
+              actor.workspace.id,
+              master.mediaIds,
+              item.createdAt,
+            );
 
             await recordAudit(db, actor, {
               action: 'content.drafted',

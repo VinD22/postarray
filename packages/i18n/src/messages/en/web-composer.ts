@@ -360,9 +360,9 @@ export const webComposerMessages = {
   'mediaLib.upload.checkedAgainst': 'Checked against the accounts selected in this draft.',
   'mediaLib.upload.noTargets':
     'No accounts are selected, so the file is checked against the workspace defaults only.',
-  'mediaLib.retention.title': 'Uploaded files are kept for 30 days after upload',
+  'mediaLib.retention.title': 'Stored files are kept for 30 days after the post is created',
   'mediaLib.retention.body':
-    'We permanently delete each uploaded file from Relay storage 30 days after upload, even if it is no longer attached to a draft. Post text, publication receipts and audit history remain available longer. A published post on a social platform is not removed when its stored file expires.',
+    'Once a file is attached to a post, we permanently delete it from Relay storage 30 days after that post is created. Files waiting to be attached use the upload date as a cleanup fallback. Post text, publication receipts and audit history remain available longer. A published post on a social platform is not removed when its stored file expires.',
   'mediaLib.retention.limits':
     'Images, audio and PDF files can be up to {imageSize}. Videos can be up to {videoSize}.',
   'mediaLib.retention.expiresLabel': 'File deletion date',
