@@ -59,6 +59,25 @@ export interface RunningWorker {
   shutdown(): Promise<void>;
 }
 
+/**
+ * A worker run that exits unexpectedly must make the process unhealthy.
+ *
+ * Temporal can establish a connection successfully and still stop polling
+ * later because the worker bundle, task queue, or server rejects the run. A
+ * connection-only health check would keep reporting `pass` in that state and
+ * make an operator believe scheduled work is being consumed. Keep the detail
+ * deliberately generic: provider and transport errors do not belong in a
+ * health document.
+ */
+export function workerRunFailureCheck(): HealthCheck {
+  return {
+    name: 'temporal.worker_run',
+    status: 'fail',
+    detail: 'Temporal worker stopped unexpectedly',
+    observedAt: nowIso(),
+  };
+}
+
 function defaultWorkflowsPath(): string {
   return fileURLToPath(new URL('./workflows/index.ts', import.meta.url));
 }
@@ -162,8 +181,12 @@ export async function startWorker(options: WorkerStartOptions): Promise<RunningW
   });
 
   const startedAt = nowMs();
+  let shuttingDown = false;
   const running = worker.run();
   running.catch((error: unknown) => {
+    if (!shuttingDown) {
+      checks.push(workerRunFailureCheck());
+    }
     logger.error(
       { taskQueue, error: error instanceof Error ? error.name : 'unknown' },
       'worker.run_failed',
@@ -178,7 +201,6 @@ export async function startWorker(options: WorkerStartOptions): Promise<RunningW
   });
   logger.info({ taskQueue, namespace: config.temporal.namespace }, 'worker.started');
 
-  let shuttingDown = false;
   const shutdown = async (): Promise<void> => {
     if (shuttingDown) {
       return;
