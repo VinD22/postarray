@@ -61,7 +61,13 @@ export {
   type AuditTarget,
 } from './audit/index';
 
-export { migrate, type MigrateOptions } from './migrate';
+export {
+  migrate,
+  verifyMigrations,
+  type MigrateOptions,
+  type MigrationVerification,
+  type VerifyMigrationsOptions,
+} from './migrate';
 export { reset, type ResetOptions } from './reset';
 
 /**

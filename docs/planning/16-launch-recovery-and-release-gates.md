@@ -89,6 +89,15 @@ connector. Those were planning assumptions, not launch facts.
 | Production dependency scan | Green locally | `pnpm audit --prod --audit-level high`; CI repeats it |
 | Full-history secret scan | Pending for release | Gitleaks CI artifact against the release commit and history |
 
+The final repository gate is `pnpm release:check`. It requires
+`DIRECT_DATABASE_URL` or `DATABASE_URL` to target an already migrated isolated
+release branch and
+`RELAY_RELEASE_DATABASE_TEST_WRITES=confirm-isolated-branch`. It verifies the
+remote migration ledger and checksums without changing schema, forces a fresh
+RLS-backed test run and production build, checks formatting, rejects enabled
+prelaunch checkout and audits production dependencies. Applying migrations is
+intentionally a separate reviewed operation.
+
 ## Neon state discovered through MCP
 
 The Neon project named `ldr-app` has a main branch and an existing

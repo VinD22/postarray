@@ -44,6 +44,12 @@ export interface MigrateOptions {
   readonly logger?: DatabaseLogger;
 }
 
+export type VerifyMigrationsOptions = MigrateOptions;
+
+export interface MigrationVerification {
+  readonly appliedFiles: number;
+}
+
 interface MigrationFile {
   readonly name: string;
   readonly order: number;
@@ -69,6 +75,43 @@ export async function migrate(options: MigrateOptions = {}): Promise<void> {
   }
 
   logger.info('db.migrate.complete', { files: files.length });
+}
+
+/**
+ * Verifies that the target database has exactly the reviewed local migration
+ * set. This check is deliberately read-only: applying migrations remains a
+ * separate, explicit release operation.
+ */
+export async function verifyMigrations(
+  options: VerifyMigrationsOptions = {},
+): Promise<MigrationVerification> {
+  const logger = options.logger ?? createStderrLogger();
+  const databaseUrl = resolveDatabaseUrl(options.databaseUrl);
+  const migrationsDir = options.migrationsDir ?? defaultMigrationsDir();
+
+  const files = await loadMigrationFiles(migrationsDir);
+  const client = new pg.Client({ connectionString: databaseUrl });
+  await client.connect();
+
+  try {
+    const ledgerResult = await client.query<{ ledger: string | null }>(
+      `SELECT to_regclass('public._relay_migrations')::text AS ledger`,
+    );
+    if (ledgerResult.rows[0]?.ledger === null || ledgerResult.rows[0]?.ledger === undefined) {
+      throw new DatabaseError(
+        DATABASE_ERROR_CODES.migrationFailed,
+        'The migration ledger is missing. Apply the reviewed migrations before verification.',
+      );
+    }
+
+    const applied = await readLedger(client);
+    assertMigrationState(files, applied);
+  } finally {
+    await client.end();
+  }
+
+  logger.info('db.migrations.verified', { files: files.length });
+  return { appliedFiles: files.length };
 }
 
 async function applyAll(
@@ -150,6 +193,41 @@ async function loadMigrationFiles(directory: string): Promise<MigrationFile[]> {
   }
 
   return files.sort((left, right) => left.order - right.order);
+}
+
+export function assertMigrationState(
+  files: readonly Pick<MigrationFile, 'name' | 'checksum'>[],
+  applied: ReadonlyMap<string, string>,
+): void {
+  const expectedNames = new Set(files.map((file) => file.name));
+
+  for (const file of files) {
+    const appliedChecksum = applied.get(file.name);
+    if (appliedChecksum === undefined) {
+      throw new DatabaseError(
+        DATABASE_ERROR_CODES.migrationFailed,
+        `Migration ${file.name} has not been applied.`,
+        { file: file.name },
+      );
+    }
+    if (appliedChecksum !== file.checksum) {
+      throw new DatabaseError(
+        DATABASE_ERROR_CODES.migrationFailed,
+        `Migration ${file.name} does not match the reviewed local checksum.`,
+        { file: file.name },
+      );
+    }
+  }
+
+  for (const appliedName of applied.keys()) {
+    if (!expectedNames.has(appliedName)) {
+      throw new DatabaseError(
+        DATABASE_ERROR_CODES.migrationFailed,
+        `The database contains unknown migration ${appliedName}.`,
+        { file: appliedName },
+      );
+    }
+  }
 }
 
 function resolveDatabaseUrl(explicit?: string): string {

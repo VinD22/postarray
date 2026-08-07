@@ -19,8 +19,10 @@
     "format:check": "prettier --check \"**/*.{ts,tsx,js,jsx,json,md,css}\"",
     "db:generate": "pnpm --filter @relay/database generate",
     "db:migrate": "pnpm --filter @relay/database migrate",
+    "db:migrations:verify": "pnpm --filter @relay/database migrations:verify",
     "db:seed": "pnpm --filter @relay/database seed",
     "db:reset": "pnpm --filter @relay/database reset",
+    "release:check": "node scripts/release-check.js",
     "verify": "turbo run typecheck lint test"
   },
   "devDependencies": {
