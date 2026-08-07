@@ -81,7 +81,12 @@ export function createRefusingServices(): Services {
       delete: refuse('content'),
     },
     validation: { validate: refuse('content') },
-    approvals: { request: refuse('approval'), decide: refuse('approval'), listPending: page },
+    approvals: {
+      get: refuse('approval'),
+      request: refuse('approval'),
+      decide: refuse('approval'),
+      listPending: page,
+    },
     scheduling: {
       schedule: refuse('content'),
       reschedule: refuse('job'),

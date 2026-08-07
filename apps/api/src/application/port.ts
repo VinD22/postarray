@@ -359,13 +359,18 @@ export interface ValidationService {
 }
 
 export interface ApprovalService {
+  get(ctx: ActorContext, approvalId: string): Promise<ApprovalRequestView>;
   request(
     ctx: ActorContext,
     input: { contentItemId: string; approverIds?: readonly string[]; note?: string },
   ): Promise<ApprovalRequestView>;
   decide(
     ctx: ActorContext,
-    input: { approvalId: string; decision: 'approved' | 'rejected'; note?: string },
+    input: {
+      approvalId: string;
+      decision: 'approve' | 'request_changes' | 'reject';
+      note?: string;
+    },
   ): Promise<ApprovalRequestView>;
   listPending(ctx: ActorContext, query: CursorQuery): Promise<Paginated<ApprovalRequestView>>;
 }

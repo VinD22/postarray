@@ -32,7 +32,7 @@ const APPROVAL_STATE_TO_VIEW = {
 
 type StoredApprovalState = keyof typeof APPROVAL_STATE_TO_VIEW;
 
-interface ApprovalRow {
+export interface ApprovalRow {
   id: string;
   contentItemId: string;
   contentVersionId: string;
@@ -54,7 +54,7 @@ interface ApprovalRow {
   }[];
 }
 
-function toView(row: ApprovalRow): ApprovalRequestView {
+export function approvalRowToView(row: ApprovalRow): ApprovalRequestView {
   const state = row.state as StoredApprovalState;
   return {
     id: row.id,
@@ -117,11 +117,17 @@ async function reload(db: Db, approvalId: string): Promise<ApprovalRequestView> 
   if (row === null) {
     throw notFound('approval_request', approvalId);
   }
-  return toView(row);
+  return approvalRowToView(row);
 }
 
 export function createApprovalService(deps: ServiceDeps): ApprovalService {
   return {
+    async get(ctx: ActorContext, approvalId: string): Promise<ApprovalRequestView> {
+      return authorized(deps, ctx, 'content.read', undefined, async (db) =>
+        reload(db, approvalId),
+      );
+    },
+
     async request(
       ctx: ActorContext,
       input: { contentItemId: string; approverIds?: readonly string[]; note?: string },
@@ -307,7 +313,7 @@ export function createApprovalService(deps: ServiceDeps): ApprovalService {
           ...(args.cursor === undefined ? {} : { cursor: args.cursor }),
           select: APPROVAL_SELECT,
         });
-        return toPage(rows, args, (row) => row.id, toView);
+        return toPage(rows, args, (row) => row.id, approvalRowToView);
       });
     },
   };

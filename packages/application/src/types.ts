@@ -609,6 +609,7 @@ export interface ValidationService {
 }
 
 export interface ApprovalService {
+  get(ctx: ActorContext, approvalId: string): Promise<ApprovalRequestView>;
   request(
     ctx: ActorContext,
     input: {

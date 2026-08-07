@@ -21,7 +21,7 @@ import { useSession, useWorkspaceId } from '@/lib/auth/session-context';
 
 import { api } from './client';
 import { newIdempotencyKey } from './correlation';
-import type { ApiError } from './error';
+import { ApiError } from './error';
 import { keys } from './keys';
 import type {
   ActionItemCategory,
@@ -115,8 +115,12 @@ export function useApprovalRequest(
   return useQuery({
     queryKey: keys.approval(workspaceId, approvalId),
     queryFn: async () => {
-      const pending = await api.approvals.listPending({ limit: 100 });
-      return pending.data.find((approval) => approval.id === approvalId) ?? null;
+      try {
+        return await api.approvals.get(approvalId);
+      } catch (error) {
+        if (ApiError.is(error) && error.status === 404) return null;
+        throw error;
+      }
     },
   });
 }

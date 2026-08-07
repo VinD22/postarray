@@ -312,6 +312,13 @@ export const validationApi = {
 };
 
 export const approvalsApi = {
+  get: (approvalId: string): Promise<ApprovalRequestView | null> =>
+    call(
+      `/approvals/${approvalId}`,
+      {},
+      () => demoApprovals.find((approval) => approval.id === approvalId) ?? null,
+    ),
+
   request: (
     input: { contentItemId: string; approverIds?: readonly string[]; note?: string },
     idempotencyKey: string,

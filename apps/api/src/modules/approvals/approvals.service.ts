@@ -15,6 +15,10 @@ import type { DecideApprovalInput, RequestApprovalInput } from './approvals.sche
 export class ApprovalsService {
   constructor(@Inject(SERVICES) private readonly services: Services) {}
 
+  get(ctx: ActorContext, approvalId: string): Promise<ApprovalRequestView> {
+    return this.services.approvals.get(ctx, approvalId);
+  }
+
   request(ctx: ActorContext, input: RequestApprovalInput): Promise<ApprovalRequestView> {
     return this.services.approvals.request(ctx, input);
   }

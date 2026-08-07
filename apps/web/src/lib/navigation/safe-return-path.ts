@@ -5,7 +5,10 @@ export function safeReturnPath(value: string | null, fallback = '/home'): string
     !value.startsWith('/') ||
     value.startsWith('//') ||
     value.includes('\\') ||
-    /[\u0000-\u001f\u007f]/u.test(value)
+    [...value].some((character) => {
+      const codePoint = character.codePointAt(0) ?? 0;
+      return codePoint <= 31 || codePoint === 127;
+    })
   ) {
     return fallback;
   }

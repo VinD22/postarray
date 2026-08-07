@@ -785,6 +785,16 @@ export const OPERATIONS: readonly OperationSpec[] = [
     response: pagedView,
   },
   {
+    method: 'get',
+    path: '/v1/approvals/{id}',
+    operationId: 'approvals.get',
+    summary: 'Read one approval request, including its resolved decision.',
+    tag: 'approvals',
+    scopes: ['drafts:read'],
+    pathParams: p('id', approvalIdSchema),
+    response: view,
+  },
+  {
     method: 'post',
     path: '/v1/approvals',
     operationId: 'approvals.request',

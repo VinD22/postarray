@@ -24,6 +24,7 @@ describe('browser content and approval resource contracts', () => {
   });
 
   it('keeps approval request, queue and decision payloads aligned with the service contract', async () => {
+    await approvalsApi.get('approval_01');
     await approvalsApi.request(
       {
         contentItemId: 'content_01',
@@ -41,6 +42,12 @@ describe('browser content and approval resource contracts', () => {
 
     expect(callMock).toHaveBeenNthCalledWith(
       1,
+      '/approvals/approval_01',
+      {},
+      expect.any(Function),
+    );
+    expect(callMock).toHaveBeenNthCalledWith(
+      2,
       '/approvals',
       {
         method: 'POST',
@@ -54,13 +61,13 @@ describe('browser content and approval resource contracts', () => {
       expect.any(Function),
     );
     expect(callMock).toHaveBeenNthCalledWith(
-      2,
+      3,
       '/approvals/pending',
       { query: { limit: 100 } },
       expect.any(Function),
     );
     expect(callMock).toHaveBeenNthCalledWith(
-      3,
+      4,
       '/approvals/approval_01/decision',
       {
         method: 'POST',
