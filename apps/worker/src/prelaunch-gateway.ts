@@ -1,4 +1,5 @@
 import { ERROR_CODES, RelayError } from '@relay/contracts';
+import type { ConnectorExecutionGateway } from '@relay/runtime';
 
 import { ACTIVITY_NAMES, type ActivityName, type WorkerActivities } from './activities/types';
 
@@ -20,6 +21,8 @@ type UnavailableActivity = (input: unknown) => Promise<never>;
 export function createWorkerGateway(
   options: {
     readonly buildDataExport?: WorkerActivities['buildDataExport'];
+    /** Accepted for composition symmetry, intentionally ignored prelaunch. */
+    readonly connectorExecution?: ConnectorExecutionGateway | null;
     readonly dataDeletion?: Pick<
       WorkerActivities,
       | 'loadDeletionScope'

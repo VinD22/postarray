@@ -9,7 +9,11 @@ import { loadConfigFor, type RelayConfig } from '@relay/config';
 import { InternalError } from '@relay/contracts';
 import { createPrismaClient } from '@relay/database';
 import { createLogger, type Logger } from '@relay/observability';
-import { createApplicationRuntime, OutboxDispatcher } from '@relay/runtime';
+import {
+  createApplicationRuntime,
+  OutboxDispatcher,
+  type ConnectorExecutionGateway,
+} from '@relay/runtime';
 import Redis from 'ioredis';
 
 import { ACTIVITY_NAMES, type WorkerActivities } from './activities/types';
@@ -17,6 +21,7 @@ import { WorkerScheduler } from './outbox-scheduler';
 import { createWorkerGateway } from './prelaunch-gateway';
 import { installShutdownHandlers, startWorker, WORKER_SERVICE_NAME } from './worker';
 import { startMediaRetentionSweep } from './media-retention';
+import { createWorkerConnectorRuntime } from './connector-runtime';
 
 /**
  * The process entry point.
@@ -33,6 +38,10 @@ import { startMediaRetentionSweep } from './media-retention';
 
 const DEFAULT_GATEWAY_MODULE = 'built-in-prelaunch-gateway';
 const GATEWAY_FACTORY = 'createWorkerGateway';
+export interface WorkerGatewayFactoryContext {
+  /** Null when production credential encryption is not configured. */
+  readonly connectorExecution: ConnectorExecutionGateway | null;
+}
 type DataDeletionActivities = Pick<
   WorkerActivities,
   | 'loadDeletionScope'
@@ -92,6 +101,7 @@ export async function loadGateway(
   options: {
     readonly buildDataExport?: WorkerActivities['buildDataExport'];
     readonly dataDeletion?: DataDeletionActivities;
+    readonly connectorExecution?: ConnectorExecutionGateway | null;
   } = {},
 ): Promise<WorkerActivities> {
   if (moduleName === DEFAULT_GATEWAY_MODULE) {
@@ -105,8 +115,12 @@ export async function loadGateway(
       details: { module: moduleName, missingExport: GATEWAY_FACTORY },
     });
   }
-  const build = factory as (...args: readonly unknown[]) => unknown;
-  return adoptGateway(await Promise.resolve(build()));
+  const build = factory as (context: WorkerGatewayFactoryContext) => unknown;
+  return adoptGateway(
+    await Promise.resolve(
+      build({ connectorExecution: options.connectorExecution ?? null }),
+    ),
+  );
 }
 
 async function createWorkerKeyValueStore(
@@ -138,6 +152,15 @@ export async function main(): Promise<void> {
   const config = loadConfigFor(WORKER_SERVICE_NAME);
   const logger = createLogger({ service: WORKER_SERVICE_NAME }, { level: config.core.logLevel });
   const moduleName = process.env['RELAY_WORKER_GATEWAY_MODULE'] ?? DEFAULT_GATEWAY_MODULE;
+  const prisma = createPrismaClient({
+    ...(config.database.url === undefined ? {} : { databaseUrl: config.database.url }),
+  });
+  const connectorRuntime = createWorkerConnectorRuntime({
+    config,
+    logger,
+    prisma,
+    clock: systemClock,
+  });
   let resolveDataExportBuilder:
     ((builder: WorkerActivities['buildDataExport']) => void) | undefined;
   const dataExportBuilderReady = new Promise<WorkerActivities['buildDataExport']>((resolve) => {
@@ -165,16 +188,25 @@ export async function main(): Promise<void> {
     markDeletionFailed: (input) =>
       dataDeletionActivitiesReady.then((activities) => activities.markDeletionFailed(input)),
   };
-  const gateway = await loadGateway(
-    moduleName,
-    moduleName === DEFAULT_GATEWAY_MODULE
-      ? { buildDataExport: deferredDataExportBuilder, dataDeletion: deferredDataDeletion }
-      : {},
-  );
-  const worker = await startWorker({ gateway, config, logger });
-  const prisma = createPrismaClient({
-    ...(config.database.url === undefined ? {} : { databaseUrl: config.database.url }),
-  });
+  let gateway: WorkerActivities;
+  let worker: Awaited<ReturnType<typeof startWorker>>;
+  try {
+    gateway = await loadGateway(
+      moduleName,
+      moduleName === DEFAULT_GATEWAY_MODULE
+        ? {
+            buildDataExport: deferredDataExportBuilder,
+            dataDeletion: deferredDataDeletion,
+            connectorExecution: connectorRuntime.gateway,
+          }
+        : { connectorExecution: connectorRuntime.gateway },
+    );
+    worker = await startWorker({ gateway, config, logger });
+  } catch (error: unknown) {
+    connectorRuntime.close();
+    await prisma.$disconnect();
+    throw error;
+  }
   const scheduler = new WorkerScheduler({ worker, config, clock: systemClock, logger });
   let kv: KeyValueStore | null = null;
   let runtime: ReturnType<typeof createApplicationRuntime>;
@@ -183,7 +215,15 @@ export async function main(): Promise<void> {
     runtime = createApplicationRuntime({
       config,
       logger,
-      adapters: { prisma, kv, scheduler },
+      adapters: {
+        prisma,
+        kv,
+        scheduler,
+        credentialStore: connectorRuntime.credentialStore,
+        ...(connectorRuntime.credentialVault === null
+          ? {}
+          : { credentialVault: connectorRuntime.credentialVault }),
+      },
     });
     resolveDataExportBuilder?.((input) => runtime.services.dataExports.build(input));
     resolveDataDeletionActivities?.({
@@ -199,6 +239,7 @@ export async function main(): Promise<void> {
   } catch (error: unknown) {
     await kv?.close();
     await scheduler.close();
+    connectorRuntime.close();
     await prisma.$disconnect();
     await worker.shutdown();
     throw error;
@@ -225,6 +266,7 @@ export async function main(): Promise<void> {
         await outbox.stop();
         await runtime.close();
         await scheduler.close();
+        connectorRuntime.close();
         await prisma.$disconnect();
         await worker.shutdown();
       },

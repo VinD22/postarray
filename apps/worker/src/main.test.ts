@@ -3,8 +3,18 @@ import { describe, expect, it } from 'vitest';
 
 import { ACTIVITY_NAMES } from './activities/types';
 import { loadGateway, missingActivityNames } from './main';
+import { lastGatewayContext } from './testing/gateway-context';
 
 describe('worker gateway bootstrap', () => {
+  it('passes the optional connector seam only to a configured gateway module', async () => {
+    const gateway = await loadGateway('./testing/gateway-context', {
+      connectorExecution: null,
+    });
+
+    expect(lastGatewayContext).toEqual({ connectorExecution: null });
+    expect(gateway.publishTarget).toBeTypeOf('function');
+  });
+
   it('builds exactly one callable for every registered activity', async () => {
     const gateway = await loadGateway('built-in-prelaunch-gateway');
 
