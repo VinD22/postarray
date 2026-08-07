@@ -9,7 +9,7 @@ gates into work packages with owners, dependencies and evidence.
 
 ## Current checkpoint
 
-Commit `83ff63d` is the verified local checkpoint. It includes:
+Commit `d6efa4a` is the verified local checkpoint. It includes:
 
 - 27 Playwright checks covering axe, keyboard navigation, reduced motion,
   pseudo-locale expansion, RTL and critical-route smoke states;
@@ -215,7 +215,7 @@ Owner: platform engineer. Dependencies: B and C.
    exclude provider secrets, write an encrypted short-lived object, expose a
    bounded download URL, and expire it deterministically.
 4. Validate and promote the deletion workflow gateway now wired in
-   `83ff63d` against the real database and storage ports. Every page is
+   `d6efa4a` against the real database and storage ports. Every page is
    resumable and idempotent. Record canceled jobs, Relay credential revocation,
    deleted objects, tombstoned receipts and final state. Do not describe a
    provider grant as revoked until the connector has an official revoke
