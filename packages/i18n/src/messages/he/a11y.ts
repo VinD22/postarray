@@ -2,6 +2,7 @@ import { withHebrewPluralForms } from './catalog-helpers';
 
 export const a11yMessages = withHebrewPluralForms({
   'a11y.region.navigation': 'ניווט ראשי',
+  'a11y.region.breadcrumb': 'פירורי לחם',
   'a11y.region.main': 'תוכן עיקרי',
   'a11y.region.composer': 'מלחין',
   'a11y.region.preview': 'תצוגה מקדימה',

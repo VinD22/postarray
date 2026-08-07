@@ -1,6 +1,7 @@
 /** th beta catalog namespace. */
 export const a11yMessages = {
   'a11y.region.navigation': 'การนำทางหลัก',
+  'a11y.region.breadcrumb': 'เส้นทางนำทาง',
   'a11y.region.main': 'เนื้อหาหลัก',
   'a11y.region.composer': 'Composer',
   'a11y.region.preview': 'ดูตัวอย่าง',

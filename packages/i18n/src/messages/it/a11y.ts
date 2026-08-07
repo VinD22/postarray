@@ -6,6 +6,7 @@
  */
 export const a11yMessages = {
   'a11y.region.navigation': 'Navigazione primaria',
+  'a11y.region.breadcrumb': 'Percorso di navigazione',
   'a11y.region.main': 'Contenuto principale',
   'a11y.region.composer': 'Composer',
   'a11y.region.preview': 'Anteprima',

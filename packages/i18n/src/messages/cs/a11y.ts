@@ -6,6 +6,7 @@
  */
 export const a11yMessages = {
   'a11y.region.navigation': 'Primární navigace',
+  'a11y.region.breadcrumb': 'Drobečková navigace',
   'a11y.region.main': 'Hlavní obsah',
   'a11y.region.composer': 'Skladatel',
   'a11y.region.preview': 'Náhled',

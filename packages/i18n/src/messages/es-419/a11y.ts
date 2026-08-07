@@ -1,6 +1,7 @@
 /** Spanish (Latin America) beta catalog. B5 legal, billing and consent messages deliberately use English fallback. */
 export const a11yMessages = {
   'a11y.region.navigation': 'Navegación primaria',
+  'a11y.region.breadcrumb': 'Migas de pan',
   'a11y.region.main': 'Contenido principal',
   'a11y.region.composer': 'Composer',
   'a11y.region.preview': 'Vista previa',

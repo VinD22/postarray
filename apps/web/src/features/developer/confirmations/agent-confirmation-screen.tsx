@@ -98,7 +98,7 @@ export function AgentConfirmationScreen({
         description={t('developer.confirmation.subtitle')}
       />
 
-      <main className="mx-auto flex w-full max-w-4xl flex-col gap-6 px-4 py-6 md:px-6">
+      <div className="mx-auto flex w-full max-w-4xl flex-col gap-6 px-4 py-6 md:px-6">
         {query.isPending ? (
           <LoadingState label={t('developer.confirmation.loading')}>
             <div className="border-border-bold bg-surface-raised shadow-hard rounded-lg border-2 p-6">
@@ -297,7 +297,7 @@ export function AgentConfirmationScreen({
             ) : null}
           </section>
         ) : null}
-      </main>
+      </div>
     </>
   );
 }

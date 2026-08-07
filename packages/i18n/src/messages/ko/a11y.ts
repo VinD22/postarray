@@ -1,6 +1,7 @@
 /** Korean beta catalog. */
 export const a11yMessages = {
   'a11y.region.navigation': '기본 탐색',
+  'a11y.region.breadcrumb': '이동 경로',
   'a11y.region.main': '주요 내용',
   'a11y.region.composer': 'Composer',
   'a11y.region.preview': '시사',

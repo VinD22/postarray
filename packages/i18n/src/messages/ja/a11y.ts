@@ -1,6 +1,7 @@
 /** Japanese beta catalog. */
 export const a11yMessages = {
   'a11y.region.navigation': 'プライマリナビゲーション',
+  'a11y.region.breadcrumb': 'パンくずリスト',
   'a11y.region.main': '主な内容',
   'a11y.region.composer': 'Composer',
   'a11y.region.preview': 'プレビュー',

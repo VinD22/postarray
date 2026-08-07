@@ -22,6 +22,9 @@ import {
   type UploadTransport,
 } from '@/features/media';
 
+/** A library upload has no destinations yet. Provider limits apply in compose. */
+const WORKSPACE_UPLOAD_RULES: readonly AccountRule[] = [];
+
 export interface LibraryClientProps {
   readonly status: LibraryStatus;
   readonly assets: readonly MediaAsset[];
@@ -71,7 +74,7 @@ export function LibraryClient(props: LibraryClientProps): ReactNode {
   const onUploaded = useCallback(() => props.onRefresh(), [props]);
 
   const queue = useUploadQueue({
-    rules: props.rules,
+    rules: WORKSPACE_UPLOAD_RULES,
     transport: props.transport,
     messages,
     onUploaded,

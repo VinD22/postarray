@@ -1,6 +1,7 @@
 /** id beta catalog namespace. */
 export const a11yMessages = {
   'a11y.region.navigation': 'Navigasi utama',
+  'a11y.region.breadcrumb': 'Jejak navigasi',
   'a11y.region.main': 'Konten utama',
   'a11y.region.composer': 'Composer',
   'a11y.region.preview': 'Pratinjau',

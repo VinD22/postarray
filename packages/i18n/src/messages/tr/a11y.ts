@@ -6,6 +6,7 @@
  */
 export const a11yMessages = {
   'a11y.region.navigation': 'Birincil gezinme',
+  'a11y.region.breadcrumb': 'Sayfa yolu',
   'a11y.region.main': 'Ana içerik',
   'a11y.region.composer': 'Besteci',
   'a11y.region.preview': 'Önizleme',

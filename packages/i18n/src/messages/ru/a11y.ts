@@ -6,6 +6,7 @@
  */
 export const a11yMessages = {
   'a11y.region.navigation': 'Основная навигация',
+  'a11y.region.breadcrumb': 'Навигационная цепочка',
   'a11y.region.main': 'Основное содержание',
   'a11y.region.composer': 'Composer',
   'a11y.region.preview': 'Предварительный просмотр',

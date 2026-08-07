@@ -6,6 +6,7 @@
  */
 export const a11yMessages = {
   'a11y.region.navigation': 'Pangunahing nabigasyon',
+  'a11y.region.breadcrumb': 'Landas ng pahina',
   'a11y.region.main': 'Pangunahing nilalaman',
   'a11y.region.composer': 'Composer',
   'a11y.region.preview': 'Silipin',

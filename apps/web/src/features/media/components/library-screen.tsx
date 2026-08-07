@@ -45,6 +45,9 @@ import { UploadPanel } from './upload-panel';
 import type { AccountRule } from '../state/media-rules';
 import type { MediaAsset, RightsDeclaration, UploadItem } from '../types';
 
+/** Library uploads are admitted against storage limits, before targets exist. */
+const WORKSPACE_UPLOAD_RULES: readonly AccountRule[] = [];
+
 export type LibraryStatus = 'loading' | 'ready' | 'error' | 'forbidden';
 
 export interface LibraryScreenProps {
@@ -146,7 +149,7 @@ export function LibraryScreen(props: LibraryScreenProps): ReactNode {
       {props.status === 'ready' ? (
         <>
           <UploadPanel
-            rules={props.rules}
+            rules={WORKSPACE_UPLOAD_RULES}
             items={props.uploads}
             online={props.online}
             onFiles={props.onFiles}

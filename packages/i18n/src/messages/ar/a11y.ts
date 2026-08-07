@@ -6,6 +6,7 @@
  */
 export const a11yMessages = {
   'a11y.region.navigation': 'التنقل الأساسي',
+  'a11y.region.breadcrumb': 'مسار التنقل',
   'a11y.region.main': 'المحتوى الرئيسي',
   'a11y.region.composer': 'Composer',
   'a11y.region.preview': 'معاينة',

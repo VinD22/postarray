@@ -1,9 +1,9 @@
 /**
  * `/library`
  *
- * The media library. Loads the assets and the capability rules of the connected
- * accounts, so every size, type and alt text requirement on the screen comes
- * from what those accounts actually accept.
+ * The media library. Upload admission uses Relay's workspace storage limits.
+ * Connected-account capability rules remain available for alt text, editing
+ * guidance and the later compose-time provider validation.
  */
 
 import type { Metadata } from 'next';

@@ -285,7 +285,7 @@ export function ComposerScreen(props: ComposerScreenProps): ReactNode {
           </aside>
         ) : null}
 
-        <main
+        <section
           aria-label={
             active ? t.full('composerWeb.pane.variant') : t.full('composerWeb.pane.master')
           }
@@ -294,7 +294,7 @@ export function ComposerScreen(props: ComposerScreenProps): ReactNode {
           <PaneTransition panelKey={active ? active.connectionId : 'master'}>
             {active ? editorPane : masterPane}
           </PaneTransition>
-        </main>
+        </section>
 
         {showPreview ? (
           <aside

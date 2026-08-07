@@ -17,7 +17,7 @@ import { useTranslations } from '@relay/i18n/react';
 import { formatBytes } from '@relay/i18n';
 import { cn } from '@relay/design-system/utils';
 
-import { acceptedMimeTypes, lowestByteLimit, type AccountRule } from '../state/media-rules';
+import { acceptedMimeTypes, type AccountRule } from '../state/media-rules';
 import type { UploadItem } from '../types';
 
 export interface UploadPanelProps {
@@ -46,7 +46,6 @@ export function UploadPanel({
   const [dragging, setDragging] = useState(false);
 
   const accept = acceptedMimeTypes(rules);
-  const imageLimit = lowestByteLimit(rules, 'image');
 
   return (
     <section aria-labelledby="upload-heading" className="flex flex-col gap-3">
@@ -112,13 +111,6 @@ export function UploadPanel({
             ? t.full('mediaLib.upload.noTargets')
             : t.full('mediaLib.upload.checkedAgainst')}
         </p>
-        {imageLimit === null ? null : (
-          <p className="text-label text-text-tertiary tabular-nums">
-            {t.full('composerWeb.limits.fileSize', {
-              size: formatBytes(t.locale, imageLimit),
-            })}
-          </p>
-        )}
         <p className="text-label text-text-tertiary">
           {t.full('composerWeb.limits.mimeTypes', { types: accept.join(', ') })}
         </p>

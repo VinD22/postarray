@@ -150,7 +150,7 @@ export function ApprovalReviewScreen({
     <div className="flex min-h-full flex-col">
       <PageHeader
         breadcrumb={{
-          label: t('a11y.region.navigation'),
+          label: t('a11y.region.breadcrumb'),
           items: [
             { id: 'actions', label: t('home.needsYou.viewAll'), href: actionCenterHref },
             { id: 'approval', label: t('approval.requestTitle') },

@@ -1,6 +1,7 @@
 /** Traditional Chinese screen-reader announcements and accessible names. */
 export const a11yMessages = {
   'a11y.region.navigation': '主要導覽',
+  'a11y.region.breadcrumb': '麵包屑導覽',
   'a11y.region.main': '主要內容',
   'a11y.region.composer': 'Composer',
   'a11y.region.preview': '預覽',

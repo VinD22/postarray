@@ -197,7 +197,7 @@ function PostDocument({
     <article className="flex min-h-full flex-col">
       <PageHeader
         breadcrumb={{
-          label: t('a11y.region.navigation'),
+          label: t('a11y.region.breadcrumb'),
           items: [
             { id: 'calendar', label: t('web.receipt.breadcrumb.calendar'), href: calendarHref },
             { id: 'post', label: title },

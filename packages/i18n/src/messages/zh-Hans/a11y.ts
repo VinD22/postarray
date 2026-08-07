@@ -6,6 +6,7 @@
  */
 export const a11yMessages = {
   'a11y.region.navigation': '主要导航',
+  'a11y.region.breadcrumb': '面包屑导航',
   'a11y.region.main': '主要内容',
   'a11y.region.composer': '作曲家',
   'a11y.region.preview': '预览',

@@ -6,6 +6,7 @@
  */
 export const a11yMessages = {
   'a11y.region.navigation': 'Основна навігація',
+  'a11y.region.breadcrumb': 'Навігаційний ланцюжок',
   'a11y.region.main': 'Основний зміст',
   'a11y.region.composer': 'Composer',
   'a11y.region.preview': 'Попередній перегляд',

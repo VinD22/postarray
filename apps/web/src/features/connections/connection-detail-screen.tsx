@@ -106,7 +106,7 @@ export function ConnectionDetailScreen({
     <div className="flex min-h-full flex-col">
       <PageHeader
         breadcrumb={{
-          label: t('a11y.region.navigation'),
+          label: t('a11y.region.breadcrumb'),
           items: [
             { id: 'connections', label: t('connection.title'), href: listHref },
             { id: 'account', label: row.displayName },

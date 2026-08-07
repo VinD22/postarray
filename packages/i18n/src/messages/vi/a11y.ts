@@ -1,6 +1,7 @@
 /** vi beta catalog namespace. */
 export const a11yMessages = {
   'a11y.region.navigation': 'Điều hướng chính',
+  'a11y.region.breadcrumb': 'Đường dẫn điều hướng',
   'a11y.region.main': 'Nội dung chính',
   'a11y.region.composer': 'Composer',
   'a11y.region.preview': 'Xem trước',
