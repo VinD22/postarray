@@ -274,9 +274,7 @@ export const approvalsApi = {
   listPending: (
     query: { cursor?: string; limit?: number } = {},
   ): Promise<Paginated<ApprovalRequestView>> =>
-    call('/approvals', { query: { ...query, state: 'requested' } }, () =>
-      page<ApprovalRequestView>([]),
-    ),
+    call('/approvals/pending', { query }, () => page<ApprovalRequestView>([])),
 };
 
 export type CalendarQuery = {
@@ -381,8 +379,8 @@ export const receiptsApi = {
   get: (receiptId: string): Promise<PublicationReceipt | null> =>
     call(`/receipts/${receiptId}`, {}, () => null),
 
-  listForJob: (jobId: string): Promise<Paginated<ReceiptSummaryView>> =>
-    call(`/publish/${jobId}/receipts`, {}, () => page(demoReceipts)),
+  listForJob: (jobId: string): Promise<{ readonly data: readonly PublicationReceipt[] }> =>
+    call(`/jobs/${jobId}/receipts`, {}, () => ({ data: [] })),
 
   /** Home and the receipts list share this. Not part of the job-scoped read. */
   listRecent: (query: { limit?: number } = {}): Promise<Paginated<ReceiptSummaryView>> =>

@@ -13,7 +13,10 @@ import type {
   MetricUnit,
   NormalizedMetricName,
   ProviderId,
+  PublicationReceipt,
+  PublishAttempt,
   PublishState,
+  ReceiptItem,
   Role,
   RuleActionKind,
   RuleTriggerKind,
@@ -345,52 +348,10 @@ export interface CalendarEntry {
   readonly approvalState: ApprovalState;
 }
 
-export interface ReceiptItemView {
-  readonly kind: 'root' | 'comment' | 'thread';
-  readonly order: number;
-  readonly state: PublishState;
-  readonly externalPostId: string | null;
-  readonly permalink: string | null;
-  readonly publishedAt: string | null;
-  readonly errorCode: string | null;
-}
-
-export interface PublishAttemptView {
-  readonly id: string;
-  readonly attemptNumber: number;
-  readonly outcome: string;
-  readonly errorClass: string | null;
-  readonly errorCode: string | null;
-  readonly httpStatus: number | null;
-  readonly startedAt: string;
-  readonly endedAt: string | null;
-}
-
-export interface PublicationReceiptView {
-  readonly id: string;
-  readonly workspaceId: string;
-  readonly publishJobId: string;
-  readonly provider: ProviderId;
-  readonly connectionId: string;
-  readonly externalPostId: string;
-  readonly permalink: string | null;
-  readonly contentVersionId: string;
-  readonly contentChecksum: string;
-  readonly publishedShortLinks: readonly string[];
-  readonly scheduledInstant: string | null;
-  readonly ianaTimeZone: string | null;
-  readonly dispatchedAt: string | null;
-  readonly publishedAt: string;
-  readonly creationSurface: CreationSurface;
-  readonly approvedByUserId: string | null;
-  readonly costActualMinor: number | null;
-  readonly costCurrency: string | null;
-  readonly items: readonly ReceiptItemView[];
-  readonly attempts: readonly PublishAttemptView[];
-  readonly lastAnalyticsSyncAt: string | null;
-  readonly deletedExternallyAt: string | null;
-  readonly createdAt: string;
-}
+/** The application and every transport expose the canonical shared contract. */
+export type ReceiptItemView = ReceiptItem;
+export type PublishAttemptView = PublishAttempt;
+export type PublicationReceiptView = PublicationReceipt;
 
 /** Compact receipt projection for the home screen and receipt timeline. */
 export interface ReceiptSummaryView {
