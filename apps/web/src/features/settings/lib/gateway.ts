@@ -86,7 +86,7 @@ export interface WorkspaceLocalizationView {
   readonly contentLocales: readonly string[];
   readonly markets: readonly string[];
   readonly timeZone: string;
-  readonly weekStart: number;
+  readonly weekStart: 0 | 1 | 6;
   readonly hourCycle: 'h12' | 'h23';
 }
 
@@ -109,18 +109,40 @@ export const workspaceGateway = {
   },
 
   async localization(): Promise<WorkspaceLocalizationView> {
-    // TODO(api): `api.workspaces.getPreferences`.
-    return request<WorkspaceLocalizationView>('/workspaces/current/localization');
+    const session = await api.session.get();
+    const workspace = await api.workspaces.get(session.workspace.id);
+    return {
+      interfaceLocale: workspace.defaultLocale,
+      contentLocales: workspace.contentLocales,
+      markets: workspace.markets,
+      timeZone: workspace.defaultTimeZone,
+      weekStart: workspace.weekStart,
+      hourCycle: workspace.hourCycle,
+    };
   },
 
   async updateLocalization(
     patch: Partial<WorkspaceLocalizationView>,
   ): Promise<WorkspaceLocalizationView> {
-    // TODO(api): `api.workspaces.updatePreferences`.
-    return request<WorkspaceLocalizationView>('/workspaces/current/localization', {
-      method: 'PATCH',
-      body: patch,
+    const session = await api.session.get();
+    const workspace = await api.workspaces.update(session.workspace.id, {
+      ...(patch.interfaceLocale === undefined
+        ? {}
+        : { defaultLocale: patch.interfaceLocale }),
+      ...(patch.timeZone === undefined ? {} : { ianaTimeZone: patch.timeZone }),
+      ...(patch.contentLocales === undefined ? {} : { contentLocales: patch.contentLocales }),
+      ...(patch.markets === undefined ? {} : { markets: patch.markets }),
+      ...(patch.weekStart === undefined ? {} : { weekStart: patch.weekStart }),
+      ...(patch.hourCycle === undefined ? {} : { hourCycle: patch.hourCycle }),
     });
+    return {
+      interfaceLocale: workspace.defaultLocale,
+      contentLocales: workspace.contentLocales,
+      markets: workspace.markets,
+      timeZone: workspace.defaultTimeZone,
+      weekStart: workspace.weekStart,
+      hourCycle: workspace.hourCycle,
+    };
   },
 };
 

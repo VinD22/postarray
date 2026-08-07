@@ -1,4 +1,4 @@
-import type { Locale, Paginated } from '@relay/contracts';
+import { ERROR_CODES, RelayError, type Locale, type Paginated } from '@relay/contracts';
 import { appendAuditEvent, withRlsContext } from '@relay/database';
 
 import type {
@@ -19,6 +19,24 @@ import { workspaceSlug } from '../internal/workspace-slug';
 
 /** Workspace settings and the operator kill switch. */
 
+function toWeekStart(value: number): WorkspaceView['weekStart'] {
+  if (value === 0 || value === 1 || value === 6) {
+    return value;
+  }
+  throw new RelayError(ERROR_CODES.INTERNAL, {
+    details: { resource: 'workspace', field: 'week_start' },
+  });
+}
+
+function toHourCycle(value: string): WorkspaceView['hourCycle'] {
+  if (value === 'h12' || value === 'h23') {
+    return value;
+  }
+  throw new RelayError(ERROR_CODES.INTERNAL, {
+    details: { resource: 'workspace', field: 'hour_cycle' },
+  });
+}
+
 async function readWorkspace(db: Db, workspaceId: string): Promise<WorkspaceView> {
   const row = await db.workspace.findUnique({
     where: { id: workspaceId },
@@ -29,6 +47,10 @@ async function readWorkspace(db: Db, workspaceId: string): Promise<WorkspaceView
       status: true,
       defaultLocale: true,
       defaultTimeZone: true,
+      contentLocales: true,
+      markets: true,
+      weekStart: true,
+      hourCycle: true,
       killSwitchAt: true,
       createdAt: true,
     },
@@ -43,6 +65,10 @@ async function readWorkspace(db: Db, workspaceId: string): Promise<WorkspaceView
     status: row.status,
     defaultLocale: row.defaultLocale,
     defaultTimeZone: row.defaultTimeZone,
+    contentLocales: [...row.contentLocales],
+    markets: [...row.markets],
+    weekStart: toWeekStart(row.weekStart),
+    hourCycle: toHourCycle(row.hourCycle),
     killSwitchEngaged: row.killSwitchAt !== null,
     createdAt: row.createdAt.toISOString(),
   };
@@ -91,6 +117,7 @@ export function createWorkspaceService(deps: ServiceDeps): WorkspaceService {
             ownerUserId: user.id,
             defaultLocale: input.defaultLocale,
             defaultTimeZone: input.ianaTimeZone,
+            contentLocales: [input.defaultLocale],
             memberships: {
               create: {
                 userId: user.id,
@@ -107,6 +134,10 @@ export function createWorkspaceService(deps: ServiceDeps): WorkspaceService {
             status: true,
             defaultLocale: true,
             defaultTimeZone: true,
+            contentLocales: true,
+            markets: true,
+            weekStart: true,
+            hourCycle: true,
             killSwitchAt: true,
             createdAt: true,
           },
@@ -132,6 +163,10 @@ export function createWorkspaceService(deps: ServiceDeps): WorkspaceService {
           status: created.status,
           defaultLocale: created.defaultLocale,
           defaultTimeZone: created.defaultTimeZone,
+          contentLocales: [...created.contentLocales],
+          markets: [...created.markets],
+          weekStart: toWeekStart(created.weekStart),
+          hourCycle: toHourCycle(created.hourCycle),
           killSwitchEngaged: created.killSwitchAt !== null,
           createdAt: created.createdAt.toISOString(),
         };
@@ -147,12 +182,20 @@ export function createWorkspaceService(deps: ServiceDeps): WorkspaceService {
             defaultLocale?: string;
             defaultTimeZone?: string;
             ianaTimeZone?: string;
+            contentLocales?: readonly string[];
+            markets?: readonly string[];
+            weekStart?: 0 | 1 | 6;
+            hourCycle?: 'h12' | 'h23';
           },
       suppliedPatch?: {
         name?: string;
         defaultLocale?: string;
         defaultTimeZone?: string;
         ianaTimeZone?: string;
+        contentLocales?: readonly string[];
+        markets?: readonly string[];
+        weekStart?: 0 | 1 | 6;
+        hourCycle?: 'h12' | 'h23';
       },
     ): Promise<WorkspaceView> {
       const workspaceId =
@@ -171,6 +214,12 @@ export function createWorkspaceService(deps: ServiceDeps): WorkspaceService {
             ...(patch.defaultTimeZone === undefined && patch.ianaTimeZone === undefined
               ? {}
               : { defaultTimeZone: patch.defaultTimeZone ?? patch.ianaTimeZone }),
+            ...(patch.contentLocales === undefined
+              ? {}
+              : { contentLocales: [...patch.contentLocales] }),
+            ...(patch.markets === undefined ? {} : { markets: [...patch.markets] }),
+            ...(patch.weekStart === undefined ? {} : { weekStart: patch.weekStart }),
+            ...(patch.hourCycle === undefined ? {} : { hourCycle: patch.hourCycle }),
           },
         });
         const after = await readWorkspace(db, workspaceId);
@@ -199,6 +248,10 @@ export function createWorkspaceService(deps: ServiceDeps): WorkspaceService {
                 status: true,
                 defaultLocale: true,
                 defaultTimeZone: true,
+                contentLocales: true,
+                markets: true,
+                weekStart: true,
+                hourCycle: true,
                 killSwitchAt: true,
                 createdAt: true,
               },
@@ -212,6 +265,10 @@ export function createWorkspaceService(deps: ServiceDeps): WorkspaceService {
           status: workspace.status,
           defaultLocale: workspace.defaultLocale,
           defaultTimeZone: workspace.defaultTimeZone,
+          contentLocales: [...workspace.contentLocales],
+          markets: [...workspace.markets],
+          weekStart: toWeekStart(workspace.weekStart),
+          hourCycle: toHourCycle(workspace.hourCycle),
           killSwitchEngaged: workspace.killSwitchAt !== null,
           createdAt: workspace.createdAt.toISOString(),
         }));

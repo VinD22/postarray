@@ -105,10 +105,54 @@ export const workspacesApi = {
         status: 'trialing',
         defaultLocale: input.locale,
         defaultTimeZone: input.timeZone,
+        contentLocales: [input.locale],
+        markets: [],
+        weekStart: 1,
+        hourCycle: 'h23',
         killSwitchEngaged: false,
         createdAt: new Date().toISOString(),
       }),
     ),
+  get: (workspaceId: string): Promise<ApplicationWorkspaceView> =>
+    call(`/workspaces/${workspaceId}`, {}, () => ({
+      id: demoSession.workspace.id,
+      name: demoSession.workspace.name,
+      slug: demoSession.workspace.slug,
+      status: 'trialing',
+      defaultLocale: demoSession.workspace.locale,
+      defaultTimeZone: demoSession.workspace.timeZone,
+      contentLocales: [demoSession.workspace.locale],
+      markets: [],
+      weekStart: 1,
+      hourCycle: 'h23',
+      killSwitchEngaged: false,
+      createdAt: new Date().toISOString(),
+    })),
+  update: (
+    workspaceId: string,
+    patch: {
+      readonly defaultLocale?: string;
+      readonly ianaTimeZone?: string;
+      readonly contentLocales?: readonly string[];
+      readonly markets?: readonly string[];
+      readonly weekStart?: 0 | 1 | 6;
+      readonly hourCycle?: 'h12' | 'h23';
+    },
+  ): Promise<ApplicationWorkspaceView> =>
+    call(`/workspaces/${workspaceId}`, { method: 'PATCH', body: patch }, () => ({
+      id: demoSession.workspace.id,
+      name: demoSession.workspace.name,
+      slug: demoSession.workspace.slug,
+      status: 'trialing',
+      defaultLocale: patch.defaultLocale ?? demoSession.workspace.locale,
+      defaultTimeZone: patch.ianaTimeZone ?? demoSession.workspace.timeZone,
+      contentLocales: patch.contentLocales ?? [demoSession.workspace.locale],
+      markets: patch.markets ?? [],
+      weekStart: patch.weekStart ?? 1,
+      hourCycle: patch.hourCycle ?? 'h23',
+      killSwitchEngaged: false,
+      createdAt: new Date().toISOString(),
+    })),
 };
 
 export const membersApi = {

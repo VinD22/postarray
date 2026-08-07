@@ -464,12 +464,20 @@ export interface WorkspaceService {
           readonly defaultLocale?: string;
           readonly defaultTimeZone?: string;
           readonly ianaTimeZone?: string;
+          readonly contentLocales?: readonly string[];
+          readonly markets?: readonly string[];
+          readonly weekStart?: 0 | 1 | 6;
+          readonly hourCycle?: 'h12' | 'h23';
         },
     patch?: {
       readonly name?: string;
       readonly defaultLocale?: string;
       readonly defaultTimeZone?: string;
       readonly ianaTimeZone?: string;
+      readonly contentLocales?: readonly string[];
+      readonly markets?: readonly string[];
+      readonly weekStart?: 0 | 1 | 6;
+      readonly hourCycle?: 'h12' | 'h23';
     },
   ): Promise<WorkspaceView>;
   listForUser(userId: string): Promise<readonly WorkspaceView[]>;

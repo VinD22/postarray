@@ -43,6 +43,10 @@ export interface WorkspaceView {
   readonly status: string;
   readonly defaultLocale: string;
   readonly defaultTimeZone: string;
+  readonly contentLocales: readonly string[];
+  readonly markets: readonly string[];
+  readonly weekStart: 0 | 1 | 6;
+  readonly hourCycle: 'h12' | 'h23';
   readonly killSwitchEngaged: boolean;
   readonly createdAt: string;
 }

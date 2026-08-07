@@ -224,7 +224,9 @@ export function LocalizationScreen(): ReactNode {
                     control={
                       <Select
                         value={String(current.weekStart)}
-                        onValueChange={(value) => update({ weekStart: Number(value) })}
+                        onValueChange={(value) =>
+                          update({ weekStart: value === '0' ? 0 : value === '6' ? 6 : 1 })
+                        }
                       >
                         <SelectTrigger
                           className="min-w-40"

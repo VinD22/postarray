@@ -58,6 +58,37 @@ describe('browser core resource contracts', () => {
     );
   });
 
+  it('uses the canonical workspace route for localization preferences', async () => {
+    await workspacesApi.get('ws_01');
+    await workspacesApi.update('ws_01', {
+      defaultLocale: 'fr',
+      contentLocales: ['en', 'fr'],
+      markets: ['France'],
+      ianaTimeZone: 'Europe/Paris',
+      weekStart: 1,
+      hourCycle: 'h23',
+    });
+
+    expect(callMock).toHaveBeenNthCalledWith(
+      1,
+      '/workspaces/ws_01',
+      {},
+      expect.any(Function),
+    );
+    expect(callMock).toHaveBeenNthCalledWith(
+      2,
+      '/workspaces/ws_01',
+      expect.objectContaining({
+        method: 'PATCH',
+        body: expect.objectContaining({
+          defaultLocale: 'fr',
+          contentLocales: ['en', 'fr'],
+        }),
+      }),
+      expect.any(Function),
+    );
+  });
+
   it('uses canonical billing and audit routes', async () => {
     await billingApi.getState();
     await billingApi.getUsage();

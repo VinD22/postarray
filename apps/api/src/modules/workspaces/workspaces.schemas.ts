@@ -21,7 +21,15 @@ export const createWorkspaceSchema = z
   })
   .strict();
 
-export const updateWorkspaceSchema = createWorkspaceSchema.partial().strict();
+export const updateWorkspaceSchema = createWorkspaceSchema
+  .partial()
+  .extend({
+    contentLocales: z.array(localeSchema).min(1).max(25).optional(),
+    markets: z.array(z.string().trim().min(2).max(100)).max(100).optional(),
+    weekStart: z.union([z.literal(0), z.literal(1), z.literal(6)]).optional(),
+    hourCycle: z.enum(['h12', 'h23']).optional(),
+  })
+  .strict();
 
 export const listWorkspacesQuerySchema = cursorQuerySchema;
 

@@ -795,6 +795,10 @@ model Workspace {
   status          WorkspaceStatus @default(trialing)
   defaultLocale   String          @default("en") @map("default_locale")
   defaultTimeZone String          @default("UTC") @map("default_time_zone")
+  contentLocales  String[]        @default(["en"]) @map("content_locales")
+  markets         String[]        @default([])
+  weekStart       Int             @default(1) @map("week_start")
+  hourCycle       String          @default("h23") @map("hour_cycle")
   /// Set by an operator to stop every outbound provider call for this tenant.
   killSwitchAt    DateTime?       @map("kill_switch_at") @db.Timestamptz(6)
   killSwitchReason String?        @map("kill_switch_reason")

@@ -283,6 +283,7 @@ export function createIdentityService(deps: ServiceDeps): IdentityService {
               ownerUserId: user.id,
               defaultLocale: input.locale,
               defaultTimeZone: input.timeZone,
+              contentLocales: [input.locale],
               memberships: {
                 create: {
                   userId: user.id,
