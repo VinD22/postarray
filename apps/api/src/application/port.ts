@@ -137,6 +137,8 @@ export interface KeyValueSetOptions {
 /** Redis-backed in deployment, in-memory in tests. Values are opaque strings. */
 export interface KeyValueStore {
   get(key: string): Promise<string | null>;
+  /** Atomically read and remove a single-use value. */
+  getAndDelete(key: string): Promise<string | null>;
   set(key: string, value: string, options?: KeyValueSetOptions): Promise<void>;
   delete(key: string): Promise<void>;
   /** Atomic set-if-absent. Returns true when this caller won the race. */

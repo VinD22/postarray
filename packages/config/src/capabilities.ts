@@ -291,7 +291,7 @@ function detectConnectors(config: RelayConfig): Record<ConnectorKey, CapabilityS
   // definition-of-done evidence. This deliberately cannot be toggled by an
   // environment variable: deployment access is not authority to claim a
   // provider review or a completed connector contract suite.
-  const verifiedProductionConnectors = new Set<Exclude<ConnectorKey, 'fake'>>([]);
+  const verifiedProductionConnectors = new Set(VERIFIED_PRODUCTION_CONNECTORS);
   const connectors = Object.fromEntries(
     Object.entries(configured).map(([provider, status]) => [
       provider,
@@ -307,6 +307,14 @@ function detectConnectors(config: RelayConfig): Record<ConnectorKey, CapabilityS
     fake: config.core.isProduction ? 'disabled:simulator-not-available' : 'live',
   };
 }
+
+/**
+ * Code-reviewed production allow-list. Credentials and environment variables
+ * never change this value. A provider is added only with its definition of
+ * done dossier, simulator, canary and policy sign-off in the same change.
+ */
+export const VERIFIED_PRODUCTION_CONNECTORS: readonly Exclude<ConnectorKey, 'fake'>[] =
+  Object.freeze([]);
 
 export function detectCapabilities(config: RelayConfig): RuntimeCapabilities {
   const capabilities: RuntimeCapabilities = {

@@ -135,6 +135,17 @@ async function requireConnection(db: Db, connectionId: string): Promise<Connecti
 }
 
 const OAUTH_TRANSACTION_TTL_SECONDS = 600;
+const OAUTH_VERIFIER_KEY_PREFIX = 'relay:social-oauth-verifier:';
+
+/** The only callback URI social providers may be given by the application. */
+export function socialOAuthCallbackUrl(apiUrl: string, provider: ProviderId): string {
+  const origin = apiUrl.replace(/\/+$/u, '');
+  return `${origin}/v1/connections/callback/${encodeURIComponent(provider)}`;
+}
+
+export function oauthVerifierKey(transactionId: string): string {
+  return `${OAUTH_VERIFIER_KEY_PREFIX}${transactionId}`;
+}
 
 /** Every connected row except an explicit disconnect occupies a plan slot. */
 export const CHANNEL_SLOT_STATUSES = [
@@ -239,12 +250,50 @@ export function createConnectionService(deps: ServiceDeps): ConnectionService {
               details: { provider: input.provider },
             });
           }
+          const beginProviderOAuth = deps.connectors.beginOAuth;
+          if (beginProviderOAuth === undefined) {
+            throw new CapabilityNotImplementedError({
+              messageKey: 'errors.capability_not_implemented',
+              details: { provider: input.provider, capability: 'oauth_start' },
+            });
+          }
           await requireChannelSlot(db);
 
           const state = randomBytes(32).toString('base64url');
           const stateHash = createHash('sha256').update(state).digest('hex');
           const verifier = randomBytes(32).toString('base64url');
           const challenge = createHash('sha256').update(verifier).digest('base64url');
+          const apiUrl = deps.config.core.apiUrl;
+          if (apiUrl === undefined) {
+            throw invalid('errors.api_url_not_configured', {});
+          }
+          const redirectUri = socialOAuthCallbackUrl(apiUrl, input.provider);
+          const authorization = await beginProviderOAuth({
+            provider: input.provider,
+            state,
+            codeChallenge: challenge,
+            codeChallengeMethod: 'S256',
+            redirectUri,
+          });
+          let authorizationUrl: URL;
+          try {
+            authorizationUrl = new URL(authorization.authorizationUrl);
+          } catch {
+            throw new RelayError(ERROR_CODES.INTERNAL, {
+              details: {
+                reason: 'connector_authorization_url_malformed',
+                provider: input.provider,
+              },
+            });
+          }
+          if (authorizationUrl.searchParams.get('state') !== state) {
+            throw new RelayError(ERROR_CODES.INTERNAL, {
+              details: {
+                reason: 'connector_authorization_state_mismatch',
+                provider: input.provider,
+              },
+            });
+          }
 
           const transaction = await db.oAuthTransaction.create({
             data: {
@@ -254,7 +303,8 @@ export function createConnectionService(deps: ServiceDeps): ConnectionService {
               stateHash,
               codeChallenge: challenge,
               codeChallengeMethod: 'S256',
-              redirectUri: input.redirectTo,
+              redirectUri,
+              requestedScopes: [...authorization.requestedScopes],
               ...(actor.userId === null ? {} : { initiatedByUserId: actor.userId }),
               expiresAt: new Date(
                 deps.clock.now().getTime() + OAUTH_TRANSACTION_TTL_SECONDS * 1000,
@@ -270,15 +320,16 @@ export function createConnectionService(deps: ServiceDeps): ConnectionService {
             after: { provider: input.provider, phase: 'begin' },
           });
 
-          const apiUrl = deps.config.core.apiUrl;
-          if (apiUrl === undefined) {
-            throw invalid('errors.api_url_not_configured', {});
+          const stored = await deps.kv.set(oauthVerifierKey(transaction.id), verifier, {
+            ttlSeconds: OAUTH_TRANSACTION_TTL_SECONDS,
+          });
+          if (!stored) {
+            throw new RelayError(ERROR_CODES.INTERNAL, {
+              details: { reason: 'oauth_verifier_store_failed', transactionId: transaction.id },
+            });
           }
-          const url = new URL(`${apiUrl.replace(/\/+$/, '')}/v1/oauth/${input.provider}/start`);
-          url.searchParams.set('state', state);
-          url.searchParams.set('transaction_id', transaction.id);
 
-          return { authorizationUrl: url.toString(), transactionId: transaction.id };
+          return { authorizationUrl: authorizationUrl.toString(), transactionId: transaction.id };
         },
       );
     },
@@ -292,7 +343,7 @@ export function createConnectionService(deps: ServiceDeps): ConnectionService {
       ctx: ActorContext,
       input: { transactionId: string; code: string; state: string },
     ): Promise<readonly ConnectionView[]> {
-      return authorized(deps, ctx, 'connection.connect', undefined, async (db, actor) => {
+      return authorized(deps, ctx, 'connection.connect', undefined, async (db) => {
         const stateHash = createHash('sha256').update(input.state).digest('hex');
         const transaction = await db.oAuthTransaction.findFirst({
           where: { id: input.transactionId },
@@ -302,7 +353,6 @@ export function createConnectionService(deps: ServiceDeps): ConnectionService {
             stateHash: true,
             consumedAt: true,
             expiresAt: true,
-            reconnectConnectionId: true,
           },
         });
         if (transaction === null) {
@@ -322,31 +372,19 @@ export function createConnectionService(deps: ServiceDeps): ConnectionService {
           throw invalid('errors.oauth_state_mismatch', {});
         }
 
-        await db.oAuthTransaction.update({
-          where: { id: transaction.id },
-          data: { consumedAt: deps.clock.now() },
-        });
-
-        // The connector adapter writes the connection and the credential in the
-        // worker. Until it reports back there is nothing new to return, so we
-        // return what the workspace already holds for this provider rather than
-        // inventing a row.
-        const rows = await db.socialConnection.findMany({
-          where: {
-            ...(transaction.provider === null ? {} : { provider: transaction.provider }),
+        // Never consume a transaction or report a connection until a provider
+        // adapter has exchanged the code, discovered eligible accounts and
+        // persisted an encrypted credential. Returning existing rows here used
+        // to create a false “connected” redirect and allowed a callback to look
+        // successful even though no provider call occurred.
+        throw new CapabilityNotImplementedError({
+          messageKey: 'errors.capability_not_implemented',
+          details: {
+            provider: transaction.provider,
+            capability: 'oauth_completion',
+            transactionId: transaction.id,
           },
-          orderBy: { connectedAt: 'desc' },
-          select: CONNECTION_SELECT,
         });
-
-        await recordAudit(db, actor, {
-          action: 'connection.connected',
-          targetType: 'oauth_transaction',
-          targetId: transaction.id,
-          after: { provider: transaction.provider, phase: 'complete' },
-        });
-
-        return rows.map(toView);
       });
     },
 

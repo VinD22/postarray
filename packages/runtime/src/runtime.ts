@@ -43,21 +43,10 @@ import { LocalDataExportEncryption } from './data-export-encryption';
 import { AwsDataExportKmsClient, KmsDataExportEncryption } from './kms-data-export-encryption';
 import { ResendMailer } from './resend-mailer';
 import { TemporalScheduler } from './temporal-scheduler';
+import { createVerifiedConnectorRegistry } from './verified-connectors';
 
 const REQUIRED_PRODUCTION_ADAPTERS = ['kv'] as const;
 type RequiredProductionAdapter = (typeof REQUIRED_PRODUCTION_ADAPTERS)[number];
-
-class NoVerifiedConnectors implements ConnectorRegistry {
-  has(): boolean {
-    return false;
-  }
-
-  async capabilitiesFor(): Promise<never> {
-    throw new RelayError(ERROR_CODES.CAPABILITY_NOT_IMPLEMENTED, {
-      details: { reason: 'no_verified_connector_enabled' },
-    });
-  }
-}
 
 class DatabaseBillingGateway implements BillingGateway {
   readonly #prisma: RelayPrismaClient;
@@ -820,7 +809,9 @@ export function createApplicationRuntime(options: ApplicationRuntimeOptions): Ap
   const services = createServices({
     prisma,
     kv,
-    connectors: adapters.connectors ?? new NoVerifiedConnectors(),
+    connectors:
+      adapters.connectors ??
+      createVerifiedConnectorRegistry({ config: options.config, logger: options.logger, clock }),
     ai: adapters.ai ?? aiAdapter(options.config, options.logger, clock),
     billing: adapters.billing ?? new DatabaseBillingGateway(prisma, clock, options.config),
     scheduler,

@@ -76,13 +76,12 @@ export class OAuthTransactionStore {
     });
   }
 
-  /** Read and delete. A transaction is single use, like the code it completes. */
+  /** Atomically read and delete. A transaction is single use, like the code it completes. */
   async consume(transactionId: string): Promise<OAuthTransaction | null> {
-    const raw = await this.kv.get(this.key(transactionId));
+    const raw = await this.kv.getAndDelete(this.key(transactionId));
     if (raw === null) {
       return null;
     }
-    await this.kv.delete(this.key(transactionId));
     let parsed: unknown;
     try {
       parsed = JSON.parse(raw);

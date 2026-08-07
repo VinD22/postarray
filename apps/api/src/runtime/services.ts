@@ -77,6 +77,10 @@ class ApplicationKvAdapter implements ApplicationKeyValueStore {
     return this.edge.get(key);
   }
 
+  getAndDelete(key: string): Promise<string | null> {
+    return this.edge.getAndDelete(key);
+  }
+
   async set(
     key: string,
     value: string,

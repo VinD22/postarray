@@ -1789,6 +1789,7 @@ model SocialConnection {
   // One row per external account per workspace, forever. Disconnect flips
   // `status`; reconnect updates the same row so history and receipts survive.
   @@unique([provider, externalAccountId, workspaceId], map: "uq_social_connections_provider_account_workspace")
+  @@unique([workspaceId, id], map: "uq_social_connections_workspace_id_id")
   @@index([workspaceId])
   @@index([workspaceId, status])
   @@index([workspaceId, brandId, provider])
@@ -1820,10 +1821,11 @@ model SocialCredential {
   updatedAt             DateTime  @updatedAt @map("updated_at") @db.Timestamptz(6)
 
   workspace  Workspace        @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
-  connection SocialConnection @relation(fields: [connectionId], references: [id], onDelete: Cascade)
+  connection SocialConnection @relation(fields: [workspaceId, connectionId], references: [workspaceId, id], onDelete: Cascade)
 
   @@index([workspaceId])
   @@index([accessTokenExpiresAt])
+  @@unique([workspaceId, connectionId], map: "uq_social_credentials_workspace_connection")
   @@map("social_credentials")
   @@schema("private")
 }

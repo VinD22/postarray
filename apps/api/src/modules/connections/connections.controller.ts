@@ -40,7 +40,7 @@ import {
 import { instantAfter } from '../../common/instant';
 import { relayState } from '../../common/request.types';
 import { connectionIdSchema } from '../../common/schemas';
-import { constantTimeEquals, randomToken } from '../../security/credentials';
+import { constantTimeEquals } from '../../security/credentials';
 import { parseBody, parseParams, parseQuery } from '../../common/zod';
 import {
   beginOAuthSchema,
@@ -52,6 +52,7 @@ import {
 } from './connections.schemas';
 import { ConnectionsService } from './connections.service';
 import { OAUTH_TRANSACTION_TTL_SECONDS, OAuthTransactionStore } from './oauth-transaction.store';
+import { stateFromAuthorizationUrl } from './oauth-state';
 
 /**
  * Connected social accounts, and the OAuth handshake that creates them.
@@ -121,7 +122,11 @@ export class ConnectionsController {
     const input = parseBody(beginOAuthSchema, body);
     const result = await this.connections.beginOAuth(actor, input);
 
-    const state = randomToken(32);
+    // The application service generated and persisted this state. Do not create
+    // another cookie value here: a second nonce makes every callback fail the
+    // database hash check, and it weakens the single source of truth for CSRF
+    // protection.
+    const state = stateFromAuthorizationUrl(result.authorizationUrl);
     const now = this.clock.now();
     await this.transactions.put({
       transactionId: result.transactionId,

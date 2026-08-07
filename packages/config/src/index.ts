@@ -81,6 +81,7 @@ export {
   type ConnectorKey,
   type RuntimeCapabilities,
   type SubsystemName,
+  VERIFIED_PRODUCTION_CONNECTORS,
 } from './capabilities';
 
 export {

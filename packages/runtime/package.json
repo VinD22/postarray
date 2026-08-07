@@ -22,6 +22,7 @@
     "@relay/ai": "workspace:*",
     "@relay/application": "workspace:*",
     "@relay/billing": "workspace:*",
+    "@relay/connectors": "workspace:*",
     "@relay/config": "workspace:*",
     "@relay/contracts": "workspace:*",
     "@relay/database": "workspace:*",

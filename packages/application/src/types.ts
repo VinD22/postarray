@@ -418,6 +418,22 @@ export interface SchedulerPort {
  */
 export interface ConnectorRegistry {
   has(provider: ProviderId): boolean;
+  /**
+   * Build a provider-owned authorization URL. The application owns state and
+   * the exact callback URI; the adapter owns the official provider endpoint
+   * and requested scopes. It is optional while no connector has passed the
+   * production definition-of-done gate.
+   */
+  beginOAuth?(input: {
+    readonly provider: ProviderId;
+    readonly state: string;
+    readonly codeChallenge: string;
+    readonly codeChallengeMethod: 'S256';
+    readonly redirectUri: string;
+  }): Promise<{
+    readonly authorizationUrl: string;
+    readonly requestedScopes: readonly string[];
+  }>;
   capabilitiesFor(input: {
     readonly provider: ProviderId;
     readonly connectionId: string;

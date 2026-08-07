@@ -731,6 +731,9 @@ importers:
       '@relay/config':
         specifier: workspace:*
         version: link:../config
+      '@relay/connectors':
+        specifier: workspace:*
+        version: link:../connectors
       '@relay/contracts':
         specifier: workspace:*
         version: link:../contracts

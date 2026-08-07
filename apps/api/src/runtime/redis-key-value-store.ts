@@ -64,6 +64,15 @@ export class MemoryKeyValueStore implements DisconnectableKeyValueStore {
     return Promise.resolve(this.live(key)?.value ?? null);
   }
 
+  getAndDelete(key: string): Promise<string | null> {
+    const entry = this.live(key);
+    if (entry === undefined) {
+      return Promise.resolve(null);
+    }
+    this.entries.delete(key);
+    return Promise.resolve(entry.value);
+  }
+
   set(key: string, value: string, options?: KeyValueSetOptions): Promise<void> {
     this.entries.set(key, { value, expiresAt: this.expiryFor(options) });
     return Promise.resolve();
@@ -142,6 +151,10 @@ export class RedisKeyValueStore implements DisconnectableKeyValueStore {
 
   async get(key: string): Promise<string | null> {
     return this.client.get(key);
+  }
+
+  async getAndDelete(key: string): Promise<string | null> {
+    return this.client.getdel(key);
   }
 
   async set(key: string, value: string, options?: KeyValueSetOptions): Promise<void> {
