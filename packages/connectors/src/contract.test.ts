@@ -26,6 +26,22 @@ import {
   fakeThreadItem,
 } from './fake/fixtures';
 import { fixedClock } from './ports';
+import {
+  createTestDeps,
+  testConnection,
+  testDraft,
+  testGrant,
+  testMetricsRequest,
+  testPublishRequest,
+  testStatusRequest,
+} from './providers/shared/testing';
+import { createBlueskyConnector } from './providers/bluesky/connector';
+import { buildBlueskyCapabilities } from './providers/bluesky/capabilities';
+import {
+  BLUESKY_CREATE_RECORD_FIXTURE,
+  BLUESKY_POST_THREAD_FIXTURE,
+  BLUESKY_SESSION_FIXTURE,
+} from './providers/bluesky/__fixtures__/index';
 
 /**
  * The shared connector contract suite.
@@ -108,13 +124,80 @@ describe('publishResult schema', () => {
   });
 });
 
-describe('a connector satisfies the contract', () => {
-  const connector = createFakeConnector({ clock, instant: true });
-  const connection = fakeConnectionRef({}, { clock });
-  const draft = fakeDraft(
-    { contentKind: 'image', media: [fakeImageAsset()], threadItems: [fakeThreadItem()] },
-    { clock, connection },
-  );
+const fakeConnector = createFakeConnector({ clock, instant: true });
+const fakeConnection = fakeConnectionRef({}, { clock });
+const fakeContractDraft = fakeDraft(
+  { contentKind: 'image', media: [fakeImageAsset()], threadItems: [fakeThreadItem()] },
+  { clock, connection: fakeConnection },
+);
+
+const blueskyConnection = testConnection({
+  provider: 'bluesky',
+  externalAccountId: 'did:plc:fakedidfakedidfake01',
+  metadata: { handle: 'sample-studio.fake.invalid', serviceUrl: 'https://bsky.invalid' },
+});
+const { deps: blueskyDeps } = createTestDeps({
+  routes: [
+    { method: 'GET', match: 'com.atproto.server.getSession', body: BLUESKY_SESSION_FIXTURE },
+    { method: 'POST', match: 'com.atproto.repo.createRecord', body: BLUESKY_CREATE_RECORD_FIXTURE },
+    { method: 'GET', match: 'app.bsky.feed.getPostThread', body: BLUESKY_POST_THREAD_FIXTURE },
+  ],
+});
+const blueskyConnector = createBlueskyConnector(blueskyDeps);
+const blueskyContractDraft = testDraft({
+  connection: blueskyConnection,
+  capabilities: buildBlueskyCapabilities({
+    connection: blueskyConnection,
+    observedAt: '2026-08-04T12:00:00.000Z',
+  }),
+  contentKind: 'text',
+});
+
+const connectorContractCases = [
+  {
+    provider: 'fake',
+    connector: fakeConnector,
+    connection: fakeConnection,
+    draft: fakeContractDraft,
+    grant: {
+      provider: 'fake' as const,
+      workspaceId: 'ws_1',
+      accessToken: fakeConnection.accessToken,
+      refreshToken: null,
+      grantedScopes: ['fake.read'] as string[],
+      obtainedAt: '2026-08-04T12:00:00.000Z',
+      accessTokenExpiresAt: null,
+      grantMetadata: {},
+    },
+    mediaRequest: fakeMediaPreparationRequest(fakeContractDraft),
+    publishRequest: fakePublishRequest(fakeContractDraft, {}, { clock }),
+    statusRequest: fakeStatusRequest(fakeContractDraft, {}, { clock }),
+    metricsRequest: fakeMetricsRequest(fakeContractDraft, 'fkp_anything'),
+    forbiddenSecret: 'fake-access-token-for-local-development',
+  },
+  {
+    provider: 'bluesky',
+    connector: blueskyConnector,
+    connection: blueskyConnection,
+    draft: blueskyContractDraft,
+    grant: testGrant({ provider: 'bluesky' }),
+    mediaRequest: fakeMediaPreparationRequest(blueskyContractDraft),
+    publishRequest: testPublishRequest({ draft: blueskyContractDraft }),
+    statusRequest: testStatusRequest({
+      connection: blueskyConnection,
+      externalPostId: BLUESKY_CREATE_RECORD_FIXTURE.uri,
+    }),
+    metricsRequest: testMetricsRequest({
+      connection: blueskyConnection,
+      scope: 'post',
+      externalPostId: BLUESKY_CREATE_RECORD_FIXTURE.uri,
+    }),
+    forbiddenSecret: 'fake-test-access-token-not-a-real-credential',
+  },
+] as const;
+
+describe.each(connectorContractCases)('$provider connector satisfies the contract', (contract) => {
+  const { connector, connection, draft } = contract;
 
   it('returns a schema valid identity and authorization definition', () => {
     expect(providerIdentitySchema.safeParse(connector.identity()).success).toBe(true);
@@ -122,16 +205,7 @@ describe('a connector satisfies the contract', () => {
   });
 
   it('returns schema valid discovery results', async () => {
-    const accounts = await connector.discoverAccounts({
-      provider: 'fake',
-      workspaceId: 'ws_1',
-      accessToken: connection.accessToken,
-      refreshToken: null,
-      grantedScopes: ['fake.read'],
-      obtainedAt: '2026-08-04T12:00:00.000Z',
-      accessTokenExpiresAt: null,
-      grantMetadata: {},
-    });
+    const accounts = await connector.discoverAccounts(contract.grant);
     for (const account of accounts) {
       expect(CONNECTOR_SCHEMAS.externalAccount.safeParse(account).success).toBe(true);
     }
@@ -153,21 +227,21 @@ describe('a connector satisfies the contract', () => {
   });
 
   it('returns schema valid prepared media', async () => {
-    const prepared = await connector.prepareMedia(fakeMediaPreparationRequest(draft));
+    const prepared = await connector.prepareMedia(contract.mediaRequest);
     for (const entry of prepared) {
       expect(CONNECTOR_SCHEMAS.preparedMedia.safeParse(entry).success).toBe(true);
     }
   });
 
   it('returns a schema valid publish result and status', async () => {
-    const result = await connector.publish(fakePublishRequest(draft, {}, { clock }));
+    const result = await connector.publish(contract.publishRequest);
     expect(publishResultSchema.safeParse(result).success).toBe(true);
-    const status = await connector.getStatus(fakeStatusRequest(draft, {}, { clock }));
+    const status = await connector.getStatus(contract.statusRequest);
     expect(publishStatusSchema.safeParse(status).success).toBe(true);
   });
 
   it('returns schema valid metric observations', async () => {
-    const observations = await connector.fetchMetrics(fakeMetricsRequest(draft, 'fkp_anything'));
+    const observations = await connector.fetchMetrics(contract.metricsRequest);
     for (const observation of observations) {
       expect(CONNECTOR_SCHEMAS.metricObservation.safeParse(observation).success).toBe(true);
     }
@@ -177,6 +251,6 @@ describe('a connector satisfies the contract', () => {
     const snapshot = await connector.getCapabilities(connection);
     const preview = await connector.preview(draft);
     const serialized = JSON.stringify({ snapshot, preview, identity: connector.identity() });
-    expect(serialized).not.toContain('fake-access-token-for-local-development');
+    expect(serialized).not.toContain(contract.forbiddenSecret);
   });
 });

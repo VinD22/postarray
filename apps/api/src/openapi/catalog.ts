@@ -602,7 +602,7 @@ export const OPERATIONS: readonly OperationSpec[] = [
     requiresStepUp: true,
     requiresIdempotencyKey: true,
     pathParams: p('id', connectionIdSchema),
-    response: view,
+    response: z.object({ authorizationUrl: z.string(), transactionId: z.string() }).strict(),
   },
   {
     method: 'post',

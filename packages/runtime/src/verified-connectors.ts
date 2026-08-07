@@ -13,7 +13,7 @@ import {
 } from '@relay/connectors';
 import {
   detectCapabilities,
-  VERIFIED_PRODUCTION_CONNECTORS,
+  verifiedConnectorsForEnvironment,
   type RelayConfig,
 } from '@relay/config';
 import {
@@ -307,7 +307,7 @@ export function createVerifiedConnectorRegistry(input: {
       config: input.config,
       redirectBaseUrl: input.config.core.apiUrl ?? 'http://127.0.0.1',
     },
-    { verifiedProviders: VERIFIED_PRODUCTION_CONNECTORS },
+    { verifiedProviders: verifiedConnectorsForEnvironment(input.config) },
   );
 
   // Keep this assertion close to composition. It makes an accidental provider

@@ -1,5 +1,10 @@
 import { randomBytes, createHash } from 'node:crypto';
 
+import { SecretValue } from '@relay/connectors';
+import {
+  VERIFIED_DEVELOPMENT_TEST_CONNECTORS,
+  VERIFIED_PRODUCTION_CONNECTORS,
+} from '@relay/config';
 import {
   ACTIVE_CHANNEL_LIMIT,
   CapabilityNotImplementedError,
@@ -19,14 +24,22 @@ import type {
   MentionEntityView,
   ProviderDestinationView,
 } from '../views';
+import type { OAuthAccountSelectionView } from '../ports/oauth-pending';
 
 import { recordAudit } from '../internal/audit';
 import { loadCapabilities } from '../internal/capabilities';
 import { invalid, notFound } from '../internal/errors';
+import {
+  buildOAuthConnectionClaims,
+  sanitizeDiscoveredAccounts,
+  toExternalAccountForClaim,
+} from '../internal/oauth-claim-build';
+import { encryptPendingOAuthGrant, serializeCredentialResult } from '../internal/oauth-grant';
 import { fromStoredAccountType, toProviderId } from '../internal/mappers';
 import { pageArgs, toPage } from '../internal/pagination';
 import { authorized, type Db } from '../internal/runtime';
 import { asDestinationKind } from '../internal/storage-enums';
+import { selectOAuthAccounts } from './oauth-gateway';
 
 /**
  * Connected accounts.
@@ -136,6 +149,30 @@ async function requireConnection(db: Db, connectionId: string): Promise<Connecti
 
 const OAUTH_TRANSACTION_TTL_SECONDS = 600;
 const OAUTH_VERIFIER_KEY_PREFIX = 'relay:social-oauth-verifier:';
+export const DESTINATION_CACHE_TTL_MS = 6 * 60 * 60 * 1000;
+export const MENTION_CACHE_TTL_MS = 5 * 60 * 1000;
+
+export function cacheIsStale(
+  refreshedAt: Date | null | undefined,
+  now: Date,
+  ttlMs: number,
+  staleAfter?: Date | null,
+): boolean {
+  if (refreshedAt === null || refreshedAt === undefined) return true;
+  const deadline = staleAfter ?? new Date(refreshedAt.getTime() + ttlMs);
+  return deadline.getTime() <= now.getTime();
+}
+
+/** Provider revoke runs only for connectors on the verified dev or production allow-list. */
+export function providerEligibleForVerifiedRevoke(
+  provider: ProviderId,
+  isProduction: boolean,
+): boolean {
+  const verified = isProduction
+    ? VERIFIED_PRODUCTION_CONNECTORS
+    : VERIFIED_DEVELOPMENT_TEST_CONNECTORS;
+  return provider !== 'fake' && verified.includes(provider);
+}
 
 /** The only callback URI social providers may be given by the application. */
 export function socialOAuthCallbackUrl(apiUrl: string, provider: ProviderId): string {
@@ -160,6 +197,22 @@ export function oauthCompletionReady(
     deps.credentialVault !== undefined &&
     deps.credentialStore?.claimOAuthConnections !== undefined
   );
+}
+
+export function oauthCallbackReady(
+  deps: Pick<ServiceDeps, 'connectors' | 'credentialVault' | 'kv'>,
+): boolean {
+  return (
+    deps.connectors.completeOAuth !== undefined &&
+    deps.credentialVault !== undefined &&
+    deps.kv !== undefined
+  );
+}
+
+export function oauthClaimReady(
+  deps: Pick<ServiceDeps, 'connectors' | 'credentialVault' | 'credentialStore' | 'oauthPending'>,
+): boolean {
+  return oauthCompletionReady(deps) && deps.oauthPending !== undefined;
 }
 
 /**
@@ -388,40 +441,22 @@ export function createConnectionService(deps: ServiceDeps): ConnectionService {
     },
 
     /**
-     * Complete an authorization. The connector adapter owns the token exchange;
-     * this method owns consuming the transaction exactly once and recording the
-     * connection. No token ever reaches this layer.
+     * Exchange the provider callback code once and persist encrypted discovery
+     * for explicit account selection. The OAuth transaction stays open until
+     * claim.
      */
-    async completeOAuth(
+    async handleOAuthCallback(
       ctx: ActorContext,
-      input: {
-        transactionId: string;
-        code: string;
-        state: string;
-        selectedExternalAccountIds?: readonly string[];
-      },
-    ): Promise<readonly ConnectionView[]> {
+      input: { transactionId: string; code: string; state: string },
+    ): Promise<void> {
       return authorized(deps, ctx, 'connection.connect', undefined, async (db) => {
-        // Validate the explicit selection before touching the one-shot verifier
-        // or exchanging the provider code. Existing transports which do not
-        // yet implement the selection handoff therefore fail without consuming
-        // anything the person would need to retry.
-        requireExplicitOAuthAccountSelection(input.selectedExternalAccountIds);
-
-        // A callback must never exchange a code or claim a connection until
-        // the composition root provides both the connector completion port and
-        // transaction-bound envelope persistence. The runtime currently keeps
-        // this path unavailable rather than reporting a false connection.
-        if (!oauthCompletionReady(deps)) {
+        if (!oauthCallbackReady(deps) || deps.oauthPending === undefined) {
           throw new CapabilityNotImplementedError({
             messageKey: 'errors.capability_not_implemented',
-            details: {
-              capability: 'oauth_completion_persistence',
-              reason: 'atomic_oauth_claim_adapter_unavailable',
-            },
+            details: { capability: 'oauth_callback_persistence' },
           });
         }
-        if (deps.connectors.completeOAuth === undefined) {
+        if (deps.connectors.completeOAuth === undefined || deps.credentialVault === undefined) {
           throw new CapabilityNotImplementedError({
             messageKey: 'errors.capability_not_implemented',
             details: { capability: 'oauth_completion' },
@@ -433,8 +468,12 @@ export function createConnectionService(deps: ServiceDeps): ConnectionService {
           where: { id: input.transactionId },
           select: {
             id: true,
+            workspaceId: true,
+            brandId: true,
             provider: true,
             stateHash: true,
+            codeChallenge: true,
+            redirectUri: true,
             consumedAt: true,
             expiresAt: true,
           },
@@ -455,31 +494,320 @@ export function createConnectionService(deps: ServiceDeps): ConnectionService {
         if (transaction.stateHash !== stateHash) {
           throw invalid('errors.oauth_state_mismatch', {});
         }
+        if (transaction.provider === null) {
+          throw invalid('error.request_invalid.message', { reason: 'OAUTH_PROVIDER_MISSING' });
+        }
+        const provider = toProviderId(transaction.provider);
 
-        // Discovery, account selection and encrypted upsert are intentionally
-        // staged behind this seam. Until their transaction-bound implementation
-        // is wired, do not consume the application OAuth row or return views.
-        throw new CapabilityNotImplementedError({
-          messageKey: 'errors.capability_not_implemented',
-          details: {
-            provider: transaction.provider,
-            capability: 'oauth_completion_persistence',
-            transactionId: transaction.id,
-          },
+        const verifier = await deps.kv.getAndDelete(oauthVerifierKey(input.transactionId));
+        if (verifier === null) {
+          throw invalid('errors.oauth_verifier_missing', { transactionId: input.transactionId });
+        }
+        if (transaction.codeChallenge === null) {
+          throw invalid('error.request_invalid.message', { reason: 'OAUTH_CHALLENGE_MISSING' });
+        }
+
+        const discovery = await deps.connectors.completeOAuth({
+          provider,
+          workspaceId: transaction.workspaceId,
+          code: input.code,
+          codeVerifier: new SecretValue(verifier),
+          expectedCodeChallenge: transaction.codeChallenge,
+          redirectUri: transaction.redirectUri,
+        });
+
+        const grant = serializeCredentialResult(discovery.credential);
+        const encryptedGrant = await encryptPendingOAuthGrant(deps.credentialVault, {
+          workspaceId: transaction.workspaceId,
+          transactionId: transaction.id,
+          provider,
+          grant,
+        });
+
+        await deps.oauthPending?.create({
+          transactionId: transaction.id,
+          workspaceId: transaction.workspaceId,
+          brandId: transaction.brandId,
+          provider,
+          stateHash: transaction.stateHash,
+          accounts: sanitizeDiscoveredAccounts(discovery.accounts),
+          grant: encryptedGrant,
+          expiresAt: transaction.expiresAt.toISOString(),
+          consumedAt: null,
         });
       });
     },
 
-    async reconnect(ctx: ActorContext, connectionId: string): Promise<ConnectionView> {
-      return authorized(deps, ctx, 'connection.reconnect', { connectionId }, async (db) => {
-        const connection = await requireConnection(db, connectionId);
-        throw new CapabilityNotImplementedError({
-          messageKey: 'errors.capability_not_implemented',
-          details: {
-            provider: toProviderId(connection.provider),
-            capability: 'oauth_reconnect',
-          },
+    async getOAuthAccountSelection(
+      ctx: ActorContext,
+      transactionId: string,
+    ): Promise<OAuthAccountSelectionView> {
+      return authorized(deps, ctx, 'connection.connect', undefined, async () => {
+        if (deps.oauthPending === undefined) {
+          throw new CapabilityNotImplementedError({
+            messageKey: 'errors.capability_not_implemented',
+            details: { capability: 'oauth_pending_discovery' },
+          });
+        }
+        const pending = await deps.oauthPending.find({
+          workspaceId: ctx.workspaceId,
+          transactionId,
         });
+        if (pending === null || pending.consumedAt !== null) {
+          throw notFound('oauth_pending_discovery', transactionId);
+        }
+        if (new Date(pending.expiresAt).getTime() <= deps.clock.now().getTime()) {
+          throw invalid('errors.oauth_transaction_expired', { transactionId });
+        }
+        return {
+          transactionId: pending.transactionId,
+          provider: pending.provider,
+          expiresAt: pending.expiresAt,
+          accounts: pending.accounts,
+        };
+      });
+    },
+
+    /**
+     * Claim selected accounts after discovery. Requires a prior callback exchange.
+     */
+    async completeOAuth(
+      ctx: ActorContext,
+      input: {
+        transactionId: string;
+        selectedExternalAccountIds: readonly string[];
+      },
+    ): Promise<readonly ConnectionView[]> {
+      return authorized(deps, ctx, 'connection.connect', undefined, async (db, actor) => {
+        const selectedExternalAccountIds = requireExplicitOAuthAccountSelection(
+          input.selectedExternalAccountIds,
+        );
+
+        if (!oauthClaimReady(deps)) {
+          throw new CapabilityNotImplementedError({
+            messageKey: 'errors.capability_not_implemented',
+            details: {
+              capability: 'oauth_completion_persistence',
+              reason: 'atomic_oauth_claim_adapter_unavailable',
+            },
+          });
+        }
+        if (
+          deps.credentialVault === undefined ||
+          deps.credentialStore?.claimOAuthConnections === undefined ||
+          deps.oauthPending === undefined
+        ) {
+          throw new CapabilityNotImplementedError({
+            messageKey: 'errors.capability_not_implemented',
+            details: { capability: 'oauth_completion' },
+          });
+        }
+
+        const pending = await deps.oauthPending.find({
+          workspaceId: ctx.workspaceId,
+          transactionId: input.transactionId,
+        });
+        if (pending === null || pending.consumedAt !== null) {
+          throw notFound('oauth_pending_discovery', input.transactionId);
+        }
+        if (new Date(pending.expiresAt).getTime() <= deps.clock.now().getTime()) {
+          throw invalid('errors.oauth_transaction_expired', { transactionId: input.transactionId });
+        }
+
+        const accountsForSelection = pending.accounts.map((account) =>
+          toExternalAccountForClaim(account),
+        );
+        const selectedAccounts = selectOAuthAccounts(
+          accountsForSelection,
+          selectedExternalAccountIds,
+        );
+
+        const oauthTransaction = await db.oAuthTransaction.findFirst({
+          where: { id: input.transactionId },
+          select: { reconnectConnectionId: true },
+        });
+        const reconnectTarget =
+          oauthTransaction?.reconnectConnectionId === null ||
+          oauthTransaction?.reconnectConnectionId === undefined
+            ? null
+            : await db.socialConnection.findFirst({
+                where: { id: oauthTransaction.reconnectConnectionId },
+                select: { id: true, provider: true, externalAccountId: true },
+              });
+        if (
+          oauthTransaction?.reconnectConnectionId !== null &&
+          oauthTransaction?.reconnectConnectionId !== undefined &&
+          reconnectTarget === null
+        ) {
+          throw notFound('connection', oauthTransaction.reconnectConnectionId);
+        }
+        if (
+          reconnectTarget !== null &&
+          (selectedExternalAccountIds.length !== 1 ||
+            selectedExternalAccountIds[0] !== reconnectTarget.externalAccountId ||
+            reconnectTarget.provider !== pending.provider)
+        ) {
+          throw invalid('error.request_invalid.message', {
+            reason: 'OAUTH_RECONNECT_ACCOUNT_MISMATCH',
+          });
+        }
+
+        const used = await db.socialConnection.count({
+          where: { status: { in: [...CHANNEL_SLOT_STATUSES] } },
+        });
+        if (reconnectTarget === null) assertChannelSlotAvailable(used, ACTIVE_CHANNEL_LIMIT);
+        if (reconnectTarget === null && used + selectedAccounts.length > ACTIVE_CHANNEL_LIMIT) {
+          throw new RelayError(ERROR_CODES.QUOTA_EXCEEDED, {
+            messageKey: 'errors.channel_limit_reached',
+            details: { used, limit: ACTIVE_CHANNEL_LIMIT },
+          });
+        }
+
+        const existingRows = await db.socialConnection.findMany({
+          where: {
+            workspaceId: ctx.workspaceId,
+            provider: pending.provider,
+            externalAccountId: { in: [...selectedExternalAccountIds] },
+          },
+          select: { id: true, externalAccountId: true, status: true },
+        });
+        const existingConnectionIds = new Map<string, string>();
+        if (reconnectTarget !== null) {
+          existingConnectionIds.set(reconnectTarget.externalAccountId, reconnectTarget.id);
+        }
+        for (const row of existingRows) {
+          if (row.status !== 'disconnected' && row.id !== reconnectTarget?.id) {
+            throw invalid('error.request_invalid.message', {
+              reason: 'OAUTH_ACCOUNT_ALREADY_CONNECTED',
+              externalAccountId: row.externalAccountId,
+            });
+          }
+          existingConnectionIds.set(row.externalAccountId, row.id);
+        }
+
+        let claims = await buildOAuthConnectionClaims({
+          vault: deps.credentialVault,
+          workspaceId: ctx.workspaceId,
+          transactionId: input.transactionId,
+          provider: pending.provider,
+          grantEnvelope: pending.grant,
+          accounts: selectedAccounts,
+          existingConnectionIds,
+        });
+
+        claims = await Promise.all(
+          claims.map(async (claim) => {
+            const snapshot = await deps.connectors.capabilitiesFor({
+              provider: pending.provider,
+              connectionId: claim.connectionId,
+              accountType: claim.accountType,
+            });
+            return {
+              ...claim,
+              capabilities: snapshot as unknown as Record<string, unknown>,
+              capabilityVersion: snapshot.capabilityVersion,
+            };
+          }),
+        );
+
+        const claimResult = await deps.credentialStore.claimOAuthConnections({
+          workspaceId: ctx.workspaceId,
+          transactionId: input.transactionId,
+          expectedProvider: pending.provider,
+          expectedStateHash: pending.stateHash,
+          claimedAt: deps.clock.now().toISOString(),
+          actor: {
+            actorType: actor.ctx.actorType,
+            actorId: actor.ctx.actorId,
+            userId: actor.userId,
+            surface: actor.ctx.surface,
+            correlationId: actor.ctx.correlationId,
+            approvalLevel: actor.ctx.approvalLevel,
+            ...(actor.ctx.clientId === undefined ? {} : { clientId: actor.ctx.clientId }),
+            ...(actor.ctx.ipAddress === undefined ? {} : { ipAddress: actor.ctx.ipAddress }),
+            ...(actor.ctx.userAgent === undefined ? {} : { userAgent: actor.ctx.userAgent }),
+          },
+          connections: claims,
+        });
+
+        const rows = await db.socialConnection.findMany({
+          where: { id: { in: [...claimResult.connectionIds] } },
+          select: CONNECTION_SELECT,
+        });
+        return rows.map((row) => toView(row));
+      });
+    },
+
+    async reconnect(ctx: ActorContext, connectionId: string) {
+      return authorized(deps, ctx, 'connection.reconnect', { connectionId }, async (db, actor) => {
+        const connection = await requireConnection(db, connectionId);
+        const provider = toProviderId(connection.provider);
+        const beginProviderOAuth = deps.connectors.beginOAuth;
+        if (beginProviderOAuth === undefined) {
+          throw new CapabilityNotImplementedError({
+            messageKey: 'errors.capability_not_implemented',
+            details: { provider, capability: 'oauth_start' },
+          });
+        }
+        const apiUrl = deps.config.core.apiUrl;
+        if (apiUrl === undefined) throw invalid('errors.api_url_not_configured', {});
+        const state = randomBytes(32).toString('base64url');
+        const stateHash = createHash('sha256').update(state).digest('hex');
+        const verifier = randomBytes(32).toString('base64url');
+        const challenge = createHash('sha256').update(verifier).digest('base64url');
+        const redirectUri = socialOAuthCallbackUrl(apiUrl, provider);
+        const authorization = await beginProviderOAuth({
+          provider,
+          state,
+          codeChallenge: challenge,
+          codeChallengeMethod: 'S256',
+          redirectUri,
+        });
+        let authorizationUrl: URL;
+        try {
+          authorizationUrl = new URL(authorization.authorizationUrl);
+        } catch {
+          throw new RelayError(ERROR_CODES.INTERNAL, {
+            details: { reason: 'connector_authorization_url_malformed', provider },
+          });
+        }
+        if (authorizationUrl.searchParams.get('state') !== state) {
+          throw new RelayError(ERROR_CODES.INTERNAL, {
+            details: { reason: 'connector_authorization_state_mismatch', provider },
+          });
+        }
+        const transaction = await db.oAuthTransaction.create({
+          data: {
+            workspaceId: actor.workspace.id,
+            brandId: connection.brandId,
+            purpose: 'reconnect_social_account',
+            provider,
+            stateHash,
+            codeChallenge: challenge,
+            codeChallengeMethod: 'S256',
+            redirectUri,
+            requestedScopes: [...authorization.requestedScopes],
+            reconnectConnectionId: connectionId,
+            ...(actor.userId === null ? {} : { initiatedByUserId: actor.userId }),
+            expiresAt: new Date(deps.clock.now().getTime() + OAUTH_TRANSACTION_TTL_SECONDS * 1000),
+          },
+          select: { id: true },
+        });
+        const stored = await deps.kv.set(oauthVerifierKey(transaction.id), verifier, {
+          ttlSeconds: OAUTH_TRANSACTION_TTL_SECONDS,
+        });
+        if (!stored) {
+          throw new RelayError(ERROR_CODES.INTERNAL, {
+            details: { reason: 'oauth_verifier_store_failed', transactionId: transaction.id },
+          });
+        }
+        await recordAudit(db, actor, {
+          action: 'connection.reconnected',
+          targetType: 'oauth_transaction',
+          targetId: transaction.id,
+          after: { provider, phase: 'begin', connectionId },
+        });
+        return { authorizationUrl: authorizationUrl.toString(), transactionId: transaction.id };
       });
     },
 
@@ -530,6 +858,23 @@ export function createConnectionService(deps: ServiceDeps): ConnectionService {
     async disconnect(ctx: ActorContext, connectionId: string): Promise<ConnectionView> {
       return authorized(deps, ctx, 'connection.disconnect', { connectionId }, async (db, actor) => {
         const before = await requireConnection(db, connectionId);
+        const provider = toProviderId(before.provider);
+        if (
+          providerEligibleForVerifiedRevoke(provider, deps.config.core.isProduction) &&
+          deps.connectorExecutionGateway !== undefined
+        ) {
+          try {
+            await deps.connectorExecutionGateway.revoke({
+              workspaceId: before.workspaceId,
+              connectionId,
+            });
+          } catch (error: unknown) {
+            deps.logger.warn(
+              { connectionId, provider, error: String(error) },
+              'connection.provider_revoke_failed',
+            );
+          }
+        }
         const after = await db.socialConnection.update({
           where: { id: connectionId },
           data: {
@@ -565,7 +910,7 @@ export function createConnectionService(deps: ServiceDeps): ConnectionService {
         if (input.kind !== '' && kind === undefined) {
           throw invalid('errors.unknown_destination_kind', { kind: input.kind });
         }
-        const rows = await db.providerDestination.findMany({
+        const cached = await db.providerDestination.findMany({
           where: {
             connectionId,
             ...(kind === undefined ? {} : { kind }),
@@ -584,8 +929,86 @@ export function createConnectionService(deps: ServiceDeps): ConnectionService {
             permalink: true,
             canPublish: true,
             refreshedAt: true,
+            staleAfter: true,
           },
         });
+        let rows = cached;
+        const stale =
+          cached.length === 0 ||
+          cached.some((row) =>
+            cacheIsStale(
+              row.refreshedAt,
+              deps.clock.now(),
+              DESTINATION_CACHE_TTL_MS,
+              row.staleAfter,
+            ),
+          );
+        if (stale && deps.connectorExecutionGateway !== undefined) {
+          try {
+            const connection = await requireConnection(db, connectionId);
+            const fresh = await deps.connectorExecutionGateway.listDestinations({
+              workspaceId: ctx.workspaceId,
+              connectionId,
+              ...(kind === undefined ? {} : { kind }),
+              ...(input.query === undefined ? {} : { query: input.query }),
+              limit: 100,
+            });
+            await Promise.all(
+              fresh.map((item) =>
+                db.providerDestination.upsert({
+                  where: {
+                    connectionId_kind_externalId: {
+                      connectionId,
+                      kind: item.kind as never,
+                      externalId: item.externalId,
+                    },
+                  },
+                  create: {
+                    workspaceId: ctx.workspaceId,
+                    connectionId,
+                    provider: connection.provider as never,
+                    kind: item.kind as never,
+                    externalId: item.externalId,
+                    displayName: item.displayLabel,
+                    canPublish: item.canPost,
+                    refreshedAt: new Date(item.refreshedAt),
+                    staleAfter: new Date(item.expiresAt),
+                  },
+                  update: {
+                    displayName: item.displayLabel,
+                    canPublish: item.canPost,
+                    refreshedAt: new Date(item.refreshedAt),
+                    staleAfter: new Date(item.expiresAt),
+                  },
+                }),
+              ),
+            );
+            rows = await db.providerDestination.findMany({
+              where: {
+                connectionId,
+                ...(kind === undefined ? {} : { kind }),
+                ...(input.query === undefined || input.query === ''
+                  ? {}
+                  : { displayName: { contains: input.query, mode: 'insensitive' } }),
+              },
+              orderBy: { displayName: 'asc' },
+              take: 100,
+              select: {
+                id: true,
+                connectionId: true,
+                kind: true,
+                externalId: true,
+                displayName: true,
+                permalink: true,
+                canPublish: true,
+                refreshedAt: true,
+                staleAfter: true,
+              },
+            });
+          } catch {
+            rows = cached;
+          }
+        }
         return rows.map((row) => ({
           id: row.id,
           connectionId: row.connectionId,
@@ -605,7 +1028,7 @@ export function createConnectionService(deps: ServiceDeps): ConnectionService {
       input: { query: string },
     ): Promise<readonly MentionEntityView[]> {
       return authorized(deps, ctx, 'connection.read', { connectionId }, async (db) => {
-        const rows = await db.mentionEntity.findMany({
+        const cached = await db.mentionEntity.findMany({
           where: {
             connectionId,
             OR: [
@@ -625,8 +1048,84 @@ export function createConnectionService(deps: ServiceDeps): ConnectionService {
             displayLabel: true,
             avatarUrl: true,
             resolvedAt: true,
+            expiresAt: true,
           },
         });
+        let rows = cached;
+        const stale =
+          cached.length === 0 ||
+          cached.some((row) =>
+            cacheIsStale(row.resolvedAt, deps.clock.now(), MENTION_CACHE_TTL_MS, row.expiresAt),
+          );
+        if (stale && deps.connectorExecutionGateway !== undefined) {
+          try {
+            const connection = await requireConnection(db, connectionId);
+            const fresh = await deps.connectorExecutionGateway.searchMentions({
+              workspaceId: ctx.workspaceId,
+              connectionId,
+              query: input.query,
+              limit: 25,
+            });
+            await Promise.all(
+              fresh.map((item) =>
+                db.mentionEntity.upsert({
+                  where: {
+                    connectionId_provider_externalId: {
+                      connectionId,
+                      provider: connection.provider as never,
+                      externalId: item.externalId,
+                    },
+                  },
+                  create: {
+                    workspaceId: ctx.workspaceId,
+                    connectionId,
+                    provider: connection.provider as never,
+                    kind: item.kind as never,
+                    externalId: item.externalId,
+                    handle: item.handle,
+                    displayLabel: item.displayLabel,
+                    avatarUrl: item.avatarUrl,
+                    resolvedAt: new Date(item.resolvedAt),
+                    expiresAt: new Date(new Date(item.resolvedAt).getTime() + MENTION_CACHE_TTL_MS),
+                  },
+                  update: {
+                    kind: item.kind as never,
+                    handle: item.handle,
+                    displayLabel: item.displayLabel,
+                    avatarUrl: item.avatarUrl,
+                    resolvedAt: new Date(item.resolvedAt),
+                    expiresAt: new Date(new Date(item.resolvedAt).getTime() + MENTION_CACHE_TTL_MS),
+                  },
+                }),
+              ),
+            );
+            rows = await db.mentionEntity.findMany({
+              where: {
+                connectionId,
+                OR: [
+                  { handle: { contains: input.query, mode: 'insensitive' } },
+                  { displayLabel: { contains: input.query, mode: 'insensitive' } },
+                ],
+              },
+              orderBy: { displayLabel: 'asc' },
+              take: 25,
+              select: {
+                id: true,
+                connectionId: true,
+                provider: true,
+                kind: true,
+                externalId: true,
+                handle: true,
+                displayLabel: true,
+                avatarUrl: true,
+                resolvedAt: true,
+                expiresAt: true,
+              },
+            });
+          } catch {
+            rows = cached;
+          }
+        }
         return rows.map((row) => ({
           id: row.id,
           connectionId: row.connectionId,

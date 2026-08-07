@@ -16,6 +16,12 @@ export type {
   StoredCredentialRecord,
 } from './credentials';
 export { MemoryKeyValueStore, RedisKeyValueStore, type RedisLikeClient } from './key-value';
+export type {
+  OAuthAccountSelectionView,
+  OAuthPendingAccount,
+  OAuthPendingDiscoveryPort,
+  OAuthPendingDiscoveryRecord,
+} from './oauth-pending';
 export {
   LocalFileStorage,
   MemoryStorage,

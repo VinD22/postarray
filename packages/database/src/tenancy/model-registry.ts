@@ -50,6 +50,7 @@ export const TENANT_MODELS = new Set<string>([
   'socialConnection',
   'socialCredential',
   'oAuthTransaction',
+  'oAuthPendingDiscovery',
   'oAuthClient',
   'oAuthGrant',
   'outboxEvent',

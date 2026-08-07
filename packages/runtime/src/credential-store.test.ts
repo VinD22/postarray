@@ -97,6 +97,53 @@ function rowFor(input: CredentialStoreWrite): Record<string, unknown> {
 }
 
 describe('createCredentialStore', () => {
+  it('claims connections, credentials, pending discovery, transaction and audit atomically', async () => {
+    const { input: credential } = await credentialWrite();
+    const transactionId = newId(ID_PREFIXES.oauthTransaction);
+    const tx = {
+      $executeRaw: vi.fn().mockResolvedValue(0),
+      oAuthTransaction: {
+        findFirst: vi.fn().mockResolvedValue({
+          id: transactionId, workspaceId: WORKSPACE_ID, brandId: null, provider: 'x',
+          stateHash: 'state-hash', consumedAt: null,
+          expiresAt: new Date('2026-08-08T00:00:00.000Z'), initiatedByUserId: null,
+        }),
+        update: vi.fn().mockResolvedValue({}),
+        updateMany: vi.fn().mockResolvedValue({ count: 1 }),
+      },
+      oAuthPendingDiscovery: {
+        findFirst: vi.fn().mockResolvedValue({ consumedAt: null, stateHash: 'state-hash', expiresAt: new Date('2026-08-08T00:00:00.000Z') }),
+        update: vi.fn().mockResolvedValue({}),
+        updateMany: vi.fn().mockResolvedValue({ count: 1 }),
+      },
+      socialConnection: {
+        findFirst: vi.fn().mockResolvedValue(null),
+        create: vi.fn().mockResolvedValue({ id: CONNECTION_ID }),
+        update: vi.fn(),
+      },
+      socialCredential: { upsert: vi.fn().mockResolvedValue({}) },
+      auditEvent: { create: vi.fn().mockResolvedValue({}) },
+    };
+    const prisma = { $transaction: vi.fn(async (callback: (value: typeof tx) => Promise<unknown>) => await callback(tx)) } as unknown as RelayPrismaClient;
+    const result = await createCredentialStore(prisma).claimOAuthConnections?.({
+      workspaceId: WORKSPACE_ID, transactionId, expectedProvider: 'x', expectedStateHash: 'state-hash',
+      claimedAt: CLOCK_NOW.toISOString(),
+      actor: { actorType: 'user', actorId: 'user_actor', userId: 'user_actor', surface: 'web', correlationId: 'corr_test', approvalLevel: 'level_3_confirm' },
+      connections: [{
+        connectionId: CONNECTION_ID, externalAccountId: 'external-1', accountType: 'personal_profile',
+        displayName: 'Account', handle: null, avatarUrl: null, profileUrl: null,
+        grantedScopes: ['post'], capabilities: {}, capabilityVersion: 'v1', credential,
+      }],
+    });
+    expect(result?.connectionIds).toEqual([CONNECTION_ID]);
+    expect(tx.socialConnection.create).toHaveBeenCalledOnce();
+    expect(tx.socialCredential.upsert).toHaveBeenCalledOnce();
+    expect(tx.auditEvent.create).toHaveBeenCalledOnce();
+    expect(tx.oAuthPendingDiscovery.updateMany).toHaveBeenCalledOnce();
+    expect(tx.oAuthTransaction.updateMany).toHaveBeenCalledOnce();
+    expect(prisma.$transaction).toHaveBeenCalledOnce();
+  });
+
   it('reads only authenticated envelope columns through a workspace scope', async () => {
     const { input } = await credentialWrite();
     const database = fakeDatabase(rowFor(input));

@@ -63,6 +63,9 @@ export const connectionMessages = {
   'connection.oauth.starting': 'Apertura {provider}',
   'connection.oauth.returned': 'Terminando la conexión',
   'connection.oauth.chooseAccounts': 'Elige qué cuentas conectar',
+  'connection.oauth.connectSelected': 'Connect selected accounts',
+  'connection.oauth.claimComplete': 'Selected accounts are connected',
+  'connection.oauth.accountUnavailable': 'This account cannot be connected',
   'connection.oauth.noEligibleAccounts':
     'No hay cuentas sobre esto {provider}El inicio de sesión se puede conectar. {reason}',
   'connection.oauth.canceled': 'La conexión fue cancelada el {provider}. Nada cambió.',

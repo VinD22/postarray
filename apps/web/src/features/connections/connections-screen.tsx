@@ -46,6 +46,7 @@ import { ConnectionRow } from './connection-row';
 import { ConnectionsTabs } from './connections-tabs';
 import { GroupList, MoveGroupDialog } from './connection-groups';
 import { PermissionsSheet } from './permissions-sheet';
+import { OAuthAccountSelectionPanel } from './oauth-account-selection';
 import { OAuthCallbackNotice } from './oauth-callback-notice';
 import { useProviderName } from './provider';
 import { sortByUrgency } from './health';
@@ -179,7 +180,7 @@ export function ConnectionsScreen({
   };
 
   const startReconnect = (row: Row): void => {
-    reconnect.mutate({ connectionId: row.id });
+    reconnect.mutate({ connectionId: row.id }, { onSuccess: goToProvider });
   };
 
   return (
@@ -200,6 +201,7 @@ export function ConnectionsScreen({
 
       <div className="px-4 pt-4 md:px-6">
         <OAuthCallbackNotice />
+        <OAuthAccountSelectionPanel />
       </div>
 
       <ConnectionsTabs

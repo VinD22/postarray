@@ -29,6 +29,7 @@ import { createShortLinkService } from './short-links';
 import { createValidationService } from './validation';
 import { createWebhookService } from './webhooks';
 import { createWorkspaceService } from './workspaces';
+import { createWorkerPublishingService } from './worker-publishing';
 
 /**
  * The composition root.
@@ -73,6 +74,7 @@ export function createServices(deps: ServiceDeps): Services {
     dataExports: createDataExportService(deps),
     dataLifecycle: createDataLifecycleService(deps),
     dataDeletion: createDataDeletionService(deps),
+    workerPublishing: createWorkerPublishingService(deps),
     health: createHealthService(deps),
   };
 }

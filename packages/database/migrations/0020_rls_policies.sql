@@ -225,6 +225,7 @@ BEGIN
       ('private', 'user_sessions',                  'workspace_id', 'service', 'service', 'service',  'service',  'Session metadata for device review and revocation.'),
       ('private', 'social_credentials',             'workspace_id', 'service', 'service', 'service',  'service',  'Encrypted provider tokens. The single most sensitive table in the system.'),
       ('private', 'oauth_transactions',             'workspace_id', 'service', 'service', 'service',  'service',  'Short lived state and PKCE material.'),
+      ('private', 'oauth_pending_discoveries',      'workspace_id', 'service', 'service', 'service',  'service',  'Encrypted OAuth grant awaiting explicit account selection. No plaintext tokens.'),
       ('private', 'oauth_clients',                  'workspace_id', 'service', 'service', 'service',  'service',  'Third-party developer applications.'),
       ('private', 'oauth_grants',                   'workspace_id', 'service', 'service', 'service',  'service',  'User consent records for developer applications.'),
       ('private', 'agent_confirmations',            'workspace_id', 'service', 'service', 'service',  'service',  'Single-use MCP publication confirmations. The application verifies the exact OAuth grant, content fingerprint, approver and idempotency key.'),

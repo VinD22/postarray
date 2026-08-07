@@ -48,6 +48,8 @@ import {
   listConnectionsQuerySchema,
   listDestinationsQuerySchema,
   oauthCallbackQuerySchema,
+  oauthClaimSchema,
+  oauthPendingParamsSchema,
   searchMentionsQuerySchema,
 } from './connections.schemas';
 import { ConnectionsService } from './connections.service';
@@ -219,18 +221,13 @@ export class ConnectionsController {
     const actor = this.transactions.toActorContext(transaction);
     relayState(request).workspaceId = transaction.workspaceId;
 
-    let connections: readonly ConnectionView[];
     try {
-      connections = await this.connections.completeOAuth(actor, {
+      await this.connections.handleOAuthCallback(actor, {
         transactionId,
         code: callback.code,
         state: callback.state,
       });
     } catch (error) {
-      // The provider code is single use and the server-side transaction has
-      // already been claimed. Return the browser to a trusted app path with a
-      // small, localizable reason rather than a raw JSON 501/502 page. The
-      // user can start a fresh connection attempt without seeing internals.
       this.redirect(response, transaction.redirectTo, {
         status: 'failed',
         provider,
@@ -239,20 +236,40 @@ export class ConnectionsController {
       return;
     }
 
-    // The final URL carries no code, no state and no token: a credential in a
-    // URL ends up in browser history, a referrer header and a proxy log.
     this.redirect(response, transaction.redirectTo, {
-      status: 'connected',
+      status: 'select',
       provider,
-      count: String(connections.length),
+      transactionId,
     });
+  }
+
+  @Get('oauth/pending/:transactionId')
+  @RequireScope('connections:admin')
+  getOAuthAccountSelection(@Actor() actor: ActorContext, @Param() params: unknown) {
+    const { transactionId } = parseParams(oauthPendingParamsSchema, params);
+    return this.connections.getOAuthAccountSelection(actor, transactionId);
+  }
+
+  @Post('oauth/claim')
+  @RequireScope('connections:admin')
+  @RequireStepUp()
+  @Idempotent()
+  claimOAuth(
+    @Actor() actor: ActorContext,
+    @Body() body: unknown,
+  ): Promise<readonly ConnectionView[]> {
+    const parsed = parseBody(oauthClaimSchema, body);
+    return this.connections.completeOAuth(actor, parsed);
   }
 
   @Post(':id/reconnect')
   @RequireScope('connections:admin')
   @RequireStepUp()
   @Idempotent()
-  reconnect(@Actor() actor: ActorContext, @Param('id') id: string): Promise<ConnectionView> {
+  reconnect(
+    @Actor() actor: ActorContext,
+    @Param('id') id: string,
+  ): Promise<{ authorizationUrl: string; transactionId: string }> {
     return this.connections.reconnect(actor, parseParams(connectionIdSchema, id));
   }
 

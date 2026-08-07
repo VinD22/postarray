@@ -81,6 +81,11 @@ export class SecretValue {
     return this.#value.length;
   }
 
+  /** Scope plaintext access to one callback so callers do not retain it accidentally. */
+  use<T>(callback: (value: string) => T): T {
+    return callback(this.#value);
+  }
+
   /** The only accessor. Never assign the result to a logged field. */
   reveal(): string {
     return this.#value;

@@ -71,6 +71,9 @@ export const connectionMessages = {
   'connection.oauth.starting': 'Açılış {provider}',
   'connection.oauth.returned': 'Bağlantıyı bitirme',
   'connection.oauth.chooseAccounts': 'Hangi hesapların bağlanacağını seçin',
+  'connection.oauth.connectSelected': 'Connect selected accounts',
+  'connection.oauth.claimComplete': 'Selected accounts are connected',
+  'connection.oauth.accountUnavailable': 'This account cannot be connected',
   'connection.oauth.noEligibleAccounts':
     'Bu {provider} girişteki hiçbir hesap bağlanamıyor. {reason}',
   'connection.oauth.canceled': 'Bağlantı {provider} tarihinde iptal edildi. Hiçbir şey değişmedi.',

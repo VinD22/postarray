@@ -291,12 +291,16 @@ function detectConnectors(config: RelayConfig): Record<ConnectorKey, CapabilityS
   // definition-of-done evidence. This deliberately cannot be toggled by an
   // environment variable: deployment access is not authority to claim a
   // provider review or a completed connector contract suite.
-  const verifiedProductionConnectors = new Set(VERIFIED_PRODUCTION_CONNECTORS);
+  const verifiedConnectors = new Set(
+    config.core.isProduction
+      ? VERIFIED_PRODUCTION_CONNECTORS
+      : VERIFIED_DEVELOPMENT_TEST_CONNECTORS,
+  );
   const connectors = Object.fromEntries(
     Object.entries(configured).map(([provider, status]) => [
       provider,
       status === 'live' &&
-      !verifiedProductionConnectors.has(provider as Exclude<ConnectorKey, 'fake'>)
+      !verifiedConnectors.has(provider as Exclude<ConnectorKey, 'fake'>)
         ? 'disabled:verification-not-complete'
         : status,
     ]),
@@ -315,6 +319,21 @@ function detectConnectors(config: RelayConfig): Record<ConnectorKey, CapabilityS
  */
 export const VERIFIED_PRODUCTION_CONNECTORS: readonly Exclude<ConnectorKey, 'fake'>[] =
   Object.freeze([]);
+
+/**
+ * Simulator-verified connectors available only in development and tests.
+ * Inclusion here never enables a connector in production.
+ */
+export const VERIFIED_DEVELOPMENT_TEST_CONNECTORS: readonly Exclude<ConnectorKey, 'fake'>[] =
+  Object.freeze(['bluesky']);
+
+export function verifiedConnectorsForEnvironment(
+  config: Pick<RelayConfig, 'core'>,
+): readonly Exclude<ConnectorKey, 'fake'>[] {
+  return config.core.isProduction
+    ? VERIFIED_PRODUCTION_CONNECTORS
+    : VERIFIED_DEVELOPMENT_TEST_CONNECTORS;
+}
 
 export function detectCapabilities(config: RelayConfig): RuntimeCapabilities {
   const capabilities: RuntimeCapabilities = {

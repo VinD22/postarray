@@ -113,6 +113,18 @@ export type {
   StoredCredentialRecord,
 } from './ports/credentials';
 
+export type {
+  OAuthAccountSelectionView,
+  OAuthPendingAccount,
+  OAuthPendingDiscoveryPort,
+  OAuthPendingDiscoveryRecord,
+} from './ports/oauth-pending';
+
+export {
+  pendingGrantEnvelopeFromRow,
+  pendingGrantEnvelopeToRow,
+} from './oauth-pending-envelope';
+
 export { normalizeAliasForLookup } from './services/identity';
 export {
   cancelPublishOutboxPayloadSchema,
@@ -216,6 +228,7 @@ export { feedItemFingerprint, parseFeed } from './services/rss';
 export {
   computeContentChecksum,
   parseStoredMaster,
+  parseVariantSettings,
   reconcileOverrides,
   resolveTarget,
   storedMasterSchema,

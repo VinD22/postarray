@@ -3,6 +3,13 @@ import type { ProviderId } from '@relay/contracts';
 import { BaseProviderSimulator } from './engine';
 import { RETRY_AFTER_SECONDS } from './types';
 import type { FailureKind, SimulatedRequest, SimulatedResponse } from './types';
+import {
+  BLUESKY_DUPLICATE_ERROR,
+  BLUESKY_OAUTH_SESSION,
+  BLUESKY_PUBLISH_RECORD,
+  BLUESKY_REFRESHED_SESSION,
+  BLUESKY_REVOKE_RESPONSE,
+} from './atproto-fixtures';
 
 /**
  * Bluesky, over the AT Protocol XRPC surface.
@@ -56,7 +63,7 @@ export class BlueskySimulator extends BaseProviderSimulator {
       case 'content_invalid':
         return xrpc(400, 'InvalidRequest', 'Record text exceeds the graphene limit of 300.');
       case 'duplicate':
-        return xrpc(400, 'InvalidRequest', 'Record already exists.');
+        return this.json(400, BLUESKY_DUPLICATE_ERROR);
       case 'not_found':
         return xrpc(404, 'NotFound', `No XRPC method at ${request.path}.`);
       case 'token_echo':
@@ -68,13 +75,15 @@ export class BlueskySimulator extends BaseProviderSimulator {
     const { method, path, mode } = request;
 
     if (method === 'POST' && path === '/xrpc/com.atproto.server.createSession') {
-      return this.json(200, {
-        did: DID,
-        handle: 'fixture.bsky.example.test',
-        // Session material is deliberately not token shaped in this fixture.
-        accessJwt: 'fake-session-placeholder',
-        refreshJwt: 'fake-refresh-placeholder',
-      });
+      return this.json(200, BLUESKY_OAUTH_SESSION);
+    }
+
+    if (method === 'POST' && path === '/xrpc/com.atproto.server.refreshSession') {
+      return this.json(200, BLUESKY_REFRESHED_SESSION);
+    }
+
+    if (method === 'POST' && path === '/xrpc/com.atproto.server.deleteSession') {
+      return this.json(200, BLUESKY_REVOKE_RESPONSE);
     }
 
     if (method === 'GET' && path === '/xrpc/app.bsky.actor.getProfile') {
@@ -102,13 +111,9 @@ export class BlueskySimulator extends BaseProviderSimulator {
       return this.json(200, {
         uri: `at://${DID}/app.bsky.feed.post/${rkey}`,
         cid: `bafyfake${rkey}`,
-        commit: { cid: `bafyfakecommit${rkey}`, rev: '3lfakerev' },
-        validationStatus: 'valid',
+        commit: { cid: `bafyfakecommit${rkey}`, rev: BLUESKY_PUBLISH_RECORD.commitRev },
+        validationStatus: BLUESKY_PUBLISH_RECORD.validationStatus,
       });
-    }
-
-    if (method === 'POST' && path === '/xrpc/com.atproto.repo.deleteRecord') {
-      return this.json(200, {});
     }
 
     return this.errorFor('not_found', request);

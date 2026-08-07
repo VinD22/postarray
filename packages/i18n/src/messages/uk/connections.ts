@@ -72,6 +72,9 @@ export const connectionMessages = {
   'connection.oauth.starting': 'що {provider}',
   'connection.oauth.returned': 'Завершення підключення',
   'connection.oauth.chooseAccounts': 'Виберіть, які облікові записи підключити',
+  'connection.oauth.connectSelected': 'Connect selected accounts',
+  'connection.oauth.claimComplete': 'Selected accounts are connected',
+  'connection.oauth.accountUnavailable': 'This account cannot be connected',
   'connection.oauth.noEligibleAccounts':
     'На це немає облікових записів {provider} логін можна підключити.{reason}',
   'connection.oauth.canceled': 'З’єднання було скасовано {provider}. Нічого не змінилося.',

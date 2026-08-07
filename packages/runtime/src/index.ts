@@ -57,6 +57,7 @@ export {
   type ClaimOutboxOptions,
 } from './outbox-repository';
 export { createCredentialStore } from './credential-store';
+export { createOAuthPendingDiscoveryStore } from './oauth-pending-store';
 export {
   AwsCredentialKmsClient,
   createConfiguredCredentialVault,

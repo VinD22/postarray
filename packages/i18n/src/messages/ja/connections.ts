@@ -62,6 +62,9 @@ export const connectionMessages = {
   'connection.oauth.starting': 'オープニング{provider}',
   'connection.oauth.returned': '接続を終了する',
   'connection.oauth.chooseAccounts': '接続するアカウントを選択してください',
+  'connection.oauth.connectSelected': 'Connect selected accounts',
+  'connection.oauth.claimComplete': 'Selected accounts are connected',
+  'connection.oauth.accountUnavailable': 'This account cannot be connected',
   'connection.oauth.noEligibleAccounts':
     'これに関するアカウントはありません{provider}ログインすると接続できるようになります。{reason}',
   'connection.oauth.canceled': '接続がキャンセルされました{provider}。何も変わりませんでした。',

@@ -55,11 +55,17 @@ describe('detectCapabilities', () => {
     );
   });
 
-  it('keeps only the fake connector usable offline', () => {
+  it('keeps only simulator-verified connectors usable offline', () => {
     const capabilities = capabilitiesFor();
     expect(capabilities.connectors.fake).toBe('live');
+    expect(capabilities.connectors.bluesky).toBe('live');
+    expect(availableConnectors(capabilities)).toEqual(['bluesky', 'fake']);
+  });
+
+  it('does not promote simulator verification into production', () => {
+    const capabilities = capabilitiesFor({ NODE_ENV: 'production' });
     expect(capabilities.connectors.bluesky).toBe('disabled:verification-not-complete');
-    expect(availableConnectors(capabilities)).toEqual(['fake']);
+    expect(capabilities.connectors.fake).toBe('disabled:simulator-not-available');
   });
 
   it('reports a half configured connector as disabled, naming the missing half', () => {

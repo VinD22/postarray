@@ -69,6 +69,9 @@ export const connectionMessages = {
   'connection.oauth.starting': 'Öppning {provider}',
   'connection.oauth.returned': 'Avslutar anslutningen',
   'connection.oauth.chooseAccounts': 'Välj vilka konton som ska anslutas',
+  'connection.oauth.connectSelected': 'Connect selected accounts',
+  'connection.oauth.claimComplete': 'Selected accounts are connected',
+  'connection.oauth.accountUnavailable': 'This account cannot be connected',
   'connection.oauth.noEligibleAccounts':
     'Inga konton på denna {provider}-inloggning kan anslutas. {reason}',
   'connection.oauth.canceled': 'Anslutningen avbröts den {provider}. Ingenting förändrades.',

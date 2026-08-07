@@ -834,6 +834,7 @@ model Workspace {
   socialConnections       SocialConnection[]
   socialCredentials       SocialCredential[]
   oauthTransactions       OAuthTransaction[]
+  oauthPendingDiscoveries OAuthPendingDiscovery[]
   oauthClients            OAuthClient[]
   oauthGrants             OAuthGrant[]
   agentConfirmations      AgentConfirmation[]
@@ -1117,6 +1118,7 @@ model Brand {
   postingSets          PostingSet[]
   socialConnections    SocialConnection[]
   oauthTransactions    OAuthTransaction[]
+  oauthPendingDiscoveries OAuthPendingDiscovery[]
   growthPlans          GrowthPlan[]
   shortLinks           ShortLink[]
   automationRules      AutomationRule[]
@@ -1863,11 +1865,42 @@ model OAuthTransaction {
 
   workspace Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
   brand     Brand?    @relation(fields: [workspaceId, brandId], references: [workspaceId, id], onDelete: Cascade)
+  pendingDiscovery OAuthPendingDiscovery?
 
   @@index([workspaceId])
   @@index([workspaceId, brandId])
   @@index([expiresAt])
   @@map("oauth_transactions")
+  @@schema("private")
+}
+
+/// Encrypted grant material between provider callback and explicit account claim.
+model OAuthPendingDiscovery {
+  id                  String       @id @default(dbgenerated("app.new_id('oauthpend')"))
+  transactionId       String       @unique @map("transaction_id")
+  workspaceId         String       @map("workspace_id")
+  brandId             String?      @map("brand_id")
+  provider            ProviderKind
+  stateHash           String       @map("state_hash")
+  accounts            Json
+  grantCiphertext     Bytes        @map("grant_ciphertext")
+  grantNonce          Bytes        @map("grant_nonce")
+  grantAuthTag        Bytes        @map("grant_auth_tag")
+  grantWrappedDataKey Bytes        @map("grant_wrapped_data_key")
+  grantKeyVersion     String       @map("grant_key_version")
+  grantAadContext     Json         @map("grant_aad_context")
+  grantEnvelopeVersion Int         @default(1) @map("grant_envelope_version")
+  expiresAt           DateTime     @map("expires_at") @db.Timestamptz(6)
+  consumedAt          DateTime?    @map("consumed_at") @db.Timestamptz(6)
+  createdAt           DateTime     @default(now()) @map("created_at") @db.Timestamptz(6)
+
+  transaction OAuthTransaction @relation(fields: [transactionId], references: [id], onDelete: Cascade)
+  workspace   Workspace        @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  brand       Brand?           @relation(fields: [workspaceId, brandId], references: [workspaceId, id], onDelete: Cascade)
+
+  @@index([workspaceId])
+  @@index([expiresAt])
+  @@map("oauth_pending_discoveries")
   @@schema("private")
 }
 

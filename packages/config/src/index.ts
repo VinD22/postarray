@@ -82,6 +82,8 @@ export {
   type RuntimeCapabilities,
   type SubsystemName,
   VERIFIED_PRODUCTION_CONNECTORS,
+  VERIFIED_DEVELOPMENT_TEST_CONNECTORS,
+  verifiedConnectorsForEnvironment,
 } from './capabilities';
 
 export {

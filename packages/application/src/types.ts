@@ -29,6 +29,8 @@ import type {
   ValidationResult,
   VariantOverrides,
   WebhookEventName,
+  ErrorClass,
+  ErrorCode,
 } from '@relay/contracts';
 import type { RelayConfig } from '@relay/config';
 import type {
@@ -46,6 +48,8 @@ import type { RelayPrismaClient } from '@relay/database';
 import type { HealthReport, Logger } from '@relay/observability';
 
 import type { CredentialStorePort } from './ports/credentials';
+import type { OAuthPendingDiscoveryPort } from './ports/oauth-pending';
+import type { OAuthAccountSelectionView } from './ports/oauth-pending';
 
 import type {
   ActionItemCategory,
@@ -595,6 +599,7 @@ export interface ServiceDeps {
   readonly credentialVault?: CredentialVaultPort;
   /** Workspace-scoped and transaction-bound in production composition. */
   readonly credentialStore?: CredentialStorePort;
+  readonly oauthPending?: OAuthPendingDiscoveryPort;
   readonly ai: AiGateway;
   readonly billing: BillingGateway;
   readonly scheduler: SchedulerPort;
@@ -604,6 +609,188 @@ export interface ServiceDeps {
   readonly logger: Logger;
   readonly clock: Clock;
   readonly config: RelayConfig;
+  /** Optional provider duplicate probe. Persistence is always checked first. */
+  readonly workerPublishingProbe?: WorkerPublishingProbe;
+  /** Credential-isolated provider operations executed by the worker/runtime. */
+  readonly connectorExecutionGateway?: ConnectorExecutionPort;
+}
+
+export interface ConnectorExecutionPort {
+  revoke(input: { readonly workspaceId: string; readonly connectionId: string }): Promise<void>;
+  listDestinations(input: {
+    readonly workspaceId: string;
+    readonly connectionId: string;
+    readonly kind?: string;
+    readonly query?: string;
+    readonly limit: number;
+  }): Promise<
+    readonly {
+      readonly externalId: string;
+      readonly kind: string;
+      readonly displayLabel: string;
+      readonly canPost: boolean;
+      readonly refreshedAt: string;
+      readonly expiresAt: string;
+    }[]
+  >;
+  searchMentions(input: {
+    readonly workspaceId: string;
+    readonly connectionId: string;
+    readonly query: string;
+    readonly limit: number;
+  }): Promise<
+    readonly {
+      readonly externalId: string;
+      readonly kind: string;
+      readonly displayLabel: string;
+      readonly handle: string | null;
+      readonly avatarUrl: string | null;
+      readonly resolvedAt: string;
+    }[]
+  >;
+}
+
+export type WorkerActivityContext = Omit<ActorContext, 'scopes'>;
+
+export interface WorkerExternalPublication {
+  readonly externalPostId: string;
+  readonly permalink: string | null;
+  readonly publishedAt: string;
+  readonly externalAccountId: string;
+}
+
+export interface WorkerReceiptItem {
+  readonly threadItemId: string | null;
+  readonly kind: 'root' | 'comment' | 'thread';
+  readonly order: number;
+  readonly state: PublishState;
+  readonly externalPostId: string | null;
+  readonly permalink: string | null;
+  readonly delaySeconds: number;
+  readonly publishedAt: string | null;
+  readonly errorCode: ErrorCode | null;
+}
+
+export interface WorkerPublishingProbe {
+  ensureNotAlreadyPublished(input: {
+    readonly ctx: WorkerActivityContext;
+    readonly publishJobId: string;
+    readonly targetId: string;
+    readonly connectionId: string;
+    readonly attemptId: string;
+    readonly providerIdempotencyToken: string;
+    readonly since: string;
+  }): Promise<{
+    readonly verdict: 'not_published' | 'published' | 'indeterminate';
+    readonly publication: WorkerExternalPublication | null;
+  }>;
+}
+
+/** Durable half of the worker activity surface. Kept structural to avoid a package cycle. */
+export interface WorkerPublishingService {
+  preflightCampaign(input: {
+    readonly ctx: WorkerActivityContext;
+    readonly publishJobId: string;
+    readonly contentItemId: string;
+    readonly contentVersionId: string;
+    readonly contentVersionChecksum: string;
+    readonly targetIds: readonly string[];
+    readonly scheduledInstant: string;
+  }): Promise<{
+    readonly verdict: 'proceed' | 'action_required' | 'needs_reapproval' | 'blocked';
+    readonly messageKey: string | null;
+    readonly errorCode: ErrorCode | null;
+    readonly blockedTargetIds: readonly string[];
+  }>;
+  beginPublishAttempt(input: {
+    readonly ctx: WorkerActivityContext;
+    readonly publishJobId: string;
+    readonly targetId: string;
+    readonly connectionId: string;
+    readonly attemptNumber: number;
+    readonly idempotencyKey: string;
+  }): Promise<{
+    readonly attemptId: string;
+    readonly attemptNumber: number;
+    readonly providerIdempotencyToken: string;
+    readonly alreadyPublished: WorkerExternalPublication | null;
+  }>;
+  ensureNotAlreadyPublished(
+    input: Parameters<WorkerPublishingProbe['ensureNotAlreadyPublished']>[0],
+  ): ReturnType<WorkerPublishingProbe['ensureNotAlreadyPublished']>;
+  finalizeAttempt(input: {
+    readonly ctx: WorkerActivityContext;
+    readonly publishJobId: string;
+    readonly targetId: string;
+    readonly attemptId: string;
+    readonly resultState: PublishState;
+    readonly errorClass: ErrorClass | null;
+    readonly errorCode: ErrorCode | null;
+    readonly retryable: boolean;
+    readonly nextRetryAt: string | null;
+  }): Promise<void>;
+  setTargetState(input: {
+    readonly ctx: WorkerActivityContext;
+    readonly publishJobId: string;
+    readonly targetId: string;
+    readonly state: PublishState;
+    readonly errorCode: ErrorCode | null;
+    readonly messageKey: string | null;
+  }): Promise<void>;
+  setJobState(input: {
+    readonly ctx: WorkerActivityContext;
+    readonly publishJobId: string;
+    readonly state: PublishState;
+    readonly errorCode: ErrorCode | null;
+  }): Promise<void>;
+  writeReceipt(input: {
+    readonly ctx: WorkerActivityContext;
+    readonly publishJobId: string;
+    readonly targetId: string;
+    readonly connectionId: string;
+    readonly provider: ProviderId;
+    readonly attemptId: string;
+    readonly contentVersionId: string;
+    readonly contentVersionChecksum: string;
+    readonly capabilityVersion: string;
+    readonly scheduledInstant: string;
+    readonly scheduledLocalTime: string;
+    readonly ianaTimeZone: string;
+    readonly dispatchedAt: string;
+    readonly publication: WorkerExternalPublication;
+    readonly items: readonly WorkerReceiptItem[];
+  }): Promise<{ readonly receiptId: string; readonly created: boolean }>;
+  emitEvent(input: {
+    readonly ctx: WorkerActivityContext;
+    readonly event: WebhookEventName;
+    readonly resourceId: string;
+    readonly payload: Readonly<Record<string, unknown>>;
+    readonly dedupeKey: string;
+  }): Promise<void>;
+  notify(input: {
+    readonly ctx: WorkerActivityContext;
+    readonly messageKey: string;
+    readonly resourceId: string;
+    readonly params: Readonly<Record<string, string>>;
+  }): Promise<void>;
+  prepareTargetMedia(input: {
+    readonly ctx: WorkerActivityContext;
+    readonly publishJobId: string;
+    readonly targetId: string;
+    readonly connectionId: string;
+    readonly contentVersionId: string;
+  }): Promise<{
+    readonly preparedMediaIds: readonly string[];
+    readonly derivativeCount: number;
+    readonly totalBytes: number;
+  }>;
+  scheduleAnalyticsFetches(input: {
+    readonly ctx: WorkerActivityContext;
+    readonly connectionId: string;
+    readonly receiptId: string;
+    readonly provider: ProviderId;
+    readonly publishedAt: string;
+  }): Promise<{ readonly offsetsMs: readonly number[] }>;
 }
 
 export interface CredentialVaultPort {
@@ -612,6 +799,16 @@ export interface CredentialVaultPort {
     readonly aad: CredentialAad;
     readonly purpose?: string;
   }): Promise<EncryptedCredential>;
+  decryptForRequest?(input: {
+    readonly record: EncryptedCredential;
+    readonly aad: CredentialAad;
+    readonly purpose: string;
+  }): Promise<{ use<T>(callback: (value: string) => T | Promise<T>): Promise<T>; release(): void }>;
+  decrypt?(input: {
+    readonly record: EncryptedCredential;
+    readonly aad: CredentialAad;
+    readonly purpose?: string;
+  }): Promise<string>;
 }
 
 // ---------------------------------------------------------------------------
@@ -756,17 +953,29 @@ export interface ConnectionService {
       readonly redirectTo: string;
     },
   ): Promise<{ readonly authorizationUrl: string; readonly transactionId: string }>;
-  completeOAuth(
+  handleOAuthCallback(
     ctx: ActorContext,
     input: {
       readonly transactionId: string;
       readonly code: string;
       readonly state: string;
-      /** Required before a provider code may be exchanged. */
-      readonly selectedExternalAccountIds?: readonly string[];
+    },
+  ): Promise<void>;
+  getOAuthAccountSelection(
+    ctx: ActorContext,
+    transactionId: string,
+  ): Promise<OAuthAccountSelectionView>;
+  completeOAuth(
+    ctx: ActorContext,
+    input: {
+      readonly transactionId: string;
+      readonly selectedExternalAccountIds: readonly string[];
     },
   ): Promise<readonly ConnectionView[]>;
-  reconnect(ctx: ActorContext, connectionId: string): Promise<ConnectionView>;
+  reconnect(
+    ctx: ActorContext,
+    connectionId: string,
+  ): Promise<{ readonly authorizationUrl: string; readonly transactionId: string }>;
   pause(ctx: ActorContext, connectionId: string): Promise<ConnectionView>;
   resume(ctx: ActorContext, connectionId: string): Promise<ConnectionView>;
   disconnect(ctx: ActorContext, connectionId: string): Promise<ConnectionView>;
@@ -1486,5 +1695,6 @@ export interface Services {
   readonly dataExports: DataExportService;
   readonly dataLifecycle: DataLifecycleService;
   readonly dataDeletion: DataDeletionService;
+  readonly workerPublishing: WorkerPublishingService;
   readonly health: HealthService;
 }

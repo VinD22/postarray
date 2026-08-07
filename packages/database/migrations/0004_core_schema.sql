@@ -893,6 +893,29 @@ CREATE TABLE "private"."oauth_transactions" (
 );
 
 -- CreateTable
+CREATE TABLE "private"."oauth_pending_discoveries" (
+    "id" TEXT NOT NULL DEFAULT app.new_id('oauthpend'),
+    "transaction_id" TEXT NOT NULL,
+    "workspace_id" TEXT NOT NULL,
+    "brand_id" TEXT,
+    "provider" "app"."provider_kind" NOT NULL,
+    "state_hash" TEXT NOT NULL,
+    "accounts" JSONB NOT NULL,
+    "grant_ciphertext" BYTEA NOT NULL,
+    "grant_nonce" BYTEA NOT NULL,
+    "grant_auth_tag" BYTEA NOT NULL,
+    "grant_wrapped_data_key" BYTEA NOT NULL,
+    "grant_key_version" TEXT NOT NULL,
+    "grant_aad_context" JSONB NOT NULL,
+    "grant_envelope_version" INTEGER NOT NULL DEFAULT 1,
+    "expires_at" TIMESTAMPTZ(6) NOT NULL,
+    "consumed_at" TIMESTAMPTZ(6),
+    "created_at" TIMESTAMPTZ(6) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT "oauth_pending_discoveries_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
 CREATE TABLE "private"."oauth_clients" (
     "id" TEXT NOT NULL DEFAULT app.new_id('app'),
     "workspace_id" TEXT NOT NULL,
@@ -1954,6 +1977,15 @@ CREATE INDEX "oauth_transactions_workspace_id_idx" ON "private"."oauth_transacti
 CREATE INDEX "oauth_transactions_expires_at_idx" ON "private"."oauth_transactions"("expires_at");
 
 -- CreateIndex
+CREATE INDEX "oauth_pending_discoveries_workspace_id_idx" ON "private"."oauth_pending_discoveries"("workspace_id");
+
+-- CreateIndex
+CREATE INDEX "oauth_pending_discoveries_expires_at_idx" ON "private"."oauth_pending_discoveries"("expires_at");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "oauth_pending_discoveries_transaction_id_key" ON "private"."oauth_pending_discoveries"("transaction_id");
+
+-- CreateIndex
 CREATE UNIQUE INDEX "oauth_clients_client_id_key" ON "private"."oauth_clients"("client_id");
 
 -- CreateIndex
@@ -2447,6 +2479,12 @@ ALTER TABLE "private"."social_credentials" ADD CONSTRAINT "social_credentials_co
 
 -- AddForeignKey
 ALTER TABLE "private"."oauth_transactions" ADD CONSTRAINT "oauth_transactions_workspace_id_fkey" FOREIGN KEY ("workspace_id") REFERENCES "app"."workspaces"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "private"."oauth_pending_discoveries" ADD CONSTRAINT "oauth_pending_discoveries_transaction_id_fkey" FOREIGN KEY ("transaction_id") REFERENCES "private"."oauth_transactions"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "private"."oauth_pending_discoveries" ADD CONSTRAINT "oauth_pending_discoveries_workspace_id_fkey" FOREIGN KEY ("workspace_id") REFERENCES "app"."workspaces"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "private"."oauth_clients" ADD CONSTRAINT "oauth_clients_workspace_id_fkey" FOREIGN KEY ("workspace_id") REFERENCES "app"."workspaces"("id") ON DELETE CASCADE ON UPDATE CASCADE;

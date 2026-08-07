@@ -18,6 +18,7 @@ import Redis from 'ioredis';
 
 import { ACTIVITY_NAMES, type WorkerActivities } from './activities/types';
 import { WorkerScheduler } from './outbox-scheduler';
+import { createConnectorExecutionActivities } from './connector-execution-activities';
 import { createWorkerGateway } from './prelaunch-gateway';
 import { installShutdownHandlers, startWorker, WORKER_SERVICE_NAME } from './worker';
 import { startMediaRetentionSweep } from './media-retention';
@@ -42,6 +43,21 @@ export interface WorkerGatewayFactoryContext {
   /** Null when production credential encryption is not configured. */
   readonly connectorExecution: ConnectorExecutionGateway | null;
 }
+type PublishingActivities = Pick<
+  WorkerActivities,
+  | 'preflightCampaign'
+  | 'beginPublishAttempt'
+  | 'ensureNotAlreadyPublished'
+  | 'finalizeAttempt'
+  | 'setTargetState'
+  | 'setJobState'
+  | 'writeReceipt'
+  | 'emitEvent'
+  | 'notify'
+  | 'prepareTargetMedia'
+  | 'scheduleAnalyticsFetches'
+>;
+
 type DataDeletionActivities = Pick<
   WorkerActivities,
   | 'loadDeletionScope'
@@ -102,6 +118,8 @@ export async function loadGateway(
     readonly buildDataExport?: WorkerActivities['buildDataExport'];
     readonly dataDeletion?: DataDeletionActivities;
     readonly connectorExecution?: ConnectorExecutionGateway | null;
+    readonly publishing?: Partial<PublishingActivities>;
+    readonly connectorBridge?: ReturnType<typeof createConnectorExecutionActivities> | null;
   } = {},
 ): Promise<WorkerActivities> {
   if (moduleName === DEFAULT_GATEWAY_MODULE) {
@@ -188,6 +206,29 @@ export async function main(): Promise<void> {
     markDeletionFailed: (input) =>
       dataDeletionActivitiesReady.then((activities) => activities.markDeletionFailed(input)),
   };
+  let resolvePublishing: ((activities: PublishingActivities) => void) | undefined;
+  const publishingReady = new Promise<PublishingActivities>((resolve) => { resolvePublishing = resolve; });
+  const deferredPublishing: PublishingActivities = {
+    preflightCampaign: (input) => publishingReady.then((value) => value.preflightCampaign(input)),
+    prepareTargetMedia: (input) => publishingReady.then((value) => value.prepareTargetMedia(input)),
+    beginPublishAttempt: (input) => publishingReady.then((value) => value.beginPublishAttempt(input)),
+    ensureNotAlreadyPublished: (input) => publishingReady.then((value) => value.ensureNotAlreadyPublished(input)),
+    finalizeAttempt: (input) => publishingReady.then((value) => value.finalizeAttempt(input)),
+    setTargetState: (input) => publishingReady.then((value) => value.setTargetState(input)),
+    setJobState: (input) => publishingReady.then((value) => value.setJobState(input)),
+    writeReceipt: (input) => publishingReady.then((value) => value.writeReceipt(input)),
+    emitEvent: (input) => publishingReady.then((value) => value.emitEvent(input)),
+    notify: (input) => publishingReady.then((value) => value.notify(input)),
+    scheduleAnalyticsFetches: (input) => publishingReady.then((value) => value.scheduleAnalyticsFetches(input)),
+  };
+  const connectorBridge =
+    connectorRuntime.gateway === null
+      ? null
+      : createConnectorExecutionActivities({
+          prisma,
+          gateway: connectorRuntime.gateway,
+          oauthClientFor: () => null,
+        });
   let gateway: WorkerActivities;
   let worker: Awaited<ReturnType<typeof startWorker>>;
   try {
@@ -197,7 +238,8 @@ export async function main(): Promise<void> {
         ? {
             buildDataExport: deferredDataExportBuilder,
             dataDeletion: deferredDataDeletion,
-            connectorExecution: connectorRuntime.gateway,
+            publishing: deferredPublishing,
+            connectorBridge,
           }
         : { connectorExecution: connectorRuntime.gateway },
     );
@@ -236,6 +278,7 @@ export async function main(): Promise<void> {
       finalizeDeletion: (input) => runtime.services.dataDeletion.finalizeDeletion(input),
       markDeletionFailed: (input) => runtime.services.dataDeletion.markDeletionFailed(input),
     });
+    resolvePublishing?.(runtime.services.workerPublishing);
   } catch (error: unknown) {
     await kv?.close();
     await scheduler.close();

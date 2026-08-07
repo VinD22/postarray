@@ -4,6 +4,7 @@ import type { CapabilitySnapshot } from '@relay/contracts';
 import type {
   ConnectionView as ApplicationConnectionView,
   MentionEntityView,
+  OAuthAccountSelectionView,
   ProviderDestinationView,
 } from '@relay/application';
 
@@ -112,13 +113,11 @@ export const connectionsApi = {
     connectionId: string,
     input: { returnUrl: string },
     idempotencyKey: string,
-  ): Promise<ConnectionView> =>
-    call<ApplicationConnectionView, ConnectionView>(
-      `/connections/${connectionId}/reconnect`,
-      { method: 'POST', idempotencyKey },
-      () => demoConnection(connectionId),
-      toConnection,
-    ),
+  ): Promise<{ authorizationUrl: string; transactionId: string }> =>
+    call(`/connections/${connectionId}/reconnect`, { method: 'POST', idempotencyKey }, () => ({
+      authorizationUrl: input.returnUrl,
+      transactionId: 'oauth_demo',
+    })),
 
   pause: (connectionId: string, idempotencyKey: string): Promise<ConnectionView> =>
     call<ApplicationConnectionView, ConnectionView>(
@@ -187,5 +186,28 @@ export const connectionsApi = {
           displayName: entry.displayLabel,
           avatarUrl: entry.avatarUrl,
         })),
+    ),
+
+  getOAuthAccountSelection: (transactionId: string): Promise<OAuthAccountSelectionView> =>
+    call(`/connections/oauth/pending/${transactionId}`, {}, () => ({
+      transactionId,
+      provider: 'bluesky',
+      expiresAt: new Date().toISOString(),
+      accounts: [],
+    })),
+
+  claimOAuth: (
+    input: { transactionId: string; selectedExternalAccountIds: readonly string[] },
+    idempotencyKey: string,
+  ): Promise<readonly ConnectionView[]> =>
+    call<readonly ApplicationConnectionView[], readonly ConnectionView[]>(
+      '/connections/oauth/claim',
+      {
+        method: 'POST',
+        body: input,
+        idempotencyKey,
+      },
+      () => [],
+      (rows) => rows.map(toConnection),
     ),
 };

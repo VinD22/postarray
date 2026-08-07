@@ -96,16 +96,26 @@ describe('createVerifiedConnectorRegistry', () => {
     ).toThrowError(expect.objectContaining({ code: 'CAPABILITY_NOT_IMPLEMENTED' }));
   });
 
-  it('registers the complete adapter matrix but exposes no unverified provider', () => {
+  it('registers the complete adapter matrix and exposes simulator-verified Bluesky in development', () => {
     const registry = createVerifiedConnectorRegistry({
       config: config(),
       logger,
       clock: { now: () => new Date('2026-08-07T00:00:00.000Z') },
     });
 
-    expect(registry.has('bluesky')).toBe(false);
+    expect(registry.has('bluesky')).toBe(true);
     expect(registry.has('x')).toBe(false);
     expect(registry.has('fake')).toBe(false);
+  });
+
+  it('keeps Bluesky unavailable in production while the production allow-list is empty', () => {
+    const registry = createVerifiedConnectorRegistry({
+      config: config({ NODE_ENV: 'production' }),
+      logger,
+      clock: { now: () => new Date('2026-08-07T00:00:00.000Z') },
+    });
+
+    expect(registry.has('bluesky')).toBe(false);
   });
 
   it('does not let configured credentials bypass the verification gate', () => {

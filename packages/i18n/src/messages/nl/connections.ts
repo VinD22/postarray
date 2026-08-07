@@ -70,6 +70,9 @@ export const connectionMessages = {
   'connection.oauth.starting': '{provider} openen',
   'connection.oauth.returned': 'De verbinding voltooien',
   'connection.oauth.chooseAccounts': 'Kies welke accounts u wilt koppelen',
+  'connection.oauth.connectSelected': 'Connect selected accounts',
+  'connection.oauth.claimComplete': 'Selected accounts are connected',
+  'connection.oauth.accountUnavailable': 'This account cannot be connected',
   'connection.oauth.noEligibleAccounts':
     'Er kunnen geen accounts op deze {provider}-login worden aangesloten. {reason}',
   'connection.oauth.canceled': 'De verbinding is verbroken op {provider}. Er veranderde niets.',

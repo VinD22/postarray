@@ -49,6 +49,7 @@ export const ID_PREFIXES = {
   oauthGrant: 'grant',
   agentConfirmation: 'confirm',
   oauthTransaction: 'oauth',
+  oauthPendingDiscovery: 'oauthpend',
   outboxEvent: 'outbox',
   outboxDeadLetter: 'outboxdl',
   webhookEndpoint: 'whep',

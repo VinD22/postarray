@@ -297,11 +297,22 @@ export interface ConnectionService {
     ctx: ActorContext,
     input: { provider: string; brandId: string; redirectTo?: string },
   ): Promise<{ authorizationUrl: string; transactionId: string }>;
-  completeOAuth(
+  handleOAuthCallback(
     ctx: ActorContext,
     input: { transactionId: string; code: string; state: string },
+  ): Promise<void>;
+  getOAuthAccountSelection(
+    ctx: ActorContext,
+    transactionId: string,
+  ): Promise<import('@relay/application').OAuthAccountSelectionView>;
+  completeOAuth(
+    ctx: ActorContext,
+    input: { transactionId: string; selectedExternalAccountIds: readonly string[] },
   ): Promise<readonly ConnectionView[]>;
-  reconnect(ctx: ActorContext, connectionId: string): Promise<ConnectionView>;
+  reconnect(
+    ctx: ActorContext,
+    connectionId: string,
+  ): Promise<{ authorizationUrl: string; transactionId: string }>;
   pause(ctx: ActorContext, connectionId: string): Promise<ConnectionView>;
   resume(ctx: ActorContext, connectionId: string): Promise<ConnectionView>;
   disconnect(ctx: ActorContext, connectionId: string): Promise<ConnectionView>;

@@ -70,6 +70,9 @@ export const connectionMessages = {
   'connection.oauth.starting': 'الافتتاح {provider}',
   'connection.oauth.returned': 'الانتهاء من الاتصال',
   'connection.oauth.chooseAccounts': 'اختر الحسابات التي تريد ربطها',
+  'connection.oauth.connectSelected': 'Connect selected accounts',
+  'connection.oauth.claimComplete': 'Selected accounts are connected',
+  'connection.oauth.accountUnavailable': 'This account cannot be connected',
   'connection.oauth.noEligibleAccounts':
     'لا يمكن ربط أي حسابات في تسجيل الدخول {provider} هذا. {reason}',
   'connection.oauth.canceled': 'تم إلغاء الاتصال بتاريخ {provider}. لم يتغير شيء.',

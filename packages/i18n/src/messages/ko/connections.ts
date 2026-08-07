@@ -61,6 +61,9 @@ export const connectionMessages = {
   'connection.oauth.starting': '열기{provider}',
   'connection.oauth.returned': '연결 마무리',
   'connection.oauth.chooseAccounts': '연결할 계정을 선택하세요',
+  'connection.oauth.connectSelected': 'Connect selected accounts',
+  'connection.oauth.claimComplete': 'Selected accounts are connected',
+  'connection.oauth.accountUnavailable': 'This account cannot be connected',
   'connection.oauth.noEligibleAccounts':
     '이 항목에 대한 계정이 없습니다.{provider}로그인 연결이 가능합니다.{reason}',
   'connection.oauth.canceled': '연결이 취소되었습니다.{provider}. 아무것도 바뀌지 않았습니다.',

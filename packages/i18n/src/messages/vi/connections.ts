@@ -63,6 +63,9 @@ export const connectionMessages = {
   'connection.oauth.starting': 'Mở {provider}',
   'connection.oauth.returned': 'Kết thúc kết nối',
   'connection.oauth.chooseAccounts': 'Chọn tài khoản để kết nối',
+  'connection.oauth.connectSelected': 'Connect selected accounts',
+  'connection.oauth.claimComplete': 'Selected accounts are connected',
+  'connection.oauth.accountUnavailable': 'This account cannot be connected',
   'connection.oauth.noEligibleAccounts':
     'Không có tài khoản nào trên thông tin đăng nhập {provider} này có thể được kết nối. {reason}',
   'connection.oauth.canceled': 'Kết nối đã bị hủy trên {provider}. Không có gì thay đổi.',

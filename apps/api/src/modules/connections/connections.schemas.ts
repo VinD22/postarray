@@ -40,6 +40,15 @@ export const oauthCallbackQuerySchema = z
   .loose();
 
 export const callbackParamsSchema = z.object({ provider: providerIdSchema }).strict();
+export const oauthPendingParamsSchema = z
+  .object({ transactionId: z.string().min(1).max(128) })
+  .strict();
+export const oauthClaimSchema = z
+  .object({
+    transactionId: z.string().min(1).max(128),
+    selectedExternalAccountIds: z.array(z.string().min(1).max(512)).min(1).max(10),
+  })
+  .strict();
 
 export const listDestinationsQuerySchema = z
   .object({

@@ -1,7 +1,7 @@
 import type { ProviderId } from '@/lib/api/types';
 
 /** The browser-facing status vocabulary emitted by the social OAuth callback. */
-export const OAUTH_CALLBACK_STATUSES = ['connected', 'declined', 'failed'] as const;
+export const OAUTH_CALLBACK_STATUSES = ['connected', 'declined', 'failed', 'select'] as const;
 export type OAuthCallbackStatus = (typeof OAUTH_CALLBACK_STATUSES)[number];
 
 /** Safe, localizable failure categories. Provider messages never cross this boundary. */
@@ -43,6 +43,7 @@ export interface OAuthCallbackResult {
   readonly provider: ProviderId;
   readonly reason?: OAuthCallbackFailureReason;
   readonly count?: number;
+  readonly transactionId?: string;
 }
 
 function pick<T extends string>(
@@ -83,6 +84,13 @@ export function parseOAuthCallbackResult(
   if (status === 'connected') {
     const count = parseCount(params);
     return count === undefined ? { status, provider } : { status, provider, count };
+  }
+
+  if (status === 'select') {
+    const transactionId = params.get('transactionId');
+    return transactionId === null || transactionId === ''
+      ? { status, provider }
+      : { status, provider, transactionId };
   }
 
   return { status, provider };

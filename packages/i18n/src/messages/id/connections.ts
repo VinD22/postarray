@@ -62,6 +62,9 @@ export const connectionMessages = {
   'connection.oauth.starting': 'Membuka {provider}',
   'connection.oauth.returned': 'Menyelesaikan koneksi',
   'connection.oauth.chooseAccounts': 'Pilih akun mana yang akan dihubungkan',
+  'connection.oauth.connectSelected': 'Connect selected accounts',
+  'connection.oauth.claimComplete': 'Selected accounts are connected',
+  'connection.oauth.accountUnavailable': 'This account cannot be connected',
   'connection.oauth.noEligibleAccounts':
     'Tidak ada akun pada login {provider} ini yang dapat dihubungkan. {reason}',
   'connection.oauth.canceled': 'Koneksi dibatalkan pada {provider}. Tidak ada yang berubah.',

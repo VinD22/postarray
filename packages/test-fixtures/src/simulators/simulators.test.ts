@@ -403,6 +403,34 @@ describe('Bluesky and the fake provider', () => {
     expect(created.cid).toMatch(/^bafyfake/);
   });
 
+  it('rotates both session credentials on refresh', async () => {
+    const refreshed = await json(
+      await call('bluesky', '/xrpc/com.atproto.server.refreshSession', { method: 'POST' }),
+    );
+    expect(refreshed.accessJwt).toBe('fake-refreshed-session-placeholder');
+    expect(refreshed.refreshJwt).toBe('fake-rotated-refresh-placeholder');
+  });
+
+  it('revokes the current session', async () => {
+    const response = await call('bluesky', '/xrpc/com.atproto.server.deleteSession', {
+      method: 'POST',
+    });
+    expect(response.status).toBe(200);
+    expect(await json(response)).toEqual({});
+  });
+
+  it('returns the AT Protocol duplicate envelope', async () => {
+    const response = await call('bluesky', '/xrpc/com.atproto.repo.createRecord', {
+      method: 'POST',
+      simulatorMode: 'duplicate',
+    });
+    expect(response.status).toBe(400);
+    expect(await json(response)).toEqual({
+      error: 'InvalidRequest',
+      message: 'Record already exists.',
+    });
+  });
+
   it('reports rate limits with a reset timestamp rather than retry-after', async () => {
     const response = await call('bluesky', '/xrpc/com.atproto.repo.createRecord', {
       method: 'POST',

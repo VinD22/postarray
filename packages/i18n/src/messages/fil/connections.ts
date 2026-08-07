@@ -73,6 +73,9 @@ export const connectionMessages = {
   'connection.oauth.starting': 'Pagbubukas {provider}',
   'connection.oauth.returned': 'Tinatapos ang koneksyon',
   'connection.oauth.chooseAccounts': 'Piliin kung aling mga account ang ikokonekta',
+  'connection.oauth.connectSelected': 'Connect selected accounts',
+  'connection.oauth.claimComplete': 'Selected accounts are connected',
+  'connection.oauth.accountUnavailable': 'This account cannot be connected',
   'connection.oauth.noEligibleAccounts':
     'Walang mga account tungkol dito {provider} maaaring konektado ang pag-login. {reason}',
   'connection.oauth.canceled': 'Kinansela ang koneksyon noong {provider}. Walang nagbago.',

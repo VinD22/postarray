@@ -13,6 +13,13 @@
 export { BaseProviderSimulator, type BaseSimulatorOptions } from './engine';
 
 export { BlueskySimulator, FakeProviderSimulator } from './atproto';
+export {
+  BLUESKY_DUPLICATE_ERROR,
+  BLUESKY_OAUTH_SESSION,
+  BLUESKY_PUBLISH_RECORD,
+  BLUESKY_REFRESHED_SESSION,
+  BLUESKY_REVOKE_RESPONSE,
+} from './atproto-fixtures';
 export { LinkedInSimulator } from './linkedin';
 export { FacebookSimulator, InstagramSimulator, ThreadsSimulator } from './meta';
 export { TikTokSimulator, YouTubeSimulator } from './video';

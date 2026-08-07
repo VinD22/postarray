@@ -48,6 +48,8 @@ export interface OAuthConnectionClaim {
   readonly avatarUrl: string | null;
   readonly profileUrl: string | null;
   readonly grantedScopes: readonly string[];
+  readonly capabilities: Readonly<Record<string, unknown>>;
+  readonly capabilityVersion: string | null;
   readonly credential: CredentialStoreWrite;
 }
 

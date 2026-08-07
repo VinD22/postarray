@@ -3,15 +3,18 @@ import {
   toSocialCredentialStorageWrite,
   type CredentialStorePort,
   type CredentialStoreWrite,
+  type OAuthConnectionClaimRequest,
   type SocialCredentialStorageRow,
   type StoredCredentialRecord,
 } from '@relay/application';
 import {
   ERROR_CODES,
   RelayError,
+  type AccountType,
   type ProviderId,
 } from '@relay/contracts';
 import {
+  appendAuditEvent,
   Prisma,
   withWorkspaceContext,
   type RelayPrismaClient,
@@ -173,6 +176,64 @@ async function readRow(
   });
 }
 
+function storedAccountType(accountType: AccountType): string {
+  switch (accountType) {
+    case 'creator_profile':
+      return 'creator_account';
+    case 'business_profile':
+      return 'business_account';
+    case 'board':
+      return 'business_account';
+    case 'community':
+      return 'group';
+    case 'publication':
+      return 'organization';
+    default:
+      return accountType;
+  }
+}
+
+function storedActorType(
+  actorType: OAuthConnectionClaimRequest['actor']['actorType'],
+): 'user' | 'service_account' | 'oauth_client' | 'system' {
+  return actorType === 'oauth_app' ? 'oauth_client' : actorType;
+}
+
+function storedSurface(
+  surface: OAuthConnectionClaimRequest['actor']['surface'],
+): 'web' | 'api' | 'mcp' | 'cli' | 'rss' | 'automation_rule' | 'import' {
+  return surface === 'agent' ? 'api' : surface;
+}
+
+async function appendClaimAudit(
+  db: WorkspaceScopedClient,
+  request: OAuthConnectionClaimRequest,
+  connectionId: string,
+  provider: ProviderId,
+): Promise<void> {
+  const actor = request.actor;
+  await appendAuditEvent(db as never, {
+    workspaceId: request.workspaceId,
+    actor: {
+      type: storedActorType(actor.actorType),
+      ...(actor.userId === null ? {} : { id: actor.userId }),
+      ...(actor.clientId === undefined ? {} : { clientId: actor.clientId }),
+    },
+    surface: storedSurface(actor.surface),
+    action: 'connection.connected',
+    target: { type: 'social_connection', id: connectionId },
+    after: { provider, phase: 'claim' },
+    metadata: {
+      contractSurface: actor.surface,
+      approvalLevel: actor.approvalLevel,
+      transactionId: request.transactionId,
+    },
+    ...(actor.ipAddress === undefined ? {} : { ipAddress: actor.ipAddress }),
+    ...(actor.userAgent === undefined ? {} : { userAgent: actor.userAgent }),
+    correlationId: actor.correlationId,
+  });
+}
+
 /**
  * Build a tenant-scoped credential store over the private Prisma model.
  *
@@ -234,6 +295,229 @@ export function createCredentialStore(prisma: RelayPrismaClient): CredentialStor
         { workspaceId: input.workspaceId, role: 'service_role' },
         async (db) => {
           await db.socialCredential.deleteMany({ where: { connectionId: input.connectionId } });
+        },
+      );
+    },
+
+    async claimOAuthConnections(input: OAuthConnectionClaimRequest) {
+      return await withWorkspaceContext(
+        prisma,
+        { workspaceId: input.workspaceId, role: 'service_role' },
+        async (db) => {
+          const now = new Date(input.claimedAt);
+          const transaction = await db.oAuthTransaction.findFirst({
+            where: { id: input.transactionId, workspaceId: input.workspaceId },
+          });
+          if (transaction === null) {
+            throw new RelayError(ERROR_CODES.NOT_FOUND, {
+              messageKey: 'errors.not_found.oauth_transaction',
+              details: { transactionId: input.transactionId },
+            });
+          }
+          const reconnectConnectionId = transaction.reconnectConnectionId;
+          if (transaction.consumedAt !== null) {
+            throw new RelayError(ERROR_CODES.VALIDATION_FAILED, {
+              messageKey: 'errors.oauth_transaction_consumed',
+              details: { transactionId: input.transactionId },
+            });
+          }
+          if (transaction.expiresAt.getTime() <= now.getTime()) {
+            throw new RelayError(ERROR_CODES.VALIDATION_FAILED, {
+              messageKey: 'errors.oauth_transaction_expired',
+              details: { transactionId: input.transactionId },
+            });
+          }
+          if (transaction.stateHash !== input.expectedStateHash) {
+            throw new RelayError(ERROR_CODES.VALIDATION_FAILED, {
+              messageKey: 'errors.oauth_state_mismatch',
+              details: {},
+            });
+          }
+          if (transaction.provider !== input.expectedProvider) {
+            throw new RelayError(ERROR_CODES.VALIDATION_FAILED, {
+              messageKey: 'error.request_invalid.message',
+              details: { reason: 'OAUTH_PROVIDER_MISMATCH' },
+            });
+          }
+
+          const pending = await db.oAuthPendingDiscovery.findFirst({
+            where: { transactionId: input.transactionId, workspaceId: input.workspaceId },
+          });
+          if (pending === null || pending.consumedAt !== null) {
+            throw new RelayError(ERROR_CODES.NOT_FOUND, {
+              messageKey: 'error.not_found.message',
+              details: { resource: 'oauth_pending_discovery' },
+            });
+          }
+          if (pending.expiresAt.getTime() <= now.getTime()) {
+            throw new RelayError(ERROR_CODES.VALIDATION_FAILED, {
+              messageKey: 'errors.oauth_transaction_expired',
+              details: { transactionId: input.transactionId },
+            });
+          }
+          if (pending.stateHash !== input.expectedStateHash) {
+            throw new RelayError(ERROR_CODES.VALIDATION_FAILED, {
+              messageKey: 'errors.oauth_state_mismatch',
+              details: {},
+            });
+          }
+
+          const consumedTransaction = await db.oAuthTransaction.updateMany({
+            where: {
+              id: input.transactionId,
+              workspaceId: input.workspaceId,
+              consumedAt: null,
+              expiresAt: { gt: now },
+              provider: input.expectedProvider,
+              stateHash: input.expectedStateHash,
+            },
+            data: { consumedAt: now },
+          });
+          if (consumedTransaction.count !== 1) {
+            throw new RelayError(ERROR_CODES.VALIDATION_FAILED, {
+              messageKey: 'errors.oauth_transaction_consumed',
+              details: { transactionId: input.transactionId },
+            });
+          }
+          const consumedPending = await db.oAuthPendingDiscovery.updateMany({
+            where: {
+              transactionId: input.transactionId,
+              workspaceId: input.workspaceId,
+              consumedAt: null,
+              expiresAt: { gt: now },
+              provider: input.expectedProvider,
+              stateHash: input.expectedStateHash,
+            },
+            data: { consumedAt: now },
+          });
+          if (consumedPending.count !== 1) {
+            throw new RelayError(ERROR_CODES.VALIDATION_FAILED, {
+              messageKey: 'errors.oauth_transaction_consumed',
+              details: { transactionId: input.transactionId },
+            });
+          }
+
+          if (input.connections.length === 0) {
+            throw new RelayError(ERROR_CODES.VALIDATION_FAILED, {
+              messageKey: 'error.request_invalid.message',
+              details: { reason: 'OAUTH_ACCOUNT_SELECTION_EMPTY' },
+            });
+          }
+
+          const connectionIds: string[] = [];
+          if (
+            reconnectConnectionId !== null &&
+            reconnectConnectionId !== undefined &&
+            input.connections.length !== 1
+          ) {
+            throw new RelayError(ERROR_CODES.VALIDATION_FAILED, {
+              messageKey: 'error.request_invalid.message',
+              details: { reason: 'OAUTH_RECONNECT_SINGLE_ACCOUNT' },
+            });
+          }
+          for (const claim of input.connections) {
+            if (claim.credential.workspaceId !== input.workspaceId) {
+              throw new RelayError(ERROR_CODES.VALIDATION_FAILED, {
+                messageKey: 'error.request_invalid.message',
+                details: { reason: 'OAUTH_CLAIM_WORKSPACE_MISMATCH' },
+              });
+            }
+            if (claim.credential.provider !== input.expectedProvider) {
+              throw providerMismatch(input.expectedProvider, claim.credential.provider);
+            }
+
+            let existing: { id: string; status: string; externalAccountId?: string } | null;
+            if (reconnectConnectionId !== null && reconnectConnectionId !== undefined) {
+              existing = await db.socialConnection.findFirst({
+                where: { id: reconnectConnectionId, workspaceId: input.workspaceId },
+                select: { id: true, status: true, externalAccountId: true },
+              });
+              if (existing === null) {
+                throw new RelayError(ERROR_CODES.NOT_FOUND, {
+                  messageKey: 'error.not_found.message',
+                  details: { resource: 'social_connection', connectionId: reconnectConnectionId },
+                });
+              }
+              if (existing.externalAccountId !== claim.externalAccountId) {
+                throw new RelayError(ERROR_CODES.VALIDATION_FAILED, {
+                  messageKey: 'error.request_invalid.message',
+                  details: { reason: 'OAUTH_RECONNECT_ACCOUNT_MISMATCH' },
+                });
+              }
+              if (claim.connectionId !== reconnectConnectionId) {
+                throw new RelayError(ERROR_CODES.VALIDATION_FAILED, {
+                  messageKey: 'error.request_invalid.message',
+                  details: { reason: 'OAUTH_RECONNECT_CONNECTION_MISMATCH' },
+                });
+              }
+            } else {
+              existing = await db.socialConnection.findFirst({
+                where: {
+                  workspaceId: input.workspaceId,
+                  provider: input.expectedProvider,
+                  externalAccountId: claim.externalAccountId,
+                },
+                select: { id: true, status: true },
+              });
+            }
+
+            const connection =
+              existing === null
+                ? await db.socialConnection.create({
+                    data: {
+                      id: claim.connectionId,
+                      workspaceId: input.workspaceId,
+                      brandId: transaction.brandId,
+                      provider: input.expectedProvider,
+                      externalAccountId: claim.externalAccountId,
+                      accountType: storedAccountType(claim.accountType) as never,
+                      displayName: claim.displayName,
+                      handle: claim.handle,
+                      avatarUrl: claim.avatarUrl,
+                      profileUrl: claim.profileUrl,
+                      status: 'active',
+                      statusReason: null,
+                      grantedScopes: [...claim.grantedScopes],
+                      capabilities: claim.capabilities as Prisma.InputJsonValue,
+                      capabilityVersion: claim.capabilityVersion,
+                      capabilitiesRefreshedAt: now,
+                      connectedAt: now,
+                      ...(transaction.initiatedByUserId === null
+                        ? {}
+                        : { createdByUserId: transaction.initiatedByUserId }),
+                    },
+                    select: { id: true },
+                  })
+                : await db.socialConnection.update({
+                    where: { id: existing.id },
+                    data: {
+                      brandId: transaction.brandId,
+                      displayName: claim.displayName,
+                      handle: claim.handle,
+                      avatarUrl: claim.avatarUrl,
+                      profileUrl: claim.profileUrl,
+                      status: 'active',
+                      statusReason: null,
+                      grantedScopes: [...claim.grantedScopes],
+                      capabilities: claim.capabilities as Prisma.InputJsonValue,
+                      capabilityVersion: claim.capabilityVersion,
+                      capabilitiesRefreshedAt: now,
+                      disconnectedAt: null,
+                    },
+                    select: { id: true },
+                  });
+
+            const storage = toPrismaWrite(claim.credential);
+            await db.socialCredential.upsert({
+              where: { connectionId: connection.id },
+              create: { ...storage, connectionId: connection.id },
+              update: storage,
+            });
+            await appendClaimAudit(db, input, connection.id, input.expectedProvider);
+            connectionIds.push(connection.id);
+          }
+
+          return { connectionIds };
         },
       );
     },

@@ -1,7 +1,23 @@
 import { ERROR_CODES, RelayError } from '@relay/contracts';
 import type { ConnectorExecutionGateway } from '@relay/runtime';
-
 import { ACTIVITY_NAMES, type ActivityName, type WorkerActivities } from './activities/types';
+import type { ProviderActivities } from './connector-execution-activities';
+import { createConnectorActivities } from './connector-activities';
+
+type PublishingActivities = Pick<
+  WorkerActivities,
+  | 'preflightCampaign'
+  | 'prepareTargetMedia'
+  | 'beginPublishAttempt'
+  | 'ensureNotAlreadyPublished'
+  | 'finalizeAttempt'
+  | 'setTargetState'
+  | 'setJobState'
+  | 'writeReceipt'
+  | 'emitEvent'
+  | 'notify'
+  | 'scheduleAnalyticsFetches'
+>;
 
 type UnavailableActivity = (input: unknown) => Promise<never>;
 
@@ -21,7 +37,8 @@ type UnavailableActivity = (input: unknown) => Promise<never>;
 export function createWorkerGateway(
   options: {
     readonly buildDataExport?: WorkerActivities['buildDataExport'];
-    /** Accepted for composition symmetry, intentionally ignored prelaunch. */
+    readonly publishing?: Partial<PublishingActivities>;
+    readonly connectorBridge?: ProviderActivities | null;
     readonly connectorExecution?: ConnectorExecutionGateway | null;
     readonly dataDeletion?: Pick<
       WorkerActivities,
@@ -54,7 +71,12 @@ export function createWorkerGateway(
   // registry above supplies every method, and main.ts validates all names again.
   return {
     ...unavailable,
+    ...(options.publishing ?? {}),
+    ...(options.connectorExecution === null || options.connectorExecution === undefined
+      ? {}
+      : createConnectorActivities(options.connectorExecution)),
     ...(options.buildDataExport === undefined ? {} : { buildDataExport: options.buildDataExport }),
     ...(options.dataDeletion ?? {}),
+    ...(options.connectorBridge ?? {}),
   } as unknown as WorkerActivities;
 }

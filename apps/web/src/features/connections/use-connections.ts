@@ -84,7 +84,7 @@ export function useAllCapabilities(
 
 /** Reconnect an existing account. Returns the provider consent URL. */
 export function useReconnectConnection(): UseMutationResult<
-  ConnectionView,
+  { authorizationUrl: string; transactionId: string },
   ApiError,
   { readonly connectionId: string }
 > {

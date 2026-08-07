@@ -60,6 +60,9 @@ export const connectionMessages = {
   'connection.oauth.starting': 'เปิด {provider}',
   'connection.oauth.returned': 'สิ้นสุดการเชื่อมต่อ',
   'connection.oauth.chooseAccounts': 'เลือกบัญชีที่จะเชื่อมต่อ',
+  'connection.oauth.connectSelected': 'Connect selected accounts',
+  'connection.oauth.claimComplete': 'Selected accounts are connected',
+  'connection.oauth.accountUnavailable': 'This account cannot be connected',
   'connection.oauth.noEligibleAccounts':
     'ไม่สามารถเชื่อมต่อบัญชีในการเข้าสู่ระบบ {provider} นี้ {reason}',
   'connection.oauth.canceled': 'การเชื่อมต่อถูกยกเลิกเมื่อ {provider} ไม่มีอะไรเปลี่ยนแปลง',

@@ -136,7 +136,7 @@ describe('buildHealthReport', () => {
       SLACK_CLIENT_ID: 'slack-id',
       SLACK_CLIENT_SECRET: 'slack-secret',
     });
-    expect(capabilities.connectors.bluesky).toBe('disabled:verification-not-complete');
+    expect(capabilities.connectors.bluesky).toBe('live');
     const fullyLive: RuntimeCapabilities = {
       ...capabilities,
       connectors: Object.fromEntries(

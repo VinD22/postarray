@@ -5,10 +5,30 @@ import {
   type KmsClient,
   type VaultAuditEvent,
 } from '@relay/connectors';
+import type { CredentialVaultPort } from '@relay/application';
 import type { RelayConfig } from '@relay/config';
 import { ERROR_CODES, RelayError } from '@relay/contracts';
 import { DecryptCommand, EncryptCommand, KMSClient, type KMSClientConfig } from '@aws-sdk/client-kms';
 import type { Logger } from '@relay/observability';
+
+export function asCredentialVaultPort(vault: CredentialVault): CredentialVaultPort {
+  return {
+    encrypt: (input) => vault.encrypt(input),
+    decryptForRequest: (input) => vault.decryptForRequest(input),
+    decrypt: async ({ record, aad, purpose }) => {
+      const handle = await vault.decryptForRequest({
+        record,
+        aad,
+        purpose: purpose ?? 'oauth_pending_grant',
+      });
+      try {
+        return await handle.use((plaintext) => plaintext);
+      } finally {
+        handle.release();
+      }
+    },
+  };
+}
 
 /** The configured vault plus the cloud client it owns. */
 export interface ConfiguredCredentialVault {

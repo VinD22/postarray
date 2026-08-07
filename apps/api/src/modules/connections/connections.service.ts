@@ -46,14 +46,31 @@ export class ConnectionsService {
     return this.services.connections.beginOAuth(ctx, input);
   }
 
-  completeOAuth(
+  handleOAuthCallback(
     ctx: ActorContext,
     input: { transactionId: string; code: string; state: string },
+  ): Promise<void> {
+    return this.services.connections.handleOAuthCallback(ctx, input);
+  }
+
+  getOAuthAccountSelection(
+    ctx: ActorContext,
+    transactionId: string,
+  ): Promise<import('@relay/application').OAuthAccountSelectionView> {
+    return this.services.connections.getOAuthAccountSelection(ctx, transactionId);
+  }
+
+  completeOAuth(
+    ctx: ActorContext,
+    input: { transactionId: string; selectedExternalAccountIds: readonly string[] },
   ): Promise<readonly ConnectionView[]> {
     return this.services.connections.completeOAuth(ctx, input);
   }
 
-  reconnect(ctx: ActorContext, connectionId: string): Promise<ConnectionView> {
+  reconnect(
+    ctx: ActorContext,
+    connectionId: string,
+  ): Promise<{ authorizationUrl: string; transactionId: string }> {
     return this.services.connections.reconnect(ctx, connectionId);
   }
 

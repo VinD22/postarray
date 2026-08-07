@@ -71,6 +71,9 @@ export const connectionMessages = {
   'connection.oauth.starting': 'Otwieranie {provider}',
   'connection.oauth.returned': 'Kończenie połączenia',
   'connection.oauth.chooseAccounts': 'Wybierz konta, które chcesz połączyć',
+  'connection.oauth.connectSelected': 'Connect selected accounts',
+  'connection.oauth.claimComplete': 'Selected accounts are connected',
+  'connection.oauth.accountUnavailable': 'This account cannot be connected',
   'connection.oauth.noEligibleAccounts':
     'Brak kont na tym {provider} login można podłączyć. {reason}',
   'connection.oauth.canceled':

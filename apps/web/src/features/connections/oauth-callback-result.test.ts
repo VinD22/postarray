@@ -15,6 +15,14 @@ describe('parseOAuthCallbackResult', () => {
     ).toEqual({ status: 'declined', provider: 'instagram' });
   });
 
+  it('accepts account selection handoff parameters', () => {
+    expect(
+      parseOAuthCallbackResult(
+        new URLSearchParams('status=select&provider=bluesky&transactionId=oauth_01'),
+      ),
+    ).toEqual({ status: 'select', provider: 'bluesky', transactionId: 'oauth_01' });
+  });
+
   it('keeps capability states distinct and defaults unknown reasons safely', () => {
     expect(
       parseOAuthCallbackResult(

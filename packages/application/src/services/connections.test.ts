@@ -5,9 +5,14 @@ import { FixedClock } from '../ports/clock';
 import { MemoryKeyValueStore } from '../ports/key-value';
 import {
   assertChannelSlotAvailable,
+  cacheIsStale,
   CHANNEL_SLOT_STATUSES,
+  DESTINATION_CACHE_TTL_MS,
+  MENTION_CACHE_TTL_MS,
   oauthCompletionReady,
+  oauthCallbackReady,
   oauthVerifierKey,
+  providerEligibleForVerifiedRevoke,
   requireExplicitOAuthAccountSelection,
   socialOAuthCallbackUrl,
 } from './connections';
@@ -68,6 +73,9 @@ describe('connection plan capacity', () => {
           encrypt: async () => {
             throw new Error('not used');
           },
+          decryptForRequest: async () => {
+            throw new Error('not used');
+          },
         },
         credentialStore: {
           find: async () => null,
@@ -79,6 +87,26 @@ describe('connection plan capacity', () => {
         },
       }),
     ).toBe(true);
+  });
+
+  it('enables callback exchange only with connector, vault and one-shot key-value storage', () => {
+    const kv = new MemoryKeyValueStore(new FixedClock());
+    const connectors = {
+      has: () => true,
+      capabilitiesFor: async () => {
+        throw new Error('not used');
+      },
+      completeOAuth: async () => {
+        throw new Error('not used');
+      },
+    };
+    const credentialVault = {
+      encrypt: async () => {
+        throw new Error('not used');
+      },
+    };
+    expect(oauthCallbackReady({ connectors, kv })).toBe(false);
+    expect(oauthCallbackReady({ connectors, credentialVault, kv })).toBe(true);
   });
 
   it('keeps completeOAuth unavailable when any persistence boundary is absent', () => {
@@ -94,6 +122,9 @@ describe('connection plan capacity', () => {
     } as const;
     const credentialVault = {
       encrypt: async () => {
+        throw new Error('not used');
+      },
+      decryptForRequest: async () => {
         throw new Error('not used');
       },
     };
@@ -174,5 +205,58 @@ describe('connection plan capacity', () => {
     ]);
     expect([first, second].filter((value) => value === 'verifier')).toHaveLength(1);
     expect([first, second].filter((value) => value === null)).toHaveLength(1);
+  });
+
+  it('treats missing cache timestamps and expired staleAfter as stale', () => {
+    const now = new Date('2026-08-07T12:00:00.000Z');
+    expect(cacheIsStale(undefined, now, DESTINATION_CACHE_TTL_MS)).toBe(true);
+    expect(cacheIsStale(new Date('2026-08-07T11:50:00.000Z'), now, DESTINATION_CACHE_TTL_MS)).toBe(
+      false,
+    );
+    expect(
+      cacheIsStale(
+        new Date('2026-08-07T10:00:00.000Z'),
+        now,
+        MENTION_CACHE_TTL_MS,
+        new Date('2026-08-07T11:30:00.000Z'),
+      ),
+    ).toBe(true);
+  });
+
+  it('limits verified provider revoke to development and production allow-lists', () => {
+    expect(providerEligibleForVerifiedRevoke('fake', false)).toBe(false);
+    expect(providerEligibleForVerifiedRevoke('bluesky', false)).toBe(true);
+    expect(providerEligibleForVerifiedRevoke('bluesky', true)).toBe(false);
+  });
+});
+
+describe('connection discovery caches', () => {
+  const now = new Date('2026-08-07T12:00:00.000Z');
+
+  it('refreshes destinations and mentions after their respective TTLs', () => {
+    expect(
+      cacheIsStale(
+        new Date(now.getTime() - DESTINATION_CACHE_TTL_MS),
+        now,
+        DESTINATION_CACHE_TTL_MS,
+      ),
+    ).toBe(true);
+    expect(
+      cacheIsStale(
+        new Date(now.getTime() - DESTINATION_CACHE_TTL_MS + 1),
+        now,
+        DESTINATION_CACHE_TTL_MS,
+      ),
+    ).toBe(false);
+    expect(
+      cacheIsStale(new Date(now.getTime() - MENTION_CACHE_TTL_MS), now, MENTION_CACHE_TTL_MS),
+    ).toBe(true);
+  });
+
+  it('honors a provider expiry over the default TTL', () => {
+    expect(cacheIsStale(now, now, DESTINATION_CACHE_TTL_MS, new Date(now.getTime() - 1))).toBe(
+      true,
+    );
+    expect(cacheIsStale(undefined, now, DESTINATION_CACHE_TTL_MS)).toBe(true);
   });
 });

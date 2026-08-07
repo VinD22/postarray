@@ -73,6 +73,9 @@ export const connectionMessages = {
   'connection.oauth.starting': 'Открытие {provider}',
   'connection.oauth.returned': 'Завершение подключения',
   'connection.oauth.chooseAccounts': 'Выберите, какие аккаунты подключать',
+  'connection.oauth.connectSelected': 'Connect selected accounts',
+  'connection.oauth.claimComplete': 'Selected accounts are connected',
+  'connection.oauth.accountUnavailable': 'This account cannot be connected',
   'connection.oauth.noEligibleAccounts':
     'Никакие учетные записи с этим логином {provider} не могут быть подключены. {reason}',
   'connection.oauth.canceled': 'Соединение было отменено на {provider}. Ничего не изменилось.',

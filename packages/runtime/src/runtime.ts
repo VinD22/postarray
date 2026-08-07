@@ -12,6 +12,7 @@ import {
   type ConnectorRegistry,
   type CredentialStorePort,
   type CredentialVaultPort,
+  type OAuthPendingDiscoveryPort,
   type DataExportEncryptionPort,
   type KeyValueStore,
   type MailerPort,
@@ -47,7 +48,8 @@ import { ResendMailer } from './resend-mailer';
 import { TemporalScheduler } from './temporal-scheduler';
 import { createVerifiedConnectorRegistry } from './verified-connectors';
 import { createCredentialStore } from './credential-store';
-import { createConfiguredCredentialVault } from './credential-vault';
+import { createOAuthPendingDiscoveryStore } from './oauth-pending-store';
+import { asCredentialVaultPort, createConfiguredCredentialVault } from './credential-vault';
 
 const REQUIRED_PRODUCTION_ADAPTERS = ['kv'] as const;
 type RequiredProductionAdapter = (typeof REQUIRED_PRODUCTION_ADAPTERS)[number];
@@ -729,6 +731,7 @@ export interface RuntimeAdapterOverrides {
   readonly connectors?: ConnectorRegistry;
   readonly credentialVault?: CredentialVaultPort;
   readonly credentialStore?: CredentialStorePort;
+  readonly oauthPending?: OAuthPendingDiscoveryPort;
   readonly ai?: AiGateway;
   readonly billing?: BillingGateway;
   readonly scheduler?: SchedulerPort;
@@ -819,8 +822,11 @@ export function createApplicationRuntime(options: ApplicationRuntimeOptions): Ap
           clock,
         })
       : null;
-  const credentialVault = adapters.credentialVault ?? configuredVault?.vault;
+  const credentialVault =
+    adapters.credentialVault ??
+    (configuredVault === null ? undefined : asCredentialVaultPort(configuredVault.vault));
   const credentialStore = adapters.credentialStore ?? createCredentialStore(prisma);
+  const oauthPending = createOAuthPendingDiscoveryStore(prisma);
 
   const services = createServices({
     prisma,
@@ -830,6 +836,7 @@ export function createApplicationRuntime(options: ApplicationRuntimeOptions): Ap
       createVerifiedConnectorRegistry({ config: options.config, logger: options.logger, clock }),
     ...(credentialVault === undefined ? {} : { credentialVault }),
     ...(credentialStore === undefined ? {} : { credentialStore }),
+    oauthPending,
     ai: adapters.ai ?? aiAdapter(options.config, options.logger, clock),
     billing: adapters.billing ?? new DatabaseBillingGateway(prisma, clock, options.config),
     scheduler,
