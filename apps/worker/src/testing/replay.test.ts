@@ -4,6 +4,7 @@ import type { ChildWorkflowDescriptor } from '../runtime/types';
 import { analyticsSyncDescriptor } from '../workflows/core/analytics-sync.core';
 import { automationRuleDescriptor } from '../workflows/core/automation-rule.core';
 import { dataDeletionDescriptor } from '../workflows/core/data-deletion.core';
+import { dataExportDescriptor } from '../workflows/core/data-export.core';
 import { publishPostDescriptor } from '../workflows/core/publish-post.core';
 import { publishTargetDescriptor } from '../workflows/core/publish-target.core';
 import { repeatPostDescriptor } from '../workflows/core/repeat-post.core';
@@ -14,6 +15,7 @@ import { webhookDeliveryDescriptor } from '../workflows/core/webhook-delivery.co
 
 import {
   makeAnalyticsInput,
+  makeDataExportInput,
   makeDeletionInput,
   makePostInput,
   makeRepeatInput,
@@ -113,6 +115,9 @@ const CASES: readonly ReplayCase[] = [
   replayCase('dataDeletionWorkflow', dataDeletionDescriptor, makeDeletionInput({ graceMs: 0 }), {
     workflowId: 'delete:ws_test:op_delete_1',
   }),
+  replayCase('dataExportWorkflow', dataExportDescriptor, makeDataExportInput(), {
+    workflowId: 'export:ws_test:export_1',
+  }),
 ];
 
 describe('replay determinism', () => {
@@ -170,6 +175,33 @@ describe('recorded publish history', () => {
     const children = run.commands.filter((command) => command.kind === 'child');
     expect(children).toHaveLength(1);
     expect(children[0]?.kind === 'child' ? children[0].name : '').toBe('publishTargetWorkflow');
+  });
+});
+
+describe('recorded export and deletion histories', () => {
+  it('runs export as a single build activity with a completed status', async () => {
+    const run = await runWorkflow(dataExportDescriptor, makeDataExportInput(), {
+      workflowId: 'export:ws_test:export_replay',
+    });
+    expect(countActivity(run.commands, 'buildDataExport')).toBe(1);
+    expect(run.output).toMatchObject({ state: 'ready' });
+  });
+
+  it('walks deletion through cancel, revoke, storage and finalize', async () => {
+    const run = await runWorkflow(dataDeletionDescriptor, makeDeletionInput({ graceMs: 0 }), {
+      workflowId: 'delete:ws_test:op_delete_replay',
+    });
+    expect(
+      containsSubsequence(activityHistory(run.commands), [
+        'loadDeletionScope',
+        'cancelScheduledJob',
+        'revokeProviderConnection',
+        'deleteStoredObjects',
+        'tombstoneAnalytics',
+        'finalizeDeletion',
+      ]),
+    ).toBe(true);
+    expect(run.output?.status).toBe('completed');
   });
 });
 

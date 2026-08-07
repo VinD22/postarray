@@ -23,6 +23,7 @@
     "db:seed": "pnpm --filter @relay/database seed",
     "db:reset": "pnpm --filter @relay/database reset",
     "release:check": "node scripts/release-check.js",
+    "test:rls": "node scripts/rls-test.js",
     "verify": "turbo run typecheck lint test",
     "generate:marketing-states": "pnpm --filter @relay/connectors generate:marketing-states"
   },

@@ -121,6 +121,7 @@ export interface SimulatorOptions {
   readonly webhookScript?: readonly DeliverWebhookResult['status'][];
   readonly webhookEndpointEnabled?: boolean;
   readonly webhookConsecutiveFailures?: number;
+  readonly webhookAlreadyDelivered?: boolean;
   readonly feedScript?: readonly FetchFeedResult[];
   readonly credential?: Partial<DescribeCredentialResult>;
   readonly refreshThrows?: boolean;
@@ -809,7 +810,7 @@ export class ActivitySimulator implements WorkerActivities {
       attempt: 0,
       endpointEnabled: this.options.webhookEndpointEnabled ?? true,
       consecutiveFailures: this.options.webhookConsecutiveFailures ?? 0,
-      alreadyDelivered: false,
+      alreadyDelivered: this.options.webhookAlreadyDelivered ?? false,
     });
   }
 

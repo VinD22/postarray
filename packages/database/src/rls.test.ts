@@ -32,6 +32,12 @@ const FIXTURE = {
   connectionA: newIdFor('connection'),
   credentialA: newIdFor('credential'),
   auditA: newIdFor('auditEvent'),
+  exportA: newIdFor('dataExport'),
+  exportB: newIdFor('dataExport'),
+  deletionA: newIdFor('deletionRequest'),
+  deletionB: newIdFor('deletionRequest'),
+  oauthTxA: newIdFor('oauthTransaction'),
+  oauthTxB: newIdFor('oauthTransaction'),
 } as const;
 
 const ROLES = ['owner', 'admin', 'manager', 'editor', 'approver', 'analyst', 'viewer'] as const;
@@ -353,6 +359,80 @@ describe.skipIf(!hasDatabase)('row level security', () => {
       expect(rows.rowCount).toBe(1);
     });
   });
+
+  describe('data rights, oauth and webhooks', () => {
+    const memberClaimsA = (): string => memberClaims(USER_IDS.viewer, FIXTURE.workspaceA);
+
+    it('lets a member read exports in their workspace', async () => {
+      const rows = await asActor(memberClaimsA(), async (tx) =>
+        tx.query('SELECT id FROM app.data_exports WHERE workspace_id = $1', [FIXTURE.workspaceA]),
+      );
+      expect(rows.rowCount).toBe(1);
+    });
+
+    it('cannot read another workspace export job', async () => {
+      const rows = await asActor(memberClaimsA(), async (tx) =>
+        tx.query('SELECT id FROM app.data_exports WHERE id = $1', [FIXTURE.exportB]),
+      );
+      expect(rows.rowCount).toBe(0);
+    });
+
+    it('cannot insert an export into another workspace', async () => {
+      await expectRejected(
+        memberClaimsA(),
+        `INSERT INTO app.data_exports
+           (id, workspace_id, requested_by_user_id, scope, format, state, updated_at)
+         VALUES ($1, $2, $3, 'workspace', 'json', 'requested', now())`,
+        [newIdFor('dataExport'), FIXTURE.workspaceB, USER_IDS.viewer],
+      );
+    });
+
+    it('lets a member read deletion requests in their workspace', async () => {
+      const rows = await asActor(memberClaimsA(), async (tx) =>
+        tx.query('SELECT id FROM app.deletion_requests WHERE workspace_id = $1', [
+          FIXTURE.workspaceA,
+        ]),
+      );
+      expect(rows.rowCount).toBe(1);
+    });
+
+    it('cannot read another workspace deletion request', async () => {
+      const rows = await asActor(memberClaimsA(), async (tx) =>
+        tx.query('SELECT id FROM app.deletion_requests WHERE id = $1', [FIXTURE.deletionB]),
+      );
+      expect(rows.rowCount).toBe(0);
+    });
+
+    it('does not let a member delete a deletion request row', async () => {
+      await expectRejected(memberClaimsA(), 'DELETE FROM app.deletion_requests WHERE id = $1', [
+        FIXTURE.deletionA,
+      ]);
+    });
+
+    it('does not expose oauth transaction state to workspace members', async () => {
+      const outcome = await asActor(memberClaimsA(), async (tx) => {
+        try {
+          const result = await tx.query('SELECT id FROM private.oauth_transactions');
+          return result.rowCount ?? 0;
+        } catch {
+          return 0;
+        }
+      });
+      expect(outcome).toBe(0);
+    });
+
+    it('does not expose webhook signing material to workspace members', async () => {
+      const outcome = await asActor(memberClaimsA(), async (tx) => {
+        try {
+          const result = await tx.query('SELECT id FROM private.webhook_endpoints');
+          return result.rowCount ?? 0;
+        } catch {
+          return 0;
+        }
+      });
+      expect(outcome).toBe(0);
+    });
+  });
 });
 
 async function seedFixture(): Promise<void> {
@@ -450,6 +530,46 @@ async function seedFixture(): Promise<void> {
      ON CONFLICT (id) DO NOTHING`,
     [FIXTURE.auditA, FIXTURE.workspaceA],
   );
+
+  for (const [exportId, workspaceId, userId] of [
+    [FIXTURE.exportA, FIXTURE.workspaceA, USER_IDS.owner],
+    [FIXTURE.exportB, FIXTURE.workspaceB, OUTSIDER_USER_ID],
+  ] as const) {
+    await client.query(
+      `INSERT INTO app.data_exports
+         (id, workspace_id, requested_by_user_id, scope, format, state, updated_at)
+       VALUES ($1, $2, $3, 'workspace', 'json', 'requested', now())
+       ON CONFLICT (id) DO NOTHING`,
+      [exportId, workspaceId, userId],
+    );
+  }
+
+  const executeAfter = new Date(Date.now() + 7 * 24 * 60 * 60_000).toISOString();
+  for (const [deletionId, workspaceId, userId] of [
+    [FIXTURE.deletionA, FIXTURE.workspaceA, USER_IDS.owner],
+    [FIXTURE.deletionB, FIXTURE.workspaceB, OUTSIDER_USER_ID],
+  ] as const) {
+    await client.query(
+      `INSERT INTO app.deletion_requests
+         (id, workspace_id, requested_by_user_id, scope, state, execute_after, updated_at)
+       VALUES ($1, $2, $3, 'workspace', 'requested', $4, now())
+       ON CONFLICT (id) DO NOTHING`,
+      [deletionId, workspaceId, userId, executeAfter],
+    );
+  }
+
+  for (const [oauthId, workspaceId, stateHash] of [
+    [FIXTURE.oauthTxA, FIXTURE.workspaceA, 'rls-oauth-state-a'],
+    [FIXTURE.oauthTxB, FIXTURE.workspaceB, 'rls-oauth-state-b'],
+  ] as const) {
+    await client.query(
+      `INSERT INTO private.oauth_transactions
+         (id, workspace_id, purpose, state_hash, redirect_uri, expires_at)
+       VALUES ($1, $2, 'connect_social_account', $3, 'https://app.example.test/oauth/callback', now() + interval '10 minutes')
+       ON CONFLICT (id) DO NOTHING`,
+      [oauthId, workspaceId, stateHash],
+    );
+  }
 
   await client.query('COMMIT');
 }
