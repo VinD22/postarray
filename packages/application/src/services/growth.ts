@@ -1,8 +1,11 @@
 import {
   GROWTH_PLAN_SECTIONS,
+  CapabilityNotImplementedError,
+  assumptionSchema,
+  factSchema,
   growthPlanSchema,
-  newIdFor,
   opportunityRecordSchema,
+  providerIdSchema,
   toolRecordSchema,
   type GrowthExportFormat,
   type GrowthPlan,
@@ -10,13 +13,21 @@ import {
   type OpportunityRecord,
   type ToolRecord,
 } from '@relay/contracts';
+import { z } from 'zod';
 
 import type { ActorContext, ContentService, GrowthService, ServiceDeps } from '../types';
-import type { BusinessProfileView, CalendarEntry, ContentItemView } from '../views';
+import type {
+  BusinessProfileView,
+  CalendarEntry,
+  ContentItemView,
+  GrowthPlanSummaryView,
+} from '../views';
 
 import { recordAudit } from '../internal/audit';
 import { invalid, notFound } from '../internal/errors';
 import { withIdempotency } from '../internal/idempotency';
+import { toJson } from '../internal/json';
+import { toProviderId } from '../internal/mappers';
 import { authorized, type Db } from '../internal/runtime';
 import { asOpportunityKind } from '../internal/storage-enums';
 
@@ -42,11 +53,23 @@ const PROFILE_SELECT = {
   productName: true,
   productUrl: true,
   category: true,
+  description: true,
   markets: true,
   languages: true,
+  idealCustomer: true,
   objective: true,
+  conversionEvent: true,
+  existingChannels: true,
+  proofAssets: true,
+  competitors: true,
+  weeklyCapacityHours: true,
+  prohibitedClaims: true,
+  prohibitedTopics: true,
+  provenClaims: true,
+  assumptions: true,
   completenessScore: true,
   confirmedAt: true,
+  createdAt: true,
 } as const;
 
 interface ProfileRow {
@@ -57,40 +80,58 @@ interface ProfileRow {
   productName: string | null;
   /** Stored as `product_url`. The view calls it `siteUrl`. */
   productUrl: string | null;
+  description: string | null;
   category: string | null;
   markets: string[];
   /** Stored as `languages`. The view calls it `contentLocales`. */
   languages: string[];
+  idealCustomer: string | null;
   objective: string | null;
+  conversionEvent: string | null;
+  existingChannels: unknown;
+  proofAssets: string[];
+  competitors: unknown;
+  weeklyCapacityHours: number | null;
+  prohibitedClaims: string[];
+  prohibitedTopics: string[];
+  provenClaims: unknown;
+  assumptions: unknown;
   completenessScore: unknown;
   confirmedAt: Date | null;
+  createdAt: Date;
 }
 
 const REQUIRED_PROFILE_FIELDS = [
   'productName',
-  'siteUrl',
-  'category',
+  'description',
   'objective',
-  'markets',
+  'conversionEvent',
   'contentLocales',
 ] as const;
+
+const factListSchema = z.array(factSchema);
+const assumptionListSchema = z.array(assumptionSchema);
+const providerListSchema = z.array(providerIdSchema);
+const stringListSchema = z.array(z.string());
+
+function parsedOr<T>(schema: z.ZodType<T>, value: unknown, fallback: T): T {
+  const parsed = schema.safeParse(value);
+  return parsed.success ? parsed.data : fallback;
+}
 
 function missingFieldKeys(row: ProfileRow): readonly string[] {
   const missing: string[] = [];
   if (row.productName === null || row.productName === '') {
     missing.push('growth.profile.product_name');
   }
-  if (row.productUrl === null || row.productUrl === '') {
-    missing.push('growth.profile.site_url');
-  }
-  if (row.category === null || row.category === '') {
-    missing.push('growth.profile.category');
+  if (row.description === null || row.description === '') {
+    missing.push('growth.profile.description');
   }
   if (row.objective === null || row.objective === '') {
     missing.push('growth.profile.objective');
   }
-  if (row.markets.length === 0) {
-    missing.push('growth.profile.markets');
+  if (row.conversionEvent === null || row.conversionEvent === '') {
+    missing.push('growth.profile.conversion_event');
   }
   if (row.languages.length === 0) {
     missing.push('growth.profile.content_locales');
@@ -107,13 +148,25 @@ function toProfileView(row: ProfileRow): BusinessProfileView {
     revision: row.version,
     productName: row.productName ?? '',
     siteUrl: row.productUrl ?? '',
+    description: row.description ?? '',
     category: row.category ?? '',
     markets: [...row.markets],
     contentLocales: [...row.languages],
+    idealCustomer: row.idealCustomer ?? '',
     objective: row.objective ?? '',
+    conversionEvent: row.conversionEvent ?? '',
+    existingChannels: parsedOr(providerListSchema, row.existingChannels, []),
+    proofAssets: [...row.proofAssets],
+    competitors: parsedOr(stringListSchema, row.competitors, []),
+    weeklyCapacityHours: row.weeklyCapacityHours,
+    prohibitedClaims: [...row.prohibitedClaims],
+    prohibitedTopics: [...row.prohibitedTopics],
+    facts: parsedOr(factListSchema, row.provenClaims, []),
+    assumptions: parsedOr(assumptionListSchema, row.assumptions, []),
     completenessScore:
       (REQUIRED_PROFILE_FIELDS.length - missing.length) / REQUIRED_PROFILE_FIELDS.length,
     confirmedAt: row.confirmedAt?.toISOString() ?? null,
+    createdAt: row.createdAt.toISOString(),
     missingFieldKeys: missing,
   };
 }
@@ -170,8 +223,29 @@ async function requirePlan(db: Db, planId: string): Promise<GrowthPlan> {
   return parsed.data;
 }
 
+function weekAt(plan: GrowthPlan, now: Date): number | null {
+  const date = now.toISOString().slice(0, 10);
+  const week = plan.calendar_proposal.find((entry) => {
+    const start = new Date(`${entry.startDate}T00:00:00.000Z`);
+    const end = new Date(start);
+    end.setUTCDate(end.getUTCDate() + 7);
+    return date >= entry.startDate && date < end.toISOString().slice(0, 10);
+  });
+  return week?.weekNumber ?? null;
+}
+
 export function createGrowthService(deps: ServiceDeps, content: ContentService): GrowthService {
   return {
+    async getBusinessProfile(ctx: ActorContext): Promise<BusinessProfileView | null> {
+      return authorized(deps, ctx, 'growth.read', undefined, async (db) => {
+        const row = await db.businessProfile.findFirst({
+          orderBy: [{ createdAt: 'desc' }, { version: 'desc' }],
+          select: PROFILE_SELECT,
+        });
+        return row === null ? null : toProfileView(row);
+      });
+    },
+
     async upsertBusinessProfile(
       ctx: ActorContext,
       input: {
@@ -183,16 +257,31 @@ export function createGrowthService(deps: ServiceDeps, content: ContentService):
         category: string;
         markets?: readonly string[];
         contentLocales?: readonly string[];
+        idealCustomer?: string;
         objective: string;
         conversionEvent?: string;
+        existingChannels?: readonly string[];
+        proofAssets?: readonly string[];
+        competitors?: readonly string[];
+        weeklyCapacityHours?: number;
+        prohibitedClaims?: readonly string[];
+        prohibitedTopics?: readonly string[];
       },
     ): Promise<BusinessProfileView> {
-      return authorized(
-        deps,
+      return withIdempotency(
+        deps.kv,
         ctx,
-        'growth.write',
-        { brandId: input.brandId },
-        async (db, actor) => {
+        {
+          operation: 'growth.upsertBusinessProfile',
+          body: input,
+          resourceIdOf: (profile) => profile.id,
+          run: () =>
+            authorized(
+              deps,
+              ctx,
+              'growth.write',
+              { brandId: input.brandId },
+              async (db, actor) => {
           const existing =
             input.profileId === undefined
               ? await db.businessProfile.findFirst({
@@ -209,11 +298,41 @@ export function createGrowthService(deps: ServiceDeps, content: ContentService):
             brandId: input.brandId,
             productName: input.productName,
             productUrl: input.siteUrl,
+            description: input.description,
             category: input.category,
             markets: [...(input.markets ?? [])],
             languages: [...(input.contentLocales ?? [])],
+            idealCustomer: input.idealCustomer ?? null,
             objective: input.objective,
+            conversionEvent: input.conversionEvent ?? null,
+            proofAssets: [...(input.proofAssets ?? [])],
+            competitors: toJson([...(input.competitors ?? [])]),
+            weeklyCapacityHours: input.weeklyCapacityHours ?? null,
+            prohibitedClaims: [...(input.prohibitedClaims ?? [])],
+            prohibitedTopics: [...(input.prohibitedTopics ?? [])],
+            completenessScore: Math.round(
+              (100 *
+                [
+                  input.productName,
+                  input.description,
+                  input.objective,
+                  input.conversionEvent ?? '',
+                  (input.contentLocales ?? []).join(','),
+                ].filter((value) => value.trim() !== '').length) /
+                REQUIRED_PROFILE_FIELDS.length,
+            ),
           };
+
+          const selectedConnections =
+            input.existingChannels === undefined || input.existingChannels.length === 0
+              ? []
+              : await db.socialConnection.findMany({
+                  where: { id: { in: [...input.existingChannels] } },
+                  select: { provider: true },
+                });
+          const existingChannels = [
+            ...new Set(selectedConnections.map((connection) => toProviderId(connection.provider))),
+          ];
 
           // A confirmed profile is never edited in place: a change produces a
           // new revision so a plan can name the revision it was built from.
@@ -222,6 +341,7 @@ export function createGrowthService(deps: ServiceDeps, content: ContentService):
               ? await db.businessProfile.create({
                   data: {
                     ...data,
+                    existingChannels: toJson(existingChannels),
                     workspaceId: actor.workspace.id,
                     version: (existing?.version ?? 0) + 1,
                   },
@@ -229,7 +349,7 @@ export function createGrowthService(deps: ServiceDeps, content: ContentService):
                 })
               : await db.businessProfile.update({
                   where: { id: existing.id },
-                  data,
+                  data: { ...data, existingChannels: toJson(existingChannels) },
                   select: PROFILE_SELECT,
                 });
 
@@ -240,89 +360,159 @@ export function createGrowthService(deps: ServiceDeps, content: ContentService):
             after: { revision: row.version, brandId: input.brandId },
           });
 
-          return toProfileView(row);
+                return toProfileView(row);
+              },
+            ),
         },
+        deps.clock,
       );
     },
 
     async confirmBusinessProfile(
       ctx: ActorContext,
-      profileId: string,
+      input: {
+        profileId: string;
+        confirmedAssumptionIds?: readonly string[];
+        corrections?: Readonly<Record<string, string>>;
+      },
     ): Promise<BusinessProfileView> {
-      return authorized(deps, ctx, 'growth.write', undefined, async (db, actor) => {
+      return withIdempotency(deps.kv, ctx, {
+        operation: 'growth.confirmBusinessProfile',
+        body: input,
+        resourceIdOf: (profile) => profile.id,
+        run: () => authorized(deps, ctx, 'growth.write', undefined, async (db, actor) => {
         const row = await db.businessProfile.findFirst({
-          where: { id: profileId },
+          where: { id: input.profileId },
           select: PROFILE_SELECT,
         });
         if (row === null) {
-          throw notFound('business_profile', profileId);
+          throw notFound('business_profile', input.profileId);
         }
         const missing = missingFieldKeys(row);
         if (missing.length > 0) {
           throw invalid('errors.growth_profile_incomplete', { missing: [...missing] });
         }
+        const confirmedIds = new Set(input.confirmedAssumptionIds ?? []);
+        const corrections = input.corrections ?? {};
+        const assumptions = parsedOr(assumptionListSchema, row.assumptions, []);
+        const facts = parsedOr(factListSchema, row.provenClaims, []);
+        const assumptionIds = new Set(assumptions.map((assumption) => assumption.id));
+        const unknownIds = [...confirmedIds, ...Object.keys(corrections)].filter(
+          (id) => !assumptionIds.has(id),
+        );
+        if (unknownIds.length > 0) {
+          throw invalid('errors.growth_assumption_not_found', { ids: [...new Set(unknownIds)] });
+        }
+        const promoted = assumptions
+          .filter((assumption) => confirmedIds.has(assumption.id))
+          .map((assumption) => ({
+            id: assumption.id,
+            statement: corrections[assumption.id] ?? assumption.statement,
+            evidenceIds: [`profile.assumption.${assumption.id}`],
+            confirmedByUser: true as const,
+          }));
+        const remaining = assumptions
+          .filter((assumption) => !confirmedIds.has(assumption.id))
+          .map((assumption) => ({
+            ...assumption,
+            statement: corrections[assumption.id] ?? assumption.statement,
+          }));
         const confirmed = await db.businessProfile.update({
-          where: { id: profileId },
-          data: { confirmedAt: deps.clock.now() },
+          where: { id: input.profileId },
+          data: {
+            confirmedAt: deps.clock.now(),
+            ...(actor.userId === null ? {} : { confirmedByUserId: actor.userId }),
+            provenClaims: toJson([...facts, ...promoted]),
+            assumptions: toJson(remaining),
+          },
           select: PROFILE_SELECT,
         });
         await recordAudit(db, actor, {
           action: 'workspace.updated',
           targetType: 'business_profile',
-          targetId: profileId,
+          targetId: input.profileId,
           after: { confirmed: true, revision: confirmed.version },
         });
-        return toProfileView(confirmed);
-      });
+          return toProfileView(confirmed);
+        }),
+      }, deps.clock);
     },
 
-    /** Asynchronous: generation runs in the worker under the AI guardrails. */
+    /**
+     * Generation stays explicitly unavailable until a durable worker workflow
+     * can persist an operation and its terminal result. Returning a queued
+     * handle without that workflow would strand the user indefinitely.
+     */
     async generatePlan(ctx: ActorContext, input: { profileId: string }): Promise<OperationRef> {
-      return withIdempotency(deps.kv, ctx, {
-        operation: 'growth.generatePlan',
-        body: input,
-        run: async () =>
-          authorized(deps, ctx, 'growth.write', undefined, async (db, actor) => {
-            const profile = await db.businessProfile.findFirst({
-              where: { id: input.profileId },
-              select: PROFILE_SELECT,
-            });
-            if (profile === null) {
-              throw notFound('business_profile', input.profileId);
-            }
-            // A plan is only ever built from a profile a human confirmed.
-            if (profile.confirmedAt === null) {
-              throw invalid('errors.growth_profile_unconfirmed', {
-                profileId: input.profileId,
-              });
-            }
-            if (!deps.ai.isAvailable()) {
-              throw invalid('errors.ai_unavailable', {});
-            }
-
-            const operationId = newIdFor('operation');
-            await recordAudit(db, actor, {
-              action: 'workspace.updated',
-              targetType: 'growth_plan_generation',
-              targetId: operationId,
-              after: { profileId: input.profileId, revision: profile.version },
-            });
-
-            return {
-              operationId,
-              status: 'queued',
-              resourceType: 'growth_plan',
-              resourceId: null,
-              createdAt: deps.clock.now().toISOString(),
-              completedAt: null,
-              error: null,
-            } satisfies OperationRef;
-          }),
+      return authorized(deps, ctx, 'growth.write', undefined, async (db) => {
+        const profile = await db.businessProfile.findFirst({
+          where: { id: input.profileId },
+          select: PROFILE_SELECT,
+        });
+        if (profile === null) {
+          throw notFound('business_profile', input.profileId);
+        }
+        if (profile.confirmedAt === null) {
+          throw invalid('errors.growth_profile_unconfirmed', { profileId: input.profileId });
+        }
+        throw new CapabilityNotImplementedError({
+          details: { provider: 'Growth Advisor', capability: 'plan_generation' },
+        });
       });
     },
 
     async getPlan(ctx: ActorContext, planId: string): Promise<GrowthPlan> {
       return authorized(deps, ctx, 'growth.read', undefined, async (db) => requirePlan(db, planId));
+    },
+
+    async getCurrentPlan(ctx: ActorContext): Promise<GrowthPlan | null> {
+      return authorized(deps, ctx, 'growth.read', undefined, async (db) => {
+        const row = await db.growthPlan.findFirst({
+          where: { state: { in: ['draft', 'approved'] } },
+          orderBy: [{ createdAt: 'desc' }, { version: 'desc' }],
+          select: { id: true },
+        });
+        return row === null ? null : requirePlan(db, row.id);
+      });
+    },
+
+    async getPlanSummary(ctx: ActorContext): Promise<GrowthPlanSummaryView> {
+      return authorized(deps, ctx, 'growth.read', undefined, async (db) => {
+        const [profile, row] = await Promise.all([
+          db.businessProfile.findFirst({
+            orderBy: [{ createdAt: 'desc' }, { version: 'desc' }],
+            select: PROFILE_SELECT,
+          }),
+          db.growthPlan.findFirst({
+            where: { state: 'approved', approvedAt: { not: null } },
+            orderBy: [{ approvedAt: 'desc' }, { version: 'desc' }],
+            select: { id: true, version: true, approvedAt: true },
+          }),
+        ]);
+        const profileComplete =
+          profile !== null && profile.confirmedAt !== null && missingFieldKeys(profile).length === 0;
+        if (row === null || row.approvedAt === null) {
+          return {
+            planId: null,
+            version: null,
+            approvedAt: null,
+            currentWeek: null,
+            totalWeeks: null,
+            undraftedBriefCount: null,
+            profileComplete,
+          };
+        }
+        const plan = await requirePlan(db, row.id);
+        return {
+          planId: row.id,
+          version: row.version,
+          approvedAt: row.approvedAt.toISOString(),
+          currentWeek: weekAt(plan, deps.clock.now()),
+          totalWeeks: plan.calendar_proposal.length,
+          undraftedBriefCount: null,
+          profileComplete,
+        };
+      });
     },
 
     async exportPlan(

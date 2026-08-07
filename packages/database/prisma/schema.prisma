@@ -1147,7 +1147,13 @@ model BusinessProfile {
   existingChannels   Json      @default("[]") @map("existing_channels")
   /// Facts the user explicitly confirmed. AI never promotes an inference here.
   provenClaims       Json      @default("[]") @map("proven_claims")
+  /// User supplied proof descriptions or asset references. These are evidence
+  /// candidates, not verified claims, until the user confirms the profile.
+  proofAssets        String[]  @default([]) @map("proof_assets")
+  /// Model assumptions remain separate from confirmed facts at rest.
+  assumptions        Json      @default("[]")
   prohibitedClaims   String[]  @default([]) @map("prohibited_claims")
+  prohibitedTopics   String[]  @default([]) @map("prohibited_topics")
   competitors        Json      @default("[]")
   weeklyCapacityHours Int?     @map("weekly_capacity_hours")
   constraints        String?

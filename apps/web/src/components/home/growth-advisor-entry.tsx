@@ -43,7 +43,6 @@ export function GrowthAdvisorEntry() {
     plan.planId !== null &&
     plan.version !== null &&
     plan.approvedAt !== null &&
-    plan.currentWeek !== null &&
     plan.totalWeeks !== null;
 
   return (
@@ -51,21 +50,25 @@ export function GrowthAdvisorEntry() {
       {hasPlan ? (
         <>
           <p className="prose-measure text-body-md text-text-secondary">
-            {t('home.advisor.summary', {
-              version: plan.version ?? 0,
-              date: format.date(plan.approvedAt ?? new Date()),
-              week: plan.currentWeek ?? 0,
-              total: plan.totalWeeks ?? 0,
-              briefs: plan.undraftedBriefCount,
-            })}
+            <span>
+              {t('growth.plan.version', {
+                version: plan.version ?? 1,
+                date: format.date(plan.approvedAt ?? new Date()),
+              })}
+            </span>{' '}
+            <span>
+              {t('growth.plan.approved', {
+                date: format.date(plan.approvedAt ?? new Date()),
+              })}
+            </span>
           </p>
           <div className="flex flex-wrap gap-2">
             <Button variant="secondary" size="sm" asChild>
-              <Link href={`/growth/plan/${plan.planId ?? ''}`}>{t('home.advisor.openPlan')}</Link>
+              <Link href="/growth">{t('home.advisor.openPlan')}</Link>
             </Button>
-            {plan.undraftedBriefCount > 0 ? (
+            {plan.currentWeek !== null ? (
               <Button variant="ghost" size="sm" asChild>
-                <Link href={`/growth/plan/${plan.planId ?? ''}?week=${plan.currentWeek ?? 1}`}>
+                <Link href={`/growth?week=${plan.currentWeek ?? 1}`}>
                   {t('home.advisor.createDrafts', { week: plan.currentWeek ?? 1 })}
                 </Link>
               </Button>
@@ -79,7 +82,7 @@ export function GrowthAdvisorEntry() {
           </p>
           <div>
             <Button variant="secondary" size="sm" asChild>
-              <Link href="/growth/profile">{t('home.advisor.start')}</Link>
+              <Link href="/growth">{t('home.advisor.start')}</Link>
             </Button>
           </div>
         </>

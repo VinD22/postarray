@@ -109,6 +109,7 @@ export type {
   ExperimentView,
   FeedHealthView,
   FeedPreview,
+  GrowthPlanSummaryView,
   InvitationView,
   MediaAssetView,
   MembershipView,

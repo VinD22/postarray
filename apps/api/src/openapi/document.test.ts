@@ -115,4 +115,10 @@ describe('openapi document', () => {
     );
     expect(snooze?.['required']).toBe(true);
   });
+
+  it('publishes current Growth Advisor reads without requiring invented ids', () => {
+    expect(operation('/v1/growth/profile', 'get')['responses']).toBeDefined();
+    expect(operation('/v1/growth/plans/current', 'get')['responses']).toBeDefined();
+    expect(operation('/v1/growth/plans/current/summary', 'get')['responses']).toBeDefined();
+  });
 });

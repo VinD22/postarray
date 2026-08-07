@@ -18,8 +18,8 @@
  */
 
 import { api, newIdempotencyKey, request } from '@/lib/api';
+import type { BusinessProfileView } from '@/lib/api/types';
 import type {
-  BusinessProfile,
   GrowthExportFormat,
   GrowthPlan,
   OpportunityRecord,
@@ -891,56 +891,37 @@ export const dataGateway = {
 /* --------------------------------------------------------------- growth */
 
 export const growthGateway = {
-  async profile(): Promise<BusinessProfile | null> {
-    // TODO(api): `api.growth.getBusinessProfile`.
-    return request<BusinessProfile | null>('/growth/profile').catch(() => null);
+  async profile(): Promise<BusinessProfileView | null> {
+    return api.growth.getBusinessProfile();
   },
 
-  /**
-   * The intake form's shape is wider than `Partial<BusinessProfile>` while the
-   * profile resource is still growing fields, so the boundary cast lives here
-   * rather than in the form.
-   */
-  async saveProfile(input: unknown): Promise<BusinessProfile> {
-    const saved = await api.growth.upsertBusinessProfile(input as Partial<BusinessProfile>);
-    if (saved === null) {
-      throw new Error('PROFILE_NOT_SAVED');
-    }
-    return saved;
+  async saveProfile(input: Readonly<Record<string, unknown>>): Promise<BusinessProfileView> {
+    return api.growth.upsertBusinessProfile(input, newIdempotencyKey('settings'));
   },
 
   async confirmProfile(input: {
     profileId: string;
     confirmedAssumptionIds: readonly string[];
     corrections: Readonly<Record<string, string>>;
-  }): Promise<BusinessProfile> {
-    const confirmed = await api.growth.confirmBusinessProfile(
-      { confirmedFactIds: input.confirmedAssumptionIds },
+  }): Promise<BusinessProfileView> {
+    return api.growth.confirmBusinessProfile(
+      input.profileId,
+      {
+        confirmedAssumptionIds: input.confirmedAssumptionIds,
+        corrections: input.corrections,
+      },
       newIdempotencyKey('settings'),
     );
-    if (Object.keys(input.corrections).length > 0) {
-      // TODO(api): corrections belong in the confirm body.
-      await request('/growth/profile/corrections', {
-        method: 'PATCH',
-        body: { corrections: input.corrections },
-      }).catch(() => undefined);
-    }
-    if (confirmed === null) {
-      throw new Error('PROFILE_NOT_CONFIRMED');
-    }
-    return confirmed;
   },
 
   async plan(): Promise<GrowthPlan | null> {
     return api.growth.getPlan();
   },
 
-  async generate(): Promise<GrowthPlan> {
-    const generated = await api.growth.generatePlan(newIdempotencyKey('settings'));
-    if (generated === null) {
-      throw new Error('PLAN_NOT_GENERATED');
-    }
-    return generated;
+  async generate(): Promise<void> {
+    const profile = await api.growth.getBusinessProfile();
+    if (profile === null) return;
+    await api.growth.generatePlan(profile.id, newIdempotencyKey('settings'));
   },
 
   async exportPlan(planId: string, format: GrowthExportFormat): Promise<string> {

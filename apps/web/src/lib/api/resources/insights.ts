@@ -1,16 +1,22 @@
 /** Analytics, experiments, tracked links and the growth advisor. */
 
 import type {
-  BusinessProfile,
   GrowthExportFormat,
   GrowthPlan,
+  OperationRef,
   OpportunityRecord,
   ToolRecord,
 } from '@relay/contracts';
 
 import { call } from '../call';
-import { demoGrowthPlan, page } from '../fixtures';
-import type { GrowthPlanSummaryView, MetricView, Paginated, ProviderId } from '../types';
+import { page } from '../fixtures';
+import type {
+  BusinessProfileView,
+  GrowthPlanSummaryView,
+  MetricView,
+  Paginated,
+  ProviderId,
+} from '../types';
 
 export type MetricWindow = {
   readonly from: string;
@@ -165,17 +171,37 @@ export const shortLinksApi = {
 };
 
 export const growthApi = {
-  upsertBusinessProfile: (input: Partial<BusinessProfile>): Promise<BusinessProfile | null> =>
-    call('/growth/profile', { method: 'PATCH', body: input }, () => null),
+  getBusinessProfile: (): Promise<BusinessProfileView | null> =>
+    call('/growth/profile', {}, () => null),
+
+  upsertBusinessProfile: (
+    input: Readonly<Record<string, unknown>>,
+    idempotencyKey: string,
+  ): Promise<BusinessProfileView> =>
+    call('/growth/profile', { method: 'PUT', body: input, idempotencyKey }, () => {
+      throw new Error('DEMO_GROWTH_PROFILE_UNAVAILABLE');
+    }),
 
   confirmBusinessProfile: (
-    input: { confirmedFactIds: readonly string[] },
+    profileId: string,
+    input: {
+      confirmedAssumptionIds?: readonly string[];
+      corrections?: Readonly<Record<string, string>>;
+    },
     idempotencyKey: string,
-  ): Promise<BusinessProfile | null> =>
-    call('/growth/profile/confirm', { method: 'POST', body: input, idempotencyKey }, () => null),
+  ): Promise<BusinessProfileView> =>
+    call(
+      `/growth/profile/${encodeURIComponent(profileId)}/confirm`,
+      { method: 'POST', body: input, idempotencyKey },
+      () => {
+        throw new Error('DEMO_GROWTH_PROFILE_UNAVAILABLE');
+      },
+    ),
 
-  generatePlan: (idempotencyKey: string): Promise<GrowthPlan | null> =>
-    call('/growth/plans', { method: 'POST', idempotencyKey }, () => null),
+  generatePlan: (profileId: string, idempotencyKey: string): Promise<OperationRef> =>
+    call('/growth/plans', { method: 'POST', body: { profileId }, idempotencyKey }, () => {
+      throw new Error('DEMO_GROWTH_PLAN_UNAVAILABLE');
+    }),
 
   getPlan: (planId?: string): Promise<GrowthPlan | null> =>
     call(
@@ -186,15 +212,23 @@ export const growthApi = {
 
   /** Home only needs the summary, not the whole plan document. */
   getPlanSummary: (): Promise<GrowthPlanSummaryView> =>
-    call('/growth/plans/current/summary', {}, () => demoGrowthPlan),
+    call('/growth/plans/current/summary', {}, () => ({
+      planId: null,
+      version: null,
+      approvedAt: null,
+      currentWeek: null,
+      totalWeeks: null,
+      undraftedBriefCount: null,
+      profileComplete: false,
+    })),
 
   exportPlan: (
     planId: string,
     format: GrowthExportFormat,
   ): Promise<{ downloadUrl: string } | null> =>
     call(
-      `/growth/plans/${planId}/exports`,
-      { method: 'POST', body: { format }, sideEffectFree: true },
+      `/growth/plans/${encodeURIComponent(planId)}/export`,
+      { query: { format } },
       () => null,
     ),
 
@@ -202,13 +236,21 @@ export const growthApi = {
     input: { planId: string; itemId: string },
     idempotencyKey: string,
   ): Promise<{ contentItemId: string } | null> =>
-    call('/growth/plans/drafts', { method: 'POST', body: input, idempotencyKey }, () => null),
+    call(
+      `/growth/plans/${encodeURIComponent(input.planId)}/drafts`,
+      { method: 'POST', body: { itemId: input.itemId }, idempotencyKey },
+      () => null,
+    ),
 
   proposeSlotFromItem: (
     input: { planId: string; itemId: string },
     idempotencyKey: string,
   ): Promise<{ scheduledAt: string; timeZone: string } | null> =>
-    call('/growth/plans/proposals', { method: 'POST', body: input, idempotencyKey }, () => null),
+    call(
+      `/growth/plans/${encodeURIComponent(input.planId)}/slot-proposals`,
+      { method: 'POST', body: { itemId: input.itemId }, idempotencyKey },
+      () => null,
+    ),
 
   listOpportunities: (
     query: { category?: string; cursor?: string; limit?: number } = {},

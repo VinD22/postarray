@@ -51,6 +51,7 @@ import type {
   ExperimentView,
   FeedHealthView,
   FeedPreview,
+  GrowthPlanSummaryView,
   InvitationView,
   MediaAssetView,
   MembershipView,
@@ -918,6 +919,7 @@ export interface RssService {
 }
 
 export interface GrowthService {
+  getBusinessProfile(ctx: ActorContext): Promise<BusinessProfileView | null>;
   upsertBusinessProfile(
     ctx: ActorContext,
     input: {
@@ -929,12 +931,28 @@ export interface GrowthService {
       readonly category: string;
       readonly markets?: readonly string[];
       readonly contentLocales?: readonly string[];
+      readonly idealCustomer?: string;
       readonly objective: string;
       readonly conversionEvent?: string;
+      readonly existingChannels?: readonly string[];
+      readonly proofAssets?: readonly string[];
+      readonly competitors?: readonly string[];
+      readonly weeklyCapacityHours?: number;
+      readonly prohibitedClaims?: readonly string[];
+      readonly prohibitedTopics?: readonly string[];
     },
   ): Promise<BusinessProfileView>;
-  confirmBusinessProfile(ctx: ActorContext, profileId: string): Promise<BusinessProfileView>;
+  confirmBusinessProfile(
+    ctx: ActorContext,
+    input: {
+      readonly profileId: string;
+      readonly confirmedAssumptionIds?: readonly string[];
+      readonly corrections?: Readonly<Record<string, string>>;
+    },
+  ): Promise<BusinessProfileView>;
   generatePlan(ctx: ActorContext, input: { readonly profileId: string }): Promise<OperationRef>;
+  getCurrentPlan(ctx: ActorContext): Promise<GrowthPlan | null>;
+  getPlanSummary(ctx: ActorContext): Promise<GrowthPlanSummaryView>;
   getPlan(ctx: ActorContext, planId: string): Promise<GrowthPlan>;
   exportPlan(
     ctx: ActorContext,

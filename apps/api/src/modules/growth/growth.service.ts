@@ -12,6 +12,7 @@ import type {
   BusinessProfileView,
   CalendarEntry,
   ContentItemView,
+  GrowthPlanSummaryView,
   Services,
 } from '../../application/port';
 import { SERVICES } from '../../application/tokens';
@@ -22,12 +23,23 @@ import type { BusinessProfileInput } from './growth.schemas';
 export class GrowthService {
   constructor(@Inject(SERVICES) private readonly services: Services) {}
 
+  getProfile(ctx: ActorContext): Promise<BusinessProfileView | null> {
+    return this.services.growth.getBusinessProfile(ctx);
+  }
+
   upsertProfile(ctx: ActorContext, input: BusinessProfileInput): Promise<BusinessProfileView> {
     return this.services.growth.upsertBusinessProfile(ctx, input);
   }
 
-  confirmProfile(ctx: ActorContext, profileId: string): Promise<BusinessProfileView> {
-    return this.services.growth.confirmBusinessProfile(ctx, profileId);
+  confirmProfile(
+    ctx: ActorContext,
+    input: {
+      profileId: string;
+      confirmedAssumptionIds?: readonly string[];
+      corrections?: Readonly<Record<string, string>>;
+    },
+  ): Promise<BusinessProfileView> {
+    return this.services.growth.confirmBusinessProfile(ctx, input);
   }
 
   generatePlan(ctx: ActorContext, profileId: string): Promise<OperationRef> {
@@ -36,6 +48,14 @@ export class GrowthService {
 
   getPlan(ctx: ActorContext, planId: string): Promise<GrowthPlan> {
     return this.services.growth.getPlan(ctx, planId);
+  }
+
+  getCurrentPlan(ctx: ActorContext): Promise<GrowthPlan | null> {
+    return this.services.growth.getCurrentPlan(ctx);
+  }
+
+  getPlanSummary(ctx: ActorContext): Promise<GrowthPlanSummaryView> {
+    return this.services.growth.getPlanSummary(ctx);
   }
 
   exportPlan(

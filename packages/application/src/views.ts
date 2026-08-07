@@ -2,9 +2,11 @@ import type {
   AccountType,
   ApprovalLevel,
   ApprovalState,
+  Assumption,
   ContentKind,
   CreationSurface,
   DisclosureFlags,
+  Fact,
   LinkSpec,
   MediaKind,
   MentionRef,
@@ -612,13 +614,36 @@ export interface BusinessProfileView {
   readonly revision: number;
   readonly productName: string;
   readonly siteUrl: string;
+  readonly description: string;
   readonly category: string;
   readonly markets: readonly string[];
   readonly contentLocales: readonly string[];
+  readonly idealCustomer: string;
   readonly objective: string;
+  readonly conversionEvent: string;
+  readonly existingChannels: readonly ProviderId[];
+  readonly proofAssets: readonly string[];
+  readonly competitors: readonly string[];
+  readonly weeklyCapacityHours: number | null;
+  readonly prohibitedClaims: readonly string[];
+  readonly prohibitedTopics: readonly string[];
+  readonly facts: readonly Fact[];
+  readonly assumptions: readonly Assumption[];
   readonly completenessScore: number;
   readonly confirmedAt: string | null;
+  readonly createdAt: string;
   readonly missingFieldKeys: readonly string[];
+}
+
+export interface GrowthPlanSummaryView {
+  readonly planId: string | null;
+  readonly version: number | null;
+  readonly approvedAt: string | null;
+  readonly currentWeek: number | null;
+  readonly totalWeeks: number | null;
+  /** Null until a durable plan-item provenance link is available. */
+  readonly undraftedBriefCount: number | null;
+  readonly profileComplete: boolean;
 }
 
 export interface WebhookEndpointView {

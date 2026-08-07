@@ -4,13 +4,13 @@ import { useState, type ReactNode } from 'react';
 import { Badge, Button, Input } from '@relay/design-system/primitives';
 import { Notice } from '@relay/design-system/patterns';
 import { useTranslations } from '@relay/i18n/react';
-import type { BusinessProfile } from '@relay/contracts';
 import { AlertCircle, Check, HelpCircle } from 'lucide-react';
 
 import { SettingsPanel } from '../settings/components/section';
+import type { BusinessProfileView } from '@/lib/api/types';
 
 export interface ProfileConfirmationProps {
-  profile: BusinessProfile;
+  profile: BusinessProfileView;
   saving: boolean;
   onConfirm: (input: {
     profileId: string;
@@ -172,7 +172,7 @@ export function ProfileConfirmation({
             })
           }
         >
-          {t('growth.ui.confirm.generate')}
+          {t('action.confirm')}
         </Button>
       </div>
     </div>

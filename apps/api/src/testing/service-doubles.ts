@@ -149,9 +149,21 @@ export function createRefusingServices(): Services {
       getHealth: refuse('feed'),
     },
     growth: {
+      getBusinessProfile: () => Promise.resolve(null),
       upsertBusinessProfile: refuse('profile'),
       confirmBusinessProfile: refuse('profile'),
       generatePlan: refuse('profile'),
+      getCurrentPlan: () => Promise.resolve(null),
+      getPlanSummary: () =>
+        Promise.resolve({
+          planId: null,
+          version: null,
+          approvedAt: null,
+          currentWeek: null,
+          totalWeeks: null,
+          undraftedBriefCount: null,
+          profileComplete: false,
+        }),
       getPlan: refuse('plan'),
       exportPlan: refuse('plan'),
       createDraftFromItem: refuse('plan'),

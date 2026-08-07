@@ -56,6 +56,7 @@ import type {
   ExperimentView as ApplicationExperimentView,
   FeedHealthView as ApplicationFeedHealthView,
   FeedPreview as ApplicationFeedPreview,
+  GrowthPlanSummaryView as ApplicationGrowthPlanSummaryView,
   InvitationView as ApplicationInvitationView,
   MediaAssetView as ApplicationMediaAssetView,
   MediaEditOperation as ApplicationMediaEditOperation,
@@ -211,6 +212,7 @@ export type FeedView = ApplicationRssFeedView;
 export type FeedPreview = ApplicationFeedPreview;
 export type FeedHealth = ApplicationFeedHealthView;
 export type BusinessProfileView = ApplicationBusinessProfileView;
+export type GrowthPlanSummaryView = ApplicationGrowthPlanSummaryView;
 export type WebhookEndpointView = ApplicationWebhookEndpointView;
 export type WebhookDeliveryView = ApplicationWebhookDeliveryView;
 export type ApiKeyView = ApplicationApiKeyView;
@@ -518,9 +520,19 @@ export interface RssService {
 }
 
 export interface GrowthService {
+  getBusinessProfile(ctx: ActorContext): Promise<BusinessProfileView | null>;
   upsertBusinessProfile(ctx: ActorContext, input: ViewModel): Promise<BusinessProfileView>;
-  confirmBusinessProfile(ctx: ActorContext, profileId: string): Promise<BusinessProfileView>;
+  confirmBusinessProfile(
+    ctx: ActorContext,
+    input: {
+      profileId: string;
+      confirmedAssumptionIds?: readonly string[];
+      corrections?: Readonly<Record<string, string>>;
+    },
+  ): Promise<BusinessProfileView>;
   generatePlan(ctx: ActorContext, input: { profileId: string }): Promise<OperationRef>;
+  getCurrentPlan(ctx: ActorContext): Promise<GrowthPlan | null>;
+  getPlanSummary(ctx: ActorContext): Promise<GrowthPlanSummaryView>;
   getPlan(ctx: ActorContext, planId: string): Promise<GrowthPlan>;
   exportPlan(
     ctx: ActorContext,

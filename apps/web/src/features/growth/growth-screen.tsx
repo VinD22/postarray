@@ -2,13 +2,11 @@
 
 import { useMemo, useState, type ReactNode } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { Badge, Button, TabsContent } from '@relay/design-system/primitives';
+import { Badge, TabsContent } from '@relay/design-system/primitives';
 import {
   EmptyState,
-  LoadingState,
   Notice,
   PageHeader,
-  SkeletonText,
 } from '@relay/design-system/patterns';
 import { useAnnouncer } from '@relay/design-system/hooks';
 import { useTranslations } from '@relay/i18n/react';
@@ -87,13 +85,6 @@ export function GrowthScreen(): ReactNode {
     mutationFn: growthGateway.confirmProfile,
     invalidate: [PROFILE_KEY],
     successMessage: t('growth.ui.confirm.announcement'),
-    onSuccess: () => void generate.run(undefined),
-  });
-
-  const generate = useSettingsMutation({
-    section,
-    mutationFn: growthGateway.generate,
-    invalidate: [PLAN_KEY],
   });
 
   const createDraft = useSettingsMutation({
@@ -124,13 +115,15 @@ export function GrowthScreen(): ReactNode {
   );
 
   function submitIntake(value: IntakeValue): void {
-    void saveProfile.run({ ...value });
+    const brandId = brands.data?.[0]?.id;
+    if (brandId === undefined) return;
+    void saveProfile.run({ ...value, brandId });
   }
 
   const step: 'intake' | 'confirm' | 'plan' =
     profile.data == null
       ? 'intake'
-      : currentPlan === null || profile.data.confirmedAt === null
+      : profile.data.confirmedAt === null
         ? 'confirm'
         : 'plan';
 
@@ -141,17 +134,6 @@ export function GrowthScreen(): ReactNode {
       <PageHeader
         title={section}
         description={t('growth.ui.entryHelp')}
-        actions={
-          currentPlan === null ? null : (
-            <Button
-              variant="secondary"
-              loading={generate.isSaving}
-              onClick={() => void generate.run(undefined)}
-            >
-              {t('growth.plan.refresh')}
-            </Button>
-          )
-        }
         toolbar={
           <p className="text-body-sm text-text-tertiary">
             {t('growth.ui.stepIndicator', {
@@ -191,24 +173,11 @@ export function GrowthScreen(): ReactNode {
             ) : null}
 
             {step === 'confirm' && profile.data != null ? (
-              <>
-                {generate.isSaving ? (
-                  <LoadingState label={t('growth.plan.generating')}>
-                    <div className="flex flex-col gap-2">
-                      <p className="text-body-md text-text-secondary">
-                        {t('growth.ui.plan.generatingBody')}
-                      </p>
-                      <SkeletonText lines={4} />
-                    </div>
-                  </LoadingState>
-                ) : (
-                  <ProfileConfirmation
-                    profile={profile.data}
-                    saving={confirmProfile.isSaving}
-                    onConfirm={(input) => void confirmProfile.run(input)}
-                  />
-                )}
-              </>
+              <ProfileConfirmation
+                profile={profile.data}
+                saving={confirmProfile.isSaving}
+                onConfirm={(input) => void confirmProfile.run(input)}
+              />
             ) : null}
 
             {step === 'plan' && currentPlan !== null ? (
@@ -337,17 +306,10 @@ export function GrowthScreen(): ReactNode {
             {step === 'plan' && currentPlan === null ? (
               <EmptyState
                 title={t('growth.ui.plan.emptyTitle')}
-                description={t('growth.ui.plan.emptyBody')}
-                example={t('growth.ui.plan.emptyExample')}
-                action={
-                  <Button
-                    variant="primary"
-                    loading={generate.isSaving}
-                    onClick={() => void generate.run(undefined)}
-                  >
-                    {t('growth.ui.confirm.generate')}
-                  </Button>
-                }
+                description={t('error.capability_not_implemented.message', {
+                  provider: t('home.advisor.title'),
+                })}
+                example={t('error.capability_not_implemented.action')}
               />
             ) : null}
           </GrowthStepTransition>

@@ -13,9 +13,11 @@
 
 import type {
   AccountType,
+  Assumption,
   ApprovalState,
   ContentKind,
   ErrorCode,
+  Fact,
   MediaKind,
   MetricObservation,
   ValidationIssue,
@@ -343,8 +345,36 @@ export interface GrowthPlanSummaryView {
   readonly approvedAt: IsoInstant | null;
   readonly currentWeek: number | null;
   readonly totalWeeks: number | null;
-  readonly undraftedBriefCount: number;
+  readonly undraftedBriefCount: number | null;
   readonly profileComplete: boolean;
+}
+
+export interface BusinessProfileView {
+  readonly id: string;
+  readonly workspaceId: string;
+  readonly brandId: string;
+  readonly revision: number;
+  readonly productName: string;
+  readonly siteUrl: string;
+  readonly description: string;
+  readonly category: string;
+  readonly markets: readonly string[];
+  readonly contentLocales: readonly string[];
+  readonly idealCustomer: string;
+  readonly objective: string;
+  readonly conversionEvent: string;
+  readonly existingChannels: readonly ProviderId[];
+  readonly proofAssets: readonly string[];
+  readonly competitors: readonly string[];
+  readonly weeklyCapacityHours: number | null;
+  readonly prohibitedClaims: readonly string[];
+  readonly prohibitedTopics: readonly string[];
+  readonly facts: readonly Fact[];
+  readonly assumptions: readonly Assumption[];
+  readonly completenessScore: number;
+  readonly confirmedAt: IsoInstant | null;
+  readonly createdAt: IsoInstant;
+  readonly missingFieldKeys: readonly string[];
 }
 
 /* -------------------------------------------------------------------------

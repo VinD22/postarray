@@ -7,12 +7,14 @@ import type {
   BusinessProfileView,
   CalendarEntry,
   ContentItemView,
+  GrowthPlanSummaryView,
 } from '../../application/port';
 import { Actor, Idempotent, RequireScope } from '../../common/decorators';
 import { growthPlanIdSchema, growthProfileIdSchema } from '../../common/schemas';
 import { parseBody, parseParams, parseQuery } from '../../common/zod';
 import {
   businessProfileInputSchema,
+  confirmBusinessProfileSchema,
   exportPlanQuerySchema,
   generatePlanSchema,
   listOpportunitiesQuerySchema,
@@ -37,8 +39,15 @@ import { GrowthService } from './growth.service';
 export class GrowthController {
   constructor(private readonly growth: GrowthService) {}
 
+  @Get('profile')
+  @RequireScope('growth:read')
+  getProfile(@Actor() actor: ActorContext): Promise<BusinessProfileView | null> {
+    return this.growth.getProfile(actor);
+  }
+
   @Put('profile')
   @RequireScope('growth:write')
+  @Idempotent()
   upsertProfile(@Actor() actor: ActorContext, @Body() body: unknown): Promise<BusinessProfileView> {
     return this.growth.upsertProfile(actor, parseBody(businessProfileInputSchema, body));
   }
@@ -54,8 +63,13 @@ export class GrowthController {
   confirmProfile(
     @Actor() actor: ActorContext,
     @Param('id') id: string,
+    @Body() body: unknown,
   ): Promise<BusinessProfileView> {
-    return this.growth.confirmProfile(actor, parseParams(growthProfileIdSchema, id));
+    const input = parseBody(confirmBusinessProfileSchema, body);
+    return this.growth.confirmProfile(actor, {
+      profileId: parseParams(growthProfileIdSchema, id),
+      ...input,
+    });
   }
 
   /** Asynchronous. Returns an operation handle, not a plan. */
@@ -66,6 +80,18 @@ export class GrowthController {
   generatePlan(@Actor() actor: ActorContext, @Body() body: unknown): Promise<OperationRef> {
     const { profileId } = parseBody(generatePlanSchema, body);
     return this.growth.generatePlan(actor, profileId);
+  }
+
+  @Get('plans/current/summary')
+  @RequireScope('growth:read')
+  getPlanSummary(@Actor() actor: ActorContext): Promise<GrowthPlanSummaryView> {
+    return this.growth.getPlanSummary(actor);
+  }
+
+  @Get('plans/current')
+  @RequireScope('growth:read')
+  getCurrentPlan(@Actor() actor: ActorContext): Promise<GrowthPlan | null> {
+    return this.growth.getCurrentPlan(actor);
   }
 
   @Get('plans/:id')

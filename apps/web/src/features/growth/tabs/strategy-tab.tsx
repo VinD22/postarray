@@ -16,14 +16,16 @@ import {
 } from '@relay/design-system/primitives';
 import { Notice } from '@relay/design-system/patterns';
 import { useTranslations } from '@relay/i18n/react';
-import type { BusinessProfile, GrowthPlan } from '@relay/contracts';
+import type { GrowthPlan } from '@relay/contracts';
+
+import type { BusinessProfileView } from '@/lib/api/types';
 
 import { SettingsPanel } from '../../settings/components/section';
 import { useFormatters } from '../../settings/lib/formatters';
 
 export interface StrategyTabProps {
   plan: GrowthPlan;
-  profile: BusinessProfile | null;
+  profile: BusinessProfileView | null;
 }
 
 export function StrategyTab({ plan, profile }: StrategyTabProps): ReactNode {

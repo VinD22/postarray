@@ -7,6 +7,7 @@ import { z } from 'zod';
 
 import {
   brandIdSchema,
+  connectionIdSchema,
   growthPlanIdSchema,
   growthProfileIdSchema,
   shortTextSchema,
@@ -34,13 +35,39 @@ export const businessProfileInputSchema = z
     profileId: growthProfileIdSchema.optional(),
     brandId: brandIdSchema,
     productName: shortTextSchema,
-    siteUrl: z.string().trim().url().max(2048),
+    siteUrl: z.union([z.string().trim().url().max(2048), z.literal('')]),
     description: z.string().trim().min(1).max(4000),
-    category: shortTextSchema,
+    category: z.string().trim().max(200),
     markets: z.array(z.string().trim().min(1).max(120)).max(100).optional(),
     contentLocales: z.array(z.string().trim().min(1).max(35)).max(25).optional(),
+    idealCustomer: z.string().trim().max(4000).optional(),
     objective: z.string().trim().min(1).max(2000),
     conversionEvent: shortTextSchema.optional(),
+    existingChannels: z.array(connectionIdSchema).max(10).optional(),
+    proofAssets: z.array(z.string().trim().min(1).max(500)).max(100).optional(),
+    competitors: z.array(z.string().trim().min(1).max(500)).max(100).optional(),
+    weeklyCapacityHours: z.number().int().min(0).max(168).optional(),
+    prohibitedClaims: z.array(z.string().trim().min(1).max(500)).max(100).optional(),
+    prohibitedTopics: z.array(z.string().trim().min(1).max(500)).max(100).optional(),
+  })
+  .strict();
+
+export const confirmBusinessProfileSchema = z
+  .object({
+    confirmedAssumptionIds: z.array(z.string().trim().min(1).max(128)).max(100).optional(),
+    corrections: z.record(z.string().max(128), z.string().trim().min(1).max(2000)).optional(),
+  })
+  .strict();
+
+export const growthPlanSummarySchema = z
+  .object({
+    planId: growthPlanIdSchema.nullable(),
+    version: z.number().int().positive().nullable(),
+    approvedAt: isoInstantSchema.nullable(),
+    currentWeek: z.number().int().positive().nullable(),
+    totalWeeks: z.number().int().positive().nullable(),
+    undraftedBriefCount: z.number().int().nonnegative().nullable(),
+    profileComplete: z.boolean(),
   })
   .strict();
 

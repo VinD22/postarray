@@ -105,8 +105,10 @@ import {
 } from '../modules/developer-apps/developer-apps.schemas';
 import {
   businessProfileInputSchema,
+  confirmBusinessProfileSchema,
   exportPlanQuerySchema,
   generatePlanSchema,
+  growthPlanSummarySchema,
   listOpportunitiesQuerySchema,
   listToolsQuerySchema,
   planItemSchema,
@@ -1318,6 +1320,15 @@ export const OPERATIONS: readonly OperationSpec[] = [
 
   /* ---------------------------------------------------------------- growth */
   {
+    method: 'get',
+    path: '/v1/growth/profile',
+    operationId: 'growth.getProfile',
+    summary: 'The latest business profile in the workspace.',
+    tag: 'growth',
+    scopes: ['growth:read'],
+    response: view.nullable(),
+  },
+  {
     method: 'put',
     path: '/v1/growth/profile',
     operationId: 'growth.upsertProfile',
@@ -1336,19 +1347,38 @@ export const OPERATIONS: readonly OperationSpec[] = [
     scopes: ['growth:write'],
     requiresIdempotencyKey: true,
     pathParams: p('id', growthProfileIdSchema),
+    body: confirmBusinessProfileSchema,
     response: view,
   },
   {
     method: 'post',
     path: '/v1/growth/plans',
     operationId: 'growth.generatePlan',
-    summary: 'Generate a plan. Asynchronous; returns an operation reference.',
+    summary: 'Generate a plan. Returns not implemented until the durable worker is enabled.',
     tag: 'growth',
     scopes: ['growth:write'],
     requiresIdempotencyKey: true,
     body: generatePlanSchema,
     successStatus: 202,
     response: operationRefSchema,
+  },
+  {
+    method: 'get',
+    path: '/v1/growth/plans/current/summary',
+    operationId: 'growth.getPlanSummary',
+    summary: 'The current approved plan summary for Home.',
+    tag: 'growth',
+    scopes: ['growth:read'],
+    response: growthPlanSummarySchema,
+  },
+  {
+    method: 'get',
+    path: '/v1/growth/plans/current',
+    operationId: 'growth.getCurrentPlan',
+    summary: 'The latest current growth plan.',
+    tag: 'growth',
+    scopes: ['growth:read'],
+    response: growthPlanSchema.nullable(),
   },
   {
     method: 'get',
