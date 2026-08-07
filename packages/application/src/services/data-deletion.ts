@@ -339,6 +339,34 @@ export function createDataDeletionService(deps: ServiceDeps): DataDeletionServic
             where: { workspaceId: ctx.workspaceId, id: { in: [...input.feedIds] } },
           });
         }
+        // Keep retention-bound evidence addressable while making the tenant
+        // inaccessible immediately. A hard workspace delete would violate the
+        // audit and receipt retention contracts, so closure is a soft delete
+        // followed by the existing retention pruner.
+        await db.dataExport.updateMany({
+          where: {
+            workspaceId: ctx.workspaceId,
+            state: { in: ['requested', 'building', 'ready', 'delivered'] },
+          },
+          data: {
+            state: 'expired',
+            storageKey: null,
+            byteSize: null,
+            checksumSha256: null,
+          },
+        });
+        await db.membership.updateMany({
+          where: { workspaceId: ctx.workspaceId, state: { not: 'removed' } },
+          data: { state: 'removed', removedAt: executedAt },
+        });
+        await db.userSession.updateMany({
+          where: { workspaceId: ctx.workspaceId, state: 'active' },
+          data: { state: 'revoked', revokedAt: executedAt },
+        });
+        await db.workspace.updateMany({
+          where: { id: ctx.workspaceId, deletedAt: null },
+          data: { status: 'deleted', deletedAt: executedAt },
+        });
 
         const completed = await db.deletionRequest.updateMany({
           where: {
@@ -360,6 +388,29 @@ export function createDataDeletionService(deps: ServiceDeps): DataDeletionServic
               revokedConnectionCount: input.revokedConnectionCount,
               providerRevocation: 'not_implemented',
             },
+          });
+        }
+      });
+    },
+
+    async markDeletionFailed(input): Promise<void> {
+      const ctx = systemContext(input.ctx);
+      await runInWorkspace(deps, ctx, async (db, actor) => {
+        const failed = await db.deletionRequest.updateMany({
+          where: {
+            id: input.requestId,
+            workspaceId: ctx.workspaceId,
+            state: { in: ['requested', 'verifying', 'scheduled', 'executing'] },
+          },
+          data: { state: 'failed', failureNote: input.reasonKey },
+        });
+        if (failed.count > 0) {
+          await recordAudit(db, actor, {
+            action: 'deletion.failed',
+            targetType: 'deletion_request',
+            targetId: input.requestId,
+            after: { state: 'failed' },
+            metadata: { reasonKey: input.reasonKey },
           });
         }
       });

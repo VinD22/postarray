@@ -78,6 +78,7 @@ describe('worker gateway bootstrap', () => {
       deleteStoredObjects: async () => ({ deletedCount: 0, nextCursor: null }),
       tombstoneAnalytics: async () => undefined,
       finalizeDeletion: async () => undefined,
+      markDeletionFailed: async () => undefined,
     };
     const gateway = await loadGateway('built-in-prelaunch-gateway', { dataDeletion });
 

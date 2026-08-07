@@ -9,6 +9,7 @@ import {
   makeTokenInput,
   makeWebhookInput,
 } from '../../testing/fixtures';
+import { ActivitySimulator } from '../../testing/activity-simulator';
 import { TEST_EPOCH_MS, runWorkflow } from '../../testing/harness';
 
 import { analyticsSyncDescriptor, offsetsForProvider } from './analytics-sync.core';
@@ -394,5 +395,16 @@ describe('data deletion', () => {
     expect(run.output?.status).toBe('aborted');
     expect(run.simulator.countOf('loadDeletionScope')).toBe(0);
     expect(run.simulator.countOf('deleteStoredObjects')).toBe(0);
+  });
+
+  it('records a failed request when a destructive step cannot complete', async () => {
+    const simulator = new ActivitySimulator({ deletionFailure: 'delete_objects' });
+    await expect(
+      runWorkflow(dataDeletionDescriptor, makeDeletionInput({ graceMs: 0 }), {
+        workflowId: 'delete:ws_test:op_delete_1',
+        simulator,
+      }),
+    ).rejects.toMatchObject({ code: 'PROVIDER_UNAVAILABLE' });
+    expect(simulator.countOf('markDeletionFailed')).toBe(1);
   });
 });

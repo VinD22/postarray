@@ -65,93 +65,110 @@ export async function runDataDeletion(
     };
   }
 
-  const scope = await activities.loadDeletionScope({ ctx, requestId: input.requestId });
+  try {
+    const scope = await activities.loadDeletionScope({ ctx, requestId: input.requestId });
 
-  let canceledJobCount = 0;
-  for (const publishJobId of stableSort(scope.publishJobIds, (id) => id)) {
-    await activities.cancelScheduledJob({
-      ctx,
-      publishJobId,
-      reasonKey: MESSAGE_KEYS.deletion.started,
-    });
-    canceledJobCount += 1;
-  }
-
-  let revokedConnectionCount = 0;
-  for (const connectionId of stableSort(scope.connectionIds, (id) => id)) {
-    await activities.revokeProviderConnection({ ctx, connectionId });
-    revokedConnectionCount += 1;
-  }
-
-  let deletedObjectCount = 0;
-  for (const prefix of stableSort(scope.objectPrefixes, (value) => value)) {
-    let cursor: string | null = null;
-    for (let page = 0; page < MAX_DELETE_PAGES; page += 1) {
-      const result = await activities.deleteStoredObjects({
+    let canceledJobCount = 0;
+    for (const publishJobId of stableSort(scope.publishJobIds, (id) => id)) {
+      await activities.cancelScheduledJob({
         ctx,
-        requestId: input.requestId,
-        prefix,
-        cursor,
+        publishJobId,
+        reasonKey: MESSAGE_KEYS.deletion.started,
       });
-      deletedObjectCount += result.deletedCount;
-      cursor = result.nextCursor;
-      if (cursor === null) {
-        break;
+      canceledJobCount += 1;
+    }
+
+    let revokedConnectionCount = 0;
+    for (const connectionId of stableSort(scope.connectionIds, (id) => id)) {
+      await activities.revokeProviderConnection({ ctx, connectionId });
+      revokedConnectionCount += 1;
+    }
+
+    let deletedObjectCount = 0;
+    for (const prefix of stableSort(scope.objectPrefixes, (value) => value)) {
+      let cursor: string | null = null;
+      for (let page = 0; page < MAX_DELETE_PAGES; page += 1) {
+        const result = await activities.deleteStoredObjects({
+          ctx,
+          requestId: input.requestId,
+          prefix,
+          cursor,
+        });
+        deletedObjectCount += result.deletedCount;
+        cursor = result.nextCursor;
+        if (cursor === null) {
+          break;
+        }
+      }
+      if (cursor !== null) {
+        throw new RelayError('PROVIDER_UNAVAILABLE', {
+          messageKey: 'errors.provider_unavailable',
+          details: { operation: 'delete_stored_objects', reason: 'page_limit_reached' },
+        });
       }
     }
-    if (cursor !== null) {
-      throw new RelayError('PROVIDER_UNAVAILABLE', {
-        messageKey: 'errors.provider_unavailable',
-        details: { operation: 'delete_stored_objects', reason: 'page_limit_reached' },
+
+    if (scope.receiptIds.length > 0) {
+      await activities.tombstoneAnalytics({
+        ctx,
+        requestId: input.requestId,
+        receiptIds: stableSort(scope.receiptIds, (id) => id),
       });
     }
-  }
 
-  if (scope.receiptIds.length > 0) {
-    await activities.tombstoneAnalytics({
+    await activities.finalizeDeletion({
       ctx,
       requestId: input.requestId,
-      receiptIds: stableSort(scope.receiptIds, (id) => id),
+      completedAt: toIsoInstant(runtime.now()),
+      deletedObjectCount,
+      canceledJobCount,
+      revokedConnectionCount,
+      ruleIds: stableSort(scope.ruleIds, (id) => id),
+      feedIds: stableSort(scope.feedIds, (id) => id),
     });
+    await activities.notify({
+      ctx,
+      messageKey: MESSAGE_KEYS.deletion.completed,
+      resourceId: input.requestId,
+      params: { requestId: input.requestId },
+    });
+
+    runtime.publishStatus({
+      workflowId: runtime.workflowId,
+      state: 'completed',
+      phase: 'completed',
+      paused: false,
+      cancelRequested: false,
+      scheduledInstant: null,
+      attempts: 1,
+      updatedAt: toIsoInstant(runtime.now()),
+      targets: [],
+    });
+
+    return {
+      requestId: input.requestId,
+      canceledJobCount,
+      revokedConnectionCount,
+      deletedObjectCount,
+      tombstonedReceiptCount: scope.receiptIds.length,
+      status: 'completed',
+    };
+  } catch (error) {
+    const relay = RelayError.fromUnknown(error);
+    try {
+      await activities.markDeletionFailed({
+        ctx,
+        requestId: input.requestId,
+        reasonKey: relay.messageKey,
+      });
+    } catch {
+      runtime.log.warn('deletion.failure_state_unavailable', {
+        workflowId: runtime.workflowId,
+        requestId: input.requestId,
+      });
+    }
+    throw error;
   }
-
-  await activities.finalizeDeletion({
-    ctx,
-    requestId: input.requestId,
-    completedAt: toIsoInstant(runtime.now()),
-    deletedObjectCount,
-    canceledJobCount,
-    revokedConnectionCount,
-    ruleIds: stableSort(scope.ruleIds, (id) => id),
-    feedIds: stableSort(scope.feedIds, (id) => id),
-  });
-  await activities.notify({
-    ctx,
-    messageKey: MESSAGE_KEYS.deletion.completed,
-    resourceId: input.requestId,
-    params: { requestId: input.requestId },
-  });
-
-  runtime.publishStatus({
-    workflowId: runtime.workflowId,
-    state: 'completed',
-    phase: 'completed',
-    paused: false,
-    cancelRequested: false,
-    scheduledInstant: null,
-    attempts: 1,
-    updatedAt: toIsoInstant(runtime.now()),
-    targets: [],
-  });
-
-  return {
-    requestId: input.requestId,
-    canceledJobCount,
-    revokedConnectionCount,
-    deletedObjectCount,
-    tombstonedReceiptCount: scope.receiptIds.length,
-    status: 'completed',
-  };
 }
 
 export const dataDeletionDescriptor: ChildWorkflowDescriptor<

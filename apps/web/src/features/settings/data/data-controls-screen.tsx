@@ -1,18 +1,19 @@
 'use client';
 
-import type { ReactNode } from 'react';
+import { useState, type ReactNode } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { Link } from '@/components/link';
 import { Button } from '@relay/design-system/primitives';
 import { Notice, PageHeader } from '@relay/design-system/patterns';
 import { useTranslations } from '@relay/i18n/react';
 
-import { dataGateway } from '../lib/gateway';
+import { dataGateway, workspaceGateway } from '../lib/gateway';
 import { AsyncBoundary } from '../lib/async-boundary';
 import { useFormatters } from '../lib/formatters';
 import { settingsKey, useWorkspaceId } from '../lib/keys';
 import { useSettingsMutation } from '../lib/use-settings-mutation';
 import { SettingRow, SettingsPanel, SettingsStack } from '../components/section';
+import { WorkspaceDeletionDialog } from './workspace-deletion-dialog';
 
 /**
  * Removing one connection, one brand or one draft happens where that thing
@@ -52,7 +53,18 @@ export function DataControlsScreen(): ReactNode {
   const formatters = useFormatters();
   const workspaceId = useWorkspaceId();
   const EXPORT_KEY = settingsKey(workspaceId, 'data', 'exports');
+  const DELETION_KEY = settingsKey(workspaceId, 'data', 'deletion');
   const exportJob = useQuery({ queryKey: EXPORT_KEY, queryFn: () => dataGateway.exportJob() });
+  const deletionJob = useQuery({
+    queryKey: DELETION_KEY,
+    queryFn: () => dataGateway.deletionJob(),
+    refetchInterval: 30_000,
+  });
+  const workspaceIdentity = useQuery({
+    queryKey: settingsKey(workspaceId, 'identity'),
+    queryFn: () => workspaceGateway.identity(),
+  });
+  const [deletionDialogOpen, setDeletionDialogOpen] = useState(false);
   const startExport = useSettingsMutation({
     section,
     mutationFn: () => dataGateway.startExport({ formats: ['json'] }),
@@ -66,7 +78,22 @@ export function DataControlsScreen(): ReactNode {
       window.location.assign(result.downloadUrl);
     },
   });
+  const requestDeletion = useSettingsMutation({
+    section,
+    mutationFn: dataGateway.requestWorkspaceDeletion,
+    invalidate: [DELETION_KEY],
+    successMessage: t('settings.ui.data.deleteRequestScheduled'),
+    onSuccess: () => setDeletionDialogOpen(false),
+  });
+  const cancelDeletion = useSettingsMutation({
+    section,
+    mutationFn: dataGateway.cancelWorkspaceDeletion,
+    invalidate: [DELETION_KEY],
+    successMessage: t('settings.ui.data.deleteRequestCanceled'),
+  });
   const job = exportJob.data;
+  const deletion = deletionJob.data;
+  const deletionId = deletion?.id ?? null;
   const readyExportId = job?.state === 'ready' ? job.id : null;
 
   return (
@@ -197,11 +224,90 @@ export function DataControlsScreen(): ReactNode {
               label={t('settings.ui.data.deleteAccount')}
               description={t('settings.ui.data.deleteAccountHelp')}
               control={
-                <span className="text-body-sm text-text-tertiary">
-                  {t('settings.ui.state.notBuiltShort')}
-                </span>
+                <Button
+                  variant="secondary"
+                  disabled={
+                    workspaceIdentity.data?.name === undefined ||
+                    deletionJob.isError ||
+                    deletion?.state === 'scheduled' ||
+                    deletion?.state === 'executing' ||
+                    deletion?.state === 'completed'
+                  }
+                  onClick={() => setDeletionDialogOpen(true)}
+                >
+                  {t('settings.ui.data.deleteAccount')}
+                </Button>
               }
             />
+            {deletion?.state === 'scheduled' ? (
+              <Notice
+                tone="warning"
+                liveness="status"
+                title={t('settings.ui.data.deleteRequestScheduled')}
+                description={t('settings.ui.data.deleteRequestScheduledBody', {
+                  date:
+                    deletion.executeAfter === null
+                      ? t('common.unknown')
+                      : formatters.dateTime(deletion.executeAfter),
+                })}
+                actions={
+                  deletionId === null ? undefined : (
+                    <Button
+                      variant="secondary"
+                      loading={cancelDeletion.isSaving}
+                      onClick={() => void cancelDeletion.run(deletionId)}
+                    >
+                      {t('settings.ui.data.deleteRequestCancel')}
+                    </Button>
+                  )
+                }
+              />
+            ) : null}
+            {deletionJob.isError ? (
+              <Notice
+                tone="destructive"
+                liveness="alert"
+                title={t('settings.ui.state.errorTitle', {
+                  section: t('settings.ui.data.deleteAccount'),
+                })}
+                description={t('settings.ui.state.errorRetry')}
+                actions={
+                  <Button variant="secondary" onClick={() => void deletionJob.refetch()}>
+                    {t('settings.ui.state.errorRetry')}
+                  </Button>
+                }
+              />
+            ) : null}
+            {deletion?.state === 'executing' ? (
+              <Notice
+                tone="warning"
+                liveness="status"
+                title={t('settings.ui.data.deleteRequestExecuting')}
+                description={t('settings.ui.data.deleteRequestExecutingBody')}
+              />
+            ) : null}
+            {deletion?.state === 'canceled' ? (
+              <Notice
+                tone="neutral"
+                title={t('settings.ui.data.deleteRequestCanceled')}
+                description={t('settings.ui.data.deleteRequestCanceledBody')}
+              />
+            ) : null}
+            {deletion?.state === 'completed' ? (
+              <Notice
+                tone="success"
+                title={t('settings.ui.data.deleteRequestCompleted')}
+                description={t('settings.ui.data.deleteRequestCompletedBody')}
+              />
+            ) : null}
+            {deletion?.state === 'failed' ? (
+              <Notice
+                tone="destructive"
+                liveness="alert"
+                title={t('settings.ui.data.deleteRequestFailed')}
+                description={t('settings.ui.data.deleteRequestFailedBody')}
+              />
+            ) : null}
           </div>
         </SettingsPanel>
 
@@ -214,6 +320,13 @@ export function DataControlsScreen(): ReactNode {
           </p>
         </SettingsPanel>
       </SettingsStack>
+      <WorkspaceDeletionDialog
+        open={deletionDialogOpen}
+        onOpenChange={setDeletionDialogOpen}
+        workspaceName={workspaceIdentity.data?.name ?? ''}
+        saving={requestDeletion.isSaving}
+        onSubmit={(input) => void requestDeletion.run(input)}
+      />
     </>
   );
 }

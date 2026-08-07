@@ -55,3 +55,35 @@ export const dataExportDownloadSchema = z
   })
   .strict();
 export type DataExportDownload = z.infer<typeof dataExportDownloadSchema>;
+
+/** Workspace deletion is an owner-only, cooling-off workflow. */
+export const DELETION_REQUEST_SCOPES = ['workspace'] as const;
+export const deletionRequestScopeSchema = z.enum(DELETION_REQUEST_SCOPES);
+export type DeletionRequestScope = z.infer<typeof deletionRequestScopeSchema>;
+
+export const DELETION_REQUEST_STATES = [
+  'requested',
+  'verifying',
+  'scheduled',
+  'executing',
+  'completed',
+  'canceled',
+  'failed',
+] as const;
+export const deletionRequestStateSchema = z.enum(DELETION_REQUEST_STATES);
+export type DeletionRequestState = z.infer<typeof deletionRequestStateSchema>;
+
+export const deletionRequestViewSchema = z
+  .object({
+    id: idSchema(ID_PREFIXES.deletionRequest),
+    workspaceId: idSchema(ID_PREFIXES.workspace),
+    scope: deletionRequestScopeSchema,
+    state: deletionRequestStateSchema,
+    executeAfter: isoInstantSchema,
+    verifiedAt: isoInstantSchema.nullable(),
+    executedAt: isoInstantSchema.nullable(),
+    canceledAt: isoInstantSchema.nullable(),
+    createdAt: isoInstantSchema,
+  })
+  .strict();
+export type DeletionRequestView = z.infer<typeof deletionRequestViewSchema>;

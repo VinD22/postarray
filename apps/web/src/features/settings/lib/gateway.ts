@@ -42,6 +42,7 @@ import type {
   UsageView,
   WebhookDeliveryView,
   WebhookEndpointView,
+  WorkspaceDeletionView,
   WorkspaceRole,
 } from './view-models';
 
@@ -736,6 +737,26 @@ export const billingGateway = {
 /* ----------------------------------------------------------- data export */
 
 export const dataGateway = {
+  async deletionJob(): Promise<WorkspaceDeletionView> {
+    const current = await api.dataDeletion.current();
+    if (current === null) {
+      return { id: null, state: 'idle', executeAfter: null, canceledAt: null };
+    }
+    return {
+      id: current.id,
+      state:
+        current.state === 'scheduled' || current.state === 'executing'
+          ? current.state
+          : current.state === 'completed' ||
+              current.state === 'canceled' ||
+              current.state === 'failed'
+            ? current.state
+            : 'scheduled',
+      executeAfter: current.executeAfter,
+      canceledAt: current.canceledAt,
+    };
+  },
+
   async exportJob(): Promise<ExportJobView> {
     const page = await api.dataExports.list({ limit: 1 });
     const latest = page.data[0];
@@ -805,8 +826,37 @@ export const dataGateway = {
    * cancelled and connections are revoked first, and the account is removed
    * after the confirmation window stated in the Terms.
    */
-  async requestWorkspaceDeletion(): Promise<void> {
-    return notImplemented('workspace_closure');
+  async requestWorkspaceDeletion(input: {
+    confirmation: string;
+    reason?: string;
+  }): Promise<WorkspaceDeletionView> {
+    const requested = await api.dataDeletion.request(
+      {
+        scope: 'workspace',
+        confirmation: input.confirmation,
+        ...(input.reason === undefined ? {} : { reason: input.reason }),
+      },
+      newIdempotencyKey('workspace_deletion'),
+    );
+    return {
+      id: requested.id,
+      state: 'scheduled',
+      executeAfter: requested.executeAfter,
+      canceledAt: requested.canceledAt,
+    };
+  },
+
+  async cancelWorkspaceDeletion(requestId: string): Promise<WorkspaceDeletionView> {
+    const canceled = await api.dataDeletion.cancel(
+      requestId,
+      newIdempotencyKey('workspace_deletion_cancel'),
+    );
+    return {
+      id: canceled.id,
+      state: canceled.state === 'canceled' ? 'canceled' : 'scheduled',
+      executeAfter: canceled.executeAfter,
+      canceledAt: canceled.canceledAt,
+    };
   },
 };
 

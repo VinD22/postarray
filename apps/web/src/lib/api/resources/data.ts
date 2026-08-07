@@ -1,4 +1,4 @@
-import type { DataExportView } from '@relay/application';
+import type { DataExportView, DeletionRequestView } from '@relay/application';
 import type { Paginated } from '@relay/contracts';
 
 import { call } from '../call';
@@ -52,4 +52,59 @@ export const dataExportsApi = {
       downloadUrl: '',
       expiresAt: new Date(Date.now() + 15 * 60_000).toISOString(),
     })),
+};
+
+export const dataDeletionApi = {
+  current: (): Promise<DeletionRequestView | null> =>
+    call('/data/deletion-requests', {}, () => null),
+
+  request: (
+    input: {
+      readonly scope?: 'workspace';
+      readonly confirmation: string;
+      readonly reason?: string;
+    },
+    idempotencyKey: string,
+  ): Promise<DeletionRequestView> =>
+    call('/data/deletion-requests', { method: 'POST', body: input, idempotencyKey }, () => ({
+      id: 'deletion_demo_new',
+      workspaceId: 'ws_demo',
+      scope: 'workspace' as const,
+      state: 'scheduled' as const,
+      executeAfter: new Date(Date.now() + 7 * 24 * 60 * 60_000).toISOString(),
+      verifiedAt: null,
+      executedAt: null,
+      canceledAt: null,
+      createdAt: new Date().toISOString(),
+    })),
+
+  get: (requestId: string): Promise<DeletionRequestView> =>
+    call(`/data/deletion-requests/${requestId}`, {}, () => ({
+      id: requestId,
+      workspaceId: 'ws_demo',
+      scope: 'workspace' as const,
+      state: 'scheduled' as const,
+      executeAfter: new Date(Date.now() + 7 * 24 * 60 * 60_000).toISOString(),
+      verifiedAt: null,
+      executedAt: null,
+      canceledAt: null,
+      createdAt: new Date().toISOString(),
+    })),
+
+  cancel: (requestId: string, idempotencyKey: string): Promise<DeletionRequestView> =>
+    call(
+      `/data/deletion-requests/${requestId}/cancel`,
+      { method: 'POST', body: {}, idempotencyKey },
+      () => ({
+        id: requestId,
+        workspaceId: 'ws_demo',
+        scope: 'workspace' as const,
+        state: 'canceled' as const,
+        executeAfter: new Date().toISOString(),
+        verifiedAt: null,
+        executedAt: null,
+        canceledAt: new Date().toISOString(),
+        createdAt: new Date().toISOString(),
+      }),
+    ),
 };

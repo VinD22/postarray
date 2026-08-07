@@ -4,7 +4,12 @@ import { FixedClock } from './clock';
 import { MemoryKeyValueStore } from './key-value';
 import { MemoryStorage } from './storage';
 import { RecordingMailer } from './mailer';
-import { dataExportWorkflowId, InMemoryScheduler, publishWorkflowId } from './scheduler';
+import {
+  dataDeletionWorkflowId,
+  dataExportWorkflowId,
+  InMemoryScheduler,
+  publishWorkflowId,
+} from './scheduler';
 
 describe('MemoryKeyValueStore', () => {
   it('round trips a value', async () => {
@@ -210,5 +215,42 @@ describe('InMemoryScheduler', () => {
     expect(first.workflowId).toBe(dataExportWorkflowId('ws-1', 'export-1'));
     expect(second.workflowId).toBe(first.workflowId);
     expect(scheduler.dataExports.size).toBe(1);
+  });
+
+  it('deduplicates deletion workflows and records cancellation', async () => {
+    const scheduler = new InMemoryScheduler(new FixedClock());
+    const workflowInput = {
+      ctx: {
+        workspaceId: 'ws-1',
+        correlationId: 'corr-1',
+        actorId: 'user-1',
+        actorType: 'user' as const,
+        surface: 'web' as const,
+        approvalLevel: 'level_3_confirm' as const,
+        locale: 'en',
+      },
+      requestId: 'deletion-1',
+      graceMs: 604_800_000,
+    };
+    const input = {
+      requestId: 'deletion-1',
+      workspaceId: 'ws-1',
+      executeAt: new Date('2026-08-14T09:00:00.000Z'),
+      workflowInput,
+    };
+    const first = await scheduler.scheduleDataDeletion(input);
+    const second = await scheduler.scheduleDataDeletion(input);
+    await scheduler.cancelDataDeletion({
+      requestId: 'deletion-1',
+      workspaceId: 'ws-1',
+      reason: 'deletion.canceled',
+    });
+    expect(first.workflowId).toBe(dataDeletionWorkflowId('ws-1', 'deletion-1'));
+    expect(second.workflowId).toBe(first.workflowId);
+    expect(scheduler.dataDeletions.size).toBe(1);
+    expect(scheduler.dataDeletions.get('deletion-1')).toMatchObject({
+      canceled: true,
+      cancelReason: 'deletion.canceled',
+    });
   });
 });

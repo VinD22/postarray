@@ -5,6 +5,7 @@ import type {
   CreationSurface,
   DataExportFormat,
   DataExportScope,
+  DeletionRequestScope,
   DisclosureFlags,
   GrowthExportFormat,
   GrowthPlan,
@@ -53,6 +54,7 @@ import type {
   CreatedApiKeyView,
   CreatedOAuthAppView,
   DataExportView,
+  DeletionRequestView,
   ExperimentView,
   FeedHealthView,
   FeedPreview,
@@ -294,6 +296,32 @@ export interface DataDeletionService {
     readonly ruleIds: readonly string[];
     readonly feedIds: readonly string[];
   }): Promise<void>;
+  markDeletionFailed(input: {
+    readonly ctx: WorkflowActorContext;
+    readonly requestId: string;
+    readonly reasonKey: string;
+  }): Promise<void>;
+}
+
+export interface DataLifecycleService {
+  request(
+    ctx: ActorContext,
+    input: {
+      readonly scope?: DeletionRequestScope;
+      readonly confirmation: string;
+      readonly reason?: string;
+    },
+  ): Promise<DeletionRequestView>;
+  current(ctx: ActorContext): Promise<DeletionRequestView | null>;
+  get(ctx: ActorContext, requestId: string): Promise<DeletionRequestView>;
+  cancel(ctx: ActorContext, requestId: string): Promise<DeletionRequestView>;
+}
+
+/** Safe workflow input persisted in Temporal history while a deletion waits. */
+export interface DataDeletionWorkflowInput {
+  readonly ctx: WorkflowActorContext;
+  readonly requestId: string;
+  readonly graceMs: number;
 }
 
 /** Infrastructure seam for encrypting an export before it reaches object storage. */
@@ -354,6 +382,17 @@ export interface SchedulerPort {
     readonly executeAt: Date;
     readonly workflowInput: DataExportWorkflowInput;
   }): Promise<{ readonly workflowId: string; readonly runId: string }>;
+  scheduleDataDeletion(input: {
+    readonly requestId: string;
+    readonly workspaceId: string;
+    readonly executeAt: Date;
+    readonly workflowInput: DataDeletionWorkflowInput;
+  }): Promise<{ readonly workflowId: string; readonly runId: string }>;
+  cancelDataDeletion(input: {
+    readonly requestId: string;
+    readonly workspaceId: string;
+    readonly reason: string;
+  }): Promise<void>;
   describe(input: {
     readonly jobId: string;
     readonly workspaceId: string;
@@ -1348,6 +1387,7 @@ export interface Services {
   readonly identity: IdentityService;
   readonly audit: AuditService;
   readonly dataExports: DataExportService;
+  readonly dataLifecycle: DataLifecycleService;
   readonly dataDeletion: DataDeletionService;
   readonly health: HealthService;
 }

@@ -28,6 +28,7 @@ export function createWorkerGateway(
       | 'deleteStoredObjects'
       | 'tombstoneAnalytics'
       | 'finalizeDeletion'
+      | 'markDeletionFailed'
     >;
   } = {},
 ): WorkerActivities {

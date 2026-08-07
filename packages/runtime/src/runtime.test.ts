@@ -62,6 +62,8 @@ describe('createApplicationRuntime', () => {
           scheduleAnalyticsSync: vi.fn(),
           startRuleRun: vi.fn(),
           scheduleDataExport: vi.fn(),
+          scheduleDataDeletion: vi.fn(),
+          cancelDataDeletion: vi.fn(),
           describe: vi.fn(),
         },
         storage: new MemoryStorage(clock),

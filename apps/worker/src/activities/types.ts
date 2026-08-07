@@ -697,6 +697,13 @@ export interface FinalizeDeletionInput {
   readonly feedIds: readonly string[];
 }
 
+export interface MarkDeletionFailedInput {
+  readonly ctx: ActivityContext;
+  readonly requestId: string;
+  /** An i18n key, never a provider payload or free-form error text. */
+  readonly reasonKey: string;
+}
+
 // ---------------------------------------------------------------------------
 // Data export
 // ---------------------------------------------------------------------------
@@ -764,6 +771,7 @@ export interface WorkerActivities {
   deleteStoredObjects(input: DeleteObjectsInput): Promise<DeleteObjectsResult>;
   tombstoneAnalytics(input: TombstoneAnalyticsInput): Promise<void>;
   finalizeDeletion(input: FinalizeDeletionInput): Promise<void>;
+  markDeletionFailed(input: MarkDeletionFailedInput): Promise<void>;
   buildDataExport(input: BuildDataExportInput): Promise<BuildDataExportResult>;
 }
 
@@ -814,5 +822,6 @@ export const ACTIVITY_NAMES: readonly ActivityName[] = [
   'deleteStoredObjects',
   'tombstoneAnalytics',
   'finalizeDeletion',
+  'markDeletionFailed',
   'buildDataExport',
 ];

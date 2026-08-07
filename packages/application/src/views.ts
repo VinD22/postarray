@@ -8,6 +8,8 @@ import type {
   DataExportFormat,
   DataExportScope,
   DataExportState,
+  DeletionRequestScope,
+  DeletionRequestState,
   DisclosureFlags,
   Fact,
   LinkSpec,
@@ -71,6 +73,19 @@ export interface DataExportView {
   readonly byteSize: number | null;
   readonly checksumSha256: string | null;
   readonly downloadUrl: string | null;
+  readonly createdAt: string;
+}
+
+/** A safe account-closure request view. Failure notes never leave the service. */
+export interface DeletionRequestView {
+  readonly id: string;
+  readonly workspaceId: string;
+  readonly scope: DeletionRequestScope;
+  readonly state: DeletionRequestState;
+  readonly executeAfter: string;
+  readonly verifiedAt: string | null;
+  readonly executedAt: string | null;
+  readonly canceledAt: string | null;
   readonly createdAt: string;
 }
 

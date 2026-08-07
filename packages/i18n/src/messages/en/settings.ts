@@ -121,7 +121,7 @@ export const settingsMessages = {
   'settings.data.exportPreparing': 'Preparing your export. We will email you when it is ready.',
   'settings.data.deletionRequest': 'Request deletion',
   'settings.data.deletionExplain':
-    'Deletion cancels scheduled workflows, revokes provider access, removes stored media and tombstones analytics where the provider requires it.',
+    'Deletion cancels scheduled workflows, removes Relay credentials, deletes stored media and marks erased analytics unavailable. Provider-side access removal is only claimed when a connector confirms it.',
   'settings.data.retention': 'Retention',
   'settings.data.consents': 'Consents',
   'settings.data.consent.productAnalytics': 'Product analytics',

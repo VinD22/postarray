@@ -9,6 +9,7 @@ import {
 
 import {
   publishWorkflowId,
+  dataDeletionWorkflowId,
   dataExportWorkflowId,
   ruleWorkflowId,
   type Clock,
@@ -22,6 +23,7 @@ const PUBLISH_WORKFLOW = 'publishPostWorkflow';
 const ANALYTICS_WORKFLOW = 'analyticsSyncWorkflow';
 const RULE_WORKFLOW = 'automationRuleWorkflow';
 const DATA_EXPORT_WORKFLOW = 'dataExportWorkflow';
+const DATA_DELETION_WORKFLOW = 'dataDeletionWorkflow';
 const SIX_HOURS_MS = 6 * 60 * 60_000;
 
 export interface TemporalSchedulerOptions {
@@ -137,6 +139,26 @@ export class TemporalScheduler implements SchedulerPort {
     return { workflowId, runId: `${workflowId}:1` };
   }
 
+  async scheduleDataDeletion(input: Parameters<SchedulerPort['scheduleDataDeletion']>[0]) {
+    const workflowId = dataDeletionWorkflowId(input.workspaceId, input.requestId);
+    await this.#startUnique(DATA_DELETION_WORKFLOW, workflowId, { ...input.workflowInput });
+    return { workflowId, runId: `${workflowId}:1` };
+  }
+
+  async cancelDataDeletion(
+    input: Parameters<SchedulerPort['cancelDataDeletion']>[0],
+  ): Promise<void> {
+    await this.#signal(
+      dataDeletionWorkflowId(input.workspaceId, input.requestId),
+      'cancel',
+      {
+        reason: input.reason,
+        requestedAt: this.#options.clock.now().toISOString(),
+      },
+      true,
+    );
+  }
+
   async describe(input: Parameters<SchedulerPort['describe']>[0]) {
     const description = await this.#describeWorkflow(
       publishWorkflowId(input.workspaceId, input.jobId),
@@ -184,6 +206,7 @@ export class TemporalScheduler implements SchedulerPort {
     workflowId: string,
     signal: string,
     payload?: Readonly<Record<string, unknown>>,
+    ignoreNotFound = false,
   ): Promise<void> {
     try {
       const client = await this.#workflowClient();
@@ -194,6 +217,7 @@ export class TemporalScheduler implements SchedulerPort {
         await handle.signal(signal, payload);
       }
     } catch (cause) {
+      if (ignoreNotFound && cause instanceof WorkflowNotFoundError) return;
       throw this.#unavailable('signal_workflow', cause);
     }
   }

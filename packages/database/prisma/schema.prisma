@@ -2909,6 +2909,7 @@ model DeletionRequest {
   id              String               @id @default(dbgenerated("app.new_id('deletion')"))
   workspaceId     String               @map("workspace_id")
   requestedByUserId String             @map("requested_by_user_id")
+  idempotencyKey  String?              @map("idempotency_key")
   scope           String
   subjectUserId   String?              @map("subject_user_id")
   state           DeletionRequestState @default(requested)
@@ -2927,6 +2928,7 @@ model DeletionRequest {
 
   @@index([workspaceId])
   @@index([state, executeAfter])
+  @@unique([workspaceId, idempotencyKey])
   @@map("deletion_requests")
   @@schema("app")
 }

@@ -1,4 +1,10 @@
-import type { Clock, DataExportWorkflowInput, PublishWorkflowInput, SchedulerPort } from '../types';
+import type {
+  Clock,
+  DataDeletionWorkflowInput,
+  DataExportWorkflowInput,
+  PublishWorkflowInput,
+  SchedulerPort,
+} from '../types';
 
 import { systemClock } from './clock';
 
@@ -29,6 +35,16 @@ export interface RecordedDataExport {
   readonly workflowId: string;
 }
 
+export interface RecordedDataDeletion {
+  readonly requestId: string;
+  readonly workspaceId: string;
+  readonly executeAt: Date;
+  readonly workflowInput: DataDeletionWorkflowInput;
+  readonly workflowId: string;
+  canceled: boolean;
+  cancelReason: string | null;
+}
+
 /** Deterministic, so a replay of the same job never starts a second workflow. */
 export function publishWorkflowId(workspaceId: string, jobId: string): string {
   return `publish:${workspaceId}:${jobId}`;
@@ -42,11 +58,16 @@ export function dataExportWorkflowId(workspaceId: string, exportId: string): str
   return `export:${workspaceId}:${exportId}`;
 }
 
+export function dataDeletionWorkflowId(workspaceId: string, requestId: string): string {
+  return `delete:${workspaceId}:${requestId}`;
+}
+
 export class InMemoryScheduler implements SchedulerPort {
   readonly publishes = new Map<string, RecordedPublish>();
   readonly analyticsSyncs: { connectionId: string; receiptId: string | null; at: Date }[] = [];
   readonly ruleRuns: { ruleId: string; workspaceId: string; workflowId: string }[] = [];
   readonly dataExports = new Map<string, RecordedDataExport>();
+  readonly dataDeletions = new Map<string, RecordedDataDeletion>();
   readonly signals: { jobId: string; signal: string }[] = [];
   constructor(_clock: Clock = systemClock) {}
 
@@ -153,6 +174,36 @@ export class InMemoryScheduler implements SchedulerPort {
       workflowId,
     });
     return { workflowId, runId: `${workflowId}:1` };
+  }
+
+  async scheduleDataDeletion(
+    input: Parameters<SchedulerPort['scheduleDataDeletion']>[0],
+  ): Promise<{ readonly workflowId: string; readonly runId: string }> {
+    const workflowId = dataDeletionWorkflowId(input.workspaceId, input.requestId);
+    const existing = this.dataDeletions.get(input.requestId);
+    if (existing !== undefined) {
+      return { workflowId: existing.workflowId, runId: `${workflowId}:1` };
+    }
+    this.dataDeletions.set(input.requestId, {
+      requestId: input.requestId,
+      workspaceId: input.workspaceId,
+      executeAt: input.executeAt,
+      workflowInput: input.workflowInput,
+      workflowId,
+      canceled: false,
+      cancelReason: null,
+    });
+    return { workflowId, runId: `${workflowId}:1` };
+  }
+
+  async cancelDataDeletion(
+    input: Parameters<SchedulerPort['cancelDataDeletion']>[0],
+  ): Promise<void> {
+    const existing = this.dataDeletions.get(input.requestId);
+    if (existing !== undefined) {
+      existing.canceled = true;
+      existing.cancelReason = input.reason;
+    }
   }
 
   async describe(input: {

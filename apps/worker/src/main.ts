@@ -41,6 +41,7 @@ type DataDeletionActivities = Pick<
   | 'deleteStoredObjects'
   | 'tombstoneAnalytics'
   | 'finalizeDeletion'
+  | 'markDeletionFailed'
 >;
 
 function requireObject(value: unknown, what: string): object {
@@ -161,6 +162,8 @@ export async function main(): Promise<void> {
       dataDeletionActivitiesReady.then((activities) => activities.tombstoneAnalytics(input)),
     finalizeDeletion: (input) =>
       dataDeletionActivitiesReady.then((activities) => activities.finalizeDeletion(input)),
+    markDeletionFailed: (input) =>
+      dataDeletionActivitiesReady.then((activities) => activities.markDeletionFailed(input)),
   };
   const gateway = await loadGateway(
     moduleName,
@@ -191,6 +194,7 @@ export async function main(): Promise<void> {
       deleteStoredObjects: (input) => runtime.services.dataDeletion.deleteStoredObjects(input),
       tombstoneAnalytics: (input) => runtime.services.dataDeletion.tombstoneAnalytics(input),
       finalizeDeletion: (input) => runtime.services.dataDeletion.finalizeDeletion(input),
+      markDeletionFailed: (input) => runtime.services.dataDeletion.markDeletionFailed(input),
     });
   } catch (error: unknown) {
     await kv?.close();

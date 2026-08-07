@@ -340,7 +340,32 @@ export const webSettingsMessages = {
     'Removes drafts and stored files. It does not remove anything already published on a platform.',
   'settings.ui.data.deleteAccount': 'Close this workspace',
   'settings.ui.data.deleteAccountHelp':
-    'Workspace closure requests are not built yet. Disconnect accounts and remove content individually.',
+    'Owner-only closure starts a seven-day cooling-off window. You can cancel it during that window.',
+  'settings.ui.data.deleteRequestDialogTitle': 'Request workspace closure',
+  'settings.ui.data.deleteRequestDialogBody':
+    'Nothing is removed during the seven-day cooling-off window. Scheduled posts stop before deletion begins. You can cancel the request while the window is open.',
+  'settings.ui.data.deleteRequestReasonLabel': 'Reason',
+  'settings.ui.data.deleteRequestReasonHelp':
+    'Optional. This is kept with the audit event and does not change what is deleted.',
+  'settings.ui.data.deleteRequestSubmit': 'Start cooling-off window',
+  'settings.ui.data.deleteRequestScheduled': 'Workspace closure is scheduled',
+  'settings.ui.data.deleteRequestScheduledBody':
+    'Deletion is scheduled for {date}. You can cancel before then. Relay credentials will be removed and stored media will be deleted. Provider-side removal depends on each connector.',
+  'settings.ui.data.deleteRequestCancel': 'Cancel workspace closure',
+  'settings.ui.data.deleteRequestCanceled': 'Workspace closure canceled',
+  'settings.ui.data.deleteRequestCanceledBody':
+    'Nothing was deleted by this request. Your scheduled work and connections remain available.',
+  'settings.ui.data.deleteRequestExecuting': 'Workspace closure is in progress',
+  'settings.ui.data.deleteRequestExecutingBody':
+    'Deletion has started and cannot be canceled. Published posts remain on their platforms.',
+  'settings.ui.data.deleteRequestCompleted': 'Workspace closure completed',
+  'settings.ui.data.deleteRequestCompletedBody':
+    'Workspace access is closed. Stored media and Relay credentials were removed. Retention-bound audit and publication records may remain. Published posts remain on their platforms.',
+  'settings.ui.data.deleteRequestFailed': 'Workspace closure needs attention',
+  'settings.ui.data.deleteRequestFailedBody':
+    'The request stopped after a deletion step failed. Earlier steps may have completed. Contact support with the request reference so the remaining work can be retried safely.',
+  'settings.ui.data.deleteRequestStatusLabel': 'Workspace closure status',
+  'settings.ui.data.deleteRequestConfirmError': 'Type the workspace name exactly to continue.',
   'settings.ui.data.scheduledJobsTitle': 'Scheduled work that will be canceled first',
   'settings.ui.data.bulkCancelUnavailableTitle': 'Bulk cancellation is not built yet',
   'settings.ui.data.bulkCancelUnavailableBody':
@@ -353,7 +378,7 @@ export const webSettingsMessages = {
   'settings.ui.data.deleteConsequence.jobs':
     'Every scheduled post is canceled before anything is removed.',
   'settings.ui.data.deleteConsequence.connections':
-    'Every social connection is revoked at the provider.',
+    'Relay credentials are removed. Relay never claims provider-side access removal until that connector confirms it.',
   'settings.ui.data.deleteConsequence.media': 'Stored media is deleted and cannot be recovered.',
   'settings.ui.data.deleteConsequence.receipts':
     'Publication receipts are kept for the retention period stated in the Terms, then removed.',

@@ -73,6 +73,7 @@ const persistence = wf.proxyActivities<
     | 'cancelScheduledJob'
     | 'tombstoneAnalytics'
     | 'finalizeDeletion'
+    | 'markDeletionFailed'
     | 'buildDataExport'
     | 'filterNewFeedItems'
     | 'processFeedItems'
@@ -167,6 +168,7 @@ export const workerActivities: WorkerActivities = {
   deleteStoredObjects: (input) => persistence.deleteStoredObjects(input),
   tombstoneAnalytics: (input) => persistence.tombstoneAnalytics(input),
   finalizeDeletion: (input) => persistence.finalizeDeletion(input),
+  markDeletionFailed: (input) => persistence.markDeletionFailed(input),
   buildDataExport: (input) => persistence.buildDataExport(input),
 };
 

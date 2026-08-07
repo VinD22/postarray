@@ -18,8 +18,10 @@ export { LoggingMailer, RecordingMailer } from './mailer';
 export {
   InMemoryScheduler,
   dataExportWorkflowId,
+  dataDeletionWorkflowId,
   publishWorkflowId,
   ruleWorkflowId,
   type RecordedDataExport,
+  type RecordedDataDeletion,
   type RecordedPublish,
 } from './scheduler';

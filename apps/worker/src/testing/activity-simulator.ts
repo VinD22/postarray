@@ -1,4 +1,4 @@
-import { ERROR_CODES, canonicalJson, type ErrorCode } from '@relay/contracts';
+import { ERROR_CODES, RelayError, canonicalJson, type ErrorCode } from '@relay/contracts';
 
 import type { CommandRecorder } from './fake-runtime';
 
@@ -38,6 +38,7 @@ import type {
   FinalizeDeletionInput,
   LoadRuleInput,
   LoadWebhookDeliveryInput,
+  MarkDeletionFailedInput,
   NotifyInput,
   PlanRepeatOccurrenceInput,
   PlanRepeatOccurrenceResult,
@@ -124,6 +125,7 @@ export interface SimulatorOptions {
   readonly credential?: Partial<DescribeCredentialResult>;
   readonly refreshThrows?: boolean;
   readonly deletionScope?: Partial<DeletionScope>;
+  readonly deletionFailure?: 'delete_objects';
   readonly dataExport?: Partial<BuildDataExportResult>;
   readonly repeatPlan?: Partial<PlanRepeatOccurrenceResult>;
   readonly occurrenceTargets?: CreateOccurrenceJobResult['targets'];
@@ -873,6 +875,14 @@ export class ActivitySimulator implements WorkerActivities {
 
   deleteStoredObjects(input: DeleteObjectsInput): Promise<DeleteObjectsResult> {
     this.record('deleteStoredObjects', input);
+    if (this.options.deletionFailure === 'delete_objects') {
+      return Promise.reject(
+        new RelayError(ERROR_CODES.PROVIDER_UNAVAILABLE, {
+          messageKey: 'errors.provider_unavailable',
+          details: { operation: 'delete_stored_objects', reason: 'simulated_failure' },
+        }),
+      );
+    }
     if (input.cursor === null) {
       return Promise.resolve({ deletedCount: 2, nextCursor: 'page2' });
     }
@@ -886,6 +896,11 @@ export class ActivitySimulator implements WorkerActivities {
 
   finalizeDeletion(input: FinalizeDeletionInput): Promise<void> {
     this.record('finalizeDeletion', input);
+    return Promise.resolve();
+  }
+
+  markDeletionFailed(input: MarkDeletionFailedInput): Promise<void> {
+    this.record('markDeletionFailed', input);
     return Promise.resolve();
   }
 

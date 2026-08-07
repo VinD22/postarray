@@ -2,6 +2,7 @@ import {
   dataExportFormatSchema,
   dataExportScopeSchema,
   dataExportViewSchema,
+  deletionRequestViewSchema,
   paginatedSchema,
 } from '@relay/contracts';
 import { z } from 'zod';
@@ -24,3 +25,14 @@ export const dataExportDownloadSchema = z
 export const dataExportPageSchema = paginatedSchema(dataExportViewSchema);
 
 export type RequestDataExportInput = z.infer<typeof requestDataExportSchema>;
+
+export const requestDeletionSchema = z
+  .object({
+    scope: z.literal('workspace').default('workspace'),
+    confirmation: z.string().trim().min(1).max(200),
+    reason: z.string().trim().max(2000).optional(),
+  })
+  .strict();
+
+export const deletionRequestViewSchemaForApi = deletionRequestViewSchema;
+export type RequestDeletionInput = z.infer<typeof requestDeletionSchema>;

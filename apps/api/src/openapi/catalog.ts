@@ -23,6 +23,7 @@ import {
   connectionIdSchema,
   contentItemIdSchema,
   dataExportIdSchema,
+  deletionRequestIdSchema,
   feedIdSchema,
   growthPlanIdSchema,
   growthProfileIdSchema,
@@ -150,8 +151,10 @@ import {
   dataExportDownloadSchema,
   dataExportPageSchema,
   dataExportViewSchemaForApi,
+  deletionRequestViewSchemaForApi,
   listDataExportsQuerySchema,
   requestDataExportSchema,
+  requestDeletionSchema,
 } from '../modules/data/data.schemas';
 import {
   createWebhookEndpointSchema,
@@ -225,6 +228,14 @@ export const OPERATIONS: readonly OperationSpec[] = [
   },
 
   /* ------------------------------------------------------------------ auth */
+  {
+    method: 'get',
+    path: '/v1/data/deletion-requests',
+    operationId: 'dataDeletion.current',
+    summary: 'Read the latest workspace deletion request, if one exists.',
+    tag: 'data',
+    response: deletionRequestViewSchemaForApi.nullable(),
+  },
   {
     method: 'post',
     path: '/v1/auth/signup',
@@ -1869,6 +1880,38 @@ export const OPERATIONS: readonly OperationSpec[] = [
     scopes: ['analytics:read'],
     pathParams: p('id', dataExportIdSchema),
     response: dataExportDownloadSchema,
+  },
+  {
+    method: 'post',
+    path: '/v1/data/deletion-requests',
+    operationId: 'dataDeletion.request',
+    summary: 'Request owner-confirmed workspace deletion after the cooling-off window.',
+    tag: 'data',
+    body: requestDeletionSchema,
+    response: deletionRequestViewSchemaForApi,
+    successStatus: 202,
+    requiresIdempotencyKey: true,
+    requiresStepUp: true,
+  },
+  {
+    method: 'get',
+    path: '/v1/data/deletion-requests/{id}',
+    operationId: 'dataDeletion.get',
+    summary: 'Read the state of one workspace deletion request.',
+    tag: 'data',
+    pathParams: p('id', deletionRequestIdSchema),
+    response: deletionRequestViewSchemaForApi,
+  },
+  {
+    method: 'post',
+    path: '/v1/data/deletion-requests/{id}/cancel',
+    operationId: 'dataDeletion.cancel',
+    summary: 'Cancel a workspace deletion request during its cooling-off window.',
+    tag: 'data',
+    pathParams: p('id', deletionRequestIdSchema),
+    response: deletionRequestViewSchemaForApi,
+    requiresIdempotencyKey: true,
+    requiresStepUp: true,
   },
 
   /* ----------------------------------------------------------------- audit */

@@ -315,6 +315,13 @@ export interface ExportJobView {
   readonly downloadUrl: string | null;
 }
 
+export interface WorkspaceDeletionView {
+  readonly id: string | null;
+  readonly state: 'idle' | 'scheduled' | 'executing' | 'completed' | 'canceled' | 'failed';
+  readonly executeAfter: string | null;
+  readonly canceledAt: string | null;
+}
+
 export interface ConnectionSummaryView {
   readonly id: string;
   readonly accountLabel: string;

@@ -14,6 +14,7 @@ import { createContentService } from './content';
 import { createCredentialVaultService } from './credentials';
 import { createDataDeletionService } from './data-deletion';
 import { createDataExportService } from './data-exports';
+import { createDataLifecycleService } from './data-lifecycle';
 import { createGrowthService } from './growth';
 import { createHealthService } from './health';
 import { createIdentityService } from './identity';
@@ -70,6 +71,7 @@ export function createServices(deps: ServiceDeps): Services {
     identity: createIdentityService(deps),
     audit: createAuditService(deps),
     dataExports: createDataExportService(deps),
+    dataLifecycle: createDataLifecycleService(deps),
     dataDeletion: createDataDeletionService(deps),
     health: createHealthService(deps),
   };

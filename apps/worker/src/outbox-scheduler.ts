@@ -1,4 +1,5 @@
 import {
+  dataDeletionWorkflowId,
   publishWorkflowId,
   dataExportWorkflowId,
   ruleWorkflowId,
@@ -13,6 +14,7 @@ import { TemporalScheduler } from '@relay/runtime';
 import { analyticsSyncDescriptor } from './workflows/core/analytics-sync.core';
 import { automationRuleDescriptor } from './workflows/core/automation-rule.core';
 import { dataExportDescriptor } from './workflows/core/data-export.core';
+import { dataDeletionDescriptor } from './workflows/core/data-deletion.core';
 import { publishPostDescriptor } from './workflows/core/publish-post.core';
 import type { RunningWorker } from './worker';
 
@@ -125,6 +127,23 @@ export class WorkerScheduler implements SchedulerPort {
     const workflowId = dataExportWorkflowId(input.workspaceId, input.exportId);
     this.#inline().startWorkflow(dataExportDescriptor, workflowId, input.workflowInput);
     return { workflowId, runId: `${workflowId}:inline` };
+  }
+
+  async scheduleDataDeletion(input: Parameters<SchedulerPort['scheduleDataDeletion']>[0]) {
+    if (this.#temporal !== null) return this.#temporal.scheduleDataDeletion(input);
+    const workflowId = dataDeletionWorkflowId(input.workspaceId, input.requestId);
+    this.#inline().startWorkflow(dataDeletionDescriptor, workflowId, input.workflowInput);
+    return { workflowId, runId: `${workflowId}:inline` };
+  }
+
+  async cancelDataDeletion(
+    input: Parameters<SchedulerPort['cancelDataDeletion']>[0],
+  ): Promise<void> {
+    if (this.#temporal !== null) return this.#temporal.cancelDataDeletion(input);
+    this.#requireSignal(dataDeletionWorkflowId(input.workspaceId, input.requestId), 'cancel', {
+      reason: input.reason,
+      requestedAt: this.#clock.now().toISOString(),
+    });
   }
 
   async describe(input: Parameters<SchedulerPort['describe']>[0]) {

@@ -233,6 +233,12 @@ export function createRefusingServices(): Services {
       build: refuse('data_export'),
       download: refuse('data_export'),
     },
+    dataLifecycle: {
+      request: refuse('deletion_request'),
+      current: () => Promise.resolve(null),
+      get: refuse('deletion_request'),
+      cancel: refuse('deletion_request'),
+    },
     dataDeletion: {
       loadDeletionScope: refuse('deletion_request'),
       cancelScheduledJob: refuse('publish_job'),
@@ -240,6 +246,7 @@ export function createRefusingServices(): Services {
       deleteStoredObjects: refuse('storage'),
       tombstoneAnalytics: refuse('deletion_request'),
       finalizeDeletion: refuse('deletion_request'),
+      markDeletionFailed: refuse('deletion_request'),
     },
     health: refuseHealth(),
   };

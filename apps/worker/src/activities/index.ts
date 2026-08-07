@@ -224,6 +224,7 @@ export function createActivities(deps: ActivityDependencies): WorkerActivities {
     ),
     tombstoneAnalytics: wrap('tombstoneAnalytics', deps, gateway.tombstoneAnalytics.bind(gateway)),
     finalizeDeletion: wrap('finalizeDeletion', deps, gateway.finalizeDeletion.bind(gateway)),
+    markDeletionFailed: wrap('markDeletionFailed', deps, gateway.markDeletionFailed.bind(gateway)),
     buildDataExport: wrap('buildDataExport', deps, gateway.buildDataExport.bind(gateway)),
   };
 }

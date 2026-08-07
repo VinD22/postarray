@@ -45,6 +45,7 @@ export const signatureIdSchema = idSchema(ID_PREFIXES.signature);
 export const userIdSchema = idSchema(ID_PREFIXES.user);
 export const agentConfirmationIdSchema = idSchema(ID_PREFIXES.agentConfirmation);
 export const dataExportIdSchema = idSchema(ID_PREFIXES.dataExport);
+export const deletionRequestIdSchema = idSchema(ID_PREFIXES.deletionRequest);
 
 /** A single path parameter named `id`, validated against its prefix. */
 export function idParamSchema(schema: z.ZodType<string>): z.ZodObject<{ id: z.ZodType<string> }> {
