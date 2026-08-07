@@ -34,7 +34,11 @@ import { requireEpochMillis } from '../../common/instant';
  * a callback that attaches the *attacker's* social account to the victim's
  * workspace, and every post the victim schedules then goes to the attacker.
  */
-export const OAUTH_TRANSACTION_TTL_SECONDS = 300;
+// Keep the browser/edge transaction window equal to the application row and
+// verifier TTL. A shorter edge TTL would reject a still-valid provider code
+// while the application transaction remains live, creating a confusing
+// single-use failure with no recovery other than restarting the flow.
+export const OAUTH_TRANSACTION_TTL_SECONDS = 600;
 
 export const oauthTransactionSchema = z
   .object({
