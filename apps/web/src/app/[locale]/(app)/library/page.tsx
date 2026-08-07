@@ -12,6 +12,7 @@ import type { CapabilitySnapshot } from '@relay/contracts';
 import { isDemoMode } from '@/lib/api/config';
 import { ApiError } from '@/lib/api/error';
 import { api } from '@/lib/api';
+import { getRequestIntl } from '@/lib/i18n/server';
 import { SEED_ACCOUNTS } from '@/features/composer';
 import {
   SEED_ASSETS,
@@ -23,9 +24,10 @@ import {
 
 import { LibraryGateway } from './library-gateway';
 
-export const metadata: Metadata = {
-  title: 'Library',
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const intl = await getRequestIntl();
+  return { title: intl.t.format('library.title') };
+}
 
 export const dynamic = 'force-dynamic';
 

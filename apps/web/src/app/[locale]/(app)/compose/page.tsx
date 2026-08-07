@@ -15,13 +15,14 @@ import { SEED_BOOTSTRAP, type ComposerBootstrap } from '@/features/composer';
 import { SEED_ASSETS, type MediaAsset } from '@/features/media';
 import { loadComposer } from '@/features/composer/data/composer-gateway';
 import { requireSession } from '@/lib/auth/require-session';
+import { getRequestIntl } from '@/lib/i18n/server';
 
 import { ComposeClient, type ComposeStatus } from './compose-client';
 
-export const metadata: Metadata = {
-  // The document title is chrome, not product copy, and Next needs it here.
-  title: 'Compose',
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const intl = await getRequestIntl();
+  return { title: intl.t.format('composer.title') };
+}
 
 export const dynamic = 'force-dynamic';
 

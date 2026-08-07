@@ -36,14 +36,23 @@ const monoFont = JetBrains_Mono({
   weight: ['400', '600'],
 });
 
-export const metadata: Metadata = {
-  title: {
-    default: 'Relay',
-    template: '%s · Relay',
-  },
-  description: 'A publishing desk for people and agents.',
-  applicationName: 'Relay',
-};
+export async function generateMetadata({
+  params,
+}: {
+  readonly params: Promise<{ readonly locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  const intl = await getStaticIntl(locale);
+  const appName = intl.t.format('shell.appName');
+  return {
+    title: {
+      default: appName,
+      template: `%s · ${appName}`,
+    },
+    description: intl.t.format('web.meta.home.description'),
+    applicationName: appName,
+  };
+}
 
 export const viewport: Viewport = {
   width: 'device-width',
