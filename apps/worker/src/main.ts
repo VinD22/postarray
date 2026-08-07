@@ -1,14 +1,22 @@
-import { systemClock } from '@relay/application';
-import { loadConfigFor } from '@relay/config';
+import {
+  MemoryKeyValueStore,
+  RedisKeyValueStore,
+  systemClock,
+  type KeyValueStore,
+  type RedisLikeClient,
+} from '@relay/application';
+import { loadConfigFor, type RelayConfig } from '@relay/config';
 import { InternalError } from '@relay/contracts';
 import { createPrismaClient } from '@relay/database';
-import { createLogger } from '@relay/observability';
-import { OutboxDispatcher } from '@relay/runtime';
+import { createLogger, type Logger } from '@relay/observability';
+import { createApplicationRuntime, OutboxDispatcher } from '@relay/runtime';
+import Redis from 'ioredis';
 
 import { ACTIVITY_NAMES, type WorkerActivities } from './activities/types';
 import { WorkerScheduler } from './outbox-scheduler';
 import { createWorkerGateway } from './prelaunch-gateway';
 import { installShutdownHandlers, startWorker, WORKER_SERVICE_NAME } from './worker';
+import { startMediaRetentionSweep } from './media-retention';
 
 /**
  * The process entry point.
@@ -85,6 +93,31 @@ export async function loadGateway(moduleName: string): Promise<WorkerActivities>
   return adoptGateway(await Promise.resolve(build()));
 }
 
+async function createWorkerKeyValueStore(
+  config: RelayConfig,
+  logger: Logger,
+): Promise<KeyValueStore> {
+  if (config.redis.url === undefined) {
+    if (config.core.isProduction) {
+      throw new Error('REDIS_URL_REQUIRED_FOR_WORKER');
+    }
+    logger.warn({}, 'worker.kv_memory_fallback');
+    return new MemoryKeyValueStore(systemClock);
+  }
+
+  const client = new Redis(config.redis.url, {
+    lazyConnect: true,
+    enableReadyCheck: true,
+    maxRetriesPerRequest: 3,
+  });
+  await client.connect();
+  logger.info({}, 'worker.kv_redis_connected');
+
+  // ioredis exposes the exact operations the application port needs, but its
+  // overloaded `set` declaration is wider than the structural port type.
+  return new RedisKeyValueStore(client as unknown as RedisLikeClient);
+}
+
 export async function main(): Promise<void> {
   const config = loadConfigFor(WORKER_SERVICE_NAME);
   const logger = createLogger({ service: WORKER_SERVICE_NAME }, { level: config.core.logLevel });
@@ -95,6 +128,22 @@ export async function main(): Promise<void> {
     ...(config.database.url === undefined ? {} : { databaseUrl: config.database.url }),
   });
   const scheduler = new WorkerScheduler({ worker, config, clock: systemClock, logger });
+  let kv: KeyValueStore | null = null;
+  let runtime: ReturnType<typeof createApplicationRuntime>;
+  try {
+    kv = await createWorkerKeyValueStore(config, logger);
+    runtime = createApplicationRuntime({
+      config,
+      logger,
+      adapters: { prisma, kv, scheduler },
+    });
+  } catch (error: unknown) {
+    await kv?.close();
+    await scheduler.close();
+    await prisma.$disconnect();
+    await worker.shutdown();
+    throw error;
+  }
   const outbox = new OutboxDispatcher({
     prisma,
     scheduler,
@@ -102,12 +151,20 @@ export async function main(): Promise<void> {
     logger,
   });
   outbox.start();
+  const mediaRetention = startMediaRetentionSweep({
+    prisma,
+    media: runtime.services.media,
+    clock: systemClock,
+    logger,
+  });
 
   installShutdownHandlers(
     {
       ...worker,
       shutdown: async () => {
+        await mediaRetention.stop();
         await outbox.stop();
+        await runtime.close();
         await scheduler.close();
         await prisma.$disconnect();
         await worker.shutdown();

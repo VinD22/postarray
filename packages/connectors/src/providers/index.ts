@@ -172,10 +172,20 @@ export function isProviderConfigured(
   return missingCredentials(config, provider).length === 0;
 }
 
-/** `live`, or `disabled:missing X_CLIENT_ID, X_CLIENT_SECRET`. */
-export function providerStatus(config: ConnectorDeps['config'], provider: BuiltInProvider): string {
+/**
+ * Configuration and verification are separate gates. Credentials alone never
+ * make a connector customer-visible.
+ */
+export function providerStatus(
+  config: ConnectorDeps['config'],
+  provider: BuiltInProvider,
+  verifiedProviders: readonly BuiltInProvider[] = [],
+): string {
   const missing = missingCredentials(config, provider);
-  return missing.length === 0 ? 'live' : `disabled:missing ${missing.join(', ')}`;
+  if (missing.length > 0) {
+    return `disabled:missing ${missing.join(', ')}`;
+  }
+  return verifiedProviders.includes(provider) ? 'live' : 'disabled:verification-not-complete';
 }
 
 export interface RegistrationOutcome {
@@ -187,6 +197,11 @@ export interface RegistrationOutcome {
 
 /** The slice of the registry this function drives. */
 export type ProviderRegistrar = Pick<ConnectorRegistry, 'register' | 'markUnavailable'>;
+
+export interface RegisterBuiltInProvidersOptions {
+  /** Providers whose definition-of-done evidence passed in this release. */
+  readonly verifiedProviders?: readonly BuiltInProvider[];
+}
 
 /**
  * Register every provider adapter, and mark the ones with missing credentials
@@ -204,10 +219,11 @@ export type ProviderRegistrar = Pick<ConnectorRegistry, 'register' | 'markUnavai
 export function registerBuiltInProviders(
   registry: ProviderRegistrar,
   deps: ConnectorDeps,
+  options: RegisterBuiltInProvidersOptions = {},
 ): RegistrationOutcome[] {
   const outcomes: RegistrationOutcome[] = [];
   for (const provider of BUILT_IN_PROVIDERS) {
-    const status = providerStatus(deps.config, provider);
+    const status = providerStatus(deps.config, provider, options.verifiedProviders ?? []);
     registry.register(PROVIDER_FACTORIES[provider](deps));
     if (status !== 'live') {
       registry.markUnavailable(provider, status);

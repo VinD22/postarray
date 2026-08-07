@@ -349,6 +349,9 @@ importers:
       '@temporalio/workflow':
         specifier: ^1.11.6
         version: 1.21.1
+      ioredis:
+        specifier: ^5.7.0
+        version: 5.11.1
       zod:
         specifier: ^4.4.3
         version: 4.4.3

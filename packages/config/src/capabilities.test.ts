@@ -55,11 +55,11 @@ describe('detectCapabilities', () => {
     );
   });
 
-  it('keeps the fake connector and bluesky usable offline', () => {
+  it('keeps only the fake connector usable offline', () => {
     const capabilities = capabilitiesFor();
     expect(capabilities.connectors.fake).toBe('live');
-    expect(capabilities.connectors.bluesky).toBe('live');
-    expect(availableConnectors(capabilities)).toEqual(['bluesky', 'fake']);
+    expect(capabilities.connectors.bluesky).toBe('disabled:verification-not-complete');
+    expect(availableConnectors(capabilities)).toEqual(['fake']);
   });
 
   it('reports a half configured connector as disabled, naming the missing half', () => {
@@ -68,14 +68,19 @@ describe('detectCapabilities', () => {
     expect(missingEnvVars(capabilities.connectors.x)).toEqual(['X_CLIENT_SECRET']);
   });
 
-  it('shares the Meta app across instagram, facebook and threads', () => {
+  it('does not confuse configured Meta credentials with provider verification', () => {
     const capabilities = capabilitiesFor({
       META_APP_ID: 'placeholder-id',
       META_APP_SECRET: 'placeholder-secret',
     });
-    expect(capabilities.connectors.instagram).toBe('live');
-    expect(capabilities.connectors.facebook).toBe('live');
-    expect(capabilities.connectors.threads).toBe('live');
+    expect(capabilities.connectors.instagram).toBe('disabled:verification-not-complete');
+    expect(capabilities.connectors.facebook).toBe('disabled:verification-not-complete');
+    expect(capabilities.connectors.threads).toBe('disabled:verification-not-complete');
+  });
+
+  it('never exposes the simulator in production', () => {
+    const capabilities = capabilitiesFor({ NODE_ENV: 'production' });
+    expect(capabilities.connectors.fake).toBe('disabled:simulator-not-available');
   });
 
   it('goes live once the supporting services are configured', () => {

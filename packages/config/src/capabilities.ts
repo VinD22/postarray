@@ -40,8 +40,9 @@ export const SUBSYSTEM_NAMES = [
 export type SubsystemName = (typeof SUBSYSTEM_NAMES)[number];
 
 /**
- * `fake` is the in-repo provider simulator. It is always available so the full
- * compose, approve, schedule, publish and receipt loop is exercisable offline.
+ * `fake` is the in-repo provider simulator. It is available only outside
+ * production so the full compose, approve, schedule, publish and receipt loop
+ * remains exercisable offline without ever appearing as a customer connector.
  */
 export const CONNECTOR_KEYS = [
   'x',
@@ -233,7 +234,7 @@ function detectConnectors(config: RelayConfig): Record<ConnectorKey, CapabilityS
     ['META_APP_ID', config.providers.meta.appId],
     ['META_APP_SECRET', config.providers.meta.appSecret],
   ]);
-  return {
+  const configured: Record<Exclude<ConnectorKey, 'fake'>, CapabilityStatus> = {
     x: allOrNothing([
       ['X_CLIENT_ID', config.providers.x.clientId],
       ['X_CLIENT_SECRET', config.providers.x.clientSecret],
@@ -283,7 +284,26 @@ function detectConnectors(config: RelayConfig): Record<ConnectorKey, CapabilityS
       ['SLACK_CLIENT_ID', config.providers.slack.clientId],
       ['SLACK_CLIENT_SECRET', config.providers.slack.clientSecret],
     ]),
-    fake: 'live',
+  };
+
+  // Provider credentials prove configuration, not approval. A provider moves
+  // out of this empty set only in the same reviewed change that attaches the
+  // definition-of-done evidence. This deliberately cannot be toggled by an
+  // environment variable: deployment access is not authority to claim a
+  // provider review or a completed connector contract suite.
+  const verifiedProductionConnectors = new Set<Exclude<ConnectorKey, 'fake'>>([]);
+  const connectors = Object.fromEntries(
+    Object.entries(configured).map(([provider, status]) => [
+      provider,
+      status === 'live' && !verifiedProductionConnectors.has(provider as Exclude<ConnectorKey, 'fake'>)
+        ? 'disabled:verification-not-complete'
+        : status,
+    ]),
+  ) as Record<Exclude<ConnectorKey, 'fake'>, CapabilityStatus>;
+
+  return {
+    ...connectors,
+    fake: config.core.isProduction ? 'disabled:simulator-not-available' : 'live',
   };
 }
 

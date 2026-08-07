@@ -1,4 +1,9 @@
-import { detectCapabilities, loadConfig, type RuntimeCapabilities } from '@relay/config';
+import {
+  CONNECTOR_KEYS,
+  detectCapabilities,
+  loadConfig,
+  type RuntimeCapabilities,
+} from '@relay/config';
 import { describe, expect, it } from 'vitest';
 
 import { buildHealthReport, healthHttpStatus, type HealthCheck } from './health';
@@ -131,7 +136,14 @@ describe('buildHealthReport', () => {
       SLACK_CLIENT_ID: 'slack-id',
       SLACK_CLIENT_SECRET: 'slack-secret',
     });
-    const report = buildHealthReport(capabilities, [{ name: 'database.query', status: 'pass' }], {
+    expect(capabilities.connectors.bluesky).toBe('disabled:verification-not-complete');
+    const fullyLive: RuntimeCapabilities = {
+      ...capabilities,
+      connectors: Object.fromEntries(
+        CONNECTOR_KEYS.map((provider) => [provider, 'live'] as const),
+      ) as RuntimeCapabilities['connectors'],
+    };
+    const report = buildHealthReport(fullyLive, [{ name: 'database.query', status: 'pass' }], {
       now: fixedNow,
       service: 'api',
       version: '0.1.0',

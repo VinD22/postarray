@@ -131,3 +131,14 @@ export {
 } from './worker';
 
 export { createWorkerGateway } from './prelaunch-gateway';
+export {
+  MEDIA_RETENTION_ASSET_BATCH,
+  MEDIA_RETENTION_SWEEP_INTERVAL_MS,
+  MEDIA_RETENTION_WORKSPACE_BATCH,
+  drainMediaRetention,
+  runMediaRetentionSweep,
+  startMediaRetentionSweep,
+  type MediaRetentionSweepResult,
+  type RunMediaRetentionSweepOptions,
+  type RunningMediaRetentionSweep,
+} from './media-retention';

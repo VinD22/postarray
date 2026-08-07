@@ -1,9 +1,12 @@
 import { randomBytes, createHash } from 'node:crypto';
 
 import {
+  ACTIVE_CHANNEL_LIMIT,
   CapabilityNotImplementedError,
   ConnectionActionRequiredError,
+  ERROR_CODES,
   PROVIDER_IDS,
+  RelayError,
   type CapabilitySnapshot,
   type Paginated,
   type ProviderId,
@@ -133,6 +136,35 @@ async function requireConnection(db: Db, connectionId: string): Promise<Connecti
 
 const OAUTH_TRANSACTION_TTL_SECONDS = 600;
 
+/** Every connected row except an explicit disconnect occupies a plan slot. */
+export const CHANNEL_SLOT_STATUSES = [
+  'active',
+  'action_required',
+  'expired',
+  'revoked',
+  'paused',
+] as const;
+
+export function assertChannelSlotAvailable(
+  used: number,
+  limit: number = ACTIVE_CHANNEL_LIMIT,
+): void {
+  if (used < limit) {
+    return;
+  }
+  throw new RelayError(ERROR_CODES.QUOTA_EXCEEDED, {
+    messageKey: 'errors.channel_limit_reached',
+    details: { used, limit },
+  });
+}
+
+async function requireChannelSlot(db: Db): Promise<void> {
+  const used = await db.socialConnection.count({
+    where: { status: { in: [...CHANNEL_SLOT_STATUSES] } },
+  });
+  assertChannelSlotAvailable(used);
+}
+
 export function createConnectionService(deps: ServiceDeps): ConnectionService {
   return {
     async listAvailableProviders(ctx: ActorContext): Promise<readonly ProviderId[]> {
@@ -207,6 +239,7 @@ export function createConnectionService(deps: ServiceDeps): ConnectionService {
               details: { provider: input.provider },
             });
           }
+          await requireChannelSlot(db);
 
           const state = randomBytes(32).toString('base64url');
           const stateHash = createHash('sha256').update(state).digest('hex');

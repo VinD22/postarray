@@ -35,18 +35,23 @@ function recordingRegistry(): {
   return { registry: registry as ProviderRegistrar, registered, unavailable };
 }
 
-function availableProviders(deps: ReturnType<typeof createTestDeps>['deps']): ProviderId[] {
+function availableProviders(
+  deps: ReturnType<typeof createTestDeps>['deps'],
+  verifiedProviders: readonly (typeof BUILT_IN_PROVIDERS)[number][] = [],
+): ProviderId[] {
   const { registry } = recordingRegistry();
-  return registerBuiltInProviders(registry, deps)
+  return registerBuiltInProviders(registry, deps, { verifiedProviders })
     .filter((outcome) => outcome.available)
     .map((outcome) => outcome.provider);
 }
 
 describe('registerBuiltInProviders', () => {
-  it('registers every provider when all credentials are configured', () => {
+  it('registers every provider and exposes only those with reviewed evidence', () => {
     const { deps } = createTestDeps();
     const { registry, registered, unavailable } = recordingRegistry();
-    const outcomes = registerBuiltInProviders(registry, deps);
+    const outcomes = registerBuiltInProviders(registry, deps, {
+      verifiedProviders: BUILT_IN_PROVIDERS,
+    });
     expect(registered).toHaveLength(BUILT_IN_PROVIDERS.length);
     expect(unavailable).toHaveLength(0);
     expect(outcomes.every((outcome) => outcome.status === 'live')).toBe(true);
@@ -85,15 +90,18 @@ describe('registerBuiltInProviders', () => {
     }
   });
 
-  it('keeps Bluesky available without an application credential', () => {
+  it('keeps Bluesky unavailable until verification evidence passes', () => {
     const { deps } = createTestDeps({ providers: { bluesky: {} } });
-    expect(providerStatus(deps.config, 'bluesky')).toBe('live');
-    expect(availableProviders(deps)).toContain('bluesky');
+    expect(providerStatus(deps.config, 'bluesky')).toBe(
+      'disabled:verification-not-complete',
+    );
+    expect(availableProviders(deps)).not.toContain('bluesky');
+    expect(availableProviders(deps, ['bluesky'])).toContain('bluesky');
   });
 
   it('does not let one unconfigured provider break the others', () => {
     const { deps } = createTestDeps({ providers: { x: {}, tiktok: {} } });
-    const available = availableProviders(deps);
+    const available = availableProviders(deps, BUILT_IN_PROVIDERS);
     expect(available).toContain('linkedin');
     expect(available).toContain('youtube');
     expect(available).toContain('bluesky');
