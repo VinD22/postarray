@@ -2,6 +2,7 @@
   "name": "relay",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
   "description": "Relay: a multilingual social publishing control plane for people and agents.",
   "packageManager": "pnpm@10.30.3",
   "engines": {
