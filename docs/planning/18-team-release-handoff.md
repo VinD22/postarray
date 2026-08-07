@@ -38,8 +38,9 @@ Current founder limits in force:
 
 - one workspace has one owner and up to five teammates, six people total;
 - one workspace has up to ten active social connections;
-- uploaded media is deleted 30 days after upload, while text, receipts and
-  audit evidence follow their separate retention policy;
+- attached media is deleted 30 days after the post is created; files waiting
+  to be attached use the upload date as a cleanup fallback, while text,
+  receipts and audit evidence follow their separate retention policy;
 - non-video uploads are limited to 20 MiB and video uploads to 500 MiB, with
   lower provider limits shown before scheduling;
 - V1 has no AI image or video generation, no browser automation and no
@@ -49,33 +50,36 @@ Current founder limits in force:
 
 ## 2. Audit snapshot at handoff
 
-The deletion checkpoint is `c08492a` (`docs(plan): record deletion release
-gates`) after the owner-only deletion slice in `274914f`. Follow-up work is now
-committed as `0ef0257` (KMS envelope encryption and authenticated plaintext
-export download), `67e3cc2` (static trial status and truthful export copy), and
-`40972fd` (verified connector composition and OAuth state hardening),
-`4082148` (safe browser callback failure feedback), `85d9819` (worker activity
-boundary validation), `39b2435` (shared PKCE exchange and discovery),
-`5a4d47d` (authenticated credential envelopes and brand-tenanted OAuth rows),
-`9e2c0b3` (atomic application KV consumption), `99c8e3e` (account-selection
-validation), `a6638b3` (format cleanup), `040d9ca` (unhealthy Temporal worker
-run detection), `ab8c449` (localized OAuth callback outcome notices) and
-`642384f` (credential-port readiness gate), `74a1d30` (atomic MCP key-value
-consumption) and `9e2f3bb` (checkpoint documentation), alongside the current
-handoff and connector audit. These commits are locally
-verified code, not proof of a provisioned Neon, Storage, Temporal, Auth or
-provider environment.
+The current code checkpoint is `03ae002` after the owner-only deletion slice in
+`274914f` and the earlier release commits. Follow-up work is committed as
+`0ef0257` (KMS envelope encryption and authenticated plaintext export download),
+`67e3cc2` (static trial status and truthful export copy), `40972fd` (verified
+connector composition and OAuth state hardening), `4082148` (safe browser
+callback failure feedback), `85d9819` (worker activity boundary validation),
+`39b2435` (shared PKCE exchange and discovery), `5a4d47d` (authenticated
+credential envelopes and brand-tenanted OAuth rows), `9e2c0b3` (atomic
+application KV consumption), `99c8e3e` (account-selection validation),
+`a6638b3` (format cleanup), `040d9ca` (unhealthy Temporal worker run
+detection), `ab8c449` (localized OAuth callback outcome notices), `642384f`
+(credential-port readiness gate), `74a1d30` (atomic MCP key-value consumption),
+`9e2f3bb` (checkpoint documentation), `323a9c3` (workspace-scoped credential
+store and KMS/local-development vault adapters), `e698e95` (workspace
+credential resolver and verified connector execution seam), `e3e0fdd`
+(post-created media retention anchor), `ed91afe` (credential adapter exports),
+`6ffa107` (retention claim test update) and `03ae002` (library offline and
+rate-limit states). These commits are locally verified code, not proof of a
+provisioned Neon, Storage, Temporal, Auth or provider environment.
 
 | Area | What exists locally | What is still unproven or incomplete |
 | --- | --- | --- |
 | Architecture | Shared application services are used by the five product surfaces. Production guards reject fake connectors, local storage, in-memory coordination and inline scheduling. | Deployed environment must prove every surface resolves the same policy, idempotency and workflow path. |
 | Publishing | Approval, preflight, idempotency, receipts, audit events and simulator duplicate-publication tests exist. | Live provider canary, crash/timeout/revoked-token evidence and read-back are still required per connector. |
-| Media | Upload reservations, checksums, MIME/size validation, 20/500 MiB limits and a 30-day purge path exist. | Private Neon Storage, sentinel, signed operations, deletion retries and authenticated browser evidence are missing. |
+| Media | Upload reservations, checksums, MIME/size validation, 20/500 MiB limits, post-created retention anchoring with upload-date fallback, and a 30-day purge path exist. | Private Neon Storage, sentinel, signed operations, deletion retries and authenticated browser evidence are missing. |
 | Data export | Workspace-scoped request, idempotency, JSON archive builder, checksum, expiry, local AES envelope, KMS envelope/decryption and authenticated plaintext download exist locally. | KMS rotation, private object access, real expiry/purge and replay/crash evidence must be witnessed in the release environment. |
 | Workspace deletion | Owner-only step-up, exact name confirmation, seven-day cooling-off request, cancellation, failure state, durable idempotency and local worker gateway exist. | Real Prisma/RLS/Storage/Temporal run, provider revoke evidence, all failure-point replays and retention-bound cleanup are missing. |
 | Identity | Authenticated session inventory and revoke-other-sessions routes and Settings controls exist. | Neon Auth is not provisioned; durable provider session linkage, recovery, rotation and authenticated closure journey are pending. |
-| Connectors | Capability states, fake simulator, contract scaffolding and a runtime registry that keeps every unverified adapter unavailable exist. Social OAuth now shares one state, canonical callback, application-owned PKCE, atomic edge/application single-use values, strict discovery selection, brand-tenanted transaction rows and an explicit credential-vault/store readiness seam. | Provider connection creation, account-selection persistence, encrypted credential upsert and the worker execution gateway are not wired. No production connector may be called supported until its definition-of-done packet and isolated canary are signed. |
-| Web UX | Paper/electric-blue/ink design direction, localized routes, loading/empty/error/unavailable states and local accessibility checks exist. OAuth cancellation and safe failure notices now render on both the connections and onboarding return routes. | Authenticated production journeys, provider limitations before scheduling, offline/rate-limit/partial-success coverage and retention disclosure pass are pending. |
+| Connectors | Capability states, fake simulator, contract scaffolding and a runtime registry that keeps every unverified adapter unavailable exist. Social OAuth now shares one state, canonical callback, application-owned PKCE, atomic edge/application single-use values, strict discovery selection, brand-tenanted transaction rows, workspace-scoped encrypted credential persistence, short-lived vault handles and a verified connector execution seam. | OAuth connection creation and account-selection persistence are not wired into the application callback, and the resolver/execution seam is not wired into worker activities. No production connector may be called supported until its definition-of-done packet and isolated canary are signed. |
+| Web UX | Paper/electric-blue/ink design direction, localized routes, loading/empty/error/unavailable states and local accessibility checks exist. OAuth cancellation and safe failure notices now render on both the connections and onboarding return routes. The library distinguishes offline and rate-limited responses with recovery guidance. | Authenticated production journeys, provider limitations before scheduling, broader partial-success coverage and authenticated retention disclosure evidence are pending. |
 | API/MCP/CLI/webhooks | Shared contracts and route/service layers exist. | OpenAPI diff, five-surface authorization matrix, stable CLI JSON, signed webhook replay/dead-letter and leakage checks are pending. |
 | Billing | Polar simulator lifecycle and fail-closed checkout flag exist. | Merchant identity, products, trial/cancellation/refund/past-due webhook evidence and reconciliation are missing. |
 | Operations | Runtime capability detection and fail-closed startup checks exist. | Neon branch, Redis/Valkey, Temporal, mail, observability, deployment, restore, latency and secret-scan evidence are missing. |

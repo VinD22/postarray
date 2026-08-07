@@ -13,18 +13,21 @@ gates into work packages with owners, dependencies and evidence.
 
 ## Current checkpoint
 
-Commit `9e2f3bb` is the latest verified local checkpoint. It includes the
-earlier deletion and export work plus the integration hardening commits
+Commit `03ae002` is the latest verified local code checkpoint. It includes the
+earlier deletion and export work, integration hardening commits
 `40972fd`, `4082148`, `85d9819`, `39b2435`, `5a4d47d`, `9e2c0b3`, `99c8e3e`,
-`a6638b3`, `040d9ca`, `ab8c449`, `642384f`, `74a1d30` and `9e2f3bb`. The current checkpoint includes:
+`a6638b3`, `040d9ca`, `ab8c449`, `642384f`, `74a1d30` and `9e2f3bb`, plus
+the credential and product-state commits `323a9c3`, `e698e95`, `e3e0fdd`,
+`ed91afe`, `6ffa107` and `03ae002`. The current checkpoint includes:
 
 - 27 Playwright checks covering axe, keyboard navigation, reduced motion,
   pseudo-locale expansion, RTL and critical-route smoke states;
 - `pnpm verify`, formatting and production build green locally;
 - production safety gates that fail closed for missing storage, fake
   connectors, local storage, in-memory coordination and checkout;
-- media limits of 20 MiB for non-video and 500 MiB for video, with 30-day
-  retention and a worker purge path;
+- media limits of 20 MiB for non-video and 500 MiB for video, with deletion
+  anchored 30 days after post creation for attached files, upload-date fallback
+  for unattached files, and a worker purge path;
 - truthful connector capability states and no V1 image or video generation;
 - shared application services consumed by REST, MCP, CLI, web and worker
   boundaries.
@@ -71,10 +74,13 @@ retention-bound audit and publication evidence can remain addressable. Published
 posts are never represented as removed from their platforms.
 
 This is production-shaped code, not production evidence. The release now has a
-KMS-backed encryption adapter and authenticated plaintext export route in the
-codebase. It still needs a private Relay Neon Storage bucket, an isolated Relay
-Neon branch with migrations through
-`0062_oauth_and_credential_invariants.sql`, live Temporal replay and crash
+KMS-backed encryption adapter and authenticated plaintext export route, plus a
+workspace-scoped credential store/vault and a verified connector execution seam
+in the codebase. The credential adapters and resolver are not yet composed into
+worker activities, OAuth completion still lacks connection creation and account
+selection persistence, and no provider is enabled. It still needs a private
+Relay Neon Storage bucket, an isolated Relay Neon branch with migrations
+through `0063_credential_envelope_v1.sql`, live Temporal replay and crash
 evidence, verified provider-side revoke adapters, and an authenticated browser
 pass.
 The MCP-connected `ldr-app` project is not the Relay database and must not be
@@ -91,12 +97,14 @@ connection. Worker activity inputs now validate tenancy and idempotency before
 gateway execution. Credential envelope columns and strict AAD/key-version
 mappers are present through migration `0063_credential_envelope_v1.sql`.
 The application now exposes an explicit credential-vault/store readiness seam
-and refuses completion until all three boundaries are composed. The worker
-marks an unexpected Temporal run exit unhealthy, and the web app renders
-localized, safe OAuth cancellation and failure outcomes on both connection
-return routes. Provider connection creation, account-selection persistence,
-encrypted vault upsert and the provider execution gateway remain deliberately
-unavailable until a connector passes its definition-of-done evidence.
+and refuses completion until all three boundaries are composed. Runtime now
+provides workspace-scoped envelope persistence, short-lived credential handles
+and a duplicate-publication execution seam, but worker activity wiring and
+OAuth connection creation/account-selection persistence remain deliberately
+unavailable. The worker marks an unexpected Temporal run exit unhealthy, and
+the web app renders localized, safe OAuth cancellation and failure outcomes on
+both connection return routes. No provider is enabled until it passes its
+definition-of-done evidence.
 
 The branch is still a prelaunch product. Local green status does not prove a
 Neon/Auth/Storage deployment, a live provider connector, a paid checkout or a
