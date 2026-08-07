@@ -191,6 +191,7 @@ export function createRefusingServices(): Services {
       create: refuse('endpoint'),
       update: refuse('endpoint'),
       delete: refuse('endpoint'),
+      rotateSecret: refuse('endpoint'),
       testDelivery: refuse('endpoint'),
       listDeliveries: page,
       redeliver: refuse('delivery'),
@@ -263,6 +264,13 @@ export function createRefusingServices(): Services {
       notify: refuse('notification'),
       prepareTargetMedia: refuse('media'),
       scheduleAnalyticsFetches: refuse('analytics'),
+    },
+    workerWebhooks: {
+      loadWebhookDelivery: refuse('webhook_delivery'),
+      deliverWebhook: refuse('webhook_delivery'),
+      recordWebhookAttempt: refuse('webhook_delivery'),
+      disableWebhookEndpoint: refuse('webhook_endpoint'),
+      deadLetterWebhookDelivery: refuse('webhook_delivery'),
     },
     health: refuseHealth(),
   };

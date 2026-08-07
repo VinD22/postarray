@@ -233,6 +233,15 @@ export const webhooksApi = {
     call(`/webhooks/endpoints/${endpointId}`, { method: 'PATCH', body: input }, () => null),
   delete: (endpointId: string): Promise<void> =>
     call(`/webhooks/endpoints/${endpointId}`, { method: 'DELETE' }, () => undefined),
+  rotateSecret: (
+    endpointId: string,
+    idempotencyKey: string,
+  ): Promise<{ endpoint: WebhookEndpoint; signingSecret: string } | null> =>
+    call(
+      `/webhooks/endpoints/${endpointId}/rotate-secret`,
+      { method: 'POST', idempotencyKey },
+      () => null,
+    ),
   testDelivery: (endpointId: string, idempotencyKey: string): Promise<WebhookDeliveryLog | null> =>
     call(`/webhooks/endpoints/${endpointId}/test`, { method: 'POST', idempotencyKey }, () => null),
   listDeliveries: (

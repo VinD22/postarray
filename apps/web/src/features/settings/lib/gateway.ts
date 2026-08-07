@@ -626,8 +626,11 @@ export const webhooksGateway = {
   },
 
   async rotateSecret(endpointId: string): Promise<OneTimeCredential> {
-    void endpointId;
-    return notImplemented('webhook_secret_rotation');
+    const rotated = await api.webhooks.rotateSecret(endpointId, newIdempotencyKey('settings'));
+    if (rotated === null) {
+      return notImplemented('webhook_secret_rotation');
+    }
+    return { value: rotated.signingSecret, expiresAt: null };
   },
 
   async remove(endpointId: string): Promise<void> {

@@ -100,6 +100,15 @@ export class WebhooksService {
     return this.services.webhooks.delete(ctx, endpointId);
   }
 
+  rotateSecret(
+    ctx: ActorContext,
+    endpointId: string,
+  ): Promise<{ endpoint: WebhookEndpoint; signingSecret: string }> {
+    return this.services.webhooks
+      .rotateSecret(ctx, endpointId)
+      .then((created) => ({ ...created, endpoint: toEndpoint(created.endpoint) }));
+  }
+
   async testDelivery(ctx: ActorContext, endpointId: string): Promise<WebhookDeliveryLog> {
     return toDelivery(await this.services.webhooks.testDelivery(ctx, endpointId));
   }

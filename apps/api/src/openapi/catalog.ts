@@ -1610,6 +1610,19 @@ export const OPERATIONS: readonly OperationSpec[] = [
   },
   {
     method: 'post',
+    path: '/v1/webhooks/endpoints/{id}/rotate-secret',
+    operationId: 'webhooks.rotateSecret',
+    summary: 'Rotate the signing secret. The previous secret verifies for 24 hours.',
+    tag: 'webhooks',
+    scopes: ['webhooks:manage'],
+    requiresIdempotencyKey: true,
+    pathParams: p('id', webhookEndpointIdSchema),
+    response: z
+      .object({ endpoint: webhookEndpointSchema, signingSecret: z.string().min(20) })
+      .strict(),
+  },
+  {
+    method: 'post',
     path: '/v1/webhooks/endpoints/{id}/test',
     operationId: 'webhooks.test',
     summary: 'Send a test event, marked `isTest` so a receiver cannot mistake it.',

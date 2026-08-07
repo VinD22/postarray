@@ -73,6 +73,17 @@ export class WebhooksController {
     await this.webhooks.delete(actor, parseParams(webhookEndpointIdSchema, id));
   }
 
+  @Post('endpoints/:id/rotate-secret')
+  @RequireScope('webhooks:manage')
+  @Idempotent()
+  @HttpCode(200)
+  rotateSecret(
+    @Actor() actor: ActorContext,
+    @Param('id') id: string,
+  ): Promise<{ endpoint: WebhookEndpoint; signingSecret: string }> {
+    return this.webhooks.rotateSecret(actor, parseParams(webhookEndpointIdSchema, id));
+  }
+
   /**
    * Send a test event. It is marked `isTest` in the envelope so a receiver can
    * never mistake it for real traffic and act on it.

@@ -69,6 +69,15 @@ type DataDeletionActivities = Pick<
   | 'markDeletionFailed'
 >;
 
+type WebhookActivities = Pick<
+  WorkerActivities,
+  | 'loadWebhookDelivery'
+  | 'deliverWebhook'
+  | 'recordWebhookAttempt'
+  | 'disableWebhookEndpoint'
+  | 'deadLetterWebhookDelivery'
+>;
+
 function requireObject(value: unknown, what: string): object {
   if (typeof value !== 'object' || value === null) {
     throw new InternalError({ details: { invalid: what } });
@@ -119,6 +128,7 @@ export async function loadGateway(
     readonly dataDeletion?: DataDeletionActivities;
     readonly connectorExecution?: ConnectorExecutionGateway | null;
     readonly publishing?: Partial<PublishingActivities>;
+    readonly webhooks?: Partial<WebhookActivities>;
     readonly connectorBridge?: ReturnType<typeof createConnectorExecutionActivities> | null;
   } = {},
 ): Promise<WorkerActivities> {
@@ -221,6 +231,19 @@ export async function main(): Promise<void> {
     notify: (input) => publishingReady.then((value) => value.notify(input)),
     scheduleAnalyticsFetches: (input) => publishingReady.then((value) => value.scheduleAnalyticsFetches(input)),
   };
+  let resolveWebhooks: ((activities: WebhookActivities) => void) | undefined;
+  const webhooksReady = new Promise<WebhookActivities>((resolve) => {
+    resolveWebhooks = resolve;
+  });
+  const deferredWebhooks: WebhookActivities = {
+    loadWebhookDelivery: (input) => webhooksReady.then((value) => value.loadWebhookDelivery(input)),
+    deliverWebhook: (input) => webhooksReady.then((value) => value.deliverWebhook(input)),
+    recordWebhookAttempt: (input) => webhooksReady.then((value) => value.recordWebhookAttempt(input)),
+    disableWebhookEndpoint: (input) =>
+      webhooksReady.then((value) => value.disableWebhookEndpoint(input)),
+    deadLetterWebhookDelivery: (input) =>
+      webhooksReady.then((value) => value.deadLetterWebhookDelivery(input)),
+  };
   const connectorBridge =
     connectorRuntime.gateway === null
       ? null
@@ -239,6 +262,7 @@ export async function main(): Promise<void> {
             buildDataExport: deferredDataExportBuilder,
             dataDeletion: deferredDataDeletion,
             publishing: deferredPublishing,
+            webhooks: deferredWebhooks,
             connectorBridge,
           }
         : { connectorExecution: connectorRuntime.gateway },
@@ -279,6 +303,15 @@ export async function main(): Promise<void> {
       markDeletionFailed: (input) => runtime.services.dataDeletion.markDeletionFailed(input),
     });
     resolvePublishing?.(runtime.services.workerPublishing);
+    resolveWebhooks?.({
+      loadWebhookDelivery: (input) => runtime.services.workerWebhooks.loadWebhookDelivery(input),
+      deliverWebhook: (input) => runtime.services.workerWebhooks.deliverWebhook(input),
+      recordWebhookAttempt: (input) => runtime.services.workerWebhooks.recordWebhookAttempt(input),
+      disableWebhookEndpoint: (input) =>
+        runtime.services.workerWebhooks.disableWebhookEndpoint(input),
+      deadLetterWebhookDelivery: (input) =>
+        runtime.services.workerWebhooks.deadLetterWebhookDelivery(input),
+    });
   } catch (error: unknown) {
     await kv?.close();
     await scheduler.close();

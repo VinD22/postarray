@@ -19,6 +19,15 @@ type PublishingActivities = Pick<
   | 'scheduleAnalyticsFetches'
 >;
 
+type WebhookActivities = Pick<
+  WorkerActivities,
+  | 'loadWebhookDelivery'
+  | 'deliverWebhook'
+  | 'recordWebhookAttempt'
+  | 'disableWebhookEndpoint'
+  | 'deadLetterWebhookDelivery'
+>;
+
 type UnavailableActivity = (input: unknown) => Promise<never>;
 
 /**
@@ -50,6 +59,7 @@ export function createWorkerGateway(
       | 'finalizeDeletion'
       | 'markDeletionFailed'
     >;
+    readonly webhooks?: Partial<WebhookActivities>;
   } = {},
 ): WorkerActivities {
   const unavailable = Object.fromEntries(
@@ -77,6 +87,7 @@ export function createWorkerGateway(
       : createConnectorActivities(options.connectorExecution)),
     ...(options.buildDataExport === undefined ? {} : { buildDataExport: options.buildDataExport }),
     ...(options.dataDeletion ?? {}),
+    ...(options.webhooks ?? {}),
     ...(options.connectorBridge ?? {}),
   } as unknown as WorkerActivities;
 }

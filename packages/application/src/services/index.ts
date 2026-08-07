@@ -30,6 +30,7 @@ import { createValidationService } from './validation';
 import { createWebhookService } from './webhooks';
 import { createWorkspaceService } from './workspaces';
 import { createWorkerPublishingService } from './worker-publishing';
+import { createWorkerWebhookService } from './worker-webhooks';
 
 /**
  * The composition root.
@@ -75,6 +76,7 @@ export function createServices(deps: ServiceDeps): Services {
     dataLifecycle: createDataLifecycleService(deps),
     dataDeletion: createDataDeletionService(deps),
     workerPublishing: createWorkerPublishingService(deps),
+    workerWebhooks: createWorkerWebhookService(deps),
     health: createHealthService(deps),
   };
 }

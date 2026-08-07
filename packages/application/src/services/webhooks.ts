@@ -4,6 +4,8 @@ import {
   WEBHOOK_SCHEMA_VERSION,
   API_VERSION,
   canonicalJson,
+  ID_PREFIXES,
+  newId,
   type Paginated,
   type WebhookEventName,
 } from '@relay/contracts';
@@ -16,17 +18,30 @@ import { invalid, notFound } from '../internal/errors';
 import { pageArgs, toPage } from '../internal/pagination';
 import { authorized } from '../internal/runtime';
 import { assertFetchable } from '../internal/url-safety';
+import {
+  encryptWebhookSigningSecret,
+  requireWebhookSigningVault,
+} from '../internal/webhook-signing-secret';
+import { webhookSigningSecretEnvelopeToRow } from '../webhook-signing-secret-envelope';
 
 /**
  * Outbound webhooks.
  *
- * The signing secret is shown exactly once, at creation. Deliveries are
- * deduplicated by event id, which is stable across retries and manual
+ * The signing secret is shown exactly once, at creation or rotation. Deliveries
+ * are deduplicated by event id, which is stable across retries and manual
  * redeliveries, so a receiver that stores the id can safely process at least
  * once. `emit` is the internal entry point the worker calls; it fans one event
  * out to every endpoint that subscribed to it and is in scope for the
  * connection involved.
  */
+
+const SECRET_OVERLAP_MS = 24 * 60 * 60 * 1000;
+
+function prismaBytes(value: Uint8Array): Uint8Array<ArrayBuffer> {
+  const bytes = new Uint8Array(new ArrayBuffer(value.byteLength));
+  bytes.set(value);
+  return bytes;
+}
 
 const ENDPOINT_SELECT = {
   id: true,
@@ -149,19 +164,31 @@ export function createWebhookService(deps: ServiceDeps): WebhookService {
           throw invalid('errors.webhook_requires_user', {});
         }
 
-        // Shown once. We store it encrypted; the plaintext never comes back.
+        const vault = requireWebhookSigningVault(deps.credentialVault);
+        const endpointId = newId(ID_PREFIXES.webhookEndpoint);
         const signingSecret = `whsec_${randomBytes(32).toString('base64url')}`;
-        const nonce = randomBytes(12);
+        const envelope = await encryptWebhookSigningSecret(vault, {
+          workspaceId: actor.workspace.id,
+          endpointId,
+          signingSecret,
+        });
+        const secretRow = webhookSigningSecretEnvelopeToRow(envelope);
 
         const created = await db.webhookEndpoint.create({
           data: {
+            id: endpointId,
             workspaceId: actor.workspace.id,
             name: input.name,
             url: input.url,
             state: 'active',
-            secretCiphertext: Buffer.from(signingSecret, 'utf8'),
-            secretNonce: nonce,
-            keyVersion: deps.config.encryption.kmsKeyId ?? 'local-v1',
+            secretCiphertext: prismaBytes(secretRow.secretCiphertext),
+            secretNonce: prismaBytes(secretRow.secretNonce),
+            secretAuthTag: prismaBytes(secretRow.secretAuthTag),
+            secretWrappedDataKey: prismaBytes(secretRow.secretWrappedDataKey),
+            keyVersion: secretRow.keyVersion,
+            secretAadContext: secretRow.secretAadContext,
+            secretEnvelopeVersion: secretRow.secretEnvelopeVersion,
+            algorithm: secretRow.algorithm,
             subscribedEvents: [...input.events],
             connectionScope: [...(input.connectionScope ?? [])],
             createdByUserId: actor.userId,
@@ -236,6 +263,87 @@ export function createWebhookService(deps: ServiceDeps): WebhookService {
           targetId: endpointId,
           after: { state: 'deleted' },
         });
+      });
+    },
+
+    async rotateSecret(
+      ctx: ActorContext,
+      endpointId: string,
+    ): Promise<{ readonly endpoint: WebhookEndpointView; readonly signingSecret: string }> {
+      return authorized(deps, ctx, 'webhook.write', undefined, async (db, actor) => {
+        const vault = requireWebhookSigningVault(deps.credentialVault);
+        const before = await db.webhookEndpoint.findFirst({
+          where: { id: endpointId, state: { not: 'deleted' } },
+          select: {
+            ...ENDPOINT_SELECT,
+            secretCiphertext: true,
+            secretNonce: true,
+            secretAuthTag: true,
+            secretWrappedDataKey: true,
+            keyVersion: true,
+            secretAadContext: true,
+            secretEnvelopeVersion: true,
+            algorithm: true,
+          },
+        });
+        if (before === null) {
+          throw notFound('webhook_endpoint', endpointId);
+        }
+        if (before.secretEnvelopeVersion !== 1) {
+          throw invalid('error.request_invalid.message', {
+            reason: 'webhook_secret_legacy',
+            endpointId,
+          });
+        }
+
+        const signingSecret = `whsec_${randomBytes(32).toString('base64url')}`;
+        const envelope = await encryptWebhookSigningSecret(vault, {
+          workspaceId: before.workspaceId,
+          endpointId: before.id,
+          signingSecret,
+        });
+        const secretRow = webhookSigningSecretEnvelopeToRow(envelope);
+        const overlapExpiresAt = new Date(deps.clock.now().getTime() + SECRET_OVERLAP_MS);
+
+        const after = await db.webhookEndpoint.update({
+          where: { id: endpointId },
+          data: {
+            secretCiphertext: prismaBytes(secretRow.secretCiphertext),
+            secretNonce: prismaBytes(secretRow.secretNonce),
+            secretAuthTag: prismaBytes(secretRow.secretAuthTag),
+            secretWrappedDataKey: prismaBytes(secretRow.secretWrappedDataKey),
+            keyVersion: secretRow.keyVersion,
+            secretAadContext: secretRow.secretAadContext,
+            secretEnvelopeVersion: secretRow.secretEnvelopeVersion,
+            algorithm: secretRow.algorithm,
+            secretRotatedAt: deps.clock.now(),
+            previousSecretCiphertext: prismaBytes(before.secretCiphertext),
+            previousSecretNonce: prismaBytes(before.secretNonce),
+            previousSecretAuthTag:
+              before.secretAuthTag === null ? null : prismaBytes(before.secretAuthTag),
+            previousSecretWrappedDataKey:
+              before.secretWrappedDataKey === null
+                ? null
+                : prismaBytes(before.secretWrappedDataKey),
+            previousSecretKeyVersion: before.keyVersion,
+            previousSecretAadContext:
+              before.secretAadContext === null || before.secretAadContext === undefined
+                ? undefined
+                : (before.secretAadContext as Record<string, string>),
+            previousSecretEnvelopeVersion: before.secretEnvelopeVersion,
+            previousSecretExpiresAt: overlapExpiresAt,
+          },
+          select: ENDPOINT_SELECT,
+        });
+
+        await recordAudit(db, actor, {
+          action: 'workspace.updated',
+          targetType: 'webhook_endpoint',
+          targetId: endpointId,
+          after: { secretRotated: true },
+        });
+
+        return { endpoint: toEndpointView(after), signingSecret };
       });
     },
 

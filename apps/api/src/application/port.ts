@@ -586,6 +586,10 @@ export interface WebhookService {
   ): Promise<{ endpoint: WebhookEndpointView; signingSecret: string }>;
   update(ctx: ActorContext, endpointId: string, patch: ViewModel): Promise<WebhookEndpointView>;
   delete(ctx: ActorContext, endpointId: string): Promise<void>;
+  rotateSecret(
+    ctx: ActorContext,
+    endpointId: string,
+  ): Promise<{ endpoint: WebhookEndpointView; signingSecret: string }>;
   testDelivery(ctx: ActorContext, endpointId: string): Promise<WebhookDeliveryView>;
   listDeliveries(
     ctx: ActorContext,

@@ -793,6 +793,54 @@ export interface WorkerPublishingService {
   }): Promise<{ readonly offsetsMs: readonly number[] }>;
 }
 
+export interface WorkerWebhookService {
+  loadWebhookDelivery(input: {
+    readonly ctx: WorkerActivityContext;
+    readonly deliveryId: string;
+  }): Promise<{
+    readonly deliveryId: string;
+    readonly endpointId: string;
+    readonly eventName: WebhookEventName;
+    readonly attempt: number;
+    readonly endpointEnabled: boolean;
+    readonly consecutiveFailures: number;
+    readonly alreadyDelivered: boolean;
+  }>;
+  deliverWebhook(input: {
+    readonly ctx: WorkerActivityContext;
+    readonly deliveryId: string;
+    readonly endpointId: string;
+    readonly attempt: number;
+    readonly isRedelivery: boolean;
+  }): Promise<{
+    readonly status: 'succeeded' | 'failed';
+    readonly responseStatus: number | null;
+    readonly retryable: boolean;
+    readonly errorCode: ErrorCode | null;
+  }>;
+  recordWebhookAttempt(input: {
+    readonly ctx: WorkerActivityContext;
+    readonly deliveryId: string;
+    readonly endpointId: string;
+    readonly attempt: number;
+    readonly status: 'succeeded' | 'failed' | 'exhausted' | 'disabled';
+    readonly responseStatus: number | null;
+    readonly nextAttemptAt: string | null;
+  }): Promise<void>;
+  disableWebhookEndpoint(input: {
+    readonly ctx: WorkerActivityContext;
+    readonly endpointId: string;
+    readonly deliveryId: string;
+    readonly reasonKey: string;
+  }): Promise<void>;
+  deadLetterWebhookDelivery(input: {
+    readonly ctx: WorkerActivityContext;
+    readonly endpointId: string;
+    readonly deliveryId: string;
+    readonly reasonKey: string;
+  }): Promise<void>;
+}
+
 export interface CredentialVaultPort {
   encrypt(input: {
     readonly secret: SecretValue | string;
@@ -1480,6 +1528,10 @@ export interface WebhookService {
     input: PageQuery & { readonly endpointId: string },
   ): Promise<Paginated<WebhookDeliveryView>>;
   redeliver(ctx: ActorContext, deliveryId: string): Promise<WebhookDeliveryView>;
+  rotateSecret(
+    ctx: ActorContext,
+    endpointId: string,
+  ): Promise<{ readonly endpoint: WebhookEndpointView; readonly signingSecret: string }>;
   /** Internal, called by the worker. Fans an event out to matching endpoints. */
   emit(
     event: WebhookEventName,
@@ -1696,5 +1748,6 @@ export interface Services {
   readonly dataLifecycle: DataLifecycleService;
   readonly dataDeletion: DataDeletionService;
   readonly workerPublishing: WorkerPublishingService;
+  readonly workerWebhooks: WorkerWebhookService;
   readonly health: HealthService;
 }
