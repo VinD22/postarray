@@ -56,3 +56,9 @@ export {
   type ClaimedOutboxEvent,
   type ClaimOutboxOptions,
 } from './outbox-repository';
+export { createCredentialStore } from './credential-store';
+export {
+  AwsCredentialKmsClient,
+  createConfiguredCredentialVault,
+  type ConfiguredCredentialVault,
+} from './credential-vault';
