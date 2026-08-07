@@ -19,6 +19,7 @@
   "dependencies": {
     "@relay/authz": "workspace:*",
     "@relay/config": "workspace:*",
+    "@relay/connectors": "workspace:*",
     "@relay/contracts": "workspace:*",
     "@relay/database": "workspace:*",
     "@relay/i18n": "workspace:*",

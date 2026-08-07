@@ -31,6 +31,15 @@ import type {
   WebhookEventName,
 } from '@relay/contracts';
 import type { RelayConfig } from '@relay/config';
+import type {
+  ClientAuthMethod,
+  CredentialResult,
+  ExternalAccount,
+  OAuthClientConfig,
+  ProviderHttpClient,
+  SecretValue,
+  SocialConnector,
+} from '@relay/connectors';
 import type { RelayPrismaClient } from '@relay/database';
 import type { HealthReport, Logger } from '@relay/observability';
 
@@ -434,11 +443,42 @@ export interface ConnectorRegistry {
     readonly authorizationUrl: string;
     readonly requestedScopes: readonly string[];
   }>;
+  /**
+   * Exchange one application-owned callback transaction and discover accounts
+   * without writing credentials. The application persists the returned secret
+   * values only after account selection and an AAD-bound vault transaction.
+   */
+  completeOAuth?(input: {
+    readonly provider: ProviderId;
+    readonly workspaceId: string;
+    readonly code: string;
+    readonly codeVerifier: SecretValue;
+    readonly expectedCodeChallenge: string;
+    readonly redirectUri: string;
+  }): Promise<OAuthDiscoveryResult>;
   capabilitiesFor(input: {
     readonly provider: ProviderId;
     readonly connectionId: string;
     readonly accountType: string;
   }): Promise<CapabilitySnapshot>;
+}
+
+/** The connector result kept in process between OAuth exchange and selection. */
+export interface OAuthDiscoveryResult {
+  readonly credential: CredentialResult;
+  readonly accounts: readonly ExternalAccount[];
+}
+
+/** Runtime binding used by the application-owned OAuth gateway factory. */
+export interface OAuthProviderBinding {
+  readonly connector: SocialConnector;
+  readonly http: ProviderHttpClient;
+  readonly client: OAuthClientConfig;
+  readonly clientAuthMethod?: ClientAuthMethod;
+}
+
+export interface OAuthProviderResolver {
+  resolve(provider: ProviderId): OAuthProviderBinding | null;
 }
 
 export interface AiGateway {

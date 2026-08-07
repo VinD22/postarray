@@ -8,6 +8,7 @@
  */
 
 export { createServices } from './services/index';
+export { createOAuthGateway, type OAuthGateway } from './services/oauth-gateway';
 export {
   agentConfirmationSummarySchema,
   fingerprintAgentConfirmationSummary,
@@ -62,6 +63,9 @@ export type {
   MediaService,
   MembershipService,
   OAuthAppService,
+  OAuthDiscoveryResult,
+  OAuthProviderBinding,
+  OAuthProviderResolver,
   PageQuery,
   PublishingService,
   PublishConfirmationEvidence,
@@ -87,6 +91,12 @@ export type {
   WorkflowActorContext,
   WorkspaceService,
 } from './types';
+
+export type {
+  CredentialStorePort,
+  CredentialStoreWrite,
+  StoredCredentialRecord,
+} from './ports/credentials';
 
 export { normalizeAliasForLookup } from './services/identity';
 export {

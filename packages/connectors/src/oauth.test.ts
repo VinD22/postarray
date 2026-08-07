@@ -7,8 +7,10 @@ import { ProviderHttpClient } from './http';
 import {
   CODE_CHALLENGE_METHOD,
   assertRedirectAllowed,
+  createAuthorizationUrl,
   createAuthorizationRequest,
   createCodeChallenge,
+  exchangeAndDiscoverAccounts,
   exchangeAuthorizationCode,
   generateCodeVerifier,
   generateState,
@@ -17,8 +19,10 @@ import {
   refreshAccessToken,
   refreshDueAt,
   revokeCredential,
+  verifyCodeChallenge,
   verifyState,
 } from './oauth';
+import { createFakeConnector } from './fake';
 import { fixedClock, recordingSleeper } from './ports';
 import { SecretValue, leaseSecret } from './vault';
 
@@ -176,6 +180,110 @@ describe('createAuthorizationRequest', () => {
   it('never puts the verifier in the URL', () => {
     const request = createAuthorizationRequest({ definition, client, clock });
     expect(request.authorizationUrl).not.toContain(request.codeVerifier.reveal());
+  });
+
+  it('uses application-owned state and challenge without generating a second pair', () => {
+    const state = generateState();
+    const verifier = generateCodeVerifier();
+    const challenge = createCodeChallenge(verifier);
+    const result = createAuthorizationUrl({
+      definition,
+      client,
+      state,
+      codeChallenge: challenge,
+    });
+    const url = new URL(result.authorizationUrl);
+    expect(url.searchParams.get('state')).toBe(state);
+    expect(url.searchParams.get('code_challenge')).toBe(challenge);
+    expect(url.searchParams.get('code_challenge_method')).toBe(CODE_CHALLENGE_METHOD);
+    expect(result.redirectUri).toBe(client.redirectUri);
+    expect(result.scopes).toEqual(['fake.read']);
+  });
+
+  it('rejects low-entropy application proof material', () => {
+    expect(() =>
+      createAuthorizationUrl({
+        definition,
+        client,
+        state: 'short-state',
+        codeChallenge: 'short-challenge',
+      }),
+    ).toThrow(RelayError);
+  });
+});
+
+describe('application-owned OAuth proof', () => {
+  it('verifies a callback verifier against the stored challenge', () => {
+    const verifier = generateCodeVerifier();
+    const challenge = createCodeChallenge(verifier);
+    expect(verifyCodeChallenge(challenge, verifier)).toBe(true);
+    expect(verifyCodeChallenge(challenge, generateCodeVerifier())).toBe(false);
+  });
+
+  it('exchanges and discovers accounts without persisting credential material', async () => {
+    const { http } = httpReturning({
+      access_token: 'oauth-access-token',
+      refresh_token: 'oauth-refresh-token',
+      expires_in: 3600,
+      scope: 'fake.read',
+    });
+    const verifier = generateCodeVerifier();
+    const result = await exchangeAndDiscoverAccounts({
+      connector: createFakeConnector({ instant: true, clock }),
+      http,
+      provider: 'fake',
+      definition,
+      client,
+      workspaceId: 'ws_oauth_test',
+      code: 'authorization-code',
+      codeVerifier: verifier,
+      expectedCodeChallenge: createCodeChallenge(verifier),
+      clock,
+    });
+    expect(result.accounts.length).toBeGreaterThan(0);
+    expect(result.accounts[0]?.eligible).toBe(true);
+    expect(result.credential.accessToken.reveal()).toBe('oauth-access-token');
+    expect(JSON.stringify(result)).not.toContain('oauth-access-token');
+    expect(JSON.stringify(result)).not.toContain('oauth-refresh-token');
+  });
+
+  it('rejects a verifier mismatch before contacting the token endpoint', async () => {
+    const { http, bodies } = httpReturning({ access_token: 'should-not-be-used' });
+    const verifier = generateCodeVerifier();
+    await expect(
+      exchangeAndDiscoverAccounts({
+        connector: createFakeConnector({ instant: true, clock }),
+        http,
+        provider: 'fake',
+        definition,
+        client,
+        workspaceId: 'ws_oauth_test',
+        code: 'authorization-code',
+        codeVerifier: verifier,
+        expectedCodeChallenge: createCodeChallenge(generateCodeVerifier()),
+        clock,
+      }),
+    ).rejects.toThrow(RelayError);
+    expect(bodies).toEqual([]);
+  });
+
+  it('does not guess at provider-specific exchange semantics', async () => {
+    const { http } = httpReturning({ access_token: 'not-used' });
+    const verifier = generateCodeVerifier();
+    await expect(
+      exchangeAndDiscoverAccounts({
+        connector: createFakeConnector({ instant: true, clock }),
+        http,
+        provider: 'fake',
+        definition: { ...definition, flavor: 'provider_specific' },
+        client,
+        workspaceId: 'ws_oauth_test',
+        code: 'authorization-code',
+        codeVerifier: verifier,
+        expectedCodeChallenge: createCodeChallenge(verifier),
+        clock,
+      }),
+    ).rejects.toMatchObject({ code: 'CAPABILITY_NOT_IMPLEMENTED' });
   });
 });
 

@@ -3,7 +3,15 @@ import { createHash, randomBytes, timingSafeEqual } from 'node:crypto';
 import { type ProviderId, RelayError } from '@relay/contracts';
 import { z } from 'zod';
 
-import type { AuthorizationDefinition, CredentialResult, OAuthClientConfig } from './contract';
+import {
+  externalAccountSchema,
+  oauthGrantInputSchema,
+  type AuthorizationDefinition,
+  type CredentialResult,
+  type ExternalAccount,
+  type OAuthClientConfig,
+  type SocialConnector,
+} from './contract';
 import { ProviderCallError, classifyProviderError, ensureOk, parseProviderBody } from './errors';
 import type { HttpClient, ProviderHttpClient } from './http';
 import { type Clock, epochMillisecondsOf, instantOf, systemClock } from './ports';
@@ -59,6 +67,14 @@ export function generateCodeVerifier(): SecretValue {
 export function createCodeChallenge(verifier: SecretValue | string): string {
   const value = typeof verifier === 'string' ? verifier : verifier.reveal();
   return base64Url(createHash('sha256').update(value, 'ascii').digest());
+}
+
+/** Constant-time check that a callback verifier belongs to the stored challenge. */
+export function verifyCodeChallenge(
+  expectedChallenge: string,
+  verifier: SecretValue | string,
+): boolean {
+  return verifyState(expectedChallenge, createCodeChallenge(verifier));
 }
 
 const LOOPBACK_HOSTS = new Set(['127.0.0.1', '[::1]', '::1']);
@@ -147,6 +163,80 @@ export interface AuthorizationRequest {
 }
 
 /**
+ * The portion of an authorization request that can be built after the
+ * application has generated its own state and PKCE challenge.
+ *
+ * State belongs to the application transaction, not to a connector. Keeping
+ * this helper separate from `createAuthorizationRequest` prevents a second
+ * random state/verifier pair from being generated at the provider boundary.
+ */
+export interface AuthorizationUrl {
+  readonly authorizationUrl: string;
+  readonly redirectUri: string;
+  readonly scopes: readonly string[];
+}
+
+const OAUTH_VALUE_PATTERN = /^[A-Za-z0-9_-]{43,128}$/u;
+
+function assertOAuthValue(value: string, reason: string): string {
+  if (!OAUTH_VALUE_PATTERN.test(value)) {
+    throw new RelayError('VALIDATION_FAILED', {
+      messageKey: 'error.request_invalid.message',
+      details: { reason },
+    });
+  }
+  return value;
+}
+
+/**
+ * Build an authorize URL from application-owned OAuth proof material.
+ *
+ * This function never creates or stores state. It requires a high-entropy
+ * state and, for PKCE providers, a valid S256 challenge. That makes it safe
+ * for the application service to bind the URL to its database transaction and
+ * for the callback to use the same verifier later.
+ */
+export function createAuthorizationUrl(input: {
+  definition: AuthorizationDefinition;
+  client: OAuthClientConfig;
+  state: string;
+  codeChallenge: string;
+  scopes?: readonly string[];
+  extraParameters?: Readonly<Record<string, string>>;
+}): AuthorizationUrl {
+  const state = assertOAuthValue(input.state, 'OAUTH_STATE_ENTROPY_INVALID');
+  const codeChallenge = assertOAuthValue(
+    input.codeChallenge,
+    'OAUTH_CODE_CHALLENGE_ENTROPY_INVALID',
+  );
+  const redirectUri = normalizeRedirectUri(input.client.redirectUri);
+  const scopes =
+    input.scopes ??
+    input.definition.scopes.filter((scope) => scope.required).map((scope) => scope.scope);
+
+  const url = new URL(input.definition.authorizeUrl);
+  url.searchParams.set('response_type', 'code');
+  url.searchParams.set('client_id', input.client.clientId);
+  url.searchParams.set('redirect_uri', redirectUri);
+  url.searchParams.set('state', state);
+  if (scopes.length > 0) {
+    url.searchParams.set('scope', scopes.join(' '));
+  }
+  if (input.definition.pkceRequired) {
+    url.searchParams.set('code_challenge', codeChallenge);
+    url.searchParams.set('code_challenge_method', CODE_CHALLENGE_METHOD);
+  }
+  for (const [key, value] of Object.entries({
+    ...input.definition.extraAuthorizeParameters,
+    ...(input.extraParameters ?? {}),
+  })) {
+    url.searchParams.set(key, value);
+  }
+
+  return { authorizationUrl: url.toString(), redirectUri, scopes };
+}
+
+/**
  * Build the authorize URL for one connect attempt.
  *
  * ```ts
@@ -170,36 +260,22 @@ export function createAuthorizationRequest(input: {
   const state = generateState();
   const codeVerifier = generateCodeVerifier();
   const codeChallenge = createCodeChallenge(codeVerifier);
-  const scopes =
-    input.scopes ??
-    input.definition.scopes.filter((scope) => scope.required).map((scope) => scope.scope);
-
-  const url = new URL(input.definition.authorizeUrl);
-  url.searchParams.set('response_type', 'code');
-  url.searchParams.set('client_id', input.client.clientId);
-  url.searchParams.set('redirect_uri', normalizeRedirectUri(input.client.redirectUri));
-  url.searchParams.set('state', state);
-  if (scopes.length > 0) {
-    url.searchParams.set('scope', scopes.join(' '));
-  }
-  if (input.definition.pkceRequired) {
-    url.searchParams.set('code_challenge', codeChallenge);
-    url.searchParams.set('code_challenge_method', CODE_CHALLENGE_METHOD);
-  }
-  for (const [key, value] of Object.entries({
-    ...input.definition.extraAuthorizeParameters,
-    ...(input.extraParameters ?? {}),
-  })) {
-    url.searchParams.set(key, value);
-  }
+  const authorization = createAuthorizationUrl({
+    definition: input.definition,
+    client: input.client,
+    state,
+    codeChallenge,
+    ...(input.scopes === undefined ? {} : { scopes: input.scopes }),
+    ...(input.extraParameters === undefined ? {} : { extraParameters: input.extraParameters }),
+  });
 
   return {
-    authorizationUrl: url.toString(),
+    authorizationUrl: authorization.authorizationUrl,
     state,
     codeVerifier,
     codeChallenge,
-    redirectUri: normalizeRedirectUri(input.client.redirectUri),
-    scopes,
+    redirectUri: authorization.redirectUri,
+    scopes: authorization.scopes,
     expiresAt: instantOf(
       clock.now().getTime() + (input.ttlSeconds ?? DEFAULT_TRANSACTION_TTL_SECONDS) * 1000,
     ),
@@ -331,6 +407,98 @@ export async function exchangeAuthorizationCode(input: {
       ...(input.definition.pkceRequired ? { code_verifier: input.codeVerifier.reveal() } : {}),
     },
   });
+}
+
+/**
+ * The result of one standard OAuth exchange and account discovery pass.
+ *
+ * The credential is deliberately returned as redacting `SecretValue` objects
+ * and is never written here. The application owns the transaction and must
+ * encrypt both token halves, together with any account-specific token, before
+ * it reports a connection to a user.
+ */
+export interface OAuthDiscoveryResult {
+  readonly credential: CredentialResult;
+  readonly accounts: readonly ExternalAccount[];
+}
+
+/**
+ * Exchange a callback code and discover the provider accounts in one bounded
+ * connector operation. Provider-specific, client-credential-exchange and
+ * OAuth 1 flows are rejected here, rather than guessed at, until an adapter
+ * supplies its own documented exchange implementation.
+ */
+export async function exchangeAndDiscoverAccounts(input: {
+  connector: SocialConnector;
+  http: ProviderHttpClient;
+  provider: ProviderId;
+  definition: AuthorizationDefinition;
+  client: OAuthClientConfig;
+  workspaceId: string;
+  code: string;
+  codeVerifier: SecretValue;
+  expectedCodeChallenge: string;
+  clientAuthMethod?: ClientAuthMethod;
+  clock?: Clock;
+}): Promise<OAuthDiscoveryResult> {
+  if (!verifyCodeChallenge(input.expectedCodeChallenge, input.codeVerifier)) {
+    throw new RelayError('VALIDATION_FAILED', {
+      messageKey: 'error.request_invalid.message',
+      details: { reason: 'OAUTH_CODE_VERIFIER_MISMATCH' },
+    });
+  }
+  if (input.definition.flavor !== 'oauth2_pkce' || !input.definition.pkceRequired) {
+    throw new RelayError('CAPABILITY_NOT_IMPLEMENTED', {
+      messageKey: 'errors.capability_not_implemented',
+      details: { provider: input.provider, capability: 'oauth_exchange' },
+    });
+  }
+
+  const credential = await exchangeAuthorizationCode({
+    http: input.http,
+    provider: input.provider,
+    definition: input.definition,
+    client: input.client,
+    code: input.code,
+    codeVerifier: input.codeVerifier,
+    ...(input.clientAuthMethod === undefined ? {} : { clientAuthMethod: input.clientAuthMethod }),
+    ...(input.clock === undefined ? {} : { clock: input.clock }),
+  });
+  const accessToken = leaseSecret({
+    secret: credential.accessToken,
+    credentialKind: 'access_token',
+    purpose: 'oauth_account_discovery',
+    ...(input.clock === undefined ? {} : { clock: input.clock }),
+  });
+  const refreshToken =
+    credential.refreshToken === null
+      ? null
+      : leaseSecret({
+          secret: credential.refreshToken,
+          credentialKind: 'refresh_token',
+          purpose: 'oauth_account_discovery',
+          ...(input.clock === undefined ? {} : { clock: input.clock }),
+        });
+
+  try {
+    const grant = oauthGrantInputSchema.parse({
+      provider: input.provider,
+      workspaceId: input.workspaceId,
+      accessToken,
+      refreshToken,
+      grantedScopes: [...credential.grantedScopes],
+      obtainedAt: credential.obtainedAt,
+      accessTokenExpiresAt: credential.expiresAt,
+      grantMetadata: {},
+    });
+    const accounts = externalAccountSchema
+      .array()
+      .parse(await input.connector.discoverAccounts(grant));
+    return { credential, accounts };
+  } finally {
+    refreshToken?.release();
+    accessToken.release();
+  }
 }
 
 /**
