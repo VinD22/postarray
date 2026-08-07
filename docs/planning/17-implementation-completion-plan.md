@@ -9,7 +9,7 @@ gates into work packages with owners, dependencies and evidence.
 
 ## Current checkpoint
 
-Commit `d32de43` is the verified local checkpoint. It includes:
+Commit `83ff63d` is the verified local checkpoint. It includes:
 
 - 27 Playwright checks covering axe, keyboard navigation, reduced motion,
   pseudo-locale expansion, RTL and critical-route smoke states;
@@ -37,10 +37,23 @@ raw provider evidence, encrypts the JSON envelope with AES-256-GCM when a
 local key is configured, writes a tenant-scoped object, persists checksum and
 expiry, and records auditable state transitions. V1 remains JSON-only.
 
+The checkpoint also wires the local deletion vertical slice through the same
+application service used by the worker. Deletion snapshots workspace scope,
+cancels active publish jobs, removes Relay credentials, pages through
+tenant-prefixed storage, tombstones publication analytics as `unavailable`,
+removes automation and integration secrets, and records idempotent audit
+transitions. Local and memory storage adapters have cursor-based listing, and
+the Neon S3-compatible adapter has the corresponding paginated primitive. The
+worker remains fail-closed for publishing and for provider-side revocation:
+the deletion activity marks a connection revoked and removes its Relay
+credential, but does not claim an official provider revoke until a verified
+connector adapter exists.
+
 This is production-shaped code, not production evidence. The release still
 needs a KMS-backed encryption adapter, a private Relay Neon Storage bucket, an
 isolated Relay Neon branch with migration `0060_data_export_idempotency.sql`,
-live Temporal replay and crash evidence, and an authenticated browser pass.
+live Temporal replay and crash evidence, verified provider-side revoke
+adapters, and an authenticated browser pass.
 The MCP-connected `ldr-app` project is not the Relay database and must not be
 modified.
 
@@ -79,7 +92,7 @@ the release commit on an isolated environment.
 | REL-001 | Database and tenancy | Create the isolated Relay Neon release branch, apply migrations through `0060`, verify checksums, seed two workspaces and run the full RLS matrix. | Cross-workspace reads and writes fail for every tenant table; backup and restore report is attached; `pnpm release:check` is green against the branch. |
 | REL-002 | Security/platform | Implement the production KMS adapter for `DataExportEncryptionPort`, including key version metadata, rotation, access policy and startup fail-closed behavior. | A key rotation decrypts old envelopes and encrypts new ones; no local key or plaintext appears in production logs, fixtures or object metadata. |
 | REL-003 | Storage/data rights | Provision private Neon Storage, run the health sentinel, exercise signed upload/head/read/delete, and promote the export builder from local AES to KMS. | Export fixture contains the documented allow-list only, checksum matches the object, expiry and purge are deterministic, and missing objects produce a recoverable error. |
-| REL-004 | Application/worker | Finish deletion activities against real Prisma and Storage ports. Preserve resumability across page boundaries, revoked grants, canceled work and partial object deletion. | A replayed deletion leaves no credential or media object behind, records tombstones and audit events, and can resume after every injected failure point. |
+| REL-004 | Application/worker | Promote the locally wired deletion activities to the isolated environment. Validate real Prisma/RLS, storage failures, cancellation races, media derivatives, automation/feed cleanup and the distinction between Relay credential revocation and provider-side revoke. | A replayed deletion leaves no Relay credential or tenant storage object behind, records tombstones and audit events, resumes after every injected failure point, and reports provider revoke as unavailable until its connector gate is signed. |
 | REL-005 | Temporal/reliability | Add export and deletion replay histories plus crash points before storage write, after storage write and before/after the durable state update. | Duplicate workflow starts produce one workflow; retries produce one receipt and one effective object; all replay histories pass on the pinned worker build. |
 | REL-006 | Integrations | Promote one official provider, starting with LinkedIn, through `docs/connectors/definition-of-done.md`. Keep all other providers explicitly unavailable. | OAuth review/scopes, account discovery, capability snapshot, text/media publish, read-back, revoked-token and duplicate-publication canaries are signed. |
 | REL-007 | Product frontend | Make connector capabilities and provider limitations visible before compose and schedule. Complete partial-success, rate-limit, offline and permission-denied states. | Every enabled capability has a recovery action and an i18n key; unavailable is never rendered as zero; axe, keyboard, RTL and pseudo-locale checks stay green. |
@@ -201,9 +214,12 @@ Owner: platform engineer. Dependencies: B and C.
    text, post metadata, receipts, audit references and membership metadata,
    exclude provider secrets, write an encrypted short-lived object, expose a
    bounded download URL, and expire it deterministically.
-4. Finish the existing deletion workflow gateway against the real database and
-   storage ports. Every page is resumable and idempotent. Record canceled jobs,
-   revoked grants, deleted objects, tombstoned receipts and final state.
+4. Validate and promote the deletion workflow gateway now wired in
+   `83ff63d` against the real database and storage ports. Every page is
+   resumable and idempotent. Record canceled jobs, Relay credential revocation,
+   deleted objects, tombstoned receipts and final state. Do not describe a
+   provider grant as revoked until the connector has an official revoke
+   operation and evidence.
 5. Add the retention disclosure to upload, media detail, composer and post
    receipt surfaces. Text and audit retention must be described separately from
    media retention.
