@@ -1,6 +1,6 @@
 # Launch recovery and release gates
 
-Status date: 6 August 2026
+Status date: 7 August 2026
 
 This document is the operational source of truth for the current release. It
 supersedes older planning copy wherever those documents say 30 active channels,
@@ -86,7 +86,8 @@ connector. Those were planning assumptions, not launch facts.
 | RLS integration suite | Not run against Neon | A migrated isolated branch and cross-workspace test run |
 | Browser smoke and accessibility pass | Pending | Authenticated critical journeys, pseudo-locale and keyboard checks |
 | Performance budget | Pending | Production-like Lighthouse and API latency evidence |
-| Secret and dependency scan | Pending for release | CI artifacts against the release commit and history |
+| Production dependency scan | Green locally | `pnpm audit --prod --audit-level high`; CI repeats it |
+| Full-history secret scan | Pending for release | Gitleaks CI artifact against the release commit and history |
 
 ## Neon state discovered through MCP
 

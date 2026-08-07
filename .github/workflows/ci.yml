@@ -98,14 +98,21 @@ jobs:
       - run: pnpm db:generate
       - run: pnpm build
 
-  secrets:
-    name: Secret scan
+  security:
+    name: Dependency and secret scan
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      # Production dependencies with a high or critical advisory block release.
+      - run: pnpm audit --prod --audit-level high
       - uses: gitleaks/gitleaks-action@v2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
