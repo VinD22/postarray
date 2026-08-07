@@ -758,7 +758,13 @@ export interface ConnectionService {
   ): Promise<{ readonly authorizationUrl: string; readonly transactionId: string }>;
   completeOAuth(
     ctx: ActorContext,
-    input: { readonly transactionId: string; readonly code: string; readonly state: string },
+    input: {
+      readonly transactionId: string;
+      readonly code: string;
+      readonly state: string;
+      /** Required before a provider code may be exchanged. */
+      readonly selectedExternalAccountIds?: readonly string[];
+    },
   ): Promise<readonly ConnectionView[]>;
   reconnect(ctx: ActorContext, connectionId: string): Promise<ConnectionView>;
   pause(ctx: ActorContext, connectionId: string): Promise<ConnectionView>;

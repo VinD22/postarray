@@ -158,8 +158,45 @@ export function oauthCompletionReady(
   return (
     deps.connectors.completeOAuth !== undefined &&
     deps.credentialVault !== undefined &&
-    deps.credentialStore !== undefined
+    deps.credentialStore?.claimOAuthConnections !== undefined
   );
+}
+
+/**
+ * Account attachment is always an explicit user decision. The property stays
+ * optional at the transport boundary during the two-phase rollout so an older
+ * callback fails safely instead of exchanging its one-use provider code.
+ */
+export function requireExplicitOAuthAccountSelection(
+  selectedExternalAccountIds: readonly string[] | undefined,
+): readonly string[] {
+  if (selectedExternalAccountIds === undefined || selectedExternalAccountIds.length === 0) {
+    throw invalid('error.request_invalid.message', {
+      reason: 'OAUTH_ACCOUNT_SELECTION_REQUIRED',
+    });
+  }
+  if (selectedExternalAccountIds.length > ACTIVE_CHANNEL_LIMIT) {
+    throw invalid('error.request_invalid.message', {
+      reason: 'OAUTH_ACCOUNT_SELECTION_TOO_LARGE',
+      limit: ACTIVE_CHANNEL_LIMIT,
+    });
+  }
+  const unique = new Set(selectedExternalAccountIds);
+  if (unique.size !== selectedExternalAccountIds.length) {
+    throw invalid('error.request_invalid.message', {
+      reason: 'OAUTH_ACCOUNT_SELECTION_DUPLICATE',
+    });
+  }
+  if (
+    selectedExternalAccountIds.some(
+      (value) => value.length > 512 || value.trim().length === 0 || value !== value.trim(),
+    )
+  ) {
+    throw invalid('error.request_invalid.message', {
+      reason: 'OAUTH_ACCOUNT_SELECTION_INVALID',
+    });
+  }
+  return [...selectedExternalAccountIds];
 }
 
 /** Every connected row except an explicit disconnect occupies a plan slot. */
@@ -357,9 +394,20 @@ export function createConnectionService(deps: ServiceDeps): ConnectionService {
      */
     async completeOAuth(
       ctx: ActorContext,
-      input: { transactionId: string; code: string; state: string },
+      input: {
+        transactionId: string;
+        code: string;
+        state: string;
+        selectedExternalAccountIds?: readonly string[];
+      },
     ): Promise<readonly ConnectionView[]> {
       return authorized(deps, ctx, 'connection.connect', undefined, async (db) => {
+        // Validate the explicit selection before touching the one-shot verifier
+        // or exchanging the provider code. Existing transports which do not
+        // yet implement the selection handoff therefore fail without consuming
+        // anything the person would need to retry.
+        requireExplicitOAuthAccountSelection(input.selectedExternalAccountIds);
+
         // A callback must never exchange a code or claim a connection until
         // the composition root provides both the connector completion port and
         // transaction-bound envelope persistence. The runtime currently keeps
@@ -369,7 +417,7 @@ export function createConnectionService(deps: ServiceDeps): ConnectionService {
             messageKey: 'errors.capability_not_implemented',
             details: {
               capability: 'oauth_completion_persistence',
-              reason: 'credential_persistence_adapter_unavailable',
+              reason: 'atomic_oauth_claim_adapter_unavailable',
             },
           });
         }

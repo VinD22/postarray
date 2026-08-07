@@ -8,6 +8,7 @@ import {
   CHANNEL_SLOT_STATUSES,
   oauthCompletionReady,
   oauthVerifierKey,
+  requireExplicitOAuthAccountSelection,
   socialOAuthCallbackUrl,
 } from './connections';
 
@@ -44,7 +45,7 @@ describe('connection plan capacity', () => {
     expect(oauthVerifierKey('oauth_01ABC')).toBe('relay:social-oauth-verifier:oauth_01ABC');
   });
 
-  it('keeps OAuth completion unavailable until exchange, encryption and persistence are composed', () => {
+  it('keeps OAuth completion unavailable until an atomic claim adapter is composed', () => {
     const base = {
       connectors: {
         has: () => true,
@@ -74,6 +75,7 @@ describe('connection plan capacity', () => {
             throw new Error('not used');
           },
           remove: async () => undefined,
+          claimOAuthConnections: async () => ({ connectionIds: [] }),
         },
       }),
     ).toBe(true);
@@ -105,7 +107,62 @@ describe('connection plan capacity', () => {
     expect(oauthCompletionReady({ connectors })).toBe(false);
     expect(oauthCompletionReady({ connectors, credentialVault })).toBe(false);
     expect(oauthCompletionReady({ connectors, credentialStore })).toBe(false);
-    expect(oauthCompletionReady({ connectors, credentialVault, credentialStore })).toBe(true);
+    expect(oauthCompletionReady({ connectors, credentialVault, credentialStore })).toBe(false);
+    expect(
+      oauthCompletionReady({
+        connectors,
+        credentialVault,
+        credentialStore: {
+          ...credentialStore,
+          claimOAuthConnections: async () => ({ connectionIds: [] }),
+        },
+      }),
+    ).toBe(true);
+  });
+
+  it('requires explicit unique account selection before OAuth exchange', () => {
+    expect(() => requireExplicitOAuthAccountSelection(undefined)).toThrowError(
+      expect.objectContaining({
+        code: ERROR_CODES.VALIDATION_FAILED,
+        details: { reason: 'OAUTH_ACCOUNT_SELECTION_REQUIRED' },
+      }),
+    );
+    expect(() => requireExplicitOAuthAccountSelection([])).toThrowError(
+      expect.objectContaining({
+        details: { reason: 'OAUTH_ACCOUNT_SELECTION_REQUIRED' },
+      }),
+    );
+    expect(() => requireExplicitOAuthAccountSelection(['account-a', 'account-a'])).toThrowError(
+      expect.objectContaining({
+        details: { reason: 'OAUTH_ACCOUNT_SELECTION_DUPLICATE' },
+      }),
+    );
+    expect(() => requireExplicitOAuthAccountSelection(['   '])).toThrowError(
+      expect.objectContaining({
+        details: { reason: 'OAUTH_ACCOUNT_SELECTION_INVALID' },
+      }),
+    );
+    expect(() => requireExplicitOAuthAccountSelection([' account-a'])).toThrowError(
+      expect.objectContaining({
+        details: { reason: 'OAUTH_ACCOUNT_SELECTION_INVALID' },
+      }),
+    );
+    expect(() =>
+      requireExplicitOAuthAccountSelection(
+        Array.from({ length: ACTIVE_CHANNEL_LIMIT + 1 }, (_, index) => `account-${index}`),
+      ),
+    ).toThrowError(
+      expect.objectContaining({
+        details: {
+          reason: 'OAUTH_ACCOUNT_SELECTION_TOO_LARGE',
+          limit: ACTIVE_CHANNEL_LIMIT,
+        },
+      }),
+    );
+    expect(requireExplicitOAuthAccountSelection(['account-b', 'account-a'])).toEqual([
+      'account-b',
+      'account-a',
+    ]);
   });
 
   it('uses a one-shot verifier primitive for completeOAuth callbacks', async () => {

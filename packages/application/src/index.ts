@@ -107,6 +107,9 @@ export type {
 export type {
   CredentialStorePort,
   CredentialStoreWrite,
+  OAuthConnectionClaim,
+  OAuthConnectionClaimActor,
+  OAuthConnectionClaimRequest,
   StoredCredentialRecord,
 } from './ports/credentials';
 

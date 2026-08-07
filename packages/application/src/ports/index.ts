@@ -10,6 +10,9 @@ export { FixedClock, systemClock } from './clock';
 export type {
   CredentialStorePort,
   CredentialStoreWrite,
+  OAuthConnectionClaim,
+  OAuthConnectionClaimActor,
+  OAuthConnectionClaimRequest,
   StoredCredentialRecord,
 } from './credentials';
 export { MemoryKeyValueStore, RedisKeyValueStore, type RedisLikeClient } from './key-value';
