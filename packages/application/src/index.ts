@@ -10,6 +10,12 @@
 export { createServices } from './services/index';
 export { createOAuthGateway, type OAuthGateway } from './services/oauth-gateway';
 export {
+  fromSocialCredentialStorageRow,
+  toSocialCredentialStorageWrite,
+  type SocialCredentialStorageRow,
+  type SocialCredentialStorageWrite,
+} from './internal/credential-mappers';
+export {
   agentConfirmationSummarySchema,
   fingerprintAgentConfirmationSummary,
 } from './services/agent-confirmations';

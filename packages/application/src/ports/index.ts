@@ -7,6 +7,11 @@
  */
 
 export { FixedClock, systemClock } from './clock';
+export type {
+  CredentialStorePort,
+  CredentialStoreWrite,
+  StoredCredentialRecord,
+} from './credentials';
 export { MemoryKeyValueStore, RedisKeyValueStore, type RedisLikeClient } from './key-value';
 export {
   LocalFileStorage,

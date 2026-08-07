@@ -50,4 +50,28 @@ describe('database schema contract', () => {
     expect(laterSql).not.toMatch(/\bCREATE\s+TABLE\b/iu);
     expect(laterSql).not.toMatch(/\buuid(?:\[\])?\b/iu);
   });
+
+  it('keeps provider credentials on the versioned authenticated envelope', () => {
+    const migration = readFileSync(
+      path.join(packageRoot, 'migrations/0063_credential_envelope_v1.sql'),
+      'utf8',
+    );
+
+    expect(schema).toContain('accessTokenAuthTag');
+    expect(schema).toContain('refreshTokenWrappedDataKey');
+    expect(schema).toContain('accessTokenAadContext');
+    expect(schema).toContain('envelopeVersion');
+    expect(migration).toContain('social_credentials_envelope_shape');
+    expect(migration).toContain("algorithm = 'AES-256-GCM'");
+    expect(migration).toContain("key_version ~ '^[1-9][0-9]*$'");
+    expect(migration).toContain('refresh_token_aad_context');
+  });
+
+  it('binds an OAuth transaction brand to the same workspace', () => {
+    expect(schema).toContain('brand     Brand?    @relation(fields: [workspaceId, brandId]');
+    expect(schema).toContain('@@unique([workspaceId, id], map: "uq_brands_workspace_id_id")');
+    expect(
+      readFileSync(path.join(packageRoot, 'migrations/0063_credential_envelope_v1.sql'), 'utf8'),
+    ).toContain('oauth_transactions_workspace_brand_fkey');
+  });
 });

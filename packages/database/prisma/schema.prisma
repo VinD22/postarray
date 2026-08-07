@@ -1116,12 +1116,14 @@ model Brand {
   signatures           Signature[]
   postingSets          PostingSet[]
   socialConnections    SocialConnection[]
+  oauthTransactions    OAuthTransaction[]
   growthPlans          GrowthPlan[]
   shortLinks           ShortLink[]
   automationRules      AutomationRule[]
   rssFeeds             RssFeed[]
 
   @@unique([workspaceId, slug])
+  @@unique([workspaceId, id], map: "uq_brands_workspace_id_id")
   @@index([workspaceId])
   @@map("brands")
   @@schema("app")
@@ -1797,28 +1799,37 @@ model SocialConnection {
   @@schema("app")
 }
 
-/// Envelope encrypted. Ciphertext, nonce, algorithm and key version are stored
-/// separately so a key rotation can re-encrypt without touching the plaintext
-/// path. Workers decrypt immediately before a provider request and never place
-/// a token in a Temporal history, log, trace or client payload.
+/// Envelope encrypted. Ciphertext, nonce, authentication tag, algorithm and
+/// wrapped data key are stored separately so a key rotation can re-encrypt
+/// without touching the plaintext path. `envelopeVersion = 0` is a legacy row
+/// that cannot be used for provider requests. New rows use version 1 and carry
+/// one authenticated envelope per token. Workers decrypt immediately before a
+/// provider request and never place a token in a Temporal history, log, trace
+/// or client payload.
 model SocialCredential {
-  id                    String    @id @default(dbgenerated("app.new_id('cred')"))
-  workspaceId           String    @map("workspace_id")
-  connectionId          String    @unique @map("connection_id")
-  accessTokenCiphertext Bytes     @map("access_token_ciphertext")
-  accessTokenNonce      Bytes     @map("access_token_nonce")
-  refreshTokenCiphertext Bytes?   @map("refresh_token_ciphertext")
-  refreshTokenNonce     Bytes?    @map("refresh_token_nonce")
-  algorithm             String    @default("aes-256-gcm")
-  keyVersion            String    @map("key_version")
-  wrappedDataKey        Bytes?    @map("wrapped_data_key")
-  accessTokenExpiresAt  DateTime? @map("access_token_expires_at") @db.Timestamptz(6)
-  refreshTokenExpiresAt DateTime? @map("refresh_token_expires_at") @db.Timestamptz(6)
-  lastRefreshedAt       DateTime? @map("last_refreshed_at") @db.Timestamptz(6)
-  lastRefreshError      String?   @map("last_refresh_error")
-  rotatedAt             DateTime? @map("rotated_at") @db.Timestamptz(6)
-  createdAt             DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
-  updatedAt             DateTime  @updatedAt @map("updated_at") @db.Timestamptz(6)
+  id                         String    @id @default(dbgenerated("app.new_id('cred')"))
+  workspaceId                String    @map("workspace_id")
+  connectionId               String    @unique @map("connection_id")
+  accessTokenCiphertext      Bytes     @map("access_token_ciphertext")
+  accessTokenNonce            Bytes     @map("access_token_nonce")
+  accessTokenAuthTag          Bytes?    @map("access_token_auth_tag")
+  refreshTokenCiphertext      Bytes?    @map("refresh_token_ciphertext")
+  refreshTokenNonce           Bytes?    @map("refresh_token_nonce")
+  refreshTokenAuthTag         Bytes?    @map("refresh_token_auth_tag")
+  algorithm                   String    @default("AES-256-GCM")
+  keyVersion                  String    @map("key_version")
+  accessTokenWrappedDataKey   Bytes?    @map("wrapped_data_key")
+  refreshTokenWrappedDataKey  Bytes?    @map("refresh_token_wrapped_data_key")
+  accessTokenAadContext       Json?     @map("access_token_aad_context")
+  refreshTokenAadContext      Json?     @map("refresh_token_aad_context")
+  envelopeVersion             Int       @default(0) @map("envelope_version")
+  accessTokenExpiresAt        DateTime? @map("access_token_expires_at") @db.Timestamptz(6)
+  refreshTokenExpiresAt       DateTime? @map("refresh_token_expires_at") @db.Timestamptz(6)
+  lastRefreshedAt              DateTime? @map("last_refreshed_at") @db.Timestamptz(6)
+  lastRefreshError             String?   @map("last_refresh_error")
+  rotatedAt                    DateTime? @map("rotated_at") @db.Timestamptz(6)
+  createdAt                    DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt                    DateTime  @updatedAt @map("updated_at") @db.Timestamptz(6)
 
   workspace  Workspace        @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
   connection SocialConnection @relation(fields: [workspaceId, connectionId], references: [workspaceId, id], onDelete: Cascade)
@@ -1833,25 +1844,28 @@ model SocialCredential {
 /// Short lived. `state` is unpredictable, the redirect must match the exact
 /// allowlist, and the row is consumed once.
 model OAuthTransaction {
-  id             String                  @id @default(dbgenerated("app.new_id('oauth')"))
-  workspaceId    String                  @map("workspace_id")
-  purpose        OAuthTransactionPurpose
-  provider       ProviderKind?
-  stateHash      String                  @unique @map("state_hash")
-  codeChallenge  String?                 @map("code_challenge")
-  codeChallengeMethod String?            @map("code_challenge_method")
-  redirectUri    String                  @map("redirect_uri")
-  requestedScopes String[]               @default([]) @map("requested_scopes")
-  initiatedByUserId String?              @map("initiated_by_user_id")
-  oauthClientId  String?                 @map("oauth_client_id")
-  reconnectConnectionId String?          @map("reconnect_connection_id")
-  consumedAt     DateTime?               @map("consumed_at") @db.Timestamptz(6)
-  expiresAt      DateTime                @map("expires_at") @db.Timestamptz(6)
-  createdAt      DateTime                @default(now()) @map("created_at") @db.Timestamptz(6)
+  id                    String                  @id @default(dbgenerated("app.new_id('oauth')"))
+  workspaceId           String                  @map("workspace_id")
+  brandId               String?                 @map("brand_id")
+  purpose               OAuthTransactionPurpose
+  provider              ProviderKind?
+  stateHash             String                  @unique @map("state_hash")
+  codeChallenge         String?                 @map("code_challenge")
+  codeChallengeMethod   String?                 @map("code_challenge_method")
+  redirectUri           String                  @map("redirect_uri")
+  requestedScopes       String[]                @default([]) @map("requested_scopes")
+  initiatedByUserId     String?                 @map("initiated_by_user_id")
+  oauthClientId         String?                 @map("oauth_client_id")
+  reconnectConnectionId String?                 @map("reconnect_connection_id")
+  consumedAt            DateTime?               @map("consumed_at") @db.Timestamptz(6)
+  expiresAt             DateTime                @map("expires_at") @db.Timestamptz(6)
+  createdAt             DateTime                @default(now()) @map("created_at") @db.Timestamptz(6)
 
   workspace Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  brand     Brand?    @relation(fields: [workspaceId, brandId], references: [workspaceId, id], onDelete: Cascade)
 
   @@index([workspaceId])
+  @@index([workspaceId, brandId])
   @@index([expiresAt])
   @@map("oauth_transactions")
   @@schema("private")

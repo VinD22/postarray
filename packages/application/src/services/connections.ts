@@ -298,6 +298,7 @@ export function createConnectionService(deps: ServiceDeps): ConnectionService {
           const transaction = await db.oAuthTransaction.create({
             data: {
               workspaceId: actor.workspace.id,
+              brandId: input.brandId ?? null,
               purpose: 'connect_social_account',
               provider: input.provider,
               stateHash,
