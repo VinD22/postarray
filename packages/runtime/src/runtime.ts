@@ -10,6 +10,7 @@ import {
   type BillingGateway,
   type Clock,
   type ConnectorRegistry,
+  type DataExportEncryptionPort,
   type KeyValueStore,
   type MailerPort,
   type SchedulerPort,
@@ -38,6 +39,7 @@ import {
 import type { Logger } from '@relay/observability';
 
 import { NeonObjectStorage } from './neon-storage';
+import { LocalDataExportEncryption } from './data-export-encryption';
 import { ResendMailer } from './resend-mailer';
 import { TemporalScheduler } from './temporal-scheduler';
 
@@ -681,6 +683,18 @@ function configuredStorage(config: RelayConfig, clock: Clock): StoragePort | nul
   });
 }
 
+function configuredDataExportEncryption(config: RelayConfig): DataExportEncryptionPort | null {
+  // A KMS key id without a KMS adapter is deliberately not treated as
+  // encryption. The export activity fails closed until the deployment supplies
+  // the provider-backed adapter.
+  if (config.encryption.kmsKeyId !== undefined) {
+    return null;
+  }
+  return config.encryption.localKey === undefined
+    ? null
+    : new LocalDataExportEncryption(config.encryption.localKey);
+}
+
 function configuredMailer(config: RelayConfig, logger: Logger): MailerPort | null {
   if (config.email.apiKey === undefined || config.email.from === undefined) {
     return null;
@@ -719,6 +733,7 @@ export interface RuntimeAdapterOverrides {
   readonly billing?: BillingGateway;
   readonly scheduler?: SchedulerPort;
   readonly storage?: StoragePort;
+  readonly exportEncryption?: DataExportEncryptionPort;
   readonly mailer?: MailerPort;
 }
 
@@ -748,7 +763,16 @@ export function createApplicationRuntime(options: ApplicationRuntimeOptions): Ap
     const mailerMissing =
       adapters.mailer === undefined &&
       (options.config.email.apiKey === undefined || options.config.email.from === undefined);
-    if (missing.length > 0 || storageMissing || schedulerMissing || mailerMissing) {
+    const exportEncryptionMissing =
+      adapters.exportEncryption === undefined &&
+      configuredDataExportEncryption(options.config) === null;
+    if (
+      missing.length > 0 ||
+      storageMissing ||
+      schedulerMissing ||
+      mailerMissing ||
+      exportEncryptionMissing
+    ) {
       throw new RelayError(ERROR_CODES.INTERNAL, {
         details: {
           reason: 'production_adapters_missing',
@@ -757,6 +781,7 @@ export function createApplicationRuntime(options: ApplicationRuntimeOptions): Ap
             ...(storageMissing ? ['storage'] : []),
             ...(schedulerMissing ? ['scheduler'] : []),
             ...(mailerMissing ? ['mailer'] : []),
+            ...(exportEncryptionMissing ? ['exportEncryption'] : []),
           ],
         },
       });
@@ -781,6 +806,8 @@ export function createApplicationRuntime(options: ApplicationRuntimeOptions): Ap
     adapters.storage ??
     configuredStorage(options.config, clock) ??
     localStorage(options.config, clock);
+  const exportEncryption =
+    adapters.exportEncryption ?? configuredDataExportEncryption(options.config);
   const mailer =
     adapters.mailer ??
     configuredMailer(options.config, options.logger) ??
@@ -794,6 +821,7 @@ export function createApplicationRuntime(options: ApplicationRuntimeOptions): Ap
     billing: adapters.billing ?? new DatabaseBillingGateway(prisma, clock, options.config),
     scheduler,
     storage,
+    exportEncryption: exportEncryption ?? undefined,
     mailer,
     logger: options.logger,
     clock,

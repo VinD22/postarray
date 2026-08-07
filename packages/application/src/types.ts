@@ -229,6 +229,22 @@ export interface DataExportWorkflowInput {
   readonly format: DataExportFormat;
 }
 
+/** Result of building the encrypted archive, safe to persist in workflow history. */
+export interface DataExportBuildResult {
+  readonly state: 'ready' | 'failed';
+  readonly byteSize: number | null;
+  readonly checksumSha256: string | null;
+}
+
+/** Infrastructure seam for encrypting an export before it reaches object storage. */
+export interface DataExportEncryptionPort {
+  encrypt(input: {
+    readonly workspaceId: string;
+    readonly exportId: string;
+    readonly plaintext: Uint8Array;
+  }): Promise<{ readonly bytes: Uint8Array; readonly keyVersion: string }>;
+}
+
 export interface SchedulerPort {
   schedulePublish(input: {
     readonly jobId: string;
@@ -402,6 +418,7 @@ export interface ServiceDeps {
   readonly billing: BillingGateway;
   readonly scheduler: SchedulerPort;
   readonly storage: StoragePort;
+  readonly exportEncryption?: DataExportEncryptionPort;
   readonly mailer: MailerPort;
   readonly logger: Logger;
   readonly clock: Clock;
@@ -1170,6 +1187,12 @@ export interface DataExportService {
   ): Promise<DataExportView>;
   list(ctx: ActorContext, query?: PageQuery): Promise<Paginated<DataExportView>>;
   get(ctx: ActorContext, exportId: string): Promise<DataExportView>;
+  build(input: {
+    readonly ctx: WorkflowActorContext;
+    readonly exportId: string;
+    readonly scope: DataExportScope;
+    readonly format: DataExportFormat;
+  }): Promise<DataExportBuildResult>;
   download(
     ctx: ActorContext,
     exportId: string,

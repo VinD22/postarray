@@ -36,6 +36,8 @@ export type {
   ConnectorRegistry,
   ContentService,
   DataExportService,
+  DataExportBuildResult,
+  DataExportEncryptionPort,
   DataExportWorkflowInput,
   CreateDraftInput,
   CredentialVaultService,

@@ -14,6 +14,7 @@ export {
   type RuntimeAdapterOverrides,
 } from './runtime';
 export { NeonObjectStorage, base64ChecksumToHex, type NeonStorageOptions } from './neon-storage';
+export { LocalDataExportEncryption } from './data-export-encryption';
 export { ResendMailer, type ResendMailerOptions } from './resend-mailer';
 export { TemporalScheduler, type TemporalSchedulerOptions } from './temporal-scheduler';
 export {

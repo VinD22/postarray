@@ -21,6 +21,7 @@ import { invalid, notFound } from '../internal/errors';
 import { withIdempotency } from '../internal/idempotency';
 import { pageArgs, toPage } from '../internal/pagination';
 import { authorized } from '../internal/runtime';
+import { createDataExportBuilder } from './data-export-builder';
 
 const EXPORT_LINK_TTL_SECONDS = 15 * 60;
 
@@ -87,6 +88,8 @@ function workflowContext(ctx: ActorContext): WorkflowActorContext {
 
 /** Workspace data rights, with a strict allow-list enforced by the worker. */
 export function createDataExportService(deps: ServiceDeps): DataExportService {
+  const builder = createDataExportBuilder(deps);
+
   return {
     async request(
       ctx: ActorContext,
@@ -156,8 +159,8 @@ export function createDataExportService(deps: ServiceDeps): DataExportService {
               workflowInput: {
                 ctx: workflowContext(ctx),
                 exportId: view.id,
-                scope,
-                format,
+                scope: view.scope,
+                format: view.format,
               },
             });
           }
@@ -191,6 +194,10 @@ export function createDataExportService(deps: ServiceDeps): DataExportService {
         }
         return toView(row);
       });
+    },
+
+    build(input) {
+      return builder.build(input);
     },
 
     async download(

@@ -77,9 +77,12 @@ export function adoptGateway(loaded: unknown): WorkerActivities {
 }
 
 /** Load the configured module, or use the honest built-in prelaunch gateway. */
-export async function loadGateway(moduleName: string): Promise<WorkerActivities> {
+export async function loadGateway(
+  moduleName: string,
+  options: { readonly buildDataExport?: WorkerActivities['buildDataExport'] } = {},
+): Promise<WorkerActivities> {
   if (moduleName === DEFAULT_GATEWAY_MODULE) {
-    return adoptGateway(createWorkerGateway());
+    return adoptGateway(createWorkerGateway(options));
   }
   const loaded: unknown = await import(moduleName);
   const module = requireObject(loaded, 'module');
@@ -122,7 +125,17 @@ export async function main(): Promise<void> {
   const config = loadConfigFor(WORKER_SERVICE_NAME);
   const logger = createLogger({ service: WORKER_SERVICE_NAME }, { level: config.core.logLevel });
   const moduleName = process.env['RELAY_WORKER_GATEWAY_MODULE'] ?? DEFAULT_GATEWAY_MODULE;
-  const gateway = await loadGateway(moduleName);
+  let resolveDataExportBuilder:
+    ((builder: WorkerActivities['buildDataExport']) => void) | undefined;
+  const dataExportBuilderReady = new Promise<WorkerActivities['buildDataExport']>((resolve) => {
+    resolveDataExportBuilder = resolve;
+  });
+  const deferredDataExportBuilder: WorkerActivities['buildDataExport'] = (input) =>
+    dataExportBuilderReady.then((builder) => builder(input));
+  const gateway = await loadGateway(
+    moduleName,
+    moduleName === DEFAULT_GATEWAY_MODULE ? { buildDataExport: deferredDataExportBuilder } : {},
+  );
   const worker = await startWorker({ gateway, config, logger });
   const prisma = createPrismaClient({
     ...(config.database.url === undefined ? {} : { databaseUrl: config.database.url }),
@@ -137,6 +150,7 @@ export async function main(): Promise<void> {
       logger,
       adapters: { prisma, kv, scheduler },
     });
+    resolveDataExportBuilder?.((input) => runtime.services.dataExports.build(input));
   } catch (error: unknown) {
     await kv?.close();
     await scheduler.close();

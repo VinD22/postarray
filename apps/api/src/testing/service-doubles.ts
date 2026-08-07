@@ -230,6 +230,7 @@ export function createRefusingServices(): Services {
       request: refuse('data_export'),
       list: page,
       get: refuse('data_export'),
+      build: refuse('data_export'),
       download: refuse('data_export'),
     },
     health: refuseHealth(),

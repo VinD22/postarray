@@ -17,7 +17,11 @@ type UnavailableActivity = (input: unknown) => Promise<never>;
  * startup boundary validates it again before registering the activities, which
  * keeps this safe even though the optional gateway module is loaded dynamically.
  */
-export function createWorkerGateway(): WorkerActivities {
+export function createWorkerGateway(
+  options: {
+    readonly buildDataExport?: WorkerActivities['buildDataExport'];
+  } = {},
+): WorkerActivities {
   const unavailable = Object.fromEntries(
     ACTIVITY_NAMES.map((activity): readonly [ActivityName, UnavailableActivity] => [
       activity,
@@ -35,5 +39,8 @@ export function createWorkerGateway(): WorkerActivities {
 
   // This assertion is the documented dynamic-boundary shim. The canonical
   // registry above supplies every method, and main.ts validates all names again.
-  return unavailable as unknown as WorkerActivities;
+  return {
+    ...unavailable,
+    ...(options.buildDataExport === undefined ? {} : { buildDataExport: options.buildDataExport }),
+  } as unknown as WorkerActivities;
 }
