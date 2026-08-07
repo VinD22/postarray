@@ -3,6 +3,7 @@ import { randomBytes, createHash } from 'node:crypto';
 import {
   CapabilityNotImplementedError,
   ConnectionActionRequiredError,
+  PROVIDER_IDS,
   type CapabilitySnapshot,
   type Paginated,
   type ProviderId,
@@ -44,10 +45,18 @@ const CONNECTION_SELECT = {
   profileUrl: true,
   status: true,
   statusReason: true,
+  grantedScopes: true,
   capabilityVersion: true,
   capabilitiesRefreshedAt: true,
   connectedAt: true,
+  createdByUserId: true,
   lastSuccessfulActionAt: true,
+  credential: { select: { accessTokenExpiresAt: true } },
+  receipts: {
+    orderBy: { publishedAt: 'desc' },
+    take: 1,
+    select: { publishedAt: true, lastAnalyticsSyncAt: true },
+  },
 } as const;
 
 interface ConnectionRow {
@@ -62,10 +71,14 @@ interface ConnectionRow {
   profileUrl: string | null;
   status: string;
   statusReason: string | null;
+  grantedScopes: string[];
   capabilityVersion: string | null;
   capabilitiesRefreshedAt: Date | null;
   connectedAt: Date;
+  createdByUserId: string | null;
   lastSuccessfulActionAt: Date | null;
+  credential: { accessTokenExpiresAt: Date | null } | null;
+  receipts: { publishedAt: Date; lastAnalyticsSyncAt: Date | null }[];
 }
 
 const HEALTH_VALUES: readonly ConnectionHealth[] = [
@@ -95,9 +108,14 @@ function toView(row: ConnectionRow): ConnectionView {
     health: healthOf(row.status),
     // The column holds a stable key, never provider prose.
     statusMessageKey: row.statusReason,
+    grantedScopes: [...row.grantedScopes],
     capabilityVersion: row.capabilityVersion,
     capabilitiesRefreshedAt: row.capabilitiesRefreshedAt?.toISOString() ?? null,
     connectedAt: row.connectedAt.toISOString(),
+    connectedByUserId: row.createdByUserId,
+    accessTokenExpiresAt: row.credential?.accessTokenExpiresAt?.toISOString() ?? null,
+    lastPublishedAt: row.receipts[0]?.publishedAt.toISOString() ?? null,
+    lastAnalyticsSyncAt: row.receipts[0]?.lastAnalyticsSyncAt?.toISOString() ?? null,
     lastSuccessfulActionAt: row.lastSuccessfulActionAt?.toISOString() ?? null,
   };
 }
@@ -117,6 +135,12 @@ const OAUTH_TRANSACTION_TTL_SECONDS = 600;
 
 export function createConnectionService(deps: ServiceDeps): ConnectionService {
   return {
+    async listAvailableProviders(ctx: ActorContext): Promise<readonly ProviderId[]> {
+      return authorized(deps, ctx, 'connection.read', undefined, async () =>
+        PROVIDER_IDS.filter((provider) => provider !== 'fake' && deps.connectors.has(provider)),
+      );
+    },
+
     async list(
       ctx: ActorContext,
       query: PageQuery & { brandId?: string; provider?: ProviderId } = {},
@@ -294,21 +318,15 @@ export function createConnectionService(deps: ServiceDeps): ConnectionService {
     },
 
     async reconnect(ctx: ActorContext, connectionId: string): Promise<ConnectionView> {
-      return authorized(deps, ctx, 'connection.reconnect', { connectionId }, async (db, actor) => {
-        const before = await requireConnection(db, connectionId);
-        const after = await db.socialConnection.update({
-          where: { id: connectionId },
-          data: { status: 'active', statusReason: null },
-          select: CONNECTION_SELECT,
+      return authorized(deps, ctx, 'connection.reconnect', { connectionId }, async (db) => {
+        const connection = await requireConnection(db, connectionId);
+        throw new CapabilityNotImplementedError({
+          messageKey: 'errors.capability_not_implemented',
+          details: {
+            provider: toProviderId(connection.provider),
+            capability: 'oauth_reconnect',
+          },
         });
-        await recordAudit(db, actor, {
-          action: 'connection.reconnected',
-          targetType: 'social_connection',
-          targetId: connectionId,
-          before: { status: before.status },
-          after: { status: after.status },
-        });
-        return toView(after);
       });
     },
 

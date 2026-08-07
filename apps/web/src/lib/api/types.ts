@@ -130,12 +130,12 @@ export interface ConnectionView {
   readonly avatarUrl: string | null;
   readonly health: ConnectionHealth;
   readonly connectedAt: IsoInstant;
-  readonly connectedByName: string;
+  readonly connectedByName: string | null;
   /** Null when the provider does not tell us when access ends. */
   readonly expiresAt: IsoInstant | null;
   readonly lastPublishedAt: IsoInstant | null;
   readonly lastAnalyticsSyncAt: IsoInstant | null;
-  readonly capabilitySnapshotVersion: number;
+  readonly capabilitySnapshotVersion: string | null;
 }
 
 export interface ConnectionDestination {
@@ -187,6 +187,7 @@ export interface ContentItemView {
 }
 
 export interface CalendarEntryView {
+  readonly publishJobId: string | null;
   readonly contentItemId: string;
   readonly title: string;
   readonly scheduledAt: IsoInstant;

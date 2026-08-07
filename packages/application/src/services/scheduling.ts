@@ -24,6 +24,7 @@ import { toLocalDateTime, toProviderId } from '../internal/mappers';
 import { pageArgs, toPage } from '../internal/pagination';
 import { PUBLISH_JOB_SELECT, jobToView, runPublishPath } from '../internal/publish-path';
 import { authorized, guard, type Db } from '../internal/runtime';
+import { storedMasterSchema } from '../internal/stored-content';
 
 /**
  * Scheduling.
@@ -296,8 +297,16 @@ export function createSchedulingService(
             scheduledFor: true,
             scheduledTimeZone: true,
             approvalPolicy: true,
-            connection: { select: { provider: true } },
-            contentItem: { select: { title: true, brandId: true, campaignId: true } },
+            connection: { select: { provider: true, displayName: true } },
+            approvalRequest: { select: { state: true } },
+            contentItem: {
+              select: {
+                title: true,
+                brandId: true,
+                campaignId: true,
+                currentVersion: { select: { payload: true } },
+              },
+            },
           },
         });
 
@@ -313,10 +322,16 @@ export function createSchedulingService(
             campaignId: row.contentItem.campaignId,
             connectionId: row.connectionId,
             provider: toProviderId(row.connection.provider),
+            accountLabel: row.connection.displayName,
+            contentKind: readCalendarContentKind(row.contentItem.currentVersion?.payload),
             state: row.state,
             instant: row.scheduledFor.toISOString(),
             ianaTimeZone: row.scheduledTimeZone,
             approvalRequired: row.approvalPolicy !== 'none',
+            approvalState:
+              row.approvalPolicy === 'none'
+                ? 'not_required'
+                : toCalendarApprovalState(row.approvalRequest?.state),
           }),
         );
       });
@@ -349,6 +364,30 @@ export function createSchedulingService(
       );
     },
   };
+}
+
+function readCalendarContentKind(payload: unknown): CalendarEntry['contentKind'] {
+  const parsed = storedMasterSchema.safeParse(payload);
+  return parsed.success ? parsed.data.contentKind : 'text';
+}
+
+function toCalendarApprovalState(state: string | undefined): CalendarEntry['approvalState'] {
+  switch (state) {
+    case 'approved':
+      return 'approved';
+    case 'rejected':
+    case 'changes_requested':
+      return 'rejected';
+    case 'expired':
+      return 'expired';
+    case 'pending':
+    case undefined:
+      return 'requested';
+    case 'canceled':
+      return 'not_required';
+    default:
+      return 'requested';
+  }
 }
 
 /** Slots are on the hour. The first hour with no scheduled job for the brand. */

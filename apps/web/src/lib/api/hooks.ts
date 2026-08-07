@@ -17,7 +17,7 @@ import {
   type UseQueryResult,
 } from '@tanstack/react-query';
 
-import { useWorkspaceId } from '@/lib/auth/session-context';
+import { useSession, useWorkspaceId } from '@/lib/auth/session-context';
 
 import { api } from './client';
 import { newIdempotencyKey } from './correlation';
@@ -52,6 +52,15 @@ export function useConnections(
   });
 }
 
+export function useAvailableProviders(): UseQueryResult<readonly ProviderId[], ApiError> {
+  const workspaceId = useWorkspaceId();
+  return useQuery({
+    queryKey: [...keys.connections(workspaceId, {}), 'available-providers'],
+    queryFn: () => api.connections.listAvailableProviders(),
+    staleTime: 5 * 60_000,
+  });
+}
+
 export function useConnection(connectionId: string): UseQueryResult<ConnectionView, ApiError> {
   const workspaceId = useWorkspaceId();
   return useQuery({
@@ -79,10 +88,11 @@ export function useCalendar(range: {
   brandId?: string;
   state?: PublishState;
 }): UseQueryResult<Paginated<CalendarEntryView>, ApiError> {
-  const workspaceId = useWorkspaceId();
+  const { workspace } = useSession();
+  const workspaceId = workspace.id;
   return useQuery({
     queryKey: keys.calendar(workspaceId, range),
-    queryFn: () => api.scheduling.getCalendar(range),
+    queryFn: () => api.scheduling.getCalendar({ ...range, ianaTimeZone: workspace.timeZone }),
   });
 }
 
@@ -205,9 +215,9 @@ export function useResumeConnection(): UseMutationResult<ConnectionView, ApiErro
 
 /** Start the OAuth handoff for a new connection. */
 export function useBeginConnection(): UseMutationResult<
-  { authorizationUrl: string; scopes: readonly string[] },
+  { authorizationUrl: string; transactionId: string },
   ApiError,
-  { provider: ProviderId; brandId?: string; returnUrl: string }
+  { provider: ProviderId; brandId: string; returnUrl: string }
 > {
   return useMutation({
     mutationFn: (input) => api.connections.beginOAuth(input, newIdempotencyKey('oauth')),

@@ -113,7 +113,7 @@ export const demoConnections: readonly ConnectionView[] = [
     expiresAt: null,
     lastPublishedAt: at(-5 * HOUR),
     lastAnalyticsSyncAt: at(-58),
-    capabilitySnapshotVersion: 14,
+    capabilitySnapshotVersion: '14',
   },
   {
     id: 'conn_demo00000000000000002',
@@ -129,7 +129,7 @@ export const demoConnections: readonly ConnectionView[] = [
     expiresAt: at(2 * DAY),
     lastPublishedAt: at(-2 * DAY),
     lastAnalyticsSyncAt: at(-3 * HOUR),
-    capabilitySnapshotVersion: 14,
+    capabilitySnapshotVersion: '14',
   },
   {
     id: 'conn_demo00000000000000003',
@@ -145,7 +145,7 @@ export const demoConnections: readonly ConnectionView[] = [
     expiresAt: at(28 * DAY),
     lastPublishedAt: at(-DAY),
     lastAnalyticsSyncAt: at(-9 * HOUR),
-    capabilitySnapshotVersion: 12,
+    capabilitySnapshotVersion: '12',
   },
   {
     id: 'conn_demo00000000000000004',
@@ -161,7 +161,7 @@ export const demoConnections: readonly ConnectionView[] = [
     expiresAt: null,
     lastPublishedAt: null,
     lastAnalyticsSyncAt: null,
-    capabilitySnapshotVersion: 9,
+    capabilitySnapshotVersion: '9',
   },
 ];
 
@@ -248,6 +248,7 @@ export const demoActionItems: readonly ActionItemView[] = [
 
 export const demoCalendar: readonly CalendarEntryView[] = [
   {
+    publishJobId: 'job_demo_calendar_1',
     contentItemId: 'content_demo0000000000002',
     title: 'Scheduled first comments, what shipped',
     scheduledAt: at(3 * HOUR),
@@ -260,6 +261,7 @@ export const demoCalendar: readonly CalendarEntryView[] = [
     mediaKind: 'text',
   },
   {
+    publishJobId: 'job_demo_calendar_2',
     contentItemId: 'content_demo0000000000003',
     title: 'Case study, migrating a 40 account workspace',
     scheduledAt: at(7 * HOUR),
@@ -272,6 +274,7 @@ export const demoCalendar: readonly CalendarEntryView[] = [
     mediaKind: 'document',
   },
   {
+    publishJobId: 'job_demo_calendar_3',
     contentItemId: 'content_demo0000000000004',
     title: 'Reel, setting up an approval policy',
     scheduledAt: at(13 * HOUR),
@@ -284,6 +287,7 @@ export const demoCalendar: readonly CalendarEntryView[] = [
     mediaKind: 'video',
   },
   {
+    publishJobId: null,
     contentItemId: 'content_demo0000000000005',
     title: 'Weekly roundup',
     scheduledAt: at(22 * HOUR),

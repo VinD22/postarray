@@ -60,6 +60,7 @@ import type {
   ProviderDestinationView,
   PublicationReceiptView,
   PublishJobView,
+  ReceiptSummaryView,
   RssFeedView,
   RulePreview,
   RuleRunView,
@@ -504,6 +505,7 @@ export interface BrandService {
 }
 
 export interface ConnectionService {
+  listAvailableProviders(ctx: ActorContext): Promise<readonly ProviderId[]>;
   list(
     ctx: ActorContext,
     query?: PageQuery & { readonly brandId?: string; readonly provider?: ProviderId },
@@ -678,6 +680,7 @@ export interface PublishConfirmationEvidence {
 export interface ReceiptService {
   get(ctx: ActorContext, receiptId: string): Promise<PublicationReceiptView>;
   listForJob(ctx: ActorContext, jobId: string): Promise<readonly PublicationReceiptView[]>;
+  listRecent(ctx: ActorContext, query?: PageQuery): Promise<Paginated<ReceiptSummaryView>>;
 }
 
 export interface MediaEditOperation {

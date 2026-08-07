@@ -15,7 +15,7 @@
  *     somebody's afternoon and reads as a broken product.
  */
 
-import { useState, type ReactNode } from 'react';
+import { useEffect, useState, type ReactNode } from 'react';
 import { Check, ExternalLink, ShieldCheck } from 'lucide-react';
 import {
   Button,
@@ -87,6 +87,7 @@ export interface ConnectDialogProps {
   onOpenChange: (open: boolean) => void;
   /** Scopes for the selected provider, from `getCapabilities`. */
   permissionsByProvider: Readonly<Record<string, readonly PermissionView[]>>;
+  availableProviders: readonly ProviderId[];
   starting: boolean;
   onBegin: (provider: ProviderId) => void;
 }
@@ -95,12 +96,19 @@ export function ConnectDialog({
   open,
   onOpenChange,
   permissionsByProvider,
+  availableProviders,
   starting,
   onBegin,
 }: ConnectDialogProps): ReactNode {
   const t = useTranslations();
   const providerName = useProviderName();
   const [provider, setProvider] = useState<ProviderId>('x');
+
+  useEffect(() => {
+    if (!availableProviders.includes(provider) && availableProviders[0] !== undefined) {
+      setProvider(availableProviders[0]);
+    }
+  }, [availableProviders, provider]);
 
   const permissions = permissionsByProvider[provider] ?? [];
 
@@ -127,7 +135,7 @@ export function ConnectDialog({
                 onValueChange={(next) => setProvider(next as ProviderId)}
                 className="grid grid-cols-1 gap-2 sm:grid-cols-2"
               >
-                {CONNECTABLE_PROVIDERS.map((candidate) => {
+                {availableProviders.map((candidate) => {
                   const selected = candidate === provider;
                   return (
                     <div
@@ -168,6 +176,13 @@ export function ConnectDialog({
                   );
                 })}
               </RadioGroup>
+              {availableProviders.length === 0 ? (
+                <Notice
+                  tone="warning"
+                  title={t('error.not_implemented.message')}
+                  description={t('error.not_implemented.action')}
+                />
+              ) : null}
             </fieldset>
 
             <Notice
@@ -230,6 +245,7 @@ export function ConnectDialog({
             loading={starting}
             loadingLabel={t('loading.connecting', { provider: providerName(provider) })}
             iconEnd={<ExternalLink aria-hidden="true" className="size-4" />}
+            disabled={availableProviders.length === 0 || !availableProviders.includes(provider)}
             onClick={() => onBegin(provider)}
           >
             {t('web.connection.connect.continue', { provider: providerName(provider) })}

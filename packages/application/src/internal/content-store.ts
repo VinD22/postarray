@@ -1,4 +1,4 @@
-import type { ApprovalState, PublishState } from '@relay/contracts';
+import { validationIssueSchema, type ApprovalState, type PublishState } from '@relay/contracts';
 
 import type { ContentItemView, PostVariantView } from '../views';
 
@@ -35,11 +35,14 @@ export interface AggregateVariant {
   readonly connectionId: string;
   readonly provider: string;
   readonly accountType: string;
+  readonly accountDisplayName: string;
+  readonly accountHandle: string | null;
   readonly destinationId: string | null;
   readonly destinationLabel: string | null;
   readonly signatureId: string | null;
   readonly settings: StoredVariantSettings;
   readonly state: PublishState;
+  readonly validationIssues: PostVariantView['validationIssues'];
   readonly capabilityVersion: string | null;
   readonly estimatedCostMinor: number | null;
   readonly estimatedCostCurrency: string | null;
@@ -119,10 +122,11 @@ export async function loadAggregate(db: Db, contentItemId: string): Promise<Cont
         signatureId: true,
         settings: true,
         state: true,
+        validationIssues: true,
         capabilitySnapshotVersion: true,
         estimatedCostMinor: true,
         estimatedCostCurrency: true,
-        connection: { select: { accountType: true } },
+        connection: { select: { accountType: true, displayName: true, handle: true } },
         destination: { select: { displayName: true } },
       },
     }),
@@ -144,11 +148,14 @@ export async function loadAggregate(db: Db, contentItemId: string): Promise<Cont
     connectionId: row.connectionId,
     provider: row.provider,
     accountType: row.connection.accountType,
+    accountDisplayName: row.connection.displayName,
+    accountHandle: row.connection.handle,
     destinationId: row.destinationId,
     destinationLabel: row.destination?.displayName ?? null,
     signatureId: row.signatureId,
     settings: parseVariantSettings(row.settings),
     state: row.state,
+    validationIssues: parseValidationIssues(row.validationIssues),
     capabilityVersion: row.capabilitySnapshotVersion,
     estimatedCostMinor: row.estimatedCostMinor,
     estimatedCostCurrency: row.estimatedCostCurrency,
@@ -324,6 +331,8 @@ export function toVariantView(
     connectionId: variant.connectionId,
     provider: toProviderId(variant.provider),
     accountType: fromStoredAccountType(variant.accountType),
+    accountDisplayName: variant.accountDisplayName,
+    accountHandle: variant.accountHandle,
     locale: resolved.values.locale,
     body: resolved.values.body,
     contentKind: resolved.values.contentKind,
@@ -347,6 +356,7 @@ export function toVariantView(
     disclosure: variant.settings.disclosure,
     capabilityVersion: variant.capabilityVersion,
     state: variant.state,
+    validationIssues: variant.validationIssues,
     estimatedCostMinor: variant.estimatedCostMinor,
     estimatedCostCurrency: variant.estimatedCostCurrency,
   };
@@ -378,6 +388,7 @@ export function toContentItemView(aggregate: ContentAggregate): ContentItemView 
     currentChecksum: aggregate.checksum,
     reapprovalRequired: reapprovalRequired(aggregate),
     createdVia: fromStoredSurface(aggregate.createdVia),
+    createdByUserId: aggregate.createdByUserId,
     createdAt: aggregate.createdAt.toISOString(),
     updatedAt: aggregate.updatedAt.toISOString(),
   };
@@ -385,3 +396,10 @@ export function toContentItemView(aggregate: ContentAggregate): ContentItemView 
 
 export const EMPTY_SETTINGS = EMPTY_VARIANT_SETTINGS;
 export { toIso };
+
+function parseValidationIssues(
+  value: unknown,
+): readonly PostVariantView['validationIssues'][number][] {
+  const parsed = validationIssueSchema.array().safeParse(value);
+  return parsed.success ? parsed.data : [];
+}

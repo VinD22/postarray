@@ -1,8 +1,11 @@
-import type { ActorContext, ReceiptService, ServiceDeps } from '../types';
-import type { PublicationReceiptView } from '../views';
+import type { Paginated } from '@relay/contracts';
+
+import type { ActorContext, PageQuery, ReceiptService, ServiceDeps } from '../types';
+import type { PublicationReceiptView, ReceiptSummaryView } from '../views';
 
 import { notFound } from '../internal/errors';
 import { fromStoredSurface, toIso, toProviderId } from '../internal/mappers';
+import { pageArgs, toPage } from '../internal/pagination';
 import { authorized, type Db } from '../internal/runtime';
 
 /**
@@ -171,6 +174,54 @@ async function readReceipts(db: Db, where: { id?: string; publishJobId?: string 
   });
 }
 
+const RECENT_RECEIPT_SELECT = {
+  id: true,
+  provider: true,
+  permalink: true,
+  publishedAt: true,
+  publishJob: {
+    select: {
+      state: true,
+      contentItem: { select: { id: true, title: true } },
+      connection: { select: { displayName: true } },
+      postVariant: {
+        select: {
+          commentItems: { select: { state: true } },
+        },
+      },
+    },
+  },
+} as const;
+
+interface RecentReceiptRow {
+  id: string;
+  provider: string;
+  permalink: string | null;
+  publishedAt: Date;
+  publishJob: {
+    state: ReceiptSummaryView['state'];
+    contentItem: { id: string; title: string | null };
+    connection: { displayName: string };
+    postVariant: { commentItems: { state: string }[] } | null;
+  };
+}
+
+function toSummary(row: RecentReceiptRow): ReceiptSummaryView {
+  return {
+    receiptId: row.id,
+    contentItemId: row.publishJob.contentItem.id,
+    title: row.publishJob.contentItem.title,
+    provider: toProviderId(row.provider),
+    accountLabel: row.publishJob.connection.displayName,
+    state: row.publishJob.state,
+    publishedAt: row.publishedAt.toISOString(),
+    permalink: row.permalink,
+    failedItemCount:
+      row.publishJob.postVariant?.commentItems.filter((item) => item.state !== 'published')
+        .length ?? 0,
+  };
+}
+
 export function createReceiptService(deps: ServiceDeps): ReceiptService {
   return {
     async get(ctx: ActorContext, receiptId: string): Promise<PublicationReceiptView> {
@@ -187,6 +238,20 @@ export function createReceiptService(deps: ServiceDeps): ReceiptService {
       return authorized(deps, ctx, 'receipt.read', undefined, async (db) => {
         const rows = await readReceipts(db, { publishJobId: jobId });
         return rows.map(toView);
+      });
+    },
+
+    async listRecent(ctx: ActorContext, query?: PageQuery): Promise<Paginated<ReceiptSummaryView>> {
+      return authorized(deps, ctx, 'receipt.read', undefined, async (db) => {
+        const args = pageArgs(query);
+        const rows = await db.publicationReceipt.findMany({
+          orderBy: [{ publishedAt: 'desc' }, { id: 'desc' }],
+          take: args.take,
+          skip: args.skip,
+          cursor: args.cursor,
+          select: RECENT_RECEIPT_SELECT,
+        });
+        return toPage(rows, args, (row) => row.id, toSummary);
       });
     },
   };

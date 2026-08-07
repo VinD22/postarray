@@ -8,7 +8,6 @@
 
 import { api, newIdempotencyKey } from '@/lib/api';
 import {
-  OVERRIDABLE_VARIANT_FIELDS,
   type CapabilitySnapshot,
   type MasterDraft,
   type OverridableVariantField,
@@ -20,12 +19,10 @@ import type { ResolvedEntity } from '../components/entity-search-field';
 /** Load the draft, the connectable accounts and their capability snapshots. */
 export async function loadComposer(input: {
   readonly contentItemId: string | null;
-  readonly brandId: string | null;
+  readonly brandId: string;
   readonly workspaceTimeZone: string;
 }): Promise<ComposerBootstrap> {
-  const connections = await api.connections.list(
-    input.brandId === null ? {} : { brandId: input.brandId },
-  );
+  const connections = await api.connections.list({ brandId: input.brandId });
 
   const accounts: TargetAccount[] = await Promise.all(
     connections.data.map(async (connection) => {
@@ -48,7 +45,7 @@ export async function loadComposer(input: {
   const master =
     input.contentItemId === null
       ? ((await api.content.createDraft(
-          input.brandId === null ? {} : { brandId: input.brandId },
+          { brandId: input.brandId },
           newIdempotencyKey('draft'),
         )) as unknown as MasterDraft)
       : ((await api.content.get(input.contentItemId)) as unknown as MasterDraft);
@@ -72,27 +69,38 @@ export async function loadComposer(input: {
 
 /** Persist the master and the per target overrides. Never optimistic. */
 export async function saveComposer(state: ComposerState): Promise<void> {
-  await api.content.updateMaster(state.master.id, state.master);
-  await api.content.setTargets(state.master.id, {
-    connectionIds: [...state.selectedConnectionIds],
+  const master = state.master;
+  await api.content.updateMaster(master.id, {
+    title: master.title,
+    body: master.body,
+    contentKind: master.contentKind,
+    locale: master.locale,
+    mediaIds: master.mediaIds,
+    links: master.links,
+    signature: master.signature,
+    threadItems: master.threadItems,
+    schedule: master.schedule,
+    disclosure: master.disclosure,
+    campaignId: master.campaignId,
   });
+  const targeted = await api.content.setTargets(state.master.id, {
+    targets: state.selectedConnectionIds.map((connectionId) => ({ connectionId })),
+  });
+  const targetByConnection = new Map(
+    targeted.targets.map((target) => [target.connectionId, target.variantId]),
+  );
   for (const [connectionId, overrides] of Object.entries(state.overrides)) {
     const fields = Object.keys(overrides) as readonly OverridableVariantField[];
+    const variantId = targetByConnection.get(connectionId);
+    if (variantId === undefined) {
+      continue;
+    }
     if (fields.length === 0) {
       // No overrides left on this target: every overridable field goes back to
       // inheriting the master rather than keeping a stale copy of it.
-      await api.content.resetVariantToMaster(state.master.id, connectionId, {
-        fields: OVERRIDABLE_VARIANT_FIELDS,
-      });
+      await api.content.resetVariantToMaster(state.master.id, variantId);
     } else {
-      // One request per overridden field: the API records the override field by
-      // field, so a rejected field cannot silently discard the others.
-      for (const field of fields) {
-        await api.content.overrideVariant(state.master.id, connectionId, {
-          field,
-          value: overrides[field],
-        });
-      }
+      await api.content.overrideVariant(state.master.id, variantId, { patch: overrides });
     }
   }
 }
@@ -103,7 +111,7 @@ export async function searchDestinations(
   query: string,
 ): Promise<readonly ResolvedEntity[]> {
   const results = await api.connections.listDestinations(connectionId, { q: query });
-  return results.data
+  return results
     .filter((entry) => entry.externalId.length > 0)
     .map((entry) => ({
       externalId: entry.externalId,

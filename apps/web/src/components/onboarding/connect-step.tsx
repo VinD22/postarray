@@ -1,14 +1,16 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 import { Notice } from '@relay/design-system/patterns';
 import { Button, Label, RadioGroup, RadioGroupItem } from '@relay/design-system/primitives';
 import { cn } from '@relay/design-system/utils';
 
 import { ApiError, api, newIdempotencyKey, type ProviderId } from '@/lib/api';
+import { useAvailableProviders } from '@/lib/api/hooks';
 import { useTranslations } from '@/lib/i18n';
+import { useSession } from '@/lib/auth/session-context';
 import { PosterCard } from '@/features/marketing/components/loud/poster-card';
 import { ProviderMark } from '@/features/connections/provider';
 import { requireFirst } from '@/lib/utils/require-first';
@@ -80,20 +82,42 @@ const PROVIDERS: readonly {
 export function ConnectStep() {
   const t = useTranslations();
   const router = useRouter();
+  const { brands } = useSession();
+  const availableProviders = useAvailableProviders();
 
   const [selected, setSelected] = useState<ProviderId>('x');
   const [pending, setPending] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  const providerOptions = useMemo(() => {
+    const available = new Set(availableProviders.data ?? []);
+    return PROVIDERS.filter((entry) => available.has(entry.id));
+  }, [availableProviders.data]);
   const provider =
-    PROVIDERS.find((entry) => entry.id === selected) ?? requireFirst(PROVIDERS, 'provider');
+    providerOptions.find((entry) => entry.id === selected) ??
+    providerOptions[0] ??
+    requireFirst(PROVIDERS, 'provider');
+
+  useEffect(() => {
+    if (
+      providerOptions[0] !== undefined &&
+      !providerOptions.some((entry) => entry.id === selected)
+    ) {
+      setSelected(providerOptions[0].id);
+    }
+  }, [providerOptions, selected]);
 
   const connect = async () => {
+    const brand = brands[0];
+    if (brand === undefined) {
+      setError(t('error.validation_failed.message'));
+      return;
+    }
     setPending(true);
     setError(null);
     try {
       const { authorizationUrl } = await api.connections.beginOAuth(
-        { provider: selected, returnUrl: `${window.location.origin}/onboarding/compose` },
+        { provider: selected, brandId: brand.id, returnUrl: '/onboarding/compose' },
         newIdempotencyKey('oauth'),
       );
       window.location.assign(authorizationUrl);
@@ -131,7 +155,7 @@ export function ConnectStep() {
             }}
             className="contents"
           >
-            {PROVIDERS.map((entry) => {
+            {providerOptions.map((entry) => {
               const id = `provider-${entry.id}`;
               const isSelected = selected === entry.id;
               return (
@@ -156,29 +180,38 @@ export function ConnectStep() {
             })}
           </RadioGroup>
         </div>
+        {!availableProviders.isPending && providerOptions.length === 0 ? (
+          <Notice
+            tone="warning"
+            title={t('error.not_implemented.message')}
+            description={t('error.not_implemented.action')}
+          />
+        ) : null}
       </fieldset>
 
-      <section aria-live="polite" className="flex flex-col gap-2">
-        <h2 className="text-title-sm text-text-primary">
-          {t('onboarding.connect.permissionsTitle', { provider: provider.name })}
-        </h2>
-        <p className="prose-measure text-body-md text-text-secondary">
-          {t('connection.permissions.explainBeforeOAuth', { provider: provider.name })}
-        </p>
-        <ul className="border-border-subtle flex flex-col border-t">
-          {provider.permissionKeys.map((key) => (
-            <li
-              key={key}
-              className="border-border-subtle text-body-md text-text-primary border-b py-2"
-            >
-              {t(key)}
-            </li>
-          ))}
-        </ul>
-        <p className="prose-measure text-body-sm text-text-tertiary">
-          {t('onboarding.connect.permissionsFooter')}
-        </p>
-      </section>
+      {providerOptions.length > 0 ? (
+        <section aria-live="polite" className="flex flex-col gap-2">
+          <h2 className="text-title-sm text-text-primary">
+            {t('onboarding.connect.permissionsTitle', { provider: provider.name })}
+          </h2>
+          <p className="prose-measure text-body-md text-text-secondary">
+            {t('connection.permissions.explainBeforeOAuth', { provider: provider.name })}
+          </p>
+          <ul className="border-border-subtle flex flex-col border-t">
+            {provider.permissionKeys.map((key) => (
+              <li
+                key={key}
+                className="border-border-subtle text-body-md text-text-primary border-b py-2"
+              >
+                {t(key)}
+              </li>
+            ))}
+          </ul>
+          <p className="prose-measure text-body-sm text-text-tertiary">
+            {t('onboarding.connect.permissionsFooter')}
+          </p>
+        </section>
+      ) : null}
 
       <div className="flex flex-col gap-3">
         <div className="flex flex-wrap gap-2">
@@ -187,6 +220,7 @@ export function ConnectStep() {
             size="lg"
             loading={pending}
             loadingLabel={t('loading.connecting', { provider: provider.name })}
+            disabled={providerOptions.length === 0 || availableProviders.isPending}
             onClick={() => {
               void connect();
             }}

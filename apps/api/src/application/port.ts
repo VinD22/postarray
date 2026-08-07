@@ -24,6 +24,7 @@ import type {
   OperationRef,
   OpportunityRecord,
   Paginated,
+  ProviderId,
   PublishState,
   Scope,
   ToolRecord,
@@ -32,6 +33,8 @@ import type {
 } from '@relay/contracts';
 import type { HealthReport, Logger } from '@relay/observability';
 import type { RelayConfig } from '@relay/config';
+
+export type { Paginated } from '@relay/contracts';
 import type {
   ApiKeyView as ApplicationApiKeyView,
   ApprovalRequestView as ApplicationApprovalRequestView,
@@ -65,6 +68,7 @@ import type {
   ProviderDestinationView as ApplicationProviderDestinationView,
   PublicationReceiptView as ApplicationPublicationReceiptView,
   PublishJobView as ApplicationPublishJobView,
+  ReceiptSummaryView as ApplicationReceiptSummaryView,
   RssFeedView as ApplicationRssFeedView,
   RulePreview as ApplicationRulePreview,
   RuleRunView as ApplicationRuleRunView,
@@ -216,6 +220,7 @@ export type OAuthGrantView = ApplicationOAuthGrantView;
 export type AuditEventView = ApplicationAuditEventView;
 export type PublishJobView = ApplicationPublishJobView;
 export type PublicationReceiptView = ApplicationPublicationReceiptView;
+export type ReceiptSummaryView = ApplicationReceiptSummaryView;
 export type MetricObservationView = ApplicationMetricObservationView;
 export type EntitlementStateView = ApplicationEntitlementStateView;
 export type UsageSummaryView = ApplicationUsageSummaryView;
@@ -271,6 +276,7 @@ export interface BrandService {
 }
 
 export interface ConnectionService {
+  listAvailableProviders(ctx: ActorContext): Promise<readonly ProviderId[]>;
   list(
     ctx: ActorContext,
     query: CursorQuery & { brandId?: string; provider?: string },
@@ -393,6 +399,7 @@ export interface PublishingService {
 export interface ReceiptService {
   get(ctx: ActorContext, receiptId: string): Promise<PublicationReceiptView>;
   listForJob(ctx: ActorContext, jobId: string): Promise<readonly PublicationReceiptView[]>;
+  listRecent(ctx: ActorContext, query?: CursorQuery): Promise<Paginated<ReceiptSummaryView>>;
 }
 
 export interface MediaService {

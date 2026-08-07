@@ -16,6 +16,7 @@ const BERLIN = 'Europe/Berlin';
 
 function entry(overrides: Partial<CalendarEntry> = {}): CalendarEntry {
   return {
+    publishJobId: 'job_01j000000000000000000001',
     contentItemId: 'post_01j000000000000000000001',
     title: 'Scheduled first comments are live',
     scheduledAt: '2026-08-06T07:30:00.000Z',

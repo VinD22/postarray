@@ -38,6 +38,7 @@ import {
 import { useTranslations } from '@relay/i18n/react';
 import { ApiError } from '@/lib/api/error';
 import type { ConnectionHealth, ProviderId } from '@/lib/api/types';
+import { useSession } from '@/lib/auth/session-context';
 import { CapabilityMatrixView } from './capability-matrix-view';
 import { buildCapabilityMatrix } from './capability-matrix';
 import { ConnectDialog } from './connect-dialog';
@@ -49,6 +50,7 @@ import { useProviderName } from './provider';
 import { sortByUrgency } from './health';
 import {
   useAllCapabilities,
+  useAvailableProviders,
   useBeginConnection,
   useConnectionCapabilities,
   useConnectionRows,
@@ -93,6 +95,7 @@ export function ConnectionsScreen({
   const t = useTranslations();
   const providerName = useProviderName();
   const { announce } = useAnnouncer();
+  const { brands } = useSession();
 
   const { query: connections, rows } = useConnectionRows();
   const groups = useCustomerGroups();
@@ -101,6 +104,7 @@ export function ConnectionsScreen({
   const resume = useResumeConnection();
   const disconnect = useDisconnectConnection();
   const beginConnection = useBeginConnection();
+  const connectableProviders = useAvailableProviders();
   const reconnect = useReconnectConnection();
   const createGroup = useCreateGroup();
   const moveGroup = useMoveConnectionGroup();
@@ -164,15 +168,17 @@ export function ConnectionsScreen({
     }
   };
 
-  const returnUrl =
-    typeof window === 'undefined' ? '/connections' : `${window.location.origin}/connections`;
-
   const startConnect = (provider: ProviderId): void => {
-    beginConnection.mutate({ provider, returnUrl }, { onSuccess: goToProvider });
+    const brand = brands[0];
+    if (brand === undefined) return;
+    beginConnection.mutate(
+      { provider, brandId: brand.id, returnUrl: '/connections' },
+      { onSuccess: goToProvider },
+    );
   };
 
   const startReconnect = (row: Row): void => {
-    reconnect.mutate({ connectionId: row.id, returnUrl }, { onSuccess: goToProvider });
+    reconnect.mutate({ connectionId: row.id });
   };
 
   return (
@@ -297,6 +303,7 @@ export function ConnectionsScreen({
         open={connectOpen}
         onOpenChange={setConnectOpen}
         permissionsByProvider={permissionsByProvider}
+        availableProviders={connectableProviders.data ?? []}
         starting={beginConnection.isPending}
         onBegin={startConnect}
       />

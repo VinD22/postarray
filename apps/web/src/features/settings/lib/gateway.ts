@@ -834,7 +834,11 @@ export const dataGateway = {
   },
 
   async scheduledJobCount(): Promise<number> {
-    const page = await api.scheduling.getCalendar({ from: EPOCH_START, to: FAR_FUTURE });
+    const page = await api.scheduling.getCalendar({
+      from: EPOCH_START,
+      to: FAR_FUTURE,
+      ianaTimeZone: 'UTC',
+    });
     return page.data.filter((entry) => entry.state === 'scheduled').length;
   },
 

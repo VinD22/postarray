@@ -18,6 +18,7 @@ import type { CapabilitySnapshot } from '@relay/contracts';
 import { api, keys, newIdempotencyKey, type ApiError } from '@/lib/api';
 import {
   useBeginConnection,
+  useAvailableProviders,
   useConnections as useConnectionsPage,
   usePauseConnection,
   useResumeConnection,
@@ -26,7 +27,7 @@ import { useWorkspaceId } from '@/lib/auth/session-context';
 import type { BrandView, ConnectionView, ProviderId } from '@/lib/api/types';
 import type { ConnectionRow, CustomerGroup } from './types';
 
-export { useBeginConnection, usePauseConnection, useResumeConnection };
+export { useAvailableProviders, useBeginConnection, usePauseConnection, useResumeConnection };
 
 /** The connection list, widened to the row shape this screen renders. */
 export function useConnectionRows(filter: { brandId?: string; provider?: ProviderId } = {}): {
@@ -83,13 +84,23 @@ export function useAllCapabilities(
 
 /** Reconnect an existing account. Returns the provider consent URL. */
 export function useReconnectConnection(): UseMutationResult<
-  { authorizationUrl: string; scopes: readonly string[] },
+  ConnectionView,
   ApiError,
-  { readonly connectionId: string; readonly returnUrl: string }
+  { readonly connectionId: string }
 > {
+  const queryClient = useQueryClient();
+  const workspaceId = useWorkspaceId();
   return useMutation({
-    mutationFn: ({ connectionId, returnUrl }) =>
-      api.connections.reconnect(connectionId, { returnUrl }, newIdempotencyKey('reconnect')),
+    mutationFn: ({ connectionId }) =>
+      api.connections.reconnect(
+        connectionId,
+        { returnUrl: '/connections' },
+        newIdempotencyKey('reconnect'),
+      ),
+    onSuccess: (_data, { connectionId }) => {
+      void queryClient.invalidateQueries({ queryKey: keys.connection(workspaceId, connectionId) });
+      void queryClient.invalidateQueries({ queryKey: ['ws', workspaceId, 'connections'] });
+    },
   });
 }
 
@@ -99,11 +110,12 @@ export function useReconnectConnection(): UseMutationResult<
  * Never optimistic and never silent: it stops scheduled posts from publishing,
  * which is a change to what will happen in the world.
  */
-export function useDisconnectConnection(): UseMutationResult<void, ApiError, string> {
+export function useDisconnectConnection(): UseMutationResult<ConnectionView, ApiError, string> {
   const queryClient = useQueryClient();
   const workspaceId = useWorkspaceId();
   return useMutation({
-    mutationFn: (connectionId: string) => api.connections.disconnect(connectionId),
+    mutationFn: (connectionId: string) =>
+      api.connections.disconnect(connectionId, newIdempotencyKey('disconnect')),
     onSuccess: () => {
       void queryClient.invalidateQueries({ queryKey: ['ws', workspaceId, 'connections'] });
       void queryClient.invalidateQueries({ queryKey: ['ws', workspaceId, 'calendar'] });

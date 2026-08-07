@@ -118,6 +118,7 @@ export type {
   PublishAttemptView,
   PublishJobView,
   ReceiptItemView,
+  ReceiptSummaryView,
   RssFeedView,
   RulePreview,
   RuleRunView,

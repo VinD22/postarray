@@ -12,7 +12,7 @@ import {
 } from '@nestjs/common';
 import type { RelayConfig } from '@relay/config';
 import { ERROR_CODES, ForbiddenError, RelayError } from '@relay/contracts';
-import type { CapabilitySnapshot, Paginated } from '@relay/contracts';
+import type { CapabilitySnapshot, Paginated, ProviderId } from '@relay/contracts';
 import type { Request, Response } from 'express';
 
 import type {
@@ -70,6 +70,12 @@ export class ConnectionsController {
     @Inject(RELAY_CONFIG) private readonly config: RelayConfig,
     @Inject(CLOCK) private readonly clock: Clock,
   ) {}
+
+  @Get('providers')
+  @RequireScope('accounts:read')
+  listAvailableProviders(@Actor() actor: ActorContext): Promise<readonly ProviderId[]> {
+    return this.connections.listAvailableProviders(actor);
+  }
 
   @Get()
   @RequireScope('accounts:read')

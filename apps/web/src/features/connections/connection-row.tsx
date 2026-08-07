@@ -166,7 +166,7 @@ export function ConnectionRow({
               {row.beta ? <Badge tone="warning">{t('web.connection.row.beta')}</Badge> : null}
               <span>
                 {t('connection.connectedBy', {
-                  name: row.connectedByName,
+                  name: row.connectedByName ?? t('common.unavailable'),
                   date: format.date(row.connectedAt),
                 })}
               </span>

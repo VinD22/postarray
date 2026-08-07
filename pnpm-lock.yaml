@@ -237,6 +237,9 @@ importers:
       '@noble/hashes':
         specifier: ^1.8.0
         version: 1.8.0
+      '@relay/application':
+        specifier: workspace:*
+        version: link:../../packages/application
       '@relay/contracts':
         specifier: workspace:*
         version: link:../../packages/contracts

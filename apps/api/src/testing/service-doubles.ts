@@ -53,6 +53,7 @@ export function createRefusingServices(): Services {
       delete: refuse('brand'),
     },
     connections: {
+      listAvailableProviders: () => Promise.resolve([]),
       list: page,
       get: refuse('connection'),
       getCapabilities: refuse('connection'),
@@ -93,7 +94,7 @@ export function createRefusingServices(): Services {
       getJob: refuse('job'),
       retryTarget: refuse('job'),
     },
-    receipts: { get: refuse('receipt'), listForJob: refuse('job') },
+    receipts: { get: refuse('receipt'), listForJob: refuse('job'), listRecent: page },
     media: {
       createUploadUrl: refuse('media'),
       finalizeUpload: refuse('media'),

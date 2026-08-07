@@ -9,13 +9,19 @@
 import { apiConfig } from './config';
 import { request, type RequestOptions } from './transport';
 
-export async function call<T>(path: string, options: RequestOptions, demo: () => T): Promise<T> {
+export async function call<Wire, View = Wire>(
+  path: string,
+  options: RequestOptions,
+  demo: () => View,
+  transform?: (wire: Wire) => View,
+): Promise<View> {
   if (apiConfig.mode === 'demo') {
     // A short delay keeps loading states honest during review.
     await new Promise((resolve) => setTimeout(resolve, 120));
     return demo();
   }
-  return request<T>(path, options);
+  const wire = await request<Wire>(path, options);
+  return transform === undefined ? (wire as unknown as View) : transform(wire);
 }
 
 export type { RequestOptions };

@@ -420,10 +420,13 @@ export function createGrowthService(deps: ServiceDeps, content: ContentService):
           campaignId: null,
           connectionId: slot.connectionId,
           provider: slot.provider,
+          accountLabel: null,
+          contentKind: slot.contentKind,
           state: 'draft',
           instant: new Date(`${slot.date}T09:00:00.000Z`).toISOString(),
           ianaTimeZone: actor.workspace.defaultTimeZone,
           approvalRequired: slot.approvalRequired,
+          approvalState: slot.approvalRequired ? 'requested' : 'not_required',
         };
       });
     },

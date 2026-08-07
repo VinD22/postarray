@@ -33,7 +33,7 @@ export function ComposeStep() {
   const t = useTranslations();
   const format = useFormatters();
   const router = useRouter();
-  const { workspace } = useSession();
+  const { workspace, brands } = useSession();
   const { announce } = useAnnouncer();
 
   const connectionsQuery = useConnections();
@@ -100,7 +100,8 @@ export function ComposeStep() {
   );
 
   const schedule = async () => {
-    if (!connection || scheduledLocal === '') {
+    const brand = brands[0];
+    if (!connection || brand === undefined || scheduledLocal === '') {
       return;
     }
     setPending(true);
@@ -108,11 +109,11 @@ export function ComposeStep() {
     try {
       const draft =
         contentItemId === null
-          ? await api.content.createDraft({ body }, newIdempotencyKey('draft'))
+          ? await api.content.createDraft({ brandId: brand.id, body }, newIdempotencyKey('draft'))
           : { id: contentItemId };
       setContentItemId(draft.id);
 
-      await api.content.setTargets(draft.id, { connectionIds: [connection.id] });
+      await api.content.setTargets(draft.id, { targets: [{ connectionId: connection.id }] });
 
       const scheduledAt = new Date(scheduledLocal).toISOString();
       await api.scheduling.schedule(

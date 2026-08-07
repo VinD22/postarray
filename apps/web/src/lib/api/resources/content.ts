@@ -2,13 +2,22 @@
 
 import type {
   MasterDraft,
-  OverridableVariantField,
   PublicationReceipt,
-  PublishJob,
   ValidationResult,
+  VariantOverrides,
 } from '@relay/contracts';
+import type {
+  CalendarEntry as ApplicationCalendarEntry,
+  CanonicalPreview,
+  ContentItemView as ApplicationContentItemView,
+  PostVariantView,
+  PublishJobView,
+  PublishConfirmationEvidence,
+} from '@relay/application';
+import { ERROR_CODES } from '@relay/contracts';
 
 import { call } from '../call';
+import { ApiError } from '../error';
 import { demoCalendar, demoReceipts, page } from '../fixtures';
 import type {
   ApprovalRequestView,
@@ -42,87 +51,176 @@ const emptyItem: ContentItemView = {
   targets: [],
 };
 
+type MasterPatch = Pick<
+  MasterDraft,
+  | 'title'
+  | 'body'
+  | 'contentKind'
+  | 'locale'
+  | 'mediaIds'
+  | 'links'
+  | 'signature'
+  | 'threadItems'
+  | 'schedule'
+  | 'disclosure'
+  | 'campaignId'
+>;
+
+function toTarget(variant: PostVariantView): ContentItemView['targets'][number] {
+  return {
+    variantId: variant.id,
+    connectionId: variant.connectionId,
+    provider: variant.provider,
+    accountLabel: variant.accountHandle ?? variant.accountDisplayName,
+    inherits: variant.overriddenFields.length === 0,
+    state: variant.state,
+    characterCount: variant.body.length,
+    characterLimit: null,
+    issueCount: variant.validationIssues.length,
+    blockingIssueCount: variant.validationIssues.filter((issue) => issue.severity === 'error')
+      .length,
+  };
+}
+
+function toContentItem(item: ApplicationContentItemView): ContentItemView {
+  return {
+    id: item.id,
+    workspaceId: item.workspaceId,
+    brandId: item.brandId,
+    title: item.title ?? '',
+    state: item.state,
+    approvalState: item.approvalState,
+    createdSurface: item.createdVia,
+    createdByName: item.createdByUserId ?? '',
+    createdAt: item.createdAt,
+    updatedAt: item.updatedAt,
+    scheduledAt: item.schedule?.instant ?? null,
+    scheduledTimeZone: item.schedule?.ianaTimeZone ?? null,
+    targets: item.variants.map(toTarget),
+  };
+}
+
+function toCalendarEntry(entry: ApplicationCalendarEntry): CalendarEntryView {
+  if (entry.jobId === null || entry.provider === null || entry.accountLabel === null) {
+    throw new ApiError({
+      code: ERROR_CODES.INTERNAL,
+      status: 502,
+      messageCode: 'internal',
+      retryable: true,
+      details: { resource: 'calendar_entry' },
+      correlationId: null,
+      retryAfterSeconds: null,
+    });
+  }
+  return {
+    publishJobId: entry.jobId,
+    contentItemId: entry.contentItemId,
+    title: entry.title ?? '',
+    scheduledAt: entry.instant,
+    timeZone: entry.ianaTimeZone,
+    state: entry.state,
+    approvalState: entry.approvalState,
+    provider: entry.provider,
+    accountLabel: entry.accountLabel,
+    targetCount: 1,
+    mediaKind:
+      entry.contentKind === 'short_video' || entry.contentKind === 'long_video'
+        ? 'video'
+        : entry.contentKind === 'thread'
+          ? 'text'
+          : entry.contentKind,
+  };
+}
+
 export const contentApi = {
   createDraft: (
-    input: { brandId?: string; title?: string; body?: string },
+    input: { brandId: string; title?: string; body?: string },
     idempotencyKey: string,
   ): Promise<ContentItemView> =>
-    call('/content', { method: 'POST', body: input, idempotencyKey }, () => ({
-      ...emptyItem,
-      title: input.title ?? '',
-    })),
+    call<ApplicationContentItemView, ContentItemView>(
+      '/content',
+      { method: 'POST', body: input, idempotencyKey },
+      () => ({ ...emptyItem, brandId: input.brandId, title: input.title ?? '' }),
+      toContentItem,
+    ),
 
   get: (contentItemId: string): Promise<ContentItemView> =>
-    call(`/content/${contentItemId}`, {}, () => ({ ...emptyItem, id: contentItemId })),
+    call<ApplicationContentItemView, ContentItemView>(
+      `/content/${contentItemId}`,
+      {},
+      () => ({ ...emptyItem, id: contentItemId }),
+      toContentItem,
+    ),
 
   list: (query: ContentListQuery = {}): Promise<Paginated<ContentItemView>> =>
-    call('/content', { query }, () => page<ContentItemView>([])),
+    call<Paginated<ApplicationContentItemView>, Paginated<ContentItemView>>(
+      '/content',
+      { query },
+      () => page<ContentItemView>([]),
+      (result) => ({ ...result, data: result.data.map(toContentItem) }),
+    ),
 
-  updateMaster: (contentItemId: string, input: Partial<MasterDraft>): Promise<ContentItemView> =>
-    call(`/content/${contentItemId}/master`, { method: 'PATCH', body: input }, () => ({
-      ...emptyItem,
-      id: contentItemId,
-    })),
+  updateMaster: (contentItemId: string, input: Partial<MasterPatch>): Promise<ContentItemView> =>
+    call<ApplicationContentItemView, ContentItemView>(
+      `/content/${contentItemId}`,
+      { method: 'PATCH', body: input },
+      () => ({ ...emptyItem, id: contentItemId }),
+      toContentItem,
+    ),
 
   overrideVariant: (
     contentItemId: string,
     variantId: string,
-    input: { field: OverridableVariantField; value: unknown },
-  ): Promise<ContentItemView> =>
+    input: { patch: VariantOverrides },
+  ): Promise<PostVariantView> =>
     call(
-      `/content/${contentItemId}/variants/${variantId}/overrides`,
+      `/content/${contentItemId}/variants/${variantId}`,
       { method: 'PATCH', body: input },
-      () => ({ ...emptyItem, id: contentItemId }),
+      () => {
+        throw new Error('No variant is available in demo mode.');
+      },
     ),
 
-  resetVariantToMaster: (
-    contentItemId: string,
-    variantId: string,
-    input: { fields: readonly OverridableVariantField[] },
-  ): Promise<ContentItemView> =>
-    call(
-      `/content/${contentItemId}/variants/${variantId}/reset`,
-      { method: 'POST', body: input, sideEffectFree: true },
-      () => ({ ...emptyItem, id: contentItemId }),
-    ),
+  resetVariantToMaster: (contentItemId: string, variantId: string): Promise<PostVariantView> =>
+    call(`/content/${contentItemId}/variants/${variantId}/overrides`, { method: 'DELETE' }, () => {
+      throw new Error('No variant is available in demo mode.');
+    }),
 
   setTargets: (
     contentItemId: string,
-    input: { connectionIds: readonly string[] },
+    input: { targets: readonly { connectionId: string }[] },
   ): Promise<ContentItemView> =>
-    call(
+    call<ApplicationContentItemView, ContentItemView>(
       `/content/${contentItemId}/targets`,
       { method: 'PUT', body: input, sideEffectFree: true },
       () => ({
         ...emptyItem,
         id: contentItemId,
       }),
+      toContentItem,
     ),
 
   applySet: (contentItemId: string, setId: string): Promise<ContentItemView> =>
-    call(
-      `/content/${contentItemId}/sets/${setId}`,
-      { method: 'POST', sideEffectFree: true },
+    call<ApplicationContentItemView, ContentItemView>(
+      `/content/${contentItemId}/apply-set`,
+      { method: 'POST', body: { setId }, sideEffectFree: true },
       () => ({ ...emptyItem, id: contentItemId }),
+      toContentItem,
     ),
 
   applySignature: (contentItemId: string, signatureId: string): Promise<ContentItemView> =>
-    call(
-      `/content/${contentItemId}/signatures/${signatureId}`,
-      { method: 'POST', sideEffectFree: true },
+    call<ApplicationContentItemView, ContentItemView>(
+      `/content/${contentItemId}/apply-signature`,
+      { method: 'POST', body: { signatureId }, sideEffectFree: true },
       () => ({ ...emptyItem, id: contentItemId }),
+      toContentItem,
     ),
 
   /** The provider-shaped preview for one target. */
-  preview: (
-    contentItemId: string,
-    variantId: string,
-  ): Promise<{ body: string; mediaUrls: readonly string[]; permalinkPreview: string | null }> =>
-    call(`/content/${contentItemId}/variants/${variantId}/preview`, {}, () => ({
-      body: '',
-      mediaUrls: [],
-      permalinkPreview: null,
-    })),
+  preview: (contentItemId: string, variantId: string): Promise<CanonicalPreview> =>
+    call(`/content/${contentItemId}/preview`, { query: { targetId: variantId } }, () => {
+      throw new Error('No preview is available in demo mode.');
+    }),
 
   delete: (contentItemId: string): Promise<void> =>
     call(`/content/${contentItemId}`, { method: 'DELETE' }, () => undefined),
@@ -184,6 +282,7 @@ export const approvalsApi = {
 export type CalendarQuery = {
   readonly from: string;
   readonly to: string;
+  readonly ianaTimeZone: string;
   readonly brandId?: string;
   readonly connectionId?: string;
   readonly state?: PublishState;
@@ -193,63 +292,87 @@ export const schedulingApi = {
   schedule: (
     input: { contentItemId: string; scheduledAt: string; timeZone: string },
     idempotencyKey: string,
-  ): Promise<ContentItemView> =>
-    call('/schedules', { method: 'POST', body: input, idempotencyKey }, () => ({
-      ...emptyItem,
-      id: input.contentItemId,
-      state: 'scheduled' as const,
-      scheduledAt: input.scheduledAt,
-      scheduledTimeZone: input.timeZone,
-    })),
+  ): Promise<PublishJobView> =>
+    call(
+      '/schedules',
+      {
+        method: 'POST',
+        body: {
+          contentItemId: input.contentItemId,
+          scheduleSpec: {
+            instant: input.scheduledAt,
+            ianaTimeZone: input.timeZone,
+            repeat: null,
+          },
+        },
+        idempotencyKey,
+      },
+      () => {
+        throw new Error('Scheduling is unavailable in demo mode.');
+      },
+    ),
 
   reschedule: (
-    contentItemId: string,
+    jobId: string,
     input: { scheduledAt: string; timeZone: string },
     idempotencyKey: string,
-  ): Promise<ContentItemView> =>
-    call(`/schedules/${contentItemId}`, { method: 'PUT', body: input, idempotencyKey }, () => ({
-      ...emptyItem,
-      id: contentItemId,
-      state: 'scheduled' as const,
-      scheduledAt: input.scheduledAt,
-      scheduledTimeZone: input.timeZone,
-    })),
+  ): Promise<PublishJobView> =>
+    call(
+      `/schedules/${jobId}/reschedule`,
+      {
+        method: 'POST',
+        body: {
+          scheduleSpec: {
+            instant: input.scheduledAt,
+            ianaTimeZone: input.timeZone,
+            repeat: null,
+          },
+        },
+        idempotencyKey,
+      },
+      () => {
+        throw new Error('Rescheduling is unavailable in demo mode.');
+      },
+    ),
 
-  cancel: (contentItemId: string, idempotencyKey: string): Promise<ContentItemView> =>
-    call(`/schedules/${contentItemId}/cancel`, { method: 'POST', idempotencyKey }, () => ({
-      ...emptyItem,
-      id: contentItemId,
-      state: 'canceled' as const,
-    })),
+  cancel: (jobId: string, reason: string, idempotencyKey: string): Promise<PublishJobView> =>
+    call(`/schedules/${jobId}/cancel`, { method: 'POST', body: { reason }, idempotencyKey }, () => {
+      throw new Error('Canceling a schedule is unavailable in demo mode.');
+    }),
 
   getCalendar: (query: CalendarQuery): Promise<Paginated<CalendarEntryView>> =>
-    call('/calendar', { query }, () => page(demoCalendar)),
+    call<Paginated<ApplicationCalendarEntry>, Paginated<CalendarEntryView>>(
+      '/calendar',
+      { query },
+      () => page(demoCalendar),
+      (result) => ({ ...result, data: result.data.map(toCalendarEntry) }),
+    ),
 
   /** The next slot that respects cadence and the workspace posting rules. */
   nextAvailableSlot: (query: {
-    connectionId: string;
+    brandId: string;
     after?: string;
-  }): Promise<{ scheduledAt: string; timeZone: string } | null> =>
+  }): Promise<{ instant: string; ianaTimeZone: string } | null> =>
     call('/calendar/next-slot', { query }, () => null),
 };
 
 export const publishingApi = {
   publishNow: (
-    input: { contentItemId: string },
+    input: { contentItemId: string; confirmation: PublishConfirmationEvidence },
     idempotencyKey: string,
-  ): Promise<PublishJob | null> =>
-    call('/publish', { method: 'POST', body: input, idempotencyKey }, () => null),
+  ): Promise<PublishJobView | null> =>
+    call('/publications', { method: 'POST', body: input, idempotencyKey }, () => null),
 
-  getJob: (jobId: string): Promise<PublishJob | null> => call(`/publish/${jobId}`, {}, () => null),
+  getJob: (jobId: string): Promise<PublishJobView | null> => call(`/jobs/${jobId}`, {}, () => null),
 
   retryTarget: (
     jobId: string,
     variantId: string,
     idempotencyKey: string,
-  ): Promise<PublishJob | null> =>
+  ): Promise<PublishJobView | null> =>
     call(
-      `/publish/${jobId}/targets/${variantId}/retry`,
-      { method: 'POST', idempotencyKey },
+      `/jobs/${jobId}/retry`,
+      { method: 'POST', body: { targetId: variantId }, idempotencyKey },
       () => null,
     ),
 };

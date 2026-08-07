@@ -235,7 +235,7 @@ describe('connection ordering', () => {
       expiresAt: null,
       lastPublishedAt: null,
       lastAnalyticsSyncAt: null,
-      capabilitySnapshotVersion: 14,
+      capabilitySnapshotVersion: '14',
       ...overrides,
     };
   }

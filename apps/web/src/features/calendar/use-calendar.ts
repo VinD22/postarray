@@ -16,7 +16,8 @@
 
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import type { UseMutationResult, UseQueryResult } from '@tanstack/react-query';
-import { api, newIdempotencyKey, type ApiError } from '@/lib/api';
+import { ERROR_CODES } from '@relay/contracts';
+import { ApiError, api, newIdempotencyKey } from '@/lib/api';
 import { useCalendar } from '@/lib/api/hooks';
 import { useWorkspaceId } from '@/lib/auth/session-context';
 import type { CalendarEntryView, Paginated } from '@/lib/api/types';
@@ -92,7 +93,7 @@ export function useRescheduleEntry(): UseMutationResult<unknown, ApiError, Resch
         );
       }
       return api.scheduling.reschedule(
-        input.entry.contentItemId,
+        requirePublishJobId(input.entry),
         { scheduledAt: input.toInstant, timeZone: input.timeZone },
         key,
       );
@@ -125,10 +126,25 @@ export function useCancelScheduled(): UseMutationResult<unknown, ApiError, strin
   const queryClient = useQueryClient();
   const workspaceId = useWorkspaceId();
   return useMutation({
-    mutationFn: (contentItemId: string) =>
-      api.scheduling.cancel(contentItemId, newIdempotencyKey('cancel')),
+    mutationFn: (publishJobId: string) =>
+      api.scheduling.cancel(publishJobId, 'calendar.user_cancelled', newIdempotencyKey('cancel')),
     onSuccess: () => {
       void queryClient.invalidateQueries({ queryKey: ['ws', workspaceId, 'calendar'] });
     },
+  });
+}
+
+function requirePublishJobId(entry: CalendarEntry): string {
+  if (entry.publishJobId !== null) {
+    return entry.publishJobId;
+  }
+  throw new ApiError({
+    code: ERROR_CODES.VALIDATION_FAILED,
+    status: 422,
+    messageCode: 'validation_failed',
+    retryable: false,
+    details: { resource: 'publish_job' },
+    correlationId: null,
+    retryAfterSeconds: null,
   });
 }

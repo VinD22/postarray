@@ -32,7 +32,7 @@ export interface CalendarEntry extends CalendarEntryView {
   /** Stable row identity. Falls back to the content item id when absent. */
   readonly entryId?: string;
   /** The publish job, when one exists. The receipt hangs off this. */
-  readonly publishJobId?: string | null;
+  readonly publishJobId: string | null;
   readonly connectionId?: string;
   readonly brandId?: string | null;
   /** BCP 47 tag of the content, not of the interface. */

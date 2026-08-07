@@ -2,8 +2,11 @@ import { Inject, Injectable } from '@nestjs/common';
 
 import type {
   ActorContext,
+  CursorQuery,
+  Paginated,
   PublicationReceiptView,
   PublishJobView,
+  ReceiptSummaryView,
   Services,
 } from '../../application/port';
 import { SERVICES } from '../../application/tokens';
@@ -37,10 +40,14 @@ export class PublishingService {
     return this.services.receipts.get(ctx, receiptId);
   }
 
-  listReceiptsForJob(
-    ctx: ActorContext,
-    jobId: string,
-  ): Promise<readonly PublicationReceiptView[]> {
+  listReceiptsForJob(ctx: ActorContext, jobId: string): Promise<readonly PublicationReceiptView[]> {
     return this.services.receipts.listForJob(ctx, jobId);
+  }
+
+  listRecentReceipts(
+    ctx: ActorContext,
+    query: CursorQuery,
+  ): Promise<Paginated<ReceiptSummaryView>> {
+    return this.services.receipts.listRecent(ctx, query);
   }
 }

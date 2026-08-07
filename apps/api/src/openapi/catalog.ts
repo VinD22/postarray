@@ -5,6 +5,7 @@ import {
   metricObservationSchema,
   operationRefSchema,
   paginatedSchema,
+  providerIdSchema,
   publicationReceiptSchema,
   publishJobSchema,
   validationResultSchema,
@@ -485,6 +486,15 @@ export const OPERATIONS: readonly OperationSpec[] = [
   /* ----------------------------------------------------------- connections */
   {
     method: 'get',
+    path: '/v1/connections/providers',
+    operationId: 'connections.listAvailableProviders',
+    summary: 'Provider connectors this deployment has verified and enabled.',
+    tag: 'connections',
+    scopes: ['accounts:read'],
+    response: z.array(providerIdSchema),
+  },
+  {
+    method: 'get',
     path: '/v1/connections',
     operationId: 'connections.list',
     summary: 'Connected accounts, with health.',
@@ -880,6 +890,16 @@ export const OPERATIONS: readonly OperationSpec[] = [
     scopes: ['analytics:read'],
     pathParams: p('id', publishJobIdSchema),
     response: z.object({ data: z.array(publicationReceiptSchema) }).strict(),
+  },
+  {
+    method: 'get',
+    path: '/v1/receipts',
+    operationId: 'publishing.listRecentReceipts',
+    summary: 'Recent immutable publication receipts for the current workspace.',
+    tag: 'publishing',
+    scopes: ['analytics:read'],
+    query: cursorQuerySchema,
+    response: pagedView,
   },
   {
     method: 'get',

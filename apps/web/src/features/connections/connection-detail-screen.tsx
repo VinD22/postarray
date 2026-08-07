@@ -165,7 +165,7 @@ export function ConnectionDetailScreen({
                 id: 'connected',
                 term: t('connection.account.label'),
                 definition: t('connection.connectedBy', {
-                  name: row.connectedByName,
+                  name: row.connectedByName ?? t('common.unavailable'),
                   date: format.date(row.connectedAt),
                 }),
               },

@@ -1,5 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
 import type { CapabilitySnapshot, Paginated } from '@relay/contracts';
+import type { ProviderId } from '@relay/contracts';
 
 import type {
   ActorContext,
@@ -22,10 +23,11 @@ import type { BeginOAuthInput, ListConnectionsQuery } from './connections.schema
 export class ConnectionsService {
   constructor(@Inject(SERVICES) private readonly services: Services) {}
 
-  list(
-    ctx: ActorContext,
-    query: ListConnectionsQuery,
-  ): Promise<Paginated<ConnectionView>> {
+  listAvailableProviders(ctx: ActorContext): Promise<readonly ProviderId[]> {
+    return this.services.connections.listAvailableProviders(ctx);
+  }
+
+  list(ctx: ActorContext, query: ListConnectionsQuery): Promise<Paginated<ConnectionView>> {
     return this.services.connections.list(ctx, query);
   }
 

@@ -1,12 +1,15 @@
-import { Body, Controller, Get, HttpCode, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, HttpCode, Param, Post, Query } from '@nestjs/common';
 import type {
   ActorContext,
+  Paginated,
   PublicationReceiptView,
   PublishJobView,
+  ReceiptSummaryView,
 } from '../../application/port';
 import { Actor, Idempotent, RateLimit, RequireScope } from '../../common/decorators';
+import { cursorQuerySchema } from '../../common/pagination';
 import { publishJobIdSchema, receiptIdSchema } from '../../common/schemas';
-import { parseBody, parseParams } from '../../common/zod';
+import { parseBody, parseParams, parseQuery } from '../../common/zod';
 import { publishNowSchema, retryTargetSchema } from './publishing.schemas';
 import { PublishingService } from './publishing.service';
 
@@ -73,6 +76,16 @@ export class PublishingController {
     return {
       data: await this.publishing.listReceiptsForJob(actor, parseParams(publishJobIdSchema, id)),
     };
+  }
+
+  /** Most recent immutable receipts across the current workspace. */
+  @Get('receipts')
+  @RequireScope('analytics:read')
+  listRecentReceipts(
+    @Actor() actor: ActorContext,
+    @Query() query: Record<string, unknown>,
+  ): Promise<Paginated<ReceiptSummaryView>> {
+    return this.publishing.listRecentReceipts(actor, parseQuery(cursorQuerySchema, query));
   }
 
   @Get('receipts/:id')

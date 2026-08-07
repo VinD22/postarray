@@ -1,6 +1,11 @@
 /** Connections, their capability snapshots, destinations and mention search. */
 
 import type { CapabilitySnapshot } from '@relay/contracts';
+import type {
+  ConnectionView as ApplicationConnectionView,
+  MentionEntityView,
+  ProviderDestinationView,
+} from '@relay/application';
 
 import { call } from '../call';
 import { demoConnections, page } from '../fixtures';
@@ -25,18 +30,57 @@ function demoConnection(connectionId: string): ConnectionView {
   return found ?? requireFirst(demoConnections, 'connection');
 }
 
+function toConnection(connection: ApplicationConnectionView): ConnectionView {
+  const health: ConnectionView['health'] =
+    connection.health === 'active'
+      ? 'healthy'
+      : connection.health === 'action_required'
+        ? 'permission_missing'
+        : connection.health === 'disconnected'
+          ? 'revoked'
+          : connection.health;
+  return {
+    id: connection.id,
+    workspaceId: connection.workspaceId,
+    provider: connection.provider,
+    accountType: connection.accountType,
+    displayName: connection.displayName,
+    handle: connection.handle,
+    avatarUrl: connection.avatarUrl,
+    health,
+    connectedAt: connection.connectedAt,
+    connectedByName: null,
+    expiresAt: connection.accessTokenExpiresAt,
+    lastPublishedAt: connection.lastPublishedAt,
+    lastAnalyticsSyncAt: connection.lastAnalyticsSyncAt,
+    capabilitySnapshotVersion: connection.capabilityVersion,
+  };
+}
+
 export const connectionsApi = {
+  listAvailableProviders: (): Promise<readonly ProviderId[]> =>
+    call('/connections/providers', {}, () => ['x', 'linkedin', 'instagram', 'facebook']),
+
   list: (query: ConnectionListQuery = {}): Promise<Paginated<ConnectionView>> =>
-    call('/connections', { query }, () =>
-      page(
-        demoConnections.filter(
-          (connection) => query.provider === undefined || connection.provider === query.provider,
+    call<Paginated<ApplicationConnectionView>, Paginated<ConnectionView>>(
+      '/connections',
+      { query },
+      () =>
+        page(
+          demoConnections.filter(
+            (connection) => query.provider === undefined || connection.provider === query.provider,
+          ),
         ),
-      ),
+      (result) => ({ ...result, data: result.data.map(toConnection) }),
     ),
 
   get: (connectionId: string): Promise<ConnectionView> =>
-    call(`/connections/${connectionId}`, {}, () => demoConnection(connectionId)),
+    call<ApplicationConnectionView, ConnectionView>(
+      `/connections/${connectionId}`,
+      {},
+      () => demoConnection(connectionId),
+      toConnection,
+    ),
 
   /**
    * The versioned capability snapshot. Never assume a limit: read it from here,
@@ -51,39 +95,54 @@ export const connectionsApi = {
    * before the user leaves Relay.
    */
   beginOAuth: (
-    input: { provider: ProviderId; brandId?: string; returnUrl: string },
+    input: { provider: ProviderId; brandId: string; returnUrl: string },
     idempotencyKey: string,
-  ): Promise<{ authorizationUrl: string; scopes: readonly string[] }> =>
-    call('/connections/oauth/begin', { method: 'POST', body: input, idempotencyKey }, () => ({
-      authorizationUrl: input.returnUrl,
-      scopes: [],
-    })),
+  ): Promise<{ authorizationUrl: string; transactionId: string }> =>
+    call(
+      '/connections/oauth/begin',
+      {
+        method: 'POST',
+        body: { provider: input.provider, brandId: input.brandId, redirectTo: input.returnUrl },
+        idempotencyKey,
+      },
+      () => ({ authorizationUrl: input.returnUrl, transactionId: 'oauth_demo' }),
+    ),
 
   reconnect: (
     connectionId: string,
     input: { returnUrl: string },
     idempotencyKey: string,
-  ): Promise<{ authorizationUrl: string; scopes: readonly string[] }> =>
-    call(
+  ): Promise<ConnectionView> =>
+    call<ApplicationConnectionView, ConnectionView>(
       `/connections/${connectionId}/reconnect`,
-      { method: 'POST', body: input, idempotencyKey },
-      () => ({ authorizationUrl: input.returnUrl, scopes: [] }),
+      { method: 'POST', idempotencyKey },
+      () => demoConnection(connectionId),
+      toConnection,
     ),
 
   pause: (connectionId: string, idempotencyKey: string): Promise<ConnectionView> =>
-    call(`/connections/${connectionId}/pause`, { method: 'POST', idempotencyKey }, () => ({
-      ...demoConnection(connectionId),
-      health: 'paused' as const,
-    })),
+    call<ApplicationConnectionView, ConnectionView>(
+      `/connections/${connectionId}/pause`,
+      { method: 'POST', idempotencyKey },
+      () => ({ ...demoConnection(connectionId), health: 'paused' as const }),
+      toConnection,
+    ),
 
   resume: (connectionId: string, idempotencyKey: string): Promise<ConnectionView> =>
-    call(`/connections/${connectionId}/resume`, { method: 'POST', idempotencyKey }, () => ({
-      ...demoConnection(connectionId),
-      health: 'healthy' as const,
-    })),
+    call<ApplicationConnectionView, ConnectionView>(
+      `/connections/${connectionId}/resume`,
+      { method: 'POST', idempotencyKey },
+      () => ({ ...demoConnection(connectionId), health: 'healthy' as const }),
+      toConnection,
+    ),
 
-  disconnect: (connectionId: string): Promise<void> =>
-    call(`/connections/${connectionId}`, { method: 'DELETE' }, () => undefined),
+  disconnect: (connectionId: string, idempotencyKey: string): Promise<ConnectionView> =>
+    call<ApplicationConnectionView, ConnectionView>(
+      `/connections/${connectionId}/disconnect`,
+      { method: 'POST', idempotencyKey },
+      () => ({ ...demoConnection(connectionId), health: 'revoked' as const }),
+      toConnection,
+    ),
 
   /**
    * Pages, boards, communities and channels this connection can publish into.
@@ -93,9 +152,19 @@ export const connectionsApi = {
   listDestinations: (
     connectionId: string,
     query: { kind?: string; q?: string } = {},
-  ): Promise<Paginated<ConnectionDestination>> =>
-    call(`/connections/${connectionId}/destinations`, { query }, () =>
-      page<ConnectionDestination>([]),
+  ): Promise<readonly ConnectionDestination[]> =>
+    call<readonly ProviderDestinationView[], readonly ConnectionDestination[]>(
+      `/connections/${connectionId}/destinations`,
+      { query: { kind: query.kind ?? '', query: query.q } },
+      () => [],
+      (results) =>
+        results.map((entry) => ({
+          id: entry.id,
+          connectionId: entry.connectionId,
+          kind: entry.kind,
+          externalId: entry.externalId,
+          name: entry.displayName,
+        })),
     ),
 
   /**
@@ -107,5 +176,16 @@ export const connectionsApi = {
     connectionId: string,
     query: { q: string; limit?: number },
   ): Promise<readonly MentionResult[]> =>
-    call(`/connections/${connectionId}/mentions`, { query }, () => []),
+    call<readonly MentionEntityView[], readonly MentionResult[]>(
+      `/connections/${connectionId}/mentions`,
+      { query: { query: query.q } },
+      () => [],
+      (results) =>
+        results.map((entry) => ({
+          externalId: entry.externalId,
+          handle: entry.handle ?? '',
+          displayName: entry.displayLabel,
+          avatarUrl: entry.avatarUrl,
+        })),
+    ),
 };

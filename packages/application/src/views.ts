@@ -144,9 +144,14 @@ export interface ConnectionView {
   readonly health: ConnectionHealth;
   /** i18n key explaining what the user must do. Never provider prose. */
   readonly statusMessageKey: string | null;
+  readonly grantedScopes: readonly string[];
   readonly capabilityVersion: string | null;
   readonly capabilitiesRefreshedAt: string | null;
   readonly connectedAt: string;
+  readonly connectedByUserId: string | null;
+  readonly accessTokenExpiresAt: string | null;
+  readonly lastPublishedAt: string | null;
+  readonly lastAnalyticsSyncAt: string | null;
   readonly lastSuccessfulActionAt: string | null;
 }
 
@@ -179,6 +184,8 @@ export interface PostVariantView {
   readonly connectionId: string;
   readonly provider: ProviderId;
   readonly accountType: AccountType;
+  readonly accountDisplayName: string;
+  readonly accountHandle: string | null;
   readonly locale: string;
   readonly body: string;
   readonly contentKind: ContentKind;
@@ -197,6 +204,7 @@ export interface PostVariantView {
   readonly disclosure: DisclosureFlags | null;
   readonly capabilityVersion: string | null;
   readonly state: PublishState;
+  readonly validationIssues: readonly ValidationIssue[];
   readonly estimatedCostMinor: number | null;
   readonly estimatedCostCurrency: string | null;
 }
@@ -225,6 +233,7 @@ export interface ContentItemView {
   readonly currentChecksum: string | null;
   readonly reapprovalRequired: boolean;
   readonly createdVia: CreationSurface;
+  readonly createdByUserId: string | null;
   readonly createdAt: string;
   readonly updatedAt: string;
 }
@@ -323,10 +332,13 @@ export interface CalendarEntry {
   readonly campaignId: string | null;
   readonly connectionId: string | null;
   readonly provider: ProviderId | null;
+  readonly accountLabel: string | null;
+  readonly contentKind: ContentKind;
   readonly state: PublishState;
   readonly instant: string;
   readonly ianaTimeZone: string;
   readonly approvalRequired: boolean;
+  readonly approvalState: ApprovalState;
 }
 
 export interface ReceiptItemView {
@@ -374,6 +386,19 @@ export interface PublicationReceiptView {
   readonly lastAnalyticsSyncAt: string | null;
   readonly deletedExternallyAt: string | null;
   readonly createdAt: string;
+}
+
+/** Compact receipt projection for the home screen and receipt timeline. */
+export interface ReceiptSummaryView {
+  readonly receiptId: string;
+  readonly contentItemId: string;
+  readonly title: string | null;
+  readonly provider: ProviderId;
+  readonly accountLabel: string;
+  readonly state: PublishState;
+  readonly publishedAt: string;
+  readonly permalink: string | null;
+  readonly failedItemCount: number;
 }
 
 export interface MediaAssetView {
