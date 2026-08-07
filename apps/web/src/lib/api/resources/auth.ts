@@ -24,6 +24,13 @@ export interface PasswordCredentials {
 }
 
 export const authApi = {
+  stepUpWithPassword: (password: string): Promise<{ verified: true }> =>
+    call(
+      '/auth/step-up/password',
+      { method: 'POST', body: { password }, sideEffectFree: true },
+      () => ({ verified: true }),
+    ),
+
   signInWithPassword: (
     input: PasswordCredentials,
     idempotencyKey: string,

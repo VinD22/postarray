@@ -227,6 +227,7 @@ BEGIN
       ('private', 'oauth_transactions',             'workspace_id', 'service', 'service', 'service',  'service',  'Short lived state and PKCE material.'),
       ('private', 'oauth_clients',                  'workspace_id', 'service', 'service', 'service',  'service',  'Third-party developer applications.'),
       ('private', 'oauth_grants',                   'workspace_id', 'service', 'service', 'service',  'service',  'User consent records for developer applications.'),
+      ('private', 'agent_confirmations',            'workspace_id', 'service', 'service', 'service',  'service',  'Single-use MCP publication confirmations. The application verifies the exact OAuth grant, content fingerprint, approver and idempotency key.'),
       ('private', 'webhook_endpoints',              'workspace_id', 'service', 'service', 'service',  'service',  'Holds a signing secret.'),
       ('private', 'webhook_deliveries',             'workspace_id', 'service', 'service', 'service',  'service',  'Delivery log and dead-letter queue.'),
       ('private', 'polar_customers',                'workspace_id', 'service', 'service', 'service',  'service',  'Billing identity.'),

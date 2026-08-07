@@ -12,6 +12,8 @@ export const BETA_ENGLISH_FALLBACK_PREFIXES = [
   // the code-entry and provider-availability wording is human reviewed.
   'auth.emailOnly.',
   'auth.otp.',
+  'developer.confirmation.',
+  'error.agent_confirmation_',
   'settings.data.',
   'web.legal.',
   'web.meta.legal.',

@@ -18,6 +18,7 @@ describe('browser authentication contract', () => {
       { identifier: 'person@example.test', password: 'a long test password' },
       'idem-signin',
     );
+    await authApi.stepUpWithPassword('a long test password');
     await sessionApi.get('relay_session=session_test');
     await sessionApi.signOut('idem-signout');
 
@@ -29,12 +30,22 @@ describe('browser authentication contract', () => {
     );
     expect(callMock).toHaveBeenNthCalledWith(
       2,
+      '/auth/step-up/password',
+      expect.objectContaining({
+        method: 'POST',
+        body: { password: 'a long test password' },
+        sideEffectFree: true,
+      }),
+      expect.any(Function),
+    );
+    expect(callMock).toHaveBeenNthCalledWith(
+      3,
       '/auth/session',
       { forwardCookie: 'relay_session=session_test' },
       expect.any(Function),
     );
     expect(callMock).toHaveBeenNthCalledWith(
-      3,
+      4,
       '/auth/signout',
       expect.objectContaining({ body: { scope: 'current' }, idempotencyKey: 'idem-signout' }),
       expect.any(Function),

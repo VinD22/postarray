@@ -47,6 +47,7 @@ export const ID_PREFIXES = {
   serviceAccount: 'svc',
   oauthClient: 'app',
   oauthGrant: 'grant',
+  agentConfirmation: 'confirm',
   oauthTransaction: 'oauth',
   outboxEvent: 'outbox',
   outboxDeadLetter: 'outboxdl',

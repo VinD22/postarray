@@ -24,6 +24,7 @@ import { clientFingerprint } from '../../security/csrf';
 import { AuthService, type EstablishedSession } from './auth.service';
 import {
   magicLinkSchema,
+  passwordStepUpSchema,
   passwordResetSchema,
   setAliasSchema,
   signInSchema,
@@ -271,6 +272,28 @@ export class AuthController {
       throw new AuthRequiredError({ details: { reason: 'profile_unavailable' } });
     }
     return session;
+  }
+
+  /** Re-enter the current password to authorize sensitive actions for ten minutes. */
+  @Post('step-up/password')
+  @WorkspaceOptional()
+  @RateLimit({ limit: 5, windowSeconds: 600 })
+  @HttpCode(200)
+  async stepUpWithPassword(
+    @Body() body: unknown,
+    @Req() request: Request,
+    @CurrentPrincipal() principal: Principal,
+  ): Promise<{ verified: true }> {
+    const sessionId = parseCookies(request.headers.cookie)[SESSION_COOKIE];
+    if (sessionId === undefined || principal.userId === undefined) {
+      throw new AuthRequiredError({ details: { reason: 'no_session' } });
+    }
+    const { password } = parseBody(passwordStepUpSchema, body);
+    const verified = await this.auth.stepUpWithPassword(sessionId, principal.userId, password);
+    if (!verified) {
+      throw new AuthRequiredError({ details: { reason: 'invalid_credentials' } });
+    }
+    return { verified: true };
   }
 
   /**

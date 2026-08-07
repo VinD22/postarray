@@ -936,6 +936,29 @@ CREATE TABLE "private"."oauth_grants" (
 );
 
 -- CreateTable
+CREATE TABLE "private"."agent_confirmations" (
+    "id" TEXT NOT NULL DEFAULT app.new_id('confirm'),
+    "workspace_id" TEXT NOT NULL,
+    "oauth_grant_id" TEXT NOT NULL,
+    "content_item_id" TEXT NOT NULL,
+    "fingerprint" TEXT NOT NULL,
+    "summary" JSONB NOT NULL,
+    "confirmed_by_user_id" TEXT,
+    "confirmed_at" TIMESTAMPTZ(6),
+    "consumed_at" TIMESTAMPTZ(6),
+    "consumed_by_key_hash" TEXT,
+    "expires_at" TIMESTAMPTZ(6) NOT NULL,
+    "created_at" TIMESTAMPTZ(6) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT "agent_confirmations_pkey" PRIMARY KEY ("id"),
+    CONSTRAINT "agent_confirmations_fingerprint_length" CHECK (char_length("fingerprint") = 64),
+    CONSTRAINT "agent_confirmations_consume_hash_length" CHECK ("consumed_by_key_hash" IS NULL OR char_length("consumed_by_key_hash") = 64),
+    CONSTRAINT "agent_confirmations_confirmed_pair" CHECK (("confirmed_by_user_id" IS NULL) = ("confirmed_at" IS NULL)),
+    CONSTRAINT "agent_confirmations_consumed_pair" CHECK (("consumed_at" IS NULL) = ("consumed_by_key_hash" IS NULL)),
+    CONSTRAINT "agent_confirmations_expiry_after_create" CHECK ("expires_at" > "created_at")
+);
+
+-- CreateTable
 CREATE TABLE "private"."outbox" (
     "id" TEXT NOT NULL DEFAULT app.new_id('outbox'),
     "workspace_id" TEXT NOT NULL,
@@ -1949,6 +1972,15 @@ CREATE INDEX "oauth_grants_subject_user_id_idx" ON "private"."oauth_grants"("sub
 CREATE UNIQUE INDEX "oauth_grants_oauth_client_id_subject_user_id_workspace_id_key" ON "private"."oauth_grants"("oauth_client_id", "subject_user_id", "workspace_id");
 
 -- CreateIndex
+CREATE INDEX "agent_confirmations_workspace_id_idx" ON "private"."agent_confirmations"("workspace_id");
+
+-- CreateIndex
+CREATE INDEX "agent_confirmations_workspace_id_expires_at_idx" ON "private"."agent_confirmations"("workspace_id", "expires_at");
+
+-- CreateIndex
+CREATE INDEX "agent_confirmations_oauth_grant_id_content_item_id_idx" ON "private"."agent_confirmations"("oauth_grant_id", "content_item_id");
+
+-- CreateIndex
 CREATE INDEX "outbox_available_at_id_idx" ON "private"."outbox"("available_at", "id");
 
 -- CreateIndex
@@ -2424,6 +2456,18 @@ ALTER TABLE "private"."oauth_grants" ADD CONSTRAINT "oauth_grants_workspace_id_f
 
 -- AddForeignKey
 ALTER TABLE "private"."oauth_grants" ADD CONSTRAINT "oauth_grants_oauth_client_id_fkey" FOREIGN KEY ("oauth_client_id") REFERENCES "private"."oauth_clients"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "private"."agent_confirmations" ADD CONSTRAINT "agent_confirmations_workspace_id_fkey" FOREIGN KEY ("workspace_id") REFERENCES "app"."workspaces"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "private"."agent_confirmations" ADD CONSTRAINT "agent_confirmations_oauth_grant_id_fkey" FOREIGN KEY ("oauth_grant_id") REFERENCES "private"."oauth_grants"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "private"."agent_confirmations" ADD CONSTRAINT "agent_confirmations_content_item_id_fkey" FOREIGN KEY ("content_item_id") REFERENCES "app"."content_items"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "private"."agent_confirmations" ADD CONSTRAINT "agent_confirmations_confirmed_by_user_id_fkey" FOREIGN KEY ("confirmed_by_user_id") REFERENCES "app"."users"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "private"."outbox" ADD CONSTRAINT "outbox_workspace_id_fkey" FOREIGN KEY ("workspace_id") REFERENCES "app"."workspaces"("id") ON DELETE CASCADE ON UPDATE CASCADE;

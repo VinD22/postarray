@@ -15,6 +15,7 @@ export { createQueryClient, queryClientConfig } from './query-client';
 export { request, type HttpMethod, type RequestOptions } from './transport';
 export * from './types';
 export type { ConnectionListQuery } from './resources/connections';
+export type { AgentConfirmationView } from '@relay/application';
 export type { CalendarQuery, ContentListQuery } from './resources/content';
 export type { ActionCenterQuery } from './resources/action-center';
 export type {

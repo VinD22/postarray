@@ -95,6 +95,12 @@ export function createRefusingServices(): Services {
       retryTarget: refuse('job'),
     },
     receipts: { get: refuse('receipt'), listForJob: refuse('job'), listRecent: page },
+    agentConfirmations: {
+      request: refuse('agent_confirmation'),
+      get: refuse('agent_confirmation'),
+      approve: refuse('agent_confirmation'),
+      consume: refuse('agent_confirmation'),
+    },
     actionCenter: {
       list: page,
       snooze: refuse('action_item'),

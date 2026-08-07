@@ -34,6 +34,8 @@ import type { HealthReport, Logger } from '@relay/observability';
 import type {
   ActionItemCategory,
   ActionItemView,
+  AgentConfirmationSummary,
+  AgentConfirmationView,
   ApiKeyView,
   ApprovalRequestView,
   AuditEventView,
@@ -677,6 +679,24 @@ export interface PublishingService {
   ): Promise<PublishJobView>;
 }
 
+export interface AgentConfirmationService {
+  request(
+    ctx: ActorContext,
+    input: { readonly contentItemId: string },
+  ): Promise<AgentConfirmationView>;
+  get(ctx: ActorContext, confirmationId: string): Promise<AgentConfirmationView>;
+  approve(ctx: ActorContext, confirmationId: string): Promise<AgentConfirmationView>;
+  consume(
+    ctx: ActorContext,
+    input: { readonly confirmationId: string; readonly contentItemId: string },
+  ): Promise<{
+    readonly confirmationId: string;
+    readonly confirmedBy: string;
+    readonly confirmedAt: string;
+    readonly summary: AgentConfirmationSummary;
+  }>;
+}
+
 /**
  * Evidence that a person reviewed the exact version and publication blast
  * radius. This is deliberately richer than a boolean so a caller cannot reuse
@@ -1197,6 +1217,7 @@ export interface Services {
   readonly approvals: ApprovalService;
   readonly scheduling: SchedulingService;
   readonly publishing: PublishingService;
+  readonly agentConfirmations: AgentConfirmationService;
   readonly receipts: ReceiptService;
   readonly actionCenter: ActionCenterService;
   readonly media: MediaService;

@@ -1,5 +1,7 @@
 import type { Services } from '@relay/application';
+import { ForbiddenError } from '@relay/contracts';
 
+import type { ConfirmationStore } from './confirmations';
 import type { RelayServicePort } from './ports';
 
 /**
@@ -53,6 +55,56 @@ export function toRelayServicePort(services: Services): RelayServicePort {
       generatePlan: (ctx, input) => services.growth.generatePlan(ctx, input),
       createDraftFromItem: (ctx, input) => services.growth.createDraftFromItem(ctx, input),
       listOpportunities: (ctx, input) => services.growth.listOpportunities(ctx, input),
+    },
+  };
+}
+
+/**
+ * Bind MCP confirmation calls to the canonical durable application service.
+ * Tool-provided summary fields are deliberately not trusted here. The
+ * application recomputes the checksum and targets in the tenant transaction.
+ */
+export function toApplicationConfirmationStore(
+  services: Services,
+  appUrl: string,
+): ConfirmationStore {
+  const baseUrl = appUrl.replace(/\/$/, '');
+  return {
+    async request(input) {
+      const confirmation = await services.agentConfirmations.request(input.actor, {
+        contentItemId: input.contentItemId,
+      });
+      return {
+        confirmationId: confirmation.id,
+        confirmUrl: `${baseUrl}/confirm/${confirmation.id}`,
+        expiresAt: confirmation.expiresAt,
+        summary: confirmation.summary,
+      };
+    },
+
+    async consume(input) {
+      const confirmation = await services.agentConfirmations.consume(input.actor, {
+        confirmationId: input.confirmationId,
+        contentItemId: input.contentItemId,
+      });
+      return {
+        confirmationId: confirmation.confirmationId,
+        confirmedBy: confirmation.confirmedBy,
+        confirmedAt: confirmation.confirmedAt,
+        surface: 'mcp',
+      };
+    },
+
+    approve() {
+      return Promise.reject(
+        new ForbiddenError({ details: { reason: 'HUMAN_SESSION_REQUIRED' } }),
+      );
+    },
+
+    get() {
+      return Promise.reject(
+        new ForbiddenError({ details: { reason: 'HUMAN_SESSION_REQUIRED' } }),
+      );
     },
   };
 }

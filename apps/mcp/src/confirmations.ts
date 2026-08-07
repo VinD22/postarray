@@ -1,8 +1,8 @@
-import { createHash, randomUUID } from 'node:crypto';
+import { createHash } from 'node:crypto';
 
-import { RelayError } from '@relay/contracts';
+import { newId, RelayError } from '@relay/contracts';
 
-import type { PublishConfirmation } from './ports';
+import type { ActorContextLike, PublishConfirmation } from './ports';
 
 /**
  * Human confirmation for immediate publication.
@@ -51,6 +51,7 @@ export interface ConfirmationSummary {
 }
 
 export interface ConfirmationRequest {
+  readonly actor: ActorContextLike;
   readonly workspaceId: string;
   readonly grantId: string;
   readonly contentItemId: string;
@@ -68,6 +69,7 @@ export interface ConfirmationStore {
   request(input: ConfirmationRequest): Promise<ConfirmationTicket>;
   /** Consumes the confirmation. Throws unless a person approved this exact plan. */
   consume(input: {
+    actor: ActorContextLike;
     confirmationId: string;
     workspaceId: string;
     grantId: string;
@@ -131,7 +133,7 @@ export function createMemoryConfirmationStore(
   return {
     async request(input: ConfirmationRequest): Promise<ConfirmationTicket> {
       purge();
-      const confirmationId = randomUUID();
+      const confirmationId = newId('confirm');
       const now = options.clock.now();
       const record: PendingConfirmation = {
         confirmationId,

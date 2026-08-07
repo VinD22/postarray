@@ -112,6 +112,12 @@ export const errorMessages = {
   'error.approval_required.action': 'Request approval from {approver}.',
   'error.approval_expired.message': 'The approval for this post expired on {date}.',
   'error.approval_expired.action': 'Request approval again.',
+  'error.agent_confirmation_expired.message': 'This agent confirmation expired.',
+  'error.agent_confirmation_expired.action': 'Ask the agent to request a new confirmation.',
+  'error.agent_confirmation_content_changed.message':
+    'The content or target accounts changed before you confirmed.',
+  'error.agent_confirmation_content_changed.action':
+    'Review the updated plan in a new confirmation.',
   'error.schedule_in_past.message': 'That time has already passed in {timeZone}.',
   'error.schedule_in_past.action': 'Choose a later time, or publish now.',
   'error.schedule_conflict.message': '{account} already has a post within {duration} of this time.',

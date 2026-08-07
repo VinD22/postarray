@@ -165,6 +165,7 @@ export const API_HEADERS = {
   rateLimitRemaining: 'x-ratelimit-remaining',
   rateLimitReset: 'x-ratelimit-reset',
   workspaceId: 'x-relay-workspace-id',
+  csrfToken: 'x-relay-csrf-token',
 } as const;
 
 export const PROBLEM_JSON_CONTENT_TYPE = 'application/problem+json';

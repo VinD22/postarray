@@ -22,7 +22,10 @@
     "@relay/application": "workspace:*",
     "@relay/config": "workspace:*",
     "@relay/contracts": "workspace:*",
+    "@relay/database": "workspace:*",
     "@relay/observability": "workspace:*",
+    "@relay/runtime": "workspace:*",
+    "ioredis": "^5.4.1",
     "zod": "^4.4.3"
   },
   "devDependencies": {

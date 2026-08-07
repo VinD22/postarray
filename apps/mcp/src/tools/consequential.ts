@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { RelayError } from '@relay/contracts';
+import { ID_PREFIXES, idSchema, RelayError } from '@relay/contracts';
 
 import { RESOURCE_URIS, defineTool, idempotencyInputShape, resourceLink } from './registry';
 import type { ToolResult } from './registry';
@@ -129,7 +129,7 @@ export const publishPostTool = defineTool({
      * Omit on the first call. The tool returns a confirmation link and does
      * nothing. Pass the id back after a person has approved it in Relay.
      */
-    confirmation_id: z.string().min(1).optional(),
+    confirmation_id: idSchema(ID_PREFIXES.agentConfirmation).optional(),
     ...idempotencyInputShape,
   }),
   async run(context, input): Promise<ToolResult> {
@@ -138,6 +138,7 @@ export const publishPostTool = defineTool({
 
     if (input.confirmation_id === undefined) {
       const ticket = await context.confirmations.request({
+        actor: context.actor,
         workspaceId: context.actor.workspaceId,
         grantId: context.grant.grantId,
         contentItemId: input.content_item_id,
@@ -169,6 +170,7 @@ export const publishPostTool = defineTool({
     }
 
     const confirmation = await context.confirmations.consume({
+      actor: context.actor,
       confirmationId: input.confirmation_id,
       workspaceId: context.actor.workspaceId,
       grantId: context.grant.grantId,

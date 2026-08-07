@@ -131,6 +131,6 @@ export type {
   VariantSummary,
 } from './ports';
 
-export { toRelayServicePort } from './wiring';
+export { toApplicationConfirmationStore, toRelayServicePort } from './wiring';
 
 export { SKILLS, skillFor, type SkillDefinition, type SkillHost } from './skills';

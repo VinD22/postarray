@@ -10,6 +10,7 @@ import type { HealthReport } from '@relay/observability';
 import { createIntrospectionVerifier } from './auth/verifier';
 import type { IntrospectionTransport } from './auth/verifier';
 import { createMemoryConfirmationStore } from './confirmations';
+import type { ConfirmationStore } from './confirmations';
 import { createDispatcher, createWorkspaceKillSwitch } from './dispatch';
 import { createMcpHttpService } from './http';
 import { createSandboxServices } from './sandbox';
@@ -37,6 +38,8 @@ export interface StartOptions {
    */
   readonly services?: RelayServicePort | undefined;
   readonly auditSink?: AuditSink | undefined;
+  readonly confirmations?: ConfirmationStore | undefined;
+  readonly close?: (() => Promise<void>) | undefined;
 }
 
 function fetchTransport(): IntrospectionTransport {
@@ -97,11 +100,16 @@ export async function main(options: StartOptions = {}): Promise<void> {
     clock: systemClock,
   });
 
-  const confirmations = createMemoryConfirmationStore({
-    clock: systemClock,
-    confirmUrlTemplate: (confirmationId) =>
-      `${(config.core.appUrl ?? '').replace(/\/$/, '')}/confirm/${confirmationId}`,
-  });
+  const confirmations = sandbox
+    ? createMemoryConfirmationStore({
+        clock: systemClock,
+        confirmUrlTemplate: (confirmationId) =>
+          `${(config.core.appUrl ?? '').replace(/\/$/, '')}/confirm/${confirmationId}`,
+      })
+    : options.confirmations;
+  if (confirmations === undefined) {
+    throw new Error('MCP_CONFIRMATIONS_NOT_WIRED');
+  }
 
   const dispatcher = createDispatcher({
     registry: createToolRegistry(),
@@ -139,7 +147,12 @@ export async function main(options: StartOptions = {}): Promise<void> {
   const shutdown = (signal: string): void => {
     logger.info({ event: 'mcp.stopping', signal }, 'mcp.stopping');
     server.close(() => {
-      process.exit(0);
+      void (options.close?.() ?? Promise.resolve())
+        .then(() => process.exit(0))
+        .catch((error: unknown) => {
+          logger.error({ event: 'mcp.stop_failed', signal, error }, 'mcp.stop_failed');
+          process.exit(1);
+        });
     });
   };
   process.on('SIGTERM', () => shutdown('SIGTERM'));

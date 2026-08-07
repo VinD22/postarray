@@ -269,6 +269,31 @@ export class AuthService {
     });
   }
 
+  /** Re-verify the current person without minting or rotating a session. */
+  async stepUpWithPassword(sessionId: string, userId: string, password: string): Promise<boolean> {
+    const profile = await this.services.identity.getSecurityProfile(userId);
+    if (profile === null) {
+      await this.identity.verifyDummyCredential();
+      return false;
+    }
+    const verified = await this.identity.signInWithPassword({
+      email: profile.email,
+      password,
+    });
+    if (verified === null) {
+      return false;
+    }
+    const verifiedProfile = await this.services.identity.getSecurityProfile(verified.userId);
+    if (verified.providerSessionId !== null) {
+      await this.identity.signOut(verified.providerSessionId);
+    }
+    if (verifiedProfile?.userId !== userId) {
+      return false;
+    }
+    await this.markStepUpSatisfied(sessionId);
+    return true;
+  }
+
   recordConsent(input: {
     identitySubjectId: string;
     email: string;

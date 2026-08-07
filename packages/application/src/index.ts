@@ -8,6 +8,10 @@
  */
 
 export { createServices } from './services/index';
+export {
+  agentConfirmationSummarySchema,
+  fingerprintAgentConfirmationSummary,
+} from './services/agent-confirmations';
 
 export type {
   ActionItemCategory,
@@ -15,6 +19,7 @@ export type {
   ActionItemUrgency,
   ActionItemView,
   ActorContext,
+  AgentConfirmationService,
   AiGateway,
   AnalyticsService,
   ApiKeyService,
@@ -89,6 +94,8 @@ export {
 } from './outbox';
 
 export type {
+  AgentConfirmationSummary,
+  AgentConfirmationView,
   ApiKeyView,
   ApprovalDecisionView,
   ApprovalRequestView,

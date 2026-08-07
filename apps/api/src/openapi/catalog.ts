@@ -17,6 +17,7 @@ import { z } from 'zod';
 import { cursorQuerySchema } from '../common/pagination';
 import {
   apiKeyIdSchema,
+  agentConfirmationIdSchema,
   approvalIdSchema,
   brandIdSchema,
   connectionIdSchema,
@@ -64,6 +65,7 @@ import {
 import {
   magicLinkSchema,
   passwordResetSchema,
+  passwordStepUpSchema,
   setAliasSchema,
   signInSchema,
   signOutSchema,
@@ -233,6 +235,16 @@ export const OPERATIONS: readonly OperationSpec[] = [
     tag: 'auth',
     public: true,
     body: signInSchema,
+  },
+  {
+    method: 'post',
+    path: '/v1/auth/step-up/password',
+    operationId: 'auth.stepUpWithPassword',
+    summary: 'Re-enter the current password to authorize sensitive actions for ten minutes.',
+    tag: 'auth',
+    workspaceOptional: true,
+    body: passwordStepUpSchema,
+    response: z.object({ verified: z.literal(true) }).strict(),
   },
   {
     method: 'post',
@@ -900,6 +912,28 @@ export const OPERATIONS: readonly OperationSpec[] = [
     body: publishNowSchema,
     successStatus: 202,
     response: publishJobSchema,
+  },
+  {
+    method: 'get',
+    path: '/v1/agent-confirmations/{id}',
+    operationId: 'agentConfirmations.get',
+    summary: 'Inspect the exact MCP publication plan awaiting a human decision.',
+    tag: 'publishing',
+    scopes: ['drafts:read'],
+    pathParams: p('id', agentConfirmationIdSchema),
+    response: view,
+  },
+  {
+    method: 'post',
+    path: '/v1/agent-confirmations/{id}/approve',
+    operationId: 'agentConfirmations.approve',
+    summary: 'Approve one exact MCP publication plan in a human session.',
+    tag: 'publishing',
+    scopes: ['posts:publish'],
+    requiresStepUp: true,
+    requiresIdempotencyKey: true,
+    pathParams: p('id', agentConfirmationIdSchema),
+    response: view,
   },
   {
     method: 'get',

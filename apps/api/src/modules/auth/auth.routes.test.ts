@@ -2,9 +2,10 @@ import { API_HEADERS, newIdFor, type Role } from '@relay/contracts';
 import request from 'supertest';
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 
-import type { SessionView } from '../../application/port';
+import type { SessionView, UserSecurityProfile } from '../../application/port';
 import {
   TEST_ACCEPT_LANGUAGE,
+  TEST_ORIGIN,
   TEST_USER_AGENT,
   createHarness,
   seedSession,
@@ -14,6 +15,7 @@ import {
 let harness: Harness;
 let selectedWorkspace: string | undefined;
 const consentCalls: unknown[] = [];
+const securityProfiles = new Map<string, UserSecurityProfile>();
 
 function sessionView(userId: string, workspaceId: string, role: Role = 'owner'): SessionView {
   const workspace = {
@@ -46,6 +48,7 @@ function sessionView(userId: string, workspaceId: string, role: Role = 'owner'):
 beforeEach(async () => {
   selectedWorkspace = undefined;
   consentCalls.length = 0;
+  securityProfiles.clear();
   harness = await createHarness({
     services: (base) => ({
       ...base,
@@ -59,6 +62,7 @@ beforeEach(async () => {
           selectedWorkspace = workspaceId;
           return Promise.resolve(sessionView(userId, workspaceId ?? newIdFor('workspace')));
         },
+        getSecurityProfile: (userId) => Promise.resolve(securityProfiles.get(userId) ?? null),
       },
     }),
   });
@@ -120,5 +124,40 @@ describe('authentication routes', () => {
     expect(response.status).toBe(200);
     expect(selectedWorkspace).toBe(workspaceB);
     expect(response.body.workspace.id).toBe(workspaceB);
+  });
+
+  it('re-verifies the current password and marks the existing session stepped up', async () => {
+    const session = await seedSession(harness, { scopes: ['posts:publish'] });
+    securityProfiles.set(session.userId, {
+      userId: session.userId,
+      email: 'owner@example.test',
+      emailVerified: true,
+      locale: 'en',
+      approvalLevel: 'level_3_confirm',
+      workspaceIds: [session.workspaceId],
+      scopesByWorkspace: { [session.workspaceId]: ['posts:publish'] },
+      mfaEnrolled: false,
+    });
+    harness.identity.seedIdentity({
+      userId: session.userId,
+      email: 'owner@example.test',
+      password: 'a long test password',
+    });
+
+    const response = await request(harness.server)
+      .post('/v1/auth/step-up/password')
+      .set('cookie', session.cookie)
+      .set(API_HEADERS.csrfToken, session.csrfToken)
+      .set('origin', TEST_ORIGIN)
+      .set('user-agent', TEST_USER_AGENT)
+      .set('accept-language', TEST_ACCEPT_LANGUAGE)
+      .send({ password: 'a long test password' });
+
+    expect(response.status).toBe(200);
+    expect(response.body).toEqual({ verified: true });
+    expect((await harness.directory.getSession(session.sessionId))?.mfaSatisfiedAt).toBe(
+      harness.clock.now().toISOString(),
+    );
+    expect(harness.identity.signOuts).toEqual([`provider-session-${session.userId}`]);
   });
 });

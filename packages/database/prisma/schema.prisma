@@ -760,6 +760,7 @@ model User {
   memberships Membership[]
   sessions    UserSession[]
   consents    Consent[]
+  agentConfirmations AgentConfirmation[] @relation("AgentConfirmationApprover")
 
   @@index([status])
   @@map("users")
@@ -835,6 +836,7 @@ model Workspace {
   oauthTransactions       OAuthTransaction[]
   oauthClients            OAuthClient[]
   oauthGrants             OAuthGrant[]
+  agentConfirmations      AgentConfirmation[]
   outboxEvents            OutboxEvent[]
   outboxDeadLetters       OutboxDeadLetter[]
   mediaAssets             MediaAsset[]
@@ -1297,6 +1299,7 @@ model ContentItem {
   approvalRequests ApprovalRequest[]
   publishJobs      PublishJob[]
   insights         Insight[]
+  agentConfirmations AgentConfirmation[]
 
   @@index([workspaceId])
   // Calendar range query: one workspace, a date window, filtered by state.
@@ -1900,11 +1903,42 @@ model OAuthGrant {
 
   workspace   Workspace   @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
   oauthClient OAuthClient @relation(fields: [oauthClientId], references: [id], onDelete: Cascade)
+  agentConfirmations AgentConfirmation[]
 
   @@unique([oauthClientId, subjectUserId, workspaceId])
   @@index([workspaceId])
   @@index([subjectUserId])
   @@map("oauth_grants")
+  @@schema("private")
+}
+
+/// Human approval minted for one exact MCP publication plan. The record is
+/// durable, bound to its OAuth grant and content fingerprint, and reusable only
+/// by the same idempotency key after consumption so a transport retry cannot
+/// turn one approval into two publications.
+model AgentConfirmation {
+  id                  String   @id @default(dbgenerated("app.new_id('confirm')"))
+  workspaceId         String   @map("workspace_id")
+  oauthGrantId        String   @map("oauth_grant_id")
+  contentItemId       String   @map("content_item_id")
+  fingerprint         String
+  summary             Json
+  confirmedByUserId   String?  @map("confirmed_by_user_id")
+  confirmedAt         DateTime? @map("confirmed_at") @db.Timestamptz(6)
+  consumedAt          DateTime? @map("consumed_at") @db.Timestamptz(6)
+  consumedByKeyHash   String?  @map("consumed_by_key_hash")
+  expiresAt           DateTime @map("expires_at") @db.Timestamptz(6)
+  createdAt           DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+
+  workspace       Workspace   @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  oauthGrant      OAuthGrant  @relation(fields: [oauthGrantId], references: [id], onDelete: Cascade)
+  contentItem     ContentItem @relation(fields: [contentItemId], references: [id], onDelete: Cascade)
+  confirmedByUser User?       @relation("AgentConfirmationApprover", fields: [confirmedByUserId], references: [id], onDelete: SetNull)
+
+  @@index([workspaceId])
+  @@index([workspaceId, expiresAt])
+  @@index([oauthGrantId, contentItemId])
+  @@map("agent_confirmations")
   @@schema("private")
 }
 

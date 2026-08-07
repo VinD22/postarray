@@ -139,6 +139,12 @@ async function performOnce(
   }
   const cookieSource =
     options.forwardCookie ?? (typeof document === 'undefined' ? undefined : document.cookie);
+  if (STATE_CHANGING_METHODS.has(method)) {
+    const csrfToken = readCookie(cookieSource, 'relay_csrf');
+    if (csrfToken !== undefined) {
+      headers[API_HEADERS.csrfToken] = csrfToken;
+    }
+  }
   const workspaceId = readCookie(cookieSource, 'relay_ws');
   if (workspaceId !== undefined) {
     headers[API_HEADERS.workspaceId] = workspaceId;
@@ -164,6 +170,13 @@ async function performOnce(
     clearTimeout(timeout);
   }
 }
+
+const STATE_CHANGING_METHODS: ReadonlySet<HttpMethod> = new Set([
+  'POST',
+  'PUT',
+  'PATCH',
+  'DELETE',
+]);
 
 function readCookie(source: string | undefined, name: string): string | undefined {
   if (source === undefined) {

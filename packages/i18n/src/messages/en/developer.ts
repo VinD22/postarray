@@ -134,4 +134,48 @@ export const developerMessages = {
   'developer.docs.pagination':
     'Results are cursor paginated. Times are explicit and include a zone.',
   'developer.docs.rateLimits': 'Rate limits apply per workspace, credential, route and connector.',
+
+  'developer.confirmation.title': 'Confirm agent publication',
+  'developer.confirmation.subtitle':
+    'Review the exact accounts and content version before an agent can publish anything.',
+  'developer.confirmation.loading': 'Loading the publication confirmation',
+  'developer.confirmation.errorTitle': 'This confirmation could not be loaded',
+  'developer.confirmation.errorBody':
+    'It may have expired, been used, or belong to another workspace. Nothing was published by this attempt.',
+  'developer.confirmation.reviewTitle': 'One decision, exact blast radius',
+  'developer.confirmation.reviewBody':
+    'Approval applies only to this content version and these named accounts. Any change requires a new confirmation.',
+  'developer.confirmation.state.pending': 'Awaiting your decision',
+  'developer.confirmation.state.approved': 'Approved',
+  'developer.confirmation.state.consumed': 'Used',
+  'developer.confirmation.state.expired': 'Expired',
+  'developer.confirmation.publicationsLabel': 'External publications',
+  'developer.confirmation.publicationsValue':
+    '{count, plural, one {# post to one account} other {# posts to # accounts}}',
+  'developer.confirmation.providersLabel': 'Platforms',
+  'developer.confirmation.expiresLabel': 'Decision expires',
+  'developer.confirmation.versionLabel': 'Content version',
+  'developer.confirmation.versionHint':
+    'This checksum changes when the content changes, which cancels this approval.',
+  'developer.confirmation.accountsTitle': 'Accounts that will receive a post',
+  'developer.confirmation.accountPosition': '{position} of {count}',
+  'developer.confirmation.pendingTitle': 'Nothing has been published yet',
+  'developer.confirmation.pendingBody':
+    'Approving lets the requesting agent continue once. It does not approve later edits or another set of accounts.',
+  'developer.confirmation.approve': 'Approve this publication',
+  'developer.confirmation.approvedTitle': 'Approved for this exact plan',
+  'developer.confirmation.approvedBody':
+    'Return to the agent. It can now continue this one publication request before the confirmation expires.',
+  'developer.confirmation.consumedTitle': 'This approval was already used',
+  'developer.confirmation.consumedBody':
+    'The agent already continued with this decision. The publication receipt records what happened next.',
+  'developer.confirmation.expiredTitle': 'This decision window has closed',
+  'developer.confirmation.expiredBody':
+    'Ask the agent to request a new confirmation. The old link cannot publish anything.',
+  'developer.confirmation.stepUpTitle': 'Confirm it is you',
+  'developer.confirmation.stepUpBody':
+    'Re-enter your password. This authorizes sensitive actions in this session for ten minutes.',
+  'developer.confirmation.passwordLabel': 'Current password',
+  'developer.confirmation.verifyAndApprove': 'Verify and approve',
+  'developer.confirmation.actionErrorTitle': 'The publication was not approved',
 } as const;

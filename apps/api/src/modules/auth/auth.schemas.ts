@@ -105,5 +105,8 @@ export const verifyTotpSchema = z
   })
   .strict();
 
+/** Password re-entry is a valid interactive step-up for a signed-in session. */
+export const passwordStepUpSchema = z.object({ password: passwordSchema }).strict();
+
 export type SignUpInput = z.infer<typeof signUpSchema>;
 export type SignInInput = z.infer<typeof signInSchema>;

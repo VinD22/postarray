@@ -2,6 +2,7 @@ import type { ServiceDeps, Services } from '../types';
 
 import { createAnalyticsService } from './analytics';
 import { createActionCenterService } from './action-center';
+import { createAgentConfirmationService } from './agent-confirmations';
 import { createApiKeyService } from './api-keys';
 import { createApprovalService } from './approvals';
 import { createAuditService } from './audit';
@@ -50,6 +51,7 @@ export function createServices(deps: ServiceDeps): Services {
     approvals: createApprovalService(deps),
     scheduling: createSchedulingService(deps, validation),
     publishing: createPublishingService(deps, validation),
+    agentConfirmations: createAgentConfirmationService(deps),
     receipts: createReceiptService(deps),
     actionCenter: createActionCenterService(deps),
     media: createMediaService(deps),

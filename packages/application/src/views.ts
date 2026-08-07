@@ -247,6 +247,31 @@ export interface ContentItemView {
   readonly updatedAt: string;
 }
 
+export interface AgentConfirmationSummary {
+  readonly contentItemId: string;
+  readonly versionChecksum: string;
+  readonly accountCount: number;
+  readonly externalPublicationCount: number;
+  readonly providers: readonly ProviderId[];
+  readonly accounts: readonly {
+    readonly connectionId: string;
+    readonly label: string;
+  }[];
+}
+
+export interface AgentConfirmationView {
+  readonly id: string;
+  readonly workspaceId: string;
+  readonly contentItemId: string;
+  readonly state: 'pending' | 'approved' | 'consumed' | 'expired';
+  readonly summary: AgentConfirmationSummary;
+  readonly confirmedByUserId: string | null;
+  readonly confirmedAt: string | null;
+  readonly consumedAt: string | null;
+  readonly expiresAt: string;
+  readonly createdAt: string;
+}
+
 export interface ContentVersionView {
   readonly id: string;
   readonly contentItemId: string;
