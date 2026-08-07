@@ -12,13 +12,14 @@
 import { useRef, useState, type ReactNode } from 'react';
 import { Upload } from 'lucide-react';
 import { Button, Progress } from '@relay/design-system/primitives';
-import { Notice, OfflineBanner } from '@relay/design-system/patterns';
+import { OfflineBanner } from '@relay/design-system/patterns';
 import { useTranslations } from '@relay/i18n/react';
 import { formatBytes } from '@relay/i18n';
 import { cn } from '@relay/design-system/utils';
 
 import { acceptedMimeTypes, type AccountRule } from '../state/media-rules';
 import type { UploadItem } from '../types';
+import { MediaPolicyNotice } from './media-policy-notice';
 
 export interface UploadPanelProps {
   readonly rules: readonly AccountRule[];
@@ -60,10 +61,7 @@ export function UploadPanel({
         />
       )}
 
-      <Notice tone="info" title={t.full('mediaLib.retention.title')}>
-        <p>{t.full('mediaLib.retention.body')}</p>
-        <p>{t.full('mediaLib.retention.limits')}</p>
-      </Notice>
+      <MediaPolicyNotice rules={rules} />
 
       <div
         onDragOver={(event) => {

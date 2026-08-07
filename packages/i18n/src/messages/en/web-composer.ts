@@ -325,7 +325,7 @@ export const webComposerMessages = {
 
   'mediaLib.empty.title': 'No media yet',
   'mediaLib.empty.body':
-    'Upload images, video, audio or documents you already have. Files stay in storage for 30 days.',
+    'Upload images, video, audio or documents you already have. Files stay in storage for 30 days after upload.',
   'mediaLib.empty.example': 'Example: launch_hero.jpg, 1600 by 900, with alt text set.',
   'mediaLib.error.title': 'The library could not be loaded',
   'mediaLib.error.body': 'Your files are safe. Nothing was changed by this failure.',
@@ -360,11 +360,11 @@ export const webComposerMessages = {
   'mediaLib.upload.checkedAgainst': 'Checked against the accounts selected in this draft.',
   'mediaLib.upload.noTargets':
     'No accounts are selected, so the file is checked against the workspace defaults only.',
-  'mediaLib.retention.title': 'Uploaded files are kept for 30 days',
+  'mediaLib.retention.title': 'Uploaded files are kept for 30 days after upload',
   'mediaLib.retention.body':
-    'We permanently delete each uploaded file from our storage 30 days after upload. Your post text, publication receipts and audit history remain.',
+    'We permanently delete each uploaded file from Relay storage 30 days after upload, even if it is no longer attached to a draft. Post text, publication receipts and audit history remain available longer. A published post on a social platform is not removed when its stored file expires.',
   'mediaLib.retention.limits':
-    'Images, audio and PDF files can be up to 20 MiB. Videos can be up to 500 MiB.',
+    'Images, audio and PDF files can be up to {imageSize}. Videos can be up to {videoSize}.',
   'mediaLib.retention.expiresLabel': 'File deletion date',
   'mediaLib.retention.deleted': 'Permanently deleted',
   'mediaLib.retention.deletedTitle': 'This stored file has been deleted',

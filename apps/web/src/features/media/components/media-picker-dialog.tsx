@@ -27,6 +27,7 @@ import { formatBytes } from '@relay/i18n';
 
 import { checkFile, type AccountRule } from '../state/media-rules';
 import type { MediaAsset } from '../types';
+import { MediaPolicyNotice } from './media-policy-notice';
 
 export interface MediaPickerDialogProps {
   readonly open: boolean;
@@ -71,6 +72,10 @@ export function MediaPickerDialog({
           <p className="text-body-sm text-text-tertiary mb-3">
             {t.full('mediaLib.picker.description')}
           </p>
+
+          <div className="mb-3">
+            <MediaPolicyNotice rules={rules} />
+          </div>
 
           {assets.length === 0 ? (
             <EmptyState

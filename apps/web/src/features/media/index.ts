@@ -9,9 +9,11 @@ export { LibraryScreen } from './components/library-screen';
 export type { LibraryScreenProps, LibraryStatus } from './components/library-screen';
 export { MediaDetail } from './components/media-detail';
 export { mediaAssetFromApi } from './state/from-api';
+export { mediaPolicyLimits } from './state/media-policy';
 export { MediaPickerDialog } from './components/media-picker-dialog';
 export { PictureEditor } from './components/picture-editor';
 export { UploadPanel } from './components/upload-panel';
+export { MediaPolicyNotice } from './components/media-policy-notice';
 export { AltTextForm } from './components/alt-text-form';
 export { RightsForm } from './components/rights-form';
 
