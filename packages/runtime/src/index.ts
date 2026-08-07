@@ -13,7 +13,11 @@ export {
   type ApplicationRuntimeOptions,
   type RuntimeAdapterOverrides,
 } from './runtime';
-export { createVerifiedConnectorRegistry, VerifiedConnectorRegistry } from './verified-connectors';
+export {
+  buildVerifiedOAuthAuthorizationUrl,
+  createVerifiedConnectorRegistry,
+  VerifiedConnectorRegistry,
+} from './verified-connectors';
 export { NeonObjectStorage, base64ChecksumToHex, type NeonStorageOptions } from './neon-storage';
 export { LocalDataExportEncryption } from './data-export-encryption';
 export {

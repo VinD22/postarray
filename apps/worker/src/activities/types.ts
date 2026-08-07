@@ -8,6 +8,8 @@ import type {
   RuleActionKind,
   WebhookEventName,
 } from '@relay/contracts';
+import { approvalLevelSchema, creationSurfaceSchema, localeSchema } from '@relay/contracts';
+import { z } from 'zod';
 
 /**
  * The activity surface.
@@ -33,6 +35,23 @@ export interface ActivityContext {
   readonly approvalLevel: ApprovalLevel;
   readonly locale: string;
 }
+
+/**
+ * Activity inputs arrive from Temporal, so the TypeScript shape is not a
+ * runtime trust boundary. Keep the context schema next to the contract and
+ * let the activity wrapper parse it before it establishes ambient tenancy.
+ */
+export const activityContextSchema = z
+  .object({
+    workspaceId: z.string().min(1).max(255),
+    correlationId: z.string().min(1).max(255),
+    actorId: z.string().min(1).max(255),
+    actorType: z.enum(['user', 'service_account', 'oauth_app', 'system']),
+    surface: creationSurfaceSchema,
+    approvalLevel: approvalLevelSchema,
+    locale: localeSchema,
+  })
+  .strict();
 
 // ---------------------------------------------------------------------------
 // Preflight and revalidation

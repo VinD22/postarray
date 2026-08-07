@@ -1,4 +1,4 @@
-import { RelayError, type ErrorCode } from '@relay/contracts';
+import { ERROR_CODES, RelayError, idempotencyKeySchema, type ErrorCode } from '@relay/contracts';
 import {
   createLogger,
   productMetrics,
@@ -8,7 +8,12 @@ import {
 } from '@relay/observability';
 import { ApplicationFailure } from '@temporalio/common';
 
-import type { ActivityContext, ActivityName, WorkerActivities } from './types';
+import {
+  activityContextSchema,
+  type ActivityContext,
+  type ActivityName,
+  type WorkerActivities,
+} from './types';
 import { nowMs } from '../runtime/clock';
 
 /**
@@ -44,6 +49,55 @@ interface WithContext {
   readonly ctx: ActivityContext;
 }
 
+const IDEMPOTENT_ACTIVITY_NAMES = new Set<ActivityName>([
+  'beginPublishAttempt',
+  'createOccurrenceJob',
+]);
+
+function invalidActivityBoundary(reason: string): RelayError {
+  return new RelayError(ERROR_CODES.VALIDATION_FAILED, {
+    messageKey: 'error.request_invalid.message',
+    details: { reason },
+  });
+}
+
+/** Parse the context before logging or establishing workspace ambient state. */
+export function parseActivityContext(value: unknown): ActivityContext {
+  const parsed = activityContextSchema.safeParse(value);
+  if (!parsed.success) {
+    throw invalidActivityBoundary('activity_context_invalid');
+  }
+  return parsed.data;
+}
+
+function activityContextOf(value: unknown): ActivityContext {
+  if (typeof value !== 'object' || value === null) {
+    throw invalidActivityBoundary('activity_input_invalid');
+  }
+  return parseActivityContext(Reflect.get(value, 'ctx'));
+}
+
+/**
+ * Every activity that can create a durable or external operation must carry a
+ * valid idempotency key before it reaches a gateway. This is a second line of
+ * defence for Temporal inputs. The application service remains authoritative
+ * for the request fingerprint and workspace-scoped persistence.
+ */
+function validateActivityBoundary(name: ActivityName, input: unknown): ActivityContext {
+  const context = activityContextOf(input);
+  if (!IDEMPOTENT_ACTIVITY_NAMES.has(name)) {
+    return context;
+  }
+  if (typeof input !== 'object' || input === null) {
+    throw invalidActivityBoundary('activity_input_invalid');
+  }
+  const key = Reflect.get(input, 'idempotencyKey');
+  if (!idempotencyKeySchema.safeParse(key).success) {
+    throw invalidActivityBoundary('activity_idempotency_key_invalid');
+  }
+  return context;
+}
+
 function toApplicationFailure(name: ActivityName, error: unknown): ApplicationFailure {
   const relay = RelayError.fromUnknown(error);
   return ApplicationFailure.create({
@@ -67,18 +121,25 @@ function wrap<TInput extends WithContext, TOutput>(
   const logger = deps.logger ?? createLogger({ service: deps.service ?? 'worker' });
   return async (input: TInput): Promise<TOutput> => {
     const started = nowMs();
+    let context: ActivityContext;
+    try {
+      context = validateActivityBoundary(name, input);
+    } catch (error: unknown) {
+      throw toApplicationFailure(name, error);
+    }
+    const normalizedInput = { ...input, ctx: context } as TInput;
     return runWithContext(
       {
-        correlationId: input.ctx.correlationId,
-        workspaceId: input.ctx.workspaceId,
-        actor: { type: input.ctx.actorType, id: input.ctx.actorId },
-        surface: input.ctx.surface,
+        correlationId: context.correlationId,
+        workspaceId: context.workspaceId,
+        actor: { type: context.actorType, id: context.actorId },
+        surface: context.surface,
         attributes: { activity: name },
       },
       async () =>
         withSpan(`activity.${name}`, { activity: name }, async () => {
           try {
-            const result = await implementation(input);
+            const result = await implementation(normalizedInput);
             logger.debug({ activity: name, durationMs: nowMs() - started }, 'activity.ok');
             return result;
           } catch (error: unknown) {
