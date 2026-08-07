@@ -2,9 +2,13 @@ import { describe, expect, it } from 'vitest';
 import { newIdFor } from '@relay/contracts';
 
 import { MemoryKeyValueStore } from '../../runtime/redis-key-value-store';
-import { OAuthTransactionStore, OAUTH_TRANSACTION_TTL_SECONDS } from './oauth-transaction.store';
+import {
+  OAuthTransactionStore,
+  OAUTH_TRANSACTION_TTL_SECONDS,
+  type OAuthTransaction,
+} from './oauth-transaction.store';
 
-const transaction = {
+const transaction: OAuthTransaction = {
   transactionId: 'oauth_01H00000000000000000000000',
   provider: 'bluesky' as const,
   state: 'state-value-1234567890',
@@ -12,7 +16,7 @@ const transaction = {
   brandId: newIdFor('brand'),
   actorId: newIdFor('user'),
   actorType: 'user' as const,
-  scopes: ['connections:admin'] as const,
+  scopes: ['connections:admin'],
   approvalLevel: 'level_3_confirm' as const,
   locale: 'en' as const,
   correlationId: 'corr-oauth-1',
