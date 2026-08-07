@@ -1,3 +1,5 @@
+import { RelayError } from '@relay/contracts';
+
 import type { WorkerActivities } from '../../activities/types';
 import { MESSAGE_KEYS } from '../../messages';
 import { stableSort, toIsoInstant } from '../../runtime/deterministic';
@@ -96,6 +98,12 @@ export async function runDataDeletion(
       if (cursor === null) {
         break;
       }
+    }
+    if (cursor !== null) {
+      throw new RelayError('PROVIDER_UNAVAILABLE', {
+        messageKey: 'errors.provider_unavailable',
+        details: { operation: 'delete_stored_objects', reason: 'page_limit_reached' },
+      });
     }
   }
 

@@ -314,6 +314,14 @@ export function createDataDeletionService(deps: ServiceDeps): DataDeletionServic
       const ctx = systemContext(input.ctx);
       const executedAt = completedAt(input.completedAt);
       await runInWorkspace(deps, ctx, async (db, actor) => {
+        // A storage delete can succeed immediately before a database retryable
+        // failure. The page will then be absent on the retry, so the final
+        // workspace sweep closes that accounting gap for every media row.
+        await db.mediaAsset.updateMany({
+          where: { workspaceId: ctx.workspaceId, storageDeletedAt: null },
+          data: { deletedAt: executedAt, storageDeletedAt: executedAt },
+        });
+        await db.mediaDerivative.deleteMany({ where: { workspaceId: ctx.workspaceId } });
         await db.socialCredential.deleteMany({ where: { workspaceId: ctx.workspaceId } });
         await db.apiKey.deleteMany({ where: { workspaceId: ctx.workspaceId } });
         await db.serviceAccount.deleteMany({ where: { workspaceId: ctx.workspaceId } });
