@@ -9,7 +9,10 @@ import { approvalsApi, contentApi } from './content';
 describe('browser content and approval resource contracts', () => {
   beforeEach(() => {
     callMock.mockReset();
-    callMock.mockResolvedValue({ data: [], pageInfo: { nextCursor: null, hasMore: false, limit: 25 } });
+    callMock.mockResolvedValue({
+      data: [],
+      pageInfo: { nextCursor: null, hasMore: false, limit: 25 },
+    });
   });
 
   it('uses the canonical content read route needed by approval review', async () => {
@@ -40,12 +43,7 @@ describe('browser content and approval resource contracts', () => {
       'idem-decision',
     );
 
-    expect(callMock).toHaveBeenNthCalledWith(
-      1,
-      '/approvals/approval_01',
-      {},
-      expect.any(Function),
-    );
+    expect(callMock).toHaveBeenNthCalledWith(1, '/approvals/approval_01', {}, expect.any(Function));
     expect(callMock).toHaveBeenNthCalledWith(
       2,
       '/approvals',

@@ -233,7 +233,7 @@ describe('evaluateEntitlement', () => {
   it('denies an eleventh channel and never disconnects one', () => {
     const decision = evaluateEntitlement(subscription(), 'connect_channel', {
       now: NOW,
-        activeChannelCount: 10,
+      activeChannelCount: 10,
     });
     expect(decision.effect).toBe('deny');
     expect(decision.reason).toBe('channel_allowance_exceeded');

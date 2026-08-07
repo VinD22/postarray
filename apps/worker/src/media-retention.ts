@@ -1,9 +1,5 @@
 import type { Clock, MediaService } from '@relay/application';
-import {
-  serviceRoleClaims,
-  withRlsContext,
-  type RelayPrismaClient,
-} from '@relay/database';
+import { serviceRoleClaims, withRlsContext, type RelayPrismaClient } from '@relay/database';
 import type { Logger } from '@relay/observability';
 
 export const MEDIA_RETENTION_SWEEP_INTERVAL_MS = 60 * 60 * 1_000;

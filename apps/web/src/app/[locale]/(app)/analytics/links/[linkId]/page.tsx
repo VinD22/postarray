@@ -10,10 +10,5 @@ export default async function TrackedLinkPage({
 }): Promise<ReactElement> {
   const { linkId } = await params;
   const session = await requireSession(`/analytics/links/${linkId}`);
-  return (
-    <LinkDetailScreen
-      linkId={linkId}
-      ianaTimeZone={session.workspace.timeZone}
-    />
-  );
+  return <LinkDetailScreen linkId={linkId} ianaTimeZone={session.workspace.timeZone} />;
 }

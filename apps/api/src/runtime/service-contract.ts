@@ -8,12 +8,16 @@ type MethodNames<Value> = {
 
 type MissingMethods = {
   [Service in keyof ApiServices]: Service extends keyof ApplicationServices
-    ? Exclude<MethodNames<ApiServices[Service]>, MethodNames<ApplicationServices[Service]>> extends never
+    ? Exclude<
+        MethodNames<ApiServices[Service]>,
+        MethodNames<ApplicationServices[Service]>
+      > extends never
       ? never
       : `${Service & string}.${Exclude<
           MethodNames<ApiServices[Service]>,
           MethodNames<ApplicationServices[Service]>
-        > & string}`
+        > &
+          string}`
     : `${Service & string}.*`;
 }[keyof ApiServices];
 

@@ -3,7 +3,7 @@ export const connectionMessages = {
   'connection.title': 'การเชื่อมต่อ',
   'connection.subtitle': 'บัญชี เพจ และช่องทางพื้นที่ทำงานนี้สามารถเผยแพร่ได้',
   'connection.add': 'เชื่อมต่อบัญชี',
-  "connection.count": "{used, plural, one {# active channel} other {# active channels}} of {limit}",
+  'connection.count': '{used, plural, one {# active channel} other {# active channels}} of {limit}',
   'connection.limitReached':
     'เวิร์กสเปซนี้ใช้แชนเนล {limit} ทั้งหมด ตัดการเชื่อมต่อหนึ่งก่อนที่จะเชื่อมต่ออีกอันหนึ่ง',
   'connection.account.label': 'บัญชี',

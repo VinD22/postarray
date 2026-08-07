@@ -22,11 +22,7 @@ export interface ApiKeyDialogProps {
   readonly open: boolean;
   readonly saving: boolean;
   readonly onOpenChange: (open: boolean) => void;
-  readonly onSubmit: (input: {
-    name: string;
-    scopes: readonly Scope[];
-    password: string;
-  }) => void;
+  readonly onSubmit: (input: { name: string; scopes: readonly Scope[]; password: string }) => void;
 }
 
 const DEFAULT_SCOPES: readonly Scope[] = ['accounts:read', 'drafts:read', 'analytics:read'];

@@ -6,10 +6,12 @@ export const analyticsMessages = {
   'analytics.range.30d': '30 วันที่ผ่านมา',
   'analytics.range.90d': '90 วันที่ผ่านมา',
   'analytics.range.custom': 'ช่วงที่กำหนดเอง',
-  "analytics.range.limitedByProvider": "{provider} returns at most {days, plural, one {# day} other {# days}} of history for this account.",
+  'analytics.range.limitedByProvider':
+    '{provider} returns at most {days, plural, one {# day} other {# days}} of history for this account.',
   'analytics.account.select': 'เลือกบัญชี',
   'analytics.compareTo': 'เมื่อเทียบกับ {baseline}',
-  "analytics.baseline.trailingMedian": "your median of the previous {count, plural, one {# comparable post} other {# comparable posts}}",
+  'analytics.baseline.trailingMedian':
+    'your median of the previous {count, plural, one {# comparable post} other {# comparable posts}}',
   'analytics.metric.followers': 'ผู้ติดตาม',
   'analytics.metric.subscribers': 'สมาชิก',
   'analytics.metric.profileViews': 'การดูโปรไฟล์',

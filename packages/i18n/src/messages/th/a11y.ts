@@ -13,9 +13,11 @@ export const a11yMessages = {
   'a11y.announce.saveFailed': 'ไม่สามารถบันทึกฉบับร่างได้ ข้อความของคุณยังคงอยู่ที่นี่',
   'a11y.announce.offline': 'คุณออฟไลน์อยู่ การเปลี่ยนแปลงจะถูกเก็บไว้ในอุปกรณ์นี้',
   'a11y.announce.online': 'กลับมาออนไลน์อีกครั้ง',
-  "a11y.announce.validationCount": "{count, plural, =0 {No validation issues} one {# validation issue} other {# validation issues}}",
+  'a11y.announce.validationCount':
+    '{count, plural, =0 {No validation issues} one {# validation issue} other {# validation issues}}',
   'a11y.announce.validationCleared': 'ปัญหาการตรวจสอบความถูกต้องทั้งหมดได้รับการแก้ไขแล้ว',
-  "a11y.announce.targetSelected": "{account} selected. {count, plural, one {# target} other {# targets}} in total.",
+  'a11y.announce.targetSelected':
+    '{account} selected. {count, plural, one {# target} other {# targets}} in total.',
   'a11y.announce.targetOverridden': '{account} ตอนนี้มีเวอร์ชันของตัวเองแล้ว',
   'a11y.announce.targetReset': '{account} รีเซ็ตเป็นแบบร่างหลัก',
   'a11y.announce.uploadProgress': '{name}, {percent} อัปโหลดแล้ว',
@@ -24,14 +26,17 @@ export const a11yMessages = {
   'a11y.announce.scheduled': 'กำหนดไว้สำหรับ {time} ใน {timeZone}',
   'a11y.announce.rescheduled': 'ย้ายไปที่ {time} ใน {timeZone}',
   'a11y.announce.publishing': 'การเผยแพร่',
-  "a11y.announce.published": "{count, plural, one {Published to # account} other {Published to # accounts}}",
-  "a11y.announce.publishPartial": "Published to {published} of {total} accounts. {failed, plural, one {# account needs attention} other {# accounts need attention}}.",
+  'a11y.announce.published':
+    '{count, plural, one {Published to # account} other {Published to # accounts}}',
+  'a11y.announce.publishPartial':
+    'Published to {published} of {total} accounts. {failed, plural, one {# account needs attention} other {# accounts need attention}}.',
   'a11y.announce.publishFailed': 'การเผยแพร่ล้มเหลว เนื้อหาของคุณจะถูกเก็บรักษาไว้',
   'a11y.announce.approvalRequested': 'ขออนุมัติจาก {approver}',
   'a11y.announce.approved': 'อนุมัติแล้ว',
   'a11y.announce.connectionAdded': 'เชื่อมต่อแล้ว {account}',
   'a11y.announce.connectionRemoved': '{account} ถูกตัดการเชื่อมต่อ',
-  "a11y.announce.filterApplied": "{count, plural, =0 {Filters cleared} one {# filter applied} other {# filters applied}}, {results, plural, one {# result} other {# results}}",
+  'a11y.announce.filterApplied':
+    '{count, plural, =0 {Filters cleared} one {# filter applied} other {# filters applied}}, {results, plural, one {# result} other {# results}}',
   'a11y.announce.pageChanged': '{title}',
   'a11y.announce.copiedToClipboard': 'คัดลอกไปยังคลิปบอร์ดแล้ว',
   'a11y.announce.suggestionApplied': 'ใช้คำแนะนำแล้ว',
@@ -47,7 +52,8 @@ export const a11yMessages = {
   'a11y.label.mediaPreview': 'การแสดงตัวอย่าง {name}',
   'a11y.label.playVideo': 'เล่น {name}',
   'a11y.label.pauseVideo': 'หยุดชั่วคราว {name}',
-  "a11y.label.calendarCell": "{date}, {count, plural, =0 {nothing scheduled} one {# post} other {# posts}}",
+  'a11y.label.calendarCell':
+    '{date}, {count, plural, =0 {nothing scheduled} one {# post} other {# posts}}',
   'a11y.label.postSummary': '{account} บน {provider}, {state}, {time}',
   'a11y.label.characterCount': '{used} จาก {limit} อักขระที่ใช้',
   'a11y.label.requiredField': 'จำเป็น',

@@ -103,10 +103,7 @@ class ApplicationKvAdapter implements ApplicationKeyValueStore {
     }
     let value = 0;
     for (let index = 0; index < amount; index += 1) {
-      value = await this.edge.increment(
-        key,
-        ttlSeconds === undefined ? undefined : { ttlSeconds },
-      );
+      value = await this.edge.increment(key, ttlSeconds === undefined ? undefined : { ttlSeconds });
     }
     return value;
   }

@@ -9,7 +9,10 @@ import { auditApi, billingApi, healthApi, membersApi, workspacesApi } from './co
 describe('browser core resource contracts', () => {
   beforeEach(() => {
     callMock.mockReset();
-    callMock.mockResolvedValue({ data: [], pageInfo: { nextCursor: null, hasMore: false, limit: 25 } });
+    callMock.mockResolvedValue({
+      data: [],
+      pageInfo: { nextCursor: null, hasMore: false, limit: 25 },
+    });
   });
 
   it('uses workspace-scoped member and invitation routes', async () => {
@@ -69,12 +72,7 @@ describe('browser core resource contracts', () => {
       hourCycle: 'h23',
     });
 
-    expect(callMock).toHaveBeenNthCalledWith(
-      1,
-      '/workspaces/ws_01',
-      {},
-      expect.any(Function),
-    );
+    expect(callMock).toHaveBeenNthCalledWith(1, '/workspaces/ws_01', {}, expect.any(Function));
     expect(callMock).toHaveBeenNthCalledWith(
       2,
       '/workspaces/ws_01',
@@ -96,10 +94,7 @@ describe('browser core resource contracts', () => {
       { interval: 'annual', returnUrl: 'https://app.example.test/settings/billing' },
       'idem-checkout',
     );
-    await billingApi.getPortalLink(
-      'https://app.example.test/settings/billing',
-      'idem-portal',
-    );
+    await billingApi.getPortalLink('https://app.example.test/settings/billing', 'idem-portal');
     await auditApi.list({ actorId: 'service_account_01' });
 
     expect(callMock.mock.calls.map((entry) => entry[0])).toEqual([

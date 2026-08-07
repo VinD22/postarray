@@ -81,10 +81,7 @@ export const brandsApi = {
   update: (
     brandId: string,
     input: Partial<
-      Pick<
-        BrandView,
-        'name' | 'voice' | 'audience' | 'approvedClaims' | 'blockedTerms' | 'domains'
-      >
+      Pick<BrandView, 'name' | 'voice' | 'audience' | 'approvedClaims' | 'blockedTerms' | 'domains'>
     >,
   ): Promise<BrandView> =>
     call(`/brands/${brandId}`, { method: 'PATCH', body: input }, () => ({
@@ -97,7 +94,10 @@ export const brandsApi = {
 
 export const workspacesApi = {
   list: (): Promise<readonly ApplicationWorkspaceView[]> =>
-    call<{ readonly data: readonly ApplicationWorkspaceView[] }, readonly ApplicationWorkspaceView[]>(
+    call<
+      { readonly data: readonly ApplicationWorkspaceView[] },
+      readonly ApplicationWorkspaceView[]
+    >(
       '/workspaces',
       {},
       () => [],
@@ -216,11 +216,7 @@ export const membersApi = {
   remove: (memberId: string): Promise<void> =>
     call(`/workspaces/current/members/${memberId}`, { method: 'DELETE' }, () => undefined),
   revokeInvitation: (invitationId: string): Promise<void> =>
-    call(
-      `/workspaces/current/invitations/${invitationId}`,
-      { method: 'DELETE' },
-      () => undefined,
-    ),
+    call(`/workspaces/current/invitations/${invitationId}`, { method: 'DELETE' }, () => undefined),
 };
 
 export const billingApi = {
@@ -255,7 +251,12 @@ export const billingApi = {
       (result) => result,
     ),
   getUsage: (): Promise<UsageView> =>
-    call<UsageSummaryView, UsageView>('/billing/usage', {}, () => demoUsage, (usage) => usage),
+    call<UsageSummaryView, UsageView>(
+      '/billing/usage',
+      {},
+      () => demoUsage,
+      (usage) => usage,
+    ),
 };
 
 export const auditApi = {

@@ -13,10 +13,7 @@ export class AgentConfirmationsController {
 
   @Get(':id')
   @RequireScope('drafts:read')
-  get(
-    @Actor() actor: ActorContext,
-    @Param('id') id: string,
-  ): Promise<AgentConfirmationView> {
+  get(@Actor() actor: ActorContext, @Param('id') id: string): Promise<AgentConfirmationView> {
     return this.confirmations.get(actor, parseParams(agentConfirmationIdSchema, id));
   }
 
@@ -26,10 +23,7 @@ export class AgentConfirmationsController {
   @Idempotent()
   @RateLimit({ limit: 20, windowSeconds: 60, cost: 2 })
   @HttpCode(200)
-  approve(
-    @Actor() actor: ActorContext,
-    @Param('id') id: string,
-  ): Promise<AgentConfirmationView> {
+  approve(@Actor() actor: ActorContext, @Param('id') id: string): Promise<AgentConfirmationView> {
     return this.confirmations.approve(actor, parseParams(agentConfirmationIdSchema, id));
   }
 }

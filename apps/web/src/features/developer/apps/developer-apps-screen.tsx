@@ -20,7 +20,13 @@ import {
   TabsList,
   TabsTrigger,
 } from '@relay/design-system/primitives';
-import { ConfirmDialog, DefinitionList, EmptyState, Notice, PageHeader } from '@relay/design-system/patterns';
+import {
+  ConfirmDialog,
+  DefinitionList,
+  EmptyState,
+  Notice,
+  PageHeader,
+} from '@relay/design-system/patterns';
 import { useTranslations } from '@relay/i18n/react';
 
 import { SettingsPanel, SettingsStack } from '../../settings/components/section';
@@ -340,9 +346,7 @@ export function DeveloperAppsScreen(): ReactNode {
                                 </TableCaption>
                                 <TableHeader>
                                   <TableRow>
-                                    <TableHead scope="col">
-                                      {t('settings.members.title')}
-                                    </TableHead>
+                                    <TableHead scope="col">{t('settings.members.title')}</TableHead>
                                     <TableHead scope="col">
                                       {t('developer.ui.apps.grantColumn.scopes')}
                                     </TableHead>
@@ -379,7 +383,6 @@ export function DeveloperAppsScreen(): ReactNode {
                           )}
                         </AsyncBoundary>
                       </TabsContent>
-
                     </Tabs>
                   </>
                 )}

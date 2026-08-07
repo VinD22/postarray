@@ -240,9 +240,7 @@ export function PricePlanBlock({
         <MagneticButton asChild variant="primary" className="text-body-lg h-11 px-5">
           <Link href={ctaHref}>{ctaLabel}</Link>
         </MagneticButton>
-        <p className="text-body-md text-text-primary max-w-[46ch] leading-[1.6]">
-          {primaryNote}
-        </p>
+        <p className="text-body-md text-text-primary max-w-[46ch] leading-[1.6]">{primaryNote}</p>
         <p className="text-body-md text-text-tertiary max-w-[46ch] leading-[1.6]">
           {secondaryNote}
         </p>

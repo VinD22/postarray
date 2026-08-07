@@ -96,15 +96,11 @@ export function toApplicationConfirmationStore(
     },
 
     approve() {
-      return Promise.reject(
-        new ForbiddenError({ details: { reason: 'HUMAN_SESSION_REQUIRED' } }),
-      );
+      return Promise.reject(new ForbiddenError({ details: { reason: 'HUMAN_SESSION_REQUIRED' } }));
     },
 
     get() {
-      return Promise.reject(
-        new ForbiddenError({ details: { reason: 'HUMAN_SESSION_REQUIRED' } }),
-      );
+      return Promise.reject(new ForbiddenError({ details: { reason: 'HUMAN_SESSION_REQUIRED' } }));
     },
   };
 }

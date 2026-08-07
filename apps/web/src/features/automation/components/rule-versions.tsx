@@ -96,7 +96,10 @@ export function RuleVersions({ versions, onRestore }: RuleVersionsProps): ReactE
         correctly under `dir="rtl"` with no separate rule.
       */}
       <div className="relative ps-5">
-        <span aria-hidden="true" className="border-border-bold absolute inset-y-0 start-[3px] border-s-2" />
+        <span
+          aria-hidden="true"
+          className="border-border-bold absolute inset-y-0 start-[3px] border-s-2"
+        />
         <ol className="flex flex-col">
           {versions.map((version) => (
             <li
@@ -110,7 +113,7 @@ export function RuleVersions({ versions, onRestore }: RuleVersionsProps): ReactE
                   version.isCurrent ? 'bg-accent' : 'bg-surface-canvas',
                 )}
               />
-              <span className="ps-3 flex min-w-0 flex-wrap items-center gap-2">
+              <span className="flex min-w-0 flex-wrap items-center gap-2 ps-3">
                 <span className="text-body-md text-text-primary tabular-nums">
                   {`v${version.version}`}
                 </span>
@@ -125,7 +128,7 @@ export function RuleVersions({ versions, onRestore }: RuleVersionsProps): ReactE
                 </span>
               </span>
 
-              <span className="ps-3 flex shrink-0 gap-2 sm:ps-0">
+              <span className="flex shrink-0 gap-2 ps-3 sm:ps-0">
                 {version.isCurrent ? null : (
                   <>
                     <Button

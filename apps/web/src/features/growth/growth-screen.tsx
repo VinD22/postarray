@@ -3,11 +3,7 @@
 import { useMemo, useState, type ReactNode } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { Badge, TabsContent } from '@relay/design-system/primitives';
-import {
-  EmptyState,
-  Notice,
-  PageHeader,
-} from '@relay/design-system/patterns';
+import { EmptyState, Notice, PageHeader } from '@relay/design-system/patterns';
 import { useAnnouncer } from '@relay/design-system/hooks';
 import { useTranslations } from '@relay/i18n/react';
 
@@ -121,11 +117,7 @@ export function GrowthScreen(): ReactNode {
   }
 
   const step: 'intake' | 'confirm' | 'plan' =
-    profile.data == null
-      ? 'intake'
-      : profile.data.confirmedAt === null
-        ? 'confirm'
-        : 'plan';
+    profile.data == null ? 'intake' : profile.data.confirmedAt === null ? 'confirm' : 'plan';
 
   const stepNumber = step === 'intake' ? 1 : step === 'confirm' ? 2 : 3;
 

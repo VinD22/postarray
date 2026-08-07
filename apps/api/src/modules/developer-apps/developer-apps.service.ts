@@ -11,10 +11,7 @@ import type {
 } from '../../application/port';
 import { SERVICES } from '../../application/tokens';
 import { CredentialDirectory } from '../../security/credential-directory';
-import type {
-  CreateOAuthAppInput,
-  UpdateOAuthAppInput,
-} from './developer-apps.schemas';
+import type { CreateOAuthAppInput, UpdateOAuthAppInput } from './developer-apps.schemas';
 
 /**
  * Developer OAuth application management.

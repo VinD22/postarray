@@ -25,15 +25,12 @@ export function ApprovalVariantCard({
         <Badge tone="outline">{format.number(index + 1)}</Badge>
       </div>
 
-      <p className="max-w-3xl whitespace-pre-wrap text-body-md leading-7 text-text-primary">
+      <p className="text-body-md text-text-primary max-w-3xl leading-7 whitespace-pre-wrap">
         {variant.body}
       </p>
 
-      <dl className="grid gap-x-6 gap-y-3 border-t border-border-subtle pt-4 text-body-sm sm:grid-cols-2">
-        <VariantFact
-          term={t('approval.content.language')}
-          value={variant.locale}
-        />
+      <dl className="border-border-subtle text-body-sm grid gap-x-6 gap-y-3 border-t pt-4 sm:grid-cols-2">
+        <VariantFact term={t('approval.content.language')} value={variant.locale} />
         <VariantFact
           term={t('approval.content.media')}
           value={t('approval.content.mediaCount', { count: variant.mediaIds.length })}
@@ -67,11 +64,17 @@ export function ApprovalVariantCard({
   );
 }
 
-function VariantFact({ term, value }: { readonly term: string; readonly value: string }): ReactNode {
+function VariantFact({
+  term,
+  value,
+}: {
+  readonly term: string;
+  readonly value: string;
+}): ReactNode {
   return (
     <div className="min-w-0">
       <dt className="text-label text-text-tertiary">{term}</dt>
-      <dd className="mt-0.5 break-words text-text-primary">{value}</dd>
+      <dd className="text-text-primary mt-0.5 break-words">{value}</dd>
     </div>
   );
 }

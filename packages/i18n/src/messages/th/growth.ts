@@ -55,7 +55,7 @@ export const growthMessages = {
   'growth.fourWeek.help':
     'สิ่งเหล่านี้เป็นเพียงการสรุป ไม่ใช่โพสต์ตามกำหนดการ ยอมรับสิ่งที่คุณต้องการและกลายเป็นร่างธรรมดา',
   'growth.fourWeek.week': 'สัปดาห์ที่ {number}',
-  "growth.fourWeek.itemCount": "{count, plural, one {# brief} other {# briefs}}",
+  'growth.fourWeek.itemCount': '{count, plural, one {# brief} other {# briefs}}',
   'growth.fourWeek.targetAccounts': 'บัญชีที่แนะนำ',
   'growth.fourWeek.approvalNote': 'การอนุมัติยังคงมีผลเมื่อคุณกำหนดเวลา',
   'growth.ugc.title': 'แคมเปญ UGC',
@@ -119,5 +119,6 @@ export const growthMessages = {
   'growth.item.dismiss': 'ยกเลิก',
   'growth.item.dismissReason': 'เหตุผล',
   'growth.item.explain': 'เหตุใดจึงแนะนำสิ่งนี้',
-  "growth.item.evidence": "Based on {count, plural, one {# record you approved} other {# records you approved}}.",
+  'growth.item.evidence':
+    'Based on {count, plural, one {# record you approved} other {# records you approved}}.',
 } as const;

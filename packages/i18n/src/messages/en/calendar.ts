@@ -90,7 +90,8 @@ export const calendarMessages = {
   'approval.decision.changesRequestedBy': 'Changes requested by {name} on {date}',
   'approval.comment.label': 'Note for the author',
   'approval.comment.placeholder': 'Say what needs to change and why.',
-  'approval.comment.optional': 'Optional when approving. Required when requesting changes or rejecting.',
+  'approval.comment.optional':
+    'Optional when approving. Required when requesting changes or rejecting.',
   'approval.comment.required': 'Add a clear note so the author knows what to change.',
   'approval.content.title': 'Platform variants',
   'approval.content.master': 'Master draft',

@@ -1,7 +1,8 @@
 /** th beta catalog namespace. */
 export const validationMessages = {
   'validation.text_required.message': '{provider} ต้องการข้อความสำหรับโพสต์ประเภทนี้',
-  "validation.text_too_long.message": "{over, plural, one {# character over the limit for {account}} other {# characters over the limit for {account}}}",
+  'validation.text_too_long.message':
+    '{over, plural, one {# character over the limit for {account}} other {# characters over the limit for {account}}}',
   'validation.text_too_long.hint': '{provider} อนุญาต {limit} อักขระสำหรับบัญชีนี้',
   'validation.text_too_short.message': '{provider} ต้องมีอักขระอย่างน้อย {min} ตัวที่นี่',
   'validation.title_required.message': '{provider} ต้องมีชื่อ',
@@ -9,7 +10,8 @@ export const validationMessages = {
   'validation.description_too_long.message': 'คำอธิบายมีความยาวเกินขีดจำกัดอักขระ {limit} ตัว',
   'validation.media_required.message':
     '{provider} ต้องมีรูปภาพหรือวิดีโออย่างน้อยหนึ่งภาพสำหรับโพสต์ประเภทนี้',
-  "validation.media_count_exceeded.message": "{provider} accepts at most {limit, plural, one {# file} other {# files}} here. This post has {count}.",
+  'validation.media_count_exceeded.message':
+    '{provider} accepts at most {limit, plural, one {# file} other {# files}} here. This post has {count}.',
   'validation.media_type_unsupported.message': '{provider} ไม่ยอมรับไฟล์ {mimeType}',
   'validation.media_aspect_ratio_unsupported.message':
     'ไฟล์นี้คือ {actual} {provider} ต้องมีอัตราส่วนระหว่าง {min} และ {max}',
@@ -24,13 +26,15 @@ export const validationMessages = {
   'validation.media_file_too_large.message': 'ไฟล์นี้คือ {actual} {provider} ยอมรับได้ถึง {limit}',
   'validation.media_mixed_types_unsupported.message':
     '{provider} ไม่สามารถเผยแพร่รูปภาพและวิดีโอในโพสต์เดียวกันได้',
-  "validation.alt_text_missing.message": "Alt text is missing on {count, plural, one {# image} other {# images}}.",
+  'validation.alt_text_missing.message':
+    'Alt text is missing on {count, plural, one {# image} other {# images}}.',
   'validation.alt_text_missing.hint': 'อธิบายภาพหรือทำเครื่องหมายเป็นการตกแต่ง',
   'validation.thumbnail_unsupported.message': '{provider} ไม่ยอมรับภาพขนาดย่อที่กำหนดเองที่นี่',
   'validation.destination_required.message': 'เลือกว่าจะเผยแพร่ที่ใดใน {provider}',
   'validation.destination_unsupported.message':
     '{destination} ไม่ยอมรับการโพสต์ประเภทนี้ใน {provider}',
-  "validation.mention_unresolved.message": "{count, plural, one {# mention has not been matched to a real account} other {# mentions have not been matched to real accounts}}.",
+  'validation.mention_unresolved.message':
+    '{count, plural, one {# mention has not been matched to a real account} other {# mentions have not been matched to real accounts}}.',
   'validation.mention_unresolved.hint':
     'เลือกบัญชีจากผลการค้นหา หรือลบการกล่าวถึง ข้อความธรรมดาจะไม่เผยแพร่เป็นแท็กเนทิฟ',
   'validation.hashtag_count_exceeded.message':
@@ -59,7 +63,8 @@ export const validationMessages = {
     'การอ้างสิทธิ์นี้ไม่อยู่ในการอ้างสิทธิ์ที่ได้รับอนุมัติสำหรับ {brand}',
   'validation.unsupported_claim.hint':
     'เพิ่มลงในคำกล่าวอ้างที่ได้รับอนุมัติพร้อมหลักฐาน หรือเปลี่ยนประโยคใหม่',
-  "validation.cadence_exceeded.message": "{account} would publish {count, plural, one {# time} other {# times}} that day, over the limit of {limit}.",
+  'validation.cadence_exceeded.message':
+    '{account} would publish {count, plural, one {# time} other {# times}} that day, over the limit of {limit}.',
   'validation.connection_paused.message': '{account} ถูกหยุดชั่วคราวและจะไม่เผยแพร่',
   'validation.account_type_invalid.message':
     '{account} ไม่ใช่ประเภทบัญชี {provider} ที่จำเป็นสำหรับประเภทโพสต์นี้',
@@ -67,8 +72,9 @@ export const validationMessages = {
   'validation.severity.warning': 'ตรวจสอบสิ่งนี้',
   'validation.severity.info': 'สำหรับข้อมูลของคุณ',
   'validation.field.required': 'ต้องระบุข้อมูลในช่องนี้',
-  "validation.field.tooShort": "Use at least {min, plural, one {# character} other {# characters}}.",
-  "validation.field.tooLong": "Use at most {max, plural, one {# character} other {# characters}}.",
+  'validation.field.tooShort':
+    'Use at least {min, plural, one {# character} other {# characters}}.',
+  'validation.field.tooLong': 'Use at most {max, plural, one {# character} other {# characters}}.',
   'validation.field.invalidEmail': 'ป้อนที่อยู่อีเมลที่ถูกต้อง',
   'validation.field.invalidUrl': 'ป้อน URL แบบเต็ม รวมถึง https',
   'validation.field.invalidDate': 'ป้อนวันที่ที่ถูกต้อง',

@@ -86,8 +86,7 @@ export const validationMessages = {
     'Very similar content is already scheduled or published for {account} within {window}.',
   'validation.similar_within_window.message':
     'Very similar content was published to this account within the last {windowHours} hours.',
-  'validation.cross_account_similarity.message':
-    'Another selected account has very similar text.',
+  'validation.cross_account_similarity.message': 'Another selected account has very similar text.',
   'validation.cross_account_similarity.remediation':
     'Adjust one version so each account receives a platform-native post.',
   'validation.link_malformed.message': 'A link is incomplete or malformed. Enter a full https URL.',

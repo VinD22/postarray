@@ -13,10 +13,7 @@ export class ActionCenterController {
 
   @Get()
   @RequireScope('drafts:read')
-  list(
-    @Actor() actor: ActorContext,
-    @Query() query: unknown,
-  ): Promise<Paginated<ActionItemView>> {
+  list(@Actor() actor: ActorContext, @Query() query: unknown): Promise<Paginated<ActionItemView>> {
     return this.actionCenter.list(actor, parseQuery(actionCenterQuerySchema, query));
   }
 

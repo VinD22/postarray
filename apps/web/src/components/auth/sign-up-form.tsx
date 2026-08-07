@@ -10,11 +10,7 @@ import { cn } from '@relay/design-system/utils';
 
 import { ApiError, api, newIdempotencyKey } from '@/lib/api';
 import { useLocalizedRouter, useTranslations } from '@/lib/i18n';
-import {
-  LEGAL_VERSION,
-  PRIVACY_VERSION_HASH,
-  TERMS_VERSION_HASH,
-} from '@/lib/legal-versions';
+import { LEGAL_VERSION, PRIVACY_VERSION_HASH, TERMS_VERSION_HASH } from '@/lib/legal-versions';
 
 const MIN_PASSWORD_LENGTH = 12;
 

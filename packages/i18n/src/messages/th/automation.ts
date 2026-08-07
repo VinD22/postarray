@@ -58,8 +58,10 @@ export const automationMessages = {
   'automation.action.repost': 'โพสต์ใหม่หรืออ้างอิงโพสต์ต้นฉบับหนึ่งครั้ง',
   'automation.action.followUpFromAccount': 'เผยแพร่การติดตามผลที่เตรียมไว้จาก {account}',
   'automation.preflight.title': 'ก่อนที่คุณจะเปิดสวิตช์นี้',
-  "automation.preflight.accounts": "This rule can act on {count, plural, one {# account} other {# accounts}}.",
-  "automation.preflight.maxActions": "It can create at most {count, plural, one {# external action} other {# external actions}} per run.",
+  'automation.preflight.accounts':
+    'This rule can act on {count, plural, one {# account} other {# accounts}}.',
+  'automation.preflight.maxActions':
+    'It can create at most {count, plural, one {# external action} other {# external actions}} per run.',
   'automation.preflight.approval': 'ทุกการเผยแพร่ยังคงติดตาม {policy}',
   'automation.preflight.providerLimits': 'ข้อจำกัดของผู้ให้บริการที่ใช้',
   'automation.preflight.estimatedCost': 'ต้นทุนต่อการใช้งานโดยประมาณโดยประมาณ: {amount}',
@@ -68,7 +70,8 @@ export const automationMessages = {
   'automation.preflight.example': 'ตัวอย่างการรัน',
   'automation.threshold.windowRequired': 'เลือกหน้าต่างการวัด',
   'automation.threshold.cooldownRequired': 'เลือกคูลดาวน์ระหว่างการประหารชีวิต',
-  "automation.threshold.maxExecutions": "Runs at most {count, plural, one {# time} other {# times}} for each source post.",
+  'automation.threshold.maxExecutions':
+    'Runs at most {count, plural, one {# time} other {# times}} for each source post.',
   'automation.threshold.staleMetric':
     'หากเมตริกหายไปหรือเก่า กฎนี้จะไม่ทำงาน ค่าเริ่มต้นดังกล่าวจะปกป้องคุณจากการดำเนินการกับหมายเลขที่เราไม่สามารถยืนยันได้',
   'automation.rules.state.draft': 'ร่าง',

@@ -66,10 +66,7 @@ describe('browser authentication contract', () => {
       },
       'idem-signup',
     );
-    await authApi.sendMagicLink(
-      { identifier: 'person@example.test', locale: 'en' },
-      'idem-code',
-    );
+    await authApi.sendMagicLink({ identifier: 'person@example.test', locale: 'en' }, 'idem-code');
     await authApi.verifyOneTimeCode(
       { identifier: 'person@example.test', code: '123456' },
       'idem-verify',

@@ -1,10 +1,6 @@
 import { afterEach, describe, expect, it } from 'vitest';
 
-import {
-  initErrorReporting,
-  isErrorReportingEnabled,
-  shutdownErrorReporting,
-} from './errors';
+import { initErrorReporting, isErrorReportingEnabled, shutdownErrorReporting } from './errors';
 import { isTracingEnabled, shutdownTracing, startTracing } from './tracing';
 
 afterEach(async () => {

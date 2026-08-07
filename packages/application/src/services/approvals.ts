@@ -123,9 +123,7 @@ async function reload(db: Db, approvalId: string): Promise<ApprovalRequestView> 
 export function createApprovalService(deps: ServiceDeps): ApprovalService {
   return {
     async get(ctx: ActorContext, approvalId: string): Promise<ApprovalRequestView> {
-      return authorized(deps, ctx, 'content.read', undefined, async (db) =>
-        reload(db, approvalId),
-      );
+      return authorized(deps, ctx, 'content.read', undefined, async (db) => reload(db, approvalId));
     },
 
     async request(

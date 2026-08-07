@@ -1,7 +1,4 @@
-import {
-  IMAGE_UPLOAD_LIMIT_BYTES,
-  VIDEO_UPLOAD_LIMIT_BYTES,
-} from '@relay/contracts';
+import { IMAGE_UPLOAD_LIMIT_BYTES, VIDEO_UPLOAD_LIMIT_BYTES } from '@relay/contracts';
 import { describe, expect, it } from 'vitest';
 
 import { uploadLimitForMimeType } from './media';

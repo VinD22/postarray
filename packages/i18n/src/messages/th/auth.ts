@@ -21,10 +21,12 @@ export const authMessages = {
   'auth.username.help':
     'ชื่อผู้ใช้ลงชื่อเข้าใช้บัญชีอีเมลที่คุณมีอยู่ มันไม่เคยแทนที่รหัสผ่านของคุณ',
   'auth.magicLink.send': 'ส่งอีเมลลิงก์ลงชื่อเข้าใช้ให้ฉัน',
-  "auth.magicLink.sent": "If that address has an account, a sign in link is on its way. The link works once and expires in {minutes, plural, one {# minute} other {# minutes}}.",
+  'auth.magicLink.sent':
+    'If that address has an account, a sign in link is on its way. The link works once and expires in {minutes, plural, one {# minute} other {# minutes}}.',
   'auth.magicLink.checkEmail': 'ตรวจสอบอีเมลของคุณ',
   'auth.magicLink.resend': 'ส่งลิงค์อื่นมาครับ',
-  "auth.magicLink.resendIn": "You can send another link in {seconds, plural, one {# second} other {# seconds}}.",
+  'auth.magicLink.resendIn':
+    'You can send another link in {seconds, plural, one {# second} other {# seconds}}.',
   'auth.forgotPassword': 'ลืมรหัสผ่าน?',
   'auth.resetPassword.title': 'เลือกรหัสผ่านใหม่',
   'auth.resetPassword.sent': 'หากที่อยู่นั้นมีบัญชี คำแนะนำการรีเซ็ตกำลังดำเนินการอยู่',
@@ -60,6 +62,7 @@ export const authMessages = {
   'auth.verifyEmail.title': 'ยืนยันอีเมลของคุณ',
   'auth.verifyEmail.body': 'เราส่งลิงก์ยืนยันไปที่ {email}',
   'auth.verifyEmail.done': 'อีเมลของคุณได้รับการยืนยันแล้ว',
-  "auth.rateLimited": "Too many attempts. Try again in {minutes, plural, one {# minute} other {# minutes}}.",
+  'auth.rateLimited':
+    'Too many attempts. Try again in {minutes, plural, one {# minute} other {# minutes}}.',
   'auth.genericFailure': 'นั่นไม่ได้ผล ตรวจสอบรายละเอียดแล้วลองอีกครั้ง',
 } as const;

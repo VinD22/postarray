@@ -32,23 +32,19 @@ describe('launch truth', () => {
     expect(en['mediaLib.retention.limits']).toContain('500 MiB');
   });
 
-  it(
-    'forces changed capability claims through the reviewed beta fallback',
-    async () => {
-      for (const key of CAPABILITY_TRUTH_KEYS) {
-        expect(isBetaEnglishFallbackKey(key), key).toBe(true);
-      }
+  it('forces changed capability claims through the reviewed beta fallback', async () => {
+    for (const key of CAPABILITY_TRUTH_KEYS) {
+      expect(isBetaEnglishFallbackKey(key), key).toBe(true);
+    }
 
-      const locales = ACTIVE_LOCALE_CODES.filter((code) => code !== 'en');
-      const catalogs = await Promise.all(
-        locales.map(async (locale) => ({ locale, catalog: await loadCatalog(locale) })),
-      );
-      for (const { locale, catalog } of catalogs) {
-        for (const key of CAPABILITY_TRUTH_KEYS) {
-          expect(catalog[key], `${locale}:${key}`).toBeUndefined();
-        }
+    const locales = ACTIVE_LOCALE_CODES.filter((code) => code !== 'en');
+    const catalogs = await Promise.all(
+      locales.map(async (locale) => ({ locale, catalog: await loadCatalog(locale) })),
+    );
+    for (const { locale, catalog } of catalogs) {
+      for (const key of CAPABILITY_TRUTH_KEYS) {
+        expect(catalog[key], `${locale}:${key}`).toBeUndefined();
       }
-    },
-    20_000,
-  );
+    }
+  }, 20_000);
 });

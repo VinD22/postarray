@@ -4,12 +4,7 @@ import { useState, type ReactNode } from 'react';
 
 import { Link } from '@/components/link';
 import { ApiError } from '@/lib/api';
-import {
-  useApprovalRequest,
-  useContentItem,
-  useDecideApproval,
-  useMembers,
-} from '@/lib/api/hooks';
+import { useApprovalRequest, useContentItem, useDecideApproval, useMembers } from '@/lib/api/hooks';
 import { useFormatters, useTranslations } from '@/lib/i18n';
 
 import { useAnnouncer } from '@relay/design-system/hooks';
@@ -122,7 +117,9 @@ export function ApprovalReviewScreen({
         <ErrorState
           title={t('home.error.title')}
           description={t(
-            ApiError.is(contentQuery.error) ? contentQuery.error.actionKey : 'error.internal.action',
+            ApiError.is(contentQuery.error)
+              ? contentQuery.error.actionKey
+              : 'error.internal.action',
             ApiError.is(contentQuery.error) ? contentQuery.error.messageValues : {},
           )}
           onRetry={() => void contentQuery.refetch()}
@@ -161,7 +158,7 @@ export function ApprovalReviewScreen({
       />
 
       <div className="mx-auto flex w-full max-w-5xl flex-col gap-7 px-4 py-6 md:px-6 md:py-8">
-        <div className="flex flex-wrap items-center gap-x-3 gap-y-2 text-body-sm text-text-secondary">
+        <div className="text-body-sm text-text-secondary flex flex-wrap items-center gap-x-3 gap-y-2">
           <Badge tone={approval.state === 'requested' ? 'warning' : 'neutral'}>
             {t(`state.approval.${approval.state}.label`)}
           </Badge>
@@ -189,7 +186,7 @@ export function ApprovalReviewScreen({
             <h2 id="approval-author-note" className="text-title-sm text-text-primary">
               {t('approval.noteFromAuthor')}
             </h2>
-            <blockquote className="border-border-bold bg-blush-subtle border-s-4 px-4 py-3 text-body-md text-text-primary">
+            <blockquote className="border-border-bold bg-blush-subtle text-body-md text-text-primary border-s-4 px-4 py-3">
               {approval.note}
             </blockquote>
           </section>
@@ -197,7 +194,10 @@ export function ApprovalReviewScreen({
 
         <section aria-labelledby="approval-variants" className="flex flex-col gap-4">
           <div className="max-w-2xl">
-            <h2 id="approval-variants" className="text-title-md text-text-primary text-wrap-balance">
+            <h2
+              id="approval-variants"
+              className="text-title-md text-text-primary text-wrap-balance"
+            >
               {t('approval.content.title')}
             </h2>
           </div>
@@ -215,7 +215,7 @@ export function ApprovalReviewScreen({
             <h2 id="approval-decision" className="text-title-md text-text-primary">
               {t('approval.decision.title')}
             </h2>
-            <p className="mt-1 text-body-sm text-text-secondary">
+            <p className="text-body-sm text-text-secondary mt-1">
               {t('approval.decision.description')}
             </p>
           </div>
@@ -251,9 +251,7 @@ export function ApprovalReviewScreen({
                     ApiError.is(decisionMutation.error)
                       ? decisionMutation.error.actionKey
                       : 'error.internal.action',
-                    ApiError.is(decisionMutation.error)
-                      ? decisionMutation.error.messageValues
-                      : {},
+                    ApiError.is(decisionMutation.error) ? decisionMutation.error.messageValues : {},
                   )}
                 />
               ) : null}

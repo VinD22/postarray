@@ -75,10 +75,18 @@ describe('action center catalogue', () => {
       date: 'August 8, 2026 at 08:00',
     });
     expect(
-      formatActionItemValues({ ...item, values: { ...item.values, date: 'in 2 days' } }, format, 'Unavailable'),
+      formatActionItemValues(
+        { ...item, values: { ...item.values, date: 'in 2 days' } },
+        format,
+        'Unavailable',
+      ),
     ).toEqual({ account: 'Example account', date: 'in 2 days' });
     expect(
-      formatActionItemValues({ ...item, values: { ...item.values, date: 'unavailable' } }, format, 'Unavailable'),
+      formatActionItemValues(
+        { ...item, values: { ...item.values, date: 'unavailable' } },
+        format,
+        'Unavailable',
+      ),
     ).toEqual({ account: 'Example account', date: 'Unavailable' });
   });
 });

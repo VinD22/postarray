@@ -27,7 +27,8 @@ export const developerMessages = {
     'ตัวแทนสามารถกำหนดเวลาภายในบัญชี ชั่วโมง จังหวะ ภาษา โดเมน และมองไปข้างหน้าที่คุณตั้งไว้ สิ่งใดก็ตามที่อยู่นอกขอบเขตนั้นจำเป็นต้องมีบุคคล',
   'developer.approvalLevel.description.3':
     'การเผยแพร่ทันที บัญชีหรือโดเมนใหม่ การดำเนินการแบบกลุ่ม เนื้อหาที่ละเอียดอ่อน หรือการตั้งค่าความเป็นส่วนตัวที่เปลี่ยนแปลง จะต้องได้รับการยืนยันอย่างชัดเจนจากบุคคลเสมอ',
-  "developer.bulkThreshold": "Bulk means more than {publications, plural, one {# external publication} other {# external publications}} in one request, or the same content to more than {accounts, plural, one {# account} other {# accounts}}.",
+  'developer.bulkThreshold':
+    'Bulk means more than {publications, plural, one {# external publication} other {# external publications}} in one request, or the same content to more than {accounts, plural, one {# account} other {# accounts}}.',
   'developer.credential.title': 'ข้อมูลรับรอง',
   'developer.credential.create': 'สร้างคีย์ API',
   'developer.credential.shownOnce':
@@ -93,7 +94,7 @@ export const developerMessages = {
   'developer.apps.status.disabled': 'ปิดการใช้งาน',
   'developer.apps.consentPreview': 'การแสดงตัวอย่างหน้าจอคำยินยอม',
   'developer.apps.grants.title': 'เงินช่วยเหลือที่ใช้งานอยู่',
-  "developer.apps.grants.count": "{count, plural, one {# grant} other {# grants}}",
+  'developer.apps.grants.count': '{count, plural, one {# grant} other {# grants}}',
   'developer.apps.deleteConfirm':
     'ลบแอปนี้ใช่ไหม เงินช่วยเหลือทุกรายการจะถูกเพิกถอนและโทเค็นจะหยุดทำงาน',
   'developer.consent.title': '{app} ต้องการเข้าถึงพื้นที่ทำงานของคุณ',

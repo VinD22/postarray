@@ -27,13 +27,15 @@ afterEach(() => {
 
 describe('NeonIdentityProvider', () => {
   it('parses a password session and retains only the opaque Neon session cookie', async () => {
-    const fetchMock = vi.fn().mockResolvedValue(
-      jsonResponse(
-        { user: { id: 'neon_user_01ABC', email: 'owner@example.test', emailVerified: true } },
-        200,
-        { 'set-cookie': `${SESSION_COOKIE}; Path=/; Secure; HttpOnly; SameSite=Lax` },
-      ),
-    );
+    const fetchMock = vi
+      .fn()
+      .mockResolvedValue(
+        jsonResponse(
+          { user: { id: 'neon_user_01ABC', email: 'owner@example.test', emailVerified: true } },
+          200,
+          { 'set-cookie': `${SESSION_COOKIE}; Path=/; Secure; HttpOnly; SameSite=Lax` },
+        ),
+      );
     vi.stubGlobal('fetch', fetchMock);
 
     await expect(
@@ -52,9 +54,11 @@ describe('NeonIdentityProvider', () => {
   it('fails closed when a successful response has no usable session', async () => {
     vi.stubGlobal(
       'fetch',
-      vi.fn().mockResolvedValue(
-        jsonResponse({ user: { id: 'neon_user_01ABC', email: 'owner@example.test' } }),
-      ),
+      vi
+        .fn()
+        .mockResolvedValue(
+          jsonResponse({ user: { id: 'neon_user_01ABC', email: 'owner@example.test' } }),
+        ),
     );
     await expect(
       provider().signInWithPassword({ email: 'owner@example.test', password: 'password' }),
@@ -66,11 +70,9 @@ describe('NeonIdentityProvider', () => {
       .fn()
       .mockResolvedValueOnce(jsonResponse({ success: true }))
       .mockResolvedValueOnce(
-        jsonResponse(
-          { user: { id: 'neon_user_01ABC', email: 'owner@example.test' } },
-          200,
-          { 'set-cookie': `${SESSION_COOKIE}; Path=/; Secure; HttpOnly` },
-        ),
+        jsonResponse({ user: { id: 'neon_user_01ABC', email: 'owner@example.test' } }, 200, {
+          'set-cookie': `${SESSION_COOKIE}; Path=/; Secure; HttpOnly`,
+        }),
       );
     vi.stubGlobal('fetch', fetchMock);
     const identity = provider();
@@ -100,7 +102,9 @@ describe('NeonIdentityProvider', () => {
     expect(() =>
       provider().enrollTotp({ userId: 'user_01', providerSessionId: SESSION_COOKIE }),
     ).toThrowError(
-      expect.objectContaining<Partial<RelayError>>({ code: ERROR_CODES.CAPABILITY_NOT_IMPLEMENTED }),
+      expect.objectContaining<Partial<RelayError>>({
+        code: ERROR_CODES.CAPABILITY_NOT_IMPLEMENTED,
+      }),
     );
   });
 

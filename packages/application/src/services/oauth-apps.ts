@@ -219,7 +219,8 @@ function assertRedirectUris(uris: readonly string[]): void {
     } catch {
       throw invalid('errors.oauth_redirect_invalid', { uri });
     }
-    const isLoopback = parsed.hostname === '127.0.0.1' || parsed.hostname === '[::1]' || parsed.hostname === '::1';
+    const isLoopback =
+      parsed.hostname === '127.0.0.1' || parsed.hostname === '[::1]' || parsed.hostname === '::1';
     if (parsed.protocol !== 'https:' && !isLoopback) {
       throw invalid('errors.oauth_redirect_insecure', { uri });
     }

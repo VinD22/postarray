@@ -1,12 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 import type { IanaTimeZone, IsoInstant, Paginated } from '@relay/contracts';
 
-import type {
-  ActorContext,
-  CalendarEntry,
-  PublishJobView,
-  Services,
-} from '../../application/port';
+import type { ActorContext, CalendarEntry, PublishJobView, Services } from '../../application/port';
 import { SERVICES } from '../../application/tokens';
 import type {
   CalendarQueryInput,

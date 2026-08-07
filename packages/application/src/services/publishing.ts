@@ -64,8 +64,7 @@ export function createPublishingService(
                   expectedTargetCount: aggregate.variants.length,
                   acknowledgedTargetCount: input.confirmation.acknowledgedTargetCount,
                   expectedVersionChecksum: aggregate.checksum,
-                  acknowledgedVersionChecksum:
-                    input.confirmation.acknowledgedVersionChecksum,
+                  acknowledgedVersionChecksum: input.confirmation.acknowledgedVersionChecksum,
                 });
               }
               for (const variant of aggregate.variants) {

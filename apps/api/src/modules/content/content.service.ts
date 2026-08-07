@@ -1,10 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
-import type {
-  Paginated,
-  PublishState,
-  ValidationResult,
-  VariantOverrides,
-} from '@relay/contracts';
+import type { Paginated, PublishState, ValidationResult, VariantOverrides } from '@relay/contracts';
 
 import type {
   ActorContext,

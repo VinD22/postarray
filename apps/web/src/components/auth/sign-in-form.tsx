@@ -165,7 +165,7 @@ export function SignInForm() {
                   /* Visual size is unchanged (`-my-3.5` cancels `py-3.5`);
                      the padding only grows the tap target to the DoD's 44px
                      minimum height (was 15.5px — WP-12 Lighthouse finding). */
-                  className="text-body-sm text-text-accent hover:underline -my-3.5 inline-block py-3.5"
+                  className="text-body-sm text-text-accent -my-3.5 inline-block py-3.5 hover:underline"
                 >
                   {t('auth.forgotPassword')}
                 </Link>
@@ -244,7 +244,7 @@ export function SignInForm() {
               loading={pending}
               loadingLabel={t('auth.submit.working')}
             >
-                {t('auth.otp.send')}
+              {t('auth.otp.send')}
             </Button>
           </form>
         </TabsContent>

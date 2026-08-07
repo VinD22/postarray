@@ -267,10 +267,7 @@ export function createAgentConfirmationService(deps: ServiceDeps): AgentConfirma
         }
         const before = await requireConfirmation(db, input.confirmationId);
         requireLive(before, deps.clock.now());
-        if (
-          before.oauthGrantId !== ctx.actorId ||
-          before.contentItemId !== input.contentItemId
-        ) {
+        if (before.oauthGrantId !== ctx.actorId || before.contentItemId !== input.contentItemId) {
           throw new ForbiddenError({
             details: { reason: 'CONFIRMATION_NOT_FOR_THIS_REQUEST' },
           });

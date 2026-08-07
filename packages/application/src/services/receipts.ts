@@ -186,9 +186,7 @@ function errorCode(value: string | null): PublicationReceipt['attempts'][number]
 }
 
 function responseEvidence(value: unknown): Readonly<Record<string, unknown>> {
-  return typeof value === 'object' && value !== null && !Array.isArray(value)
-    ? { ...value }
-    : {};
+  return typeof value === 'object' && value !== null && !Array.isArray(value) ? { ...value } : {};
 }
 
 function publishState(value: string): PublishState {
@@ -212,7 +210,10 @@ function publishState(value: string): PublishState {
   return states.includes(value as PublishState) ? (value as PublishState) : 'action_required';
 }
 
-function approvalState(policy: string, state: string | undefined): PublicationReceipt['approval']['state'] {
+function approvalState(
+  policy: string,
+  state: string | undefined,
+): PublicationReceipt['approval']['state'] {
   if (policy === 'none') {
     return 'not_required';
   }
@@ -255,8 +256,7 @@ export function receiptRowToView(row: ReceiptRow): PublicationReceiptView {
       ? {
           currency: estimateCurrency,
           estimatedMinor: estimate,
-          actualMinor:
-            row.costCurrency === estimateCurrency ? row.costActualMinor : null,
+          actualMinor: row.costCurrency === estimateCurrency ? row.costActualMinor : null,
           reconciledAt: row.lastAnalyticsSyncAt?.toISOString() ?? null,
         }
       : null;
@@ -283,10 +283,7 @@ export function receiptRowToView(row: ReceiptRow): PublicationReceiptView {
     publishedAt: row.publishedAt.toISOString(),
     creationSurface: fromStoredSurface(row.surface),
     approval: {
-      state: approvalState(
-        row.publishJob.approvalPolicy,
-        row.publishJob.approvalRequest?.state,
-      ),
+      state: approvalState(row.publishJob.approvalPolicy, row.publishJob.approvalRequest?.state),
       approvalId: row.publishJob.approvalRequest?.id ?? null,
       decidedBy: decision?.decidedByUserId ?? row.approvedByUserId,
       decidedAt: decision?.createdAt.toISOString() ?? null,
@@ -306,9 +303,7 @@ export function receiptRowToView(row: ReceiptRow): PublicationReceiptView {
         errorCode: errorCode(attempt.errorCode),
         retryable: classification === 'transient_provider',
         nextRetryAt:
-          classification === 'transient_provider'
-            ? toIso(row.publishJob.nextAttemptAt)
-            : null,
+          classification === 'transient_provider' ? toIso(row.publishJob.nextAttemptAt) : null,
         providerRequestId: attempt.providerRequestId,
         httpStatus: attempt.httpStatus,
         sanitizedResponse: responseEvidence(attempt.sanitizedResponse),

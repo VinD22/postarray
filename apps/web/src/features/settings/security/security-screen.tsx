@@ -67,11 +67,7 @@ export function SecurityScreen(): ReactNode {
 
   const createKey = useSettingsMutation({
     section,
-    mutationFn: async (input: {
-      name: string;
-      scopes: readonly Scope[];
-      password: string;
-    }) => {
+    mutationFn: async (input: { name: string; scopes: readonly Scope[]; password: string }) => {
       await api.auth.stepUpWithPassword(input.password);
       return securityGateway.createApiKey({ name: input.name, scopes: input.scopes });
     },

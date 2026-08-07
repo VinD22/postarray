@@ -90,10 +90,7 @@ export function ReceiptTimeline({ steps, provider }: ReceiptTimelineProps): Reac
                   {t(step.messageKey, formatValues(step, format))}
                 </p>
                 {step.at ? (
-                  <time
-                    dateTime={step.at}
-                    className="text-body-sm text-text-tertiary tabular-nums"
-                  >
+                  <time dateTime={step.at} className="text-body-sm text-text-tertiary tabular-nums">
                     {format.dateTime(step.at)}
                   </time>
                 ) : null}

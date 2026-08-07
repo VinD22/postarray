@@ -17,8 +17,10 @@ export const composerMessages = {
   'composer.contentLocale.help': 'ภาษาของโพสต์ สิ่งนี้แยกจากภาษาอินเทอร์เฟซของคุณ',
   'composer.market.label': 'ตลาดผู้ชม',
   'composer.targets.title': 'เป้าหมาย',
-  "composer.targets.count": "{count, plural, =0 {No accounts selected} one {# account} other {# accounts}}",
-  "composer.targets.publishSummary": "{count, plural, one {This will publish to # account} other {This will publish to # accounts}} {when, select, now {now} scheduled {at the scheduled time} other {}}",
+  'composer.targets.count':
+    '{count, plural, =0 {No accounts selected} one {# account} other {# accounts}}',
+  'composer.targets.publishSummary':
+    '{count, plural, one {This will publish to # account} other {This will publish to # accounts}} {when, select, now {now} scheduled {at the scheduled time} other {}}',
   'composer.targets.add': 'เพิ่มบัญชี',
   'composer.targets.empty': 'เลือกอย่างน้อยหนึ่งบัญชีที่จะเผยแพร่',
   'composer.targets.state.ready': 'พร้อม',
@@ -31,17 +33,20 @@ export const composerMessages = {
   'composer.targets.resetConfirm.title': 'รีเซ็ตเป้าหมายนี้เป็นฉบับร่างหลักใช่ไหม',
   'composer.targets.resetConfirm.body':
     'สำเนา สื่อ และการตั้งค่าที่คุณเปลี่ยนแปลงสำหรับ {account} จะถูกแทนที่ด้วยร่างหลัก เป้าหมายอื่นๆ จะไม่ได้รับผลกระทบ',
-  "composer.targets.divergence": "{count, plural, one {# target differs from the master draft} other {# targets differ from the master draft}}",
+  'composer.targets.divergence':
+    '{count, plural, one {# target differs from the master draft} other {# targets differ from the master draft}}',
   'composer.applyToAll.title': 'ใช้ได้กับทุกเป้าหมาย',
-  "composer.applyToAll.compatible": "{count, plural, one {# field is compatible with every selected target} other {# fields are compatible with every selected target}}",
-  "composer.applyToAll.incompatible": "{count, plural, one {# field cannot be applied and stays per target} other {# fields cannot be applied and stay per target}}",
+  'composer.applyToAll.compatible':
+    '{count, plural, one {# field is compatible with every selected target} other {# fields are compatible with every selected target}}',
+  'composer.applyToAll.incompatible':
+    '{count, plural, one {# field cannot be applied and stays per target} other {# fields cannot be applied and stay per target}}',
   'composer.applyToAll.creates': 'การใช้จะสร้างเวอร์ชันที่ชัดเจนสำหรับแต่ละเป้าหมาย',
   'composer.editor.label': 'โพสต์ข้อความ',
   'composer.editor.characterCount': '{used} จาก {limit} อักขระ',
   'composer.editor.characterCountOver': '{over} อักขระเกินขีดจำกัด {limit} อักขระ',
   'composer.editor.characterCountUnknown': 'จำนวนอักขระสูงสุดไม่พร้อมใช้งานสำหรับบัญชีนี้',
-  "composer.editor.remaining": "{count, plural, one {# character left} other {# characters left}}",
-  "composer.editor.hashtagCount": "{count, plural, one {# hashtag} other {# hashtags}}",
+  'composer.editor.remaining': '{count, plural, one {# character left} other {# characters left}}',
+  'composer.editor.hashtagCount': '{count, plural, one {# hashtag} other {# hashtags}}',
   'composer.editor.formatting': 'การจัดรูปแบบ',
   'composer.editor.emoji': 'อิโมจิ',
   'composer.editor.mention': 'กล่าวถึง',
@@ -64,7 +69,7 @@ export const composerMessages = {
   'composer.destination.refresh': 'รีเฟรชจุดหมายปลายทาง',
   'composer.destination.lastRefreshed': 'รีเฟรชจุดหมายปลายทางแล้ว {relativeTime}',
   'composer.media.title': 'สื่อ',
-  "composer.media.count": "{count, plural, one {# file} other {# files}}",
+  'composer.media.count': '{count, plural, one {# file} other {# files}}',
   'composer.media.dropHint': 'ลากไฟล์มาที่นี่หรือเรียกดูไลบรารีของคุณ',
   'composer.media.inheritFromMaster': 'การใช้สื่อหลัก',
   'composer.media.overridden': 'เป้าหมายนี้ใช้สื่อของตัวเอง',
@@ -93,13 +98,13 @@ export const composerMessages = {
   'composer.sequence.add': 'เพิ่มความคิดเห็นหรือรายการกระทู้',
   'composer.sequence.delayLabel': 'ความล่าช้าหลังจากรายการก่อนหน้า',
   'composer.sequence.delayImmediate': 'ทันที',
-  "composer.sequence.delayMinutes": "{count, plural, one {# minute} other {# minutes}}",
+  'composer.sequence.delayMinutes': '{count, plural, one {# minute} other {# minutes}}',
   'composer.sequence.delayCustom': 'ความล่าช้าที่กำหนดเอง',
   'composer.sequence.accountLabel': 'เผยแพร่รายการนี้เป็น',
   'composer.sequence.unsupported': 'บัญชีนี้ไม่รองรับรายการติดตามผลตามกำหนดการ',
   'composer.repeat.title': 'ทำซ้ำ',
   'composer.repeat.off': 'อย่าทำซ้ำ',
-  "composer.repeat.everyDays": "{count, plural, one {Every day} other {Every # days}}",
+  'composer.repeat.everyDays': '{count, plural, one {Every day} other {Every # days}}',
   'composer.repeat.endLabel': 'หยุดทำซ้ำ',
   'composer.repeat.endOnDate': 'ออกเดท',
   'composer.repeat.endAfterCount': 'หลังจากหลายกระทู้.',
@@ -123,7 +128,8 @@ export const composerMessages = {
   'composer.set.applied': 'ชุดประยุกต์ {name} แบบร่างนี้ขณะนี้ไม่ขึ้นอยู่กับชุด',
   'composer.validation.title': 'การตรวจสอบ',
   'composer.validation.clean': 'ไม่พบปัญหาสำหรับเป้าหมายที่เลือก',
-  "composer.validation.issueCount": "{count, plural, one {# issue} other {# issues}} across {targets, plural, one {# target} other {# targets}}",
+  'composer.validation.issueCount':
+    '{count, plural, one {# issue} other {# issues}} across {targets, plural, one {# target} other {# targets}}',
   'composer.validation.blocking': 'สิ่งนี้จะต้องได้รับการแก้ไขก่อนกำหนดเวลา',
   'composer.validation.warning': 'ตรวจสอบสิ่งนี้ก่อนที่จะเผยแพร่',
   'composer.validation.revalidated': 'ตรวจสอบอีกครั้งกับขีดจำกัดแพลตฟอร์มปัจจุบัน {relativeTime}',
@@ -136,7 +142,8 @@ export const composerMessages = {
   'composer.cost.estimate': '{provider} ประมาณ {amount} ของการใช้ API สำหรับโพสต์นี้',
   'composer.cost.linkSurcharge':
     '{provider} เรียกเก็บเงินเพิ่มสำหรับโพสต์ที่มี URL การนำลิงก์ออกจะทำให้ค่าประมาณลดลง',
-  "composer.cost.bulkWarning": "{count, plural, one {# publication} other {# publications}} in one action. Review the estimate before you continue.",
+  'composer.cost.bulkWarning':
+    '{count, plural, one {# publication} other {# publications}} in one action. Review the estimate before you continue.',
   'composer.cost.reconciled': 'การใช้งานจริงจะกระทบยอดหลังจากการเผยแพร่',
   'composer.cost.none': 'ไม่มีค่าใช้จ่ายของผู้ให้บริการแบบมิเตอร์สำหรับโพสต์นี้',
   'composer.autosave.saving': 'ประหยัด',
@@ -156,7 +163,7 @@ export const composerMessages = {
   'composer.ai.diffTitle': 'การเปลี่ยนแปลงที่เสนอ',
   'composer.ai.diffHelp': 'ไม่มีอะไรเปลี่ยนแปลงจนกว่าคุณจะยอมรับมัน',
   'composer.ai.working': 'กำลังทำงานอยู่',
-  "composer.ai.sources": "Based on {count, plural, one {# source} other {# sources}} you approved",
+  'composer.ai.sources': 'Based on {count, plural, one {# source} other {# sources}} you approved',
   'composer.ai.uncertain': 'วลีนี้ไม่เทียบเท่ากับ {language} ทบทวนกับเจ้าของภาษาก่อนเผยแพร่',
   'composer.schedule.title': 'กำหนดการ',
   'composer.schedule.dateLabel': 'วันที่',
@@ -173,5 +180,6 @@ export const composerMessages = {
   'composer.schedule.policyLabel': 'นโยบายการอนุมัติ',
   'composer.schedule.duplicateWarning':
     'เนื้อหาที่คล้ายกันถูกเผยแพร่ไปที่ {account} {relativeTime} การเผยแพร่อีกครั้งอาจเป็นการละเมิดกฎของแพลตฟอร์มเกี่ยวกับเนื้อหาที่ซ้ำกัน',
-  "composer.schedule.cadenceWarning": "{account} already has {count, plural, one {# post} other {# posts}} scheduled that day.",
+  'composer.schedule.cadenceWarning':
+    '{account} already has {count, plural, one {# post} other {# posts}} scheduled that day.',
 } as const;

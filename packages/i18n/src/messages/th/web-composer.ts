@@ -14,8 +14,9 @@ export const webComposerMessages = {
   'composerWeb.step.progress': 'ขั้นตอนที่ {current} จาก {total}',
   'composerWeb.step.legend': 'Composer ขั้นตอน',
   'composerWeb.summary.label': 'สรุปร่าง',
-  "composerWeb.summary.targets": "{count, plural, =0 {No targets} one {# target} other {# targets}}",
-  "composerWeb.summary.issues": "{count, plural, =0 {No issues} one {# issue} other {# issues}}",
+  'composerWeb.summary.targets':
+    '{count, plural, =0 {No targets} one {# target} other {# targets}}',
+  'composerWeb.summary.issues': '{count, plural, =0 {No issues} one {# issue} other {# issues}}',
   'composerWeb.summary.notScheduled': 'ไม่ได้เลือกเวลา',
   'composerWeb.summary.scheduledFor': '{time}',
   'composerWeb.summary.costUnknown': 'ต้นทุนยังไม่กำหนดราคา',
@@ -29,7 +30,8 @@ export const webComposerMessages = {
   'composerWeb.rail.openTarget': 'เปิดเวอร์ชันสำหรับ {account}',
   'composerWeb.rail.counter': '{used}/{limit}',
   'composerWeb.rail.counterUnknown': 'ไม่ทราบขีดจำกัด',
-  "composerWeb.rail.mediaCounter": "{count, plural, =0 {no media} one {# media file} other {# media files}}",
+  'composerWeb.rail.mediaCounter':
+    '{count, plural, =0 {no media} one {# media file} other {# media files}}',
   'composerWeb.rail.paused': 'หยุดชั่วคราว มันจะไม่เผยแพร่จนกว่าคุณจะดำเนินการต่อ',
   'composerWeb.rail.state.notBuilt': 'ยังไม่ได้สร้าง',
   'composerWeb.rail.state.unsupported': 'ผู้ให้บริการไม่สนับสนุน',
@@ -53,7 +55,8 @@ export const webComposerMessages = {
     '{account} อนุญาต {limit} อักขระ ข้อความนี้คือ {actual}',
   'composerWeb.globalEdit.reason.linkNotAllowed':
     '{account} ไม่ยอมรับลิงก์ในช่องนี้ ลิงก์จะยังคงอยู่ในแบบร่างหลักและในเป้าหมายที่อนุญาต',
-  "composerWeb.globalEdit.reason.mediaCountExceeded": "{account} accepts {limit, plural, one {# file} other {# files}}. This draft has {actual}.",
+  'composerWeb.globalEdit.reason.mediaCountExceeded':
+    '{account} accepts {limit, plural, one {# file} other {# files}}. This draft has {actual}.',
   'composerWeb.globalEdit.reason.mediaKindUnsupported': '{account} ไม่ยอมรับไฟล์ {mimeType}',
   'composerWeb.globalEdit.reason.threadUnsupported':
     '{account} ไม่สนับสนุนรายการติดตามผล ดังนั้นลำดับจึงยังคงอยู่ในแบบร่างหลัก',
@@ -62,9 +65,11 @@ export const webComposerMessages = {
   'composerWeb.globalEdit.adaptedPreview': 'สิ่งที่ {account} ได้รับแทน',
   'composerWeb.globalEdit.confirm': 'ใช้และสร้างเวอร์ชัน',
   'composerWeb.globalEdit.nothingToApply': 'ไม่มีอะไรเปลี่ยนแปลง แบบร่างหลักมีค่านี้อยู่แล้ว',
-  "composerWeb.globalEdit.announced": "{applied, plural, one {Change applied to # target} other {Change applied to # targets}}. {adapted, plural, =0 {No target needed an adapted version} one {# target got an adapted version} other {# targets got adapted versions}}.",
+  'composerWeb.globalEdit.announced':
+    '{applied, plural, one {Change applied to # target} other {Change applied to # targets}}. {adapted, plural, =0 {No target needed an adapted version} one {# target got an adapted version} other {# targets got adapted versions}}.',
   'composerWeb.override.heading': 'เป้าหมายนี้มีเวอร์ชันของตัวเอง',
-  "composerWeb.override.fieldsChanged": "{count, plural, one {# field differs from the master draft} other {# fields differ from the master draft}}",
+  'composerWeb.override.fieldsChanged':
+    '{count, plural, one {# field differs from the master draft} other {# fields differ from the master draft}}',
   'composerWeb.override.field.body': 'โพสต์ข้อความ',
   'composerWeb.override.field.contentKind': 'ประเภทการโพสต์',
   'composerWeb.override.field.locale': 'ภาษาเนื้อหา',
@@ -83,9 +88,12 @@ export const webComposerMessages = {
   'composerWeb.override.created': '{account} ตอนนี้มี {field} ของตัวเองแล้ว',
   'composerWeb.limits.heading': 'ขีดจำกัดสำหรับ {account}',
   'composerWeb.limits.text': 'ส่งข้อความได้สูงสุด {limit} อักขระ',
-  "composerWeb.limits.linkCost": "A link counts as {count, plural, one {# character} other {# characters}} whatever its length.",
-  "composerWeb.limits.images": "{count, plural, =0 {No images} one {# image} other {up to # images}}",
-  "composerWeb.limits.videos": "{count, plural, =0 {No video} one {# video} other {up to # videos}}",
+  'composerWeb.limits.linkCost':
+    'A link counts as {count, plural, one {# character} other {# characters}} whatever its length.',
+  'composerWeb.limits.images':
+    '{count, plural, =0 {No images} one {# image} other {up to # images}}',
+  'composerWeb.limits.videos':
+    '{count, plural, =0 {No video} one {# video} other {up to # videos}}',
   'composerWeb.limits.duration': 'วิดีโอสูงสุด {duration}',
   'composerWeb.limits.aspect': 'อัตราส่วนภาพระหว่าง {min} ถึง {max}',
   'composerWeb.limits.fileSize': 'ไฟล์ได้ถึง {size}',
@@ -116,14 +124,17 @@ export const webComposerMessages = {
     'ไม่ตรงกัน. โดยจะเผยแพร่เป็นข้อความธรรมดาซึ่งไม่ใช่แท็กเนทิฟใน {provider}',
   'composerWeb.entity.removeMention': 'ลบการกล่าวถึง {label} ออก',
   'composerWeb.entity.addMention': 'เพิ่มการกล่าวถึง',
-  "composerWeb.entity.mentionCount": "{count, plural, =0 {No mentions} one {# mention} other {# mentions}}, {resolved} matched to a real account",
+  'composerWeb.entity.mentionCount':
+    '{count, plural, =0 {No mentions} one {# mention} other {# mentions}}, {resolved} matched to a real account',
   'composerWeb.entity.lookupUnsupported': '{provider} ไม่มีการค้นหาเอนทิตีสำหรับบัญชีประเภทนี้',
   'composerWeb.entity.lookupNotBuilt':
     'Relay ยังไม่ได้สร้างการค้นหาเอนทิตีสำหรับ {provider} ไม่มีอะไรคาดเดาได้ในระหว่างนี้',
   'composerWeb.entity.searchHint': 'พิมพ์อย่างน้อยสองตัวอักขระ จากนั้นเลือกผลลัพธ์',
-  "composerWeb.entity.resultCount": "{count, plural, =0 {No matches} one {# match} other {# matches}}",
+  'composerWeb.entity.resultCount':
+    '{count, plural, =0 {No matches} one {# match} other {# matches}}',
   'composerWeb.links.heading': 'ลิงค์',
-  "composerWeb.links.detected": "{count, plural, one {# link found in this draft} other {# links found in this draft}}",
+  'composerWeb.links.detected':
+    '{count, plural, one {# link found in this draft} other {# links found in this draft}}',
   'composerWeb.links.noneDetected': 'ยังไม่มีลิงก์ในฉบับร่างนี้',
   'composerWeb.links.modeLabel': 'ลิงค์นี้เผยแพร่อย่างไร',
   'composerWeb.links.original': 'URL เดิม',
@@ -145,10 +156,12 @@ export const webComposerMessages = {
   'composerWeb.sequence.absoluteTime': 'ทำงานที่ {time} ซึ่งเป็น {utc} UTC',
   'composerWeb.sequence.partialFailure':
     'หากรายการล้มเหลว โพสต์ที่เผยแพร่แล้วจะยังคงเผยแพร่ต่อไป และรายการหลังจากนั้นจะไม่ทำงาน คุณได้รับรายการการดำเนินการ',
-  "composerWeb.sequence.maxReached": "{account} accepts {limit, plural, one {# follow up item} other {# follow up items}}.",
+  'composerWeb.sequence.maxReached':
+    '{account} accepts {limit, plural, one {# follow up item} other {# follow up items}}.',
   'composerWeb.sequence.minDelay': 'ความล่าช้าที่สั้นที่สุด {provider} อนุญาตที่นี่คือ {duration}',
   'composerWeb.sequence.inheritAuthor': 'บัญชีเดียวกับโพสต์',
-  "composerWeb.sequence.itemIssues": "{count, plural, =0 {No issues} one {# issue} other {# issues}} on this item",
+  'composerWeb.sequence.itemIssues':
+    '{count, plural, =0 {No issues} one {# issue} other {# issues}} on this item',
   'composerWeb.sequence.customMinutes': 'นาทีหลังจากรายการก่อนหน้า',
   'composerWeb.repeat.enable': 'ทำซ้ำโพสต์นี้',
   'composerWeb.repeat.cadenceLabel': 'บ่อยแค่ไหน',
@@ -157,12 +170,13 @@ export const webComposerMessages = {
   'composerWeb.repeat.duplicateCheck':
     'แต่ละเหตุการณ์จะถูกตรวจสอบเนื้อหาที่ซ้ำกันก่อนที่จะเผยแพร่ เหตุการณ์ที่ไม่ผ่านการตรวจสอบจะกลายเป็นรายการดำเนินการแทนที่จะเผยแพร่',
   'composerWeb.repeat.occurrenceList': 'เกิดขึ้นครั้งแรก',
-  "composerWeb.repeat.occurrenceMore": "{count, plural, one {and # more occurrence} other {and # more occurrences}}",
+  'composerWeb.repeat.occurrenceMore':
+    '{count, plural, one {and # more occurrence} other {and # more occurrences}}',
   'composerWeb.set.heading': 'ชุดและลายเซ็น',
   'composerWeb.set.pickerTitle': 'เริ่มจากชุด',
   'composerWeb.set.pickerDescription':
     'ชุดประกอบด้วยเป้าหมาย ข้อความ และการตั้งค่า แบบร่างที่สร้างขึ้นมีความเป็นอิสระ ดังนั้นการแก้ไขชุดในภายหลังจะไม่เปลี่ยนแปลงโพสต์ที่ได้รับอนุมัติหรือกำหนดเวลาไว้',
-  "composerWeb.set.accountCount": "{count, plural, one {# account} other {# accounts}}",
+  'composerWeb.set.accountCount': '{count, plural, one {# account} other {# accounts}}',
   'composerWeb.set.apply': 'ใช้ชุดนี้',
   'composerWeb.set.none': 'ยังไม่มีชุดที่บันทึกไว้',
   'composerWeb.signature.pickerLabel': 'ลายเซ็น',
@@ -217,10 +231,12 @@ export const webComposerMessages = {
   'composerWeb.review.disclosureState': 'การเปิดเผยข้อมูล: {value}',
   'composerWeb.review.disclosureNone': 'ไม่มีการเปิดเผยข้อมูล',
   'composerWeb.review.mediaVersion': '{name} เวอร์ชัน {version}',
-  "composerWeb.review.blocked": "{count, plural, one {# target cannot be scheduled yet} other {# targets cannot be scheduled yet}}",
+  'composerWeb.review.blocked':
+    '{count, plural, one {# target cannot be scheduled yet} other {# targets cannot be scheduled yet}}',
   'composerWeb.review.offlineBlocked':
     'การกำหนดเวลาและการเผยแพร่จำเป็นต้องมีการเชื่อมต่อ ฉบับร่างของคุณปลอดภัยบนอุปกรณ์นี้',
-  "composerWeb.review.publishConfirm": "This publishes to {count, plural, one {# account} other {# accounts}} straight away. It cannot be undone from here.",
+  'composerWeb.review.publishConfirm':
+    'This publishes to {count, plural, one {# account} other {# accounts}} straight away. It cannot be undone from here.',
   'composerWeb.savedFlash': 'บันทึกแล้ว',
   'composerWeb.validation.clear.v2': 'ไม่มีอะไรมาขวางกั้น',
   'composerWeb.schedule.confirmed': 'กำหนดเวลาแล้ว',
@@ -285,7 +301,8 @@ export const webComposerMessages = {
   'mediaLib.upload.offline': 'ออฟไลน์ การอัปโหลดจะดำเนินต่อไปจากจุดที่หยุดเมื่อคุณเชื่อมต่อใหม่',
   'mediaLib.upload.rejectedType': '{name} คือ {mimeType} ซึ่งไม่มีบัญชีที่คุณเลือกยอมรับ',
   'mediaLib.upload.rejectedSize': '{name} คือ {size} ขีดจำกัดต่ำสุดในบัญชีของคุณคือ {limit}',
-  "mediaLib.upload.acceptedBy": "{count, plural, one {Accepted by # of your accounts} other {Accepted by # of your accounts}}",
+  'mediaLib.upload.acceptedBy':
+    '{count, plural, one {Accepted by # of your accounts} other {Accepted by # of your accounts}}',
   'mediaLib.upload.rejectedBy': 'ไม่ยอมรับโดย {accounts}',
   'mediaLib.upload.checkedAgainst': 'ตรวจสอบกับบัญชีที่เลือกในแบบร่างนี้',
   'mediaLib.upload.noTargets':
@@ -301,7 +318,8 @@ export const webComposerMessages = {
     'ใช้สิ่งนี้เพื่อการตกแต่งเท่านั้น รูปภาพที่ยกเว้นจะเผยแพร่พร้อมคำอธิบายที่ว่างเปล่าซึ่งแพลตฟอร์มอนุญาต',
   'mediaLib.alt.waived': 'ยกเว้นโดย {name} บน {date} เหตุผล: {reason}',
   'mediaLib.alt.unsupported': '{provider} ไม่ยอมรับข้อความแสดงแทนผ่าน API สำหรับบัญชีนี้',
-  "mediaLib.alt.missingCount": "{count, plural, one {# file has no alt text} other {# files have no alt text}}",
+  'mediaLib.alt.missingCount':
+    '{count, plural, one {# file has no alt text} other {# files have no alt text}}',
   'mediaLib.rights.heading': 'สิทธิและความยินยอม',
   'mediaLib.rights.declared': 'ประกาศโดย {name} เมื่อ {date}',
   'mediaLib.rights.undeclared': 'ยังไม่ประกาศ. ประกาศก่อนที่ไฟล์นี้จะเผยแพร่',
@@ -375,7 +393,8 @@ export const webComposerMessages = {
     'รายละเอียดเหล่านี้มาจากแหล่งที่มา ไม่ใช่จาก Relay โปรดตรวจสอบก่อนที่จะเชื่อถือ',
   'mediaLib.picker.title': 'เลือกสื่อ',
   'mediaLib.picker.description': 'ไฟล์จะถูกตรวจสอบกับบัญชีที่เลือกในแบบร่างนี้',
-  "mediaLib.picker.confirm": "{count, plural, =0 {Choose files} one {Add # file} other {Add # files}}",
+  'mediaLib.picker.confirm':
+    '{count, plural, =0 {Choose files} one {Add # file} other {Add # files}}',
   'mediaLib.picker.forMaster': 'เพิ่มไปยังร่างหลัก',
   'mediaLib.picker.forVariant': 'เพิ่มเป็นเวอร์ชั่น {account} เท่านั้น',
 } as const;

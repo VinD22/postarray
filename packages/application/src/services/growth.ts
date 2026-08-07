@@ -276,93 +276,89 @@ export function createGrowthService(deps: ServiceDeps, content: ContentService):
           body: input,
           resourceIdOf: (profile) => profile.id,
           run: () =>
-            authorized(
-              deps,
-              ctx,
-              'growth.write',
-              { brandId: input.brandId },
-              async (db, actor) => {
-          const existing =
-            input.profileId === undefined
-              ? await db.businessProfile.findFirst({
-                  where: { brandId: input.brandId },
-                  orderBy: { version: 'desc' },
-                  select: PROFILE_SELECT,
-                })
-              : await db.businessProfile.findFirst({
-                  where: { id: input.profileId },
-                  select: PROFILE_SELECT,
-                });
+            authorized(deps, ctx, 'growth.write', { brandId: input.brandId }, async (db, actor) => {
+              const existing =
+                input.profileId === undefined
+                  ? await db.businessProfile.findFirst({
+                      where: { brandId: input.brandId },
+                      orderBy: { version: 'desc' },
+                      select: PROFILE_SELECT,
+                    })
+                  : await db.businessProfile.findFirst({
+                      where: { id: input.profileId },
+                      select: PROFILE_SELECT,
+                    });
 
-          const data = {
-            brandId: input.brandId,
-            productName: input.productName,
-            productUrl: input.siteUrl,
-            description: input.description,
-            category: input.category,
-            markets: [...(input.markets ?? [])],
-            languages: [...(input.contentLocales ?? [])],
-            idealCustomer: input.idealCustomer ?? null,
-            objective: input.objective,
-            conversionEvent: input.conversionEvent ?? null,
-            proofAssets: [...(input.proofAssets ?? [])],
-            competitors: toJson([...(input.competitors ?? [])]),
-            weeklyCapacityHours: input.weeklyCapacityHours ?? null,
-            prohibitedClaims: [...(input.prohibitedClaims ?? [])],
-            prohibitedTopics: [...(input.prohibitedTopics ?? [])],
-            completenessScore: Math.round(
-              (100 *
-                [
-                  input.productName,
-                  input.description,
-                  input.objective,
-                  input.conversionEvent ?? '',
-                  (input.contentLocales ?? []).join(','),
-                ].filter((value) => value.trim() !== '').length) /
-                REQUIRED_PROFILE_FIELDS.length,
-            ),
-          };
+              const data = {
+                brandId: input.brandId,
+                productName: input.productName,
+                productUrl: input.siteUrl,
+                description: input.description,
+                category: input.category,
+                markets: [...(input.markets ?? [])],
+                languages: [...(input.contentLocales ?? [])],
+                idealCustomer: input.idealCustomer ?? null,
+                objective: input.objective,
+                conversionEvent: input.conversionEvent ?? null,
+                proofAssets: [...(input.proofAssets ?? [])],
+                competitors: toJson([...(input.competitors ?? [])]),
+                weeklyCapacityHours: input.weeklyCapacityHours ?? null,
+                prohibitedClaims: [...(input.prohibitedClaims ?? [])],
+                prohibitedTopics: [...(input.prohibitedTopics ?? [])],
+                completenessScore: Math.round(
+                  (100 *
+                    [
+                      input.productName,
+                      input.description,
+                      input.objective,
+                      input.conversionEvent ?? '',
+                      (input.contentLocales ?? []).join(','),
+                    ].filter((value) => value.trim() !== '').length) /
+                    REQUIRED_PROFILE_FIELDS.length,
+                ),
+              };
 
-          const selectedConnections =
-            input.existingChannels === undefined || input.existingChannels.length === 0
-              ? []
-              : await db.socialConnection.findMany({
-                  where: { id: { in: [...input.existingChannels] } },
-                  select: { provider: true },
-                });
-          const existingChannels = [
-            ...new Set(selectedConnections.map((connection) => toProviderId(connection.provider))),
-          ];
+              const selectedConnections =
+                input.existingChannels === undefined || input.existingChannels.length === 0
+                  ? []
+                  : await db.socialConnection.findMany({
+                      where: { id: { in: [...input.existingChannels] } },
+                      select: { provider: true },
+                    });
+              const existingChannels = [
+                ...new Set(
+                  selectedConnections.map((connection) => toProviderId(connection.provider)),
+                ),
+              ];
 
-          // A confirmed profile is never edited in place: a change produces a
-          // new revision so a plan can name the revision it was built from.
-          const row =
-            existing === null || existing.confirmedAt !== null
-              ? await db.businessProfile.create({
-                  data: {
-                    ...data,
-                    existingChannels: toJson(existingChannels),
-                    workspaceId: actor.workspace.id,
-                    version: (existing?.version ?? 0) + 1,
-                  },
-                  select: PROFILE_SELECT,
-                })
-              : await db.businessProfile.update({
-                  where: { id: existing.id },
-                  data: { ...data, existingChannels: toJson(existingChannels) },
-                  select: PROFILE_SELECT,
-                });
+              // A confirmed profile is never edited in place: a change produces a
+              // new revision so a plan can name the revision it was built from.
+              const row =
+                existing === null || existing.confirmedAt !== null
+                  ? await db.businessProfile.create({
+                      data: {
+                        ...data,
+                        existingChannels: toJson(existingChannels),
+                        workspaceId: actor.workspace.id,
+                        version: (existing?.version ?? 0) + 1,
+                      },
+                      select: PROFILE_SELECT,
+                    })
+                  : await db.businessProfile.update({
+                      where: { id: existing.id },
+                      data: { ...data, existingChannels: toJson(existingChannels) },
+                      select: PROFILE_SELECT,
+                    });
 
-          await recordAudit(db, actor, {
-            action: 'workspace.updated',
-            targetType: 'business_profile',
-            targetId: row.id,
-            after: { revision: row.version, brandId: input.brandId },
-          });
+              await recordAudit(db, actor, {
+                action: 'workspace.updated',
+                targetType: 'business_profile',
+                targetId: row.id,
+                after: { revision: row.version, brandId: input.brandId },
+              });
 
-                return toProfileView(row);
-              },
-            ),
+              return toProfileView(row);
+            }),
         },
         deps.clock,
       );
@@ -376,66 +372,74 @@ export function createGrowthService(deps: ServiceDeps, content: ContentService):
         corrections?: Readonly<Record<string, string>>;
       },
     ): Promise<BusinessProfileView> {
-      return withIdempotency(deps.kv, ctx, {
-        operation: 'growth.confirmBusinessProfile',
-        body: input,
-        resourceIdOf: (profile) => profile.id,
-        run: () => authorized(deps, ctx, 'growth.write', undefined, async (db, actor) => {
-        const row = await db.businessProfile.findFirst({
-          where: { id: input.profileId },
-          select: PROFILE_SELECT,
-        });
-        if (row === null) {
-          throw notFound('business_profile', input.profileId);
-        }
-        const missing = missingFieldKeys(row);
-        if (missing.length > 0) {
-          throw invalid('errors.growth_profile_incomplete', { missing: [...missing] });
-        }
-        const confirmedIds = new Set(input.confirmedAssumptionIds ?? []);
-        const corrections = input.corrections ?? {};
-        const assumptions = parsedOr(assumptionListSchema, row.assumptions, []);
-        const facts = parsedOr(factListSchema, row.provenClaims, []);
-        const assumptionIds = new Set(assumptions.map((assumption) => assumption.id));
-        const unknownIds = [...confirmedIds, ...Object.keys(corrections)].filter(
-          (id) => !assumptionIds.has(id),
-        );
-        if (unknownIds.length > 0) {
-          throw invalid('errors.growth_assumption_not_found', { ids: [...new Set(unknownIds)] });
-        }
-        const promoted = assumptions
-          .filter((assumption) => confirmedIds.has(assumption.id))
-          .map((assumption) => ({
-            id: assumption.id,
-            statement: corrections[assumption.id] ?? assumption.statement,
-            evidenceIds: [`profile.assumption.${assumption.id}`],
-            confirmedByUser: true as const,
-          }));
-        const remaining = assumptions
-          .filter((assumption) => !confirmedIds.has(assumption.id))
-          .map((assumption) => ({
-            ...assumption,
-            statement: corrections[assumption.id] ?? assumption.statement,
-          }));
-        const confirmed = await db.businessProfile.update({
-          where: { id: input.profileId },
-          data: {
-            confirmedAt: deps.clock.now(),
-            ...(actor.userId === null ? {} : { confirmedByUserId: actor.userId }),
-            provenClaims: toJson([...facts, ...promoted]),
-            assumptions: toJson(remaining),
-          },
-          select: PROFILE_SELECT,
-        });
-        await recordAudit(db, actor, {
-          action: 'workspace.updated',
-          targetType: 'business_profile',
-          targetId: input.profileId,
-          after: { confirmed: true, revision: confirmed.version },
-        });
-          return toProfileView(confirmed);
-        }),
-      }, deps.clock);
+      return withIdempotency(
+        deps.kv,
+        ctx,
+        {
+          operation: 'growth.confirmBusinessProfile',
+          body: input,
+          resourceIdOf: (profile) => profile.id,
+          run: () =>
+            authorized(deps, ctx, 'growth.write', undefined, async (db, actor) => {
+              const row = await db.businessProfile.findFirst({
+                where: { id: input.profileId },
+                select: PROFILE_SELECT,
+              });
+              if (row === null) {
+                throw notFound('business_profile', input.profileId);
+              }
+              const missing = missingFieldKeys(row);
+              if (missing.length > 0) {
+                throw invalid('errors.growth_profile_incomplete', { missing: [...missing] });
+              }
+              const confirmedIds = new Set(input.confirmedAssumptionIds ?? []);
+              const corrections = input.corrections ?? {};
+              const assumptions = parsedOr(assumptionListSchema, row.assumptions, []);
+              const facts = parsedOr(factListSchema, row.provenClaims, []);
+              const assumptionIds = new Set(assumptions.map((assumption) => assumption.id));
+              const unknownIds = [...confirmedIds, ...Object.keys(corrections)].filter(
+                (id) => !assumptionIds.has(id),
+              );
+              if (unknownIds.length > 0) {
+                throw invalid('errors.growth_assumption_not_found', {
+                  ids: [...new Set(unknownIds)],
+                });
+              }
+              const promoted = assumptions
+                .filter((assumption) => confirmedIds.has(assumption.id))
+                .map((assumption) => ({
+                  id: assumption.id,
+                  statement: corrections[assumption.id] ?? assumption.statement,
+                  evidenceIds: [`profile.assumption.${assumption.id}`],
+                  confirmedByUser: true as const,
+                }));
+              const remaining = assumptions
+                .filter((assumption) => !confirmedIds.has(assumption.id))
+                .map((assumption) => ({
+                  ...assumption,
+                  statement: corrections[assumption.id] ?? assumption.statement,
+                }));
+              const confirmed = await db.businessProfile.update({
+                where: { id: input.profileId },
+                data: {
+                  confirmedAt: deps.clock.now(),
+                  ...(actor.userId === null ? {} : { confirmedByUserId: actor.userId }),
+                  provenClaims: toJson([...facts, ...promoted]),
+                  assumptions: toJson(remaining),
+                },
+                select: PROFILE_SELECT,
+              });
+              await recordAudit(db, actor, {
+                action: 'workspace.updated',
+                targetType: 'business_profile',
+                targetId: input.profileId,
+                after: { confirmed: true, revision: confirmed.version },
+              });
+              return toProfileView(confirmed);
+            }),
+        },
+        deps.clock,
+      );
     },
 
     /**
@@ -490,7 +494,9 @@ export function createGrowthService(deps: ServiceDeps, content: ContentService):
           }),
         ]);
         const profileComplete =
-          profile !== null && profile.confirmedAt !== null && missingFieldKeys(profile).length === 0;
+          profile !== null &&
+          profile.confirmedAt !== null &&
+          missingFieldKeys(profile).length === 0;
         if (row === null || row.approvedAt === null) {
           return {
             planId: null,

@@ -116,7 +116,6 @@ export function DataControlsScreen(): ReactNode {
           </p>
         </SettingsPanel>
       </SettingsStack>
-
     </>
   );
 }

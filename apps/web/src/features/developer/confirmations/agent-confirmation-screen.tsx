@@ -145,9 +145,7 @@ export function AgentConfirmationScreen({
                   id: 'providers',
                   term: t('developer.confirmation.providersLabel'),
                   definition: formatters.list(
-                    confirmation.summary.providers.map((provider) =>
-                      t(`web.provider.${provider}`),
-                    ),
+                    confirmation.summary.providers.map((provider) => t(`web.provider.${provider}`)),
                   ),
                 },
                 {

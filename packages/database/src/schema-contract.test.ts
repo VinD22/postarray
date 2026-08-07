@@ -14,7 +14,9 @@ function modelIdDefaults(source: string): ReadonlyMap<string, string> {
   for (const model of source.matchAll(modelPattern)) {
     const name = model[1];
     const body = model[2];
-    const prefix = body?.match(/\bid\s+String\s+@id\s+@default\(dbgenerated\("app\.new_id\('([^']+)'\)"\)\)/u)?.[1];
+    const prefix = body?.match(
+      /\bid\s+String\s+@id\s+@default\(dbgenerated\("app\.new_id\('([^']+)'\)"\)\)/u,
+    )?.[1];
     if (name !== undefined && prefix !== undefined) defaults.set(name, prefix);
   }
   return defaults;

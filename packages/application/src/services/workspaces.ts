@@ -80,7 +80,12 @@ export function createWorkspaceService(deps: ServiceDeps): WorkspaceService {
       return authorized(deps, ctx, 'workspace.read', undefined, async (db) => {
         const args = pageArgs(query);
         const workspace = await readWorkspace(db, ctx.workspaceId);
-        return toPage([workspace], args, (row) => row.id, (row) => row);
+        return toPage(
+          [workspace],
+          args,
+          (row) => row.id,
+          (row) => row,
+        );
       });
     },
 
@@ -200,7 +205,8 @@ export function createWorkspaceService(deps: ServiceDeps): WorkspaceService {
     ): Promise<WorkspaceView> {
       const workspaceId =
         typeof workspaceIdOrPatch === 'string' ? workspaceIdOrPatch : ctx.workspaceId;
-      const patch = typeof workspaceIdOrPatch === 'string' ? (suppliedPatch ?? {}) : workspaceIdOrPatch;
+      const patch =
+        typeof workspaceIdOrPatch === 'string' ? (suppliedPatch ?? {}) : workspaceIdOrPatch;
       if (workspaceId !== ctx.workspaceId) {
         throw notFound('workspace', workspaceId);
       }

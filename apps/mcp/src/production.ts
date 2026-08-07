@@ -4,11 +4,7 @@ import {
   type KeyValueStore,
 } from '@relay/application';
 import { loadConfigFor, requireConfigValue } from '@relay/config';
-import {
-  appendAuditEvent,
-  withWorkspaceContext,
-  type RlsTransactionClient,
-} from '@relay/database';
+import { appendAuditEvent, withWorkspaceContext, type RlsTransactionClient } from '@relay/database';
 import { createLogger } from '@relay/observability';
 import { createApplicationRuntime } from '@relay/runtime';
 import Redis from 'ioredis';
@@ -42,8 +38,7 @@ async function keyValueStore(): Promise<KeyValueStore> {
   return {
     get: (key) => client.get(key),
     async set(key: string, value: string, options: KeyValueSetOptions = {}) {
-      const ttl =
-        options.ttlSeconds === undefined ? undefined : Math.max(1, options.ttlSeconds);
+      const ttl = options.ttlSeconds === undefined ? undefined : Math.max(1, options.ttlSeconds);
       const result =
         options.ifAbsent === true
           ? ttl === undefined
@@ -88,8 +83,7 @@ export async function createProductionMcpOptions(): Promise<StartOptions> {
   const auditSink: AuditSink = {
     async record(input) {
       const metadata = jsonRecordSchema.parse(input.metadata);
-      const clientId =
-        typeof metadata['clientId'] === 'string' ? metadata['clientId'] : undefined;
+      const clientId = typeof metadata['clientId'] === 'string' ? metadata['clientId'] : undefined;
       await withWorkspaceContext(
         runtime.prisma,
         { workspaceId: input.workspaceId, role: 'service_role' },

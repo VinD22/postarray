@@ -128,12 +128,7 @@ export function ReferralsScreen(): ReactNode {
                   />
                   <Button variant="secondary" onClick={() => void copyLink()}>
                     {copied ? (
-                      <span
-                        className={cn(
-                          'flex items-center gap-2',
-                          motionOk && 'relay-pop-in',
-                        )}
-                      >
+                      <span className={cn('flex items-center gap-2', motionOk && 'relay-pop-in')}>
                         <Check aria-hidden="true" className="size-4" />
                         {t('settings.ui.referral.linkCopied')}
                       </span>

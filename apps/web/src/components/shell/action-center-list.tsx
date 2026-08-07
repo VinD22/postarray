@@ -280,10 +280,7 @@ function ResolvingRow({ item }: { readonly item: ActionItemView }): ReactNode {
     >
       <span className="overflow-hidden">
         <span className="text-body-sm text-text-tertiary flex min-h-11 items-center gap-2 py-3 line-through">
-          {t(
-            definition.messageKey,
-            formatActionItemValues(item, format, t('common.unavailable')),
-          )}
+          {t(definition.messageKey, formatActionItemValues(item, format, t('common.unavailable')))}
         </span>
       </span>
     </li>

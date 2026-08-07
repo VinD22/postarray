@@ -8,7 +8,8 @@ export const onboardingMessages = {
   'onboarding.workspace.title': '命名你的 Workspace',
   'onboarding.workspace.namePlaceholder': '你的公司或客戶名稱',
   'onboarding.workspace.timeZone': '排程時區',
-  'onboarding.workspace.timeZoneHelp': '每個排程時間都會連同此時區儲存，因此時鐘變更不會意外改變你的貼文時間。',
+  'onboarding.workspace.timeZoneHelp':
+    '每個排程時間都會連同此時區儲存，因此時鐘變更不會意外改變你的貼文時間。',
   'onboarding.workspace.locale': '介面語言',
   'onboarding.role.title': '哪一項最符合你的情況？',
   'onboarding.role.creator': '創作者',

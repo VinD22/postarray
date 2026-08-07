@@ -81,23 +81,23 @@ describe('authentication routes', () => {
       password: 'a long test password',
     });
 
-    const response = await request(harness.server).post('/v1/auth/signup').send({
-      email: 'owner@example.test',
-      password: 'a long test password',
-      displayName: 'Launch Owner',
-      locale: 'en',
-      timeZone: 'Asia/Kolkata',
-      termsVersionHash: 'a'.repeat(64),
-      privacyVersionHash: 'b'.repeat(64),
-      acceptedTerms: true,
-    });
+    const response = await request(harness.server)
+      .post('/v1/auth/signup')
+      .send({
+        email: 'owner@example.test',
+        password: 'a long test password',
+        displayName: 'Launch Owner',
+        locale: 'en',
+        timeZone: 'Asia/Kolkata',
+        termsVersionHash: 'a'.repeat(64),
+        privacyVersionHash: 'b'.repeat(64),
+        acceptedTerms: true,
+      });
 
     expect(response.status).toBe(202);
     expect(response.body).toEqual({ status: 'accepted' });
     expect(harness.identity.signUpCalls[0]).toMatchObject({ displayName: 'Launch Owner' });
-    expect(harness.identity.magicLinks).toEqual([
-      { email: 'owner@example.test', locale: 'en' },
-    ]);
+    expect(harness.identity.magicLinks).toEqual([{ email: 'owner@example.test', locale: 'en' }]);
     expect(consentCalls[0]).toMatchObject({
       identitySubjectId,
       displayName: 'Launch Owner',

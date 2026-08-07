@@ -1,12 +1,7 @@
 'use client';
 
 import { useEffect, useState, type FormEvent, type ReactNode } from 'react';
-import {
-  Button,
-  Field,
-  Input,
-  Textarea,
-} from '@relay/design-system/primitives';
+import { Button, Field, Input, Textarea } from '@relay/design-system/primitives';
 import { CapabilityBadge, Notice } from '@relay/design-system/patterns';
 import { useTranslations } from '@relay/i18n/react';
 

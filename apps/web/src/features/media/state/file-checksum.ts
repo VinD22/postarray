@@ -9,7 +9,8 @@ function readBlob(blob: Blob): Promise<ArrayBuffer> {
   }
   return new Promise<ArrayBuffer>((resolve, reject) => {
     const reader = new FileReader();
-    reader.onerror = () => reject(reader.error ?? new DOMException('File read failed', 'DataError'));
+    reader.onerror = () =>
+      reject(reader.error ?? new DOMException('File read failed', 'DataError'));
     reader.onload = () => {
       if (reader.result instanceof ArrayBuffer) {
         resolve(reader.result);

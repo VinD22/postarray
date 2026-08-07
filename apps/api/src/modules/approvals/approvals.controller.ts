@@ -37,10 +37,7 @@ export class ApprovalsController {
   /** One request, including resolved decisions, scoped to the actor's workspace. */
   @Get(':id')
   @RequireScope('drafts:read')
-  get(
-    @Actor() actor: ActorContext,
-    @Param('id') id: string,
-  ): Promise<ApprovalRequestView> {
+  get(@Actor() actor: ActorContext, @Param('id') id: string): Promise<ApprovalRequestView> {
     return this.approvals.get(actor, parseParams(approvalIdSchema, id));
   }
 

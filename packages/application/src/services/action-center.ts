@@ -1,10 +1,7 @@
 import type { Paginated } from '@relay/contracts';
 
 import type { ActionCenterService, ActorContext, ServiceDeps } from '../types';
-import type {
-  ActionItemUrgency,
-  ActionItemView,
-} from '../views';
+import type { ActionItemUrgency, ActionItemView } from '../views';
 
 import { invalid, notFound } from '../internal/errors';
 import { decodeCursor, encodeCursor, normalizeLimit } from '../internal/pagination';
@@ -43,7 +40,10 @@ function connectionItems(
     const openIncident = row.incidents[0];
     if (row.status !== 'active' || openIncident !== undefined) {
       items.push({
-        id: itemId(openIncident === undefined ? 'connection_action_required' : 'provider_incident', row.id),
+        id: itemId(
+          openIncident === undefined ? 'connection_action_required' : 'provider_incident',
+          row.id,
+        ),
         kind: openIncident === undefined ? 'connection_action_required' : 'provider_incident',
         urgency: 'now',
         category: 'connections',
@@ -58,7 +58,11 @@ function connectionItems(
       continue;
     }
     const expiresAt = row.credential?.accessTokenExpiresAt;
-    if (expiresAt !== null && expiresAt !== undefined && expiresAt.getTime() <= now.getTime() + EXPIRY_WARNING_MS) {
+    if (
+      expiresAt !== null &&
+      expiresAt !== undefined &&
+      expiresAt.getTime() <= now.getTime() + EXPIRY_WARNING_MS
+    ) {
       items.push({
         id: itemId('connection_expiring', row.id),
         kind: 'connection_expiring',
@@ -150,7 +154,9 @@ async function loadEvidence(db: Db) {
       },
     }),
     db.publicationReceipt.findMany({
-      where: { publishJob: { postVariant: { commentItems: { some: { state: { not: 'published' } } } } } },
+      where: {
+        publishJob: { postVariant: { commentItems: { some: { state: { not: 'published' } } } } },
+      },
       orderBy: { publishedAt: 'desc' },
       take: 100,
       select: {
@@ -182,16 +188,26 @@ async function loadEvidence(db: Db) {
   return { connections, approvals, jobs, receipts, feeds, endpoints };
 }
 
-function remainingItems(evidence: Awaited<ReturnType<typeof loadEvidence>>, now: Date): ActionItemView[] {
+function remainingItems(
+  evidence: Awaited<ReturnType<typeof loadEvidence>>,
+  now: Date,
+): ActionItemView[] {
   const items: ActionItemView[] = [];
   for (const row of evidence.approvals) {
     const dueAt = row.dueAt;
     if (dueAt === null || dueAt > now) continue;
     const subject = named(row.contentItem.title, row.id);
     items.push({
-      id: itemId('approval_overdue', row.id), kind: 'approval_overdue', urgency: 'now',
-      category: 'publishing', subject, provider: null, createdAt: row.createdAt.toISOString(),
-      dueAt: dueAt.toISOString(), snoozedUntil: null, href: `/approvals/${row.id}`,
+      id: itemId('approval_overdue', row.id),
+      kind: 'approval_overdue',
+      urgency: 'now',
+      category: 'publishing',
+      subject,
+      provider: null,
+      createdAt: row.createdAt.toISOString(),
+      dueAt: dueAt.toISOString(),
+      snoozedUntil: null,
+      href: `/approvals/${row.id}`,
       values: { date: dueAt.toISOString() },
     });
   }
@@ -200,37 +216,65 @@ function remainingItems(evidence: Awaited<ReturnType<typeof loadEvidence>>, now:
     const scheduleConflict = row.lastErrorCode === 'CADENCE_EXCEEDED';
     items.push({
       id: itemId(scheduleConflict ? 'schedule_conflict' : 'provider_incident', row.id),
-      kind: scheduleConflict ? 'schedule_conflict' : 'provider_incident', urgency: 'now',
-      category: 'publishing', subject, provider: toProviderId(row.connection.provider),
-      createdAt: row.updatedAt.toISOString(), dueAt: null, snoozedUntil: null,
-      href: `/posts/${row.contentItemId}`, values: { account: subject },
+      kind: scheduleConflict ? 'schedule_conflict' : 'provider_incident',
+      urgency: 'now',
+      category: 'publishing',
+      subject,
+      provider: toProviderId(row.connection.provider),
+      createdAt: row.updatedAt.toISOString(),
+      dueAt: null,
+      snoozedUntil: null,
+      href: `/posts/${row.contentItemId}`,
+      values: { account: subject },
     });
   }
   for (const row of evidence.receipts) {
     const subject = named(row.publishJob.contentItem.title, row.publishJob.connection.displayName);
     items.push({
-      id: itemId('comment_failed', row.id), kind: 'comment_failed', urgency: 'now',
-      category: 'publishing', subject, provider: toProviderId(row.provider),
-      createdAt: row.publishedAt.toISOString(), dueAt: null, snoozedUntil: null,
+      id: itemId('comment_failed', row.id),
+      kind: 'comment_failed',
+      urgency: 'now',
+      category: 'publishing',
+      subject,
+      provider: toProviderId(row.provider),
+      createdAt: row.publishedAt.toISOString(),
+      dueAt: null,
+      snoozedUntil: null,
       href: `/posts/${row.publishJob.contentItemId}`,
       values: { account: row.publishJob.connection.displayName },
     });
   }
   for (const row of evidence.feeds) {
     items.push({
-      id: itemId('rss_stalled', row.id), kind: 'rss_stalled', urgency: 'watching',
-      category: 'automation', subject: named(row.title, row.id), provider: null,
-      createdAt: row.updatedAt.toISOString(), dueAt: null, snoozedUntil: null,
+      id: itemId('rss_stalled', row.id),
+      kind: 'rss_stalled',
+      urgency: 'watching',
+      category: 'automation',
+      subject: named(row.title, row.id),
+      provider: null,
+      createdAt: row.updatedAt.toISOString(),
+      dueAt: null,
+      snoozedUntil: null,
       href: `/automation/rss/${row.id}`,
-      values: { name: named(row.title, row.id), date: row.lastPolledAt?.toISOString() ?? 'unavailable' },
+      values: {
+        name: named(row.title, row.id),
+        date: row.lastPolledAt?.toISOString() ?? 'unavailable',
+      },
     });
   }
   for (const row of evidence.endpoints) {
     const subject = named(row.name, row.url);
     items.push({
-      id: itemId('webhook_failing', row.id), kind: 'webhook_failing', urgency: 'watching',
-      category: 'automation', subject, provider: null, createdAt: row.updatedAt.toISOString(),
-      dueAt: null, snoozedUntil: null, href: '/settings/webhooks',
+      id: itemId('webhook_failing', row.id),
+      kind: 'webhook_failing',
+      urgency: 'watching',
+      category: 'automation',
+      subject,
+      provider: null,
+      createdAt: row.updatedAt.toISOString(),
+      dueAt: null,
+      snoozedUntil: null,
+      href: '/settings/webhooks',
       values: { endpoint: subject, count: row.consecutiveFailures },
     });
   }
@@ -238,9 +282,11 @@ function remainingItems(evidence: Awaited<ReturnType<typeof loadEvidence>>, now:
 }
 
 function sorted(items: readonly ActionItemView[]): ActionItemView[] {
-  return [...items].sort((left, right) =>
-    URGENCY_ORDER[left.urgency] - URGENCY_ORDER[right.urgency] ||
-    right.createdAt.localeCompare(left.createdAt) || left.id.localeCompare(right.id),
+  return [...items].sort(
+    (left, right) =>
+      URGENCY_ORDER[left.urgency] - URGENCY_ORDER[right.urgency] ||
+      right.createdAt.localeCompare(left.createdAt) ||
+      left.id.localeCompare(right.id),
   );
 }
 
@@ -249,7 +295,10 @@ export function createActionCenterService(deps: ServiceDeps): ActionCenterServic
     return authorized(deps, ctx, 'content.read', undefined, async (db) => {
       const now = deps.clock.now();
       const evidence = await loadEvidence(db);
-      return sorted([...connectionItems(evidence.connections, now), ...remainingItems(evidence, now)]);
+      return sorted([
+        ...connectionItems(evidence.connections, now),
+        ...remainingItems(evidence, now),
+      ]);
     });
   }
 
@@ -257,17 +306,23 @@ export function createActionCenterService(deps: ServiceDeps): ActionCenterServic
     async list(ctx, query = {}): Promise<Paginated<ActionItemView>> {
       const now = deps.clock.now();
       const all = await build(ctx);
-      const withSnoozes = await Promise.all(all.map(async (item) => {
-        const value = await deps.kv.get(snoozeKey(ctx.workspaceId, item.id));
-        return { ...item, snoozedUntil: value };
-      }));
-      const filtered = withSnoozes.filter((item) =>
-        (query.category === undefined || item.category === query.category) &&
-        (query.includeSnoozed === true || item.snoozedUntil === null || new Date(item.snoozedUntil) <= now),
+      const withSnoozes = await Promise.all(
+        all.map(async (item) => {
+          const value = await deps.kv.get(snoozeKey(ctx.workspaceId, item.id));
+          return { ...item, snoozedUntil: value };
+        }),
+      );
+      const filtered = withSnoozes.filter(
+        (item) =>
+          (query.category === undefined || item.category === query.category) &&
+          (query.includeSnoozed === true ||
+            item.snoozedUntil === null ||
+            new Date(item.snoozedUntil) <= now),
       );
       const limit = normalizeLimit(query.limit);
       const cursorId = decodeCursor(query.cursor);
-      const start = cursorId === null ? 0 : Math.max(0, filtered.findIndex((item) => item.id === cursorId) + 1);
+      const start =
+        cursorId === null ? 0 : Math.max(0, filtered.findIndex((item) => item.id === cursorId) + 1);
       const slice = filtered.slice(start, start + limit + 1);
       const data = slice.slice(0, limit);
       const hasMore = slice.length > limit;

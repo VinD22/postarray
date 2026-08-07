@@ -295,7 +295,8 @@ function detectConnectors(config: RelayConfig): Record<ConnectorKey, CapabilityS
   const connectors = Object.fromEntries(
     Object.entries(configured).map(([provider, status]) => [
       provider,
-      status === 'live' && !verifiedProductionConnectors.has(provider as Exclude<ConnectorKey, 'fake'>)
+      status === 'live' &&
+      !verifiedProductionConnectors.has(provider as Exclude<ConnectorKey, 'fake'>)
         ? 'disabled:verification-not-complete'
         : status,
     ]),

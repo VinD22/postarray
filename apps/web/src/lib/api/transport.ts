@@ -171,12 +171,7 @@ async function performOnce(
   }
 }
 
-const STATE_CHANGING_METHODS: ReadonlySet<HttpMethod> = new Set([
-  'POST',
-  'PUT',
-  'PATCH',
-  'DELETE',
-]);
+const STATE_CHANGING_METHODS: ReadonlySet<HttpMethod> = new Set(['POST', 'PUT', 'PATCH', 'DELETE']);
 
 function readCookie(source: string | undefined, name: string): string | undefined {
   if (source === undefined) {

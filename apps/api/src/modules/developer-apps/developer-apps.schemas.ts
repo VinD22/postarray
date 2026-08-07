@@ -63,13 +63,16 @@ const publishedHttpsUrlSchema = z
   .trim()
   .min(1)
   .max(2048)
-  .refine((candidate) => {
-    try {
-      return new URL(candidate).protocol === 'https:';
-    } catch {
-      return false;
-    }
-  }, { error: 'HTTPS_URL_REQUIRED' });
+  .refine(
+    (candidate) => {
+      try {
+        return new URL(candidate).protocol === 'https:';
+      } catch {
+        return false;
+      }
+    },
+    { error: 'HTTPS_URL_REQUIRED' },
+  );
 
 export const createOAuthAppSchema = z
   .object({

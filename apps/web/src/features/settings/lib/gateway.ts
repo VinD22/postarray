@@ -128,9 +128,7 @@ export const workspaceGateway = {
   ): Promise<WorkspaceLocalizationView> {
     const session = await api.session.get();
     const workspace = await api.workspaces.update(session.workspace.id, {
-      ...(patch.interfaceLocale === undefined
-        ? {}
-        : { defaultLocale: patch.interfaceLocale }),
+      ...(patch.interfaceLocale === undefined ? {} : { defaultLocale: patch.interfaceLocale }),
       ...(patch.timeZone === undefined ? {} : { ianaTimeZone: patch.timeZone }),
       ...(patch.contentLocales === undefined ? {} : { contentLocales: patch.contentLocales }),
       ...(patch.markets === undefined ? {} : { markets: patch.markets }),
@@ -210,19 +208,17 @@ export const membersGateway = {
 
 /* --------------------------------------------------------------- brands */
 
-function toBrandView(
-  base: {
-    id: string;
-    name: string;
-    voice: string | null;
-    audience: string | null;
-    approvedClaims: readonly string[];
-    blockedTerms: readonly string[];
-    domains: readonly string[];
-    connectionIds: readonly string[];
-    updatedAt: string;
-  },
-): BrandView {
+function toBrandView(base: {
+  id: string;
+  name: string;
+  voice: string | null;
+  audience: string | null;
+  approvedClaims: readonly string[];
+  blockedTerms: readonly string[];
+  domains: readonly string[];
+  connectionIds: readonly string[];
+  updatedAt: string;
+}): BrandView {
   return {
     id: base.id,
     name: base.name,
@@ -434,7 +430,8 @@ function toAppView(base: ApiOAuthAppView): OAuthAppView {
     name: base.name,
     clientId: base.clientId,
     clientType: base.clientType,
-    status: base.status === 'sandbox' ? 'draft' : base.status === 'deleted' ? 'disabled' : base.status,
+    status:
+      base.status === 'sandbox' ? 'draft' : base.status === 'deleted' ? 'disabled' : base.status,
     homepageUrl: base.homepageUrl,
     privacyUrl: base.privacyPolicyUrl,
     termsUrl: base.termsUrl,
@@ -509,9 +506,7 @@ export const oauthAppsGateway = {
           ? {}
           : { status: patch.status === 'draft' ? ('sandbox' as const) : patch.status }),
         ...(patch.homepageUrl === undefined ? {} : { homepageUrl: patch.homepageUrl }),
-        ...(patch.privacyUrl === undefined
-          ? {}
-          : { privacyPolicyUrl: patch.privacyUrl }),
+        ...(patch.privacyUrl === undefined ? {} : { privacyPolicyUrl: patch.privacyUrl }),
         ...(patch.termsUrl === undefined ? {} : { termsUrl: patch.termsUrl }),
         ...(patch.supportEmail === undefined ? {} : { supportEmail: patch.supportEmail }),
         ...(patch.logoUrl === undefined ? {} : { logoUrl: patch.logoUrl }),
@@ -542,18 +537,20 @@ export const oauthAppsGateway = {
 
   async grants(appId: string): Promise<readonly OAuthGrantView[]> {
     const page = await api.oauthApps.listGrants();
-    return page.data.filter((grant) => grant.oauthClientId === appId).map((grant) => ({
-      id: grant.id,
-      subjectUserId: grant.subjectUserId,
-      scopes: grant.scopes as readonly Scope[],
-      brandScope: grant.brandScope,
-      connectionScope: grant.connectionScope,
-      consentedAt: grant.consentedAt,
-      lastUsedAt: grant.lastUsedAt,
-      appName: grant.clientName,
-      appId,
-      revokedAt: grant.revokedAt,
-    }));
+    return page.data
+      .filter((grant) => grant.oauthClientId === appId)
+      .map((grant) => ({
+        id: grant.id,
+        subjectUserId: grant.subjectUserId,
+        scopes: grant.scopes as readonly Scope[],
+        brandScope: grant.brandScope,
+        connectionScope: grant.connectionScope,
+        consentedAt: grant.consentedAt,
+        lastUsedAt: grant.lastUsedAt,
+        appName: grant.clientName,
+        appId,
+        revokedAt: grant.revokedAt,
+      }));
   },
 };
 
@@ -715,10 +712,7 @@ export const billingGateway = {
 
   async portalLink(): Promise<string> {
     const returnUrl = `${window.location.origin}/settings/billing`;
-    const result = await api.billing.getPortalLink(
-      returnUrl,
-      newIdempotencyKey('settings'),
-    );
+    const result = await api.billing.getPortalLink(returnUrl, newIdempotencyKey('settings'));
     if (result.portalUrl === null) {
       throw new Error('PORTAL_UNAVAILABLE');
     }

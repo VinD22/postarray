@@ -1,9 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import {
-  confirmationMatchesContent,
-  confirmationMatchesEscalations,
-} from './publish-confirmation';
+import { confirmationMatchesContent, confirmationMatchesEscalations } from './publish-confirmation';
 
 const evidence = {
   acknowledgedTargetCount: 2,

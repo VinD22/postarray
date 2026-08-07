@@ -92,9 +92,7 @@ describe('registerBuiltInProviders', () => {
 
   it('keeps Bluesky unavailable until verification evidence passes', () => {
     const { deps } = createTestDeps({ providers: { bluesky: {} } });
-    expect(providerStatus(deps.config, 'bluesky')).toBe(
-      'disabled:verification-not-complete',
-    );
+    expect(providerStatus(deps.config, 'bluesky')).toBe('disabled:verification-not-complete');
     expect(availableProviders(deps)).not.toContain('bluesky');
     expect(availableProviders(deps, ['bluesky'])).toContain('bluesky');
   });

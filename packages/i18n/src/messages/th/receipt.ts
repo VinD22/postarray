@@ -29,7 +29,8 @@ export const receiptMessages = {
   'receipt.timeline.approved': 'อนุมัติโดย {actor} ภายใต้นโยบาย {policy}',
   'receipt.timeline.scheduled': 'กำหนดไว้สำหรับ {local} ใน {timeZone}',
   'receipt.timeline.revalidated': 'ตรวจสอบข้อมูลรับรองและขีดจำกัดของแพลตฟอร์มแล้ว',
-  "receipt.timeline.mediaPrepared": "{count, plural, one {# file prepared for the platform} other {# files prepared for the platform}}",
+  'receipt.timeline.mediaPrepared':
+    '{count, plural, one {# file prepared for the platform} other {# files prepared for the platform}}',
   'receipt.timeline.dispatched': 'ส่งไปที่ {provider}',
   'receipt.timeline.providerAccepted': '{provider} ยอมรับโพสต์แล้ว',
   'receipt.timeline.providerProcessing': '{provider} ยังคงประมวลผลสื่อ',
@@ -45,7 +46,7 @@ export const receiptMessages = {
   'receipt.times.published': 'เวลาเผยแพร่',
   'receipt.times.latency': 'จัดส่งแล้ว {duration} หลังจากเวลาที่กำหนด',
   'receipt.attempts.title': 'ความพยายาม',
-  "receipt.attempts.count": "{count, plural, one {# attempt} other {# attempts}}",
+  'receipt.attempts.count': '{count, plural, one {# attempt} other {# attempts}}',
   'receipt.attempts.classification': 'การจำแนกประเภท',
   'receipt.attempts.providerResponse': 'การตอบสนองของผู้ให้บริการ',
   'receipt.attempts.responseRedacted':
@@ -55,7 +56,8 @@ export const receiptMessages = {
   'receipt.cost.actual': 'กระทบยอด {amount}',
   'receipt.cost.pending': 'การใช้งานจริงยังไม่กระทบยอด',
   'receipt.partial.title': 'เผยแพร่แล้วบางส่วน',
-  "receipt.partial.body": "{published, plural, one {# target published} other {# targets published}}. {failed, plural, one {# target failed} other {# targets failed}}. The published posts still exist on the platform.",
+  'receipt.partial.body':
+    '{published, plural, one {# target published} other {# targets published}}. {failed, plural, one {# target failed} other {# targets failed}}. The published posts still exist on the platform.',
   'receipt.partial.doNotRollback':
     'เราจะไม่ลบโพสต์ที่เผยแพร่แล้ว ลบมันบนแพลตฟอร์มหากนั่นคือสิ่งที่คุณต้องการ',
   'receipt.export.title': 'แบ่งปันใบเสร็จรับเงินนี้',

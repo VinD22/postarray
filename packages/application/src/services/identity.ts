@@ -201,9 +201,8 @@ export function createIdentityService(deps: ServiceDeps): IdentityService {
       }
 
       const activeMembership =
-        user.memberships.find(
-          (membership) => membership.workspace.id === preferredWorkspaceId,
-        ) ?? user.memberships[0];
+        user.memberships.find((membership) => membership.workspace.id === preferredWorkspaceId) ??
+        user.memberships[0];
       if (activeMembership === undefined) {
         return null;
       }
