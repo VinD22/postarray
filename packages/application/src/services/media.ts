@@ -4,9 +4,11 @@ import {
   IMAGE_UPLOAD_LIMIT_BYTES,
   MEDIA_RETENTION_DAYS,
   VIDEO_UPLOAD_LIMIT_BYTES,
+  newIdFor,
   type OperationRef,
   type Paginated,
 } from '@relay/contracts';
+import { safeFetch } from '@relay/connectors';
 import { z } from 'zod';
 
 import type {
@@ -24,6 +26,8 @@ import { toJson } from '../internal/json';
 import { pageArgs, toPage } from '../internal/pagination';
 import { authorized, type Db } from '../internal/runtime';
 import { asMediaKind } from '../internal/storage-enums';
+import { withIdempotency } from '../internal/idempotency';
+import { fetchAndStoreRemoteMedia } from './media-import';
 
 /**
  * Media.
@@ -375,17 +379,119 @@ export function createMediaService(deps: ServiceDeps): MediaService {
       });
     },
 
-    /** Asynchronous and SSRF safe. The worker performs the fetch, not this call. */
+    /** SSRF-safe, content-addressed and replay-safe. */
     async importFromUrl(
       ctx: ActorContext,
       input: { url: string; brandId?: string | null },
     ): Promise<OperationRef> {
-      return authorized(deps, ctx, 'media.write', undefined, async () => {
-        throw new CapabilityNotImplementedError({
-          messageKey: 'errors.media_url_import_not_implemented',
-          details: { capability: 'media_url_import', hasBrandScope: input.brandId != null },
-        });
-      });
+      const resource =
+        input.brandId === undefined || input.brandId === null
+          ? undefined
+          : { brandId: input.brandId };
+      return withIdempotency(
+        deps.kv,
+        ctx,
+        {
+          operation: 'media.import_from_url',
+          body: input,
+          run: async () => {
+            // Authorize before making any outbound request, then authorize
+            // again when the durable row and audit event are written.
+            await authorized(deps, ctx, 'media.write', resource, async () => undefined);
+
+            const imported = await fetchAndStoreRemoteMedia({
+              workspaceId: ctx.workspaceId,
+              url: input.url,
+              fetchRemote: deps.remoteMediaFetch ?? safeFetch,
+              storage: deps.storage,
+            });
+
+            const mediaId = await authorized(
+              deps,
+              ctx,
+              'media.write',
+              resource,
+              async (db, actor) => {
+                const retainedUntil = retentionExpiry(deps.clock.now());
+                const existing = await db.mediaAsset.findFirst({
+                  where: { checksumSha256: imported.checksumSha256 },
+                  select: { id: true },
+                });
+                const stored =
+                  existing === null
+                    ? await db.mediaAsset.create({
+                        data: {
+                          workspaceId: actor.workspace.id,
+                          brandId: input.brandId ?? null,
+                          kind: kindForMimeType(imported.mimeType),
+                          storageBucket: deps.config.neon.storageBucket,
+                          storageKey: imported.storageKey,
+                          mimeType: imported.mimeType,
+                          byteSize: BigInt(imported.byteSize),
+                          checksumSha256: imported.checksumSha256,
+                          originKind: 'import',
+                          originUrl: imported.finalUrl,
+                          scanState: 'pending',
+                          scanNote: 'media.safety_scan_pending',
+                          retentionExpiresAt: retainedUntil,
+                          ...(actor.userId === null ? {} : { createdByUserId: actor.userId }),
+                          metadata: toJson({ filename: imported.fileName }),
+                        },
+                        select: { id: true, originKind: true },
+                      })
+                    : await db.mediaAsset.update({
+                        where: { id: existing.id },
+                        data: {
+                          brandId: input.brandId ?? null,
+                          kind: kindForMimeType(imported.mimeType),
+                          storageKey: imported.storageKey,
+                          mimeType: imported.mimeType,
+                          byteSize: BigInt(imported.byteSize),
+                          scanState: 'pending',
+                          scanNote: 'media.safety_scan_pending',
+                          deletedAt: null,
+                          storageDeletedAt: null,
+                          retentionExpiresAt: retainedUntil,
+                          metadata: toJson({ filename: imported.fileName }),
+                        },
+                        select: { id: true, originKind: true },
+                      });
+                const id = stored.id;
+
+                await recordAudit(db, actor, {
+                  action: 'workspace.updated',
+                  targetType: 'media_asset',
+                  targetId: id,
+                  after: {
+                    checksum: imported.checksumSha256,
+                    byteSize: imported.byteSize,
+                    originKind: stored.originKind,
+                    scanState: 'pending',
+                  },
+                  metadata: {
+                    redirectCount: imported.redirectCount,
+                    resolvedAddressCount: imported.resolvedAddressCount,
+                  },
+                });
+                return id;
+              },
+            );
+
+            const completedAt = deps.clock.now().toISOString();
+            return {
+              operationId: newIdFor('operation'),
+              status: 'succeeded' as const,
+              resourceType: 'media_asset',
+              resourceId: mediaId,
+              createdAt: completedAt,
+              completedAt,
+              error: null,
+            };
+          },
+          resourceIdOf: (operation) => operation.resourceId ?? undefined,
+        },
+        deps.clock,
+      );
     },
 
     async list(

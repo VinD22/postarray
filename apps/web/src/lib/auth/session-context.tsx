@@ -2,7 +2,8 @@
 
 import { createContext, useContext, useInsertionEffect, useMemo, type ReactNode } from 'react';
 
-import type { BrandView, SessionView, WorkspaceView } from '@/lib/api/types';
+import type { SessionProjectView, SessionView, WorkspaceView } from '@/lib/api/types';
+import { ACTIVE_PROJECT_COOKIE, resolveActiveProject } from './project-selection';
 
 /**
  * The signed-in session, resolved once on the server and handed to the client.
@@ -14,7 +15,8 @@ import type { BrandView, SessionView, WorkspaceView } from '@/lib/api/types';
 export interface SessionContextValue {
   readonly session: SessionView;
   readonly workspace: WorkspaceView;
-  readonly brands: readonly BrandView[];
+  readonly brands: readonly SessionProjectView[];
+  readonly project: SessionProjectView | null;
   readonly hasScope: (scope: string) => boolean;
   readonly canPublish: boolean;
 }
@@ -25,14 +27,23 @@ const PUBLISHING_ROLES = new Set(['owner', 'admin', 'manager', 'editor']);
 
 export function SessionProvider({
   session,
+  activeProjectId,
   children,
 }: {
   readonly session: SessionView;
+  readonly activeProjectId?: string | null;
   readonly children: ReactNode;
 }) {
+  const project = resolveActiveProject(session.brands, activeProjectId);
+
   useInsertionEffect(() => {
     document.cookie = `relay_ws=${encodeURIComponent(session.workspace.id)}; path=/; SameSite=Lax`;
-  }, [session.workspace.id]);
+    if (project !== null) {
+      document.cookie = `${ACTIVE_PROJECT_COOKIE}=${encodeURIComponent(project.id)}; path=/; SameSite=Lax`;
+    } else {
+      document.cookie = `${ACTIVE_PROJECT_COOKIE}=; path=/; Max-Age=0; SameSite=Lax`;
+    }
+  }, [project, session.workspace.id]);
 
   const value = useMemo<SessionContextValue>(() => {
     const scopes = new Set(session.scopes);
@@ -40,10 +51,11 @@ export function SessionProvider({
       session,
       workspace: session.workspace,
       brands: session.brands,
+      project,
       hasScope: (scope: string) => scopes.has(scope),
       canPublish: !session.workspace.readOnly && PUBLISHING_ROLES.has(session.workspace.role),
     };
-  }, [session]);
+  }, [project, session]);
 
   return <SessionContext.Provider value={value}>{children}</SessionContext.Provider>;
 }

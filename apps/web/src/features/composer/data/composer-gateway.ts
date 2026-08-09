@@ -62,7 +62,6 @@ export async function loadComposer(input: {
     approvalPinned: false,
     approverName: null,
     approvalPolicy: null,
-    assistConfigured: false,
     workspaceTimeZone: input.workspaceTimeZone,
   };
 }

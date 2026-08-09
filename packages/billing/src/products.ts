@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { ACTIVE_CHANNEL_LIMIT, WORKSPACE_MEMBER_LIMIT } from '@relay/contracts';
+import { ACTIVE_CHANNEL_LIMIT, BASE_PROJECT_LIMIT, WORKSPACE_MEMBER_LIMIT } from '@relay/contracts';
 
 import { formatMoneyMinor, USD } from './money';
 
@@ -56,6 +56,9 @@ export const RELAY_TRIAL_SUMMARY_DAY = TRIAL_DAYS - 1;
 
 /** Active connections a workspace may hold. Never enforced by disconnecting. */
 export const ACTIVE_CHANNEL_ALLOWANCE = ACTIVE_CHANNEL_LIMIT;
+
+/** Active projects included in the $29 base subscription. */
+export const PROJECT_ALLOWANCE = BASE_PROJECT_LIMIT;
 
 /** Workspace owner plus five invited teammates. */
 export const MEMBER_ALLOWANCE = WORKSPACE_MEMBER_LIMIT;
@@ -137,6 +140,7 @@ export function planPriceMinor(interval: BillingInterval): number {
  * lives in the i18n catalog and this list fixes the order it renders in.
  */
 export const PLAN_INCLUSION_KEYS: readonly string[] = Object.freeze([
+  'billing.plan.includes.projects',
   'billing.plan.includes.channels',
   'billing.plan.includes.members',
   'billing.plan.includes.posts',
@@ -144,7 +148,6 @@ export const PLAN_INCLUSION_KEYS: readonly string[] = Object.freeze([
   'billing.plan.includes.analytics',
   'billing.plan.includes.api',
   'billing.plan.includes.automation',
-  'billing.plan.includes.ai',
   'billing.plan.includes.support',
 ]);
 
@@ -184,6 +187,7 @@ export interface PricePresentation {
   readonly trialDueTodayText: string;
   readonly trialDueTodayKey: string;
   readonly activeChannelAllowance: number;
+  readonly projectAllowance: number;
   readonly inclusionKeys: readonly string[];
   readonly fairUseKey: string;
   readonly mediaGenerationBoundaryKey: string;
@@ -236,6 +240,7 @@ export const PRICE_PRESENTATION: PricePresentation = Object.freeze({
   trialDueTodayText: MANDATED_COPY.dueToday,
   trialDueTodayKey: 'billing.trial.dueToday',
   activeChannelAllowance: ACTIVE_CHANNEL_ALLOWANCE,
+  projectAllowance: PROJECT_ALLOWANCE,
   memberAllowance: MEMBER_ALLOWANCE,
   inclusionKeys: PLAN_INCLUSION_KEYS,
   fairUseKey: 'billing.plan.fairUse',

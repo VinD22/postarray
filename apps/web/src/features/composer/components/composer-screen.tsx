@@ -31,7 +31,6 @@ import { TargetRail } from './target-rail';
 import { ValidationPanel } from './validation-panel';
 import { VariantEditor } from './variant-editor';
 import type { ResolvedEntity } from './entity-search-field';
-import type { AssistAction, AssistProposal } from '../types';
 import type { MediaAsset } from '../../media/types';
 
 const STEPS = ['targets', 'write', 'variant', 'review'] as const;
@@ -44,11 +43,6 @@ export interface ComposerScreenProps {
   readonly onPickMedia: (scope: string | null) => void;
   readonly onEditMedia: (mediaId: string) => void;
   readonly onCommit: (intent: ScheduleIntent) => Promise<void>;
-  readonly runAssist: (
-    action: AssistAction,
-    scope: string | null,
-    text: string,
-  ) => Promise<AssistProposal>;
   readonly searchDestinations: (
     connectionId: string,
     query: string,
@@ -132,7 +126,7 @@ export function ComposerScreen(props: ComposerScreenProps): ReactNode {
       'Ctrl+i': () => moveIssue(1),
       'Ctrl+Shift+i': () => moveIssue(-1),
       'Mod+s': () => {
-        saveNow();
+        void saveNow();
         savedFlash.flash();
       },
       'Mod+Enter': () => setScheduleOpen(true),
@@ -150,7 +144,7 @@ export function ComposerScreen(props: ComposerScreenProps): ReactNode {
         <Button variant="primary" onClick={() => setScheduleOpen(true)} disabled={!online}>
           {t.full('action.schedule')}
         </Button>
-        <Button variant="secondary" onClick={saveNow}>
+        <Button variant="secondary" onClick={() => void saveNow()}>
           {t.full('action.saveDraft')}
         </Button>
       </div>
@@ -181,7 +175,6 @@ export function ComposerScreen(props: ComposerScreenProps): ReactNode {
       assets={props.assets}
       onPickMedia={() => props.onPickMedia(active.connectionId)}
       onEditMedia={props.onEditMedia}
-      runAssist={props.runAssist}
       searchDestinations={props.searchDestinations}
       searchMentions={props.searchMentions}
     />
@@ -195,7 +188,6 @@ export function ComposerScreen(props: ComposerScreenProps): ReactNode {
       contentLocales={props.contentLocales}
       onPickMedia={() => props.onPickMedia(null)}
       onEditMedia={props.onEditMedia}
-      runAssist={props.runAssist}
     />
   );
 

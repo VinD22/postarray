@@ -97,9 +97,11 @@ export function ConnectionsScreen({
   const t = useTranslations();
   const providerName = useProviderName();
   const { announce } = useAnnouncer();
-  const { brands } = useSession();
+  const { project } = useSession();
 
-  const { query: connections, rows } = useConnectionRows();
+  const { query: connections, rows } = useConnectionRows(
+    project === null ? {} : { brandId: project.id },
+  );
   const groups = useCustomerGroups();
 
   const pause = usePauseConnection();
@@ -171,10 +173,9 @@ export function ConnectionsScreen({
   };
 
   const startConnect = (provider: ProviderId): void => {
-    const brand = brands[0];
-    if (brand === undefined) return;
+    if (project === null) return;
     beginConnection.mutate(
-      { provider, brandId: brand.id, returnUrl: '/connections' },
+      { provider, brandId: project.id, returnUrl: '/connections' },
       { onSuccess: goToProvider },
     );
   };
@@ -192,6 +193,7 @@ export function ConnectionsScreen({
           <Button
             variant="primary"
             iconStart={<Plus aria-hidden="true" className="size-4" />}
+            disabled={project === null}
             onClick={() => setConnectOpen(true)}
           >
             {t('connection.add')}
@@ -200,6 +202,19 @@ export function ConnectionsScreen({
       />
 
       <div className="px-4 pt-4 md:px-6">
+        {project === null ? (
+          <Notice
+            tone="warning"
+            title={t('web.connection.projectMissing.title')}
+            description={t('web.connection.projectMissing.body')}
+          />
+        ) : (
+          <Notice
+            tone="info"
+            title={t('web.connection.projectScope.title', { project: project.name })}
+            description={t('web.connection.projectScope.body')}
+          />
+        )}
         <OAuthCallbackNotice />
         <OAuthAccountSelectionPanel />
       </div>
@@ -311,6 +326,7 @@ export function ConnectionsScreen({
         onOpenChange={setConnectOpen}
         permissionsByProvider={permissionsByProvider}
         availableProviders={connectableProviders.data ?? []}
+        projectName={project?.name ?? null}
         starting={beginConnection.isPending}
         onBegin={startConnect}
       />

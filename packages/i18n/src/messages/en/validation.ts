@@ -71,7 +71,7 @@ export const validationMessages = {
   'validation.privacy_value_unsupported.message':
     'The privacy choice {value} is not available for this account.',
   'validation.disclosure_required.message':
-    'This post needs a disclosure under the brand rules for {market}.',
+    'This post needs a disclosure under the project rules for {market}.',
   'validation.first_comment_unsupported.message':
     '{provider} does not support a scheduled first comment for this account.',
   'validation.thread_unsupported.message': '{provider} does not support threads for this account.',
@@ -81,7 +81,7 @@ export const validationMessages = {
   'validation.schedule_too_far_ahead.message':
     'This is further ahead than the {limit} look ahead set for this credential.',
   'validation.schedule_outside_quiet_hours.message':
-    'This falls inside the quiet hours set for {brand}.',
+    'This falls inside the quiet hours set for project {brand}.',
   'validation.duplicate_within_window.message':
     'Very similar content is already scheduled or published for {account} within {window}.',
   'validation.similar_within_window.message':
@@ -91,8 +91,10 @@ export const validationMessages = {
     'Adjust one version so each account receives a platform-native post.',
   'validation.link_malformed.message': 'A link is incomplete or malformed. Enter a full https URL.',
   'validation.no_targets_selected.message': 'Choose at least one connected account.',
-  'validation.blocked_term_present.message': 'The text contains a blocked term for {brand}.',
-  'validation.unsupported_claim.message': 'This claim is not in the approved claims for {brand}.',
+  'validation.blocked_term_present.message':
+    'The text contains a blocked term for project {brand}.',
+  'validation.unsupported_claim.message':
+    'This claim is not in the approved claims for project {brand}.',
   'validation.unsupported_claim.hint':
     'Add it to the approved claims with evidence, or reword the sentence.',
   'validation.cadence_exceeded.message':

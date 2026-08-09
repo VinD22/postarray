@@ -21,8 +21,10 @@ connector. Those were planning assumptions, not launch facts.
 - Non-video uploads are limited to 20 MiB. Video uploads are limited to 500
   MiB. Provider-specific limits may be lower and must be shown before
   scheduling.
-- V1 supports uploaded media. URL import and in-app media editing are currently
-  not built. Relay does not offer AI image or video generation.
+- V1 supports uploaded media. URL import is implemented locally through the
+  shared application service and web Library, but production Storage, scanning,
+  worker streaming and CLI/MCP parity remain release gates. In-app media editing
+  is not built. Relay does not offer AI image or video generation.
 - A connector is offered in production only after its definition of done is
   satisfied. Credentials alone do not make a connector verified.
 - The in-repository `fake` connector is for tests and local development only.
@@ -43,8 +45,13 @@ connector. Those were planning assumptions, not launch facts.
 - Workspaces, roles, invitations and action attribution are represented in the
   canonical database and application contracts.
 - Composer, calendar, receipts, media library, connections, automation,
-  tracked links, analytics, growth guidance and settings have production API
-  paths. Unsupported and not-yet-built capability states are distinct.
+  tracked links, analytics and settings have application API paths. Unsupported
+  and not-yet-built capability states are distinct. The exposed AI growth and
+  composer-assist paths are not part of the primary V1 product.
+- Workspaces contain customer-facing Projects. The $29 base allowance is three
+  active projects, with an entitlement-bounded maximum of 20. Project selection
+  scopes the primary app surfaces and capacity is checked in the application
+  and database.
 
 ### Safety and truthfulness
 
@@ -192,8 +199,9 @@ of the following are verified:
       server-side event;
 - [ ] cancellation, past-due, grace-period and read-only transitions pass;
 - [ ] invoices and the customer portal work from Settings;
-- [ ] plan-limit tests prove ten active channels and six total members at the
-      application and database boundaries; and
+- [ ] plan-limit tests prove three base projects (up to the 20-project hard
+      ceiling), ten active channels and six total members at the application and
+      database boundaries; and
 - [ ] a production smoke payment and refund are reconciled end to end.
 
 Only then may `BILLING_CHECKOUT_ENABLED` become `true`.

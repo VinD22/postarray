@@ -25,7 +25,7 @@ export const webShellMessages = {
   'shell.workspace.create': 'Create a workspace',
   'shell.workspace.manage': 'Workspace settings',
   'shell.workspace.role': 'You are {role} here',
-  'shell.brand.filterHint': 'Filtering Home, Calendar and Analytics to this brand.',
+  'shell.brand.filterHint': 'Filtering Home, Calendar and Analytics to this project.',
 
   /* -- Demo data --------------------------------------------------------- */
   'shell.demo.badge': 'Demo data',
@@ -204,7 +204,7 @@ export const webShellMessages = {
     'The next screen is Polar, our merchant of record. Access is granted when Polar confirms the subscription, not when the browser comes back.',
   'onboarding.plan.factsTitle': 'What happens when you continue',
   'onboarding.workspace.help':
-    'A workspace holds your brands, connected accounts, drafts and receipts. You can create more later.',
+    'A workspace holds your projects, connected accounts, drafts and receipts. You can create more later.',
   'onboarding.workspace.localeNote':
     'Your interface language changes this app. Content languages are chosen per post and are separate from this setting.',
   'onboarding.workspace.timeZoneDetected': 'Detected from this device: {timeZone}',

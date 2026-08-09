@@ -50,7 +50,8 @@ import type { MediaAsset, RightsDeclaration, UploadItem } from '../types';
 /** Library uploads are admitted against storage limits, before targets exist. */
 const WORKSPACE_UPLOAD_RULES: readonly AccountRule[] = [];
 
-export type LibraryStatus = 'loading' | 'ready' | 'error' | 'forbidden' | 'offline' | 'rate_limited';
+export type LibraryStatus =
+  'loading' | 'ready' | 'error' | 'forbidden' | 'offline' | 'rate_limited';
 
 export interface LibraryScreenProps {
   readonly status: LibraryStatus;
@@ -58,12 +59,14 @@ export interface LibraryScreenProps {
   readonly rules: readonly AccountRule[];
   readonly uploads: readonly UploadItem[];
   readonly online: boolean;
+  readonly importEnabled: boolean;
   readonly timeZone: string;
   readonly errorMessage?: string;
   readonly errorReference?: string;
   readonly rateLimitResetAt?: string;
   readonly onRetry?: () => void;
   readonly onFiles: (files: readonly File[]) => void;
+  readonly onImportUrl: (url: string) => Promise<void>;
   readonly onPauseUpload: (id: string) => void;
   readonly onResumeUpload: (id: string) => void;
   readonly onCancelUpload: (id: string) => void;
@@ -194,7 +197,9 @@ export function LibraryScreen(props: LibraryScreenProps): ReactNode {
             rules={WORKSPACE_UPLOAD_RULES}
             items={props.uploads}
             online={props.online}
+            importEnabled={props.importEnabled}
             onFiles={props.onFiles}
+            onImportUrl={props.onImportUrl}
             onPause={props.onPauseUpload}
             onResume={props.onResumeUpload}
             onCancel={props.onCancelUpload}

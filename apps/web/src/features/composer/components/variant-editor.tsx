@@ -18,7 +18,6 @@ import { formatBytes, formatDuration, formatRelativeTime } from '@relay/i18n';
 import { resolveVariant, type OverridableVariantField } from '@relay/contracts';
 
 import { useComposer } from '../composer-context';
-import { AssistMenu, AssistProposalPanel } from './assist-menu';
 import { BodyField } from './body-field';
 import { MediaStrip } from './media-strip';
 import { NativeSettings } from './native-settings';
@@ -26,7 +25,7 @@ import { fieldLabel, ResetToMasterDialog } from './reset-to-master-dialog';
 import { SequencePanel } from './sequence-panel';
 import { PROVIDER_LABEL } from './provider-identity';
 import type { ResolvedEntity } from './entity-search-field';
-import type { AssistAction, AssistProposal, TargetSummary } from '../types';
+import type { TargetSummary } from '../types';
 import type { MediaAsset } from '../../media/types';
 
 export interface VariantEditorProps {
@@ -34,11 +33,6 @@ export interface VariantEditorProps {
   readonly assets: readonly MediaAsset[];
   readonly onPickMedia: () => void;
   readonly onEditMedia: (mediaId: string) => void;
-  readonly runAssist: (
-    action: AssistAction,
-    scope: string | null,
-    text: string,
-  ) => Promise<AssistProposal>;
   readonly searchDestinations: (
     connectionId: string,
     query: string,
@@ -54,7 +48,6 @@ export function VariantEditor({
   assets,
   onPickMedia,
   onEditMedia,
-  runAssist,
   searchDestinations,
   searchMentions,
 }: VariantEditorProps): ReactNode {
@@ -147,16 +140,7 @@ export function VariantEditor({
             capabilities: snapshot,
           },
         ]}
-        toolbar={
-          <AssistMenu
-            scope={summary.connectionId}
-            currentText={resolved.values.body}
-            runAssist={runAssist}
-          />
-        }
       />
-
-      <AssistProposalPanel />
 
       <section aria-labelledby="limits-heading" className="flex flex-col gap-1">
         <h3 id="limits-heading" className="text-label text-text-secondary">

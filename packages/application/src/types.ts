@@ -43,6 +43,7 @@ import type {
   ProviderHttpClient,
   SecretValue,
   SocialConnector,
+  SafeFetchResult,
 } from '@relay/connectors';
 import type { RelayPrismaClient } from '@relay/database';
 import type { HealthReport, Logger } from '@relay/observability';
@@ -604,6 +605,16 @@ export interface ServiceDeps {
   readonly billing: BillingGateway;
   readonly scheduler: SchedulerPort;
   readonly storage: StoragePort;
+  /** Safe user-supplied URL fetcher. Tests inject a network-free adapter. */
+  readonly remoteMediaFetch?: (
+    url: string,
+    options: { readonly maxBytes: number },
+  ) => Promise<
+    Pick<
+      SafeFetchResult,
+      'finalUrl' | 'status' | 'body' | 'contentType' | 'redirectChain' | 'resolvedAddresses'
+    >
+  >;
   readonly exportEncryption?: DataExportEncryptionPort;
   readonly mailer: MailerPort;
   readonly logger: Logger;

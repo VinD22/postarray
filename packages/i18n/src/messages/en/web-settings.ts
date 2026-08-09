@@ -26,9 +26,9 @@ export const webSettingsMessages = {
 
   'settings.ui.section.members': 'Members and roles',
   'settings.ui.section.membersSummary': 'Who is in this workspace and what each person can do.',
-  'settings.ui.section.brands': 'Brands',
+  'settings.ui.section.brands': 'Projects',
   'settings.ui.section.brandsSummary':
-    'Voice, audience, approved claims, blocked terms and domains.',
+    'Separate channels, media, drafts, schedules and publishing rules for each product or client.',
   'settings.ui.section.agents': 'Agents and API',
   'settings.ui.section.agentsSummary':
     'Planned service accounts, scopes, credentials, activity and a dry run playground.',
@@ -52,7 +52,7 @@ export const webSettingsMessages = {
     'API credentials, outbound webhooks, connected apps and social account permissions.',
   'settings.ui.section.data': 'Data controls',
   'settings.ui.section.dataSummary':
-    'Find the correct place to disconnect an account, archive a brand or delete content.',
+    'Find the correct place to disconnect an account, archive a project or delete content.',
 
   /* ------------------------------------------------------- shared UI states */
 
@@ -109,11 +109,12 @@ export const webSettingsMessages = {
   'settings.ui.members.column.approvals': 'Approvals',
   'settings.ui.members.column.lastActive': 'Last active',
   'settings.ui.members.column.actions': 'Actions',
-  'settings.ui.members.scopeAll': 'All brands and accounts',
-  'settings.ui.members.scopeLimited': '{count, plural, one {# brand} other {# brands}}: {names}',
+  'settings.ui.members.scopeAll': 'All projects and accounts',
+  'settings.ui.members.scopeLimited':
+    '{count, plural, one {# project} other {# projects}}: {names}',
   'settings.ui.members.approvals.canApprove': 'Can approve',
   'settings.ui.members.approvals.cannotApprove': 'Cannot approve',
-  'settings.ui.members.approvals.canApproveOwnBrands': 'Can approve for the brands listed',
+  'settings.ui.members.approvals.canApproveOwnBrands': 'Can approve for the projects listed',
   'settings.ui.members.lastActiveNever': 'Has not signed in yet',
   'settings.ui.members.changeRole': 'Change role for {name}',
   'settings.ui.members.remove': 'Remove {name}',
@@ -124,9 +125,9 @@ export const webSettingsMessages = {
   'settings.ui.members.inviteBody':
     'They receive an email with a link. The invite expires after seven days and you can revoke it before then.',
   'settings.ui.members.inviteRole': 'Role',
-  'settings.ui.members.inviteScope': 'Brands they can work in',
-  'settings.ui.members.inviteScopeAll': 'Every brand in this workspace',
-  'settings.ui.members.inviteScopeSelected': 'Only the brands I select',
+  'settings.ui.members.inviteScope': 'Projects they can work in',
+  'settings.ui.members.inviteScopeAll': 'Every project in this workspace',
+  'settings.ui.members.inviteScopeSelected': 'Only the projects I select',
   'settings.ui.members.inviteApprovals': 'Can decide approval requests',
   'settings.ui.members.inviteApprovalsHelp':
     'Only roles that already include review can be given this. It is separate from editing.',
@@ -136,9 +137,9 @@ export const webSettingsMessages = {
   'settings.ui.members.inviteResend': 'Send the invite again',
   'settings.ui.members.emptyTitle': 'You are the only person here',
   'settings.ui.members.emptyBody':
-    'Invite the people who write, approve or read results. Each one gets a role and a brand scope.',
+    'Invite the people who write, approve or read results. Each one gets a role and a project scope.',
   'settings.ui.members.emptyExample':
-    'A common shape: one owner for billing, one approver per brand, and editors who draft but never publish.',
+    'A common shape: one owner for billing, one approver per project, and editors who draft but never publish.',
   'settings.ui.members.roleReferenceTitle': 'What each role can do',
   'settings.ui.members.roleReferenceCaption': 'Roles and the actions each one allows',
   'settings.ui.members.roleColumn.role': 'Role',
@@ -163,28 +164,28 @@ export const webSettingsMessages = {
   /* ------------------------------------------------------------------ brands */
 
   'settings.ui.brands.description':
-    'A brand carries the rules that content is checked against: what you may claim, what you may not say, and how each language is written.',
-  'settings.ui.brands.listCaption': 'Brands in this workspace',
-  'settings.ui.brands.column.brand': 'Brand',
+    'Keep each product, client, publication or venture separate. Every project has its own channels, media, drafts, schedule and publishing rules.',
+  'settings.ui.brands.listCaption': 'Projects in this workspace',
+  'settings.ui.brands.column.brand': 'Project',
   'settings.ui.brands.column.locales': 'Content languages',
   'settings.ui.brands.column.accounts': 'Accounts',
   'settings.ui.brands.column.updated': 'Updated',
   'settings.ui.brands.accountCount':
     '{count, plural, =0 {No accounts} one {# account} other {# accounts}}',
-  'settings.ui.brands.emptyTitle': 'No brands yet',
+  'settings.ui.brands.emptyTitle': 'Create your first project',
   'settings.ui.brands.emptyBody':
-    'A brand groups accounts, approval rules and language rules. Most teams start with one and add a second when a client or a market needs different rules.',
+    'A project keeps one product or client in sync across its social channels without mixing media, drafts or schedules with another project.',
   'settings.ui.brands.emptyExample':
-    'Example: brand "Acme EU", languages English and German, blocked term "guaranteed", disclosure "Paid partnership" on for Instagram.',
+    'Example: Acme App, Acme Podcast and Client Northwind can be three separate projects in one workspace.',
   'settings.ui.brands.voiceHelp':
-    'How this brand sounds. Used when you ask for a rewrite and when claims are checked.',
+    'How this project should sound. Used for review guidance and claim checks.',
   'settings.ui.brands.audienceHelp': 'Who the content is for, per market.',
   'settings.ui.brands.approvedClaimsHelp':
     'Statements a reviewer has cleared. Anything outside this list is flagged before approval, not after publishing.',
   'settings.ui.brands.blockedTermsHelp':
-    'Words that block scheduling for this brand. One per line.',
+    'Words that block scheduling for this project. One per line.',
   'settings.ui.brands.domainsHelp':
-    'Domains this brand may link to and shorten through. Only verified domains can be selected in the composer.',
+    'Domains this project may link to and shorten through. Only verified domains can be selected in the composer.',
   'settings.ui.brands.domainVerified': 'Verified {date}',
   'settings.ui.brands.domainPending': 'DNS record not seen yet',
   'settings.ui.brands.domainVerificationUnavailable': 'Verification is not built yet',
@@ -203,7 +204,29 @@ export const webSettingsMessages = {
     'No protected terms yet. Add product names and legal terms that must not be translated or rephrased.',
   'settings.ui.brands.localeRulesHelp':
     'Rules per content language. They are applied when you adapt or transcreate, and shown to the reviewer.',
-  'settings.ui.brands.saveBrand': 'Save brand',
+  'settings.ui.brands.saveBrand': 'Save project',
+  'settings.ui.projects.capacityTitle': 'Project capacity',
+  'settings.ui.projects.capacityHelp':
+    'The $29 base plan includes 3 active projects. A workspace can be entitled for up to 20 without creating another account.',
+  'settings.ui.projects.capacitySummary': '{used} of {limit}',
+  'settings.ui.projects.atLimitTitle': 'This workspace has used every project slot',
+  'settings.ui.projects.atLimitBody':
+    'Archive an inactive project or change the workspace entitlement before adding another. The current limit is {limit}.',
+  'settings.ui.projects.listLabel': 'Choose a project to edit',
+  'settings.ui.projects.detailsTitle': 'Project details',
+  'settings.ui.projects.projectMeta':
+    '{accounts, plural, =0 {No channels} one {# channel} other {# channels}} · Updated {updated}',
+  'settings.ui.projects.archiveAction': 'Archive project',
+  'settings.ui.projects.archiveTitle': 'Archive {project}?',
+  'settings.ui.projects.archiveBody':
+    'This inactive project leaves the active workspace and frees one project slot.',
+  'settings.ui.projects.archiveChannels':
+    'Its connected channels stop appearing in active project flows.',
+  'settings.ui.projects.archiveHistory':
+    'Drafts, published posts, receipts and audit history are retained.',
+  'settings.ui.projects.archiveLastDisabled': 'Keep at least one active project in the workspace.',
+  'settings.ui.projects.archiveConnectedDisabled':
+    'Disconnect this project’s channels before archiving it.',
 
   /* ------------------------------------------------------------ localization */
 
@@ -332,9 +355,9 @@ export const webSettingsMessages = {
   'settings.ui.data.deleteConnection': 'Revoke one social connection',
   'settings.ui.data.deleteConnectionHelp':
     'Removes Relay access to that account. The workspace, its content and its receipts stay.',
-  'settings.ui.data.deleteBrand': 'Delete a brand',
+  'settings.ui.data.deleteBrand': 'Archive a project',
   'settings.ui.data.deleteBrandHelp':
-    'Open Brands to archive that posting identity. Content published under it keeps its receipts.',
+    'Open Projects to archive that publishing context. Content published under it keeps its receipts.',
   'settings.ui.data.deleteContent': 'Delete content and media',
   'settings.ui.data.deleteContentHelp':
     'Removes drafts and stored files. It does not remove anything already published on a platform.',
@@ -415,7 +438,7 @@ export const webSettingsMessages = {
   'developer.ui.agents.emptyBody':
     'Create one for each automation you run. Separate accounts mean you can revoke one without stopping the others.',
   'developer.ui.agents.emptyExample':
-    'Example: "Content agent", brand Acme EU, may draft and schedule up to 6 posts a day between 07:00 and 22:00, never publishes immediately.',
+    'Example: "Content agent", project Acme EU, may draft and schedule up to 6 posts a day between 07:00 and 22:00, never publishes immediately.',
   'developer.ui.agents.step.identity': 'Name and purpose',
   'developer.ui.agents.step.scope': 'What it can reach',
   'developer.ui.agents.step.limits': 'Limits',
@@ -630,8 +653,8 @@ export const webSettingsMessages = {
   'developer.ui.webhooks.eventGroup.publishing': 'Publishing',
   'developer.ui.webhooks.eventGroup.automation': 'Automation and feeds',
   'developer.ui.webhooks.eventGroup.workspace': 'Workspace',
-  'developer.ui.webhooks.scopeTitle': 'Brands and accounts',
-  'developer.ui.webhooks.scopeAll': 'Every brand and account',
+  'developer.ui.webhooks.scopeTitle': 'Projects and accounts',
+  'developer.ui.webhooks.scopeAll': 'Every project and account',
   'developer.ui.webhooks.scopeSelected': 'Only the ones I select',
   'developer.ui.webhooks.secretTitle': 'Signing secret',
   'developer.ui.webhooks.secretBody':

@@ -20,6 +20,7 @@ export const billingMessages = {
   'billing.plan.interval.annual': 'Annual',
   'billing.plan.selectInterval': 'Choose a billing interval',
   'billing.plan.includes.title': 'What is included',
+  'billing.plan.includes.projects': 'Up to 3 active projects in one workspace',
   'billing.plan.includes.channels': 'Up to 10 active social channels',
   'billing.plan.includes.members': 'Owner plus 5 teammates',
   'billing.plan.includes.posts': 'Unlimited drafts and scheduled posts under fair use',
@@ -27,7 +28,6 @@ export const billingMessages = {
   'billing.plan.includes.analytics': 'Analytics kept from the day you connect an account',
   'billing.plan.includes.api': 'REST API, remote MCP server, CLI and webhooks',
   'billing.plan.includes.automation': 'Automation rules, RSS autopost and tracked links',
-  'billing.plan.includes.ai': 'DeepSeek text assistance under abuse and cost limits',
   'billing.plan.includes.support': 'Email and in app support',
   'billing.plan.fairUse':
     'Fair use means anti spam, rate and provider cost controls that protect your accounts. They work the same for every subscriber.',

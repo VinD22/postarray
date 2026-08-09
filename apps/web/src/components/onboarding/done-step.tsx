@@ -93,7 +93,7 @@ export function DoneStep() {
           {[
             { href: '/connections', labelKey: 'onboarding.done.nextStep.connectMore' },
             { href: '/settings/members', labelKey: 'onboarding.done.nextStep.inviteTeam' },
-            { href: '/settings/brands', labelKey: 'onboarding.done.nextStep.setApproval' },
+            { href: '/settings/projects', labelKey: 'onboarding.done.nextStep.setApproval' },
             { href: '/settings/agents', labelKey: 'onboarding.done.nextStep.exploreApi' },
           ].map((entry) => (
             <li key={entry.href} className="border-border-subtle border-b">

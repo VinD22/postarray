@@ -23,25 +23,18 @@ import {
 import { useTranslations } from '@relay/i18n/react';
 
 import { useComposer } from '../composer-context';
-import { AssistMenu, AssistProposalPanel } from './assist-menu';
 import { BodyField, type CounterTarget } from './body-field';
 import { GlobalEditDialog } from './global-edit-dialog';
 import { LinkControls } from './link-controls';
 import { MediaStrip } from './media-strip';
 import { SequencePanel } from './sequence-panel';
 import { SignaturePanel } from './signature-panel';
-import type { AssistAction, AssistProposal } from '../types';
 import type { MediaAsset } from '../../media/types';
 
 export interface MasterPanelProps {
   readonly assets: readonly MediaAsset[];
   readonly onPickMedia: () => void;
   readonly onEditMedia: (mediaId: string) => void;
-  readonly runAssist: (
-    action: AssistAction,
-    scope: string | null,
-    text: string,
-  ) => Promise<AssistProposal>;
   readonly contentLocales: readonly string[];
 }
 
@@ -49,7 +42,6 @@ export function MasterPanel({
   assets,
   onPickMedia,
   onEditMedia,
-  runAssist,
   contentLocales,
 }: MasterPanelProps): ReactNode {
   const t = useTranslations();
@@ -90,16 +82,11 @@ export function MasterPanel({
         counters={counters}
         onChange={(value) => dispatch({ type: 'master/patch', patch: { body: value } })}
         toolbar={
-          <div className="flex flex-wrap items-center gap-2">
-            <AssistMenu scope={null} currentText={state.master.body} runAssist={runAssist} />
-            <Button variant="secondary" size="sm" onClick={() => setGlobalEditOpen(true)}>
-              {t.full('composerWeb.globalEdit.open')}
-            </Button>
-          </div>
+          <Button variant="secondary" size="sm" onClick={() => setGlobalEditOpen(true)}>
+            {t.full('composerWeb.globalEdit.open')}
+          </Button>
         }
       />
-
-      <AssistProposalPanel />
 
       <MediaStrip
         assets={assets}

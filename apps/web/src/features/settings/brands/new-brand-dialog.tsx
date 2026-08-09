@@ -19,6 +19,7 @@ export interface NewBrandDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   saving: boolean;
+  disabled?: boolean;
   onSubmit: (input: { name: string }) => void;
 }
 
@@ -27,6 +28,7 @@ export function NewBrandDialog({
   open,
   onOpenChange,
   saving,
+  disabled = false,
   onSubmit,
 }: NewBrandDialogProps): ReactNode {
   const t = useTranslations();
@@ -75,7 +77,13 @@ export function NewBrandDialog({
           <Button variant="ghost" onClick={() => onOpenChange(false)}>
             {t('action.cancel')}
           </Button>
-          <Button type="submit" form={formId} variant="primary" loading={saving}>
+          <Button
+            type="submit"
+            form={formId}
+            variant="primary"
+            loading={saving}
+            disabled={disabled}
+          >
             {t('action.create')}
           </Button>
         </DialogFooter>

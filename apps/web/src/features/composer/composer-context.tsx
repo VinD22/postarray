@@ -28,7 +28,6 @@ import { findUrls } from './state/capability-rules';
 import { initialComposerState } from './state/seed';
 import { summarizeTargets, totalsFor, type DraftTotals, type MediaLookup } from './state/selectors';
 import type {
-  AssistProposal,
   AutosaveState,
   ComposerBootstrap,
   ComposerState,
@@ -48,10 +47,7 @@ export interface ComposerContextValue {
   readonly conflict: ConflictInfo | null;
   readonly resolveConflict: (keep: 'mine' | 'theirs') => void;
   readonly online: boolean;
-  readonly saveNow: () => void;
-  readonly proposal: AssistProposal | null;
-  readonly setProposal: (proposal: AssistProposal | null) => void;
-  readonly acceptProposal: () => void;
+  readonly saveNow: () => Promise<void>;
 }
 
 const ComposerContext = createContext<ComposerContextValue | null>(null);
@@ -91,7 +87,6 @@ export function ComposerProvider({
   const [autosave, setAutosave] = useState<AutosaveState>('idle');
   const [savedAt, setSavedAt] = useState<string | null>(null);
   const [conflict, setConflict] = useState<ConflictInfo | null>(null);
-  const [proposal, setProposal] = useState<AssistProposal | null>(null);
   const [online, setOnline] = useState(true);
   const lastSavedRevision = useRef(0);
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -141,9 +136,10 @@ export function ComposerProvider({
         setSavedAt(new Date().toISOString());
         setAutosave('saved');
         announce(t.full('a11y.announce.saved'), 'polite');
-      } catch {
+      } catch (error) {
         setAutosave('failed');
         announce(t.full('a11y.announce.saveFailed'), 'assertive');
+        throw error;
       }
     },
     [announce, onSave, t],
@@ -163,7 +159,7 @@ export function ComposerProvider({
       clearTimeout(timer.current);
     }
     timer.current = setTimeout(() => {
-      void persist(state);
+      void persist(state).catch(() => undefined);
     }, AUTOSAVE_DELAY_MS);
     return () => {
       if (timer.current !== null) {
@@ -176,7 +172,7 @@ export function ComposerProvider({
     if (timer.current !== null) {
       clearTimeout(timer.current);
     }
-    void persist(state);
+    return persist(state);
   }, [persist, state]);
 
   const resolveConflict = useCallback(
@@ -189,24 +185,6 @@ export function ComposerProvider({
     },
     [conflict, dispatch],
   );
-
-  const acceptProposal = useCallback(() => {
-    if (!proposal) {
-      return;
-    }
-    if (proposal.connectionId === null) {
-      dispatch({ type: 'master/patch', patch: { body: proposal.after } });
-    } else {
-      dispatch({
-        type: 'variant/override',
-        connectionId: proposal.connectionId,
-        field: 'body',
-        value: proposal.after,
-      });
-    }
-    setProposal(null);
-    announce(t.full('a11y.announce.suggestionApplied'), 'polite');
-  }, [announce, dispatch, proposal, t]);
 
   const summaries = useMemo(
     () =>
@@ -251,18 +229,13 @@ export function ComposerProvider({
       resolveConflict,
       online,
       saveNow,
-      proposal,
-      setProposal,
-      acceptProposal,
     }),
     [
-      acceptProposal,
       autosave,
       bootstrap,
       conflict,
       dispatch,
       online,
-      proposal,
       resolveConflict,
       runAll,
       savedAt,

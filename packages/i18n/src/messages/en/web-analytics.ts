@@ -27,7 +27,7 @@ export const webAnalyticsMessages = {
   'analytics.question.accounts': 'Which accounts need attention?',
   'analytics.question.next': 'What is worth testing next?',
 
-  'analytics.filter.brand': 'Brand',
+  'analytics.filter.brand': 'Project',
   'analytics.filter.accounts': 'Accounts',
   'analytics.filter.allAccounts': 'All connected accounts',
   'analytics.filter.range': 'Date range',
@@ -441,7 +441,7 @@ export const webAnalyticsMessages = {
   'automation.param.signature': 'Signature',
   'automation.param.disclosure': 'Disclosure',
   'automation.param.locale': 'Language',
-  'automation.param.brand': 'Brand',
+  'automation.param.brand': 'Project',
   'automation.param.campaign': 'Campaign',
   'automation.param.account': 'Account',
   'automation.param.platform': 'Platform',

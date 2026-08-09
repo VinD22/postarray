@@ -68,7 +68,13 @@ export interface MediaEditOperation {
 
 export const mediaApi = {
   createUploadUrl: (
-    input: { filename: string; mimeType: string; byteSize: number; sha256: string },
+    input: {
+      filename: string;
+      mimeType: string;
+      byteSize: number;
+      sha256: string;
+      brandId?: string | null;
+    },
     idempotencyKey: string,
   ): Promise<UploadTicket> =>
     call('/media/uploads', { method: 'POST', body: input, idempotencyKey }, () => ({
@@ -98,7 +104,7 @@ export const mediaApi = {
     })),
 
   list: (
-    query: { kind?: MediaKind; cursor?: string; limit?: number } = {},
+    query: { brandId?: string; kind?: MediaKind; cursor?: string; limit?: number } = {},
   ): Promise<Paginated<MediaAssetView>> =>
     call('/media', { query }, () => page<MediaAssetView>([])),
 

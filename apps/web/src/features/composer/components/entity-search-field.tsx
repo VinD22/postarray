@@ -148,7 +148,7 @@ export function EntitySearchField({
           placeholder: t.full('composer.destination.placeholder'),
           loading: t.full('composer.mentions.searching', { provider: PROVIDER_LABEL[provider] }),
           empty: t.full('composer.mentions.noResults', { provider: PROVIDER_LABEL[provider] }),
-          error: t.full('composerWeb.assist.failed'),
+          error: t.full('composerWeb.entity.searchFailed'),
           toggle: t.full('action.search'),
           resultCount: (count: number) => t.full('composerWeb.entity.resultCount', { count }),
         }}

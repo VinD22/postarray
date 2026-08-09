@@ -42,7 +42,7 @@ export function ComposerHeader({ onClose, onShowShortcuts }: ComposerHeaderProps
           </p>
 
           {autosave === 'failed' ? (
-            <Button variant="secondary" size="sm" onClick={saveNow}>
+            <Button variant="secondary" size="sm" onClick={() => void saveNow()}>
               {t.full('composerWeb.autosave.retry')}
             </Button>
           ) : null}

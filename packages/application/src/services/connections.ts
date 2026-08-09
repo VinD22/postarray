@@ -7,10 +7,10 @@ import {
 } from '@relay/config';
 import {
   ACTIVE_CHANNEL_LIMIT,
+  CORE_PROVIDER_IDS,
   CapabilityNotImplementedError,
   ConnectionActionRequiredError,
   ERROR_CODES,
-  PROVIDER_IDS,
   RelayError,
   type CapabilitySnapshot,
   type Paginated,
@@ -285,7 +285,7 @@ export function createConnectionService(deps: ServiceDeps): ConnectionService {
   return {
     async listAvailableProviders(ctx: ActorContext): Promise<readonly ProviderId[]> {
       return authorized(deps, ctx, 'connection.read', undefined, async () =>
-        PROVIDER_IDS.filter((provider) => provider !== 'fake' && deps.connectors.has(provider)),
+        CORE_PROVIDER_IDS.filter((provider) => deps.connectors.has(provider)),
       );
     },
 

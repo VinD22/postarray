@@ -1,4 +1,10 @@
-import type { Paginated } from '@relay/contracts';
+import {
+  ERROR_CODES,
+  PROJECT_LIMIT_ENTITLEMENT_KEY,
+  RelayError,
+  normalizeProjectLimit,
+  type Paginated,
+} from '@relay/contracts';
 
 import type { ActorContext, BrandService, PageQuery, ServiceDeps } from '../types';
 import type { BrandView } from '../views';
@@ -6,7 +12,7 @@ import type { BrandView } from '../views';
 import { recordAudit } from '../internal/audit';
 import { notFound } from '../internal/errors';
 import { pageArgs, toPage } from '../internal/pagination';
-import { authorized } from '../internal/runtime';
+import { authorized, type Db } from '../internal/runtime';
 import { workspaceSlug } from '../internal/workspace-slug';
 
 /** Brands: voice, claims, blocked terms, domains and scheduling defaults. */
@@ -26,7 +32,7 @@ const BRAND_SELECT = {
   archivedAt: true,
   createdAt: true,
   updatedAt: true,
-  socialConnections: { select: { id: true } },
+  socialConnections: { select: { id: true, status: true } },
 } as const;
 
 interface BrandRow {
@@ -44,7 +50,7 @@ interface BrandRow {
   archivedAt: Date | null;
   createdAt: Date;
   updatedAt: Date;
-  socialConnections: readonly { id: string }[];
+  socialConnections: readonly { id: string; status: string }[];
 }
 
 function toView(row: BrandRow): BrandView {
@@ -67,12 +73,60 @@ function toView(row: BrandRow): BrandView {
   };
 }
 
+export function assertProjectSlotAvailable(used: number, limit: number): void {
+  if (used < limit) {
+    return;
+  }
+  throw new RelayError(ERROR_CODES.QUOTA_EXCEEDED, {
+    messageKey: 'errors.project_limit_reached',
+    details: { used, limit },
+  });
+}
+
+async function requireProjectSlot(db: Db): Promise<void> {
+  const [used, entitlement] = await Promise.all([
+    db.brand.count({ where: { archivedAt: null } }),
+    db.entitlement.findFirst({
+      where: { key: PROJECT_LIMIT_ENTITLEMENT_KEY },
+      select: { numericValue: true },
+    }),
+  ]);
+  assertProjectSlotAvailable(used, normalizeProjectLimit(entitlement?.numericValue));
+}
+
+function assertProjectArchivable(row: BrandRow): void {
+  const connected = row.socialConnections.filter(
+    (connection) => connection.status !== 'disconnected',
+  );
+  if (connected.length === 0) {
+    return;
+  }
+  throw new RelayError(ERROR_CODES.CONFLICT, {
+    messageKey: 'errors.project_has_connections',
+    details: { connected: connected.length },
+  });
+}
+
+async function requireAnotherActiveProject(db: Db, brandId: string): Promise<void> {
+  const remaining = await db.brand.count({
+    where: { id: { not: brandId }, archivedAt: null },
+  });
+  if (remaining > 0) {
+    return;
+  }
+  throw new RelayError(ERROR_CODES.CONFLICT, {
+    messageKey: 'errors.project_last_active',
+    details: {},
+  });
+}
+
 export function createBrandService(deps: ServiceDeps): BrandService {
   return {
     async list(ctx: ActorContext, query: PageQuery = {}): Promise<Paginated<BrandView>> {
       return authorized(deps, ctx, 'brand.read', undefined, async (db) => {
         const args = pageArgs(query);
         const rows = await db.brand.findMany({
+          where: { archivedAt: null },
           orderBy: { id: 'asc' },
           take: args.take,
           skip: args.skip,
@@ -98,6 +152,7 @@ export function createBrandService(deps: ServiceDeps): BrandService {
       input: { name: string; defaultTimeZone?: string },
     ): Promise<BrandView> {
       return authorized(deps, ctx, 'brand.write', undefined, async (db, actor) => {
+        await requireProjectSlot(db);
         const created = await db.brand.create({
           data: {
             workspaceId: actor.workspace.id,
@@ -160,6 +215,12 @@ export function createBrandService(deps: ServiceDeps): BrandService {
 
     async archive(ctx: ActorContext, brandId: string): Promise<BrandView> {
       return authorized(deps, ctx, 'brand.delete', { brandId }, async (db, actor) => {
+        const before = await db.brand.findFirst({ where: { id: brandId }, select: BRAND_SELECT });
+        if (before === null) {
+          throw notFound('brand', brandId);
+        }
+        assertProjectArchivable(before);
+        await requireAnotherActiveProject(db, brandId);
         const row = await db.brand.update({
           where: { id: brandId },
           data: { archivedAt: deps.clock.now() },
@@ -177,10 +238,12 @@ export function createBrandService(deps: ServiceDeps): BrandService {
 
     async delete(ctx: ActorContext, brandId: string): Promise<void> {
       await authorized(deps, ctx, 'brand.delete', { brandId }, async (db, actor) => {
-        const row = await db.brand.findFirst({ where: { id: brandId }, select: { id: true } });
+        const row = await db.brand.findFirst({ where: { id: brandId }, select: BRAND_SELECT });
         if (row === null) {
           throw notFound('brand', brandId);
         }
+        assertProjectArchivable(row);
+        await requireAnotherActiveProject(db, brandId);
         await db.brand.update({
           where: { id: brandId },
           data: { archivedAt: deps.clock.now() },

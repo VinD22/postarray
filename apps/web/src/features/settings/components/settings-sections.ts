@@ -23,7 +23,7 @@ export const SETTINGS_SECTIONS: readonly SettingsSectionDescriptor[] = [
   },
   {
     id: 'brands',
-    href: '/settings/brands',
+    href: '/settings/projects',
     titleKey: 'settings.ui.section.brands',
     summaryKey: 'settings.ui.section.brandsSummary',
     availability: 'available',

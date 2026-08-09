@@ -20,12 +20,15 @@ import { cn } from '@relay/design-system/utils';
 import { acceptedMimeTypes, type AccountRule } from '../state/media-rules';
 import type { UploadItem } from '../types';
 import { MediaPolicyNotice } from './media-policy-notice';
+import { ImportFromUrlForm } from './import-from-url-form';
 
 export interface UploadPanelProps {
   readonly rules: readonly AccountRule[];
   readonly items: readonly UploadItem[];
   readonly online: boolean;
+  readonly importEnabled: boolean;
   readonly onFiles: (files: readonly File[]) => void;
+  readonly onImportUrl: (url: string) => Promise<void>;
   readonly onPause: (id: string) => void;
   readonly onResume: (id: string) => void;
   readonly onCancel: (id: string) => void;
@@ -36,7 +39,9 @@ export function UploadPanel({
   rules,
   items,
   online,
+  importEnabled,
   onFiles,
+  onImportUrl,
   onPause,
   onResume,
   onCancel,
@@ -63,55 +68,59 @@ export function UploadPanel({
 
       <MediaPolicyNotice rules={rules} />
 
-      <div
-        onDragOver={(event) => {
-          event.preventDefault();
-          setDragging(true);
-        }}
-        onDragLeave={() => setDragging(false)}
-        onDrop={(event) => {
-          event.preventDefault();
-          setDragging(false);
-          onFiles([...event.dataTransfer.files]);
-        }}
-        className={cn(
-          'flex flex-col items-start gap-2 rounded-lg border-2 border-dashed px-4 py-5',
-          'transition-[color,background-color,border-color,scale] duration-[var(--duration-fast)]',
-          'ease-[var(--ease-standard)] motion-reduce:transition-none',
-          dragging
-            ? 'border-accent bg-accent-subtle scale-[1.01] motion-reduce:scale-100'
-            : 'border-border-bold bg-surface-sunken',
-        )}
-      >
-        <p className="text-body-sm text-text-secondary">{t.full('mediaLib.upload.dropHint')}</p>
-        <Button
-          variant="secondary"
-          size="sm"
-          iconStart={<Upload aria-hidden />}
-          onClick={() => input.current?.click()}
-        >
-          {t.full('mediaLib.upload.browse')}
-        </Button>
-        <input
-          ref={input}
-          type="file"
-          multiple
-          accept={accept.join(',')}
-          className="sr-only"
-          aria-label={t.full('mediaLib.upload.browse')}
-          onChange={(event) => {
-            onFiles([...(event.target.files ?? [])]);
-            event.target.value = '';
+      <div className="grid items-stretch gap-3 lg:grid-cols-2">
+        <div
+          onDragOver={(event) => {
+            event.preventDefault();
+            setDragging(true);
           }}
-        />
-        <p className="text-body-sm text-text-tertiary">
-          {rules.length === 0
-            ? t.full('mediaLib.upload.noTargets')
-            : t.full('mediaLib.upload.checkedAgainst')}
-        </p>
-        <p className="text-label text-text-tertiary">
-          {t.full('composerWeb.limits.mimeTypes', { types: accept.join(', ') })}
-        </p>
+          onDragLeave={() => setDragging(false)}
+          onDrop={(event) => {
+            event.preventDefault();
+            setDragging(false);
+            onFiles([...event.dataTransfer.files]);
+          }}
+          className={cn(
+            'flex min-h-56 flex-col items-start gap-2 rounded-lg border-2 border-dashed px-4 py-5',
+            'transition-[color,background-color,border-color,scale] duration-[var(--duration-fast)]',
+            'ease-[var(--ease-standard)] motion-reduce:transition-none',
+            dragging
+              ? 'border-accent bg-accent-subtle scale-[1.01] motion-reduce:scale-100'
+              : 'border-border-bold bg-surface-sunken',
+          )}
+        >
+          <p className="text-body-sm text-text-secondary">{t.full('mediaLib.upload.dropHint')}</p>
+          <Button
+            variant="secondary"
+            size="sm"
+            iconStart={<Upload aria-hidden />}
+            onClick={() => input.current?.click()}
+          >
+            {t.full('mediaLib.upload.browse')}
+          </Button>
+          <input
+            ref={input}
+            type="file"
+            multiple
+            accept={accept.join(',')}
+            className="sr-only"
+            aria-label={t.full('mediaLib.upload.browse')}
+            onChange={(event) => {
+              onFiles([...(event.target.files ?? [])]);
+              event.target.value = '';
+            }}
+          />
+          <p className="text-body-sm text-text-tertiary mt-auto">
+            {rules.length === 0
+              ? t.full('mediaLib.upload.noTargets')
+              : t.full('mediaLib.upload.checkedAgainst')}
+          </p>
+          <p className="text-label text-text-tertiary">
+            {t.full('composerWeb.limits.mimeTypes', { types: accept.join(', ') })}
+          </p>
+        </div>
+
+        <ImportFromUrlForm enabled={importEnabled} online={online} onImport={onImportUrl} />
       </div>
 
       {items.length === 0 ? null : (

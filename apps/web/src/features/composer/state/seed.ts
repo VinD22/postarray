@@ -349,8 +349,7 @@ export const SEED_BOOTSTRAP: ComposerBootstrap = {
   settings: {},
   approvalPinned: false,
   approverName: 'Dana Ito',
-  approvalPolicy: 'Two approvers for brand Acme EU',
-  assistConfigured: true,
+  approvalPolicy: 'Two approvers for project Acme EU',
   workspaceTimeZone: 'Europe/Berlin',
 };
 

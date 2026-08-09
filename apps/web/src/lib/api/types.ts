@@ -89,6 +89,15 @@ export interface WorkspaceView {
   readonly locale: string;
   readonly role: Role;
   readonly readOnly: boolean;
+  readonly projectLimit: number;
+}
+
+/** The intentionally small project summary carried in session bootstrap data. */
+export interface SessionProjectView {
+  readonly id: string;
+  readonly workspaceId: string;
+  readonly name: string;
+  readonly connectionIds: readonly string[];
 }
 
 export interface BrandView {
@@ -113,7 +122,7 @@ export interface SessionView {
   readonly user: UserView;
   readonly workspace: WorkspaceView;
   readonly workspaces: readonly WorkspaceView[];
-  readonly brands: readonly BrandView[];
+  readonly brands: readonly SessionProjectView[];
   /** Scopes the current credential carries. Used for 403 remediation copy. */
   readonly scopes: readonly string[];
   readonly onboardingComplete: boolean;

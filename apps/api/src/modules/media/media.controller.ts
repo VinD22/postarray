@@ -81,12 +81,12 @@ export class MediaController {
     return this.media.finalizeUpload(actor, parseParams(mediaIdSchema, id));
   }
 
-  /** Import by URL. Asynchronous, and returns an operation handle to follow. */
+  /** Import by URL and return the completed, replay-safe operation handle. */
   @Post('imports')
   @RequireScope('media:write')
   @Idempotent()
   @RateLimit({ limit: 30, windowSeconds: 60 })
-  @HttpCode(202)
+  @HttpCode(200)
   importFromUrl(@Actor() actor: ActorContext, @Body() body: unknown): Promise<OperationRef> {
     return this.media.importFromUrl(actor, parseBody(importFromUrlSchema, body));
   }

@@ -9,6 +9,8 @@ export const onboardingMessages = {
   'onboarding.plan.help': 'One plan, every feature. Change the interval whenever you like.',
 
   'onboarding.workspace.title': 'Name your workspace',
+  'onboarding.workspace.help':
+    'Your workspace holds billing and teammates. We will create its first project with the same name, and you can add more projects later.',
   'onboarding.workspace.namePlaceholder': 'Your company or client name',
   'onboarding.workspace.timeZone': 'Time zone for scheduling',
   'onboarding.workspace.timeZoneHelp':
@@ -53,7 +55,7 @@ export const onboardingMessages = {
   'onboarding.checklist.connectAccount': 'Connect an account',
   'onboarding.checklist.firstPost': 'Publish or schedule a post',
   'onboarding.checklist.inviteTeammate': 'Invite a teammate',
-  'onboarding.checklist.setBrandVoice': 'Describe your brand voice',
+  'onboarding.checklist.setBrandVoice': 'Describe the project voice',
   'onboarding.checklist.tryAutomation': 'Try an automation rule',
   'onboarding.checklist.remaining':
     '{count, plural, =0 {All done} one {# step left} other {# steps left}}',

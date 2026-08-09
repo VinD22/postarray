@@ -50,8 +50,6 @@ export {
 } from './state/seed';
 
 export type {
-  AssistAction,
-  AssistProposal,
   ComposerBootstrap,
   ComposerState,
   LinkPlan,

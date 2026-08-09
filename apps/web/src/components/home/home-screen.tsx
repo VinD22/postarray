@@ -16,7 +16,6 @@ import { StaggerList } from '@/components/motion';
 import { ActionCenterList } from '@/components/shell/action-center-list';
 
 import { ConnectionHealth } from './connection-health';
-import { GrowthAdvisorEntry } from './growth-advisor-entry';
 import { RecentReceipts } from './recent-receipts';
 import { HomeSection } from './section';
 import { TrialBanner } from './trial-banner';
@@ -34,7 +33,7 @@ const DAY_MS = 86_400_000;
  */
 export function HomeScreen() {
   const t = useTranslations();
-  const { session, canPublish } = useSession();
+  const { session, project, canPublish } = useSession();
   const { announce } = useAnnouncer();
 
   const actionQuery = useActionCenter();
@@ -45,6 +44,7 @@ export function HomeScreen() {
   const upcomingQuery = useCalendar({
     from: now.toISOString(),
     to: new Date(now.getTime() + DAY_MS).toISOString(),
+    ...(project === null ? {} : { brandId: project.id }),
   });
   const upcomingCount = upcomingQuery.data?.data.length ?? 0;
 
@@ -138,10 +138,6 @@ export function HomeScreen() {
           <RecentReceipts />
           <ConnectionHealth />
         </div>
-
-        <Separator />
-
-        <GrowthAdvisorEntry />
 
         <p className="text-body-sm text-text-tertiary">
           {t('shell.workspace.current', { name: session.workspace.name })}

@@ -7,6 +7,7 @@ import { useTranslations } from '@relay/i18n/react';
 
 import { api } from '@/lib/api';
 import { useLocalizedRouter } from '@/lib/i18n';
+import { useSession } from '@/lib/auth/session-context';
 
 import { AnalyticsOverviewScreen } from './analytics-overview-screen';
 import type { AnalyticsFilters } from './components/analytics-toolbar';
@@ -38,15 +39,17 @@ interface ConnectionLike {
 export function AnalyticsOverviewContainer(): ReactElement {
   const t = useTranslations();
   const router = useLocalizedRouter();
+  const { workspace, project } = useSession();
 
   const brands = useQuery({
-    queryKey: ['brands', 'list'],
+    queryKey: ['ws', workspace.id, 'brands', 'list'],
     queryFn: async () => api.brands.list({ limit: 100 }),
   });
 
   const connections = useQuery({
-    queryKey: ['connections', 'list', 'analytics'],
-    queryFn: async () => api.connections.list({ limit: 100 }),
+    queryKey: ['ws', workspace.id, 'connections', 'analytics', project?.id ?? 'none'],
+    queryFn: async () =>
+      api.connections.list({ limit: 100, ...(project === null ? {} : { brandId: project.id }) }),
   });
 
   const accounts = useMemo<readonly AccountRef[]>(() => {
@@ -61,14 +64,14 @@ export function AnalyticsOverviewContainer(): ReactElement {
 
   const initialFilters = useMemo<AnalyticsFilters>(
     () => ({
-      brandId: null,
+      brandId: project?.id ?? null,
       connectionIds: [],
       range: defaultRange(),
       rankMetric: 'impressions',
       format: null,
       comparePrevious: false,
     }),
-    [],
+    [project?.id],
   );
 
   if (connections.isPending || brands.isPending) {

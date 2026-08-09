@@ -68,7 +68,7 @@ export const webCalendarMessages = {
   'web.calendar.allDayHeading': 'No exact time yet',
 
   'web.calendar.filter.group': 'Customer group',
-  'web.calendar.filter.anyBrand': 'Any brand',
+  'web.calendar.filter.anyBrand': 'Any project',
   'web.calendar.filter.anyAccount': 'Any account',
   'web.calendar.filter.anyPlatform': 'Any platform',
   'web.calendar.filter.anyStatus': 'Any status',
@@ -180,7 +180,7 @@ export const webCalendarMessages = {
   'web.calendar.permission.requirementsLabel': 'Required scope',
   'web.calendar.permission.title': 'You cannot see this calendar',
   'web.calendar.permission.body':
-    'Calendar access is granted per brand. Your account is not on the brands in this view.',
+    'Calendar access is granted per project. Your account is not on the projects in this view.',
 
   /* ---------------------------------------------------------------------
    * Post job and publication receipt
@@ -337,6 +337,8 @@ export const webCalendarMessages = {
     'Metrics already collected stay in this workspace and stop updating.',
 
   'web.connection.connect.title': 'Connect an account',
+  'web.connection.connect.projectContext':
+    'Connect {provider} to {project}. Relay keeps this account, its media and its posts inside that project.',
   'web.connection.connect.chooseProvider': 'Which platform',
   'web.connection.connect.permissionHeading': 'What Relay will ask {provider} for',
   'web.connection.connect.requirementHeading': 'Before you continue',
@@ -345,6 +347,12 @@ export const webCalendarMessages = {
     'The next screen is {provider}, not Relay. Relay never sees your password.',
   'web.connection.connect.noWriteWithoutApproval':
     'Connecting an account does not publish anything. Every post still follows this workspace approval policy.',
+  'web.connection.projectScope.title': 'Showing channels for {project}',
+  'web.connection.projectScope.body':
+    'New channels connect to this project. Switch projects from the top bar to manage another set.',
+  'web.connection.projectMissing.title': 'Create a project before connecting a channel',
+  'web.connection.projectMissing.body':
+    'Projects keep channels, media, drafts and schedules from different products or clients separate.',
 
   'web.connection.requirement.instagram':
     'Instagram publishing needs a professional account, which means a business or creator account linked to a Facebook Page.',
@@ -440,7 +448,7 @@ export const webCalendarMessages = {
     'A group filters the calendar and analytics. Moving an account keeps every post, receipt and metric it already has.',
   'web.connection.group.empty.title': 'No customer groups yet',
   'web.connection.group.empty.body':
-    'A group is a client or a brand. Group accounts to filter the calendar and analytics by customer.',
+    'A project keeps one product or client and its connected accounts together across the calendar and analytics.',
 
   'web.connection.incident.title': 'This account needs attention',
   'web.connection.incident.remediationHeading': 'What to do',

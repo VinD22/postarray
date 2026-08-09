@@ -1,6 +1,8 @@
 import { describe, expect, it } from 'vitest';
+import { newIdFor } from '@relay/contracts';
 
 import {
+  createUploadUrlSchema,
   declareRightsSchema,
   setAltTextSchema,
   toMediaEditOperations,
@@ -8,6 +10,18 @@ import {
 } from './media.schemas';
 
 describe('media boundary schemas', () => {
+  it('accepts a project id on an upload reservation', () => {
+    const brandId = newIdFor('brand');
+    const parsed = createUploadUrlSchema.parse({
+      filename: 'launch.jpg',
+      mimeType: 'image/jpeg',
+      byteSize: 1024,
+      sha256: 'a'.repeat(64),
+      brandId,
+    });
+    expect(parsed.brandId).toBe(brandId);
+  });
+
   it('requires a reason for an explicit alt-text waiver', () => {
     expect(
       setAltTextSchema.safeParse({ altText: null, waived: true, waivedReason: '' }).success,

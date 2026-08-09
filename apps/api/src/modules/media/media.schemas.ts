@@ -36,6 +36,7 @@ export const createUploadUrlSchema = z
     filename: z.string().trim().min(1).max(255),
     mimeType: z.enum(UPLOADABLE_MIME_TYPES),
     byteSize: z.number().int().positive().max(MAX_UPLOAD_BYTES),
+    brandId: brandIdSchema.nullable().optional(),
     /** Computed by the client. Re-verified server side after the upload. */
     sha256: checksumSchema,
   })
@@ -57,7 +58,7 @@ export const createUploadUrlSchema = z
   });
 
 /**
- * Import by URL. Asynchronous and SSRF-safe: the fetch resolves DNS itself,
+ * Import by URL. SSRF-safe: the fetch resolves DNS itself,
  * refuses loopback, link-local, private, CGNAT and cloud metadata addresses,
  * pins the resolved address on connect and repeats every check on each
  * redirect. That work happens in `@relay/application`'s single `safeFetch`, so

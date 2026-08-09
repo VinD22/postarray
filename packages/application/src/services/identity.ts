@@ -1,5 +1,12 @@
 import { delegableScopes } from '@relay/authz';
-import { ERROR_CODES, RelayError, type ApprovalLevel, type Role } from '@relay/contracts';
+import {
+  ERROR_CODES,
+  PROJECT_LIMIT_ENTITLEMENT_KEY,
+  RelayError,
+  normalizeProjectLimit,
+  type ApprovalLevel,
+  type Role,
+} from '@relay/contracts';
 
 import type {
   IdentityContext,
@@ -181,6 +188,11 @@ export function createIdentityService(deps: ServiceDeps): IdentityService {
                   status: true,
                   defaultLocale: true,
                   defaultTimeZone: true,
+                  entitlements: {
+                    where: { key: PROJECT_LIMIT_ENTITLEMENT_KEY },
+                    take: 1,
+                    select: { numericValue: true },
+                  },
                   brands: {
                     where: { archivedAt: null },
                     orderBy: { createdAt: 'asc' },
@@ -216,6 +228,7 @@ export function createIdentityService(deps: ServiceDeps): IdentityService {
         locale: membership.workspace.defaultLocale,
         role: membership.role,
         readOnly: !['active', 'trialing'].includes(membership.workspace.status),
+        projectLimit: normalizeProjectLimit(membership.workspace.entitlements[0]?.numericValue),
       });
 
       return {
@@ -258,10 +271,7 @@ export function createIdentityService(deps: ServiceDeps): IdentityService {
       if (byEmail === null) {
         return null;
       }
-      if (
-        byEmail.authSubjectId !== null &&
-        byEmail.authSubjectId !== input.identitySubjectId
-      ) {
+      if (byEmail.authSubjectId !== null && byEmail.authSubjectId !== input.identitySubjectId) {
         return null;
       }
 
@@ -270,9 +280,7 @@ export function createIdentityService(deps: ServiceDeps): IdentityService {
       const updated = await deps.prisma.user.update({
         where: { id: byEmail.id },
         data: {
-          ...(byEmail.authSubjectId === null
-            ? { authSubjectId: input.identitySubjectId }
-            : {}),
+          ...(byEmail.authSubjectId === null ? { authSubjectId: input.identitySubjectId } : {}),
           ...(verifiedAt === undefined ? {} : { emailVerifiedAt: verifiedAt }),
         },
         select: { id: true },

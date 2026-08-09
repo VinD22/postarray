@@ -15,7 +15,8 @@ export const navMessages = {
   'nav.commandPalette': 'Command palette',
   'nav.account': 'Account',
   'nav.workspaceSwitcher': 'Switch workspace',
-  'nav.brandSwitcher': 'Switch brand',
+  'nav.projectSwitcher': 'Switch project or workspace',
+  'nav.brandSwitcher': 'Switch project',
   'nav.skipToContent': 'Skip to main content',
   'nav.primaryLandmark': 'Primary navigation',
   'nav.moreItems': 'More',
@@ -26,7 +27,7 @@ export const navMessages = {
   'nav.theme.label': 'Theme',
 
   'settings.nav.members': 'Members and roles',
-  'settings.nav.brands': 'Brands',
+  'settings.nav.brands': 'Projects',
   'settings.nav.agents': 'Agents and API',
   'settings.nav.developerApps': 'Developer apps',
   'settings.nav.webhooks': 'Webhooks',
@@ -65,8 +66,12 @@ export const navMessages = {
 
   'shell.workspace.label': 'Workspace',
   'shell.workspace.current': 'Current workspace: {name}',
-  'shell.brand.label': 'Brand',
-  'shell.brand.all': 'All brands',
+  'shell.project.label': 'Projects',
+  'shell.project.none': 'Create a project',
+  'shell.project.current': 'Current project: {name}',
+  'shell.project.manage': 'Manage projects',
+  'shell.brand.label': 'Project',
+  'shell.brand.all': 'All projects',
   'shell.timeZone.label': 'Times shown in {timeZone}',
   'shell.notifications.count':
     '{count, plural, =0 {No new notifications} one {# new notification} other {# new notifications}}',

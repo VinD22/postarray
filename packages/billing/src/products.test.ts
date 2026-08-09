@@ -110,4 +110,9 @@ describe('the presentation object agrees with the English catalog', () => {
     expect(PRICE_PRESENTATION.activeChannelAllowance).toBe(10);
     expect(catalog['billing.plan.includes.channels']).toContain('10');
   });
+
+  it('states the three-project base allowance', () => {
+    expect(PRICE_PRESENTATION.projectAllowance).toBe(3);
+    expect(catalog['billing.plan.includes.projects']).toContain('3');
+  });
 });

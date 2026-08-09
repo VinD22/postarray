@@ -1,6 +1,6 @@
 /** Connections, their capability snapshots, destinations and mention search. */
 
-import type { CapabilitySnapshot } from '@relay/contracts';
+import { CORE_PROVIDER_IDS, type CapabilitySnapshot } from '@relay/contracts';
 import type {
   ConnectionView as ApplicationConnectionView,
   MentionEntityView,
@@ -9,7 +9,7 @@ import type {
 } from '@relay/application';
 
 import { call } from '../call';
-import { demoConnections, page } from '../fixtures';
+import { demoConnections, demoSession, page } from '../fixtures';
 import type {
   ConnectionDestination,
   ConnectionView,
@@ -60,18 +60,28 @@ function toConnection(connection: ApplicationConnectionView): ConnectionView {
 
 export const connectionsApi = {
   listAvailableProviders: (): Promise<readonly ProviderId[]> =>
-    call('/connections/providers', {}, () => ['x', 'linkedin', 'instagram', 'facebook']),
+    call('/connections/providers', {}, () => CORE_PROVIDER_IDS),
 
   list: (query: ConnectionListQuery = {}): Promise<Paginated<ConnectionView>> =>
     call<Paginated<ApplicationConnectionView>, Paginated<ConnectionView>>(
       '/connections',
       { query },
-      () =>
-        page(
+      () => {
+        const projectConnectionIds =
+          query.brandId === undefined
+            ? null
+            : new Set(
+                demoSession.brands.find((project) => project.id === query.brandId)?.connectionIds ??
+                  [],
+              );
+        return page(
           demoConnections.filter(
-            (connection) => query.provider === undefined || connection.provider === query.provider,
+            (connection) =>
+              (query.provider === undefined || connection.provider === query.provider) &&
+              (projectConnectionIds === null || projectConnectionIds.has(connection.id)),
           ),
-        ),
+        );
+      },
       (result) => ({ ...result, data: result.data.map(toConnection) }),
     ),
 

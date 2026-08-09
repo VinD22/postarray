@@ -78,6 +78,7 @@ export interface CalendarScreenProps {
   actionCenterHref: string;
   /** Route pattern for one post. `{id}` is replaced with the content item id. */
   postHrefPattern: string;
+  defaultProjectId?: string | null;
   /**
    * Named brands and customer groups from the session. Passed in rather than
    * derived from the entries, because deriving them would mean showing an
@@ -91,6 +92,7 @@ export function CalendarScreen({
   composeHref,
   actionCenterHref,
   postHrefPattern,
+  defaultProjectId = null,
   brands = [],
   customerGroups = [],
 }: CalendarScreenProps): ReactNode {
@@ -109,7 +111,12 @@ export function CalendarScreen({
 
   const view = parseView(searchParams, defaultView);
   const anchor = useMemo(() => parseAnchor(searchParams, new Date()), [searchParams]);
-  const filters = useMemo(() => parseFilters(searchParams), [searchParams]);
+  const filters = useMemo(() => {
+    const parsed = parseFilters(searchParams);
+    return parsed.brandId === null && defaultProjectId !== null
+      ? { ...parsed, brandId: defaultProjectId }
+      : parsed;
+  }, [defaultProjectId, searchParams]);
 
   const range = useMemo(
     () => computeRange(view, anchor, format.timeZone, format.weekStartsOn),

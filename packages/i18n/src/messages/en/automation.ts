@@ -30,7 +30,7 @@ export const automationMessages = {
   'automation.trigger.recurring': 'a recurring schedule fires',
 
   'automation.condition.label': 'Conditions',
-  'automation.condition.brand': 'the brand is {brand}',
+  'automation.condition.brand': 'the project is {brand}',
   'automation.condition.campaign': 'the campaign is {campaign}',
   'automation.condition.account': 'the account is {account}',
   'automation.condition.platform': 'the platform is {platform}',
@@ -127,7 +127,7 @@ export const automationMessages = {
   'automation.webhooks.urlLabel': 'Endpoint URL',
   'automation.webhooks.eventsLabel': 'Events',
   'automation.webhooks.allEvents': 'All events',
-  'automation.webhooks.scopeLabel': 'Brands and accounts',
+  'automation.webhooks.scopeLabel': 'Projects and accounts',
   'automation.webhooks.allAccounts': 'All accounts',
   'automation.webhooks.secret': 'Signing secret',
   'automation.webhooks.secretShownOnce': 'This secret is shown once. Store it now.',

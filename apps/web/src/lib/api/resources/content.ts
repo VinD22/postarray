@@ -10,6 +10,7 @@ import type {
   CalendarEntry as ApplicationCalendarEntry,
   CanonicalPreview,
   ContentItemView as ApplicationContentItemView,
+  ContentVersionView as ApplicationContentVersionView,
   PostVariantView,
   PublishJobView,
   PublishConfirmationEvidence,
@@ -275,6 +276,20 @@ export const contentApi = {
       }),
       toContentItem,
     ),
+
+  freezeVersion: (
+    contentItemId: string,
+    idempotencyKey: string,
+  ): Promise<ApplicationContentVersionView> =>
+    call(`/content/${contentItemId}/versions`, { method: 'POST', idempotencyKey }, () => ({
+      id: 'version_demo_new',
+      contentItemId,
+      revision: 1,
+      checksum: '0'.repeat(64),
+      locale: 'en',
+      createdAt: new Date().toISOString(),
+      createdBy: null,
+    })),
 
   applySet: (contentItemId: string, setId: string): Promise<ContentItemView> =>
     call<ApplicationContentItemView, ContentItemView>(

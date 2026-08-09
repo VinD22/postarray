@@ -26,6 +26,7 @@ export interface LibraryGatewayProps {
   readonly rateLimitResetAt?: string;
   /** True when no API is configured and the screen is showing seeded content. */
   readonly readOnly: boolean;
+  readonly projectId: string | null;
 }
 
 export function LibraryGateway(props: LibraryGatewayProps): ReactNode {
@@ -43,6 +44,7 @@ export function LibraryGateway(props: LibraryGatewayProps): ReactNode {
             mimeType: file.type,
             byteSize: file.size,
             sha256,
+            brandId: props.projectId,
           },
           newIdempotencyKey('media_upload'),
         );
@@ -83,7 +85,7 @@ export function LibraryGateway(props: LibraryGatewayProps): ReactNode {
         return { mediaId: finalized.id };
       },
     };
-  }, []);
+  }, [props.projectId]);
 
   return (
     <LibraryClient
@@ -93,6 +95,20 @@ export function LibraryGateway(props: LibraryGatewayProps): ReactNode {
       timeZone={props.timeZone}
       {...(props.rateLimitResetAt ? { rateLimitResetAt: props.rateLimitResetAt } : {})}
       transport={transport}
+      importEnabled={!props.readOnly}
+      onImportUrl={async (url) => {
+        if (props.readOnly) {
+          return;
+        }
+        const operation = await api.media.importFromUrl(
+          { url, brandId: props.projectId },
+          newIdempotencyKey('media_import'),
+        );
+        if (operation.status === 'failed') {
+          throw new Error('MEDIA_IMPORT_FAILED');
+        }
+        refresh();
+      }}
       onRefresh={refresh}
       {...(props.errorReference ? { errorReference: props.errorReference } : {})}
       onSaveAltText={async (assetId, input) => {

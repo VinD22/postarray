@@ -15,7 +15,7 @@ export const statusMessages = {
   'empty.analytics.noPermission':
     'This account has not granted analytics access. Reconnect to add it.',
   'empty.approvals.title': 'Nothing waiting on you',
-  'empty.approvals.body': 'Approval requests for your brands appear here.',
+  'empty.approvals.body': 'Approval requests for your projects appear here.',
   'empty.library.title': 'Your library is empty',
   'empty.library.body': 'Upload images and video, or import them from a URL or the API.',
   'empty.library.action': 'Upload media',
@@ -59,7 +59,7 @@ export const statusMessages = {
   'permission.denied.role': 'This needs the {role} role. You are {currentRole}.',
   'permission.denied.scope': 'This credential needs the scope {scope}.',
   'permission.denied.contactOwner': 'Ask {owner} to grant it.',
-  'permission.denied.brandScope': 'Your access is limited to {brands}.',
+  'permission.denied.brandScope': 'Your access is limited to these projects: {brands}.',
   'permission.readOnly': 'This workspace is read only right now.',
   'permission.mfaRequired': 'Confirm with two factor authentication to continue.',
 

@@ -266,6 +266,10 @@ export const brandsGateway = {
     const brand = await api.brands.create(input, newIdempotencyKey('settings'));
     return toBrandView(brand);
   },
+
+  async archive(brandId: string): Promise<void> {
+    await api.brands.archive(brandId);
+  },
 };
 
 /* ------------------------------------------------------------- security */

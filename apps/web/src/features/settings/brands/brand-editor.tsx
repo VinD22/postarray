@@ -2,7 +2,7 @@
 
 import { useEffect, useState, type FormEvent, type ReactNode } from 'react';
 import { Button, Field, Input, Textarea } from '@relay/design-system/primitives';
-import { CapabilityBadge, Notice } from '@relay/design-system/patterns';
+import { CapabilityBadge, ConfirmDialog, Notice } from '@relay/design-system/patterns';
 import { useTranslations } from '@relay/i18n/react';
 
 import { SettingsPanel } from '../components/section';
@@ -13,8 +13,12 @@ import type { BrandView } from '../lib/view-models';
 export interface BrandEditorProps {
   brand: BrandView;
   saving: boolean;
+  archiving: boolean;
   disabled: boolean;
   onSave: (patch: Partial<BrandView>) => void;
+  onArchive: () => void;
+  archiveDisabled: boolean;
+  archiveDisabledReason: string | null;
 }
 
 interface DraftState {
@@ -44,10 +48,20 @@ function draftFrom(brand: BrandView): DraftState {
  * audience are prose, claims and blocked terms are lists people paste in, and
  * the glossary and the locale rules are tables because they have columns.
  */
-export function BrandEditor({ brand, saving, disabled, onSave }: BrandEditorProps): ReactNode {
+export function BrandEditor({
+  brand,
+  saving,
+  archiving,
+  disabled,
+  onSave,
+  onArchive,
+  archiveDisabled,
+  archiveDisabledReason,
+}: BrandEditorProps): ReactNode {
   const t = useTranslations();
   const formatters = useFormatters();
   const [draft, setDraft] = useState<DraftState>(() => draftFrom(brand));
+  const [archiveOpen, setArchiveOpen] = useState(false);
 
   useEffect(() => {
     setDraft(draftFrom(brand));
@@ -92,7 +106,7 @@ export function BrandEditor({ brand, saving, disabled, onSave }: BrandEditorProp
       ) : null}
 
       <SettingsPanel
-        title={t('settings.ui.section.brands')}
+        title={t('settings.ui.projects.detailsTitle')}
         description={t('settings.ui.brands.description')}
         footnote={
           brand.updatedByName === null
@@ -240,7 +254,7 @@ export function BrandEditor({ brand, saving, disabled, onSave }: BrandEditorProp
         />
       </SettingsPanel>
 
-      <div className="flex items-center gap-2">
+      <div className="flex flex-wrap items-center gap-2">
         <Button type="submit" variant="primary" loading={saving} disabled={disabled || !dirty}>
           {t('settings.ui.brands.saveBrand')}
         </Button>
@@ -252,7 +266,39 @@ export function BrandEditor({ brand, saving, disabled, onSave }: BrandEditorProp
         >
           {t('action.undo')}
         </Button>
+        <Button
+          type="button"
+          variant="destructive"
+          className="ms-auto"
+          loading={archiving}
+          disabled={archiveDisabled || saving}
+          onClick={() => setArchiveOpen(true)}
+        >
+          {t('settings.ui.projects.archiveAction')}
+        </Button>
       </div>
+      {archiveDisabledReason === null ? null : (
+        <p className="text-body-sm text-text-tertiary">{archiveDisabledReason}</p>
+      )}
+
+      <ConfirmDialog
+        open={archiveOpen}
+        onOpenChange={setArchiveOpen}
+        tone="destructive"
+        title={t('settings.ui.projects.archiveTitle', { project: brand.name })}
+        description={t('settings.ui.projects.archiveBody')}
+        consequences={[
+          { id: 'channels', text: t('settings.ui.projects.archiveChannels') },
+          { id: 'history', text: t('settings.ui.projects.archiveHistory') },
+        ]}
+        confirmLabel={t('settings.ui.projects.archiveAction')}
+        cancelLabel={t('action.cancel')}
+        closeLabel={t('a11y.label.closeDialog')}
+        onConfirm={() => {
+          onArchive();
+          setArchiveOpen(false);
+        }}
+      />
     </form>
   );
 }

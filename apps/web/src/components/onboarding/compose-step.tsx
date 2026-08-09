@@ -32,7 +32,7 @@ export function ComposeStep() {
   const t = useTranslations();
   const format = useFormatters();
   const router = useLocalizedRouter();
-  const { workspace, brands } = useSession();
+  const { workspace, project } = useSession();
   const { announce } = useAnnouncer();
 
   const connectionsQuery = useConnections();
@@ -99,8 +99,7 @@ export function ComposeStep() {
   );
 
   const schedule = async () => {
-    const brand = brands[0];
-    if (!connection || brand === undefined || scheduledLocal === '') {
+    if (!connection || project === null || scheduledLocal === '') {
       return;
     }
     setPending(true);
@@ -108,7 +107,7 @@ export function ComposeStep() {
     try {
       const draft =
         contentItemId === null
-          ? await api.content.createDraft({ brandId: brand.id, body }, newIdempotencyKey('draft'))
+          ? await api.content.createDraft({ brandId: project.id, body }, newIdempotencyKey('draft'))
           : { id: contentItemId };
       setContentItemId(draft.id);
 

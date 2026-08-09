@@ -44,22 +44,26 @@ function requireValue<T>(value: T | null, code: string): T {
 }
 
 export function useAutomationRules() {
+  const { project } = useSession();
   return useQuery({
-    queryKey: automationKeys.rules,
+    queryKey: [...automationKeys.rules, project?.id ?? 'none'],
+    enabled: project !== null,
     staleTime: THIRTY_SECONDS,
     queryFn: async (): Promise<readonly RuleSummaryView[]> => {
       const result = await api.automationRules.list({});
-      return result.data.map((rule): RuleSummaryView => {
-        const draft = toRuleDraft(rule);
-        return {
-          id: rule.id,
-          name: rule.name,
-          state: draft.state,
-          draft,
-          connectionCount: rule.preauthorizedConnectionIds.length,
-          lastRunAt: rule.lastRunAt,
-        };
-      });
+      return result.data
+        .filter((rule) => rule.brandId === project?.id)
+        .map((rule): RuleSummaryView => {
+          const draft = toRuleDraft(rule);
+          return {
+            id: rule.id,
+            name: rule.name,
+            state: draft.state,
+            draft,
+            connectionCount: rule.preauthorizedConnectionIds.length,
+            lastRunAt: rule.lastRunAt,
+          };
+        });
     },
   });
 }
@@ -98,11 +102,11 @@ export function useRulePreflight(ruleId: string, enabled = true) {
 
 export function useSaveRule() {
   const client = useQueryClient();
-  const { brands } = useSession();
+  const { project } = useSession();
   return useMutation({
     mutationFn: async (draft: RuleDraft): Promise<RuleDraft> => {
-      const brandId = brands[0]?.id;
-      if (brandId === undefined) throw new Error('ACTIVE_BRAND_REQUIRED');
+      const brandId = project?.id;
+      if (brandId === undefined) throw new Error('ACTIVE_PROJECT_REQUIRED');
       const saved =
         draft.id === null
           ? await api.automationRules.create(toRuleInput(draft, brandId), newIdempotencyKey('rule'))

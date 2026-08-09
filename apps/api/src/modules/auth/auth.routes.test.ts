@@ -29,6 +29,7 @@ function sessionView(userId: string, workspaceId: string, role: Role = 'owner'):
     locale: 'en',
     role,
     readOnly: false,
+    projectLimit: 3,
   } as const;
   return {
     user: {

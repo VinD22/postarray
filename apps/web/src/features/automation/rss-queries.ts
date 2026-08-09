@@ -132,11 +132,13 @@ export function toFeedHealth(health: ApiFeedHealthView): FeedHealthView {
 }
 
 export function useFeeds() {
+  const { project } = useSession();
   return useQuery({
-    queryKey: automationKeys.feeds,
+    queryKey: [...automationKeys.feeds, project?.id ?? 'none'],
+    enabled: project !== null,
     queryFn: async (): Promise<readonly FeedSummaryView[]> => {
       const result = await api.rss.list({});
-      return result.data.map(toFeedSummary);
+      return result.data.filter((feed) => feed.brandId === project?.id).map(toFeedSummary);
     },
   });
 }
@@ -168,11 +170,11 @@ export function useValidateFeed() {
 
 export function useCreateFeed() {
   const client = useQueryClient();
-  const { brands } = useSession();
+  const { project } = useSession();
   return useMutation({
     mutationFn: async (draft: FeedDraft): Promise<FeedSummaryView> => {
-      const brandId = brands[0]?.id;
-      if (brandId === undefined) throw new Error('ACTIVE_BRAND_REQUIRED');
+      const brandId = project?.id;
+      if (brandId === undefined) throw new Error('ACTIVE_PROJECT_REQUIRED');
       return toFeedSummary(
         requireValue(
           await api.rss.create(toFeedInput(draft, brandId), newIdempotencyKey('feed')),

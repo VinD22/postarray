@@ -26,6 +26,16 @@ describe('browser content and approval resource contracts', () => {
     );
   });
 
+  it('freezes an immutable version before a publish intent can be committed', async () => {
+    await contentApi.freezeVersion('content_01', 'idem-version');
+
+    expect(callMock).toHaveBeenCalledWith(
+      '/content/content_01/versions',
+      { method: 'POST', idempotencyKey: 'idem-version' },
+      expect.any(Function),
+    );
+  });
+
   it('keeps approval request, queue and decision payloads aligned with the service contract', async () => {
     await approvalsApi.get('approval_01');
     await approvalsApi.request(

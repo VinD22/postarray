@@ -123,6 +123,13 @@ export function createWorkspaceService(deps: ServiceDeps): WorkspaceService {
             defaultLocale: input.defaultLocale,
             defaultTimeZone: input.ianaTimeZone,
             contentLocales: [input.defaultLocale],
+            brands: {
+              create: {
+                name: input.name,
+                slug: workspaceSlug(input.name),
+                defaultTimeZone: input.ianaTimeZone,
+              },
+            },
             memberships: {
               create: {
                 userId: user.id,

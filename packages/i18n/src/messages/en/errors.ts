@@ -56,6 +56,15 @@ export const errorMessages = {
   'error.entitlement_missing.action': 'Check the billing settings, or contact support.',
   'error.channel_limit_reached.message': 'This workspace already uses all {limit} active channels.',
   'error.channel_limit_reached.action': 'Disconnect a channel before connecting another one.',
+  'error.project_limit_reached.message': 'This workspace already uses all {limit} active projects.',
+  'error.project_limit_reached.action':
+    'Archive an inactive project or change the workspace project allowance.',
+  'error.project_has_connections.message':
+    'This project still has {connected, plural, one {# connected channel} other {# connected channels}}.',
+  'error.project_has_connections.action':
+    'Disconnect every channel in this project before archiving it.',
+  'error.project_last_active.message': 'A workspace must keep at least one active project.',
+  'error.project_last_active.action': 'Create another project before archiving this one.',
   'error.connection_not_found.message': 'That connection is no longer in this workspace.',
   'error.connection_not_found.action': 'Connect the account again to keep publishing to it.',
   'error.connection_revoked.message': '{account} revoked access on {provider}.',

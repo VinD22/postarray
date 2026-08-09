@@ -8,13 +8,16 @@
  */
 
 import type { Metadata } from 'next';
+import { cookies } from 'next/headers';
 
+import { api } from '@/lib/api';
 import { isDemoMode } from '@/lib/api/config';
 import { ApiError } from '@/lib/api/error';
 import { SEED_BOOTSTRAP, type ComposerBootstrap } from '@/features/composer';
-import { SEED_ASSETS, type MediaAsset } from '@/features/media';
+import { SEED_ASSETS, mediaAssetFromApi, type MediaAsset } from '@/features/media';
 import { loadComposer } from '@/features/composer/data/composer-gateway';
 import { requireSession } from '@/lib/auth/require-session';
+import { ACTIVE_PROJECT_COOKIE, resolveActiveProject } from '@/lib/auth/project-selection';
 import { getRequestIntl } from '@/lib/i18n/server';
 
 import { ComposeClient, type ComposeStatus } from './compose-client';
@@ -56,8 +59,11 @@ export default async function ComposePage({
   } else {
     try {
       const session = await requireSession('/compose');
-      const selectedBrand =
-        session.brands.find((brand) => brand.id === brandId) ?? session.brands[0] ?? null;
+      const cookieStore = await cookies();
+      const selectedBrand = resolveActiveProject(
+        session.brands,
+        brandId ?? cookieStore.get(ACTIVE_PROJECT_COOKIE)?.value,
+      );
       if (selectedBrand === null) {
         status = 'no_connections';
         return (
@@ -70,11 +76,16 @@ export default async function ComposePage({
           />
         );
       }
-      bootstrap = await loadComposer({
-        contentItemId,
-        brandId: selectedBrand.id,
-        workspaceTimeZone: session.workspace.timeZone,
-      });
+      const [loadedComposer, mediaPage] = await Promise.all([
+        loadComposer({
+          contentItemId,
+          brandId: selectedBrand.id,
+          workspaceTimeZone: session.workspace.timeZone,
+        }),
+        api.media.list({ brandId: selectedBrand.id }),
+      ]);
+      bootstrap = loadedComposer;
+      assets = mediaPage.data.map(mediaAssetFromApi);
       if (bootstrap.accounts.length === 0) {
         status = 'no_connections';
       }

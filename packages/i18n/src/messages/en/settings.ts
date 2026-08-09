@@ -31,16 +31,16 @@ export const settingsMessages = {
   'settings.role.viewer.label': 'Viewer',
   'settings.role.owner.description': 'Everything, including billing, security and deletion.',
   'settings.role.admin.description': 'Everything except billing and workspace deletion.',
-  'settings.role.manager.description': 'Manage brands, connections, schedules and rules.',
+  'settings.role.manager.description': 'Manage projects, connections, schedules and rules.',
   'settings.role.editor.description': 'Create and edit content, request approval.',
   'settings.role.approver.description': 'Approve or reject content, and schedule what is approved.',
   'settings.role.analyst.description': 'Read analytics and receipts.',
   'settings.role.viewer.description': 'Read only.',
-  'settings.role.scopeLabel': 'Limit to brands and accounts',
+  'settings.role.scopeLabel': 'Limit to projects and accounts',
   'settings.role.mfaRequired': 'Owners must use two factor authentication.',
 
-  'settings.brands.title': 'Brands',
-  'settings.brands.add': 'Add a brand',
+  'settings.brands.title': 'Projects',
+  'settings.brands.add': 'Add project',
   'settings.brands.voice': 'Voice',
   'settings.brands.audience': 'Audience',
   'settings.brands.approvedClaims': 'Approved claims',
@@ -69,7 +69,7 @@ export const settingsMessages = {
     'Editing a Set does not change posts that are already approved or scheduled.',
   'settings.signatures.title': 'Signatures',
   'settings.signatures.description':
-    'Closing text, hashtags, links or disclosures, scoped by brand, platform and language.',
+    'Closing text, hashtags, links or disclosures, scoped by project, platform and language.',
   'settings.signatures.autoApply': 'Add automatically when the context matches',
 
   'settings.localization.title': 'Localization',
@@ -78,7 +78,7 @@ export const settingsMessages = {
     'The language of this app for you. It does not change the language of your posts.',
   'settings.localization.contentLocales': 'Content languages',
   'settings.localization.contentLocalesHelp':
-    'The languages you publish in. Each brand can set rules and a glossary per language.',
+    'The languages you publish in. Each project can set rules and a glossary per language.',
   'settings.localization.marketLocales': 'Audience markets',
   'settings.localization.beta': 'Beta translation',
   'settings.localization.betaHelp':

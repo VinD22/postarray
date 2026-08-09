@@ -33,6 +33,7 @@ import {
   cn,
 } from '@relay/design-system';
 import { useTranslations } from '@relay/i18n/react';
+import { CORE_PROVIDER_IDS } from '@relay/contracts';
 import { ProviderMark, useProviderName } from './provider';
 import type { PermissionView } from './types';
 import type { ProviderId } from '@/lib/api/types';
@@ -41,25 +42,7 @@ import type { ProviderId } from '@/lib/api/types';
  * Providers a person can connect, and the requirement sentence each one needs
  * before the handoff. `fake` is the in-repo simulator and is not offered.
  */
-export const CONNECTABLE_PROVIDERS: readonly ProviderId[] = [
-  'x',
-  'linkedin',
-  'instagram',
-  'facebook',
-  'youtube',
-  'tiktok',
-  'threads',
-  'bluesky',
-  'mastodon',
-  'telegram',
-  'reddit',
-  'wordpress',
-  'medium',
-  'devto',
-  'pinterest',
-  'discord',
-  'slack',
-];
+export const CONNECTABLE_PROVIDERS: readonly ProviderId[] = CORE_PROVIDER_IDS;
 
 const REQUIREMENT_KEY: Readonly<Record<ProviderId, string>> = {
   x: 'web.connection.requirement.x',
@@ -88,6 +71,7 @@ export interface ConnectDialogProps {
   /** Scopes for the selected provider, from `getCapabilities`. */
   permissionsByProvider: Readonly<Record<string, readonly PermissionView[]>>;
   availableProviders: readonly ProviderId[];
+  projectName: string | null;
   starting: boolean;
   onBegin: (provider: ProviderId) => void;
 }
@@ -97,6 +81,7 @@ export function ConnectDialog({
   onOpenChange,
   permissionsByProvider,
   availableProviders,
+  projectName,
   starting,
   onBegin,
 }: ConnectDialogProps): ReactNode {
@@ -118,8 +103,9 @@ export function ConnectDialog({
         <DialogHeader>
           <DialogTitle>{t('web.connection.connect.title')}</DialogTitle>
           <DialogDescription>
-            {t('connection.permissions.explainBeforeOAuth', {
+            {t('web.connection.connect.projectContext', {
               provider: providerName(provider),
+              project: projectName ?? t('shell.project.none'),
             })}
           </DialogDescription>
         </DialogHeader>
@@ -245,7 +231,11 @@ export function ConnectDialog({
             loading={starting}
             loadingLabel={t('loading.connecting', { provider: providerName(provider) })}
             iconEnd={<ExternalLink aria-hidden="true" className="size-4" />}
-            disabled={availableProviders.length === 0 || !availableProviders.includes(provider)}
+            disabled={
+              projectName === null ||
+              availableProviders.length === 0 ||
+              !availableProviders.includes(provider)
+            }
             onClick={() => onBegin(provider)}
           >
             {t('web.connection.connect.continue', { provider: providerName(provider) })}

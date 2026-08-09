@@ -34,7 +34,7 @@ const DAY_MS = 86_400_000;
 export function UpcomingQueue() {
   const t = useTranslations();
   const format = useFormatters();
-  const { workspace } = useSession();
+  const { workspace, project } = useSession();
 
   const range = useMemo(() => {
     const now = new Date();
@@ -43,7 +43,7 @@ export function UpcomingQueue() {
       to: new Date(now.getTime() + DAY_MS).toISOString(),
     };
   }, []);
-  const query = useCalendar(range);
+  const query = useCalendar({ ...range, ...(project === null ? {} : { brandId: project.id }) });
   const entries = query.data?.data ?? [];
 
   return (

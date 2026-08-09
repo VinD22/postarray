@@ -1,5 +1,10 @@
 import type { RlsTransactionClient } from '../tenancy/rls-context';
-import { ACTIVE_CHANNEL_LIMIT, WORKSPACE_MEMBER_LIMIT } from '@relay/contracts';
+import {
+  ACTIVE_CHANNEL_LIMIT,
+  BASE_PROJECT_LIMIT,
+  PROJECT_LIMIT_ENTITLEMENT_KEY,
+  WORKSPACE_MEMBER_LIMIT,
+} from '@relay/contracts';
 
 import { SEED_OPPORTUNITY_IDS } from './catalog';
 import { SEED_WORKSPACE_ID, hoursAgo, seedId } from './ids';
@@ -645,6 +650,11 @@ async function seedBilling(tx: RlsTransactionClient): Promise<void> {
   // would refuse.
   const entitlements: readonly EntitlementSeed[] = [
     { key: 'channels.active.max', kind: 'numeric_limit', numericValue: ACTIVE_CHANNEL_LIMIT },
+    {
+      key: PROJECT_LIMIT_ENTITLEMENT_KEY,
+      kind: 'numeric_limit',
+      numericValue: BASE_PROJECT_LIMIT,
+    },
     { key: 'team.members.max', kind: 'numeric_limit', numericValue: WORKSPACE_MEMBER_LIMIT },
     { key: 'publishing.enabled', kind: 'boolean_flag', booleanValue: true },
     { key: 'api.enabled', kind: 'boolean_flag', booleanValue: true },

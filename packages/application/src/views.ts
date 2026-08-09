@@ -97,6 +97,8 @@ export interface SessionWorkspaceView {
   readonly locale: string;
   readonly role: Role;
   readonly readOnly: boolean;
+  /** Active projects this workspace may hold under its current entitlement. */
+  readonly projectLimit: number;
 }
 
 export interface SessionBrandView {

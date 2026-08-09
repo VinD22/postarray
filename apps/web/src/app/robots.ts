@@ -11,7 +11,6 @@ const PRIVATE_PATHS = [
   '/compose',
   '/connections',
   '/forgot-password',
-  '/growth',
   '/home',
   '/library',
   '/onboarding',

@@ -14,6 +14,7 @@ import type { Paginated as ContractPaginated } from '@relay/contracts';
 import {
   demoAudit,
   demoBilling,
+  demoBrands,
   demoHealth,
   demoMembers,
   demoSession,
@@ -51,14 +52,12 @@ export const sessionApi = {
 
 export const brandsApi = {
   list: (query: ListQuery = {}): Promise<Paginated<BrandView>> =>
-    call('/brands', { query }, () => page(demoSession.brands)),
+    call('/brands', { query }, () => page(demoBrands)),
   get: (brandId: string): Promise<BrandView> =>
     call(
       `/brands/${brandId}`,
       {},
-      () =>
-        demoSession.brands.find((brand) => brand.id === brandId) ??
-        requireFirst(demoSession.brands, 'brand'),
+      () => demoBrands.find((brand) => brand.id === brandId) ?? requireFirst(demoBrands, 'brand'),
     ),
   create: (input: { name: string }, idempotencyKey: string): Promise<BrandView> =>
     call('/brands', { method: 'POST', body: input, idempotencyKey }, () => ({
@@ -85,11 +84,12 @@ export const brandsApi = {
     >,
   ): Promise<BrandView> =>
     call(`/brands/${brandId}`, { method: 'PATCH', body: input }, () => ({
-      ...(demoSession.brands.find((brand) => brand.id === brandId) ??
-        requireFirst(demoSession.brands, 'brand')),
+      ...(demoBrands.find((brand) => brand.id === brandId) ?? requireFirst(demoBrands, 'brand')),
       ...input,
       updatedAt: new Date().toISOString(),
     })),
+  archive: (brandId: string): Promise<void> =>
+    call(`/brands/${brandId}`, { method: 'DELETE' }, () => undefined),
 };
 
 export const workspacesApi = {

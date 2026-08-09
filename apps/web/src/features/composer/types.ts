@@ -4,7 +4,7 @@
  * The domain shapes (master draft, variant overrides, capability snapshot,
  * validation issue) come from `@relay/contracts` and are used unchanged. What
  * this file adds is the screen's vocabulary: a target account with its live
- * counters, the rail state, the Sets, the assist actions and the link plan.
+ * counters, the rail state, saved Sets and the link plan.
  */
 
 import type {
@@ -138,26 +138,6 @@ export interface ComposerState {
   readonly revision: number;
 }
 
-/** The verbs the assistant offers. There is no image or video action here. */
-export type AssistAction =
-  'make_concise' | 'adapt_for_platform' | 'transcreate' | 'check_claims' | 'write_alt_text';
-
-export interface AssistProposal {
-  readonly action: AssistAction;
-  /** `null` means the proposal applies to the master draft. */
-  readonly connectionId: string | null;
-  readonly before: string;
-  readonly after: string;
-  readonly evidence: readonly AssistEvidence[];
-}
-
-export interface AssistEvidence {
-  readonly id: string;
-  readonly claim: string;
-  readonly sourceUrl: string | null;
-  readonly verified: boolean;
-}
-
 /** What the composer needs from the server before it can render. */
 export interface ComposerBootstrap {
   readonly master: MasterDraft;
@@ -171,7 +151,5 @@ export interface ComposerBootstrap {
   readonly approvalPinned: boolean;
   readonly approverName: string | null;
   readonly approvalPolicy: string | null;
-  /** False when no AI gateway is configured. The assist menu says so plainly. */
-  readonly assistConfigured: boolean;
   readonly workspaceTimeZone: string;
 }

@@ -29,6 +29,7 @@ import {
 } from '@/features/composer';
 import { MediaPickerDialog, type AccountRule, type MediaAsset } from '@/features/media';
 import { useLocalizedRouter } from '@/lib/i18n';
+import { api, newIdempotencyKey } from '@/lib/api';
 import {
   saveComposer,
   searchDestinations,
@@ -159,7 +160,7 @@ function ComposeSurface({
   readonly contentLocales: readonly string[];
 }): ReactNode {
   const router = useLocalizedRouter();
-  const { bootstrap, state, dispatch, summaries, saveNow } = useComposer();
+  const { bootstrap, state, dispatch, summaries, totals, saveNow } = useComposer();
   const [pickerScope, setPickerScope] = useState<string | null | 'closed'>('closed');
 
   const rules = useMemo<AccountRule[]>(
@@ -197,13 +198,48 @@ function ComposeSurface({
 
   const commit = useCallback(
     async (intent: ScheduleIntent) => {
-      saveNow();
+      await saveNow();
       if (intent === 'draft') {
         return;
       }
+      const version = await api.content.freezeVersion(
+        state.master.id,
+        newIdempotencyKey('content_version'),
+      );
+      if (intent === 'approval') {
+        await api.approvals.request(
+          { contentItemId: state.master.id },
+          newIdempotencyKey('approval_request'),
+        );
+      } else if (intent === 'schedule') {
+        const schedule = state.master.schedule;
+        if (schedule === null) {
+          throw new Error('SCHEDULE_REQUIRED');
+        }
+        await api.scheduling.schedule(
+          {
+            contentItemId: state.master.id,
+            scheduledAt: schedule.instant,
+            timeZone: schedule.ianaTimeZone,
+          },
+          newIdempotencyKey('schedule'),
+        );
+      } else {
+        await api.publishing.publishNow(
+          {
+            contentItemId: state.master.id,
+            confirmation: {
+              acknowledgedTargetCount: totals.targetCount,
+              acknowledgedVersionChecksum: version.checksum,
+              acknowledgedEscalations: [],
+            },
+          },
+          newIdempotencyKey('publish'),
+        );
+      }
       router.push(`/calendar?contentItemId=${encodeURIComponent(state.master.id)}`);
     },
-    [router, saveNow, state.master.id],
+    [router, saveNow, state.master.id, state.master.schedule, totals.targetCount],
   );
 
   const targetLabel =
@@ -221,12 +257,6 @@ function ComposeSurface({
         onPickMedia={(scope) => setPickerScope(scope)}
         onEditMedia={(mediaId) => router.push(`/library?asset=${encodeURIComponent(mediaId)}`)}
         onCommit={commit}
-        runAssist={async () => {
-          // No AI gateway is configured for this workspace, so the menu already
-          // says so. Reaching here means a stale render; refuse rather than
-          // invent a suggestion.
-          throw new Error('ASSIST_NOT_CONFIGURED');
-        }}
         searchDestinations={searchDestinations}
         searchMentions={searchMentions}
       />

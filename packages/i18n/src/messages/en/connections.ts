@@ -60,7 +60,7 @@ export const connectionMessages = {
     '{provider} has restricted this app pending review. Posts from {account} publish privately until review completes.',
 
   'connection.group.title': 'Customer groups',
-  'connection.group.description': 'Group accounts by client or brand to filter every screen.',
+  'connection.group.description': 'Projects keep each product or client and its accounts separate.',
   'connection.group.assign': 'Move to group',
   'connection.group.none': 'Ungrouped',
   'connection.group.moveNote': 'Moving an account keeps its posts, receipts and analytics.',

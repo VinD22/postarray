@@ -157,6 +157,7 @@ export const webComposerMessages = {
   'composerWeb.entity.lookupNotBuilt':
     'Relay has not built entity lookup for {provider} yet. Nothing is guessed in the meantime.',
   'composerWeb.entity.searchHint': 'Type at least two characters, then choose a result.',
+  'composerWeb.entity.searchFailed': 'The search did not complete. Try again.',
   'composerWeb.entity.resultCount':
     '{count, plural, =0 {No matches} one {# match} other {# matches}}',
 
@@ -215,31 +216,10 @@ export const webComposerMessages = {
   'composerWeb.set.apply': 'Use this Set',
   'composerWeb.set.none': 'No Sets saved yet.',
   'composerWeb.signature.pickerLabel': 'Signature',
-  'composerWeb.signature.scope': 'For {brand} on {provider} in {language}',
+  'composerWeb.signature.scope': 'For project {brand} on {provider} in {language}',
   'composerWeb.signature.previewHeading': 'How it ends the post',
   'composerWeb.signature.notMatching':
-    'This signature is scoped to a different brand, platform or language, so it is not offered here.',
-
-  // --------------------------------------------------------------- assist
-  'composerWeb.assist.menuLabel': 'Assist with this text',
-  'composerWeb.assist.unavailableTitle': 'Text assistance is not configured',
-  'composerWeb.assist.unavailableBody':
-    'No AI gateway is set up for this workspace, so the assist actions are off. Everything else in the composer works normally.',
-  'composerWeb.assist.targetLabel': 'Applies to',
-  'composerWeb.assist.targetMaster': 'The master draft',
-  'composerWeb.assist.targetVariant': 'The version for {account}',
-  'composerWeb.assist.beforeLabel': 'Current text',
-  'composerWeb.assist.afterLabel': 'Proposed text',
-  'composerWeb.assist.regionLabel': 'Proposed text change, not applied yet',
-  'composerWeb.assist.added': 'added',
-  'composerWeb.assist.removed': 'removed',
-  'composerWeb.assist.evidence': 'Evidence and sources',
-  'composerWeb.assist.claimChecked': '{claim}',
-  'composerWeb.assist.claimUnverified':
-    'No source found for this claim. Check it before publishing.',
-  'composerWeb.assist.failed': 'The assist request did not complete. Your text is unchanged.',
-  'composerWeb.assist.noMediaGeneration':
-    'Relay does not create images or video. Bring finished files into the library and publish them here.',
+    'This signature is scoped to a different project, platform or language, so it is not offered here.',
 
   // ------------------------------------------------------------- autosave
   'composerWeb.autosave.pinned':
@@ -341,7 +321,7 @@ export const webComposerMessages = {
   'mediaLib.loading': 'Loading your media library',
   'mediaLib.permission.title': 'You cannot see this workspace library',
   'mediaLib.permission.body':
-    'Viewing media needs the viewer role or higher on this brand. An owner or admin can grant it.',
+    'Viewing media needs the viewer role or higher on this project. An owner or admin can grant it.',
 
   'mediaLib.upload.heading': 'Add media',
   'mediaLib.upload.browse': 'Choose files',
@@ -369,6 +349,20 @@ export const webComposerMessages = {
   'mediaLib.upload.checkedAgainst': 'Checked against the accounts selected in this draft.',
   'mediaLib.upload.noTargets':
     'No accounts are selected, so the file is checked against the workspace defaults only.',
+  'mediaLib.import.urlLabel': 'Public file URL',
+  'mediaLib.import.urlPlaceholder': 'https://cdn.example.com/launch-video.mp4',
+  'mediaLib.import.importing': 'Importing media',
+  'mediaLib.import.succeeded': 'The file is in your library',
+  'mediaLib.import.scanPending':
+    'Relay recorded its source. Publishing waits until the safety check finishes.',
+  'mediaLib.import.failed': 'The file could not be imported',
+  'mediaLib.import.failedHelp':
+    'Check that the link is public and points directly to a supported media file, then try again.',
+  'mediaLib.import.readOnly': 'Connect the API to import files in this environment.',
+  'mediaLib.import.offline': 'Reconnect before importing a file.',
+  'mediaLib.import.issue.invalid': 'Enter a complete URL.',
+  'mediaLib.import.issue.scheme': 'Use an HTTP or HTTPS link.',
+  'mediaLib.import.issue.credentials': 'Use a link without a username or password.',
   'mediaLib.retention.title': 'Stored files are kept for 30 days after the post is created',
   'mediaLib.retention.body':
     'Once a file is attached to a post, we permanently delete it from Relay storage 30 days after that post is created. Files waiting to be attached use the upload date as a cleanup fallback. Post text, publication receipts and audit history remain available longer. A published post on a social platform is not removed when its stored file expires.',

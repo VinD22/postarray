@@ -7,11 +7,14 @@
  */
 
 import type { Metadata } from 'next';
+import { cookies } from 'next/headers';
 import type { CapabilitySnapshot } from '@relay/contracts';
 
 import { isDemoMode } from '@/lib/api/config';
 import { ApiError } from '@/lib/api/error';
 import { api } from '@/lib/api';
+import { requireSession } from '@/lib/auth/require-session';
+import { ACTIVE_PROJECT_COOKIE, resolveActiveProject } from '@/lib/auth/project-selection';
 import { getRequestIntl } from '@/lib/i18n/server';
 import { SEED_ACCOUNTS } from '@/features/composer';
 import {
@@ -37,6 +40,8 @@ export default async function LibraryPage(): Promise<React.ReactElement> {
   let rules: readonly AccountRule[] = [];
   let errorReference: string | undefined;
   let rateLimitResetAt: string | undefined;
+  let projectId: string | null = null;
+  let timeZone = 'UTC';
 
   if (isDemoMode) {
     assets = SEED_ASSETS;
@@ -47,7 +52,18 @@ export default async function LibraryPage(): Promise<React.ReactElement> {
     }));
   } else {
     try {
-      const [page, connections] = await Promise.all([api.media.list({}), api.connections.list({})]);
+      const session = await requireSession('/library');
+      timeZone = session.workspace.timeZone;
+      const cookieStore = await cookies();
+      const project = resolveActiveProject(
+        session.brands,
+        cookieStore.get(ACTIVE_PROJECT_COOKIE)?.value,
+      );
+      projectId = project?.id ?? null;
+      const [page, connections] = await Promise.all([
+        api.media.list(projectId === null ? {} : { brandId: projectId }),
+        api.connections.list(projectId === null ? {} : { brandId: projectId }),
+      ]);
       assets = page.data.map(mediaAssetFromApi);
       rules = await Promise.all(
         connections.data.map(async (connection) => ({
@@ -69,9 +85,7 @@ export default async function LibraryPage(): Promise<React.ReactElement> {
             : 'error';
       errorReference = apiError.correlationId ?? undefined;
       if (apiError.retryAfterSeconds !== null) {
-        rateLimitResetAt = new Date(
-          Date.now() + apiError.retryAfterSeconds * 1_000,
-        ).toISOString();
+        rateLimitResetAt = new Date(Date.now() + apiError.retryAfterSeconds * 1_000).toISOString();
       }
     }
   }
@@ -81,8 +95,9 @@ export default async function LibraryPage(): Promise<React.ReactElement> {
       status={status}
       assets={assets}
       rules={rules}
-      timeZone="UTC"
+      timeZone={timeZone}
       readOnly={isDemoMode}
+      projectId={projectId}
       {...(errorReference ? { errorReference } : {})}
       {...(rateLimitResetAt ? { rateLimitResetAt } : {})}
     />

@@ -81,7 +81,7 @@ const PROVIDERS: readonly {
 export function ConnectStep() {
   const t = useTranslations();
   const router = useLocalizedRouter();
-  const { brands } = useSession();
+  const { project } = useSession();
   const availableProviders = useAvailableProviders();
 
   const [selected, setSelected] = useState<ProviderId>('x');
@@ -107,8 +107,7 @@ export function ConnectStep() {
   }, [providerOptions, selected]);
 
   const connect = async () => {
-    const brand = brands[0];
-    if (brand === undefined) {
+    if (project === null) {
       setError(t('error.validation_failed.message'));
       return;
     }
@@ -116,7 +115,7 @@ export function ConnectStep() {
     setError(null);
     try {
       const { authorizationUrl } = await api.connections.beginOAuth(
-        { provider: selected, brandId: brand.id, returnUrl: '/onboarding/compose' },
+        { provider: selected, brandId: project.id, returnUrl: '/onboarding/compose' },
         newIdempotencyKey('oauth'),
       );
       window.location.assign(authorizationUrl);
