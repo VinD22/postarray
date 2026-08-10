@@ -3,10 +3,10 @@
 -- data explicit rather than reconstructing it in the browser.
 
 ALTER TABLE app.workspaces
-  ADD COLUMN content_locales TEXT[] NOT NULL DEFAULT ARRAY['en']::TEXT[],
-  ADD COLUMN markets TEXT[] NOT NULL DEFAULT ARRAY[]::TEXT[],
-  ADD COLUMN week_start INTEGER NOT NULL DEFAULT 1,
-  ADD COLUMN hour_cycle TEXT NOT NULL DEFAULT 'h23';
+  ADD COLUMN IF NOT EXISTS content_locales TEXT[] NOT NULL DEFAULT ARRAY['en']::TEXT[],
+  ADD COLUMN IF NOT EXISTS markets TEXT[] NOT NULL DEFAULT ARRAY[]::TEXT[],
+  ADD COLUMN IF NOT EXISTS week_start INTEGER NOT NULL DEFAULT 1,
+  ADD COLUMN IF NOT EXISTS hour_cycle TEXT NOT NULL DEFAULT 'h23';
 
 ALTER TABLE app.workspaces
   ADD CONSTRAINT workspaces_content_locales_not_empty

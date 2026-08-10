@@ -4,8 +4,8 @@
 -- is set, so a transient object-store error cannot silently orphan bytes.
 
 ALTER TABLE app.media_assets
-  ADD COLUMN retention_expires_at timestamptz,
-  ADD COLUMN storage_deleted_at timestamptz;
+  ADD COLUMN IF NOT EXISTS retention_expires_at timestamptz,
+  ADD COLUMN IF NOT EXISTS storage_deleted_at timestamptz;
 
 UPDATE app.media_assets
 SET retention_expires_at = created_at + interval '30 days'

@@ -515,11 +515,97 @@ GRANT SELECT, INSERT, UPDATE, DELETE ON private.payout_batches TO service_role;
 
 -- ---------------------------------------------------------------------------
 -- Assertion: no table in `app` or `private` may exist without RLS enabled.
+-- private.invitations, private.outbox, private.outbox_dead_letter ------------
+--
+-- Service role only, like every other `private` table. The schema already
+-- revokes USAGE from `anon` and `authenticated` (0002_schemas.sql), so these
+-- were unreachable rather than exposed, but this codebase protects a private
+-- table twice on purpose: a future GRANT that restores schema usage must not
+-- silently open a table with no policy behind it.
+--
+-- None of the three is tenant scoped. An invitation is addressed to an email
+-- that has no user row yet, and the outbox is a delivery ledger the dispatcher
+-- drains across workspaces, so both are read by the service role alone.
+
+ALTER TABLE private.invitations ENABLE ROW LEVEL SECURITY;
+ALTER TABLE private.invitations FORCE ROW LEVEL SECURITY;
+
+DROP POLICY IF EXISTS invitations_select ON private.invitations;
+CREATE POLICY invitations_select ON private.invitations
+  FOR SELECT TO public USING (app.is_service_role());
+DROP POLICY IF EXISTS invitations_insert ON private.invitations;
+CREATE POLICY invitations_insert ON private.invitations
+  FOR INSERT TO public WITH CHECK (app.is_service_role());
+DROP POLICY IF EXISTS invitations_update ON private.invitations;
+CREATE POLICY invitations_update ON private.invitations
+  FOR UPDATE TO public USING (app.is_service_role()) WITH CHECK (app.is_service_role());
+DROP POLICY IF EXISTS invitations_delete ON private.invitations;
+CREATE POLICY invitations_delete ON private.invitations
+  FOR DELETE TO public USING (app.is_service_role());
+COMMENT ON POLICY invitations_select ON private.invitations IS
+  'Not tenant scoped: an invitation exists before the person it names has a user row, so there is no membership to test against.';
+
+REVOKE ALL ON private.invitations FROM anon, authenticated;
+GRANT SELECT, INSERT, UPDATE, DELETE ON private.invitations TO service_role;
+
+ALTER TABLE private.outbox ENABLE ROW LEVEL SECURITY;
+ALTER TABLE private.outbox FORCE ROW LEVEL SECURITY;
+
+DROP POLICY IF EXISTS outbox_select ON private.outbox;
+CREATE POLICY outbox_select ON private.outbox
+  FOR SELECT TO public USING (app.is_service_role());
+DROP POLICY IF EXISTS outbox_insert ON private.outbox;
+CREATE POLICY outbox_insert ON private.outbox
+  FOR INSERT TO public WITH CHECK (app.is_service_role());
+DROP POLICY IF EXISTS outbox_update ON private.outbox;
+CREATE POLICY outbox_update ON private.outbox
+  FOR UPDATE TO public USING (app.is_service_role()) WITH CHECK (app.is_service_role());
+DROP POLICY IF EXISTS outbox_delete ON private.outbox;
+CREATE POLICY outbox_delete ON private.outbox
+  FOR DELETE TO public USING (app.is_service_role());
+COMMENT ON POLICY outbox_select ON private.outbox IS
+  'Not tenant scoped: the dispatcher drains this ledger across every workspace, and a row is a delivery instruction rather than customer data.';
+
+REVOKE ALL ON private.outbox FROM anon, authenticated;
+GRANT SELECT, INSERT, UPDATE, DELETE ON private.outbox TO service_role;
+
+ALTER TABLE private.outbox_dead_letter ENABLE ROW LEVEL SECURITY;
+ALTER TABLE private.outbox_dead_letter FORCE ROW LEVEL SECURITY;
+
+DROP POLICY IF EXISTS outbox_dead_letter_select ON private.outbox_dead_letter;
+CREATE POLICY outbox_dead_letter_select ON private.outbox_dead_letter
+  FOR SELECT TO public USING (app.is_service_role());
+DROP POLICY IF EXISTS outbox_dead_letter_insert ON private.outbox_dead_letter;
+CREATE POLICY outbox_dead_letter_insert ON private.outbox_dead_letter
+  FOR INSERT TO public WITH CHECK (app.is_service_role());
+DROP POLICY IF EXISTS outbox_dead_letter_update ON private.outbox_dead_letter;
+CREATE POLICY outbox_dead_letter_update ON private.outbox_dead_letter
+  FOR UPDATE TO public USING (app.is_service_role()) WITH CHECK (app.is_service_role());
+DROP POLICY IF EXISTS outbox_dead_letter_delete ON private.outbox_dead_letter;
+CREATE POLICY outbox_dead_letter_delete ON private.outbox_dead_letter
+  FOR DELETE TO public USING (app.is_service_role());
+COMMENT ON POLICY outbox_dead_letter_select ON private.outbox_dead_letter IS
+  'Not tenant scoped, and never deleted by policy: a dead letter is the evidence that a delivery failed.';
+
+REVOKE ALL ON private.outbox_dead_letter FROM anon, authenticated;
+GRANT SELECT, INSERT, UPDATE, DELETE ON private.outbox_dead_letter TO service_role;
+
 -- The migration fails loudly rather than shipping a table nobody protected.
 -- `_relay_migrations` is the ledger written by src/migrate.ts and is exempt.
 -- ---------------------------------------------------------------------------
 
-DO $$
+-- The check is a function rather than an inline block because it has to run
+-- twice. Table DDL all lives in 0004_core_schema.sql by convention, so every
+-- future table already exists by the time this migration runs, including ones
+-- whose policies are written in a later numbered migration. Asserting here with
+-- no exceptions would forbid that convention; asserting only here would let a
+-- table added later ship unprotected. So this file asserts with an explicit
+-- deferral list, and the last migration asserts again with none.
+CREATE OR REPLACE FUNCTION private.assert_rls_complete(deferred text[] DEFAULT '{}')
+RETURNS void
+LANGUAGE plpgsql
+SET search_path = private, pg_catalog, pg_temp
+AS $fn$
 DECLARE
   unprotected text;
 BEGIN
@@ -530,12 +616,27 @@ BEGIN
   WHERE n.nspname IN ('app', 'private')
     AND c.relkind = 'r'
     AND c.relname <> '_relay_migrations'
+    AND NOT (format('%s.%s', n.nspname, c.relname) = ANY (deferred))
     AND (NOT c.relrowsecurity OR NOT c.relforcerowsecurity);
 
   IF unprotected IS NOT NULL THEN
     RAISE EXCEPTION
-      'Row level security missing or not forced on: %. Add the table to 0020_rls_policies.sql.',
+      'Row level security missing or not forced on: %. Add the table to 0020_rls_policies.sql, or to the deferral list if its policies land in a later migration.',
       unprotected;
   END IF;
 END
-$$;
+$fn$;
+
+COMMENT ON FUNCTION private.assert_rls_complete(text[]) IS
+  'Raises when a table in app or private lacks forced row level security. Called here with the tables whose policies land later, and again with no deferrals in the final migration.';
+
+-- Tables whose policies are written in a later numbered migration. An exact
+-- set, not a ceiling: the final assertion allows no deferrals, so a name left
+-- here after its migration lands is caught there rather than forgotten.
+SELECT private.assert_rls_complete(ARRAY[
+  'app.queue_rules',
+  'app.queue_slot_reservations',
+  'app.bulk_import_jobs',
+  'app.bulk_import_rows',
+  'app.remembered_targets'
+]);

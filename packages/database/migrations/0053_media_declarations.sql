@@ -4,8 +4,8 @@
 -- columns close the equivalent audit gap for accessibility decisions.
 
 ALTER TABLE app.media_assets
-  ADD COLUMN alt_text_waived_reason text,
-  ADD COLUMN alt_text_waived_by_name text;
+  ADD COLUMN IF NOT EXISTS alt_text_waived_reason text,
+  ADD COLUMN IF NOT EXISTS alt_text_waived_by_name text;
 
 COMMENT ON COLUMN app.media_assets.alt_text_waived_reason IS
   'Human explanation recorded when alt text is explicitly waived.';

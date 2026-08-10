@@ -55,7 +55,14 @@ export function SiteHeader(props: SiteHeaderProps): ReactNode {
 
   return (
     <header className="border-border-default bg-surface-canvas relative sticky top-0 z-(--z-index-sticky) border-b">
-      <Container>
+      {/*
+        The header opts out of the 80rem editorial measure. That cap is right
+        for reading text and wrong for a navigation bar: with French or German
+        labels the row needs about a fifth more room than English, and squeezing
+        it into 1280px on a 2400px screen made the items overlap each other
+        rather than simply run out of space.
+      */}
+      <Container className="max-w-[110rem]">
         <div className="flex h-16 items-stretch justify-between gap-4">
           <div className="flex items-center">
             <Link
@@ -70,8 +77,8 @@ export function SiteHeader(props: SiteHeaderProps): ReactNode {
             </Link>
           </div>
 
-          <nav aria-label={navLabel} className="hidden min-w-0 xl:flex">
-            <ul className="flex items-stretch">
+          <nav aria-label={navLabel} className="hidden min-w-0 flex-1 justify-center xl:flex">
+            <ul className="flex min-w-0 items-stretch">
               {items.map((item) => {
                 const current = isCurrent(item.href);
                 return (
@@ -102,7 +109,7 @@ export function SiteHeader(props: SiteHeaderProps): ReactNode {
             </ul>
           </nav>
 
-          <div className="hidden items-center gap-1 xl:flex">
+          <div className="hidden shrink-0 items-center gap-1 xl:flex">
             <ThemePicker />
             <LanguagePicker />
             <Link

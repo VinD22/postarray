@@ -3,6 +3,6 @@
 -- be collapsed into one untyped notes field.
 
 ALTER TABLE "app"."business_profiles"
-  ADD COLUMN "proof_assets" TEXT[] NOT NULL DEFAULT ARRAY[]::TEXT[],
-  ADD COLUMN "assumptions" JSONB NOT NULL DEFAULT '[]'::JSONB,
-  ADD COLUMN "prohibited_topics" TEXT[] NOT NULL DEFAULT ARRAY[]::TEXT[];
+  ADD COLUMN IF NOT EXISTS "proof_assets" TEXT[] NOT NULL DEFAULT ARRAY[]::TEXT[],
+  ADD COLUMN IF NOT EXISTS "assumptions" JSONB NOT NULL DEFAULT '[]'::JSONB,
+  ADD COLUMN IF NOT EXISTS "prohibited_topics" TEXT[] NOT NULL DEFAULT ARRAY[]::TEXT[];

@@ -88,6 +88,22 @@ async function asActor<T>(claims: string | null, work: (tx: pg.Client) => Promis
     } else {
       await client.query(`SELECT set_config('request.jwt.claims', $1, true)`, [claims]);
     }
+    // Drop to a role that cannot bypass row level security before asserting
+    // anything. The migration owner is BYPASSRLS on Neon (and on most managed
+    // Postgres), so without this every policy is skipped and the whole suite
+    // passes vacuously while proving nothing. `LOCAL` scopes the switch to this
+    // transaction, so the rollback below restores the seeding role.
+    //
+    // The database role has to match the role the claims assert, because the
+    // policies test both: `app.is_service_role()` reads the claim, while the
+    // table GRANTs are held by the database role. Asserting a service-role
+    // policy while connected as `authenticated` fails on the GRANT before the
+    // policy is ever consulted.
+    const pgRole =
+      claims !== null && (JSON.parse(claims) as { role?: string }).role === 'service_role'
+        ? 'service_role'
+        : 'authenticated';
+    await client.query(`SET LOCAL ROLE ${pgRole}`);
     return await work(client);
   } finally {
     await client.query('ROLLBACK');
@@ -1018,8 +1034,9 @@ async function seedFixture(): Promise<void> {
   }
 
   for (const [oauthId, workspaceId, stateHash] of [
-    [FIXTURE.oauthTxA, FIXTURE.workspaceA, 'rls-oauth-state-a'],
-    [FIXTURE.oauthTxB, FIXTURE.workspaceB, 'rls-oauth-state-b'],
+    // `state_hash` is CHECKed against ^[0-9a-f]{64}$ (0062).
+    [FIXTURE.oauthTxA, FIXTURE.workspaceA, 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa1'],
+    [FIXTURE.oauthTxB, FIXTURE.workspaceB, 'bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb2'],
   ] as const) {
     await client.query(
       `INSERT INTO private.oauth_transactions
