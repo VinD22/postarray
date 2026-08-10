@@ -1408,7 +1408,7 @@ export const webMarketingMessages = {
   /* ---------------------------------------------------------------------- */
 
   /** Reused by every WP-3 page whose closing band has no page-specific copy. */
-  'web.marketing.v2.closing.title': 'Be first to try it on your own accounts',
+  'web.marketing.v2.closing.title': 'Run it on your own accounts',
   'web.marketing.v2.closing.body':
     'Start your free trial. Connector availability is shown account by account as each platform completes its review.',
 
