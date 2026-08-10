@@ -761,6 +761,7 @@ model User {
   memberships Membership[]
   sessions    UserSession[]
   consents    Consent[]
+  rememberedTargets RememberedTarget[]
   agentConfirmations AgentConfirmation[] @relation("AgentConfirmationApprover")
 
   @@index([status])
@@ -824,6 +825,7 @@ model Workspace {
   contentVersions         ContentVersion[]
   postVariants            PostVariant[]
   postingSets             PostingSet[]
+  rememberedTargets       RememberedTarget[]
   signatures              Signature[]
   providerDestinations    ProviderDestination[]
   mentionEntities         MentionEntity[]
@@ -1109,6 +1111,10 @@ model Brand {
   disclosureDefaults  Json     @default("{}") @map("disclosure_defaults")
   defaultTimeZone     String?  @map("default_time_zone")
   defaultShortLinkOn  Boolean  @default(false) @map("default_short_link_on")
+  /// Opt in, per project, to remembering which channels each member selected
+  /// last. False is the only correct default: while it is false nothing is
+  /// stored, so there is no row to leak and nothing to forget.
+  rememberTargetsEnabled Boolean @default(false) @map("remember_targets_enabled")
   archivedAt          DateTime? @map("archived_at") @db.Timestamptz(6)
   createdAt           DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
   updatedAt           DateTime @updatedAt @map("updated_at") @db.Timestamptz(6)
@@ -1121,6 +1127,7 @@ model Brand {
   contentItems         ContentItem[]
   signatures           Signature[]
   postingSets          PostingSet[]
+  rememberedTargets    RememberedTarget[]
   socialConnections    SocialConnection[]
   oauthTransactions    OAuthTransaction[]
   oauthPendingDiscoveries OAuthPendingDiscovery[]
@@ -1441,6 +1448,34 @@ model PostingSet {
   @@unique([workspaceId, brandId, name])
   @@index([workspaceId])
   @@map("posting_sets")
+  @@schema("app")
+}
+
+/// One member's last channel selection in one project.
+///
+/// Channel identifiers only. Never a caption, a schedule, a privacy setting, an
+/// approval state or any campaign content: a selection is not content, and this
+/// table must not become a shadow draft store. Migration 0070 carries the CHECK
+/// that enforces the array shape and the self-row policies that keep one member
+/// out of another member's memory.
+model RememberedTarget {
+  id            String   @id @default(dbgenerated("app.new_id('remtgt')"))
+  workspaceId   String   @map("workspace_id")
+  brandId       String   @map("brand_id")
+  userId        String   @map("user_id")
+  /// In last-selected order. Re-checked against live channel health before any
+  /// of them is offered again, so a revoked account is never reselected.
+  connectionIds String[] @default([]) @map("connection_ids")
+  createdAt     DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt     DateTime @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  workspace Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  brand     Brand     @relation(fields: [brandId], references: [id], onDelete: Cascade)
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([workspaceId, brandId, userId])
+  @@index([workspaceId])
+  @@map("remembered_targets")
   @@schema("app")
 }
 
@@ -2145,6 +2180,12 @@ model PublishJob {
   dispatchedAt        DateTime?    @map("dispatched_at") @db.Timestamptz(6)
   completedAt         DateTime?    @map("completed_at") @db.Timestamptz(6)
   canceledAt          DateTime?    @map("canceled_at") @db.Timestamptz(6)
+  /// A hold, not a state. Set together with `pausedReason`, cleared together.
+  pausedAt            DateTime?    @map("paused_at") @db.Timestamptz(6)
+  /// `user` or `billing`. The two never merge: one is resumed by a person, the
+  /// other by a payment. Constrained in migration 0070.
+  pausedReason        String?      @map("paused_reason")
+  pausedByUserId      String?      @map("paused_by_user_id")
   createdAt           DateTime     @default(now()) @map("created_at") @db.Timestamptz(6)
   updatedAt           DateTime     @updatedAt @map("updated_at") @db.Timestamptz(6)
 
@@ -2166,6 +2207,10 @@ model PublishJob {
   @@index([workspaceId, scheduledFor, state])
   @@index([state, nextAttemptAt])
   @@index([workspaceId, connectionId, scheduledFor])
+  // The held-jobs index is partial (`WHERE paused_at IS NOT NULL`), which
+  // Prisma cannot express, so it lives in migration 0070 the way the queue slot
+  // uniqueness does. Declaring a non-partial one here would create a second,
+  // larger index nobody asked for.
   @@map("publish_jobs")
   @@schema("app")
 }

@@ -1,6 +1,8 @@
 import {
   cancelPublishOutboxPayloadSchema,
+  pausePublishOutboxPayloadSchema,
   reschedulePublishOutboxPayloadSchema,
+  resumePublishOutboxPayloadSchema,
   startPublishOutboxPayloadSchema,
   startRuleRunOutboxPayloadSchema,
   type SchedulerPort,
@@ -59,6 +61,58 @@ export async function dispatchWorkflowOutbox(
         ...payload,
         executeAt: new Date(payload.executeAt),
       });
+      return { workflowId: null, runId: null, publishJobId: null };
+    }
+    case 'pause_publish': {
+      const payload = pausePublishOutboxPayloadSchema.parse(input.payload);
+      // A scheduler that has not learned the named method still delivers the
+      // intent: `pause` is a signal the publish workflow already handles.
+      if (scheduler.pausePublish === undefined) {
+        await scheduler.signalPublish({
+          jobId: payload.jobId,
+          workspaceId: payload.workspaceId,
+          signal: 'pause',
+        });
+      } else {
+        await scheduler.pausePublish({
+          jobId: payload.jobId,
+          workspaceId: payload.workspaceId,
+        });
+      }
+      return { workflowId: null, runId: null, publishJobId: null };
+    }
+    case 'resume_publish': {
+      const payload = resumePublishOutboxPayloadSchema.parse(input.payload);
+      const moved =
+        payload.executeAt === undefined || payload.ianaTimeZone === undefined
+          ? null
+          : { executeAt: new Date(payload.executeAt), ianaTimeZone: payload.ianaTimeZone };
+      if (scheduler.resumePublish === undefined) {
+        // Order matters. The new instant has to be in place before the workflow
+        // is allowed to leave the pause loop, or it would wake on the instant
+        // that passed while it was held and publish immediately.
+        if (moved !== null) {
+          await scheduler.reschedulePublish({
+            jobId: payload.jobId,
+            workspaceId: payload.workspaceId,
+            executeAt: moved.executeAt,
+            ianaTimeZone: moved.ianaTimeZone,
+          });
+        }
+        await scheduler.signalPublish({
+          jobId: payload.jobId,
+          workspaceId: payload.workspaceId,
+          signal: 'resume',
+        });
+      } else {
+        await scheduler.resumePublish({
+          jobId: payload.jobId,
+          workspaceId: payload.workspaceId,
+          ...(moved === null
+            ? {}
+            : { executeAt: moved.executeAt, ianaTimeZone: moved.ianaTimeZone }),
+        });
+      }
       return { workflowId: null, runId: null, publishJobId: null };
     }
     case 'start_rule_run': {

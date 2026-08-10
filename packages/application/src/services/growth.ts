@@ -623,6 +623,8 @@ export function createGrowthService(deps: ServiceDeps, content: ContentService):
           ianaTimeZone: actor.workspace.defaultTimeZone,
           approvalRequired: slot.approvalRequired,
           approvalState: slot.approvalRequired ? 'requested' : 'not_required',
+          // A proposal has no job, so there is nothing to hold.
+          hold: null,
         };
       });
     },

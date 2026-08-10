@@ -22,6 +22,7 @@ import type {
   ProviderId,
   PublicationReceipt,
   PublishAttempt,
+  PublishHold,
   PublishState,
   ReceiptItem,
   Role,
@@ -161,6 +162,13 @@ export interface BrandView {
   readonly domains: readonly string[];
   readonly defaultTimeZone: string | null;
   readonly defaultShortLinkOn: boolean;
+  /**
+   * Whether this project remembers each member's last channel selection.
+   *
+   * Off unless somebody turned it on. While it is false nothing is stored, so
+   * there is no row to leak and nothing to forget.
+   */
+  readonly rememberTargetsEnabled: boolean;
   readonly archived: boolean;
   readonly connectionIds: readonly string[];
   readonly createdAt: string;
@@ -393,6 +401,15 @@ export interface PublishJobView {
   readonly createdAt: string;
   readonly updatedAt: string;
   readonly canceledAt: string | null;
+  /**
+   * The hold on this job, when there is one. Null is the ordinary case.
+   *
+   * A hold is not a state: the job stays `scheduled` while it is held, because
+   * that is what it still is. What the hold adds is who stopped the clock. A
+   * person's hold and a billing hold read differently in the interface and are
+   * cleared by different actions, so they never collapse into one field.
+   */
+  readonly hold: PublishHold | null;
 }
 
 export interface CalendarEntry {
@@ -410,6 +427,8 @@ export interface CalendarEntry {
   readonly ianaTimeZone: string;
   readonly approvalRequired: boolean;
   readonly approvalState: ApprovalState;
+  /** The hold on this entry, when there is one. See `PublishJobView.hold`. */
+  readonly hold: PublishHold | null;
 }
 
 /** The application and every transport expose the canonical shared contract. */

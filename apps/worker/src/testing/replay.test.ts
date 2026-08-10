@@ -28,7 +28,8 @@ import {
   makeTokenInput,
   makeWebhookInput,
 } from './fixtures';
-import { runWorkflow, type HarnessOptions, type HarnessRun } from './harness';
+import { runWorkflow, TEST_EPOCH_MS, type HarnessOptions, type HarnessRun } from './harness';
+import { toIsoInstant } from '../runtime/deterministic';
 import {
   activityHistory,
   containsSubsequence,
@@ -129,6 +130,42 @@ const CASES: readonly ReplayCase[] = [
     makeBulkImportInput({ applyMode: 'drafts' }),
     { workflowId: 'import:ws_test:import_2' },
   ),
+  /**
+   * A person pauses the campaign twenty minutes before it goes out, then
+   * releases it ten minutes later. The wait loop leaves and re-enters its pause
+   * branch, which is the case most likely to introduce a latency-dependent
+   * race, so it earns a replay case of its own.
+   */
+  replayCase('publishPostWorkflow held and released', publishPostDescriptor, makePostInput(), {
+    workflowId: 'publish:ws_test:job_paused_1',
+    signals: [
+      { afterMs: 20 * 60_000, apply: (inbox) => inbox.onPause() },
+      { afterMs: 30 * 60_000, apply: (inbox) => inbox.onResume() },
+    ],
+  }),
+  /**
+   * The same hold, released onto a later instant. This is what a resume with an
+   * explicit new time looks like at the workflow boundary: the reschedule lands
+   * first, then the release, so the job wakes on the new instant instead of the
+   * one that passed while it was held.
+   */
+  replayCase('publishPostWorkflow released at a new time', publishPostDescriptor, makePostInput(), {
+    workflowId: 'publish:ws_test:job_paused_2',
+    signals: [
+      { afterMs: 10 * 60_000, apply: (inbox) => inbox.onPause() },
+      {
+        afterMs: 40 * 60_000,
+        apply: (inbox) => {
+          inbox.onReschedule({
+            instant: toIsoInstant(TEST_EPOCH_MS + 7_200_000),
+            ianaTimeZone: 'Europe/Berlin',
+            confirmedDst: true,
+          });
+          inbox.onResume();
+        },
+      },
+    ],
+  }),
 ];
 
 describe('replay determinism', () => {
@@ -186,6 +223,50 @@ describe('recorded publish history', () => {
     const children = run.commands.filter((command) => command.kind === 'child');
     expect(children).toHaveLength(1);
     expect(children[0]?.kind === 'child' ? children[0].name : '').toBe('publishTargetWorkflow');
+  });
+
+  /**
+   * A hold does not dispatch, and a release does not dispatch early.
+   *
+   * The first case is the one that matters: while the pause flag is set the
+   * workflow must sit in its wait loop even after the scheduled instant has
+   * come and gone. If it ever leaves early, a person who paused a post would
+   * watch it publish anyway, which is the failure this whole feature exists to
+   * make impossible.
+   */
+  it('does not dispatch while it is held, even once the instant has passed', async () => {
+    // The fixture is scheduled one hour out. This run is held at ten minutes
+    // and released at ninety, so the scheduled instant passes while the pause
+    // flag is set. Anything that publishes before the release is a bug that
+    // would let a paused post go out anyway.
+    const undisturbed = await runWorkflow(publishPostDescriptor, makePostInput(), {
+      workflowId: 'publish:ws_test:job_reference',
+    });
+    const held = await runWorkflow(publishPostDescriptor, makePostInput(), {
+      workflowId: 'publish:ws_test:job_held',
+      signals: [
+        { afterMs: 10 * 60_000, apply: (inbox) => inbox.onPause() },
+        { afterMs: 90 * 60_000, apply: (inbox) => inbox.onResume() },
+      ],
+    });
+
+    const scheduledInstant = TEST_EPOCH_MS + 3_600_000;
+    expect(undisturbed.clock.now()).toBeGreaterThanOrEqual(scheduledInstant);
+    // The held run finished strictly later, and no earlier than the release.
+    expect(held.clock.now()).toBeGreaterThanOrEqual(TEST_EPOCH_MS + 90 * 60_000);
+    expect(held.clock.now()).toBeGreaterThan(undisturbed.clock.now());
+  });
+
+  it('dispatches exactly once after it is released, never twice', async () => {
+    const run = await runWorkflow(publishPostDescriptor, makePostInput(), {
+      workflowId: 'publish:ws_test:job_held_then_released',
+      signals: [
+        { afterMs: 10 * 60_000, apply: (inbox) => inbox.onPause() },
+        { afterMs: 90 * 60_000, apply: (inbox) => inbox.onResume() },
+      ],
+    });
+    expect(run.commands.filter((command) => command.kind === 'child')).toHaveLength(1);
+    expect(countActivity(run.commands, 'preflightCampaign')).toBe(1);
   });
 });
 

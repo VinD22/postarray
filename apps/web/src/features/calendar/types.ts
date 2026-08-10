@@ -22,6 +22,7 @@ import type {
   ProviderId,
   PublishState,
 } from '@/lib/api/types';
+import type { PublishHoldView } from './hold';
 
 export type CalendarView = 'day' | 'week' | 'month' | 'list';
 
@@ -44,6 +45,14 @@ export interface CalendarEntry extends CalendarEntryView {
   readonly permalink?: string | null;
   /** True when this entry is one target of a multi-target campaign. */
   readonly isCampaignTarget?: boolean;
+  /**
+   * The hold on this entry, when somebody stopped its clock.
+   *
+   * Not a state: a held entry is still `scheduled`, because that is what it is.
+   * What the hold adds is who stopped it, and a person's hold and a billing
+   * hold are cleared by different things, so they never share a field.
+   */
+  readonly hold?: PublishHoldView | null;
 }
 
 export interface CalendarFilters {

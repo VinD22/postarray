@@ -2,22 +2,16 @@ import type { Metadata } from 'next';
 import type { ReactNode } from 'react';
 import { ArrowRight } from 'lucide-react';
 
-import { Reveal, StaggerList } from '@/components/motion';
+import { StaggerList } from '@/components/motion';
 import {
-  Body,
-  Heading,
-  Lede,
-  Section,
-  Split,
-  Subheading,
-} from '@/features/marketing/components/layout';
+  ClosingCta,
+  EditorialBigNumber,
+  EditorialCard,
+  EditorialDisplay,
+  EditorialSection,
+} from '@/features/marketing/components/editorial';
+import { Body, Heading, Lede, Split, Subheading } from '@/features/marketing/components/layout';
 import { Cta, TextLink } from '@/features/marketing/components/links';
-import { Band } from '@/features/marketing/components/loud/band';
-import { BigNumber } from '@/features/marketing/components/loud/big-number';
-import { CtaSlab } from '@/features/marketing/components/loud/cta-slab';
-import { LoudDisplay } from '@/features/marketing/components/loud/display';
-import { PosterCard } from '@/features/marketing/components/loud/poster-card';
-import { Sticker } from '@/features/marketing/components/loud/sticker';
 import { marketingTranslator } from '@/features/marketing/i18n';
 import { pageMetadata } from '@/features/marketing/seo';
 import { ROUTES } from '@/features/marketing/site';
@@ -81,40 +75,47 @@ export default async function ForAgenciesPage({
 
   return (
     <>
-      <Band tone="paper">
-        <Reveal className="max-w-[52rem]">
-          <LoudDisplay as="h1" size="xl">
+      <EditorialSection reveal={false} containerClassName="py-24 md:py-32">
+        <div className="max-w-[52rem]">
+          <EditorialDisplay as="h1" size="md" reveal>
             {t.t('web.agencies.title')}
-          </LoudDisplay>
-          <Lede className="mt-6">{t.t('web.agencies.lede')}</Lede>
-          <div className="mt-8 flex flex-wrap items-center gap-3">
+          </EditorialDisplay>
+          <Lede className="mt-8">{t.t('web.agencies.lede')}</Lede>
+          <div className="mt-10 flex flex-wrap items-center gap-3">
             <Cta href={ROUTES.signUp}>{t.t('web.cta.startTrial')}</Cta>
             <Cta href={ROUTES.pricing} variant="secondary">
               {t.t('web.cta.seePricing')}
             </Cta>
           </div>
-        </Reveal>
+        </div>
 
-        <div className="mt-12 flex flex-wrap items-center gap-8">
-          <BigNumber
+        {/* Two allowances, stated as two facts. The members line was a
+            rotated sticker; both are the same kind of statement, so both are
+            now the same kind of element. */}
+        <div className="mt-16 flex flex-wrap items-start gap-x-16 gap-y-8">
+          <EditorialBigNumber
             value={ACTIVE_CHANNEL_ALLOWANCE}
             locale={locale}
             label={t.t('web.agencies.v2.channelsLabel')}
           />
-          <Sticker tone="pop" rotate={4}>
+          <p className="text-body-lg text-text-secondary max-w-[32ch] leading-[1.6]">
             {t.t('web.agencies.v2.membersSticker')}
-          </Sticker>
+          </p>
         </div>
-      </Band>
+      </EditorialSection>
 
       {/* The approval flow, drawn plainly: four real steps, connected. */}
-      <Section id="flow" ariaLabel={t.t('web.agencies.job.approval.title')}>
+      <EditorialSection rule id="flow" ariaLabel={t.t('web.agencies.job.approval.title')}>
         <div className="flex flex-wrap items-stretch gap-3">
           {FLOW_STEPS.map((key, index) => (
             <div key={key} className="flex items-center gap-3">
-              <PosterCard tone={index === 1 ? 'brand' : 'paper'} className="px-5 py-4">
-                <span className="text-body-md">{t.format(key)}</span>
-              </PosterCard>
+              <EditorialCard
+                interactive={false}
+                tone={index === 1 ? 'sunken' : 'raised'}
+                className="px-5 py-4"
+              >
+                <span className="text-body-md text-text-primary">{t.format(key)}</span>
+              </EditorialCard>
               {index < FLOW_STEPS.length - 1 ? (
                 <ArrowRight
                   aria-hidden="true"
@@ -124,33 +125,33 @@ export default async function ForAgenciesPage({
             </div>
           ))}
         </div>
-      </Section>
+      </EditorialSection>
 
-      <Section id="jobs">
-        <StaggerList className="grid gap-6 sm:grid-cols-2">
+      <EditorialSection rule id="jobs" reveal={false}>
+        <StaggerList stagger={0.07} className="grid gap-5 sm:grid-cols-2">
           {JOBS.map((job) => (
             <div key={job.id} data-stagger-item>
-              <PosterCard tone="paper" className="h-full">
+              <EditorialCard className="h-full">
                 <Subheading as="h2" className="text-title-sm text-pretty">
                   {t.format(job.titleKey)}
                 </Subheading>
                 <p className="text-body-md text-text-secondary mt-3">{t.format(job.bodyKey)}</p>
-              </PosterCard>
+              </EditorialCard>
             </div>
           ))}
         </StaggerList>
-      </Section>
+      </EditorialSection>
 
-      <Section id="boundary">
+      <EditorialSection rule id="boundary">
         <Split aside={<Heading>{t.t('web.agencies.limits.title')}</Heading>}>
           <Body>{t.t('web.agencies.limits.body')}</Body>
           <p className="mt-4">
             <TextLink href={ROUTES.pricing}>{t.t('nav.public.pricing')}</TextLink>
           </p>
         </Split>
-      </Section>
+      </EditorialSection>
 
-      <CtaSlab
+      <ClosingCta
         id="start"
         title={t.t('web.marketing.v2.closing.title')}
         body={t.t('web.marketing.v2.closing.body')}

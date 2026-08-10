@@ -1,5 +1,8 @@
 import type { MessageKey } from '@relay/i18n/translate';
 
+import { PLATFORM_SLUGS } from '@/features/platforms/registry';
+import { USE_CASE_PAGES } from '@/features/platforms/use-cases';
+
 /**
  * The public site map, in one place.
  *
@@ -35,6 +38,11 @@ export const ROUTES = {
   /** The blog index. Individual articles are `/blog/<slug>`, driven by the
    *  registry in `features/blog`, and appear in the sitemap from there. */
   blog: '/blog',
+  /** The per platform scheduler index. One child page per cohort platform,
+   *  driven by the generated dataset in `features/platforms`. */
+  schedule: '/schedule',
+  /** The use case index. Three children, driven by `features/platforms`. */
+  useCases: '/use-cases',
   /** The free tools index. Each tool below is its own indexable page. */
   tools: '/tools',
   toolPostPreflight: '/tools/post-preflight',
@@ -65,9 +73,36 @@ export const ROUTES = {
  * which is intentionally noindexed. Keeping this derived from `ROUTES` makes
  * the sitemap follow the source-of-truth route map as pages are added.
  */
-export const MARKETING_ROUTES = Object.values(ROUTES).filter(
-  (route) => route !== ROUTES.signIn && route !== ROUTES.signUp,
-);
+/** `/schedule/instagram`, and so on for every platform in the cohort. */
+export function schedulePlatformPath(slug: string): string {
+  return `${ROUTES.schedule}/${slug}`;
+}
+
+/** `/use-cases/approval-workflows`, and so on. */
+export function toUseCasePath(slug: string): string {
+  return `${ROUTES.useCases}/${slug}`;
+}
+
+/**
+ * The platform and use case children, derived rather than listed.
+ *
+ * Adding a platform to the launch cohort regenerates the limits dataset, which
+ * adds a page here, which adds a sitemap entry. There is no second list to
+ * forget.
+ */
+export const SCHEDULE_PLATFORM_ROUTES: readonly string[] = PLATFORM_SLUGS.map(schedulePlatformPath);
+
+export const USE_CASE_LINKS: readonly SiteLink[] = USE_CASE_PAGES.map((page) => ({
+  href: toUseCasePath(page.slug),
+  labelKey: page.titleKey,
+  descriptionKey: page.ledeKey,
+}));
+
+export const MARKETING_ROUTES = [
+  ...Object.values(ROUTES).filter((route) => route !== ROUTES.signIn && route !== ROUTES.signUp),
+  ...SCHEDULE_PLATFORM_ROUTES,
+  ...USE_CASE_LINKS.map((link) => link.href),
+];
 
 /** The seven navigation items, in the order the IA specifies. */
 export const PRIMARY_NAV: readonly SiteLink[] = [
@@ -267,6 +302,7 @@ export const FOOTER_COLUMNS: readonly {
       { href: ROUTES.product, labelKey: 'nav.public.product' },
       { href: ROUTES.integrations, labelKey: 'nav.public.integrations' },
       { href: ROUTES.capabilities, labelKey: 'nav.public.capabilities' },
+      { href: ROUTES.schedule, labelKey: 'web.schedule.index.title' },
       { href: ROUTES.pricing, labelKey: 'nav.public.pricing' },
     ],
   },
@@ -275,6 +311,7 @@ export const FOOTER_COLUMNS: readonly {
     links: [
       { href: ROUTES.creators, labelKey: 'nav.public.forCreators' },
       { href: ROUTES.agencies, labelKey: 'nav.public.forAgencies' },
+      { href: ROUTES.useCases, labelKey: 'web.useCases.index.title' },
       { href: ROUTES.methodology, labelKey: 'nav.public.methodology' },
       { href: ROUTES.compare, labelKey: 'nav.public.comparisons' },
     ],

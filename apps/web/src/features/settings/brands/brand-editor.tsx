@@ -6,6 +6,7 @@ import { CapabilityBadge, ConfirmDialog, Notice } from '@relay/design-system/pat
 import { useTranslations } from '@relay/i18n/react';
 
 import { SettingsPanel } from '../components/section';
+import { TargetMemoryCard } from './target-memory-card';
 import { useFormatters } from '../lib/formatters';
 import { fromLines, toLines } from '../lib/lines';
 import type { BrandView } from '../lib/view-models';
@@ -252,6 +253,17 @@ export function BrandEditor({
           title={t('settings.ui.state.notBuiltTitle')}
           description={t('settings.ui.brands.localeRulesUnavailable')}
         />
+      </SettingsPanel>
+
+      {/* The composer's remembered channel selection. Its own panel, and its
+          own save, because it is a privacy setting rather than a document
+          field: turning it off deletes what is stored, which is not something
+          to bury inside a form that saves everything at once. */}
+      <SettingsPanel
+        title={t('targetMemory.setting.title')}
+        description={t('targetMemory.setting.body')}
+      >
+        <TargetMemoryCard brandId={brand.id} enabled={brand.rememberTargetsEnabled} />
       </SettingsPanel>
 
       <div className="flex flex-wrap items-center gap-2">

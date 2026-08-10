@@ -9,7 +9,9 @@ import {
   calendarQuerySchema,
   cancelRequestSchema,
   nextSlotQuerySchema,
+  pauseRequestSchema,
   rescheduleRequestSchema,
+  resumeRequestSchema,
   scheduleRequestSchema,
 } from './scheduling.schemas';
 import { SchedulingService } from './scheduling.service';
@@ -71,6 +73,54 @@ export class SchedulingController {
   ): Promise<PublishJobView> {
     const { reason } = parseBody(cancelRequestSchema, body);
     return this.scheduling.cancel(actor, parseParams(publishJobIdSchema, id), reason);
+  }
+
+  /**
+   * Hold a scheduled job.
+   *
+   * Carries `posts:schedule`, not `posts:cancel`: a pause changes when
+   * something goes out, it does not destroy it, and it retracts nothing that
+   * already reached a platform. The application refuses a job that is published
+   * or mid-dispatch, and refuses to write over a hold the billing path placed.
+   */
+  @Post('schedules/:id/pause')
+  @RequireScope('posts:schedule')
+  @Idempotent()
+  @HttpCode(200)
+  pause(
+    @Actor() actor: ActorContext,
+    @Param('id') id: string,
+    @Body() body: unknown,
+  ): Promise<PublishJobView> {
+    return this.scheduling.pause(
+      actor,
+      parseParams(publishJobIdSchema, id),
+      parseBody(pauseRequestSchema, body),
+    );
+  }
+
+  /**
+   * Release a held job.
+   *
+   * When the original instant passed while the job was held, the application
+   * refuses without an explicit `scheduleSpec` rather than publishing on the
+   * spot. A client that receives that refusal should ask for a new time, not
+   * retry.
+   */
+  @Post('schedules/:id/resume')
+  @RequireScope('posts:schedule')
+  @Idempotent()
+  @HttpCode(200)
+  resume(
+    @Actor() actor: ActorContext,
+    @Param('id') id: string,
+    @Body() body: unknown,
+  ): Promise<PublishJobView> {
+    return this.scheduling.resume(
+      actor,
+      parseParams(publishJobIdSchema, id),
+      parseBody(resumeRequestSchema, body),
+    );
   }
 
   /** The calendar window. Cursor paginated, and always zone-qualified. */

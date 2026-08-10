@@ -308,3 +308,66 @@ export type PublicationReceipt = z.infer<typeof publicationReceiptSchema>;
 
 /** Every state, for exhaustiveness checks in consumers. */
 export const ALL_PUBLISH_STATES: readonly PublishState[] = PUBLISH_STATES;
+
+/**
+ * A hold on a scheduled job.
+ *
+ * A hold is deliberately not a `PublishState`. The state machine above answers
+ * "where is this job in its lifecycle"; a hold answers "who stopped the clock,
+ * and why". Modelling it as a state would have forced a second `scheduled`-like
+ * node with the same outgoing edges, and would have made the two reasons below
+ * indistinguishable the moment they overlapped.
+ *
+ * `billing` is set by the entitlement path when a workspace loses full access
+ * (`scheduledPostDisposition` in `@relay/billing` returns `pause_by_billing`).
+ * `user` is set by a person from the calendar. They must stay distinguishable:
+ * resuming a billing hold is a payment problem, not a scheduling one, and no
+ * amount of clicking Resume should clear it.
+ */
+export const PUBLISH_HOLD_REASONS = ['user', 'billing'] as const;
+export const publishHoldReasonSchema = z.enum(PUBLISH_HOLD_REASONS);
+export type PublishHoldReason = z.infer<typeof publishHoldReasonSchema>;
+
+export const publishHoldSchema = z
+  .object({
+    reason: publishHoldReasonSchema,
+    since: isoInstantSchema,
+    /** Null when the hold was applied by the system rather than by a person. */
+    byUserId: idSchema(ID_PREFIXES.user).nullable(),
+  })
+  .strict();
+export type PublishHold = z.infer<typeof publishHoldSchema>;
+
+/**
+ * States in which stopping the clock still means something.
+ *
+ * Everything else is either already outside our control or already finished.
+ * A job that is `preparing_media`, `dispatching` or `provider_processing` owns
+ * an in-flight external side effect and is never paused; a job that already
+ * published is never un-published.
+ */
+export const PAUSABLE_PUBLISH_STATES: readonly PublishState[] = Object.freeze([
+  'validation_needed',
+  'approval_requested',
+  'approved',
+  'scheduled',
+  'action_required',
+  'retry_scheduled',
+]);
+
+/** Why a pause was refused, or null when it is allowed. */
+export type PauseRefusal = 'already_published' | 'in_flight' | 'terminal';
+
+export function pauseRefusal(state: PublishState): PauseRefusal | null {
+  if (EXTERNALLY_VISIBLE_PUBLISH_STATES.includes(state)) {
+    return 'already_published';
+  }
+  if (isTerminal(state)) {
+    return 'terminal';
+  }
+  return PAUSABLE_PUBLISH_STATES.includes(state) ? null : 'in_flight';
+}
+
+export function canPause(state: PublishState): boolean {
+  return pauseRefusal(state) === null;
+}

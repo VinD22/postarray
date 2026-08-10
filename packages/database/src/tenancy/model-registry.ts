@@ -67,6 +67,11 @@ export const TENANT_MODELS = new Set<string>([
   'queueRule',
   'queueSlotReservation',
 
+  // Remembered channel selection. Workspace scoped like everything else here,
+  // and additionally self-row at the database: workspace membership is
+  // necessary but never sufficient to read another member's memory.
+  'rememberedTarget',
+
   // Automation
   'automationRule',
   'automationRuleRun',

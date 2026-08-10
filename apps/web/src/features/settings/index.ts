@@ -7,6 +7,8 @@ export { SETTINGS_SECTIONS, type SettingsSectionDescriptor } from './components/
 export { InlineFact, SettingRow, SettingsPanel, SettingsStack } from './components/section';
 export { MembersScreen } from './members/members-screen';
 export { BrandsScreen } from './brands/brands-screen';
+export { TargetMemoryCard, type TargetMemoryCardProps } from './brands/target-memory-card';
+export { useSetTargetMemory, type SetTargetMemoryInput } from './brands/use-target-memory';
 export { LocalizationScreen } from './localization/localization-screen';
 export { SecurityScreen } from './security/security-screen';
 export { DataControlsScreen } from './data/data-controls-screen';

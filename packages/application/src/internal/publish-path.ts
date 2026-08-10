@@ -4,6 +4,8 @@ import {
   EntitlementRequiredError,
   PolicyBlockedError,
   hasErrors,
+  publishHoldReasonSchema,
+  type PublishHold,
   type ScheduleSpec,
   type ValidationResult,
 } from '@relay/contracts';
@@ -66,6 +68,9 @@ export function jobToView(row: {
   createdAt: Date;
   updatedAt: Date;
   canceledAt: Date | null;
+  pausedAt: Date | null;
+  pausedReason: string | null;
+  pausedByUserId: string | null;
   connection: { provider: string };
   approvalRequest: { state: string } | null;
 }): PublishJobView {
@@ -99,6 +104,35 @@ export function jobToView(row: {
     createdAt: row.createdAt.toISOString(),
     updatedAt: row.updatedAt.toISOString(),
     canceledAt: row.canceledAt?.toISOString() ?? null,
+    hold: toPublishHold(row),
+  };
+}
+
+/**
+ * A hold, read back off the two columns that carry it.
+ *
+ * The columns move together, so a row with only one of them set is a database
+ * bug rather than a partial hold; migration 0070 refuses it. Here the pair is
+ * read defensively anyway, and an unrecognised reason is treated as no hold
+ * rather than guessed at, because inventing `user` for a value we do not
+ * understand would put a Resume button on something a person cannot resume.
+ */
+export function toPublishHold(row: {
+  pausedAt: Date | null;
+  pausedReason: string | null;
+  pausedByUserId: string | null;
+}): PublishHold | null {
+  if (row.pausedAt === null || row.pausedReason === null) {
+    return null;
+  }
+  const reason = publishHoldReasonSchema.safeParse(row.pausedReason);
+  if (!reason.success) {
+    return null;
+  }
+  return {
+    reason: reason.data,
+    since: row.pausedAt.toISOString(),
+    byUserId: row.pausedByUserId,
   };
 }
 
@@ -157,6 +191,9 @@ export const PUBLISH_JOB_SELECT = {
   createdAt: true,
   updatedAt: true,
   canceledAt: true,
+  pausedAt: true,
+  pausedReason: true,
+  pausedByUserId: true,
   connection: { select: { provider: true } },
   approvalRequest: { select: { state: true } },
 } as const;

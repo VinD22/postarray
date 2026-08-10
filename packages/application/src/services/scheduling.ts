@@ -23,11 +23,17 @@ import { invalid, notFound } from '../internal/errors';
 import { withIdempotency } from '../internal/idempotency';
 import { toLocalDateTime, toProviderId } from '../internal/mappers';
 import { pageArgs, toPage } from '../internal/pagination';
-import { PUBLISH_JOB_SELECT, jobToView, runPublishPath } from '../internal/publish-path';
+import {
+  PUBLISH_JOB_SELECT,
+  jobToView,
+  runPublishPath,
+  toPublishHold,
+} from '../internal/publish-path';
 import { authorized, guard } from '../internal/runtime';
 import { findNextSlot } from '../internal/slot-finder';
 import { storedMasterSchema } from '../internal/stored-content';
 import { linkReservationToJob, readQueueContext } from './queue-rules.mappers';
+import { createSchedulingPause, crossesOffsetChange } from './scheduling-pause';
 
 /**
  * Scheduling.
@@ -40,32 +46,26 @@ import { linkReservationToJob, readQueueContext } from './queue-rules.mappers';
 
 const DST_CONFIRMATION_KEY = 'errors.schedule_crosses_dst';
 
-function offsetMinutes(instant: Date, timeZone: string): number {
-  const formatted = new Intl.DateTimeFormat('en-US', {
-    timeZone,
-    timeZoneName: 'longOffset',
-  }).formatToParts(instant);
-  const name = formatted.find((part) => part.type === 'timeZoneName')?.value ?? 'GMT+00:00';
-  const match = /GMT([+-])(\d{2}):(\d{2})/.exec(name);
-  if (match === null) {
-    return 0;
-  }
-  const sign = match[1] === '-' ? -1 : 1;
-  const hours = Number.parseInt(match[2] ?? '0', 10);
-  const minutes = Number.parseInt(match[3] ?? '0', 10);
-  return sign * (hours * 60 + minutes);
-}
-
-/** True when moving between these two instants changes the UTC offset. */
-export function crossesOffsetChange(from: Date, to: Date, timeZone: string): boolean {
-  return offsetMinutes(from, timeZone) !== offsetMinutes(to, timeZone);
-}
+/**
+ * The daylight saving check lives with pause and resume, and is re-exported
+ * here so its long-standing import path keeps working. There is exactly one
+ * implementation, which is what makes "Move" and "Resume at a new time" warn
+ * about a clock change in identical words.
+ */
+export { crossesOffsetChange } from './scheduling-pause';
 
 export function createSchedulingService(
   deps: ServiceDeps,
   validation: ValidationService,
 ): SchedulingService {
+  // Pause and resume are the same template as `cancel` and belong to the same
+  // service; they live in a sibling file only because this one is already long.
+  const holds = createSchedulingPause(deps);
+
   return {
+    pause: holds.pause,
+    resume: holds.resume,
+
     async schedule(
       ctx: ActorContext,
       input: { contentItemId: string; scheduleSpec: ScheduleSpec },
@@ -319,6 +319,9 @@ export function createSchedulingService(
             scheduledFor: true,
             scheduledTimeZone: true,
             approvalPolicy: true,
+            pausedAt: true,
+            pausedReason: true,
+            pausedByUserId: true,
             connection: { select: { provider: true, displayName: true } },
             approvalRequest: { select: { state: true } },
             contentItem: {
@@ -354,6 +357,7 @@ export function createSchedulingService(
               row.approvalPolicy === 'none'
                 ? 'not_required'
                 : toCalendarApprovalState(row.approvalRequest?.state),
+            hold: toPublishHold(row),
           }),
         );
       });

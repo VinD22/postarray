@@ -25,6 +25,7 @@ import { useTranslations } from '@relay/i18n/react';
 import type { ProviderId } from '@relay/contracts';
 
 import { useComposer } from '../composer-context';
+import { useSeedRememberedTargets } from '../data/use-seed-remembered-targets';
 import { DURATION_FAST, EASE_STANDARD } from '@/lib/motion/constants';
 import { Flip, useGSAP } from '@/lib/motion/gsap';
 import { useMotionOk } from '@/lib/motion/use-motion-ok';
@@ -38,8 +39,8 @@ import type { TargetRailState, TargetSummary } from '../types';
  * identification), the same rule `provider-identity.tsx` documents.
  *
  * A provider with no identity token yet takes the neutral `border-bold` ink
- * rather than borrowing another platform's colour. Google Business Profile is
- * in that state today.
+ * rather than borrowing another platform's colour. The record is `Partial` for
+ * exactly that reason, so a new provider id can land before its token does.
  */
 const PROVIDER_BAR_CLASS: Partial<Record<ProviderId, string>> = {
   x: 'bg-brand-x',
@@ -100,6 +101,15 @@ export function TargetRail(): ReactNode {
   const { bootstrap, state, dispatch, summaries, totals } = useComposer();
   const [query, setQuery] = useState('');
   const motionOk = useMotionOk();
+  // Seeds the selection once, on open, from this person's own last selection in
+  // this project. Off unless the project opted in, and filtered to channels
+  // that are still connected, still authorized and not paused.
+  const seeded = useSeedRememberedTargets({
+    brandId: bootstrap.master.brandId ?? null,
+    accounts: bootstrap.accounts,
+    selectedConnectionIds: state.selectedConnectionIds,
+    dispatch,
+  });
 
   const unselected = useMemo(
     () =>
@@ -160,6 +170,19 @@ export function TargetRail(): ReactNode {
 
   return (
     <nav aria-label={t.full('composerWeb.pane.targets')} className="flex h-full flex-col gap-5">
+      {/* What the composer restored from last time, and what it deliberately
+          did not. A channel that was revoked, paused or expired since the last
+          post is never silently reselected, so it is named here instead. */}
+      {seeded.noticeKey === null ? null : (
+        <p
+          className="text-body-sm text-text-tertiary"
+          role="status"
+          data-testid="remembered-targets-notice"
+        >
+          {t.full(seeded.noticeKey, { count: seeded.count })}
+        </p>
+      )}
+
       <section aria-labelledby="composer-sets-heading" className="flex flex-col gap-2">
         <h2 id="composer-sets-heading" className="text-label text-text-tertiary">
           {t.full('composerWeb.rail.setsHeading')}

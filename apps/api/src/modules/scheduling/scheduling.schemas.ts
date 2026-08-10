@@ -47,6 +47,33 @@ export const rescheduleRequestSchema = z
 
 export const cancelRequestSchema = z.object({ reason: mediumTextSchema }).strict();
 
+/**
+ * Holding a scheduled job.
+ *
+ * There is no reason code here on purpose. A pause is reversible and retracts
+ * nothing, so it does not need the justification a cancel does; the optional
+ * note exists only so the audit trail can carry what the person typed.
+ */
+export const pauseRequestSchema = z
+  .object({ note: z.string().min(1).max(280).optional() })
+  .strict();
+
+/**
+ * Releasing a held job.
+ *
+ * `scheduleSpec` is optional at the edge and required by the application once
+ * the original instant has passed. Enforcing it here instead would mean the
+ * edge deciding what "has passed" means, which is a clock question the
+ * application already owns. `confirmDst` behaves exactly as it does on
+ * reschedule, because a resume that carries a new time is a reschedule.
+ */
+export const resumeRequestSchema = z
+  .object({
+    scheduleSpec: scheduleSpecSchema.optional(),
+    confirmDst: z.boolean().optional(),
+  })
+  .strict();
+
 export const calendarQuerySchema = cursorQueryWith({
   from: isoInstantSchema,
   to: isoInstantSchema,
@@ -70,5 +97,7 @@ export const nextSlotQuerySchema = z
   .strict();
 
 export type ScheduleRequestInput = z.infer<typeof scheduleRequestSchema>;
+export type PauseRequestInput = z.infer<typeof pauseRequestSchema>;
+export type ResumeRequestInput = z.infer<typeof resumeRequestSchema>;
 export type RescheduleRequestInput = z.infer<typeof rescheduleRequestSchema>;
 export type CalendarQueryInput = z.infer<typeof calendarQuerySchema>;

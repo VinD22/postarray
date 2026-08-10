@@ -82,6 +82,27 @@ export const BETA_ENGLISH_FALLBACK_PREFIXES = [
   // would describe a different and more dangerous tool, so beta locales keep
   // the reviewed English source until a person translates it.
   'import.',
+  // Per platform scheduler pages and the project-led use case pages (C5).
+  // Every sentence either states a platform rule or states plainly that
+  // nothing publishes yet. A machine translation that softened "not built yet"
+  // into something warmer would be a capability claim in that language, which
+  // is exactly the failure the launch-truth test exists to prevent. Beta
+  // locales keep the reviewed English source until a person translates them.
+  'web.schedule.',
+  'web.meta.schedule.',
+  'web.meta.schedulePlatform.',
+  'web.useCases.',
+  'web.meta.useCases.',
+  'web.meta.useCase.',
+  // Pause and resume, Posting Set management, remembered channel selection
+  // (A3, A7, A8). All three make precise claims a machine translation is likely
+  // to soften: that pausing cannot retract a post that already published, that
+  // editing a Set never touches work already made from it, and exactly what the
+  // composer does and does not store about a person's account selection. They
+  // stay on the reviewed English source until each has a human translation.
+  'calendar.hold.',
+  'set.',
+  'targetMemory.',
 ] as const;
 
 /** B5-controlled keys whose namespace also contains ordinary interface copy. */
@@ -180,6 +201,12 @@ export const BETA_ENGLISH_FALLBACK_KEYS = [
   'calendar.drag.handleHint',
   'calendar.drag.overSlot',
   'calendar.drag.dropped',
+  // Pause and resume, Posting Set management and remembered channel selection
+  // (A3, A7, A8). All three make precise claims a machine translation is likely
+  // to soften: that pausing cannot retract a post that already published, that
+  // editing a Set never touches work already made from it, and exactly what the
+  // composer does and does not store about a person's account selection. They
+  // stay on the reviewed English source until each has a human translation.
 ] as const;
 
 export function isBetaEnglishFallbackKey(key: string): boolean {

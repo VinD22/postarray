@@ -1,20 +1,15 @@
 import type { Metadata } from 'next';
 import type { ReactNode } from 'react';
 
-import { Reveal, StaggerList } from '@/components/motion';
+import { StaggerList } from '@/components/motion';
 import {
-  Body,
-  FullBleed,
-  Heading,
-  List,
-  Section,
-  Split,
-} from '@/features/marketing/components/layout';
+  ClosingCta,
+  EditorialDisplay,
+  EditorialSection,
+  EditorialVariantScene,
+} from '@/features/marketing/components/editorial';
+import { Body, Heading, List, Split } from '@/features/marketing/components/layout';
 import { Cta, TextLink } from '@/features/marketing/components/links';
-import { Band } from '@/features/marketing/components/loud/band';
-import { CtaSlab } from '@/features/marketing/components/loud/cta-slab';
-import { LoudDisplay } from '@/features/marketing/components/loud/display';
-import { VariantScene } from '@/features/marketing/components/loud/variant-scene';
 import { ProductShot } from '@/features/marketing/components/page-parts';
 import { marketingTranslator } from '@/features/marketing/i18n';
 import { pageMetadata } from '@/features/marketing/seo';
@@ -119,44 +114,42 @@ export default async function ProductPage({
     variant: t.format(row.variantKey),
     check: t.format(row.checkKey),
   }));
-  const demoProgressLabels = demoRows.map((_, index) =>
-    t.t('web.home.v2.variantScene.progress', {
-      revealed: index + 1,
-      total: demoRows.length,
-    }),
-  );
 
   return (
     <>
-      <Band tone="paper">
-        <Reveal className="max-w-[52rem]">
-          <LoudDisplay as="h1" size="xl">
+      <EditorialSection reveal={false} containerClassName="py-24 md:py-32">
+        <div className="max-w-[52rem]">
+          <EditorialDisplay as="h1" size="md" reveal>
             {t.t('web.product.title')}
-          </LoudDisplay>
-          <p className="text-body-lg text-text-secondary mt-6 max-w-[58ch] leading-[1.62] md:text-[1.125rem]">
+          </EditorialDisplay>
+          <p className="text-body-lg text-text-secondary mt-8 max-w-[58ch] leading-[1.62] md:text-[1.125rem]">
             {t.t('web.product.lede')}
           </p>
-          <div className="mt-8 flex flex-wrap items-center gap-3">
+          <div className="mt-10 flex flex-wrap items-center gap-3">
             <Cta href={ROUTES.signUp}>{t.t('web.cta.startTrial')}</Cta>
             <Cta href={ROUTES.capabilities} variant="secondary">
               {t.t('web.cta.seeCapabilities')}
             </Cta>
           </div>
-        </Reveal>
-      </Band>
+        </div>
+      </EditorialSection>
 
-      <Section id="sequence">
+      <EditorialSection rule id="sequence" reveal={false}>
         <Heading className="max-w-[28ch]">{t.t('web.product.v2.demo.title')}</Heading>
-        <StaggerList className="border-border-default mt-10 border-t">
+        <StaggerList stagger={0.07} className="border-border-default mt-12 border-t">
           {STEPS.map((step, index) => (
             <div
               key={step.id}
               data-stagger-item
-              className="border-border-subtle grid gap-2 border-b py-6 sm:grid-cols-[4rem_minmax(0,1fr)] sm:gap-6"
+              className="border-border-subtle grid gap-2 border-b py-7 sm:grid-cols-[4rem_minmax(0,1fr)] sm:gap-8"
             >
+              {/* The step number was set in display type at 45% opacity, which
+                  is a decorative watermark rather than a signpost. It is now a
+                  quiet monospaced ordinal, the same treatment the rest of the
+                  site gives a sequence. */}
               <span
                 aria-hidden="true"
-                className="font-display text-display-lg text-text-primary leading-none opacity-45"
+                className="text-body-sm text-text-tertiary font-mono tabular-nums"
               >
                 {String(index + 1).padStart(2, '0')}
               </span>
@@ -169,23 +162,21 @@ export default async function ProductPage({
             </div>
           ))}
         </StaggerList>
-      </Section>
+      </EditorialSection>
 
-      {/* The compose step made concrete: the same one-draft-to-five-variants
-          scene from the home page, scoped to three rows here rather than
-          restated in full. */}
-      <Section id="demo" divided={false}>
+      {/* The compose step made concrete: the same one-draft-to-variants scene
+          from the home page, scoped to three rows here rather than restated in
+          full. */}
+      <EditorialSection rule id="demo" reveal={false}>
         <Body className="max-w-[62ch]">{t.t('web.product.v2.demo.body')}</Body>
-      </Section>
-      <FullBleed className="border-border-default border-y">
-        <VariantScene
+        <EditorialVariantScene
           rows={demoRows}
           masterLabel={t.t('web.home.v2.variantScene.masterLabel')}
-          progressLabels={demoProgressLabels}
+          className="mt-12"
         />
-      </FullBleed>
+      </EditorialSection>
 
-      <Band tone="paper">
+      <EditorialSection rule id="shot">
         <Split
           aside={
             <div className="space-y-4">
@@ -200,9 +191,9 @@ export default async function ProductPage({
             caption={t.t('web.home.example.caption')}
           />
         </Split>
-      </Band>
+      </EditorialSection>
 
-      <Section id="states">
+      <EditorialSection rule id="states">
         <Split
           aside={
             <div className="space-y-4">
@@ -216,9 +207,9 @@ export default async function ProductPage({
         >
           <List items={STATES.map((key) => t.format(key))} />
         </Split>
-      </Section>
+      </EditorialSection>
 
-      <CtaSlab
+      <ClosingCta
         id="start"
         title={t.t('web.marketing.v2.closing.title')}
         body={t.t('web.marketing.v2.closing.body')}

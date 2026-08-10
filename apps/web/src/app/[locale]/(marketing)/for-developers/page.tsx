@@ -1,7 +1,13 @@
 import type { Metadata } from 'next';
 import type { ReactNode } from 'react';
 
-import { Reveal } from '@/components/motion';
+import {
+  ClosingCta,
+  EditorialCard,
+  EditorialDisplay,
+  EditorialSection,
+  Eyebrow,
+} from '@/features/marketing/components/editorial';
 import {
   Body,
   Fact,
@@ -9,14 +15,9 @@ import {
   Heading,
   Lede,
   List,
-  Section,
   Split,
 } from '@/features/marketing/components/layout';
 import { Cta, TextLink } from '@/features/marketing/components/links';
-import { Band } from '@/features/marketing/components/loud/band';
-import { CtaSlab } from '@/features/marketing/components/loud/cta-slab';
-import { LoudDisplay } from '@/features/marketing/components/loud/display';
-import { PosterCard } from '@/features/marketing/components/loud/poster-card';
 import { DOC_PRINCIPLES } from '@/features/marketing/data/catalogs';
 import { marketingTranslator } from '@/features/marketing/i18n';
 import { pageMetadata } from '@/features/marketing/seo';
@@ -86,50 +87,47 @@ export default async function ForDevelopersPage({
 
   return (
     <>
-      <Band tone="paper">
-        <Reveal className="max-w-[52rem]">
-          <LoudDisplay as="h1" size="xl">
+      <EditorialSection reveal={false} containerClassName="py-24 md:py-32">
+        <div className="max-w-[52rem]">
+          <EditorialDisplay as="h1" size="md" reveal>
             {t.t('web.developers.title')}
-          </LoudDisplay>
-          <Lede className="mt-6">{t.t('web.developers.lede')}</Lede>
-          <div className="mt-8 flex flex-wrap items-center gap-3">
+          </EditorialDisplay>
+          <Lede className="mt-8">{t.t('web.developers.lede')}</Lede>
+          <div className="mt-10 flex flex-wrap items-center gap-3">
             <Cta href={ROUTES.docs}>{t.t('web.cta.readDocs')}</Cta>
             <Cta href={ROUTES.apiTerms} variant="secondary">
               {t.t('web.legal.apiTerms.title')}
             </Cta>
           </div>
-        </Reveal>
+        </div>
 
-        {/* The fake-terminal moment: real CLI lines, reveal-in once, static
-            under reduced motion (`Reveal`'s own contract). */}
-        <Reveal delay={0.15} className="mt-12 max-w-[36rem]">
-          <h2 className="text-label text-text-tertiary mb-3 tracking-wide uppercase">
+        {/*
+          Two real CLI commands. The drawn traffic-light title bar that used
+          to sit above them is gone: it was a window chrome illustration
+          pretending the page had a screenshot of a terminal, and the commands
+          themselves are the evidence. What is left is a code block on a
+          sunken surface, which is what this is.
+        */}
+        <div className="mt-16 max-w-[36rem]">
+          <Eyebrow as="h2" className="mb-4">
             {t.t('web.developers.v2.terminal.title')}
-          </h2>
-          <PosterCard tone="ink" className="p-0">
-            <div
-              aria-hidden="true"
-              className="bg-surface-inverted flex items-center gap-1.5 rounded-t-[calc(var(--radius-lg)-2px)] px-4 py-3"
-            >
-              <span className="bg-text-inverted/70 size-2 rounded-full" />
-              <span className="bg-text-inverted/50 size-2 rounded-full" />
-              <span className="bg-text-inverted/30 size-2 rounded-full" />
-            </div>
-            <pre className="text-body-md overflow-x-auto px-4 py-4 font-mono leading-[1.8]">
+          </Eyebrow>
+          <EditorialCard tone="sunken" interactive={false} flush>
+            <pre className="text-body-md relay-scroll-x px-5 py-5 font-mono leading-[1.9]">
               {TERMINAL_LINES.map((line) => (
                 <code key={line} className="block">
-                  <span aria-hidden="true" className="text-text-inverted/50">
+                  <span aria-hidden="true" className="text-text-tertiary">
                     {'$ '}
                   </span>
-                  {line}
+                  <span className="text-text-primary">{line}</span>
                 </code>
               ))}
             </pre>
-          </PosterCard>
-        </Reveal>
-      </Band>
+          </EditorialCard>
+        </div>
+      </EditorialSection>
 
-      <Section id="surfaces">
+      <EditorialSection rule id="surfaces">
         <Split aside={<Heading>{t.t('web.home.surfaces.title')}</Heading>}>
           <FactList className="border-t-0">
             {SURFACES.map((surface) => (
@@ -139,9 +137,9 @@ export default async function ForDevelopersPage({
             ))}
           </FactList>
         </Split>
-      </Section>
+      </EditorialSection>
 
-      <Section id="safety">
+      <EditorialSection rule id="safety">
         <Split aside={<Heading>{t.t('web.developers.safety.title')}</Heading>}>
           <div className="space-y-4">
             {SAFETY.map((key) => (
@@ -149,24 +147,24 @@ export default async function ForDevelopersPage({
             ))}
           </div>
         </Split>
-      </Section>
+      </EditorialSection>
 
-      <Section id="guarantees">
+      <EditorialSection rule id="guarantees">
         <Split aside={<Heading>{t.t('web.docs.principles.title')}</Heading>}>
           <List items={DOC_PRINCIPLES.map((key) => t.format(key))} />
         </Split>
-      </Section>
+      </EditorialSection>
 
-      <Section id="open">
+      <EditorialSection rule id="open">
         <Split aside={<Heading>{t.t('web.developers.openSource.title')}</Heading>}>
           <Body>{t.t('web.developers.openSource.body')}</Body>
           <p className="mt-4">
             <TextLink href={ROUTES.capabilities}>{t.t('nav.public.capabilities')}</TextLink>
           </p>
         </Split>
-      </Section>
+      </EditorialSection>
 
-      <CtaSlab
+      <ClosingCta
         id="start"
         title={t.t('web.marketing.v2.closing.title')}
         body={t.t('web.marketing.v2.closing.body')}

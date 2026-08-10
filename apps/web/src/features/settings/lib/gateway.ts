@@ -218,6 +218,7 @@ function toBrandView(base: {
   blockedTerms: readonly string[];
   domains: readonly string[];
   connectionIds: readonly string[];
+  rememberTargetsEnabled: boolean;
   updatedAt: string;
 }): BrandView {
   return {
@@ -233,6 +234,7 @@ function toBrandView(base: {
     disclosureDefaults: [],
     glossary: [],
     connectionCount: base.connectionIds.length,
+    rememberTargetsEnabled: base.rememberTargetsEnabled,
     updatedAt: base.updatedAt,
     updatedByName: null,
   };

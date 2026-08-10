@@ -16,6 +16,7 @@ import { importMessages } from './import';
 import { navMessages } from './nav';
 import { onboardingMessages } from './onboarding';
 import { queueMessages } from './queue';
+import { postingSetMessages } from './posting-sets';
 import { receiptMessages } from './receipt';
 import { settingsMessages } from './settings';
 import { stateMessages } from './states';
@@ -29,6 +30,9 @@ import { webSettingsMessages } from './web-settings';
 import { webShellMessages } from './web-shell';
 import { webBlogMessages } from './web-blog';
 import { webToolsMessages } from './web-tools';
+// C5 platform and use case pages.
+import { webPlatformsMessages } from './web-platforms';
+import { webUseCaseMessages } from './web-use-cases';
 
 /**
  * The English catalog. This is the source of truth for every user visible
@@ -50,6 +54,7 @@ export const en = {
   ...analyticsMessages,
   ...automationMessages,
   ...queueMessages,
+  ...postingSetMessages,
   ...webAnalyticsMessages,
   ...growthMessages,
   ...importMessages,
@@ -69,6 +74,8 @@ export const en = {
   ...webShellMessages,
   ...webBlogMessages,
   ...webToolsMessages,
+  ...webPlatformsMessages,
+  ...webUseCaseMessages,
 } as const;
 
 /** Every message key in the product. */
@@ -96,6 +103,7 @@ export {
   navMessages,
   onboardingMessages,
   queueMessages,
+  postingSetMessages,
   receiptMessages,
   settingsMessages,
   stateMessages,
@@ -109,4 +117,6 @@ export {
   webAnalyticsMessages,
   webBlogMessages,
   webToolsMessages,
+  webPlatformsMessages,
+  webUseCaseMessages,
 };

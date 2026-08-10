@@ -1,21 +1,17 @@
 import type { Metadata } from 'next';
 import type { ReactNode } from 'react';
 
-import { Reveal, StaggerList } from '@/components/motion';
-import { HeroPlatformCycler } from '@/features/marketing/components/loud/hero-platform-cycler';
+import { StaggerList } from '@/components/motion';
 import {
-  Body,
-  Heading,
-  Lede,
-  Section,
-  Split,
-  Subheading,
-} from '@/features/marketing/components/layout';
+  ClosingCta,
+  EditorialCard,
+  EditorialDisplay,
+  EditorialPlatformCycler,
+  EditorialSection,
+  Eyebrow,
+} from '@/features/marketing/components/editorial';
+import { Body, Heading, Lede, Split, Subheading } from '@/features/marketing/components/layout';
 import { Cta, TextLink } from '@/features/marketing/components/links';
-import { Band } from '@/features/marketing/components/loud/band';
-import { CtaSlab } from '@/features/marketing/components/loud/cta-slab';
-import { LoudDisplay } from '@/features/marketing/components/loud/display';
-import { PosterCard } from '@/features/marketing/components/loud/poster-card';
 import { marketingTranslator } from '@/features/marketing/i18n';
 import { pageMetadata } from '@/features/marketing/seo';
 import { ROUTES } from '@/features/marketing/site';
@@ -63,70 +59,70 @@ export default async function ForCreatorsPage({
 
   return (
     <>
-      <Band tone="paper">
-        <div className="grid gap-10 lg:grid-cols-12 lg:items-center lg:gap-16">
-          <Reveal className="lg:col-span-7">
-            <LoudDisplay as="h1" size="xl">
+      <EditorialSection reveal={false} containerClassName="py-24 md:py-32">
+        <div className="grid gap-12 lg:grid-cols-12 lg:items-center lg:gap-16">
+          <div className="lg:col-span-7">
+            <EditorialDisplay as="h1" size="md" reveal>
               {t.t('web.creators.title')}
-            </LoudDisplay>
-            <Lede className="mt-6">{t.t('web.creators.lede')}</Lede>
-            <div className="mt-8 flex flex-wrap items-center gap-3">
+            </EditorialDisplay>
+            <Lede className="mt-8">{t.t('web.creators.lede')}</Lede>
+            <div className="mt-10 flex flex-wrap items-center gap-3">
               <Cta href={ROUTES.signUp}>{t.t('web.cta.startTrial')}</Cta>
               <Cta href={ROUTES.pricing} variant="secondary">
                 {t.t('web.cta.seePricing')}
               </Cta>
             </div>
-          </Reveal>
+          </div>
 
           {/*
-            A CSS phone bezel, not a screenshot — this project treats a drawn
-            interface or an invented app frame as a fabricated screenshot
-            (see `ProductShot`'s own doc comment). The cycling word is the
-            platform name itself, via the same `HeroPlatformCycler` the home
-            hero uses, honestly captioned.
+            This used to be a drawn phone bezel: a 9:19 outlined slab with a
+            hard offset shadow, standing in for a screenshot. A drawn interface
+            is a fabricated screenshot in this project (see `ProductShot`), and
+            a bezel with no screen in it was decoration doing the work of
+            evidence. What was actually true inside it — the platform name
+            cycling, honestly captioned — is all that remains, set as a plain
+            typographic panel that does not pretend to be a device.
           */}
           <div className="lg:col-span-5">
-            <div className="border-border-bold shadow-hard bg-surface-raised mx-auto flex aspect-[9/19] w-full max-w-[16rem] flex-col items-center justify-center gap-4 rounded-[var(--radius-editorial)] border-2 p-6">
-              <span className="text-label text-text-tertiary tracking-wide uppercase">
-                {t.t('web.creators.title')}
-              </span>
-              <HeroPlatformCycler
+            <div className="border-border-default bg-surface-raised space-y-4 rounded-lg border p-8 shadow-raised">
+              <Eyebrow>{t.t('web.creators.title')}</Eyebrow>
+              <EditorialPlatformCycler
                 platforms={platformNames}
-                className="font-display text-display-lg text-center"
+                className="font-display text-display-lg"
               />
-              <p className="text-body-sm text-text-tertiary text-center">
+              <p className="text-body-sm text-text-tertiary max-w-[36ch] leading-[1.6]">
                 {t.t('web.creators.v2.phone.caption')}
               </p>
             </div>
           </div>
         </div>
-      </Band>
+      </EditorialSection>
 
-      <Section id="jobs">
-        <StaggerList className="grid gap-6 sm:grid-cols-2">
+      <EditorialSection rule id="jobs" reveal={false}>
+        <StaggerList stagger={0.07} className="grid gap-5 sm:grid-cols-2">
           {JOBS.map((job) => (
             <div key={job.id} data-stagger-item>
-              <PosterCard tone="paper" className="h-full">
+              <EditorialCard className="h-full">
                 <Subheading as="h2" className="text-title-sm text-pretty">
                   {t.format(job.titleKey)}
                 </Subheading>
                 <p className="text-body-md text-text-secondary mt-3">{t.format(job.bodyKey)}</p>
-              </PosterCard>
+              </EditorialCard>
             </div>
           ))}
         </StaggerList>
-      </Section>
+      </EditorialSection>
 
-      <Section id="not-for">
+      <EditorialSection rule id="not-for">
         <Split aside={<Heading>{t.t('web.creators.notFor.title')}</Heading>}>
           <Body>{t.t('web.creators.notFor.body')}</Body>
           <p className="mt-4">
             <TextLink href={ROUTES.toolRadar}>{t.t('web.meta.toolRadar.title')}</TextLink>
           </p>
         </Split>
-      </Section>
+      </EditorialSection>
 
-      <CtaSlab
+      <ClosingCta
         id="start"
         title={t.t('web.marketing.v2.closing.title')}
         body={t.t('web.marketing.v2.closing.body')}

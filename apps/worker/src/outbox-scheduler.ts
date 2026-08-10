@@ -81,6 +81,59 @@ export class WorkerScheduler implements SchedulerPort {
     });
   }
 
+  /**
+   * Hold a scheduled campaign where it is.
+   *
+   * The publish workflow's wait loop is already interruptible by `pause`, so
+   * delivery is one signal. There is nothing to undo and nothing to send: a
+   * pause stops work that has not happened, and never retracts an external
+   * post. A workflow that has already left the wait loop simply ignores it,
+   * which is why the application service refuses to pause a job that is
+   * mid-dispatch rather than pretending this signal could stop it.
+   */
+  async pausePublish(input: {
+    readonly jobId: string;
+    readonly workspaceId: string;
+  }): Promise<void> {
+    if (this.#temporal !== null) {
+      return this.#temporal.signalPublish({ ...input, signal: 'pause' });
+    }
+    this.#requireSignal(publishWorkflowId(input.workspaceId, input.jobId), 'pause');
+  }
+
+  /**
+   * Let a held campaign continue, optionally at a new instant.
+   *
+   * The ordering is the whole content of this method. When a new instant is
+   * supplied it is delivered as a reschedule *first*, and only then is the
+   * workflow released. Signalling resume first would let the wait loop observe
+   * an instant that passed while the job was held and dispatch immediately,
+   * which is exactly what the person who paused it was preventing.
+   */
+  async resumePublish(input: {
+    readonly jobId: string;
+    readonly workspaceId: string;
+    readonly executeAt?: Date;
+    readonly ianaTimeZone?: string;
+  }): Promise<void> {
+    if (input.executeAt !== undefined && input.ianaTimeZone !== undefined) {
+      await this.reschedulePublish({
+        jobId: input.jobId,
+        workspaceId: input.workspaceId,
+        executeAt: input.executeAt,
+        ianaTimeZone: input.ianaTimeZone,
+      });
+    }
+    if (this.#temporal !== null) {
+      return this.#temporal.signalPublish({
+        jobId: input.jobId,
+        workspaceId: input.workspaceId,
+        signal: 'resume',
+      });
+    }
+    this.#requireSignal(publishWorkflowId(input.workspaceId, input.jobId), 'resume');
+  }
+
   async signalPublish(input: Parameters<SchedulerPort['signalPublish']>[0]): Promise<void> {
     if (this.#temporal !== null) return this.#temporal.signalPublish(input);
     this.#requireSignal(

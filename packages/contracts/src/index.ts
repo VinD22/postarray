@@ -18,6 +18,8 @@ export * from './content';
 export * from './validation';
 export * from './publishing';
 export * from './queue-rules';
+export * from './posting-sets';
+export * from './target-memory';
 export * from './bulk-import';
 export * from './growth';
 export * from './data';

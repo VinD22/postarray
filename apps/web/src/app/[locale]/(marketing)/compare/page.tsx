@@ -2,15 +2,18 @@ import type { Metadata } from 'next';
 import type { ReactNode } from 'react';
 import { EmptyState } from '@relay/design-system/patterns';
 
-import { Reveal, StaggerList } from '@/components/motion';
-import { Container, Heading, Lede, Section, Split } from '@/features/marketing/components/layout';
+import { StaggerList } from '@/components/motion';
+import {
+  ClosingCta,
+  EditorialCard,
+  EditorialDisplay,
+  EditorialSection,
+  EditorialVsTable,
+  Eyebrow,
+  type EditorialVsTableRow,
+} from '@/features/marketing/components/editorial';
+import { Container, Heading, Lede, Split } from '@/features/marketing/components/layout';
 import { RowLink, TextLink } from '@/features/marketing/components/links';
-import { Band } from '@/features/marketing/components/loud/band';
-import { CtaSlab } from '@/features/marketing/components/loud/cta-slab';
-import { LoudDisplay } from '@/features/marketing/components/loud/display';
-import { PosterCard } from '@/features/marketing/components/loud/poster-card';
-import { Sticker } from '@/features/marketing/components/loud/sticker';
-import { VsTable, type VsTableRow } from '@/features/marketing/components/loud/vs-table';
 import { CorrectionNotice } from '@/features/marketing/components/page-parts';
 import { COMPARISON_AXES, COMPARISON_TARGETS } from '@/features/marketing/data/catalogs';
 import { marketingTranslator } from '@/features/marketing/i18n';
@@ -43,13 +46,13 @@ export default async function ComparePage({
 
   /**
    * Every axis this site's own comparison methodology commits to, as one
-   * "Relay" column — the only column with real content behind it right now
-   * (every `COMPARISON_TARGETS` entry still has `href: null`; see
-   * `vs-table.tsx`'s own doc comment). A `true` cell states a real
-   * commitment already published in `COMPARISON_AXES` above, not a claim
-   * about any competitor.
+   * column for this product — the only column with real content behind it
+   * right now (every `COMPARISON_TARGETS` entry still has `href: null`; see
+   * `EditorialVsTable`'s own doc comment). A `true` cell states a real
+   * commitment already published in `COMPARISON_AXES`, not a claim about any
+   * competitor.
    */
-  const rulesRows: readonly VsTableRow[] = COMPARISON_AXES.map((key) => ({
+  const rulesRows: readonly EditorialVsTableRow[] = COMPARISON_AXES.map((key) => ({
     id: key,
     label: t.format(key),
     cells: { relay: true },
@@ -57,36 +60,34 @@ export default async function ComparePage({
 
   return (
     <>
-      <Band tone="paper">
-        <Reveal className="max-w-[52rem]">
-          <LoudDisplay as="h1" size="xl">
+      <EditorialSection reveal={false} containerClassName="py-24 md:py-32">
+        <div className="max-w-[52rem]">
+          <Eyebrow className="mb-6">{t.t('web.compare.v2.honest')}</Eyebrow>
+          <EditorialDisplay as="h1" size="md" reveal>
             {t.t('web.compare.title')}
-          </LoudDisplay>
-          <Lede className="mt-6">{t.t('web.compare.lede')}</Lede>
-          <Sticker tone="pop" rotate={-3} className="mt-6">
-            {t.t('web.compare.v2.honest')}
-          </Sticker>
-        </Reveal>
-      </Band>
+          </EditorialDisplay>
+          <Lede className="mt-8">{t.t('web.compare.lede')}</Lede>
+        </div>
+      </EditorialSection>
 
-      <Section id="rules">
+      <EditorialSection rule id="rules" reveal={false}>
         <Heading className="max-w-[28ch]">{t.t('web.compare.rules.title')}</Heading>
-        <div className="mt-8">
-          <VsTable
+        <div className="mt-10">
+          <EditorialVsTable
             caption={t.t('web.compare.rules.title')}
             rowHeaderLabel={t.t('web.compare.rules.title')}
-            columns={[{ id: 'relay', label: t.t('web.brand.name'), tone: 'cta' }]}
+            columns={[{ id: 'relay', label: t.t('web.brand.name'), tone: 'own' }]}
             rows={rulesRows}
             trueLabel={t.t('common.yes')}
             falseLabel={t.t('common.no')}
           />
         </div>
-        <p className="mt-6">
+        <p className="mt-8">
           <TextLink href={ROUTES.methodology}>{t.t('nav.public.methodology')}</TextLink>
         </p>
-      </Section>
+      </EditorialSection>
 
-      <Section id="pages">
+      <EditorialSection rule id="pages">
         {published.length === 0 ? (
           <EmptyState
             title={t.t('web.compare.empty')}
@@ -104,9 +105,9 @@ export default async function ComparePage({
             ))}
           </ul>
         )}
-      </Section>
+      </EditorialSection>
 
-      <Section id="planned">
+      <EditorialSection rule id="planned" reveal={false}>
         <Split
           aside={
             <div className="space-y-4">
@@ -117,23 +118,24 @@ export default async function ComparePage({
             </div>
           }
         >
-          <StaggerList className="grid gap-3 sm:grid-cols-2">
+          <StaggerList stagger={0.07} className="grid gap-3 sm:grid-cols-2">
             {planned.map((target) => (
               <div key={target.id} data-stagger-item>
-                <PosterCard
-                  tone="paper"
+                {/* The fact-check state was a second rotated sticker inside a
+                    poster card. It is a real state, so it survives as an
+                    eyebrow; the rotation and the outline do not. */}
+                <EditorialCard
+                  interactive={false}
                   className="flex flex-wrap items-center justify-between gap-3 p-4"
                 >
                   <span className="text-body-md text-text-primary">{t.format(target.nameKey)}</span>
-                  <Sticker tone="paper" rotate={0} className="shadow-none">
-                    {t.t('web.compare.state.factCheckPending')}
-                  </Sticker>
-                </PosterCard>
+                  <Eyebrow tone="muted">{t.t('web.compare.state.factCheckPending')}</Eyebrow>
+                </EditorialCard>
               </div>
             ))}
           </StaggerList>
         </Split>
-      </Section>
+      </EditorialSection>
 
       <Container>
         <div className="pb-16 md:pb-20">
@@ -141,7 +143,7 @@ export default async function ComparePage({
         </div>
       </Container>
 
-      <CtaSlab
+      <ClosingCta
         id="start"
         title={t.t('web.marketing.v2.closing.title')}
         body={t.t('web.marketing.v2.closing.body')}

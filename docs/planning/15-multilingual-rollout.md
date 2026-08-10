@@ -641,3 +641,111 @@ The project is complete when **all** of these are true:
 ## 12. Parallel-agent execution prompt
 
 See `docs/planning/15a-multilingual-agent-prompt.md`. It is written to be pasted verbatim.
+
+---
+
+## 13. Locale review promotion (C6)
+
+**Added 10 August 2026.** Section 11 already required "a named reviewer and a date in the PR". That is a
+process promise, and a process promise is not a gate. This section replaces it with a mechanical one and
+records the honest state of the fifteen-language promise.
+
+### 13.1 Where review status now comes from
+
+`LocaleDescriptor.reviewStatus` is no longer a literal. It is derived, at module evaluation, from
+`packages/i18n/src/reviews.ts`:
+
+| File | Role |
+| --- | --- |
+| `src/reviews.ts` | The data. One `LocaleReview` per promoted locale: `locale`, `reviewer`, `reviewedOn`, and an optional `identicalToEnglish` acknowledgement list. Imports nothing, because `locales.ts` reads it at evaluation time. |
+| `src/locales.ts` | Derives `reviewStatus` through `reviewStatusFor()`. There is no other way to set it. Also exports `REVIEWED_LOCALES`, `REVIEWED_LOCALE_CODE_LIST` and `isReviewedLocale()`. |
+| `src/review-gate.ts` | The gate. Pure functions over a catalog, a reference catalog and a review record. Nothing in the product calls it. |
+| `src/review-gate.test.ts` | Runs the gate over every entry in `LOCALE_REVIEWS` in CI, plus unit tests for each rule. |
+
+The language picker already badges `reviewStatus === 'beta'`, so flipping the data flips the interface.
+Nothing else has to change.
+
+### 13.2 The gate
+
+A locale may appear in `LOCALE_REVIEWS` only if all of the following hold. Each is a distinct failure
+rule, so a failing build names the actual problem rather than saying "review invalid".
+
+1. `unknown-locale` / `inactive-locale` — the tag is in the registry and its `status` is `active`.
+2. `reviewer-missing` — `reviewer` names a person. "TBD", "pending", "the team", "Localization Lead"
+   and anything without a letter are rejected by name.
+3. `review-date-invalid` / `review-date-in-future` — `reviewedOn` is a real ISO `YYYY-MM-DD` date, not
+   after today.
+4. `catalog-incomplete` — every English key that is not on the B5 beta-fallback list has a translation.
+5. `catalog-lint-error` — the catalog passes `lintCatalog` against the English reference, including
+   argument parity, plural categories for that locale, and the forbidden-word and em-dash rules.
+6. `untranslated-english` — no message repeats the English source verbatim unless the reviewer listed
+   that key in `identicalToEnglish`. Messages with no translatable text, such as `{weekday}, {date}`,
+   are correctly not counted.
+7. `stale-sign-off` — every key in `identicalToEnglish` still matches English, so the acknowledgement
+   list cannot rot into a blanket exemption.
+8. `duplicate-review` — one signature per locale.
+
+### 13.3 The honest state, 10 August 2026
+
+The founder named fifteen locales as the public promise: `en`, `es`, `pt-BR`, `fr`, `de`, `it`, `nl`,
+`pl`, `tr`, `id`, `ar`, `hi`, `ja`, `ko`, `zh-Hans`. They are recorded as
+`REVIEW_PROMISE_LOCALE_CODES`, which is a target and grants no badge.
+
+**Locales that reached `reviewed` today: zero.** Two separate reasons, and both are real:
+
+1. **No named human reviewer exists for any locale.** Naming one is a founder decision, not an
+   engineering one. Writing a plausible name into `reviews.ts` would make the badge a lie in fifteen
+   languages at once, so `LOCALE_REVIEWS` is empty.
+2. **Every one of the fifteen still contains English pass-through strings**, so even with a name they
+   would need either a translation pass or an explicit acknowledgement list. Measured on
+   10 August 2026, counting only keys that are not on the B5 fallback list and whose English source has
+   translatable words:
+
+   | Locale | Pass-through | Locale | Pass-through | Locale | Pass-through |
+   | --- | --- | --- | --- | --- | --- |
+   | `tr` | 44 | `it` | 77 | `nl` | 118 |
+   | `ar` | 50 | `zh-Hans` | 90 | `fr` | 142 |
+   | `ja` | 59 | `pt-BR` | 99 | `es` | 168 |
+   | `ko` | 62 | `de` | 117 | `id` | 210 |
+   | `pl` | 67 | | | `hi` | 380 |
+
+   Reproduce with `findEnglishPassThroughKeys` from `src/review-gate.ts`.
+
+   Many are legitimate: proper nouns, ISO codes, loanwords, single words that are the same in both
+   languages. Some are not. `ja` repeats three complete English sentences from the OAuth connection
+   flow (`connection.oauth.connectSelected`, `.claimComplete`, `.accountUnavailable`); most of the 380
+   in `hi` are whole sentences, including the entire composer adaptation vocabulary. Telling those two
+   cases apart is exactly the work a review is, which is why the gate demands a person rather than a
+   threshold.
+
+   What *is* true of all fifteen today, and asserted by `review-gate.test.ts`: every catalog is
+   **complete** (zero missing non-fallback keys) and **lint clean** (zero lint errors).
+
+### 13.4 Promoting a locale
+
+1. A person reads the catalog against the checklist in `packages/i18n/README.md`.
+2. They fix, or explicitly acknowledge, every key `findEnglishPassThroughKeys` reports for that locale.
+3. They add one object to `LOCALE_REVIEWS`:
+
+   ```ts
+   { locale: 'de', reviewer: 'Ada Kessler', reviewedOn: '2026-08-14' },
+   ```
+
+4. `pnpm --filter @relay/i18n test` re-runs the whole gate against the catalog on disk. If it passes,
+   the picker drops the beta badge for that locale on the next deploy. If it does not, the failure names
+   the keys.
+
+That is the entire promotion. One line, one CI gate, no judgement call in a pull request description.
+
+### 13.5 Metadata sweep
+
+`apps/web/src/features/marketing/locale-metadata-sweep.test.ts` asserts, for every promise locale
+across ten key marketing routes: the document `lang` and `dir` the root layout will emit, a
+self-referencing canonical, a complete reciprocal hreflang cluster including `x-default`, and a title
+and description that are not the English fallback. It also asserts that every reviewed locale is inside
+the swept set, so a promotion cannot route around it. The sweep deliberately runs over the promise
+rather than only the reviewed set: a vacuous pass on an empty set would tell nobody anything.
+
+Pricing, legal, blog and free-tool routes are excluded from the "not the English fallback" assertion,
+because their copy is on the B5 English fallback list by policy. Asserting a translated title there
+would assert the opposite of what the project decided.

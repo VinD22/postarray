@@ -32,6 +32,15 @@ export const keys = {
   calendar: (workspaceId: string, range: { from: string; to: string; brandId?: string }) =>
     ['ws', workspaceId, 'calendar', range] as const,
 
+  postingSets: (workspaceId: string, filter: { brandId?: string; includeArchived?: boolean } = {}) =>
+    ['ws', workspaceId, 'posting-sets', filter] as const,
+  postingSet: (workspaceId: string, setId: string) =>
+    ['ws', workspaceId, 'posting-set', setId] as const,
+  // Per person as well as per workspace at the database; the key only has to be
+  // per project, because a session is one person by construction.
+  rememberedTargets: (workspaceId: string, brandId: string) =>
+    ['ws', workspaceId, 'remembered-targets', brandId] as const,
+
   approvalsPending: (workspaceId: string) => ['ws', workspaceId, 'approvals', 'pending'] as const,
   approval: (workspaceId: string, approvalId: string) =>
     ['ws', workspaceId, 'approval', approvalId] as const,

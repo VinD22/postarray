@@ -453,6 +453,55 @@ export const schedulingApi = {
       throw new Error('Canceling a schedule is unavailable in demo mode.');
     }),
 
+  /**
+   * Hold a scheduled post. Stops what has not happened; retracts nothing that
+   * already reached a platform. The optional note lands on the audit record
+   * only, never on any provider.
+   */
+  pause: (jobId: string, note: string | null, idempotencyKey: string): Promise<PublishJobView> =>
+    call(
+      `/schedules/${jobId}/pause`,
+      { method: 'POST', body: note === null ? {} : { note }, idempotencyKey },
+      () => {
+        throw new Error('Pausing a schedule is unavailable in demo mode.');
+      },
+    ),
+
+  /**
+   * Release a held post.
+   *
+   * `scheduledAt` is omitted while the original instant is still ahead. Once it
+   * has passed the server refuses without one rather than publishing on the
+   * spot, and the dialog asks for a new time.
+   */
+  resume: (
+    jobId: string,
+    input: { scheduledAt?: string; timeZone?: string; confirmDst?: boolean },
+    idempotencyKey: string,
+  ): Promise<PublishJobView> =>
+    call(
+      `/schedules/${jobId}/resume`,
+      {
+        method: 'POST',
+        body: {
+          ...(input.scheduledAt === undefined || input.timeZone === undefined
+            ? {}
+            : {
+                scheduleSpec: {
+                  instant: input.scheduledAt,
+                  ianaTimeZone: input.timeZone,
+                  repeat: null,
+                },
+              }),
+          ...(input.confirmDst === undefined ? {} : { confirmDst: input.confirmDst }),
+        },
+        idempotencyKey,
+      },
+      () => {
+        throw new Error('Resuming a schedule is unavailable in demo mode.');
+      },
+    ),
+
   getCalendar: (query: CalendarQuery): Promise<Paginated<CalendarEntryView>> =>
     call<Paginated<ApplicationCalendarEntry>, Paginated<CalendarEntryView>>(
       '/calendar',

@@ -93,6 +93,8 @@ export function createRefusingServices(): Services {
       schedule: refuse('content'),
       reschedule: refuse('job'),
       cancel: refuse('job'),
+      pause: refuse('job'),
+      resume: refuse('job'),
       getCalendar: page,
       nextAvailableSlot: refuse('brand'),
     },
@@ -107,6 +109,19 @@ export function createRefusingServices(): Services {
       acceptSlot: refuse('queue_slot_reservation'),
       releaseSlot: refuse('queue_slot_reservation'),
       listReservations: page,
+    },
+    postingSets: {
+      list: page,
+      get: refuse('posting_set'),
+      create: refuse('posting_set'),
+      update: refuse('posting_set'),
+      archive: refuse('posting_set'),
+    },
+    rememberedTargets: {
+      read: refuse('brand'),
+      remember: refuse('brand'),
+      forget: refuse('brand'),
+      setEnabled: refuse('brand'),
     },
     publishing: {
       publishNow: refuse('content'),

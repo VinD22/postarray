@@ -5,7 +5,9 @@ import type { ActorContext, CalendarEntry, PublishJobView, Services } from '../.
 import { SERVICES } from '../../application/tokens';
 import type {
   CalendarQueryInput,
+  PauseRequestInput,
   RescheduleRequestInput,
+  ResumeRequestInput,
   ScheduleRequestInput,
 } from './scheduling.schemas';
 
@@ -33,6 +35,21 @@ export class SchedulingService {
 
   cancel(ctx: ActorContext, jobId: string, reason: string): Promise<PublishJobView> {
     return this.services.scheduling.cancel(ctx, { jobId, reason });
+  }
+
+  pause(ctx: ActorContext, jobId: string, input: PauseRequestInput): Promise<PublishJobView> {
+    return this.services.scheduling.pause(ctx, {
+      jobId,
+      ...(input.note === undefined ? {} : { note: input.note }),
+    });
+  }
+
+  resume(ctx: ActorContext, jobId: string, input: ResumeRequestInput): Promise<PublishJobView> {
+    return this.services.scheduling.resume(ctx, {
+      jobId,
+      ...(input.scheduleSpec === undefined ? {} : { scheduleSpec: input.scheduleSpec }),
+      ...(input.confirmDst === undefined ? {} : { confirmDst: input.confirmDst }),
+    });
   }
 
   getCalendar(ctx: ActorContext, query: CalendarQueryInput): Promise<Paginated<CalendarEntry>> {

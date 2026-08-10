@@ -134,6 +134,79 @@ export function useCancelScheduled(): UseMutationResult<unknown, ApiError, strin
   });
 }
 
+export interface PauseInput {
+  readonly entry: CalendarEntry;
+  readonly note: string | null;
+}
+
+/**
+ * Hold a scheduled post.
+ *
+ * Not optimistic, for the same reason a reschedule is not: this changes whether
+ * something reaches the outside world. Showing "Paused" before the server has
+ * agreed would leave a person believing a post was stopped when it was not,
+ * which is the worst possible thing this control could get wrong.
+ *
+ * The idempotency key is derived from the job, so a double click or a retry
+ * after a dropped response replays one request rather than racing two.
+ */
+export function usePauseScheduled(): UseMutationResult<unknown, ApiError, PauseInput> {
+  const queryClient = useQueryClient();
+  const workspaceId = useWorkspaceId();
+  return useMutation({
+    mutationFn: (input: PauseInput) =>
+      api.scheduling.pause(
+        requirePublishJobId(input.entry),
+        input.note,
+        holdIdempotencyKey('pause', input.entry),
+      ),
+    onSuccess: () => {
+      void queryClient.invalidateQueries({ queryKey: ['ws', workspaceId, 'calendar'] });
+      void queryClient.invalidateQueries({ queryKey: ['ws', workspaceId, 'content'] });
+    },
+  });
+}
+
+export interface ResumeInput {
+  readonly entry: CalendarEntry;
+  /** Omitted while the original instant is still ahead. */
+  readonly toInstant?: string;
+  readonly timeZone?: string;
+  readonly confirmDst?: boolean;
+}
+
+/** Release a held post, optionally at a new time. */
+export function useResumeScheduled(): UseMutationResult<unknown, ApiError, ResumeInput> {
+  const queryClient = useQueryClient();
+  const workspaceId = useWorkspaceId();
+  return useMutation({
+    mutationFn: (input: ResumeInput) =>
+      api.scheduling.resume(
+        requirePublishJobId(input.entry),
+        {
+          ...(input.toInstant === undefined ? {} : { scheduledAt: input.toInstant }),
+          ...(input.timeZone === undefined ? {} : { timeZone: input.timeZone }),
+          ...(input.confirmDst === undefined ? {} : { confirmDst: input.confirmDst }),
+        },
+        holdIdempotencyKey(
+          input.toInstant === undefined ? 'resume' : `resume.${input.toInstant}`,
+          input.entry,
+        ),
+      ),
+    onSuccess: () => {
+      void queryClient.invalidateQueries({ queryKey: ['ws', workspaceId, 'calendar'] });
+      void queryClient.invalidateQueries({ queryKey: ['ws', workspaceId, 'content'] });
+    },
+  });
+}
+
+/** Deterministic, so a retry of one intent replays instead of racing. */
+export function holdIdempotencyKey(action: string, entry: CalendarEntry): string {
+  return `hold.${action}.${entry.publishJobId ?? entry.contentItemId}`.replace(/[:.]/g, (match) =>
+    match === ':' ? '-' : '.',
+  );
+}
+
 function requirePublishJobId(entry: CalendarEntry): string {
   if (entry.publishJobId !== null) {
     return entry.publishJobId;

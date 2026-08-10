@@ -14,6 +14,20 @@ export {
 export { AttentionBar } from './attention-bar';
 export { EntryChip } from './entry-chip';
 export { EntryDetailSheet } from './entry-detail-sheet';
+export { HoldDialog, instantFromLocal, type HoldDialogProps, type HoldIntent } from './hold-dialog';
+export {
+  PAUSABLE_STATES,
+  REFUSAL_MESSAGE_KEYS,
+  canPause,
+  holdControlFor,
+  pauseRefusal,
+  refusalMessageKey,
+  resumeNeedsNewTime,
+  type HoldControl,
+  type HoldReason,
+  type PauseRefusal,
+  type PublishHoldView,
+} from './hold';
 export { RescheduleDialog } from './reschedule-dialog';
 export { useCalendarFormat, type CalendarFormatters } from './format';
 export {
@@ -21,7 +35,12 @@ export {
   rescheduleIdempotencyKey,
   useCalendarEntries,
   useCancelScheduled,
+  usePauseScheduled,
   useRescheduleEntry,
+  useResumeScheduled,
+  holdIdempotencyKey,
+  type PauseInput,
+  type ResumeInput,
 } from './use-calendar';
 export {
   addDays,

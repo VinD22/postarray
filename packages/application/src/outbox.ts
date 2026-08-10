@@ -80,6 +80,51 @@ export const reschedulePublishOutboxPayloadSchema = z
   })
   .strict();
 
+/**
+ * Hold this job where it is.
+ *
+ * Delivered as the workflow's `pause` signal, which the publish workflow has
+ * always understood; what was missing was the path from a person to it. There
+ * is nothing to undo here, so the payload carries no content: a pause stops
+ * what has not happened and never retracts an external post.
+ */
+export const pausePublishOutboxPayloadSchema = z
+  .object({
+    jobId: z.string().min(1),
+    workspaceId: z.string().min(1),
+    requestedAt: z.string().datetime(),
+  })
+  .strict();
+
+/**
+ * Let this job continue, optionally at a new instant.
+ *
+ * `executeAt` and `ianaTimeZone` travel together or not at all. A resume that
+ * carries them is delivered as a reschedule followed by the resume signal, so
+ * the workflow wakes on the new instant rather than on the one that passed
+ * while it was held. A resume without them is only ever enqueued for a job
+ * whose instant is still in the future, which the application service checks
+ * before this row exists.
+ */
+export const resumePublishOutboxPayloadSchema = z
+  .object({
+    jobId: z.string().min(1),
+    workspaceId: z.string().min(1),
+    requestedAt: z.string().datetime(),
+    executeAt: z.string().datetime().optional(),
+    ianaTimeZone: z.string().min(1).optional(),
+  })
+  .strict()
+  .superRefine((payload, context) => {
+    if ((payload.executeAt === undefined) !== (payload.ianaTimeZone === undefined)) {
+      context.addIssue({
+        code: z.ZodIssueCode.custom,
+        path: ['ianaTimeZone'],
+        message: 'a resumed instant always carries the zone it was chosen in',
+      });
+    }
+  });
+
 export const startRuleRunOutboxPayloadSchema = z
   .object({
     ctx: workflowActorSchema,
@@ -138,6 +183,8 @@ export const workflowOutboxPayloadSchemas = {
   start_publish: startPublishOutboxPayloadSchema,
   cancel_publish: cancelPublishOutboxPayloadSchema,
   reschedule_publish: reschedulePublishOutboxPayloadSchema,
+  pause_publish: pausePublishOutboxPayloadSchema,
+  resume_publish: resumePublishOutboxPayloadSchema,
   start_rule_run: startRuleRunOutboxPayloadSchema,
 } as const;
 
@@ -145,10 +192,14 @@ export type WorkflowOutboxKind = keyof typeof workflowOutboxPayloadSchemas;
 export type StartPublishOutboxPayload = z.infer<typeof startPublishOutboxPayloadSchema>;
 export type CancelPublishOutboxPayload = z.infer<typeof cancelPublishOutboxPayloadSchema>;
 export type ReschedulePublishOutboxPayload = z.infer<typeof reschedulePublishOutboxPayloadSchema>;
+export type PausePublishOutboxPayload = z.infer<typeof pausePublishOutboxPayloadSchema>;
+export type ResumePublishOutboxPayload = z.infer<typeof resumePublishOutboxPayloadSchema>;
 export type StartRuleRunOutboxPayload = z.infer<typeof startRuleRunOutboxPayloadSchema>;
 
 export type WorkflowOutboxInput =
   | { readonly kind: 'start_publish'; readonly payload: StartPublishOutboxPayload }
   | { readonly kind: 'cancel_publish'; readonly payload: CancelPublishOutboxPayload }
   | { readonly kind: 'reschedule_publish'; readonly payload: ReschedulePublishOutboxPayload }
+  | { readonly kind: 'pause_publish'; readonly payload: PausePublishOutboxPayload }
+  | { readonly kind: 'resume_publish'; readonly payload: ResumePublishOutboxPayload }
   | { readonly kind: 'start_rule_run'; readonly payload: StartRuleRunOutboxPayload };

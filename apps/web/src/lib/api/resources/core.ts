@@ -72,6 +72,7 @@ export const brandsApi = {
       domains: [],
       defaultTimeZone: demoSession.workspace.timeZone,
       defaultShortLinkOn: false,
+    rememberTargetsEnabled: false,
       archived: false,
       connectionIds: [],
       createdAt: new Date().toISOString(),

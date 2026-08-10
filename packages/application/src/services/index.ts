@@ -23,9 +23,11 @@ import { createIdentityService } from './identity';
 import { createMediaService } from './media';
 import { createMembershipService } from './members';
 import { createOAuthAppService } from './oauth-apps';
+import { createPostingSetService } from './posting-sets';
 import { createPublishingService } from './publishing';
 import { createQueueRuleService } from './queue-rules';
 import { createReceiptService } from './receipts';
+import { createRememberedTargetService } from './remembered-targets';
 import { createRssService } from './rss';
 import { createSchedulingService } from './scheduling';
 import { createShortLinkService } from './short-links';
@@ -65,6 +67,8 @@ export function createServices(deps: ServiceDeps): Services {
     approvals: createApprovalService(deps),
     scheduling,
     queueRules: createQueueRuleService(deps),
+    postingSets: createPostingSetService(deps),
+    rememberedTargets: createRememberedTargetService(deps),
     publishing: createPublishingService(deps, validation),
     agentConfirmations: createAgentConfirmationService(deps),
     receipts: createReceiptService(deps),

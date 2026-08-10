@@ -57,6 +57,7 @@ import { CalendarToolbar } from './calendar-toolbar';
 import { CalendarViewTransition } from './calendar-view-transition';
 import { AttentionBar } from './attention-bar';
 import { EntryDetailSheet } from './entry-detail-sheet';
+import { HoldDialog, type HoldIntent } from './hold-dialog';
 import { RescheduleDialog } from './reschedule-dialog';
 import { computeRange, stepAnchor } from './date-range';
 import { useCalendarFormat } from './format';
@@ -72,7 +73,12 @@ import {
   toSearchParams,
 } from './filters';
 import { buildProposal, collectWarnings, keyboardStep, KEYBOARD_STEP_MINUTES } from './reschedule';
-import { useCalendarEntries, useRescheduleEntry } from './use-calendar';
+import {
+  useCalendarEntries,
+  usePauseScheduled,
+  useRescheduleEntry,
+  useResumeScheduled,
+} from './use-calendar';
 import { useDragReschedule } from './use-drag-reschedule';
 import { EMPTY_FILTERS } from './types';
 import type {
@@ -162,6 +168,13 @@ export function CalendarScreen({
   const [dialogOpen, setDialogOpen] = useState(false);
 
   const reschedule = useRescheduleEntry();
+  // A hold is a separate decision from a move, so it has its own confirmation
+  // and its own pending state. Sharing the reschedule dialog would have meant
+  // one set of copy trying to describe two different promises.
+  const [holdEntry, setHoldEntry] = useState<CalendarEntry | null>(null);
+  const [holdIntent, setHoldIntent] = useState<HoldIntent>('pause');
+  const pause = usePauseScheduled();
+  const resume = useResumeScheduled();
 
   const navigate = useCallback(
     (next: { view?: CalendarView; anchor?: Date; filters?: typeof filters }) => {
@@ -479,6 +492,31 @@ export function CalendarScreen({
         hrefForEntry={hrefForEntry}
         hrefForReceipt={hrefForReceipt}
         onReschedule={openRescheduleFor}
+        onPause={(entry) => {
+          setHoldIntent('pause');
+          setHoldEntry(entry);
+        }}
+        onResume={(entry) => {
+          setHoldIntent('resume');
+          setHoldEntry(entry);
+        }}
+      />
+
+      <HoldDialog
+        entry={holdEntry}
+        intent={holdIntent}
+        open={holdEntry !== null}
+        onOpenChange={(open) => {
+          if (!open) setHoldEntry(null);
+        }}
+        submitting={pause.isPending || resume.isPending}
+        timeZone={format.timeZone}
+        onPause={(input) => {
+          pause.mutate(input, { onSettled: () => setHoldEntry(null) });
+        }}
+        onResume={(input) => {
+          resume.mutate(input, { onSettled: () => setHoldEntry(null) });
+        }}
       />
     </div>
   );

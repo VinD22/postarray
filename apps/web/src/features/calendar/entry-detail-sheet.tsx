@@ -14,6 +14,7 @@ import { ExternalLink } from 'lucide-react';
 import {
   Button,
   DefinitionList,
+  Notice,
   Sheet,
   SheetBody,
   SheetContent,
@@ -27,6 +28,7 @@ import { useTranslations } from '@relay/i18n/react';
 import { Link } from '@/components/link';
 import { AccountIdentity, useProviderName } from '@/features/connections/provider';
 import { useCalendarFormat } from './format';
+import { holdControlFor } from './hold';
 import { canReschedule, hasExternalPost } from './reschedule';
 import type { CalendarEntry } from './types';
 
@@ -37,6 +39,11 @@ export interface EntryDetailSheetProps {
   hrefForEntry: (entry: CalendarEntry) => string;
   hrefForReceipt: (entry: CalendarEntry) => string | null;
   onReschedule: (entry: CalendarEntry) => void;
+  /** Opens the hold confirmation. Absent while the screen has not wired it. */
+  onPause?: (entry: CalendarEntry) => void;
+  onResume?: (entry: CalendarEntry) => void;
+  /** Where a person goes to clear a hold the billing path placed. */
+  billingHref?: string;
 }
 
 export function EntryDetailSheet({
@@ -46,6 +53,9 @@ export function EntryDetailSheet({
   hrefForEntry,
   hrefForReceipt,
   onReschedule,
+  onPause,
+  onResume,
+  billingHref,
 }: EntryDetailSheetProps): ReactNode {
   const t = useTranslations();
   const format = useCalendarFormat();
@@ -55,6 +65,8 @@ export function EntryDetailSheet({
 
   const receiptHref = hrefForReceipt(entry);
   const title = entry.title.trim() || t('web.calendar.entry.untitled');
+  const hold = entry.hold ?? null;
+  const holdControl = holdControlFor({ state: entry.state, hold });
 
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
@@ -66,7 +78,38 @@ export function EntryDetailSheet({
 
         <SheetBody>
           <div className="flex flex-col gap-4">
-            <StatusPill state={entry.state} label={t(`state.${entry.state}.label`)} />
+            <div className="flex flex-wrap items-center gap-2">
+              <StatusPill state={entry.state} label={t(`state.${entry.state}.label`)} />
+              {/* A hold is shown as its own pill, never as a colour on the
+                  state pill: "paused" and "scheduled" are both true at once,
+                  and status is never carried by colour alone here. */}
+              {hold ? (
+                <StatusPill
+                  state="action_required"
+                  label={
+                    hold.reason === 'billing'
+                      ? t('calendar.hold.badgeBilling')
+                      : t('calendar.hold.badge')
+                  }
+                />
+              ) : null}
+            </div>
+
+            {hold ? (
+              <Notice
+                tone={hold.reason === 'billing' ? 'warning' : 'info'}
+                title={
+                  hold.reason === 'billing'
+                    ? t('calendar.hold.badgeBilling')
+                    : t('calendar.hold.badge')
+                }
+                description={
+                  hold.reason === 'billing'
+                    ? t('calendar.hold.byBilling', { date: format.dateTime(hold.since) })
+                    : t('calendar.hold.byPerson', { date: format.dateTime(hold.since) })
+                }
+              />
+            ) : null}
 
             <DefinitionList
               layout="columns"
@@ -131,6 +174,36 @@ export function EntryDetailSheet({
           {receiptHref ? (
             <Button variant="secondary" asChild>
               <Link href={receiptHref}>{t('action.viewReceipt')}</Link>
+            </Button>
+          ) : null}
+          {/* The hold control. Its copy says plainly what stops and what does
+              not: pausing cannot retract something already published, which is
+              why the control disappears entirely once it has. */}
+          {holdControl === 'pause' && onPause ? (
+            <Button
+              variant="secondary"
+              onClick={() => {
+                onOpenChange(false);
+                onPause(entry);
+              }}
+            >
+              {t('calendar.hold.action')}
+            </Button>
+          ) : null}
+          {holdControl === 'resume' && onResume ? (
+            <Button
+              variant="secondary"
+              onClick={() => {
+                onOpenChange(false);
+                onResume(entry);
+              }}
+            >
+              {t('calendar.hold.resumeAction')}
+            </Button>
+          ) : null}
+          {holdControl === 'billing' && billingHref ? (
+            <Button variant="secondary" asChild>
+              <Link href={billingHref}>{t('calendar.hold.blocked.billingAction')}</Link>
             </Button>
           ) : null}
           {canReschedule(entry.state) ? (

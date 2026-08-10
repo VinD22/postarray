@@ -23,12 +23,16 @@ import type {
   OperationRef,
   OpportunityRecord,
   Paginated,
+  PostingSetInput,
+  PostingSetPatch,
+  PostingSetView,
   ProviderId,
   PublishState,
   QueueRuleInput,
   QueueRulePatch,
   QueueRuleView,
   QueueSlotReservationView,
+  RememberedTargetsView,
   Role,
   RuleActionKind,
   RuleTriggerKind,
@@ -422,6 +426,23 @@ export interface SchedulerPort {
     readonly workspaceId: string;
     readonly signal: string;
     readonly payload?: Record<string, unknown>;
+  }): Promise<void>;
+  /**
+   * Hold and release, optional in the same way `scheduleBulkImport` is.
+   *
+   * The publish workflow has always understood `pause` and `resume` signals, so
+   * a scheduler that does not implement these named methods still delivers the
+   * intent correctly through `signalPublish`. Naming them buys one thing that
+   * matters: a resume carrying a new instant is a reschedule followed by a
+   * resume, and putting that ordering in one place stops each caller from
+   * inventing its own.
+   */
+  pausePublish?(input: { readonly jobId: string; readonly workspaceId: string }): Promise<void>;
+  resumePublish?(input: {
+    readonly jobId: string;
+    readonly workspaceId: string;
+    readonly executeAt?: Date;
+    readonly ianaTimeZone?: string;
   }): Promise<void>;
   scheduleAnalyticsSync(input: {
     readonly ctx: WorkflowActorContext;
@@ -1188,6 +1209,33 @@ export interface SchedulingService {
     ctx: ActorContext,
     input: { readonly jobId: string; readonly reason: string },
   ): Promise<PublishJobView>;
+  /**
+   * Hold a scheduled job where it is.
+   *
+   * Refused for anything already published or mid-dispatch, and refused for a
+   * job the billing path is already holding, because those two holds are
+   * cleared by different things. Implemented in `services/scheduling-pause.ts`.
+   */
+  pause(
+    ctx: ActorContext,
+    input: { readonly jobId: string; readonly note?: string },
+  ): Promise<PublishJobView>;
+  /**
+   * Let a held job continue.
+   *
+   * `scheduleSpec` is required once the original instant has passed: resuming
+   * onto a time that is already behind us would publish immediately, which is
+   * the outcome the pause existed to prevent. When it is supplied it goes
+   * through the same daylight saving confirmation as a reschedule.
+   */
+  resume(
+    ctx: ActorContext,
+    input: {
+      readonly jobId: string;
+      readonly scheduleSpec?: ScheduleSpec;
+      readonly confirmDst?: boolean;
+    },
+  ): Promise<PublishJobView>;
   getCalendar(
     ctx: ActorContext,
     input: PageQuery & {
@@ -1252,6 +1300,48 @@ export interface QueueRuleService {
     ctx: ActorContext,
     query: PageQuery & { readonly brandId: string },
   ): Promise<Paginated<QueueSlotReservationView>>;
+}
+
+/**
+ * Posting Set management.
+ *
+ * A Set is read once, at apply time, by `ContentService.applySet`. Nothing on
+ * this interface reaches a content item, a variant or a publish job: editing a
+ * Set changes what the next apply produces and never rewrites work that was
+ * already created, reviewed or approved from it.
+ */
+export interface PostingSetService {
+  list(
+    ctx: ActorContext,
+    query?: PageQuery & { readonly brandId?: string; readonly includeArchived?: boolean },
+  ): Promise<Paginated<PostingSetView>>;
+  get(ctx: ActorContext, setId: string): Promise<PostingSetView>;
+  create(ctx: ActorContext, input: PostingSetInput): Promise<PostingSetView>;
+  update(ctx: ActorContext, setId: string, patch: PostingSetPatch): Promise<PostingSetView>;
+  /** Retires the Set from the picker and frees its name. Content is untouched. */
+  archive(ctx: ActorContext, setId: string): Promise<PostingSetView>;
+}
+
+/**
+ * The composer's "remember these accounts for next time".
+ *
+ * Per person, per project, opt in, off by default, channel identifiers only.
+ * `read` filters what it returns against live channel health and the acting
+ * person's own authorization, so a revoked or paused account is never silently
+ * reselected.
+ */
+export interface RememberedTargetService {
+  read(ctx: ActorContext, input: { readonly brandId: string }): Promise<RememberedTargetsView>;
+  remember(
+    ctx: ActorContext,
+    input: { readonly brandId: string; readonly connectionIds: readonly string[] },
+  ): Promise<RememberedTargetsView>;
+  forget(ctx: ActorContext, input: { readonly brandId: string }): Promise<void>;
+  /** The project opt in. Turning it off deletes what was stored, project wide. */
+  setEnabled(
+    ctx: ActorContext,
+    input: { readonly brandId: string; readonly enabled: boolean },
+  ): Promise<{ readonly brandId: string; readonly enabled: boolean }>;
 }
 
 export interface PublishingService {
@@ -1897,6 +1987,8 @@ export interface Services {
   readonly approvals: ApprovalService;
   readonly scheduling: SchedulingService;
   readonly queueRules: QueueRuleService;
+  readonly postingSets: PostingSetService;
+  readonly rememberedTargets: RememberedTargetService;
   readonly publishing: PublishingService;
   readonly agentConfirmations: AgentConfirmationService;
   readonly receipts: ReceiptService;

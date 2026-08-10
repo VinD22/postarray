@@ -29,6 +29,7 @@ import {
 } from './resources/core';
 import { analyticsApi, growthApi, shortLinksApi } from './resources/insights';
 import { mediaApi } from './resources/media';
+import { postingSetsApi, targetMemoryApi } from './resources/posting-sets';
 import { dataDeletionApi, dataExportsApi } from './resources/data';
 import {
   apiKeysApi,
@@ -47,6 +48,8 @@ export const api = {
   validation: validationApi,
   approvals: approvalsApi,
   scheduling: schedulingApi,
+  postingSets: postingSetsApi,
+  targetMemory: targetMemoryApi,
   publishing: publishingApi,
   receipts: receiptsApi,
   media: mediaApi,

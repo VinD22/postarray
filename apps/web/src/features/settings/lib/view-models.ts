@@ -96,6 +96,8 @@ export interface BrandView {
   readonly disclosureDefaults: readonly { readonly provider: string; readonly text: string }[];
   readonly glossary: readonly GlossaryTermView[];
   readonly connectionCount: number;
+  /** Whether this project remembers each member's last channel selection. */
+  readonly rememberTargetsEnabled: boolean;
   readonly updatedAt: string;
   readonly updatedByName: string | null;
 }

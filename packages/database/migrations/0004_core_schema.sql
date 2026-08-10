@@ -408,6 +408,10 @@ CREATE TABLE "app"."brands" (
     "disclosure_defaults" JSONB NOT NULL DEFAULT '{}',
     "default_time_zone" TEXT,
     "default_short_link_on" BOOLEAN NOT NULL DEFAULT false,
+    -- Opt in, per project, to remembering which channels each member selected
+    -- last. Off is the only correct default: nothing is stored until somebody
+    -- with project authority turns this on.
+    "remember_targets_enabled" BOOLEAN NOT NULL DEFAULT false,
     "archived_at" TIMESTAMPTZ(6),
     "created_at" TIMESTAMPTZ(6) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMPTZ(6) NOT NULL,
@@ -1098,6 +1102,12 @@ CREATE TABLE "app"."publish_jobs" (
     "dispatched_at" TIMESTAMPTZ(6),
     "completed_at" TIMESTAMPTZ(6),
     "canceled_at" TIMESTAMPTZ(6),
+    -- A hold, not a state. `paused_reason` keeps a person's pause and a billing
+    -- pause apart forever: resuming the second one is a payment matter and no
+    -- amount of clicking Resume may clear it. See 0070 for the constraints.
+    "paused_at" TIMESTAMPTZ(6),
+    "paused_reason" TEXT,
+    "paused_by_user_id" TEXT,
     "created_at" TIMESTAMPTZ(6) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMPTZ(6) NOT NULL,
 
@@ -1787,6 +1797,26 @@ CREATE TABLE "app"."bulk_import_rows" (
     "updated_at" TIMESTAMPTZ(6) NOT NULL,
 
     CONSTRAINT "bulk_import_rows_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+-- One member's last channel selection in one project.
+--
+-- Channel identifiers only. No caption, no schedule, no privacy value, no
+-- approval state, no media. A selection is not content and this table must
+-- never become a shadow draft store; 0070 adds the CHECK that keeps the array
+-- to identifiers and the self-row policies that keep one member out of
+-- another's memory.
+CREATE TABLE "app"."remembered_targets" (
+    "id" TEXT NOT NULL DEFAULT app.new_id('remtgt'),
+    "workspace_id" TEXT NOT NULL,
+    "brand_id" TEXT NOT NULL,
+    "user_id" TEXT NOT NULL,
+    "connection_ids" TEXT[] NOT NULL DEFAULT ARRAY[]::TEXT[],
+    "created_at" TIMESTAMPTZ(6) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updated_at" TIMESTAMPTZ(6) NOT NULL,
+
+    CONSTRAINT "remembered_targets_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateIndex
@@ -2853,3 +2883,12 @@ ALTER TABLE "app"."bulk_import_rows" ADD CONSTRAINT "bulk_import_rows_workspace_
 
 -- AddForeignKey
 ALTER TABLE "app"."bulk_import_rows" ADD CONSTRAINT "bulk_import_rows_bulk_import_job_id_fkey" FOREIGN KEY ("bulk_import_job_id") REFERENCES "app"."bulk_import_jobs"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "app"."remembered_targets" ADD CONSTRAINT "remembered_targets_workspace_id_fkey" FOREIGN KEY ("workspace_id") REFERENCES "app"."workspaces"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "app"."remembered_targets" ADD CONSTRAINT "remembered_targets_brand_id_fkey" FOREIGN KEY ("brand_id") REFERENCES "app"."brands"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "app"."remembered_targets" ADD CONSTRAINT "remembered_targets_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "app"."users"("id") ON DELETE CASCADE ON UPDATE CASCADE;

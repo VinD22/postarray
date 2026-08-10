@@ -8,6 +8,8 @@
   "exports": {
     ".": "./src/index.ts",
     "./locales": "./src/locales.ts",
+    "./reviews": "./src/reviews.ts",
+    "./review-gate": "./src/review-gate.ts",
     "./messages": "./src/messages/index.ts",
     "./format": "./src/format.ts",
     "./translate": "./src/translate.ts",

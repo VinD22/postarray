@@ -85,6 +85,7 @@ export const ID_PREFIXES = {
   operation: 'op',
   set: 'set',
   signature: 'sig',
+  rememberedTargets: 'remtgt',
 } as const;
 
 export type IdEntity = keyof typeof ID_PREFIXES;

@@ -17,6 +17,23 @@ export { PROVIDER_LABEL, ProviderIdentity } from './components/provider-identity
 export { CheckRow, RadioRow, SwitchRow } from './components/form-rows';
 
 export { composerReducer, newThreadItem, sequenceFor } from './state/composer-reducer';
+export {
+  noticeCount,
+  restoreSelection,
+  type ComposerChannel,
+  type RestoredSelection,
+} from './state/remembered-targets';
+export {
+  useForgetTargets,
+  useRememberTargets,
+  useRememberedTargets,
+  type RememberTargetsInput,
+} from './data/use-remembered-targets';
+export {
+  useSeedRememberedTargets,
+  type SeedRememberedTargetsInput,
+  type SeededTargets,
+} from './data/use-seed-remembered-targets';
 export type { ComposerAction } from './state/composer-reducer';
 export { planGlobalEdit, commitGlobalEdit } from './state/global-edit';
 export type { GlobalEditPlan } from './state/global-edit';

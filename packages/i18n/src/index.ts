@@ -16,11 +16,14 @@ export {
   ALL_LOCALE_CODES,
   DEFAULT_LOCALE,
   PLANNED_LOCALES,
+  REVIEWED_LOCALES,
+  REVIEWED_LOCALE_CODE_LIST,
   canonicalizeLocaleTag,
   getCardinalPluralCategories,
   getDirection,
   getLocale,
   isActiveLocale,
+  isReviewedLocale,
   isRtl,
   parseAcceptLanguage,
   requireLocale,
@@ -31,11 +34,20 @@ export type {
   LocaleCode,
   LocaleDescriptor,
   LocaleFormatting,
+  LocaleReviewStatus,
   LocaleStatus,
   PluralCategory,
   TextDirection,
   WeekDayIndex,
 } from './locales';
+
+export {
+  LOCALE_REVIEWS,
+  REVIEWED_LOCALE_CODES,
+  REVIEW_PROMISE_LOCALE_CODES,
+  getLocaleReview,
+} from './reviews';
+export type { LocaleReview } from './reviews';
 
 export { CATALOGS, en, loadCatalog, messageKeys } from './messages/index';
 export type {

@@ -171,24 +171,12 @@
 }
 
 /*
- * The hero's decorative corner stickers (WP-1). A slow, purely CSS float —
- * neutralized for free by the global `prefers-reduced-motion` override in
- * `theme.css` (`*, *::before, *::after { animation-duration: 1ms !important
- * }`), so this file never needs its own reduced-motion branch.
+ * `relay-sticker-float`, the hero's decorative corner stickers, lived here.
+ * The editorial marketing pass deleted the stickers themselves rather than
+ * restyling them: they carried no information, and whitespace is the
+ * decoration now. Nothing referenced the class, so the rule and its keyframes
+ * went with them.
  */
-@keyframes relay-sticker-float {
-  0%,
-  100% {
-    translate: 0 0;
-  }
-  50% {
-    translate: 0 -6px;
-  }
-}
-
-.relay-sticker-float {
-  animation: relay-sticker-float 5s var(--ease-standard) infinite;
-}
 
 @layer utilities {
   /*
@@ -433,8 +421,8 @@
  * Shared by the tool radar's ring and the marketing 404's dashed zero — both
  * `aria-hidden`, both fine with a direction-agnostic `rotate`, so neither
  * needs an RTL-specific rule. Neutralized for free by the global 1ms
- * `prefers-reduced-motion` override in `theme.css`, same as
- * `relay-sticker-float` above.
+ * `prefers-reduced-motion` override in `theme.css`, so this needs no
+ * reduced-motion branch of its own.
  */
 @keyframes relay-slow-spin {
   to {

@@ -112,6 +112,8 @@ export interface BrandView {
   readonly domains: readonly string[];
   readonly defaultTimeZone: string | null;
   readonly defaultShortLinkOn: boolean;
+  /** Whether this project remembers each member's last channel selection. */
+  readonly rememberTargetsEnabled: boolean;
   readonly archived: boolean;
   readonly connectionIds: readonly string[];
   readonly createdAt: string;

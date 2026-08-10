@@ -46,6 +46,10 @@ const FIXTURE = {
   importJobB: newIdFor('bulkImportJob'),
   importRowA: newIdFor('bulkImportRow'),
   importRowB: newIdFor('bulkImportRow'),
+  publishJobA: newIdFor('publishJob'),
+  memoryEditorA: newIdFor('rememberedTargets'),
+  memoryManagerA: newIdFor('rememberedTargets'),
+  memoryOutsiderB: newIdFor('rememberedTargets'),
 } as const;
 
 const ROLES = ['owner', 'admin', 'manager', 'editor', 'approver', 'analyst', 'viewer'] as const;
@@ -715,6 +719,179 @@ describe.skipIf(!hasDatabase)('row level security', () => {
       ).rejects.toThrow();
     });
   });
+
+  /**
+   * Remembered targets.
+   *
+   * Every other tenant table in this suite asks "is this row in my workspace".
+   * This one asks a second question as well: "is this row mine". Workspace
+   * membership is necessary and not sufficient. The editor and the manager are
+   * both active members of workspace A and both have a memory in project A, and
+   * neither may see the other's, because which accounts a colleague last posted
+   * to is nobody else's business, including an administrator's.
+   */
+  describe('remembered targets are self-row', () => {
+    const editorClaims = (): string => memberClaims(USER_IDS.editor, FIXTURE.workspaceA);
+    const managerClaims = (): string => memberClaims(USER_IDS.manager, FIXTURE.workspaceA);
+    const adminClaims = (): string => memberClaims(USER_IDS.admin, FIXTURE.workspaceA);
+
+    it('lets a person read their own remembered selection', async () => {
+      const rows = await asActor(editorClaims(), async (tx) =>
+        tx.query('SELECT id FROM app.remembered_targets WHERE id = $1', [FIXTURE.memoryEditorA]),
+      );
+      expect(rows.rowCount).toBe(1);
+    });
+
+    it('hides a teammate memory in the same project', async () => {
+      const rows = await asActor(managerClaims(), async (tx) =>
+        tx.query('SELECT id FROM app.remembered_targets WHERE id = $1', [FIXTURE.memoryEditorA]),
+      );
+      expect(rows.rowCount).toBe(0);
+    });
+
+    it('hides every teammate memory from an administrator too', async () => {
+      const rows = await asActor(adminClaims(), async (tx) =>
+        tx.query('SELECT id FROM app.remembered_targets WHERE workspace_id = $1', [
+          FIXTURE.workspaceA,
+        ]),
+      );
+      expect(rows.rowCount).toBe(0);
+    });
+
+    it('cannot write a memory on somebody else behalf', async () => {
+      await expectRejected(
+        managerClaims(),
+        `INSERT INTO app.remembered_targets (workspace_id, brand_id, user_id, connection_ids, updated_at)
+         VALUES ($1, $2, $3, ARRAY[$4]::text[], now())`,
+        [FIXTURE.workspaceA, FIXTURE.brandA, USER_IDS.viewer, FIXTURE.connectionA],
+      );
+    });
+
+    it('cannot edit or delete a teammate memory', async () => {
+      await expectRejected(
+        managerClaims(),
+        `UPDATE app.remembered_targets SET connection_ids = ARRAY[]::text[] WHERE id = $1`,
+        [FIXTURE.memoryEditorA],
+      );
+      await expectRejected(managerClaims(), 'DELETE FROM app.remembered_targets WHERE id = $1', [
+        FIXTURE.memoryEditorA,
+      ]);
+    });
+
+    it('cannot reach into another workspace memory', async () => {
+      const rows = await asActor(editorClaims(), async (tx) =>
+        tx.query('SELECT id FROM app.remembered_targets WHERE id = $1', [FIXTURE.memoryOutsiderB]),
+      );
+      expect(rows.rowCount).toBe(0);
+    });
+
+    it('lets a person forget their own selection', async () => {
+      const deleted = await asActor(editorClaims(), async (tx) =>
+        tx.query('DELETE FROM app.remembered_targets WHERE id = $1', [FIXTURE.memoryEditorA]),
+      );
+      expect(deleted.rowCount).toBe(1);
+    });
+
+    it('refuses anything that is not a channel identifier, even to the service', async () => {
+      await expect(
+        asActor(serviceClaims, async (tx) =>
+          tx.query(
+            `UPDATE app.remembered_targets SET connection_ids = ARRAY['Ship it on Friday']::text[] WHERE id = $1`,
+            [FIXTURE.memoryEditorA],
+          ),
+        ),
+      ).rejects.toThrow();
+    });
+
+    it('keeps one memory per person per project', async () => {
+      await expect(
+        asActor(serviceClaims, async (tx) =>
+          tx.query(
+            `INSERT INTO app.remembered_targets (workspace_id, brand_id, user_id, connection_ids, updated_at)
+             VALUES ($1, $2, $3, ARRAY[]::text[], now())`,
+            [FIXTURE.workspaceA, FIXTURE.brandA, USER_IDS.editor],
+          ),
+        ),
+      ).rejects.toThrow();
+    });
+  });
+
+  /**
+   * A hold on a publish job.
+   *
+   * The database refuses a half-written hold and a hold on work that already
+   * reached a platform. Both are refused to the service role as well, because
+   * "the application would never do that" is not an invariant.
+   */
+  describe('publish job holds', () => {
+    it('accepts a complete hold by a person', async () => {
+      const updated = await asActor(serviceClaims, async (tx) =>
+        tx.query(
+          `UPDATE app.publish_jobs
+             SET paused_at = now(), paused_reason = 'user', paused_by_user_id = $2
+           WHERE id = $1`,
+          [FIXTURE.publishJobA, USER_IDS.editor],
+        ),
+      );
+      expect(updated.rowCount).toBe(1);
+    });
+
+    it('accepts a billing hold with nobody attached', async () => {
+      const updated = await asActor(serviceClaims, async (tx) =>
+        tx.query(
+          `UPDATE app.publish_jobs SET paused_at = now(), paused_reason = 'billing' WHERE id = $1`,
+          [FIXTURE.publishJobA],
+        ),
+      );
+      expect(updated.rowCount).toBe(1);
+    });
+
+    it('refuses a paused instant without a reason', async () => {
+      await expect(
+        asActor(serviceClaims, async (tx) =>
+          tx.query('UPDATE app.publish_jobs SET paused_at = now() WHERE id = $1', [
+            FIXTURE.publishJobA,
+          ]),
+        ),
+      ).rejects.toThrow();
+    });
+
+    it('refuses a reason outside the closed vocabulary', async () => {
+      await expect(
+        asActor(serviceClaims, async (tx) =>
+          tx.query(
+            `UPDATE app.publish_jobs SET paused_at = now(), paused_reason = 'because' WHERE id = $1`,
+            [FIXTURE.publishJobA],
+          ),
+        ),
+      ).rejects.toThrow();
+    });
+
+    it("refuses a person's hold with no person on it", async () => {
+      await expect(
+        asActor(serviceClaims, async (tx) =>
+          tx.query(
+            `UPDATE app.publish_jobs SET paused_at = now(), paused_reason = 'user' WHERE id = $1`,
+            [FIXTURE.publishJobA],
+          ),
+        ),
+      ).rejects.toThrow();
+    });
+
+    it('refuses a hold on work that already reached a platform', async () => {
+      await expect(
+        asActor(serviceClaims, async (tx) =>
+          tx.query(
+            `UPDATE app.publish_jobs
+               SET state = 'published', paused_at = now(), paused_reason = 'user',
+                   paused_by_user_id = $2
+             WHERE id = $1`,
+            [FIXTURE.publishJobA, USER_IDS.editor],
+          ),
+        ),
+      ).rejects.toThrow();
+    });
+  });
 });
 
 async function seedFixture(): Promise<void> {
@@ -894,6 +1071,35 @@ async function seedFixture(): Promise<void> {
                '{"reasons":[{"key":"queue.reason.matchedRule","values":{}}]}'::jsonb, $7, now())
        ON CONFLICT (id) DO NOTHING`,
       [slotId, workspaceId, brandId, ruleId, instant, local, USER_IDS.owner],
+    );
+  }
+
+  // A scheduled job in workspace A, so the hold constraints have something real
+  // to be asserted against.
+  await client.query(
+    `INSERT INTO app.publish_jobs
+       (id, workspace_id, content_item_id, content_version_id, connection_id, scheduled_for,
+        scheduled_time_zone, state, idempotency_key, updated_at)
+     VALUES ($1, $2, $3, $4, $5, '2030-06-10T08:00:00.000Z', 'Europe/London', 'scheduled',
+             'rls-fixture-job', now())
+     ON CONFLICT (id) DO NOTHING`,
+    [FIXTURE.publishJobA, FIXTURE.workspaceA, FIXTURE.itemA, FIXTURE.versionA, FIXTURE.connectionA],
+  );
+
+  // One memory per person per project. The editor's and the manager's rows are
+  // both inside workspace A, which is what makes the self-row assertions below
+  // meaningful: same tenant, same project, different people.
+  for (const [memoryId, workspaceId, brandId, userId] of [
+    [FIXTURE.memoryEditorA, FIXTURE.workspaceA, FIXTURE.brandA, USER_IDS.editor],
+    [FIXTURE.memoryManagerA, FIXTURE.workspaceA, FIXTURE.brandA, USER_IDS.manager],
+    [FIXTURE.memoryOutsiderB, FIXTURE.workspaceB, FIXTURE.brandB, OUTSIDER_USER_ID],
+  ] as const) {
+    await client.query(
+      `INSERT INTO app.remembered_targets
+         (id, workspace_id, brand_id, user_id, connection_ids, updated_at)
+       VALUES ($1, $2, $3, $4, ARRAY[$5]::text[], now())
+       ON CONFLICT (id) DO NOTHING`,
+      [memoryId, workspaceId, brandId, userId, FIXTURE.connectionA],
     );
   }
 

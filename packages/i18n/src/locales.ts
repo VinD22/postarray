@@ -1,14 +1,21 @@
 /**
  * The registry of every locale Relay plans to ship.
  *
- * V1 ships English only. Every other entry is `planned`: its metadata is real
- * and already drives layout direction, week start, hour cycle and plural
- * handling, so switching a locale on is a catalog file plus a status change.
+ * `status` says whether a locale is switched on in the product. A `planned`
+ * entry still carries real metadata, which already drives layout direction,
+ * week start, hour cycle and plural handling, so switching a locale on is a
+ * catalog file plus a status change.
+ *
+ * `reviewStatus` is a different question and has a different source: it says
+ * whether a named person has read the catalog. It is derived from
+ * `./reviews.ts` and can never be set by hand here.
  *
  * `defaultDateFormat` is documentation of the conventional short date order for
  * the locale. Actual rendering always goes through `Intl` in `./format.ts`; the
  * pattern exists so designers and reviewers can reason about column widths.
  */
+
+import { REVIEWED_LOCALE_CODES } from './reviews';
 
 export type TextDirection = 'ltr' | 'rtl';
 
@@ -45,7 +52,12 @@ export interface LocaleFormatting {
 
 export interface LocaleDescriptor extends LocaleFormatting {
   readonly status: LocaleStatus;
-  /** `reviewed` requires the complete human-review checklist in the i18n README. */
+  /**
+   * Derived, never hand written. `reviewed` means a named person signed a
+   * dated review in `./reviews.ts` and that entry passed the CI gate in
+   * `./review-gate.ts`. Everything else is `beta`, which the language picker
+   * badges.
+   */
   readonly reviewStatus: LocaleReviewStatus;
 }
 
@@ -436,9 +448,18 @@ const LOCALE_METADATA = [
   },
 ] as const satisfies readonly (LocaleFormatting & { readonly status: LocaleStatus })[];
 
+/**
+ * Review status is data, not a literal. Flipping a locale's badge is a signed
+ * entry in `./reviews.ts` and nothing else, so no edit here can promote a
+ * language on its own.
+ */
+function reviewStatusFor(code: string): LocaleReviewStatus {
+  return REVIEWED_LOCALE_CODES.has(code) ? 'reviewed' : 'beta';
+}
+
 const LOCALE_LIST = LOCALE_METADATA.map((locale) => ({
   ...locale,
-  reviewStatus: 'beta' as const,
+  reviewStatus: reviewStatusFor(locale.bcp47),
 })) satisfies readonly LocaleDescriptor[];
 
 /** Every locale in the plan, active and planned. */
@@ -463,6 +484,26 @@ export const ACTIVE_LOCALES: readonly LocaleDescriptor[] = LOCALE_LIST.filter(
 export const PLANNED_LOCALES: readonly LocaleDescriptor[] = LOCALE_LIST.filter(
   (locale) => locale.status === 'planned',
 );
+
+/**
+ * Locales carrying a signed human translation review.
+ *
+ * Derived from `./reviews.ts`, so this list can only grow by a person putting
+ * their name to a date, and the CI gate refuses names attached to an
+ * incomplete catalog.
+ */
+export const REVIEWED_LOCALES: readonly LocaleDescriptor[] = LOCALE_LIST.filter(
+  (locale) => locale.reviewStatus === 'reviewed',
+);
+
+export const REVIEWED_LOCALE_CODE_LIST: readonly string[] = REVIEWED_LOCALES.map(
+  (locale) => locale.bcp47,
+);
+
+/** Whether a tag shows the reviewed badge rather than the beta badge. */
+export function isReviewedLocale(code: string): boolean {
+  return getLocale(code)?.reviewStatus === 'reviewed';
+}
 
 export const ACTIVE_LOCALE_CODES: readonly string[] = ACTIVE_LOCALES.map((locale) => locale.bcp47);
 

@@ -132,13 +132,17 @@ export {
 export { normalizeAliasForLookup } from './services/identity';
 export {
   cancelPublishOutboxPayloadSchema,
+  pausePublishOutboxPayloadSchema,
   reschedulePublishOutboxPayloadSchema,
+  resumePublishOutboxPayloadSchema,
   startPublishOutboxPayloadSchema,
   startRuleRunOutboxPayloadSchema,
   startBulkImportPayloadSchema,
   workflowOutboxPayloadSchemas,
   type CancelPublishOutboxPayload,
+  type PausePublishOutboxPayload,
   type ReschedulePublishOutboxPayload,
+  type ResumePublishOutboxPayload,
   type StartPublishOutboxPayload,
   type StartRuleRunOutboxPayload,
   type StartBulkImportPayload,

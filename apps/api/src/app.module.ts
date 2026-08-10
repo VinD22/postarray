@@ -38,6 +38,7 @@ import { HealthModule } from './modules/health/health.module';
 import { MediaModule } from './modules/media/media.module';
 import { PublishingModule } from './modules/publishing/publishing.module';
 import { ImportModule } from './modules/import/import.module';
+import { PostingSetsModule } from './modules/posting-sets/posting-sets.module';
 import { QueueRulesModule } from './modules/queue-rules/queue-rules.module';
 import { RssModule } from './modules/rss/rss.module';
 import { SchedulingModule } from './modules/scheduling/scheduling.module';
@@ -95,6 +96,7 @@ export class AppModule implements NestModule {
         SchedulingModule,
         ImportModule,
         QueueRulesModule,
+        PostingSetsModule,
         PublishingModule,
         MediaModule,
         AnalyticsModule,
