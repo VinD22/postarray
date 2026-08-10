@@ -82,6 +82,7 @@ const PROVIDER_KIND_BY_ID = {
   pinterest: 'pinterest',
   discord: 'discord',
   slack: 'slack',
+  google_business_profile: 'google_business_profile',
   fake: 'fake',
 } as const satisfies Record<ProviderId, ProviderKind>;
 

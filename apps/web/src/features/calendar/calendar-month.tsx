@@ -7,16 +7,21 @@
  * beyond that is a link into the day view rather than a scrollable stack: a
  * cell that scrolls internally hides work, and hidden work is the failure this
  * whole surface exists to prevent.
+ *
+ * A cell is also a drop target. A month drop changes the date and nothing else:
+ * the post keeps the wall clock time it was scheduled for, because that is the
+ * only reading of "move this to Thursday" that does not quietly reschedule the
+ * hour as well.
  */
 
-import { useMemo, type ReactNode } from 'react';
+import { useMemo, type PointerEvent as ReactPointerEvent, type ReactNode } from 'react';
 import { cn, focusRingInset } from '@relay/design-system';
 import { useTranslations } from '@relay/i18n/react';
 import { EntryChip } from './entry-chip';
 import { useCalendarFormat } from './format';
 import { entryKey, needsAttention, sortEntries } from './filters';
 import { isSameDay, toWallClock } from './date-range';
-import type { CalendarEntry, CalendarRange } from './types';
+import type { CalendarEntry, CalendarRange, RescheduleProposal } from './types';
 
 const VISIBLE_PER_CELL = 3;
 
@@ -26,6 +31,13 @@ export interface CalendarMonthProps {
   timeZone: string;
   hrefForEntry: (entry: CalendarEntry) => string;
   hrefForDay: (day: Date) => string;
+  /** The entry picked up for a keyboard move, if any. See `CalendarGrid`. */
+  grabbedKey?: string | null;
+  onPickUp?: (entry: CalendarEntry) => void;
+  /** The proposed landing day, drawn as a dashed outline on that one cell. */
+  proposal?: RescheduleProposal | null;
+  draggingKey?: string | null;
+  onDragStart?: (entry: CalendarEntry, event: ReactPointerEvent<Element>) => void;
   label: string;
 }
 
@@ -35,10 +47,16 @@ export function CalendarMonth({
   timeZone,
   hrefForEntry,
   hrefForDay,
+  grabbedKey = null,
+  onPickUp,
+  proposal = null,
+  draggingKey = null,
+  onDragStart,
   label,
 }: CalendarMonthProps): ReactNode {
   const t = useTranslations();
   const format = useCalendarFormat();
+  const targetInstant = proposal ? new Date(proposal.toInstant) : null;
 
   const byDay = useMemo(() => {
     const map = new Map<string, CalendarEntry[]>();
@@ -73,11 +91,19 @@ export function CalendarMonth({
             const overflow = dayEntries.length - visible.length;
             const attention = dayEntries.some(needsAttention);
             const today = isSameDay(day, new Date(), timeZone);
+            const isTarget = targetInstant !== null && isSameDay(day, targetInstant, timeZone);
 
             return (
               <div
                 key={day.toISOString()}
-                className="bg-surface-canvas flex min-h-28 flex-col gap-1 p-1.5"
+                data-drop-instant={day.toISOString()}
+                data-drop-granularity="day"
+                className={cn(
+                  'bg-surface-canvas flex min-h-28 flex-col gap-1 p-1.5',
+                  // Snaps rather than animates: the outline is the only thing
+                  // that changes as the pointer or the arrow keys move.
+                  isTarget && 'outline-accent outline-2 outline-offset-[-2px] outline-dashed',
+                )}
               >
                 <div className="flex items-baseline justify-between gap-1">
                   <a
@@ -109,6 +135,10 @@ export function CalendarMonth({
                     entry={entry}
                     href={hrefForEntry(entry)}
                     density="compact"
+                    grabbed={grabbedKey === entryKey(entry)}
+                    dragging={draggingKey === entryKey(entry)}
+                    {...(onPickUp ? { onPickUp } : {})}
+                    {...(onDragStart ? { onDragStart } : {})}
                   />
                 ))}
 

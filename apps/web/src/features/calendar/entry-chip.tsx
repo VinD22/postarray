@@ -9,14 +9,18 @@
  * and is it in trouble": the platform mark and account, the publish state as
  * an icon plus a word, the content language, and the media type.
  *
- * The whole chip is a link. Rescheduling from the keyboard is a separate
- * button inside it, so tabbing never picks a post up by accident and the
- * primary action of a chip stays "open the post".
+ * The whole chip is a link. Rescheduling is a separate button inside it, so
+ * tabbing never picks a post up by accident and the primary action of a chip
+ * stays "open the post".
+ *
+ * That button is also the drag handle: clicking it picks the post up for the
+ * arrow keys, pressing and moving on it drags. One control, two input methods,
+ * so there is nothing a mouse can reach here that a keyboard cannot.
  */
 
-import type { CSSProperties, ReactNode } from 'react';
+import type { CSSProperties, PointerEvent as ReactPointerEvent, ReactNode } from 'react';
 import { FileText, Film, Image as ImageIcon, Images, Type as TypeIcon, Move } from 'lucide-react';
-import { Badge, StatusPill, cn, focusRingInset } from '@relay/design-system';
+import { Badge, StatusPill, cn, focusRingInset, touchTarget } from '@relay/design-system';
 import { useTranslations } from '@relay/i18n/react';
 import { useMotionOk } from '@/lib/motion/use-motion-ok';
 import type { ProviderId } from '@/lib/api/types';
@@ -60,6 +64,7 @@ const providerBarClass: Record<ProviderId, string> = {
   pinterest: 'bg-brand-pinterest',
   discord: 'bg-brand-discord',
   slack: 'bg-brand-slack',
+  google_business_profile: 'bg-brand-google-business-profile',
 };
 
 export interface EntryChipProps {
@@ -69,7 +74,11 @@ export interface EntryChipProps {
   density?: 'grid' | 'compact';
   /** True while this entry is picked up for a keyboard move. */
   grabbed?: boolean;
+  /** True while the pointer is dragging this entry over the grid. */
+  dragging?: boolean;
   onPickUp?: (entry: CalendarEntry) => void;
+  /** Pointer drag, from the same handle the keyboard move uses. */
+  onDragStart?: (entry: CalendarEntry, event: ReactPointerEvent<Element>) => void;
   className?: string;
   style?: CSSProperties;
 }
@@ -79,7 +88,9 @@ export function EntryChip({
   href,
   density = 'grid',
   grabbed = false,
+  dragging = false,
   onPickUp,
+  onDragStart,
   className,
   style,
 }: EntryChipProps): ReactNode {
@@ -103,21 +114,28 @@ export function EntryChip({
     <article
       data-entry-key={entryKey(entry)}
       data-grabbed={grabbed || undefined}
+      data-dragging={dragging || undefined}
       style={style}
       className={cn(
-        'group/chip relative flex min-w-0 flex-col rounded-md border',
+        'group/chip relative flex min-w-0 rounded-md border',
+        density === 'compact' ? 'flex-row items-center' : 'flex-col',
         'bg-surface-raised',
         attention ? 'border-warning-border' : 'border-border-default',
         grabbed && 'border-accent ring-2 ring-[color:var(--border-focus)] ring-offset-1',
-        // Picked up for a keyboard move: rotate and lift, transform-only so it
-        // never triggers layout. Reduced motion keeps only the ring above,
-        // which already says "picked up" without moving anything.
+        // Picked up, by the M key or by the handle: rotate and lift,
+        // transform-only so it never triggers layout. Reduced motion keeps
+        // only the ring above, which already says "picked up" without moving
+        // anything, and the dashed outline on the target cell says where it
+        // would land. Neither depends on the chip having moved.
         grabbed && motionOk && 'shadow-hard scale-[1.02] rotate-[1.5deg]',
+        // The source stays put while the pointer is down. It reads as lifted,
+        // not relocated, because nothing has been written yet.
+        dragging && 'opacity-70',
         // Hover lift on the whole card, not just the link text underneath.
         'hover:shadow-hard-sm hover:-translate-y-px',
         'transition-[background-color,border-color,color,box-shadow,translate,rotate,scale]',
         'duration-(--duration-base) ease-(--ease-out-back) motion-reduce:transition-none',
-        density === 'compact' ? 'gap-0 py-1 ps-2.5 pe-1.5' : 'gap-1 py-1.5 ps-3 pe-2',
+        density === 'compact' ? 'gap-1 py-1 ps-2.5 pe-1' : 'gap-1 py-1.5 ps-3 pe-2',
         className,
       )}
     >
@@ -134,6 +152,7 @@ export function EntryChip({
         aria-label={accessibleName}
         className={cn(
           'flex min-w-0 flex-col gap-1 rounded-sm no-underline',
+          density === 'compact' && 'flex-1',
           'after:absolute after:inset-0 after:content-[""]',
           focusRingInset,
         )}
@@ -153,7 +172,18 @@ export function EntryChip({
         )}
       </a>
 
-      {density === 'compact' ? null : (
+      {density === 'compact' ? (
+        movable ? (
+          <MoveHandle
+            entry={entry}
+            label={t('web.calendar.keyboard.pickUp')}
+            hint={t('calendar.drag.handleHint')}
+            compact
+            onPickUp={onPickUp}
+            {...(onDragStart ? { onDragStart } : {})}
+          />
+        ) : null
+      ) : (
         <div className="relative z-10 flex flex-wrap items-center gap-1">
           <StatusPill state={entry.state} label={stateLabel} size="sm" />
           {entry.contentLocale ? (
@@ -170,21 +200,67 @@ export function EntryChip({
             </Badge>
           ) : null}
           {movable ? (
-            <button
-              type="button"
-              onClick={() => onPickUp?.(entry)}
-              className={cn(
-                'ms-auto inline-flex items-center gap-1 rounded-sm px-1 py-0.5',
-                'text-label text-text-tertiary hover:bg-surface-hover hover:text-text-primary',
-                focusRingInset,
-              )}
-            >
-              <Move aria-hidden="true" className="size-3" />
-              <span className="sr-only sm:not-sr-only">{t('web.calendar.keyboard.pickUp')}</span>
-            </button>
+            <MoveHandle
+              entry={entry}
+              label={t('web.calendar.keyboard.pickUp')}
+              hint={t('calendar.drag.handleHint')}
+              onPickUp={onPickUp}
+              {...(onDragStart ? { onDragStart } : {})}
+            />
           ) : null}
         </div>
       )}
     </article>
+  );
+}
+
+interface MoveHandleProps {
+  entry: CalendarEntry;
+  label: string;
+  /** Describes both input methods, so neither is discoverable only by trying. */
+  hint: string;
+  compact?: boolean;
+  onPickUp?: ((entry: CalendarEntry) => void) | undefined;
+  onDragStart?: ((entry: CalendarEntry, event: ReactPointerEvent<Element>) => void) | undefined;
+}
+
+/**
+ * Pick up, by click or by drag.
+ *
+ * `onPointerDown` only records a candidate drag. The click still fires when the
+ * pointer never travelled, which is what keeps the keyboard route reachable
+ * with a mouse and reachable at all on a touch screen, where the drag is
+ * deliberately not wired up so the page can still be scrolled.
+ */
+function MoveHandle({
+  entry,
+  label,
+  hint,
+  compact = false,
+  onPickUp,
+  onDragStart,
+}: MoveHandleProps): ReactNode {
+  return (
+    <button
+      type="button"
+      data-move-handle=""
+      title={hint}
+      onClick={() => onPickUp?.(entry)}
+      onPointerDown={onDragStart ? (event) => onDragStart(entry, event) : undefined}
+      className={cn(
+        'relative z-10 inline-flex shrink-0 items-center justify-center gap-1 rounded-sm',
+        'text-label text-text-tertiary hover:bg-surface-hover hover:text-text-primary',
+        onDragStart && 'cursor-grab active:cursor-grabbing',
+        focusRingInset,
+        // WCAG 2.2 target size (minimum) is 24 by 24 CSS pixels. A month chip
+        // has no room for more, so the compact handle is exactly that square.
+        // Elsewhere the design system recipe takes it to a comfortable 44 on a
+        // phone, and the icon plus padding holds it at 24 on a wide screen.
+        compact ? 'size-6' : cn('ms-auto px-1.5 py-1', touchTarget),
+      )}
+    >
+      <Move aria-hidden="true" className="size-4" />
+      <span className={compact ? 'sr-only' : 'sr-only sm:not-sr-only'}>{label}</span>
+    </button>
   );
 }

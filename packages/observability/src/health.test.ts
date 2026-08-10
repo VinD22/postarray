@@ -34,7 +34,7 @@ describe('buildHealthReport', () => {
     const report = buildHealthReport(capabilitiesFor(), [], { now: fixedNow });
 
     expect(report.subsystems).toHaveLength(14);
-    expect(report.connectors).toHaveLength(18);
+    expect(report.connectors).toHaveLength(19);
 
     const redis = report.subsystems.find((component) => component.name === 'redis');
     expect(redis).toEqual({
@@ -52,7 +52,7 @@ describe('buildHealthReport', () => {
   it('counts live, degraded and disabled components', () => {
     const report = buildHealthReport(capabilitiesFor(), [], { now: fixedNow });
     const total = report.summary.live + report.summary.degraded + report.summary.disabled;
-    expect(total).toBe(14 + 18);
+    expect(total).toBe(14 + 19);
     expect(report.summary.failingChecks).toBe(0);
   });
 

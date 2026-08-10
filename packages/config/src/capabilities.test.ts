@@ -55,6 +55,21 @@ describe('detectCapabilities', () => {
     expect(capabilities.connectors.tiktok).toBe(
       'disabled:missing TIKTOK_CLIENT_KEY, TIKTOK_CLIENT_SECRET',
     );
+    expect(capabilities.connectors.google_business_profile).toBe(
+      'disabled:missing GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET',
+    );
+  });
+
+  it('never verifies a connector in production from configuration alone', () => {
+    const capabilities = capabilitiesFor({
+      NODE_ENV: 'production',
+      GOOGLE_CLIENT_ID: 'placeholder-id',
+      GOOGLE_CLIENT_SECRET: 'placeholder-secret',
+    });
+    expect(capabilities.connectors.google_business_profile).toBe(
+      'disabled:verification-not-complete',
+    );
+    expect(capabilities.connectors.youtube).toBe('disabled:verification-not-complete');
   });
 
   it('keeps only simulator-verified connectors usable offline', () => {
@@ -175,7 +190,7 @@ describe('capability helpers', () => {
 
   it('lists every capability for the admin panel', () => {
     const entries = listCapabilities(capabilitiesFor());
-    expect(entries).toHaveLength(14 + 18);
+    expect(entries).toHaveLength(14 + 19);
     const billing = entries.find((entry) => entry.name === 'billing');
     expect(billing?.level).toBe('disabled');
     expect(billing?.requiredEnvVars).toEqual([]);

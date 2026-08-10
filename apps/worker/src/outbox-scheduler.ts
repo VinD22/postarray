@@ -1,4 +1,5 @@
 import {
+  bulkImportWorkflowId,
   dataDeletionWorkflowId,
   publishWorkflowId,
   dataExportWorkflowId,
@@ -12,6 +13,7 @@ import type { Logger } from '@relay/observability';
 import { TemporalScheduler } from '@relay/runtime';
 
 import { analyticsSyncDescriptor } from './workflows/core/analytics-sync.core';
+import { bulkImportDescriptor } from './workflows/core/bulk-import.core';
 import { automationRuleDescriptor } from './workflows/core/automation-rule.core';
 import { dataExportDescriptor } from './workflows/core/data-export.core';
 import { dataDeletionDescriptor } from './workflows/core/data-deletion.core';
@@ -133,6 +135,27 @@ export class WorkerScheduler implements SchedulerPort {
     if (this.#temporal !== null) return this.#temporal.scheduleDataDeletion(input);
     const workflowId = dataDeletionWorkflowId(input.workspaceId, input.requestId);
     this.#inline().startWorkflow(dataDeletionDescriptor, workflowId, input.workflowInput);
+    return { workflowId, runId: `${workflowId}:inline` };
+  }
+
+  /**
+   * Bulk CSV import.
+   *
+   * Temporal has no bulk-import method of its own yet, so a durable deployment
+   * runs the same workflow body through the worker's inline scheduler. That is
+   * honest: the run is real and idempotent, it simply does not get Temporal's
+   * durable retries until the shared scheduler learns this workflow. The
+   * workflow id is deterministic per job either way, so a retried upload joins
+   * the run that already exists rather than starting a second one.
+   */
+  async scheduleBulkImport(input: {
+    readonly importJobId: string;
+    readonly workspaceId: string;
+    readonly executeAt: Date;
+    readonly workflowInput: Parameters<typeof bulkImportDescriptor.run>[2];
+  }): Promise<{ readonly workflowId: string; readonly runId: string }> {
+    const workflowId = bulkImportWorkflowId(input.workspaceId, input.importJobId);
+    this.#inline().startWorkflow(bulkImportDescriptor, workflowId, input.workflowInput);
     return { workflowId, runId: `${workflowId}:inline` };
   }
 

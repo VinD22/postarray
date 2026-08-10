@@ -3,6 +3,7 @@ import { describe, expect, it } from 'vitest';
 import type { ChildWorkflowDescriptor } from '../runtime/types';
 import { analyticsSyncDescriptor } from '../workflows/core/analytics-sync.core';
 import { automationRuleDescriptor } from '../workflows/core/automation-rule.core';
+import { bulkImportDescriptor } from '../workflows/core/bulk-import.core';
 import { dataDeletionDescriptor } from '../workflows/core/data-deletion.core';
 import { dataExportDescriptor } from '../workflows/core/data-export.core';
 import { publishPostDescriptor } from '../workflows/core/publish-post.core';
@@ -15,6 +16,7 @@ import { webhookDeliveryDescriptor } from '../workflows/core/webhook-delivery.co
 
 import {
   makeAnalyticsInput,
+  makeBulkImportInput,
   makeDataExportInput,
   makeDeletionInput,
   makePostInput,
@@ -118,6 +120,15 @@ const CASES: readonly ReplayCase[] = [
   replayCase('dataExportWorkflow', dataExportDescriptor, makeDataExportInput(), {
     workflowId: 'export:ws_test:export_1',
   }),
+  replayCase('bulkImportWorkflow', bulkImportDescriptor, makeBulkImportInput(), {
+    workflowId: 'import:ws_test:import_1',
+  }),
+  replayCase(
+    'bulkImportWorkflow applying drafts',
+    bulkImportDescriptor,
+    makeBulkImportInput({ applyMode: 'drafts' }),
+    { workflowId: 'import:ws_test:import_2' },
+  ),
 ];
 
 describe('replay determinism', () => {
@@ -175,6 +186,33 @@ describe('recorded publish history', () => {
     const children = run.commands.filter((command) => command.kind === 'child');
     expect(children).toHaveLength(1);
     expect(children[0]?.kind === 'child' ? children[0].name : '').toBe('publishTargetWorkflow');
+  });
+});
+
+describe('recorded bulk import history', () => {
+  it('reads the verdict and stops there when nobody has applied', async () => {
+    const run = await runWorkflow(bulkImportDescriptor, makeBulkImportInput(), {
+      workflowId: 'import:ws_test:import_dryrun',
+    });
+    expect(activityHistory(run.commands)).toEqual(['readBulkImportVerdict']);
+    expect(countActivity(run.commands, 'applyBulkImportRows')).toBe(0);
+    expect(run.output).toMatchObject({ state: 'validated' });
+  });
+
+  it('applies only after an explicit mode, and only once', async () => {
+    const run = await runWorkflow(
+      bulkImportDescriptor,
+      makeBulkImportInput({ applyMode: 'drafts' }),
+      { workflowId: 'import:ws_test:import_apply' },
+    );
+    expect(
+      containsSubsequence(activityHistory(run.commands), [
+        'readBulkImportVerdict',
+        'applyBulkImportRows',
+      ]),
+    ).toBe(true);
+    expect(countActivity(run.commands, 'applyBulkImportRows')).toBe(1);
+    expect(run.output).toMatchObject({ state: 'applied' });
   });
 });
 

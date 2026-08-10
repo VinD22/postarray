@@ -63,6 +63,10 @@ export const TENANT_MODELS = new Set<string>([
   'providerLimit',
   'connectionIncident',
 
+  // Queue rules and slot reservations
+  'queueRule',
+  'queueSlotReservation',
+
   // Automation
   'automationRule',
   'automationRuleRun',
@@ -91,6 +95,10 @@ export const TENANT_MODELS = new Set<string>([
   // Lifecycle
   'deletionRequest',
   'dataExport',
+
+  // Bulk CSV import
+  'bulkImportJob',
+  'bulkImportRow',
 ]);
 
 /**

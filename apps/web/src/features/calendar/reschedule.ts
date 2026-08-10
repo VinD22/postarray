@@ -13,7 +13,13 @@
 
 import { crossesOffsetChange, getTimeZoneOffsetMinutes } from '@relay/i18n';
 import type { PublishState } from '@/lib/api/types';
-import { addMinutes, shiftSchedule } from './date-range';
+import {
+  addMinutes,
+  calendarDayDelta,
+  fromWallClock,
+  shiftSchedule,
+  toWallClock,
+} from './date-range';
 import type { CalendarEntry, RescheduleProposal, RescheduleWarning } from './types';
 
 /** Slot granularity for a keyboard move, in minutes. */
@@ -97,6 +103,59 @@ export function buildProposal(input: ProposalInput): RescheduleProposal {
     toInstant: to.toISOString(),
     keepsLocalTime: wallClockDelta % 1440 === 0,
   };
+}
+
+/**
+ * A calendar cell a post can be dropped on.
+ *
+ * `instant` is what the cell stands for: the start of its day in a month or an
+ * agenda cell, the start of its hour in the time grid. `granularity` is the
+ * promise the cell makes, and the month promise is the load bearing one: a
+ * month cell changes the date and leaves the wall clock time alone.
+ */
+export interface DropTarget {
+  readonly instant: Date;
+  readonly granularity: 'day' | 'slot';
+}
+
+/**
+ * Where a drop lands.
+ *
+ * A day drop is routed through `shiftSchedule` with a whole number of days,
+ * which is the path `ArrowRight` takes, so the two produce the same proposal
+ * and survive a daylight saving edge for the same reason. A slot drop rebuilds
+ * the wall clock reading instead, date and hour from the cell, minute from the
+ * post: the band is a claim about the clock, not about elapsed time.
+ */
+export function dropInstant(entry: CalendarEntry, target: DropTarget, timeZone: string): Date {
+  const from = new Date(entry.scheduledAt);
+  const days = calendarDayDelta(from, target.instant, timeZone);
+
+  if (target.granularity === 'day') {
+    return shiftSchedule(from, timeZone, days === 0 ? {} : { days });
+  }
+
+  const fromWall = toWallClock(from, timeZone);
+  const targetWall = toWallClock(target.instant, timeZone);
+  return fromWallClock({ ...targetWall, minute: fromWall.minute }, timeZone);
+}
+
+export interface DropProposalInput {
+  readonly entry: CalendarEntry;
+  readonly target: DropTarget;
+  readonly timeZone: string;
+}
+
+/**
+ * The proposal a drop asks for. Nothing is written: this is the same value the
+ * keyboard path produces, handed to the same confirmation dialog.
+ */
+export function buildDropProposal(input: DropProposalInput): RescheduleProposal {
+  return buildProposal({
+    entry: input.entry,
+    timeZone: input.timeZone,
+    toInstant: dropInstant(input.entry, input.target, input.timeZone),
+  });
 }
 
 /** A campaign window, when the entry belongs to one. */

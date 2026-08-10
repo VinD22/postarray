@@ -39,6 +39,17 @@ export interface TextTokens {
   readonly accent: string;
 }
 
+/**
+ * The single chromatic accent: deep terracotta in light, a lightened
+ * fired-clay in dark. It carries links, focus, selection, the active tab and
+ * the calendar "today" marker. It is deliberately NOT the primary button fill
+ * — that stays ink — so colour reads as navigation and state rather than as
+ * the loudest surface on the screen.
+ *
+ * `default` must clear 4.5:1 as text on canvas and raised in both themes, and
+ * `onAccent` must clear 4.5:1 on every fill step. Both are asserted in
+ * contrast.test.ts via `documentedContrastPairs`.
+ */
 export interface AccentTokens {
   readonly default: string;
   readonly hover: string;
@@ -103,6 +114,7 @@ export const PROVIDER_KEYS = [
   'pinterest',
   'discord',
   'slack',
+  'google_business_profile',
   /**
    * The local development connector. It mirrors `ProviderId` in
    * `@relay/contracts`, which is the authoritative provider union; the design
@@ -142,7 +154,7 @@ export const lightTheme: ThemeTokens = {
     subtle: '#EBE7DF',
     default: '#E0DBD1',
     strong: '#6B6866',
-    focus: '#141413',
+    focus: '#B4462B',
     bold: '#141413',
   },
   text: {
@@ -151,14 +163,14 @@ export const lightTheme: ThemeTokens = {
     tertiary: '#6B6866',
     disabled: '#8A8784',
     inverted: '#FFFCF8',
-    accent: '#141413',
+    accent: '#B4462B',
   },
   accent: {
-    default: '#141413',
-    hover: '#0A0A0A',
-    active: '#000000',
-    subtleBg: '#F2EDE6',
-    subtleBgHover: '#EDE8E0',
+    default: '#B4462B',
+    hover: '#9E3B23',
+    active: '#863019',
+    subtleBg: '#FBF1ED',
+    subtleBgHover: '#F9EEE9',
     onAccent: '#FFFFFF',
   },
   cta: {
@@ -204,6 +216,7 @@ export const lightTheme: ThemeTokens = {
     pinterest: '#E60023',
     discord: '#5865F2',
     slack: '#4A154B',
+    google_business_profile: '#1A73E8',
     fake: '#6B6560',
   },
 };
@@ -222,7 +235,7 @@ export const darkTheme: ThemeTokens = {
     subtle: '#2A2A28',
     default: '#3A3936',
     strong: '#8A8784',
-    focus: '#E8E2D6',
+    focus: '#E07A5F',
     bold: '#E8E2D6',
   },
   text: {
@@ -231,14 +244,14 @@ export const darkTheme: ThemeTokens = {
     tertiary: '#A8A29A',
     disabled: '#7A7672',
     inverted: '#141413',
-    accent: '#E8E2D6',
+    accent: '#E07A5F',
   },
   accent: {
-    default: '#E8E2D6',
-    hover: '#E8E2D6',
-    active: '#D6CEC0',
-    subtleBg: '#1A1A18',
-    subtleBgHover: '#252520',
+    default: '#E07A5F',
+    hover: '#EC8B72',
+    active: '#C96545',
+    subtleBg: '#26140F',
+    subtleBgHover: '#331A13',
     onAccent: '#141413',
   },
   /* CTA / blush — identical to light; see comment in theme.css section 2. */
@@ -285,6 +298,7 @@ export const darkTheme: ThemeTokens = {
     pinterest: '#FF5A5F',
     discord: '#8B93F7',
     slack: '#E8A0C0',
+    google_business_profile: '#7CB0F5',
     fake: '#A8A29A',
   },
 };
@@ -597,10 +611,58 @@ const brandPairs: ContrastPair[] = PROVIDER_KEYS.flatMap((key) => [
   },
 ]);
 
+/*
+ * The chromatic accent, covered in every role it actually plays: as link and
+ * marker text on each surface, as a fill carrying `onAccent`, and as the
+ * foreground of a selected row sitting on the subtle accent wash. Any future
+ * retune of the terracotta has to keep all of these green.
+ */
+const accentPairs: ContrastPair[] = [
+  ...(['canvas', 'raised', 'sunken', 'overlay'] as const).map((surface) => ({
+    id: `accent.default on surface.${surface}`,
+    foreground: (t: ThemeTokens) => t.accent.default,
+    background: (t: ThemeTokens) => t.surface[surface],
+    purpose: 'body' as const,
+  })),
+  {
+    id: 'accent.default on accent.subtleBg',
+    foreground: (t: ThemeTokens) => t.accent.default,
+    background: (t: ThemeTokens) => t.accent.subtleBg,
+    purpose: 'body' as const,
+  },
+  {
+    id: 'accent.default on accent.subtleBgHover',
+    foreground: (t: ThemeTokens) => t.accent.default,
+    background: (t: ThemeTokens) => t.accent.subtleBgHover,
+    purpose: 'body' as const,
+  },
+  {
+    // `::selection` paints the subtle accent wash behind primary text.
+    id: 'text.primary on accent.subtleBg',
+    foreground: (t: ThemeTokens) => t.text.primary,
+    background: (t: ThemeTokens) => t.accent.subtleBg,
+    purpose: 'body' as const,
+  },
+  {
+    id: 'text.primary on accent.subtleBgHover',
+    foreground: (t: ThemeTokens) => t.text.primary,
+    background: (t: ThemeTokens) => t.accent.subtleBgHover,
+    purpose: 'body' as const,
+  },
+  {
+    // The focus ring drawn around a control inside a selected row.
+    id: 'border.focus on accent.subtleBg',
+    foreground: (t: ThemeTokens) => t.border.focus,
+    background: (t: ThemeTokens) => t.accent.subtleBg,
+    purpose: 'ui-boundary' as const,
+  },
+];
+
 export const documentedContrastPairs: readonly ContrastPair[] = [
   ...textOnSurfacePairs,
   ...statusPairs,
   ...brandPairs,
+  ...accentPairs,
   {
     id: 'accent.onAccent on accent.default',
     foreground: (t) => t.accent.onAccent,

@@ -101,6 +101,39 @@ export const startRuleRunOutboxPayloadSchema = z
     }
   });
 
+/**
+ * A bulk import intent.
+ *
+ * Registered here so the worker parses the same shape the application builds,
+ * rather than trusting an untyped object across the process boundary. It is
+ * deliberately absent from `workflowOutboxPayloadSchemas` below: that map is
+ * the contract of what the transactional outbox dispatcher can hand to a
+ * scheduler, and adding a kind it cannot dispatch would turn a rejected row
+ * into a dead letter. A bulk import is started directly by the service that
+ * owns the job, the way a data export is.
+ *
+ * `applyMode` is nullable and null means dry run. There is no value here that
+ * publishes.
+ */
+export const startBulkImportPayloadSchema = z
+  .object({
+    ctx: workflowActorSchema,
+    importJobId: z.string().min(1),
+    workspaceId: z.string().min(1),
+    applyMode: z.enum(['drafts', 'scheduled']).nullable(),
+  })
+  .strict()
+  .superRefine((payload, context) => {
+    if (payload.workspaceId !== payload.ctx.workspaceId) {
+      context.addIssue({
+        code: z.ZodIssueCode.custom,
+        path: ['workspaceId'],
+        message: 'outbox payload workspace mismatch',
+      });
+    }
+  });
+export type StartBulkImportPayload = z.infer<typeof startBulkImportPayloadSchema>;
+
 export const workflowOutboxPayloadSchemas = {
   start_publish: startPublishOutboxPayloadSchema,
   cancel_publish: cancelPublishOutboxPayloadSchema,

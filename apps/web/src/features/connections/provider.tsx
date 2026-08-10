@@ -42,6 +42,7 @@ const BRANDED_PROVIDERS: Readonly<Record<ProviderId, ProviderKey | null>> = {
   pinterest: 'pinterest',
   discord: 'discord',
   slack: 'slack',
+  google_business_profile: 'google_business_profile',
   fake: null,
 };
 

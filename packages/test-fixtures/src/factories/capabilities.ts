@@ -473,6 +473,38 @@ const PROFILES: Readonly<Record<ProviderId, ProviderCapabilityProfile>> = {
     costMinorPerCreate: null,
     costMinorPerUrlCreate: null,
   },
+  /**
+   * Google Business Profile has no adapter yet. Every field below is
+   * deliberately the most restrictive value the schema allows, so a fixture can
+   * never assert a capability nobody has verified against the provider. The
+   * real profile is written when the adapter lands and its definition-of-done
+   * evidence is signed.
+   */
+  google_business_profile: {
+    accountType: 'business_profile',
+    maxTextLength: 1_500,
+    supportsMarkdown: false,
+    linkCounting: { mode: 'actual', charactersPerLink: null },
+    maxImages: 1,
+    maxVideos: 0,
+    allowedMimeTypes: ['image/jpeg', 'image/png'],
+    maxBytesByKind: bytes({}),
+    maxDurationSeconds: null,
+    requiresThumbnail: false,
+    altText: 'unsupported',
+    maxAltTextLength: null,
+    supportedKinds: ['text', 'image'],
+    unsupportedKinds: ['carousel', 'video', 'document', 'thread'],
+    firstComment: 'unsupported',
+    threads: 'unsupported',
+    maxThreadItems: 0,
+    privacyMustBeExplicit: false,
+    privacyOptions: [],
+    deletion: 'not_implemented',
+    drafts: 'not_implemented',
+    costMinorPerCreate: null,
+    costMinorPerUrlCreate: null,
+  },
   pinterest: {
     accountType: 'business_profile',
     maxTextLength: 500,

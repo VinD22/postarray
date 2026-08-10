@@ -37,6 +37,8 @@ import { GrowthModule } from './modules/growth/growth.module';
 import { HealthModule } from './modules/health/health.module';
 import { MediaModule } from './modules/media/media.module';
 import { PublishingModule } from './modules/publishing/publishing.module';
+import { ImportModule } from './modules/import/import.module';
+import { QueueRulesModule } from './modules/queue-rules/queue-rules.module';
 import { RssModule } from './modules/rss/rss.module';
 import { SchedulingModule } from './modules/scheduling/scheduling.module';
 import { ShortLinksModule } from './modules/short-links/short-links.module';
@@ -91,6 +93,8 @@ export class AppModule implements NestModule {
         AgentConfirmationsModule,
         ActionCenterModule,
         SchedulingModule,
+        ImportModule,
+        QueueRulesModule,
         PublishingModule,
         MediaModule,
         AnalyticsModule,

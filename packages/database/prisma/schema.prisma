@@ -241,6 +241,7 @@ enum ProviderKind {
   discord
   slack
   fake
+  google_business_profile
 
   @@map("provider_kind")
   @@schema("app")
@@ -847,6 +848,8 @@ model Workspace {
   publicationReceipts     PublicationReceipt[]
   providerLimits          ProviderLimit[]
   connectionIncidents     ConnectionIncident[]
+  queueRules              QueueRule[]
+  queueSlotReservations   QueueSlotReservation[]
   automationRules         AutomationRule[]
   automationRuleRuns      AutomationRuleRun[]
   rssFeeds                RssFeed[]
@@ -868,6 +871,8 @@ model Workspace {
   commissionLedgerEntries CommissionLedger[]
   deletionRequests        DeletionRequest[]
   dataExports             DataExport[]
+  bulkImportJobs          BulkImportJob[]
+  bulkImportRows          BulkImportRow[]
 
   @@index([ownerUserId])
   @@index([status])
@@ -1121,8 +1126,11 @@ model Brand {
   oauthPendingDiscoveries OAuthPendingDiscovery[]
   growthPlans          GrowthPlan[]
   shortLinks           ShortLink[]
+  queueRules           QueueRule[]
+  queueSlotReservations QueueSlotReservation[]
   automationRules      AutomationRule[]
   rssFeeds             RssFeed[]
+  bulkImportJobs       BulkImportJob[]
 
   @@unique([workspaceId, slug])
   @@unique([workspaceId, id], map: "uq_brands_workspace_id_id")
@@ -2150,6 +2158,7 @@ model PublishJob {
 
   attempts PublishAttempt[]
   receipt  PublicationReceipt?
+  queueSlotReservations QueueSlotReservation[]
 
   @@unique([workspaceId, idempotencyKey], map: "uq_publish_jobs_workspace_idempotency_key")
   @@index([workspaceId])
@@ -2287,6 +2296,89 @@ model ConnectionIncident {
   @@index([workspaceId])
   @@index([workspaceId, state, detectedAt(sort: Desc)])
   @@map("connection_incidents")
+  @@schema("app")
+}
+
+// ---------------------------------------------------------------------------
+// Queue rules and slot reservations
+// ---------------------------------------------------------------------------
+
+/// When a project is willing to post: weekly local windows in one zone, a
+/// minimum spacing, a daily ceiling, blackout dates and an optional connection
+/// scope. A rule is a live, editable object. It never moves an instant a person
+/// already reserved, because a reservation carries its own frozen copy.
+model QueueRule {
+  id                String    @id @default(dbgenerated("app.new_id('qrule')"))
+  workspaceId       String    @map("workspace_id")
+  brandId           String    @map("brand_id")
+  name              String
+  /// The zone the windows, the daily rollover and the blackout dates are read
+  /// in. Never the browser's zone and never the server's.
+  ianaTimeZone      String    @map("iana_time_zone")
+  /// `[{ weekday, startMinute, endMinute }]`, local minutes past midnight.
+  windows           Json      @default("[]")
+  minimumGapMinutes Int       @default(0) @map("minimum_gap_minutes")
+  /// NULL is no ceiling. Zero is zero. Nothing may treat 0 as unlimited.
+  maximumPerDay     Int?      @map("maximum_per_day")
+  /// `[{ from, to, note? }]`, inclusive local calendar dates.
+  blackouts         Json      @default("[]")
+  /// Empty means every connection in the project.
+  connectionIds     String[]  @default([]) @map("connection_ids")
+  /// Higher runs first. Ties break on the earlier instant, then on name.
+  priority          Int       @default(0)
+  enabled           Boolean   @default(true)
+  archivedAt        DateTime? @map("archived_at") @db.Timestamptz(6)
+  createdByUserId   String    @map("created_by_user_id")
+  createdAt         DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt         DateTime  @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  workspace Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  brand     Brand     @relation(fields: [brandId], references: [id], onDelete: Cascade)
+
+  reservations QueueSlotReservation[]
+
+  @@unique([workspaceId, brandId, name])
+  @@index([workspaceId])
+  @@index([workspaceId, brandId, enabled, priority(sort: Desc)])
+  @@map("queue_rules")
+  @@schema("app")
+}
+
+/// One proposed instant, held for a person to accept. `ruleSnapshot` is a
+/// frozen copy of the rule that produced it plus the reasons it was chosen, so
+/// editing or deleting the rule later can neither move the slot nor take away
+/// its explanation. `queueRuleId` is nullable for the same reason: losing the
+/// pointer must not lose the evidence.
+model QueueSlotReservation {
+  id                String    @id @default(dbgenerated("app.new_id('qslot')"))
+  workspaceId       String    @map("workspace_id")
+  brandId           String    @map("brand_id")
+  queueRuleId       String?   @map("queue_rule_id")
+  /// proposed | accepted | released | expired. Constrained in SQL.
+  state             String    @default("proposed")
+  scheduledFor      DateTime  @map("scheduled_for") @db.Timestamptz(6)
+  scheduledTimeZone String    @map("scheduled_time_zone")
+  /// The wall clock the person was shown, kept beside the instant so an audit
+  /// never has to recompute it against a zone database that has since changed.
+  localDateTime     String    @map("local_date_time")
+  ruleSnapshot      Json      @map("rule_snapshot")
+  contentItemId     String?   @map("content_item_id")
+  publishJobId      String?   @map("publish_job_id")
+  /// A proposal nobody accepted lapses rather than holding the slot forever.
+  expiresAt         DateTime? @map("expires_at") @db.Timestamptz(6)
+  createdByUserId   String    @map("created_by_user_id")
+  createdAt         DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt         DateTime  @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  workspace Workspace   @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  brand     Brand       @relation(fields: [brandId], references: [id], onDelete: Cascade)
+  queueRule QueueRule?  @relation(fields: [queueRuleId], references: [id], onDelete: SetNull)
+  publishJob PublishJob? @relation(fields: [publishJobId], references: [id], onDelete: SetNull)
+
+  @@index([workspaceId])
+  @@index([workspaceId, brandId, scheduledFor])
+  @@index([workspaceId, state, expiresAt])
+  @@map("queue_slot_reservations")
   @@schema("app")
 }
 
@@ -3019,5 +3111,108 @@ model DataExport {
   @@index([state, expiresAt])
   @@unique([workspaceId, idempotencyKey])
   @@map("data_exports")
+  @@schema("app")
+}
+
+// ---------------------------------------------------------------------------
+// Bulk CSV import
+// ---------------------------------------------------------------------------
+
+/// One uploaded CSV manifest.
+///
+/// Uploading is not applying. A job exists as soon as a file is accepted, and
+/// it holds the parse result, the per-row verdicts and the counts. Nothing in
+/// this table has created a draft or scheduled anything until `appliedAt` is
+/// set, and `applyMode` is null until a person chooses one.
+///
+/// `manifestChecksum` plus the workspace is what makes uploading the same file
+/// twice safe: the second upload resolves to the first job instead of building
+/// a parallel set of rows that would apply the same content again.
+model BulkImportJob {
+  id                    String    @id @default(dbgenerated("app.new_id('import')"))
+  workspaceId           String    @map("workspace_id")
+  brandId               String    @map("brand_id")
+  /// uploaded | validating | validated | applying | applied | failed.
+  state                 String    @default("uploaded")
+  filename              String
+  storageBucket         String?   @map("storage_bucket")
+  storageKey            String?   @map("storage_key")
+  /// SHA-256 of the uploaded bytes, lower case hex.
+  manifestChecksum      String    @map("manifest_checksum")
+  byteSize              BigInt    @default(0) @map("byte_size")
+  /// Which grammar read this file. A reparse under a newer parser is a new job.
+  parserVersion         String    @map("parser_version")
+  options               Json      @default("{}")
+  /// Sanitized ICU issue objects about the file as a whole.
+  manifestIssues        Json      @default("[]") @map("manifest_issues")
+  columnsReport         Json      @default("{}") @map("columns_report")
+  /// Counts are nullable on purpose. A count we have not computed is unknown,
+  /// and zero would read as "nothing failed".
+  rowCount              Int?      @map("row_count")
+  validRowCount         Int?      @map("valid_row_count")
+  invalidRowCount       Int?      @map("invalid_row_count")
+  appliedRowCount       Int?      @map("applied_row_count")
+  failedRowCount        Int?      @map("failed_row_count")
+  skippedRowCount       Int?      @map("skipped_row_count")
+  /// drafts | scheduled. Null until a person applies. Never defaulted.
+  applyMode             String?   @map("apply_mode")
+  appliedAt             DateTime? @map("applied_at") @db.Timestamptz(6)
+  appliedByUserId       String?   @map("applied_by_user_id")
+  errorReportStorageKey String?   @map("error_report_storage_key")
+  errorReportChecksum   String?   @map("error_report_checksum")
+  idempotencyKey        String?   @map("idempotency_key")
+  requestedByUserId     String    @map("requested_by_user_id")
+  failureNote           String?   @map("failure_note")
+  createdAt             DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt             DateTime  @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  workspace Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  brand     Brand     @relation(fields: [brandId], references: [id], onDelete: Cascade)
+
+  rows BulkImportRow[]
+
+  @@unique([workspaceId, idempotencyKey])
+  @@unique([workspaceId, manifestChecksum])
+  @@index([workspaceId])
+  @@index([workspaceId, brandId, state])
+  @@map("bulk_import_jobs")
+  @@schema("app")
+}
+
+/// One line of a manifest, with its own verdict and its own idempotency.
+///
+/// `(bulkImportJobId, externalRowKey)` is unique, and that uniqueness is the
+/// whole safety argument for re-applying a job: a row that already produced a
+/// draft is found rather than repeated. `contentItemId` and `publishJobId` are
+/// the evidence of what it produced, so a person can follow a spreadsheet line
+/// to the post it became.
+model BulkImportRow {
+  id              String    @id @default(dbgenerated("app.new_id('importrow')"))
+  workspaceId     String    @map("workspace_id")
+  bulkImportJobId String    @map("bulk_import_job_id")
+  /// Chosen by the person who wrote the file. Unique within one job.
+  externalRowKey  String    @map("external_row_key")
+  lineNumber      Int       @map("line_number")
+  /// pending | valid | invalid | applied | skipped | failed.
+  state           String    @default("pending")
+  /// The composer-shaped payload this line normalized to, or null when it did
+  /// not normalize at all.
+  payload         Json?
+  validation      Json?
+  /// Sanitized ICU issue objects. Never a provider payload and never a stack.
+  issues          Json      @default("[]")
+  contentItemId   String?   @map("content_item_id")
+  publishJobId    String?   @map("publish_job_id")
+  appliedAt       DateTime? @map("applied_at") @db.Timestamptz(6)
+  createdAt       DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt       DateTime  @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  workspace Workspace     @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  job       BulkImportJob @relation(fields: [bulkImportJobId], references: [id], onDelete: Cascade)
+
+  @@unique([bulkImportJobId, externalRowKey])
+  @@index([workspaceId])
+  @@index([bulkImportJobId, state])
+  @@map("bulk_import_rows")
   @@schema("app")
 }

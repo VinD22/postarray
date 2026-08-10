@@ -38,6 +38,14 @@ const FIXTURE = {
   deletionB: newIdFor('deletionRequest'),
   oauthTxA: newIdFor('oauthTransaction'),
   oauthTxB: newIdFor('oauthTransaction'),
+  queueRuleA: newIdFor('queueRule'),
+  queueRuleB: newIdFor('queueRule'),
+  queueSlotA: newIdFor('queueSlotReservation'),
+  queueSlotB: newIdFor('queueSlotReservation'),
+  importJobA: newIdFor('bulkImportJob'),
+  importJobB: newIdFor('bulkImportJob'),
+  importRowA: newIdFor('bulkImportRow'),
+  importRowB: newIdFor('bulkImportRow'),
 } as const;
 
 const ROLES = ['owner', 'admin', 'manager', 'editor', 'approver', 'analyst', 'viewer'] as const;
@@ -433,6 +441,280 @@ describe.skipIf(!hasDatabase)('row level security', () => {
       expect(outcome).toBe(0);
     });
   });
+
+  /**
+   * Queue rules and slot reservations.
+   *
+   * A rule is editorial, so a member reads it and a writer edits it. A
+   * reservation is evidence produced by the application service, so a browser
+   * session may read one and may never mint or move one. The frozen columns are
+   * refused even to the service role.
+   */
+  describe('queue rules and slot reservations', () => {
+    const memberClaimsA = (): string => memberClaims(USER_IDS.editor, FIXTURE.workspaceA);
+
+    it('lets a member read the queue rules in their workspace', async () => {
+      const rows = await asActor(memberClaimsA(), async (tx) =>
+        tx.query('SELECT id FROM app.queue_rules WHERE workspace_id = $1', [FIXTURE.workspaceA]),
+      );
+      expect(rows.rowCount).toBe(1);
+    });
+
+    it('cannot read another workspace queue rule', async () => {
+      const rows = await asActor(memberClaimsA(), async (tx) =>
+        tx.query('SELECT id FROM app.queue_rules WHERE id = $1', [FIXTURE.queueRuleB]),
+      );
+      expect(rows.rowCount).toBe(0);
+    });
+
+    it('cannot insert a queue rule into another workspace', async () => {
+      await expectRejected(
+        memberClaimsA(),
+        `INSERT INTO app.queue_rules
+           (id, workspace_id, brand_id, name, iana_time_zone, created_by_user_id, updated_at)
+         VALUES ($1, $2, $3, 'stolen', 'UTC', $4, now())`,
+        [newIdFor('queueRule'), FIXTURE.workspaceB, FIXTURE.brandB, USER_IDS.editor],
+      );
+    });
+
+    it('cannot update or delete another workspace queue rule', async () => {
+      await expectRejected(
+        memberClaimsA(),
+        `UPDATE app.queue_rules SET minimum_gap_minutes = 0 WHERE id = $1`,
+        [FIXTURE.queueRuleB],
+      );
+      await expectRejected(memberClaimsA(), 'DELETE FROM app.queue_rules WHERE id = $1', [
+        FIXTURE.queueRuleB,
+      ]);
+    });
+
+    it('lets a member read the reservations in their workspace', async () => {
+      const rows = await asActor(memberClaimsA(), async (tx) =>
+        tx.query('SELECT id FROM app.queue_slot_reservations WHERE workspace_id = $1', [
+          FIXTURE.workspaceA,
+        ]),
+      );
+      expect(rows.rowCount).toBe(1);
+    });
+
+    it('cannot read another workspace reservation', async () => {
+      const rows = await asActor(memberClaimsA(), async (tx) =>
+        tx.query('SELECT id FROM app.queue_slot_reservations WHERE id = $1', [FIXTURE.queueSlotB]),
+      );
+      expect(rows.rowCount).toBe(0);
+    });
+
+    it('does not let a member mint a reservation directly, in any workspace', async () => {
+      for (const [workspaceId, brandId] of [
+        [FIXTURE.workspaceA, FIXTURE.brandA],
+        [FIXTURE.workspaceB, FIXTURE.brandB],
+      ] as const) {
+        await expectRejected(
+          memberClaimsA(),
+          `INSERT INTO app.queue_slot_reservations
+             (id, workspace_id, brand_id, state, scheduled_for, scheduled_time_zone,
+              local_date_time, rule_snapshot, created_by_user_id, updated_at)
+           VALUES ($1, $2, $3, 'proposed', now() + interval '1 day', 'UTC', '2030-01-01T09:00',
+                   '{"reasons":[]}'::jsonb, $4, now())`,
+          [newIdFor('queueSlotReservation'), workspaceId, brandId, USER_IDS.editor],
+        );
+      }
+    });
+
+    it('does not let a member move a reservation they can see', async () => {
+      await expectRejected(
+        memberClaimsA(),
+        `UPDATE app.queue_slot_reservations SET scheduled_for = now() WHERE id = $1`,
+        [FIXTURE.queueSlotA],
+      );
+    });
+
+    it('refuses to rewrite the frozen evidence, even as the service role', async () => {
+      for (const sql of [
+        `UPDATE app.queue_slot_reservations SET rule_snapshot = '{"reasons":[]}'::jsonb WHERE id = $1`,
+        `UPDATE app.queue_slot_reservations SET scheduled_for = now() WHERE id = $1`,
+        `UPDATE app.queue_slot_reservations SET scheduled_time_zone = 'UTC' WHERE id = $1`,
+      ]) {
+        await expect(
+          asActor(serviceClaims, async (tx) => tx.query(sql, [FIXTURE.queueSlotA])),
+        ).rejects.toThrow();
+      }
+    });
+
+    it('lets the service role change state and attach content, which is not evidence', async () => {
+      const outcome = await asActor(serviceClaims, async (tx) =>
+        tx.query(
+          `UPDATE app.queue_slot_reservations
+             SET state = 'accepted', content_item_id = $2, updated_at = now()
+           WHERE id = $1`,
+          [FIXTURE.queueSlotA, FIXTURE.itemA],
+        ),
+      );
+      expect(outcome.rowCount).toBe(1);
+    });
+
+    it('refuses a second live reservation on the same project and instant', async () => {
+      await expect(
+        asActor(serviceClaims, async (tx) =>
+          tx.query(
+            `INSERT INTO app.queue_slot_reservations
+               (id, workspace_id, brand_id, state, scheduled_for, scheduled_time_zone,
+                local_date_time, rule_snapshot, created_by_user_id, updated_at)
+             SELECT $1, workspace_id, brand_id, 'proposed', scheduled_for, scheduled_time_zone,
+                    local_date_time, rule_snapshot, created_by_user_id, now()
+             FROM app.queue_slot_reservations WHERE id = $2`,
+            [newIdFor('queueSlotReservation'), FIXTURE.queueSlotA],
+          ),
+        ),
+      ).rejects.toThrow();
+    });
+
+    it('refuses a negative daily maximum and keeps zero distinct from null', async () => {
+      await expect(
+        asActor(serviceClaims, async (tx) =>
+          tx.query('UPDATE app.queue_rules SET maximum_per_day = -1 WHERE id = $1', [
+            FIXTURE.queueRuleA,
+          ]),
+        ),
+      ).rejects.toThrow();
+
+      const stored = await asActor(serviceClaims, async (tx) => {
+        await tx.query('UPDATE app.queue_rules SET maximum_per_day = 0 WHERE id = $1', [
+          FIXTURE.queueRuleA,
+        ]);
+        return tx.query('SELECT maximum_per_day FROM app.queue_rules WHERE id = $1', [
+          FIXTURE.queueRuleA,
+        ]);
+      });
+      expect(stored.rows[0]?.maximum_per_day).toBe(0);
+    });
+  });
+
+  /**
+   * Bulk CSV import.
+   *
+   * A job and its rows are evidence produced by the application service: what
+   * was uploaded, what the parser concluded and, once a person applied, which
+   * draft each line became. A browser session reads its own workspace and
+   * writes neither, and the per-row uniqueness that makes re-applying safe is
+   * enforced here rather than hoped for in application code.
+   */
+  describe('bulk import jobs and rows', () => {
+    const memberClaimsA = (): string => memberClaims(USER_IDS.editor, FIXTURE.workspaceA);
+
+    it('lets a member read the import jobs in their workspace', async () => {
+      const rows = await asActor(memberClaimsA(), async (tx) =>
+        tx.query('SELECT id FROM app.bulk_import_jobs WHERE workspace_id = $1', [
+          FIXTURE.workspaceA,
+        ]),
+      );
+      expect(rows.rowCount).toBe(1);
+    });
+
+    it('cannot read another workspace import job or its rows', async () => {
+      const jobs = await asActor(memberClaimsA(), async (tx) =>
+        tx.query('SELECT id FROM app.bulk_import_jobs WHERE id = $1', [FIXTURE.importJobB]),
+      );
+      expect(jobs.rowCount).toBe(0);
+
+      const rows = await asActor(memberClaimsA(), async (tx) =>
+        tx.query('SELECT id FROM app.bulk_import_rows WHERE id = $1', [FIXTURE.importRowB]),
+      );
+      expect(rows.rowCount).toBe(0);
+    });
+
+    it('cannot mint an import job from a browser session', async () => {
+      await expectRejected(
+        memberClaimsA(),
+        `INSERT INTO app.bulk_import_jobs
+           (id, workspace_id, brand_id, filename, manifest_checksum, parser_version,
+            requested_by_user_id, updated_at)
+         VALUES ($1, $2, $3, 'forged.csv', $4, 'rls-test', $5, now())`,
+        [
+          newIdFor('bulkImportJob'),
+          FIXTURE.workspaceA,
+          FIXTURE.brandA,
+          'c'.repeat(64),
+          USER_IDS.editor,
+        ],
+      );
+    });
+
+    it('cannot mint or move an import row from a browser session', async () => {
+      await expectRejected(
+        memberClaimsA(),
+        `INSERT INTO app.bulk_import_rows
+           (id, workspace_id, bulk_import_job_id, external_row_key, line_number, updated_at)
+         VALUES ($1, $2, $3, 'forged', 9, now())`,
+        [newIdFor('bulkImportRow'), FIXTURE.workspaceA, FIXTURE.importJobA],
+      );
+      await expectRejected(
+        memberClaimsA(),
+        `UPDATE app.bulk_import_rows SET state = 'applied' WHERE id = $1`,
+        [FIXTURE.importRowA],
+      );
+    });
+
+    it('cannot write into another workspace import job', async () => {
+      await expectRejected(
+        memberClaimsA(),
+        `UPDATE app.bulk_import_jobs SET state = 'applied' WHERE id = $1`,
+        [FIXTURE.importJobB],
+      );
+      await expectRejected(memberClaimsA(), 'DELETE FROM app.bulk_import_jobs WHERE id = $1', [
+        FIXTURE.importJobB,
+      ]);
+    });
+
+    it('refuses a second row with the same key inside one job', async () => {
+      await expect(
+        asActor(serviceClaims, async (tx) =>
+          tx.query(
+            `INSERT INTO app.bulk_import_rows
+               (id, workspace_id, bulk_import_job_id, external_row_key, line_number, updated_at)
+             VALUES ($1, $2, $3, 'row-1', 3, now())`,
+            [newIdFor('bulkImportRow'), FIXTURE.workspaceA, FIXTURE.importJobA],
+          ),
+        ),
+      ).rejects.toThrow();
+    });
+
+    it('refuses a second job for the same manifest in one workspace', async () => {
+      await expect(
+        asActor(serviceClaims, async (tx) =>
+          tx.query(
+            `INSERT INTO app.bulk_import_jobs
+               (id, workspace_id, brand_id, filename, manifest_checksum, parser_version,
+                requested_by_user_id, updated_at)
+             SELECT $1, workspace_id, brand_id, 'again.csv', manifest_checksum, parser_version,
+                    requested_by_user_id, now()
+             FROM app.bulk_import_jobs WHERE id = $2`,
+            [newIdFor('bulkImportJob'), FIXTURE.importJobA],
+          ),
+        ),
+      ).rejects.toThrow();
+    });
+
+    it('refuses an apply mode without an applied instant, even to the service', async () => {
+      await expect(
+        asActor(serviceClaims, async (tx) =>
+          tx.query(`UPDATE app.bulk_import_jobs SET apply_mode = 'drafts' WHERE id = $1`, [
+            FIXTURE.importJobA,
+          ]),
+        ),
+      ).rejects.toThrow();
+    });
+
+    it('refuses rewriting the job, key or line a row was read from', async () => {
+      await expect(
+        asActor(serviceClaims, async (tx) =>
+          tx.query(`UPDATE app.bulk_import_rows SET external_row_key = 'renamed' WHERE id = $1`, [
+            FIXTURE.importRowA,
+          ]),
+        ),
+      ).rejects.toThrow();
+    });
+  });
 });
 
 async function seedFixture(): Promise<void> {
@@ -568,6 +850,85 @@ async function seedFixture(): Promise<void> {
        VALUES ($1, $2, 'connect_social_account', $3, 'https://app.example.test/oauth/callback', now() + interval '10 minutes')
        ON CONFLICT (id) DO NOTHING`,
       [oauthId, workspaceId, stateHash],
+    );
+  }
+
+  for (const [ruleId, workspaceId, brandId, name] of [
+    [FIXTURE.queueRuleA, FIXTURE.workspaceA, FIXTURE.brandA, 'rls-queue-a'],
+    [FIXTURE.queueRuleB, FIXTURE.workspaceB, FIXTURE.brandB, 'rls-queue-b'],
+  ] as const) {
+    await client.query(
+      `INSERT INTO app.queue_rules
+         (id, workspace_id, brand_id, name, iana_time_zone, windows, minimum_gap_minutes,
+          maximum_per_day, created_by_user_id, updated_at)
+       VALUES ($1, $2, $3, $4, 'Europe/London',
+               '[{"weekday":1,"startMinute":540,"endMinute":1020}]'::jsonb, 60, NULL, $5, now())
+       ON CONFLICT (id) DO NOTHING`,
+      [ruleId, workspaceId, brandId, name, USER_IDS.owner],
+    );
+  }
+
+  for (const [slotId, workspaceId, brandId, ruleId, instant, local] of [
+    [
+      FIXTURE.queueSlotA,
+      FIXTURE.workspaceA,
+      FIXTURE.brandA,
+      FIXTURE.queueRuleA,
+      '2030-06-10T08:00:00.000Z',
+      '2030-06-10T09:00',
+    ],
+    [
+      FIXTURE.queueSlotB,
+      FIXTURE.workspaceB,
+      FIXTURE.brandB,
+      FIXTURE.queueRuleB,
+      '2030-06-10T09:00:00.000Z',
+      '2030-06-10T10:00',
+    ],
+  ] as const) {
+    await client.query(
+      `INSERT INTO app.queue_slot_reservations
+         (id, workspace_id, brand_id, queue_rule_id, state, scheduled_for, scheduled_time_zone,
+          local_date_time, rule_snapshot, created_by_user_id, updated_at)
+       VALUES ($1, $2, $3, $4, 'proposed', $5, 'Europe/London', $6,
+               '{"reasons":[{"key":"queue.reason.matchedRule","values":{}}]}'::jsonb, $7, now())
+       ON CONFLICT (id) DO NOTHING`,
+      [slotId, workspaceId, brandId, ruleId, instant, local, USER_IDS.owner],
+    );
+  }
+
+  for (const [jobId, rowId, workspaceId, brandId, userId, checksum] of [
+    [
+      FIXTURE.importJobA,
+      FIXTURE.importRowA,
+      FIXTURE.workspaceA,
+      FIXTURE.brandA,
+      USER_IDS.owner,
+      'a'.repeat(64),
+    ],
+    [
+      FIXTURE.importJobB,
+      FIXTURE.importRowB,
+      FIXTURE.workspaceB,
+      FIXTURE.brandB,
+      OUTSIDER_USER_ID,
+      'b'.repeat(64),
+    ],
+  ] as const) {
+    await client.query(
+      `INSERT INTO app.bulk_import_jobs
+         (id, workspace_id, brand_id, state, filename, manifest_checksum, byte_size,
+          parser_version, requested_by_user_id, updated_at)
+       VALUES ($1, $2, $3, 'validated', 'manifest.csv', $4, 128, 'rls-test', $5, now())
+       ON CONFLICT (id) DO NOTHING`,
+      [jobId, workspaceId, brandId, checksum, userId],
+    );
+    await client.query(
+      `INSERT INTO app.bulk_import_rows
+         (id, workspace_id, bulk_import_job_id, external_row_key, line_number, state, updated_at)
+       VALUES ($1, $2, $3, 'row-1', 2, 'valid', now())
+       ON CONFLICT (id) DO NOTHING`,
+      [rowId, workspaceId, jobId],
     );
   }
 

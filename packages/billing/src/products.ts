@@ -1,17 +1,29 @@
-import { z } from 'zod';
-import { ACTIVE_CHANNEL_LIMIT, BASE_PROJECT_LIMIT, WORKSPACE_MEMBER_LIMIT } from '@relay/contracts';
+import { ACTIVE_CHANNEL_LIMIT, WORKSPACE_MEMBER_LIMIT } from '@relay/contracts';
 
-import { formatMoneyMinor, USD } from './money';
+import { formatMoneyMinor } from './money';
+import { BASE_TIER_KEY, PLAN_TIERS, SHARED_INCLUSION_KEYS, tierProjectAllowance } from './tiers';
+import { buildTierPresentation, publishableTierPresentations } from './tier-presentation';
+import type { TierPresentation } from './tier-presentation';
+import type { BillingInterval } from './intervals';
+
+export {
+  BILLING_INTERVALS,
+  billingIntervalSchema,
+  normalizeInterval,
+  type BillingInterval,
+} from './intervals';
 
 /**
- * The one public plan.
+ * The public products.
  *
- * Every number a customer can see about pricing is defined exactly once, here.
- * The marketing page, the checkout disclosure, the Billing settings screen, the
- * CLI and the API all read this module, so there is no second place for the
- * annual saving to drift out of step with the annual price.
+ * Every number a customer can see about pricing is defined exactly once, in
+ * `tiers.ts`, and formatted exactly once, here. The marketing page, the
+ * checkout disclosure, the Billing settings screen, the CLI and the API all
+ * read this module, so there is no second place for the annual saving to drift
+ * out of step with the annual price.
  *
- * Two commercial rules are load bearing and are asserted by tests:
+ * Three commercial rules are load bearing and are asserted by tests:
+ *  - a tier buys project capacity only. Every tier includes every feature;
  *  - the annual framing is stated as money saved, never as a percentage off,
  *    because a percentage discount claim would not be true for $29 and $300;
  *  - no trial copy anywhere claims a temporary payment authorization of any
@@ -19,17 +31,13 @@ import { formatMoneyMinor, USD } from './money';
  *    saying anything more than that would be a claim we cannot support.
  */
 
-export const BILLING_INTERVALS = ['month', 'year'] as const;
-export const billingIntervalSchema = z.enum(BILLING_INTERVALS);
-export type BillingInterval = z.infer<typeof billingIntervalSchema>;
+/** The tier a workspace has unless verified subscription state says otherwise. */
+export const PLAN_KEY = BASE_TIER_KEY;
 
-/** There is one plan. There are no tiers, no seats and no add-on products. */
-export const PLAN_KEY = 'relay_standard';
+export const PLAN_CURRENCY = PLAN_TIERS[BASE_TIER_KEY].currency;
 
-export const PLAN_CURRENCY = USD;
-
-export const MONTHLY_PRICE_MINOR = 2_900;
-export const ANNUAL_PRICE_MINOR = 30_000;
+export const MONTHLY_PRICE_MINOR = PLAN_TIERS[BASE_TIER_KEY].monthlyPriceMinor;
+export const ANNUAL_PRICE_MINOR = PLAN_TIERS[BASE_TIER_KEY].annualPriceMinor;
 
 /** $300 a year presented per month. Exact, not rounded. */
 export const ANNUAL_EFFECTIVE_MONTHLY_MINOR = ANNUAL_PRICE_MINOR / 12;
@@ -57,10 +65,10 @@ export const RELAY_TRIAL_SUMMARY_DAY = TRIAL_DAYS - 1;
 /** Active connections a workspace may hold. Never enforced by disconnecting. */
 export const ACTIVE_CHANNEL_ALLOWANCE = ACTIVE_CHANNEL_LIMIT;
 
-/** Active projects included in the $29 base subscription. */
-export const PROJECT_ALLOWANCE = BASE_PROJECT_LIMIT;
+/** Active projects included in the base subscription. Higher tiers raise it. */
+export const PROJECT_ALLOWANCE = tierProjectAllowance(BASE_TIER_KEY);
 
-/** Workspace owner plus five invited teammates. */
+/** Workspace owner plus five invited teammates. Identical on every tier. */
 export const MEMBER_ALLOWANCE = WORKSPACE_MEMBER_LIMIT;
 
 /** Days of full access after a failed payment before the workspace is read only. */
@@ -72,8 +80,9 @@ export const READ_ONLY_PERIOD_DAYS = 30;
 /**
  * The exact strings the checkout disclosure and the billing screen must show.
  * They are duplicated in the `@relay/i18n` English catalog, which is where the
- * UI reads them from. `products.test.ts` asserts the two agree, so a catalog
- * edit that softens the disclosure fails the build.
+ * UI reads them from. `products.test.ts` asserts the two agree and that the
+ * annual sentence still matches the arithmetic, so neither a catalog edit that
+ * softens the disclosure nor a price change that strands the sentence can ship.
  */
 export const MANDATED_COPY = Object.freeze({
   dueToday: '$0 due today',
@@ -98,7 +107,7 @@ export interface PlanProduct {
   readonly key: string;
   readonly interval: BillingInterval;
   /** Which environment variable carries the Polar product id for this interval. */
-  readonly productIdEnvKey: 'POLAR_MONTHLY_PRODUCT_ID' | 'POLAR_ANNUAL_PRODUCT_ID';
+  readonly productIdEnvKey: string;
   readonly priceMinor: number;
   readonly currency: string;
   readonly trialDays: number;
@@ -107,7 +116,7 @@ export interface PlanProduct {
 export const MONTHLY_PRODUCT: PlanProduct = Object.freeze({
   key: PLAN_KEY,
   interval: 'month',
-  productIdEnvKey: 'POLAR_MONTHLY_PRODUCT_ID',
+  productIdEnvKey: PLAN_TIERS[BASE_TIER_KEY].monthlyProductIdEnvKey,
   priceMinor: MONTHLY_PRICE_MINOR,
   currency: PLAN_CURRENCY,
   trialDays: TRIAL_DAYS,
@@ -116,7 +125,7 @@ export const MONTHLY_PRODUCT: PlanProduct = Object.freeze({
 export const ANNUAL_PRODUCT: PlanProduct = Object.freeze({
   key: PLAN_KEY,
   interval: 'year',
-  productIdEnvKey: 'POLAR_ANNUAL_PRODUCT_ID',
+  productIdEnvKey: PLAN_TIERS[BASE_TIER_KEY].annualProductIdEnvKey,
   priceMinor: ANNUAL_PRICE_MINOR,
   currency: PLAN_CURRENCY,
   trialDays: TRIAL_DAYS,
@@ -136,20 +145,11 @@ export function planPriceMinor(interval: BillingInterval): number {
 }
 
 /**
- * Everything the single entitlement bundle unlocks. Message keys only: the copy
- * lives in the i18n catalog and this list fixes the order it renders in.
+ * Everything every tier unlocks. Message keys only: the copy lives in the i18n
+ * catalog and this list fixes the order it renders in. Identical for every
+ * tier, which is what `tiers.test.ts` asserts.
  */
-export const PLAN_INCLUSION_KEYS: readonly string[] = Object.freeze([
-  'billing.plan.includes.projects',
-  'billing.plan.includes.channels',
-  'billing.plan.includes.members',
-  'billing.plan.includes.posts',
-  'billing.plan.includes.connectors',
-  'billing.plan.includes.analytics',
-  'billing.plan.includes.api',
-  'billing.plan.includes.automation',
-  'billing.plan.includes.support',
-]);
+export const PLAN_INCLUSION_KEYS: readonly string[] = SHARED_INCLUSION_KEYS;
 
 export interface IntervalPresentation {
   readonly interval: BillingInterval;
@@ -188,6 +188,7 @@ export interface PricePresentation {
   readonly trialDueTodayKey: string;
   readonly activeChannelAllowance: number;
   readonly projectAllowance: number;
+  readonly memberAllowance: number;
   readonly inclusionKeys: readonly string[];
   readonly fairUseKey: string;
   readonly mediaGenerationBoundaryKey: string;
@@ -195,10 +196,12 @@ export interface PricePresentation {
   readonly cancellationKey: string;
 }
 
+const BASE_TIER_PRESENTATION = buildTierPresentation(BASE_TIER_KEY, TRIAL_DAYS);
+
 /**
- * The single object every pricing surface renders. Amount strings are derived
- * from the minor units above, so the numbers cannot drift; sentences are
- * message keys, so the words cannot be hard coded in a component.
+ * The base tier, in the shape the pre-tier surfaces already render. Amount
+ * strings are derived from the minor units above, so the numbers cannot drift;
+ * sentences are message keys, so the words cannot be hard coded in a component.
  */
 export const PRICE_PRESENTATION: PricePresentation = Object.freeze({
   planKey: PLAN_KEY,
@@ -206,33 +209,19 @@ export const PRICE_PRESENTATION: PricePresentation = Object.freeze({
   nameKey: 'billing.plan.name',
   taglineKey: 'billing.plan.single',
   month: Object.freeze({
-    interval: 'month' as const,
-    priceMinor: MONTHLY_PRICE_MINOR,
-    currency: PLAN_CURRENCY,
-    priceText: formatMoneyMinor(MONTHLY_PRICE_MINOR, PLAN_CURRENCY, { trimZeroFraction: true }),
-    exactPriceText: formatMoneyMinor(MONTHLY_PRICE_MINOR, PLAN_CURRENCY),
+    ...BASE_TIER_PRESENTATION.month,
     headlineKey: 'billing.plan.monthlyPrice',
-    labelKey: 'billing.plan.interval.monthly',
-    trialDays: TRIAL_DAYS,
   }),
   year: Object.freeze({
-    interval: 'year' as const,
-    priceMinor: ANNUAL_PRICE_MINOR,
-    currency: PLAN_CURRENCY,
-    priceText: formatMoneyMinor(ANNUAL_PRICE_MINOR, PLAN_CURRENCY, { trimZeroFraction: true }),
-    exactPriceText: formatMoneyMinor(ANNUAL_PRICE_MINOR, PLAN_CURRENCY),
+    ...BASE_TIER_PRESENTATION.year,
     headlineKey: 'billing.plan.annualPrice',
-    labelKey: 'billing.plan.interval.annual',
-    trialDays: TRIAL_DAYS,
   }),
   annualFraming: Object.freeze({
-    effectiveMonthlyMinor: ANNUAL_EFFECTIVE_MONTHLY_MINOR,
-    effectiveMonthlyText: formatMoneyMinor(ANNUAL_EFFECTIVE_MONTHLY_MINOR, PLAN_CURRENCY, {
-      trimZeroFraction: true,
-    }),
-    savingMinor: ANNUAL_SAVING_MINOR,
-    savingText: formatMoneyMinor(ANNUAL_SAVING_MINOR, PLAN_CURRENCY, { trimZeroFraction: true }),
-    savingBasisPoints: ANNUAL_SAVING_BASIS_POINTS,
+    effectiveMonthlyMinor: BASE_TIER_PRESENTATION.annualFraming.effectiveMonthlyMinor,
+    effectiveMonthlyText: BASE_TIER_PRESENTATION.annualFraming.effectiveMonthlyText,
+    savingMinor: BASE_TIER_PRESENTATION.annualFraming.savingMinor,
+    savingText: BASE_TIER_PRESENTATION.annualFraming.savingText,
+    savingBasisPoints: BASE_TIER_PRESENTATION.annualFraming.savingBasisPoints,
     framingText: MANDATED_COPY.annualFraming,
     framingKey: 'billing.plan.annualFraming',
   }),
@@ -249,6 +238,10 @@ export const PRICE_PRESENTATION: PricePresentation = Object.freeze({
   cancellationKey: 'billing.cancel.beforeTrialEnd',
 });
 
+/** Every tier a pricing page or a tier picker may offer, cheapest first. */
+export const TIER_PRESENTATIONS: readonly TierPresentation[] =
+  publishableTierPresentations(TRIAL_DAYS);
+
 /**
  * A Polar product whose configured trial length disagrees with `TRIAL_DAYS`
  * would make our on-screen conversion date a lie. The service start-up check
@@ -258,14 +251,12 @@ export function trialLengthMatches(polarTrialDays: number, configuredTrialDays: 
   return polarTrialDays === configuredTrialDays && configuredTrialDays === TRIAL_DAYS;
 }
 
-/** The interval a Polar recurring interval string maps to. */
-export function normalizeInterval(value: string): BillingInterval | null {
-  const normalized = value.trim().toLowerCase();
-  if (normalized === 'month' || normalized === 'monthly') {
-    return 'month';
-  }
-  if (normalized === 'year' || normalized === 'yearly' || normalized === 'annual') {
-    return 'year';
-  }
-  return null;
+/** Every amount the mandated annual sentence claims, derived from minor units. */
+export function derivedAnnualFramingAmounts(): { perMonth: string; saving: string } {
+  return {
+    perMonth: formatMoneyMinor(ANNUAL_EFFECTIVE_MONTHLY_MINOR, PLAN_CURRENCY, {
+      trimZeroFraction: true,
+    }),
+    saving: formatMoneyMinor(ANNUAL_SAVING_MINOR, PLAN_CURRENCY, { trimZeroFraction: true }),
+  };
 }

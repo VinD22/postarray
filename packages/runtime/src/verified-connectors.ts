@@ -6,6 +6,7 @@ import {
   createAuthorizationUrl,
   createConnectorRegistry,
   registerBuiltInProviders,
+  type BuiltInProvider,
   type ConnectorLogger,
   type AuthorizationDefinition,
   type ConnectorFeature,
@@ -33,6 +34,21 @@ interface OAuthUrlInput {
   readonly codeChallenge: string;
   readonly codeChallengeMethod: 'S256';
   readonly redirectUri: string;
+}
+
+/**
+ * The verification allow list is expressed over every known provider id, and a
+ * provider id can exist before its adapter does. Google Business Profile is in
+ * that state today: it is part of the launch cohort but has no adapter, so it is
+ * not a built-in provider and cannot be registered. Narrowing here states that
+ * rule explicitly rather than leaving it to the registration loop to ignore an
+ * id it has no factory for.
+ */
+function builtInVerifiedProviders(config: RelayConfig): readonly BuiltInProvider[] {
+  const builtIn = new Set<string>(BUILT_IN_PROVIDERS);
+  return verifiedConnectorsForEnvironment(config).filter(
+    (provider): provider is BuiltInProvider => builtIn.has(provider),
+  );
 }
 
 function assertOAuthInput(input: OAuthUrlInput): void {
@@ -307,7 +323,7 @@ export function createVerifiedConnectorRegistry(input: {
       config: input.config,
       redirectBaseUrl: input.config.core.apiUrl ?? 'http://127.0.0.1',
     },
-    { verifiedProviders: verifiedConnectorsForEnvironment(input.config) },
+    { verifiedProviders: builtInVerifiedProviders(input.config) },
   );
 
   // Keep this assertion close to composition. It makes an accidental provider

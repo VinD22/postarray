@@ -239,6 +239,32 @@ export interface DataExportWorkflowOutput {
   readonly checksumSha256: string | null;
 }
 
+/**
+ * Bulk CSV import.
+ *
+ * `applyMode` is null for a dry run, which is the only thing an upload starts.
+ * Applying is a separate decision a person makes, and the mode they chose
+ * travels here so the workflow can never widen it.
+ */
+export interface BulkImportWorkflowInput {
+  readonly ctx: ActivityContext;
+  readonly importJobId: string;
+  readonly applyMode: 'drafts' | 'scheduled' | null;
+}
+
+export interface BulkImportWorkflowOutput {
+  readonly importJobId: string;
+  readonly state: string;
+  readonly counts: {
+    readonly total: number | null;
+    readonly valid: number | null;
+    readonly invalid: number | null;
+    readonly applied: number | null;
+    readonly failed: number | null;
+    readonly skipped: number | null;
+  };
+}
+
 export interface DataDeletionWorkflowInput {
   readonly ctx: ActivityContext;
   readonly requestId: string;

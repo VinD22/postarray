@@ -12,8 +12,10 @@ import { developerMessages } from './developer';
 import { emailMessages } from './email';
 import { errorMessages } from './errors';
 import { growthMessages } from './growth';
+import { importMessages } from './import';
 import { navMessages } from './nav';
 import { onboardingMessages } from './onboarding';
+import { queueMessages } from './queue';
 import { receiptMessages } from './receipt';
 import { settingsMessages } from './settings';
 import { stateMessages } from './states';
@@ -25,6 +27,8 @@ import { webCalendarMessages } from './web-calendar';
 import { webComposerMessages } from './web-composer';
 import { webSettingsMessages } from './web-settings';
 import { webShellMessages } from './web-shell';
+import { webBlogMessages } from './web-blog';
+import { webToolsMessages } from './web-tools';
 
 /**
  * The English catalog. This is the source of truth for every user visible
@@ -45,8 +49,10 @@ export const en = {
   ...webCalendarMessages,
   ...analyticsMessages,
   ...automationMessages,
+  ...queueMessages,
   ...webAnalyticsMessages,
   ...growthMessages,
+  ...importMessages,
   ...billingMessages,
   ...settingsMessages,
   ...developerMessages,
@@ -61,6 +67,8 @@ export const en = {
   ...webMarketingMessages,
   ...webSettingsMessages,
   ...webShellMessages,
+  ...webBlogMessages,
+  ...webToolsMessages,
 } as const;
 
 /** Every message key in the product. */
@@ -84,8 +92,10 @@ export {
   emailMessages,
   errorMessages,
   growthMessages,
+  importMessages,
   navMessages,
   onboardingMessages,
+  queueMessages,
   receiptMessages,
   settingsMessages,
   stateMessages,
@@ -97,4 +107,6 @@ export {
   webComposerMessages,
   webCalendarMessages,
   webAnalyticsMessages,
+  webBlogMessages,
+  webToolsMessages,
 };

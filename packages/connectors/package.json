@@ -15,7 +15,8 @@
     "lint": "eslint src",
     "test": "vitest run",
     "clean": "rm -rf dist .turbo",
-    "generate:marketing-states": "tsx scripts/generate-marketing-registry-states.ts"
+    "generate:marketing-states": "tsx scripts/generate-marketing-registry-states.ts",
+    "generate:publishing-limits": "tsx scripts/generate-publishing-limits.ts"
   },
   "dependencies": {
     "@relay/config": "workspace:*",

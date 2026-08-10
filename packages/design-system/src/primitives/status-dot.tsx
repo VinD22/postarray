@@ -33,6 +33,7 @@ const providerClass: Record<ProviderKey, string> = {
   pinterest: 'bg-brand-pinterest',
   discord: 'bg-brand-discord',
   slack: 'bg-brand-slack',
+  google_business_profile: 'bg-brand-google-business-profile',
   fake: 'bg-brand-fake',
 };
 

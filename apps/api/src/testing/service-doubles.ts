@@ -96,6 +96,18 @@ export function createRefusingServices(): Services {
       getCalendar: page,
       nextAvailableSlot: refuse('brand'),
     },
+    queueRules: {
+      list: page,
+      get: refuse('queue_rule'),
+      create: refuse('queue_rule'),
+      update: refuse('queue_rule'),
+      archive: refuse('queue_rule'),
+      previewSlot: refuse('brand'),
+      proposeSlot: refuse('brand'),
+      acceptSlot: refuse('queue_slot_reservation'),
+      releaseSlot: refuse('queue_slot_reservation'),
+      listReservations: page,
+    },
     publishing: {
       publishNow: refuse('content'),
       getJob: refuse('job'),
@@ -237,6 +249,18 @@ export function createRefusingServices(): Services {
       build: refuse('data_export'),
       download: refuse('data_export'),
       content: refuse('data_export'),
+    },
+    bulkImports: {
+      upload: refuse('bulk_import'),
+      get: refuse('bulk_import'),
+      list: page,
+      listRows: page,
+      apply: refuse('bulk_import'),
+      errorReport: refuse('bulk_import'),
+    },
+    workerBulkImports: {
+      validate: refuse('bulk_import'),
+      applyRows: refuse('bulk_import'),
     },
     dataLifecycle: {
       request: refuse('deletion_request'),

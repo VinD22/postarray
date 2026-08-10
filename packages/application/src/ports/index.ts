@@ -31,6 +31,7 @@ export {
 export { LoggingMailer, RecordingMailer } from './mailer';
 export {
   InMemoryScheduler,
+  bulkImportWorkflowId,
   dataExportWorkflowId,
   dataDeletionWorkflowId,
   publishWorkflowId,

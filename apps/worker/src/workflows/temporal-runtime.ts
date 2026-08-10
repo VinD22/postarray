@@ -75,6 +75,8 @@ const persistence = wf.proxyActivities<
     | 'finalizeDeletion'
     | 'markDeletionFailed'
     | 'buildDataExport'
+    | 'readBulkImportVerdict'
+    | 'applyBulkImportRows'
     | 'filterNewFeedItems'
     | 'processFeedItems'
     | 'preflightCampaign'
@@ -170,6 +172,8 @@ export const workerActivities: WorkerActivities = {
   finalizeDeletion: (input) => persistence.finalizeDeletion(input),
   markDeletionFailed: (input) => persistence.markDeletionFailed(input),
   buildDataExport: (input) => persistence.buildDataExport(input),
+  readBulkImportVerdict: (input) => persistence.readBulkImportVerdict(input),
+  applyBulkImportRows: (input) => persistence.applyBulkImportRows(input),
 };
 
 // ---------------------------------------------------------------------------

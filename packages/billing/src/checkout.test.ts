@@ -64,6 +64,17 @@ describe('the checkout disclosure', () => {
     expect(disclosure.annualFramingText).toBeNull();
   });
 
+  it('names the tier and its project allowance before the customer confirms', () => {
+    const ids = disclosure.lines.map((line) => line.id);
+    expect(ids).toContain('tier');
+    expect(ids).toContain('project_allowance');
+    expect(disclosure.tierKey).toBe('relay_standard');
+    expect(disclosure.projectAllowance).toBe(3);
+    const allowance = disclosure.lines.find((line) => line.id === 'project_allowance');
+    expect(allowance?.messageKey).toBe('billing.tier.projectAllowance');
+    expect(allowance?.params).toEqual({ count: 3 });
+  });
+
   it('discloses the channel allowance, fair use, metered X usage and the media boundary', () => {
     const ids = disclosure.lines.map((line) => line.id);
     expect(ids).toContain('channel_allowance');
@@ -140,9 +151,43 @@ describe('creating a checkout session', () => {
 
   it('refuses to guess a product id when Polar is live and none is configured', () => {
     expect(() =>
-      resolveProductId({ ...simulatorConfig, accessToken: 'polar_at_example' }, 'month', false),
+      resolveProductId({
+        config: { ...simulatorConfig, accessToken: 'polar_at_example' },
+        interval: 'month',
+        allowSimulatorFallback: false,
+      }),
     ).toThrow(RelayError);
-    expect(resolveProductId(simulatorConfig, 'year', true)).toBe('sim_prod_annual');
+    expect(
+      resolveProductId({
+        config: simulatorConfig,
+        interval: 'year',
+        allowSimulatorFallback: true,
+      }),
+    ).toBe('sim_prod_annual');
+  });
+
+  it('resolves the product from the tier and the interval together', () => {
+    expect(
+      resolveProductId({
+        config: simulatorConfig,
+        interval: 'month',
+        tier: 'relay_standard',
+        allowSimulatorFallback: false,
+        tierProductIds: { 'relay_standard:month': 'prod_supplied' },
+      }),
+    ).toBe('prod_supplied');
+  });
+
+  it('fails closed for a tier whose products are not configured', () => {
+    expect(() =>
+      resolveProductId({
+        config: simulatorConfig,
+        interval: 'month',
+        tier: 'relay_growth',
+        allowSimulatorFallback: true,
+        tierProductIds: { 'relay_growth:month': 'prod_growth' },
+      }),
+    ).toThrow(RelayError);
   });
 });
 

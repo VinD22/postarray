@@ -62,6 +62,7 @@ export const CONNECTOR_KEYS = [
   'pinterest',
   'discord',
   'slack',
+  'google_business_profile',
   'fake',
 ] as const;
 
@@ -234,6 +235,13 @@ function detectConnectors(config: RelayConfig): Record<ConnectorKey, CapabilityS
     ['META_APP_ID', config.providers.meta.appId],
     ['META_APP_SECRET', config.providers.meta.appSecret],
   ]);
+  // YouTube and Google Business Profile are two products behind one Google
+  // Cloud OAuth client. They differ by requested scope and by API, not by
+  // credential, so they read the same pair of variables.
+  const google = allOrNothing([
+    ['GOOGLE_CLIENT_ID', config.providers.google.clientId],
+    ['GOOGLE_CLIENT_SECRET', config.providers.google.clientSecret],
+  ]);
   const configured: Record<Exclude<ConnectorKey, 'fake'>, CapabilityStatus> = {
     x: allOrNothing([
       ['X_CLIENT_ID', config.providers.x.clientId],
@@ -246,10 +254,8 @@ function detectConnectors(config: RelayConfig): Record<ConnectorKey, CapabilityS
     instagram: meta,
     facebook: meta,
     threads: meta,
-    youtube: allOrNothing([
-      ['GOOGLE_CLIENT_ID', config.providers.google.clientId],
-      ['GOOGLE_CLIENT_SECRET', config.providers.google.clientSecret],
-    ]),
+    youtube: google,
+    google_business_profile: google,
     tiktok: allOrNothing([
       ['TIKTOK_CLIENT_KEY', config.providers.tiktok.clientKey],
       ['TIKTOK_CLIENT_SECRET', config.providers.tiktok.clientSecret],

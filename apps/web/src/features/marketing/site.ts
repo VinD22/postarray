@@ -32,6 +32,15 @@ export const ROUTES = {
   compare: '/compare',
   toolRadar: '/tool-radar',
   opportunities: '/opportunities',
+  /** The blog index. Individual articles are `/blog/<slug>`, driven by the
+   *  registry in `features/blog`, and appear in the sitemap from there. */
+  blog: '/blog',
+  /** The free tools index. Each tool below is its own indexable page. */
+  tools: '/tools',
+  toolPostPreflight: '/tools/post-preflight',
+  toolUtmBuilder: '/tools/utm-builder',
+  toolYouTubeTitle: '/tools/youtube-title-length',
+  toolTimeZonePlanner: '/tools/time-zone-planner',
   legal: '/legal',
   terms: '/legal/terms',
   privacy: '/legal/privacy',
@@ -111,6 +120,41 @@ export const RESOURCE_LINKS: readonly SiteLink[] = [
     href: ROUTES.opportunities,
     labelKey: 'web.meta.opportunities.title',
     descriptionKey: 'web.resources.opportunities.body',
+  },
+  {
+    href: ROUTES.tools,
+    labelKey: 'web.tools.index.title',
+    descriptionKey: 'web.tools.index.summary',
+  },
+];
+
+/**
+ * The free tools, in the order the index presents them.
+ *
+ * Declared here rather than in the tools feature so the index page, the footer
+ * and the sitemap read one list. Adding a tool is a route, an entry here and a
+ * page; nothing else has to be remembered.
+ */
+export const TOOL_LINKS: readonly SiteLink[] = [
+  {
+    href: ROUTES.toolPostPreflight,
+    labelKey: 'web.tools.preflight.name',
+    descriptionKey: 'web.tools.preflight.summary',
+  },
+  {
+    href: ROUTES.toolUtmBuilder,
+    labelKey: 'web.tools.utm.name',
+    descriptionKey: 'web.tools.utm.summary',
+  },
+  {
+    href: ROUTES.toolYouTubeTitle,
+    labelKey: 'web.tools.youtubeTitle.name',
+    descriptionKey: 'web.tools.youtubeTitle.summary',
+  },
+  {
+    href: ROUTES.toolTimeZonePlanner,
+    labelKey: 'web.tools.timeZone.name',
+    descriptionKey: 'web.tools.timeZone.summary',
   },
 ];
 
@@ -250,6 +294,7 @@ export const FOOTER_COLUMNS: readonly {
       { href: ROUTES.changelog, labelKey: 'nav.public.changelog' },
       { href: ROUTES.toolRadar, labelKey: 'web.meta.toolRadar.title' },
       { href: ROUTES.opportunities, labelKey: 'web.meta.opportunities.title' },
+      { href: ROUTES.tools, labelKey: 'web.tools.index.title' },
       { href: ROUTES.resources, labelKey: 'nav.public.resources' },
     ],
   },

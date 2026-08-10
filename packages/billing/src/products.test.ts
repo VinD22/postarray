@@ -12,7 +12,9 @@ import {
   MONTHLY_PRICE_MINOR,
   PLAN_INCLUSION_KEYS,
   PRICE_PRESENTATION,
+  TIER_PRESENTATIONS,
   TRIAL_DAYS,
+  derivedAnnualFramingAmounts,
   normalizeInterval,
   planPriceMinor,
   trialLengthMatches,
@@ -20,7 +22,7 @@ import {
 
 const catalog = en as Readonly<Record<string, string>>;
 
-describe('the one public plan', () => {
+describe('the base tier', () => {
   it('prices monthly at $29 and annual at $300', () => {
     expect(MONTHLY_PRICE_MINOR).toBe(2_900);
     expect(ANNUAL_PRICE_MINOR).toBe(30_000);
@@ -79,6 +81,17 @@ describe('the presentation object agrees with the English catalog', () => {
     );
   });
 
+  it('ties the mandated annual sentence to the arithmetic, so it cannot drift', () => {
+    const derived = derivedAnnualFramingAmounts();
+    expect(derived.perMonth).toBe('$25');
+    expect(derived.saving).toBe('$48');
+    // Change either price without rewording the sentence and this fails.
+    expect(MANDATED_COPY.annualFraming).toContain(`${derived.perMonth}/month`);
+    expect(MANDATED_COPY.annualFraming).toContain(`Save ${derived.saving}/year`);
+    expect(catalog['billing.plan.annualFraming']).toContain(derived.perMonth);
+    expect(catalog['billing.plan.annualFraming']).toContain(derived.saving);
+  });
+
   it('keeps the headline prices in step with the catalog', () => {
     expect(catalog[PRICE_PRESENTATION.month.headlineKey]).toBe(MANDATED_COPY.monthlyPrice);
     expect(catalog[PRICE_PRESENTATION.year.headlineKey]).toBe(MANDATED_COPY.annualPrice);
@@ -114,5 +127,41 @@ describe('the presentation object agrees with the English catalog', () => {
   it('states the three-project base allowance', () => {
     expect(PRICE_PRESENTATION.projectAllowance).toBe(3);
     expect(catalog['billing.plan.includes.projects']).toContain('3');
+  });
+});
+
+describe('the tier presentations every pricing surface renders', () => {
+  it('offers only the base tier while the higher tiers are undecided', () => {
+    expect(TIER_PRESENTATIONS.map((tier) => tier.tierKey)).toEqual(['relay_standard']);
+  });
+
+  it('derives every amount from the tier minor units', () => {
+    const base = TIER_PRESENTATIONS[0];
+    expect(base).toBeDefined();
+    if (base === undefined) {
+      return;
+    }
+    expect(base.month.priceText).toBe('$29');
+    expect(base.year.priceText).toBe('$300');
+    expect(base.annualFraming.effectiveMonthlyMinor * 12).toBe(base.year.priceMinor);
+    expect(base.annualFraming.effectiveMonthlyIsExact).toBe(true);
+    expect(base.annualFraming.savingMinor).toBe(base.month.priceMinor * 12 - base.year.priceMinor);
+    expect(base.projectAllowance).toBe(3);
+  });
+
+  it('references only message keys that exist', () => {
+    for (const tier of TIER_PRESENTATIONS) {
+      for (const key of [
+        tier.nameKey,
+        tier.taglineKey,
+        tier.projectAllowanceKey,
+        tier.annualFraming.framingKey,
+        tier.month.labelKey,
+        tier.year.labelKey,
+        ...tier.inclusionKeys,
+      ]) {
+        expect(catalog[key], key).toBeTypeOf('string');
+      }
+    }
   });
 });

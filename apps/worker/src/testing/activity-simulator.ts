@@ -6,8 +6,11 @@ import type {
   ActivityName,
   BeginPublishAttemptInput,
   BeginPublishAttemptResult,
+  ApplyBulkImportInput,
   BuildDataExportInput,
   BuildDataExportResult,
+  BulkImportActivityInput,
+  BulkImportActivityResult,
   CancelScheduledJobInput,
   ConnectionIncidentInput,
   CreateOccurrenceJobInput,
@@ -128,6 +131,7 @@ export interface SimulatorOptions {
   readonly deletionScope?: Partial<DeletionScope>;
   readonly deletionFailure?: 'delete_objects';
   readonly dataExport?: Partial<BuildDataExportResult>;
+  readonly bulkImport?: Partial<BulkImportActivityResult>;
   readonly repeatPlan?: Partial<PlanRepeatOccurrenceResult>;
   readonly occurrenceTargets?: CreateOccurrenceJobResult['targets'];
   readonly metrics?: Partial<FetchMetricsResult>;
@@ -912,6 +916,26 @@ export class ActivitySimulator implements WorkerActivities {
       byteSize: 128,
       checksumSha256: 'a'.repeat(64),
       ...this.options.dataExport,
+    });
+  }
+
+  readBulkImportVerdict(input: BulkImportActivityInput): Promise<BulkImportActivityResult> {
+    this.record('readBulkImportVerdict', input);
+    return Promise.resolve({
+      importJobId: input.importJobId,
+      state: 'validated',
+      counts: { total: 2, valid: 2, invalid: 0, applied: 0, failed: 0, skipped: 0 },
+      ...this.options.bulkImport,
+    });
+  }
+
+  applyBulkImportRows(input: ApplyBulkImportInput): Promise<BulkImportActivityResult> {
+    this.record('applyBulkImportRows', input);
+    return Promise.resolve({
+      importJobId: input.importJobId,
+      state: 'applied',
+      counts: { total: 2, valid: 0, invalid: 0, applied: 2, failed: 0, skipped: 0 },
+      ...this.options.bulkImport,
     });
   }
 }

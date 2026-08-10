@@ -58,6 +58,7 @@ function runtimeCapabilities(fake: RuntimeCapabilities['connectors']['fake']): R
       facebook: 'disabled:missing META_APP_ID, META_APP_SECRET',
       threads: 'disabled:missing META_APP_ID, META_APP_SECRET',
       youtube: 'disabled:missing GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET',
+      google_business_profile: 'disabled:missing GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET',
       tiktok: 'disabled:missing TIKTOK_CLIENT_KEY, TIKTOK_CLIENT_SECRET',
       bluesky: 'live',
       mastodon: 'disabled:missing MASTODON_CLIENT_ID, MASTODON_CLIENT_SECRET',

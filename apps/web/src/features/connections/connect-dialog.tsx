@@ -62,6 +62,7 @@ const REQUIREMENT_KEY: Readonly<Record<ProviderId, string>> = {
   pinterest: 'web.connection.requirement.pinterest',
   discord: 'web.connection.requirement.discord',
   slack: 'web.connection.requirement.slack',
+  google_business_profile: 'web.connection.requirement.google_business_profile',
   fake: 'web.connection.requirement.generic',
 };
 

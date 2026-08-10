@@ -3,13 +3,11 @@ import { z } from 'zod';
 import { RelayError, subscriptionStatusSchema } from '@relay/contracts';
 import type { SubscriptionStatus } from '@relay/contracts';
 
+import { billingIntervalSchema } from './intervals';
 import { BILLING_MESSAGE_KEYS } from './messages';
-import {
-  ACTIVE_CHANNEL_ALLOWANCE,
-  GRACE_PERIOD_DAYS,
-  READ_ONLY_PERIOD_DAYS,
-  billingIntervalSchema,
-} from './products';
+import { ACTIVE_CHANNEL_ALLOWANCE, GRACE_PERIOD_DAYS, READ_ONLY_PERIOD_DAYS } from './products';
+import { BASE_TIER_KEY, tierForProductId, tierProjectAllowance } from './tiers';
+import type { PlanTierKey } from './tiers';
 import { addDays, daysUntil, isAtOrAfter, isBefore } from './time';
 
 /**
@@ -149,6 +147,14 @@ export interface EntitlementSnapshot {
   readonly analyticsAllowed: boolean;
   readonly exportAllowed: boolean;
   readonly activeChannelAllowance: number;
+  /** The capacity tier the verified subscription's product maps to. */
+  readonly tierKey: PlanTierKey;
+  /**
+   * Active projects this workspace may hold. Always a real number: an unknown
+   * or unmapped product falls back to the base allowance, never to unlimited
+   * and never to zero.
+   */
+  readonly projectAllowance: number;
   readonly isTrialing: boolean;
   readonly trialEndsAt: string | null;
   readonly trialDaysRemaining: number | null;
@@ -165,6 +171,26 @@ export interface DeriveEntitlementOptions {
   readonly gracePeriodDays?: number;
   readonly readOnlyPeriodDays?: number;
   readonly activeChannelAllowance?: number;
+  /**
+   * Polar product id to tier key, supplied by configuration so product ids stay
+   * out of source. Omitted, unknown and unmapped ids all resolve to the base
+   * tier.
+   */
+  readonly productTiers?: Readonly<Record<string, string>>;
+}
+
+/**
+ * The tier a subscription grants. Only verified state is evidence, so an
+ * unverified record carries the base tier exactly like no record at all.
+ */
+export function tierOf(
+  subscription: VerifiedSubscription | null,
+  productTiers: Readonly<Record<string, string>> = {},
+): PlanTierKey {
+  if (subscription === null || !isVerifiedSource(subscription.source)) {
+    return BASE_TIER_KEY;
+  }
+  return tierForProductId(subscription.productId, productTiers);
 }
 
 const FULL_STATES: readonly EntitlementState[] = Object.freeze([
@@ -192,6 +218,7 @@ function snapshot(
   const subscription = input.subscription;
   const isTrialing = subscription?.status === 'trialing';
   const trialEndsAt = isTrialing ? (subscription?.trialEnd ?? null) : null;
+  const tierKey = tierOf(subscription, options.productTiers ?? {});
   return {
     state: input.state,
     reason: input.reason,
@@ -205,6 +232,8 @@ function snapshot(
     analyticsAllowed: input.state !== 'none',
     exportAllowed: true,
     activeChannelAllowance: options.activeChannelAllowance ?? ACTIVE_CHANNEL_ALLOWANCE,
+    tierKey,
+    projectAllowance: tierProjectAllowance(tierKey),
     isTrialing,
     trialEndsAt,
     trialDaysRemaining: trialEndsAt === null ? null : daysUntil(trialEndsAt, options.now),

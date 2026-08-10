@@ -1,198 +1,57 @@
-import { RelayError, computeChecksum } from '@relay/contracts';
+import { RelayError } from '@relay/contracts';
 import type { PolarConfig } from '@relay/config';
 
 import type { PolarClient } from './client';
 import { isSimulated } from './client';
+import { buildCheckoutDisclosure, buildConsentRecord } from './disclosure';
+import type { CheckoutDisclosure, DisclosureConsentRecord } from './disclosure';
 import { BILLING_MESSAGE_KEYS } from './messages';
-import { formatMoneyMinor } from './money';
-import {
-  ACTIVE_CHANNEL_ALLOWANCE,
-  MANDATED_COPY,
-  PLAN_CURRENCY,
-  PRICE_PRESENTATION,
-  TRIAL_DAYS,
-} from './products';
-import type { BillingInterval } from './products';
+import { PLAN_CURRENCY, TRIAL_DAYS } from './products';
+import type { BillingInterval } from './intervals';
+import { BASE_TIER_KEY, assertTierPublishable } from './tiers';
+import type { PlanTierKey } from './tiers';
 import { SIMULATOR_ANNUAL_PRODUCT_ID, SIMULATOR_MONTHLY_PRODUCT_ID } from './simulator';
-import { computeTrialSchedule } from './trial';
-import type { TrialSchedule } from './trial';
 import type { Clock } from './time';
-import { isoDateOf, nowIso } from './time';
+import { nowIso } from './time';
 
 /**
- * Checkout, and the disclosure the customer must see **before** they confirm.
- *
- * The disclosure is not marketing. It is the record of what was promised, so it
- * is versioned, checksummed and retained with a timestamp in `consents`. If a
- * customer later disputes a charge, we can show exactly what they read.
+ * Checkout.
  *
  * Nothing here grants access. The redirect that follows checkout grants
  * nothing either. Entitlements come from the verified webhook and from
  * reconciliation, and only from those.
+ *
+ * The pre-purchase disclosure lives in `disclosure.ts` and is re-exported here
+ * so every caller keeps one import for the whole checkout surface.
  */
 
-/** Bump when any sentence in the disclosure changes. Stored with the consent. */
-export const DISCLOSURE_VERSION = '2026-08-04';
-
-export interface DisclosureLine {
-  /** Stable identifier so a test can assert the block is complete. */
-  readonly id: string;
-  readonly messageKey: string;
-  readonly params: Readonly<Record<string, string | number>>;
-}
-
-/** Every line the checkout disclosure must contain, in render order. */
-export const REQUIRED_DISCLOSURE_LINE_IDS: readonly string[] = Object.freeze([
-  'due_today',
-  'trial_end',
-  'first_charge',
-  'interval',
-  'renewal',
-  'cancellation_path',
-  'channel_allowance',
-  'fair_use',
-  'metered_x_usage',
-  'no_media_generation',
-  'tax',
-]);
-
-export interface CheckoutDisclosure {
-  readonly version: string;
-  readonly interval: BillingInterval;
-  readonly currency: string;
-  /** Always zero. Rendered as the exact string "$0 due today". */
-  readonly dueTodayMinor: number;
-  readonly dueTodayText: string;
-  readonly trialDays: number;
-  readonly trialEndsAt: string;
-  readonly trialEndsOnDate: string;
-  readonly firstChargeMinor: number;
-  readonly firstChargeText: string;
-  readonly firstChargeAt: string;
-  readonly firstChargeOnDate: string;
-  readonly renewalMinor: number;
-  readonly renewalText: string;
-  readonly annualFramingText: string | null;
-  readonly activeChannelAllowance: number;
-  readonly lines: readonly DisclosureLine[];
-}
-
-export interface BuildDisclosureInput {
-  readonly interval: BillingInterval;
-  readonly startedAt: string;
-  readonly trialDays?: number;
-}
-
-/**
- * The block rendered beside the primary action, and repeated on the Billing
- * settings page. Dates and amounts come from `computeTrialSchedule`, sentences
- * come from `@relay/i18n` keys, so this function never contains prose.
- */
-export function buildCheckoutDisclosure(input: BuildDisclosureInput): CheckoutDisclosure {
-  const schedule: TrialSchedule = computeTrialSchedule({
-    startedAt: input.startedAt,
-    interval: input.interval,
-    ...(input.trialDays === undefined ? {} : { trialDays: input.trialDays }),
-  });
-  const firstChargeText = formatMoneyMinor(schedule.firstChargeMinor, schedule.currency);
-  const renewalText = formatMoneyMinor(schedule.renewalMinor, schedule.currency);
-  const trialEndsOnDate = isoDateOf(schedule.conversionAt);
-  const firstChargeOnDate = isoDateOf(schedule.firstChargeAt);
-  const intervalLabelKey =
-    input.interval === 'year'
-      ? PRICE_PRESENTATION.year.labelKey
-      : PRICE_PRESENTATION.month.labelKey;
-
-  const lines: DisclosureLine[] = [
-    { id: 'due_today', messageKey: 'billing.trial.dueToday', params: {} },
-    {
-      id: 'trial_end',
-      messageKey: 'billing.trial.length',
-      params: { date: trialEndsOnDate, days: schedule.trialDays },
-    },
-    {
-      id: 'first_charge',
-      messageKey: 'billing.trial.firstCharge',
-      params: { amount: firstChargeText, date: firstChargeOnDate },
-    },
-    { id: 'interval', messageKey: intervalLabelKey, params: {} },
-    {
-      id: 'renewal',
-      messageKey: 'billing.trial.renewal',
-      params: { amount: renewalText, interval: input.interval },
-    },
-    { id: 'cancellation_path', messageKey: 'billing.trial.cancelBefore', params: {} },
-    {
-      id: 'channel_allowance',
-      messageKey: 'billing.plan.includes.channels',
-      params: { limit: ACTIVE_CHANNEL_ALLOWANCE },
-    },
-    { id: 'fair_use', messageKey: 'billing.plan.fairUse', params: {} },
-    { id: 'metered_x_usage', messageKey: 'billing.usage.xCharges', params: {} },
-    { id: 'no_media_generation', messageKey: 'billing.usage.noMediaCredits', params: {} },
-    { id: 'tax', messageKey: 'billing.checkout.taxNote', params: {} },
-  ];
-
-  return {
-    version: DISCLOSURE_VERSION,
-    interval: input.interval,
-    currency: schedule.currency,
-    dueTodayMinor: schedule.dueTodayMinor,
-    dueTodayText: MANDATED_COPY.dueToday,
-    trialDays: schedule.trialDays,
-    trialEndsAt: schedule.conversionAt,
-    trialEndsOnDate,
-    firstChargeMinor: schedule.firstChargeMinor,
-    firstChargeText,
-    firstChargeAt: schedule.firstChargeAt,
-    firstChargeOnDate,
-    renewalMinor: schedule.renewalMinor,
-    renewalText,
-    annualFramingText:
-      input.interval === 'year' ? PRICE_PRESENTATION.annualFraming.framingText : null,
-    activeChannelAllowance: ACTIVE_CHANNEL_ALLOWANCE,
-    lines,
-  };
-}
-
-export interface DisclosureConsentRecord {
-  readonly version: string;
-  readonly interval: BillingInterval;
-  readonly workspaceId: string;
-  readonly actorId: string;
-  readonly shownAt: string;
-  /** Checksum of the exact disclosure the customer saw. */
-  readonly checksum: string;
-  readonly locale: string;
-}
-
-/** The retained proof of what was shown, written to `consents` at checkout. */
-export async function buildConsentRecord(input: {
-  disclosure: CheckoutDisclosure;
-  workspaceId: string;
-  actorId: string;
-  shownAt: string;
-  locale: string;
-}): Promise<DisclosureConsentRecord> {
-  return {
-    version: input.disclosure.version,
-    interval: input.disclosure.interval,
-    workspaceId: input.workspaceId,
-    actorId: input.actorId,
-    shownAt: input.shownAt,
-    checksum: await computeChecksum(input.disclosure),
-    locale: input.locale,
-  };
-}
+export {
+  DISCLOSURE_VERSION,
+  REQUIRED_DISCLOSURE_LINE_IDS,
+  buildCheckoutDisclosure,
+  buildConsentRecord,
+  type BuildDisclosureInput,
+  type CheckoutDisclosure,
+  type DisclosureConsentRecord,
+  type DisclosureLine,
+} from './disclosure';
 
 export interface CheckoutDeps {
   readonly client: PolarClient;
   readonly config: PolarConfig;
   readonly clock: Clock;
+  /**
+   * Polar product ids for tiers above the base one, keyed `<tier>:<interval>`.
+   * `PolarConfig` carries the two base product ids directly; a higher tier
+   * cannot be sold until its ids are supplied here from the environment.
+   */
+  readonly tierProductIds?: Readonly<Record<string, string>>;
 }
 
 export interface CreateCheckoutSessionInput {
   readonly interval: BillingInterval;
+  /** Defaults to the base tier. A tier awaiting a founder decision throws. */
+  readonly tier?: PlanTierKey;
   readonly workspaceId: string;
   readonly actorId: string;
   readonly successUrl: string;
@@ -207,6 +66,7 @@ export interface CheckoutSession {
   readonly checkoutUrl: string;
   readonly productId: string;
   readonly interval: BillingInterval;
+  readonly tierKey: PlanTierKey;
   readonly disclosure: CheckoutDisclosure;
   readonly consent: DisclosureConsentRecord;
   /** Access is granted by the webhook, never by the return page. */
@@ -214,24 +74,48 @@ export interface CheckoutSession {
   readonly pendingStateKey: string;
 }
 
-/** Resolve the Polar product id for an interval, or refuse to guess. */
-export function resolveProductId(
-  config: PolarConfig,
-  interval: BillingInterval,
-  allowSimulatorFallback: boolean,
-): string {
-  const configured = interval === 'year' ? config.annualProductId : config.monthlyProductId;
-  if (configured !== undefined && configured.length > 0) {
+export interface ResolveProductIdInput {
+  readonly config: PolarConfig;
+  readonly interval: BillingInterval;
+  readonly tier?: PlanTierKey;
+  readonly allowSimulatorFallback: boolean;
+  readonly tierProductIds?: Readonly<Record<string, string>>;
+}
+
+/** The `tierProductIds` lookup key for one purchasable combination. */
+export function tierProductKey(tier: PlanTierKey, interval: BillingInterval): string {
+  return `${tier}:${interval}`;
+}
+
+/**
+ * Resolve the Polar product id for a (tier, interval), or refuse to guess.
+ *
+ * Fail closed is the whole point: an unconfigured product throws rather than
+ * falling back to a different tier's product, because charging a customer the
+ * base price for a larger allowance would be worse than not selling at all.
+ */
+export function resolveProductId(input: ResolveProductIdInput): string {
+  const tier = assertTierPublishable(input.tier ?? BASE_TIER_KEY);
+  const { config, interval } = input;
+  const envKey = interval === 'year' ? tier.annualProductIdEnvKey : tier.monthlyProductIdEnvKey;
+
+  const supplied = input.tierProductIds?.[tierProductKey(tier.key, interval)];
+  const configured =
+    supplied ?? (interval === 'year' ? config.annualProductId : config.monthlyProductId);
+  const usesBaseConfig = tier.key === BASE_TIER_KEY;
+
+  if (supplied !== undefined && supplied.length > 0) {
+    return supplied;
+  }
+  if (usesBaseConfig && configured !== undefined && configured.length > 0) {
     return configured;
   }
-  if (allowSimulatorFallback) {
+  if (usesBaseConfig && input.allowSimulatorFallback) {
     return interval === 'year' ? SIMULATOR_ANNUAL_PRODUCT_ID : SIMULATOR_MONTHLY_PRODUCT_ID;
   }
   throw new RelayError('INTERNAL', {
     messageKey: BILLING_MESSAGE_KEYS.internal,
-    details: {
-      missingEnvVar: interval === 'year' ? 'POLAR_ANNUAL_PRODUCT_ID' : 'POLAR_MONTHLY_PRODUCT_ID',
-    },
+    details: { missingEnvVar: envKey, tier: tier.key, interval },
   });
 }
 
@@ -247,9 +131,17 @@ export async function createCheckoutSession(
   input: CreateCheckoutSessionInput,
 ): Promise<CheckoutSession> {
   const now = nowIso(deps.clock);
-  const productId = resolveProductId(deps.config, input.interval, isSimulated(deps.client));
+  const tierKey = input.tier ?? BASE_TIER_KEY;
+  const productId = resolveProductId({
+    config: deps.config,
+    interval: input.interval,
+    tier: tierKey,
+    allowSimulatorFallback: isSimulated(deps.client),
+    ...(deps.tierProductIds === undefined ? {} : { tierProductIds: deps.tierProductIds }),
+  });
   const disclosure = buildCheckoutDisclosure({
     interval: input.interval,
+    tier: tierKey,
     startedAt: now,
     trialDays: deps.config.trialDays,
   });
@@ -263,6 +155,7 @@ export async function createCheckoutSession(
       workspaceId: input.workspaceId,
       actorId: input.actorId,
       interval: input.interval,
+      tier: tierKey,
       disclosureVersion: disclosure.version,
     },
     ...(input.customerEmail === undefined ? {} : { customerEmail: input.customerEmail }),
@@ -282,6 +175,7 @@ export async function createCheckoutSession(
     checkoutUrl: checkout.url,
     productId,
     interval: input.interval,
+    tierKey,
     disclosure,
     consent,
     grantsEntitlement: false,

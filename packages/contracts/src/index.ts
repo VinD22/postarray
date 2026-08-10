@@ -17,6 +17,8 @@ export * from './capabilities';
 export * from './content';
 export * from './validation';
 export * from './publishing';
+export * from './queue-rules';
+export * from './bulk-import';
 export * from './growth';
 export * from './data';
 export * from './api';

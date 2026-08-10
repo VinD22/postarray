@@ -35,6 +35,9 @@ export const calendarMessages = {
     'This post is already published. Moving it changes the local record only. Publishing it again is a separate action.',
   'calendar.drag.conflictNotice':
     '{account} already has {count, plural, one {# post} other {# posts}} within an hour of the new time.',
+  'calendar.drag.handleHint': 'Drag to a new slot, or select this and use the arrow keys.',
+  'calendar.drag.overSlot': 'Over {to}. Release to confirm.',
+  'calendar.drag.dropped': 'Dropped at {to}. Confirm the move, or cancel to put it back.',
 
   'calendar.queue.title': 'Queue',
   'calendar.queue.upcoming': 'Upcoming',

@@ -6,7 +6,13 @@ import { describe, expect, it } from 'vitest';
 
 import { en } from '@relay/i18n';
 
-import { FORBIDDEN_BILLING_PHRASES, MANDATED_COPY, PRICE_PRESENTATION } from './products';
+import {
+  FORBIDDEN_BILLING_PHRASES,
+  MANDATED_COPY,
+  PRICE_PRESENTATION,
+  TIER_PRESENTATIONS,
+} from './products';
+import { tierPresentationStrings } from './tier-presentation';
 import { FORBIDDEN_METER_NAMES } from './usage';
 
 /**
@@ -73,6 +79,52 @@ describe('forbidden billing claims', () => {
       for (const phrase of FORBIDDEN_BILLING_PHRASES) {
         expect(lowered, `${key} contains "${phrase}"`).not.toContain(phrase.toLowerCase());
       }
+    }
+  });
+});
+
+describe('tier copy', () => {
+  const tierCatalogValues = Object.entries(en as Readonly<Record<string, string>>)
+    .filter(([key]) => key.startsWith('billing.tier.'))
+    .map(([key, value]) => [key, value] as const);
+
+  it('has tier copy to check', () => {
+    expect(tierCatalogValues.length).toBeGreaterThan(0);
+  });
+
+  it('never carries a forbidden phrase in a rendered tier amount', () => {
+    for (const presentation of TIER_PRESENTATIONS) {
+      for (const value of tierPresentationStrings(presentation)) {
+        const lowered = value.toLowerCase();
+        for (const phrase of FORBIDDEN_BILLING_PHRASES) {
+          expect(lowered, `${presentation.tierKey} renders "${phrase}"`).not.toContain(
+            phrase.toLowerCase(),
+          );
+        }
+      }
+    }
+  });
+
+  it('never frames a tier price as a percentage off', () => {
+    for (const [key, value] of tierCatalogValues) {
+      expect(value, key).not.toMatch(/\d+\s*%\s*(off|discount)/i);
+      expect(value.toLowerCase(), key).not.toContain('20% off');
+    }
+  });
+
+  it('never claims a tier unlocks a feature another tier does not have', () => {
+    for (const [key, value] of tierCatalogValues) {
+      const lowered = value.toLowerCase();
+      expect(lowered, key).not.toContain('unlock');
+      expect(lowered, key).not.toContain('upgrade to get');
+      expect(lowered, key).not.toContain('per seat');
+      expect(lowered, key).not.toContain('per channel');
+    }
+  });
+
+  it('keeps tier copy free of em dashes', () => {
+    for (const [key, value] of tierCatalogValues) {
+      expect(value, key).not.toContain('—');
     }
   });
 });

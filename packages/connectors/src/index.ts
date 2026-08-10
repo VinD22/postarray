@@ -25,6 +25,7 @@ export * from './registry';
 export * from './idempotency';
 export * from './capability-diff';
 export * from './marketing-capability-grid';
+export * from './marketing-limits-grid';
 export * from './fake/index';
 
 // Provider adapters. This barrel is owned by the provider adapter work and is

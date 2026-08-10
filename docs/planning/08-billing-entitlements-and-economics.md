@@ -17,10 +17,16 @@ source first.
 
 ## 1. The commercial model in nine lines
 
-1. One public plan. No feature tiers. No free forever plan. No lifetime deal.
-2. **$29 per month** or **$300 per year**, which is **$25 per month billed annually, save $48 per year**
-   (13.8%). Never say "20% off": it is not true for these prices.
-3. Both intervals unlock every shipped feature, 30 active channels and unlimited team members.
+1. **Project capacity tiers.** A tier buys active project capacity and nothing else. No feature tiers,
+   no per-seat price, no per-channel price, no free forever plan, no lifetime deal.
+2. The base tier, `relay_standard`, is **$29 per month** or **$300 per year**, which is **$25 per month
+   billed annually, save $48 per year** (13.8%). Never say "20% off": it is not true for these prices.
+   It includes **3 active projects**. Two higher tiers (`relay_growth`, `relay_studio`) exist as
+   structure only: every number on them is a founder placeholder, they are excluded from every pricing
+   surface and from checkout, and `packages/billing/src/tiers.test.ts` fails if one leaks.
+3. **Every tier gets every feature.** Both intervals and every tier unlock every shipped feature,
+   **10 active channels** and **6 workspace members** (owner plus 5). There is exactly one inclusion
+   list in `packages/billing/src/tiers.ts`, and a test asserts no tier carries a different one.
 4. Both intervals start with a **seven-day trial** through Polar: payment method collected, **$0 due
    today**, exact conversion date and amount shown before confirming, Polar's pre-conversion reminder,
    self-service cancellation.
@@ -46,18 +52,25 @@ our corporate income tax. Source: `https://polar.sh/docs/merchant-of-record/intr
 
 Create in the Polar sandbox first, then production. Record the IDs in the environment, never in source.
 
-| Product | Type | Price | Interval | Trial | Env var |
-| --- | --- | --- | --- | --- | --- |
-| Relay Monthly | Recurring subscription | $29.00 USD | month | 7 days | `POLAR_MONTHLY_PRODUCT_ID` |
-| Relay Annual | Recurring subscription | $300.00 USD | year | 7 days | `POLAR_ANNUAL_PRODUCT_ID` |
-| X API usage | Usage-based meter | pass-through, see section 8 | monthly in arrears | n/a | `POLAR_X_USAGE_METER_ID` |
+| Product | Tier | Type | Price | Interval | Trial | Env var |
+| --- | --- | --- | --- | --- | --- | --- |
+| Relay Monthly | `relay_standard` | Recurring subscription | $29.00 USD | month | 7 days | `POLAR_MONTHLY_PRODUCT_ID` |
+| Relay Annual | `relay_standard` | Recurring subscription | $300.00 USD | year | 7 days | `POLAR_ANNUAL_PRODUCT_ID` |
+| X API usage | n/a | Usage-based meter | pass-through, see section 8 | monthly in arrears | n/a | `POLAR_X_USAGE_METER_ID` |
 
 `POLAR_TRIAL_DAYS=7` is a config value that must match the Polar product configuration. A startup check
 fails loudly if the configured product's trial length does not equal `POLAR_TRIAL_DAYS`, because a
 mismatch would make our on-screen conversion date a lie.
 
-There is no third product. In particular there is no image product, no video product, no credit pack and
-no seat add-on.
+**Higher tiers have no Polar products yet, deliberately.** `relay_growth` and `relay_studio` carry the
+`FOUNDER_DECISION_PENDING` sentinel in every price, allowance and product-id field. Until the founder
+replaces all of them in one edit, the tiers are excluded from `PUBLISHABLE_TIER_KEYS`, cannot be
+presented and cannot be checked out; `resolveProductId` throws rather than falling back to the base
+product, because charging the base price for a larger allowance would be worse than not selling. The
+replacement procedure is documented at the top of `packages/billing/src/tiers.ts`.
+
+Beyond these there is no other product. In particular there is no image product, no video product, no
+credit pack and no seat add-on.
 
 ### 2.2 What must never be created in Polar
 
@@ -65,6 +78,11 @@ Creating any of these in the Polar dashboard is a policy violation, not a mistak
 media-generation meters, per-seat prices, per-channel prices, feature-gated product variants, or a
 discounted "lite" plan. If a commercial experiment needs one of these, it needs a founder decision and an
 update to this document first.
+
+Tiers do not weaken this rule, they are bounded by it. A tier may differ from another tier in exactly one
+respect: the number of active projects it allows, up to the hard authorization ceiling of 20 in
+`packages/contracts/src/plan-limits.ts`. A tier that differs in feature access, seat count or channel
+count is the same violation under a new name.
 
 ---
 
@@ -92,11 +110,15 @@ Source for trial mechanics: `https://polar.sh/docs/features/subscriptions/trials
 Rendered before the user leaves for Polar's hosted checkout, and repeated on the Billing settings page.
 No em dashes.
 
-> $0.00 due today. Your seven-day trial ends on 11 August 2026 and your card is charged $29.00 per
-> month from that date unless you cancel. Cancel in Settings before 11 August 2026 and you will not be
-> charged. Managed X API usage is billed separately at cost.
+> $0.00 due today. Standard, 3 active projects. Your seven-day trial ends on 11 August 2026 and your
+> card is charged $29.00 per month from that date unless you cancel. Cancel in Settings before
+> 11 August 2026 and you will not be charged. Managed X API usage is billed separately at cost.
 
 For annual: "$300.00 per year, which is $25.00 per month billed annually. You save $48 per year."
+
+The tier name and its project allowance are mandatory disclosure lines (`tier` and `project_allowance`
+in `REQUIRED_DISCLOSURE_LINE_IDS`), because capacity is the thing being bought. `DISCLOSURE_VERSION` was
+bumped to `2026-08-10` when they were added, so consents recorded before and after are distinguishable.
 
 We retain the exact disclosure text version shown, with a timestamp, in `consents`, so we can prove what
 the customer saw.
@@ -202,13 +224,35 @@ Entitlements are **derived**, never hand-set. One function, one table of truth:
 | `revoked` / `unpaid` | `read_only` | no | no | yes | yes | Read-only, how to restore |
 | No subscription | `none` | no | no | no | yes | Start a trial |
 
-The single entitlement bundle for `full`: every shipped feature, 30 active channels, unlimited team
-members, unlimited drafts and standard scheduled posts under fair use, all approved connectors,
-approvals, analytics, API, MCP, CLI, webhooks, automation, DeepSeek text assistance under the abuse and
-cost limits in `docs/planning/07-ai-growth-advisor-and-localization.md` section 2.4.
+The entitlement bundle for `full` is the same on every tier: every shipped feature, **10 active
+channels**, **6 workspace members** (owner plus 5), unlimited drafts and standard scheduled posts under
+fair use, all approved connectors, approvals, analytics, API, MCP, CLI, webhooks, automation, DeepSeek
+text assistance under the abuse and cost limits in
+`docs/planning/07-ai-growth-advisor-and-localization.md` section 2.4. These are the numbers the code
+enforces (`ACTIVE_CHANNEL_LIMIT = 10`, `WORKSPACE_MEMBER_LIMIT = 6` in
+`packages/contracts/src/plan-limits.ts`). Earlier drafts of this document said 30 channels and unlimited
+members; that was never what shipped.
 
-Channel count enforcement: a workspace may hold at most 30 **active** connections. Exceeding it is
+Channel count enforcement: a workspace may hold at most 10 **active** connections. Exceeding it is
 prevented at connect time with a clear message. We never auto-disconnect an account to enforce a limit.
+
+### 5.3.1 Project capacity
+
+Project capacity is the one entitlement a tier changes. The snapshot carries `tierKey` and
+`projectAllowance`, both derived from the verified subscription's Polar product id. An unknown or
+unmapped product id resolves to the base allowance of 3. It never resolves to the largest tier and there
+is no unlimited outcome.
+
+On every verified subscription upsert (webhook or reconciliation) the billing package emits a
+`projects.active.max` numeric entitlement row carrying that allowance. Migration
+`0066_project_capacity_guard.sql` already reads exactly that key under an advisory lock and refuses a
+concurrent insert that would exceed it, so the database is the race-safe final guard and billing does not
+add a second one.
+
+**Downgrade never destroys.** A workspace that ends up above its new allowance keeps full read and write
+access to every project it already has. Nothing is archived for it, ever. What it loses is the ability to
+create another active project or to unarchive one, until it is back inside the allowance. The message is
+`billing.downgrade.projectsOverAllowance` and it says so plainly.
 
 ### 5.4 Reconciliation
 
@@ -469,8 +513,8 @@ collects a card and never publishes is a failure we should be able to see.
 | P1 | DeepSeek raises token prices materially | Medium | Medium | AI is 13% of variable cost. The gateway makes a provider swap a config change. Re-verify pricing monthly (`docs/research/06-source-register.md` recheck schedule) |
 | P2 | X raises per-operation prices | Medium | Low to margin, high to trust | Pass-through means margin is unaffected. Update the price book, notify workspaces with active X connections before the new price applies |
 | P3 | Polar fees change or the MoR relationship ends | Low | High | Keep the billing package provider-neutral behind an interface. Do not scatter Polar types through the application layer |
-| P4 | $29 is too low for agencies running 30 channels | Medium | Medium | Support cost per subscriber is the tell. If agency cohorts exceed the support budget, adjust the disclosed fair-use boundary, not the feature set |
-| P5 | $29 is too high for solo creators | Medium | Medium | Do not create a cheaper tier. Compete on reliability and receipts. Measure with the price validation research in `docs/research/04-marketing-and-growth.md` |
+| P4 | $29 is too low for agencies running many projects and 10 channels | Medium | Medium | Support cost per subscriber is the tell. If agency cohorts exceed the support budget, raise capacity through a higher project tier or adjust the disclosed fair-use boundary. Never the feature set |
+| P5 | $29 is too high for solo creators | Medium | Medium | Do not create a cheaper tier and never a feature-reduced one. A tier may only change project capacity. Compete on reliability and receipts. Measure with the price validation research in `docs/research/04-marketing-and-growth.md` |
 | P6 | Annual plan margin is structurally thinner and annual mix rises | Medium | Low | Annual improves cash and retention, which is worth 1.3 margin points. No action unless the mix passes 60% annual |
 | P7 | Trial abuse at scale | Low | Low | Polar controls plus the product-side controls in 3.3. Watch the trial-to-publish ratio |
 | P8 | Affiliate fraud | Medium | Medium | Holds, the automatic review triggers in 9.3, the 30% new-subscription cap |
@@ -536,6 +580,17 @@ Every row is an automated test unless marked manual. All run against the Polar s
 33. No image or video credit, product, meter or upsell exists in Polar or in the app.
 34. The annual copy reads "$25/month billed annually, save $48/year" and the arithmetic is correct.
 
+**Project capacity tiers**
+35. Every tier renders the identical inclusion list. No surface implies a feature is behind a larger tier.
+36. No tier carrying a `FOUNDER_DECISION_PENDING` value appears on the pricing page, in the tier picker,
+    in the checkout disclosure or in a checkout session.
+37. No tier allowance exceeds `MAX_PROJECT_LIMIT` (20).
+38. An unknown or unmapped Polar product id derives the base allowance of 3, never a larger one.
+39. A verified subscription upsert writes `projects.active.max`; a browser redirect writes nothing.
+40. A workspace over its allowance keeps read and write access to every existing project, has nothing
+    archived for it, and is refused only creation and unarchiving.
+41. A project allowance the service has not reported renders as "unavailable", never as 0.
+
 ---
 
 ## 13. Open billing decisions
@@ -549,5 +604,9 @@ Every row is an automated test unless marked manual. All run against the Polar s
 | B5 | Affiliate commission rate and duration | Founder | 20 Nov 2026 | 20% for 12 months on net revenue. Revisit only with the cohort margin report in hand |
 | B6 | Non-USD pricing | Founder | 20 Dec 2026 | USD only in V1. Polar handles tax. Local pricing needs measured demand and a rounding policy first |
 | B7 | Discount codes and partner promotions | Founder | 20 Dec 2026 | None in V1. A code is a second price, and a second price is the beginning of tiers |
-| B8 | Whether a workspace can hold more than 30 channels for an extra fee | Founder | 20 Dec 2026 | No. 30 is the plan. Revisit as a disclosed plan change, never as a hidden add-on |
+| B8 | Whether a workspace can hold more than 10 channels for an extra fee | Founder | 20 Dec 2026 | No. 10 is the allowance on every tier. Revisit as a disclosed plan change, never as a hidden add-on and never as a per-channel price |
 | B9 | Annual-to-monthly downgrade proration policy | Finance/Ops | 6 Nov 2026 | Credit the unused portion to the Polar balance, apply to future invoices, no cash refund except where law requires it |
+| B10 | Project allowance and price for `relay_growth` | Founder | **outstanding** | Not decided. The tier is structure only until the founder sets `projectAllowance`, `monthlyPriceMinor`, `annualPriceMinor` and both Polar product ids in one edit to `packages/billing/src/tiers.ts` |
+| B11 | Project allowance and price for `relay_studio` | Founder | **outstanding** | Not decided. Same replacement procedure as B10. The allowance may not exceed 20 |
+| B12 | Whether a mid-cycle tier change prorates or applies at renewal | Founder with Finance/Ops | **outstanding** | Not decided. Whatever is chosen, the confirmation must state the proration outcome, the next charge date and the next amount before the customer confirms, exactly as the interval change does today |
+| B13 | Whether the higher tiers are named Growth and Studio in public copy | Founder | **outstanding** | Placeholder names. They live in `billing.tier.*` catalog keys, so renaming is a catalog edit |

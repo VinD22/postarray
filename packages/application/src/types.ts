@@ -1,5 +1,13 @@
 import type {
   ApprovalLevel,
+  BulkImportApplyMode,
+  BulkImportCounts,
+  BulkImportJobView,
+  BulkImportOptions,
+  BulkImportReport,
+  BulkImportRowState,
+  BulkImportRowView,
+  BulkImportState,
   CapabilitySnapshot,
   ContentKind,
   CreationSurface,
@@ -17,12 +25,17 @@ import type {
   Paginated,
   ProviderId,
   PublishState,
+  QueueRuleInput,
+  QueueRulePatch,
+  QueueRuleView,
+  QueueSlotReservationView,
   Role,
   RuleActionKind,
   RuleTriggerKind,
   ScheduleSpec,
   Scope,
   SignatureRef,
+  SlotProposal,
   ThreadItem,
   ToolRecord,
   UtmParameters,
@@ -337,6 +350,26 @@ export interface DataLifecycleService {
   cancel(ctx: ActorContext, requestId: string): Promise<DeletionRequestView>;
 }
 
+/**
+ * Safe workflow input for a bulk import.
+ *
+ * Identifiers and a mode, nothing else. The manifest itself never enters
+ * workflow history: it is a customer file that may contain anything, and
+ * Temporal history is not the place for it.
+ */
+export interface BulkImportWorkflowInput {
+  readonly ctx: WorkflowActorContext;
+  readonly importJobId: string;
+  /** `null` runs the dry run only. Applying is always a separate decision. */
+  readonly applyMode: BulkImportApplyMode | null;
+}
+
+export interface BulkImportWorkflowOutput {
+  readonly importJobId: string;
+  readonly state: BulkImportState;
+  readonly counts: BulkImportCounts;
+}
+
 /** Safe workflow input persisted in Temporal history while a deletion waits. */
 export interface DataDeletionWorkflowInput {
   readonly ctx: WorkflowActorContext;
@@ -425,6 +458,18 @@ export interface SchedulerPort {
     readonly workspaceId: string;
     readonly reason: string;
   }): Promise<void>;
+  /**
+   * Optional while only the worker's own scheduler implements it, in the same
+   * way `ConnectorRegistry.beginOAuth` is optional. A deployment without it
+   * still validates and applies inline through the application service; it
+   * simply does not get durable retries for a very large manifest.
+   */
+  scheduleBulkImport?(input: {
+    readonly importJobId: string;
+    readonly workspaceId: string;
+    readonly executeAt: Date;
+    readonly workflowInput: BulkImportWorkflowInput;
+  }): Promise<{ readonly workflowId: string; readonly runId: string }>;
   describe(input: {
     readonly jobId: string;
     readonly workspaceId: string;
@@ -1156,10 +1201,57 @@ export interface SchedulingService {
       };
     },
   ): Promise<Paginated<CalendarEntry>>;
+  /**
+   * The next slot the queue model is willing to offer, with the ICU reason keys
+   * that produced it. A project with no rules still gets one, labelled as such.
+   */
   nextAvailableSlot(
     ctx: ActorContext,
     input: { readonly brandId: string; readonly after?: string },
-  ): Promise<{ readonly instant: string; readonly ianaTimeZone: string }>;
+  ): Promise<SlotProposal>;
+}
+
+/**
+ * Queue rules and slot reservations.
+ *
+ * `previewSlot` reads. `proposeSlot` reserves an instant and freezes the rule
+ * that chose it, then returns the local time with its reasons for a person to
+ * accept. Neither one schedules anything: `acceptSlot` records the human
+ * decision, and scheduling links the publish job onto the reservation.
+ */
+export interface QueueRuleService {
+  list(
+    ctx: ActorContext,
+    query?: PageQuery & { readonly brandId?: string },
+  ): Promise<Paginated<QueueRuleView>>;
+  get(ctx: ActorContext, ruleId: string): Promise<QueueRuleView>;
+  create(ctx: ActorContext, input: QueueRuleInput): Promise<QueueRuleView>;
+  update(ctx: ActorContext, ruleId: string, patch: QueueRulePatch): Promise<QueueRuleView>;
+  archive(ctx: ActorContext, ruleId: string): Promise<QueueRuleView>;
+  previewSlot(
+    ctx: ActorContext,
+    input: { readonly brandId: string; readonly after?: string },
+  ): Promise<SlotProposal>;
+  proposeSlot(
+    ctx: ActorContext,
+    input: {
+      readonly brandId: string;
+      readonly after?: string;
+      readonly contentItemId?: string;
+    },
+  ): Promise<QueueSlotReservationView>;
+  acceptSlot(
+    ctx: ActorContext,
+    input: { readonly reservationId: string; readonly contentItemId: string },
+  ): Promise<QueueSlotReservationView>;
+  releaseSlot(
+    ctx: ActorContext,
+    input: { readonly reservationId: string; readonly reason?: string },
+  ): Promise<QueueSlotReservationView>;
+  listReservations(
+    ctx: ActorContext,
+    query: PageQuery & { readonly brandId: string },
+  ): Promise<Paginated<QueueSlotReservationView>>;
 }
 
 export interface PublishingService {
@@ -1738,6 +1830,63 @@ export interface CustomerBillingService {
   hasEntitlement(ctx: ActorContext, entitlement: string): Promise<boolean>;
 }
 
+/**
+ * Bulk CSV import.
+ *
+ * `upload` parses and reports. It creates nothing. `apply` is the second,
+ * explicit call, and its mode defaults to drafts. Nothing on this interface can
+ * publish, and nothing on it takes a path or a URL the server would fetch
+ * outside the media service's own guarded import.
+ */
+export interface BulkImportService {
+  upload(
+    ctx: ActorContext,
+    input: {
+      readonly projectId: string;
+      readonly filename: string;
+      /** The manifest bytes. CSV only; a spreadsheet binary is refused. */
+      readonly content: string;
+      readonly options?: Partial<BulkImportOptions>;
+    },
+  ): Promise<BulkImportReport>;
+  get(ctx: ActorContext, importJobId: string): Promise<BulkImportReport>;
+  list(
+    ctx: ActorContext,
+    query?: PageQuery & { readonly projectId?: string },
+  ): Promise<Paginated<BulkImportJobView>>;
+  listRows(
+    ctx: ActorContext,
+    importJobId: string,
+    query?: PageQuery & { readonly state?: BulkImportRowState },
+  ): Promise<Paginated<BulkImportRowView>>;
+  /**
+   * Turn the valid rows into drafts, or into scheduled posts when a person
+   * deliberately chose that. Rows are applied independently and a failure is
+   * recorded on the row that caused it.
+   */
+  apply(
+    ctx: ActorContext,
+    input: { readonly importJobId: string; readonly mode?: BulkImportApplyMode },
+  ): Promise<BulkImportReport>;
+  /** The failed rows as a CSV a person can fix and upload again. */
+  errorReport(
+    ctx: ActorContext,
+    importJobId: string,
+  ): Promise<{ readonly filename: string; readonly csv: string }>;
+}
+
+/** The worker-facing half: the same two steps, addressed by job id. */
+export interface WorkerBulkImportService {
+  validate(
+    ctx: WorkflowActorContext,
+    input: { readonly importJobId: string },
+  ): Promise<BulkImportWorkflowOutput>;
+  applyRows(
+    ctx: WorkflowActorContext,
+    input: { readonly importJobId: string; readonly mode: BulkImportApplyMode },
+  ): Promise<BulkImportWorkflowOutput>;
+}
+
 export interface Services {
   readonly workspaces: WorkspaceService;
   readonly members: MembershipService;
@@ -1747,6 +1896,7 @@ export interface Services {
   readonly validation: ValidationService;
   readonly approvals: ApprovalService;
   readonly scheduling: SchedulingService;
+  readonly queueRules: QueueRuleService;
   readonly publishing: PublishingService;
   readonly agentConfirmations: AgentConfirmationService;
   readonly receipts: ReceiptService;
@@ -1767,7 +1917,9 @@ export interface Services {
   readonly dataExports: DataExportService;
   readonly dataLifecycle: DataLifecycleService;
   readonly dataDeletion: DataDeletionService;
+  readonly bulkImports: BulkImportService;
   readonly workerPublishing: WorkerPublishingService;
   readonly workerWebhooks: WorkerWebhookService;
+  readonly workerBulkImports: WorkerBulkImportService;
   readonly health: HealthService;
 }

@@ -9,6 +9,8 @@ import type {
   WebhookResult,
   WebhookSignatureState,
 } from './inbox';
+import { buildProjectAllowanceGrant } from './project-allowance';
+import type { ProjectAllowanceGrant } from './project-allowance';
 import {
   isKnownPolarEventType,
   polarBenefitGrantSchema,
@@ -65,8 +67,17 @@ export interface WebhookProcessorDeps {
   readonly webhookSecret: string | undefined;
   readonly logger?: Logger;
   readonly toleranceSeconds?: number;
+  /** Polar product id to tier key. Unmapped ids resolve to the base tier. */
+  readonly productTiers?: Readonly<Record<string, string>>;
   /** Fired whenever the derived entitlement state changes. */
   readonly onEntitlementChange?: (change: EntitlementChange) => Promise<void> | void;
+  /**
+   * Fired on every verified subscription upsert with the numeric entitlement
+   * row migration 0066 reads. The caller writes it; this package does not own a
+   * database connection. It is idempotent: the same event replayed produces the
+   * same row.
+   */
+  readonly onProjectAllowance?: (grant: ProjectAllowanceGrant) => Promise<void> | void;
   /** Fired on `order.paid`. The affiliate ledger accrues from here. */
   readonly onOrderPaid?: (event: OrderEvent) => Promise<void> | void;
   /** Fired on `order.refunded`. The affiliate ledger reverses from here. */
@@ -194,7 +205,11 @@ export function createWebhookProcessor(deps: WebhookProcessorDeps): WebhookProce
       // Out of order delivery. The stored state is newer; do not regress it.
       return { result: 'superseded', before: null, after: null, note: 'older_than_stored_state' };
     }
-    const before = previous === null ? null : deriveEntitlement(previous, { now: receivedAt });
+    const derivation = {
+      now: receivedAt,
+      ...(deps.productTiers === undefined ? {} : { productTiers: deps.productTiers }),
+    };
+    const before = previous === null ? null : deriveEntitlement(previous, derivation);
     const next = toVerifiedSubscription({
       subscription,
       workspaceId,
@@ -203,7 +218,15 @@ export function createWebhookProcessor(deps: WebhookProcessorDeps): WebhookProce
       previous,
     });
     await deps.subscriptions.upsert(next);
-    const after = deriveEntitlement(next, { now: receivedAt });
+    const grant = buildProjectAllowanceGrant({
+      subscription: next,
+      effectiveFrom: receivedAt,
+      ...(deps.productTiers === undefined ? {} : { productTiers: deps.productTiers }),
+    });
+    if (grant !== null) {
+      await deps.onProjectAllowance?.(grant);
+    }
+    const after = deriveEntitlement(next, derivation);
     if (before === null || before.state !== after.state) {
       await deps.onEntitlementChange?.({
         workspaceId,

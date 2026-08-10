@@ -50,6 +50,7 @@ const DEFAULT_SCOPES: Readonly<Record<ProviderId, readonly string[]>> = {
   instagram: ['instagram_basic', 'instagram_content_publish', 'pages_show_list'],
   facebook: ['pages_manage_posts', 'pages_read_engagement', 'pages_show_list'],
   youtube: ['https://www.googleapis.com/auth/youtube.upload'],
+  google_business_profile: ['https://www.googleapis.com/auth/business.manage'],
   tiktok: ['video.publish', 'video.upload', 'user.info.basic'],
   threads: ['threads_basic', 'threads_content_publish'],
   bluesky: ['app-password'],

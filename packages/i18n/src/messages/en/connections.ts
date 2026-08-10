@@ -78,6 +78,14 @@ export const connectionMessages = {
   'connection.oauth.connectedToAnotherWorkspace':
     '{account} is connected to another workspace. Disconnect it there first.',
 
+  // Google Business Profile joined the launch cohort after the `web.provider.*`
+  // and `web.connection.requirement.*` families were authored in
+  // `web-calendar.ts`. The catalog is one flat key space, so these live beside
+  // the connection copy they belong to rather than in a calendar file.
+  'web.provider.google_business_profile': 'Google Business Profile',
+  'web.connection.requirement.google_business_profile':
+    'Google Business Profile publishes to a verified business location. Your Google account needs an owner or manager role on that location.',
+
   'capability.title': 'What this account supports',
   'capability.matrix.title': 'Platform capabilities',
   'capability.matrix.subtitle':

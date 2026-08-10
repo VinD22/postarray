@@ -88,6 +88,34 @@ describe('Button', () => {
     expect(button.className).toContain('bg-destructive-solid');
   });
 
+  it('fills the primary variant with ink rather than the chromatic accent', () => {
+    render(<Button variant="primary">{LABEL}</Button>);
+    const button = screen.getByRole('button', { name: LABEL });
+    expect(button.className).toContain('bg-surface-inverted');
+    expect(button.className).toContain('text-text-inverted');
+    expect(button.className).not.toContain('bg-accent');
+  });
+
+  it('still accepts the deprecated cta variant and renders it as primary', () => {
+    render(<Button variant="cta">{LABEL}</Button>);
+    const cta = screen.getByRole('button', { name: LABEL }).className;
+
+    render(<Button variant="primary">{LABEL} again</Button>);
+    const primary = screen.getByRole('button', { name: `${LABEL} again` }).className;
+
+    expect(cta).toBe(primary);
+  });
+
+  it('carries no bold outline or offset-shadow recipe on any variant', () => {
+    for (const variant of ['primary', 'cta', 'secondary', 'ghost', 'destructive'] as const) {
+      const { unmount } = render(<Button variant={variant}>{LABEL}</Button>);
+      const { className } = screen.getByRole('button', { name: LABEL });
+      expect(className).not.toContain('border-2');
+      expect(className).not.toContain('border-border-bold');
+      unmount();
+    }
+  });
+
   it('renders as a child element when asChild is set', () => {
     render(
       <Button asChild>

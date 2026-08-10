@@ -5,12 +5,12 @@ import { formatMoneyMinor } from './money';
 import {
   POLAR_TRIAL_REMINDER_DAY,
   POLAR_TRIAL_REMINDER_LEAD_DAYS,
-  PLAN_CURRENCY,
   RELAY_TRIAL_SUMMARY_DAY,
   TRIAL_DAYS,
-  planPriceMinor,
 } from './products';
-import type { BillingInterval } from './products';
+import { BASE_TIER_KEY, planTier, tierPriceMinor } from './tiers';
+import type { PlanTierKey } from './tiers';
+import type { BillingInterval } from './intervals';
 import type { VerifiedSubscription } from './entitlements';
 import { addDays, daysUntil, isAtOrAfter, isBefore, normalizeInstant } from './time';
 
@@ -57,6 +57,8 @@ export interface ComputeTrialScheduleInput {
   readonly startedAt: string;
   readonly interval: BillingInterval;
   readonly trialDays?: number;
+  /** Defaults to the base tier. Higher tiers charge their own price. */
+  readonly tier?: PlanTierKey;
 }
 
 /**
@@ -74,7 +76,8 @@ export function computeTrialSchedule(input: ComputeTrialScheduleInput): TrialSch
   }
   const startsAt = normalizeInstant(input.startedAt);
   const conversionAt = addDays(startsAt, trialDays);
-  const price = planPriceMinor(input.interval);
+  const tierKey = input.tier ?? BASE_TIER_KEY;
+  const price = tierPriceMinor(tierKey, input.interval);
   const reminderDay = Math.max(0, trialDays - POLAR_TRIAL_REMINDER_LEAD_DAYS);
   const summaryDay = Math.max(reminderDay, trialDays - 1);
   return {
@@ -85,7 +88,7 @@ export function computeTrialSchedule(input: ComputeTrialScheduleInput): TrialSch
     firstChargeAt: conversionAt,
     firstChargeMinor: price,
     renewalMinor: price,
-    currency: PLAN_CURRENCY,
+    currency: planTier(tierKey).currency,
     dueTodayMinor: TRIAL_DUE_TODAY_MINOR,
     polarReminderAt: addDays(startsAt, reminderDay),
     polarReminderDay: reminderDay,

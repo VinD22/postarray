@@ -279,3 +279,51 @@ describe('scheduled work when a workspace stops paying', () => {
     expect(isFullAccess('read_only')).toBe(false);
   });
 });
+
+describe('the project allowance on the entitlement snapshot', () => {
+  it('maps a verified product id to its tier allowance', () => {
+    const snapshot = deriveEntitlement(subscription({ productId: 'prod_base' }), {
+      now: NOW,
+      productTiers: { prod_base: 'relay_standard' },
+    });
+    expect(snapshot.tierKey).toBe('relay_standard');
+    expect(snapshot.projectAllowance).toBe(3);
+  });
+
+  it('falls back to the base allowance for an unmapped product, never unlimited', () => {
+    const snapshot = deriveEntitlement(subscription({ productId: 'prod_unheard_of' }), {
+      now: NOW,
+    });
+    expect(snapshot.tierKey).toBe('relay_standard');
+    expect(snapshot.projectAllowance).toBe(3);
+    expect(Number.isFinite(snapshot.projectAllowance)).toBe(true);
+  });
+
+  it('never reports the allowance as zero, in any state', () => {
+    const states: ReadonlyArray<VerifiedSubscription | null> = [
+      null,
+      subscription({ source: 'redirect' }),
+      subscription({ status: 'past_due', pastDueSince: NOW }),
+      subscription({ status: 'unpaid' }),
+      subscription({ status: 'canceled', endedAt: NOW }),
+    ];
+    for (const record of states) {
+      const snapshot = deriveEntitlement(record, { now: NOW });
+      expect(snapshot.projectAllowance).toBeGreaterThanOrEqual(1);
+      expect(snapshot.projectAllowance).toBeLessThanOrEqual(20);
+    }
+  });
+
+  it('grants the base tier from a browser redirect, which is evidence of nothing', () => {
+    const snapshot = deriveEntitlement(
+      subscription({ source: 'redirect', productId: 'prod_big' }),
+      {
+        now: NOW,
+        productTiers: { prod_big: 'relay_studio' },
+      },
+    );
+    expect(snapshot.state).toBe('none');
+    expect(snapshot.tierKey).toBe('relay_standard');
+    expect(snapshot.projectAllowance).toBe(3);
+  });
+});

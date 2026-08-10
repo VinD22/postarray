@@ -57,10 +57,12 @@ export {
   toSearchParams,
 } from './filters';
 export {
+  buildDropProposal,
   buildProposal,
   canReschedule,
   collectWarnings,
   countNearbyEntries,
+  dropInstant,
   hasExternalPost,
   isBlocked,
   keyboardStep,
@@ -68,7 +70,15 @@ export {
   KEYBOARD_STEP_MINUTES,
   MEDIA_LEAD_TIME_SECONDS,
   type CampaignWindow,
+  type DropTarget,
 } from './reschedule';
+export {
+  dropCellAt,
+  useDragReschedule,
+  DRAG_THRESHOLD_PX,
+  type DragReschedule,
+  type DragRescheduleOptions,
+} from './use-drag-reschedule';
 export {
   ATTENTION_STATES,
   EMPTY_FILTERS,

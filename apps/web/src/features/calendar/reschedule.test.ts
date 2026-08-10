@@ -1,11 +1,13 @@
 import { describe, expect, it } from 'vitest';
 
-import { fromWallClock, toWallClock } from './date-range';
+import { addDays, fromWallClock, startOfDay, toWallClock } from './date-range';
 import {
+  buildDropProposal,
   buildProposal,
   canReschedule,
   collectWarnings,
   countNearbyEntries,
+  dropInstant,
   hasExternalPost,
   isBlocked,
   keyboardStep,
@@ -63,6 +65,115 @@ describe('buildProposal', () => {
     const target = new Date('2026-09-01T12:00:00.000Z');
     const proposal = buildProposal({ entry: entry(), toInstant: target, timeZone: BERLIN });
     expect(proposal.toInstant).toBe(target.toISOString());
+  });
+});
+
+describe('buildDropProposal', () => {
+  /** The month cell for the day `days` after the entry, as the grid renders it. */
+  function dayCell(subject: CalendarEntry, days: number): Date {
+    return startOfDay(addDays(new Date(subject.scheduledAt), days, BERLIN), BERLIN);
+  }
+
+  it('produces exactly the proposal the equivalent key press produces', () => {
+    const subject = entry();
+    const step = keyboardStep('ArrowRight', 'month');
+    const byKeyboard = buildProposal({ entry: subject, ...step, timeZone: BERLIN });
+    const byDrop = buildDropProposal({
+      entry: subject,
+      target: { instant: dayCell(subject, 1), granularity: 'day' },
+      timeZone: BERLIN,
+    });
+
+    expect(byDrop).toEqual(byKeyboard);
+    expect(byDrop.entry).toBe(subject);
+    expect(byDrop.fromInstant).toBe(byKeyboard.fromInstant);
+    expect(byDrop.toInstant).toBe(byKeyboard.toInstant);
+    expect(byDrop.keepsLocalTime).toBe(byKeyboard.keepsLocalTime);
+  });
+
+  it('matches the keyboard week step too, from the other end of the grid', () => {
+    const subject = entry();
+    const byKeyboard = buildProposal({ entry: subject, days: 7, timeZone: BERLIN });
+    const byDrop = buildDropProposal({
+      entry: subject,
+      target: { instant: dayCell(subject, 7), granularity: 'day' },
+      timeZone: BERLIN,
+    });
+    expect(byDrop).toEqual(byKeyboard);
+  });
+
+  it('keeps the wall clock time when a month drop crosses the autumn clock change', () => {
+    const october = entry({
+      scheduledAt: fromWallClock(
+        { year: 2026, month: 10, day: 24, hour: 9, minute: 30 },
+        BERLIN,
+      ).toISOString(),
+    });
+    const proposal = buildDropProposal({
+      entry: october,
+      target: { instant: dayCell(october, 1), granularity: 'day' },
+      timeZone: BERLIN,
+    });
+
+    expect(proposal.keepsLocalTime).toBe(true);
+    expect(toWallClock(new Date(proposal.toInstant), BERLIN)).toMatchObject({
+      day: 25,
+      hour: 9,
+      minute: 30,
+    });
+  });
+
+  it('takes the hour from a time grid cell and the minute from the post', () => {
+    const subject = entry();
+    const band = fromWallClock({ year: 2026, month: 8, day: 7, hour: 14, minute: 0 }, BERLIN);
+    const proposal = buildDropProposal({
+      entry: subject,
+      target: { instant: band, granularity: 'slot' },
+      timeZone: BERLIN,
+    });
+
+    expect(toWallClock(new Date(proposal.toInstant), BERLIN)).toMatchObject({
+      day: 7,
+      hour: 14,
+      minute: 30,
+    });
+    expect(proposal.keepsLocalTime).toBe(false);
+  });
+
+  it('agrees with the keyboard when a slot drop lands on the same hour a day later', () => {
+    const subject = entry();
+    const sameBandTomorrow = fromWallClock(
+      { year: 2026, month: 8, day: 7, hour: 9, minute: 0 },
+      BERLIN,
+    );
+    const byDrop = buildDropProposal({
+      entry: subject,
+      target: { instant: sameBandTomorrow, granularity: 'slot' },
+      timeZone: BERLIN,
+    });
+    expect(byDrop).toEqual(buildProposal({ entry: subject, days: 1, timeZone: BERLIN }));
+  });
+
+  it('proposes no change when the post is dropped back on its own cell', () => {
+    const subject = entry();
+    const proposal = buildDropProposal({
+      entry: subject,
+      target: { instant: dayCell(subject, 0), granularity: 'day' },
+      timeZone: BERLIN,
+    });
+    expect(proposal.toInstant).toBe(proposal.fromInstant);
+    expect(proposal.keepsLocalTime).toBe(true);
+  });
+
+  it('resolves a day cell through the same helper the arrow keys use', () => {
+    const subject = entry();
+    expect(
+      dropInstant(
+        subject,
+        { instant: dayCell(subject, -3), granularity: 'day' },
+        BERLIN,
+      ).toISOString(),
+    ).toBe(buildProposal({ entry: subject, days: -3, timeZone: BERLIN }).toInstant);
   });
 });
 

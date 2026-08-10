@@ -6,6 +6,11 @@ import { openReadyPage } from './navigation';
 const ROUTES = [
   '/',
   '/pricing',
+  '/tools',
+  '/tools/post-preflight',
+  '/tools/utm-builder',
+  '/tools/youtube-title-length',
+  '/tools/time-zone-planner',
   '/sign-in',
   '/home',
   '/compose',

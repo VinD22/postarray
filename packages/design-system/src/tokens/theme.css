@@ -5,14 +5,22 @@
  * ----------
  * An editorial publishing desk. Warm paper, near-black ink, generous
  * whitespace. Hierarchy via type and space, tonal surface steps, hairline
- * rules — not hard shadows or neon fills. One restrained ink accent. Warning,
- * destructive, success and info are semantic exceptions, never decorative.
- * Provider brand colours exist only as 8px identity dots.
+ * rules — not hard shadows or neon fills. Warning, destructive, success and
+ * info are semantic exceptions, never decorative. Provider brand colours
+ * exist only as 8px identity dots.
+ *
+ * Exactly one chromatic accent: a deep terracotta (#B4462B in light,
+ * lightened to #E07A5F in dark). It carries links, focus rings, text
+ * selection, the active tab and the calendar "today" marker — the places a
+ * reader needs a colour affordance and ink alone gives none. It is
+ * deliberately not the primary button fill: the primary commit action stays
+ * ink so the accent reads as navigation and state, not as the loudest
+ * surface on the screen. There is no second accent.
  *
  * Dark is designed, not inverted. A warm near-black canvas with paper-ink
- * text; accent softens toward paper so it reads on the dark ground; the
- * destructive solid is a light coral carrying dark text rather than a dark
- * red carrying white text.
+ * text; the terracotta lightens so it reads on the dark ground and still
+ * carries ink text at AA when used as a fill; the destructive solid is a
+ * light coral carrying dark text rather than a dark red carrying white text.
  *
  * Layering rule: component code must reference the semantic layer only
  * (--color-surface-*, --color-text-*, --color-accent-*, --color-status-*).
@@ -28,19 +36,22 @@
  * visual boundary of interactive controls.
  *
  * Editorial palette (Noteform Pitch). Every number below is live — the
- * 188-case gate in contrast.test.ts is green against it.
+ * 112-pair gate in contrast.test.ts (224 assertions across the two themes)
+ * is green against it.
  *
  * LIGHT THEME                                canvas  raised  sunken  overlay
  *   text.primary       #141413               18.02   18.43   16.11   18.43
  *   text.secondary     #2E2E2E               13.28   13.58   11.87   13.58
  *   text.tertiary      #6B6866                5.41    5.54    4.84    5.54
- *   text.accent        #141413               18.02   18.43   16.11   18.43
+ *   text.accent        #B4462B                5.33    5.45    4.81    5.45
+ *   border.focus       #B4462B                5.33    5.45    4.81    5.45
  *   border.strong      #6B6866                5.41    5.54    4.84    5.54
  *   text.disabled      #8A8784                3.49    3.57    3.12    3.57
- *   accent.on   #FFFFFF on accent   #141413  = 18.43
- *   accent.on   #FFFFFF on hover    #0A0A0A  = 19.80
- *   accent.on   #FFFFFF on active   #000000  = 21.00
- *   accent      #141413 on subtle   #F2EDE6  = 15.83
+ *   accent.on   #FFFFFF on accent   #B4462B  = 5.45
+ *   accent.on   #FFFFFF on hover    #9E3B23  = 6.77
+ *   accent.on   #FFFFFF on active   #863019  = 8.57
+ *   accent      #B4462B on subtle   #FBF1ED  = 4.91 (hover #F9EEE9 4.79)
+ *   text.primary #141413 on subtle  #FBF1ED  = 16.60 (hover 16.18)
  *   destructive.on #FFFFFF on solid #8B1E1A  = 9.14 (hover 11.75, active 14.94)
  *   status fg on its own tinted bg:  success 7.09  warning 6.34
  *                                    destructive 7.53  info 6.39
@@ -55,13 +66,15 @@
  *   text.primary       #FFFCF8               18.75   16.69   19.59   16.32
  *   text.secondary     #D6D0C4               12.49   11.12   13.05   10.88
  *   text.tertiary      #A8A29A                7.58    6.75    7.92    6.60
- *   text.accent        #E8E2D6               14.87   13.23   15.53   12.95
+ *   text.accent        #E07A5F                6.50    5.79    6.79    5.66
+ *   border.focus       #E07A5F                6.50    5.79    6.79    5.66
  *   border.strong      #8A8784                5.37    4.78    5.60    4.68
  *   text.disabled      #7A7672                4.26    3.79    4.45    3.71
- *   accent.on   #141413 on accent   #E8E2D6  = 14.29
- *   accent.on   #141413 on hover    #E8E2D6  = 14.29
- *   accent.on   #141413 on active   #D6CEC0  = 11.81
- *   accent      #E8E2D6 on subtle   #1A1A18  = 13.51
+ *   accent.on   #141413 on accent   #E07A5F  = 6.25
+ *   accent.on   #141413 on hover    #EC8B72  = 7.46
+ *   accent.on   #141413 on active   #C96545  = 4.77
+ *   accent      #E07A5F on subtle   #26140F  = 5.99 (hover #331A13 5.48)
+ *   text.primary #FFFCF8 on subtle  #26140F  = 17.26 (hover 15.82)
  *   destructive.on #141413 on solid #E85D4D  = 5.36 (hover 6.31, active 4.83)
  *   status fg on its own tinted bg:  success 8.24  warning 9.05
  *                                    destructive 5.21  info 7.86
@@ -77,8 +90,9 @@
  * Provider identity dots clear 3:1 against their own theme canvas in both
  * themes (lowest: facebook 5.32 light, youtube 5.63 dark).
  *
- * Editorial accent is ink/charcoal, not blue. The cta/blush groups survive as
- * warm paper tints rather than neon yellow/pink.
+ * The accent is a deep terracotta, the only chromatic family in the system.
+ * The cta/blush groups survive as warm paper tints rather than neon
+ * yellow/pink, and the primary button fill stays ink.
  * ---------------------------------------------------------------------------
  */
 
@@ -102,41 +116,51 @@
   --relay-ink-500: #8a8784; /* disabled text */
   --relay-ink-450: #6b6866; /* border strong */
 
-  /* Editorial ink accent — single restrained accent, not blue. */
-  --relay-blue-100: #f2ede6;
-  --relay-blue-150: #ede8e0;
-  --relay-blue-250: #e8e2d6;
-  --relay-blue-300: #e8e2d6;
-  --relay-blue-400: #d6cec0;
-  --relay-blue-600: #141413;
-  --relay-blue-700: #0a0a0a;
-  --relay-blue-800: #000000;
-  --relay-blue-850: #252520;
-  --relay-blue-900: #1a1a18;
+  /* Terracotta — the one chromatic accent in the system. Fired-clay red,
+     warm enough to belong to the paper, saturated enough that a link, a
+     focus ring, a selected row or the calendar "today" marker reads as
+     deliberately coloured rather than as another shade of ink.
 
-  /* Warm paper tints — editorial hover/active, not yellow/pink. */
-  --relay-yellow-400: #ede8e0;
-  --relay-yellow-500: #e8e2d6;
-  --relay-yellow-600: #d6cec0;
+     Light theme uses the 600/700/800 steps as ink-weight text (they clear
+     4.5:1 on paper); dark theme uses the lightened 300/400/500 steps, which
+     carry ink text at 4.5:1 when used as a fill. The 50/100 and 900/950
+     steps are the subtle selected-row washes for their respective themes.
 
-  --relay-pink-300: #ede8e0;
-  --relay-pink-400: #e8e2d6;
-  --relay-pink-900: #2a2520;
+     This ramp is deliberately NOT wired to the primary button: the primary
+     commit action stays ink-filled. Terracotta marks navigation, state and
+     selection, not the loudest button on the screen. */
+  --relay-terracotta-50: #fbf1ed; /* light subtle bg */
+  --relay-terracotta-100: #f9eee9; /* light subtle bg, hover */
+  --relay-terracotta-300: #ec8b72; /* dark hover */
+  --relay-terracotta-400: #e07a5f; /* dark default / focus */
+  --relay-terracotta-500: #c96545; /* dark active */
+  --relay-terracotta-600: #b4462b; /* light default / focus */
+  --relay-terracotta-700: #9e3b23; /* light hover */
+  --relay-terracotta-800: #863019; /* light active */
+  --relay-terracotta-900: #331a13; /* dark subtle bg, hover */
+  --relay-terracotta-950: #26140f; /* dark subtle bg */
 
-  /* Warm charcoal — dark theme neutral ramp (replaces navy). */
-  --relay-navy-950: #080807; /* sunken */
-  --relay-navy-900: #0f0f0e; /* canvas */
-  --relay-navy-850: #1c1c1a; /* raised */
-  --relay-navy-800: #1e1e1c; /* overlay */
-  --relay-navy-780: #252520; /* hover */
-  --relay-navy-770: #2a2a28; /* border subtle */
-  --relay-navy-750: #2e2e2e; /* active */
-  --relay-navy-600: #3a3936; /* border default */
-  --relay-navy-500: #8a8784; /* border strong */
-  --relay-navy-text-1: #fffcf8; /* primary text */
-  --relay-navy-text-2: #d6d0c4; /* secondary text */
-  --relay-navy-text-3: #a8a29a; /* tertiary text */
-  --relay-navy-text-4: #7a7672; /* disabled text */
+  /* Warm paper fills — the quiet CTA and badge fills. Formerly named
+     `yellow`/`pink`; the editorial system replaced those neons with paper
+     tints, so the names are now the values they actually hold. */
+  --relay-fill-100: #ede8e0;
+  --relay-fill-200: #e8e2d6;
+  --relay-fill-300: #d6cec0;
+
+  /* Warm charcoal — dark theme neutral ramp (formerly named `navy`). */
+  --relay-charcoal-950: #080807; /* sunken */
+  --relay-charcoal-900: #0f0f0e; /* canvas */
+  --relay-charcoal-850: #1c1c1a; /* raised */
+  --relay-charcoal-800: #1e1e1c; /* overlay */
+  --relay-charcoal-780: #252520; /* hover */
+  --relay-charcoal-770: #2a2a28; /* border subtle */
+  --relay-charcoal-750: #2e2e2e; /* active */
+  --relay-charcoal-600: #3a3936; /* border default */
+  --relay-charcoal-500: #8a8784; /* border strong */
+  --relay-charcoal-text-1: #fffcf8; /* primary text */
+  --relay-charcoal-text-2: #d6d0c4; /* secondary text */
+  --relay-charcoal-text-3: #a8a29a; /* tertiary text */
+  --relay-charcoal-text-4: #7a7672; /* disabled text */
 
   --shadow-hard-x: 4px;
 
@@ -198,32 +222,36 @@
   --border-subtle: var(--relay-paper-250);
   --border-default: var(--relay-paper-200);
   --border-strong: var(--relay-ink-450);
-  --border-focus: var(--relay-blue-600);
+  --border-focus: var(--relay-terracotta-600);
 
   --text-primary: var(--relay-ink);
   --text-secondary: var(--relay-ink-700);
   --text-tertiary: var(--relay-ink-600);
   --text-disabled: var(--relay-ink-500);
   --text-inverted: var(--relay-paper-50);
-  --text-accent: var(--relay-blue-600);
+  --text-accent: var(--relay-terracotta-600);
 
-  --accent-default: var(--relay-blue-600);
-  --accent-hover: var(--relay-blue-700);
-  --accent-active: var(--relay-blue-800);
-  --accent-subtle-bg: var(--relay-blue-100);
-  --accent-subtle-bg-hover: var(--relay-blue-150);
+  /* The single chromatic accent. Links, focus, selection, the active tab
+     underline and the calendar "today" marker. Not the primary button: that
+     stays ink-filled so the accent reads as navigation and state, not as
+     the loudest surface on the screen. */
+  --accent-default: var(--relay-terracotta-600);
+  --accent-hover: var(--relay-terracotta-700);
+  --accent-active: var(--relay-terracotta-800);
+  --accent-subtle-bg: var(--relay-terracotta-50);
+  --accent-subtle-bg-hover: var(--relay-terracotta-100);
   --accent-on-accent: var(--relay-paper-0);
 
   /* Editorial fill groups. What was once loud yellow/pink is now warm paper
      tints: quiet highlighted fills with ink text, identical in both themes.
      Ink reads on them at 15:1+ in either theme. */
-  --cta-bg: var(--relay-yellow-400);
-  --cta-bg-hover: var(--relay-yellow-500);
-  --cta-bg-active: var(--relay-yellow-600);
+  --cta-bg: var(--relay-fill-100);
+  --cta-bg-hover: var(--relay-fill-200);
+  --cta-bg-active: var(--relay-fill-300);
   --cta-on: var(--relay-ink);
 
-  --accent-blush-bg: var(--relay-pink-300);
-  --accent-blush-bg-hover: var(--relay-pink-400);
+  --accent-blush-bg: var(--relay-fill-100);
+  --accent-blush-bg-hover: var(--relay-fill-200);
   --accent-blush-on: var(--relay-ink);
 
   --border-bold: var(--relay-ink);
@@ -267,6 +295,7 @@
   --brand-pinterest: #e60023;
   --brand-discord: #5865f2;
   --brand-slack: #4a154b;
+  --brand-google-business-profile: #1a73e8;
   --brand-fake: #6b6560;
 }
 
@@ -287,42 +316,42 @@
   :root:not([data-theme='light']) {
     color-scheme: dark;
 
-    --surface-canvas: var(--relay-navy-900);
-    --surface-raised: var(--relay-navy-850);
-    --surface-sunken: var(--relay-navy-950);
-    --surface-overlay: var(--relay-navy-800);
-    --surface-hover: var(--relay-navy-780);
-    --surface-active: var(--relay-navy-750);
-    --surface-inverted: var(--relay-navy-text-1);
+    --surface-canvas: var(--relay-charcoal-900);
+    --surface-raised: var(--relay-charcoal-850);
+    --surface-sunken: var(--relay-charcoal-950);
+    --surface-overlay: var(--relay-charcoal-800);
+    --surface-hover: var(--relay-charcoal-780);
+    --surface-active: var(--relay-charcoal-750);
+    --surface-inverted: var(--relay-charcoal-text-1);
     --surface-scrim: rgb(4 5 10 / 0.7);
 
-    --border-subtle: var(--relay-navy-770);
-    --border-default: var(--relay-navy-600);
-    --border-strong: var(--relay-navy-500);
-    --border-focus: var(--relay-blue-300);
+    --border-subtle: var(--relay-charcoal-770);
+    --border-default: var(--relay-charcoal-600);
+    --border-strong: var(--relay-charcoal-500);
+    --border-focus: var(--relay-terracotta-400);
 
-    --text-primary: var(--relay-navy-text-1);
-    --text-secondary: var(--relay-navy-text-2);
-    --text-tertiary: var(--relay-navy-text-3);
-    --text-disabled: var(--relay-navy-text-4);
+    --text-primary: var(--relay-charcoal-text-1);
+    --text-secondary: var(--relay-charcoal-text-2);
+    --text-tertiary: var(--relay-charcoal-text-3);
+    --text-disabled: var(--relay-charcoal-text-4);
     --text-inverted: var(--relay-ink);
-    --text-accent: var(--relay-blue-300);
+    --text-accent: var(--relay-terracotta-400);
 
-    --accent-default: var(--relay-blue-300);
-    --accent-hover: var(--relay-blue-250);
-    --accent-active: var(--relay-blue-400);
-    --accent-subtle-bg: var(--relay-blue-900);
-    --accent-subtle-bg-hover: var(--relay-blue-850);
+    --accent-default: var(--relay-terracotta-400);
+    --accent-hover: var(--relay-terracotta-300);
+    --accent-active: var(--relay-terracotta-500);
+    --accent-subtle-bg: var(--relay-terracotta-950);
+    --accent-subtle-bg-hover: var(--relay-terracotta-900);
     --accent-on-accent: var(--relay-ink);
 
     /* CTA / blush — identical to light; see comment in section 2. */
-    --cta-bg: var(--relay-yellow-400);
-    --cta-bg-hover: var(--relay-yellow-500);
-    --cta-bg-active: var(--relay-yellow-600);
+    --cta-bg: var(--relay-fill-100);
+    --cta-bg-hover: var(--relay-fill-200);
+    --cta-bg-active: var(--relay-fill-300);
     --cta-on: var(--relay-ink);
 
-    --accent-blush-bg: var(--relay-pink-300);
-    --accent-blush-bg-hover: var(--relay-pink-400);
+    --accent-blush-bg: var(--relay-fill-100);
+    --accent-blush-bg-hover: var(--relay-fill-200);
     --accent-blush-on: var(--relay-ink);
 
     --border-bold: #e8e2d6;
@@ -356,6 +385,7 @@
     --brand-tiktok: #25f4ee;
     --brand-threads: #ededed;
     --brand-bluesky: #6bb0f5;
+    --brand-google-business-profile: #7cb0f5;
     --brand-fake: #a8a29a;
   }
 }
@@ -364,42 +394,42 @@
 :root[data-theme='dark'] {
   color-scheme: dark;
 
-  --surface-canvas: var(--relay-navy-900);
-  --surface-raised: var(--relay-navy-850);
-  --surface-sunken: var(--relay-navy-950);
-  --surface-overlay: var(--relay-navy-800);
-  --surface-hover: var(--relay-navy-780);
-  --surface-active: var(--relay-navy-750);
-  --surface-inverted: var(--relay-navy-text-1);
+  --surface-canvas: var(--relay-charcoal-900);
+  --surface-raised: var(--relay-charcoal-850);
+  --surface-sunken: var(--relay-charcoal-950);
+  --surface-overlay: var(--relay-charcoal-800);
+  --surface-hover: var(--relay-charcoal-780);
+  --surface-active: var(--relay-charcoal-750);
+  --surface-inverted: var(--relay-charcoal-text-1);
   --surface-scrim: rgb(4 5 10 / 0.7);
 
-  --border-subtle: var(--relay-navy-770);
-  --border-default: var(--relay-navy-600);
-  --border-strong: var(--relay-navy-500);
-  --border-focus: var(--relay-blue-300);
+  --border-subtle: var(--relay-charcoal-770);
+  --border-default: var(--relay-charcoal-600);
+  --border-strong: var(--relay-charcoal-500);
+  --border-focus: var(--relay-terracotta-400);
 
-  --text-primary: var(--relay-navy-text-1);
-  --text-secondary: var(--relay-navy-text-2);
-  --text-tertiary: var(--relay-navy-text-3);
-  --text-disabled: var(--relay-navy-text-4);
+  --text-primary: var(--relay-charcoal-text-1);
+  --text-secondary: var(--relay-charcoal-text-2);
+  --text-tertiary: var(--relay-charcoal-text-3);
+  --text-disabled: var(--relay-charcoal-text-4);
   --text-inverted: var(--relay-ink);
-  --text-accent: var(--relay-blue-300);
+  --text-accent: var(--relay-terracotta-400);
 
-  --accent-default: var(--relay-blue-300);
-  --accent-hover: var(--relay-blue-250);
-  --accent-active: var(--relay-blue-400);
-  --accent-subtle-bg: var(--relay-blue-900);
-  --accent-subtle-bg-hover: var(--relay-blue-850);
+  --accent-default: var(--relay-terracotta-400);
+  --accent-hover: var(--relay-terracotta-300);
+  --accent-active: var(--relay-terracotta-500);
+  --accent-subtle-bg: var(--relay-terracotta-950);
+  --accent-subtle-bg-hover: var(--relay-terracotta-900);
   --accent-on-accent: var(--relay-ink);
 
   /* CTA / blush — identical to light; see comment in section 2. */
-  --cta-bg: var(--relay-yellow-400);
-  --cta-bg-hover: var(--relay-yellow-500);
-  --cta-bg-active: var(--relay-yellow-600);
+  --cta-bg: var(--relay-fill-100);
+  --cta-bg-hover: var(--relay-fill-200);
+  --cta-bg-active: var(--relay-fill-300);
   --cta-on: var(--relay-ink);
 
-  --accent-blush-bg: var(--relay-pink-300);
-  --accent-blush-bg-hover: var(--relay-pink-400);
+  --accent-blush-bg: var(--relay-fill-100);
+  --accent-blush-bg-hover: var(--relay-fill-200);
   --accent-blush-on: var(--relay-ink);
 
   --border-bold: #e8e2d6;
@@ -442,6 +472,7 @@
   --brand-pinterest: #ff5a5f;
   --brand-discord: #8b93f7;
   --brand-slack: #e8a0c0;
+  --brand-google-business-profile: #7cb0f5;
   --brand-fake: #a8a29a;
 }
 
@@ -534,6 +565,7 @@
   --color-brand-pinterest: var(--brand-pinterest);
   --color-brand-discord: var(--brand-discord);
   --color-brand-slack: var(--brand-slack);
+  --color-brand-google-business-profile: var(--brand-google-business-profile);
   --color-brand-fake: var(--brand-fake);
 
   /* --- Typography -------------------------------------------------------- */

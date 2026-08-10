@@ -5,6 +5,7 @@ import type { PolarConfig } from '@relay/config';
 import { createPolarClient } from './client';
 import { deriveEntitlement } from './entitlements';
 import { InMemorySubscriptionStore } from './inbox';
+import type { ProjectAllowanceGrant } from './project-allowance';
 import {
   DRIFT_PAGE_THRESHOLD_PER_HOUR,
   reconcileSubscriptions,
@@ -137,5 +138,43 @@ describe('reconciliation', () => {
       { workspaceId: 'ws_unknown' },
     );
     expect(snapshot.state).toBe('none');
+  });
+});
+
+describe('reconciliation repairs project capacity too', () => {
+  it('re-emits the projects.active.max row when it repairs a subscription', async () => {
+    const { clock, client, subscriptions } = await setup();
+    const grants: ProjectAllowanceGrant[] = [];
+    await reconcileSubscriptions({
+      client,
+      subscriptions,
+      clock,
+      onProjectAllowance: (grant) => {
+        grants.push(grant);
+      },
+    });
+    expect(grants).toHaveLength(1);
+    expect(grants[0]?.key).toBe('projects.active.max');
+    expect(grants[0]?.numericValue).toBe(3);
+    expect(grants[0]?.source).toBe('reconciliation');
+  });
+
+  it('emits it from a single workspace repair as well', async () => {
+    const { clock, client, subscriptions, created } = await setup();
+    const grants: ProjectAllowanceGrant[] = [];
+    await reconcileWorkspace(
+      {
+        client,
+        subscriptions,
+        clock,
+        onProjectAllowance: (grant) => {
+          grants.push(grant);
+        },
+      },
+      { workspaceId: 'ws_01', subscriptionId: created.id },
+    );
+    expect(grants).toHaveLength(1);
+    expect(grants[0]?.workspaceId).toBe('ws_01');
+    expect(grants[0]?.numericValue).toBe(3);
   });
 });

@@ -69,6 +69,22 @@ export function toOpenGraphLocale(locale: string): string | undefined {
     : `${maximized.language}_${maximized.region}`;
 }
 
+/**
+ * Every Open Graph locale except the current one, deduplicated.
+ *
+ * Shared by `pageMetadata` and `articleMetadata` so the two cannot drift into
+ * advertising different alternate locale sets for the same site.
+ */
+export function openGraphAlternateLocales(locale: string): string[] {
+  return [
+    ...new Set(
+      ACTIVE_LOCALE_CODES.filter((activeLocale) => activeLocale !== locale)
+        .map(toOpenGraphLocale)
+        .filter((activeLocale): activeLocale is string => activeLocale !== undefined),
+    ),
+  ];
+}
+
 export async function pageMetadata(
   titleKey: MessageKey,
   descriptionKey: MessageKey,
@@ -81,13 +97,7 @@ export async function pageMetadata(
   const url = absoluteUrl(path, locale);
   const alternates = localeAlternates(path, locale);
   const openGraphLocale = toOpenGraphLocale(locale);
-  const alternateOpenGraphLocales = [
-    ...new Set(
-      ACTIVE_LOCALE_CODES.filter((activeLocale) => activeLocale !== locale)
-        .map(toOpenGraphLocale)
-        .filter((activeLocale): activeLocale is string => activeLocale !== undefined),
-    ),
-  ];
+  const alternateOpenGraphLocales = openGraphAlternateLocales(locale);
 
   return {
     title,
@@ -183,4 +193,130 @@ export function breadcrumbJsonLd(
 /** Serialize for a `<script type="application/ld+json">` tag safely. */
 export function jsonLdScript(node: JsonLdNode): string {
   return JSON.stringify(node).replace(/</g, '\\u003c');
+}
+
+/**
+ * The site itself.
+ *
+ * Deliberately without a `potentialAction` / `SearchAction`: sitelinks search
+ * markup declares a search endpoint at a URL template, and this site has no
+ * search of any kind. That would be markup for a feature that does not exist,
+ * the same class of error as an invented rating.
+ */
+export async function websiteJsonLd(locale: string = DEFAULT_LOCALE): Promise<JsonLdNode> {
+  const t = await marketingTranslator(locale);
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    name: t.t('web.brand.name'),
+    url: absoluteUrl(ROUTES.home, locale),
+    description: t.t('web.brand.tagline'),
+    inLanguage: locale,
+    publisher: {
+      '@type': 'Organization',
+      name: t.t('web.brand.name'),
+      url: absoluteUrl(ROUTES.home, locale),
+    },
+  };
+}
+
+/** A calendar date as an ISO instant, with the zone stated rather than assumed. */
+function calendarDateToInstant(isoDate: string): string {
+  return new Date(`${isoDate}T00:00:00Z`).toISOString();
+}
+
+export interface ArticleSeoInput {
+  /** Already-resolved article title. Article prose is content, not catalog copy. */
+  readonly headline: string;
+  readonly description: string;
+  /** Site-relative path, for example `/blog/a-slug`. */
+  readonly path: string;
+  /** ISO calendar dates. `updated` is never earlier than `published`. */
+  readonly published: string;
+  readonly updated: string;
+  /** The named desk or person accountable for the writing. Never invented. */
+  readonly authorName: string;
+  /** The named desk or person who checked the platform claims, when there is one. */
+  readonly reviewerName?: string;
+  /** Official documents the article relies on. */
+  readonly sourceUrls?: readonly string[];
+  readonly locale?: string;
+}
+
+/**
+ * `Article` structured data.
+ *
+ * `author` and `reviewedBy` are required inputs rather than optional
+ * decoration: markup that claims an article has an author without naming one
+ * is worse than markup that omits the property. There is no `publisher.logo`,
+ * because no logo asset exists at a stable URL yet and inventing one would put
+ * a 404 into structured data.
+ */
+export async function articleJsonLd(input: ArticleSeoInput): Promise<JsonLdNode> {
+  const locale = input.locale ?? DEFAULT_LOCALE;
+  const t = await marketingTranslator(locale);
+  const url = absoluteUrl(input.path, locale);
+  const sourceUrls = input.sourceUrls ?? [];
+
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: input.headline,
+    description: input.description,
+    inLanguage: locale,
+    url,
+    mainEntityOfPage: { '@type': 'WebPage', '@id': url },
+    datePublished: calendarDateToInstant(input.published),
+    dateModified: calendarDateToInstant(input.updated),
+    author: { '@type': 'Organization', name: input.authorName },
+    ...(input.reviewerName === undefined
+      ? {}
+      : { reviewedBy: { '@type': 'Organization', name: input.reviewerName } }),
+    publisher: {
+      '@type': 'Organization',
+      name: t.t('web.brand.name'),
+      url: absoluteUrl(ROUTES.home, locale),
+    },
+    ...(sourceUrls.length === 0
+      ? {}
+      : { citation: sourceUrls.map((sourceUrl) => ({ '@type': 'CreativeWork', url: sourceUrl })) }),
+  };
+}
+
+/**
+ * Metadata for one article: the canonical and hreflang contract every other
+ * route gets, plus an `article` Open Graph type with real publication and
+ * modification times. Title and description arrive as strings because article
+ * prose is content loaded per slug, not interface copy merged into every page.
+ */
+export async function articleMetadata(input: ArticleSeoInput): Promise<Metadata> {
+  const locale = input.locale ?? DEFAULT_LOCALE;
+  const t = await marketingTranslator(locale);
+  const url = absoluteUrl(input.path, locale);
+  const alternates = localeAlternates(input.path, locale);
+  const openGraphLocale = toOpenGraphLocale(locale);
+  const alternateLocales = openGraphAlternateLocales(locale);
+
+  return {
+    title: input.headline,
+    description: input.description,
+    alternates,
+    openGraph: {
+      type: 'article',
+      url,
+      title: input.headline,
+      description: input.description,
+      siteName: t.t('web.brand.name'),
+      publishedTime: calendarDateToInstant(input.published),
+      modifiedTime: calendarDateToInstant(input.updated),
+      authors: [input.authorName],
+      ...(openGraphLocale === undefined ? {} : { locale: openGraphLocale }),
+      ...(alternateLocales.length === 0 ? {} : { alternateLocale: alternateLocales }),
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: input.headline,
+      description: input.description,
+    },
+  };
 }

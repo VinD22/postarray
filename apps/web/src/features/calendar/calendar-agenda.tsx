@@ -10,7 +10,7 @@
  * mobile approver needs exactly the same facts as a desktop one.
  */
 
-import { useMemo, type ReactNode } from 'react';
+import { useMemo, type PointerEvent as ReactPointerEvent, type ReactNode } from 'react';
 import { cn } from '@relay/design-system';
 import { useTranslations } from '@relay/i18n/react';
 import { EntryChip } from './entry-chip';
@@ -28,6 +28,8 @@ export interface CalendarAgendaProps {
   onPickUp: (entry: CalendarEntry) => void;
   /** The in-progress keyboard move, when one is active. See `CalendarGrid`. */
   proposal?: RescheduleProposal | null;
+  draggingKey?: string | null;
+  onDragStart?: (entry: CalendarEntry, event: ReactPointerEvent<Element>) => void;
   label: string;
   /** Days with nothing on them are dropped once the list gets long. */
   hideEmptyDays?: boolean;
@@ -41,6 +43,8 @@ export function CalendarAgenda({
   grabbedKey,
   onPickUp,
   proposal = null,
+  draggingKey = null,
+  onDragStart,
   label,
   hideEmptyDays = false,
 }: CalendarAgendaProps): ReactNode {
@@ -75,6 +79,8 @@ export function CalendarAgenda({
         return (
           <div
             key={day.toISOString()}
+            data-drop-instant={day.toISOString()}
+            data-drop-granularity="day"
             className={cn(
               'border-border-subtle border-b last:border-b-0',
               isTarget && 'outline-accent outline-2 outline-offset-[-2px] outline-dashed',
@@ -95,7 +101,9 @@ export function CalendarAgenda({
                       entry={entry}
                       href={hrefForEntry(entry)}
                       grabbed={grabbedKey === entryKey(entry)}
+                      dragging={draggingKey === entryKey(entry)}
                       onPickUp={onPickUp}
+                      {...(onDragStart ? { onDragStart } : {})}
                     />
                   </li>
                 ))}

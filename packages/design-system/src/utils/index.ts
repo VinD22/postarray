@@ -10,5 +10,6 @@ export {
   panelSurface,
   panelPoster,
   pressable,
+  elevationRamp,
   type ControlSize,
 } from './style-constants';

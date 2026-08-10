@@ -3,6 +3,12 @@ import type { ReactNode } from 'react';
 import { Check, ChevronDown } from 'lucide-react';
 
 import { StaggerList } from '@/components/motion';
+import {
+  WEB_SHARED_INCLUSION_KEYS,
+  pendingTiers,
+  priceUnits,
+  publishableTiers,
+} from '@/features/billing/tiers';
 import { JsonLd } from '@/features/marketing/components/json-ld';
 import {
   Body,
@@ -52,17 +58,13 @@ const BESIDE_PURCHASE = [
   'web.pricing.beside.data',
 ] as const;
 
-const INCLUDED = [
-  'billing.plan.includes.channels',
-  'billing.plan.includes.members',
-  'billing.plan.includes.posts',
-  'billing.plan.includes.connectors',
-  'billing.plan.includes.analytics',
-  'billing.plan.includes.api',
-  'billing.plan.includes.automation',
-  'billing.plan.includes.ai',
-  'billing.plan.includes.support',
-] as const;
+/**
+ * One list, shared by every tier, read from the tier module rather than
+ * restated here. If a tier ever had its own list, that would be feature gating,
+ * which `apps/web/src/features/billing/tiers.test.ts` and the billing package
+ * both refuse.
+ */
+const INCLUDED = WEB_SHARED_INCLUSION_KEYS;
 
 const FAQ = [
   { id: 'channels', q: 'web.pricing.faq.channels.q', a: 'web.pricing.faq.channels.a' },
@@ -90,6 +92,19 @@ export default async function PricingPage({
 }): Promise<ReactNode> {
   const { locale } = await params;
   const t = await marketingTranslator(locale);
+
+  /**
+   * Amounts are formatted from the tier's integer minor units, never written
+   * out, so a price on this page cannot disagree with the price that is
+   * charged. Zero cents are trimmed because the tier prices are whole dollars.
+   */
+  function money(minor: number, currency: string): string {
+    return new Intl.NumberFormat(locale, {
+      style: 'currency',
+      currency,
+      maximumFractionDigits: 0,
+    }).format(priceUnits(minor));
+  }
 
   return (
     <>
@@ -174,14 +189,82 @@ export default async function PricingPage({
         </p>
       </Section>
 
-      {/* 5 & 6. Editorial as-is: a comparison table would have one column. */}
-      <Section id="no-tiers">
-        <Split aside={<Heading>{t.t('web.pricing.compare.title')}</Heading>}>
-          <Body>{t.t('web.pricing.compare.body')}</Body>
-          <p className="mt-4">
-            <TextLink href={ROUTES.changelog}>{t.t('nav.public.changelog')}</TextLink>
-          </p>
-        </Split>
+      {/*
+        5 & 6. The tier table. Tiers buy active project capacity and nothing
+        else, so the only column that varies is the project count. There is no
+        feature column, because there is no feature any tier lacks, and a tier
+        whose price the founder has not decided is named as undecided rather
+        than shown with a placeholder number.
+      */}
+      <Section id="capacity">
+        <Heading>{t.t('billing.tier.heading')}</Heading>
+        <Body className="mt-4">{t.t('billing.tier.subheading')}</Body>
+
+        <div className="mt-8 overflow-x-auto">
+          <table className="w-full min-w-[34rem] border-collapse">
+            <caption className="sr-only">{t.t('billing.tier.heading')}</caption>
+            <thead>
+              <tr className="border-border-bold border-b-2">
+                <th scope="col" className="text-label px-3 py-3 text-start uppercase">
+                  {t.t('billing.tier.columnTier')}
+                </th>
+                <th scope="col" className="text-label px-3 py-3 text-start uppercase">
+                  {t.t('billing.tier.columnProjects')}
+                </th>
+                <th scope="col" className="text-label px-3 py-3 text-start uppercase">
+                  {t.t('billing.plan.interval.monthly')}
+                </th>
+                <th scope="col" className="text-label px-3 py-3 text-start uppercase">
+                  {t.t('billing.plan.interval.annual')}
+                </th>
+              </tr>
+            </thead>
+            <tbody className="divide-border-default divide-y">
+              {publishableTiers().map((tier) => (
+                <tr key={tier.key}>
+                  <th scope="row" className="text-body-lg px-3 py-4 text-start font-semibold">
+                    {t.t(tier.nameKey)}
+                    <span className="text-body-sm text-text-secondary block font-normal">
+                      {t.t(tier.taglineKey)}
+                    </span>
+                  </th>
+                  <td className="text-body-lg px-3 py-4">
+                    {t.format('billing.tier.projectAllowance', {
+                      count: tier.projectAllowance,
+                    })}
+                  </td>
+                  <td className="text-body-lg px-3 py-4">
+                    {money(tier.monthlyPriceMinor, tier.currency)}
+                  </td>
+                  <td className="text-body-lg px-3 py-4">
+                    {money(tier.annualPriceMinor, tier.currency)}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+
+        <p className="text-body-md text-text-secondary mt-6 max-w-[68ch] leading-[1.6]">
+          {t.t('billing.tier.everyFeature')}
+        </p>
+
+        {pendingTiers().length > 0 ? (
+          <div className="mt-8 max-w-[46rem]">
+            <PosterCard tone="paper">
+              <Subheading as="h3" className="text-title-sm">
+                {t.t('billing.tier.moreComingTitle')}
+              </Subheading>
+              <p className="text-body-md text-text-secondary mt-2 leading-[1.6]">
+                {t.t('billing.tier.moreComingBody')}
+              </p>
+            </PosterCard>
+          </div>
+        ) : null}
+
+        <p className="mt-6">
+          <TextLink href={ROUTES.changelog}>{t.t('nav.public.changelog')}</TextLink>
+        </p>
       </Section>
 
       <Section id="media">

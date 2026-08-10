@@ -8,11 +8,14 @@
  *    percentage discount.
  *  - `billing.mediaGeneration.explanation` is the approved boundary paragraph.
  *    Tool Radar and the pricing page use this same key.
+ *
+ * Tiers buy active project capacity and nothing else, so no `billing.tier.*`
+ * string may describe a feature one tier has and another does not.
  */
 export const billingMessages = {
   'billing.title': 'Billing',
   'billing.plan.name': 'Relay',
-  'billing.plan.single': 'One plan. Every feature. No tiers.',
+  'billing.plan.single': 'Every feature on every tier',
   'billing.plan.monthlyPrice': '$29/month',
   'billing.plan.annualPrice': '$300/year',
   'billing.plan.annualFraming': '$25/month billed annually. Save $48/year.',
@@ -28,9 +31,37 @@ export const billingMessages = {
   'billing.plan.includes.analytics': 'Analytics kept from the day you connect an account',
   'billing.plan.includes.api': 'REST API, remote MCP server, CLI and webhooks',
   'billing.plan.includes.automation': 'Automation rules, RSS autopost and tracked links',
+  'billing.plan.includes.ai': 'Text assistance under the published abuse and cost limits',
   'billing.plan.includes.support': 'Email and in app support',
   'billing.plan.fairUse':
     'Fair use means anti spam, rate and provider cost controls that protect your accounts. They work the same for every subscriber.',
+
+  'billing.tier.heading': 'Choose your project capacity',
+  'billing.tier.subheading':
+    'Every tier includes every feature. The only difference is how many active projects a workspace can run at once.',
+  'billing.tier.select': 'Choose a tier',
+  'billing.tier.selected': 'Current tier',
+  'billing.tier.current': 'You are on {tier}.',
+  'billing.tier.projectAllowance':
+    '{count, plural, one {# active project} other {# active projects}}',
+  'billing.tier.projectAllowanceUsage': '{used} of {limit} active projects',
+  'billing.tier.everyFeature': 'Every feature, on every tier',
+  'billing.tier.columnTier': 'Tier',
+  'billing.tier.columnProjects': 'Active projects',
+  'billing.tier.annualFraming': '{perMonth}/month billed annually. Save {saving}/year.',
+  'billing.tier.upgradeAction': 'Increase project capacity',
+  'billing.tier.upgradeHelp':
+    'A larger tier raises the number of active projects you can run at once. Features are identical on every tier.',
+  'billing.tier.moreComingTitle': 'Larger tiers are not on sale yet',
+  'billing.tier.moreComingBody':
+    'Higher project capacity is planned. The prices and allowances are not decided, so we do not list them.',
+  'billing.tier.allowanceUnavailable': 'Project allowance unavailable',
+  'billing.tier.standard.name': 'Standard',
+  'billing.tier.standard.tagline': 'For one team running a handful of projects.',
+  'billing.tier.growth.name': 'Growth',
+  'billing.tier.growth.tagline': 'More active projects in one workspace.',
+  'billing.tier.studio.name': 'Studio',
+  'billing.tier.studio.tagline': 'The largest project capacity we offer.',
 
   'billing.trial.length': 'Seven day trial with every feature',
   'billing.trial.dueToday': '$0 due today',
@@ -93,6 +124,8 @@ export const billingMessages = {
 
   'billing.downgrade.overLimit':
     'This workspace has {count, plural, one {# channel} other {# channels}} over the limit. New actions on those channels are blocked. Nothing is disconnected for you.',
+  'billing.downgrade.projectsOverAllowance':
+    'This workspace has {count, plural, one {# project} other {# projects}} over the tier allowance. Every existing project keeps working and nothing is archived for you. You cannot create or restore another project until you are back within the allowance.',
 
   'billing.mediaGeneration.title': 'Why we do not generate images or video',
   'billing.mediaGeneration.explanation':

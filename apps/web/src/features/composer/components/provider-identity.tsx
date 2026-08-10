@@ -33,9 +33,18 @@ export const PROVIDER_LABEL: Readonly<Record<ProviderId, string>> = {
   pinterest: 'Pinterest',
   discord: 'Discord',
   slack: 'Slack',
+  google_business_profile: 'Google Business Profile',
 };
 
-/** The design system carries a colour for every provider it knows about. */
+/**
+ * The design system carries a colour for every provider it knows about.
+ *
+ * Google Business Profile is deliberately absent: the token set has no
+ * `--brand-google-business-profile` yet, and inventing one here would put a
+ * colour outside the reviewed palette. It renders a neutral dot until the
+ * token lands, which costs nothing, because the dot never carries the
+ * identification on its own.
+ */
 const BRANDED: ReadonlySet<ProviderId> = new Set<ProviderId>([
   'x',
   'linkedin',
@@ -54,6 +63,7 @@ const BRANDED: ReadonlySet<ProviderId> = new Set<ProviderId>([
   'pinterest',
   'discord',
   'slack',
+  'google_business_profile',
 ]);
 
 type BrandedProvider =
@@ -73,7 +83,8 @@ type BrandedProvider =
   | 'devto'
   | 'pinterest'
   | 'discord'
-  | 'slack';
+  | 'slack'
+  | 'google_business_profile';
 
 export interface ProviderIdentityProps {
   readonly provider: ProviderId;

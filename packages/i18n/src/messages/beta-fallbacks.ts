@@ -60,6 +60,28 @@ export const BETA_ENGLISH_FALLBACK_PREFIXES = [
   'approval.content.',
   'approval.changed.',
   'approval.notFound.',
+  // Queue rules and slot reservations (A4). The rule editor and the reasons a
+  // slot was chosen stay on the reviewed English source until each beta locale
+  // has a human translation of the daylight-saving wording, which is the part
+  // most likely to be got subtly wrong.
+  'queue.',
+  // The blog (C3). Articles are English-only typed content modules, so the
+  // chrome around them stays on the reviewed English source until an article
+  // actually exists in a locale. Translating the labels first would advertise
+  // a translated blog that has no translated writing in it.
+  'web.blog.',
+  // The free tools (C4). Short interface chrome, but every sentence states a
+  // platform rule or a privacy promise, and a machine translation that softens
+  // either would be a false claim in that language. Beta locales keep the
+  // reviewed English source until a person translates them.
+  'web.tools.',
+  'web.meta.tools.',
+  // Bulk CSV import (A6). Column names, time zone rules and the difference
+  // between making a draft and scheduling one are exact statements about how a
+  // file is read. A machine translation that blurred "drafts" into "posts"
+  // would describe a different and more dangerous tool, so beta locales keep
+  // the reviewed English source until a person translates it.
+  'import.',
 ] as const;
 
 /** B5-controlled keys whose namespace also contains ordinary interface copy. */
@@ -147,6 +169,17 @@ export const BETA_ENGLISH_FALLBACK_KEYS = [
   'approval.decision.approved',
   'approval.decision.changesRequested',
   'approval.decision.rejected',
+  // Google Business Profile joined the launch cohort after the current
+  // translation batch was cut. Its name and its account-role requirement stay
+  // on the reviewed English source until each beta locale picks them up.
+  'web.provider.google_business_profile',
+  'web.connection.requirement.google_business_profile',
+  // Calendar drag to reschedule (A5). The handle hint and the two live-region
+  // sentences are new English copy; beta locales keep the reviewed source
+  // until each one has a human translation.
+  'calendar.drag.handleHint',
+  'calendar.drag.overSlot',
+  'calendar.drag.dropped',
 ] as const;
 
 export function isBetaEnglishFallbackKey(key: string): boolean {

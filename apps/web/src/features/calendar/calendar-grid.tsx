@@ -14,7 +14,7 @@
  * post rather than hiding it.
  */
 
-import { useMemo, type ReactNode } from 'react';
+import { useMemo, type PointerEvent as ReactPointerEvent, type ReactNode } from 'react';
 import { cn } from '@relay/design-system';
 import { useTranslations } from '@relay/i18n/react';
 import { EntryChip } from './entry-chip';
@@ -39,6 +39,10 @@ export interface CalendarGridProps {
    * visible without moving or animating the chip itself.
    */
   proposal?: RescheduleProposal | null;
+  /** The entry the pointer is currently dragging, if any. */
+  draggingKey?: string | null;
+  /** Pointer drag start, raised by the chip's Move handle. */
+  onDragStart?: (entry: CalendarEntry, event: ReactPointerEvent<Element>) => void;
   /** Accessible name for the grid region. */
   label: string;
 }
@@ -56,6 +60,8 @@ export function CalendarGrid({
   grabbedKey,
   onPickUp,
   proposal = null,
+  draggingKey = null,
+  onDragStart,
   label,
 }: CalendarGridProps): ReactNode {
   const t = useTranslations();
@@ -138,6 +144,10 @@ export function CalendarGrid({
                 return (
                   <div
                     key={`${band.hour}-${day.toISOString()}`}
+                    // A drop cell. `slot` because this band is a claim about
+                    // the clock: dropping here changes the time of day.
+                    data-drop-instant={hourInstant(day, band.hour, timeZone).toISOString()}
+                    data-drop-granularity="slot"
                     className={cn(
                       'bg-surface-canvas flex min-h-14 flex-col gap-1 p-1',
                       // No transition here on purpose: the outline is the
@@ -160,7 +170,9 @@ export function CalendarGrid({
                           entry={entry}
                           href={hrefForEntry(entry)}
                           grabbed={grabbedKey === entryKey(entry)}
+                          dragging={draggingKey === entryKey(entry)}
                           onPickUp={onPickUp}
+                          {...(onDragStart ? { onDragStart } : {})}
                         />
                       ))
                     )}

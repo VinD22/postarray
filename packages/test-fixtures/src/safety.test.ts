@@ -27,6 +27,7 @@ const SOURCE_ROOT = fileURLToPath(new URL('.', import.meta.url));
  */
 const ALLOWED_NON_FIXTURE_URLS: readonly string[] = [
   'https://www.googleapis.com/auth/youtube.upload',
+  'https://www.googleapis.com/auth/business.manage',
 ];
 
 /**

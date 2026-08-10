@@ -20,6 +20,7 @@ export const BILLING_MESSAGE_KEYS = Object.freeze({
   trialExpired: 'error.trial_expired.message',
   entitlementMissing: 'error.entitlement_missing.message',
   channelLimitReached: 'error.channel_limit_reached.message',
+  projectLimitReached: 'error.project_limit_reached.message',
   forbidden: 'error.forbidden.message',
   quotaExceeded: 'error.quota_exceeded.message',
   internal: 'error.internal.message',

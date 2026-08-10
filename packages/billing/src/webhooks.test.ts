@@ -9,6 +9,7 @@ import {
   workspaceIdOf,
 } from './webhooks';
 import type { EntitlementChange, OrderEvent } from './webhooks';
+import type { ProjectAllowanceGrant } from './project-allowance';
 import { polarSubscriptionSchema } from './polar-schemas';
 import {
   WEBHOOK_HEADER_ID,
@@ -52,6 +53,7 @@ interface Harness {
   readonly clock: MutableClock;
   readonly changes: EntitlementChange[];
   readonly orders: OrderEvent[];
+  readonly grants: ProjectAllowanceGrant[];
   deliver(
     type: string,
     data: unknown,
@@ -65,6 +67,7 @@ function makeHarness(): Harness {
   const clock = new MutableClock(NOW);
   const changes: EntitlementChange[] = [];
   const orders: OrderEvent[] = [];
+  const grants: ProjectAllowanceGrant[] = [];
   const processor = createWebhookProcessor({
     inbox,
     subscriptions,
@@ -79,6 +82,9 @@ function makeHarness(): Harness {
     onOrderRefunded: (event) => {
       orders.push(event);
     },
+    onProjectAllowance: (grant) => {
+      grants.push(grant);
+    },
   });
 
   let sequence = 0;
@@ -88,6 +94,7 @@ function makeHarness(): Harness {
     clock,
     changes,
     orders,
+    grants,
     async deliver(type, data, options = {}) {
       sequence += 1;
       const eventId = options.eventId ?? `sim_evt_${String(sequence).padStart(6, '0')}`;
@@ -302,5 +309,43 @@ describe('normalisation helpers', () => {
       subscriptionPayload({ status: 'incomplete_expired' }),
     );
     expect(subscription.status).toBe('incomplete');
+  });
+});
+
+describe('project capacity written from verified webhooks', () => {
+  it('emits the projects.active.max row the database trigger reads', async () => {
+    const harness = makeHarness();
+    await harness.deliver('subscription.created', subscriptionPayload());
+    expect(harness.grants).toHaveLength(1);
+    expect(harness.grants[0]?.key).toBe('projects.active.max');
+    expect(harness.grants[0]?.kind).toBe('numeric_limit');
+    expect(harness.grants[0]?.numericValue).toBe(3);
+    expect(harness.grants[0]?.workspaceId).toBe('ws_01');
+    expect(harness.grants[0]?.tierKey).toBe('relay_standard');
+  });
+
+  it('emits nothing for a forged delivery', async () => {
+    const harness = makeHarness();
+    await harness.deliver('subscription.created', subscriptionPayload(), {
+      secret: 'whsec_d3Jvbmctc2VjcmV0',
+    });
+    expect(harness.grants).toHaveLength(0);
+  });
+
+  it('is idempotent: the same event replayed writes the row once', async () => {
+    const harness = makeHarness();
+    await harness.deliver('subscription.created', subscriptionPayload(), { eventId: 'evt_same' });
+    await harness.deliver('subscription.created', subscriptionPayload(), { eventId: 'evt_same' });
+    expect(harness.grants).toHaveLength(1);
+  });
+
+  it('repeats the same value on an update, so replay converges', async () => {
+    const harness = makeHarness();
+    await harness.deliver('subscription.created', subscriptionPayload());
+    await harness.deliver(
+      'subscription.updated',
+      subscriptionPayload({ status: 'active', modified_at: '2026-08-11T14:00:00.000Z' }),
+    );
+    expect(harness.grants.map((grant) => grant.numericValue)).toEqual([3, 3]);
   });
 });

@@ -7,6 +7,8 @@ import { createPolarClient } from './client';
 import { deriveEntitlement, evaluateEntitlement, scheduledPostDisposition } from './entitlements';
 import type { EntitlementSnapshot } from './entitlements';
 import { InMemorySubscriptionStore, InMemoryWebhookInbox } from './inbox';
+import { projectCapacityPosture } from './project-allowance';
+import type { ProjectAllowanceGrant } from './project-allowance';
 import { reconcileSubscriptions } from './reconcile';
 import { type LocalPolarSimulator } from './simulator';
 import { cancellationOutcome } from './trial';
@@ -38,6 +40,7 @@ let inbox: InMemoryWebhookInbox;
 let subscriptions: InMemorySubscriptionStore;
 let processor: WebhookProcessor;
 let orderEvents: OrderEvent[];
+let allowanceGrants: ProjectAllowanceGrant[];
 
 async function pump(): Promise<void> {
   for (const delivery of client.drainDeliveries()) {
@@ -73,6 +76,7 @@ beforeEach(() => {
   inbox = new InMemoryWebhookInbox();
   subscriptions = new InMemorySubscriptionStore();
   orderEvents = [];
+  allowanceGrants = [];
   processor = createWebhookProcessor({
     inbox,
     subscriptions,
@@ -83,6 +87,9 @@ beforeEach(() => {
     },
     onOrderRefunded: (event) => {
       orderEvents.push(event);
+    },
+    onProjectAllowance: (grant) => {
+      allowanceGrants.push(grant);
     },
   });
 });
@@ -335,5 +342,39 @@ describe('the inbox holds a record of every delivery', () => {
       expect(row.processedAt).not.toBeNull();
       expect(row.result).not.toBe('pending');
     }
+  });
+});
+
+describe('project capacity across the lifecycle', () => {
+  it('writes the allowance once the verified webhook lands, not before', async () => {
+    expect(allowanceGrants).toHaveLength(0);
+    await startTrial();
+    expect(allowanceGrants).toHaveLength(1);
+    expect(allowanceGrants[0]?.key).toBe('projects.active.max');
+    expect(allowanceGrants[0]?.numericValue).toBe(3);
+    expect((await entitlement()).projectAllowance).toBe(3);
+  });
+
+  it('keeps the allowance stated while a workspace is read only, and archives nothing', async () => {
+    const subscriptionId = await startTrial();
+    client.failNextCharge(subscriptionId);
+    clock.advanceDays(7);
+    await client.tick();
+    await pump();
+    clock.advanceDays(8);
+
+    const readOnly = await entitlement();
+    expect(readOnly.state).toBe('read_only');
+    // The number is still a fact about the subscription. It is never reported
+    // as 0 just because publishing is paused.
+    expect(readOnly.projectAllowance).toBe(3);
+
+    const posture = projectCapacityPosture({
+      activeProjects: 4,
+      allowance: readOnly.projectAllowance,
+    });
+    expect(posture.projectsArchivedByDowngrade).toBe(0);
+    expect(posture.existingProjectsBlockedByCapacity).toBe(false);
+    expect(posture.canCreateProject).toBe(false);
   });
 });

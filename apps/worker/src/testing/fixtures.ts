@@ -1,6 +1,7 @@
 import type {
   AnalyticsSyncWorkflowInput,
   AutomationRuleWorkflowInput,
+  BulkImportWorkflowInput,
   DataDeletionWorkflowInput,
   DataExportWorkflowInput,
   PublishPostWorkflowInput,
@@ -184,6 +185,22 @@ export function makeDeletionInput(
     ctx: TEST_CONTEXT,
     requestId: 'op_delete_1',
     graceMs: 24 * 60 * 60_000,
+    ...overrides,
+  };
+}
+
+/**
+ * A dry run by default. Applying is a separate decision everywhere else in this
+ * feature, and a fixture that quietly applied would make the replay test assert
+ * the wrong shape of run.
+ */
+export function makeBulkImportInput(
+  overrides: Partial<BulkImportWorkflowInput> = {},
+): BulkImportWorkflowInput {
+  return {
+    ctx: TEST_CONTEXT,
+    importJobId: 'import_1',
+    applyMode: null,
     ...overrides,
   };
 }

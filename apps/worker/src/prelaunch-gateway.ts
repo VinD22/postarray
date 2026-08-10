@@ -28,6 +28,11 @@ type WebhookActivities = Pick<
   | 'deadLetterWebhookDelivery'
 >;
 
+type BulkImportActivities = Pick<
+  WorkerActivities,
+  'readBulkImportVerdict' | 'applyBulkImportRows'
+>;
+
 type UnavailableActivity = (input: unknown) => Promise<never>;
 
 /**
@@ -60,6 +65,7 @@ export function createWorkerGateway(
       | 'markDeletionFailed'
     >;
     readonly webhooks?: Partial<WebhookActivities>;
+    readonly bulkImports?: Partial<BulkImportActivities>;
   } = {},
 ): WorkerActivities {
   const unavailable = Object.fromEntries(
@@ -88,6 +94,7 @@ export function createWorkerGateway(
     ...(options.buildDataExport === undefined ? {} : { buildDataExport: options.buildDataExport }),
     ...(options.dataDeletion ?? {}),
     ...(options.webhooks ?? {}),
+    ...(options.bulkImports ?? {}),
     ...(options.connectorBridge ?? {}),
   } as unknown as WorkerActivities;
 }

@@ -72,7 +72,10 @@ export const DialogContent = forwardRef<HTMLDivElement, DialogContentProps>(func
           'sm:start-1/2 sm:end-auto sm:-translate-x-1/2 sm:rtl:translate-x-1/2',
           'sm:w-[calc(100vw-2rem)]',
           dialogSize[size],
-          'bg-surface-overlay border-border-bold shadow-hard-lg rounded-xl border-2',
+          // A hairline edge plus the soft overlay shadow. The scrim does the
+          // work of separating the dialog from the page; the panel does not
+          // need a 2px ink outline to be found.
+          'bg-surface-overlay border-border-default shadow-overlay rounded-xl border',
           'relay-pop-in',
           className,
         )}

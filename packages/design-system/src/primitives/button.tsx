@@ -4,24 +4,45 @@ import { forwardRef, type ComponentPropsWithoutRef, type ReactNode } from 'react
 import { Slot } from 'radix-ui';
 import { cva, type VariantProps } from 'class-variance-authority';
 import { cn } from '../utils/cn';
-import { focusRing, pressable, transitionBase } from '../utils/style-constants';
+import { elevationRamp, focusRing, pressable, transitionBase } from '../utils/style-constants';
 import { Spinner } from './spinner';
+
+/**
+ * The commit fill. Ink in light, paper in dark, with the inverted text token
+ * on top: 18:1 in both themes. Hover softens the fill by one ink step rather
+ * than tinting it, because there is no second accent to move toward.
+ */
+const inkFilled = [
+  'border-transparent bg-surface-inverted text-text-inverted',
+  'hover:bg-text-secondary active:bg-surface-inverted',
+].join(' ');
+
+/** Every filled variant falls back to the same quiet, flat disabled state. */
+const filledDisabled =
+  'disabled:bg-surface-sunken disabled:text-text-disabled disabled:border-border-subtle';
 
 /**
  * The button.
  *
- * Five intents, three sizes. Primary is the single accent path on a screen;
- * if two primaries appear side by side, one of them is a secondary. CTA is
- * the loud yellow commit action — the signature "sign up", "start trial",
- * "schedule" moment; there is at most one per screen. Ghost is for toolbar
- * and row-level actions. Destructive is a solid semantic fill and is never
- * used for a merely irreversible-feeling action, only for one that removes
- * or disconnects something.
+ * Five intents, three sizes. Primary is the single commit path on a screen;
+ * if two primaries appear side by side, one of them is a secondary. Ghost is
+ * for toolbar and row-level actions. Destructive is a solid semantic fill and
+ * is never used for a merely irreversible-feeling action, only for one that
+ * removes or disconnects something.
+ *
+ * Primary is ink filled, not chromatic. The terracotta accent carries links,
+ * focus, selection and state; if it also carried the commit button it would
+ * stop reading as navigation and start reading as decoration. Ink on paper is
+ * the loudest thing this system says.
+ *
+ * `cta` is retained as an alias of primary so existing call sites keep
+ * compiling. It renders exactly the primary treatment: there is no separate
+ * poster-slab commit button any more.
  *
  * Shape is a 6px radius, a hairline border and a tonal fill for the quiet
- * variants. Primary and CTA add a physical press: they translate toward
- * their own hard offset shadow on `:active` via `relay-pressable`, so the
- * direction mirrors for free under `dir="rtl"`.
+ * variants. Primary and CTA add a soft elevation ramp on hover plus the quiet
+ * 1px settle of `relay-pressable` on `:active`. The press is vertical only,
+ * so nothing needs mirroring under `dir="rtl"`.
  */
 export const buttonVariants = cva(
   [
@@ -34,17 +55,10 @@ export const buttonVariants = cva(
   {
     variants: {
       variant: {
-        primary: [
-          'border-transparent bg-accent text-accent-on',
-          'hover:bg-accent-hover hover:shadow-hard-sm active:bg-accent-active',
-          pressable,
-          'disabled:bg-surface-sunken disabled:text-text-disabled disabled:border-border-subtle disabled:shadow-none',
-        ].join(' '),
-        cta: [
-          'bg-cta text-cta-on border-2 border-border-bold shadow-hard hover:bg-cta-hover',
-          pressable,
-          'disabled:bg-surface-sunken disabled:text-text-disabled disabled:border-border-subtle disabled:shadow-none',
-        ].join(' '),
+        primary: [inkFilled, elevationRamp, pressable, filledDisabled].join(' '),
+        // Visually deprecated: kept as an alias of `primary` so the call sites
+        // that still say variant="cta" compile until they are migrated.
+        cta: [inkFilled, elevationRamp, pressable, filledDisabled].join(' '),
         secondary: [
           'border-border-strong bg-surface-raised text-text-primary',
           'hover:bg-surface-hover active:bg-surface-active',

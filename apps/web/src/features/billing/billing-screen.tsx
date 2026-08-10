@@ -18,6 +18,9 @@ import { useFormatters } from '../settings/lib/formatters';
 import { settingsKey, useWorkspaceId } from '../settings/lib/keys';
 import { useSettingsMutation } from '../settings/lib/use-settings-mutation';
 import { CancelDialog } from './cancel-dialog';
+import { TierPanel } from './tier-panel';
+import { TierPicker } from './tier-picker';
+import { BASE_TIER_KEY } from './tiers';
 import { TrialSummary } from './trial-summary';
 import { UsagePanel } from './usage-panel';
 
@@ -35,6 +38,7 @@ export function BillingScreen(): ReactNode {
   const usage = useQuery({ queryKey: USAGE_KEY, queryFn: () => billingGateway.usage() });
 
   const [cancelling, setCancelling] = useState(false);
+  const [tier, setTier] = useState<string>(BASE_TIER_KEY);
 
   const openPortal = useSettingsMutation({
     section,
@@ -83,34 +87,44 @@ export function BillingScreen(): ReactNode {
           skeletonColumns={2}
         >
           {state === undefined ? null : state.status === 'none' || state.status === 'incomplete' ? (
-            <EmptyState
-              title={
-                state.checkoutAvailable
-                  ? t('billing.ui.noSubscriptionTitle')
-                  : t('billing.ui.prelaunchTitle')
-              }
-              description={
-                state.checkoutAvailable
-                  ? t('billing.ui.noSubscriptionBody')
-                  : t('billing.ui.prelaunchBody')
-              }
-              example={
-                state.checkoutAvailable
-                  ? t('billing.ui.noSubscriptionExample')
-                  : t('billing.ui.prelaunchTerms')
-              }
-              action={
-                state.checkoutAvailable ? (
-                  <Button
-                    variant="primary"
-                    loading={startCheckout.isSaving}
-                    onClick={() => chooseInterval('monthly')}
-                  >
-                    {t('action.upgrade')}
-                  </Button>
-                ) : undefined
-              }
-            />
+            <>
+              {state.checkoutAvailable ? (
+                <SettingsPanel
+                  title={t('billing.tier.heading')}
+                  description={t('billing.tier.subheading')}
+                >
+                  <TierPicker value={tier} onChange={setTier} interval="monthly" />
+                </SettingsPanel>
+              ) : null}
+              <EmptyState
+                title={
+                  state.checkoutAvailable
+                    ? t('billing.ui.noSubscriptionTitle')
+                    : t('billing.ui.prelaunchTitle')
+                }
+                description={
+                  state.checkoutAvailable
+                    ? t('billing.ui.noSubscriptionBody')
+                    : t('billing.ui.prelaunchBody')
+                }
+                example={
+                  state.checkoutAvailable
+                    ? t('billing.ui.noSubscriptionExample')
+                    : t('billing.ui.prelaunchTerms')
+                }
+                action={
+                  state.checkoutAvailable ? (
+                    <Button
+                      variant="primary"
+                      loading={startCheckout.isSaving}
+                      onClick={() => chooseInterval('monthly')}
+                    >
+                      {t('action.upgrade')}
+                    </Button>
+                  ) : undefined
+                }
+              />
+            </>
           ) : (
             <>
               <SettingsPanel
@@ -133,6 +147,21 @@ export function BillingScreen(): ReactNode {
                   openingPortal={openPortal.isSaving}
                   onOpenPortal={() => void openPortal.run(undefined)}
                 />
+              </SettingsPanel>
+
+              {/*
+                Project capacity. The tier is what the workspace bought; the
+                allowance is the one number that varies between tiers. Neither
+                is in `BillingStateView` yet, so both are passed as `null` and
+                render as "unavailable" rather than as a plausible guess.
+                TODO(billing): depends on EntitlementStateView carrying
+                `tierKey`, `projectAllowance` and `activeProjectCount`.
+              */}
+              <SettingsPanel
+                title={t('billing.tier.heading')}
+                description={t('billing.tier.subheading')}
+              >
+                <TierPanel tierKey={null} activeProjects={null} />
               </SettingsPanel>
 
               <SettingsPanel
@@ -213,6 +242,11 @@ export function BillingScreen(): ReactNode {
                   title={t('billing.ui.intervalHeading')}
                   description={t('billing.ui.intervalChangeHelp')}
                 >
+                  <TierPicker
+                    value={tier}
+                    onChange={setTier}
+                    interval={state.interval === 'annual' ? 'annual' : 'monthly'}
+                  />
                   <RadioGroup
                     value={state.interval ?? 'monthly'}
                     onValueChange={(value) =>

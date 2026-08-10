@@ -9,6 +9,8 @@ import { createAuditService } from './audit';
 import { createAutomationRuleService } from './automation-rules';
 import { createBillingService } from './billing';
 import { createBrandService } from './brands';
+import { createBulkImportService } from './bulk-import';
+import { createWorkerBulkImportService } from './worker-bulk-import';
 import { createConnectionService } from './connections';
 import { createContentService } from './content';
 import { createCredentialVaultService } from './credentials';
@@ -22,6 +24,7 @@ import { createMediaService } from './media';
 import { createMembershipService } from './members';
 import { createOAuthAppService } from './oauth-apps';
 import { createPublishingService } from './publishing';
+import { createQueueRuleService } from './queue-rules';
 import { createReceiptService } from './receipts';
 import { createRssService } from './rss';
 import { createSchedulingService } from './scheduling';
@@ -45,6 +48,12 @@ export function createServices(deps: ServiceDeps): Services {
   // preflight, so they receive the same instance rather than building one each.
   const validation = createValidationService(deps);
   const content = createContentService(deps);
+  // Bulk import applies rows by calling these exact services, so it is handed
+  // the same instances rather than building its own. A second content service
+  // here would be a second set of rules about what a draft is.
+  const scheduling = createSchedulingService(deps, validation);
+  const media = createMediaService(deps);
+  const bulkImports = createBulkImportService(deps, content, scheduling, media);
 
   return {
     workspaces: createWorkspaceService(deps),
@@ -54,12 +63,13 @@ export function createServices(deps: ServiceDeps): Services {
     content,
     validation,
     approvals: createApprovalService(deps),
-    scheduling: createSchedulingService(deps, validation),
+    scheduling,
+    queueRules: createQueueRuleService(deps),
     publishing: createPublishingService(deps, validation),
     agentConfirmations: createAgentConfirmationService(deps),
     receipts: createReceiptService(deps),
     actionCenter: createActionCenterService(deps),
-    media: createMediaService(deps),
+    media,
     analytics: createAnalyticsService(deps),
     shortLinks: createShortLinkService(deps),
     automationRules: createAutomationRuleService(deps),
@@ -75,8 +85,10 @@ export function createServices(deps: ServiceDeps): Services {
     dataExports: createDataExportService(deps),
     dataLifecycle: createDataLifecycleService(deps),
     dataDeletion: createDataDeletionService(deps),
+    bulkImports,
     workerPublishing: createWorkerPublishingService(deps),
     workerWebhooks: createWorkerWebhookService(deps),
+    workerBulkImports: createWorkerBulkImportService(deps, bulkImports),
     health: createHealthService(deps),
   };
 }

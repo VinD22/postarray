@@ -21,6 +21,9 @@ export const PROVIDER_IDS = [
   'discord',
   'slack',
   'fake',
+  // Appended, never inserted. The order here mirrors the physical order of the
+  // `app.provider_kind` Postgres enum, which can only grow at the end.
+  'google_business_profile',
 ] as const;
 export const providerIdSchema = z.enum(PROVIDER_IDS);
 export type ProviderId = z.infer<typeof providerIdSchema>;

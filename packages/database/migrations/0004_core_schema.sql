@@ -1195,6 +1195,49 @@ CREATE TABLE "app"."connection_incidents" (
 );
 
 -- CreateTable
+CREATE TABLE "app"."queue_rules" (
+    "id" TEXT NOT NULL DEFAULT app.new_id('qrule'),
+    "workspace_id" TEXT NOT NULL,
+    "brand_id" TEXT NOT NULL,
+    "name" TEXT NOT NULL,
+    "iana_time_zone" TEXT NOT NULL,
+    "windows" JSONB NOT NULL DEFAULT '[]',
+    "minimum_gap_minutes" INTEGER NOT NULL DEFAULT 0,
+    "maximum_per_day" INTEGER,
+    "blackouts" JSONB NOT NULL DEFAULT '[]',
+    "connection_ids" TEXT[] DEFAULT ARRAY[]::TEXT[],
+    "priority" INTEGER NOT NULL DEFAULT 0,
+    "enabled" BOOLEAN NOT NULL DEFAULT true,
+    "archived_at" TIMESTAMPTZ(6),
+    "created_by_user_id" TEXT NOT NULL,
+    "created_at" TIMESTAMPTZ(6) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updated_at" TIMESTAMPTZ(6) NOT NULL,
+
+    CONSTRAINT "queue_rules_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "app"."queue_slot_reservations" (
+    "id" TEXT NOT NULL DEFAULT app.new_id('qslot'),
+    "workspace_id" TEXT NOT NULL,
+    "brand_id" TEXT NOT NULL,
+    "queue_rule_id" TEXT,
+    "state" TEXT NOT NULL DEFAULT 'proposed',
+    "scheduled_for" TIMESTAMPTZ(6) NOT NULL,
+    "scheduled_time_zone" TEXT NOT NULL,
+    "local_date_time" TEXT NOT NULL,
+    "rule_snapshot" JSONB NOT NULL,
+    "content_item_id" TEXT,
+    "publish_job_id" TEXT,
+    "expires_at" TIMESTAMPTZ(6),
+    "created_by_user_id" TEXT NOT NULL,
+    "created_at" TIMESTAMPTZ(6) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updated_at" TIMESTAMPTZ(6) NOT NULL,
+
+    CONSTRAINT "queue_slot_reservations_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
 CREATE TABLE "app"."automation_rules" (
     "id" TEXT NOT NULL DEFAULT app.new_id('rule'),
     "workspace_id" TEXT NOT NULL,
@@ -1691,6 +1734,61 @@ CREATE TABLE "app"."data_exports" (
     CONSTRAINT "data_exports_pkey" PRIMARY KEY ("id")
 );
 
+-- CreateTable
+CREATE TABLE "app"."bulk_import_jobs" (
+    "id" TEXT NOT NULL DEFAULT app.new_id('import'),
+    "workspace_id" TEXT NOT NULL,
+    "brand_id" TEXT NOT NULL,
+    "state" TEXT NOT NULL DEFAULT 'uploaded',
+    "filename" TEXT NOT NULL,
+    "storage_bucket" TEXT,
+    "storage_key" TEXT,
+    "manifest_checksum" TEXT NOT NULL,
+    "byte_size" BIGINT NOT NULL DEFAULT 0,
+    "parser_version" TEXT NOT NULL,
+    "options" JSONB NOT NULL DEFAULT '{}',
+    "manifest_issues" JSONB NOT NULL DEFAULT '[]',
+    "columns_report" JSONB NOT NULL DEFAULT '{}',
+    "row_count" INTEGER,
+    "valid_row_count" INTEGER,
+    "invalid_row_count" INTEGER,
+    "applied_row_count" INTEGER,
+    "failed_row_count" INTEGER,
+    "skipped_row_count" INTEGER,
+    "apply_mode" TEXT,
+    "applied_at" TIMESTAMPTZ(6),
+    "applied_by_user_id" TEXT,
+    "error_report_storage_key" TEXT,
+    "error_report_checksum" TEXT,
+    "idempotency_key" TEXT,
+    "requested_by_user_id" TEXT NOT NULL,
+    "failure_note" TEXT,
+    "created_at" TIMESTAMPTZ(6) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updated_at" TIMESTAMPTZ(6) NOT NULL,
+
+    CONSTRAINT "bulk_import_jobs_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "app"."bulk_import_rows" (
+    "id" TEXT NOT NULL DEFAULT app.new_id('importrow'),
+    "workspace_id" TEXT NOT NULL,
+    "bulk_import_job_id" TEXT NOT NULL,
+    "external_row_key" TEXT NOT NULL,
+    "line_number" INTEGER NOT NULL,
+    "state" TEXT NOT NULL DEFAULT 'pending',
+    "payload" JSONB,
+    "validation" JSONB,
+    "issues" JSONB NOT NULL DEFAULT '[]',
+    "content_item_id" TEXT,
+    "publish_job_id" TEXT,
+    "applied_at" TIMESTAMPTZ(6),
+    "created_at" TIMESTAMPTZ(6) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updated_at" TIMESTAMPTZ(6) NOT NULL,
+
+    CONSTRAINT "bulk_import_rows_pkey" PRIMARY KEY ("id")
+);
+
 -- CreateIndex
 CREATE UNIQUE INDEX "users_auth_subject_id_key" ON "app"."users"("auth_subject_id");
 
@@ -2101,6 +2199,24 @@ CREATE INDEX "connection_incidents_workspace_id_idx" ON "app"."connection_incide
 
 -- CreateIndex
 CREATE INDEX "connection_incidents_workspace_id_state_detected_at_idx" ON "app"."connection_incidents"("workspace_id", "state", "detected_at" DESC);
+
+-- CreateIndex
+CREATE INDEX "queue_rules_workspace_id_idx" ON "app"."queue_rules"("workspace_id");
+
+-- CreateIndex
+CREATE INDEX "queue_rules_workspace_id_brand_id_enabled_priority_idx" ON "app"."queue_rules"("workspace_id", "brand_id", "enabled", "priority" DESC);
+
+-- CreateIndex
+CREATE UNIQUE INDEX "queue_rules_workspace_id_brand_id_name_key" ON "app"."queue_rules"("workspace_id", "brand_id", "name");
+
+-- CreateIndex
+CREATE INDEX "queue_slot_reservations_workspace_id_idx" ON "app"."queue_slot_reservations"("workspace_id");
+
+-- CreateIndex
+CREATE INDEX "queue_slot_reservations_workspace_id_brand_id_scheduled_for_idx" ON "app"."queue_slot_reservations"("workspace_id", "brand_id", "scheduled_for");
+
+-- CreateIndex
+CREATE INDEX "queue_slot_reservations_workspace_id_state_expires_at_idx" ON "app"."queue_slot_reservations"("workspace_id", "state", "expires_at");
 
 -- CreateIndex
 CREATE INDEX "automation_rules_workspace_id_idx" ON "app"."automation_rules"("workspace_id");
@@ -2580,6 +2696,24 @@ ALTER TABLE "app"."connection_incidents" ADD CONSTRAINT "connection_incidents_wo
 ALTER TABLE "app"."connection_incidents" ADD CONSTRAINT "connection_incidents_connection_id_fkey" FOREIGN KEY ("connection_id") REFERENCES "app"."social_connections"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
+ALTER TABLE "app"."queue_rules" ADD CONSTRAINT "queue_rules_workspace_id_fkey" FOREIGN KEY ("workspace_id") REFERENCES "app"."workspaces"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "app"."queue_rules" ADD CONSTRAINT "queue_rules_brand_id_fkey" FOREIGN KEY ("brand_id") REFERENCES "app"."brands"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "app"."queue_slot_reservations" ADD CONSTRAINT "queue_slot_reservations_workspace_id_fkey" FOREIGN KEY ("workspace_id") REFERENCES "app"."workspaces"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "app"."queue_slot_reservations" ADD CONSTRAINT "queue_slot_reservations_brand_id_fkey" FOREIGN KEY ("brand_id") REFERENCES "app"."brands"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "app"."queue_slot_reservations" ADD CONSTRAINT "queue_slot_reservations_queue_rule_id_fkey" FOREIGN KEY ("queue_rule_id") REFERENCES "app"."queue_rules"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "app"."queue_slot_reservations" ADD CONSTRAINT "queue_slot_reservations_publish_job_id_fkey" FOREIGN KEY ("publish_job_id") REFERENCES "app"."publish_jobs"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
 ALTER TABLE "app"."automation_rules" ADD CONSTRAINT "automation_rules_workspace_id_fkey" FOREIGN KEY ("workspace_id") REFERENCES "app"."workspaces"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
@@ -2707,3 +2841,15 @@ ALTER TABLE "app"."deletion_requests" ADD CONSTRAINT "deletion_requests_workspac
 
 -- AddForeignKey
 ALTER TABLE "app"."data_exports" ADD CONSTRAINT "data_exports_workspace_id_fkey" FOREIGN KEY ("workspace_id") REFERENCES "app"."workspaces"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "app"."bulk_import_jobs" ADD CONSTRAINT "bulk_import_jobs_workspace_id_fkey" FOREIGN KEY ("workspace_id") REFERENCES "app"."workspaces"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "app"."bulk_import_jobs" ADD CONSTRAINT "bulk_import_jobs_brand_id_fkey" FOREIGN KEY ("brand_id") REFERENCES "app"."brands"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "app"."bulk_import_rows" ADD CONSTRAINT "bulk_import_rows_workspace_id_fkey" FOREIGN KEY ("workspace_id") REFERENCES "app"."workspaces"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "app"."bulk_import_rows" ADD CONSTRAINT "bulk_import_rows_bulk_import_job_id_fkey" FOREIGN KEY ("bulk_import_job_id") REFERENCES "app"."bulk_import_jobs"("id") ON DELETE CASCADE ON UPDATE CASCADE;

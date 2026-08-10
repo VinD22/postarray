@@ -62,6 +62,14 @@ export function dataDeletionWorkflowId(workspaceId: string, requestId: string): 
   return `delete:${workspaceId}:${requestId}`;
 }
 
+/**
+ * Deterministic per job, so a retried upload or a duplicated start signal joins
+ * the run that already exists instead of beginning a second one.
+ */
+export function bulkImportWorkflowId(workspaceId: string, importJobId: string): string {
+  return `import:${workspaceId}:${importJobId}`;
+}
+
 export class InMemoryScheduler implements SchedulerPort {
   readonly publishes = new Map<string, RecordedPublish>();
   readonly analyticsSyncs: { connectionId: string; receiptId: string | null; at: Date }[] = [];

@@ -37,6 +37,7 @@ import { crossesOffsetChange, formatCurrency, formatDateTime } from '@relay/i18n
 import { resolveVariant } from '@relay/contracts';
 
 import { useMotionOk } from '@/lib/motion/use-motion-ok';
+import { NextSlotPanel } from '@/features/queue/components/next-slot-panel';
 import { useComposer } from '../composer-context';
 import { PROVIDER_LABEL } from './provider-identity';
 import { RepeatPanel } from './repeat-panel';
@@ -153,6 +154,25 @@ export function ScheduleSheet({
         </SheetHeader>
 
         <SheetBody className="flex flex-col gap-5">
+          {/*
+            The queue offers a time and says why, before anything is accepted.
+            Accepting only fills the fields below; the person still presses
+            Schedule. Nothing here publishes and nothing here schedules.
+          */}
+          <NextSlotPanel
+            disabled={!online}
+            onAccept={(slot) => {
+              dispatch({
+                type: 'schedule/set',
+                schedule: {
+                  instant: slot.instant,
+                  ianaTimeZone: slot.ianaTimeZone,
+                  repeat: schedule?.repeat ?? null,
+                },
+              });
+            }}
+          />
+
           <div className="grid gap-2.5 sm:grid-cols-2">
             <Field label={t.full('composer.schedule.dateLabel')}>
               {(control) => (

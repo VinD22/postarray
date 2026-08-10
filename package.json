@@ -25,7 +25,8 @@
     "release:check": "node scripts/release-check.js",
     "test:rls": "node scripts/rls-test.js",
     "verify": "turbo run typecheck lint test",
-    "generate:marketing-states": "pnpm --filter @relay/connectors generate:marketing-states"
+    "generate:marketing-states": "pnpm --filter @relay/connectors generate:marketing-states",
+    "generate:publishing-limits": "pnpm --filter @relay/connectors generate:publishing-limits"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",

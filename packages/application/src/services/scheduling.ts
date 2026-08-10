@@ -3,6 +3,7 @@ import {
   type Paginated,
   type PublishState,
   type ScheduleSpec,
+  type SlotProposal,
   type ValidationResult,
 } from '@relay/contracts';
 
@@ -23,8 +24,10 @@ import { withIdempotency } from '../internal/idempotency';
 import { toLocalDateTime, toProviderId } from '../internal/mappers';
 import { pageArgs, toPage } from '../internal/pagination';
 import { PUBLISH_JOB_SELECT, jobToView, runPublishPath } from '../internal/publish-path';
-import { authorized, guard, type Db } from '../internal/runtime';
+import { authorized, guard } from '../internal/runtime';
+import { findNextSlot } from '../internal/slot-finder';
 import { storedMasterSchema } from '../internal/stored-content';
+import { linkReservationToJob, readQueueContext } from './queue-rules.mappers';
 
 /**
  * Scheduling.
@@ -100,6 +103,25 @@ export function createSchedulingService(
               if (first === undefined) {
                 throw invalid('errors.no_targets_selected', {
                   contentItemId: input.contentItemId,
+                });
+              }
+
+              // A person may have accepted a queue slot for exactly this draft
+              // at exactly this instant. Link the job onto it so the receipt and
+              // the audit can say which rule chose the time. Nothing is created
+              // here: an unmatched schedule simply has no reservation.
+              const linked = await linkReservationToJob(db, {
+                brandId: aggregate.brandId,
+                instant: new Date(spec.instant),
+                contentItemId: input.contentItemId,
+                publishJobId: first.id,
+              });
+              if (linked !== null) {
+                await recordAudit(db, actor, {
+                  action: 'queue_slot.linked',
+                  targetType: 'queue_slot_reservation',
+                  targetId: linked,
+                  after: { publishJobId: first.id, instant: spec.instant },
                 });
               }
               return first;
@@ -337,29 +359,37 @@ export function createSchedulingService(
       });
     },
 
+    /**
+     * The next slot, delegated to the queue model.
+     *
+     * The old behaviour, "the first free hour with no job for this brand", is
+     * still here: it is the labelled fallback inside the slot finder, used when
+     * a project has configured no queue rules yet. What changed is that the
+     * choice is now explainable, and the reasons travel with it.
+     */
     async nextAvailableSlot(
       ctx: ActorContext,
       input: { brandId: string; after?: string },
-    ): Promise<{ instant: string; ianaTimeZone: string }> {
+    ): Promise<SlotProposal> {
       return authorized(
         deps,
         ctx,
         'content.read',
         { brandId: input.brandId },
         async (db, actor) => {
-          const brand = await db.brand.findFirst({
-            where: { id: input.brandId },
-            select: { defaultTimeZone: true },
+          const context = await readQueueContext(
+            db,
+            deps.clock,
+            actor.workspace.defaultTimeZone,
+            input,
+          );
+          return findNextSlot({
+            rules: context.rules,
+            occupied: context.occupied,
+            reserved: context.reserved,
+            after: context.after,
+            fallbackTimeZone: context.timeZone,
           });
-          if (brand === null) {
-            throw notFound('brand', input.brandId);
-          }
-          const timeZone = brand.defaultTimeZone ?? actor.workspace.defaultTimeZone;
-          const after = input.after === undefined ? deps.clock.now() : new Date(input.after);
-          if (Number.isNaN(after.getTime())) {
-            throw invalid('errors.invalid_range', { after: input.after ?? null });
-          }
-          return findNextSlot(db, input.brandId, after, timeZone);
         },
       );
     },
@@ -388,38 +418,4 @@ function toCalendarApprovalState(state: string | undefined): CalendarEntry['appr
     default:
       return 'requested';
   }
-}
-
-/** Slots are on the hour. The first hour with no scheduled job for the brand. */
-const SLOT_MINUTES = 60;
-const MAX_SLOT_SEARCH_HOURS = 24 * 30;
-
-async function findNextSlot(
-  db: Db,
-  brandId: string,
-  after: Date,
-  timeZone: string,
-): Promise<{ instant: string; ianaTimeZone: string }> {
-  const start = new Date(after.getTime());
-  start.setUTCMinutes(0, 0, 0);
-  start.setUTCHours(start.getUTCHours() + 1);
-
-  const horizon = new Date(start.getTime() + MAX_SLOT_SEARCH_HOURS * 3_600_000);
-  const taken = await db.publishJob.findMany({
-    where: {
-      scheduledFor: { gte: start, lte: horizon },
-      state: { notIn: ['canceled', 'failed_permanently'] },
-      contentItem: { brandId },
-    },
-    select: { scheduledFor: true },
-  });
-  const occupied = new Set(taken.map((row) => row.scheduledFor.toISOString()));
-
-  for (let hour = 0; hour < MAX_SLOT_SEARCH_HOURS; hour += 1) {
-    const candidate = new Date(start.getTime() + hour * SLOT_MINUTES * 60_000);
-    if (!occupied.has(candidate.toISOString())) {
-      return { instant: candidate.toISOString(), ianaTimeZone: timeZone };
-    }
-  }
-  return { instant: horizon.toISOString(), ianaTimeZone: timeZone };
 }

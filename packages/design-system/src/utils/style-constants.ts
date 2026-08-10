@@ -45,15 +45,30 @@ export type ControlSize = keyof typeof controlHeight;
 export const panelSurface = 'bg-surface-raised border border-border-default rounded-lg';
 
 /**
- * The poster surface recipe: bold 2px ink outline, hard offset shadow. Used
- * where a control should read as a physical, cut-out panel rather than a
- * quiet tonal one — the CTA button, poster cards and other "loud" surfaces.
+ * The emphasised surface recipe. Editorial edition: still a hairline border
+ * and a tonal fill, separated from `panelSurface` only by a soft, diffuse
+ * lift rather than by a 2px ink outline and an offset block.
+ *
+ * The name survives because ~40 call sites outside this package still ask for
+ * it; visually it is now a near-twin of `panelSurface`. Prefer `panelSurface`
+ * in new code and reach for this only when a panel genuinely needs to float
+ * above its neighbours.
  */
-export const panelPoster = 'bg-surface-raised border-2 border-border-bold rounded-lg shadow-hard';
+export const panelPoster = 'bg-surface-raised border border-border-default rounded-lg shadow-raised';
 
 /**
- * Physical press feedback: the surface translates toward its own hard shadow
- * on `:active` instead of the shadow moving, so the offset direction mirrors
- * for free under `[dir='rtl']` (see `--shadow-hard-x` in theme.css).
+ * Press feedback. Editorial edition: a quiet 1px vertical settle plus the
+ * shadow softening, rather than the surface translating into an offset block.
+ * The press is vertical only, so nothing needs mirroring under `[dir='rtl']`
+ * (see `.relay-pressable` in theme.css).
  */
 export const pressable = 'relay-pressable';
+
+/**
+ * The elevation ramp for committing actions: quiet at rest, a soft lift on
+ * hover, flat again when disabled. `--shadow-*` resolves to diffuse editorial
+ * shadows, so this is a change in depth, never a glow or an offset block.
+ * `transitionBase` already animates `box-shadow` and already opts out under
+ * `prefers-reduced-motion`.
+ */
+export const elevationRamp = 'shadow-raised hover:shadow-hard disabled:shadow-none';

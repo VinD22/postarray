@@ -47,6 +47,10 @@ export type {
   DataDeletionWorkflowInput,
   DataLifecycleService,
   BrandService,
+  BulkImportService,
+  BulkImportWorkflowInput,
+  BulkImportWorkflowOutput,
+  WorkerBulkImportService,
   Clock,
   ConnectionService,
   ConnectorRegistry,
@@ -131,11 +135,13 @@ export {
   reschedulePublishOutboxPayloadSchema,
   startPublishOutboxPayloadSchema,
   startRuleRunOutboxPayloadSchema,
+  startBulkImportPayloadSchema,
   workflowOutboxPayloadSchemas,
   type CancelPublishOutboxPayload,
   type ReschedulePublishOutboxPayload,
   type StartPublishOutboxPayload,
   type StartRuleRunOutboxPayload,
+  type StartBulkImportPayload,
   type WorkflowOutboxInput,
   type WorkflowOutboxKind,
 } from './outbox';
@@ -222,6 +228,8 @@ export {
  * the same URL safety check the application applies.
  */
 export { fingerprintOf, publishJobIdempotencyKey, withIdempotency } from './internal/idempotency';
+export { parseCsvManifest, readDelimitedText, type CsvManifest } from './internal/csv-manifest';
+export { bulkImportWorkflowId } from './ports/index';
 export { assertFetchable, isPrivateAddress, type FetchableUrl } from './internal/url-safety';
 export { crossesOffsetChange } from './services/scheduling';
 export { feedItemFingerprint, parseFeed } from './services/rss';

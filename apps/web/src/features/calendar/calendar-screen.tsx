@@ -11,11 +11,21 @@
  *     loading, empty, empty-because-filtered, error, offline, permission
  *     denied and rate limited each have their own shape here.
  *  4. Offer a complete keyboard path for rescheduling, so no operation on this
- *     screen is drag-only.
+ *     screen is drag-only. The drag added on top of it is a second way into the
+ *     same state: it produces the same proposal and opens the same dialog, and
+ *     it writes nothing until that dialog is confirmed.
  *  5. Keep work that needs a person visible above the grid until it is done.
  */
 
-import { useCallback, useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
+import {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  type PointerEvent as ReactPointerEvent,
+  type ReactNode,
+} from 'react';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { CalendarPlus } from 'lucide-react';
 import {
@@ -63,6 +73,7 @@ import {
 } from './filters';
 import { buildProposal, collectWarnings, keyboardStep, KEYBOARD_STEP_MINUTES } from './reschedule';
 import { useCalendarEntries, useRescheduleEntry } from './use-calendar';
+import { useDragReschedule } from './use-drag-reschedule';
 import { EMPTY_FILTERS } from './types';
 import type {
   CalendarEntry,
@@ -200,6 +211,30 @@ export function CalendarScreen({
     setGrabbed(null);
     setProposal(null);
   }, [announce, format, grabbed, t]);
+
+  /* --------------------------------------------------------------------
+     Dragging, which is the same move made with a pointer.
+
+     A drop never writes. It sets the proposal the arrow keys would have set
+     and opens the confirmation, so cancelling leaves the post exactly where
+     it was: nothing moved optimistically, so nothing has to be rolled back.
+     ------------------------------------------------------------------ */
+
+  const drag = useDragReschedule({
+    timeZone: format.timeZone,
+    enabled: !dialogOpen,
+    onPickUp: beginMove,
+    onPropose: (next) => {
+      setProposal(next);
+      announce(t('calendar.drag.overSlot', { to: format.dateTime(next.toInstant) }));
+    },
+    onDrop: (next) => {
+      setProposal(next);
+      setDialogOpen(true);
+      announce(t('calendar.drag.dropped', { to: format.dateTime(next.toInstant) }));
+    },
+    onCancel: cancelMove,
+  });
 
   useEffect(() => {
     if (!grabbed || dialogOpen) return undefined;
@@ -409,7 +444,9 @@ export function CalendarScreen({
           filtersActive={countActiveFilters(filters) > 0}
           grabbedKey={grabbed ? entryKey(grabbed) : null}
           proposal={grabbed ? proposal : null}
+          draggingKey={drag.draggingKey}
           onPickUp={beginMove}
+          onDragStart={drag.startDrag}
           onReschedule={openRescheduleFor}
           onOpenDetail={setDetailEntry}
           onShowOnlyAttention={() => navigate({ filters: { ...filters, attentionOnly: true } })}
@@ -464,7 +501,9 @@ interface CalendarBodyProps {
   filtersActive: boolean;
   grabbedKey: string | null;
   proposal: RescheduleProposal | null;
+  draggingKey: string | null;
   onPickUp: (entry: CalendarEntry) => void;
+  onDragStart: (entry: CalendarEntry, event: ReactPointerEvent<Element>) => void;
   onReschedule: (entry: CalendarEntry) => void;
   onOpenDetail: (entry: CalendarEntry) => void;
   onShowOnlyAttention: () => void;
@@ -634,6 +673,11 @@ function CalendarBody(props: CalendarBodyProps): ReactNode {
             timeZone={format.timeZone}
             hrefForEntry={props.hrefForEntry}
             hrefForDay={props.hrefForDay}
+            grabbedKey={props.grabbedKey}
+            onPickUp={props.onPickUp}
+            proposal={props.proposal}
+            draggingKey={props.draggingKey}
+            onDragStart={props.onDragStart}
             label={t('web.calendar.month.label', { month: props.rangeLabel })}
           />
         ) : (
@@ -649,6 +693,8 @@ function CalendarBody(props: CalendarBodyProps): ReactNode {
                 grabbedKey={props.grabbedKey}
                 onPickUp={props.onPickUp}
                 proposal={props.proposal}
+                draggingKey={props.draggingKey}
+                onDragStart={props.onDragStart}
                 label={t('web.calendar.grid.label', { range: props.rangeLabel })}
               />
             </div>
@@ -661,6 +707,8 @@ function CalendarBody(props: CalendarBodyProps): ReactNode {
                 grabbedKey={props.grabbedKey}
                 onPickUp={props.onPickUp}
                 proposal={props.proposal}
+                draggingKey={props.draggingKey}
+                onDragStart={props.onDragStart}
                 label={t('web.calendar.agenda.label', { range: props.rangeLabel })}
               />
             </div>

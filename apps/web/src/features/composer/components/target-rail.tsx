@@ -36,6 +36,10 @@ import type { TargetRailState, TargetSummary } from '../types';
  * `--brand-*` identity token as each row's `ProviderMark` dot — never the
  * sole identifier (the dot and `PROVIDER_LABEL` text beside it stay the real
  * identification), the same rule `provider-identity.tsx` documents.
+ *
+ * A provider with no identity token yet takes the neutral `border-bold` ink
+ * rather than borrowing another platform's colour. Google Business Profile is
+ * in that state today.
  */
 const PROVIDER_BAR_CLASS: Partial<Record<ProviderId, string>> = {
   x: 'bg-brand-x',
@@ -55,6 +59,7 @@ const PROVIDER_BAR_CLASS: Partial<Record<ProviderId, string>> = {
   pinterest: 'bg-brand-pinterest',
   discord: 'bg-brand-discord',
   slack: 'bg-brand-slack',
+  google_business_profile: 'bg-brand-google-business-profile',
 };
 
 const MASTER_ROW_KEY = 'master';

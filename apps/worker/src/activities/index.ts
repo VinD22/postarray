@@ -287,6 +287,16 @@ export function createActivities(deps: ActivityDependencies): WorkerActivities {
     finalizeDeletion: wrap('finalizeDeletion', deps, gateway.finalizeDeletion.bind(gateway)),
     markDeletionFailed: wrap('markDeletionFailed', deps, gateway.markDeletionFailed.bind(gateway)),
     buildDataExport: wrap('buildDataExport', deps, gateway.buildDataExport.bind(gateway)),
+    readBulkImportVerdict: wrap(
+      'readBulkImportVerdict',
+      deps,
+      gateway.readBulkImportVerdict.bind(gateway),
+    ),
+    applyBulkImportRows: wrap(
+      'applyBulkImportRows',
+      deps,
+      gateway.applyBulkImportRows.bind(gateway),
+    ),
   };
 }
 

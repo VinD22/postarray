@@ -741,6 +741,41 @@ export interface BuildDataExportResult {
 }
 
 // ---------------------------------------------------------------------------
+// Bulk CSV import
+// ---------------------------------------------------------------------------
+
+/**
+ * Bulk import activity payloads.
+ *
+ * Identifiers and counts only. The manifest itself never travels through an
+ * activity argument or a workflow result: it is a customer file that may hold
+ * anything, and Temporal history is not the place for it.
+ */
+export interface BulkImportActivityInput {
+  readonly ctx: ActivityContext;
+  readonly importJobId: string;
+}
+
+export interface ApplyBulkImportInput extends BulkImportActivityInput {
+  /** Drafts or scheduled. There is no value here that publishes. */
+  readonly mode: 'drafts' | 'scheduled';
+}
+
+export interface BulkImportActivityResult {
+  readonly importJobId: string;
+  readonly state: string;
+  /** A count we have not computed is null, never zero. */
+  readonly counts: {
+    readonly total: number | null;
+    readonly valid: number | null;
+    readonly invalid: number | null;
+    readonly applied: number | null;
+    readonly failed: number | null;
+    readonly skipped: number | null;
+  };
+}
+
+// ---------------------------------------------------------------------------
 // The complete activity surface
 // ---------------------------------------------------------------------------
 
@@ -792,6 +827,8 @@ export interface WorkerActivities {
   finalizeDeletion(input: FinalizeDeletionInput): Promise<void>;
   markDeletionFailed(input: MarkDeletionFailedInput): Promise<void>;
   buildDataExport(input: BuildDataExportInput): Promise<BuildDataExportResult>;
+  readBulkImportVerdict(input: BulkImportActivityInput): Promise<BulkImportActivityResult>;
+  applyBulkImportRows(input: ApplyBulkImportInput): Promise<BulkImportActivityResult>;
 }
 
 export type ActivityName = keyof WorkerActivities;
@@ -843,4 +880,6 @@ export const ACTIVITY_NAMES: readonly ActivityName[] = [
   'finalizeDeletion',
   'markDeletionFailed',
   'buildDataExport',
+  'readBulkImportVerdict',
+  'applyBulkImportRows',
 ];

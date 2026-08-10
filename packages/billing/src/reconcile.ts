@@ -5,6 +5,8 @@ import { deriveEntitlement } from './entitlements';
 import type { EntitlementSnapshot, EntitlementState, VerifiedSubscription } from './entitlements';
 import { isFullAccess } from './entitlements';
 import type { SubscriptionStore } from './inbox';
+import { buildProjectAllowanceGrant } from './project-allowance';
+import type { ProjectAllowanceGrant } from './project-allowance';
 import { toVerifiedSubscription, workspaceIdOf } from './webhooks';
 import type { Clock } from './time';
 import { addDays, nowIso } from './time';
@@ -69,8 +71,31 @@ export interface ReconcileDeps {
   readonly subscriptions: SubscriptionStore;
   readonly clock: Clock;
   readonly logger?: Logger;
+  /** Polar product id to tier key. Unmapped ids resolve to the base tier. */
+  readonly productTiers?: Readonly<Record<string, string>>;
   /** Called for each repair so the caller can append an audit event. */
   readonly onDriftRepaired?: (drift: DriftRecord) => Promise<void> | void;
+  /**
+   * Called on every verified upsert with the numeric entitlement row migration
+   * 0066 reads, so a repaired subscription repairs project capacity too.
+   */
+  readonly onProjectAllowance?: (grant: ProjectAllowanceGrant) => Promise<void> | void;
+}
+
+/** Emit the `projects.active.max` row for a subscription we just re-verified. */
+async function publishProjectAllowance(
+  deps: ReconcileDeps,
+  subscription: VerifiedSubscription,
+  effectiveFrom: string,
+): Promise<void> {
+  const grant = buildProjectAllowanceGrant({
+    subscription,
+    effectiveFrom,
+    ...(deps.productTiers === undefined ? {} : { productTiers: deps.productTiers }),
+  });
+  if (grant !== null) {
+    await deps.onProjectAllowance?.(grant);
+  }
 }
 
 export interface ReconcileInput {
@@ -172,8 +197,12 @@ export async function reconcileSubscriptions(
         verifiedAt: startedAt,
         previous: stored,
       });
-      const storedSnapshot = stored === null ? null : deriveEntitlement(stored, { now: startedAt });
-      const nextSnapshot = deriveEntitlement(next, { now: startedAt });
+      const derivation = {
+        now: startedAt,
+        ...(deps.productTiers === undefined ? {} : { productTiers: deps.productTiers }),
+      };
+      const storedSnapshot = stored === null ? null : deriveEntitlement(stored, derivation);
+      const nextSnapshot = deriveEntitlement(next, derivation);
       const kinds = classifyDrift(stored, next, storedSnapshot, nextSnapshot);
       if (kinds.length === 0) {
         continue;
@@ -185,6 +214,7 @@ export async function reconcileSubscriptions(
           : isFullAccess(storedSnapshot.state) !== isFullAccess(nextSnapshot.state);
 
       await deps.subscriptions.upsert(next);
+      await publishProjectAllowance(deps, next, startedAt);
       repaired += 1;
       if (grantedOrRemovedFull) {
         alerts += 1;
@@ -246,17 +276,21 @@ export async function reconcileWorkspace(
   input: { workspaceId: string; subscriptionId?: string },
 ): Promise<EntitlementSnapshot> {
   const now = nowIso(deps.clock);
+  const derivation = {
+    now,
+    ...(deps.productTiers === undefined ? {} : { productTiers: deps.productTiers }),
+  };
   const stored =
     input.subscriptionId === undefined
       ? await deps.subscriptions.getByWorkspaceId(input.workspaceId)
       : await deps.subscriptions.getBySubscriptionId(input.subscriptionId);
   const subscriptionId = input.subscriptionId ?? stored?.subscriptionId;
   if (subscriptionId === undefined) {
-    return deriveEntitlement(null, { now });
+    return deriveEntitlement(null, derivation);
   }
   const remote = await deps.client.getSubscription(subscriptionId);
   if (remote === null) {
-    return deriveEntitlement(stored, { now });
+    return deriveEntitlement(stored, derivation);
   }
   const workspaceId = workspaceIdOf(remote) ?? stored?.workspaceId ?? input.workspaceId;
   const next = toVerifiedSubscription({
@@ -267,5 +301,6 @@ export async function reconcileWorkspace(
     previous: stored,
   });
   await deps.subscriptions.upsert(next);
-  return deriveEntitlement(next, { now });
+  await publishProjectAllowance(deps, next, now);
+  return deriveEntitlement(next, derivation);
 }

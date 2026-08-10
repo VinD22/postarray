@@ -78,6 +78,11 @@ type WebhookActivities = Pick<
   | 'deadLetterWebhookDelivery'
 >;
 
+type BulkImportActivities = Pick<
+  WorkerActivities,
+  'readBulkImportVerdict' | 'applyBulkImportRows'
+>;
+
 function requireObject(value: unknown, what: string): object {
   if (typeof value !== 'object' || value === null) {
     throw new InternalError({ details: { invalid: what } });
@@ -129,6 +134,7 @@ export async function loadGateway(
     readonly connectorExecution?: ConnectorExecutionGateway | null;
     readonly publishing?: Partial<PublishingActivities>;
     readonly webhooks?: Partial<WebhookActivities>;
+    readonly bulkImports?: Partial<BulkImportActivities>;
     readonly connectorBridge?: ReturnType<typeof createConnectorExecutionActivities> | null;
   } = {},
 ): Promise<WorkerActivities> {
@@ -244,6 +250,16 @@ export async function main(): Promise<void> {
     deadLetterWebhookDelivery: (input) =>
       webhooksReady.then((value) => value.deadLetterWebhookDelivery(input)),
   };
+  let resolveBulkImports: ((activities: BulkImportActivities) => void) | undefined;
+  const bulkImportsReady = new Promise<BulkImportActivities>((resolve) => {
+    resolveBulkImports = resolve;
+  });
+  const deferredBulkImports: BulkImportActivities = {
+    readBulkImportVerdict: (input) =>
+      bulkImportsReady.then((value) => value.readBulkImportVerdict(input)),
+    applyBulkImportRows: (input) =>
+      bulkImportsReady.then((value) => value.applyBulkImportRows(input)),
+  };
   const connectorBridge =
     connectorRuntime.gateway === null
       ? null
@@ -263,6 +279,7 @@ export async function main(): Promise<void> {
             dataDeletion: deferredDataDeletion,
             publishing: deferredPublishing,
             webhooks: deferredWebhooks,
+            bulkImports: deferredBulkImports,
             connectorBridge,
           }
         : { connectorExecution: connectorRuntime.gateway },
@@ -303,6 +320,17 @@ export async function main(): Promise<void> {
       markDeletionFailed: (input) => runtime.services.dataDeletion.markDeletionFailed(input),
     });
     resolvePublishing?.(runtime.services.workerPublishing);
+    resolveBulkImports?.({
+      readBulkImportVerdict: (input) =>
+        runtime.services.workerBulkImports.validate(input.ctx, {
+          importJobId: input.importJobId,
+        }),
+      applyBulkImportRows: (input) =>
+        runtime.services.workerBulkImports.applyRows(input.ctx, {
+          importJobId: input.importJobId,
+          mode: input.mode,
+        }),
+    });
     resolveWebhooks?.({
       loadWebhookDelivery: (input) => runtime.services.workerWebhooks.loadWebhookDelivery(input),
       deliverWebhook: (input) => runtime.services.workerWebhooks.deliverWebhook(input),

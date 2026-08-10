@@ -50,8 +50,11 @@ export const Slider = forwardRef<HTMLSpanElement, SliderProps>(function Slider(
           key={label}
           aria-label={label}
           className={cn(
-            'border-accent bg-surface-raised block size-4 rounded-full border-2',
-            'disabled:border-border-subtle disabled:cursor-not-allowed',
+            // A hairline accent ring on a raised fill, lifted by the soft
+            // raised shadow so the knob still reads against the track without
+            // a 2px outline. The accent clears 3:1 on both themes' surfaces.
+            'border-accent bg-surface-raised shadow-raised block size-4 rounded-full border',
+            'disabled:border-border-subtle disabled:shadow-none disabled:cursor-not-allowed',
             focusRing,
           )}
         />

@@ -6,8 +6,10 @@
  * the unit-economics model.
  *
  * Three rules hold across the whole package:
- *  - one public plan, $29 a month or $300 a year, with a seven day trial on
- *    both intervals and the annual saving stated in money, never as a percentage;
+ *  - tiers buy active project capacity and nothing else. Every tier includes
+ *    every feature. The base tier is $29 a month or $300 a year and includes
+ *    three active projects, with a seven day trial on both intervals and the
+ *    annual saving stated in money, never as a percentage;
  *  - entitlements come only from verified subscription state plus periodic
  *    reconciliation, never from the checkout success redirect;
  *  - there is no AI image or video generation product, meter or entitlement.
@@ -36,8 +38,10 @@ export {
   PRICE_PRESENTATION,
   READ_ONLY_PERIOD_DAYS,
   RELAY_TRIAL_SUMMARY_DAY,
+  TIER_PRESENTATIONS,
   TRIAL_DAYS,
   billingIntervalSchema,
+  derivedAnnualFramingAmounts,
   normalizeInterval,
   planPriceMinor,
   planProduct,
@@ -48,6 +52,49 @@ export {
   type PlanProduct,
   type PricePresentation,
 } from './products';
+
+export {
+  BASE_TIER_KEY,
+  FOUNDER_DECISION_PENDING,
+  FOUNDER_DECISION_PENDING_ENV_KEY,
+  PENDING_TIER_KEYS,
+  PLAN_TIERS,
+  PLAN_TIER_KEYS,
+  PUBLISHABLE_TIER_KEYS,
+  SHARED_INCLUSION_KEYS,
+  assertTierPublishable,
+  isPublishableTier,
+  planTier,
+  planTierKeySchema,
+  publishableTiers,
+  tierDecisionPending,
+  tierForProductId,
+  tierInclusionKeys,
+  tierPriceMinor,
+  tierProjectAllowance,
+  type PlanTier,
+  type PlanTierKey,
+} from './tiers';
+
+export {
+  TIER_ANNUAL_FRAMING_KEY,
+  TIER_PROJECT_ALLOWANCE_KEY,
+  buildTierPresentation,
+  publishableTierPresentations,
+  tierPresentationStrings,
+  type TierAnnualFraming,
+  type TierIntervalPresentation,
+  type TierPresentation,
+} from './tier-presentation';
+
+export {
+  PROJECT_ALLOWANCE_ENTITLEMENT_KEY,
+  buildProjectAllowanceGrant,
+  projectCapacityPosture,
+  type BuildProjectAllowanceGrantInput,
+  type ProjectAllowanceGrant,
+  type ProjectCapacityPosture,
+} from './project-allowance';
 
 export {
   MICRO_PER_MINOR,
@@ -170,6 +217,8 @@ export {
   checkoutReturnState,
   createCheckoutSession,
   resolveProductId,
+  tierProductKey,
+  type ResolveProductIdInput,
   type CheckoutDeps,
   type CheckoutDisclosure,
   type CheckoutReturnState,
@@ -224,6 +273,7 @@ export {
   isFullAccess,
   isVerifiedSource,
   scheduledPostDisposition,
+  tierOf,
   verifiedSubscriptionSchema,
   type BillingAction,
   type DeriveEntitlementOptions,
