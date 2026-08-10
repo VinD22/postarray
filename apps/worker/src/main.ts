@@ -22,6 +22,7 @@ import { createConnectorExecutionActivities } from './connector-execution-activi
 import { createWorkerGateway } from './prelaunch-gateway';
 import { installShutdownHandlers, startWorker, WORKER_SERVICE_NAME } from './worker';
 import { startMediaRetentionSweep } from './media-retention';
+import { createSharpMediaTransform } from './media-transform';
 import { createWorkerConnectorRuntime } from './connector-runtime';
 
 /**
@@ -83,6 +84,8 @@ type BulkImportActivities = Pick<
   'readBulkImportVerdict' | 'applyBulkImportRows'
 >;
 
+type MediaDerivativeActivities = Pick<WorkerActivities, 'produceMediaDerivative'>;
+
 function requireObject(value: unknown, what: string): object {
   if (typeof value !== 'object' || value === null) {
     throw new InternalError({ details: { invalid: what } });
@@ -135,6 +138,7 @@ export async function loadGateway(
     readonly publishing?: Partial<PublishingActivities>;
     readonly webhooks?: Partial<WebhookActivities>;
     readonly bulkImports?: Partial<BulkImportActivities>;
+    readonly mediaDerivatives?: Partial<MediaDerivativeActivities>;
     readonly connectorBridge?: ReturnType<typeof createConnectorExecutionActivities> | null;
   } = {},
 ): Promise<WorkerActivities> {
@@ -260,6 +264,14 @@ export async function main(): Promise<void> {
     applyBulkImportRows: (input) =>
       bulkImportsReady.then((value) => value.applyBulkImportRows(input)),
   };
+  let resolveMediaDerivatives: ((activities: MediaDerivativeActivities) => void) | undefined;
+  const mediaDerivativesReady = new Promise<MediaDerivativeActivities>((resolve) => {
+    resolveMediaDerivatives = resolve;
+  });
+  const deferredMediaDerivatives: MediaDerivativeActivities = {
+    produceMediaDerivative: (input) =>
+      mediaDerivativesReady.then((value) => value.produceMediaDerivative(input)),
+  };
   const connectorBridge =
     connectorRuntime.gateway === null
       ? null
@@ -280,6 +292,7 @@ export async function main(): Promise<void> {
             publishing: deferredPublishing,
             webhooks: deferredWebhooks,
             bulkImports: deferredBulkImports,
+            mediaDerivatives: deferredMediaDerivatives,
             connectorBridge,
           }
         : { connectorExecution: connectorRuntime.gateway },
@@ -330,6 +343,33 @@ export async function main(): Promise<void> {
           importJobId: input.importJobId,
           mode: input.mode,
         }),
+    });
+    // The codec lives here and nowhere else. `@relay/application` owns tenancy,
+    // storage and the row; `sharp` never becomes a dependency of the API or the
+    // web app, and no generative provider exists to inject in its place.
+    const mediaTransform = createSharpMediaTransform();
+    resolveMediaDerivatives?.({
+      produceMediaDerivative: async (input) => {
+        const derivative = await runtime.services.workerMedia.produceDerivative(
+          input.ctx,
+          {
+            mediaAssetId: input.mediaAssetId,
+            presetKey: input.presetKey,
+            operations: input.operations,
+          },
+          mediaTransform,
+        );
+        return {
+          derivativeId: derivative.id,
+          mediaAssetId: derivative.mediaAssetId,
+          presetKey: derivative.presetKey,
+          mimeType: derivative.mimeType,
+          byteSize: derivative.byteSize,
+          checksumSha256: derivative.checksumSha256,
+          width: derivative.width,
+          height: derivative.height,
+        };
+      },
     });
     resolveWebhooks?.({
       loadWebhookDelivery: (input) => runtime.services.workerWebhooks.loadWebhookDelivery(input),

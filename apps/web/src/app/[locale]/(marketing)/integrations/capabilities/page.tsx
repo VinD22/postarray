@@ -2,7 +2,6 @@ import type { Metadata } from 'next';
 import type { ReactNode } from 'react';
 import { CapabilityBadge, Notice } from '@relay/design-system/patterns';
 
-import { Reveal } from '@/components/motion';
 import { CapabilityMatrix } from '@/features/marketing/components/capability-matrix';
 import {
   Container,
@@ -14,9 +13,11 @@ import {
   Section,
 } from '@/features/marketing/components/layout';
 import { TextLink } from '@/features/marketing/components/links';
-import { Band } from '@/features/marketing/components/loud/band';
-import { CtaSlab } from '@/features/marketing/components/loud/cta-slab';
-import { LoudDisplay } from '@/features/marketing/components/loud/display';
+import {
+  ClosingCta,
+  EditorialDisplay,
+  EditorialSection,
+} from '@/features/marketing/components/editorial';
 import { CorrectionNotice, ReviewStamp } from '@/features/marketing/components/page-parts';
 import { CAPABILITY_SNAPSHOT, capabilityStateCounts } from '@/features/marketing/data/connectors';
 import { formatDate, marketingTranslator } from '@/features/marketing/i18n';
@@ -51,11 +52,11 @@ export default async function CapabilitiesPage({
 
   return (
     <>
-      <Band tone="paper">
-        <Reveal className="max-w-[52rem]">
-          <LoudDisplay as="h1" size="xl">
+      <EditorialSection>
+        <div className="max-w-[52rem]">
+          <EditorialDisplay as="h1" size="md">
             {t.t('web.capabilities.title')}
-          </LoudDisplay>
+          </EditorialDisplay>
           <Lede className="mt-6">{t.t('web.capabilities.lede')}</Lede>
           <div className="mt-6 space-y-2">
             <Meta>
@@ -77,8 +78,8 @@ export default async function CapabilitiesPage({
               description={t.t('web.capabilities.buildState.body')}
             />
           </div>
-        </Reveal>
-      </Band>
+        </div>
+      </EditorialSection>
 
       <Section id="legend">
         <div className="grid gap-x-12 gap-y-8 lg:grid-cols-12">
@@ -131,7 +132,7 @@ export default async function CapabilitiesPage({
         </div>
       </Container>
 
-      <CtaSlab
+      <ClosingCta
         id="start"
         title={t.t('web.marketing.v2.closing.title')}
         body={t.t('web.marketing.v2.closing.body')}

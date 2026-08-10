@@ -12,6 +12,28 @@ export { mediaAssetFromApi } from './state/from-api';
 export { mediaPolicyLimits } from './state/media-policy';
 export { MediaPickerDialog } from './components/media-picker-dialog';
 export { PictureEditor } from './components/picture-editor';
+export { DerivativeDialog } from './components/derivative-dialog';
+export type { DerivativeDialogProps } from './components/derivative-dialog';
+export { DerivativeEditor } from './components/derivative-editor';
+export type { DerivativeEditorProps, DerivativeEditorSource } from './components/derivative-editor';
+export { DerivativeList } from './components/derivative-list';
+export type { DerivativeListProps } from './components/derivative-list';
+export { useDerivatives } from './hooks/use-derivatives';
+export type { DerivativesState } from './hooks/use-derivatives';
+export { derivativesApi } from './state/derivatives-api';
+export type {
+  DerivativeFormat,
+  DerivativeOperation,
+  DerivativeRequestView,
+  DerivativeView,
+} from './state/derivatives-api';
+export {
+  EMPTY_DERIVATIVE_PLAN,
+  clampCrop,
+  projectedSize,
+  toDerivativeOperations,
+} from './state/derivative-plan';
+export type { DerivativeCrop, DerivativePlan } from './state/derivative-plan';
 export { UploadPanel } from './components/upload-panel';
 export { MediaPolicyNotice } from './components/media-policy-notice';
 export { AltTextForm } from './components/alt-text-form';

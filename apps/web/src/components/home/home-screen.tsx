@@ -92,7 +92,9 @@ export function HomeScreen() {
           title={t('home.needsYou.title')}
           meta={
             actionItems.length > 0 ? (
-              <Badge tone="pop">{t('actionCenter.itemCount', { count: actionItems.length })}</Badge>
+              <Badge tone="accent">
+                {t('actionCenter.itemCount', { count: actionItems.length })}
+              </Badge>
             ) : undefined
           }
           link={

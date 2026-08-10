@@ -5,13 +5,15 @@
  * rights, plus the picture editor. A row of facts, not a wall of cards.
  */
 
-import type { ReactNode } from 'react';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@relay/design-system/primitives';
+import { useState, type ReactNode } from 'react';
+import { Crop } from 'lucide-react';
+import { Button, Tabs, TabsContent, TabsList, TabsTrigger } from '@relay/design-system/primitives';
 import { DefinitionList, Notice } from '@relay/design-system/patterns';
 import { useTranslations } from '@relay/i18n/react';
 import { formatBytes, formatDateTime, formatDuration } from '@relay/i18n';
 
 import { AltTextForm } from './alt-text-form';
+import { DerivativeDialog } from './derivative-dialog';
 import { RightsForm } from './rights-form';
 import type { AccountRule } from '../state/media-rules';
 import type { MediaAsset, RightsDeclaration } from '../types';
@@ -40,6 +42,9 @@ export function MediaDetail({
   onSuggestAltText,
 }: MediaDetailProps): ReactNode {
   const t = useTranslations();
+  // The library's entry point into the picture editor. The composer's media
+  // strip opens the same dialog, so both surfaces get identical rules.
+  const [editorOpen, setEditorOpen] = useState(false);
 
   return (
     <div className="flex flex-col gap-5">
@@ -270,11 +275,46 @@ export function MediaDetail({
         </TabsContent>
       </Tabs>
 
-      <Notice
-        tone="info"
-        title={t.full('mediaLib.editor.unavailable.title')}
-        description={t.full('mediaLib.editor.unavailable.body')}
-      />
+      {asset.kind === 'image' ? (
+        <section aria-labelledby="media-editor-heading" className="flex flex-col gap-2">
+          <h3 id="media-editor-heading" className="text-title-sm text-text-primary">
+            {t.full('mediaLib.derivative.heading')}
+          </h3>
+          <p className="text-body-sm text-text-secondary">
+            {t.full('mediaLib.derivative.originalKept')}
+          </p>
+          <div>
+            <Button
+              variant="secondary"
+              iconStart={<Crop aria-hidden />}
+              disabled={!asset.storageAvailable}
+              onClick={() => setEditorOpen(true)}
+            >
+              {t.full('mediaLib.derivative.openEditor', {
+                name: asset.name ?? t.full('common.unavailable'),
+              })}
+            </Button>
+          </div>
+          <DerivativeDialog
+            open={editorOpen}
+            onOpenChange={setEditorOpen}
+            source={{
+              id: asset.id,
+              name: asset.name,
+              mimeType: asset.mimeType,
+              byteSize: asset.bytes,
+              width: asset.width,
+              height: asset.height,
+            }}
+          />
+        </section>
+      ) : (
+        <Notice
+          tone="info"
+          title={t.full('mediaLib.derivative.unsupportedTitle')}
+          description={t.full('mediaLib.derivative.unsupportedBody')}
+        />
+      )}
     </div>
   );
 }

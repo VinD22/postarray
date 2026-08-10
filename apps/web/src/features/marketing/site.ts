@@ -1,5 +1,6 @@
 import type { MessageKey } from '@relay/i18n/translate';
 
+import { COMPARISON_SLUGS, comparisonPath } from '@/features/comparisons/slugs';
 import { PLATFORM_SLUGS } from '@/features/platforms/registry';
 import { USE_CASE_PAGES } from '@/features/platforms/use-cases';
 
@@ -92,6 +93,15 @@ export function toUseCasePath(slug: string): string {
  */
 export const SCHEDULE_PLATFORM_ROUTES: readonly string[] = PLATFORM_SLUGS.map(schedulePlatformPath);
 
+/**
+ * One indexable page per published comparison.
+ *
+ * Derived from `features/comparisons/slugs.ts`, which imports nothing, so the
+ * sitemap follows the registry without this module reaching into comparison
+ * content and without an import cycle back through `ROUTES`.
+ */
+export const COMPARISON_PAGE_ROUTES: readonly string[] = COMPARISON_SLUGS.map(comparisonPath);
+
 export const USE_CASE_LINKS: readonly SiteLink[] = USE_CASE_PAGES.map((page) => ({
   href: toUseCasePath(page.slug),
   labelKey: page.titleKey,
@@ -102,6 +112,7 @@ export const MARKETING_ROUTES = [
   ...Object.values(ROUTES).filter((route) => route !== ROUTES.signIn && route !== ROUTES.signUp),
   ...SCHEDULE_PLATFORM_ROUTES,
   ...USE_CASE_LINKS.map((link) => link.href),
+  ...COMPARISON_PAGE_ROUTES,
 ];
 
 /** The seven navigation items, in the order the IA specifies. */

@@ -48,6 +48,8 @@ import type {
   PollPublishStatusInput,
   PrepareTargetMediaInput,
   PrepareTargetMediaResult,
+  ProduceMediaDerivativeInput,
+  ProduceMediaDerivativeResult,
   PreflightCampaignInput,
   PreflightCampaignResult,
   ProcessFeedItemsInput,
@@ -132,6 +134,7 @@ export interface SimulatorOptions {
   readonly deletionFailure?: 'delete_objects';
   readonly dataExport?: Partial<BuildDataExportResult>;
   readonly bulkImport?: Partial<BulkImportActivityResult>;
+  readonly mediaDerivative?: Partial<ProduceMediaDerivativeResult>;
   readonly repeatPlan?: Partial<PlanRepeatOccurrenceResult>;
   readonly occurrenceTargets?: CreateOccurrenceJobResult['targets'];
   readonly metrics?: Partial<FetchMetricsResult>;
@@ -926,6 +929,28 @@ export class ActivitySimulator implements WorkerActivities {
       state: 'validated',
       counts: { total: 2, valid: 2, invalid: 0, applied: 0, failed: 0, skipped: 0 },
       ...this.options.bulkImport,
+    });
+  }
+
+  /**
+   * A derivative that already exists is returned unchanged, which is what the
+   * real activity does. The simulator therefore has no branch for "produce
+   * again", because the pipeline it stands in for does not have one either.
+   */
+  produceMediaDerivative(
+    input: ProduceMediaDerivativeInput,
+  ): Promise<ProduceMediaDerivativeResult> {
+    this.record('produceMediaDerivative', input);
+    return Promise.resolve({
+      derivativeId: `mder_${input.presetKey.slice(0, 8)}`,
+      mediaAssetId: input.mediaAssetId,
+      presetKey: input.presetKey,
+      mimeType: 'image/webp',
+      byteSize: 4_096,
+      checksumSha256: 'c'.repeat(64),
+      width: 400,
+      height: 300,
+      ...this.options.mediaDerivative,
     });
   }
 

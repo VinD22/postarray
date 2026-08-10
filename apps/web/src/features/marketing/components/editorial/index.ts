@@ -26,6 +26,18 @@
  * `loud/band`'s `ZigzagEdge` is the one export with no editorial equivalent:
  * the torn-paper seam is a poster device, and the seam between two editorial
  * sections is whitespace or a hairline.
+ *
+ * ## What is left of `loud/`
+ *
+ * Eight of the eleven files are deleted. Three survive, with exactly two
+ * importers between them, both owned by other work in flight:
+ *
+ *   loud/band + loud/display   `features/tools/tool-page.tsx`
+ *   loud/sticker               `features/media/components/alt-text-form.tsx`
+ *
+ * Nothing else may import them. `inverted-band.test.ts` pins the remaining set
+ * so a new consumer fails the suite rather than quietly growing the directory,
+ * and the directory goes when those two files are migrated.
  */
 export { EditorialCard, type EditorialCardProps, type EditorialCardTone } from './card';
 export {

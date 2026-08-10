@@ -51,6 +51,7 @@ export type {
   BulkImportWorkflowInput,
   BulkImportWorkflowOutput,
   WorkerBulkImportService,
+  WorkerMediaService,
   Clock,
   ConnectionService,
   ConnectorRegistry,
@@ -75,8 +76,15 @@ export type {
   MailerPort,
   MasterDraftPatch,
   MoneyView,
+  MediaDerivativeRequest,
+  MediaDerivativeService,
+  MediaDerivativeView,
+  MediaDerivativeWorkflowInput,
   MediaEditOperation,
   MediaService,
+  MediaTransformFn,
+  MediaTransformInput,
+  MediaTransformResult,
   MembershipService,
   OAuthAppService,
   OAuthDiscoveryResult,
@@ -138,6 +146,7 @@ export {
   startPublishOutboxPayloadSchema,
   startRuleRunOutboxPayloadSchema,
   startBulkImportPayloadSchema,
+  startMediaDerivativePayloadSchema,
   workflowOutboxPayloadSchemas,
   type CancelPublishOutboxPayload,
   type PausePublishOutboxPayload,
@@ -146,6 +155,7 @@ export {
   type StartPublishOutboxPayload,
   type StartRuleRunOutboxPayload,
   type StartBulkImportPayload,
+  type StartMediaDerivativePayload,
   type WorkflowOutboxInput,
   type WorkflowOutboxKind,
 } from './outbox';
@@ -234,6 +244,7 @@ export {
 export { fingerprintOf, publishJobIdempotencyKey, withIdempotency } from './internal/idempotency';
 export { parseCsvManifest, readDelimitedText, type CsvManifest } from './internal/csv-manifest';
 export { bulkImportWorkflowId } from './ports/index';
+export { mediaDerivativeWorkflowId } from './services/media-derivatives';
 export { assertFetchable, isPrivateAddress, type FetchableUrl } from './internal/url-safety';
 export { crossesOffsetChange } from './services/scheduling';
 export { feedItemFingerprint, parseFeed } from './services/rss';

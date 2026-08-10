@@ -6,8 +6,8 @@
  * This is not the shared `Toaster` (`@relay/design-system/primitives`) — a
  * manual save is not a fact anyone needs to find again later (the draft's own
  * autosave state already carries that, and a failed save surfaces through the
- * rate-limit notice, not a toast). It is a transient, purely decorative
- * confirmation: a `Sticker` that pops in near the header and clears itself
+ * rate-limit notice, not a toast). It is a transient confirmation: a `Badge`
+ * that slides in near the header and clears itself
  * after 1.5s, using the theme's own `.relay-toast-bounce` CSS entrance
  * (`packages/design-system/src/tokens/theme.css`) rather than GSAP, since
  * `Mod+s` sits directly on the composer's hottest path and this must add
@@ -17,7 +17,8 @@
 
 import { useEffect, useRef, useState } from 'react';
 
-import { Sticker } from '@/features/marketing/components/loud/sticker';
+import { Badge } from '@relay/design-system/primitives';
+
 import { useTranslations } from '@/lib/i18n';
 
 const VISIBLE_MS = 1500;
@@ -61,9 +62,9 @@ export function SavedFlash({ visible }: { readonly visible: boolean }) {
       aria-live="polite"
       className="pointer-events-none fixed end-4 top-4 z-(--z-index-toast)"
     >
-      <Sticker tone="cta" className="relay-toast-bounce">
+      <Badge tone="accent" className="relay-toast-bounce shadow-raised">
         {t.full('composerWeb.savedFlash')}
-      </Sticker>
+      </Badge>
     </div>
   );
 }

@@ -49,10 +49,12 @@ export const panelSurface = 'bg-surface-raised border border-border-default roun
  * and a tonal fill, separated from `panelSurface` only by a soft, diffuse
  * lift rather than by a 2px ink outline and an offset block.
  *
- * The name survives because ~40 call sites outside this package still ask for
- * it; visually it is now a near-twin of `panelSurface`. Prefer `panelSurface`
- * in new code and reach for this only when a panel genuinely needs to float
- * above its neighbours.
+ * The name is on its way out. It is down to three call sites, none of which
+ * this pass owned: `app/[locale]/(auth)/layout.tsx`,
+ * `features/growth/tabs/tool-radar-tab.tsx` and
+ * `features/analytics/components/trend-chart.tsx`. Every other panel now says
+ * `panelSurface`. Migrate those three and this export goes; do not add a
+ * fourth.
  */
 export const panelPoster = 'bg-surface-raised border border-border-default rounded-lg shadow-raised';
 

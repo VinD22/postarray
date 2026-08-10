@@ -21,6 +21,7 @@ import { createGrowthService } from './growth';
 import { createHealthService } from './health';
 import { createIdentityService } from './identity';
 import { createMediaService } from './media';
+import { createWorkerMediaService } from './media-derivatives';
 import { createMembershipService } from './members';
 import { createOAuthAppService } from './oauth-apps';
 import { createPostingSetService } from './posting-sets';
@@ -93,6 +94,7 @@ export function createServices(deps: ServiceDeps): Services {
     workerPublishing: createWorkerPublishingService(deps),
     workerWebhooks: createWorkerWebhookService(deps),
     workerBulkImports: createWorkerBulkImportService(deps, bulkImports),
+    workerMedia: createWorkerMediaService(deps),
     health: createHealthService(deps),
   };
 }

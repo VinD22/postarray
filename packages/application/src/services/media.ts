@@ -1,10 +1,10 @@
 import {
-  CapabilityNotImplementedError,
   ForbiddenError,
   IMAGE_UPLOAD_LIMIT_BYTES,
   MEDIA_RETENTION_DAYS,
   VIDEO_UPLOAD_LIMIT_BYTES,
   newIdFor,
+  type MediaDerivativeOperation,
   type OperationRef,
   type Paginated,
 } from '@relay/contracts';
@@ -13,7 +13,8 @@ import { z } from 'zod';
 
 import type {
   ActorContext,
-  MediaEditOperation,
+  MediaDerivativeRequest,
+  MediaDerivativeView,
   MediaService,
   PageQuery,
   ServiceDeps,
@@ -28,6 +29,7 @@ import { authorized, type Db } from '../internal/runtime';
 import { asMediaKind } from '../internal/storage-enums';
 import { withIdempotency } from '../internal/idempotency';
 import { fetchAndStoreRemoteMedia } from './media-import';
+import { createMediaDerivativeService } from './media-derivatives';
 
 /**
  * Media.
@@ -201,6 +203,7 @@ async function requireMedia(db: Db, mediaId: string, now: Date): Promise<MediaRo
 }
 
 export function createMediaService(deps: ServiceDeps): MediaService {
+  const derivatives = createMediaDerivativeService(deps);
   return {
     async createUploadUrl(
       ctx: ActorContext,
@@ -556,7 +559,12 @@ export function createMediaService(deps: ServiceDeps): MediaService {
           },
           orderBy: { retentionExpiresAt: 'asc' },
           take: batchSize,
-          select: { id: true, storageKey: true, retentionExpiresAt: true },
+          select: {
+            id: true,
+            storageKey: true,
+            retentionExpiresAt: true,
+            derivatives: { select: { id: true, storageKey: true } },
+          },
         }),
       );
 
@@ -564,8 +572,16 @@ export function createMediaService(deps: ServiceDeps): MediaService {
       for (const asset of expired) {
         // Delete first. If the database update fails, the next sweep repeats
         // the idempotent object deletion and then records completion.
+        //
+        // Derivatives go with the original. They are stored objects of their
+        // own, so a sweep that only removed the source would leave crops of a
+        // deleted photo sitting in the bucket with nothing pointing at them.
+        for (const derivative of asset.derivatives) {
+          await deps.storage.remove(derivative.storageKey);
+        }
         await deps.storage.remove(asset.storageKey);
         await authorized(deps, ctx, 'media.delete', undefined, async (db, actor) => {
+          await db.mediaDerivative.deleteMany({ where: { mediaAssetId: asset.id } });
           await db.mediaAsset.update({
             where: { id: asset.id },
             data: { storageDeletedAt: deps.clock.now(), deletedAt: deps.clock.now() },
@@ -574,7 +590,7 @@ export function createMediaService(deps: ServiceDeps): MediaService {
             action: 'deletion.executed',
             targetType: 'media_asset',
             targetId: asset.id,
-            after: { storageDeleted: true },
+            after: { storageDeleted: true, derivativesDeleted: asset.derivatives.length },
             metadata: { retentionExpiresAt: asset.retentionExpiresAt.toISOString() },
           });
         });
@@ -585,21 +601,25 @@ export function createMediaService(deps: ServiceDeps): MediaService {
 
     /**
      * Non-generative editing only. The original is preserved: an edit produces
-     * a derivative, and platform validation reruns against the result.
+     * a derivative, and platform validation reruns against the result. See
+     * `media-derivatives.ts` for the pipeline and the idempotency argument.
      */
     async edit(
       ctx: ActorContext,
-      input: { mediaId: string; ops: readonly MediaEditOperation[] },
-    ): Promise<MediaAssetView> {
-      return authorized(deps, ctx, 'media.write', undefined, async () => {
-        throw new CapabilityNotImplementedError({
-          messageKey: 'errors.media_editing_not_implemented',
-          details: {
-            capability: 'media_editing',
-            operationCount: input.ops.length,
-          },
-        });
-      });
+      input: { mediaId: string; ops: readonly MediaDerivativeOperation[] },
+    ): Promise<MediaDerivativeRequest> {
+      return derivatives.request(ctx, { mediaId: input.mediaId, operations: input.ops });
+    },
+
+    async listDerivatives(
+      ctx: ActorContext,
+      mediaId: string,
+    ): Promise<readonly MediaDerivativeView[]> {
+      return derivatives.list(ctx, mediaId);
+    },
+
+    async getDerivative(ctx: ActorContext, derivativeId: string): Promise<MediaDerivativeView> {
+      return derivatives.get(ctx, derivativeId);
     },
 
     async setAltText(

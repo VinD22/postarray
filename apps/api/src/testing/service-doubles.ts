@@ -148,6 +148,8 @@ export function createRefusingServices(): Services {
       get: refuse('media'),
       delete: refuse('media'),
       edit: refuse('media'),
+      listDerivatives: refuse('media'),
+      getDerivative: refuse('media_derivative'),
       setAltText: refuse('media'),
       declareRights: refuse('media'),
       purgeExpired: refuse('media'),
@@ -273,6 +275,9 @@ export function createRefusingServices(): Services {
       apply: refuse('bulk_import'),
       errorReport: refuse('bulk_import'),
     },
+    // Worker-only. The REST API never reaches it; it is present so adding a
+    // worker-facing method still breaks this file at compile time.
+    workerMedia: { produceDerivative: refuse('media_derivative') },
     workerBulkImports: {
       validate: refuse('bulk_import'),
       applyRows: refuse('bulk_import'),

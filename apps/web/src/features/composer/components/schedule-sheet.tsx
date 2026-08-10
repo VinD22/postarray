@@ -396,7 +396,7 @@ export function ScheduleSheet({
             {t.full('action.requestApproval')}
           </Button>
           <Button
-            variant="cta"
+            variant="primary"
             disabled={justScheduled || !online || !totals.canSchedule || instant === null || inPast}
             loading={busy === 'schedule' && !justScheduled}
             loadingLabel={t.full('composer.autosave.saving')}

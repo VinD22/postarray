@@ -14,8 +14,6 @@ const TONES = [
   'destructive',
   'info',
   'outline',
-  'pop',
-  'blush',
 ] as const;
 
 describe('Badge', () => {
@@ -55,10 +53,16 @@ describe('Badge', () => {
     }
   });
 
-  it('still accepts the visually deprecated pop and blush tones', () => {
-    for (const tone of ['pop', 'blush'] as const) {
+  // The loud decorative tones `pop` and `blush` were deleted once every call
+  // site named the tone it actually meant. `badgeVariants` is the contract, so
+  // asserting against its own key set is what keeps a reintroduced poster tone
+  // from slipping back in unnoticed.
+  it('offers no decorative poster tone', () => {
+    for (const tone of TONES) {
       const { unmount } = render(<Badge tone={tone}>{LABEL}</Badge>);
-      expect(screen.getByText(LABEL).className).toContain('border-border-default');
+      const { className } = screen.getByText(LABEL);
+      expect(className).not.toContain('bg-cta');
+      expect(className).not.toContain('bg-blush');
       unmount();
     }
   });

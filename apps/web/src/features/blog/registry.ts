@@ -1,8 +1,13 @@
 import { clientAccountsAsSeparateProjects } from './articles/client-accounts-as-separate-projects';
+import { connectionsExpireBeforeYouNotice } from './articles/connections-expire-before-you-notice';
+import { firstCommentsAndReplyChains } from './articles/first-comments-and-reply-chains';
+import { idempotentSchedulingThroughAnApi } from './articles/idempotent-scheduling-through-an-api';
+import { mediaPreflightBeforeTheCalendar } from './articles/media-preflight-before-the-calendar';
 import { oneIdeaAdaptedPerPlatform } from './articles/one-idea-adapted-per-platform';
 import { postingCadenceYouCanKeep } from './articles/posting-cadence-you-can-keep';
 import { queueSlotsOrFixedTimes } from './articles/queue-slots-or-fixed-times';
 import { schedulingAcrossTimeZones } from './articles/scheduling-across-time-zones';
+import { whenHalfAPostPublishes } from './articles/when-half-a-post-publishes';
 import type { BlogArticle } from './types';
 
 /**
@@ -22,6 +27,11 @@ const ARTICLES: readonly BlogArticle[] = [
   schedulingAcrossTimeZones,
   oneIdeaAdaptedPerPlatform,
   clientAccountsAsSeparateProjects,
+  firstCommentsAndReplyChains,
+  whenHalfAPostPublishes,
+  connectionsExpireBeforeYouNotice,
+  mediaPreflightBeforeTheCalendar,
+  idempotentSchedulingThroughAnApi,
 ];
 
 /** Newest first, by last substantive edit, then by publication, then by slug. */

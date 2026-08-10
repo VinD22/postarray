@@ -2,14 +2,15 @@ import type { Metadata } from 'next';
 import type { ReactNode } from 'react';
 import { EmptyState, Notice } from '@relay/design-system/patterns';
 
-import { Reveal } from '@/components/motion';
 import { BLOG_FEED_PATH } from '@/features/blog/feed';
 import { BLOG_ARTICLES, blogArticlePath } from '@/features/blog/registry';
 import { clusterLabelKey } from '@/features/blog/types';
 import { Lede, Meta, Section } from '@/features/marketing/components/layout';
-import { Band } from '@/features/marketing/components/loud/band';
-import { CtaSlab } from '@/features/marketing/components/loud/cta-slab';
-import { LoudDisplay } from '@/features/marketing/components/loud/display';
+import {
+  ClosingCta,
+  EditorialDisplay,
+  EditorialSection,
+} from '@/features/marketing/components/editorial';
 import { RowLink } from '@/features/marketing/components/links';
 import { JsonLd } from '@/features/marketing/components/json-ld';
 import { formatDate, marketingTranslator } from '@/features/marketing/i18n';
@@ -47,11 +48,11 @@ export default async function BlogIndexPage({
 
   return (
     <>
-      <Band tone="paper">
-        <Reveal className="max-w-[48rem] space-y-6">
-          <LoudDisplay as="h1" size="xl">
+      <EditorialSection>
+        <div className="max-w-[48rem] space-y-6">
+          <EditorialDisplay as="h1" size="md">
             {t.t('web.blog.title')}
-          </LoudDisplay>
+          </EditorialDisplay>
           <Lede>{t.t('web.blog.lede')}</Lede>
           <Notice
             tone="neutral"
@@ -66,8 +67,8 @@ export default async function BlogIndexPage({
               {t.t('web.blog.feed.label')}
             </a>
           </p>
-        </Reveal>
-      </Band>
+        </div>
+      </EditorialSection>
 
       <Section id="articles" ariaLabel={t.t('web.blog.label.articleList')}>
         {BLOG_ARTICLES.length === 0 ? (
@@ -99,7 +100,7 @@ export default async function BlogIndexPage({
         )}
       </Section>
 
-      <CtaSlab
+      <ClosingCta
         id="start"
         title={t.t('web.marketing.v2.closing.title')}
         body={t.t('web.marketing.v2.closing.body')}

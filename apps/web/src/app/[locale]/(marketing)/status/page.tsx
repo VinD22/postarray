@@ -7,7 +7,6 @@ import type { ReactNode } from 'react';
 import { EmptyState, Notice } from '@relay/design-system/patterns';
 import { StatusDot, type StatusDotTone } from '@relay/design-system/primitives';
 
-import { Reveal } from '@/components/motion';
 import {
   Body,
   Container,
@@ -17,9 +16,11 @@ import {
   Section,
   Split,
 } from '@/features/marketing/components/layout';
-import { Band } from '@/features/marketing/components/loud/band';
-import { CtaSlab } from '@/features/marketing/components/loud/cta-slab';
-import { LoudDisplay } from '@/features/marketing/components/loud/display';
+import {
+  ClosingCta,
+  EditorialDisplay,
+  EditorialSection,
+} from '@/features/marketing/components/editorial';
 import { TextLink } from '@/features/marketing/components/links';
 import { CorrectionNotice } from '@/features/marketing/components/page-parts';
 import { CapabilityMatrixSummary } from '@/features/marketing/components/connector-status';
@@ -67,11 +68,11 @@ export default async function StatusPage({
 
   return (
     <>
-      <Band tone="paper">
-        <Reveal className="max-w-[46rem]">
-          <LoudDisplay as="h1" size="lg">
+      <EditorialSection>
+        <div className="max-w-[46rem]">
+          <EditorialDisplay as="h1" size="sm">
             {t.t('web.status.title')}
-          </LoudDisplay>
+          </EditorialDisplay>
           <Lede className="mt-6">{t.t('web.status.lede')}</Lede>
           <Meta className="mt-4 block">
             {t.t('web.status.updated', { time: formatDateTime(STATUS_CHECKED_AT, locale) })}
@@ -84,8 +85,8 @@ export default async function StatusPage({
               description={t.t('web.status.preLaunch.body')}
             />
           </div>
-        </Reveal>
-      </Band>
+        </div>
+      </EditorialSection>
 
       <Section id="surfaces">
         <Split
@@ -214,7 +215,7 @@ export default async function StatusPage({
         </div>
       </Container>
 
-      <CtaSlab
+      <ClosingCta
         id="start"
         title={t.t('web.marketing.v2.closing.title')}
         body={t.t('web.marketing.v2.closing.body')}

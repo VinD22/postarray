@@ -13,8 +13,8 @@ import { useTranslations } from '@/lib/i18n';
 /**
  * Compose is a persistent primary action, not a navigation destination.
  *
- * It is the shell's one loud control: the yellow `cta` slab, so it reads as
- * the single thing the top bar most wants you to do. `Magnetic` gives it a
+ * It is the shell's one filled control, so it reads as the single thing the
+ * top bar most wants you to do. `Magnetic` gives it a
  * subtle pointer-follow pull on fine-pointer devices only — it is an inert
  * passthrough on touch and under reduced motion (see `useMotionOk`).
  *
@@ -34,7 +34,7 @@ export function ComposeButton({ className }: { readonly className?: string }) {
     return (
       <Tooltip content={reason}>
         <span className={cn('inline-flex', className)}>
-          <Button variant="cta" size="md" disabled aria-describedby="compose-disabled-reason">
+          <Button variant="primary" size="md" disabled aria-describedby="compose-disabled-reason">
             <PenSquare aria-hidden="true" className="size-4" />
             {t('nav.compose')}
           </Button>
@@ -48,7 +48,7 @@ export function ComposeButton({ className }: { readonly className?: string }) {
 
   return (
     <Magnetic strength={0.15} maxOffset={4} className={className}>
-      <Button variant="cta" size="md" className="relay-compose-cta" asChild>
+      <Button variant="primary" size="md" className="relay-compose-cta" asChild>
         <Link href="/compose">
           <PenSquare aria-hidden="true" className="size-4" />
           {t('nav.compose')}

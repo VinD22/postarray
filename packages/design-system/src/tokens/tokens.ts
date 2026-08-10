@@ -199,7 +199,9 @@ export const lightTheme: ThemeTokens = {
     info: { fg: '#5A3DB0', bg: '#ECE8F5', border: '#7A5EC0' },
   },
   brand: {
-    x: '#0F0F0E',
+    // Matches `--brand-x` in theme.css. It reads as the same near-black as
+    // `--relay-charcoal-900` (#0F0F0E) but is its own value, not that token.
+    x: '#0F0F0F',
     linkedin: '#0A66C2',
     instagram: '#C31E68',
     facebook: '#1466D2',

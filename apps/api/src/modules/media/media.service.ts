@@ -1,11 +1,14 @@
 import { Inject, Injectable } from '@nestjs/common';
 import type { OperationRef, Paginated } from '@relay/contracts';
 
+import type { MediaDerivativeOperation } from '@relay/contracts';
+
 import type {
   ActorContext,
   CursorQuery,
   MediaAssetView,
-  MediaEditOperation,
+  MediaDerivativeRequest,
+  MediaDerivativeView,
   Services,
 } from '../../application/port';
 import { SERVICES } from '../../application/tokens';
@@ -56,12 +59,17 @@ export class MediaService {
     return this.services.media.delete(ctx, mediaId);
   }
 
+  /** Crop, rotate, resize, convert, compress. The original stays untouched. */
   edit(
     ctx: ActorContext,
     mediaId: string,
-    ops: readonly MediaEditOperation[],
-  ): Promise<MediaAssetView> {
+    ops: readonly MediaDerivativeOperation[],
+  ): Promise<MediaDerivativeRequest> {
     return this.services.media.edit(ctx, { mediaId, ops });
+  }
+
+  listDerivatives(ctx: ActorContext, mediaId: string): Promise<readonly MediaDerivativeView[]> {
+    return this.services.media.listDerivatives(ctx, mediaId);
   }
 
   setAltText(

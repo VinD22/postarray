@@ -2,7 +2,6 @@ import type { Metadata } from 'next';
 import type { ReactNode } from 'react';
 import { Badge } from '@relay/design-system/primitives';
 
-import { Reveal } from '@/components/motion';
 import {
   Heading,
   Lede,
@@ -11,8 +10,10 @@ import {
   Split,
   Subheading,
 } from '@/features/marketing/components/layout';
-import { Band } from '@/features/marketing/components/loud/band';
-import { LoudDisplay } from '@/features/marketing/components/loud/display';
+import {
+  EditorialDisplay,
+  EditorialSection,
+} from '@/features/marketing/components/editorial';
 import { TextLink } from '@/features/marketing/components/links';
 import { DOC_PRINCIPLES, DOC_SECTIONS } from '@/features/marketing/data/catalogs';
 import { marketingTranslator } from '@/features/marketing/i18n';
@@ -38,14 +39,14 @@ export default async function DocsPage({
 
   return (
     <>
-      <Band tone="paper">
-        <Reveal className="max-w-[46rem]">
-          <LoudDisplay as="h1" size="lg">
+      <EditorialSection>
+        <div className="max-w-[46rem]">
+          <EditorialDisplay as="h1" size="sm">
             {t.t('web.docs.title')}
-          </LoudDisplay>
+          </EditorialDisplay>
           <Lede className="mt-6">{t.t('web.docs.lede')}</Lede>
-        </Reveal>
-      </Band>
+        </div>
+      </EditorialSection>
 
       <Section id="sections">
         <ul className="border-border-bold border-t-2">

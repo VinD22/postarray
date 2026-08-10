@@ -4,9 +4,8 @@ import { useState } from 'react';
 
 import { Notice } from '@relay/design-system/patterns';
 import { Button, Label, RadioGroup, RadioGroupItem } from '@relay/design-system/primitives';
-import { cn } from '@relay/design-system/utils';
+import { cn, panelSurface } from '@relay/design-system/utils';
 
-import { PosterCard } from '@/features/marketing/components/loud/poster-card';
 import { ApiError, api, newIdempotencyKey } from '@/lib/api';
 import { useFormatters, useTranslations } from '@/lib/i18n';
 
@@ -37,11 +36,11 @@ const AMOUNTS: Readonly<
  * and amount, the renewal interval, the payment method requirement, when the
  * reminder arrives, and how to cancel without being charged.
  *
- * The block itself reuses the loud system's `PosterCard` (WP-4, shared with
- * WP-2's pricing page) for the hard-outlined poster treatment, but not WP-2's
- * segmented interval toggle: two named radio options are already keyboard-
- * and screen-reader-simple, and a one-time setup step is not where a second,
- * more elaborate control earns its keep.
+ * The block itself is the product's one panel recipe (`panelSurface`), not a
+ * marketing card: this is a step inside the app. It does not borrow the
+ * pricing page's segmented interval toggle either, because two named radio
+ * options are already keyboard- and screen-reader-simple, and a one-time
+ * setup step is not where a second, more elaborate control earns its keep.
  */
 export function PlanStep() {
   const t = useTranslations();
@@ -86,7 +85,7 @@ export function PlanStep() {
 
       {error === null ? null : <Notice tone="destructive" liveness="alert" title={error} />}
 
-      <PosterCard tone="paper" className="flex flex-col gap-6 p-6 sm:p-8">
+      <div className={cn(panelSurface, 'flex flex-col gap-6 p-6 sm:p-8')}>
         <section className="flex flex-col gap-3">
           <h2 className="font-display text-title-md text-text-primary font-bold">
             {t('billing.plan.name')}
@@ -151,7 +150,7 @@ export function PlanStep() {
 
         <div className="flex flex-col gap-3">
           <Button
-            variant="cta"
+            variant="primary"
             size="lg"
             fullWidth
             loading={pending}
@@ -170,7 +169,7 @@ export function PlanStep() {
             {t('billing.checkout.taxNote')}
           </p>
         </div>
-      </PosterCard>
+      </div>
     </div>
   );
 }

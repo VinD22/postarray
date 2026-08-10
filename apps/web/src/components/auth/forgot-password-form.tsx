@@ -79,7 +79,7 @@ export function ForgotPasswordForm() {
 
       <Button
         type="submit"
-        variant="cta"
+        variant="primary"
         size="lg"
         fullWidth
         loading={pending}

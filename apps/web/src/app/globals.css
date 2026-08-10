@@ -146,36 +146,15 @@
 }
 
 /*
- * The loud poster card's hover lift (WP-1, `loud/poster-card.tsx`). Moves the
- * card up and away from its own hard shadow on hover, revealing more of it,
- * the same physical idea as `.relay-pressable` in `theme.css` but inverted;
- * a press (or a lingering hover-then-press) collapses it straight back to
- * flush. The horizontal component mirrors `--shadow-hard-x`, which itself
- * flips under `[dir='rtl']`, so this never needs a second, RTL-specific
- * rule.
- */
-.relay-poster-card {
-  translate: 0 0;
-  transition:
-    translate var(--duration-fast) var(--ease-standard),
-    box-shadow var(--duration-fast) var(--ease-standard);
-}
-
-.relay-poster-card:hover,
-.relay-poster-card:focus-visible {
-  translate: calc(var(--shadow-hard-x) * -1) -4px;
-}
-
-.relay-poster-card:active {
-  translate: 0 0;
-}
-
-/*
- * `relay-sticker-float`, the hero's decorative corner stickers, lived here.
- * The editorial marketing pass deleted the stickers themselves rather than
- * restyling them: they carried no information, and whitespace is the
- * decoration now. Nothing referenced the class, so the rule and its keyframes
- * went with them.
+ * `relay-poster-card` and `relay-sticker-float` lived here: the poster card's
+ * diagonal hover lift away from its own hard offset shadow, and the hero's
+ * decorative corner stickers.
+ *
+ * The editorial marketing pass deleted both call sites rather than restyling
+ * them. `loud/poster-card.tsx` is gone (marketing cards are `EditorialCard`,
+ * product panels are `panelSurface`), and the stickers carried no information,
+ * so whitespace is the decoration now. Nothing references either class, so the
+ * rules and their keyframes went with them.
  */
 
 @layer utilities {

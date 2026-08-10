@@ -297,6 +297,11 @@ export function createActivities(deps: ActivityDependencies): WorkerActivities {
       deps,
       gateway.applyBulkImportRows.bind(gateway),
     ),
+    produceMediaDerivative: wrap(
+      'produceMediaDerivative',
+      deps,
+      gateway.produceMediaDerivative.bind(gateway),
+    ),
   };
 }
 

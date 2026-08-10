@@ -1,11 +1,12 @@
 import type { Metadata } from 'next';
 import type { ReactNode } from 'react';
 
-import { Reveal } from '@/components/motion';
 import { Body, Heading, Lede, Section, Split } from '@/features/marketing/components/layout';
 import { TextLink } from '@/features/marketing/components/links';
-import { Band } from '@/features/marketing/components/loud/band';
-import { LoudDisplay } from '@/features/marketing/components/loud/display';
+import {
+  EditorialDisplay,
+  EditorialSection,
+} from '@/features/marketing/components/editorial';
 import { marketingTranslator } from '@/features/marketing/i18n';
 import { pageMetadata } from '@/features/marketing/seo';
 import { ROUTES, TOOL_LINKS } from '@/features/marketing/site';
@@ -36,14 +37,14 @@ export default async function ToolsIndexPage({
 
   return (
     <>
-      <Band tone="paper">
-        <Reveal className="max-w-[46rem]">
-          <LoudDisplay as="h1" size="xl">
+      <EditorialSection>
+        <div className="max-w-[46rem]">
+          <EditorialDisplay as="h1" size="md">
             {t.t('web.tools.index.title')}
-          </LoudDisplay>
+          </EditorialDisplay>
           <Lede className="mt-6">{t.t('web.tools.index.lede')}</Lede>
-        </Reveal>
-      </Band>
+        </div>
+      </EditorialSection>
 
       <Section id="tools" ariaLabel={t.t('web.tools.index.title')}>
         <ul className="border-border-bold border-t-2">

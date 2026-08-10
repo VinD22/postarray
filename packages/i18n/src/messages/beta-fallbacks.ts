@@ -103,6 +103,23 @@ export const BETA_ENGLISH_FALLBACK_PREFIXES = [
   'calendar.hold.',
   'set.',
   'targetMemory.',
+  // Per comparison pages (C6). Every sentence in this namespace is either a
+  // state word a table cell depends on or a statement about what this product
+  // does not do: no verified connector, no reviewed locale, undecided pricing
+  // tiers. A machine translation that softened any of those would be a false
+  // claim in that language, which is the exact failure the launch-truth test
+  // exists to prevent. Beta locales keep the reviewed English source until a
+  // person translates them.
+  'web.comparison.',
+  // A9: the non-generative media editor. Every sentence in these two
+  // namespaces makes a capability claim: that an edit never replaces the
+  // original, that this product does not enlarge a picture because the extra
+  // pixels would be invented, and that Relay generates no imagery at all. A
+  // machine translation that softened any of those would be a false claim in
+  // that language. Beta locales keep the reviewed English source until a person
+  // translates them.
+  'mediaLib.derivative.',
+  'error.media_derivative_',
 ] as const;
 
 /** B5-controlled keys whose namespace also contains ordinary interface copy. */

@@ -9,14 +9,15 @@
  * actually is.
  */
 
-import { type ReactNode } from 'react';
-import { ImagePlus, Pencil, X } from 'lucide-react';
+import { useState, type ReactNode } from 'react';
+import { Crop, ImagePlus, Pencil, X } from 'lucide-react';
 import { Button, IconButton } from '@relay/design-system/primitives';
 import { useTranslations } from '@relay/i18n/react';
 import { formatBytes } from '@relay/i18n';
 import { cn } from '@relay/design-system/utils';
 
 import type { MediaAsset } from '../../media/types';
+import { DerivativeDialog } from '../../media/components/derivative-dialog';
 
 export interface MediaStripProps {
   readonly assets: readonly MediaAsset[];
@@ -28,6 +29,13 @@ export interface MediaStripProps {
   readonly onEdit: (mediaId: string) => void;
   readonly limit: number;
   readonly disabled?: boolean;
+  /**
+   * Which stored version each attachment uses. A missing entry, or a null one,
+   * means the original. The strip works without this: a person can still open
+   * the editor and make versions, they simply are not chosen per target yet.
+   */
+  readonly derivativeIds?: Readonly<Record<string, string | null>>;
+  readonly onSelectDerivative?: (mediaId: string, derivativeId: string | null) => void;
 }
 
 export function MediaStrip({
@@ -39,8 +47,13 @@ export function MediaStrip({
   onEdit,
   limit,
   disabled = false,
+  derivativeIds,
+  onSelectDerivative,
 }: MediaStripProps): ReactNode {
   const t = useTranslations();
+  // Which attachment's editor is open. One at a time: the dialog is modal and
+  // two open editors would make "which file is this" a guess.
+  const [editing, setEditing] = useState<string | null>(null);
   const files = mediaIds
     .map((id) => assets.find((asset) => asset.id === id))
     .filter((asset): asset is MediaAsset => asset !== undefined);
@@ -110,6 +123,16 @@ export function MediaStrip({
                   )}
                 </span>
                 <span className="ms-auto flex shrink-0 items-center gap-0.5">
+                  {asset.kind === 'image' ? (
+                    <IconButton
+                      variant="ghost"
+                      size="sm"
+                      label={t.full('mediaLib.derivative.openEditor', { name: assetName })}
+                      icon={<Crop aria-hidden />}
+                      disabled={disabled}
+                      onClick={() => setEditing(asset.id)}
+                    />
+                  ) : null}
                   <IconButton
                     variant="ghost"
                     size="sm"
@@ -146,6 +169,31 @@ export function MediaStrip({
           {t.full('composer.media.count', { count: files.length })}
         </span>
       </div>
+
+      {files.map((asset) => (
+        <DerivativeDialog
+          key={`editor-${asset.id}`}
+          open={editing === asset.id}
+          onOpenChange={(next) => setEditing(next ? asset.id : null)}
+          source={{
+            id: asset.id,
+            name: asset.name,
+            mimeType: asset.mimeType,
+            byteSize: asset.bytes,
+            width: asset.width,
+            height: asset.height,
+          }}
+          {...(derivativeIds === undefined
+            ? {}
+            : { selectedDerivativeId: derivativeIds[asset.id] ?? null })}
+          {...(onSelectDerivative === undefined
+            ? {}
+            : {
+                onSelectDerivative: (derivativeId: string | null) =>
+                  onSelectDerivative(asset.id, derivativeId),
+              })}
+        />
+      ))}
     </section>
   );
 }

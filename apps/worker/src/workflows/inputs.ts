@@ -2,6 +2,7 @@ import type {
   DataExportFormat,
   DataExportScope,
   ErrorCode,
+  MediaDerivativeOperation,
   ProviderId,
   PublishState,
   WebhookEventName,
@@ -263,6 +264,36 @@ export interface BulkImportWorkflowOutput {
     readonly failed: number | null;
     readonly skipped: number | null;
   };
+}
+
+/**
+ * A non-generative media derivative.
+ *
+ * The input carries identifiers, a checksum and geometry. That is the whole
+ * payload: no bytes, no filename, no alt text and, by construction, no prompt,
+ * model or seed. Temporal history stays free of anything a person wrote.
+ *
+ * The workflow is one activity because there is one side effect: produce the
+ * object and record it. Splitting it would buy nothing, because the derivative
+ * row is the receipt and the unique constraint on `(asset, preset key)` already
+ * makes a retry converge instead of duplicating.
+ */
+export interface MediaDerivativeWorkflowInput {
+  readonly ctx: ActivityContext;
+  readonly mediaAssetId: string;
+  readonly presetKey: string;
+  readonly operations: readonly MediaDerivativeOperation[];
+}
+
+export interface MediaDerivativeWorkflowOutput {
+  readonly mediaAssetId: string;
+  readonly presetKey: string;
+  /** Null when the transform failed. A missing derivative is never a zero. */
+  readonly derivativeId: string | null;
+  readonly mimeType: string | null;
+  readonly byteSize: number | null;
+  readonly width: number | null;
+  readonly height: number | null;
 }
 
 export interface DataDeletionWorkflowInput {

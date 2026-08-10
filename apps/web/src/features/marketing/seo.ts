@@ -122,6 +122,51 @@ export async function pageMetadata(
   };
 }
 
+/**
+ * Metadata for a page whose title and description are content, not catalog
+ * copy.
+ *
+ * `pageMetadata` takes message keys, which is right for interface copy that
+ * every locale carries. A comparison page carries several hundred words of
+ * dated, sourced English content loaded per slug, so its own title and
+ * description arrive as strings for the same reason `articleMetadata` takes
+ * them as strings. The difference from `articleMetadata` is the Open Graph
+ * type: this is a `website` page with no author and no publication date, and
+ * claiming otherwise in markup would be the same class of error as claiming a
+ * rating.
+ */
+export async function contentPageMetadata(
+  title: string,
+  description: string,
+  path: string,
+  locale: string = DEFAULT_LOCALE,
+): Promise<Metadata> {
+  const t = await marketingTranslator(locale);
+  const url = absoluteUrl(path, locale);
+  const openGraphLocale = toOpenGraphLocale(locale);
+  const alternateLocales = openGraphAlternateLocales(locale);
+
+  return {
+    title,
+    description,
+    alternates: localeAlternates(path, locale),
+    openGraph: {
+      type: 'website',
+      url,
+      title,
+      description,
+      siteName: t.t('web.brand.name'),
+      ...(openGraphLocale === undefined ? {} : { locale: openGraphLocale }),
+      ...(alternateLocales.length === 0 ? {} : { alternateLocale: alternateLocales }),
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title,
+      description,
+    },
+  };
+}
+
 interface JsonLdNode {
   readonly [key: string]: unknown;
 }

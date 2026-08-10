@@ -21,6 +21,7 @@ import type {
   GrowthPlan,
   IanaTimeZone,
   IsoInstant,
+  MediaDerivativeOperation,
   OperationRef,
   OpportunityRecord,
   Paginated,
@@ -61,6 +62,8 @@ import type {
   GrowthPlanSummaryView as ApplicationGrowthPlanSummaryView,
   InvitationView as ApplicationInvitationView,
   MediaAssetView as ApplicationMediaAssetView,
+  MediaDerivativeRequest as ApplicationMediaDerivativeRequest,
+  MediaDerivativeView as ApplicationMediaDerivativeView,
   MediaEditOperation as ApplicationMediaEditOperation,
   MembershipView as ApplicationMembershipView,
   MentionEntityView as ApplicationMentionEntityView,
@@ -205,6 +208,8 @@ export type ApprovalRequestView = ApplicationApprovalRequestView;
 export type CalendarEntry = ApplicationCalendarEntry;
 export type MediaAssetView = ApplicationMediaAssetView;
 export type MediaEditOperation = ApplicationMediaEditOperation;
+export type MediaDerivativeView = ApplicationMediaDerivativeView;
+export type MediaDerivativeRequest = ApplicationMediaDerivativeRequest;
 export type ComparisonReport = ApplicationComparisonReport;
 export type ExperimentView = ApplicationExperimentView;
 export type ShortLinkView = ApplicationShortLinkView;
@@ -451,10 +456,16 @@ export interface MediaService {
   ): Promise<Paginated<MediaAssetView>>;
   get(ctx: ActorContext, mediaId: string): Promise<MediaAssetView>;
   delete(ctx: ActorContext, mediaId: string): Promise<void>;
+  /**
+   * Non-generative editing. The original is never overwritten: this returns a
+   * derivative, or the one that already existed for the same operations.
+   */
   edit(
     ctx: ActorContext,
-    input: { mediaId: string; ops: readonly MediaEditOperation[] },
-  ): Promise<MediaAssetView>;
+    input: { mediaId: string; ops: readonly MediaDerivativeOperation[] },
+  ): Promise<MediaDerivativeRequest>;
+  listDerivatives(ctx: ActorContext, mediaId: string): Promise<readonly MediaDerivativeView[]>;
+  getDerivative(ctx: ActorContext, derivativeId: string): Promise<MediaDerivativeView>;
   setAltText(
     ctx: ActorContext,
     input: {

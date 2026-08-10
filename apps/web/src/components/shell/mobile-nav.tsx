@@ -132,8 +132,12 @@ export function MobileNav() {
             aria-disabled={canPublish ? undefined : true}
             className={cn(
               'relay-pressable flex size-14 -translate-y-3 flex-col items-center justify-center rounded-full',
-              'bg-cta text-cta-on border-border-bold shadow-hard border-2',
-              canPublish ? 'hover:bg-cta-hover' : 'pointer-events-none opacity-60',
+              // The commit fill, same recipe as `Button variant="primary"`:
+              // ink in light, paper in dark, with a hairline border and a soft
+              // lift rather than the poster palette's yellow slab behind a 2px
+              // outline and an offset block.
+              'bg-surface-inverted text-text-inverted border-border-strong border shadow-raised',
+              canPublish ? 'hover:bg-text-secondary' : 'pointer-events-none opacity-60',
             )}
           >
             <PenSquare aria-hidden="true" className="size-5" />

@@ -358,6 +358,9 @@ importers:
       ioredis:
         specifier: ^5.7.0
         version: 5.11.1
+      sharp:
+        specifier: 0.35.3
+        version: 0.35.3(@types/node@22.20.1)
       zod:
         specifier: ^4.4.3
         version: 4.4.3
@@ -6817,8 +6820,7 @@ snapshots:
 
   '@humanwhocodes/retry@0.4.3': {}
 
-  '@img/colour@1.1.0':
-    optional: true
+  '@img/colour@1.1.0': {}
 
   '@img/sharp-darwin-arm64@0.35.3':
     optionalDependencies:
@@ -11274,7 +11276,6 @@ snapshots:
       '@img/sharp-win32-ia32': 0.35.3
       '@img/sharp-win32-x64': 0.35.3
       '@types/node': 22.20.1
-    optional: true
 
   shebang-command@2.0.0:
     dependencies:

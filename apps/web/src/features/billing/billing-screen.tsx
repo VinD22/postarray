@@ -4,12 +4,10 @@ import { useState, type ReactNode } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { Link } from '@/components/link';
 import { Button, RadioGroup, RadioGroupItem } from '@relay/design-system/primitives';
-import { EmptyState, Notice, PageHeader } from '@relay/design-system/patterns';
+import { EmptyState, MetricValue, Notice, PageHeader } from '@relay/design-system/patterns';
 import { useAnnouncer } from '@relay/design-system/hooks';
-import { useI18n, useTranslations } from '@relay/i18n/react';
-
-import { BigNumber } from '@/features/marketing/components/loud/big-number';
-import { PosterCard } from '@/features/marketing/components/loud/poster-card';
+import { cn, panelSurface } from '@relay/design-system/utils';
+import { useTranslations } from '@relay/i18n/react';
 
 import { SettingsPanel, SettingsStack } from '../settings/components/section';
 import { AsyncBoundary } from '../settings/lib/async-boundary';
@@ -26,7 +24,6 @@ import { UsagePanel } from './usage-panel';
 
 export function BillingScreen(): ReactNode {
   const t = useTranslations();
-  const { locale } = useI18n();
   const section = t('settings.ui.section.billing');
   const formatters = useFormatters();
   const { announce } = useAnnouncer();
@@ -169,33 +166,35 @@ export function BillingScreen(): ReactNode {
                 description={t('billing.plan.single')}
               >
                 {/*
-                  The read-only poster price block (WP-11): the same
-                  `PosterCard` + `BigNumber` pairing WP-2's pricing page and
-                  the onboarding plan step build the price around, minus
-                  their interval toggle and checkout action — this is a
-                  statement of what the workspace is already paying, not a
-                  purchase surface, so there is nothing here to choose. The
-                  figure only renders once the billing service has actually
-                  quoted a next-charge amount; an estimate computed from the
-                  interval alone would not be a fact anyone could rely on.
+                  The read-only price block. This is a statement of what the
+                  workspace is already paying, not a purchase surface, so there
+                  is nothing here to choose.
+
+                  It used to be the marketing `PosterCard` + `BigNumber`
+                  pairing, counting the figure up on scroll. A settings screen
+                  is not a landing page: the number is now a `MetricValue` on
+                  the product's own panel surface, and minor units are
+                  formatted by the workspace formatter rather than divided by
+                  100 in the view.
+
+                  The block still only renders once the billing service has
+                  actually quoted a next-charge amount. An estimate computed
+                  from the interval alone would not be a fact anyone could
+                  rely on, and an absent quote is an absence, not a zero.
                 */}
                 {state.conversionAmount !== null ? (
-                  <PosterCard tone="paper" className="max-w-xs">
-                    <BigNumber
-                      value={state.conversionAmount.amountMinor / 100}
-                      locale={locale}
-                      formatOptions={{
-                        style: 'currency',
-                        currency: state.conversionAmount.currency,
-                        maximumFractionDigits: 0,
-                      }}
+                  <div className={cn(panelSurface, 'max-w-xs p-4')}>
+                    <MetricValue
+                      size="lg"
                       label={
                         state.interval === 'annual'
                           ? t('billing.plan.interval.annual')
                           : t('billing.plan.interval.monthly')
                       }
+                      availability="available"
+                      value={formatters.money(state.conversionAmount)}
                     />
-                  </PosterCard>
+                  </div>
                 ) : null}
 
                 <ul className="text-body-md text-text-secondary flex max-w-[68ch] list-disc flex-col gap-1 ps-5">

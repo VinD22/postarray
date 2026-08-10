@@ -19,6 +19,8 @@ import type {
   GrowthPlan,
   LinkSpec,
   Locale,
+  MediaDerivativeFormat,
+  MediaDerivativeOperation,
   MentionRef,
   OperationRef,
   OpportunityRecord,
@@ -490,6 +492,23 @@ export interface SchedulerPort {
     readonly workspaceId: string;
     readonly executeAt: Date;
     readonly workflowInput: BulkImportWorkflowInput;
+  }): Promise<{ readonly workflowId: string; readonly runId: string }>;
+  /**
+   * A non-generative image derivative, optional in the same way
+   * `scheduleBulkImport` is. The workflow id is derived from the asset and the
+   * preset key, so a duplicated request joins the run that already exists
+   * rather than starting a second one and writing a second object.
+   *
+   * A deployment without a scheduler still validates the plan and still returns
+   * the derivative when one already exists. It simply cannot produce a new one,
+   * which the caller sees as `processing` with no workflow id rather than as a
+   * row that quietly does not exist.
+   */
+  scheduleMediaDerivative?(input: {
+    readonly workspaceId: string;
+    readonly mediaAssetId: string;
+    readonly presetKey: string;
+    readonly workflowInput: MediaDerivativeWorkflowInput;
   }): Promise<{ readonly workflowId: string; readonly runId: string }>;
   describe(input: {
     readonly jobId: string;
@@ -1406,9 +1425,112 @@ export interface ActionCenterService {
   unsnooze(ctx: ActorContext, itemId: string): Promise<void>;
 }
 
+/**
+ * @deprecated The untyped shape the editing endpoint used while the pipeline
+ * was `not_implemented`. Derivatives use `MediaDerivativeOperation` from
+ * `@relay/contracts`, which is a discriminated union with no free-form params.
+ */
 export interface MediaEditOperation {
   readonly kind: 'crop' | 'resize' | 'rotate' | 'compress' | 'convert';
   readonly params: Readonly<Record<string, number | string>>;
+}
+
+/**
+ * One stored derivative.
+ *
+ * It is a sibling of the original, never a replacement: its own object, its own
+ * checksum, its own dimensions. The source asset row is immutable.
+ */
+export interface MediaDerivativeView {
+  readonly id: string;
+  readonly workspaceId: string;
+  readonly mediaAssetId: string;
+  readonly kind: 'transcode' | 'crop' | 'resize' | 'thumbnail' | 'format_conversion' | 'compressed';
+  /** Checksum of the canonical operation list. Same edit, same key, always. */
+  readonly presetKey: string;
+  readonly storageKey: string;
+  readonly mimeType: string;
+  readonly byteSize: number;
+  readonly checksumSha256: string;
+  readonly width: number | null;
+  readonly height: number | null;
+  readonly operations: readonly MediaDerivativeOperation[];
+  readonly createdAt: string;
+}
+
+/**
+ * The answer to "make me this edit".
+ *
+ * `ready` means the derivative already existed and nothing was reprocessed.
+ * `processing` means the transform was handed to the worker and no row exists
+ * yet, which is why `derivative` is null rather than a placeholder.
+ */
+export interface MediaDerivativeRequest {
+  readonly mediaId: string;
+  readonly presetKey: string;
+  readonly status: 'ready' | 'processing';
+  readonly derivative: MediaDerivativeView | null;
+  readonly operations: readonly MediaDerivativeOperation[];
+  readonly projectedWidth: number;
+  readonly projectedHeight: number;
+  readonly targetMimeType: MediaDerivativeFormat;
+  readonly workflowId: string | null;
+}
+
+export interface MediaTransformInput {
+  readonly bytes: Uint8Array;
+  readonly sourceMimeType: string;
+  readonly targetMimeType: MediaDerivativeFormat;
+  readonly operations: readonly MediaDerivativeOperation[];
+}
+
+export interface MediaTransformResult {
+  readonly bytes: Uint8Array;
+  readonly byteSize: number;
+  readonly width: number;
+  readonly height: number;
+  readonly mimeType: string;
+}
+
+/**
+ * The pixel seam.
+ *
+ * The only call the derivative pipeline makes to anything outside this package.
+ * Its input carries bytes, a MIME type and geometry, and it has no field a
+ * prompt, a model, a seed or a provider could travel in. That is deliberate:
+ * `docs/planning/media-v1-policy.md` requires editing to be provably
+ * non-generative, and a seam this narrow makes the requirement testable.
+ */
+export type MediaTransformFn = (input: MediaTransformInput) => Promise<MediaTransformResult>;
+
+export interface MediaDerivativeService {
+  request(
+    ctx: ActorContext,
+    input: { readonly mediaId: string; readonly operations: readonly MediaDerivativeOperation[] },
+  ): Promise<MediaDerivativeRequest>;
+  list(ctx: ActorContext, mediaId: string): Promise<readonly MediaDerivativeView[]>;
+  get(ctx: ActorContext, derivativeId: string): Promise<MediaDerivativeView>;
+}
+
+/** Worker-facing. Writes the row only once the bytes are actually stored. */
+export interface WorkerMediaService {
+  produceDerivative(
+    ctx: WorkflowActorContext,
+    input: {
+      readonly mediaAssetId: string;
+      readonly presetKey: string;
+      readonly operations: readonly MediaDerivativeOperation[];
+    },
+    transform: MediaTransformFn,
+  ): Promise<MediaDerivativeView>;
+}
+
+/** What the derivative workflow receives. Ids, geometry and MIME types only. */
+export interface MediaDerivativeWorkflowInput {
+  readonly ctx: WorkflowActorContext;
+  readonly mediaAssetId: string;
+  readonly presetKey: string;
+  readonly operations: readonly MediaDerivativeOperation[];
 }
 
 export interface MediaService {
@@ -1440,10 +1562,17 @@ export interface MediaService {
   ): Promise<Paginated<MediaAssetView>>;
   get(ctx: ActorContext, mediaId: string): Promise<MediaAssetView>;
   delete(ctx: ActorContext, mediaId: string): Promise<void>;
+  /**
+   * Non-generative editing. Crop, rotate, resize, convert and compress, in that
+   * fixed pipeline order. The original is never overwritten: this returns a
+   * derivative, or the derivative that already existed for the same operations.
+   */
   edit(
     ctx: ActorContext,
-    input: { readonly mediaId: string; readonly ops: readonly MediaEditOperation[] },
-  ): Promise<MediaAssetView>;
+    input: { readonly mediaId: string; readonly ops: readonly MediaDerivativeOperation[] },
+  ): Promise<MediaDerivativeRequest>;
+  listDerivatives(ctx: ActorContext, mediaId: string): Promise<readonly MediaDerivativeView[]>;
+  getDerivative(ctx: ActorContext, derivativeId: string): Promise<MediaDerivativeView>;
   setAltText(
     ctx: ActorContext,
     input: {
@@ -2013,5 +2142,6 @@ export interface Services {
   readonly workerPublishing: WorkerPublishingService;
   readonly workerWebhooks: WorkerWebhookService;
   readonly workerBulkImports: WorkerBulkImportService;
+  readonly workerMedia: WorkerMediaService;
   readonly health: HealthService;
 }

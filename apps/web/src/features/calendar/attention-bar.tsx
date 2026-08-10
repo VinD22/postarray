@@ -10,11 +10,10 @@
  */
 
 import type { ReactNode } from 'react';
-import { Button, Notice } from '@relay/design-system';
+import { Badge, Button, Notice } from '@relay/design-system';
 import { useTranslations } from '@relay/i18n/react';
 
 import { Link } from '@/components/link';
-import { Sticker } from '@/features/marketing/components/loud/sticker';
 
 export interface AttentionBarProps {
   count: number;
@@ -42,9 +41,12 @@ export function AttentionBar({
         liveness="status"
         title={
           <span className="flex flex-wrap items-center gap-2">
-            <Sticker tone="cta" rotate={-3} ariaHidden>
+            {/* The count again, as a figure. Hidden from assistive tech
+                because the sentence beside it already carries the same
+                number, and a screen reader should hear it once. */}
+            <Badge tone="warning" aria-hidden="true">
               {count}
-            </Sticker>
+            </Badge>
             {t('web.calendar.attention.title', { count })}
           </span>
         }

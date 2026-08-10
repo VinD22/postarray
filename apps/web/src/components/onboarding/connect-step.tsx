@@ -4,13 +4,12 @@ import { useEffect, useMemo, useState } from 'react';
 
 import { Notice } from '@relay/design-system/patterns';
 import { Button, Label, RadioGroup, RadioGroupItem } from '@relay/design-system/primitives';
-import { cn } from '@relay/design-system/utils';
+import { cn, panelSurface } from '@relay/design-system/utils';
 
 import { ApiError, api, newIdempotencyKey, type ProviderId } from '@/lib/api';
 import { useAvailableProviders } from '@/lib/api/hooks';
 import { useLocalizedRouter, useTranslations } from '@/lib/i18n';
 import { useSession } from '@/lib/auth/session-context';
-import { PosterCard } from '@/features/marketing/components/loud/poster-card';
 import { ProviderMark } from '@/features/connections/provider';
 import { requireFirst } from '@/lib/utils/require-first';
 
@@ -72,11 +71,14 @@ const PROVIDERS: readonly {
  * One is enough to reach a first post. The permission list is on the page,
  * before the handoff, and the button says where it is about to send you.
  *
- * Each provider is a hover-lift `PosterCard` (WP-4) rather than a plain radio
- * row: `RadioGroup` renders with `display: contents` so its own layout
- * disappears and the cards become direct items of the surrounding CSS grid,
- * while the underlying `role="radiogroup"` / `role="radio"` semantics (and
- * `Label`'s `htmlFor` association) are unchanged from the plain-row version.
+ * Each provider is a `panelSurface` card rather than a plain radio row:
+ * `RadioGroup` renders with `display: contents` so its own layout disappears
+ * and the cards become direct items of the surrounding CSS grid, while the
+ * underlying `role="radiogroup"` / `role="radio"` semantics (and `Label`'s
+ * `htmlFor` association) are unchanged from the plain-row version.
+ *
+ * Selection is carried by the radio control itself; the accent border is a
+ * second, redundant signal, never the only one.
  */
 export function ConnectStep() {
   const t = useTranslations();
@@ -157,12 +159,12 @@ export function ConnectStep() {
               const id = `provider-${entry.id}`;
               const isSelected = selected === entry.id;
               return (
-                <PosterCard
+                <div
                   key={entry.id}
-                  tone="paper"
                   className={cn(
+                    panelSurface,
                     'flex min-h-11 items-center gap-3 p-4',
-                    isSelected && 'border-accent shadow-hard-lg',
+                    isSelected && 'border-accent',
                   )}
                 >
                   <RadioGroupItem value={entry.id} id={id} />
@@ -173,7 +175,7 @@ export function ConnectStep() {
                   >
                     {entry.name}
                   </Label>
-                </PosterCard>
+                </div>
               );
             })}
           </RadioGroup>

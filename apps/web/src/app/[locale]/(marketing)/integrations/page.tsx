@@ -2,31 +2,28 @@ import type { Metadata } from 'next';
 import type { ReactNode } from 'react';
 import { Notice } from '@relay/design-system/patterns';
 
-import { Reveal, StaggerList } from '@/components/motion';
+import { StaggerList } from '@/components/motion';
 import {
   Container,
   Fact,
   FactList,
-  FullBleed,
   Lede,
   Section,
   Subheading,
 } from '@/features/marketing/components/layout';
 import { Cta, TextLink } from '@/features/marketing/components/links';
-import { Band } from '@/features/marketing/components/loud/band';
-import { CtaSlab } from '@/features/marketing/components/loud/cta-slab';
-import { LoudDisplay } from '@/features/marketing/components/loud/display';
-import { LogoMarquee } from '@/features/marketing/components/loud/logo-marquee';
-import { PosterCard } from '@/features/marketing/components/loud/poster-card';
+import {
+  ClosingCta,
+  EditorialCard,
+  EditorialDisplay,
+  EditorialSection,
+  Eyebrow,
+} from '@/features/marketing/components/editorial';
 import { CorrectionNotice, SourceNote } from '@/features/marketing/components/page-parts';
 import { CONNECTORS } from '@/features/marketing/data/connectors';
 import { marketingTranslator } from '@/features/marketing/i18n';
 import { pageMetadata } from '@/features/marketing/seo';
 import { ROUTES } from '@/features/marketing/site';
-import type { ProviderId } from '@/lib/api/types';
-
-/** Every connector this page documents, for the top marquee and logo wall. */
-const CONNECTOR_IDS: readonly ProviderId[] = CONNECTORS.map((connector) => connector.id);
 
 export async function generateMetadata({
   params,
@@ -52,11 +49,11 @@ export default async function IntegrationsPage({
 
   return (
     <>
-      <Band tone="paper">
-        <Reveal className="max-w-[52rem]">
-          <LoudDisplay as="h1" size="xl">
+      <EditorialSection>
+        <div className="max-w-[52rem]">
+          <EditorialDisplay as="h1" size="md">
             {t.t('web.integrations.title')}
-          </LoudDisplay>
+          </EditorialDisplay>
           <Lede className="mt-6">{t.t('web.integrations.lede')}</Lede>
           <div className="mt-8">
             <Cta href={ROUTES.capabilities} variant="secondary">
@@ -70,36 +67,27 @@ export default async function IntegrationsPage({
               description={t.t('web.integrations.reviewNotice.body')}
             />
           </div>
-        </Reveal>
-      </Band>
+        </div>
+      </EditorialSection>
 
-      {/* Logo wall: every connector as a hover-lift chip, each linking to its
-          detailed row below. The marquee restates the same set, honestly
-          captioned, for the "every connector here is an official API"
-          claim. */}
-      <section aria-label={t.t('web.integrations.v2.marqueeCaption')}>
-        <FullBleed>
-          <LogoMarquee providers={CONNECTOR_IDS} />
-        </FullBleed>
-        <Container>
-          <p className="text-body-sm text-text-tertiary py-4">
-            {t.t('web.integrations.v2.marqueeCaption')}
-          </p>
-        </Container>
-      </section>
-
+      {/* One index of connectors, each card linking to its detailed row below.
+          This used to be two: a full-bleed marquee of ink-bordered name chips
+          and then this same set again as poster cards. The marquee's only
+          content was the list it now sits above, so the caption that carried
+          the honest claim moves here and the second restatement leaves. */}
       <Section id="wall" ariaLabel={t.t('web.integrations.title')}>
-        <StaggerList className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <Eyebrow>{t.t('web.integrations.v2.marqueeCaption')}</Eyebrow>
+        <StaggerList className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {CONNECTORS.map((connector) => (
             <a key={connector.id} href={`#${connector.id}`} data-stagger-item className="block">
-              <PosterCard tone="paper" className="hover:border-accent h-full transition-colors">
+              <EditorialCard className="hover:border-accent h-full">
                 <Subheading as="h2" className="text-title-sm">
                   {t.format(connector.nameKey)}
                 </Subheading>
                 <p className="text-body-sm text-text-tertiary mt-2">
                   {t.t('web.integrations.viewMatrix')}
                 </p>
-              </PosterCard>
+              </EditorialCard>
             </a>
           ))}
         </StaggerList>
@@ -162,7 +150,7 @@ export default async function IntegrationsPage({
         </div>
       </Container>
 
-      <CtaSlab
+      <ClosingCta
         id="start"
         title={t.t('web.marketing.v2.closing.title')}
         body={t.t('web.marketing.v2.closing.body')}

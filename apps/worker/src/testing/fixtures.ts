@@ -4,6 +4,7 @@ import type {
   BulkImportWorkflowInput,
   DataDeletionWorkflowInput,
   DataExportWorkflowInput,
+  MediaDerivativeWorkflowInput,
   PublishPostWorkflowInput,
   PublishTargetPlan,
   PublishTargetWorkflowInput,
@@ -201,6 +202,26 @@ export function makeBulkImportInput(
     ctx: TEST_CONTEXT,
     importJobId: 'import_1',
     applyMode: null,
+    ...overrides,
+  };
+}
+
+/**
+ * A crop plus a conversion, which is the shape the library actually sends. The
+ * preset key here is a fixture value: the real one is a SHA-256 the application
+ * computes, and the activity recomputes it before it touches a byte.
+ */
+export function makeMediaDerivativeInput(
+  overrides: Partial<MediaDerivativeWorkflowInput> = {},
+): MediaDerivativeWorkflowInput {
+  return {
+    ctx: TEST_CONTEXT,
+    mediaAssetId: 'media_1',
+    presetKey: 'd'.repeat(64),
+    operations: [
+      { op: 'crop', x: 0, y: 0, width: 800, height: 600 },
+      { op: 'convert', format: 'image/webp' },
+    ],
     ...overrides,
   };
 }

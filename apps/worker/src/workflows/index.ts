@@ -23,6 +23,7 @@ export { webhookDeliveryWorkflow } from './webhook-delivery.workflow';
 export { dataDeletionWorkflow } from './data-deletion.workflow';
 export { dataExportWorkflow } from './data-export.workflow';
 export { bulkImportWorkflow } from './bulk-import.workflow';
+export { mediaDerivativeWorkflow } from './media-derivative.workflow';
 
 export {
   cancelSignal,

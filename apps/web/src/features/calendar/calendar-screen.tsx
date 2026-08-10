@@ -670,7 +670,7 @@ function CalendarBody(props: CalendarBodyProps): ReactNode {
         }
         action={
           <Button
-            variant="cta"
+            variant="primary"
             asChild
             iconStart={<CalendarPlus aria-hidden="true" className="size-4" />}
           >

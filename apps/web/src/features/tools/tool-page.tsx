@@ -14,8 +14,10 @@ import {
   Subheading,
 } from '@/features/marketing/components/layout';
 import { TextLink } from '@/features/marketing/components/links';
-import { Band } from '@/features/marketing/components/loud/band';
-import { LoudDisplay } from '@/features/marketing/components/loud/display';
+import {
+  EditorialSection,
+  EditorialDisplay,
+} from '@/features/marketing/components/editorial';
 import { marketingTranslator } from '@/features/marketing/i18n';
 import { breadcrumbJsonLd, faqJsonLd } from '@/features/marketing/seo';
 import { ROUTES, TOOL_LINKS } from '@/features/marketing/site';
@@ -57,14 +59,14 @@ export async function ToolPageShell(props: ToolPageShellProps): Promise<ReactNod
 
   return (
     <>
-      <Band tone="paper">
+      <EditorialSection tone="canvas">
         <Reveal className="max-w-[46rem]">
-          <LoudDisplay as="h1" size="xl">
+          <EditorialDisplay as="h1" size="lg">
             {t.format(props.titleKey)}
-          </LoudDisplay>
+          </EditorialDisplay>
           <Lede className="mt-6">{t.format(props.ledeKey)}</Lede>
         </Reveal>
-      </Band>
+      </EditorialSection>
 
       <Section id="tool" ariaLabel={t.format(props.titleKey)}>
         {children}

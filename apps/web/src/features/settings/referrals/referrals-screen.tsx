@@ -4,6 +4,7 @@ import { useEffect, useRef, useState, type ReactNode } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { Check } from 'lucide-react';
 import {
+  Badge,
   Button,
   Input,
   Table,
@@ -21,7 +22,6 @@ import { useAnnouncer } from '@relay/design-system/hooks';
 import { cn } from '@relay/design-system/utils';
 import { useTranslations } from '@relay/i18n/react';
 
-import { Sticker } from '@/features/marketing/components/loud/sticker';
 import { useMotionOk } from '@/lib/motion/use-motion-ok';
 
 import { AsyncBoundary } from '../lib/async-boundary';
@@ -74,7 +74,7 @@ export function ReferralsScreen(): ReactNode {
       announce(t('a11y.announce.copiedToClipboard'));
       // The referral link is the one playful moment WP-11 allows on an
       // otherwise calm settings surface: the button's own label
-      // check-morphs and a "Copied" `Sticker` pops in beside it for a
+      // check-morphs and a "Copied" `Badge` pops in beside it for a
       // beat, then both revert — the same transient, self-clearing
       // confirmation pattern as the composer's `Mod+s` "Saved" flash.
       setCopied(true);
@@ -140,13 +140,13 @@ export function ReferralsScreen(): ReactNode {
                     // Purely decorative: `announce()` above already puts the
                     // "copied" fact in the accessible live region, so this
                     // visual echo does not get a second one.
-                    <Sticker
-                      tone="cta"
-                      ariaHidden
+                    <Badge
+                      tone="accent"
+                      aria-hidden="true"
                       className={motionOk ? 'relay-pop-in' : undefined}
                     >
                       {t('settings.ui.referral.linkCopied')}
-                    </Sticker>
+                    </Badge>
                   ) : null}
                 </div>
                 {copyFailed ? (

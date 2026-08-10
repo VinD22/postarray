@@ -30,6 +30,7 @@ export const webBlogMessages = {
   'web.blog.cluster.scheduling': 'Scheduling',
   'web.blog.cluster.adaptation': 'Per platform adaptation',
   'web.blog.cluster.operations': 'Agency operations',
+  'web.blog.cluster.developers': 'Integrating through the API',
 
   'web.blog.label.published': 'Published {date}',
   'web.blog.label.updated': 'Updated {date}',

@@ -1,6 +1,7 @@
 import {
   bulkImportWorkflowId,
   dataDeletionWorkflowId,
+  mediaDerivativeWorkflowId,
   publishWorkflowId,
   dataExportWorkflowId,
   ruleWorkflowId,
@@ -14,6 +15,7 @@ import { TemporalScheduler } from '@relay/runtime';
 
 import { analyticsSyncDescriptor } from './workflows/core/analytics-sync.core';
 import { bulkImportDescriptor } from './workflows/core/bulk-import.core';
+import { mediaDerivativeDescriptor } from './workflows/core/media-derivative.core';
 import { automationRuleDescriptor } from './workflows/core/automation-rule.core';
 import { dataExportDescriptor } from './workflows/core/data-export.core';
 import { dataDeletionDescriptor } from './workflows/core/data-deletion.core';
@@ -209,6 +211,30 @@ export class WorkerScheduler implements SchedulerPort {
   }): Promise<{ readonly workflowId: string; readonly runId: string }> {
     const workflowId = bulkImportWorkflowId(input.workspaceId, input.importJobId);
     this.#inline().startWorkflow(bulkImportDescriptor, workflowId, input.workflowInput);
+    return { workflowId, runId: `${workflowId}:inline` };
+  }
+
+  /**
+   * A non-generative image derivative.
+   *
+   * Temporal has no derivative method of its own yet, so a durable deployment
+   * runs the same workflow body through the worker's inline scheduler, exactly
+   * as bulk import does. The workflow id is deterministic per asset and preset
+   * either way, so a duplicated request joins the run that already exists
+   * rather than starting a second one and writing a second object.
+   */
+  async scheduleMediaDerivative(input: {
+    readonly workspaceId: string;
+    readonly mediaAssetId: string;
+    readonly presetKey: string;
+    readonly workflowInput: Parameters<typeof mediaDerivativeDescriptor.run>[2];
+  }): Promise<{ readonly workflowId: string; readonly runId: string }> {
+    const workflowId = mediaDerivativeWorkflowId(
+      input.workspaceId,
+      input.mediaAssetId,
+      input.presetKey,
+    );
+    this.#inline().startWorkflow(mediaDerivativeDescriptor, workflowId, input.workflowInput);
     return { workflowId, runId: `${workflowId}:inline` };
   }
 

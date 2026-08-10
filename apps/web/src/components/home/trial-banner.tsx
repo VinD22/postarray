@@ -3,7 +3,7 @@
 import { Link } from '@/components/link';
 
 import { Button } from '@relay/design-system/primitives';
-import { cn, panelPoster } from '@relay/design-system/utils';
+import { cn, panelSurface } from '@relay/design-system/utils';
 
 import { useBillingState } from '@/lib/api/hooks';
 import { useFormatters, useTranslations } from '@/lib/i18n';
@@ -16,7 +16,7 @@ const DAY_MS = 86_400_000;
  * It states the remaining days, the exact conversion date and the exact amount,
  * and it disappears the moment the subscription is active. No countdown
  * animation on the words themselves, no urgency styling on the sentence: it
- * is a fact, not a nudge. The one loud element is decorative, a large
+ * is a fact, not a nudge. The one emphatic element is decorative, a large
  * `aria-hidden` numeral that mirrors the same day count, so a screen reader
  * still hears the fact exactly once, from the sentence. The numeral is static:
  * data should be readable immediately, not animated on arrival.
@@ -43,12 +43,12 @@ export function TrialBanner() {
       role="status"
       data-stagger-item
       className={cn(
-        panelPoster,
+        panelSurface,
         'relative flex flex-col gap-3 overflow-hidden p-4 ps-6',
         'sm:flex-row sm:items-center sm:gap-5',
       )}
     >
-      <span aria-hidden="true" className="bg-blush absolute inset-y-0 start-0 w-1.5" />
+      <span aria-hidden="true" className="bg-accent absolute inset-y-0 start-0 w-1.5" />
 
       <div aria-hidden="true" className="flex shrink-0 flex-col items-start">
         <span data-numeric className="font-display text-display-md text-text-primary leading-none">

@@ -33,6 +33,8 @@ type BulkImportActivities = Pick<
   'readBulkImportVerdict' | 'applyBulkImportRows'
 >;
 
+type MediaDerivativeActivities = Pick<WorkerActivities, 'produceMediaDerivative'>;
+
 type UnavailableActivity = (input: unknown) => Promise<never>;
 
 /**
@@ -66,6 +68,7 @@ export function createWorkerGateway(
     >;
     readonly webhooks?: Partial<WebhookActivities>;
     readonly bulkImports?: Partial<BulkImportActivities>;
+    readonly mediaDerivatives?: Partial<MediaDerivativeActivities>;
   } = {},
 ): WorkerActivities {
   const unavailable = Object.fromEntries(
@@ -95,6 +98,7 @@ export function createWorkerGateway(
     ...(options.dataDeletion ?? {}),
     ...(options.webhooks ?? {}),
     ...(options.bulkImports ?? {}),
+    ...(options.mediaDerivatives ?? {}),
     ...(options.connectorBridge ?? {}),
   } as unknown as WorkerActivities;
 }

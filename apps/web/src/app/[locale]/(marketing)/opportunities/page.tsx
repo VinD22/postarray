@@ -2,11 +2,12 @@ import type { Metadata } from 'next';
 import type { ReactNode } from 'react';
 import { EmptyState } from '@relay/design-system/patterns';
 
-import { Reveal } from '@/components/motion';
 import { Body, Heading, Lede, List, Section, Split } from '@/features/marketing/components/layout';
-import { Band } from '@/features/marketing/components/loud/band';
-import { CtaSlab } from '@/features/marketing/components/loud/cta-slab';
-import { LoudDisplay } from '@/features/marketing/components/loud/display';
+import {
+  ClosingCta,
+  EditorialDisplay,
+  EditorialSection,
+} from '@/features/marketing/components/editorial';
 import { TextLink } from '@/features/marketing/components/links';
 import {
   OPPORTUNITY_CATEGORIES,
@@ -41,14 +42,14 @@ export default async function OpportunitiesPage({
 
   return (
     <>
-      <Band tone="paper">
-        <Reveal className="max-w-[46rem]">
-          <LoudDisplay as="h1" size="xl">
+      <EditorialSection>
+        <div className="max-w-[46rem]">
+          <EditorialDisplay as="h1" size="md">
             {t.t('web.opportunities.title')}
-          </LoudDisplay>
+          </EditorialDisplay>
           <Lede className="mt-6">{t.t('web.opportunities.lede')}</Lede>
-        </Reveal>
-      </Band>
+        </div>
+      </EditorialSection>
 
       <Section id="rules">
         <Split aside={<Heading>{t.t('web.opportunities.rules.title')}</Heading>}>
@@ -97,7 +98,7 @@ export default async function OpportunitiesPage({
         </Split>
       </Section>
 
-      <CtaSlab
+      <ClosingCta
         id="start"
         title={t.t('web.marketing.v2.closing.title')}
         body={t.t('web.marketing.v2.closing.body')}

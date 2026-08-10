@@ -1,7 +1,12 @@
 import { Body, Controller, Delete, Get, HttpCode, Param, Post, Put, Query } from '@nestjs/common';
 import type { OperationRef, Paginated } from '@relay/contracts';
 
-import type { ActorContext, MediaAssetView } from '../../application/port';
+import type {
+  ActorContext,
+  MediaAssetView,
+  MediaDerivativeRequest,
+  MediaDerivativeView,
+} from '../../application/port';
 import { Actor, Idempotent, RateLimit, RequireScope } from '../../common/decorators';
 import { mediaIdSchema } from '../../common/schemas';
 import { parseBody, parseParams, parseQuery } from '../../common/zod';
@@ -91,7 +96,15 @@ export class MediaController {
     return this.media.importFromUrl(actor, parseBody(importFromUrlSchema, body));
   }
 
-  /** Crop, resize, rotate, compress. Nothing generative. */
+  /**
+   * Crop, rotate, resize, convert, compress. Nothing generative.
+   *
+   * The original is never overwritten. This returns a derivative handle: `ready`
+   * when the same edit was already produced, in which case nothing is
+   * reprocessed, and `processing` when the worker has been handed the transform
+   * and no derivative exists yet. A derivative that does not exist is reported
+   * as null, never as an empty placeholder.
+   */
   @Post(':id/edits')
   @RequireScope('media:write')
   @Idempotent()
@@ -100,9 +113,19 @@ export class MediaController {
     @Actor() actor: ActorContext,
     @Param('id') id: string,
     @Body() body: unknown,
-  ): Promise<MediaAssetView> {
+  ): Promise<MediaDerivativeRequest> {
     const input = parseBody(editMediaSchema, body);
     return this.media.edit(actor, parseParams(mediaIdSchema, id), toMediaEditOperations(input));
+  }
+
+  /** Every derivative of one asset. The original is always addressable too. */
+  @Get(':id/derivatives')
+  @RequireScope('media:read')
+  async listDerivatives(
+    @Actor() actor: ActorContext,
+    @Param('id') id: string,
+  ): Promise<{ data: readonly MediaDerivativeView[] }> {
+    return { data: await this.media.listDerivatives(actor, parseParams(mediaIdSchema, id)) };
   }
 
   @Put(':id/alt-text')

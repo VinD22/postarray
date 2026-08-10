@@ -6,6 +6,7 @@ import { automationRuleDescriptor } from '../workflows/core/automation-rule.core
 import { bulkImportDescriptor } from '../workflows/core/bulk-import.core';
 import { dataDeletionDescriptor } from '../workflows/core/data-deletion.core';
 import { dataExportDescriptor } from '../workflows/core/data-export.core';
+import { mediaDerivativeDescriptor } from '../workflows/core/media-derivative.core';
 import { publishPostDescriptor } from '../workflows/core/publish-post.core';
 import { publishTargetDescriptor } from '../workflows/core/publish-target.core';
 import { repeatPostDescriptor } from '../workflows/core/repeat-post.core';
@@ -19,6 +20,7 @@ import {
   makeBulkImportInput,
   makeDataExportInput,
   makeDeletionInput,
+  makeMediaDerivativeInput,
   makePostInput,
   makeRepeatInput,
   makeRssInput,
@@ -123,6 +125,9 @@ const CASES: readonly ReplayCase[] = [
   }),
   replayCase('bulkImportWorkflow', bulkImportDescriptor, makeBulkImportInput(), {
     workflowId: 'import:ws_test:import_1',
+  }),
+  replayCase('mediaDerivativeWorkflow', mediaDerivativeDescriptor, makeMediaDerivativeInput(), {
+    workflowId: 'mder:ws_test:media_1:dddddddddddddddddddddddd',
   }),
   replayCase(
     'bulkImportWorkflow applying drafts',
@@ -294,6 +299,30 @@ describe('recorded bulk import history', () => {
     ).toBe(true);
     expect(countActivity(run.commands, 'applyBulkImportRows')).toBe(1);
     expect(run.output).toMatchObject({ state: 'applied' });
+  });
+});
+
+/**
+ * The derivative workflow is one activity by design, and this is where that
+ * stays true. A second `produceMediaDerivative` in this history would mean a
+ * retry could write a second object for the same edit.
+ */
+describe('recorded media derivative history', () => {
+  it('produces the derivative in exactly one activity', async () => {
+    const run = await runWorkflow(mediaDerivativeDescriptor, makeMediaDerivativeInput(), {
+      workflowId: 'mder:ws_test:media_1:replay',
+    });
+    expect(activityHistory(run.commands)).toEqual(['produceMediaDerivative']);
+    expect(countActivity(run.commands, 'produceMediaDerivative')).toBe(1);
+    expect(run.output).toMatchObject({ mediaAssetId: 'media_1', mimeType: 'image/webp' });
+  });
+
+  it('invokes no other activity, so nothing generative can hide in the run', async () => {
+    const run = await runWorkflow(mediaDerivativeDescriptor, makeMediaDerivativeInput(), {
+      workflowId: 'mder:ws_test:media_1:replay_2',
+    });
+    expect(run.commands.filter((command) => command.kind === 'child')).toHaveLength(0);
+    expect(activityHistory(run.commands)).toHaveLength(1);
   });
 });
 

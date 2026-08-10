@@ -88,9 +88,9 @@ const persistence = wf.proxyActivities<
   >
 >(toTemporalActivityOptions(ACTIVITY_OPTIONS.persistence));
 
-const mediaProxy = wf.proxyActivities<Group<'prepareTargetMedia'>>(
-  toTemporalActivityOptions(ACTIVITY_OPTIONS.prepareMedia),
-);
+const mediaProxy = wf.proxyActivities<
+  Group<'prepareTargetMedia' | 'produceMediaDerivative'>
+>(toTemporalActivityOptions(ACTIVITY_OPTIONS.prepareMedia));
 
 const publishProxy = wf.proxyActivities<Group<'publishTarget' | 'publishSequenceItem'>>(
   toTemporalActivityOptions(ACTIVITY_OPTIONS.publish),
@@ -174,6 +174,7 @@ export const workerActivities: WorkerActivities = {
   buildDataExport: (input) => persistence.buildDataExport(input),
   readBulkImportVerdict: (input) => persistence.readBulkImportVerdict(input),
   applyBulkImportRows: (input) => persistence.applyBulkImportRows(input),
+  produceMediaDerivative: (input) => mediaProxy.produceMediaDerivative(input),
 };
 
 // ---------------------------------------------------------------------------

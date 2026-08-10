@@ -9,6 +9,7 @@ import type {
   WebhookEventName,
 } from '@relay/contracts';
 import { approvalLevelSchema, creationSurfaceSchema, localeSchema } from '@relay/contracts';
+import type { MediaDerivativeOperation } from '@relay/contracts';
 import { z } from 'zod';
 
 /**
@@ -776,6 +777,40 @@ export interface BulkImportActivityResult {
 }
 
 // ---------------------------------------------------------------------------
+// Media derivatives
+// ---------------------------------------------------------------------------
+
+/**
+ * Produce one non-generative derivative of a stored image.
+ *
+ * Identifiers, a checksum and geometry. The bytes never cross this boundary in
+ * either direction: the activity implementation reads them through the storage
+ * port and writes the result back through the same port, and only the recorded
+ * row comes out.
+ *
+ * `operations` is the closed union from `@relay/contracts`. It has no prompt,
+ * no model, no seed and no provider field, which is what makes "no generative
+ * provider is ever invoked" a property of the type rather than a promise.
+ */
+export interface ProduceMediaDerivativeInput {
+  readonly ctx: ActivityContext;
+  readonly mediaAssetId: string;
+  readonly presetKey: string;
+  readonly operations: readonly MediaDerivativeOperation[];
+}
+
+export interface ProduceMediaDerivativeResult {
+  readonly derivativeId: string;
+  readonly mediaAssetId: string;
+  readonly presetKey: string;
+  readonly mimeType: string;
+  readonly byteSize: number;
+  readonly checksumSha256: string;
+  readonly width: number | null;
+  readonly height: number | null;
+}
+
+// ---------------------------------------------------------------------------
 // The complete activity surface
 // ---------------------------------------------------------------------------
 
@@ -829,6 +864,9 @@ export interface WorkerActivities {
   buildDataExport(input: BuildDataExportInput): Promise<BuildDataExportResult>;
   readBulkImportVerdict(input: BulkImportActivityInput): Promise<BulkImportActivityResult>;
   applyBulkImportRows(input: ApplyBulkImportInput): Promise<BulkImportActivityResult>;
+  produceMediaDerivative(
+    input: ProduceMediaDerivativeInput,
+  ): Promise<ProduceMediaDerivativeResult>;
 }
 
 export type ActivityName = keyof WorkerActivities;
@@ -882,4 +920,5 @@ export const ACTIVITY_NAMES: readonly ActivityName[] = [
   'buildDataExport',
   'readBulkImportVerdict',
   'applyBulkImportRows',
+  'produceMediaDerivative',
 ];

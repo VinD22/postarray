@@ -30,7 +30,13 @@ import type { Citation } from '@/features/marketing/data/connectors';
  */
 
 /** Editorial groupings. Each maps to one `web.blog.cluster.*` catalog key. */
-export const BLOG_CLUSTERS = ['cadence', 'scheduling', 'adaptation', 'operations'] as const;
+export const BLOG_CLUSTERS = [
+  'cadence',
+  'scheduling',
+  'adaptation',
+  'operations',
+  'developers',
+] as const;
 
 export type BlogCluster = (typeof BLOG_CLUSTERS)[number];
 

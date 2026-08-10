@@ -13,6 +13,8 @@ import { emailMessages } from './email';
 import { errorMessages } from './errors';
 import { growthMessages } from './growth';
 import { importMessages } from './import';
+// A9 media derivatives.
+import { mediaMessages } from './media';
 import { navMessages } from './nav';
 import { onboardingMessages } from './onboarding';
 import { queueMessages } from './queue';
@@ -33,6 +35,8 @@ import { webToolsMessages } from './web-tools';
 // C5 platform and use case pages.
 import { webPlatformsMessages } from './web-platforms';
 import { webUseCaseMessages } from './web-use-cases';
+// C6 per comparison pages.
+import { webComparisonMessages } from './web-comparisons';
 
 /**
  * The English catalog. This is the source of truth for every user visible
@@ -58,6 +62,7 @@ export const en = {
   ...webAnalyticsMessages,
   ...growthMessages,
   ...importMessages,
+  ...mediaMessages,
   ...billingMessages,
   ...settingsMessages,
   ...developerMessages,
@@ -76,6 +81,7 @@ export const en = {
   ...webToolsMessages,
   ...webPlatformsMessages,
   ...webUseCaseMessages,
+  ...webComparisonMessages,
 } as const;
 
 /** Every message key in the product. */
@@ -100,6 +106,7 @@ export {
   errorMessages,
   growthMessages,
   importMessages,
+  mediaMessages,
   navMessages,
   onboardingMessages,
   queueMessages,

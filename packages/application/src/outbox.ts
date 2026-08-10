@@ -1,4 +1,9 @@
-import { approvalLevelSchema, creationSurfaceSchema, providerIdSchema } from '@relay/contracts';
+import {
+  approvalLevelSchema,
+  creationSurfaceSchema,
+  mediaDerivativeOperationsSchema,
+  providerIdSchema,
+} from '@relay/contracts';
 import { z } from 'zod';
 
 const workflowActorSchema = z
@@ -178,6 +183,39 @@ export const startBulkImportPayloadSchema = z
     }
   });
 export type StartBulkImportPayload = z.infer<typeof startBulkImportPayloadSchema>;
+
+/**
+ * A non-generative image derivative.
+ *
+ * Registered here so the worker parses the same shape the application builds.
+ * Like the bulk import payload it is deliberately absent from
+ * `workflowOutboxPayloadSchemas`: the derivative run is started directly by the
+ * service that owns the asset, and a kind the transactional dispatcher cannot
+ * hand to a scheduler would turn a valid request into a dead letter.
+ *
+ * The operations are geometry and MIME types. There is no prompt, no model, no
+ * seed and no provider in this payload, and there is nowhere for one to be
+ * added without failing this strict schema.
+ */
+export const startMediaDerivativePayloadSchema = z
+  .object({
+    ctx: workflowActorSchema,
+    workspaceId: z.string().min(1),
+    mediaAssetId: z.string().min(1),
+    presetKey: z.string().regex(/^[0-9a-f]{64}$/u),
+    operations: mediaDerivativeOperationsSchema,
+  })
+  .strict()
+  .superRefine((payload, context) => {
+    if (payload.workspaceId !== payload.ctx.workspaceId) {
+      context.addIssue({
+        code: z.ZodIssueCode.custom,
+        path: ['workspaceId'],
+        message: 'outbox payload workspace mismatch',
+      });
+    }
+  });
+export type StartMediaDerivativePayload = z.infer<typeof startMediaDerivativePayloadSchema>;
 
 export const workflowOutboxPayloadSchemas = {
   start_publish: startPublishOutboxPayloadSchema,

@@ -35,9 +35,14 @@ const filledDisabled =
  * stop reading as navigation and start reading as decoration. Ink on paper is
  * the loudest thing this system says.
  *
- * `cta` is retained as an alias of primary so existing call sites keep
- * compiling. It renders exactly the primary treatment: there is no separate
- * poster-slab commit button any more.
+ * `cta` is an alias of primary, on its way out. It renders exactly the primary
+ * treatment: there is no separate poster-slab commit button any more. Five
+ * call sites still name it, none of which the editorial pass owned:
+ * `app/[locale]/(app)/error.tsx`, `app/[locale]/(app)/not-found.tsx`,
+ * `features/connections/connections-screen.tsx`,
+ * `features/connections/connection-row.tsx` and
+ * `features/queue/rule-editor-screen.tsx`. Migrate those five and this variant
+ * goes; do not add a sixth.
  *
  * Shape is a 6px radius, a hairline border and a tonal fill for the quiet
  * variants. Primary and CTA add a soft elevation ramp on hover plus the quiet

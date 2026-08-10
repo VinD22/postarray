@@ -12,11 +12,12 @@ import {
   Eyebrow,
   type EditorialVsTableRow,
 } from '@/features/marketing/components/editorial';
-import { Container, Heading, Lede, Split } from '@/features/marketing/components/layout';
+import { COMPARISON_PAGES, comparisonPath } from '@/features/comparisons/registry';
+import { Container, Heading, Lede, Meta, Split } from '@/features/marketing/components/layout';
 import { RowLink, TextLink } from '@/features/marketing/components/links';
 import { CorrectionNotice } from '@/features/marketing/components/page-parts';
 import { COMPARISON_AXES, COMPARISON_TARGETS } from '@/features/marketing/data/catalogs';
-import { marketingTranslator } from '@/features/marketing/i18n';
+import { formatDate, marketingTranslator } from '@/features/marketing/i18n';
 import { pageMetadata } from '@/features/marketing/seo';
 import { ROUTES } from '@/features/marketing/site';
 
@@ -41,7 +42,16 @@ export default async function ComparePage({
 }): Promise<ReactNode> {
   const { locale } = await params;
   const t = await marketingTranslator(locale);
-  const published = COMPARISON_TARGETS.filter((target) => target.href !== null);
+
+  /**
+   * Two different lists, deliberately.
+   *
+   * `COMPARISON_PAGES` is what is actually published: one page per category of
+   * alternative whose facts could be read from official documentation.
+   * `COMPARISON_TARGETS` is the list of named products whose fact check has not
+   * happened, and every one of them still carries `href: null`, so naming them
+   * here as pending is the only honest thing the page can say about them.
+   */
   const planned = COMPARISON_TARGETS.filter((target) => target.href === null);
 
   /**
@@ -87,20 +97,34 @@ export default async function ComparePage({
         </p>
       </EditorialSection>
 
-      <EditorialSection rule id="pages">
-        {published.length === 0 ? (
-          <EmptyState
-            title={t.t('web.compare.empty')}
-            description={t.t('web.compare.emptyBody')}
-            example={t.t('web.methodology.comparison.distinction')}
-          />
+      <EditorialSection rule id="pages" reveal={false}>
+        <Heading className="max-w-[28ch]">{t.t('web.comparison.index.title')}</Heading>
+        <p className="text-body-lg text-text-secondary mt-4 max-w-[62ch] leading-[1.65]">
+          {t.t('web.comparison.index.body')}
+        </p>
+        {COMPARISON_PAGES.length === 0 ? (
+          <div className="mt-10">
+            <EmptyState
+              title={t.t('web.compare.empty')}
+              description={t.t('web.compare.emptyBody')}
+              example={t.t('web.methodology.comparison.distinction')}
+            />
+          </div>
         ) : (
-          <ul className="border-border-default border-t">
-            {published.map((target) => (
+          <ul className="border-border-default mt-10 border-t">
+            {COMPARISON_PAGES.map((page) => (
               <RowLink
-                key={target.id}
-                href={target.href ?? ROUTES.compare}
-                title={t.format(target.nameKey)}
+                key={page.slug}
+                href={comparisonPath(page.slug)}
+                title={page.title}
+                description={page.description}
+                meta={
+                  <Meta>
+                    {t.t('web.comparison.index.checked', {
+                      date: formatDate(page.checked, locale),
+                    })}
+                  </Meta>
+                }
               />
             ))}
           </ul>

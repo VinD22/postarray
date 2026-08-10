@@ -88,7 +88,7 @@ export function SummaryBar({ onOpenReview }: SummaryBarProps): ReactNode {
           : formatCurrency(t.locale, totals.estimatedCostMinor, totals.costCurrency)}
       </span>
 
-      <Button variant="cta" size="md" className="ms-auto scroll-mb-24" onClick={onOpenReview}>
+      <Button variant="primary" size="md" className="ms-auto scroll-mb-24" onClick={onOpenReview}>
         {t.full('composerWeb.summary.openReview')}
       </Button>
     </div>

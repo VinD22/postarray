@@ -11,12 +11,11 @@
 
 import { useRef, type ReactNode } from 'react';
 import { Notice } from '@relay/design-system/patterns';
-import { cn } from '@relay/design-system/utils';
+import { cn, panelSurface } from '@relay/design-system/utils';
 import { useTranslations } from '@relay/i18n/react';
 import { resolveVariant } from '@relay/contracts';
 import { formatDateTime } from '@relay/i18n';
 
-import { PosterCard } from '@/features/marketing/components/loud/poster-card';
 import { DURATION_FAST, EASE_STANDARD } from '@/lib/motion/constants';
 import { gsap, useGSAP } from '@/lib/motion/gsap';
 import { useMotionOk } from '@/lib/motion/use-motion-ok';
@@ -86,7 +85,7 @@ export function ProviderPreview({ summary }: ProviderPreviewProps): ReactNode {
       })}
       className="flex flex-col gap-3"
     >
-      <PosterCard tone="paper" className="p-4">
+      <div className={cn(panelSurface, 'p-4')}>
         <ProviderIdentity
           provider={summary.account.provider}
           accountName={summary.account.displayName}
@@ -130,7 +129,7 @@ export function ProviderPreview({ summary }: ProviderPreviewProps): ReactNode {
             {summary.publishedUrl}
           </p>
         ) : null}
-      </PosterCard>
+      </div>
 
       {resolved.values.threadItems.length > 0 ? (
         <ol className="flex flex-col gap-2">

@@ -203,7 +203,7 @@ export function SignInForm() {
 
             <Button
               type="submit"
-              variant="cta"
+              variant="primary"
               size="lg"
               fullWidth
               loading={pending}
@@ -238,7 +238,7 @@ export function SignInForm() {
 
             <Button
               type="submit"
-              variant="cta"
+              variant="primary"
               size="lg"
               fullWidth
               loading={pending}
@@ -288,7 +288,7 @@ export function SignInForm() {
 
             <Button
               type="submit"
-              variant="cta"
+              variant="primary"
               size="lg"
               fullWidth
               loading={pending}

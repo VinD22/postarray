@@ -3,10 +3,12 @@ import {
   UPLOADABLE_MEDIA_MIME_TYPES,
   VIDEO_UPLOAD_LIMIT_BYTES,
   checksumSchema,
+  mediaDerivativeOperationSchema,
+  mediaDerivativeOperationsSchema,
   mediaKindSchema,
+  type MediaDerivativeOperation,
 } from '@relay/contracts';
 import { z } from 'zod';
-import type { MediaEditOperation } from '../../application/port';
 
 import { cursorQueryWith } from '../../common/pagination';
 import { brandIdSchema, mediaIdSchema } from '../../common/schemas';
@@ -71,35 +73,18 @@ export const importFromUrlSchema = z
   })
   .strict();
 
-/** Non-generative edits only. V1 generates no image or video, ever. */
-export const mediaEditOpSchema = z.discriminatedUnion('op', [
-  z
-    .object({
-      op: z.literal('crop'),
-      x: z.number().int().nonnegative(),
-      y: z.number().int().nonnegative(),
-      width: z.number().int().positive(),
-      height: z.number().int().positive(),
-    })
-    .strict(),
-  z
-    .object({
-      op: z.literal('resize'),
-      width: z.number().int().positive().max(16_384),
-      height: z.number().int().positive().max(16_384),
-    })
-    .strict(),
-  z
-    .object({
-      op: z.literal('rotate'),
-      degrees: z.union([z.literal(90), z.literal(180), z.literal(270)]),
-    })
-    .strict(),
-  z.object({ op: z.literal('compress'), quality: z.number().int().min(1).max(100) }).strict(),
-]);
+/**
+ * Non-generative edits only. V1 generates no image or video, ever.
+ *
+ * The union is the one in `@relay/contracts`, not a second copy: crop, rotate,
+ * resize, convert and compress, each strict, none carrying a prompt, a model or
+ * a seed. The transport therefore cannot describe an edit the pipeline would
+ * refuse, and there is no field a generative request could arrive in.
+ */
+export const mediaEditOpSchema = mediaDerivativeOperationSchema;
 
 export const editMediaSchema = z
-  .object({ ops: z.array(mediaEditOpSchema).min(1).max(10) })
+  .object({ ops: mediaDerivativeOperationsSchema })
   .strict();
 
 /**
@@ -152,38 +137,21 @@ export const listMediaQuerySchema = cursorQueryWith({
 
 export const finalizeParamsSchema = z.object({ id: mediaIdSchema }).strict();
 
+/** Derivatives of one asset. Read only: they are produced, never uploaded. */
+export const listDerivativesParamsSchema = z.object({ id: mediaIdSchema }).strict();
+
 export type CreateUploadUrlInput = z.infer<typeof createUploadUrlSchema>;
 export type EditMediaInput = z.infer<typeof editMediaSchema>;
 export type DeclareRightsInput = z.infer<typeof declareRightsSchema>;
 
-export function toMediaEditOperations(input: EditMediaInput): readonly MediaEditOperation[] {
-  return input.ops.map((operation): MediaEditOperation => {
-    switch (operation.op) {
-      case 'crop':
-        return {
-          kind: operation.op,
-          params: {
-            x: operation.x,
-            y: operation.y,
-            width: operation.width,
-            height: operation.height,
-          },
-        } satisfies MediaEditOperation;
-      case 'resize':
-        return {
-          kind: operation.op,
-          params: { width: operation.width, height: operation.height },
-        } satisfies MediaEditOperation;
-      case 'rotate':
-        return {
-          kind: operation.op,
-          params: { degrees: operation.degrees },
-        } satisfies MediaEditOperation;
-      case 'compress':
-        return {
-          kind: operation.op,
-          params: { quality: operation.quality },
-        } satisfies MediaEditOperation;
-    }
-  });
+/**
+ * The transport shape is already the domain shape, so this is the identity.
+ * It stays as a named function because the boundary is worth naming: the
+ * application canonicalizes and validates these against the source file, and
+ * the handler must not do either.
+ */
+export function toMediaEditOperations(
+  input: EditMediaInput,
+): readonly MediaDerivativeOperation[] {
+  return input.ops;
 }
