@@ -120,6 +120,16 @@ export const BETA_ENGLISH_FALLBACK_PREFIXES = [
   // translates them.
   'mediaLib.derivative.',
   'error.media_derivative_',
+  // The in-page product demonstration: the hero demonstration and the guided
+  // walkthrough at /demo. Every sentence here is either sample content, which
+  // must stay recognizable as sample content, or a statement about where the
+  // workflow stops today: no connector has passed provider verification, so
+  // nothing publishes and half of a receipt is unavailable. A machine
+  // translation that softened either would turn a demonstration into a claim.
+  // Beta locales keep the reviewed English source until a person translates
+  // them.
+  'web.demo.',
+  'web.meta.demo.',
 ] as const;
 
 /** B5-controlled keys whose namespace also contains ordinary interface copy. */

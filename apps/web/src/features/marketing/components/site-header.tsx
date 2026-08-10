@@ -7,6 +7,7 @@ import { cn } from '@relay/design-system/utils';
 import { useI18n } from '@relay/i18n/react';
 
 import { Link } from '@/components/link';
+import { ThemePicker } from '@/components/theme-picker';
 import { localizedHref } from '@/lib/i18n/routing';
 
 import { Container } from './layout';
@@ -69,7 +70,7 @@ export function SiteHeader(props: SiteHeaderProps): ReactNode {
             </Link>
           </div>
 
-          <nav aria-label={navLabel} className="hidden min-w-0 lg:flex">
+          <nav aria-label={navLabel} className="hidden min-w-0 xl:flex">
             <ul className="flex items-stretch">
               {items.map((item) => {
                 const current = isCurrent(item.href);
@@ -79,7 +80,7 @@ export function SiteHeader(props: SiteHeaderProps): ReactNode {
                       href={item.href}
                       aria-current={current ? 'page' : undefined}
                       className={cn(
-                        'text-body-md relative flex items-center px-3',
+                        'text-body-md relative flex items-center px-3 whitespace-nowrap',
                         'transition-colors duration-(--duration-fast) ease-(--ease-standard)',
                         'focus-visible:outline-border-focus focus-visible:outline-2 focus-visible:outline-offset-[-2px]',
                         current
@@ -101,12 +102,13 @@ export function SiteHeader(props: SiteHeaderProps): ReactNode {
             </ul>
           </nav>
 
-          <div className="hidden items-center gap-1 lg:flex">
+          <div className="hidden items-center gap-1 xl:flex">
+            <ThemePicker />
             <LanguagePicker />
             <Link
               href={signIn.href}
               className={cn(
-                'text-body-md text-text-secondary flex min-h-11 items-center px-3',
+                'text-body-md text-text-secondary flex min-h-11 items-center px-3 whitespace-nowrap',
                 'hover:text-text-primary transition-colors duration-(--duration-fast) ease-(--ease-standard)',
                 'focus-visible:outline-border-focus focus-visible:outline-2 focus-visible:outline-offset-2',
               )}
@@ -116,7 +118,7 @@ export function SiteHeader(props: SiteHeaderProps): ReactNode {
             <Link
               href={startTrial.href}
               className={cn(
-                'bg-accent flex min-h-11 items-center rounded-md border border-transparent px-4',
+                'bg-accent flex min-h-11 items-center rounded-md border border-transparent px-4 whitespace-nowrap',
                 'text-body-md text-accent-on font-medium',
                 'transition-colors duration-(--duration-fast) ease-(--ease-standard)',
                 'hover:bg-accent-hover active:bg-accent-active',
@@ -127,7 +129,7 @@ export function SiteHeader(props: SiteHeaderProps): ReactNode {
             </Link>
           </div>
 
-          <details key={pathname} className="group flex items-center lg:hidden">
+          <details key={pathname} className="group flex items-center xl:hidden">
             <summary
               className={cn(
                 'flex min-h-11 min-w-11 cursor-pointer list-none items-center justify-center gap-2',
@@ -168,6 +170,7 @@ export function SiteHeader(props: SiteHeaderProps): ReactNode {
                     })}
                   </ul>
                   <div className="flex flex-wrap items-center gap-3 py-4">
+                    <ThemePicker />
                     <LanguagePicker />
                     <Link
                       href={startTrial.href}

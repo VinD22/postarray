@@ -22,11 +22,16 @@ describe('launch truth', () => {
     expect(en['web.product.step.compose.body']).toContain('not built yet');
     expect(en['web.developers.safety.body']).toContain('not built yet');
     expect(en['web.developers.safety.killSwitch']).toContain('not built yet');
-    expect(en['web.legal.ai.features.feedback']).toContain('not available in prelaunch');
+    expect(en['web.legal.ai.features.feedback']).toContain('not available');
+    // The product is sold from launch, so these no longer guard a prelaunch
+    // disclaimer. What they still guard is the pair of claims a paid page is
+    // most tempted to soften: that beginning a trial costs nothing and takes no
+    // card, and that a connector is available only once its own provider review
+    // passes. Neither may be dropped while checkout is open and connectors are
+    // still being reviewed one at a time.
     expect(en['web.pricing.prelaunch.primaryNote']).toContain('No card');
-    expect(en['web.pricing.prelaunch.secondaryNote']).toContain('unavailable');
+    expect(en['web.pricing.prelaunch.secondaryNote']).toContain('Connector availability');
     expect(en['web.pricing.beside.data']).toContain('CSV and media archives are not available yet');
-    expect(en['web.pricing.v2.closing.title']).toContain('before paid checkout opens');
     expect(en['mediaLib.retention.title']).toContain('30 days after the post is created');
     expect(en['mediaLib.retention.body']).toContain('upload date as a cleanup fallback');
     expect(en['mediaLib.retention.limits']).toContain('{imageSize}');

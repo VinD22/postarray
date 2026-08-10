@@ -47,7 +47,7 @@ export const navMessages = {
   'nav.public.pricing': 'Pricing',
   'nav.public.resources': 'Resources',
   'nav.public.signIn': 'Sign in',
-  'nav.public.startTrial': 'Join prelaunch',
+  'nav.public.startTrial': 'Start free trial',
   'nav.public.docs': 'Documentation',
   'nav.public.changelog': 'Changelog',
   'nav.public.status': 'Status',

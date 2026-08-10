@@ -13,6 +13,6 @@ export const THEME_MEDIA_QUERY = '(prefers-color-scheme: dark)';
  */
 export const themeBootstrapScript = `(function(){try{var k=${JSON.stringify(
   THEME_STORAGE_KEY,
-)};var p=localStorage.getItem(k);if(p!=="light"&&p!=="dark"&&p!=="system"){p="system"}var t=p;if(p==="system"){t=window.matchMedia&&window.matchMedia(${JSON.stringify(
+)};var p=localStorage.getItem(k);var t=p==="light"||p==="dark"?p:(window.matchMedia&&window.matchMedia(${JSON.stringify(
   THEME_MEDIA_QUERY,
-)}).matches?"dark":"light"}var r=document.documentElement;r.setAttribute("data-theme",t);r.style.colorScheme=t}catch(e){}})();`;
+)}).matches?"dark":"light");var r=document.documentElement;r.setAttribute("data-theme",t);r.style.colorScheme=t}catch(e){}})();`;

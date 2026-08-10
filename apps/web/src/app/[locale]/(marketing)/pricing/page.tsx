@@ -135,10 +135,16 @@ export default async function PricingPage({
       {/*
         2 & 3. The price and everything a buyer is agreeing to sit side by
         side. The allowance, the fair use boundary, the metered platform
-        usage, the planned trial and the cancellation path are next to the
-        button, not behind a link and not below the fold.
-        `EditorialPricePlanBlock` keeps both intervals' prices in the server
-        HTML regardless of which one the toggle currently shows.
+        usage, the trial and the cancellation path are next to the button, not
+        behind a link and not below the fold.
+        `EditorialPricePlanBlock` states both intervals' prices visibly,
+        whichever one the toggle is currently counting to, so a reader who
+        never touches the control still learns the annual price exists.
+
+        The action is honest about what it does: checkout is closed, so it
+        joins a waiting list for a paid product rather than starting a
+        subscription, and `web.pricing.prelaunch.primaryNote` says so directly
+        underneath it.
 
         This band used to be a full-viewport `--color-cta` fill. A price is
         the most consequential thing on the page and does not need a

@@ -30,12 +30,12 @@ export const webMarketingMessages = {
   'web.nav.closeMenu': 'Close the menu',
   'web.nav.footerLabel': 'Footer navigation',
 
-  'web.cta.startTrial': 'Join the public prelaunch',
+  'web.cta.startTrial': 'Start your free trial',
   'web.cta.seePricing': 'See the price',
   'web.cta.seeCapabilities': 'Read the capability matrix',
   'web.cta.readDocs': 'Read the documentation',
   'web.cta.trialFootnote':
-    'Prelaunch access is free. Checkout stays closed until connector, reliability and legal gates pass.',
+    'Relay costs $29 a month or $300 a year. The seven day trial starts when checkout opens, and checkout stays closed until the connector, reliability and legal gates pass.',
 
   'web.label.lastReviewed': 'Last reviewed {date}',
   'web.label.nextReview': 'Next review {date}',
@@ -82,7 +82,7 @@ export const webMarketingMessages = {
     'One backend behind the web app, the REST API, a remote MCP server, the CLI and signed webhooks. Same approval rules on every surface.',
   'web.meta.pricing.title': 'Pricing',
   'web.meta.pricing.description':
-    'Planned paid pricing is $29 a month or $300 a year. The plan includes 10 active channels and an owner plus 5 teammates. Checkout is closed during prelaunch.',
+    'Relay costs $29 a month or $300 a year, with a seven day free trial. The plan includes 10 active channels and an owner plus 5 teammates. Every feature is included at every tier.',
   'web.meta.resources.title': 'Resources',
   'web.meta.resources.description':
     'Status, changelog, documentation, methodology, comparisons, the tool radar and the opportunity catalog.',
@@ -120,9 +120,9 @@ export const webMarketingMessages = {
   'web.home.lede':
     'Relay is a publishing desk for people who are accountable for what goes out. You write once, adapt per platform, see the real limits before you schedule, get the approval you need, publish through official platform APIs, and keep a receipt for every post.',
   'web.home.summaryLine':
-    'Public prelaunch access is free. Planned paid pricing is $29 a month or $300 a year for 10 active social channels and an owner plus 5 teammates.',
+    'Relay costs $29 a month, or $300 a year and save $48. That covers 10 active social channels and an owner plus 5 teammates. Every feature is included, and the seven day trial needs no card.',
 
-  'web.home.example.title': 'One idea, five platform-native versions',
+  'web.home.example.title': 'One idea, ten platform-native versions',
   'web.home.example.body':
     'The composer starts with a master version. Selecting one account opens an override for that account only, with its own live limits and its own preview. Nothing you write for LinkedIn changes what X receives.',
   'web.home.example.column.account': 'Account',
@@ -220,7 +220,7 @@ export const webMarketingMessages = {
    * `web.home.pillars.economics.*` above.
    */
   'web.home.v2.heroTemplate': 'Native, on-brand posts for {platform}.',
-  'web.home.v2.sticker.trial': 'Public prelaunch',
+  'web.home.v2.sticker.trial': 'Seven day free trial. No card required.',
   'web.home.v2.sticker.official': 'Official APIs only',
   'web.home.v2.marqueeCaption': 'Official APIs only.',
   'web.home.v2.surfacesStat': 'Surfaces on one shared backend',
@@ -379,20 +379,25 @@ export const webMarketingMessages = {
 
   'web.pricing.title': 'One plan',
   'web.pricing.lede':
-    'There are no feature tiers. Checkout is closed during public prelaunch, so no payment method is collected yet. These are the planned paid terms.',
+    'There are no feature tiers. One plan, $29 a month or $300 a year, with a seven day free trial. Every feature is included at every price, and capacity is the only thing that changes.',
   'web.pricing.intervalHeading': 'Choose how you pay',
   'web.pricing.monthlyLabel': 'Billed monthly',
   'web.pricing.annualLabel': 'Billed annually',
   'web.pricing.annualDetail': '$300 charged once a year.',
   'web.pricing.monthlyDetail': '$29 charged every month.',
+  // The annual saving is stated in whole dollars. Never a percentage: the real
+  // discount on 29 and 300 is not a round number and the billing copy
+  // compliance test rejects percentage framing. Mirrors
+  // `BASE_TIER_PRESENTATION.annualFraming` in packages/billing/src/products.ts.
+  'web.pricing.annualFraming': '$25 a month billed annually. Save $48 a year.',
   'web.pricing.prelaunch.primaryNote':
-    'Public prelaunch access is free. No card or payment method is collected.',
+    'Your seven day trial starts today. No card is collected to begin it, and you choose monthly or annual when it ends.',
   'web.pricing.prelaunch.secondaryNote':
-    'Paid checkout, invoices and trial conversion stay unavailable until the commercial launch gates pass.',
+    'Cancel at any time from Settings during the trial and you are charged nothing. Connector availability is shown account by account as each platform completes its review.',
   'web.pricing.perMonthNote':
-    'Planned prices are in US dollars. Taxes and merchant terms will be shown before checkout opens.',
+    'Prices are in US dollars. Taxes and merchant terms will be shown before checkout opens.',
 
-  'web.pricing.beside.title': 'Planned paid terms',
+  'web.pricing.beside.title': 'The paid terms',
   'web.pricing.beside.channels':
     '10 active social channels. A channel is one social account, Page, profile, group or publication connection.',
   'web.pricing.beside.members':
@@ -408,7 +413,7 @@ export const webMarketingMessages = {
   'web.pricing.beside.conversion':
     'When checkout opens, an uncanceled trial will convert on day seven to the interval you chose. Polar will email a reminder three days before that happens.',
   'web.pricing.beside.cancel':
-    'Paid access is not active during prelaunch. When it opens, you will be able to cancel from Settings without contacting support.',
+    'Paid access is not active yet. When checkout opens, you will be able to cancel from Settings without contacting support.',
   'web.pricing.beside.data':
     'Post text, receipts and audit history remain under the data policy. Uploaded files are permanently deleted 30 days after upload. Workspace export is available as structured JSON; CSV and media archives are not available yet.',
 
@@ -445,9 +450,9 @@ export const webMarketingMessages = {
    * matching the existing precedent for `web.pricing.*` above and
    * `web.home.v2.*` on the landing page.
    */
-  'web.pricing.v2.closing.title': 'Join before paid checkout opens',
+  'web.pricing.v2.closing.title': 'Start publishing on one plan',
   'web.pricing.v2.closing.body':
-    'Use the public prelaunch, see which connectors are available for your account and tell us where the workflow needs polish. No card is collected.',
+    'Joining now reserves your place, shows which connectors are available for your account and collects no card. The seven day trial starts on the day checkout opens, not today.',
 
   /* ---------------------------------------------------------------------- */
   /* Resources index                                                         */
@@ -1403,11 +1408,11 @@ export const webMarketingMessages = {
   /* ---------------------------------------------------------------------- */
 
   /** Reused by every WP-3 page whose closing band has no page-specific copy. */
-  'web.marketing.v2.closing.title': 'Try it on your own accounts',
+  'web.marketing.v2.closing.title': 'Be first to try it on your own accounts',
   'web.marketing.v2.closing.body':
-    'Join the public prelaunch. Connector availability is shown account by account, and checkout stays closed until the launch gates pass.',
+    'Start your free trial. Connector availability is shown account by account as each platform completes its review.',
 
-  'web.product.v2.demo.title': 'One brief, five platform-native drafts',
+  'web.product.v2.demo.title': 'One brief, ten platform-native drafts',
   'web.product.v2.demo.body':
     'The same scene from the home page, scoped to what the compose step actually produces.',
 

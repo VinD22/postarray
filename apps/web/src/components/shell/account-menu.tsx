@@ -25,7 +25,8 @@ import { initialsOf } from '@/lib/utils/initials';
  *
  * It carries the identity, the settings entry, the three-way theme choice and
  * sign out. The theme choice is explicit rather than a toggle, because
- * "match system" is a real answer and a two-state switch cannot express it.
+ * The choice is explicit light or dark. A first visit seeds from the operating
+ * system once, and after that the stored choice is what wins.
  */
 export function AccountMenu() {
   const t = useTranslations();
@@ -79,12 +80,11 @@ export function AccountMenu() {
         <DropdownMenuRadioGroup
           value={preference}
           onValueChange={(next) => {
-            setPreference(next as 'light' | 'dark' | 'system');
+            setPreference(next as 'light' | 'dark');
           }}
         >
           <DropdownMenuRadioItem value="light">{t('nav.theme.light')}</DropdownMenuRadioItem>
           <DropdownMenuRadioItem value="dark">{t('nav.theme.dark')}</DropdownMenuRadioItem>
-          <DropdownMenuRadioItem value="system">{t('nav.theme.system')}</DropdownMenuRadioItem>
         </DropdownMenuRadioGroup>
 
         <DropdownMenuSeparator />

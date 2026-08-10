@@ -22,6 +22,7 @@ export interface SiteLink {
 export const ROUTES = {
   home: '/',
   product: '/product',
+  demo: '/demo',
   integrations: '/integrations',
   capabilities: '/integrations/capabilities',
   creators: '/for-creators',

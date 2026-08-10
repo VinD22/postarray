@@ -3,6 +3,7 @@ import type { ReactNode } from 'react';
 import { X } from 'lucide-react';
 
 import { StaggerList } from '@/components/motion';
+import { HeroDemoSection } from '@/features/demo/hero-demo-section';
 import { JsonLd } from '@/features/marketing/components/json-ld';
 import {
   ClosingCta,
@@ -10,6 +11,7 @@ import {
   EditorialCard,
   EditorialDisplay,
   EditorialPlatformCycler,
+  EditorialPricePair,
   EditorialSection,
   EditorialVariantScene,
   Eyebrow,
@@ -135,6 +137,9 @@ const BOUNDARIES = [
 /** The plan's one price, in whole dollars. Mirrors `billing.plan.monthlyPrice` / `MANDATED_COPY.monthlyPrice` ($29/month, `packages/billing/src/products.ts`). */
 const MONTHLY_PRICE_DOLLARS = 29;
 
+/** The annual price in whole dollars. Mirrors `annualPriceMinor: 30_000` on the base tier in `packages/billing/src/tiers.ts`. */
+const ANNUAL_PRICE_DOLLARS = 300;
+
 export default async function HomePage({
   params,
 }: {
@@ -176,8 +181,15 @@ export default async function HomePage({
         className="flex min-h-[86dvh] items-center"
         containerClassName="py-24 md:py-32"
       >
-        <div className="max-w-[68rem]">
-          <Eyebrow className="mb-6">{t.t('web.home.v2.sticker.trial')}</Eyebrow>
+        {/*
+          Two columns from `lg` up: the promise on the left, a working
+          demonstration on the right. Below `lg` the demonstration follows the
+          actions rather than pushing them off the first screen, because the
+          point of the hero is still to say what this is and let someone start.
+        */}
+        <div className="grid items-center gap-14 lg:grid-cols-[minmax(0,1fr)_minmax(0,26rem)] lg:gap-16">
+          <div className="max-w-[46rem]">
+            <Eyebrow className="mb-6">{t.t('web.home.v2.sticker.trial')}</Eyebrow>
 
           {/*
             `web.home.promise` is a full sentence, so it is set at the middle
@@ -204,12 +216,22 @@ export default async function HomePage({
             </Cta>
           </div>
 
-          <p className="text-body-md text-text-tertiary mt-7 max-w-[64ch] leading-[1.6]">
-            {t.t('web.home.summaryLine')}{' '}
-            <TextLink href={ROUTES.pricing} className="text-body-md">
-              {t.t('nav.public.pricing')}
-            </TextLink>
-          </p>
+            <p className="text-body-md text-text-tertiary mt-7 max-w-[64ch] leading-[1.6]">
+              {t.t('web.home.summaryLine')}{' '}
+              <TextLink href={ROUTES.pricing} className="text-body-md">
+                {t.t('nav.public.pricing')}
+              </TextLink>
+            </p>
+          </div>
+
+          <div className="lg:justify-self-end">
+            <HeroDemoSection locale={locale} />
+            <p className="mt-4">
+              <TextLink href={ROUTES.demo} className="text-body-sm">
+                {t.t('web.demo.hero.more')}
+              </TextLink>
+            </p>
+          </div>
         </div>
       </EditorialSection>
 
@@ -222,7 +244,7 @@ export default async function HomePage({
         <ProviderGrid providers={CONNECTOR_PROVIDERS} className="mt-8" />
       </EditorialSection>
 
-      {/* 3. One idea, five platform-native versions. The core proof. */}
+      {/* 3. One idea, a platform-native version each. The core proof. */}
       <EditorialSection rule id="example" reveal={false}>
         <Heading className="max-w-[32ch]">{t.t('web.home.example.title')}</Heading>
         <Body className="mt-4">{t.t('web.home.example.body')}</Body>
@@ -336,15 +358,21 @@ export default async function HomePage({
         <Heading className="max-w-[24ch]">{t.t('web.home.v2.pricingTeaser.title')}</Heading>
         <div className="mt-10 max-w-sm">
           <EditorialCard interactive={false}>
-            <EditorialBigNumber
-              value={MONTHLY_PRICE_DOLLARS}
+            {/* Both intervals, because a visitor who only ever sees the monthly
+                figure never learns the annual one exists. The saving is stated
+                in whole dollars, never as a percentage: the real discount on
+                29 and 300 is not a round number and the billing copy
+                compliance test rejects a percentage. */}
+            <EditorialPricePair
               locale={locale}
-              formatOptions={{ style: 'currency', currency: 'USD', maximumFractionDigits: 0 }}
-              label={t.t('billing.plan.single')}
+              monthlyPriceDollars={MONTHLY_PRICE_DOLLARS}
+              annualPriceDollars={ANNUAL_PRICE_DOLLARS}
+              monthlyLabel={t.t('web.pricing.monthlyLabel')}
+              annualLabel={t.t('web.pricing.annualLabel')}
+              monthlyDetail={t.t('web.pricing.monthlyDetail')}
+              annualDetail={t.t('web.pricing.annualDetail')}
+              annualFraming={t.t('web.pricing.annualFraming')}
             />
-            <p className="text-body-sm text-text-tertiary mt-3">
-              {t.t('web.pricing.perMonthNote')}
-            </p>
             <p className="text-body-md text-text-secondary mt-4">
               {t.t('web.home.v2.sticker.trial')}
             </p>

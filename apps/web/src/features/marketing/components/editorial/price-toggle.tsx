@@ -98,7 +98,7 @@ export function EditorialPriceToggle({
         ref={thumbRef}
         aria-hidden="true"
         style={{ gridColumnStart: value === 'month' ? 1 : 2 }}
-        className="bg-surface-raised border-border-default pointer-events-none row-start-1 rounded-full border shadow-raised"
+        className="bg-surface-raised border-border-default shadow-raised pointer-events-none row-start-1 rounded-full border"
       />
       <ToggleOption
         column={1}
@@ -158,15 +158,18 @@ function ToggleOption({
  * needs — everything it receives is already-translated text and plain numbers,
  * so the async Server Component page never becomes a client boundary itself.
  *
- * Only one price is ever visually shown at a time (whichever `interval` is
- * selected), and `<CountUp>` (via `EditorialBigNumber`) re-counts to the new
- * figure every time the toggle changes. A plain, always-present `sr-only`
- * `<dl>` states both intervals' prices as static text regardless of which the
- * toggle shows, so both prices stay in the server HTML and are crawlable with
- * JS off.
+ * The display numeral follows the toggle: `<CountUp>` (via
+ * `EditorialBigNumber`) re-counts to the selected interval's figure every time
+ * it changes. The two prices themselves do not follow the toggle. Both are
+ * stated, visibly, in a `<dl>` underneath, along with the annual framing
+ * sentence, because a reader who never operates the control must still learn
+ * that the annual price exists and what it is. That `<dl>` used to be
+ * `sr-only`, which put the second price in the markup for a crawler while
+ * hiding it from the person deciding whether to buy.
  *
- * `annualFraming` used to render as a rotated `Sticker`. It is a real fact, so
- * it survives the restyle as a plain line of body text rather than a badge.
+ * `annualFraming` used to render as a rotated `Sticker`, then as a line that
+ * appeared only while the annual interval was selected. It is a real fact
+ * about both intervals, so it is now always present.
  *
  * This block prices exactly one thing: the plan the caller passes in. It knows
  * nothing about tiers, and in particular it has no way to render a tier whose
@@ -220,30 +223,31 @@ export function EditorialPricePlanBlock({
         onChange={setBillingInterval}
       />
 
-      <div className="space-y-2">
-        <EditorialBigNumber
-          value={isAnnual ? annualPriceDollars : monthlyPriceDollars}
-          locale={locale}
-          formatOptions={{ style: 'currency', currency: 'USD', maximumFractionDigits: 0 }}
-          label={isAnnual ? annualDetail : monthlyDetail}
-        />
-        {isAnnual ? (
-          <p className="text-body-md text-text-secondary max-w-[46ch] leading-[1.6]">
-            {annualFraming}
-          </p>
-        ) : null}
-      </div>
+      <EditorialBigNumber
+        value={isAnnual ? annualPriceDollars : monthlyPriceDollars}
+        locale={locale}
+        formatOptions={{ style: 'currency', currency: 'USD', maximumFractionDigits: 0 }}
+        label={isAnnual ? annualLabel : monthlyLabel}
+      />
 
-      {/* Both intervals, always in the server HTML, for screen readers,
-          search engines and no-JS clients — the toggle above is a visual
-          convenience layered on top, not the only place the numbers live. */}
-      <dl className="sr-only">
-        <dt>{monthlyLabel}</dt>
-        <dd>{monthlyDetail}</dd>
-        <dt>{annualLabel}</dt>
-        <dd>{annualDetail}</dd>
-        <dd>{annualFraming}</dd>
-      </dl>
+      {/* Both intervals, visible, whichever one the toggle is showing. The
+          toggle is a convenience layered on top; it is not the only place
+          either number lives, and it never hides one of them. */}
+      <div className="space-y-3">
+        <dl className="space-y-2">
+          <div className="flex flex-wrap items-baseline gap-x-3">
+            <dt className="text-body-md text-text-tertiary">{monthlyLabel}</dt>
+            <dd className="text-body-md text-text-secondary">{monthlyDetail}</dd>
+          </div>
+          <div className="flex flex-wrap items-baseline gap-x-3">
+            <dt className="text-body-md text-text-tertiary">{annualLabel}</dt>
+            <dd className="text-body-md text-text-secondary">{annualDetail}</dd>
+          </div>
+        </dl>
+        <p className="text-body-md text-text-secondary max-w-[46ch] leading-[1.6]">
+          {annualFraming}
+        </p>
+      </div>
 
       <div className="border-border-subtle space-y-4 border-t pt-8">
         <Button asChild variant="primary" className="text-body-lg h-11 px-5">

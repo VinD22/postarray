@@ -37,6 +37,8 @@ import { webPlatformsMessages } from './web-platforms';
 import { webUseCaseMessages } from './web-use-cases';
 // C6 per comparison pages.
 import { webComparisonMessages } from './web-comparisons';
+// The hero demonstration and the guided walkthrough at /demo.
+import { webDemoMessages } from './web-demo';
 
 /**
  * The English catalog. This is the source of truth for every user visible
@@ -82,6 +84,7 @@ export const en = {
   ...webPlatformsMessages,
   ...webUseCaseMessages,
   ...webComparisonMessages,
+  ...webDemoMessages,
 } as const;
 
 /** Every message key in the product. */

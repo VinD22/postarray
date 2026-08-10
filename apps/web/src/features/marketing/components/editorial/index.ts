@@ -77,3 +77,4 @@ export {
   type EditorialVariantSceneProps,
   type EditorialVariantRow,
 } from './variant-scene';
+export { EditorialPricePair, type EditorialPricePairProps } from './price-pair';

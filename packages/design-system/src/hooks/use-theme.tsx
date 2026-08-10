@@ -4,7 +4,6 @@ import {
   createContext,
   useCallback,
   useContext,
-  useEffect,
   useMemo,
   useState,
   type ReactNode,
@@ -13,21 +12,21 @@ import {
 import { THEME_MEDIA_QUERY, THEME_STORAGE_KEY, themeBootstrapScript } from '../theme-bootstrap';
 import { useIsomorphicLayoutEffect } from './use-isomorphic-layout-effect';
 
-export type ThemePreference = 'light' | 'dark' | 'system';
+export type ThemePreference = 'light' | 'dark';
 export type ResolvedTheme = 'light' | 'dark';
 
 function isPreference(value: unknown): value is ThemePreference {
-  return value === 'light' || value === 'dark' || value === 'system';
+  return value === 'light' || value === 'dark';
 }
 
 function readStoredPreference(): ThemePreference {
-  if (typeof window === 'undefined') return 'system';
+  if (typeof window === 'undefined') return 'light';
   try {
     const raw = window.localStorage.getItem(THEME_STORAGE_KEY);
-    return isPreference(raw) ? raw : 'system';
+    return isPreference(raw) ? raw : systemTheme();
   } catch {
     // Private browsing or a blocked storage partition. System is a safe answer.
-    return 'system';
+    return 'light';
   }
 }
 
@@ -37,7 +36,7 @@ function systemTheme(): ResolvedTheme {
 }
 
 function applyTheme(preference: ThemePreference): ResolvedTheme {
-  const resolved = preference === 'system' ? systemTheme() : preference;
+  const resolved = preference;
   const root = document.documentElement;
   root.setAttribute('data-theme', resolved);
   root.style.colorScheme = resolved;
@@ -64,7 +63,7 @@ export function ThemeProvider({ children, forcedPreference }: ThemeProviderProps
   // The server cannot know the preference, so it renders the neutral default
   // and the bootstrap script has already corrected the DOM by the time this
   // mounts. Reading storage in an effect keeps hydration deterministic.
-  const [preference, setPreferenceState] = useState<ThemePreference>(forcedPreference ?? 'system');
+  const [preference, setPreferenceState] = useState<ThemePreference>(forcedPreference ?? 'light');
   const [resolvedTheme, setResolvedTheme] = useState<ResolvedTheme>('light');
 
   useIsomorphicLayoutEffect(() => {
@@ -72,15 +71,6 @@ export function ThemeProvider({ children, forcedPreference }: ThemeProviderProps
     setPreferenceState(initial);
     setResolvedTheme(applyTheme(initial));
   }, [forcedPreference]);
-
-  useEffect(() => {
-    if (preference !== 'system') return undefined;
-    if (typeof window === 'undefined' || !window.matchMedia) return undefined;
-    const list = window.matchMedia(THEME_MEDIA_QUERY);
-    const onChange = (): void => setResolvedTheme(applyTheme('system'));
-    list.addEventListener('change', onChange);
-    return () => list.removeEventListener('change', onChange);
-  }, [preference]);
 
   const setPreference = useCallback((next: ThemePreference) => {
     setPreferenceState(next);
