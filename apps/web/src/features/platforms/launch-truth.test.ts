@@ -5,6 +5,7 @@ import { en } from '@relay/i18n';
 
 import { CONNECTORS } from '@/features/marketing/data/connectors';
 import { PUBLISHING_LIMITS } from '@/features/marketing/data/publishing-limits';
+import { REGISTRY_MARKETING_CAPABILITY_STATES } from '@/features/marketing/data/registry-capability-states';
 
 import { PLATFORM_PAGES } from './registry';
 import { USE_CASE_PAGES } from './use-cases';
@@ -99,11 +100,30 @@ describe('platform pages hold no claim of their own', () => {
     }
   });
 
-  it('has a cohort platform with no connector record, which the page must survive', () => {
-    const uncovered = PLATFORM_PAGES.filter(
-      (page) => !CONNECTORS.some((connector) => connector.id === page.provider),
+  it('documents every cohort platform, so no page is silently blank', () => {
+    // This once asserted the opposite: that at least one cohort platform had no
+    // connector record. Google Business Profile was that platform, and the gap
+    // meant `/integrations` quietly listed nine of the ten. Every cohort member
+    // now has a record, and the graceful path below covers the real remaining
+    // case, which is a documented platform whose adapter does not exist yet.
+    for (const page of PLATFORM_PAGES) {
+      expect(
+        CONNECTORS.some((connector) => connector.id === page.provider),
+        `${page.provider} has a page but no connector record`,
+      ).toBe(true);
+    }
+  });
+
+  it('has a documented platform with no adapter, which the page must survive', () => {
+    // The generated states are keyed only by providers that actually have an
+    // adapter, so a cohort provider is deliberately absent from that type. The
+    // widened record is the honest way to ask "is it there?" rather than
+    // asserting a key the generator never emitted.
+    const states: Readonly<Record<string, unknown>> = REGISTRY_MARKETING_CAPABILITY_STATES;
+    const withoutAdapter = PLATFORM_PAGES.filter(
+      (page) => states[page.provider] === undefined,
     );
-    expect(uncovered.length).toBeGreaterThan(0);
+    expect(withoutAdapter.length).toBeGreaterThan(0);
   });
 });
 

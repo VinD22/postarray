@@ -18,6 +18,14 @@ describe('generated publishing limits', () => {
       if (row === undefined) {
         continue;
       }
+      // A platform with no adapter has nothing measured, so it cites nothing.
+      // Google Business Profile is in that state: documented on the matrix,
+      // unbuilt in the registry. Citing the connector record's source here would
+      // imply a limit was read from the provider when none was.
+      if (row.source === null) {
+        expect(row.adapterPresent, record.id).toBe(false);
+        continue;
+      }
       expect(row.source, record.id).toEqual({
         url: record.primarySource.url,
         readOn: record.primarySource.readOn,

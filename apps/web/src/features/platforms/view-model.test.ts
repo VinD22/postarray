@@ -86,10 +86,20 @@ describe('platform view model', () => {
     expect(withoutAdapter.length).toBeGreaterThan(0);
 
     for (const { page, model } of withoutAdapter) {
+      // Measured values are the thing that must not appear. A ceiling with no
+      // adapter behind it would be invented, and a zero would read as "this
+      // platform allows none", which is a different and false statement.
       expect(model.limitRows, page.slug).toBeNull();
       expect(model.limitSource, page.slug).toBeNull();
-      expect(model.capabilities, page.slug).toBeNull();
-      expect(model.requirements, page.slug).toBeNull();
+
+      // Curated capability and requirement rows may still render, because they
+      // are reviewed statements of intent rather than measurements. Every cell
+      // must then be a non-available state: `not_implemented` says we have not
+      // built it, `unsupported` says the platform cannot do it, and neither
+      // claims the product works today.
+      for (const row of model.capabilities ?? []) {
+        expect(row.state, `${page.slug}/${row.column}`).not.toBe('supported');
+      }
     }
   });
 

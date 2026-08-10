@@ -1164,6 +1164,13 @@ export const webMarketingMessages = {
     'A pin requires an image and a board you own. Writing to Pinterest requires app review and the board list is read at connect time.',
   'web.marketing.provider.pinterest.cost': 'No per operation charge.',
 
+  'web.marketing.provider.google_business_profile.label': 'Google Business Profile',
+  'web.marketing.provider.google_business_profile.accountTypes':
+    'One verified business location, connected through Google OAuth.',
+  'web.marketing.provider.google_business_profile.restriction':
+    'A local post carries text or a single image, a call to action and a language tag, and goes to one connected location. No adapter is built yet, so nothing publishes here today.',
+  'web.marketing.provider.google_business_profile.cost': 'No per operation charge.',
+
   'web.marketing.provider.discord.label': 'Discord',
   'web.marketing.provider.discord.accountTypes':
     'A Discord bot you control, posting into text channels.',
@@ -1226,6 +1233,7 @@ export const webMarketingMessages = {
     'This platform does not accept a custom thumbnail through its API.',
   'web.capabilities.note.inBuild': 'The platform offers this. Relay has not shipped it yet.',
   'web.capabilities.note.noCarousel': 'The platform does not offer a swipeable carousel product.',
+  'web.capabilities.note.noVideo': 'This post type accepts text or a single image, never video.',
   'web.capabilities.note.noDisclosure':
     'The platform has no disclosure field for AI or commercial content.',
   'web.capabilities.note.noAnalytics':

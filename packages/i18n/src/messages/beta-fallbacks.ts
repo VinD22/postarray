@@ -124,6 +124,14 @@ export const BETA_ENGLISH_FALLBACK_PREFIXES = [
 
 /** B5-controlled keys whose namespace also contains ordinary interface copy. */
 export const BETA_ENGLISH_FALLBACK_KEYS = [
+  // Google Business Profile joined the public connector matrix after the
+  // catalogs were last translated, and `noVideo` came with it. Reviewed English
+  // until a reviewer covers them in each locale.
+  'web.marketing.provider.google_business_profile.label',
+  'web.marketing.provider.google_business_profile.accountTypes',
+  'web.marketing.provider.google_business_profile.restriction',
+  'web.marketing.provider.google_business_profile.cost',
+  'web.capabilities.note.noVideo',
   'settings.nav.billing',
   'nav.public.terms',
   'nav.public.privacy',

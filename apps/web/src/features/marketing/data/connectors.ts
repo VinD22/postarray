@@ -1,6 +1,8 @@
 import type { CapabilityState } from '@relay/design-system/patterns';
 import type { MessageKey } from '@relay/i18n/translate';
 
+import { CORE_PROVIDER_IDS } from '@relay/contracts';
+
 import type { ProviderId } from '@/lib/api/types';
 
 import { REGISTRY_MARKETING_CAPABILITY_STATES } from './registry-capability-states';
@@ -602,6 +604,39 @@ export const CONNECTOR_SOURCE: readonly ConnectorRecord[] = [
     },
   },
   {
+    id: 'google_business_profile',
+    nameKey: 'web.marketing.provider.google_business_profile.label',
+    accountTypesKey: 'web.marketing.provider.google_business_profile.accountTypes',
+    restrictionKey: 'web.marketing.provider.google_business_profile.restriction',
+    costKey: 'web.marketing.provider.google_business_profile.cost',
+    primarySource: {
+      url: 'https://developers.google.com/my-business/reference/rest',
+      readOn: READ,
+    },
+    policySource: {
+      url: 'https://developers.google.com/my-business/content/policy',
+      readOn: READ,
+    },
+    // Google Business Profile is in the launch cohort but has no adapter yet, so
+    // every cell is `not_implemented` or `unsupported`. Nothing here may read as
+    // available: the honest state is "named, not built".
+    capabilities: {
+      text: inBuild,
+      image: inBuild,
+      carousel: unsupported('web.capabilities.note.noCarousel'),
+      video: unsupported('web.capabilities.note.noVideo'),
+      document: unsupported('web.capabilities.note.noDocuments'),
+      thread: unsupported('web.capabilities.note.noThreads'),
+      altText: unsupported('web.capabilities.note.noAltText'),
+      destinations: inBuild,
+      privacy: unsupported('web.capabilities.note.noPrivacyChoice'),
+      thumbnail: unsupported('web.capabilities.note.noThumbnail'),
+      analytics: unsupported('web.capabilities.note.noAnalytics'),
+      delete: inBuild,
+      disclosure: unsupported('web.capabilities.note.noDisclosure'),
+    },
+  },
+  {
     id: 'pinterest',
     nameKey: 'web.marketing.provider.pinterest.label',
     accountTypesKey: 'web.marketing.provider.pinterest.accountTypes',
@@ -705,7 +740,22 @@ export const CONNECTOR_SOURCE: readonly ConnectorRecord[] = [
   },
 ];
 
-export const CONNECTORS: readonly ConnectorRecord[] = CONNECTOR_SOURCE.map((connector) => ({
+/**
+ * The public connector list, restricted to the launch cohort.
+ *
+ * `CONNECTOR_SOURCE` documents every adapter that exists in the repository,
+ * which is deliberately more than the product promises: Mastodon, Discord,
+ * Slack, Telegram, WordPress, Dev.to, Reddit and Medium all have working
+ * adapters and none of them are part of the customer-facing set. Publishing the
+ * source list advertised eight platforms the product does not offer, which is
+ * the same class of untruth as claiming a capability a connector lacks.
+ *
+ * Cohort membership lives in `CORE_PROVIDER_IDS`, so this list follows that
+ * decision automatically rather than restating it.
+ */
+export const CONNECTORS: readonly ConnectorRecord[] = CORE_PROVIDER_IDS.flatMap((provider) =>
+  CONNECTOR_SOURCE.filter((connector) => connector.id === provider),
+).map((connector) => ({
   ...connector,
   capabilities: Object.fromEntries(
     CAPABILITY_COLUMNS.map((column) => [

@@ -1,0 +1,268 @@
+- generic [active] [ref=f2e1]:
+  - generic [ref=f2e2]:
+    - link "Skip to the main content" [ref=f2e3] [cursor=pointer]:
+      - /url: "#main"
+    - banner [ref=f2e4]:
+      - generic [ref=f2e6]:
+        - link "Relay" [ref=f2e8] [cursor=pointer]:
+          - /url: /
+        - navigation "Site navigation" [ref=f2e9]:
+          - list [ref=f2e10]:
+            - listitem [ref=f2e11]:
+              - link "Product" [ref=f2e12] [cursor=pointer]:
+                - /url: /product
+            - listitem [ref=f2e13]:
+              - link "Integrations" [ref=f2e14] [cursor=pointer]:
+                - /url: /integrations
+            - listitem [ref=f2e15]:
+              - link "For creators" [ref=f2e16] [cursor=pointer]:
+                - /url: /for-creators
+            - listitem [ref=f2e17]:
+              - link "For agencies" [ref=f2e18] [cursor=pointer]:
+                - /url: /for-agencies
+            - listitem [ref=f2e19]:
+              - link "For developers" [ref=f2e20] [cursor=pointer]:
+                - /url: /for-developers
+            - listitem [ref=f2e21]:
+              - link "Pricing" [ref=f2e22] [cursor=pointer]:
+                - /url: /pricing
+            - listitem [ref=f2e24]:
+              - link "Resources" [ref=f2e25] [cursor=pointer]:
+                - /url: /resources
+        - generic [ref=f2e26]:
+          - button "Choose interface language English" [ref=f2e27]:
+            - generic [ref=f2e33]: Choose interface language
+            - generic [ref=f2e34]: English
+          - link "Sign in" [ref=f2e35] [cursor=pointer]:
+            - /url: /sign-in
+          - link "Join prelaunch" [ref=f2e36] [cursor=pointer]:
+            - /url: /sign-up
+    - main [ref=f2e37]:
+      - generic [ref=f2e41]:
+        - paragraph [ref=f2e42]: Public prelaunch
+        - heading "One plan" [level=1] [ref=f2e43]
+        - paragraph [ref=f2e44]: There are no feature tiers. Checkout is closed during public prelaunch, so no payment method is collected yet. These are the planned paid terms.
+      - generic [ref=f2e48]:
+        - generic [ref=f2e50]:
+          - group "Choose how you pay" [ref=f2e51]:
+            - generic [ref=f2e53] [cursor=pointer]:
+              - radio "Billed monthly" [checked] [ref=f2e54]
+              - generic [ref=f2e55]: Billed monthly
+            - generic [ref=f2e56] [cursor=pointer]:
+              - radio "Billed annually" [ref=f2e57]
+              - generic [ref=f2e58]: Billed annually
+          - generic [ref=f2e60]:
+            - generic [ref=f2e61]: $29
+            - paragraph [ref=f2e62]: $29 charged every month.
+          - generic [ref=f2e63]:
+            - term [ref=f2e64]: Billed monthly
+            - definition [ref=f2e65]: $29 charged every month.
+            - term [ref=f2e66]: Billed annually
+            - definition [ref=f2e67]: $300 charged once a year.
+            - definition [ref=f2e68]: $25/month billed annually. Save $48/year.
+          - generic [ref=f2e69]:
+            - link "Join the public prelaunch" [ref=f2e70] [cursor=pointer]:
+              - /url: /sign-up
+            - paragraph [ref=f2e71]: Public prelaunch access is free. No card or payment method is collected.
+            - paragraph [ref=f2e72]: Paid checkout, invoices and trial conversion stay unavailable until the commercial launch gates pass.
+            - paragraph [ref=f2e73]: Planned prices are in US dollars. Taxes and merchant terms will be shown before checkout opens.
+        - generic [ref=f2e74]:
+          - heading "Planned paid terms" [level=2] [ref=f2e75]
+          - list [ref=f2e77]:
+            - listitem [ref=f2e78]:
+              - generic [ref=f2e81]: 10 active social channels. A channel is one social account, Page, profile, group or publication connection.
+            - listitem [ref=f2e82]:
+              - generic [ref=f2e85]: One owner and up to 5 teammates in each workspace. There is no separate per-seat charge within that limit.
+            - listitem [ref=f2e86]:
+              - generic [ref=f2e89]: Unlimited drafts, scheduled posts and stored receipts under a published fair use and anti spam policy. Those controls exist to protect your connected accounts and they apply identically to every subscriber.
+            - listitem [ref=f2e90]:
+              - generic [ref=f2e93]: X charges per API operation and charges more for a post that contains a URL. Relay passes that through at cost, estimates it before you confirm the action, and shows it in your usage. Other platform fees are passed through only when they are disclosed before the action.
+            - listitem [ref=f2e94]:
+              - generic [ref=f2e97]: AI image generation and AI video generation are not included and are not sold. There are no media credits, because Relay does not generate media.
+            - listitem [ref=f2e98]:
+              - generic [ref=f2e101]: When paid access opens, the trial will run for seven days with every shipped feature. Polar will show the exact first charge amount and date before you confirm.
+            - listitem [ref=f2e102]:
+              - generic [ref=f2e105]: When checkout opens, an uncanceled trial will convert on day seven to the interval you chose. Polar will email a reminder three days before that happens.
+            - listitem [ref=f2e106]:
+              - generic [ref=f2e109]: Paid access is not active during prelaunch. When it opens, you will be able to cancel from Settings without contacting support.
+            - listitem [ref=f2e110]:
+              - generic [ref=f2e113]: Post text, receipts and audit history remain under the data policy. Uploaded files are permanently deleted 30 days after upload. Workspace export is available as structured JSON; CSV and media archives are not available yet.
+      - generic [ref=f2e116]:
+        - heading "Included, in both intervals" [level=2] [ref=f2e117]
+        - paragraph [ref=f2e118]: Every feature on every tier
+        - generic [ref=f2e119]:
+          - paragraph [ref=f2e122]: Up to 10 active social channels
+          - paragraph [ref=f2e125]: Owner plus 5 teammates
+          - paragraph [ref=f2e128]: Unlimited drafts and scheduled posts under fair use
+          - paragraph [ref=f2e131]: Every approved connector
+          - paragraph [ref=f2e134]: Analytics kept from the day you connect an account
+          - paragraph [ref=f2e137]: REST API, remote MCP server, CLI and webhooks
+          - paragraph [ref=f2e140]: Automation rules, RSS autopost and tracked links
+          - paragraph [ref=f2e143]: Text assistance under the published abuse and cost limits
+          - paragraph [ref=f2e146]: Email and in app support
+        - paragraph [ref=f2e147]: Fair use means anti spam, rate and provider cost controls that protect your accounts. They work the same for every subscriber.
+      - generic [ref=f2e150]:
+        - heading "Choose your project capacity" [level=2] [ref=f2e151]
+        - paragraph [ref=f2e152]: Every tier includes every feature. The only difference is how many active projects a workspace can run at once.
+        - region "Choose your project capacity" [ref=f2e153]:
+          - table [ref=f2e154]:
+            - caption [ref=f2e155]: Choose your project capacity
+            - rowgroup [ref=f2e156]:
+              - row [ref=f2e157]:
+                - columnheader "Tier" [ref=f2e158]
+                - columnheader "Active projects" [ref=f2e159]
+                - columnheader "Monthly" [ref=f2e160]
+                - columnheader "Annual" [ref=f2e161]
+            - rowgroup [ref=f2e162]:
+              - row [ref=f2e163]:
+                - rowheader "Standard For one team running a handful of projects." [ref=f2e164]:
+                  - text: Standard
+                  - generic [ref=f2e165]: For one team running a handful of projects.
+                - cell "3 active projects" [ref=f2e166]
+                - cell "$29" [ref=f2e167]
+                - cell "$300" [ref=f2e168]
+        - paragraph [ref=f2e169]: Every feature, on every tier
+        - generic [ref=f2e170]:
+          - heading "Larger tiers are not on sale yet" [level=3] [ref=f2e171]
+          - paragraph [ref=f2e172]: Higher project capacity is planned. The prices and allowances are not decided, so we do not list them.
+        - paragraph [ref=f2e173]:
+          - link "Changelog" [ref=f2e174] [cursor=pointer]:
+            - /url: /changelog
+      - generic [ref=f2e179]:
+        - heading "Why we do not generate images or video" [level=2] [ref=f2e181]
+        - generic [ref=f2e182]:
+          - paragraph [ref=f2e183]: "We focus on helping you plan, approve, publish and learn. We do not generate images or video in V1 because brand-ready media needs more than a short prompt: it needs your complete visual system, accurate product details, licensed assets, people and usage permissions, and careful review. Creative models also change quickly. We recommend currently verified specialist tools and make it easy to bring their finished work into your campaigns while you keep creative control."
+          - paragraph [ref=f2e184]: There are no image or video generation credits, because Relay does not generate media.
+          - paragraph [ref=f2e185]:
+            - link "Creative tool radar" [ref=f2e186] [cursor=pointer]:
+              - /url: /tool-radar
+      - generic [ref=f2e190]:
+        - heading "There are no customer quotes on this page yet" [level=2] [ref=f2e191]
+        - paragraph [ref=f2e192]: A quote goes up only when the customer wrote it, gave written permission for it, and we can point to the work it describes. Until then an empty space is more honest than a wall of invented praise.
+      - generic [ref=f2e195]:
+        - heading "Questions people ask before paying" [level=2] [ref=f2e196]
+        - generic [ref=f2e197]:
+          - group [ref=f2e198]:
+            - heading "What happens if I reach 10 channels" [level=3] [ref=f2e200] [cursor=pointer]
+          - group [ref=f2e203]:
+            - heading "How much will X actually cost me" [level=3] [ref=f2e205] [cursor=pointer]
+          - group [ref=f2e208]:
+            - heading "Do you refund" [level=3] [ref=f2e210] [cursor=pointer]
+          - group [ref=f2e213]:
+            - heading "Can I start a second trial" [level=3] [ref=f2e215] [cursor=pointer]
+          - group [ref=f2e218]:
+            - heading "Can I run it myself" [level=3] [ref=f2e220] [cursor=pointer]
+      - list [ref=f2e225]:
+        - listitem [ref=f2e226]:
+          - link "Refund and Cancellation Policy" [ref=f2e227] [cursor=pointer]:
+            - /url: /legal/refunds
+        - listitem [ref=f2e228]:
+          - link "Terms of Service" [ref=f2e229] [cursor=pointer]:
+            - /url: /legal/terms
+        - listitem [ref=f2e230]:
+          - link "Acceptable Use Policy" [ref=f2e231] [cursor=pointer]:
+            - /url: /legal/acceptable-use
+      - generic [ref=f2e236]:
+        - heading "Join before paid checkout opens" [level=2] [ref=f2e237]
+        - paragraph [ref=f2e238]: Use the public prelaunch, see which connectors are available for your account and tell us where the workflow needs polish. No card is collected.
+        - link "Join the public prelaunch" [ref=f2e240] [cursor=pointer]:
+          - /url: /sign-up
+        - paragraph [ref=f2e241]: Prelaunch access is free. Checkout stays closed until connector, reliability and legal gates pass.
+    - contentinfo [ref=f2e242]:
+      - generic [ref=f2e244]:
+        - navigation "Footer navigation" [ref=f2e245]:
+          - generic [ref=f2e246]:
+            - heading "Product" [level=2] [ref=f2e247]
+            - list [ref=f2e248]:
+              - listitem [ref=f2e249]:
+                - link "Product" [ref=f2e250] [cursor=pointer]:
+                  - /url: /product
+              - listitem [ref=f2e251]:
+                - link "Integrations" [ref=f2e252] [cursor=pointer]:
+                  - /url: /integrations
+              - listitem [ref=f2e253]:
+                - link "Platform capabilities" [ref=f2e254] [cursor=pointer]:
+                  - /url: /integrations/capabilities
+              - listitem [ref=f2e255]:
+                - link "Scheduling, platform by platform" [ref=f2e256] [cursor=pointer]:
+                  - /url: /schedule
+              - listitem [ref=f2e257]:
+                - link "Pricing" [ref=f2e258] [cursor=pointer]:
+                  - /url: /pricing
+          - generic [ref=f2e259]:
+            - heading "Company" [level=2] [ref=f2e260]
+            - list [ref=f2e261]:
+              - listitem [ref=f2e262]:
+                - link "For creators" [ref=f2e263] [cursor=pointer]:
+                  - /url: /for-creators
+              - listitem [ref=f2e264]:
+                - link "For agencies" [ref=f2e265] [cursor=pointer]:
+                  - /url: /for-agencies
+              - listitem [ref=f2e266]:
+                - link "Use cases" [ref=f2e267] [cursor=pointer]:
+                  - /url: /use-cases
+              - listitem [ref=f2e268]:
+                - link "Methodology" [ref=f2e269] [cursor=pointer]:
+                  - /url: /methodology
+              - listitem [ref=f2e270]:
+                - link "Comparisons" [ref=f2e271] [cursor=pointer]:
+                  - /url: /compare
+          - generic [ref=f2e272]:
+            - heading "Developers" [level=2] [ref=f2e273]
+            - list [ref=f2e274]:
+              - listitem [ref=f2e275]:
+                - link "For developers" [ref=f2e276] [cursor=pointer]:
+                  - /url: /for-developers
+              - listitem [ref=f2e277]:
+                - link "Documentation" [ref=f2e278] [cursor=pointer]:
+                  - /url: /docs
+              - listitem [ref=f2e279]:
+                - link "API and MCP Terms" [ref=f2e280] [cursor=pointer]:
+                  - /url: /legal/api-terms
+              - listitem [ref=f2e281]:
+                - link "Status" [ref=f2e282] [cursor=pointer]:
+                  - /url: /status
+          - generic [ref=f2e283]:
+            - heading "Resources" [level=2] [ref=f2e284]
+            - list [ref=f2e285]:
+              - listitem [ref=f2e286]:
+                - link "Changelog" [ref=f2e287] [cursor=pointer]:
+                  - /url: /changelog
+              - listitem [ref=f2e288]:
+                - link "Creative tool radar" [ref=f2e289] [cursor=pointer]:
+                  - /url: /tool-radar
+              - listitem [ref=f2e290]:
+                - link "Promotion opportunities" [ref=f2e291] [cursor=pointer]:
+                  - /url: /opportunities
+              - listitem [ref=f2e292]:
+                - link "Free tools" [ref=f2e293] [cursor=pointer]:
+                  - /url: /tools
+              - listitem [ref=f2e294]:
+                - link "Resources" [ref=f2e295] [cursor=pointer]:
+                  - /url: /resources
+          - generic [ref=f2e296]:
+            - heading "Legal" [level=2] [ref=f2e297]
+            - list [ref=f2e298]:
+              - listitem [ref=f2e299]:
+                - link "Terms" [ref=f2e300] [cursor=pointer]:
+                  - /url: /legal/terms
+              - listitem [ref=f2e301]:
+                - link "Privacy" [ref=f2e302] [cursor=pointer]:
+                  - /url: /legal/privacy
+              - listitem [ref=f2e303]:
+                - link "Acceptable use" [ref=f2e304] [cursor=pointer]:
+                  - /url: /legal/acceptable-use
+              - listitem [ref=f2e305]:
+                - link "Security" [ref=f2e306] [cursor=pointer]:
+                  - /url: /legal/security
+              - listitem [ref=f2e307]:
+                - link "Legal and policies" [ref=f2e308] [cursor=pointer]:
+                  - /url: /legal
+        - generic [ref=f2e309]:
+          - paragraph [ref=f2e310]: Relay publishes through official platform APIs only. Connector availability depends on approvals that the platforms control, and every capability claim on this site is dated and sourced.
+          - paragraph [ref=f2e311]: Platform names and marks belong to their owners. Their use here identifies a connector and does not imply endorsement or partnership.
+          - paragraph [ref=f2e312]: Relay 2026
+  - region "Notifications (F8)":
+    - list
+  - alert [ref=f2e314]
+  - button "Open Next.js Dev Tools" [ref=f2e320] [cursor=pointer]
