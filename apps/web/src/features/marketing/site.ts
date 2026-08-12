@@ -51,6 +51,7 @@ export const ROUTES = {
   toolUtmBuilder: '/tools/utm-builder',
   toolYouTubeTitle: '/tools/youtube-title-length',
   toolTimeZonePlanner: '/tools/time-zone-planner',
+  toolEngagementRate: '/tools/engagement-rate',
   legal: '/legal',
   terms: '/legal/terms',
   privacy: '/legal/privacy',
@@ -202,6 +203,11 @@ export const TOOL_LINKS: readonly SiteLink[] = [
     href: ROUTES.toolTimeZonePlanner,
     labelKey: 'web.tools.timeZone.name',
     descriptionKey: 'web.tools.timeZone.summary',
+  },
+  {
+    href: ROUTES.toolEngagementRate,
+    labelKey: 'web.tools.engagementRate.name',
+    descriptionKey: 'web.tools.engagementRate.summary',
   },
 ];
 

@@ -1,17 +1,33 @@
 import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
 import type { ReactNode } from 'react';
+import { ACTIVE_LOCALES } from '@relay/i18n';
 
 import { Reveal } from '@/components/motion';
 import { ArticleBody } from '@/features/blog/components/article-body';
 import { BLOG_SLUGS, blogArticlePath, findBlogArticle } from '@/features/blog/registry';
-import { articleHeadings, clusterLabelKey } from '@/features/blog/types';
+import {
+  articleContent,
+  articleFaq,
+  articleHeadings,
+  articleLede,
+  articleLocales,
+  clusterLabelKey,
+  hasArticleLocale,
+} from '@/features/blog/types';
 import { Container, Lede, Meta, Subheading } from '@/features/marketing/components/layout';
 import { JsonLd } from '@/features/marketing/components/json-ld';
+import { Notice } from '@relay/design-system/patterns';
 import { ExternalLink, TextLink } from '@/features/marketing/components/links';
 import { formatDate, marketingTranslator } from '@/features/marketing/i18n';
-import { articleJsonLd, articleMetadata, breadcrumbJsonLd } from '@/features/marketing/seo';
+import {
+  articleJsonLd,
+  articleMetadata,
+  breadcrumbJsonLd,
+  faqJsonLd,
+} from '@/features/marketing/seo';
 import { ROUTES } from '@/features/marketing/site';
+import { localizedHref } from '@/lib/i18n/routing';
 
 /**
  * One article.
@@ -41,16 +57,18 @@ export async function generateMetadata({
     return {};
   }
   const t = await marketingTranslator(locale);
+  const content = articleContent(article, locale);
 
   return articleMetadata({
-    headline: article.title,
-    description: article.description,
+    headline: content.title,
+    description: content.description,
     path: blogArticlePath(article.slug),
     published: article.published,
     updated: article.updated,
     authorName: t.format(article.author.nameKey),
     ...(article.reviewer === undefined ? {} : { reviewerName: t.format(article.reviewer.nameKey) }),
     sourceUrls: article.sources.map((source) => source.url),
+    availableLocales: articleLocales(article),
     locale,
   });
 }
@@ -67,7 +85,10 @@ export default async function BlogArticlePage({
   }
 
   const t = await marketingTranslator(locale);
-  const headings = articleHeadings(article);
+  const content = articleContent(article, locale);
+  const headings = articleHeadings(content);
+  const faq = articleFaq(content);
+  const locales = articleLocales(article);
   const authorName = t.format(article.author.nameKey);
   const reviewerName =
     article.reviewer === undefined ? undefined : t.format(article.reviewer.nameKey);
@@ -124,9 +145,45 @@ export default async function BlogArticlePage({
             <article className="space-y-10">
               <Reveal as="header" className="space-y-5">
                 <h1 className="text-text-primary font-display text-[clamp(1.9rem,1.3rem+2.2vw,2.9rem)] leading-[1.1] tracking-[-0.02em] text-pretty">
-                  {article.title}
+                  {content.title}
                 </h1>
-                <Lede>{article.description}</Lede>
+                <Lede>{articleLede(content)}</Lede>
+
+                {locales.length > 1 ? (
+                  <nav
+                    aria-label={t.t('web.blog.label.language')}
+                    className="flex flex-wrap items-center gap-x-2 gap-y-1"
+                  >
+                    <span className="text-body-sm text-text-tertiary">
+                      {t.t('web.blog.label.language')}
+                    </span>
+                    {locales.map((available) => {
+                      const descriptor = ACTIVE_LOCALES.find((entry) => entry.bcp47 === available);
+                      const isCurrent = available === locale;
+                      return (
+                        <a
+                          key={available}
+                          href={localizedHref(blogArticlePath(article.slug), available)}
+                          lang={available}
+                          hrefLang={available}
+                          aria-current={isCurrent ? 'true' : undefined}
+                          className={
+                            isCurrent
+                              ? 'text-body-sm text-text-primary underline underline-offset-4'
+                              : 'text-body-sm text-text-secondary hover:text-text-primary underline underline-offset-4'
+                          }
+                        >
+                          {descriptor?.endonym ?? available}
+                        </a>
+                      );
+                    })}
+                  </nav>
+                ) : null}
+
+                {hasArticleLocale(article, locale) ? null : (
+                  <Notice tone="neutral" title={t.t('web.blog.label.notTranslated')} />
+                )}
+
                 <div className="border-border-subtle flex flex-wrap gap-x-6 gap-y-1 border-t pt-4">
                   <Meta>{t.t('web.blog.label.writtenBy', { name: authorName })}</Meta>
                   {reviewerName === undefined ? null : (
@@ -135,7 +192,7 @@ export default async function BlogArticlePage({
                 </div>
               </Reveal>
 
-              <ArticleBody blocks={article.blocks} />
+              <ArticleBody blocks={content.blocks} locale={locale} />
 
               {article.sources.length > 0 ? (
                 <section
@@ -176,23 +233,32 @@ export default async function BlogArticlePage({
 
       <JsonLd
         node={await articleJsonLd({
-          headline: article.title,
-          description: article.description,
+          headline: content.title,
+          description: content.description,
           path: blogArticlePath(article.slug),
           published: article.published,
           updated: article.updated,
           authorName,
           ...(reviewerName === undefined ? {} : { reviewerName }),
           sourceUrls: article.sources.map((source) => source.url),
+          availableLocales: locales,
           locale,
         })}
       />
+      {faq.length === 0 ? null : (
+        <JsonLd
+          node={faqJsonLd(
+            faq.map((entry) => ({ question: entry.q, answer: entry.a })),
+            locale,
+          )}
+        />
+      )}
       <JsonLd
         node={breadcrumbJsonLd(
           [
             { name: t.t('web.brand.name'), path: ROUTES.home },
             { name: t.t('web.blog.title'), path: ROUTES.blog },
-            { name: article.title, path: blogArticlePath(article.slug) },
+            { name: content.title, path: blogArticlePath(article.slug) },
           ],
           locale,
         )}

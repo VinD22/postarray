@@ -4,7 +4,14 @@ import { EmptyState, Notice } from '@relay/design-system/patterns';
 
 import { BLOG_FEED_PATH } from '@/features/blog/feed';
 import { BLOG_ARTICLES, blogArticlePath } from '@/features/blog/registry';
-import { clusterLabelKey } from '@/features/blog/types';
+import {
+  articleContent,
+  articleLocales,
+  BLOG_CLUSTERS,
+  clusterLabelKey,
+  hasArticleLocale,
+  type BlogCluster,
+} from '@/features/blog/types';
 import { Lede, Meta, Section } from '@/features/marketing/components/layout';
 import {
   ClosingCta,
@@ -46,6 +53,11 @@ export default async function BlogIndexPage({
   const { locale } = await params;
   const t = await marketingTranslator(locale);
 
+  const clusters = BLOG_CLUSTERS.map((cluster: BlogCluster) => ({
+    cluster,
+    articles: BLOG_ARTICLES.filter((article) => article.cluster === cluster),
+  })).filter((group) => group.articles.length > 0);
+
   return (
     <>
       <EditorialSection>
@@ -77,26 +89,49 @@ export default async function BlogIndexPage({
             description={t.t('web.blog.empty.body')}
           />
         ) : (
-          <ul className="border-border-bold border-t-2">
-            {BLOG_ARTICLES.map((article) => (
-              <RowLink
-                key={article.slug}
-                href={blogArticlePath(article.slug)}
-                title={article.title}
-                description={article.description}
-                meta={
-                  <span className="flex flex-wrap gap-x-5 gap-y-1">
-                    <Meta>{t.format(clusterLabelKey(article.cluster))}</Meta>
-                    <Meta>
-                      {t.t('web.blog.label.updated', {
-                        date: formatDate(article.updated, locale),
-                      })}
-                    </Meta>
+          <div className="space-y-12">
+            {clusters.map((group) => (
+              <div key={group.cluster}>
+                <h2 className="text-label text-text-tertiary flex items-baseline gap-3">
+                  <span>{t.format(clusterLabelKey(group.cluster))}</span>
+                  <span className="text-text-tertiary/70">
+                    {t.t('web.blog.label.count', { count: group.articles.length })}
                   </span>
-                }
-              />
+                </h2>
+                <ul className="border-border-bold mt-3 border-t-2">
+                  {group.articles.map((article) => {
+                    const content = articleContent(article, locale);
+                    const locales = articleLocales(article);
+                    return (
+                      <RowLink
+                        key={article.slug}
+                        href={blogArticlePath(article.slug)}
+                        title={content.title}
+                        description={content.description}
+                        meta={
+                          <span className="flex flex-wrap gap-x-5 gap-y-1">
+                            {hasArticleLocale(article, locale) ? null : (
+                              <Meta>{t.t('web.blog.label.notTranslated')}</Meta>
+                            )}
+                            <Meta>
+                              {t.t('web.blog.label.updated', {
+                                date: formatDate(article.updated, locale),
+                              })}
+                            </Meta>
+                            {locales.length > 1 ? (
+                              <Meta>
+                                {t.t('web.blog.label.languageCount', { count: locales.length })}
+                              </Meta>
+                            ) : null}
+                          </span>
+                        }
+                      />
+                    );
+                  })}
+                </ul>
+              </div>
             ))}
-          </ul>
+          </div>
         )}
       </Section>
 

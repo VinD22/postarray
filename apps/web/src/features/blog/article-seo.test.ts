@@ -3,6 +3,7 @@ import { describe, expect, it } from 'vitest';
 
 import {
   absoluteUrl,
+  articleAlternates,
   articleJsonLd,
   articleMetadata,
   jsonLdScript,
@@ -10,6 +11,7 @@ import {
 } from '@/features/marketing/seo';
 
 import { BLOG_ARTICLES, blogArticlePath } from './registry';
+import { articleContent, articleLocales } from './types';
 
 const article = BLOG_ARTICLES[0];
 
@@ -18,47 +20,55 @@ function requireArticle(): NonNullable<typeof article> {
   return article;
 }
 
-describe('article metadata', () => {
-  it('self-canonicalizes and emits a reciprocal hreflang cluster in every locale', async () => {
-    const path = blogArticlePath(requireArticle().slug);
+describe('article alternates', () => {
+  it('lists exactly the languages the article was written in, plus x-default', () => {
+    const subject = requireArticle();
+    const path = blogArticlePath(subject.slug);
+    const locales = articleLocales(subject);
 
-    for (const locale of ACTIVE_LOCALE_CODES) {
-      const metadata = await articleMetadata({
-        headline: requireArticle().title,
-        description: requireArticle().description,
-        path,
-        published: requireArticle().published,
-        updated: requireArticle().updated,
-        authorName: en['web.blog.byline.editorial.name'],
-        locale,
-      });
+    for (const requested of locales) {
+      const alternates = articleAlternates(path, requested, locales);
+      expect(alternates.canonical).toBe(absoluteUrl(path, requested));
 
-      expect(metadata.alternates?.canonical).toBe(absoluteUrl(path, locale));
-
-      // `Languages` is keyed by a template literal union, so a runtime lookup
-      // by locale string needs the plain record view of it.
-      const languages = (metadata.alternates?.languages ?? {}) as Readonly<
-        Record<string, string | undefined>
-      >;
-      expect(languages['x-default']).toBe(absoluteUrl(path, DEFAULT_LOCALE));
-      for (const alternate of ACTIVE_LOCALE_CODES) {
-        expect(languages[alternate], `${locale} -> ${alternate}`).toBe(
-          absoluteUrl(path, alternate),
-        );
+      const languages = alternates.languages as Readonly<Record<string, string | undefined>>;
+      expect(Object.keys(languages).sort()).toEqual([...locales, 'x-default'].sort());
+      for (const locale of locales) {
+        expect(languages[locale]).toBe(absoluteUrl(path, locale));
       }
+      expect(languages['x-default']).toBe(absoluteUrl(path, DEFAULT_LOCALE));
     }
-    // Every active locale's catalog is loaded to resolve the brand name.
-  }, 30_000);
+  });
 
+  it('canonicals to English for a locale the article has no translation in', () => {
+    const subject = requireArticle();
+    const path = blogArticlePath(subject.slug);
+    const locales = articleLocales(subject);
+    const untranslated = ACTIVE_LOCALE_CODES.find((locale) => !locales.includes(locale));
+    if (untranslated === undefined) {
+      // Every active locale happens to have this article; nothing to assert.
+      return;
+    }
+
+    const alternates = articleAlternates(path, untranslated, locales);
+    expect(alternates.canonical).toBe(absoluteUrl(path, DEFAULT_LOCALE));
+    const languages = alternates.languages as Readonly<Record<string, string | undefined>>;
+    expect(languages[untranslated]).toBeUndefined();
+  });
+});
+
+describe('article metadata', () => {
   it('marks the page as an article with real publication and modification times', async () => {
+    const subject = requireArticle();
+    const content = articleContent(subject, 'de');
     const metadata = await articleMetadata({
-      headline: requireArticle().title,
-      description: requireArticle().description,
-      path: blogArticlePath(requireArticle().slug),
+      headline: content.title,
+      description: content.description,
+      path: blogArticlePath(subject.slug),
       published: '2026-08-01',
       updated: '2026-08-10',
       authorName: en['web.blog.byline.editorial.name'],
       reviewerName: en['web.blog.byline.platform.name'],
+      availableLocales: articleLocales(subject),
       locale: 'de',
     });
 
@@ -83,11 +93,12 @@ describe('article metadata', () => {
 describe('article structured data', () => {
   it('names the author and the reviewer and cites the sources', async () => {
     const subject = requireArticle();
+    const content = articleContent(subject, 'en');
     const node = JSON.parse(
       jsonLdScript(
         await articleJsonLd({
-          headline: subject.title,
-          description: subject.description,
+          headline: content.title,
+          description: content.description,
           path: blogArticlePath(subject.slug),
           published: subject.published,
           updated: subject.updated,

@@ -12,9 +12,12 @@ import {
 } from '@relay/design-system/primitives';
 import { Notice } from '@relay/design-system/patterns';
 
+import { ChevronDown } from 'lucide-react';
+
 import { Body, Heading, List } from '@/features/marketing/components/layout';
 import { TextLink } from '@/features/marketing/components/links';
 
+import { ArticleTool } from './article-tool';
 import type { BlogBlock } from '../types';
 
 /**
@@ -30,7 +33,7 @@ import type { BlogBlock } from '../types';
  * one.
  */
 
-function BlockContent({ block }: { block: BlogBlock }): ReactNode {
+function BlockContent({ block, locale }: { block: BlogBlock; locale: string }): ReactNode {
   switch (block.kind) {
     case 'heading':
       return (
@@ -133,10 +136,67 @@ function BlockContent({ block }: { block: BlogBlock }): ReactNode {
           <TextLink href={block.href}>{block.label}</TextLink>
         </p>
       );
+
+    case 'takeaways':
+      return (
+        <div className="border-border-bold bg-surface-raised space-y-3 border-2 p-6">
+          <p className="text-body-sm text-text-tertiary font-mono uppercase tracking-wide">
+            {block.title}
+          </p>
+          <ul className="space-y-2">
+            {block.items.map((item) => (
+              <li key={item} className="text-body-md text-text-primary leading-[1.6]">
+                {item}
+              </li>
+            ))}
+          </ul>
+        </div>
+      );
+
+    case 'faq':
+      return (
+        <div className="border-border-bold divide-border-bold divide-y-2 border-y-2">
+          {block.items.map((item) => (
+            <details key={item.q} className="group">
+              <summary className="flex min-h-11 cursor-pointer list-none items-center justify-between gap-4 py-6 marker:content-none [&::-webkit-details-marker]:hidden">
+                <span className="text-title-sm text-text-primary text-pretty">{item.q}</span>
+                <ChevronDown
+                  aria-hidden="true"
+                  className="text-text-tertiary size-5 shrink-0 transition-transform duration-(--duration-fast) group-open:rotate-180"
+                />
+              </summary>
+              <Body className="pb-6">{item.a}</Body>
+            </details>
+          ))}
+        </div>
+      );
+
+    case 'stat':
+      return (
+        <figure className="space-y-2">
+          <p className="font-display text-display-lg text-text-primary leading-none tabular-nums">
+            {block.value}
+          </p>
+          <figcaption className="text-body-sm text-text-tertiary max-w-[64ch] leading-[1.6]">
+            {block.label}
+            {'. Source: '}
+            <TextLink href={block.source}>{new URL(block.source).hostname}</TextLink>
+          </figcaption>
+        </figure>
+      );
+
+    case 'tool':
+      return <ArticleTool tool={block.tool} caption={block.caption} locale={locale} />;
   }
 }
 
-export function ArticleBody({ blocks }: { blocks: readonly BlogBlock[] }): ReactNode {
+export function ArticleBody({
+  blocks,
+  locale,
+}: {
+  blocks: readonly BlogBlock[];
+  locale: string;
+}): ReactNode {
   return (
     <div className="space-y-6">
       {blocks.map((block, index) => (
@@ -145,7 +205,7 @@ export function ArticleBody({ blocks }: { blocks: readonly BlogBlock[] }): React
           key={index}
           className={block.kind === 'heading' && index > 0 ? 'pt-6' : undefined}
         >
-          <BlockContent block={block} />
+          <BlockContent block={block} locale={locale} />
         </div>
       ))}
     </div>

@@ -45,6 +45,37 @@ export function localeAlternates(path: string, locale: string = DEFAULT_LOCALE):
 }
 
 /**
+ * The reciprocal hreflang cluster for a piece of content that does not exist
+ * in every active locale, such as a blog article.
+ *
+ * `localeAlternates` assumes the same page renders at every active locale
+ * path, which is true of catalog-driven marketing pages and false of an
+ * article that was only ever written in some of them. Advertising all 25
+ * languages for writing that exists in three is the duplicate content problem
+ * this function exists to avoid: `languages` lists only `availableLocales`,
+ * and the canonical points at the current locale only when that locale is one
+ * of them. A reader on a locale with no translation is served the English
+ * article, so the canonical for that request points at the English URL
+ * instead of self-referencing a page that does not exist in that language.
+ */
+export function articleAlternates(
+  path: string,
+  locale: string,
+  availableLocales: readonly string[],
+): LocaleAlternates {
+  const canonicalLocale = availableLocales.includes(locale) ? locale : DEFAULT_LOCALE;
+  return {
+    canonical: absoluteUrl(path, canonicalLocale),
+    languages: {
+      ...Object.fromEntries(
+        availableLocales.map((available) => [available, absoluteUrl(path, available)]),
+      ),
+      'x-default': absoluteUrl(path, DEFAULT_LOCALE),
+    },
+  };
+}
+
+/**
  * Convert a BCP-47 interface locale into the underscore format Open Graph
  * expects. `es-419` is a region grouping, not an Open Graph locale, so it is
  * intentionally omitted instead of publishing an invalid value.
@@ -286,6 +317,12 @@ export interface ArticleSeoInput {
   /** Official documents the article relies on. */
   readonly sourceUrls?: readonly string[];
   readonly locale?: string;
+  /**
+   * The languages this article was actually written in. When present,
+   * `articleMetadata` builds its alternates from `articleAlternates` rather
+   * than assuming every active locale has a translation.
+   */
+  readonly availableLocales?: readonly string[];
 }
 
 /**
@@ -338,7 +375,10 @@ export async function articleMetadata(input: ArticleSeoInput): Promise<Metadata>
   const locale = input.locale ?? DEFAULT_LOCALE;
   const t = await marketingTranslator(locale);
   const url = absoluteUrl(input.path, locale);
-  const alternates = localeAlternates(input.path, locale);
+  const alternates =
+    input.availableLocales === undefined
+      ? localeAlternates(input.path, locale)
+      : articleAlternates(input.path, locale, input.availableLocales);
   const openGraphLocale = toOpenGraphLocale(locale);
   const alternateLocales = openGraphAlternateLocales(locale);
 

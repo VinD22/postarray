@@ -57,4 +57,10 @@ export const webBlogMessages = {
   'web.blog.empty.title': 'There is nothing published here yet',
   'web.blog.empty.body':
     'The first articles are being written. The feed will carry them when they are up.',
+
+  'web.blog.label.language': 'Read this in',
+  'web.blog.label.notTranslated':
+    'This article is not yet written in your language. Showing the English version.',
+  'web.blog.label.languageCount':
+    '{count, plural, one {# language} other {# languages}}',
 } as const;

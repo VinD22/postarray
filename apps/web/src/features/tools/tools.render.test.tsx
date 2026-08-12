@@ -5,6 +5,7 @@ import userEvent from '@testing-library/user-event';
 import { en } from '@relay/i18n/messages';
 import type { PartialCatalog } from '@relay/i18n/messages';
 
+import { EngagementRatePanel } from './engagement-rate-panel';
 import { PreflightChecker } from './preflight-checker';
 import { ToolsProvider } from './tools-provider';
 import { UtmBuilder } from './utm-builder';
@@ -120,5 +121,35 @@ describe('time zone planner markup', () => {
 
     expect(screen.getByRole('group', { name: 'Audience zones' })).toBeInTheDocument();
     expect(screen.getByLabelText('Your zone')).toBeInTheDocument();
+  });
+});
+
+describe('engagement rate calculator markup', () => {
+  it('shows unavailable rather than a number or a zero before any input', () => {
+    render(mount(<EngagementRatePanel />));
+
+    expect(screen.getAllByText('unavailable').length).toBe(3);
+  });
+
+  it('divides interactions by each denominator independently', async () => {
+    const user = userEvent.setup();
+    render(mount(<EngagementRatePanel />));
+
+    await user.type(screen.getByLabelText('Interactions'), '50');
+    await user.type(screen.getByLabelText('Reach'), '1000');
+    await user.type(screen.getByLabelText('Followers'), '2000');
+    await user.type(screen.getByLabelText('Impressions'), '4000');
+
+    expect(screen.getByText('5.00%')).toBeInTheDocument();
+    expect(screen.getByText('2.50%')).toBeInTheDocument();
+    expect(screen.getByText('1.25%')).toBeInTheDocument();
+  });
+
+  it('states plainly that there is no universal benchmark to compare against', () => {
+    render(mount(<EngagementRatePanel />));
+
+    expect(
+      screen.getByText(/no universal good rate to compare against/iu),
+    ).toBeInTheDocument();
   });
 });

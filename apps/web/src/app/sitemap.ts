@@ -1,7 +1,8 @@
 import type { MetadataRoute } from 'next';
 
 import { BLOG_ARTICLES, blogArticlePath, blogDateToInstant } from '@/features/blog/registry';
-import { localeAlternates } from '@/features/marketing/seo';
+import { articleLocales } from '@/features/blog/types';
+import { articleAlternates, localeAlternates } from '@/features/marketing/seo';
 import { MARKETING_ROUTES } from '@/features/marketing/site';
 
 /**
@@ -23,7 +24,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
   });
 
   const articles = BLOG_ARTICLES.map((article) => {
-    const alternates = localeAlternates(blogArticlePath(article.slug));
+    const path = blogArticlePath(article.slug);
+    const alternates = articleAlternates(path, 'en', articleLocales(article));
     return {
       url: alternates.canonical,
       lastModified: blogDateToInstant(article.updated),

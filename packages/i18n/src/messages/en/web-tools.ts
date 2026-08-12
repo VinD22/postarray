@@ -37,6 +37,9 @@ export const webToolsMessages = {
   'web.meta.tools.timeZone.title': 'Time zone and daylight saving planner',
   'web.meta.tools.timeZone.description':
     'See one posting time across several audience zones and find the weeks where a daylight saving shift moves the local hour.',
+  'web.meta.tools.engagementRate.title': 'Engagement rate calculator',
+  'web.meta.tools.engagementRate.description':
+    'Divide interactions by reach, followers or impressions. Three plain calculations, no invented benchmark.',
 
   /* ---------------------------------------------------------------------- */
   /* Shared tool furniture                                                   */
@@ -83,6 +86,9 @@ export const webToolsMessages = {
   'web.tools.timeZone.name': 'Time zone and daylight saving planner',
   'web.tools.timeZone.summary':
     'One posting time across several audience zones, with the daylight saving shifts marked.',
+  'web.tools.engagementRate.name': 'Engagement rate calculator',
+  'web.tools.engagementRate.summary':
+    'Interactions divided by reach, followers or impressions. Nothing looked up, nothing benchmarked.',
 
   /* ---------------------------------------------------------------------- */
   /* Post preflight checker                                                  */
@@ -257,4 +263,37 @@ export const webToolsMessages = {
   'web.tools.timeZone.faq.storage.q': 'How should a scheduled post store its time?',
   'web.tools.timeZone.faq.storage.a':
     'As an instant plus the IANA zone the person chose, never as a naive local time. That is what we do internally, and it is why a post scheduled before a clock change still lands at the intended local hour.',
+
+  /* ---------------------------------------------------------------------- */
+  /* Engagement rate calculator                                              */
+  /* ---------------------------------------------------------------------- */
+
+  'web.tools.engagementRate.title': 'Engagement rate calculator',
+  'web.tools.engagementRate.lede':
+    'Type the numbers your own dashboard already shows you. This divides them three ways and stops there: no benchmark, no "good" threshold, nothing we do not actually have.',
+  'web.tools.engagementRate.explainer.title': 'Why three denominators, not one',
+  'web.tools.engagementRate.explainer.body':
+    'Reach, followers and impressions answer different questions. Rate by reach tells you how the people who actually saw the post responded. Rate by followers tells you what share of your audience engaged, whether or not the post reached everyone. Rate by impressions counts every view, including repeats. Comparing a rate calculated one way against a rate calculated another way is a common source of an engagement number that looks wrong.',
+  'web.tools.engagementRate.field.interactions.label': 'Interactions',
+  'web.tools.engagementRate.field.interactions.help':
+    'Likes, comments, shares and saves added together, from the post you are measuring.',
+  'web.tools.engagementRate.field.reach.label': 'Reach',
+  'web.tools.engagementRate.field.reach.help': 'Accounts that saw the post at least once.',
+  'web.tools.engagementRate.field.followers.label': 'Followers',
+  'web.tools.engagementRate.field.followers.help': 'The account size at the time of the post.',
+  'web.tools.engagementRate.field.impressions.label': 'Impressions',
+  'web.tools.engagementRate.field.impressions.help': 'Total views, including a person who saw it twice.',
+  'web.tools.engagementRate.result.title': 'Engagement rate, three ways',
+  'web.tools.engagementRate.result.empty': 'unavailable',
+  'web.tools.engagementRate.result.note':
+    'There is no universal good rate to compare against. It depends on platform, format, audience size and industry, and any single number offered as a benchmark is a guess dressed up as data.',
+  'web.tools.engagementRate.basis.reach': 'By reach',
+  'web.tools.engagementRate.basis.followers': 'By followers',
+  'web.tools.engagementRate.basis.impressions': 'By impressions',
+  'web.tools.engagementRate.faq.formula.q': 'What is the actual formula?',
+  'web.tools.engagementRate.faq.formula.a':
+    'Interactions divided by the denominator you pick, shown as a percentage. Interactions here means likes, comments, shares and saves added together; some platforms report these separately, in which case add them yourself before typing the total in.',
+  'web.tools.engagementRate.faq.basis.q': 'Which denominator should I use?',
+  'web.tools.engagementRate.faq.basis.a':
+    'Whichever one your platform reports alongside the post, so the two numbers came from the same measurement window. Comparing a rate by reach on one post against a rate by followers on another is not a fair comparison even though both are called an engagement rate.',
 } as const;

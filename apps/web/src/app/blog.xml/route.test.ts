@@ -40,10 +40,10 @@ describe('GET /blog.xml', () => {
       );
 
       expect(item, article.slug).toBeDefined();
-      expect(item?.querySelector('title')?.textContent).toBe(article.title);
+      expect(item?.querySelector('title')?.textContent).toBe(article.content.en.title);
       expect(item?.querySelector('guid')?.textContent).toBe(expected);
       expect(item?.querySelector('guid')?.getAttribute('isPermaLink')).toBe('true');
-      expect(item?.querySelector('description')?.textContent).toBe(article.description);
+      expect(item?.querySelector('description')?.textContent).toBe(article.content.en.description);
       expect(item?.querySelector('pubDate')?.textContent).toContain('GMT');
     }
   });
