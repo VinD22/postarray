@@ -10,11 +10,11 @@ import { clusterLabelKey } from './types';
 /**
  * The RSS feed.
  *
- * English only, deliberately. A feed is a subscription to writing, and the
- * writing exists in one language today; publishing 25 feeds where 24 carry
- * English items with translated chrome would be a worse experience than one
- * honest feed. When an article gains a translation, that locale gets its own
- * feed document rather than a mixed one.
+ * English only, deliberately, and it reads `content.en` rather than whatever
+ * language a build happens to resolve. A feed is a subscription to writing, and
+ * a subscriber expects every item in the language they subscribed in. When a
+ * locale earns its own audience, it gets its own feed document at its own URL
+ * rather than turning this one into a mixture.
  *
  * Every URL is absolute. A relative link in a feed resolves against whatever
  * the reader's client guesses, which is usually nothing.
@@ -47,13 +47,14 @@ export async function blogFeedXml(): Promise<string> {
 
   const items = BLOG_ARTICLES.map((article) => {
     const url = absoluteUrl(blogArticlePath(article.slug), DEFAULT_LOCALE);
+    const english = article.content.en;
     return [
       '    <item>',
-      `      <title>${escapeXml(article.title)}</title>`,
+      `      <title>${escapeXml(english.title)}</title>`,
       `      <link>${escapeXml(url)}</link>`,
       `      <guid isPermaLink="true">${escapeXml(url)}</guid>`,
       `      <pubDate>${toRfc822(article.published)}</pubDate>`,
-      `      <description>${escapeXml(article.description)}</description>`,
+      `      <description>${escapeXml(english.description)}</description>`,
       `      <category>${escapeXml(t.format(clusterLabelKey(article.cluster)))}</category>`,
       '    </item>',
     ].join('\n');
