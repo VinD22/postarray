@@ -146,6 +146,29 @@ async function seedPeopleAndWorkspace(tx: RlsTransactionClient): Promise<void> {
       update: {},
     });
 
+  }
+
+  await tx.workspace.upsert({
+    where: { id: SEED_IDS.workspace },
+    create: {
+      id: SEED_IDS.workspace,
+      name: 'Northwind Supply Co.',
+      slug: 'northwind-demo',
+      ownerUserId: SEED_IDS.ownerUser,
+      status: 'trialing',
+      defaultLocale: 'en',
+      defaultTimeZone: 'Europe/Lisbon',
+    },
+    update: { name: 'Northwind Supply Co.' },
+  });
+
+  // Consent is recorded against the workspace, so it cannot be written until
+  // the workspace exists, and the workspace cannot be written until its owner
+  // does. That is the whole ordering constraint, and it used to be violated:
+  // consent sat in the loop above and every fresh database failed the seed on
+  // `consents_workspace_id_fkey`. It only ever succeeded against a database
+  // that had already been seeded once.
+  for (const person of people) {
     await tx.consent.upsert({
       where: {
         userId_kind_documentVersion: {
@@ -166,20 +189,6 @@ async function seedPeopleAndWorkspace(tx: RlsTransactionClient): Promise<void> {
       update: {},
     });
   }
-
-  await tx.workspace.upsert({
-    where: { id: SEED_IDS.workspace },
-    create: {
-      id: SEED_IDS.workspace,
-      name: 'Northwind Supply Co.',
-      slug: 'northwind-demo',
-      ownerUserId: SEED_IDS.ownerUser,
-      status: 'trialing',
-      defaultLocale: 'en',
-      defaultTimeZone: 'Europe/Lisbon',
-    },
-    update: { name: 'Northwind Supply Co.' },
-  });
 
   const memberships = [
     { userId: SEED_IDS.ownerUser, role: 'owner' as const },
@@ -491,9 +500,20 @@ async function seedReusables(tx: RlsTransactionClient): Promise<void> {
       name: 'Weekly restock',
       description: 'The targets and defaults used for the Tuesday restock note.',
       connectionIds: [SEED_IDS.connection],
-      targetDefaults: {
-        fake: { destinationId: 'fake-community-42', privacy: 'public' },
-      },
+      // An array, one entry per provider, matching
+      // `postingSetTargetDefaultSchema` and the `target_defaults_is_array`
+      // check in migration 0070. This was an object keyed by provider, which
+      // the constraint rejects outright, so the seed could never have run
+      // against a database that had migration 0070 applied.
+      targetDefaults: [
+        {
+          provider: 'fake',
+          privacyValue: 'public',
+          bodyPrefix: null,
+          bodySuffix: null,
+          requireAltText: false,
+        },
+      ],
       commentSkeleton: [{ position: 1, delayMinutes: 5, placeholder: 'Link to the restock list.' }],
       signatureId: SEED_IDS.signature,
       approvalPolicy: 'single_approver',

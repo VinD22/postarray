@@ -61,7 +61,13 @@ export async function seed(options: SeedOptions = {}): Promise<void> {
         await seedTenantCore(tx);
         await seedTenantContent(tx);
       },
-      { timeoutMs: 120_000, maxWaitMs: 15_000 },
+      // Ten minutes, not two. The seed is one interactive transaction of a few
+      // hundred writes, which is a second or two against a local Postgres and
+      // several minutes against a remote Neon branch where every round trip
+      // costs about half a second. Two minutes was enough for the former and
+      // silently too short for the latter, which fails late and confusingly as
+      // "transaction not found" rather than as a timeout.
+      { timeoutMs: 600_000, maxWaitMs: 30_000 },
     );
   } finally {
     if (options.prisma === undefined) {
