@@ -26,6 +26,13 @@ export function CountUp({ value, format, className }: CountUpProps) {
   const scope = useRef<HTMLSpanElement>(null);
   const motionOk = useMotionOk();
   const [display, setDisplay] = useState(value);
+  // Only the very first count-up waits for scroll into view. A later `value`
+  // change — e.g. a caller like the pricing toggle re-rendering this same
+  // node with a new amount — animates right away: recreating a `once: true`
+  // ScrollTrigger on an element that is already in view, with no new scroll
+  // event to re-evaluate it against, never fires again, which left the
+  // yearly price frozen on its monthly digits after the interval toggle.
+  const pastFirstRunRef = useRef(false);
 
   useGSAP(
     () => {
@@ -34,23 +41,31 @@ export function CountUp({ value, format, className }: CountUpProps) {
         return;
       }
 
-      const proxy = { value: 0 };
+      const gateOnScroll = !pastFirstRunRef.current;
+      pastFirstRunRef.current = true;
+
+      const proxy = { value: gateOnScroll ? 0 : display };
       const tween = gsap.to(proxy, {
         value,
         duration: EXPRESSIVE_LG,
         ease: EASE_OUT_EXPO,
         snap: { value: 1 },
         onUpdate: () => setDisplay(proxy.value),
-        scrollTrigger: {
-          trigger: scope.current,
-          start: 'top 85%',
-          once: true,
-        },
+        ...(gateOnScroll
+          ? {
+              scrollTrigger: {
+                trigger: scope.current,
+                start: 'top 85%',
+                once: true,
+              },
+            }
+          : {}),
       });
 
       return () => {
         tween.kill();
       };
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     },
     { scope, dependencies: [motionOk, value] },
   );
