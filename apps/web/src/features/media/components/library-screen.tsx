@@ -42,6 +42,8 @@ import { useTranslations } from '@relay/i18n/react';
 import { formatBytes, formatDateTime } from '@relay/i18n';
 import { cn } from '@relay/design-system/utils';
 
+import { EmptyScene } from '@/components/empty';
+
 import { MediaDetail } from './media-detail';
 import { UploadPanel } from './upload-panel';
 import type { AccountRule } from '../state/media-rules';
@@ -207,7 +209,12 @@ export function LibraryScreen(props: LibraryScreenProps): ReactNode {
           />
 
           {props.assets.length === 0 ? (
+            // A brand new workspace lands here before it owns a single file,
+            // so the library gets the drawn scene rather than an icon in a
+            // dashed circle, for the same reason the calendar and the action
+            // centre do: it is a first screen, not a failure.
             <EmptyState
+              illustration={<EmptyScene scene="library" />}
               title={t.full('mediaLib.empty.title')}
               description={t.full('mediaLib.empty.body')}
               example={t.full('mediaLib.empty.example')}

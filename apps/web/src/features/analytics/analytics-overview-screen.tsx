@@ -14,6 +14,8 @@ import {
 import { Separator } from '@relay/design-system/primitives';
 import { useTranslations } from '@relay/i18n/react';
 
+import { EmptyScene } from '@/components/empty';
+
 import { byBaselineMovement } from './baseline';
 import { AnalyticsToolbar, type AnalyticsFilters } from './components/analytics-toolbar';
 import { AttentionList } from './components/attention-list';
@@ -213,7 +215,12 @@ export function AnalyticsOverviewScreen({
             retrying={query.isFetching}
           />
         ) : rows.length === 0 ? (
+          // The drawn scene rather than a bare heading: this is what a
+          // workspace sees for its whole first week, before ingestion has
+          // anything to report. The line under it says why the screen is
+          // empty, which is a fact about timing and never about a failure.
           <EmptyState
+            illustration={<EmptyScene scene="analytics" />}
             title={t('analytics.state.empty')}
             description={t('analytics.state.emptyBody')}
             example={t('analytics.state.emptyExample')}

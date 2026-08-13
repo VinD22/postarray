@@ -32,9 +32,19 @@ webhook, revoked token and a DST transition.
 These need credentials or services this machine did not have, and none of them
 should be assumed working until someone runs them:
 
-- **Migrations and row level security.** The 82 RLS tests skip without a
-  database. Start Postgres, run `pnpm db:migrate && pnpm --filter @relay/database test`,
-  and treat a failure there as a release blocker rather than a local problem.
+- **Row level security, now partly verified, with a caveat that matters more
+  than the result.** The suite has been run once against a real Postgres (Neon,
+  PG 18, 10 August 2026): 120 of its 126 tests pass and no tenant isolation
+  hole was found. Before that run it proved nothing at all: it set the
+  `request.jwt.claims` GUC but never left the migration owner role, which
+  carries `rolbypassrls`, so not one policy was ever evaluated. Any earlier
+  claim that RLS was covered, including previous versions of this file, was
+  unsupported. Six tests still fail;
+  `docs/planning/25-rls-suite-findings.md` diagnoses each as a harness or
+  fixture defect rather than a policy hole, and one is blocked on an open
+  design question about whether database-level write enforcement is real or
+  vestigial. `pnpm test:rls` needs a live database and is deliberately not part
+  of `pnpm verify`.
 - **Any live provider call.** Every connector has only ever spoken to the
   simulator. The capability snapshots, error mappings and app-review notes come
   from official documentation dated 4 August 2026 and must be re-checked against
@@ -77,11 +87,21 @@ username-alias sign-in. Connections for X, LinkedIn, Instagram, Facebook Pages,
 YouTube and TikTok, with Threads and Bluesky as approval-delay fallbacks. One
 composer with a master draft and explicit per-target overrides, live platform
 limits, native mention and destination resolution, and true previews. Calendar,
-queue, approvals, delayed comment and thread sequences, repeats, Sets and
-signatures. Durable scheduling on Temporal with immutable publication receipts.
+queue, approvals, delayed comment and thread sequences, repeats and Posting
+Sets. Durable scheduling on Temporal with immutable publication receipts.
 Automation Rules, RSS autopost, first-party tracked short links, normalized
 analytics with provider definitions and freshness, a basic Growth Advisor, a
 curated Creative Tool Radar, and a scoped developer OAuth platform.
+
+Two items in that list are less finished than a list can show, so they are
+stated here rather than discovered later. **Posting Sets** have a service, REST
+endpoints and a screen component, and the composer now loads and applies them;
+what is missing is a route mounting that screen, so a Set is created through the
+API, CLI or MCP rather than in the web app. **Signatures** are further back: the
+table exists and `POST /v1/content/{id}/apply-signature` can apply one, but no
+endpoint lists them and no service stands behind such an endpoint, so nothing
+can offer a signature to choose and the composer's signature panel is correctly
+empty rather than populated with invented entries.
 
 Not in V1, deliberately: AI image generation and AI video generation. Uploaded
 and imported media is fully supported. The reasoning is in

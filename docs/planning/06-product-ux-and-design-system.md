@@ -824,7 +824,10 @@ a reduced-motion visitor get.
 | `ScrollScene` | Pinned, scroll-scrubbed scene with named beats and an interpolated background between two documented tokens | Renders the beats as ordinary stacked sections |
 | `ParallaxLayer` | Scrubbed `yPercent` on a wrapper, `depth` clamped to ±0.3. Only valid inside a `ScrollScene` | Returns children unwrapped, no element at all |
 | `SceneSequencer` | Auto-advancing looping tour on one timeline. Auto-pauses off-screen, on `visibilitychange` and on `focusin`; requires `controlLabels` (WCAG 2.2.2) | Server HTML is the whole walkthrough as a labelled `<ol>` |
-| `ColorBand` | Full-width band tinted in one of the three accent families | Static |
+| `ColorBand` | Full-width band tinted in one of the three accent families (`warm` marigold, `cool` ultramarine, `neutral` sunken paper). Publishes `data-scene-accent` so the custom cursor can adopt the family | Static |
+| `GradientWash` | Decorative duotone edge painted behind a band's content, `aria-hidden` and pointer-transparent. Stops are always two `--color-*` tokens inside one accent family; the `top`/`bottom` placements fade to transparent before the content column, so running copy never sits on the ramp | Static |
+| `Sticker` | A chip carrying one fact, tilted by a static inline transform clamped to ±3°. `fact` and `source` are both required, so a decorative sticker with nothing to say does not compile | Identical: the rotation is server HTML, not an animation |
+| `TourIndicator` | Shared "where am I" dot row for multi-beat scenes. Presentational only; the active beat is marked by a wider filled dot **and** by `positionLabel` as visible text, never by colour alone | Handled by the global 1ms override, no JS branch |
 | `Marquee` | Duplicated `aria-hidden` track; direction resolves against `dir` | Degrades to a single static row |
 | `CelebrationBurst` | Deterministic radial burst | Renders nothing: celebration is additive, so absence is correct |
 | `LiveBadge` | Dot plus a required label, CSS-driven | Handled by the global 1ms override, no JS branch |
@@ -840,6 +843,18 @@ the numbers are repeated here so a reviewer knows them before opening a pull req
 | `ColorBand` | 2 | 1 |
 | `Marquee` | 1 | 0 |
 | `SceneSequencer` | 1 | 1 |
+
+**Only those four devices are counted.** `GradientWash`, `Sticker`, `TourIndicator`, `ParallaxLayer`,
+`CelebrationBurst` and `LiveBadge` have no per-page ceiling today, and this document should not be read
+as claiming they do. The budget meters the devices whose cost is *per page* — a pin competes with
+another pin for the same scroll distance, a second tinted band pushes a page toward reading as a colour
+swatch, a second auto-advancing tour removes the focal point. The rest are constrained by construction
+instead, which is a weaker guarantee but a real one: `ParallaxLayer` is separately asserted to appear
+only inside a `ScrollScene`, `Sticker` cannot compile without a `fact` and a `source`, `GradientWash`
+carries no text and draws only from documented tokens inside one accent family, and `TourIndicator`
+reports progress without ever offering a control. If one of them is later sprayed the way the v1
+vocabulary was, the fix is to add it to `SceneBudget` in `scene-budget.test.ts` — the gate grows, it
+does not get argued down.
 
 Two documented overrides exist: the home page gets a second `ColorBand` and the single `Marquee` (it is a
 demonstration rather than a document, and the connector list is genuinely too long to read at once), and
