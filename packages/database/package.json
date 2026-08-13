@@ -20,6 +20,7 @@
     "migrate": "tsx src/migrate.ts",
     "migrations:verify": "tsx src/verify-migrations.ts",
     "seed": "tsx src/seed.ts",
+    "test-user": "tsx src/test-user.ts",
     "reset": "tsx src/reset.ts",
     "studio": "prisma studio"
   },
