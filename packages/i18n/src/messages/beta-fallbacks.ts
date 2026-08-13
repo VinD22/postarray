@@ -31,6 +31,7 @@ export const FULL_COVERAGE_LOCALE_CODES = [
   'id',
   'hi',
   'ar',
+  'zh-Hans',
 ] as const;
 
 /**

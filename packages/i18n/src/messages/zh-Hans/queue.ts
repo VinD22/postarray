@@ -1,0 +1,99 @@
+export const queueMessages = {
+  'queue.title': '发布队列',
+  'queue.subtitle':
+    '此项目何时愿意发布，间隔多久。未经人工接受时间，任何内容都不会发布。',
+
+  'queue.rules.heading': '队列规则',
+  'queue.rules.empty':
+    '尚无队列规则。在您添加规则之前，下一个时段就是第一个空闲小时。',
+  'queue.rules.create': '新建队列规则',
+  'queue.rules.count': '{count, plural, =0 {无规则} other {# 条规则}}',
+  'queue.rules.enabled': '正在使用',
+  'queue.rules.disabled': '已暂停',
+  'queue.rules.archived': '已归档',
+  'queue.rules.edit': '编辑规则',
+  'queue.rules.archive': '归档规则',
+  'queue.rules.archiveHelp':
+    '归档会停止未来的建议。已预留的时段将保留其时间和原因。',
+
+  'queue.field.name': '规则名称',
+  'queue.field.nameHelp': '您日后会认出的名称，例如“工作日早晨”。',
+  'queue.field.timeZone': '时区',
+  'queue.field.timeZoneHelp':
+    '时间窗口、每日数量和黑名单日期均以此时区读取。',
+  'queue.field.minimumGap': '最小间隔',
+  'queue.field.minimumGapHelp': '两篇帖子之间的分钟数。零表示无间隔规则。',
+  'queue.field.maximumPerDay': '每日最大数量',
+  'queue.field.maximumPerDayHelp':
+    '留空表示无每日限制。零表示此规则不提议任何内容。',
+  'queue.field.maximumPerDayUnlimited': '无每日限制',
+  'queue.field.priority': '优先级',
+  'queue.field.priorityHelp': '能够提供时段的最高优先级规则将被使用。',
+  'queue.field.enabled': '使用此规则',
+
+  'queue.windows.heading': '每周时间窗口',
+  'queue.windows.help':
+    '选择此项目可以发布的本地时间。使用日期和时间字段，或使用网格上的按钮。',
+  'queue.windows.empty': '尚无时间窗口。没有时间窗口的规则永远无法提供时段。',
+  'queue.windows.add': '添加时间窗口',
+  'queue.windows.remove': '移除时间窗口',
+  'queue.windows.entry': '{weekday}，{start} 至 {end}',
+  'queue.windows.start': '从',
+  'queue.windows.end': '至',
+  'queue.windows.weekday': '星期',
+  'queue.windows.toggleCell': '{weekday} {hour} 点',
+  'queue.windows.gridLabel': '每周可用性，每天每小时一个按钮',
+
+  'queue.weekday.1': '星期一',
+  'queue.weekday.2': '星期二',
+  'queue.weekday.3': '星期三',
+  'queue.weekday.4': '星期四',
+  'queue.weekday.5': '星期五',
+  'queue.weekday.6': '星期六',
+  'queue.weekday.7': '星期日',
+
+  'queue.blackouts.heading': '黑名单日期',
+  'queue.blackouts.help': '此项目不会发布的日期，以规则时区读取。',
+  'queue.blackouts.empty': '没有黑名单日期。',
+  'queue.blackouts.add': '添加黑名单',
+  'queue.blackouts.remove': '移除黑名单',
+  'queue.blackouts.from': '第一天',
+  'queue.blackouts.to': '最后一天',
+  'queue.blackouts.entry': '{from} 至 {to}',
+
+  'queue.connections.heading': '账户',
+  'queue.connections.all': '此项目中的每个账户',
+  'queue.connections.scoped': '此规则适用于 {count, plural, other {# 个账户}}',
+
+  'queue.slot.heading': '下一个队列时段',
+  'queue.slot.action': '使用下一个队列时段',
+  'queue.slot.proposed': '{timeZone} 时区的 {local}',
+  'queue.slot.utc': '即 UTC 时间的 {utc}。',
+  'queue.slot.why': '为何是此时间',
+  'queue.slot.accept': '使用此时间',
+  'queue.slot.release': '选择其他时间',
+  'queue.slot.expires': '此提议保留至 {expires}。',
+  'queue.slot.unavailable': '目前没有可用的队列时段。',
+  'queue.slot.pending': '正在寻找下一个时段。',
+  'queue.slot.accepted': '已排期至 {timeZone} 时区的 {local}。',
+  'queue.slot.notAutomatic': '在您选择此时间之前，不会安排任何计划。',
+
+  'queue.reason.noRulesConfigured':
+    '此项目未配置任何队列规则，因此没有应用任何时间窗口。',
+  'queue.reason.fallbackFirstFreeHour': '因此改用了从现在起的第一个空闲小时。',
+  'queue.reason.matchedRule': '规则“{name}”在 {zone} 时区选择了此时间。',
+  'queue.reason.matchedWindow': '它落在 {zone} 时区的 {start} 至 {end} 时间窗口内。',
+  'queue.reason.minimumGap': '它与其他每篇帖子相距至少 {minutes} 分钟。',
+  'queue.reason.noMinimumGap': '此规则未设定帖子间的最小间隔。',
+  'queue.reason.dailyCap': '那一天最多容纳 {limit} 篇帖子，尚未满员。',
+  'queue.reason.dailyCapUnlimited': '此规则未设定每日限制。',
+  'queue.reason.blackoutSkipped':
+    '为到达此时间，跳过了 {days, plural, other {# 个黑名单日}}。',
+  'queue.reason.dstNonexistentSkipped':
+    '该时间窗口内的第一个时间在 {zone} 时区的那一日不存在，因此使用了下一个存在的时间。',
+  'queue.reason.dstAmbiguousFirst':
+    '该本地时间在 {zone} 时区的那一天出现了两次，使用了第一次出现的时间。',
+  'queue.reason.priorityChosen': '此规则的优先级为 {priority}，是能够提供的最高优先级。',
+  'queue.reason.connectionScoped': '此规则涵盖 {count, plural, other {# 个账户}}。',
+  'queue.reason.horizonExhausted': '在 {days} 天内没有空闲的时间窗口。',
+} as const;

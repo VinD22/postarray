@@ -1,0 +1,149 @@
+export const importMessages = {
+  'import.title': '从 CSV 导入帖子',
+  'import.subtitle':
+    '上传电子表格，查看它将做什么，然后再决定。上传只是检查文件，不会创建任何内容。',
+
+  'import.step.upload': '上传',
+  'import.step.columns': '列',
+  'import.step.review': '审核',
+  'import.step.apply': '应用',
+  'import.step.results': '结果',
+  'import.step.position': '第 {current} 步，共 {total} 步',
+
+  'import.upload.heading': '选择一个 CSV 文件',
+  'import.upload.help':
+    '仅支持 CSV。不会读取 .xlsx 等电子表格文件。请先将您的表格导出为 CSV。',
+  'import.upload.field': 'CSV 文件',
+  'import.upload.fieldHelp': '选择一个文件，或将行粘贴到下方的文本框中。',
+  'import.upload.paste': '或粘贴 CSV 文本',
+  'import.upload.pasteHelp': '请包含标题行。所有内容都会在创建之前进行检查。',
+  'import.upload.project': '项目',
+  'import.upload.projectHelp': '一个文件中的每一行都属于该项目。',
+  'import.upload.submit': '检查此文件',
+  'import.upload.submitting': '正在读取文件',
+  'import.upload.allowPast': '允许已过去的时间',
+  'import.upload.allowPastHelp':
+    '默认关闭。日期在过去的行会被报告出来，以便您自行修正，而不是自动被移动。',
+  'import.upload.tooLarge': '该文件超过 {limit} 个字符。请拆分后重试。',
+  'import.upload.duplicate':
+    '这是您之前上传过的同一个文件，因此您看到的是那次导入，而不是它的第二份副本。',
+
+  'import.template.heading': '各列的含义',
+  'import.template.download': '下载 CSV 模板',
+  'import.template.required': '必填列',
+  'import.template.optional': '可选列',
+  'import.column.external_row_id': '此行的您自己的 id。它在文件内必须唯一。',
+  'import.column.project': '此行所属的项目名称或 id。',
+  'import.column.targets':
+    '两种之一：以目标集 id 开头，或以竖线分隔的账户 id。',
+  'import.column.caption': '帖子文本。',
+  'import.column.scheduled_local_time': '本地日期和时间，写作 2026-09-01T10:00。',
+  'import.column.time_zone': '本地时间所依据的 IANA 时区，例如 Europe/Berlin。',
+  'import.column.media':
+    '媒体 id、以 sha256: 开头并跟随您已有媒体的校验和，或供服务器抓取的 https 地址。',
+  'import.column.title': '标题，适用于使用标题的目标平台。',
+  'import.column.destination': '账户内的页面、看板或频道。',
+  'import.column.privacy': '目标平台所期望的隐私值。',
+  'import.column.first_comment': '作为帖子后第一条评论发布的文本。',
+  'import.column.approval_policy': '附加到每个草稿的审批策略。',
+  'import.column.perPlatform':
+    '以平台名命名的 caption_ 或 title_ 列仅覆盖该平台，例如 caption_instagram。',
+
+  'import.columns.heading': '列检查',
+  'import.columns.ok': '每个必填列都存在。',
+  'import.columns.missing': '{count, plural, other {缺少 # 个必填列}}',
+  'import.columns.unknown': '{count, plural, other {# 个列未被识别，已被忽略}}',
+  'import.columns.present': '找到的列',
+
+  'import.review.heading': '此文件将执行的操作',
+  'import.review.counts':
+    '{valid, plural, =0 {没有就绪的行} other {# 行已就绪}}，{invalid, plural, =0 {没有需要注意的} other {# 行需要注意}}。',
+  'import.review.empty': '未从此文件中读取到任何行。',
+  'import.review.rowsHeading': '行',
+  'import.review.filterAll': '所有行',
+  'import.review.filterValid': '就绪',
+  'import.review.filterInvalid': '需要注意',
+  'import.review.filterFailed': '失败',
+  'import.review.downloadErrors': '将问题下载为 CSV',
+  'import.review.parsedWith': '由解析器 {version} 读取',
+
+  'import.table.row': '行 id',
+  'import.table.line': '行号',
+  'import.table.state': '状态',
+  'import.table.caption': '说明',
+  'import.table.time': '已计划',
+  'import.table.problems': '问题',
+  'import.table.draft': '草稿',
+  'import.table.noProblems': '无',
+
+  'import.state.pending': '未检查',
+  'import.state.valid': '就绪',
+  'import.state.invalid': '需要注意',
+  'import.state.applied': '已创建草稿',
+  'import.state.skipped': '已完成',
+  'import.state.failed': '失败',
+
+  'import.job.state.uploaded': '已上传',
+  'import.job.state.validating': '正在检查',
+  'import.job.state.validated': '已检查',
+  'import.job.state.applying': '正在应用',
+  'import.job.state.applied': '已应用',
+  'import.job.state.failed': '无法读取',
+
+  'import.apply.heading': '就绪的行应该发生什么？',
+  'import.apply.drafts': '创建草稿',
+  'import.apply.draftsHelp':
+    '默认选项。每个就绪的行都会成为一个可打开、编辑和批准的草稿，不会安排任何计划。',
+  'import.apply.scheduled': '创建草稿并安排计划',
+  'import.apply.scheduledHelp':
+    '每个就绪的行都会成为草稿，并采用文件中写明的时间。仅在时间正确时才选择此项。',
+  'import.apply.confirm': '应用 {count, plural, other {# 行}}',
+  'import.apply.confirmScheduled': '创建并安排 {count, plural, other {# 行}}',
+  'import.apply.running': '正在应用行',
+  'import.apply.safeToRepeat':
+    '应用两次是安全的。已经生成草稿的行不会被再次处理。',
+
+  'import.results.heading': '结果',
+  'import.results.applied': '{count, plural, other {已创建 # 个草稿}}',
+  'import.results.skipped': '{count, plural, other {# 行此前已完成}}',
+  'import.results.failed': '{count, plural, other {# 行失败}}',
+  'import.results.retry': '重新应用剩余的行',
+  'import.results.openDrafts': '打开草稿',
+  'import.results.unavailable': '不可用',
+
+  'import.history.heading': '历史导入',
+  'import.history.empty': '尚无导入记录。',
+  'import.history.open': '打开',
+
+  'import.a11y.rowsTable': '清单行及其问题',
+  'import.a11y.stepList': '导入步骤',
+  'import.a11y.uploadedFile': '已选择的文件：{filename}',
+
+  'import.error.emptyFile': '该文件中没有任何行。',
+  'import.error.missingColumn': '缺少列 {column}。',
+  'import.error.unknownColumn': '列 {column} 未被识别，因此已被忽略。',
+  'import.error.duplicateRowId': '行 id {value} 在此文件中被使用了不止一次。',
+  'import.error.required': '此单元格不能为空。',
+  'import.error.invalidCell': '此单元格的格式无法读取。',
+  'import.error.rowShape': '此行有 {actual} 个单元格，但表头有 {expected} 个。',
+  'import.error.invalidLocalTime':
+    '时间 {value} 不是如 2026-09-01T10:00 这样的本地日期和时间。',
+  'import.error.invalidTimeZone': '区域 {value} 不是 IANA 时区名称。',
+  'import.error.nonexistentLocalTime':
+    '时间 {value} 在 {zone} 中不存在，时钟跳过了它。',
+  'import.error.ambiguousLocalTime':
+    '时间 {value} 在 {zone} 的那一天出现了两次。请选择一个不同的时间。',
+  'import.error.scheduleInPast': '{zone} 中的时间 {value} 已经过去。',
+  'import.error.invalidTargets':
+    '值 {value} 既不是已保存的目标集，也不是账户 id 列表。',
+  'import.error.invalidMedia':
+    '值 {value} 既不是媒体 id，也不是 sha256 校验和，也不是 https 地址。',
+  'import.error.mediaNotFound': '此工作区中没有与 {value} 匹配的媒体。',
+  'import.error.mediaImportStarted':
+    '正在获取 {value} 处的媒体。待其进入媒体库后请再次应用此文件。',
+  'import.error.unknownVariantTarget':
+    '此行没有 {provider} 账户，因此未使用 {provider} 的说明文字。',
+  'import.error.applyFailed': '此行无法应用。参考代码：{code}。',
+  'import.error.alreadyApplied': '此行已经创建了草稿，因此未做改动。',
+  'import.error.tooManyRows': '文件中仅读取前 {limit} 行。',
+} as const;
