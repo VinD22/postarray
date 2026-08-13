@@ -45,6 +45,51 @@ describe('ColorBand', () => {
     expect(band.className).toContain('text-text-primary');
     expect(band.className).not.toContain('bg-surface-inverted');
   });
+
+  it('prints no wash unless one is asked for', () => {
+    // A texture is punctuation. If every band carried one by default the page
+    // would be textured rather than punctuated, which is the failure the
+    // scene budget exists to prevent one level up.
+    render(
+      <ColorBand accent="warm" ariaLabel="Band">
+        <p>Inside</p>
+      </ColorBand>,
+    );
+
+    expect(screen.getByLabelText('Band').querySelector('.relay-band-wash-warm')).toBeNull();
+  });
+
+  it('prints the family wash when asked, decoratively and behind the content', () => {
+    render(
+      <ColorBand accent="warm" texture ariaLabel="Band">
+        <p>Inside</p>
+      </ColorBand>,
+    );
+
+    const wash = screen.getByLabelText('Band').querySelector('.relay-band-wash-warm');
+    expect(wash).not.toBeNull();
+    // Paper stock, not content: a reader should no more meet it than they
+    // meet the band's tint.
+    expect(wash).toHaveAttribute('aria-hidden', 'true');
+    expect(wash?.className).toContain('pointer-events-none');
+    // The 8% ceiling lives in globals.css, never on the element, so a call
+    // site cannot raise it. If an opacity utility ever appears here, the
+    // contrast gate has quietly stopped describing what a reader sees.
+    expect(wash?.className).not.toMatch(/opacity-/u);
+  });
+
+  it('gives the neutral family no wash at all', () => {
+    // The mono treatment is the point of `neutral`, and a texture would be
+    // the one thing that stops it being mono.
+    render(
+      <ColorBand accent="neutral" texture ariaLabel="Band">
+        <p>Inside</p>
+      </ColorBand>,
+    );
+
+    const band = screen.getByLabelText('Band');
+    expect(band.querySelector('[class*="relay-band-wash"]')).toBeNull();
+  });
 });
 
 describe('GradientWash', () => {

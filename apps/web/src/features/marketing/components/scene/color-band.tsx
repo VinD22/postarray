@@ -52,12 +52,39 @@ const EDGE_CLASS: Record<SceneAccent, string> = {
   neutral: 'border-border-subtle',
 };
 
+/**
+ * The class that paints a printed wash under a band's tint.
+ *
+ * The file itself is chosen in `globals.css`, not here, for the same reason
+ * every other themed value in this codebase is: the theme is a `data-theme`
+ * attribute rather than a media feature, so a component cannot pick the right
+ * asset without shipping a script to read the attribute. A class whose
+ * `background-image` is redefined under both dark selectors costs nothing and
+ * loads exactly one file.
+ *
+ * Rule 3 of the gradient and texture policy in `theme.css` allows a texture at
+ * or below 8% opacity over a token surface, on the grounds that below that
+ * threshold it does not move measured contrast — which is why the contrast
+ * gate can keep ignoring it and stay honest. That ceiling lives in the CSS
+ * beside the images, and it is not a knob: a call site passes a boolean.
+ */
+const TEXTURE_CLASS: Record<Exclude<SceneAccent, 'neutral'>, string> = {
+  warm: 'relay-band-wash-warm',
+  cool: 'relay-band-wash-cool',
+};
+
 export interface ColorBandProps {
   readonly accent: SceneAccent;
   readonly as?: 'section' | 'div';
   readonly id?: string;
   /** Accessible name, for a band with no visible heading. */
   readonly ariaLabel?: string;
+  /**
+   * Print a wash under the tint. Off by default: a texture is punctuation,
+   * and a page whose every band carries one has stopped punctuating anything.
+   * `neutral` has none on purpose — the mono treatment is the point of it.
+   */
+  readonly texture?: boolean;
   /** Extra classes on the padded content wrapper, not the full-bleed band. */
   readonly containerClassName?: string;
   readonly className?: string;
@@ -69,25 +96,35 @@ export function ColorBand({
   as = 'section',
   id,
   ariaLabel,
+  texture,
   containerClassName,
   className,
   children,
 }: ColorBandProps): ReactNode {
   const Tag = as as ElementType;
+  const wash = accent === 'neutral' || texture !== true ? null : TEXTURE_CLASS[accent];
   return (
     <Tag
       id={id}
       aria-label={ariaLabel}
       data-scene-accent={accent}
       className={cn(
-        'text-text-primary relative w-full border-y',
+        'text-text-primary relative w-full overflow-hidden border-y',
         GROUND_CLASS[accent],
         EDGE_CLASS[accent],
         className,
       )}
     >
+      {/*
+        A CSS background rather than an `<img>`: it is paper stock, not
+        content, and a screen reader should no more meet it than it meets the
+        band's tint.
+      */}
+      {wash === null ? null : (
+        <div aria-hidden="true" className={cn('pointer-events-none absolute inset-0', wash)} />
+      )}
       <Container>
-        <div className={cn('py-20 md:py-28', containerClassName)}>{children}</div>
+        <div className={cn('relative py-20 md:py-28', containerClassName)}>{children}</div>
       </Container>
     </Tag>
   );

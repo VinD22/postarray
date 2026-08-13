@@ -146,6 +146,59 @@
 }
 
 /*
+ * The printed wash under a `ColorBand` (`scene/color-band.tsx`, opt-in).
+ *
+ * Rule 3 of the gradient and texture policy in `theme.css`: a texture stays at
+ * or below 8% over a token surface, because below that it does not move
+ * measured contrast, which is what lets `contrast.test.ts` keep measuring the
+ * flat token underneath and still be telling the truth. The opacity lives here
+ * rather than on the element so a call site cannot raise it.
+ *
+ * Each family is a separate file per theme so exactly one loads: the theme is
+ * a `data-theme` attribute, not a media feature, so a component cannot choose
+ * the asset without shipping a script to read the attribute. Declared three
+ * times for the same reason `relay-band-cta` above is — once for light, once
+ * for the OS preference, once for the explicit toggle.
+ *
+ * The images are abstract risograph washes with no object, figure or letter in
+ * them, generated for this repo. They carry no product claim, which is the
+ * only kind of image this codebase will ship: see `public/textures/README.md`.
+ */
+.relay-band-wash-warm,
+.relay-band-wash-cool {
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  opacity: 0.08;
+}
+
+.relay-band-wash-warm {
+  background-image: url('/textures/wash-warm-light.avif');
+}
+
+.relay-band-wash-cool {
+  background-image: url('/textures/wash-cool-light.avif');
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) .relay-band-wash-warm {
+    background-image: url('/textures/wash-warm-dark.avif');
+  }
+
+  :root:not([data-theme='light']) .relay-band-wash-cool {
+    background-image: url('/textures/wash-cool-dark.avif');
+  }
+}
+
+:root[data-theme='dark'] .relay-band-wash-warm {
+  background-image: url('/textures/wash-warm-dark.avif');
+}
+
+:root[data-theme='dark'] .relay-band-wash-cool {
+  background-image: url('/textures/wash-cool-dark.avif');
+}
+
+/*
  * `relay-poster-card` and `relay-sticker-float` lived here: the poster card's
  * diagonal hover lift away from its own hard offset shadow, and the hero's
  * decorative corner stickers.
