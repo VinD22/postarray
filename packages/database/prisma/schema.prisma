@@ -2994,6 +2994,36 @@ model BillingWebhookInbox {
   @@schema("private")
 }
 
+/// Re-pullable DataForSEO keyword research. Not tenant data: no workspace owns
+/// a keyword, so this is operator research the growth and content workflows
+/// read, service role only, the same shape as `growth_opportunities` and
+/// `tool_catalog_entries` but with no public-facing surface. RLS lives in
+/// migrations/0071_seo_keyword_targets_rls.sql, after the table DDL here.
+model SeoKeywordTarget {
+  id                String    @id @default(dbgenerated("app.new_id('kwtarget')"))
+  keyword           String
+  /// BCP-47 interface locale the keyword was pulled for, e.g. 'en', 'pt-BR'.
+  locale            String
+  locationName      String    @map("location_name")
+  searchVolume      Int?      @map("search_volume")
+  keywordDifficulty Int?      @map("keyword_difficulty")
+  /// USD minor units (cents). NULL when DataForSEO reported no CPC.
+  cpcMinorUnits     Int?      @map("cpc_minor_units")
+  competitionLevel  String?   @map("competition_level")
+  mainIntent        String?   @map("main_intent")
+  /// Site-relative path this keyword targets, e.g. '/blog/best-time-to-post'.
+  targetRoute       String?   @map("target_route")
+  source            String    @default("dataforseo")
+  /// The date the figures were retrieved, not when the row was inserted.
+  pulledOn          DateTime  @map("pulled_on") @db.Date
+  createdAt         DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
+
+  @@unique([keyword, locale, locationName])
+  @@index([targetRoute])
+  @@map("seo_keyword_targets")
+  @@schema("private")
+}
+
 /// Disclosure acceptance is mandatory. No commission is ever conditional on a
 /// positive review.
 model AffiliatePartner {

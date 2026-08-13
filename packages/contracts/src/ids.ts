@@ -86,6 +86,7 @@ export const ID_PREFIXES = {
   set: 'set',
   signature: 'sig',
   rememberedTargets: 'remtgt',
+  seoKeywordTarget: 'kwtarget',
 } as const;
 
 export type IdEntity = keyof typeof ID_PREFIXES;
