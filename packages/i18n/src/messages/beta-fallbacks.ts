@@ -3,6 +3,61 @@
  * approved a human translation. This is an explicit, narrow exception to the
  * active-catalog parity gate, never a general escape hatch for missing work.
  */
+
+/**
+ * Locales that carry a real translation of the eleven namespaces listed in
+ * `LOCALE_FILLED_PREFIXES`, not the whole B5 backlog.
+ *
+ * This is a narrow, additive exception, not a locale-wide override. Every
+ * other B5 prefix and key below, including billing, legal, pricing, security
+ * copy and the safety-critical namespaces (queue rules' daylight-saving
+ * wording, media editor claims, approval flow, pause and resume, bulk
+ * import), stays on the reviewed English source for these locales exactly as
+ * it does for every other beta locale. Those namespaces are excluded here on
+ * purpose: they need the human legal or security review this file's opening
+ * comment requires, which translating the eleven content namespaces below
+ * does not provide. Adding a locale to this list without also filling its
+ * eleven catalogs makes `active-catalogs.test.ts` fail loudly for that
+ * locale, which is the intended guard rail: this list cannot get ahead of
+ * the work.
+ */
+export const FULL_COVERAGE_LOCALE_CODES = ['en', 'pt-BR'] as const;
+
+/**
+ * The eleven namespaces a `FULL_COVERAGE_LOCALE_CODES` locale has actually
+ * translated: content and product-description copy (the blog, the free
+ * tools, the per-platform scheduler pages, the use case pages, the
+ * comparison page chrome, the in-page demonstration, bulk CSV import, the
+ * non-generative media editor, posting sets and holds, queue rules, and
+ * transactional email). Every prefix here is a subset of
+ * `BETA_ENGLISH_FALLBACK_PREFIXES` below; this list exists only to carve a
+ * hole in that list for the locales that have filled it, key for key, prefix
+ * for prefix, matching what `docs/planning` describes as phase 5 of the
+ * multilingual rollout.
+ */
+export const LOCALE_FILLED_PREFIXES = [
+  'email.',
+  'queue.',
+  'web.blog.',
+  'web.tools.',
+  'web.meta.tools.',
+  'import.',
+  'web.schedule.',
+  'web.meta.schedule.',
+  'web.meta.schedulePlatform.',
+  'web.useCases.',
+  'web.meta.useCases.',
+  'web.meta.useCase.',
+  'calendar.hold.',
+  'set.',
+  'targetMemory.',
+  'web.comparison.',
+  'mediaLib.derivative.',
+  'error.media_derivative_',
+  'web.demo.',
+  'web.meta.demo.',
+] as const;
+
 export const BETA_ENGLISH_FALLBACK_PREFIXES = [
   'billing.',
   // Transactional security and invitation mail stays in reviewed English
@@ -130,6 +185,17 @@ export const BETA_ENGLISH_FALLBACK_PREFIXES = [
   // them.
   'web.demo.',
   'web.meta.demo.',
+  // Track B phase 4, in-app delight. Four new namespaces, all of them making
+  // precise claims a machine translation is likely to soften: the dashboard
+  // tiles state what a number counts and when it is unreadable, the publish
+  // panel states that some destinations are live and some are not, the empty
+  // scenes state what has not happened yet, and the onboarding rows state
+  // that an account came back from a provider. Beta locales keep the reviewed
+  // English source until a person translates them.
+  'home.v2.',
+  'publish.receipt.',
+  'empty.scene.',
+  'onboarding.live.',
 ] as const;
 
 /** B5-controlled keys whose namespace also contains ordinary interface copy. */
@@ -242,23 +308,47 @@ export const BETA_ENGLISH_FALLBACK_KEYS = [
   // editing a Set never touches work already made from it, and exactly what the
   // composer does and does not store about a person's account selection. They
   // stay on the reviewed English source until each has a human translation.
+  //
+  // The home connector sticker (Track B phase 3). It states how many
+  // connectors exist and where to verify the number, so a machine translation
+  // that rounded the plural rule would misstate a countable fact. Reviewed
+  // English until a person translates it.
+  'web.home.b3.sticker.connectorsFact',
+  'web.home.b3.sticker.connectorsSource',
 ] as const;
 
-export function isBetaEnglishFallbackKey(key: string): boolean {
-  return (
+/**
+ * `locale` carves `LOCALE_FILLED_PREFIXES` out of the B5 list when that
+ * locale is in `FULL_COVERAGE_LOCALE_CODES`. Every other B5 prefix and key
+ * stays fallback-controlled for that locale exactly as for any other. Omitting
+ * `locale` keeps the full, unmodified B5 list.
+ */
+export function isBetaEnglishFallbackKey(key: string, locale?: string): boolean {
+  const onB5List =
     BETA_ENGLISH_FALLBACK_KEYS.includes(key as (typeof BETA_ENGLISH_FALLBACK_KEYS)[number]) ||
     BETA_ENGLISH_FALLBACK_PREFIXES.some((prefix) => key.startsWith(prefix)) ||
     key.startsWith('developer.consent.') ||
     key.startsWith('auth.terms.') ||
-    key.startsWith('home.trial.')
-  );
+    key.startsWith('home.trial.');
+
+  if (!onB5List) {
+    return false;
+  }
+
+  const locallyFilled =
+    locale !== undefined &&
+    (FULL_COVERAGE_LOCALE_CODES as readonly string[]).includes(locale) &&
+    LOCALE_FILLED_PREFIXES.some((prefix) => key.startsWith(prefix));
+
+  return !locallyFilled;
 }
 
-/** Remove only B5-controlled keys from a beta locale catalog. */
+/** Remove only B5-controlled keys from a beta locale catalog. See `isBetaEnglishFallbackKey`. */
 export function withoutBetaEnglishFallbacks(
   messages: Readonly<Record<string, string>>,
+  locale?: string,
 ): Readonly<Record<string, string>> {
   return Object.fromEntries(
-    Object.entries(messages).filter(([key]) => !isBetaEnglishFallbackKey(key)),
+    Object.entries(messages).filter(([key]) => !isBetaEnglishFallbackKey(key, locale)),
   );
 }

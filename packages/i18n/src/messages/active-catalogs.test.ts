@@ -18,7 +18,7 @@ describe('active catalogs', () => {
       expect(result.findings).toEqual([]);
 
       const missingNonB5Keys = (Object.keys(en) as (keyof typeof en)[]).filter(
-        (key) => !isBetaEnglishFallbackKey(key) && catalog[key] === undefined,
+        (key) => !isBetaEnglishFallbackKey(key, locale) && catalog[key] === undefined,
       );
       expect(missingNonB5Keys).toEqual([]);
     },
