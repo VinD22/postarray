@@ -72,6 +72,15 @@ export function LineMaskHeadline({
         duration: EXPRESSIVE_MD,
         ease: EASE_OUT_EXPO,
         onComplete: revert,
+        // `from` renders its start state at creation by default, which for a
+        // scroll-triggered reveal means the words are hidden from mount and
+        // stay hidden for as long as the trigger has not fired — forever, if
+        // it never does. That is not a hypothetical: it shipped, and the
+        // headline on this page was blank on load, LCP element included.
+        // Deferring the start state to the moment the tween actually runs is
+        // what makes the file's own rule ("nothing hidden in server HTML")
+        // true at runtime rather than only in the markup.
+        immediateRender: false,
         scrollTrigger: {
           trigger: scope.current,
           start: 'top 90%',
