@@ -20,6 +20,7 @@ import { ERROR_CODES } from '@relay/contracts';
 import { call } from '../call';
 import { ApiError } from '../error';
 import { demoApprovals, demoCalendar, demoReceipts, page } from '../fixtures';
+import type { ForwardAuth } from '../transport';
 import type {
   ApprovalRequestView,
   CalendarEntryView,
@@ -170,18 +171,19 @@ export const contentApi = {
   createDraft: (
     input: { brandId: string; title?: string; body?: string },
     idempotencyKey: string,
+    forward?: ForwardAuth,
   ): Promise<ContentItemView> =>
     call<ApplicationContentItemView, ContentItemView>(
       '/content',
-      { method: 'POST', body: input, idempotencyKey },
+      { method: 'POST', body: input, idempotencyKey, ...forward },
       () => ({ ...emptyItem, brandId: input.brandId, title: input.title ?? '' }),
       toContentItem,
     ),
 
-  get: (contentItemId: string): Promise<ContentItemView> =>
+  get: (contentItemId: string, forward?: ForwardAuth): Promise<ContentItemView> =>
     call<ApplicationContentItemView, ContentItemView>(
       `/content/${contentItemId}`,
-      {},
+      { ...forward },
       () =>
         contentItemId === 'content_demo0000000000003'
           ? {

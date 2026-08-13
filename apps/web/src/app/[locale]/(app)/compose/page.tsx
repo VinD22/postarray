@@ -8,11 +8,12 @@
  */
 
 import type { Metadata } from 'next';
-import { cookies } from 'next/headers';
+import { cookies, headers } from 'next/headers';
 
 import { api } from '@/lib/api';
 import { isDemoMode } from '@/lib/api/config';
 import { ApiError } from '@/lib/api/error';
+import type { ForwardAuth } from '@/lib/api/transport';
 import { SEED_BOOTSTRAP, type ComposerBootstrap } from '@/features/composer';
 import { SEED_ASSETS, mediaAssetFromApi, type MediaAsset } from '@/features/media';
 import { loadComposer } from '@/features/composer/data/composer-gateway';
@@ -60,6 +61,20 @@ export default async function ComposePage({
     try {
       const session = await requireSession('/compose');
       const cookieStore = await cookies();
+      // `requireSession` forwards these to the session check internally, but
+      // every other read this page makes is its own request and needs the
+      // same forwarding — see `ForwardAuth` and `loadComposer`'s doc comment.
+      const requestHeaders = await headers();
+      const forward: ForwardAuth = {
+        forwardCookie: cookieStore
+          .getAll()
+          .map((entry) => `${entry.name}=${entry.value}`)
+          .join('; '),
+        forwardHeaders: {
+          userAgent: requestHeaders.get('user-agent') ?? undefined,
+          acceptLanguage: requestHeaders.get('accept-language') ?? undefined,
+        },
+      };
       const selectedBrand = resolveActiveProject(
         session.brands,
         brandId ?? cookieStore.get(ACTIVE_PROJECT_COOKIE)?.value,
@@ -81,8 +96,9 @@ export default async function ComposePage({
           contentItemId,
           brandId: selectedBrand.id,
           workspaceTimeZone: session.workspace.timeZone,
+          forward,
         }),
-        api.media.list({ brandId: selectedBrand.id }),
+        api.media.list({ brandId: selectedBrand.id }, forward),
       ]);
       bootstrap = loadedComposer;
       assets = mediaPage.data.map(mediaAssetFromApi);

@@ -10,6 +10,7 @@ import type {
 
 import { call } from '../call';
 import { demoConnections, demoSession, page } from '../fixtures';
+import type { ForwardAuth } from '../transport';
 import type {
   ConnectionDestination,
   ConnectionView,
@@ -62,10 +63,13 @@ export const connectionsApi = {
   listAvailableProviders: (): Promise<readonly ProviderId[]> =>
     call('/connections/providers', {}, () => CORE_PROVIDER_IDS),
 
-  list: (query: ConnectionListQuery = {}): Promise<Paginated<ConnectionView>> =>
+  list: (
+    query: ConnectionListQuery = {},
+    forward?: ForwardAuth,
+  ): Promise<Paginated<ConnectionView>> =>
     call<Paginated<ApplicationConnectionView>, Paginated<ConnectionView>>(
       '/connections',
-      { query },
+      { query, ...forward },
       () => {
         const projectConnectionIds =
           query.brandId === undefined
@@ -97,8 +101,11 @@ export const connectionsApi = {
    * The versioned capability snapshot. Never assume a limit: read it from here,
    * because limits differ by account type on the same provider.
    */
-  getCapabilities: (connectionId: string): Promise<CapabilitySnapshot | null> =>
-    call(`/connections/${connectionId}/capabilities`, {}, () => null),
+  getCapabilities: (
+    connectionId: string,
+    forward?: ForwardAuth,
+  ): Promise<CapabilitySnapshot | null> =>
+    call(`/connections/${connectionId}/capabilities`, { ...forward }, () => null),
 
   /**
    * Start the OAuth handoff. Returns the provider consent URL and the exact

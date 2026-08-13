@@ -1,4 +1,5 @@
 import type { RlsTransactionClient } from '../tenancy/rls-context';
+import { buildFakeCapabilitySnapshot } from '@relay/connectors';
 import {
   ACTIVE_CHANNEL_LIMIT,
   BASE_PROJECT_LIMIT,
@@ -44,46 +45,30 @@ export const SEED_IDS = {
 } as const;
 
 /**
- * The capability snapshot the fake provider reports. Data, not code.
- * Deliberately mixed so every UI state has a case to render.
+ * The capability snapshot the fake provider reports, built the same way the
+ * connector package itself does.
+ *
+ * A hand-rolled literal used to live here instead, in a shape that never
+ * matched `capabilitySnapshotSchema` (packages/contracts/src/capabilities.ts)
+ * — different field names, different structure entirely — so it always
+ * failed `safeParse` on read. Because the connector registry's `has('fake')`
+ * also deliberately always returns `false` (a real production safety fence,
+ * not a bug — the simulator must never be reachable as a live, dispatchable
+ * connector), there was no fallback path either: every capability read for
+ * the seeded connection 501'd with `CAPABILITY_NOT_IMPLEMENTED`, which broke
+ * Compose entirely for the one connection seeding provides.
  */
-export const FAKE_CAPABILITY_SNAPSHOT = {
-  version: '2026-08-04.1',
-  text: { maxLength: 480, supportsLineBreaks: true, supportsHashtags: true },
-  media: {
-    image: {
-      state: 'supported',
-      maxCount: 4,
-      maxBytes: 8_000_000,
-      mimeTypes: ['image/jpeg', 'image/png', 'image/webp'],
-    },
-    video: {
-      state: 'supported',
-      maxCount: 1,
-      maxBytes: 200_000_000,
-      maxDurationSeconds: 180,
-      mimeTypes: ['video/mp4'],
-    },
-    document: { state: 'unsupported', reason: 'The fake provider has no document post type.' },
-    carousel: { state: 'supported', minItems: 2, maxItems: 4 },
-    altText: { state: 'supported', required: false, maxLength: 400 },
-    thumbnail: { state: 'not_implemented', reason: 'Custom video thumbnails are not built yet.' },
-  },
-  destinations: { state: 'supported', kinds: ['community'] },
-  mentions: { lookup: 'supported', nativeTagging: 'supported' },
-  firstComment: { state: 'supported', maxLength: 480 },
-  threads: { state: 'supported', maxItems: 5 },
-  drafts: { state: 'unsupported', reason: 'The fake provider has no remote draft store.' },
-  privacyOptions: { state: 'supported', values: ['public', 'unlisted'] },
-  scheduling: { providerSideScheduling: 'unsupported' },
-  deletePost: { state: 'supported' },
-  analytics: { state: 'supported', postLevel: true, accountLevel: false, freshnessMinutes: 60 },
-  aiDisclosure: {
-    state: 'not_implemented',
-    reason: 'No disclosure field is exposed by this simulator yet.',
-  },
-  costPerCreate: { minor: 0, currency: 'USD' },
-};
+function fakeCapabilitySnapshot(): ReturnType<typeof buildFakeCapabilitySnapshot> {
+  return buildFakeCapabilitySnapshot({
+    connectionId: SEED_IDS.connection,
+    // The capability snapshot's account type is the application-facing enum
+    // (`AccountType`), not the DB column's storage enum below (`business_account`
+    // on `socialConnection`) — see `fromStoredAccountType` in
+    // packages/application/src/internal/mappers.ts for the full mapping.
+    accountType: 'business_profile',
+    observedAt: hoursAgo(2).toISOString(),
+  });
+}
 
 export async function seedTenantCore(tx: RlsTransactionClient): Promise<void> {
   await seedPeopleAndWorkspace(tx);
@@ -355,6 +340,7 @@ async function seedBrands(tx: RlsTransactionClient): Promise<void> {
 }
 
 async function seedConnection(tx: RlsTransactionClient): Promise<void> {
+  const capabilities = fakeCapabilitySnapshot();
   await tx.socialConnection.upsert({
     where: { id: SEED_IDS.connection },
     create: {
@@ -369,16 +355,16 @@ async function seedConnection(tx: RlsTransactionClient): Promise<void> {
       profileUrl: 'https://simulator.example.test/northwind_supply',
       status: 'active',
       grantedScopes: ['posts:write', 'posts:read', 'analytics:read', 'mentions:read'],
-      capabilities: FAKE_CAPABILITY_SNAPSHOT,
-      capabilityVersion: FAKE_CAPABILITY_SNAPSHOT.version,
+      capabilities,
+      capabilityVersion: capabilities.capabilityVersion,
       capabilitiesRefreshedAt: hoursAgo(2),
       lastSuccessfulActionAt: hoursAgo(20),
       connectedAt: hoursAgo(700),
       createdByUserId: SEED_IDS.ownerUser,
     },
     update: {
-      capabilities: FAKE_CAPABILITY_SNAPSHOT,
-      capabilityVersion: FAKE_CAPABILITY_SNAPSHOT.version,
+      capabilities,
+      capabilityVersion: capabilities.capabilityVersion,
       capabilitiesRefreshedAt: hoursAgo(2),
     },
   });

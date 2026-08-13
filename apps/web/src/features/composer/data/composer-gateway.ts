@@ -7,6 +7,7 @@
  */
 
 import { api, newIdempotencyKey } from '@/lib/api';
+import type { ForwardAuth } from '@/lib/api/transport';
 import {
   type CapabilitySnapshot,
   type MasterDraft,
@@ -42,19 +43,27 @@ export async function loadComposer(input: {
   readonly contentItemId: string | null;
   readonly brandId: string;
   readonly workspaceTimeZone: string;
+  /**
+   * The session cookie and fingerprint headers to forward. This runs as part
+   * of the Server Component render for `/compose`, not in the browser, so
+   * without these every call here is unauthenticated — see `require-session.ts`
+   * for why the fingerprint headers matter as much as the cookie itself.
+   */
+  readonly forward?: ForwardAuth;
 }): Promise<ComposerBootstrap> {
   // Both reads are for the same project and neither depends on the other, so
   // they go out together rather than stacking two round trips in front of the
   // one screen where people are waiting to start writing.
   const [connections, sets] = await Promise.all([
-    api.connections.list({ brandId: input.brandId }),
-    api.postingSets.list({ brandId: input.brandId }),
+    api.connections.list({ brandId: input.brandId }, input.forward),
+    api.postingSets.list({ brandId: input.brandId }, input.forward),
   ]);
 
   const accounts: TargetAccount[] = await Promise.all(
     connections.data.map(async (connection) => {
       const capabilities = (await api.connections.getCapabilities(
         connection.id,
+        input.forward,
       )) as CapabilitySnapshot;
       return {
         connectionId: connection.id,
@@ -74,8 +83,9 @@ export async function loadComposer(input: {
       ? ((await api.content.createDraft(
           { brandId: input.brandId },
           newIdempotencyKey('draft'),
+          input.forward,
         )) as unknown as MasterDraft)
-      : ((await api.content.get(input.contentItemId)) as unknown as MasterDraft);
+      : ((await api.content.get(input.contentItemId, input.forward)) as unknown as MasterDraft);
 
   return {
     master,

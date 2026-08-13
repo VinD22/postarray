@@ -69,7 +69,7 @@ describe('loadComposer', () => {
   it('asks for this project’s Posting Sets, so the rail has something to apply', async () => {
     await loadComposer(INPUT);
 
-    expect(listPostingSets).toHaveBeenCalledWith({ brandId: 'brand_01' });
+    expect(listPostingSets).toHaveBeenCalledWith({ brandId: 'brand_01' }, undefined);
   });
 
   it('maps a Set to what the rail needs, and never invents seed text for it', async () => {
@@ -154,6 +154,6 @@ describe('loadComposer', () => {
       },
     ]);
     expect(bootstrap.master.id).toBe('content_01');
-    expect(createDraft).toHaveBeenCalledWith({ brandId: 'brand_01' }, 'draft_test');
+    expect(createDraft).toHaveBeenCalledWith({ brandId: 'brand_01' }, 'draft_test', undefined);
   });
 });

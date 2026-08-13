@@ -53,6 +53,17 @@ export interface RequestOptions {
   readonly forwardHeaders?: { readonly userAgent?: string; readonly acceptLanguage?: string };
 }
 
+/**
+ * The subset of `RequestOptions` a Server Component passes down to a resource
+ * call it makes directly (outside `requireSession`). Only `require-session.ts`
+ * forwards these automatically; any other server-side read — the composer's
+ * bootstrap, for instance — has to be given them explicitly, the same way.
+ */
+export interface ForwardAuth {
+  readonly forwardCookie?: string;
+  readonly forwardHeaders?: { readonly userAgent?: string; readonly acceptLanguage?: string };
+}
+
 /** Refresh state, so ten parallel 401s produce one refresh, not ten. */
 let refreshInFlight: Promise<boolean> | null = null;
 
@@ -149,6 +160,18 @@ async function performOnce(
   }
   if (options.forwardCookie !== undefined) {
     headers['cookie'] = options.forwardCookie;
+    // A browser sets its own `Origin` on every cross-origin request; Node's
+    // server-side `fetch` does not. The API's CSRF guard rejects any
+    // cookie-authenticated, state-changing request with no allowed `Origin`
+    // (`apps/api/src/guards/csrf.guard.ts`), so a Server Component making a
+    // POST/PATCH/DELETE with a forwarded cookie — creating a draft on first
+    // visit to `/compose`, for instance — always 403'd without this. The API
+    // is configured to trust exactly this origin already (`APP_URL`); this is
+    // that same origin, read from the equivalent client-side env var.
+    const appOrigin = process.env.NEXT_PUBLIC_APP_URL;
+    if (appOrigin !== undefined && appOrigin.length > 0) {
+      headers['origin'] = appOrigin.replace(/\/+$/, '');
+    }
   }
   if (options.forwardHeaders?.userAgent !== undefined) {
     headers['user-agent'] = options.forwardHeaders.userAgent;

@@ -15,6 +15,7 @@ import type {
 
 import { call } from '../call';
 import { page } from '../fixtures';
+import type { ForwardAuth } from '../transport';
 
 /**
  * Demo mode shows an empty list rather than an invented Set. A fabricated
@@ -25,8 +26,9 @@ const NO_SETS: readonly PostingSetView[] = [];
 export const postingSetsApi = {
   list: (
     query: { brandId?: string; includeArchived?: boolean } = {},
+    forward?: ForwardAuth,
   ): Promise<ContractPaginated<PostingSetView>> =>
-    call('/posting-sets', { query }, () => page(NO_SETS)),
+    call('/posting-sets', { query, ...forward }, () => page(NO_SETS)),
 
   get: (setId: string): Promise<PostingSetView | null> =>
     call(`/posting-sets/${setId}`, {}, () => null),

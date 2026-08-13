@@ -4,6 +4,7 @@ import type { MediaKind, OperationRef, Paginated } from '@relay/contracts';
 
 import { call } from '../call';
 import { page } from '../fixtures';
+import type { ForwardAuth } from '../transport';
 
 export type { MediaKind };
 
@@ -105,8 +106,9 @@ export const mediaApi = {
 
   list: (
     query: { brandId?: string; kind?: MediaKind; cursor?: string; limit?: number } = {},
+    forward?: ForwardAuth,
   ): Promise<Paginated<MediaAssetView>> =>
-    call('/media', { query }, () => page<MediaAssetView>([])),
+    call('/media', { query, ...forward }, () => page<MediaAssetView>([])),
 
   get: (mediaId: string): Promise<MediaAssetView | null> =>
     call(`/media/${mediaId}`, {}, () => null),
