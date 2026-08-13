@@ -23,16 +23,16 @@ function dollars(micro: number): number {
 }
 
 describe('variable cost per subscriber', () => {
-  it('is $5.42 on the monthly plan', () => {
+  it('is $5.20 on the monthly plan', () => {
     const monthly = planEconomics('month', 1_000);
-    expect(dollars(monthly.variableCostMicroPerMonth)).toBe(5.42);
-    expect(dollars(monthly.polarFeeMicroPerMonth + monthly.cardFeeMicroPerMonth)).toBe(2.12);
+    expect(dollars(monthly.variableCostMicroPerMonth)).toBe(5.2);
+    expect(dollars(monthly.polarFeeMicroPerMonth + monthly.cardFeeMicroPerMonth)).toBe(1.9);
   });
 
-  it('is $4.74 on the annual plan, because the Polar flat fee is charged once a year', () => {
+  it('is $4.51 on the annual plan, because the Polar flat fee is charged once a year', () => {
     const annual = planEconomics('year', 1_000);
-    expect(dollars(annual.variableCostMicroPerMonth)).toBe(4.74);
-    expect(dollars(annual.revenueMicroPerMonth)).toBe(25);
+    expect(dollars(annual.variableCostMicroPerMonth)).toBe(4.51);
+    expect(dollars(annual.revenueMicroPerMonth)).toBe(20.83);
   });
 
   it('spreads the fixed platform floor across subscribers', () => {
@@ -44,13 +44,15 @@ describe('variable cost per subscriber', () => {
 
 describe('the 75% gross margin gate', () => {
   it('is met at the documented assumptions once the base is at scale', () => {
-    const blended = blendedEconomics(1_000);
+    // 2,000 rather than 1,000: at $25 the gate is reached at about 1,239
+    // subscribers, so 1,000 is now below it. The gate itself did not move.
+    const blended = blendedEconomics(2_000);
     expect(blended.blendedMarginBasisPoints).toBeGreaterThan(MARGIN_GATE_BASIS_POINTS);
     expect(blended.meetsMarginGate).toBe(true);
   });
 
   it('holds above 75% at every scale from the gate upwards', () => {
-    for (const subscribers of [700, 1_000, 2_000, 5_000, 10_000]) {
+    for (const subscribers of [1_300, 2_000, 5_000, 10_000]) {
       const blended = blendedEconomics(subscribers);
       expect(blended.blendedMarginBasisPoints, `${subscribers} subscribers`).toBeGreaterThan(
         MARGIN_GATE_BASIS_POINTS,
@@ -73,12 +75,13 @@ describe('the 75% gross margin gate', () => {
 
   it('reproduces the published margin table within a point', () => {
     const expected: Readonly<Record<number, number>> = {
-      250: 6_480,
-      500: 7_290,
-      670: 7_500,
-      1_000: 7_710,
-      2_000: 7_920,
-      5_000: 8_040,
+      250: 5_940,
+      500: 6_917,
+      670: 7_165,
+      1_000: 7_405,
+      1_239: 7_500,
+      2_000: 7_650,
+      5_000: 7_796,
     };
     for (const row of marginTable()) {
       const target = expected[row.subscribers];
@@ -100,14 +103,14 @@ describe('the 75% gross margin gate', () => {
 describe('the project capacity ladder', () => {
   it('measures the blended model on the base tier, so the gate stays a floor', () => {
     expect(BLENDED_MODEL_TIER).toBe('relay_standard');
-    expect(dollars(tierEconomics('relay_standard', 'month', 1_000).revenueMicroPerMonth)).toBe(29);
+    expect(dollars(tierEconomics('relay_standard', 'month', 1_000).revenueMicroPerMonth)).toBe(25);
   });
 
   it('recognises the monthly revenue each tier actually charges', () => {
-    expect(dollars(tierEconomics('relay_growth', 'month', 1_000).revenueMicroPerMonth)).toBe(59);
-    expect(dollars(tierEconomics('relay_studio', 'month', 1_000).revenueMicroPerMonth)).toBe(119);
-    expect(dollars(tierEconomics('relay_growth', 'year', 1_000).revenueMicroPerMonth)).toBe(51);
-    expect(dollars(tierEconomics('relay_studio', 'year', 1_000).revenueMicroPerMonth)).toBe(103);
+    expect(dollars(tierEconomics('relay_growth', 'month', 1_000).revenueMicroPerMonth)).toBe(50);
+    expect(dollars(tierEconomics('relay_studio', 'month', 1_000).revenueMicroPerMonth)).toBe(100);
+    expect(dollars(tierEconomics('relay_growth', 'year', 1_000).revenueMicroPerMonth)).toBe(41.67);
+    expect(dollars(tierEconomics('relay_studio', 'year', 1_000).revenueMicroPerMonth)).toBe(83.33);
   });
 
   it('improves margin as the ladder climbs, because capacity costs less than it sells for', () => {
@@ -156,12 +159,12 @@ describe('the project capacity ladder', () => {
 describe('the referred cohort, reported separately', () => {
   it('reproduces the documented referred subscriber economics at 1,000 subscribers', () => {
     const cohort = referredCohortEconomics(1_000);
-    expect(dollars(cohort.revenueMicroPerMonth)).toBe(29);
-    expect(dollars(cohort.feesMicroPerMonth)).toBe(2.12);
+    expect(dollars(cohort.revenueMicroPerMonth)).toBe(25);
+    expect(dollars(cohort.feesMicroPerMonth)).toBe(1.9);
     expect(dollars(cohort.operatingCostMicroPerMonth)).toBe(4.45);
-    expect(dollars(cohort.commissionMicroPerMonth)).toBe(5.38);
-    expect(dollars(cohort.grossProfitMicroPerMonth)).toBe(17.05);
-    expect(cohort.marginBasisPoints).toBe(5_880);
+    expect(dollars(cohort.commissionMicroPerMonth)).toBe(4.62);
+    expect(dollars(cohort.grossProfitMicroPerMonth)).toBe(14.03);
+    expect(cohort.marginBasisPoints).toBe(5_612);
   });
 
   it('stays above the 55% floor', () => {

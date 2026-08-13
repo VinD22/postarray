@@ -62,11 +62,11 @@ describe('the tier table', () => {
     ]);
   });
 
-  it('prices the base tier at $29 monthly, $300 annual, three projects', () => {
+  it('prices the base tier at $25 monthly, $250 annual, three projects', () => {
     const base = planTier(BASE_TIER_KEY);
     expect(base.key).toBe('relay_standard');
-    expect(base.monthlyPriceMinor).toBe(2_900);
-    expect(base.annualPriceMinor).toBe(30_000);
+    expect(base.monthlyPriceMinor).toBe(2_500);
+    expect(base.annualPriceMinor).toBe(25_000);
     expect(base.projectAllowance).toBe(BASE_PROJECT_LIMIT);
     expect(base.projectAllowance).toBe(3);
   });
@@ -80,19 +80,19 @@ describe('the tier table', () => {
     }
   });
 
-  it('prices Growth at $59 monthly, $612 annual, ten projects', () => {
+  it('prices Growth at $50 monthly, $500 annual, ten projects', () => {
     const growth = planTier('relay_growth');
-    expect(growth.monthlyPriceMinor).toBe(5_900);
-    expect(growth.annualPriceMinor).toBe(61_200);
+    expect(growth.monthlyPriceMinor).toBe(5_000);
+    expect(growth.annualPriceMinor).toBe(50_000);
     expect(growth.projectAllowance).toBe(10);
     expect(growth.monthlyProductIdEnvKey).toBe('POLAR_GROWTH_MONTHLY_PRODUCT_ID');
     expect(growth.annualProductIdEnvKey).toBe('POLAR_GROWTH_ANNUAL_PRODUCT_ID');
   });
 
-  it('prices Studio at $119 monthly, $1,236 annual, twenty projects', () => {
+  it('prices Studio at $100 monthly, $1,000 annual, twenty projects', () => {
     const studio = planTier('relay_studio');
-    expect(studio.monthlyPriceMinor).toBe(11_900);
-    expect(studio.annualPriceMinor).toBe(123_600);
+    expect(studio.monthlyPriceMinor).toBe(10_000);
+    expect(studio.annualPriceMinor).toBe(100_000);
     expect(studio.projectAllowance).toBe(20);
     expect(studio.monthlyProductIdEnvKey).toBe('POLAR_STUDIO_MONTHLY_PRODUCT_ID');
     expect(studio.annualProductIdEnvKey).toBe('POLAR_STUDIO_ANNUAL_PRODUCT_ID');
@@ -102,10 +102,16 @@ describe('the tier table', () => {
     expect(planTier('relay_studio').projectAllowance).toBe(MAX_PROJECT_LIMIT);
   });
 
-  it('divides every annual price into twelve whole dollars', () => {
+  it('prices a year at ten months on every tier, so the offer is one sentence', () => {
+    // Replaces an older rule that annual had to divide into twelve whole
+    // dollars. That rule existed to keep a derived per-month figure printable;
+    // this ladder does not print one, because ten-for-twelve is the clearer
+    // offer and dividing it would produce $20.83. The pin moved to the fact the
+    // pricing page now actually states, and it is stricter: every tier must
+    // agree, so a future tier cannot quietly break the shared sentence.
     for (const key of PUBLISHABLE_TIER_KEYS) {
       const tier = planTier(key);
-      expect(tier.annualPriceMinor % 1_200, key).toBe(0);
+      expect(tier.annualPriceMinor, key).toBe(tier.monthlyPriceMinor * 10);
     }
   });
 

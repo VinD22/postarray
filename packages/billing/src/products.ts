@@ -24,8 +24,9 @@ export {
  *
  * Three commercial rules are load bearing and are asserted by tests:
  *  - a tier buys project capacity only. Every tier includes every feature;
- *  - the annual framing is stated as money saved, never as a percentage off,
- *    because a percentage discount claim would not be true for $29 and $300;
+ *  - the annual framing is stated as money saved and whole months free, never
+ *    as a percentage off: $25 and $250 is 16.67%, and no rounding of that is
+ *    both honest and memorable;
  *  - no trial copy anywhere claims a temporary payment authorization of any
  *    amount. Polar collects a payment method and defers the first charge, and
  *    saying anything more than that would be a claim we cannot support.
@@ -39,13 +40,20 @@ export const PLAN_CURRENCY = PLAN_TIERS[BASE_TIER_KEY].currency;
 export const MONTHLY_PRICE_MINOR = PLAN_TIERS[BASE_TIER_KEY].monthlyPriceMinor;
 export const ANNUAL_PRICE_MINOR = PLAN_TIERS[BASE_TIER_KEY].annualPriceMinor;
 
-/** $300 a year presented per month. Exact, not rounded. */
+/**
+ * $250 a year divided by twelve. **Fractional, and therefore never rendered.**
+ *
+ * A year buys ten months, so this is $20.8333…, and formatting it produces a
+ * price with cents in it. Every surface quotes a year as a year and describes
+ * the discount with `freeMonthsEquivalent` instead. Kept so `products.test.ts`
+ * can pin the fact that it does not divide, which is the reason for the rule.
+ */
 export const ANNUAL_EFFECTIVE_MONTHLY_MINOR = ANNUAL_PRICE_MINOR / 12;
 
-/** Twelve monthly charges minus one annual charge. $348 - $300 = $48. */
+/** Twelve monthly charges minus one annual charge. $300 - $250 = $50. */
 export const ANNUAL_SAVING_MINOR = MONTHLY_PRICE_MINOR * 12 - ANNUAL_PRICE_MINOR;
 
-/** 4800 / 34800 = 13.79%. Recorded for internal reporting, never rendered. */
+/** 5000 / 30000 = 16.67%. Recorded for internal reporting, never rendered. */
 export const ANNUAL_SAVING_BASIS_POINTS = Math.round(
   (ANNUAL_SAVING_MINOR * 10_000) / (MONTHLY_PRICE_MINOR * 12),
 );
@@ -86,9 +94,9 @@ export const READ_ONLY_PERIOD_DAYS = 30;
  */
 export const MANDATED_COPY = Object.freeze({
   dueToday: '$0 due today',
-  annualFraming: '$25/month billed annually. Save $48/year.',
-  monthlyPrice: '$29/month',
-  annualPrice: '$300/year',
+  annualFraming: 'Save $50/year. That is 2 months free.',
+  monthlyPrice: '$25/month',
+  annualPrice: '$250/year',
 });
 
 /** Phrases that may never appear in any billing surface. */
@@ -170,7 +178,9 @@ export interface AnnualFramingPresentation {
   readonly savingMinor: number;
   readonly savingText: string;
   readonly savingBasisPoints: number;
-  /** `$25/month billed annually. Save $48/year.` Never a percentage. */
+  /** Whole months saved by paying yearly, or null when it is not a whole number. */
+  readonly freeMonthsEquivalent: number | null;
+  /** `Save $50/year. That is 2 months free.` Never a percentage. */
   readonly framingText: string;
   readonly framingKey: string;
 }
@@ -222,6 +232,7 @@ export const PRICE_PRESENTATION: PricePresentation = Object.freeze({
     savingMinor: BASE_TIER_PRESENTATION.annualFraming.savingMinor,
     savingText: BASE_TIER_PRESENTATION.annualFraming.savingText,
     savingBasisPoints: BASE_TIER_PRESENTATION.annualFraming.savingBasisPoints,
+    freeMonthsEquivalent: BASE_TIER_PRESENTATION.annualFraming.freeMonthsEquivalent,
     framingText: MANDATED_COPY.annualFraming,
     framingKey: 'billing.plan.annualFraming',
   }),
@@ -251,12 +262,17 @@ export function trialLengthMatches(polarTrialDays: number, configuredTrialDays: 
   return polarTrialDays === configuredTrialDays && configuredTrialDays === TRIAL_DAYS;
 }
 
-/** Every amount the mandated annual sentence claims, derived from minor units. */
-export function derivedAnnualFramingAmounts(): { perMonth: string; saving: string } {
+/**
+ * Every amount the mandated annual sentence claims, derived from minor units.
+ *
+ * It used to also return a per-month equivalent. That field is gone with the
+ * figure it formatted: on this ladder it renders `$20.83`, and an exported
+ * helper that produces the one presentation the product refuses is a trap
+ * rather than a convenience.
+ */
+export function derivedAnnualFramingAmounts(): { saving: string; freeMonths: number | null } {
   return {
-    perMonth: formatMoneyMinor(ANNUAL_EFFECTIVE_MONTHLY_MINOR, PLAN_CURRENCY, {
-      trimZeroFraction: true,
-    }),
     saving: formatMoneyMinor(ANNUAL_SAVING_MINOR, PLAN_CURRENCY, { trimZeroFraction: true }),
+    freeMonths: BASE_TIER_PRESENTATION.annualFraming.freeMonthsEquivalent,
   };
 }

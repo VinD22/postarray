@@ -1,6 +1,8 @@
 import { describe, expect, it } from 'vitest';
 import { en } from '@relay/i18n';
 
+import { BASE_TIER_KEY, WEB_PLAN_TIERS, annualSavingMinor, priceUnits } from './tiers';
+
 /**
  * Billing copy is a legal statement, so the phrasings we must not ship are
  * asserted rather than reviewed. The research brief bans the percentage framing
@@ -32,12 +34,46 @@ describe('billing copy', () => {
     }
   });
 
-  it('states the annual saving in currency', () => {
-    const framing = Object.entries(en as Record<string, string>).find(([key]) =>
-      key.endsWith('annualFraming'),
+  /**
+   * Was: "the first key ending in annualFraming contains these two literals".
+   * That asserted a sentence, so a reprice stranded it and nothing checked the
+   * other framing sentences at all. It now asserts the arithmetic, on every
+   * sentence a price surface reads, against the same tier module the pages
+   * format their numbers from. A reprice moves both or fails here.
+   */
+  it('states the annual saving in currency, on every sentence a price surface reads', () => {
+    const catalog = en as Record<string, string>;
+    const money = (minor: number): string =>
+      new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: 'USD',
+        maximumFractionDigits: 0,
+      }).format(priceUnits(minor));
+
+    const framingKeys = [
+      'billing.plan.annualFraming',
+      ...WEB_PLAN_TIERS.map(
+        (tier) => `billing.tier.${tier.key.replace('relay_', '')}.annualFraming`,
+      ),
+    ];
+
+    for (const key of framingKeys) {
+      const sentence = catalog[key];
+      expect(sentence, key).toBeTypeOf('string');
+      // Money, never a rate. The real discount is not a round percentage and a
+      // percentage claim is banned outright by the billing package.
+      expect(sentence, key).not.toContain('%');
+      expect(sentence?.toLowerCase(), key).not.toContain(' off');
+      expect(sentence, key).toMatch(/\$\d/);
+    }
+
+    // And the base tier's sentence states the saving this repository would
+    // actually charge, rather than a figure that survived a reprice.
+    const base = WEB_PLAN_TIERS.find((tier) => tier.key === BASE_TIER_KEY);
+    expect(base).toBeDefined();
+    expect(catalog['billing.plan.annualFraming']).toContain(
+      money(base === undefined ? 0 : annualSavingMinor(base)),
     );
-    expect(framing?.[1]).toContain('$25/month billed annually');
-    expect(framing?.[1]).toContain('Save $48/year');
   });
 
   it('uses no em dash and no hype word anywhere in billing copy', () => {

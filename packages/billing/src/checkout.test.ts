@@ -55,16 +55,16 @@ describe('the checkout disclosure', () => {
   it('states the exact trial end and the exact first charge', () => {
     expect(disclosure.trialEndsAt).toBe('2026-08-11T14:00:00.000Z');
     expect(disclosure.trialEndsOnDate).toBe('2026-08-11');
-    expect(disclosure.firstChargeText).toBe('$29.00');
+    expect(disclosure.firstChargeText).toBe('$25.00');
     expect(disclosure.firstChargeOnDate).toBe('2026-08-11');
-    expect(disclosure.renewalText).toBe('$29.00');
+    expect(disclosure.renewalText).toBe('$25.00');
     expect(disclosure.interval).toBe('month');
   });
 
   it('frames the annual price in money saved, not as a percentage', () => {
     const annual = buildCheckoutDisclosure({ interval: 'year', startedAt: CONFIRMED_AT });
-    expect(annual.firstChargeText).toBe('$300.00');
-    expect(annual.annualFramingText).toBe('$25/month billed annually. Save $48/year.');
+    expect(annual.firstChargeText).toBe('$250.00');
+    expect(annual.annualFramingText).toBe('Save $50/year. That is 2 months free.');
     expect(annual.annualFramingText).not.toContain('%');
     expect(disclosure.annualFramingText).toBeNull();
   });

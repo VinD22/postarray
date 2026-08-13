@@ -144,7 +144,7 @@ describe('trial to paid', () => {
     expect(converted.state).toBe('full');
     expect(converted.isTrialing).toBe(false);
     expect(orderEvents).toHaveLength(1);
-    expect(orderEvents[0]?.order.totalMinor).toBe(2_900);
+    expect(orderEvents[0]?.order.totalMinor).toBe(2_500);
   });
 
   it('charges the annual price on the annual interval', async () => {
@@ -152,7 +152,7 @@ describe('trial to paid', () => {
     clock.advanceDays(7);
     await client.tick();
     await pump();
-    expect(orderEvents[0]?.order.totalMinor).toBe(30_000);
+    expect(orderEvents[0]?.order.totalMinor).toBe(25_000);
   });
 
   it('renews the following period without a second trial', async () => {
@@ -301,7 +301,7 @@ describe('refunds and the customer portal', () => {
     await pump();
     expect(orderEvents).toHaveLength(2);
     expect(orderEvents[1]?.eventType).toBe('order.refunded');
-    expect(orderEvents[1]?.order.refundedMinor).toBe(2_900);
+    expect(orderEvents[1]?.order.refundedMinor).toBe(2_500);
   });
 
   it('links to a hosted customer portal rather than rebuilding one', async () => {

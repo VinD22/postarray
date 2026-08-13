@@ -66,8 +66,16 @@ export const DOCUMENTED_ASSUMPTIONS: EconomicsAssumptions = Object.freeze({
 /** The gross margin gate. Measured on the non-referred base. */
 export const MARGIN_GATE_BASIS_POINTS = 7_500;
 
-/** Blended margin reaches the gate at approximately this many subscribers. */
-export const MARGIN_GATE_SUBSCRIBERS = 670;
+/**
+ * Blended margin reaches the gate at approximately this many subscribers.
+ *
+ * It was 670 while the base plan was $29. Moving it to $25 keeps the gate at
+ * 75% and pushes the point of reaching it out to here, because the costs that
+ * matter at this scale are a flat fee per subscriber and a fixed monthly floor,
+ * neither of which falls when the price does. The gate is a target and stays
+ * where it was; this number is a measurement and follows the price.
+ */
+export const MARGIN_GATE_SUBSCRIBERS = 1_239;
 
 /** Referred-cohort margin must stay above this. */
 export const REFERRED_COHORT_MARGIN_FLOOR_BASIS_POINTS =

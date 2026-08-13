@@ -24,9 +24,9 @@ export interface TierIntervalPresentation {
   readonly interval: BillingInterval;
   readonly priceMinor: number;
   readonly currency: string;
-  /** `$29` and `$300`, with zero cents trimmed. */
+  /** `$25` and `$250`, with zero cents trimmed. */
   readonly priceText: string;
-  /** `$29.00` and `$300.00`, used wherever an exact charge is stated. */
+  /** `$25.00` and `$250.00`, used wherever an exact charge is stated. */
   readonly exactPriceText: string;
   readonly labelKey: string;
   readonly trialDays: number;
@@ -43,8 +43,24 @@ export interface TierAnnualFraming {
    * False when the annual price does not divide into twelve whole cents. The
    * per-month framing is suppressed rather than rounded into a claim we would
    * not charge.
+   *
+   * False on every tier under the current ladder, and deliberately so: a year
+   * costs ten months, which is a clean thing to charge and a fractional thing
+   * to divide. $250 over twelve is $20.83, and a price with cents in it is
+   * exactly the presentation this product refuses. Use `freeMonthsEquivalent`
+   * to describe the discount instead of inventing a monthly figure.
    */
   readonly effectiveMonthlyIsExact: boolean;
+  /**
+   * The saving expressed in whole months, when it lands on one.
+   *
+   * This is the sentence a buyer actually understands. Every tier here prices a
+   * year at ten times its month, so this is 2 across the table and the annual
+   * offer is one shared sentence rather than three separate sums. Null when the
+   * saving is not a whole number of months, in which case the renderer falls
+   * back to the money saving, which is always exact.
+   */
+  readonly freeMonthsEquivalent: number | null;
   /**
    * The shared parameterized sentence. Amounts are supplied by the renderer
    * from the fields above, so it cannot drift from the charge on any tier.
@@ -124,7 +140,14 @@ function annualFraming(tier: PlanTier): TierAnnualFraming {
   const effectiveMonthlyMinor = Math.round(tier.annualPriceMinor / 12);
   const savingMinor = twelveMonths - tier.annualPriceMinor;
   const currency = tier.currency;
+  // Whole months only. A saving of "1.7 months" is not a sentence anyone wants
+  // read to them, and the money figure beside it is already exact.
+  const freeMonthsEquivalent =
+    tier.monthlyPriceMinor > 0 && savingMinor % tier.monthlyPriceMinor === 0
+      ? savingMinor / tier.monthlyPriceMinor
+      : null;
   return {
+    freeMonthsEquivalent,
     effectiveMonthlyMinor,
     effectiveMonthlyText: formatMoneyMinor(effectiveMonthlyMinor, currency, {
       trimZeroFraction: true,

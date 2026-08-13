@@ -133,18 +133,21 @@ describe('the annual framing', () => {
   const catalog = en as Readonly<Record<string, string>>;
 
   it('states a saving in money, never a discount percentage', () => {
-    expect(MANDATED_COPY.annualFraming).toBe('$25/month billed annually. Save $48/year.');
+    expect(MANDATED_COPY.annualFraming).toBe('Save $50/year. That is 2 months free.');
     expect(MANDATED_COPY.annualFraming).not.toContain('%');
     expect(MANDATED_COPY.annualFraming).not.toContain('off');
   });
 
   it('has arithmetic that holds up', () => {
-    expect(PRICE_PRESENTATION.annualFraming.effectiveMonthlyMinor * 12).toBe(
-      PRICE_PRESENTATION.year.priceMinor,
-    );
+    // A year buys ten months, so the saving is two of them. The old assertion
+    // here was that annual divided into twelve whole dollars, which this ladder
+    // does not and deliberately does not need to: nothing divides an annual
+    // price by twelve any more, because a year is quoted as a year.
+    expect(PRICE_PRESENTATION.year.priceMinor).toBe(PRICE_PRESENTATION.month.priceMinor * 10);
     expect(PRICE_PRESENTATION.month.priceMinor * 12 - PRICE_PRESENTATION.year.priceMinor).toBe(
       PRICE_PRESENTATION.annualFraming.savingMinor,
     );
+    expect(PRICE_PRESENTATION.annualFraming.freeMonthsEquivalent).toBe(2);
   });
 
   /**
@@ -157,9 +160,9 @@ describe('the annual framing', () => {
     expect(TIER_PRESENTATIONS.length).toBeGreaterThan(0);
     for (const tier of TIER_PRESENTATIONS) {
       const { annualFraming, month, year } = tier;
-      expect(annualFraming.effectiveMonthlyMinor * 12, tier.tierKey).toBe(year.priceMinor);
+      expect(year.priceMinor, tier.tierKey).toBe(month.priceMinor * 10);
       expect(month.priceMinor * 12 - year.priceMinor, tier.tierKey).toBe(annualFraming.savingMinor);
-      expect(annualFraming.effectiveMonthlyIsExact, tier.tierKey).toBe(true);
+      expect(annualFraming.freeMonthsEquivalent, tier.tierKey).toBe(2);
     }
   });
 
@@ -175,8 +178,13 @@ describe('the annual framing', () => {
     for (const tier of TIER_PRESENTATIONS) {
       const sentence = catalog[tier.annualFraming.mandatedFramingKey];
       expect(sentence, tier.annualFraming.mandatedFramingKey).toBeTypeOf('string');
-      expect(sentence, tier.tierKey).toContain(tier.annualFraming.effectiveMonthlyText);
+      // The sentence must carry the saving and the months, which are the two
+      // things it claims. It used to be checked against a derived per-month
+      // figure; that figure is no longer printed anywhere, and asserting a
+      // sentence contains "$20.83" would be pinning the exact string the owner
+      // asked us never to show.
       expect(sentence, tier.tierKey).toContain(tier.annualFraming.savingText);
+      expect(sentence, tier.tierKey).toContain(String(tier.annualFraming.freeMonthsEquivalent));
       expect(sentence, tier.tierKey).not.toContain('%');
       expect(sentence?.toLowerCase(), tier.tierKey).not.toContain(' off');
       expect(sentence, tier.tierKey).not.toContain('—');

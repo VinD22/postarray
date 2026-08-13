@@ -47,9 +47,13 @@ import { USD } from './money';
  * `tiers.test.ts` fails if a half-replaced tier reaches customer facing copy or
  * a checkout, so a forgotten step cannot ship quietly.
  *
- * Annual prices are chosen so that `annualPriceMinor / 12` is a whole number of
- * cents. `tier-presentation.ts` suppresses the per-month framing outright when
- * it is not, rather than rounding into a price we would not charge.
+ * Every annual price is ten times its monthly price, so a year costs what ten
+ * months would and the saving is exactly two months on every tier. That is why
+ * the annual framing is one sentence the whole table shares rather than a
+ * per-tier calculation, and why no surface ever needs to divide an annual price
+ * by twelve: a yearly plan is quoted as a yearly amount. Deriving a monthly
+ * equivalent here would produce $20.83 and a superscript-cents price, which is
+ * the specific presentation this product refuses.
  */
 
 export const PLAN_TIER_KEYS = ['relay_standard', 'relay_growth', 'relay_studio'] as const;
@@ -87,8 +91,9 @@ export const PLAN_TIERS: Readonly<Record<PlanTierKey, PlanTier>> = Object.freeze
     key: 'relay_standard',
     rank: 0,
     projectAllowance: BASE_PROJECT_LIMIT,
-    monthlyPriceMinor: 2_900,
-    annualPriceMinor: 30_000,
+    monthlyPriceMinor: 2_500,
+    // Ten months for a year, so the saving is two months: $50.
+    annualPriceMinor: 25_000,
     currency: USD,
     nameKey: 'billing.tier.standard.name',
     taglineKey: 'billing.tier.standard.tagline',
@@ -99,9 +104,9 @@ export const PLAN_TIERS: Readonly<Record<PlanTierKey, PlanTier>> = Object.freeze
     key: 'relay_growth',
     rank: 1,
     projectAllowance: 10,
-    monthlyPriceMinor: 5_900,
-    // $612 a year is $51 a month exactly, and $96 less than twelve months at $59.
-    annualPriceMinor: 61_200,
+    monthlyPriceMinor: 5_000,
+    // Ten months for a year, so the saving is two months: $100.
+    annualPriceMinor: 50_000,
     currency: USD,
     nameKey: 'billing.tier.growth.name',
     taglineKey: 'billing.tier.growth.tagline',
@@ -114,9 +119,9 @@ export const PLAN_TIERS: Readonly<Record<PlanTierKey, PlanTier>> = Object.freeze
     // Equal to MAX_PROJECT_LIMIT: the largest tier saturates the ceiling the
     // database already enforces, so we never have to claim "unlimited".
     projectAllowance: MAX_PROJECT_LIMIT,
-    monthlyPriceMinor: 11_900,
-    // $1,236 a year is $103 a month exactly, and $192 less than twelve at $119.
-    annualPriceMinor: 123_600,
+    monthlyPriceMinor: 10_000,
+    // Ten months for a year, so the saving is two months: $200.
+    annualPriceMinor: 100_000,
     currency: USD,
     nameKey: 'billing.tier.studio.name',
     taglineKey: 'billing.tier.studio.tagline',

@@ -23,31 +23,50 @@ import {
 const catalog = en as Readonly<Record<string, string>>;
 
 describe('the base tier', () => {
-  it('prices monthly at $29 and annual at $300', () => {
-    expect(MONTHLY_PRICE_MINOR).toBe(2_900);
-    expect(ANNUAL_PRICE_MINOR).toBe(30_000);
-    expect(planPriceMinor('month')).toBe(2_900);
-    expect(planPriceMinor('year')).toBe(30_000);
+  it('prices monthly at $25 and annual at $250', () => {
+    expect(MONTHLY_PRICE_MINOR).toBe(2_500);
+    expect(ANNUAL_PRICE_MINOR).toBe(25_000);
+    expect(planPriceMinor('month')).toBe(2_500);
+    expect(planPriceMinor('year')).toBe(25_000);
   });
 
   it('derives the annual framing from the prices, not from a hand written number', () => {
-    expect(ANNUAL_EFFECTIVE_MONTHLY_MINOR).toBe(2_500);
     expect(ANNUAL_SAVING_MINOR).toBe(MONTHLY_PRICE_MINOR * 12 - ANNUAL_PRICE_MINOR);
-    expect(ANNUAL_SAVING_MINOR).toBe(4_800);
+    expect(ANNUAL_SAVING_MINOR).toBe(5_000);
+    // Two months, exactly, which is the whole of the annual offer.
+    expect(ANNUAL_SAVING_MINOR).toBe(MONTHLY_PRICE_MINOR * 2);
   });
 
-  it('is a 13.8% saving, which is why it is never described as 20% off', () => {
-    expect(ANNUAL_SAVING_BASIS_POINTS).toBe(1_379);
+  it('does not divide the annual price into twelve, because it does not divide', () => {
+    // $250 over twelve is $20.8333…, a fractional cent. This is the arithmetic
+    // reason a year is quoted as a year on every surface rather than as a
+    // per-month equivalent: rendering this number produces a price with cents
+    // in it, which is the presentation the owner rejected outright.
+    //
+    // Pinned rather than deleted so that a future ladder which *does* divide
+    // cleanly has to come here and decide deliberately to print a monthly
+    // figure again, instead of one silently reappearing.
+    expect(ANNUAL_EFFECTIVE_MONTHLY_MINOR * 12).toBe(ANNUAL_PRICE_MINOR);
+    expect(Number.isInteger(ANNUAL_EFFECTIVE_MONTHLY_MINOR)).toBe(false);
+    expect(MANDATED_COPY.annualFraming).not.toContain('/month');
+  });
+
+  it('is a two month saving, stated in months and money but never as a percentage', () => {
+    // 1,667 basis points is 16.67%, which is what ten-months-for-twelve works
+    // out to. The figure is pinned because the copy must never round it into
+    // "20% off", and it is never rendered: every surface says two months free
+    // or fifty dollars, both of which are exact.
+    expect(ANNUAL_SAVING_BASIS_POINTS).toBe(1_667);
     expect(ANNUAL_SAVING_BASIS_POINTS).toBeLessThan(2_000);
   });
 
   it('formats the presentation amounts from the minor units', () => {
-    expect(PRICE_PRESENTATION.month.priceText).toBe('$29');
-    expect(PRICE_PRESENTATION.month.exactPriceText).toBe('$29.00');
-    expect(PRICE_PRESENTATION.year.priceText).toBe('$300');
-    expect(PRICE_PRESENTATION.year.exactPriceText).toBe('$300.00');
-    expect(PRICE_PRESENTATION.annualFraming.effectiveMonthlyText).toBe('$25');
-    expect(PRICE_PRESENTATION.annualFraming.savingText).toBe('$48');
+    expect(PRICE_PRESENTATION.month.priceText).toBe('$25');
+    expect(PRICE_PRESENTATION.month.exactPriceText).toBe('$25.00');
+    expect(PRICE_PRESENTATION.year.priceText).toBe('$250');
+    expect(PRICE_PRESENTATION.year.exactPriceText).toBe('$250.00');
+    expect(PRICE_PRESENTATION.annualFraming.savingText).toBe('$50');
+    expect(PRICE_PRESENTATION.annualFraming.freeMonthsEquivalent).toBe(2);
   });
 
   it('carries a seven day trial on both intervals', () => {
@@ -77,19 +96,25 @@ describe('the presentation object agrees with the English catalog', () => {
   it('renders the annual framing in money, exactly as the catalog does', () => {
     expect(catalog[PRICE_PRESENTATION.annualFraming.framingKey]).toBe(MANDATED_COPY.annualFraming);
     expect(PRICE_PRESENTATION.annualFraming.framingText).toBe(
-      '$25/month billed annually. Save $48/year.',
+      'Save $50/year. That is 2 months free.',
     );
   });
 
   it('ties the mandated annual sentence to the arithmetic, so it cannot drift', () => {
     const derived = derivedAnnualFramingAmounts();
-    expect(derived.perMonth).toBe('$25');
-    expect(derived.saving).toBe('$48');
-    // Change either price without rewording the sentence and this fails.
-    expect(MANDATED_COPY.annualFraming).toContain(`${derived.perMonth}/month`);
+    expect(derived.saving).toBe('$50');
+    expect(derived.freeMonths).toBe(2);
+    // Change either price without rewording the sentence and this fails. The
+    // per-month half of the old assertion is gone with the figure it checked:
+    // an annual plan is quoted as a year, so there is no monthly amount in the
+    // sentence to keep in step.
     expect(MANDATED_COPY.annualFraming).toContain(`Save ${derived.saving}/year`);
-    expect(catalog['billing.plan.annualFraming']).toContain(derived.perMonth);
     expect(catalog['billing.plan.annualFraming']).toContain(derived.saving);
+    // The second claim the sentence makes. Both halves are tied to arithmetic,
+    // so neither the money nor the month count can drift from the charge.
+    expect(catalog['billing.plan.annualFraming']).toContain(
+      String(PRICE_PRESENTATION.annualFraming.freeMonthsEquivalent),
+    );
   });
 
   it('keeps the headline prices in step with the catalog', () => {
@@ -145,10 +170,10 @@ describe('the tier presentations every pricing surface renders', () => {
     if (base === undefined) {
       return;
     }
-    expect(base.month.priceText).toBe('$29');
-    expect(base.year.priceText).toBe('$300');
-    expect(base.annualFraming.effectiveMonthlyMinor * 12).toBe(base.year.priceMinor);
-    expect(base.annualFraming.effectiveMonthlyIsExact).toBe(true);
+    expect(base.month.priceText).toBe('$25');
+    expect(base.year.priceText).toBe('$250');
+    expect(base.year.priceMinor).toBe(base.month.priceMinor * 10);
+    expect(base.annualFraming.freeMonthsEquivalent).toBe(2);
     expect(base.annualFraming.savingMinor).toBe(base.month.priceMinor * 12 - base.year.priceMinor);
     expect(base.projectAllowance).toBe(3);
   });
@@ -162,18 +187,23 @@ describe('the tier presentations every pricing surface renders', () => {
       channels: tier.channelAllowance,
     }));
     expect(rendered).toEqual([
-      { tier: 'relay_standard', month: '$29', year: '$300', projects: 3, channels: 15 },
-      { tier: 'relay_growth', month: '$59', year: '$612', projects: 10, channels: 50 },
-      { tier: 'relay_studio', month: '$119', year: '$1,236', projects: 20, channels: 100 },
+      { tier: 'relay_standard', month: '$25', year: '$250', projects: 3, channels: 15 },
+      { tier: 'relay_growth', month: '$50', year: '$500', projects: 10, channels: 50 },
+      { tier: 'relay_studio', month: '$100', year: '$1,000', projects: 20, channels: 100 },
     ]);
   });
 
-  it('states an exact per-month equivalent on every tier, never a rounded one', () => {
+  it('never states a per-month equivalent for an annual plan, on any tier', () => {
+    // The inverse of the rule this replaces. That one required annual to divide
+    // into twelve whole dollars so a per-month figure could be printed; this
+    // ladder charges ten months for twelve, which does not divide, and the
+    // right answer is to quote a year as a year rather than to print $20.83.
+    // A price with cents in it is the presentation the owner rejected outright
+    // after seeing a competitor render one in superscript.
     for (const tier of TIER_PRESENTATIONS) {
-      expect(tier.annualFraming.effectiveMonthlyIsExact, tier.tierKey).toBe(true);
-      expect(tier.annualFraming.effectiveMonthlyMinor * 12, tier.tierKey).toBe(
-        tier.year.priceMinor,
-      );
+      expect(tier.annualFraming.effectiveMonthlyIsExact, tier.tierKey).toBe(false);
+      expect(tier.annualFraming.freeMonthsEquivalent, tier.tierKey).toBe(2);
+      expect(tier.year.priceMinor, tier.tierKey).toBe(tier.month.priceMinor * 10);
     }
   });
 

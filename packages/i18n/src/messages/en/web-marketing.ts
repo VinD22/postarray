@@ -40,7 +40,7 @@ export const webMarketingMessages = {
   // `web.home.v2.sticker.trial` all repeat exactly this, because three pages
   // disagreeing about when a trial starts is a defect, not a wording choice.
   'web.cta.trialFootnote':
-    'Relay costs $29 a month or $300 a year. The seven day trial starts today and beginning it takes no card. Connector availability is shown account by account as each platform completes its review.',
+    'Relay costs $25 a month, or $250 a year, which is two months free. The seven day trial starts today and beginning it takes no card. Connector availability is shown account by account as each platform completes its review.',
 
   'web.label.lastReviewed': 'Last reviewed {date}',
   'web.label.nextReview': 'Next review {date}',
@@ -87,7 +87,7 @@ export const webMarketingMessages = {
     'One backend behind the web app, the REST API, a remote MCP server, the CLI and signed webhooks. Same approval rules on every surface.',
   'web.meta.pricing.title': 'Pricing',
   'web.meta.pricing.description':
-    'Relay costs $29 a month or $300 a year, with a seven day free trial. The plan includes 10 active channels and an owner plus 5 teammates. Every feature is included at every tier.',
+    'Relay costs $25 a month, or $250 a year with two months free, and a seven day trial that takes no card. Every feature is included at every price, including the remote MCP server an agent connects to.',
   'web.meta.resources.title': 'Resources',
   'web.meta.resources.description':
     'Status, changelog, documentation, methodology, comparisons, the tool radar and the opportunity catalog.',
@@ -125,7 +125,7 @@ export const webMarketingMessages = {
   'web.home.lede':
     'Relay is a publishing desk for people who are accountable for what goes out. You write once, adapt per platform, see the real limits before you schedule, get the approval you need, publish through official platform APIs, and keep a receipt for every post.',
   'web.home.summaryLine':
-    'Relay costs $29 a month, or $300 a year and save $48. That covers 10 active social channels and an owner plus 5 teammates. Every feature is included, and the seven day trial needs no card.',
+    'One plan, and every feature is in it, including the remote MCP server an agent connects to. What a plan buys is active project capacity. The seven day trial needs no card.',
 
   // Five, because the scene under this heading renders five rows
   // (`EXAMPLE_ROWS` on the home page). It said "ten" while showing five, which
@@ -235,6 +235,65 @@ export const webMarketingMessages = {
   'web.home.v2.pricingTeaser.title': 'What it costs',
   'web.home.v2.variantScene.masterLabel': 'Master draft',
   'web.home.v2.variantScene.progress': '{revealed} of {total}',
+
+  /*
+   * The rebuilt hero and the agent section.
+   *
+   * Two notes for whoever edits these next.
+   *
+   * 1. Nothing above is deleted. `web.home.promise` and `web.home.lede` are
+   *    the long-form promise the hero used to set at display size; they are
+   *    still translated in other locales and still render on the page, below
+   *    the fold, where a paragraph is what a reader actually wants. The hero
+   *    now leads with `hero.headline`, which is six words.
+   * 2. They live under `web.home.v2.` rather than a new `web.agents.`
+   *    namespace on purpose. `web.home.v2.` already carries the B5
+   *    English-fallback exemption in `beta-fallbacks.ts`; a fresh namespace
+   *    would need a new entry in that file, which belongs to the translation
+   *    owner, and until they added it every beta locale would fail the
+   *    catalog parity gate.
+   */
+  'web.home.v2.hero.providersLabel': 'Networks Relay publishes to',
+  'web.home.v2.hero.headline': 'Post everywhere from your AI agent.',
+  'web.home.v2.hero.subhead':
+    'Connect Claude Code, Codex, Hermes or any MCP client to the Relay MCP server and it can draft, check platform limits and schedule posts. Not using an agent? The web app, a REST API, a CLI and signed webhooks do the same work.',
+  'web.home.v2.hero.agentsCta': 'See what an agent can do',
+
+  'web.home.v2.agents.title': 'Your agent gets tools, not a text box',
+  'web.home.v2.agents.lede':
+    'The MCP server is a resource server in front of the same application services the web app uses. It holds no publishing logic and no second permission system, so an agent cannot reach anything you have not granted it, and it cannot route around an approval by using a different surface.',
+  'web.home.v2.agents.connect.title': 'Connecting is one config block',
+  'web.home.v2.agents.connect.step.credential.title': 'Point the client at the endpoint',
+  'web.home.v2.agents.connect.step.credential.body':
+    'Create a credential in Relay, then paste the workspace MCP endpoint into your client. The credential is read from an environment variable rather than written into the file, because a config committed to a repository is the most common way one leaks.',
+  'web.home.v2.agents.connect.step.authorize.title': 'The client authorizes over OAuth',
+  'web.home.v2.agents.connect.step.authorize.body':
+    'Relay compares the token audience against this server as an exact string, never a prefix, and re-verifies the grant on every call. A revoked grant stops working in the middle of a long lived agent session.',
+  'web.home.v2.agents.connect.step.work.title': 'The agent reads your accounts, then works',
+  'web.home.v2.agents.connect.step.work.body':
+    'It lists the accounts you connected, reads the live platform limits for each one, and drafts against those rather than against a guess. Account ids are resolved on the server, so a raw handle is never accepted.',
+  'web.home.v2.agents.connect.clients': 'Reviewed setups ship for these clients',
+  'web.home.v2.agents.connect.clientsNote':
+    'Any MCP client that speaks Streamable HTTP over TLS can connect. There are no unauthenticated tools, not even read ones.',
+  'web.home.v2.agents.connect.snippetCaption':
+    'The Claude Code block, with your own endpoint in place of the example.',
+  'web.home.v2.agents.tools.title': '{count} tools, split by blast radius',
+  'web.home.v2.agents.tools.body':
+    'Every tool declares its risk, its scopes and its approval level as data, and the description a client shows is generated from that declaration. A tool whose description disagrees with what is enforced is worse than no description, so the two cannot disagree.',
+  'web.home.v2.agents.tier.count': '{count, plural, one {# tool} other {# tools}}',
+  'web.home.v2.agents.tier.read.label': 'Read',
+  'web.home.v2.agents.tier.read.rule':
+    'Nothing changes. Each one answers with a bounded page and a link, so a calendar of ten thousand entries comes back as ten and a cursor instead of filling the context window.',
+  'web.home.v2.agents.tier.reversible.label': 'Reversible',
+  'web.home.v2.agents.tier.reversible.rule':
+    'Changes something inside Relay and publishes nothing. A draft sits in the workspace until a person, or a grant you gave for scheduling, moves it forward.',
+  'web.home.v2.agents.tier.consequential.label': 'Consequential',
+  'web.home.v2.agents.tier.consequential.rule':
+    'Reaches a platform. Each one requires an idempotency key, rejected rather than defaulted, so an agent retrying in a loop cannot post the same thing twice.',
+  'web.home.v2.agents.confirm.title': 'Publishing right now needs a person',
+  'web.home.v2.agents.confirm.body':
+    'Asking an agent to publish immediately does not publish. Relay mints a pending confirmation bound to the workspace, the grant, the post and a fingerprint of the exact accounts, and hands back a link on the Relay domain. You open it in your own session, see what will go out and where, and approve. Change the post afterwards and the fingerprint changes with it, which voids the approval.',
+  'web.home.v2.agents.docsCta': 'Read the agent documentation',
 
   /* ---------------------------------------------------------------------- */
   /* Product                                                                 */
@@ -386,18 +445,23 @@ export const webMarketingMessages = {
   /* ---------------------------------------------------------------------- */
 
   'web.pricing.title': 'One plan',
+  // No amounts in this sentence, on purpose. The page has exactly one place
+  // where a price is stated, and it is the plan card, where every figure is
+  // formatted from the tier module's integer minor units. A price written into
+  // prose is a price that survives a reprice and starts lying: this sentence
+  // used to say "$29 a month or $300 a year" and was doing exactly that.
   'web.pricing.lede':
-    'There are no feature tiers. One plan, $29 a month or $300 a year, with a seven day free trial. Every feature is included at every price, and capacity is the only thing that changes.',
+    'There are no feature tiers. Every feature is included at every price, including the MCP server an agent connects to, and the seven day free trial starts without a card.',
   'web.pricing.intervalHeading': 'Choose how you pay',
   'web.pricing.monthlyLabel': 'Billed monthly',
   'web.pricing.annualLabel': 'Billed annually',
-  'web.pricing.annualDetail': '$300 charged once a year.',
-  'web.pricing.monthlyDetail': '$29 charged every month.',
+  'web.pricing.annualDetail': '$250 charged once a year.',
+  'web.pricing.monthlyDetail': '$25 charged every month.',
   // The annual saving is stated in whole dollars. Never a percentage: the real
   // discount on 29 and 300 is not a round number and the billing copy
   // compliance test rejects percentage framing. Mirrors
   // `BASE_TIER_PRESENTATION.annualFraming` in packages/billing/src/products.ts.
-  'web.pricing.annualFraming': '$25 a month billed annually. Save $48 a year.',
+  'web.pricing.annualFraming': 'Save $50 a year. That is 2 months free.',
   'web.pricing.prelaunch.primaryNote':
     'Your seven day trial starts today. No card is collected to begin it, and you choose monthly or annual when it ends.',
   'web.pricing.prelaunch.secondaryNote':
@@ -1465,6 +1529,7 @@ export const webMarketingMessages = {
     'Everything in {tier}, plus {added, plural, one {# more active project} other {# more active projects}}.',
   'web.pricing.tierGrid.notPurchasable':
     'Not on sale yet. Standard is the only tier you can buy today.',
+  'web.pricing.tierGrid.notOpenYet': 'Opening soon. Start on Standard and move up any time.',
   'web.pricing.tierGrid.intervalGroup': 'Billing interval for every tier',
 
   /**
@@ -1483,4 +1548,52 @@ export const webMarketingMessages = {
   'web.home.b3.sticker.connectorsFact':
     '{count, plural, one {# connector} other {# connectors}}, official APIs only',
   'web.home.b3.sticker.connectorsSource': 'Integrations',
+
+  /* ---------------------------------------------------------------------- */
+  /* Pricing v3 — one plan, one interval control, one checklist.             */
+  /* Appended, for the same merge reason as the blocks above. Additive: the  */
+  /* `web.pricing.tierGrid.*` keys above are still the anchor label and the  */
+  /* delta sentence, and nothing here replaces a key that another catalog is */
+  /* mid-translation on.                                                     */
+  /* ---------------------------------------------------------------------- */
+
+  'web.pricing.plan.heading': 'Pay monthly or yearly',
+  'web.pricing.plan.lede':
+    'The same plan either way. What it buys is active project capacity, and that is the only number on this page that ever changes.',
+
+  /*
+   * The interval control and the two faces of one price.
+   *
+   * The rule this block exists to hold: a yearly plan is quoted as a yearly
+   * amount, and the reader is shown at most two numbers plus one badge. The
+   * headline is the charge. The supporting line is what the same plan costs
+   * month to month, which is the only figure worth comparing it against. The
+   * badge states the discount once. Nothing divides an annual price by twelve,
+   * because $250 over twelve months is $20.83 and a headline price carrying
+   * cents is the presentation this page was rebuilt to get rid of.
+   *
+   * "2 months free" is arithmetic, not a slogan: a year is priced at ten times
+   * a month on every tier, so twelve months cost what ten cost. The number is
+   * derived in `features/billing/tiers.ts` and is never written into this
+   * sentence, so a reprice that stops the ladder dividing cleanly drops the
+   * badge rather than shipping a claim that is no longer true.
+   */
+  'web.pricing.interval.group': 'How you want to pay',
+  'web.pricing.interval.monthly': 'Monthly',
+  'web.pricing.interval.yearly': 'Yearly',
+  'web.pricing.interval.perMonth': 'per month',
+  'web.pricing.interval.perYear': 'per year',
+  'web.pricing.interval.monthlySupport': 'Charged every month. Cancel from Settings at any time.',
+  'web.pricing.interval.yearlySupport':
+    'Charged once a year. Month to month, the same plan is {amount} a month.',
+  'web.pricing.interval.freeMonths': '{count, plural, one {# month free} other {# months free}}',
+
+  'web.pricing.checklist.title': 'Included at both prices',
+  'web.pricing.plan.trialNote':
+    'The seven day trial starts the day you sign up and takes no card. You choose monthly or yearly when it ends, and Polar shows the exact amount and date before you confirm.',
+  'web.pricing.plan.taxNote':
+    'Prices are in US dollars. Taxes and merchant terms are shown at checkout before you confirm.',
+  'web.pricing.plan.capacityTitle': 'More capacity than one plan covers',
+  'web.pricing.plan.capacityNote':
+    'Larger project capacity is decided and priced. It appears on this page as soon as its checkout opens, and the changelog is where that gets announced.',
 } as const;

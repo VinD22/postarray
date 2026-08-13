@@ -30,10 +30,10 @@ describe('the seven day trial', () => {
   });
 
   it('states the first charge and the renewal amount', () => {
-    expect(monthly.firstChargeMinor).toBe(2_900);
-    expect(monthly.renewalMinor).toBe(2_900);
+    expect(monthly.firstChargeMinor).toBe(2_500);
+    expect(monthly.renewalMinor).toBe(2_500);
     const annual = computeTrialSchedule({ startedAt: CONFIRMED_AT, interval: 'year' });
-    expect(annual.firstChargeMinor).toBe(30_000);
+    expect(annual.firstChargeMinor).toBe(25_000);
     expect(annual.conversionAt).toBe('2026-08-11T14:00:00.000Z');
   });
 
@@ -70,7 +70,7 @@ describe('trial status', () => {
   });
 
   it('renders the first charge as an exact amount', () => {
-    expect(trialStatus(schedule, CONFIRMED_AT).firstChargeText).toBe('$29.00');
+    expect(trialStatus(schedule, CONFIRMED_AT).firstChargeText).toBe('$25.00');
   });
 });
 
@@ -111,7 +111,7 @@ function subscription(overrides: Partial<VerifiedSubscription> = {}): VerifiedSu
     productId: 'sim_prod_monthly',
     interval: 'month',
     status: 'trialing',
-    amountMinor: 2_900,
+    amountMinor: 2_500,
     currency: 'USD',
     currentPeriodStart: CONFIRMED_AT,
     currentPeriodEnd: '2026-08-11T14:00:00.000Z',
