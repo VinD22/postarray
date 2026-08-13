@@ -1,6 +1,6 @@
 import 'server-only';
 
-import { cookies } from 'next/headers';
+import { cookies, headers } from 'next/headers';
 import { redirect } from 'next/navigation';
 
 import { ApiError, api, type SessionView } from '@/lib/api';
@@ -20,8 +20,19 @@ export async function getSession(): Promise<SessionView | null> {
     .map((entry) => `${entry.name}=${entry.value}`)
     .join('; ');
 
+  // The API binds a session to a fingerprint of the signin request's
+  // user-agent and accept-language and rejects a mismatch. This call runs on
+  // the Next server, not in the visitor's browser, so without forwarding the
+  // real incoming headers it would carry Node's own (or none) and every
+  // signed-in page load would 401 into a redirect loop back to sign-in.
+  const requestHeaders = await headers();
+  const forwardHeaders = {
+    userAgent: requestHeaders.get('user-agent') ?? undefined,
+    acceptLanguage: requestHeaders.get('accept-language') ?? undefined,
+  };
+
   try {
-    return await api.session.get(cookieHeader);
+    return await api.session.get(cookieHeader, forwardHeaders);
   } catch (error) {
     if (ApiError.is(error) && (error.isAuthentication || error.status === 404)) {
       return null;

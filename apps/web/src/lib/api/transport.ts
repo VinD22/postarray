@@ -38,6 +38,19 @@ export interface RequestOptions {
   readonly signal?: AbortSignal;
   /** Cookie header to forward when the call originates on the server. */
   readonly forwardCookie?: string;
+  /**
+   * `user-agent` and `accept-language` to forward alongside `forwardCookie`.
+   *
+   * The API binds a session to a fingerprint of these two headers at signin
+   * (`clientFingerprint`, `apps/api/src/security/csrf.ts`) and rejects any
+   * request whose fingerprint doesn't match — a deliberate anti-hijacking
+   * check. A server-rendered page calls the API from the Next server, not the
+   * browser, so without this the request carries Node's own `user-agent` (or
+   * none) instead of the visitor's, the fingerprint never matches, and every
+   * signed-in page load 401s and redirects back to sign-in. Forwarding the
+   * cookie alone reproduces exactly that loop.
+   */
+  readonly forwardHeaders?: { readonly userAgent?: string; readonly acceptLanguage?: string };
 }
 
 /** Refresh state, so ten parallel 401s produce one refresh, not ten. */
@@ -136,6 +149,12 @@ async function performOnce(
   }
   if (options.forwardCookie !== undefined) {
     headers['cookie'] = options.forwardCookie;
+  }
+  if (options.forwardHeaders?.userAgent !== undefined) {
+    headers['user-agent'] = options.forwardHeaders.userAgent;
+  }
+  if (options.forwardHeaders?.acceptLanguage !== undefined) {
+    headers['accept-language'] = options.forwardHeaders.acceptLanguage;
   }
   const cookieSource =
     options.forwardCookie ?? (typeof document === 'undefined' ? undefined : document.cookie);

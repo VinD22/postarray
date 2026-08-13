@@ -40,8 +40,15 @@ export type ListQuery = {
 };
 
 export const sessionApi = {
-  get: (forwardCookie?: string): Promise<SessionView> =>
-    call('/auth/session', forwardCookie === undefined ? {} : { forwardCookie }, () => demoSession),
+  get: (
+    forwardCookie?: string,
+    forwardHeaders?: { readonly userAgent?: string; readonly acceptLanguage?: string },
+  ): Promise<SessionView> =>
+    call(
+      '/auth/session',
+      forwardCookie === undefined ? {} : { forwardCookie, forwardHeaders },
+      () => demoSession,
+    ),
   signOut: (idempotencyKey: string): Promise<void> =>
     call(
       '/auth/signout',
