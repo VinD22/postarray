@@ -9,21 +9,32 @@ import { commonMessages } from './common';
 import { composerMessages } from './composer';
 import { connectionMessages } from './connections';
 import { developerMessages } from './developer';
+import { emailMessages } from './email';
 import { errorMessages } from './errors';
 import { growthMessages } from './growth';
+import { importMessages } from './import';
+import { mediaMessages } from './media';
 import { navMessages } from './nav';
 import { onboardingMessages } from './onboarding';
+import { postingSetMessages } from './posting-sets';
+import { queueMessages } from './queue';
 import { receiptMessages } from './receipt';
 import { settingsMessages } from './settings';
 import { stateMessages } from './states';
 import { statusMessages } from './status';
 import { validationMessages } from './validation';
+import { webBlogMessages } from './web-blog';
+import { webComparisonMessages } from './web-comparisons';
+import { webDemoMessages } from './web-demo';
 import { webMarketingMessages } from './web-marketing';
+import { webPlatformsMessages } from './web-platforms';
 import { webAnalyticsMessages } from './web-analytics';
 import { webCalendarMessages } from './web-calendar';
 import { webComposerMessages } from './web-composer';
 import { webSettingsMessages } from './web-settings';
 import { webShellMessages } from './web-shell';
+import { webToolsMessages } from './web-tools';
+import { webUseCaseMessages } from './web-use-cases';
 import { withoutBetaEnglishFallbacks } from '../beta-fallbacks';
 
 /**
@@ -47,19 +58,30 @@ export const fr = {
   ...growthMessages,
   // `billing.*` is English fallback pending legal/commercial review.
   // `settings.data.*` includes privacy and consent controls.
-  ...withoutBetaEnglishFallbacks(settingsMessages),
+  ...withoutBetaEnglishFallbacks(settingsMessages, 'fr'),
   ...developerMessages,
   ...authMessages,
   ...onboardingMessages,
+  ...emailMessages,
   ...errorMessages,
+  ...importMessages,
+  ...mediaMessages,
+  ...postingSetMessages,
+  ...queueMessages,
   ...validationMessages,
   ...stateMessages,
   ...statusMessages,
   ...a11yMessages,
+  ...webBlogMessages,
+  ...webComparisonMessages,
+  ...webDemoMessages,
   // The legal and price/trial sections are English fallback pending review.
-  ...withoutBetaEnglishFallbacks(webMarketingMessages),
-  ...withoutBetaEnglishFallbacks(webSettingsMessages),
+  ...withoutBetaEnglishFallbacks(webMarketingMessages, 'fr'),
+  ...webPlatformsMessages,
+  ...withoutBetaEnglishFallbacks(webSettingsMessages, 'fr'),
   ...webShellMessages,
+  ...webToolsMessages,
+  ...webUseCaseMessages,
 } as const;
 
 /** Every message key in the product. */
