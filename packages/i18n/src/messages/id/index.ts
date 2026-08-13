@@ -9,24 +9,35 @@ import { commonMessages } from './common';
 import { composerMessages } from './composer';
 import { connectionMessages } from './connections';
 import { developerMessages } from './developer';
+import { emailMessages } from './email';
 import { errorMessages } from './errors';
 import { growthMessages } from './growth';
+import { importMessages } from './import';
+import { mediaMessages } from './media';
 import { navMessages } from './nav';
 import { onboardingMessages } from './onboarding';
+import { postingSetMessages } from './posting-sets';
+import { queueMessages } from './queue';
 import { receiptMessages } from './receipt';
 import { settingsMessages } from './settings';
 import { stateMessages } from './states';
 import { statusMessages } from './status';
 import { validationMessages } from './validation';
 import { webAnalyticsMessages } from './web-analytics';
+import { webBlogMessages } from './web-blog';
 import { webCalendarMessages } from './web-calendar';
+import { webComparisonMessages } from './web-comparisons';
 import { webComposerMessages } from './web-composer';
+import { webDemoMessages } from './web-demo';
 import { webMarketingMessages } from './web-marketing';
+import { webPlatformsMessages } from './web-platforms';
 import { webSettingsMessages } from './web-settings';
 import { webShellMessages } from './web-shell';
+import { webToolsMessages } from './web-tools';
+import { webUseCaseMessages } from './web-use-cases';
 import { withoutBetaEnglishFallbacks } from '../beta-fallbacks';
 
-/** Indonesian beta catalog. B5-controlled copy falls back to reviewed English. */
+/** Indonesian beta catalog. B5-controlled legal, billing, and consent copy falls back to reviewed English. */
 export const id = {
   ...navMessages,
   ...actionMessages,
@@ -41,18 +52,29 @@ export const id = {
   ...automationMessages,
   ...webAnalyticsMessages,
   ...growthMessages,
-  ...withoutBetaEnglishFallbacks(settingsMessages),
+  ...withoutBetaEnglishFallbacks(settingsMessages, 'id'),
   ...developerMessages,
   ...authMessages,
   ...onboardingMessages,
+  ...emailMessages,
   ...errorMessages,
+  ...importMessages,
+  ...mediaMessages,
+  ...postingSetMessages,
+  ...queueMessages,
   ...validationMessages,
   ...stateMessages,
   ...statusMessages,
   ...a11yMessages,
-  ...withoutBetaEnglishFallbacks(webMarketingMessages),
-  ...withoutBetaEnglishFallbacks(webSettingsMessages),
+  ...webBlogMessages,
+  ...webComparisonMessages,
+  ...webDemoMessages,
+  ...withoutBetaEnglishFallbacks(webMarketingMessages, 'id'),
+  ...webPlatformsMessages,
+  ...withoutBetaEnglishFallbacks(webSettingsMessages, 'id'),
   ...webShellMessages,
+  ...webToolsMessages,
+  ...webUseCaseMessages,
 } as const;
 
 export type IndonesianCatalog = typeof id;
