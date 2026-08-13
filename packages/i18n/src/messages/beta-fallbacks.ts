@@ -21,7 +21,17 @@
  * locale, which is the intended guard rail: this list cannot get ahead of
  * the work.
  */
-export const FULL_COVERAGE_LOCALE_CODES = ['en', 'pt-BR', 'es', 'de', 'fr', 'ja', 'id', 'hi'] as const;
+export const FULL_COVERAGE_LOCALE_CODES = [
+  'en',
+  'pt-BR',
+  'es',
+  'de',
+  'fr',
+  'ja',
+  'id',
+  'hi',
+  'ar',
+] as const;
 
 /**
  * The eleven namespaces a `FULL_COVERAGE_LOCALE_CODES` locale has actually
