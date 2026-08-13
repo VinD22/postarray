@@ -6,7 +6,6 @@ import { cn } from '@relay/design-system/utils';
 import type { Translator } from '@relay/i18n/translate';
 
 import { StaggerList } from '@/components/motion';
-import { baseTierPriceUnits } from '@/features/billing/tiers';
 import { HeroDemoSection } from '@/features/demo/hero-demo-section';
 import { buildSnippet } from '@/features/developer/lib/setup-snippets';
 import { JsonLd } from '@/features/marketing/components/json-ld';
@@ -16,7 +15,6 @@ import {
   EditorialBigNumber,
   EditorialCard,
   EditorialDisplay,
-  EditorialPricePair,
   EditorialSection,
   EditorialVariantScene,
   Eyebrow,
@@ -209,15 +207,6 @@ const BOUNDARIES = [
   'web.home.honest.noPromises',
   'web.home.honest.noUnattendedPublishing',
 ] as const;
-
-/**
- * The plan's two prices, in whole dollars, read from the tier module rather
- * than typed out here. They were two literals (29 and 300) sitting a few
- * hundred lines above a `TierGrid` that formats the same plan from the tier
- * module's own minor units, so a reprice left this page stating two different
- * prices for one plan at the same time. There is now one source.
- */
-const { month: MONTHLY_PRICE_DOLLARS, year: ANNUAL_PRICE_DOLLARS } = baseTierPriceUnits();
 
 type Pillar = (typeof PILLARS)[number];
 
@@ -609,33 +598,21 @@ export default async function HomePage({
           className="mt-12"
         />
 
-        <div className="mt-12 max-w-sm">
-          <EditorialCard interactive={false}>
-            {/* Both intervals, because a visitor who only ever sees the monthly
-                figure never learns the annual one exists. The saving is stated
-                in whole dollars, never as a percentage: the real discount on
-                29 and 300 is not a round number and the billing copy
-                compliance test rejects a percentage. */}
-            <EditorialPricePair
-              locale={locale}
-              monthlyPriceDollars={MONTHLY_PRICE_DOLLARS}
-              annualPriceDollars={ANNUAL_PRICE_DOLLARS}
-              monthlyLabel={t.t('web.pricing.monthlyLabel')}
-              annualLabel={t.t('web.pricing.annualLabel')}
-              monthlyDetail={t.t('web.pricing.monthlyDetail')}
-              annualDetail={t.t('web.pricing.annualDetail')}
-              annualFraming={t.t('web.pricing.annualFraming')}
-            />
-            <p className="text-body-md text-text-secondary mt-4">
-              {t.t('web.home.v2.sticker.trial')}
-            </p>
-            <p className="mt-6">
-              <TextLink href={ROUTES.pricing} className="text-body-md">
-                {t.t('web.cta.seePricing')}
-              </TextLink>
-            </p>
-          </EditorialCard>
-        </div>
+        {/* One presentation of the ladder on this page, not two. This card used
+            to repeat the Standard column's own two numbers a second time,
+            directly beneath the TierGrid that already states them — the exact
+            "two prices for one plan" confusion the pricing page itself was
+            rebuilt to remove. The trial note and the link to the full page
+            are the part worth keeping; the numbers are not, because the grid
+            above already carries them. */}
+        <p className="text-body-md text-text-secondary mt-8 max-w-sm">
+          {t.t('web.home.v2.sticker.trial')}
+        </p>
+        <p className="mt-4">
+          <TextLink href={ROUTES.pricing} className="text-body-md">
+            {t.t('web.cta.seePricing')}
+          </TextLink>
+        </p>
       </EditorialSection>
 
       {/* 10. Closing. The page's one inverted band. */}

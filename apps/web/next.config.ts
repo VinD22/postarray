@@ -13,6 +13,10 @@ const nextConfig: NextConfig = {
   // The project contract lives in the repository root and must not be shadowed.
   agentRules: false,
   reactStrictMode: true,
+  // Dev-only: some local browser/DNS setups resolve `127.0.0.1` but not
+  // `localhost` for this app's own origin, which Next's cross-origin dev-asset
+  // check then blocks by default. Has no effect on a production build.
+  allowedDevOrigins: ['127.0.0.1', 'localhost'],
   // The Docker runtime stage copies .next/standalone and runs server.js.
   output: 'standalone',
   outputFileTracingRoot: fileURLToPath(new URL('../../', import.meta.url)),
