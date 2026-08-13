@@ -32,6 +32,36 @@ import { DemoFrame } from './demo-frame';
  * nine: a single seekable object is what makes the step indicator's jump exact
  * and keeps pause and resume from drifting.
  *
+ * ## The stage is the size of the scene on it
+ *
+ * The nine panels are wildly different heights — a project card is 187px and
+ * the variant list is 495px at the hero's width — so a stage sized once to the
+ * tallest left the short scenes floating in 300px of nothing with the step
+ * rail stranded at the bottom. It read as a broken layout rather than as a
+ * tour. The stage therefore follows the active scene: heights are measured
+ * once per width, and each scene's entrance carries a matching height tween on
+ * the container.
+ *
+ * That tween is the one animation here that touches a layout property, and it
+ * is cheap on purpose: the scenes are absolutely positioned, so nothing inside
+ * the stage reflows when it resizes. The only things that move are the step
+ * rail and the caption underneath. It is a per-scene tween, never a scrub and
+ * never a tick, which is the line the motion README's performance budget
+ * draws.
+ *
+ * The height is applied from a `gsap.call` rather than authored as a timeline
+ * tween, so it always animates from the height that is really on screen. A
+ * timeline tween caches its start value the first time it renders, and a
+ * visitor who jumps to step 7 from step 2 would poison that cache for every
+ * later loop.
+ *
+ * A frame that changes height would be a frame that moves, because the hero
+ * lays its two columns out centred against each other. So the component
+ * reserves the tallest scene's worth of room on a wrapper around the frame and
+ * lets the frame grow downwards inside it. The wrapper is a constant height, so
+ * the frame's top edge never moves and the space it is not using is outside the
+ * dashed border, where there is nothing to see.
+ *
  * ## It stops when nobody is watching
  *
  * Scrolled out of view, tab in the background, or focus inside the frame: any
@@ -97,6 +127,19 @@ const ROW_STAGGER = 0.09;
 /** Locales whose text `SplitText` must not be split below the line. */
 const NON_LINE_SPLITTABLE_PREFIXES = ['zh', 'ja', 'ko'];
 
+/**
+ * Where one scene sits on the master timeline.
+ *
+ * `start` is where it begins arriving, `arrive` is where it has finished
+ * arriving (the point a jump lands on), and `end` is where the next one takes
+ * over. `start` to `end` is what the step's progress fill measures.
+ */
+interface SceneSpan {
+  start: number;
+  arrive: number;
+  end: number;
+}
+
 /** Why the tour is not playing. Any true reason keeps it paused. */
 interface PauseReasons {
   user: boolean;
@@ -116,10 +159,18 @@ export function HeroDemo({
   className,
 }: HeroDemoProps): ReactNode {
   const scope = useRef<HTMLDivElement>(null);
+  /** The wrapper that holds the tallest scene's worth of room open. */
+  const reserveRef = useRef<HTMLDivElement>(null);
   const listRef = useRef<HTMLOListElement>(null);
   const timelineRef = useRef<gsap.core.Timeline | null>(null);
   const fillRefs = useRef<(HTMLSpanElement | null)[]>([]);
-  const spansRef = useRef<readonly { start: number; end: number }[]>([]);
+  const spansRef = useRef<readonly SceneSpan[]>([]);
+  /** Natural height of each scene at the current width, measured once per width. */
+  const heightsRef = useRef<number[]>([]);
+  /** The scene the stage is currently sized to, so a resize can re-apply it. */
+  const activeRef = useRef(0);
+  /** Sizes the stage to a scene. Called from the timeline and from a jump. */
+  const applyHeightRef = useRef<(index: number, animate: boolean) => void>(() => undefined);
   const pauseRef = useRef<PauseReasons>({
     user: false,
     offScreen: false,
@@ -149,23 +200,73 @@ export function HeroDemo({
 
   useGSAP(
     () => {
-      if (!motionOk || !scope.current || !listRef.current || scenes.length < 2) return undefined;
+      if (!motionOk || !scope.current || !listRef.current || !reserveRef.current) return undefined;
+      if (scenes.length < 2) return undefined;
       const el = scope.current;
       const list = listRef.current;
+      const reserve = reserveRef.current;
 
       const items = gsap.utils.toArray<HTMLElement>('[data-demo-scene]', list);
       if (items.length < 2) return undefined;
 
-      // Collapse the stack into a stage. The only layout read in this
-      // component, taken once at setup rather than on a tick.
-      const tallest = Math.max(...items.map((item) => item.offsetHeight));
-      gsap.set(list, { position: 'relative', height: tallest });
+      // Collapse the stack into a stage. Every layout read in this component
+      // happens here, at setup, or in the resize observer below — never on a
+      // tick and never inside a scroll callback.
       gsap.set(items, {
         position: 'absolute',
         insetBlockStart: 0,
         insetInlineStart: 0,
         inlineSize: '100%',
       });
+      gsap.set(list, { position: 'relative' });
+
+      /**
+       * Re-read every scene's natural height, size the stage to the scene on
+       * it, and hold the tallest scene's worth of room open on the wrapper.
+       *
+       * Reading a scene's height is valid at any time: each one is absolutely
+       * positioned at the stage's full inline size, so `offsetHeight` is its own
+       * content height and owes nothing to the stage's. Text wrapping is the
+       * only input, so this runs once at setup and once per width change, never
+       * on a tick.
+       */
+      const remeasure = (index: number): void => {
+        heightsRef.current = items.map((item) => item.offsetHeight);
+        const tallest = Math.max(...heightsRef.current);
+        const height = heightsRef.current[index] ?? tallest;
+
+        // The reserve is read rather than calculated: put the tallest scene on
+        // the stage, clear last pass's reserve, and ask the wrapper how tall it
+        // is. Subtracting a "chrome" constant instead would be wrong wherever
+        // the frame's height is not the stage's — at the widths where the step
+        // list sits beside the stage and is the taller of the two, it never is.
+        gsap.set(list, { height: tallest });
+        reserve.style.minBlockSize = '';
+        const full = reserve.offsetHeight;
+
+        gsap.set(list, { height });
+        reserve.style.minBlockSize = `${Math.round(full)}px`;
+      };
+
+      const applyHeight = (index: number, animate: boolean): void => {
+        const height = heightsRef.current[index];
+        if (height === undefined) return;
+        activeRef.current = index;
+        if (animate) {
+          gsap.to(list, {
+            height,
+            duration: TRANSITION,
+            ease: EASE_OUT_EXPO,
+            overwrite: 'auto',
+          });
+        } else {
+          gsap.set(list, { height });
+        }
+      };
+      applyHeightRef.current = applyHeight;
+
+      remeasure(0);
+      activeRef.current = 0;
       // `autoAlpha`, not `opacity`: an inactive scene is `visibility: hidden`,
       // so it leaves the accessibility tree and the tab order instead of
       // sitting invisibly on top of the visible one.
@@ -186,21 +287,32 @@ export function HeroDemo({
       const timeline = gsap.timeline({ repeat: -1 });
       timelineRef.current = timeline;
 
-      const spans: { start: number; end: number }[] = [];
+      const spans: SceneSpan[] = [];
 
       scenes.forEach((scene, index) => {
         const item = items[index];
         if (!item) return;
 
         const start = timeline.duration();
-        spans.push({ start, end: start });
+        spans.push({ start, arrive: start, end: start });
 
         timeline.addLabel(`scene-${scene.id}`, start);
-        timeline.call(() => setActive(index), undefined, start);
+        timeline.call(
+          () => {
+            setActive(index);
+            applyHeight(index, true);
+          },
+          undefined,
+          start,
+        );
 
         const previous = items[index - 1];
         if (previous) {
-          timeline.to(previous, { autoAlpha: 0, duration: TRANSITION }, start);
+          // The outgoing scene leaves faster than the incoming one arrives. An
+          // even cross-dissolve holds two whole panels on screen at half
+          // opacity each, which on this ground reads as a printing error; at
+          // this ratio the old one is gone before the new one is legible.
+          timeline.to(previous, { autoAlpha: 0, duration: TRANSITION * 0.55 }, start);
         }
         timeline.fromTo(
           item,
@@ -256,10 +368,19 @@ export function HeroDemo({
           }
         }
 
+        // Everything above is this scene's entrance, so the timeline's length
+        // right now is the instant it has finished arriving. That is where a
+        // jump lands: seeking to the label itself parks the playhead on the
+        // first frame of a fade-in, and since clicking a step also pauses the
+        // tour (focus is inside the frame), the visitor would be left looking
+        // at an empty stage.
+        const arrive = timeline.duration();
+        const span = spans[index];
+        if (span) span.arrive = arrive;
+
         // An empty tween is how a GSAP timeline waits. The hold is the point:
         // a scene nobody can finish reading is a slideshow, not a tour.
         timeline.to({}, { duration: scene.hold }, start + TRANSITION);
-        const span = spans[index];
         if (span) span.end = timeline.duration();
       });
 
@@ -301,6 +422,21 @@ export function HeroDemo({
       el.addEventListener('focusin', onFocusIn);
       el.addEventListener('focusout', onFocusOut);
 
+      // A panel's height depends on how its text wraps, so every width change
+      // invalidates the measurements. Only width is watched: the stage's own
+      // height is animated from here, and reacting to that would be a loop.
+      let lastWidth = list.getBoundingClientRect().width;
+      const observer =
+        typeof ResizeObserver === 'undefined'
+          ? null
+          : new ResizeObserver((entries) => {
+              const width = entries[0]?.contentRect.width ?? lastWidth;
+              if (Math.abs(width - lastWidth) < 1) return;
+              lastWidth = width;
+              remeasure(activeRef.current);
+            });
+      observer?.observe(list);
+
       // A scroll watcher, not an animation: the tween drives a throwaway proxy
       // and touches no DOM. Written as tween vars rather than
       // `ScrollTrigger.create` because `lib/motion/gsap.ts` registers
@@ -329,10 +465,14 @@ export function HeroDemo({
         document.removeEventListener('visibilitychange', onVisibility);
         el.removeEventListener('focusin', onFocusIn);
         el.removeEventListener('focusout', onFocusOut);
+        observer?.disconnect();
+        reserve.style.minBlockSize = '';
         for (const split of splits) split.revert();
         timeline.kill();
         timelineRef.current = null;
         spansRef.current = [];
+        heightsRef.current = [];
+        applyHeightRef.current = () => undefined;
       };
     },
     { scope, dependencies: [motionOk, scenes, dir, lang] },
@@ -355,109 +495,189 @@ export function HeroDemo({
     const timeline = timelineRef.current;
     const scene = scenes[index];
     if (!timeline || !scene) return;
-    timeline.seek(`scene-${scene.id}`);
+    // Land on the finished scene, not on the first frame of its entrance.
+    timeline.seek(spansRef.current[index]?.arrive ?? `scene-${scene.id}`);
     setActive(index);
+    // `seek` suppresses the timeline's own callbacks, so the stage is resized
+    // here rather than being left at the height of the scene we came from.
+    applyHeightRef.current(index, true);
   };
 
   const toggleLabel = running ? pauseLabel : playLabel;
   const ToggleIcon = running ? Pause : Play;
 
   return (
-    <DemoFrame
-      badge={badge}
-      caption={caption}
-      className={className}
-      control={
-        motionOk && scenes.length > 1 ? (
-          // Icon only, with the sentence as the accessible name: the frame is
-          // about 26rem wide in the hero and the full sentence set beside the
-          // badge wrapped onto the badge itself. Targets stay 44x44.
-          <span className="flex shrink-0 items-center gap-1">
-            <Button
-              type="button"
-              variant="ghost"
-              size="lg"
-              onClick={toggle}
-              aria-label={toggleLabel}
-              title={toggleLabel}
-              className="min-h-11 min-w-11 shrink-0 px-0"
-            >
-              <ToggleIcon aria-hidden="true" className="size-4 shrink-0" />
-            </Button>
-            <Button
-              type="button"
-              variant="ghost"
-              size="lg"
-              onClick={restart}
-              aria-label={replayLabel}
-              title={replayLabel}
-              className="min-h-11 min-w-11 shrink-0 px-0"
-            >
-              <RotateCcw aria-hidden="true" className="size-4 shrink-0" />
-            </Button>
-          </span>
-        ) : undefined
-      }
-    >
-      <div ref={scope}>
-        {/*
-          The stack. This is the server layout and the whole tour in reading
-          order; the client only ever changes where these sit, never whether
-          they exist.
-        */}
-        <ol ref={listRef} className="space-y-3">
-          {scenes.map((scene, index) => (
-            <li key={scene.id} data-demo-scene data-demo-scene-index={index}>
-              <p className="text-label text-text-tertiary mb-2">{scene.label}</p>
-              {scene.content}
-            </li>
-          ))}
-        </ol>
-
-        {/*
-          The step indicator. Real buttons, because clicking one moves the
-          timeline, and only rendered once the timeline exists: a control that
-          cannot do anything is a false affordance. The label is text, the
-          active step carries `aria-current`, and the fill is a third signal on
-          top of those two rather than the only one.
-        */}
-        {motionOk && scenes.length > 1 ? (
-          <ol aria-label={stepsLabel} className="mt-4 flex flex-wrap gap-1">
+    /*
+      The room the frame is allowed to use. It is a plain block with no border
+      and no background until the effect gives it a minimum height, so with no
+      JavaScript and under reduced motion it is nothing at all.
+    */
+    <div ref={reserveRef}>
+      <DemoFrame
+        badge={badge}
+        caption={caption}
+        className={className}
+        control={
+          motionOk && scenes.length > 1 ? (
+            // Icon only, with the sentence as the accessible name: the frame is
+            // about 26rem wide in the hero and the full sentence set beside the
+            // badge wrapped onto the badge itself. Targets stay 44x44.
+            <span className="flex shrink-0 items-center gap-1">
+              <Button
+                type="button"
+                variant="ghost"
+                size="lg"
+                onClick={toggle}
+                aria-label={toggleLabel}
+                title={toggleLabel}
+                className="min-h-11 min-w-11 shrink-0 px-0"
+              >
+                <ToggleIcon aria-hidden="true" className="size-4 shrink-0" />
+              </Button>
+              <Button
+                type="button"
+                variant="ghost"
+                size="lg"
+                onClick={restart}
+                aria-label={replayLabel}
+                title={replayLabel}
+                className="min-h-11 min-w-11 shrink-0 px-0"
+              >
+                <RotateCcw aria-hidden="true" className="size-4 shrink-0" />
+              </Button>
+            </span>
+          ) : undefined
+        }
+      >
+        <div
+          ref={scope}
+          className={cn(
+            // Wide enough, and the stage and the chapter list sit side by side:
+            // the tour stops being a small box with a strip of numbers under it
+            // and becomes a thing with a table of contents, where the step you
+            // are on is named rather than numbered. The list is the taller of
+            // the two columns for most scenes, which is also what stops the
+            // frame changing height as the tour runs.
+            motionOk && scenes.length > 1
+              ? 'grid gap-x-8 gap-y-4 lg:grid-cols-[minmax(0,1fr)_minmax(0,15rem)]'
+              : undefined,
+          )}
+        >
+          {/*
+            The stack. This is the server layout and the whole tour in reading
+            order; the client only ever changes where these sit, never whether
+            they exist.
+          */}
+          <ol ref={listRef} className="space-y-3">
             {scenes.map((scene, index) => (
-              <li key={scene.id}>
-                <button
-                  type="button"
-                  onClick={() => jump(index)}
-                  aria-current={index === active ? 'step' : undefined}
-                  aria-label={scene.jumpLabel}
-                  title={scene.jumpLabel}
+              <li key={scene.id} data-demo-scene data-demo-scene-index={index}>
+                {/*
+                  The step name above the panel. It is how the stacked
+                  walkthrough is labelled with no JavaScript and under reduced
+                  motion, so it is always in the server HTML; where the chapter
+                  list is beside the stage naming the same step, it steps aside.
+                */}
+                <p
                   className={cn(
-                    'relative flex min-h-11 min-w-11 flex-col justify-end gap-1 overflow-hidden',
-                    'rounded-sm px-2 pb-1.5 text-start',
-                    'hover:bg-surface-hover',
-                    index === active ? 'text-text-primary' : 'text-text-tertiary',
+                    'text-label text-text-tertiary mb-2',
+                    motionOk && scenes.length > 1 ? 'lg:hidden' : undefined,
                   )}
                 >
-                  <span className="text-label font-mono tabular-nums">{index + 1}</span>
-                  <span className="bg-border-subtle block h-0.5 w-full overflow-hidden rounded-full">
-                    <span
-                      aria-hidden="true"
-                      ref={(node) => {
-                        fillRefs.current[index] = node;
-                      }}
-                      className={cn(
-                        'block h-full w-full origin-[left_center] rounded-full',
-                        index === active ? 'bg-accent-cool' : 'bg-transparent',
-                      )}
-                      style={{ transform: 'scaleX(0)' }}
-                    />
-                  </span>
-                </button>
+                  {scene.label}
+                </p>
+                {scene.content}
               </li>
             ))}
           </ol>
-        ) : null}
-      </div>
-    </DemoFrame>
+
+          {/*
+            The chapter list. Real buttons, because clicking one moves the
+            timeline, and only rendered once the timeline exists: a control that
+            cannot do anything is a false affordance. The name is text, the
+            active step carries `aria-current`, and the fill is a third signal on
+            top of those two rather than the only one.
+          */}
+          {motionOk && scenes.length > 1 ? (
+            <ol
+              aria-label={stepsLabel}
+              className={cn(
+                // Below the stage it is a rail across the foot of the frame,
+                // taking the frame's own padding back: nine 44px targets need
+                // 396px and the padded content box is 382px in a hero column,
+                // which is exactly how the ninth step used to end up orphaned on
+                // a row of its own. Beside the stage it is a plain list.
+                'border-border-subtle -mx-3 border-t px-1 pt-2 sm:-mx-4',
+                'lg:mx-0 lg:border-t-0 lg:px-0 lg:pt-0',
+                // Nine wraps evenly or not at all: three is the only other
+                // number that divides it. Three rows of three on a phone, one
+                // row of nine once nine targets fit, one column beside the
+                // stage once there is room for one.
+                'grid grid-cols-3 gap-x-1 gap-y-1 sm:grid-cols-9 lg:grid-cols-1 lg:gap-y-0.5',
+              )}
+            >
+              {scenes.map((scene, index) => (
+                <li key={scene.id} className="min-w-0">
+                  <button
+                    type="button"
+                    onClick={() => jump(index)}
+                    aria-current={index === active ? 'step' : undefined}
+                    aria-label={scene.jumpLabel}
+                    title={scene.jumpLabel}
+                    className={cn(
+                      'flex min-h-11 w-full min-w-11 flex-col items-center justify-center gap-1.5',
+                      'rounded-sm px-1 lg:items-stretch lg:justify-start lg:px-2 lg:py-1.5',
+                      'hover:bg-surface-hover',
+                      index === active
+                        ? 'text-text-primary lg:bg-surface-raised'
+                        : 'text-text-tertiary',
+                    )}
+                  >
+                    <span className="flex items-baseline gap-2">
+                      <span className="text-label font-mono tabular-nums">{index + 1}</span>
+                      {/*
+                        The step's name, at the width where the list is a column
+                        with room for it. Hidden below that, where the button is
+                        a 44px tick and the name is its accessible name.
+                      */}
+                      <span className="text-body-sm hidden min-w-0 text-start leading-[1.4] lg:block">
+                        {scene.label}
+                      </span>
+                    </span>
+                    <span
+                      className={cn(
+                        'block h-0.5 w-full max-w-8 overflow-hidden rounded-full lg:max-w-none',
+                        // Below the column width the empty track is the tick,
+                        // so all nine are drawn. In the column, nine hairlines
+                        // read as nine underlines, so only the step being
+                        // played carries one.
+                        index === active ? 'bg-border-subtle' : 'bg-border-subtle lg:bg-transparent',
+                      )}
+                    >
+                      <span
+                        aria-hidden="true"
+                        ref={(node) => {
+                          fillRefs.current[index] = node;
+                        }}
+                        className={cn(
+                          'block h-full w-full rounded-full',
+                          index === active ? 'bg-accent-cool' : 'bg-transparent',
+                        )}
+                        // `transform-origin` has no logical form, so the growth
+                        // direction is resolved against `dir` the same way
+                        // `Marquee` resolves its travel.
+                        style={{
+                          transform: 'scaleX(0)',
+                          transformOrigin: dir === 'rtl' ? 'right center' : 'left center',
+                        }}
+                      />
+                    </span>
+                  </button>
+                </li>
+              ))}
+            </ol>
+          ) : null}
+        </div>
+      </DemoFrame>
+    </div>
   );
 }

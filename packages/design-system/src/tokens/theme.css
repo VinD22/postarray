@@ -6,35 +6,59 @@
  * An editorial publishing desk. Warm paper, near-black ink, generous
  * whitespace. Hierarchy via type and space, tonal surface steps, hairline
  * rules — not hard shadows or neon fills. Warning, destructive, success and
- * info are semantic exceptions, never decorative. Provider brand colours
- * exist only as 8px identity dots.
+ * info are semantic exceptions, never decorative. Provider brand colours are
+ * governed by the rule in the PROVIDER BRAND COLOUR section below.
  *
- * The primary chromatic accent: a deep terracotta (#B4462B in light,
- * lightened to #E07A5F in dark). It carries links, focus rings, text
- * selection, the active tab and the calendar "today" marker — the places a
- * reader needs a colour affordance and ink alone gives none. It is
- * deliberately not the primary button fill: the primary commit action stays
- * ink so the accent reads as navigation and state, not as the loudest
- * surface on the screen.
+ * The navigational accent: a deep terracotta (#B4462B in light, lightened to
+ * #E07A5F in dark). It carries links, focus rings, text selection, the active
+ * tab and the calendar "today" marker — the places a reader needs a colour
+ * affordance and ink alone gives none. It is deliberately not a button fill.
  *
- * Two more accent families (the "loud and alive" pass)
- * ----------------------------------------------------
+ * The action accent: a vivid vermilion (#CE2700 in light, lightened to
+ * #FF6D32 in dark). It carries exactly one thing — the primary commit button.
+ * This header used to say the commit action stays ink "so the accent reads as
+ * navigation and state, not as the loudest surface on the screen". That was
+ * right for a quiet editorial world and wrong for a product about social
+ * media: the one button a visitor is asked to press should be the loudest
+ * surface on the screen. Ink is no longer the commit fill. Terracotta still
+ * is not: navigation and action are now two different reds, 27 ΔE*ab apart in
+ * light and 30 in dark, which is twice the separation of the deliberate
+ * near-neighbours called out further down.
+ *
+ * Three more accent families (the "loud and alive" pass)
+ * -----------------------------------------------------
  * This header used to end "There is no second accent." That sentence is gone
  * on purpose. The editorial system is keeping its restraint and its gates, and
- * gaining a governed *scene vocabulary* on top: choreographed marketing
+ * gaining two things on top: one loud chromatic action colour in product
+ * chrome, and a governed *scene vocabulary* for choreographed marketing
  * moments that need more than one hue to say "this is energy" and "this is
- * live". Two families join terracotta, and nothing else may:
+ * live". Three families join terracotta, and nothing else may. The first is
+ * product chrome; the other two are scene only:
  *
+ *   VERMILION   (--accent-action-*) saturated warm red-orange. The primary
+ *                                  commit button, and nothing else.
+ *                                  #CE2700 light / #FF6D32 dark.
  *   MARIGOLD    (--accent-warm-*)  warm gold. Energy, celebration, highlight.
  *                                  #8A6100 light / #F5C233 dark.
  *   ULTRAMARINE (--accent-cool-*)  deep blue-violet. The cool counterweight;
  *                                  "live" / "published" moments.
  *                                  #3B4CC0 light / #8B9BF4 dark.
  *
- * Both mirror terracotta's token set exactly (default / hover / active /
+ * All three mirror terracotta's token set exactly (default / hover / active /
  * subtle-bg / subtle-bg-hover / on-accent) so a consumer that can style with
- * one can style with any. Neither is wired to a status meaning: status stays
+ * one can style with any. None is wired to a status meaning: status stays
  * success/warning/destructive/info, and status is never colour alone.
+ *
+ * Vermilion's light step is #CE2700, not the #E5401F–#FF4A24 the eye reaches
+ * for in this hue. Both of those were measured and rejected: white on #E5401F
+ * is 4.13:1 and white on #FF4A24 is 3.36:1, under the 4.5:1 body floor for the
+ * label the button actually carries. The ramp was walked down in luminance
+ * until white cleared the floor with headroom (5.36:1), then pushed back out
+ * to the most chromatic value at that luminance — C*ab 85.1 against
+ * terracotta's 57.9, so it is unmistakably the hotter, more saturated red even
+ * though it is the darker one. The dark step lightens rather than saturates
+ * (#FF6D32, C*ab 78.4), because on a near-black canvas the same saturation
+ * reads as a smaller, dimmer shape.
  *
  * Marigold's light step sits noticeably darker than a "pure" marigold
  * (#B07D10 would have been the eye's choice) because #B07D10 reads only
@@ -47,6 +71,17 @@
  * dark, 11.0 light). They are distinguishable, but they are not a substitute
  * for each other: an accent family never carries status, and every status
  * surface in this codebase pairs its colour with a word and an icon.
+ *
+ * The three reds are the separation worth watching, so all three gaps are
+ * measured rather than eyeballed. Vermilion to terracotta: ΔE*ab 27.2 light,
+ * 30.2 dark. Vermilion to the destructive solid: 35.2 light, 22.1 dark — the
+ * dark figure is the tightest one in the system and it is why the dark
+ * vermilion sits at hue 47.8° (flame) rather than the 43.0° the light step uses:
+ * the dark destructive coral (#E85D4D) lives at 34.9°, and a lightened
+ * vermilion drifts straight into it unless it is pushed toward orange. If a
+ * future retune moves either, re-measure this gap before shipping. A primary
+ * button and a delete button that read as the same colour is the failure this
+ * paragraph exists to prevent.
  *
  * Dark is designed, not inverted. A warm near-black canvas with paper-ink
  * text; the terracotta lightens so it reads on the dark ground and still
@@ -67,11 +102,13 @@
  * visual boundary of interactive controls.
  *
  * Editorial palette (Noteform Pitch). Every number below is live — the
- * 141-pair gate in contrast.test.ts (282 assertions across the two themes)
- * is green against it. It was 114 pairs / 228 assertions before the two new
- * accent families landed (+26 for the two families, +1 because terracotta
- * picked up the `border.strong on subtleBg` pair the shared generator gives
- * every family). The gate grows, it never shrinks.
+ * 154-pair gate in contrast.test.ts (308 assertions across the two themes)
+ * is green against it. It was 114 pairs / 228 assertions before the marigold
+ * and ultramarine families landed (+26 for the two families, +1 because
+ * terracotta picked up the `border.strong on subtleBg` pair the shared
+ * generator gives every family), and 141 / 282 before vermilion joined them
+ * (+13, the full generator set for a fourth family). The gate grows, it never
+ * shrinks.
  *
  * LIGHT THEME                                canvas  raised  sunken  overlay
  *   text.primary       #141413               18.02   18.43   16.11   18.43
@@ -95,6 +132,16 @@
  *                                    destructive 5.13  info 4.90
  *   text.inverted #FFFCF8 on surface.inverted #141413 = 18.02
  *   border.bold #141413 on canvas #FFFCF8 = 18.02; on raised #FFFFFF = 18.43
+ *
+ *   VERMILION light (--accent-action-*)    canvas  raised  sunken  overlay
+ *     accent-action.default #CE2700         5.24    5.36    4.73    5.36
+ *     on-accent   #FFFFFF on default #CE2700 = 5.36
+ *     on-accent   #FFFFFF on hover   #B32200 = 6.68
+ *     on-accent   #FFFFFF on active  #971C00 = 8.46
+ *     accent-action #CE2700 on subtle #FCF0EA = 4.80 (hover #FBECE5 4.66)
+ *     text.primary #141413 on subtle #FCF0EA = 16.49 (hover 16.00)
+ *     border.focus #B4462B on subtle #FCF0EA = 4.88
+ *     border.strong #6B6866 on subtle #FCF0EA = 4.95
  *
  *   MARIGOLD light  (--accent-warm-*)      canvas  raised  sunken  overlay
  *     accent-warm.default #8A6100           5.42    5.54    4.88    5.54
@@ -141,6 +188,16 @@
  *   blush.on    #141413 on blush.bg    #EDE8E0 = 15.12 (hover 14.29)
  *   border.bold #E8E2D6 on canvas #0F0F0E = 14.87; on raised #1C1C1A = 13.23
  *
+ *   VERMILION dark  (--accent-action-*)    canvas  raised  sunken  overlay
+ *     accent-action.default #FF6D32         6.84    6.08    7.14    5.95
+ *     on-accent   #141413 on default #FF6D32 = 6.57
+ *     on-accent   #141413 on hover   #FF8A5B = 7.93
+ *     on-accent   #141413 on active  #E35F2A = 5.21
+ *     accent-action #FF6D32 on subtle #2E1B13 = 5.84 (hover #3F2215 5.16)
+ *     text.primary #FFFCF8 on subtle #2E1B13 = 16.01 (hover 14.15)
+ *     border.focus #E07A5F on subtle #2E1B13 = 5.55
+ *     border.strong #8A8784 on subtle #2E1B13 = 4.58
+ *
  *   MARIGOLD dark   (--accent-warm-*)      canvas  raised  sunken  overlay
  *     accent-warm.default #F5C233          11.55   10.28   12.07   10.06
  *     on-accent   #141413 on default #F5C233 = 11.10
@@ -161,15 +218,50 @@
  *     border.focus #E07A5F on subtle #13152C = 6.08
  *     border.strong #8A8784 on subtle #13152C = 5.02
  *
- * Provider identity dots clear 3:1 against their own theme canvas in both
+ * Provider identity colours clear 3:1 against their own theme canvas in both
  * themes (lowest: facebook 5.32 light, youtube 5.63 dark).
  *
- * Terracotta remains the primary accent — the one that carries links, focus
- * and selection. Marigold and ultramarine are scene colours: they belong to
- * budgeted marketing choreography (see
+ * THE FOCUS RING ON THE VERMILION FILL. Measured, because this is exactly
+ * where focus rings disappear: terracotta on the vermilion fill is 1.02:1 in
+ * light and 1.05:1 in dark. Two reds of the same luminance are invisible
+ * against each other, and if the ring were drawn on the fill the primary
+ * button would have no visible focus state at all. It is not: the one focus
+ * treatment in section 5 is `outline-offset: 2px`, so the ring is drawn in the
+ * gap OUTSIDE the control, on whatever surface the button sits on, never on
+ * the fill. Those are the pairs the gate already measures — `border.focus on
+ * surface.*` (5.33 light / 6.50 dark on canvas) and `border.focus on
+ * <family>.subtleBg` (4.88 light / 5.55 dark for vermilion's own wash). Any
+ * component that switches the primary button to `focusRingInset` would put the
+ * ring back on the fill and silently lose it; use the offset ring.
+ *
+ * Terracotta remains the navigational accent — the one that carries links,
+ * focus and selection. Vermilion is the action accent and carries the primary
+ * commit button only. Marigold and ultramarine are scene colours: they belong
+ * to budgeted marketing choreography (see
  * `apps/web/src/features/marketing/components/scene/scene-budget.test.ts`),
  * not to product chrome. The cta/blush groups survive as warm paper tints
- * rather than neon yellow/pink, and the primary button fill stays ink.
+ * rather than neon yellow/pink.
+ *
+ * ---------------------------------------------------------------------------
+ * PROVIDER BRAND COLOUR
+ *
+ * The rule used to be: brand colour on 8px identity dots and 1px rules, never
+ * a surface, never the sole identifier. That is amended here, deliberately and
+ * exactly this far — brand colour is ADDITIONALLY permitted at logo scale in a
+ * provider row or grid, on these conditions:
+ *
+ *   1. The mark is a provider logo or glyph, not a block of colour.
+ *   2. Its name is present as text, in the same row or grid cell. Colour is
+ *      never the sole identifier, which is the same requirement the 8px dot
+ *      has always carried and the reason it survives contact with colour
+ *      blindness and with a monochrome print stylesheet.
+ *   3. It never becomes a page surface: no brand-coloured band, card, button
+ *      or section background, in any theme.
+ *
+ * Everything outside those three lines is still banned. This is not a licence
+ * for brand-coloured fills; it is a licence for a row of real logos, in their
+ * real colours, above their names — the one glance that tells a visitor which
+ * networks we publish to, and that a row of monochrome dots cannot.
  *
  * ---------------------------------------------------------------------------
  * GRADIENT AND TEXTURE POLICY
@@ -232,9 +324,9 @@
      carry ink text at 4.5:1 when used as a fill. The 50/100 and 900/950
      steps are the subtle selected-row washes for their respective themes.
 
-     This ramp is deliberately NOT wired to the primary button: the primary
-     commit action stays ink-filled. Terracotta marks navigation, state and
-     selection, not the loudest button on the screen. */
+     This ramp is deliberately NOT wired to the primary button — that is
+     vermilion's job, below. Terracotta marks navigation, state and selection:
+     links, focus rings, selection, the active tab, the "today" marker. */
   --relay-terracotta-50: #fbf1ed; /* light subtle bg */
   --relay-terracotta-100: #f9eee9; /* light subtle bg, hover */
   --relay-terracotta-300: #ec8b72; /* dark hover */
@@ -245,6 +337,34 @@
   --relay-terracotta-800: #863019; /* light active */
   --relay-terracotta-900: #331a13; /* dark subtle bg, hover */
   --relay-terracotta-950: #26140f; /* dark subtle bg */
+
+  /* Vermilion — the action accent. One job: the fill of the primary commit
+     button, in both themes. Where terracotta is fired clay and belongs to the
+     paper, this is a signal flare that does not.
+
+     Same step grammar as terracotta above: 50/100 are the light theme's
+     subtle washes, 300/400/500 the dark theme's hover/default/active,
+     600/700/800 the light theme's default/hover/active, and 900/950 the dark
+     theme's subtle washes.
+
+     The 600 step is #CE2700 rather than the #E5401F–#FF4A24 this hue wants to
+     be, because the button carries a label: white measures 4.13:1 on #E5401F
+     and 3.36:1 on #FF4A24, and a 4.2 is not a pass with a "but it's large
+     text" attached to it. #CE2700 carries white at 5.36:1 and is the most
+     chromatic value available at that luminance (C*ab 85.1 against
+     terracotta's 57.9). The dark 400 step lightens instead — #FF6D32, pushed
+     to hue 47.8° so a lightened vermilion does not collide with the dark
+     destructive coral #E85D4D at 34.9°. */
+  --relay-vermilion-50: #fcf0ea; /* light subtle bg */
+  --relay-vermilion-100: #fbece5; /* light subtle bg, hover */
+  --relay-vermilion-300: #ff8a5b; /* dark hover */
+  --relay-vermilion-400: #ff6d32; /* dark default */
+  --relay-vermilion-500: #e35f2a; /* dark active */
+  --relay-vermilion-600: #ce2700; /* light default */
+  --relay-vermilion-700: #b32200; /* light hover */
+  --relay-vermilion-800: #971c00; /* light active */
+  --relay-vermilion-900: #3f2215; /* dark subtle bg, hover */
+  --relay-vermilion-950: #2e1b13; /* dark subtle bg */
 
   /* Marigold — the warm scene accent. Energy, celebration, the highlight
      moment in a choreographed section.
@@ -379,10 +499,10 @@
   --text-inverted: var(--relay-paper-50);
   --text-accent: var(--relay-terracotta-600);
 
-  /* The single chromatic accent. Links, focus, selection, the active tab
+  /* The navigational accent. Links, focus, selection, the active tab
      underline and the calendar "today" marker. Not the primary button: that
-     stays ink-filled so the accent reads as navigation and state, not as
-     the loudest surface on the screen. */
+     is --accent-action-* below, so this one keeps reading as navigation and
+     state rather than as a call to action. */
   --accent-default: var(--relay-terracotta-600);
   --accent-hover: var(--relay-terracotta-700);
   --accent-active: var(--relay-terracotta-800);
@@ -390,8 +510,19 @@
   --accent-subtle-bg-hover: var(--relay-terracotta-100);
   --accent-on-accent: var(--relay-paper-0);
 
-  /* The two scene accents. Same six-token shape as the accent above, so a
-     component that can be styled by one can be styled by any of the three.
+  /* The action accent. Same six-token shape as the accent above. It fills the
+     primary commit button and nothing else — not links, not focus, not
+     selection, not a band, not a badge. One vermilion surface per screen is
+     what makes it read as "press this"; two make it read as decoration. */
+  --accent-action-default: var(--relay-vermilion-600);
+  --accent-action-hover: var(--relay-vermilion-700);
+  --accent-action-active: var(--relay-vermilion-800);
+  --accent-action-subtle-bg: var(--relay-vermilion-50);
+  --accent-action-subtle-bg-hover: var(--relay-vermilion-100);
+  --accent-action-on-accent: var(--relay-paper-0);
+
+  /* The two scene accents. Same six-token shape as the accents above, so a
+     component that can be styled by one can be styled by any of the four.
 
      These are NOT product chrome. Terracotta stays the accent that carries
      links, focus and selection everywhere; warm and cool exist for budgeted
@@ -514,6 +645,14 @@
     --accent-subtle-bg-hover: var(--relay-terracotta-900);
     --accent-on-accent: var(--relay-ink);
 
+    /* Action accent — see the comment in section 2. */
+    --accent-action-default: var(--relay-vermilion-400);
+    --accent-action-hover: var(--relay-vermilion-300);
+    --accent-action-active: var(--relay-vermilion-500);
+    --accent-action-subtle-bg: var(--relay-vermilion-950);
+    --accent-action-subtle-bg-hover: var(--relay-vermilion-900);
+    --accent-action-on-accent: var(--relay-ink);
+
     /* Scene accents — see the comment in section 2. Dark uses the lightened
        300/400/500 steps as text/fill and the 900/950 steps as the washes,
        exactly as terracotta does. */
@@ -617,6 +756,14 @@
   --accent-subtle-bg: var(--relay-terracotta-950);
   --accent-subtle-bg-hover: var(--relay-terracotta-900);
   --accent-on-accent: var(--relay-ink);
+
+  /* Action accent — see the comment in section 2. */
+  --accent-action-default: var(--relay-vermilion-400);
+  --accent-action-hover: var(--relay-vermilion-300);
+  --accent-action-active: var(--relay-vermilion-500);
+  --accent-action-subtle-bg: var(--relay-vermilion-950);
+  --accent-action-subtle-bg-hover: var(--relay-vermilion-900);
+  --accent-action-on-accent: var(--relay-ink);
 
   /* Scene accents — see the comment in section 2. Dark uses the lightened
      300/400/500 steps as text/fill and the 900/950 steps as the washes,
@@ -734,6 +881,13 @@
   --color-accent-subtle: var(--accent-subtle-bg);
   --color-accent-subtle-hover: var(--accent-subtle-bg-hover);
   --color-accent-on: var(--accent-on-accent);
+
+  --color-accent-action: var(--accent-action-default);
+  --color-accent-action-hover: var(--accent-action-hover);
+  --color-accent-action-active: var(--accent-action-active);
+  --color-accent-action-subtle: var(--accent-action-subtle-bg);
+  --color-accent-action-subtle-hover: var(--accent-action-subtle-bg-hover);
+  --color-accent-action-on: var(--accent-action-on-accent);
 
   --color-accent-warm: var(--accent-warm-default);
   --color-accent-warm-hover: var(--accent-warm-hover);

@@ -57,10 +57,16 @@ const mediaIcon: Record<CalendarEntry['mediaKind'], ReactNode> = {
 
 /**
  * The provider's identity colour, reused here as a decorative inline-start
- * bar. It is never the only carrier of the platform: `ProviderMark` beside
+ * spine. It is never the only carrier of the platform: `ProviderMark` beside
  * the time already names the platform for assistive technology, so this bar
  * is `aria-hidden` and purely reinforces what the mark and the account label
  * already say.
+ *
+ * It runs the full height of the chip and is flush with its start edge rather
+ * than floating inside it. In a month cell three or four chips are stacked
+ * four pixels apart and an 8px dot is the only other platform signal; a
+ * continuous spine is what makes "two of these are LinkedIn" readable without
+ * reading anything.
  */
 const providerBarClass: Record<ProviderId, string> = {
   x: 'bg-brand-x',
@@ -192,14 +198,19 @@ export function EntryChip({
         // change on this chip uses.
         dragging ? 'duration-(--duration-fast)' : 'duration-(--duration-base)',
         'ease-(--ease-out-back) motion-reduce:transition-none',
-        density === 'compact' ? 'gap-1 py-1 ps-2.5 pe-1' : 'gap-1 py-1.5 ps-3 pe-2',
+        // The inline-start padding clears the identity spine on both densities.
+        density === 'compact' ? 'gap-1 py-1 ps-3 pe-1.5' : 'gap-1.5 py-2 ps-3.5 pe-2',
         className,
       )}
     >
       <span
         aria-hidden="true"
         className={cn(
-          'pointer-events-none absolute inset-y-1 start-0.5 w-[3px] rounded-full',
+          // Inside the chip's 1px border and carrying its start radius, rather
+          // than clipped by an `overflow` rule: `hiddenStateClassesIn` reads
+          // every class on this surface looking for hidden initial state, and
+          // `overflow-hidden` is indistinguishable from `hidden` to it.
+          'pointer-events-none absolute inset-y-px start-px w-1 rounded-s-md',
           providerBarClass[entry.provider],
         )}
       />

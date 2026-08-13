@@ -12,6 +12,22 @@
  * the post keeps the wall clock time it was scheduled for, because that is the
  * only reading of "move this to Thursday" that does not quietly reschedule the
  * hour as well.
+ *
+ * ## The month is the shape, not the range
+ *
+ * `computeRange` pads the grid out to whole weeks, so the first and last rows
+ * carry days belonging to the months either side. Those days are real, are
+ * droppable and hold real posts, so they are shown — but on a sunken ground
+ * with a quieter date, because a month grid whose edges look exactly like its
+ * middle is a grid you have to count your way around.
+ *
+ * ## What the date is allowed to weigh
+ *
+ * The date is the cell's address, not its content. It stays small, tabular and
+ * secondary so the posts under it are the thing the eye lands on, and it is set
+ * on a fixed-width mark so that 9 and 30 sit in the same column down the week.
+ * Exactly one date in the view is loud: today, wearing the filled mark that the
+ * week grid's heading also uses.
  */
 
 import { useMemo, useRef, type PointerEvent as ReactPointerEvent, type ReactNode } from 'react';
@@ -85,6 +101,7 @@ export function CalendarMonth({
   }, [entries, timeZone]);
 
   const weekdayNames = range.days.slice(0, 7);
+  const anchorMonth = dominantMonth(range.days, timeZone);
 
   return (
     <section ref={scope} aria-label={label} className="relay-scrollbar overflow-x-auto">
@@ -94,7 +111,7 @@ export function CalendarMonth({
             <h3
               key={day.toISOString()}
               {...{ [WEEK_CELL_ATTRIBUTE]: '' }}
-              className="text-label text-text-secondary px-2 py-1.5"
+              className="text-label text-text-secondary px-2.5 py-2"
             >
               {format.weekdayShort(day)}
             </h3>
@@ -110,6 +127,7 @@ export function CalendarMonth({
             const attention = dayEntries.some(needsAttention);
             const today = isSameDay(day, new Date(), timeZone);
             const isTarget = targetInstant !== null && isSameDay(day, targetInstant, timeZone);
+            const outside = wall.month !== anchorMonth;
 
             return (
               <div
@@ -117,7 +135,11 @@ export function CalendarMonth({
                 data-drop-instant={day.toISOString()}
                 data-drop-granularity="day"
                 className={cn(
-                  'bg-surface-canvas flex min-h-28 flex-col gap-1 p-1.5',
+                  'flex min-h-32 flex-col gap-1.5 p-2',
+                  // The padding weeks either side of the month sit on the sunken
+                  // ground, so a glance finds the month's own edges without
+                  // reading a single number.
+                  outside ? 'bg-surface-sunken' : 'bg-surface-canvas',
                   // Snaps rather than animates: the outline is the only thing
                   // that changes as the pointer or the arrow keys move.
                   isTarget && 'outline-accent outline-2 outline-offset-[-2px] outline-dashed',
@@ -126,7 +148,7 @@ export function CalendarMonth({
                   isTarget && draggingKey !== null && 'bg-accent-subtle',
                 )}
               >
-                <div className="flex items-baseline justify-between gap-1">
+                <div className="flex items-center justify-between gap-1">
                   <a
                     href={hrefForDay(day)}
                     {...(today ? { [TODAY_CELL_ATTRIBUTE]: '' } : {})}
@@ -135,17 +157,24 @@ export function CalendarMonth({
                       count: dayEntries.length,
                     })}
                     className={cn(
-                      'text-body-sm inline-block rounded-full px-1.5 tabular-nums no-underline',
+                      // A fixed-width mark so the dates line up down the column
+                      // whether they are one digit or two, and a 24px box so the
+                      // link is a target rather than two characters of text.
+                      'text-body-sm inline-flex h-6 min-w-6 items-center justify-center',
+                      'rounded-full px-1 font-medium tabular-nums no-underline',
                       today
-                        ? 'bg-cta text-cta-on border-border-bold border-2 font-semibold'
-                        : 'text-text-secondary hover:bg-surface-hover hover:text-text-primary',
+                        ? 'bg-cta text-cta-on'
+                        : cn(
+                            'hover:bg-surface-hover hover:text-text-primary',
+                            outside ? 'text-text-tertiary' : 'text-text-secondary',
+                          ),
                       focusRingInset,
                     )}
                   >
                     {format.dayNumber(day)}
                   </a>
                   {attention ? (
-                    <span className="border-warning-border bg-warning-bg text-label text-warning-fg rounded-sm border px-1">
+                    <span className="border-warning-border bg-warning-bg text-label text-warning-fg rounded-sm border px-1 py-0.5">
                       {t('calendar.queue.failed')}
                     </span>
                   ) : null}
@@ -170,7 +199,10 @@ export function CalendarMonth({
                   <a
                     href={hrefForDay(day)}
                     className={cn(
-                      'text-label text-text-accent rounded-sm px-1 py-0.5 no-underline',
+                      // Pinned to the foot of the cell, so on a dense day the
+                      // three posts read as a stack and this reads as the
+                      // cell's own footer rather than as a fourth post.
+                      'text-label text-text-accent mt-auto rounded-sm px-1 py-1 no-underline',
                       'hover:bg-accent-subtle',
                       focusRingInset,
                     )}
@@ -185,4 +217,30 @@ export function CalendarMonth({
       </div>
     </section>
   );
+}
+
+/**
+ * Which month this grid is a grid of.
+ *
+ * The range is whole weeks, so it is the month that holds most of the days: a
+ * padded grid is four to six weeks and the padding is at most six days at each
+ * end, so the month itself is always the majority. Derived rather than passed
+ * in, because the range is already the single source of truth for what is on
+ * screen and a second prop saying the same thing is a second thing to get
+ * wrong.
+ */
+function dominantMonth(days: readonly Date[], timeZone: string): number {
+  const counts = new Map<number, number>();
+  let best = 0;
+  let bestCount = 0;
+  for (const day of days) {
+    const { month } = toWallClock(day, timeZone);
+    const count = (counts.get(month) ?? 0) + 1;
+    counts.set(month, count);
+    if (count > bestCount) {
+      best = month;
+      bestCount = count;
+    }
+  }
+  return best;
 }

@@ -57,12 +57,14 @@ export const webDemoMessages = {
 
   'web.demo.title': 'How it works, in the order you meet it',
   'web.demo.lede':
-    'Six steps, from an empty workspace to the record of what happened. Each one shows the surface you would actually be looking at, with sample content in it.',
+    'Nine steps, from an empty workspace to the record of what happened. Each one shows the surface you would actually be looking at, with sample content in it. Nothing on this page moves on its own, so you can read it at your own pace.',
   'web.demo.notice.title': 'This is a demonstration, not a live account',
   'web.demo.notice.body':
     'Every panel here is the product interface with sample content in it. No connector has passed provider verification, so nothing publishes to any platform through this product today. Where the workflow stops, the page says so instead of drawing the rest.',
-  'web.demo.contents.title': 'The six steps',
+  'web.demo.contents.title': 'The nine steps',
   'web.demo.stepLabel': 'Step {position} of {total}',
+  'web.demo.next': 'Next: {step}',
+  'web.demo.closing.pricing': 'See what it costs',
   'web.demo.closing.title': 'That is the whole loop',
   'web.demo.closing.body':
     'Nothing above is a mock up of a product we hope to build. It is the interface as it stands, with the publishing half honestly marked as unfinished.',
@@ -82,6 +84,10 @@ export const webDemoMessages = {
   'web.demo.step.compose.title': 'Write it once, adapt it per platform',
   'web.demo.step.compose.body':
     'You write a master draft. Selecting one account opens an override for that account alone, with its own limits and its own preview. Nothing you write for LinkedIn changes what X receives, and the checks under each version run before anything is scheduled.',
+
+  'web.demo.step.variants.title': 'See what each account actually receives',
+  'web.demo.step.variants.body':
+    'One draft becomes one version per account, each written for the platform it goes to: a shorter line for X, the full release note for LinkedIn, a caption and alt text for Instagram. You edit any of them without touching the others, and every version carries the check that applies to it.',
 
   'web.demo.step.schedule.title': 'Give it a time, or hand it to the queue',
   'web.demo.step.schedule.body':

@@ -8,13 +8,28 @@ import { elevationRamp, focusRing, pressable, transitionBase } from '../utils/st
 import { Spinner } from './spinner';
 
 /**
- * The commit fill. Ink in light, paper in dark, with the inverted text token
- * on top: 18:1 in both themes. Hover softens the fill by one ink step rather
- * than tinting it, because there is no second accent to move toward.
+ * The commit fill: vermilion, with its own on-accent label on top. 5.36:1 in
+ * light (#FFFFFF on #CE2700) and 6.57:1 in dark (#141413 on #FF6D32), both
+ * clear of the 4.5:1 body floor. Hover and active are the family's own darker
+ * (light) / lighter-then-darker (dark) steps rather than an opacity change, so
+ * every state is a measured pair in `documentedContrastPairs`.
+ *
+ * This used to be ink on paper. It is vermilion because the one button a
+ * visitor is asked to press should be the loudest surface on the screen, and
+ * on a page about social media an ink rectangle is not. Terracotta is
+ * untouched and still carries links, focus and selection — see the "action
+ * accent" note in theme.css for why those are two different reds and how far
+ * apart they measure.
+ *
+ * The focus ring stays terracotta and stays OUTSIDE the fill: `focusRing` is
+ * `outline-offset-2`, so the ring lands on the surface behind the button
+ * (5.33:1 light / 6.50:1 dark on canvas), never on the vermilion, where it
+ * would measure 1.02:1 and be invisible. Do not swap this variant to
+ * `focusRingInset`.
  */
-const inkFilled = [
-  'border-transparent bg-surface-inverted text-text-inverted',
-  'hover:bg-text-secondary active:bg-surface-inverted',
+const actionFilled = [
+  'border-transparent bg-accent-action text-accent-action-on',
+  'hover:bg-accent-action-hover active:bg-accent-action-active',
 ].join(' ');
 
 /** Every filled variant falls back to the same quiet, flat disabled state. */
@@ -30,10 +45,11 @@ const filledDisabled =
  * is never used for a merely irreversible-feeling action, only for one that
  * removes or disconnects something.
  *
- * Primary is ink filled, not chromatic. The terracotta accent carries links,
- * focus, selection and state; if it also carried the commit button it would
- * stop reading as navigation and start reading as decoration. Ink on paper is
- * the loudest thing this system says.
+ * Primary is a vermilion fill (`--accent-action-*`), the one chromatic surface
+ * in the system that is allowed to shout. Terracotta still carries links,
+ * focus, selection and state and is deliberately not this fill: navigation and
+ * action are two different reds, far enough apart to read as two different
+ * things (ΔE*ab 27.2 light / 30.2 dark).
  *
  * `cta` is an alias of primary, on its way out. It renders exactly the primary
  * treatment: there is no separate poster-slab commit button any more. Five
@@ -60,10 +76,10 @@ export const buttonVariants = cva(
   {
     variants: {
       variant: {
-        primary: [inkFilled, elevationRamp, pressable, filledDisabled].join(' '),
+        primary: [actionFilled, elevationRamp, pressable, filledDisabled].join(' '),
         // Visually deprecated: kept as an alias of `primary` so the call sites
         // that still say variant="cta" compile until they are migrated.
-        cta: [inkFilled, elevationRamp, pressable, filledDisabled].join(' '),
+        cta: [actionFilled, elevationRamp, pressable, filledDisabled].join(' '),
         secondary: [
           'border-border-strong bg-surface-raised text-text-primary',
           'hover:bg-surface-hover active:bg-surface-active',

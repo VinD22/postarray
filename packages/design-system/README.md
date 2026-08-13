@@ -20,9 +20,9 @@ transpiles it.
 Three layers, and component code may only touch the third.
 
 1. **Palette.** Raw ramps (`--relay-paper-*`, `--relay-ink-*`,
-   `--relay-charcoal-*`, `--relay-terracotta-*`, `--relay-marigold-*`,
-   `--relay-ultramarine-*`, and the status ramps). Never referenced outside
-   `theme.css`.
+   `--relay-charcoal-*`, `--relay-terracotta-*`, `--relay-vermilion-*`,
+   `--relay-marigold-*`, `--relay-ultramarine-*`, and the status ramps). Never
+   referenced outside `theme.css`.
 2. **Semantic.** What a colour is _for_: `--surface-raised`, `--text-secondary`,
    `--accent-hover`, `--status-warning-border`. Redefined per theme.
 3. **Utilities.** Tailwind `@theme` entries that point at layer 2, so
@@ -37,26 +37,46 @@ An editorial publishing desk. Warm paper (`#FFFCF8`), near-black ink
 (`#141413`), generous whitespace, hairline rules. Hierarchy comes from type
 and space and tonal surface steps, not from heavy shadows or neon fills.
 
-**The primary accent is a deep terracotta** (`#B4462B` light, lightened to
+**The navigational accent is a deep terracotta** (`#B4462B` light, lightened to
 `#E07A5F` dark). It carries links, focus rings, text selection, the active tab
-and the calendar "today" marker. It is deliberately _not_ the primary button
-fill — the primary commit action stays ink — so colour reads as navigation and
-state rather than as the loudest surface on the screen.
+and the calendar "today" marker. It is deliberately _not_ a button fill, so
+colour reads as navigation and state rather than as a call to action.
 
-**Two further accent families** joined terracotta for the scene vocabulary, and
-nothing else may:
+**The action accent is a vivid vermilion** (`#CE2700` light, `#FF6D32` dark).
+It fills the primary commit button and nothing else. This is a change: the
+commit fill used to be ink. On a product about social media the one button a
+visitor is asked to press should be the loudest surface on the screen, and an
+ink rectangle is not. Navigation and action are now two different reds, and
+they are measurably different — ΔE\*ab 27.2 in light, 30.2 in dark, roughly
+twice the separation of the deliberate near-neighbours the palette already
+carries.
+
+**Four accent families**, all sharing one token set, and nothing else may join:
 
 | Family | Tokens | Light / dark | For |
 | --- | --- | --- | --- |
+| Terracotta | `--accent-*` | `#B4462B` / `#E07A5F` | Links, focus, selection, state |
+| Vermilion | `--accent-action-*` | `#CE2700` / `#FF6D32` | The primary commit button, and nothing else |
 | Marigold | `--accent-warm-*` | `#8A6100` / `#F5C233` | Energy, celebration, highlight |
 | Ultramarine | `--accent-cool-*` | `#3B4CC0` / `#8B9BF4` | The cool counterweight: "live" and "published" moments |
 
-Both mirror terracotta's token set exactly (`default` / `hover` / `active` /
+All four mirror the same token set (`default` / `hover` / `active` /
 `subtle-bg` / `subtle-bg-hover` / `on-accent`), so a surface that can be tinted
-with one can be tinted with any. Neither carries a status meaning: status stays
-success / warning / destructive / info, and status is never colour alone.
-Marigold's light step is calculated rather than picked by eye — a brighter
-marigold reads 3.63:1 on white, below the body floor.
+with one can be tinted with any, and `accentFamilyPairs` in `tokens.ts`
+generates the same thirteen contrast assertions for each. None carries a status
+meaning: status stays success / warning / destructive / info, and status is
+never colour alone.
+
+Two of the four light steps are calculated rather than picked by eye, and both
+came out darker than the eye wanted. A brighter marigold reads 3.63:1 on white.
+A vermilion at `#E5401F` carries white at only 4.13:1, and at `#FF4A24` at
+3.36:1 — under the body floor for the label the button actually has, so the
+ramp walked down in luminance until white cleared it (5.36:1) and then back out
+to the most chromatic value available there.
+
+The vermilion button's focus ring is still terracotta and still `outline-offset`,
+which is the only reason it is visible: terracotta drawn _on_ the vermilion fill
+measures 1.02:1. Do not give the primary button an inset focus ring.
 
 `--cta-*` and `--accent-blush-*` survive as small-control fills (the calendar
 view switch, the growth plan tabs, the "today" cell). They are warm paper tints
@@ -76,10 +96,27 @@ rather than offset blocks.
 
 ### Provider brand colours
 
-Eleven provider colours exist as `--brand-*`. They are permitted on an 8px
-identity dot and on a 1px rule. They are never a surface, never a button, and
-never the only way a provider is identified: the account name is always beside
-the dot.
+Nineteen provider colours exist as `--brand-*`, one per `ProviderKey`. They are
+permitted in exactly three places:
+
+1. An 8px identity dot.
+2. A 1px rule.
+3. **A provider logo at logo scale, inside a provider row or grid** — amended
+   in, deliberately, and no further. A row of real marks in their real colours
+   is the one glance that tells a visitor which networks we publish to, and a
+   row of monochrome dots cannot do it.
+
+The third one carries conditions, and they are the same conditions the dot has
+always carried:
+
+- The mark is a logo or glyph, never a block of colour.
+- Its name is present as text in the same row or grid cell, so colour is never
+  the sole identifier — which is what keeps the row working under colour
+  blindness and under a monochrome print stylesheet.
+- It never becomes a page surface: no brand-coloured band, card, button or
+  section background, in any theme.
+
+Everything outside those three lines is still banned.
 
 ### Motion
 
@@ -166,9 +203,14 @@ These are not style preferences. A review rejects them.
   (`--radius-editorial` / `--radius-poster`) for marketing surfaces.
 - CTA fills (`bg-cta`, `text-cta-on`) with the mandatory 2px `--border-bold`
   outline, on small controls only.
-- The two extra accent families (`--accent-warm-*` marigold, `--accent-cool-*`
+- The two scene accent families (`--accent-warm-*` marigold, `--accent-cool-*`
   ultramarine) on marketing scene surfaces, inside the per-page ceilings in
   `apps/web/src/features/marketing/components/scene/scene-budget.test.ts`.
+- A chromatic primary button: `--accent-action-*` vermilion with
+  `--accent-action-on-accent` on top. One per screen — a second vermilion
+  surface stops the first one meaning "press this".
+- Provider brand colour at logo scale in a provider row or grid, under the
+  three conditions above.
 - Kinetic, decorative marketing motion, always behind a
   `prefers-reduced-motion` gate.
 - Marquees.

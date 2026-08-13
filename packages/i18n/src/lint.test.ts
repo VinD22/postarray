@@ -56,8 +56,15 @@ describe('the shipped English catalog', () => {
 
   it('carries the mandated billing copy word for word', () => {
     expect(english['billing.trial.dueToday']).toBe('$0 due today');
-    expect(english['billing.plan.annualFraming']).toBe('$25/month billed annually. Save $48/year.');
+    // Kept as a literal because `@relay/i18n` is a leaf and may not import
+    // `@relay/billing`. `billing/products.test.ts` is the other end of the
+    // pincer: it ties this same sentence to the arithmetic, so the pair fails
+    // if a price moves, if the catalog moves, or if the two drift apart.
+    expect(english['billing.plan.annualFraming']).toBe('Save $50/year. That is 2 months free.');
     expect(english['billing.plan.annualFraming']).not.toContain('%');
+    // A year is quoted as a year. No per-month equivalent, because $250 over
+    // twelve is $20.83 and a price with cents in it is the rejected form.
+    expect(english['billing.plan.annualFraming']).not.toContain('/month');
     expect(english['billing.mediaGeneration.explanation']).toContain(
       'We do not generate images or video in V1',
     );

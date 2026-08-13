@@ -88,12 +88,25 @@ describe('Button', () => {
     expect(button.className).toContain('bg-destructive-solid');
   });
 
-  it('fills the primary variant with ink rather than the chromatic accent', () => {
+  it('fills the primary variant with the vermilion action accent', () => {
     render(<Button variant="primary">{LABEL}</Button>);
     const button = screen.getByRole('button', { name: LABEL });
-    expect(button.className).toContain('bg-surface-inverted');
-    expect(button.className).toContain('text-text-inverted');
-    expect(button.className).not.toContain('bg-accent');
+    expect(button.className).toContain('bg-accent-action');
+    expect(button.className).toContain('text-accent-action-on');
+    // The navigational accent (terracotta) is never the commit fill: it
+    // carries links, focus and selection, and `bg-accent` here would collapse
+    // the two roles back into one colour.
+    expect(button.className).not.toContain('bg-accent ');
+    expect(button.className).not.toContain('bg-surface-inverted');
+  });
+
+  it('keeps the focus ring outside the vermilion fill, where it stays visible', () => {
+    render(<Button variant="primary">{LABEL}</Button>);
+    const button = screen.getByRole('button', { name: LABEL });
+    // Terracotta on vermilion measures 1.02:1. The ring only survives because
+    // it is drawn in the offset gap on the surface behind the button.
+    expect(button.className).toContain('focus-visible:outline-offset-2');
+    expect(button.className).not.toContain('-outline-offset-2');
   });
 
   it('still accepts the deprecated cta variant and renders it as primary', () => {

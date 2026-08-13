@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, useState, type ReactNode } from 'react';
+import { useId, useRef, useState, type ReactNode } from 'react';
 import { Link } from '@/components/link';
 import { Button } from '@relay/design-system/primitives';
 import { cn } from '@relay/design-system/utils';
@@ -50,6 +50,12 @@ export interface EditorialPriceToggleProps {
   readonly groupLabel: string;
   readonly monthlyLabel: string;
   readonly annualLabel: string;
+  /**
+   * The incentive, rendered inside the annual option's own label so a screen
+   * reader hears "Yearly, 2 months free" as one choice rather than meeting a
+   * loose chip beside it. Omit and the option carries none.
+   */
+  readonly annualBadge?: string;
   readonly value: BillingInterval;
   readonly onChange: (interval: BillingInterval) => void;
   readonly className?: string;
@@ -59,6 +65,7 @@ export function EditorialPriceToggle({
   groupLabel,
   monthlyLabel,
   annualLabel,
+  annualBadge,
   value,
   onChange,
   className,
@@ -67,6 +74,13 @@ export function EditorialPriceToggle({
   const thumbRef = useRef<HTMLSpanElement>(null);
   const flipState = useRef<ReturnType<typeof Flip.getState> | null>(null);
   const motionOk = useMotionOk();
+  /**
+   * One radio group per instance. A fixed `name` made every toggle on the site
+   * one group, so a second control on the same page would silently steal the
+   * first one's selection, and a browser restoring form state on reload could
+   * hand back a checked radio that React's own state did not agree with.
+   */
+  const groupName = useId();
 
   const select = (next: BillingInterval): void => {
     if (next === value) return;
@@ -102,13 +116,16 @@ export function EditorialPriceToggle({
       />
       <ToggleOption
         column={1}
+        groupName={groupName}
         label={monthlyLabel}
         checked={value === 'month'}
         onSelect={() => select('month')}
       />
       <ToggleOption
         column={2}
+        groupName={groupName}
         label={annualLabel}
+        badge={annualBadge}
         checked={value === 'year'}
         onSelect={() => select('year')}
       />
@@ -118,23 +135,27 @@ export function EditorialPriceToggle({
 
 function ToggleOption({
   column,
+  groupName,
   label,
+  badge,
   checked,
   onSelect,
 }: {
   readonly column: 1 | 2;
+  readonly groupName: string;
   readonly label: string;
+  readonly badge?: string;
   readonly checked: boolean;
   readonly onSelect: () => void;
 }): ReactNode {
   return (
     <label
       style={{ gridColumnStart: column }}
-      className="relative row-start-1 flex min-h-11 cursor-pointer items-center justify-center rounded-full px-4 text-center"
+      className="relative row-start-1 flex min-h-11 cursor-pointer items-center justify-center gap-2 rounded-full px-4 text-center"
     >
       <input
         type="radio"
-        name="pricing-interval"
+        name={groupName}
         checked={checked}
         onChange={onSelect}
         className="peer sr-only"
@@ -148,6 +169,15 @@ function ToggleOption({
       >
         {label}
       </span>
+      {/* Marigold on its own documented wash (5.05:1 in light, 10.25:1 in
+          dark). Not vermilion: that fills the primary button and nothing else,
+          and a second vermilion surface on the same screen would stop the
+          first one reading as "press this". */}
+      {badge === undefined ? null : (
+        <span className="text-label bg-accent-warm-subtle text-accent-warm rounded-full px-2 py-1 whitespace-nowrap">
+          {badge}
+        </span>
+      )}
     </label>
   );
 }

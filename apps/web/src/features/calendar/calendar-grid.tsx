@@ -143,7 +143,12 @@ export function CalendarGrid({
               style={columnTemplate}
               className="border-border-subtle grid gap-px border-b last:border-b-0"
             >
-              <div className="bg-surface-canvas px-2 py-2 text-end">
+              {/*
+                The hour, set against the top of its band rather than centred
+                in it, so it reads as the line the band starts on. Tabular, so
+                the column of times is a column.
+              */}
+              <div className="bg-surface-canvas px-2.5 pt-1.5 pb-2 text-end">
                 <span className="text-label text-text-tertiary tabular-nums">
                   {format.time(hourInstant(days[0] ?? range.start, band.hour, timeZone))}
                 </span>
@@ -163,7 +168,7 @@ export function CalendarGrid({
                     data-drop-instant={hourInstant(day, band.hour, timeZone).toISOString()}
                     data-drop-granularity="slot"
                     className={cn(
-                      'bg-surface-canvas flex min-h-14 flex-col gap-1 p-1',
+                      'bg-surface-canvas flex min-h-14 flex-col gap-1.5 p-1.5',
                       // No transition here on purpose: the outline is the
                       // only thing that should change as the arrow keys step
                       // through slots, and it should snap, not animate.
@@ -210,6 +215,14 @@ export function CalendarGrid({
   );
 }
 
+/**
+ * One column heading: the weekday, then the date.
+ *
+ * Today wears the same filled mark the month grid gives it. Two views of one
+ * calendar that mark today two different ways teach the reader to look for two
+ * things, and `bg-accent-subtle` is already spoken for here: it is the fill the
+ * cell under a dragged post takes.
+ */
 function DayHeading({ day, timeZone }: { day: Date; timeZone: string }): ReactNode {
   const format = useCalendarFormat();
   const today = isSameDay(day, new Date(), timeZone);
@@ -217,7 +230,7 @@ function DayHeading({ day, timeZone }: { day: Date; timeZone: string }): ReactNo
     <h3
       {...{ [WEEK_CELL_ATTRIBUTE]: '' }}
       className={cn(
-        'flex items-baseline gap-1.5 px-2 py-2',
+        'flex items-center gap-2 px-2.5 py-2',
         today ? 'text-text-primary' : 'text-text-secondary',
       )}
     >
@@ -225,8 +238,9 @@ function DayHeading({ day, timeZone }: { day: Date; timeZone: string }): ReactNo
       <span
         {...(today ? { [TODAY_CELL_ATTRIBUTE]: '' } : {})}
         className={cn(
-          'text-body-md inline-block tabular-nums',
-          today && 'bg-accent-subtle text-text-accent rounded-sm px-1.5 font-semibold',
+          'text-body-sm inline-flex h-6 min-w-6 items-center justify-center rounded-full px-1',
+          'font-medium tabular-nums',
+          today && 'bg-cta text-cta-on',
         )}
       >
         {format.dayNumber(day)}

@@ -32,7 +32,15 @@ export interface MasterDraftPanelProps {
 export function MasterDraftPanel({ label, body, projectLine }: MasterDraftPanelProps): ReactNode {
   return (
     <DemoPanel label={label}>
-      <p className="text-body-md text-text-primary leading-[1.6] text-pretty">{body}</p>
+      {/*
+        The draft is the only thing on this panel, and on a wide stage it is
+        the one piece of sample content a reader is meant to actually read, so
+        it is set at the size a draft is written at rather than at body size in
+        a column three times its measure.
+      */}
+      <p className="text-body-md lg:text-title-sm text-text-primary max-w-[48ch] leading-[1.55] text-pretty">
+        {body}
+      </p>
       <p className="text-body-sm text-text-tertiary mt-3">{projectLine}</p>
     </DemoPanel>
   );

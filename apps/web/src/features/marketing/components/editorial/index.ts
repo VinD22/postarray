@@ -66,5 +66,12 @@ export {
   type EditorialVariantSceneProps,
   type EditorialVariantRow,
 } from './variant-scene';
+export { ProviderLogo, type ProviderLogoProps } from './provider-logo';
+export { ProviderLogoRow, type ProviderLogoRowProps } from './provider-logo-row';
+export {
+  AgentToolLedger,
+  type AgentToolLedgerProps,
+  type AgentToolLedgerTier,
+} from './agent-tool-ledger';
 export { EditorialPricePair, type EditorialPricePairProps } from './price-pair';
 export { TierGrid, type TierGridProps, type TierGridColumn } from './tier-grid';

@@ -55,8 +55,8 @@ describe('EditorialPricePair', () => {
     // here rather than trusted.
     const standard = publishableTiers()[0];
     expect(standard?.key).toBe('relay_standard');
-    expect(standard?.monthlyPriceMinor).toBe(29 * 100);
-    expect(standard?.annualPriceMinor).toBe(300 * 100);
+    expect(standard?.monthlyPriceMinor).toBe(25 * 100);
+    expect(standard?.annualPriceMinor).toBe(250 * 100);
   });
 
   it('carries the annual framing sentence the caller passed, in money', () => {

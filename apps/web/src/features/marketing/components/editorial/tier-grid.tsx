@@ -1,6 +1,7 @@
 'use client';
 
 import { useMemo, useState, type ReactNode } from 'react';
+import { Check } from 'lucide-react';
 import { Link } from '@/components/link';
 import { Button } from '@relay/design-system/primitives';
 import { cn } from '@relay/design-system/utils';
@@ -12,63 +13,82 @@ import { EditorialPriceToggle, type BillingInterval } from './price-toggle';
 import { Eyebrow } from './eyebrow';
 
 /**
- * The three-tier presentation.
+ * The plan presentation. One interval control, one price, one checklist.
+ *
+ * ## What it replaced, and why
+ *
+ * This page used to state its prices twice: a three-column tier grid, and then
+ * a second card underneath restating the same two figures in a different shape.
+ * Two price presentations of one plan is the confusion, so there is now exactly
+ * one, and this is it.
+ *
+ * ## The yearly view is the point
+ *
+ * The competitor stacks four numbers on one fact there: a fractional headline
+ * with superscript cents, the annual charge, the money saved, and the months
+ * free. This shows at most two numbers and one badge. The headline is the
+ * charge for the selected interval, quoted in that interval's own unit, so a
+ * yearly plan is a yearly amount and nothing is ever divided by twelve into a
+ * price with cents in it. Under it sits one supporting line. The incentive is
+ * stated once, as a badge on the yearly option of the control.
  *
  * ## Why it is not a feature comparison table
  *
  * Every feature is on every tier. A tier buys active project capacity and
- * nothing else — `features/billing/tiers.ts` has one shared inclusion list and
- * no per-tier one, and `tiers.test.ts` plus the billing package both refuse a
- * per-tier list outright. A column of ticks and crosses would therefore have
- * to invent the crosses, so the only honest shape for a third column is a
- * DELTA: "everything in Standard, plus N more active projects". `delta` is a
- * required prop for that reason; there is nowhere to put a feature list.
+ * nothing else, so a column of ticks and crosses would have to invent the
+ * crosses. The checklist is therefore identical on every column except its
+ * first line, which is the allowance, and a column above the first also carries
+ * a `delta` sentence naming the difference.
  *
  * ## Why the prices are minor units and not strings
  *
  * A price written out as a string is a price that can disagree with the price
- * that is charged. Every figure here is an integer minor-unit amount formatted
- * through one locale-bound `Intl.NumberFormat`, so a tier's displayed amount
- * is arithmetic on the same number the tier module holds.
+ * that is charged. Every figure is an integer minor-unit amount formatted
+ * through one locale-bound `Intl.NumberFormat`, so what a reader sees is
+ * arithmetic on the same number the tier module holds.
  *
- * The annual saving is stated in whole dollars by the caller
- * (`billing.tier.*.annualFraming`), never as a percentage:
- * `packages/billing/src/copy-compliance.test.ts` rejects a percentage framing
- * and an "off" framing outright, and the real discounts here are not round
- * numbers anyway.
+ * ## One accent
  *
- * ## One primary action
- *
- * Exactly one tier may carry `cta`, and it is the anchored one. Checkout is
- * closed for the others, so they state that (`unavailableNote`) rather than
- * offering a button that would either lie or do nothing. That is a shape
- * rather than a convention: a second `cta` would render, but the anchor
- * treatment (`anchored`) is what marks the start, and the pricing page passes
- * `cta` on one column only.
+ * The only chromatic surface here is the vermilion primary button, which is
+ * what `--accent-action-*` exists for and the one thing it is allowed to fill.
+ * The anchored column is marked by a heavier ink border and by a label that
+ * says so, never by a second accent colour competing with the action.
  *
  * Every string arrives already translated. This file holds no prose.
  */
+export interface TierFeature {
+  readonly id: string;
+  /** Already translated and pluralized. */
+  readonly text: string;
+  /** Rendered at full weight: the line a reader is scanning this column for. */
+  readonly strong: boolean;
+}
+
+/** One interval's face of a column: what it charges and the one line under it. */
+export interface TierIntervalFace {
+  /** Integer minor units, from the tier module. Never a formatted string. */
+  readonly priceMinor: number;
+  /** The unit this amount is quoted in, e.g. "per year". */
+  readonly label: string;
+  /** Exactly one supporting sentence. Two would be a restatement. */
+  readonly support: string;
+}
+
 export interface TierGridColumn {
   readonly id: string;
   readonly name: string;
   readonly tagline: string;
-  /** Integer minor units, from the tier module. Never a formatted string. */
-  readonly monthlyPriceMinor: number;
-  readonly annualPriceMinor: number;
   /** ISO 4217. */
   readonly currency: string;
-  /** e.g. "3 active projects". Already translated and pluralized. */
-  readonly allowance: string;
-  /** "Everything in Standard, plus ..." — see the doc comment. */
-  readonly delta: string;
-  /** Effective monthly plus the saving, in whole dollars. */
-  readonly annualFraming: string;
-  /** The anchor: accent border, "start here" eyebrow. At most one. */
+  readonly month: TierIntervalFace;
+  readonly year: TierIntervalFace;
+  readonly features: readonly TierFeature[];
+  /** "Everything in Standard, plus ..." Absent on the first column. */
+  readonly delta?: string;
+  /** The anchor: heavier border, "start here" label. At most one. */
   readonly anchored?: boolean;
   /** The single primary action. Only the anchored column should carry one. */
   readonly cta?: { readonly href: string; readonly label: string };
-  /** Shown instead of an action on a column that cannot be bought yet. */
-  readonly unavailableNote?: string;
 }
 
 export interface TierGridProps {
@@ -77,15 +97,37 @@ export interface TierGridProps {
   readonly intervalGroupLabel: string;
   readonly monthlyLabel: string;
   readonly annualLabel: string;
+  /** The incentive, on the yearly option. Omit and the control carries none. */
+  readonly annualBadge?: string;
   readonly startHereLabel: string;
+  /** Heading above the checklist. Required by `full`, unused by `compact`. */
+  readonly featuresLabel?: string;
   /**
-   * `full` is the pricing page. `compact` is the home teaser: the same three
-   * columns and the same arithmetic, without the delta prose or the framing
-   * sentence, because the teaser's job is to show the shape of the ladder and
-   * send the reader to the page that explains it.
+   * What pressing the action actually does, under the action. It belongs to
+   * the button and not to the page, because a trial term stated three sections
+   * away from the button is a term nobody read.
+   */
+  readonly actionNote?: string;
+  /**
+   * `full` is the pricing page. `compact` is the home teaser: the same prices
+   * and the same control, without the checklist, because the teaser's job is
+   * to show what a plan costs and send the reader to the page that explains it.
    */
   readonly variant?: 'full' | 'compact';
   readonly className?: string;
+}
+
+/**
+ * Written out rather than interpolated: Tailwind v4 scans source for complete
+ * class names, so a template-literal column count would compile to no CSS at
+ * all. Three is the ceiling because a fourth priced column stops being a
+ * choice and starts being a menu.
+ */
+function columnClass(count: number): string {
+  if (count <= 1) {
+    return '';
+  }
+  return count === 2 ? 'lg:grid-cols-2' : 'lg:grid-cols-3';
 }
 
 export function TierGrid({
@@ -94,17 +136,19 @@ export function TierGrid({
   intervalGroupLabel,
   monthlyLabel,
   annualLabel,
+  annualBadge,
   startHereLabel,
+  featuresLabel,
+  actionNote,
   variant = 'full',
   className,
 }: TierGridProps): ReactNode {
   const [interval, setInterval] = useState<BillingInterval>('month');
-  const isAnnual = interval === 'year';
   const compact = variant === 'compact';
 
   // One formatter for the whole grid. Zero cents are trimmed because every
-  // tier price is a whole dollar amount; if a fractional price ever ships,
-  // this is the single place that has to learn about it.
+  // price on the ladder is a whole dollar amount; if a fractional price ever
+  // ships, this is the single place that has to learn about it.
   const format = useMemo<Intl.NumberFormatOptions>(
     () => ({
       style: 'currency',
@@ -114,78 +158,171 @@ export function TierGrid({
     [tiers],
   );
 
+  // A single purchasable plan is a statement, not a choice: it gets one wide
+  // card that reads price on one side and checklist on the other, rather than a
+  // lonely third of a three-column grid.
+  const solo = tiers.length === 1 && !compact;
+
   return (
     <div className={cn('space-y-10', className)}>
       <EditorialPriceToggle
         groupLabel={intervalGroupLabel}
         monthlyLabel={monthlyLabel}
         annualLabel={annualLabel}
+        annualBadge={annualBadge}
         value={interval}
         onChange={setInterval}
-        className="max-w-xs"
+        className={annualBadge === undefined ? 'max-w-xs' : 'max-w-md'}
       />
 
       {/* Staggered in, one column at a time. `StaggerList` renders the
           finished, static layout under reduced motion and with no JS. */}
-      <StaggerList stagger={0.08} className="grid gap-5 lg:grid-cols-3">
+      <StaggerList
+        stagger={0.08}
+        className={cn('grid gap-5', solo ? '' : columnClass(tiers.length))}
+      >
         {tiers.map((tier) => (
-          <div key={tier.id} data-stagger-item className="h-full">
-            <article
-              data-tier={tier.id}
-              data-anchored={tier.anchored === true ? 'true' : 'false'}
-              className={cn(
-                'bg-surface-raised flex h-full flex-col gap-5 rounded-sm border p-6',
-                // The anchor is marked by a heavier accent border AND by the
-                // "start here" eyebrow above it. Never colour alone.
-                tier.anchored === true ? 'border-accent-cool border-2' : 'border-border-default',
-              )}
-            >
-              {tier.anchored === true ? (
-                <Eyebrow className="text-accent-cool">{startHereLabel}</Eyebrow>
-              ) : null}
-
-              <div className="space-y-1">
-                <h3 className="text-title-md text-text-primary">{tier.name}</h3>
-                <p className="text-body-md text-text-secondary max-w-[34ch] leading-[1.6]">
-                  {tier.tagline}
-                </p>
-              </div>
-
-              <EditorialBigNumber
-                value={(isAnnual ? tier.annualPriceMinor : tier.monthlyPriceMinor) / 100}
-                locale={locale}
-                formatOptions={format}
-                label={isAnnual ? annualLabel : monthlyLabel}
-              />
-
-              <p className="text-body-lg text-text-primary">{tier.allowance}</p>
-
-              {compact ? null : (
-                <>
-                  <p className="text-body-md text-text-secondary max-w-[38ch] leading-[1.6]">
-                    {tier.delta}
-                  </p>
-                  <p className="text-body-sm text-text-tertiary max-w-[38ch] leading-[1.6]">
-                    {tier.annualFraming}
-                  </p>
-                </>
-              )}
-
-              <div className="mt-auto pt-2">
-                {tier.cta ? (
-                  <Button asChild variant="primary" className="text-body-md h-11 w-full px-5">
-                    <Link href={tier.cta.href}>{tier.cta.label}</Link>
-                  </Button>
-                ) : tier.unavailableNote ? (
-                  <p className="text-body-sm text-text-tertiary max-w-[38ch] leading-[1.6]">
-                    {tier.unavailableNote}
-                  </p>
-                ) : null}
-              </div>
-            </article>
-          </div>
+          <TierCard
+            key={tier.id}
+            tier={tier}
+            face={interval === 'year' ? tier.year : tier.month}
+            locale={locale}
+            format={format}
+            compact={compact}
+            solo={solo}
+            startHereLabel={startHereLabel}
+            featuresLabel={featuresLabel}
+            actionNote={actionNote}
+            showAnchor={tiers.length > 1}
+          />
         ))}
       </StaggerList>
+    </div>
+  );
+}
+
+function TierCard({
+  tier,
+  face,
+  locale,
+  format,
+  compact,
+  solo,
+  startHereLabel,
+  featuresLabel,
+  actionNote,
+  showAnchor,
+}: {
+  readonly tier: TierGridColumn;
+  readonly face: TierIntervalFace;
+  readonly locale: string;
+  readonly format: Intl.NumberFormatOptions;
+  readonly compact: boolean;
+  readonly solo: boolean;
+  readonly startHereLabel: string;
+  readonly featuresLabel?: string;
+  readonly actionNote?: string;
+  /** An anchor only means something against something else. */
+  readonly showAnchor: boolean;
+}): ReactNode {
+  const anchored = tier.anchored === true && showAnchor;
+
+  return (
+    <div data-stagger-item className="h-full">
+      <article
+        data-tier={tier.id}
+        data-anchored={anchored ? 'true' : 'false'}
+        className={cn(
+          'bg-surface-raised h-full rounded-sm border p-6 md:p-8',
+          // Elevation is declared once: a border, no shadow under it. The
+          // anchor is a heavier ink border AND the "start here" label above
+          // it, so it never reads by colour alone.
+          anchored ? 'border-border-strong border-2' : 'border-border-default',
+          solo ? 'md:grid md:grid-cols-[minmax(0,20rem)_1fr] md:gap-x-12' : 'flex flex-col',
+        )}
+      >
+        <div className={cn('flex flex-col gap-5', solo ? '' : 'h-full')}>
+          {anchored ? <Eyebrow>{startHereLabel}</Eyebrow> : null}
+
+          <div className="space-y-1">
+            <h3 className="text-title-md text-text-primary">{tier.name}</h3>
+            <p className="text-body-md text-text-secondary max-w-[34ch] leading-[1.6]">
+              {tier.tagline}
+            </p>
+          </div>
+
+          {/* The headline is the charge for the selected interval, quoted in
+              that interval's own unit. Both the numeral and its label swap
+              together, so "$250" is never sitting under "per month". */}
+          <EditorialBigNumber
+            value={face.priceMinor / 100}
+            locale={locale}
+            formatOptions={format}
+            label={face.label}
+          />
+
+          <p className="text-body-md text-text-secondary max-w-[36ch] leading-[1.6]">
+            {face.support}
+          </p>
+
+          {compact || tier.delta === undefined ? null : (
+            <p className="text-body-md text-text-primary max-w-[36ch] leading-[1.6]">
+              {tier.delta}
+            </p>
+          )}
+
+          {tier.cta ? (
+            <div className={cn('space-y-4 pt-2', solo ? '' : 'mt-auto')}>
+              <Button asChild variant="primary" className="text-body-md h-11 w-full px-5">
+                <Link href={tier.cta.href}>{tier.cta.label}</Link>
+              </Button>
+              {actionNote === undefined || compact ? null : (
+                <p className="text-body-sm text-text-tertiary max-w-[36ch] leading-[1.55]">
+                  {actionNote}
+                </p>
+              )}
+            </div>
+          ) : null}
+        </div>
+
+        {compact ? null : (
+          <div
+            className={cn(
+              'border-border-subtle',
+              // A hairline between price and checklist: above on a stacked
+              // card, beside on the wide solo card. Logical properties only,
+              // so it lands on the correct side under `dir="rtl"`.
+              solo
+                ? 'mt-8 border-t pt-8 md:mt-0 md:border-s md:border-t-0 md:ps-12 md:pt-0'
+                : 'mt-6 border-t pt-6',
+            )}
+          >
+            {/* A caption, not a heading: the tier name above it is already
+                the `h3` for this card, and an `h4` here would announce a
+                nesting level the page does not actually have. */}
+            {featuresLabel === undefined ? null : (
+              <Eyebrow as="p" className="mb-5">
+                {featuresLabel}
+              </Eyebrow>
+            )}
+            <ul className="space-y-3">
+              {tier.features.map((feature) => (
+                <li key={feature.id} className="flex items-start gap-3">
+                  <Check aria-hidden="true" className="text-text-tertiary mt-0.5 size-4 shrink-0" />
+                  <span
+                    className={cn(
+                      'text-body-md max-w-[46ch] leading-[1.55]',
+                      feature.strong ? 'text-text-primary font-medium' : 'text-text-secondary',
+                    )}
+                  >
+                    {feature.text}
+                  </span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+      </article>
     </div>
   );
 }

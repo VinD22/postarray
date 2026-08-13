@@ -40,11 +40,10 @@ export interface TextTokens {
 }
 
 /**
- * The single chromatic accent: deep terracotta in light, a lightened
- * fired-clay in dark. It carries links, focus, selection, the active tab and
- * the calendar "today" marker. It is deliberately NOT the primary button fill
- * — that stays ink — so colour reads as navigation and state rather than as
- * the loudest surface on the screen.
+ * One accent family: six steps that any surface in the system can be tinted
+ * with. Four families share this shape — terracotta (`accent`, navigation and
+ * state), vermilion (`accentAction`, the primary commit button), marigold
+ * (`accentWarm`) and ultramarine (`accentCool`).
  *
  * `default` must clear 4.5:1 as text on canvas and raised in both themes, and
  * `onAccent` must clear 4.5:1 on every fill step. Both are asserted in
@@ -60,19 +59,20 @@ export interface AccentTokens {
 }
 
 /**
- * The three accent families share one shape on purpose: a surface that can be
- * tinted by `accent` can be tinted by `accentWarm` or `accentCool` without a
- * second code path, and `accentFamilyPairs` below can generate the same
- * thirteen contrast pairs for each of them.
+ * The four accent families share one shape on purpose: a surface that can be
+ * tinted by `accent` can be tinted by `accentAction`, `accentWarm` or
+ * `accentCool` without a second code path, and `accentFamilyPairs` below can
+ * generate the same thirteen contrast pairs for each of them.
  *
- * There is no `text.accentWarm` / `text.accentCool` counterpart to the
- * historical `text.accent`. `text.accent` duplicates `accent.default` for
- * reasons that predate this file; repeating that twice more would add eight
- * documented pairs that measure colours already measured. The families'
- * `default` step is documented as body text on all four surfaces instead,
- * which is the assertion that actually protects a reader.
+ * There is no `text.accentAction` / `text.accentWarm` / `text.accentCool`
+ * counterpart to the historical `text.accent`. `text.accent` duplicates
+ * `accent.default` for reasons that predate this file; repeating that three
+ * times more would add twelve documented pairs that measure colours already
+ * measured. The families' `default` step is documented as body text on all
+ * four surfaces instead, which is the assertion that actually protects a
+ * reader.
  */
-export type AccentFamilyKey = 'accent' | 'accentWarm' | 'accentCool';
+export type AccentFamilyKey = 'accent' | 'accentAction' | 'accentWarm' | 'accentCool';
 
 export interface StatusTone {
   readonly fg: string;
@@ -148,6 +148,13 @@ export interface ThemeTokens {
   readonly border: BorderTokens;
   readonly text: TextTokens;
   readonly accent: AccentTokens;
+  /**
+   * Vermilion. The fill of the primary commit button, and nothing else — not
+   * links, not focus, not selection, not a band or a badge. Its `onAccent`
+   * step is the button's label colour and clears 4.5:1 on `default`, `hover`
+   * and `active` in both themes.
+   */
+  readonly accentAction: AccentTokens;
   /** Marigold. Energy, celebration, highlight moments. Scene vocabulary only. */
   readonly accentWarm: AccentTokens;
   /** Ultramarine. The cool counterweight: "live" / "published" moments. */
@@ -190,6 +197,19 @@ export const lightTheme: ThemeTokens = {
     active: '#863019',
     subtleBg: '#FBF1ED',
     subtleBgHover: '#F9EEE9',
+    onAccent: '#FFFFFF',
+  },
+  // Vermilion. `default` is #CE2700 rather than the #E5401F–#FF4A24 the hue
+  // wants to be: white measures 4.13:1 and 3.36:1 on those, under the 4.5:1
+  // body floor for the button label. #CE2700 carries white at 5.36:1 and is
+  // the most chromatic value available at that luminance (C*ab 85.1 against
+  // terracotta's 57.9), which is what keeps the two reds 27.2 ΔE*ab apart.
+  accentAction: {
+    default: '#CE2700',
+    hover: '#B32200',
+    active: '#971C00',
+    subtleBg: '#FCF0EA',
+    subtleBgHover: '#FBECE5',
     onAccent: '#FFFFFF',
   },
   // Marigold. `default` is #8A6100 rather than a brighter marigold because
@@ -292,6 +312,20 @@ export const darkTheme: ThemeTokens = {
     active: '#C96545',
     subtleBg: '#26140F',
     subtleBgHover: '#331A13',
+    onAccent: '#141413',
+  },
+  // Vermilion. The dark step lightens rather than saturates (#FF6D32), and
+  // sits at Lab hue 47.8° instead of the light step's 43.0°: the dark
+  // destructive coral (#E85D4D) is at 34.9°, and a lightened vermilion drifts
+  // into it unless it is pushed toward orange. The gap is ΔE*ab 22.1, the
+  // tightest deliberate separation in the system — re-measure it before
+  // retuning either ramp.
+  accentAction: {
+    default: '#FF6D32',
+    hover: '#FF8A5B',
+    active: '#E35F2A',
+    subtleBg: '#2E1B13',
+    subtleBgHover: '#3F2215',
     onAccent: '#141413',
   },
   // Marigold. #F5C233 rather than the #F2C044 the ramp first landed on: that
@@ -677,7 +711,7 @@ const brandPairs: ContrastPair[] = PROVIDER_KEYS.flatMap((key) => [
  * the foreground of a row sitting on its own subtle wash, and as the ground a
  * focus ring or control boundary has to survive on top of.
  *
- * One generator for all three families rather than three hand-written blocks:
+ * One generator for all four families rather than four hand-written blocks:
  * the families share `AccentTokens`, so a new family cannot be added with a
  * thinner set of guarantees than the ones already here. Any future retune of
  * any of them has to keep all thirteen green.
@@ -759,6 +793,7 @@ function accentFamilyPairs(
 
 const accentPairs: ContrastPair[] = [
   ...accentFamilyPairs('accent', (t) => t.accent),
+  ...accentFamilyPairs('accentAction', (t) => t.accentAction),
   ...accentFamilyPairs('accentWarm', (t) => t.accentWarm),
   ...accentFamilyPairs('accentCool', (t) => t.accentCool),
 ];

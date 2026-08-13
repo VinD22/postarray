@@ -78,6 +78,14 @@ const TOKEN_TO_CSS: Readonly<Record<string, string>> = {
   'accent.subtleBgHover': 'accent-subtle-bg-hover',
   'accent.onAccent': 'accent-on-accent',
 
+  // The action accent (vermilion). Same six-token shape as `accent`.
+  'accentAction.default': 'accent-action-default',
+  'accentAction.hover': 'accent-action-hover',
+  'accentAction.active': 'accent-action-active',
+  'accentAction.subtleBg': 'accent-action-subtle-bg',
+  'accentAction.subtleBgHover': 'accent-action-subtle-bg-hover',
+  'accentAction.onAccent': 'accent-action-on-accent',
+
   // The two scene accents. Same six-token shape as `accent` above, which is
   // exactly why they are spelled out the same way: `accentWarm.subtleBgHover`
   // is `--accent-warm-subtle-bg-hover`, not a camel-to-kebab transform of the
