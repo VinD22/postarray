@@ -40,6 +40,18 @@ const RESERVED_ALIASES = new Set([
  * confusables data pipeline is in place. That is safer than accepting Unicode
  * names while pretending a lowercase transform prevents lookalike attacks.
  */
+/**
+ * Interactive transaction budget for identity writes.
+ *
+ * Prisma defaults to five seconds, which is generous against a database on the
+ * same machine and too tight against a managed one where a single round trip
+ * costs about half a second. Signup does a handful of reads and writes and was
+ * failing against a remote Neon branch as "transaction not found", which reads
+ * like a dropped connection rather than the timeout it is. Production runs
+ * against a managed database, so the local default was never the relevant one.
+ */
+const IDENTITY_TX_OPTIONS = { timeout: 20_000, maxWait: 10_000 } as const;
+
 export function normalizeAliasForLookup(value: string): string | null {
   const normalized = value.trim().normalize('NFKC').toLowerCase();
   return ASCII_ALIAS.test(normalized) ? normalized : null;
@@ -289,6 +301,13 @@ export function createIdentityService(deps: ServiceDeps): IdentityService {
     },
 
     async recordSignupConsent(input): Promise<void> {
+      // Prisma's interactive transactions default to a five second budget,
+      // which is generous against a database on the same machine and too tight
+      // against a managed one where a single round trip costs about half a
+      // second. Signup does a handful of reads and writes and was failing on a
+      // remote Neon branch as "transaction not found", which reads like a
+      // dropped connection rather than a timeout. Production runs against a
+      // managed database, so the local default was never the relevant one.
       await deps.prisma.$transaction(async (tx) => {
         const existing = await tx.user.findUnique({
           where: { email: input.email.trim().toLowerCase() },
@@ -366,7 +385,7 @@ export function createIdentityService(deps: ServiceDeps): IdentityService {
           ],
           skipDuplicates: true,
         });
-      });
+      }, IDENTITY_TX_OPTIONS);
     },
 
     async setUsernameAlias(ctx: IdentityContext, alias: string): Promise<{ alias: string }> {
@@ -403,7 +422,7 @@ export function createIdentityService(deps: ServiceDeps): IdentityService {
           select: { handle: true },
         });
         return { alias: created.handle };
-      });
+      }, IDENTITY_TX_OPTIONS);
     },
   };
 }
