@@ -323,7 +323,7 @@ export async function runInWorkspace<T>(
   deps: ServiceDeps,
   ctx: ActorContext,
   handler: (db: Db, actor: ActorSnapshot) => Promise<T>,
-  options: { readonly timeoutMs?: number } = {},
+  options: { readonly timeoutMs?: number; readonly maxWaitMs?: number } = {},
 ): Promise<T> {
   try {
     return await withWorkspaceContext(
@@ -337,7 +337,13 @@ export async function runInWorkspace<T>(
         const actor = await loadActor(db, ctx);
         return handler(db, actor);
       },
-      { timeoutMs: options.timeoutMs ?? 15_000 },
+      // Prisma's maxWait default is 2000ms — the time it has to acquire a
+      // connection and begin the transaction before giving up with
+      // "Unable to start a transaction in the given time". Against a remote
+      // Neon database that is routinely tighter than one connection
+      // round trip, so every workspace-scoped read intermittently failed
+      // with a 500 even though the query itself would have succeeded.
+      { timeoutMs: options.timeoutMs ?? 15_000, maxWaitMs: options.maxWaitMs ?? 10_000 },
     );
   } catch (error) {
     throw toRelayError(error, ctx.correlationId);

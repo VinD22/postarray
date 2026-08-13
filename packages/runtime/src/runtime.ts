@@ -55,6 +55,13 @@ import { asCredentialVaultPort, createConfiguredCredentialVault } from './creden
 const REQUIRED_PRODUCTION_ADAPTERS = ['kv'] as const;
 type RequiredProductionAdapter = (typeof REQUIRED_PRODUCTION_ADAPTERS)[number];
 
+// Prisma's maxWait default is 2000ms — too tight for a managed/remote
+// database, where acquiring a connection can alone take longer than that.
+// Without this, `getEntitlements`/`getUsage` fail intermittently with
+// "Unable to start a transaction in the given time" even though the query
+// itself would have succeeded.
+const WORKSPACE_TX_OPTIONS = { timeoutMs: 15_000, maxWaitMs: 10_000 };
+
 class DatabaseBillingGateway implements BillingGateway {
   readonly #prisma: RelayPrismaClient;
   readonly #clock: Clock;
@@ -227,7 +234,7 @@ class DatabaseBillingGateway implements BillingGateway {
         activeMemberCount,
         memberLimit: MEMBER_ALLOWANCE,
       };
-    });
+    }, WORKSPACE_TX_OPTIONS);
   }
 
   async getUsage(
@@ -293,7 +300,7 @@ class DatabaseBillingGateway implements BillingGateway {
         },
         lines,
       };
-    });
+    }, WORKSPACE_TX_OPTIONS);
   }
 
   async createCheckout(input: Parameters<BillingGateway['createCheckout']>[0]) {
