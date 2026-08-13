@@ -6,7 +6,7 @@
   "main": "./src/main.ts",
   "types": "./src/main.ts",
   "scripts": {
-    "build": "tsc --noEmit",
+    "build": "tsup",
     "dev": "node --import tsx/esm src/main.ts",
     "start": "node --import tsx/esm src/main.ts",
     "typecheck": "tsc --noEmit",
@@ -33,15 +33,16 @@
     "zod": "^4.4.3"
   },
   "devDependencies": {
+    "@swc/core": "^1.15.47",
     "@types/compression": "^1.7.5",
     "@types/express": "^5.0.0",
     "@types/node": "^22.10.2",
     "@types/supertest": "^6.0.2",
     "supertest": "^7.0.0",
+    "tsup": "^8.5.1",
     "tsx": "^4.19.2",
     "typescript": "^5.7.2",
-    "vitest": "^2.1.8",
     "unplugin-swc": "^1.5.10",
-    "@swc/core": "^1.15.47"
+    "vitest": "^2.1.8"
   }
 }

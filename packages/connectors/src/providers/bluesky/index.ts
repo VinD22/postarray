@@ -1,4 +1,5 @@
 export { blueskyPermalink, createBlueskyConnector } from './connector';
+export { createAppPasswordSession, type AppPasswordSessionInput } from './app-password';
 export {
   BLUESKY_CAPABILITY_REVISION,
   BLUESKY_CREATES_PER_HOUR,

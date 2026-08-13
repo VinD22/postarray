@@ -19,8 +19,10 @@ transpiles it.
 
 Three layers, and component code may only touch the third.
 
-1. **Palette.** Raw ramps (`--relay-sand-*`, `--relay-petrol-*`). Never
-   referenced outside `theme.css`.
+1. **Palette.** Raw ramps (`--relay-paper-*`, `--relay-ink-*`,
+   `--relay-charcoal-*`, `--relay-terracotta-*`, `--relay-marigold-*`,
+   `--relay-ultramarine-*`, and the status ramps). Never referenced outside
+   `theme.css`.
 2. **Semantic.** What a colour is _for_: `--surface-raised`, `--text-secondary`,
    `--accent-hover`, `--status-warning-border`. Redefined per theme.
 3. **Utilities.** Tailwind `@theme` entries that point at layer 2, so
@@ -31,16 +33,46 @@ A theme switch is one attribute on `<html>`.
 
 ### The character
 
-A loud publishing desk: paper, electric blue and a sunshine CTA, with a
-blush accent held in reserve. Hierarchy comes from huge display type, 2px ink
-outlines and hard offset shadows, not from soft elevation. Product controls
-still sit at tight, predictable density; the poster energy is in type, color
-and the hard-shadow press, not in spacing.
+An editorial publishing desk. Warm paper (`#FFFCF8`), near-black ink
+(`#141413`), generous whitespace, hairline rules. Hierarchy comes from type
+and space and tonal surface steps, not from heavy shadows or neon fills.
 
-Dark is designed, not inverted. It is an inky navy-black canvas carrying the
-same neons: the accent lifts to a lighter blue so it reads on a dark ground,
-and its destructive solid is a light coral carrying dark text instead of a
-dark red carrying white text.
+**The primary accent is a deep terracotta** (`#B4462B` light, lightened to
+`#E07A5F` dark). It carries links, focus rings, text selection, the active tab
+and the calendar "today" marker. It is deliberately _not_ the primary button
+fill — the primary commit action stays ink — so colour reads as navigation and
+state rather than as the loudest surface on the screen.
+
+**Two further accent families** joined terracotta for the scene vocabulary, and
+nothing else may:
+
+| Family | Tokens | Light / dark | For |
+| --- | --- | --- | --- |
+| Marigold | `--accent-warm-*` | `#8A6100` / `#F5C233` | Energy, celebration, highlight |
+| Ultramarine | `--accent-cool-*` | `#3B4CC0` / `#8B9BF4` | The cool counterweight: "live" and "published" moments |
+
+Both mirror terracotta's token set exactly (`default` / `hover` / `active` /
+`subtle-bg` / `subtle-bg-hover` / `on-accent`), so a surface that can be tinted
+with one can be tinted with any. Neither carries a status meaning: status stays
+success / warning / destructive / info, and status is never colour alone.
+Marigold's light step is calculated rather than picked by eye — a brighter
+marigold reads 3.63:1 on white, below the body floor.
+
+`--cta-*` and `--accent-blush-*` survive as small-control fills (the calendar
+view switch, the growth plan tabs, the "today" cell). They are warm paper tints
+(`#EDE8E0`), not the sunshine yellow and bubblegum pink they were named for,
+and ink is still the only foreground either one carries.
+
+Dark is designed, not inverted: a warm near-black canvas with paper-ink text,
+a terracotta lifted so it reads on the dark ground, and a destructive solid
+that is a light coral carrying dark text rather than a dark red carrying white
+text.
+
+Radii are near-square (0/2/4/6/8px) with one 20px poster radius
+(`--radius-editorial` / `--radius-poster`) for marketing surfaces. Elevation is
+quiet: tonal steps plus soft, diffuse shadows. The `--shadow-hard*` tokens keep
+their names for compatibility but now resolve to soft, low-contrast shadows
+rather than offset blocks.
 
 ### Provider brand colours
 
@@ -55,8 +87,9 @@ Two tiers. Functional, in-app motion stays 120-200ms, three named easings,
 nothing animates for spectacle and nothing animates data. Expressive motion
 (400-900ms) is reserved for marketing and overlay entrances/exits. **GSAP is
 banned in this package** — it lives only in `apps/web/src/lib/motion`; this
-package stays CSS-only so `@relay/design-system` keeps its `react` +
-`@relay/i18n` dependency surface. `prefers-reduced-motion: reduce` collapses
+package stays CSS-only, so a component here animates without a JS branch and
+the global reduced-motion override actually reaches it.
+`prefers-reduced-motion: reduce` collapses
 every transition and animation to 1ms globally, and `usePrefersReducedMotion`
 covers the cases CSS cannot reach.
 
@@ -110,9 +143,11 @@ These are not style preferences. A review rejects them.
   Logical properties only.
 - `dark:` Tailwind variants anywhere. Themes are redefined CSS vars under
   `[data-theme]`.
-- Yellow or pink used as text color. Yellow is the CTA fill (`--cta-*`, ink
-  text on it); pink is the decorative blush accent (`--accent-blush-*`, ink
-  text on it). Neither is ever a text color itself.
+- Yellow or pink used as text color. `--cta-*` and `--accent-blush-*` are
+  small-control fills carrying ink (`--cta-on` / `--accent-blush-on`); in the
+  editorial system both resolve to warm paper tints rather than the yellow and
+  pink they are named for. Neither is ever a text color itself, whatever hue it
+  currently holds.
 - A row of three identical icon-plus-heading-plus-text cards.
 - A card for something that reads better as a row, a table, a timeline or a
   sentence. Six facts about one post are a `DefinitionList`, not six cards.
@@ -124,12 +159,16 @@ These are not style preferences. A review rejects them.
 
 **Newly allowed:**
 
-- Hard offset shadows, through the `--shadow-hard*` tokens only (never a
-  hand-rolled `box-shadow`).
-- Sharp 0-6px radii on product controls, plus the 20px poster radius
+- Elevation through the shadow tokens only (never a hand-rolled `box-shadow`).
+  The `--shadow-hard*` names are historical: they resolve to soft, diffuse
+  shadows, not offset blocks.
+- Sharp 0-8px radii on product controls, plus the 20px poster radius
   (`--radius-editorial` / `--radius-poster`) for marketing surfaces.
-- Loud CTA fills (`bg-cta`, `text-cta-on`) with the mandatory 2px
-  `--border-bold` outline.
+- CTA fills (`bg-cta`, `text-cta-on`) with the mandatory 2px `--border-bold`
+  outline, on small controls only.
+- The two extra accent families (`--accent-warm-*` marigold, `--accent-cool-*`
+  ultramarine) on marketing scene surfaces, inside the per-page ceilings in
+  `apps/web/src/features/marketing/components/scene/scene-budget.test.ts`.
 - Kinetic, decorative marketing motion, always behind a
   `prefers-reduced-motion` gate.
 - Marquees.
@@ -195,6 +234,8 @@ script in `<head>`, before any stylesheet:
 import { themeBootstrapScript, ThemeProvider } from '@relay/design-system/hooks';
 ```
 
-It reads the stored preference, resolves `system` against the media query, and
-sets `data-theme` plus `color-scheme` on the root element before first paint.
-`ThemeProvider` then takes over for runtime changes.
+The preference is `light` or `dark`; there is no `system` value. The script
+reads the stored preference, falls back to `prefers-color-scheme` only when
+nothing is stored, and sets `data-theme` plus `color-scheme` on the root
+element before first paint. `ThemeProvider` then takes over for runtime
+changes.

@@ -45,8 +45,22 @@ export function ProviderGrid({ providers, ariaLabel, className }: ProviderGridPr
       )}
     >
       {providers.map((provider) => (
-        <li key={provider} className="flex min-w-0 items-center gap-3">
-          <ProviderMark provider={provider} />
+        <li
+          key={provider}
+          className={cn(
+            'group/cell -mx-2 flex min-w-0 items-center gap-3 rounded-sm px-2 py-1.5',
+            // The bloom: the cell's ground fills with the surface hover tint
+            // and the mark grows from 8px to 12px. Both are transforms and a
+            // background colour on a non-interactive element, at the fast
+            // functional duration, and the global 1ms reduced-motion override
+            // reaches both because neither is a GSAP tween.
+            'transition-colors duration-(--duration-base) ease-(--ease-standard)',
+            'hover:bg-surface-sunken',
+          )}
+        >
+          <span className="flex shrink-0 items-center transition-transform duration-(--duration-base) ease-(--ease-out-back) group-hover/cell:scale-150">
+            <ProviderMark provider={provider} />
+          </span>
           <span className="text-body-lg text-text-secondary min-w-0 truncate">
             {providerName(provider)}
           </span>

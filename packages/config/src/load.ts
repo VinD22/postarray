@@ -100,6 +100,20 @@ export interface PolarConfig {
   readonly server: PolarServer;
   readonly monthlyProductId: string | undefined;
   readonly annualProductId: string | undefined;
+  readonly growthMonthlyProductId: string | undefined;
+  readonly growthAnnualProductId: string | undefined;
+  readonly studioMonthlyProductId: string | undefined;
+  readonly studioAnnualProductId: string | undefined;
+  /**
+   * Every configured Polar product id, keyed by the environment variable name
+   * that carried it, with absent variables omitted.
+   *
+   * Billing owns the tier table and therefore owns the `productId -> tier`
+   * mapping; it builds that from this map rather than this package building it,
+   * because `@relay/config` depends on nothing and must keep it that way. Ids
+   * are configuration, not secrets, but they are still never logged.
+   */
+  readonly productIdsByEnvKey: Readonly<Record<string, string>>;
   readonly trialDays: number;
 }
 
@@ -108,11 +122,20 @@ export interface AiConfig {
   readonly promptVersion: string | undefined;
   readonly requestTimeoutMs: number;
   readonly maxMonthlyUsdPerWorkspace: number;
-  readonly deepseek: {
-    readonly apiKey: string | undefined;
-    readonly baseUrl: string;
-    readonly model: string;
-  };
+  readonly deepseek: AiProviderConfig;
+  readonly anthropic: AiProviderConfig;
+}
+
+/**
+ * One provider's endpoint settings. The two entries are the same shape on
+ * purpose: `@relay/ai` picks one by name and hands it to the matching adapter,
+ * so adding a provider is a schema entry plus an adapter, not a new branch in
+ * every caller.
+ */
+export interface AiProviderConfig {
+  readonly apiKey: string | undefined;
+  readonly baseUrl: string;
+  readonly model: string;
 }
 
 export interface EncryptionConfig {
@@ -232,6 +255,28 @@ function collectFormatIssues(env: Record<string, unknown>): {
   return { issues, parsed: undefined };
 }
 
+/** The six Polar product-id variables, in the order the tier ladder climbs. */
+const POLAR_PRODUCT_ID_KEYS = [
+  'POLAR_MONTHLY_PRODUCT_ID',
+  'POLAR_ANNUAL_PRODUCT_ID',
+  'POLAR_GROWTH_MONTHLY_PRODUCT_ID',
+  'POLAR_GROWTH_ANNUAL_PRODUCT_ID',
+  'POLAR_STUDIO_MONTHLY_PRODUCT_ID',
+  'POLAR_STUDIO_ANNUAL_PRODUCT_ID',
+] as const satisfies readonly EnvKey[];
+
+/** Configured product ids keyed by variable name. Absent variables are omitted. */
+function polarProductIdsByEnvKey(env: RelayEnv): Readonly<Record<string, string>> {
+  const ids: Record<string, string> = {};
+  for (const key of POLAR_PRODUCT_ID_KEYS) {
+    const value = env[key];
+    if (value !== undefined && value.length > 0) {
+      ids[key] = value;
+    }
+  }
+  return ids;
+}
+
 function collectPresenceIssues(
   env: Record<string, unknown>,
   requirement: ServiceRequirement,
@@ -299,6 +344,11 @@ function toConfig(
       server: env.POLAR_SERVER,
       monthlyProductId: env.POLAR_MONTHLY_PRODUCT_ID,
       annualProductId: env.POLAR_ANNUAL_PRODUCT_ID,
+      growthMonthlyProductId: env.POLAR_GROWTH_MONTHLY_PRODUCT_ID,
+      growthAnnualProductId: env.POLAR_GROWTH_ANNUAL_PRODUCT_ID,
+      studioMonthlyProductId: env.POLAR_STUDIO_MONTHLY_PRODUCT_ID,
+      studioAnnualProductId: env.POLAR_STUDIO_ANNUAL_PRODUCT_ID,
+      productIdsByEnvKey: polarProductIdsByEnvKey(env),
       trialDays: env.POLAR_TRIAL_DAYS,
     },
     ai: {
@@ -310,6 +360,11 @@ function toConfig(
         apiKey: env.DEEPSEEK_API_KEY,
         baseUrl: env.DEEPSEEK_BASE_URL,
         model: env.DEEPSEEK_MODEL,
+      },
+      anthropic: {
+        apiKey: env.ANTHROPIC_API_KEY,
+        baseUrl: env.ANTHROPIC_BASE_URL,
+        model: env.ANTHROPIC_MODEL,
       },
     },
     encryption: {

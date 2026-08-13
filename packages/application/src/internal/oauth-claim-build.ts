@@ -19,10 +19,23 @@ export const sanitizedExternalAccountSchema = externalAccountSchema
 
 export type SanitizedExternalAccount = z.infer<typeof sanitizedExternalAccountSchema>;
 
+/**
+ * Sanitizing is what removes the per-account credential, so it is done here
+ * rather than expected of the caller.
+ *
+ * The schema omits `accountAccessToken` and is strict, which means an account
+ * still carrying that property is rejected outright. Connectors always set it
+ * (as `null` for every provider that does not issue one), so leaving the strip
+ * to callers made this function throw on every real discovery result. The claim
+ * path re-reads the field as `null` regardless, so nothing downstream loses
+ * information it was going to use.
+ */
 export function sanitizeDiscoveredAccounts(
   accounts: readonly ExternalAccount[],
 ): readonly SanitizedExternalAccount[] {
-  return accounts.map((account) => sanitizedExternalAccountSchema.parse(account));
+  return accounts.map(({ accountAccessToken: _accountAccessToken, ...account }) =>
+    sanitizedExternalAccountSchema.parse(account),
+  );
 }
 
 export function parseSanitizedAccounts(value: unknown): readonly SanitizedExternalAccount[] {
@@ -80,8 +93,7 @@ export async function buildOAuthConnectionClaims(input: {
 
   for (const account of input.accounts) {
     const connectionId =
-      input.existingConnectionIds?.get(account.externalAccountId) ??
-      newId(ID_PREFIXES.connection);
+      input.existingConnectionIds?.get(account.externalAccountId) ?? newId(ID_PREFIXES.connection);
     const accessPlaintext =
       account.accountAccessToken === null
         ? grant.accessToken

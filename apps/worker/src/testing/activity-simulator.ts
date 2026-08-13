@@ -35,6 +35,8 @@ import type {
   FetchFeedResult,
   FetchMetricsInput,
   FetchMetricsResult,
+  GeneratePostFeedbackInput,
+  GeneratePostFeedbackResult,
   FilterNewFeedItemsInput,
   FilterNewFeedItemsResult,
   FinalizeAttemptInput,
@@ -138,6 +140,7 @@ export interface SimulatorOptions {
   readonly repeatPlan?: Partial<PlanRepeatOccurrenceResult>;
   readonly occurrenceTargets?: CreateOccurrenceJobResult['targets'];
   readonly metrics?: Partial<FetchMetricsResult>;
+  readonly postFeedback?: Partial<GeneratePostFeedbackResult>;
   readonly now?: () => number;
   /** When present, every call is also appended to the shared command log. */
   readonly recorder?: CommandRecorder;
@@ -634,6 +637,18 @@ export class ActivitySimulator implements WorkerActivities {
   recordAnalyticsRun(input: RecordAnalyticsRunInput): Promise<void> {
     this.record('recordAnalyticsRun', input);
     return Promise.resolve();
+  }
+
+  generatePostFeedback(input: GeneratePostFeedbackInput): Promise<GeneratePostFeedbackResult> {
+    this.record('generatePostFeedback', input);
+    return Promise.resolve({
+      insightId: `insight_${input.receiptId}`,
+      created: true,
+      window: 'twenty_four_hours',
+      verdict: 'insufficient_data',
+      reasonKey: null,
+      ...this.options.postFeedback,
+    });
   }
 
   // -------------------------------------------------------------------------

@@ -57,6 +57,7 @@ const persistence = wf.proxyActivities<
     | 'finalizeAttempt'
     | 'beginPublishAttempt'
     | 'recordAnalyticsRun'
+    | 'generatePostFeedback'
     | 'recordFeedPoll'
     | 'recordRuleRun'
     | 'recordWebhookAttempt'
@@ -88,9 +89,9 @@ const persistence = wf.proxyActivities<
   >
 >(toTemporalActivityOptions(ACTIVITY_OPTIONS.persistence));
 
-const mediaProxy = wf.proxyActivities<
-  Group<'prepareTargetMedia' | 'produceMediaDerivative'>
->(toTemporalActivityOptions(ACTIVITY_OPTIONS.prepareMedia));
+const mediaProxy = wf.proxyActivities<Group<'prepareTargetMedia' | 'produceMediaDerivative'>>(
+  toTemporalActivityOptions(ACTIVITY_OPTIONS.prepareMedia),
+);
 
 const publishProxy = wf.proxyActivities<Group<'publishTarget' | 'publishSequenceItem'>>(
   toTemporalActivityOptions(ACTIVITY_OPTIONS.publish),
@@ -147,6 +148,7 @@ export const workerActivities: WorkerActivities = {
   fetchPostMetrics: (input) => metricsProxy.fetchPostMetrics(input),
   fetchAccountMetrics: (input) => metricsProxy.fetchAccountMetrics(input),
   recordAnalyticsRun: (input) => persistence.recordAnalyticsRun(input),
+  generatePostFeedback: (input) => persistence.generatePostFeedback(input),
   describeCredential: (input) => persistence.describeCredential(input),
   refreshCredential: (input) => credentialProxy.refreshCredential(input),
   raiseConnectionIncident: (input) => persistence.raiseConnectionIncident(input),

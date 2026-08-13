@@ -1,3 +1,4 @@
+import { existsSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 
 import { detectCapabilities, loadConfigFor, type RelayConfig } from '@relay/config';
@@ -8,7 +9,7 @@ import {
   type HealthReport,
   type Logger,
 } from '@relay/observability';
-import { NativeConnection, Worker } from '@temporalio/worker';
+import { NativeConnection, Worker, type WorkerOptions } from '@temporalio/worker';
 
 import { createActivities, type WorkerGateway } from './activities/index';
 import type { WorkerActivities } from './activities/types';
@@ -80,6 +81,22 @@ export function workerRunFailureCheck(): HealthCheck {
 
 function defaultWorkflowsPath(): string {
   return fileURLToPath(new URL('./workflows/index.ts', import.meta.url));
+}
+
+/**
+ * Where the workflow code comes from.
+ *
+ * A built image ships `dist/workflow-bundle.js`, produced at build time by
+ * `scripts/build-workflow-bundle.mjs`. Preferring it means the runtime carries
+ * no workflow sources and no TypeScript toolchain, and the first task is polled
+ * without waiting for a webpack run. When the file is absent — `pnpm dev`, the
+ * test suite, a checkout — the SDK bundles from source exactly as before.
+ */
+function defaultWorkflowSource(): Pick<WorkerOptions, 'workflowBundle' | 'workflowsPath'> {
+  const prebuilt = fileURLToPath(new URL('./workflow-bundle.js', import.meta.url));
+  return existsSync(prebuilt)
+    ? { workflowBundle: { codePath: prebuilt } }
+    : { workflowsPath: defaultWorkflowsPath() };
 }
 
 function toWorkflowLog(logger: Logger): WorkflowLog {
@@ -175,7 +192,9 @@ export async function startWorker(options: WorkerStartOptions): Promise<RunningW
     connection: activeConnection,
     namespace: config.temporal.namespace,
     taskQueue,
-    workflowsPath: options.workflowsPath ?? defaultWorkflowsPath(),
+    ...(options.workflowsPath === undefined
+      ? defaultWorkflowSource()
+      : { workflowsPath: options.workflowsPath }),
     activities,
     shutdownGraceTime: SHUTDOWN_GRACE_MS,
   });

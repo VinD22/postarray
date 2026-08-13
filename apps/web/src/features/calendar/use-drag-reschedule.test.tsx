@@ -10,7 +10,7 @@
  */
 
 import { useEffect, useState, type ReactNode } from 'react';
-import { fireEvent, render, screen, within } from '@testing-library/react';
+import { act, fireEvent, render, screen, within } from '@testing-library/react';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { en } from '@relay/i18n';
 import { I18nProvider } from '@relay/i18n/react';
@@ -19,7 +19,7 @@ import { CalendarMonth } from './calendar-month';
 import { computeRange } from './date-range';
 import { entryKey } from './filters';
 import { buildProposal, keyboardStep } from './reschedule';
-import { useDragReschedule } from './use-drag-reschedule';
+import { SETTLE_HOLD_MS, useDragReschedule } from './use-drag-reschedule';
 import type { CalendarEntry, RescheduleProposal } from './types';
 
 const BERLIN = 'Europe/Berlin';
@@ -159,10 +159,12 @@ function Harness({ entries }: HarnessProps): ReactNode {
         }}
         proposal={grabbed ? proposal : null}
         draggingKey={drag.draggingKey}
+        settle={drag.settle}
         onDragStart={drag.startDrag}
         label="August 2026"
       />
       <output data-testid="proposal">{proposal?.toInstant ?? 'none'}</output>
+      <output data-testid="settle">{drag.settle ? drag.settle.kind : 'none'}</output>
       <output data-testid="grabbed">{grabbed ? entryKey(grabbed) : 'none'}</output>
       <output data-testid="dialog">{dialogOpen ? 'open' : 'closed'}</output>
     </I18nProvider>
@@ -366,5 +368,54 @@ describe('drag to reschedule', () => {
     fireEvent.click(handle);
     expect(screen.getByTestId('proposal')).toHaveTextContent(String(afterDrop));
     expect(afterDrop).not.toBe(SCHEDULED_AT);
+  });
+});
+
+/**
+ * The settle marker.
+ *
+ * It exists only so a released chip can play one frame of motion, so the
+ * properties worth pinning are that it names the right release and that it
+ * clears itself. A marker that stayed set would make an unrelated re-render
+ * replay the settle, which on a calendar that re-renders on every filter
+ * change would be constant.
+ */
+describe('the release settle', () => {
+  it('marks a real drop as a drop, and clears itself afterwards', () => {
+    vi.useFakeTimers({ shouldAdvanceTime: true });
+    const { container, handle } = setup();
+    const target = cellFor(container, dayAfterScheduled());
+
+    hover(target);
+    fireEvent(handle, pointer('pointerdown', { x: 40, y: 40 }));
+    fireEvent(window, pointer('pointermove', { x: 200, y: 200 }));
+    fireEvent(window, pointer('pointerup', { x: 200, y: 200 }));
+
+    expect(screen.getByTestId('settle')).toHaveTextContent('drop');
+
+    act(() => {
+      vi.advanceTimersByTime(SETTLE_HOLD_MS + 1);
+    });
+    expect(screen.getByTestId('settle')).toHaveTextContent('none');
+  });
+
+  it('marks a release over nothing as a cancel', () => {
+    const { handle } = setup();
+
+    hover(null);
+    fireEvent(handle, pointer('pointerdown', { x: 40, y: 40 }));
+    fireEvent(window, pointer('pointermove', { x: 200, y: 200 }));
+    fireEvent(window, pointer('pointerup', { x: 200, y: 200 }));
+
+    expect(screen.getByTestId('settle')).toHaveTextContent('cancel');
+  });
+
+  it('never marks a press that did not become a drag', () => {
+    const { handle } = setup();
+
+    fireEvent(handle, pointer('pointerdown', { x: 40, y: 40 }));
+    fireEvent(window, pointer('pointerup', { x: 41, y: 41 }));
+
+    expect(screen.getByTestId('settle')).toHaveTextContent('none');
   });
 });

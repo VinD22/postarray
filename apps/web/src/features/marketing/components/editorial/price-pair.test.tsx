@@ -1,6 +1,8 @@
 import { render, screen } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
 
+import { publishableTiers } from '@/features/billing/tiers';
+
 import { EditorialPricePair } from './price-pair';
 
 /**
@@ -43,6 +45,18 @@ describe('EditorialPricePair', () => {
     expect(screen.queryAllByRole('radio')).toHaveLength(0);
     expect(screen.queryAllByRole('button')).toHaveLength(0);
     expect(screen.queryAllByRole('switch')).toHaveLength(0);
+  });
+
+  it('states the same two amounts the base tier is actually charged', () => {
+    // Extended for the tier grid (Track B phase 3). This component takes
+    // whole dollars while `TierGrid` takes minor units, so the two could
+    // drift into disagreeing about the base tier on the same page — the home
+    // teaser renders both. The fixture above is pinned to the tier module
+    // here rather than trusted.
+    const standard = publishableTiers()[0];
+    expect(standard?.key).toBe('relay_standard');
+    expect(standard?.monthlyPriceMinor).toBe(29 * 100);
+    expect(standard?.annualPriceMinor).toBe(300 * 100);
   });
 
   it('carries the annual framing sentence the caller passed, in money', () => {

@@ -246,6 +246,7 @@ describe('campaignOutcome', () => {
       hasExternalPost: true,
       receiptId: 'rcpt_1',
       permalink: null,
+      publishedAt: null,
       failedItemCount: 0,
       ...overrides,
     };

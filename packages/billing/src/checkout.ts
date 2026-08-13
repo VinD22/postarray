@@ -10,7 +10,7 @@ import { PLAN_CURRENCY, TRIAL_DAYS } from './products';
 import type { BillingInterval } from './intervals';
 import { BASE_TIER_KEY, assertTierPublishable } from './tiers';
 import type { PlanTierKey } from './tiers';
-import { SIMULATOR_ANNUAL_PRODUCT_ID, SIMULATOR_MONTHLY_PRODUCT_ID } from './simulator';
+import { simulatorProductId } from './simulator';
 import type { Clock } from './time';
 import { nowIso } from './time';
 
@@ -90,6 +90,12 @@ export function tierProductKey(tier: PlanTierKey, interval: BillingInterval): st
 /**
  * Resolve the Polar product id for a (tier, interval), or refuse to guess.
  *
+ * Every tier already names the two environment variables carrying its product
+ * ids, and `config.productIdsByEnvKey` reports what the environment actually
+ * supplied, so resolution is a lookup rather than a special case per tier. The
+ * order is: an explicitly injected id, then the tier's own env var, then the
+ * base tier's dedicated config fields, then the simulator.
+ *
  * Fail closed is the whole point: an unconfigured product throws rather than
  * falling back to a different tier's product, because charging a customer the
  * base price for a larger allowance would be worse than not selling at all.
@@ -100,19 +106,29 @@ export function resolveProductId(input: ResolveProductIdInput): string {
   const envKey = interval === 'year' ? tier.annualProductIdEnvKey : tier.monthlyProductIdEnvKey;
 
   const supplied = input.tierProductIds?.[tierProductKey(tier.key, interval)];
-  const configured =
-    supplied ?? (interval === 'year' ? config.annualProductId : config.monthlyProductId);
-  const usesBaseConfig = tier.key === BASE_TIER_KEY;
-
   if (supplied !== undefined && supplied.length > 0) {
     return supplied;
   }
+
+  const fromEnv = config.productIdsByEnvKey[envKey];
+  if (fromEnv !== undefined && fromEnv.length > 0) {
+    return fromEnv;
+  }
+
+  // The base tier predates `productIdsByEnvKey` and keeps its own two fields.
+  const usesBaseConfig = tier.key === BASE_TIER_KEY;
+  const configured = interval === 'year' ? config.annualProductId : config.monthlyProductId;
   if (usesBaseConfig && configured !== undefined && configured.length > 0) {
     return configured;
   }
-  if (usesBaseConfig && input.allowSimulatorFallback) {
-    return interval === 'year' ? SIMULATOR_ANNUAL_PRODUCT_ID : SIMULATOR_MONTHLY_PRODUCT_ID;
+
+  if (input.allowSimulatorFallback) {
+    const simulated = simulatorProductId(tier.key, interval);
+    if (simulated !== undefined) {
+      return simulated;
+    }
   }
+
   throw new RelayError('INTERNAL', {
     messageKey: BILLING_MESSAGE_KEYS.internal,
     details: { missingEnvVar: envKey, tier: tier.key, interval },

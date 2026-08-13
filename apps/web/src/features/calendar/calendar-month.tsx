@@ -14,13 +14,20 @@
  * hour as well.
  */
 
-import { useMemo, type PointerEvent as ReactPointerEvent, type ReactNode } from 'react';
+import { useMemo, useRef, type PointerEvent as ReactPointerEvent, type ReactNode } from 'react';
 import { cn, focusRingInset } from '@relay/design-system';
 import { useTranslations } from '@relay/i18n/react';
 import { EntryChip } from './entry-chip';
 import { useCalendarFormat } from './format';
 import { entryKey, needsAttention, sortEntries } from './filters';
 import { isSameDay, toWallClock } from './date-range';
+import {
+  TODAY_CELL_ATTRIBUTE,
+  WEEK_CELL_ATTRIBUTE,
+  useTodayPulse,
+  useWeekFill,
+} from './mount-motion';
+import type { DragSettle } from './use-drag-reschedule';
 import type { CalendarEntry, CalendarRange, RescheduleProposal } from './types';
 
 const VISIBLE_PER_CELL = 3;
@@ -37,6 +44,8 @@ export interface CalendarMonthProps {
   /** The proposed landing day, drawn as a dashed outline on that one cell. */
   proposal?: RescheduleProposal | null;
   draggingKey?: string | null;
+  /** The chip released on the last pointer-up, and how. See `useDragReschedule`. */
+  settle?: DragSettle | null;
   onDragStart?: (entry: CalendarEntry, event: ReactPointerEvent<Element>) => void;
   label: string;
 }
@@ -51,12 +60,17 @@ export function CalendarMonth({
   onPickUp,
   proposal = null,
   draggingKey = null,
+  settle = null,
   onDragStart,
   label,
 }: CalendarMonthProps): ReactNode {
   const t = useTranslations();
   const format = useCalendarFormat();
+  const scope = useRef<HTMLElement>(null);
   const targetInstant = proposal ? new Date(proposal.toInstant) : null;
+
+  useWeekFill(scope);
+  useTodayPulse(scope);
 
   const byDay = useMemo(() => {
     const map = new Map<string, CalendarEntry[]>();
@@ -73,11 +87,15 @@ export function CalendarMonth({
   const weekdayNames = range.days.slice(0, 7);
 
   return (
-    <section aria-label={label} className="relay-scrollbar overflow-x-auto">
+    <section ref={scope} aria-label={label} className="relay-scrollbar overflow-x-auto">
       <div className="min-w-[42rem]">
         <div className="border-border-default bg-surface-canvas grid grid-cols-7 gap-px border-b">
           {weekdayNames.map((day) => (
-            <h3 key={day.toISOString()} className="text-label text-text-secondary px-2 py-1.5">
+            <h3
+              key={day.toISOString()}
+              {...{ [WEEK_CELL_ATTRIBUTE]: '' }}
+              className="text-label text-text-secondary px-2 py-1.5"
+            >
               {format.weekdayShort(day)}
             </h3>
           ))}
@@ -103,17 +121,21 @@ export function CalendarMonth({
                   // Snaps rather than animates: the outline is the only thing
                   // that changes as the pointer or the arrow keys move.
                   isTarget && 'outline-accent outline-2 outline-offset-[-2px] outline-dashed',
+                  // A pointer carrying a post also fills the day it is over.
+                  // Same drag state, same proposal the keyboard produces.
+                  isTarget && draggingKey !== null && 'bg-accent-subtle',
                 )}
               >
                 <div className="flex items-baseline justify-between gap-1">
                   <a
                     href={hrefForDay(day)}
+                    {...(today ? { [TODAY_CELL_ATTRIBUTE]: '' } : {})}
                     aria-label={t('a11y.label.calendarCell', {
                       date: format.date(day, 'full'),
                       count: dayEntries.length,
                     })}
                     className={cn(
-                      'text-body-sm rounded-full px-1.5 tabular-nums no-underline',
+                      'text-body-sm inline-block rounded-full px-1.5 tabular-nums no-underline',
                       today
                         ? 'bg-cta text-cta-on border-border-bold border-2 font-semibold'
                         : 'text-text-secondary hover:bg-surface-hover hover:text-text-primary',
@@ -137,6 +159,8 @@ export function CalendarMonth({
                     density="compact"
                     grabbed={grabbedKey === entryKey(entry)}
                     dragging={draggingKey === entryKey(entry)}
+                    settleKind={settle?.key === entryKey(entry) ? settle.kind : null}
+                    settleId={settle?.key === entryKey(entry) ? settle.id : null}
                     {...(onPickUp ? { onPickUp } : {})}
                     {...(onDragStart ? { onDragStart } : {})}
                   />

@@ -1,7 +1,6 @@
 'use client';
 
 import { Link } from '@/components/link';
-import { Coffee } from 'lucide-react';
 import { useEffect, useRef } from 'react';
 
 import { useAnnouncer } from '@relay/design-system/hooks';
@@ -12,12 +11,15 @@ import { ApiError } from '@/lib/api';
 import { useActionCenter, useCalendar } from '@/lib/api/hooks';
 import { useSession } from '@/lib/auth/session-context';
 import { useTranslations } from '@/lib/i18n';
+import { EmptyScene } from '@/components/empty';
 import { StaggerList } from '@/components/motion';
 import { ActionCenterList } from '@/components/shell/action-center-list';
 
 import { ConnectionHealth } from './connection-health';
+import { DigestCard } from './digest-card';
 import { RecentReceipts } from './recent-receipts';
 import { HomeSection } from './section';
+import { StatTiles } from './stat-tiles';
 import { TrialBanner } from './trial-banner';
 import { UpcomingQueue } from './upcoming-queue';
 
@@ -27,9 +29,20 @@ const DAY_MS = 86_400_000;
  * Home.
  *
  * It answers one question: what needs me today. Rows, a table and a timeline,
- * in that order of urgency. No charts, no counters, no "welcome back" hero, and
- * no vanity tiles: counts live in Analytics, where they have a denominator and
- * a freshness time next to them.
+ * in that order of urgency. No charts and no "welcome back" hero.
+ *
+ * It now opens with three counts, which is a deliberate reversal of this
+ * file's original "no counters" rule and worth writing down. The objection
+ * was never to numbers, it was to vanity tiles: a number with no denominator,
+ * no window and no source. `StatTiles` answers all three (posts with a time
+ * on them this week, accounts this workspace owns, the next thing out), reads
+ * them from the same endpoints the lists below read, and says `unavailable`
+ * rather than `0` when a read fails. Engagement numbers still live in
+ * Analytics, where they have a freshness time next to them.
+ *
+ * The whole page arrives on one mount stagger, so the sections land in the
+ * order they should be read: what needs you, then what goes out, then what
+ * already went.
  */
 export function HomeScreen() {
   const t = useTranslations();
@@ -86,6 +99,8 @@ export function HomeScreen() {
       <StaggerList className="relay-page flex flex-col gap-8 py-5 md:py-6" stagger={0.06} y={16}>
         <TrialBanner />
 
+        <StatTiles />
+
         <HomeSection
           id="home-needs-you"
           emphasis
@@ -104,13 +119,12 @@ export function HomeScreen() {
           }
         >
           {needsYouEmpty ? (
+            // The drawn scene, not an icon in a dashed circle: an empty
+            // action center is the single most common thing a healthy
+            // workspace sees, so it is worth some character.
             <EmptyState
               compact
-              illustration={
-                <span className="border-border-strong inline-flex size-12 items-center justify-center rounded-full border-2 border-dashed">
-                  <Coffee aria-hidden="true" className="size-5" />
-                </span>
-              }
+              illustration={<EmptyScene scene="actionCenter" />}
               title={t('actionCenter.empty')}
               description={t('home.needsYou.emptyQuiet')}
             />
@@ -133,6 +147,10 @@ export function HomeScreen() {
         <Separator />
 
         <UpcomingQueue />
+
+        <Separator />
+
+        <DigestCard />
 
         <Separator />
 

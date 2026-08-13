@@ -1,4 +1,9 @@
-import { BASE_PROJECT_LIMIT, MAX_PROJECT_LIMIT } from '@relay/contracts';
+import {
+  BASE_PROJECT_LIMIT,
+  MAX_CHANNEL_LIMIT,
+  MAX_PROJECT_LIMIT,
+  channelAllowanceForProjects,
+} from '@relay/contracts';
 import type { MessageKey } from '@relay/i18n/translate';
 
 /**
@@ -15,6 +20,8 @@ import type { MessageKey } from '@relay/i18n/translate';
  *
  * A tier buys active project capacity and nothing else. Every tier includes
  * every feature, which is why there is one inclusion list and not one per tier.
+ * Channel capacity is derived from the project allowance rather than stored, so
+ * there is nowhere here a per-channel price could be written either.
  */
 
 /** Not a price and not an allowance. Marks a number only the founder decides. */
@@ -45,9 +52,9 @@ export const WEB_PLAN_TIERS: readonly WebPlanTier[] = [
   {
     key: 'relay_growth',
     rank: 1,
-    projectAllowance: FOUNDER_DECISION_PENDING,
-    monthlyPriceMinor: FOUNDER_DECISION_PENDING,
-    annualPriceMinor: FOUNDER_DECISION_PENDING,
+    projectAllowance: 10,
+    monthlyPriceMinor: 5_900,
+    annualPriceMinor: 61_200,
     currency: 'USD',
     nameKey: 'billing.tier.growth.name',
     taglineKey: 'billing.tier.growth.tagline',
@@ -55,9 +62,10 @@ export const WEB_PLAN_TIERS: readonly WebPlanTier[] = [
   {
     key: 'relay_studio',
     rank: 2,
-    projectAllowance: FOUNDER_DECISION_PENDING,
-    monthlyPriceMinor: FOUNDER_DECISION_PENDING,
-    annualPriceMinor: FOUNDER_DECISION_PENDING,
+    // The authorization ceiling exactly, so no surface claims "unlimited".
+    projectAllowance: MAX_PROJECT_LIMIT,
+    monthlyPriceMinor: 11_900,
+    annualPriceMinor: 123_600,
     currency: 'USD',
     nameKey: 'billing.tier.studio.name',
     taglineKey: 'billing.tier.studio.tagline',
@@ -116,6 +124,21 @@ export function displayProjectAllowance(tier: WebPlanTier | null): number | null
     return null;
   }
   return Math.min(MAX_PROJECT_LIMIT, Math.max(1, tier.projectAllowance));
+}
+
+/**
+ * The active channel allowance to render, or `null` when we do not know it.
+ *
+ * Derived from the project allowance, exactly as `@relay/billing` derives it, so
+ * a card cannot show a channel count the entitlement would not grant. Pooled
+ * across the workspace, not fenced per project. Never rendered as 0.
+ */
+export function displayChannelAllowance(tier: WebPlanTier | null): number | null {
+  const projects = displayProjectAllowance(tier);
+  if (projects === null) {
+    return null;
+  }
+  return Math.min(MAX_CHANNEL_LIMIT, channelAllowanceForProjects(projects));
 }
 
 /** Whole-currency amount for `Intl.NumberFormat`. Minor units are the source. */

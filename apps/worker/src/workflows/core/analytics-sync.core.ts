@@ -112,6 +112,18 @@ export async function runAnalyticsSync(
       errorCode: null,
     });
 
+    // Fresh readings for a post are what makes feedback possible. The activity
+    // decides for itself whether the post is old enough, and whether this
+    // window has already been described, so calling it after every post sync
+    // that actually observed something is both safe and idempotent.
+    if (input.receiptId !== null && result.observedCount > 0) {
+      await activities.generatePostFeedback({
+        ctx,
+        receiptId: input.receiptId,
+        observedAt: toIsoInstant(runtime.now()),
+      });
+    }
+
     if (result.observedCount > 0) {
       await activities.emitEvent({
         ctx,

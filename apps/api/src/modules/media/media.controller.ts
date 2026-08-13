@@ -1,5 +1,19 @@
-import { Body, Controller, Delete, Get, HttpCode, Param, Post, Put, Query } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Headers,
+  HttpCode,
+  Param,
+  Post,
+  Put,
+  Query,
+  Req,
+  Res,
+} from '@nestjs/common';
 import type { OperationRef, Paginated } from '@relay/contracts';
+import type { Request, Response } from 'express';
 
 import type {
   ActorContext,
@@ -10,16 +24,23 @@ import type {
 import { Actor, Idempotent, RateLimit, RequireScope } from '../../common/decorators';
 import { mediaIdSchema } from '../../common/schemas';
 import { parseBody, parseParams, parseQuery } from '../../common/zod';
+import { readDirectUploadBody } from './direct-upload-body';
 import {
+  MAX_UPLOAD_BYTES,
   createUploadUrlSchema,
   declareRightsSchema,
+  directUploadHeadersSchema,
   editMediaSchema,
   importFromUrlSchema,
   listMediaQuerySchema,
+  objectKeyParamsSchema,
   setAltTextSchema,
   toMediaEditOperations,
 } from './media.schemas';
 import { MediaService } from './media.service';
+
+/** The header `LocalFileStorage` puts on every upload ticket it issues. */
+const CHECKSUM_HEADER = 'x-relay-content-sha256';
 
 /**
  * The media library.
@@ -70,6 +91,64 @@ export class MediaController {
     retentionExpiresAt: string;
   }> {
     return this.media.createUploadUrl(actor, parseBody(createUploadUrlSchema, body));
+  }
+
+  /**
+   * The other end of a local upload ticket.
+   *
+   * A deployment with object storage hands out a presigned PUT and never
+   * reaches this route; the application service refuses unless the configured
+   * adapter is the local filesystem one, so this cannot become a second,
+   * unsigned write path in production. It exists because the local adapter
+   * points its ticket back here, and without it every upload on a developer
+   * laptop and in CI silently PUTs into a 404.
+   *
+   * Nothing in the request is trusted: the workspace in the key must be the
+   * caller's, and the content type and checksum headers are compared against
+   * the pending asset row the ticket was issued for.
+   */
+  @Put('uploads/:workspaceId/:digest')
+  @RequireScope('media:write')
+  @RateLimit({ limit: 120, windowSeconds: 60 })
+  @HttpCode(200)
+  async acceptDirectUpload(
+    @Actor() actor: ActorContext,
+    @Param() params: unknown,
+    @Headers() headers: Record<string, string | undefined>,
+    @Req() request: Request,
+  ): Promise<{ byteSize: number }> {
+    const { workspaceId, digest } = parseParams(objectKeyParamsSchema, params);
+    const declared = parseBody(directUploadHeadersSchema, {
+      contentType: headers['content-type'],
+      checksumSha256: headers[CHECKSUM_HEADER],
+    });
+    const bytes = await readDirectUploadBody(request, MAX_UPLOAD_BYTES);
+    return this.media.acceptDirectUpload(actor, {
+      storageKey: `${workspaceId}/${digest}`,
+      contentType: declared.contentType,
+      checksumSha256: declared.checksumSha256,
+      bytes,
+    });
+  }
+
+  /** The read half of the same local-only pair. */
+  @Get('objects/:workspaceId/:digest')
+  @RequireScope('media:read')
+  async readObject(
+    @Actor() actor: ActorContext,
+    @Param() params: unknown,
+    @Res() response: Response,
+  ): Promise<void> {
+    const { workspaceId, digest } = parseParams(objectKeyParamsSchema, params);
+    const object = await this.media.readObjectForDownload(actor, {
+      storageKey: `${workspaceId}/${digest}`,
+    });
+    response.setHeader('content-type', object.contentType);
+    response.setHeader('content-length', String(object.bytes.byteLength));
+    // User-supplied bytes: never sniffed, never cached by a shared proxy.
+    response.setHeader('x-content-type-options', 'nosniff');
+    response.setHeader('cache-control', 'private, no-store');
+    response.status(200).end(Buffer.from(object.bytes));
   }
 
   /**

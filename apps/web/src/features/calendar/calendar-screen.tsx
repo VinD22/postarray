@@ -49,6 +49,7 @@ import { useI18n, useTranslations } from '@relay/i18n/react';
 
 import { Link } from '@/components/link';
 import { ApiError } from '@/lib/api/error';
+import { EmptyScene } from '@/components/empty';
 import { CalendarAgenda } from './calendar-agenda';
 import { CalendarGrid } from './calendar-grid';
 import { CalendarMonth } from './calendar-month';
@@ -79,7 +80,7 @@ import {
   useRescheduleEntry,
   useResumeScheduled,
 } from './use-calendar';
-import { useDragReschedule } from './use-drag-reschedule';
+import { useDragReschedule, type DragSettle } from './use-drag-reschedule';
 import { EMPTY_FILTERS } from './types';
 import type {
   CalendarEntry,
@@ -458,6 +459,7 @@ export function CalendarScreen({
           grabbedKey={grabbed ? entryKey(grabbed) : null}
           proposal={grabbed ? proposal : null}
           draggingKey={drag.draggingKey}
+          settle={drag.settle}
           onPickUp={beginMove}
           onDragStart={drag.startDrag}
           onReschedule={openRescheduleFor}
@@ -540,6 +542,8 @@ interface CalendarBodyProps {
   grabbedKey: string | null;
   proposal: RescheduleProposal | null;
   draggingKey: string | null;
+  /** The chip released on the last pointer-up, and how. See `useDragReschedule`. */
+  settle: DragSettle | null;
   onPickUp: (entry: CalendarEntry) => void;
   onDragStart: (entry: CalendarEntry, event: ReactPointerEvent<Element>) => void;
   onReschedule: (entry: CalendarEntry) => void;
@@ -663,11 +667,10 @@ function CalendarBody(props: CalendarBodyProps): ReactNode {
         title={t('empty.calendar.title')}
         description={t('empty.calendar.body')}
         example={t('web.calendar.empty.example')}
-        illustration={
-          <span className="border-border-strong inline-flex size-12 items-center justify-center rounded-full border-2 border-dashed">
-            <CalendarPlus aria-hidden="true" className="size-5" />
-          </span>
-        }
+        // The first-run calendar is one of the screens a brand new workspace
+        // sees before anything else, so it gets the drawn scene rather than
+        // an icon in a dashed circle. The scene carries its own sentence.
+        illustration={<EmptyScene scene="calendar" />}
         action={
           <Button
             variant="primary"
@@ -715,6 +718,7 @@ function CalendarBody(props: CalendarBodyProps): ReactNode {
             onPickUp={props.onPickUp}
             proposal={props.proposal}
             draggingKey={props.draggingKey}
+            settle={props.settle}
             onDragStart={props.onDragStart}
             label={t('web.calendar.month.label', { month: props.rangeLabel })}
           />
@@ -732,6 +736,7 @@ function CalendarBody(props: CalendarBodyProps): ReactNode {
                 onPickUp={props.onPickUp}
                 proposal={props.proposal}
                 draggingKey={props.draggingKey}
+                settle={props.settle}
                 onDragStart={props.onDragStart}
                 label={t('web.calendar.grid.label', { range: props.rangeLabel })}
               />
@@ -746,6 +751,7 @@ function CalendarBody(props: CalendarBodyProps): ReactNode {
                 onPickUp={props.onPickUp}
                 proposal={props.proposal}
                 draggingKey={props.draggingKey}
+                settle={props.settle}
                 onDragStart={props.onDragStart}
                 label={t('web.calendar.agenda.label', { range: props.rangeLabel })}
               />

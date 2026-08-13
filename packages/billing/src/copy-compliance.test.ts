@@ -130,6 +130,8 @@ describe('tier copy', () => {
 });
 
 describe('the annual framing', () => {
+  const catalog = en as Readonly<Record<string, string>>;
+
   it('states a saving in money, never a discount percentage', () => {
     expect(MANDATED_COPY.annualFraming).toBe('$25/month billed annually. Save $48/year.');
     expect(MANDATED_COPY.annualFraming).not.toContain('%');
@@ -143,6 +145,42 @@ describe('the annual framing', () => {
     expect(PRICE_PRESENTATION.month.priceMinor * 12 - PRICE_PRESENTATION.year.priceMinor).toBe(
       PRICE_PRESENTATION.annualFraming.savingMinor,
     );
+  });
+
+  /**
+   * The same arithmetic, on every tier a buyer can see, not only the base one.
+   * A tier added without a divisible annual price, or with a hand-written
+   * sentence that no longer matches the charge, fails here rather than on a
+   * pricing page.
+   */
+  it('has arithmetic that holds up on every published tier', () => {
+    expect(TIER_PRESENTATIONS.length).toBeGreaterThan(0);
+    for (const tier of TIER_PRESENTATIONS) {
+      const { annualFraming, month, year } = tier;
+      expect(annualFraming.effectiveMonthlyMinor * 12, tier.tierKey).toBe(year.priceMinor);
+      expect(month.priceMinor * 12 - year.priceMinor, tier.tierKey).toBe(annualFraming.savingMinor);
+      expect(annualFraming.effectiveMonthlyIsExact, tier.tierKey).toBe(true);
+    }
+  });
+
+  it('states every tier saving in whole dollars, never in cents and never as a rate', () => {
+    for (const tier of TIER_PRESENTATIONS) {
+      expect(tier.annualFraming.savingMinor % 100, tier.tierKey).toBe(0);
+      expect(tier.annualFraming.savingText, tier.tierKey).not.toContain('.');
+      expect(tier.annualFraming.savingText, tier.tierKey).not.toContain('%');
+    }
+  });
+
+  it('keeps every founder-worded tier sentence in step with the charge', () => {
+    for (const tier of TIER_PRESENTATIONS) {
+      const sentence = catalog[tier.annualFraming.mandatedFramingKey];
+      expect(sentence, tier.annualFraming.mandatedFramingKey).toBeTypeOf('string');
+      expect(sentence, tier.tierKey).toContain(tier.annualFraming.effectiveMonthlyText);
+      expect(sentence, tier.tierKey).toContain(tier.annualFraming.savingText);
+      expect(sentence, tier.tierKey).not.toContain('%');
+      expect(sentence?.toLowerCase(), tier.tierKey).not.toContain(' off');
+      expect(sentence, tier.tierKey).not.toContain('—');
+    }
   });
 });
 

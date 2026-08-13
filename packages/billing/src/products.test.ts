@@ -131,8 +131,12 @@ describe('the presentation object agrees with the English catalog', () => {
 });
 
 describe('the tier presentations every pricing surface renders', () => {
-  it('offers only the base tier while the higher tiers are undecided', () => {
-    expect(TIER_PRESENTATIONS.map((tier) => tier.tierKey)).toEqual(['relay_standard']);
+  it('offers all three decided tiers, cheapest first', () => {
+    expect(TIER_PRESENTATIONS.map((tier) => tier.tierKey)).toEqual([
+      'relay_standard',
+      'relay_growth',
+      'relay_studio',
+    ]);
   });
 
   it('derives every amount from the tier minor units', () => {
@@ -149,13 +153,39 @@ describe('the tier presentations every pricing surface renders', () => {
     expect(base.projectAllowance).toBe(3);
   });
 
+  it('renders the ladder a buyer actually chooses from', () => {
+    const rendered = TIER_PRESENTATIONS.map((tier) => ({
+      tier: tier.tierKey,
+      month: tier.month.priceText,
+      year: tier.year.priceText,
+      projects: tier.projectAllowance,
+      channels: tier.channelAllowance,
+    }));
+    expect(rendered).toEqual([
+      { tier: 'relay_standard', month: '$29', year: '$300', projects: 3, channels: 15 },
+      { tier: 'relay_growth', month: '$59', year: '$612', projects: 10, channels: 50 },
+      { tier: 'relay_studio', month: '$119', year: '$1,236', projects: 20, channels: 100 },
+    ]);
+  });
+
+  it('states an exact per-month equivalent on every tier, never a rounded one', () => {
+    for (const tier of TIER_PRESENTATIONS) {
+      expect(tier.annualFraming.effectiveMonthlyIsExact, tier.tierKey).toBe(true);
+      expect(tier.annualFraming.effectiveMonthlyMinor * 12, tier.tierKey).toBe(
+        tier.year.priceMinor,
+      );
+    }
+  });
+
   it('references only message keys that exist', () => {
     for (const tier of TIER_PRESENTATIONS) {
       for (const key of [
         tier.nameKey,
         tier.taglineKey,
         tier.projectAllowanceKey,
+        tier.channelAllowanceKey,
         tier.annualFraming.framingKey,
+        tier.annualFraming.mandatedFramingKey,
         tier.month.labelKey,
         tier.year.labelKey,
         ...tier.inclusionKeys,

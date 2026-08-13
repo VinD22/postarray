@@ -17,6 +17,39 @@ import { describe, expect, it } from 'vitest';
  * A page declares an inverted band in exactly two ways: by passing
  * `tone="inverted"` to `EditorialSection`, or by rendering `ClosingCta`, which
  * is an inverted band by construction. The sum of the two must be at most one.
+ *
+ * ---------------------------------------------------------------------------
+ * Loud came back. On purpose, and governed.
+ *
+ * A reader arriving here later deserves the whole story, because half of it
+ * looks like a contradiction. The v1 loud vocabulary — hover-lift poster
+ * cards, rotating stickers, logo marquees, torn-paper dividers — was deleted,
+ * and the bottom half of this file is the fence that keeps it deleted. That
+ * fence has not moved and must not: `LOUD_CONSUMERS_ALLOWED` is still an empty
+ * exact set, `components/loud/` is still asserted absent from disk, and none
+ * of that is a threshold to edit.
+ *
+ * What changed is that a second-generation vocabulary was built beside it: a
+ * scene vocabulary of pinned scroll scenes, parallax layers, an auto-advancing
+ * tour, and tinted `ColorBand`s in the marigold and ultramarine accent
+ * families. The difference between it and v1 is not restraint of taste, which
+ * is not enforceable, but a budget, which is: every device has a per-page
+ * ceiling in `../scene/scene-budget.test.ts`.
+ *
+ * That is why the rule below counts inverted bands and NOT ColorBands. They
+ * are different concepts with different failure modes, and folding them into
+ * one number would make both worse:
+ *
+ *   - an INVERTED band flips the page's whole figure/ground relationship. Two
+ *     of them means the page has no idea which moment is its loudest, which is
+ *     why the ceiling is one and always will be.
+ *   - a COLOR BAND tints one section's ground while ink stays ink. Two can
+ *     legitimately punctuate a long page, so its ceiling is two and it is
+ *     counted where the rest of the scene budget is counted.
+ *
+ * A page may therefore hold one inverted band AND its budgeted ColorBands.
+ * Neither test can be satisfied by moving a device into the other's category.
+ * ---------------------------------------------------------------------------
  */
 // Built with `join`, not `new URL`: the route segments contain `[` and `(`,
 // which a URL would percent-encode into a path that does not exist on disk.
@@ -83,7 +116,26 @@ describe('the editorial marketing pages', () => {
     const explicitInverted = countMatches(source, /tone="inverted"/g);
     const closingCtas = countMatches(source, /<ClosingCta[\s/>]/g);
 
-    expect(explicitInverted + closingCtas).toBeLessThanOrEqual(1);
+    // Unchanged, and deliberately not widened to make room for the scene
+    // vocabulary: a tinted ColorBand is a separate budgeted concept, counted
+    // in `../scene/scene-budget.test.ts` (see this file's header). The ceiling
+    // on figure/ground inversion stays at one whatever else a page is doing.
+    expect(
+      explicitInverted + closingCtas,
+      `${page} inverts its figure/ground ${explicitInverted + closingCtas} times. ` +
+        `A page has one loudest moment. If this section wants colour rather than ` +
+        `inversion, it wants a ColorBand, and ColorBands are budgeted separately.`,
+    ).toBeLessThanOrEqual(1);
+  });
+
+  it.each(MIGRATED_PAGES)('never disguises an inverted band as a ColorBand: %s', async (page) => {
+    const source = await readFile(`${MARKETING_DIR}/${page}`, 'utf8');
+
+    // The one way the two budgets could be gamed: a ColorBand carrying
+    // `tone="inverted"` would be counted by the scene budget as a tinted band
+    // while behaving like a second inverted one. It is not a valid tone for
+    // that component, and this is what stops it becoming one by accident.
+    expect(source).not.toMatch(/<ColorBand[^>]*tone="inverted"/);
   });
 
   it.each(MIGRATED_PAGES)('imports no loud component: %s', async (page) => {

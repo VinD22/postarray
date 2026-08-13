@@ -3,6 +3,9 @@ import { Link } from '@/components/link';
 import { Button } from '@relay/design-system/primitives';
 import { cn } from '@relay/design-system/utils';
 
+import { GradientWash, type SceneAccent } from '../scene';
+
+import { ClosingCelebration } from './closing-celebration';
 import { EditorialDisplay } from './display';
 import { EditorialSection } from './section';
 
@@ -31,6 +34,18 @@ export interface ClosingCtaProps {
   readonly cta: { readonly href: string; readonly label: string };
   readonly footnote?: ReactNode;
   readonly id?: string;
+  /**
+   * Paints a duotone wash across the top edge of the band, in one accent
+   * family. Off by default: this is the flagship page's upgrade, not every
+   * page's. The wash is an edge and fades to transparent well above the copy,
+   * because body text never sits on a gradient (`theme.css`, rule 1).
+   */
+  readonly wash?: SceneAccent;
+  /**
+   * Fires one small burst the first time the band scrolls into view. Off by
+   * default, and it renders nothing at all under reduced motion.
+   */
+  readonly celebrate?: boolean;
   readonly className?: string;
 }
 
@@ -40,11 +55,17 @@ export function ClosingCta({
   cta,
   footnote,
   id,
+  wash,
+  celebrate = false,
   className,
 }: ClosingCtaProps): ReactNode {
   return (
-    <EditorialSection tone="inverted" id={id} className={className}>
-      <div className="max-w-[46rem] space-y-6">
+    <EditorialSection tone="inverted" id={id} className={cn('isolate overflow-hidden', className)}>
+      {wash ? <GradientWash accent={wash} placement="top" /> : null}
+      {/* Both layers sit behind the copy: the wrapper below is the only
+          positioned, stacked element in the band. */}
+      <div className="relative max-w-[46rem] space-y-6">
+        {celebrate ? <ClosingCelebration /> : null}
         <EditorialDisplay as="h2" size="sm">
           {title}
         </EditorialDisplay>
@@ -54,9 +75,7 @@ export function ClosingCta({
             <Link href={cta.href}>{cta.label}</Link>
           </Button>
         </div>
-        {footnote ? (
-          <p className="text-body-md max-w-[62ch] leading-[1.6]">{footnote}</p>
-        ) : null}
+        {footnote ? <p className="text-body-md max-w-[62ch] leading-[1.6]">{footnote}</p> : null}
       </div>
     </EditorialSection>
   );

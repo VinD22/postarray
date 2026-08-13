@@ -6,6 +6,7 @@ import { fileURLToPath } from 'node:url';
 import pg from 'pg';
 
 import { DATABASE_ERROR_CODES, DatabaseError } from './errors';
+import { isProcessEntryPoint } from './invoked-directly';
 import { createStderrLogger, type DatabaseLogger } from './logger';
 
 /**
@@ -254,8 +255,7 @@ function describeError(error: unknown): string {
   return String(error);
 }
 
-const invokedDirectly =
-  process.argv[1] !== undefined && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url);
+const invokedDirectly = isProcessEntryPoint(import.meta.url, 'migrate');
 
 if (invokedDirectly) {
   migrate().catch((error: unknown) => {

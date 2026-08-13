@@ -59,6 +59,21 @@ export interface AccentTokens {
   readonly onAccent: string;
 }
 
+/**
+ * The three accent families share one shape on purpose: a surface that can be
+ * tinted by `accent` can be tinted by `accentWarm` or `accentCool` without a
+ * second code path, and `accentFamilyPairs` below can generate the same
+ * thirteen contrast pairs for each of them.
+ *
+ * There is no `text.accentWarm` / `text.accentCool` counterpart to the
+ * historical `text.accent`. `text.accent` duplicates `accent.default` for
+ * reasons that predate this file; repeating that twice more would add eight
+ * documented pairs that measure colours already measured. The families'
+ * `default` step is documented as body text on all four surfaces instead,
+ * which is the assertion that actually protects a reader.
+ */
+export type AccentFamilyKey = 'accent' | 'accentWarm' | 'accentCool';
+
 export interface StatusTone {
   readonly fg: string;
   readonly bg: string;
@@ -133,6 +148,10 @@ export interface ThemeTokens {
   readonly border: BorderTokens;
   readonly text: TextTokens;
   readonly accent: AccentTokens;
+  /** Marigold. Energy, celebration, highlight moments. Scene vocabulary only. */
+  readonly accentWarm: AccentTokens;
+  /** Ultramarine. The cool counterweight: "live" / "published" moments. */
+  readonly accentCool: AccentTokens;
   readonly cta: CtaTokens;
   readonly blush: BlushTokens;
   readonly status: StatusTokens;
@@ -171,6 +190,25 @@ export const lightTheme: ThemeTokens = {
     active: '#863019',
     subtleBg: '#FBF1ED',
     subtleBgHover: '#F9EEE9',
+    onAccent: '#FFFFFF',
+  },
+  // Marigold. `default` is #8A6100 rather than a brighter marigold because
+  // #B07D10 measures 3.63:1 on #FFFFFF, under the 4.5:1 body floor.
+  accentWarm: {
+    default: '#8A6100',
+    hover: '#745100',
+    active: '#5E4100',
+    subtleBg: '#FCF4E0',
+    subtleBgHover: '#F9EFD2',
+    onAccent: '#FFFFFF',
+  },
+  // Ultramarine.
+  accentCool: {
+    default: '#3B4CC0',
+    hover: '#3240A6',
+    active: '#29358C',
+    subtleBg: '#EEF0FD',
+    subtleBgHover: '#E4E8FB',
     onAccent: '#FFFFFF',
   },
   cta: {
@@ -254,6 +292,26 @@ export const darkTheme: ThemeTokens = {
     active: '#C96545',
     subtleBg: '#26140F',
     subtleBgHover: '#331A13',
+    onAccent: '#141413',
+  },
+  // Marigold. #F5C233 rather than the #F2C044 the ramp first landed on: that
+  // value sat ΔE*ab 6.5 from the dark warning foreground (#E8B84A), close
+  // enough to read as the same colour. #F5C233 opens the gap to 13.1.
+  accentWarm: {
+    default: '#F5C233',
+    hover: '#FAD25C',
+    active: '#DBA919',
+    subtleBg: '#241B06',
+    subtleBgHover: '#302407',
+    onAccent: '#141413',
+  },
+  // Ultramarine.
+  accentCool: {
+    default: '#8B9BF4',
+    hover: '#A3AFF7',
+    active: '#6D7FE0',
+    subtleBg: '#13152C',
+    subtleBgHover: '#1B1E3D',
     onAccent: '#141413',
   },
   /* CTA / blush — identical to light; see comment in theme.css section 2. */
@@ -614,50 +672,95 @@ const brandPairs: ContrastPair[] = PROVIDER_KEYS.flatMap((key) => [
 ]);
 
 /*
- * The chromatic accent, covered in every role it actually plays: as link and
- * marker text on each surface, as a fill carrying `onAccent`, and as the
- * foreground of a selected row sitting on the subtle accent wash. Any future
- * retune of the terracotta has to keep all of these green.
+ * Every accent family, covered in every role it actually plays: as link,
+ * marker and display text on each surface, as a fill carrying `onAccent`, as
+ * the foreground of a row sitting on its own subtle wash, and as the ground a
+ * focus ring or control boundary has to survive on top of.
+ *
+ * One generator for all three families rather than three hand-written blocks:
+ * the families share `AccentTokens`, so a new family cannot be added with a
+ * thinner set of guarantees than the ones already here. Any future retune of
+ * any of them has to keep all thirteen green.
  */
+function accentFamilyPairs(
+  family: AccentFamilyKey,
+  pick: (t: ThemeTokens) => AccentTokens,
+): ContrastPair[] {
+  return [
+    ...(['canvas', 'raised', 'sunken', 'overlay'] as const).map((surface) => ({
+      id: `${family}.default on surface.${surface}`,
+      foreground: (t: ThemeTokens) => pick(t).default,
+      background: (t: ThemeTokens) => t.surface[surface],
+      purpose: 'body' as const,
+    })),
+    {
+      id: `${family}.default on ${family}.subtleBg`,
+      foreground: (t: ThemeTokens) => pick(t).default,
+      background: (t: ThemeTokens) => pick(t).subtleBg,
+      purpose: 'body' as const,
+    },
+    {
+      id: `${family}.default on ${family}.subtleBgHover`,
+      foreground: (t: ThemeTokens) => pick(t).default,
+      background: (t: ThemeTokens) => pick(t).subtleBgHover,
+      purpose: 'body' as const,
+    },
+    {
+      // For `accent` this is `::selection`; for the two scene families it is
+      // running copy inside a tinted band, which is the only place body text
+      // is allowed to meet a scene colour at all (see the gradient/texture
+      // policy in theme.css: never on a gradient, only on a flat wash).
+      id: `text.primary on ${family}.subtleBg`,
+      foreground: (t: ThemeTokens) => t.text.primary,
+      background: (t: ThemeTokens) => pick(t).subtleBg,
+      purpose: 'body' as const,
+    },
+    {
+      id: `text.primary on ${family}.subtleBgHover`,
+      foreground: (t: ThemeTokens) => t.text.primary,
+      background: (t: ThemeTokens) => pick(t).subtleBgHover,
+      purpose: 'body' as const,
+    },
+    {
+      id: `${family}.onAccent on ${family}.default`,
+      foreground: (t: ThemeTokens) => pick(t).onAccent,
+      background: (t: ThemeTokens) => pick(t).default,
+      purpose: 'body' as const,
+    },
+    {
+      id: `${family}.onAccent on ${family}.hover`,
+      foreground: (t: ThemeTokens) => pick(t).onAccent,
+      background: (t: ThemeTokens) => pick(t).hover,
+      purpose: 'body' as const,
+    },
+    {
+      id: `${family}.onAccent on ${family}.active`,
+      foreground: (t: ThemeTokens) => pick(t).onAccent,
+      background: (t: ThemeTokens) => pick(t).active,
+      purpose: 'body' as const,
+    },
+    {
+      // The focus ring drawn around a control inside a tinted row or band.
+      // The ring is always terracotta, whatever the band is tinted with.
+      id: `border.focus on ${family}.subtleBg`,
+      foreground: (t: ThemeTokens) => t.border.focus,
+      background: (t: ThemeTokens) => pick(t).subtleBg,
+      purpose: 'ui-boundary' as const,
+    },
+    {
+      // An input, checkbox or hairline rule keeping its edge inside the band.
+      id: `border.strong on ${family}.subtleBg`,
+      foreground: (t: ThemeTokens) => t.border.strong,
+      background: (t: ThemeTokens) => pick(t).subtleBg,
+      purpose: 'ui-boundary' as const,
+    },
+  ];
+}
+
 const accentPairs: ContrastPair[] = [
-  ...(['canvas', 'raised', 'sunken', 'overlay'] as const).map((surface) => ({
-    id: `accent.default on surface.${surface}`,
-    foreground: (t: ThemeTokens) => t.accent.default,
-    background: (t: ThemeTokens) => t.surface[surface],
-    purpose: 'body' as const,
-  })),
-  {
-    id: 'accent.default on accent.subtleBg',
-    foreground: (t: ThemeTokens) => t.accent.default,
-    background: (t: ThemeTokens) => t.accent.subtleBg,
-    purpose: 'body' as const,
-  },
-  {
-    id: 'accent.default on accent.subtleBgHover',
-    foreground: (t: ThemeTokens) => t.accent.default,
-    background: (t: ThemeTokens) => t.accent.subtleBgHover,
-    purpose: 'body' as const,
-  },
-  {
-    // `::selection` paints the subtle accent wash behind primary text.
-    id: 'text.primary on accent.subtleBg',
-    foreground: (t: ThemeTokens) => t.text.primary,
-    background: (t: ThemeTokens) => t.accent.subtleBg,
-    purpose: 'body' as const,
-  },
-  {
-    id: 'text.primary on accent.subtleBgHover',
-    foreground: (t: ThemeTokens) => t.text.primary,
-    background: (t: ThemeTokens) => t.accent.subtleBgHover,
-    purpose: 'body' as const,
-  },
-  {
-    // The focus ring drawn around a control inside a selected row.
-    id: 'border.focus on accent.subtleBg',
-    foreground: (t: ThemeTokens) => t.border.focus,
-    background: (t: ThemeTokens) => t.accent.subtleBg,
-    purpose: 'ui-boundary' as const,
-  },
+  ...accentFamilyPairs('accent', (t) => t.accent),
+  ...accentFamilyPairs('accentWarm', (t) => t.accentWarm),
+  ...accentFamilyPairs('accentCool', (t) => t.accentCool),
 ];
 
 export const documentedContrastPairs: readonly ContrastPair[] = [
@@ -665,24 +768,8 @@ export const documentedContrastPairs: readonly ContrastPair[] = [
   ...statusPairs,
   ...brandPairs,
   ...accentPairs,
-  {
-    id: 'accent.onAccent on accent.default',
-    foreground: (t) => t.accent.onAccent,
-    background: (t) => t.accent.default,
-    purpose: 'body',
-  },
-  {
-    id: 'accent.onAccent on accent.hover',
-    foreground: (t) => t.accent.onAccent,
-    background: (t) => t.accent.hover,
-    purpose: 'body',
-  },
-  {
-    id: 'accent.onAccent on accent.active',
-    foreground: (t) => t.accent.onAccent,
-    background: (t) => t.accent.active,
-    purpose: 'body',
-  },
+  // `accent.onAccent on accent.{default,hover,active}` used to be spelled out
+  // here; `accentFamilyPairs` above now generates it for all three families.
   {
     id: 'text.accent on accent.subtleBg',
     foreground: (t) => t.text.accent,

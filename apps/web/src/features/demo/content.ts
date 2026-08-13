@@ -3,7 +3,14 @@ import type { Translator } from '@relay/i18n/translate';
 
 import type { ProviderId } from '@/lib/api/types';
 
-import { DEMO_SCHEDULED_AT, DEMO_TIME_ZONE, DEMO_VARIANTS, DEMO_WEEKDAYS } from './sample';
+import {
+  DEMO_CHECKS,
+  DEMO_DIGEST_LINE_KEYS,
+  DEMO_SCHEDULED_AT,
+  DEMO_TIME_ZONE,
+  DEMO_VARIANTS,
+  DEMO_WEEKDAYS,
+} from './sample';
 
 /**
  * The demonstration, resolved once on the server.
@@ -36,6 +43,14 @@ export interface DemoWeekdayView {
   readonly entries: readonly DemoVariantView[];
 }
 
+export interface DemoCheckView {
+  readonly id: string;
+  /** What the check is called, in the composer's own words. */
+  readonly label: string;
+  /** What it measures, so a tick is never a bare green mark. */
+  readonly detail: string;
+}
+
 export interface DemoContent {
   readonly project: string;
   /** Human readable zone label with its offset, never a bare IANA identifier. */
@@ -48,6 +63,16 @@ export interface DemoContent {
   readonly author: string;
   readonly approver: string;
   readonly policy: string;
+  /** The three checks the composer genuinely runs. Never an invented fourth. */
+  readonly checks: readonly DemoCheckView[];
+  /**
+   * The digest, as sentences about what the product did.
+   *
+   * Deliberately never a number: no post in this sample has published, so any
+   * engagement figure here would be fabricated. Sentences describe behaviour
+   * the demonstration actually shows, which is the honest half of a digest.
+   */
+  readonly digest: readonly string[];
 }
 
 export function demoContent(t: Translator, locale: string): DemoContent {
@@ -82,5 +107,11 @@ export function demoContent(t: Translator, locale: string): DemoContent {
     author: t.t('web.demo.sample.actor'),
     approver: t.t('web.demo.sample.approver'),
     policy: t.t('web.demo.sample.policy'),
+    checks: DEMO_CHECKS.map((check) => ({
+      id: check.id,
+      label: t.format(check.labelKey),
+      detail: t.format(check.detailKey),
+    })),
+    digest: DEMO_DIGEST_LINE_KEYS.map((key) => t.format(key)),
   };
 }

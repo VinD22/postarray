@@ -10,11 +10,16 @@
  * issues, time, cost and the primary action.
  */
 
-import { useCallback, useMemo, useState, type ReactNode } from 'react';
+import { useCallback, useMemo, useRef, useState, type ReactNode } from 'react';
 import { Button } from '@relay/design-system/primitives';
 import { Notice, RateLimitNotice } from '@relay/design-system/patterns';
 import { useBreakpoint, useHotkeys } from '@relay/design-system/hooks';
+import { cn } from '@relay/design-system/utils';
 import { useTranslations } from '@relay/i18n/react';
+
+import { DURATION_FAST, EASE_STANDARD } from '@/lib/motion/constants';
+import { Flip, useGSAP } from '@/lib/motion/gsap';
+import { useMotionOk } from '@/lib/motion/use-motion-ok';
 
 import { useComposer } from '../composer-context';
 import { issueCursorList } from '../state/selectors';
@@ -196,32 +201,7 @@ export function ComposerScreen(props: ComposerScreenProps): ReactNode {
       <div className="flex min-h-dvh flex-col gap-4 px-4 pt-4">
         <ComposerHeader onClose={props.onClose} onShowShortcuts={() => setShortcutsOpen(true)} />
 
-        <nav aria-label={t.full('composerWeb.step.legend')}>
-          <ol className="flex gap-1 overflow-x-auto">
-            {STEPS.map((entry, index) => (
-              <li key={entry}>
-                <button
-                  type="button"
-                  aria-current={step === entry ? 'step' : undefined}
-                  onClick={() => setStep(entry)}
-                  className={
-                    step === entry
-                      ? 'border-accent bg-accent-subtle text-body-sm text-text-primary min-h-11 rounded-md border px-3'
-                      : 'border-border-subtle text-body-sm text-text-secondary min-h-11 rounded-md border px-3'
-                  }
-                >
-                  {t(`composerWeb.step.${entry === 'variant' ? 'perTarget' : entry}`)}
-                  <span className="sr-only">
-                    {t.full('composerWeb.step.progress', {
-                      current: index + 1,
-                      total: STEPS.length,
-                    })}
-                  </span>
-                </button>
-              </li>
-            ))}
-          </ol>
-        </nav>
+        <StepTabs step={step} onStepChange={setStep} />
 
         <PaneTransition panelKey={step} className="flex-1 pb-4">
           {step === 'targets' ? <TargetRail /> : null}
@@ -340,5 +320,99 @@ export function ComposerScreen(props: ComposerScreenProps): ReactNode {
       <ShortcutsDialog open={shortcutsOpen} onOpenChange={setShortcutsOpen} />
       <SavedFlash visible={savedFlash.visible} />
     </div>
+  );
+}
+
+/**
+ * The four named steps below 768px, with one sliding thumb.
+ *
+ * The thumb is a single element moved with GSAP `Flip` rather than four
+ * elements each drawing their own selected background, which is the same
+ * technique the primary nav's active marker and the calendar's view switch
+ * use, and the reason `Flip` is sanctioned for app chrome (see
+ * `components/motion/README.md`). Its position is measured from real bounding
+ * rects, so it lands correctly under `dir="rtl"` with no logical/physical
+ * branch, and the first paint positions it with no animation at all: an
+ * indicator that slides in from the corner on load is a distraction, not a
+ * transition.
+ *
+ * `aria-current="step"` on the button is what actually announces the step.
+ * The thumb is `aria-hidden` and never the only signal: the selected button
+ * also carries its own text colour and border.
+ */
+function StepTabs({
+  step,
+  onStepChange,
+}: {
+  readonly step: Step;
+  readonly onStepChange: (next: Step) => void;
+}): ReactNode {
+  const t = useTranslations();
+  const motionOk = useMotionOk();
+  const listRef = useRef<HTMLOListElement>(null);
+  const thumbRef = useRef<HTMLSpanElement>(null);
+  const itemRefs = useRef(new Map<Step, HTMLButtonElement>());
+  const hasPositioned = useRef(false);
+
+  useGSAP(
+    () => {
+      const list = listRef.current;
+      const thumb = thumbRef.current;
+      const active = itemRefs.current.get(step);
+      if (!list || !thumb || !active) return;
+
+      const shouldAnimate = hasPositioned.current && motionOk;
+      const state = shouldAnimate ? Flip.getState(thumb) : null;
+
+      const listRect = list.getBoundingClientRect();
+      const activeRect = active.getBoundingClientRect();
+      thumb.style.left = `${activeRect.left - listRect.left}px`;
+      thumb.style.width = `${activeRect.width}px`;
+
+      if (state) {
+        Flip.from(state, { duration: DURATION_FAST, ease: EASE_STANDARD });
+      }
+      hasPositioned.current = true;
+    },
+    { scope: listRef, dependencies: [step, motionOk] },
+  );
+
+  return (
+    <nav aria-label={t.full('composerWeb.step.legend')}>
+      <ol ref={listRef} className="relative flex gap-1 overflow-x-auto">
+        <span
+          ref={thumbRef}
+          aria-hidden="true"
+          className="border-accent bg-accent-subtle pointer-events-none absolute inset-y-0 z-0 rounded-md border"
+        />
+        {STEPS.map((entry, index) => (
+          <li key={entry}>
+            <button
+              type="button"
+              aria-current={step === entry ? 'step' : undefined}
+              ref={(element) => {
+                if (element) itemRefs.current.set(entry, element);
+                else itemRefs.current.delete(entry);
+              }}
+              onClick={() => onStepChange(entry)}
+              className={cn(
+                'text-body-sm relative z-10 min-h-11 rounded-md border px-3',
+                step === entry
+                  ? 'text-text-primary border-transparent font-medium'
+                  : 'border-border-subtle text-text-secondary',
+              )}
+            >
+              {t(`composerWeb.step.${entry === 'variant' ? 'perTarget' : entry}`)}
+              <span className="sr-only">
+                {t.full('composerWeb.step.progress', {
+                  current: index + 1,
+                  total: STEPS.length,
+                })}
+              </span>
+            </button>
+          </li>
+        ))}
+      </ol>
+    </nav>
   );
 }

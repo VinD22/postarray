@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 
 import {
+  BLENDED_MODEL_TIER,
   DOCUMENTED_ASSUMPTIONS,
   FORBIDDEN_MARGIN_LEVERS,
   MARGIN_GATE_BASIS_POINTS,
@@ -12,6 +13,8 @@ import {
   planEconomics,
   referredCohortEconomics,
   subscribersToMeetMarginGate,
+  tierEconomics,
+  tierMarginTable,
 } from './economics';
 import { MICRO_PER_UNIT } from './money';
 
@@ -87,6 +90,66 @@ describe('the 75% gross margin gate', () => {
         ).toBeLessThanOrEqual(100);
       }
     }
+  });
+});
+
+/**
+ * The larger tiers, reported separately rather than blended in. Blending them
+ * would flatter every figure above with a tier mix nobody has measured yet.
+ */
+describe('the project capacity ladder', () => {
+  it('measures the blended model on the base tier, so the gate stays a floor', () => {
+    expect(BLENDED_MODEL_TIER).toBe('relay_standard');
+    expect(dollars(tierEconomics('relay_standard', 'month', 1_000).revenueMicroPerMonth)).toBe(29);
+  });
+
+  it('recognises the monthly revenue each tier actually charges', () => {
+    expect(dollars(tierEconomics('relay_growth', 'month', 1_000).revenueMicroPerMonth)).toBe(59);
+    expect(dollars(tierEconomics('relay_studio', 'month', 1_000).revenueMicroPerMonth)).toBe(119);
+    expect(dollars(tierEconomics('relay_growth', 'year', 1_000).revenueMicroPerMonth)).toBe(51);
+    expect(dollars(tierEconomics('relay_studio', 'year', 1_000).revenueMicroPerMonth)).toBe(103);
+  });
+
+  it('improves margin as the ladder climbs, because capacity costs less than it sells for', () => {
+    const rows = tierMarginTable('month', 1_000);
+    expect(rows.map((row) => row.tierKey)).toEqual([
+      'relay_standard',
+      'relay_growth',
+      'relay_studio',
+    ]);
+    for (let index = 1; index < rows.length; index += 1) {
+      const previous = rows[index - 1];
+      const current = rows[index];
+      expect(previous).toBeDefined();
+      expect(current).toBeDefined();
+      if (previous === undefined || current === undefined) {
+        continue;
+      }
+      expect(current.marginBasisPoints, current.tierKey).toBeGreaterThan(
+        previous.marginBasisPoints,
+      );
+    }
+  });
+
+  it('clears the margin gate on the higher tiers at a scale the base tier does not', () => {
+    // 500 subscribers is deliberately under the blended gate (see above).
+    expect(blendedEconomics(500).meetsMarginGate).toBe(false);
+    expect(tierEconomics('relay_growth', 'month', 500).marginBasisPoints).toBeGreaterThan(
+      MARGIN_GATE_BASIS_POINTS,
+    );
+    expect(tierEconomics('relay_studio', 'month', 500).marginBasisPoints).toBeGreaterThan(
+      MARGIN_GATE_BASIS_POINTS,
+    );
+  });
+
+  it('charges the same variable cost per subscriber on every tier except the fees', () => {
+    const standard = tierEconomics('relay_standard', 'month', 1_000);
+    const studio = tierEconomics('relay_studio', 'month', 1_000);
+    expect(studio.infrastructureMicroPerMonth).toBe(standard.infrastructureMicroPerMonth);
+    expect(studio.supportMicroPerMonth).toBe(standard.supportMicroPerMonth);
+    expect(studio.fixedCostMicroPerMonth).toBe(standard.fixedCostMicroPerMonth);
+    // Only the percentage fees scale with the price.
+    expect(studio.polarFeeMicroPerMonth).toBeGreaterThan(standard.polarFeeMicroPerMonth);
   });
 });
 

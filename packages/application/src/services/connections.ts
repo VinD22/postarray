@@ -538,6 +538,106 @@ export function createConnectionService(deps: ServiceDeps): ConnectionService {
       });
     },
 
+    /**
+     * Connect a provider whose official flow is a secret, not a redirect.
+     *
+     * Bluesky is the only such provider today. There is no browser hop and no
+     * authorization code, so there is no `state` to defend against CSRF at a
+     * callback. We still create the same transaction row and the same encrypted
+     * pending grant, because everything downstream (selection, the claim, the
+     * capability snapshot, the audit trail) is shared with the OAuth path and
+     * must not be forked.
+     *
+     * The exchange runs before anything is written. A rejected app password
+     * therefore leaves no row behind, and the app password itself never reaches
+     * the database: only the session tokens the provider issues in return are
+     * encrypted and stored.
+     */
+    async connectWithProviderSecret(
+      ctx: ActorContext,
+      input: { provider: 'bluesky'; identifier: string; appPassword: string },
+    ): Promise<{ transactionId: string }> {
+      return authorized(deps, ctx, 'connection.connect', undefined, async (db, actor) => {
+        const completeProviderSecretAuth = deps.connectors.completeProviderSecretAuth;
+        if (!deps.connectors.has(input.provider) || completeProviderSecretAuth === undefined) {
+          throw new CapabilityNotImplementedError({
+            messageKey: 'errors.capability_not_implemented',
+            details: { provider: input.provider, capability: 'oauth_completion' },
+          });
+        }
+        if (deps.credentialVault === undefined || deps.oauthPending === undefined) {
+          throw new CapabilityNotImplementedError({
+            messageKey: 'errors.capability_not_implemented',
+            details: { capability: 'oauth_callback_persistence' },
+          });
+        }
+        const apiUrl = deps.config.core.apiUrl;
+        if (apiUrl === undefined) {
+          throw invalid('errors.api_url_not_configured', {});
+        }
+        await requireChannelSlot(db);
+
+        const discovery = await completeProviderSecretAuth({
+          provider: input.provider,
+          workspaceId: actor.workspace.id,
+          identifier: input.identifier,
+          secret: new SecretValue(input.appPassword, 'provider_secret'),
+        });
+
+        // The claim path compares the pending record's state hash against the
+        // transaction row, so both halves must come from one generated value
+        // even though no browser ever carries it.
+        const state = randomBytes(32).toString('base64url');
+        const stateHash = createHash('sha256').update(state).digest('hex');
+        const expiresAt = new Date(
+          deps.clock.now().getTime() + OAUTH_TRANSACTION_TTL_SECONDS * 1000,
+        );
+        const transaction = await db.oAuthTransaction.create({
+          data: {
+            workspaceId: actor.workspace.id,
+            brandId: null,
+            purpose: 'connect_social_account',
+            provider: input.provider,
+            stateHash,
+            redirectUri: socialOAuthCallbackUrl(apiUrl, input.provider),
+            requestedScopes: [...discovery.credential.grantedScopes],
+            ...(actor.userId === null ? {} : { initiatedByUserId: actor.userId }),
+            expiresAt,
+          },
+          select: { id: true },
+        });
+
+        await recordAudit(db, actor, {
+          action: 'connection.connected',
+          targetType: 'oauth_transaction',
+          targetId: transaction.id,
+          after: { provider: input.provider, phase: 'begin' },
+        });
+
+        const grant = serializeCredentialResult(discovery.credential);
+        const encryptedGrant = await encryptPendingOAuthGrant(deps.credentialVault, {
+          workspaceId: actor.workspace.id,
+          transactionId: transaction.id,
+          provider: input.provider,
+          grant,
+        });
+
+        await deps.oauthPending.create({
+          transactionId: transaction.id,
+          workspaceId: actor.workspace.id,
+          brandId: null,
+          provider: input.provider,
+          stateHash,
+          accounts: sanitizeDiscoveredAccounts(discovery.accounts),
+          grant: encryptedGrant,
+          expiresAt: expiresAt.toISOString(),
+          consumedAt: null,
+        });
+
+        return { transactionId: transaction.id };
+      });
+    },
+
     async getOAuthAccountSelection(
       ctx: ActorContext,
       transactionId: string,

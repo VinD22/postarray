@@ -73,9 +73,36 @@ export interface DragRescheduleOptions {
   readonly onCancel: () => void;
 }
 
+/**
+ * How the pointer let go, for the one frame of motion that follows.
+ *
+ * `drop` settles onto the new slot with an overshoot; `cancel` snaps back
+ * with none, because a snap back is a correction and a correction that
+ * bounces reads like it landed somewhere. Both are decorative: the state
+ * that matters (the proposal, the dialog) is already set by the time either
+ * plays, and reduced motion skips them entirely.
+ */
+export type DragSettleKind = 'drop' | 'cancel';
+
+export interface DragSettle {
+  /** The entry key that was released. */
+  readonly key: string;
+  readonly kind: DragSettleKind;
+  /** Distinct per release, so two drops in a row both play. */
+  readonly id: number;
+}
+
+/** How long a released chip keeps its settle marker. Cleared after this. */
+export const SETTLE_HOLD_MS = 240;
+
 export interface DragReschedule {
   /** The entry key currently being dragged, for the chip's lifted state. */
   readonly draggingKey: string | null;
+  /**
+   * The chip released on the last pointer-up, and how. Null while a drag is
+   * in progress and again once the settle has played.
+   */
+  readonly settle: DragSettle | null;
   /** Attach to the Move handle's `onPointerDown`. */
   readonly startDrag: (entry: CalendarEntry, event: ReactPointerEvent<Element>) => void;
   /** Drop the session without confirming. Safe to call when idle. */
@@ -94,8 +121,11 @@ interface DragSession {
 
 export function useDragReschedule(options: DragRescheduleOptions): DragReschedule {
   const [draggingKey, setDraggingKey] = useState<string | null>(null);
+  const [settle, setSettle] = useState<DragSettle | null>(null);
   const session = useRef<DragSession | null>(null);
   const latest = useRef(options);
+  const settleCounter = useRef(0);
+  const settleTimer = useRef(0);
 
   // Written after render so the window listeners below, which are registered
   // once, always read the current callbacks without being torn down per render.
@@ -107,6 +137,31 @@ export function useDragReschedule(options: DragRescheduleOptions): DragReschedul
     session.current = null;
     setDraggingKey(null);
   }, []);
+
+  /**
+   * Mark a released chip so it can play one settle, then clear the mark.
+   *
+   * The marker is cleared on a timer rather than left in place because it is
+   * a one-shot event, not a state: leaving it set would make an unrelated
+   * re-render replay the settle. `id` rises on every release so two drops onto
+   * the same slot are still two distinct events.
+   */
+  const markSettle = useCallback((key: string, kind: DragSettleKind) => {
+    settleCounter.current += 1;
+    setSettle({ key, kind, id: settleCounter.current });
+    if (settleTimer.current) window.clearTimeout(settleTimer.current);
+    settleTimer.current = window.setTimeout(() => {
+      setSettle(null);
+      settleTimer.current = 0;
+    }, SETTLE_HOLD_MS);
+  }, []);
+
+  useEffect(
+    () => () => {
+      if (settleTimer.current) window.clearTimeout(settleTimer.current);
+    },
+    [],
+  );
 
   const startDrag = useCallback((entry: CalendarEntry, event: ReactPointerEvent<Element>) => {
     if (!latest.current.enabled) return;
@@ -190,11 +245,12 @@ export function useDragReschedule(options: DragRescheduleOptions): DragReschedul
     const onPointerUp = (event: PointerEvent): void => {
       const current = session.current;
       if (!current || event.pointerId !== current.pointerId) return;
-      const { moved, proposal } = current;
+      const { entry, moved, proposal } = current;
       endDrag();
       // A press that never moved is a plain click on the handle. Let it be one.
       if (!moved) return;
       swallowNextClick();
+      markSettle(entryKey(entry), proposal ? 'drop' : 'cancel');
       if (proposal) latest.current.onDrop(proposal);
       else latest.current.onCancel();
     };
@@ -202,9 +258,11 @@ export function useDragReschedule(options: DragRescheduleOptions): DragReschedul
     const onPointerCancel = (event: PointerEvent): void => {
       const current = session.current;
       if (!current || event.pointerId !== current.pointerId) return;
-      const { moved } = current;
+      const { entry, moved } = current;
       endDrag();
-      if (moved) latest.current.onCancel();
+      if (!moved) return;
+      markSettle(entryKey(entry), 'cancel');
+      latest.current.onCancel();
     };
 
     // Escape only releases this session. The screen's own Escape handler owns
@@ -225,7 +283,7 @@ export function useDragReschedule(options: DragRescheduleOptions): DragReschedul
       window.removeEventListener('pointercancel', onPointerCancel);
       window.removeEventListener('keydown', onKeyDown);
     };
-  }, [endDrag]);
+  }, [endDrag, markSettle]);
 
-  return { draggingKey, startDrag, endDrag };
+  return { draggingKey, settle, startDrag, endDrag };
 }

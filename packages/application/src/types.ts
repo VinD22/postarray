@@ -22,6 +22,8 @@ import type {
   MediaDerivativeFormat,
   MediaDerivativeOperation,
   MentionRef,
+  MetricObservation,
+  MetricScope,
   OperationRef,
   OpportunityRecord,
   Paginated,
@@ -552,6 +554,24 @@ export interface ConnectorRegistry {
     readonly expectedCodeChallenge: string;
     readonly redirectUri: string;
   }): Promise<OAuthDiscoveryResult>;
+  /**
+   * Discover accounts from a provider-issued secret instead of an
+   * authorization code.
+   *
+   * Some official provider flows are not the authorization-code grant: Bluesky
+   * documents a revocable app password as the supported programmatic
+   * credential. The result is the same shape code exchange returns, so the
+   * caller's persistence path is identical. The submitted secret is exchanged
+   * once and never stored; only the credential the provider issues in return
+   * reaches the vault. Optional, because it exists only for providers whose
+   * official flow requires it.
+   */
+  completeProviderSecretAuth?(input: {
+    readonly provider: ProviderId;
+    readonly workspaceId: string;
+    readonly identifier: string;
+    readonly secret: SecretValue;
+  }): Promise<OAuthDiscoveryResult>;
   capabilitiesFor(input: {
     readonly provider: ProviderId;
     readonly connectionId: string;
@@ -887,6 +907,23 @@ export interface WorkerPublishingService {
     readonly provider: ProviderId;
     readonly publishedAt: string;
   }): Promise<{ readonly offsetsMs: readonly number[] }>;
+  /**
+   * Record where one comment or thread part ended up.
+   *
+   * Called by the sequence activity after every item, published or not, so the
+   * composer and the receipt agree on which parts exist. It records; it never
+   * creates, and it is safe to call twice with the same outcome.
+   */
+  setSequenceItemState(input: {
+    readonly ctx: WorkerActivityContext;
+    readonly targetId: string;
+    readonly threadItemId: string;
+    readonly state: PublishState;
+    readonly externalPostId: string | null;
+    readonly permalink: string | null;
+    readonly publishedAt: string | null;
+    readonly errorCode: ErrorCode | null;
+  }): Promise<void>;
 }
 
 export interface WorkerWebhookService {
@@ -935,6 +972,265 @@ export interface WorkerWebhookService {
     readonly deliveryId: string;
     readonly reasonKey: string;
   }): Promise<void>;
+}
+
+/**
+ * Analytics persistence for the worker.
+ *
+ * Observations arrive already normalized by the connector execution gateway.
+ * This service only writes them down, and it writes the unavailable ones too:
+ * "we could not read this" is a fact the analytics screens and the AI digest
+ * both depend on, and it is the reason neither of them may show a false zero.
+ */
+export interface WorkerAnalyticsService {
+  writeObservations(input: {
+    readonly ctx: WorkerActivityContext;
+    readonly connectionId: string;
+    readonly receiptId: string | null;
+    readonly scope: MetricScope;
+    readonly observations: readonly MetricObservation[];
+  }): Promise<{ readonly observedCount: number; readonly unavailableCount: number }>;
+  recordAnalyticsRun(input: {
+    readonly ctx: WorkerActivityContext;
+    readonly connectionId: string;
+    readonly startedAt: string;
+    readonly finishedAt: string;
+    readonly observedCount: number;
+    readonly unavailableCount: number;
+    readonly errorCode: ErrorCode | null;
+  }): Promise<void>;
+}
+
+/**
+ * Credential health for the worker.
+ *
+ * `describeCredential` returns metadata and nothing else. No ciphertext, no
+ * handle and no plaintext token crosses this boundary, which is what lets the
+ * token refresh workflow reason about expiry without ever holding a secret.
+ */
+export interface WorkerCredentialService {
+  describeCredential(input: {
+    readonly ctx: WorkerActivityContext;
+    readonly connectionId: string;
+  }): Promise<{
+    readonly expiresAt: string | null;
+    readonly refreshable: boolean;
+    readonly revoked: boolean;
+    readonly lifetimeSeconds: number | null;
+  }>;
+  raiseConnectionIncident(input: {
+    readonly ctx: WorkerActivityContext;
+    readonly connectionId: string;
+    readonly messageKey: string;
+    readonly errorCode: ErrorCode;
+  }): Promise<void>;
+}
+
+/**
+ * A repeating series, worker half.
+ *
+ * `planRepeatOccurrence` is pure arithmetic over the series' own time zone;
+ * `createOccurrenceJob` is the only write, and it is idempotent on the dedupe
+ * key the workflow supplies. A repeat that double-inserts is a duplicate post,
+ * which is the single worst thing this product can do, so the guarantee is the
+ * unique index on `(workspace_id, idempotency_key)` rather than a lookup.
+ */
+export interface WorkerRepeatService {
+  planRepeatOccurrence(input: {
+    readonly ctx: WorkerActivityContext;
+    readonly seriesId: string;
+    readonly contentItemId: string;
+    readonly occurrenceIndex: number;
+    readonly cadenceDays: number;
+    readonly firstInstant: string;
+    readonly ianaTimeZone: string;
+    readonly endDate: string | null;
+    readonly count: number | null;
+  }): Promise<{
+    readonly shouldRun: boolean;
+    readonly instant: string;
+    readonly localDateTime: string;
+    readonly reasonKey: string | null;
+  }>;
+  createOccurrenceJob(input: {
+    readonly ctx: WorkerActivityContext;
+    readonly seriesId: string;
+    readonly contentItemId: string;
+    readonly occurrenceIndex: number;
+    readonly instant: string;
+    readonly localDateTime: string;
+    readonly ianaTimeZone: string;
+    readonly idempotencyKey: string;
+  }): Promise<{
+    readonly publishJobId: string;
+    readonly contentVersionId: string;
+    readonly contentVersionChecksum: string;
+    readonly created: boolean;
+    readonly targets: readonly {
+      readonly targetId: string;
+      readonly connectionId: string;
+      readonly provider: ProviderId;
+      readonly approvedCapabilityVersion: string;
+      readonly threadItemIds: readonly string[];
+    }[];
+  }>;
+}
+
+/**
+ * One feed item, reduced to what deduplication needs.
+ *
+ * No title and no body: a workflow argument is history, and a customer's text
+ * does not belong in history. The fingerprint covers the GUID, the link and the
+ * title together, so a feed that rewrites one of them cannot republish.
+ */
+export interface WorkerFeedItemDigest {
+  readonly guid: string;
+  readonly link: string | null;
+  readonly contentFingerprint: string;
+  readonly publishedAt: string | null;
+}
+
+export interface WorkerRssService {
+  fetchFeed(input: {
+    readonly ctx: WorkerActivityContext;
+    readonly feedId: string;
+    readonly etag: string | null;
+    readonly lastModified: string | null;
+  }): Promise<{
+    readonly changed: boolean;
+    readonly etag: string | null;
+    readonly lastModified: string | null;
+    readonly items: readonly WorkerFeedItemDigest[];
+    readonly errorCode: ErrorCode | null;
+  }>;
+  filterNewFeedItems(input: {
+    readonly ctx: WorkerActivityContext;
+    readonly feedId: string;
+    readonly items: readonly WorkerFeedItemDigest[];
+  }): Promise<{
+    readonly newItems: readonly WorkerFeedItemDigest[];
+    readonly duplicateCount: number;
+  }>;
+  processFeedItems(input: {
+    readonly ctx: WorkerActivityContext;
+    readonly feedId: string;
+    readonly items: readonly WorkerFeedItemDigest[];
+  }): Promise<{
+    readonly createdContentItemIds: readonly string[];
+    readonly skippedCount: number;
+  }>;
+  recordFeedPoll(input: {
+    readonly ctx: WorkerActivityContext;
+    readonly feedId: string;
+    readonly polledAt: string;
+    readonly itemCount: number;
+    readonly newItemCount: number;
+    readonly errorCode: ErrorCode | null;
+  }): Promise<void>;
+}
+
+export interface WorkerRuleActionResult {
+  readonly status: 'succeeded' | 'skipped' | 'failed' | 'approval_required';
+  readonly resourceId: string | null;
+  readonly errorCode: ErrorCode | null;
+  readonly messageKey: string | null;
+}
+
+/**
+ * Automation rules, worker half.
+ *
+ * `reserveRuleExecution` is the interlock: it claims the slot by inserting the
+ * run row, so two triggers racing for the same source produce one run and the
+ * database decides which. Nothing external happens before it returns `allowed`.
+ */
+export interface WorkerRuleService {
+  loadRuleDefinition(input: {
+    readonly ctx: WorkerActivityContext;
+    readonly ruleId: string;
+  }): Promise<{
+    readonly ruleId: string;
+    readonly enabled: boolean;
+    readonly cooldownSeconds: number;
+    readonly expiresAt: string | null;
+    readonly maxExecutions: number | null;
+    readonly maxExecutionsPerSource: number | null;
+    readonly executionCount: number;
+    readonly oncePerSourcePost: boolean;
+    readonly requiresApproval: boolean;
+    readonly actions: readonly {
+      readonly actionId: string;
+      readonly kind: RuleActionKind;
+      readonly order: number;
+      readonly delaySeconds: number;
+      readonly consequential: boolean;
+    }[];
+  }>;
+  evaluateRuleConditions(input: {
+    readonly ctx: WorkerActivityContext;
+    readonly ruleId: string;
+    readonly runId: string;
+    readonly sourceKey: string;
+    readonly event: Readonly<Record<string, unknown>>;
+  }): Promise<{ readonly matched: boolean; readonly unmatchedConditionKeys: readonly string[] }>;
+  reserveRuleExecution(input: {
+    readonly ctx: WorkerActivityContext;
+    readonly ruleId: string;
+    readonly runId: string;
+    readonly sourceKey: string;
+    readonly now: string;
+  }): Promise<{
+    readonly verdict:
+      'allowed' | 'cooldown' | 'expired' | 'max_executions' | 'duplicate_source' | 'disabled';
+    readonly nextEligibleAt: string | null;
+  }>;
+  executeRuleAction(input: {
+    readonly ctx: WorkerActivityContext;
+    readonly ruleId: string;
+    readonly runId: string;
+    readonly actionId: string;
+    readonly kind: RuleActionKind;
+    readonly event: Readonly<Record<string, unknown>>;
+    readonly dryRun: boolean;
+  }): Promise<WorkerRuleActionResult>;
+  recordRuleRun(input: {
+    readonly ctx: WorkerActivityContext;
+    readonly ruleId: string;
+    readonly runId: string;
+    readonly startedAt: string;
+    readonly finishedAt: string;
+    readonly status: 'succeeded' | 'skipped' | 'failed';
+    readonly actionResults: readonly {
+      readonly actionId: string;
+      readonly status: WorkerRuleActionResult['status'];
+    }[];
+    readonly reasonKey: string | null;
+  }): Promise<void>;
+}
+
+/** A post is described once at 24 hours and refreshed once at 7 days. */
+export type WorkerPostFeedbackWindow = 'twenty_four_hours' | 'seven_days';
+
+/**
+ * Per-post feedback.
+ *
+ * Deterministic: the verdict comes from the account's own trailing median in
+ * `@relay/analytics-domain`. With AI configured a narrator may reword it; with
+ * AI off the row is written anyway with a null model, so the post page always
+ * has honest content rather than an empty panel.
+ */
+export interface WorkerInsightService {
+  generatePostFeedback(input: {
+    readonly ctx: WorkerActivityContext;
+    readonly receiptId: string;
+    /** When the analytics run that triggered this finished. */
+    readonly observedAt: string;
+  }): Promise<{
+    readonly insightId: string | null;
+    readonly created: boolean;
+    readonly window: WorkerPostFeedbackWindow | null;
+    readonly verdict: 'above' | 'below' | 'similar' | 'insufficient_data';
+    readonly reasonKey: string | null;
+  }>;
 }
 
 export interface CredentialVaultPort {
@@ -1105,6 +1401,20 @@ export interface ConnectionService {
       readonly state: string;
     },
   ): Promise<void>;
+  /**
+   * Connect an account whose official flow is a provider-issued secret rather
+   * than a browser redirect. There is no authorization URL to visit, so this
+   * returns the transaction id directly; the caller then finishes with the same
+   * pending-selection and claim endpoints an OAuth callback would have reached.
+   */
+  connectWithProviderSecret(
+    ctx: ActorContext,
+    input: {
+      readonly provider: 'bluesky';
+      readonly identifier: string;
+      readonly appPassword: string;
+    },
+  ): Promise<{ readonly transactionId: string }>;
   getOAuthAccountSelection(
     ctx: ActorContext,
     transactionId: string,
@@ -1552,6 +1862,28 @@ export interface MediaService {
     readonly retentionExpiresAt: string;
   }>;
   finalizeUpload(ctx: ActorContext, mediaId: string): Promise<MediaAssetView>;
+  /**
+   * Accept the upload body itself.
+   *
+   * Only the local filesystem adapter needs this: it hands out a ticket that
+   * points back at our own API instead of a presigned object-store URL. Any
+   * other configured adapter refuses with `CAPABILITY_NOT_IMPLEMENTED`, so a
+   * deployment using presigned PUTs never grows a second, unsigned write path.
+   */
+  acceptDirectUpload(
+    ctx: ActorContext,
+    input: {
+      readonly storageKey: string;
+      readonly contentType: string;
+      readonly checksumSha256: string;
+      readonly bytes: Uint8Array;
+    },
+  ): Promise<{ readonly byteSize: number }>;
+  /** The read half of the same local-only pair. */
+  readObjectForDownload(
+    ctx: ActorContext,
+    input: { readonly storageKey: string },
+  ): Promise<{ readonly bytes: Uint8Array; readonly contentType: string }>;
   importFromUrl(
     ctx: ActorContext,
     input: { readonly url: string; readonly brandId?: string | null },
@@ -2141,6 +2473,12 @@ export interface Services {
   readonly bulkImports: BulkImportService;
   readonly workerPublishing: WorkerPublishingService;
   readonly workerWebhooks: WorkerWebhookService;
+  readonly workerAnalytics: WorkerAnalyticsService;
+  readonly workerCredentials: WorkerCredentialService;
+  readonly workerRepeats: WorkerRepeatService;
+  readonly workerRss: WorkerRssService;
+  readonly workerRules: WorkerRuleService;
+  readonly workerInsights: WorkerInsightService;
   readonly workerBulkImports: WorkerBulkImportService;
   readonly workerMedia: WorkerMediaService;
   readonly health: HealthService;

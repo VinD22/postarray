@@ -81,3 +81,53 @@ export const DEMO_VARIANTS: readonly DemoVariantSample[] = [
 
 /** The instant the whole set is scheduled from: the first version's time. */
 export const DEMO_SCHEDULED_AT = DEMO_VARIANTS[0]?.at ?? '2026-09-15T07:15:00Z';
+
+export interface DemoCheckSample {
+  readonly id: string;
+  readonly labelKey: MessageKey;
+  readonly detailKey: MessageKey;
+}
+
+/**
+ * The checks step 5 shows.
+ *
+ * Three, and only three, because these are the three the composer genuinely
+ * runs today: the per account character limit
+ * (`validation.text_too_long`), alt text on every image
+ * (`validation.alt_text_missing`) and whether the account's platform offers a
+ * first comment at all (the `firstComment` capability). A fourth invented row
+ * would be the same lie as an invented follower count, in a friendlier font.
+ */
+export const DEMO_CHECKS: readonly DemoCheckSample[] = [
+  {
+    id: 'length',
+    labelKey: 'web.demo.validate.check.length',
+    detailKey: 'web.demo.validate.check.lengthDetail',
+  },
+  {
+    id: 'altText',
+    labelKey: 'web.demo.validate.check.altText',
+    detailKey: 'web.demo.validate.check.altTextDetail',
+  },
+  {
+    id: 'firstComment',
+    labelKey: 'web.demo.validate.check.firstComment',
+    detailKey: 'web.demo.validate.check.firstCommentDetail',
+  },
+];
+
+/**
+ * The weekly digest, as sentences.
+ *
+ * Every line describes something the product did, and none of them is a
+ * measurement of how anybody reacted to it. That is not a stylistic choice: a
+ * digest line carrying reach or engagement would need a number this product
+ * cannot read, and rule 2 at the top of this file has no exception for a
+ * number that sounds encouraging.
+ */
+export const DEMO_DIGEST_LINE_KEYS: readonly MessageKey[] = [
+  'web.demo.digest.line.variants',
+  'web.demo.digest.line.earliest',
+  'web.demo.digest.line.approval',
+  'web.demo.digest.line.alt',
+];

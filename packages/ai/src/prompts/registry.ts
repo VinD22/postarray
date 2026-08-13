@@ -18,7 +18,13 @@ import {
   duplicateCheckPrompt,
   platformFitCheckPrompt,
 } from './review';
-import { analyticsSummaryPrompt, experimentSuggestionPrompt, growthPlanPrompt } from './analysis';
+import {
+  analyticsSummaryPrompt,
+  experimentSuggestionPrompt,
+  growthPlanPrompt,
+  postFeedbackPrompt,
+  weeklyDigestPrompt,
+} from './analysis';
 
 /**
  * The prompt registry.
@@ -43,7 +49,9 @@ export const PROMPT_REGISTRY: Readonly<Record<PromptId, PromptModule>> = Object.
   'duplicate-check': duplicateCheckPrompt,
   'accessibility-check': accessibilityCheckPrompt,
   'analytics-summary': analyticsSummaryPrompt,
+  'weekly-digest': weeklyDigestPrompt,
   'experiment-suggestion': experimentSuggestionPrompt,
+  'post-feedback': postFeedbackPrompt,
   'growth-plan': growthPlanPrompt,
 });
 

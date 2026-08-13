@@ -4,6 +4,12 @@ export { ReceiptTimeline } from './receipt-timeline';
 export { ReceiptItems } from './receipt-items';
 export { ReceiptAttempts } from './receipt-attempts';
 export {
+  CELEBRATION_WINDOW_MS,
+  PublishCelebration,
+  isFreshPublication,
+  type PublishCelebrationProps,
+} from './publish-celebration';
+export {
   buildTimeline,
   dispatchLatencyMs,
   hasFailedFollowUp,

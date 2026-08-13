@@ -226,6 +226,11 @@ export function createActivities(deps: ActivityDependencies): WorkerActivities {
       gateway.fetchAccountMetrics.bind(gateway),
     ),
     recordAnalyticsRun: wrap('recordAnalyticsRun', deps, gateway.recordAnalyticsRun.bind(gateway)),
+    generatePostFeedback: wrap(
+      'generatePostFeedback',
+      deps,
+      gateway.generatePostFeedback.bind(gateway),
+    ),
     describeCredential: wrap('describeCredential', deps, gateway.describeCredential.bind(gateway)),
     refreshCredential: wrap('refreshCredential', deps, gateway.refreshCredential.bind(gateway)),
     raiseConnectionIncident: wrap(

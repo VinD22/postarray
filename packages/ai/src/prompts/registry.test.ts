@@ -20,14 +20,19 @@ describe('prompt registry', () => {
     expect(new Set(listPrompts().map((prompt) => prompt.id)).size).toBe(PROMPT_IDS.length);
   });
 
-  it('ships the fifteen V1 capabilities', () => {
+  // Sixteen since the weekly digest was added; the registry is append-only, so
+  // this count grows with a documented entry and never shrinks.
+  it('ships the sixteen V1 capabilities', () => {
     expect(PROMPT_IDS).toContain('draft-from-brief');
     expect(PROMPT_IDS).toContain('transcreate');
     expect(PROMPT_IDS).toContain('alt-text');
     expect(PROMPT_IDS).toContain('claim-check');
     expect(PROMPT_IDS).toContain('analytics-summary');
     expect(PROMPT_IDS).toContain('growth-plan');
-    expect(PROMPT_IDS).toHaveLength(15);
+    expect(PROMPT_IDS).toContain('weekly-digest');
+    // Per-post feedback: one post against the account's own baseline.
+    expect(PROMPT_IDS).toContain('post-feedback');
+    expect(PROMPT_IDS).toHaveLength(17);
   });
 
   it('versions every prompt as YYYY-MM-DD.N', () => {

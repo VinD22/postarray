@@ -34,8 +34,13 @@ export const webMarketingMessages = {
   'web.cta.seePricing': 'See the price',
   'web.cta.seeCapabilities': 'Read the capability matrix',
   'web.cta.readDocs': 'Read the documentation',
+  // One trial story, stated the same way everywhere it appears: it starts the
+  // day you sign up and beginning it takes no card. `web.pricing.beside.*`,
+  // `web.pricing.prelaunch.*`, `web.pricing.v2.closing.body` and
+  // `web.home.v2.sticker.trial` all repeat exactly this, because three pages
+  // disagreeing about when a trial starts is a defect, not a wording choice.
   'web.cta.trialFootnote':
-    'Relay costs $29 a month or $300 a year. The seven day trial starts when checkout opens, and checkout stays closed until the connector, reliability and legal gates pass.',
+    'Relay costs $29 a month or $300 a year. The seven day trial starts today and beginning it takes no card. Connector availability is shown account by account as each platform completes its review.',
 
   'web.label.lastReviewed': 'Last reviewed {date}',
   'web.label.nextReview': 'Next review {date}',
@@ -122,7 +127,10 @@ export const webMarketingMessages = {
   'web.home.summaryLine':
     'Relay costs $29 a month, or $300 a year and save $48. That covers 10 active social channels and an owner plus 5 teammates. Every feature is included, and the seven day trial needs no card.',
 
-  'web.home.example.title': 'One idea, ten platform-native versions',
+  // Five, because the scene under this heading renders five rows
+  // (`EXAMPLE_ROWS` on the home page). It said "ten" while showing five, which
+  // the page itself disproved on the way past.
+  'web.home.example.title': 'One idea, five platform-native versions',
   'web.home.example.body':
     'The composer starts with a master version. Selecting one account opens an override for that account only, with its own live limits and its own preview. Nothing you write for LinkedIn changes what X receives.',
   'web.home.example.column.account': 'Account',
@@ -395,7 +403,7 @@ export const webMarketingMessages = {
   'web.pricing.prelaunch.secondaryNote':
     'Cancel at any time from Settings during the trial and you are charged nothing. Connector availability is shown account by account as each platform completes its review.',
   'web.pricing.perMonthNote':
-    'Prices are in US dollars. Taxes and merchant terms will be shown before checkout opens.',
+    'Prices are in US dollars. Taxes and merchant terms are shown at checkout before you confirm.',
 
   'web.pricing.beside.title': 'The paid terms',
   'web.pricing.beside.channels':
@@ -409,11 +417,11 @@ export const webMarketingMessages = {
   'web.pricing.beside.noMedia':
     'AI image generation and AI video generation are not included and are not sold. There are no media credits, because Relay does not generate media.',
   'web.pricing.beside.trial':
-    'When paid access opens, the trial will run for seven days with every shipped feature. Polar will show the exact first charge amount and date before you confirm.',
+    'The trial starts today and runs for seven days with every shipped feature. Beginning it takes no card. Polar shows the exact first charge amount and date before you confirm a subscription.',
   'web.pricing.beside.conversion':
-    'When checkout opens, an uncanceled trial will convert on day seven to the interval you chose. Polar will email a reminder three days before that happens.',
+    'An uncanceled trial converts on day seven to the interval you chose. Polar emails a reminder three days before that happens.',
   'web.pricing.beside.cancel':
-    'Paid access is not active yet. When checkout opens, you will be able to cancel from Settings without contacting support.',
+    'Cancel from Settings without contacting support. Cancel during the trial and no charge is attempted.',
   'web.pricing.beside.data':
     'Post text, receipts and audit history remain under the data policy. Uploaded files are permanently deleted 30 days after upload. Workspace export is available as structured JSON; CSV and media archives are not available yet.',
 
@@ -451,8 +459,11 @@ export const webMarketingMessages = {
    * `web.home.v2.*` on the landing page.
    */
   'web.pricing.v2.closing.title': 'Start publishing on one plan',
+  // Was a waiting-list sentence ("joining now reserves your place ... the trial
+  // starts on the day checkout opens, not today"). It contradicted the note
+  // beside the button on the same page, so it now tells the one story.
   'web.pricing.v2.closing.body':
-    'Joining now reserves your place, shows which connectors are available for your account and collects no card. The seven day trial starts on the day checkout opens, not today.',
+    'Signing up starts the seven day trial today and collects no card. Which connectors are available is shown for your account, platform by platform, as each review completes.',
 
   /* ---------------------------------------------------------------------- */
   /* Resources index                                                         */
@@ -1407,12 +1418,21 @@ export const webMarketingMessages = {
   /* `beta-fallbacks.ts`, matching the `web.home.v2.*` precedent above.     */
   /* ---------------------------------------------------------------------- */
 
-  /** Reused by every WP-3 page whose closing band has no page-specific copy. */
+  /**
+   * Reused by every WP-3 page whose closing band has no page-specific copy,
+   * which is thirteen pages, so it is the sentence most likely to contradict
+   * the pricing page. It carries the same trial story as
+   * `web.cta.trialFootnote`: starts today, no card.
+   */
   'web.marketing.v2.closing.title': 'Run it on your own accounts',
   'web.marketing.v2.closing.body':
-    'Start your free trial. Connector availability is shown account by account as each platform completes its review.',
+    'The seven day trial starts today and takes no card. Connector availability is shown account by account as each platform completes its review.',
 
-  'web.product.v2.demo.title': 'One brief, ten platform-native drafts',
+  // Three, matching `DEMO_ROWS` on the product page. The page currently
+  // renders only the body beneath its section rule, so this heading is held
+  // ready rather than live; it is corrected here so it cannot ship claiming a
+  // number the scene under it disproves.
+  'web.product.v2.demo.title': 'One brief, three platform-native drafts',
   'web.product.v2.demo.body':
     'The same scene from the home page, scoped to what the compose step actually produces.',
 
@@ -1430,4 +1450,37 @@ export const webMarketingMessages = {
   'web.developers.v2.terminal.title': 'Two commands, machine readable',
 
   'web.notFound.v2.line': 'No link on this site points here on purpose.',
+
+  /* ---------------------------------------------------------------------- */
+  /* Track B phase 3 — the scene vocabulary and the three-tier presentation. */
+  /* Appended, for the same merge reason as the block above.                 */
+  /* ---------------------------------------------------------------------- */
+
+  /** The tier grid. Delta framing, because every feature is on every tier. */
+  'web.pricing.tierGrid.heading': 'Three sizes of the same product',
+  'web.pricing.tierGrid.startHere': 'Start here',
+  'web.pricing.tierGrid.baseDelta':
+    'Every feature Relay has, on {count, plural, one {# active project} other {# active projects}}.',
+  'web.pricing.tierGrid.stepDelta':
+    'Everything in {tier}, plus {added, plural, one {# more active project} other {# more active projects}}.',
+  'web.pricing.tierGrid.notPurchasable':
+    'Not on sale yet. Standard is the only tier you can buy today.',
+  'web.pricing.tierGrid.intervalGroup': 'Billing interval for every tier',
+
+  /**
+   * The home connector sticker. It states a count and names the page where a
+   * reader can check it, and the count is passed in from the cohort constant
+   * rather than typed into the sentence.
+   *
+   * Seven keys that sat here are gone: the surfaces sticker
+   * (`web.home.b3.sticker.surfaces*`), the shared multi-beat position
+   * indicator (`web.scene.position`), the pinned home variant scene's eyebrow
+   * (`web.home.b3.variantScene.eyebrow`) and the product page's three pinned
+   * beat labels (`web.product.b3.beats.*`). Every one of them belonged to a
+   * pinned scene that was removed; none was referenced by any component, and a
+   * catalog entry nothing renders is a claim nobody is checking.
+   */
+  'web.home.b3.sticker.connectorsFact':
+    '{count, plural, one {# connector} other {# connectors}}, official APIs only',
+  'web.home.b3.sticker.connectorsSource': 'Integrations',
 } as const;

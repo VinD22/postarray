@@ -114,7 +114,12 @@ describe('comparison registry', () => {
     const byId = new Map(disclosures.map((entry) => [entry.id, entry.count]));
     expect(byId.get('connectors')).toBe(0);
     expect(byId.get('locales')).toBe(0);
-    expect(byId.get('tiers')).toBeGreaterThan(0);
+    // Was "greater than zero" while Growth and Studio were undecided
+    // placeholders. Both now carry real prices, so the disclosure renders its
+    // `=0` case: every tier has been decided. Pinned to the exact count rather
+    // than relaxed, because the sentence is only worth anything if it changes
+    // the day the fact does.
+    expect(byId.get('tiers')).toBe(0);
   });
 
   it('renders the questions it marks up, and cites at least one external source', () => {

@@ -18,16 +18,33 @@
  * so there is nothing a mouse can reach here that a keyboard cannot.
  */
 
-import type { CSSProperties, PointerEvent as ReactPointerEvent, ReactNode } from 'react';
-import { FileText, Film, Image as ImageIcon, Images, Type as TypeIcon, Move } from 'lucide-react';
+import {
+  useRef,
+  type CSSProperties,
+  type PointerEvent as ReactPointerEvent,
+  type ReactNode,
+} from 'react';
+import {
+  Check,
+  FileText,
+  Film,
+  Image as ImageIcon,
+  Images,
+  Type as TypeIcon,
+  Move,
+} from 'lucide-react';
 import { Badge, StatusPill, cn, focusRingInset, touchTarget } from '@relay/design-system';
 import { useTranslations } from '@relay/i18n/react';
+import { LiveBadge } from '@/components/motion';
+import { DURATION_FAST, EASE_OUT_BACK, EASE_STANDARD } from '@/lib/motion/constants';
+import { gsap, useGSAP } from '@/lib/motion/gsap';
 import { useMotionOk } from '@/lib/motion/use-motion-ok';
 import type { ProviderId } from '@/lib/api/types';
 import { ProviderMark, useProviderName } from '@/features/connections/provider';
 import { useCalendarFormat } from './format';
 import { entryKey, needsAttention } from './filters';
 import { canReschedule } from './reschedule';
+import type { DragSettleKind } from './use-drag-reschedule';
 import type { CalendarEntry } from './types';
 
 const mediaIcon: Record<CalendarEntry['mediaKind'], ReactNode> = {
@@ -76,6 +93,13 @@ export interface EntryChipProps {
   grabbed?: boolean;
   /** True while the pointer is dragging this entry over the grid. */
   dragging?: boolean;
+  /**
+   * Plays one settle when the pointer lets go: a back-out on a drop, a flat
+   * snap back on a cancel. `settleId` changes per release so a second drop
+   * onto the same slot plays again rather than being deduplicated away.
+   */
+  settleKind?: DragSettleKind | null;
+  settleId?: number | null;
   onPickUp?: (entry: CalendarEntry) => void;
   /** Pointer drag, from the same handle the keyboard move uses. */
   onDragStart?: (entry: CalendarEntry, event: ReactPointerEvent<Element>) => void;
@@ -89,6 +113,8 @@ export function EntryChip({
   density = 'grid',
   grabbed = false,
   dragging = false,
+  settleKind = null,
+  settleId = null,
   onPickUp,
   onDragStart,
   className,
@@ -98,8 +124,31 @@ export function EntryChip({
   const format = useCalendarFormat();
   const providerName = useProviderName();
   const motionOk = useMotionOk();
+  const scope = useRef<HTMLElement>(null);
   const attention = needsAttention(entry);
   const movable = canReschedule(entry.state) && onPickUp !== undefined;
+
+  /*
+   * The release.
+   *
+   * A drop overshoots slightly and settles; a cancel returns flat, because a
+   * correction that bounces reads as if it landed somewhere. Both are
+   * transform-only `from` tweens at the fast tier, so nothing is hidden in
+   * markup and reduced motion simply never runs them: the chip is already
+   * exactly where it ends up.
+   */
+  useGSAP(
+    () => {
+      if (!motionOk || settleKind === null || settleId === null || !scope.current) return;
+      gsap.from(scope.current, {
+        scale: settleKind === 'drop' ? 1.02 : 0.99,
+        duration: DURATION_FAST,
+        ease: settleKind === 'drop' ? EASE_OUT_BACK : EASE_STANDARD,
+        clearProps: 'scale',
+      });
+    },
+    { scope, dependencies: [motionOk, settleKind, settleId] },
+  );
 
   const stateLabel = t(`state.${entry.state}.label`);
   const title = entry.title.trim().length > 0 ? entry.title : t('web.calendar.entry.untitled');
@@ -112,6 +161,7 @@ export function EntryChip({
 
   return (
     <article
+      ref={scope}
       data-entry-key={entryKey(entry)}
       data-grabbed={grabbed || undefined}
       data-dragging={dragging || undefined}
@@ -129,12 +179,19 @@ export function EntryChip({
         // would land. Neither depends on the chip having moved.
         grabbed && motionOk && 'shadow-hard scale-[1.02] rotate-[1.5deg]',
         // The source stays put while the pointer is down. It reads as lifted,
-        // not relocated, because nothing has been written yet.
+        // not relocated, because nothing has been written yet: a 2% lift plus
+        // the hard shadow token, and the fade that says "this is the copy you
+        // are carrying, not the copy that is scheduled".
         dragging && 'opacity-70',
+        dragging && motionOk && 'shadow-hard scale-[1.02]',
         // Hover lift on the whole card, not just the link text underneath.
         'hover:shadow-hard-sm hover:-translate-y-px',
         'transition-[background-color,border-color,color,box-shadow,translate,rotate,scale]',
-        'duration-(--duration-base) ease-(--ease-out-back) motion-reduce:transition-none',
+        // The lift is the one interaction here that has to feel instant, so it
+        // runs at the fast tier rather than the base one every other state
+        // change on this chip uses.
+        dragging ? 'duration-(--duration-fast)' : 'duration-(--duration-base)',
+        'ease-(--ease-out-back) motion-reduce:transition-none',
         density === 'compact' ? 'gap-1 py-1 ps-2.5 pe-1' : 'gap-1 py-1.5 ps-3 pe-2',
         className,
       )}
@@ -185,7 +242,23 @@ export function EntryChip({
         ) : null
       ) : (
         <div className="relative z-10 flex flex-wrap items-center gap-1">
-          <StatusPill state={entry.state} label={stateLabel} size="sm" />
+          {/*
+            A published entry is the one state on this chip that is an event
+            rather than a status, so it gets the badge that celebrates the
+            transition instead of the pill that reports a step. The word is
+            still `state.published.label`: the badge changes the gesture, not
+            the vocabulary, and colour is never the only signal either way.
+          */}
+          {entry.state === 'published' ? (
+            <LiveBadge
+              live
+              label={stateLabel}
+              icon={<Check aria-hidden="true" className="size-3" />}
+              className="px-2 py-0.5"
+            />
+          ) : (
+            <StatusPill state={entry.state} label={stateLabel} size="sm" />
+          )}
           {entry.contentLocale ? (
             <Badge tone="outline">
               {t('web.calendar.entry.language', { locale: entry.contentLocale })}

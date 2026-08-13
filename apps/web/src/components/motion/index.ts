@@ -9,3 +9,27 @@ export {
   PageTransitionProvider,
   type PageTransitionProviderProps,
 } from './page-transition-provider';
+
+/* The scene vocabulary (Track B). Budgeted per page by
+   `features/marketing/components/scene/scene-budget.test.ts` — read that file
+   before reaching for any of these. */
+export {
+  SceneSequencer,
+  type SceneSequencerProps,
+  type SceneSequencerHandle,
+  type SceneSequencerControlLabels,
+  type SequencerScene,
+} from './scene-sequencer';
+export { ParallaxLayer, type ParallaxLayerProps } from './parallax-layer';
+export {
+  ScrollScene,
+  type ScrollSceneProps,
+  type ScrollSceneBackground,
+  type ThemeTokenName,
+} from './scroll-scene';
+export {
+  CelebrationBurst,
+  type CelebrationBurstProps,
+  type CelebrationTier,
+} from './celebration-burst';
+export { LiveBadge, type LiveBadgeProps } from './live-badge';

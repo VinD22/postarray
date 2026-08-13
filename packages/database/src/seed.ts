@@ -1,7 +1,5 @@
-import path from 'node:path';
-import { fileURLToPath } from 'node:url';
-
 import { createPrismaClient, type RelayPrismaClient } from './client';
+import { isProcessEntryPoint } from './invoked-directly';
 import { createStderrLogger, type DatabaseLogger } from './logger';
 import { seedGlobalCatalogs } from './seed/catalog';
 import { SEED_IDS, seedTenantCore } from './seed/tenant-core';
@@ -80,8 +78,7 @@ export async function seed(options: SeedOptions = {}): Promise<void> {
 export { SEED_IDS } from './seed/tenant-core';
 export { SEED_OPPORTUNITY_IDS, SEED_TOOL_IDS, SEED_METRIC_IDS } from './seed/catalog';
 
-const invokedDirectly =
-  process.argv[1] !== undefined && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url);
+const invokedDirectly = isProcessEntryPoint(import.meta.url, 'seed');
 
 if (invokedDirectly) {
   seed().catch((error: unknown) => {

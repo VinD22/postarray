@@ -72,7 +72,7 @@ compose, approve, schedule, publish and receipt loop is exercisable offline.
 
 ## What is in V1
 
-Workspaces, brands and roles. Google, Facebook, password, magic-link and
+Workspaces, brands and roles. Email and password, magic-link and
 username-alias sign-in. Connections for X, LinkedIn, Instagram, Facebook Pages,
 YouTube and TikTok, with Threads and Bluesky as approval-delay fallbacks. One
 composer with a master draft and explicit per-target overrides, live platform
@@ -93,12 +93,24 @@ backlinks.
 
 ## Pricing
 
-One public plan, no feature tiers: **$29/month** or **$300/year**
-($25/month billed annually, a saving of $48 or 13.8%). Both intervals start
-with a seven-day full-product trial through Polar, which collects a payment
-method, charges $0 at checkout, shows the exact conversion date and amount, and
-converts only if the customer has not cancelled. Managed X API usage is metered
-and passed through at cost because X charges per operation.
+One plan on sale, no feature tiers: **$29/month** or **$300/year**
+($25/month billed annually, a saving of $48 a year). The saving is stated in
+whole dollars everywhere, never as a percentage: the real discount is 13.8%,
+which is not a round number, and `packages/billing`'s copy compliance test
+rejects percentage framing.
+
+Two larger sizes of the same product (Growth and Studio) are defined in
+`packages/billing/src/tiers.ts` and shown on the pricing page as not yet on
+sale. Every feature is on every tier; active project capacity is the only thing
+that differs.
+
+**The trial starts on the day you sign up and takes no card.** A new workspace
+is created `trialing` with a trial end date, so the seven days run from
+sign-up. Polar checkout is a separate, later moment: that is where a payment
+method is collected, $0 is charged, and the exact conversion date and amount
+are shown before the customer confirms. It converts only if the customer has
+not cancelled. Managed X API usage is metered and passed through at cost
+because X charges per operation.
 
 ## Localization
 

@@ -28,12 +28,31 @@ type WebhookActivities = Pick<
   | 'deadLetterWebhookDelivery'
 >;
 
-type BulkImportActivities = Pick<
-  WorkerActivities,
-  'readBulkImportVerdict' | 'applyBulkImportRows'
->;
+type BulkImportActivities = Pick<WorkerActivities, 'readBulkImportVerdict' | 'applyBulkImportRows'>;
 
 type MediaDerivativeActivities = Pick<WorkerActivities, 'produceMediaDerivative'>;
+
+/**
+ * Everything that runs without a connector: repeats, feeds, rules and the
+ * per-post feedback row. None of these calls a provider, so they are grouped
+ * apart from the connector bridge and are available even where no connector is
+ * verified yet.
+ */
+type AutomationActivities = Pick<
+  WorkerActivities,
+  | 'planRepeatOccurrence'
+  | 'createOccurrenceJob'
+  | 'fetchFeed'
+  | 'filterNewFeedItems'
+  | 'processFeedItems'
+  | 'recordFeedPoll'
+  | 'loadRuleDefinition'
+  | 'evaluateRuleConditions'
+  | 'reserveRuleExecution'
+  | 'executeRuleAction'
+  | 'recordRuleRun'
+  | 'generatePostFeedback'
+>;
 
 type UnavailableActivity = (input: unknown) => Promise<never>;
 
@@ -69,6 +88,7 @@ export function createWorkerGateway(
     readonly webhooks?: Partial<WebhookActivities>;
     readonly bulkImports?: Partial<BulkImportActivities>;
     readonly mediaDerivatives?: Partial<MediaDerivativeActivities>;
+    readonly automation?: Partial<AutomationActivities>;
   } = {},
 ): WorkerActivities {
   const unavailable = Object.fromEntries(
@@ -99,6 +119,7 @@ export function createWorkerGateway(
     ...(options.webhooks ?? {}),
     ...(options.bulkImports ?? {}),
     ...(options.mediaDerivatives ?? {}),
+    ...(options.automation ?? {}),
     ...(options.connectorBridge ?? {}),
   } as unknown as WorkerActivities;
 }

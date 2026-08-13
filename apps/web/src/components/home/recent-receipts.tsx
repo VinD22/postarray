@@ -1,5 +1,7 @@
 'use client';
 
+import { Check } from 'lucide-react';
+
 import { Link } from '@/components/link';
 
 import {
@@ -15,6 +17,8 @@ import { Button } from '@relay/design-system/primitives';
 import { ApiError } from '@/lib/api';
 import { useRecentReceipts } from '@/lib/api/hooks';
 import { useFormatters, useTranslations } from '@/lib/i18n';
+import { EmptyScene } from '@/components/empty';
+import { LiveBadge } from '@/components/motion';
 
 import { HomeSection } from './section';
 
@@ -43,13 +47,27 @@ export function RecentReceipts() {
       ? {}
       : { timestamp: format.dateTime(receipt.publishedAt), isoTimestamp: receipt.publishedAt }),
     actor: t('home.receipts.publishedTo', { account: receipt.accountLabel }),
+    // A published receipt carries the live badge rather than a state word:
+    // this row is reporting an event that happened, and the badge is the
+    // gesture this product uses for that everywhere else. A partial one keeps
+    // its sentence, because "some of it worked" is not something a badge can
+    // say honestly.
     detail:
-      receipt.failedItemCount > 0
-        ? t('state.partially_published.description', {
-            published: 1,
-            failed: receipt.failedItemCount,
-          })
-        : t(`state.${receipt.state}.label`),
+      receipt.failedItemCount > 0 ? (
+        t('state.partially_published.description', {
+          published: 1,
+          failed: receipt.failedItemCount,
+        })
+      ) : receipt.state === 'published' ? (
+        <LiveBadge
+          live
+          label={t('state.published.label')}
+          icon={<Check aria-hidden="true" className="size-3" />}
+          className="px-2 py-0.5"
+        />
+      ) : (
+        t(`state.${receipt.state}.label`)
+      ),
     outcome:
       receipt.state === 'published'
         ? ('completed' as const)
@@ -83,6 +101,7 @@ export function RecentReceipts() {
       ) : events.length === 0 ? (
         <EmptyState
           compact
+          illustration={<EmptyScene scene="receipts" />}
           title={t('home.receipts.empty')}
           description={t('home.receipts.emptyBody')}
           action={

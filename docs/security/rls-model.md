@@ -62,12 +62,47 @@ satisfies policies that name it, which means the reach of an operator query is
 still described in SQL a reviewer can read, and it means a server-side bug can
 still be caught by a policy.
 
+## The database roles
+
+| Role | Holds | Used by |
+| --- | --- | --- |
+| `relay_app` | `SELECT, INSERT, UPDATE, DELETE` on every table in `app` and `private`, `EXECUTE` on the policy helpers, **no `BYPASSRLS`** | Every application connection: the Nest API, the worker, MCP, the CLI |
+| `authenticated` | `SELECT` on `app` tables only, plus writes on `app.remembered_targets` | Reserved for a future Neon Data API surface. Nothing connects as it today |
+| `anon` | Nothing, anywhere | Nothing |
+| `service_role` | Same table grants as `relay_app` | The Supabase-shaped name the policies were written against. Kept so a Data API deployment stays possible |
+| the migration owner | Everything, and `BYPASSRLS` on Neon | `pnpm db:migrate` only |
+
+`relay_app` is created by `migrations/0073_relay_app_role.sql`, which also
+asserts that it does not carry `BYPASSRLS` and that it holds CRUD on every
+guarded table. Both assertions fail the migration rather than warning, because a
+role that silently lost its grants would make every write policy unreachable
+again and nothing else would notice.
+
+That migration is the answer to a question the first live run of `src/rls.test.ts`
+exposed, recorded in `docs/planning/25-rls-suite-findings.md`. Grants are checked
+before policies. While the application wrote as a role with no write grant, every
+claims-based write branch (`app.can_write`, `app.can_administer`,
+`app.can_approve`) was unreachable and the role checks that mattered lived only
+in `packages/application`. Giving the connecting role the grants — and no
+bypass — makes those branches load bearing for writes as well as reads. Deleting
+them instead would have been cheaper and would have left row level security as
+theatre in a product that holds other people's publishing credentials.
+
+**`authenticated` stays read-only** with exactly one documented exception,
+`app.remembered_targets`, whose four policies are self-row: a browser session can
+only write its own memory row inside a workspace it belongs to, and forgetting
+must not require a round trip through the API. 0073 asserts that no other table
+grows a write grant for `authenticated`.
+
 ## Where the claims come from
 
-Browser traffic goes through the Supabase pooler, which sets
-`request.jwt.claims` from the bearer token. Workers, the Nest API and the CLI
-hold direct connections and nothing sets the GUC for them, so they set it
-themselves:
+**Every surface sets `request.jwt.claims` itself.** There is no pooler doing it
+for anyone. This document used to say that browser traffic arrives through the
+Supabase pooler with the GUC already set; that is false on Neon, which is where
+this runs, and a stale claim in a security document is worse than a missing one.
+
+The web app, the Nest API, the worker, MCP and the CLI all hold direct
+connections and all go through `withWorkspaceContext` / `withRlsContext`:
 
 ```ts
 import { withWorkspaceContext } from '@relay/database';
@@ -85,6 +120,13 @@ there is no "trusted connection" path to forget about.
 `withWorkspace` additionally injects the `workspace_id` filter into every query.
 That is a lint, not the boundary: it makes the intended tenant visible in the
 call site and in code review. The database is what actually stops the query.
+
+A connection that sets no claims sees nothing at all: every policy denies on
+empty claims, so the failure mode of forgetting is a query that returns zero
+rows, not one that returns somebody else's. If a Neon Data API surface is added
+later it will set the GUC from the bearer token on the way in, and the policy
+bodies will not change, because they were never written against a database
+role.
 
 ## The policy pattern
 
@@ -164,6 +206,17 @@ including the owner. Retention pruning goes through
 `private.prune_audit_events(older_than)`, which refuses anything inside the 365
 day floor, disables the guard for exactly one bounded `DELETE`, and re-enables
 it.
+
+The triggers and the missing policies are two different layers, and
+`src/rls.test.ts` asserts them separately. Under row level security an `UPDATE`
+on `app.content_versions` or `private.audit_events` matches no rows at all,
+because neither table has an `UPDATE` policy. That means the statement succeeds
+having changed nothing, and — because these are `BEFORE ... FOR EACH ROW`
+triggers — the trigger never fires. A test that only ran under RLS would
+therefore pass whether the trigger existed or not. The immutability cases run
+with row level security bypassed and assert that the target row exists first, so
+the guard is the thing being tested and a zero-row statement can never
+impersonate one.
 
 `DELETE` on these tables is denied by the absence of a policy rather than by the
 triggers. That distinction matters: referential cascades are exempt from RLS but

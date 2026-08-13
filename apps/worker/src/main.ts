@@ -18,7 +18,10 @@ import Redis from 'ioredis';
 
 import { ACTIVITY_NAMES, type WorkerActivities } from './activities/types';
 import { WorkerScheduler } from './outbox-scheduler';
-import { createConnectorExecutionActivities } from './connector-execution-activities';
+import {
+  createConnectorExecutionActivities,
+  type WorkerSequenceStateSink,
+} from './connector-execution-activities';
 import { createWorkerGateway } from './prelaunch-gateway';
 import { installShutdownHandlers, startWorker, WORKER_SERVICE_NAME } from './worker';
 import { startMediaRetentionSweep } from './media-retention';
@@ -79,12 +82,26 @@ type WebhookActivities = Pick<
   | 'deadLetterWebhookDelivery'
 >;
 
-type BulkImportActivities = Pick<
-  WorkerActivities,
-  'readBulkImportVerdict' | 'applyBulkImportRows'
->;
+type BulkImportActivities = Pick<WorkerActivities, 'readBulkImportVerdict' | 'applyBulkImportRows'>;
 
 type MediaDerivativeActivities = Pick<WorkerActivities, 'produceMediaDerivative'>;
+
+/** Repeats, feeds, rules and per-post feedback. None of these calls a provider. */
+type AutomationActivities = Pick<
+  WorkerActivities,
+  | 'planRepeatOccurrence'
+  | 'createOccurrenceJob'
+  | 'fetchFeed'
+  | 'filterNewFeedItems'
+  | 'processFeedItems'
+  | 'recordFeedPoll'
+  | 'loadRuleDefinition'
+  | 'evaluateRuleConditions'
+  | 'reserveRuleExecution'
+  | 'executeRuleAction'
+  | 'recordRuleRun'
+  | 'generatePostFeedback'
+>;
 
 function requireObject(value: unknown, what: string): object {
   if (typeof value !== 'object' || value === null) {
@@ -139,6 +156,7 @@ export async function loadGateway(
     readonly webhooks?: Partial<WebhookActivities>;
     readonly bulkImports?: Partial<BulkImportActivities>;
     readonly mediaDerivatives?: Partial<MediaDerivativeActivities>;
+    readonly automation?: Partial<AutomationActivities>;
     readonly connectorBridge?: ReturnType<typeof createConnectorExecutionActivities> | null;
   } = {},
 ): Promise<WorkerActivities> {
@@ -155,9 +173,7 @@ export async function loadGateway(
   }
   const build = factory as (context: WorkerGatewayFactoryContext) => unknown;
   return adoptGateway(
-    await Promise.resolve(
-      build({ connectorExecution: options.connectorExecution ?? null }),
-    ),
+    await Promise.resolve(build({ connectorExecution: options.connectorExecution ?? null })),
   );
 }
 
@@ -227,19 +243,24 @@ export async function main(): Promise<void> {
       dataDeletionActivitiesReady.then((activities) => activities.markDeletionFailed(input)),
   };
   let resolvePublishing: ((activities: PublishingActivities) => void) | undefined;
-  const publishingReady = new Promise<PublishingActivities>((resolve) => { resolvePublishing = resolve; });
+  const publishingReady = new Promise<PublishingActivities>((resolve) => {
+    resolvePublishing = resolve;
+  });
   const deferredPublishing: PublishingActivities = {
     preflightCampaign: (input) => publishingReady.then((value) => value.preflightCampaign(input)),
     prepareTargetMedia: (input) => publishingReady.then((value) => value.prepareTargetMedia(input)),
-    beginPublishAttempt: (input) => publishingReady.then((value) => value.beginPublishAttempt(input)),
-    ensureNotAlreadyPublished: (input) => publishingReady.then((value) => value.ensureNotAlreadyPublished(input)),
+    beginPublishAttempt: (input) =>
+      publishingReady.then((value) => value.beginPublishAttempt(input)),
+    ensureNotAlreadyPublished: (input) =>
+      publishingReady.then((value) => value.ensureNotAlreadyPublished(input)),
     finalizeAttempt: (input) => publishingReady.then((value) => value.finalizeAttempt(input)),
     setTargetState: (input) => publishingReady.then((value) => value.setTargetState(input)),
     setJobState: (input) => publishingReady.then((value) => value.setJobState(input)),
     writeReceipt: (input) => publishingReady.then((value) => value.writeReceipt(input)),
     emitEvent: (input) => publishingReady.then((value) => value.emitEvent(input)),
     notify: (input) => publishingReady.then((value) => value.notify(input)),
-    scheduleAnalyticsFetches: (input) => publishingReady.then((value) => value.scheduleAnalyticsFetches(input)),
+    scheduleAnalyticsFetches: (input) =>
+      publishingReady.then((value) => value.scheduleAnalyticsFetches(input)),
   };
   let resolveWebhooks: ((activities: WebhookActivities) => void) | undefined;
   const webhooksReady = new Promise<WebhookActivities>((resolve) => {
@@ -248,7 +269,8 @@ export async function main(): Promise<void> {
   const deferredWebhooks: WebhookActivities = {
     loadWebhookDelivery: (input) => webhooksReady.then((value) => value.loadWebhookDelivery(input)),
     deliverWebhook: (input) => webhooksReady.then((value) => value.deliverWebhook(input)),
-    recordWebhookAttempt: (input) => webhooksReady.then((value) => value.recordWebhookAttempt(input)),
+    recordWebhookAttempt: (input) =>
+      webhooksReady.then((value) => value.recordWebhookAttempt(input)),
     disableWebhookEndpoint: (input) =>
       webhooksReady.then((value) => value.disableWebhookEndpoint(input)),
     deadLetterWebhookDelivery: (input) =>
@@ -272,6 +294,33 @@ export async function main(): Promise<void> {
     produceMediaDerivative: (input) =>
       mediaDerivativesReady.then((value) => value.produceMediaDerivative(input)),
   };
+  let resolveSequenceState: ((sink: WorkerSequenceStateSink) => void) | undefined;
+  const sequenceStateReady = new Promise<WorkerSequenceStateSink>((resolve) => {
+    resolveSequenceState = resolve;
+  });
+  let resolveAutomation: ((activities: AutomationActivities) => void) | undefined;
+  const automationReady = new Promise<AutomationActivities>((resolve) => {
+    resolveAutomation = resolve;
+  });
+  const deferredAutomation: AutomationActivities = {
+    planRepeatOccurrence: (input) =>
+      automationReady.then((value) => value.planRepeatOccurrence(input)),
+    createOccurrenceJob: (input) =>
+      automationReady.then((value) => value.createOccurrenceJob(input)),
+    fetchFeed: (input) => automationReady.then((value) => value.fetchFeed(input)),
+    filterNewFeedItems: (input) => automationReady.then((value) => value.filterNewFeedItems(input)),
+    processFeedItems: (input) => automationReady.then((value) => value.processFeedItems(input)),
+    recordFeedPoll: (input) => automationReady.then((value) => value.recordFeedPoll(input)),
+    loadRuleDefinition: (input) => automationReady.then((value) => value.loadRuleDefinition(input)),
+    evaluateRuleConditions: (input) =>
+      automationReady.then((value) => value.evaluateRuleConditions(input)),
+    reserveRuleExecution: (input) =>
+      automationReady.then((value) => value.reserveRuleExecution(input)),
+    executeRuleAction: (input) => automationReady.then((value) => value.executeRuleAction(input)),
+    recordRuleRun: (input) => automationReady.then((value) => value.recordRuleRun(input)),
+    generatePostFeedback: (input) =>
+      automationReady.then((value) => value.generatePostFeedback(input)),
+  };
   const connectorBridge =
     connectorRuntime.gateway === null
       ? null
@@ -279,6 +328,14 @@ export async function main(): Promise<void> {
           prisma,
           gateway: connectorRuntime.gateway,
           oauthClientFor: () => null,
+          // The sequence activity records where a part landed through the same
+          // publishing service everything else uses. It is deferred for the
+          // same reason the publishing group is: the runtime is composed after
+          // the worker registers its activities.
+          sequenceState: {
+            setSequenceItemState: (input) =>
+              sequenceStateReady.then((sink) => sink.setSequenceItemState(input)),
+          },
         });
   let gateway: WorkerActivities;
   let worker: Awaited<ReturnType<typeof startWorker>>;
@@ -293,6 +350,7 @@ export async function main(): Promise<void> {
             webhooks: deferredWebhooks,
             bulkImports: deferredBulkImports,
             mediaDerivatives: deferredMediaDerivatives,
+            automation: deferredAutomation,
             connectorBridge,
           }
         : { connectorExecution: connectorRuntime.gateway },
@@ -333,6 +391,21 @@ export async function main(): Promise<void> {
       markDeletionFailed: (input) => runtime.services.dataDeletion.markDeletionFailed(input),
     });
     resolvePublishing?.(runtime.services.workerPublishing);
+    resolveSequenceState?.(runtime.services.workerPublishing);
+    resolveAutomation?.({
+      planRepeatOccurrence: (input) => runtime.services.workerRepeats.planRepeatOccurrence(input),
+      createOccurrenceJob: (input) => runtime.services.workerRepeats.createOccurrenceJob(input),
+      fetchFeed: (input) => runtime.services.workerRss.fetchFeed(input),
+      filterNewFeedItems: (input) => runtime.services.workerRss.filterNewFeedItems(input),
+      processFeedItems: (input) => runtime.services.workerRss.processFeedItems(input),
+      recordFeedPoll: (input) => runtime.services.workerRss.recordFeedPoll(input),
+      loadRuleDefinition: (input) => runtime.services.workerRules.loadRuleDefinition(input),
+      evaluateRuleConditions: (input) => runtime.services.workerRules.evaluateRuleConditions(input),
+      reserveRuleExecution: (input) => runtime.services.workerRules.reserveRuleExecution(input),
+      executeRuleAction: (input) => runtime.services.workerRules.executeRuleAction(input),
+      recordRuleRun: (input) => runtime.services.workerRules.recordRuleRun(input),
+      generatePostFeedback: (input) => runtime.services.workerInsights.generatePostFeedback(input),
+    });
     resolveBulkImports?.({
       readBulkImportVerdict: (input) =>
         runtime.services.workerBulkImports.validate(input.ctx, {
@@ -420,7 +493,14 @@ export async function main(): Promise<void> {
   logger.info({ mode: worker.mode, taskQueue: worker.taskQueue }, 'worker.ready');
 }
 
+// `.mjs` is the built bundle (`dist/main.mjs`); the other two are the source
+// entry under tsx and a plain compiled entry. A container that started, found no
+// match and exited 0 would look like a healthy deploy with nothing polling.
 const entryPoint = process.argv[1] ?? '';
-if (entryPoint.endsWith('main.ts') || entryPoint.endsWith('main.js')) {
+if (
+  entryPoint.endsWith('main.ts') ||
+  entryPoint.endsWith('main.js') ||
+  entryPoint.endsWith('main.mjs')
+) {
   await main();
 }

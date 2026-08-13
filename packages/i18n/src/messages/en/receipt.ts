@@ -75,4 +75,27 @@ export const receiptMessages = {
 
   'receipt.analytics.lastSync': 'Analytics last synced {relativeTime}.',
   'receipt.analytics.nextSync': 'Next sync around {time}.',
+
+  /* -- The moment a publication lands -----------------------------------
+     The panel at the top of a fresh receipt, one row per destination, each
+     row flipping to live as that platform answers. A partial result keeps
+     its own heading and its own count: it is never worded as a success with
+     a footnote, because that is the exact reading this product exists to
+     prevent. */
+  'publish.receipt.sectionLabel': 'What went live',
+  'publish.receipt.live.title':
+    '{count, plural, one {# destination is live} other {All # destinations are live}}',
+  'publish.receipt.live.body': 'Every account below returned a post. Open one to check it.',
+  'publish.receipt.partial.title':
+    '{published, plural, one {# destination is live} other {# destinations are live}}, {failed, plural, one {# is not} other {# are not}}',
+  'publish.receipt.partial.body':
+    'Some accounts returned a post and some did not. Both are named below. Nothing that already published will be republished.',
+  'publish.receipt.pending.title': 'Waiting on the platforms',
+  'publish.receipt.pending.body':
+    'Confirmations land here one account at a time, as each platform answers.',
+  'publish.receipt.failed.title': 'Nothing reached a platform',
+  'publish.receipt.failed.body': 'No account returned a post. Each one says why below.',
+  'publish.receipt.badge.live': 'Live',
+  'publish.receipt.badge.waiting': 'Waiting',
+  'publish.receipt.badge.notLive': 'Not live',
 } as const;

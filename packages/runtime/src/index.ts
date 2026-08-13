@@ -16,8 +16,18 @@ export {
 export {
   buildVerifiedOAuthAuthorizationUrl,
   createVerifiedConnectorRegistry,
+  oauthClientId,
+  oauthClientSecret,
   VerifiedConnectorRegistry,
 } from './verified-connectors';
+export {
+  createComposedConnectorRegistry,
+  type ComposedConnectorRegistryOptions,
+} from './connector-registry-composition';
+export {
+  createOAuthProviderResolver,
+  type OAuthProviderResolverOptions,
+} from './oauth-provider-resolver';
 export {
   ConnectorExecutionGateway,
   createWorkspaceCredentialResolver,

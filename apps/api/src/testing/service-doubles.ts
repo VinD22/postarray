@@ -59,6 +59,7 @@ export function createRefusingServices(): Services {
       getCapabilities: refuse('connection'),
       beginOAuth: refuse('connection'),
       handleOAuthCallback: refuse('connection'),
+      connectWithProviderSecret: refuse('connection'),
       getOAuthAccountSelection: refuse('connection'),
       completeOAuth: refuse('connection'),
       reconnect: refuse('connection'),
@@ -143,6 +144,8 @@ export function createRefusingServices(): Services {
     media: {
       createUploadUrl: refuse('media'),
       finalizeUpload: refuse('media'),
+      acceptDirectUpload: refuse('media'),
+      readObjectForDownload: refuse('media'),
       importFromUrl: refuse('media'),
       list: page,
       get: refuse('media'),
@@ -303,6 +306,7 @@ export function createRefusingServices(): Services {
       ensureNotAlreadyPublished: refuse('publication_receipt'),
       finalizeAttempt: refuse('publish_attempt'),
       setTargetState: refuse('post_variant'),
+      setSequenceItemState: refuse('comment_thread_item'),
       setJobState: refuse('publish_job'),
       writeReceipt: refuse('publication_receipt'),
       emitEvent: refuse('outbox'),
@@ -316,6 +320,34 @@ export function createRefusingServices(): Services {
       recordWebhookAttempt: refuse('webhook_delivery'),
       disableWebhookEndpoint: refuse('webhook_endpoint'),
       deadLetterWebhookDelivery: refuse('webhook_delivery'),
+    },
+    workerAnalytics: {
+      writeObservations: refuse('metric_observation'),
+      recordAnalyticsRun: refuse('analytics_sync_run'),
+    },
+    workerCredentials: {
+      describeCredential: refuse('social_credential'),
+      raiseConnectionIncident: refuse('connection_incident'),
+    },
+    workerRepeats: {
+      planRepeatOccurrence: refuse('publish_job'),
+      createOccurrenceJob: refuse('publish_job'),
+    },
+    workerRss: {
+      fetchFeed: refuse('rss_feed'),
+      filterNewFeedItems: refuse('rss_feed'),
+      processFeedItems: refuse('rss_feed'),
+      recordFeedPoll: refuse('rss_feed'),
+    },
+    workerRules: {
+      loadRuleDefinition: refuse('automation_rule'),
+      evaluateRuleConditions: refuse('automation_rule'),
+      reserveRuleExecution: refuse('automation_rule'),
+      executeRuleAction: refuse('automation_rule'),
+      recordRuleRun: refuse('automation_rule'),
+    },
+    workerInsights: {
+      generatePostFeedback: refuse('insight'),
     },
     health: refuseHealth(),
   };

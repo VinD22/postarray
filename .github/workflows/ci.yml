@@ -45,7 +45,9 @@ jobs:
     timeout-minutes: 20
     services:
       postgres:
-        image: postgres:16
+        # Matches the major version Neon runs, so a migration that works here
+        # is not relying on behaviour that changed between 16 and 18.
+        image: postgres:18
         env:
           POSTGRES_PASSWORD: postgres
           POSTGRES_DB: relay_test
@@ -67,6 +69,70 @@ jobs:
       - run: pnpm db:migrate
       # Cross-tenant access must fail. This job is a merge gate, not advisory.
       - run: pnpm --filter @relay/database test
+
+  rls-neon:
+    name: Row level security on Neon
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    # The containerised job above is the fast merge gate and runs on every push.
+    # This one runs the same suite against the database we actually deploy to,
+    # because the two disagree in ways that matter: on Neon the migration owner
+    # carries BYPASSRLS, which is what hid the fact that the suite was evaluating
+    # no policies at all for months. A local superuser hides the same thing.
+    #
+    # `NEON_API_KEY` is an organisation secret and has to be created by an owner.
+    # Without it the job cannot run, so it is skipped rather than failed: a red
+    # tick nobody can fix teaches people to ignore red ticks.
+    if: ${{ github.event_name == 'push' || github.event.pull_request.head.repo.full_name == github.repository }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm db:generate
+
+      - name: Create a throwaway Neon branch
+        id: branch
+        if: ${{ env.NEON_API_KEY != '' }}
+        uses: neondatabase/create-branch-action@v5
+        with:
+          # The Neon project id for `post-on-social-media`. A project id is not a
+          # credential; the API key beside it is, and it is a secret.
+          project_id: bitter-resonance-28128022
+          branch_name: ci/${{ github.run_id }}-${{ github.run_attempt }}
+          api_key: ${{ secrets.NEON_API_KEY }}
+
+      # The suite writes a fixture and rolls every case back, but it also needs
+      # DDL-free access to a fully migrated schema, so it gets its own branch and
+      # never touches a shared one.
+      - name: Migrate the branch
+        if: ${{ steps.branch.outcome == 'success' }}
+        env:
+          DATABASE_URL: ${{ steps.branch.outputs.db_url }}
+          DIRECT_DATABASE_URL: ${{ steps.branch.outputs.db_url }}
+        run: pnpm db:migrate
+
+      - name: Run the row level security matrix
+        if: ${{ steps.branch.outcome == 'success' }}
+        env:
+          DATABASE_URL: ${{ steps.branch.outputs.db_url }}
+          DIRECT_DATABASE_URL: ${{ steps.branch.outputs.db_url }}
+        run: pnpm test:rls
+
+      # Always. A branch left behind bills, and a hundred of them make the
+      # project console unusable.
+      - name: Delete the branch
+        if: always() && steps.branch.outcome == 'success'
+        uses: neondatabase/delete-branch-action@v3
+        with:
+          project_id: bitter-resonance-28128022
+          branch: ci/${{ github.run_id }}-${{ github.run_attempt }}
+          api_key: ${{ secrets.NEON_API_KEY }}
+    env:
+      NEON_API_KEY: ${{ secrets.NEON_API_KEY }}
 
   localization:
     name: Message catalog lint
@@ -96,7 +162,21 @@ jobs:
           cache: pnpm
       - run: pnpm install --frozen-lockfile
       - run: pnpm db:generate
+      # Emits real artefacts now: apps/{api,worker,links,mcp}/dist/main.mjs and
+      # the worker's pre-built Temporal workflow bundle. `build` used to be
+      # `tsc --noEmit` everywhere, so this job proved only that the code
+      # typechecked.
       - run: pnpm build
+
+      # Every deployable service has an image, and every image is built on every
+      # change. A Dockerfile that is only exercised at release time is a
+      # Dockerfile that breaks at release time. These are build-only: nothing is
+      # pushed and no registry credential is needed.
+      - name: Build the container images
+        run: |
+          for app in api worker links mcp web; do
+            docker build --file "apps/$app/Dockerfile" --tag "relay-$app:ci" .
+          done
 
   browser:
     name: Browser smoke, accessibility and localization

@@ -11,18 +11,45 @@ import {
   type CapabilitySnapshot,
   type MasterDraft,
   type OverridableVariantField,
+  type PostingSetView,
 } from '@relay/contracts';
 
-import type { ComposerBootstrap, ComposerState, TargetAccount } from '../types';
+import type { ComposerBootstrap, ComposerState, TargetAccount, TargetSet } from '../types';
 import type { ResolvedEntity } from '../components/entity-search-field';
 
-/** Load the draft, the connectable accounts and their capability snapshots. */
+/**
+ * One Posting Set, as the rail needs it.
+ *
+ * `seedBody` is empty because a Set is a channel selection plus a signature: it
+ * has no draft text of its own on the server, and `PostingSetView` has no field
+ * for one. The reducer treats an empty `seedBody` as "seeds nothing", which is
+ * exactly the truth here — a Set applies channels, and inventing seed text
+ * would put words in the draft that nobody wrote.
+ */
+function targetSetFromApi(view: PostingSetView): TargetSet {
+  return {
+    id: view.id,
+    name: view.name,
+    description: view.description ?? '',
+    connectionIds: view.connectionIds,
+    seedBody: '',
+    signatureId: view.signatureId,
+  };
+}
+
+/** Load the draft, the connectable accounts, their capabilities and the Sets. */
 export async function loadComposer(input: {
   readonly contentItemId: string | null;
   readonly brandId: string;
   readonly workspaceTimeZone: string;
 }): Promise<ComposerBootstrap> {
-  const connections = await api.connections.list({ brandId: input.brandId });
+  // Both reads are for the same project and neither depends on the other, so
+  // they go out together rather than stacking two round trips in front of the
+  // one screen where people are waiting to start writing.
+  const [connections, sets] = await Promise.all([
+    api.connections.list({ brandId: input.brandId }),
+    api.postingSets.list({ brandId: input.brandId }),
+  ]);
 
   const accounts: TargetAccount[] = await Promise.all(
     connections.data.map(async (connection) => {
@@ -53,7 +80,44 @@ export async function loadComposer(input: {
   return {
     master,
     accounts,
-    sets: [],
+    /*
+     * Sets used to be hardcoded to `[]` here, which meant "apply a Set" was
+     * unreachable from the one screen anybody would ever want it on: the
+     * feature had an API, tables, and a settings screen where Sets are created,
+     * and the composer simply never asked for them.
+     *
+     * Two states, and only two, because the list is real now:
+     *  - empty: the project genuinely has no Sets, and the rail says
+     *    `composerWeb.set.none`.
+     *  - failed: the error is not swallowed. Claiming "No Sets saved yet"
+     *    when the request failed would be a statement about somebody's
+     *    workspace that we cannot support, so the rejection travels up to the
+     *    designed error state on `/compose`, which names a correlation id.
+     * Archived Sets never arrive: the endpoint excludes them unless
+     * `includeArchived` is passed, and it is not passed.
+     */
+    sets: sets.data.map(targetSetFromApi),
+    /*
+     * Signatures and branded domains stay empty because there is nothing to
+     * read, not because the composer forgot to ask.
+     *
+     * Signatures: the `signatures` table exists, `PostingSet.signatureId`
+     * points at it, and `POST /content/{id}/apply-signature` can apply one, but
+     * no surface lists them. There is no `GET /signatures` in `apps/api`, no
+     * signatures service in `@relay/application` and no `api.signatures` client
+     * to call. Fabricating a list from the Sets that reference one would show a
+     * signature's id where its text belongs, so `SignaturePanel` correctly
+     * offers nothing until the endpoint exists.
+     *
+     * Branded domains: `BrandView.domains` is a bare `string[]` with no
+     * verification state, and `LinkControls` only ever offers a *verified*
+     * domain. Mapping those strings in would either hide them all (identical to
+     * this, with extra code) or assert a verification this product cannot
+     * perform yet — settings already says domain verification is unavailable.
+     *
+     * TODO(owner): both need a read endpoint before the composer can show
+     * them. Neither is a composer-side fix.
+     */
     signatures: [],
     brandedDomains: [],
     selectedConnectionIds: [],

@@ -10,7 +10,11 @@ import type {
   Services,
 } from '../../application/port';
 import { SERVICES } from '../../application/tokens';
-import type { BeginOAuthInput, ListConnectionsQuery } from './connections.schemas';
+import type {
+  BeginOAuthInput,
+  ConnectWithProviderSecretInput,
+  ListConnectionsQuery,
+} from './connections.schemas';
 
 /**
  * Transport-level delegation for connections.
@@ -51,6 +55,13 @@ export class ConnectionsService {
     input: { transactionId: string; code: string; state: string },
   ): Promise<void> {
     return this.services.connections.handleOAuthCallback(ctx, input);
+  }
+
+  connectWithProviderSecret(
+    ctx: ActorContext,
+    input: ConnectWithProviderSecretInput,
+  ): Promise<{ transactionId: string }> {
+    return this.services.connections.connectWithProviderSecret(ctx, input);
   }
 
   getOAuthAccountSelection(

@@ -36,6 +36,12 @@ export interface CampaignTargetView {
   readonly hasExternalPost: boolean;
   readonly receiptId: string | null;
   readonly permalink: string | null;
+  /**
+   * When this destination's post appeared on the platform, if it has. Null
+   * covers both "not yet" and "we never got a time back", which is why the
+   * publish panel keys its "just now" decision off `hasExternalPost` as well.
+   */
+  readonly publishedAt: string | null;
   /** Follow up items that failed while the root post stayed live. */
   readonly failedItemCount: number;
 }
@@ -80,6 +86,7 @@ export function buildCampaignTargets(
       hasExternalPost: EXTERNALLY_VISIBLE_STATES.includes(state),
       receiptId: summary?.receiptId ?? null,
       permalink: summary?.permalink ?? null,
+      publishedAt: summary?.publishedAt ?? null,
       failedItemCount: summary?.failedItemCount ?? 0,
     };
   });

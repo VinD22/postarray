@@ -8,7 +8,7 @@
  */
 
 export { createServices } from './services/index';
-export { oauthCompletionReady } from './services/connections';
+export { oauthCompletionReady, socialOAuthCallbackUrl } from './services/connections';
 export {
   createOAuthGateway,
   selectOAuthAccounts,
@@ -132,10 +132,7 @@ export type {
   OAuthPendingDiscoveryRecord,
 } from './ports/oauth-pending';
 
-export {
-  pendingGrantEnvelopeFromRow,
-  pendingGrantEnvelopeToRow,
-} from './oauth-pending-envelope';
+export { pendingGrantEnvelopeFromRow, pendingGrantEnvelopeToRow } from './oauth-pending-envelope';
 
 export { normalizeAliasForLookup } from './services/identity';
 export {

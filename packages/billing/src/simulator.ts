@@ -30,6 +30,8 @@ import type {
 } from './client';
 import { ANNUAL_PRICE_MINOR, MONTHLY_PRICE_MINOR, TRIAL_DAYS } from './products';
 import type { BillingInterval } from './products';
+import { tierPriceMinor } from './tiers';
+import type { PlanTierKey } from './tiers';
 import {
   WEBHOOK_HEADER_ID,
   WEBHOOK_HEADER_SIGNATURE,
@@ -57,7 +59,90 @@ export const SIMULATOR_HOST = 'https://polar.simulator.example.test';
 export const SIMULATOR_WEBHOOK_SECRET = 'whsec_c2ltdWxhdG9yLXNlY3JldC1ub3QtYS1yZWFsLWtleQ==';
 export const SIMULATOR_MONTHLY_PRODUCT_ID = 'sim_prod_monthly';
 export const SIMULATOR_ANNUAL_PRODUCT_ID = 'sim_prod_annual';
+export const SIMULATOR_GROWTH_MONTHLY_PRODUCT_ID = 'sim_prod_growth_monthly';
+export const SIMULATOR_GROWTH_ANNUAL_PRODUCT_ID = 'sim_prod_growth_annual';
+export const SIMULATOR_STUDIO_MONTHLY_PRODUCT_ID = 'sim_prod_studio_monthly';
+export const SIMULATOR_STUDIO_ANNUAL_PRODUCT_ID = 'sim_prod_studio_annual';
 export const SIMULATOR_BENEFIT_ID = 'sim_benefit_relay_standard';
+
+/**
+ * The simulated product catalog, one entry per (tier, interval).
+ *
+ * The higher tiers are here so a local checkout of Growth or Studio runs the
+ * whole lifecycle with no key and no network, and so the entitlement derivation
+ * is exercised against a product that maps to something other than the base
+ * tier. Prices are read from the tier table, so a simulated charge can never
+ * disagree with the real one.
+ */
+export interface SimulatedProduct {
+  readonly productId: string;
+  readonly tierKey: PlanTierKey;
+  readonly interval: BillingInterval;
+  readonly priceMinor: number;
+  readonly name: string;
+}
+
+function simulatedProduct(
+  productId: string,
+  tierKey: PlanTierKey,
+  interval: BillingInterval,
+  name: string,
+): SimulatedProduct {
+  return Object.freeze({
+    productId,
+    tierKey,
+    interval,
+    priceMinor: tierPriceMinor(tierKey, interval),
+    name,
+  });
+}
+
+export const SIMULATOR_PRODUCTS: readonly SimulatedProduct[] = Object.freeze([
+  simulatedProduct(SIMULATOR_MONTHLY_PRODUCT_ID, 'relay_standard', 'month', 'Relay Monthly'),
+  simulatedProduct(SIMULATOR_ANNUAL_PRODUCT_ID, 'relay_standard', 'year', 'Relay Annual'),
+  simulatedProduct(
+    SIMULATOR_GROWTH_MONTHLY_PRODUCT_ID,
+    'relay_growth',
+    'month',
+    'Relay Growth Monthly',
+  ),
+  simulatedProduct(
+    SIMULATOR_GROWTH_ANNUAL_PRODUCT_ID,
+    'relay_growth',
+    'year',
+    'Relay Growth Annual',
+  ),
+  simulatedProduct(
+    SIMULATOR_STUDIO_MONTHLY_PRODUCT_ID,
+    'relay_studio',
+    'month',
+    'Relay Studio Monthly',
+  ),
+  simulatedProduct(
+    SIMULATOR_STUDIO_ANNUAL_PRODUCT_ID,
+    'relay_studio',
+    'year',
+    'Relay Studio Annual',
+  ),
+]);
+
+/** The simulated product id for one purchasable combination, or `undefined`. */
+export function simulatorProductId(
+  tier: PlanTierKey,
+  interval: BillingInterval,
+): string | undefined {
+  return SIMULATOR_PRODUCTS.find(
+    (product) => product.tierKey === tier && product.interval === interval,
+  )?.productId;
+}
+
+/**
+ * The `productId -> tierKey` map a simulated environment hands to entitlement
+ * derivation, so a locally bought Growth subscription grants Growth capacity.
+ */
+export const SIMULATOR_PRODUCT_TIERS: Readonly<Record<string, PlanTierKey>> = Object.freeze(
+  Object.fromEntries(SIMULATOR_PRODUCTS.map((product) => [product.productId, product.tierKey])),
+);
 
 export interface SimulatedDelivery {
   readonly eventType: PolarEventType;
@@ -173,12 +258,39 @@ export class LocalPolarSimulator implements PolarClient {
     return nowIso(this.clock);
   }
 
+  /**
+   * The catalog entry for a product id, if it is one of the simulated tiers.
+   * The two base ids are excluded because the constructor may have overridden
+   * them, and an override must keep winning.
+   */
+  private catalogEntry(productId: string): SimulatedProduct | undefined {
+    if (productId === this.monthlyProductId || productId === this.annualProductId) {
+      return undefined;
+    }
+    return SIMULATOR_PRODUCTS.find((product) => product.productId === productId);
+  }
+
   private intervalOf(productId: string): BillingInterval {
-    return productId === this.annualProductId ? 'year' : 'month';
+    if (productId === this.annualProductId) {
+      return 'year';
+    }
+    return this.catalogEntry(productId)?.interval ?? 'month';
   }
 
   private priceOf(productId: string): number {
+    const entry = this.catalogEntry(productId);
+    if (entry !== undefined) {
+      return entry.priceMinor;
+    }
     return this.intervalOf(productId) === 'year' ? ANNUAL_PRICE_MINOR : MONTHLY_PRICE_MINOR;
+  }
+
+  private nameOf(productId: string): string {
+    const entry = this.catalogEntry(productId);
+    if (entry !== undefined) {
+      return entry.name;
+    }
+    return this.intervalOf(productId) === 'year' ? 'Relay Annual' : 'Relay Monthly';
   }
 
   private advancePeriod(instant: string, interval: BillingInterval): string {
@@ -377,7 +489,7 @@ export class LocalPolarSimulator implements PolarClient {
     const interval = this.intervalOf(productId);
     return polarProductSchema.parse({
       id: productId,
-      name: interval === 'year' ? 'Relay Annual' : 'Relay Monthly',
+      name: this.nameOf(productId),
       is_recurring: true,
       recurring_interval: interval,
       trial_days: this.trialDays,

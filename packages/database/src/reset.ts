@@ -1,8 +1,6 @@
-import path from 'node:path';
-import { fileURLToPath } from 'node:url';
-
 import pg from 'pg';
 
+import { isProcessEntryPoint } from './invoked-directly';
 import { createStderrLogger, type DatabaseLogger } from './logger';
 import { migrate } from './migrate';
 import { seed } from './seed';
@@ -78,8 +76,7 @@ function safeHost(databaseUrl: string): string {
   }
 }
 
-const invokedDirectly =
-  process.argv[1] !== undefined && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url);
+const invokedDirectly = isProcessEntryPoint(import.meta.url, 'reset');
 
 if (invokedDirectly) {
   reset().catch((error: unknown) => {

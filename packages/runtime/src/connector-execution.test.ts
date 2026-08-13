@@ -143,7 +143,9 @@ describe('workspace credential resolver', () => {
       vault: encrypted.vault,
     });
 
-    await expect(resolver.lease({ workspaceId, connection, purpose: 'test_publish' })).rejects.toMatchObject({
+    await expect(
+      resolver.lease({ workspaceId, connection, purpose: 'test_publish' }),
+    ).rejects.toMatchObject({
       code: 'NOT_FOUND',
     });
   });
@@ -203,11 +205,14 @@ describe('connector execution gateway', () => {
       connectors: { ...detected.connectors, bluesky: 'live' as const },
     };
     const verified = new VerifiedConnectorRegistry(registry, verifiedCapabilities, config());
-    const connectionRef = fakeConnectionRef({
-      workspaceId,
-      connectionId,
-      provider: 'bluesky',
-    }, { clock });
+    const connectionRef = fakeConnectionRef(
+      {
+        workspaceId,
+        connectionId,
+        provider: 'bluesky',
+      },
+      { clock },
+    );
     const connection = details('bluesky');
     const encrypted = await encryptedRecord(connection);
     const store = storeFor(encrypted.record);
@@ -215,10 +220,18 @@ describe('connector execution gateway', () => {
       store,
       vault: encrypted.vault,
     });
-    const gateway = new ConnectorExecutionGateway({ registry: verified, credentials: resolver, clock });
+    const gateway = new ConnectorExecutionGateway({
+      registry: verified,
+      credentials: resolver,
+      clock,
+    });
     const capabilities = await gateway.capabilitiesFor({ workspaceId, connection });
     const draft = fakeDraft({}, { connection: connectionRef, capabilities, clock });
-    const publishRequest = fakePublishRequest(draft, { idempotencyKey: 'idem_publish_000000000001' }, { clock });
+    const publishRequest = fakePublishRequest(
+      draft,
+      { idempotencyKey: 'idem_publish_000000000001' },
+      { clock },
+    );
     const { connection: _connection, ...draftWithoutConnection } = draft;
     const { draft: _draft, ...requestWithoutDraft } = publishRequest;
     const input = {
@@ -237,5 +250,84 @@ describe('connector execution gateway', () => {
       status: 'adopted',
     });
     expect(fake.state.posts).toHaveLength(1);
+  });
+});
+
+describe('connector execution gateway status polling', () => {
+  /**
+   * A connector that is registered but has no verified status read. Polling
+   * must refuse before it touches a credential, because the caller's only other
+   * move would be a second create.
+   */
+  it('fails closed, before any credential lookup, when get_status is not verified', async () => {
+    const connection = details('fake');
+    const encrypted = await encryptedRecord(connection);
+    const store = storeFor(encrypted.record);
+    const gateway = new ConnectorExecutionGateway({
+      registry: prelaunchRegistry(),
+      credentials: createWorkspaceCredentialResolver({ store, vault: encrypted.vault }),
+      clock,
+    });
+
+    await expect(
+      gateway.pollStatus({
+        workspaceId,
+        connection,
+        providerJobId: 'container_1',
+        externalPostId: null,
+        idempotencyKey: 'idem_publish_000000000001',
+        contentFingerprint: 'a'.repeat(64),
+        dispatchWindowFrom: '2026-08-06T23:00:00.000Z',
+        dispatchWindowTo: '2026-08-07T00:00:00.000Z',
+      }),
+    ).rejects.toMatchObject({ code: 'CAPABILITY_NOT_IMPLEMENTED' });
+    expect(store.find).not.toHaveBeenCalled();
+  });
+
+  it('reports the provider verdict and never creates anything', async () => {
+    class EnabledFakeConnector extends FakeConnector {
+      override identity(): ProviderIdentity {
+        return { ...super.identity(), provider: 'bluesky' };
+      }
+
+      override async getCapabilities(connection: ConnectionRef) {
+        const snapshot = await super.getCapabilities(connection);
+        return { ...snapshot, provider: 'bluesky' as const };
+      }
+    }
+
+    const fake = new EnabledFakeConnector({ clock, instant: true });
+    const detected = detectCapabilities(config());
+    const verified = new VerifiedConnectorRegistry(
+      createConnectorRegistry([fake], { clock }),
+      { ...detected, connectors: { ...detected.connectors, bluesky: 'live' as const } },
+      config(),
+    );
+    const connection = details('bluesky');
+    const encrypted = await encryptedRecord(connection);
+    const gateway = new ConnectorExecutionGateway({
+      registry: verified,
+      credentials: createWorkspaceCredentialResolver({
+        store: storeFor(encrypted.record),
+        vault: encrypted.vault,
+      }),
+      clock,
+    });
+
+    const status = await gateway.pollStatus({
+      workspaceId,
+      connection,
+      providerJobId: null,
+      externalPostId: null,
+      idempotencyKey: 'idem_publish_000000000001',
+      contentFingerprint: 'a'.repeat(64),
+      dispatchWindowFrom: '2026-08-06T23:00:00.000Z',
+      dispatchWindowTo: '2026-08-07T00:00:00.000Z',
+    });
+
+    // Nothing was published, so nothing is claimed, and the poll itself created
+    // no post: the whole point of this seam is that it cannot.
+    expect(status.state).not.toBe('published');
+    expect(fake.state.posts).toHaveLength(0);
   });
 });

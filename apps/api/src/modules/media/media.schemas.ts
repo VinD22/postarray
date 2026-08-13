@@ -33,6 +33,26 @@ export const UPLOADABLE_MIME_TYPES = UPLOADABLE_MEDIA_MIME_TYPES;
 
 export const MAX_UPLOAD_BYTES = VIDEO_UPLOAD_LIMIT_BYTES;
 
+/**
+ * The object key a local upload ticket points at.
+ *
+ * `LocalFileStorage` issues `${workspaceId}/${sha256}`, so the route takes it as
+ * two path segments rather than a wildcard. A segment cannot contain a slash,
+ * which makes a traversal key unrepresentable here rather than merely rejected,
+ * and the digest shape is checked before anything touches storage.
+ */
+export const objectKeyParamsSchema = z
+  .object({ workspaceId: z.string().trim().min(1).max(64), digest: checksumSchema })
+  .strict();
+
+/**
+ * The two headers a local upload ticket told the client to send. Both are
+ * compared against the pending asset row, never trusted on their own.
+ */
+export const directUploadHeadersSchema = z
+  .object({ contentType: z.enum(UPLOADABLE_MIME_TYPES), checksumSha256: checksumSchema })
+  .strict();
+
 export const createUploadUrlSchema = z
   .object({
     filename: z.string().trim().min(1).max(255),
@@ -83,9 +103,7 @@ export const importFromUrlSchema = z
  */
 export const mediaEditOpSchema = mediaDerivativeOperationSchema;
 
-export const editMediaSchema = z
-  .object({ ops: mediaDerivativeOperationsSchema })
-  .strict();
+export const editMediaSchema = z.object({ ops: mediaDerivativeOperationsSchema }).strict();
 
 /**
  * Alt text. It can be waived, but only explicitly and only with a reason, so
@@ -150,8 +168,6 @@ export type DeclareRightsInput = z.infer<typeof declareRightsSchema>;
  * application canonicalizes and validates these against the source file, and
  * the handler must not do either.
  */
-export function toMediaEditOperations(
-  input: EditMediaInput,
-): readonly MediaDerivativeOperation[] {
+export function toMediaEditOperations(input: EditMediaInput): readonly MediaDerivativeOperation[] {
   return input.ops;
 }

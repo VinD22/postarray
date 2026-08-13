@@ -15,7 +15,7 @@
  * republish a target that already succeeded.
  */
 
-import { useMemo, type ReactNode } from 'react';
+import { useMemo, useState, type ReactNode } from 'react';
 import { Download, ExternalLink, Printer } from 'lucide-react';
 import {
   Badge,
@@ -47,6 +47,7 @@ import {
   useAccountTypeName,
   useProviderName,
 } from '@/features/connections/provider';
+import { PublishCelebration, isFreshPublication } from './publish-celebration';
 import { ReceiptAttempts } from './receipt-attempts';
 import { ReceiptItems } from './receipt-items';
 import { ReceiptTimeline } from './receipt-timeline';
@@ -193,6 +194,21 @@ function PostDocument({
       ? ('partially_published' as const)
       : (receipt?.root.state ?? job?.state ?? item.state);
 
+  /*
+   * Celebrate once, and only for a publication that genuinely just happened.
+   *
+   * Read once, in a state initialiser, so the decision is fixed for the life
+   * of this mount: a refetch that lands a second destination must settle that
+   * row's badge, not fire a second burst. A receipt opened an hour later is a
+   * document, and the same panel renders completely still.
+   */
+  const [celebrate] = useState(() => isFreshPublication(targets, Date.now()));
+  const describeTarget = (target: CampaignTargetView): string =>
+    t('receipt.target', {
+      account: target.accountLabel,
+      provider: providerName(target.provider),
+    });
+
   return (
     <article className="flex min-h-full flex-col">
       <PageHeader
@@ -227,6 +243,17 @@ function PostDocument({
               />
             ) : null}
           </div>
+
+          {celebrate ? (
+            <PublishCelebration
+              celebrate
+              outcome={outcome}
+              targets={targets}
+              campaignId={item.id}
+              describeTarget={describeTarget}
+              renderTargets={!(isCampaign && outcome === 'partially_published')}
+            />
+          ) : null}
 
           {isCampaign && outcome === 'partially_published' ? (
             // The 2px warning border lives here, outside the primitive, for

@@ -59,4 +59,10 @@ export const onboardingMessages = {
   'onboarding.checklist.tryAutomation': 'Try an automation rule',
   'onboarding.checklist.remaining':
     '{count, plural, =0 {All done} one {# step left} other {# steps left}}',
+
+  /* -- Accounts that came back from a provider consent screen ------------ */
+  'onboarding.live.connectedHeading': 'Already connected',
+  'onboarding.live.connected': 'Connected',
+  'onboarding.live.connectedNote':
+    'One account is enough to reach a first post. You can add the rest later.',
 } as const;

@@ -65,6 +65,17 @@ const USER_IDS: Record<Role, string> = {
   viewer: newIdFor('user'),
 };
 
+/**
+ * The owner of workspace B. Everything workspace B needs a person for points at
+ * this id.
+ *
+ * It used to be `OUTSIDER_USER_ID`, which quietly broke the outsider case below:
+ * a user who owns workspace B is not an outsider, so "reads nothing" read one
+ * row and the suite reported a leak the policies never had.
+ */
+const WORKSPACE_B_OWNER_ID = newIdFor('user');
+
+/** A real outsider: seeded as a user, given no membership anywhere. */
 const OUTSIDER_USER_ID = newIdFor('user');
 
 let client: pg.Client;
@@ -88,26 +99,71 @@ async function asActor<T>(claims: string | null, work: (tx: pg.Client) => Promis
     } else {
       await client.query(`SELECT set_config('request.jwt.claims', $1, true)`, [claims]);
     }
-    // Drop to a role that cannot bypass row level security before asserting
-    // anything. The migration owner is BYPASSRLS on Neon (and on most managed
-    // Postgres), so without this every policy is skipped and the whole suite
-    // passes vacuously while proving nothing. `LOCAL` scopes the switch to this
-    // transaction, so the rollback below restores the seeding role.
+    // Drop to `relay_app` before asserting anything. The migration owner is
+    // BYPASSRLS on Neon (and on most managed Postgres), so without this every
+    // policy is skipped and the whole suite passes vacuously while proving
+    // nothing. `LOCAL` scopes the switch to this transaction, so the rollback
+    // below restores the seeding role.
     //
-    // The database role has to match the role the claims assert, because the
-    // policies test both: `app.is_service_role()` reads the claim, while the
-    // table GRANTs are held by the database role. Asserting a service-role
-    // policy while connected as `authenticated` fails on the GRANT before the
-    // policy is ever consulted.
-    const pgRole =
-      claims !== null && (JSON.parse(claims) as { role?: string }).role === 'service_role'
-        ? 'service_role'
-        : 'authenticated';
-    await client.query(`SET LOCAL ROLE ${pgRole}`);
+    // `relay_app` (0073) is the role the application itself connects as: full
+    // CRUD on `app` and `private`, no BYPASSRLS. Using it here is the point of
+    // the suite. Grants are checked before policies, so a role without write
+    // grants fails on the grant and the claims-based write branches never run;
+    // with `relay_app` the only thing between this statement and the row is a
+    // policy body a reviewer can read.
+    //
+    // The *claims* still carry the role, and that is what `app.is_service_role()`
+    // reads. The database role is deliberately the same for a member and for a
+    // service-role caller, so the suite proves that the claim is what widens
+    // access, not the connection.
+    await client.query('SET LOCAL ROLE relay_app');
     return await work(client);
   } finally {
     await client.query('ROLLBACK');
   }
+}
+
+/**
+ * Runs `work` as the connecting migration owner, which carries BYPASSRLS, with
+ * service-role claims set and a rollback at the end.
+ *
+ * Used only by the immutability probes. Those assert a trigger, and a trigger is
+ * the layer *behind* the policy: `app.content_versions` and
+ * `private.audit_events` have no UPDATE policy at all, so under RLS the
+ * statement matches zero rows, no `BEFORE ... FOR EACH ROW` trigger fires, and
+ * the update "succeeds" having changed nothing. Bypassing RLS is the only way to
+ * make the trigger the thing under test, and it makes the assertion the stronger
+ * one: not even an operator connection that skips every policy can rewrite the
+ * audit log.
+ */
+async function asOwner<T>(work: (tx: pg.Client) => Promise<T>): Promise<T> {
+  await client.query('BEGIN');
+  try {
+    await client.query(`SELECT set_config('request.jwt.claims', $1, true)`, [serviceClaims]);
+    return await work(client);
+  } finally {
+    await client.query('ROLLBACK');
+  }
+}
+
+/**
+ * Asserts that `mutationSql` is refused by a trigger rather than silently
+ * matching nothing.
+ *
+ * `probeSql` must return at least one row, so a statement whose `WHERE` matches
+ * nothing can never masquerade as a guard firing. That vacuous pass is exactly
+ * what hid behind three of the six failures in
+ * docs/planning/25-rls-suite-findings.md.
+ */
+async function expectImmutable(
+  probeSql: string,
+  mutationSql: string,
+  params: readonly unknown[],
+): Promise<void> {
+  const present = await asOwner(async (tx) => tx.query(probeSql, [...params]));
+  expect(present.rowCount ?? 0).toBeGreaterThanOrEqual(1);
+
+  await expect(asOwner(async (tx) => tx.query(mutationSql, [...params]))).rejects.toThrow();
 }
 
 async function expectRejected(
@@ -340,33 +396,93 @@ describe.skipIf(!hasDatabase)('row level security', () => {
     });
   });
 
+  /**
+   * Immutability.
+   *
+   * Two layers, asserted separately.
+   *
+   * Under RLS these tables have no UPDATE and no DELETE policy, so the statement
+   * matches nothing and changes nothing. Behind that, a trigger refuses the
+   * write outright, and the trigger is what still holds if a future migration
+   * adds a policy by mistake. The trigger cases run with RLS bypassed, because a
+   * row trigger cannot fire on a statement that matched no rows.
+   */
   describe('immutability', () => {
-    it('rejects an update to a content version, even as the service role', async () => {
-      await expect(
-        asActor(serviceClaims, async (tx) =>
-          tx.query(`UPDATE app.content_versions SET body = 'rewritten' WHERE id = $1`, [
-            FIXTURE.versionA,
-          ]),
-        ),
-      ).rejects.toThrow();
+    it('changes nothing when the service role updates a content version', async () => {
+      const outcome = await asActor(serviceClaims, async (tx) =>
+        tx.query(`UPDATE app.content_versions SET body = 'rewritten' WHERE id = $1`, [
+          FIXTURE.versionA,
+        ]),
+      );
+      expect(outcome.rowCount).toBe(0);
     });
 
-    it('rejects an update to the audit log, even as the service role', async () => {
-      await expect(
-        asActor(serviceClaims, async (tx) =>
-          tx.query(`UPDATE private.audit_events SET action = 'rewritten' WHERE id = $1`, [
-            FIXTURE.auditA,
-          ]),
-        ),
-      ).rejects.toThrow();
+    it('rejects an update to a content version, even with row level security bypassed', async () => {
+      await expectImmutable(
+        'SELECT id FROM app.content_versions WHERE id = $1',
+        `UPDATE app.content_versions SET body = 'rewritten' WHERE id = $1`,
+        [FIXTURE.versionA],
+      );
     });
 
-    it('rejects a delete from the audit log, even as the service role', async () => {
-      await expect(
-        asActor(serviceClaims, async (tx) =>
-          tx.query('DELETE FROM private.audit_events WHERE id = $1', [FIXTURE.auditA]),
-        ),
-      ).rejects.toThrow();
+    it('rejects an update to the audit log, even with row level security bypassed', async () => {
+      await expectImmutable(
+        'SELECT id FROM private.audit_events WHERE id = $1',
+        `UPDATE private.audit_events SET action = 'rewritten' WHERE id = $1`,
+        [FIXTURE.auditA],
+      );
+    });
+
+    it('rejects a delete from the audit log, even with row level security bypassed', async () => {
+      await expectImmutable(
+        'SELECT id FROM private.audit_events WHERE id = $1',
+        'DELETE FROM private.audit_events WHERE id = $1',
+        [FIXTURE.auditA],
+      );
+    });
+  });
+
+  /**
+   * The roles themselves.
+   *
+   * `relay_app` is the role every case above runs as, so its shape is part of
+   * the boundary rather than a deployment detail. `authenticated` is reserved
+   * for a future Neon Data API surface and must stay read-only.
+   */
+  describe('the connecting roles', () => {
+    it('does not let relay_app bypass row level security', async () => {
+      const rows = await client.query(
+        'SELECT rolbypassrls, rolsuper FROM pg_roles WHERE rolname = $1',
+        ['relay_app'],
+      );
+      expect(rows.rows[0]).toMatchObject({ rolbypassrls: false, rolsuper: false });
+    });
+
+    it('gives relay_app the write grants that make the policies load bearing', async () => {
+      const rows = await client.query(
+        `SELECT has_table_privilege('relay_app', 'app.content_items', 'INSERT') AS insertable,
+                has_table_privilege('relay_app', 'app.workspaces', 'UPDATE') AS updatable`,
+      );
+      expect(rows.rows[0]).toMatchObject({ insertable: true, updatable: true });
+    });
+
+    it('keeps the data api role read-only', async () => {
+      await client.query('BEGIN');
+      try {
+        await client.query(`SELECT set_config('request.jwt.claims', $1, true)`, [
+          memberClaims(USER_IDS.editor, FIXTURE.workspaceA),
+        ]);
+        await client.query('SET LOCAL ROLE authenticated');
+        await expect(
+          client.query(
+            `INSERT INTO app.content_items (workspace_id, brand_id, title, state, updated_at)
+             VALUES ($1, $2, 'data api write', 'draft', now())`,
+            [FIXTURE.workspaceA, FIXTURE.brandA],
+          ),
+        ).rejects.toThrow(/permission denied/iu);
+      } finally {
+        await client.query('ROLLBACK');
+      }
     });
   });
 
@@ -916,6 +1032,8 @@ async function seedFixture(): Promise<void> {
 
   const people: readonly [string, string][] = [
     ...ROLES.map((role): [string, string] => [USER_IDS[role], `rls-${role}@example.test`]),
+    [WORKSPACE_B_OWNER_ID, 'rls-workspace-b-owner@example.test'],
+    // Seeded as a person and deliberately never given a membership anywhere.
     [OUTSIDER_USER_ID, 'rls-outsider@example.test'],
   ];
 
@@ -927,14 +1045,14 @@ async function seedFixture(): Promise<void> {
     );
   }
 
-  for (const [workspaceId, slug] of [
-    [FIXTURE.workspaceA, 'rls-fixture-a'],
-    [FIXTURE.workspaceB, 'rls-fixture-b'],
+  for (const [workspaceId, slug, ownerUserId] of [
+    [FIXTURE.workspaceA, 'rls-fixture-a', USER_IDS.owner],
+    [FIXTURE.workspaceB, 'rls-fixture-b', WORKSPACE_B_OWNER_ID],
   ] as const) {
     await client.query(
       `INSERT INTO app.workspaces (id, name, slug, owner_user_id, status, updated_at)
        VALUES ($1, $2, $3, $4, 'active', now()) ON CONFLICT (id) DO NOTHING`,
-      [workspaceId, slug, slug, USER_IDS.owner],
+      [workspaceId, slug, slug, ownerUserId],
     );
   }
 
@@ -952,7 +1070,7 @@ async function seedFixture(): Promise<void> {
     `INSERT INTO app.memberships (workspace_id, user_id, role, state, updated_at)
      VALUES ($1, $2, 'owner', 'active', now())
      ON CONFLICT (workspace_id, user_id) DO NOTHING`,
-    [FIXTURE.workspaceB, OUTSIDER_USER_ID],
+    [FIXTURE.workspaceB, WORKSPACE_B_OWNER_ID],
   );
 
   for (const [brandId, workspaceId, slug] of [
@@ -1008,7 +1126,7 @@ async function seedFixture(): Promise<void> {
 
   for (const [exportId, workspaceId, userId] of [
     [FIXTURE.exportA, FIXTURE.workspaceA, USER_IDS.owner],
-    [FIXTURE.exportB, FIXTURE.workspaceB, OUTSIDER_USER_ID],
+    [FIXTURE.exportB, FIXTURE.workspaceB, WORKSPACE_B_OWNER_ID],
   ] as const) {
     await client.query(
       `INSERT INTO app.data_exports
@@ -1022,7 +1140,7 @@ async function seedFixture(): Promise<void> {
   const executeAfter = new Date(Date.now() + 7 * 24 * 60 * 60_000).toISOString();
   for (const [deletionId, workspaceId, userId] of [
     [FIXTURE.deletionA, FIXTURE.workspaceA, USER_IDS.owner],
-    [FIXTURE.deletionB, FIXTURE.workspaceB, OUTSIDER_USER_ID],
+    [FIXTURE.deletionB, FIXTURE.workspaceB, WORKSPACE_B_OWNER_ID],
   ] as const) {
     await client.query(
       `INSERT INTO app.deletion_requests
@@ -1035,8 +1153,16 @@ async function seedFixture(): Promise<void> {
 
   for (const [oauthId, workspaceId, stateHash] of [
     // `state_hash` is CHECKed against ^[0-9a-f]{64}$ (0062).
-    [FIXTURE.oauthTxA, FIXTURE.workspaceA, 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa1'],
-    [FIXTURE.oauthTxB, FIXTURE.workspaceB, 'bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb2'],
+    [
+      FIXTURE.oauthTxA,
+      FIXTURE.workspaceA,
+      'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa1',
+    ],
+    [
+      FIXTURE.oauthTxB,
+      FIXTURE.workspaceB,
+      'bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb2',
+    ],
   ] as const) {
     await client.query(
       `INSERT INTO private.oauth_transactions
@@ -1109,7 +1235,7 @@ async function seedFixture(): Promise<void> {
   for (const [memoryId, workspaceId, brandId, userId] of [
     [FIXTURE.memoryEditorA, FIXTURE.workspaceA, FIXTURE.brandA, USER_IDS.editor],
     [FIXTURE.memoryManagerA, FIXTURE.workspaceA, FIXTURE.brandA, USER_IDS.manager],
-    [FIXTURE.memoryOutsiderB, FIXTURE.workspaceB, FIXTURE.brandB, OUTSIDER_USER_ID],
+    [FIXTURE.memoryOutsiderB, FIXTURE.workspaceB, FIXTURE.brandB, WORKSPACE_B_OWNER_ID],
   ] as const) {
     await client.query(
       `INSERT INTO app.remembered_targets
@@ -1134,7 +1260,7 @@ async function seedFixture(): Promise<void> {
       FIXTURE.importRowB,
       FIXTURE.workspaceB,
       FIXTURE.brandB,
-      OUTSIDER_USER_ID,
+      WORKSPACE_B_OWNER_ID,
       'b'.repeat(64),
     ],
   ] as const) {
@@ -1175,7 +1301,7 @@ async function teardownFixture(): Promise<void> {
     [FIXTURE.workspaceA, FIXTURE.workspaceB],
   ]);
   await client.query('DELETE FROM app.users WHERE id = ANY($1)', [
-    [...ROLES.map((role) => USER_IDS[role]), OUTSIDER_USER_ID],
+    [...ROLES.map((role) => USER_IDS[role]), WORKSPACE_B_OWNER_ID, OUTSIDER_USER_ID],
   ]);
 
   await client.query('COMMIT');

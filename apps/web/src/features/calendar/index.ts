@@ -95,9 +95,18 @@ export {
   dropCellAt,
   useDragReschedule,
   DRAG_THRESHOLD_PX,
+  SETTLE_HOLD_MS,
   type DragReschedule,
   type DragRescheduleOptions,
+  type DragSettle,
+  type DragSettleKind,
 } from './use-drag-reschedule';
+export {
+  TODAY_CELL_ATTRIBUTE,
+  WEEK_CELL_ATTRIBUTE,
+  useTodayPulse,
+  useWeekFill,
+} from './mount-motion';
 export {
   ATTENTION_STATES,
   EMPTY_FILTERS,

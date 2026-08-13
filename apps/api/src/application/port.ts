@@ -306,6 +306,11 @@ export interface ConnectionService {
     ctx: ActorContext,
     input: { transactionId: string; code: string; state: string },
   ): Promise<void>;
+  /** Providers whose official flow is a revocable secret, not a browser hop. */
+  connectWithProviderSecret(
+    ctx: ActorContext,
+    input: { provider: 'bluesky'; identifier: string; appPassword: string },
+  ): Promise<{ transactionId: string }>;
   getOAuthAccountSelection(
     ctx: ActorContext,
     transactionId: string,
@@ -446,6 +451,20 @@ export interface MediaService {
     retentionExpiresAt: string;
   }>;
   finalizeUpload(ctx: ActorContext, mediaId: string): Promise<MediaAssetView>;
+  /** Local filesystem adapter only. Presigned-PUT deployments refuse both. */
+  acceptDirectUpload(
+    ctx: ActorContext,
+    input: {
+      storageKey: string;
+      contentType: string;
+      checksumSha256: string;
+      bytes: Uint8Array;
+    },
+  ): Promise<{ byteSize: number }>;
+  readObjectForDownload(
+    ctx: ActorContext,
+    input: { storageKey: string },
+  ): Promise<{ bytes: Uint8Array; contentType: string }>;
   importFromUrl(
     ctx: ActorContext,
     input: { url: string; brandId?: string | null },

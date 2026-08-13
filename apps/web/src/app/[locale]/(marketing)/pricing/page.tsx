@@ -14,10 +14,12 @@ import {
   ClosingCta,
   EditorialCard,
   EditorialDisplay,
-  EditorialPricePlanBlock,
+  EditorialPricePair,
   EditorialSection,
   Eyebrow,
+  TierGrid,
 } from '@/features/marketing/components/editorial';
+import { tierColumns } from '@/features/marketing/components/editorial/tier-columns';
 import {
   Body,
   Container,
@@ -133,44 +135,57 @@ export default async function PricingPage({
       </EditorialSection>
 
       {/*
-        2 & 3. The price and everything a buyer is agreeing to sit side by
-        side. The allowance, the fair use boundary, the metered platform
-        usage, the trial and the cancellation path are next to the button, not
-        behind a link and not below the fold.
-        `EditorialPricePlanBlock` states both intervals' prices visibly,
-        whichever one the toggle is currently counting to, so a reader who
-        never touches the control still learns the annual price exists.
+        2 & 3. The three tiers, then everything a buyer is agreeing to.
 
+        This was one plan block for the base tier plus a separate capacity
+        table further down, which meant the page stated its prices twice, in
+        two shapes, and a reader had to scroll past the whole inclusion list
+        to discover that two more sizes existed. `TierGrid` is now the page's
+        single price presentation: three columns, one interval control, the
+        same integer minor units the tier module holds, and a delta sentence
+        per column because every feature is on every tier.
+
+        Only Standard carries an action, because only Standard can be bought.
         The action is honest about what it does: checkout is closed, so it
         joins a waiting list for a paid product rather than starting a
         subscription, and `web.pricing.prelaunch.primaryNote` says so directly
-        underneath it.
+        underneath the grid.
 
-        This band used to be a full-viewport `--color-cta` fill. A price is
-        the most consequential thing on the page and does not need a
-        highlighter behind it; it needs room.
+        This is a decision page, so it stays quiet on purpose: reveals and a
+        staggered grid, no pinned scene, no tinted band. The reader is here to
+        choose, not to be shown something.
       */}
       <EditorialSection rule id="price" reveal={false}>
-        <div className="grid gap-x-12 gap-y-12 lg:grid-cols-12 lg:items-start">
-          <div className="lg:col-span-6">
-            <EditorialPricePlanBlock
-              locale={locale}
-              groupLabel={t.t('web.pricing.intervalHeading')}
-              monthlyLabel={t.t('web.pricing.monthlyLabel')}
-              annualLabel={t.t('web.pricing.annualLabel')}
-              monthlyDetail={t.t('web.pricing.monthlyDetail')}
-              annualDetail={t.t('web.pricing.annualDetail')}
-              monthlyPriceDollars={MONTHLY_PRICE_DOLLARS}
-              annualPriceDollars={ANNUAL_PRICE_DOLLARS}
-              annualFraming={t.t('billing.plan.annualFraming')}
-              ctaHref={ROUTES.signUp}
-              ctaLabel={t.t('web.cta.startTrial')}
-              primaryNote={t.t('web.pricing.prelaunch.primaryNote')}
-              secondaryNote={t.t('web.pricing.prelaunch.secondaryNote')}
-              footerNote={t.t('web.pricing.perMonthNote')}
-            />
-          </div>
+        <Heading className="max-w-[28ch]">{t.t('web.pricing.tierGrid.heading')}</Heading>
+        <Body className="mt-4">{t.t('billing.tier.subheading')}</Body>
 
+        <TierGrid
+          locale={locale}
+          tiers={tierColumns({
+            t,
+            ctaHref: ROUTES.signUp,
+            ctaLabel: t.t('web.cta.startTrial'),
+          })}
+          intervalGroupLabel={t.t('web.pricing.tierGrid.intervalGroup')}
+          monthlyLabel={t.t('web.pricing.monthlyLabel')}
+          annualLabel={t.t('web.pricing.annualLabel')}
+          startHereLabel={t.t('web.pricing.tierGrid.startHere')}
+          className="mt-12"
+        />
+
+        <div className="mt-10 max-w-[62ch] space-y-4">
+          <p className="text-body-md text-text-primary leading-[1.6]">
+            {t.t('web.pricing.prelaunch.primaryNote')}
+          </p>
+          <p className="text-body-md text-text-tertiary leading-[1.6]">
+            {t.t('web.pricing.prelaunch.secondaryNote')}
+          </p>
+          <p className="text-body-sm text-text-tertiary font-mono tabular-nums">
+            {t.t('web.pricing.perMonthNote')}
+          </p>
+        </div>
+
+        <div className="mt-16 grid gap-x-12 gap-y-12 lg:grid-cols-12 lg:items-start">
           <div className="min-w-0 lg:col-span-6">
             <Eyebrow as="h2">{t.t('web.pricing.beside.title')}</Eyebrow>
             <StaggerList stagger={0.07} className="mt-8">
@@ -185,6 +200,22 @@ export default async function PricingPage({
                 ))}
               </ul>
             </StaggerList>
+          </div>
+
+          {/* Both intervals for the base tier, side by side, with nothing to
+              operate: the grid's control is a convenience, and a reader who
+              never touches it must still learn the annual price exists. */}
+          <div className="min-w-0 lg:col-span-6">
+            <EditorialPricePair
+              locale={locale}
+              monthlyPriceDollars={MONTHLY_PRICE_DOLLARS}
+              annualPriceDollars={ANNUAL_PRICE_DOLLARS}
+              monthlyLabel={t.t('web.pricing.monthlyLabel')}
+              annualLabel={t.t('web.pricing.annualLabel')}
+              monthlyDetail={t.t('web.pricing.monthlyDetail')}
+              annualDetail={t.t('web.pricing.annualDetail')}
+              annualFraming={t.t('billing.plan.annualFraming')}
+            />
           </div>
         </div>
       </EditorialSection>

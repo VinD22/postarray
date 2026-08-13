@@ -17,6 +17,7 @@ import { EntryChip } from './entry-chip';
 import { useCalendarFormat } from './format';
 import { entryKey, sortEntries } from './filters';
 import { isSameDay, toWallClock } from './date-range';
+import type { DragSettle } from './use-drag-reschedule';
 import type { CalendarEntry, CalendarRange, RescheduleProposal } from './types';
 
 export interface CalendarAgendaProps {
@@ -29,6 +30,8 @@ export interface CalendarAgendaProps {
   /** The in-progress keyboard move, when one is active. See `CalendarGrid`. */
   proposal?: RescheduleProposal | null;
   draggingKey?: string | null;
+  /** The chip released on the last pointer-up, and how. See `useDragReschedule`. */
+  settle?: DragSettle | null;
   onDragStart?: (entry: CalendarEntry, event: ReactPointerEvent<Element>) => void;
   label: string;
   /** Days with nothing on them are dropped once the list gets long. */
@@ -44,6 +47,7 @@ export function CalendarAgenda({
   onPickUp,
   proposal = null,
   draggingKey = null,
+  settle = null,
   onDragStart,
   label,
   hideEmptyDays = false,
@@ -84,6 +88,9 @@ export function CalendarAgenda({
             className={cn(
               'border-border-subtle border-b last:border-b-0',
               isTarget && 'outline-accent outline-2 outline-offset-[-2px] outline-dashed',
+              // Same fill the grid and the month draw while a pointer is
+              // carrying a post over this day.
+              isTarget && draggingKey !== null && 'bg-accent-subtle',
             )}
           >
             <h3 className="flex items-baseline gap-2 px-4 py-2 md:px-6">
@@ -102,6 +109,8 @@ export function CalendarAgenda({
                       href={hrefForEntry(entry)}
                       grabbed={grabbedKey === entryKey(entry)}
                       dragging={draggingKey === entryKey(entry)}
+                      settleKind={settle?.key === entryKey(entry) ? settle.kind : null}
+                      settleId={settle?.key === entryKey(entry) ? settle.id : null}
                       onPickUp={onPickUp}
                       {...(onDragStart ? { onDragStart } : {})}
                     />

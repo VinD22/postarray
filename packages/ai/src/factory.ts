@@ -1,10 +1,11 @@
 import type { RelayConfig } from '@relay/config';
 
-import { createBudgetGuard, DEFAULT_BUDGET_LIMITS } from './budget';
+import { createBudgetGuard, DEFAULT_BUDGET_LIMITS, pricingForModel } from './budget';
 import type { AiBudgetGuard, AiBudgetLimits, TokenPricing } from './budget';
 import { systemClock } from './clock';
 import type { Clock } from './clock';
 import { createAiGateway } from './gateway';
+import { createAnthropicProvider } from './providers/anthropic';
 import { createDeepSeekProvider } from './providers/deepseek';
 import { createDisabledProvider } from './providers/disabled';
 import { createEchoProvider } from './providers/echo';
@@ -22,8 +23,20 @@ import type { AiCounterStore, AiGateway, AiLogger, AiProviderAdapter } from './t
  *    "assistance is not configured" instead of pretending or failing.
  */
 
-export interface AiGatewayFactoryOptions {
+/**
+ * What choosing an adapter actually depends on. Narrower than the gateway's
+ * options on purpose: provider selection reads configuration and nothing else,
+ * so it stays callable — and testable — without standing up a logger.
+ */
+export interface AiProviderSelectionOptions {
   readonly config: RelayConfig;
+  /** Force the deterministic offline provider. */
+  readonly offline?: boolean;
+  /** Injected in tests so no call can reach the network. */
+  readonly fetchImpl?: typeof globalThis.fetch;
+}
+
+export interface AiGatewayFactoryOptions extends AiProviderSelectionOptions {
   readonly logger: AiLogger;
   readonly clock?: Clock;
   /** Redis-backed in production. Falls back to in-process counters. */
@@ -31,30 +44,39 @@ export interface AiGatewayFactoryOptions {
   readonly budget?: AiBudgetGuard;
   readonly limits?: AiBudgetLimits;
   readonly pricing?: TokenPricing;
-  /** Force the deterministic offline provider. */
-  readonly offline?: boolean;
-  /** Injected in tests so no call can reach the network. */
-  readonly fetchImpl?: typeof globalThis.fetch;
 }
 
-export function selectProvider(options: AiGatewayFactoryOptions): AiProviderAdapter {
-  const { deepseek } = options.config.ai;
+export function selectProvider(options: AiProviderSelectionOptions): AiProviderAdapter {
+  const { provider, anthropic, deepseek } = options.config.ai;
+  // DeepSeek stays the default, and the enum default in `@relay/config` is what
+  // makes that true. Flipping providers is `AI_PROVIDER=anthropic` plus a key,
+  // never an edit here. Which one should be the default in the end is a
+  // question for the evals harness in `./evals`, once the digest fixtures exist.
+  const selected = provider === 'anthropic' ? anthropic : deepseek;
   if (options.offline === true) {
-    return createEchoProvider({ model: `${deepseek.model}-offline-echo` });
+    return createEchoProvider({ model: `${selected.model}-offline-echo` });
   }
-  if (deepseek.apiKey !== undefined && deepseek.apiKey.length > 0) {
-    return createDeepSeekProvider({
-      apiKey: deepseek.apiKey,
-      baseUrl: deepseek.baseUrl,
-      model: deepseek.model,
-      ...(options.fetchImpl === undefined ? {} : { fetchImpl: options.fetchImpl }),
-    });
+  if (selected.apiKey === undefined || selected.apiKey.length === 0) {
+    return createDisabledProvider(selected.model);
   }
-  return createDisabledProvider(deepseek.model);
+  const shared = {
+    apiKey: selected.apiKey,
+    baseUrl: selected.baseUrl,
+    model: selected.model,
+    ...(options.fetchImpl === undefined ? {} : { fetchImpl: options.fetchImpl }),
+  };
+  return provider === 'anthropic'
+    ? createAnthropicProvider(shared)
+    : createDeepSeekProvider(shared);
 }
 
 export function createAiGatewayFromConfig(options: AiGatewayFactoryOptions): AiGateway {
   const clock = options.clock ?? systemClock;
+  const provider = selectProvider(options);
+  // The budget guard prices the call it is about to allow, so the rate has to
+  // be the selected model's rate. A provider swap that kept DeepSeek's rate
+  // would let a Sonnet call step over the ceiling and apologise afterwards.
+  const pricing = options.pricing ?? pricingForModel(provider.model);
   const counters = options.counters ?? createMemoryCounterStore(() => clock.now().getTime());
   const budget =
     options.budget ??
@@ -65,10 +87,10 @@ export function createAiGatewayFromConfig(options: AiGatewayFactoryOptions): AiG
     });
 
   return createAiGateway({
-    provider: selectProvider(options),
+    provider,
     budget,
     logger: options.logger,
     clock,
-    ...(options.pricing === undefined ? {} : { pricing: options.pricing }),
+    pricing,
   });
 }

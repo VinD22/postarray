@@ -13,6 +13,13 @@
  * `Mod+s` sits directly on the composer's hottest path and this must add
  * nothing to the keystroke cost of typing — the global 1ms
  * `prefers-reduced-motion` override neutralizes the entrance for free.
+ *
+ * The entrance is retimed to `--duration-fast` here rather than in the
+ * keyframe, because the shared `.relay-toast-bounce` recipe is used by
+ * genuine overlay toasts where the expressive 400ms is right. This one is
+ * in-app chrome on the composer's hottest path, so it takes the app tier: the
+ * badge is confirming something that already finished, and a confirmation
+ * that is still arriving three frames later reads as latency.
  */
 
 import { useEffect, useRef, useState } from 'react';
@@ -62,7 +69,10 @@ export function SavedFlash({ visible }: { readonly visible: boolean }) {
       aria-live="polite"
       className="pointer-events-none fixed end-4 top-4 z-(--z-index-toast)"
     >
-      <Badge tone="accent" className="relay-toast-bounce shadow-raised">
+      <Badge
+        tone="accent"
+        className="relay-toast-bounce shadow-raised [animation-duration:var(--duration-fast)]"
+      >
         {t.full('composerWeb.savedFlash')}
       </Badge>
     </div>

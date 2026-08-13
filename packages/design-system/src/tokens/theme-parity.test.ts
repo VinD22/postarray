@@ -26,10 +26,7 @@ import { PROVIDER_KEYS, darkTheme, lightTheme, type ThemeName, type ThemeTokens 
  * a token present in only one of them silently splits those two audiences.
  */
 
-const THEME_CSS = readFileSync(
-  join(dirname(fileURLToPath(import.meta.url)), 'theme.css'),
-  'utf8',
-);
+const THEME_CSS = readFileSync(join(dirname(fileURLToPath(import.meta.url)), 'theme.css'), 'utf8');
 
 /** A `--custom-property: value` map, keyed without the leading dashes. */
 type Declarations = Map<string, string>;
@@ -80,6 +77,24 @@ const TOKEN_TO_CSS: Readonly<Record<string, string>> = {
   'accent.subtleBg': 'accent-subtle-bg',
   'accent.subtleBgHover': 'accent-subtle-bg-hover',
   'accent.onAccent': 'accent-on-accent',
+
+  // The two scene accents. Same six-token shape as `accent` above, which is
+  // exactly why they are spelled out the same way: `accentWarm.subtleBgHover`
+  // is `--accent-warm-subtle-bg-hover`, not a camel-to-kebab transform of the
+  // field name, and a wrong guess would compare a token to nothing.
+  'accentWarm.default': 'accent-warm-default',
+  'accentWarm.hover': 'accent-warm-hover',
+  'accentWarm.active': 'accent-warm-active',
+  'accentWarm.subtleBg': 'accent-warm-subtle-bg',
+  'accentWarm.subtleBgHover': 'accent-warm-subtle-bg-hover',
+  'accentWarm.onAccent': 'accent-warm-on-accent',
+
+  'accentCool.default': 'accent-cool-default',
+  'accentCool.hover': 'accent-cool-hover',
+  'accentCool.active': 'accent-cool-active',
+  'accentCool.subtleBg': 'accent-cool-subtle-bg',
+  'accentCool.subtleBgHover': 'accent-cool-subtle-bg-hover',
+  'accentCool.onAccent': 'accent-cool-on-accent',
 
   'cta.bg': 'cta-bg',
   'cta.bgHover': 'cta-bg-hover',
@@ -170,7 +185,10 @@ function collect(blocks: Map<string, Declarations>, stack: readonly string[], ra
   const existing = blocks.get(path) ?? new Map<string, string>();
   existing.set(
     declaration.slice(2, separator).trim(),
-    declaration.slice(separator + 1).trim().replace(/\s+/g, ' '),
+    declaration
+      .slice(separator + 1)
+      .trim()
+      .replace(/\s+/g, ' '),
   );
   blocks.set(path, existing);
 }
@@ -194,9 +212,7 @@ const PALETTE = mergeBlocks((path) => path === ':root');
 const LIGHT_BLOCK = mergeBlocks((path) => path === ":root, :root[data-theme='light']");
 
 /** Section 3, first copy: dark for people who never chose a theme. */
-const DARK_SYSTEM_BLOCK = mergeBlocks((path) =>
-  path.endsWith(":root:not([data-theme='light'])"),
-);
+const DARK_SYSTEM_BLOCK = mergeBlocks((path) => path.endsWith(":root:not([data-theme='light'])"));
 
 /** Section 3, second copy: dark for the explicit in-app toggle. */
 const DARK_EXPLICIT_BLOCK = mergeBlocks((path) => path === ":root[data-theme='dark']");

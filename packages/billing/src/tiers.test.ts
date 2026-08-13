@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import { BASE_PROJECT_LIMIT, MAX_PROJECT_LIMIT } from '@relay/contracts';
+import { BASE_PROJECT_LIMIT, MAX_CHANNEL_LIMIT, MAX_PROJECT_LIMIT } from '@relay/contracts';
 import { en } from '@relay/i18n';
 
 import { buildCheckoutDisclosure, resolveProductId } from './checkout';
@@ -17,11 +17,14 @@ import {
   SHARED_INCLUSION_KEYS,
   isPublishableTier,
   planTier,
+  productTiersFromProductIds,
+  tierChannelAllowance,
+  tierDecisionPending,
   tierForProductId,
   tierInclusionKeys,
   tierProjectAllowance,
 } from './tiers';
-import type { PlanTierKey } from './tiers';
+import type { PlanTier, PlanTierKey } from './tiers';
 
 const catalog = en as Readonly<Record<string, string>>;
 
@@ -32,6 +35,11 @@ const emptyConfig = {
   server: 'sandbox' as const,
   monthlyProductId: undefined,
   annualProductId: undefined,
+  growthMonthlyProductId: undefined,
+  growthAnnualProductId: undefined,
+  studioMonthlyProductId: undefined,
+  studioAnnualProductId: undefined,
+  productIdsByEnvKey: {},
   trialDays: 7,
 };
 
@@ -72,9 +80,87 @@ describe('the tier table', () => {
     }
   });
 
-  it('keeps two founder placeholder tiers as structure, not as products', () => {
-    expect(PUBLISHABLE_TIER_KEYS).toEqual([BASE_TIER_KEY]);
-    expect(PENDING_TIER_KEYS).toEqual(['relay_growth', 'relay_studio']);
+  it('prices Growth at $59 monthly, $612 annual, ten projects', () => {
+    const growth = planTier('relay_growth');
+    expect(growth.monthlyPriceMinor).toBe(5_900);
+    expect(growth.annualPriceMinor).toBe(61_200);
+    expect(growth.projectAllowance).toBe(10);
+    expect(growth.monthlyProductIdEnvKey).toBe('POLAR_GROWTH_MONTHLY_PRODUCT_ID');
+    expect(growth.annualProductIdEnvKey).toBe('POLAR_GROWTH_ANNUAL_PRODUCT_ID');
+  });
+
+  it('prices Studio at $119 monthly, $1,236 annual, twenty projects', () => {
+    const studio = planTier('relay_studio');
+    expect(studio.monthlyPriceMinor).toBe(11_900);
+    expect(studio.annualPriceMinor).toBe(123_600);
+    expect(studio.projectAllowance).toBe(20);
+    expect(studio.monthlyProductIdEnvKey).toBe('POLAR_STUDIO_MONTHLY_PRODUCT_ID');
+    expect(studio.annualProductIdEnvKey).toBe('POLAR_STUDIO_ANNUAL_PRODUCT_ID');
+  });
+
+  it('saturates the authorization ceiling at the largest tier, never claiming unlimited', () => {
+    expect(planTier('relay_studio').projectAllowance).toBe(MAX_PROJECT_LIMIT);
+  });
+
+  it('divides every annual price into twelve whole dollars', () => {
+    for (const key of PUBLISHABLE_TIER_KEYS) {
+      const tier = planTier(key);
+      expect(tier.annualPriceMinor % 1_200, key).toBe(0);
+    }
+  });
+
+  it('publishes all three tiers now that the founder has decided them', () => {
+    expect(PUBLISHABLE_TIER_KEYS).toEqual(['relay_standard', 'relay_growth', 'relay_studio']);
+    expect(PENDING_TIER_KEYS).toEqual([]);
+  });
+});
+
+/**
+ * Channels are derived from projects, not sold. This is what lets a ten and a
+ * twenty project tier exist without a per-channel price appearing anywhere.
+ */
+describe('the channel allowance a tier implies', () => {
+  it('derives five channels per project, pooled across the workspace', () => {
+    expect(tierChannelAllowance('relay_standard')).toBe(15);
+    expect(tierChannelAllowance('relay_growth')).toBe(50);
+    expect(tierChannelAllowance('relay_studio')).toBe(100);
+  });
+
+  it('never exceeds the authorization ceiling on any tier', () => {
+    for (const key of PLAN_TIER_KEYS) {
+      expect(tierChannelAllowance(key), key).toBeLessThanOrEqual(MAX_CHANNEL_LIMIT);
+    }
+  });
+
+  it('is not a field on the tier record, so it can never carry a price', () => {
+    for (const key of PLAN_TIER_KEYS) {
+      expect(Object.keys(PLAN_TIERS[key])).not.toContain('channelAllowance');
+    }
+  });
+});
+
+describe('the configured product id map', () => {
+  it('inverts the environment into a productId to tier mapping', () => {
+    const mapping = productTiersFromProductIds({
+      POLAR_MONTHLY_PRODUCT_ID: 'prod_std_m',
+      POLAR_ANNUAL_PRODUCT_ID: 'prod_std_y',
+      POLAR_GROWTH_MONTHLY_PRODUCT_ID: 'prod_gro_m',
+      POLAR_STUDIO_ANNUAL_PRODUCT_ID: 'prod_stu_y',
+    });
+    expect(mapping).toEqual({
+      prod_std_m: 'relay_standard',
+      prod_std_y: 'relay_standard',
+      prod_gro_m: 'relay_growth',
+      prod_stu_y: 'relay_studio',
+    });
+  });
+
+  it('ignores an absent or blank product id rather than mapping an empty key', () => {
+    const mapping = productTiersFromProductIds({
+      POLAR_MONTHLY_PRODUCT_ID: '',
+      POLAR_GROWTH_ANNUAL_PRODUCT_ID: undefined,
+    });
+    expect(mapping).toEqual({});
   });
 });
 
@@ -118,8 +204,54 @@ describe('every tier gets every feature', () => {
  * The sentinel guard. A tier that still carries a founder placeholder must be
  * impossible to price, impossible to present and impossible to buy. If a
  * placeholder is ever replaced by hand in only some of its fields, this fails.
+ *
+ * All three shipped tiers are decided, so the loops below are empty today. The
+ * synthetic cases keep the machinery itself proven, because the guard has to
+ * still work on the day a fourth tier is added as structure.
  */
 describe('a founder placeholder can never reach a customer', () => {
+  function syntheticTier(overrides: Partial<PlanTier>): PlanTier {
+    return { ...PLAN_TIERS[BASE_TIER_KEY], ...overrides };
+  }
+
+  it('refuses a tier whose numbers or product ids are still placeholders', () => {
+    expect(tierDecisionPending(PLAN_TIERS[BASE_TIER_KEY])).toBe(false);
+    expect(tierDecisionPending(syntheticTier({ projectAllowance: FOUNDER_DECISION_PENDING }))).toBe(
+      true,
+    );
+    expect(
+      tierDecisionPending(syntheticTier({ monthlyPriceMinor: FOUNDER_DECISION_PENDING })),
+    ).toBe(true);
+    expect(tierDecisionPending(syntheticTier({ annualPriceMinor: FOUNDER_DECISION_PENDING }))).toBe(
+      true,
+    );
+    expect(
+      tierDecisionPending(
+        syntheticTier({ monthlyProductIdEnvKey: FOUNDER_DECISION_PENDING_ENV_KEY }),
+      ),
+    ).toBe(true);
+    expect(
+      tierDecisionPending(
+        syntheticTier({ annualProductIdEnvKey: FOUNDER_DECISION_PENDING_ENV_KEY }),
+      ),
+    ).toBe(true);
+  });
+
+  it('refuses a half-replaced tier, not just a wholly pending one', () => {
+    // Prices decided, product ids forgotten. The dangerous half.
+    expect(
+      tierDecisionPending(
+        syntheticTier({
+          projectAllowance: 12,
+          monthlyPriceMinor: 7_900,
+          annualPriceMinor: 79_200,
+          monthlyProductIdEnvKey: FOUNDER_DECISION_PENDING_ENV_KEY,
+          annualProductIdEnvKey: FOUNDER_DECISION_PENDING_ENV_KEY,
+        }),
+      ),
+    ).toBe(true);
+  });
+
   function pendingFields(key: PlanTierKey): readonly string[] {
     const tier = PLAN_TIERS[key];
     return Object.entries(tier)
@@ -204,5 +336,13 @@ describe('mapping a Polar product to a tier', () => {
 
   it('honours a configured mapping to a publishable tier', () => {
     expect(tierForProductId('prod_base', { prod_base: BASE_TIER_KEY })).toBe(BASE_TIER_KEY);
+    expect(tierForProductId('prod_gro', { prod_gro: 'relay_growth' })).toBe('relay_growth');
+    expect(tierForProductId('prod_stu', { prod_stu: 'relay_studio' })).toBe('relay_studio');
+  });
+
+  it('grants the capacity the mapped tier sells, projects and channels alike', () => {
+    const growth = tierForProductId('prod_gro', { prod_gro: 'relay_growth' });
+    expect(tierProjectAllowance(growth)).toBe(10);
+    expect(tierChannelAllowance(growth)).toBe(50);
   });
 });

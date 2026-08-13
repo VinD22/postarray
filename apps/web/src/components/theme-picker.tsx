@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, type ReactNode } from 'react';
-import { Monitor, Moon, Sun } from 'lucide-react';
+import { Moon, Sun } from 'lucide-react';
 
 import { useTheme, type ThemePreference } from '@relay/design-system/hooks';
 import {
@@ -23,13 +23,12 @@ const LABEL_KEYS = {
 } as const;
 
 function PreferenceIcon({ preference }: { readonly preference: ThemePreference }): ReactNode {
-  if (preference === 'light') return <Sun aria-hidden="true" className="size-4 shrink-0" />;
   if (preference === 'dark') return <Moon aria-hidden="true" className="size-4 shrink-0" />;
-  return <Monitor aria-hidden="true" className="size-4 shrink-0" />;
+  return <Sun aria-hidden="true" className="size-4 shrink-0" />;
 }
 
 /**
- * The public, three-way light / dark / system control.
+ * The public light / dark control.
  *
  * It is the same mechanism as the signed-in account menu: one `useTheme` hook,
  * one storage key, one pre-paint bootstrap script in the root layout. Nothing
@@ -37,12 +36,15 @@ function PreferenceIcon({ preference }: { readonly preference: ThemePreference }
  * flash of the wrong theme, because the bootstrap has already stamped
  * `data-theme` on the document before this component exists.
  *
- * The choice stays three-way rather than a binary toggle so that "match my
- * system" remains reachable. A toggle cannot express it.
+ * There are two options, not three. A "match my system" option was removed
+ * deliberately: both themes are designed rather than inverted, so the choice a
+ * reader makes here is between two finished designs, and an option that
+ * silently changes which one they are looking at is a worse answer than
+ * either. This comment used to describe a three-way control, which the menu it
+ * documents has not been for some time.
  *
- * The trigger renders the neutral system state on the server, because the
- * server cannot know a per-visitor preference. The stored preference arrives in
- * the provider's layout effect, before the browser paints the hydrated tree.
+ * It is still a menu rather than a toggle so the current value is named in
+ * words for a screen reader rather than implied by an icon.
  */
 export function ThemePicker(): ReactNode {
   const t = useTranslations();

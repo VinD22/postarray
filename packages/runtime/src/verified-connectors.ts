@@ -46,8 +46,8 @@ interface OAuthUrlInput {
  */
 function builtInVerifiedProviders(config: RelayConfig): readonly BuiltInProvider[] {
   const builtIn = new Set<string>(BUILT_IN_PROVIDERS);
-  return verifiedConnectorsForEnvironment(config).filter(
-    (provider): provider is BuiltInProvider => builtIn.has(provider),
+  return verifiedConnectorsForEnvironment(config).filter((provider): provider is BuiltInProvider =>
+    builtIn.has(provider),
   );
 }
 
@@ -60,7 +60,7 @@ function assertOAuthInput(input: OAuthUrlInput): void {
   }
 }
 
-function oauthClientId(config: RelayConfig, provider: ProviderId): string | undefined {
+export function oauthClientId(config: RelayConfig, provider: ProviderId): string | undefined {
   switch (provider) {
     case 'x':
       return config.providers.x.clientId;
@@ -86,6 +86,50 @@ function oauthClientId(config: RelayConfig, provider: ProviderId): string | unde
       return config.providers.pinterest.clientId;
     case 'slack':
       return config.providers.slack.clientId;
+    case 'bluesky':
+    case 'telegram':
+    case 'devto':
+    case 'discord':
+    case 'fake':
+      return undefined;
+  }
+}
+
+/**
+ * The confidential half of the same client. It is read only by the OAuth
+ * provider resolver, which hands it to the token endpoint inside a
+ * `SecretValue`; nothing else in the runtime may see it.
+ *
+ * The switch is total over `ProviderId` on purpose. Adding a provider id then
+ * becomes a compile error here instead of a connector that silently resolves to
+ * "not configured" long after someone set its environment variables.
+ */
+export function oauthClientSecret(config: RelayConfig, provider: ProviderId): string | undefined {
+  switch (provider) {
+    case 'x':
+      return config.providers.x.clientSecret;
+    case 'linkedin':
+      return config.providers.linkedin.clientSecret;
+    case 'instagram':
+    case 'facebook':
+    case 'threads':
+      return config.providers.meta.appSecret;
+    case 'youtube':
+      return config.providers.google.clientSecret;
+    case 'tiktok':
+      return config.providers.tiktok.clientSecret;
+    case 'mastodon':
+      return config.providers.mastodon.clientSecret;
+    case 'reddit':
+      return config.providers.reddit.clientSecret;
+    case 'wordpress':
+      return config.providers.wordpress.clientSecret;
+    case 'medium':
+      return config.providers.medium.clientSecret;
+    case 'pinterest':
+      return config.providers.pinterest.clientSecret;
+    case 'slack':
+      return config.providers.slack.clientSecret;
     case 'bluesky':
     case 'telegram':
     case 'devto':
@@ -138,10 +182,11 @@ export function buildVerifiedOAuthAuthorizationUrl(input: OAuthUrlInput): {
  * includes the explicit definition-of-done allow-list. Credentials alone never
  * make a connector customer-visible.
  *
- * Capability execution remains deliberately unavailable here. It needs the
- * workspace-scoped credential resolver and the worker gateway, which will be
- * added with the first provider dossier. Keeping the method explicit prevents
- * the runtime from accidentally treating a registered adapter as publishable.
+ * Capability execution remains deliberately unavailable on this class. It needs
+ * a workspace-scoped credential resolver and an execution gateway, neither of
+ * which this object owns. `createComposedConnectorRegistry` wraps an instance
+ * of this class once both exist; until then `capabilitiesFor` fails closed, so
+ * a registered adapter is never mistaken for a publishable one.
  */
 export class VerifiedConnectorRegistry implements ApplicationConnectorRegistry {
   readonly #registry: ReturnType<typeof createConnectorRegistry>;
@@ -277,7 +322,7 @@ export class VerifiedConnectorRegistry implements ApplicationConnectorRegistry {
   }
 }
 
-function connectorLogger(logger: Logger): ConnectorLogger {
+export function connectorLogger(logger: Logger): ConnectorLogger {
   return {
     debug(fields, message): void {
       logger.debug(fields, message);

@@ -19,14 +19,19 @@ source first.
 
 1. **Project capacity tiers.** A tier buys active project capacity and nothing else. No feature tiers,
    no per-seat price, no per-channel price, no free forever plan, no lifetime deal.
-2. The base tier, `relay_standard`, is **$29 per month** or **$300 per year**, which is **$25 per month
-   billed annually, save $48 per year** (13.8%). Never say "20% off": it is not true for these prices.
-   It includes **3 active projects**. Two higher tiers (`relay_growth`, `relay_studio`) exist as
-   structure only: every number on them is a founder placeholder, they are excluded from every pricing
-   surface and from checkout, and `packages/billing/src/tiers.test.ts` fails if one leaks.
-3. **Every tier gets every feature.** Both intervals and every tier unlock every shipped feature,
-   **10 active channels** and **6 workspace members** (owner plus 5). There is exactly one inclusion
+2. Three tiers, one axis. `relay_standard` is **$29 per month** or **$300 per year**, which is **$25 per
+   month billed annually, save $48 per year** (13.8%); **3 active projects**. `relay_growth` is **$59**
+   or **$612** ("$51 a month billed annually. Save $96 a year."); **10 active projects**.
+   `relay_studio` is **$119** or **$1,236** ("$103 a month billed annually. Save $192 a year."); **20
+   active projects**, which is `MAX_PROJECT_LIMIT` exactly, so we never claim "unlimited". Never say
+   "20% off": it is not true for any of these prices. Savings are always stated in whole dollars.
+3. **Every tier gets every feature.** Both intervals and every tier unlock every shipped feature and
+   **6 workspace members** (owner plus 5) on every tier, permanently. There is exactly one inclusion
    list in `packages/billing/src/tiers.ts`, and a test asserts no tier carries a different one.
+   Channel capacity is the one thing that scales with the tier, and it is **derived** from the project
+   allowance rather than sold: five active channels per active project, pooled across the workspace.
+   Standard 15, Growth 50, Studio 100. See section 2.2 for why that is inside the rule and not an
+   exception to it.
 4. Both intervals start with a **seven-day trial** through Polar: payment method collected, **$0 due
    today**, exact conversion date and amount shown before confirming, Polar's pre-conversion reminder,
    self-service cancellation.
@@ -56,18 +61,35 @@ Create in the Polar sandbox first, then production. Record the IDs in the enviro
 | --- | --- | --- | --- | --- | --- | --- |
 | Relay Monthly | `relay_standard` | Recurring subscription | $29.00 USD | month | 7 days | `POLAR_MONTHLY_PRODUCT_ID` |
 | Relay Annual | `relay_standard` | Recurring subscription | $300.00 USD | year | 7 days | `POLAR_ANNUAL_PRODUCT_ID` |
+| Relay Growth Monthly | `relay_growth` | Recurring subscription | $59.00 USD | month | 7 days | `POLAR_GROWTH_MONTHLY_PRODUCT_ID` |
+| Relay Growth Annual | `relay_growth` | Recurring subscription | $612.00 USD | year | 7 days | `POLAR_GROWTH_ANNUAL_PRODUCT_ID` |
+| Relay Studio Monthly | `relay_studio` | Recurring subscription | $119.00 USD | month | 7 days | `POLAR_STUDIO_MONTHLY_PRODUCT_ID` |
+| Relay Studio Annual | `relay_studio` | Recurring subscription | $1,236.00 USD | year | 7 days | `POLAR_STUDIO_ANNUAL_PRODUCT_ID` |
 | X API usage | n/a | Usage-based meter | pass-through, see section 8 | monthly in arrears | n/a | `POLAR_X_USAGE_METER_ID` |
+
+Every annual price divides into twelve whole dollars, so the "per month, billed annually" framing
+is an exact statement of what we charge rather than a rounded one. `tier-presentation.ts` suppresses
+the framing outright when it is not exact, and `copy-compliance.test.ts` asserts the arithmetic on
+every published tier.
+
+**These six products do not exist yet.** Creating them in the Polar sandbox and then in production is
+an owner and ops action. Until the four new ids are set, checkout for Growth and Studio fails closed:
+`resolveProductId` throws naming the missing variable, rather than falling back to the base product,
+because charging $29 for a twenty-project allowance would be worse than not selling at all. The base
+tier is unaffected and continues to sell.
 
 `POLAR_TRIAL_DAYS=7` is a config value that must match the Polar product configuration. A startup check
 fails loudly if the configured product's trial length does not equal `POLAR_TRIAL_DAYS`, because a
 mismatch would make our on-screen conversion date a lie.
 
-**Higher tiers have no Polar products yet, deliberately.** `relay_growth` and `relay_studio` carry the
-`FOUNDER_DECISION_PENDING` sentinel in every price, allowance and product-id field. Until the founder
-replaces all of them in one edit, the tiers are excluded from `PUBLISHABLE_TIER_KEYS`, cannot be
-presented and cannot be checked out; `resolveProductId` throws rather than falling back to the base
-product, because charging the base price for a larger allowance would be worse than not selling. The
-replacement procedure is documented at the top of `packages/billing/src/tiers.ts`.
+**The sentinel machinery outlives the sentinels.** `relay_growth` and `relay_studio` were structure
+only until 12 August 2026, carrying `FOUNDER_DECISION_PENDING` in every price, allowance and
+product-id field. They are now decided (section 13, B10 and B11), so all three tiers are in
+`PUBLISHABLE_TIER_KEYS`. The machinery stays: any future tier carrying a sentinel in any field is
+excluded from pricing, from presentation and from checkout, and `tiers.test.ts` proves that on a
+synthetic tier rather than passing vacuously now that the list is empty. The replacement procedure is
+documented at the top of `packages/billing/src/tiers.ts` and must be followed in full for the next
+tier, including this document's section 13.
 
 Beyond these there is no other product. In particular there is no image product, no video product, no
 credit pack and no seat add-on.
@@ -81,8 +103,32 @@ update to this document first.
 
 Tiers do not weaken this rule, they are bounded by it. A tier may differ from another tier in exactly one
 respect: the number of active projects it allows, up to the hard authorization ceiling of 20 in
-`packages/contracts/src/plan-limits.ts`. A tier that differs in feature access, seat count or channel
-count is the same violation under a new name.
+`packages/contracts/src/plan-limits.ts`. A tier that differs in feature access or seat count is the same
+violation under a new name.
+
+**Refined doctrine, 12 August 2026: capacity may scale with the one number we sell. Features may not.**
+
+Shipping a ten-project and a twenty-project tier forced this question, because a workspace capped at ten
+connections cannot run twenty projects, and the honest answer is not to start selling connections. So
+channel capacity is now **derived** rather than sold: `channelAllowanceForProjects` in
+`packages/contracts/src/plan-limits.ts` grants five active channels per active project, pooled across the
+whole workspace, floored at the ten a workspace holds with no entitlement at all and ceilinged at 100,
+which twenty projects reaches exactly. Standard 15, Growth 50, Studio 100.
+
+The distinction that keeps this inside the rule:
+
+- **Capacity** is how much of the same product you may run. It follows from projects by a published
+  formula, has no price of its own, appears in no product, and cannot be bought without buying projects.
+  There is deliberately no `channelAllowance` field on the tier record, so there is nowhere a per-channel
+  price could be written even by accident, and `tiers.test.ts` pins the record's field list to prove it.
+- **Features** are what the product can do. They never vary. `tierInclusionKeys` ignores its argument on
+  purpose and one shared inclusion list is asserted for every tier.
+
+Pooled rather than per project, because real projects are uneven: one client runs six accounts and the
+next runs one, and a per-project quota would refuse the sixth connection while five slots sat unused next
+door. A per-channel price, a per-seat price, a channel add-on and a channel overage charge all remain
+violations. So does scaling members by tier: the member limit is 6 on every tier, permanently, because a
+member limit that climbs with price is seat pricing with extra steps.
 
 ---
 
@@ -253,6 +299,23 @@ add a second one.
 access to every project it already has. Nothing is archived for it, ever. What it loses is the ability to
 create another active project or to unarchive one, until it is back inside the allowance. The message is
 `billing.downgrade.projectsOverAllowance` and it says so plainly.
+
+### 5.3.2 Channel capacity
+
+One verified subscription writes **two** numeric entitlement rows, never one: `projects.active.max` and
+`channels.active.max`. `buildAllowanceGrants` emits them together from the same tier, so a workspace can
+never hold a project allowance and a channel allowance that disagree about what was bought. Both are
+clamped against the ceilings in `@relay/contracts`, and both are sourced only from a verified webhook or
+from reconciliation. A checkout redirect writes neither, because a redirect is not evidence.
+
+The channel number is derived from the project number by the formula in section 2.2 and has no price of
+its own. A product id we cannot map resolves to the base tier's 15, never to the largest tier, and there
+is no unlimited outcome.
+
+**Downgrade never disconnects.** The rule is the project rule verbatim: a workspace above its channel
+allowance keeps every connection it has and keeps publishing through all of them. We never disconnect a
+channel to enforce an allowance. What it loses is the ability to connect another one, until it is back
+inside the allowance. The message is `billing.downgrade.overLimit` and it says so plainly.
 
 ### 5.4 Reconciliation
 
@@ -440,6 +503,14 @@ Every row is an assumption to be replaced with measured data by 20 December 2026
 Managed X API usage is excluded from these figures on both sides, because it is passed through at cost
 and is neither revenue nor margin.
 
+**The blended model is measured on `relay_standard` alone, on purpose.** Growth and Studio carry the same
+variable cost per subscriber at a higher price, so any mix that included them could only improve every
+figure in 10.2. Reporting the base tier keeps the margin gate a floor we can be held to rather than a
+number that quietly depends on a tier mix nobody has measured yet. Per-tier figures come from
+`tierEconomics` and are reported separately, the same way the referred cohort is, and the direction is
+one way: at 1,000 monthly subscribers Growth and Studio both clear the 75% gate that the base tier does
+not reach until roughly 670. Revisit this once the real tier mix is measured, not before.
+
 ### 10.2 Gross margin by scale
 
 Variable cost per subscriber per month: monthly plan $5.42, annual plan $4.74. The difference is the
@@ -590,6 +661,16 @@ Every row is an automated test unless marked manual. All run against the Polar s
 40. A workspace over its allowance keeps read and write access to every existing project, has nothing
     archived for it, and is refused only creation and unarchiving.
 41. A project allowance the service has not reported renders as "unavailable", never as 0.
+42. A verified subscription upsert writes `channels.active.max` as well, from the same tier and in the
+    same operation; a browser redirect writes neither row.
+43. The channel allowance equals five per active project, pooled at workspace level, never below 10 and
+    never above 100. It appears in no Polar product and carries no price of its own.
+44. A workspace over its channel allowance keeps every connection and keeps publishing through all of
+    them. Nothing is ever disconnected to enforce an allowance; only connecting another is refused.
+45. Checkout for a tier whose Polar product id is not configured throws naming the missing environment
+    variable. It never falls back to another tier's product.
+46. Every published tier's annual price divides into twelve whole dollars, and the per-month framing is
+    suppressed rather than rounded if a future tier's does not.
 
 ---
 
@@ -604,9 +685,9 @@ Every row is an automated test unless marked manual. All run against the Polar s
 | B5 | Affiliate commission rate and duration | Founder | 20 Nov 2026 | 20% for 12 months on net revenue. Revisit only with the cohort margin report in hand |
 | B6 | Non-USD pricing | Founder | 20 Dec 2026 | USD only in V1. Polar handles tax. Local pricing needs measured demand and a rounding policy first |
 | B7 | Discount codes and partner promotions | Founder | 20 Dec 2026 | None in V1. A code is a second price, and a second price is the beginning of tiers |
-| B8 | Whether a workspace can hold more than 10 channels for an extra fee | Founder | 20 Dec 2026 | No. 10 is the allowance on every tier. Revisit as a disclosed plan change, never as a hidden add-on and never as a per-channel price |
+| B8 | Whether a workspace can hold more than 10 channels for an extra fee | Founder | **closed 12 Aug 2026** | No, and the question has changed shape. Channels are no longer a flat 10: they are derived from the project allowance at five per project, pooled across the workspace (section 2.2). There is still no fee, no add-on and no per-channel price. 10 survives only as the floor a workspace holds with no entitlement |
 | B9 | Annual-to-monthly downgrade proration policy | Finance/Ops | 6 Nov 2026 | Credit the unused portion to the Polar balance, apply to future invoices, no cash refund except where law requires it |
-| B10 | Project allowance and price for `relay_growth` | Founder | **outstanding** | Not decided. The tier is structure only until the founder sets `projectAllowance`, `monthlyPriceMinor`, `annualPriceMinor` and both Polar product ids in one edit to `packages/billing/src/tiers.ts` |
-| B11 | Project allowance and price for `relay_studio` | Founder | **outstanding** | Not decided. Same replacement procedure as B10. The allowance may not exceed 20 |
+| B10 | Project allowance and price for `relay_growth` | Founder | **closed 12 Aug 2026** | Decided. 10 active projects, $59.00 monthly, $612.00 annual, env keys `POLAR_GROWTH_MONTHLY_PRODUCT_ID` and `POLAR_GROWTH_ANNUAL_PRODUCT_ID`. Annual framing: "$51 a month billed annually. Save $96 a year." |
+| B11 | Project allowance and price for `relay_studio` | Founder | **closed 12 Aug 2026** | Decided. 20 active projects, $119.00 monthly, $1,236.00 annual, env keys `POLAR_STUDIO_MONTHLY_PRODUCT_ID` and `POLAR_STUDIO_ANNUAL_PRODUCT_ID`. Annual framing: "$103 a month billed annually. Save $192 a year." 20 equals `MAX_PROJECT_LIMIT`, so the largest tier saturates the ceiling the database already enforces and no surface ever claims "unlimited" |
 | B12 | Whether a mid-cycle tier change prorates or applies at renewal | Founder with Finance/Ops | **outstanding** | Not decided. Whatever is chosen, the confirmation must state the proration outcome, the next charge date and the next amount before the customer confirms, exactly as the interval change does today |
 | B13 | Whether the higher tiers are named Growth and Studio in public copy | Founder | **outstanding** | Placeholder names. They live in `billing.tier.*` catalog keys, so renaming is a catalog edit |

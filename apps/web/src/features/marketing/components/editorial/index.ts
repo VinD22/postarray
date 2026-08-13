@@ -40,18 +40,10 @@
  * and the directory goes when those two files are migrated.
  */
 export { EditorialCard, type EditorialCardProps, type EditorialCardTone } from './card';
-export {
-  EditorialSection,
-  type EditorialSectionProps,
-  type EditorialSectionTone,
-} from './section';
+export { EditorialSection, type EditorialSectionProps, type EditorialSectionTone } from './section';
 export { ClosingCta, type ClosingCtaProps } from './closing-cta';
 export { Eyebrow, type EyebrowProps, type EyebrowTone } from './eyebrow';
-export {
-  EditorialDisplay,
-  type EditorialDisplayProps,
-  type EditorialDisplaySize,
-} from './display';
+export { EditorialDisplay, type EditorialDisplayProps, type EditorialDisplaySize } from './display';
 export { LineMaskHeadline, type LineMaskHeadlineProps } from './line-mask-headline';
 export { EditorialBigNumber, type EditorialBigNumberProps } from './big-number';
 export {
@@ -67,10 +59,7 @@ export {
   type EditorialPricePlanBlockProps,
   type BillingInterval,
 } from './price-toggle';
-export {
-  EditorialPlatformCycler,
-  type EditorialPlatformCyclerProps,
-} from './platform-cycler';
+export { EditorialPlatformCycler, type EditorialPlatformCyclerProps } from './platform-cycler';
 export { ProviderGrid, type ProviderGridProps } from './provider-grid';
 export {
   EditorialVariantScene,
@@ -78,3 +67,4 @@ export {
   type EditorialVariantRow,
 } from './variant-scene';
 export { EditorialPricePair, type EditorialPricePairProps } from './price-pair';
+export { TierGrid, type TierGridProps, type TierGridColumn } from './tier-grid';

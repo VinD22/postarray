@@ -14,13 +14,20 @@
  * post rather than hiding it.
  */
 
-import { useMemo, type PointerEvent as ReactPointerEvent, type ReactNode } from 'react';
+import { useMemo, useRef, type PointerEvent as ReactPointerEvent, type ReactNode } from 'react';
 import { cn } from '@relay/design-system';
 import { useTranslations } from '@relay/i18n/react';
 import { EntryChip } from './entry-chip';
 import { useCalendarFormat } from './format';
 import { entryKey, sortEntries } from './filters';
 import { fromWallClock, isSameDay, toWallClock } from './date-range';
+import {
+  TODAY_CELL_ATTRIBUTE,
+  WEEK_CELL_ATTRIBUTE,
+  useTodayPulse,
+  useWeekFill,
+} from './mount-motion';
+import type { DragSettle } from './use-drag-reschedule';
 import type { CalendarEntry, CalendarRange, RescheduleProposal } from './types';
 
 const DEFAULT_FIRST_HOUR = 8;
@@ -41,6 +48,8 @@ export interface CalendarGridProps {
   proposal?: RescheduleProposal | null;
   /** The entry the pointer is currently dragging, if any. */
   draggingKey?: string | null;
+  /** The chip released on the last pointer-up, and how. See `useDragReschedule`. */
+  settle?: DragSettle | null;
   /** Pointer drag start, raised by the chip's Move handle. */
   onDragStart?: (entry: CalendarEntry, event: ReactPointerEvent<Element>) => void;
   /** Accessible name for the grid region. */
@@ -61,12 +70,17 @@ export function CalendarGrid({
   onPickUp,
   proposal = null,
   draggingKey = null,
+  settle = null,
   onDragStart,
   label,
 }: CalendarGridProps): ReactNode {
   const t = useTranslations();
   const format = useCalendarFormat();
+  const scope = useRef<HTMLElement>(null);
   const days = range.days;
+
+  useWeekFill(scope);
+  useTodayPulse(scope);
 
   // The proposed landing slot for an active keyboard move, if any. Computed
   // once per render rather than per cell.
@@ -106,7 +120,7 @@ export function CalendarGrid({
   };
 
   return (
-    <section aria-label={label} className="relay-scrollbar overflow-x-auto">
+    <section ref={scope} aria-label={label} className="relay-scrollbar overflow-x-auto">
       <div className="min-w-[44rem]">
         {/* Day headings. A sticky row so the columns stay identifiable. */}
         <div
@@ -154,6 +168,13 @@ export function CalendarGrid({
                       // only thing that should change as the arrow keys step
                       // through slots, and it should snap, not animate.
                       isTarget && 'outline-accent outline-2 outline-offset-[-2px] outline-dashed',
+                      // While a pointer is carrying a post, the slot it is
+                      // over also fills, so the landing place is readable
+                      // without looking for a 2px outline under the cursor.
+                      // Driven by the drag state the hook already keeps, not
+                      // by a hover listener: the keyboard path sets exactly
+                      // the same proposal and therefore keeps the outline.
+                      isTarget && draggingKey !== null && 'bg-accent-subtle',
                     )}
                   >
                     {cell.length === 0 ? (
@@ -171,6 +192,8 @@ export function CalendarGrid({
                           href={hrefForEntry(entry)}
                           grabbed={grabbedKey === entryKey(entry)}
                           dragging={draggingKey === entryKey(entry)}
+                          settleKind={settle?.key === entryKey(entry) ? settle.kind : null}
+                          settleId={settle?.key === entryKey(entry) ? settle.id : null}
                           onPickUp={onPickUp}
                           {...(onDragStart ? { onDragStart } : {})}
                         />
@@ -192,6 +215,7 @@ function DayHeading({ day, timeZone }: { day: Date; timeZone: string }): ReactNo
   const today = isSameDay(day, new Date(), timeZone);
   return (
     <h3
+      {...{ [WEEK_CELL_ATTRIBUTE]: '' }}
       className={cn(
         'flex items-baseline gap-1.5 px-2 py-2',
         today ? 'text-text-primary' : 'text-text-secondary',
@@ -199,8 +223,9 @@ function DayHeading({ day, timeZone }: { day: Date; timeZone: string }): ReactNo
     >
       <span className="text-label">{format.weekdayShort(day)}</span>
       <span
+        {...(today ? { [TODAY_CELL_ATTRIBUTE]: '' } : {})}
         className={cn(
-          'text-body-md tabular-nums',
+          'text-body-md inline-block tabular-nums',
           today && 'bg-accent-subtle text-text-accent rounded-sm px-1.5 font-semibold',
         )}
       >

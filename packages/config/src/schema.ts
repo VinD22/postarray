@@ -131,7 +131,12 @@ const nonNegativeNumber = z.coerce.number().nonnegative();
 export const NODE_ENVIRONMENTS = ['development', 'test', 'production'] as const;
 export const LOG_LEVELS = ['trace', 'debug', 'info', 'warn', 'error', 'fatal', 'silent'] as const;
 export const POLAR_SERVERS = ['sandbox', 'production'] as const;
-export const AI_PROVIDERS = ['deepseek'] as const;
+/**
+ * DeepSeek stays first because it is the default. Which provider a deployment
+ * runs is a configuration decision, not a code change: `@relay/ai` has one
+ * adapter file per entry here and selects between them on this value.
+ */
+export const AI_PROVIDERS = ['deepseek', 'anthropic'] as const;
 
 export type NodeEnvironment = (typeof NODE_ENVIRONMENTS)[number];
 export type LogLevel = (typeof LOG_LEVELS)[number];
@@ -188,6 +193,15 @@ const polarShape = {
   POLAR_SERVER: z.enum(POLAR_SERVERS).default('sandbox'),
   POLAR_MONTHLY_PRODUCT_ID: identifier.optional(),
   POLAR_ANNUAL_PRODUCT_ID: identifier.optional(),
+  /**
+   * The larger project-capacity tiers. Optional: a deployment that sells the
+   * base tier alone is a complete deployment, not a degraded one. The tier
+   * table in `@relay/billing` names these variables; ids never live in source.
+   */
+  POLAR_GROWTH_MONTHLY_PRODUCT_ID: identifier.optional(),
+  POLAR_GROWTH_ANNUAL_PRODUCT_ID: identifier.optional(),
+  POLAR_STUDIO_MONTHLY_PRODUCT_ID: identifier.optional(),
+  POLAR_STUDIO_ANNUAL_PRODUCT_ID: identifier.optional(),
   POLAR_TRIAL_DAYS: positiveInt.max(90).default(7),
 };
 
@@ -196,6 +210,9 @@ const aiShape = {
   DEEPSEEK_API_KEY: identifier.optional(),
   DEEPSEEK_BASE_URL: httpUrl.default('https://api.deepseek.com'),
   DEEPSEEK_MODEL: identifier.default('deepseek-v4-flash'),
+  ANTHROPIC_API_KEY: identifier.optional(),
+  ANTHROPIC_BASE_URL: httpUrl.default('https://api.anthropic.com'),
+  ANTHROPIC_MODEL: identifier.default('claude-sonnet-5'),
   AI_PROMPT_VERSION: isoDate.optional(),
   AI_REQUEST_TIMEOUT_MS: positiveInt.max(600_000).default(60_000),
   AI_MAX_MONTHLY_USD_PER_WORKSPACE: nonNegativeNumber.default(25),

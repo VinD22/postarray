@@ -1,6 +1,11 @@
 import { z } from 'zod';
 
-import { BASE_PROJECT_LIMIT, MAX_PROJECT_LIMIT, RelayError } from '@relay/contracts';
+import {
+  BASE_PROJECT_LIMIT,
+  MAX_PROJECT_LIMIT,
+  RelayError,
+  channelAllowanceForProjects,
+} from '@relay/contracts';
 
 import type { BillingInterval } from './intervals';
 import { BILLING_MESSAGE_KEYS } from './messages';
@@ -11,18 +16,25 @@ import { USD } from './money';
  *
  * The commercial model is project led, not account led. A tier buys **active
  * project capacity and nothing else**. Every tier unlocks every shipped
- * feature, every connector, every surface and the same channel and member
- * allowances. Feature gated variants, per seat prices and per channel prices
- * are named policy violations in
+ * feature, every connector, every surface and the same member allowance.
+ * Feature gated variants, per seat prices and per channel prices are named
+ * policy violations in
  * `docs/planning/08-billing-entitlements-and-economics.md` section 2.2, so the
  * tier record deliberately has no field they could be expressed in.
  *
+ * Channel capacity is not a field here either. It is **derived** from the
+ * project allowance by `channelAllowanceForProjects` in `@relay/contracts`, so
+ * there is still exactly one number a tier sells and still no place a per
+ * channel price could be written. Section 2.2 states the refined doctrine:
+ * capacity may scale with the one number we sell, features may not.
+ *
  * ## Replacing a founder placeholder
  *
- * `relay_growth` and `relay_studio` exist as structure, not as products. Every
- * number and product id on them is the `FOUNDER_DECISION_PENDING` sentinel, and
- * a tier carrying any sentinel is excluded from `PUBLISHABLE_TIER_KEYS`, from
- * every pricing presentation and from checkout. To ship one:
+ * All three tiers are decided as of 12 August 2026 (section 13, B10 and B11).
+ * The ritual below is kept because it is how the next tier ships, and because
+ * the sentinel machinery underneath it is still live: a tier carrying any
+ * `FOUNDER_DECISION_PENDING` value is excluded from `PUBLISHABLE_TIER_KEYS`,
+ * from every pricing presentation and from checkout. To ship one:
  *
  *  1. record the founder decision in
  *     `docs/planning/08-billing-entitlements-and-economics.md` section 13;
@@ -34,6 +46,10 @@ import { USD } from './money';
  *
  * `tiers.test.ts` fails if a half-replaced tier reaches customer facing copy or
  * a checkout, so a forgotten step cannot ship quietly.
+ *
+ * Annual prices are chosen so that `annualPriceMinor / 12` is a whole number of
+ * cents. `tier-presentation.ts` suppresses the per-month framing outright when
+ * it is not, rather than rounding into a price we would not charge.
  */
 
 export const PLAN_TIER_KEYS = ['relay_standard', 'relay_growth', 'relay_studio'] as const;
@@ -66,15 +82,6 @@ export interface PlanTier {
   readonly annualProductIdEnvKey: string;
 }
 
-const PENDING_TIER = {
-  projectAllowance: FOUNDER_DECISION_PENDING,
-  monthlyPriceMinor: FOUNDER_DECISION_PENDING,
-  annualPriceMinor: FOUNDER_DECISION_PENDING,
-  currency: USD,
-  monthlyProductIdEnvKey: FOUNDER_DECISION_PENDING_ENV_KEY,
-  annualProductIdEnvKey: FOUNDER_DECISION_PENDING_ENV_KEY,
-} as const;
-
 export const PLAN_TIERS: Readonly<Record<PlanTierKey, PlanTier>> = Object.freeze({
   relay_standard: Object.freeze({
     key: 'relay_standard',
@@ -89,18 +96,32 @@ export const PLAN_TIERS: Readonly<Record<PlanTierKey, PlanTier>> = Object.freeze
     annualProductIdEnvKey: 'POLAR_ANNUAL_PRODUCT_ID',
   }),
   relay_growth: Object.freeze({
-    ...PENDING_TIER,
     key: 'relay_growth',
     rank: 1,
+    projectAllowance: 10,
+    monthlyPriceMinor: 5_900,
+    // $612 a year is $51 a month exactly, and $96 less than twelve months at $59.
+    annualPriceMinor: 61_200,
+    currency: USD,
     nameKey: 'billing.tier.growth.name',
     taglineKey: 'billing.tier.growth.tagline',
+    monthlyProductIdEnvKey: 'POLAR_GROWTH_MONTHLY_PRODUCT_ID',
+    annualProductIdEnvKey: 'POLAR_GROWTH_ANNUAL_PRODUCT_ID',
   }),
   relay_studio: Object.freeze({
-    ...PENDING_TIER,
     key: 'relay_studio',
     rank: 2,
+    // Equal to MAX_PROJECT_LIMIT: the largest tier saturates the ceiling the
+    // database already enforces, so we never have to claim "unlimited".
+    projectAllowance: MAX_PROJECT_LIMIT,
+    monthlyPriceMinor: 11_900,
+    // $1,236 a year is $103 a month exactly, and $192 less than twelve at $119.
+    annualPriceMinor: 123_600,
+    currency: USD,
     nameKey: 'billing.tier.studio.name',
     taglineKey: 'billing.tier.studio.tagline',
+    monthlyProductIdEnvKey: 'POLAR_STUDIO_MONTHLY_PRODUCT_ID',
+    annualProductIdEnvKey: 'POLAR_STUDIO_ANNUAL_PRODUCT_ID',
   }),
 });
 
@@ -182,6 +203,44 @@ export function tierProjectAllowance(key: PlanTierKey): number {
     return BASE_PROJECT_LIMIT;
   }
   return Math.min(MAX_PROJECT_LIMIT, Math.max(1, Math.trunc(tier.projectAllowance)));
+}
+
+/**
+ * Active channels the tier grants, derived from its project allowance.
+ *
+ * Deliberately a function and not a field on `PlanTier`. A tier sells exactly
+ * one number; channel capacity follows from it, so there is nowhere a per
+ * channel price could be written even by accident. `tiers.test.ts` pins the
+ * field list of the tier record for exactly that reason.
+ */
+export function tierChannelAllowance(key: PlanTierKey): number {
+  return channelAllowanceForProjects(tierProjectAllowance(key));
+}
+
+/**
+ * Invert the configured product ids into the `productId -> tierKey` map that
+ * `tierForProductId` reads.
+ *
+ * The input is keyed by environment variable *name*, which is how
+ * `@relay/config` reports the ids it found. Tier names stay here rather than in
+ * the config package, which depends on nothing and must keep it that way. A
+ * tier still awaiting a founder decision is skipped, so a stale env var naming
+ * an undecided tier cannot grant its capacity.
+ */
+export function productTiersFromProductIds(
+  productIdsByEnvKey: Readonly<Record<string, string | undefined>>,
+): Readonly<Record<string, PlanTierKey>> {
+  const mapping: Record<string, PlanTierKey> = {};
+  for (const key of PUBLISHABLE_TIER_KEYS) {
+    const tier = PLAN_TIERS[key];
+    for (const envKey of [tier.monthlyProductIdEnvKey, tier.annualProductIdEnvKey]) {
+      const productId = productIdsByEnvKey[envKey];
+      if (productId !== undefined && productId.length > 0) {
+        mapping[productId] = key;
+      }
+    }
+  }
+  return Object.freeze(mapping);
 }
 
 /** The charge for one interval on a tier, in integer minor units. */

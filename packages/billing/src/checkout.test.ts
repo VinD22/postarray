@@ -26,6 +26,11 @@ const simulatorConfig: PolarConfig = {
   server: 'sandbox',
   monthlyProductId: undefined,
   annualProductId: undefined,
+  growthMonthlyProductId: undefined,
+  growthAnnualProductId: undefined,
+  studioMonthlyProductId: undefined,
+  studioAnnualProductId: undefined,
+  productIdsByEnvKey: {},
   trialDays: 7,
 };
 
@@ -179,15 +184,84 @@ describe('creating a checkout session', () => {
   });
 
   it('fails closed for a tier whose products are not configured', () => {
+    // No injected id, nothing in the environment and no simulator to fall back
+    // to. Selling the base product here would charge $29 for ten projects.
     expect(() =>
+      resolveProductId({
+        config: { ...simulatorConfig, accessToken: 'polar_at_example' },
+        interval: 'month',
+        tier: 'relay_growth',
+        allowSimulatorFallback: false,
+      }),
+    ).toThrow(RelayError);
+  });
+
+  it('names the missing variable rather than guessing a product', () => {
+    try {
+      resolveProductId({
+        config: { ...simulatorConfig, accessToken: 'polar_at_example' },
+        interval: 'year',
+        tier: 'relay_studio',
+        allowSimulatorFallback: false,
+      });
+      expect.unreachable('an unconfigured tier must throw');
+    } catch (error) {
+      expect(error).toBeInstanceOf(RelayError);
+      expect((error as RelayError).details).toMatchObject({
+        missingEnvVar: 'POLAR_STUDIO_ANNUAL_PRODUCT_ID',
+        tier: 'relay_studio',
+        interval: 'year',
+      });
+    }
+  });
+
+  it('reads a higher tier product id from the variable the tier names', () => {
+    expect(
+      resolveProductId({
+        config: {
+          ...simulatorConfig,
+          productIdsByEnvKey: { POLAR_GROWTH_MONTHLY_PRODUCT_ID: 'prod_growth_month' },
+        },
+        interval: 'month',
+        tier: 'relay_growth',
+        allowSimulatorFallback: false,
+      }),
+    ).toBe('prod_growth_month');
+  });
+
+  it('never lets one tier borrow another tier product id', () => {
+    expect(() =>
+      resolveProductId({
+        config: {
+          ...simulatorConfig,
+          accessToken: 'polar_at_example',
+          monthlyProductId: 'prod_standard_month',
+          productIdsByEnvKey: { POLAR_MONTHLY_PRODUCT_ID: 'prod_standard_month' },
+        },
+        interval: 'month',
+        tier: 'relay_studio',
+        allowSimulatorFallback: false,
+      }),
+    ).toThrow(RelayError);
+  });
+
+  it('checks out every tier locally through the simulator', () => {
+    expect(
       resolveProductId({
         config: simulatorConfig,
         interval: 'month',
         tier: 'relay_growth',
         allowSimulatorFallback: true,
-        tierProductIds: { 'relay_growth:month': 'prod_growth' },
       }),
-    ).toThrow(RelayError);
+    ).toBe('sim_prod_growth_monthly');
+    expect(
+      resolveProductId({
+        config: simulatorConfig,
+        interval: 'year',
+        tier: 'relay_studio',
+        allowSimulatorFallback: true,
+      }),
+    ).toBe('sim_prod_studio_annual');
   });
 });
 

@@ -144,6 +144,27 @@ export const webShellMessages = {
   'home.error.title': 'Home could not load',
   'home.error.body': 'Your workspace is intact. This is a problem reaching the Relay API.',
 
+  /* -- Home, second pass: the stat row and the weekly digest card --------
+     Every tile here is a count we can actually read. A tile whose read
+     failed says so with `common.unavailable`; it never falls back to zero,
+     because zero is a fact about the workspace and a failed read is not. */
+  'home.v2.tiles.label': 'This week, in three numbers',
+  'home.v2.tiles.scheduled': 'Scheduled this week',
+  'home.v2.tiles.scheduledHint': 'Posts with a time on them, from now to the end of the week.',
+  'home.v2.tiles.accounts': 'Connected accounts',
+  'home.v2.tiles.accountsHint':
+    '{attention, plural, =0 {All of them are working} one {# needs attention} other {# need attention}}.',
+  'home.v2.tiles.nextSlot': 'Next one out',
+  'home.v2.tiles.nextSlotHint': 'To {account}, in {timeZone}.',
+  'home.v2.tiles.nextSlotNone': 'Nothing queued',
+  'home.v2.tiles.nextSlotNoneHint': 'Give a draft a time and it will show up here.',
+  'home.v2.digest.title': 'This week',
+  'home.v2.digest.emptyTitle': 'Your first digest arrives after your first published week',
+  'home.v2.digest.emptyBody':
+    'It is written from your publication receipts and your own measurements, so there has to be a week of them first.',
+  'home.v2.digest.notBuilt':
+    'The weekly summary is still being built. Nothing is missing from your receipts in the meantime.',
+
   /* -- Auth: provider consent, alias sign in, honest failure ------------- */
   'auth.aside.title': 'Publish through official APIs and see exactly what happened.',
   'auth.aside.point.receipts':

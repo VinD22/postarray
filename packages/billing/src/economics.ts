@@ -2,6 +2,8 @@ import { AFFILIATE_TERMS } from './affiliate';
 import { MICRO_PER_UNIT, applyBasisPoints, unitsToMicro } from './money';
 import { ANNUAL_PRICE_MINOR, MONTHLY_PRICE_MINOR } from './products';
 import type { BillingInterval } from './products';
+import { BASE_TIER_KEY, PUBLISHABLE_TIER_KEYS, tierPriceMinor } from './tiers';
+import type { PlanTierKey } from './tiers';
 
 /**
  * The unit-economics model as code.
@@ -13,6 +15,14 @@ import type { BillingInterval } from './products';
  *
  * Managed X API usage is excluded from both sides: it is passed through at cost
  * and is neither revenue nor margin.
+ *
+ * **The blended model is pinned to the base tier on purpose.** Growth and
+ * Studio carry the same variable cost per subscriber at a higher price, so a
+ * mix that included them could only improve every figure below. Reporting the
+ * base tier alone keeps `MARGIN_GATE_SUBSCRIBERS` a floor we can be held to
+ * rather than a number that quietly depends on an unmeasured tier mix. Per-tier
+ * figures are available from `tierEconomics` and are reported separately, the
+ * same way the referred cohort is.
  */
 
 export interface EconomicsAssumptions {
@@ -149,6 +159,73 @@ export function planEconomics(
     marginBasisPoints: marginBasisPoints(revenueMicroPerMonth, grossProfitMicroPerMonth),
   };
 }
+
+export interface TierEconomics extends PlanEconomics {
+  readonly tierKey: PlanTierKey;
+}
+
+/**
+ * One tier on one interval at a given scale.
+ *
+ * The cost side is identical to the base tier's by construction: a larger tier
+ * buys project capacity, and capacity costs us storage and a little more
+ * support, not a different cost model. Treating the costs as equal therefore
+ * understates the larger tiers' margin slightly, which is the direction an
+ * assumption should err in.
+ */
+export function tierEconomics(
+  tierKey: PlanTierKey,
+  interval: BillingInterval,
+  subscribers: number,
+  assumptions: EconomicsAssumptions = DOCUMENTED_ASSUMPTIONS,
+): TierEconomics {
+  const base = planEconomics(interval, subscribers, assumptions);
+  const months = monthsPerCharge(interval);
+  const chargeMicro = tierPriceMinor(tierKey, interval) * (MICRO_PER_UNIT / 100);
+  const revenueMicroPerMonth = Math.round(chargeMicro / months);
+
+  const polarFeePerCharge =
+    applyBasisPoints(chargeMicro, assumptions.polarFeeBasisPoints) + assumptions.polarFeeFlatMicro;
+  const cardFeePerCharge = applyBasisPoints(
+    chargeMicro,
+    assumptions.internationalCardFeeBasisPoints,
+  );
+  const polarFeeMicroPerMonth = Math.round(polarFeePerCharge / months);
+  const cardFeeMicroPerMonth = Math.round(cardFeePerCharge / months);
+
+  const variableCostMicroPerMonth =
+    base.variableCostMicroPerMonth -
+    base.polarFeeMicroPerMonth -
+    base.cardFeeMicroPerMonth +
+    polarFeeMicroPerMonth +
+    cardFeeMicroPerMonth;
+
+  const grossProfitMicroPerMonth =
+    revenueMicroPerMonth - variableCostMicroPerMonth - base.fixedCostMicroPerMonth;
+
+  return {
+    ...base,
+    tierKey,
+    revenueMicroPerMonth,
+    polarFeeMicroPerMonth,
+    cardFeeMicroPerMonth,
+    variableCostMicroPerMonth,
+    grossProfitMicroPerMonth,
+    marginBasisPoints: marginBasisPoints(revenueMicroPerMonth, grossProfitMicroPerMonth),
+  };
+}
+
+/** Every published tier on one interval, cheapest first. */
+export function tierMarginTable(
+  interval: BillingInterval,
+  subscribers: number,
+  assumptions: EconomicsAssumptions = DOCUMENTED_ASSUMPTIONS,
+): readonly TierEconomics[] {
+  return PUBLISHABLE_TIER_KEYS.map((key) => tierEconomics(key, interval, subscribers, assumptions));
+}
+
+/** The tier the blended model is measured on. Everything above it is upside. */
+export const BLENDED_MODEL_TIER: PlanTierKey = BASE_TIER_KEY;
 
 export interface BlendedEconomics {
   readonly subscribers: number;

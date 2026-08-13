@@ -50,6 +50,37 @@ export const ASSUMED_PRICING: TokenPricing = Object.freeze({
   verifiedAt: '2026-08-04',
 });
 
+/**
+ * Anthropic's published list price for `claude-sonnet-5`: 3 USD per million
+ * input tokens and 15 USD per million output tokens, which is 3 and 15 micros
+ * per token. Recorded from the provider adapter's specification rather than
+ * read from a live price list, so it carries the same "assumption" status as
+ * every other entry here.
+ */
+export const ANTHROPIC_SONNET_PRICING: TokenPricing = Object.freeze({
+  inputMicrosPerToken: 3,
+  outputMicrosPerToken: 15,
+  source: 'anthropic list price for claude-sonnet-5, recorded from configuration, unverified',
+  verifiedAt: '2026-08-12',
+});
+
+/**
+ * Per-model rates.
+ *
+ * Keyed by model rather than by provider because the price is a property of the
+ * model, and a deployment that pins a different model must not silently inherit
+ * another one's rate. An unknown model falls back to `ASSUMED_PRICING`, which
+ * is the conservative default the budget guard was written against.
+ */
+export const PRICING_BY_MODEL: Readonly<Record<string, TokenPricing>> = Object.freeze({
+  'deepseek-v4-flash': ASSUMED_PRICING,
+  'claude-sonnet-5': ANTHROPIC_SONNET_PRICING,
+});
+
+export function pricingForModel(model: string): TokenPricing {
+  return PRICING_BY_MODEL[model] ?? ASSUMED_PRICING;
+}
+
 /** Rough token estimate used only for pre-call budgeting, never for billing. */
 export function estimateTokens(text: string): number {
   return Math.ceil(text.length / 4);

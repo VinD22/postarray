@@ -37,6 +37,25 @@ export class MediaService {
     return this.services.media.finalizeUpload(ctx, mediaId);
   }
 
+  acceptDirectUpload(
+    ctx: ActorContext,
+    input: {
+      storageKey: string;
+      contentType: string;
+      checksumSha256: string;
+      bytes: Uint8Array;
+    },
+  ): Promise<{ byteSize: number }> {
+    return this.services.media.acceptDirectUpload(ctx, input);
+  }
+
+  readObjectForDownload(
+    ctx: ActorContext,
+    input: { storageKey: string },
+  ): Promise<{ bytes: Uint8Array; contentType: string }> {
+    return this.services.media.readObjectForDownload(ctx, input);
+  }
+
   importFromUrl(
     ctx: ActorContext,
     input: { url: string; brandId?: string | null },

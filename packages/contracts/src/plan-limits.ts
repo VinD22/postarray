@@ -1,4 +1,12 @@
-/** Commercial limits shared by billing, authorization and every surface. */
+/**
+ * Commercial limits shared by billing, authorization and every surface.
+ *
+ * `ACTIVE_CHANNEL_LIMIT` is the floor a workspace holds with **no** channel
+ * entitlement at all: an unsubscribed, unverified or unreadable state. It is
+ * not the ceiling and it is not what any tier grants. The number a subscribed
+ * workspace holds is derived from the one thing we sell, active projects, by
+ * `channelAllowanceForProjects`.
+ */
 export const ACTIVE_CHANNEL_LIMIT = 10;
 
 /**
@@ -22,6 +30,54 @@ export function normalizeProjectLimit(value: number | null | undefined): number 
     return BASE_PROJECT_LIMIT;
   }
   return Math.min(MAX_PROJECT_LIMIT, Math.max(1, Math.trunc(value)));
+}
+
+/**
+ * Channels a project is worth.
+ *
+ * Channel capacity is **derived, never sold**. A tier buys active projects and
+ * nothing else, so a per-channel price cannot exist; but a ten or twenty
+ * project tier that still capped the workspace at ten connections would be
+ * unusable, so the connection allowance scales with the one number we sell.
+ * Five is one account on each of the platform families a single project
+ * realistically runs at once.
+ */
+export const CHANNEL_ALLOWANCE_PER_PROJECT = 5;
+
+/** No commercial entitlement may hold more than this many active channels. */
+export const MAX_CHANNEL_LIMIT = 100;
+
+/** Numeric entitlement read by every surface that connects a channel. */
+export const CHANNEL_LIMIT_ENTITLEMENT_KEY = 'channels.active.max';
+
+/**
+ * The channel allowance a project allowance implies.
+ *
+ * Pooled at workspace level on purpose. Real projects are uneven: one client
+ * runs six accounts and the next runs one, and a per-project quota would refuse
+ * the sixth connection while five slots sat unused next door. The workspace
+ * holds one pool and spends it where the work is.
+ *
+ * Bounded below by the no-entitlement floor so a derived number can never be
+ * worse than having no subscription, and above by `MAX_CHANNEL_LIMIT`, which
+ * the twenty-project ceiling reaches exactly.
+ */
+export function channelAllowanceForProjects(projects: number): number {
+  const projectCount = Number.isFinite(projects) ? Math.trunc(projects) : 0;
+  const derived = projectCount * CHANNEL_ALLOWANCE_PER_PROJECT;
+  return Math.min(MAX_CHANNEL_LIMIT, Math.max(ACTIVE_CHANNEL_LIMIT, derived));
+}
+
+/**
+ * Missing or malformed entitlement data falls back to the no-entitlement floor.
+ * Mirrors `normalizeProjectLimit`: operator grants are bounded so a bad value
+ * cannot hand a workspace an unbounded connection budget.
+ */
+export function normalizeChannelLimit(value: number | null | undefined): number {
+  if (value === null || value === undefined || !Number.isFinite(value)) {
+    return ACTIVE_CHANNEL_LIMIT;
+  }
+  return Math.min(MAX_CHANNEL_LIMIT, Math.max(1, Math.trunc(value)));
 }
 
 /** One workspace owner plus five invited teammates. */

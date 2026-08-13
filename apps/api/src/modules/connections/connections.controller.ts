@@ -45,6 +45,7 @@ import { parseBody, parseParams, parseQuery } from '../../common/zod';
 import {
   beginOAuthSchema,
   callbackParamsSchema,
+  connectWithProviderSecretSchema,
   listConnectionsQuerySchema,
   listDestinationsQuerySchema,
   oauthCallbackQuerySchema,
@@ -241,6 +242,35 @@ export class ConnectionsController {
       provider,
       transactionId,
     });
+  }
+
+  /**
+   * Connect a provider whose official credential is a secret, not a redirect.
+   *
+   * Bluesky documents a revocable app password for programmatic clients, so
+   * there is no authorization URL to visit and no callback to protect with a
+   * `state` cookie. Everything else is the OAuth path: this returns a
+   * transaction id, and the browser finishes at `oauth/pending/:transactionId`
+   * and `oauth/claim` exactly as it would after a provider redirect.
+   *
+   * The same step-up requirement and the same rate limit as `oauth/begin`
+   * apply, because the outcome is the same: publishing power over a
+   * third-party identity. The body is never logged.
+   */
+  @Post('secret/begin')
+  @RequireScope('connections:admin')
+  @RequireStepUp()
+  @Idempotent()
+  @RateLimit({ limit: 20, windowSeconds: 300, connectorBudget: true })
+  @HttpCode(201)
+  connectWithProviderSecret(
+    @Actor() actor: ActorContext,
+    @Body() body: unknown,
+  ): Promise<{ transactionId: string }> {
+    return this.connections.connectWithProviderSecret(
+      actor,
+      parseBody(connectWithProviderSecretSchema, body),
+    );
   }
 
   @Get('oauth/pending/:transactionId')

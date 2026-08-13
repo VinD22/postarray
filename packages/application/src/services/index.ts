@@ -35,6 +35,12 @@ import { createShortLinkService } from './short-links';
 import { createValidationService } from './validation';
 import { createWebhookService } from './webhooks';
 import { createWorkspaceService } from './workspaces';
+import { createWorkerAnalyticsService } from './worker-analytics';
+import { createWorkerCredentialService } from './worker-credentials';
+import { createWorkerInsightService } from './worker-insights';
+import { createWorkerRepeatService } from './worker-repeat';
+import { createWorkerRssService } from './worker-rss';
+import { createWorkerRuleService } from './worker-rules';
 import { createWorkerPublishingService } from './worker-publishing';
 import { createWorkerWebhookService } from './worker-webhooks';
 
@@ -92,6 +98,14 @@ export function createServices(deps: ServiceDeps): Services {
     dataDeletion: createDataDeletionService(deps),
     bulkImports,
     workerPublishing: createWorkerPublishingService(deps),
+    workerAnalytics: createWorkerAnalyticsService(deps),
+    workerCredentials: createWorkerCredentialService(deps),
+    workerRepeats: createWorkerRepeatService(deps),
+    // RSS and rules create drafts through the same content service the composer
+    // uses, so approval policy and validation cannot be bypassed by automation.
+    workerRss: createWorkerRssService(deps, content),
+    workerRules: createWorkerRuleService(deps, content),
+    workerInsights: createWorkerInsightService(deps),
     workerWebhooks: createWorkerWebhookService(deps),
     workerBulkImports: createWorkerBulkImportService(deps, bulkImports),
     workerMedia: createWorkerMediaService(deps),

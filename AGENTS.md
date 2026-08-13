@@ -87,7 +87,13 @@ normalized view models from `contracts`.
 Forbidden imports (enforced by lint):
 
 - `apps/web` may not import `@relay/database` or `@relay/connectors`.
-- `packages/design-system` may not import anything but `react` and `@relay/i18n`.
+- `packages/design-system` may not import any workspace package except
+  `@relay/i18n`, and today it imports none: every user-visible string is a
+  required prop supplied by the caller. It may import `react`/`react-dom` and
+  its presentation toolchain (`radix-ui`, `lucide-react`,
+  `class-variance-authority`, `clsx`, `tailwind-merge`), which are its declared
+  dependencies. The rule is about product coupling, not about package count.
+  GSAP is separately banned there; it lives only in `apps/web/src/lib/motion`.
 - Nothing may import from another package's `src/**` internals; use its exports.
 
 ## Code conventions
@@ -132,11 +138,23 @@ Forbidden imports (enforced by lint):
 
 ## Design
 
-`docs/planning/06-product-ux-and-design-system.md` is authoritative (see its
-superseded-in-part note for the current direction). Paper + electric blue
-+ sunshine CTA + blush accent, hierarchy from huge display type, 2px ink
-outlines and hard offset shadows; dark is inky navy-black carrying the same
-neons. Still banned: no emoji iconography, no gradient headline text, no
+`packages/design-system/README.md` is authoritative for palette, radii,
+elevation and motion tiers; `docs/planning/06-product-ux-and-design-system.md`
+holds the information architecture and the merge-gate list (see its
+superseded-in-part note).
+
+The shipped system is editorial: warm paper (`#FFFCF8`), near-black ink
+(`#141413`), hairline rules, hierarchy from type and space rather than from
+heavy shadows. The primary accent is a deep terracotta (`#B4462B` light,
+`#E07A5F` dark) carrying links, focus, selection and the active tab; the
+primary button fill stays ink. Two further accent families exist for the
+marketing scene vocabulary and nothing else may join them: marigold
+(`--accent-warm-*`) and ultramarine (`--accent-cool-*`). Neither carries a
+status meaning. Elevation is soft and tonal; the `--shadow-hard*` token names
+are historical and now resolve to diffuse shadows. Dark is designed, not
+inverted.
+
+Still banned: no emoji iconography, no gradient headline text, no
 glowing orbs or glass panels, no fake dashboards or invented metrics, no
 animation that slows composing, no color-alone status, no sub-AA pairs, no
 physical direction props, no `dark:` variants, no yellow or pink as text.

@@ -106,14 +106,14 @@ function parseTrigger(value: unknown): AutomationRuleView['trigger'] {
     : { kind: 'manual_command', config: {} };
 }
 
-function parseConditions(value: unknown): AutomationRuleView['conditions'] {
+export function parseConditions(value: unknown): AutomationRuleView['conditions'] {
   const parsed = z.array(conditionSchema).safeParse(value);
   return parsed.success
     ? parsed.data.map((entry) => ({ kind: entry.kind, config: entry.config }))
     : [];
 }
 
-function parseActions(value: unknown): AutomationRuleView['actions'] {
+export function parseActions(value: unknown): AutomationRuleView['actions'] {
   const parsed = z.array(actionSchema).safeParse(value);
   return parsed.success
     ? parsed.data.map((entry) => ({ kind: entry.kind, config: entry.config }))
@@ -206,6 +206,145 @@ function toRunView(row: RunRow): RuleRunView {
     startedAt: row.startedAt.toISOString(),
     endedAt: row.endedAt?.toISOString() ?? null,
   };
+}
+
+/**
+ * Condition evaluation, shared by the preview, the test run and the worker.
+ *
+ * One implementation, three callers, so "this is what the rule would do" and
+ * "this is what the rule did" cannot drift apart.
+ *
+ * A condition this evaluator cannot answer from the trigger event does **not**
+ * pass. It comes back in `unmatchedConditionKeys`, the run records it, and the
+ * rule does not fire. Failing open here would mean an automation acting because
+ * we did not know enough to stop it, which is the opposite of the guarantee a
+ * consequential action needs. A missing metric is likewise unknown, never zero.
+ */
+export interface RuleConditionEvaluation {
+  readonly matched: boolean;
+  readonly unmatchedConditionKeys: readonly string[];
+}
+
+function readString(event: Readonly<Record<string, unknown>>, key: string): string | null {
+  const value: unknown = event[key];
+  return typeof value === 'string' && value !== '' ? value : null;
+}
+
+function readNumber(event: Readonly<Record<string, unknown>>, key: string): number | null {
+  const value: unknown = event[key];
+  return typeof value === 'number' && Number.isFinite(value) ? value : null;
+}
+
+function configList(config: Readonly<Record<string, unknown>>, key: string): string[] {
+  const value: unknown = config[key];
+  if (Array.isArray(value)) {
+    return value.filter((entry): entry is string => typeof entry === 'string');
+  }
+  return typeof value === 'string' ? [value] : [];
+}
+
+/** `event[field]` must be one of the values the condition names. */
+function membership(
+  event: Readonly<Record<string, unknown>>,
+  config: Readonly<Record<string, unknown>>,
+  field: string,
+  configKey: string,
+): boolean | null {
+  const allowed = configList(config, configKey);
+  if (allowed.length === 0) {
+    return null;
+  }
+  const actual = readString(event, field);
+  return actual === null ? null : allowed.includes(actual);
+}
+
+function containsTerm(
+  event: Readonly<Record<string, unknown>>,
+  config: Readonly<Record<string, unknown>>,
+  configKey: string,
+): boolean | null {
+  const terms = configList(config, configKey);
+  const body = readString(event, 'body');
+  if (terms.length === 0 || body === null) {
+    return null;
+  }
+  const haystack = body.toLowerCase();
+  return terms.some((term) => haystack.includes(term.toLowerCase()));
+}
+
+/** A metric threshold. An unavailable reading is unknown, so it never matches. */
+function threshold(
+  event: Readonly<Record<string, unknown>>,
+  config: Readonly<Record<string, unknown>>,
+  direction: 'minimum' | 'maximum',
+): boolean | null {
+  const metric = typeof config['metric'] === 'string' ? config['metric'] : null;
+  const limit = typeof config['value'] === 'number' ? config['value'] : null;
+  if (metric === null || limit === null) {
+    return null;
+  }
+  const metrics: unknown = event['metrics'];
+  if (typeof metrics !== 'object' || metrics === null) {
+    return null;
+  }
+  const reading: unknown = Reflect.get(metrics, metric);
+  if (typeof reading !== 'number' || !Number.isFinite(reading)) {
+    return null;
+  }
+  return direction === 'minimum' ? reading >= limit : reading <= limit;
+}
+
+function evaluateCondition(
+  condition: { readonly kind: string; readonly config: Readonly<Record<string, unknown>> },
+  event: Readonly<Record<string, unknown>>,
+): boolean | null {
+  switch (condition.kind) {
+    case 'brand':
+      return membership(event, condition.config, 'brandId', 'brandIds');
+    case 'campaign':
+      return membership(event, condition.config, 'campaignId', 'campaignIds');
+    case 'account':
+      return membership(event, condition.config, 'connectionId', 'connectionIds');
+    case 'platform':
+      return membership(event, condition.config, 'provider', 'providers');
+    case 'locale':
+      return membership(event, condition.config, 'locale', 'locales');
+    case 'content_type':
+      return membership(event, condition.config, 'contentKind', 'contentKinds');
+    case 'content_status':
+      return membership(event, condition.config, 'state', 'states');
+    case 'domain_present':
+      return containsTerm(event, condition.config, 'domains');
+    case 'hashtag_present':
+      return containsTerm(event, condition.config, 'hashtags');
+    case 'keyword_present':
+      return containsTerm(event, condition.config, 'keywords');
+    case 'engagement_minimum':
+      return threshold(event, condition.config, 'minimum');
+    case 'engagement_maximum':
+      return threshold(event, condition.config, 'maximum');
+    case 'time_since_publication': {
+      const minimum =
+        typeof condition.config['minimumSeconds'] === 'number'
+          ? condition.config['minimumSeconds']
+          : null;
+      const age = readNumber(event, 'ageSeconds');
+      return minimum === null || age === null ? null : age >= minimum;
+    }
+    default:
+      // Everything else needs state this evaluator was not given. Unknown.
+      return null;
+  }
+}
+
+export function evaluateRuleConditions(
+  conditions: readonly { readonly kind: string; readonly config: Record<string, unknown> }[],
+  event: Readonly<Record<string, unknown>>,
+): RuleConditionEvaluation {
+  const unmatchedConditionKeys = conditions
+    .filter((condition) => evaluateCondition(condition, event) !== true)
+    .map((condition) => condition.kind);
+  return { matched: unmatchedConditionKeys.length === 0, unmatchedConditionKeys };
 }
 
 function consequentialActions(actions: readonly { kind: RuleActionKind }[]): RuleActionKind[] {
@@ -489,21 +628,25 @@ export function createAutomationRuleService(deps: ServiceDeps): AutomationRuleSe
       return authorized(deps, ctx, 'rule.read', undefined, async (db, actor) => {
         const rule = await requireRule(db, input.ruleId);
         // A test run never produces an external action. It records what would
-        // have happened so the sentence builder can show an example.
+        // have happened so the sentence builder can show an example, and it
+        // runs the same evaluator the worker runs, so a test that says the
+        // conditions matched is describing the code that will actually decide.
+        const conditions = parseConditions(rule.conditions);
+        const evaluation = evaluateRuleConditions(conditions, input.sampleEvent);
         const created = await db.automationRuleRun.create({
           data: {
             workspaceId: actor.workspace.id,
             automationRuleId: rule.id,
             ruleVersion: rule.version,
-            state: 'succeeded',
+            state: evaluation.matched ? 'succeeded' : 'skipped',
             isTest: true,
             sourceKind: 'test',
             sourceId: `test:${deps.clock.now().toISOString()}`,
             triggerPayload: toJson(input.sampleEvent),
             evaluatedConditions: toJson(
-              parseConditions(rule.conditions).map((condition) => ({
+              conditions.map((condition) => ({
                 kind: condition.kind,
-                matched: true,
+                matched: !evaluation.unmatchedConditionKeys.includes(condition.kind),
               })),
             ),
             performedActions: toJson(

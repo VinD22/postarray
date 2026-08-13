@@ -6,10 +6,13 @@ import { Notice } from '@relay/design-system/patterns';
 import { Button, Label, RadioGroup, RadioGroupItem } from '@relay/design-system/primitives';
 import { cn, panelSurface } from '@relay/design-system/utils';
 
+import { Check } from 'lucide-react';
+
 import { ApiError, api, newIdempotencyKey, type ProviderId } from '@/lib/api';
-import { useAvailableProviders } from '@/lib/api/hooks';
+import { useAvailableProviders, useConnections } from '@/lib/api/hooks';
 import { useLocalizedRouter, useTranslations } from '@/lib/i18n';
 import { useSession } from '@/lib/auth/session-context';
+import { LiveBadge } from '@/components/motion';
 import { ProviderMark } from '@/features/connections/provider';
 import { requireFirst } from '@/lib/utils/require-first';
 
@@ -85,6 +88,18 @@ export function ConnectStep() {
   const router = useLocalizedRouter();
   const { project } = useSession();
   const availableProviders = useAvailableProviders();
+  /*
+   * Accounts that have already come back from a provider consent screen.
+   *
+   * This step is the one place in the product a person leaves and returns to,
+   * and on the way back this list goes from empty to holding their account.
+   * `LiveBadge` animates only on the false-to-true transition, so the dot
+   * settles exactly once, on the render where the account arrives, and never
+   * again on a refetch. Nothing about the arrival is guessed: the row is
+   * drawn from the connections read, not from a query parameter.
+   */
+  const connections = useConnections();
+  const connected = connections.data?.data ?? [];
 
   const [selected, setSelected] = useState<ProviderId>('x');
   const [pending, setPending] = useState(false);
@@ -141,6 +156,33 @@ export function ConnectStep() {
       </div>
 
       {error === null ? null : <Notice tone="destructive" liveness="alert" title={error} />}
+
+      {connected.length === 0 ? null : (
+        <section aria-labelledby="onboarding-connected" className="flex flex-col gap-2">
+          <h2 id="onboarding-connected" className="text-title-sm text-text-primary">
+            {t('onboarding.live.connectedHeading')}
+          </h2>
+          <ul className="border-border-subtle flex flex-col border-t">
+            {connected.map((connection) => (
+              <li
+                key={connection.id}
+                className="border-border-subtle flex flex-wrap items-center gap-x-3 gap-y-1 border-b py-2.5"
+              >
+                <ProviderMark provider={connection.provider} />
+                <span className="text-body-md text-text-primary min-w-0 flex-1 truncate">
+                  {connection.displayName}
+                </span>
+                <LiveBadge
+                  live
+                  label={t('onboarding.live.connected')}
+                  icon={<Check aria-hidden="true" className="size-3.5" />}
+                />
+              </li>
+            ))}
+          </ul>
+          <p className="text-body-sm text-text-tertiary">{t('onboarding.live.connectedNote')}</p>
+        </section>
+      )}
 
       <fieldset className="flex flex-col gap-3">
         <legend className="text-label text-text-tertiary pb-1 tracking-wide uppercase">

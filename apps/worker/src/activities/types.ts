@@ -422,6 +422,32 @@ export interface RecordAnalyticsRunInput {
   readonly errorCode: ErrorCode | null;
 }
 
+/**
+ * Per-post feedback, written after an analytics sync produced fresh readings.
+ *
+ * Idempotent by post and window: a post is described once at the 24 hour mark
+ * and refreshed once at the 7 day checkpoint. The comparison itself is
+ * deterministic, so the row exists whether or not AI is configured; with AI off
+ * it simply carries a null model rather than being skipped.
+ */
+export interface GeneratePostFeedbackInput {
+  readonly ctx: ActivityContext;
+  readonly receiptId: string;
+  /** When the analytics run that triggered this finished. */
+  readonly observedAt: string;
+}
+
+export type PostFeedbackVerdict = 'above' | 'below' | 'similar' | 'insufficient_data';
+
+export interface GeneratePostFeedbackResult {
+  /** Null when the post was too young, or the receipt has gone. */
+  readonly insightId: string | null;
+  readonly created: boolean;
+  readonly window: 'twenty_four_hours' | 'seven_days' | null;
+  readonly verdict: PostFeedbackVerdict;
+  readonly reasonKey: string | null;
+}
+
 // ---------------------------------------------------------------------------
 // Credentials
 // ---------------------------------------------------------------------------
@@ -837,6 +863,7 @@ export interface WorkerActivities {
   fetchPostMetrics(input: FetchMetricsInput): Promise<FetchMetricsResult>;
   fetchAccountMetrics(input: FetchMetricsInput): Promise<FetchMetricsResult>;
   recordAnalyticsRun(input: RecordAnalyticsRunInput): Promise<void>;
+  generatePostFeedback(input: GeneratePostFeedbackInput): Promise<GeneratePostFeedbackResult>;
   describeCredential(input: DescribeCredentialInput): Promise<DescribeCredentialResult>;
   refreshCredential(input: RefreshCredentialInput): Promise<RefreshCredentialResult>;
   raiseConnectionIncident(input: ConnectionIncidentInput): Promise<void>;
@@ -864,9 +891,7 @@ export interface WorkerActivities {
   buildDataExport(input: BuildDataExportInput): Promise<BuildDataExportResult>;
   readBulkImportVerdict(input: BulkImportActivityInput): Promise<BulkImportActivityResult>;
   applyBulkImportRows(input: ApplyBulkImportInput): Promise<BulkImportActivityResult>;
-  produceMediaDerivative(
-    input: ProduceMediaDerivativeInput,
-  ): Promise<ProduceMediaDerivativeResult>;
+  produceMediaDerivative(input: ProduceMediaDerivativeInput): Promise<ProduceMediaDerivativeResult>;
 }
 
 export type ActivityName = keyof WorkerActivities;
@@ -893,6 +918,7 @@ export const ACTIVITY_NAMES: readonly ActivityName[] = [
   'fetchPostMetrics',
   'fetchAccountMetrics',
   'recordAnalyticsRun',
+  'generatePostFeedback',
   'describeCredential',
   'refreshCredential',
   'raiseConnectionIncident',

@@ -166,6 +166,12 @@
    * `prefers-reduced-motion` override (theme.css) already collapses it to a
    * no-op; callers still add `motion-reduce:animate-none` as a second,
    * explicit guard (see `connection-health.tsx`).
+   *
+   * Also the settle in `components/motion/live-badge.tsx`, which is the same
+   * gesture for the same reason one layer up: a thing that has just gone live
+   * settles once and then holds still. That component is CSS-driven rather
+   * than GSAP-driven precisely so it inherits this keyframe's free
+   * reduced-motion behaviour and stays cheap enough for the in-app tier.
    */
   @keyframes relay-dot-settle {
     0% {
@@ -361,15 +367,21 @@
 }
 
 /*
- * Onboarding done-step confetti burst (WP-4, `components/onboarding/
- * confetti-burst.tsx`). Twenty pieces radiate from a fixed point in a
- * deterministic pattern (never `Math.random()`, so this never mismatches
- * between server and client) using the brand/cta/pop trio via
- * `--confetti-x`/`--confetti-y`/`--confetti-delay`, set per piece by the
- * component. The component itself renders nothing at all under
- * `prefers-reduced-motion` (see its own header comment) rather than relying
- * on this animation being neutralized — the real guard is that the DOM never
- * mounts, not the global 1ms override.
+ * Confetti burst. Pieces radiate from a fixed point in a deterministic
+ * pattern (never `Math.random()`, so this never mismatches between server and
+ * client) via `--confetti-x`/`--confetti-y`/`--confetti-delay`, set per piece
+ * by the component. Neither component relies on this animation being
+ * neutralized under `prefers-reduced-motion`: both render nothing at all in
+ * that case (see their header comments), because a finished burst has no
+ * meaningful static state. The real guard is that the DOM never mounts.
+ *
+ * Two consumers share the keyframe:
+ *   - `components/onboarding/confetti-burst.tsx` (WP-4) — twenty pieces in
+ *     the brand/cta/pop trio, the one celebration inside the signed-in
+ *     product.
+ *   - `components/motion/celebration-burst.tsx` (Track B) — the generalised
+ *     version: 12 or 24 pieces, coloured from the three accent families
+ *     (terracotta / marigold / ultramarine), one burst per trigger value.
  */
 @keyframes relay-confetti-burst {
   0% {

@@ -24,6 +24,11 @@ const config: PolarConfig = {
   server: 'sandbox',
   monthlyProductId: undefined,
   annualProductId: undefined,
+  growthMonthlyProductId: undefined,
+  growthAnnualProductId: undefined,
+  studioMonthlyProductId: undefined,
+  studioAnnualProductId: undefined,
+  productIdsByEnvKey: {},
   trialDays: 7,
 };
 

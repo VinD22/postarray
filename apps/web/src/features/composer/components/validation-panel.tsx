@@ -218,11 +218,17 @@ function SeverityIcon({
 }
 
 /**
- * A just-resolved issue: struck through, then collapsed via the CSS
- * `grid-template-rows` 1fr-to-0fr trick (no JS height measurement). Only
- * ever rendered when `useMotionOk()` was true at the moment the issue
- * resolved — see `ValidationPanel`'s effect — so there is no reduced-motion
- * branch to thread through here.
+ * A just-resolved issue: the check ticks in, the sentence strikes through,
+ * then the row collapses via the CSS `grid-template-rows` 1fr-to-0fr trick
+ * (no JS height measurement). Only ever rendered when `useMotionOk()` was
+ * true at the moment the issue resolved — see `ValidationPanel`'s effect — so
+ * there is no reduced-motion branch to thread through here.
+ *
+ * The icon swaps from the severity mark to a check on the way out, drawn in
+ * with the shared `relay-icon-draw` stroke animation. That is the whole point
+ * of keeping the ghost row at all: watching the warning become a tick is what
+ * tells a person their fix landed, and it costs one CSS animation on a row
+ * that was about to disappear anyway.
  */
 function ResolvingIssueRow({ entry }: { readonly entry: ResolvingIssue }): ReactNode {
   const [collapsed, setCollapsed] = useState(false);
@@ -243,7 +249,11 @@ function ResolvingIssueRow({ entry }: { readonly entry: ResolvingIssue }): React
     >
       <span className="overflow-hidden">
         <span className="text-body-sm text-text-tertiary flex min-h-11 items-center gap-2 px-2 py-2 line-through">
-          <SeverityIcon severity={entry.severity} />
+          <CircleCheck
+            aria-hidden
+            className="text-success-fg relay-icon-draw mt-0.5 size-4 shrink-0 motion-reduce:animate-none"
+            strokeWidth={2}
+          />
           {entry.text}
         </span>
       </span>

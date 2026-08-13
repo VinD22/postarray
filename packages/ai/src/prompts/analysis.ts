@@ -1,3 +1,7 @@
+import { z } from 'zod';
+
+import { weeklyDigestResultSchema } from '../digest/schema';
+import type { WeeklyDigestResult } from '../digest/schema';
 import { GROWTH_PLAN_FIXTURE_BODY } from '../growth/fixture';
 import { JSON_OUTPUT_RULE } from './types';
 import type { PromptModule } from './types';
@@ -11,6 +15,13 @@ import type { AnalyticsSummaryResult, ExperimentSuggestionResult } from './schem
 /** Analysis and planning prompts. */
 
 const VERSION = '2026-08-04.1';
+
+/**
+ * The weekly digest is a new prompt, so it starts at its own version. Prompt
+ * versions are append-only: never edit a version that has produced a stored
+ * insight, mint the next one.
+ */
+const DIGEST_VERSION = '2026-08-12.1';
 
 export const analyticsSummaryPrompt: PromptModule<AnalyticsSummaryResult> = {
   id: 'analytics-summary',
@@ -69,6 +80,139 @@ export const analyticsSummaryPrompt: PromptModule<AnalyticsSummaryResult> = {
   ],
 };
 
+/**
+ * The weekly digest: "what has been happening".
+ *
+ * Retrieval is deterministic and happens in `../digest/retrieval`. This prompt
+ * only turns already-assembled first-party rows into prose, and the number
+ * audit in `../digest/postprocess` rejects any numeral that was not in those
+ * rows. The model is structurally incapable of producing a metric.
+ */
+export const weeklyDigestPrompt: PromptModule<WeeklyDigestResult> = {
+  id: 'weekly-digest',
+  version: DIGEST_VERSION,
+  locale: 'en',
+  mode: 'fast',
+  schema: weeklyDigestResultSchema,
+  outputFormat: 'json',
+  maxOutputTokens: 1600,
+  timeoutMs: 30_000,
+  budgetCents: 5,
+  degradation: 'raw_data_only',
+  requiredVariables: [
+    'receiptSummary',
+    'metricRows',
+    'baselineOutcomes',
+    'freshnessReport',
+    'unavailableMetrics',
+    'windowStart',
+    'windowEnd',
+  ],
+  scan: { checkVoice: true },
+  instruction: [
+    'Summarise what happened in this workspace between windowStart and windowEnd,',
+    'using only the supplied rows. You are writing sentences about data somebody else',
+    'already gathered. You are not measuring anything.',
+    '',
+    'Rules that are not negotiable:',
+    '- A metric listed in unavailableMetrics is unknown. Never treat it as zero, never',
+    '  estimate it, and never describe it as "no engagement" or "nothing happened".',
+    '- Only numbers that already appear in the supplied rows may appear in your answer.',
+    '  Do not add, subtract, average, or convert. If a number you want is not in the',
+    '  rows, write the sentence without it.',
+    '- published, partial and failed are three different outcomes. A partial publication',
+    '  reached some destinations and not others. Never fold it into either neighbour.',
+    '- Every observation cites the receipt ids or metric names it rests on, and carries',
+    '  at least one confounder.',
+    '- State the freshness of the data you were given, in your own words, from',
+    '  freshnessReport. A summary that hides how old its data is has misled the reader.',
+    '- Differences are associations. Never write that one thing caused another.',
+    '- When any baseline row says smallSample=true, set "sampleIsSmall" and say the',
+    '  sample is small in the observation itself.',
+    '- "There is not enough data yet" is a complete and acceptable answer. An empty',
+    '  observations array with an honest headline is better than a padded one.',
+    '',
+    'Put anything the data cannot support into "notSupported". Set "suggestedNextAction"',
+    'to null unless the rows support one concrete next step.',
+    JSON_OUTPUT_RULE,
+  ].join('\n'),
+  fixtures: [
+    {
+      /**
+       * Week one for a new customer: posts went out, no analytics exist at all.
+       * This is the common first-run state, so it is a first-class fixture.
+       */
+      name: 'receipts-only-no-metrics',
+      variables: {
+        receiptSummary: ['provider=mastodon published=2 partial=1 failed=0 receipts=r1|r2|r3'],
+        metricRows: [],
+        baselineOutcomes: [],
+        freshnessReport: 'label=never_synced lastObservedAt=never ageSeconds=unknown',
+        unavailableMetrics: [],
+        windowStart: '2026-08-03',
+        windowEnd: '2026-08-10',
+      },
+      output: {
+        headline: 'Three publications went out and no measurements have arrived yet.',
+        observations: [
+          {
+            statement:
+              'One publication reached some destinations and not others, and is recorded as partial rather than as a success or a failure.',
+            evidenceIds: ['r1', 'r2', 'r3'],
+            confidence: 'high',
+            confounders: ['A partial publication may still be retried.'],
+          },
+        ],
+        notSupported: [
+          'No metrics have been synced for this window, so reach and engagement are unknown.',
+        ],
+        suggestedNextAction: null,
+        sampleIsSmall: true,
+        uncertain: false,
+        uncertaintyReason: null,
+      },
+    },
+    {
+      /**
+       * The other real first-week state: posts published, and the connection was
+       * never granted the permission the metric needs. Unknown, not zero.
+       */
+      name: 'metrics-unavailable-by-permission',
+      variables: {
+        receiptSummary: ['provider=mastodon published=2 partial=0 failed=0 receipts=r1|r2'],
+        metricRows: [],
+        baselineOutcomes: [],
+        freshnessReport: 'label=fresh lastObservedAt=2026-08-10T09:00:00Z ageSeconds=600',
+        unavailableMetrics: [
+          'metric=impressions provider=mastodon reason=unavailable_permission receipts=r1|r2',
+        ],
+        windowStart: '2026-08-03',
+        windowEnd: '2026-08-10',
+      },
+      output: {
+        headline: 'Two publications went out. Impressions cannot be read for this account.',
+        observations: [
+          {
+            statement:
+              'Both publications completed. Impressions are unknown for them because the connection was not granted the permission that metric requires.',
+            evidenceIds: ['r1', 'r2'],
+            confidence: 'high',
+            confounders: ['Unknown is not the same as low.'],
+          },
+        ],
+        notSupported: [
+          'Impressions are unavailable for this connection, so reach cannot be described.',
+        ],
+        suggestedNextAction:
+          'Reconnect the account and grant the analytics permission if you want impressions in next week digest.',
+        sampleIsSmall: true,
+        uncertain: false,
+        uncertaintyReason: null,
+      },
+    },
+  ],
+};
+
 export const experimentSuggestionPrompt: PromptModule<ExperimentSuggestionResult> = {
   id: 'experiment-suggestion',
   version: VERSION,
@@ -113,6 +257,152 @@ export const experimentSuggestionPrompt: PromptModule<ExperimentSuggestionResult
         evidenceIds: ['receipt_a'],
         uncertain: false,
         uncertaintyReason: null,
+      },
+    },
+  ],
+};
+
+/**
+ * Per-post feedback: "how did this one do, compared with your own posts".
+ *
+ * Its own version, because it is a new prompt and versions are append-only.
+ * Never edit a version that has produced a stored insight; mint the next one.
+ */
+const POST_FEEDBACK_VERSION = '2026-08-13.1';
+
+export const POST_FEEDBACK_VERDICTS = ['above', 'below', 'similar', 'insufficient_data'] as const;
+
+export const postFeedbackResultSchema = z
+  .object({
+    verdict: z.enum(POST_FEEDBACK_VERDICTS),
+    statement: z.string().min(1),
+    evidenceIds: z.array(z.string().min(1)),
+    confounders: z.array(z.string().min(1)),
+    /** At most one, changing exactly one variable. Null is the common answer. */
+    suggestion: z
+      .object({
+        statement: z.string().min(1),
+        changedVariable: z.string().min(1),
+        successMetric: z.string().min(1),
+      })
+      .strict()
+      .nullable(),
+    uncertain: z.boolean(),
+    uncertaintyReason: z.string().min(1).nullable(),
+  })
+  .strict();
+export type PostFeedbackResult = z.infer<typeof postFeedbackResultSchema>;
+
+/**
+ * One post, one baseline, one sentence.
+ *
+ * The retrieval is deterministic and happens before this prompt runs: the
+ * baseline handed in is the account's own trailing median over comparable
+ * posts, and the metric rows are the readings that were actually taken. The
+ * model compares the two and writes it down. It measures nothing, and
+ * "insufficient_data" is a complete answer rather than a failure.
+ */
+export const postFeedbackPrompt: PromptModule<PostFeedbackResult> = {
+  id: 'post-feedback',
+  version: POST_FEEDBACK_VERSION,
+  locale: 'en',
+  mode: 'fast',
+  schema: postFeedbackResultSchema,
+  outputFormat: 'json',
+  maxOutputTokens: 500,
+  timeoutMs: 20_000,
+  budgetCents: 2,
+  degradation: 'raw_data_only',
+  requiredVariables: [
+    'metricRows',
+    'baselineDescription',
+    'baselineRows',
+    'sampleSize',
+    'smallSampleThreshold',
+    'availableMetrics',
+    'unavailableMetrics',
+  ],
+  scan: { checkVoice: true },
+  instruction: [
+    'Say how this one post did against the baseline you were given. One post, one',
+    'comparison, at most one suggestion.',
+    '',
+    'Rules that are not negotiable:',
+    '- Compare only against the supplied baseline, which is this account own trailing',
+    '  median over comparable posts. There is no global benchmark, no industry average',
+    '  and no cross platform score. If you were given no baseline rows, the verdict is',
+    '  "insufficient_data".',
+    '- A metric listed in unavailableMetrics is unknown. Never treat it as zero, never',
+    '  estimate it, and never describe it as "no engagement".',
+    '- Only numbers that already appear in metricRows or baselineRows may appear in your',
+    '  answer. Do not add, average or convert.',
+    '- Differences are associations. Never write that the post caused the difference, and',
+    '  never write that a change would cause one.',
+    '- When sampleSize is below smallSampleThreshold, set "uncertain", say the sample is',
+    '  small in the statement itself, and prefer "insufficient_data" over a verdict the',
+    '  sample cannot carry.',
+    '- Every statement carries the evidence ids it rests on and at least one confounder.',
+    '- "insufficient_data" is a complete, valid answer. An honest one-line answer with no',
+    '  suggestion is better than a padded one.',
+    '',
+    'The suggestion is optional and there is never more than one. It must change exactly',
+    'one variable, and its successMetric must be one of availableMetrics: do not propose',
+    'something this account cannot measure. Set "suggestion" to null whenever the rows do',
+    'not support a single concrete change.',
+    JSON_OUTPUT_RULE,
+  ].join('\n'),
+  fixtures: [
+    {
+      /** The first post on a new account: nothing to compare it with yet. */
+      name: 'no-baseline-yet',
+      variables: {
+        metricRows: ['receipt=r1 metric=impressions value=310'],
+        baselineDescription: 'median of the previous 5 comparable posts',
+        baselineRows: [],
+        sampleSize: 0,
+        smallSampleThreshold: 5,
+        availableMetrics: ['impressions', 'likes'],
+        unavailableMetrics: [],
+      },
+      output: {
+        verdict: 'insufficient_data',
+        statement:
+          'This is the first comparable post on this account, so there is nothing to compare it with yet.',
+        evidenceIds: ['r1'],
+        confounders: ['A single post cannot establish a baseline.'],
+        suggestion: null,
+        uncertain: true,
+        uncertaintyReason: 'No baseline posts exist for this account yet.',
+      },
+    },
+    {
+      /** A real comparison on a small sample, with one metric unreadable. */
+      name: 'above-baseline-small-sample',
+      variables: {
+        metricRows: ['receipt=r9 metric=impressions value=1200'],
+        baselineDescription: 'median of the previous 4 comparable posts',
+        baselineRows: ['metric=impressions median=800 posts=4'],
+        sampleSize: 4,
+        smallSampleThreshold: 5,
+        availableMetrics: ['impressions'],
+        unavailableMetrics: ['metric=saves reason=unavailable_permission'],
+      },
+      output: {
+        verdict: 'above',
+        statement:
+          'This post reached more impressions than the median of the previous four comparable posts. Four posts is a small sample.',
+        evidenceIds: ['r9'],
+        confounders: [
+          'Posting time was three hours earlier than the comparable posts.',
+          'Saves cannot be read for this account, so engagement depth is unknown.',
+        ],
+        suggestion: {
+          statement: 'Post the next one at the same hour and leave everything else as it was.',
+          changedVariable: 'posting hour',
+          successMetric: 'impressions',
+        },
+        uncertain: true,
+        uncertaintyReason: 'The baseline rests on four posts.',
       },
     },
   ],

@@ -1,4 +1,5 @@
 import {
+  CapabilityNotImplementedError,
   ForbiddenError,
   IMAGE_UPLOAD_LIMIT_BYTES,
   MEDIA_RETENTION_DAYS,
@@ -28,6 +29,7 @@ import { pageArgs, toPage } from '../internal/pagination';
 import { authorized, type Db } from '../internal/runtime';
 import { asMediaKind } from '../internal/storage-enums';
 import { withIdempotency } from '../internal/idempotency';
+import { LocalFileStorage } from '../ports/storage';
 import { fetchAndStoreRemoteMedia } from './media-import';
 import { createMediaDerivativeService } from './media-derivatives';
 
@@ -191,6 +193,57 @@ function retentionExpiry(now: Date): Date {
   return new Date(now.getTime() + MEDIA_RETENTION_DAYS * 24 * 60 * 60 * 1_000);
 }
 
+/**
+ * A path value carrying a control character is malformed, never routed. Written
+ * as a code-point scan rather than a regular expression so the range is legible
+ * and no literal control byte ends up in this file.
+ */
+function hasControlCharacter(value: string): boolean {
+  for (const character of value) {
+    const code = character.codePointAt(0) ?? 0;
+    if (code < 0x20 || code === 0x7f) {
+      return true;
+    }
+  }
+  return false;
+}
+
+/**
+ * A storage key is always `${workspaceId}/${sha256}`.
+ *
+ * The two direct-transfer routes below take the key from the request path, so
+ * it is checked here rather than trusted: it must belong to the calling
+ * workspace, and it must not contain a traversal segment or a control
+ * character. `LocalFileStorage` refuses an escaping key as well; this is the
+ * application-side half of the same rule, and it is what makes a foreign key a
+ * `FORBIDDEN` rather than a confusing storage error.
+ */
+export function assertStorageKeyBelongsToWorkspace(workspaceId: string, storageKey: string): void {
+  if (
+    !storageKey.startsWith(`${workspaceId}/`) ||
+    storageKey.includes('..') ||
+    hasControlCharacter(storageKey)
+  ) {
+    throw new ForbiddenError({ details: { reason: 'storage_key_workspace_mismatch' } });
+  }
+}
+
+/**
+ * These two routes exist only for the local filesystem adapter, which points
+ * its upload ticket back at our own API. A deployment configured with an object
+ * store issues presigned PUTs, and must not also expose an unsigned write path,
+ * so anything other than `LocalFileStorage` refuses.
+ */
+export function requireLocalStorage(deps: Pick<ServiceDeps, 'storage'>): LocalFileStorage {
+  if (!(deps.storage instanceof LocalFileStorage)) {
+    throw new CapabilityNotImplementedError({
+      messageKey: 'errors.capability_not_implemented',
+      details: { capability: 'media_direct_transfer' },
+    });
+  }
+  return deps.storage;
+}
+
 async function requireMedia(db: Db, mediaId: string, now: Date): Promise<MediaRow> {
   const row = await db.mediaAsset.findFirst({
     where: { id: mediaId, deletedAt: null, retentionExpiresAt: { gt: now } },
@@ -309,6 +362,90 @@ export function createMediaService(deps: ServiceDeps): MediaService {
         expiresAt: ticket.expiresAt,
         retentionExpiresAt: prepared.retainedUntil.toISOString(),
       };
+    },
+
+    /**
+     * Accept the bytes a local upload ticket pointed at this API.
+     *
+     * Every check is against the pending row the ticket was issued for, not
+     * against what the request claims: the workspace prefix, the content type,
+     * the checksum header and the ticketed size. `finalizeUpload` re-hashes the
+     * stored object independently afterwards, so this is the early reject, not
+     * the only integrity check.
+     */
+    async acceptDirectUpload(
+      ctx: ActorContext,
+      input: {
+        storageKey: string;
+        contentType: string;
+        checksumSha256: string;
+        bytes: Uint8Array;
+      },
+    ): Promise<{ byteSize: number }> {
+      const storage = requireLocalStorage(deps);
+      assertStorageKeyBelongsToWorkspace(ctx.workspaceId, input.storageKey);
+      if (!SHA256_PATTERN.test(input.checksumSha256)) {
+        throw invalid('errors.media_checksum_invalid', {});
+      }
+
+      const row = await authorized(deps, ctx, 'media.write', undefined, async (db) => {
+        const media = await db.mediaAsset.findFirst({
+          where: {
+            storageKey: input.storageKey,
+            deletedAt: null,
+            retentionExpiresAt: { gt: deps.clock.now() },
+          },
+          select: { id: true, mimeType: true, byteSize: true, checksumSha256: true },
+        });
+        if (media === null) {
+          // No ticket was issued for this key, so nothing may be written to it.
+          throw notFound('media_asset', input.storageKey);
+        }
+        return media;
+      });
+
+      if (input.contentType !== row.mimeType) {
+        throw invalid('errors.media_content_type_mismatch', { mediaId: row.id });
+      }
+      if (input.checksumSha256 !== row.checksumSha256) {
+        throw invalid('errors.media_checksum_mismatch', { mediaId: row.id });
+      }
+      if (BigInt(input.bytes.byteLength) > row.byteSize) {
+        throw invalid('errors.media_too_large', {
+          byteSize: input.bytes.byteLength,
+          limit: Number(row.byteSize),
+        });
+      }
+
+      const stored = await storage.write(input.storageKey, input.bytes, input.contentType);
+      return { byteSize: stored.byteSize };
+    },
+
+    async readObjectForDownload(
+      ctx: ActorContext,
+      input: { storageKey: string },
+    ): Promise<{ bytes: Uint8Array; contentType: string }> {
+      const storage = requireLocalStorage(deps);
+      assertStorageKeyBelongsToWorkspace(ctx.workspaceId, input.storageKey);
+
+      const row = await authorized(deps, ctx, 'media.read', undefined, async (db) => {
+        const media = await db.mediaAsset.findFirst({
+          where: {
+            storageKey: input.storageKey,
+            deletedAt: null,
+            storageDeletedAt: null,
+            // An expired retention window is a gone object, not a slow one.
+            retentionExpiresAt: { gt: deps.clock.now() },
+          },
+          select: { mimeType: true },
+        });
+        if (media === null) {
+          throw notFound('media_asset', input.storageKey);
+        }
+        return media;
+      });
+
+      return { bytes: await storage.read(input.storageKey), contentType: row.mimeType };
     },
 
     async finalizeUpload(ctx: ActorContext, mediaId: string): Promise<MediaAssetView> {

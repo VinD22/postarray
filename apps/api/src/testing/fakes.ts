@@ -200,6 +200,11 @@ export function testConfig(overrides: Partial<RelayConfig> = {}): RelayConfig {
       server: 'sandbox' as const,
       monthlyProductId: undefined,
       annualProductId: undefined,
+      growthMonthlyProductId: undefined,
+      growthAnnualProductId: undefined,
+      studioMonthlyProductId: undefined,
+      studioAnnualProductId: undefined,
+      productIdsByEnvKey: {},
       trialDays: 7,
     },
     ai: {
@@ -211,6 +216,11 @@ export function testConfig(overrides: Partial<RelayConfig> = {}): RelayConfig {
         apiKey: undefined,
         baseUrl: 'https://api.deepseek.com',
         model: 'deepseek-v4-flash',
+      },
+      anthropic: {
+        apiKey: undefined,
+        baseUrl: 'https://api.anthropic.com',
+        model: 'claude-sonnet-5',
       },
     },
     encryption: { kmsKeyId: undefined, kmsRegion: 'us-east-2', localKey: undefined },

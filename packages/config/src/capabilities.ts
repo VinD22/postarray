@@ -165,6 +165,13 @@ function detectAuth(config: RelayConfig): CapabilityStatus {
   return 'live';
 }
 
+/**
+ * Only the base tier's two products are required. A deployment that sells
+ * Standard alone is complete, not degraded, so the four higher-tier product ids
+ * are deliberately absent from this check. Checkout for a tier whose id is not
+ * configured fails closed in `resolveProductId` rather than quietly selling the
+ * base product at a larger allowance.
+ */
 function detectBilling(config: RelayConfig): CapabilityStatus {
   if (!config.polar.checkoutEnabled) return 'disabled:checkout-not-enabled';
   if (config.polar.accessToken === undefined) return missing('POLAR_ACCESS_TOKEN');
@@ -177,9 +184,17 @@ function detectBilling(config: RelayConfig): CapabilityStatus {
   return 'live';
 }
 
+/**
+ * Only the selected provider's key is required. A deployment that runs DeepSeek
+ * is complete without an Anthropic key and the other way round, so a key for
+ * the provider nobody selected is not a partial configuration.
+ */
 function detectAi(config: RelayConfig): CapabilityStatus {
   if (config.ai.provider === 'deepseek' && config.ai.deepseek.apiKey === undefined) {
     return missing('DEEPSEEK_API_KEY');
+  }
+  if (config.ai.provider === 'anthropic' && config.ai.anthropic.apiKey === undefined) {
+    return missing('ANTHROPIC_API_KEY');
   }
   return 'live';
 }
@@ -305,8 +320,7 @@ function detectConnectors(config: RelayConfig): Record<ConnectorKey, CapabilityS
   const connectors = Object.fromEntries(
     Object.entries(configured).map(([provider, status]) => [
       provider,
-      status === 'live' &&
-      !verifiedConnectors.has(provider as Exclude<ConnectorKey, 'fake'>)
+      status === 'live' && !verifiedConnectors.has(provider as Exclude<ConnectorKey, 'fake'>)
         ? 'disabled:verification-not-complete'
         : status,
     ]),

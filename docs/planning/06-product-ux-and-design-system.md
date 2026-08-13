@@ -1,15 +1,22 @@
 # 06. Product UX and Design System
 
-> **Superseded in part — 6 August 2026.** The visual direction below (warm
-> neutral canvas, restrained single accent, 6-10px radii, soft elevation) has
-> been replaced by the redesign in `packages/design-system/README.md`: paper +
-> electric blue + sunshine CTA + blush accent, huge display type, 2px ink
-> outlines, hard offset shadows, and an inky navy-black dark theme carrying the
-> same neons. The hard constraints here (WCAG 2.2 AA as a merge gate, logical
+> **Superseded in part.** `packages/design-system/README.md` is authoritative
+> for palette, radii, elevation and motion tiers. The shipped system is
+> editorial: warm paper, near-black ink, hairline rules, a deep terracotta
+> accent, plus marigold (`--accent-warm-*`) and ultramarine (`--accent-cool-*`)
+> for the marketing scene vocabulary. Elevation is soft and tonal; dark is a
+> warm near-black, designed rather than inverted.
+>
+> An earlier version of this note described a different redesign (electric
+> blue, a sunshine CTA, a blush accent, 2px ink outlines, hard offset shadows,
+> an inky navy-black dark theme). None of that shipped; it is recorded here
+> only so a reader who remembers it knows it was replaced rather than lost.
+>
+> The hard constraints in this document (WCAG 2.2 AA as a merge gate, logical
 > properties only, no `dark:` variants, no hardcoded English, lucide-react
-> icons only, honest copy) all survive unchanged. Treat the new README as
-> authoritative for palette, radii, shadows and motion tiers; a full rewrite of
-> this document is out of scope for this change.
+> icons only, honest copy) all survive unchanged, as does its information
+> architecture. Section 2's merge gate is still enforced, with the one
+> documented correction recorded in that section.
 
 **Status:** authoritative for design. Referenced by `AGENTS.md`.
 **Owner:** Design Lead. **Co-owners:** Product Lead (IA and copy), Web Lead (tokens and components).
@@ -66,12 +73,28 @@ no design debate required.
 | A decorative "score" widget (virality score, health ring, growth gauge) | Black-box numbers users cannot audit | Named metric, denominator, provider, freshness |
 | A card for something that reads better as a row or a sentence | Card sprawl destroys scanability | Rows, tables, timelines, sentences |
 | Pill-shaped status overload and deeply rounded table containers | Turns a queue into confetti | One 4px status dot plus a text label, 6px table radius |
-| Animation on data arrival, count-up numbers, chart draw-in | Delays reading, misleads on freshness | Render final value immediately |
+| Chart draw-in, and any animation that delays a number a reader is waiting for | Delays reading, misleads on freshness | Render the final value immediately |
 | Astronaut, robot, brain or wizard imagery | Positions AI as the product | Screenshots of the real product |
 | Modal that interrupts composing | Loses work | Inline panel, or a sheet that preserves the draft |
 
 Marketing pages get more breathing room and one editorial serif for headlines. They do not get any of
 the above either.
+
+**Count-up numbers are no longer banned** (corrected here because they shipped: `<CountUp>` renders the
+home page's surfaces figure and the pricing page's price numeral). The blanket ban was aimed at the real
+failure, which is a reader waiting on an animation to learn a fact, and that failure is now prevented by
+four conditions rather than by prohibition. A count-up is allowed only when all four hold:
+
+1. It tweens a numeric **proxy** and formats each frame exactly as the static value would, so the number
+   is never rebuilt as a string and never shows a value that is not a real intermediate.
+2. Under `prefers-reduced-motion`, and with no JS at all, it renders the finished value immediately.
+   `<CountUp>` branches on `useMotionOk()`; the server HTML already carries the final number.
+3. It never animates a number whose meaning depends on freshness or availability. An unavailable metric
+   renders `analytics.value.unavailable` with its reason and does not animate at all, ever.
+4. In-app it runs **once**, on a screen's first successful data load, never on a filter change, a refetch
+   or a re-render. `ComparisonTable`'s `animateCounts` is the pattern.
+
+Anything outside those four conditions is still the banned thing.
 
 ---
 
@@ -778,10 +801,55 @@ In dark mode shadows are halved in opacity and elevation is carried by `--bg-sur
 | `--motion-base` | 160ms | Popover, dropdown, tab change |
 | `--motion-slow` | 200ms | Sheet, drawer, modal |
 
-Nothing animates longer than 200ms. No parallax, no scroll-triggered reveals, no count-up numbers, no
-chart draw-in, no skeleton shimmer that outlives the request. Under
+**In-app, nothing animates longer than 200ms**, and none of it animates data: no chart draw-in, no
+skeleton shimmer that outlives the request, no working screen that scroll-scrubs. Under
 `@media (prefers-reduced-motion: reduce)` all durations become 0ms and transforms are removed; opacity
 changes may remain.
+
+The banned list here used to read "no parallax, no scroll-triggered reveals, no count-up numbers". Those
+three are now permitted on the **marketing surface** under §7.4.1, and count-up is permitted in-app under
+the four conditions in §2. The 200ms ceiling is unchanged for every product control.
+
+### 7.4.1 The scene vocabulary (marketing tier)
+
+Marketing gets a second, expressive tier: 400-900ms, GSAP, and a small governed set of devices. GSAP
+lives only in `apps/web/src/lib/motion`; the wrappers are in `apps/web/src/components/motion` and
+`apps/web/src/features/marketing/components/scene`, and every one of them branches on `useMotionOk()`
+and renders the finished static state when motion is off. **No component may author hidden initial state
+in server HTML** — the server response is the finished page, which is what a crawler, a no-JS client and
+a reduced-motion visitor get.
+
+| Device | What it is | Reduced motion |
+| --- | --- | --- |
+| `ScrollScene` | Pinned, scroll-scrubbed scene with named beats and an interpolated background between two documented tokens | Renders the beats as ordinary stacked sections |
+| `ParallaxLayer` | Scrubbed `yPercent` on a wrapper, `depth` clamped to ±0.3. Only valid inside a `ScrollScene` | Returns children unwrapped, no element at all |
+| `SceneSequencer` | Auto-advancing looping tour on one timeline. Auto-pauses off-screen, on `visibilitychange` and on `focusin`; requires `controlLabels` (WCAG 2.2.2) | Server HTML is the whole walkthrough as a labelled `<ol>` |
+| `ColorBand` | Full-width band tinted in one of the three accent families | Static |
+| `Marquee` | Duplicated `aria-hidden` track; direction resolves against `dir` | Degrades to a single static row |
+| `CelebrationBurst` | Deterministic radial burst | Renders nothing: celebration is additive, so absence is correct |
+| `LiveBadge` | Dot plus a required label, CSS-driven | Handled by the global 1ms override, no JS branch |
+
+**Per-page budgets.** The vocabulary is governed by
+`apps/web/src/features/marketing/components/scene/scene-budget.test.ts`, which is a source census over
+every `page.tsx` under the marketing route tree. That file, not this document, is the enforcement point;
+the numbers are repeated here so a reviewer knows them before opening a pull request.
+
+| Device | Vocabulary ceiling (no page may ever exceed) | Default page budget |
+| --- | --- | --- |
+| `ScrollScene` | 1 | 1 |
+| `ColorBand` | 2 | 1 |
+| `Marquee` | 1 | 0 |
+| `SceneSequencer` | 1 | 1 |
+
+Two documented overrides exist: the home page gets a second `ColorBand` and the single `Marquee` (it is a
+demonstration rather than a document, and the connector list is genuinely too long to read at once), and
+the product page gets a second `ColorBand` to mark the boundary between its two halves. Adding a third
+override is a design decision a reviewer may refuse. Raising a ceiling is a redesign, not a budget edit.
+
+The reason a budget exists at all: this product had a loud visual system once and deleted it, because it
+was sprayed rather than spent. `features/marketing/components/editorial/inverted-band.test.ts` still
+holds the empty allow-list that keeps the old vocabulary dead. The budget is what makes this attempt a
+different attempt.
 
 ### 7.5 Iconography
 

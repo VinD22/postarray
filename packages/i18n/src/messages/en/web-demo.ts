@@ -160,4 +160,100 @@ export const webDemoMessages = {
   'web.demo.sample.instagram.body':
     'The same release picture, with a caption written for the feed and alt text written by a person.',
   'web.demo.sample.instagram.check': 'Account type, aspect ratio and alt text',
+
+  /* ---------------------------------------------------------------------- */
+  /* The nine scene product tour                                             */
+  /*                                                                         */
+  /* The step names are the indicator's button labels, so they are short      */
+  /* enough to sit in a row of nine and specific enough to be worth clicking. */
+  /* They are also the labels of the stacked walkthrough a reader gets with   */
+  /* reduced motion or no JavaScript, which is the same tour with the timing  */
+  /* taken out rather than a reduced version of it.                           */
+  /* ---------------------------------------------------------------------- */
+
+  'web.demo.tour.stepsLabel': 'Tour steps',
+  'web.demo.tour.jump': 'Show step {position}: {step}',
+  'web.demo.tour.step.project': 'Create a project',
+  'web.demo.tour.step.connect': 'Connect accounts',
+  'web.demo.tour.step.compose': 'Compose once',
+  'web.demo.tour.step.variants': 'Adapt per platform',
+  'web.demo.tour.step.validate': 'Check it',
+  'web.demo.tour.step.schedule': 'Give it a time',
+  'web.demo.tour.step.week': 'See the week',
+  'web.demo.tour.step.publish': 'Publish and record',
+  'web.demo.tour.step.digest': 'Read the digest',
+
+  /* ---------------------------------------------------------------------- */
+  /* Checks (step 5)                                                         */
+  /*                                                                         */
+  /* Only checks the composer genuinely runs today: the per account character */
+  /* limit (`validation.text_too_long`), alt text on every image             */
+  /* (`validation.alt_text_missing`), and whether a first comment is allowed  */
+  /* on the account it was written for (the `firstComment` capability).       */
+  /* ---------------------------------------------------------------------- */
+
+  'web.demo.validate.label': 'Checks before scheduling',
+  'web.demo.validate.check.length': 'Character limit, per account',
+  'web.demo.validate.check.lengthDetail':
+    'Each version is measured against the limit the platform gives that account.',
+  'web.demo.validate.check.altText': 'Alt text on every image',
+  'web.demo.validate.check.altTextDetail':
+    'An image without a description, or without being marked decorative, stops the schedule.',
+  'web.demo.validate.check.firstComment': 'First comment allowed here',
+  'web.demo.validate.check.firstCommentDetail':
+    'A first comment is only offered on accounts whose platform supports one.',
+  'web.demo.validate.note':
+    'These run in the composer before anything is scheduled, and again before anything is sent.',
+
+  /* ---------------------------------------------------------------------- */
+  /* Publish and receipt (step 8)                                            */
+  /*                                                                         */
+  /* The steps a scheduled post has really passed are completed. Everything   */
+  /* the publish run would write is pending, because no connector has passed  */
+  /* provider verification, so there is no publish run to write it.           */
+  /* ---------------------------------------------------------------------- */
+
+  'web.demo.live.label': 'Publishing and the record of it',
+  'web.demo.live.step.approved': 'Approved by {approver}',
+  'web.demo.live.step.queued': 'Queued for its slot',
+  'web.demo.live.step.sent': 'Sent to the platform',
+  'web.demo.live.step.confirmed': 'Confirmed by the platform',
+  'web.demo.live.badge.pending': 'Not published',
+  'web.demo.live.badge.live': 'Live',
+  'web.demo.live.pending':
+    'The last two steps are written by the publish run. No connector has passed provider verification yet, so they stay pending and the external post ID and permalink stay unavailable.',
+
+  /* ---------------------------------------------------------------------- */
+  /* The weekly digest (step 9)                                              */
+  /*                                                                         */
+  /* Sentences about what the product did, never engagement figures. There is */
+  /* no reach, no impression count and no score here, because the product has */
+  /* none to read and a digest that invented one would be a fabricated        */
+  /* dashboard with a friendlier voice.                                       */
+  /* ---------------------------------------------------------------------- */
+
+  'web.demo.digest.label': 'Your week, in sentences',
+  'web.demo.digest.sample': 'Sample',
+  'web.demo.digest.line.variants':
+    'Three platform-native versions went out from one draft this week.',
+  'web.demo.digest.line.earliest': 'Tuesday morning was your earliest slot.',
+  'web.demo.digest.line.approval': 'Every version was approved before it was queued.',
+  'web.demo.digest.line.alt': 'Every image carried alt text written by a person.',
+  'web.demo.digest.footer': 'Live analytics appear here as your posts publish.',
+
+  /* ---------------------------------------------------------------------- */
+  /* The three added walkthrough steps                                       */
+  /* ---------------------------------------------------------------------- */
+
+  'web.demo.step.validate.title': 'Check it before it is scheduled',
+  'web.demo.step.validate.body':
+    'The composer measures each version against the account it is written for: the character limit that account really has, alt text on every image, and whether the platform offers a first comment at all. A version that fails a check cannot be scheduled.',
+
+  'web.demo.step.publish.title': 'Publish, and keep the record',
+  'web.demo.step.publish.body':
+    'A publish run sends each version at its instant, records what the platform answered, and writes an immutable receipt. That run is the part that does not exist yet, so the last two steps below are pending rather than drawn as finished.',
+
+  'web.demo.step.digest.title': 'Read the weekly digest',
+  'web.demo.step.digest.body':
+    'The digest describes what the product did in sentences: how many versions went out from one draft, which slot was earliest, what was approved. It carries no engagement figures, because analytics come from the platforms after a post publishes and nothing publishes yet.',
 } as const;

@@ -10,7 +10,14 @@
  *    Tool Radar and the pricing page use this same key.
  *
  * Tiers buy active project capacity and nothing else, so no `billing.tier.*`
- * string may describe a feature one tier has and another does not.
+ * string may describe a feature one tier has and another does not. Channel
+ * capacity is derived from project capacity, never sold separately, so
+ * `billing.tier.channelAllowance` states a count and never a price.
+ *
+ * The three `billing.tier.*.annualFraming` sentences are literals in the same
+ * tradition as `billing.plan.annualFraming`. `copy-compliance.test.ts` asserts
+ * every amount in them against the arithmetic in `packages/billing/src/tiers.ts`,
+ * so a price change cannot leave a stale sentence behind.
  */
 export const billingMessages = {
   'billing.title': 'Billing',
@@ -45,6 +52,10 @@ export const billingMessages = {
   'billing.tier.projectAllowance':
     '{count, plural, one {# active project} other {# active projects}}',
   'billing.tier.projectAllowanceUsage': '{used} of {limit} active projects',
+  'billing.tier.channelAllowance':
+    '{count, plural, one {# active social channel} other {# active social channels}}',
+  'billing.tier.channelAllowancePooled':
+    'Channels are pooled across the whole workspace, so one busy project can use more of them than a quiet one.',
   'billing.tier.everyFeature': 'Every feature, on every tier',
   'billing.tier.columnTier': 'Tier',
   'billing.tier.columnProjects': 'Active projects',
@@ -58,10 +69,13 @@ export const billingMessages = {
   'billing.tier.allowanceUnavailable': 'Project allowance unavailable',
   'billing.tier.standard.name': 'Standard',
   'billing.tier.standard.tagline': 'For one team running a handful of projects.',
+  'billing.tier.standard.annualFraming': '$25 a month billed annually. Save $48 a year.',
   'billing.tier.growth.name': 'Growth',
   'billing.tier.growth.tagline': 'More active projects in one workspace.',
+  'billing.tier.growth.annualFraming': '$51 a month billed annually. Save $96 a year.',
   'billing.tier.studio.name': 'Studio',
   'billing.tier.studio.tagline': 'The largest project capacity we offer.',
+  'billing.tier.studio.annualFraming': '$103 a month billed annually. Save $192 a year.',
 
   'billing.trial.length': 'Seven day trial with every feature',
   'billing.trial.dueToday': '$0 due today',
@@ -123,7 +137,7 @@ export const billingMessages = {
     'There are no image or video generation credits, because Relay does not generate media.',
 
   'billing.downgrade.overLimit':
-    'This workspace has {count, plural, one {# channel} other {# channels}} over the limit. New actions on those channels are blocked. Nothing is disconnected for you.',
+    'This workspace has {count, plural, one {# channel} other {# channels}} over the tier allowance. Every connected channel keeps publishing and nothing is disconnected for you. You cannot connect another channel until you are back within the allowance.',
   'billing.downgrade.projectsOverAllowance':
     'This workspace has {count, plural, one {# project} other {# projects}} over the tier allowance. Every existing project keeps working and nothing is archived for you. You cannot create or restore another project until you are back within the allowance.',
 

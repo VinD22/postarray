@@ -6,8 +6,7 @@ import { useSearchParams } from 'next/navigation';
 import { Timeline, type TimelineEvent } from '@relay/design-system/patterns';
 import { Button, Separator } from '@relay/design-system/primitives';
 
-import { KineticHeadline, MagneticButton } from '@/components/motion';
-import { ConfettiBurst } from './confetti-burst';
+import { CelebrationBurst, KineticHeadline, MagneticButton } from '@/components/motion';
 import { useSession } from '@/lib/auth/session-context';
 import { useFormatters, useTranslations } from '@/lib/i18n';
 
@@ -20,11 +19,17 @@ import { useFormatters, useTranslations } from '@/lib/i18n';
  * what is still to come.
  *
  * The one deliberately celebratory moment in the signed-in product (WP-4):
- * the heading rises in via `KineticHeadline` and a one-time confetti burst
- * plays behind it, both named exceptions to those components' marketing-tier
+ * the heading rises in via `KineticHeadline` and a one-time burst plays
+ * behind it, both named exceptions to those components' marketing-tier
  * default (see `components/motion/README.md`). Everything else on this
  * screen — the timeline, the facts, the next-step list — stays exactly as
  * plain and honest as every other receipt in the product.
+ *
+ * The burst is the shared `<CelebrationBurst tier="lg">` (Track B) rather
+ * than this directory's original single-purpose `ConfettiBurst`. Same
+ * gesture, one implementation: the publish celebration on the receipt page
+ * fires the same component at the same tier, so finishing onboarding and
+ * landing a first cross-post look like the same moment, because they are.
  */
 export function DoneStep() {
   const t = useTranslations();
@@ -72,7 +77,12 @@ export function DoneStep() {
 
   return (
     <div className="flex flex-col gap-8">
-      <ConfettiBurst />
+      {/* Positioned, so the burst radiates from behind the heading rather
+          than from the document origin. Renders nothing under reduced
+          motion, which is why there is no static fallback here. */}
+      <div aria-hidden="true" className="pointer-events-none relative">
+        <CelebrationBurst tier="lg" className="start-1/2 top-8" />
+      </div>
 
       <div className="flex flex-col gap-1">
         <KineticHeadline as="h1" className="text-title-lg text-text-primary">

@@ -91,4 +91,19 @@ export const statusMessages = {
   'confirm.publishNow.body':
     '{count, plural, one {This publishes to # account immediately} other {This publishes to # accounts immediately}}. It cannot be recalled from Relay.',
   'confirm.typeToConfirm': 'Type {word} to confirm.',
+
+  /* -- Empty scenes ------------------------------------------------------
+     One sentence per scene, in the product voice, sitting under the small
+     line drawing in `components/empty/empty-scene.tsx`. These are the first
+     screens a new workspace sees, so they say what will fill the screen and
+     why it is not filled yet, and never apologise for it. */
+  'empty.scene.analytics.line':
+    'Nothing to measure yet. Numbers appear once a post has been out long enough to have any.',
+  'empty.scene.library.line':
+    'An empty library. Upload something and it lives here, with its alt text and its rights on the record.',
+  'empty.scene.actionCenter.line': 'Nothing needs you. That is the whole point of this queue.',
+  'empty.scene.calendar.line': 'A clear week. Write something and give it a time.',
+  'empty.scene.receipts.line':
+    'No receipts yet. The first publication writes one, and it never changes after that.',
+  'empty.scene.digest.line': 'Your first digest arrives after your first published week.',
 } as const;

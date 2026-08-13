@@ -9,13 +9,44 @@
  * info are semantic exceptions, never decorative. Provider brand colours
  * exist only as 8px identity dots.
  *
- * Exactly one chromatic accent: a deep terracotta (#B4462B in light,
+ * The primary chromatic accent: a deep terracotta (#B4462B in light,
  * lightened to #E07A5F in dark). It carries links, focus rings, text
  * selection, the active tab and the calendar "today" marker — the places a
  * reader needs a colour affordance and ink alone gives none. It is
  * deliberately not the primary button fill: the primary commit action stays
  * ink so the accent reads as navigation and state, not as the loudest
- * surface on the screen. There is no second accent.
+ * surface on the screen.
+ *
+ * Two more accent families (the "loud and alive" pass)
+ * ----------------------------------------------------
+ * This header used to end "There is no second accent." That sentence is gone
+ * on purpose. The editorial system is keeping its restraint and its gates, and
+ * gaining a governed *scene vocabulary* on top: choreographed marketing
+ * moments that need more than one hue to say "this is energy" and "this is
+ * live". Two families join terracotta, and nothing else may:
+ *
+ *   MARIGOLD    (--accent-warm-*)  warm gold. Energy, celebration, highlight.
+ *                                  #8A6100 light / #F5C233 dark.
+ *   ULTRAMARINE (--accent-cool-*)  deep blue-violet. The cool counterweight;
+ *                                  "live" / "published" moments.
+ *                                  #3B4CC0 light / #8B9BF4 dark.
+ *
+ * Both mirror terracotta's token set exactly (default / hover / active /
+ * subtle-bg / subtle-bg-hover / on-accent) so a consumer that can style with
+ * one can style with any. Neither is wired to a status meaning: status stays
+ * success/warning/destructive/info, and status is never colour alone.
+ *
+ * Marigold's light step sits noticeably darker than a "pure" marigold
+ * (#B07D10 would have been the eye's choice) because #B07D10 reads only
+ * 3.63:1 on white — below the 4.5:1 body floor. The hex below was chosen by
+ * calculation, not by eye, and the whole family follows from it.
+ *
+ * Deliberate near-neighbours, called out so nobody "fixes" them by accident:
+ * marigold sits in the same hue region as the warning ramp (ΔE*ab 13.1 in
+ * dark, 11.9 in light) and ultramarine in the same region as info (ΔE*ab 13.4
+ * dark, 11.0 light). They are distinguishable, but they are not a substitute
+ * for each other: an accent family never carries status, and every status
+ * surface in this codebase pairs its colour with a word and an icon.
  *
  * Dark is designed, not inverted. A warm near-black canvas with paper-ink
  * text; the terracotta lightens so it reads on the dark ground and still
@@ -36,8 +67,11 @@
  * visual boundary of interactive controls.
  *
  * Editorial palette (Noteform Pitch). Every number below is live — the
- * 112-pair gate in contrast.test.ts (224 assertions across the two themes)
- * is green against it.
+ * 141-pair gate in contrast.test.ts (282 assertions across the two themes)
+ * is green against it. It was 114 pairs / 228 assertions before the two new
+ * accent families landed (+26 for the two families, +1 because terracotta
+ * picked up the `border.strong on subtleBg` pair the shared generator gives
+ * every family). The gate grows, it never shrinks.
  *
  * LIGHT THEME                                canvas  raised  sunken  overlay
  *   text.primary       #141413               18.02   18.43   16.11   18.43
@@ -61,6 +95,26 @@
  *                                    destructive 5.13  info 4.90
  *   text.inverted #FFFCF8 on surface.inverted #141413 = 18.02
  *   border.bold #141413 on canvas #FFFCF8 = 18.02; on raised #FFFFFF = 18.43
+ *
+ *   MARIGOLD light  (--accent-warm-*)      canvas  raised  sunken  overlay
+ *     accent-warm.default #8A6100           5.42    5.54    4.88    5.54
+ *     on-accent   #FFFFFF on default #8A6100 = 5.54
+ *     on-accent   #FFFFFF on hover   #745100 = 7.19
+ *     on-accent   #FFFFFF on active  #5E4100 = 9.41
+ *     accent-warm #8A6100 on subtle  #FCF4E0 = 5.05 (hover #F9EFD2 4.83)
+ *     text.primary #141413 on subtle #FCF4E0 = 16.81 (hover 16.07)
+ *     border.focus #B4462B on subtle #FCF4E0 = 4.97
+ *     border.strong #6B6866 on subtle #FCF4E0 = 5.04
+ *
+ *   ULTRAMARINE light (--accent-cool-*)    canvas  raised  sunken  overlay
+ *     accent-cool.default #3B4CC0           6.89    7.04    6.21    7.04
+ *     on-accent   #FFFFFF on default #3B4CC0 = 7.04
+ *     on-accent   #FFFFFF on hover   #3240A6 = 8.68
+ *     on-accent   #FFFFFF on active  #29358C = 10.59
+ *     accent-cool #3B4CC0 on subtle  #EEF0FD = 6.21 (hover #E4E8FB 5.78)
+ *     text.primary #141413 on subtle #EEF0FD = 16.25 (hover 15.13)
+ *     border.focus #B4462B on subtle #EEF0FD = 4.81
+ *     border.strong #6B6866 on subtle #EEF0FD = 4.88
  *
  * DARK THEME                                 canvas  raised  sunken  overlay
  *   text.primary       #FFFCF8               18.75   16.69   19.59   16.32
@@ -87,12 +141,64 @@
  *   blush.on    #141413 on blush.bg    #EDE8E0 = 15.12 (hover 14.29)
  *   border.bold #E8E2D6 on canvas #0F0F0E = 14.87; on raised #1C1C1A = 13.23
  *
+ *   MARIGOLD dark   (--accent-warm-*)      canvas  raised  sunken  overlay
+ *     accent-warm.default #F5C233          11.55   10.28   12.07   10.06
+ *     on-accent   #141413 on default #F5C233 = 11.10
+ *     on-accent   #141413 on hover   #FAD25C = 12.67
+ *     on-accent   #141413 on active  #DBA919 =  8.52
+ *     accent-warm #F5C233 on subtle  #241B06 = 10.25 (hover #302407 9.16)
+ *     text.primary #FFFCF8 on subtle #241B06 = 16.63 (hover 14.87)
+ *     border.focus #E07A5F on subtle #241B06 = 5.77
+ *     border.strong #8A8784 on subtle #241B06 = 4.76
+ *
+ *   ULTRAMARINE dark (--accent-cool-*)     canvas  raised  sunken  overlay
+ *     accent-cool.default #8B9BF4           7.39    6.58    7.72    6.43
+ *     on-accent   #141413 on default #8B9BF4 = 7.10
+ *     on-accent   #141413 on hover   #A3AFF7 = 8.81
+ *     on-accent   #141413 on active  #6D7FE0 = 5.06
+ *     accent-cool #8B9BF4 on subtle  #13152C = 6.91 (hover #1B1E3D 6.23)
+ *     text.primary #FFFCF8 on subtle #13152C = 17.53 (hover 15.80)
+ *     border.focus #E07A5F on subtle #13152C = 6.08
+ *     border.strong #8A8784 on subtle #13152C = 5.02
+ *
  * Provider identity dots clear 3:1 against their own theme canvas in both
  * themes (lowest: facebook 5.32 light, youtube 5.63 dark).
  *
- * The accent is a deep terracotta, the only chromatic family in the system.
- * The cta/blush groups survive as warm paper tints rather than neon
- * yellow/pink, and the primary button fill stays ink.
+ * Terracotta remains the primary accent — the one that carries links, focus
+ * and selection. Marigold and ultramarine are scene colours: they belong to
+ * budgeted marketing choreography (see
+ * `apps/web/src/features/marketing/components/scene/scene-budget.test.ts`),
+ * not to product chrome. The cta/blush groups survive as warm paper tints
+ * rather than neon yellow/pink, and the primary button fill stays ink.
+ *
+ * ---------------------------------------------------------------------------
+ * GRADIENT AND TEXTURE POLICY
+ *
+ * A contrast gate can only measure two flat colours. A gradient has infinitely
+ * many, and a texture overlay has none that a test can name — so gradients and
+ * textures cannot be gate-checked, and the rules below are what keep the gate
+ * honest rather than decorative. Breaking one of them does not turn a test
+ * red; it just makes every green test a lie. Treat them as gates.
+ *
+ *   1. Body text never sits on a gradient or a texture. Ever. Running copy
+ *      goes on a flat token surface (--surface-*, --accent-*-subtle-bg or a
+ *      status bg). If a gradient is wanted behind a paragraph, the paragraph
+ *      moves out of it.
+ *   2. Display text over a gradient must pass AA (3:1, large text) against
+ *      BOTH extreme stops, and both stops must be documented tokens whose
+ *      pairs with that text colour appear in `documentedContrastPairs`. Two
+ *      documented stops make the whole ramp between them safe, because every
+ *      intermediate colour's luminance lies between the two endpoints'.
+ *   3. Decorative texture overlays (grain, hatch, noise, paper fibre) run at
+ *      <= 8% opacity over a token surface. At that strength the composite
+ *      luminance moves by less than the rounding slack already built into the
+ *      documented ratios, so the surface's existing pairs still hold.
+ *   4. Duotone gradients may only combine stops WITHIN one accent family's
+ *      documented tints and shades (e.g. --accent-warm-subtle-bg to
+ *      --accent-warm-default), or a documented surface token to a documented
+ *      accent token. No arbitrary hex, anywhere, for any reason — not in a
+ *      component, not in a CSS file, not in an inline style. If a value is
+ *      worth painting it is worth a token, and a token is worth a pair.
  * ---------------------------------------------------------------------------
  */
 
@@ -139,6 +245,48 @@
   --relay-terracotta-800: #863019; /* light active */
   --relay-terracotta-900: #331a13; /* dark subtle bg, hover */
   --relay-terracotta-950: #26140f; /* dark subtle bg */
+
+  /* Marigold — the warm scene accent. Energy, celebration, the highlight
+     moment in a choreographed section.
+
+     Same step grammar as terracotta above: 50/100 are the light theme's
+     subtle washes, 300/400/500 the dark theme's hover/default/active,
+     600/700/800 the light theme's default/hover/active, and 900/950 the dark
+     theme's subtle washes.
+
+     The 600 step is #8A6100, not the #B07D10 a designer's eye reaches for.
+     #B07D10 measures 3.63:1 on #FFFFFF, which is under the 4.5:1 body floor,
+     so the whole light ramp was re-derived downward from the floor. It reads
+     as a deep antique gold rather than a bright marigold; that is the price
+     of a gold that can carry text on paper, and the dark ramp (#F5C233) is
+     where the family gets to be bright. */
+  --relay-marigold-50: #fcf4e0; /* light subtle bg */
+  --relay-marigold-100: #f9efd2; /* light subtle bg, hover */
+  --relay-marigold-300: #fad25c; /* dark hover */
+  --relay-marigold-400: #f5c233; /* dark default */
+  --relay-marigold-500: #dba919; /* dark active */
+  --relay-marigold-600: #8a6100; /* light default */
+  --relay-marigold-700: #745100; /* light hover */
+  --relay-marigold-800: #5e4100; /* light active */
+  --relay-marigold-900: #302407; /* dark subtle bg, hover */
+  --relay-marigold-950: #241b06; /* dark subtle bg */
+
+  /* Ultramarine — the cool scene accent, and the only cool chromatic family
+     in the system. It is the counterweight to two warm accents: where
+     terracotta is navigation and marigold is celebration, ultramarine is the
+     "live" / "published" moment, the thing that has actually left the building.
+
+     Steps follow the same grammar as the two ramps above. */
+  --relay-ultramarine-50: #eef0fd; /* light subtle bg */
+  --relay-ultramarine-100: #e4e8fb; /* light subtle bg, hover */
+  --relay-ultramarine-300: #a3aff7; /* dark hover */
+  --relay-ultramarine-400: #8b9bf4; /* dark default */
+  --relay-ultramarine-500: #6d7fe0; /* dark active */
+  --relay-ultramarine-600: #3b4cc0; /* light default */
+  --relay-ultramarine-700: #3240a6; /* light hover */
+  --relay-ultramarine-800: #29358c; /* light active */
+  --relay-ultramarine-900: #1b1e3d; /* dark subtle bg, hover */
+  --relay-ultramarine-950: #13152c; /* dark subtle bg */
 
   /* Warm paper fills — the quiet CTA and badge fills. Formerly named
      `yellow`/`pink`; the editorial system replaced those neons with paper
@@ -242,6 +390,28 @@
   --accent-subtle-bg-hover: var(--relay-terracotta-100);
   --accent-on-accent: var(--relay-paper-0);
 
+  /* The two scene accents. Same six-token shape as the accent above, so a
+     component that can be styled by one can be styled by any of the three.
+
+     These are NOT product chrome. Terracotta stays the accent that carries
+     links, focus and selection everywhere; warm and cool exist for budgeted
+     marketing choreography (the scene vocabulary), and their budget is
+     enforced by scene-budget.test.ts, not by taste. Neither carries a status
+     meaning. */
+  --accent-warm-default: var(--relay-marigold-600);
+  --accent-warm-hover: var(--relay-marigold-700);
+  --accent-warm-active: var(--relay-marigold-800);
+  --accent-warm-subtle-bg: var(--relay-marigold-50);
+  --accent-warm-subtle-bg-hover: var(--relay-marigold-100);
+  --accent-warm-on-accent: var(--relay-paper-0);
+
+  --accent-cool-default: var(--relay-ultramarine-600);
+  --accent-cool-hover: var(--relay-ultramarine-700);
+  --accent-cool-active: var(--relay-ultramarine-800);
+  --accent-cool-subtle-bg: var(--relay-ultramarine-50);
+  --accent-cool-subtle-bg-hover: var(--relay-ultramarine-100);
+  --accent-cool-on-accent: var(--relay-paper-0);
+
   /* Editorial fill groups. What was once loud yellow/pink is now warm paper
      tints: quiet highlighted fills with ink text, identical in both themes.
      Ink reads on them at 15:1+ in either theme. */
@@ -344,6 +514,23 @@
     --accent-subtle-bg-hover: var(--relay-terracotta-900);
     --accent-on-accent: var(--relay-ink);
 
+    /* Scene accents — see the comment in section 2. Dark uses the lightened
+       300/400/500 steps as text/fill and the 900/950 steps as the washes,
+       exactly as terracotta does. */
+    --accent-warm-default: var(--relay-marigold-400);
+    --accent-warm-hover: var(--relay-marigold-300);
+    --accent-warm-active: var(--relay-marigold-500);
+    --accent-warm-subtle-bg: var(--relay-marigold-950);
+    --accent-warm-subtle-bg-hover: var(--relay-marigold-900);
+    --accent-warm-on-accent: var(--relay-ink);
+
+    --accent-cool-default: var(--relay-ultramarine-400);
+    --accent-cool-hover: var(--relay-ultramarine-300);
+    --accent-cool-active: var(--relay-ultramarine-500);
+    --accent-cool-subtle-bg: var(--relay-ultramarine-950);
+    --accent-cool-subtle-bg-hover: var(--relay-ultramarine-900);
+    --accent-cool-on-accent: var(--relay-ink);
+
     /* CTA / blush — identical to light; see comment in section 2. */
     --cta-bg: var(--relay-fill-100);
     --cta-bg-hover: var(--relay-fill-200);
@@ -430,6 +617,23 @@
   --accent-subtle-bg: var(--relay-terracotta-950);
   --accent-subtle-bg-hover: var(--relay-terracotta-900);
   --accent-on-accent: var(--relay-ink);
+
+  /* Scene accents — see the comment in section 2. Dark uses the lightened
+     300/400/500 steps as text/fill and the 900/950 steps as the washes,
+     exactly as terracotta does. */
+  --accent-warm-default: var(--relay-marigold-400);
+  --accent-warm-hover: var(--relay-marigold-300);
+  --accent-warm-active: var(--relay-marigold-500);
+  --accent-warm-subtle-bg: var(--relay-marigold-950);
+  --accent-warm-subtle-bg-hover: var(--relay-marigold-900);
+  --accent-warm-on-accent: var(--relay-ink);
+
+  --accent-cool-default: var(--relay-ultramarine-400);
+  --accent-cool-hover: var(--relay-ultramarine-300);
+  --accent-cool-active: var(--relay-ultramarine-500);
+  --accent-cool-subtle-bg: var(--relay-ultramarine-950);
+  --accent-cool-subtle-bg-hover: var(--relay-ultramarine-900);
+  --accent-cool-on-accent: var(--relay-ink);
 
   /* CTA / blush — identical to light; see comment in section 2. */
   --cta-bg: var(--relay-fill-100);
@@ -530,6 +734,20 @@
   --color-accent-subtle: var(--accent-subtle-bg);
   --color-accent-subtle-hover: var(--accent-subtle-bg-hover);
   --color-accent-on: var(--accent-on-accent);
+
+  --color-accent-warm: var(--accent-warm-default);
+  --color-accent-warm-hover: var(--accent-warm-hover);
+  --color-accent-warm-active: var(--accent-warm-active);
+  --color-accent-warm-subtle: var(--accent-warm-subtle-bg);
+  --color-accent-warm-subtle-hover: var(--accent-warm-subtle-bg-hover);
+  --color-accent-warm-on: var(--accent-warm-on-accent);
+
+  --color-accent-cool: var(--accent-cool-default);
+  --color-accent-cool-hover: var(--accent-cool-hover);
+  --color-accent-cool-active: var(--accent-cool-active);
+  --color-accent-cool-subtle: var(--accent-cool-subtle-bg);
+  --color-accent-cool-subtle-hover: var(--accent-cool-subtle-bg-hover);
+  --color-accent-cool-on: var(--accent-cool-on-accent);
 
   --color-cta: var(--cta-bg);
   --color-cta-hover: var(--cta-bg-hover);

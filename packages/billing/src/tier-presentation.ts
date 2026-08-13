@@ -3,6 +3,7 @@ import {
   BASE_TIER_KEY,
   PUBLISHABLE_TIER_KEYS,
   assertTierPublishable,
+  tierChannelAllowance,
   tierInclusionKeys,
   tierProjectAllowance,
 } from './tiers';
@@ -44,7 +45,17 @@ export interface TierAnnualFraming {
    * not charge.
    */
   readonly effectiveMonthlyIsExact: boolean;
+  /**
+   * The shared parameterized sentence. Amounts are supplied by the renderer
+   * from the fields above, so it cannot drift from the charge on any tier.
+   */
   readonly framingKey: string;
+  /**
+   * The founder-worded sentence for this specific tier, in the tradition of
+   * `MANDATED_COPY`. It is a literal, so `copy-compliance.test.ts` asserts its
+   * amounts against the derived ones and a price change cannot strand it.
+   */
+  readonly mandatedFramingKey: string;
 }
 
 export interface TierPresentation {
@@ -57,6 +68,13 @@ export interface TierPresentation {
   /** The one number that varies between tiers. */
   readonly projectAllowance: number;
   readonly projectAllowanceKey: string;
+  /**
+   * Derived from `projectAllowance`, never sold on its own. Rendered so a buyer
+   * can see what their project capacity is worth in connections, pooled across
+   * the workspace rather than fenced per project.
+   */
+  readonly channelAllowance: number;
+  readonly channelAllowanceKey: string;
   readonly month: TierIntervalPresentation;
   readonly year: TierIntervalPresentation;
   readonly annualFraming: TierAnnualFraming;
@@ -67,6 +85,9 @@ export interface TierPresentation {
 
 /** Rendered beside the project count on every tier card. */
 export const TIER_PROJECT_ALLOWANCE_KEY = 'billing.tier.projectAllowance';
+
+/** Rendered beside the derived channel count on every tier card. */
+export const TIER_CHANNEL_ALLOWANCE_KEY = 'billing.tier.channelAllowance';
 
 /** The per-tier annual sentence. Parameters are money, never a percentage. */
 export const TIER_ANNUAL_FRAMING_KEY = 'billing.tier.annualFraming';
@@ -89,6 +110,15 @@ function intervalPresentation(
   };
 }
 
+/**
+ * The catalog key holding this tier's founder-worded annual sentence. Derived
+ * from the tier key so adding a tier cannot forget it: the presentation test
+ * resolves every key it names against the English catalog.
+ */
+export function tierAnnualFramingKey(key: PlanTierKey): string {
+  return `billing.tier.${key.replace('relay_', '')}.annualFraming`;
+}
+
 function annualFraming(tier: PlanTier): TierAnnualFraming {
   const twelveMonths = tier.monthlyPriceMinor * 12;
   const effectiveMonthlyMinor = Math.round(tier.annualPriceMinor / 12);
@@ -104,6 +134,7 @@ function annualFraming(tier: PlanTier): TierAnnualFraming {
     savingBasisPoints: Math.round((savingMinor * 10_000) / twelveMonths),
     effectiveMonthlyIsExact: effectiveMonthlyMinor * 12 === tier.annualPriceMinor,
     framingKey: TIER_ANNUAL_FRAMING_KEY,
+    mandatedFramingKey: tierAnnualFramingKey(tier.key),
   };
 }
 
@@ -119,6 +150,8 @@ export function buildTierPresentation(key: PlanTierKey, trialDays: number): Tier
     taglineKey: tier.taglineKey,
     projectAllowance: tierProjectAllowance(tier.key),
     projectAllowanceKey: TIER_PROJECT_ALLOWANCE_KEY,
+    channelAllowance: tierChannelAllowance(tier.key),
+    channelAllowanceKey: TIER_CHANNEL_ALLOWANCE_KEY,
     month: Object.freeze(intervalPresentation(tier, 'month', trialDays)),
     year: Object.freeze(intervalPresentation(tier, 'year', trialDays)),
     annualFraming: Object.freeze(annualFraming(tier)),

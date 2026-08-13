@@ -1,6 +1,8 @@
 import type { ReactNode } from 'react';
 import { DefinitionList, Timeline } from '@relay/design-system/patterns';
 
+import { LiveBadge } from '@/components/motion';
+
 import { DemoPanel } from '../demo-frame';
 
 /**
@@ -66,5 +68,43 @@ export function ReceiptPanel({ label, steps, pending, fields }: ReceiptPanelProp
       />
       <p className="text-body-sm text-text-tertiary mt-3 leading-[1.55]">{pending}</p>
     </DemoPanel>
+  );
+}
+
+export interface LiveReceiptPanelProps extends ReceiptPanelProps {
+  /**
+   * Whether a real publish run wrote the other half of this receipt.
+   *
+   * False today, and it must stay false until a connector passes provider
+   * verification. It is a prop rather than a constant so that reaching the
+   * live state is a data change rather than a redesign: the day publishing
+   * works, the same panel already knows how to show it.
+   */
+  readonly published: boolean;
+  readonly liveLabel: string;
+  readonly pendingLabel: string;
+}
+
+/**
+ * The receipt panel, plus the badge that says whether the post is actually
+ * live.
+ *
+ * This is the scene the whole tour builds towards, so it is also the scene
+ * most tempting to overstate. It refuses: with `published` false the badge
+ * reads "not published", the publish steps stay `pending` and the fields a
+ * finished receipt would carry read "Unavailable". A visitor sees the shape of
+ * the record without being shown a post that never went out.
+ */
+export function LiveReceiptPanel({
+  published,
+  liveLabel,
+  pendingLabel,
+  ...receipt
+}: LiveReceiptPanelProps): ReactNode {
+  return (
+    <div className="grid gap-3">
+      <LiveBadge live={published} label={published ? liveLabel : pendingLabel} />
+      <ReceiptPanel {...receipt} />
+    </div>
   );
 }

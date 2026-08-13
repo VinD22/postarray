@@ -1,8 +1,11 @@
 import type { Metadata } from 'next';
 import type { ReactNode } from 'react';
 import { X } from 'lucide-react';
+import { CORE_PROVIDER_IDS } from '@relay/contracts';
+import { cn } from '@relay/design-system/utils';
+import type { Translator } from '@relay/i18n/translate';
 
-import { StaggerList } from '@/components/motion';
+import { Marquee, StaggerList } from '@/components/motion';
 import { HeroDemoSection } from '@/features/demo/hero-demo-section';
 import { JsonLd } from '@/features/marketing/components/json-ld';
 import {
@@ -16,7 +19,10 @@ import {
   EditorialVariantScene,
   Eyebrow,
   ProviderGrid,
+  TierGrid,
 } from '@/features/marketing/components/editorial';
+import { tierColumns } from '@/features/marketing/components/editorial/tier-columns';
+import { Sticker } from '@/features/marketing/components/scene';
 import { Body, Heading, Lede, Subheading } from '@/features/marketing/components/layout';
 import { Cta, TextLink } from '@/features/marketing/components/links';
 import { marketingTranslator } from '@/features/marketing/i18n';
@@ -69,17 +75,24 @@ const EXAMPLE_ROWS = [
 /** The hero cycler's platforms, in the order named in the WP-1 spec: X, LinkedIn, Instagram, YouTube, Bluesky. */
 const PLATFORM_CYCLE_IDS = EXAMPLE_ROWS.map((row) => row.id);
 
-/** Every real, shipped connector (`features/marketing/data/connectors.ts`), for the "official APIs only" grid. */
-const CONNECTOR_PROVIDERS: readonly ProviderId[] = [
-  'x',
-  'linkedin',
-  'instagram',
-  'facebook',
-  'youtube',
-  'tiktok',
-  'threads',
-  'bluesky',
-];
+/**
+ * The launch cohort, for the marquee, the "official APIs only" grid and the
+ * connector-count sticker.
+ *
+ * Derived from `CORE_PROVIDER_IDS` rather than typed out. This list used to be
+ * eight hand-written ids under a comment claiming it was "every real, shipped
+ * connector", which it was not: the cohort in `@relay/contracts` already held
+ * ten, so the home page quietly promised a smaller product than the
+ * integrations page and the connect dialog did. Deriving it means the page
+ * cannot disagree with the cohort again, in either direction — a provider
+ * added to or removed from the cohort moves this grid with it, on the same
+ * commit, with no second edit to remember.
+ *
+ * `features/marketing/data/connectors.ts` (the capability matrix) derives from
+ * the same constant, so the two public connector surfaces are two views of one
+ * list.
+ */
+const CONNECTOR_PROVIDERS: readonly ProviderId[] = CORE_PROVIDER_IDS;
 
 const PILLARS = [
   {
@@ -140,6 +153,62 @@ const MONTHLY_PRICE_DOLLARS = 29;
 /** The annual price in whole dollars. Mirrors `annualPriceMinor: 30_000` on the base tier in `packages/billing/src/tiers.ts`. */
 const ANNUAL_PRICE_DOLLARS = 300;
 
+type Pillar = (typeof PILLARS)[number];
+
+/**
+ * One numbered proof row.
+ *
+ * Extracted because the rows are no longer one uninterrupted list: two of
+ * them sit inside a `ColorBand` and the rest on the paper canvas, and the
+ * row's markup must be identical in both grounds or the tint reads as a
+ * different component rather than as the same row on a different surface.
+ *
+ * The numeral is set at display scale with a marigold rule under it. Both are
+ * CSS: the rule's `scale-x` grows from the row's own hover/focus state and
+ * the global 1ms reduced-motion override reaches it, so there is no GSAP
+ * timeline here to branch on `useMotionOk` and nothing hidden in server HTML
+ * — the finished numeral and the full-width rule are what a no-JS visitor
+ * gets.
+ */
+function PillarRow({
+  pillar,
+  index,
+  t,
+}: {
+  readonly pillar: Pillar;
+  readonly index: number;
+  readonly t: Translator;
+}): ReactNode {
+  return (
+    <div
+      data-stagger-item
+      className="border-border-subtle group grid gap-4 border-b py-10 lg:grid-cols-12 lg:items-start lg:gap-12"
+    >
+      <div aria-hidden="true" className="lg:col-span-2">
+        <span className="font-display text-display-md text-text-tertiary block leading-none tabular-nums">
+          {String(index + 1).padStart(2, '0')}
+        </span>
+        <span
+          className={cn(
+            'bg-accent-warm mt-2 block h-0.5 w-16 origin-[left_center] rtl:origin-[right_center]',
+            'scale-x-50 transition-transform duration-(--duration-expressive) ease-(--ease-out-expo)',
+            'group-focus-within:scale-x-100 group-hover:scale-x-100',
+          )}
+        />
+      </div>
+      <div className="space-y-4 lg:col-span-9 lg:col-start-4">
+        <h3 className="text-title-lg text-text-primary text-pretty">{t.format(pillar.titleKey)}</h3>
+        <p className="text-body-lg text-text-secondary max-w-[68ch] leading-[1.65]">
+          {t.format(pillar.bodyKey)}
+        </p>
+        <p className="border-border-default text-body-sm text-text-tertiary border-s ps-4 font-mono leading-[1.6]">
+          {t.format(pillar.proofKey)}
+        </p>
+      </div>
+    </div>
+  );
+}
+
 export default async function HomePage({
   params,
 }: {
@@ -191,30 +260,30 @@ export default async function HomePage({
           <div className="max-w-[46rem]">
             <Eyebrow className="mb-6">{t.t('web.home.v2.sticker.trial')}</Eyebrow>
 
-          {/*
+            {/*
             `web.home.promise` is a full sentence, so it is set at the middle
             display step rather than the largest: at `lg` it wrapped to six or
             seven lines and pushed the action below the fold on common
             viewport heights.
           */}
-          <EditorialDisplay as="h1" size="md" reveal>
-            {t.t('web.home.promise')}
-          </EditorialDisplay>
+            <EditorialDisplay as="h1" size="md" reveal>
+              {t.t('web.home.promise')}
+            </EditorialDisplay>
 
-          <p className="font-display text-display-lg text-text-secondary mt-6 flex flex-wrap items-baseline gap-x-3 text-pretty">
-            {heroBefore.trim() ? <span>{heroBefore}</span> : null}
-            <EditorialPlatformCycler platforms={platformNames} />
-            {heroAfter.trim() ? <span>{heroAfter}</span> : null}
-          </p>
+            <p className="font-display text-display-lg text-text-secondary mt-6 flex flex-wrap items-baseline gap-x-3 text-pretty">
+              {heroBefore.trim() ? <span>{heroBefore}</span> : null}
+              <EditorialPlatformCycler platforms={platformNames} />
+              {heroAfter.trim() ? <span>{heroAfter}</span> : null}
+            </p>
 
-          <Lede className="mt-8 max-w-[62ch]">{t.t('web.home.lede')}</Lede>
+            <Lede className="mt-8 max-w-[62ch]">{t.t('web.home.lede')}</Lede>
 
-          <div className="mt-10 flex flex-wrap items-center gap-3">
-            <Cta href={ROUTES.signUp}>{t.t('web.cta.startTrial')}</Cta>
-            <Cta href={ROUTES.product} variant="secondary">
-              {t.t('nav.public.product')}
-            </Cta>
-          </div>
+            <div className="mt-10 flex flex-wrap items-center gap-3">
+              <Cta href={ROUTES.signUp}>{t.t('web.cta.startTrial')}</Cta>
+              <Cta href={ROUTES.product} variant="secondary">
+                {t.t('nav.public.product')}
+              </Cta>
+            </div>
 
             <p className="text-body-md text-text-tertiary mt-7 max-w-[64ch] leading-[1.6]">
               {t.t('web.home.summaryLine')}{' '}
@@ -236,12 +305,41 @@ export default async function HomePage({
       </EditorialSection>
 
       {/*
-        2. The connectors. Was an infinitely scrolling marquee of ink-bordered
-        name chips; now one still, wrapped grid that shows all of them at once.
+        2. The connectors, twice: moving, then still.
+
+        The marquee is the page's one (`scene-budget.test.ts` grants home
+        exactly one) and it is energy, not information — it loops the same
+        cohort names past the reader at reading speed and can never be read in
+        full. The still grid underneath is where the list is actually read,
+        and it is the one a crawler, a no-JS client and a reduced-motion
+        visitor see, because `Marquee` degrades to a single static row.
+
+        So the pairing is deliberate rather than redundant: motion earns the
+        glance, the grid answers it. Nothing in the marquee is announced twice
+        to a screen reader — the duplicated track inside it is `aria-hidden`,
+        and the grid below carries the real names.
       */}
       <EditorialSection rule id="connectors" ariaLabel={t.t('web.home.v2.marqueeCaption')}>
         <Eyebrow>{t.t('web.home.v2.marqueeCaption')}</Eyebrow>
-        <ProviderGrid providers={CONNECTOR_PROVIDERS} className="mt-8" />
+        <Marquee className="mt-8" speed={32}>
+          <ul className="flex items-center gap-10 pe-10">
+            {CONNECTOR_PROVIDERS.map((provider) => (
+              <li key={provider} className="text-title-sm text-text-tertiary whitespace-nowrap">
+                {t.format(`web.provider.${provider}`)}
+              </li>
+            ))}
+          </ul>
+        </Marquee>
+        <ProviderGrid providers={CONNECTOR_PROVIDERS} className="mt-10" />
+        <div className="mt-8">
+          <Sticker
+            fact={t.format('web.home.b3.sticker.connectorsFact', {
+              count: CONNECTOR_PROVIDERS.length,
+            })}
+            source={t.format('web.home.b3.sticker.connectorsSource')}
+            accent="cool"
+          />
+        </div>
       </EditorialSection>
 
       {/* 3. One idea, a platform-native version each. The core proof. */}
@@ -266,29 +364,7 @@ export default async function HomePage({
         <Heading className="max-w-[28ch]">{t.t('web.home.pillars.title')}</Heading>
         <StaggerList stagger={0.07} className="border-border-default mt-12 border-t">
           {PILLARS.map((pillar, index) => (
-            <div
-              key={pillar.id}
-              data-stagger-item
-              className="border-border-subtle grid gap-4 border-b py-10 lg:grid-cols-12 lg:items-start lg:gap-12"
-            >
-              <span
-                aria-hidden="true"
-                className="text-text-tertiary font-mono text-body-sm tabular-nums lg:col-span-2"
-              >
-                {String(index + 1).padStart(2, '0')}
-              </span>
-              <div className="space-y-4 lg:col-span-9 lg:col-start-4">
-                <h3 className="text-title-lg text-text-primary text-pretty">
-                  {t.format(pillar.titleKey)}
-                </h3>
-                <p className="text-body-lg text-text-secondary max-w-[68ch] leading-[1.65]">
-                  {t.format(pillar.bodyKey)}
-                </p>
-                <p className="border-border-default text-body-sm text-text-tertiary border-s ps-4 font-mono leading-[1.6]">
-                  {t.format(pillar.proofKey)}
-                </p>
-              </div>
-            </div>
+            <PillarRow key={pillar.id} pillar={pillar} index={index} t={t} />
           ))}
         </StaggerList>
       </EditorialSection>
@@ -356,7 +432,26 @@ export default async function HomePage({
           verbatim, in `billing.plan.monthlyPrice` / `billing.plan.single`. */}
       <EditorialSection rule id="pricing-teaser">
         <Heading className="max-w-[24ch]">{t.t('web.home.v2.pricingTeaser.title')}</Heading>
-        <div className="mt-10 max-w-sm">
+        {/* The three sizes, compact: the same integer minor units and the
+            same interval control as the pricing page, without the delta
+            prose. A visitor who never reaches /pricing should still know the
+            ladder exists and that only Standard is on sale. */}
+        <TierGrid
+          locale={locale}
+          variant="compact"
+          tiers={tierColumns({
+            t,
+            ctaHref: ROUTES.signUp,
+            ctaLabel: t.t('web.cta.startTrial'),
+          })}
+          intervalGroupLabel={t.t('web.pricing.tierGrid.intervalGroup')}
+          monthlyLabel={t.t('web.pricing.monthlyLabel')}
+          annualLabel={t.t('web.pricing.annualLabel')}
+          startHereLabel={t.t('web.pricing.tierGrid.startHere')}
+          className="mt-12"
+        />
+
+        <div className="mt-12 max-w-sm">
           <EditorialCard interactive={false}>
             {/* Both intervals, because a visitor who only ever sees the monthly
                 figure never learns the annual one exists. The saving is stated

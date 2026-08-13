@@ -47,6 +47,7 @@ import { AwsDataExportKmsClient, KmsDataExportEncryption } from './kms-data-expo
 import { ResendMailer } from './resend-mailer';
 import { TemporalScheduler } from './temporal-scheduler';
 import { createVerifiedConnectorRegistry } from './verified-connectors';
+import { createComposedConnectorRegistry } from './connector-registry-composition';
 import { createCredentialStore } from './credential-store';
 import { createOAuthPendingDiscoveryStore } from './oauth-pending-store';
 import { asCredentialVaultPort, createConfiguredCredentialVault } from './credential-vault';
@@ -828,12 +829,41 @@ export function createApplicationRuntime(options: ApplicationRuntimeOptions): Ap
   const credentialStore = adapters.credentialStore ?? createCredentialStore(prisma);
   const oauthPending = createOAuthPendingDiscoveryStore(prisma);
 
+  /**
+   * The registry the application receives.
+   *
+   * Built lazily so a caller that supplies its own connector adapter never runs
+   * provider registration. It is only wrapped with the execution and OAuth
+   * seams when a real credential vault and credential store both resolved; the
+   * vault must be the connector-package vault, which exists only when this
+   * process configured it, because leasing a credential is what the wrapper
+   * does. Otherwise the bare verified registry is returned and the system fails
+   * closed exactly as it did before.
+   */
+  function connectorRegistry(): ConnectorRegistry {
+    const base = createVerifiedConnectorRegistry({
+      config: options.config,
+      logger: options.logger,
+      clock,
+    });
+    if (configuredVault === null || credentialStore === undefined) {
+      return base;
+    }
+    return createComposedConnectorRegistry({
+      base,
+      prisma,
+      credentialStore,
+      credentialVault: configuredVault.vault,
+      config: options.config,
+      logger: options.logger,
+      clock,
+    });
+  }
+
   const services = createServices({
     prisma,
     kv,
-    connectors:
-      adapters.connectors ??
-      createVerifiedConnectorRegistry({ config: options.config, logger: options.logger, clock }),
+    connectors: adapters.connectors ?? connectorRegistry(),
     ...(credentialVault === undefined ? {} : { credentialVault }),
     ...(credentialStore === undefined ? {} : { credentialStore }),
     oauthPending,

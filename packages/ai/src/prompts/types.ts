@@ -27,7 +27,9 @@ export const PROMPT_IDS = [
   'duplicate-check',
   'accessibility-check',
   'analytics-summary',
+  'weekly-digest',
   'experiment-suggestion',
+  'post-feedback',
   'growth-plan',
 ] as const;
 export const promptIdSchema = z.enum(PROMPT_IDS);

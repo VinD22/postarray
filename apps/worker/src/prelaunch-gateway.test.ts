@@ -45,7 +45,16 @@ describe('createWorkerGateway connector execution', () => {
       messageKey: null,
       retryAfterMs: null,
     });
-    const connectorBridge: ProviderActivities = { publishTarget, revalidateTarget: vi.fn(), refreshCredential: vi.fn(), revokeProviderConnection: vi.fn() };
+    const connectorBridge: ProviderActivities = {
+      publishTarget,
+      pollPublishStatus: vi.fn(),
+      publishSequenceItem: vi.fn(),
+      revalidateTarget: vi.fn(),
+      refreshCredential: vi.fn(),
+      revokeProviderConnection: vi.fn(),
+      fetchPostMetrics: vi.fn(),
+      fetchAccountMetrics: vi.fn(),
+    };
     const gateway = createWorkerGateway({ connectorBridge });
     const input: Parameters<WorkerActivities['publishTarget']>[0] = {
       ctx: {
