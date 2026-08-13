@@ -84,7 +84,28 @@ async function createItemWithVersion(
         contentItemId: itemId,
         version: 1,
         body: spec.body,
-        payload: { blocks: [{ type: 'text', text: spec.body }], links: [] },
+        // Must match `storedMasterSchema` (packages/application/src/internal/
+        // stored-content.ts) exactly — it is `.strict()`, and the read path
+        // (`parseStoredMaster`) throws on anything else. A `{ blocks, links }`
+        // shape here previously passed seeding but made every content-item
+        // read (compose, receipts, "Open the receipt" from Home) 422.
+        payload: {
+          id: itemId,
+          workspaceId: SEED_IDS.workspace,
+          brandId: SEED_IDS.brandSupply,
+          campaignId: SEED_IDS.campaign,
+          title: spec.title,
+          body: spec.body,
+          contentKind: 'text',
+          locale: 'en',
+          mediaIds: [],
+          links: [],
+          signature: null,
+          threadItems: [],
+          schedule: null,
+          disclosure: { aiAssisted: false, commercialContent: false, brandedContent: false },
+          createdVia: 'web',
+        },
         contentHash: hash,
         locale: 'en',
         creationMethod: 'human',
