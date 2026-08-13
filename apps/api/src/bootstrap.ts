@@ -115,6 +115,13 @@ export async function createApiApp(options: CreateAppOptions): Promise<NestExpre
       WORKSPACE_HEADER,
       API_HEADERS.idempotencyKey,
       API_HEADERS.correlationId,
+      // The client sends this on every request (`apps/web/src/lib/api/
+      // transport.ts`), unconditionally. Its absence here meant every
+      // cross-origin call from a real browser failed the CORS preflight and
+      // never reached the API at all — sign-in included. `exposedHeaders`
+      // below governs reading a RESPONSE header; this list governs sending a
+      // REQUEST header, and the two are not interchangeable.
+      API_HEADERS.apiVersion,
     ],
     exposedHeaders: [
       API_HEADERS.correlationId,
