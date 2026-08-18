@@ -1,0 +1,70 @@
+- generic [active] [ref=f30e1]:
+  - generic [ref=f30e2]:
+    - link "Skip to main content" [ref=f30e3] [cursor=pointer]:
+      - /url: "#main"
+    - banner [ref=f30e4]:
+      - generic [ref=f30e5]:
+        - link "Relay" [ref=f30e6] [cursor=pointer]:
+          - /url: /home
+        - button "Switch project or workspace" [ref=f30e7]:
+          - generic [ref=f30e8]:
+            - generic [ref=f30e9]: Example Studio EU
+            - generic [ref=f30e10]: Example Studio
+        - button "Search ⌘ K" [ref=f30e242]:
+          - generic [ref=f30e18]: Search
+          - generic [ref=f30e19]:
+            - generic [ref=f30e243]: ⌘
+            - generic [ref=f30e21]: K
+        - generic [ref=f30e22]:
+          - link "Compose" [ref=f30e24] [cursor=pointer]:
+            - /url: /compose
+          - button "6 items need attention" [ref=f30e244]:
+            - generic [ref=f30e245]: "6"
+          - button "Help" [ref=f30e32]
+          - button "Account" [ref=f30e36]:
+            - generic "Ana Ruiz" [ref=f30e247]: AR
+      - generic [ref=f30e43]:
+        - paragraph [ref=f30e44]: You are looking at demo data
+        - generic [ref=f30e46]:
+          - generic [ref=f30e47]: The Relay API is not reachable from this browser, so the screens are filled with a seeded example workspace. Nothing here is connected to a real account and nothing can publish.
+          - generic [ref=f30e48]: Set NEXT_PUBLIC_RELAY_API_URL and restart the app to use live data.
+    - generic [ref=f30e49]:
+      - navigation "Primary navigation" [ref=f30e50]:
+        - link "Home" [ref=f30e249] [cursor=pointer]:
+          - /url: /home
+        - link "Calendar" [ref=f30e255] [cursor=pointer]:
+          - /url: /calendar
+        - link "Automation" [ref=f30e260] [cursor=pointer]:
+          - /url: /automation
+        - link "Analytics" [ref=f30e267] [cursor=pointer]:
+          - /url: /analytics
+        - link "Growth advisor" [ref=f30e272] [cursor=pointer]:
+          - /url: /growth
+        - link "Library" [ref=f30e279] [cursor=pointer]:
+          - /url: /library
+        - link "Connections" [ref=f30e284] [cursor=pointer]:
+          - /url: /connections
+      - main "Main content" [ref=f30e84]:
+        - article [ref=f30e288]:
+          - generic [ref=f30e289]:
+            - navigation "Breadcrumb" [ref=f30e290]:
+              - list [ref=f30e291]:
+                - listitem [ref=f30e292]:
+                  - link "Calendar" [ref=f30e293] [cursor=pointer]:
+                    - /url: /calendar
+                - listitem [ref=f30e296]:
+                  - generic [ref=f30e297]: Untitled draft
+            - generic [ref=f30e299]:
+              - heading "Untitled draft" [level=1] [ref=f30e300]
+              - paragraph [ref=f30e301]: Exactly what was published, where, when and on whose approval.
+          - region [ref=f30e303]:
+            - heading "What happened" [level=2] [ref=f30e304]
+            - generic [ref=f30e305]: Draft
+            - generic [ref=f30e315]:
+              - paragraph [ref=f30e316]: No receipt with that reference
+              - generic [ref=f30e317]: A receipt exists once a post has been dispatched. Check the reference, or open the post from the calendar.
+  - region "Notifications (F8)":
+    - list
+  - alert [ref=f30e231]
+  - button "Open Next.js Dev Tools" [ref=f30e237] [cursor=pointer]
+  - alert [ref=f30e241]

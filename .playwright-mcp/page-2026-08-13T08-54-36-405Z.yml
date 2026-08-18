@@ -1,0 +1,524 @@
+- generic [active] [ref=f4e1]:
+  - generic [ref=f4e2]:
+    - link "Skip to the main content" [ref=f4e3] [cursor=pointer]:
+      - /url: "#main"
+    - banner [ref=f4e4]:
+      - generic [ref=f4e6]:
+        - link "Relay" [ref=f4e8] [cursor=pointer]:
+          - /url: /
+        - navigation "Site navigation" [ref=f4e9]:
+          - list [ref=f4e10]:
+            - listitem [ref=f4e11]:
+              - link "Product" [ref=f4e12] [cursor=pointer]:
+                - /url: /product
+            - listitem [ref=f4e13]:
+              - link "Integrations" [ref=f4e14] [cursor=pointer]:
+                - /url: /integrations
+            - listitem [ref=f4e15]:
+              - link "For creators" [ref=f4e16] [cursor=pointer]:
+                - /url: /for-creators
+            - listitem [ref=f4e17]:
+              - link "For agencies" [ref=f4e18] [cursor=pointer]:
+                - /url: /for-agencies
+            - listitem [ref=f4e19]:
+              - link "For developers" [ref=f4e20] [cursor=pointer]:
+                - /url: /for-developers
+            - listitem [ref=f4e21]:
+              - link "Pricing" [ref=f4e22] [cursor=pointer]:
+                - /url: /pricing
+            - listitem [ref=f4e23]:
+              - link "Resources" [ref=f4e24] [cursor=pointer]:
+                - /url: /resources
+        - generic [ref=f4e25]:
+          - button "Theme" [ref=f4e26]
+          - button "Choose interface language English" [ref=f4e33]:
+            - generic [ref=f4e39]: Choose interface language
+            - generic [ref=f4e40]: English
+          - link "Sign in" [ref=f4e41] [cursor=pointer]:
+            - /url: /sign-in
+          - link "Start free trial" [ref=f4e42] [cursor=pointer]:
+            - /url: /sign-up
+    - main [ref=f4e43]:
+      - generic [ref=f4e47]:
+        - generic [ref=f4e48]:
+          - paragraph [ref=f4e49]: Seven day free trial. No card required.
+          - heading "Turn one sourced idea into platform-native content, approve it once, publish it reliably, and learn what to improve next." [level=1] [ref=f4e50]
+          - paragraph [ref=f4e51]:
+            - generic [ref=f4e52]: Native, on-brand posts for
+            - generic [ref=f4e53]:
+              - generic [ref=f4e54]: X
+              - generic [ref=f4e55]: X, LinkedIn, Instagram, YouTube, Bluesky
+            - generic [ref=f4e56]: .
+          - paragraph [ref=f4e57]: Relay is a publishing desk for people who are accountable for what goes out. You write once, adapt per platform, see the real limits before you schedule, get the approval you need, publish through official platform APIs, and keep a receipt for every post.
+          - generic [ref=f4e58]:
+            - link "Start your free trial" [ref=f4e59] [cursor=pointer]:
+              - /url: /sign-up
+            - link "Product" [ref=f4e60] [cursor=pointer]:
+              - /url: /product
+          - paragraph [ref=f4e61]:
+            - text: Relay costs $29 a month, or $300 a year and save $48. That covers 10 active social channels and an owner plus 5 teammates. Every feature is included, and the seven day trial needs no card.
+            - link "Pricing" [ref=f4e62] [cursor=pointer]:
+              - /url: /pricing
+        - generic [ref=f4e63]:
+          - figure "One draft becomes a version per platform, gets a time, and lands on the week. Sample content, not a live account." [ref=f4e64]:
+            - paragraph [ref=f4e66]: Demonstration
+            - list [ref=f4e69]:
+              - listitem [ref=f4e70]:
+                - paragraph [ref=f4e71]: Create a project
+                - generic [ref=f4e72]:
+                  - paragraph [ref=f4e73]: Project
+                  - generic [ref=f4e74]:
+                    - paragraph [ref=f4e75]:
+                      - generic [ref=f4e78]: Northbound Tools (sample)
+                    - paragraph [ref=f4e79]: "Time zone: Central European Summer Time (GMT+2)"
+                    - paragraph [ref=f4e80]: Drafts, accounts, approvals and receipts belong to this project and nowhere else.
+              - listitem [ref=f4e81]:
+                - paragraph [ref=f4e82]: Connect accounts
+                - generic [ref=f4e83]:
+                  - paragraph [ref=f4e84]: Accounts in this project
+                  - generic [ref=f4e85]:
+                    - list [ref=f4e86]:
+                      - listitem [ref=f4e87]:
+                        - generic [ref=f4e88]: X, @northbound
+                        - generic [ref=f4e91]: Verification not complete
+                      - listitem [ref=f4e95]:
+                        - generic [ref=f4e96]: LinkedIn, Northbound Tools
+                        - generic [ref=f4e99]: Verification not complete
+                      - listitem [ref=f4e103]:
+                        - generic [ref=f4e104]: Instagram, @northbound.tools
+                        - generic [ref=f4e107]: Verification not complete
+                    - paragraph [ref=f4e111]: Each row would carry token health, the permissions granted and the last successful post. None of them can publish today.
+              - listitem [ref=f4e112]:
+                - paragraph [ref=f4e113]: Compose once
+                - generic [ref=f4e114]:
+                  - paragraph [ref=f4e115]: Master draft
+                  - generic [ref=f4e116]:
+                    - paragraph [ref=f4e117]: Northbound 2.4 is out today. Imports are faster, search has a keyboard shortcut, and the export bug two of you reported is fixed.
+                    - paragraph [ref=f4e118]: In project Northbound Tools (sample)
+              - listitem [ref=f4e119]:
+                - paragraph [ref=f4e120]: Adapt per platform
+                - generic [ref=f4e121]:
+                  - paragraph [ref=f4e122]: What each account receives
+                  - list [ref=f4e124]:
+                    - listitem [ref=f4e125]:
+                      - paragraph [ref=f4e126]:
+                        - generic [ref=f4e128]: X, @northbound
+                      - paragraph [ref=f4e129]: Northbound 2.4 is out. Faster imports, keyboard search, and that export bug is fixed.
+                      - paragraph [ref=f4e130]:
+                        - generic [ref=f4e133]: Character count and thread order
+                    - listitem [ref=f4e134]:
+                      - paragraph [ref=f4e135]:
+                        - generic [ref=f4e137]: LinkedIn, Northbound Tools
+                      - paragraph [ref=f4e138]: Northbound 2.4 is out today. The release note explains the import changes and the export fix in full.
+                      - paragraph [ref=f4e139]:
+                        - generic [ref=f4e142]: Organization role and post length
+                    - listitem [ref=f4e143]:
+                      - paragraph [ref=f4e144]:
+                        - generic [ref=f4e146]: Instagram, @northbound.tools
+                      - paragraph [ref=f4e147]: The same release picture, with a caption written for the feed and alt text written by a person.
+                      - paragraph [ref=f4e148]:
+                        - generic [ref=f4e151]: Account type, aspect ratio and alt text
+              - listitem [ref=f4e152]:
+                - paragraph [ref=f4e153]: Check it
+                - generic [ref=f4e154]:
+                  - paragraph [ref=f4e155]: Checks before scheduling
+                  - generic [ref=f4e156]:
+                    - list [ref=f4e157]:
+                      - listitem [ref=f4e158]:
+                        - generic [ref=f4e161]:
+                          - generic [ref=f4e162]: Character limit, per account
+                          - generic [ref=f4e163]: Each version is measured against the limit the platform gives that account.
+                      - listitem [ref=f4e164]:
+                        - generic [ref=f4e167]:
+                          - generic [ref=f4e168]: Alt text on every image
+                          - generic [ref=f4e169]: An image without a description, or without being marked decorative, stops the schedule.
+                      - listitem [ref=f4e170]:
+                        - generic [ref=f4e173]:
+                          - generic [ref=f4e174]: First comment allowed here
+                          - generic [ref=f4e175]: A first comment is only offered on accounts whose platform supports one.
+                    - paragraph [ref=f4e176]: These run in the composer before anything is scheduled, and again before anything is sent.
+              - listitem [ref=f4e177]:
+                - paragraph [ref=f4e178]: Give it a time
+                - generic [ref=f4e179]:
+                  - paragraph [ref=f4e180]: Scheduled
+                  - generic [ref=f4e181]:
+                    - paragraph [ref=f4e182]:
+                      - generic [ref=f4e187]: Tuesday, September 15, 2026 at 9:15 AM in Central European Summer Time (GMT+2)
+                    - paragraph [ref=f4e188]: One approval is required before anything can be sent.
+                    - paragraph [ref=f4e189]: "The queue is the other route: it picks the next slot your rules allow, in this time zone."
+              - listitem [ref=f4e190]:
+                - paragraph [ref=f4e191]: See the week
+                - generic [ref=f4e192]:
+                  - paragraph [ref=f4e193]: The week
+                  - generic [ref=f4e194]:
+                    - list [ref=f4e195]:
+                      - listitem [ref=f4e196]:
+                        - paragraph [ref=f4e197]: Monday
+                        - paragraph [ref=f4e199]:
+                          - generic [ref=f4e200]: Nothing scheduled
+                          - generic [ref=f4e201]: ·
+                      - listitem [ref=f4e202]:
+                        - paragraph [ref=f4e203]: Tuesday
+                        - generic [ref=f4e204]:
+                          - paragraph [ref=f4e205]:
+                            - generic [ref=f4e207]: 9:15 AM
+                            - generic [ref=f4e208]: X, @northbound
+                          - paragraph [ref=f4e209]:
+                            - generic [ref=f4e211]: 1:00 PM
+                            - generic [ref=f4e212]: LinkedIn, Northbound Tools
+                      - listitem [ref=f4e213]:
+                        - paragraph [ref=f4e214]: Wednesday
+                        - paragraph [ref=f4e216]:
+                          - generic [ref=f4e218]: 5:30 PM
+                          - generic [ref=f4e219]: Instagram, @northbound.tools
+                      - listitem [ref=f4e220]:
+                        - paragraph [ref=f4e221]: Thursday
+                        - paragraph [ref=f4e223]:
+                          - generic [ref=f4e224]: Nothing scheduled
+                          - generic [ref=f4e225]: ·
+                      - listitem [ref=f4e226]:
+                        - paragraph [ref=f4e227]: Friday
+                        - paragraph [ref=f4e229]:
+                          - generic [ref=f4e230]: Nothing scheduled
+                          - generic [ref=f4e231]: ·
+                    - paragraph [ref=f4e232]: The same three posts on the calendar, read in the project time zone.
+              - listitem [ref=f4e233]:
+                - paragraph [ref=f4e234]: Publish and record
+                - generic [ref=f4e235]:
+                  - generic [ref=f4e236]: Not published
+                  - generic [ref=f4e238]:
+                    - paragraph [ref=f4e239]: Publishing and the record of it
+                    - generic [ref=f4e240]:
+                      - list "Publishing and the record of it" [ref=f4e241]:
+                        - listitem [ref=f4e242]:
+                          - paragraph [ref=f4e250]: Approved by Ravi, sample reviewer
+                        - listitem [ref=f4e251]:
+                          - paragraph [ref=f4e259]: Queued for its slot
+                        - listitem [ref=f4e260]:
+                          - paragraph [ref=f4e268]: Sent to the platform
+                        - listitem [ref=f4e269]:
+                          - paragraph [ref=f4e276]: Confirmed by the platform
+                      - generic [ref=f4e277]:
+                        - generic [ref=f4e278]:
+                          - term [ref=f4e279]: External post ID
+                          - definition [ref=f4e280]: Unavailable
+                        - generic [ref=f4e281]:
+                          - term [ref=f4e282]: Permalink
+                          - definition [ref=f4e283]: Unavailable
+                      - paragraph [ref=f4e284]: The last two steps are written by the publish run. No connector has passed provider verification yet, so they stay pending and the external post ID and permalink stay unavailable.
+              - listitem [ref=f4e285]:
+                - paragraph [ref=f4e286]: Read the digest
+                - generic [ref=f4e287]:
+                  - paragraph [ref=f4e288]: Your week, in sentences
+                  - generic [ref=f4e289]:
+                    - paragraph [ref=f4e290]: Sample
+                    - list [ref=f4e291]:
+                      - listitem [ref=f4e292]: Three platform-native versions went out from one draft this week.
+                      - listitem [ref=f4e293]: Tuesday morning was your earliest slot.
+                      - listitem [ref=f4e294]: Every version was approved before it was queued.
+                      - listitem [ref=f4e295]: Every image carried alt text written by a person.
+                    - paragraph [ref=f4e296]: Live analytics appear here as your posts publish.
+          - paragraph [ref=f4e298]:
+            - link "Walk through the whole workflow" [ref=f4e299] [cursor=pointer]:
+              - /url: /demo
+      - region "Official APIs only." [ref=f4e300]:
+        - generic [ref=f4e303]:
+          - paragraph [ref=f4e304]: Official APIs only.
+          - list [ref=f4e307]:
+            - listitem [ref=f4e308]: X
+            - listitem [ref=f4e309]: Instagram
+            - listitem [ref=f4e310]: Facebook
+            - listitem [ref=f4e311]: LinkedIn
+            - listitem [ref=f4e312]: TikTok
+            - listitem [ref=f4e313]: YouTube
+            - listitem [ref=f4e314]: Pinterest
+            - listitem [ref=f4e315]: Bluesky
+            - listitem [ref=f4e316]: Threads
+            - listitem [ref=f4e317]: Google Business Profile
+          - list [ref=f4e318]:
+            - listitem [ref=f4e319]:
+              - generic [ref=f4e322]: X
+            - listitem [ref=f4e323]:
+              - generic [ref=f4e326]: Instagram
+            - listitem [ref=f4e327]:
+              - generic [ref=f4e330]: Facebook
+            - listitem [ref=f4e331]:
+              - generic [ref=f4e334]: LinkedIn
+            - listitem [ref=f4e335]:
+              - generic [ref=f4e338]: TikTok
+            - listitem [ref=f4e339]:
+              - generic [ref=f4e342]: YouTube
+            - listitem [ref=f4e343]:
+              - generic [ref=f4e346]: Pinterest
+            - listitem [ref=f4e347]:
+              - generic [ref=f4e350]: Bluesky
+            - listitem [ref=f4e351]:
+              - generic [ref=f4e354]: Threads
+            - listitem [ref=f4e355]:
+              - generic [ref=f4e358]: Google Business Profile
+          - generic [ref=f4e360]:
+            - generic [ref=f4e361]: 10 connectors, official APIs only
+            - generic [ref=f4e362]: Integrations
+      - generic [ref=f4e365]:
+        - heading "One idea, five platform-native versions" [level=2] [ref=f4e366]
+        - paragraph [ref=f4e367]: The composer starts with a master version. Selecting one account opens an override for that account only, with its own live limits and its own preview. Nothing you write for LinkedIn changes what X receives.
+        - generic [ref=f4e368]:
+          - paragraph [ref=f4e371]: Master draft
+          - generic [ref=f4e373]:
+            - generic [ref=f4e374]: X, @northbound
+            - paragraph [ref=f4e377]: Master text, shortened, plus a two post thread
+            - generic [ref=f4e378]: Character count, thread order, estimated API cost for a link post
+          - generic [ref=f4e383]:
+            - generic [ref=f4e384]: LinkedIn, Northbound Tools
+            - paragraph [ref=f4e387]: Longer master text with the document attached
+            - generic [ref=f4e388]: Organization role, post length, document type
+          - generic [ref=f4e393]:
+            - generic [ref=f4e394]: Instagram, @northbound.tools
+            - paragraph [ref=f4e397]: The same image selected, with a caption rewritten for the feed
+            - generic [ref=f4e398]: Professional account type, aspect ratio, alt text present
+          - generic [ref=f4e403]:
+            - generic [ref=f4e404]: YouTube, Northbound
+            - paragraph [ref=f4e407]: The same clip as a Short, with its own title and description
+            - generic [ref=f4e408]: Upload scope, audit state, privacy the upload will land in
+          - generic [ref=f4e413]:
+            - generic [ref=f4e414]: Bluesky, northbound.example
+            - paragraph [ref=f4e417]: Master text with the link card
+            - generic [ref=f4e418]: Character count, link card resolution, alt text present
+      - generic [ref=f4e424]:
+        - heading "What Relay is built to be good at" [level=2] [ref=f4e425]
+        - generic [ref=f4e426]:
+          - generic [ref=f4e427]:
+            - generic [ref=f4e428]: "01"
+            - generic [ref=f4e431]:
+              - heading "Publish with confidence" [level=3] [ref=f4e432]
+              - paragraph [ref=f4e433]: A true preview per account, deterministic policy and platform checks before anything is queued, the approval your workspace requires, an immutable receipt with the external post ID, and a health state for every connection.
+              - paragraph [ref=f4e434]: Every external write carries an idempotency key, so a worker crash after the platform accepted a post does not create a second one.
+          - generic [ref=f4e435]:
+            - generic [ref=f4e436]: "02"
+            - generic [ref=f4e439]:
+              - heading "Adapt rather than duplicate" [level=3] [ref=f4e440]
+              - paragraph [ref=f4e441]: Per platform variants that you can override one account at a time, and transcreation rather than literal translation, with a brand glossary and a named reviewer per language.
+              - paragraph [ref=f4e442]: The interface is available in selected languages. Content adaptation covers 30 content languages and every one of them is reviewable before it publishes.
+          - generic [ref=f4e443]:
+            - generic [ref=f4e444]: "03"
+            - generic [ref=f4e447]:
+              - heading "Close the loop" [level=3] [ref=f4e448]
+              - paragraph [ref=f4e449]: Analytics that name the metric, the platform that reported it, the denominator and when it was last refreshed. Where a platform does not report something, Relay says so instead of showing a zero.
+              - paragraph [ref=f4e450]: A post is compared against your own median rather than against a score nobody can audit.
+          - generic [ref=f4e451]:
+            - generic [ref=f4e452]: "04"
+            - generic [ref=f4e455]:
+              - heading "Work from where you already are" [level=3] [ref=f4e456]
+              - paragraph [ref=f4e457]: The web app, a REST API, a remote MCP server, a CLI and signed webhooks call the same application services, the same authorization rules and the same validators.
+              - paragraph [ref=f4e458]: An agent cannot bypass an approval policy by using a different surface, because the policy is enforced in the service, not in the interface.
+          - generic [ref=f4e459]:
+            - generic [ref=f4e460]: "05"
+            - generic [ref=f4e463]:
+              - heading "Economics you can predict" [level=3] [ref=f4e464]
+              - paragraph [ref=f4e465]: One price, every shipped feature, 10 active channels and an owner plus 5 teammates. Platform usage that a provider charges per operation is passed through at cost and shown before you confirm the action.
+              - paragraph [ref=f4e466]: There is no image or video generation credit system, because Relay does not generate media.
+      - generic [ref=f4e469]:
+        - heading "Five surfaces, one backend" [level=2] [ref=f4e470]
+        - paragraph [ref=f4e471]: The same use cases, the same tenancy checks, the same validators and the same publishing workflows. A surface is a way in, never a shortcut past a rule.
+        - generic [ref=f4e472]:
+          - generic [ref=f4e473]: "5"
+          - paragraph [ref=f4e474]: Surfaces on one shared backend
+        - generic [ref=f4e475]:
+          - generic [ref=f4e477]:
+            - heading "Web app" [level=3] [ref=f4e478]
+            - paragraph [ref=f4e479]: Composer, calendar, approvals, analytics, connections and settings.
+          - generic [ref=f4e481]:
+            - heading "REST API" [level=3] [ref=f4e482]
+            - paragraph [ref=f4e483]: Scoped keys, idempotency keys on every write, cursor pagination, typed errors.
+          - generic [ref=f4e485]:
+            - heading "Remote MCP server" [level=3] [ref=f4e486]
+            - paragraph [ref=f4e487]: Streamable HTTP, OAuth, per tool scopes and a preview before every consequential call.
+          - generic [ref=f4e489]:
+            - heading "CLI" [level=3] [ref=f4e490]
+            - paragraph [ref=f4e491]: Stable machine readable output for scripts and continuous integration.
+          - generic [ref=f4e493]:
+            - heading "Signed webhooks" [level=3] [ref=f4e494]
+            - paragraph [ref=f4e495]: Publish results, approval decisions and connection health, with redelivery.
+        - paragraph [ref=f4e496]:
+          - link "For developers" [ref=f4e497] [cursor=pointer]:
+            - /url: /for-developers
+      - generic [ref=f4e501]:
+        - heading "What Relay does not do" [level=2] [ref=f4e502]
+        - paragraph [ref=f4e503]: These are boundaries, not a roadmap tease. If one of them changes, it changes on the changelog first.
+        - list [ref=f4e504]:
+          - listitem [ref=f4e505]:
+            - paragraph [ref=f4e509]: No AI image generation and no AI video generation. Relay adapts, approves, publishes and measures the media you bring.
+          - listitem [ref=f4e510]:
+            - paragraph [ref=f4e514]: No automatic likes, follows, reposts, unsolicited replies or direct messages. No engagement pods and no fabricated engagement.
+          - listitem [ref=f4e515]:
+            - paragraph [ref=f4e519]: No browser automation, no cookie replay, no scraping and no unofficial posting endpoints. Official platform APIs only.
+          - listitem [ref=f4e520]:
+            - paragraph [ref=f4e524]: No promise about reach, ranking or engagement. Relay can tell you what happened and what to test next. It cannot tell you what an audience will do.
+          - listitem [ref=f4e525]:
+            - paragraph [ref=f4e529]: No unattended publishing by default. An agent can draft, validate and request approval. A human decides before anything becomes public, unless you deliberately opt a specific policy out.
+        - paragraph [ref=f4e530]:
+          - link "Changelog" [ref=f4e531] [cursor=pointer]:
+            - /url: /changelog
+      - generic [ref=f4e535]:
+        - heading "What it costs" [level=2] [ref=f4e536]
+        - generic [ref=f4e537]:
+          - group "Billing interval for every tier" [ref=f4e538]:
+            - generic [ref=f4e540] [cursor=pointer]:
+              - radio "Billed monthly" [checked] [ref=f4e541]
+              - generic [ref=f4e542]: Billed monthly
+            - generic [ref=f4e543] [cursor=pointer]:
+              - radio "Billed annually" [ref=f4e544]
+              - generic [ref=f4e545]: Billed annually
+          - generic [ref=f4e546]:
+            - article [ref=f4e548]:
+              - paragraph [ref=f4e549]: Start here
+              - generic [ref=f4e550]:
+                - heading "Standard" [level=3] [ref=f4e551]
+                - paragraph [ref=f4e552]: For one team running a handful of projects.
+              - generic [ref=f4e553]:
+                - generic [ref=f4e554]: $29
+                - paragraph [ref=f4e555]: Billed monthly
+              - paragraph [ref=f4e556]: 3 active projects
+              - link "Start your free trial" [ref=f4e558] [cursor=pointer]:
+                - /url: /sign-up
+            - article [ref=f4e560]:
+              - generic [ref=f4e561]:
+                - heading "Growth" [level=3] [ref=f4e562]
+                - paragraph [ref=f4e563]: More active projects in one workspace.
+              - generic [ref=f4e564]:
+                - generic [ref=f4e565]: $59
+                - paragraph [ref=f4e566]: Billed monthly
+              - paragraph [ref=f4e567]: 10 active projects
+              - paragraph [ref=f4e569]: Not on sale yet. Standard is the only tier you can buy today.
+            - article [ref=f4e571]:
+              - generic [ref=f4e572]:
+                - heading "Studio" [level=3] [ref=f4e573]
+                - paragraph [ref=f4e574]: The largest project capacity we offer.
+              - generic [ref=f4e575]:
+                - generic [ref=f4e576]: $119
+                - paragraph [ref=f4e577]: Billed monthly
+              - paragraph [ref=f4e578]: 20 active projects
+              - paragraph [ref=f4e580]: Not on sale yet. Standard is the only tier you can buy today.
+        - generic [ref=f4e582]:
+          - generic [ref=f4e583]:
+            - generic [ref=f4e584]:
+              - generic [ref=f4e585]:
+                - generic [ref=f4e586]:
+                  - generic [ref=f4e587]: $29
+                  - paragraph [ref=f4e588]: Billed monthly
+                - paragraph [ref=f4e589]: $29 charged every month.
+              - generic [ref=f4e590]:
+                - generic [ref=f4e591]:
+                  - generic [ref=f4e592]: $300
+                  - paragraph [ref=f4e593]: Billed annually
+                - paragraph [ref=f4e594]: $300 charged once a year.
+            - paragraph [ref=f4e595]: $25 a month billed annually. Save $48 a year.
+          - paragraph [ref=f4e596]: Seven day free trial. No card required.
+          - paragraph [ref=f4e597]:
+            - link "See the price" [ref=f4e598] [cursor=pointer]:
+              - /url: /pricing
+      - generic [ref=f4e603]:
+        - heading "Start with one account and one post" [level=2] [ref=f4e604]
+        - paragraph [ref=f4e605]: Connect one account, draft one post, watch the validation run, schedule it and read the receipt. That is the whole product in about ten minutes.
+        - link "Start your free trial" [ref=f4e607] [cursor=pointer]:
+          - /url: /sign-up
+        - paragraph [ref=f4e608]: Relay costs $29 a month or $300 a year. The seven day trial starts today and beginning it takes no card. Connector availability is shown account by account as each platform completes its review.
+    - contentinfo [ref=f4e609]:
+      - generic [ref=f4e611]:
+        - navigation "Footer navigation" [ref=f4e612]:
+          - generic [ref=f4e613]:
+            - heading "Product" [level=2] [ref=f4e614]
+            - list [ref=f4e615]:
+              - listitem [ref=f4e616]:
+                - link "Product" [ref=f4e617] [cursor=pointer]:
+                  - /url: /product
+              - listitem [ref=f4e618]:
+                - link "Integrations" [ref=f4e619] [cursor=pointer]:
+                  - /url: /integrations
+              - listitem [ref=f4e620]:
+                - link "Platform capabilities" [ref=f4e621] [cursor=pointer]:
+                  - /url: /integrations/capabilities
+              - listitem [ref=f4e622]:
+                - link "Scheduling, platform by platform" [ref=f4e623] [cursor=pointer]:
+                  - /url: /schedule
+              - listitem [ref=f4e624]:
+                - link "Pricing" [ref=f4e625] [cursor=pointer]:
+                  - /url: /pricing
+          - generic [ref=f4e626]:
+            - heading "Company" [level=2] [ref=f4e627]
+            - list [ref=f4e628]:
+              - listitem [ref=f4e629]:
+                - link "For creators" [ref=f4e630] [cursor=pointer]:
+                  - /url: /for-creators
+              - listitem [ref=f4e631]:
+                - link "For agencies" [ref=f4e632] [cursor=pointer]:
+                  - /url: /for-agencies
+              - listitem [ref=f4e633]:
+                - link "Use cases" [ref=f4e634] [cursor=pointer]:
+                  - /url: /use-cases
+              - listitem [ref=f4e635]:
+                - link "Methodology" [ref=f4e636] [cursor=pointer]:
+                  - /url: /methodology
+              - listitem [ref=f4e637]:
+                - link "Comparisons" [ref=f4e638] [cursor=pointer]:
+                  - /url: /compare
+          - generic [ref=f4e639]:
+            - heading "Developers" [level=2] [ref=f4e640]
+            - list [ref=f4e641]:
+              - listitem [ref=f4e642]:
+                - link "For developers" [ref=f4e643] [cursor=pointer]:
+                  - /url: /for-developers
+              - listitem [ref=f4e644]:
+                - link "Documentation" [ref=f4e645] [cursor=pointer]:
+                  - /url: /docs
+              - listitem [ref=f4e646]:
+                - link "API and MCP Terms" [ref=f4e647] [cursor=pointer]:
+                  - /url: /legal/api-terms
+              - listitem [ref=f4e648]:
+                - link "Status" [ref=f4e649] [cursor=pointer]:
+                  - /url: /status
+          - generic [ref=f4e650]:
+            - heading "Resources" [level=2] [ref=f4e651]
+            - list [ref=f4e652]:
+              - listitem [ref=f4e653]:
+                - link "Changelog" [ref=f4e654] [cursor=pointer]:
+                  - /url: /changelog
+              - listitem [ref=f4e655]:
+                - link "Creative tool radar" [ref=f4e656] [cursor=pointer]:
+                  - /url: /tool-radar
+              - listitem [ref=f4e657]:
+                - link "Promotion opportunities" [ref=f4e658] [cursor=pointer]:
+                  - /url: /opportunities
+              - listitem [ref=f4e659]:
+                - link "Free tools" [ref=f4e660] [cursor=pointer]:
+                  - /url: /tools
+              - listitem [ref=f4e661]:
+                - link "Resources" [ref=f4e662] [cursor=pointer]:
+                  - /url: /resources
+          - generic [ref=f4e663]:
+            - heading "Legal" [level=2] [ref=f4e664]
+            - list [ref=f4e665]:
+              - listitem [ref=f4e666]:
+                - link "Terms" [ref=f4e667] [cursor=pointer]:
+                  - /url: /legal/terms
+              - listitem [ref=f4e668]:
+                - link "Privacy" [ref=f4e669] [cursor=pointer]:
+                  - /url: /legal/privacy
+              - listitem [ref=f4e670]:
+                - link "Acceptable use" [ref=f4e671] [cursor=pointer]:
+                  - /url: /legal/acceptable-use
+              - listitem [ref=f4e672]:
+                - link "Security" [ref=f4e673] [cursor=pointer]:
+                  - /url: /legal/security
+              - listitem [ref=f4e674]:
+                - link "Legal and policies" [ref=f4e675] [cursor=pointer]:
+                  - /url: /legal
+        - generic [ref=f4e676]:
+          - paragraph [ref=f4e677]: Relay publishes through official platform APIs only. Connector availability depends on approvals that the platforms control, and every capability claim on this site is dated and sourced.
+          - paragraph [ref=f4e678]: Platform names and marks belong to their owners. Their use here identifies a connector and does not imply endorsement or partnership.
+          - paragraph [ref=f4e679]: Relay 2026
+  - region "Notifications (F8)":
+    - list
+  - alert [ref=f4e681]
+  - button "Open Next.js Dev Tools" [ref=f4e687] [cursor=pointer]
+  - alert [ref=f4e691]

@@ -1,0 +1,376 @@
+- generic [active] [ref=f21e1]:
+  - generic [ref=f21e2]:
+    - link "Skip to the main content" [ref=f21e3] [cursor=pointer]:
+      - /url: "#main"
+    - banner [ref=f21e4]:
+      - generic [ref=f21e6]:
+        - link "Relay" [ref=f21e8] [cursor=pointer]:
+          - /url: /
+        - group [ref=f21e9]:
+          - generic "Menu" [ref=f21e10] [cursor=pointer]
+    - main [ref=f21e13]:
+      - generic [ref=f21e16]:
+        - heading "How it works, in the order you meet it" [level=1] [ref=f21e17]
+        - paragraph [ref=f21e18]: Nine steps, from an empty workspace to the record of what happened. Each one shows the surface you would actually be looking at, with sample content in it. Nothing on this page moves on its own, so you can read it at your own pace.
+        - generic [ref=f21e19]:
+          - paragraph [ref=f21e20]: This is a demonstration, not a live account
+          - paragraph [ref=f21e22]: Every panel here is the product interface with sample content in it. No connector has passed provider verification, so nothing publishes to any platform through this product today. Where the workflow stops, the page says so instead of drawing the rest.
+        - navigation "The nine steps" [ref=f21e23]:
+          - heading "The nine steps" [level=2] [ref=f21e24]
+          - list [ref=f21e25]:
+            - listitem [ref=f21e26]:
+              - 'link "Show step 1: Create a project" [ref=f21e27] [cursor=pointer]':
+                - /url: "#project"
+                - generic [ref=f21e28]: "1"
+                - generic [ref=f21e29]: Create a project
+            - listitem [ref=f21e30]:
+              - 'link "Show step 2: Connect accounts" [ref=f21e31] [cursor=pointer]':
+                - /url: "#connect"
+                - generic [ref=f21e32]: "2"
+                - generic [ref=f21e33]: Connect accounts
+            - listitem [ref=f21e34]:
+              - 'link "Show step 3: Compose once" [ref=f21e35] [cursor=pointer]':
+                - /url: "#compose"
+                - generic [ref=f21e36]: "3"
+                - generic [ref=f21e37]: Compose once
+            - listitem [ref=f21e38]:
+              - 'link "Show step 4: Adapt per platform" [ref=f21e39] [cursor=pointer]':
+                - /url: "#variants"
+                - generic [ref=f21e40]: "4"
+                - generic [ref=f21e41]: Adapt per platform
+            - listitem [ref=f21e42]:
+              - 'link "Show step 5: Check it" [ref=f21e43] [cursor=pointer]':
+                - /url: "#validate"
+                - generic [ref=f21e44]: "5"
+                - generic [ref=f21e45]: Check it
+            - listitem [ref=f21e46]:
+              - 'link "Show step 6: Give it a time" [ref=f21e47] [cursor=pointer]':
+                - /url: "#schedule"
+                - generic [ref=f21e48]: "6"
+                - generic [ref=f21e49]: Give it a time
+            - listitem [ref=f21e50]:
+              - 'link "Show step 7: See the week" [ref=f21e51] [cursor=pointer]':
+                - /url: "#calendar"
+                - generic [ref=f21e52]: "7"
+                - generic [ref=f21e53]: See the week
+            - listitem [ref=f21e54]:
+              - 'link "Show step 8: Publish and record" [ref=f21e55] [cursor=pointer]':
+                - /url: "#receipt"
+                - generic [ref=f21e56]: "8"
+                - generic [ref=f21e57]: Publish and record
+            - listitem [ref=f21e58]:
+              - 'link "Show step 9: Read the digest" [ref=f21e59] [cursor=pointer]':
+                - /url: "#digest"
+                - generic [ref=f21e60]: "9"
+                - generic [ref=f21e61]: Read the digest
+      - generic [ref=f21e65]:
+        - generic [ref=f21e66]:
+          - paragraph [ref=f21e67]: Step 1 of 9
+          - heading "Create a project" [level=2] [ref=f21e68]
+          - paragraph [ref=f21e69]: A project holds accounts, drafts, approvals and a time zone. Every query in the product is scoped to one, in the application service and again in the database, so a client cannot see another client by accident.
+          - paragraph [ref=f21e70]:
+            - 'link "Next: Connect accounts" [ref=f21e73] [cursor=pointer]':
+              - /url: "#connect"
+        - generic [ref=f21e75]:
+          - paragraph [ref=f21e76]: Project
+          - generic [ref=f21e77]:
+            - paragraph [ref=f21e78]:
+              - generic [ref=f21e81]: Northbound Tools (sample)
+            - paragraph [ref=f21e82]: "Time zone: Central European Summer Time (GMT+2)"
+            - paragraph [ref=f21e83]: Drafts, accounts, approvals and receipts belong to this project and nowhere else.
+      - generic [ref=f21e87]:
+        - generic [ref=f21e88]:
+          - paragraph [ref=f21e89]: Step 2 of 9
+          - heading "Connect an account" [level=2] [ref=f21e90]
+          - paragraph [ref=f21e91]: Connecting runs through official platform APIs only, and tells you what the platform requires of the account before you start. Today every connector stops at verification, which is why each row below says so rather than showing a green tick.
+          - paragraph [ref=f21e92]:
+            - 'link "Next: Compose once" [ref=f21e95] [cursor=pointer]':
+              - /url: "#compose"
+        - generic [ref=f21e97]:
+          - paragraph [ref=f21e98]: Accounts in this project
+          - generic [ref=f21e99]:
+            - list [ref=f21e100]:
+              - listitem [ref=f21e101]:
+                - generic [ref=f21e102]: X, @northbound
+                - generic [ref=f21e105]: Verification not complete
+              - listitem [ref=f21e109]:
+                - generic [ref=f21e110]: LinkedIn, Northbound Tools
+                - generic [ref=f21e113]: Verification not complete
+              - listitem [ref=f21e117]:
+                - generic [ref=f21e118]: Instagram, @northbound.tools
+                - generic [ref=f21e121]: Verification not complete
+            - paragraph [ref=f21e125]: Each row would carry token health, the permissions granted and the last successful post. None of them can publish today.
+      - generic [ref=f21e129]:
+        - generic [ref=f21e130]:
+          - paragraph [ref=f21e131]: Step 3 of 9
+          - heading "Write it once, adapt it per platform" [level=2] [ref=f21e132]
+          - paragraph [ref=f21e133]: You write a master draft. Selecting one account opens an override for that account alone, with its own limits and its own preview. Nothing you write for LinkedIn changes what X receives, and the checks under each version run before anything is scheduled.
+          - paragraph [ref=f21e134]:
+            - 'link "Next: Adapt per platform" [ref=f21e137] [cursor=pointer]':
+              - /url: "#variants"
+        - generic [ref=f21e139]:
+          - paragraph [ref=f21e140]: Master draft
+          - generic [ref=f21e141]:
+            - paragraph [ref=f21e142]: Northbound 2.4 is out today. Imports are faster, search has a keyboard shortcut, and the export bug two of you reported is fixed.
+            - paragraph [ref=f21e143]: In project Northbound Tools (sample)
+      - generic [ref=f21e147]:
+        - generic [ref=f21e148]:
+          - paragraph [ref=f21e149]: Step 4 of 9
+          - heading "See what each account actually receives" [level=2] [ref=f21e150]
+          - paragraph [ref=f21e151]: "One draft becomes one version per account, each written for the platform it goes to: a shorter line for X, the full release note for LinkedIn, a caption and alt text for Instagram. You edit any of them without touching the others, and every version carries the check that applies to it."
+          - paragraph [ref=f21e152]:
+            - 'link "Next: Check it" [ref=f21e155] [cursor=pointer]':
+              - /url: "#validate"
+        - generic [ref=f21e157]:
+          - paragraph [ref=f21e158]: What each account receives
+          - list [ref=f21e160]:
+            - listitem [ref=f21e161]:
+              - paragraph [ref=f21e162]:
+                - generic [ref=f21e164]: X, @northbound
+              - paragraph [ref=f21e165]: Northbound 2.4 is out. Faster imports, keyboard search, and that export bug is fixed.
+              - paragraph [ref=f21e166]:
+                - generic [ref=f21e169]: Character count and thread order
+            - listitem [ref=f21e170]:
+              - paragraph [ref=f21e171]:
+                - generic [ref=f21e173]: LinkedIn, Northbound Tools
+              - paragraph [ref=f21e174]: Northbound 2.4 is out today. The release note explains the import changes and the export fix in full.
+              - paragraph [ref=f21e175]:
+                - generic [ref=f21e178]: Organization role and post length
+            - listitem [ref=f21e179]:
+              - paragraph [ref=f21e180]:
+                - generic [ref=f21e182]: Instagram, @northbound.tools
+              - paragraph [ref=f21e183]: The same release picture, with a caption written for the feed and alt text written by a person.
+              - paragraph [ref=f21e184]:
+                - generic [ref=f21e187]: Account type, aspect ratio and alt text
+      - generic [ref=f21e191]:
+        - generic [ref=f21e192]:
+          - paragraph [ref=f21e193]: Step 5 of 9
+          - heading "Check it before it is scheduled" [level=2] [ref=f21e194]
+          - paragraph [ref=f21e195]: "The composer measures each version against the account it is written for: the character limit that account really has, alt text on every image, and whether the platform offers a first comment at all. A version that fails a check cannot be scheduled."
+          - paragraph [ref=f21e196]:
+            - 'link "Next: Give it a time" [ref=f21e199] [cursor=pointer]':
+              - /url: "#schedule"
+        - generic [ref=f21e201]:
+          - paragraph [ref=f21e202]: Checks before scheduling
+          - generic [ref=f21e203]:
+            - list [ref=f21e204]:
+              - listitem [ref=f21e205]:
+                - generic [ref=f21e208]:
+                  - generic [ref=f21e209]: Character limit, per account
+                  - generic [ref=f21e210]: Each version is measured against the limit the platform gives that account.
+              - listitem [ref=f21e211]:
+                - generic [ref=f21e214]:
+                  - generic [ref=f21e215]: Alt text on every image
+                  - generic [ref=f21e216]: An image without a description, or without being marked decorative, stops the schedule.
+              - listitem [ref=f21e217]:
+                - generic [ref=f21e220]:
+                  - generic [ref=f21e221]: First comment allowed here
+                  - generic [ref=f21e222]: A first comment is only offered on accounts whose platform supports one.
+            - paragraph [ref=f21e223]: These run in the composer before anything is scheduled, and again before anything is sent.
+      - generic [ref=f21e227]:
+        - generic [ref=f21e228]:
+          - paragraph [ref=f21e229]: Step 6 of 9
+          - heading "Give it a time, or hand it to the queue" [level=2] [ref=f21e230]
+          - paragraph [ref=f21e231]: "A time is stored as an instant plus the project time zone, never as a naive local time, so a daylight saving change moves nothing under you. The queue is the other route: it takes the next slot allowed by the rules you set."
+          - paragraph [ref=f21e232]:
+            - 'link "Next: See the week" [ref=f21e235] [cursor=pointer]':
+              - /url: "#calendar"
+        - generic [ref=f21e237]:
+          - paragraph [ref=f21e238]: Scheduled
+          - generic [ref=f21e239]:
+            - paragraph [ref=f21e240]:
+              - generic [ref=f21e245]: Tuesday, September 15, 2026 at 9:15 AM in Central European Summer Time (GMT+2)
+            - paragraph [ref=f21e246]: One approval is required before anything can be sent.
+            - paragraph [ref=f21e247]: "The queue is the other route: it picks the next slot your rules allow, in this time zone."
+      - generic [ref=f21e251]:
+        - generic [ref=f21e252]:
+          - paragraph [ref=f21e253]: Step 7 of 9
+          - heading "Watch the calendar" [level=2] [ref=f21e254]
+          - paragraph [ref=f21e255]: The week shows the platform, the account, the state and the time for every post. Moving one is a button as well as a drag, so the calendar is fully usable from the keyboard.
+          - paragraph [ref=f21e256]:
+            - 'link "Next: Publish and record" [ref=f21e259] [cursor=pointer]':
+              - /url: "#receipt"
+        - generic [ref=f21e261]:
+          - paragraph [ref=f21e262]: The week
+          - generic [ref=f21e263]:
+            - list [ref=f21e264]:
+              - listitem [ref=f21e265]:
+                - paragraph [ref=f21e266]: Monday
+                - paragraph [ref=f21e268]:
+                  - generic [ref=f21e269]: Nothing scheduled
+                  - generic [ref=f21e270]: ·
+              - listitem [ref=f21e271]:
+                - paragraph [ref=f21e272]: Tuesday
+                - generic [ref=f21e273]:
+                  - paragraph [ref=f21e274]:
+                    - generic [ref=f21e276]: 9:15 AM
+                    - generic [ref=f21e277]: X, @northbound
+                  - paragraph [ref=f21e278]:
+                    - generic [ref=f21e280]: 1:00 PM
+                    - generic [ref=f21e281]: LinkedIn, Northbound Tools
+              - listitem [ref=f21e282]:
+                - paragraph [ref=f21e283]: Wednesday
+                - paragraph [ref=f21e285]:
+                  - generic [ref=f21e287]: 5:30 PM
+                  - generic [ref=f21e288]: Instagram, @northbound.tools
+              - listitem [ref=f21e289]:
+                - paragraph [ref=f21e290]: Thursday
+                - paragraph [ref=f21e292]:
+                  - generic [ref=f21e293]: Nothing scheduled
+                  - generic [ref=f21e294]: ·
+              - listitem [ref=f21e295]:
+                - paragraph [ref=f21e296]: Friday
+                - paragraph [ref=f21e298]:
+                  - generic [ref=f21e299]: Nothing scheduled
+                  - generic [ref=f21e300]: ·
+            - paragraph [ref=f21e301]: The same three posts on the calendar, read in the project time zone.
+      - generic [ref=f21e305]:
+        - generic [ref=f21e306]:
+          - paragraph [ref=f21e307]: Step 8 of 9
+          - heading "Publish, and keep the record" [level=2] [ref=f21e308]
+          - paragraph [ref=f21e309]: A publish run sends each version at its instant, records what the platform answered, and writes an immutable receipt. That run is the part that does not exist yet, so the last two steps below are pending rather than drawn as finished.
+          - paragraph [ref=f21e310]:
+            - 'link "Next: Read the digest" [ref=f21e313] [cursor=pointer]':
+              - /url: "#digest"
+        - generic [ref=f21e315]:
+          - generic [ref=f21e316]: Not published
+          - generic [ref=f21e318]:
+            - paragraph [ref=f21e319]: Publishing and the record of it
+            - generic [ref=f21e320]:
+              - list "Publishing and the record of it" [ref=f21e321]:
+                - listitem [ref=f21e322]:
+                  - paragraph [ref=f21e330]: Approved by Ravi, sample reviewer
+                - listitem [ref=f21e331]:
+                  - paragraph [ref=f21e339]: Queued for its slot
+                - listitem [ref=f21e340]:
+                  - paragraph [ref=f21e348]: Sent to the platform
+                - listitem [ref=f21e349]:
+                  - paragraph [ref=f21e356]: Confirmed by the platform
+              - generic [ref=f21e357]:
+                - generic [ref=f21e358]:
+                  - term [ref=f21e359]: External post ID
+                  - definition [ref=f21e360]: Unavailable
+                - generic [ref=f21e361]:
+                  - term [ref=f21e362]: Permalink
+                  - definition [ref=f21e363]: Unavailable
+              - paragraph [ref=f21e364]: The last two steps are written by the publish run. No connector has passed provider verification yet, so they stay pending and the external post ID and permalink stay unavailable.
+      - generic [ref=f21e368]:
+        - generic [ref=f21e369]:
+          - paragraph [ref=f21e370]: Step 9 of 9
+          - heading "Read the weekly digest" [level=2] [ref=f21e371]
+          - paragraph [ref=f21e372]: "The digest describes what the product did in sentences: how many versions went out from one draft, which slot was earliest, what was approved. It carries no engagement figures, because analytics come from the platforms after a post publishes and nothing publishes yet."
+        - generic [ref=f21e374]:
+          - paragraph [ref=f21e375]: Your week, in sentences
+          - generic [ref=f21e376]:
+            - paragraph [ref=f21e377]: Sample
+            - list [ref=f21e378]:
+              - listitem [ref=f21e379]: Three platform-native versions went out from one draft this week.
+              - listitem [ref=f21e380]: Tuesday morning was your earliest slot.
+              - listitem [ref=f21e381]: Every version was approved before it was queued.
+              - listitem [ref=f21e382]: Every image carried alt text written by a person.
+            - paragraph [ref=f21e383]: Live analytics appear here as your posts publish.
+      - generic [ref=f21e387]:
+        - heading "That is the whole loop" [level=2] [ref=f21e388]
+        - paragraph [ref=f21e389]: Nothing above is a mock up of a product we hope to build. It is the interface as it stands, with the publishing half honestly marked as unfinished.
+        - paragraph [ref=f21e390]:
+          - link "See what it costs" [ref=f21e391] [cursor=pointer]:
+            - /url: /pricing
+    - contentinfo [ref=f21e392]:
+      - generic [ref=f21e394]:
+        - navigation "Footer navigation" [ref=f21e395]:
+          - generic [ref=f21e396]:
+            - heading "Product" [level=2] [ref=f21e397]
+            - list [ref=f21e398]:
+              - listitem [ref=f21e399]:
+                - link "Product" [ref=f21e400] [cursor=pointer]:
+                  - /url: /product
+              - listitem [ref=f21e401]:
+                - link "Integrations" [ref=f21e402] [cursor=pointer]:
+                  - /url: /integrations
+              - listitem [ref=f21e403]:
+                - link "Platform capabilities" [ref=f21e404] [cursor=pointer]:
+                  - /url: /integrations/capabilities
+              - listitem [ref=f21e405]:
+                - link "Scheduling, platform by platform" [ref=f21e406] [cursor=pointer]:
+                  - /url: /schedule
+              - listitem [ref=f21e407]:
+                - link "Pricing" [ref=f21e408] [cursor=pointer]:
+                  - /url: /pricing
+          - generic [ref=f21e409]:
+            - heading "Company" [level=2] [ref=f21e410]
+            - list [ref=f21e411]:
+              - listitem [ref=f21e412]:
+                - link "For creators" [ref=f21e413] [cursor=pointer]:
+                  - /url: /for-creators
+              - listitem [ref=f21e414]:
+                - link "For agencies" [ref=f21e415] [cursor=pointer]:
+                  - /url: /for-agencies
+              - listitem [ref=f21e416]:
+                - link "Use cases" [ref=f21e417] [cursor=pointer]:
+                  - /url: /use-cases
+              - listitem [ref=f21e418]:
+                - link "Methodology" [ref=f21e419] [cursor=pointer]:
+                  - /url: /methodology
+              - listitem [ref=f21e420]:
+                - link "Comparisons" [ref=f21e421] [cursor=pointer]:
+                  - /url: /compare
+          - generic [ref=f21e422]:
+            - heading "Developers" [level=2] [ref=f21e423]
+            - list [ref=f21e424]:
+              - listitem [ref=f21e425]:
+                - link "For developers" [ref=f21e426] [cursor=pointer]:
+                  - /url: /for-developers
+              - listitem [ref=f21e427]:
+                - link "Documentation" [ref=f21e428] [cursor=pointer]:
+                  - /url: /docs
+              - listitem [ref=f21e429]:
+                - link "API and MCP Terms" [ref=f21e430] [cursor=pointer]:
+                  - /url: /legal/api-terms
+              - listitem [ref=f21e431]:
+                - link "Status" [ref=f21e432] [cursor=pointer]:
+                  - /url: /status
+          - generic [ref=f21e433]:
+            - heading "Resources" [level=2] [ref=f21e434]
+            - list [ref=f21e435]:
+              - listitem [ref=f21e436]:
+                - link "Changelog" [ref=f21e437] [cursor=pointer]:
+                  - /url: /changelog
+              - listitem [ref=f21e438]:
+                - link "Creative tool radar" [ref=f21e439] [cursor=pointer]:
+                  - /url: /tool-radar
+              - listitem [ref=f21e440]:
+                - link "Promotion opportunities" [ref=f21e441] [cursor=pointer]:
+                  - /url: /opportunities
+              - listitem [ref=f21e442]:
+                - link "Free tools" [ref=f21e443] [cursor=pointer]:
+                  - /url: /tools
+              - listitem [ref=f21e444]:
+                - link "Resources" [ref=f21e445] [cursor=pointer]:
+                  - /url: /resources
+          - generic [ref=f21e446]:
+            - heading "Legal" [level=2] [ref=f21e447]
+            - list [ref=f21e448]:
+              - listitem [ref=f21e449]:
+                - link "Terms" [ref=f21e450] [cursor=pointer]:
+                  - /url: /legal/terms
+              - listitem [ref=f21e451]:
+                - link "Privacy" [ref=f21e452] [cursor=pointer]:
+                  - /url: /legal/privacy
+              - listitem [ref=f21e453]:
+                - link "Acceptable use" [ref=f21e454] [cursor=pointer]:
+                  - /url: /legal/acceptable-use
+              - listitem [ref=f21e455]:
+                - link "Security" [ref=f21e456] [cursor=pointer]:
+                  - /url: /legal/security
+              - listitem [ref=f21e457]:
+                - link "Legal and policies" [ref=f21e458] [cursor=pointer]:
+                  - /url: /legal
+        - generic [ref=f21e459]:
+          - paragraph [ref=f21e460]: Relay publishes through official platform APIs only. Connector availability depends on approvals that the platforms control, and every capability claim on this site is dated and sourced.
+          - paragraph [ref=f21e461]: Platform names and marks belong to their owners. Their use here identifies a connector and does not imply endorsement or partnership.
+          - paragraph [ref=f21e462]: Relay 2026
+  - region "Notifications (F8)":
+    - list
+  - alert [ref=f21e464]
+  - button "Open Next.js Dev Tools" [ref=f21e470] [cursor=pointer]
+  - alert [ref=f21e474]

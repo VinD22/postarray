@@ -1,0 +1,920 @@
+- generic [active] [ref=f3e1]:
+  - banner [ref=f3e2]:
+    - navigation "Global" [ref=f3e3]:
+      - link "post bridge logo post bridge" [ref=f3e5] [cursor=pointer]:
+        - /url: /
+        - img "post bridge logo" [ref=f3e6]
+        - generic [ref=f3e7]: post bridge
+      - generic [ref=f3e8]:
+        - link "Pricing" [ref=f3e9] [cursor=pointer]:
+          - /url: /#pricing
+        - link "Reviews" [ref=f3e10] [cursor=pointer]:
+          - /url: /#testimonials
+        - link "Features" [ref=f3e11] [cursor=pointer]:
+          - /url: /#features
+        - link "Platforms" [ref=f3e12] [cursor=pointer]:
+          - /url: /#platforms
+        - link "FAQ" [ref=f3e13] [cursor=pointer]:
+          - /url: /#faq
+        - link "Blog" [ref=f3e14] [cursor=pointer]:
+          - /url: /blog
+        - button "Tools" [ref=f3e16] [cursor=pointer]
+        - link "API" [ref=f3e19] [cursor=pointer]:
+          - /url: /#api
+        - link "Billing" [ref=f3e20] [cursor=pointer]:
+          - /url: https://billing.stripe.com/p/login/00g28WfgQ9GnfL2288
+      - link "Login" [ref=f3e22] [cursor=pointer]:
+        - /url: /signin
+  - main [ref=f3e23]:
+    - generic [ref=f3e26]:
+      - generic [ref=f3e27]:
+        - generic [ref=f3e28]:
+          - text: Twitter/X
+          - img "Twitter/X" [ref=f3e30]
+        - generic [ref=f3e31]:
+          - text: Instagram
+          - img "Instagram" [ref=f3e33]
+        - generic [ref=f3e34]:
+          - text: LinkedIn
+          - img "LinkedIn" [ref=f3e36]
+        - generic [ref=f3e37]:
+          - text: Facebook
+          - img "Facebook" [ref=f3e39]
+        - generic [ref=f3e40]:
+          - text: TikTok
+          - img "TikTok" [ref=f3e42]
+        - generic [ref=f3e43]:
+          - text: YouTube
+          - img "YouTube" [ref=f3e45]
+        - generic [ref=f3e46]:
+          - text: Bluesky
+          - img "Bluesky" [ref=f3e48]
+        - generic [ref=f3e49]:
+          - text: Threads
+          - img "Threads" [ref=f3e51]
+        - generic [ref=f3e52]:
+          - text: Pinterest
+          - img "Pinterest" [ref=f3e54]
+        - generic [ref=f3e55]:
+          - text: Google Business
+          - img "Google Business" [ref=f3e57]
+      - heading [level=1] [ref=f3e59]:
+        - text: Post to all your social accounts from your AI Agent
+        - generic [ref=f3e60]: ChatGPT
+      - generic [ref=f3e65]:
+        - text: works with Claude, ChatGPT, OpenClaw, Cursor, or any other AI agent. fairly priced, support from
+        - generic [ref=f3e66]:
+          - text: jack
+          - link [ref=f3e67] [cursor=pointer]:
+            - /url: "#founder-story"
+            - img "Jack" [ref=f3e69]
+        - text: .
+      - link "Try it for free" [ref=f3e71] [cursor=pointer]:
+        - /url: /create-account
+      - button "not using an AI agent? click here →" [ref=f3e74] [cursor=pointer]
+      - generic [ref=f3e76]:
+        - generic [ref=f3e77]:
+          - img "User" [ref=f3e79]
+          - img "User" [ref=f3e81]
+          - img "User" [ref=f3e83]
+          - img "User" [ref=f3e85]
+          - img "User" [ref=f3e87]
+        - generic [ref=f3e88]: Used by 1,772 happy customers
+    - iframe [ref=f3e93]:
+      - generic [ref=f4e1]:
+        - generic "YouTube Video Player" [ref=f4e3]
+        - generic [ref=f4e5]:
+          - generic:
+            - generic:
+              - generic [ref=f4e6] [cursor=pointer]
+              - button "Play video" [ref=f4e10] [cursor=pointer]
+              - button "Hide player controls" [ref=f4e14] [cursor=pointer]
+              - generic [ref=f4e16]:
+                - generic [ref=f4e21]:
+                  - generic [ref=f4e22]:
+                    - link "how to use post bridge! (social media scheduler demo)" [ref=f4e23] [cursor=pointer]:
+                      - /url: https://www.youtube.com/watch?v=FR5e4r_QYfA
+                    - link "jack friks" [ref=f4e24] [cursor=pointer]:
+                      - /url: /channel/UC3dKF3d9hZjRpuFkwBGhFkw
+                  - generic [ref=f4e26]:
+                    - button [ref=f4e27] [cursor=pointer]:
+                      - img "thumbnail-image" [ref=f4e28]
+                    - generic [ref=f4e30]:
+                      - generic: jack friks
+                      - generic: 7.88K subscribers
+                - generic [ref=f4e31]:
+                  - button "Share" [ref=f4e34] [cursor=pointer]
+                  - link "Watch on YouTube" [ref=f4e45] [cursor=pointer]:
+                    - /url: https://www.youtube.com/watch?v=FR5e4r_QYfA
+                    - generic [ref=f4e46]: Watch on
+    - generic [ref=f3e96]:
+      - generic [ref=f3e97]: Featured on
+      - generic [ref=f3e98]:
+        - link [ref=f3e99] [cursor=pointer]:
+          - /url: https://www.youtube.com/watch?v=qeY283nBhIA
+          - img "Starter Story" [ref=f3e100]
+        - link [ref=f3e101] [cursor=pointer]:
+          - /url: https://www.tinylaun.ch/launch/2016
+          - img "Tiny Launch" [ref=f3e102]
+        - link [ref=f3e103] [cursor=pointer]:
+          - /url: https://www.producthunt.com/products/post-bridge
+          - img "Product Hunt" [ref=f3e104]
+        - link [ref=f3e105] [cursor=pointer]:
+          - /url: https://x.com/blackdorn/status/1904169318570463531
+          - img "X (Twitter)" [ref=f3e106]
+    - generic [ref=f3e108]:
+      - generic [ref=f3e109]:
+        - heading "connect your agent in minutes" [level=2] [ref=f3e110]
+        - paragraph [ref=f3e111]: pick your agent. here's the fastest way in, and what posting looks like once it's connected.
+      - generic [ref=f3e112]:
+        - button "Claude" [ref=f3e113] [cursor=pointer]
+        - button "ChatGPT" [ref=f3e116] [cursor=pointer]
+        - button "OpenClaw" [ref=f3e119] [cursor=pointer]
+        - button "Hermes" [ref=f3e121] [cursor=pointer]
+        - button "Cursor" [ref=f3e123] [cursor=pointer]
+        - button "CLI / API" [ref=f3e125] [cursor=pointer]
+      - generic [ref=f3e128]:
+        - generic [ref=f3e129]:
+          - paragraph [ref=f3e130]: fastest way in
+          - heading "One click from the Claude directory" [level=3] [ref=f3e131]
+          - list [ref=f3e132]:
+            - listitem [ref=f3e133]:
+              - generic [ref=f3e134]: "1"
+              - text: Open post bridge in the Claude connector directory
+            - listitem [ref=f3e135]:
+              - generic [ref=f3e136]: "2"
+              - text: Hit Connect and sign in with your post bridge account
+            - listitem [ref=f3e137]:
+              - generic [ref=f3e138]: "3"
+              - text: That's it. Claude has all 13 posting tools
+          - link "Add to Claude" [ref=f3e139] [cursor=pointer]:
+            - /url: https://claude.ai/directory/connectors/post-bridge-scheduler
+          - paragraph [ref=f3e140]: Also works in Claude Code and Claude Desktop via MCP.
+        - generic [ref=f3e141]:
+          - generic [ref=f3e142]: Claude
+          - generic [ref=f3e149]:
+            - generic [ref=f3e150]: Post this video to TikTok, Instagram Reels, and YouTube Shorts with the same caption.
+            - generic [ref=f3e152]:
+              - generic [ref=f3e153]:
+                - img "post bridge" [ref=f3e155]
+                - generic [ref=f3e156]: upload_media
+                - generic [ref=f3e157]: video.mp4
+              - generic [ref=f3e161]:
+                - img "post bridge" [ref=f3e163]
+                - generic [ref=f3e164]: create_post
+                - generic [ref=f3e165]: 3 accounts
+            - generic [ref=f3e169]: Done, published to all three. Want me to pull view counts tomorrow?
+    - generic [ref=f3e173]:
+      - generic [ref=f3e176]:
+        - generic [ref=f3e177]:
+          - generic [ref=f3e178]: SCHEDULING
+          - heading "Schedule a week of posts in one chat" [level=2] [ref=f3e183]
+          - paragraph [ref=f3e184]: Hand your agent finished content. It queues the week across every platform while you keep creating.
+          - generic [ref=f3e185]:
+            - link "Start free" [ref=f3e186] [cursor=pointer]:
+              - /url: /create-account
+            - link "See how it connects" [ref=f3e189] [cursor=pointer]:
+              - /url: "#connect-your-agent"
+        - generic [ref=f3e192]:
+          - generic [ref=f3e193]: schedule these 5 videos this week, 9am each day
+          - generic [ref=f3e195]:
+            - generic [ref=f3e196]:
+              - generic [ref=f3e197]: your schedule
+              - img "post bridge" [ref=f3e199]
+            - generic [ref=f3e200]:
+              - generic [ref=f3e201]:
+                - generic [ref=f3e202]: Mon
+                - generic [ref=f3e203]: 9:00
+              - generic [ref=f3e207]:
+                - generic [ref=f3e208]: Tue
+                - generic [ref=f3e209]: 9:00
+              - generic [ref=f3e213]:
+                - generic [ref=f3e214]: Wed
+                - generic [ref=f3e215]: 9:00
+              - generic [ref=f3e219]:
+                - generic [ref=f3e220]: Thu
+                - generic [ref=f3e221]: 9:00
+              - generic [ref=f3e225]:
+                - generic [ref=f3e226]: Fri
+                - generic [ref=f3e227]: 9:00
+          - generic [ref=f3e231]: Queued Mon to Fri at 9am. Your week's handled.
+      - generic [ref=f3e235]:
+        - generic [ref=f3e236]:
+          - generic [ref=f3e237]: POST ANALYTICS
+          - heading "Track your post analytics and double down" [level=2] [ref=f3e242]
+          - paragraph [ref=f3e243]: "Ask for your numbers right in the chat: views, likes, and comments per post. Your agent spots the winners and queues more of what works."
+          - generic [ref=f3e244]:
+            - link "Start free" [ref=f3e245] [cursor=pointer]:
+              - /url: /create-account
+            - link "API docs" [ref=f3e248] [cursor=pointer]:
+              - /url: https://api.post-bridge.com/reference
+        - generic [ref=f3e251]:
+          - generic [ref=f3e252]: how did my posts do this week?
+          - generic [ref=f3e254]:
+            - generic [ref=f3e255]:
+              - generic [ref=f3e256]: views, last 7 days
+              - img "post bridge" [ref=f3e258]
+            - generic [ref=f3e259]:
+              - generic [ref=f3e260]: 12.4k
+              - generic [ref=f3e275]:
+                - generic [ref=f3e276]: Mon
+                - generic [ref=f3e277]: Tue
+                - generic [ref=f3e278]: Wed
+                - generic [ref=f3e279]: Thu
+                - generic [ref=f3e280]: Fri
+                - generic [ref=f3e281]: Sat
+                - generic [ref=f3e282]: Sun
+          - generic [ref=f3e283]: Tuesday's TikTok hit 12.4k views, 6x your average. Want 3 more in that style?
+    - generic [ref=f3e287]:
+      - generic [ref=f3e288]:
+        - generic [ref=f3e289]: "9"
+        - generic [ref=f3e290]: Social platforms supported
+      - generic [ref=f3e291]:
+        - generic [ref=f3e292]: 2,392,210
+        - generic [ref=f3e293]: Posts published by users
+      - generic [ref=f3e294]:
+        - generic [ref=f3e295]: 2 min
+        - generic [ref=f3e296]: Average time to post everywhere
+    - link "Give your agent posting powers" [ref=f3e299] [cursor=pointer]:
+      - /url: /create-account
+    - generic [ref=f3e303]:
+      - heading "post bridge is loved by 1,772 users. Here's what they are saying." [level=2] [ref=f3e305]:
+        - text: post bridge is loved by
+        - generic [ref=f3e306]: 1,772 users
+        - text: .Here's what they are saying.
+      - generic [ref=f3e307]:
+        - generic [ref=f3e309]:
+          - generic [ref=f3e310] [cursor=pointer]: Your browser does not support the video tag.
+          - generic [ref=f3e316]:
+            - paragraph [ref=f3e328]:
+              - generic [ref=f3e329]: post bridge makes me 100x more productive
+            - generic [ref=f3e330]:
+              - img "Sami Hindi" [ref=f3e332]
+              - generic [ref=f3e333]:
+                - heading "Sami Hindi" [level=3] [ref=f3e334]
+                - paragraph [ref=f3e335]: "@DevBySami"
+              - link "See user post on Twitter" [ref=f3e336] [cursor=pointer]:
+                - /url: https://x.com/DevBySami/status/1957117836968493521
+        - generic [ref=f3e340]:
+          - img "Achievement" [ref=f3e342]
+          - generic [ref=f3e343]:
+            - paragraph [ref=f3e355]:
+              - generic [ref=f3e356]: My first ever 1M view video. This has been a monumental boost for [my app]
+              - text: ScoutR.
+            - generic [ref=f3e357]:
+              - img "Ollie Warren" [ref=f3e359]
+              - generic [ref=f3e360]:
+                - heading "Ollie Warren" [level=3] [ref=f3e361]
+                - paragraph [ref=f3e362]: "@ollie_warren99"
+              - link "See user post on Twitter" [ref=f3e363] [cursor=pointer]:
+                - /url: https://x.com/ollie_warren99/status/1864567347748491733
+        - generic [ref=f3e367]:
+          - img "Achievement" [ref=f3e369]
+          - generic [ref=f3e370]:
+            - paragraph [ref=f3e382]:
+              - generic [ref=f3e383]: I got 2.6 Million views in 6 weeks
+              - text: . I have NEVER GOTTEN 10K VIEWS BEFORE THIS. We used post bridge to manage postings - posted 4 videos on every platform daily and did it EVERYDAY!
+            - generic [ref=f3e384]:
+              - img "Moudjahid Moussa" [ref=f3e386]
+              - generic [ref=f3e387]:
+                - heading "Moudjahid Moussa" [level=3] [ref=f3e388]
+                - paragraph [ref=f3e389]: "@moudjaonline"
+              - link "See user post on Twitter" [ref=f3e390] [cursor=pointer]:
+                - /url: https://x.com/moudjaonline/status/1956352080215744733
+        - generic [ref=f3e394]:
+          - img "Achievement" [ref=f3e396]
+          - generic [ref=f3e397]:
+            - paragraph [ref=f3e409]:
+              - generic [ref=f3e410]: Our channel was fully automated with post bridge and thanks to them we hit 100k on YouTube
+            - generic [ref=f3e411]:
+              - img "Ernesto Lopez" [ref=f3e413]
+              - generic [ref=f3e414]:
+                - heading "Ernesto Lopez" [level=3] [ref=f3e415]
+                - paragraph [ref=f3e416]: "@ErnestoSOFTWARE"
+              - link "See user post on Twitter" [ref=f3e417] [cursor=pointer]:
+                - /url: https://x.com/ErnestoSOFTWARE/status/2061534929951805893
+        - generic [ref=f3e422]:
+          - paragraph [ref=f3e434]: Finally, social media posting tool for the rest of us. Thanks Jack!
+          - generic [ref=f3e435]:
+            - img "David" [ref=f3e437]
+            - generic [ref=f3e438]:
+              - heading "David" [level=3] [ref=f3e439]
+              - paragraph [ref=f3e440]: "@ninthdensity"
+            - link "See user post on Twitter" [ref=f3e441] [cursor=pointer]:
+              - /url: https://x.com/ninthdensity/status/1856817175295922573
+        - generic [ref=f3e446]:
+          - paragraph [ref=f3e458]:
+            - generic [ref=f3e459]: post bridge is amazing, makes my life so much easier!
+          - generic [ref=f3e460]:
+            - img "Julian" [ref=f3e462]
+            - generic [ref=f3e463]:
+              - heading "Julian" [level=3] [ref=f3e464]
+              - paragraph [ref=f3e465]: "@BuiltByJulian"
+        - generic [ref=f3e468]:
+          - paragraph [ref=f3e480]:
+            - generic [ref=f3e481]: Thank u for making this!!!! All current products with similar pricing are too expensive which priced out small entrepreneurs. Thank u for making such a great product
+            - text: "!"
+          - generic [ref=f3e482]:
+            - img "Nil Ni" [ref=f3e484]
+            - generic [ref=f3e485]:
+              - heading "Nil Ni" [level=3] [ref=f3e486]
+              - paragraph [ref=f3e487]: "@nilni"
+            - link "See user review on Product Hunt" [ref=f3e488] [cursor=pointer]:
+              - /url: https://www.producthunt.com/products/post-bridge?comment=4028700#post-bridge
+        - generic [ref=f3e494]:
+          - paragraph [ref=f3e506]:
+            - generic [ref=f3e507]: Amazing tool at an amazing price
+            - text: 🔥🔥
+          - generic [ref=f3e508]:
+            - img "Andrei Bogdan" [ref=f3e510]
+            - generic [ref=f3e511]:
+              - heading "Andrei Bogdan" [level=3] [ref=f3e512]
+              - paragraph [ref=f3e513]: "@TheAndreiBogdan"
+        - generic [ref=f3e516]:
+          - paragraph [ref=f3e528]:
+            - generic [ref=f3e529]: Literally no easier way to interface would multi-account posting. and for 10x cheaper. every creator should be using this
+          - generic [ref=f3e530]:
+            - img "Noah Solomon" [ref=f3e532]
+            - generic [ref=f3e533]:
+              - heading "Noah Solomon" [level=3] [ref=f3e534]
+              - paragraph [ref=f3e535]: "@noah_solomon1"
+            - link "See user review on Product Hunt" [ref=f3e536] [cursor=pointer]:
+              - /url: https://www.producthunt.com/products/post-bridge/reviews
+        - generic [ref=f3e542]:
+          - paragraph [ref=f3e554]:
+            - generic [ref=f3e555]: Honestly postbridge has been such a life hack. Saves me at least 1h a day
+          - generic [ref=f3e556]:
+            - img "Fabian" [ref=f3e558]
+            - generic [ref=f3e559]:
+              - heading "Fabian" [level=3] [ref=f3e560]
+              - paragraph [ref=f3e561]: "@fabianbuilds"
+            - link "See user post on Twitter" [ref=f3e562] [cursor=pointer]:
+              - /url: https://x.com/fabianbuilds/status/1932795886658019572
+        - generic [ref=f3e567]:
+          - paragraph [ref=f3e579]:
+            - generic [ref=f3e580]: The UI is clean and easy to navigate
+            - text: . Easy as adding an event on a calendar. Similar apps I've found have a slightly higher learning curve when all you want to do is just schedule your damn content.
+          - generic [ref=f3e581]:
+            - img "Rahul Kahani" [ref=f3e583]
+            - generic [ref=f3e584]:
+              - heading "Rahul Kahani" [level=3] [ref=f3e585]
+              - paragraph [ref=f3e586]: "@rahulkahani"
+            - link "See user review on Product Hunt" [ref=f3e587] [cursor=pointer]:
+              - /url: https://www.producthunt.com/products/post-bridge?comment=4028583#post-bridge
+        - generic [ref=f3e593]:
+          - paragraph [ref=f3e605]:
+            - generic [ref=f3e606]: Post bridge is the best investment i've made in months
+            - text: . It's simple and works, exactly what i was searching to handle multiple channels.
+          - generic [ref=f3e607]:
+            - img "Fer" [ref=f3e609]
+            - generic [ref=f3e610]:
+              - heading "Fer" [level=3] [ref=f3e611]
+              - paragraph [ref=f3e612]: "@fer_chvs"
+            - link "See user post on Twitter" [ref=f3e613] [cursor=pointer]:
+              - /url: https://x.com/fer_chvs/status/1851987537062986203?s=46
+        - generic [ref=f3e618]:
+          - paragraph [ref=f3e630]:
+            - generic [ref=f3e631]: Best price/quality
+            - text: of all platforms of this kind by far
+          - generic [ref=f3e632]:
+            - img "Yorgo Hoebeke" [ref=f3e634]
+            - generic [ref=f3e635]:
+              - heading "Yorgo Hoebeke" [level=3] [ref=f3e636]
+              - paragraph [ref=f3e637]: "@yorgohoebeke"
+            - link "See user post on Twitter" [ref=f3e638] [cursor=pointer]:
+              - /url: https://x.com/yorgohoebeke/status/1856770400803225686
+        - generic [ref=f3e643]:
+          - paragraph [ref=f3e655]:
+            - generic [ref=f3e656]: Time is money, and using post bridge daily has been saving me both
+            - text: for the last two weeks 👌
+          - generic [ref=f3e657]:
+            - img "Soto Montero" [ref=f3e659]
+            - generic [ref=f3e660]:
+              - heading "Soto Montero" [level=3] [ref=f3e661]
+              - paragraph [ref=f3e662]: "@thesotomontero"
+            - link "See user post on Twitter" [ref=f3e663] [cursor=pointer]:
+              - /url: https://x.com/thesotomontero/status/1856864768188969287
+        - generic [ref=f3e668]:
+          - paragraph [ref=f3e680]:
+            - generic [ref=f3e681]: I wanted to say thank you for creating post-bridge. Your content studio has saved me WEEKS of time
+            - text: in literally less than a couple hours. This software is goated brotha.
+          - generic [ref=f3e682]:
+            - img "Dominick" [ref=f3e684]
+            - generic [ref=f3e685]:
+              - heading "Dominick" [level=3] [ref=f3e686]
+              - paragraph [ref=f3e687]: "@dominickbdiaz"
+        - generic [ref=f3e690]:
+          - paragraph [ref=f3e702]: $9/month should not be legal for this level of app
+          - generic [ref=f3e703]:
+            - img "Paulius" [ref=f3e705]
+            - generic [ref=f3e706]:
+              - heading "Paulius" [level=3] [ref=f3e707]
+              - paragraph [ref=f3e708]: "@0xPaulius"
+            - link "See user post on Twitter" [ref=f3e709] [cursor=pointer]:
+              - /url: https://x.com/0xPaulius/status/1856860177841983953
+        - generic [ref=f3e714]:
+          - paragraph [ref=f3e726]:
+            - generic [ref=f3e727]: Creating videos directly on Post-Bridge and scheduling it right away is a cheat code
+          - generic [ref=f3e728]:
+            - img "Cyril" [ref=f3e730]
+            - generic [ref=f3e731]:
+              - heading "Cyril" [level=3] [ref=f3e732]
+              - paragraph [ref=f3e733]: "@SlamingDev"
+            - link "See user post on Twitter" [ref=f3e734] [cursor=pointer]:
+              - /url: https://x.com/slamingdev/status/1863651830489554978?s=46
+        - generic [ref=f3e739]:
+          - paragraph [ref=f3e751]:
+            - generic [ref=f3e752]: I hate how every social media has a different scheduling and post management provider, thankfully post bridge solves that and I love the experience so far, it just works.
+          - generic [ref=f3e753]:
+            - img "Ryan Vogel" [ref=f3e755]
+            - generic [ref=f3e756]:
+              - heading "Ryan Vogel" [level=3] [ref=f3e757]
+              - paragraph [ref=f3e758]: "@ryandavogel"
+            - link "See user post on Twitter" [ref=f3e759] [cursor=pointer]:
+              - /url: https://x.com/ryandavogel/status/1856870315793539201?s=46
+        - generic [ref=f3e763]:
+          - img "Achievement" [ref=f3e765]
+          - generic [ref=f3e766]:
+            - paragraph [ref=f3e778]:
+              - generic [ref=f3e779]: "[the content studio] has slowly been bringing in customers tho and I appreciate you so much for that 🙏 + saves me soooo much time"
+              - text: can spend days just building new shit cause all the marketing on autopilot. Love it
+            - generic [ref=f3e780]:
+              - img "Patty" [ref=f3e782]
+              - generic [ref=f3e783]:
+                - heading "Patty" [level=3] [ref=f3e784]
+                - paragraph [ref=f3e785]: "@pattybuilds"
+              - link "See user post on Twitter" [ref=f3e786] [cursor=pointer]:
+                - /url: https://x.com/pattybuilds
+        - generic [ref=f3e791]:
+          - paragraph [ref=f3e803]:
+            - generic [ref=f3e804]: We use post bridge to keep doing our socials. Thank you so much @jackfriks (maker of post bridge) for helping us grow our startup. We gained more users
+            - text: 🔥
+          - generic [ref=f3e805]:
+            - img "Santy Gegenschatz" [ref=f3e807]
+            - generic [ref=f3e808]:
+              - heading "Santy Gegenschatz" [level=3] [ref=f3e809]
+              - paragraph [ref=f3e810]: "@santygegen"
+            - link "See user post on Twitter" [ref=f3e811] [cursor=pointer]:
+              - /url: https://x.com/santygegen/status/1888755154733662410
+        - generic [ref=f3e816]:
+          - paragraph [ref=f3e828]:
+            - generic [ref=f3e829]: super impressed by the UX. I went from 0 experience on the site to a scheduled post in less than 5 mins
+            - text: . very smooth.
+          - generic [ref=f3e830]:
+            - img "Allen" [ref=f3e832]
+            - generic [ref=f3e833]:
+              - heading "Allen" [level=3] [ref=f3e834]
+              - paragraph [ref=f3e835]: "@alnwdnhlm"
+            - link "See user post on Twitter" [ref=f3e836] [cursor=pointer]:
+              - /url: https://x.com/alnwdnhlm/status/1926907035011969334
+        - generic [ref=f3e841]:
+          - paragraph [ref=f3e853]:
+            - generic [ref=f3e854]: First posts made on YT and TT with post bridge [to advertise my product]. So happy I finally took the first step to prioritizing marketing daily. Jack built an amazing app
+            - text: here.
+          - generic [ref=f3e855]:
+            - img "Max Blade" [ref=f3e857]
+            - generic [ref=f3e858]:
+              - heading "Max Blade" [level=3] [ref=f3e859]
+              - paragraph [ref=f3e860]: "@_MaxBlade"
+            - link "See user post on Twitter" [ref=f3e861] [cursor=pointer]:
+              - /url: https://x.com/_MaxBlade/status/1870538781046235264
+    - link "Give your agent posting powers" [ref=f3e866] [cursor=pointer]:
+      - /url: /create-account
+    - generic [ref=f3e872]:
+      - img "Jack - Founder of post bridge" [ref=f3e874]
+      - generic [ref=f3e875]:
+        - heading "heyo! it's jack" [level=2] [ref=f3e876]
+        - paragraph [ref=f3e877]: (the guy who made post bridge)
+        - generic [ref=f3e878]:
+          - paragraph [ref=f3e879]: last year i was spending over 1 hour every single day posting the same content across all platforms.going from one app to another, then switching accounts multiple times, switching back and forth… it sucked.and what also sucked was the existing tools that i needed… they were way too expensive ($150-$300/month) for my needs and way too damn complex.i needed something lightweight and simple, something affordable.i searched far and wide but couldn't find what i needed, so i built it myself. and thats how i made post bridgeturns out thousands of others, like you, are just like me! so i made it into a businesssince then i've used post bridge daily to grow my own mobile app (now at 100k+ downloads) and to generate 100M+ views just on my accounts aloneall while spending less time than ever managing my socials, using post bridge.and there are 1000+ founders using it to save hours every week tooif you want to join them and save an hour this week you can try it for FREE, just click the button below
+          - link "Try it for free" [ref=f3e881] [cursor=pointer]:
+            - /url: /create-account
+    - generic [ref=f3e883]:
+      - generic [ref=f3e884]:
+        - heading "Supported Platforms" [level=2] [ref=f3e885]
+        - paragraph [ref=f3e886]: These are all the platforms you can post to from within post bridge.
+      - generic [ref=f3e887]:
+        - link [ref=f3e888] [cursor=pointer]:
+          - /url: /twitter-x
+          - generic [ref=f3e889]:
+            - img "Twitter/X" [ref=f3e891]
+            - heading "Twitter/X" [level=3] [ref=f3e892]
+        - link [ref=f3e893] [cursor=pointer]:
+          - /url: /instagram
+          - generic [ref=f3e894]:
+            - img "Instagram" [ref=f3e896]
+            - heading "Instagram" [level=3] [ref=f3e897]
+        - link [ref=f3e898] [cursor=pointer]:
+          - /url: /linkedin
+          - generic [ref=f3e899]:
+            - img "LinkedIn" [ref=f3e901]
+            - heading "LinkedIn" [level=3] [ref=f3e902]
+        - link [ref=f3e903] [cursor=pointer]:
+          - /url: /facebook
+          - generic [ref=f3e904]:
+            - img "Facebook" [ref=f3e906]
+            - heading "Facebook" [level=3] [ref=f3e907]
+        - link [ref=f3e908] [cursor=pointer]:
+          - /url: /tiktok
+          - generic [ref=f3e909]:
+            - img "TikTok" [ref=f3e911]
+            - heading "TikTok" [level=3] [ref=f3e912]
+        - link [ref=f3e913] [cursor=pointer]:
+          - /url: /youtube
+          - generic [ref=f3e914]:
+            - img "YouTube" [ref=f3e916]
+            - heading "YouTube" [level=3] [ref=f3e917]
+        - link [ref=f3e918] [cursor=pointer]:
+          - /url: /bluesky
+          - generic [ref=f3e919]:
+            - img "Bluesky" [ref=f3e921]
+            - heading "Bluesky" [level=3] [ref=f3e922]
+        - link [ref=f3e923] [cursor=pointer]:
+          - /url: /threads
+          - generic [ref=f3e924]:
+            - img "Threads" [ref=f3e926]
+            - heading "Threads" [level=3] [ref=f3e927]
+        - link [ref=f3e928] [cursor=pointer]:
+          - /url: /pinterest
+          - generic [ref=f3e929]:
+            - img "Pinterest" [ref=f3e931]
+            - heading "Pinterest" [level=3] [ref=f3e932]
+        - link [ref=f3e933] [cursor=pointer]:
+          - /url: /google-business
+          - generic [ref=f3e934]:
+            - img "Google Business" [ref=f3e936]
+            - heading "Google Business" [level=3] [ref=f3e937]
+        - heading "More to come" [level=3] [ref=f3e945]
+    - generic [ref=f3e949]:
+      - generic [ref=f3e950]:
+        - generic [ref=f3e951]: Connect your agent
+        - heading "Hooked up in one config block" [level=2] [ref=f3e955]
+        - paragraph [ref=f3e956]:
+          - text: "One click for Claude, or paste this into any MCP agent: OpenClaw, Hermes, Cursor, or your own. The"
+          - link "REST API" [ref=f3e957] [cursor=pointer]:
+            - /url: https://api.post-bridge.com/reference
+          - text: and CLI cover everything else.
+        - code [ref=f3e959]: "{ \"mcpServers\": { \"post-bridge\": { \"type\": \"http\", \"url\": \"https://www.post-bridge.com/api/mcp/mcp\" } } }"
+        - generic [ref=f3e960]:
+          - generic [ref=f3e961]: MCP included with all subscriptions
+          - generic [ref=f3e965]: "API keys for REST + CLI: $5/month add-on"
+      - generic [ref=f3e966]:
+        - link "Add to Claude" [ref=f3e967] [cursor=pointer]:
+          - /url: https://claude.ai/directory/connectors/post-bridge-scheduler
+        - link "View API Docs" [ref=f3e968] [cursor=pointer]:
+          - /url: https://api.post-bridge.com/reference
+    - generic [ref=f3e970]:
+      - generic [ref=f3e971]:
+        - paragraph [ref=f3e972]: Pricing
+        - heading "Get more views, with less effort." [level=2] [ref=f3e973]
+        - generic [ref=f3e976]:
+          - button "Monthly" [ref=f3e977] [cursor=pointer]
+          - button "Yearly 1 month free" [ref=f3e978] [cursor=pointer]:
+            - text: Yearly
+            - generic [ref=f3e979]: 1 month free
+      - generic [ref=f3e980]:
+        - generic [ref=f3e982]:
+          - generic [ref=f3e984]:
+            - paragraph [ref=f3e985]: CreatorMost popular
+            - paragraph [ref=f3e986]: Best for growing creators
+          - generic [ref=f3e988]:
+            - paragraph [ref=f3e989]: $29
+            - paragraph [ref=f3e991]: /month
+          - list [ref=f3e992]:
+            - listitem [ref=f3e993]:
+              - generic [ref=f3e996]: 15 connected social accounts
+            - listitem [ref=f3e997]:
+              - generic [ref=f3e1000]: Multiple accounts per platform
+            - listitem [ref=f3e1001]:
+              - generic [ref=f3e1004]: Unlimited posts
+            - listitem [ref=f3e1005]:
+              - generic [ref=f3e1008]: Schedule posts
+            - listitem [ref=f3e1009]:
+              - generic [ref=f3e1012]: MCP agent connect
+              - generic [ref=f3e1013]: Connect an AI agent like Claude or ChatGPT and it can create and schedule posts for you. Included with every plan.
+            - listitem [ref=f3e1016]:
+              - generic [ref=f3e1019]: Carousel posts
+            - listitem [ref=f3e1020]:
+              - generic [ref=f3e1023]: Bulk video scheduling
+            - listitem [ref=f3e1024]:
+              - generic [ref=f3e1027]: Content studio access
+            - listitem [ref=f3e1028]:
+              - generic [ref=f3e1031]: API add-on available
+              - generic [ref=f3e1032]: $5/month
+            - listitem [ref=f3e1035]:
+              - generic [ref=f3e1038]: Analytics (beta)
+              - generic [ref=f3e1039]: Works for TikTok, Instagram, and YouTube Shorts
+            - listitem [ref=f3e1042]:
+              - generic [ref=f3e1045]: Human support
+          - generic [ref=f3e1046]:
+            - button "Start 7 day free trial →" [ref=f3e1047] [cursor=pointer]
+            - paragraph [ref=f3e1049]: $0.00 due today, cancel anytime
+        - generic [ref=f3e1053]:
+          - generic [ref=f3e1055]:
+            - paragraph [ref=f3e1056]: Growth
+            - paragraph [ref=f3e1057]: Best for growing teams & agencies
+          - generic [ref=f3e1059]:
+            - paragraph [ref=f3e1060]: $49
+            - paragraph [ref=f3e1062]: /month
+          - list [ref=f3e1063]:
+            - listitem [ref=f3e1064]:
+              - generic [ref=f3e1067]: 50 connected social accounts
+            - listitem [ref=f3e1068]:
+              - generic [ref=f3e1071]: Multiple accounts per platform
+            - listitem [ref=f3e1072]:
+              - generic [ref=f3e1075]: Unlimited posts
+            - listitem [ref=f3e1076]:
+              - generic [ref=f3e1079]: Schedule posts
+            - listitem [ref=f3e1080]:
+              - generic [ref=f3e1083]: MCP agent connect
+              - generic [ref=f3e1084]: Connect an AI agent like Claude or ChatGPT and it can create and schedule posts for you. Included with every plan.
+            - listitem [ref=f3e1087]:
+              - generic [ref=f3e1090]: Carousel posts
+            - listitem [ref=f3e1091]:
+              - generic [ref=f3e1094]: Bulk video scheduling
+            - listitem [ref=f3e1095]:
+              - generic [ref=f3e1098]: Content studio access
+            - listitem [ref=f3e1099]:
+              - generic [ref=f3e1102]: API add-on available
+              - generic [ref=f3e1103]: $5/month
+            - listitem [ref=f3e1106]:
+              - generic [ref=f3e1109]: Analytics (beta)
+              - generic [ref=f3e1110]: Works for TikTok, Instagram, and YouTube Shorts
+            - listitem [ref=f3e1113]:
+              - generic [ref=f3e1116]: Viral growth consulting
+              - generic [ref=f3e1117]: Direct communication line to help you grow your accounts (from 100M+ views of experience)
+            - listitem [ref=f3e1120]:
+              - generic [ref=f3e1123]: Priority human support
+            - listitem [ref=f3e1124]:
+              - generic [ref=f3e1127]: Invite team members
+              - generic [ref=f3e1128]: 10 team members per team, 5 teams
+          - generic [ref=f3e1131]:
+            - button "Start 7 day free trial →" [ref=f3e1132] [cursor=pointer]
+            - paragraph [ref=f3e1134]: $0.00 due today, cancel anytime
+        - generic [ref=f3e1138]:
+          - generic [ref=f3e1140]:
+            - paragraph [ref=f3e1141]: ProBest deal
+            - paragraph [ref=f3e1142]: Best for scaling brands
+          - generic [ref=f3e1144]:
+            - paragraph [ref=f3e1145]: $99
+            - paragraph [ref=f3e1147]: /month
+          - list [ref=f3e1148]:
+            - listitem [ref=f3e1149]:
+              - generic [ref=f3e1152]: Unlimited connected accounts
+            - listitem [ref=f3e1154]:
+              - generic [ref=f3e1157]: Multiple accounts per platform
+            - listitem [ref=f3e1158]:
+              - generic [ref=f3e1161]: Unlimited posts
+            - listitem [ref=f3e1162]:
+              - generic [ref=f3e1165]: Schedule posts
+            - listitem [ref=f3e1166]:
+              - generic [ref=f3e1169]: MCP agent connect
+              - generic [ref=f3e1170]: Connect an AI agent like Claude or ChatGPT and it can create and schedule posts for you. Included with every plan.
+            - listitem [ref=f3e1173]:
+              - generic [ref=f3e1176]: Carousel posts
+            - listitem [ref=f3e1177]:
+              - generic [ref=f3e1180]: Bulk video scheduling
+            - listitem [ref=f3e1181]:
+              - generic [ref=f3e1184]: Content studio access
+            - listitem [ref=f3e1185]:
+              - generic [ref=f3e1188]: API add-on available
+              - generic [ref=f3e1189]: $5/month
+            - listitem [ref=f3e1192]:
+              - generic [ref=f3e1195]: Analytics (beta)
+              - generic [ref=f3e1196]: Works for TikTok, Instagram, and YouTube Shorts
+            - listitem [ref=f3e1199]:
+              - generic [ref=f3e1202]: Viral growth consulting
+              - generic [ref=f3e1203]: Direct communication line to help you grow your accounts (from 100M+ views of experience)
+            - listitem [ref=f3e1206]:
+              - generic [ref=f3e1209]: Priority human support
+            - listitem [ref=f3e1210]:
+              - generic [ref=f3e1213]: Invite team members
+              - generic [ref=f3e1214]: 10 team members per team, 5 teams
+          - generic [ref=f3e1217]:
+            - button "Start 7 day free trial →" [ref=f3e1218] [cursor=pointer]
+            - paragraph [ref=f3e1220]: $0.00 due today, cancel anytime
+      - generic [ref=f3e1224]:
+        - generic [ref=f3e1225]: "Post to:"
+        - generic [ref=f3e1226]:
+          - generic [ref=f3e1227]:
+            - text: Twitter/X
+            - img "Twitter/X" [ref=f3e1228]
+          - generic [ref=f3e1229]:
+            - text: Instagram
+            - img "Instagram" [ref=f3e1230]
+          - generic [ref=f3e1231]:
+            - text: LinkedIn
+            - img "LinkedIn" [ref=f3e1232]
+          - generic [ref=f3e1233]:
+            - text: Facebook
+            - img "Facebook" [ref=f3e1234]
+          - generic [ref=f3e1235]:
+            - text: TikTok
+            - img "TikTok" [ref=f3e1236]
+          - generic [ref=f3e1237]:
+            - text: YouTube
+            - img "YouTube" [ref=f3e1238]
+          - generic [ref=f3e1239]:
+            - text: Bluesky
+            - img "Bluesky" [ref=f3e1240]
+          - generic [ref=f3e1241]:
+            - text: Threads
+            - img "Threads" [ref=f3e1242]
+          - generic [ref=f3e1243]:
+            - text: Pinterest
+            - img "Pinterest" [ref=f3e1244]
+          - generic [ref=f3e1245]:
+            - text: Google Business
+            - img "Google Business" [ref=f3e1246]
+    - generic [ref=f3e1248]:
+      - generic [ref=f3e1249]:
+        - paragraph [ref=f3e1250]: FAQ
+        - paragraph [ref=f3e1251]: Frequently Asked Questions
+      - list [ref=f3e1252]:
+        - listitem [ref=f3e1253]:
+          - button "Why switch from Buffer or Hootsuite?" [ref=f3e1254] [cursor=pointer]
+          - generic [ref=f3e1260]:
+            - paragraph [ref=f3e1261]: Same core features, 1/10th the price, actually simple to use.
+            - paragraph [ref=f3e1262]: "Tools like Buffer and Hootsuite charge $75-$200/month for features most people never use. Post bridge focuses on what matters: posting to all your platforms quickly and reliably."
+            - paragraph [ref=f3e1263]: No bloated dashboards, no enterprise features you don't need. Just connect your accounts, create your post, and publish everywhere in 30 seconds.
+            - paragraph [ref=f3e1264]: Plus you get human support from jack (the founder) instead of waiting days for ticket responses.
+        - listitem [ref=f3e1265]:
+          - button "What social platforms do you support?" [ref=f3e1266] [cursor=pointer]
+          - generic [ref=f3e1272]:
+            - text: Currently we support Twitter/X, Instagram, LinkedIn, Facebook, TikTok, YouTube, Bluesky, Threads, Pinterest, Google Business for scheduled posting and instant posting. To see all platforms we offer and that are coming soon
+            - link "click here" [ref=f3e1273] [cursor=pointer]:
+              - /url: /#platforms
+            - text: . If you have a request please feel free to email us.
+        - listitem [ref=f3e1274]:
+          - button "How many social accounts can I connect?" [ref=f3e1275] [cursor=pointer]
+          - generic: Depends on your plan, see the pricing section for more details... You will not find a more fair price anywhere else.
+        - listitem [ref=f3e1282]:
+          - button "What is a social account?" [ref=f3e1283] [cursor=pointer]
+          - generic: "Social accounts are accounts of supported social media platforms. For example: Connecting your instagram account = connecting 1 social account."
+        - listitem [ref=f3e1290]:
+          - button "Can I connect 2 accounts to the same platform?" [ref=f3e1291] [cursor=pointer]
+          - generic: "Yes. Example: Starter plan can connect 5 total accounts, all of them can be tiktok accounts, or 3 of them could be tiktok and 2 instagram accounts for their cap of 5."
+        - listitem [ref=f3e1298]:
+          - button "How many posts can I make and schedule per month?" [ref=f3e1299] [cursor=pointer]
+          - generic: Unlimited for paying users. 5 for free users. 1 post to 4 platforms = 4 posts total.
+        - listitem [ref=f3e1306]:
+          - button "What types of content can I post?" [ref=f3e1307] [cursor=pointer]
+          - generic: "You can create and schedule various types of posts including: videos, images, text posts, carousels (multiple images), and reels. This gives you the flexibility to share all types of content across your social media platforms."
+        - listitem [ref=f3e1314]:
+          - button "Will my posts get less reach using this app?" [ref=f3e1315] [cursor=pointer]
+          - generic [ref=f3e1321]:
+            - generic [ref=f3e1322]: No, you will have the same reach as if you posted manually. We understand you may be wary that the algorithm favors manual posting, we were too! However, under our own testing we have found no difference in reach between manual posting and posting from post bridge.
+            - generic [ref=f3e1323]:
+              - img "Proof of views comparison" [ref=f3e1324]
+              - img "views with post bridge testimonial" [ref=f3e1325]
+            - generic [ref=f3e1326]:
+              - text: Also checkout our blog post
+              - link "here" [ref=f3e1327] [cursor=pointer]:
+                - /url: /blog/social-media-best-practices
+              - text: to make sure you are using a warm account with best practices for getting your content to go viral.
+        - listitem [ref=f3e1328]:
+          - button "Can I cancel anytime?" [ref=f3e1329] [cursor=pointer]
+          - generic: Yes, there's no lock-in and you can cancel your subscription at anytime of the month. When cancelling it will cancel at the end of your current billing period; you can still use the pro features until the end of your billing period.
+        - listitem [ref=f3e1336]:
+          - button "Can I get a refund?" [ref=f3e1337] [cursor=pointer]
+          - paragraph [ref=f3e1343]: Yes! You can request a refund within 7 days of being charged. Just reach out by email in this time frame.
+        - listitem [ref=f3e1344]:
+          - button "Do I need to share my social media passwords with you?" [ref=f3e1345] [cursor=pointer]
+          - generic: No, we never ask for or store your passwords directly. We use official authentication methods provided by each social platform, which means you log in securely through their official login pages. This is the same secure method used by all legitimate social media management tools.
+        - listitem [ref=f3e1352]:
+          - button "I have another question" [ref=f3e1353] [cursor=pointer]
+          - generic: "Cool, contact us by email: support@post-bridge.com 👋"
+        - listitem [ref=f3e1360]:
+          - button "Which AI agents work with post bridge?" [ref=f3e1361] [cursor=pointer]
+          - paragraph [ref=f3e1368]:
+            - text: Claude (one-click connector), ChatGPT, OpenClaw, Hermes, Cursor, and any agent that speaks MCP or plain HTTP. There's also a CLI (
+            - code [ref=f3e1369]: postbridge-cli
+            - text: ) for terminal-based agents.
+        - listitem [ref=f3e1370]:
+          - button "How does my agent connect?" [ref=f3e1371] [cursor=pointer]
+          - paragraph [ref=f3e1378]:
+            - text: "Three ways: install the post bridge connector from the Claude directory, paste our MCP server URL into your agent's config, or use the REST API with an API key. Takes a couple of minutes whichever way you pick. See"
+            - link "the agent setup guide" [ref=f3e1379] [cursor=pointer]:
+              - /url: /agents
+            - text: .
+        - listitem [ref=f3e1380]:
+          - button "Can I review posts before my agent publishes them?" [ref=f3e1381] [cursor=pointer]
+          - paragraph [ref=f3e1388]: Yes. Tell your agent to draft or schedule instead of posting immediately. Everything lands in your calendar where you can edit, reschedule or delete before it goes out.
+        - listitem [ref=f3e1389]:
+          - button "Do I need my own Instagram or TikTok developer accounts?" [ref=f3e1390] [cursor=pointer]
+          - paragraph [ref=f3e1397]: No. Connect your socials to post bridge once and your agent uses our integrations. No Meta app review, no platform developer accounts, no token maintenance.
+    - generic [ref=f3e1401]:
+      - heading "put your socials on autopilot" [level=2] [ref=f3e1402]
+      - paragraph [ref=f3e1403]: connect your agent in minutes. fairly priced, human support from jack.
+      - link "Try for free" [ref=f3e1404] [cursor=pointer]:
+        - /url: /dashboard/create
+  - contentinfo [ref=f3e1405]:
+    - generic [ref=f3e1407]:
+      - generic [ref=f3e1408]:
+        - link [ref=f3e1409] [cursor=pointer]:
+          - /url: /#
+          - img "post bridge logo" [ref=f3e1410]
+          - strong [ref=f3e1411]: post bridge
+        - paragraph [ref=f3e1412]: Post content to multiple social media platforms at the same time, all-in one place. Cross posting made easy.
+        - paragraph [ref=f3e1413]: Copyright © 2026 - All rights reserved
+      - generic [ref=f3e1414]:
+        - generic [ref=f3e1415]:
+          - generic [ref=f3e1416]: LINKS
+          - generic [ref=f3e1417]:
+            - link "Contact Support" [ref=f3e1418] [cursor=pointer]:
+              - /url: mailto:support@post-bridge.com
+              - text: Support
+            - link "Pricing" [ref=f3e1419] [cursor=pointer]:
+              - /url: /#pricing
+            - link "Blog" [ref=f3e1420] [cursor=pointer]:
+              - /url: /blog
+            - link "Affiliates" [ref=f3e1421] [cursor=pointer]:
+              - /url: https://post-bridge.affonso.io/post-bridge-affiliates
+            - link "Billing" [ref=f3e1422] [cursor=pointer]:
+              - /url: https://billing.stripe.com/p/login/00g28WfgQ9GnfL2288
+            - link "AI Agents" [ref=f3e1423] [cursor=pointer]:
+              - /url: /agents
+            - link "MCP" [ref=f3e1424] [cursor=pointer]:
+              - /url: /mcp
+            - link "OpenClaw" [ref=f3e1425] [cursor=pointer]:
+              - /url: /openclaw
+            - link "Agent Skill" [ref=f3e1426] [cursor=pointer]:
+              - /url: https://github.com/post-bridge-hq/agent-mode
+        - generic [ref=f3e1427]:
+          - generic [ref=f3e1428]: PLATFORMS
+          - generic [ref=f3e1429]:
+            - link "Social media scheduler" [ref=f3e1430] [cursor=pointer]:
+              - /url: /social-media-scheduler
+            - link "Cross posting" [ref=f3e1431] [cursor=pointer]:
+              - /url: /cross-posting
+            - link "Twitter/X scheduler" [ref=f3e1432] [cursor=pointer]:
+              - /url: /twitter-x
+            - link "Instagram scheduler" [ref=f3e1433] [cursor=pointer]:
+              - /url: /instagram
+            - link "LinkedIn scheduler" [ref=f3e1434] [cursor=pointer]:
+              - /url: /linkedin
+            - link "Facebook scheduler" [ref=f3e1435] [cursor=pointer]:
+              - /url: /facebook
+            - link "TikTok scheduler" [ref=f3e1436] [cursor=pointer]:
+              - /url: /tiktok
+            - link "YouTube scheduler" [ref=f3e1437] [cursor=pointer]:
+              - /url: /youtube
+            - link "Bluesky scheduler" [ref=f3e1438] [cursor=pointer]:
+              - /url: /bluesky
+            - link "Threads scheduler" [ref=f3e1439] [cursor=pointer]:
+              - /url: /threads
+            - link "Pinterest scheduler" [ref=f3e1440] [cursor=pointer]:
+              - /url: /pinterest
+            - link "Google Business scheduler" [ref=f3e1441] [cursor=pointer]:
+              - /url: /google-business
+        - generic [ref=f3e1442]:
+          - generic [ref=f3e1443]: FREE TOOLS
+          - generic [ref=f3e1444]:
+            - link "Growth Guide" [ref=f3e1445] [cursor=pointer]:
+              - /url: /growth-guide
+            - link "Instagram Grid Maker" [ref=f3e1446] [cursor=pointer]:
+              - /url: /tools/instagram-grid-maker
+            - link "Instagram Carousel Splitter" [ref=f3e1447] [cursor=pointer]:
+              - /url: /tools/instagram-carousel-splitter
+            - link "Instagram Handle Checker" [ref=f3e1448] [cursor=pointer]:
+              - /url: /tools/instagram-handle-checker
+            - link "TikTok Username Checker" [ref=f3e1449] [cursor=pointer]:
+              - /url: /tools/tiktok-username-checker
+            - link "TikTok Caption Generator" [ref=f3e1450] [cursor=pointer]:
+              - /url: /tools/tiktok-caption-generator
+            - link "LinkedIn Text Formatter" [ref=f3e1451] [cursor=pointer]:
+              - /url: /tools/linkedin-text-formatter
+            - link "YouTube Title Checker" [ref=f3e1452] [cursor=pointer]:
+              - /url: /tools/youtube-title-checker
+            - link "YouTube Tag Generator" [ref=f3e1453] [cursor=pointer]:
+              - /url: /tools/youtube-tag-generator
+            - link "Timeline Blocker for X/Twitter" [ref=f3e1454] [cursor=pointer]:
+              - /url: /tools/x-timeline-blocker
+        - generic [ref=f3e1455]:
+          - generic [ref=f3e1456]: COMPARE
+          - generic [ref=f3e1457]:
+            - link "Buffer alternative" [ref=f3e1458] [cursor=pointer]:
+              - /url: /buffer-alternative
+            - link "Hootsuite alternative" [ref=f3e1459] [cursor=pointer]:
+              - /url: /hootsuite-alternative
+            - link "Later alternative" [ref=f3e1460] [cursor=pointer]:
+              - /url: /later-alternative
+            - link "Publer alternative" [ref=f3e1461] [cursor=pointer]:
+              - /url: /publer-alternative
+            - link "Postiz alternative" [ref=f3e1462] [cursor=pointer]:
+              - /url: /postiz-alternative
+            - link "Best scheduling APIs" [ref=f3e1463] [cursor=pointer]:
+              - /url: /best-social-media-scheduling-api
+            - link "Claude social media manager" [ref=f3e1464] [cursor=pointer]:
+              - /url: /claude
+          - generic [ref=f3e1465]: LEGAL
+          - generic [ref=f3e1466]:
+            - link "Terms of services" [ref=f3e1467] [cursor=pointer]:
+              - /url: /tos
+            - link "Privacy policy" [ref=f3e1468] [cursor=pointer]:
+              - /url: /privacy-policy
+  - alert [ref=f3e1469]
+  - generic:
+    - iframe
+    - link "Chat with us!" [ref=f3e1471] [cursor=pointer]:
+      - /url: javascript:;

@@ -1,0 +1,302 @@
+- generic [active] [ref=f7e1]:
+  - banner [ref=f7e2]:
+    - navigation "Global" [ref=f7e3]:
+      - link "post bridge logo post bridge" [ref=f7e5] [cursor=pointer]:
+        - /url: /
+        - img "post bridge logo" [ref=f7e6]
+        - generic [ref=f7e7]: post bridge
+      - generic [ref=f7e8]:
+        - link "Pricing" [ref=f7e9] [cursor=pointer]:
+          - /url: /#pricing
+        - link "Reviews" [ref=f7e10] [cursor=pointer]:
+          - /url: /#testimonials
+        - link "Features" [ref=f7e11] [cursor=pointer]:
+          - /url: /#features
+        - link "Platforms" [ref=f7e12] [cursor=pointer]:
+          - /url: /#platforms
+        - link "FAQ" [ref=f7e13] [cursor=pointer]:
+          - /url: /#faq
+        - link "Blog" [ref=f7e14] [cursor=pointer]:
+          - /url: /blog
+        - button "Tools" [ref=f7e16] [cursor=pointer]
+        - link "API" [ref=f7e19] [cursor=pointer]:
+          - /url: /#api
+        - link "Billing" [ref=f7e20] [cursor=pointer]:
+          - /url: https://billing.stripe.com/p/login/00g28WfgQ9GnfL2288
+      - link "Login" [ref=f7e22] [cursor=pointer]:
+        - /url: /signin
+  - main [ref=f7e23]:
+    - heading "Simple Pricing for Every Creator" [level=1] [ref=f7e24]
+    - generic [ref=f7e26]:
+      - generic [ref=f7e27]:
+        - paragraph [ref=f7e28]: Pricing
+        - heading "Get more views, with less effort." [level=2] [ref=f7e29]
+        - generic [ref=f7e32]:
+          - button "Monthly" [ref=f7e33] [cursor=pointer]
+          - button "Yearly 1 month free" [ref=f7e34] [cursor=pointer]:
+            - text: Yearly
+            - generic [ref=f7e35]: 1 month free
+      - generic [ref=f7e36]:
+        - generic [ref=f7e38]:
+          - generic [ref=f7e40]:
+            - paragraph [ref=f7e41]: CreatorMost popular
+            - paragraph [ref=f7e42]: Best for growing creators
+          - generic [ref=f7e44]:
+            - paragraph [ref=f7e45]: $29
+            - paragraph [ref=f7e47]: /month
+          - list [ref=f7e48]:
+            - listitem [ref=f7e49]:
+              - generic [ref=f7e52]: 15 connected social accounts
+            - listitem [ref=f7e53]:
+              - generic [ref=f7e56]: Multiple accounts per platform
+            - listitem [ref=f7e57]:
+              - generic [ref=f7e60]: Unlimited posts
+            - listitem [ref=f7e61]:
+              - generic [ref=f7e64]: Schedule posts
+            - listitem [ref=f7e65]:
+              - generic [ref=f7e68]: MCP agent connect
+              - generic [ref=f7e69]: Connect an AI agent like Claude or ChatGPT and it can create and schedule posts for you. Included with every plan.
+            - listitem [ref=f7e72]:
+              - generic [ref=f7e75]: Carousel posts
+            - listitem [ref=f7e76]:
+              - generic [ref=f7e79]: Bulk video scheduling
+            - listitem [ref=f7e80]:
+              - generic [ref=f7e83]: Content studio access
+            - listitem [ref=f7e84]:
+              - generic [ref=f7e87]: API add-on available
+              - generic [ref=f7e88]: $5/month
+            - listitem [ref=f7e91]:
+              - generic [ref=f7e94]: Analytics (beta)
+              - generic [ref=f7e95]: Works for TikTok, Instagram, and YouTube Shorts
+            - listitem [ref=f7e98]:
+              - generic [ref=f7e101]: Human support
+          - generic [ref=f7e102]:
+            - button "Start 7 day free trial →" [ref=f7e103] [cursor=pointer]
+            - paragraph [ref=f7e105]: $0.00 due today, cancel anytime
+        - generic [ref=f7e109]:
+          - generic [ref=f7e111]:
+            - paragraph [ref=f7e112]: Growth
+            - paragraph [ref=f7e113]: Best for growing teams & agencies
+          - generic [ref=f7e115]:
+            - paragraph [ref=f7e116]: $49
+            - paragraph [ref=f7e118]: /month
+          - list [ref=f7e119]:
+            - listitem [ref=f7e120]:
+              - generic [ref=f7e123]: 50 connected social accounts
+            - listitem [ref=f7e124]:
+              - generic [ref=f7e127]: Multiple accounts per platform
+            - listitem [ref=f7e128]:
+              - generic [ref=f7e131]: Unlimited posts
+            - listitem [ref=f7e132]:
+              - generic [ref=f7e135]: Schedule posts
+            - listitem [ref=f7e136]:
+              - generic [ref=f7e139]: MCP agent connect
+              - generic [ref=f7e140]: Connect an AI agent like Claude or ChatGPT and it can create and schedule posts for you. Included with every plan.
+            - listitem [ref=f7e143]:
+              - generic [ref=f7e146]: Carousel posts
+            - listitem [ref=f7e147]:
+              - generic [ref=f7e150]: Bulk video scheduling
+            - listitem [ref=f7e151]:
+              - generic [ref=f7e154]: Content studio access
+            - listitem [ref=f7e155]:
+              - generic [ref=f7e158]: API add-on available
+              - generic [ref=f7e159]: $5/month
+            - listitem [ref=f7e162]:
+              - generic [ref=f7e165]: Analytics (beta)
+              - generic [ref=f7e166]: Works for TikTok, Instagram, and YouTube Shorts
+            - listitem [ref=f7e169]:
+              - generic [ref=f7e172]: Viral growth consulting
+              - generic [ref=f7e173]: Direct communication line to help you grow your accounts (from 100M+ views of experience)
+            - listitem [ref=f7e176]:
+              - generic [ref=f7e179]: Priority human support
+            - listitem [ref=f7e180]:
+              - generic [ref=f7e183]: Invite team members
+              - generic [ref=f7e184]: 10 team members per team, 5 teams
+          - generic [ref=f7e187]:
+            - button "Start 7 day free trial →" [ref=f7e188] [cursor=pointer]
+            - paragraph [ref=f7e190]: $0.00 due today, cancel anytime
+        - generic [ref=f7e194]:
+          - generic [ref=f7e196]:
+            - paragraph [ref=f7e197]: ProBest deal
+            - paragraph [ref=f7e198]: Best for scaling brands
+          - generic [ref=f7e200]:
+            - paragraph [ref=f7e201]: $99
+            - paragraph [ref=f7e203]: /month
+          - list [ref=f7e204]:
+            - listitem [ref=f7e205]:
+              - generic [ref=f7e208]: Unlimited connected accounts
+            - listitem [ref=f7e210]:
+              - generic [ref=f7e213]: Multiple accounts per platform
+            - listitem [ref=f7e214]:
+              - generic [ref=f7e217]: Unlimited posts
+            - listitem [ref=f7e218]:
+              - generic [ref=f7e221]: Schedule posts
+            - listitem [ref=f7e222]:
+              - generic [ref=f7e225]: MCP agent connect
+              - generic [ref=f7e226]: Connect an AI agent like Claude or ChatGPT and it can create and schedule posts for you. Included with every plan.
+            - listitem [ref=f7e229]:
+              - generic [ref=f7e232]: Carousel posts
+            - listitem [ref=f7e233]:
+              - generic [ref=f7e236]: Bulk video scheduling
+            - listitem [ref=f7e237]:
+              - generic [ref=f7e240]: Content studio access
+            - listitem [ref=f7e241]:
+              - generic [ref=f7e244]: API add-on available
+              - generic [ref=f7e245]: $5/month
+            - listitem [ref=f7e248]:
+              - generic [ref=f7e251]: Analytics (beta)
+              - generic [ref=f7e252]: Works for TikTok, Instagram, and YouTube Shorts
+            - listitem [ref=f7e255]:
+              - generic [ref=f7e258]: Viral growth consulting
+              - generic [ref=f7e259]: Direct communication line to help you grow your accounts (from 100M+ views of experience)
+            - listitem [ref=f7e262]:
+              - generic [ref=f7e265]: Priority human support
+            - listitem [ref=f7e266]:
+              - generic [ref=f7e269]: Invite team members
+              - generic [ref=f7e270]: 10 team members per team, 5 teams
+          - generic [ref=f7e273]:
+            - button "Start 7 day free trial →" [ref=f7e274] [cursor=pointer]
+            - paragraph [ref=f7e276]: $0.00 due today, cancel anytime
+      - generic [ref=f7e280]:
+        - generic [ref=f7e281]: "Post to:"
+        - generic [ref=f7e282]:
+          - generic [ref=f7e283]:
+            - text: Twitter/X
+            - img "Twitter/X" [ref=f7e284]
+          - generic [ref=f7e285]:
+            - text: Instagram
+            - img "Instagram" [ref=f7e286]
+          - generic [ref=f7e287]:
+            - text: LinkedIn
+            - img "LinkedIn" [ref=f7e288]
+          - generic [ref=f7e289]:
+            - text: Facebook
+            - img "Facebook" [ref=f7e290]
+          - generic [ref=f7e291]:
+            - text: TikTok
+            - img "TikTok" [ref=f7e292]
+          - generic [ref=f7e293]:
+            - text: YouTube
+            - img "YouTube" [ref=f7e294]
+          - generic [ref=f7e295]:
+            - text: Bluesky
+            - img "Bluesky" [ref=f7e296]
+          - generic [ref=f7e297]:
+            - text: Threads
+            - img "Threads" [ref=f7e298]
+          - generic [ref=f7e299]:
+            - text: Pinterest
+            - img "Pinterest" [ref=f7e300]
+          - generic [ref=f7e301]:
+            - text: Google Business
+            - img "Google Business" [ref=f7e302]
+  - contentinfo [ref=f7e303]:
+    - generic [ref=f7e305]:
+      - generic [ref=f7e306]:
+        - link [ref=f7e307] [cursor=pointer]:
+          - /url: /#
+          - img "post bridge logo" [ref=f7e308]
+          - strong [ref=f7e309]: post bridge
+        - paragraph [ref=f7e310]: Post content to multiple social media platforms at the same time, all-in one place. Cross posting made easy.
+        - paragraph [ref=f7e311]: Copyright © 2026 - All rights reserved
+      - generic [ref=f7e312]:
+        - generic [ref=f7e313]:
+          - generic [ref=f7e314]: LINKS
+          - generic [ref=f7e315]:
+            - link "Contact Support" [ref=f7e316] [cursor=pointer]:
+              - /url: mailto:support@post-bridge.com
+              - text: Support
+            - link "Pricing" [ref=f7e317] [cursor=pointer]:
+              - /url: /#pricing
+            - link "Blog" [ref=f7e318] [cursor=pointer]:
+              - /url: /blog
+            - link "Affiliates" [ref=f7e319] [cursor=pointer]:
+              - /url: https://post-bridge.affonso.io/post-bridge-affiliates
+            - link "Billing" [ref=f7e320] [cursor=pointer]:
+              - /url: https://billing.stripe.com/p/login/00g28WfgQ9GnfL2288
+            - link "AI Agents" [ref=f7e321] [cursor=pointer]:
+              - /url: /agents
+            - link "MCP" [ref=f7e322] [cursor=pointer]:
+              - /url: /mcp
+            - link "OpenClaw" [ref=f7e323] [cursor=pointer]:
+              - /url: /openclaw
+            - link "Agent Skill" [ref=f7e324] [cursor=pointer]:
+              - /url: https://github.com/post-bridge-hq/agent-mode
+        - generic [ref=f7e325]:
+          - generic [ref=f7e326]: PLATFORMS
+          - generic [ref=f7e327]:
+            - link "Social media scheduler" [ref=f7e328] [cursor=pointer]:
+              - /url: /social-media-scheduler
+            - link "Cross posting" [ref=f7e329] [cursor=pointer]:
+              - /url: /cross-posting
+            - link "Twitter/X scheduler" [ref=f7e330] [cursor=pointer]:
+              - /url: /twitter-x
+            - link "Instagram scheduler" [ref=f7e331] [cursor=pointer]:
+              - /url: /instagram
+            - link "LinkedIn scheduler" [ref=f7e332] [cursor=pointer]:
+              - /url: /linkedin
+            - link "Facebook scheduler" [ref=f7e333] [cursor=pointer]:
+              - /url: /facebook
+            - link "TikTok scheduler" [ref=f7e334] [cursor=pointer]:
+              - /url: /tiktok
+            - link "YouTube scheduler" [ref=f7e335] [cursor=pointer]:
+              - /url: /youtube
+            - link "Bluesky scheduler" [ref=f7e336] [cursor=pointer]:
+              - /url: /bluesky
+            - link "Threads scheduler" [ref=f7e337] [cursor=pointer]:
+              - /url: /threads
+            - link "Pinterest scheduler" [ref=f7e338] [cursor=pointer]:
+              - /url: /pinterest
+            - link "Google Business scheduler" [ref=f7e339] [cursor=pointer]:
+              - /url: /google-business
+        - generic [ref=f7e340]:
+          - generic [ref=f7e341]: FREE TOOLS
+          - generic [ref=f7e342]:
+            - link "Growth Guide" [ref=f7e343] [cursor=pointer]:
+              - /url: /growth-guide
+            - link "Instagram Grid Maker" [ref=f7e344] [cursor=pointer]:
+              - /url: /tools/instagram-grid-maker
+            - link "Instagram Carousel Splitter" [ref=f7e345] [cursor=pointer]:
+              - /url: /tools/instagram-carousel-splitter
+            - link "Instagram Handle Checker" [ref=f7e346] [cursor=pointer]:
+              - /url: /tools/instagram-handle-checker
+            - link "TikTok Username Checker" [ref=f7e347] [cursor=pointer]:
+              - /url: /tools/tiktok-username-checker
+            - link "TikTok Caption Generator" [ref=f7e348] [cursor=pointer]:
+              - /url: /tools/tiktok-caption-generator
+            - link "LinkedIn Text Formatter" [ref=f7e349] [cursor=pointer]:
+              - /url: /tools/linkedin-text-formatter
+            - link "YouTube Title Checker" [ref=f7e350] [cursor=pointer]:
+              - /url: /tools/youtube-title-checker
+            - link "YouTube Tag Generator" [ref=f7e351] [cursor=pointer]:
+              - /url: /tools/youtube-tag-generator
+            - link "Timeline Blocker for X/Twitter" [ref=f7e352] [cursor=pointer]:
+              - /url: /tools/x-timeline-blocker
+        - generic [ref=f7e353]:
+          - generic [ref=f7e354]: COMPARE
+          - generic [ref=f7e355]:
+            - link "Buffer alternative" [ref=f7e356] [cursor=pointer]:
+              - /url: /buffer-alternative
+            - link "Hootsuite alternative" [ref=f7e357] [cursor=pointer]:
+              - /url: /hootsuite-alternative
+            - link "Later alternative" [ref=f7e358] [cursor=pointer]:
+              - /url: /later-alternative
+            - link "Publer alternative" [ref=f7e359] [cursor=pointer]:
+              - /url: /publer-alternative
+            - link "Postiz alternative" [ref=f7e360] [cursor=pointer]:
+              - /url: /postiz-alternative
+            - link "Best scheduling APIs" [ref=f7e361] [cursor=pointer]:
+              - /url: /best-social-media-scheduling-api
+            - link "Claude social media manager" [ref=f7e362] [cursor=pointer]:
+              - /url: /claude
+          - generic [ref=f7e363]: LEGAL
+          - generic [ref=f7e364]:
+            - link "Terms of services" [ref=f7e365] [cursor=pointer]:
+              - /url: /tos
+            - link "Privacy policy" [ref=f7e366] [cursor=pointer]:
+              - /url: /privacy-policy
+  - alert [ref=f7e367]
+  - generic:
+    - iframe
+    - link "Chat with us!" [ref=f7e369] [cursor=pointer]:
+      - /url: javascript:;

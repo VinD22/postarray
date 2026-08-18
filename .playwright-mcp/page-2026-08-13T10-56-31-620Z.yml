@@ -1,0 +1,68 @@
+- generic [active] [ref=f31e1]:
+  - generic [ref=f31e2]:
+    - link "Skip to main content" [ref=f31e3] [cursor=pointer]:
+      - /url: "#main"
+    - banner [ref=f31e4]:
+      - generic [ref=f31e5]:
+        - link "Relay" [ref=f31e6] [cursor=pointer]:
+          - /url: /home
+        - button "Switch project or workspace" [ref=f31e7]:
+          - generic [ref=f31e8]:
+            - generic [ref=f31e9]: Example Studio EU
+            - generic [ref=f31e10]: Example Studio
+        - button "Search Ctrl K" [ref=f31e14]:
+          - generic [ref=f31e18]: Search
+          - generic [ref=f31e19]:
+            - generic [ref=f31e20]: Ctrl
+            - generic [ref=f31e21]: K
+        - generic [ref=f31e22]:
+          - link "Compose" [ref=f31e24] [cursor=pointer]:
+            - /url: /compose
+          - button "Nothing needs attention" [ref=f31e28]
+          - button "Help" [ref=f31e32]
+          - button "Account" [ref=f31e36]
+      - generic [ref=f31e43]:
+        - paragraph [ref=f31e44]: You are looking at demo data
+        - generic [ref=f31e46]:
+          - generic [ref=f31e47]: The Relay API is not reachable from this browser, so the screens are filled with a seeded example workspace. Nothing here is connected to a real account and nothing can publish.
+          - generic [ref=f31e48]: Set NEXT_PUBLIC_RELAY_API_URL and restart the app to use live data.
+    - generic [ref=f31e49]:
+      - navigation "Primary navigation" [ref=f31e50]:
+        - link "Home" [ref=f31e51] [cursor=pointer]:
+          - /url: /home
+        - link "Calendar" [ref=f31e56] [cursor=pointer]:
+          - /url: /calendar
+        - link "Automation" [ref=f31e60] [cursor=pointer]:
+          - /url: /automation
+        - link "Analytics" [ref=f31e66] [cursor=pointer]:
+          - /url: /analytics
+        - link "Growth advisor" [ref=f31e70] [cursor=pointer]:
+          - /url: /growth
+        - link "Library" [ref=f31e76] [cursor=pointer]:
+          - /url: /library
+        - link "Connections" [ref=f31e80] [cursor=pointer]:
+          - /url: /connections
+      - main "Main content" [ref=f31e84]:
+        - generic [ref=f31e85]:
+          - generic [ref=f31e86]:
+            - generic [ref=f31e88]:
+              - heading "Analytics" [level=1] [ref=f31e89]
+              - paragraph [ref=f31e90]: What happened, how fresh it is, and what is worth testing next.
+            - navigation "Analytics sections" [ref=f31e92]:
+              - list [ref=f31e93]:
+                - listitem [ref=f31e94]:
+                  - link "Overview" [ref=f31e95] [cursor=pointer]:
+                    - /url: /analytics
+                - listitem [ref=f31e96]:
+                  - link "Experiments" [ref=f31e97] [cursor=pointer]:
+                    - /url: /analytics/experiments
+                - listitem [ref=f31e98]:
+                  - link "Tracked links" [ref=f31e99] [cursor=pointer]:
+                    - /url: /analytics/links
+          - status [ref=f31e102]:
+            - generic [ref=f31e103]: Loading analytics for the selected accounts
+  - region "Notifications (F8)":
+    - list
+  - alert [ref=f31e148]
+  - button "Open Next.js Dev Tools" [ref=f31e154] [cursor=pointer]
+  - alert [ref=f31e158]

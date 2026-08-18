@@ -1,0 +1,261 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - link "Skip to the main content" [ref=e3] [cursor=pointer]:
+      - /url: "#main"
+    - banner [ref=e4]:
+      - generic [ref=e6]:
+        - link "Relay" [ref=e8] [cursor=pointer]:
+          - /url: /
+        - navigation "Site navigation" [ref=e9]:
+          - list [ref=e10]:
+            - listitem [ref=e11]:
+              - link "Product" [ref=e12] [cursor=pointer]:
+                - /url: /product
+            - listitem [ref=e13]:
+              - link "Integrations" [ref=e14] [cursor=pointer]:
+                - /url: /integrations
+            - listitem [ref=e15]:
+              - link "For creators" [ref=e16] [cursor=pointer]:
+                - /url: /for-creators
+            - listitem [ref=e17]:
+              - link "For agencies" [ref=e18] [cursor=pointer]:
+                - /url: /for-agencies
+            - listitem [ref=e19]:
+              - link "For developers" [ref=e20] [cursor=pointer]:
+                - /url: /for-developers
+            - listitem [ref=e21]:
+              - link "Pricing" [ref=e22] [cursor=pointer]:
+                - /url: /pricing
+            - listitem [ref=e24]:
+              - link "Resources" [ref=e25] [cursor=pointer]:
+                - /url: /resources
+        - generic [ref=e26]:
+          - button "Theme" [ref=e27]
+          - button "Choose interface language English" [ref=e34]:
+            - generic [ref=e40]: Choose interface language
+            - generic [ref=e41]: English
+          - link "Sign in" [ref=e42] [cursor=pointer]:
+            - /url: /sign-in
+          - link "Start free trial" [ref=e43] [cursor=pointer]:
+            - /url: /sign-up
+    - main [ref=e44]:
+      - generic [ref=e48]:
+        - paragraph [ref=e49]: Seven day free trial. No card required.
+        - heading "One plan" [level=1] [ref=e50]
+        - paragraph [ref=e51]: There are no feature tiers. One plan, $29 a month or $300 a year, with a seven day free trial. Every feature is included at every price, and capacity is the only thing that changes.
+      - generic [ref=e54]:
+        - heading "One plan. Pay monthly or yearly." [level=2] [ref=e55]
+        - paragraph [ref=e56]: Every feature is included at both prices, including the MCP server your agent connects to. What a plan buys is active project capacity, and that is the only thing that ever changes.
+        - generic [ref=e57]:
+          - group "How you want to pay" [ref=e58]:
+            - generic [ref=e60] [cursor=pointer]:
+              - radio "Monthly" [checked] [ref=e61]
+              - generic [ref=e62]: Monthly
+            - generic [ref=e63] [cursor=pointer]:
+              - radio "Yearly 2 months free" [ref=e64]
+              - generic [ref=e65]: Yearly
+              - generic [ref=e66]: 2 months free
+          - article [ref=e69]:
+            - generic [ref=e70]:
+              - generic [ref=e71]:
+                - heading "Standard" [level=3] [ref=e72]
+                - paragraph [ref=e73]: For one team running a handful of projects.
+              - generic [ref=e74]:
+                - generic [ref=e75]: $25
+                - paragraph [ref=e76]: per month
+              - paragraph [ref=e77]: Charged every month. Cancel from Settings at any time.
+              - link "Start your free trial" [ref=e79] [cursor=pointer]:
+                - /url: /sign-up
+            - generic [ref=e80]:
+              - paragraph [ref=e81]: Included at both prices
+              - list [ref=e82]:
+                - listitem [ref=e83]:
+                  - generic [ref=e86]: 3 active projects
+                - listitem [ref=e87]:
+                  - generic [ref=e90]: Up to 10 active social channels
+                - listitem [ref=e91]:
+                  - generic [ref=e94]: Owner plus 5 teammates
+                - listitem [ref=e95]:
+                  - generic [ref=e98]: Unlimited drafts and scheduled posts under fair use
+                - listitem [ref=e99]:
+                  - generic [ref=e102]: Every approved connector
+                - listitem [ref=e103]:
+                  - generic [ref=e106]: Analytics kept from the day you connect an account
+                - listitem [ref=e107]:
+                  - generic [ref=e110]: REST API, remote MCP server, CLI and webhooks
+                - listitem [ref=e111]:
+                  - generic [ref=e114]: Automation rules, RSS autopost and tracked links
+                - listitem [ref=e115]:
+                  - generic [ref=e118]: Text assistance under the published abuse and cost limits
+                - listitem [ref=e119]:
+                  - generic [ref=e122]: Email and in app support
+        - generic [ref=e123]:
+          - paragraph [ref=e124]: The seven day trial starts the day you sign up and takes no card. You choose monthly or yearly when it ends, and Polar shows the exact amount and date before you confirm.
+          - paragraph [ref=e125]: Fair use means anti spam, rate and provider cost controls that protect your accounts. They work the same for every subscriber.
+          - paragraph [ref=e126]: Prices are in US dollars. Taxes and merchant terms are shown at checkout before you confirm.
+        - generic [ref=e127]:
+          - heading "Larger tiers are not on sale yet" [level=3] [ref=e128]
+          - paragraph [ref=e129]: Larger project capacity is decided and priced. It appears on this page as soon as its checkout opens, and the changelog is where that gets announced.
+          - paragraph [ref=e130]:
+            - link "Changelog" [ref=e131] [cursor=pointer]:
+              - /url: /changelog
+      - generic [ref=e134]:
+        - heading "The paid terms" [level=2] [ref=e135]
+        - list [ref=e137]:
+          - listitem [ref=e138]:
+            - generic [ref=e141]: 10 active social channels. A channel is one social account, Page, profile, group or publication connection.
+          - listitem [ref=e142]:
+            - generic [ref=e145]: One owner and up to 5 teammates in each workspace. There is no separate per-seat charge within that limit.
+          - listitem [ref=e146]:
+            - generic [ref=e149]: Unlimited drafts, scheduled posts and stored receipts under a published fair use and anti spam policy. Those controls exist to protect your connected accounts and they apply identically to every subscriber.
+          - listitem [ref=e150]:
+            - generic [ref=e153]: X charges per API operation and charges more for a post that contains a URL. Relay passes that through at cost, estimates it before you confirm the action, and shows it in your usage. Other platform fees are passed through only when they are disclosed before the action.
+          - listitem [ref=e154]:
+            - generic [ref=e157]: AI image generation and AI video generation are not included and are not sold. There are no media credits, because Relay does not generate media.
+          - listitem [ref=e158]:
+            - generic [ref=e161]: The trial starts today and runs for seven days with every shipped feature. Beginning it takes no card. Polar shows the exact first charge amount and date before you confirm a subscription.
+          - listitem [ref=e162]:
+            - generic [ref=e165]: An uncanceled trial converts on day seven to the interval you chose. Polar emails a reminder three days before that happens.
+          - listitem [ref=e166]:
+            - generic [ref=e169]: Cancel from Settings without contacting support. Cancel during the trial and no charge is attempted.
+          - listitem [ref=e170]:
+            - generic [ref=e173]: Post text, receipts and audit history remain under the data policy. Uploaded files are permanently deleted 30 days after upload. Workspace export is available as structured JSON; CSV and media archives are not available yet.
+      - generic [ref=e178]:
+        - heading "Why we do not generate images or video" [level=2] [ref=e180]
+        - generic [ref=e181]:
+          - paragraph [ref=e182]: "We focus on helping you plan, approve, publish and learn. We do not generate images or video in V1 because brand-ready media needs more than a short prompt: it needs your complete visual system, accurate product details, licensed assets, people and usage permissions, and careful review. Creative models also change quickly. We recommend currently verified specialist tools and make it easy to bring their finished work into your campaigns while you keep creative control."
+          - paragraph [ref=e183]: There are no image or video generation credits, because Relay does not generate media.
+          - paragraph [ref=e184]:
+            - link "Creative tool radar" [ref=e185] [cursor=pointer]:
+              - /url: /tool-radar
+      - generic [ref=e189]:
+        - heading "There are no customer quotes on this page yet" [level=2] [ref=e190]
+        - paragraph [ref=e191]: A quote goes up only when the customer wrote it, gave written permission for it, and we can point to the work it describes. Until then an empty space is more honest than a wall of invented praise.
+      - generic [ref=e194]:
+        - heading "Questions people ask before paying" [level=2] [ref=e195]
+        - generic [ref=e196]:
+          - group [ref=e197]:
+            - heading "What happens if I reach 10 channels" [level=3] [ref=e199] [cursor=pointer]
+          - group [ref=e202]:
+            - heading "How much will X actually cost me" [level=3] [ref=e204] [cursor=pointer]
+          - group [ref=e207]:
+            - heading "Do you refund" [level=3] [ref=e209] [cursor=pointer]
+          - group [ref=e212]:
+            - heading "Can I start a second trial" [level=3] [ref=e214] [cursor=pointer]
+          - group [ref=e217]:
+            - heading "Can I run it myself" [level=3] [ref=e219] [cursor=pointer]
+      - list [ref=e224]:
+        - listitem [ref=e225]:
+          - link "Refund and Cancellation Policy" [ref=e226] [cursor=pointer]:
+            - /url: /legal/refunds
+        - listitem [ref=e227]:
+          - link "Terms of Service" [ref=e228] [cursor=pointer]:
+            - /url: /legal/terms
+        - listitem [ref=e229]:
+          - link "Acceptable Use Policy" [ref=e230] [cursor=pointer]:
+            - /url: /legal/acceptable-use
+      - generic [ref=e235]:
+        - heading "Start publishing on one plan" [level=2] [ref=e236]
+        - paragraph [ref=e237]: Signing up starts the seven day trial today and collects no card. Which connectors are available is shown for your account, platform by platform, as each review completes.
+        - link "Start your free trial" [ref=e239] [cursor=pointer]:
+          - /url: /sign-up
+        - paragraph [ref=e240]: Relay costs $29 a month or $300 a year. The seven day trial starts today and beginning it takes no card. Connector availability is shown account by account as each platform completes its review.
+    - contentinfo [ref=e241]:
+      - generic [ref=e243]:
+        - navigation "Footer navigation" [ref=e244]:
+          - generic [ref=e245]:
+            - heading "Product" [level=2] [ref=e246]
+            - list [ref=e247]:
+              - listitem [ref=e248]:
+                - link "Product" [ref=e249] [cursor=pointer]:
+                  - /url: /product
+              - listitem [ref=e250]:
+                - link "Integrations" [ref=e251] [cursor=pointer]:
+                  - /url: /integrations
+              - listitem [ref=e252]:
+                - link "Platform capabilities" [ref=e253] [cursor=pointer]:
+                  - /url: /integrations/capabilities
+              - listitem [ref=e254]:
+                - link "Scheduling, platform by platform" [ref=e255] [cursor=pointer]:
+                  - /url: /schedule
+              - listitem [ref=e256]:
+                - link "Pricing" [ref=e257] [cursor=pointer]:
+                  - /url: /pricing
+          - generic [ref=e258]:
+            - heading "Company" [level=2] [ref=e259]
+            - list [ref=e260]:
+              - listitem [ref=e261]:
+                - link "For creators" [ref=e262] [cursor=pointer]:
+                  - /url: /for-creators
+              - listitem [ref=e263]:
+                - link "For agencies" [ref=e264] [cursor=pointer]:
+                  - /url: /for-agencies
+              - listitem [ref=e265]:
+                - link "Use cases" [ref=e266] [cursor=pointer]:
+                  - /url: /use-cases
+              - listitem [ref=e267]:
+                - link "Methodology" [ref=e268] [cursor=pointer]:
+                  - /url: /methodology
+              - listitem [ref=e269]:
+                - link "Comparisons" [ref=e270] [cursor=pointer]:
+                  - /url: /compare
+          - generic [ref=e271]:
+            - heading "Developers" [level=2] [ref=e272]
+            - list [ref=e273]:
+              - listitem [ref=e274]:
+                - link "For developers" [ref=e275] [cursor=pointer]:
+                  - /url: /for-developers
+              - listitem [ref=e276]:
+                - link "Documentation" [ref=e277] [cursor=pointer]:
+                  - /url: /docs
+              - listitem [ref=e278]:
+                - link "API and MCP Terms" [ref=e279] [cursor=pointer]:
+                  - /url: /legal/api-terms
+              - listitem [ref=e280]:
+                - link "Status" [ref=e281] [cursor=pointer]:
+                  - /url: /status
+          - generic [ref=e282]:
+            - heading "Resources" [level=2] [ref=e283]
+            - list [ref=e284]:
+              - listitem [ref=e285]:
+                - link "Changelog" [ref=e286] [cursor=pointer]:
+                  - /url: /changelog
+              - listitem [ref=e287]:
+                - link "Creative tool radar" [ref=e288] [cursor=pointer]:
+                  - /url: /tool-radar
+              - listitem [ref=e289]:
+                - link "Promotion opportunities" [ref=e290] [cursor=pointer]:
+                  - /url: /opportunities
+              - listitem [ref=e291]:
+                - link "Free tools" [ref=e292] [cursor=pointer]:
+                  - /url: /tools
+              - listitem [ref=e293]:
+                - link "Resources" [ref=e294] [cursor=pointer]:
+                  - /url: /resources
+          - generic [ref=e295]:
+            - heading "Legal" [level=2] [ref=e296]
+            - list [ref=e297]:
+              - listitem [ref=e298]:
+                - link "Terms" [ref=e299] [cursor=pointer]:
+                  - /url: /legal/terms
+              - listitem [ref=e300]:
+                - link "Privacy" [ref=e301] [cursor=pointer]:
+                  - /url: /legal/privacy
+              - listitem [ref=e302]:
+                - link "Acceptable use" [ref=e303] [cursor=pointer]:
+                  - /url: /legal/acceptable-use
+              - listitem [ref=e304]:
+                - link "Security" [ref=e305] [cursor=pointer]:
+                  - /url: /legal/security
+              - listitem [ref=e306]:
+                - link "Legal and policies" [ref=e307] [cursor=pointer]:
+                  - /url: /legal
+        - generic [ref=e308]:
+          - paragraph [ref=e309]: Relay publishes through official platform APIs only. Connector availability depends on approvals that the platforms control, and every capability claim on this site is dated and sourced.
+          - paragraph [ref=e310]: Platform names and marks belong to their owners. Their use here identifies a connector and does not imply endorsement or partnership.
+          - paragraph [ref=e311]: Relay 2026
+  - region "Notifications (F8)":
+    - list
+  - alert [ref=e313]
+  - button "Open Next.js Dev Tools" [ref=e319] [cursor=pointer]
+  - alert [ref=e323]
