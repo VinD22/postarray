@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, type ElementType, type ReactNode, type Ref } from 'react';
+import { createElement, useRef, type ElementType, type ReactNode, type Ref } from 'react';
 
 import { EASE_OUT_EXPO, EXPRESSIVE_SM } from '@/lib/motion/constants';
 import { gsap, useGSAP, type ScrollTrigger } from '@/lib/motion/gsap';
@@ -52,9 +52,5 @@ export function Reveal({ as, y = 16, delay, once = true, className, children }: 
     { scope, dependencies: [motionOk, y, delay, once] },
   );
 
-  return (
-    <Tag ref={scope as Ref<HTMLElement>} className={className}>
-      {children}
-    </Tag>
-  );
+  return createElement(Tag, { ref: scope as Ref<HTMLElement>, className }, children);
 }

@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, type ElementType, type Ref } from 'react';
+import { createElement, useRef, type ElementType, type Ref } from 'react';
 
 import { EASE_OUT_EXPO, EXPRESSIVE_MD } from '@/lib/motion/constants';
 import { gsap, SplitText, useGSAP } from '@/lib/motion/gsap';
@@ -93,9 +93,9 @@ export function LineMaskHeadline({
     { scope, dependencies: [motionOk, children] },
   );
 
-  return (
-    <RenderTag ref={scope as Ref<HTMLElement>} className={className}>
-      {children}
-    </RenderTag>
+  return createElement(
+    RenderTag,
+    { ref: scope as Ref<HTMLElement>, className },
+    children,
   );
 }

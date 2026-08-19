@@ -1,4 +1,4 @@
-import type { ElementType, ReactNode } from 'react';
+import { createElement, type ElementType, type ReactNode } from 'react';
 import { cn } from '@relay/design-system/utils';
 
 import { Container } from '../layout';
@@ -103,29 +103,27 @@ export function ColorBand({
 }: ColorBandProps): ReactNode {
   const Tag = as as ElementType;
   const wash = accent === 'neutral' || texture !== true ? null : TEXTURE_CLASS[accent];
-  return (
-    <Tag
-      id={id}
-      aria-label={ariaLabel}
-      data-scene-accent={accent}
-      className={cn(
+  return createElement(
+    Tag,
+    {
+      id,
+      'aria-label': ariaLabel,
+      'data-scene-accent': accent,
+      className: cn(
         'text-text-primary relative w-full overflow-hidden border-y',
         GROUND_CLASS[accent],
         EDGE_CLASS[accent],
         className,
-      )}
-    >
-      {/*
-        A CSS background rather than an `<img>`: it is paper stock, not
-        content, and a screen reader should no more meet it than it meets the
-        band's tint.
-      */}
-      {wash === null ? null : (
-        <div aria-hidden="true" className={cn('pointer-events-none absolute inset-0', wash)} />
-      )}
-      <Container>
-        <div className={cn('relative py-20 md:py-28', containerClassName)}>{children}</div>
-      </Container>
-    </Tag>
+      ),
+    },
+    // A CSS background rather than an `<img>`: it is paper stock, not
+    // content, and a screen reader should no more meet it than it meets the
+    // band's tint.
+    wash === null ? null : (
+      <div aria-hidden="true" className={cn('pointer-events-none absolute inset-0', wash)} />
+    ),
+    <Container>
+      <div className={cn('relative py-20 md:py-28', containerClassName)}>{children}</div>
+    </Container>,
   );
 }

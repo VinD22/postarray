@@ -1,4 +1,4 @@
-import type { ElementType, ReactNode } from 'react';
+import { createElement, type ElementType, type ReactNode } from 'react';
 import { Reveal } from '@/components/motion';
 import { cn } from '@relay/design-system/utils';
 
@@ -69,12 +69,13 @@ export function EditorialSection({
   const Tag = as as ElementType;
   const body = <div className={cn('py-20 md:py-28 lg:py-32', containerClassName)}>{children}</div>;
 
-  return (
-    <Tag
-      id={id}
-      aria-label={ariaLabel}
-      data-tone={tone}
-      className={cn(
+  return createElement(
+    Tag,
+    {
+      id,
+      'aria-label': ariaLabel,
+      'data-tone': tone,
+      className: cn(
         'relative w-full',
         // The rule is the section's own inline-start-to-end hairline, drawn
         // inside the width cap rather than edge to edge, so it reads as an
@@ -82,9 +83,8 @@ export function EditorialSection({
         rule && 'border-border-default border-t',
         TONE_CLASS[tone],
         className,
-      )}
-    >
-      <Container>{reveal ? <Reveal y={12}>{body}</Reveal> : body}</Container>
-    </Tag>
+      ),
+    },
+    <Container>{reveal ? <Reveal y={12}>{body}</Reveal> : body}</Container>,
   );
 }

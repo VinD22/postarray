@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, type ElementType, type Ref, type RefObject } from 'react';
+import { createElement, useRef, type ElementType, type Ref, type RefObject } from 'react';
 
 import { useDirectionAttributes } from '@/lib/i18n';
 import { EASE_OUT_EXPO, EXPRESSIVE_MD } from '@/lib/motion/constants';
@@ -80,9 +80,9 @@ export function KineticHeadline({
     { scope, dependencies: [motionOk, effectiveSplit, children, trigger] },
   );
 
-  return (
-    <RenderTag ref={scope as Ref<HTMLElement>} className={className}>
-      {children}
-    </RenderTag>
+  return createElement(
+    RenderTag,
+    { ref: scope as Ref<HTMLElement>, className },
+    children,
   );
 }

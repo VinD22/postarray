@@ -1,4 +1,4 @@
-import type { ElementType, ReactNode } from 'react';
+import { createElement, type ElementType, type ReactNode } from 'react';
 import { cn } from '@relay/design-system/utils';
 
 /**
@@ -56,10 +56,11 @@ export function EditorialCard({
   children,
 }: EditorialCardProps): ReactNode {
   const Tag = as as ElementType;
-  return (
-    <Tag
-      data-tone={tone}
-      className={cn(
+  return createElement(
+    Tag,
+    {
+      'data-tone': tone,
+      className: cn(
         'rounded-lg border shadow-raised',
         flush ? 'overflow-hidden' : 'p-6',
         TONE_CLASS[tone],
@@ -70,9 +71,8 @@ export function EditorialCard({
             'focus-within:-translate-y-0.5 focus-within:shadow-hard',
           ),
         className,
-      )}
-    >
-      {children}
-    </Tag>
+      ),
+    },
+    children,
   );
 }

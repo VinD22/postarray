@@ -1,4 +1,4 @@
-import type { ElementType, ReactNode } from 'react';
+import { createElement, type ElementType, type ReactNode } from 'react';
 import { cn } from '@relay/design-system/utils';
 
 /**
@@ -46,10 +46,11 @@ export function Eyebrow({
   className,
 }: EyebrowProps): ReactNode {
   const Tag = as as ElementType;
-  return (
-    <Tag
-      id={id}
-      className={cn(
+  return createElement(
+    Tag,
+    {
+      id,
+      className: cn(
         'text-label uppercase',
         // Letter-spacing, not a fake font-variant: the display face has no
         // real small-caps cut, so the small-caps *effect* is uppercase plus
@@ -57,9 +58,8 @@ export function Eyebrow({
         'tracking-[0.14em]',
         TONE_CLASS[tone],
         className,
-      )}
-    >
-      {children}
-    </Tag>
+      ),
+    },
+    children,
   );
 }

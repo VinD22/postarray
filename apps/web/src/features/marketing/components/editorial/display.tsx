@@ -1,4 +1,4 @@
-import type { ElementType, ReactNode } from 'react';
+import { createElement, type ElementType, type ReactNode } from 'react';
 import { cn } from '@relay/design-system/utils';
 
 import { LineMaskHeadline } from './line-mask-headline';
@@ -56,5 +56,5 @@ export function EditorialDisplay({
   }
 
   const Tag = as as ElementType;
-  return <Tag className={classes}>{children}</Tag>;
+  return createElement(Tag, { className: classes }, children);
 }
