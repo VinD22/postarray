@@ -15,8 +15,16 @@ import { loadCatalog, type PartialCatalog } from '@relay/i18n/messages';
  * sentence, never a raw key.
  */
 
-/** Platform display names travel too, because a result row names a platform. */
-export const TOOLS_KEY_PREFIXES = ['web.tools.', 'web.provider.'] as const;
+/**
+ * Platform display names travel too, because a result row names a platform.
+ *
+ * `web.toolDirectory.` is the namespace the generated tool pages use. It is
+ * separate from `web.tools.` for a translation reason rather than a product
+ * one, which `messages/en/web-tool-directory.ts` explains, but the browser
+ * needs both for the same reason: a character counter formats its sentence
+ * after the reader types, not before.
+ */
+export const TOOLS_KEY_PREFIXES = ['web.tools.', 'web.toolDirectory.', 'web.provider.'] as const;
 
 function slice(catalog: PartialCatalog): Record<string, string> {
   const out: Record<string, string> = {};

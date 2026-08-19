@@ -73,8 +73,14 @@ export interface PreflightInput {
   readonly height: number | null;
 }
 
-/** Within this fraction of the ceiling, a draft is worth a second look. */
-const NEAR_LIMIT_FRACTION = 0.95;
+/**
+ * Within this fraction of the ceiling, a draft is worth a second look.
+ *
+ * Exported so the per platform character counters warn at the same point this
+ * checker does. Two tools measuring the same draft and disagreeing about when
+ * it is close to the limit would be a bug a reader could see.
+ */
+export const NEAR_LIMIT_FRACTION = 0.95;
 
 function severity(status: PreflightStatus): number {
   switch (status) {

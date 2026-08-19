@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react';
 import { ChevronDown } from 'lucide-react';
 import { cn } from '@relay/design-system/utils';
-import type { MessageKey } from '@relay/i18n/translate';
+import type { MessageKey, MessageValues } from '@relay/i18n/translate';
 
 import { Reveal } from '@/components/motion';
 import { JsonLd } from '@/features/marketing/components/json-ld';
@@ -48,13 +48,25 @@ export interface ToolPageShellProps {
   /** An optional second paragraph under the explainer. */
   readonly explainerExtraKey?: MessageKey;
   readonly faq: readonly ToolFaqEntry[];
+  /**
+   * ICU arguments for this page's own copy: the title, the standfirst, the
+   * explainer paragraphs and the questions.
+   *
+   * The generated tool pages differ only by the platform they are about, so
+   * nine pages share one set of catalog sentences and pass the platform, its
+   * ceiling and its counting rule in here. The shared furniture below never
+   * takes them: a privacy promise is the same sentence on every tool.
+   */
+  readonly values?: MessageValues;
   /** Set on any tool that reads the generated limits dataset. */
   readonly showsBaselineNote?: boolean;
+  /** An extra band between the questions and the list of other tools. */
+  readonly related?: ReactNode;
   readonly children: ReactNode;
 }
 
 export async function ToolPageShell(props: ToolPageShellProps): Promise<ReactNode> {
-  const { locale, path, faq, children } = props;
+  const { locale, path, faq, values, children } = props;
   const t = await marketingTranslator(locale);
 
   return (
@@ -62,21 +74,21 @@ export async function ToolPageShell(props: ToolPageShellProps): Promise<ReactNod
       <EditorialSection tone="canvas">
         <Reveal className="max-w-[46rem]">
           <EditorialDisplay as="h1" size="lg">
-            {t.format(props.titleKey)}
+            {t.format(props.titleKey, values)}
           </EditorialDisplay>
-          <Lede className="mt-6">{t.format(props.ledeKey)}</Lede>
+          <Lede className="mt-6">{t.format(props.ledeKey, values)}</Lede>
         </Reveal>
       </EditorialSection>
 
-      <Section id="tool" ariaLabel={t.format(props.titleKey)}>
+      <Section id="tool" ariaLabel={t.format(props.titleKey, values)}>
         {children}
       </Section>
 
       <Section id="how">
-        <Split aside={<Heading>{t.format(props.explainerTitleKey)}</Heading>}>
-          <Body>{t.format(props.explainerBodyKey)}</Body>
+        <Split aside={<Heading>{t.format(props.explainerTitleKey, values)}</Heading>}>
+          <Body>{t.format(props.explainerBodyKey, values)}</Body>
           {props.explainerExtraKey === undefined ? null : (
-            <Body className="mt-4">{t.format(props.explainerExtraKey)}</Body>
+            <Body className="mt-4">{t.format(props.explainerExtraKey, values)}</Body>
           )}
           {props.showsBaselineNote === true ? (
             <>
@@ -112,18 +124,20 @@ export async function ToolPageShell(props: ToolPageShellProps): Promise<ReactNod
                 )}
               >
                 <Subheading as="h3" className="text-title-sm text-pretty">
-                  {t.format(item.q)}
+                  {t.format(item.q, values)}
                 </Subheading>
                 <ChevronDown
                   aria-hidden="true"
                   className="text-text-tertiary size-5 shrink-0 transition-transform duration-(--duration-fast) group-open:rotate-180"
                 />
               </summary>
-              <Body className="pb-6">{t.format(item.a)}</Body>
+              <Body className="pb-6">{t.format(item.a, values)}</Body>
             </details>
           ))}
         </div>
       </Section>
+
+      {props.related === undefined ? null : <Section id="related">{props.related}</Section>}
 
       <Section id="other-tools">
         <Split aside={<Heading>{t.t('web.tools.shared.otherTools')}</Heading>}>
@@ -144,7 +158,10 @@ export async function ToolPageShell(props: ToolPageShellProps): Promise<ReactNod
 
       <JsonLd
         node={faqJsonLd(
-          faq.map((item) => ({ question: t.format(item.q), answer: t.format(item.a) })),
+          faq.map((item) => ({
+            question: t.format(item.q, values),
+            answer: t.format(item.a, values),
+          })),
           locale,
         )}
       />
@@ -152,7 +169,7 @@ export async function ToolPageShell(props: ToolPageShellProps): Promise<ReactNod
         node={breadcrumbJsonLd(
           [
             { name: t.t('web.tools.index.title'), path: ROUTES.tools },
-            { name: t.format(props.titleKey), path },
+            { name: t.format(props.titleKey, values), path },
           ],
           locale,
         )}

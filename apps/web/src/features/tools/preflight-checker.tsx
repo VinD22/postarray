@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo, useState, type ReactElement } from 'react';
+import { useEffect, useMemo, useState, type ReactElement } from 'react';
 import { Button, Checkbox, Field, Input, Textarea } from '@relay/design-system/primitives';
 import { useTranslations } from '@relay/i18n/react';
 import { formatBytes } from '@relay/i18n/format';
@@ -16,6 +16,7 @@ import {
   type PreflightRow,
   type PreflightStatus,
 } from './preflight';
+import { parsePreflightPlatforms } from './preflight-link';
 import { SourceNote, StatusTag } from './result-parts';
 
 /**
@@ -51,6 +52,23 @@ export function PreflightChecker(): ReactElement {
   const [duration, setDuration] = useState('');
   const [width, setWidth] = useState('');
   const [height, setHeight] = useState('');
+
+  /**
+   * Honour `?platform=` once, after mount.
+   *
+   * This page is statically rendered, so the server never sees a query string
+   * and reading one during render would make the first client paint disagree
+   * with the delivered HTML. Applying it in an effect keeps the prerendered
+   * form intact and still lets a specs page hand the reader a checker with the
+   * platform it was about already ticked. A query naming nothing recognizable
+   * leaves the defaults alone rather than clearing the selection.
+   */
+  useEffect(() => {
+    const requested = parsePreflightPlatforms(window.location.search);
+    if (requested.length > 0) {
+      setSelected(requested);
+    }
+  }, []);
 
   const report = useMemo(() => {
     const sizeMb = toNumber(megabytes);
