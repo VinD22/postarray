@@ -28,6 +28,22 @@ alternates, and the sitemap. Set it to the exact HTTPS origin for each deployed
 environment, without a trailing slash. For local development it is
 `http://localhost:3000`.
 
+A **production build requires it** and fails without it. `NEXT_PUBLIC_*` is
+inlined at build time, so an unset or `localhost` value would bake
+`http://localhost:3000` into every canonical, alternate and sitemap URL in the
+artefact, telling search engines the real pages are duplicates of a host nobody
+can reach. Nothing in the running app can detect that afterwards, so
+`resolveSiteOrigin` in `src/features/marketing/site.ts` stops the build
+instead. Development and test keep the localhost fallback, so a local build
+still works with no `.env` file.
+
+```bash
+# a production build, or a container image, needs the real origin
+NEXT_PUBLIC_SITE_ORIGIN=https://example.com pnpm --filter @relay/web build
+docker build --file apps/web/Dockerfile \
+  --build-arg NEXT_PUBLIC_SITE_ORIGIN=https://example.com .
+```
+
 ```bash
 pnpm --filter @relay/web typecheck
 pnpm --filter @relay/web lint

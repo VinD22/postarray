@@ -33,6 +33,18 @@ COPY apps/web apps/web
 
 ENV NEXT_TELEMETRY_DISABLED=1
 ENV NODE_ENV=production
+
+# The public canonical origin, inlined into the bundle at build time because
+# `NEXT_PUBLIC_*` is a compile-time substitution, not a runtime lookup. There is
+# deliberately no default: `resolveSiteOrigin` in
+# `apps/web/src/features/marketing/site.ts` aborts a production build that has
+# no usable origin, so an image built without this argument fails here instead
+# of shipping `http://localhost:3000` canonicals, hreflang alternates and
+# sitemap URLs to search engines. Pass the real origin at build time:
+#   docker build --build-arg NEXT_PUBLIC_SITE_ORIGIN=https://example.com ...
+ARG NEXT_PUBLIC_SITE_ORIGIN
+ENV NEXT_PUBLIC_SITE_ORIGIN=${NEXT_PUBLIC_SITE_ORIGIN}
+
 RUN pnpm --filter @relay/web build
 
 # --- Runtime ----------------------------------------------------------------

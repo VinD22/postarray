@@ -167,16 +167,32 @@ jobs:
       # `tsc --noEmit` everywhere, so this job proved only that the code
       # typechecked.
       - run: pnpm build
+        env:
+          # The web build refuses to produce a production bundle it cannot name
+          # a public origin for, because `NEXT_PUBLIC_*` is inlined at build
+          # time and an unset value would bake `http://localhost:3000` into
+          # every canonical, hreflang alternate and sitemap URL in the image.
+          # CI is proving the code builds, not publishing a site, so it passes
+          # a placeholder public origin rather than a real one. A deploy must
+          # pass its own.
+          NEXT_PUBLIC_SITE_ORIGIN: https://relay.example
 
       # Every deployable service has an image, and every image is built on every
       # change. A Dockerfile that is only exercised at release time is a
       # Dockerfile that breaks at release time. These are build-only: nothing is
       # pushed and no registry credential is needed.
+      #
+      # The web image takes the same placeholder origin as the step above, and
+      # for the same reason. `apps/web/Dockerfile` declares the build argument
+      # with no default, so a release pipeline that forgets to pass the real
+      # origin fails the image build instead of shipping localhost canonicals.
       - name: Build the container images
         run: |
-          for app in api worker links mcp web; do
+          for app in api worker links mcp; do
             docker build --file "apps/$app/Dockerfile" --tag "relay-$app:ci" .
           done
+          docker build --file apps/web/Dockerfile --tag relay-web:ci \
+            --build-arg NEXT_PUBLIC_SITE_ORIGIN=https://relay.example .
 
   browser:
     name: Browser smoke, accessibility and localization

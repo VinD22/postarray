@@ -3,6 +3,8 @@ import type { MessageKey } from '@relay/i18n/translate';
 import { COMPARISON_SLUGS, comparisonPath } from '@/features/comparisons/slugs';
 import { PLATFORM_SLUGS } from '@/features/platforms/registry';
 import { USE_CASE_PAGES } from '@/features/platforms/use-cases';
+import { SPEC_PAIRS, SPEC_PLATFORM_SLUGS } from '@/features/specs/registry';
+import { CHARACTER_COUNTER_SLUGS } from '@/features/tools/character-counter';
 
 /**
  * The public site map, in one place.
@@ -45,6 +47,9 @@ export const ROUTES = {
   schedule: '/schedule',
   /** The use case index. Three children, driven by `features/platforms`. */
   useCases: '/use-cases',
+  /** The generated post specs cluster. `/specs/<platform>/<constraint>`, one
+   *  page per value the publishing-limits dataset actually carries. */
+  specs: '/specs',
   /** The free tools index. Each tool below is its own indexable page. */
   tools: '/tools',
   toolPostPreflight: '/tools/post-preflight',
@@ -52,6 +57,13 @@ export const ROUTES = {
   toolYouTubeTitle: '/tools/youtube-title-length',
   toolTimeZonePlanner: '/tools/time-zone-planner',
   toolEngagementRate: '/tools/engagement-rate',
+  /** The consolidated media limits table. One page, every platform. */
+  toolImageSizes: '/tools/social-media-image-sizes',
+  toolThreadSplitter: '/tools/thread-splitter',
+  toolHashtagCounter: '/tools/hashtag-counter',
+  toolCaseConverter: '/tools/case-converter',
+  toolInvisibleCharacter: '/tools/invisible-character',
+  toolVideoScriptTimer: '/tools/video-script-timer',
   legal: '/legal',
   terms: '/legal/terms',
   privacy: '/legal/privacy',
@@ -86,6 +98,28 @@ export function toUseCasePath(slug: string): string {
   return `${ROUTES.useCases}/${slug}`;
 }
 
+/** `/specs/instagram`, for a platform the limits dataset actually has values for. */
+export function specsPlatformPath(slug: string): string {
+  return `${ROUTES.specs}/${slug}`;
+}
+
+/** `/specs/instagram/image-size`, for one recorded value. */
+export function specsConstraintPath(platformSlug: string, constraintSlug: string): string {
+  return `${ROUTES.specs}/${platformSlug}/${constraintSlug}`;
+}
+
+/**
+ * `/tools/character-counter/instagram`, for a platform the limits dataset
+ * carries a body text ceiling for.
+ *
+ * The base segment has no page of its own on purpose. The tools index is the
+ * hub for this cluster, and a second index listing the same nine pages would
+ * be a duplicate of it.
+ */
+export function characterCounterPath(slug: string): string {
+  return `${ROUTES.tools}/character-counter/${slug}`;
+}
+
 /**
  * The platform and use case children, derived rather than listed.
  *
@@ -94,6 +128,31 @@ export function toUseCasePath(slug: string): string {
  * forget.
  */
 export const SCHEDULE_PLATFORM_ROUTES: readonly string[] = PLATFORM_SLUGS.map(schedulePlatformPath);
+
+/**
+ * The specs cluster, derived the same way and for the same reason.
+ *
+ * `features/specs/registry` decides which pages exist by asking the generated
+ * dataset for a value, so a platform or a constraint with nothing recorded
+ * never reaches the sitemap. Regenerating the dataset is the only way to add
+ * or remove an entry here.
+ */
+export const SPEC_PLATFORM_ROUTES: readonly string[] = SPEC_PLATFORM_SLUGS.map(specsPlatformPath);
+
+export const SPEC_CONSTRAINT_ROUTES: readonly string[] = SPEC_PAIRS.map((pair) =>
+  specsConstraintPath(pair.platform, pair.constraint),
+);
+
+/**
+ * One character counter per platform with a recorded body text ceiling.
+ *
+ * Derived the same way and for the same reason as the specs cluster:
+ * `features/tools/character-counter` asks the generated dataset for a ceiling,
+ * so a platform with none never reaches the sitemap and never gets a page that
+ * would have nothing to count against.
+ */
+export const CHARACTER_COUNTER_ROUTES: readonly string[] =
+  CHARACTER_COUNTER_SLUGS.map(characterCounterPath);
 
 /**
  * One indexable page per published comparison.
@@ -115,6 +174,9 @@ export const MARKETING_ROUTES = [
   ...SCHEDULE_PLATFORM_ROUTES,
   ...USE_CASE_LINKS.map((link) => link.href),
   ...COMPARISON_PAGE_ROUTES,
+  ...SPEC_PLATFORM_ROUTES,
+  ...SPEC_CONSTRAINT_ROUTES,
+  ...CHARACTER_COUNTER_ROUTES,
 ];
 
 /** The seven navigation items, in the order the IA specifies. */
@@ -174,6 +236,11 @@ export const RESOURCE_LINKS: readonly SiteLink[] = [
     labelKey: 'web.tools.index.title',
     descriptionKey: 'web.tools.index.summary',
   },
+  {
+    href: ROUTES.specs,
+    labelKey: 'web.specs.index.title',
+    descriptionKey: 'web.specs.index.lede',
+  },
 ];
 
 /**
@@ -208,6 +275,36 @@ export const TOOL_LINKS: readonly SiteLink[] = [
     href: ROUTES.toolEngagementRate,
     labelKey: 'web.tools.engagementRate.name',
     descriptionKey: 'web.tools.engagementRate.summary',
+  },
+  {
+    href: ROUTES.toolImageSizes,
+    labelKey: 'web.toolDirectory.media.name',
+    descriptionKey: 'web.toolDirectory.media.summary',
+  },
+  {
+    href: ROUTES.toolThreadSplitter,
+    labelKey: 'web.toolDirectory.threadSplitter.name',
+    descriptionKey: 'web.toolDirectory.threadSplitter.summary',
+  },
+  {
+    href: ROUTES.toolHashtagCounter,
+    labelKey: 'web.toolDirectory.hashtagCounter.name',
+    descriptionKey: 'web.toolDirectory.hashtagCounter.summary',
+  },
+  {
+    href: ROUTES.toolCaseConverter,
+    labelKey: 'web.toolDirectory.caseConverter.name',
+    descriptionKey: 'web.toolDirectory.caseConverter.summary',
+  },
+  {
+    href: ROUTES.toolInvisibleCharacter,
+    labelKey: 'web.toolDirectory.invisibleCharacter.name',
+    descriptionKey: 'web.toolDirectory.invisibleCharacter.summary',
+  },
+  {
+    href: ROUTES.toolVideoScriptTimer,
+    labelKey: 'web.toolDirectory.videoScriptTimer.name',
+    descriptionKey: 'web.toolDirectory.videoScriptTimer.summary',
   },
 ];
 
@@ -321,6 +418,7 @@ export const FOOTER_COLUMNS: readonly {
       { href: ROUTES.integrations, labelKey: 'nav.public.integrations' },
       { href: ROUTES.capabilities, labelKey: 'nav.public.capabilities' },
       { href: ROUTES.schedule, labelKey: 'web.schedule.index.title' },
+      { href: ROUTES.specs, labelKey: 'web.specs.index.title' },
       { href: ROUTES.pricing, labelKey: 'nav.public.pricing' },
     ],
   },
@@ -365,11 +463,39 @@ export const FOOTER_COLUMNS: readonly {
   },
 ];
 
-/** Public origin. Deployments validate this separately; local builds stay reproducible. */
-function resolveSiteOrigin(): string {
-  const configured = process.env.NEXT_PUBLIC_SITE_ORIGIN;
-  if (configured !== undefined && configured.trim() !== '') return configured;
-  return 'http://localhost:3000';
+export const LOCAL_SITE_ORIGIN = 'http://localhost:3000';
+
+/** Only the two variables the origin depends on, so the check is testable. */
+export interface SiteOriginEnv {
+  readonly NEXT_PUBLIC_SITE_ORIGIN?: string | undefined;
+  readonly NODE_ENV?: string | undefined;
+}
+
+/**
+ * The public origin every canonical URL, hreflang alternate and sitemap entry
+ * is built from.
+ *
+ * A missing value used to fall back to localhost everywhere, which is harmless
+ * on a laptop and silently corrupting in production: a deploy with the variable
+ * unset ships `http://localhost:3000` canonicals, telling search engines that
+ * the real pages are duplicates of a host nobody can reach. There is no way to
+ * notice that from inside the running app, so a production build that cannot
+ * name its own origin fails here at module load instead.
+ *
+ * Development and test keep the localhost fallback, so a local build stays
+ * reproducible without a `.env` file.
+ */
+export function resolveSiteOrigin(env: SiteOriginEnv = process.env): string {
+  const configured = env.NEXT_PUBLIC_SITE_ORIGIN?.trim() ?? '';
+  const usable = configured !== '' && !configured.includes('localhost');
+  if (env.NODE_ENV === 'production' && !usable) {
+    throw new Error(
+      'NEXT_PUBLIC_SITE_ORIGIN must be set to the public HTTPS origin for a production build. ' +
+        `Received ${configured === '' ? 'no value' : `"${configured}"`}. ` +
+        'A localhost canonical, hreflang or sitemap URL must never ship.',
+    );
+  }
+  return configured === '' ? LOCAL_SITE_ORIGIN : configured;
 }
 
 export const SITE_ORIGIN = resolveSiteOrigin();
