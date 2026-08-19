@@ -13,14 +13,18 @@ import {
 } from '@/features/marketing/components/layout';
 import { Cta, TextLink } from '@/features/marketing/components/links';
 import {
+  BentoCell,
+  BentoGrid,
   ClosingCta,
+  EditorialBigNumber,
   EditorialCard,
-  EditorialDisplay,
   EditorialSection,
   Eyebrow,
+  HeroHeadline,
 } from '@/features/marketing/components/editorial';
+import { ColorBand, GradientWash } from '@/features/marketing/components/scene';
 import { CorrectionNotice, SourceNote } from '@/features/marketing/components/page-parts';
-import { CONNECTORS } from '@/features/marketing/data/connectors';
+import { CAPABILITY_COLUMNS, CONNECTORS } from '@/features/marketing/data/connectors';
 import { marketingTranslator } from '@/features/marketing/i18n';
 import { pageMetadata } from '@/features/marketing/seo';
 import { ROUTES } from '@/features/marketing/site';
@@ -49,11 +53,21 @@ export default async function IntegrationsPage({
 
   return (
     <>
-      <EditorialSection>
-        <div className="max-w-[52rem]">
-          <EditorialDisplay as="h1" size="md">
-            {t.t('web.integrations.title')}
-          </EditorialDisplay>
+      {/*
+        1. The hero. `HeroHeadline` replaces the single-line `EditorialDisplay`
+        this page opened with, matching the home page's hero treatment: a full
+        display step larger, two lines, the second set in the action accent.
+        Nothing else in the hero changes — the same secondary action and the
+        same review-status `Notice` that keeps "official" from meaning
+        anything before a platform has actually approved it.
+      */}
+      <EditorialSection className="isolate overflow-hidden" containerClassName="py-20 md:py-28 lg:py-32">
+        <GradientWash accent="cool" placement="top" />
+        <div className="relative max-w-[52rem]">
+          <HeroHeadline
+            lead={t.t('web.integrations.v2.hero.headline')}
+            accent={t.t('web.integrations.v2.hero.headlineAccent')}
+          />
           <Lede className="mt-6">{t.t('web.integrations.lede')}</Lede>
           <div className="mt-8">
             <Cta href={ROUTES.capabilities} variant="secondary">
@@ -70,11 +84,57 @@ export default async function IntegrationsPage({
         </div>
       </EditorialSection>
 
+      {/*
+        2. The cohort, stated as two figures, and a prominent way into the
+        real matrix. Both numbers are derived, never typed: `CONNECTORS.length`
+        is the same launch cohort the home page counts, and
+        `CAPABILITY_COLUMNS.length` is the width of the actual generated
+        table at `/integrations/capabilities`. Neither number claims a
+        capability is supported — the matrix linked beside it is where that
+        real, per-cell state lives, and this band only ever counts the shape
+        of the data, not its content.
+      */}
+      <ColorBand accent="cool" id="stats" texture>
+        <BentoGrid>
+          <BentoCell span="lead" as="section">
+            <div className="grid gap-x-10 gap-y-10 sm:grid-cols-2">
+              <EditorialBigNumber
+                value={CONNECTORS.length}
+                locale={locale}
+                label={t.t('web.integrations.v2.platformsStat')}
+              />
+              <div className="border-border-subtle sm:border-s sm:ps-10">
+                <EditorialBigNumber
+                  value={CAPABILITY_COLUMNS.length}
+                  locale={locale}
+                  label={t.t('web.integrations.v2.capabilitiesStat')}
+                />
+              </div>
+            </div>
+          </BentoCell>
+          <BentoCell span="side" as="section">
+            <Subheading as="h3">{t.t('web.capabilities.title')}</Subheading>
+            <p className="text-body-md text-text-secondary mt-4 leading-[1.6]">
+              {t.t('web.capabilities.lede')}
+            </p>
+            <p className="mt-6">
+              <Cta href={ROUTES.capabilities} variant="secondary">
+                {t.t('web.integrations.viewMatrix')}
+              </Cta>
+            </p>
+          </BentoCell>
+        </BentoGrid>
+      </ColorBand>
+
       {/* One index of connectors, each card linking to its detailed row below.
           This used to be two: a full-bleed marquee of ink-bordered name chips
           and then this same set again as poster cards. The marquee's only
           content was the list it now sits above, so the caption that carried
-          the honest claim moves here and the second restatement leaves. */}
+          the honest claim moves here and the second restatement leaves.
+
+          Left on plain paper, not inside the `ColorBand` above: this is the
+          real, generated connector list, and it stays the neutral ground the
+          rest of the page's data-driven sections sit on. */}
       <Section id="wall" ariaLabel={t.t('web.integrations.title')}>
         <Eyebrow>{t.t('web.integrations.v2.marqueeCaption')}</Eyebrow>
         <StaggerList className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">

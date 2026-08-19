@@ -11,19 +11,21 @@ import { buildSnippet } from '@/features/developer/lib/setup-snippets';
 import { JsonLd } from '@/features/marketing/components/json-ld';
 import {
   AgentToolLedger,
+  BentoCell,
+  BentoGrid,
   ClosingCta,
   EditorialBigNumber,
   EditorialCard,
   EditorialDisplay,
   EditorialSection,
   EditorialVariantScene,
-  Eyebrow,
+  HeroHeadline,
   ProviderGrid,
   ProviderLogoRow,
   TierGrid,
 } from '@/features/marketing/components/editorial';
 import { tierColumns } from '@/features/marketing/components/editorial/tier-columns';
-import { ColorBand, Sticker } from '@/features/marketing/components/scene';
+import { ColorBand, GradientWash, Sticker } from '@/features/marketing/components/scene';
 import {
   Body,
   Fact,
@@ -39,6 +41,7 @@ import { AGENT_TOOL_COUNT, AGENT_TOOL_TIERS } from '@/features/marketing/data/ag
 import { marketingTranslator } from '@/features/marketing/i18n';
 import { offerJsonLd, pageMetadata } from '@/features/marketing/seo';
 import { ROUTES } from '@/features/marketing/site';
+import { HeroWebglStage } from '@/lib/motion/webgl/hero-webgl-stage';
 
 export async function generateMetadata({
   params,
@@ -83,8 +86,8 @@ const EXAMPLE_ROWS = [
 ] as const;
 
 /**
- * The launch cohort: the hero logo row, the "official APIs only" grid and the
- * connector-count sticker.
+ * The launch cohort: the hero logo row, the hero's reach figure, the bento
+ * band's connector grid and the connector-count sticker.
  *
  * Derived from `CORE_PROVIDER_IDS` rather than typed out. This list used to be
  * eight hand-written ids under a comment claiming it was "every real, shipped
@@ -94,6 +97,10 @@ const EXAMPLE_ROWS = [
  * cannot disagree with the cohort again, in either direction — a provider
  * added to or removed from the cohort moves this row with it, on the same
  * commit, with no second edit to remember.
+ *
+ * That now covers the hero's reach figure too, which is
+ * `CONNECTOR_PROVIDERS.length` and never a numeral in this file or in the
+ * catalog. `home/home-vocabulary.test.tsx` asserts it stays derived.
  *
  * The type is `CoreProviderId`, not `ProviderId`: `ProviderLogoRow` holds a
  * total record of marks over the cohort, so a provider joining
@@ -284,63 +291,220 @@ export default async function HomePage({
   return (
     <>
       {/*
-        1. The hero, in the order a stranger reads it.
+        1. The hero, and now the whole of the first act.
 
-        Platforms, promise, how it works, one action. The row of marks comes
-        first because it is the fastest fact on the page: before a word is
-        read, the reader knows which networks this publishes to. Then a six
-        word headline, then the sentence that names the clients and the
-        surfaces, then one vermilion action and one quiet one.
+        Order, in the order a stranger reads it: the marks, so the networks
+        land before a word is read; a two line display headline whose second
+        line is the page's one coloured phrase; the sentence that names the
+        clients and the surfaces; one action; the reach figure; and then the
+        product itself, running.
 
-        What used to be here: an eyebrow, then a twenty word literary sentence
-        set at display size that filled a 900px viewport on its own, then a
-        platform cycler, then a lede, then two equally weighted buttons. The
-        eyebrow is gone because the craft floor bans it and the headline
-        carries its own weight. The long sentence is not deleted — it is
-        `web.home.promise`, still translated in every locale, and it still runs
-        further down the page where a paragraph is what a reader wants.
+        Three changes from the version this replaces.
 
-        The `<h1>` stays the LCP element with its finished text in server HTML.
-        `EditorialDisplay size="sm"` caps it at 3.75rem, which keeps the
-        headline, the subhead and the actions inside 900px of viewport height
-        with the demonstration below the fold rather than beside it.
+        The headline is `HeroHeadline` rather than `EditorialDisplay
+        size="sm"`. It is a full step larger (`--text-display-xl`, up to 88px
+        against the old 60px cap), it is two lines, and the second line is set
+        in `--accent-action-*`. That component's doc comment carries the two
+        rules behind it: the lines are two whole sentences rather than one
+        sentence split around a span, because a translated fragment may never
+        be interpolated into another translated string, and there is exactly
+        one accent phrase on the page.
+
+        There is one button. There used to be two of equal weight, which is a
+        way of admitting you do not know which one matters. The agent tour is
+        still one click away, as a link.
+
+        The demonstration comes back into the hero, below the fold line rather
+        than beside the headline. Beside it, it halved the width of the promise
+        and pushed the action off a 900px screen; underneath, it is the size it
+        deserves and the hero still reads in one glance. It is unchanged
+        functionally: `HeroDemoSection` renders exactly the nine server-rendered
+        panels it always did.
+
+        The wash is the page's warm edge, and the band further down answers it.
+        It is an edge, not a background: it fades to transparent well above the
+        copy, which is rule 1 of the gradient policy in `theme.css`.
       */}
-      <EditorialSection reveal={false} containerClassName="py-14 md:py-20 lg:py-24">
-        {/*
-          The row runs the full measure of the page rather than the width of
-          the headline column: at desktop widths the whole cohort then reads as
-          one strip in a single pass, which is the entire point of putting it
-          first. It wraps to two or three lines on a phone, which is fine — it
-          still resolves before the headline does.
-        */}
-        <ProviderLogoRow
-          providers={CONNECTOR_PROVIDERS}
-          ariaLabel={t.t('web.home.v2.hero.providersLabel')}
-          name={providerName}
-        />
+      <EditorialSection
+        reveal={false}
+        className="isolate overflow-hidden"
+        containerClassName="py-16 md:py-24 lg:py-28"
+      >
+        <GradientWash accent="warm" placement="top" />
 
-        <div className="mt-9 max-w-[52rem]">
-          <EditorialDisplay as="h1" size="sm" reveal>
-            {t.t('web.home.v2.hero.headline')}
-          </EditorialDisplay>
+        <div className="relative">
+          {/*
+            The row runs the full measure of the page rather than the width of
+            the headline column: at desktop widths the whole cohort then reads
+            as one strip in a single pass, which is the entire point of putting
+            it first. It wraps to two or three lines on a phone, which is fine
+            — it still resolves before the headline does.
+          */}
+          <ProviderLogoRow
+            providers={CONNECTOR_PROVIDERS}
+            ariaLabel={t.t('web.home.v2.hero.providersLabel')}
+            name={providerName}
+          />
 
-          <Lede className="mt-6 max-w-[64ch]">{t.t('web.home.v2.hero.subhead')}</Lede>
+          <HeroHeadline
+            className="mt-10"
+            lead={t.t('web.home.v2.hero.headline')}
+            accent={t.t('web.home.v2.hero.headlineAccent')}
+          />
 
-          <div className="mt-9 flex flex-wrap items-center gap-3">
-            <Cta href={ROUTES.signUp}>{t.t('web.cta.startTrial')}</Cta>
-            <Cta href="#agents" variant="secondary">
-              {t.t('web.home.v2.hero.agentsCta')}
-            </Cta>
+          <div className="mt-12 grid gap-10 lg:grid-cols-12 lg:items-end lg:gap-12">
+            <div className="lg:col-span-7">
+              <Lede className="max-w-[62ch]">{t.t('web.home.v2.hero.subhead')}</Lede>
+
+              <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-3">
+                <Cta href={ROUTES.signUp}>{t.t('web.cta.startTrial')}</Cta>
+                <TextLink href="#agents">{t.t('web.home.v2.hero.agentsCta')}</TextLink>
+              </div>
+
+              <p className="text-body-sm text-text-tertiary mt-5">
+                {t.t('web.home.v2.sticker.trial')}
+              </p>
+            </div>
+
+            {/*
+              The reach, stated as a figure rather than as an adjective. The
+              value is `CONNECTOR_PROVIDERS.length`, so it is the cohort
+              counting itself; the note underneath is what stops the figure
+              overclaiming, because cohort membership is intent and a connector
+              is available account by account as its provider review lands.
+            */}
+            <div className="border-border-default border-t pt-6 lg:col-span-4 lg:col-start-9 lg:border-t-0 lg:border-s lg:ps-8 lg:pt-0">
+              <EditorialBigNumber
+                value={CONNECTOR_PROVIDERS.length}
+                locale={locale}
+                label={t.t('web.home.v2.hero.reachLabel')}
+              />
+              <p className="text-body-sm text-text-tertiary mt-4 max-w-[36ch] leading-[1.6]">
+                {t.t('web.home.v2.hero.reachNote')}
+              </p>
+              {/*
+                The one WebGL element on the site, and the only place it is
+                allowed: a decorative echo of the figure just above it, one
+                draft fanning out to several destinations at once. Server HTML
+                and every first paint are `PublishFanoutFallback` (plain SVG);
+                the canvas only replaces it client-side, after the hero has
+                painted, and only for browsers `HeroWebglStage` clears. Fixed
+                aspect ratio, so its arrival never shifts anything around it.
+              */}
+              <HeroWebglStage className="mt-6 aspect-[4/3] w-full max-w-56" />
+            </div>
           </div>
 
-          <p className="text-body-sm text-text-tertiary mt-5">
-            {t.t('web.home.v2.sticker.trial')}
-          </p>
+          {/*
+            `web.home.lede` is the sentence that says what the product is. It
+            belongs immediately in front of the walkthrough that shows it,
+            rather than in front of the headline that has already said it in
+            six words.
+          */}
+          <div className="mt-16 md:mt-20">
+            <Body className="mb-8">{t.t('web.home.lede')}</Body>
+            <HeroDemoSection locale={locale} />
+            <p className="mt-6">
+              <TextLink href={ROUTES.demo}>{t.t('web.demo.hero.more')}</TextLink>
+            </p>
+          </div>
         </div>
       </EditorialSection>
 
       {/*
-        2. The agent story, which this site has never told.
+        2. The proof band: what actually comes out, as a bento rather than as
+        three sections in a column.
+
+        This one band replaces three that used to run one after another — the
+        five surfaces, the connector grid, and the variant scene — and it is
+        shorter than any two of them were. Nothing here is a benefit sentence
+        in a box: the tall cell is real per-account output with the real check
+        each one runs, the connector cell is the cohort in its own marks, and
+        the surfaces cell is a definition list of five things that exist.
+
+        The cells are asymmetric by construction rather than by discipline:
+        `BentoCell` takes a named role, `lead` is seven columns and two rows,
+        `side` is five and one, and a row of three identical cards has no way
+        to express itself. `home/home-vocabulary.test.tsx` also reads this file
+        and fails if every cell in it ends up the same size.
+
+        This is the second of the page's two budgeted `ColorBand`s
+        (`scene/scene-budget.test.ts`), and the last: marigold here, ultramarine
+        below, and no third band.
+      */}
+      <ColorBand accent="warm" id="proof" texture>
+        <div className="max-w-[46rem]">
+          <EditorialDisplay as="h2" size="sm">
+            {t.t('web.home.example.title')}
+          </EditorialDisplay>
+          <Body className="mt-5">{t.t('web.home.example.body')}</Body>
+        </div>
+
+        <BentoGrid className="mt-14">
+          {/*
+            Bare on purpose. The variant scene is nine cards; wrapping them in
+            a tenth would be cards inside a card, which is the failure mode a
+            bento invites.
+          */}
+          <BentoCell span="lead" surface="bare">
+            <EditorialVariantScene
+              rows={variantRows}
+              masterLabel={t.t('web.home.v2.variantScene.masterLabel')}
+            />
+            <p className="text-body-sm text-text-tertiary mt-6 max-w-[62ch] leading-[1.6]">
+              {t.t('web.home.example.caption')}
+            </p>
+          </BentoCell>
+
+          <BentoCell span="side" as="section">
+            <Subheading as="h3">{t.t('web.home.surfaces.title')}</Subheading>
+            <EditorialBigNumber
+              value={SURFACES.length}
+              locale={locale}
+              label={t.t('web.home.v2.surfacesStat')}
+              className="mt-6"
+            />
+            <p className="text-body-md text-text-secondary mt-6 leading-[1.6]">
+              {t.t('web.home.surfaces.body')}
+            </p>
+            <FactList className="mt-6">
+              {SURFACES.map((surface) => (
+                <Fact key={surface.id} term={t.format(surface.nameKey)}>
+                  {t.format(surface.bodyKey)}
+                </Fact>
+              ))}
+            </FactList>
+            <p className="mt-6">
+              <TextLink href={ROUTES.developers}>{t.t('nav.public.forDevelopers')}</TextLink>
+            </p>
+          </BentoCell>
+
+          <BentoCell span="side" as="section">
+            <Subheading as="h3">{t.t('web.home.v2.bento.networks.title')}</Subheading>
+            {/*
+              Two columns, not the grid's default four: this cell is five of
+              twelve, and four columns of platform name inside it truncate
+              every one of them.
+            */}
+            <ProviderGrid
+              providers={CONNECTOR_PROVIDERS}
+              className="mt-6 grid-cols-2 sm:grid-cols-2 lg:grid-cols-2"
+            />
+            <div className="mt-8">
+              <Sticker
+                fact={t.format('web.home.b3.sticker.connectorsFact', {
+                  count: CONNECTOR_PROVIDERS.length,
+                })}
+                source={t.format('web.home.b3.sticker.connectorsSource')}
+                accent="warm"
+              />
+            </div>
+          </BentoCell>
+        </BentoGrid>
+      </ColorBand>
+
+      {/*
+        3. The agent story, which this site has never told.
 
         It is the strongest thing we have and it was invisible: a real remote
         MCP server, a real CLI, a real REST API and real signed webhooks, all
@@ -352,10 +516,9 @@ export default async function HomePage({
         section reads connect, then what an agent may call, then what it may
         never do without a person.
 
-        The tinted band is the page's first of its two budgeted `ColorBand`s
-        (`scene/scene-budget.test.ts`). Ultramarine, because the vermilion is
-        spent on the action in the hero and a section-wide vermilion would
-        compete with it.
+        Ultramarine, because the vermilion is spent on the action in the hero
+        and on the one phrase in the headline, and the marigold is spent on the
+        band above.
       */}
       <ColorBand accent="cool" id="agents" texture>
         <div className="max-w-[46rem]">
@@ -448,89 +611,8 @@ export default async function HomePage({
         </p>
       </ColorBand>
 
-      {/* 3. The same five surfaces, as rows rather than as five identical cards. */}
-      <EditorialSection rule id="surfaces" reveal={false}>
-        <Heading className="max-w-[24ch]">{t.t('web.home.surfaces.title')}</Heading>
-        <Body className="mt-4">{t.t('web.home.surfaces.body')}</Body>
-
-        <EditorialBigNumber
-          value={SURFACES.length}
-          locale={locale}
-          label={t.t('web.home.v2.surfacesStat')}
-          className="mt-12 mb-10"
-        />
-
-        <FactList>
-          {SURFACES.map((surface) => (
-            <Fact key={surface.id} term={t.format(surface.nameKey)}>
-              {t.format(surface.bodyKey)}
-            </Fact>
-          ))}
-        </FactList>
-
-        <p className="mt-10">
-          <TextLink href={ROUTES.developers}>{t.t('nav.public.forDevelopers')}</TextLink>
-        </p>
-      </EditorialSection>
-
       {/*
-        4. The demonstration. It used to sit beside the headline, where it
-        halved the width of the promise and pushed the action off a 900px
-        screen. Below the fold it can be the size it deserves, and the hero can
-        be read in one glance.
-      */}
-      <EditorialSection rule id="demo" reveal={false} ariaLabel={t.t('web.demo.hero.more')}>
-        {/*
-          `web.home.lede` is the sentence the hero used to carry under the
-          promise. It is not deleted and not orphaned: it says what the product
-          is, and the place for that is immediately before the walkthrough that
-          shows it, not in front of the headline that has already said it in
-          six words.
-        */}
-        <Lede className="mb-10">{t.t('web.home.lede')}</Lede>
-        <HeroDemoSection locale={locale} />
-        <p className="mt-6">
-          <TextLink href={ROUTES.demo}>{t.t('web.demo.hero.more')}</TextLink>
-        </p>
-      </EditorialSection>
-
-      {/*
-        5. The connectors, still.
-
-        The looping marquee that used to run above this grid is gone. The hero
-        now names every platform in its own colours at logo scale, so a
-        scrolling track of the same ten names was the third rendering of one
-        list, and it was the one that could never be read in full. The grid is
-        what a crawler, a no-JS client and a reduced-motion visitor were
-        getting anyway.
-      */}
-      <EditorialSection rule id="connectors" ariaLabel={t.t('web.home.v2.marqueeCaption')}>
-        <Eyebrow>{t.t('web.home.v2.marqueeCaption')}</Eyebrow>
-        <ProviderGrid providers={CONNECTOR_PROVIDERS} className="mt-8" />
-        <div className="mt-8">
-          <Sticker
-            fact={t.format('web.home.b3.sticker.connectorsFact', {
-              count: CONNECTOR_PROVIDERS.length,
-            })}
-            source={t.format('web.home.b3.sticker.connectorsSource')}
-            accent="cool"
-          />
-        </div>
-      </EditorialSection>
-
-      {/* 6. One idea, a platform-native version each. The core proof. */}
-      <EditorialSection rule id="example" reveal={false}>
-        <Heading className="max-w-[32ch]">{t.t('web.home.example.title')}</Heading>
-        <Body className="mt-4">{t.t('web.home.example.body')}</Body>
-        <EditorialVariantScene
-          rows={variantRows}
-          masterLabel={t.t('web.home.v2.variantScene.masterLabel')}
-          className="mt-12"
-        />
-      </EditorialSection>
-
-      {/*
-        7. The five proof pillars, and the long promise the hero used to set at
+        4. The five proof pillars, and the long promise the hero used to set at
         display size. It reads as a standfirst here, which is what it always
         was.
       */}
@@ -545,7 +627,7 @@ export default async function HomePage({
       </EditorialSection>
 
       {/*
-        8. The boundaries. The copy is unchanged and stays a quiet disclosure
+        5. The boundaries. The copy is unchanged and stays a quiet disclosure
         rather than a hero moment: this is a sales page for what the product
         does, and four screens of "No ..." set in display type reads as
         apologetic.
@@ -570,7 +652,7 @@ export default async function HomePage({
         </p>
       </EditorialSection>
 
-      {/* 9. Pricing teaser. Both figures shown here are already stated,
+      {/* 6. Pricing teaser. Both figures shown here are already stated,
           verbatim, in `billing.plan.monthlyPrice` / `billing.plan.single`. */}
       <EditorialSection rule id="pricing-teaser">
         <Heading className="max-w-[24ch]">{t.t('web.home.v2.pricingTeaser.title')}</Heading>
@@ -615,13 +697,16 @@ export default async function HomePage({
         </p>
       </EditorialSection>
 
-      {/* 10. Closing. The page's one inverted band. */}
+      {/* 7. Closing. The page's one inverted band, and the one place the warm
+          wash is allowed to run across a whole edge rather than under a
+          heading. */}
       <ClosingCta
         id="start"
         title={t.t('web.home.closing.title')}
         body={t.t('web.home.closing.body')}
         cta={{ href: ROUTES.signUp, label: t.t('web.cta.startTrial') }}
         footnote={t.t('web.cta.trialFootnote')}
+        wash="warm"
       />
 
       <JsonLd node={await offerJsonLd(locale)} />

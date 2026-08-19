@@ -75,3 +75,18 @@ export {
 } from './agent-tool-ledger';
 export { EditorialPricePair, type EditorialPricePairProps } from './price-pair';
 export { TierGrid, type TierGridProps, type TierGridColumn } from './tier-grid';
+
+/*
+ * The bento grid and the two-line hero headline. Built for the home page's
+ * "loud, but no spamming" pass and moved up here the day pricing, product and
+ * integrations wanted the same shape — see each file's own doc comment.
+ */
+export {
+  BentoGrid,
+  type BentoGridProps,
+  BentoCell,
+  type BentoCellProps,
+  type BentoCellSpan,
+  type BentoCellSurface,
+} from './bento';
+export { HeroHeadline, type HeroHeadlineProps } from './hero-headline';

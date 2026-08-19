@@ -6,10 +6,12 @@ import { StaggerList } from '@/components/motion';
 import { publishableTiers, purchasableTiers } from '@/features/billing/tiers';
 import { JsonLd } from '@/features/marketing/components/json-ld';
 import {
+  BentoCell,
+  BentoGrid,
   ClosingCta,
-  EditorialDisplay,
   EditorialSection,
   Eyebrow,
+  HeroHeadline,
   TierGrid,
 } from '@/features/marketing/components/editorial';
 import {
@@ -21,11 +23,11 @@ import {
   Container,
   Heading,
   Lede,
-  Split,
   Subheading,
 } from '@/features/marketing/components/layout';
-import { TextLink } from '@/features/marketing/components/links';
+import { Cta, TextLink } from '@/features/marketing/components/links';
 import { marketingTranslator } from '@/features/marketing/i18n';
+import { GradientWash } from '@/features/marketing/components/scene';
 import { faqJsonLd, offerJsonLd, pageMetadata } from '@/features/marketing/seo';
 import { ROUTES } from '@/features/marketing/site';
 import { cn } from '@relay/design-system/utils';
@@ -83,14 +85,29 @@ export default async function PricingPage({
   return (
     <>
       {/* 1. Intro. The trial fact was a rotated sticker; it is now the
-          eyebrow, which is the same statement without the poster. */}
-      <EditorialSection reveal={false} containerClassName="py-24 md:py-32">
-        <div className="max-w-[46rem]">
+          eyebrow, which is the same statement without the poster.
+
+          The headline is `HeroHeadline` rather than `EditorialDisplay`, the
+          same swap the home page made: a full display step larger, two
+          lines, the second set in the action accent. The accent line is
+          `billing.plan.single` reused verbatim, not restated — it is
+          already the reviewed "no feature tiers" sentence the in-app billing
+          screen and the onboarding plan step both show, and a second
+          wording of the same claim on this page would be a second claim to
+          keep in sync with the first. */}
+      <EditorialSection
+        reveal={false}
+        className="isolate overflow-hidden"
+        containerClassName="py-20 md:py-28 lg:py-32"
+      >
+        <GradientWash accent="warm" placement="top" />
+        <div className="relative max-w-[46rem]">
           <Eyebrow className="mb-6">{t.t('web.home.v2.sticker.trial')}</Eyebrow>
-          <EditorialDisplay as="h1" size="md" reveal>
-            {t.t('web.pricing.title')}
-          </EditorialDisplay>
+          <HeroHeadline lead={t.t('web.pricing.v2.hero.headline')} accent={t.t('billing.plan.single')} />
           <Lede className="mt-8">{t.t('web.pricing.lede')}</Lede>
+          <div className="mt-8">
+            <Cta href={ROUTES.signUp}>{t.t('web.cta.startTrial')}</Cta>
+          </div>
         </div>
       </EditorialSection>
 
@@ -183,33 +200,51 @@ export default async function PricingPage({
         </StaggerList>
       </EditorialSection>
 
-      <EditorialSection rule id="media">
-        <Split aside={<Heading>{t.t('billing.mediaGeneration.title')}</Heading>}>
-          <Body>{t.t('billing.mediaGeneration.explanation')}</Body>
-          <p className="text-body-md text-text-tertiary mt-4 max-w-[68ch] leading-[1.6]">
-            {t.t('billing.usage.noMediaCredits')}
-          </p>
-          <p className="mt-4">
-            <TextLink href={ROUTES.toolRadar}>{t.t('web.meta.toolRadar.title')}</TextLink>
-          </p>
-        </Split>
-      </EditorialSection>
-
       {/*
-        7. No testimonials. This was a second full-bleed ink band, which meant
-        the page had two inverted moments competing with each other. The
-        closing band keeps the ink; this keeps the claim, on paper.
+        4. Why the price looks the way it does: no comparison table, no
+        customer quotes yet, no media credits. Three honest disclosures that
+        used to be three separate full-bleed sections stacked one after
+        another, plus a fourth (`web.pricing.compare.*`) that was written for
+        exactly this page and never wired up — the page argued its own
+        simplicity in prose while sitting on the paragraph that explains why,
+        unrendered, in the catalog. This is the answer a reader who came from
+        a search for "relay pricing vs X" is actually looking for, so it gets
+        the lead cell rather than a caveat at the bottom of the page.
+
+        Bento, not three more stacked sections: the point is that these three
+        disclosures are read together, as one argument for why there is one
+        number on this page instead of a table of them. No `ColorBand` here —
+        the page stays quiet and undecorated through its price and its terms,
+        the same restraint section 2's own comment argues for.
       */}
-      <EditorialSection rule id="no-testimonials">
-        <EditorialDisplay as="h2" size="sm" className="max-w-[26ch]">
-          {t.t('web.pricing.testimonials.title')}
-        </EditorialDisplay>
-        <p className="text-body-lg text-text-secondary mt-6 max-w-[62ch] leading-[1.65]">
-          {t.t('web.pricing.testimonials.body')}
-        </p>
+      <EditorialSection rule id="why" reveal={false}>
+        <BentoGrid>
+          <BentoCell span="lead">
+            <Heading className="max-w-[26ch]">{t.t('web.pricing.compare.title')}</Heading>
+            <Body className="mt-5">{t.t('web.pricing.compare.body')}</Body>
+          </BentoCell>
+          <BentoCell span="side" as="section">
+            <Subheading as="h3">{t.t('web.pricing.testimonials.title')}</Subheading>
+            <p className="text-body-md text-text-secondary mt-4 leading-[1.6]">
+              {t.t('web.pricing.testimonials.body')}
+            </p>
+          </BentoCell>
+          <BentoCell span="side" as="section">
+            <Subheading as="h3">{t.t('billing.mediaGeneration.title')}</Subheading>
+            <p className="text-body-md text-text-secondary mt-4 leading-[1.6]">
+              {t.t('billing.mediaGeneration.explanation')}
+            </p>
+            <p className="text-body-sm text-text-tertiary mt-3 leading-[1.6]">
+              {t.t('billing.usage.noMediaCredits')}
+            </p>
+            <p className="mt-4">
+              <TextLink href={ROUTES.toolRadar}>{t.t('web.meta.toolRadar.title')}</TextLink>
+            </p>
+          </BentoCell>
+        </BentoGrid>
       </EditorialSection>
 
-      {/* 8. FAQ as native accordions: works before hydration, no JS needed. */}
+      {/* 5. FAQ as native accordions: works before hydration, no JS needed. */}
       <EditorialSection rule id="questions" reveal={false}>
         <Heading className="max-w-[28ch]">{t.t('web.pricing.faq.title')}</Heading>
         <div className="border-border-default divide-border-subtle mt-12 divide-y border-t">
@@ -238,7 +273,7 @@ export default async function PricingPage({
         </div>
       </EditorialSection>
 
-      {/* 9. Legal links strip. */}
+      {/* 6. Legal links strip. */}
       <Container>
         <div className="border-border-default border-t py-8 md:py-10">
           <ul className="flex flex-wrap gap-x-8 gap-y-2">
@@ -261,7 +296,7 @@ export default async function PricingPage({
         </div>
       </Container>
 
-      {/* 10. Closing. The page's one inverted band. */}
+      {/* 7. Closing. The page's one inverted band. */}
       <ClosingCta
         id="start"
         title={t.t('web.pricing.v2.closing.title')}

@@ -3,15 +3,19 @@ import type { ReactNode } from 'react';
 
 import { StaggerList } from '@/components/motion';
 import {
+  BentoCell,
+  BentoGrid,
   ClosingCta,
-  EditorialDisplay,
+  EditorialBigNumber,
   EditorialSection,
   EditorialVariantScene,
+  HeroHeadline,
 } from '@/features/marketing/components/editorial';
-import { Body, Heading, List, Split } from '@/features/marketing/components/layout';
+import { Body, Heading, List, Split, Subheading } from '@/features/marketing/components/layout';
 import { Cta, TextLink } from '@/features/marketing/components/links';
 import { ProductShot } from '@/features/marketing/components/page-parts';
 import { marketingTranslator } from '@/features/marketing/i18n';
+import { ColorBand, GradientWash } from '@/features/marketing/components/scene';
 import { pageMetadata } from '@/features/marketing/seo';
 import { ROUTES } from '@/features/marketing/site';
 import type { ProviderId } from '@/lib/api/types';
@@ -117,11 +121,26 @@ export default async function ProductPage({
 
   return (
     <>
-      <EditorialSection reveal={false} containerClassName="py-24 md:py-32">
-        <div className="max-w-[52rem]">
-          <EditorialDisplay as="h1" size="md" reveal>
-            {t.t('web.product.title')}
-          </EditorialDisplay>
+      {/*
+        1. The hero. `HeroHeadline` replaces the single-line `EditorialDisplay`
+        this page opened with: a full display step larger, two lines, the
+        second set in the action accent, matching the home page's hero and
+        `web.product.lede` moved underneath it as the standfirst rather than
+        the h1 itself. `web.product.title` ("The publishing desk") is no
+        longer the visible headline; the two new sentences below say the same
+        thing at hero scale instead of at section-heading scale.
+      */}
+      <EditorialSection
+        reveal={false}
+        className="isolate overflow-hidden"
+        containerClassName="py-20 md:py-28 lg:py-32"
+      >
+        <GradientWash accent="warm" placement="top" />
+        <div className="relative max-w-[52rem]">
+          <HeroHeadline
+            lead={t.t('web.product.v2.hero.headline')}
+            accent={t.t('web.product.v2.hero.headlineAccent')}
+          />
           <p className="text-body-lg text-text-secondary mt-8 max-w-[58ch] leading-[1.62] md:text-[1.125rem]">
             {t.t('web.product.lede')}
           </p>
@@ -134,8 +153,22 @@ export default async function ProductPage({
         </div>
       </EditorialSection>
 
-      <EditorialSection rule id="sequence" reveal={false}>
-        <Heading className="max-w-[28ch]">{t.t('web.product.v2.demo.title')}</Heading>
+      {/*
+        2. What it does: the seven-step sequence, then the compose step made
+        concrete, then the screenshot disclosure. One `ColorBand` (of the two
+        this page is budgeted in `scene-budget.test.ts`, argued there as "two
+        distinct halves: what it does / what it costs you to switch") rather
+        than three separate full-bleed sections.
+
+        `web.product.v2.demo.title` ("One brief, three platform-native
+        drafts") now sits directly over `EditorialVariantScene`, which is the
+        section that actually has three rows. It used to sit over the
+        seven-step list instead — a heading naming a count of three above
+        content with a different count. The new `web.product.v2.sequence.title`
+        states the sequence's own count, seven, in its place.
+      */}
+      <ColorBand accent="warm" id="sequence" texture>
+        <Heading className="max-w-[28ch]">{t.t('web.product.v2.sequence.title')}</Heading>
         <StaggerList stagger={0.07} className="border-border-default mt-12 border-t">
           {STEPS.map((step, index) => (
             <div
@@ -162,38 +195,49 @@ export default async function ProductPage({
             </div>
           ))}
         </StaggerList>
-      </EditorialSection>
 
-      {/* The compose step made concrete: the same one-draft-to-variants scene
-          from the home page, scoped to three rows here rather than restated in
-          full. */}
-      <EditorialSection rule id="demo" reveal={false}>
-        <Body className="max-w-[62ch]">{t.t('web.product.v2.demo.body')}</Body>
-        <EditorialVariantScene
-          rows={demoRows}
-          masterLabel={t.t('web.home.v2.variantScene.masterLabel')}
-          className="mt-12"
-        />
-      </EditorialSection>
+        <BentoGrid className="mt-14">
+          {/* Bare: the variant scene is nine cards of its own, and wrapping
+              them in a tenth panel is the cards-inside-a-card failure a
+              bento invites. */}
+          <BentoCell span="lead" surface="bare">
+            <Subheading as="h3">{t.t('web.product.v2.demo.title')}</Subheading>
+            <Body className="mt-3 max-w-[62ch]">{t.t('web.product.v2.demo.body')}</Body>
+            <EditorialVariantScene
+              rows={demoRows}
+              masterLabel={t.t('web.home.v2.variantScene.masterLabel')}
+              className="mt-8"
+            />
+          </BentoCell>
 
-      <EditorialSection rule id="shot">
-        <Split
-          aside={
-            <div className="space-y-4">
-              <Heading>{t.t('web.product.shot.pending')}</Heading>
-              <Body>{t.t('web.product.shot.caption')}</Body>
+          <BentoCell span="side" as="section">
+            <EditorialBigNumber
+              value={STEPS.length}
+              locale={locale}
+              label={t.t('web.product.v2.sequence.stepsStat')}
+            />
+            <Subheading as="h3" className="mt-8 text-title-sm">
+              {t.t('web.product.shot.pending')}
+            </Subheading>
+            <Body className="mt-3">{t.t('web.product.shot.caption')}</Body>
+            <div className="mt-6">
+              <ProductShot
+                locale={locale}
+                alt={t.t('web.product.step.compose.body')}
+                caption={t.t('web.home.example.caption')}
+              />
             </div>
-          }
-        >
-          <ProductShot
-            locale={locale}
-            alt={t.t('web.product.step.compose.body')}
-            caption={t.t('web.home.example.caption')}
-          />
-        </Split>
-      </EditorialSection>
+          </BentoCell>
+        </BentoGrid>
+      </ColorBand>
 
-      <EditorialSection rule id="states">
+      {/*
+        3. What it costs you to switch: the states nobody likes to design.
+        The second budgeted `ColorBand`, ultramarine rather than marigold, the
+        same accent split home draws between its own proof band and its agent
+        band.
+      */}
+      <ColorBand accent="cool" id="states" texture>
         <Split
           aside={
             <div className="space-y-4">
@@ -207,7 +251,7 @@ export default async function ProductPage({
         >
           <List items={STATES.map((key) => t.format(key))} />
         </Split>
-      </EditorialSection>
+      </ColorBand>
 
       <ClosingCta
         id="start"
