@@ -12,10 +12,10 @@ describe('RSS API adapters', () => {
           connectionIds: ['conn_01'],
           policy: 'approval',
         },
-        'brand_01',
+        'project_01',
       ),
     ).toEqual({
-      brandId: 'brand_01',
+      projectId: 'project_01',
       title: 'Example feed',
       feedUrl: 'https://example.test/feed.xml',
       connectionIds: ['conn_01'],

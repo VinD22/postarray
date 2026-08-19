@@ -56,11 +56,11 @@ describe('parsing', () => {
   it('reads every filter from the query string', () => {
     const filters = parseFilters(
       new URLSearchParams(
-        'brand=brand_1&account=conn_1&platform=x&status=failed&locale=de&campaign=Q3&group=grp_1&attention=1',
+        'project=project_1&account=conn_1&platform=x&status=failed&locale=de&campaign=Q3&group=grp_1&attention=1',
       ),
     );
     expect(filters).toEqual({
-      brandId: 'brand_1',
+      projectId: 'project_1',
       connectionId: 'conn_1',
       provider: 'x',
       bucket: 'failed',

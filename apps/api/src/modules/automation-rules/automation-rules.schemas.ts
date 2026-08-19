@@ -7,7 +7,7 @@ import { z } from 'zod';
 
 import { cursorQuerySchema } from '../../common/pagination';
 import {
-  brandIdSchema,
+  projectIdSchema,
   connectionIdSchema,
   passthroughObjectSchema,
   ruleIdSchema,
@@ -48,7 +48,7 @@ export const ruleEndConditionSchema = z.discriminatedUnion('kind', [
 
 export const createRuleSchema = z
   .object({
-    brandId: brandIdSchema,
+    projectId: projectIdSchema,
     name: shortTextSchema,
     trigger: ruleTriggerSchema,
     conditions: z.array(ruleConditionSchema).max(30).default([]),

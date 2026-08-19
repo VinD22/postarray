@@ -4,7 +4,7 @@ import { describe, expect, it } from 'vitest';
 import { createFeedSchema } from './rss.schemas';
 
 const BASE_FEED = {
-  brandId: newIdFor('brand'),
+  projectId: newIdFor('project'),
   title: 'Example feed',
   feedUrl: 'https://example.test/feed.xml',
 } as const;

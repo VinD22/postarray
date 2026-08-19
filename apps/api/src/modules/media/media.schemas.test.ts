@@ -12,15 +12,15 @@ import {
 
 describe('media boundary schemas', () => {
   it('accepts a project id on an upload reservation', () => {
-    const brandId = newIdFor('brand');
+    const projectId = newIdFor('project');
     const parsed = createUploadUrlSchema.parse({
       filename: 'launch.jpg',
       mimeType: 'image/jpeg',
       byteSize: 1024,
       sha256: 'a'.repeat(64),
-      brandId,
+      projectId,
     });
-    expect(parsed.brandId).toBe(brandId);
+    expect(parsed.projectId).toBe(projectId);
   });
 
   it('requires a reason for an explicit alt-text waiver', () => {

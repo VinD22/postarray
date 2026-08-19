@@ -107,7 +107,7 @@ export function ComposeStep() {
     try {
       const draft =
         contentItemId === null
-          ? await api.content.createDraft({ brandId: project.id, body }, newIdempotencyKey('draft'))
+          ? await api.content.createDraft({ projectId: project.id, body }, newIdempotencyKey('draft'))
           : { id: contentItemId };
       setContentItemId(draft.id);
 

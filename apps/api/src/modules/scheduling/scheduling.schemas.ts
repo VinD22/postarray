@@ -10,7 +10,7 @@ import { z } from 'zod';
 import { cursorQueryWith } from '../../common/pagination';
 import { requireEpochMillis } from '../../common/instant';
 import {
-  brandIdSchema,
+  projectIdSchema,
   campaignIdSchema,
   connectionIdSchema,
   contentItemIdSchema,
@@ -79,7 +79,7 @@ export const calendarQuerySchema = cursorQueryWith({
   to: isoInstantSchema,
   /** The zone the grid is drawn in. Required: there is no implicit local time. */
   ianaTimeZone: ianaTimeZoneSchema,
-  brandId: brandIdSchema.optional(),
+  projectId: projectIdSchema.optional(),
   campaignId: campaignIdSchema.optional(),
   connectionId: connectionIdSchema.optional(),
   provider: providerIdSchema.optional(),
@@ -91,7 +91,7 @@ export const calendarQuerySchema = cursorQueryWith({
 
 export const nextSlotQuerySchema = z
   .object({
-    brandId: brandIdSchema,
+    projectId: projectIdSchema,
     after: isoInstantSchema.optional(),
   })
   .strict();

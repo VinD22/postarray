@@ -10,7 +10,7 @@ import { serviceRoleClaims, withRlsContext } from './tenancy/rls-context';
  * Realistic local data.
  *
  * What this produces: one workspace, an owner, an editor and an approver, two
- * brands, a `fake` provider connection with a complete capability snapshot,
+ * projects, a `fake` provider connection with a complete capability snapshot,
  * five posts spread across draft, validation-needed, scheduled and published
  * with receipts, attempts and metric observations, one automation rule with a
  * run, one RSS feed, one tracked short link with clicks, a trialing

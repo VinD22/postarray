@@ -20,18 +20,18 @@ import { useTranslations } from '@relay/i18n/react';
 import { useSetTargetMemory } from './use-target-memory';
 
 export interface TargetMemoryCardProps {
-  brandId: string;
+  projectId: string;
   /** The project's current setting, read from the project record. */
   enabled: boolean;
 }
 
-export function TargetMemoryCard({ brandId, enabled }: TargetMemoryCardProps): ReactNode {
+export function TargetMemoryCard({ projectId, enabled }: TargetMemoryCardProps): ReactNode {
   const t = useTranslations();
   const [confirmingOff, setConfirmingOff] = useState(false);
   const setting = useSetTargetMemory();
 
   const apply = (next: boolean): void => {
-    setting.mutate({ brandId, enabled: next }, { onSettled: () => setConfirmingOff(false) });
+    setting.mutate({ projectId, enabled: next }, { onSettled: () => setConfirmingOff(false) });
   };
 
   return (

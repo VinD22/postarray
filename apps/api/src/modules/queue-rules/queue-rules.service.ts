@@ -29,11 +29,11 @@ export class QueueRulesService {
   constructor(@Inject(SERVICES) private readonly services: Services) {}
 
   list(ctx: ActorContext, query: ListQueueRulesQuery): Promise<Paginated<QueueRuleView>> {
-    const { cursor, limit, brandId } = query;
+    const { cursor, limit, projectId } = query;
     return this.services.queueRules.list(ctx, {
       ...(cursor === undefined ? {} : { cursor }),
       ...(limit === undefined ? {} : { limit }),
-      ...(brandId === undefined ? {} : { brandId }),
+      ...(projectId === undefined ? {} : { projectId }),
     });
   }
 
@@ -84,9 +84,9 @@ export class QueueRulesService {
     ctx: ActorContext,
     query: ListQueueSlotsQuery,
   ): Promise<Paginated<QueueSlotReservationView>> {
-    const { cursor, limit, brandId } = query;
+    const { cursor, limit, projectId } = query;
     return this.services.queueRules.listReservations(ctx, {
-      brandId,
+      projectId,
       ...(cursor === undefined ? {} : { cursor }),
       ...(limit === undefined ? {} : { limit }),
     });

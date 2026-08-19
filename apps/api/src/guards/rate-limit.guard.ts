@@ -19,7 +19,7 @@ import { relayState } from '../common/request.types';
  *   collectively what no single credential could.
  * - **Cost** is what makes a route that fans out to a metered provider spend
  *   more of the budget than a cheap read. A flat "requests per minute" treats
- *   `GET /v1/brands` and a 30-account publish as equivalent, and they are not.
+ *   `GET /v1/projects` and a 30-account publish as equivalent, and they are not.
  * - **Source address**, for unauthenticated routes, where there is no
  *   credential to key on yet.
  *

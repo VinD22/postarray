@@ -35,7 +35,7 @@ export interface CalendarEntry extends CalendarEntryView {
   /** The publish job, when one exists. The receipt hangs off this. */
   readonly publishJobId: string | null;
   readonly connectionId?: string;
-  readonly brandId?: string | null;
+  readonly projectId?: string | null;
   /** BCP 47 tag of the content, not of the interface. */
   readonly contentLocale?: string | null;
   readonly campaignName?: string | null;
@@ -56,7 +56,7 @@ export interface CalendarEntry extends CalendarEntryView {
 }
 
 export interface CalendarFilters {
-  readonly brandId: string | null;
+  readonly projectId: string | null;
   readonly connectionId: string | null;
   readonly provider: ProviderId | null;
   readonly bucket: QueueBucket | null;
@@ -68,7 +68,7 @@ export interface CalendarFilters {
 }
 
 export const EMPTY_FILTERS: CalendarFilters = {
-  brandId: null,
+  projectId: null,
   connectionId: null,
   provider: null,
   bucket: null,
@@ -80,7 +80,7 @@ export const EMPTY_FILTERS: CalendarFilters = {
 
 /** Options the toolbar offers, supplied by the screen from live data only. */
 export interface CalendarFilterOptions {
-  readonly brands: readonly { readonly id: string; readonly name: string }[];
+  readonly projects: readonly { readonly id: string; readonly name: string }[];
   readonly connections: readonly {
     readonly id: string;
     readonly label: string;

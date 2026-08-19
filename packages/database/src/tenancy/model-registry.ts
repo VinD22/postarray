@@ -25,10 +25,10 @@ export const TENANT_MODELS = new Set<string>([
   'userSession',
   'consent',
 
-  // Brands and content
-  'brand',
+  // Projects and content
+  'project',
   'businessProfile',
-  'brandSource',
+  'projectSource',
   'glossaryTerm',
   'campaign',
   'contentItem',

@@ -18,7 +18,7 @@ import type { Paginated } from '../types';
 export interface RuleView {
   readonly id: string;
   readonly workspaceId: string;
-  readonly brandId: string;
+  readonly projectId: string;
   readonly name: string;
   readonly state: 'draft' | 'active' | 'paused' | 'disabled' | 'archived';
   readonly trigger: {
@@ -70,7 +70,7 @@ export interface RuleRunView {
  * lifetime end and per-source threshold guards.
  */
 export interface RuleInput {
-  readonly brandId: string;
+  readonly projectId: string;
   readonly name: string;
   readonly trigger: RuleView['trigger'];
   readonly conditions: RuleView['conditions'];
@@ -145,7 +145,7 @@ export const automationRulesApi = {
 export interface FeedView {
   readonly id: string;
   readonly workspaceId: string;
-  readonly brandId: string;
+  readonly projectId: string;
   readonly title: string;
   readonly feedUrl: string;
   readonly health: 'healthy' | 'degraded' | 'invalid' | 'stalled';
@@ -163,7 +163,7 @@ export interface FeedView {
  * goes past validation and approval.
  */
 export interface FeedInput {
-  readonly brandId: string;
+  readonly projectId: string;
   readonly title: string;
   readonly feedUrl: string;
   readonly connectionIds?: readonly string[];
@@ -311,7 +311,7 @@ export interface OAuthGrantView {
   readonly clientName: string;
   readonly subjectUserId: string;
   readonly scopes: readonly string[];
-  readonly brandScope: readonly string[];
+  readonly projectScope: readonly string[];
   readonly connectionScope: readonly string[];
   readonly consentedAt: string;
   readonly lastUsedAt: string | null;

@@ -32,7 +32,7 @@ export async function readDataExportArchive(
 
   const [
     memberships,
-    brands,
+    projects,
     campaigns,
     contentItems,
     versions,
@@ -51,7 +51,7 @@ export async function readDataExportArchive(
         userId: true,
         role: true,
         state: true,
-        brandScope: true,
+        projectScope: true,
         invitedAt: true,
         acceptedAt: true,
         removedAt: true,
@@ -60,7 +60,7 @@ export async function readDataExportArchive(
         user: { select: { id: true, email: true, displayName: true } },
       },
     }),
-    db.brand.findMany({
+    db.project.findMany({
       where: { workspaceId: input.workspaceId },
       orderBy: { id: 'asc' },
       select: {
@@ -83,7 +83,7 @@ export async function readDataExportArchive(
       orderBy: { id: 'asc' },
       select: {
         id: true,
-        brandId: true,
+        projectId: true,
         name: true,
         objective: true,
         tags: true,
@@ -99,7 +99,7 @@ export async function readDataExportArchive(
       orderBy: { id: 'asc' },
       select: {
         id: true,
-        brandId: true,
+        projectId: true,
         campaignId: true,
         title: true,
         brief: true,
@@ -166,7 +166,7 @@ export async function readDataExportArchive(
       orderBy: { id: 'asc' },
       select: {
         id: true,
-        brandId: true,
+        projectId: true,
         provider: true,
         accountType: true,
         displayName: true,
@@ -189,7 +189,7 @@ export async function readDataExportArchive(
       orderBy: { id: 'asc' },
       select: {
         id: true,
-        brandId: true,
+        projectId: true,
         kind: true,
         mimeType: true,
         byteSize: true,
@@ -284,7 +284,7 @@ export async function readDataExportArchive(
   return mapDataExportArchive({
     workspace,
     memberships,
-    brands,
+    projects,
     campaigns,
     contentItems,
     versions,

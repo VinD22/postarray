@@ -33,7 +33,7 @@ function database(): Db {
           userId: user.id,
           role: 'owner',
           state: 'active',
-          brandScope: [],
+          projectScope: [],
           invitedAt: null,
           acceptedAt: at,
           removedAt: null,
@@ -43,12 +43,12 @@ function database(): Db {
         },
       ]),
     },
-    brand: {
+    project: {
       findMany: vi.fn().mockResolvedValue([
         {
-          id: 'brand_1',
-          name: 'Brand',
-          slug: 'brand',
+          id: 'project_1',
+          name: 'Project',
+          slug: 'project',
           voice: 'Direct',
           audience: 'Teams',
           approvedClaims: [],
@@ -65,7 +65,7 @@ function database(): Db {
       findMany: vi.fn().mockResolvedValue([
         {
           id: 'campaign_1',
-          brandId: 'brand_1',
+          projectId: 'project_1',
           name: 'Launch',
           objective: 'announce',
           tags: [],
@@ -81,7 +81,7 @@ function database(): Db {
       findMany: vi.fn().mockResolvedValue([
         {
           id: 'item_1',
-          brandId: 'brand_1',
+          projectId: 'project_1',
           campaignId: 'campaign_1',
           title: 'Post',
           brief: 'Brief',
@@ -150,7 +150,7 @@ function database(): Db {
       findMany: vi.fn().mockResolvedValue([
         {
           id: 'connection_1',
-          brandId: 'brand_1',
+          projectId: 'project_1',
           provider: 'linkedin',
           accountType: 'organization',
           displayName: 'Relay',
@@ -174,7 +174,7 @@ function database(): Db {
       findMany: vi.fn().mockResolvedValue([
         {
           id: 'media_1',
-          brandId: 'brand_1',
+          projectId: 'project_1',
           kind: 'image',
           mimeType: 'image/png',
           byteSize: 12n,

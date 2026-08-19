@@ -10,7 +10,7 @@ import {
 import { z } from 'zod';
 
 import { cursorQueryWith } from '../../common/pagination';
-import { brandIdSchema } from '../../common/schemas';
+import { projectIdSchema } from '../../common/schemas';
 
 /**
  * Bulk import payloads.
@@ -30,7 +30,7 @@ export const MAX_MANIFEST_CHARACTERS = 5 * 1024 * 1024;
 
 export const uploadImportSchema = z
   .object({
-    projectId: brandIdSchema,
+    projectId: projectIdSchema,
     filename: z.string().min(1).max(255),
     /** The CSV text. XLSX is out of scope and is not accepted here. */
     content: z.string().min(1).max(MAX_MANIFEST_CHARACTERS),
@@ -38,7 +38,7 @@ export const uploadImportSchema = z
   })
   .strict();
 
-export const listImportsQuerySchema = cursorQueryWith({ projectId: brandIdSchema.optional() });
+export const listImportsQuerySchema = cursorQueryWith({ projectId: projectIdSchema.optional() });
 
 export const listImportRowsQuerySchema = cursorQueryWith({
   state: bulkImportRowStateSchema.optional(),

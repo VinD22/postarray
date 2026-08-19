@@ -15,7 +15,7 @@ import { PERMISSIONS, type Permission } from './permissions';
 const VIEWER: readonly Permission[] = [
   'workspace.read',
   'member.read',
-  'brand.read',
+  'project.read',
   'connection.read',
   'content.read',
   'media.read',
@@ -75,7 +75,7 @@ const EDITOR: readonly Permission[] = [
 const MANAGER: readonly Permission[] = [
   ...EDITOR,
   'content.approve',
-  'brand.write',
+  'project.write',
   'connection.connect',
   'connection.reconnect',
   'connection.pause',
@@ -98,7 +98,7 @@ const ADMIN: readonly Permission[] = [
   'workspace.update',
   'member.update_role',
   'member.remove',
-  'brand.delete',
+  'project.delete',
   'webhook.write',
   'developer.manage',
   'billing.manage',

@@ -102,7 +102,7 @@ export {
 } from './http';
 
 export {
-  SANDBOX_BRAND_ID,
+  SANDBOX_PROJECT_ID,
   createSandboxServices,
   fakeCapabilitySnapshot,
   type SandboxOptions,

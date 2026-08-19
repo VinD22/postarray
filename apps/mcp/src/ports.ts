@@ -53,7 +53,7 @@ export interface PageLike<T> {
 
 export interface ConnectionSummary {
   readonly id: string;
-  readonly brandId: string | null;
+  readonly projectId: string | null;
   readonly provider: ProviderId;
   readonly accountType: AccountType;
   readonly displayName: string;
@@ -72,7 +72,7 @@ export interface VariantSummary {
 
 export interface ContentItemSummary {
   readonly id: string;
-  readonly brandId: string;
+  readonly projectId: string;
   readonly state: PublishState;
   readonly approvalState: ApprovalState;
   readonly title: string | null;
@@ -168,8 +168,8 @@ export interface TargetSpecLike {
 }
 
 export interface CreateDraftInputLike {
-  /** Required. A draft always belongs to a brand, never to a workspace at large. */
-  readonly brandId: string;
+  /** Required. A draft always belongs to a project, never to a workspace at large. */
+  readonly projectId: string;
   readonly body: string;
   readonly title?: string | null;
   readonly locale?: string;
@@ -198,7 +198,7 @@ export interface RelayServicePort {
       input?: {
         readonly cursor?: string;
         readonly limit?: number;
-        readonly brandId?: string;
+        readonly projectId?: string;
         readonly provider?: ProviderId;
       },
     ): Promise<PageLike<ConnectionSummary>>;
@@ -248,7 +248,7 @@ export interface RelayServicePort {
         readonly to: string;
         readonly cursor?: string;
         readonly limit?: number;
-        readonly filters?: { readonly brandId?: string };
+        readonly filters?: { readonly projectId?: string };
       },
     ): Promise<PageLike<CalendarEntrySummary>>;
   };

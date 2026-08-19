@@ -21,7 +21,7 @@ import { isGlobalModel, isTenantModel, isUnregisteredModel } from './model-regis
  *
  * This is a convenience and a lint, not the security boundary. Row level
  * security in `migrations/0020_rls_policies.sql` is the boundary. In particular
- * this proxy does not walk nested writes (`create: { brand: { connect: … } }`);
+ * this proxy does not walk nested writes (`create: { project: { connect: … } }`);
  * a nested connect that crosses a tenant is caught by RLS and by the foreign
  * keys, which is why the database enforcement exists in the first place.
  */

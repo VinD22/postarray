@@ -51,7 +51,7 @@ export interface AggregateVariant {
 export interface ContentAggregate {
   readonly itemId: string;
   readonly workspaceId: string;
-  readonly brandId: string;
+  readonly projectId: string;
   readonly campaignId: string | null;
   readonly title: string | null;
   readonly state: PublishState;
@@ -85,7 +85,7 @@ export async function loadAggregate(db: Db, contentItemId: string): Promise<Cont
     select: {
       id: true,
       workspaceId: true,
-      brandId: true,
+      projectId: true,
       campaignId: true,
       title: true,
       state: true,
@@ -164,7 +164,7 @@ export async function loadAggregate(db: Db, contentItemId: string): Promise<Cont
   return {
     itemId: item.id,
     workspaceId: item.workspaceId,
-    brandId: item.brandId,
+    projectId: item.projectId,
     campaignId: item.campaignId,
     title: item.title,
     state: item.state,
@@ -367,7 +367,7 @@ export function toContentItemView(aggregate: ContentAggregate): ContentItemView 
   return {
     id: aggregate.itemId,
     workspaceId: aggregate.workspaceId,
-    brandId: aggregate.brandId,
+    projectId: aggregate.projectId,
     campaignId: aggregate.campaignId,
     title: aggregate.title,
     state: aggregate.state,

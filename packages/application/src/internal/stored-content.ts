@@ -83,7 +83,7 @@ export const storedMasterSchema = z
   .object({
     id: idSchema,
     workspaceId: idSchema,
-    brandId: idSchema.nullable(),
+    projectId: idSchema.nullable(),
     campaignId: idSchema.nullable(),
     title: z.string().nullable(),
     body: z.string(),

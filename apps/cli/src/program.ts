@@ -155,7 +155,7 @@ export function buildProgram(deps: CliDeps, state: ProgramState): Command {
     .command('list')
     .description('connected accounts and their health. Risk: read')
     .option('--provider <provider>')
-    .option('--brand-id <id>')
+    .option('--project-id <id>')
     .option('--cursor <cursor>')
     .option('--limit <n>', 'page size', (value) => Number.parseInt(value, 10));
   attach(accountsListCommand, {
@@ -163,7 +163,7 @@ export function buildProgram(deps: CliDeps, state: ProgramState): Command {
     run: async (context, render) => {
       const options = accountsListCommand.opts<{
         provider?: string;
-        brandId?: string;
+        projectId?: string;
         cursor?: string;
         limit?: number;
       }>();
@@ -191,7 +191,7 @@ export function buildProgram(deps: CliDeps, state: ProgramState): Command {
       'deterministic preflight against live platform limits. Risk: read with --content-item. With a file it first creates the draft, which publishes nothing but does need --idempotency-key and drafts:write',
     )
     .option('--content-item <id>', 'validate an existing draft instead of a file')
-    .option('--brand-id <id>')
+    .option('--project-id <id>')
     .option('--idempotency-key <key>');
   attach(validateCommand, {
     name: 'posts validate',
@@ -199,13 +199,13 @@ export function buildProgram(deps: CliDeps, state: ProgramState): Command {
       const [file] = validateCommand.args;
       const options = validateCommand.opts<{
         contentItem?: string;
-        brandId?: string;
+        projectId?: string;
         idempotencyKey?: string;
       }>();
       await postsValidate(context, render, {
         file,
         contentItemId: options.contentItem,
-        brandId: options.brandId,
+        projectId: options.projectId,
         idempotencyKey: options.idempotencyKey,
       });
     },
@@ -233,12 +233,12 @@ export function buildProgram(deps: CliDeps, state: ProgramState): Command {
       'create a draft and schedule it. Risk: consequential. Requires --idempotency-key and posts:schedule',
     )
     .option('--idempotency-key <key>')
-    .option('--brand-id <id>');
+    .option('--project-id <id>');
   attach(scheduleCommand, {
     name: 'posts schedule',
     run: async (context, render) => {
       const [file] = scheduleCommand.args;
-      const options = scheduleCommand.opts<{ idempotencyKey?: string; brandId?: string }>();
+      const options = scheduleCommand.opts<{ idempotencyKey?: string; projectId?: string }>();
       await postsSchedule(context, render, file ?? '', options);
     },
   });
@@ -250,7 +250,7 @@ export function buildProgram(deps: CliDeps, state: ProgramState): Command {
     )
     .option('--content-item <id>')
     .option('--file <path>')
-    .option('--brand-id <id>')
+    .option('--project-id <id>')
     .option('--idempotency-key <key>')
     .option('--confirm', 'explicit human confirmation for immediate publication', false);
   attach(publishCommand, {
@@ -259,14 +259,14 @@ export function buildProgram(deps: CliDeps, state: ProgramState): Command {
       const options = publishCommand.opts<{
         contentItem?: string;
         file?: string;
-        brandId?: string;
+        projectId?: string;
         idempotencyKey?: string;
         confirm?: boolean;
       }>();
       await postsPublish(context, render, {
         contentItemId: options.contentItem,
         file: options.file,
-        brandId: options.brandId,
+        projectId: options.projectId,
         idempotencyKey: options.idempotencyKey,
         confirm: options.confirm === true,
       });
@@ -302,7 +302,7 @@ export function buildProgram(deps: CliDeps, state: ProgramState): Command {
     .command('list')
     .description('content items in this workspace. Risk: read')
     .option('--state <state>')
-    .option('--brand-id <id>')
+    .option('--project-id <id>')
     .option('--cursor <cursor>')
     .option('--limit <n>', 'page size', (value) => Number.parseInt(value, 10));
   attach(postsListCommand, {
@@ -310,7 +310,7 @@ export function buildProgram(deps: CliDeps, state: ProgramState): Command {
     run: async (context, render) => {
       const options = postsListCommand.opts<{
         state?: string;
-        brandId?: string;
+        projectId?: string;
         cursor?: string;
         limit?: number;
       }>();
@@ -325,7 +325,7 @@ export function buildProgram(deps: CliDeps, state: ProgramState): Command {
     .description('scheduled entries in a window. Risk: read')
     .requiredOption('--from <instant>')
     .requiredOption('--to <instant>')
-    .option('--brand-id <id>')
+    .option('--project-id <id>')
     .option('--cursor <cursor>')
     .option('--limit <n>', 'page size', (value) => Number.parseInt(value, 10));
   attach(calendarListCommand, {
@@ -334,7 +334,7 @@ export function buildProgram(deps: CliDeps, state: ProgramState): Command {
       const options = calendarListCommand.opts<{
         from: string;
         to: string;
-        brandId?: string;
+        projectId?: string;
         cursor?: string;
         limit?: number;
       }>();

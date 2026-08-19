@@ -11,7 +11,7 @@ import { postingSetTargetDefaultSchema, type PostingSetTargetDefault, type Posti
 export const SET_SELECT = {
   id: true,
   workspaceId: true,
-  brandId: true,
+  projectId: true,
   name: true,
   description: true,
   connectionIds: true,
@@ -27,7 +27,7 @@ export const SET_SELECT = {
 export interface PostingSetRow {
   id: string;
   workspaceId: string;
-  brandId: string;
+  projectId: string;
   name: string;
   description: string | null;
   connectionIds: string[];
@@ -76,7 +76,7 @@ export function toPostingSetView(row: PostingSetRow): PostingSetView {
   return {
     id: row.id,
     workspaceId: row.workspaceId,
-    brandId: row.brandId,
+    projectId: row.projectId,
     name: row.name,
     description: row.description,
     connectionIds: [...row.connectionIds],

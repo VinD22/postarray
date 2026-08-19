@@ -47,7 +47,7 @@ export const oauthTransactionSchema = z
     /** The exact value we sent to the provider. Compared, never re-derived. */
     state: z.string().min(16).max(512),
     workspaceId: idSchema(ID_PREFIXES.workspace),
-    brandId: idSchema(ID_PREFIXES.brand),
+    projectId: idSchema(ID_PREFIXES.project),
     actorId: z.string().min(1).max(128),
     actorType: z.enum(['user', 'service_account', 'oauth_app', 'system']),
     scopes: z.array(scopeSchema).max(64),

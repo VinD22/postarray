@@ -3,7 +3,7 @@ import type { RememberedTargetsView } from '@relay/contracts';
 
 import type { ActorContext } from '../../application/port';
 import { Actor, RequireScope } from '../../common/decorators';
-import { brandIdSchema } from '../../common/schemas';
+import { projectIdSchema } from '../../common/schemas';
 import { parseBody, parseParams } from '../../common/zod';
 import { rememberTargetsSchema, setTargetMemorySchema } from './target-memory.schemas';
 import { TargetMemoryService } from './target-memory.service';
@@ -17,11 +17,11 @@ import { TargetMemoryService } from './target-memory.service';
  * `droppedConnectionIds` instead, so the composer can say what it did not
  * restore rather than preselecting an account nobody can publish to.
  *
- * The project toggle needs `brand.write`, which no OAuth scope delegates. That
+ * The project toggle needs `project.write`, which no OAuth scope delegates. That
  * is deliberate: turning on a per-member memory for everyone in a project is a
  * human decision, not something a token does on somebody's behalf.
  */
-@Controller('v1/projects/:brandId/remembered-targets')
+@Controller('v1/projects/:projectId/remembered-targets')
 export class TargetMemoryController {
   constructor(private readonly memory: TargetMemoryService) {}
 
@@ -29,9 +29,9 @@ export class TargetMemoryController {
   @RequireScope('drafts:read')
   read(
     @Actor() actor: ActorContext,
-    @Param('brandId') brandId: string,
+    @Param('projectId') projectId: string,
   ): Promise<RememberedTargetsView> {
-    return this.memory.read(actor, parseParams(brandIdSchema, brandId));
+    return this.memory.read(actor, parseParams(projectIdSchema, projectId));
   }
 
   /**
@@ -45,19 +45,19 @@ export class TargetMemoryController {
   @HttpCode(200)
   remember(
     @Actor() actor: ActorContext,
-    @Param('brandId') brandId: string,
+    @Param('projectId') projectId: string,
     @Body() body: unknown,
   ): Promise<RememberedTargetsView> {
     const { connectionIds } = parseBody(rememberTargetsSchema, body);
-    return this.memory.remember(actor, parseParams(brandIdSchema, brandId), connectionIds);
+    return this.memory.remember(actor, parseParams(projectIdSchema, projectId), connectionIds);
   }
 
   /** Forget this person's selection. Always available, opt in or not. */
   @Delete()
   @RequireScope('drafts:write')
   @HttpCode(204)
-  async forget(@Actor() actor: ActorContext, @Param('brandId') brandId: string): Promise<void> {
-    await this.memory.forget(actor, parseParams(brandIdSchema, brandId));
+  async forget(@Actor() actor: ActorContext, @Param('projectId') projectId: string): Promise<void> {
+    await this.memory.forget(actor, parseParams(projectIdSchema, projectId));
   }
 
   /** The project opt in. Turning it off deletes every memory in the project. */
@@ -66,10 +66,10 @@ export class TargetMemoryController {
   @HttpCode(200)
   setEnabled(
     @Actor() actor: ActorContext,
-    @Param('brandId') brandId: string,
+    @Param('projectId') projectId: string,
     @Body() body: unknown,
-  ): Promise<{ brandId: string; enabled: boolean }> {
+  ): Promise<{ projectId: string; enabled: boolean }> {
     const { enabled } = parseBody(setTargetMemorySchema, body);
-    return this.memory.setEnabled(actor, parseParams(brandIdSchema, brandId), enabled);
+    return this.memory.setEnabled(actor, parseParams(projectIdSchema, projectId), enabled);
   }
 }

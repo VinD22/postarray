@@ -1,7 +1,7 @@
 import { scopeSchema } from '@relay/contracts';
 import { z } from 'zod';
 
-import { brandIdSchema, connectionIdSchema, workspaceIdSchema } from '../common/schemas';
+import { projectIdSchema, connectionIdSchema, workspaceIdSchema } from '../common/schemas';
 import { CODE_CHALLENGE_METHOD, isValidCodeChallenge, isValidCodeVerifier } from './pkce';
 
 /**
@@ -48,8 +48,8 @@ export const consentDecisionSchema = z
     decision: z.enum(['approve', 'deny']),
     /** Exactly one workspace. Never a list. */
     workspaceId: workspaceIdSchema,
-    /** Narrowing only. Empty means "every brand in that workspace". */
-    brandIds: z.array(brandIdSchema).max(200).default([]),
+    /** Narrowing only. Empty means "every project in that workspace". */
+    projectIds: z.array(projectIdSchema).max(200).default([]),
     connectionIds: z.array(connectionIdSchema).max(200).default([]),
     /** The subset of the requested scopes the user actually agreed to. */
     grantedScopes: z.array(scopeSchema).max(32).default([]),

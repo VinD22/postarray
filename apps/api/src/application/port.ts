@@ -43,7 +43,7 @@ import type {
   ApprovalRequestView as ApplicationApprovalRequestView,
   AuditEventView as ApplicationAuditEventView,
   AutomationRuleView as ApplicationAutomationRuleView,
-  BrandView as ApplicationBrandView,
+  ProjectView as ApplicationProjectView,
   BusinessProfileView as ApplicationBusinessProfileView,
   CalendarEntry as ApplicationCalendarEntry,
   CanonicalPreview as ApplicationCanonicalPreview,
@@ -196,7 +196,7 @@ export type ViewModel = Readonly<Record<string, unknown>>;
 export type WorkspaceView = ApplicationWorkspaceView;
 export type MembershipView = ApplicationMembershipView;
 export type InvitationView = ApplicationInvitationView;
-export type BrandView = ApplicationBrandView;
+export type ProjectView = ApplicationProjectView;
 export type ConnectionView = ApplicationConnectionView;
 export type ProviderDestination = ApplicationProviderDestinationView;
 export type MentionEntity = ApplicationMentionEntityView;
@@ -282,25 +282,25 @@ export interface MembershipService {
   acceptInvitation(ctx: IdentityContext, token: string): Promise<MembershipView>;
 }
 
-export interface BrandService {
-  list(ctx: ActorContext, query: CursorQuery): Promise<Paginated<BrandView>>;
-  get(ctx: ActorContext, brandId: string): Promise<BrandView>;
-  create(ctx: ActorContext, input: ViewModel): Promise<BrandView>;
-  update(ctx: ActorContext, brandId: string, patch: ViewModel): Promise<BrandView>;
-  delete(ctx: ActorContext, brandId: string): Promise<void>;
+export interface ProjectService {
+  list(ctx: ActorContext, query: CursorQuery): Promise<Paginated<ProjectView>>;
+  get(ctx: ActorContext, projectId: string): Promise<ProjectView>;
+  create(ctx: ActorContext, input: ViewModel): Promise<ProjectView>;
+  update(ctx: ActorContext, projectId: string, patch: ViewModel): Promise<ProjectView>;
+  delete(ctx: ActorContext, projectId: string): Promise<void>;
 }
 
 export interface ConnectionService {
   listAvailableProviders(ctx: ActorContext): Promise<readonly ProviderId[]>;
   list(
     ctx: ActorContext,
-    query: CursorQuery & { brandId?: string; provider?: string },
+    query: CursorQuery & { projectId?: string; provider?: string },
   ): Promise<Paginated<ConnectionView>>;
   get(ctx: ActorContext, connectionId: string): Promise<ConnectionView>;
   getCapabilities(ctx: ActorContext, connectionId: string): Promise<CapabilitySnapshot>;
   beginOAuth(
     ctx: ActorContext,
-    input: { provider: string; brandId: string; redirectTo?: string },
+    input: { provider: string; projectId: string; redirectTo?: string },
   ): Promise<{ authorizationUrl: string; transactionId: string }>;
   handleOAuthCallback(
     ctx: ActorContext,
@@ -343,7 +343,7 @@ export interface ContentService {
   get(ctx: ActorContext, contentItemId: string): Promise<ContentItemView>;
   list(
     ctx: ActorContext,
-    query: CursorQuery & { state?: PublishState; brandId?: string; campaignId?: string },
+    query: CursorQuery & { state?: PublishState; projectId?: string; campaignId?: string },
   ): Promise<Paginated<ContentItemView>>;
   updateMaster(
     ctx: ActorContext,
@@ -416,7 +416,7 @@ export interface SchedulingService {
   ): Promise<Paginated<CalendarEntry>>;
   nextAvailableSlot(
     ctx: ActorContext,
-    input: { brandId: string; after?: IsoInstant },
+    input: { projectId: string; after?: IsoInstant },
   ): Promise<{ instant: IsoInstant; ianaTimeZone: IanaTimeZone }>;
 }
 
@@ -467,11 +467,11 @@ export interface MediaService {
   ): Promise<{ bytes: Uint8Array; contentType: string }>;
   importFromUrl(
     ctx: ActorContext,
-    input: { url: string; brandId?: string | null },
+    input: { url: string; projectId?: string | null },
   ): Promise<OperationRef>;
   list(
     ctx: ActorContext,
-    query: CursorQuery & { brandId?: string; kind?: string },
+    query: CursorQuery & { projectId?: string; kind?: string },
   ): Promise<Paginated<MediaAssetView>>;
   get(ctx: ActorContext, mediaId: string): Promise<MediaAssetView>;
   delete(ctx: ActorContext, mediaId: string): Promise<void>;

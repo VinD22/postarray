@@ -29,7 +29,7 @@ import type { Clock } from '../types';
 export const QUEUE_RULE_SELECT = {
   id: true,
   workspaceId: true,
-  brandId: true,
+  projectId: true,
   name: true,
   ianaTimeZone: true,
   windows: true,
@@ -48,7 +48,7 @@ export const QUEUE_RULE_SELECT = {
 export const RESERVATION_SELECT = {
   id: true,
   workspaceId: true,
-  brandId: true,
+  projectId: true,
   queueRuleId: true,
   state: true,
   scheduledFor: true,
@@ -66,7 +66,7 @@ export const RESERVATION_SELECT = {
 export interface QueueRuleRow {
   readonly id: string;
   readonly workspaceId: string;
-  readonly brandId: string;
+  readonly projectId: string;
   readonly name: string;
   readonly ianaTimeZone: string;
   readonly windows: unknown;
@@ -85,7 +85,7 @@ export interface QueueRuleRow {
 export interface ReservationRow {
   readonly id: string;
   readonly workspaceId: string;
-  readonly brandId: string;
+  readonly projectId: string;
   readonly queueRuleId: string | null;
   readonly state: string;
   readonly scheduledFor: Date;
@@ -132,7 +132,7 @@ export function toRuleView(row: QueueRuleRow): QueueRuleView {
     ...toDefinition(row),
     id: row.id,
     workspaceId: row.workspaceId,
-    brandId: row.brandId,
+    projectId: row.projectId,
     archived: row.archivedAt !== null,
     createdByUserId: row.createdByUserId,
     createdAt: row.createdAt.toISOString(),
@@ -180,7 +180,7 @@ export function toReservationView(row: ReservationRow): QueueSlotReservationView
   return {
     id: row.id,
     workspaceId: row.workspaceId,
-    brandId: row.brandId,
+    projectId: row.projectId,
     state: toReservationState(row.state),
     instant: row.scheduledFor.toISOString(),
     ianaTimeZone: row.scheduledTimeZone,
@@ -246,7 +246,7 @@ const OCCUPANCY_WINDOW_DAYS = 90;
 export async function linkReservationToJob(
   db: Db,
   input: {
-    readonly brandId: string;
+    readonly projectId: string;
     readonly instant: Date;
     readonly contentItemId: string;
     readonly publishJobId: string;
@@ -254,7 +254,7 @@ export async function linkReservationToJob(
 ): Promise<string | null> {
   const match = await db.queueSlotReservation.findFirst({
     where: {
-      brandId: input.brandId,
+      projectId: input.projectId,
       scheduledFor: input.instant,
       state: 'accepted',
       publishJobId: null,
@@ -288,14 +288,14 @@ export async function readQueueContext(
   db: Db,
   clock: Clock,
   workspaceTimeZone: string,
-  input: { readonly brandId: string; readonly after?: string },
+  input: { readonly projectId: string; readonly after?: string },
 ): Promise<QueueContext> {
-  const brand = await db.brand.findFirst({
-    where: { id: input.brandId },
+  const project = await db.project.findFirst({
+    where: { id: input.projectId },
     select: { defaultTimeZone: true },
   });
-  if (brand === null) {
-    throw notFound('brand', input.brandId);
+  if (project === null) {
+    throw notFound('project', input.projectId);
   }
   const after = input.after === undefined ? clock.now() : new Date(input.after);
   if (Number.isNaN(after.getTime())) {
@@ -305,7 +305,7 @@ export async function readQueueContext(
 
   const [ruleRows, jobs, reservations] = await Promise.all([
     db.queueRule.findMany({
-      where: { brandId: input.brandId, archivedAt: null, enabled: true },
+      where: { projectId: input.projectId, archivedAt: null, enabled: true },
       orderBy: [{ priority: 'desc' }, { name: 'asc' }],
       select: QUEUE_RULE_SELECT,
     }),
@@ -313,13 +313,13 @@ export async function readQueueContext(
       where: {
         scheduledFor: { gte: after, lte: to },
         state: { notIn: [...CLOSED_JOB_STATES] },
-        contentItem: { brandId: input.brandId },
+        contentItem: { projectId: input.projectId },
       },
       select: { scheduledFor: true, connectionId: true },
     }),
     db.queueSlotReservation.findMany({
       where: {
-        brandId: input.brandId,
+        projectId: input.projectId,
         scheduledFor: { gte: after, lte: to },
         state: { in: LIVE_RESERVATION_STATES },
       },
@@ -334,7 +334,7 @@ export async function readQueueContext(
       connectionId: job.connectionId,
     })),
     reserved: reservations.map((row) => ({ instant: row.scheduledFor.toISOString() })),
-    timeZone: brand.defaultTimeZone ?? workspaceTimeZone,
+    timeZone: project.defaultTimeZone ?? workspaceTimeZone,
     after,
   };
 }

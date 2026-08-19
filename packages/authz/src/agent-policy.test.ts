@@ -17,7 +17,7 @@ function target(overrides: Partial<AgentTarget> = {}): AgentTarget {
   return {
     connectionId: 'conn-1',
     provider: 'linkedin',
-    brandId: 'brand-1',
+    projectId: 'project-1',
     locale: 'en',
     body: 'A calm update about the release we shipped this week.',
     external: true,
@@ -168,15 +168,15 @@ describe('service account restrictions', () => {
     expect(decision.blockers.map((entry) => entry.code)).toContain('connection_not_preauthorized');
   });
 
-  it('refuses a brand, provider or locale outside the preauthorized lists', () => {
+  it('refuses a project, provider or locale outside the preauthorized lists', () => {
     const decision = evaluateAgentAction(
       request({
-        targets: [target({ brandId: 'brand-9', provider: 'x', locale: 'de' })],
-        restrictions: { brandIds: ['brand-1'], providers: ['linkedin'], locales: ['en'] },
+        targets: [target({ projectId: 'project-9', provider: 'x', locale: 'de' })],
+        restrictions: { projectIds: ['project-1'], providers: ['linkedin'], locales: ['en'] },
       }),
     );
     const codes = decision.blockers.map((entry) => entry.code);
-    expect(codes).toContain('brand_not_preauthorized');
+    expect(codes).toContain('project_not_preauthorized');
     expect(codes).toContain('provider_not_preauthorized');
     expect(codes).toContain('locale_not_preauthorized');
   });

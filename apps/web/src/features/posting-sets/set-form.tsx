@@ -57,7 +57,7 @@ export interface SignatureOption {
 }
 
 export interface SetFormProps {
-  brandId: string;
+  projectId: string;
   /** Absent when creating. */
   set?: PostingSetView | undefined;
   connections: readonly ConnectionView[];
@@ -80,7 +80,7 @@ function initialValue(set: PostingSetView | undefined): SetFormValue {
 }
 
 export function SetForm({
-  brandId,
+  projectId,
   set,
   connections,
   signatures,
@@ -91,7 +91,7 @@ export function SetForm({
 }: SetFormProps): ReactNode {
   const t = useTranslations();
   const [value, setValue] = useState<SetFormValue>(() => initialValue(set));
-  const nextSlot = useNextQueueSlot(value.slotBehavior === 'next_free_slot' ? brandId : null);
+  const nextSlot = useNextQueueSlot(value.slotBehavior === 'next_free_slot' ? projectId : null);
 
   useEffect(() => {
     setValue(initialValue(set));

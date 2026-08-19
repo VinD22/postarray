@@ -43,7 +43,7 @@ describe('fixture identifiers', () => {
   });
 
   it('separates entities even when the seed is identical', () => {
-    expect(fixtureId('workspace', 'same')).not.toBe(fixtureId('brand', 'same'));
+    expect(fixtureId('workspace', 'same')).not.toBe(fixtureId('project', 'same'));
   });
 });
 

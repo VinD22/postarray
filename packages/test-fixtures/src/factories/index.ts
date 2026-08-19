@@ -8,13 +8,13 @@
  */
 
 export {
-  makeBrand,
+  makeProject,
   makeCampaign,
   makeMembership,
   makeUser,
   makeWorkspace,
   makeWorkspaceBundle,
-  type BrandFixture,
+  type ProjectFixture,
   type CampaignFixture,
   type MembershipFixture,
   type UserFixture,

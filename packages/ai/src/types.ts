@@ -48,7 +48,7 @@ export type UntrustedSource = z.infer<typeof untrustedSourceSchema>;
 /** Everything the gateway needs to budget, scope and label one call. */
 export interface AiCallContext {
   readonly workspaceId: string;
-  readonly brandId: string | null;
+  readonly projectId: string | null;
   /** Interface locale of the requesting user. Never the content language. */
   readonly locale: string;
   /** The language the produced text must be written in, when that differs. */

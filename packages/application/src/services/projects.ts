@@ -6,8 +6,8 @@ import {
   type Paginated,
 } from '@relay/contracts';
 
-import type { ActorContext, BrandService, PageQuery, ServiceDeps } from '../types';
-import type { BrandView } from '../views';
+import type { ActorContext, ProjectService, PageQuery, ServiceDeps } from '../types';
+import type { ProjectView } from '../views';
 
 import { recordAudit } from '../internal/audit';
 import { notFound } from '../internal/errors';
@@ -15,9 +15,9 @@ import { pageArgs, toPage } from '../internal/pagination';
 import { authorized, type Db } from '../internal/runtime';
 import { workspaceSlug } from '../internal/workspace-slug';
 
-/** Brands: voice, claims, blocked terms, domains and scheduling defaults. */
+/** Projects: voice, claims, blocked terms, domains and scheduling defaults. */
 
-const BRAND_SELECT = {
+const PROJECT_SELECT = {
   id: true,
   workspaceId: true,
   name: true,
@@ -36,7 +36,7 @@ const BRAND_SELECT = {
   socialConnections: { select: { id: true, status: true } },
 } as const;
 
-interface BrandRow {
+interface ProjectRow {
   id: string;
   workspaceId: string;
   name: string;
@@ -55,7 +55,7 @@ interface BrandRow {
   socialConnections: readonly { id: string; status: string }[];
 }
 
-function toView(row: BrandRow): BrandView {
+function toView(row: ProjectRow): ProjectView {
   return {
     id: row.id,
     workspaceId: row.workspaceId,
@@ -88,7 +88,7 @@ export function assertProjectSlotAvailable(used: number, limit: number): void {
 
 async function requireProjectSlot(db: Db): Promise<void> {
   const [used, entitlement] = await Promise.all([
-    db.brand.count({ where: { archivedAt: null } }),
+    db.project.count({ where: { archivedAt: null } }),
     db.entitlement.findFirst({
       where: { key: PROJECT_LIMIT_ENTITLEMENT_KEY },
       select: { numericValue: true },
@@ -97,7 +97,7 @@ async function requireProjectSlot(db: Db): Promise<void> {
   assertProjectSlotAvailable(used, normalizeProjectLimit(entitlement?.numericValue));
 }
 
-function assertProjectArchivable(row: BrandRow): void {
+function assertProjectArchivable(row: ProjectRow): void {
   const connected = row.socialConnections.filter(
     (connection) => connection.status !== 'disconnected',
   );
@@ -110,9 +110,9 @@ function assertProjectArchivable(row: BrandRow): void {
   });
 }
 
-async function requireAnotherActiveProject(db: Db, brandId: string): Promise<void> {
-  const remaining = await db.brand.count({
-    where: { id: { not: brandId }, archivedAt: null },
+async function requireAnotherActiveProject(db: Db, projectId: string): Promise<void> {
+  const remaining = await db.project.count({
+    where: { id: { not: projectId }, archivedAt: null },
   });
   if (remaining > 0) {
     return;
@@ -123,28 +123,28 @@ async function requireAnotherActiveProject(db: Db, brandId: string): Promise<voi
   });
 }
 
-export function createBrandService(deps: ServiceDeps): BrandService {
+export function createProjectService(deps: ServiceDeps): ProjectService {
   return {
-    async list(ctx: ActorContext, query: PageQuery = {}): Promise<Paginated<BrandView>> {
-      return authorized(deps, ctx, 'brand.read', undefined, async (db) => {
+    async list(ctx: ActorContext, query: PageQuery = {}): Promise<Paginated<ProjectView>> {
+      return authorized(deps, ctx, 'project.read', undefined, async (db) => {
         const args = pageArgs(query);
-        const rows = await db.brand.findMany({
+        const rows = await db.project.findMany({
           where: { archivedAt: null },
           orderBy: { id: 'asc' },
           take: args.take,
           skip: args.skip,
           ...(args.cursor === undefined ? {} : { cursor: args.cursor }),
-          select: BRAND_SELECT,
+          select: PROJECT_SELECT,
         });
         return toPage(rows, args, (row) => row.id, toView);
       });
     },
 
-    async get(ctx: ActorContext, brandId: string): Promise<BrandView> {
-      return authorized(deps, ctx, 'brand.read', { brandId }, async (db) => {
-        const row = await db.brand.findFirst({ where: { id: brandId }, select: BRAND_SELECT });
+    async get(ctx: ActorContext, projectId: string): Promise<ProjectView> {
+      return authorized(deps, ctx, 'project.read', { projectId }, async (db) => {
+        const row = await db.project.findFirst({ where: { id: projectId }, select: PROJECT_SELECT });
         if (row === null) {
-          throw notFound('brand', brandId);
+          throw notFound('project', projectId);
         }
         return toView(row);
       });
@@ -153,21 +153,21 @@ export function createBrandService(deps: ServiceDeps): BrandService {
     async create(
       ctx: ActorContext,
       input: { name: string; defaultTimeZone?: string },
-    ): Promise<BrandView> {
-      return authorized(deps, ctx, 'brand.write', undefined, async (db, actor) => {
+    ): Promise<ProjectView> {
+      return authorized(deps, ctx, 'project.write', undefined, async (db, actor) => {
         await requireProjectSlot(db);
-        const created = await db.brand.create({
+        const created = await db.project.create({
           data: {
             workspaceId: actor.workspace.id,
             name: input.name,
             slug: workspaceSlug(input.name),
             defaultTimeZone: input.defaultTimeZone ?? actor.workspace.defaultTimeZone,
           },
-          select: BRAND_SELECT,
+          select: PROJECT_SELECT,
         });
         await recordAudit(db, actor, {
           action: 'workspace.updated',
-          targetType: 'brand',
+          targetType: 'project',
           targetId: created.id,
           after: { name: created.name, slug: created.slug },
         });
@@ -177,16 +177,16 @@ export function createBrandService(deps: ServiceDeps): BrandService {
 
     async update(
       ctx: ActorContext,
-      brandId: string,
-      patch: Partial<BrandView>,
-    ): Promise<BrandView> {
-      return authorized(deps, ctx, 'brand.write', { brandId }, async (db, actor) => {
-        const before = await db.brand.findFirst({ where: { id: brandId }, select: BRAND_SELECT });
+      projectId: string,
+      patch: Partial<ProjectView>,
+    ): Promise<ProjectView> {
+      return authorized(deps, ctx, 'project.write', { projectId }, async (db, actor) => {
+        const before = await db.project.findFirst({ where: { id: projectId }, select: PROJECT_SELECT });
         if (before === null) {
-          throw notFound('brand', brandId);
+          throw notFound('project', projectId);
         }
-        const after = await db.brand.update({
-          where: { id: brandId },
+        const after = await db.project.update({
+          where: { id: projectId },
           data: {
             ...(patch.name === undefined ? {} : { name: patch.name }),
             ...(patch.voice === undefined ? {} : { voice: patch.voice }),
@@ -203,12 +203,12 @@ export function createBrandService(deps: ServiceDeps): BrandService {
               ? {}
               : { defaultShortLinkOn: patch.defaultShortLinkOn }),
           },
-          select: BRAND_SELECT,
+          select: PROJECT_SELECT,
         });
         await recordAudit(db, actor, {
           action: 'workspace.updated',
-          targetType: 'brand',
-          targetId: brandId,
+          targetType: 'project',
+          targetId: projectId,
           before: toView(before),
           after: toView(after),
         });
@@ -216,45 +216,45 @@ export function createBrandService(deps: ServiceDeps): BrandService {
       });
     },
 
-    async archive(ctx: ActorContext, brandId: string): Promise<BrandView> {
-      return authorized(deps, ctx, 'brand.delete', { brandId }, async (db, actor) => {
-        const before = await db.brand.findFirst({ where: { id: brandId }, select: BRAND_SELECT });
+    async archive(ctx: ActorContext, projectId: string): Promise<ProjectView> {
+      return authorized(deps, ctx, 'project.delete', { projectId }, async (db, actor) => {
+        const before = await db.project.findFirst({ where: { id: projectId }, select: PROJECT_SELECT });
         if (before === null) {
-          throw notFound('brand', brandId);
+          throw notFound('project', projectId);
         }
         assertProjectArchivable(before);
-        await requireAnotherActiveProject(db, brandId);
-        const row = await db.brand.update({
-          where: { id: brandId },
+        await requireAnotherActiveProject(db, projectId);
+        const row = await db.project.update({
+          where: { id: projectId },
           data: { archivedAt: deps.clock.now() },
-          select: BRAND_SELECT,
+          select: PROJECT_SELECT,
         });
         await recordAudit(db, actor, {
           action: 'workspace.updated',
-          targetType: 'brand',
-          targetId: brandId,
+          targetType: 'project',
+          targetId: projectId,
           after: { archived: true },
         });
         return toView(row);
       });
     },
 
-    async delete(ctx: ActorContext, brandId: string): Promise<void> {
-      await authorized(deps, ctx, 'brand.delete', { brandId }, async (db, actor) => {
-        const row = await db.brand.findFirst({ where: { id: brandId }, select: BRAND_SELECT });
+    async delete(ctx: ActorContext, projectId: string): Promise<void> {
+      await authorized(deps, ctx, 'project.delete', { projectId }, async (db, actor) => {
+        const row = await db.project.findFirst({ where: { id: projectId }, select: PROJECT_SELECT });
         if (row === null) {
-          throw notFound('brand', brandId);
+          throw notFound('project', projectId);
         }
         assertProjectArchivable(row);
-        await requireAnotherActiveProject(db, brandId);
-        await db.brand.update({
-          where: { id: brandId },
+        await requireAnotherActiveProject(db, projectId);
+        await db.project.update({
+          where: { id: projectId },
           data: { archivedAt: deps.clock.now() },
         });
         await recordAudit(db, actor, {
           action: 'workspace.updated',
-          targetType: 'brand',
-          targetId: brandId,
+          targetType: 'project',
+          targetId: projectId,
           after: { archived: true },
         });
       });

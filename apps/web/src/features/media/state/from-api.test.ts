@@ -7,7 +7,7 @@ import { mediaAssetFromApi } from './from-api';
 const VIEW: MediaAssetView = {
   id: 'media_1',
   workspaceId: 'workspace_1',
-  brandId: null,
+  projectId: null,
   kind: 'image',
   fileName: null,
   mimeType: 'image/png',

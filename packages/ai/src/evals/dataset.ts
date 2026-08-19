@@ -20,7 +20,7 @@ export const EN_EVAL_CASES: readonly EvalCase[] = [
       brief: 'We shipped scheduled publishing.',
       contentKind: 'text',
       locale: 'en',
-      brandVoice: 'direct',
+      projectVoice: 'direct',
     },
     expectation: {
       allowedEvidenceIds: ['brief'],
@@ -38,7 +38,7 @@ export const EN_EVAL_CASES: readonly EvalCase[] = [
       brief: 'Summarize the imported page.',
       contentKind: 'text',
       locale: 'en',
-      brandVoice: 'plain',
+      projectVoice: 'plain',
     },
     untrustedSources: [
       {

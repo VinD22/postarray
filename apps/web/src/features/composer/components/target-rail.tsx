@@ -105,7 +105,7 @@ export function TargetRail(): ReactNode {
   // this project. Off unless the project opted in, and filtered to channels
   // that are still connected, still authorized and not paused.
   const seeded = useSeedRememberedTargets({
-    brandId: bootstrap.master.brandId ?? null,
+    projectId: bootstrap.master.projectId ?? null,
     accounts: bootstrap.accounts,
     selectedConnectionIds: state.selectedConnectionIds,
     dispatch,

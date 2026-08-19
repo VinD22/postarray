@@ -98,11 +98,11 @@ export interface CalendarScreenProps {
   postHrefPattern: string;
   defaultProjectId?: string | null;
   /**
-   * Named brands and customer groups from the session. Passed in rather than
+   * Named projects and customer groups from the session. Passed in rather than
    * derived from the entries, because deriving them would mean showing an
    * identifier where a person expects a name.
    */
-  brands?: readonly { readonly id: string; readonly name: string }[];
+  projects?: readonly { readonly id: string; readonly name: string }[];
   customerGroups?: readonly { readonly id: string; readonly name: string }[];
 }
 
@@ -111,7 +111,7 @@ export function CalendarScreen({
   actionCenterHref,
   postHrefPattern,
   defaultProjectId = null,
-  brands = [],
+  projects = [],
   customerGroups = [],
 }: CalendarScreenProps): ReactNode {
   const t = useTranslations();
@@ -131,8 +131,8 @@ export function CalendarScreen({
   const anchor = useMemo(() => parseAnchor(searchParams, new Date()), [searchParams]);
   const filters = useMemo(() => {
     const parsed = parseFilters(searchParams);
-    return parsed.brandId === null && defaultProjectId !== null
-      ? { ...parsed, brandId: defaultProjectId }
+    return parsed.projectId === null && defaultProjectId !== null
+      ? { ...parsed, projectId: defaultProjectId }
       : parsed;
   }, [defaultProjectId, searchParams]);
 
@@ -144,7 +144,7 @@ export function CalendarScreen({
   const query = useCalendarEntries({
     from: range.start,
     to: range.end,
-    brandId: filters.brandId,
+    projectId: filters.projectId,
   });
 
   // Recompute the derived list only when the fetched page or the filters
@@ -158,8 +158,8 @@ export function CalendarScreen({
   const attentionCount = useMemo(() => allEntries.filter(needsAttention).length, [allEntries]);
 
   const options = useMemo(
-    () => buildFilterOptions(allEntries, brands, customerGroups),
-    [allEntries, brands, customerGroups],
+    () => buildFilterOptions(allEntries, projects, customerGroups),
+    [allEntries, projects, customerGroups],
   );
 
   const [filterSheetOpen, setFilterSheetOpen] = useState(false);
@@ -766,7 +766,7 @@ function CalendarBody(props: CalendarBodyProps): ReactNode {
 /** Filter choices, built from what is actually in the window. Never invented. */
 function buildFilterOptions(
   entries: readonly CalendarEntry[],
-  brands: readonly { readonly id: string; readonly name: string }[],
+  projects: readonly { readonly id: string; readonly name: string }[],
   customerGroups: readonly { readonly id: string; readonly name: string }[],
 ): CalendarFilterOptions {
   const connections = new Map<
@@ -793,7 +793,7 @@ function buildFilterOptions(
   }
 
   return {
-    brands,
+    projects,
     connections: [...connections.values()],
     providers: [...providers],
     locales: [...locales].sort(),

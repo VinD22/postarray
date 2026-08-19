@@ -15,7 +15,7 @@ import { ACTIVE_PROJECT_COOKIE, resolveActiveProject } from './project-selection
 export interface SessionContextValue {
   readonly session: SessionView;
   readonly workspace: WorkspaceView;
-  readonly brands: readonly SessionProjectView[];
+  readonly projects: readonly SessionProjectView[];
   readonly project: SessionProjectView | null;
   readonly hasScope: (scope: string) => boolean;
   readonly canPublish: boolean;
@@ -34,7 +34,7 @@ export function SessionProvider({
   readonly activeProjectId?: string | null;
   readonly children: ReactNode;
 }) {
-  const project = resolveActiveProject(session.brands, activeProjectId);
+  const project = resolveActiveProject(session.projects, activeProjectId);
 
   useInsertionEffect(() => {
     document.cookie = `relay_ws=${encodeURIComponent(session.workspace.id)}; path=/; SameSite=Lax`;
@@ -50,7 +50,7 @@ export function SessionProvider({
     return {
       session,
       workspace: session.workspace,
-      brands: session.brands,
+      projects: session.projects,
       project,
       hasScope: (scope: string) => scopes.has(scope),
       canPublish: !session.workspace.readOnly && PUBLISHING_ROLES.has(session.workspace.role),

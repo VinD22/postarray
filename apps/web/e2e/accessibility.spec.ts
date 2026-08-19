@@ -11,6 +11,11 @@ const ROUTES = [
   '/tools/utm-builder',
   '/tools/youtube-title-length',
   '/tools/time-zone-planner',
+  // One generated character counter stands for all nine: they are the same
+  // page with different numbers in it. The media table is its own shape, so it
+  // is audited separately.
+  '/tools/character-counter/x',
+  '/tools/social-media-image-sizes',
   '/sign-in',
   '/home',
   '/compose',

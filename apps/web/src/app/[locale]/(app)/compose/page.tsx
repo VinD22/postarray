@@ -46,7 +46,7 @@ export default async function ComposePage({
 }: ComposePageProps): Promise<React.ReactElement> {
   const params = await searchParams;
   const contentItemId = first(params.contentItemId);
-  const brandId = first(params.brandId);
+  const projectId = first(params.projectId);
 
   let status: ComposeStatus = 'ready';
   let bootstrap: ComposerBootstrap | null = null;
@@ -75,11 +75,11 @@ export default async function ComposePage({
           acceptLanguage: requestHeaders.get('accept-language') ?? undefined,
         },
       };
-      const selectedBrand = resolveActiveProject(
-        session.brands,
-        brandId ?? cookieStore.get(ACTIVE_PROJECT_COOKIE)?.value,
+      const selectedProject = resolveActiveProject(
+        session.projects,
+        projectId ?? cookieStore.get(ACTIVE_PROJECT_COOKIE)?.value,
       );
-      if (selectedBrand === null) {
+      if (selectedProject === null) {
         status = 'no_connections';
         return (
           <ComposeClient
@@ -94,11 +94,11 @@ export default async function ComposePage({
       const [loadedComposer, mediaPage] = await Promise.all([
         loadComposer({
           contentItemId,
-          brandId: selectedBrand.id,
+          projectId: selectedProject.id,
           workspaceTimeZone: session.workspace.timeZone,
           forward,
         }),
-        api.media.list({ brandId: selectedBrand.id }, forward),
+        api.media.list({ projectId: selectedProject.id }, forward),
       ]);
       bootstrap = loadedComposer;
       assets = mediaPage.data.map(mediaAssetFromApi);

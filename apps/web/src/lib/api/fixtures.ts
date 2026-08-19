@@ -18,7 +18,7 @@ import type {
   ApprovalRequestView,
   AuditEventView,
   BillingStateView,
-  BrandView,
+  ProjectView,
   CalendarEntryView,
   ConnectionView,
   GrowthPlanSummaryView,
@@ -43,9 +43,9 @@ export function page<T>(data: readonly T[]): Paginated<T> {
   return { data, pageInfo: { nextCursor: null, hasMore: false, limit: 25 } };
 }
 
-export const demoBrands: readonly BrandView[] = [
+export const demoProjects: readonly ProjectView[] = [
   {
-    id: 'brand_demo00000000000000001',
+    id: 'project_demo00000000000000001',
     workspaceId: 'ws_demo0000000000000000001',
     name: 'Example Studio EU',
     slug: 'example-studio-eu',
@@ -63,7 +63,7 @@ export const demoBrands: readonly BrandView[] = [
     updatedAt: '2026-01-12T09:00:00.000Z',
   },
   {
-    id: 'brand_demo00000000000000002',
+    id: 'project_demo00000000000000002',
     workspaceId: 'ws_demo0000000000000000001',
     name: 'Example Studio Labs',
     slug: 'example-studio-labs',
@@ -124,7 +124,7 @@ export const demoSession: SessionView = {
       projectLimit: 3,
     },
   ],
-  brands: demoBrands,
+  projects: demoProjects,
   scopes: ['content:write', 'publish:write', 'connections:write', 'analytics:read'],
   onboardingComplete: true,
 };
@@ -436,7 +436,7 @@ export const demoMembers: readonly MemberView[] = [
     email: 'ana@example-studio.test',
     role: 'owner',
     invitePending: false,
-    brandScope: [],
+    projectScope: [],
     invitedAt: null,
   },
   {
@@ -446,7 +446,7 @@ export const demoMembers: readonly MemberView[] = [
     email: 'dana@example-studio.test',
     role: 'approver',
     invitePending: false,
-    brandScope: [],
+    projectScope: [],
     invitedAt: null,
   },
   {
@@ -456,7 +456,7 @@ export const demoMembers: readonly MemberView[] = [
     email: 'sam@example-studio.test',
     role: 'editor',
     invitePending: true,
-    brandScope: [],
+    projectScope: [],
     invitedAt: at(-2 * DAY),
   },
 ];

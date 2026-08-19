@@ -207,7 +207,7 @@ function collides(candidate: Date, taken: readonly Date[], gapMs: number): boole
   });
 }
 
-/** Slots are on the hour. The first hour with nothing scheduled for the brand. */
+/** Slots are on the hour. The first hour with nothing scheduled for the project. */
 const FALLBACK_SLOT_MINUTES = 60;
 const FALLBACK_SEARCH_HOURS = 24 * 30;
 

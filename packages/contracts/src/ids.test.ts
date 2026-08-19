@@ -110,7 +110,7 @@ describe('idSchema', () => {
     const schema = idSchema(ID_PREFIXES.workspace);
     const workspaceId = newId(ID_PREFIXES.workspace);
     expect(schema.parse(workspaceId)).toBe(workspaceId);
-    expect(schema.safeParse(newId(ID_PREFIXES.brand)).success).toBe(false);
+    expect(schema.safeParse(newId(ID_PREFIXES.project)).success).toBe(false);
     expect(schema.safeParse('ws_').success).toBe(false);
     expect(schema.safeParse(42).success).toBe(false);
   });

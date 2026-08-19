@@ -55,9 +55,9 @@ export function toDraft(rule: QueueRuleView): RuleDraft {
   };
 }
 
-export function toInput(draft: RuleDraft, brandId: string): QueueRuleInput {
+export function toInput(draft: RuleDraft, projectId: string): QueueRuleInput {
   return {
-    brandId,
+    projectId,
     name: draft.name.trim(),
     ianaTimeZone: draft.ianaTimeZone,
     windows: [...draft.windows],

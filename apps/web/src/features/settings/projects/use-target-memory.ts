@@ -6,7 +6,7 @@ import { api, type ApiError } from '@/lib/api';
 import { useWorkspaceId } from '@/lib/auth/session-context';
 
 export interface SetTargetMemoryInput {
-  readonly brandId: string;
+  readonly projectId: string;
   readonly enabled: boolean;
 }
 
@@ -18,7 +18,7 @@ export interface SetTargetMemoryInput {
  * showing a switch that has moved and a deletion that has not.
  */
 export function useSetTargetMemory(): UseMutationResult<
-  { readonly brandId: string; readonly enabled: boolean },
+  { readonly projectId: string; readonly enabled: boolean },
   ApiError,
   SetTargetMemoryInput
 > {
@@ -26,11 +26,11 @@ export function useSetTargetMemory(): UseMutationResult<
   const workspaceId = useWorkspaceId();
   return useMutation({
     mutationFn: (input: SetTargetMemoryInput) =>
-      api.targetMemory.setEnabled(input.brandId, input.enabled),
+      api.targetMemory.setEnabled(input.projectId, input.enabled),
     onSuccess: (_result, input) => {
-      void queryClient.invalidateQueries({ queryKey: ['ws', workspaceId, 'brands'] });
+      void queryClient.invalidateQueries({ queryKey: ['ws', workspaceId, 'projects'] });
       void queryClient.invalidateQueries({
-        queryKey: ['ws', workspaceId, 'remembered-targets', input.brandId],
+        queryKey: ['ws', workspaceId, 'remembered-targets', input.projectId],
       });
     },
   });

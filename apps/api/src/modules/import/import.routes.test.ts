@@ -67,7 +67,7 @@ afterEach(async () => {
 describe('bulk import routes', () => {
   it('accepts a manifest under the draft write scope and reports without applying', async () => {
     const session = await seedSession(harness, { scopes: ['drafts:write'] });
-    const projectId = newIdFor('brand');
+    const projectId = newIdFor('project');
     upload.mockResolvedValue(reportFor(session.workspaceId, projectId));
 
     const response = await request(harness.server)
@@ -97,7 +97,7 @@ describe('bulk import routes', () => {
 
   it('applies as drafts and never asks the caller which mode to use', async () => {
     const session = await seedSession(harness, { scopes: ['drafts:write'] });
-    const report = reportFor(session.workspaceId, newIdFor('brand'));
+    const report = reportFor(session.workspaceId, newIdFor('project'));
     apply.mockResolvedValue({
       ...report,
       job: { ...report.job, state: 'applied', appliedMode: 'drafts' },

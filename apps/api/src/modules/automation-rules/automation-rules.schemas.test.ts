@@ -4,7 +4,7 @@ import { describe, expect, it } from 'vitest';
 import { createRuleSchema, testRunSchema } from './automation-rules.schemas';
 
 const BASE_RULE = {
-  brandId: newIdFor('brand'),
+  projectId: newIdFor('project'),
   name: 'Respond to traction',
   trigger: { kind: 'analytics_threshold', config: {} },
   actions: [{ kind: 'request_approval', config: {} }],

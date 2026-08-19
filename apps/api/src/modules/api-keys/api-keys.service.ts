@@ -71,7 +71,7 @@ export class ApiKeysService {
         secretHash: hashSecret(parsed.secret, this.directory.pepper),
         scopes: created.key.scopes,
         approvalLevel: input.approvalLevel,
-        brandIds: input.brandIds,
+        projectIds: input.projectIds,
         connectionIds: input.connectionIds,
         ipAllowlist: input.ipAllowlist,
         expiresAt,

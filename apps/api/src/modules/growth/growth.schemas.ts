@@ -6,7 +6,7 @@ import {
 import { z } from 'zod';
 
 import {
-  brandIdSchema,
+  projectIdSchema,
   connectionIdSchema,
   growthPlanIdSchema,
   growthProfileIdSchema,
@@ -33,7 +33,7 @@ import {
 export const businessProfileInputSchema = z
   .object({
     profileId: growthProfileIdSchema.optional(),
-    brandId: brandIdSchema,
+    projectId: projectIdSchema,
     productName: shortTextSchema,
     siteUrl: z.union([z.string().trim().url().max(2048), z.literal('')]),
     description: z.string().trim().min(1).max(4000),

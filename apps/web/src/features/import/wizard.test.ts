@@ -16,7 +16,7 @@ function report(overrides: Partial<BulkImportReport['job']> = {}): BulkImportRep
     job: {
       id: 'import_00000000000000000000000001',
       workspaceId: 'ws_00000000000000000000000001',
-      projectId: 'brand_00000000000000000000000001',
+      projectId: 'project_00000000000000000000000001',
       state: 'validated',
       filename: 'posts.csv',
       manifestChecksum: 'a'.repeat(64),

@@ -65,14 +65,14 @@ describe('workspace factories', () => {
     const bundle = makeWorkspaceBundle();
     expect(bundle.membership.workspaceId).toBe(bundle.workspace.id);
     expect(bundle.membership.userId).toBe(bundle.owner.id);
-    expect(bundle.brand.workspaceId).toBe(bundle.workspace.id);
-    expect(bundle.campaign.brandId).toBe(bundle.brand.id);
+    expect(bundle.project.workspaceId).toBe(bundle.workspace.id);
+    expect(bundle.campaign.projectId).toBe(bundle.project.id);
   });
 
   it('accepts overrides without losing consistency', () => {
     const bundle = makeWorkspaceBundle({ workspace: { slug: 'other-workspace' } });
     expect(bundle.workspace.slug).toBe('other-workspace');
-    expect(bundle.brand.workspaceId).toBe(bundle.workspace.id);
+    expect(bundle.project.workspaceId).toBe(bundle.workspace.id);
   });
 });
 

@@ -58,7 +58,7 @@ async function createItemWithVersion(
     create: {
       id: itemId,
       workspaceId: SEED_IDS.workspace,
-      brandId: SEED_IDS.brandSupply,
+      projectId: SEED_IDS.projectSupply,
       campaignId: SEED_IDS.campaign,
       title: spec.title,
       state,
@@ -92,7 +92,7 @@ async function createItemWithVersion(
         payload: {
           id: itemId,
           workspaceId: SEED_IDS.workspace,
-          brandId: SEED_IDS.brandSupply,
+          projectId: SEED_IDS.projectSupply,
           campaignId: SEED_IDS.campaign,
           title: spec.title,
           body: spec.body,
@@ -468,16 +468,16 @@ async function seedAutomation(tx: RlsTransactionClient): Promise<void> {
 
   await tx.automationRule.upsert({
     where: {
-      workspaceId_brandId_name: {
+      workspaceId_projectId_name: {
         workspaceId: SEED_IDS.workspace,
-        brandId: SEED_IDS.brandSupply,
+        projectId: SEED_IDS.projectSupply,
         name: 'Restock follow-up comment',
       },
     },
     create: {
       id: ruleId,
       workspaceId: SEED_IDS.workspace,
-      brandId: SEED_IDS.brandSupply,
+      projectId: SEED_IDS.projectSupply,
       name: 'Restock follow-up comment',
       state: 'active',
       trigger: { kind: 'post_published', filter: { campaignId: SEED_IDS.campaign } },
@@ -553,7 +553,7 @@ async function seedAutomation(tx: RlsTransactionClient): Promise<void> {
     create: {
       id: feedId,
       workspaceId: SEED_IDS.workspace,
-      brandId: SEED_IDS.brandSupply,
+      projectId: SEED_IDS.projectSupply,
       title: 'Supplier notes (simulator feed)',
       feedUrl: 'https://feeds.example.test/supplier-notes.xml',
       health: 'healthy',
@@ -596,7 +596,7 @@ async function seedLinks(tx: RlsTransactionClient): Promise<void> {
     create: {
       id: linkId,
       workspaceId: SEED_IDS.workspace,
-      brandId: SEED_IDS.brandSupply,
+      projectId: SEED_IDS.projectSupply,
       campaignId: SEED_IDS.campaign,
       domain: 'nw.example.test',
       slug: 'spring-list',

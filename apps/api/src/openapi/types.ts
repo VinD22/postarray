@@ -11,7 +11,7 @@ import type { z } from 'zod';
  */
 export interface OperationSpec {
   readonly method: 'get' | 'post' | 'put' | 'patch' | 'delete';
-  /** OpenAPI path with `{}` parameters, for example `/v1/brands/{id}`. */
+  /** OpenAPI path with `{}` parameters, for example `/v1/projects/{id}`. */
   readonly path: string;
   readonly operationId: string;
   /** Sentence describing what the operation does. Documentation, not product copy. */

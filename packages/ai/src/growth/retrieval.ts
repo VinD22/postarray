@@ -8,12 +8,12 @@ import type { AiVariables, UntrustedSource } from '../types';
  * Retrieval for the Growth Advisor.
  *
  * Retrieval is restricted to three things and nothing else: the CONFIRMED
- * business profile, brand sources a human approved, and catalog records in the
+ * business profile, project sources a human approved, and catalog records in the
  * `active` state. Catalog records enter the prompt as an id plus a summary, so
  * a URL never travels through the model in either direction.
  */
 
-export interface ApprovedBrandSource {
+export interface ApprovedProjectSource {
   readonly id: string;
   readonly title: string;
   readonly text: string;
@@ -42,7 +42,7 @@ export const PROFILE_EVIDENCE_IDS: readonly string[] = [
 
 export interface GrowthContextInput {
   readonly profile: BusinessProfile;
-  readonly brandSources: readonly ApprovedBrandSource[];
+  readonly projectSources: readonly ApprovedProjectSource[];
   readonly opportunities: readonly OpportunityRecord[];
   readonly tools: readonly ToolRecord[];
   readonly windowStart: string;
@@ -113,7 +113,7 @@ export function buildGrowthContext(input: GrowthContextInput): GrowthPlanContext
     ...input.tools.filter((record) => !isCustomerVisible(record)).map((record) => record.id),
   ];
 
-  const approvedSources = input.brandSources.filter((source) => source.approved);
+  const approvedSources = input.projectSources.filter((source) => source.approved);
 
   const allowedEvidenceIds = new Set<string>([
     ...PROFILE_EVIDENCE_IDS,

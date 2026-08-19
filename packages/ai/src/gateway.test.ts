@@ -258,7 +258,7 @@ describe('telemetry', () => {
         brief: 'A very distinctive customer sentence about kittens.',
         contentKind: 'text',
         locale: 'en',
-        brandVoice: 'direct',
+        projectVoice: 'direct',
       }),
     );
 

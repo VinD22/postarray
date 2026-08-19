@@ -153,7 +153,7 @@ export const SEED_ACCOUNTS: readonly TargetAccount[] = [
     displayName: 'Acme',
     handle: '@acme',
     avatarUrl: null,
-    brandId: 'brand_seed_acme_eu',
+    projectId: 'project_seed_acme_eu',
     paused: false,
     capabilities: snapshot({
       provider: 'x',
@@ -183,7 +183,7 @@ export const SEED_ACCOUNTS: readonly TargetAccount[] = [
     displayName: 'Acme Europe',
     handle: 'acme-europe',
     avatarUrl: null,
-    brandId: 'brand_seed_acme_eu',
+    projectId: 'project_seed_acme_eu',
     paused: false,
     capabilities: snapshot({
       provider: 'linkedin',
@@ -215,7 +215,7 @@ export const SEED_ACCOUNTS: readonly TargetAccount[] = [
     displayName: 'acme.studio',
     handle: '@acme.studio',
     avatarUrl: null,
-    brandId: 'brand_seed_acme_eu',
+    projectId: 'project_seed_acme_eu',
     paused: false,
     capabilities: snapshot({
       provider: 'instagram',
@@ -245,7 +245,7 @@ export const SEED_ACCOUNTS: readonly TargetAccount[] = [
     displayName: 'Acme Engineering',
     handle: '@acmeengineering',
     avatarUrl: null,
-    brandId: 'brand_seed_acme_eu',
+    projectId: 'project_seed_acme_eu',
     paused: false,
     capabilities: snapshot({
       provider: 'youtube',
@@ -278,7 +278,7 @@ export const SEED_ACCOUNTS: readonly TargetAccount[] = [
 export const SEED_MASTER: MasterDraft = {
   id: 'content_seed_launch_thread',
   workspaceId: 'ws_seed_acme',
-  brandId: 'brand_seed_acme_eu',
+  projectId: 'project_seed_acme_eu',
   campaignId: null,
   title: 'Scheduled first comments',
   body: 'We shipped scheduled first comments for every connector that officially supports them. Full notes: https://acme.example/changelog/first-comments',
@@ -317,7 +317,7 @@ export const SEED_SIGNATURES: readonly SignatureOption[] = [
     id: 'sig_seed_eu_footer',
     name: 'EU legal footer',
     text: 'Acme Europe BV, Amsterdam. Terms at acme.example/terms',
-    brandId: 'brand_seed_acme_eu',
+    projectId: 'project_seed_acme_eu',
     providers: [],
     locale: 'en',
     autoApply: false,
@@ -326,7 +326,7 @@ export const SEED_SIGNATURES: readonly SignatureOption[] = [
     id: 'sig_seed_x_short',
     name: 'Short attribution',
     text: 'Built by the Acme team.',
-    brandId: 'brand_seed_acme_eu',
+    projectId: 'project_seed_acme_eu',
     providers: ['x'],
     locale: 'en',
     autoApply: false,

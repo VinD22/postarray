@@ -16,13 +16,13 @@ import { SettingRow, SettingsPanel, SettingsStack } from '../components/section'
 import { WorkspaceDeletionDialog } from './workspace-deletion-dialog';
 
 /**
- * Removing one connection, one brand or one draft happens where that thing
+ * Removing one connection, one project or one draft happens where that thing
  * lives, so the row links there instead of building a second delete path that
  * could drift from the first. Closing the workspace is the only action that
  * belongs on this screen, and it is a request with a confirmation window.
  */
 const DELETION_OPTIONS: readonly {
-  readonly scope: 'connection' | 'brand' | 'content';
+  readonly scope: 'connection' | 'project' | 'content';
   readonly titleKey: string;
   readonly helpKey: string;
   readonly href: string;
@@ -34,10 +34,10 @@ const DELETION_OPTIONS: readonly {
     href: '/connections',
   },
   {
-    scope: 'brand',
-    titleKey: 'settings.ui.data.deleteBrand',
-    helpKey: 'settings.ui.data.deleteBrandHelp',
-    href: '/settings/brands',
+    scope: 'project',
+    titleKey: 'settings.ui.data.deleteProject',
+    helpKey: 'settings.ui.data.deleteProjectHelp',
+    href: '/settings/projects',
   },
   {
     scope: 'content',

@@ -67,7 +67,7 @@ interface Wiring {
   readonly receipts?: readonly ReceiptSummaryView[];
   readonly calendarStates?: readonly string[];
   readonly connections?: readonly { provider: string; health: string }[];
-  readonly brands?: number;
+  readonly projects?: number;
   readonly metricsByReceipt?: Readonly<Record<string, readonly MetricObservationView[]>>;
   readonly projectLimit?: number;
 }
@@ -86,9 +86,9 @@ function service(wiring: Wiring = {}) {
     },
     actionCenter: { list: async () => page([{ id: 'act_1' }]) },
     connections: { list: async () => page(wiring.connections ?? []) },
-    brands: {
+    projects: {
       list: async () =>
-        page(Array.from({ length: wiring.brands ?? 0 }, (_, i) => ({ id: `br_${i}` }))),
+        page(Array.from({ length: wiring.projects ?? 0 }, (_, i) => ({ id: `proj_${i}` }))),
     },
     analytics: { getPostMetrics },
     identity: {
@@ -256,7 +256,7 @@ describe('DashboardService.getSummary', () => {
   });
 
   it('reports project capacity against the workspace entitlement', async () => {
-    const { service: dashboard } = service({ brands: 4, projectLimit: 10 });
+    const { service: dashboard } = service({ projects: 4, projectLimit: 10 });
     const summary = await dashboard.getSummary(actor, { days: 7 });
     expect(summary.projects).toEqual({ active: 4, allowance: 10, remaining: 6 });
   });

@@ -171,7 +171,7 @@ const GRANT_SELECT = {
   oauthClientId: true,
   subjectUserId: true,
   scopes: true,
-  brandScope: true,
+  projectScope: true,
   connectionScope: true,
   consentedAt: true,
   lastUsedAt: true,
@@ -184,7 +184,7 @@ interface GrantRow {
   oauthClientId: string;
   subjectUserId: string;
   scopes: string[];
-  brandScope: string[];
+  projectScope: string[];
   connectionScope: string[];
   consentedAt: Date;
   lastUsedAt: Date | null;
@@ -199,7 +199,7 @@ function toGrantView(row: GrantRow): OAuthGrantView {
     clientName: row.oauthClient.name,
     subjectUserId: row.subjectUserId,
     scopes: normalizeScopes(row.scopes),
-    brandScope: [...row.brandScope],
+    projectScope: [...row.projectScope],
     connectionScope: [...row.connectionScope],
     consentedAt: row.consentedAt.toISOString(),
     lastUsedAt: row.lastUsedAt?.toISOString() ?? null,

@@ -36,7 +36,7 @@ export function createTestLogger(): TestLogger {
 
 export const TEST_CALL_CONTEXT: AiCallContext = {
   workspaceId: 'ws_00000000000000000000000001',
-  brandId: null,
+  projectId: null,
   locale: 'en',
   contentLanguage: null,
   correlationId: 'corr_test',

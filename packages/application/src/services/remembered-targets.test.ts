@@ -13,7 +13,7 @@ import type { ActorContext, ServiceDeps } from '../types';
  * reselected in a composer somebody is about to publish from.
  */
 
-interface BrandRow {
+interface ProjectRow {
   id: string;
   rememberTargetsEnabled: boolean;
 }
@@ -21,7 +21,7 @@ interface BrandRow {
 interface MemoryRow {
   id: string;
   workspaceId: string;
-  brandId: string;
+  projectId: string;
   userId: string;
   connectionIds: string[];
   updatedAt: Date;
@@ -29,11 +29,11 @@ interface MemoryRow {
 
 interface ChannelRow {
   id: string;
-  brandId: string;
+  projectId: string;
   status: string;
 }
 
-const brands: BrandRow[] = [];
+const projects: ProjectRow[] = [];
 const memories: MemoryRow[] = [];
 const channels: ChannelRow[] = [];
 const audits: Record<string, unknown>[] = [];
@@ -70,23 +70,23 @@ vi.mock('../internal/audit', () => ({
 }));
 
 const fakeDb = {
-  brand: {
+  project: {
     findFirst: async ({ where }: { where: { id: string } }) =>
-      brands.find((row) => row.id === where.id) ?? null,
+      projects.find((row) => row.id === where.id) ?? null,
     update: async ({ where, data }: { where: { id: string }; data: Record<string, unknown> }) => {
-      const row = brands.find((entry) => entry.id === where.id);
-      if (row === undefined) throw new Error('missing brand');
+      const row = projects.find((entry) => entry.id === where.id);
+      if (row === undefined) throw new Error('missing project');
       Object.assign(row, data);
       return row;
     },
   },
   socialConnection: {
-    findMany: async ({ where }: { where: { brandId: string } }) =>
-      channels.filter((row) => row.brandId === where.brandId),
+    findMany: async ({ where }: { where: { projectId: string } }) =>
+      channels.filter((row) => row.projectId === where.projectId),
   },
   rememberedTarget: {
-    findFirst: async ({ where }: { where: { brandId: string; userId: string } }) =>
-      memories.find((row) => row.brandId === where.brandId && row.userId === where.userId) ?? null,
+    findFirst: async ({ where }: { where: { projectId: string; userId: string } }) =>
+      memories.find((row) => row.projectId === where.projectId && row.userId === where.userId) ?? null,
     create: async ({ data }: { data: Omit<MemoryRow, 'id' | 'updatedAt'> }) => {
       const row: MemoryRow = {
         id: `remtgt_${memories.length + 1}`,
@@ -102,12 +102,12 @@ const fakeDb = {
       Object.assign(row, data);
       return row;
     },
-    deleteMany: async ({ where }: { where: { brandId: string; userId?: string } }) => {
+    deleteMany: async ({ where }: { where: { projectId: string; userId?: string } }) => {
       const before = memories.length;
       for (let index = memories.length - 1; index >= 0; index -= 1) {
         const row = memories[index];
         if (row === undefined) continue;
-        if (row.brandId !== where.brandId) continue;
+        if (row.projectId !== where.projectId) continue;
         if (where.userId !== undefined && row.userId !== where.userId) continue;
         memories.splice(index, 1);
       }
@@ -124,7 +124,7 @@ const NOW = new Date('2026-06-05T10:00:00.000Z');
 const clock = new FixedClock(NOW);
 let deps: ServiceDeps;
 
-const BRAND = 'brand_1';
+const PROJECT = 'project_1';
 
 const ctx: ActorContext = {
   actorType: 'user',
@@ -138,20 +138,20 @@ const ctx: ActorContext = {
 };
 
 /**
- * Flip the project opt in on the seeded brand.
+ * Flip the project opt in on the seeded project.
  *
  * A helper rather than an index-and-assert, so the suite reads as "this project
  * opted out" instead of reaching into a fixture array.
  */
 function disableProject(): void {
-  const brand = brands[0];
-  if (brand === undefined) throw new Error('brand fixture missing');
-  brand.rememberTargetsEnabled = false;
+  const project = projects[0];
+  if (project === undefined) throw new Error('project fixture missing');
+  project.rememberTargetsEnabled = false;
 }
 
 function seedChannels(entries: readonly (readonly [string, string])[]): void {
   for (const [id, status] of entries) {
-    channels.push({ id, brandId: BRAND, status });
+    channels.push({ id, projectId: PROJECT, status });
   }
 }
 
@@ -160,7 +160,7 @@ function service() {
 }
 
 beforeEach(() => {
-  brands.length = 0;
+  projects.length = 0;
   memories.length = 0;
   channels.length = 0;
   audits.length = 0;
@@ -168,16 +168,16 @@ beforeEach(() => {
   denyPermission = null;
   activeActor.userId = 'user_1';
   activeActor.restrictions = {};
-  brands.push({ id: BRAND, rememberTargetsEnabled: true });
+  projects.push({ id: PROJECT, rememberTargetsEnabled: true });
   deps = { kv: new MemoryKeyValueStore(), clock } as unknown as ServiceDeps;
 });
 
 describe('the project opt in', () => {
   it('is what read reports, and an off project offers nothing', async () => {
     disableProject();
-    const view = await service().read(ctx, { brandId: BRAND });
+    const view = await service().read(ctx, { projectId: PROJECT });
     expect(view).toEqual({
-      brandId: BRAND,
+      projectId: PROJECT,
       enabled: false,
       connectionIds: [],
       droppedConnectionIds: [],
@@ -188,7 +188,7 @@ describe('the project opt in', () => {
   it('persists nothing at all while the project has opted out', async () => {
     disableProject();
     seedChannels([['conn_a', 'active']]);
-    const view = await service().remember(ctx, { brandId: BRAND, connectionIds: ['conn_a'] });
+    const view = await service().remember(ctx, { projectId: PROJECT, connectionIds: ['conn_a'] });
     expect(view.enabled).toBe(false);
     expect(view.connectionIds).toEqual([]);
     // The important assertion: no row exists to be leaked, exported or forgotten.
@@ -197,27 +197,27 @@ describe('the project opt in', () => {
 
   it('deletes every memory in the project when the opt in is switched off', async () => {
     seedChannels([['conn_a', 'active']]);
-    await service().remember(ctx, { brandId: BRAND, connectionIds: ['conn_a'] });
+    await service().remember(ctx, { projectId: PROJECT, connectionIds: ['conn_a'] });
     memories.push({
       id: 'remtgt_other',
       workspaceId: 'ws_1',
-      brandId: BRAND,
+      projectId: PROJECT,
       userId: 'user_2',
       connectionIds: ['conn_a'],
       updatedAt: NOW,
     });
 
-    await service().setEnabled(ctx, { brandId: BRAND, enabled: false });
+    await service().setEnabled(ctx, { projectId: PROJECT, enabled: false });
 
-    expect(brands[0]?.rememberTargetsEnabled).toBe(false);
+    expect(projects[0]?.rememberTargetsEnabled).toBe(false);
     expect(memories).toHaveLength(0);
-    expect(audits[0]?.['action']).toBe('brand.target_memory_changed');
+    expect(audits[0]?.['action']).toBe('project.target_memory_changed');
     expect(audits[0]?.['metadata']).toMatchObject({ clearedMemories: 2 });
   });
 
-  it('asks for brand.write to change the project setting', async () => {
-    await service().setEnabled(ctx, { brandId: BRAND, enabled: false });
-    expect(permissions).toEqual(['brand.write']);
+  it('asks for project.write to change the project setting', async () => {
+    await service().setEnabled(ctx, { projectId: PROJECT, enabled: false });
+    expect(permissions).toEqual(['project.write']);
   });
 });
 
@@ -228,15 +228,15 @@ describe('what is stored', () => {
       ['conn_a', 'active'],
     ]);
     await service().remember(ctx, {
-      brandId: BRAND,
+      projectId: PROJECT,
       connectionIds: ['conn_b', 'conn_a', 'conn_b'],
     });
     expect(memories[0]?.connectionIds).toEqual(['conn_b', 'conn_a']);
     // Nothing else made it into the row.
     expect(Object.keys(memories[0] ?? {}).sort()).toEqual([
-      'brandId',
       'connectionIds',
       'id',
+      'projectId',
       'updatedAt',
       'userId',
       'workspaceId',
@@ -248,8 +248,8 @@ describe('what is stored', () => {
       ['conn_a', 'active'],
       ['conn_b', 'active'],
     ]);
-    await service().remember(ctx, { brandId: BRAND, connectionIds: ['conn_a'] });
-    await service().remember(ctx, { brandId: BRAND, connectionIds: ['conn_b'] });
+    await service().remember(ctx, { projectId: PROJECT, connectionIds: ['conn_a'] });
+    await service().remember(ctx, { projectId: PROJECT, connectionIds: ['conn_b'] });
     expect(memories).toHaveLength(1);
     expect(memories[0]?.connectionIds).toEqual(['conn_b']);
   });
@@ -257,15 +257,15 @@ describe('what is stored', () => {
   it('refuses to remember anything under a machine identity', async () => {
     activeActor.userId = null;
     await expect(
-      service().remember(ctx, { brandId: BRAND, connectionIds: ['conn_a'] }),
+      service().remember(ctx, { projectId: PROJECT, connectionIds: ['conn_a'] }),
     ).rejects.toMatchObject({ messageKey: 'errors.target_memory_requires_person' });
   });
 
   it('lets a person forget, even after the project was switched off', async () => {
     seedChannels([['conn_a', 'active']]);
-    await service().remember(ctx, { brandId: BRAND, connectionIds: ['conn_a'] });
+    await service().remember(ctx, { projectId: PROJECT, connectionIds: ['conn_a'] });
     disableProject();
-    await service().forget(ctx, { brandId: BRAND });
+    await service().forget(ctx, { projectId: PROJECT });
     expect(memories).toHaveLength(0);
   });
 });
@@ -282,13 +282,13 @@ describe('what is offered back', () => {
     memories.push({
       id: 'remtgt_1',
       workspaceId: 'ws_1',
-      brandId: BRAND,
+      projectId: PROJECT,
       userId: 'user_1',
       connectionIds: ['conn_ok', 'conn_revoked', 'conn_paused', 'conn_expired', 'conn_gone'],
       updatedAt: NOW,
     });
 
-    const view = await service().read(ctx, { brandId: BRAND });
+    const view = await service().read(ctx, { projectId: PROJECT });
     expect(view.connectionIds).toEqual(['conn_ok']);
     expect(view.droppedConnectionIds).toEqual([
       'conn_revoked',
@@ -307,13 +307,13 @@ describe('what is offered back', () => {
     memories.push({
       id: 'remtgt_1',
       workspaceId: 'ws_1',
-      brandId: BRAND,
+      projectId: PROJECT,
       userId: 'user_1',
       connectionIds: ['conn_a', 'conn_b'],
       updatedAt: NOW,
     });
 
-    const view = await service().read(ctx, { brandId: BRAND });
+    const view = await service().read(ctx, { projectId: PROJECT });
     expect(view.connectionIds).toEqual(['conn_a']);
     expect(view.droppedConnectionIds).toEqual(['conn_b']);
   });
@@ -323,13 +323,13 @@ describe('what is offered back', () => {
     memories.push({
       id: 'remtgt_1',
       workspaceId: 'ws_1',
-      brandId: BRAND,
+      projectId: PROJECT,
       userId: 'user_1',
       connectionIds: ['conn_a', 'conn_moved'],
       updatedAt: NOW,
     });
 
-    const view = await service().read(ctx, { brandId: BRAND });
+    const view = await service().read(ctx, { projectId: PROJECT });
     expect(view.connectionIds).toEqual(['conn_a']);
     expect(view.droppedConnectionIds).toEqual(['conn_moved']);
   });
@@ -342,13 +342,13 @@ describe('what is offered back', () => {
     memories.push({
       id: 'remtgt_other',
       workspaceId: 'ws_1',
-      brandId: BRAND,
+      projectId: PROJECT,
       userId: 'user_2',
       connectionIds: ['conn_b'],
       updatedAt: NOW,
     });
 
-    const view = await service().read(ctx, { brandId: BRAND });
+    const view = await service().read(ctx, { projectId: PROJECT });
     expect(view.connectionIds).toEqual([]);
     expect(view.updatedAt).toBeNull();
   });

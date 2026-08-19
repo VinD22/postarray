@@ -24,13 +24,13 @@ import {
   useResumeConnection,
 } from '@/lib/api/hooks';
 import { useWorkspaceId } from '@/lib/auth/session-context';
-import type { BrandView, ConnectionView, ProviderId } from '@/lib/api/types';
+import type { ProjectView, ConnectionView, ProviderId } from '@/lib/api/types';
 import type { ConnectionRow, CustomerGroup } from './types';
 
 export { useAvailableProviders, useBeginConnection, usePauseConnection, useResumeConnection };
 
 /** The connection list, widened to the row shape this screen renders. */
-export function useConnectionRows(filter: { brandId?: string; provider?: ProviderId } = {}): {
+export function useConnectionRows(filter: { projectId?: string; provider?: ProviderId } = {}): {
   readonly query: ReturnType<typeof useConnectionsPage>;
   readonly rows: readonly ConnectionRow[];
 } {
@@ -126,7 +126,7 @@ export function useDisconnectConnection(): UseMutationResult<ConnectionView, Api
 /* -------------------------------------------------------------------------
    Customer groups
 
-   A group is a brand in the domain model: a named set of connections that
+   A group is a project in the domain model: a named set of connections that
    scopes the calendar, analytics and approval policy. The screen calls them
    customer groups because that is what an agency calls a client.
    ------------------------------------------------------------------------- */
@@ -134,30 +134,30 @@ export function useDisconnectConnection(): UseMutationResult<ConnectionView, Api
 export function useCustomerGroups(): UseQueryResult<readonly CustomerGroup[], ApiError> {
   const workspaceId = useWorkspaceId();
   return useQuery({
-    queryKey: keys.brands(workspaceId),
+    queryKey: keys.projects(workspaceId),
     staleTime: 5 * 60_000,
     queryFn: async (): Promise<readonly CustomerGroup[]> => {
-      const page = await api.brands.list();
+      const page = await api.projects.list();
       return page.data.map(toCustomerGroup);
     },
   });
 }
 
-function toCustomerGroup(brand: BrandView): CustomerGroup {
-  return { id: brand.id, name: brand.name, connectionIds: brand.connectionIds };
+function toCustomerGroup(project: ProjectView): CustomerGroup {
+  return { id: project.id, name: project.name, connectionIds: project.connectionIds };
 }
 
 export function useCreateGroup(): UseMutationResult<
-  BrandView,
+  ProjectView,
   ApiError,
   { readonly name: string }
 > {
   const queryClient = useQueryClient();
   const workspaceId = useWorkspaceId();
   return useMutation({
-    mutationFn: ({ name }) => api.brands.create({ name }, newIdempotencyKey('brand')),
+    mutationFn: ({ name }) => api.projects.create({ name }, newIdempotencyKey('project')),
     onSuccess: () => {
-      void queryClient.invalidateQueries({ queryKey: keys.brands(workspaceId) });
+      void queryClient.invalidateQueries({ queryKey: keys.projects(workspaceId) });
     },
   });
 }
@@ -169,7 +169,7 @@ export function useCreateGroup(): UseMutationResult<
  * account's posts, receipts and metrics are keyed to the connection and are
  * untouched, which is what the dialog promises.
  *
- * TODO(web): collapse to a single call once `PATCH /brands/{id}/connections`
+ * TODO(web): collapse to a single call once `PATCH /projects/{id}/connections`
  * is exposed by the client. The two-write form below is correct but not atomic.
  */
 export function useMoveConnectionGroup(): UseMutationResult<
@@ -193,8 +193,8 @@ export function useMoveConnectionGroup(): UseMutationResult<
       // `update` is typed for the rename case today. The membership payload is
       // what the REST surface documents, so it is sent through a widened
       // signature rather than modelled as a rename.
-      const update = api.brands.update as unknown as (
-        brandId: string,
+      const update = api.projects.update as unknown as (
+        projectId: string,
         input: { connectionIds: readonly string[] },
       ) => Promise<unknown>;
 
@@ -213,7 +213,7 @@ export function useMoveConnectionGroup(): UseMutationResult<
       }
     },
     onSuccess: () => {
-      void queryClient.invalidateQueries({ queryKey: keys.brands(workspaceId) });
+      void queryClient.invalidateQueries({ queryKey: keys.projects(workspaceId) });
       void queryClient.invalidateQueries({ queryKey: ['ws', workspaceId, 'connections'] });
       void queryClient.invalidateQueries({ queryKey: ['ws', workspaceId, 'calendar'] });
     },

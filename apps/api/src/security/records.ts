@@ -64,7 +64,7 @@ export const apiKeyRecordSchema = z
     scopes,
     approvalLevel: approvalLevelSchema,
     /** Narrowing only. An empty array means "no narrowing", not "none allowed". */
-    brandIds: z.array(idSchema(ID_PREFIXES.brand)).max(200),
+    projectIds: z.array(idSchema(ID_PREFIXES.project)).max(200),
     connectionIds: z.array(idSchema(ID_PREFIXES.connection)).max(200),
     /** Optional source restriction, as CIDR blocks. */
     ipAllowlist: z.array(z.string().min(7).max(43)).max(20),
@@ -89,7 +89,7 @@ export const accessTokenRecordSchema = z
     workspaceId,
     scopes,
     approvalLevel: approvalLevelSchema,
-    brandIds: z.array(idSchema(ID_PREFIXES.brand)).max(200),
+    projectIds: z.array(idSchema(ID_PREFIXES.project)).max(200),
     connectionIds: z.array(idSchema(ID_PREFIXES.connection)).max(200),
     /**
      * The resource identifier this token was minted for. Verified on every
@@ -155,7 +155,7 @@ export const authorizationCodeRecordSchema = z
     scopes,
     subjectUserId: userId,
     workspaceId,
-    brandIds: z.array(idSchema(ID_PREFIXES.brand)).max(200),
+    projectIds: z.array(idSchema(ID_PREFIXES.project)).max(200),
     connectionIds: z.array(idSchema(ID_PREFIXES.connection)).max(200),
     approvalLevel: approvalLevelSchema,
     audience: z.string().min(1).max(512),

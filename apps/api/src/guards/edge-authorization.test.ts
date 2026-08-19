@@ -28,13 +28,13 @@ beforeEach(async () => {
   harness = await createHarness({
     services: (base) => ({
       ...base,
-      brands: {
-        ...base.brands,
+      projects: {
+        ...base.projects,
         list: () =>
           Promise.resolve({
             data: [
               {
-                id: newIdFor('brand'),
+                id: newIdFor('project'),
                 workspaceId: newIdFor('workspace'),
                 name: 'Acme',
                 slug: 'acme',
@@ -65,7 +65,7 @@ afterEach(async () => {
 
 describe('authentication', () => {
   it('rejects a request with no credential and does not leak a route shape', async () => {
-    const response = await request(harness.server).get('/v1/brands');
+    const response = await request(harness.server).get('/v1/projects');
 
     expect(response.status).toBe(401);
     expect(response.headers['content-type']).toContain('application/problem+json');
@@ -76,10 +76,10 @@ describe('authentication', () => {
 
   it('answers identically for a malformed credential and an unknown one', async () => {
     const malformed = await request(harness.server)
-      .get('/v1/brands')
+      .get('/v1/projects')
       .set('authorization', 'Bearer not-a-relay-credential');
     const unknown = await request(harness.server)
-      .get('/v1/brands')
+      .get('/v1/projects')
       .set('authorization', `Bearer rly_ak_abcdefgh_${'z'.repeat(40)}`);
 
     expect(malformed.status).toBe(401);
@@ -93,7 +93,7 @@ describe('authentication', () => {
     const key = await seedApiKey(harness, { scopes: ['accounts:read'] });
 
     const response = await request(harness.server)
-      .get('/v1/brands')
+      .get('/v1/projects')
       .set('cookie', session.cookie)
       .set('authorization', `Bearer ${key.secret}`)
       .set('user-agent', TEST_USER_AGENT);
@@ -107,7 +107,7 @@ describe('authentication', () => {
     const key = await seedApiKey(harness, { scopes: ['accounts:read'] });
 
     const response = await request(harness.server)
-      .get('/v1/brands')
+      .get('/v1/projects')
       .set('authorization', `Bearer ${key.secret}`);
 
     expect(response.status).toBe(200);
@@ -121,7 +121,7 @@ describe('authentication', () => {
     });
 
     const response = await request(harness.server)
-      .get('/v1/brands')
+      .get('/v1/projects')
       .set('authorization', `Bearer ${key.secret}`);
 
     expect(response.status).toBe(401);
@@ -134,7 +134,7 @@ describe('authentication', () => {
     });
 
     const response = await request(harness.server)
-      .get('/v1/brands')
+      .get('/v1/projects')
       .set('authorization', `Bearer ${token.token}`);
 
     // Audience verification is the confused-deputy defence: a token for another
@@ -146,7 +146,7 @@ describe('authentication', () => {
     const token = await seedAccessToken(harness, { scopes: ['accounts:read'] });
 
     const response = await request(harness.server)
-      .get('/v1/brands')
+      .get('/v1/projects')
       .set('authorization', `Bearer ${token.token}`);
 
     expect(response.status).toBe(200);
@@ -156,7 +156,7 @@ describe('authentication', () => {
     const session = await seedSession(harness, { scopes: ['accounts:read'] });
 
     const response = await request(harness.server)
-      .get('/v1/brands')
+      .get('/v1/projects')
       .set('cookie', session.cookie)
       .set('user-agent', 'a-completely-different-browser/9')
       .set('accept-language', 'zz');
@@ -170,7 +170,7 @@ describe('scope enforcement', () => {
     const key = await seedApiKey(harness, { scopes: ['analytics:read'] });
 
     const response = await request(harness.server)
-      .get('/v1/brands')
+      .get('/v1/projects')
       .set('authorization', `Bearer ${key.secret}`);
 
     expect(response.status).toBe(403);
@@ -209,14 +209,14 @@ describe('scope enforcement', () => {
     });
 
     const allowed = await request(harness.server)
-      .get('/v1/brands')
+      .get('/v1/projects')
       .set('cookie', session.cookie)
       .set('user-agent', TEST_USER_AGENT)
       .set('accept-language', TEST_ACCEPT_LANGUAGE)
       .set('x-relay-workspace-id', workspaceA);
 
     const refused = await request(harness.server)
-      .get('/v1/brands')
+      .get('/v1/projects')
       .set('cookie', session.cookie)
       .set('user-agent', TEST_USER_AGENT)
       .set('accept-language', TEST_ACCEPT_LANGUAGE)
@@ -234,7 +234,7 @@ describe('cross-workspace access', () => {
     const foreignWorkspace = newIdFor('workspace');
 
     const response = await request(harness.server)
-      .get('/v1/brands')
+      .get('/v1/projects')
       .set('authorization', `Bearer ${key.secret}`)
       .set('x-relay-workspace-id', foreignWorkspace);
 
@@ -249,11 +249,11 @@ describe('cross-workspace access', () => {
     const key = await seedApiKey(harness, { scopes: ['accounts:read'] });
 
     const foreign = await request(harness.server)
-      .get('/v1/brands')
+      .get('/v1/projects')
       .set('authorization', `Bearer ${key.secret}`)
       .set('x-relay-workspace-id', newIdFor('workspace'));
     const nonexistent = await request(harness.server)
-      .get('/v1/brands')
+      .get('/v1/projects')
       .set('authorization', `Bearer ${key.secret}`)
       .set('x-relay-workspace-id', newIdFor('workspace'));
 
@@ -268,7 +268,7 @@ describe('csrf protection', () => {
     const session = await seedSession(harness, { scopes: ['accounts:write'] });
 
     const response = await request(harness.server)
-      .post('/v1/brands')
+      .post('/v1/projects')
       .set('cookie', session.cookie)
       .set('user-agent', TEST_USER_AGENT)
       .set('accept-language', TEST_ACCEPT_LANGUAGE)
@@ -283,7 +283,7 @@ describe('csrf protection', () => {
     const session = await seedSession(harness, { scopes: ['accounts:write'] });
 
     const response = await request(harness.server)
-      .post('/v1/brands')
+      .post('/v1/projects')
       .set('cookie', session.cookie)
       .set('origin', 'https://app.relay.test.evil.example')
       .set('user-agent', TEST_USER_AGENT)
@@ -300,7 +300,7 @@ describe('csrf protection', () => {
     const session = await seedSession(harness, { scopes: ['accounts:write'] });
 
     const response = await request(harness.server)
-      .post('/v1/brands')
+      .post('/v1/projects')
       .set('cookie', session.cookie)
       .set('origin', TEST_ORIGIN)
       .set('user-agent', TEST_USER_AGENT)
@@ -316,7 +316,7 @@ describe('csrf protection', () => {
     const key = await seedApiKey(harness, { scopes: ['accounts:read'] });
 
     const response = await request(harness.server)
-      .get('/v1/brands')
+      .get('/v1/projects')
       .set('authorization', `Bearer ${key.secret}`);
 
     // A bearer token is not ambient, so it is not CSRF-exposed.

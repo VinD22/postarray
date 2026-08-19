@@ -70,7 +70,7 @@ export function WorkspaceSwitcher({ className }: { readonly className?: string }
 
       <DropdownMenuContent align="start" className="w-72">
         <DropdownMenuLabel>{t('shell.project.label')}</DropdownMenuLabel>
-        {session.brands.map((candidate) => {
+        {session.projects.map((candidate) => {
           const current = candidate.id === project?.id;
           return (
             <DropdownMenuItem key={candidate.id} onSelect={() => switchProject(candidate.id)}>

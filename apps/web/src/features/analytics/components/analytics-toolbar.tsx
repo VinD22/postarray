@@ -37,7 +37,7 @@ import type { AccountRef, AnalyticsRange } from '../types';
  */
 
 export interface AnalyticsFilters {
-  readonly brandId: string | null;
+  readonly projectId: string | null;
   readonly connectionIds: readonly string[];
   readonly range: AnalyticsRange;
   readonly rankMetric: NormalizedMetricName;
@@ -47,7 +47,7 @@ export interface AnalyticsFilters {
 
 export interface AnalyticsToolbarProps {
   readonly filters: AnalyticsFilters;
-  readonly brands: readonly { readonly id: string; readonly name: string }[];
+  readonly projects: readonly { readonly id: string; readonly name: string }[];
   readonly accounts: readonly AccountRef[];
   readonly formats: readonly ContentKind[];
   readonly onChange: (filters: AnalyticsFilters) => void;
@@ -68,13 +68,13 @@ function presetToRange(preset: AnalyticsRange['preset'], now: Date): AnalyticsRa
 
 export function AnalyticsToolbar({
   filters,
-  brands,
+  projects,
   accounts,
   formats,
   onChange,
 }: AnalyticsToolbarProps): ReactElement {
   const t = useTranslations();
-  const brandId = useId();
+  const projectId = useId();
   const rangeId = useId();
   const metricId = useId();
   const formatId = useId();
@@ -95,21 +95,21 @@ export function AnalyticsToolbar({
     <div className="flex flex-col gap-3">
       <div className="flex flex-wrap items-end gap-x-4 gap-y-3">
         <div className="flex flex-col gap-1">
-          <Label htmlFor={brandId}>{t('analytics.filter.brand')}</Label>
+          <Label htmlFor={projectId}>{t('analytics.filter.project')}</Label>
           <Select
-            value={filters.brandId ?? 'all'}
+            value={filters.projectId ?? 'all'}
             onValueChange={(value) =>
-              onChange({ ...filters, brandId: value === 'all' ? null : value })
+              onChange({ ...filters, projectId: value === 'all' ? null : value })
             }
           >
-            <SelectTrigger id={brandId} size="sm" className="min-w-40">
+            <SelectTrigger id={projectId} size="sm" className="min-w-40">
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="all">{t('shell.brand.all')}</SelectItem>
-              {brands.map((brand) => (
-                <SelectItem key={brand.id} value={brand.id}>
-                  {brand.name}
+              <SelectItem value="all">{t('shell.project.all')}</SelectItem>
+              {projects.map((project) => (
+                <SelectItem key={project.id} value={project.id}>
+                  {project.name}
                 </SelectItem>
               ))}
             </SelectContent>

@@ -223,7 +223,7 @@ export function createApprovalService(deps: ServiceDeps): ApprovalService {
             // The author never signs off their own work unless the workspace
             // has deliberately enabled it. The policy owns that rule.
             guard(actor, 'content.approve', {
-              brandId: aggregate.brandId,
+              projectId: aggregate.projectId,
               authorActorId: aggregate.createdByUserId,
             });
 

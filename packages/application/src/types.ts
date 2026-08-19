@@ -82,7 +82,7 @@ import type {
   ApprovalRequestView,
   AuditEventView,
   AutomationRuleView,
-  BrandView,
+  ProjectView,
   BusinessProfileView,
   CalendarEntry,
   CanonicalPreview,
@@ -1269,7 +1269,7 @@ export interface TargetSpec {
 }
 
 export interface CreateDraftInput {
-  readonly brandId: string;
+  readonly projectId: string;
   readonly campaignId?: string | null;
   readonly title?: string | null;
   readonly body: string;
@@ -1365,23 +1365,23 @@ export interface MembershipService {
   remove(ctx: ActorContext, membershipId: string): Promise<void>;
 }
 
-export interface BrandService {
-  list(ctx: ActorContext, query?: PageQuery): Promise<Paginated<BrandView>>;
-  get(ctx: ActorContext, brandId: string): Promise<BrandView>;
+export interface ProjectService {
+  list(ctx: ActorContext, query?: PageQuery): Promise<Paginated<ProjectView>>;
+  get(ctx: ActorContext, projectId: string): Promise<ProjectView>;
   create(
     ctx: ActorContext,
     input: { readonly name: string; readonly defaultTimeZone?: string },
-  ): Promise<BrandView>;
-  update(ctx: ActorContext, brandId: string, patch: Partial<BrandView>): Promise<BrandView>;
-  archive(ctx: ActorContext, brandId: string): Promise<BrandView>;
-  delete(ctx: ActorContext, brandId: string): Promise<void>;
+  ): Promise<ProjectView>;
+  update(ctx: ActorContext, projectId: string, patch: Partial<ProjectView>): Promise<ProjectView>;
+  archive(ctx: ActorContext, projectId: string): Promise<ProjectView>;
+  delete(ctx: ActorContext, projectId: string): Promise<void>;
 }
 
 export interface ConnectionService {
   listAvailableProviders(ctx: ActorContext): Promise<readonly ProviderId[]>;
   list(
     ctx: ActorContext,
-    query?: PageQuery & { readonly brandId?: string; readonly provider?: ProviderId },
+    query?: PageQuery & { readonly projectId?: string; readonly provider?: ProviderId },
   ): Promise<Paginated<ConnectionView>>;
   get(ctx: ActorContext, connectionId: string): Promise<ConnectionView>;
   getCapabilities(ctx: ActorContext, connectionId: string): Promise<CapabilitySnapshot>;
@@ -1389,7 +1389,7 @@ export interface ConnectionService {
     ctx: ActorContext,
     input: {
       readonly provider: ProviderId;
-      readonly brandId?: string | null;
+      readonly projectId?: string | null;
       readonly redirectTo: string;
     },
   ): Promise<{ readonly authorizationUrl: string; readonly transactionId: string }>;
@@ -1452,7 +1452,7 @@ export interface ContentService {
     ctx: ActorContext,
     query?: PageQuery & {
       readonly state?: PublishState;
-      readonly brandId?: string;
+      readonly projectId?: string;
       readonly campaignId?: string;
     },
   ): Promise<Paginated<ContentItemView>>;
@@ -1571,7 +1571,7 @@ export interface SchedulingService {
       readonly from: string;
       readonly to: string;
       readonly filters?: {
-        readonly brandId?: string;
+        readonly projectId?: string;
         readonly campaignId?: string;
         readonly connectionId?: string;
         readonly state?: PublishState;
@@ -1584,7 +1584,7 @@ export interface SchedulingService {
    */
   nextAvailableSlot(
     ctx: ActorContext,
-    input: { readonly brandId: string; readonly after?: string },
+    input: { readonly projectId: string; readonly after?: string },
   ): Promise<SlotProposal>;
 }
 
@@ -1599,7 +1599,7 @@ export interface SchedulingService {
 export interface QueueRuleService {
   list(
     ctx: ActorContext,
-    query?: PageQuery & { readonly brandId?: string },
+    query?: PageQuery & { readonly projectId?: string },
   ): Promise<Paginated<QueueRuleView>>;
   get(ctx: ActorContext, ruleId: string): Promise<QueueRuleView>;
   create(ctx: ActorContext, input: QueueRuleInput): Promise<QueueRuleView>;
@@ -1607,12 +1607,12 @@ export interface QueueRuleService {
   archive(ctx: ActorContext, ruleId: string): Promise<QueueRuleView>;
   previewSlot(
     ctx: ActorContext,
-    input: { readonly brandId: string; readonly after?: string },
+    input: { readonly projectId: string; readonly after?: string },
   ): Promise<SlotProposal>;
   proposeSlot(
     ctx: ActorContext,
     input: {
-      readonly brandId: string;
+      readonly projectId: string;
       readonly after?: string;
       readonly contentItemId?: string;
     },
@@ -1627,7 +1627,7 @@ export interface QueueRuleService {
   ): Promise<QueueSlotReservationView>;
   listReservations(
     ctx: ActorContext,
-    query: PageQuery & { readonly brandId: string },
+    query: PageQuery & { readonly projectId: string },
   ): Promise<Paginated<QueueSlotReservationView>>;
 }
 
@@ -1642,7 +1642,7 @@ export interface QueueRuleService {
 export interface PostingSetService {
   list(
     ctx: ActorContext,
-    query?: PageQuery & { readonly brandId?: string; readonly includeArchived?: boolean },
+    query?: PageQuery & { readonly projectId?: string; readonly includeArchived?: boolean },
   ): Promise<Paginated<PostingSetView>>;
   get(ctx: ActorContext, setId: string): Promise<PostingSetView>;
   create(ctx: ActorContext, input: PostingSetInput): Promise<PostingSetView>;
@@ -1660,17 +1660,17 @@ export interface PostingSetService {
  * reselected.
  */
 export interface RememberedTargetService {
-  read(ctx: ActorContext, input: { readonly brandId: string }): Promise<RememberedTargetsView>;
+  read(ctx: ActorContext, input: { readonly projectId: string }): Promise<RememberedTargetsView>;
   remember(
     ctx: ActorContext,
-    input: { readonly brandId: string; readonly connectionIds: readonly string[] },
+    input: { readonly projectId: string; readonly connectionIds: readonly string[] },
   ): Promise<RememberedTargetsView>;
-  forget(ctx: ActorContext, input: { readonly brandId: string }): Promise<void>;
+  forget(ctx: ActorContext, input: { readonly projectId: string }): Promise<void>;
   /** The project opt in. Turning it off deletes what was stored, project wide. */
   setEnabled(
     ctx: ActorContext,
-    input: { readonly brandId: string; readonly enabled: boolean },
-  ): Promise<{ readonly brandId: string; readonly enabled: boolean }>;
+    input: { readonly projectId: string; readonly enabled: boolean },
+  ): Promise<{ readonly projectId: string; readonly enabled: boolean }>;
 }
 
 export interface PublishingService {
@@ -1851,7 +1851,7 @@ export interface MediaService {
       readonly mimeType: string;
       readonly byteSize: number;
       readonly sha256: string;
-      readonly brandId?: string | null;
+      readonly projectId?: string | null;
     },
   ): Promise<{
     readonly uploadUrl: string;
@@ -1886,11 +1886,11 @@ export interface MediaService {
   ): Promise<{ readonly bytes: Uint8Array; readonly contentType: string }>;
   importFromUrl(
     ctx: ActorContext,
-    input: { readonly url: string; readonly brandId?: string | null },
+    input: { readonly url: string; readonly projectId?: string | null },
   ): Promise<OperationRef>;
   list(
     ctx: ActorContext,
-    query?: PageQuery & { readonly brandId?: string; readonly kind?: string },
+    query?: PageQuery & { readonly projectId?: string; readonly kind?: string },
   ): Promise<Paginated<MediaAssetView>>;
   get(ctx: ActorContext, mediaId: string): Promise<MediaAssetView>;
   delete(ctx: ActorContext, mediaId: string): Promise<void>;
@@ -1972,7 +1972,7 @@ export interface ShortLinkService {
       readonly destinationUrl: string;
       readonly campaignId?: string | null;
       readonly domainId?: string | null;
-      readonly brandId?: string | null;
+      readonly projectId?: string | null;
       readonly utm?: UtmParameters;
       readonly expiresAt?: string | null;
       readonly slug?: string | null;
@@ -2015,7 +2015,7 @@ export interface ShortLinkService {
 }
 
 export interface AutomationRuleInput {
-  readonly brandId: string;
+  readonly projectId: string;
   readonly name: string;
   readonly trigger: { readonly kind: RuleTriggerKind; readonly config?: Record<string, unknown> };
   readonly conditions?: readonly {
@@ -2068,7 +2068,7 @@ export interface RssService {
   create(
     ctx: ActorContext,
     input: {
-      readonly brandId: string;
+      readonly projectId: string;
       readonly title: string;
       readonly feedUrl: string;
       readonly connectionIds?: readonly string[];
@@ -2098,7 +2098,7 @@ export interface GrowthService {
     ctx: ActorContext,
     input: {
       readonly profileId?: string;
-      readonly brandId: string;
+      readonly projectId: string;
       readonly productName: string;
       readonly siteUrl: string;
       readonly description: string;
@@ -2441,7 +2441,7 @@ export interface WorkerBulkImportService {
 export interface Services {
   readonly workspaces: WorkspaceService;
   readonly members: MembershipService;
-  readonly brands: BrandService;
+  readonly projects: ProjectService;
   readonly connections: ConnectionService;
   readonly content: ContentService;
   readonly validation: ValidationService;

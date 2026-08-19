@@ -40,7 +40,7 @@ export const analyticsKeys = {
 };
 
 export interface OverviewInput {
-  readonly brandId: string | null;
+  readonly projectId: string | null;
   readonly connectionIds: readonly string[];
   readonly range: AnalyticsRange;
   readonly rankMetric: NormalizedMetricName;
@@ -68,7 +68,7 @@ export function useAnalyticsOverview(input: OverviewInput, enabled = true) {
     staleTime: FIVE_MINUTES,
     queryFn: async (): Promise<AnalyticsOverview> => {
       const result = await api.analytics.getOverview({
-        ...(input.brandId === null ? {} : { brandId: input.brandId }),
+        ...(input.projectId === null ? {} : { projectId: input.projectId }),
         connectionIds: input.connectionIds,
         from: input.range.start,
         to: input.range.end,

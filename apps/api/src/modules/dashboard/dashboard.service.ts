@@ -39,7 +39,7 @@ import type {
 /** Only the services this aggregate composes. Keeps the test doubles honest. */
 export type DashboardServices = Pick<
   Services,
-  'receipts' | 'scheduling' | 'actionCenter' | 'connections' | 'analytics' | 'brands' | 'identity'
+  'receipts' | 'scheduling' | 'actionCenter' | 'connections' | 'analytics' | 'projects' | 'identity'
 >;
 
 const DAY_MS = 86_400_000;
@@ -127,7 +127,7 @@ export class DashboardService {
     const now = this.clock.now();
     const windowStart = new Date(now.getTime() - query.days * DAY_MS);
 
-    const [receiptPage, calendarPage, attentionPage, connectionPage, brandPage] = await Promise.all(
+    const [receiptPage, calendarPage, attentionPage, connectionPage, projectPage] = await Promise.all(
       [
         this.services.receipts.listRecent(ctx, { limit: RECEIPT_PAGE_LIMIT }),
         this.services.scheduling.getCalendar(ctx, {
@@ -137,7 +137,7 @@ export class DashboardService {
         }),
         this.services.actionCenter.list(ctx, { limit: ATTENTION_LIMIT }),
         this.services.connections.list(ctx, { limit: RECEIPT_PAGE_LIMIT }),
-        this.services.brands.list(ctx, { limit: RECEIPT_PAGE_LIMIT }),
+        this.services.projects.list(ctx, { limit: RECEIPT_PAGE_LIMIT }),
       ],
     );
 
@@ -163,7 +163,7 @@ export class DashboardService {
       // digest producer writes one. Null until then, never a placeholder.
       digest: null,
       attention,
-      projects: await this.projects(ctx, brandPage.data.length),
+      projects: await this.projects(ctx, projectPage.data.length),
     };
   }
 

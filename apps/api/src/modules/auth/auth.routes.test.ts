@@ -43,7 +43,7 @@ function sessionView(userId: string, workspaceId: string, role: Role = 'owner'):
     },
     workspace,
     workspaces: [workspace],
-    brands: [],
+    projects: [],
     scopes: ['accounts:read'],
     onboardingComplete: true,
   };

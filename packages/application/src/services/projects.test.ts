@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 
 import { RelayError } from '@relay/contracts';
 
-import { assertProjectSlotAvailable } from './brands';
+import { assertProjectSlotAvailable } from './projects';
 
 describe('project capacity', () => {
   it('allows creation below the workspace entitlement', () => {

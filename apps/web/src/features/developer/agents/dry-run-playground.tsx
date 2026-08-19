@@ -28,7 +28,7 @@ const DRY_RUN_TOOLS: readonly { readonly id: string; readonly sample: string }[]
   {
     id: 'create_draft',
     sample:
-      '{\n  "brandId": "brand_seed_acme_eu",\n  "body": "We shipped scheduled first comments.",\n  "targets": ["conn_seed_x_acme"]\n}',
+      '{\n  "projectId": "project_seed_acme_eu",\n  "body": "We shipped scheduled first comments.",\n  "targets": ["conn_seed_x_acme"]\n}',
   },
   { id: 'validate_content', sample: '{\n  "contentItemId": "post_seed_launch"\n}' },
   {

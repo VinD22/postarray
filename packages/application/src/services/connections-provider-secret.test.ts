@@ -100,7 +100,7 @@ function harness(
       }),
     },
     membership: {
-      findFirst: async () => ({ role: 'owner', state: 'active', brandScope: [] }),
+      findFirst: async () => ({ role: 'owner', state: 'active', projectScope: [] }),
     },
     rolePermission: { findMany: async () => [] },
     socialConnection: { count: async () => 0 },

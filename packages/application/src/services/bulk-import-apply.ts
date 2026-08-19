@@ -113,7 +113,7 @@ async function resolveMedia(
     if (ref.kind === 'url') {
       await input.media.importFromUrl(input.ctx, {
         url: ref.value,
-        brandId: input.projectId,
+        projectId: input.projectId,
       });
       problems.push(issue('import.error.mediaImportStarted', 'media', { value: ref.value }));
       continue;
@@ -185,7 +185,7 @@ export async function applyImportRow(input: ApplyRowInput): Promise<ApplyRowOutc
           ];
 
     let item = await input.content.createDraft(rowCtx, {
-      brandId: input.projectId,
+      projectId: input.projectId,
       body: payload.body,
       title: payload.title,
       mediaIds,

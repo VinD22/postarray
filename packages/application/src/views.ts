@@ -102,7 +102,7 @@ export interface SessionWorkspaceView {
   readonly projectLimit: number;
 }
 
-export interface SessionBrandView {
+export interface SessionProjectView {
   readonly id: string;
   readonly workspaceId: string;
   readonly name: string;
@@ -122,7 +122,7 @@ export interface SessionView {
   };
   readonly workspace: SessionWorkspaceView;
   readonly workspaces: readonly SessionWorkspaceView[];
-  readonly brands: readonly SessionBrandView[];
+  readonly projects: readonly SessionProjectView[];
   readonly scopes: readonly Scope[];
   readonly onboardingComplete: boolean;
 }
@@ -135,7 +135,7 @@ export interface MembershipView {
   readonly displayName: string;
   readonly role: Role;
   readonly state: 'invited' | 'active' | 'suspended' | 'removed';
-  readonly brandScope: readonly string[];
+  readonly projectScope: readonly string[];
   readonly invitedAt: string | null;
   readonly acceptedAt: string | null;
 }
@@ -150,7 +150,7 @@ export interface InvitationView {
   readonly createdAt: string;
 }
 
-export interface BrandView {
+export interface ProjectView {
   readonly id: string;
   readonly workspaceId: string;
   readonly name: string;
@@ -188,7 +188,7 @@ export type ConnectionHealth = (typeof CONNECTION_HEALTH)[number];
 export interface ConnectionView {
   readonly id: string;
   readonly workspaceId: string;
-  readonly brandId: string | null;
+  readonly projectId: string | null;
   readonly provider: ProviderId;
   readonly accountType: AccountType;
   readonly displayName: string;
@@ -266,7 +266,7 @@ export interface PostVariantView {
 export interface ContentItemView {
   readonly id: string;
   readonly workspaceId: string;
-  readonly brandId: string;
+  readonly projectId: string;
   readonly campaignId: string | null;
   readonly title: string | null;
   readonly state: PublishState;
@@ -416,7 +416,7 @@ export interface CalendarEntry {
   readonly jobId: string | null;
   readonly contentItemId: string;
   readonly title: string | null;
-  readonly brandId: string;
+  readonly projectId: string;
   readonly campaignId: string | null;
   readonly connectionId: string | null;
   readonly provider: ProviderId | null;
@@ -483,7 +483,7 @@ export interface ActionItemView {
 export interface MediaAssetView {
   readonly id: string;
   readonly workspaceId: string;
-  readonly brandId: string | null;
+  readonly projectId: string | null;
   readonly kind: MediaKind;
   readonly mimeType: string;
   readonly byteSize: number;
@@ -607,7 +607,7 @@ export type RuleEndCondition =
 export interface AutomationRuleView {
   readonly id: string;
   readonly workspaceId: string;
-  readonly brandId: string;
+  readonly projectId: string;
   readonly name: string;
   readonly state: 'draft' | 'active' | 'paused' | 'disabled' | 'archived';
   readonly trigger: { readonly kind: RuleTriggerKind; readonly config: Record<string, unknown> };
@@ -682,7 +682,7 @@ export interface FeedPreview {
 export interface RssFeedView {
   readonly id: string;
   readonly workspaceId: string;
-  readonly brandId: string;
+  readonly projectId: string;
   readonly title: string;
   readonly feedUrl: string;
   readonly health: 'healthy' | 'degraded' | 'invalid' | 'stalled';
@@ -707,7 +707,7 @@ export interface FeedHealthView {
 export interface BusinessProfileView {
   readonly id: string;
   readonly workspaceId: string;
-  readonly brandId: string;
+  readonly projectId: string;
   readonly revision: number;
   readonly productName: string;
   readonly siteUrl: string;
@@ -818,7 +818,7 @@ export interface OAuthGrantView {
   readonly clientName: string;
   readonly subjectUserId: string;
   readonly scopes: readonly Scope[];
-  readonly brandScope: readonly string[];
+  readonly projectScope: readonly string[];
   readonly connectionScope: readonly string[];
   readonly consentedAt: string;
   readonly lastUsedAt: string | null;

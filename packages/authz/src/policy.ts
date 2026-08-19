@@ -10,7 +10,7 @@ import { isDelegable, scopeGrantsPermission, scopesForPermission } from './scope
  * A decision is never a bare boolean. The UI renders the reason next to the
  * disabled control, and a REST client turns it into a problem document, so the
  * reason has to be specific enough to act on: which role, which scope, which
- * brand. Every branch below returns a typed reason and an i18n message key.
+ * project. Every branch below returns a typed reason and an i18n message key.
  */
 
 export const DECISION_REASONS = [
@@ -27,7 +27,7 @@ export const DECISION_REASONS = [
   'grant_revoked',
   'credential_expired',
   'grantor_lacks_permission',
-  'brand_out_of_scope',
+  'project_out_of_scope',
   'connection_out_of_scope',
   'self_approval_forbidden',
   'approval_level_insufficient',
@@ -82,8 +82,8 @@ export interface PolicyActor {
    * privileges flowing into an agent.
    */
   readonly scopesEnforced?: boolean;
-  /** Empty means every brand in the workspace. */
-  readonly brandScope?: readonly string[];
+  /** Empty means every project in the workspace. */
+  readonly projectScope?: readonly string[];
   /** Empty means every connection in the workspace. */
   readonly connectionScope?: readonly string[];
   readonly grantRevoked?: boolean;
@@ -94,7 +94,7 @@ export interface PolicyActor {
 }
 
 export interface PolicyResource {
-  readonly brandId?: string | null;
+  readonly projectId?: string | null;
   readonly connectionId?: string | null;
   /** The actor that authored the thing being acted on, for self-approval. */
   readonly authorActorId?: string | null;
@@ -176,16 +176,16 @@ export function requiredApprovalLevel(permission: Permission): ApprovalLevel {
   }
 }
 
-function withinBrandScope(actor: PolicyActor, resource: PolicyResource | undefined): boolean {
-  const scope = actor.brandScope;
+function withinProjectScope(actor: PolicyActor, resource: PolicyResource | undefined): boolean {
+  const scope = actor.projectScope;
   if (scope === undefined || scope.length === 0) {
     return true;
   }
-  const brandId = resource?.brandId;
-  if (brandId === undefined || brandId === null) {
+  const projectId = resource?.projectId;
+  if (projectId === undefined || projectId === null) {
     return true;
   }
-  return scope.includes(brandId);
+  return scope.includes(projectId);
 }
 
 function withinConnectionScope(actor: PolicyActor, resource: PolicyResource | undefined): boolean {
@@ -293,10 +293,10 @@ export function can(
     }
   }
 
-  // 7. Narrowing. Brand and connection scopes intersect down and never union up.
-  if (!withinBrandScope(actor, resource)) {
-    return deny(permission, 'brand_out_of_scope', {
-      details: { brandId: resource?.brandId ?? null },
+  // 7. Narrowing. Project and connection scopes intersect down and never union up.
+  if (!withinProjectScope(actor, resource)) {
+    return deny(permission, 'project_out_of_scope', {
+      details: { projectId: resource?.projectId ?? null },
     });
   }
   if (!withinConnectionScope(actor, resource)) {

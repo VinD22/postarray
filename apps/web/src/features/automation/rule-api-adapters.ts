@@ -16,11 +16,11 @@ import type {
 
 const CONSEQUENTIAL_ACTIONS = new Set<string>(CONSEQUENTIAL_RULE_ACTION_KINDS);
 
-export function toRuleInput(draft: RuleDraft, brandId: string): RuleInput {
+export function toRuleInput(draft: RuleDraft, projectId: string): RuleInput {
   if (draft.trigger === null) throw new Error('RULE_TRIGGER_REQUIRED');
   const { kind, parameters, measurement } = draft.trigger;
   return {
-    brandId,
+    projectId,
     name: draft.name,
     trigger: {
       kind,

@@ -13,7 +13,7 @@ export const keys = {
 
   workspace: (workspaceId: string) => ['ws', workspaceId] as const,
 
-  connections: (workspaceId: string, filter: { brandId?: string; provider?: ProviderId } = {}) =>
+  connections: (workspaceId: string, filter: { projectId?: string; provider?: ProviderId } = {}) =>
     ['ws', workspaceId, 'connections', filter] as const,
   connection: (workspaceId: string, connectionId: string) =>
     ['ws', workspaceId, 'connection', connectionId] as const,
@@ -22,24 +22,24 @@ export const keys = {
   connectionDestinations: (workspaceId: string, connectionId: string, kind?: string) =>
     ['ws', workspaceId, 'connection', connectionId, 'destinations', kind ?? 'all'] as const,
 
-  content: (workspaceId: string, filter: { brandId?: string; state?: PublishState } = {}) =>
+  content: (workspaceId: string, filter: { projectId?: string; state?: PublishState } = {}) =>
     ['ws', workspaceId, 'content', filter] as const,
   contentItem: (workspaceId: string, contentItemId: string) =>
     ['ws', workspaceId, 'content', contentItemId] as const,
   validation: (workspaceId: string, contentItemId: string) =>
     ['ws', workspaceId, 'content', contentItemId, 'validation'] as const,
 
-  calendar: (workspaceId: string, range: { from: string; to: string; brandId?: string }) =>
+  calendar: (workspaceId: string, range: { from: string; to: string; projectId?: string }) =>
     ['ws', workspaceId, 'calendar', range] as const,
 
-  postingSets: (workspaceId: string, filter: { brandId?: string; includeArchived?: boolean } = {}) =>
+  postingSets: (workspaceId: string, filter: { projectId?: string; includeArchived?: boolean } = {}) =>
     ['ws', workspaceId, 'posting-sets', filter] as const,
   postingSet: (workspaceId: string, setId: string) =>
     ['ws', workspaceId, 'posting-set', setId] as const,
   // Per person as well as per workspace at the database; the key only has to be
   // per project, because a session is one person by construction.
-  rememberedTargets: (workspaceId: string, brandId: string) =>
-    ['ws', workspaceId, 'remembered-targets', brandId] as const,
+  rememberedTargets: (workspaceId: string, projectId: string) =>
+    ['ws', workspaceId, 'remembered-targets', projectId] as const,
 
   approvalsPending: (workspaceId: string) => ['ws', workspaceId, 'approvals', 'pending'] as const,
   approval: (workspaceId: string, approvalId: string) =>
@@ -88,7 +88,7 @@ export const keys = {
   billing: (workspaceId: string) => ['ws', workspaceId, 'billing'] as const,
   usage: (workspaceId: string) => ['ws', workspaceId, 'usage'] as const,
   members: (workspaceId: string) => ['ws', workspaceId, 'members'] as const,
-  brands: (workspaceId: string) => ['ws', workspaceId, 'brands'] as const,
+  projects: (workspaceId: string) => ['ws', workspaceId, 'projects'] as const,
   audit: (workspaceId: string) => ['ws', workspaceId, 'audit'] as const,
 
   onboarding: () => ['onboarding'] as const,

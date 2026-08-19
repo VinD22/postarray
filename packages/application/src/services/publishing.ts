@@ -69,7 +69,7 @@ export function createPublishingService(
               }
               for (const variant of aggregate.variants) {
                 guard(actor, 'post.publish_now', {
-                  brandId: aggregate.brandId,
+                  projectId: aggregate.projectId,
                   connectionId: variant.connectionId,
                 });
               }

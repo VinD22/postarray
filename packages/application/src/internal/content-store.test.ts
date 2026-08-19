@@ -9,7 +9,7 @@ function aggregate(overrides: Partial<ContentAggregate> = {}): ContentAggregate 
   const master = storedMasterSchema.parse({
     id: 'content-1',
     workspaceId: 'ws-1',
-    brandId: 'brand-1',
+    projectId: 'project-1',
     campaignId: null,
     title: null,
     body: 'A post.',
@@ -26,7 +26,7 @@ function aggregate(overrides: Partial<ContentAggregate> = {}): ContentAggregate 
   return {
     itemId: 'content-1',
     workspaceId: 'ws-1',
-    brandId: 'brand-1',
+    projectId: 'project-1',
     campaignId: null,
     title: null,
     state: 'draft',

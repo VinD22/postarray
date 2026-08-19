@@ -94,19 +94,19 @@ async function loadRoleFor(
 ): Promise<{
   role: Role | null;
   state: 'invited' | 'active' | 'suspended' | 'removed';
-  brandScope: readonly string[];
+  projectScope: readonly string[];
 }> {
   const membership = await db.membership.findFirst({
     where: { workspaceId, userId },
-    select: { role: true, state: true, brandScope: true },
+    select: { role: true, state: true, projectScope: true },
   });
   if (membership === null) {
-    return { role: null, state: 'removed', brandScope: [] };
+    return { role: null, state: 'removed', projectScope: [] };
   }
   return {
     role: membership.role,
     state: membershipStateOf(membership.state),
-    brandScope: membership.brandScope,
+    projectScope: membership.projectScope,
   };
 }
 
@@ -151,7 +151,7 @@ export async function loadActor(
   let userId: string | null = null;
   let role: Role | null = null;
   let membershipState: 'invited' | 'active' | 'suspended' | 'removed';
-  let brandScope: readonly string[] = [];
+  let projectScope: readonly string[] = [];
   let connectionScope: readonly string[] = [];
   let grantRevoked = false;
   let credentialExpired = false;
@@ -163,14 +163,14 @@ export async function loadActor(
     const membership = await loadRoleFor(db, ctx.workspaceId, ctx.actorId);
     role = membership.role;
     membershipState = membership.state;
-    brandScope = membership.brandScope;
+    projectScope = membership.projectScope;
   } else if (ctx.actorType === 'service_account') {
     const account = await db.serviceAccount.findFirst({
       where: { id: ctx.actorId, workspaceId: ctx.workspaceId },
       select: {
         id: true,
         createdByUserId: true,
-        brandScope: true,
+        projectScope: true,
         connectionScope: true,
         providerScope: true,
         localeScope: true,
@@ -188,12 +188,12 @@ export async function loadActor(
     const membership = await loadRoleFor(db, ctx.workspaceId, account.createdByUserId);
     role = membership.role;
     membershipState = membership.state;
-    brandScope = intersect(membership.brandScope, account.brandScope);
+    projectScope = intersect(membership.projectScope, account.projectScope);
     connectionScope = account.connectionScope;
     credentialExpired = account.disabledAt !== null;
     const cap = approvalLevelFromInt(account.maxApprovalLevel);
     restrictions = {
-      brandIds: brandScope,
+      projectIds: projectScope,
       connectionIds: account.connectionScope,
       providers: account.providerScope.map((provider) => toProviderId(provider)),
       locales: account.localeScope,
@@ -210,7 +210,7 @@ export async function loadActor(
       where: { id: ctx.actorId, workspaceId: ctx.workspaceId },
       select: {
         subjectUserId: true,
-        brandScope: true,
+        projectScope: true,
         connectionScope: true,
         revokedAt: true,
         expiresAt: true,
@@ -223,13 +223,13 @@ export async function loadActor(
     const membership = await loadRoleFor(db, ctx.workspaceId, grant.subjectUserId);
     role = membership.role;
     membershipState = membership.state;
-    brandScope = intersect(membership.brandScope, grant.brandScope);
+    projectScope = intersect(membership.projectScope, grant.projectScope);
     connectionScope = grant.connectionScope;
     grantRevoked = grant.revokedAt !== null;
     credentialExpired =
       grant.expiresAt !== null && grant.expiresAt.getTime() <= clock.now().getTime();
     restrictions = {
-      brandIds: brandScope,
+      projectIds: projectScope,
       connectionIds: grant.connectionScope,
       ianaTimeZone: workspace.defaultTimeZone,
     };
@@ -246,7 +246,7 @@ export async function loadActor(
     membershipState,
     scopes,
     approvalLevel,
-    brandScope,
+    projectScope,
     connectionScope,
     grantRevoked,
     credentialExpired,

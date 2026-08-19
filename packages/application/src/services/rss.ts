@@ -27,7 +27,7 @@ const MIN_POLL_INTERVAL_SECONDS = 300;
 const FEED_SELECT = {
   id: true,
   workspaceId: true,
-  brandId: true,
+  projectId: true,
   title: true,
   feedUrl: true,
   health: true,
@@ -42,7 +42,7 @@ const FEED_SELECT = {
 interface FeedRow {
   id: string;
   workspaceId: string;
-  brandId: string;
+  projectId: string;
   title: string;
   feedUrl: string;
   health: string;
@@ -58,7 +58,7 @@ function toView(row: FeedRow): RssFeedView {
   return {
     id: row.id,
     workspaceId: row.workspaceId,
-    brandId: row.brandId,
+    projectId: row.projectId,
     title: row.title,
     feedUrl: row.feedUrl,
     health: row.health as RssFeedView['health'],
@@ -236,7 +236,7 @@ export function createRssService(deps: ServiceDeps): RssService {
     async create(
       ctx: ActorContext,
       input: {
-        brandId: string;
+        projectId: string;
         title: string;
         feedUrl: string;
         connectionIds?: readonly string[];
@@ -244,7 +244,7 @@ export function createRssService(deps: ServiceDeps): RssService {
         pollIntervalSeconds?: number;
       },
     ): Promise<RssFeedView> {
-      return authorized(deps, ctx, 'rss.write', { brandId: input.brandId }, async (db, actor) => {
+      return authorized(deps, ctx, 'rss.write', { projectId: input.projectId }, async (db, actor) => {
         if (actor.userId === null) {
           throw invalid('errors.rss_requires_user', {});
         }
@@ -253,7 +253,7 @@ export function createRssService(deps: ServiceDeps): RssService {
         const created = await db.rssFeed.create({
           data: {
             workspaceId: actor.workspace.id,
-            brandId: input.brandId,
+            projectId: input.projectId,
             title: input.title,
             feedUrl: input.feedUrl,
             connectionIds: [...(input.connectionIds ?? [])],

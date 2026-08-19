@@ -36,7 +36,7 @@ function rule(overrides: Record<string, unknown> = {}) {
     id: 'rule_1',
     state: 'active',
     version: 2,
-    brandId: 'brand_1',
+    projectId: 'project_1',
     actions: [{ kind: 'create_draft', config: {} }],
     conditions: [{ kind: 'platform', config: { providers: ['bluesky'] } }],
     delaySeconds: 60,
@@ -208,7 +208,7 @@ describe('rule action execution', () => {
 
     expect(result).toMatchObject({ status: 'succeeded', resourceId: 'content_1' });
     const draft = createDraft.mock.calls[0]?.[1] as Record<string, unknown>;
-    expect(draft).toMatchObject({ brandId: 'brand_1', body: 'A new post' });
+    expect(draft).toMatchObject({ projectId: 'project_1', body: 'A new post' });
     expect(draft).not.toHaveProperty('targets');
   });
 

@@ -26,7 +26,7 @@ export function createOAuthPendingDiscoveryStore(
             data: {
               transactionId: input.transactionId,
               workspaceId: input.workspaceId,
-              brandId: input.brandId,
+              projectId: input.projectId,
               provider: input.provider,
               stateHash: input.stateHash,
               accounts: input.accounts as unknown as Prisma.InputJsonValue,
@@ -53,7 +53,7 @@ export function createOAuthPendingDiscoveryStore(
           return {
             transactionId: row.transactionId,
             workspaceId: row.workspaceId,
-            brandId: row.brandId,
+            projectId: row.projectId,
             provider: row.provider,
             stateHash: row.stateHash,
             accounts: row.accounts as unknown as OAuthPendingDiscoveryRecord['accounts'],

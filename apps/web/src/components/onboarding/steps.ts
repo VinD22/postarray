@@ -2,7 +2,7 @@
  * The first run sequence.
  *
  * Six steps, in this order, aimed at a verified scheduled post in under ten
- * minutes. Nothing here asks for brand voice, teammates or automation: those
+ * minutes. Nothing here asks for project voice, teammates or automation: those
  * questions come after the first real result.
  *
  * WCAG 2.2 SC 3.3.7 (Redundant Entry): the time zone and the language chosen in

@@ -383,7 +383,7 @@ export class AuthController {
    *
    * SMS is not offered and will not be. SIM swap makes it worse than no second
    * factor for a product that holds publishing credentials for other people's
-   * brands.
+   * projects.
    */
   @Post('mfa/totp')
   @WorkspaceOptional()

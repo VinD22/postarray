@@ -23,7 +23,7 @@ export type ConnectionHealth = (typeof CONNECTION_HEALTHS)[number];
 export interface ConnectionFixture {
   readonly id: string;
   readonly workspaceId: string;
-  readonly brandId: string | null;
+  readonly projectId: string | null;
   readonly provider: ProviderId;
   readonly accountType: AccountType;
   readonly externalAccountId: string;
@@ -74,7 +74,7 @@ export function makeConnection(input: MakeConnectionInput = {}): ConnectionFixtu
   return {
     id: fixtureId('connection', seed),
     workspaceId: input.workspaceId ?? fixtureId('workspace', 'fixture-workspace'),
-    brandId: null,
+    projectId: null,
     provider,
     accountType: snapshot.accountType,
     externalAccountId: fakeExternalId(provider, seed),

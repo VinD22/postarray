@@ -43,7 +43,7 @@ import { resolveTarget } from '../internal/stored-content';
 /** Posts inside this window are compared for duplicate and similarity. */
 const DUPLICATE_WINDOW_HOURS = 72;
 const CROSS_ACCOUNT_SIMILARITY_THRESHOLD = 0.8;
-/** Default per-connection budget when the brand has not set one. */
+/** Default per-connection budget when the project has not set one. */
 const DEFAULT_DAILY_CADENCE = 10;
 
 interface TargetContext {

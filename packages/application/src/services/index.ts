@@ -8,7 +8,7 @@ import { createApprovalService } from './approvals';
 import { createAuditService } from './audit';
 import { createAutomationRuleService } from './automation-rules';
 import { createBillingService } from './billing';
-import { createBrandService } from './brands';
+import { createProjectService } from './projects';
 import { createBulkImportService } from './bulk-import';
 import { createWorkerBulkImportService } from './worker-bulk-import';
 import { createConnectionService } from './connections';
@@ -67,7 +67,7 @@ export function createServices(deps: ServiceDeps): Services {
   return {
     workspaces: createWorkspaceService(deps),
     members: createMembershipService(deps),
-    brands: createBrandService(deps),
+    projects: createProjectService(deps),
     connections: createConnectionService(deps),
     content,
     validation,

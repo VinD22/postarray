@@ -28,7 +28,7 @@ import type {
   ApiKeyView,
   ApprovalLevel,
   BillingStateView,
-  BrandView,
+  ProjectView,
   ConnectionSummaryView,
   ExportJobView,
   MemberView,
@@ -151,13 +151,13 @@ export const workspaceGateway = {
 
 export const membersGateway = {
   async list(): Promise<readonly MemberView[]> {
-    const [members, invitations, session, brands] = await Promise.all([
+    const [members, invitations, session, projects] = await Promise.all([
       api.members.list(),
       api.members.listInvitations(),
       api.session.get(),
-      api.brands.list({ limit: 100 }),
+      api.projects.list({ limit: 100 }),
     ]);
-    const brandNames = new Map(brands.data.map((brand) => [brand.id, brand.name]));
+    const projectNames = new Map(projects.data.map((project) => [project.id, project.name]));
     return [...members.data, ...invitations.data].map((member) => ({
       id: member.id,
       userId: member.userId,
@@ -165,8 +165,8 @@ export const membersGateway = {
       email: member.email,
       role: member.role as WorkspaceRole,
       status: member.invitePending ? ('invited' as const) : ('active' as const),
-      brandScope: member.brandScope.flatMap((id) => {
-        const name = brandNames.get(id);
+      projectScope: member.projectScope.flatMap((id) => {
+        const name = projectNames.get(id);
         return name === undefined ? [] : [{ id, name }];
       }),
       canApprove: APPROVAL_ROLES.has(member.role),
@@ -180,7 +180,7 @@ export const membersGateway = {
   async invite(input: {
     email: string;
     role: WorkspaceRole;
-    brandIds: readonly string[];
+    projectIds: readonly string[];
     canApprove: boolean;
   }): Promise<void> {
     await api.members.invite(
@@ -192,7 +192,7 @@ export const membersGateway = {
   async updateRole(input: {
     memberId: string;
     role: WorkspaceRole;
-    brandIds: readonly string[];
+    projectIds: readonly string[];
     canApprove: boolean;
   }): Promise<void> {
     await api.members.updateRole(input.memberId, input.role);
@@ -207,9 +207,9 @@ export const membersGateway = {
   },
 };
 
-/* --------------------------------------------------------------- brands */
+/* -------------------------------------------------------------- projects */
 
-function toBrandView(base: {
+function toProjectView(base: {
   id: string;
   name: string;
   voice: string | null;
@@ -220,7 +220,7 @@ function toBrandView(base: {
   connectionIds: readonly string[];
   rememberTargetsEnabled: boolean;
   updatedAt: string;
-}): BrandView {
+}): ProjectView {
   return {
     id: base.id,
     name: base.name,
@@ -240,18 +240,18 @@ function toBrandView(base: {
   };
 }
 
-export const brandsGateway = {
-  async list(): Promise<readonly BrandView[]> {
-    const page = await api.brands.list();
-    return page.data.map(toBrandView);
+export const projectsGateway = {
+  async list(): Promise<readonly ProjectView[]> {
+    const page = await api.projects.list();
+    return page.data.map(toProjectView);
   },
 
-  async get(brandId: string): Promise<BrandView> {
-    return toBrandView(await api.brands.get(brandId));
+  async get(projectId: string): Promise<ProjectView> {
+    return toProjectView(await api.projects.get(projectId));
   },
 
-  async update(brandId: string, patch: Partial<BrandView>): Promise<BrandView> {
-    const updated = await api.brands.update(brandId, {
+  async update(projectId: string, patch: Partial<ProjectView>): Promise<ProjectView> {
+    const updated = await api.projects.update(projectId, {
       ...(patch.name === undefined ? {} : { name: patch.name }),
       ...(patch.voice === undefined ? {} : { voice: patch.voice }),
       ...(patch.audience === undefined ? {} : { audience: patch.audience }),
@@ -261,16 +261,16 @@ export const brandsGateway = {
         ? {}
         : { domains: patch.domains.map((entry) => entry.domain) }),
     });
-    return toBrandView(updated);
+    return toProjectView(updated);
   },
 
-  async create(input: { name: string }): Promise<BrandView> {
-    const brand = await api.brands.create(input, newIdempotencyKey('settings'));
-    return toBrandView(brand);
+  async create(input: { name: string }): Promise<ProjectView> {
+    const project = await api.projects.create(input, newIdempotencyKey('settings'));
+    return toProjectView(project);
   },
 
-  async archive(brandId: string): Promise<void> {
-    await api.brands.archive(brandId);
+  async archive(projectId: string): Promise<void> {
+    await api.projects.archive(projectId);
   },
 };
 
@@ -336,7 +336,7 @@ export const securityGateway = {
       id: grant.id,
       subjectUserId: grant.subjectUserId,
       scopes: grant.scopes as readonly Scope[],
-      brandScope: grant.brandScope,
+      projectScope: grant.projectScope,
       connectionScope: grant.connectionScope,
       consentedAt: grant.consentedAt,
       lastUsedAt: grant.lastUsedAt,
@@ -376,7 +376,7 @@ export const agentsGateway = {
     name: string;
     purpose: string;
     scopes: readonly Scope[];
-    brandIds: readonly string[];
+    projectIds: readonly string[];
     connectionIds: readonly string[];
     contentLocales: readonly string[];
     allowedDomains: readonly string[];
@@ -550,7 +550,7 @@ export const oauthAppsGateway = {
         id: grant.id,
         subjectUserId: grant.subjectUserId,
         scopes: grant.scopes as readonly Scope[],
-        brandScope: grant.brandScope,
+        projectScope: grant.projectScope,
         connectionScope: grant.connectionScope,
         consentedAt: grant.consentedAt,
         lastUsedAt: grant.lastUsedAt,

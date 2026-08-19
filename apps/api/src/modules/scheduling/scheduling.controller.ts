@@ -133,7 +133,7 @@ export class SchedulingController {
     return this.scheduling.getCalendar(actor, parseQuery(calendarQuerySchema, query));
   }
 
-  /** The next slot that respects the brand's cadence and quiet hours. */
+  /** The next slot that respects the project's cadence and quiet hours. */
   @Get('calendar/next-slot')
   @RequireScope('drafts:read')
   nextSlot(

@@ -2,7 +2,7 @@ import { approvalLevelSchema, scopeSchema } from '@relay/contracts';
 import { z } from 'zod';
 
 import { cursorQuerySchema } from '../../common/pagination';
-import { brandIdSchema, connectionIdSchema, shortTextSchema } from '../../common/schemas';
+import { projectIdSchema, connectionIdSchema, shortTextSchema } from '../../common/schemas';
 
 /**
  * Workspace API keys.
@@ -32,7 +32,7 @@ export const createApiKeySchema = z
       .max(MAX_API_KEY_LIFETIME_DAYS)
       .default(DEFAULT_API_KEY_LIFETIME_DAYS),
     approvalLevel: approvalLevelSchema.default('level_1_draft'),
-    brandIds: z.array(brandIdSchema).max(200).default([]),
+    projectIds: z.array(projectIdSchema).max(200).default([]),
     connectionIds: z.array(connectionIdSchema).max(200).default([]),
     /** CIDR blocks the key may be used from. Empty means no source restriction. */
     ipAllowlist: z.array(z.string().trim().min(7).max(43)).max(20).default([]),

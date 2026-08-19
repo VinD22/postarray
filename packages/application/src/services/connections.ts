@@ -27,6 +27,7 @@ import type {
 import type { OAuthAccountSelectionView } from '../ports/oauth-pending';
 
 import { recordAudit } from '../internal/audit';
+import { requireProjectOwnershipIfPresent } from '../internal/project-ownership';
 import { loadCapabilities } from '../internal/capabilities';
 import { invalid, notFound } from '../internal/errors';
 import {
@@ -52,7 +53,7 @@ import { selectOAuthAccounts } from './oauth-gateway';
 const CONNECTION_SELECT = {
   id: true,
   workspaceId: true,
-  brandId: true,
+  projectId: true,
   provider: true,
   accountType: true,
   displayName: true,
@@ -78,7 +79,7 @@ const CONNECTION_SELECT = {
 interface ConnectionRow {
   id: string;
   workspaceId: string;
-  brandId: string | null;
+  projectId: string | null;
   provider: string;
   accountType: string;
   displayName: string;
@@ -114,7 +115,7 @@ function toView(row: ConnectionRow): ConnectionView {
   return {
     id: row.id,
     workspaceId: row.workspaceId,
-    brandId: row.brandId,
+    projectId: row.projectId,
     provider: toProviderId(row.provider),
     accountType: fromStoredAccountType(row.accountType),
     displayName: row.displayName,
@@ -291,13 +292,14 @@ export function createConnectionService(deps: ServiceDeps): ConnectionService {
 
     async list(
       ctx: ActorContext,
-      query: PageQuery & { brandId?: string; provider?: ProviderId } = {},
+      query: PageQuery & { projectId?: string; provider?: ProviderId } = {},
     ): Promise<Paginated<ConnectionView>> {
-      return authorized(deps, ctx, 'connection.read', undefined, async (db) => {
+      return authorized(deps, ctx, 'connection.read', undefined, async (db, actor) => {
+        await requireProjectOwnershipIfPresent(db, actor, query.projectId);
         const args = pageArgs(query);
         const rows = await db.socialConnection.findMany({
           where: {
-            ...(query.brandId === undefined ? {} : { brandId: query.brandId }),
+            ...(query.projectId === undefined ? {} : { projectId: query.projectId }),
             ...(query.provider === undefined ? {} : { provider: query.provider }),
           },
           orderBy: { id: 'asc' },
@@ -341,14 +343,15 @@ export function createConnectionService(deps: ServiceDeps): ConnectionService {
      */
     async beginOAuth(
       ctx: ActorContext,
-      input: { provider: ProviderId; brandId?: string | null; redirectTo: string },
+      input: { provider: ProviderId; projectId?: string | null; redirectTo: string },
     ): Promise<{ authorizationUrl: string; transactionId: string }> {
       return authorized(
         deps,
         ctx,
         'connection.connect',
-        input.brandId === undefined ? undefined : { brandId: input.brandId },
+        input.projectId === undefined ? undefined : { projectId: input.projectId },
         async (db, actor) => {
+          await requireProjectOwnershipIfPresent(db, actor, input.projectId);
           if (!deps.connectors.has(input.provider)) {
             throw new CapabilityNotImplementedError({
               messageKey: 'errors.capability_not_implemented',
@@ -403,7 +406,7 @@ export function createConnectionService(deps: ServiceDeps): ConnectionService {
           const transaction = await db.oAuthTransaction.create({
             data: {
               workspaceId: actor.workspace.id,
-              brandId: input.brandId ?? null,
+              projectId: input.projectId ?? null,
               purpose: 'connect_social_account',
               provider: input.provider,
               stateHash,
@@ -469,7 +472,7 @@ export function createConnectionService(deps: ServiceDeps): ConnectionService {
           select: {
             id: true,
             workspaceId: true,
-            brandId: true,
+            projectId: true,
             provider: true,
             stateHash: true,
             codeChallenge: true,
@@ -527,7 +530,7 @@ export function createConnectionService(deps: ServiceDeps): ConnectionService {
         await deps.oauthPending?.create({
           transactionId: transaction.id,
           workspaceId: transaction.workspaceId,
-          brandId: transaction.brandId,
+          projectId: transaction.projectId,
           provider,
           stateHash: transaction.stateHash,
           accounts: sanitizeDiscoveredAccounts(discovery.accounts),
@@ -595,7 +598,7 @@ export function createConnectionService(deps: ServiceDeps): ConnectionService {
         const transaction = await db.oAuthTransaction.create({
           data: {
             workspaceId: actor.workspace.id,
-            brandId: null,
+            projectId: null,
             purpose: 'connect_social_account',
             provider: input.provider,
             stateHash,
@@ -625,7 +628,7 @@ export function createConnectionService(deps: ServiceDeps): ConnectionService {
         await deps.oauthPending.create({
           transactionId: transaction.id,
           workspaceId: actor.workspace.id,
-          brandId: null,
+          projectId: null,
           provider: input.provider,
           stateHash,
           accounts: sanitizeDiscoveredAccounts(discovery.accounts),
@@ -879,7 +882,7 @@ export function createConnectionService(deps: ServiceDeps): ConnectionService {
         const transaction = await db.oAuthTransaction.create({
           data: {
             workspaceId: actor.workspace.id,
-            brandId: connection.brandId,
+            projectId: connection.projectId,
             purpose: 'reconnect_social_account',
             provider,
             stateHash,

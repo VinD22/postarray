@@ -52,7 +52,7 @@ export function useAutomationRules() {
     queryFn: async (): Promise<readonly RuleSummaryView[]> => {
       const result = await api.automationRules.list({});
       return result.data
-        .filter((rule) => rule.brandId === project?.id)
+        .filter((rule) => rule.projectId === project?.id)
         .map((rule): RuleSummaryView => {
           const draft = toRuleDraft(rule);
           return {
@@ -105,12 +105,12 @@ export function useSaveRule() {
   const { project } = useSession();
   return useMutation({
     mutationFn: async (draft: RuleDraft): Promise<RuleDraft> => {
-      const brandId = project?.id;
-      if (brandId === undefined) throw new Error('ACTIVE_PROJECT_REQUIRED');
+      const projectId = project?.id;
+      if (projectId === undefined) throw new Error('ACTIVE_PROJECT_REQUIRED');
       const saved =
         draft.id === null
-          ? await api.automationRules.create(toRuleInput(draft, brandId), newIdempotencyKey('rule'))
-          : await api.automationRules.update(draft.id, toRuleInput(draft, brandId));
+          ? await api.automationRules.create(toRuleInput(draft, projectId), newIdempotencyKey('rule'))
+          : await api.automationRules.update(draft.id, toRuleInput(draft, projectId));
       return toRuleDraft(requireValue(saved, 'RULE_SAVE_NOT_AVAILABLE'));
     },
     onSuccess: (saved) => {

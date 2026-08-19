@@ -46,7 +46,7 @@ function master(overrides: Partial<MasterDraft> = {}): MasterDraft {
   return {
     id: newId(ID_PREFIXES.contentItem),
     workspaceId: newId(ID_PREFIXES.workspace),
-    brandId: null,
+    projectId: null,
     campaignId: null,
     title: null,
     body: 'One master draft, many native variants.',

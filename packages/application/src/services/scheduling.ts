@@ -85,7 +85,7 @@ export function createSchedulingService(
               const aggregate = await loadAggregate(db, input.contentItemId);
               for (const variant of aggregate.variants) {
                 guard(actor, 'post.schedule', {
-                  brandId: aggregate.brandId,
+                  projectId: aggregate.projectId,
                   connectionId: variant.connectionId,
                 });
               }
@@ -111,7 +111,7 @@ export function createSchedulingService(
               // the audit can say which rule chose the time. Nothing is created
               // here: an unmatched schedule simply has no reservation.
               const linked = await linkReservationToJob(db, {
-                brandId: aggregate.brandId,
+                projectId: aggregate.projectId,
                 instant: new Date(spec.instant),
                 contentItemId: input.contentItemId,
                 publishJobId: first.id,
@@ -278,7 +278,7 @@ export function createSchedulingService(
         from: string;
         to: string;
         filters?: {
-          brandId?: string;
+          projectId?: string;
           campaignId?: string;
           connectionId?: string;
           state?: PublishState;
@@ -298,11 +298,11 @@ export function createSchedulingService(
             scheduledFor: { gte: from, lte: to },
             ...(filters.connectionId === undefined ? {} : { connectionId: filters.connectionId }),
             ...(filters.state === undefined ? {} : { state: filters.state }),
-            ...(filters.brandId === undefined && filters.campaignId === undefined
+            ...(filters.projectId === undefined && filters.campaignId === undefined
               ? {}
               : {
                   contentItem: {
-                    ...(filters.brandId === undefined ? {} : { brandId: filters.brandId }),
+                    ...(filters.projectId === undefined ? {} : { projectId: filters.projectId }),
                     ...(filters.campaignId === undefined ? {} : { campaignId: filters.campaignId }),
                   },
                 }),
@@ -327,7 +327,7 @@ export function createSchedulingService(
             contentItem: {
               select: {
                 title: true,
-                brandId: true,
+                projectId: true,
                 campaignId: true,
                 currentVersion: { select: { payload: true } },
               },
@@ -343,7 +343,7 @@ export function createSchedulingService(
             jobId: row.id,
             contentItemId: row.contentItemId,
             title: row.contentItem.title,
-            brandId: row.contentItem.brandId,
+            projectId: row.contentItem.projectId,
             campaignId: row.contentItem.campaignId,
             connectionId: row.connectionId,
             provider: toProviderId(row.connection.provider),
@@ -366,20 +366,20 @@ export function createSchedulingService(
     /**
      * The next slot, delegated to the queue model.
      *
-     * The old behaviour, "the first free hour with no job for this brand", is
+     * The old behaviour, "the first free hour with no job for this project", is
      * still here: it is the labelled fallback inside the slot finder, used when
      * a project has configured no queue rules yet. What changed is that the
      * choice is now explainable, and the reasons travel with it.
      */
     async nextAvailableSlot(
       ctx: ActorContext,
-      input: { brandId: string; after?: string },
+      input: { projectId: string; after?: string },
     ): Promise<SlotProposal> {
       return authorized(
         deps,
         ctx,
         'content.read',
-        { brandId: input.brandId },
+        { projectId: input.projectId },
         async (db, actor) => {
           const context = await readQueueContext(
             db,

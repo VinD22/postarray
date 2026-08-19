@@ -31,11 +31,11 @@ import { useTranslations } from '@relay/i18n/react';
 import { MoreHorizontal } from 'lucide-react';
 
 import { AsyncBoundary } from '../lib/async-boundary';
-import { brandsGateway, membersGateway } from '../lib/gateway';
+import { projectsGateway, membersGateway } from '../lib/gateway';
 import { useFormatters } from '../lib/formatters';
 import { settingsKey, useWorkspaceId } from '../lib/keys';
 import { useSettingsMutation } from '../lib/use-settings-mutation';
-import type { BrandRef, MemberView } from '../lib/view-models';
+import type { ProjectRef, MemberView } from '../lib/view-models';
 import { SettingsPanel, SettingsStack } from '../components/section';
 import { MemberDialog, type MemberFormValue } from './member-dialog';
 import { RoleReference } from './role-reference';
@@ -46,18 +46,18 @@ export function MembersScreen(): ReactNode {
   const formatters = useFormatters();
   const workspaceId = useWorkspaceId();
   const MEMBERS_KEY = settingsKey(workspaceId, 'members');
-  const BRANDS_KEY = settingsKey(workspaceId, 'brands');
+  const PROJECTS_KEY = settingsKey(workspaceId, 'projects');
 
   const members = useQuery({ queryKey: MEMBERS_KEY, queryFn: () => membersGateway.list() });
-  const brands = useQuery({ queryKey: BRANDS_KEY, queryFn: () => brandsGateway.list() });
+  const projects = useQuery({ queryKey: PROJECTS_KEY, queryFn: () => projectsGateway.list() });
 
   const [dialogOpen, setDialogOpen] = useState(false);
   const [editing, setEditing] = useState<MemberView | null>(null);
   const [pendingRemoval, setPendingRemoval] = useState<MemberView | null>(null);
 
-  const brandRefs = useMemo<readonly BrandRef[]>(
-    () => (brands.data ?? []).map((brand) => ({ id: brand.id, name: brand.name })),
-    [brands.data],
+  const projectRefs = useMemo<readonly ProjectRef[]>(
+    () => (projects.data ?? []).map((project) => ({ id: project.id, name: project.name })),
+    [projects.data],
   );
 
   const invite = useSettingsMutation({
@@ -92,7 +92,7 @@ export function MembersScreen(): ReactNode {
     void changeRole.run({
       memberId: editing.id,
       role: value.role,
-      brandIds: value.brandIds,
+      projectIds: value.projectIds,
       canApprove: value.canApprove,
     });
   }
@@ -108,12 +108,12 @@ export function MembersScreen(): ReactNode {
   }
 
   function scopeLabel(member: MemberView): string {
-    if (member.brandScope.length === 0) {
+    if (member.projectScope.length === 0) {
       return t('settings.ui.members.scopeAll');
     }
     return t('settings.ui.members.scopeLimited', {
-      count: member.brandScope.length,
-      names: formatters.list(member.brandScope.map((brand) => brand.name)),
+      count: member.projectScope.length,
+      names: formatters.list(member.projectScope.map((project) => project.name)),
     });
   }
 
@@ -121,9 +121,9 @@ export function MembersScreen(): ReactNode {
     if (!member.canApprove) {
       return t('settings.ui.members.approvals.cannotApprove');
     }
-    return member.brandScope.length === 0
+    return member.projectScope.length === 0
       ? t('settings.ui.members.approvals.canApprove')
-      : t('settings.ui.members.approvals.canApproveOwnBrands');
+      : t('settings.ui.members.approvals.canApproveOwnProjects');
   }
 
   function lastActiveLabel(member: MemberView): string {
@@ -167,7 +167,7 @@ export function MembersScreen(): ReactNode {
                 void invite.run({
                   email: member.email,
                   role: member.role,
-                  brandIds: member.brandScope.map((brand) => brand.id),
+                  projectIds: member.projectScope.map((project) => project.id),
                   canApprove: member.canApprove,
                 })
               }
@@ -347,7 +347,7 @@ export function MembersScreen(): ReactNode {
         open={dialogOpen}
         onOpenChange={setDialogOpen}
         member={editing}
-        brands={brandRefs}
+        projects={projectRefs}
         saving={invite.isSaving || changeRole.isSaving}
         onSubmit={submitDialog}
       />

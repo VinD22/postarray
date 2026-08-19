@@ -44,14 +44,14 @@ export async function accountsList(
   render: RenderInput,
   options: PageOptions & {
     readonly provider?: string | undefined;
-    readonly brandId?: string | undefined;
+    readonly projectId?: string | undefined;
   },
 ): Promise<void> {
   const response = await context.api().request({
     method: 'GET',
     path: ROUTES.connections(),
     schema: paginated(connectionViewSchema),
-    query: { ...pageQuery(options), provider: options.provider, brandId: options.brandId },
+    query: { ...pageQuery(options), provider: options.provider, projectId: options.projectId },
   });
 
   renderSuccess({ ...render, correlationId: response.correlationId }, response.data, [
@@ -131,14 +131,14 @@ export async function postsList(
   render: RenderInput,
   options: PageOptions & {
     readonly state?: string | undefined;
-    readonly brandId?: string | undefined;
+    readonly projectId?: string | undefined;
   },
 ): Promise<void> {
   const response = await context.api().request({
     method: 'GET',
     path: ROUTES.content(),
     schema: paginated(contentItemViewSchema),
-    query: { ...pageQuery(options), state: options.state, brandId: options.brandId },
+    query: { ...pageQuery(options), state: options.state, projectId: options.projectId },
   });
 
   renderSuccess({ ...render, correlationId: response.correlationId }, response.data, [
@@ -198,14 +198,14 @@ export async function calendarList(
   options: PageOptions & {
     readonly from: string;
     readonly to: string;
-    readonly brandId?: string | undefined;
+    readonly projectId?: string | undefined;
   },
 ): Promise<void> {
   const response = await context.api().request({
     method: 'GET',
     path: ROUTES.calendar(),
     schema: paginated(calendarEntrySchema),
-    query: { ...pageQuery(options), from: options.from, to: options.to, brandId: options.brandId },
+    query: { ...pageQuery(options), from: options.from, to: options.to, projectId: options.projectId },
   });
 
   renderSuccess({ ...render, correlationId: response.correlationId }, response.data, [

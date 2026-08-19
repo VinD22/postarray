@@ -16,7 +16,7 @@ import { z } from 'zod';
 
 import { cursorQueryWith } from '../../common/pagination';
 import {
-  brandIdSchema,
+  projectIdSchema,
   campaignIdSchema,
   connectionIdSchema,
   contentItemIdSchema,
@@ -49,7 +49,7 @@ export const targetInputSchema = z
 
 export const createDraftSchema = z
   .object({
-    brandId: brandIdSchema,
+    projectId: projectIdSchema,
     campaignId: campaignIdSchema.nullable().optional(),
     title: z.string().max(300).nullable().optional(),
     body: z.string().max(100_000).default(''),
@@ -103,7 +103,7 @@ export const applySignatureSchema = z
 
 export const listContentQuerySchema = cursorQueryWith({
   state: publishStateSchema.optional(),
-  brandId: brandIdSchema.optional(),
+  projectId: projectIdSchema.optional(),
   campaignId: campaignIdSchema.optional(),
 });
 

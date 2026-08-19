@@ -28,7 +28,7 @@ import {
 export interface BulkImportJobRow {
   readonly id: string;
   readonly workspaceId: string;
-  readonly brandId: string;
+  readonly projectId: string;
   readonly state: string;
   readonly filename: string;
   readonly manifestChecksum: string;
@@ -66,7 +66,7 @@ export interface BulkImportRowRow {
 export const BULK_IMPORT_JOB_SELECT = {
   id: true,
   workspaceId: true,
-  brandId: true,
+  projectId: true,
   state: true,
   filename: true,
   manifestChecksum: true,
@@ -133,7 +133,7 @@ export function toJobView(row: BulkImportJobRow): BulkImportJobView {
   return {
     id: row.id,
     workspaceId: row.workspaceId,
-    projectId: row.brandId,
+    projectId: row.projectId,
     state: bulkImportStateSchema.parse(row.state),
     filename: row.filename,
     manifestChecksum: row.manifestChecksum,

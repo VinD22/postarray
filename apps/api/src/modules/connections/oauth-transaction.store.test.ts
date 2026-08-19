@@ -13,7 +13,7 @@ const transaction: OAuthTransaction = {
   provider: 'bluesky' as const,
   state: 'state-value-1234567890',
   workspaceId: newIdFor('workspace'),
-  brandId: newIdFor('brand'),
+  projectId: newIdFor('project'),
   actorId: newIdFor('user'),
   actorType: 'user' as const,
   scopes: ['connections:admin'],

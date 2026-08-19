@@ -21,7 +21,7 @@ interface MembershipRow {
   readonly userId: string;
   readonly role: string;
   readonly state: string;
-  readonly brandScope: unknown;
+  readonly projectScope: unknown;
   readonly invitedAt: NullableDate;
   readonly acceptedAt: NullableDate;
   readonly removedAt: NullableDate;
@@ -34,7 +34,7 @@ interface MembershipRow {
   };
 }
 
-interface BrandRow {
+interface ProjectRow {
   readonly id: string;
   readonly name: string;
   readonly slug: string;
@@ -51,7 +51,7 @@ interface BrandRow {
 
 interface CampaignRow {
   readonly id: string;
-  readonly brandId: string;
+  readonly projectId: string;
   readonly name: string;
   readonly objective: string | null;
   readonly tags: unknown;
@@ -64,7 +64,7 @@ interface CampaignRow {
 
 interface ContentItemRow {
   readonly id: string;
-  readonly brandId: string;
+  readonly projectId: string;
   readonly campaignId: string | null;
   readonly title: string | null;
   readonly brief: string | null;
@@ -122,7 +122,7 @@ interface PostVariantRow {
 
 interface ConnectionRow {
   readonly id: string;
-  readonly brandId: string | null;
+  readonly projectId: string | null;
   readonly provider: string;
   readonly accountType: string;
   readonly displayName: string;
@@ -142,7 +142,7 @@ interface ConnectionRow {
 
 interface MediaRow {
   readonly id: string;
-  readonly brandId: string | null;
+  readonly projectId: string | null;
   readonly kind: string;
   readonly mimeType: string;
   readonly byteSize: bigint;
@@ -226,7 +226,7 @@ interface AuditRow {
 export interface DataExportArchiveRows {
   readonly workspace: WorkspaceRow;
   readonly memberships: readonly MembershipRow[];
-  readonly brands: readonly BrandRow[];
+  readonly projects: readonly ProjectRow[];
   readonly campaigns: readonly CampaignRow[];
   readonly contentItems: readonly ContentItemRow[];
   readonly versions: readonly ContentVersionRow[];

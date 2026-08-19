@@ -9,27 +9,27 @@ import { SERVICES } from '../../application/tokens';
 export class TargetMemoryService {
   constructor(@Inject(SERVICES) private readonly services: Services) {}
 
-  read(ctx: ActorContext, brandId: string): Promise<RememberedTargetsView> {
-    return this.services.rememberedTargets.read(ctx, { brandId });
+  read(ctx: ActorContext, projectId: string): Promise<RememberedTargetsView> {
+    return this.services.rememberedTargets.read(ctx, { projectId });
   }
 
   remember(
     ctx: ActorContext,
-    brandId: string,
+    projectId: string,
     connectionIds: readonly string[],
   ): Promise<RememberedTargetsView> {
-    return this.services.rememberedTargets.remember(ctx, { brandId, connectionIds });
+    return this.services.rememberedTargets.remember(ctx, { projectId, connectionIds });
   }
 
-  forget(ctx: ActorContext, brandId: string): Promise<void> {
-    return this.services.rememberedTargets.forget(ctx, { brandId });
+  forget(ctx: ActorContext, projectId: string): Promise<void> {
+    return this.services.rememberedTargets.forget(ctx, { projectId });
   }
 
   setEnabled(
     ctx: ActorContext,
-    brandId: string,
+    projectId: string,
     enabled: boolean,
-  ): Promise<{ brandId: string; enabled: boolean }> {
-    return this.services.rememberedTargets.setEnabled(ctx, { brandId, enabled });
+  ): Promise<{ projectId: string; enabled: boolean }> {
+    return this.services.rememberedTargets.setEnabled(ctx, { projectId, enabled });
   }
 }

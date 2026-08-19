@@ -46,7 +46,7 @@ export function wrapped<T extends z.ZodType>(item: T) {
 export const connectionViewSchema = z.object({
   id: z.string().min(1),
   workspaceId: z.string().min(1),
-  brandId: z.string().min(1).nullable(),
+  projectId: z.string().min(1).nullable(),
   provider: providerIdSchema,
   accountType: accountTypeSchema,
   displayName: z.string(),
@@ -95,7 +95,7 @@ export const postVariantViewSchema = z.object({
 export const contentItemViewSchema = z.object({
   id: z.string().min(1),
   workspaceId: z.string().min(1),
-  brandId: z.string().min(1),
+  projectId: z.string().min(1),
   campaignId: z.string().nullable(),
   title: z.string().nullable(),
   state: publishStateSchema,
@@ -118,7 +118,7 @@ export const calendarEntrySchema = z.object({
   jobId: z.string().nullable(),
   contentItemId: z.string().min(1),
   title: z.string().nullable(),
-  brandId: z.string().min(1),
+  projectId: z.string().min(1),
   campaignId: z.string().nullable(),
   connectionId: z.string().nullable(),
   provider: providerIdSchema.nullable(),
@@ -180,7 +180,7 @@ export type ShortLinkStats = z.infer<typeof shortLinkStatsSchema>;
 
 export const automationRuleViewSchema = z.object({
   id: z.string().min(1),
-  brandId: z.string().min(1),
+  projectId: z.string().min(1),
   name: z.string(),
   state: z.enum(['draft', 'active', 'paused', 'disabled', 'archived']),
   trigger: z.object({ kind: z.string().min(1) }),

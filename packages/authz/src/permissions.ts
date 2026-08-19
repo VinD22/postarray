@@ -19,10 +19,10 @@ export const PERMISSIONS = [
   'member.update_role',
   'member.remove',
 
-  // Brands and campaigns
-  'brand.read',
-  'brand.write',
-  'brand.delete',
+  // Projects and campaigns
+  'project.read',
+  'project.write',
+  'project.delete',
 
   // Connections
   'connection.read',

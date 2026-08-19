@@ -24,7 +24,7 @@ import { isNavItemActive, NAV_ITEMS } from './nav-items';
 
 const SETTINGS_LINKS = [
   { href: '/settings/members', labelKey: 'settings.nav.members' },
-  { href: '/settings/brands', labelKey: 'settings.nav.brands' },
+  { href: '/settings/projects', labelKey: 'settings.nav.projects' },
   { href: '/settings/billing', labelKey: 'settings.nav.billing' },
   { href: '/settings/webhooks', labelKey: 'settings.nav.webhooks' },
   { href: '/settings/security', labelKey: 'settings.nav.security' },

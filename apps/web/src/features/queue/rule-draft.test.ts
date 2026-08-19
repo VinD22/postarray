@@ -105,7 +105,7 @@ describe('draft issues', () => {
       maximumPerDay: 0,
     };
     expect(draftIssues(draft)).toEqual([]);
-    expect(toInput(draft, 'brand_1').maximumPerDay).toBe(0);
+    expect(toInput(draft, 'project_1').maximumPerDay).toBe(0);
   });
 
   it('carries a null daily maximum through as null, never as zero', () => {
@@ -114,7 +114,7 @@ describe('draft issues', () => {
       name: 'Open',
       windows: [{ weekday: 1, startMinute: 540, endMinute: 600 }],
     };
-    expect(toInput(draft, 'brand_1').maximumPerDay).toBeNull();
+    expect(toInput(draft, 'project_1').maximumPerDay).toBeNull();
   });
 
   it('trims the name it sends', () => {
@@ -123,6 +123,6 @@ describe('draft issues', () => {
       name: '  Weekday mornings  ',
       windows: [{ weekday: 1, startMinute: 540, endMinute: 600 }],
     };
-    expect(toInput(draft, 'brand_1').name).toBe('Weekday mornings');
+    expect(toInput(draft, 'project_1').name).toBe('Weekday mornings');
   });
 });

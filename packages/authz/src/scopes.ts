@@ -26,7 +26,7 @@ export const SCOPE_PERMISSIONS: Readonly<Record<Scope, readonly Permission[]>> =
   'accounts:read': ['connection.read'],
   'accounts:write': ['connection.reconnect', 'connection.pause'],
   'connections:admin': ['connection.connect', 'connection.disconnect'],
-  'drafts:read': ['content.read', 'brand.read'],
+  'drafts:read': ['content.read', 'project.read'],
   'drafts:write': ['content.write', 'content.delete', 'content.request_approval'],
   'posts:schedule': ['post.schedule', 'post.reschedule'],
   'posts:publish': ['post.publish_now', 'post.retry'],

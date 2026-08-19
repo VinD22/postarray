@@ -100,7 +100,7 @@ export function ConnectionsScreen({
   const { project } = useSession();
 
   const { query: connections, rows } = useConnectionRows(
-    project === null ? {} : { brandId: project.id },
+    project === null ? {} : { projectId: project.id },
   );
   const groups = useCustomerGroups();
 
@@ -175,7 +175,7 @@ export function ConnectionsScreen({
   const startConnect = (provider: ProviderId): void => {
     if (project === null) return;
     beginConnection.mutate(
-      { provider, brandId: project.id, returnUrl: '/connections' },
+      { provider, projectId: project.id, returnUrl: '/connections' },
       { onSuccess: goToProvider },
     );
   };

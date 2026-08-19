@@ -132,7 +132,7 @@ export function ConnectStep() {
     setError(null);
     try {
       const { authorizationUrl } = await api.connections.beginOAuth(
-        { provider: selected, brandId: project.id, returnUrl: '/onboarding/compose' },
+        { provider: selected, projectId: project.id, returnUrl: '/onboarding/compose' },
         newIdempotencyKey('oauth'),
       );
       window.location.assign(authorizationUrl);

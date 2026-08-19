@@ -4,13 +4,13 @@ import { newIdFor } from './ids';
 import { postingSetInputSchema, postingSetPatchSchema } from './posting-sets';
 import { canPause, pauseRefusal, PAUSABLE_PUBLISH_STATES } from './publishing';
 
-const brandId = newIdFor('brand');
+const projectId = newIdFor('project');
 const connectionA = newIdFor('connection');
 const connectionB = newIdFor('connection');
 
 describe('postingSetInputSchema', () => {
   it('defaults an unconfigured Set to no approval and the queue slot', () => {
-    const parsed = postingSetInputSchema.parse({ brandId, name: 'Launch' });
+    const parsed = postingSetInputSchema.parse({ projectId, name: 'Launch' });
     expect(parsed.approvalPolicy).toBe('none');
     expect(parsed.slotBehavior).toBe('next_free_slot');
     expect(parsed.connectionIds).toEqual([]);
@@ -19,7 +19,7 @@ describe('postingSetInputSchema', () => {
 
   it('rejects the same channel twice', () => {
     const result = postingSetInputSchema.safeParse({
-      brandId,
+      projectId,
       name: 'Launch',
       connectionIds: [connectionA, connectionA],
     });
@@ -28,7 +28,7 @@ describe('postingSetInputSchema', () => {
 
   it('rejects two defaults for the same platform', () => {
     const result = postingSetInputSchema.safeParse({
-      brandId,
+      projectId,
       name: 'Launch',
       targetDefaults: [{ provider: 'mastodon' }, { provider: 'mastodon' }],
     });
@@ -37,7 +37,7 @@ describe('postingSetInputSchema', () => {
 
   it('accepts one default per platform', () => {
     const parsed = postingSetInputSchema.parse({
-      brandId,
+      projectId,
       name: 'Launch',
       connectionIds: [connectionA, connectionB],
       targetDefaults: [{ provider: 'mastodon' }, { provider: 'linkedin', requireAltText: true }],
@@ -56,7 +56,7 @@ describe('postingSetPatchSchema', () => {
   });
 
   it('refuses an unknown field rather than dropping it silently', () => {
-    expect(postingSetPatchSchema.safeParse({ brandId }).success).toBe(false);
+    expect(postingSetPatchSchema.safeParse({ projectId }).success).toBe(false);
   });
 });
 

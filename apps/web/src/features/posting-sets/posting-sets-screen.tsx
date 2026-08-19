@@ -36,7 +36,7 @@ import {
 } from './use-posting-sets';
 
 export interface PostingSetsScreenProps {
-  brandId: string;
+  projectId: string;
   connections: readonly ConnectionView[];
   signatures?: readonly SignatureOption[];
 }
@@ -44,14 +44,14 @@ export interface PostingSetsScreenProps {
 type Editing = { readonly mode: 'create' } | { readonly mode: 'edit'; readonly set: PostingSetView };
 
 export function PostingSetsScreen({
-  brandId,
+  projectId,
   connections,
   signatures = [],
 }: PostingSetsScreenProps): ReactNode {
   const t = useTranslations();
   const [includeArchived, setIncludeArchived] = useState(false);
   const [editing, setEditing] = useState<Editing | null>(null);
-  const query = usePostingSets({ brandId, includeArchived });
+  const query = usePostingSets({ projectId, includeArchived });
   const create = useCreatePostingSet();
   const update = useUpdatePostingSet();
   const archive = useArchivePostingSet();
@@ -79,7 +79,7 @@ export function PostingSetsScreen({
       return;
     }
     create.mutate(
-      { brandId, targetDefaults: [], ...patch },
+      { projectId, targetDefaults: [], ...patch },
       { onSuccess: () => setEditing(null) },
     );
   };
@@ -92,7 +92,7 @@ export function PostingSetsScreen({
           description={t('set.lede')}
         />
         <SetForm
-          brandId={brandId}
+          projectId={projectId}
           {...(editing.mode === 'edit' ? { set: editing.set } : {})}
           connections={connections}
           signatures={signatures}

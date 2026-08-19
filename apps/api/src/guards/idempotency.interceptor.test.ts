@@ -20,12 +20,12 @@ beforeEach(async () => {
   harness = await createHarness({
     services: (base) => ({
       ...base,
-      brands: {
-        ...base.brands,
+      projects: {
+        ...base.projects,
         create: () => {
           created += 1;
           return Promise.resolve({
-            id: newIdFor('brand'),
+            id: newIdFor('project'),
             workspaceId: newIdFor('workspace'),
             name: `Acme ${created}`,
             slug: `acme-${created}`,
@@ -54,12 +54,12 @@ afterEach(async () => {
 
 const body = { name: 'Acme', ianaTimeZone: 'Europe/Berlin' };
 
-async function createBrand(
+async function createProject(
   key: string | undefined,
   payload: Record<string, unknown>,
   secret: string,
 ): Promise<request.Response> {
-  const call = request(harness.server).post('/v1/brands').set('authorization', `Bearer ${secret}`);
+  const call = request(harness.server).post('/v1/projects').set('authorization', `Bearer ${secret}`);
   if (key !== undefined) {
     call.set('idempotency-key', key);
   }
@@ -70,7 +70,7 @@ describe('idempotency', () => {
   it('requires an Idempotency-Key on a create', async () => {
     const key = await seedApiKey(harness, { scopes: ['accounts:write'] });
 
-    const response = await createBrand(undefined, body, key.secret);
+    const response = await createProject(undefined, body, key.secret);
 
     expect(response.status).toBe(422);
     expect(response.body.code).toBe('VALIDATION_FAILED');
@@ -81,8 +81,8 @@ describe('idempotency', () => {
   it('replays the stored response and does not run the handler twice', async () => {
     const key = await seedApiKey(harness, { scopes: ['accounts:write'] });
 
-    const first = await createBrand('idem-replay-1', body, key.secret);
-    const second = await createBrand('idem-replay-1', body, key.secret);
+    const first = await createProject('idem-replay-1', body, key.secret);
+    const second = await createProject('idem-replay-1', body, key.secret);
 
     expect(first.status).toBe(201);
     expect(second.status).toBe(201);
@@ -95,8 +95,8 @@ describe('idempotency', () => {
   it('rejects the same key with a different body rather than overwriting', async () => {
     const key = await seedApiKey(harness, { scopes: ['accounts:write'] });
 
-    await createBrand('idem-mismatch-1', body, key.secret);
-    const conflicting = await createBrand(
+    await createProject('idem-mismatch-1', body, key.secret);
+    const conflicting = await createProject(
       'idem-mismatch-1',
       { ...body, name: 'Something else entirely' },
       key.secret,
@@ -111,8 +111,8 @@ describe('idempotency', () => {
     const first = await seedApiKey(harness, { scopes: ['accounts:write'] });
     const second = await seedApiKey(harness, { scopes: ['accounts:write'] });
 
-    const one = await createBrand('shared-key', body, first.secret);
-    const two = await createBrand('shared-key', body, second.secret);
+    const one = await createProject('shared-key', body, first.secret);
+    const two = await createProject('shared-key', body, second.secret);
 
     expect(one.status).toBe(201);
     expect(two.status).toBe(201);
@@ -123,10 +123,10 @@ describe('idempotency', () => {
   it('does not reserve a key for a request that failed', async () => {
     const key = await seedApiKey(harness, { scopes: ['accounts:write'] });
 
-    const rejected = await createBrand('idem-retry-1', { name: '' }, key.secret);
+    const rejected = await createProject('idem-retry-1', { name: '' }, key.secret);
     expect(rejected.status).toBe(422);
 
-    const retried = await createBrand('idem-retry-1', body, key.secret);
+    const retried = await createProject('idem-retry-1', body, key.secret);
     expect(retried.status).toBe(201);
     expect(created).toBe(1);
   });
@@ -136,15 +136,15 @@ describe('idempotency', () => {
       scopes: ['accounts:write', 'drafts:write'],
     });
 
-    await createBrand('idem-cross-route', body, key.secret);
+    await createProject('idem-cross-route', body, key.secret);
     const other = await request(harness.server)
       .post('/v1/content')
       .set('authorization', `Bearer ${key.secret}`)
       .set('idempotency-key', 'idem-cross-route')
       .send({
-        brandId: newIdFor('brand'),
+        projectId: newIdFor('project'),
         master: {
-          brandId: null,
+          projectId: null,
           campaignId: null,
           title: null,
           body: 'hello',

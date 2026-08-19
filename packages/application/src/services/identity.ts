@@ -205,7 +205,7 @@ export function createIdentityService(deps: ServiceDeps): IdentityService {
                     take: 1,
                     select: { numericValue: true },
                   },
-                  brands: {
+                  projects: {
                     where: { archivedAt: null },
                     orderBy: { createdAt: 'asc' },
                     select: {
@@ -255,11 +255,11 @@ export function createIdentityService(deps: ServiceDeps): IdentityService {
         },
         workspace: toWorkspace(activeMembership),
         workspaces: user.memberships.map(toWorkspace),
-        brands: activeMembership.workspace.brands.map((brand) => ({
-          id: brand.id,
+        projects: activeMembership.workspace.projects.map((project) => ({
+          id: project.id,
           workspaceId: activeMembership.workspace.id,
-          name: brand.name,
-          connectionIds: brand.socialConnections.map((connection) => connection.id),
+          name: project.name,
+          connectionIds: project.socialConnections.map((connection) => connection.id),
         })),
         scopes: delegableScopes(activeMembership.role),
         onboardingComplete: true,
@@ -357,7 +357,7 @@ export function createIdentityService(deps: ServiceDeps): IdentityService {
                   acceptedAt: deps.clock.now(),
                 },
               },
-              brands: {
+              projects: {
                 create: {
                   name: input.displayName,
                   slug: workspaceSlug(input.displayName),

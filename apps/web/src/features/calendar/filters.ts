@@ -71,7 +71,7 @@ export function formatAnchor(anchor: Date): string {
 
 export function parseFilters(params: ReadableParams): CalendarFilters {
   return {
-    brandId: params.get('brand'),
+    projectId: params.get('project'),
     connectionId: params.get('account'),
     provider: pick(params, 'platform', PROVIDERS),
     bucket: pick(params, 'status', BUCKETS),
@@ -97,7 +97,7 @@ export function toSearchParams(
   const params = new URLSearchParams();
   if (view !== defaultView) params.set('view', view);
   params.set('date', formatAnchor(anchor));
-  if (filters.brandId) params.set('brand', filters.brandId);
+  if (filters.projectId) params.set('project', filters.projectId);
   if (filters.connectionId) params.set('account', filters.connectionId);
   if (filters.provider) params.set('platform', filters.provider);
   if (filters.bucket) params.set('status', filters.bucket);
@@ -111,7 +111,7 @@ export function toSearchParams(
 /** How many filters are narrowing the view right now. */
 export function countActiveFilters(filters: CalendarFilters): number {
   let count = 0;
-  if (filters.brandId) count += 1;
+  if (filters.projectId) count += 1;
   if (filters.connectionId) count += 1;
   if (filters.provider) count += 1;
   if (filters.bucket) count += 1;
@@ -164,7 +164,7 @@ export function applyFilters(
   filters: CalendarFilters,
 ): readonly CalendarEntry[] {
   return entries.filter((entry) => {
-    if (filters.brandId && (entry.brandId ?? null) !== filters.brandId) return false;
+    if (filters.projectId && (entry.projectId ?? null) !== filters.projectId) return false;
     if (filters.connectionId && (entry.connectionId ?? null) !== filters.connectionId) {
       return false;
     }

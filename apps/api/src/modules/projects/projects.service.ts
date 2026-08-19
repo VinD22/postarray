@@ -1,32 +1,32 @@
 import { Inject, Injectable } from '@nestjs/common';
 import type { Paginated } from '@relay/contracts';
 
-import type { ActorContext, BrandView, CursorQuery, Services } from '../../application/port';
+import type { ActorContext, ProjectView, CursorQuery, Services } from '../../application/port';
 import { SERVICES } from '../../application/tokens';
-import type { CreateBrandInput, UpdateBrandInput } from './brands.schemas';
+import type { CreateProjectInput, UpdateProjectInput } from './projects.schemas';
 
-/** Transport-level delegation for brands. No rule lives here. */
+/** Transport-level delegation for projects. No rule lives here. */
 @Injectable()
-export class BrandsService {
+export class ProjectsService {
   constructor(@Inject(SERVICES) private readonly services: Services) {}
 
-  list(ctx: ActorContext, query: CursorQuery): Promise<Paginated<BrandView>> {
-    return this.services.brands.list(ctx, query);
+  list(ctx: ActorContext, query: CursorQuery): Promise<Paginated<ProjectView>> {
+    return this.services.projects.list(ctx, query);
   }
 
-  get(ctx: ActorContext, brandId: string): Promise<BrandView> {
-    return this.services.brands.get(ctx, brandId);
+  get(ctx: ActorContext, projectId: string): Promise<ProjectView> {
+    return this.services.projects.get(ctx, projectId);
   }
 
-  create(ctx: ActorContext, input: CreateBrandInput): Promise<BrandView> {
-    return this.services.brands.create(ctx, {
+  create(ctx: ActorContext, input: CreateProjectInput): Promise<ProjectView> {
+    return this.services.projects.create(ctx, {
       name: input.name,
       ...(input.ianaTimeZone === undefined ? {} : { defaultTimeZone: input.ianaTimeZone }),
     });
   }
 
-  update(ctx: ActorContext, brandId: string, patch: UpdateBrandInput): Promise<BrandView> {
-    return this.services.brands.update(ctx, brandId, {
+  update(ctx: ActorContext, projectId: string, patch: UpdateProjectInput): Promise<ProjectView> {
+    return this.services.projects.update(ctx, projectId, {
       ...(patch.name === undefined ? {} : { name: patch.name }),
       ...(patch.ianaTimeZone === undefined ? {} : { defaultTimeZone: patch.ianaTimeZone }),
       ...(patch.voice === undefined ? {} : { voice: patch.voice }),
@@ -37,7 +37,7 @@ export class BrandsService {
     });
   }
 
-  delete(ctx: ActorContext, brandId: string): Promise<void> {
-    return this.services.brands.delete(ctx, brandId);
+  delete(ctx: ActorContext, projectId: string): Promise<void> {
+    return this.services.projects.delete(ctx, projectId);
   }
 }

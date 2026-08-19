@@ -9,7 +9,7 @@ import { useTranslations } from '@relay/i18n/react';
 
 import { SettingsStack } from '../settings/components/section';
 import { AsyncBoundary } from '../settings/lib/async-boundary';
-import { brandsGateway, growthGateway, securityGateway } from '../settings/lib/gateway';
+import { projectsGateway, growthGateway, securityGateway } from '../settings/lib/gateway';
 import { useFormatters } from '../settings/lib/formatters';
 import { settingsKey, useWorkspaceId } from '../settings/lib/keys';
 import { useSettingsMutation } from '../settings/lib/use-settings-mutation';
@@ -40,12 +40,12 @@ export function GrowthScreen(): ReactNode {
   const workspaceId = useWorkspaceId();
   const PROFILE_KEY = settingsKey(workspaceId, 'growth', 'profile');
   const PLAN_KEY = settingsKey(workspaceId, 'growth', 'plan');
-  const BRANDS_KEY = settingsKey(workspaceId, 'brands');
+  const PROJECTS_KEY = settingsKey(workspaceId, 'projects');
   const CONNECTIONS_KEY = settingsKey(workspaceId, 'security', 'connections');
 
   const profile = useQuery({ queryKey: PROFILE_KEY, queryFn: () => growthGateway.profile() });
   const plan = useQuery({ queryKey: PLAN_KEY, queryFn: () => growthGateway.plan() });
-  const brands = useQuery({ queryKey: BRANDS_KEY, queryFn: () => brandsGateway.list() });
+  const projects = useQuery({ queryKey: PROJECTS_KEY, queryFn: () => projectsGateway.list() });
   const connections = useQuery({
     queryKey: CONNECTIONS_KEY,
     queryFn: () => securityGateway.connections(),
@@ -97,8 +97,8 @@ export function GrowthScreen(): ReactNode {
   });
 
   const availableLocales = useMemo(
-    () => Array.from(new Set((brands.data ?? []).flatMap((brand) => brand.contentLocales))).sort(),
-    [brands.data],
+    () => Array.from(new Set((projects.data ?? []).flatMap((project) => project.contentLocales))).sort(),
+    [projects.data],
   );
 
   const availableChannels = useMemo(
@@ -111,9 +111,9 @@ export function GrowthScreen(): ReactNode {
   );
 
   function submitIntake(value: IntakeValue): void {
-    const brandId = brands.data?.[0]?.id;
-    if (brandId === undefined) return;
-    void saveProfile.run({ ...value, brandId });
+    const projectId = projects.data?.[0]?.id;
+    if (projectId === undefined) return;
+    void saveProfile.run({ ...value, projectId });
   }
 
   const step: 'intake' | 'confirm' | 'plan' =

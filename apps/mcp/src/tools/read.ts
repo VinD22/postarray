@@ -42,13 +42,13 @@ export const listAccountsTool = defineTool({
   requiresHumanConfirmation: false,
   inputSchema: z.object({
     provider: providerIdSchema.optional(),
-    brand_id: z.string().min(1).optional(),
+    project_id: z.string().min(1).optional(),
     ...pageInputShape,
   }),
   async run(context, input): Promise<ToolResult> {
     const page = await context.services.connections.list(context.actor, {
       ...(input.provider === undefined ? {} : { provider: input.provider }),
-      ...(input.brand_id === undefined ? {} : { brandId: input.brand_id }),
+      ...(input.project_id === undefined ? {} : { projectId: input.project_id }),
       ...(input.cursor === undefined ? {} : { cursor: input.cursor }),
       limit: input.limit,
     });
@@ -148,14 +148,14 @@ export const getCalendarTool = defineTool({
   inputSchema: z.object({
     from: z.string().min(1),
     to: z.string().min(1),
-    brand_id: z.string().min(1).optional(),
+    project_id: z.string().min(1).optional(),
     ...pageInputShape,
   }),
   async run(context, input): Promise<ToolResult> {
     const page = await context.services.scheduling.getCalendar(context.actor, {
       from: input.from,
       to: input.to,
-      ...(input.brand_id === undefined ? {} : { filters: { brandId: input.brand_id } }),
+      ...(input.project_id === undefined ? {} : { filters: { projectId: input.project_id } }),
       ...(input.cursor === undefined ? {} : { cursor: input.cursor }),
       limit: input.limit,
     });

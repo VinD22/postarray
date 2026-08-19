@@ -13,7 +13,7 @@ function request(overrides: Partial<AiRequest> = {}): AiRequest {
       brief: 'We shipped scheduled publishing.',
       contentKind: 'text',
       locale: 'en',
-      brandVoice: 'direct',
+      projectVoice: 'direct',
     },
     ...overrides,
   };

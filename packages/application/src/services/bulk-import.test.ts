@@ -78,8 +78,8 @@ function matches(row: Record<string, unknown>, where: Record<string, unknown>): 
 }
 
 const fakeDb = {
-  brand: {
-    findFirst: async () => ({ id: 'brand_1', defaultTimeZone: 'Europe/London' }),
+  project: {
+    findFirst: async () => ({ id: 'project_1', defaultTimeZone: 'Europe/London' }),
   },
   mediaAsset: {
     findFirst: async ({ where }: { where: Record<string, unknown> }) =>
@@ -223,12 +223,12 @@ describe('bulk import upload', () => {
     const csv = `${HEADER}\n${line('r1')}\n${line('r2')}\n`;
 
     const first = await service.upload(ctx, {
-      projectId: 'brand_1',
+      projectId: 'project_1',
       filename: 'posts.csv',
       content: csv,
     });
     const second = await service.upload(ctx, {
-      projectId: 'brand_1',
+      projectId: 'project_1',
       filename: 'posts-again.csv',
       content: csv,
     });
@@ -242,7 +242,7 @@ describe('bulk import upload', () => {
   it('creates no draft and schedules nothing on upload', async () => {
     const service = await makeService();
     await service.upload(ctx, {
-      projectId: 'brand_1',
+      projectId: 'project_1',
       filename: 'posts.csv',
       content: `${HEADER}\n${line('r1')}\n`,
     });
@@ -256,7 +256,7 @@ describe('bulk import upload', () => {
   it('reports counts rather than leaving them unknown after a parse', async () => {
     const service = await makeService();
     const report = await service.upload(ctx, {
-      projectId: 'brand_1',
+      projectId: 'project_1',
       filename: 'posts.csv',
       content: `${HEADER}\n${line('r1')}\n${line('r2', CONNECTION_OK, 'Second')}\n`,
     });
@@ -268,7 +268,7 @@ describe('bulk import apply', () => {
   it('defaults to drafts and does not schedule', async () => {
     const service = await makeService();
     const uploaded = await service.upload(ctx, {
-      projectId: 'brand_1',
+      projectId: 'project_1',
       filename: 'posts.csv',
       content: `${HEADER}\n${line('r1')}\n`,
     });
@@ -284,7 +284,7 @@ describe('bulk import apply', () => {
   it('schedules only when a person explicitly chose the scheduled mode', async () => {
     const service = await makeService();
     const uploaded = await service.upload(ctx, {
-      projectId: 'brand_1',
+      projectId: 'project_1',
       filename: 'posts.csv',
       content: `${HEADER}\n${line('r1')}\n`,
     });
@@ -298,7 +298,7 @@ describe('bulk import apply', () => {
   it('applies a second time without creating a second draft', async () => {
     const service = await makeService();
     const uploaded = await service.upload(ctx, {
-      projectId: 'brand_1',
+      projectId: 'project_1',
       filename: 'posts.csv',
       content: `${HEADER}\n${line('r1')}\n${line('r2', CONNECTION_OK, 'Second')}\n`,
     });
@@ -315,7 +315,7 @@ describe('bulk import apply', () => {
   it('uses a stable per row idempotency key so a retry replays', async () => {
     const service = await makeService();
     const uploaded = await service.upload(ctx, {
-      projectId: 'brand_1',
+      projectId: 'project_1',
       filename: 'posts.csv',
       content: `${HEADER}\n${line('r1')}\n`,
     });
@@ -328,7 +328,7 @@ describe('bulk import apply', () => {
   it('keeps one failing row from harming the row after it', async () => {
     const service = await makeService();
     const uploaded = await service.upload(ctx, {
-      projectId: 'brand_1',
+      projectId: 'project_1',
       filename: 'posts.csv',
       content: `${HEADER}\n${line('bad', CONNECTION_BAD)}\n${line('good')}\n`,
     });
@@ -347,7 +347,7 @@ describe('bulk import apply', () => {
   it('records a failed row as an ICU key with no message text', async () => {
     const service = await makeService();
     const uploaded = await service.upload(ctx, {
-      projectId: 'brand_1',
+      projectId: 'project_1',
       filename: 'posts.csv',
       content: `${HEADER}\n${line('bad', CONNECTION_BAD)}\n`,
     });
@@ -363,7 +363,7 @@ describe('bulk import error report', () => {
   it('downloads the failed rows as a CSV of keys, not sentences', async () => {
     const service = await makeService();
     const uploaded = await service.upload(ctx, {
-      projectId: 'brand_1',
+      projectId: 'project_1',
       filename: 'posts.csv',
       content: `${HEADER}\n${line('r1', CONNECTION_OK, 'Fine')}\nr2,launch,not-an-id,Body,2026-09-01T10:00,Europe/Berlin,${MEDIA}\n`,
     });

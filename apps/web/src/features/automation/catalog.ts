@@ -191,10 +191,10 @@ export const TRIGGERS: readonly TriggerSpec[] = [
 
 export const CONDITIONS: readonly ConditionSpec[] = [
   {
-    kind: 'brand',
-    sentenceKey: 'automation.condition.brand',
+    kind: 'project',
+    sentenceKey: 'automation.condition.project',
     groupKey: 'automation.picker.groupContent',
-    parameters: [param('brand', 'automation.param.brand', 'select')],
+    parameters: [param('project', 'automation.param.project', 'select')],
   },
   {
     kind: 'campaign',

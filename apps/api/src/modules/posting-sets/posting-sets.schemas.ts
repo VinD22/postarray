@@ -7,7 +7,7 @@ import {
 import { z } from 'zod';
 
 import { cursorQueryWith } from '../../common/pagination';
-import { brandIdSchema, connectionIdSchema, signatureIdSchema } from '../../common/schemas';
+import { projectIdSchema, connectionIdSchema, signatureIdSchema } from '../../common/schemas';
 
 /**
  * Posting Set payloads.
@@ -21,7 +21,7 @@ import { brandIdSchema, connectionIdSchema, signatureIdSchema } from '../../comm
 
 export const createPostingSetSchema = postingSetInputShape
   .extend({
-    brandId: brandIdSchema,
+    projectId: projectIdSchema,
     connectionIds: z.array(connectionIdSchema).max(200).default([]),
     signatureId: signatureIdSchema.nullable().default(null),
   })
@@ -35,7 +35,7 @@ export const updatePostingSetSchema = postingSetPatchSchema.extend({
 });
 
 export const listPostingSetsQuerySchema = cursorQueryWith({
-  brandId: brandIdSchema.optional(),
+  projectId: projectIdSchema.optional(),
   /** Archived Sets are hidden by default; the management screen can ask. */
   includeArchived: z.coerce.boolean().optional(),
 });

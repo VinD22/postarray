@@ -17,6 +17,7 @@
     "clean": "rm -rf dist .turbo"
   },
   "dependencies": {
+    "@relay/analytics-domain": "workspace:*",
     "@relay/authz": "workspace:*",
     "@relay/config": "workspace:*",
     "@relay/connectors": "workspace:*",

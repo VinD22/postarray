@@ -14,6 +14,7 @@ import type { ActorContext, ServiceDeps } from '../types';
  */
 
 const sets: Record<string, unknown>[] = [];
+const projects: Record<string, unknown>[] = [];
 const audits: Record<string, unknown>[] = [];
 const permissions: string[] = [];
 const forbiddenWrites: string[] = [];
@@ -65,6 +66,14 @@ function forbidden(model: string): Record<string, unknown> {
 }
 
 const fakeDb = {
+  // Ownership is resolved against this table before a project id is used, so
+  // the fake honours the workspace in the `where` clause rather than matching
+  // on id alone. A project row that exists but belongs to another workspace is
+  // exactly the case the security tests below turn on.
+  project: {
+    findFirst: async ({ where }: { where: Record<string, unknown> }) =>
+      projects.find((row) => matches(row, where)) ?? null,
+  },
   postingSet: {
     findMany: async () => sets,
     findFirst: async ({ where }: { where: Record<string, unknown> }) =>
@@ -123,14 +132,15 @@ const ctx: ActorContext = {
   locale: 'en',
 };
 
-const BRAND_ID = newIdFor('brand');
+const PROJECT_ID = newIdFor('project');
+const OTHER_WORKSPACE_PROJECT_ID = newIdFor('project');
 const CONNECTION_A = newIdFor('connection');
 const CONNECTION_B = newIdFor('connection');
 const CONNECTION_C = newIdFor('connection');
 const CONNECTION_D = newIdFor('connection');
 
 const BASE = {
-  brandId: BRAND_ID,
+  projectId: PROJECT_ID,
   name: 'Launch day',
   description: null,
   connectionIds: [CONNECTION_A, CONNECTION_B],
@@ -154,6 +164,19 @@ function service() {
 
 beforeEach(() => {
   sets.length = 0;
+  projects.length = 0;
+  projects.push(
+    { id: PROJECT_ID, workspaceId: 'ws_1', archivedAt: null, rememberTargetsEnabled: false },
+    // Same database, different tenant. Row level security would hide it; the
+    // service must refuse it even when a fake, or a future unscoped client,
+    // does not.
+    {
+      id: OTHER_WORKSPACE_PROJECT_ID,
+      workspaceId: 'ws_2',
+      archivedAt: null,
+      rememberTargetsEnabled: false,
+    },
+  );
   audits.length = 0;
   permissions.length = 0;
   forbiddenWrites.length = 0;
@@ -195,18 +218,16 @@ describe('create, update and archive', () => {
 
   it('refuses a second live Set with the same name in one project', async () => {
     await service().create(ctx, BASE);
-    await expect(
-      service().create({ ...ctx, correlationId: 'c2' }, BASE),
-    ).rejects.toMatchObject({ messageKey: 'errors.posting_set_name_taken' });
+    await expect(service().create({ ...ctx, correlationId: 'c2' }, BASE)).rejects.toMatchObject({
+      messageKey: 'errors.posting_set_name_taken',
+    });
   });
 
   it('treats an absent patch field as leave alone', async () => {
     const created = await service().create(ctx, BASE);
-    const updated = await service().update(
-      { ...ctx, correlationId: 'c2' },
-      created.id,
-      { name: 'Launch week' },
-    );
+    const updated = await service().update({ ...ctx, correlationId: 'c2' }, created.id, {
+      name: 'Launch week',
+    });
     expect(updated.name).toBe('Launch week');
     expect(updated.connectionIds).toEqual([CONNECTION_A, CONNECTION_B]);
     expect(updated.approvalPolicy).toBe('single_approver');
@@ -301,5 +322,51 @@ describe('a Set is read only at apply time', () => {
     const reread = await service().get(ctx, created.id);
     expect(reread.connectionIds).toHaveLength(4);
     expect(reread.approvalPolicy).toBe('none');
+  });
+});
+
+/**
+ * Tenancy, at the layer above row level security.
+ *
+ * RLS makes a wrong-workspace project read back as nothing, which is why the
+ * fake above filters on `workspaceId` too. What it cannot do is tell the
+ * difference between "this project is not mine" and "this project is empty",
+ * so the service has to resolve the project first and refuse an id it does not
+ * own, before that id reaches a `where` clause or a `data` payload.
+ */
+describe('a project id from another workspace', () => {
+  it('is refused on create rather than filed under the caller workspace', async () => {
+    await expect(
+      service().create(ctx, { ...BASE, projectId: OTHER_WORKSPACE_PROJECT_ID }),
+    ).rejects.toMatchObject({
+      code: 'NOT_FOUND',
+      messageKey: 'errors.not_found.project',
+    });
+    expect(sets).toHaveLength(0);
+    expect(audits).toHaveLength(0);
+  });
+
+  it('is refused as a list filter rather than answered with an empty page', async () => {
+    await expect(service().list(ctx, { projectId: OTHER_WORKSPACE_PROJECT_ID })).rejects.toMatchObject({
+      code: 'NOT_FOUND',
+    });
+  });
+
+  it('says not found, never forbidden, so an id cannot be confirmed by probing', async () => {
+    const unknown = await service()
+      .list(ctx, { projectId: newIdFor('project') })
+      .catch((error: unknown) => error);
+    const foreign = await service()
+      .list(ctx, { projectId: OTHER_WORKSPACE_PROJECT_ID })
+      .catch((error: unknown) => error);
+    expect(unknown).toMatchObject({ code: 'NOT_FOUND' });
+    expect(foreign).toMatchObject({ code: 'NOT_FOUND' });
+  });
+
+  it('still allows the project this workspace owns', async () => {
+    const created = await service().create(ctx, BASE);
+    expect(created.projectId).toBe(PROJECT_ID);
+    const listed = await service().list(ctx, { projectId: PROJECT_ID });
+    expect(listed.data).toHaveLength(1);
   });
 });

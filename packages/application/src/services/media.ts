@@ -23,6 +23,7 @@ import type {
 import type { MediaAssetView } from '../views';
 
 import { recordAudit } from '../internal/audit';
+import { requireProjectOwnershipIfPresent } from '../internal/project-ownership';
 import { invalid, notFound } from '../internal/errors';
 import { toJson } from '../internal/json';
 import { pageArgs, toPage } from '../internal/pagination';
@@ -46,7 +47,7 @@ import { createMediaDerivativeService } from './media-derivatives';
 const MEDIA_SELECT = {
   id: true,
   workspaceId: true,
-  brandId: true,
+  projectId: true,
   kind: true,
   mimeType: true,
   byteSize: true,
@@ -72,7 +73,7 @@ const MEDIA_SELECT = {
 interface MediaRow {
   id: string;
   workspaceId: string;
-  brandId: string | null;
+  projectId: string | null;
   kind: string;
   mimeType: string;
   byteSize: bigint;
@@ -145,7 +146,7 @@ function toView(row: MediaRow): MediaAssetView {
   return {
     id: row.id,
     workspaceId: row.workspaceId,
-    brandId: row.brandId,
+    projectId: row.projectId,
     kind: row.kind as MediaAssetView['kind'],
     mimeType: row.mimeType,
     byteSize: Number(row.byteSize),
@@ -265,7 +266,7 @@ export function createMediaService(deps: ServiceDeps): MediaService {
         mimeType: string;
         byteSize: number;
         sha256: string;
-        brandId?: string | null;
+        projectId?: string | null;
       },
     ): Promise<{
       uploadUrl: string;
@@ -279,10 +280,11 @@ export function createMediaService(deps: ServiceDeps): MediaService {
         deps,
         ctx,
         'media.write',
-        input.brandId === undefined || input.brandId === null
+        input.projectId === undefined || input.projectId === null
           ? undefined
-          : { brandId: input.brandId },
+          : { projectId: input.projectId },
         async (db, actor) => {
+          await requireProjectOwnershipIfPresent(db, actor, input.projectId);
           if (!SHA256_PATTERN.test(input.sha256)) {
             throw invalid('errors.media_checksum_invalid', {});
           }
@@ -309,7 +311,7 @@ export function createMediaService(deps: ServiceDeps): MediaService {
                   await db.mediaAsset.create({
                     data: {
                       workspaceId: actor.workspace.id,
-                      brandId: input.brandId ?? null,
+                      projectId: input.projectId ?? null,
                       kind,
                       storageBucket: deps.config.neon.storageBucket,
                       storageKey: `${ctx.workspaceId}/${input.sha256}`,
@@ -329,7 +331,7 @@ export function createMediaService(deps: ServiceDeps): MediaService {
                   await db.mediaAsset.update({
                     where: { id: existing.id },
                     data: {
-                      brandId: input.brandId ?? null,
+                      projectId: input.projectId ?? null,
                       kind,
                       mimeType: input.mimeType,
                       byteSize: BigInt(input.byteSize),
@@ -522,12 +524,12 @@ export function createMediaService(deps: ServiceDeps): MediaService {
     /** SSRF-safe, content-addressed and replay-safe. */
     async importFromUrl(
       ctx: ActorContext,
-      input: { url: string; brandId?: string | null },
+      input: { url: string; projectId?: string | null },
     ): Promise<OperationRef> {
       const resource =
-        input.brandId === undefined || input.brandId === null
+        input.projectId === undefined || input.projectId === null
           ? undefined
-          : { brandId: input.brandId };
+          : { projectId: input.projectId };
       return withIdempotency(
         deps.kv,
         ctx,
@@ -536,8 +538,12 @@ export function createMediaService(deps: ServiceDeps): MediaService {
           body: input,
           run: async () => {
             // Authorize before making any outbound request, then authorize
-            // again when the durable row and audit event are written.
-            await authorized(deps, ctx, 'media.write', resource, async () => undefined);
+            // again when the durable row and audit event are written. The
+            // project is resolved in the same pass, so an id this workspace
+            // does not own never reaches the fetcher.
+            await authorized(deps, ctx, 'media.write', resource, async (db, actor) => {
+              await requireProjectOwnershipIfPresent(db, actor, input.projectId);
+            });
 
             const imported = await fetchAndStoreRemoteMedia({
               workspaceId: ctx.workspaceId,
@@ -562,7 +568,7 @@ export function createMediaService(deps: ServiceDeps): MediaService {
                     ? await db.mediaAsset.create({
                         data: {
                           workspaceId: actor.workspace.id,
-                          brandId: input.brandId ?? null,
+                          projectId: input.projectId ?? null,
                           kind: kindForMimeType(imported.mimeType),
                           storageBucket: deps.config.neon.storageBucket,
                           storageKey: imported.storageKey,
@@ -582,7 +588,7 @@ export function createMediaService(deps: ServiceDeps): MediaService {
                     : await db.mediaAsset.update({
                         where: { id: existing.id },
                         data: {
-                          brandId: input.brandId ?? null,
+                          projectId: input.projectId ?? null,
                           kind: kindForMimeType(imported.mimeType),
                           storageKey: imported.storageKey,
                           mimeType: imported.mimeType,
@@ -636,9 +642,10 @@ export function createMediaService(deps: ServiceDeps): MediaService {
 
     async list(
       ctx: ActorContext,
-      query: PageQuery & { brandId?: string; kind?: string } = {},
+      query: PageQuery & { projectId?: string; kind?: string } = {},
     ): Promise<Paginated<MediaAssetView>> {
-      return authorized(deps, ctx, 'media.read', undefined, async (db) => {
+      return authorized(deps, ctx, 'media.read', undefined, async (db, actor) => {
+        await requireProjectOwnershipIfPresent(db, actor, query.projectId);
         const args = pageArgs(query);
         const kind = query.kind === undefined ? undefined : asMediaKind(query.kind);
         if (query.kind !== undefined && kind === undefined) {
@@ -648,7 +655,7 @@ export function createMediaService(deps: ServiceDeps): MediaService {
           where: {
             deletedAt: null,
             retentionExpiresAt: { gt: deps.clock.now() },
-            ...(query.brandId === undefined ? {} : { brandId: query.brandId }),
+            ...(query.projectId === undefined ? {} : { projectId: query.projectId }),
             ...(kind === undefined ? {} : { kind }),
           },
           orderBy: { id: 'desc' },

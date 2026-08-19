@@ -3,7 +3,7 @@
 /**
  * Signatures.
  *
- * A signature is scoped by brand, platform and content language, so only the
+ * A signature is scoped by project, platform and content language, so only the
  * ones that actually match this draft are offered. The exact ending text is
  * shown before it can be approved, because a footer that appears for the first
  * time on the live post is a footer nobody reviewed.
@@ -44,12 +44,12 @@ export function SignaturePanel(): ReactNode {
     () =>
       bootstrap.signatures.filter(
         (signature) =>
-          (signature.brandId === null || signature.brandId === state.master.brandId) &&
+          (signature.projectId === null || signature.projectId === state.master.projectId) &&
           signature.locale === state.master.locale &&
           (signature.providers.length === 0 ||
             signature.providers.some((provider) => providers.has(provider))),
       ),
-    [bootstrap.signatures, providers, state.master.brandId, state.master.locale],
+    [bootstrap.signatures, providers, state.master.projectId, state.master.locale],
   );
 
   const current = state.master.signature;
@@ -117,9 +117,9 @@ export function SignaturePanel(): ReactNode {
             layout="columns"
             items={[
               {
-                id: 'brand',
+                id: 'project',
                 term: t.full('composer.campaign.label'),
-                definition: currentOption.brandId ?? t.full('common.all'),
+                definition: currentOption.projectId ?? t.full('common.all'),
               },
               {
                 id: 'platform',

@@ -2,19 +2,19 @@ import { destinationKindSchema, providerIdSchema } from '@relay/contracts';
 import { z } from 'zod';
 
 import { cursorQueryWith } from '../../common/pagination';
-import { brandIdSchema, shortTextSchema } from '../../common/schemas';
+import { projectIdSchema, shortTextSchema } from '../../common/schemas';
 
 /** Connection listing, OAuth handshake and provider lookup payloads. */
 
 export const listConnectionsQuerySchema = cursorQueryWith({
-  brandId: brandIdSchema.optional(),
+  projectId: projectIdSchema.optional(),
   provider: providerIdSchema.optional(),
 });
 
 export const beginOAuthSchema = z
   .object({
     provider: providerIdSchema,
-    brandId: brandIdSchema,
+    projectId: projectIdSchema,
     /**
      * Where to send the browser when the handshake finishes. Validated against
      * the configured app origin at the callback, never followed blindly: an

@@ -3,6 +3,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 import type { ActorContext, ServiceDeps } from '../types';
 
 const rules: Record<string, unknown>[] = [];
+const projects: Record<string, unknown>[] = [];
 const reservations: Record<string, unknown>[] = [];
 const audits: Record<string, unknown>[] = [];
 const permissions: unknown[] = [];
@@ -47,8 +48,13 @@ vi.mock('../internal/audit', () => ({
 }));
 
 const fakeDb = {
-  brand: {
-    findFirst: async () => ({ defaultTimeZone: 'Europe/London' }),
+  // Every project id a caller supplies is resolved here first, so the fake
+  // honours the workspace in the `where` clause. A project that exists but
+  // belongs to another tenant is the case the security suite at the bottom of
+  // this file turns on.
+  project: {
+    findFirst: async ({ where }: { where: Record<string, unknown> }) =>
+      projects.find((row) => matches(row, where)) ?? null,
   },
   queueRule: {
     findMany: async () => rules,
@@ -127,6 +133,10 @@ const ctx: ActorContext = {
   locale: 'en',
 };
 
+const OWN_PROJECT = 'project_1';
+/** A real project row, in this database, owned by a different workspace. */
+const OTHER_WORKSPACE_PROJECT = 'project_other_workspace';
+
 const MONDAY_NINE_TO_FIVE = [{ weekday: 1, startMinute: 9 * 60, endMinute: 17 * 60 }];
 
 function service() {
@@ -135,6 +145,23 @@ function service() {
 
 beforeEach(() => {
   rules.length = 0;
+  projects.length = 0;
+  projects.push(
+    {
+      id: OWN_PROJECT,
+      workspaceId: 'ws_1',
+      archivedAt: null,
+      rememberTargetsEnabled: false,
+      defaultTimeZone: 'Europe/London',
+    },
+    {
+      id: OTHER_WORKSPACE_PROJECT,
+      workspaceId: 'ws_2',
+      archivedAt: null,
+      rememberTargetsEnabled: false,
+      defaultTimeZone: 'Europe/London',
+    },
+  );
   reservations.length = 0;
   audits.length = 0;
   permissions.length = 0;
@@ -148,7 +175,7 @@ describe('queue rule authorization', () => {
   it('asks for rule.read before listing and rule.write before creating', async () => {
     await service().list(ctx, {});
     await service().create(ctx, {
-      brandId: 'brand_1',
+      projectId: 'project_1',
       name: 'Weekdays',
       ianaTimeZone: 'Europe/London',
       windows: MONDAY_NINE_TO_FIVE,
@@ -166,7 +193,7 @@ describe('queue rule authorization', () => {
     denyPermission = 'rule.write';
     await expect(
       service().create(ctx, {
-        brandId: 'brand_1',
+        projectId: 'project_1',
         name: 'Weekdays',
         ianaTimeZone: 'Europe/London',
         windows: MONDAY_NINE_TO_FIVE,
@@ -182,13 +209,13 @@ describe('queue rule authorization', () => {
   });
 
   it('asks for post.schedule before reserving a slot, never merely content.read', async () => {
-    await service().proposeSlot(ctx, { brandId: 'brand_1' });
+    await service().proposeSlot(ctx, { projectId: 'project_1' });
     expect(permissions).toEqual(['post.schedule']);
   });
 
   it('refuses a proposal from an actor with no person behind it', async () => {
     activeActor.userId = null as unknown as string;
-    await expect(service().proposeSlot(ctx, { brandId: 'brand_1' })).rejects.toThrow();
+    await expect(service().proposeSlot(ctx, { projectId: 'project_1' })).rejects.toThrow();
   });
 });
 
@@ -196,7 +223,7 @@ describe('queue rule idempotency', () => {
   it('replays the same rule for a repeated key instead of creating a second', async () => {
     const keyed: ActorContext = { ...ctx, idempotencyKey: 'a'.repeat(20) };
     const input = {
-      brandId: 'brand_1',
+      projectId: 'project_1',
       name: 'Weekdays',
       ianaTimeZone: 'Europe/London',
       windows: MONDAY_NINE_TO_FIVE,
@@ -215,8 +242,8 @@ describe('queue rule idempotency', () => {
 
   it('replays a slot proposal rather than holding two instants for one key', async () => {
     const keyed: ActorContext = { ...ctx, idempotencyKey: 'b'.repeat(20) };
-    const first = await service().proposeSlot(keyed, { brandId: 'brand_1' });
-    const second = await service().proposeSlot(keyed, { brandId: 'brand_1' });
+    const first = await service().proposeSlot(keyed, { projectId: 'project_1' });
+    const second = await service().proposeSlot(keyed, { projectId: 'project_1' });
     expect(second.id).toBe(first.id);
     expect(second.instant).toBe(first.instant);
     expect(reservations).toHaveLength(1);
@@ -225,7 +252,7 @@ describe('queue rule idempotency', () => {
 
 describe('the proposal is never silent automation', () => {
   it('records a proposal with its reasons and leaves it unaccepted', async () => {
-    const reservation = await service().proposeSlot(ctx, { brandId: 'brand_1' });
+    const reservation = await service().proposeSlot(ctx, { projectId: 'project_1' });
     expect(reservation.state).toBe('proposed');
     expect(reservation.contentItemId).toBeNull();
     expect(reservation.publishJobId).toBeNull();
@@ -235,7 +262,7 @@ describe('the proposal is never silent automation', () => {
   });
 
   it('takes a human decision to accept, and audits it separately', async () => {
-    const reservation = await service().proposeSlot(ctx, { brandId: 'brand_1' });
+    const reservation = await service().proposeSlot(ctx, { projectId: 'project_1' });
     const accepted = await service().acceptSlot(ctx, {
       reservationId: reservation.id,
       contentItemId: 'content_1',
@@ -249,7 +276,7 @@ describe('the proposal is never silent automation', () => {
   });
 
   it('refuses to accept the same reservation twice', async () => {
-    const reservation = await service().proposeSlot(ctx, { brandId: 'brand_1' });
+    const reservation = await service().proposeSlot(ctx, { projectId: 'project_1' });
     await service().acceptSlot(ctx, {
       reservationId: reservation.id,
       contentItemId: 'content_1',
@@ -263,7 +290,7 @@ describe('the proposal is never silent automation', () => {
 describe('a rule change never moves a slot that was already reserved', () => {
   it('keeps the instant, the zone and the frozen copy after the rule is rewritten', async () => {
     const created = await service().create(ctx, {
-      brandId: 'brand_1',
+      projectId: 'project_1',
       name: 'Weekdays',
       ianaTimeZone: 'Europe/London',
       windows: MONDAY_NINE_TO_FIVE,
@@ -275,7 +302,7 @@ describe('a rule change never moves a slot that was already reserved', () => {
       enabled: true,
     });
 
-    const reservation = await service().proposeSlot(ctx, { brandId: 'brand_1' });
+    const reservation = await service().proposeSlot(ctx, { projectId: 'project_1' });
     expect(reservation.ruleSnapshot.queueRuleId).toBe(created.id);
     expect(reservation.ruleSnapshot.windows).toEqual(MONDAY_NINE_TO_FIVE);
     expect(reservation.ruleSnapshot.ianaTimeZone).toBe('Europe/London');
@@ -290,7 +317,7 @@ describe('a rule change never moves a slot that was already reserved', () => {
     });
 
     const [stored] = await service()
-      .listReservations(ctx, { brandId: 'brand_1' })
+      .listReservations(ctx, { projectId: 'project_1' })
       .then((page) => page.data);
     expect(stored?.instant).toBe(reservation.instant);
     expect(stored?.ianaTimeZone).toBe(reservation.ianaTimeZone);
@@ -303,7 +330,7 @@ describe('a rule change never moves a slot that was already reserved', () => {
 
   it('keeps the reservation explainable after the rule is archived', async () => {
     const created = await service().create(ctx, {
-      brandId: 'brand_1',
+      projectId: 'project_1',
       name: 'Weekdays',
       ianaTimeZone: 'Europe/London',
       windows: MONDAY_NINE_TO_FIVE,
@@ -314,11 +341,11 @@ describe('a rule change never moves a slot that was already reserved', () => {
       priority: 0,
       enabled: true,
     });
-    const reservation = await service().proposeSlot(ctx, { brandId: 'brand_1' });
+    const reservation = await service().proposeSlot(ctx, { projectId: 'project_1' });
     await service().archive(ctx, created.id);
 
     const [stored] = await service()
-      .listReservations(ctx, { brandId: 'brand_1' })
+      .listReservations(ctx, { projectId: 'project_1' })
       .then((page) => page.data);
     expect(stored?.instant).toBe(reservation.instant);
     expect(stored?.ruleSnapshot.name).toBe('Weekdays');
@@ -331,7 +358,7 @@ describe('a rule change never moves a slot that was already reserved', () => {
 describe('maximum per day never treats zero as unlimited', () => {
   it('stores zero as zero on create and on update', async () => {
     const created = await service().create(ctx, {
-      brandId: 'brand_1',
+      projectId: 'project_1',
       name: 'Paused',
       ianaTimeZone: 'Europe/London',
       windows: MONDAY_NINE_TO_FIVE,
@@ -349,5 +376,76 @@ describe('maximum per day never treats zero as unlimited', () => {
 
     const back = await service().update(ctx, created.id, { maximumPerDay: 0 });
     expect(back.maximumPerDay).toBe(0);
+  });
+});
+
+/**
+ * Tenancy, at the layer above row level security.
+ *
+ * RLS hides another workspace's project, so a wrong-workspace id fails closed
+ * at the database. It cannot distinguish "not my project" from "an empty
+ * project", and it cannot stop a same-workspace-shaped id from being written
+ * into a reservation. Every handler that takes a project id therefore resolves
+ * it first and refuses one this workspace does not own.
+ */
+describe('a project id from another workspace', () => {
+  const RULE = {
+    name: 'Weekdays',
+    ianaTimeZone: 'Europe/London',
+    windows: MONDAY_NINE_TO_FIVE,
+    minimumGapMinutes: 0,
+    maximumPerDay: null,
+    blackouts: [],
+    connectionIds: [],
+    priority: 0,
+    enabled: true,
+  };
+
+  it('is refused on create, and no rule is written under it', async () => {
+    await expect(
+      service().create(ctx, { ...RULE, projectId: OTHER_WORKSPACE_PROJECT }),
+    ).rejects.toMatchObject({ code: 'NOT_FOUND', messageKey: 'errors.not_found.project' });
+    expect(rules).toHaveLength(0);
+    expect(audits).toHaveLength(0);
+  });
+
+  it('is refused as a list filter rather than answered with an empty page', async () => {
+    await expect(service().list(ctx, { projectId: OTHER_WORKSPACE_PROJECT })).rejects.toMatchObject({
+      code: 'NOT_FOUND',
+    });
+  });
+
+  it('is refused before a slot is previewed or proposed', async () => {
+    await expect(
+      service().previewSlot(ctx, { projectId: OTHER_WORKSPACE_PROJECT }),
+    ).rejects.toMatchObject({ code: 'NOT_FOUND' });
+    await expect(
+      service().proposeSlot(ctx, { projectId: OTHER_WORKSPACE_PROJECT }),
+    ).rejects.toMatchObject({ code: 'NOT_FOUND' });
+    expect(reservations).toHaveLength(0);
+  });
+
+  it('is refused when listing reservations', async () => {
+    await expect(
+      service().listReservations(ctx, { projectId: OTHER_WORKSPACE_PROJECT }),
+    ).rejects.toMatchObject({ code: 'NOT_FOUND' });
+  });
+
+  it('reports not found, never forbidden, so an id cannot be confirmed by probing', async () => {
+    const unknown = await service()
+      .list(ctx, { projectId: 'project_does_not_exist' })
+      .catch((error: unknown) => error);
+    const foreign = await service()
+      .list(ctx, { projectId: OTHER_WORKSPACE_PROJECT })
+      .catch((error: unknown) => error);
+    expect(unknown).toMatchObject({ code: 'NOT_FOUND' });
+    expect(foreign).toMatchObject({ code: 'NOT_FOUND' });
+  });
+
+  it('still allows the project this workspace owns', async () => {
+    const created = await service().create(ctx, { ...RULE, projectId: OWN_PROJECT });
+    expect(created.projectId).toBe(OWN_PROJECT);
+    const listed = await service().list(ctx, { projectId: OWN_PROJECT });
+    expect(listed.data).toHaveLength(1);
   });
 });

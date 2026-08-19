@@ -58,14 +58,14 @@ export class MediaService {
 
   importFromUrl(
     ctx: ActorContext,
-    input: { url: string; brandId?: string | null },
+    input: { url: string; projectId?: string | null },
   ): Promise<OperationRef> {
     return this.services.media.importFromUrl(ctx, input);
   }
 
   list(
     ctx: ActorContext,
-    query: CursorQuery & { brandId?: string; kind?: string },
+    query: CursorQuery & { projectId?: string; kind?: string },
   ): Promise<Paginated<MediaAssetView>> {
     return this.services.media.list(ctx, query);
   }

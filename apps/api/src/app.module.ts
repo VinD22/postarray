@@ -28,7 +28,7 @@ import { AuditModule } from './modules/audit/audit.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { AutomationRulesModule } from './modules/automation-rules/automation-rules.module';
 import { BillingModule } from './modules/billing/billing.module';
-import { BrandsModule } from './modules/brands/brands.module';
+import { ProjectsModule } from './modules/projects/projects.module';
 import { ConnectionsModule } from './modules/connections/connections.module';
 import { ContentModule } from './modules/content/content.module';
 import { DataModule } from './modules/data/data.module';
@@ -86,7 +86,7 @@ export class AppModule implements NestModule {
         OpenApiModule,
         AuthModule,
         WorkspacesModule,
-        BrandsModule,
+        ProjectsModule,
         ConnectionsModule,
         ContentModule,
         DataModule,

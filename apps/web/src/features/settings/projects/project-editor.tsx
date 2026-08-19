@@ -9,14 +9,14 @@ import { SettingsPanel } from '../components/section';
 import { TargetMemoryCard } from './target-memory-card';
 import { useFormatters } from '../lib/formatters';
 import { fromLines, toLines } from '../lib/lines';
-import type { BrandView } from '../lib/view-models';
+import type { ProjectView } from '../lib/view-models';
 
-export interface BrandEditorProps {
-  brand: BrandView;
+export interface ProjectEditorProps {
+  project: ProjectView;
   saving: boolean;
   archiving: boolean;
   disabled: boolean;
-  onSave: (patch: Partial<BrandView>) => void;
+  onSave: (patch: Partial<ProjectView>) => void;
   onArchive: () => void;
   archiveDisabled: boolean;
   archiveDisabledReason: string | null;
@@ -31,26 +31,26 @@ interface DraftState {
   domains: string;
 }
 
-function draftFrom(brand: BrandView): DraftState {
+function draftFrom(project: ProjectView): DraftState {
   return {
-    name: brand.name,
-    voice: brand.voice,
-    audience: brand.audience,
-    approvedClaims: toLines(brand.approvedClaims),
-    blockedTerms: toLines(brand.blockedTerms),
-    domains: toLines(brand.domains.map((domain) => domain.domain)),
+    name: project.name,
+    voice: project.voice,
+    audience: project.audience,
+    approvedClaims: toLines(project.approvedClaims),
+    blockedTerms: toLines(project.blockedTerms),
+    domains: toLines(project.domains.map((domain) => domain.domain)),
   };
 }
 
 /**
- * The rules content is checked against for one brand.
+ * The rules content is checked against for one project.
  *
  * Everything here is a document field rather than a toggle wall: voice and
  * audience are prose, claims and blocked terms are lists people paste in, and
  * the glossary and the locale rules are tables because they have columns.
  */
-export function BrandEditor({
-  brand,
+export function ProjectEditor({
+  project,
   saving,
   archiving,
   disabled,
@@ -58,23 +58,23 @@ export function BrandEditor({
   onArchive,
   archiveDisabled,
   archiveDisabledReason,
-}: BrandEditorProps): ReactNode {
+}: ProjectEditorProps): ReactNode {
   const t = useTranslations();
   const formatters = useFormatters();
-  const [draft, setDraft] = useState<DraftState>(() => draftFrom(brand));
+  const [draft, setDraft] = useState<DraftState>(() => draftFrom(project));
   const [archiveOpen, setArchiveOpen] = useState(false);
 
   useEffect(() => {
-    setDraft(draftFrom(brand));
-  }, [brand]);
+    setDraft(draftFrom(project));
+  }, [project]);
 
   const dirty =
-    draft.name !== brand.name ||
-    draft.voice !== brand.voice ||
-    draft.audience !== brand.audience ||
-    draft.approvedClaims !== toLines(brand.approvedClaims) ||
-    draft.blockedTerms !== toLines(brand.blockedTerms) ||
-    draft.domains !== toLines(brand.domains.map((domain) => domain.domain));
+    draft.name !== project.name ||
+    draft.voice !== project.voice ||
+    draft.audience !== project.audience ||
+    draft.approvedClaims !== toLines(project.approvedClaims) ||
+    draft.blockedTerms !== toLines(project.blockedTerms) ||
+    draft.domains !== toLines(project.domains.map((domain) => domain.domain));
 
   function update<K extends keyof DraftState>(key: K, value: DraftState[K]): void {
     setDraft((current) => ({ ...current, [key]: value }));
@@ -89,7 +89,7 @@ export function BrandEditor({
       approvedClaims: fromLines(draft.approvedClaims),
       blockedTerms: fromLines(draft.blockedTerms),
       domains: fromLines(draft.domains).map((domain) => {
-        const existing = brand.domains.find((entry) => entry.domain === domain);
+        const existing = project.domains.find((entry) => entry.domain === domain);
         return { domain, verifiedAt: existing?.verifiedAt ?? null };
       }),
     });
@@ -108,13 +108,13 @@ export function BrandEditor({
 
       <SettingsPanel
         title={t('settings.ui.projects.detailsTitle')}
-        description={t('settings.ui.brands.description')}
+        description={t('settings.ui.projects.description')}
         footnote={
-          brand.updatedByName === null
+          project.updatedByName === null
             ? t('settings.ui.attributionNever')
             : t('settings.ui.attribution', {
-                name: brand.updatedByName,
-                relativeTime: formatters.relative(brand.updatedAt),
+                name: project.updatedByName,
+                relativeTime: formatters.relative(project.updatedAt),
               })
         }
       >
@@ -130,7 +130,7 @@ export function BrandEditor({
             )}
           </Field>
 
-          <Field label={t('settings.brands.voice')} description={t('settings.ui.brands.voiceHelp')}>
+          <Field label={t('settings.projects.voice')} description={t('settings.ui.projects.voiceHelp')}>
             {(control) => (
               <Textarea
                 {...control}
@@ -144,8 +144,8 @@ export function BrandEditor({
           </Field>
 
           <Field
-            label={t('settings.brands.audience')}
-            description={t('settings.ui.brands.audienceHelp')}
+            label={t('settings.projects.audience')}
+            description={t('settings.ui.projects.audienceHelp')}
           >
             {(control) => (
               <Textarea
@@ -160,8 +160,8 @@ export function BrandEditor({
           </Field>
 
           <Field
-            label={t('settings.brands.approvedClaims')}
-            description={t('settings.ui.brands.approvedClaimsHelp')}
+            label={t('settings.projects.approvedClaims')}
+            description={t('settings.ui.projects.approvedClaimsHelp')}
           >
             {(control) => (
               <Textarea
@@ -176,8 +176,8 @@ export function BrandEditor({
           </Field>
 
           <Field
-            label={t('settings.brands.blockedTerms')}
-            description={t('settings.ui.brands.blockedTermsHelp')}
+            label={t('settings.projects.blockedTerms')}
+            description={t('settings.ui.projects.blockedTermsHelp')}
           >
             {(control) => (
               <Textarea
@@ -194,10 +194,10 @@ export function BrandEditor({
       </SettingsPanel>
 
       <SettingsPanel
-        title={t('settings.brands.domains')}
-        description={t('settings.ui.brands.domainsHelp')}
+        title={t('settings.projects.domains')}
+        description={t('settings.ui.projects.domainsHelp')}
       >
-        <Field label={t('settings.brands.domains')}>
+        <Field label={t('settings.projects.domains')}>
           {(control) => (
             <Textarea
               {...control}
@@ -210,12 +210,12 @@ export function BrandEditor({
           )}
         </Field>
         <ul className="flex flex-col gap-1">
-          {brand.domains.map((domain) => (
+          {project.domains.map((domain) => (
             <li key={domain.domain} className="text-body-sm flex items-center gap-2">
               <span className="text-text-primary font-mono">{domain.domain}</span>
               <CapabilityBadge
                 state="not_implemented"
-                label={t('settings.ui.brands.domainVerificationUnavailable')}
+                label={t('settings.ui.projects.domainVerificationUnavailable')}
               />
             </li>
           ))}
@@ -223,35 +223,35 @@ export function BrandEditor({
       </SettingsPanel>
 
       <SettingsPanel
-        title={t('settings.brands.disclosureDefaults')}
-        description={t('settings.ui.brands.disclosureHelp')}
+        title={t('settings.projects.disclosureDefaults')}
+        description={t('settings.ui.projects.disclosureHelp')}
       >
         <Notice
           tone="info"
           title={t('settings.ui.state.notBuiltTitle')}
-          description={t('settings.ui.brands.disclosureUnavailable')}
+          description={t('settings.ui.projects.disclosureUnavailable')}
         />
       </SettingsPanel>
 
       <SettingsPanel
-        title={t('settings.brands.glossary.title')}
-        description={t('settings.ui.brands.glossaryHelp')}
+        title={t('settings.projects.glossary.title')}
+        description={t('settings.ui.projects.glossaryHelp')}
       >
         <Notice
           tone="info"
           title={t('settings.ui.state.notBuiltTitle')}
-          description={t('settings.ui.brands.glossaryUnavailable')}
+          description={t('settings.ui.projects.glossaryUnavailable')}
         />
       </SettingsPanel>
 
       <SettingsPanel
-        title={t('settings.brands.localeRules.title')}
-        description={t('settings.ui.brands.localeRulesHelp')}
+        title={t('settings.projects.localeRules.title')}
+        description={t('settings.ui.projects.localeRulesHelp')}
       >
         <Notice
           tone="info"
           title={t('settings.ui.state.notBuiltTitle')}
-          description={t('settings.ui.brands.localeRulesUnavailable')}
+          description={t('settings.ui.projects.localeRulesUnavailable')}
         />
       </SettingsPanel>
 
@@ -263,18 +263,18 @@ export function BrandEditor({
         title={t('targetMemory.setting.title')}
         description={t('targetMemory.setting.body')}
       >
-        <TargetMemoryCard brandId={brand.id} enabled={brand.rememberTargetsEnabled} />
+        <TargetMemoryCard projectId={project.id} enabled={project.rememberTargetsEnabled} />
       </SettingsPanel>
 
       <div className="flex flex-wrap items-center gap-2">
         <Button type="submit" variant="primary" loading={saving} disabled={disabled || !dirty}>
-          {t('settings.ui.brands.saveBrand')}
+          {t('settings.ui.projects.saveProject')}
         </Button>
         <Button
           type="button"
           variant="ghost"
           disabled={!dirty || saving}
-          onClick={() => setDraft(draftFrom(brand))}
+          onClick={() => setDraft(draftFrom(project))}
         >
           {t('action.undo')}
         </Button>
@@ -297,7 +297,7 @@ export function BrandEditor({
         open={archiveOpen}
         onOpenChange={setArchiveOpen}
         tone="destructive"
-        title={t('settings.ui.projects.archiveTitle', { project: brand.name })}
+        title={t('settings.ui.projects.archiveTitle', { project: project.name })}
         description={t('settings.ui.projects.archiveBody')}
         consequences={[
           { id: 'channels', text: t('settings.ui.projects.archiveChannels') },

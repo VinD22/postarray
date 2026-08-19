@@ -13,7 +13,7 @@ export interface ConsentPreviewProps {
   appName: string;
   developerName: string;
   workspaceName: string;
-  brandNames: readonly string[];
+  projectNames: readonly string[];
   scopes: readonly Scope[];
   homepageUrl: string;
   privacyUrl: string;
@@ -33,7 +33,7 @@ export function ConsentPreview({
   appName,
   developerName,
   workspaceName,
-  brandNames,
+  projectNames,
   scopes,
   homepageUrl,
   privacyUrl,
@@ -89,9 +89,9 @@ export function ConsentPreview({
       <dl className="grid gap-x-4 gap-y-2 sm:grid-cols-[minmax(8rem,12rem)_1fr]">
         <dt className="text-label text-text-tertiary">{t('developer.consent.workspace')}</dt>
         <dd className="text-body-md text-text-primary">{workspaceName}</dd>
-        <dt className="text-label text-text-tertiary">{t('developer.consent.brands')}</dt>
+        <dt className="text-label text-text-tertiary">{t('developer.consent.projects')}</dt>
         <dd className="text-body-md text-text-primary">
-          {brandNames.length === 0 ? t('common.all') : brandNames.join(', ')}
+          {projectNames.length === 0 ? t('common.all') : projectNames.join(', ')}
         </dd>
       </dl>
 

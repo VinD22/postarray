@@ -56,7 +56,7 @@ const actionSchema = z
 const RULE_SELECT = {
   id: true,
   workspaceId: true,
-  brandId: true,
+  projectId: true,
   name: true,
   state: true,
   trigger: true,
@@ -79,7 +79,7 @@ const RULE_SELECT = {
 interface RuleRow {
   id: string;
   workspaceId: string;
-  brandId: string;
+  projectId: string;
   name: string;
   state: string;
   trigger: unknown;
@@ -139,7 +139,7 @@ function toView(row: RuleRow): AutomationRuleView {
   return {
     id: row.id,
     workspaceId: row.workspaceId,
-    brandId: row.brandId,
+    projectId: row.projectId,
     name: row.name,
     state: row.state as AutomationRuleView['state'],
     trigger: parseTrigger(row.trigger),
@@ -299,8 +299,8 @@ function evaluateCondition(
   event: Readonly<Record<string, unknown>>,
 ): boolean | null {
   switch (condition.kind) {
-    case 'brand':
-      return membership(event, condition.config, 'brandId', 'brandIds');
+    case 'project':
+      return membership(event, condition.config, 'projectId', 'projectIds');
     case 'campaign':
       return membership(event, condition.config, 'campaignId', 'campaignIds');
     case 'account':
@@ -419,20 +419,20 @@ export function createAutomationRuleService(deps: ServiceDeps): AutomationRuleSe
     },
 
     async create(ctx: ActorContext, input: AutomationRuleInput): Promise<AutomationRuleView> {
-      return authorized(deps, ctx, 'rule.write', { brandId: input.brandId }, async (db, actor) => {
+      return authorized(deps, ctx, 'rule.write', { projectId: input.projectId }, async (db, actor) => {
         if (actor.userId === null) {
           throw invalid('errors.rule_requires_user', {});
         }
         assertThresholdGuards(input);
         assertPreauthorized(input);
         for (const connectionId of input.preauthorizedConnectionIds ?? []) {
-          guard(actor, 'post.schedule', { connectionId, brandId: input.brandId });
+          guard(actor, 'post.schedule', { connectionId, projectId: input.projectId });
         }
 
         const created = await db.automationRule.create({
           data: {
             workspaceId: actor.workspace.id,
-            brandId: input.brandId,
+            projectId: input.projectId,
             name: input.name,
             state: 'draft',
             trigger: toJson({ kind: input.trigger.kind, config: input.trigger.config ?? {} }),
@@ -480,7 +480,7 @@ export function createAutomationRuleService(deps: ServiceDeps): AutomationRuleSe
       return authorized(deps, ctx, 'rule.write', undefined, async (db, actor) => {
         const before = await requireRule(db, ruleId);
         const merged: AutomationRuleInput = {
-          brandId: input.brandId ?? before.brandId,
+          projectId: input.projectId ?? before.projectId,
           name: input.name ?? before.name,
           trigger: input.trigger ?? parseTrigger(before.trigger),
           conditions: input.conditions ?? parseConditions(before.conditions),

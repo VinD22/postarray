@@ -12,7 +12,7 @@ import {
 } from './queue-rules.schemas';
 
 const BASE = {
-  brandId: newIdFor('brand'),
+  projectId: newIdFor('project'),
   name: 'Weekday mornings',
   ianaTimeZone: 'Europe/London',
   windows: [{ weekday: 1, startMinute: 540, endMinute: 720 }],
@@ -37,7 +37,7 @@ describe('queue rule payloads', () => {
       createQueueRuleSchema.safeParse({
         ...BASE,
         maximumPerDay: null,
-        brandId: newIdFor('connection'),
+        projectId: newIdFor('connection'),
       }).success,
     ).toBe(false);
   });
@@ -59,16 +59,16 @@ describe('queue rule payloads', () => {
   });
 
   it('accepts an optional draft when proposing and an optional after instant', () => {
-    expect(proposeQueueSlotSchema.safeParse({ brandId: BASE.brandId }).success).toBe(true);
+    expect(proposeQueueSlotSchema.safeParse({ projectId: BASE.projectId }).success).toBe(true);
     expect(
       proposeQueueSlotSchema.safeParse({
-        brandId: BASE.brandId,
+        projectId: BASE.projectId,
         after: '2026-06-08T08:00:00.000Z',
         contentItemId: newIdFor('contentItem'),
       }).success,
     ).toBe(true);
     expect(
-      nextQueueSlotQuerySchema.safeParse({ brandId: BASE.brandId, after: 'yesterday' }).success,
+      nextQueueSlotQuerySchema.safeParse({ projectId: BASE.projectId, after: 'yesterday' }).success,
     ).toBe(false);
   });
 });

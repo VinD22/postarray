@@ -32,7 +32,7 @@ const CREDENTIAL: StoredCredential = {
 
 const DRAFT = {
   version: 1,
-  brandId: 'brand_1',
+  projectId: 'project_1',
   body: 'A launch note that goes to two accounts.',
   targets: [{ connectionId: 'conn_1' }, { connectionId: 'conn_2' }],
   threadItems: [{ kind: 'comment', body: 'Details in the link.', delaySeconds: 60 }],
@@ -43,7 +43,7 @@ function connection(id: string, provider: string, handle: string) {
   return {
     id,
     workspaceId: 'ws_01',
-    brandId: 'brand_1',
+    projectId: 'project_1',
     provider,
     accountType: 'business_profile',
     displayName: 'Acme',

@@ -67,7 +67,7 @@ function receipt(overrides: Partial<PublicationReceipt> = {}): PublicationReceip
       approvalId: 'appr_01j000000000000000000001',
       decidedBy: 'Dana Ito',
       decidedAt: '2026-08-04T07:12:00.000Z',
-      policyKey: 'brand.acme_eu.two_approvers',
+      policyKey: 'project.acme_eu.two_approvers',
     },
     cost: {
       currency: 'USD',
@@ -111,7 +111,7 @@ describe('buildTimeline', () => {
     expect(approved?.messageKey).toBe('receipt.timeline.approved');
     expect(approved?.values).toMatchObject({
       actor: 'Dana Ito',
-      policy: 'brand.acme_eu.two_approvers',
+      policy: 'project.acme_eu.two_approvers',
     });
   });
 

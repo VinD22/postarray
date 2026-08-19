@@ -65,7 +65,7 @@ export class SchedulingService {
 
   nextAvailableSlot(
     ctx: ActorContext,
-    input: { brandId: string; after?: IsoInstant },
+    input: { projectId: string; after?: IsoInstant },
   ): Promise<{ instant: IsoInstant; ianaTimeZone: IanaTimeZone }> {
     return this.services.scheduling.nextAvailableSlot(ctx, input);
   }

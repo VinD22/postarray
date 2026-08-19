@@ -104,7 +104,7 @@ describe('createCredentialStore', () => {
       $executeRaw: vi.fn().mockResolvedValue(0),
       oAuthTransaction: {
         findFirst: vi.fn().mockResolvedValue({
-          id: transactionId, workspaceId: WORKSPACE_ID, brandId: null, provider: 'x',
+          id: transactionId, workspaceId: WORKSPACE_ID, projectId: null, provider: 'x',
           stateHash: 'state-hash', consumedAt: null,
           expiresAt: new Date('2026-08-08T00:00:00.000Z'), initiatedByUserId: null,
         }),

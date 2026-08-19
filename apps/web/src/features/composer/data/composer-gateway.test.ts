@@ -30,7 +30,7 @@ import { loadComposer } from './composer-gateway';
 
 const INPUT = {
   contentItemId: null,
-  brandId: 'brand_01',
+  projectId: 'project_01',
   workspaceTimeZone: 'Europe/Berlin',
 } as const;
 
@@ -42,7 +42,7 @@ function postingSet(overrides: Record<string, unknown> = {}) {
   return {
     id: 'set_01',
     workspaceId: 'ws_01',
-    brandId: 'brand_01',
+    projectId: 'project_01',
     name: 'Launch day',
     description: 'The three channels that carry a release.',
     connectionIds: ['conn_01', 'conn_02'],
@@ -62,14 +62,14 @@ describe('loadComposer', () => {
     vi.clearAllMocks();
     listConnections.mockResolvedValue(page([]));
     listPostingSets.mockResolvedValue(page([]));
-    createDraft.mockResolvedValue({ id: 'content_01', brandId: 'brand_01', body: '' });
-    getContent.mockResolvedValue({ id: 'content_01', brandId: 'brand_01', body: '' });
+    createDraft.mockResolvedValue({ id: 'content_01', projectId: 'project_01', body: '' });
+    getContent.mockResolvedValue({ id: 'content_01', projectId: 'project_01', body: '' });
   });
 
   it('asks for this project’s Posting Sets, so the rail has something to apply', async () => {
     await loadComposer(INPUT);
 
-    expect(listPostingSets).toHaveBeenCalledWith({ brandId: 'brand_01' }, undefined);
+    expect(listPostingSets).toHaveBeenCalledWith({ projectId: 'project_01' }, undefined);
   });
 
   it('maps a Set to what the rail needs, and never invents seed text for it', async () => {
@@ -116,7 +116,7 @@ describe('loadComposer', () => {
 
   it('leaves signatures and branded domains empty, because nothing lists them', async () => {
     // Not an oversight and not a stub to fill in here: there is no signatures
-    // read endpoint anywhere in the API, and `BrandView.domains` carries no
+    // read endpoint anywhere in the API, and `ProjectView.domains` carries no
     // verification state, which is the only kind of domain LinkControls offers.
     const bootstrap = await loadComposer(INPUT);
 
@@ -148,12 +148,12 @@ describe('loadComposer', () => {
         displayName: 'Northbound',
         handle: '@northbound',
         avatarUrl: null,
-        brandId: 'brand_01',
+        projectId: 'project_01',
         paused: true,
         capabilities: { provider: 'x' },
       },
     ]);
     expect(bootstrap.master.id).toBe('content_01');
-    expect(createDraft).toHaveBeenCalledWith({ brandId: 'brand_01' }, 'draft_test', undefined);
+    expect(createDraft).toHaveBeenCalledWith({ projectId: 'project_01' }, 'draft_test', undefined);
   });
 });

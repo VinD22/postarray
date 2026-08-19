@@ -25,7 +25,7 @@ const NO_SETS: readonly PostingSetView[] = [];
 
 export const postingSetsApi = {
   list: (
-    query: { brandId?: string; includeArchived?: boolean } = {},
+    query: { projectId?: string; includeArchived?: boolean } = {},
     forward?: ForwardAuth,
   ): Promise<ContractPaginated<PostingSetView>> =>
     call('/posting-sets', { query, ...forward }, () => page(NO_SETS)),
@@ -54,9 +54,9 @@ export const postingSetsApi = {
 };
 
 /** A project that has not opted in, which is the honest demo-mode answer. */
-function optedOut(brandId: string): RememberedTargetsView {
+function optedOut(projectId: string): RememberedTargetsView {
   return {
-    brandId,
+    projectId,
     enabled: false,
     connectionIds: [],
     droppedConnectionIds: [],
@@ -65,29 +65,29 @@ function optedOut(brandId: string): RememberedTargetsView {
 }
 
 export const targetMemoryApi = {
-  read: (brandId: string): Promise<RememberedTargetsView> =>
-    call(`/projects/${brandId}/remembered-targets`, {}, () => optedOut(brandId)),
+  read: (projectId: string): Promise<RememberedTargetsView> =>
+    call(`/projects/${projectId}/remembered-targets`, {}, () => optedOut(projectId)),
 
   remember: (
-    brandId: string,
+    projectId: string,
     connectionIds: readonly string[],
   ): Promise<RememberedTargetsView> =>
     call(
-      `/projects/${brandId}/remembered-targets`,
+      `/projects/${projectId}/remembered-targets`,
       { method: 'PUT', body: { connectionIds: [...connectionIds] } },
-      () => optedOut(brandId),
+      () => optedOut(projectId),
     ),
 
-  forget: (brandId: string): Promise<void> =>
-    call(`/projects/${brandId}/remembered-targets`, { method: 'DELETE' }, () => undefined),
+  forget: (projectId: string): Promise<void> =>
+    call(`/projects/${projectId}/remembered-targets`, { method: 'DELETE' }, () => undefined),
 
   setEnabled: (
-    brandId: string,
+    projectId: string,
     enabled: boolean,
-  ): Promise<{ readonly brandId: string; readonly enabled: boolean }> =>
+  ): Promise<{ readonly projectId: string; readonly enabled: boolean }> =>
     call(
-      `/projects/${brandId}/remembered-targets/setting`,
+      `/projects/${projectId}/remembered-targets/setting`,
       { method: 'PUT', body: { enabled } },
-      () => ({ brandId, enabled: false }),
+      () => ({ projectId, enabled: false }),
     ),
 };

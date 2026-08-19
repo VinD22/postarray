@@ -41,28 +41,28 @@ import { authorized, type ActorSnapshot, type Db } from '../internal/runtime';
 
 const connectionIdsSchema = z.array(z.string().min(1)).max(200);
 
-interface BrandRow {
+interface ProjectRow {
   id: string;
   rememberTargetsEnabled: boolean;
 }
 
-async function requireBrand(db: Db, brandId: string): Promise<BrandRow> {
-  const brand = await db.brand.findFirst({
-    where: { id: brandId },
+async function requireProject(db: Db, projectId: string): Promise<ProjectRow> {
+  const project = await db.project.findFirst({
+    where: { id: projectId },
     select: { id: true, rememberTargetsEnabled: true },
   });
-  if (brand === null) {
-    throw notFound('brand', brandId);
+  if (project === null) {
+    throw notFound('project', projectId);
   }
-  return brand;
+  return project;
 }
 
-function requirePerson(actor: ActorSnapshot, brandId: string): string {
+function requirePerson(actor: ActorSnapshot, projectId: string): string {
   if (actor.userId === null) {
     // The memory belongs to a person. A service account or an agent has no
     // "last time", and writing one under a machine identity would create a
     // selection nobody can see, correct or delete.
-    throw invalid('errors.target_memory_requires_person', { brandId });
+    throw invalid('errors.target_memory_requires_person', { projectId });
   }
   return actor.userId;
 }
@@ -78,10 +78,10 @@ function requirePerson(actor: ActorSnapshot, brandId: string): string {
 async function offerableChannels(
   db: Db,
   actor: ActorSnapshot,
-  brandId: string,
+  projectId: string,
 ): Promise<readonly OfferableChannel[]> {
   const rows = await db.socialConnection.findMany({
-    where: { brandId },
+    where: { projectId },
     select: { id: true, status: true },
   });
   const allowed = actor.restrictions.connectionIds ?? null;
@@ -96,38 +96,38 @@ export function createRememberedTargetService(deps: ServiceDeps): RememberedTarg
   return {
     async read(
       ctx: ActorContext,
-      input: { readonly brandId: string },
+      input: { readonly projectId: string },
     ): Promise<RememberedTargetsView> {
       return authorized(
         deps,
         ctx,
         'content.read',
-        { brandId: input.brandId },
+        { projectId: input.projectId },
         async (db, actor) => {
-          const brand = await requireBrand(db, input.brandId);
+          const project = await requireProject(db, input.projectId);
           const empty: RememberedTargetsView = {
-            brandId: brand.id,
-            enabled: brand.rememberTargetsEnabled,
+            projectId: project.id,
+            enabled: project.rememberTargetsEnabled,
             connectionIds: [],
             droppedConnectionIds: [],
             updatedAt: null,
           };
-          if (!brand.rememberTargetsEnabled || actor.userId === null) {
+          if (!project.rememberTargetsEnabled || actor.userId === null) {
             return empty;
           }
 
           const row = await db.rememberedTarget.findFirst({
-            where: { brandId: brand.id, userId: actor.userId },
+            where: { projectId: project.id, userId: actor.userId },
             select: { connectionIds: true, updatedAt: true },
           });
           if (row === null) {
             return empty;
           }
 
-          const channels = await offerableChannels(db, actor, brand.id);
+          const channels = await offerableChannels(db, actor, project.id);
           const filtered = filterRememberedTargets(row.connectionIds, channels);
           return {
-            brandId: brand.id,
+            projectId: project.id,
             enabled: true,
             connectionIds: [...filtered.connectionIds],
             droppedConnectionIds: [...filtered.droppedConnectionIds],
@@ -139,43 +139,43 @@ export function createRememberedTargetService(deps: ServiceDeps): RememberedTarg
 
     async remember(
       ctx: ActorContext,
-      input: { readonly brandId: string; readonly connectionIds: readonly string[] },
+      input: { readonly projectId: string; readonly connectionIds: readonly string[] },
     ): Promise<RememberedTargetsView> {
       const connectionIds = connectionIdsSchema.parse([...input.connectionIds]);
       return authorized(
         deps,
         ctx,
         'content.write',
-        { brandId: input.brandId },
+        { projectId: input.projectId },
         async (db, actor) => {
-          const brand = await requireBrand(db, input.brandId);
-          if (!brand.rememberTargetsEnabled) {
+          const project = await requireProject(db, input.projectId);
+          if (!project.rememberTargetsEnabled) {
             // Opted out. Nothing is written, no row is created, and the caller
             // is told plainly that nothing was remembered rather than being led
             // to believe a preference was saved.
             return {
-              brandId: brand.id,
+              projectId: project.id,
               enabled: false,
               connectionIds: [],
               droppedConnectionIds: [],
               updatedAt: null,
             };
           }
-          const userId = requirePerson(actor, brand.id);
+          const userId = requirePerson(actor, project.id);
 
           // Deduplicate, keep the order the person selected in, and store only
           // identifiers. Nothing about the draft travels with them.
           const unique = [...new Set(connectionIds)];
           const at = deps.clock.now();
           const existing = await db.rememberedTarget.findFirst({
-            where: { brandId: brand.id, userId },
+            where: { projectId: project.id, userId },
             select: { id: true },
           });
           if (existing === null) {
             await db.rememberedTarget.create({
               data: {
                 workspaceId: actor.workspace.id,
-                brandId: brand.id,
+                projectId: project.id,
                 userId,
                 connectionIds: unique,
               },
@@ -187,10 +187,10 @@ export function createRememberedTargetService(deps: ServiceDeps): RememberedTarg
             });
           }
 
-          const channels = await offerableChannels(db, actor, brand.id);
+          const channels = await offerableChannels(db, actor, project.id);
           const filtered = filterRememberedTargets(unique, channels);
           return {
-            brandId: brand.id,
+            projectId: project.id,
             enabled: true,
             connectionIds: [...filtered.connectionIds],
             droppedConnectionIds: [...filtered.droppedConnectionIds],
@@ -200,12 +200,12 @@ export function createRememberedTargetService(deps: ServiceDeps): RememberedTarg
       );
     },
 
-    async forget(ctx: ActorContext, input: { readonly brandId: string }): Promise<void> {
+    async forget(ctx: ActorContext, input: { readonly projectId: string }): Promise<void> {
       await authorized(
         deps,
         ctx,
         'content.write',
-        { brandId: input.brandId },
+        { projectId: input.projectId },
         async (db, actor) => {
           if (actor.userId === null) {
             return;
@@ -213,7 +213,7 @@ export function createRememberedTargetService(deps: ServiceDeps): RememberedTarg
           // Forgetting must always be available, including when the project
           // flag is already off, so this never consults the flag.
           await db.rememberedTarget.deleteMany({
-            where: { brandId: input.brandId, userId: actor.userId },
+            where: { projectId: input.projectId, userId: actor.userId },
           });
         },
       );
@@ -221,21 +221,21 @@ export function createRememberedTargetService(deps: ServiceDeps): RememberedTarg
 
     async setEnabled(
       ctx: ActorContext,
-      input: { readonly brandId: string; readonly enabled: boolean },
-    ): Promise<{ readonly brandId: string; readonly enabled: boolean }> {
+      input: { readonly projectId: string; readonly enabled: boolean },
+    ): Promise<{ readonly projectId: string; readonly enabled: boolean }> {
       return authorized(
         deps,
         ctx,
-        'brand.write',
-        { brandId: input.brandId },
+        'project.write',
+        { projectId: input.projectId },
         async (db, actor) => {
-          const brand = await requireBrand(db, input.brandId);
-          if (brand.rememberTargetsEnabled === input.enabled) {
-            return { brandId: brand.id, enabled: input.enabled };
+          const project = await requireProject(db, input.projectId);
+          if (project.rememberTargetsEnabled === input.enabled) {
+            return { projectId: project.id, enabled: input.enabled };
           }
 
-          await db.brand.update({
-            where: { id: brand.id },
+          await db.project.update({
+            where: { id: project.id },
             data: { rememberTargetsEnabled: input.enabled },
           });
 
@@ -244,19 +244,19 @@ export function createRememberedTargetService(deps: ServiceDeps): RememberedTarg
           // is entitled to have that be true of what was already stored.
           const cleared =
             input.enabled === false
-              ? await db.rememberedTarget.deleteMany({ where: { brandId: brand.id } })
+              ? await db.rememberedTarget.deleteMany({ where: { projectId: project.id } })
               : { count: 0 };
 
           await recordAudit(db, actor, {
-            action: 'brand.target_memory_changed',
-            targetType: 'brand',
-            targetId: brand.id,
-            before: { rememberTargetsEnabled: brand.rememberTargetsEnabled },
+            action: 'project.target_memory_changed',
+            targetType: 'project',
+            targetId: project.id,
+            before: { rememberTargetsEnabled: project.rememberTargetsEnabled },
             after: { rememberTargetsEnabled: input.enabled },
             metadata: { clearedMemories: cleared.count },
           });
 
-          return { brandId: brand.id, enabled: input.enabled };
+          return { projectId: project.id, enabled: input.enabled };
         },
       );
     },

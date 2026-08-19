@@ -36,7 +36,7 @@ export const WORKSPACE_ROLES: readonly WorkspaceRole[] = [
 /** Fails to compile if a role is added to the contract and not to the screen. */
 const _ROLE_COVERAGE: readonly WorkspaceRole[] = ROLES;
 
-export interface BrandRef {
+export interface ProjectRef {
   readonly id: string;
   readonly name: string;
 }
@@ -48,8 +48,8 @@ export interface MemberView {
   readonly email: string;
   readonly role: WorkspaceRole;
   readonly status: 'active' | 'invited';
-  /** Empty means every brand in the workspace. */
-  readonly brandScope: readonly BrandRef[];
+  /** Empty means every project in the workspace. */
+  readonly projectScope: readonly ProjectRef[];
   readonly canApprove: boolean;
   readonly lastActiveAt: string | null;
   readonly invitedAt: string | null;
@@ -78,12 +78,12 @@ export interface LocaleRuleView {
   readonly reviewedExamples: readonly string[];
 }
 
-export interface BrandDomainView {
+export interface ProjectDomainView {
   readonly domain: string;
   readonly verifiedAt: string | null;
 }
 
-export interface BrandView {
+export interface ProjectView {
   readonly id: string;
   readonly name: string;
   readonly voice: string;
@@ -92,7 +92,7 @@ export interface BrandView {
   readonly blockedTerms: readonly string[];
   readonly contentLocales: readonly string[];
   readonly localeRules: readonly LocaleRuleView[];
-  readonly domains: readonly BrandDomainView[];
+  readonly domains: readonly ProjectDomainView[];
   readonly disclosureDefaults: readonly { readonly provider: string; readonly text: string }[];
   readonly glossary: readonly GlossaryTermView[];
   readonly connectionCount: number;
@@ -129,7 +129,7 @@ export interface ServiceAccountView {
   readonly purpose: string;
   readonly state: 'active' | 'stopped' | 'expired';
   readonly scopes: readonly Scope[];
-  readonly brandScope: readonly BrandRef[];
+  readonly projectScope: readonly ProjectRef[];
   readonly connectionIds: readonly string[];
   readonly connectionLabels: readonly string[];
   readonly contentLocales: readonly string[];
@@ -182,7 +182,7 @@ export interface OAuthGrantView {
   readonly id: string;
   readonly subjectUserId: string;
   readonly scopes: readonly Scope[];
-  readonly brandScope: readonly string[];
+  readonly projectScope: readonly string[];
   readonly connectionScope: readonly string[];
   readonly consentedAt: string;
   readonly lastUsedAt: string | null;

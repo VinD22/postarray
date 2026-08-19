@@ -47,7 +47,7 @@ describe('buildGrowthContext', () => {
     expect(() =>
       buildGrowthContext({
         profile: makeBusinessProfile({ confirmedAt: null }),
-        brandSources: [],
+        projectSources: [],
         opportunities: [],
         tools: [],
         windowStart: '2026-08-10',
@@ -68,10 +68,10 @@ describe('buildGrowthContext', () => {
     expect(context.excludedCatalogIds).toEqual(['opp_00000000000000000000000009']);
   });
 
-  it('drops brand sources that were never approved', () => {
+  it('drops project sources that were never approved', () => {
     const context = buildGrowthContext({
       profile: makeBusinessProfile(),
-      brandSources: [
+      projectSources: [
         {
           id: 'src_ok',
           title: 'Approved page',

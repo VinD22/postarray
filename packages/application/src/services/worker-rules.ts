@@ -59,7 +59,7 @@ const RULE_SELECT = {
   executionCount: true,
   runOncePerSource: true,
   requiresApproval: true,
-  brandId: true,
+  projectId: true,
   lastRunAt: true,
 } as const;
 
@@ -240,7 +240,7 @@ export function createWorkerRuleService(
               idempotencyKey: `rule:${input.runId}:${input.actionId}`,
             },
             {
-              brandId: rule.brandId,
+              projectId: rule.projectId,
               title: typeof input.event['title'] === 'string' ? input.event['title'] : null,
               body,
             },

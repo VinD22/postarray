@@ -124,7 +124,7 @@ export function createWorkerRssService(
         where: { id: feedId, workspaceId: ctx.workspaceId },
         select: {
           id: true,
-          brandId: true,
+          projectId: true,
           feedUrl: true,
           title: true,
           publishPolicy: true,
@@ -258,7 +258,7 @@ export function createWorkerRssService(
             idempotencyKey: `rss:${input.feedId}:${digest.contentFingerprint}`,
           },
           {
-            brandId: feed.brandId,
+            projectId: feed.projectId,
             title,
             body,
             ...(digest.link === null

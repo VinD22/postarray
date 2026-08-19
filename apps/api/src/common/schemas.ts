@@ -13,13 +13,13 @@ import { z } from 'zod';
 /**
  * Route parameter and query schemas shared by more than one module.
  *
- * Every identifier is parsed with its own prefix, so `GET /v1/brands/conn_...`
+ * Every identifier is parsed with its own prefix, so `GET /v1/projects/conn_...`
  * is a 422 at the edge and never becomes a lookup. That is cheap, and it keeps
  * a malformed identifier from ever reaching a repository.
  */
 
 export const workspaceIdSchema = idSchema(ID_PREFIXES.workspace);
-export const brandIdSchema = idSchema(ID_PREFIXES.brand);
+export const projectIdSchema = idSchema(ID_PREFIXES.project);
 export const connectionIdSchema = idSchema(ID_PREFIXES.connection);
 export const contentItemIdSchema = idSchema(ID_PREFIXES.contentItem);
 export const postVariantIdSchema = idSchema(ID_PREFIXES.postVariant);

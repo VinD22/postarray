@@ -11,7 +11,9 @@ export const ACTIVE_CHANNEL_LIMIT = 10;
 
 /**
  * A project is the customer-facing publishing boundary inside a workspace.
- * Existing Brand identifiers remain the compatible storage and API shape.
+ * An identifier minted before the storage rename keeps its `brand_` prefix
+ * forever; the prefix is opaque once assigned. Every identifier minted since
+ * carries the `project_` prefix instead, and both are equally valid.
  */
 export const BASE_PROJECT_LIMIT = 3;
 

@@ -89,7 +89,7 @@ function harness(options: HarnessOptions = {}) {
       }),
     },
     membership: {
-      findFirst: async () => ({ role: 'owner', state: 'active', brandScope: [] }),
+      findFirst: async () => ({ role: 'owner', state: 'active', projectScope: [] }),
     },
     rolePermission: { findMany: async () => [] },
     mediaAsset: { findFirst: async () => asset },

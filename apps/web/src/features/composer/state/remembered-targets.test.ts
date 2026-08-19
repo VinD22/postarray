@@ -5,7 +5,7 @@ import { noticeCount, restoreSelection, type ComposerChannel } from './remembere
 
 function memory(overrides: Partial<RememberedTargetsView> = {}): RememberedTargetsView {
   return {
-    brandId: 'brand_1',
+    projectId: 'project_1',
     enabled: true,
     connectionIds: [],
     droppedConnectionIds: [],

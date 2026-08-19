@@ -2,7 +2,7 @@ import { z } from 'zod';
 
 import { cursorQuerySchema } from '../../common/pagination';
 import {
-  brandIdSchema,
+  projectIdSchema,
   connectionIdSchema,
   feedIdSchema,
   shortTextSchema,
@@ -23,7 +23,7 @@ import {
  */
 export const createFeedSchema = z
   .object({
-    brandId: brandIdSchema,
+    projectId: projectIdSchema,
     title: shortTextSchema,
     feedUrl: z.string().trim().url().max(2048),
     connectionIds: z.array(connectionIdSchema).max(200).optional(),

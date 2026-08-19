@@ -24,7 +24,7 @@ import { SettingsPanel, SettingsStack } from '../../settings/components/section'
 import { AsyncBoundary } from '../../settings/lib/async-boundary';
 import {
   agentsGateway,
-  brandsGateway,
+  projectsGateway,
   securityGateway,
   workspaceGateway,
 } from '../../settings/lib/gateway';
@@ -44,7 +44,7 @@ export function AgentsScreen(): ReactNode {
   const formatters = useFormatters();
   const workspaceId = useWorkspaceId();
   const AGENTS_KEY = settingsKey(workspaceId, 'agents');
-  const BRANDS_KEY = settingsKey(workspaceId, 'brands');
+  const PROJECTS_KEY = settingsKey(workspaceId, 'projects');
   const CONNECTIONS_KEY = settingsKey(workspaceId, 'security', 'connections');
 
   const agents = useQuery({ queryKey: AGENTS_KEY, queryFn: () => agentsGateway.list() });
@@ -54,7 +54,7 @@ export function AgentsScreen(): ReactNode {
   });
   const mcpEndpoint = workspace.data?.mcpEndpoint ?? '';
   const apiBaseUrl = workspace.data?.apiBaseUrl ?? '';
-  const brands = useQuery({ queryKey: BRANDS_KEY, queryFn: () => brandsGateway.list() });
+  const projects = useQuery({ queryKey: PROJECTS_KEY, queryFn: () => projectsGateway.list() });
   const connections = useQuery({
     queryKey: CONNECTIONS_KEY,
     queryFn: () => securityGateway.connections(),
@@ -76,8 +76,8 @@ export function AgentsScreen(): ReactNode {
   });
 
   const contentLocales = useMemo(
-    () => Array.from(new Set((brands.data ?? []).flatMap((brand) => brand.contentLocales))).sort(),
-    [brands.data],
+    () => Array.from(new Set((projects.data ?? []).flatMap((project) => project.contentLocales))).sort(),
+    [projects.data],
   );
 
   const create = useSettingsMutation({
@@ -137,7 +137,7 @@ export function AgentsScreen(): ReactNode {
 
         {creating ? (
           <ServiceAccountForm
-            brands={(brands.data ?? []).map((brand) => ({ id: brand.id, name: brand.name }))}
+            projects={(projects.data ?? []).map((project) => ({ id: project.id, name: project.name }))}
             connections={connections.data ?? []}
             contentLocales={contentLocales}
             timeZone={formatters.timeZone}
@@ -258,12 +258,12 @@ export function AgentsScreen(): ReactNode {
                       <DefinitionList
                         items={[
                           {
-                            id: 'brands',
-                            term: t('developer.serviceAccount.scopeBrands'),
+                            id: 'projects',
+                            term: t('developer.serviceAccount.scopeProjects'),
                             definition:
-                              selected.brandScope.length === 0
+                              selected.projectScope.length === 0
                                 ? t('common.all')
-                                : formatters.list(selected.brandScope.map((brand) => brand.name)),
+                                : formatters.list(selected.projectScope.map((project) => project.name)),
                           },
                           {
                             id: 'accounts',

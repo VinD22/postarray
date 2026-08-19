@@ -79,7 +79,7 @@ export function makeDraft(input: MakeDraftInput = {}): MasterDraft {
   return masterDraftSchema.parse({
     id: fixtureId('contentItem', seed),
     workspaceId,
-    brandId: fixtureId('brand', 'fixture-brand'),
+    projectId: fixtureId('project', 'fixture-project'),
     campaignId: null,
     title: 'Fixture draft',
     body: 'We shipped a change to how scheduling handles time zones. Details below.',

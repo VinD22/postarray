@@ -11,7 +11,7 @@ import {
 import { z } from 'zod';
 
 import { cursorQueryWith } from '../../common/pagination';
-import { brandIdSchema, mediaIdSchema } from '../../common/schemas';
+import { projectIdSchema, mediaIdSchema } from '../../common/schemas';
 
 /**
  * Media payloads.
@@ -58,7 +58,7 @@ export const createUploadUrlSchema = z
     filename: z.string().trim().min(1).max(255),
     mimeType: z.enum(UPLOADABLE_MIME_TYPES),
     byteSize: z.number().int().positive().max(MAX_UPLOAD_BYTES),
-    brandId: brandIdSchema.nullable().optional(),
+    projectId: projectIdSchema.nullable().optional(),
     /** Computed by the client. Re-verified server side after the upload. */
     sha256: checksumSchema,
   })
@@ -89,7 +89,7 @@ export const createUploadUrlSchema = z
 export const importFromUrlSchema = z
   .object({
     url: z.string().trim().min(1).max(2048),
-    brandId: brandIdSchema.nullable().optional(),
+    projectId: projectIdSchema.nullable().optional(),
   })
   .strict();
 
@@ -149,7 +149,7 @@ export const declareRightsSchema = z
   });
 
 export const listMediaQuerySchema = cursorQueryWith({
-  brandId: brandIdSchema.optional(),
+  projectId: projectIdSchema.optional(),
   kind: mediaKindSchema.optional(),
 });
 

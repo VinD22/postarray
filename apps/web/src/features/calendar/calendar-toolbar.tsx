@@ -150,7 +150,7 @@ export function CalendarToolbar(props: CalendarToolbarProps): ReactNode {
           resultCount={props.resultCount}
           onClear={() =>
             props.onFiltersChange({
-              brandId: null,
+              projectId: null,
               connectionId: null,
               provider: null,
               bucket: null,
@@ -181,7 +181,7 @@ export function CalendarToolbar(props: CalendarToolbarProps): ReactNode {
                 resultCount={props.resultCount}
                 onClear={() =>
                   props.onFiltersChange({
-                    brandId: null,
+                    projectId: null,
                     connectionId: null,
                     provider: null,
                     bucket: null,
@@ -213,14 +213,14 @@ function FilterFields({
 
   return (
     <>
-      {options.brands.length > 0 ? (
+      {options.projects.length > 0 ? (
         <FilterSelect
           className={width}
-          label={t('calendar.filter.brand')}
-          anyLabel={t('web.calendar.filter.anyBrand')}
-          value={filters.brandId}
-          onChange={(value) => onFiltersChange({ ...filters, brandId: value })}
-          items={options.brands.map((brand) => ({ value: brand.id, label: brand.name }))}
+          label={t('calendar.filter.project')}
+          anyLabel={t('web.calendar.filter.anyProject')}
+          value={filters.projectId}
+          onChange={(value) => onFiltersChange({ ...filters, projectId: value })}
+          items={options.projects.map((project) => ({ value: project.id, label: project.name }))}
         />
       ) : null}
 

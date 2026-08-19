@@ -21,7 +21,7 @@ import {
 import {
   auditApi,
   billingApi,
-  brandsApi,
+  projectsApi,
   healthApi,
   membersApi,
   sessionApi,
@@ -65,7 +65,7 @@ export const api = {
   oauthApps: oauthAppsApi,
   billing: billingApi,
   members: membersApi,
-  brands: brandsApi,
+  projects: projectsApi,
   workspaces: workspacesApi,
   audit: auditApi,
   health: healthApi,

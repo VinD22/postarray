@@ -57,7 +57,7 @@ export function HomeScreen() {
   const upcomingQuery = useCalendar({
     from: now.toISOString(),
     to: new Date(now.getTime() + DAY_MS).toISOString(),
-    ...(project === null ? {} : { brandId: project.id }),
+    ...(project === null ? {} : { projectId: project.id }),
   });
   const upcomingCount = upcomingQuery.data?.data.length ?? 0;
 

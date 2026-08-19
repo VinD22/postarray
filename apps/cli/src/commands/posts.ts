@@ -115,15 +115,15 @@ async function createDraft(
   context: CliContext,
   draft: DraftDocument,
   idempotencyKey: string,
-  brandId: string | undefined,
+  projectId: string | undefined,
 ): Promise<string> {
-  const resolvedBrandId = brandId ?? draft.brandId;
-  if (resolvedBrandId === undefined) {
-    // A draft always belongs to a brand. Guessing one would put content under
+  const resolvedProjectId = projectId ?? draft.projectId;
+  if (resolvedProjectId === undefined) {
+    // A draft always belongs to a project. Guessing one would put content under
     // the wrong voice, claims and disclosure defaults.
     throw new RelayError('VALIDATION_FAILED', {
       messageKey: 'error.request_invalid.message',
-      details: { reason: 'BRAND_ID_REQUIRED' },
+      details: { reason: 'PROJECT_ID_REQUIRED' },
     });
   }
 
@@ -133,7 +133,7 @@ async function createDraft(
     schema: contentItemViewSchema,
     idempotencyKey,
     body: {
-      brandId: resolvedBrandId,
+      projectId: resolvedProjectId,
       campaignId: draft.campaignId ?? null,
       title: draft.title ?? null,
       body: draft.body,
@@ -195,7 +195,7 @@ export interface ValidateOptions {
   readonly file?: string | undefined;
   readonly contentItemId?: string | undefined;
   readonly idempotencyKey?: string | undefined;
-  readonly brandId?: string | undefined;
+  readonly projectId?: string | undefined;
 }
 
 /**
@@ -225,7 +225,7 @@ export async function postsValidate(
       context,
       draft,
       requireIdempotencyKey(options.idempotencyKey),
-      options.brandId,
+      options.projectId,
     );
   }
 
@@ -385,7 +385,7 @@ export async function buildPlan(
 
 export interface ScheduleOptions {
   readonly idempotencyKey?: string | undefined;
-  readonly brandId?: string | undefined;
+  readonly projectId?: string | undefined;
 }
 
 export async function postsSchedule(
@@ -417,7 +417,7 @@ export async function postsSchedule(
     context,
     draft,
     `${idempotencyKey}.draft`,
-    options.brandId,
+    options.projectId,
   );
 
   const validation = await context.api().request({
@@ -475,7 +475,7 @@ export interface PublishOptions {
   readonly contentItemId?: string | undefined;
   readonly file?: string | undefined;
   readonly idempotencyKey?: string | undefined;
-  readonly brandId?: string | undefined;
+  readonly projectId?: string | undefined;
   readonly confirm: boolean;
 }
 
@@ -534,7 +534,7 @@ export async function postsPublish(
   let contentItemId = options.contentItemId;
   if (options.file !== undefined) {
     const draft = await readDraftFile(options.file);
-    contentItemId = await createDraft(context, draft, `${idempotencyKey}.draft`, options.brandId);
+    contentItemId = await createDraft(context, draft, `${idempotencyKey}.draft`, options.projectId);
   }
 
   const item = await context.api().request({

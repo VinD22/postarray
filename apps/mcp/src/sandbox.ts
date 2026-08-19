@@ -47,7 +47,7 @@ import type {
  */
 
 const FAKE_PROVIDER = 'fake';
-export const SANDBOX_BRAND_ID = 'brand_sandbox';
+export const SANDBOX_PROJECT_ID = 'project_sandbox';
 
 export function fakeCapabilitySnapshot(
   connectionId: string,
@@ -156,7 +156,7 @@ export function createSandboxServices(options: SandboxOptions): SandboxServices 
   const state: SandboxState = {
     connections: Array.from({ length: connectionCount }, (_, index) => ({
       id: `conn_sandbox_${index + 1}`,
-      brandId: SANDBOX_BRAND_ID,
+      projectId: SANDBOX_PROJECT_ID,
       provider: FAKE_PROVIDER,
       accountType: 'business_profile' as const,
       displayName: `Sandbox account ${index + 1}`,
@@ -242,7 +242,7 @@ export function createSandboxServices(options: SandboxOptions): SandboxServices 
         const id = `content_${randomUUID().replace(/-/g, '').slice(0, 20)}`;
         const item: ContentItemSummary = {
           id,
-          brandId: input.brandId,
+          projectId: input.projectId,
           state: 'draft',
           approvalState: 'not_required',
           title: input.title ?? null,
@@ -461,7 +461,7 @@ export function createSandboxServices(options: SandboxOptions): SandboxServices 
         const id = `content_${randomUUID().replace(/-/g, '').slice(0, 20)}`;
         const item: ContentItemSummary = {
           id,
-          brandId: SANDBOX_BRAND_ID,
+          projectId: SANDBOX_PROJECT_ID,
           state: 'draft',
           approvalState: 'not_required',
           title: 'Sandbox plan item',

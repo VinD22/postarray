@@ -24,8 +24,8 @@ const hasDatabase = DATABASE_URL !== undefined && DATABASE_URL !== '';
 const FIXTURE = {
   workspaceA: newIdFor('workspace'),
   workspaceB: newIdFor('workspace'),
-  brandA: newIdFor('brand'),
-  brandB: newIdFor('brand'),
+  projectA: newIdFor('project'),
+  projectB: newIdFor('project'),
   itemA: newIdFor('contentItem'),
   itemB: newIdFor('contentItem'),
   versionA: newIdFor('contentVersion'),
@@ -213,9 +213,9 @@ describe.skipIf(!hasDatabase)('row level security', () => {
     it('cannot insert content', async () => {
       await expectRejected(
         null,
-        `INSERT INTO app.content_items (workspace_id, brand_id, title, state, updated_at)
+        `INSERT INTO app.content_items (workspace_id, project_id, title, state, updated_at)
          VALUES ($1, $2, 'anon insert', 'draft', now())`,
-        [FIXTURE.workspaceA, FIXTURE.brandA],
+        [FIXTURE.workspaceA, FIXTURE.projectA],
       );
     });
   });
@@ -247,9 +247,9 @@ describe.skipIf(!hasDatabase)('row level security', () => {
     it('cannot insert content into workspace B', async () => {
       await expectRejected(
         claims(),
-        `INSERT INTO app.content_items (workspace_id, brand_id, title, state, updated_at)
+        `INSERT INTO app.content_items (workspace_id, project_id, title, state, updated_at)
          VALUES ($1, $2, 'cross tenant insert', 'draft', now())`,
-        [FIXTURE.workspaceB, FIXTURE.brandB],
+        [FIXTURE.workspaceB, FIXTURE.projectB],
       );
     });
 
@@ -296,9 +296,9 @@ describe.skipIf(!hasDatabase)('row level security', () => {
     it('lets an editor create content', async () => {
       const rows = await asActor(memberClaims(USER_IDS.editor), async (tx) =>
         tx.query(
-          `INSERT INTO app.content_items (workspace_id, brand_id, title, state, updated_at)
+          `INSERT INTO app.content_items (workspace_id, project_id, title, state, updated_at)
            VALUES ($1, $2, 'editor draft', 'draft', now()) RETURNING id`,
-          [FIXTURE.workspaceA, FIXTURE.brandA],
+          [FIXTURE.workspaceA, FIXTURE.projectA],
         ),
       );
       expect(rows.rowCount).toBe(1);
@@ -309,9 +309,9 @@ describe.skipIf(!hasDatabase)('row level security', () => {
       async (role) => {
         await expectRejected(
           memberClaims(USER_IDS[role]),
-          `INSERT INTO app.content_items (workspace_id, brand_id, title, state, updated_at)
+          `INSERT INTO app.content_items (workspace_id, project_id, title, state, updated_at)
            VALUES ($1, $2, 'should not exist', 'draft', now())`,
-          [FIXTURE.workspaceA, FIXTURE.brandA],
+          [FIXTURE.workspaceA, FIXTURE.projectA],
         );
       },
     );
@@ -372,9 +372,9 @@ describe.skipIf(!hasDatabase)('row level security', () => {
     it('cannot write anywhere', async () => {
       await expectRejected(
         memberClaims(OUTSIDER_USER_ID),
-        `INSERT INTO app.content_items (workspace_id, brand_id, title, state, updated_at)
+        `INSERT INTO app.content_items (workspace_id, project_id, title, state, updated_at)
          VALUES ($1, $2, 'outsider', 'draft', now())`,
-        [FIXTURE.workspaceA, FIXTURE.brandA],
+        [FIXTURE.workspaceA, FIXTURE.projectA],
       );
     });
   });
@@ -475,9 +475,9 @@ describe.skipIf(!hasDatabase)('row level security', () => {
         await client.query('SET LOCAL ROLE authenticated');
         await expect(
           client.query(
-            `INSERT INTO app.content_items (workspace_id, brand_id, title, state, updated_at)
+            `INSERT INTO app.content_items (workspace_id, project_id, title, state, updated_at)
              VALUES ($1, $2, 'data api write', 'draft', now())`,
-            [FIXTURE.workspaceA, FIXTURE.brandA],
+            [FIXTURE.workspaceA, FIXTURE.projectA],
           ),
         ).rejects.toThrow(/permission denied/iu);
       } finally {
@@ -607,9 +607,9 @@ describe.skipIf(!hasDatabase)('row level security', () => {
       await expectRejected(
         memberClaimsA(),
         `INSERT INTO app.queue_rules
-           (id, workspace_id, brand_id, name, iana_time_zone, created_by_user_id, updated_at)
+           (id, workspace_id, project_id, name, iana_time_zone, created_by_user_id, updated_at)
          VALUES ($1, $2, $3, 'stolen', 'UTC', $4, now())`,
-        [newIdFor('queueRule'), FIXTURE.workspaceB, FIXTURE.brandB, USER_IDS.editor],
+        [newIdFor('queueRule'), FIXTURE.workspaceB, FIXTURE.projectB, USER_IDS.editor],
       );
     });
 
@@ -641,18 +641,18 @@ describe.skipIf(!hasDatabase)('row level security', () => {
     });
 
     it('does not let a member mint a reservation directly, in any workspace', async () => {
-      for (const [workspaceId, brandId] of [
-        [FIXTURE.workspaceA, FIXTURE.brandA],
-        [FIXTURE.workspaceB, FIXTURE.brandB],
+      for (const [workspaceId, projectId] of [
+        [FIXTURE.workspaceA, FIXTURE.projectA],
+        [FIXTURE.workspaceB, FIXTURE.projectB],
       ] as const) {
         await expectRejected(
           memberClaimsA(),
           `INSERT INTO app.queue_slot_reservations
-             (id, workspace_id, brand_id, state, scheduled_for, scheduled_time_zone,
+             (id, workspace_id, project_id, state, scheduled_for, scheduled_time_zone,
               local_date_time, rule_snapshot, created_by_user_id, updated_at)
            VALUES ($1, $2, $3, 'proposed', now() + interval '1 day', 'UTC', '2030-01-01T09:00',
                    '{"reasons":[]}'::jsonb, $4, now())`,
-          [newIdFor('queueSlotReservation'), workspaceId, brandId, USER_IDS.editor],
+          [newIdFor('queueSlotReservation'), workspaceId, projectId, USER_IDS.editor],
         );
       }
     });
@@ -694,9 +694,9 @@ describe.skipIf(!hasDatabase)('row level security', () => {
         asActor(serviceClaims, async (tx) =>
           tx.query(
             `INSERT INTO app.queue_slot_reservations
-               (id, workspace_id, brand_id, state, scheduled_for, scheduled_time_zone,
+               (id, workspace_id, project_id, state, scheduled_for, scheduled_time_zone,
                 local_date_time, rule_snapshot, created_by_user_id, updated_at)
-             SELECT $1, workspace_id, brand_id, 'proposed', scheduled_for, scheduled_time_zone,
+             SELECT $1, workspace_id, project_id, 'proposed', scheduled_for, scheduled_time_zone,
                     local_date_time, rule_snapshot, created_by_user_id, now()
              FROM app.queue_slot_reservations WHERE id = $2`,
             [newIdFor('queueSlotReservation'), FIXTURE.queueSlotA],
@@ -763,13 +763,13 @@ describe.skipIf(!hasDatabase)('row level security', () => {
       await expectRejected(
         memberClaimsA(),
         `INSERT INTO app.bulk_import_jobs
-           (id, workspace_id, brand_id, filename, manifest_checksum, parser_version,
+           (id, workspace_id, project_id, filename, manifest_checksum, parser_version,
             requested_by_user_id, updated_at)
          VALUES ($1, $2, $3, 'forged.csv', $4, 'rls-test', $5, now())`,
         [
           newIdFor('bulkImportJob'),
           FIXTURE.workspaceA,
-          FIXTURE.brandA,
+          FIXTURE.projectA,
           'c'.repeat(64),
           USER_IDS.editor,
         ],
@@ -820,9 +820,9 @@ describe.skipIf(!hasDatabase)('row level security', () => {
         asActor(serviceClaims, async (tx) =>
           tx.query(
             `INSERT INTO app.bulk_import_jobs
-               (id, workspace_id, brand_id, filename, manifest_checksum, parser_version,
+               (id, workspace_id, project_id, filename, manifest_checksum, parser_version,
                 requested_by_user_id, updated_at)
-             SELECT $1, workspace_id, brand_id, 'again.csv', manifest_checksum, parser_version,
+             SELECT $1, workspace_id, project_id, 'again.csv', manifest_checksum, parser_version,
                     requested_by_user_id, now()
              FROM app.bulk_import_jobs WHERE id = $2`,
             [newIdFor('bulkImportJob'), FIXTURE.importJobA],
@@ -893,9 +893,9 @@ describe.skipIf(!hasDatabase)('row level security', () => {
     it('cannot write a memory on somebody else behalf', async () => {
       await expectRejected(
         managerClaims(),
-        `INSERT INTO app.remembered_targets (workspace_id, brand_id, user_id, connection_ids, updated_at)
+        `INSERT INTO app.remembered_targets (workspace_id, project_id, user_id, connection_ids, updated_at)
          VALUES ($1, $2, $3, ARRAY[$4]::text[], now())`,
-        [FIXTURE.workspaceA, FIXTURE.brandA, USER_IDS.viewer, FIXTURE.connectionA],
+        [FIXTURE.workspaceA, FIXTURE.projectA, USER_IDS.viewer, FIXTURE.connectionA],
       );
     });
 
@@ -939,9 +939,9 @@ describe.skipIf(!hasDatabase)('row level security', () => {
       await expect(
         asActor(serviceClaims, async (tx) =>
           tx.query(
-            `INSERT INTO app.remembered_targets (workspace_id, brand_id, user_id, connection_ids, updated_at)
+            `INSERT INTO app.remembered_targets (workspace_id, project_id, user_id, connection_ids, updated_at)
              VALUES ($1, $2, $3, ARRAY[]::text[], now())`,
-            [FIXTURE.workspaceA, FIXTURE.brandA, USER_IDS.editor],
+            [FIXTURE.workspaceA, FIXTURE.projectA, USER_IDS.editor],
           ),
         ),
       ).rejects.toThrow();
@@ -1073,25 +1073,25 @@ async function seedFixture(): Promise<void> {
     [FIXTURE.workspaceB, WORKSPACE_B_OWNER_ID],
   );
 
-  for (const [brandId, workspaceId, slug] of [
-    [FIXTURE.brandA, FIXTURE.workspaceA, 'brand-a'],
-    [FIXTURE.brandB, FIXTURE.workspaceB, 'brand-b'],
+  for (const [projectId, workspaceId, slug] of [
+    [FIXTURE.projectA, FIXTURE.workspaceA, 'project-a'],
+    [FIXTURE.projectB, FIXTURE.workspaceB, 'project-b'],
   ] as const) {
     await client.query(
-      `INSERT INTO app.brands (id, workspace_id, name, slug, updated_at)
+      `INSERT INTO app.projects (id, workspace_id, name, slug, updated_at)
        VALUES ($1, $2, $3, $4, now()) ON CONFLICT (id) DO NOTHING`,
-      [brandId, workspaceId, slug, slug],
+      [projectId, workspaceId, slug, slug],
     );
   }
 
-  for (const [itemId, workspaceId, brandId] of [
-    [FIXTURE.itemA, FIXTURE.workspaceA, FIXTURE.brandA],
-    [FIXTURE.itemB, FIXTURE.workspaceB, FIXTURE.brandB],
+  for (const [itemId, workspaceId, projectId] of [
+    [FIXTURE.itemA, FIXTURE.workspaceA, FIXTURE.projectA],
+    [FIXTURE.itemB, FIXTURE.workspaceB, FIXTURE.projectB],
   ] as const) {
     await client.query(
-      `INSERT INTO app.content_items (id, workspace_id, brand_id, title, state, updated_at)
+      `INSERT INTO app.content_items (id, workspace_id, project_id, title, state, updated_at)
        VALUES ($1, $2, $3, 'fixture', 'draft', now()) ON CONFLICT (id) DO NOTHING`,
-      [itemId, workspaceId, brandId],
+      [itemId, workspaceId, projectId],
     );
   }
 
@@ -1173,26 +1173,26 @@ async function seedFixture(): Promise<void> {
     );
   }
 
-  for (const [ruleId, workspaceId, brandId, name] of [
-    [FIXTURE.queueRuleA, FIXTURE.workspaceA, FIXTURE.brandA, 'rls-queue-a'],
-    [FIXTURE.queueRuleB, FIXTURE.workspaceB, FIXTURE.brandB, 'rls-queue-b'],
+  for (const [ruleId, workspaceId, projectId, name] of [
+    [FIXTURE.queueRuleA, FIXTURE.workspaceA, FIXTURE.projectA, 'rls-queue-a'],
+    [FIXTURE.queueRuleB, FIXTURE.workspaceB, FIXTURE.projectB, 'rls-queue-b'],
   ] as const) {
     await client.query(
       `INSERT INTO app.queue_rules
-         (id, workspace_id, brand_id, name, iana_time_zone, windows, minimum_gap_minutes,
+         (id, workspace_id, project_id, name, iana_time_zone, windows, minimum_gap_minutes,
           maximum_per_day, created_by_user_id, updated_at)
        VALUES ($1, $2, $3, $4, 'Europe/London',
                '[{"weekday":1,"startMinute":540,"endMinute":1020}]'::jsonb, 60, NULL, $5, now())
        ON CONFLICT (id) DO NOTHING`,
-      [ruleId, workspaceId, brandId, name, USER_IDS.owner],
+      [ruleId, workspaceId, projectId, name, USER_IDS.owner],
     );
   }
 
-  for (const [slotId, workspaceId, brandId, ruleId, instant, local] of [
+  for (const [slotId, workspaceId, projectId, ruleId, instant, local] of [
     [
       FIXTURE.queueSlotA,
       FIXTURE.workspaceA,
-      FIXTURE.brandA,
+      FIXTURE.projectA,
       FIXTURE.queueRuleA,
       '2030-06-10T08:00:00.000Z',
       '2030-06-10T09:00',
@@ -1200,7 +1200,7 @@ async function seedFixture(): Promise<void> {
     [
       FIXTURE.queueSlotB,
       FIXTURE.workspaceB,
-      FIXTURE.brandB,
+      FIXTURE.projectB,
       FIXTURE.queueRuleB,
       '2030-06-10T09:00:00.000Z',
       '2030-06-10T10:00',
@@ -1208,12 +1208,12 @@ async function seedFixture(): Promise<void> {
   ] as const) {
     await client.query(
       `INSERT INTO app.queue_slot_reservations
-         (id, workspace_id, brand_id, queue_rule_id, state, scheduled_for, scheduled_time_zone,
+         (id, workspace_id, project_id, queue_rule_id, state, scheduled_for, scheduled_time_zone,
           local_date_time, rule_snapshot, created_by_user_id, updated_at)
        VALUES ($1, $2, $3, $4, 'proposed', $5, 'Europe/London', $6,
                '{"reasons":[{"key":"queue.reason.matchedRule","values":{}}]}'::jsonb, $7, now())
        ON CONFLICT (id) DO NOTHING`,
-      [slotId, workspaceId, brandId, ruleId, instant, local, USER_IDS.owner],
+      [slotId, workspaceId, projectId, ruleId, instant, local, USER_IDS.owner],
     );
   }
 
@@ -1232,26 +1232,26 @@ async function seedFixture(): Promise<void> {
   // One memory per person per project. The editor's and the manager's rows are
   // both inside workspace A, which is what makes the self-row assertions below
   // meaningful: same tenant, same project, different people.
-  for (const [memoryId, workspaceId, brandId, userId] of [
-    [FIXTURE.memoryEditorA, FIXTURE.workspaceA, FIXTURE.brandA, USER_IDS.editor],
-    [FIXTURE.memoryManagerA, FIXTURE.workspaceA, FIXTURE.brandA, USER_IDS.manager],
-    [FIXTURE.memoryOutsiderB, FIXTURE.workspaceB, FIXTURE.brandB, WORKSPACE_B_OWNER_ID],
+  for (const [memoryId, workspaceId, projectId, userId] of [
+    [FIXTURE.memoryEditorA, FIXTURE.workspaceA, FIXTURE.projectA, USER_IDS.editor],
+    [FIXTURE.memoryManagerA, FIXTURE.workspaceA, FIXTURE.projectA, USER_IDS.manager],
+    [FIXTURE.memoryOutsiderB, FIXTURE.workspaceB, FIXTURE.projectB, WORKSPACE_B_OWNER_ID],
   ] as const) {
     await client.query(
       `INSERT INTO app.remembered_targets
-         (id, workspace_id, brand_id, user_id, connection_ids, updated_at)
+         (id, workspace_id, project_id, user_id, connection_ids, updated_at)
        VALUES ($1, $2, $3, $4, ARRAY[$5]::text[], now())
        ON CONFLICT (id) DO NOTHING`,
-      [memoryId, workspaceId, brandId, userId, FIXTURE.connectionA],
+      [memoryId, workspaceId, projectId, userId, FIXTURE.connectionA],
     );
   }
 
-  for (const [jobId, rowId, workspaceId, brandId, userId, checksum] of [
+  for (const [jobId, rowId, workspaceId, projectId, userId, checksum] of [
     [
       FIXTURE.importJobA,
       FIXTURE.importRowA,
       FIXTURE.workspaceA,
-      FIXTURE.brandA,
+      FIXTURE.projectA,
       USER_IDS.owner,
       'a'.repeat(64),
     ],
@@ -1259,18 +1259,18 @@ async function seedFixture(): Promise<void> {
       FIXTURE.importJobB,
       FIXTURE.importRowB,
       FIXTURE.workspaceB,
-      FIXTURE.brandB,
+      FIXTURE.projectB,
       WORKSPACE_B_OWNER_ID,
       'b'.repeat(64),
     ],
   ] as const) {
     await client.query(
       `INSERT INTO app.bulk_import_jobs
-         (id, workspace_id, brand_id, state, filename, manifest_checksum, byte_size,
+         (id, workspace_id, project_id, state, filename, manifest_checksum, byte_size,
           parser_version, requested_by_user_id, updated_at)
        VALUES ($1, $2, $3, 'validated', 'manifest.csv', $4, 128, 'rls-test', $5, now())
        ON CONFLICT (id) DO NOTHING`,
-      [jobId, workspaceId, brandId, checksum, userId],
+      [jobId, workspaceId, projectId, checksum, userId],
     );
     await client.query(
       `INSERT INTO app.bulk_import_rows

@@ -84,7 +84,7 @@ async function draft(targets = 2): Promise<string> {
     toolName: 'draft_post',
     grant: grantOf(),
     rawArguments: {
-      brand_id: 'brand_sandbox',
+      project_id: 'project_sandbox',
       body: 'A sandbox post.',
       targets: Array.from({ length: targets }, (_, index) => ({
         connection_id: `conn_sandbox_${index + 1}`,

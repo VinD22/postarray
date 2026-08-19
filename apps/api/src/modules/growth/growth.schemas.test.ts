@@ -10,7 +10,7 @@ import {
 describe('Growth Advisor transport schemas', () => {
   it('accepts the complete human-authored intake without requiring optional guesses', () => {
     const result = businessProfileInputSchema.safeParse({
-      brandId: newIdFor('brand'),
+      projectId: newIdFor('project'),
       productName: 'Example product',
       siteUrl: '',
       description: 'A description written by the user.',

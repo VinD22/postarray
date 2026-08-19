@@ -10,60 +10,60 @@ import { useSession } from '@/lib/auth/session-context';
 import { useLocalizedRouter } from '@/lib/i18n';
 
 import { AsyncBoundary } from '../lib/async-boundary';
-import { brandsGateway } from '../lib/gateway';
+import { projectsGateway } from '../lib/gateway';
 import { useFormatters } from '../lib/formatters';
 import { settingsKey, useWorkspaceId } from '../lib/keys';
 import { useSettingsMutation } from '../lib/use-settings-mutation';
 import { SettingsStack } from '../components/section';
-import { BrandEditor } from './brand-editor';
-import { NewBrandDialog } from './new-brand-dialog';
+import { ProjectEditor } from './project-editor';
+import { NewProjectDialog } from './new-project-dialog';
 
-export function BrandsScreen(): ReactNode {
+export function ProjectsScreen(): ReactNode {
   const t = useTranslations();
-  const section = t('settings.ui.section.brands');
+  const section = t('settings.ui.section.projects');
   const formatters = useFormatters();
   const { workspace } = useSession();
   const router = useLocalizedRouter();
   const workspaceId = useWorkspaceId();
-  const BRANDS_KEY = settingsKey(workspaceId, 'brands');
+  const PROJECTS_KEY = settingsKey(workspaceId, 'projects');
 
-  const brands = useQuery({ queryKey: BRANDS_KEY, queryFn: () => brandsGateway.list() });
+  const projects = useQuery({ queryKey: PROJECTS_KEY, queryFn: () => projectsGateway.list() });
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [creating, setCreating] = useState(false);
 
-  const rows = brands.data ?? [];
-  const firstBrandId = rows[0]?.id ?? null;
+  const rows = projects.data ?? [];
+  const firstProjectId = rows[0]?.id ?? null;
 
   useEffect(() => {
-    if (selectedId === null && firstBrandId !== null) {
-      setSelectedId(firstBrandId);
+    if (selectedId === null && firstProjectId !== null) {
+      setSelectedId(firstProjectId);
     }
-  }, [firstBrandId, selectedId]);
+  }, [firstProjectId, selectedId]);
 
-  const selected = rows.find((brand) => brand.id === selectedId) ?? null;
+  const selected = rows.find((project) => project.id === selectedId) ?? null;
   const atLimit = rows.length >= workspace.projectLimit;
 
   const save = useSettingsMutation({
     section,
-    mutationFn: (input: { brandId: string; patch: Parameters<typeof brandsGateway.update>[1] }) =>
-      brandsGateway.update(input.brandId, input.patch),
-    invalidate: [BRANDS_KEY],
+    mutationFn: (input: { projectId: string; patch: Parameters<typeof projectsGateway.update>[1] }) =>
+      projectsGateway.update(input.projectId, input.patch),
+    invalidate: [PROJECTS_KEY],
   });
 
   const create = useSettingsMutation({
     section,
-    mutationFn: brandsGateway.create,
-    invalidate: [BRANDS_KEY],
-    onSuccess: (brand) => {
-      setSelectedId(brand.id);
+    mutationFn: projectsGateway.create,
+    invalidate: [PROJECTS_KEY],
+    onSuccess: (project) => {
+      setSelectedId(project.id);
       setCreating(false);
     },
   });
 
   const archive = useSettingsMutation({
     section,
-    mutationFn: (brandId: string) => brandsGateway.archive(brandId),
-    invalidate: [BRANDS_KEY],
+    mutationFn: (projectId: string) => projectsGateway.archive(projectId),
+    invalidate: [PROJECTS_KEY],
     onSuccess: () => {
       setSelectedId(null);
       router.refresh();
@@ -74,10 +74,10 @@ export function BrandsScreen(): ReactNode {
     <>
       <PageHeader
         title={section}
-        description={t('settings.ui.brands.description')}
+        description={t('settings.ui.projects.description')}
         actions={
           <Button variant="primary" disabled={atLimit} onClick={() => setCreating(true)}>
-            {t('settings.brands.add')}
+            {t('settings.projects.add')}
           </Button>
         }
       />
@@ -113,18 +113,18 @@ export function BrandsScreen(): ReactNode {
 
         <AsyncBoundary
           section={section}
-          isPending={brands.isPending}
-          error={brands.error}
-          onRetry={() => void brands.refetch()}
+          isPending={projects.isPending}
+          error={projects.error}
+          onRetry={() => void projects.refetch()}
         >
           {rows.length === 0 ? (
             <EmptyState
-              title={t('settings.ui.brands.emptyTitle')}
-              description={t('settings.ui.brands.emptyBody')}
-              example={t('settings.ui.brands.emptyExample')}
+              title={t('settings.ui.projects.emptyTitle')}
+              description={t('settings.ui.projects.emptyBody')}
+              example={t('settings.ui.projects.emptyExample')}
               action={
                 <Button variant="primary" disabled={atLimit} onClick={() => setCreating(true)}>
-                  {t('settings.brands.add')}
+                  {t('settings.projects.add')}
                 </Button>
               }
             />
@@ -135,10 +135,10 @@ export function BrandsScreen(): ReactNode {
                 className="border-border-default bg-surface-raised h-fit overflow-hidden rounded-lg border"
               >
                 <ul className="flex overflow-x-auto lg:flex-col lg:overflow-visible">
-                  {rows.map((brand) => {
-                    const active = brand.id === selectedId;
+                  {rows.map((project) => {
+                    const active = project.id === selectedId;
                     return (
-                      <li key={brand.id} className="min-w-56 flex-1 lg:min-w-0">
+                      <li key={project.id} className="min-w-56 flex-1 lg:min-w-0">
                         <button
                           type="button"
                           className={cn(
@@ -149,13 +149,13 @@ export function BrandsScreen(): ReactNode {
                               : 'text-text-primary hover:bg-surface-hover',
                           )}
                           aria-current={active ? 'true' : undefined}
-                          onClick={() => setSelectedId(brand.id)}
+                          onClick={() => setSelectedId(project.id)}
                         >
-                          <span className="text-body-md font-semibold">{brand.name}</span>
+                          <span className="text-body-md font-semibold">{project.name}</span>
                           <span className="text-label text-text-tertiary">
                             {t('settings.ui.projects.projectMeta', {
-                              accounts: brand.connectionCount,
-                              updated: formatters.relative(brand.updatedAt),
+                              accounts: project.connectionCount,
+                              updated: formatters.relative(project.updatedAt),
                             })}
                           </span>
                         </button>
@@ -166,13 +166,13 @@ export function BrandsScreen(): ReactNode {
               </nav>
 
               {selected === null ? null : (
-                <BrandEditor
+                <ProjectEditor
                   key={selected.id}
-                  brand={selected}
+                  project={selected}
                   saving={save.isSaving}
                   archiving={archive.isSaving}
                   disabled={false}
-                  onSave={(patch) => void save.run({ brandId: selected.id, patch })}
+                  onSave={(patch) => void save.run({ projectId: selected.id, patch })}
                   onArchive={() => void archive.run(selected.id)}
                   archiveDisabled={rows.length === 1 || selected.connectionCount > 0}
                   archiveDisabledReason={
@@ -189,7 +189,7 @@ export function BrandsScreen(): ReactNode {
         </AsyncBoundary>
       </SettingsStack>
 
-      <NewBrandDialog
+      <NewProjectDialog
         open={creating}
         onOpenChange={setCreating}
         saving={create.isSaving}

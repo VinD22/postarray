@@ -300,7 +300,7 @@ export function AppForm({
           appName={name.trim().length === 0 ? t('developer.apps.name') : name.trim()}
           developerName={developerName}
           workspaceName={workspaceName}
-          brandNames={[]}
+          projectNames={[]}
           scopes={scopes}
           homepageUrl={homepageUrl}
           privacyUrl={privacyUrl}

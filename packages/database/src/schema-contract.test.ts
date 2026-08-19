@@ -21,8 +21,18 @@ const baseline = readFileSync(path.join(packageRoot, 'migrations/0004_core_schem
  * honest alternative to bypassing that guard. Keep this list to genuine cases
  * of the same situation, not a general escape hatch for "forgot to add it to
  * 0004 in time."
+ *
+ * `0075_rename_brand_to_project.sql` is here for a related but distinct
+ * reason: it does not `CREATE TABLE`, but it does `ALTER COLUMN id SET
+ * DEFAULT app.new_id('project')` on the table 0004 created as `app.brands`
+ * with `DEFAULT app.new_id('brand')`. 0004 cannot be edited to say `'project'`
+ * for the same edit-detection reason as above, so the new default's marker
+ * lives here instead.
  */
-const POST_BASELINE_TABLE_EXCEPTIONS = ['0074_seo_keyword_targets.sql'];
+const POST_BASELINE_TABLE_EXCEPTIONS = [
+  '0074_seo_keyword_targets.sql',
+  '0075_rename_brand_to_project.sql',
+];
 
 function modelIdDefaults(source: string): ReadonlyMap<string, string> {
   const defaults = new Map<string, string>();
@@ -90,11 +100,13 @@ describe('database schema contract', () => {
     expect(migration).toContain('refresh_token_aad_context');
   });
 
-  it('binds an OAuth transaction brand to the same workspace', () => {
-    expect(schema).toContain('brand     Brand?    @relation(fields: [workspaceId, brandId]');
-    expect(schema).toContain('@@unique([workspaceId, id], map: "uq_brands_workspace_id_id")');
+  it('binds an OAuth transaction project to the same workspace', () => {
+    expect(schema).toContain(
+      'project          Project?               @relation(fields: [workspaceId, projectId]',
+    );
+    expect(schema).toContain('@@unique([workspaceId, id], map: "uq_projects_workspace_id_id")');
     expect(
-      readFileSync(path.join(packageRoot, 'migrations/0063_credential_envelope_v1.sql'), 'utf8'),
-    ).toContain('oauth_transactions_workspace_brand_fkey');
+      readFileSync(path.join(packageRoot, 'migrations/0075_rename_brand_to_project.sql'), 'utf8'),
+    ).toContain('oauth_transactions_workspace_project_fkey');
   });
 });

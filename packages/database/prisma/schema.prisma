@@ -131,13 +131,13 @@ enum SourceConsentState {
   @@schema("app")
 }
 
-enum BrandSourceKind {
+enum ProjectSourceKind {
   uploaded_document
   linked_url
   pasted_text
   imported_export
 
-  @@map("brand_source_kind")
+  @@map("project_source_kind")
   @@schema("app")
 }
 
@@ -741,27 +741,27 @@ enum SessionState {
 // ---------------------------------------------------------------------------
 
 model User {
-  id             String     @id @default(dbgenerated("app.new_id('user')"))
+  id              String     @id @default(dbgenerated("app.new_id('user')"))
   /// Neon Auth / Better Auth user id. Provider ids are opaque strings, while
   /// this row remains our profile and tenancy anchor.
   authSubjectId   String?    @unique @map("auth_subject_id")
-  email          String     @unique @db.Citext
-  emailVerifiedAt DateTime? @map("email_verified_at") @db.Timestamptz(6)
-  displayName    String     @map("display_name")
-  avatarUrl      String?    @map("avatar_url")
-  status         UserStatus @default(active)
-  locale         String     @default("en")
-  timeZone       String     @default("UTC") @map("time_zone")
-  mfaEnrolledAt  DateTime?  @map("mfa_enrolled_at") @db.Timestamptz(6)
-  lastSeenAt     DateTime?  @map("last_seen_at") @db.Timestamptz(6)
-  createdAt      DateTime   @default(now()) @map("created_at") @db.Timestamptz(6)
-  updatedAt      DateTime   @updatedAt @map("updated_at") @db.Timestamptz(6)
+  email           String     @unique @db.Citext
+  emailVerifiedAt DateTime?  @map("email_verified_at") @db.Timestamptz(6)
+  displayName     String     @map("display_name")
+  avatarUrl       String?    @map("avatar_url")
+  status          UserStatus @default(active)
+  locale          String     @default("en")
+  timeZone        String     @default("UTC") @map("time_zone")
+  mfaEnrolledAt   DateTime?  @map("mfa_enrolled_at") @db.Timestamptz(6)
+  lastSeenAt      DateTime?  @map("last_seen_at") @db.Timestamptz(6)
+  createdAt       DateTime   @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt       DateTime   @updatedAt @map("updated_at") @db.Timestamptz(6)
 
-  aliases     UserAlias[]
-  memberships Membership[]
-  sessions    UserSession[]
-  consents    Consent[]
-  rememberedTargets RememberedTarget[]
+  aliases            UserAlias[]
+  memberships        Membership[]
+  sessions           UserSession[]
+  consents           Consent[]
+  rememberedTargets  RememberedTarget[]
   agentConfirmations AgentConfirmation[] @relation("AgentConfirmationApprover")
 
   @@index([status])
@@ -791,23 +791,23 @@ model UserAlias {
 }
 
 model Workspace {
-  id              String          @id @default(dbgenerated("app.new_id('ws')"))
-  name            String
-  slug            String          @unique @db.Citext
-  ownerUserId     String          @map("owner_user_id")
-  status          WorkspaceStatus @default(trialing)
-  defaultLocale   String          @default("en") @map("default_locale")
-  defaultTimeZone String          @default("UTC") @map("default_time_zone")
-  contentLocales  String[]        @default(["en"]) @map("content_locales")
-  markets         String[]        @default([])
-  weekStart       Int             @default(1) @map("week_start")
-  hourCycle       String          @default("h23") @map("hour_cycle")
+  id               String          @id @default(dbgenerated("app.new_id('ws')"))
+  name             String
+  slug             String          @unique @db.Citext
+  ownerUserId      String          @map("owner_user_id")
+  status           WorkspaceStatus @default(trialing)
+  defaultLocale    String          @default("en") @map("default_locale")
+  defaultTimeZone  String          @default("UTC") @map("default_time_zone")
+  contentLocales   String[]        @default(["en"]) @map("content_locales")
+  markets          String[]        @default([])
+  weekStart        Int             @default(1) @map("week_start")
+  hourCycle        String          @default("h23") @map("hour_cycle")
   /// Set by an operator to stop every outbound provider call for this tenant.
-  killSwitchAt    DateTime?       @map("kill_switch_at") @db.Timestamptz(6)
-  killSwitchReason String?        @map("kill_switch_reason")
-  deletedAt       DateTime?       @map("deleted_at") @db.Timestamptz(6)
-  createdAt       DateTime        @default(now()) @map("created_at") @db.Timestamptz(6)
-  updatedAt       DateTime        @updatedAt @map("updated_at") @db.Timestamptz(6)
+  killSwitchAt     DateTime?       @map("kill_switch_at") @db.Timestamptz(6)
+  killSwitchReason String?         @map("kill_switch_reason")
+  deletedAt        DateTime?       @map("deleted_at") @db.Timestamptz(6)
+  createdAt        DateTime        @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt        DateTime        @updatedAt @map("updated_at") @db.Timestamptz(6)
 
   memberships             Membership[]
   rolePermissions         RolePermission[]
@@ -816,9 +816,9 @@ model Workspace {
   auditEvents             AuditEvent[]
   sessions                UserSession[]
   consents                Consent[]
-  brands                  Brand[]
+  projects                Project[]
   businessProfiles        BusinessProfile[]
-  brandSources            BrandSource[]
+  projectSources          ProjectSource[]
   glossaryTerms           GlossaryTerm[]
   campaigns               Campaign[]
   contentItems            ContentItem[]
@@ -883,19 +883,19 @@ model Workspace {
 }
 
 model Membership {
-  id            String          @id @default(dbgenerated("app.new_id('membership')"))
-  workspaceId   String          @map("workspace_id")
-  userId        String          @map("user_id")
-  role          WorkspaceRole
-  state         MembershipState @default(invited)
-  /// Empty means "every brand in the workspace".
-  brandScope    String[]        @default([]) @map("brand_scope")
-  invitedByUserId String?       @map("invited_by_user_id")
-  invitedAt     DateTime?       @map("invited_at") @db.Timestamptz(6)
-  acceptedAt    DateTime?       @map("accepted_at") @db.Timestamptz(6)
-  removedAt     DateTime?       @map("removed_at") @db.Timestamptz(6)
-  createdAt     DateTime        @default(now()) @map("created_at") @db.Timestamptz(6)
-  updatedAt     DateTime        @updatedAt @map("updated_at") @db.Timestamptz(6)
+  id              String          @id @default(dbgenerated("app.new_id('membership')"))
+  workspaceId     String          @map("workspace_id")
+  userId          String          @map("user_id")
+  role            WorkspaceRole
+  state           MembershipState @default(invited)
+  /// Empty means "every project in the workspace".
+  projectScope    String[]        @default([]) @map("project_scope")
+  invitedByUserId String?         @map("invited_by_user_id")
+  invitedAt       DateTime?       @map("invited_at") @db.Timestamptz(6)
+  acceptedAt      DateTime?       @map("accepted_at") @db.Timestamptz(6)
+  removedAt       DateTime?       @map("removed_at") @db.Timestamptz(6)
+  createdAt       DateTime        @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt       DateTime        @updatedAt @map("updated_at") @db.Timestamptz(6)
 
   workspace Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
   user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -951,24 +951,24 @@ model RolePermission {
 }
 
 model ServiceAccount {
-  id                  String   @id @default(dbgenerated("app.new_id('svc')"))
-  workspaceId         String   @map("workspace_id")
-  name                String
-  description         String?
-  scopes              String[] @default([])
-  brandScope          String[] @default([]) @map("brand_scope")
-  connectionScope     String[] @default([]) @map("connection_scope")
-  providerScope       ProviderKind[] @default([]) @map("provider_scope")
-  localeScope         String[] @default([]) @map("locale_scope")
-  approvedDomains     String[] @default([]) @map("approved_domains")
-  maxDailyPublishes   Int?     @map("max_daily_publishes")
-  maxLookAheadDays    Int?     @map("max_look_ahead_days")
+  id                String         @id @default(dbgenerated("app.new_id('svc')"))
+  workspaceId       String         @map("workspace_id")
+  name              String
+  description       String?
+  scopes            String[]       @default([])
+  projectScope      String[]       @default([]) @map("project_scope")
+  connectionScope   String[]       @default([]) @map("connection_scope")
+  providerScope     ProviderKind[] @default([]) @map("provider_scope")
+  localeScope       String[]       @default([]) @map("locale_scope")
+  approvedDomains   String[]       @default([]) @map("approved_domains")
+  maxDailyPublishes Int?           @map("max_daily_publishes")
+  maxLookAheadDays  Int?           @map("max_look_ahead_days")
   /// 0 read, 1 draft, 2 schedule within preapproval, 3 human confirmation.
-  maxApprovalLevel    Int      @default(1) @map("max_approval_level")
-  disabledAt          DateTime? @map("disabled_at") @db.Timestamptz(6)
-  createdByUserId     String   @map("created_by_user_id")
-  createdAt           DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
-  updatedAt           DateTime @updatedAt @map("updated_at") @db.Timestamptz(6)
+  maxApprovalLevel  Int            @default(1) @map("max_approval_level")
+  disabledAt        DateTime?      @map("disabled_at") @db.Timestamptz(6)
+  createdByUserId   String         @map("created_by_user_id")
+  createdAt         DateTime       @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt         DateTime       @updatedAt @map("updated_at") @db.Timestamptz(6)
 
   workspace Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
   apiKeys   ApiKey[]
@@ -1008,24 +1008,24 @@ model ApiKey {
 /// Append only. `0040_audit.sql` installs a trigger that rejects UPDATE and
 /// DELETE, including for the owner role.
 model AuditEvent {
-  id             String    @id @default(dbgenerated("app.new_id('aud')"))
-  workspaceId    String    @map("workspace_id")
-  actorType      ActorType @map("actor_type")
-  actorId        String?   @map("actor_id")
+  id            String          @id @default(dbgenerated("app.new_id('aud')"))
+  workspaceId   String          @map("workspace_id")
+  actorType     ActorType       @map("actor_type")
+  actorId       String?         @map("actor_id")
   /// Set when the action arrived through a third-party developer application.
-  actorClientId  String?   @map("actor_client_id")
-  surface        CreationSurface
-  action         String
-  targetType     String    @map("target_type")
-  targetId       String?   @map("target_id")
-  beforeHash     String?   @map("before_hash")
-  afterHash      String?   @map("after_hash")
+  actorClientId String?         @map("actor_client_id")
+  surface       CreationSurface
+  action        String
+  targetType    String          @map("target_type")
+  targetId      String?         @map("target_id")
+  beforeHash    String?         @map("before_hash")
+  afterHash     String?         @map("after_hash")
   /// Sanitized. Never a token, provider payload or raw request body.
-  metadata       Json      @default("{}")
-  ipAddress      String?   @map("ip_address") @db.Inet
-  userAgent      String?   @map("user_agent")
-  correlationId  String?   @map("correlation_id")
-  createdAt      DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
+  metadata      Json            @default("{}")
+  ipAddress     String?         @map("ip_address") @db.Inet
+  userAgent     String?         @map("user_agent")
+  correlationId String?         @map("correlation_id")
+  createdAt     DateTime        @default(now()) @map("created_at") @db.Timestamptz(6)
 
   /// Restrict, not Cascade. The audit log outlives the tenant: a workspace is
   /// soft deleted through `deletedAt`, and the row is only removed for real once
@@ -1092,184 +1092,184 @@ model Consent {
 }
 
 // ---------------------------------------------------------------------------
-// Brands and content
+// Projects and content
 // ---------------------------------------------------------------------------
 
-model Brand {
-  id                  String   @id @default(dbgenerated("app.new_id('brand')"))
-  workspaceId         String   @map("workspace_id")
-  name                String
-  slug                String   @db.Citext
-  voice               String?
-  audience            String?
-  approvedClaims      String[] @default([]) @map("approved_claims")
-  blockedTerms        String[] @default([]) @map("blocked_terms")
-  localeRules         Json     @default("{}") @map("locale_rules")
-  domains             String[] @default([])
+model Project {
+  id                     String    @id @default(dbgenerated("app.new_id('project')"))
+  workspaceId            String    @map("workspace_id")
+  name                   String
+  slug                   String    @db.Citext
+  voice                  String?
+  audience               String?
+  approvedClaims         String[]  @default([]) @map("approved_claims")
+  blockedTerms           String[]  @default([]) @map("blocked_terms")
+  localeRules            Json      @default("{}") @map("locale_rules")
+  domains                String[]  @default([])
   /// Default AI or paid-partnership disclosure appended where a platform
   /// requires one. Never silently applied without preview.
-  disclosureDefaults  Json     @default("{}") @map("disclosure_defaults")
-  defaultTimeZone     String?  @map("default_time_zone")
-  defaultShortLinkOn  Boolean  @default(false) @map("default_short_link_on")
+  disclosureDefaults     Json      @default("{}") @map("disclosure_defaults")
+  defaultTimeZone        String?   @map("default_time_zone")
+  defaultShortLinkOn     Boolean   @default(false) @map("default_short_link_on")
   /// Opt in, per project, to remembering which channels each member selected
   /// last. False is the only correct default: while it is false nothing is
   /// stored, so there is no row to leak and nothing to forget.
-  rememberTargetsEnabled Boolean @default(false) @map("remember_targets_enabled")
-  archivedAt          DateTime? @map("archived_at") @db.Timestamptz(6)
-  createdAt           DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
-  updatedAt           DateTime @updatedAt @map("updated_at") @db.Timestamptz(6)
+  rememberTargetsEnabled Boolean   @default(false) @map("remember_targets_enabled")
+  archivedAt             DateTime? @map("archived_at") @db.Timestamptz(6)
+  createdAt              DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt              DateTime  @updatedAt @map("updated_at") @db.Timestamptz(6)
 
-  workspace            Workspace                @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
-  businessProfiles     BusinessProfile[]
-  brandSources         BrandSource[]
-  glossaryTerms        GlossaryTerm[]
-  campaigns            Campaign[]
-  contentItems         ContentItem[]
-  signatures           Signature[]
-  postingSets          PostingSet[]
-  rememberedTargets    RememberedTarget[]
-  socialConnections    SocialConnection[]
-  oauthTransactions    OAuthTransaction[]
+  workspace               Workspace               @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  businessProfiles        BusinessProfile[]
+  projectSources          ProjectSource[]
+  glossaryTerms           GlossaryTerm[]
+  campaigns               Campaign[]
+  contentItems            ContentItem[]
+  signatures              Signature[]
+  postingSets             PostingSet[]
+  rememberedTargets       RememberedTarget[]
+  socialConnections       SocialConnection[]
+  oauthTransactions       OAuthTransaction[]
   oauthPendingDiscoveries OAuthPendingDiscovery[]
-  growthPlans          GrowthPlan[]
-  shortLinks           ShortLink[]
-  queueRules           QueueRule[]
-  queueSlotReservations QueueSlotReservation[]
-  automationRules      AutomationRule[]
-  rssFeeds             RssFeed[]
-  bulkImportJobs       BulkImportJob[]
+  growthPlans             GrowthPlan[]
+  shortLinks              ShortLink[]
+  queueRules              QueueRule[]
+  queueSlotReservations   QueueSlotReservation[]
+  automationRules         AutomationRule[]
+  rssFeeds                RssFeed[]
+  bulkImportJobs          BulkImportJob[]
 
   @@unique([workspaceId, slug])
-  @@unique([workspaceId, id], map: "uq_brands_workspace_id_id")
+  @@unique([workspaceId, id], map: "uq_projects_workspace_id_id")
   @@index([workspaceId])
-  @@map("brands")
+  @@map("projects")
   @@schema("app")
 }
 
 /// Versioned. A new revision never overwrites the confirmed one, because an
 /// approved growth plan points at the exact profile version it was built from.
 model BusinessProfile {
-  id                 String    @id @default(dbgenerated("app.new_id('bprof')"))
-  workspaceId        String    @map("workspace_id")
-  brandId            String    @map("brand_id")
-  version            Int       @default(1)
+  id                   String    @id @default(dbgenerated("app.new_id('bprof')"))
+  workspaceId          String    @map("workspace_id")
+  projectId            String    @map("project_id")
+  version              Int       @default(1)
   /// What the thing being marketed is called. Required before a growth plan can
-  /// be generated, so the plan can name the product rather than the brand.
-  productName        String?   @map("product_name")
-  productUrl         String?   @map("product_url")
+  /// be generated, so the plan can name the product rather than the project.
+  productName          String?   @map("product_name")
+  productUrl           String?   @map("product_url")
   productUrlVerifiedAt DateTime? @map("product_url_verified_at") @db.Timestamptz(6)
-  description        String?
-  category           String?
-  markets            String[]  @default([])
-  languages          String[]  @default([])
-  idealCustomer      String?   @map("ideal_customer")
-  objective          String?
-  conversionEvent    String?   @map("conversion_event")
-  existingChannels   Json      @default("[]") @map("existing_channels")
+  description          String?
+  category             String?
+  markets              String[]  @default([])
+  languages            String[]  @default([])
+  idealCustomer        String?   @map("ideal_customer")
+  objective            String?
+  conversionEvent      String?   @map("conversion_event")
+  existingChannels     Json      @default("[]") @map("existing_channels")
   /// Facts the user explicitly confirmed. AI never promotes an inference here.
-  provenClaims       Json      @default("[]") @map("proven_claims")
+  provenClaims         Json      @default("[]") @map("proven_claims")
   /// User supplied proof descriptions or asset references. These are evidence
   /// candidates, not verified claims, until the user confirms the profile.
-  proofAssets        String[]  @default([]) @map("proof_assets")
+  proofAssets          String[]  @default([]) @map("proof_assets")
   /// Model assumptions remain separate from confirmed facts at rest.
-  assumptions        Json      @default("[]")
-  prohibitedClaims   String[]  @default([]) @map("prohibited_claims")
-  prohibitedTopics   String[]  @default([]) @map("prohibited_topics")
-  competitors        Json      @default("[]")
-  weeklyCapacityHours Int?     @map("weekly_capacity_hours")
-  constraints        String?
+  assumptions          Json      @default("[]")
+  prohibitedClaims     String[]  @default([]) @map("prohibited_claims")
+  prohibitedTopics     String[]  @default([]) @map("prohibited_topics")
+  competitors          Json      @default("[]")
+  weeklyCapacityHours  Int?      @map("weekly_capacity_hours")
+  constraints          String?
   /// 0-100. Drives the "missing information" warnings in a generated plan.
-  completenessScore  Int       @default(0) @map("completeness_score")
-  confirmedAt        DateTime? @map("confirmed_at") @db.Timestamptz(6)
-  confirmedByUserId  String?   @map("confirmed_by_user_id")
-  createdAt          DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
-  updatedAt          DateTime  @updatedAt @map("updated_at") @db.Timestamptz(6)
+  completenessScore    Int       @default(0) @map("completeness_score")
+  confirmedAt          DateTime? @map("confirmed_at") @db.Timestamptz(6)
+  confirmedByUserId    String?   @map("confirmed_by_user_id")
+  createdAt            DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt            DateTime  @updatedAt @map("updated_at") @db.Timestamptz(6)
 
   workspace   Workspace    @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
-  brand       Brand        @relation(fields: [brandId], references: [id], onDelete: Cascade)
+  project     Project      @relation(fields: [projectId], references: [id], onDelete: Cascade)
   growthPlans GrowthPlan[]
 
-  @@unique([brandId, version])
+  @@unique([projectId, version])
   @@index([workspaceId])
-  @@index([workspaceId, brandId, confirmedAt(sort: Desc)])
+  @@index([workspaceId, projectId, confirmedAt(sort: Desc)])
   @@map("business_profiles")
   @@schema("app")
 }
 
-model BrandSource {
-  id            String             @id @default(dbgenerated("app.new_id('bsrc')"))
-  workspaceId   String             @map("workspace_id")
-  brandId       String             @map("brand_id")
-  kind          BrandSourceKind
-  label         String
-  sourceUrl     String?            @map("source_url")
-  storageKey    String?            @map("storage_key")
-  checksum      String?
-  byteSize      Int?               @map("byte_size")
-  mimeType      String?            @map("mime_type")
-  consentState  SourceConsentState @default(declared) @map("consent_state")
+model ProjectSource {
+  id              String             @id @default(dbgenerated("app.new_id('bsrc')"))
+  workspaceId     String             @map("workspace_id")
+  projectId       String             @map("project_id")
+  kind            ProjectSourceKind
+  label           String
+  sourceUrl       String?            @map("source_url")
+  storageKey      String?            @map("storage_key")
+  checksum        String?
+  byteSize        Int?               @map("byte_size")
+  mimeType        String?            @map("mime_type")
+  consentState    SourceConsentState @default(declared) @map("consent_state")
   /// Retrieved text is untrusted prompt input. It is delimited before it ever
   /// reaches a model and can never change tool policy.
-  extractedText String?            @map("extracted_text")
-  retrievedAt   DateTime?          @map("retrieved_at") @db.Timestamptz(6)
-  createdByUserId String           @map("created_by_user_id")
-  createdAt     DateTime           @default(now()) @map("created_at") @db.Timestamptz(6)
-  updatedAt     DateTime           @updatedAt @map("updated_at") @db.Timestamptz(6)
+  extractedText   String?            @map("extracted_text")
+  retrievedAt     DateTime?          @map("retrieved_at") @db.Timestamptz(6)
+  createdByUserId String             @map("created_by_user_id")
+  createdAt       DateTime           @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt       DateTime           @updatedAt @map("updated_at") @db.Timestamptz(6)
 
   workspace Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
-  brand     Brand     @relation(fields: [brandId], references: [id], onDelete: Cascade)
+  project   Project   @relation(fields: [projectId], references: [id], onDelete: Cascade)
 
   @@index([workspaceId])
-  @@index([workspaceId, brandId])
-  @@map("brand_sources")
+  @@index([workspaceId, projectId])
+  @@map("project_sources")
   @@schema("app")
 }
 
 model GlossaryTerm {
-  id                   String   @id @default(dbgenerated("app.new_id('term')"))
-  workspaceId          String   @map("workspace_id")
-  brandId              String   @map("brand_id")
-  locale               String
-  term                 String
-  preferredTranslation String?  @map("preferred_translation")
+  id                     String   @id @default(dbgenerated("app.new_id('term')"))
+  workspaceId            String   @map("workspace_id")
+  projectId              String   @map("project_id")
+  locale                 String
+  term                   String
+  preferredTranslation   String?  @map("preferred_translation")
   prohibitedTranslations String[] @default([]) @map("prohibited_translations")
-  context              String?
-  doNotTranslate       Boolean  @default(false) @map("do_not_translate")
-  createdAt            DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
-  updatedAt            DateTime @updatedAt @map("updated_at") @db.Timestamptz(6)
+  context                String?
+  doNotTranslate         Boolean  @default(false) @map("do_not_translate")
+  createdAt              DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt              DateTime @updatedAt @map("updated_at") @db.Timestamptz(6)
 
   workspace Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
-  brand     Brand     @relation(fields: [brandId], references: [id], onDelete: Cascade)
+  project   Project   @relation(fields: [projectId], references: [id], onDelete: Cascade)
 
-  @@unique([brandId, locale, term])
+  @@unique([projectId, locale, term])
   @@index([workspaceId])
   @@map("glossary_terms")
   @@schema("app")
 }
 
 model Campaign {
-  id             String    @id @default(dbgenerated("app.new_id('campaign')"))
-  workspaceId    String    @map("workspace_id")
-  brandId        String    @map("brand_id")
-  name           String
-  objective      String?
-  tags           String[]  @default([])
-  utmDefaults    Json      @default("{}") @map("utm_defaults")
-  startsAt       DateTime? @map("starts_at") @db.Timestamptz(6)
-  endsAt         DateTime? @map("ends_at") @db.Timestamptz(6)
-  archivedAt     DateTime? @map("archived_at") @db.Timestamptz(6)
-  createdByUserId String   @map("created_by_user_id")
-  createdAt      DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
-  updatedAt      DateTime  @updatedAt @map("updated_at") @db.Timestamptz(6)
+  id              String    @id @default(dbgenerated("app.new_id('campaign')"))
+  workspaceId     String    @map("workspace_id")
+  projectId       String    @map("project_id")
+  name            String
+  objective       String?
+  tags            String[]  @default([])
+  utmDefaults     Json      @default("{}") @map("utm_defaults")
+  startsAt        DateTime? @map("starts_at") @db.Timestamptz(6)
+  endsAt          DateTime? @map("ends_at") @db.Timestamptz(6)
+  archivedAt      DateTime? @map("archived_at") @db.Timestamptz(6)
+  createdByUserId String    @map("created_by_user_id")
+  createdAt       DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt       DateTime  @updatedAt @map("updated_at") @db.Timestamptz(6)
 
   workspace    Workspace     @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
-  brand        Brand         @relation(fields: [brandId], references: [id], onDelete: Cascade)
+  project      Project       @relation(fields: [projectId], references: [id], onDelete: Cascade)
   contentItems ContentItem[]
   experiments  Experiment[]
   shortLinks   ShortLink[]
 
   @@index([workspaceId])
-  @@index([workspaceId, brandId])
+  @@index([workspaceId, projectId])
   @@map("campaigns")
   @@schema("app")
 }
@@ -1277,53 +1277,53 @@ model Campaign {
 /// The canonical idea. Copy lives in immutable `ContentVersion` rows; per-target
 /// output lives in `PostVariant`.
 model ContentItem {
-  id               String          @id @default(dbgenerated("app.new_id('content')"))
-  workspaceId      String          @map("workspace_id")
-  brandId          String          @map("brand_id")
-  campaignId       String?         @map("campaign_id")
-  postingSetId     String?         @map("posting_set_id")
-  title            String?
-  brief            String?
-  state            PublishState    @default(draft)
-  approvalPolicy   ApprovalPolicy  @default(none) @map("approval_policy")
-  currentVersionId String?         @unique @map("current_version_id")
-  approvedVersionId String?        @map("approved_version_id")
+  id                        String          @id @default(dbgenerated("app.new_id('content')"))
+  workspaceId               String          @map("workspace_id")
+  projectId                 String          @map("project_id")
+  campaignId                String?         @map("campaign_id")
+  postingSetId              String?         @map("posting_set_id")
+  title                     String?
+  brief                     String?
+  state                     PublishState    @default(draft)
+  approvalPolicy            ApprovalPolicy  @default(none) @map("approval_policy")
+  currentVersionId          String?         @unique @map("current_version_id")
+  approvedVersionId         String?         @map("approved_version_id")
   /// Wall-clock intent plus its zone. The UTC instant lives on `PublishJob`.
-  scheduledAt      DateTime?       @map("scheduled_at") @db.Timestamptz(6)
-  scheduledTimeZone String?        @map("scheduled_time_zone")
-  approvedAt       DateTime?       @map("approved_at") @db.Timestamptz(6)
-  publishedAt      DateTime?       @map("published_at") @db.Timestamptz(6)
-  canceledAt       DateTime?       @map("canceled_at") @db.Timestamptz(6)
+  scheduledAt               DateTime?       @map("scheduled_at") @db.Timestamptz(6)
+  scheduledTimeZone         String?         @map("scheduled_time_zone")
+  approvedAt                DateTime?       @map("approved_at") @db.Timestamptz(6)
+  publishedAt               DateTime?       @map("published_at") @db.Timestamptz(6)
+  canceledAt                DateTime?       @map("canceled_at") @db.Timestamptz(6)
   /// Repeat cadence in days: 1, 2, 3, 4, 5, 6, 7, 14 or 30. Null means once.
-  repeatEveryDays  Int?            @map("repeat_every_days")
-  repeatUntil      DateTime?       @map("repeat_until") @db.Timestamptz(6)
-  repeatCount      Int?            @map("repeat_count")
-  repeatOfItemId   String?         @map("repeat_of_item_id")
-  surface          CreationSurface @default(web)
-  creationMethod   CreationMethod  @default(human) @map("creation_method")
-  createdByUserId  String?         @map("created_by_user_id")
-  createdByServiceAccountId String? @map("created_by_service_account_id")
-  correlationId    String?         @map("correlation_id")
-  createdAt        DateTime        @default(now()) @map("created_at") @db.Timestamptz(6)
-  updatedAt        DateTime        @updatedAt @map("updated_at") @db.Timestamptz(6)
+  repeatEveryDays           Int?            @map("repeat_every_days")
+  repeatUntil               DateTime?       @map("repeat_until") @db.Timestamptz(6)
+  repeatCount               Int?            @map("repeat_count")
+  repeatOfItemId            String?         @map("repeat_of_item_id")
+  surface                   CreationSurface @default(web)
+  creationMethod            CreationMethod  @default(human) @map("creation_method")
+  createdByUserId           String?         @map("created_by_user_id")
+  createdByServiceAccountId String?         @map("created_by_service_account_id")
+  correlationId             String?         @map("correlation_id")
+  createdAt                 DateTime        @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt                 DateTime        @updatedAt @map("updated_at") @db.Timestamptz(6)
 
   workspace      Workspace       @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
-  brand          Brand           @relation(fields: [brandId], references: [id], onDelete: Cascade)
+  project        Project         @relation(fields: [projectId], references: [id], onDelete: Cascade)
   campaign       Campaign?       @relation(fields: [campaignId], references: [id], onDelete: SetNull)
   postingSet     PostingSet?     @relation(fields: [postingSetId], references: [id], onDelete: SetNull)
   currentVersion ContentVersion? @relation("ContentItemCurrentVersion", fields: [currentVersionId], references: [id], onDelete: SetNull)
 
-  versions         ContentVersion[]  @relation("ContentItemVersions")
-  variants         PostVariant[]
-  approvalRequests ApprovalRequest[]
-  publishJobs      PublishJob[]
-  insights         Insight[]
+  versions           ContentVersion[]    @relation("ContentItemVersions")
+  variants           PostVariant[]
+  approvalRequests   ApprovalRequest[]
+  publishJobs        PublishJob[]
+  insights           Insight[]
   agentConfirmations AgentConfirmation[]
 
   @@index([workspaceId])
   // Calendar range query: one workspace, a date window, filtered by state.
   @@index([workspaceId, scheduledAt, state])
-  @@index([workspaceId, brandId, state])
+  @@index([workspaceId, projectId, state])
   @@index([workspaceId, campaignId])
   @@index([repeatOfItemId])
   @@map("content_items")
@@ -1333,23 +1333,23 @@ model ContentItem {
 /// Immutable. `0030_constraints.sql` installs a trigger that rejects UPDATE.
 /// Every publish attempt references exactly one of these rows.
 model ContentVersion {
-  id             String         @id @default(dbgenerated("app.new_id('cver')"))
-  workspaceId    String         @map("workspace_id")
-  contentItemId  String         @map("content_item_id")
-  version        Int
-  body           String
+  id              String         @id @default(dbgenerated("app.new_id('cver')"))
+  workspaceId     String         @map("workspace_id")
+  contentItemId   String         @map("content_item_id")
+  version         Int
+  body            String
   /// The canonical master payload: blocks, media references, link decisions,
   /// applied signature and frozen short URLs.
-  payload        Json           @default("{}")
+  payload         Json           @default("{}")
   /// SHA-256 over the canonicalized payload. Copied onto every receipt.
-  contentHash    String         @map("content_hash")
-  locale         String         @default("en")
-  creationMethod CreationMethod @default(human) @map("creation_method")
-  aiModel        String?        @map("ai_model")
-  aiPromptVersion String?       @map("ai_prompt_version")
-  sourceIds      String[]       @default([]) @map("source_ids")
-  createdByUserId String?       @map("created_by_user_id")
-  createdAt      DateTime       @default(now()) @map("created_at") @db.Timestamptz(6)
+  contentHash     String         @map("content_hash")
+  locale          String         @default("en")
+  creationMethod  CreationMethod @default(human) @map("creation_method")
+  aiModel         String?        @map("ai_model")
+  aiPromptVersion String?        @map("ai_prompt_version")
+  sourceIds       String[]       @default([]) @map("source_ids")
+  createdByUserId String?        @map("created_by_user_id")
+  createdAt       DateTime       @default(now()) @map("created_at") @db.Timestamptz(6)
 
   workspace   Workspace   @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
   contentItem ContentItem @relation("ContentItemVersions", fields: [contentItemId], references: [id], onDelete: Cascade)
@@ -1371,34 +1371,34 @@ model ContentVersion {
 /// One platform target. `inheritedFields` records what still tracks the master
 /// so the composer can show inherited versus overridden without guessing.
 model PostVariant {
-  id               String       @id @default(dbgenerated("app.new_id('pv')"))
-  workspaceId      String       @map("workspace_id")
-  contentItemId    String       @map("content_item_id")
-  contentVersionId String       @map("content_version_id")
-  connectionId     String       @map("connection_id")
-  destinationId    String?      @map("destination_id")
-  provider         ProviderKind
-  locale           String       @default("en")
-  body             String
+  id                        String       @id @default(dbgenerated("app.new_id('pv')"))
+  workspaceId               String       @map("workspace_id")
+  contentItemId             String       @map("content_item_id")
+  contentVersionId          String       @map("content_version_id")
+  connectionId              String       @map("connection_id")
+  destinationId             String?      @map("destination_id")
+  provider                  ProviderKind
+  locale                    String       @default("en")
+  body                      String
   /// Provider-specific settings: privacy, comment/duet/stitch toggles, title,
   /// description, thumbnail choice, category, alt text.
-  settings         Json         @default("{}")
-  mediaAssetIds    String[]     @default([]) @map("media_asset_ids")
-  mentionEntityIds String[]     @default([]) @map("mention_entity_ids")
-  signatureId      String?      @map("signature_id")
-  inheritedFields  String[]     @default([]) @map("inherited_fields")
-  overriddenFields String[]     @default([]) @map("overridden_fields")
-  state            PublishState @default(draft)
+  settings                  Json         @default("{}")
+  mediaAssetIds             String[]     @default([]) @map("media_asset_ids")
+  mentionEntityIds          String[]     @default([]) @map("mention_entity_ids")
+  signatureId               String?      @map("signature_id")
+  inheritedFields           String[]     @default([]) @map("inherited_fields")
+  overriddenFields          String[]     @default([]) @map("overridden_fields")
+  state                     PublishState @default(draft)
   /// Snapshot of the capability contract used at approval, revalidated
   /// immediately before dispatch.
-  capabilitySnapshotVersion String? @map("capability_snapshot_version")
-  validationIssues Json         @default("[]") @map("validation_issues")
+  capabilitySnapshotVersion String?      @map("capability_snapshot_version")
+  validationIssues          Json         @default("[]") @map("validation_issues")
   /// Integer minor units of `estimatedCostCurrency`. X charges per operation and
   /// a post containing a URL costs materially more.
-  estimatedCostMinor Int?       @map("estimated_cost_minor")
-  estimatedCostCurrency String? @map("estimated_cost_currency")
-  createdAt        DateTime     @default(now()) @map("created_at") @db.Timestamptz(6)
-  updatedAt        DateTime     @updatedAt @map("updated_at") @db.Timestamptz(6)
+  estimatedCostMinor        Int?         @map("estimated_cost_minor")
+  estimatedCostCurrency     String?      @map("estimated_cost_currency")
+  createdAt                 DateTime     @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt                 DateTime     @updatedAt @map("updated_at") @db.Timestamptz(6)
 
   workspace      Workspace            @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
   contentItem    ContentItem          @relation(fields: [contentItemId], references: [id], onDelete: Cascade)
@@ -1422,30 +1422,30 @@ model PostVariant {
 /// Applying a Set produces an independent draft; later Set edits never rewrite
 /// an approved or scheduled post.
 model PostingSet {
-  id              String   @id @default(dbgenerated("app.new_id('set')"))
-  workspaceId     String   @map("workspace_id")
-  brandId         String   @map("brand_id")
+  id              String         @id @default(dbgenerated("app.new_id('set')"))
+  workspaceId     String         @map("workspace_id")
+  projectId       String         @map("project_id")
   name            String
   description     String?
-  connectionIds   String[] @default([]) @map("connection_ids")
+  connectionIds   String[]       @default([]) @map("connection_ids")
   /// Per-provider placeholder copy, media placement rules and settings.
-  targetDefaults  Json     @default("{}") @map("target_defaults")
-  commentSkeleton Json     @default("[]") @map("comment_skeleton")
-  signatureId     String?  @map("signature_id")
+  targetDefaults  Json           @default("{}") @map("target_defaults")
+  commentSkeleton Json           @default("[]") @map("comment_skeleton")
+  signatureId     String?        @map("signature_id")
   approvalPolicy  ApprovalPolicy @default(none) @map("approval_policy")
-  slotBehavior    String   @default("next_free_slot") @map("slot_behavior")
-  archivedAt      DateTime? @map("archived_at") @db.Timestamptz(6)
-  createdByUserId String   @map("created_by_user_id")
-  createdAt       DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
-  updatedAt       DateTime @updatedAt @map("updated_at") @db.Timestamptz(6)
+  slotBehavior    String         @default("next_free_slot") @map("slot_behavior")
+  archivedAt      DateTime?      @map("archived_at") @db.Timestamptz(6)
+  createdByUserId String         @map("created_by_user_id")
+  createdAt       DateTime       @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt       DateTime       @updatedAt @map("updated_at") @db.Timestamptz(6)
 
   workspace Workspace  @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
-  brand     Brand      @relation(fields: [brandId], references: [id], onDelete: Cascade)
+  project   Project    @relation(fields: [projectId], references: [id], onDelete: Cascade)
   signature Signature? @relation(fields: [signatureId], references: [id], onDelete: SetNull)
 
   contentItems ContentItem[]
 
-  @@unique([workspaceId, brandId, name])
+  @@unique([workspaceId, projectId, name])
   @@index([workspaceId])
   @@map("posting_sets")
   @@schema("app")
@@ -1461,7 +1461,7 @@ model PostingSet {
 model RememberedTarget {
   id            String   @id @default(dbgenerated("app.new_id('remtgt')"))
   workspaceId   String   @map("workspace_id")
-  brandId       String   @map("brand_id")
+  projectId     String   @map("project_id")
   userId        String   @map("user_id")
   /// In last-selected order. Re-checked against live channel health before any
   /// of them is offered again, so a revoked account is never reselected.
@@ -1470,35 +1470,35 @@ model RememberedTarget {
   updatedAt     DateTime @updatedAt @map("updated_at") @db.Timestamptz(6)
 
   workspace Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
-  brand     Brand     @relation(fields: [brandId], references: [id], onDelete: Cascade)
+  project   Project   @relation(fields: [projectId], references: [id], onDelete: Cascade)
   user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  @@unique([workspaceId, brandId, userId])
+  @@unique([workspaceId, projectId, userId])
   @@index([workspaceId])
   @@map("remembered_targets")
   @@schema("app")
 }
 
 model Signature {
-  id           String        @id @default(dbgenerated("app.new_id('sig')"))
-  workspaceId  String        @map("workspace_id")
-  brandId      String        @map("brand_id")
-  name         String
-  body         String
-  locale       String        @default("en")
-  providers    ProviderKind[] @default([])
-  autoApply    Boolean       @default(false) @map("auto_apply")
-  archivedAt   DateTime?     @map("archived_at") @db.Timestamptz(6)
-  createdAt    DateTime      @default(now()) @map("created_at") @db.Timestamptz(6)
-  updatedAt    DateTime      @updatedAt @map("updated_at") @db.Timestamptz(6)
+  id          String         @id @default(dbgenerated("app.new_id('sig')"))
+  workspaceId String         @map("workspace_id")
+  projectId   String         @map("project_id")
+  name        String
+  body        String
+  locale      String         @default("en")
+  providers   ProviderKind[] @default([])
+  autoApply   Boolean        @default(false) @map("auto_apply")
+  archivedAt  DateTime?      @map("archived_at") @db.Timestamptz(6)
+  createdAt   DateTime       @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt   DateTime       @updatedAt @map("updated_at") @db.Timestamptz(6)
 
   workspace Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
-  brand     Brand     @relation(fields: [brandId], references: [id], onDelete: Cascade)
+  project   Project   @relation(fields: [projectId], references: [id], onDelete: Cascade)
 
   postVariants PostVariant[]
   postingSets  PostingSet[]
 
-  @@unique([workspaceId, brandId, name, locale])
+  @@unique([workspaceId, projectId, name, locale])
   @@index([workspaceId])
   @@map("signatures")
   @@schema("app")
@@ -1507,19 +1507,19 @@ model Signature {
 /// Communities, boards, groups, organizations, Pages, channels and publications
 /// discovered through the provider API for one connection.
 model ProviderDestination {
-  id                 String          @id @default(dbgenerated("app.new_id('dest')"))
-  workspaceId        String          @map("workspace_id")
-  connectionId       String          @map("connection_id")
-  provider           ProviderKind
-  kind               DestinationKind
-  externalId         String          @map("external_id")
-  displayName        String          @map("display_name")
-  permalink          String?
-  canPublish         Boolean         @default(true) @map("can_publish")
-  metadata           Json            @default("{}")
-  refreshedAt        DateTime        @default(now()) @map("refreshed_at") @db.Timestamptz(6)
-  staleAfter         DateTime?       @map("stale_after") @db.Timestamptz(6)
-  createdAt          DateTime        @default(now()) @map("created_at") @db.Timestamptz(6)
+  id           String          @id @default(dbgenerated("app.new_id('dest')"))
+  workspaceId  String          @map("workspace_id")
+  connectionId String          @map("connection_id")
+  provider     ProviderKind
+  kind         DestinationKind
+  externalId   String          @map("external_id")
+  displayName  String          @map("display_name")
+  permalink    String?
+  canPublish   Boolean         @default(true) @map("can_publish")
+  metadata     Json            @default("{}")
+  refreshedAt  DateTime        @default(now()) @map("refreshed_at") @db.Timestamptz(6)
+  staleAfter   DateTime?       @map("stale_after") @db.Timestamptz(6)
+  createdAt    DateTime        @default(now()) @map("created_at") @db.Timestamptz(6)
 
   workspace  Workspace        @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
   connection SocialConnection @relation(fields: [connectionId], references: [id], onDelete: Cascade)
@@ -1561,22 +1561,22 @@ model MentionEntity {
 }
 
 model ApprovalRequest {
-  id               String        @id @default(dbgenerated("app.new_id('approval')"))
-  workspaceId      String        @map("workspace_id")
-  contentItemId    String        @map("content_item_id")
-  contentVersionId String        @map("content_version_id")
-  policy           ApprovalPolicy
-  state            ApprovalState @default(pending)
-  requestedByUserId String?      @map("requested_by_user_id")
-  requestedByServiceAccountId String? @map("requested_by_service_account_id")
-  assignedUserIds  String[]      @default([]) @map("assigned_user_ids")
-  note             String?
-  dueAt            DateTime?     @map("due_at") @db.Timestamptz(6)
+  id                          String         @id @default(dbgenerated("app.new_id('approval')"))
+  workspaceId                 String         @map("workspace_id")
+  contentItemId               String         @map("content_item_id")
+  contentVersionId            String         @map("content_version_id")
+  policy                      ApprovalPolicy
+  state                       ApprovalState  @default(pending)
+  requestedByUserId           String?        @map("requested_by_user_id")
+  requestedByServiceAccountId String?        @map("requested_by_service_account_id")
+  assignedUserIds             String[]       @default([]) @map("assigned_user_ids")
+  note                        String?
+  dueAt                       DateTime?      @map("due_at") @db.Timestamptz(6)
   /// Set the moment the request reaches `approved`. `0030_constraints.sql`
   /// rejects a publish job whose scheduled instant precedes this.
-  resolvedAt       DateTime?     @map("resolved_at") @db.Timestamptz(6)
-  createdAt        DateTime      @default(now()) @map("created_at") @db.Timestamptz(6)
-  updatedAt        DateTime      @updatedAt @map("updated_at") @db.Timestamptz(6)
+  resolvedAt                  DateTime?      @map("resolved_at") @db.Timestamptz(6)
+  createdAt                   DateTime       @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt                   DateTime       @updatedAt @map("updated_at") @db.Timestamptz(6)
 
   workspace      Workspace      @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
   contentItem    ContentItem    @relation(fields: [contentItemId], references: [id], onDelete: Cascade)
@@ -1593,16 +1593,16 @@ model ApprovalRequest {
 }
 
 model ApprovalDecision {
-  id                String               @id @default(dbgenerated("app.new_id('apdecision')"))
-  workspaceId       String               @map("workspace_id")
-  approvalRequestId String               @map("approval_request_id")
-  decision          ApprovalDecisionKind
-  decidedByUserId   String               @map("decided_by_user_id")
-  comment           String?
+  id                  String               @id @default(dbgenerated("app.new_id('apdecision')"))
+  workspaceId         String               @map("workspace_id")
+  approvalRequestId   String               @map("approval_request_id")
+  decision            ApprovalDecisionKind
+  decidedByUserId     String               @map("decided_by_user_id")
+  comment             String?
   /// Hash of the exact version the approver saw. If it differs at dispatch the
   /// job stops and reapproval is required.
-  reviewedContentHash String             @map("reviewed_content_hash")
-  createdAt         DateTime             @default(now()) @map("created_at") @db.Timestamptz(6)
+  reviewedContentHash String               @map("reviewed_content_hash")
+  createdAt           DateTime             @default(now()) @map("created_at") @db.Timestamptz(6)
 
   workspace       Workspace       @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
   approvalRequest ApprovalRequest @relation(fields: [approvalRequestId], references: [id], onDelete: Cascade)
@@ -1616,21 +1616,21 @@ model ApprovalDecision {
 /// A first comment or an ordered thread segment. A failed segment never
 /// retroactively fails the root post that already published.
 model CommentThreadItem {
-  id             String       @id @default(dbgenerated("app.new_id('cmt')"))
-  workspaceId    String       @map("workspace_id")
-  postVariantId  String       @map("post_variant_id")
-  position       Int
-  body           String
-  mediaAssetIds  String[]     @default([]) @map("media_asset_ids")
+  id                 String       @id @default(dbgenerated("app.new_id('cmt')"))
+  workspaceId        String       @map("workspace_id")
+  postVariantId      String       @map("post_variant_id")
+  position           Int
+  body               String
+  mediaAssetIds      String[]     @default([]) @map("media_asset_ids")
   /// Presets are 1, 2, 5, 10, 15, 30, 60 and 120 minutes, or a custom value.
-  delayMinutes   Int          @default(0) @map("delay_minutes")
+  delayMinutes       Int          @default(0) @map("delay_minutes")
   /// A follow-up may be authored by a different owned connection where the
   /// provider allows it.
-  authorConnectionId String?  @map("author_connection_id")
-  state          PublishState @default(draft)
-  settings       Json         @default("{}")
-  createdAt      DateTime     @default(now()) @map("created_at") @db.Timestamptz(6)
-  updatedAt      DateTime     @updatedAt @map("updated_at") @db.Timestamptz(6)
+  authorConnectionId String?      @map("author_connection_id")
+  state              PublishState @default(draft)
+  settings           Json         @default("{}")
+  createdAt          DateTime     @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt          DateTime     @updatedAt @map("updated_at") @db.Timestamptz(6)
 
   workspace   Workspace   @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
   postVariant PostVariant @relation(fields: [postVariantId], references: [id], onDelete: Cascade)
@@ -1650,37 +1650,37 @@ model CommentThreadItem {
 /// The versioned `GrowthPlan` document. `sections` holds the nine required
 /// sections validated against one schema shared by UI, API, MCP and exports.
 model GrowthPlan {
-  id                String          @id @default(dbgenerated("app.new_id('plan')"))
-  workspaceId       String          @map("workspace_id")
-  brandId           String          @map("brand_id")
-  businessProfileId String          @map("business_profile_id")
-  version           Int             @default(1)
-  state             GrowthPlanState @default(draft)
-  objective         String?
-  schemaVersion     String          @default("1") @map("schema_version")
-  sections          Json            @default("{}")
-  channelPriorities Json            @default("[]") @map("channel_priorities")
-  contentPillars    Json            @default("[]") @map("content_pillars")
-  cadence           Json            @default("{}")
-  ugcPlan           Json            @default("{}") @map("ugc_plan")
-  measurementPlan   Json            @default("{}") @map("measurement_plan")
-  risksAndUnknowns  Json            @default("[]") @map("risks_and_unknowns")
-  aiModel           String?         @map("ai_model")
-  aiPromptVersion   String?         @map("ai_prompt_version")
-  evidenceIds       String[]        @default([]) @map("evidence_ids")
-  supersededByPlanId String?        @map("superseded_by_plan_id")
-  approvedAt        DateTime?       @map("approved_at") @db.Timestamptz(6)
-  approvedByUserId  String?         @map("approved_by_user_id")
-  createdAt         DateTime        @default(now()) @map("created_at") @db.Timestamptz(6)
-  updatedAt         DateTime        @updatedAt @map("updated_at") @db.Timestamptz(6)
+  id                 String          @id @default(dbgenerated("app.new_id('plan')"))
+  workspaceId        String          @map("workspace_id")
+  projectId          String          @map("project_id")
+  businessProfileId  String          @map("business_profile_id")
+  version            Int             @default(1)
+  state              GrowthPlanState @default(draft)
+  objective          String?
+  schemaVersion      String          @default("1") @map("schema_version")
+  sections           Json            @default("{}")
+  channelPriorities  Json            @default("[]") @map("channel_priorities")
+  contentPillars     Json            @default("[]") @map("content_pillars")
+  cadence            Json            @default("{}")
+  ugcPlan            Json            @default("{}") @map("ugc_plan")
+  measurementPlan    Json            @default("{}") @map("measurement_plan")
+  risksAndUnknowns   Json            @default("[]") @map("risks_and_unknowns")
+  aiModel            String?         @map("ai_model")
+  aiPromptVersion    String?         @map("ai_prompt_version")
+  evidenceIds        String[]        @default([]) @map("evidence_ids")
+  supersededByPlanId String?         @map("superseded_by_plan_id")
+  approvedAt         DateTime?       @map("approved_at") @db.Timestamptz(6)
+  approvedByUserId   String?         @map("approved_by_user_id")
+  createdAt          DateTime        @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt          DateTime        @updatedAt @map("updated_at") @db.Timestamptz(6)
 
   workspace       Workspace       @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
-  brand           Brand           @relation(fields: [brandId], references: [id], onDelete: Cascade)
+  project         Project         @relation(fields: [projectId], references: [id], onDelete: Cascade)
   businessProfile BusinessProfile @relation(fields: [businessProfileId], references: [id], onDelete: Restrict)
 
   opportunityMatches StrategyOpportunityMatch[]
 
-  @@unique([brandId, version])
+  @@unique([projectId, version])
   @@index([workspaceId])
   @@index([workspaceId, state])
   @@map("growth_plans")
@@ -1690,30 +1690,30 @@ model GrowthPlan {
 /// Operator-curated and global, not tenant owned. Readable by any authenticated
 /// user only while `state = active`; writes are service-role only.
 model GrowthOpportunity {
-  id              String          @id @default(dbgenerated("app.new_id('opp')"))
-  kind            OpportunityKind
-  name            String
-  officialUrl     String          @map("official_url")
-  description     String?
-  audience        String?
-  regions         String[]        @default([])
-  categories      String[]        @default([])
+  id                   String          @id @default(dbgenerated("app.new_id('opp')"))
+  kind                 OpportunityKind
+  name                 String
+  officialUrl          String          @map("official_url")
+  description          String?
+  audience             String?
+  regions              String[]        @default([])
+  categories           String[]        @default([])
   /// How a submission is actually made. Never automated by us.
-  submissionMethod String         @map("submission_method")
-  submissionRules String?         @map("submission_rules")
+  submissionMethod     String          @map("submission_method")
+  submissionRules      String?         @map("submission_rules")
   /// Integer minor units. Zero means free to submit.
-  costMinor       Int             @default(0) @map("cost_minor")
-  costCurrency    String          @default("USD") @map("cost_currency")
-  disclosureRules String?         @map("disclosure_rules")
-  selfPromotionAllowed Boolean    @default(false) @map("self_promotion_allowed")
-  sourceNote      String?         @map("source_note")
-  state           CatalogState    @default(draft)
-  lastVerifiedAt  DateTime?       @map("last_verified_at") @db.Timestamptz(6)
-  nextReviewAt    DateTime?       @map("next_review_at") @db.Timestamptz(6)
-  verifiedByUserId String?        @map("verified_by_user_id")
-  changeLog       Json            @default("[]") @map("change_log")
-  createdAt       DateTime        @default(now()) @map("created_at") @db.Timestamptz(6)
-  updatedAt       DateTime        @updatedAt @map("updated_at") @db.Timestamptz(6)
+  costMinor            Int             @default(0) @map("cost_minor")
+  costCurrency         String          @default("USD") @map("cost_currency")
+  disclosureRules      String?         @map("disclosure_rules")
+  selfPromotionAllowed Boolean         @default(false) @map("self_promotion_allowed")
+  sourceNote           String?         @map("source_note")
+  state                CatalogState    @default(draft)
+  lastVerifiedAt       DateTime?       @map("last_verified_at") @db.Timestamptz(6)
+  nextReviewAt         DateTime?       @map("next_review_at") @db.Timestamptz(6)
+  verifiedByUserId     String?         @map("verified_by_user_id")
+  changeLog            Json            @default("[]") @map("change_log")
+  createdAt            DateTime        @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt            DateTime        @updatedAt @map("updated_at") @db.Timestamptz(6)
 
   matches StrategyOpportunityMatch[]
 
@@ -1726,22 +1726,22 @@ model GrowthOpportunity {
 
 /// A suggestion. Never a promised backlink, ranking or placement.
 model StrategyOpportunityMatch {
-  id            String        @id @default(dbgenerated("app.new_id('oppmatch')"))
-  workspaceId   String        @map("workspace_id")
-  growthPlanId  String        @map("growth_plan_id")
-  opportunityId String        @map("opportunity_id")
-  rank          Int
-  fitExplanation String       @map("fit_explanation")
-  suggestedAsset String?      @map("suggested_asset")
-  suggestedPitch String?      @map("suggested_pitch")
-  estimatedEffort String?     @map("estimated_effort")
-  evidenceIds   String[]      @default([]) @map("evidence_ids")
-  decision      MatchDecision @default(proposed)
-  decidedByUserId String?     @map("decided_by_user_id")
-  decidedAt     DateTime?     @map("decided_at") @db.Timestamptz(6)
-  outcomeNote   String?       @map("outcome_note")
-  createdAt     DateTime      @default(now()) @map("created_at") @db.Timestamptz(6)
-  updatedAt     DateTime      @updatedAt @map("updated_at") @db.Timestamptz(6)
+  id              String        @id @default(dbgenerated("app.new_id('oppmatch')"))
+  workspaceId     String        @map("workspace_id")
+  growthPlanId    String        @map("growth_plan_id")
+  opportunityId   String        @map("opportunity_id")
+  rank            Int
+  fitExplanation  String        @map("fit_explanation")
+  suggestedAsset  String?       @map("suggested_asset")
+  suggestedPitch  String?       @map("suggested_pitch")
+  estimatedEffort String?       @map("estimated_effort")
+  evidenceIds     String[]      @default([]) @map("evidence_ids")
+  decision        MatchDecision @default(proposed)
+  decidedByUserId String?       @map("decided_by_user_id")
+  decidedAt       DateTime?     @map("decided_at") @db.Timestamptz(6)
+  outcomeNote     String?       @map("outcome_note")
+  createdAt       DateTime      @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt       DateTime      @updatedAt @map("updated_at") @db.Timestamptz(6)
 
   workspace   Workspace         @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
   growthPlan  GrowthPlan        @relation(fields: [growthPlanId], references: [id], onDelete: Cascade)
@@ -1757,29 +1757,29 @@ model StrategyOpportunityMatch {
 /// Operator-curated and global. The Creative Tool Radar may only recommend rows
 /// from here, and shows `lastVerifiedAt` rather than guessing when it is stale.
 model ToolCatalogEntry {
-  id             String       @id @default(dbgenerated("app.new_id('tool')"))
-  name           String
-  officialUrl    String       @map("official_url")
-  category       ToolCategory
-  summary        String
-  useCases       String[]     @default([]) @map("use_cases")
-  inputs         String[]     @default([])
-  outputs        String[]     @default([])
-  priceModel     String       @map("price_model")
-  priceNote      String?      @map("price_note")
-  rightsCaveats  String?      @map("rights_caveats")
-  privacyCaveats String?      @map("privacy_caveats")
-  limitations    String?
-  integrations   String[]     @default([])
-  isAffiliate    Boolean      @default(false) @map("is_affiliate")
-  affiliateDisclosure String?  @map("affiliate_disclosure")
-  state          CatalogState @default(draft)
-  lastVerifiedAt DateTime?    @map("last_verified_at") @db.Timestamptz(6)
-  nextReviewAt   DateTime?    @map("next_review_at") @db.Timestamptz(6)
-  verifiedByUserId String?    @map("verified_by_user_id")
-  changeLog      Json         @default("[]") @map("change_log")
-  createdAt      DateTime     @default(now()) @map("created_at") @db.Timestamptz(6)
-  updatedAt      DateTime     @updatedAt @map("updated_at") @db.Timestamptz(6)
+  id                  String       @id @default(dbgenerated("app.new_id('tool')"))
+  name                String
+  officialUrl         String       @map("official_url")
+  category            ToolCategory
+  summary             String
+  useCases            String[]     @default([]) @map("use_cases")
+  inputs              String[]     @default([])
+  outputs             String[]     @default([])
+  priceModel          String       @map("price_model")
+  priceNote           String?      @map("price_note")
+  rightsCaveats       String?      @map("rights_caveats")
+  privacyCaveats      String?      @map("privacy_caveats")
+  limitations         String?
+  integrations        String[]     @default([])
+  isAffiliate         Boolean      @default(false) @map("is_affiliate")
+  affiliateDisclosure String?      @map("affiliate_disclosure")
+  state               CatalogState @default(draft)
+  lastVerifiedAt      DateTime?    @map("last_verified_at") @db.Timestamptz(6)
+  nextReviewAt        DateTime?    @map("next_review_at") @db.Timestamptz(6)
+  verifiedByUserId    String?      @map("verified_by_user_id")
+  changeLog           Json         @default("[]") @map("change_log")
+  createdAt           DateTime     @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt           DateTime     @updatedAt @map("updated_at") @db.Timestamptz(6)
 
   @@unique([officialUrl])
   @@index([state, category])
@@ -1793,45 +1793,45 @@ model ToolCatalogEntry {
 // ---------------------------------------------------------------------------
 
 model SocialConnection {
-  id                String              @id @default(dbgenerated("app.new_id('conn')"))
-  workspaceId       String              @map("workspace_id")
-  brandId           String?             @map("brand_id")
-  provider          ProviderKind
-  externalAccountId String              @map("external_account_id")
-  accountType       ExternalAccountType @map("account_type")
-  displayName       String              @map("display_name")
-  handle            String?
-  avatarUrl         String?             @map("avatar_url")
-  profileUrl        String?             @map("profile_url")
-  status            ConnectionStatus    @default(active)
-  statusReason      String?             @map("status_reason")
-  grantedScopes     String[]            @default([]) @map("granted_scopes")
+  id                      String              @id @default(dbgenerated("app.new_id('conn')"))
+  workspaceId             String              @map("workspace_id")
+  projectId               String?             @map("project_id")
+  provider                ProviderKind
+  externalAccountId       String              @map("external_account_id")
+  accountType             ExternalAccountType @map("account_type")
+  displayName             String              @map("display_name")
+  handle                  String?
+  avatarUrl               String?             @map("avatar_url")
+  profileUrl              String?             @map("profile_url")
+  status                  ConnectionStatus    @default(active)
+  statusReason            String?             @map("status_reason")
+  grantedScopes           String[]            @default([]) @map("granted_scopes")
   /// Data, not code. Records the account-specific limits and permissions in
   /// force. Saved at approval and revalidated immediately before publish.
-  capabilities      Json                @default("{}")
-  capabilityVersion String?             @map("capability_version")
-  capabilitiesRefreshedAt DateTime?     @map("capabilities_refreshed_at") @db.Timestamptz(6)
-  lastSuccessfulActionAt DateTime?      @map("last_successful_action_at") @db.Timestamptz(6)
-  connectedAt       DateTime            @default(now()) @map("connected_at") @db.Timestamptz(6)
-  disconnectedAt    DateTime?           @map("disconnected_at") @db.Timestamptz(6)
-  createdByUserId   String?             @map("created_by_user_id")
-  createdAt         DateTime            @default(now()) @map("created_at") @db.Timestamptz(6)
-  updatedAt         DateTime            @updatedAt @map("updated_at") @db.Timestamptz(6)
+  capabilities            Json                @default("{}")
+  capabilityVersion       String?             @map("capability_version")
+  capabilitiesRefreshedAt DateTime?           @map("capabilities_refreshed_at") @db.Timestamptz(6)
+  lastSuccessfulActionAt  DateTime?           @map("last_successful_action_at") @db.Timestamptz(6)
+  connectedAt             DateTime            @default(now()) @map("connected_at") @db.Timestamptz(6)
+  disconnectedAt          DateTime?           @map("disconnected_at") @db.Timestamptz(6)
+  createdByUserId         String?             @map("created_by_user_id")
+  createdAt               DateTime            @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt               DateTime            @updatedAt @map("updated_at") @db.Timestamptz(6)
 
   workspace Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
-  brand     Brand?    @relation(fields: [brandId], references: [id], onDelete: SetNull)
+  project   Project?  @relation(fields: [projectId], references: [id], onDelete: SetNull)
 
-  credential          SocialCredential?
-  destinations        ProviderDestination[]
-  mentionEntities     MentionEntity[]
-  postVariants        PostVariant[]
-  publishJobs         PublishJob[]
-  publishAttempts     PublishAttempt[]
-  receipts            PublicationReceipt[]
-  providerLimits      ProviderLimit[]
-  incidents           ConnectionIncident[]
-  analyticsSyncRuns   AnalyticsSyncRun[]
-  metricObservations  MetricObservation[]
+  credential         SocialCredential?
+  destinations       ProviderDestination[]
+  mentionEntities    MentionEntity[]
+  postVariants       PostVariant[]
+  publishJobs        PublishJob[]
+  publishAttempts    PublishAttempt[]
+  receipts           PublicationReceipt[]
+  providerLimits     ProviderLimit[]
+  incidents          ConnectionIncident[]
+  analyticsSyncRuns  AnalyticsSyncRun[]
+  metricObservations MetricObservation[]
 
   // One row per external account per workspace, forever. Disconnect flips
   // `status`; reconnect updates the same row so history and receipts survive.
@@ -1839,7 +1839,7 @@ model SocialConnection {
   @@unique([workspaceId, id], map: "uq_social_connections_workspace_id_id")
   @@index([workspaceId])
   @@index([workspaceId, status])
-  @@index([workspaceId, brandId, provider])
+  @@index([workspaceId, projectId, provider])
   @@map("social_connections")
   @@schema("app")
 }
@@ -1856,32 +1856,32 @@ model SocialCredential {
   workspaceId                String    @map("workspace_id")
   connectionId               String    @unique @map("connection_id")
   accessTokenCiphertext      Bytes     @map("access_token_ciphertext")
-  accessTokenNonce            Bytes     @map("access_token_nonce")
-  accessTokenAuthTag          Bytes?    @map("access_token_auth_tag")
-  refreshTokenCiphertext      Bytes?    @map("refresh_token_ciphertext")
-  refreshTokenNonce           Bytes?    @map("refresh_token_nonce")
-  refreshTokenAuthTag         Bytes?    @map("refresh_token_auth_tag")
-  algorithm                   String    @default("AES-256-GCM")
-  keyVersion                  String    @map("key_version")
-  accessTokenWrappedDataKey   Bytes?    @map("wrapped_data_key")
-  refreshTokenWrappedDataKey  Bytes?    @map("refresh_token_wrapped_data_key")
-  accessTokenAadContext       Json?     @map("access_token_aad_context")
-  refreshTokenAadContext      Json?     @map("refresh_token_aad_context")
-  envelopeVersion             Int       @default(0) @map("envelope_version")
-  accessTokenExpiresAt        DateTime? @map("access_token_expires_at") @db.Timestamptz(6)
-  refreshTokenExpiresAt       DateTime? @map("refresh_token_expires_at") @db.Timestamptz(6)
-  lastRefreshedAt              DateTime? @map("last_refreshed_at") @db.Timestamptz(6)
-  lastRefreshError             String?   @map("last_refresh_error")
-  rotatedAt                    DateTime? @map("rotated_at") @db.Timestamptz(6)
-  createdAt                    DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
-  updatedAt                    DateTime  @updatedAt @map("updated_at") @db.Timestamptz(6)
+  accessTokenNonce           Bytes     @map("access_token_nonce")
+  accessTokenAuthTag         Bytes?    @map("access_token_auth_tag")
+  refreshTokenCiphertext     Bytes?    @map("refresh_token_ciphertext")
+  refreshTokenNonce          Bytes?    @map("refresh_token_nonce")
+  refreshTokenAuthTag        Bytes?    @map("refresh_token_auth_tag")
+  algorithm                  String    @default("AES-256-GCM")
+  keyVersion                 String    @map("key_version")
+  accessTokenWrappedDataKey  Bytes?    @map("wrapped_data_key")
+  refreshTokenWrappedDataKey Bytes?    @map("refresh_token_wrapped_data_key")
+  accessTokenAadContext      Json?     @map("access_token_aad_context")
+  refreshTokenAadContext     Json?     @map("refresh_token_aad_context")
+  envelopeVersion            Int       @default(0) @map("envelope_version")
+  accessTokenExpiresAt       DateTime? @map("access_token_expires_at") @db.Timestamptz(6)
+  refreshTokenExpiresAt      DateTime? @map("refresh_token_expires_at") @db.Timestamptz(6)
+  lastRefreshedAt            DateTime? @map("last_refreshed_at") @db.Timestamptz(6)
+  lastRefreshError           String?   @map("last_refresh_error")
+  rotatedAt                  DateTime? @map("rotated_at") @db.Timestamptz(6)
+  createdAt                  DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt                  DateTime  @updatedAt @map("updated_at") @db.Timestamptz(6)
 
   workspace  Workspace        @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
   connection SocialConnection @relation(fields: [workspaceId, connectionId], references: [workspaceId, id], onDelete: Cascade)
 
+  @@unique([workspaceId, connectionId], map: "uq_social_credentials_workspace_connection")
   @@index([workspaceId])
   @@index([accessTokenExpiresAt])
-  @@unique([workspaceId, connectionId], map: "uq_social_credentials_workspace_connection")
   @@map("social_credentials")
   @@schema("private")
 }
@@ -1891,7 +1891,7 @@ model SocialCredential {
 model OAuthTransaction {
   id                    String                  @id @default(dbgenerated("app.new_id('oauth')"))
   workspaceId           String                  @map("workspace_id")
-  brandId               String?                 @map("brand_id")
+  projectId             String?                 @map("project_id")
   purpose               OAuthTransactionPurpose
   provider              ProviderKind?
   stateHash             String                  @unique @map("state_hash")
@@ -1906,12 +1906,12 @@ model OAuthTransaction {
   expiresAt             DateTime                @map("expires_at") @db.Timestamptz(6)
   createdAt             DateTime                @default(now()) @map("created_at") @db.Timestamptz(6)
 
-  workspace Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
-  brand     Brand?    @relation(fields: [workspaceId, brandId], references: [workspaceId, id], onDelete: Cascade)
+  workspace        Workspace              @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  project          Project?               @relation(fields: [workspaceId, projectId], references: [workspaceId, id], onDelete: Cascade)
   pendingDiscovery OAuthPendingDiscovery?
 
   @@index([workspaceId])
-  @@index([workspaceId, brandId])
+  @@index([workspaceId, projectId])
   @@index([expiresAt])
   @@map("oauth_transactions")
   @@schema("private")
@@ -1919,27 +1919,27 @@ model OAuthTransaction {
 
 /// Encrypted grant material between provider callback and explicit account claim.
 model OAuthPendingDiscovery {
-  id                  String       @id @default(dbgenerated("app.new_id('oauthpend')"))
-  transactionId       String       @unique @map("transaction_id")
-  workspaceId         String       @map("workspace_id")
-  brandId             String?      @map("brand_id")
-  provider            ProviderKind
-  stateHash           String       @map("state_hash")
-  accounts            Json
-  grantCiphertext     Bytes        @map("grant_ciphertext")
-  grantNonce          Bytes        @map("grant_nonce")
-  grantAuthTag        Bytes        @map("grant_auth_tag")
-  grantWrappedDataKey Bytes        @map("grant_wrapped_data_key")
-  grantKeyVersion     String       @map("grant_key_version")
-  grantAadContext     Json         @map("grant_aad_context")
-  grantEnvelopeVersion Int         @default(1) @map("grant_envelope_version")
-  expiresAt           DateTime     @map("expires_at") @db.Timestamptz(6)
-  consumedAt          DateTime?    @map("consumed_at") @db.Timestamptz(6)
-  createdAt           DateTime     @default(now()) @map("created_at") @db.Timestamptz(6)
+  id                   String       @id @default(dbgenerated("app.new_id('oauthpend')"))
+  transactionId        String       @unique @map("transaction_id")
+  workspaceId          String       @map("workspace_id")
+  projectId            String?      @map("project_id")
+  provider             ProviderKind
+  stateHash            String       @map("state_hash")
+  accounts             Json
+  grantCiphertext      Bytes        @map("grant_ciphertext")
+  grantNonce           Bytes        @map("grant_nonce")
+  grantAuthTag         Bytes        @map("grant_auth_tag")
+  grantWrappedDataKey  Bytes        @map("grant_wrapped_data_key")
+  grantKeyVersion      String       @map("grant_key_version")
+  grantAadContext      Json         @map("grant_aad_context")
+  grantEnvelopeVersion Int          @default(1) @map("grant_envelope_version")
+  expiresAt            DateTime     @map("expires_at") @db.Timestamptz(6)
+  consumedAt           DateTime?    @map("consumed_at") @db.Timestamptz(6)
+  createdAt            DateTime     @default(now()) @map("created_at") @db.Timestamptz(6)
 
   transaction OAuthTransaction @relation(fields: [transactionId], references: [id], onDelete: Cascade)
   workspace   Workspace        @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
-  brand       Brand?           @relation(fields: [workspaceId, brandId], references: [workspaceId, id], onDelete: Cascade)
+  project     Project?         @relation(fields: [workspaceId, projectId], references: [workspaceId, id], onDelete: Cascade)
 
   @@index([workspaceId])
   @@index([expiresAt])
@@ -1978,23 +1978,23 @@ model OAuthClient {
 }
 
 model OAuthGrant {
-  id                 String    @id @default(dbgenerated("app.new_id('grant')"))
-  workspaceId        String    @map("workspace_id")
-  oauthClientId      String    @map("oauth_client_id")
-  subjectUserId      String    @map("subject_user_id")
-  scopes             String[]  @default([])
-  brandScope         String[]  @default([]) @map("brand_scope")
-  connectionScope    String[]  @default([]) @map("connection_scope")
-  refreshTokenHash   String?   @unique @map("refresh_token_hash")
+  id                    String    @id @default(dbgenerated("app.new_id('grant')"))
+  workspaceId           String    @map("workspace_id")
+  oauthClientId         String    @map("oauth_client_id")
+  subjectUserId         String    @map("subject_user_id")
+  scopes                String[]  @default([])
+  projectScope          String[]  @default([]) @map("project_scope")
+  connectionScope       String[]  @default([]) @map("connection_scope")
+  refreshTokenHash      String?   @unique @map("refresh_token_hash")
   refreshTokenRotatedAt DateTime? @map("refresh_token_rotated_at") @db.Timestamptz(6)
-  consentedAt        DateTime  @default(now()) @map("consented_at") @db.Timestamptz(6)
-  lastUsedAt         DateTime? @map("last_used_at") @db.Timestamptz(6)
-  expiresAt          DateTime? @map("expires_at") @db.Timestamptz(6)
-  revokedAt          DateTime? @map("revoked_at") @db.Timestamptz(6)
-  revokedByUserId    String?   @map("revoked_by_user_id")
+  consentedAt           DateTime  @default(now()) @map("consented_at") @db.Timestamptz(6)
+  lastUsedAt            DateTime? @map("last_used_at") @db.Timestamptz(6)
+  expiresAt             DateTime? @map("expires_at") @db.Timestamptz(6)
+  revokedAt             DateTime? @map("revoked_at") @db.Timestamptz(6)
+  revokedByUserId       String?   @map("revoked_by_user_id")
 
-  workspace   Workspace   @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
-  oauthClient OAuthClient @relation(fields: [oauthClientId], references: [id], onDelete: Cascade)
+  workspace          Workspace           @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  oauthClient        OAuthClient         @relation(fields: [oauthClientId], references: [id], onDelete: Cascade)
   agentConfirmations AgentConfirmation[]
 
   @@unique([oauthClientId, subjectUserId, workspaceId])
@@ -2009,18 +2009,18 @@ model OAuthGrant {
 /// by the same idempotency key after consumption so a transport retry cannot
 /// turn one approval into two publications.
 model AgentConfirmation {
-  id                  String   @id @default(dbgenerated("app.new_id('confirm')"))
-  workspaceId         String   @map("workspace_id")
-  oauthGrantId        String   @map("oauth_grant_id")
-  contentItemId       String   @map("content_item_id")
-  fingerprint         String
-  summary             Json
-  confirmedByUserId   String?  @map("confirmed_by_user_id")
-  confirmedAt         DateTime? @map("confirmed_at") @db.Timestamptz(6)
-  consumedAt          DateTime? @map("consumed_at") @db.Timestamptz(6)
-  consumedByKeyHash   String?  @map("consumed_by_key_hash")
-  expiresAt           DateTime @map("expires_at") @db.Timestamptz(6)
-  createdAt           DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  id                String    @id @default(dbgenerated("app.new_id('confirm')"))
+  workspaceId       String    @map("workspace_id")
+  oauthGrantId      String    @map("oauth_grant_id")
+  contentItemId     String    @map("content_item_id")
+  fingerprint       String
+  summary           Json
+  confirmedByUserId String?   @map("confirmed_by_user_id")
+  confirmedAt       DateTime? @map("confirmed_at") @db.Timestamptz(6)
+  consumedAt        DateTime? @map("consumed_at") @db.Timestamptz(6)
+  consumedByKeyHash String?   @map("consumed_by_key_hash")
+  expiresAt         DateTime  @map("expires_at") @db.Timestamptz(6)
+  createdAt         DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
 
   workspace       Workspace   @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
   oauthGrant      OAuthGrant  @relation(fields: [oauthGrantId], references: [id], onDelete: Cascade)
@@ -2080,39 +2080,39 @@ model OutboxDeadLetter {
 }
 
 model MediaAsset {
-  id             String            @id @default(dbgenerated("app.new_id('media')"))
-  workspaceId    String            @map("workspace_id")
-  brandId        String?           @map("brand_id")
-  kind           MediaKind
-  storageBucket  String            @map("storage_bucket")
-  storageKey     String            @map("storage_key")
+  id                  String            @id @default(dbgenerated("app.new_id('media')"))
+  workspaceId         String            @map("workspace_id")
+  projectId           String?           @map("project_id")
+  kind                MediaKind
+  storageBucket       String            @map("storage_bucket")
+  storageKey          String            @map("storage_key")
   /// Sniffed from the bytes. The uploaded filename extension is not trusted.
-  mimeType       String            @map("mime_type")
-  byteSize       BigInt            @map("byte_size")
-  checksumSha256 String            @map("checksum_sha256")
-  width          Int?
-  height         Int?
-  durationMs     Int?              @map("duration_ms")
-  frameRate      Float?            @map("frame_rate")
-  altText        String?           @map("alt_text")
-  altTextWaivedAt DateTime?        @map("alt_text_waived_at") @db.Timestamptz(6)
+  mimeType            String            @map("mime_type")
+  byteSize            BigInt            @map("byte_size")
+  checksumSha256      String            @map("checksum_sha256")
+  width               Int?
+  height              Int?
+  durationMs          Int?              @map("duration_ms")
+  frameRate           Float?            @map("frame_rate")
+  altText             String?           @map("alt_text")
+  altTextWaivedAt     DateTime?         @map("alt_text_waived_at") @db.Timestamptz(6)
   altTextWaivedReason String?           @map("alt_text_waived_reason")
   altTextWaivedByName String?           @map("alt_text_waived_by_name")
-  rights         RightsDeclaration @default(unverified)
-  rightsNote     String?           @map("rights_note")
+  rights              RightsDeclaration @default(unverified)
+  rightsNote          String?           @map("rights_note")
   /// Where the file came from, kept for provenance. An imported asset keeps the
   /// origin the source supplied.
-  originKind     String            @default("upload") @map("origin_kind")
-  originUrl      String?           @map("origin_url")
-  scanState      MediaScanState    @default(pending) @map("scan_state")
-  scanNote       String?           @map("scan_note")
-  metadata       Json              @default("{}")
-  createdByUserId String?          @map("created_by_user_id")
-  deletedAt      DateTime?         @map("deleted_at") @db.Timestamptz(6)
+  originKind          String            @default("upload") @map("origin_kind")
+  originUrl           String?           @map("origin_url")
+  scanState           MediaScanState    @default(pending) @map("scan_state")
+  scanNote            String?           @map("scan_note")
+  metadata            Json              @default("{}")
+  createdByUserId     String?           @map("created_by_user_id")
+  deletedAt           DateTime?         @map("deleted_at") @db.Timestamptz(6)
   retentionExpiresAt  DateTime          @map("retention_expires_at") @db.Timestamptz(6)
   storageDeletedAt    DateTime?         @map("storage_deleted_at") @db.Timestamptz(6)
-  createdAt      DateTime          @default(now()) @map("created_at") @db.Timestamptz(6)
-  updatedAt      DateTime          @updatedAt @map("updated_at") @db.Timestamptz(6)
+  createdAt           DateTime          @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt           DateTime          @updatedAt @map("updated_at") @db.Timestamptz(6)
 
   workspace   Workspace         @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
   derivatives MediaDerivative[]
@@ -2155,39 +2155,39 @@ model MediaDerivative {
 /// One durable unit of external work. `idempotencyKey` is unique per workspace
 /// and `temporalWorkflowId` is deterministic, so a replay cannot create twice.
 model PublishJob {
-  id                  String       @id @default(dbgenerated("app.new_id('job')"))
-  workspaceId         String       @map("workspace_id")
-  contentItemId       String       @map("content_item_id")
-  contentVersionId    String       @map("content_version_id")
-  postVariantId       String?      @map("post_variant_id")
-  commentThreadItemId String?      @map("comment_thread_item_id")
-  connectionId        String       @map("connection_id")
-  approvalRequestId   String?      @map("approval_request_id")
-  approvalPolicy      ApprovalPolicy @default(none) @map("approval_policy")
+  id                  String          @id @default(dbgenerated("app.new_id('job')"))
+  workspaceId         String          @map("workspace_id")
+  contentItemId       String          @map("content_item_id")
+  contentVersionId    String          @map("content_version_id")
+  postVariantId       String?         @map("post_variant_id")
+  commentThreadItemId String?         @map("comment_thread_item_id")
+  connectionId        String          @map("connection_id")
+  approvalRequestId   String?         @map("approval_request_id")
+  approvalPolicy      ApprovalPolicy  @default(none) @map("approval_policy")
   /// The instant that actually executes, always UTC.
-  scheduledFor        DateTime     @map("scheduled_for") @db.Timestamptz(6)
+  scheduledFor        DateTime        @map("scheduled_for") @db.Timestamptz(6)
   /// The zone the user chose, retained so a DST shift is explainable.
-  scheduledTimeZone   String       @map("scheduled_time_zone")
-  state               PublishState @default(scheduled)
-  idempotencyKey      String       @map("idempotency_key")
-  temporalWorkflowId  String?      @unique @map("temporal_workflow_id")
-  temporalRunId       String?      @map("temporal_run_id")
-  attemptCount        Int          @default(0) @map("attempt_count")
-  nextAttemptAt       DateTime?    @map("next_attempt_at") @db.Timestamptz(6)
-  lastErrorClass      ErrorClass?  @map("last_error_class")
-  lastErrorCode       String?      @map("last_error_code")
+  scheduledTimeZone   String          @map("scheduled_time_zone")
+  state               PublishState    @default(scheduled)
+  idempotencyKey      String          @map("idempotency_key")
+  temporalWorkflowId  String?         @unique @map("temporal_workflow_id")
+  temporalRunId       String?         @map("temporal_run_id")
+  attemptCount        Int             @default(0) @map("attempt_count")
+  nextAttemptAt       DateTime?       @map("next_attempt_at") @db.Timestamptz(6)
+  lastErrorClass      ErrorClass?     @map("last_error_class")
+  lastErrorCode       String?         @map("last_error_code")
   surface             CreationSurface @default(web)
-  dispatchedAt        DateTime?    @map("dispatched_at") @db.Timestamptz(6)
-  completedAt         DateTime?    @map("completed_at") @db.Timestamptz(6)
-  canceledAt          DateTime?    @map("canceled_at") @db.Timestamptz(6)
+  dispatchedAt        DateTime?       @map("dispatched_at") @db.Timestamptz(6)
+  completedAt         DateTime?       @map("completed_at") @db.Timestamptz(6)
+  canceledAt          DateTime?       @map("canceled_at") @db.Timestamptz(6)
   /// A hold, not a state. Set together with `pausedReason`, cleared together.
-  pausedAt            DateTime?    @map("paused_at") @db.Timestamptz(6)
+  pausedAt            DateTime?       @map("paused_at") @db.Timestamptz(6)
   /// `user` or `billing`. The two never merge: one is resumed by a person, the
   /// other by a payment. Constrained in migration 0070.
-  pausedReason        String?      @map("paused_reason")
-  pausedByUserId      String?      @map("paused_by_user_id")
-  createdAt           DateTime     @default(now()) @map("created_at") @db.Timestamptz(6)
-  updatedAt           DateTime     @updatedAt @map("updated_at") @db.Timestamptz(6)
+  pausedReason        String?         @map("paused_reason")
+  pausedByUserId      String?         @map("paused_by_user_id")
+  createdAt           DateTime        @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt           DateTime        @updatedAt @map("updated_at") @db.Timestamptz(6)
 
   workspace         Workspace          @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
   contentItem       ContentItem        @relation(fields: [contentItemId], references: [id], onDelete: Cascade)
@@ -2197,8 +2197,8 @@ model PublishJob {
   connection        SocialConnection   @relation(fields: [connectionId], references: [id], onDelete: Restrict)
   approvalRequest   ApprovalRequest?   @relation(fields: [approvalRequestId], references: [id], onDelete: SetNull)
 
-  attempts PublishAttempt[]
-  receipt  PublicationReceipt?
+  attempts              PublishAttempt[]
+  receipt               PublicationReceipt?
   queueSlotReservations QueueSlotReservation[]
 
   @@unique([workspaceId, idempotencyKey], map: "uq_publish_jobs_workspace_idempotency_key")
@@ -2258,31 +2258,31 @@ model PublishAttempt {
 /// "Published" requires an external ID or provider evidence, never a bare 2xx
 /// from a media container step.
 model PublicationReceipt {
-  id               String       @id @default(dbgenerated("app.new_id('receipt')"))
-  workspaceId      String       @map("workspace_id")
-  publishJobId     String       @unique @map("publish_job_id")
-  contentVersionId String       @map("content_version_id")
-  connectionId     String       @map("connection_id")
-  provider         ProviderKind
-  externalPostId   String       @map("external_post_id")
-  permalink        String?
-  contentHash      String       @map("content_hash")
-  mediaChecksums   String[]     @default([]) @map("media_checksums")
+  id                  String          @id @default(dbgenerated("app.new_id('receipt')"))
+  workspaceId         String          @map("workspace_id")
+  publishJobId        String          @unique @map("publish_job_id")
+  contentVersionId    String          @map("content_version_id")
+  connectionId        String          @map("connection_id")
+  provider            ProviderKind
+  externalPostId      String          @map("external_post_id")
+  permalink           String?
+  contentHash         String          @map("content_hash")
+  mediaChecksums      String[]        @default([]) @map("media_checksums")
   /// The exact public short URLs that appeared in the published copy.
-  publishedShortLinks String[]  @default([]) @map("published_short_links")
-  publishedAt      DateTime     @map("published_at") @db.Timestamptz(6)
-  dispatchedAt     DateTime?    @map("dispatched_at") @db.Timestamptz(6)
-  scheduledFor     DateTime?    @map("scheduled_for") @db.Timestamptz(6)
-  scheduledTimeZone String?     @map("scheduled_time_zone")
-  surface          CreationSurface
-  approvedByUserId String?      @map("approved_by_user_id")
-  approvalPolicy   ApprovalPolicy @default(none) @map("approval_policy")
-  costActualMinor  Int?         @map("cost_actual_minor")
-  costCurrency     String?      @map("cost_currency")
-  responseEvidence Json         @default("{}") @map("response_evidence")
-  deletedExternallyAt DateTime? @map("deleted_externally_at") @db.Timestamptz(6)
-  lastAnalyticsSyncAt DateTime? @map("last_analytics_sync_at") @db.Timestamptz(6)
-  createdAt        DateTime     @default(now()) @map("created_at") @db.Timestamptz(6)
+  publishedShortLinks String[]        @default([]) @map("published_short_links")
+  publishedAt         DateTime        @map("published_at") @db.Timestamptz(6)
+  dispatchedAt        DateTime?       @map("dispatched_at") @db.Timestamptz(6)
+  scheduledFor        DateTime?       @map("scheduled_for") @db.Timestamptz(6)
+  scheduledTimeZone   String?         @map("scheduled_time_zone")
+  surface             CreationSurface
+  approvedByUserId    String?         @map("approved_by_user_id")
+  approvalPolicy      ApprovalPolicy  @default(none) @map("approval_policy")
+  costActualMinor     Int?            @map("cost_actual_minor")
+  costCurrency        String?         @map("cost_currency")
+  responseEvidence    Json            @default("{}") @map("response_evidence")
+  deletedExternallyAt DateTime?       @map("deleted_externally_at") @db.Timestamptz(6)
+  lastAnalyticsSyncAt DateTime?       @map("last_analytics_sync_at") @db.Timestamptz(6)
+  createdAt           DateTime        @default(now()) @map("created_at") @db.Timestamptz(6)
 
   workspace      Workspace        @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
   publishJob     PublishJob       @relation(fields: [publishJobId], references: [id], onDelete: Cascade)
@@ -2322,18 +2322,18 @@ model ProviderLimit {
 }
 
 model ConnectionIncident {
-  id             String        @id @default(dbgenerated("app.new_id('incident')"))
-  workspaceId    String        @map("workspace_id")
-  connectionId   String        @map("connection_id")
-  kind           IncidentKind
-  state          IncidentState @default(open)
+  id               String        @id @default(dbgenerated("app.new_id('incident')"))
+  workspaceId      String        @map("workspace_id")
+  connectionId     String        @map("connection_id")
+  kind             IncidentKind
+  state            IncidentState @default(open)
   /// A stable i18n key. The message itself lives in packages/i18n.
-  remediationKey String        @map("remediation_key")
-  detail         Json          @default("{}")
-  detectedAt     DateTime      @default(now()) @map("detected_at") @db.Timestamptz(6)
-  acknowledgedAt DateTime?     @map("acknowledged_at") @db.Timestamptz(6)
-  resolvedAt     DateTime?     @map("resolved_at") @db.Timestamptz(6)
-  resolvedByUserId String?     @map("resolved_by_user_id")
+  remediationKey   String        @map("remediation_key")
+  detail           Json          @default("{}")
+  detectedAt       DateTime      @default(now()) @map("detected_at") @db.Timestamptz(6)
+  acknowledgedAt   DateTime?     @map("acknowledged_at") @db.Timestamptz(6)
+  resolvedAt       DateTime?     @map("resolved_at") @db.Timestamptz(6)
+  resolvedByUserId String?       @map("resolved_by_user_id")
 
   workspace  Workspace        @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
   connection SocialConnection @relation(fields: [connectionId], references: [id], onDelete: Cascade)
@@ -2355,7 +2355,7 @@ model ConnectionIncident {
 model QueueRule {
   id                String    @id @default(dbgenerated("app.new_id('qrule')"))
   workspaceId       String    @map("workspace_id")
-  brandId           String    @map("brand_id")
+  projectId         String    @map("project_id")
   name              String
   /// The zone the windows, the daily rollover and the blackout dates are read
   /// in. Never the browser's zone and never the server's.
@@ -2378,13 +2378,13 @@ model QueueRule {
   updatedAt         DateTime  @updatedAt @map("updated_at") @db.Timestamptz(6)
 
   workspace Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
-  brand     Brand     @relation(fields: [brandId], references: [id], onDelete: Cascade)
+  project   Project   @relation(fields: [projectId], references: [id], onDelete: Cascade)
 
   reservations QueueSlotReservation[]
 
-  @@unique([workspaceId, brandId, name])
+  @@unique([workspaceId, projectId, name])
   @@index([workspaceId])
-  @@index([workspaceId, brandId, enabled, priority(sort: Desc)])
+  @@index([workspaceId, projectId, enabled, priority(sort: Desc)])
   @@map("queue_rules")
   @@schema("app")
 }
@@ -2397,7 +2397,7 @@ model QueueRule {
 model QueueSlotReservation {
   id                String    @id @default(dbgenerated("app.new_id('qslot')"))
   workspaceId       String    @map("workspace_id")
-  brandId           String    @map("brand_id")
+  projectId         String    @map("project_id")
   queueRuleId       String?   @map("queue_rule_id")
   /// proposed | accepted | released | expired. Constrained in SQL.
   state             String    @default("proposed")
@@ -2415,13 +2415,13 @@ model QueueSlotReservation {
   createdAt         DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
   updatedAt         DateTime  @updatedAt @map("updated_at") @db.Timestamptz(6)
 
-  workspace Workspace   @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
-  brand     Brand       @relation(fields: [brandId], references: [id], onDelete: Cascade)
-  queueRule QueueRule?  @relation(fields: [queueRuleId], references: [id], onDelete: SetNull)
+  workspace  Workspace   @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  project    Project     @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  queueRule  QueueRule?  @relation(fields: [queueRuleId], references: [id], onDelete: SetNull)
   publishJob PublishJob? @relation(fields: [publishJobId], references: [id], onDelete: SetNull)
 
   @@index([workspaceId])
-  @@index([workspaceId, brandId, scheduledFor])
+  @@index([workspaceId, projectId, scheduledFor])
   @@index([workspaceId, state, expiresAt])
   @@map("queue_slot_reservations")
   @@schema("app")
@@ -2434,40 +2434,40 @@ model QueueSlotReservation {
 /// Our policy-aware replacement for Plugs. A rule can never activate a
 /// disallowed platform action; the policy check runs at save and at every run.
 model AutomationRule {
-  id              String              @id @default(dbgenerated("app.new_id('rule')"))
-  workspaceId     String              @map("workspace_id")
-  brandId         String              @map("brand_id")
-  name            String
-  state           AutomationRuleState @default(draft)
+  id                         String              @id @default(dbgenerated("app.new_id('rule')"))
+  workspaceId                String              @map("workspace_id")
+  projectId                  String              @map("project_id")
+  name                       String
+  state                      AutomationRuleState @default(draft)
   /// When [trigger], if [conditions], then [actions], after [delay], until [end].
-  trigger         Json                @default("{}")
-  conditions      Json                @default("[]")
-  actions         Json                @default("[]")
-  delaySeconds    Int                 @default(0) @map("delay_seconds")
-  endCondition    Json                @default("{}") @map("end_condition")
+  trigger                    Json                @default("{}")
+  conditions                 Json                @default("[]")
+  actions                    Json                @default("[]")
+  delaySeconds               Int                 @default(0) @map("delay_seconds")
+  endCondition               Json                @default("{}") @map("end_condition")
   /// Engagement-threshold rules require a window, cooldown and execution cap.
-  measurementWindowSeconds Int?       @map("measurement_window_seconds")
-  cooldownSeconds Int?                @map("cooldown_seconds")
-  maxExecutionsPerSource Int?         @map("max_executions_per_source")
-  maxExecutions   Int?                @map("max_executions")
-  executionCount  Int                 @default(0) @map("execution_count")
-  runOncePerSource Boolean            @default(true) @map("run_once_per_source")
-  skipWhenMetricStale Boolean         @default(true) @map("skip_when_metric_stale")
-  requiresApproval Boolean            @default(true) @map("requires_approval")
-  preauthorizedConnectionIds String[] @default([]) @map("preauthorized_connection_ids")
-  version         Int                 @default(1)
-  lastRunAt       DateTime?           @map("last_run_at") @db.Timestamptz(6)
-  pausedReason    String?             @map("paused_reason")
-  createdByUserId String              @map("created_by_user_id")
-  createdAt       DateTime            @default(now()) @map("created_at") @db.Timestamptz(6)
-  updatedAt       DateTime            @updatedAt @map("updated_at") @db.Timestamptz(6)
+  measurementWindowSeconds   Int?                @map("measurement_window_seconds")
+  cooldownSeconds            Int?                @map("cooldown_seconds")
+  maxExecutionsPerSource     Int?                @map("max_executions_per_source")
+  maxExecutions              Int?                @map("max_executions")
+  executionCount             Int                 @default(0) @map("execution_count")
+  runOncePerSource           Boolean             @default(true) @map("run_once_per_source")
+  skipWhenMetricStale        Boolean             @default(true) @map("skip_when_metric_stale")
+  requiresApproval           Boolean             @default(true) @map("requires_approval")
+  preauthorizedConnectionIds String[]            @default([]) @map("preauthorized_connection_ids")
+  version                    Int                 @default(1)
+  lastRunAt                  DateTime?           @map("last_run_at") @db.Timestamptz(6)
+  pausedReason               String?             @map("paused_reason")
+  createdByUserId            String              @map("created_by_user_id")
+  createdAt                  DateTime            @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt                  DateTime            @updatedAt @map("updated_at") @db.Timestamptz(6)
 
   workspace Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
-  brand     Brand     @relation(fields: [brandId], references: [id], onDelete: Cascade)
+  project   Project   @relation(fields: [projectId], references: [id], onDelete: Cascade)
 
   runs AutomationRuleRun[]
 
-  @@unique([workspaceId, brandId, name])
+  @@unique([workspaceId, projectId, name])
   @@index([workspaceId])
   @@index([workspaceId, state])
   @@map("automation_rules")
@@ -2475,24 +2475,24 @@ model AutomationRule {
 }
 
 model AutomationRuleRun {
-  id               String   @id @default(dbgenerated("app.new_id('rulerun')"))
-  workspaceId      String   @map("workspace_id")
-  automationRuleId String   @map("automation_rule_id")
-  ruleVersion      Int      @map("rule_version")
-  state            RunState @default(pending)
-  isTest           Boolean  @default(false) @map("is_test")
+  id                  String      @id @default(dbgenerated("app.new_id('rulerun')"))
+  workspaceId         String      @map("workspace_id")
+  automationRuleId    String      @map("automation_rule_id")
+  ruleVersion         Int         @map("rule_version")
+  state               RunState    @default(pending)
+  isTest              Boolean     @default(false) @map("is_test")
   /// Deduplication anchor: the post, feed item or webhook that triggered this.
-  sourceKind       String   @map("source_kind")
-  sourceId         String?  @map("source_id")
-  triggerPayload   Json     @default("{}") @map("trigger_payload")
-  evaluatedConditions Json  @default("[]") @map("evaluated_conditions")
-  performedActions Json     @default("[]") @map("performed_actions")
-  blockedReason    String?  @map("blocked_reason")
-  errorClass       ErrorClass? @map("error_class")
-  errorCode        String?  @map("error_code")
-  startedAt        DateTime @default(now()) @map("started_at") @db.Timestamptz(6)
-  endedAt          DateTime? @map("ended_at") @db.Timestamptz(6)
-  correlationId    String?  @map("correlation_id")
+  sourceKind          String      @map("source_kind")
+  sourceId            String?     @map("source_id")
+  triggerPayload      Json        @default("{}") @map("trigger_payload")
+  evaluatedConditions Json        @default("[]") @map("evaluated_conditions")
+  performedActions    Json        @default("[]") @map("performed_actions")
+  blockedReason       String?     @map("blocked_reason")
+  errorClass          ErrorClass? @map("error_class")
+  errorCode           String?     @map("error_code")
+  startedAt           DateTime    @default(now()) @map("started_at") @db.Timestamptz(6)
+  endedAt             DateTime?   @map("ended_at") @db.Timestamptz(6)
+  correlationId       String?     @map("correlation_id")
 
   workspace      Workspace      @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
   automationRule AutomationRule @relation(fields: [automationRuleId], references: [id], onDelete: Cascade)
@@ -2505,31 +2505,31 @@ model AutomationRuleRun {
 }
 
 model RssFeed {
-  id                String     @id @default(dbgenerated("app.new_id('rss')"))
-  workspaceId       String     @map("workspace_id")
-  brandId           String     @map("brand_id")
-  title             String
-  feedUrl           String     @map("feed_url")
-  health            FeedHealth @default(healthy)
+  id                  String     @id @default(dbgenerated("app.new_id('rss')"))
+  workspaceId         String     @map("workspace_id")
+  projectId           String     @map("project_id")
+  title               String
+  feedUrl             String     @map("feed_url")
+  health              FeedHealth @default(healthy)
   /// SSRF-safe fetch only: HTTP(S) scheme, DNS and IP checks before and after
   /// every redirect, private ranges denied, size and time limits.
-  connectionIds     String[]   @default([]) @map("connection_ids")
+  connectionIds       String[]   @default([]) @map("connection_ids")
   /// draft, approval, next_free_slot, fixed_cadence or immediate.
-  publishPolicy     String     @default("draft") @map("publish_policy")
-  templateBody      String?    @map("template_body")
-  useAiAdaptation   Boolean    @default(false) @map("use_ai_adaptation")
-  markCurrentAsSeen Boolean    @default(true) @map("mark_current_as_seen")
-  pollIntervalSeconds Int      @default(900) @map("poll_interval_seconds")
-  lastPolledAt      DateTime?  @map("last_polled_at") @db.Timestamptz(6)
-  lastNewItemAt     DateTime?  @map("last_new_item_at") @db.Timestamptz(6)
-  lastError         String?    @map("last_error")
-  pausedAt          DateTime?  @map("paused_at") @db.Timestamptz(6)
-  createdByUserId   String     @map("created_by_user_id")
-  createdAt         DateTime   @default(now()) @map("created_at") @db.Timestamptz(6)
-  updatedAt         DateTime   @updatedAt @map("updated_at") @db.Timestamptz(6)
+  publishPolicy       String     @default("draft") @map("publish_policy")
+  templateBody        String?    @map("template_body")
+  useAiAdaptation     Boolean    @default(false) @map("use_ai_adaptation")
+  markCurrentAsSeen   Boolean    @default(true) @map("mark_current_as_seen")
+  pollIntervalSeconds Int        @default(900) @map("poll_interval_seconds")
+  lastPolledAt        DateTime?  @map("last_polled_at") @db.Timestamptz(6)
+  lastNewItemAt       DateTime?  @map("last_new_item_at") @db.Timestamptz(6)
+  lastError           String?    @map("last_error")
+  pausedAt            DateTime?  @map("paused_at") @db.Timestamptz(6)
+  createdByUserId     String     @map("created_by_user_id")
+  createdAt           DateTime   @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt           DateTime   @updatedAt @map("updated_at") @db.Timestamptz(6)
 
   workspace Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
-  brand     Brand     @relation(fields: [brandId], references: [id], onDelete: Cascade)
+  project   Project   @relation(fields: [projectId], references: [id], onDelete: Cascade)
 
   items RssFeedItem[]
 
@@ -2570,20 +2570,20 @@ model RssFeedItem {
 
 /// Holds a signing secret, so it lives in `private`.
 model WebhookEndpoint {
-  id               String               @id @default(dbgenerated("app.new_id('whep')"))
-  workspaceId      String               @map("workspace_id")
-  name             String
-  url              String
-  state            WebhookEndpointState @default(active)
-  secretCiphertext            Bytes                @map("secret_ciphertext")
-  secretNonce                 Bytes                @map("secret_nonce")
-  secretAuthTag               Bytes?               @map("secret_auth_tag")
-  secretWrappedDataKey        Bytes?               @map("secret_wrapped_data_key")
-  secretAadContext            Json?                @map("secret_aad_context")
-  secretEnvelopeVersion       Int                  @default(0) @map("secret_envelope_version")
-  algorithm                   String               @default("AES-256-GCM")
-  keyVersion                  String               @map("key_version")
-  secretRotatedAt             DateTime?            @map("secret_rotated_at") @db.Timestamptz(6)
+  id                            String               @id @default(dbgenerated("app.new_id('whep')"))
+  workspaceId                   String               @map("workspace_id")
+  name                          String
+  url                           String
+  state                         WebhookEndpointState @default(active)
+  secretCiphertext              Bytes                @map("secret_ciphertext")
+  secretNonce                   Bytes                @map("secret_nonce")
+  secretAuthTag                 Bytes?               @map("secret_auth_tag")
+  secretWrappedDataKey          Bytes?               @map("secret_wrapped_data_key")
+  secretAadContext              Json?                @map("secret_aad_context")
+  secretEnvelopeVersion         Int                  @default(0) @map("secret_envelope_version")
+  algorithm                     String               @default("AES-256-GCM")
+  keyVersion                    String               @map("key_version")
+  secretRotatedAt               DateTime?            @map("secret_rotated_at") @db.Timestamptz(6)
   previousSecretCiphertext      Bytes?               @map("previous_secret_ciphertext")
   previousSecretNonce           Bytes?               @map("previous_secret_nonce")
   previousSecretAuthTag         Bytes?               @map("previous_secret_auth_tag")
@@ -2592,14 +2592,14 @@ model WebhookEndpoint {
   previousSecretAadContext      Json?                @map("previous_secret_aad_context")
   previousSecretEnvelopeVersion Int?                 @map("previous_secret_envelope_version")
   previousSecretExpiresAt       DateTime?            @map("previous_secret_expires_at") @db.Timestamptz(6)
-  subscribedEvents String[]             @default([]) @map("subscribed_events")
-  brandScope       String[]             @default([]) @map("brand_scope")
-  connectionScope  String[]             @default([]) @map("connection_scope")
-  consecutiveFailures Int               @default(0) @map("consecutive_failures")
-  disabledReason   String?              @map("disabled_reason")
-  createdByUserId  String               @map("created_by_user_id")
-  createdAt        DateTime             @default(now()) @map("created_at") @db.Timestamptz(6)
-  updatedAt        DateTime             @updatedAt @map("updated_at") @db.Timestamptz(6)
+  subscribedEvents              String[]             @default([]) @map("subscribed_events")
+  projectScope                  String[]             @default([]) @map("project_scope")
+  connectionScope               String[]             @default([]) @map("connection_scope")
+  consecutiveFailures           Int                  @default(0) @map("consecutive_failures")
+  disabledReason                String?              @map("disabled_reason")
+  createdByUserId               String               @map("created_by_user_id")
+  createdAt                     DateTime             @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt                     DateTime             @updatedAt @map("updated_at") @db.Timestamptz(6)
 
   workspace Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
 
@@ -2646,24 +2646,24 @@ model WebhookDelivery {
 /// Global reference data. The provider's own field name and definition are kept
 /// verbatim so a normalized label never hides an incompatible denominator.
 model MetricDefinition {
-  id                 String             @id @default(dbgenerated("app.new_id('metric')"))
-  provider           ProviderKind
-  providerFieldName  String             @map("provider_field_name")
-  providerDefinition String             @map("provider_definition")
-  normalizedName     String             @map("normalized_name")
-  unit               MetricUnit
-  availability       MetricAvailability @default(available)
-  aggregationRule    AggregationRule    @default(latest_snapshot) @map("aggregation_rule")
+  id                   String             @id @default(dbgenerated("app.new_id('metric')"))
+  provider             ProviderKind
+  providerFieldName    String             @map("provider_field_name")
+  providerDefinition   String             @map("provider_definition")
+  normalizedName       String             @map("normalized_name")
+  unit                 MetricUnit
+  availability         MetricAvailability @default(available)
+  aggregationRule      AggregationRule    @default(latest_snapshot) @map("aggregation_rule")
   /// Some providers forbid deriving or combining their metrics. When true the
   /// value is displayed alone and excluded from comparisons.
-  derivationRestricted Boolean          @default(false) @map("derivation_restricted")
-  denominatorNote    String?            @map("denominator_note")
-  appliesToAccount   Boolean            @default(false) @map("applies_to_account")
-  appliesToPost      Boolean            @default(true) @map("applies_to_post")
-  documentationUrl   String?            @map("documentation_url")
-  lastVerifiedAt     DateTime?          @map("last_verified_at") @db.Timestamptz(6)
-  createdAt          DateTime           @default(now()) @map("created_at") @db.Timestamptz(6)
-  updatedAt          DateTime           @updatedAt @map("updated_at") @db.Timestamptz(6)
+  derivationRestricted Boolean            @default(false) @map("derivation_restricted")
+  denominatorNote      String?            @map("denominator_note")
+  appliesToAccount     Boolean            @default(false) @map("applies_to_account")
+  appliesToPost        Boolean            @default(true) @map("applies_to_post")
+  documentationUrl     String?            @map("documentation_url")
+  lastVerifiedAt       DateTime?          @map("last_verified_at") @db.Timestamptz(6)
+  createdAt            DateTime           @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt            DateTime           @updatedAt @map("updated_at") @db.Timestamptz(6)
 
   observations MetricObservation[]
 
@@ -2710,23 +2710,23 @@ model MetricObservation {
 }
 
 model AnalyticsSyncRun {
-  id            String       @id @default(dbgenerated("app.new_id('sync')"))
-  workspaceId   String       @map("workspace_id")
-  connectionId  String       @map("connection_id")
-  provider      ProviderKind
-  state         RunState     @default(pending)
-  scope         String
-  cursor        String?
-  windowStart   DateTime?    @map("window_start") @db.Timestamptz(6)
-  windowEnd     DateTime?    @map("window_end") @db.Timestamptz(6)
-  receiptsCovered Int        @default(0) @map("receipts_covered")
-  observationsWritten Int    @default(0) @map("observations_written")
-  errorClass    ErrorClass?  @map("error_class")
-  errorCode     String?      @map("error_code")
-  providerCostMinor Int?     @map("provider_cost_minor")
-  costCurrency  String?      @map("cost_currency")
-  startedAt     DateTime     @default(now()) @map("started_at") @db.Timestamptz(6)
-  endedAt       DateTime?    @map("ended_at") @db.Timestamptz(6)
+  id                  String       @id @default(dbgenerated("app.new_id('sync')"))
+  workspaceId         String       @map("workspace_id")
+  connectionId        String       @map("connection_id")
+  provider            ProviderKind
+  state               RunState     @default(pending)
+  scope               String
+  cursor              String?
+  windowStart         DateTime?    @map("window_start") @db.Timestamptz(6)
+  windowEnd           DateTime?    @map("window_end") @db.Timestamptz(6)
+  receiptsCovered     Int          @default(0) @map("receipts_covered")
+  observationsWritten Int          @default(0) @map("observations_written")
+  errorClass          ErrorClass?  @map("error_class")
+  errorCode           String?      @map("error_code")
+  providerCostMinor   Int?         @map("provider_cost_minor")
+  costCurrency        String?      @map("cost_currency")
+  startedAt           DateTime     @default(now()) @map("started_at") @db.Timestamptz(6)
+  endedAt             DateTime?    @map("ended_at") @db.Timestamptz(6)
 
   workspace  Workspace        @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
   connection SocialConnection @relation(fields: [connectionId], references: [id], onDelete: Cascade)
@@ -2741,23 +2741,23 @@ model AnalyticsSyncRun {
 
 /// Tagged before publishing so analysis is not entirely post hoc.
 model Experiment {
-  id            String          @id @default(dbgenerated("app.new_id('exp')"))
-  workspaceId   String          @map("workspace_id")
-  campaignId    String?         @map("campaign_id")
-  name          String
-  hypothesis    String
-  variants      Json            @default("[]")
-  successMetric String          @map("success_metric")
-  windowStart   DateTime        @map("window_start") @db.Timestamptz(6)
-  windowEnd     DateTime        @map("window_end") @db.Timestamptz(6)
-  state         ExperimentState @default(planned)
+  id              String          @id @default(dbgenerated("app.new_id('exp')"))
+  workspaceId     String          @map("workspace_id")
+  campaignId      String?         @map("campaign_id")
+  name            String
+  hypothesis      String
+  variants        Json            @default("[]")
+  successMetric   String          @map("success_metric")
+  windowStart     DateTime        @map("window_start") @db.Timestamptz(6)
+  windowEnd       DateTime        @map("window_end") @db.Timestamptz(6)
+  state           ExperimentState @default(planned)
   /// Sample size, confounders and comparability warnings. Association is never
   /// reported as causation.
-  caveats       String?
-  conclusion    String?
-  createdByUserId String        @map("created_by_user_id")
-  createdAt     DateTime        @default(now()) @map("created_at") @db.Timestamptz(6)
-  updatedAt     DateTime        @updatedAt @map("updated_at") @db.Timestamptz(6)
+  caveats         String?
+  conclusion      String?
+  createdByUserId String          @map("created_by_user_id")
+  createdAt       DateTime        @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt       DateTime        @updatedAt @map("updated_at") @db.Timestamptz(6)
 
   workspace Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
   campaign  Campaign? @relation(fields: [campaignId], references: [id], onDelete: SetNull)
@@ -2771,23 +2771,23 @@ model Experiment {
 }
 
 model Insight {
-  id            String       @id @default(dbgenerated("app.new_id('insight')"))
-  workspaceId   String       @map("workspace_id")
-  contentItemId String?      @map("content_item_id")
-  experimentId  String?      @map("experiment_id")
+  id              String       @id @default(dbgenerated("app.new_id('insight')"))
+  workspaceId     String       @map("workspace_id")
+  contentItemId   String?      @map("content_item_id")
+  experimentId    String?      @map("experiment_id")
   /// A stable i18n key plus its ICU arguments. No English lives in this table.
-  messageKey    String       @map("message_key")
-  messageArgs   Json         @default("{}") @map("message_args")
-  evidenceIds   String[]     @default([]) @map("evidence_ids")
+  messageKey      String       @map("message_key")
+  messageArgs     Json         @default("{}") @map("message_args")
+  evidenceIds     String[]     @default([]) @map("evidence_ids")
   /// low, moderate or high. Wording, never a fabricated probability.
-  confidence    String       @default("low")
-  sampleSize    Int?         @map("sample_size")
-  state         InsightState @default(new)
-  aiModel       String?      @map("ai_model")
-  aiPromptVersion String?    @map("ai_prompt_version")
-  decidedByUserId String?    @map("decided_by_user_id")
-  decidedAt     DateTime?    @map("decided_at") @db.Timestamptz(6)
-  createdAt     DateTime     @default(now()) @map("created_at") @db.Timestamptz(6)
+  confidence      String       @default("low")
+  sampleSize      Int?         @map("sample_size")
+  state           InsightState @default(new)
+  aiModel         String?      @map("ai_model")
+  aiPromptVersion String?      @map("ai_prompt_version")
+  decidedByUserId String?      @map("decided_by_user_id")
+  decidedAt       DateTime?    @map("decided_at") @db.Timestamptz(6)
+  createdAt       DateTime     @default(now()) @map("created_at") @db.Timestamptz(6)
 
   workspace   Workspace    @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
   contentItem ContentItem? @relation(fields: [contentItemId], references: [id], onDelete: Cascade)
@@ -2802,30 +2802,30 @@ model Insight {
 /// First-party redirect measurement. Deliberately a different data series from
 /// provider-reported link clicks; neither substitutes for the other.
 model ShortLink {
-  id             String         @id @default(dbgenerated("app.new_id('lnk')"))
-  workspaceId    String         @map("workspace_id")
-  brandId        String?        @map("brand_id")
-  campaignId     String?        @map("campaign_id")
+  id                 String         @id @default(dbgenerated("app.new_id('lnk')"))
+  workspaceId        String         @map("workspace_id")
+  projectId          String?        @map("project_id")
+  campaignId         String?        @map("campaign_id")
   /// Null means the default isolated redirect domain.
-  domain         String?
-  slug           String
-  destinationUrl String         @map("destination_url")
-  utmParameters  Json           @default("{}") @map("utm_parameters")
-  state          ShortLinkState @default(active)
+  domain             String?
+  slug               String
+  destinationUrl     String         @map("destination_url")
+  utmParameters      Json           @default("{}") @map("utm_parameters")
+  state              ShortLinkState @default(active)
   /// Result of the safety scan: open redirect, private network target,
   /// executable scheme, known abuse. Blocked links never resolve.
-  safetyScan     Json           @default("{}") @map("safety_scan")
-  safetyScannedAt DateTime?     @map("safety_scanned_at") @db.Timestamptz(6)
-  expiresAt      DateTime?      @map("expires_at") @db.Timestamptz(6)
-  disabledAt     DateTime?      @map("disabled_at") @db.Timestamptz(6)
+  safetyScan         Json           @default("{}") @map("safety_scan")
+  safetyScannedAt    DateTime?      @map("safety_scanned_at") @db.Timestamptz(6)
+  expiresAt          DateTime?      @map("expires_at") @db.Timestamptz(6)
+  disabledAt         DateTime?      @map("disabled_at") @db.Timestamptz(6)
   /// Every destination change is an audited action and never rewrites history.
-  destinationHistory Json       @default("[]") @map("destination_history")
-  createdByUserId String        @map("created_by_user_id")
-  createdAt      DateTime       @default(now()) @map("created_at") @db.Timestamptz(6)
-  updatedAt      DateTime       @updatedAt @map("updated_at") @db.Timestamptz(6)
+  destinationHistory Json           @default("[]") @map("destination_history")
+  createdByUserId    String         @map("created_by_user_id")
+  createdAt          DateTime       @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt          DateTime       @updatedAt @map("updated_at") @db.Timestamptz(6)
 
   workspace Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
-  brand     Brand?    @relation(fields: [brandId], references: [id], onDelete: SetNull)
+  project   Project?  @relation(fields: [projectId], references: [id], onDelete: SetNull)
   campaign  Campaign? @relation(fields: [campaignId], references: [id], onDelete: SetNull)
 
   clicks ShortLinkClick[]
@@ -2840,18 +2840,18 @@ model ShortLink {
 /// No raw IP column. `dedupeKey` is a keyed hash with a short retention window,
 /// which is enough for bot classification and deduplication and nothing more.
 model ShortLinkClick {
-  id             String            @id @default(dbgenerated("app.new_id('click')"))
-  workspaceId    String            @map("workspace_id")
-  shortLinkId    String            @map("short_link_id")
+  id              String            @id @default(dbgenerated("app.new_id('click')"))
+  workspaceId     String            @map("workspace_id")
+  shortLinkId     String            @map("short_link_id")
   /// Truncated to the hour.
-  occurredAt     DateTime          @map("occurred_at") @db.Timestamptz(6)
-  countryCode    String?           @map("country_code")
-  deviceClass    String?           @map("device_class")
-  referrerClass  String?           @map("referrer_class")
-  botClass       BotClassification @default(unknown) @map("bot_class")
-  dedupeKey      String            @map("dedupe_key")
-  dedupeExpiresAt DateTime         @map("dedupe_expires_at") @db.Timestamptz(6)
-  createdAt      DateTime          @default(now()) @map("created_at") @db.Timestamptz(6)
+  occurredAt      DateTime          @map("occurred_at") @db.Timestamptz(6)
+  countryCode     String?           @map("country_code")
+  deviceClass     String?           @map("device_class")
+  referrerClass   String?           @map("referrer_class")
+  botClass        BotClassification @default(unknown) @map("bot_class")
+  dedupeKey       String            @map("dedupe_key")
+  dedupeExpiresAt DateTime          @map("dedupe_expires_at") @db.Timestamptz(6)
+  createdAt       DateTime          @default(now()) @map("created_at") @db.Timestamptz(6)
 
   workspace Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
   shortLink ShortLink @relation(fields: [shortLinkId], references: [id], onDelete: Cascade)
@@ -2869,13 +2869,13 @@ model ShortLinkClick {
 // ---------------------------------------------------------------------------
 
 model PolarCustomer {
-  id               String   @id @default(dbgenerated("app.new_id('customer')"))
-  workspaceId      String   @unique @map("workspace_id")
-  polarCustomerId  String   @unique @map("polar_customer_id")
-  billingEmail     String   @map("billing_email") @db.Citext
-  portalUrl        String?  @map("portal_url")
-  createdAt        DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
-  updatedAt        DateTime @updatedAt @map("updated_at") @db.Timestamptz(6)
+  id              String   @id @default(dbgenerated("app.new_id('customer')"))
+  workspaceId     String   @unique @map("workspace_id")
+  polarCustomerId String   @unique @map("polar_customer_id")
+  billingEmail    String   @map("billing_email") @db.Citext
+  portalUrl       String?  @map("portal_url")
+  createdAt       DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt       DateTime @updatedAt @map("updated_at") @db.Timestamptz(6)
 
   workspace     Workspace      @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
   subscriptions Subscription[]
@@ -2888,26 +2888,26 @@ model PolarCustomer {
 /// redirect. Both intervals carry a seven-day trial that charges zero at
 /// checkout and converts only if the customer has not canceled.
 model Subscription {
-  id                 String             @id @default(dbgenerated("app.new_id('sub')"))
-  workspaceId        String             @map("workspace_id")
-  polarCustomerId    String             @map("polar_customer_id")
-  polarSubscriptionId String            @unique @map("polar_subscription_id")
-  polarProductId     String             @map("polar_product_id")
-  status             SubscriptionStatus
-  interval           BillingInterval
+  id                  String             @id @default(dbgenerated("app.new_id('sub')"))
+  workspaceId         String             @map("workspace_id")
+  polarCustomerId     String             @map("polar_customer_id")
+  polarSubscriptionId String             @unique @map("polar_subscription_id")
+  polarProductId      String             @map("polar_product_id")
+  status              SubscriptionStatus
+  interval            BillingInterval
   /// Integer minor units. $29 monthly is 2900; $300 annual is 30000.
-  amountMinor        Int                @map("amount_minor")
-  currency           String             @default("USD")
-  trialStartsAt      DateTime?          @map("trial_starts_at") @db.Timestamptz(6)
-  trialEndsAt        DateTime?          @map("trial_ends_at") @db.Timestamptz(6)
-  currentPeriodStart DateTime?          @map("current_period_start") @db.Timestamptz(6)
-  currentPeriodEnd   DateTime?          @map("current_period_end") @db.Timestamptz(6)
-  cancelAtPeriodEnd  Boolean            @default(false) @map("cancel_at_period_end")
-  canceledAt         DateTime?          @map("canceled_at") @db.Timestamptz(6)
-  pastDueSince       DateTime?          @map("past_due_since") @db.Timestamptz(6)
-  lastReconciledAt   DateTime?          @map("last_reconciled_at") @db.Timestamptz(6)
-  createdAt          DateTime           @default(now()) @map("created_at") @db.Timestamptz(6)
-  updatedAt          DateTime           @updatedAt @map("updated_at") @db.Timestamptz(6)
+  amountMinor         Int                @map("amount_minor")
+  currency            String             @default("USD")
+  trialStartsAt       DateTime?          @map("trial_starts_at") @db.Timestamptz(6)
+  trialEndsAt         DateTime?          @map("trial_ends_at") @db.Timestamptz(6)
+  currentPeriodStart  DateTime?          @map("current_period_start") @db.Timestamptz(6)
+  currentPeriodEnd    DateTime?          @map("current_period_end") @db.Timestamptz(6)
+  cancelAtPeriodEnd   Boolean            @default(false) @map("cancel_at_period_end")
+  canceledAt          DateTime?          @map("canceled_at") @db.Timestamptz(6)
+  pastDueSince        DateTime?          @map("past_due_since") @db.Timestamptz(6)
+  lastReconciledAt    DateTime?          @map("last_reconciled_at") @db.Timestamptz(6)
+  createdAt           DateTime           @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt           DateTime           @updatedAt @map("updated_at") @db.Timestamptz(6)
 
   workspace     Workspace     @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
   polarCustomer PolarCustomer @relation(fields: [polarCustomerId], references: [id], onDelete: Restrict)
@@ -2948,21 +2948,21 @@ model Entitlement {
 /// Metered pass-through: managed X operations and AI text tokens. No media
 /// generation meter exists in V1.
 model UsageEvent {
-  id            String   @id @default(dbgenerated("app.new_id('usage')"))
-  workspaceId   String   @map("workspace_id")
-  meterKey      String   @map("meter_key")
-  quantity      Decimal  @db.Decimal(20, 6)
-  unit          String
-  costMinor     Int?     @map("cost_minor")
-  costCurrency  String?  @map("cost_currency")
-  provider      ProviderKind?
-  referenceType String?  @map("reference_type")
-  referenceId   String?  @map("reference_id")
+  id                String        @id @default(dbgenerated("app.new_id('usage')"))
+  workspaceId       String        @map("workspace_id")
+  meterKey          String        @map("meter_key")
+  quantity          Decimal       @db.Decimal(20, 6)
+  unit              String
+  costMinor         Int?          @map("cost_minor")
+  costCurrency      String?       @map("cost_currency")
+  provider          ProviderKind?
+  referenceType     String?       @map("reference_type")
+  referenceId       String?       @map("reference_id")
   /// Unique per workspace so a retried report cannot double-charge.
-  idempotencyKey String  @map("idempotency_key")
-  reportedToPolarAt DateTime? @map("reported_to_polar_at") @db.Timestamptz(6)
-  occurredAt    DateTime @map("occurred_at") @db.Timestamptz(6)
-  createdAt     DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  idempotencyKey    String        @map("idempotency_key")
+  reportedToPolarAt DateTime?     @map("reported_to_polar_at") @db.Timestamptz(6)
+  occurredAt        DateTime      @map("occurred_at") @db.Timestamptz(6)
+  createdAt         DateTime      @default(now()) @map("created_at") @db.Timestamptz(6)
 
   workspace Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
 
@@ -2976,17 +2976,17 @@ model UsageEvent {
 /// Global. Signature verification happens before any side effect, and the body
 /// hash plus event ID make reprocessing idempotent.
 model BillingWebhookInbox {
-  id             String               @id @default(dbgenerated("app.new_id('billingevent')"))
-  provider       String               @default("polar")
-  eventId        String               @map("event_id")
-  eventType      String               @map("event_type")
-  signatureValid Boolean              @map("signature_valid")
-  bodyHash       String               @map("body_hash")
-  payload        Json
-  state          InboxProcessingState @default(received)
-  processingError String?             @map("processing_error")
-  receivedAt     DateTime             @default(now()) @map("received_at") @db.Timestamptz(6)
-  processedAt    DateTime?            @map("processed_at") @db.Timestamptz(6)
+  id              String               @id @default(dbgenerated("app.new_id('billingevent')"))
+  provider        String               @default("polar")
+  eventId         String               @map("event_id")
+  eventType       String               @map("event_type")
+  signatureValid  Boolean              @map("signature_valid")
+  bodyHash        String               @map("body_hash")
+  payload         Json
+  state           InboxProcessingState @default(received)
+  processingError String?              @map("processing_error")
+  receivedAt      DateTime             @default(now()) @map("received_at") @db.Timestamptz(6)
+  processedAt     DateTime?            @map("processed_at") @db.Timestamptz(6)
 
   @@unique([provider, eventId])
   @@index([state, receivedAt])
@@ -3000,23 +3000,23 @@ model BillingWebhookInbox {
 /// `tool_catalog_entries` but with no public-facing surface. RLS lives in
 /// migrations/0071_seo_keyword_targets_rls.sql, after the table DDL here.
 model SeoKeywordTarget {
-  id                String    @id @default(dbgenerated("app.new_id('kwtarget')"))
+  id                String   @id @default(dbgenerated("app.new_id('kwtarget')"))
   keyword           String
   /// BCP-47 interface locale the keyword was pulled for, e.g. 'en', 'pt-BR'.
   locale            String
-  locationName      String    @map("location_name")
-  searchVolume      Int?      @map("search_volume")
-  keywordDifficulty Int?      @map("keyword_difficulty")
+  locationName      String   @map("location_name")
+  searchVolume      Int?     @map("search_volume")
+  keywordDifficulty Int?     @map("keyword_difficulty")
   /// USD minor units (cents). NULL when DataForSEO reported no CPC.
-  cpcMinorUnits     Int?      @map("cpc_minor_units")
-  competitionLevel  String?   @map("competition_level")
-  mainIntent        String?   @map("main_intent")
+  cpcMinorUnits     Int?     @map("cpc_minor_units")
+  competitionLevel  String?  @map("competition_level")
+  mainIntent        String?  @map("main_intent")
   /// Site-relative path this keyword targets, e.g. '/blog/best-time-to-post'.
-  targetRoute       String?   @map("target_route")
-  source            String    @default("dataforseo")
+  targetRoute       String?  @map("target_route")
+  source            String   @default("dataforseo")
   /// The date the figures were retrieved, not when the row was inserted.
-  pulledOn          DateTime  @map("pulled_on") @db.Date
-  createdAt         DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
+  pulledOn          DateTime @map("pulled_on") @db.Date
+  createdAt         DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
 
   @@unique([keyword, locale, locationName])
   @@index([targetRoute])
@@ -3027,21 +3027,21 @@ model SeoKeywordTarget {
 /// Disclosure acceptance is mandatory. No commission is ever conditional on a
 /// positive review.
 model AffiliatePartner {
-  id                  String                @id @default(dbgenerated("app.new_id('aff')"))
-  workspaceId         String                @map("workspace_id")
-  contactUserId       String                @map("contact_user_id")
-  displayName         String                @map("display_name")
-  referralCode        String                @unique @map("referral_code") @db.Citext
-  state               AffiliatePartnerState @default(applied)
-  commissionRateBps   Int                   @default(2000) @map("commission_rate_bps")
-  disclosureAcceptedAt DateTime?            @map("disclosure_accepted_at") @db.Timestamptz(6)
-  disclosureVersion   String?               @map("disclosure_version")
-  payoutMethod        String?               @map("payout_method")
-  fraudFlags          Json                  @default("[]") @map("fraud_flags")
-  approvedAt          DateTime?             @map("approved_at") @db.Timestamptz(6)
-  terminatedAt        DateTime?             @map("terminated_at") @db.Timestamptz(6)
-  createdAt           DateTime              @default(now()) @map("created_at") @db.Timestamptz(6)
-  updatedAt           DateTime              @updatedAt @map("updated_at") @db.Timestamptz(6)
+  id                   String                @id @default(dbgenerated("app.new_id('aff')"))
+  workspaceId          String                @map("workspace_id")
+  contactUserId        String                @map("contact_user_id")
+  displayName          String                @map("display_name")
+  referralCode         String                @unique @map("referral_code") @db.Citext
+  state                AffiliatePartnerState @default(applied)
+  commissionRateBps    Int                   @default(2000) @map("commission_rate_bps")
+  disclosureAcceptedAt DateTime?             @map("disclosure_accepted_at") @db.Timestamptz(6)
+  disclosureVersion    String?               @map("disclosure_version")
+  payoutMethod         String?               @map("payout_method")
+  fraudFlags           Json                  @default("[]") @map("fraud_flags")
+  approvedAt           DateTime?             @map("approved_at") @db.Timestamptz(6)
+  terminatedAt         DateTime?             @map("terminated_at") @db.Timestamptz(6)
+  createdAt            DateTime              @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt            DateTime              @updatedAt @map("updated_at") @db.Timestamptz(6)
 
   workspace Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
 
@@ -3055,18 +3055,18 @@ model AffiliatePartner {
 }
 
 model ReferralAttribution {
-  id                  String    @id @default(dbgenerated("app.new_id('referral')"))
+  id                 String    @id @default(dbgenerated("app.new_id('referral')"))
   /// The referred workspace, which is the tenant that owns this row.
-  workspaceId         String    @map("workspace_id")
-  affiliatePartnerId  String    @map("affiliate_partner_id")
-  referralCode        String    @map("referral_code") @db.Citext
-  landingUrl          String?   @map("landing_url")
-  referrerClass       String?   @map("referrer_class")
-  attributedAt        DateTime  @default(now()) @map("attributed_at") @db.Timestamptz(6)
-  convertedAt         DateTime? @map("converted_at") @db.Timestamptz(6)
-  polarOrderId        String?   @map("polar_order_id")
-  fraudReviewState    String    @default("pending") @map("fraud_review_state")
-  fraudReviewNote     String?   @map("fraud_review_note")
+  workspaceId        String    @map("workspace_id")
+  affiliatePartnerId String    @map("affiliate_partner_id")
+  referralCode       String    @map("referral_code") @db.Citext
+  landingUrl         String?   @map("landing_url")
+  referrerClass      String?   @map("referrer_class")
+  attributedAt       DateTime  @default(now()) @map("attributed_at") @db.Timestamptz(6)
+  convertedAt        DateTime? @map("converted_at") @db.Timestamptz(6)
+  polarOrderId       String?   @map("polar_order_id")
+  fraudReviewState   String    @default("pending") @map("fraud_review_state")
+  fraudReviewNote    String?   @map("fraud_review_note")
 
   workspace        Workspace        @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
   affiliatePartner AffiliatePartner @relation(fields: [affiliatePartnerId], references: [id], onDelete: Cascade)
@@ -3110,16 +3110,16 @@ model CommissionLedger {
 
 /// Operator level, not tenant owned. Service role only.
 model PayoutBatch {
-  id            String           @id @default(dbgenerated("app.new_id('payout')"))
-  reference     String           @unique
-  state         PayoutBatchState @default(open)
-  periodStart   DateTime         @map("period_start") @db.Timestamptz(6)
-  periodEnd     DateTime         @map("period_end") @db.Timestamptz(6)
-  totalMinor    Int              @default(0) @map("total_minor")
-  currency      String           @default("USD")
-  exportedAt    DateTime?        @map("exported_at") @db.Timestamptz(6)
-  paidAt        DateTime?        @map("paid_at") @db.Timestamptz(6)
-  createdAt     DateTime         @default(now()) @map("created_at") @db.Timestamptz(6)
+  id          String           @id @default(dbgenerated("app.new_id('payout')"))
+  reference   String           @unique
+  state       PayoutBatchState @default(open)
+  periodStart DateTime         @map("period_start") @db.Timestamptz(6)
+  periodEnd   DateTime         @map("period_end") @db.Timestamptz(6)
+  totalMinor  Int              @default(0) @map("total_minor")
+  currency    String           @default("USD")
+  exportedAt  DateTime?        @map("exported_at") @db.Timestamptz(6)
+  paidAt      DateTime?        @map("paid_at") @db.Timestamptz(6)
+  createdAt   DateTime         @default(now()) @map("created_at") @db.Timestamptz(6)
 
   commissions CommissionLedger[]
 
@@ -3135,56 +3135,56 @@ model PayoutBatch {
 /// Executing a deletion also cancels Temporal workflows, revokes provider
 /// grants, deletes stored objects and tombstones analytics where required.
 model DeletionRequest {
-  id              String               @id @default(dbgenerated("app.new_id('deletion')"))
-  workspaceId     String               @map("workspace_id")
-  requestedByUserId String             @map("requested_by_user_id")
-  idempotencyKey  String?              @map("idempotency_key")
-  scope           String
-  subjectUserId   String?              @map("subject_user_id")
-  state           DeletionRequestState @default(requested)
-  reason          String?
+  id                String               @id @default(dbgenerated("app.new_id('deletion')"))
+  workspaceId       String               @map("workspace_id")
+  requestedByUserId String               @map("requested_by_user_id")
+  idempotencyKey    String?              @map("idempotency_key")
+  scope             String
+  subjectUserId     String?              @map("subject_user_id")
+  state             DeletionRequestState @default(requested)
+  reason            String?
   /// Cooling-off window before anything is destroyed.
-  executeAfter    DateTime             @map("execute_after") @db.Timestamptz(6)
-  verifiedAt      DateTime?            @map("verified_at") @db.Timestamptz(6)
-  executedAt      DateTime?            @map("executed_at") @db.Timestamptz(6)
-  canceledAt      DateTime?            @map("canceled_at") @db.Timestamptz(6)
-  steps           Json                 @default("[]")
-  failureNote     String?              @map("failure_note")
-  createdAt       DateTime             @default(now()) @map("created_at") @db.Timestamptz(6)
-  updatedAt       DateTime             @updatedAt @map("updated_at") @db.Timestamptz(6)
+  executeAfter      DateTime             @map("execute_after") @db.Timestamptz(6)
+  verifiedAt        DateTime?            @map("verified_at") @db.Timestamptz(6)
+  executedAt        DateTime?            @map("executed_at") @db.Timestamptz(6)
+  canceledAt        DateTime?            @map("canceled_at") @db.Timestamptz(6)
+  steps             Json                 @default("[]")
+  failureNote       String?              @map("failure_note")
+  createdAt         DateTime             @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt         DateTime             @updatedAt @map("updated_at") @db.Timestamptz(6)
 
   workspace Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
 
+  @@unique([workspaceId, idempotencyKey])
   @@index([workspaceId])
   @@index([state, executeAfter])
-  @@unique([workspaceId, idempotencyKey])
   @@map("deletion_requests")
   @@schema("app")
 }
 
 model DataExport {
-  id              String          @id @default(dbgenerated("app.new_id('export')"))
-  workspaceId     String          @map("workspace_id")
-  requestedByUserId String        @map("requested_by_user_id")
-  idempotencyKey  String?         @map("idempotency_key")
-  scope           String
-  format          String          @default("json")
-  state           DataExportState @default(requested)
-  storageBucket   String?         @map("storage_bucket")
-  storageKey      String?         @map("storage_key")
-  byteSize        BigInt?         @map("byte_size")
-  checksumSha256  String?         @map("checksum_sha256")
-  downloadedAt    DateTime?       @map("downloaded_at") @db.Timestamptz(6)
-  expiresAt       DateTime?       @map("expires_at") @db.Timestamptz(6)
-  failureNote     String?         @map("failure_note")
-  createdAt       DateTime        @default(now()) @map("created_at") @db.Timestamptz(6)
-  updatedAt       DateTime        @updatedAt @map("updated_at") @db.Timestamptz(6)
+  id                String          @id @default(dbgenerated("app.new_id('export')"))
+  workspaceId       String          @map("workspace_id")
+  requestedByUserId String          @map("requested_by_user_id")
+  idempotencyKey    String?         @map("idempotency_key")
+  scope             String
+  format            String          @default("json")
+  state             DataExportState @default(requested)
+  storageBucket     String?         @map("storage_bucket")
+  storageKey        String?         @map("storage_key")
+  byteSize          BigInt?         @map("byte_size")
+  checksumSha256    String?         @map("checksum_sha256")
+  downloadedAt      DateTime?       @map("downloaded_at") @db.Timestamptz(6)
+  expiresAt         DateTime?       @map("expires_at") @db.Timestamptz(6)
+  failureNote       String?         @map("failure_note")
+  createdAt         DateTime        @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt         DateTime        @updatedAt @map("updated_at") @db.Timestamptz(6)
 
   workspace Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
 
+  @@unique([workspaceId, idempotencyKey])
   @@index([workspaceId])
   @@index([state, expiresAt])
-  @@unique([workspaceId, idempotencyKey])
   @@map("data_exports")
   @@schema("app")
 }
@@ -3206,7 +3206,7 @@ model DataExport {
 model BulkImportJob {
   id                    String    @id @default(dbgenerated("app.new_id('import')"))
   workspaceId           String    @map("workspace_id")
-  brandId               String    @map("brand_id")
+  projectId             String    @map("project_id")
   /// uploaded | validating | validated | applying | applied | failed.
   state                 String    @default("uploaded")
   filename              String
@@ -3242,14 +3242,14 @@ model BulkImportJob {
   updatedAt             DateTime  @updatedAt @map("updated_at") @db.Timestamptz(6)
 
   workspace Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
-  brand     Brand     @relation(fields: [brandId], references: [id], onDelete: Cascade)
+  project   Project   @relation(fields: [projectId], references: [id], onDelete: Cascade)
 
   rows BulkImportRow[]
 
   @@unique([workspaceId, idempotencyKey])
   @@unique([workspaceId, manifestChecksum])
   @@index([workspaceId])
-  @@index([workspaceId, brandId, state])
+  @@index([workspaceId, projectId, state])
   @@map("bulk_import_jobs")
   @@schema("app")
 }

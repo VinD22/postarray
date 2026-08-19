@@ -278,7 +278,7 @@ export async function runPublishPath(
     return {
       connectionId: variant.connectionId,
       provider: toProviderId(variant.provider),
-      brandId: aggregate.brandId,
+      projectId: aggregate.projectId,
       locale: resolved.values.locale,
       body: resolved.values.body,
       scheduledInstant: schedule.instant,

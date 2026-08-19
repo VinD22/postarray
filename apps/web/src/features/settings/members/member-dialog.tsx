@@ -25,7 +25,7 @@ import { useTranslations } from '@relay/i18n/react';
 
 import {
   WORKSPACE_ROLES,
-  type BrandRef,
+  type ProjectRef,
   type MemberView,
   type WorkspaceRole,
 } from '../lib/view-models';
@@ -36,7 +36,7 @@ const APPROVAL_CAPABLE_ROLES: readonly WorkspaceRole[] = ['owner', 'admin', 'man
 export interface MemberFormValue {
   readonly email: string;
   readonly role: WorkspaceRole;
-  readonly brandIds: readonly string[];
+  readonly projectIds: readonly string[];
   readonly canApprove: boolean;
 }
 
@@ -45,7 +45,7 @@ export interface MemberDialogProps {
   onOpenChange: (open: boolean) => void;
   /** Null invites someone new. A member edits that person's role and scope. */
   member: MemberView | null;
-  brands: readonly BrandRef[];
+  projects: readonly ProjectRef[];
   saving: boolean;
   onSubmit: (value: MemberFormValue) => void;
 }
@@ -53,7 +53,7 @@ export interface MemberDialogProps {
 /**
  * Invite someone, or change what an existing member can reach.
  *
- * Role, brand scope and approval rights are three separate decisions and are
+ * Role, project scope and approval rights are three separate decisions and are
  * asked for separately. Bundling them is how a workspace ends up with editors
  * who can approve their own work.
  */
@@ -61,7 +61,7 @@ export function MemberDialog({
   open,
   onOpenChange,
   member,
-  brands,
+  projects,
   saving,
   onSubmit,
 }: MemberDialogProps): ReactNode {
@@ -72,7 +72,7 @@ export function MemberDialog({
   const [email, setEmail] = useState('');
   const [role, setRole] = useState<WorkspaceRole>('editor');
   const [scopeMode, setScopeMode] = useState<'all' | 'selected'>('all');
-  const [brandIds, setBrandIds] = useState<readonly string[]>([]);
+  const [projectIds, setProjectIds] = useState<readonly string[]>([]);
   const [canApprove, setCanApprove] = useState(false);
   const [emailError, setEmailError] = useState<string | null>(null);
 
@@ -83,16 +83,16 @@ export function MemberDialog({
     setEmailError(null);
     setEmail(member?.email ?? '');
     setRole(member?.role ?? 'editor');
-    setScopeMode(member === null || member.brandScope.length === 0 ? 'all' : 'selected');
-    setBrandIds(member?.brandScope.map((brand) => brand.id) ?? []);
+    setScopeMode(member === null || member.projectScope.length === 0 ? 'all' : 'selected');
+    setProjectIds(member?.projectScope.map((project) => project.id) ?? []);
     setCanApprove(member?.canApprove ?? false);
   }, [open, member]);
 
   const approvalAvailable = APPROVAL_CAPABLE_ROLES.includes(role);
 
-  function toggleBrand(brandId: string, checked: boolean): void {
-    setBrandIds((current) =>
-      checked ? [...current, brandId] : current.filter((id) => id !== brandId),
+  function toggleProject(projectId: string, checked: boolean): void {
+    setProjectIds((current) =>
+      checked ? [...current, projectId] : current.filter((id) => id !== projectId),
     );
   }
 
@@ -107,7 +107,7 @@ export function MemberDialog({
     onSubmit({
       email: trimmed,
       role,
-      brandIds: scopeMode === 'all' ? [] : brandIds,
+      projectIds: scopeMode === 'all' ? [] : projectIds,
       canApprove: approvalAvailable && canApprove,
     });
   }
@@ -192,14 +192,14 @@ export function MemberDialog({
 
               {scopeMode === 'selected' ? (
                 <ul className="flex flex-col ps-6">
-                  {brands.map((brand) => (
-                    <li key={brand.id}>
+                  {projects.map((project) => (
+                    <li key={project.id}>
                       <label className="text-body-md text-text-primary flex min-h-11 items-center gap-2">
                         <Checkbox
-                          checked={brandIds.includes(brand.id)}
-                          onCheckedChange={(checked) => toggleBrand(brand.id, checked === true)}
+                          checked={projectIds.includes(project.id)}
+                          onCheckedChange={(checked) => toggleProject(project.id, checked === true)}
                         />
-                        {brand.name}
+                        {project.name}
                       </label>
                     </li>
                   ))}

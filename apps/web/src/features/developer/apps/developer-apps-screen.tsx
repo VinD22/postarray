@@ -319,7 +319,7 @@ export function DeveloperAppsScreen(): ReactNode {
                           appName={selected.name}
                           developerName={developerName}
                           workspaceName={workspaceName}
-                          brandNames={[]}
+                          projectNames={[]}
                           scopes={selected.scopes}
                           homepageUrl={selected.homepageUrl}
                           privacyUrl={selected.privacyUrl}

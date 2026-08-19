@@ -11,7 +11,7 @@ import {
 import { z } from 'zod';
 
 import { cursorQueryWith } from '../../common/pagination';
-import { brandIdSchema, contentItemIdSchema } from '../../common/schemas';
+import { projectIdSchema, contentItemIdSchema } from '../../common/schemas';
 
 /**
  * Queue rule payloads.
@@ -28,20 +28,20 @@ export const queueSlotIdSchema = idSchema(ID_PREFIXES.queueSlotReservation);
  * The contract body, with the project identifier narrowed to its prefix so a
  * malformed id is a 422 at the edge rather than a lookup that finds nothing.
  */
-export const createQueueRuleSchema = queueRuleInputSchema.extend({ brandId: brandIdSchema });
+export const createQueueRuleSchema = queueRuleInputSchema.extend({ projectId: projectIdSchema });
 export const updateQueueRuleSchema = queueRulePatchSchema;
 
 export const listQueueRulesQuerySchema = cursorQueryWith({
-  brandId: brandIdSchema.optional(),
+  projectId: projectIdSchema.optional(),
 });
 
 export const nextQueueSlotQuerySchema = z
-  .object({ brandId: brandIdSchema, after: isoInstantSchema.optional() })
+  .object({ projectId: projectIdSchema, after: isoInstantSchema.optional() })
   .strict();
 
 export const proposeQueueSlotSchema = z
   .object({
-    brandId: brandIdSchema,
+    projectId: projectIdSchema,
     after: isoInstantSchema.optional(),
     /** Attaching the draft up front is optional; accepting it is not. */
     contentItemId: contentItemIdSchema.optional(),
@@ -54,7 +54,7 @@ export const releaseQueueSlotSchema = z
   .object({ reason: z.string().min(1).max(280).optional() })
   .strict();
 
-export const listQueueSlotsQuerySchema = cursorQueryWith({ brandId: brandIdSchema });
+export const listQueueSlotsQuerySchema = cursorQueryWith({ projectId: projectIdSchema });
 
 export { queueRuleSchema, queueSlotReservationSchema, slotProposalSchema };
 

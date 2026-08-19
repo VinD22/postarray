@@ -56,7 +56,7 @@ const version = {
   payload: {
     contentItemId: 'content_1',
     workspaceId: 'ws_1',
-    brandId: 'brand_1',
+    projectId: 'project_1',
     campaignId: null,
     title: null,
     body: 'hello',

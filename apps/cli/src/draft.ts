@@ -54,7 +54,7 @@ export const draftDocumentSchema = z
   .object({
     /** Bump when the file format changes in a way an old CLI cannot read. */
     version: z.literal(1),
-    brandId: z.string().min(1).optional(),
+    projectId: z.string().min(1).optional(),
     campaignId: z.string().min(1).optional(),
     title: z.string().optional(),
     body: z.string(),

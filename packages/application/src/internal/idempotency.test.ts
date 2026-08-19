@@ -73,12 +73,12 @@ describe('withIdempotency', () => {
 
     await withIdempotency(kv, ctx, {
       operation: 'content.createDraft',
-      body: { body: 'hello', brandId: 'brand-1' },
+      body: { body: 'hello', projectId: 'project-1' },
       run,
     });
     await withIdempotency(kv, ctx, {
       operation: 'content.createDraft',
-      body: { brandId: 'brand-1', body: 'hello' },
+      body: { projectId: 'project-1', body: 'hello' },
       run,
     });
     expect(calls).toBe(1);

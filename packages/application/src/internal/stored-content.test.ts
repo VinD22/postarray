@@ -17,7 +17,7 @@ function master(overrides: Partial<StoredMaster> = {}): StoredMaster {
   return storedMasterSchema.parse({
     id: 'content-1',
     workspaceId: 'ws-1',
-    brandId: 'brand-1',
+    projectId: 'project-1',
     campaignId: null,
     title: 'Release notes',
     body: 'We shipped the scheduler.',

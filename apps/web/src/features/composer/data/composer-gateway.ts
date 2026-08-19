@@ -41,7 +41,7 @@ function targetSetFromApi(view: PostingSetView): TargetSet {
 /** Load the draft, the connectable accounts, their capabilities and the Sets. */
 export async function loadComposer(input: {
   readonly contentItemId: string | null;
-  readonly brandId: string;
+  readonly projectId: string;
   readonly workspaceTimeZone: string;
   /**
    * The session cookie and fingerprint headers to forward. This runs as part
@@ -55,8 +55,8 @@ export async function loadComposer(input: {
   // they go out together rather than stacking two round trips in front of the
   // one screen where people are waiting to start writing.
   const [connections, sets] = await Promise.all([
-    api.connections.list({ brandId: input.brandId }, input.forward),
-    api.postingSets.list({ brandId: input.brandId }, input.forward),
+    api.connections.list({ projectId: input.projectId }, input.forward),
+    api.postingSets.list({ projectId: input.projectId }, input.forward),
   ]);
 
   const accounts: TargetAccount[] = await Promise.all(
@@ -71,7 +71,7 @@ export async function loadComposer(input: {
         displayName: connection.displayName,
         handle: connection.handle,
         avatarUrl: connection.avatarUrl,
-        brandId: input.brandId,
+        projectId: input.projectId,
         paused: connection.health === 'paused',
         capabilities,
       } satisfies TargetAccount;
@@ -81,7 +81,7 @@ export async function loadComposer(input: {
   const master =
     input.contentItemId === null
       ? ((await api.content.createDraft(
-          { brandId: input.brandId },
+          { projectId: input.projectId },
           newIdempotencyKey('draft'),
           input.forward,
         )) as unknown as MasterDraft)
@@ -119,7 +119,7 @@ export async function loadComposer(input: {
      * signature's id where its text belongs, so `SignaturePanel` correctly
      * offers nothing until the endpoint exists.
      *
-     * Branded domains: `BrandView.domains` is a bare `string[]` with no
+     * Branded domains: `ProjectView.domains` is a bare `string[]` with no
      * verification state, and `LinkControls` only ever offers a *verified*
      * domain. Mapping those strings in would either hide them all (identical to
      * this, with extra code) or assert a verification this product cannot

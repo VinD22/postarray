@@ -20,7 +20,7 @@ const SEED_PREFIXES = {
   audit: ID_PREFIXES.auditEvent,
   automation_rule: ID_PREFIXES.rule,
   automation_rule_run: ID_PREFIXES.ruleRun,
-  brand: ID_PREFIXES.brand,
+  project: ID_PREFIXES.project,
   business_profile: ID_PREFIXES.growthProfile,
   campaign: ID_PREFIXES.campaign,
   comment: ID_PREFIXES.comment,

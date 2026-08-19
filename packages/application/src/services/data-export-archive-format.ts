@@ -17,14 +17,14 @@ export function mapDataExportArchive(
       displayName: row.user.displayName,
       role: row.role,
       state: row.state,
-      brandScope: row.brandScope,
+      projectScope: row.projectScope,
       invitedAt: iso(row.invitedAt),
       acceptedAt: iso(row.acceptedAt),
       removedAt: iso(row.removedAt),
       createdAt: row.createdAt.toISOString(),
       updatedAt: row.updatedAt.toISOString(),
     })),
-    brands: rows.brands.map((row) => ({
+    projects: rows.projects.map((row) => ({
       id: row.id,
       name: row.name,
       slug: row.slug,
@@ -40,7 +40,7 @@ export function mapDataExportArchive(
     })),
     campaigns: rows.campaigns.map((row) => ({
       id: row.id,
-      brandId: row.brandId,
+      projectId: row.projectId,
       name: row.name,
       objective: row.objective,
       tags: row.tags,
@@ -52,7 +52,7 @@ export function mapDataExportArchive(
     })),
     contentItems: rows.contentItems.map((row) => ({
       id: row.id,
-      brandId: row.brandId,
+      projectId: row.projectId,
       campaignId: row.campaignId,
       title: row.title,
       brief: row.brief,
@@ -107,7 +107,7 @@ export function mapDataExportArchive(
     })),
     connections: rows.connections.map((row) => ({
       id: row.id,
-      brandId: row.brandId,
+      projectId: row.projectId,
       provider: row.provider,
       accountType: row.accountType,
       displayName: row.displayName,
@@ -126,7 +126,7 @@ export function mapDataExportArchive(
     })),
     media: rows.media.map((row) => ({
       id: row.id,
-      brandId: row.brandId,
+      projectId: row.projectId,
       kind: row.kind,
       mimeType: row.mimeType,
       byteSize: row.byteSize.toString(),

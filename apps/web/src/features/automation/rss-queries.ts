@@ -28,9 +28,9 @@ import type { FeedDraft, FeedHealthView, FeedSummaryView, FeedValidation } from 
  * The wizard's draft in the shape the API records. The wizard calls the feed's
  * name its title, which is the only place the two shapes disagree.
  */
-export function toFeedInput(draft: FeedDraft, brandId: string): FeedInput {
+export function toFeedInput(draft: FeedDraft, projectId: string): FeedInput {
   return {
-    brandId,
+    projectId,
     title: draft.title,
     feedUrl: draft.url,
     connectionIds: [...draft.connectionIds],
@@ -138,7 +138,7 @@ export function useFeeds() {
     enabled: project !== null,
     queryFn: async (): Promise<readonly FeedSummaryView[]> => {
       const result = await api.rss.list({});
-      return result.data.filter((feed) => feed.brandId === project?.id).map(toFeedSummary);
+      return result.data.filter((feed) => feed.projectId === project?.id).map(toFeedSummary);
     },
   });
 }
@@ -173,11 +173,11 @@ export function useCreateFeed() {
   const { project } = useSession();
   return useMutation({
     mutationFn: async (draft: FeedDraft): Promise<FeedSummaryView> => {
-      const brandId = project?.id;
-      if (brandId === undefined) throw new Error('ACTIVE_PROJECT_REQUIRED');
+      const projectId = project?.id;
+      if (projectId === undefined) throw new Error('ACTIVE_PROJECT_REQUIRED');
       return toFeedSummary(
         requireValue(
-          await api.rss.create(toFeedInput(draft, brandId), newIdempotencyKey('feed')),
+          await api.rss.create(toFeedInput(draft, projectId), newIdempotencyKey('feed')),
           'FEED_SAVE_NOT_AVAILABLE',
         ),
       );

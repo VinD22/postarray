@@ -60,7 +60,7 @@ export const transcreateResultSchema = z
   .object({
     targetLanguage: localeSchema,
     body: z.string().min(1).max(6000),
-    /** Terms deliberately left untranslated, from the brand glossary. */
+    /** Terms deliberately left untranslated, from the project glossary. */
     preservedTerms: z.array(z.string().min(1).max(80)).max(40),
     /** Phrases with no clean equivalent. Drives the composer's warning. */
     untranslatablePhrases: z

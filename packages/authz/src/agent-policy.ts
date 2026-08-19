@@ -52,7 +52,7 @@ const LEVEL_RANK: Readonly<Record<ApprovalLevel, number>> = Object.freeze({
 
 /** Every restriction is optional and narrowing only. Empty means no narrowing. */
 export interface ServiceAccountRestrictions {
-  readonly brandIds?: readonly string[];
+  readonly projectIds?: readonly string[];
   readonly connectionIds?: readonly string[];
   readonly providers?: readonly ProviderId[];
   readonly locales?: readonly string[];
@@ -73,7 +73,7 @@ export interface ServiceAccountRestrictions {
 export interface AgentTarget {
   readonly connectionId: string;
   readonly provider: ProviderId;
-  readonly brandId: string | null;
+  readonly projectId: string | null;
   readonly locale: string;
   /** The resolved body that will actually publish to this target. */
   readonly body: string;
@@ -149,7 +149,7 @@ export const RESTRICTION_CODES = [
   'service_account_disabled',
   'approval_level_too_low',
   'approval_level_capped',
-  'brand_not_preauthorized',
+  'project_not_preauthorized',
   'connection_not_preauthorized',
   'provider_not_preauthorized',
   'locale_not_preauthorized',
@@ -308,16 +308,16 @@ function checkRestrictions(
     blockers.push(note('approval_level_capped', { held: request.approvalLevel, cap }));
   }
 
-  const brandIds = restrictions.brandIds ?? [];
+  const projectIds = restrictions.projectIds ?? [];
   const connectionIds = restrictions.connectionIds ?? [];
   const providers = restrictions.providers ?? [];
   const locales = restrictions.locales ?? [];
   const approvedDomains = restrictions.approvedDomains ?? [];
 
   for (const target of request.targets) {
-    if (brandIds.length > 0 && target.brandId !== null && !brandIds.includes(target.brandId)) {
+    if (projectIds.length > 0 && target.projectId !== null && !projectIds.includes(target.projectId)) {
       blockers.push(
-        note('brand_not_preauthorized', { brandId: target.brandId }, target.connectionId),
+        note('project_not_preauthorized', { projectId: target.projectId }, target.connectionId),
       );
     }
     if (connectionIds.length > 0 && !connectionIds.includes(target.connectionId)) {

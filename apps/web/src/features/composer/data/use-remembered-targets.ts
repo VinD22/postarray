@@ -22,13 +22,13 @@ import { keys } from '@/lib/api/keys';
 import { useWorkspaceId } from '@/lib/auth/session-context';
 
 export function useRememberedTargets(
-  brandId: string | null,
+  projectId: string | null,
 ): UseQueryResult<RememberedTargetsView | null, ApiError> {
   const workspaceId = useWorkspaceId();
   return useQuery({
-    queryKey: keys.rememberedTargets(workspaceId, brandId ?? 'none'),
-    queryFn: () => (brandId === null ? Promise.resolve(null) : api.targetMemory.read(brandId)),
-    enabled: brandId !== null,
+    queryKey: keys.rememberedTargets(workspaceId, projectId ?? 'none'),
+    queryFn: () => (projectId === null ? Promise.resolve(null) : api.targetMemory.read(projectId)),
+    enabled: projectId !== null,
     // Read once when the composer opens. Re-reading mid-edit could change the
     // selection under somebody's cursor, which is worse than a stale notice.
     staleTime: Number.POSITIVE_INFINITY,
@@ -36,7 +36,7 @@ export function useRememberedTargets(
 }
 
 export interface RememberTargetsInput {
-  readonly brandId: string;
+  readonly projectId: string;
   readonly connectionIds: readonly string[];
 }
 
@@ -58,10 +58,10 @@ export function useRememberTargets(): UseMutationResult<
   const workspaceId = useWorkspaceId();
   return useMutation({
     mutationFn: (input: RememberTargetsInput) =>
-      api.targetMemory.remember(input.brandId, input.connectionIds),
+      api.targetMemory.remember(input.projectId, input.connectionIds),
     onSuccess: (_result, input) => {
       void queryClient.invalidateQueries({
-        queryKey: keys.rememberedTargets(workspaceId, input.brandId),
+        queryKey: keys.rememberedTargets(workspaceId, input.projectId),
       });
     },
   });
@@ -72,10 +72,10 @@ export function useForgetTargets(): UseMutationResult<void, ApiError, string> {
   const queryClient = useQueryClient();
   const workspaceId = useWorkspaceId();
   return useMutation({
-    mutationFn: (brandId: string) => api.targetMemory.forget(brandId),
-    onSuccess: (_result, brandId) => {
+    mutationFn: (projectId: string) => api.targetMemory.forget(projectId),
+    onSuccess: (_result, projectId) => {
       void queryClient.invalidateQueries({
-        queryKey: keys.rememberedTargets(workspaceId, brandId),
+        queryKey: keys.rememberedTargets(workspaceId, projectId),
       });
     },
   });

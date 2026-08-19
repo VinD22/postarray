@@ -41,7 +41,7 @@ import type { AuthorizeQuery, ConsentDecision, TokenRequest, TokenResponse } fro
  * be revoked before it expires, and "revoke this app" taking effect within
  * seconds is the entire point of the grant screen. The cost is one lookup per
  * request, which is the right trade for a product that holds publishing rights
- * over other people's brands.
+ * over other people's projects.
  */
 
 export const AUTHORIZATION_CODE_TTL_SECONDS = 60;
@@ -230,7 +230,7 @@ export class OAuthProviderService {
       scopes: granted,
       subjectUserId,
       workspaceId: decision.workspaceId,
-      brandIds: decision.brandIds,
+      projectIds: decision.projectIds,
       connectionIds: decision.connectionIds,
       // A grant never starts above "may schedule". Immediate publish stays a
       // human confirmation, which is what the consent screen promises.
@@ -374,7 +374,7 @@ export class OAuthProviderService {
         subjectUserId: record.subjectUserId,
         workspaceId: record.workspaceId,
         audience: record.audience,
-        brandIds: [],
+        projectIds: [],
         connectionIds: [],
         approvalLevel: 'level_2_scheduled',
         locale: 'en',
@@ -395,7 +395,7 @@ export class OAuthProviderService {
       subjectUserId: string;
       workspaceId: string;
       audience: string;
-      brandIds: readonly string[];
+      projectIds: readonly string[];
       connectionIds: readonly string[];
       approvalLevel: AuthorizationCodeRecord['approvalLevel'];
       locale: string;
@@ -419,7 +419,7 @@ export class OAuthProviderService {
       workspaceId: source.workspaceId,
       scopes: [...scopes],
       approvalLevel: source.approvalLevel,
-      brandIds: [...source.brandIds],
+      projectIds: [...source.projectIds],
       connectionIds: [...source.connectionIds],
       audience: source.audience,
       locale: source.locale,

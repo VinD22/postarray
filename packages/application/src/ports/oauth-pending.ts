@@ -18,7 +18,7 @@ export interface OAuthPendingAccount {
 export interface OAuthPendingDiscoveryRecord {
   readonly transactionId: string;
   readonly workspaceId: string;
-  readonly brandId: string | null;
+  readonly projectId: string | null;
   readonly provider: ProviderId;
   readonly stateHash: string;
   readonly accounts: readonly OAuthPendingAccount[];

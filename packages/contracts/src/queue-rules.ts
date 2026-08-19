@@ -83,7 +83,7 @@ export const queueRuleDefinitionSchema = z
 export type QueueRuleDefinition = z.infer<typeof queueRuleDefinitionSchema>;
 
 export const queueRuleInputSchema = queueRuleDefinitionSchema
-  .extend({ brandId: z.string().min(1) })
+  .extend({ projectId: z.string().min(1) })
   .strict();
 export type QueueRuleInput = z.infer<typeof queueRuleInputSchema>;
 
@@ -94,7 +94,7 @@ export const queueRuleSchema = queueRuleDefinitionSchema
   .extend({
     id: z.string().min(1),
     workspaceId: z.string().min(1),
-    brandId: z.string().min(1),
+    projectId: z.string().min(1),
     archived: z.boolean(),
     createdByUserId: z.string().nullable(),
     createdAt: isoInstantSchema,
@@ -174,7 +174,7 @@ export const queueSlotReservationSchema = z
   .object({
     id: z.string().min(1),
     workspaceId: z.string().min(1),
-    brandId: z.string().min(1),
+    projectId: z.string().min(1),
     state: queueReservationStateSchema,
     instant: isoInstantSchema,
     ianaTimeZone: ianaTimeZoneSchema,

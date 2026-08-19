@@ -104,7 +104,7 @@ export function createBulkImportService(
         deps,
         ctx,
         'content.write',
-        { brandId: input.projectId },
+        { projectId: input.projectId },
         async (db, actor) => {
           // The same bytes uploaded twice are the same job. Returning the
           // existing one is what stops a double click, a retried request or a
@@ -118,12 +118,12 @@ export function createBulkImportService(
             return { job: existing, reused: true } as const;
           }
 
-          const project = await db.brand.findFirst({
+          const project = await db.project.findFirst({
             where: { id: input.projectId },
             select: { id: true, defaultTimeZone: true },
           });
           if (project === null) {
-            throw notFound('brand', input.projectId);
+            throw notFound('project', input.projectId);
           }
           if (actor.userId === null) {
             throw invalid('errors.import_requires_member', {});
@@ -139,7 +139,7 @@ export function createBulkImportService(
           const job = await db.bulkImportJob.create({
             data: {
               workspaceId: ctx.workspaceId,
-              brandId: input.projectId,
+              projectId: input.projectId,
               state: manifest.columns.missingRequired.length > 0 ? 'failed' : 'validated',
               filename: input.filename.slice(0, 255),
               manifestChecksum: checksum,
@@ -223,7 +223,7 @@ export function createBulkImportService(
       return authorized(deps, ctx, 'content.read', undefined, async (db) => {
         const args = pageArgs(query);
         const rows = await db.bulkImportJob.findMany({
-          where: query.projectId === undefined ? {} : { brandId: query.projectId },
+          where: query.projectId === undefined ? {} : { projectId: query.projectId },
           orderBy: { id: 'desc' },
           take: args.take,
           skip: args.skip,
@@ -288,7 +288,7 @@ export function createBulkImportService(
           orderBy: { id: 'asc' },
           select: BULK_IMPORT_ROW_SELECT,
         });
-        return { projectId: job.brandId, rows: rows.map(toRowView) };
+        return { projectId: job.projectId, rows: rows.map(toRowView) };
       });
 
       for (const row of pending.rows) {

@@ -47,7 +47,7 @@ import { useOnlineStatus } from './use-online-status';
  */
 
 export interface AnalyticsOverviewScreenProps {
-  readonly brands: readonly { readonly id: string; readonly name: string }[];
+  readonly projects: readonly { readonly id: string; readonly name: string }[];
   readonly accounts: readonly AccountRef[];
   readonly initialFilters: AnalyticsFilters;
   readonly formats?: readonly ContentKind[];
@@ -70,7 +70,7 @@ const DEFAULT_FORMATS: readonly ContentKind[] = [
 ];
 
 export function AnalyticsOverviewScreen({
-  brands,
+  projects,
   accounts,
   initialFilters,
   formats = DEFAULT_FORMATS,
@@ -86,7 +86,7 @@ export function AnalyticsOverviewScreen({
   const [filters, setFilters] = useState<AnalyticsFilters>(initialFilters);
 
   const query = useAnalyticsOverview({
-    brandId: filters.brandId,
+    projectId: filters.projectId,
     connectionIds: filters.connectionIds,
     range: filters.range,
     rankMetric: filters.rankMetric,
@@ -127,7 +127,7 @@ export function AnalyticsOverviewScreen({
     announce(
       t('analytics.filter.applied', {
         count:
-          (next.brandId ? 1 : 0) + (next.format ? 1 : 0) + (next.connectionIds.length > 0 ? 1 : 0),
+          (next.projectId ? 1 : 0) + (next.format ? 1 : 0) + (next.connectionIds.length > 0 ? 1 : 0),
         results: rows.length,
       }),
       'polite',
@@ -148,7 +148,7 @@ export function AnalyticsOverviewScreen({
 
       <AnalyticsToolbar
         filters={filters}
-        brands={brands}
+        projects={projects}
         accounts={accounts}
         formats={formats}
         onChange={handleFilters}

@@ -22,21 +22,21 @@ const THIRTY_SECONDS = 30 * 1000;
 
 export const queueKeys = {
   all: ['queue'] as const,
-  rules: (brandId: string) => ['queue', 'rules', brandId] as const,
+  rules: (projectId: string) => ['queue', 'rules', projectId] as const,
   rule: (ruleId: string) => ['queue', 'rule', ruleId] as const,
-  nextSlot: (brandId: string) => ['queue', 'nextSlot', brandId] as const,
+  nextSlot: (projectId: string) => ['queue', 'nextSlot', projectId] as const,
 };
 
 export function useQueueRules() {
   const { project } = useSession();
-  const brandId = project?.id ?? null;
+  const projectId = project?.id ?? null;
   return useQuery({
-    queryKey: queueKeys.rules(brandId ?? 'none'),
-    enabled: brandId !== null,
+    queryKey: queueKeys.rules(projectId ?? 'none'),
+    enabled: projectId !== null,
     staleTime: THIRTY_SECONDS,
     queryFn: async (): Promise<readonly QueueRuleView[]> => {
-      if (brandId === null) return [];
-      const page = await queueApi.listRules(brandId);
+      if (projectId === null) return [];
+      const page = await queueApi.listRules(projectId);
       return page.data;
     },
   });
@@ -45,14 +45,14 @@ export function useQueueRules() {
 /** Read-only. Shows what the queue would offer without holding anything. */
 export function useNextQueueSlot(enabled: boolean) {
   const { project } = useSession();
-  const brandId = project?.id ?? null;
+  const projectId = project?.id ?? null;
   return useQuery({
-    queryKey: queueKeys.nextSlot(brandId ?? 'none'),
-    enabled: enabled && brandId !== null,
+    queryKey: queueKeys.nextSlot(projectId ?? 'none'),
+    enabled: enabled && projectId !== null,
     staleTime: THIRTY_SECONDS,
     queryFn: async (): Promise<SlotProposal> => {
-      if (brandId === null) throw new Error('PROJECT_REQUIRED');
-      return queueApi.previewSlot(brandId);
+      if (projectId === null) throw new Error('PROJECT_REQUIRED');
+      return queueApi.previewSlot(projectId);
     },
   });
 }
@@ -62,13 +62,13 @@ export function useSaveQueueRule() {
   const { project } = useSession();
   return useMutation({
     mutationFn: async (input: { draft: RuleDraft; ruleId?: string }): Promise<QueueRuleView> => {
-      const brandId = project?.id;
-      if (brandId === undefined) throw new Error('PROJECT_REQUIRED');
-      const body = toInput(input.draft, brandId);
+      const projectId = project?.id;
+      if (projectId === undefined) throw new Error('PROJECT_REQUIRED');
+      const body = toInput(input.draft, projectId);
       if (input.ruleId === undefined) {
         return queueApi.createRule(body, newIdempotencyKey('queue'));
       }
-      const { brandId: _brandId, ...patch } = body;
+      const { projectId: _projectId, ...patch } = body;
       return queueApi.updateRule(input.ruleId, patch, newIdempotencyKey('queue'));
     },
     onSuccess: () => {
@@ -93,11 +93,11 @@ export function useProposeQueueSlot() {
   const { project } = useSession();
   return useMutation({
     mutationFn: async (input: { contentItemId?: string }): Promise<QueueSlotReservationView> => {
-      const brandId = project?.id;
-      if (brandId === undefined) throw new Error('PROJECT_REQUIRED');
+      const projectId = project?.id;
+      if (projectId === undefined) throw new Error('PROJECT_REQUIRED');
       return queueApi.proposeSlot(
         {
-          brandId,
+          projectId,
           ...(input.contentItemId === undefined ? {} : { contentItemId: input.contentItemId }),
         },
         newIdempotencyKey('queue'),

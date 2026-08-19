@@ -1,11 +1,11 @@
 import { describe, expect, it } from 'vitest';
 
-import { updateBrandSchema } from './brands.schemas';
+import { updateProjectSchema } from './projects.schemas';
 
-describe('brand rule input', () => {
+describe('project rule input', () => {
   it('accepts the persisted voice, audience, claim, term and domain fields', () => {
     expect(
-      updateBrandSchema.parse({
+      updateProjectSchema.parse({
         name: 'Example',
         voice: 'Direct and specific.',
         audience: 'Independent publishing teams.',
@@ -24,9 +24,9 @@ describe('brand rule input', () => {
   });
 
   it('rejects unknown and unbounded rule input', () => {
-    expect(() => updateBrandSchema.parse({ localeRules: {} })).toThrow();
+    expect(() => updateProjectSchema.parse({ localeRules: {} })).toThrow();
     expect(() =>
-      updateBrandSchema.parse({ approvedClaims: Array.from({ length: 101 }, () => 'claim') }),
+      updateProjectSchema.parse({ approvedClaims: Array.from({ length: 101 }, () => 'claim') }),
     ).toThrow();
   });
 });

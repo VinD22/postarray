@@ -27,7 +27,7 @@ import type { TargetAccount } from '../types';
 import { useRememberedTargets } from './use-remembered-targets';
 
 export interface SeedRememberedTargetsInput {
-  readonly brandId: string | null;
+  readonly projectId: string | null;
   readonly accounts: readonly TargetAccount[];
   readonly selectedConnectionIds: readonly string[];
   readonly dispatch: (action: ComposerAction) => void;
@@ -64,7 +64,7 @@ function toChannels(accounts: readonly TargetAccount[]): readonly ComposerChanne
 }
 
 export function useSeedRememberedTargets(input: SeedRememberedTargetsInput): SeededTargets {
-  const memory = useRememberedTargets(input.brandId);
+  const memory = useRememberedTargets(input.projectId);
   const seeded = useRef(false);
 
   const restored = useMemo(

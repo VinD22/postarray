@@ -24,6 +24,7 @@ import type {
 } from '../views';
 
 import { recordAudit } from '../internal/audit';
+import { requireProjectOwnership } from '../internal/project-ownership';
 import { invalid, notFound } from '../internal/errors';
 import { withIdempotency } from '../internal/idempotency';
 import { toJson } from '../internal/json';
@@ -48,7 +49,7 @@ import { asOpportunityKind } from '../internal/storage-enums';
 const PROFILE_SELECT = {
   id: true,
   workspaceId: true,
-  brandId: true,
+  projectId: true,
   version: true,
   productName: true,
   productUrl: true,
@@ -75,7 +76,7 @@ const PROFILE_SELECT = {
 interface ProfileRow {
   id: string;
   workspaceId: string;
-  brandId: string;
+  projectId: string;
   version: number;
   productName: string | null;
   /** Stored as `product_url`. The view calls it `siteUrl`. */
@@ -144,7 +145,7 @@ function toProfileView(row: ProfileRow): BusinessProfileView {
   return {
     id: row.id,
     workspaceId: row.workspaceId,
-    brandId: row.brandId,
+    projectId: row.projectId,
     revision: row.version,
     productName: row.productName ?? '',
     siteUrl: row.productUrl ?? '',
@@ -250,7 +251,7 @@ export function createGrowthService(deps: ServiceDeps, content: ContentService):
       ctx: ActorContext,
       input: {
         profileId?: string;
-        brandId: string;
+        projectId: string;
         productName: string;
         siteUrl: string;
         description: string;
@@ -276,11 +277,12 @@ export function createGrowthService(deps: ServiceDeps, content: ContentService):
           body: input,
           resourceIdOf: (profile) => profile.id,
           run: () =>
-            authorized(deps, ctx, 'growth.write', { brandId: input.brandId }, async (db, actor) => {
+            authorized(deps, ctx, 'growth.write', { projectId: input.projectId }, async (db, actor) => {
+              await requireProjectOwnership(db, actor, input.projectId);
               const existing =
                 input.profileId === undefined
                   ? await db.businessProfile.findFirst({
-                      where: { brandId: input.brandId },
+                      where: { projectId: input.projectId },
                       orderBy: { version: 'desc' },
                       select: PROFILE_SELECT,
                     })
@@ -290,7 +292,7 @@ export function createGrowthService(deps: ServiceDeps, content: ContentService):
                     });
 
               const data = {
-                brandId: input.brandId,
+                projectId: input.projectId,
                 productName: input.productName,
                 productUrl: input.siteUrl,
                 description: input.description,
@@ -354,7 +356,7 @@ export function createGrowthService(deps: ServiceDeps, content: ContentService):
                 action: 'workspace.updated',
                 targetType: 'business_profile',
                 targetId: row.id,
-                after: { revision: row.version, brandId: input.brandId },
+                after: { revision: row.version, projectId: input.projectId },
               });
 
               return toProfileView(row);
@@ -565,16 +567,16 @@ export function createGrowthService(deps: ServiceDeps, content: ContentService):
         }
         const planRow = await db.growthPlan.findFirst({
           where: { id: input.planId },
-          select: { brandId: true },
+          select: { projectId: true },
         });
         if (planRow === null) {
           throw notFound('growth_plan', input.planId);
         }
-        return { slot: found, brandId: planRow.brandId };
+        return { slot: found, projectId: planRow.projectId };
       });
 
       return content.createDraft(ctx, {
-        brandId: slot.brandId,
+        projectId: slot.projectId,
         title: slot.slot.pillar,
         body: slot.slot.briefSummary,
         contentKind: slot.slot.contentKind,
@@ -600,7 +602,7 @@ export function createGrowthService(deps: ServiceDeps, content: ContentService):
         }
         const planRow = await db.growthPlan.findFirst({
           where: { id: input.planId },
-          select: { brandId: true },
+          select: { projectId: true },
         });
         if (planRow === null) {
           throw notFound('growth_plan', input.planId);
@@ -612,7 +614,7 @@ export function createGrowthService(deps: ServiceDeps, content: ContentService):
           jobId: null,
           contentItemId: input.itemId,
           title: slot.pillar,
-          brandId: planRow.brandId,
+          projectId: planRow.projectId,
           campaignId: null,
           connectionId: slot.connectionId,
           provider: slot.provider,

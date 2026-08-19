@@ -23,7 +23,7 @@ import { SettingsPanel } from '../../settings/components/section';
 import { fromLines } from '../../settings/lib/lines';
 import type {
   ApprovalLevel,
-  BrandRef,
+  ProjectRef,
   ConnectionSummaryView,
 } from '../../settings/lib/view-models';
 import { ScopePicker } from '../components/scope-picker';
@@ -34,7 +34,7 @@ export interface ServiceAccountFormValue {
   readonly name: string;
   readonly purpose: string;
   readonly scopes: readonly Scope[];
-  readonly brandIds: readonly string[];
+  readonly projectIds: readonly string[];
   readonly connectionIds: readonly string[];
   readonly contentLocales: readonly string[];
   readonly allowedDomains: readonly string[];
@@ -47,7 +47,7 @@ export interface ServiceAccountFormValue {
 }
 
 export interface ServiceAccountFormProps {
-  brands: readonly BrandRef[];
+  projects: readonly ProjectRef[];
   connections: readonly ConnectionSummaryView[];
   contentLocales: readonly string[];
   timeZone: string;
@@ -65,7 +65,7 @@ export interface ServiceAccountFormProps {
  * publications per day" is the fact a reviewer actually needs.
  */
 export function ServiceAccountForm({
-  brands,
+  projects,
   connections,
   contentLocales,
   timeZone,
@@ -79,7 +79,7 @@ export function ServiceAccountForm({
   const [name, setName] = useState('');
   const [purpose, setPurpose] = useState('');
   const [scopes, setScopes] = useState<readonly Scope[]>(['accounts:read', 'drafts:read']);
-  const [brandIds, setBrandIds] = useState<readonly string[]>([]);
+  const [projectIds, setProjectIds] = useState<readonly string[]>([]);
   const [connectionIds, setConnectionIds] = useState<readonly string[]>([]);
   const [locales, setLocales] = useState<readonly string[]>([]);
   const [domains, setDomains] = useState('');
@@ -106,7 +106,7 @@ export function ServiceAccountForm({
       name: name.trim(),
       purpose: purpose.trim(),
       scopes,
-      brandIds,
+      projectIds,
       connectionIds,
       contentLocales: locales,
       allowedDomains: fromLines(domains),
@@ -159,19 +159,19 @@ export function ServiceAccountForm({
         <div className="flex flex-col gap-5">
           <fieldset className="flex flex-col gap-1 border-0 p-0">
             <legend className="text-body-md text-text-primary pb-1 font-medium">
-              {t('developer.serviceAccount.scopeBrands')}
+              {t('developer.serviceAccount.scopeProjects')}
             </legend>
             <ul className="flex flex-col sm:grid sm:grid-cols-2">
-              {brands.map((brand) => (
-                <li key={brand.id}>
+              {projects.map((project) => (
+                <li key={project.id}>
                   <label className="text-body-md text-text-primary flex min-h-11 items-center gap-2">
                     <Checkbox
-                      checked={brandIds.includes(brand.id)}
+                      checked={projectIds.includes(project.id)}
                       onCheckedChange={(checked) =>
-                        setBrandIds(toggle(brandIds, brand.id, checked === true))
+                        setProjectIds(toggle(projectIds, project.id, checked === true))
                       }
                     />
-                    {brand.name}
+                    {project.name}
                   </label>
                 </li>
               ))}

@@ -224,7 +224,7 @@ export function createShortLinkService(deps: ServiceDeps): ShortLinkService {
         destinationUrl: string;
         campaignId?: string | null;
         domainId?: string | null;
-        brandId?: string | null;
+        projectId?: string | null;
         utm?: UtmParameters;
         expiresAt?: string | null;
         slug?: string | null;
@@ -283,7 +283,7 @@ export function createShortLinkService(deps: ServiceDeps): ShortLinkService {
               created = await db.shortLink.create({
                 data: {
                   workspaceId: actor.workspace.id,
-                  brandId: input.brandId ?? null,
+                  projectId: input.projectId ?? null,
                   campaignId: input.campaignId ?? null,
                   domain: null,
                   slug,

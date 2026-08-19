@@ -45,7 +45,7 @@ import type {
    ------------------------------------------------------------------------- */
 
 export function useConnections(
-  filter: { brandId?: string; provider?: ProviderId } = {},
+  filter: { projectId?: string; provider?: ProviderId } = {},
 ): UseQueryResult<Paginated<ConnectionView>, ApiError> {
   const workspaceId = useWorkspaceId();
   return useQuery({
@@ -87,7 +87,7 @@ export function useActionCenter(
 export function useCalendar(range: {
   from: string;
   to: string;
-  brandId?: string;
+  projectId?: string;
   state?: PublishState;
 }): UseQueryResult<Paginated<CalendarEntryView>, ApiError> {
   const { workspace } = useSession();
@@ -276,7 +276,7 @@ export function useDecideApproval(): UseMutationResult<
 export function useBeginConnection(): UseMutationResult<
   { authorizationUrl: string; transactionId: string },
   ApiError,
-  { provider: ProviderId; brandId: string; returnUrl: string }
+  { provider: ProviderId; projectId: string; returnUrl: string }
 > {
   return useMutation({
     mutationFn: (input) => api.connections.beginOAuth(input, newIdempotencyKey('oauth')),

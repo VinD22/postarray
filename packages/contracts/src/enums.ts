@@ -195,7 +195,7 @@ export const ruleTriggerKindSchema = z.enum(RULE_TRIGGER_KINDS);
 export type RuleTriggerKind = z.infer<typeof ruleTriggerKindSchema>;
 
 export const RULE_CONDITION_KINDS = [
-  'brand',
+  'project',
   'campaign',
   'account',
   'platform',

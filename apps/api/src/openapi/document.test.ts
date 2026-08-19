@@ -53,7 +53,7 @@ describe('openapi document', () => {
   });
 
   it('describes a request body from the same schema the controller validates', () => {
-    const body = operation('/v1/brands', 'post')['requestBody'];
+    const body = operation('/v1/projects', 'post')['requestBody'];
     expect(body).toBeDefined();
     const schema = JSON.stringify(body);
     // These fields exist in the document because they exist in the validator,
@@ -64,12 +64,12 @@ describe('openapi document', () => {
   });
 
   it('marks the idempotency header required exactly on the routes that need it', () => {
-    const create = parameters('/v1/brands', 'post').find(
+    const create = parameters('/v1/projects', 'post').find(
       (parameter) => parameter['name'] === 'idempotency-key',
     );
     expect(create?.['required']).toBe(true);
 
-    const read = parameters('/v1/brands', 'get').find(
+    const read = parameters('/v1/projects', 'get').find(
       (parameter) => parameter['name'] === 'idempotency-key',
     );
     expect(read).toBeUndefined();
@@ -95,7 +95,7 @@ describe('openapi document', () => {
 
   it('declares no security requirement on a public route and one everywhere else', () => {
     expect(operation('/healthz', 'get')['security']).toEqual([]);
-    expect(operation('/v1/brands', 'get')['security']).not.toEqual([]);
+    expect(operation('/v1/projects', 'get')['security']).not.toEqual([]);
   });
 
   it('carries the required scopes so a consent screen can be generated from it', () => {
@@ -105,7 +105,7 @@ describe('openapi document', () => {
 
   it('flags step-up routes so a client can prompt before it calls them', () => {
     expect(operation('/v1/api-keys', 'post')['x-relay-step-up']).toBe(true);
-    expect(operation('/v1/brands', 'post')['x-relay-step-up']).toBeUndefined();
+    expect(operation('/v1/projects', 'post')['x-relay-step-up']).toBeUndefined();
   });
 
   it('publishes the action center queue and its idempotent snooze contract', () => {

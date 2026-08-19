@@ -24,7 +24,7 @@ import type { ParameterValue } from '../types';
  * is the whole rule.
  *
  * Options for a `select` are supplied by the editor, which knows the workspace's
- * brands, templates, signatures and locales. This component knows nothing about
+ * projects, templates, signatures and locales. This component knows nothing about
  * the product beyond the shape of a field.
  */
 

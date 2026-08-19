@@ -112,7 +112,7 @@ export function makePlanContext(
 ): GrowthPlanContext {
   return buildGrowthContext({
     profile: options.profile ?? makeBusinessProfile(),
-    brandSources: [],
+    projectSources: [],
     opportunities: options.opportunities ?? [],
     tools: options.tools ?? [],
     windowStart: '2026-08-10',

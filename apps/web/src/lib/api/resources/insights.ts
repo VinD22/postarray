@@ -39,7 +39,7 @@ export interface ExperimentView {
  * accounts, one normalized ranking metric, one window.
  */
 export interface AnalyticsOverviewQuery {
-  readonly brandId?: string;
+  readonly projectId?: string;
   readonly connectionIds: readonly string[];
   readonly from: string;
   readonly to: string;
@@ -68,7 +68,7 @@ export const analyticsApi = {
       '/analytics/overview',
       {
         query: {
-          ...(query.brandId === undefined ? {} : { brandId: query.brandId }),
+          ...(query.projectId === undefined ? {} : { projectId: query.projectId }),
           // Repeated ids travel as one comma separated parameter.
           connectionIds: query.connectionIds.join(','),
           from: query.from,

@@ -44,7 +44,7 @@ export function LibraryGateway(props: LibraryGatewayProps): ReactNode {
             mimeType: file.type,
             byteSize: file.size,
             sha256,
-            brandId: props.projectId,
+            projectId: props.projectId,
           },
           newIdempotencyKey('media_upload'),
         );
@@ -101,7 +101,7 @@ export function LibraryGateway(props: LibraryGatewayProps): ReactNode {
           return;
         }
         const operation = await api.media.importFromUrl(
-          { url, brandId: props.projectId },
+          { url, projectId: props.projectId },
           newIdempotencyKey('media_import'),
         );
         if (operation.status === 'failed') {

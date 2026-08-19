@@ -35,11 +35,11 @@ export interface MembershipFixture {
   readonly workspaceId: string;
   readonly userId: string;
   readonly role: Role;
-  readonly brandIds: readonly string[];
+  readonly projectIds: readonly string[];
   readonly createdAt: string;
 }
 
-export interface BrandFixture {
+export interface ProjectFixture {
   readonly id: string;
   readonly workspaceId: string;
   readonly name: string;
@@ -52,7 +52,7 @@ export interface BrandFixture {
 export interface CampaignFixture {
   readonly id: string;
   readonly workspaceId: string;
-  readonly brandId: string;
+  readonly projectId: string;
   readonly name: string;
   readonly startsOn: string;
   readonly endsOn: string | null;
@@ -95,19 +95,19 @@ export function makeMembership(overrides: Partial<MembershipFixture> = {}): Memb
     workspaceId,
     userId,
     role: 'owner',
-    brandIds: [],
+    projectIds: [],
     createdAt: FIXTURE_NOW,
     ...overrides,
   };
 }
 
-export function makeBrand(overrides: Partial<BrandFixture> = {}): BrandFixture {
+export function makeProject(overrides: Partial<ProjectFixture> = {}): ProjectFixture {
   const workspaceId = overrides.workspaceId ?? makeWorkspace().id;
-  const seed = overrides.name ?? 'fixture-brand';
+  const seed = overrides.name ?? 'fixture-project';
   return {
-    id: fixtureId('brand', seed),
+    id: fixtureId('project', seed),
     workspaceId,
-    name: 'Fixture Brand',
+    name: 'Fixture Project',
     siteUrl: fixtureUrl('/'),
     ianaTimeZone: 'Europe/Berlin',
     defaultLocale: 'en',
@@ -118,12 +118,12 @@ export function makeBrand(overrides: Partial<BrandFixture> = {}): BrandFixture {
 
 export function makeCampaign(overrides: Partial<CampaignFixture> = {}): CampaignFixture {
   const workspaceId = overrides.workspaceId ?? makeWorkspace().id;
-  const brandId = overrides.brandId ?? makeBrand({ workspaceId }).id;
+  const projectId = overrides.projectId ?? makeProject({ workspaceId }).id;
   const seed = overrides.name ?? 'fixture-campaign';
   return {
     id: fixtureId('campaign', seed),
     workspaceId,
-    brandId,
+    projectId,
     name: 'Fixture Campaign',
     startsOn: '2026-08-04',
     endsOn: null,
@@ -132,12 +132,12 @@ export function makeCampaign(overrides: Partial<CampaignFixture> = {}): Campaign
   };
 }
 
-/** A workspace, an owner, a membership, a brand and a campaign, all consistent. */
+/** A workspace, an owner, a membership, a project and a campaign, all consistent. */
 export interface WorkspaceBundle {
   readonly workspace: WorkspaceFixture;
   readonly owner: UserFixture;
   readonly membership: MembershipFixture;
-  readonly brand: BrandFixture;
+  readonly project: ProjectFixture;
   readonly campaign: CampaignFixture;
 }
 
@@ -147,7 +147,7 @@ export function makeWorkspaceBundle(
   const workspace = makeWorkspace(overrides.workspace ?? {});
   const owner = makeUser(overrides.owner ?? {});
   const membership = makeMembership({ workspaceId: workspace.id, userId: owner.id });
-  const brand = makeBrand({ workspaceId: workspace.id });
-  const campaign = makeCampaign({ workspaceId: workspace.id, brandId: brand.id });
-  return { workspace, owner, membership, brand, campaign };
+  const project = makeProject({ workspaceId: workspace.id });
+  const campaign = makeCampaign({ workspaceId: workspace.id, projectId: project.id });
+  return { workspace, owner, membership, project, campaign };
 }

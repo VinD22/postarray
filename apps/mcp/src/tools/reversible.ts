@@ -27,8 +27,8 @@ export const draftPostTool = defineTool({
   requiresIdempotencyKey: false,
   requiresHumanConfirmation: false,
   inputSchema: z.object({
-    /** Required. A draft always belongs to a brand, never to a workspace at large. */
-    brand_id: z.string().min(1),
+    /** Required. A draft always belongs to a project, never to a workspace at large. */
+    project_id: z.string().min(1),
     body: z.string().min(1).max(20_000),
     title: z.string().min(1).max(300).optional(),
     locale: z.string().min(2).max(12).optional(),
@@ -47,7 +47,7 @@ export const draftPostTool = defineTool({
   }),
   async run(context, input): Promise<ToolResult> {
     const item = await context.services.content.createDraft(context.actor, {
-      brandId: input.brand_id,
+      projectId: input.project_id,
       body: input.body,
       ...(input.title === undefined ? {} : { title: input.title }),
       ...(input.locale === undefined ? {} : { locale: input.locale }),

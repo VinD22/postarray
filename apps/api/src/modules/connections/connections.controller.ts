@@ -137,7 +137,7 @@ export class ConnectionsController {
       provider: input.provider,
       state,
       workspaceId: actor.workspaceId,
-      brandId: input.brandId,
+      projectId: input.projectId,
       actorId: actor.actorId,
       actorType: actor.actorType,
       scopes: [...actor.scopes],
@@ -169,7 +169,7 @@ export class ConnectionsController {
    * Public because the provider redirects a browser here with no credential of
    * ours attached. Everything that decides what happens next comes from the
    * stored transaction, not from the URL: the workspace, the actor, the scopes
-   * and the brand. The only things taken from the query string are the
+   * and the project. The only things taken from the query string are the
    * provider's `code` and `state`, and `state` has to match the cookie exactly
    * before the code is used at all.
    */

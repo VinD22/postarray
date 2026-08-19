@@ -100,7 +100,7 @@ export interface SessionProjectView {
   readonly connectionIds: readonly string[];
 }
 
-export interface BrandView {
+export interface ProjectView {
   readonly id: string;
   readonly workspaceId: string;
   readonly name: string;
@@ -124,7 +124,7 @@ export interface SessionView {
   readonly user: UserView;
   readonly workspace: WorkspaceView;
   readonly workspaces: readonly WorkspaceView[];
-  readonly brands: readonly SessionProjectView[];
+  readonly projects: readonly SessionProjectView[];
   /** Scopes the current credential carries. Used for 403 remediation copy. */
   readonly scopes: readonly string[];
   readonly onboardingComplete: boolean;
@@ -223,7 +223,7 @@ export interface ContentReviewVariantView {
 export interface ContentItemView {
   readonly id: string;
   readonly workspaceId: string;
-  readonly brandId: string | null;
+  readonly projectId: string | null;
   readonly title: string;
   readonly body: string;
   readonly locale: string;
@@ -356,7 +356,7 @@ export interface MemberView {
   readonly email: string;
   readonly role: Role;
   readonly invitePending: boolean;
-  readonly brandScope: readonly string[];
+  readonly projectScope: readonly string[];
   readonly invitedAt: IsoInstant | null;
 }
 
@@ -398,7 +398,7 @@ export interface GrowthPlanSummaryView {
 export interface BusinessProfileView {
   readonly id: string;
   readonly workspaceId: string;
-  readonly brandId: string;
+  readonly projectId: string;
   readonly revision: number;
   readonly productName: string;
   readonly siteUrl: string;

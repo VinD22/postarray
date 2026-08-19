@@ -141,17 +141,17 @@ describe('can', () => {
     expect(decision.reason).toBe('no_membership');
   });
 
-  it('enforces brand narrowing only for the named brand', () => {
+  it('enforces project narrowing only for the named project', () => {
     const actor = user({
       actorType: 'service_account',
       role: 'manager',
       scopes: ['drafts:write'],
-      brandScope: ['brand-a'],
+      projectScope: ['project-a'],
     });
-    expect(can(actor, 'content.write', { brandId: 'brand-a' }).allowed).toBe(true);
-    const denied = can(actor, 'content.write', { brandId: 'brand-b' });
+    expect(can(actor, 'content.write', { projectId: 'project-a' }).allowed).toBe(true);
+    const denied = can(actor, 'content.write', { projectId: 'project-b' });
     expect(denied.allowed).toBe(false);
-    expect(denied.reason).toBe('brand_out_of_scope');
+    expect(denied.reason).toBe('project_out_of_scope');
   });
 
   it('enforces connection narrowing', () => {

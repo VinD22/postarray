@@ -1,4 +1,4 @@
-/** Session, workspaces, brands, members, billing, audit and health. */
+/** Session, workspaces, projects, members, billing, audit and health. */
 
 import { call } from '../call';
 import type {
@@ -14,7 +14,7 @@ import type { Paginated as ContractPaginated } from '@relay/contracts';
 import {
   demoAudit,
   demoBilling,
-  demoBrands,
+  demoProjects,
   demoHealth,
   demoMembers,
   demoSession,
@@ -24,7 +24,7 @@ import {
 import type {
   AuditEventView,
   BillingStateView,
-  BrandView,
+  ProjectView,
   HealthView,
   MemberView,
   Paginated,
@@ -57,18 +57,18 @@ export const sessionApi = {
     ),
 };
 
-export const brandsApi = {
-  list: (query: ListQuery = {}): Promise<Paginated<BrandView>> =>
-    call('/brands', { query }, () => page(demoBrands)),
-  get: (brandId: string): Promise<BrandView> =>
+export const projectsApi = {
+  list: (query: ListQuery = {}): Promise<Paginated<ProjectView>> =>
+    call('/projects', { query }, () => page(demoProjects)),
+  get: (projectId: string): Promise<ProjectView> =>
     call(
-      `/brands/${brandId}`,
+      `/projects/${projectId}`,
       {},
-      () => demoBrands.find((brand) => brand.id === brandId) ?? requireFirst(demoBrands, 'brand'),
+      () => demoProjects.find((project) => project.id === projectId) ?? requireFirst(demoProjects, 'project'),
     ),
-  create: (input: { name: string }, idempotencyKey: string): Promise<BrandView> =>
-    call('/brands', { method: 'POST', body: input, idempotencyKey }, () => ({
-      id: 'brand_demo_new',
+  create: (input: { name: string }, idempotencyKey: string): Promise<ProjectView> =>
+    call('/projects', { method: 'POST', body: input, idempotencyKey }, () => ({
+      id: 'project_demo_new',
       workspaceId: demoSession.workspace.id,
       name: input.name,
       slug: input.name.toLowerCase().replace(/[^a-z0-9]+/g, '-'),
@@ -86,18 +86,18 @@ export const brandsApi = {
       updatedAt: new Date().toISOString(),
     })),
   update: (
-    brandId: string,
+    projectId: string,
     input: Partial<
-      Pick<BrandView, 'name' | 'voice' | 'audience' | 'approvedClaims' | 'blockedTerms' | 'domains'>
+      Pick<ProjectView, 'name' | 'voice' | 'audience' | 'approvedClaims' | 'blockedTerms' | 'domains'>
     >,
-  ): Promise<BrandView> =>
-    call(`/brands/${brandId}`, { method: 'PATCH', body: input }, () => ({
-      ...(demoBrands.find((brand) => brand.id === brandId) ?? requireFirst(demoBrands, 'brand')),
+  ): Promise<ProjectView> =>
+    call(`/projects/${projectId}`, { method: 'PATCH', body: input }, () => ({
+      ...(demoProjects.find((project) => project.id === projectId) ?? requireFirst(demoProjects, 'project')),
       ...input,
       updatedAt: new Date().toISOString(),
     })),
-  archive: (brandId: string): Promise<void> =>
-    call(`/brands/${brandId}`, { method: 'DELETE' }, () => undefined),
+  archive: (projectId: string): Promise<void> =>
+    call(`/projects/${projectId}`, { method: 'DELETE' }, () => undefined),
 };
 
 export const workspacesApi = {
@@ -209,7 +209,7 @@ export const membersApi = {
         email: input.email,
         role: input.role,
         invitePending: true,
-        brandScope: [],
+        projectScope: [],
         invitedAt: new Date().toISOString(),
       }),
       toInvitationMemberView,
@@ -293,7 +293,7 @@ function toMemberView(member: MembershipView): MemberView {
     email: member.email,
     role: member.role,
     invitePending: member.state === 'invited',
-    brandScope: member.brandScope,
+    projectScope: member.projectScope,
     invitedAt: member.invitedAt,
   };
 }
@@ -306,7 +306,7 @@ function toInvitationMemberView(invitation: InvitationView): MemberView {
     email: invitation.email,
     role: invitation.role,
     invitePending: true,
-    brandScope: [],
+    projectScope: [],
     invitedAt: invitation.createdAt,
   };
 }

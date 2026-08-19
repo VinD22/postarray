@@ -36,7 +36,7 @@ export class ContentService {
 
   list(
     ctx: ActorContext,
-    query: CursorQuery & { state?: PublishState; brandId?: string; campaignId?: string },
+    query: CursorQuery & { state?: PublishState; projectId?: string; campaignId?: string },
   ): Promise<Paginated<ContentItemView>> {
     return this.services.content.list(ctx, query);
   }

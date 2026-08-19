@@ -35,7 +35,7 @@ const FEED_XML = [
 
 const feedRow = {
   id: 'rss_1',
-  brandId: 'brand_1',
+  projectId: 'project_1',
   feedUrl: 'https://example.test/feed.xml',
   title: 'Blog',
   publishPolicy: 'draft',
@@ -178,7 +178,7 @@ describe('worker feed processing', () => {
 
     expect(result.createdContentItemIds).toEqual(['content_1']);
     const draft = createDraft.mock.calls[0]?.[1] as Record<string, unknown>;
-    expect(draft['brandId']).toBe('brand_1');
+    expect(draft['projectId']).toBe('project_1');
     // The standing rule: inbound automation may propose a post, never decide
     // which account publishes it.
     expect(draft).not.toHaveProperty('targets');

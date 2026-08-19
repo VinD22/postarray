@@ -11,6 +11,7 @@ import {
 import type { ActorContext, PageQuery, PostingSetService, ServiceDeps } from '../types';
 
 import { recordAudit } from '../internal/audit';
+import { requireProjectOwnership, requireProjectOwnershipIfPresent } from '../internal/project-ownership';
 import { invalid, notFound } from '../internal/errors';
 import { withIdempotency } from '../internal/idempotency';
 import { toJson } from '../internal/json';
@@ -50,16 +51,16 @@ export function createPostingSetService(deps: ServiceDeps): PostingSetService {
 
   async function assertNameFree(
     db: Db,
-    input: { brandId: string; name: string; exceptId?: string },
+    input: { projectId: string; name: string; exceptId?: string },
   ): Promise<void> {
     const duplicate = await db.postingSet.findFirst({
-      where: { brandId: input.brandId, name: input.name, archivedAt: null },
+      where: { projectId: input.projectId, name: input.name, archivedAt: null },
       select: { id: true },
     });
     if (duplicate !== null && duplicate.id !== input.exceptId) {
       throw new ConflictError({
         messageKey: 'errors.posting_set_name_taken',
-        details: { name: input.name, brandId: input.brandId },
+        details: { name: input.name, projectId: input.projectId },
       });
     }
   }
@@ -67,14 +68,15 @@ export function createPostingSetService(deps: ServiceDeps): PostingSetService {
   return {
     async list(
       ctx: ActorContext,
-      query: PageQuery & { readonly brandId?: string; readonly includeArchived?: boolean } = {},
+      query: PageQuery & { readonly projectId?: string; readonly includeArchived?: boolean } = {},
     ): Promise<Paginated<PostingSetView>> {
-      return authorized(deps, ctx, 'content.read', undefined, async (db) => {
+      return authorized(deps, ctx, 'content.read', undefined, async (db, actor) => {
+        await requireProjectOwnershipIfPresent(db, actor, query.projectId);
         const args = pageArgs(query);
         const rows = await db.postingSet.findMany({
           where: {
             ...(query.includeArchived === true ? {} : { archivedAt: null }),
-            ...(query.brandId === undefined ? {} : { brandId: query.brandId }),
+            ...(query.projectId === undefined ? {} : { projectId: query.projectId }),
           },
           orderBy: { id: 'asc' },
           take: args.take,
@@ -99,16 +101,17 @@ export function createPostingSetService(deps: ServiceDeps): PostingSetService {
         body: parsed,
         resourceIdOf: (view) => view.id,
         run: async () =>
-          authorized(deps, ctx, 'content.write', { brandId: parsed.brandId }, async (db, actor) => {
+          authorized(deps, ctx, 'content.write', { projectId: parsed.projectId }, async (db, actor) => {
+            await requireProjectOwnership(db, actor, parsed.projectId);
             if (actor.userId === null) {
-              throw invalid('errors.posting_set_requires_person', { brandId: parsed.brandId });
+              throw invalid('errors.posting_set_requires_person', { projectId: parsed.projectId });
             }
-            await assertNameFree(db, { brandId: parsed.brandId, name: parsed.name });
+            await assertNameFree(db, { projectId: parsed.projectId, name: parsed.name });
 
             const created = await db.postingSet.create({
               data: {
                 workspaceId: actor.workspace.id,
-                brandId: parsed.brandId,
+                projectId: parsed.projectId,
                 name: parsed.name,
                 description: parsed.description,
                 connectionIds: [...parsed.connectionIds],
@@ -150,7 +153,7 @@ export function createPostingSetService(deps: ServiceDeps): PostingSetService {
             }
             if (parsed.name !== undefined) {
               await assertNameFree(db, {
-                brandId: before.brandId,
+                projectId: before.projectId,
                 name: parsed.name,
                 exceptId: setId,
               });
@@ -174,9 +177,7 @@ export function createPostingSetService(deps: ServiceDeps): PostingSetService {
                 ...(parsed.approvalPolicy === undefined
                   ? {}
                   : { approvalPolicy: parsed.approvalPolicy }),
-                ...(parsed.slotBehavior === undefined
-                  ? {}
-                  : { slotBehavior: parsed.slotBehavior }),
+                ...(parsed.slotBehavior === undefined ? {} : { slotBehavior: parsed.slotBehavior }),
               },
               select: SET_SELECT,
             });

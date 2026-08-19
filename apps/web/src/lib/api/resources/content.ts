@@ -31,7 +31,7 @@ import type {
 } from '../types';
 
 export type ContentListQuery = {
-  readonly brandId?: string;
+  readonly projectId?: string;
   readonly state?: PublishState;
   readonly cursor?: string;
   readonly limit?: number;
@@ -40,7 +40,7 @@ export type ContentListQuery = {
 const emptyItem: ContentItemView = {
   id: 'content_demo0000000000000',
   workspaceId: 'ws_demo0000000000000000001',
-  brandId: null,
+  projectId: null,
   title: '',
   body: '',
   locale: 'en',
@@ -95,7 +95,7 @@ function toContentItem(item: ApplicationContentItemView): ContentItemView {
   return {
     id: item.id,
     workspaceId: item.workspaceId,
-    brandId: item.brandId,
+    projectId: item.projectId,
     title: item.title ?? '',
     body: item.body,
     locale: item.locale,
@@ -169,14 +169,14 @@ function toCalendarEntry(entry: ApplicationCalendarEntry): CalendarEntryView {
 
 export const contentApi = {
   createDraft: (
-    input: { brandId: string; title?: string; body?: string },
+    input: { projectId: string; title?: string; body?: string },
     idempotencyKey: string,
     forward?: ForwardAuth,
   ): Promise<ContentItemView> =>
     call<ApplicationContentItemView, ContentItemView>(
       '/content',
       { method: 'POST', body: input, idempotencyKey, ...forward },
-      () => ({ ...emptyItem, brandId: input.brandId, title: input.title ?? '' }),
+      () => ({ ...emptyItem, projectId: input.projectId, title: input.title ?? '' }),
       toContentItem,
     ),
 
@@ -398,7 +398,7 @@ export type CalendarQuery = {
   readonly from: string;
   readonly to: string;
   readonly ianaTimeZone: string;
-  readonly brandId?: string;
+  readonly projectId?: string;
   readonly connectionId?: string;
   readonly state?: PublishState;
 };
@@ -514,7 +514,7 @@ export const schedulingApi = {
 
   /** The next slot that respects cadence and the workspace posting rules. */
   nextAvailableSlot: (query: {
-    brandId: string;
+    projectId: string;
     after?: string;
   }): Promise<{ instant: string; ianaTimeZone: string } | null> =>
     call('/calendar/next-slot', { query }, () => null),

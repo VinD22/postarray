@@ -85,7 +85,7 @@ export function StatTiles(): ReactNode {
 
   const calendarQuery = useCalendar({
     ...range,
-    ...(project === null ? {} : { brandId: project.id }),
+    ...(project === null ? {} : { projectId: project.id }),
   });
   const connectionsQuery = useConnections();
 

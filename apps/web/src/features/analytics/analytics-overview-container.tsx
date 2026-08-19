@@ -41,15 +41,15 @@ export function AnalyticsOverviewContainer(): ReactElement {
   const router = useLocalizedRouter();
   const { workspace, project } = useSession();
 
-  const brands = useQuery({
-    queryKey: ['ws', workspace.id, 'brands', 'list'],
-    queryFn: async () => api.brands.list({ limit: 100 }),
+  const projects = useQuery({
+    queryKey: ['ws', workspace.id, 'projects', 'list'],
+    queryFn: async () => api.projects.list({ limit: 100 }),
   });
 
   const connections = useQuery({
     queryKey: ['ws', workspace.id, 'connections', 'analytics', project?.id ?? 'none'],
     queryFn: async () =>
-      api.connections.list({ limit: 100, ...(project === null ? {} : { brandId: project.id }) }),
+      api.connections.list({ limit: 100, ...(project === null ? {} : { projectId: project.id }) }),
   });
 
   const accounts = useMemo<readonly AccountRef[]>(() => {
@@ -64,7 +64,7 @@ export function AnalyticsOverviewContainer(): ReactElement {
 
   const initialFilters = useMemo<AnalyticsFilters>(
     () => ({
-      brandId: project?.id ?? null,
+      projectId: project?.id ?? null,
       connectionIds: [],
       range: defaultRange(),
       rankMetric: 'impressions',
@@ -74,7 +74,7 @@ export function AnalyticsOverviewContainer(): ReactElement {
     [project?.id],
   );
 
-  if (connections.isPending || brands.isPending) {
+  if (connections.isPending || projects.isPending) {
     return (
       <div className="px-4 py-6 md:px-6">
         <LoadingState label={t('analytics.state.loading')}>
@@ -112,7 +112,7 @@ export function AnalyticsOverviewContainer(): ReactElement {
 
   return (
     <AnalyticsOverviewScreen
-      brands={(brands.data?.data ?? []) as readonly { id: string; name: string }[]}
+      projects={(projects.data?.data ?? []) as readonly { id: string; name: string }[]}
       accounts={accounts}
       initialFilters={initialFilters}
       statusHref="/status"

@@ -22,6 +22,7 @@ import type {
 } from '../views';
 
 import { recordAudit } from '../internal/audit';
+import { requireProjectOwnership, requireProjectOwnershipIfPresent } from '../internal/project-ownership';
 import {
   loadAggregate,
   reapprovalRequired,
@@ -135,7 +136,7 @@ async function resolveTargets(
 function buildMaster(input: {
   readonly id: string;
   readonly workspaceId: string;
-  readonly brandId: string;
+  readonly projectId: string;
   readonly campaignId: string | null;
   readonly draft: CreateDraftInput;
   readonly defaultLocale: string;
@@ -144,7 +145,7 @@ function buildMaster(input: {
   return storedMasterSchema.parse({
     id: input.id,
     workspaceId: input.workspaceId,
-    brandId: input.brandId,
+    projectId: input.projectId,
     campaignId: input.campaignId,
     title: input.draft.title ?? null,
     body: input.draft.body,
@@ -239,14 +240,8 @@ export function createContentService(deps: ServiceDeps): ContentService {
         body: input,
         resourceIdOf: (view) => view.id,
         run: async () =>
-          authorized(deps, ctx, 'content.write', { brandId: input.brandId }, async (db, actor) => {
-            const brand = await db.brand.findFirst({
-              where: { id: input.brandId },
-              select: { id: true },
-            });
-            if (brand === null) {
-              throw notFound('brand', input.brandId);
-            }
+          authorized(deps, ctx, 'content.write', { projectId: input.projectId }, async (db, actor) => {
+            await requireProjectOwnership(db, actor, input.projectId);
 
             const targets = await resolveTargets(db, input.targets ?? []);
             for (const target of targets) {
@@ -256,7 +251,7 @@ export function createContentService(deps: ServiceDeps): ContentService {
             const item = await db.contentItem.create({
               data: {
                 workspaceId: actor.workspace.id,
-                brandId: input.brandId,
+                projectId: input.projectId,
                 campaignId: input.campaignId ?? null,
                 title: input.title ?? null,
                 state: 'draft',
@@ -275,7 +270,7 @@ export function createContentService(deps: ServiceDeps): ContentService {
             const master = buildMaster({
               id: item.id,
               workspaceId: ctx.workspaceId,
-              brandId: input.brandId,
+              projectId: input.projectId,
               campaignId: input.campaignId ?? null,
               draft: input,
               defaultLocale: actor.workspace.defaultLocale,
@@ -301,7 +296,7 @@ export function createContentService(deps: ServiceDeps): ContentService {
               targetType: 'content_item',
               targetId: item.id,
               after: { checksum: written.checksum, targetCount: targets.length },
-              metadata: { brandId: input.brandId, revision: written.revision },
+              metadata: { projectId: input.projectId, revision: written.revision },
             });
 
             return toContentItemView(await loadAggregate(db, item.id));
@@ -319,16 +314,17 @@ export function createContentService(deps: ServiceDeps): ContentService {
       ctx: ActorContext,
       query: PageQuery & {
         state?: ContentItemView['state'];
-        brandId?: string;
+        projectId?: string;
         campaignId?: string;
       } = {},
     ): Promise<Paginated<ContentItemView>> {
-      return authorized(deps, ctx, 'content.read', undefined, async (db) => {
+      return authorized(deps, ctx, 'content.read', undefined, async (db, actor) => {
+        await requireProjectOwnershipIfPresent(db, actor, query.projectId);
         const args = pageArgs(query);
         const rows = await db.contentItem.findMany({
           where: {
             ...(query.state === undefined ? {} : { state: query.state }),
-            ...(query.brandId === undefined ? {} : { brandId: query.brandId }),
+            ...(query.projectId === undefined ? {} : { projectId: query.projectId }),
             ...(query.campaignId === undefined ? {} : { campaignId: query.campaignId }),
           },
           orderBy: { id: 'desc' },
@@ -730,7 +726,7 @@ export function createContentService(deps: ServiceDeps): ContentService {
     async delete(ctx: ActorContext, contentItemId: string): Promise<void> {
       await runInWorkspace(deps, ctx, async (db, actor) => {
         const aggregate = await loadAggregate(db, contentItemId);
-        guard(actor, 'content.delete', { brandId: aggregate.brandId });
+        guard(actor, 'content.delete', { projectId: aggregate.projectId });
         if (aggregate.state === 'published' || aggregate.state === 'partially_published') {
           throw invalid('errors.content_already_published', { contentItemId });
         }

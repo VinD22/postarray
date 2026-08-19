@@ -56,13 +56,13 @@ export default async function LibraryPage(): Promise<React.ReactElement> {
       timeZone = session.workspace.timeZone;
       const cookieStore = await cookies();
       const project = resolveActiveProject(
-        session.brands,
+        session.projects,
         cookieStore.get(ACTIVE_PROJECT_COOKIE)?.value,
       );
       projectId = project?.id ?? null;
       const [page, connections] = await Promise.all([
-        api.media.list(projectId === null ? {} : { brandId: projectId }),
-        api.connections.list(projectId === null ? {} : { brandId: projectId }),
+        api.media.list(projectId === null ? {} : { projectId: projectId }),
+        api.connections.list(projectId === null ? {} : { projectId: projectId }),
       ]);
       assets = page.data.map(mediaAssetFromApi);
       rules = await Promise.all(

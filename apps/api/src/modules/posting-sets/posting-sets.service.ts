@@ -22,11 +22,11 @@ export class PostingSetsService {
   constructor(@Inject(SERVICES) private readonly services: Services) {}
 
   list(ctx: ActorContext, query: ListPostingSetsQuery): Promise<Paginated<PostingSetView>> {
-    const { cursor, limit, brandId, includeArchived } = query;
+    const { cursor, limit, projectId, includeArchived } = query;
     return this.services.postingSets.list(ctx, {
       ...(cursor === undefined ? {} : { cursor }),
       ...(limit === undefined ? {} : { limit }),
-      ...(brandId === undefined ? {} : { brandId }),
+      ...(projectId === undefined ? {} : { projectId }),
       ...(includeArchived === undefined ? {} : { includeArchived }),
     });
   }

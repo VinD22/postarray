@@ -1,5 +1,5 @@
 export { PROFILE_EVIDENCE_IDS, buildGrowthContext, planWindow } from './retrieval';
-export type { ApprovedBrandSource, GrowthContextInput, GrowthPlanContext } from './retrieval';
+export type { ApprovedProjectSource, GrowthContextInput, GrowthPlanContext } from './retrieval';
 
 export { GROWTH_REJECTION_RULES, collectStrings, postProcessGrowthPlan } from './postprocess';
 export type {

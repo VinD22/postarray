@@ -26,7 +26,7 @@ import type { CalendarEntry, PublishedMoveMode } from './types';
 export interface CalendarQueryInput {
   readonly from: Date;
   readonly to: Date;
-  readonly brandId: string | null;
+  readonly projectId: string | null;
 }
 
 export type CalendarEntriesResult = UseQueryResult<Paginated<CalendarEntryView>, ApiError>;
@@ -43,7 +43,7 @@ export function useCalendarEntries(input: CalendarQueryInput): CalendarEntriesRe
   return useCalendar({
     from: input.from.toISOString(),
     to: input.to.toISOString(),
-    ...(input.brandId ? { brandId: input.brandId } : {}),
+    ...(input.projectId ? { projectId: input.projectId } : {}),
   });
 }
 

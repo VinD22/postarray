@@ -33,7 +33,7 @@ const MEMBERSHIP_SELECT = {
   workspaceId: true,
   role: true,
   state: true,
-  brandScope: true,
+  projectScope: true,
   invitedAt: true,
   acceptedAt: true,
   user: { select: { email: true, displayName: true } },
@@ -45,7 +45,7 @@ interface MembershipRow {
   workspaceId: string;
   role: Role;
   state: string;
-  brandScope: string[];
+  projectScope: string[];
   invitedAt: Date | null;
   acceptedAt: Date | null;
   user: { email: string; displayName: string };
@@ -109,7 +109,7 @@ function toView(row: MembershipRow): MembershipView {
       state === 'invited' || state === 'active' || state === 'suspended' || state === 'removed'
         ? state
         : 'removed',
-    brandScope: [...row.brandScope],
+    projectScope: [...row.projectScope],
     invitedAt: row.invitedAt?.toISOString() ?? null,
     acceptedAt: row.acceptedAt?.toISOString() ?? null,
   };

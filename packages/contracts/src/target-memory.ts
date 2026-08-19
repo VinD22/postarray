@@ -28,7 +28,7 @@ export const OFFERABLE_TARGET_HEALTH = 'active' as const;
 
 export const rememberedTargetsSchema = z
   .object({
-    brandId: idSchema(ID_PREFIXES.brand),
+    projectId: idSchema(ID_PREFIXES.project),
     userId: idSchema(ID_PREFIXES.user),
     /** Channel identifiers, in the order they were last selected. */
     connectionIds: z.array(idSchema(ID_PREFIXES.connection)).max(200),
@@ -46,7 +46,7 @@ export type RememberedTargets = z.infer<typeof rememberedTargetsSchema>;
  */
 export const rememberedTargetsViewSchema = z
   .object({
-    brandId: idSchema(ID_PREFIXES.brand),
+    projectId: idSchema(ID_PREFIXES.project),
     enabled: z.boolean(),
     connectionIds: z.array(idSchema(ID_PREFIXES.connection)),
     /** Remembered channels that are no longer offerable, for honest copy. */

@@ -28,7 +28,7 @@ import { keys } from '@/lib/api/keys';
 import { useWorkspaceId } from '@/lib/auth/session-context';
 
 export function usePostingSets(
-  filter: { brandId?: string; includeArchived?: boolean } = {},
+  filter: { projectId?: string; includeArchived?: boolean } = {},
 ): UseQueryResult<Paginated<PostingSetView>, ApiError> {
   const workspaceId = useWorkspaceId();
   return useQuery({
@@ -46,14 +46,14 @@ export function usePostingSets(
  * about which hour is free.
  */
 export function useNextQueueSlot(
-  brandId: string | null,
+  projectId: string | null,
 ): UseQueryResult<SlotProposal | { instant: string; ianaTimeZone: string } | null, ApiError> {
   const workspaceId = useWorkspaceId();
   return useQuery({
-    queryKey: [...keys.postingSets(workspaceId, {}), 'next-slot', brandId ?? 'none'],
+    queryKey: [...keys.postingSets(workspaceId, {}), 'next-slot', projectId ?? 'none'],
     queryFn: () =>
-      brandId === null ? Promise.resolve(null) : api.scheduling.nextAvailableSlot({ brandId }),
-    enabled: brandId !== null,
+      projectId === null ? Promise.resolve(null) : api.scheduling.nextAvailableSlot({ projectId }),
+    enabled: projectId !== null,
   });
 }
 

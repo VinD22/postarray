@@ -11,7 +11,7 @@ import { SEED_OPPORTUNITY_IDS } from './catalog';
 import { SEED_WORKSPACE_ID, hoursAgo, seedId } from './ids';
 
 /**
- * Identity, tenancy, brands and the fake provider connection.
+ * Identity, tenancy, projects and the fake provider connection.
  *
  * The fake connector exists so the whole compose, approve, schedule, publish,
  * receipt and analytics loop is exercisable with no provider keys and no
@@ -26,8 +26,8 @@ export const SEED_IDS = {
   ownerUser: seedId('user:owner'),
   editorUser: seedId('user:editor'),
   approverUser: seedId('user:approver'),
-  brandSupply: seedId('brand:supply'),
-  brandLabs: seedId('brand:labs'),
+  projectSupply: seedId('project:supply'),
+  projectLabs: seedId('project:labs'),
   businessProfile: seedId('business_profile:supply'),
   campaign: seedId('campaign:spring-restock'),
   connection: seedId('connection:fake-supply'),
@@ -72,7 +72,7 @@ function fakeCapabilitySnapshot(): ReturnType<typeof buildFakeCapabilitySnapshot
 
 export async function seedTenantCore(tx: RlsTransactionClient): Promise<void> {
   await seedPeopleAndWorkspace(tx);
-  await seedBrands(tx);
+  await seedProjects(tx);
   await seedConnection(tx);
   await seedReusables(tx);
   await seedGrowthPlan(tx);
@@ -234,11 +234,11 @@ async function seedPeopleAndWorkspace(tx: RlsTransactionClient): Promise<void> {
   });
 }
 
-async function seedBrands(tx: RlsTransactionClient): Promise<void> {
-  await tx.brand.upsert({
+async function seedProjects(tx: RlsTransactionClient): Promise<void> {
+  await tx.project.upsert({
     where: { workspaceId_slug: { workspaceId: SEED_IDS.workspace, slug: 'supply' } },
     create: {
-      id: SEED_IDS.brandSupply,
+      id: SEED_IDS.projectSupply,
       workspaceId: SEED_IDS.workspace,
       name: 'Northwind Supply',
       slug: 'supply',
@@ -256,10 +256,10 @@ async function seedBrands(tx: RlsTransactionClient): Promise<void> {
     update: {},
   });
 
-  await tx.brand.upsert({
+  await tx.project.upsert({
     where: { workspaceId_slug: { workspaceId: SEED_IDS.workspace, slug: 'labs' } },
     create: {
-      id: SEED_IDS.brandLabs,
+      id: SEED_IDS.projectLabs,
       workspaceId: SEED_IDS.workspace,
       name: 'Northwind Labs',
       slug: 'labs',
@@ -274,11 +274,11 @@ async function seedBrands(tx: RlsTransactionClient): Promise<void> {
   });
 
   await tx.businessProfile.upsert({
-    where: { brandId_version: { brandId: SEED_IDS.brandSupply, version: 1 } },
+    where: { projectId_version: { projectId: SEED_IDS.projectSupply, version: 1 } },
     create: {
       id: SEED_IDS.businessProfile,
       workspaceId: SEED_IDS.workspace,
-      brandId: SEED_IDS.brandSupply,
+      projectId: SEED_IDS.projectSupply,
       version: 1,
       productUrl: 'https://northwind.example.test',
       productUrlVerifiedAt: hoursAgo(700),
@@ -307,12 +307,12 @@ async function seedBrands(tx: RlsTransactionClient): Promise<void> {
 
   await tx.glossaryTerm.upsert({
     where: {
-      brandId_locale_term: { brandId: SEED_IDS.brandSupply, locale: 'pt', term: 'workshop' },
+      projectId_locale_term: { projectId: SEED_IDS.projectSupply, locale: 'pt', term: 'workshop' },
     },
     create: {
       id: seedId('glossary:pt:workshop'),
       workspaceId: SEED_IDS.workspace,
-      brandId: SEED_IDS.brandSupply,
+      projectId: SEED_IDS.projectSupply,
       locale: 'pt',
       term: 'workshop',
       preferredTranslation: 'oficina',
@@ -327,7 +327,7 @@ async function seedBrands(tx: RlsTransactionClient): Promise<void> {
     create: {
       id: SEED_IDS.campaign,
       workspaceId: SEED_IDS.workspace,
-      brandId: SEED_IDS.brandSupply,
+      projectId: SEED_IDS.projectSupply,
       name: 'Spring restock',
       objective: 'Bring dormant customers back for consumables.',
       tags: ['restock', 'consumables'],
@@ -346,7 +346,7 @@ async function seedConnection(tx: RlsTransactionClient): Promise<void> {
     create: {
       id: SEED_IDS.connection,
       workspaceId: SEED_IDS.workspace,
-      brandId: SEED_IDS.brandSupply,
+      projectId: SEED_IDS.projectSupply,
       provider: 'fake',
       externalAccountId: 'fake-account-000123',
       accountType: 'business_account',
@@ -451,9 +451,9 @@ async function seedConnection(tx: RlsTransactionClient): Promise<void> {
 async function seedReusables(tx: RlsTransactionClient): Promise<void> {
   await tx.signature.upsert({
     where: {
-      workspaceId_brandId_name_locale: {
+      workspaceId_projectId_name_locale: {
         workspaceId: SEED_IDS.workspace,
-        brandId: SEED_IDS.brandSupply,
+        projectId: SEED_IDS.projectSupply,
         name: 'Standard close',
         locale: 'en',
       },
@@ -461,7 +461,7 @@ async function seedReusables(tx: RlsTransactionClient): Promise<void> {
     create: {
       id: SEED_IDS.signature,
       workspaceId: SEED_IDS.workspace,
-      brandId: SEED_IDS.brandSupply,
+      projectId: SEED_IDS.projectSupply,
       name: 'Standard close',
       body: 'Questions about a part number? Reply here and we will answer.',
       locale: 'en',
@@ -473,16 +473,16 @@ async function seedReusables(tx: RlsTransactionClient): Promise<void> {
 
   await tx.postingSet.upsert({
     where: {
-      workspaceId_brandId_name: {
+      workspaceId_projectId_name: {
         workspaceId: SEED_IDS.workspace,
-        brandId: SEED_IDS.brandSupply,
+        projectId: SEED_IDS.projectSupply,
         name: 'Weekly restock',
       },
     },
     create: {
       id: SEED_IDS.postingSet,
       workspaceId: SEED_IDS.workspace,
-      brandId: SEED_IDS.brandSupply,
+      projectId: SEED_IDS.projectSupply,
       name: 'Weekly restock',
       description: 'The targets and defaults used for the Tuesday restock note.',
       connectionIds: [SEED_IDS.connection],
@@ -530,11 +530,11 @@ async function seedReusables(tx: RlsTransactionClient): Promise<void> {
 
 async function seedGrowthPlan(tx: RlsTransactionClient): Promise<void> {
   await tx.growthPlan.upsert({
-    where: { brandId_version: { brandId: SEED_IDS.brandSupply, version: 1 } },
+    where: { projectId_version: { projectId: SEED_IDS.projectSupply, version: 1 } },
     create: {
       id: SEED_IDS.growthPlan,
       workspaceId: SEED_IDS.workspace,
-      brandId: SEED_IDS.brandSupply,
+      projectId: SEED_IDS.projectSupply,
       businessProfileId: SEED_IDS.businessProfile,
       version: 1,
       state: 'draft',

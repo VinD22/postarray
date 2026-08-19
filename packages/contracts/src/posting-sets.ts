@@ -76,7 +76,7 @@ export const MAX_POSTING_SET_TARGETS = 200;
  */
 export const postingSetInputShape = z
   .object({
-    brandId: idSchema(ID_PREFIXES.brand),
+    projectId: idSchema(ID_PREFIXES.project),
     name: z.string().min(1).max(120),
     description: z.string().max(500).nullable().default(null),
     /** The channels this Set posts to. Empty is allowed while it is drafted. */
@@ -136,7 +136,7 @@ export const postingSetViewSchema = z
   .object({
     id: idSchema(ID_PREFIXES.set),
     workspaceId: idSchema(ID_PREFIXES.workspace),
-    brandId: idSchema(ID_PREFIXES.brand),
+    projectId: idSchema(ID_PREFIXES.project),
     name: z.string(),
     description: z.string().nullable(),
     connectionIds: z.array(idSchema(ID_PREFIXES.connection)),

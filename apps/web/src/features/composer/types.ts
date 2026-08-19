@@ -27,7 +27,7 @@ export interface TargetAccount {
   readonly displayName: string;
   readonly handle: string | null;
   readonly avatarUrl: string | null;
-  readonly brandId: string | null;
+  readonly projectId: string | null;
   readonly paused: boolean;
   /** The versioned snapshot every counter and limit in this screen reads. */
   readonly capabilities: CapabilitySnapshot;
@@ -48,7 +48,7 @@ export interface SignatureOption {
   readonly id: string;
   readonly name: string;
   readonly text: string;
-  readonly brandId: string | null;
+  readonly projectId: string | null;
   /** Empty means every platform. */
   readonly providers: readonly ProviderId[];
   readonly locale: string;

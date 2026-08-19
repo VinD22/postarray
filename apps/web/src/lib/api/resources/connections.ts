@@ -21,7 +21,7 @@ import type {
 import { requireFirst } from '@/lib/utils/require-first';
 
 export type ConnectionListQuery = {
-  readonly brandId?: string;
+  readonly projectId?: string;
   readonly provider?: ProviderId;
   readonly cursor?: string;
   readonly limit?: number;
@@ -72,10 +72,10 @@ export const connectionsApi = {
       { query, ...forward },
       () => {
         const projectConnectionIds =
-          query.brandId === undefined
+          query.projectId === undefined
             ? null
             : new Set(
-                demoSession.brands.find((project) => project.id === query.brandId)?.connectionIds ??
+                demoSession.projects.find((project) => project.id === query.projectId)?.connectionIds ??
                   [],
               );
         return page(
@@ -113,14 +113,14 @@ export const connectionsApi = {
    * before the user leaves Relay.
    */
   beginOAuth: (
-    input: { provider: ProviderId; brandId: string; returnUrl: string },
+    input: { provider: ProviderId; projectId: string; returnUrl: string },
     idempotencyKey: string,
   ): Promise<{ authorizationUrl: string; transactionId: string }> =>
     call(
       '/connections/oauth/begin',
       {
         method: 'POST',
-        body: { provider: input.provider, brandId: input.brandId, redirectTo: input.returnUrl },
+        body: { provider: input.provider, projectId: input.projectId, redirectTo: input.returnUrl },
         idempotencyKey,
       },
       () => ({ authorizationUrl: input.returnUrl, transactionId: 'oauth_demo' }),

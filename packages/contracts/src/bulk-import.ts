@@ -246,7 +246,7 @@ export const bulkImportJobSchema = z
   .object({
     id: idSchema(ID_PREFIXES.bulkImportJob),
     workspaceId: idSchema(ID_PREFIXES.workspace),
-    projectId: idSchema(ID_PREFIXES.brand),
+    projectId: idSchema(ID_PREFIXES.project),
     state: bulkImportStateSchema,
     filename: z.string().min(1).max(255),
     manifestChecksum: checksumSchema,

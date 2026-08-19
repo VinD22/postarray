@@ -43,7 +43,7 @@ function apiRule(): RuleView {
   return {
     id: 'rule_01',
     workspaceId: 'ws_01',
-    brandId: 'brand_01',
+    projectId: 'project_01',
     name: 'Respond to traction',
     state: 'active',
     trigger: {
@@ -67,10 +67,10 @@ function apiRule(): RuleView {
 
 describe('automation API adapters', () => {
   it('sends tenant scope and threshold guards without browser-only fields', () => {
-    const input = toRuleInput(draft(), 'brand_01');
+    const input = toRuleInput(draft(), 'project_01');
 
     expect(input).toMatchObject({
-      brandId: 'brand_01',
+      projectId: 'project_01',
       preauthorizedConnectionIds: ['conn_01'],
       requiresApproval: true,
       endCondition: { kind: 'manual' },

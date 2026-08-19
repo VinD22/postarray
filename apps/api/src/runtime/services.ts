@@ -10,7 +10,7 @@ import type { Clock, KeyValueStore, Services } from '../application/port';
 const REQUIRED_SERVICES = [
   'workspaces',
   'members',
-  'brands',
+  'projects',
   'connections',
   'content',
   'validation',

@@ -43,7 +43,7 @@ export function UpcomingQueue() {
       to: new Date(now.getTime() + DAY_MS).toISOString(),
     };
   }, []);
-  const query = useCalendar({ ...range, ...(project === null ? {} : { brandId: project.id }) });
+  const query = useCalendar({ ...range, ...(project === null ? {} : { projectId: project.id }) });
   const entries = query.data?.data ?? [];
 
   return (

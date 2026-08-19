@@ -467,7 +467,7 @@ export function createCredentialStore(prisma: RelayPrismaClient): CredentialStor
                     data: {
                       id: claim.connectionId,
                       workspaceId: input.workspaceId,
-                      brandId: transaction.brandId,
+                      projectId: transaction.projectId,
                       provider: input.expectedProvider,
                       externalAccountId: claim.externalAccountId,
                       accountType: storedAccountType(claim.accountType) as never,
@@ -491,7 +491,7 @@ export function createCredentialStore(prisma: RelayPrismaClient): CredentialStor
                 : await db.socialConnection.update({
                     where: { id: existing.id },
                     data: {
-                      brandId: transaction.brandId,
+                      projectId: transaction.projectId,
                       displayName: claim.displayName,
                       handle: claim.handle,
                       avatarUrl: claim.avatarUrl,

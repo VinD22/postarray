@@ -14,6 +14,7 @@ import {
 import type { ActorContext, PageQuery, QueueRuleService, ServiceDeps } from '../types';
 
 import { recordAudit } from '../internal/audit';
+import { requireProjectOwnership, requireProjectOwnershipIfPresent } from '../internal/project-ownership';
 import { invalid, notFound } from '../internal/errors';
 import { withIdempotency } from '../internal/idempotency';
 import { pageArgs, toPage } from '../internal/pagination';
@@ -57,14 +58,15 @@ export function createQueueRuleService(deps: ServiceDeps): QueueRuleService {
   return {
     async list(
       ctx: ActorContext,
-      query: PageQuery & { readonly brandId?: string } = {},
+      query: PageQuery & { readonly projectId?: string } = {},
     ): Promise<Paginated<QueueRuleView>> {
-      return authorized(deps, ctx, 'rule.read', undefined, async (db) => {
+      return authorized(deps, ctx, 'rule.read', undefined, async (db, actor) => {
+        await requireProjectOwnershipIfPresent(db, actor, query.projectId);
         const args = pageArgs(query);
         const rows = await db.queueRule.findMany({
           where: {
             archivedAt: null,
-            ...(query.brandId === undefined ? {} : { brandId: query.brandId }),
+            ...(query.projectId === undefined ? {} : { projectId: query.projectId }),
           },
           orderBy: { id: 'asc' },
           take: args.take,
@@ -89,12 +91,13 @@ export function createQueueRuleService(deps: ServiceDeps): QueueRuleService {
         body: parsed,
         resourceIdOf: (view) => view.id,
         run: async () =>
-          authorized(deps, ctx, 'rule.write', { brandId: parsed.brandId }, async (db, actor) => {
+          authorized(deps, ctx, 'rule.write', { projectId: parsed.projectId }, async (db, actor) => {
+            await requireProjectOwnership(db, actor, parsed.projectId);
             if (actor.userId === null) {
-              throw invalid('errors.queue_rule_requires_person', { brandId: parsed.brandId });
+              throw invalid('errors.queue_rule_requires_person', { projectId: parsed.projectId });
             }
             const duplicate = await db.queueRule.findFirst({
-              where: { brandId: parsed.brandId, name: parsed.name, archivedAt: null },
+              where: { projectId: parsed.projectId, name: parsed.name, archivedAt: null },
               select: { id: true },
             });
             if (duplicate !== null) {
@@ -103,7 +106,7 @@ export function createQueueRuleService(deps: ServiceDeps): QueueRuleService {
             const created = await db.queueRule.create({
               data: {
                 workspaceId: actor.workspace.id,
-                brandId: parsed.brandId,
+                projectId: parsed.projectId,
                 name: parsed.name,
                 ianaTimeZone: parsed.ianaTimeZone,
                 windows: [...parsed.windows],
@@ -194,14 +197,15 @@ export function createQueueRuleService(deps: ServiceDeps): QueueRuleService {
 
     async previewSlot(
       ctx: ActorContext,
-      input: { readonly brandId: string; readonly after?: string },
+      input: { readonly projectId: string; readonly after?: string },
     ): Promise<SlotProposal> {
       return authorized(
         deps,
         ctx,
         'content.read',
-        { brandId: input.brandId },
+        { projectId: input.projectId },
         async (db, actor) => {
+          await requireProjectOwnership(db, actor, input.projectId);
           const context = await readQueueContext(
             db,
             deps.clock,
@@ -222,7 +226,7 @@ export function createQueueRuleService(deps: ServiceDeps): QueueRuleService {
     async proposeSlot(
       ctx: ActorContext,
       input: {
-        readonly brandId: string;
+        readonly projectId: string;
         readonly after?: string;
         readonly contentItemId?: string;
       },
@@ -232,9 +236,10 @@ export function createQueueRuleService(deps: ServiceDeps): QueueRuleService {
         body: input,
         resourceIdOf: (view) => view.id,
         run: async () =>
-          authorized(deps, ctx, 'post.schedule', { brandId: input.brandId }, async (db, actor) => {
+          authorized(deps, ctx, 'post.schedule', { projectId: input.projectId }, async (db, actor) => {
+            await requireProjectOwnership(db, actor, input.projectId);
             if (actor.userId === null) {
-              throw invalid('errors.queue_rule_requires_person', { brandId: input.brandId });
+              throw invalid('errors.queue_rule_requires_person', { projectId: input.projectId });
             }
             const context = await readQueueContext(
               db,
@@ -253,7 +258,7 @@ export function createQueueRuleService(deps: ServiceDeps): QueueRuleService {
             const created = await db.queueSlotReservation.create({
               data: {
                 workspaceId: actor.workspace.id,
-                brandId: input.brandId,
+                projectId: input.projectId,
                 queueRuleId: proposal.queueRuleId,
                 state: 'proposed',
                 scheduledFor: new Date(proposal.instant),
@@ -358,20 +363,27 @@ export function createQueueRuleService(deps: ServiceDeps): QueueRuleService {
 
     async listReservations(
       ctx: ActorContext,
-      query: PageQuery & { readonly brandId: string },
+      query: PageQuery & { readonly projectId: string },
     ): Promise<Paginated<QueueSlotReservationView>> {
-      return authorized(deps, ctx, 'content.read', { brandId: query.brandId }, async (db) => {
-        const args = pageArgs(query);
-        const rows = await db.queueSlotReservation.findMany({
-          where: { brandId: query.brandId },
-          orderBy: { id: 'asc' },
-          take: args.take,
-          skip: args.skip,
-          ...(args.cursor === undefined ? {} : { cursor: args.cursor }),
-          select: RESERVATION_SELECT,
-        });
-        return toPage(rows, args, (row) => row.id, toReservationView);
-      });
+      return authorized(
+        deps,
+        ctx,
+        'content.read',
+        { projectId: query.projectId },
+        async (db, actor) => {
+          await requireProjectOwnership(db, actor, query.projectId);
+          const args = pageArgs(query);
+          const rows = await db.queueSlotReservation.findMany({
+            where: { projectId: query.projectId },
+            orderBy: { id: 'asc' },
+            take: args.take,
+            skip: args.skip,
+            ...(args.cursor === undefined ? {} : { cursor: args.cursor }),
+            select: RESERVATION_SELECT,
+          });
+          return toPage(rows, args, (row) => row.id, toReservationView);
+        },
+      );
     },
   };
 }

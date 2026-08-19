@@ -159,7 +159,7 @@ export const masterDraftSchema = z
   .object({
     id: idSchema(ID_PREFIXES.contentItem),
     workspaceId: idSchema(ID_PREFIXES.workspace),
-    brandId: idSchema(ID_PREFIXES.brand).nullable(),
+    projectId: idSchema(ID_PREFIXES.project).nullable(),
     campaignId: idSchema(ID_PREFIXES.campaign).nullable(),
     title: z.string().nullable(),
     body: z.string(),

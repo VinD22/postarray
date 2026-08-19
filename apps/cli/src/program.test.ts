@@ -117,7 +117,7 @@ describe('--json envelope', () => {
           {
             id: 'conn_1',
             workspaceId: 'ws_01',
-            brandId: null,
+            projectId: null,
             provider: 'linkedin',
             accountType: 'organization',
             displayName: 'Acme',

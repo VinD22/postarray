@@ -22,8 +22,8 @@ function unavailable(): never {
 }
 
 export const queueApi = {
-  listRules: (brandId: string): Promise<Paginated<QueueRuleView>> =>
-    call('/queue/rules', { method: 'GET', query: { brandId } }, unavailable),
+  listRules: (projectId: string): Promise<Paginated<QueueRuleView>> =>
+    call('/queue/rules', { method: 'GET', query: { projectId } }, unavailable),
 
   getRule: (ruleId: string): Promise<QueueRuleView> =>
     call(`/queue/rules/${ruleId}`, { method: 'GET' }, unavailable),
@@ -42,11 +42,11 @@ export const queueApi = {
     call(`/queue/rules/${ruleId}`, { method: 'DELETE', sideEffectFree: true }, unavailable),
 
   /** Read-only. Shows the slot and its reasons without holding anything. */
-  previewSlot: (brandId: string): Promise<SlotProposal> =>
-    call('/queue/next-slot', { method: 'GET', query: { brandId } }, unavailable),
+  previewSlot: (projectId: string): Promise<SlotProposal> =>
+    call('/queue/next-slot', { method: 'GET', query: { projectId } }, unavailable),
 
   proposeSlot: (
-    input: { brandId: string; contentItemId?: string },
+    input: { projectId: string; contentItemId?: string },
     idempotencyKey: string,
   ): Promise<QueueSlotReservationView> =>
     call('/queue/slots', { method: 'POST', body: input, idempotencyKey }, unavailable),

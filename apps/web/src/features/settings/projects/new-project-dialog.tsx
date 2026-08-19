@@ -15,7 +15,7 @@ import {
 } from '@relay/design-system/primitives';
 import { useTranslations } from '@relay/i18n/react';
 
-export interface NewBrandDialogProps {
+export interface NewProjectDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   saving: boolean;
@@ -23,14 +23,14 @@ export interface NewBrandDialogProps {
   onSubmit: (input: { name: string }) => void;
 }
 
-/** A brand starts with a name. Everything else is edited in place afterwards. */
-export function NewBrandDialog({
+/** A project starts with a name. Everything else is edited in place afterwards. */
+export function NewProjectDialog({
   open,
   onOpenChange,
   saving,
   disabled = false,
   onSubmit,
-}: NewBrandDialogProps): ReactNode {
+}: NewProjectDialogProps): ReactNode {
   const t = useTranslations();
   const formId = useId();
   const [name, setName] = useState('');
@@ -57,8 +57,8 @@ export function NewBrandDialog({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent closeLabel={t('a11y.label.closeDialog')} size="sm">
         <DialogHeader>
-          <DialogTitle>{t('settings.brands.add')}</DialogTitle>
-          <DialogDescription>{t('settings.ui.brands.description')}</DialogDescription>
+          <DialogTitle>{t('settings.projects.add')}</DialogTitle>
+          <DialogDescription>{t('settings.ui.projects.description')}</DialogDescription>
         </DialogHeader>
         <DialogBody>
           <form id={formId} onSubmit={handleSubmit} noValidate>

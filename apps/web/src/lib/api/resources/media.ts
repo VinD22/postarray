@@ -19,7 +19,7 @@ export interface RightsDeclarationInput {
 export interface MediaAssetView {
   readonly id: string;
   readonly workspaceId: string;
-  readonly brandId: string | null;
+  readonly projectId: string | null;
   readonly kind: MediaKind;
   readonly fileName: string | null;
   readonly mimeType: string;
@@ -74,7 +74,7 @@ export const mediaApi = {
       mimeType: string;
       byteSize: number;
       sha256: string;
-      brandId?: string | null;
+      projectId?: string | null;
     },
     idempotencyKey: string,
   ): Promise<UploadTicket> =>
@@ -91,7 +91,7 @@ export const mediaApi = {
     call(`/media/${mediaId}/finalize`, { method: 'POST', idempotencyKey }, () => null),
 
   importFromUrl: (
-    input: { url: string; brandId?: string | null },
+    input: { url: string; projectId?: string | null },
     idempotencyKey: string,
   ): Promise<OperationRef> =>
     call('/media/imports', { method: 'POST', body: input, idempotencyKey }, () => ({
@@ -105,7 +105,7 @@ export const mediaApi = {
     })),
 
   list: (
-    query: { brandId?: string; kind?: MediaKind; cursor?: string; limit?: number } = {},
+    query: { projectId?: string; kind?: MediaKind; cursor?: string; limit?: number } = {},
     forward?: ForwardAuth,
   ): Promise<Paginated<MediaAssetView>> =>
     call('/media', { query, ...forward }, () => page<MediaAssetView>([])),

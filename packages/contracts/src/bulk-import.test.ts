@@ -136,7 +136,7 @@ describe('bulk import job view', () => {
     const parsed = bulkImportJobSchema.safeParse({
       id: 'import_00000000000000000000000001',
       workspaceId: 'ws_00000000000000000000000001',
-      projectId: 'brand_00000000000000000000000001',
+      projectId: 'project_00000000000000000000000001',
       state: 'uploaded',
       filename: 'posts.csv',
       manifestChecksum: 'a'.repeat(64),
