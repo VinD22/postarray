@@ -65,6 +65,17 @@ export const errorMessages = {
     'Bu çalışma alanı zaten tüm {limit} aktif kanalları kullanıyor.',
   'error.channel_limit_reached.action':
     'Başka bir kanalı bağlamadan önce bir kanalın bağlantısını kesin.',
+  'error.project_limit_reached.message':
+    'Bu çalışma alanı zaten tüm {limit} aktif projeyi kullanıyor.',
+  'error.project_limit_reached.action':
+    'Etkin olmayan bir projeyi arşivleyin veya çalışma alanının proje kotasını değiştirin.',
+  'error.project_has_connections.message':
+    'Bu projede hâlâ {connected, plural, one {# bağlı kanal} other {# bağlı kanal}} var.',
+  'error.project_has_connections.action':
+    'Arşivlemeden önce bu projedeki her kanalın bağlantısını kesin.',
+  'error.project_last_active.message':
+    'Bir çalışma alanı en az bir etkin proje bulundurmalıdır.',
+  'error.project_last_active.action': 'Bunu arşivlemeden önce başka bir proje oluşturun.',
   'error.connection_not_found.message': 'Bu bağlantı artık bu çalışma alanında değil.',
   'error.connection_not_found.action': 'Yayınlamaya devam etmek için hesabı tekrar bağlayın.',
   'error.connection_revoked.message': '{account} {provider} tarihinde erişimi iptal etti.',

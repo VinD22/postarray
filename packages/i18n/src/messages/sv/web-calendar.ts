@@ -86,7 +86,7 @@ export const webCalendarMessages = {
   'web.calendar.allDayHeading': 'Ingen exakt tid än',
 
   'web.calendar.filter.group': 'Kundgrupp',
-  'web.calendar.filter.anyBrand': 'Vilket märke som helst',
+  'web.calendar.filter.anyProject': 'Vilket märke som helst',
   'web.calendar.filter.anyAccount': 'Vilket konto som helst',
   'web.calendar.filter.anyPlatform': 'Vilken plattform som helst',
   'web.calendar.filter.anyStatus': 'Vilken status som helst',
@@ -361,6 +361,12 @@ export const webCalendarMessages = {
     'Nästa skärm är {provider}, inte Relä. Relay ser aldrig ditt lösenord.',
   'web.connection.connect.noWriteWithoutApproval':
     'Att ansluta ett konto publicerar ingenting. Varje inlägg följer fortfarande denna policy för godkännande av arbetsytan.',
+  'web.connection.projectScope.title': 'Kanaler för {project}',
+  'web.connection.projectScope.body':
+    'Nya kanaler ansluter till detta varumärke. Byt varumärke i det övre fältet för att hantera en annan uppsättning.',
+  'web.connection.projectMissing.title': 'Skapa ett varumärke innan du ansluter en kanal',
+  'web.connection.projectMissing.body':
+    'Varumärken håller kanaler, media, utkast och scheman för olika produkter eller kunder separata.',
 
   'web.connection.requirement.instagram':
     'Instagram-publicering behöver ett professionellt konto, vilket innebär ett företags- eller skaparkonto kopplat till en Facebook-sida.',

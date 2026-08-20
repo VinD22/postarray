@@ -15,7 +15,6 @@ export const navMessages = {
   'nav.commandPalette': 'Command palette',
   'nav.account': 'Account',
   'nav.workspaceSwitcher': 'Lumipat ng workspace',
-  'nav.brandSwitcher': 'Magpalit ng brand',
   'nav.skipToContent': 'Lumaktaw sa pangunahing nilalaman',
   'nav.primaryLandmark': 'Pangunahing nabigasyon',
   'nav.moreItems': 'Higit pa',
@@ -26,7 +25,7 @@ export const navMessages = {
   'nav.theme.label': 'Tema',
 
   'settings.nav.members': 'Mga miyembro at tungkulin',
-  'settings.nav.brands': 'Mga tatak',
+  'settings.nav.projects': 'Mga proyekto',
   'settings.nav.agents': 'Mga Ahente at API',
   'settings.nav.developerApps': 'Mga app ng developer',
   'settings.nav.webhooks': 'Mga Webhook',
@@ -65,8 +64,11 @@ export const navMessages = {
 
   'shell.workspace.label': 'Workspace',
   'shell.workspace.current': 'Kasalukuyang workspace: {name}',
-  'shell.brand.label': 'Brand',
-  'shell.brand.all': 'Lahat ng brand',
+  'shell.project.label': 'Proyekto',
+  'shell.project.none': 'Gumawa ng proyekto',
+  'shell.project.current': 'Kasalukuyang proyekto: {name}',
+  'shell.project.manage': 'Pamahalaan ang mga proyekto',
+  'shell.project.all': 'Lahat ng proyekto',
   'shell.timeZone.label': 'Mga oras na ipinakita sa {timeZone}',
   'shell.notifications.count':
     '{count, plural, =0 {Walang bagong notification} one {# bagong abiso} other {# bagong notification}}',

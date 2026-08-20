@@ -223,7 +223,7 @@ export const webComposerMessages = {
   'composerWeb.set.apply': 'Verwenden Sie dieses Set',
   'composerWeb.set.none': 'Noch keine Sets gespeichert.',
   'composerWeb.signature.pickerLabel': 'Unterschrift',
-  'composerWeb.signature.scope': 'Für {brand} auf {provider} in {language}',
+  'composerWeb.signature.scope': 'Für {project} auf {provider} in {language}',
   'composerWeb.signature.previewHeading': 'Wie es den Beitrag beendet',
   'composerWeb.signature.notMatching':
     'Diese Signatur bezieht sich auf eine andere Marke, Plattform oder Sprache und wird daher hier nicht angeboten.',

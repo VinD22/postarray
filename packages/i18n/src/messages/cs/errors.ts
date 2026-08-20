@@ -64,6 +64,14 @@ export const errorMessages = {
   'error.channel_limit_reached.message':
     'Tento pracovní prostor již používá všechny {limit} aktivní kanály.',
   'error.channel_limit_reached.action': 'Před připojením dalšího kanálu odpojte kanál.',
+  'error.project_limit_reached.message': 'Tento pracovní prostor už používá všech {limit} aktivních projektů.',
+  'error.project_limit_reached.action':
+    'Archivujte neaktivní projekt nebo změňte limit projektů pracovního prostoru.',
+  'error.project_has_connections.message':
+    'Tento projekt stále má {connected, plural, one {# připojený kanál} few {# připojené kanály} many {# připojeného kanálu} other {# připojených kanálů}}.',
+  'error.project_has_connections.action': 'Před archivací tohoto projektu odpojte každý kanál v něm.',
+  'error.project_last_active.message': 'Pracovní prostor musí mít alespoň jeden aktivní projekt.',
+  'error.project_last_active.action': 'Před archivací tohoto vytvořte jiný projekt.',
   'error.connection_not_found.message': 'Toto připojení již není v tomto pracovním prostoru.',
   'error.connection_not_found.action': 'Znovu připojte účet, abyste do něj mohli dále publikovat.',
   'error.connection_revoked.message': '{account} odebral přístup na {provider}.',

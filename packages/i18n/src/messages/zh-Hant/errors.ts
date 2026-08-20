@@ -47,6 +47,13 @@ export const errorMessages = {
   'error.entitlement_missing.action': '檢查帳務設定，或聯絡支援團隊。',
   'error.channel_limit_reached.message': '此 Workspace 已使用全部 {limit} 個啟用中的頻道。',
   'error.channel_limit_reached.action': '連線另一個頻道前請先中斷一個。',
+  'error.project_limit_reached.message': '此 Workspace 已使用全部 {limit} 個啟用中的專案。',
+  'error.project_limit_reached.action': '請封存一個未使用的專案，或變更 Workspace 的專案配額。',
+  'error.project_has_connections.message':
+    '此專案仍有 {connected, plural, other {# 個已連線的頻道}}。',
+  'error.project_has_connections.action': '封存此專案前，請先中斷其中所有頻道的連線。',
+  'error.project_last_active.message': 'Workspace 必須保留至少一個啟用中的專案。',
+  'error.project_last_active.action': '封存此專案前，請先建立另一個專案。',
   'error.connection_not_found.message': '該連線已不在此 Workspace。',
   'error.connection_not_found.action': '再次連線帳號以繼續發布至該帳號。',
   'error.connection_revoked.message': '{account} 已在 {provider} 撤銷存取權。',

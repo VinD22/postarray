@@ -218,7 +218,7 @@ export const webComposerMessages = {
   'composerWeb.set.apply': 'Utilice este conjunto',
   'composerWeb.set.none': 'Aún no hay conjuntos guardados.',
   'composerWeb.signature.pickerLabel': 'Firma',
-  'composerWeb.signature.scope': 'For {brand} on {provider} in {language}',
+  'composerWeb.signature.scope': 'For {project} on {provider} in {language}',
   'composerWeb.signature.previewHeading': 'Como termina el post',
   'composerWeb.signature.notMatching':
     'Esta firma está dirigida a una marca, plataforma o idioma diferente, por lo que no se ofrece aquí.',

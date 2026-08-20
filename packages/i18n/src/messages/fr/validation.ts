@@ -66,12 +66,12 @@ export const validationMessages = {
   'validation.schedule_too_far_ahead.message':
     "C'est plus en avance que le {limit} anticipez ce titre.",
   'validation.schedule_outside_quiet_hours.message':
-    'Cela tombe dans les heures calmes fixées pour {brand}.',
+    'Cela tombe dans les heures calmes fixées pour {project}.',
   'validation.duplicate_within_window.message':
     'Un contenu très similaire est déjà programmé ou publié pour {account} dans {window}.',
-  'validation.blocked_term_present.message': 'Le texte contient un terme bloqué pour {brand}.',
+  'validation.blocked_term_present.message': 'Le texte contient un terme bloqué pour {project}.',
   'validation.unsupported_claim.message':
-    'Cette allégation ne figure pas dans les allégations approuvées pour {brand}.',
+    'Cette allégation ne figure pas dans les allégations approuvées pour {project}.',
   'validation.unsupported_claim.hint':
     'Ajoutez-le aux allégations approuvées avec des preuves ou reformulez la phrase.',
   'validation.cadence_exceeded.message':

@@ -28,7 +28,7 @@ export const automationMessages = {
   'automation.trigger.manual': 'ai đó chạy nó từ ứng dụng, API, MCP hoặc CLI',
   'automation.trigger.recurring': 'lịch trình định kỳ bị cháy',
   'automation.condition.label': 'Điều kiện',
-  'automation.condition.brand': 'thương hiệu là {brand}',
+  'automation.condition.project': 'thương hiệu là {project}',
   'automation.condition.campaign': 'chiến dịch là {campaign}',
   'automation.condition.account': 'tài khoản là {account}',
   'automation.condition.platform': 'nền tảng là {platform}',
@@ -120,7 +120,7 @@ export const automationMessages = {
   'automation.webhooks.urlLabel': 'URL điểm cuối',
   'automation.webhooks.eventsLabel': 'Sự kiện',
   'automation.webhooks.allEvents': 'Tất cả sự kiện',
-  'automation.webhooks.scopeLabel': 'Brand và tài khoản',
+  'automation.webhooks.scopeLabel': 'Project và tài khoản',
   'automation.webhooks.allAccounts': 'Tất cả tài khoản',
   'automation.webhooks.secret': 'Ký bí mật',
   'automation.webhooks.secretShownOnce':

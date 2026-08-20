@@ -1,7 +1,7 @@
 /** Composer: master draft, per target overrides, previews, validation, cost. */
 export const composerMessages = {
   'composer.title': 'रचना',
-  'composer.titleWithBrand': 'के लिए लिखें {brand}',
+  'composer.titleWithProject': 'के लिए लिखें {project}',
   'composer.master.label': 'मास्टर ड्राफ्ट',
   'composer.master.description':
     'एक बार यहाँ लिखें. संगत परिवर्तन प्रत्येक चयनित लक्ष्य तक पहुंचते हैं। केवल उस खाते को प्राप्त होने वाला संस्करण लिखने के लिए एक लक्ष्य खोलें।',

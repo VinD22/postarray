@@ -51,6 +51,16 @@ export const errorMessages = {
   'error.channel_limit_reached.message':
     'เวิร์กสเปซนี้ใช้แชนเนลที่ใช้งานอยู่ทั้งหมด {limit} แชนเนลแล้ว',
   'error.channel_limit_reached.action': 'ยกเลิกการเชื่อมต่อช่องก่อนที่จะเชื่อมต่อกับช่องอื่น',
+  'error.project_limit_reached.message':
+    'พื้นที่ทำงานนี้ใช้โปรเจกต์ที่ใช้งานอยู่ครบ {limit} โปรเจกต์แล้ว',
+  'error.project_limit_reached.action':
+    'เก็บโปรเจกต์ที่ไม่ได้ใช้งานเข้าคลังหรือเปลี่ยนสิทธิ์จำนวนโปรเจกต์ของพื้นที่ทำงาน',
+  'error.project_has_connections.message':
+    'โปรเจกต์นี้ยังมี {connected, plural, other {# ช่องทางที่เชื่อมต่ออยู่}}',
+  'error.project_has_connections.action':
+    'ตัดการเชื่อมต่อทุกช่องทางในโปรเจกต์นี้ก่อนเก็บเข้าคลัง',
+  'error.project_last_active.message': 'พื้นที่ทำงานต้องมีโปรเจกต์ที่ใช้งานอยู่อย่างน้อยหนึ่งโปรเจกต์',
+  'error.project_last_active.action': 'สร้างโปรเจกต์อื่นก่อนเก็บโปรเจกต์นี้เข้าคลัง',
   'error.connection_not_found.message': 'การเชื่อมต่อนั้นไม่อยู่ในพื้นที่ทำงานนี้อีกต่อไป',
   'error.connection_not_found.action': 'เชื่อมต่อบัญชีอีกครั้งเพื่อเผยแพร่ต่อไป',
   'error.connection_revoked.message': '{account} เพิกถอนการเข้าถึงบน {provider}',

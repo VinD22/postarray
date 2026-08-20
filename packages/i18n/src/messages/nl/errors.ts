@@ -66,6 +66,14 @@ export const errorMessages = {
   'error.channel_limit_reached.message':
     'Deze werkruimte gebruikt al alle actieve {limit}-kanalen.',
   'error.channel_limit_reached.action': 'Ontkoppel een kanaal voordat u een ander kanaal aansluit.',
+  'error.project_limit_reached.message': 'Deze werkruimte gebruikt al alle {limit} actieve projecten.',
+  'error.project_limit_reached.action':
+    'Archiveer een inactief project of wijzig de projecttoewijzing van de werkruimte.',
+  'error.project_has_connections.message':
+    'Dit project heeft nog {connected, plural, one {# gekoppeld kanaal} other {# gekoppelde kanalen}}.',
+  'error.project_has_connections.action': 'Ontkoppel elk kanaal in dit project voordat je het archiveert.',
+  'error.project_last_active.message': 'Een werkruimte moet minstens één actief project behouden.',
+  'error.project_last_active.action': 'Maak een ander project voordat je dit archiveert.',
   'error.connection_not_found.message': 'Die verbinding bevindt zich niet meer in deze werkruimte.',
   'error.connection_not_found.action':
     'Verbind het account opnieuw om ernaar te blijven publiceren.',

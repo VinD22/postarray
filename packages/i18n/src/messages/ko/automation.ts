@@ -27,7 +27,7 @@ export const automationMessages = {
   'automation.trigger.manual': '누군가 앱, API, MCP 또는 CLI에서 실행합니다.',
   'automation.trigger.recurring': '반복되는 일정이 발생했습니다.',
   'automation.condition.label': '정황',
-  'automation.condition.brand': '브랜드는{brand}',
+  'automation.condition.project': '브랜드는{project}',
   'automation.condition.campaign': '캠페인은{campaign}',
   'automation.condition.account': '계정은{account}',
   'automation.condition.platform': '플랫폼은{platform}',

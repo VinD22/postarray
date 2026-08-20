@@ -16,7 +16,6 @@ export const webShellMessages = {
   'shell.workspace.create': '建立 Workspace',
   'shell.workspace.manage': 'Workspace 設定',
   'shell.workspace.role': '你在這裡的角色是 {role}',
-  'shell.brand.filterHint': '將首頁、行事曆與分析篩選為此 Brand。',
   'shell.demo.badge': '示範資料',
   'shell.demo.title': '你正在查看示範資料',
   'shell.demo.body':
@@ -169,7 +168,7 @@ export const webShellMessages = {
     '下一個畫面是 Polar，我們的商家登記方。Polar 確認訂閱時才授予存取權，不是在瀏覽器返回時。',
   'onboarding.plan.factsTitle': '繼續後會發生什麼',
   'onboarding.workspace.help':
-    'Workspace 存放你的 Brand、已連線帳號、草稿和收據。你之後可以建立更多。',
+    'Workspace 存放你的專案、已連線帳號、草稿和收據。你之後可以建立更多。',
   'onboarding.workspace.localeNote':
     '介面語言會變更此應用程式。內容語言依貼文選擇，並與此設定分開。',
   'onboarding.workspace.timeZoneDetected': '從此裝置偵測到：{timeZone}',

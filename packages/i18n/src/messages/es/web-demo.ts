@@ -43,6 +43,8 @@ export const webDemoMessages = {
     'Cada panel aquí es la interfaz del producto con contenido de ejemplo. Ningún conector completó la verificación del proveedor, así que no se publica nada en ninguna plataforma a través de este producto hoy. Donde el flujo de trabajo se detiene, la página lo dice en lugar de dibujar el resto.',
   'web.demo.contents.title': 'Los seis pasos',
   'web.demo.stepLabel': 'Paso {position} de {total}',
+  'web.demo.next': 'Siguiente: {step}',
+  'web.demo.closing.pricing': 'Mira cuánto cuesta',
   'web.demo.closing.title': 'Ese es todo el ciclo',
   'web.demo.closing.body':
     'Nada de lo anterior es una maqueta de un producto que esperamos construir. Es la interfaz tal como está, con la mitad de la publicación marcada honestamente como inconclusa.',
@@ -62,6 +64,9 @@ export const webDemoMessages = {
   'web.demo.step.compose.title': 'Escríbelo una vez, adáptalo por plataforma',
   'web.demo.step.compose.body':
     'Escribes un borrador maestro. Seleccionar una cuenta abre una anulación solo para esa cuenta, con sus propios límites y su propia vista previa. Nada que escribas para LinkedIn cambia lo que recibe X, y las verificaciones de cada versión se ejecutan antes de que algo se programe.',
+  'web.demo.step.variants.title': 'Mira lo que recibe realmente cada cuenta',
+  'web.demo.step.variants.body':
+    'Un borrador se convierte en una versión por cuenta, cada una escrita para la plataforma a la que va: una línea más corta para X, la nota de lanzamiento completa para LinkedIn, una leyenda y texto alternativo para Instagram. Editas cualquiera de ellas sin tocar las otras, y cada versión lleva la verificación que le corresponde.',
 
   'web.demo.step.schedule.title': 'Dale un horario, o entrégalo a la cola',
   'web.demo.step.schedule.body':
@@ -101,7 +106,8 @@ export const webDemoMessages = {
     'La cola es la otra ruta: elige el próximo horario que permiten tus reglas, en esta zona horaria.',
 
   'web.demo.week.label': 'La semana',
-  'web.demo.week.caption': 'Las mismas tres publicaciones en el calendario, leídas en la zona horaria del proyecto.',
+  'web.demo.week.caption':
+    'Las mismas tres publicaciones en el calendario, leídas en la zona horaria del proyecto.',
   'web.demo.week.empty': 'Nada programado',
 
   'web.demo.receipt.label': 'Recibo hasta ahora',
@@ -194,7 +200,8 @@ export const webDemoMessages = {
   'web.demo.digest.line.earliest': 'La mañana del martes fue tu horario más temprano.',
   'web.demo.digest.line.approval': 'Toda versión se aprobó antes de entrar en la cola.',
   'web.demo.digest.line.alt': 'Toda imagen tenía texto alternativo escrito por una persona.',
-  'web.demo.digest.footer': 'Los análisis en vivo aparecen aquí a medida que se publican tus contenidos.',
+  'web.demo.digest.footer':
+    'Los análisis en vivo aparecen aquí a medida que se publican tus contenidos.',
 
   /* ---------------------------------------------------------------------- */
   /* Los tres pasos añadidos al recorrido                                  */

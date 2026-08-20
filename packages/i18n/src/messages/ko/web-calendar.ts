@@ -60,7 +60,7 @@ export const webCalendarMessages = {
   'web.calendar.nowLabel': '지금',
   'web.calendar.allDayHeading': '아직 정확한 시간은 없습니다',
   'web.calendar.filter.group': '고객그룹',
-  'web.calendar.filter.anyBrand': '모든 브랜드',
+  'web.calendar.filter.anyProject': '모든 브랜드',
   'web.calendar.filter.anyAccount': '모든 계정',
   'web.calendar.filter.anyPlatform': '모든 플랫폼',
   'web.calendar.filter.anyStatus': '모든 상태',
@@ -303,6 +303,13 @@ export const webCalendarMessages = {
     '다음 화면은{provider}, Relay이 아닙니다. Relay은 귀하의 비밀번호를 결코 볼 수 없습니다.',
   'web.connection.connect.noWriteWithoutApproval':
     '계정을 연결해도 아무 것도 게시되지 않습니다. 모든 게시물은 여전히 ​​이 작업공간 승인 정책을 따릅니다.',
+  'web.connection.projectScope.title': '{project}의 채널을 표시하고 있습니다',
+  'web.connection.projectScope.body':
+    '새 채널은 이 브랜드에 연결됩니다. 다른 세트를 관리하려면 상단 표시줄에서 브랜드를 전환하세요.',
+  'web.connection.projectMissing.title': '채널을 연결하기 전에 브랜드를 만드세요',
+  'web.connection.projectMissing.body':
+    '브랜드는 서로 다른 제품이나 고객의 채널, 미디어, 초안, 일정을 분리해서 유지합니다.',
+
   'web.connection.requirement.instagram':
     'Instagram 게시하려면 전문가 계정이 필요합니다. 즉, Facebook 페이지에 연결된 비즈니스 또는 제작자 계정을 의미합니다.',
   'web.connection.requirement.facebook':

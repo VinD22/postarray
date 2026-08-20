@@ -34,7 +34,7 @@ const PROTECTED_TERM_REPLACEMENTS: readonly (readonly [string, string])[] = [
   ['יוטיוב', 'YouTube'],
   ['בלוסקיי', 'Bluesky'],
   ['בלוסקי', 'Bluesky'],
-  ['מותג', 'Brand'],
+  ['פרויקט', 'Project'],
 ];
 
 function preserveGlossaryTerms(value: string): string {

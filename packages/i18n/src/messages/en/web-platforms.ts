@@ -121,4 +121,106 @@ export const webPlatformsMessages = {
   'web.schedule.next.title': 'Where to go next',
   'web.schedule.next.body':
     'The capability matrix carries every platform and every capability in one table. The use case pages describe the workflows this product is being built around.',
+
+  /* ---------------------------------------------------------------------- */
+  /* Post specs cluster (/specs)                                            */
+  /* ---------------------------------------------------------------------- */
+
+  'web.meta.specs.title': 'Post specs, platform by platform',
+  'web.meta.specs.description':
+    'The limits each platform in the launch cohort enforces on one post, generated from the connector code, each one carrying the official document it came from and the date a person read it.',
+  'web.meta.specsPlatform.title': 'Post specs for {platform}',
+  'web.meta.specsPlatform.description':
+    'Every limit recorded for {platform}: what it is, the official document the number came from, and the date a person read that document.',
+
+  'web.specs.index.title': 'Post specs, platform by platform',
+  'web.specs.index.lede':
+    'One page per limit, per platform. Each page states the recorded value, the official document it came from and the date a person read it. Nothing here is typed by hand: the values are generated from the connector code, so a page exists only where the dataset has one.',
+  'web.specs.index.listLabel': 'Platforms with recorded limits',
+  'web.specs.index.count': '{count, plural, one {# recorded limit} other {# recorded limits}}',
+  'web.specs.index.missingTitle': 'Why a platform can be missing here',
+  'web.specs.index.missingBody':
+    'A platform appears only where this build ships an adapter for it and the generated dataset carries at least one value. A platform with nothing recorded gets no page, because a page built on an invented number would be worse than no page at all.',
+  'web.specs.index.methodTitle': 'Where these values come from',
+  'web.specs.index.methodBody':
+    'The dataset is regenerated from the connector capability code, which is the same code a draft is measured against. Values are read for a freshly connected account with no elevated eligibility.',
+
+  'web.specs.platform.listLabel': 'Recorded limits for this platform',
+  'web.specs.platform.limitsTitle': 'What is recorded for {platform}',
+  'web.specs.platform.limitsBody':
+    'Each row links to a page that states the value on its own, with the document it came from. A limit this platform does not document has no row and no page.',
+
+  'web.specs.detail.valueTitle': 'The recorded value',
+  'web.specs.detail.sourceLabel': 'Official platform documentation',
+  'web.specs.detail.freshnessTitle': 'How current this is',
+  'web.specs.detail.freshnessBody':
+    'A platform can raise or lower a limit without announcing it. The value above is read for a freshly connected account with no elevated eligibility, and the date beside the source is the day a person last read that document.',
+  'web.specs.detail.checkTitle': 'Check a real post against it',
+  'web.specs.detail.checkBody':
+    'The preflight checker measures a draft and a media file against every limit recorded for a platform, in the browser, without uploading anything. Opening it from this page preselects this platform.',
+  'web.specs.detail.checkLink': 'Open the preflight checker for this platform',
+  'web.specs.detail.siblingTitle': 'Everything else recorded for this platform',
+  'web.specs.detail.siblingBody':
+    'The other values in the same generated dataset, sourced the same way.',
+  'web.specs.detail.scheduleLink': 'Read the full platform page',
+
+  'web.specs.notice.title': 'A platform limit, not a working scheduler',
+  'web.specs.notice.body':
+    'No connector has passed its definition of done. This page states what the platform enforces. It does not say that this product publishes there yet.',
+
+  'web.specs.constraint.characterLimit.name': 'Character limit',
+  'web.specs.constraint.characterLimit.title': '{platform} character limit',
+  'web.specs.constraint.characterLimit.lede':
+    'The longest body text {platform} accepts on one post through its official API, read from the same generated dataset the preflight checker measures a draft against.',
+  'web.specs.constraint.characterLimit.description':
+    'The body text ceiling {platform} enforces on one post, with the official document the number came from and the date a person read it.',
+
+  'web.specs.constraint.titleLimit.name': 'Title length limit',
+  'web.specs.constraint.titleLimit.title': '{platform} title length limit',
+  'web.specs.constraint.titleLimit.lede':
+    'The longest title {platform} accepts in the separate title field its API exposes, read from the same generated dataset the preflight checker measures a draft against.',
+  'web.specs.constraint.titleLimit.description':
+    'The title field ceiling {platform} enforces, with the official document the number came from and the date a person read it.',
+
+  'web.specs.constraint.imageSize.name': 'Image size limit',
+  'web.specs.constraint.imageSize.title': '{platform} image size limit',
+  'web.specs.constraint.imageSize.lede':
+    'The largest still image file {platform} accepts through its official API, read from the same generated dataset the preflight checker measures a file against.',
+  'web.specs.constraint.imageSize.description':
+    'The largest image file {platform} accepts, with the official document the number came from and the date a person read it.',
+
+  'web.specs.constraint.videoSize.name': 'Video size limit',
+  'web.specs.constraint.videoSize.title': '{platform} video size limit',
+  'web.specs.constraint.videoSize.lede':
+    'The largest video file {platform} accepts through its official API, read from the same generated dataset the preflight checker measures a file against.',
+  'web.specs.constraint.videoSize.description':
+    'The largest video file {platform} accepts, with the official document the number came from and the date a person read it.',
+
+  'web.specs.constraint.videoLength.name': 'Video length limit',
+  'web.specs.constraint.videoLength.title': '{platform} video length limit',
+  'web.specs.constraint.videoLength.lede':
+    'How long a video posted to {platform} through its official API is allowed to run, read from the same generated dataset the preflight checker measures a file against.',
+  'web.specs.constraint.videoLength.description':
+    'How long a video posted to {platform} may run, with the official document the number came from and the date a person read it.',
+
+  'web.specs.constraint.imageCount.name': 'Images per post',
+  'web.specs.constraint.imageCount.title': '{platform} images per post',
+  'web.specs.constraint.imageCount.lede':
+    'How many images {platform} accepts on a single post through its official API, read from the same generated dataset the preflight checker measures a draft against.',
+  'web.specs.constraint.imageCount.description':
+    'How many images fit on one {platform} post, with the official document the number came from and the date a person read it.',
+
+  'web.specs.constraint.altTextLimit.name': 'Alternative text limit',
+  'web.specs.constraint.altTextLimit.title': '{platform} alt text limit',
+  'web.specs.constraint.altTextLimit.lede':
+    'The longest alternative text {platform} accepts on an attached image through its official API, read from the same generated dataset the preflight checker measures a draft against.',
+  'web.specs.constraint.altTextLimit.description':
+    'The alternative text ceiling {platform} enforces on an attached image, with the official document the number came from and the date a person read it.',
+
+  'web.specs.constraint.fileTypes.name': 'Accepted file types',
+  'web.specs.constraint.fileTypes.title': '{platform} accepted file types',
+  'web.specs.constraint.fileTypes.lede':
+    'The media types {platform} accepts through its official API, read from the same generated dataset the preflight checker measures a file against.',
+  'web.specs.constraint.fileTypes.description':
+    'Which media types {platform} accepts, with the official document the list came from and the date a person read it.',
 } as const;

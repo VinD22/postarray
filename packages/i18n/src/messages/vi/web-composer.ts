@@ -187,7 +187,7 @@ export const webComposerMessages = {
   'composerWeb.set.apply': 'Sử dụng bộ này',
   'composerWeb.set.none': 'Chưa có Bộ nào được lưu.',
   'composerWeb.signature.pickerLabel': 'Chữ ký',
-  'composerWeb.signature.scope': 'Dành cho {brand} trên {provider} trong {language}',
+  'composerWeb.signature.scope': 'Dành cho {project} trên {provider} trong {language}',
   'composerWeb.signature.previewHeading': 'Cách kết thúc bài viết',
   'composerWeb.signature.notMatching':
     'Chữ ký này dành cho một thương hiệu, nền tảng hoặc ngôn ngữ khác, vì vậy nó không được cung cấp ở đây.',
@@ -287,6 +287,15 @@ export const webComposerMessages = {
     'Ví dụ: launch_hero.jpg, 1600 x 900, bộ văn bản thay thế, được sử dụng trong 2 bài viết.',
   'mediaLib.error.title': 'Không thể tải thư viện',
   'mediaLib.error.body': 'Các tập tin của bạn được an toàn. Không có gì thay đổi bởi thất bại này.',
+  'mediaLib.offline.title': 'Thư viện không khả dụng khi ngoại tuyến',
+  'mediaLib.offline.body':
+    'Chúng tôi không thể làm mới thư viện khi không có kết nối. Các tệp đã có trên màn hình này không thay đổi. Hãy kết nối lại rồi thử lại.',
+  'mediaLib.rateLimited.title': 'Thư viện cần tạm nghỉ một chút',
+  'mediaLib.rateLimited.cause':
+    'API yêu cầu chúng tôi chậm lại trong khi tải tệp của bạn. Phương tiện đã lưu trữ của bạn vẫn an toàn.',
+  'mediaLib.rateLimited.resetLabel': 'Thử lại sau',
+  'mediaLib.rateLimited.alternative':
+    'Bạn vẫn có thể soạn nháp cục bộ, nhưng việc tải lên và thay đổi thư viện phải chờ đến khi giới hạn được đặt lại.',
   'mediaLib.loading': 'Đang tải thư viện phương tiện của bạn',
   'mediaLib.permission.title': 'Bạn không thể thấy thư viện không gian làm việc này',
   'mediaLib.permission.body':
@@ -317,6 +326,39 @@ export const webComposerMessages = {
   'mediaLib.upload.checkedAgainst': 'Đã đối chiếu với các tài khoản được chọn trong bản nháp này.',
   'mediaLib.upload.noTargets':
     'Không có tài khoản nào được chọn nên tệp chỉ được kiểm tra theo các giá trị mặc định của không gian làm việc.',
+  'mediaLib.import.urlLabel': 'URL tệp công khai',
+  'mediaLib.import.urlPlaceholder': 'https://cdn.example.com/launch-video.mp4',
+  'mediaLib.import.importing': 'Đang nhập phương tiện',
+  'mediaLib.import.succeeded': 'Tệp đã có trong thư viện của bạn',
+  'mediaLib.import.scanPending':
+    'Relay đã ghi lại nguồn của tệp. Việc xuất bản sẽ chờ đến khi kiểm tra an toàn hoàn tất.',
+  'mediaLib.import.failed': 'Không thể nhập tệp',
+  'mediaLib.import.failedHelp':
+    'Hãy kiểm tra rằng liên kết công khai và trỏ trực tiếp đến một tệp phương tiện được hỗ trợ, rồi thử lại.',
+  'mediaLib.import.readOnly': 'Kết nối API để nhập tệp trong môi trường này.',
+  'mediaLib.import.offline': 'Kết nối lại trước khi nhập một tệp.',
+  'mediaLib.import.issue.invalid': 'Nhập một URL đầy đủ.',
+  'mediaLib.import.issue.scheme': 'Dùng liên kết HTTP hoặc HTTPS.',
+  'mediaLib.import.issue.credentials': 'Dùng liên kết không có tên đăng nhập hay mật khẩu.',
+  'mediaLib.retention.title': 'Tệp lưu trữ được giữ trong 30 ngày sau khi bài đăng được tạo',
+  'mediaLib.retention.body':
+    'Khi một tệp được đính kèm vào một bài đăng, chúng tôi sẽ xóa vĩnh viễn tệp đó khỏi kho lưu trữ của Relay 30 ngày sau khi bài đăng đó được tạo. Các tệp đang chờ được đính kèm dùng ngày tải lên làm mốc dọn dẹp dự phòng. Nội dung bài đăng, biên nhận xuất bản và lịch sử kiểm tra vẫn khả dụng lâu hơn. Một bài đăng đã xuất bản trên một nền tảng xã hội không bị gỡ bỏ khi tệp lưu trữ của nó hết hạn.',
+  'mediaLib.retention.limits':
+    'Ảnh, âm thanh và tệp PDF có thể lên đến {imageSize}. Video có thể lên đến {videoSize}.',
+  'mediaLib.retention.expiresLabel': 'Ngày xóa tệp',
+  'mediaLib.retention.deleted': 'Đã xóa vĩnh viễn',
+  'mediaLib.retention.deletedTitle': 'Tệp lưu trữ này đã bị xóa',
+  'mediaLib.retention.deletedBody':
+    'Thời hạn lưu trữ 30 ngày đã kết thúc. Nội dung bài đăng, biên nhận xuất bản và lịch sử kiểm tra vẫn còn.',
+  'mediaLib.processing.unavailableTitle': 'Tệp này chưa sẵn sàng để xuất bản',
+  'mediaLib.processing.unavailableBody':
+    'Việc xử lý hoặc kiểm tra an toàn vẫn đang chờ, hoặc đã không đạt. Hãy tải lại tệp nếu trạng thái này không tự hết.',
+  'mediaLib.processing.pendingTitle': 'Quét an toàn chưa khả dụng trong giai đoạn tiền phát hành',
+  'mediaLib.processing.pendingBody':
+    'Tệp được lưu trữ trong 30 ngày, nhưng nó không thể được đính kèm vào một bài đăng đã xuất bản cho đến khi quét an toàn được bật.',
+  'mediaLib.processing.blockedTitle': 'Tệp này không thể xuất bản',
+  'mediaLib.processing.blockedBody':
+    'Tệp không qua được xử lý hoặc kiểm tra an toàn. Hãy tải lên một tệp khác.',
   'mediaLib.alt.heading': 'Văn bản thay thế',
   'mediaLib.alt.help':
     'Mô tả những gì quan trọng trong hình ảnh cho người không thể nhìn thấy nó. Một hoặc hai câu thường là đủ.',

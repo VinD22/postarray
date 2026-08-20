@@ -32,6 +32,9 @@ import { webSettingsMessages } from './web-settings';
 import { webShellMessages } from './web-shell';
 import { webBlogMessages } from './web-blog';
 import { webToolsMessages } from './web-tools';
+// The generated free tool directory: per platform character counters and the
+// consolidated media limits table.
+import { webToolDirectoryMessages } from './web-tool-directory';
 // C5 platform and use case pages.
 import { webPlatformsMessages } from './web-platforms';
 import { webUseCaseMessages } from './web-use-cases';
@@ -81,6 +84,7 @@ export const en = {
   ...webShellMessages,
   ...webBlogMessages,
   ...webToolsMessages,
+  ...webToolDirectoryMessages,
   ...webPlatformsMessages,
   ...webUseCaseMessages,
   ...webComparisonMessages,
@@ -127,6 +131,7 @@ export {
   webAnalyticsMessages,
   webBlogMessages,
   webToolsMessages,
+  webToolDirectoryMessages,
   webPlatformsMessages,
   webUseCaseMessages,
 };

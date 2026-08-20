@@ -27,8 +27,8 @@ export const webSettingsMessages = {
   'settings.ui.section.members': 'Medlemmar och roller',
   'settings.ui.section.membersSummary':
     'Vem finns i denna arbetsyta och vad varje person kan göra.',
-  'settings.ui.section.brands': 'Varumärken',
-  'settings.ui.section.brandsSummary':
+  'settings.ui.section.projects': 'Projekt',
+  'settings.ui.section.projectsSummary':
     'Röst, publik, godkända anspråk, blockerade termer, språkregler, domäner och ordlistan.',
   'settings.ui.section.agents': 'Agenter och API',
   'settings.ui.section.agentsSummary':
@@ -110,7 +110,7 @@ export const webSettingsMessages = {
     '{count, plural, one {# varumärke} other {# varumärken}}: {names}',
   'settings.ui.members.approvals.canApprove': 'Kan godkänna',
   'settings.ui.members.approvals.cannotApprove': 'Kan inte godkänna',
-  'settings.ui.members.approvals.canApproveOwnBrands': 'Kan godkänna de angivna varumärkena',
+  'settings.ui.members.approvals.canApproveOwnProjects': 'Kan godkänna de angivna projekten',
   'settings.ui.members.lastActiveNever': 'Har inte loggat in ännu',
   'settings.ui.members.changeRole': 'Byt roll för {name}',
   'settings.ui.members.remove': 'Ta bort {name}',
@@ -160,43 +160,72 @@ export const webSettingsMessages = {
   'settings.ui.members.removeConsequence.approvals':
     'Godkännandeförfrågningar som väntar på dem återgår till kön för en annan godkännare.',
 
-  /* ------------------------------------------------------------------ brands */
+  /* ----------------------------------------------------------------- projects */
 
-  'settings.ui.brands.description':
+  'settings.ui.projects.description':
     'Ett varumärke bär reglerna som innehåll kontrolleras mot: vad du får hävda, vad du inte får säga och hur varje språk är skrivet.',
-  'settings.ui.brands.listCaption': 'Varumärken i denna arbetsyta',
-  'settings.ui.brands.column.brand': 'Varumärke',
-  'settings.ui.brands.column.locales': 'Innehållsspråk',
-  'settings.ui.brands.column.accounts': 'konton',
-  'settings.ui.brands.column.updated': 'Uppdaterad',
-  'settings.ui.brands.accountCount':
+  'settings.ui.projects.listCaption': 'Projekt i denna arbetsyta',
+  'settings.ui.projects.column.project': 'Projekt',
+  'settings.ui.projects.column.locales': 'Innehållsspråk',
+  'settings.ui.projects.column.accounts': 'konton',
+  'settings.ui.projects.column.updated': 'Uppdaterad',
+  'settings.ui.projects.accountCount':
     '{count, plural, =0 {Inga konton} one {# konto} other {# konton}}',
-  'settings.ui.brands.emptyTitle': 'Inga märken än',
-  'settings.ui.brands.emptyBody':
+  'settings.ui.projects.emptyTitle': 'Inga projekt än',
+  'settings.ui.projects.emptyBody':
     'Ett varumärke grupperar konton, godkännanderegler och språkregler. De flesta team börjar med en och lägger till en andra när en kund eller en marknad behöver andra regler.',
-  'settings.ui.brands.emptyExample':
+  'settings.ui.projects.emptyExample':
     'Exempel: varumärke "Acme EU", språk engelska och tyska, blockerad term "garanterad", avslöjande "Betalt partnerskap" på för Instagram.',
-  'settings.ui.brands.voiceHelp':
-    'Hur det här märket låter. Används när du ber om en omskrivning och när anspråk kontrolleras.',
-  'settings.ui.brands.audienceHelp': 'Vem innehållet är till för, per marknad.',
-  'settings.ui.brands.approvedClaimsHelp':
+  'settings.ui.projects.voiceHelp':
+    'Hur det här projektet låter. Används när du ber om en omskrivning och när anspråk kontrolleras.',
+  'settings.ui.projects.audienceHelp': 'Vem innehållet är till för, per marknad.',
+  'settings.ui.projects.approvedClaimsHelp':
     'Uttalanden som en granskare har tagit bort. Allt utanför den här listan flaggas före godkännande, inte efter publicering.',
-  'settings.ui.brands.blockedTermsHelp':
-    'Ord som blockerar schemaläggning för detta märke. En per rad.',
-  'settings.ui.brands.domainsHelp':
-    'Domäner som detta varumärke kan länka till och förkorta genom. Endast verifierade domäner kan väljas i kompositören.',
-  'settings.ui.brands.domainVerified': 'Verifierad {date}',
-  'settings.ui.brands.domainPending': 'DNS-posten har inte setts ännu',
-  'settings.ui.brands.disclosureHelp':
-    'Applied by default in the composer for the platforms you choose here. It can be changed per post before approval.',
-  'settings.ui.brands.glossaryHelp':
+  'settings.ui.projects.blockedTermsHelp':
+    'Ord som blockerar schemaläggning för detta projekt. En per rad.',
+  'settings.ui.projects.domainsHelp':
+    'Domäner som detta projekt kan länka till och förkorta genom. Endast verifierade domäner kan väljas i kompositören.',
+  'settings.ui.projects.domainVerified': 'Verifierad {date}',
+  'settings.ui.projects.domainPending': 'DNS-posten har inte setts ännu',
+  'settings.ui.projects.domainVerificationUnavailable': 'Verifiering är inte byggd än',
+  'settings.ui.projects.disclosureUnavailable':
+    'Standardvärden för avslöjande per kanal är inte byggda än. Lägg till det obligatoriska avslöjandet i inlägget tills detta släpps.',
+  'settings.ui.projects.glossaryUnavailable':
+    'Arbetsytans ordlista är inte byggd än. Röst, målgrupp, godkända påståenden och blockerade termer ovan sparas och tillämpas.',
+  'settings.ui.projects.localeRulesUnavailable':
+    'Skrivregler per språk är inte byggda än. Arbetsytans språk och marknader förblir tillgängliga under Lokalisering.',
+  'settings.ui.projects.disclosureHelp':
+    'Tillämpas som standard i kompositören för de plattformar du väljer här. Det kan ändras per inlägg innan godkännande.',
+  'settings.ui.projects.glossaryHelp':
     'Produktnamn, juridiska termer och allt som måste överleva en översättning oförändrat.',
-  'settings.ui.brands.glossaryCaption': 'Skyddade termer och hur var och en hanteras per språk',
-  'settings.ui.brands.glossaryEmpty':
+  'settings.ui.projects.glossaryCaption': 'Skyddade termer och hur var och en hanteras per språk',
+  'settings.ui.projects.glossaryEmpty':
     'Inga skyddade villkor ännu. Lägg till produktnamn och juridiska termer som inte får översättas eller omformuleras.',
-  'settings.ui.brands.localeRulesHelp':
+  'settings.ui.projects.localeRulesHelp':
     'Regler per innehållsspråk. De tillämpas när du anpassar eller omskapar och visas för granskaren.',
-  'settings.ui.brands.saveBrand': 'Spara varumärke',
+  'settings.ui.projects.saveProject': 'Spara projekt',
+  'settings.ui.projects.capacityTitle': 'Projektkapacitet',
+  'settings.ui.projects.capacityHelp':
+    'Grundplanen på 29 USD inkluderar 3 aktiva projekt. En arbetsyta kan berättigas till upp till 20 utan att skapa ett annat konto.',
+  'settings.ui.projects.capacitySummary': '{used} av {limit}',
+  'settings.ui.projects.atLimitTitle': 'Denna arbetsyta har använt varje projektplats',
+  'settings.ui.projects.atLimitBody':
+    'Arkivera ett inaktivt projekt eller ändra arbetsytans rättighet innan du lägger till ett till. Den aktuella gränsen är {limit}.',
+  'settings.ui.projects.listLabel': 'Välj ett projekt att redigera',
+  'settings.ui.projects.detailsTitle': 'Projektdetaljer',
+  'settings.ui.projects.projectMeta':
+    '{accounts, plural, =0 {Inga kanaler} one {# kanal} other {# kanaler}} · Uppdaterad {updated}',
+  'settings.ui.projects.archiveAction': 'Arkivera projekt',
+  'settings.ui.projects.archiveTitle': 'Arkivera {project}?',
+  'settings.ui.projects.archiveBody':
+    'Detta inaktiva projekt lämnar den aktiva arbetsytan och frigör en projektplats.',
+  'settings.ui.projects.archiveChannels':
+    'Dess anslutna kanaler slutar visas i aktiva projektflöden.',
+  'settings.ui.projects.archiveHistory':
+    'Utkast, publicerade inlägg, kvitton och granskningshistorik behålls.',
+  'settings.ui.projects.archiveLastDisabled': 'Behåll minst ett aktivt projekt i arbetsytan.',
+  'settings.ui.projects.archiveConnectedDisabled':
+    'Koppla bort detta projekts kanaler innan du arkiverar det.',
 
   /* ------------------------------------------------------------ localization */
 
@@ -279,9 +308,9 @@ export const webSettingsMessages = {
   'settings.ui.data.deleteConnection': 'Revoke one social connection',
   'settings.ui.data.deleteConnectionHelp':
     'Removes Relay access to that account. The workspace, its content and its receipts stay.',
-  'settings.ui.data.deleteBrand': 'Delete a brand',
-  'settings.ui.data.deleteBrandHelp':
-    'Removes the brand, its rules and its glossary. Content published under it keeps its receipts.',
+  'settings.ui.data.deleteProject': 'Arkivera ett projekt',
+  'settings.ui.data.deleteProjectHelp':
+    'Tar bort projektet, dess regler och dess ordlista. Innehåll publicerat under det behåller sina kvitton.',
   'settings.ui.data.deleteContent': 'Delete content and media',
   'settings.ui.data.deleteContentHelp':
     'Removes drafts and stored files. It does not remove anything already published on a platform.',
@@ -619,7 +648,7 @@ export const webSettingsMessages = {
   'billing.ui.conversionLabel': 'Converts',
   'billing.ui.channelsLabel': 'Active channels',
   'billing.ui.paymentMethodPolar': 'Payment method held by Polar',
-  'billing.ui.paymentMethodDescriptor': '{brand} ending {last4}, expires {expiry}',
+  'billing.ui.paymentMethodDescriptor': '{project} ending {last4}, expires {expiry}',
   'billing.ui.paymentMethodMissing': 'No payment method on file yet',
   'billing.ui.cancelBeforeDate': 'Cancel before {date} and you will not be charged.',
   'billing.ui.annualFraming': '$25/month billed annually. Save $48/year.',
@@ -807,15 +836,15 @@ export const webSettingsMessages = {
   'growth.ui.fourWeek.acceptAnnouncement': 'Utkast skapat från denna brief.',
   'growth.ui.fourWeek.proposeAnnouncement': 'Kalenderförslag tillagt för {date}.',
 
-  'growth.ui.ugc.promptAngle': 'Angle {number}',
-  'growth.ui.ugc.checklistTitle': 'Rights, consent and disclosure',
+  'growth.ui.ugc.promptAngle': 'Vinkel {number}',
+  'growth.ui.ugc.checklistTitle': 'Rättigheter, samtycke och information',
   'growth.ui.ugc.checklistHelp':
-    'Work through this with each participant before anything is published. Consent to appear is not consent to advertise.',
-  'growth.ui.ugc.incentiveNone': 'No incentive offered',
+    'Gå igenom detta med varje deltagare innan något publiceras. Samtycke till att medverka är inte samtycke till att marknadsföra.',
+  'growth.ui.ugc.incentiveNone': 'Ingen ersättning erbjuds',
   'growth.ui.ugc.incentiveDisclosure':
-    'An incentive must be disclosed on every post that results from it, by you and by the participant.',
+    'En ersättning måste anges i varje inlägg som blir resultatet, av både dig och deltagaren.',
   'growth.ui.ugc.honesty':
-    'This plans a campaign you run with real people. Relay does not find creators, contact them, write testimonials or create customer content.',
+    'Detta planerar en kampanj som du driver med riktiga personer. Relay hittar inte skapare, kontaktar dem inte, skriver inte omdömen och skapar inte kundinnehåll.',
 
   'growth.ui.opportunities.caption':
     'Verifierade möjligheter från katalogen, rangordnade efter passform med din profil',

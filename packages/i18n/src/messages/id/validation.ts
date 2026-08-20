@@ -60,12 +60,12 @@ export const validationMessages = {
   'validation.schedule_too_far_ahead.message':
     'Hal ini jauh lebih maju dibandingkan {limit} yang ditetapkan untuk kredensial ini.',
   'validation.schedule_outside_quiet_hours.message':
-    'Ini termasuk dalam jam tenang yang ditetapkan untuk {brand}.',
+    'Ini termasuk dalam jam tenang yang ditetapkan untuk {project}.',
   'validation.duplicate_within_window.message':
     'Konten yang sangat mirip telah dijadwalkan atau diterbitkan untuk {account} dalam {window}.',
-  'validation.blocked_term_present.message': 'Teks berisi istilah yang diblokir untuk {brand}.',
+  'validation.blocked_term_present.message': 'Teks berisi istilah yang diblokir untuk {project}.',
   'validation.unsupported_claim.message':
-    'Klaim ini tidak termasuk dalam klaim yang disetujui untuk {brand}.',
+    'Klaim ini tidak termasuk dalam klaim yang disetujui untuk {project}.',
   'validation.unsupported_claim.hint':
     'Tambahkan ke klaim yang disetujui dengan bukti, atau susun ulang kalimatnya.',
   'validation.cadence_exceeded.message':

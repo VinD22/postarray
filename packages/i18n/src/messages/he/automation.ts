@@ -27,7 +27,7 @@ export const automationMessages = withHebrewPluralForms({
   'automation.trigger.manual': 'מישהו מפעיל אותו מהאפליקציה, API, MCP או CLI',
   'automation.trigger.recurring': 'לוח זמנים חוזר בוער',
   'automation.condition.label': 'תנאים',
-  'automation.condition.brand': 'המותג הוא {brand}',
+  'automation.condition.project': 'המותג הוא {project}',
   'automation.condition.campaign': 'הקמפיין הוא {campaign}',
   'automation.condition.account': 'החשבון הוא {account}',
   'automation.condition.platform': 'הפלטפורמה היא {platform}',

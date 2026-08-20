@@ -57,7 +57,7 @@ export const statusMessages = {
   'permission.denied.role': 'هذا يحتاج إلى دور {role}. أنت {currentRole}.',
   'permission.denied.scope': 'يحتاج بيانات الاعتماد هذه إلى النطاق {scope}.',
   'permission.denied.contactOwner': 'اطلب {owner} لمنحها.',
-  'permission.denied.brandScope': 'وصولك يقتصر على {brands}.',
+  'permission.denied.projectScope': 'وصولك يقتصر على {projects}.',
   'permission.readOnly': 'تتم قراءة مساحة العمل هذه الآن فقط.',
   'permission.mfaRequired': 'قم بالتأكيد باستخدام المصادقة الثنائية للمتابعة.',
 

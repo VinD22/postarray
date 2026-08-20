@@ -17,7 +17,6 @@ export const webShellMessages = {
   'shell.workspace.create': '创建工作区',
   'shell.workspace.manage': 'Workspace设置',
   'shell.workspace.role': '您在这里 {role}',
-  'shell.brand.filterHint': '筛选该品牌的主页、日历和分析。',
   'shell.demo.badge': '演示数据',
   'shell.demo.title': '您正在查看演示数据',
   'shell.demo.body':

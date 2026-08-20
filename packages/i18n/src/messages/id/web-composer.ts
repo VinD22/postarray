@@ -188,7 +188,7 @@ export const webComposerMessages = {
   'composerWeb.set.apply': 'Gunakan Set ini',
   'composerWeb.set.none': 'Belum ada Set yang disimpan.',
   'composerWeb.signature.pickerLabel': 'Tanda tangan',
-  'composerWeb.signature.scope': 'Untuk {brand} di {provider} di {language}',
+  'composerWeb.signature.scope': 'Untuk {project} di {provider} di {language}',
   'composerWeb.signature.previewHeading': 'Bagaimana ini mengakhiri postingan',
   'composerWeb.signature.notMatching':
     'Tanda tangan ini terbatas pada merek, platform, atau bahasa yang berbeda, sehingga tidak ditawarkan di sini.',

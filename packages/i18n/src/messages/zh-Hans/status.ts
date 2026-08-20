@@ -49,7 +49,7 @@ export const statusMessages = {
   'permission.denied.role': '这需要 {role} 角色。您是{currentRole}。',
   'permission.denied.scope': '此凭证需要范围 {scope}。',
   'permission.denied.contactOwner': '请求 {owner} 授予它。',
-  'permission.denied.brandScope': '您的访问权限仅限于 {brands}。',
+  'permission.denied.projectScope': '您的访问权限仅限于 {projects}。',
   'permission.readOnly': '该工作区现在是只读的。',
   'permission.mfaRequired': '通过两因素身份验证确认以继续。',
   'rateLimit.title': '放慢脚步一会儿',

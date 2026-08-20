@@ -33,6 +33,8 @@ export const validationMessages = {
     'Questo file è {actual}. {provider} accetta fino a {limit}.',
   'validation.media_mixed_types_unsupported.message':
     '{provider} non può pubblicare immagini e video nello stesso post.',
+  'validation.media_unavailable.message':
+    'Un file allegato non è più disponibile. Rimuovilo dal post o caricalo di nuovo.',
   'validation.alt_text_missing.message':
     'Manca il testo alternativo su {count, plural, one {# immagine} many {# immagini} other {# immagini}}.',
   'validation.alt_text_missing.hint': "Descrivi l'immagine o contrassegnala come decorativa.",
@@ -66,12 +68,12 @@ export const validationMessages = {
   'validation.schedule_too_far_ahead.message':
     'Questo è più avanti rispetto allo sguardo al futuro di {limit} impostato per questa credenziale.',
   'validation.schedule_outside_quiet_hours.message':
-    'Questo rientra nelle ore tranquille impostate per {brand}.',
+    'Questo rientra nelle ore tranquille impostate per {project}.',
   'validation.duplicate_within_window.message':
     "Contenuti molto simili sono già programmati o pubblicati per {account} all'interno di {window}.",
-  'validation.blocked_term_present.message': 'Il testo contiene un termine bloccato per {brand}.',
+  'validation.blocked_term_present.message': 'Il testo contiene un termine bloccato per {project}.',
   'validation.unsupported_claim.message':
-    'Questa affermazione non è inclusa nelle affermazioni approvate per {brand}.',
+    'Questa affermazione non è inclusa nelle affermazioni approvate per {project}.',
   'validation.unsupported_claim.hint':
     'Aggiungilo alle affermazioni approvate con prove o riformula la frase.',
   'validation.cadence_exceeded.message':

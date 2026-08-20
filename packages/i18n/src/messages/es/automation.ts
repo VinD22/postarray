@@ -31,7 +31,7 @@ export const automationMessages = {
   'automation.trigger.recurring': 'un programa recurrente se dispara',
 
   'automation.condition.label': 'Condiciones',
-  'automation.condition.brand': 'la marca is {brand}',
+  'automation.condition.project': 'la marca is {project}',
   'automation.condition.campaign': 'la campaña is {campaign}',
   'automation.condition.account': 'la cuenta is {account}',
   'automation.condition.platform': 'la plataforma is {platform}',

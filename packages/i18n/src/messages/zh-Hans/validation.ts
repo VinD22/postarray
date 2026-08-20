@@ -45,11 +45,11 @@ export const validationMessages = {
   'validation.repeat_end_required.message': '重复帖子需要结束日期或重复次数。',
   'validation.schedule_in_past.message': '那段时间已经在 {timeZone} 中过去了。',
   'validation.schedule_too_far_ahead.message': '这比为此凭证设置的 {limit} 前瞻更进一步。',
-  'validation.schedule_outside_quiet_hours.message': '这属于为 {brand} 设置的安静时段。',
+  'validation.schedule_outside_quiet_hours.message': '这属于为 {project} 设置的安静时段。',
   'validation.duplicate_within_window.message':
     '已在 {window} 内为 {account} 安排或发布了非常相似的内容。',
-  'validation.blocked_term_present.message': '该文本包含 {brand} 的屏蔽术语。',
-  'validation.unsupported_claim.message': '此索赔不在 {brand} 的批准索赔中。',
+  'validation.blocked_term_present.message': '该文本包含 {project} 的屏蔽术语。',
+  'validation.unsupported_claim.message': '此索赔不在 {project} 的批准索赔中。',
   'validation.unsupported_claim.hint': '将其添加到已批准的主张中并提供证据，或重新措辞句子。',
   'validation.cadence_exceeded.message':
     '{account} 将在当天发布 {count, plural, one {# time} other {# times}}，超过 {limit} 的限制。',

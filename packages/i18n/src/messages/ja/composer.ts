@@ -1,7 +1,7 @@
 /** Japanese beta catalog. */
 export const composerMessages = {
   'composer.title': '作曲する',
-  'composer.titleWithBrand': '作曲{brand}',
+  'composer.titleWithProject': '作曲{project}',
   'composer.master.label': 'マスタードラフト',
   'composer.master.description':
     'ここに一度書いてください。互換性のある変更は、選択したすべてのターゲットに適用されます。ターゲットを開いて、そのアカウントのみが受け取るバージョンを書き込みます。',

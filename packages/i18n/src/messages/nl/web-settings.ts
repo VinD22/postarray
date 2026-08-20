@@ -26,8 +26,8 @@ export const webSettingsMessages = {
   'settings.ui.section.members': 'Leden en rollen',
   'settings.ui.section.membersSummary':
     'Wie bevindt zich in deze werkruimte en wat kan elke persoon doen?',
-  'settings.ui.section.brands': "Brand's",
-  'settings.ui.section.brandsSummary':
+  'settings.ui.section.projects': 'Projecten',
+  'settings.ui.section.projectsSummary':
     'Stem, publiek, goedgekeurde claims, geblokkeerde termen, landregels, domeinen en de woordenlijst.',
   'settings.ui.section.agents': 'Agenten en API',
   'settings.ui.section.agentsSummary':
@@ -108,7 +108,7 @@ export const webSettingsMessages = {
   'settings.ui.members.scopeLimited': '{count, plural, one {# merk} other {# merken}}: {names}',
   'settings.ui.members.approvals.canApprove': 'Kan goedkeuren',
   'settings.ui.members.approvals.cannotApprove': 'Kan niet goedkeuren',
-  'settings.ui.members.approvals.canApproveOwnBrands': 'Kan goedkeuren voor de vermelde merken',
+  'settings.ui.members.approvals.canApproveOwnProjects': 'Kan goedkeuren voor de vermelde projecten',
   'settings.ui.members.lastActiveNever': 'Heeft zich nog niet aangemeld',
   'settings.ui.members.changeRole': 'Verander de rol voor {name}',
   'settings.ui.members.remove': '{name} verwijderen',
@@ -119,7 +119,7 @@ export const webSettingsMessages = {
   'settings.ui.members.inviteBody':
     'Ze ontvangen een e-mail met een link. De uitnodiging vervalt na zeven dagen en u kunt deze vóór die tijd intrekken.',
   'settings.ui.members.inviteRole': 'Rol',
-  'settings.ui.members.inviteScope': "Brand's waarin ze kunnen werken",
+  'settings.ui.members.inviteScope': "Project's waarin ze kunnen werken",
   'settings.ui.members.inviteScopeAll': 'Elk merk in deze werkruimte',
   'settings.ui.members.inviteScopeSelected': 'Alleen de merken die ik selecteer',
   'settings.ui.members.inviteApprovals': 'Kan goedkeuringsverzoeken beslissen',
@@ -158,43 +158,72 @@ export const webSettingsMessages = {
   'settings.ui.members.removeConsequence.approvals':
     'Goedkeuringsaanvragen die erop wachten, keren terug naar de wachtrij voor een andere goedkeurder.',
 
-  /* ------------------------------------------------------------------ brands */
+  /* ----------------------------------------------------------------- projects */
 
-  'settings.ui.brands.description':
+  'settings.ui.projects.description':
     'Een merk hanteert de regels waaraan inhoud wordt getoetst: wat je mag beweren, wat je niet mag zeggen en hoe elke taal is geschreven.',
-  'settings.ui.brands.listCaption': "Brand's in deze werkruimte",
-  'settings.ui.brands.column.brand': 'Brand',
-  'settings.ui.brands.column.locales': 'Inhoud talen',
-  'settings.ui.brands.column.accounts': 'Rekeningen',
-  'settings.ui.brands.column.updated': 'Bijgewerkt',
-  'settings.ui.brands.accountCount':
+  'settings.ui.projects.listCaption': 'Projecten in deze werkruimte',
+  'settings.ui.projects.column.project': 'Project',
+  'settings.ui.projects.column.locales': 'Inhoud talen',
+  'settings.ui.projects.column.accounts': 'Rekeningen',
+  'settings.ui.projects.column.updated': 'Bijgewerkt',
+  'settings.ui.projects.accountCount':
     '{count, plural, =0 {Geen accounts} one {# account} other {# accounts}}',
-  'settings.ui.brands.emptyTitle': 'Nog geen merken',
-  'settings.ui.brands.emptyBody':
+  'settings.ui.projects.emptyTitle': 'Nog geen projecten',
+  'settings.ui.projects.emptyBody':
     'Een merk groepeert accounts, goedkeuringsregels en taalregels. De meeste teams beginnen met één en voegen er een tweede aan toe als een klant of een markt andere regels nodig heeft.',
-  'settings.ui.brands.emptyExample':
+  'settings.ui.projects.emptyExample':
     'Voorbeeld: merk "Acme EU", talen Engels en Duits, geblokkeerde term "gegarandeerd", vermelding "Betaald partnerschap" op Instagram.',
-  'settings.ui.brands.voiceHelp':
-    'Hoe dit merk klinkt. Wordt gebruikt wanneer u om herschrijving vraagt ​​en wanneer claims worden gecontroleerd.',
-  'settings.ui.brands.audienceHelp': 'Voor wie is de content bedoeld, per markt.',
-  'settings.ui.brands.approvedClaimsHelp':
+  'settings.ui.projects.voiceHelp':
+    'Hoe dit project klinkt. Wordt gebruikt wanneer u om herschrijving vraagt ​​en wanneer claims worden gecontroleerd.',
+  'settings.ui.projects.audienceHelp': 'Voor wie is de content bedoeld, per markt.',
+  'settings.ui.projects.approvedClaimsHelp':
     'Verklaringen die een recensent heeft goedgekeurd. Alles buiten deze lijst wordt vóór goedkeuring gemarkeerd, niet na publicatie.',
-  'settings.ui.brands.blockedTermsHelp':
-    'Woorden die de planning voor dit merk blokkeren. Eén per regel.',
-  'settings.ui.brands.domainsHelp':
-    'Domeinen waarnaar dit merk kan linken en waar doorheen kan worden ingekort. Alleen geverifieerde domeinen kunnen in de samensteller worden geselecteerd.',
-  'settings.ui.brands.domainVerified': 'Geverifieerde {date}',
-  'settings.ui.brands.domainPending': 'DNS-record nog niet gezien',
-  'settings.ui.brands.disclosureHelp':
+  'settings.ui.projects.blockedTermsHelp':
+    'Woorden die de planning voor dit project blokkeren. Eén per regel.',
+  'settings.ui.projects.domainsHelp':
+    'Domeinen waarnaar dit project kan linken en waar doorheen kan worden ingekort. Alleen geverifieerde domeinen kunnen in de samensteller worden geselecteerd.',
+  'settings.ui.projects.domainVerified': 'Geverifieerde {date}',
+  'settings.ui.projects.domainPending': 'DNS-record nog niet gezien',
+  'settings.ui.projects.domainVerificationUnavailable': 'Verificatie is nog niet gebouwd',
+  'settings.ui.projects.disclosureUnavailable':
+    'Standaard openbaarmaking per kanaal is nog niet gebouwd. Voeg de vereiste openbaarmaking toe in het bericht totdat dit is uitgebracht.',
+  'settings.ui.projects.glossaryUnavailable':
+    'De werkruimteglossarium is nog niet gebouwd. Stem, doelgroep, goedgekeurde beweringen en geblokkeerde termen hierboven worden opgeslagen en gehandhaafd.',
+  'settings.ui.projects.localeRulesUnavailable':
+    'Schrijfregels per taal zijn nog niet gebouwd. Werkruimtetalen en markten blijven beschikbaar onder Lokalisatie.',
+  'settings.ui.projects.disclosureHelp':
     'Standaard toegepast in de componist voor de platforms die u hier kiest. Het kan per bericht worden gewijzigd voordat het wordt goedgekeurd.',
-  'settings.ui.brands.glossaryHelp':
+  'settings.ui.projects.glossaryHelp':
     'Productnamen, juridische termen en alles wat een vertaling ongewijzigd moet overleven.',
-  'settings.ui.brands.glossaryCaption': 'Beschermde termen en hoe ze per taal worden afgehandeld',
-  'settings.ui.brands.glossaryEmpty':
+  'settings.ui.projects.glossaryCaption': 'Beschermde termen en hoe ze per taal worden afgehandeld',
+  'settings.ui.projects.glossaryEmpty':
     'Nog geen beschermde termen. Voeg productnamen en juridische termen toe die niet vertaald of opnieuw geformuleerd mogen worden.',
-  'settings.ui.brands.localeRulesHelp':
+  'settings.ui.projects.localeRulesHelp':
     'Regels per inhoudstaal. Ze worden toegepast wanneer u de tekst aanpast of transcreëert, en aan de recensent getoond.',
-  'settings.ui.brands.saveBrand': 'Merk opslaan',
+  'settings.ui.projects.saveProject': 'Project opslaan',
+  'settings.ui.projects.capacityTitle': 'Projectcapaciteit',
+  'settings.ui.projects.capacityHelp':
+    'Het basisplan van $29 omvat 3 actieve projecten. Een werkruimte kan recht hebben op tot 20 zonder een ander account te maken.',
+  'settings.ui.projects.capacitySummary': '{used} van {limit}',
+  'settings.ui.projects.atLimitTitle': 'Deze werkruimte heeft elke projectplek gebruikt',
+  'settings.ui.projects.atLimitBody':
+    'Archiveer een inactief project of wijzig het recht van de werkruimte voordat je er nog een toevoegt. De huidige limiet is {limit}.',
+  'settings.ui.projects.listLabel': 'Kies een project om te bewerken',
+  'settings.ui.projects.detailsTitle': 'Projectdetails',
+  'settings.ui.projects.projectMeta':
+    '{accounts, plural, =0 {Geen kanalen} one {# kanaal} other {# kanalen}} · Bijgewerkt {updated}',
+  'settings.ui.projects.archiveAction': 'Project archiveren',
+  'settings.ui.projects.archiveTitle': '{project} archiveren?',
+  'settings.ui.projects.archiveBody':
+    'Dit inactieve project verlaat de actieve werkruimte en maakt één projectplek vrij.',
+  'settings.ui.projects.archiveChannels':
+    'De gekoppelde kanalen verschijnen niet langer in actieve projectstromen.',
+  'settings.ui.projects.archiveHistory':
+    'Concepten, gepubliceerde berichten, ontvangstbevestigingen en auditgeschiedenis blijven bewaard.',
+  'settings.ui.projects.archiveLastDisabled': 'Houd minstens één actief project in de werkruimte.',
+  'settings.ui.projects.archiveConnectedDisabled':
+    'Ontkoppel de kanalen van dit project voordat je het archiveert.',
 
   /* ------------------------------------------------------------ localization */
 
@@ -277,9 +306,9 @@ export const webSettingsMessages = {
   'settings.ui.data.deleteConnection': 'Revoke one social connection',
   'settings.ui.data.deleteConnectionHelp':
     'Removes Relay access to that account. The workspace, its content and its receipts stay.',
-  'settings.ui.data.deleteBrand': 'Delete a brand',
-  'settings.ui.data.deleteBrandHelp':
-    'Removes the brand, its rules and its glossary. Content published under it keeps its receipts.',
+  'settings.ui.data.deleteProject': 'Archiveer een project',
+  'settings.ui.data.deleteProjectHelp':
+    'Verwijdert het project, de regels en het glossarium ervan. Content die eronder is gepubliceerd, behoudt de bijbehorende ontvangstbevestigingen.',
   'settings.ui.data.deleteContent': 'Delete content and media',
   'settings.ui.data.deleteContentHelp':
     'Removes drafts and stored files. It does not remove anything already published on a platform.',
@@ -557,7 +586,7 @@ export const webSettingsMessages = {
   'developer.ui.webhooks.eventGroup.publishing': 'Publiceren',
   'developer.ui.webhooks.eventGroup.automation': 'Automatisering en feeds',
   'developer.ui.webhooks.eventGroup.workspace': 'Workspace',
-  'developer.ui.webhooks.scopeTitle': "Brand's en accounts",
+  'developer.ui.webhooks.scopeTitle': "Project's en accounts",
   'developer.ui.webhooks.scopeAll': 'Elk merk en account',
   'developer.ui.webhooks.scopeSelected': 'Alleen degene die ik selecteer',
   'developer.ui.webhooks.secretTitle': 'Ondertekening geheim',
@@ -624,7 +653,7 @@ export const webSettingsMessages = {
   'billing.ui.conversionLabel': 'Converts',
   'billing.ui.channelsLabel': 'Active channels',
   'billing.ui.paymentMethodPolar': 'Payment method held by Polar',
-  'billing.ui.paymentMethodDescriptor': '{brand} ending {last4}, expires {expiry}',
+  'billing.ui.paymentMethodDescriptor': '{project} ending {last4}, expires {expiry}',
   'billing.ui.paymentMethodMissing': 'No payment method on file yet',
   'billing.ui.cancelBeforeDate': 'Cancel before {date} and you will not be charged.',
   'billing.ui.annualFraming': '$25/month billed annually. Save $48/year.',
@@ -813,15 +842,15 @@ export const webSettingsMessages = {
   'growth.ui.fourWeek.acceptAnnouncement': 'Concept gemaakt op basis van deze opdracht.',
   'growth.ui.fourWeek.proposeAnnouncement': 'Kalendervoorstel toegevoegd voor {date}.',
 
-  'growth.ui.ugc.promptAngle': 'Angle {number}',
-  'growth.ui.ugc.checklistTitle': 'Rights, consent and disclosure',
+  'growth.ui.ugc.promptAngle': 'Invalshoek {number}',
+  'growth.ui.ugc.checklistTitle': 'Rechten, toestemming en openbaarmaking',
   'growth.ui.ugc.checklistHelp':
-    'Work through this with each participant before anything is published. Consent to appear is not consent to advertise.',
-  'growth.ui.ugc.incentiveNone': 'No incentive offered',
+    'Doorloop dit met elke deelnemer voordat er iets wordt gepubliceerd. Toestemming om te verschijnen is geen toestemming om te adverteren.',
+  'growth.ui.ugc.incentiveNone': 'Geen vergoeding aangeboden',
   'growth.ui.ugc.incentiveDisclosure':
-    'An incentive must be disclosed on every post that results from it, by you and by the participant.',
+    'Een vergoeding moet worden vermeld bij elke post die eruit voortkomt, door jou en door de deelnemer.',
   'growth.ui.ugc.honesty':
-    'This plans a campaign you run with real people. Relay does not find creators, contact them, write testimonials or create customer content.',
+    'Dit plant een campagne die je zelf uitvoert met echte mensen. Relay zoekt geen creators, neemt geen contact met hen op, schrijft geen testimonials en maakt geen klantcontent.',
 
   'growth.ui.opportunities.caption':
     'Geverifieerde vacatures uit de catalogus, gerangschikt op basis van uw profiel',

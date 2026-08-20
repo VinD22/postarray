@@ -1,7 +1,7 @@
 /** Composer: master draft, per target overrides, previews, validation, cost. */
 export const composerMessages = {
   'composer.title': 'يؤلف',
-  'composer.titleWithBrand': 'يؤلف لـ {brand}',
+  'composer.titleWithProject': 'يؤلف لـ {project}',
   'composer.master.label': 'مسودة رئيسية',
   'composer.master.description':
     'أكتب مرة واحدة هنا. تصل التغييرات المتوافقة إلى كل هدف محدد. افتح هدفًا لكتابة إصدار سيتلقاه هذا الحساب فقط.',

@@ -86,7 +86,7 @@ export const webCalendarMessages = {
   'web.calendar.allDayHeading': 'Wala pang eksaktong oras',
 
   'web.calendar.filter.group': 'Grupo ng customer',
-  'web.calendar.filter.anyBrand': 'Kahit anong brand',
+  'web.calendar.filter.anyProject': 'Kahit anong project',
   'web.calendar.filter.anyAccount': 'Kahit anong account',
   'web.calendar.filter.anyPlatform': 'Kahit anong platform',
   'web.calendar.filter.anyStatus': 'Kahit anong status',
@@ -202,7 +202,7 @@ export const webCalendarMessages = {
   'web.calendar.permission.requirementsLabel': 'Kinakailangang saklaw',
   'web.calendar.permission.title': 'Hindi mo makikita ang kalendaryong ito',
   'web.calendar.permission.body':
-    'Ang access sa kalendaryo ay ibinibigay sa bawat brand. Ang iyong account ay wala sa mga brand sa view na ito.',
+    'Ang access sa kalendaryo ay ibinibigay sa bawat project. Ang iyong account ay wala sa mga project sa view na ito.',
 
   /* ---------------------------------------------------------------------
    * Post job and publication receipt
@@ -365,6 +365,12 @@ export const webCalendarMessages = {
     'Ang susunod na screen ay {provider}, hindi Relay. Hindi kailanman nakikita ng Relay ang iyong password.',
   'web.connection.connect.noWriteWithoutApproval':
     'Ang pagkonekta ng isang account ay hindi naglalathala ng anuman. Sinusunod pa rin ng bawat post ang patakaran sa pag-apruba ng workspace na ito.',
+  'web.connection.projectScope.title': 'Ipinapakita ang mga channel para sa {project}',
+  'web.connection.projectScope.body':
+    'Ang mga bagong channel ay ikokonekta sa proyektong ito. Lumipat ng proyekto mula sa itaas na bar para pamahalaan ang ibang grupo.',
+  'web.connection.projectMissing.title': 'Gumawa ng proyekto bago kumonekta ng channel',
+  'web.connection.projectMissing.body':
+    "Pinananatili ng mga proyekto na magkahiwalay ang mga channel, media, draft at iskedyul ng iba't ibang produkto o kliyente.",
 
   'web.connection.requirement.instagram':
     'Ang Instagram publishing ay nangangailangan ng isang propesyonal na account, na nangangahulugang isang negosyo o creator account na naka-link sa isang Facebook Page.',

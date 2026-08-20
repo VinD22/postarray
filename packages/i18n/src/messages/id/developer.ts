@@ -6,7 +6,7 @@ export const developerMessages = {
   'developer.serviceAccount.title': 'Akun layanan',
   'developer.serviceAccount.create': 'Buat akun layanan',
   'developer.serviceAccount.name': 'Nama',
-  'developer.serviceAccount.scopeBrands': 'Brand dan akun yang dapat digunakan',
+  'developer.serviceAccount.scopeProjects': 'Project dan akun yang dapat digunakan',
   'developer.serviceAccount.scopePlatforms': 'Platform',
   'developer.serviceAccount.scopeLocales': 'Bahasa konten',
   'developer.serviceAccount.scopeDomains': 'Domain tautan yang diizinkan',
@@ -100,7 +100,7 @@ export const developerMessages = {
     'Hapus aplikasi ini? Setiap hibah dicabut dan tokennya berhenti berfungsi.',
   'developer.consent.title': '{app} menginginkan akses ke ruang kerja Anda',
   'developer.consent.workspace': 'Workspace',
-  'developer.consent.brands': 'Brand dan akun',
+  'developer.consent.projects': 'Project dan akun',
   'developer.consent.willBeAbleTo': '{app} akan bisa',
   'developer.consent.willNotBeAbleTo': '{app} tidak akan bisa',
   'developer.consent.approvalStillApplies':

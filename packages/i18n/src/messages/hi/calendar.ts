@@ -17,7 +17,7 @@ export const calendarMessages = {
   'calendar.slotOverflow': '{count, plural, one {# अधिक} other {# अधिक}}',
   'calendar.newPostAt': 'नई पोस्ट पर {time}',
 
-  'calendar.filter.brand': 'ZZZप्रोटेक्टेड11ZZZ',
+  'calendar.filter.project': 'ZZZप्रोटेक्टेड11ZZZ',
   'calendar.filter.account': 'खाता',
   'calendar.filter.platform': 'मंच',
   'calendar.filter.status': 'स्थिति',

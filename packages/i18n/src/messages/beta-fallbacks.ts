@@ -32,6 +32,21 @@ export const FULL_COVERAGE_LOCALE_CODES = [
   'hi',
   'ar',
   'zh-Hans',
+  'it',
+  'nl',
+  'pl',
+  'cs',
+  'sv',
+  'tr',
+  'ru',
+  'uk',
+  'he',
+  'ko',
+  'vi',
+  'th',
+  'fil',
+  'zh-Hant',
+  'es-419',
 ] as const;
 
 /**
@@ -160,6 +175,25 @@ export const BETA_ENGLISH_FALLBACK_PREFIXES = [
   'web.useCases.',
   'web.meta.useCases.',
   'web.meta.useCase.',
+  // The generated post specs cluster at /specs. Every sentence in this
+  // namespace either labels a value read from the generated publishing-limits
+  // dataset or says plainly that a platform limit is not a claim that anything
+  // publishes. A machine translation that softened the second would turn a
+  // reference page into a capability claim in that language. Beta locales keep
+  // the reviewed English source until a person translates them.
+  'web.specs.',
+  'web.meta.specs.',
+  'web.meta.specsPlatform.',
+  // The generated free tool directory: a character counter per platform and the
+  // consolidated media limits table. Every sentence in this namespace either
+  // states a platform counting rule, states a recorded ceiling, or promises
+  // that what a reader types never leaves the browser. A machine translation
+  // that softened the last one would be a privacy claim nobody reviewed, so
+  // beta locales keep the reviewed English source until a person translates
+  // them. Deliberately not filed under `web.tools.`, which ten locales have
+  // already translated key for key.
+  'web.toolDirectory.',
+  'web.meta.toolDirectory.',
   // Pause and resume, Posting Set management, remembered channel selection
   // (A3, A7, A8). All three make precise claims a machine translation is likely
   // to soften: that pausing cannot retract a post that already published, that
@@ -228,18 +262,18 @@ export const BETA_ENGLISH_FALLBACK_KEYS = [
   'web.cta.startTrial',
   'web.cta.seePricing',
   'web.home.honest.noMedia',
-  'settings.brands.disclosureDefaults',
-  'settings.brands.localeRules.legal',
+  'settings.projects.disclosureDefaults',
+  'settings.projects.localeRules.legal',
   'settings.ui.section.billing',
   'settings.ui.section.billingSummary',
   'nav.projectSwitcher',
   'composerWeb.entity.searchFailed',
   'web.connection.connect.projectContext',
-  'settings.ui.brands.disclosureHelp',
-  'settings.ui.brands.domainVerificationUnavailable',
-  'settings.ui.brands.disclosureUnavailable',
-  'settings.ui.brands.glossaryUnavailable',
-  'settings.ui.brands.localeRulesUnavailable',
+  'settings.ui.projects.disclosureHelp',
+  'settings.ui.projects.domainVerificationUnavailable',
+  'settings.ui.projects.disclosureUnavailable',
+  'settings.ui.projects.glossaryUnavailable',
+  'settings.ui.projects.localeRulesUnavailable',
   'settings.ui.security.killSwitchUnavailable',
   'developer.ui.webhooks.secretRotationUnavailable',
   'actionCenter.filter.billing',
@@ -255,6 +289,18 @@ export const BETA_ENGLISH_FALLBACK_KEYS = [
   'web.product.v2.demo.title',
   'web.product.v2.demo.body',
   'web.integrations.v2.marqueeCaption',
+  // Editorial-marketing follow-up: the product and integrations hero
+  // headlines and the product page's sequence heading and stat label, plus
+  // the integrations stats cell's two labels. New strings, English only
+  // until translated, same as the rest of this WP-3 batch.
+  'web.product.v2.hero.headline',
+  'web.product.v2.hero.headlineAccent',
+  'web.product.v2.sequence.title',
+  'web.product.v2.sequence.stepsStat',
+  'web.integrations.v2.hero.headline',
+  'web.integrations.v2.hero.headlineAccent',
+  'web.integrations.v2.platformsStat',
+  'web.integrations.v2.capabilitiesStat',
   'web.compare.v2.honest',
   'web.creators.v2.phone.caption',
   'web.agencies.v2.channelsLabel',

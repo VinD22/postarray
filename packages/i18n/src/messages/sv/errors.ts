@@ -63,6 +63,14 @@ export const errorMessages = {
   'error.channel_limit_reached.message':
     'Denna arbetsyta använder redan alla {limit} aktiva kanaler.',
   'error.channel_limit_reached.action': 'Koppla bort en kanal innan du ansluter en annan.',
+  'error.project_limit_reached.message': 'Denna arbetsyta använder redan alla {limit} aktiva projekt.',
+  'error.project_limit_reached.action':
+    'Arkivera ett inaktivt projekt eller ändra arbetsytans projektgräns.',
+  'error.project_has_connections.message':
+    'Detta projekt har fortfarande {connected, plural, one {# ansluten kanal} other {# anslutna kanaler}}.',
+  'error.project_has_connections.action': 'Koppla bort varje kanal i detta projekt innan du arkiverar det.',
+  'error.project_last_active.message': 'En arbetsyta måste behålla minst ett aktivt projekt.',
+  'error.project_last_active.action': 'Skapa ett annat projekt innan du arkiverar detta.',
   'error.connection_not_found.message': 'Den anslutningen finns inte längre i den här arbetsytan.',
   'error.connection_not_found.action': 'Anslut kontot igen för att fortsätta publicera till det.',
   'error.connection_revoked.message': '{account} återkallade åtkomst på {provider}.',

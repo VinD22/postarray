@@ -16,7 +16,7 @@ export const calendarMessages = {
   'calendar.slotCount': '{count, plural, =0 {Nothing scheduled} one {# post} other {# posts}}',
   'calendar.slotOverflow': '{count, plural, one {# more} other {# more}}',
   'calendar.newPostAt': 'โพสต์ใหม่ที่ {time}',
-  'calendar.filter.brand': 'Brand',
+  'calendar.filter.project': 'Project',
   'calendar.filter.account': 'บัญชี',
   'calendar.filter.platform': 'แพลตฟอร์ม',
   'calendar.filter.status': 'สถานะ',

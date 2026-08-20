@@ -67,13 +67,13 @@ export const validationMessages = {
   'validation.schedule_too_far_ahead.message':
     'Dies ist weiter voraus als die für diesen Berechtigungsnachweis festgelegte {limit} Vorschau.',
   'validation.schedule_outside_quiet_hours.message':
-    'Dies fällt in die Ruhezeiten, die für {brand} festgelegt sind.',
+    'Dies fällt in die Ruhezeiten, die für {project} festgelegt sind.',
   'validation.duplicate_within_window.message':
     'Sehr ähnliche Inhalte sind bereits für {account} innerhalb von {window} geplant oder veröffentlicht.',
   'validation.blocked_term_present.message':
-    'Der Text enthält einen gesperrten Begriff für {brand}.',
+    'Der Text enthält einen gesperrten Begriff für {project}.',
   'validation.unsupported_claim.message':
-    'Dieser Anspruch ist nicht in den genehmigten Ansprüchen für {brand} enthalten.',
+    'Dieser Anspruch ist nicht in den genehmigten Ansprüchen für {project} enthalten.',
   'validation.unsupported_claim.hint':
     'Fügen Sie es den genehmigten Behauptungen mit Beweisen hinzu oder formulieren Sie den Satz um.',
   'validation.cadence_exceeded.message':

@@ -16,7 +16,7 @@ export const calendarMessages = {
   'calendar.slotCount': '{count, plural, other {# 件の投稿}}',
   'calendar.slotOverflow': '{count, plural, other {＃ もっと}}',
   'calendar.newPostAt': '新しい投稿{time}',
-  'calendar.filter.brand': 'Brand',
+  'calendar.filter.project': 'Project',
   'calendar.filter.account': 'アカウント',
   'calendar.filter.platform': 'プラットフォーム',
   'calendar.filter.status': '状態',

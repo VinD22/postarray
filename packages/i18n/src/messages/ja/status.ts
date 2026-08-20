@@ -56,7 +56,7 @@ export const statusMessages = {
   'permission.denied.role': 'これには、{role}役割。あなたは{currentRole}。',
   'permission.denied.scope': 'この資格情報にはスコープが必要です{scope}。',
   'permission.denied.contactOwner': '聞く{owner}それを与えるために。',
-  'permission.denied.brandScope': 'アクセスは以下に制限されています{brands}。',
+  'permission.denied.projectScope': 'アクセスは以下に制限されています{projects}。',
   'permission.readOnly': '現在、このワークスペースは読み取り専用です。',
   'permission.mfaRequired': '続行するには、2 要素認証で確認してください。',
   'rateLimit.title': 'ちょっとゆっくりしてください',

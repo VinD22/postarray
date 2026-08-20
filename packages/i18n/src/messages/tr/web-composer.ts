@@ -215,7 +215,7 @@ export const webComposerMessages = {
   'composerWeb.set.apply': 'Bu Seti Kullan',
   'composerWeb.set.none': 'Henüz hiçbir Set kaydedilmedi.',
   'composerWeb.signature.pickerLabel': 'İmza',
-  'composerWeb.signature.scope': "{language}'de {provider}'de {brand} için",
+  'composerWeb.signature.scope': "{language}'de {provider}'de {project} için",
   'composerWeb.signature.previewHeading': 'Gönderi nasıl bitiyor',
   'composerWeb.signature.notMatching':
     'Bu imza farklı bir marka, platform veya dile yönelik olduğundan burada sunulmamaktadır.',
@@ -325,6 +325,15 @@ export const webComposerMessages = {
     'Örnek: launch_hero.jpg, 1600 x 900, alternatif metin seti, 2 gönderide kullanıldı.',
   'mediaLib.error.title': 'Kütüphane yüklenemedi',
   'mediaLib.error.body': 'Dosyalarınız güvende. Bu başarısızlıkla hiçbir şey değişmedi.',
+  'mediaLib.offline.title': 'Kitaplık çevrimdışıyken kullanılamıyor',
+  'mediaLib.offline.body':
+    'Bağlantı olmadan kitaplığı yenileyemiyoruz. Bu ekrandaki dosyalar değişmedi. Yeniden bağlanın, sonra tekrar deneyin.',
+  'mediaLib.rateLimited.title': 'Kitaplığın kısa bir molaya ihtiyacı var',
+  'mediaLib.rateLimited.cause':
+    'API, dosyalarınızı yüklerken yavaşlamamızı istedi. Saklanan medyanız güvende.',
+  'mediaLib.rateLimited.resetLabel': 'Şu tarihten sonra tekrar deneyin',
+  'mediaLib.rateLimited.alternative':
+    'Yerel olarak taslak hazırlamaya devam edebilirsiniz, ancak yüklemeler ve kitaplık değişiklikleri limit sıfırlanana kadar bekler.',
   'mediaLib.loading': 'Medya kitaplığınızı yükleme',
   'mediaLib.permission.title': 'Bu çalışma alanı kitaplığını göremezsiniz',
   'mediaLib.permission.body':
@@ -358,6 +367,40 @@ export const webComposerMessages = {
   'mediaLib.upload.noTargets':
     'Hiçbir hesap seçilmediğinden dosya yalnızca çalışma alanı varsayılanlarına göre kontrol edilir.',
 
+  'mediaLib.import.urlLabel': 'Herkese açık dosya URL’si',
+  'mediaLib.import.urlPlaceholder': 'https://cdn.example.com/launch-video.mp4',
+  'mediaLib.import.importing': 'Medya içe aktarılıyor',
+  'mediaLib.import.succeeded': 'Dosya kitaplığınızda',
+  'mediaLib.import.scanPending':
+    'Relay kaynağını kaydetti. Güvenlik kontrolü tamamlanana kadar yayınlama bekler.',
+  'mediaLib.import.failed': 'Dosya içe aktarılamadı',
+  'mediaLib.import.failedHelp':
+    'Bağlantının herkese açık olduğunu ve doğrudan desteklenen bir medya dosyasına işaret ettiğini kontrol edip tekrar deneyin.',
+  'mediaLib.import.readOnly': 'Bu ortamda dosya içe aktarmak için API’ye bağlanın.',
+  'mediaLib.import.offline': 'Bir dosyayı içe aktarmadan önce yeniden bağlanın.',
+  'mediaLib.import.issue.invalid': 'Eksiksiz bir URL girin.',
+  'mediaLib.import.issue.scheme': 'HTTP veya HTTPS bağlantısı kullanın.',
+  'mediaLib.import.issue.credentials': 'Kullanıcı adı veya şifre içermeyen bir bağlantı kullanın.',
+  'mediaLib.retention.title':
+    'Saklanan dosyalar, gönderi oluşturulduktan sonra 30 gün boyunca tutulur',
+  'mediaLib.retention.body':
+    'Bir dosya bir gönderiye eklendiğinde, o gönderi oluşturulduktan 30 gün sonra dosyayı Relay depolamasından kalıcı olarak sileriz. Eklenmeyi bekleyen dosyalar için yükleme tarihi temizleme yedeği olarak kullanılır. Gönderi metni, yayın alındıları ve denetim geçmişi daha uzun süre kullanılabilir kalır. Sosyal platformda yayınlanmış bir gönderi, saklanan dosyasının süresi dolduğunda kaldırılmaz.',
+  'mediaLib.retention.limits':
+    'Görseller, ses ve PDF dosyaları en fazla {imageSize} olabilir. Videolar en fazla {videoSize} olabilir.',
+  'mediaLib.retention.expiresLabel': 'Dosya silme tarihi',
+  'mediaLib.retention.deleted': 'Kalıcı olarak silindi',
+  'mediaLib.retention.deletedTitle': 'Bu saklanan dosya silindi',
+  'mediaLib.retention.deletedBody':
+    '30 günlük saklama süresi sona erdi. Gönderi metni, yayın alındıları ve denetim geçmişi kalır.',
+  'mediaLib.processing.unavailableTitle': 'Bu dosya yayınlanmaya hazır değil',
+  'mediaLib.processing.unavailableBody':
+    'İşleme veya güvenlik kontrolü hâlâ beklemede ya da geçemedi. Bu durum düzelmezse dosyayı tekrar yükleyin.',
+  'mediaLib.processing.pendingTitle': 'Güvenlik taraması lansman öncesinde kullanılamıyor',
+  'mediaLib.processing.pendingBody':
+    'Dosya 30 gün boyunca saklanır, ancak güvenlik taraması etkinleştirilene kadar yayınlanan bir gönderiye eklenemez.',
+  'mediaLib.processing.blockedTitle': 'Bu dosya yayınlanamaz',
+  'mediaLib.processing.blockedBody':
+    'Dosya işlemeyi veya güvenlik kontrolünü geçemedi. Farklı bir dosya yükleyin.',
   'mediaLib.alt.heading': 'Alternatif metin',
   'mediaLib.alt.help':
     'Göremeyen biri için resimde neyin önemli olduğunu açıklayın. Genellikle bir veya iki cümle yeterlidir.',

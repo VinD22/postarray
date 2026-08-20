@@ -177,7 +177,7 @@ export const webComposerMessages = {
   'composerWeb.set.apply': '使用这套',
   'composerWeb.set.none': '尚未保存任何集合。',
   'composerWeb.signature.pickerLabel': '签名',
-  'composerWeb.signature.scope': '对于 {language} 中 {provider} 上的 {brand}',
+  'composerWeb.signature.scope': '对于 {language} 中 {provider} 上的 {project}',
   'composerWeb.signature.previewHeading': '帖子如何结束',
   'composerWeb.signature.notMatching': '此签名适用于不同的品牌、平台或语言，因此此处不提供。',
   'composerWeb.assist.menuLabel': '协助处理此文本',

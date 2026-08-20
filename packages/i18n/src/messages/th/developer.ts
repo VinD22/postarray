@@ -6,7 +6,7 @@ export const developerMessages = {
   'developer.serviceAccount.title': 'บัญชีบริการ',
   'developer.serviceAccount.create': 'สร้างบัญชีบริการ',
   'developer.serviceAccount.name': 'ชื่อ',
-  'developer.serviceAccount.scopeBrands': 'Brand และบัญชีที่สามารถใช้ได้',
+  'developer.serviceAccount.scopeProjects': 'Project และบัญชีที่สามารถใช้ได้',
   'developer.serviceAccount.scopePlatforms': 'แพลตฟอร์ม',
   'developer.serviceAccount.scopeLocales': 'ภาษาเนื้อหา',
   'developer.serviceAccount.scopeDomains': 'โดเมนลิงก์ที่อนุญาต',
@@ -99,7 +99,7 @@ export const developerMessages = {
     'ลบแอปนี้ใช่ไหม เงินช่วยเหลือทุกรายการจะถูกเพิกถอนและโทเค็นจะหยุดทำงาน',
   'developer.consent.title': '{app} ต้องการเข้าถึงพื้นที่ทำงานของคุณ',
   'developer.consent.workspace': 'Workspace',
-  'developer.consent.brands': 'Brand และบัญชี',
+  'developer.consent.projects': 'Project และบัญชี',
   'developer.consent.willBeAbleTo': '{app} จะสามารถ',
   'developer.consent.willNotBeAbleTo': '{app} จะไม่สามารถ',
   'developer.consent.approvalStillApplies':

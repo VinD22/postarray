@@ -61,7 +61,7 @@ export const webCalendarMessages = {
   'web.calendar.nowLabel': 'bây giờ',
   'web.calendar.allDayHeading': 'Chưa có thời gian chính xác',
   'web.calendar.filter.group': 'Nhóm khách hàng',
-  'web.calendar.filter.anyBrand': 'Bất kỳ thương hiệu',
+  'web.calendar.filter.anyProject': 'Bất kỳ thương hiệu',
   'web.calendar.filter.anyAccount': 'Bất kỳ tài khoản nào',
   'web.calendar.filter.anyPlatform': 'Bất kỳ nền tảng nào',
   'web.calendar.filter.anyStatus': 'Bất kỳ trạng thái nào',
@@ -307,6 +307,12 @@ export const webCalendarMessages = {
     'Màn hình tiếp theo là {provider}, không phải Relay. Relay không bao giờ nhìn thấy mật khẩu của bạn.',
   'web.connection.connect.noWriteWithoutApproval':
     'Kết nối một tài khoản không xuất bản bất cứ điều gì. Mọi bài đăng vẫn tuân theo chính sách phê duyệt không gian làm việc này.',
+  'web.connection.projectScope.title': 'Hiển thị kênh cho {project}',
+  'web.connection.projectScope.body':
+    'Kênh mới sẽ kết nối vào dự án này. Chuyển đổi dự án từ thanh trên cùng để quản lý một nhóm khác.',
+  'web.connection.projectMissing.title': 'Tạo một dự án trước khi kết nối một kênh',
+  'web.connection.projectMissing.body':
+    'Dự án giữ cho kênh, phương tiện, bản nháp và lịch đăng của các sản phẩm hoặc khách hàng khác nhau được tách biệt.',
   'web.connection.requirement.instagram':
     'Việc xuất bản Instagram cần có tài khoản chuyên nghiệp, nghĩa là tài khoản doanh nghiệp hoặc người sáng tạo được liên kết với Trang Facebook.',
   'web.connection.requirement.facebook':

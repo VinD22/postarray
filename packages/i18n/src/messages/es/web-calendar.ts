@@ -86,7 +86,7 @@ export const webCalendarMessages = {
   'web.calendar.allDayHeading': 'Aún no hay hora exacta',
 
   'web.calendar.filter.group': 'grupo de clientes',
-  'web.calendar.filter.anyBrand': 'cualquier marca',
+  'web.calendar.filter.anyProject': 'cualquier marca',
   'web.calendar.filter.anyAccount': 'cualquier cuenta',
   'web.calendar.filter.anyPlatform': 'Cualquier plataforma',
   'web.calendar.filter.anyStatus': 'cualquier estado',

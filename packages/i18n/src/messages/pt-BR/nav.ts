@@ -15,7 +15,6 @@ export const navMessages = {
   'nav.commandPalette': 'Paleta de comandos',
   'nav.account': 'Conta',
   'nav.workspaceSwitcher': 'Alternar espaço de trabalho',
-  'nav.brandSwitcher': 'Mudar marca',
   'nav.skipToContent': 'Pular para o conteúdo principal',
   'nav.primaryLandmark': 'Navegação primária',
   'nav.moreItems': 'Mais',
@@ -26,7 +25,7 @@ export const navMessages = {
   'nav.theme.label': 'Tema',
 
   'settings.nav.members': 'Membros e funções',
-  'settings.nav.brands': 'Brands',
+  'settings.nav.projects': 'Projects',
   'settings.nav.agents': 'Agentes e API',
   'settings.nav.developerApps': 'Aplicativos para desenvolvedores',
   'settings.nav.webhooks': 'Webhooks',
@@ -65,8 +64,7 @@ export const navMessages = {
 
   'shell.workspace.label': 'Workspace',
   'shell.workspace.current': 'Área de trabalho atual: {name}',
-  'shell.brand.label': 'Brand',
-  'shell.brand.all': 'Todas as marcas',
+  'shell.project.all': 'Todas as marcas',
   'shell.timeZone.label': 'Tempos mostrados em {timeZone}',
   'shell.notifications.count':
     '{count, plural, =0 {Sem novas notificações} one {# nova notificação} other {# novas notificações} many {# novas notificações}}',

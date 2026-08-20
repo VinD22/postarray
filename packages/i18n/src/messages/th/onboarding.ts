@@ -44,7 +44,7 @@ export const onboardingMessages = {
   'onboarding.checklist.connectAccount': 'เชื่อมต่อบัญชี',
   'onboarding.checklist.firstPost': 'เผยแพร่หรือกำหนดเวลาโพสต์',
   'onboarding.checklist.inviteTeammate': 'เชิญเพื่อนร่วมทีม',
-  'onboarding.checklist.setBrandVoice': 'อธิบายเสียงของแบรนด์ของคุณ',
+  'onboarding.checklist.setProjectVoice': 'อธิบายเสียงของแบรนด์ของคุณ',
   'onboarding.checklist.tryAutomation': 'ลองใช้กฎอัตโนมัติ',
   'onboarding.checklist.remaining':
     '{count, plural, =0 {All done} one {# step left} other {# steps left}}',

@@ -33,6 +33,8 @@ export const validationMessages = {
     "Bu dosya {actual}'dır. {provider} {limit}’ye kadar kabul eder.",
   'validation.media_mixed_types_unsupported.message':
     '{provider} görselleri ve videoyu aynı gönderide yayınlayamaz.',
+  'validation.media_unavailable.message':
+    'Eklenen bir dosya artık kullanılabilir değil. Gönderiden kaldırın veya yeniden yükleyin.',
   'validation.alt_text_missing.message':
     '{count, plural, one {# resim} other {# resim}} üzerinde alternatif metin eksik.',
   'validation.alt_text_missing.hint': 'Resmi tanımlayın veya dekoratif olarak işaretleyin.',
@@ -65,12 +67,12 @@ export const validationMessages = {
   'validation.schedule_too_far_ahead.message':
     'Bu, bu kimlik bilgisi için belirlenen {limit} ileriye bakış setinden daha ileridedir.',
   'validation.schedule_outside_quiet_hours.message':
-    'Bu, {brand} için ayarlanan sessiz saatlerin içindedir.',
+    'Bu, {project} için ayarlanan sessiz saatlerin içindedir.',
   'validation.duplicate_within_window.message':
     'Çok benzer içerik zaten {window} içinde {account} için planlanmış veya yayınlanmış.',
-  'validation.blocked_term_present.message': 'Metin {brand} için engellenmiş bir terim içeriyor.',
+  'validation.blocked_term_present.message': 'Metin {project} için engellenmiş bir terim içeriyor.',
   'validation.unsupported_claim.message':
-    'Bu iddia {brand} için onaylanmış talepler arasında yer almıyor.',
+    'Bu iddia {project} için onaylanmış talepler arasında yer almıyor.',
   'validation.unsupported_claim.hint':
     'Kanıtlarla birlikte onaylanmış iddialara ekleyin veya cümleyi yeniden ifade edin.',
   'validation.cadence_exceeded.message':

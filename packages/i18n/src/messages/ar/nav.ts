@@ -15,7 +15,6 @@ export const navMessages = {
   'nav.commandPalette': 'لوحة الأوامر',
   'nav.account': 'الحساب',
   'nav.workspaceSwitcher': 'تبديل مساحة العمل',
-  'nav.brandSwitcher': 'تبديل العلامة التجارية',
   'nav.skipToContent': 'انتقل إلى المحتوى الرئيسي',
   'nav.primaryLandmark': 'التنقل الأساسي',
   'nav.moreItems': 'المزيد',
@@ -26,7 +25,7 @@ export const navMessages = {
   'nav.theme.label': 'الموضوع',
 
   'settings.nav.members': 'الأعضاء والأدوار',
-  'settings.nav.brands': 'Brands',
+  'settings.nav.projects': 'Projects',
   'settings.nav.agents': 'الوكلاء وواجهة برمجة التطبيقات',
   'settings.nav.developerApps': 'تطبيقات المطورين',
   'settings.nav.webhooks': 'خطافات الويب',
@@ -65,8 +64,7 @@ export const navMessages = {
 
   'shell.workspace.label': 'Workspace',
   'shell.workspace.current': 'مساحة العمل الحالية: {name}',
-  'shell.brand.label': 'Brand',
-  'shell.brand.all': 'جميع العلامات التجارية',
+  'shell.project.all': 'جميع العلامات التجارية',
   'shell.timeZone.label': 'الأوقات المعروضة في {timeZone}',
   'shell.notifications.count':
     '{count, plural, =0 {لا توجد إشعارات جديدة} one {#إخطار جديد} zero {# إشعارات جديدة} two {# إشعارات جديدة} few {# إشعارات جديدة} many {# إشعارات جديدة} other {# إشعارات جديدة}}',

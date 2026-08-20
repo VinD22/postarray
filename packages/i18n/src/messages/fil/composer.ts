@@ -1,7 +1,7 @@
 /** Composer: master draft, per target overrides, previews, validation, cost. */
 export const composerMessages = {
   'composer.title': 'Mag-compose',
-  'composer.titleWithBrand': 'Mag-compose para sa {brand}',
+  'composer.titleWithProject': 'Mag-compose para sa {project}',
   'composer.master.label': 'Master draft',
   'composer.master.description':
     'Sumulat ng isang beses dito. Naaabot ng mga katugmang pagbabago ang bawat napiling target. Magbukas ng target para magsulat ng bersyon na matatanggap lang ng account na iyon.',

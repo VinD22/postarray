@@ -32,7 +32,7 @@ export const automationMessages = {
   'automation.trigger.recurring': 'uruchamia się harmonogram cykliczny',
 
   'automation.condition.label': 'Warunki',
-  'automation.condition.brand': 'marka to {brand}',
+  'automation.condition.project': 'marka to {project}',
   'automation.condition.campaign': 'kampania to {campaign}',
   'automation.condition.account': 'konto to {account}',
   'automation.condition.platform': 'platforma to {platform}',

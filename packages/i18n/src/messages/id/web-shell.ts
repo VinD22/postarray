@@ -17,7 +17,6 @@ export const webShellMessages = {
   'shell.workspace.create': 'Buat ruang kerja',
   'shell.workspace.manage': 'Pengaturan Workspace',
   'shell.workspace.role': 'Anda {role} di sini',
-  'shell.brand.filterHint': 'Memfilter Beranda, Kalender, dan Analisis untuk merek ini.',
   'shell.demo.badge': 'Data demo',
   'shell.demo.title': 'Anda sedang melihat data demo',
   'shell.demo.body':

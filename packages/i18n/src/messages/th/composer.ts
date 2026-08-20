@@ -1,7 +1,7 @@
 /** th beta catalog namespace. */
 export const composerMessages = {
   'composer.title': 'เขียน',
-  'composer.titleWithBrand': 'เขียนสำหรับ {brand}',
+  'composer.titleWithProject': 'เขียนสำหรับ {project}',
   'composer.master.label': 'ร่างต้นแบบ',
   'composer.master.description':
     'เขียนครั้งหนึ่งที่นี่ การเปลี่ยนแปลงที่เข้ากันได้จะไปถึงทุกเป้าหมายที่เลือก เปิดเป้าหมายเพื่อเขียนเวอร์ชันเฉพาะที่บัญชีจะได้รับ',

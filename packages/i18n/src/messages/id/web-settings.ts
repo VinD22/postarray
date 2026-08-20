@@ -8,8 +8,8 @@ export const webSettingsMessages = {
   'settings.ui.section.members': 'Anggota dan peran',
   'settings.ui.section.membersSummary':
     'Siapa yang ada di ruang kerja ini dan apa yang dapat dilakukan setiap orang.',
-  'settings.ui.section.brands': 'Brand',
-  'settings.ui.section.brandsSummary':
+  'settings.ui.section.projects': 'Project',
+  'settings.ui.section.projectsSummary':
     'Suara, audiens, klaim yang disetujui, istilah yang diblokir, aturan lokal, domain, dan glosarium.',
   'settings.ui.section.agents': 'Agen dan API',
   'settings.ui.section.agentsSummary':
@@ -80,10 +80,10 @@ export const webSettingsMessages = {
   'settings.ui.members.column.lastActive': 'Terakhir aktif',
   'settings.ui.members.column.actions': 'Tindakan',
   'settings.ui.members.scopeAll': 'Semua merek dan akun',
-  'settings.ui.members.scopeLimited': '{count, plural, one {# brand} other {# brands}}: {names}',
+  'settings.ui.members.scopeLimited': '{count, plural, one {# project} other {# projects}}: {names}',
   'settings.ui.members.approvals.canApprove': 'Dapat menyetujui',
   'settings.ui.members.approvals.cannotApprove': 'Tidak dapat menyetujui',
-  'settings.ui.members.approvals.canApproveOwnBrands': 'Dapat menyetujui merek yang terdaftar',
+  'settings.ui.members.approvals.canApproveOwnProjects': 'Dapat menyetujui merek yang terdaftar',
   'settings.ui.members.lastActiveNever': 'Belum masuk',
   'settings.ui.members.changeRole': 'Ubah peran untuk {name}',
   'settings.ui.members.remove': 'Hapus {name}',
@@ -94,7 +94,7 @@ export const webSettingsMessages = {
   'settings.ui.members.inviteBody':
     'Mereka menerima email dengan tautan. Undangan akan habis masa berlakunya setelah tujuh hari dan Anda dapat membatalkannya sebelum tanggal tersebut.',
   'settings.ui.members.inviteRole': 'Peran',
-  'settings.ui.members.inviteScope': 'Brand tempat mereka dapat bekerja',
+  'settings.ui.members.inviteScope': 'Project tempat mereka dapat bekerja',
   'settings.ui.members.inviteScopeAll': 'Setiap merek di ruang kerja ini',
   'settings.ui.members.inviteScopeSelected': 'Hanya merek yang saya pilih',
   'settings.ui.members.inviteApprovals': 'Dapat memutuskan permintaan persetujuan',
@@ -131,42 +131,42 @@ export const webSettingsMessages = {
     'Tindakan mereka di masa lalu tetap tersimpan dalam log audit dan tanda terima.',
   'settings.ui.members.removeConsequence.approvals':
     'Permintaan persetujuan yang menunggunya kembali ke antrean untuk pemberi persetujuan lain.',
-  'settings.ui.brands.description':
+  'settings.ui.projects.description':
     'Sebuah merek memiliki aturan yang harus dipatuhi: apa yang boleh Anda klaim, apa yang tidak boleh Anda katakan, dan bagaimana setiap bahasa ditulis.',
-  'settings.ui.brands.listCaption': 'Brands di ruang kerja ini',
-  'settings.ui.brands.column.brand': 'Brand',
-  'settings.ui.brands.column.locales': 'Bahasa konten',
-  'settings.ui.brands.column.accounts': 'Akun',
-  'settings.ui.brands.column.updated': 'Diperbarui',
-  'settings.ui.brands.accountCount':
+  'settings.ui.projects.listCaption': 'Projects di ruang kerja ini',
+  'settings.ui.projects.column.project': 'Project',
+  'settings.ui.projects.column.locales': 'Bahasa konten',
+  'settings.ui.projects.column.accounts': 'Akun',
+  'settings.ui.projects.column.updated': 'Diperbarui',
+  'settings.ui.projects.accountCount':
     '{count, plural, =0 {No accounts} one {# account} other {# accounts}}',
-  'settings.ui.brands.emptyTitle': 'Belum ada merek',
-  'settings.ui.brands.emptyBody':
+  'settings.ui.projects.emptyTitle': 'Belum ada merek',
+  'settings.ui.projects.emptyBody':
     'Sebuah merek mengelompokkan akun, aturan persetujuan, dan aturan bahasa. Kebanyakan tim memulai dengan satu aturan dan menambahkan aturan kedua ketika klien atau pasar membutuhkan aturan yang berbeda.',
-  'settings.ui.brands.emptyExample':
+  'settings.ui.projects.emptyExample':
     'Contoh: merek "Acme EU", bahasa Inggris dan Jerman, istilah "dijamin" diblokir, pengungkapan "Kemitraan berbayar" aktif untuk Instagram.',
-  'settings.ui.brands.voiceHelp':
+  'settings.ui.projects.voiceHelp':
     'Bagaimana merek ini terdengar. Digunakan saat Anda meminta penulisan ulang dan saat klaim diperiksa.',
-  'settings.ui.brands.audienceHelp': 'Untuk siapa konten tersebut, per pasar.',
-  'settings.ui.brands.approvedClaimsHelp':
+  'settings.ui.projects.audienceHelp': 'Untuk siapa konten tersebut, per pasar.',
+  'settings.ui.projects.approvedClaimsHelp':
     'Pernyataan yang telah diselesaikan oleh pengulas. Apa pun di luar daftar ini ditandai sebelum disetujui, bukan setelah dipublikasikan.',
-  'settings.ui.brands.blockedTermsHelp':
+  'settings.ui.projects.blockedTermsHelp':
     'Kata-kata yang menghalangi penjadwalan untuk merek ini. Satu per baris.',
-  'settings.ui.brands.domainsHelp':
+  'settings.ui.projects.domainsHelp':
     'Domain yang mungkin ditautkan dan diperpendek oleh merek ini. Hanya domain terverifikasi yang dapat dipilih di komposer.',
-  'settings.ui.brands.domainVerified': '{date} terverifikasi',
-  'settings.ui.brands.domainPending': 'Catatan DNS belum terlihat',
-  'settings.ui.brands.disclosureHelp':
+  'settings.ui.projects.domainVerified': '{date} terverifikasi',
+  'settings.ui.projects.domainPending': 'Catatan DNS belum terlihat',
+  'settings.ui.projects.disclosureHelp':
     'Diterapkan secara default di komposer untuk platform yang Anda pilih di sini. Itu dapat diubah per posting sebelum disetujui.',
-  'settings.ui.brands.glossaryHelp':
+  'settings.ui.projects.glossaryHelp':
     'Nama produk, istilah hukum, dan apa pun yang harus diubah dalam terjemahan.',
-  'settings.ui.brands.glossaryCaption':
+  'settings.ui.projects.glossaryCaption':
     'Istilah yang dilindungi dan cara masing-masing istilah tersebut ditangani per bahasa',
-  'settings.ui.brands.glossaryEmpty':
+  'settings.ui.projects.glossaryEmpty':
     'Belum ada persyaratan yang dilindungi. Tambahkan nama produk dan istilah hukum yang tidak boleh diterjemahkan atau diungkapkan ulang.',
-  'settings.ui.brands.localeRulesHelp':
+  'settings.ui.projects.localeRulesHelp':
     'Aturan per bahasa konten. Aturan ini diterapkan saat Anda mengadaptasi atau melakukan transkreasi, dan ditampilkan kepada peninjau.',
-  'settings.ui.brands.saveBrand': 'Simpan merek',
+  'settings.ui.projects.saveProject': 'Simpan merek',
   'settings.ui.localization.description':
     'Tiga pengaturan terpisah: bahasa aplikasi ini, bahasa yang Anda publikasikan, dan pasar tempat Anda menulis. Mengubah yang satu tidak akan pernah mengubah yang lain.',
   'settings.ui.localization.interfaceOnlyEnglish':
@@ -240,8 +240,8 @@ export const webSettingsMessages = {
   'settings.ui.data.deleteConnection': 'Cabut satu koneksi sosial',
   'settings.ui.data.deleteConnectionHelp':
     'Menghapus akses Relay ke akun itu. Ruang kerja, isinya, dan kuitansinya tetap ada.',
-  'settings.ui.data.deleteBrand': 'Hapus merek',
-  'settings.ui.data.deleteBrandHelp':
+  'settings.ui.data.deleteProject': 'Hapus merek',
+  'settings.ui.data.deleteProjectHelp':
     'Menghapus merek, aturannya, dan glosariumnya. Konten yang diterbitkan di bawahnya menyimpan kuitansinya.',
   'settings.ui.data.deleteContent': 'Hapus konten dan media',
   'settings.ui.data.deleteContentHelp':
@@ -501,7 +501,7 @@ export const webSettingsMessages = {
   'developer.ui.webhooks.eventGroup.publishing': 'Penerbitan',
   'developer.ui.webhooks.eventGroup.automation': 'Otomatisasi dan umpan',
   'developer.ui.webhooks.eventGroup.workspace': 'Workspace',
-  'developer.ui.webhooks.scopeTitle': 'Brand dan akun',
+  'developer.ui.webhooks.scopeTitle': 'Project dan akun',
   'developer.ui.webhooks.scopeAll': 'Setiap merek dan akun',
   'developer.ui.webhooks.scopeSelected': 'Hanya yang saya pilih',
   'developer.ui.webhooks.secretTitle': 'Rahasia penandatanganan',
@@ -566,7 +566,7 @@ export const webSettingsMessages = {
   'billing.ui.conversionLabel': 'Bertobat',
   'billing.ui.channelsLabel': 'Saluran aktif',
   'billing.ui.paymentMethodPolar': 'Metode pembayaran dipegang oleh Polar',
-  'billing.ui.paymentMethodDescriptor': '{brand} berakhir {last4}, habis masa berlakunya {expiry}',
+  'billing.ui.paymentMethodDescriptor': '{project} berakhir {last4}, habis masa berlakunya {expiry}',
   'billing.ui.paymentMethodMissing': 'Belum ada metode pembayaran yang tercatat',
   'billing.ui.cancelBeforeDate': 'Batalkan sebelum {date} dan Anda tidak akan dikenakan biaya.',
   'billing.ui.annualFraming': '$25/bulan ditagih setiap tahun. Hemat $48/tahun.',

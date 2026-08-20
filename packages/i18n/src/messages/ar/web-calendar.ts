@@ -84,7 +84,7 @@ export const webCalendarMessages = {
   'web.calendar.allDayHeading': 'لا يوجد وقت محدد بعد',
 
   'web.calendar.filter.group': 'مجموعة العملاء',
-  'web.calendar.filter.anyBrand': 'أي علامة تجارية',
+  'web.calendar.filter.anyProject': 'أي علامة تجارية',
   'web.calendar.filter.anyAccount': 'أي حساب',
   'web.calendar.filter.anyPlatform': 'أي منصة',
   'web.calendar.filter.anyStatus': 'أي حالة',

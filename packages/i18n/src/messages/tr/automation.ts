@@ -31,7 +31,7 @@ export const automationMessages = {
   'automation.trigger.recurring': 'yinelenen bir program tetikleniyor',
 
   'automation.condition.label': 'Koşullar',
-  'automation.condition.brand': 'marka {brand}',
+  'automation.condition.project': 'marka {project}',
   'automation.condition.campaign': 'kampanya {campaign}',
   'automation.condition.account': 'hesap {account}',
   'automation.condition.platform': 'platform {platform}',

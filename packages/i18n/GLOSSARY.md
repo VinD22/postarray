@@ -25,7 +25,7 @@ it does not change the separate per-brand glossary used for post content.
 | `Composer` | Keep exactly as written | Product feature name. |
 | `Growth Advisor` | Keep exactly as written | Product feature name. |
 | `Action Center` | Keep exactly as written | Product feature name. |
-| `Brand` | Keep exactly as written | Relay tenant-domain noun, not a generic marketing use. |
+| `Project` | Translate to this language's ordinary word for "project" | Relay's tenant-scoping noun (a workspace-owned publishing context). Renamed from "Brand" in the English source; do not translate it as this language's word for "brand" even where older, unreviewed catalog entries still do. |
 | `Workspace` | Keep exactly as written | Relay tenant-domain noun, not a generic office use. |
 
 ## Protected connector names

@@ -26,8 +26,8 @@ export const webSettingsMessages = {
   'settings.ui.section.members': 'Membros e funções',
   'settings.ui.section.membersSummary':
     'Quem está neste espaço de trabalho e o que cada pessoa pode fazer.',
-  'settings.ui.section.brands': 'Brands',
-  'settings.ui.section.brandsSummary':
+  'settings.ui.section.projects': 'Projects',
+  'settings.ui.section.projectsSummary':
     'Voz, público, reivindicações aprovadas, termos bloqueados, regras de localidade, domínios e glossário.',
   'settings.ui.section.agents': 'Agentes e API',
   'settings.ui.section.agentsSummary':
@@ -106,7 +106,7 @@ export const webSettingsMessages = {
     '{count, plural, one {# marca} other {# marcas} many {# marcas}}: {names}',
   'settings.ui.members.approvals.canApprove': 'Pode aprovar',
   'settings.ui.members.approvals.cannotApprove': 'Não é possível aprovar',
-  'settings.ui.members.approvals.canApproveOwnBrands': 'Pode aprovar as marcas listadas',
+  'settings.ui.members.approvals.canApproveOwnProjects': 'Pode aprovar as marcas listadas',
   'settings.ui.members.lastActiveNever': 'Ainda não fez login',
   'settings.ui.members.changeRole': 'Alterar função para {name}',
   'settings.ui.members.remove': 'Remover {name}',
@@ -117,7 +117,7 @@ export const webSettingsMessages = {
   'settings.ui.members.inviteBody':
     'Eles recebem um email com um link. O convite expira após sete dias e você pode revogá-lo antes disso.',
   'settings.ui.members.inviteRole': 'Função',
-  'settings.ui.members.inviteScope': 'Brands em que eles podem trabalhar',
+  'settings.ui.members.inviteScope': 'Projects em que eles podem trabalhar',
   'settings.ui.members.inviteScopeAll': 'Todas as marcas neste espaço de trabalho',
   'settings.ui.members.inviteScopeSelected': 'Somente as marcas que eu selecionar',
   'settings.ui.members.inviteApprovals': 'Pode decidir solicitações de aprovação',
@@ -155,41 +155,41 @@ export const webSettingsMessages = {
   'settings.ui.members.removeConsequence.approvals':
     'As solicitações de aprovação que aguardam retornam à fila para outro aprovador.',
 
-  /* ------------------------------------------------------------------ brands */
+  /* ----------------------------------------------------------------- projects */
 
-  'settings.ui.brands.description':
+  'settings.ui.projects.description':
     'Uma marca segue as regras pelas quais o conteúdo é verificado: o que você pode reivindicar, o que não pode dizer e como cada idioma é escrito.',
-  'settings.ui.brands.listCaption': 'Brands nesta área de trabalho',
-  'settings.ui.brands.column.brand': 'Brand',
-  'settings.ui.brands.column.locales': 'Idiomas de conteúdo',
-  'settings.ui.brands.column.accounts': 'Contas',
-  'settings.ui.brands.column.updated': 'Atualizado',
-  'settings.ui.brands.accountCount':
+  'settings.ui.projects.listCaption': 'Projects nesta área de trabalho',
+  'settings.ui.projects.column.project': 'Project',
+  'settings.ui.projects.column.locales': 'Idiomas de conteúdo',
+  'settings.ui.projects.column.accounts': 'Contas',
+  'settings.ui.projects.column.updated': 'Atualizado',
+  'settings.ui.projects.accountCount':
     '{count, plural, =0 {Sem contas} one {# conta} other {# contas} many {# contas}}',
-  'settings.ui.brands.emptyTitle': 'Nenhuma marca ainda',
-  'settings.ui.brands.emptyBody':
+  'settings.ui.projects.emptyTitle': 'Nenhuma marca ainda',
+  'settings.ui.projects.emptyBody':
     'A marca agrupa contas, regras de aprovação e regras de idioma. A maioria das equipes começa com uma e adiciona uma segunda quando um cliente ou mercado precisa de regras diferentes.',
-  'settings.ui.brands.emptyExample':
+  'settings.ui.projects.emptyExample':
     'Exemplo: marca "Acme EU", idiomas inglês e alemão, termo bloqueado "garantido", divulgação "Parceria paga" em Instagram.',
-  'settings.ui.brands.voiceHelp':
+  'settings.ui.projects.voiceHelp':
     'Como essa marca soa. Usado quando você solicita uma reescrita e quando as reivindicações são verificadas.',
-  'settings.ui.brands.audienceHelp': 'A quem se destina o conteúdo, por mercado.',
-  'settings.ui.brands.approvedClaimsHelp':
+  'settings.ui.projects.audienceHelp': 'A quem se destina o conteúdo, por mercado.',
+  'settings.ui.projects.approvedClaimsHelp':
     'Declarações que um revisor limpou. Qualquer coisa fora desta lista é sinalizada antes da aprovação, não após a publicação.',
-  'settings.ui.brands.blockedTermsHelp':
+  'settings.ui.projects.blockedTermsHelp':
     'Palavras que bloqueiam agendamento para esta marca. Um por linha.',
-  'settings.ui.brands.domainsHelp':
+  'settings.ui.projects.domainsHelp':
     'Domínios aos quais esta marca pode vincular e encurtar. Somente domínios verificados podem ser selecionados no compositor.',
-  'settings.ui.brands.domainVerified': 'Verificado {date}',
-  'settings.ui.brands.domainPending': 'Registro DNS ainda não visto',
-  'settings.ui.brands.glossaryHelp':
+  'settings.ui.projects.domainVerified': 'Verificado {date}',
+  'settings.ui.projects.domainPending': 'Registro DNS ainda não visto',
+  'settings.ui.projects.glossaryHelp':
     'Nomes de produtos, termos legais e qualquer coisa que deva sobreviver a uma tradução inalterada.',
-  'settings.ui.brands.glossaryCaption': 'Termos protegidos e como cada um é tratado por idioma',
-  'settings.ui.brands.glossaryEmpty':
+  'settings.ui.projects.glossaryCaption': 'Termos protegidos e como cada um é tratado por idioma',
+  'settings.ui.projects.glossaryEmpty':
     'Ainda não há termos protegidos. Adicione nomes de produtos e termos legais que não devem ser traduzidos ou reformulados.',
-  'settings.ui.brands.localeRulesHelp':
+  'settings.ui.projects.localeRulesHelp':
     'Regras por idioma do conteúdo. Eles são aplicados quando você adapta ou transcria e são mostrados ao revisor.',
-  'settings.ui.brands.saveBrand': 'Salvar marca',
+  'settings.ui.projects.saveProject': 'Salvar marca',
 
   /* ------------------------------------------------------------ localization */
 
@@ -500,7 +500,7 @@ export const webSettingsMessages = {
   'developer.ui.webhooks.eventGroup.publishing': 'Publicação',
   'developer.ui.webhooks.eventGroup.automation': 'Automação e feeds',
   'developer.ui.webhooks.eventGroup.workspace': 'Workspace',
-  'developer.ui.webhooks.scopeTitle': 'Brands e contas',
+  'developer.ui.webhooks.scopeTitle': 'Projects e contas',
   'developer.ui.webhooks.scopeAll': 'Todas as marcas e contas',
   'developer.ui.webhooks.scopeSelected': 'Somente os que eu selecionar',
   'developer.ui.webhooks.secretTitle': 'Assinatura secreta',
@@ -566,7 +566,7 @@ export const webSettingsMessages = {
   'billing.ui.conversionLabel': 'Converte',
   'billing.ui.channelsLabel': 'Canais ativos',
   'billing.ui.paymentMethodPolar': 'Método de pagamento mantido pela Polar',
-  'billing.ui.paymentMethodDescriptor': '{brand} terminando {last4}, expira {expiry}',
+  'billing.ui.paymentMethodDescriptor': '{project} terminando {last4}, expira {expiry}',
   'billing.ui.paymentMethodMissing': 'Nenhum método de pagamento cadastrado ainda',
   'billing.ui.cancelBeforeDate': 'Cancele antes de {date} e você não será cobrado.',
   'billing.ui.annualFraming': '$25/mês cobrado anualmente. Economize $ 48/ano.',

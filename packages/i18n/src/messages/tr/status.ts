@@ -63,7 +63,7 @@ export const statusMessages = {
   'permission.denied.role': 'Bunun {role} rolüne ihtiyacı var. Sen {currentRole}’sin.',
   'permission.denied.scope': 'Bu kimlik bilgisinin kapsamı {scope} olmalıdır.',
   'permission.denied.contactOwner': "{owner}'dan bunu kabul etmesini isteyin.",
-  'permission.denied.brandScope': 'Erişiminiz {brands} ile sınırlıdır.',
+  'permission.denied.projectScope': 'Erişiminiz {projects} ile sınırlıdır.',
   'permission.readOnly': 'Bu çalışma alanı şu anda salt okunur.',
   'permission.mfaRequired': 'Devam etmek için iki faktörlü kimlik doğrulamayla onaylayın.',
 

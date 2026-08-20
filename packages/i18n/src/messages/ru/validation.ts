@@ -34,6 +34,8 @@ export const validationMessages = {
   'validation.media_file_too_large.message': 'Это файл {actual}. {provider} принимает до {limit}.',
   'validation.media_mixed_types_unsupported.message':
     '{provider} не может публиковать изображения и видео в одном сообщении.',
+  'validation.media_unavailable.message':
+    'Прикреплённый файл больше недоступен. Удалите его из публикации или загрузите заново.',
   'validation.alt_text_missing.message':
     'На {count, plural, one {# изображения} few {# изображения} many {# изображения} other {# изображения}} отсутствует альтернативный текст.',
   'validation.alt_text_missing.hint': 'Опишите изображение или отметьте его как декоративное.',
@@ -67,12 +69,12 @@ export const validationMessages = {
   'validation.schedule_too_far_ahead.message':
     'Это дальше, чем прогнозный прогноз {limit}, установленный для этих учетных данных.',
   'validation.schedule_outside_quiet_hours.message':
-    'Это соответствует тихим часам, установленным для {brand}.',
+    'Это соответствует тихим часам, установленным для {project}.',
   'validation.duplicate_within_window.message':
     'Очень похожий контент уже запланирован или опубликован для {account} в {window}.',
-  'validation.blocked_term_present.message': 'Текст содержит заблокированный термин для {brand}.',
+  'validation.blocked_term_present.message': 'Текст содержит заблокированный термин для {project}.',
   'validation.unsupported_claim.message':
-    'Эта претензия не входит в число одобренных претензий для {brand}.',
+    'Эта претензия не входит в число одобренных претензий для {project}.',
   'validation.unsupported_claim.hint':
     'Добавьте его к утвержденным утверждениям с доказательствами или переформулируйте предложение.',
   'validation.cadence_exceeded.message':

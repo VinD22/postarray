@@ -52,6 +52,15 @@ export const errorMessages = {
   'error.channel_limit_reached.message':
     '이 작업공간은 이미 다음을 모두 사용하고 있습니다.{limit}활성 채널.',
   'error.channel_limit_reached.action': '다른 채널을 연결하기 전에 채널을 연결 해제하세요.',
+  'error.project_limit_reached.message':
+    '이 작업공간은 이미 활성 프로젝트 {limit}개를 모두 사용하고 있습니다.',
+  'error.project_limit_reached.action':
+    '비활성 프로젝트를 보관하거나 작업공간의 프로젝트 허용량을 변경하세요.',
+  'error.project_has_connections.message':
+    '이 프로젝트에는 아직 연결된 채널이 {connected, plural, other {#개}} 있습니다.',
+  'error.project_has_connections.action': '보관하기 전에 이 프로젝트의 모든 채널 연결을 해제하세요.',
+  'error.project_last_active.message': '작업공간에는 활성 프로젝트가 하나 이상 있어야 합니다.',
+  'error.project_last_active.action': '이 프로젝트를 보관하기 전에 다른 프로젝트를 만드세요.',
   'error.connection_not_found.message': '해당 연결은 더 이상 이 작업 영역에 없습니다.',
   'error.connection_not_found.action': '계속 게시하려면 계정을 다시 연결하세요.',
   'error.connection_revoked.message': '{account}에 대한 액세스가 취소되었습니다.{provider}.',

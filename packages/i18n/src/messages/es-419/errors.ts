@@ -62,6 +62,16 @@ export const errorMessages = {
   'error.channel_limit_reached.message':
     'Este espacio de trabajo ya utiliza todos {limit}canales activos.',
   'error.channel_limit_reached.action': 'Desconecte un canal antes de conectar otro.',
+  'error.project_limit_reached.message':
+    'Este espacio de trabajo ya usa los {limit} proyectos activos disponibles.',
+  'error.project_limit_reached.action':
+    'Archive un proyecto inactivo o cambie el límite de proyectos del espacio de trabajo.',
+  'error.project_has_connections.message':
+    'Este proyecto todavía tiene {connected, plural, one {#canal conectado} other {#canales conectados} many {#canales conectados}}.',
+  'error.project_has_connections.action':
+    'Desconecte todos los canales de este proyecto antes de archivarlo.',
+  'error.project_last_active.message': 'Un espacio de trabajo debe conservar al menos un proyecto activo.',
+  'error.project_last_active.action': 'Cree otro proyecto antes de archivar este.',
   'error.connection_not_found.message': 'Esa conexión ya no está en este espacio de trabajo.',
   'error.connection_not_found.action':
     'Conecte la cuenta nuevamente para seguir publicando en ella.',

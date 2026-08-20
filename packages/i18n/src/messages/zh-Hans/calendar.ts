@@ -16,7 +16,7 @@ export const calendarMessages = {
   'calendar.slotCount': '{count, plural, =0 {Nothing scheduled} one {# post} other {# posts}}',
   'calendar.slotOverflow': '{count, plural, one {# more} other {# more}}',
   'calendar.newPostAt': '{time} 有新帖子',
-  'calendar.filter.brand': 'Brand',
+  'calendar.filter.project': 'Project',
   'calendar.filter.account': '帐户',
   'calendar.filter.platform': '平台',
   'calendar.filter.status': '状态',

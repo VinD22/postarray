@@ -32,6 +32,8 @@ export const validationMessages = {
     'Den här filen är {actual}. {provider} accepterar upp till {limit}.',
   'validation.media_mixed_types_unsupported.message':
     '{provider} kan inte publicera bilder och video i samma inlägg.',
+  'validation.media_unavailable.message':
+    'En bifogad fil är inte längre tillgänglig. Ta bort den från inlägget eller ladda upp den igen.',
   'validation.alt_text_missing.message':
     'Alt text saknas på {count, plural, one {# bild} other {# bilder}}.',
   'validation.alt_text_missing.hint': 'Beskriv bilden eller markera den som dekorativ.',
@@ -64,12 +66,12 @@ export const validationMessages = {
   'validation.schedule_too_far_ahead.message':
     'Detta är längre fram än {limit} framåtblicken som ställts in för denna referens.',
   'validation.schedule_outside_quiet_hours.message':
-    'Detta faller inom de tysta timmar som är inställda på {brand}.',
+    'Detta faller inom de tysta timmar som är inställda på {project}.',
   'validation.duplicate_within_window.message':
     'Mycket liknande innehåll är redan schemalagt eller publicerat för {account} inom {window}.',
-  'validation.blocked_term_present.message': 'Texten innehåller en spärrad term för {brand}.',
+  'validation.blocked_term_present.message': 'Texten innehåller en spärrad term för {project}.',
   'validation.unsupported_claim.message':
-    'Detta påstående finns inte i de godkända anspråken för {brand}.',
+    'Detta påstående finns inte i de godkända anspråken för {project}.',
   'validation.unsupported_claim.hint':
     'Lägg till det i de godkända påståendena med bevis, eller omformulera meningen.',
   'validation.cadence_exceeded.message':

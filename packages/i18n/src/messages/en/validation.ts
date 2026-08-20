@@ -81,7 +81,7 @@ export const validationMessages = {
   'validation.schedule_too_far_ahead.message':
     'This is further ahead than the {limit} look ahead set for this credential.',
   'validation.schedule_outside_quiet_hours.message':
-    'This falls inside the quiet hours set for project {brand}.',
+    'This falls inside the quiet hours set for project {project}.',
   'validation.duplicate_within_window.message':
     'Very similar content is already scheduled or published for {account} within {window}.',
   'validation.similar_within_window.message':
@@ -92,9 +92,9 @@ export const validationMessages = {
   'validation.link_malformed.message': 'A link is incomplete or malformed. Enter a full https URL.',
   'validation.no_targets_selected.message': 'Choose at least one connected account.',
   'validation.blocked_term_present.message':
-    'The text contains a blocked term for project {brand}.',
+    'The text contains a blocked term for project {project}.',
   'validation.unsupported_claim.message':
-    'This claim is not in the approved claims for project {brand}.',
+    'This claim is not in the approved claims for project {project}.',
   'validation.unsupported_claim.hint':
     'Add it to the approved claims with evidence, or reword the sentence.',
   'validation.cadence_exceeded.message':

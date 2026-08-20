@@ -1,7 +1,7 @@
 /** Composer: master draft, per target overrides, previews, validation, cost. */
 export const composerMessages = {
   'composer.title': 'Compor',
-  'composer.titleWithBrand': 'Escrever para {brand}',
+  'composer.titleWithProject': 'Escrever para {project}',
   'composer.master.label': 'Rascunho mestre',
   'composer.master.description':
     'Escreva uma vez aqui. As alterações compatíveis atingem todos os alvos selecionados. Abra um destino para escrever uma versão que somente essa conta receberá.',

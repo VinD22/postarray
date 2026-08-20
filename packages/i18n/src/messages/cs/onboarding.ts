@@ -54,7 +54,7 @@ export const onboardingMessages = {
   'onboarding.checklist.connectAccount': 'Připojit účet',
   'onboarding.checklist.firstPost': 'Publikujte nebo naplánujte příspěvek',
   'onboarding.checklist.inviteTeammate': 'Pozvat spoluhráče',
-  'onboarding.checklist.setBrandVoice': 'Popište hlas své značky',
+  'onboarding.checklist.setProjectVoice': 'Popište hlas své značky',
   'onboarding.checklist.tryAutomation': 'Vyzkoušejte pravidlo automatizace',
   'onboarding.checklist.remaining':
     '{count, plural, =0 {Vše hotovo} one {# krok doleva} other {# kroky doleva} few {# kroky doleva} many {# kroky doleva}}',

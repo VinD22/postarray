@@ -63,7 +63,7 @@ export const statusMessages = {
   'permission.denied.role': 'इसकी जरूरत है {role} भूमिका. आप हैं {currentRole}.',
   'permission.denied.scope': 'इस क्रेडेंशियल को दायरे की आवश्यकता है {scope}.',
   'permission.denied.contactOwner': 'पूछो {owner} इसे देने के लिए.',
-  'permission.denied.brandScope': 'आपकी पहुंच यहीं तक सीमित है {brands}.',
+  'permission.denied.projectScope': 'आपकी पहुंच यहीं तक सीमित है {projects}.',
   'permission.readOnly': 'यह कार्यक्षेत्र अभी केवल पढ़ने के लिए है।',
   'permission.mfaRequired': 'जारी रखने के लिए दो कारक प्रमाणीकरण की पुष्टि करें।',
 

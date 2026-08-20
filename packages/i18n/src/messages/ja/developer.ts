@@ -6,7 +6,7 @@ export const developerMessages = {
   'developer.serviceAccount.title': 'サービスアカウント',
   'developer.serviceAccount.create': 'サービスアカウントを作成する',
   'developer.serviceAccount.name': '名前',
-  'developer.serviceAccount.scopeBrands': '使用できるブランドとアカウント',
+  'developer.serviceAccount.scopeProjects': '使用できるブランドとアカウント',
   'developer.serviceAccount.scopePlatforms': 'プラットフォーム',
   'developer.serviceAccount.scopeLocales': 'コンテンツ言語',
   'developer.serviceAccount.scopeDomains': '許可されたリンクドメイン',
@@ -101,7 +101,7 @@ export const developerMessages = {
     'このアプリを削除しますか?すべての付与は取り消され、そのトークンは機能しなくなります。',
   'developer.consent.title': '{app}ワークスペースへのアクセスを求めています',
   'developer.consent.workspace': 'Workspace',
-  'developer.consent.brands': 'ブランドとアカウント',
+  'developer.consent.projects': 'ブランドとアカウント',
   'developer.consent.willBeAbleTo': '{app}できるでしょう',
   'developer.consent.willNotBeAbleTo': '{app}できないだろう',
   'developer.consent.approvalStillApplies':

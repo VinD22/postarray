@@ -54,7 +54,7 @@ export const statusMessages = {
   'permission.denied.role': '이것은{role}역할. 당신은{currentRole}.',
   'permission.denied.scope': '이 자격 증명에는 범위가 필요합니다.{scope}.',
   'permission.denied.contactOwner': '묻다{owner}그것을 부여하기 위해.',
-  'permission.denied.brandScope': '귀하의 액세스는 다음으로 제한됩니다.{brands}.',
+  'permission.denied.projectScope': '귀하의 액세스는 다음으로 제한됩니다.{projects}.',
   'permission.readOnly': '현재 이 작업공간은 읽기 전용입니다.',
   'permission.mfaRequired': '계속하려면 2단계 인증을 확인하세요.',
   'rateLimit.title': '잠시만 속도를 늦추세요',

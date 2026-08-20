@@ -1,7 +1,7 @@
 /** Composer: master draft, per target overrides, previews, validation, cost. */
 export const composerMessages = {
   'composer.title': 'Komponera',
-  'composer.titleWithBrand': 'Skriv för {brand}',
+  'composer.titleWithProject': 'Skriv för {project}',
   'composer.master.label': 'Masterutkast',
   'composer.master.description':
     'Skriv en gång här. Kompatibla ändringar når alla valda mål. Öppna ett mål för att skriva en version som bara det kontot kommer att få.',

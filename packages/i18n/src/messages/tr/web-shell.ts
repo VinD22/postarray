@@ -25,7 +25,6 @@ export const webShellMessages = {
   'shell.workspace.create': 'Bir çalışma alanı oluşturun',
   'shell.workspace.manage': 'Çalışma alanı ayarları',
   'shell.workspace.role': 'Burada {role} rolündesiniz',
-  'shell.brand.filterHint': 'Ana Sayfa, Takvim ve Analytics bu markaya göre filtreleniyor.',
 
   /* -- Demo data --------------------------------------------------------- */
   'shell.demo.badge': 'Demo verileri',

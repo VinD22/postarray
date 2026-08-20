@@ -17,7 +17,6 @@ export const webShellMessages = {
   'shell.workspace.create': '작업공간 만들기',
   'shell.workspace.manage': 'Workspace 설정',
   'shell.workspace.role': '당신은{role}여기',
-  'shell.brand.filterHint': '홈, 캘린더, 분석을 이 브랜드로 필터링합니다.',
   'shell.demo.badge': '데모 데이터',
   'shell.demo.title': '데모 데이터를 보고 계십니다',
   'shell.demo.body':

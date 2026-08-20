@@ -59,7 +59,7 @@ export const statusMessages = {
   'permission.denied.role': 'Detta behöver rollen {role}. Du är {currentRole}.',
   'permission.denied.scope': 'Denna legitimation behöver omfattningen {scope}.',
   'permission.denied.contactOwner': 'Be {owner} att bevilja det.',
-  'permission.denied.brandScope': 'Din åtkomst är begränsad till {brands}.',
+  'permission.denied.projectScope': 'Din åtkomst är begränsad till {projects}.',
   'permission.readOnly': 'Den här arbetsytan är skrivskyddad just nu.',
   'permission.mfaRequired': 'Bekräfta med tvåfaktorsautentisering för att fortsätta.',
 

@@ -18,7 +18,6 @@ export const webShellMessages = withHebrewPluralForms({
   'shell.workspace.create': 'צור סביבת עבודה',
   'shell.workspace.manage': 'הגדרות סביבת עבודה',
   'shell.workspace.role': 'אתה {role} כאן',
-  'shell.brand.filterHint': 'סינון הבית, היומן והאנליטיקס למותג זה.',
   'shell.demo.badge': 'נתוני הדגמה',
   'shell.demo.title': 'אתה מסתכל על נתוני הדגמה',
   'shell.demo.body':

@@ -19,7 +19,7 @@ export const calendarMessages = {
     '{count, plural, one {# więcej} other {# więcej} few {# więcej} many {# więcej}}',
   'calendar.newPostAt': 'Nowy post w {time}',
 
-  'calendar.filter.brand': 'Marka',
+  'calendar.filter.project': 'Marka',
   'calendar.filter.account': 'Konto',
   'calendar.filter.platform': 'Platforma',
   'calendar.filter.status': 'Stan',

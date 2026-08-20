@@ -15,7 +15,6 @@ export const navMessages = {
   'nav.commandPalette': 'Komut paleti',
   'nav.account': 'Hesap',
   'nav.workspaceSwitcher': 'Çalışma alanını değiştir',
-  'nav.brandSwitcher': 'Markayı değiştir',
   'nav.skipToContent': 'Ana içeriğe atla',
   'nav.primaryLandmark': 'Birincil gezinme',
   'nav.moreItems': 'Daha Fazla',
@@ -26,7 +25,7 @@ export const navMessages = {
   'nav.theme.label': 'Tema',
 
   'settings.nav.members': 'Üyeler ve roller',
-  'settings.nav.brands': 'Markalar',
+  'settings.nav.projects': 'Projeler',
   'settings.nav.agents': 'Aracılar ve API',
   'settings.nav.developerApps': 'Geliştirici uygulamaları',
   'settings.nav.webhooks': 'Web kancaları',
@@ -65,8 +64,11 @@ export const navMessages = {
 
   'shell.workspace.label': 'Çalışma alanı',
   'shell.workspace.current': 'Mevcut çalışma alanı: {name}',
-  'shell.brand.label': 'Marka',
-  'shell.brand.all': 'Tüm markalar',
+  'shell.project.label': 'Projeler',
+  'shell.project.none': 'Proje oluşturun',
+  'shell.project.current': 'Geçerli proje: {name}',
+  'shell.project.manage': 'Projeleri yönetin',
+  'shell.project.all': 'Tüm projeler',
   'shell.timeZone.label': '{timeZone} cinsinden gösterilen zamanlar',
   'shell.notifications.count':
     '{count, plural, =0 {Yeni bildirim yok} one {# yeni bildirim} other {# yeni bildirim}}',

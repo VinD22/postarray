@@ -1,7 +1,7 @@
 /** Composer: master draft, per target overrides, previews, validation, cost. */
 export const composerMessages = {
   'composer.title': 'Napsat',
-  'composer.titleWithBrand': 'Napište pro {brand}',
+  'composer.titleWithProject': 'Napište pro {project}',
   'composer.master.label': 'Hlavní návrh',
   'composer.master.description':
     'Napište jednou sem. Kompatibilní změny dosáhnou každého vybraného cíle. Otevřete cíl a zapište verzi, kterou obdrží pouze tento účet.',

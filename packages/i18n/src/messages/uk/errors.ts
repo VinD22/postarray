@@ -66,6 +66,17 @@ export const errorMessages = {
   'error.channel_limit_reached.message':
     'Ця робоча область вже використовує всі {limit} активні канали.',
   'error.channel_limit_reached.action': 'Від’єднайте канал перед підключенням іншого.',
+  'error.project_limit_reached.message':
+    'Ця робоча область вже використовує всі {limit} активні проєкти.',
+  'error.project_limit_reached.action':
+    'Заархівуйте неактивний проєкт або змініть ліміт проєктів для робочої області.',
+  'error.project_has_connections.message':
+    'Цей проєкт усе ще має {connected, plural, one {# підключений канал} few {# підключені канали} many {# підключених каналів} other {# підключені канали}}.',
+  'error.project_has_connections.action':
+    'Від’єднайте всі канали в цьому проєкті перед архівуванням.',
+  'error.project_last_active.message':
+    'У робочій області має залишатися щонайменше один активний проєкт.',
+  'error.project_last_active.action': 'Створіть інший проєкт, перш ніж архівувати цей.',
   'error.connection_not_found.message': 'Цього з’єднання більше немає в цій робочій області.',
   'error.connection_not_found.action':
     'Знову підключіть обліковий запис, щоб продовжити публікацію в ньому.',

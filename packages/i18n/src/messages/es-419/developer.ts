@@ -6,7 +6,7 @@ export const developerMessages = {
   'developer.serviceAccount.title': 'cuentas de servicio',
   'developer.serviceAccount.create': 'Crear una cuenta de servicio',
   'developer.serviceAccount.name': 'Nombre',
-  'developer.serviceAccount.scopeBrands': 'Brand y cuentas que puede usar',
+  'developer.serviceAccount.scopeProjects': 'Project y cuentas que puede usar',
   'developer.serviceAccount.scopePlatforms': 'Plataformas',
   'developer.serviceAccount.scopeLocales': 'Idiomas del contenido',
   'developer.serviceAccount.scopeDomains': 'Dominios de enlace permitidos',

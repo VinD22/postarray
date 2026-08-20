@@ -8,8 +8,7 @@ export const webDemoMessages = {
     '从新建项目到收据的发布流程引导之旅，在真实界面中以示例内容展示。目前尚无任何内容发布，此引导会说明该界限所在。',
 
   'web.demo.nav.label': '了解其工作原理',
-  'web.demo.nav.summary':
-    '按您接触产品的顺序进行的引导之旅，由带有示例内容的真实界面构建而成。',
+  'web.demo.nav.summary': '按您接触产品的顺序进行的引导之旅，由带有示例内容的真实界面构建而成。',
 
   /* ---------------------------------------------------------------------- */
   /* 每个演示面板所处的框架                                                  */
@@ -43,6 +42,8 @@ export const webDemoMessages = {
     '此处的每个面板都是带有示例内容的产品界面。没有任何连接器完成提供商验证，因此今天没有任何内容通过本产品发布到任何平台。工作流程停止的地方，页面会如实说明，而不会继续绘制其余部分。',
   'web.demo.contents.title': '六个步骤',
   'web.demo.stepLabel': '第 {position} 步，共 {total} 步',
+  'web.demo.next': '下一步：{step}',
+  'web.demo.closing.pricing': '查看价格',
   'web.demo.closing.title': '这就是整个循环',
   'web.demo.closing.body':
     '以上没有任何内容是我们希望构建的产品的模型演示，这就是界面当前的实际状态，其中发布部分被诚实地标注为尚未完成。',
@@ -62,6 +63,9 @@ export const webDemoMessages = {
   'web.demo.step.compose.title': '撰写一次，按平台适配',
   'web.demo.step.compose.body':
     '您撰写一份主草稿。选择一个账户会为该账户单独打开一个覆盖版本，拥有各自的限制和预览。您为 LinkedIn 撰写的内容不会改变 X 收到的内容，每个版本下方的检查都会在排期之前运行。',
+  'web.demo.step.variants.title': '看看每个账号实际收到什么',
+  'web.demo.step.variants.body':
+    '一份草稿会变成每个账号一个版本，每个版本都为它要去的平台而写：给 X 的是更短的一行，给 LinkedIn 的是完整的发布说明，给 Instagram 的是一段说明文字和替代文本。你可以编辑其中任意一个而不触动其他版本，并且每个版本都带着适用于它的检查。',
 
   'web.demo.step.schedule.title': '给它一个时间，或交给队列',
   'web.demo.step.schedule.body':
@@ -81,8 +85,7 @@ export const webDemoMessages = {
 
   'web.demo.project.label': '项目',
   'web.demo.project.zone': '时区：{zone}',
-  'web.demo.project.scope':
-    '草稿、账户、审批和收据均归属于此项目，不会归属于其他任何地方。',
+  'web.demo.project.scope': '草稿、账户、审批和收据均归属于此项目，不会归属于其他任何地方。',
 
   'web.demo.accounts.label': '此项目中的账户',
   'web.demo.accounts.state': '验证未完成',
@@ -97,8 +100,7 @@ export const webDemoMessages = {
   'web.demo.schedule.label': '已排期',
   'web.demo.schedule.value': '{zone} 时区的 {when}',
   'web.demo.schedule.approval': '在发送任何内容之前，需要一次审批。',
-  'web.demo.schedule.queue':
-    '队列是另一条路径：它会在此时区内选择您规则所允许的下一个时段。',
+  'web.demo.schedule.queue': '队列是另一条路径：它会在此时区内选择您规则所允许的下一个时段。',
 
   'web.demo.week.label': '本周',
   'web.demo.week.caption': '日历上同样的三篇帖子，以项目时区读取。',
@@ -122,8 +124,7 @@ export const webDemoMessages = {
     'Northbound 2.4 今天发布。导入更快了，搜索有了键盘快捷键，你们中有两人反馈的导出漏洞也已修复。',
 
   'web.demo.sample.x.account': 'X，@northbound',
-  'web.demo.sample.x.body':
-    'Northbound 2.4 已发布。导入更快，键盘搜索，那个导出漏洞已修复。',
+  'web.demo.sample.x.body': 'Northbound 2.4 已发布。导入更快，键盘搜索，那个导出漏洞已修复。',
   'web.demo.sample.x.check': '字符数与串联顺序',
 
   'web.demo.sample.linkedin.account': 'LinkedIn，Northbound Tools',
@@ -158,16 +159,12 @@ export const webDemoMessages = {
 
   'web.demo.validate.label': '排期前的检查',
   'web.demo.validate.check.length': '字符限制，按账户计',
-  'web.demo.validate.check.lengthDetail':
-    '每个版本都会依据平台给该账户的限制进行核对。',
+  'web.demo.validate.check.lengthDetail': '每个版本都会依据平台给该账户的限制进行核对。',
   'web.demo.validate.check.altText': '每张图片的替代文本',
-  'web.demo.validate.check.altTextDetail':
-    '没有描述、也没有标记为装饰性的图片会阻止排期。',
+  'web.demo.validate.check.altTextDetail': '没有描述、也没有标记为装饰性的图片会阻止排期。',
   'web.demo.validate.check.firstComment': '此处允许首条评论',
-  'web.demo.validate.check.firstCommentDetail':
-    '仅在平台支持的账户上才会提供首条评论选项。',
-  'web.demo.validate.note':
-    '这些检查会在排期前于创作器中运行，并在发送前再次运行。',
+  'web.demo.validate.check.firstCommentDetail': '仅在平台支持的账户上才会提供首条评论选项。',
+  'web.demo.validate.note': '这些检查会在排期前于创作器中运行，并在发送前再次运行。',
 
   /* ---------------------------------------------------------------------- */
   /* 发布与收据（第 8 步）                                                  */
@@ -189,8 +186,7 @@ export const webDemoMessages = {
 
   'web.demo.digest.label': '您的一周，以句子呈现',
   'web.demo.digest.sample': '示例',
-  'web.demo.digest.line.variants':
-    '本周从一份草稿发出了三个平台专属版本。',
+  'web.demo.digest.line.variants': '本周从一份草稿发出了三个平台专属版本。',
   'web.demo.digest.line.earliest': '周二上午是您最早的时段。',
   'web.demo.digest.line.approval': '每个版本在进入队列前都已获批准。',
   'web.demo.digest.line.alt': '每张图片都附有人工撰写的替代文本。',

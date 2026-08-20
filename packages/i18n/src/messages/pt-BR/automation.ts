@@ -30,7 +30,7 @@ export const automationMessages = {
   'automation.trigger.recurring': 'uma programação recorrente dispara',
 
   'automation.condition.label': 'Condições',
-  'automation.condition.brand': 'a marca é {brand}',
+  'automation.condition.project': 'a marca é {project}',
   'automation.condition.campaign': 'a campanha é {campaign}',
   'automation.condition.account': 'a conta é {account}',
   'automation.condition.platform': 'a plataforma é {platform}',
@@ -128,7 +128,7 @@ export const automationMessages = {
   'automation.webhooks.urlLabel': 'URL do ponto final',
   'automation.webhooks.eventsLabel': 'Eventos',
   'automation.webhooks.allEvents': 'Todos os eventos',
-  'automation.webhooks.scopeLabel': 'Brands e contas',
+  'automation.webhooks.scopeLabel': 'Projects e contas',
   'automation.webhooks.allAccounts': 'Todas as contas',
   'automation.webhooks.secret': 'Assinatura secreta',
   'automation.webhooks.secretShownOnce': 'Este segredo é mostrado uma vez. Armazene-o agora.',

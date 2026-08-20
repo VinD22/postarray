@@ -61,7 +61,7 @@ export const statusMessages = {
   'permission.denied.role': 'To vyžaduje {role} role. Jste {currentRole}.',
   'permission.denied.scope': 'Toto pověření vyžaduje rozsah {scope}.',
   'permission.denied.contactOwner': 'Zeptejte se {owner} k udělení.',
-  'permission.denied.brandScope': 'Váš přístup je omezen na {brands}.',
+  'permission.denied.projectScope': 'Váš přístup je omezen na {projects}.',
   'permission.readOnly': 'Tento pracovní prostor je nyní pouze pro čtení.',
   'permission.mfaRequired': 'Pro pokračování potvrďte dvoufaktorovou autentizací.',
 

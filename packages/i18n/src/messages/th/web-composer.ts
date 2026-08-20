@@ -180,7 +180,7 @@ export const webComposerMessages = {
   'composerWeb.set.apply': 'ใช้ชุดนี้',
   'composerWeb.set.none': 'ยังไม่มีชุดที่บันทึกไว้',
   'composerWeb.signature.pickerLabel': 'ลายเซ็น',
-  'composerWeb.signature.scope': 'สำหรับ {brand} บน {provider} ใน {language}',
+  'composerWeb.signature.scope': 'สำหรับ {project} บน {provider} ใน {language}',
   'composerWeb.signature.previewHeading': 'กระทู้จะจบยังไง.',
   'composerWeb.signature.notMatching':
     'ลายเซ็นนี้จำกัดขอบเขตไว้ที่แบรนด์ แพลตฟอร์ม หรือภาษาอื่น ดังนั้นจึงไม่มีการนำเสนอที่นี่',
@@ -280,6 +280,15 @@ export const webComposerMessages = {
     'ตัวอย่าง: launch_hero.jpg, 1600 x 900, ชุดข้อความแสดงแทน ใช้ใน 2 โพสต์',
   'mediaLib.error.title': 'ไม่สามารถโหลดไลบรารีได้',
   'mediaLib.error.body': 'ไฟล์ของคุณปลอดภัย ไม่มีอะไรเปลี่ยนแปลงจากความล้มเหลวนี้',
+  'mediaLib.offline.title': 'ไลบรารีไม่พร้อมใช้งานแบบออฟไลน์',
+  'mediaLib.offline.body':
+    'เราไม่สามารถรีเฟรชไลบรารีได้เมื่อไม่มีการเชื่อมต่อ ไฟล์ที่อยู่บนหน้าจอนี้แล้วไม่เปลี่ยนแปลง ให้เชื่อมต่ออีกครั้งแล้วลองใหม่',
+  'mediaLib.rateLimited.title': 'ไลบรารีต้องการหยุดพักสั้น ๆ',
+  'mediaLib.rateLimited.cause':
+    'API ขอให้เราชะลอความเร็วขณะโหลดไฟล์ของคุณ สื่อที่จัดเก็บไว้ของคุณปลอดภัยดี',
+  'mediaLib.rateLimited.resetLabel': 'ลองอีกครั้งหลังจาก',
+  'mediaLib.rateLimited.alternative':
+    'คุณยังสามารถร่างเนื้อหาต่อในเครื่องได้ แต่การอัปโหลดและการเปลี่ยนแปลงไลบรารีต้องรอจนกว่าขีดจำกัดจะรีเซ็ต',
   'mediaLib.loading': 'กำลังโหลดไลบรารีสื่อของคุณ',
   'mediaLib.permission.title': 'คุณไม่เห็นไลบรารีพื้นที่ทำงานนี้',
   'mediaLib.permission.body':
@@ -307,6 +316,39 @@ export const webComposerMessages = {
   'mediaLib.upload.checkedAgainst': 'ตรวจสอบกับบัญชีที่เลือกในแบบร่างนี้',
   'mediaLib.upload.noTargets':
     'ไม่มีการเลือกบัญชี ดังนั้นไฟล์จะถูกตรวจสอบโดยเทียบกับค่าเริ่มต้นของพื้นที่ทำงานเท่านั้น',
+  'mediaLib.import.urlLabel': 'URL ไฟล์สาธารณะ',
+  'mediaLib.import.urlPlaceholder': 'https://cdn.example.com/launch-video.mp4',
+  'mediaLib.import.importing': 'กำลังนำเข้าสื่อ',
+  'mediaLib.import.succeeded': 'ไฟล์อยู่ในไลบรารีของคุณแล้ว',
+  'mediaLib.import.scanPending':
+    'Relay บันทึกแหล่งที่มาของไฟล์แล้ว การเผยแพร่จะรอจนกว่าการตรวจสอบความปลอดภัยจะเสร็จสิ้น',
+  'mediaLib.import.failed': 'ไม่สามารถนำเข้าไฟล์ได้',
+  'mediaLib.import.failedHelp':
+    'ตรวจสอบว่าลิงก์เป็นสาธารณะและชี้ตรงไปยังไฟล์สื่อที่รองรับ แล้วลองใหม่',
+  'mediaLib.import.readOnly': 'เชื่อมต่อ API เพื่อนำเข้าไฟล์ในสภาพแวดล้อมนี้',
+  'mediaLib.import.offline': 'เชื่อมต่ออีกครั้งก่อนนำเข้าไฟล์',
+  'mediaLib.import.issue.invalid': 'ป้อน URL ที่สมบูรณ์',
+  'mediaLib.import.issue.scheme': 'ใช้ลิงก์ HTTP หรือ HTTPS',
+  'mediaLib.import.issue.credentials': 'ใช้ลิงก์ที่ไม่มีชื่อผู้ใช้หรือรหัสผ่าน',
+  'mediaLib.retention.title': 'ไฟล์ที่จัดเก็บไว้จะถูกเก็บไว้ 30 วันหลังจากสร้างโพสต์',
+  'mediaLib.retention.body':
+    'เมื่อไฟล์ถูกแนบเข้ากับโพสต์แล้ว เราจะลบไฟล์นั้นออกจากพื้นที่จัดเก็บของ Relay อย่างถาวรใน 30 วันหลังจากสร้างโพสต์นั้น ไฟล์ที่รอการแนบจะใช้วันที่อัปโหลดเป็นจุดล้างข้อมูลสำรอง ข้อความโพสต์ ใบเสร็จการเผยแพร่ และประวัติการตรวจสอบยังคงพร้อมใช้งานนานกว่านั้น โพสต์ที่เผยแพร่แล้วบนแพลตฟอร์มโซเชียลจะไม่ถูกลบเมื่อไฟล์ที่จัดเก็บไว้หมดอายุ',
+  'mediaLib.retention.limits':
+    'รูปภาพ เสียง และไฟล์ PDF มีขนาดได้สูงสุด {imageSize} วิดีโอมีขนาดได้สูงสุด {videoSize}',
+  'mediaLib.retention.expiresLabel': 'วันที่ลบไฟล์',
+  'mediaLib.retention.deleted': 'ลบถาวรแล้ว',
+  'mediaLib.retention.deletedTitle': 'ไฟล์ที่จัดเก็บไว้นี้ถูกลบแล้ว',
+  'mediaLib.retention.deletedBody':
+    'ระยะเวลาจัดเก็บ 30 วันสิ้นสุดแล้ว ข้อความโพสต์ ใบเสร็จการเผยแพร่ และประวัติการตรวจสอบยังคงอยู่',
+  'mediaLib.processing.unavailableTitle': 'ไฟล์นี้ยังไม่พร้อมเผยแพร่',
+  'mediaLib.processing.unavailableBody':
+    'การประมวลผลหรือการตรวจสอบความปลอดภัยยังค้างอยู่ หรือไม่ผ่าน ให้อัปโหลดไฟล์ใหม่หากสถานะนี้ไม่หายไป',
+  'mediaLib.processing.pendingTitle': 'การสแกนความปลอดภัยยังไม่พร้อมใช้งานในช่วงก่อนเปิดตัว',
+  'mediaLib.processing.pendingBody':
+    'ไฟล์ถูกจัดเก็บไว้ 30 วัน แต่จะยังไม่สามารถแนบเข้ากับโพสต์ที่เผยแพร่แล้วได้จนกว่าจะเปิดใช้งานการสแกนความปลอดภัย',
+  'mediaLib.processing.blockedTitle': 'ไฟล์นี้ไม่สามารถเผยแพร่ได้',
+  'mediaLib.processing.blockedBody':
+    'ไฟล์ไม่ผ่านการประมวลผลหรือการตรวจสอบความปลอดภัย ให้อัปโหลดไฟล์อื่น',
   'mediaLib.alt.heading': 'ข้อความแสดงแทน',
   'mediaLib.alt.help':
     'อธิบายสิ่งที่สำคัญในภาพสำหรับคนที่ไม่สามารถมองเห็นได้ ปกติหนึ่งหรือสองประโยคก็เพียงพอแล้ว',

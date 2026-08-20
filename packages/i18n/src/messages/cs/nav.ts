@@ -15,7 +15,6 @@ export const navMessages = {
   'nav.commandPalette': 'Paleta příkazů',
   'nav.account': 'Účet',
   'nav.workspaceSwitcher': 'Přepnout pracovní prostor',
-  'nav.brandSwitcher': 'Změnit značku',
   'nav.skipToContent': 'Přeskočit na hlavní obsah',
   'nav.primaryLandmark': 'Primární navigace',
   'nav.moreItems': 'Více',
@@ -26,7 +25,7 @@ export const navMessages = {
   'nav.theme.label': 'Motiv',
 
   'settings.nav.members': 'Členové a role',
-  'settings.nav.brands': 'Značky',
+  'settings.nav.projects': 'Projekty',
   'settings.nav.agents': 'Agenti a API',
   'settings.nav.developerApps': 'Aplikace pro vývojáře',
   'settings.nav.webhooks': 'Webhooky',
@@ -65,8 +64,11 @@ export const navMessages = {
 
   'shell.workspace.label': 'Pracovní prostor',
   'shell.workspace.current': 'Aktuální pracovní prostor: {name}',
-  'shell.brand.label': 'Značka',
-  'shell.brand.all': 'Všechny značky',
+  'shell.project.label': 'Projekty',
+  'shell.project.none': 'Vytvořit projekt',
+  'shell.project.current': 'Aktuální projekt: {name}',
+  'shell.project.manage': 'Spravovat projekty',
+  'shell.project.all': 'Všechny projekty',
   'shell.timeZone.label': 'Časy zobrazené v {timeZone}',
   'shell.notifications.count':
     '{count, plural, =0 {Žádná nová oznámení} one {# nové oznámení} other {# nová oznámení} few {# nová oznámení} many {# nová oznámení}}',

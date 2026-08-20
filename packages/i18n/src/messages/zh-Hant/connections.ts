@@ -48,7 +48,7 @@ export const connectionMessages = {
   'connection.incident.reviewRestricted':
     '{provider} 正在審查此應用程式，並暫時限制它。{account} 的貼文會以私密方式發布，直到審查完成。',
   'connection.group.title': '客戶群組',
-  'connection.group.description': '依客戶或 Brand 分組帳號，以篩選每個畫面。',
+  'connection.group.description': '依客戶或 Project 分組帳號，以篩選每個畫面。',
   'connection.group.assign': '移至群組',
   'connection.group.none': '未分組',
   'connection.group.moveNote': '移動帳號會保留其貼文、收據與分析資料。',

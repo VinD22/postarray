@@ -43,6 +43,8 @@ export const webDemoMessages = {
     'Setiap panel di sini adalah antarmuka produk dengan konten contoh di dalamnya. Belum ada konektor yang menyelesaikan verifikasi penyedia, jadi tidak ada yang terbit ke platform mana pun melalui produk ini hari ini. Di mana alur kerja berhenti, halaman mengatakannya alih-alih menggambar sisanya.',
   'web.demo.contents.title': 'Enam langkah',
   'web.demo.stepLabel': 'Langkah {position} dari {total}',
+  'web.demo.next': 'Berikutnya: {step}',
+  'web.demo.closing.pricing': 'Lihat berapa biayanya',
   'web.demo.closing.title': 'Itulah seluruh alurnya',
   'web.demo.closing.body':
     'Tidak ada yang di atas adalah tiruan dari produk yang kami harap dapat kami bangun. Ini adalah antarmuka sebagaimana adanya, dengan bagian penerbitan ditandai dengan jujur sebagai belum selesai.',
@@ -62,6 +64,9 @@ export const webDemoMessages = {
   'web.demo.step.compose.title': 'Tulis sekali, sesuaikan per platform',
   'web.demo.step.compose.body':
     'Anda menulis draf utama. Memilih satu akun membuka penyesuaian untuk akun itu saja, dengan batasan dan pratinjaunya sendiri. Tidak ada yang Anda tulis untuk LinkedIn mengubah apa yang diterima X, dan pemeriksaan di bawah setiap versi berjalan sebelum apa pun dijadwalkan.',
+  'web.demo.step.variants.title': 'Lihat apa yang benar-benar diterima setiap akun',
+  'web.demo.step.variants.body':
+    'Satu draf menjadi satu versi per akun, masing-masing ditulis untuk platform tujuannya: baris yang lebih pendek untuk X, catatan rilis lengkap untuk LinkedIn, keterangan dan teks alternatif untuk Instagram. Anda menyunting salah satunya tanpa menyentuh yang lain, dan setiap versi membawa pemeriksaan yang berlaku untuknya.',
 
   'web.demo.step.schedule.title': 'Beri waktu, atau serahkan ke antrean',
   'web.demo.step.schedule.body':
@@ -189,8 +194,7 @@ export const webDemoMessages = {
 
   'web.demo.digest.label': 'Minggu Anda, dalam kalimat',
   'web.demo.digest.sample': 'Contoh',
-  'web.demo.digest.line.variants':
-    'Tiga versi khas platform terbit dari satu draf minggu ini.',
+  'web.demo.digest.line.variants': 'Tiga versi khas platform terbit dari satu draf minggu ini.',
   'web.demo.digest.line.earliest': 'Selasa pagi adalah slot terawal Anda.',
   'web.demo.digest.line.approval': 'Setiap versi disetujui sebelum diantrekan.',
   'web.demo.digest.line.alt': 'Setiap gambar membawa teks alternatif yang ditulis oleh seseorang.',

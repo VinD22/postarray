@@ -25,6 +25,8 @@ export const validationMessages = {
   'validation.media_file_too_large.message': '이 파일은{actual}.{provider}최대 허용{limit}.',
   'validation.media_mixed_types_unsupported.message':
     '{provider}동일한 게시물에 이미지와 동영상을 게시할 수 없습니다.',
+  'validation.media_unavailable.message':
+    '첨부된 파일을 더 이상 사용할 수 없습니다. 게시물에서 제거하거나 다시 업로드하세요.',
   'validation.alt_text_missing.message':
     '대체 텍스트가 없습니다.{count, plural, other {# 이미지}}.',
   'validation.alt_text_missing.hint': '이미지를 설명하거나 장식용으로 표시하세요.',
@@ -56,11 +58,11 @@ export const validationMessages = {
   'validation.schedule_in_past.message': '그 시간이 지나갔어{timeZone}.',
   'validation.schedule_too_far_ahead.message':
     '이는 과거보다 훨씬 앞서 있다.{limit}이 자격 증명을 미리 설정해 보세요.',
-  'validation.schedule_outside_quiet_hours.message': '이는 설정된 조용한 시간에 속합니다.{brand}.',
+  'validation.schedule_outside_quiet_hours.message': '이는 설정된 조용한 시간에 속합니다.{project}.',
   'validation.duplicate_within_window.message':
     '매우 유사한 콘텐츠가 이미 예약되었거나 게시되었습니다.{account}이내에{window}.',
-  'validation.blocked_term_present.message': '텍스트에 차단된 용어가 포함되어 있습니다.{brand}.',
-  'validation.unsupported_claim.message': '이 주장은 승인된 주장에 없습니다.{brand}.',
+  'validation.blocked_term_present.message': '텍스트에 차단된 용어가 포함되어 있습니다.{project}.',
+  'validation.unsupported_claim.message': '이 주장은 승인된 주장에 없습니다.{project}.',
   'validation.unsupported_claim.hint': '증거와 함께 승인된 주장에 추가하거나 문장을 바꿔보세요.',
   'validation.cadence_exceeded.message':
     '{account}출판할 것이다{count, plural, other {#회}}그 날, 한도를 초과해서{limit}.',

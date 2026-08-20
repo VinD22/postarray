@@ -86,7 +86,7 @@ export const webCalendarMessages = {
   'web.calendar.allDayHeading': 'Nie ma jeszcze dokładnego czasu',
 
   'web.calendar.filter.group': 'Grupa klientów',
-  'web.calendar.filter.anyBrand': 'Dowolna marka',
+  'web.calendar.filter.anyProject': 'Dowolna marka',
   'web.calendar.filter.anyAccount': 'Dowolne konto',
   'web.calendar.filter.anyPlatform': 'Dowolna platforma',
   'web.calendar.filter.anyStatus': 'Dowolny stan',
@@ -364,6 +364,12 @@ export const webCalendarMessages = {
     'Następny ekran to {provider}, a nie przekaźnik. Przekaźnik nigdy nie widzi Twojego hasła.',
   'web.connection.connect.noWriteWithoutApproval':
     'Podłączenie konta nie powoduje żadnej publikacji. Każdy post nadal jest zgodny z tymi zasadami zatwierdzania przestrzeni roboczej.',
+  'web.connection.projectScope.title': 'Kanały dla {project}',
+  'web.connection.projectScope.body':
+    'Nowe kanały łączą się z tą marką. Przełącz markę na górnym pasku, aby zarządzać innym zestawem.',
+  'web.connection.projectMissing.title': 'Utwórz markę przed połączeniem kanału',
+  'web.connection.projectMissing.body':
+    'Marki utrzymują oddzielnie kanały, media, szkice i harmonogramy różnych produktów lub klientów.',
 
   'web.connection.requirement.instagram':
     'Publikowanie na Instagramie wymaga konta profesjonalnego, co oznacza konto firmowe lub twórcy połączone ze stroną na Facebooku.',

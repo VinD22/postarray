@@ -49,6 +49,15 @@ export const errorMessages = withHebrewPluralForms({
   'error.entitlement_missing.action': 'בדוק את הגדרות החיוב, או פנה לתמיכה.',
   'error.channel_limit_reached.message': 'סביבת העבודה הזו כבר משתמשת בכל הערוצים הפעילים {limit}.',
   'error.channel_limit_reached.action': 'נתק ערוץ לפני חיבור ערוץ אחר.',
+  'error.project_limit_reached.message':
+    'סביבת העבודה הזו כבר משתמשת בכל {limit} הפרויקטים הפעילים.',
+  'error.project_limit_reached.action':
+    'העבר לארכיון פרויקט לא פעיל או שנה את מכסת הפרויקטים של סביבת העבודה.',
+  'error.project_has_connections.message':
+    'לפרויקט הזה עדיין יש {connected, plural, one {# ערוץ מחובר} other {# ערוצים מחוברים}}.',
+  'error.project_has_connections.action': 'נתק כל ערוץ בפרויקט הזה לפני העברתו לארכיון.',
+  'error.project_last_active.message': 'בסביבת עבודה חייב להישאר לפחות פרויקט פעיל אחד.',
+  'error.project_last_active.action': 'צור פרויקט נוסף לפני העברת זה לארכיון.',
   'error.connection_not_found.message': 'החיבור הזה כבר לא נמצא בסביבת העבודה הזו.',
   'error.connection_not_found.action': 'חבר שוב את החשבון כדי להמשיך לפרסם אליו.',
   'error.connection_revoked.message': '{account} ביטלה את הגישה ב-{provider}.',

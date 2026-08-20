@@ -25,8 +25,8 @@ export const webSettingsMessages = {
 
   'settings.ui.section.members': 'Členové a role',
   'settings.ui.section.membersSummary': 'Kdo je v tomto pracovním prostoru a co každý může dělat.',
-  'settings.ui.section.brands': 'Značky',
-  'settings.ui.section.brandsSummary':
+  'settings.ui.section.projects': 'Projekty',
+  'settings.ui.section.projectsSummary':
     'Hlas, publikum, schválené nároky, blokované výrazy, pravidla národního prostředí, domény a glosář.',
   'settings.ui.section.agents': 'Agenti a API',
   'settings.ui.section.agentsSummary':
@@ -107,7 +107,7 @@ export const webSettingsMessages = {
     '{count, plural, one {# značka} other {# značky} few {# značky} many {# značky}}: {names}',
   'settings.ui.members.approvals.canApprove': 'Může schválit',
   'settings.ui.members.approvals.cannotApprove': 'Nelze schválit',
-  'settings.ui.members.approvals.canApproveOwnBrands': 'Lze schválit pro uvedené značky',
+  'settings.ui.members.approvals.canApproveOwnProjects': 'Lze schválit pro uvedené projekty',
   'settings.ui.members.lastActiveNever': 'Zatím se nepřihlásil',
   'settings.ui.members.changeRole': 'Změnit roli pro {name}',
   'settings.ui.members.remove': 'Odebrat {name}',
@@ -157,44 +157,72 @@ export const webSettingsMessages = {
   'settings.ui.members.removeConsequence.approvals':
     'Žádosti o schválení, které na ně čekají, se vrátí do fronty pro jiného schvalovatele.',
 
-  /* ------------------------------------------------------------------ brands */
+  /* ----------------------------------------------------------------- projects */
 
-  'settings.ui.brands.description':
+  'settings.ui.projects.description':
     'Značka má pravidla, podle kterých je obsah kontrolován: co si můžete nárokovat, co nesmíte říkat a jak jsou jednotlivé jazyky napsány.',
-  'settings.ui.brands.listCaption': 'Značky v tomto pracovním prostoru',
-  'settings.ui.brands.column.brand': 'Značka',
-  'settings.ui.brands.column.locales': 'Jazyky obsahu',
-  'settings.ui.brands.column.accounts': 'Účty',
-  'settings.ui.brands.column.updated': 'Aktualizováno',
-  'settings.ui.brands.accountCount':
+  'settings.ui.projects.listCaption': 'Projekty v tomto pracovním prostoru',
+  'settings.ui.projects.column.project': 'Projekt',
+  'settings.ui.projects.column.locales': 'Jazyky obsahu',
+  'settings.ui.projects.column.accounts': 'Účty',
+  'settings.ui.projects.column.updated': 'Aktualizováno',
+  'settings.ui.projects.accountCount':
     '{count, plural, =0 {Žádné účty} one {# účet} other {# účty} few {# účty} many {# účty}}',
-  'settings.ui.brands.emptyTitle': 'Zatím žádné značky',
-  'settings.ui.brands.emptyBody':
+  'settings.ui.projects.emptyTitle': 'Zatím žádné projekty',
+  'settings.ui.projects.emptyBody':
     'Značka seskupuje účty, pravidla schvalování a jazyková pravidla. Většina týmů začíná s jedním a přidává druhý, když klient nebo trh potřebuje jiná pravidla.',
-  'settings.ui.brands.emptyExample':
+  'settings.ui.projects.emptyExample':
     'Příklad: značka „Acme EU“, jazyky angličtina a němčina, blokovaný výraz „zaručeno“, zveřejnění „placeného partnerství“ na Instagramu.',
-  'settings.ui.brands.voiceHelp':
-    'Jak tato značka zní. Používá se, když žádáte o přepsání a když se kontrolují nároky.',
-  'settings.ui.brands.audienceHelp': 'Pro koho je obsah určen podle trhu.',
-  'settings.ui.brands.approvedClaimsHelp':
+  'settings.ui.projects.voiceHelp':
+    'Jak tento projekt zní. Používá se, když žádáte o přepsání a když se kontrolují nároky.',
+  'settings.ui.projects.audienceHelp': 'Pro koho je obsah určen podle trhu.',
+  'settings.ui.projects.approvedClaimsHelp':
     'Výroky, které recenzent vymazal. Cokoli mimo tento seznam je označeno před schválením, nikoli po zveřejnění.',
-  'settings.ui.brands.blockedTermsHelp':
-    'Slova, která blokují plánování pro tuto značku. Jeden na řádek.',
-  'settings.ui.brands.domainsHelp':
-    'Domény, na které může tato značka odkazovat a zkracovat je. Ve skladateli lze vybrat pouze ověřené domény.',
-  'settings.ui.brands.domainVerified': 'Ověřeno {date}',
-  'settings.ui.brands.domainPending': 'DNS záznam ještě nebyl zobrazen',
-  'settings.ui.brands.disclosureHelp':
+  'settings.ui.projects.blockedTermsHelp':
+    'Slova, která blokují plánování pro tento projekt. Jeden na řádek.',
+  'settings.ui.projects.domainsHelp':
+    'Domény, na které může tento projekt odkazovat a zkracovat je. Ve skladateli lze vybrat pouze ověřené domény.',
+  'settings.ui.projects.domainVerified': 'Ověřeno {date}',
+  'settings.ui.projects.domainPending': 'DNS záznam ještě nebyl zobrazen',
+  'settings.ui.projects.domainVerificationUnavailable': 'Ověření zatím není postaveno',
+  'settings.ui.projects.disclosureUnavailable':
+    'Výchozí zveřejnění pro jednotlivé kanály zatím není postaveno. Přidejte požadované zveřejnění do příspěvku, dokud toto nebude vydáno.',
+  'settings.ui.projects.glossaryUnavailable':
+    'Slovník pracovního prostoru zatím není postaven. Tón, publikum, schválená tvrzení a blokované výrazy výše se ukládají a vynucují.',
+  'settings.ui.projects.localeRulesUnavailable':
+    'Pravidla psaní pro jednotlivé jazyky zatím nejsou postavena. Jazyky a trhy pracovního prostoru zůstávají dostupné v části Lokalizace.',
+  'settings.ui.projects.disclosureHelp':
     'Ve výchozím nastavení použito ve skladateli pro platformy, které zde vyberete. Před schválením jej lze změnit u příspěvku.',
-  'settings.ui.brands.glossaryHelp':
+  'settings.ui.projects.glossaryHelp':
     'Názvy produktů, právní podmínky a vše, co musí vydržet překlad beze změny.',
-  'settings.ui.brands.glossaryCaption':
+  'settings.ui.projects.glossaryCaption':
     'Chráněné výrazy a způsob, jakým je každý z nich zpracován v jednotlivých jazycích',
-  'settings.ui.brands.glossaryEmpty':
+  'settings.ui.projects.glossaryEmpty':
     'Zatím žádné chráněné výrazy. Přidejte názvy produktů a právní termíny, které se nesmí překládat ani přeformulovat.',
-  'settings.ui.brands.localeRulesHelp':
+  'settings.ui.projects.localeRulesHelp':
     'Pravidla pro jazyk obsahu. Použijí se, když se přizpůsobíte nebo přeměníte, a zobrazí se recenzentovi.',
-  'settings.ui.brands.saveBrand': 'Uložit značku',
+  'settings.ui.projects.saveProject': 'Uložit projekt',
+  'settings.ui.projects.capacityTitle': 'Kapacita projektů',
+  'settings.ui.projects.capacityHelp':
+    'Základní plán za 29 $ zahrnuje 3 aktivní projekty. Pracovní prostor může mít nárok až na 20 bez vytváření dalšího účtu.',
+  'settings.ui.projects.capacitySummary': '{used} z {limit}',
+  'settings.ui.projects.atLimitTitle': 'Tento pracovní prostor využil každé místo pro projekt',
+  'settings.ui.projects.atLimitBody':
+    'Před přidáním dalšího archivujte neaktivní projekt nebo změňte nárok pracovního prostoru. Aktuální limit je {limit}.',
+  'settings.ui.projects.listLabel': 'Vyberte projekt k úpravě',
+  'settings.ui.projects.detailsTitle': 'Podrobnosti projektu',
+  'settings.ui.projects.projectMeta':
+    '{accounts, plural, =0 {Žádné kanály} one {# kanál} few {# kanály} many {# kanálu} other {# kanálů}} · Aktualizováno {updated}',
+  'settings.ui.projects.archiveAction': 'Archivovat projekt',
+  'settings.ui.projects.archiveTitle': 'Archivovat {project}?',
+  'settings.ui.projects.archiveBody':
+    'Tento neaktivní projekt opouští aktivní pracovní prostor a uvolňuje jedno místo pro projekt.',
+  'settings.ui.projects.archiveChannels':
+    'Jeho propojené kanály přestanou zobrazovat se v tocích aktivních projektů.',
+  'settings.ui.projects.archiveHistory':
+    'Koncepty, publikované příspěvky, potvrzenky a auditní historie se zachovávají.',
+  'settings.ui.projects.archiveLastDisabled': 'Zachovejte v pracovním prostoru alespoň jeden aktivní projekt.',
+  'settings.ui.projects.archiveConnectedDisabled': 'Před archivací odpojte kanály tohoto projektu.',
 
   /* ------------------------------------------------------------ localization */
 
@@ -277,9 +305,9 @@ export const webSettingsMessages = {
   'settings.ui.data.deleteConnection': 'Odvolat jedno sociální spojení',
   'settings.ui.data.deleteConnectionHelp':
     'Odebere přenosový přístup k tomuto účtu. Pracovní prostor, jeho obsah a účtenky zůstávají.',
-  'settings.ui.data.deleteBrand': 'Smazat značku',
-  'settings.ui.data.deleteBrandHelp':
-    'Odstraní značku, její pravidla a její glosář. Obsah publikovaný pod ním si uchovává účtenky.',
+  'settings.ui.data.deleteProject': 'Archivovat projekt',
+  'settings.ui.data.deleteProjectHelp':
+    'Odstraní projekt, jeho pravidla a jeho glosář. Obsah publikovaný pod ním si uchovává účtenky.',
   'settings.ui.data.deleteContent': 'Smazat obsah a média',
   'settings.ui.data.deleteContentHelp':
     'Odstraní koncepty a uložené soubory. Neodstraňuje nic, co již bylo na platformě zveřejněno.',
@@ -622,7 +650,7 @@ export const webSettingsMessages = {
   'billing.ui.conversionLabel': 'Konvertuje',
   'billing.ui.channelsLabel': 'Aktivní kanály',
   'billing.ui.paymentMethodPolar': 'Platební metoda držená společností Polar',
-  'billing.ui.paymentMethodDescriptor': '{brand} končící {last4}, platnost vyprší {expiry}',
+  'billing.ui.paymentMethodDescriptor': '{project} končící {last4}, platnost vyprší {expiry}',
   'billing.ui.paymentMethodMissing': 'Zatím není zapsána žádná platební metoda',
   'billing.ui.cancelBeforeDate': 'Zrušit do {date} a nebudou vám účtovány žádné poplatky.',
   'billing.ui.annualFraming': '25 $ měsíčně účtováno ročně. Ušetřete 48 $ ročně.',

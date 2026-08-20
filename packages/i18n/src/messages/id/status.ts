@@ -59,7 +59,7 @@ export const statusMessages = {
   'permission.denied.role': 'Ini membutuhkan peran {role}. Anda adalah {currentRole}.',
   'permission.denied.scope': 'Kredensial ini memerlukan cakupan {scope}.',
   'permission.denied.contactOwner': 'Minta {owner} untuk mengabulkannya.',
-  'permission.denied.brandScope': 'Akses Anda dibatasi hingga {brands}.',
+  'permission.denied.projectScope': 'Akses Anda dibatasi hingga {projects}.',
   'permission.readOnly': 'Ruang kerja ini hanya dapat dibaca saat ini.',
   'permission.mfaRequired': 'Konfirmasikan dengan otentikasi dua faktor untuk melanjutkan.',
   'rateLimit.title': 'Pelan-pelan sejenak',

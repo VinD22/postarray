@@ -31,6 +31,8 @@ export const validationMessages = {
   'validation.media_file_too_large.message': 'Цей файл {actual}. {provider} необхідно до {limit}.',
   'validation.media_mixed_types_unsupported.message':
     '{provider}не можна опублікувати зображення та відео в одній публікації.',
+  'validation.media_unavailable.message':
+    'Прикріплений файл більше недоступний. Видаліть його з публікації або завантажте знову.',
   'validation.alt_text_missing.message':
     'Альтернативний текст відсутній {count, plural, one {# зображення} few {# зображення} many {# зображення} other {# зображення}}.',
   'validation.alt_text_missing.hint': 'Опишіть зображення або позначте його як декоративне.',
@@ -63,12 +65,12 @@ export const validationMessages = {
   'validation.schedule_too_far_ahead.message':
     'Це далі попереду, ніж {limit} подивіться вперед для цих облікових даних.',
   'validation.schedule_outside_quiet_hours.message':
-    'Це відбувається у встановлені години тиші {brand}.',
+    'Це відбувається у встановлені години тиші {project}.',
   'validation.duplicate_within_window.message':
     'Дуже подібний вміст уже заплановано або опубліковано {account} в межах {window}.',
-  'validation.blocked_term_present.message': 'Текст містить заблокований термін для {brand}.',
+  'validation.blocked_term_present.message': 'Текст містить заблокований термін для {project}.',
   'validation.unsupported_claim.message':
-    'Ця претензія не входить до підтвердженої формули {brand}.',
+    'Ця претензія не входить до підтвердженої формули {project}.',
   'validation.unsupported_claim.hint':
     'Додайте його до підтверджених тверджень із доказами або переформулюйте речення.',
   'validation.cadence_exceeded.message':

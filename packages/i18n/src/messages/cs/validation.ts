@@ -32,6 +32,8 @@ export const validationMessages = {
     'Tento soubor je {actual}. {provider} přijímá až {limit}.',
   'validation.media_mixed_types_unsupported.message':
     '{provider} nemůže publikovat obrázky a video ve stejném příspěvku.',
+  'validation.media_unavailable.message':
+    'Připojený soubor už není dostupný. Odeberte jej z příspěvku nebo jej znovu nahrajte.',
   'validation.alt_text_missing.message':
     'Na {count, plural, one {# obrázek} other {# obrázky} few {# obrázky} many {# obrázky}}.',
   'validation.alt_text_missing.hint': 'Popište obrázek nebo jej označte jako dekorativní.',
@@ -63,11 +65,11 @@ export const validationMessages = {
   'validation.schedule_too_far_ahead.message':
     'Toto je dále než {limit} nastavení tohoto pověření dopředu.',
   'validation.schedule_outside_quiet_hours.message':
-    'Toto spadá do klidových hodin nastavených na {brand}.',
+    'Toto spadá do klidových hodin nastavených na {project}.',
   'validation.duplicate_within_window.message':
     'Velmi podobný obsah je již naplánován nebo publikován pro {account} v rámci {window}.',
-  'validation.blocked_term_present.message': 'Text obsahuje blokovaný výraz pro {brand}.',
-  'validation.unsupported_claim.message': 'Tento nárok není ve schválených nárocích pro {brand}.',
+  'validation.blocked_term_present.message': 'Text obsahuje blokovaný výraz pro {project}.',
+  'validation.unsupported_claim.message': 'Tento nárok není ve schválených nárocích pro {project}.',
   'validation.unsupported_claim.hint':
     'Přidejte jej ke schváleným tvrzením s důkazy nebo přeformulujte větu.',
   'validation.cadence_exceeded.message':

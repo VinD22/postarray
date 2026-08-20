@@ -15,7 +15,6 @@ export const navMessages = {
   'nav.commandPalette': 'Paleta poleceń',
   'nav.account': 'Konto',
   'nav.workspaceSwitcher': 'Przełącz obszar roboczy',
-  'nav.brandSwitcher': 'Zmień markę',
   'nav.skipToContent': 'Przeskocz do głównej treści',
   'nav.primaryLandmark': 'Podstawowa nawigacja',
   'nav.moreItems': 'Więcej',
@@ -26,7 +25,7 @@ export const navMessages = {
   'nav.theme.label': 'Motyw',
 
   'settings.nav.members': 'Członkowie i role',
-  'settings.nav.brands': 'Marki',
+  'settings.nav.projects': 'Projekty',
   'settings.nav.agents': 'Agenci i API',
   'settings.nav.developerApps': 'Aplikacje dla programistów',
   'settings.nav.webhooks': 'Webhooki',
@@ -65,8 +64,11 @@ export const navMessages = {
 
   'shell.workspace.label': 'Przestrzeń robocza',
   'shell.workspace.current': 'Aktualny obszar roboczy: {name}',
-  'shell.brand.label': 'Marka',
-  'shell.brand.all': 'Wszystkie marki',
+  'shell.project.label': 'Projekty',
+  'shell.project.none': 'Utwórz projekt',
+  'shell.project.current': 'Aktualny projekt: {name}',
+  'shell.project.manage': 'Zarządzaj projektami',
+  'shell.project.all': 'Wszystkie projekty',
   'shell.timeZone.label': 'Czasy pokazane w {timeZone}',
   'shell.notifications.count':
     '{count, plural, =0 {Brak nowych powiadomień} one {# nowe powiadomienie} other {# nowe powiadomienia} few {# nowe powiadomienia} many {# nowe powiadomienia}}',

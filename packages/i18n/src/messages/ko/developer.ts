@@ -6,7 +6,7 @@ export const developerMessages = {
   'developer.serviceAccount.title': '서비스 계정',
   'developer.serviceAccount.create': '서비스 계정 만들기',
   'developer.serviceAccount.name': '이름',
-  'developer.serviceAccount.scopeBrands': '사용할 수 있는 브랜드 및 계정',
+  'developer.serviceAccount.scopeProjects': '사용할 수 있는 브랜드 및 계정',
   'developer.serviceAccount.scopePlatforms': '플랫폼',
   'developer.serviceAccount.scopeLocales': '콘텐츠 언어',
   'developer.serviceAccount.scopeDomains': '허용된 링크 도메인',
@@ -100,7 +100,7 @@ export const developerMessages = {
     '이 앱을 삭제하시겠습니까? 모든 부여가 취소되고 해당 토큰의 작동이 중지됩니다.',
   'developer.consent.title': '{app}작업 공간에 액세스하고 싶어합니다',
   'developer.consent.workspace': 'Workspace',
-  'developer.consent.brands': '브랜드 및 계정',
+  'developer.consent.projects': '브랜드 및 계정',
   'developer.consent.willBeAbleTo': '{app}할 수 있을 것이다',
   'developer.consent.willNotBeAbleTo': '{app}할 수 없을 것이다',
   'developer.consent.approvalStillApplies':

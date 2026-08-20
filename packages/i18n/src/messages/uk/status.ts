@@ -61,7 +61,7 @@ export const statusMessages = {
   'permission.denied.role': 'Це потребує {role} роль. Ви є {currentRole}.',
   'permission.denied.scope': 'Для цих облікових даних потрібен обсяг {scope}.',
   'permission.denied.contactOwner': 'Запитуйте {owner} надати це.',
-  'permission.denied.brandScope': 'Ваш доступ обмежено {brands}.',
+  'permission.denied.projectScope': 'Ваш доступ обмежено {projects}.',
   'permission.readOnly': 'Ця робоча область зараз доступна лише для читання.',
   'permission.mfaRequired': 'Щоб продовжити, підтвердьте двофакторну автентифікацію.',
 

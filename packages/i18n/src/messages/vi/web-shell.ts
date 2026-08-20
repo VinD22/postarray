@@ -17,7 +17,6 @@ export const webShellMessages = {
   'shell.workspace.create': 'Tạo không gian làm việc',
   'shell.workspace.manage': 'Cài đặt Workspace',
   'shell.workspace.role': 'Bạn là {role} ở đây',
-  'shell.brand.filterHint': 'Lọc Trang chủ, Lịch và Phân tích cho thương hiệu này.',
   'shell.demo.badge': 'Dữ liệu demo',
   'shell.demo.title': 'Bạn đang xem dữ liệu demo',
   'shell.demo.body':

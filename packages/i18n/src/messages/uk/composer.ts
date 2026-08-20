@@ -1,7 +1,7 @@
 /** Composer: master draft, per target overrides, previews, validation, cost. */
 export const composerMessages = {
   'composer.title': 'Скласти',
-  'composer.titleWithBrand': 'Складіть для {brand}',
+  'composer.titleWithProject': 'Складіть для {project}',
   'composer.master.label': 'Головний проект',
   'composer.master.description':
     'Напишіть один раз тут. Сумісні зміни досягають кожної вибраної цілі. Відкрийте ціль, щоб написати версію, яку отримає лише цей обліковий запис.',

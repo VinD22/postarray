@@ -1,7 +1,7 @@
 /** Spanish (Latin America) beta catalog. B5 legal, billing and consent messages deliberately use English fallback. */
 export const composerMessages = {
   'composer.title': 'componer',
-  'composer.titleWithBrand': 'Componer para {brand}',
+  'composer.titleWithProject': 'Componer para {project}',
   'composer.master.label': 'borrador maestro',
   'composer.master.description':
     'Escribe una vez aquí. Los cambios compatibles llegan a todos los objetivos seleccionados. Abra un objetivo para escribir una versión que solo recibirá esa cuenta.',

@@ -30,7 +30,7 @@ export const automationMessages = {
   'automation.trigger.recurring': 'a recurring schedule fires',
 
   'automation.condition.label': 'Conditions',
-  'automation.condition.brand': 'the project is {brand}',
+  'automation.condition.project': 'the project is {project}',
   'automation.condition.campaign': 'the campaign is {campaign}',
   'automation.condition.account': 'the account is {account}',
   'automation.condition.platform': 'the platform is {platform}',

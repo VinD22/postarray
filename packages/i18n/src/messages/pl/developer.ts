@@ -7,7 +7,7 @@ export const developerMessages = {
   'developer.serviceAccount.title': 'Konta usług',
   'developer.serviceAccount.create': 'Utwórz konto usługi',
   'developer.serviceAccount.name': 'Nazwa',
-  'developer.serviceAccount.scopeBrands': 'Marki i konta, z których może korzystać',
+  'developer.serviceAccount.scopeProjects': 'Marki i konta, z których może korzystać',
   'developer.serviceAccount.scopePlatforms': 'Platformy',
   'developer.serviceAccount.scopeLocales': 'Języki treści',
   'developer.serviceAccount.scopeDomains': 'Dozwolone domeny linków',
@@ -112,7 +112,7 @@ export const developerMessages = {
 
   'developer.consent.title': '{app} chce dostępu do Twojego obszaru roboczego',
   'developer.consent.workspace': 'Przestrzeń robocza',
-  'developer.consent.brands': 'Marki i konta',
+  'developer.consent.projects': 'Marki i konta',
   'developer.consent.willBeAbleTo': '{app} będzie mógł',
   'developer.consent.willNotBeAbleTo': '{app} nie będzie mógł',
   'developer.consent.approvalStillApplies':

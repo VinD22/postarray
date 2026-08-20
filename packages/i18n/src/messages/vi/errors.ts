@@ -59,6 +59,16 @@ export const errorMessages = {
   'error.channel_limit_reached.message':
     'Không gian làm việc này đã sử dụng tất cả các kênh hoạt động {limit}.',
   'error.channel_limit_reached.action': 'Ngắt kết nối một kênh trước khi kết nối một kênh khác.',
+  'error.project_limit_reached.message':
+    'Không gian làm việc này đã sử dụng hết {limit} dự án hoạt động.',
+  'error.project_limit_reached.action':
+    'Lưu trữ một dự án không hoạt động hoặc thay đổi hạn mức dự án của không gian làm việc.',
+  'error.project_has_connections.message':
+    'Dự án này vẫn còn {connected, plural, other {# kênh đã kết nối}}.',
+  'error.project_has_connections.action':
+    'Ngắt kết nối mọi kênh trong dự án này trước khi lưu trữ nó.',
+  'error.project_last_active.message': 'Một không gian làm việc phải giữ ít nhất một dự án hoạt động.',
+  'error.project_last_active.action': 'Tạo một dự án khác trước khi lưu trữ dự án này.',
   'error.connection_not_found.message': 'Kết nối đó không còn trong không gian làm việc này nữa.',
   'error.connection_not_found.action':
     'Kết nối lại tài khoản để tiếp tục xuất bản lên tài khoản đó.',

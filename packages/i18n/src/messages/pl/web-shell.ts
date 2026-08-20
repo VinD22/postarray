@@ -25,8 +25,6 @@ export const webShellMessages = {
   'shell.workspace.create': 'Utwórz obszar roboczy',
   'shell.workspace.manage': 'Ustawienia obszaru roboczego',
   'shell.workspace.role': 'Jesteś {role} tutaj',
-  'shell.brand.filterHint':
-    'Filtrowanie strony głównej, kalendarza i statystyk pod kątem tej marki.',
 
   /* -- Demo data --------------------------------------------------------- */
   'shell.demo.badge': 'Dane demonstracyjne',

@@ -1,4 +1,4 @@
-/** Workspace settings: members, roles, brands, localization, security, data. */
+/** Workspace settings: members, roles, projects, localization, security, data. */
 export const settingsMessages = {
   'settings.title': 'Mga setting',
   'settings.saved': 'Nai-save',
@@ -38,31 +38,31 @@ export const settingsMessages = {
     'Aprubahan o tanggihan ang nilalaman, at iiskedyul kung ano ang naaprubahan.',
   'settings.role.analyst.description': 'Basahin ang analytics at mga resibo.',
   'settings.role.viewer.description': 'Basahin lamang.',
-  'settings.role.scopeLabel': 'Limitahan sa mga brand at account',
+  'settings.role.scopeLabel': 'Limitahan sa mga project at account',
   'settings.role.mfaRequired': 'Dapat gumamit ang mga may-ari ng dalawang salik na pagpapatotoo.',
 
-  'settings.brands.title': 'Mga tatak',
-  'settings.brands.add': 'Magdagdag ng tatak',
-  'settings.brands.voice': 'Boses',
-  'settings.brands.audience': 'Madla',
-  'settings.brands.approvedClaims': 'Mga naaprubahang claim',
-  'settings.brands.blockedTerms': 'Mga naka-block na termino',
-  'settings.brands.disclosureDefaults': 'Disclosure defaults',
-  'settings.brands.domains': 'Mga domain',
-  'settings.brands.glossary.title': 'Talasalitaan',
-  'settings.brands.glossary.term': 'Termino',
-  'settings.brands.glossary.preferred': 'Ginustong pagsasalin',
-  'settings.brands.glossary.prohibited': 'Huwag isalin bilang',
-  'settings.brands.glossary.context': 'Konteksto',
-  'settings.brands.glossary.keepUntranslated': 'Panatilihing hindi naisalin',
-  'settings.brands.localeRules.title': 'Mga panuntunan sa lokal',
-  'settings.brands.localeRules.formality': 'Formality',
-  'settings.brands.localeRules.pronouns': 'Mga panghalip at parangal',
-  'settings.brands.localeRules.idioms': 'Mga idyoma na dapat iwasan',
-  'settings.brands.localeRules.emoji': 'Mga pamantayan ng emoji at hashtag',
-  'settings.brands.localeRules.legal': 'Regional legal disclosures',
-  'settings.brands.localeRules.cta': 'Call to action ayon sa market',
-  'settings.brands.localeRules.reviewedExamples':
+  'settings.projects.title': 'Mga tatak',
+  'settings.projects.add': 'Magdagdag ng tatak',
+  'settings.projects.voice': 'Boses',
+  'settings.projects.audience': 'Madla',
+  'settings.projects.approvedClaims': 'Mga naaprubahang claim',
+  'settings.projects.blockedTerms': 'Mga naka-block na termino',
+  'settings.projects.disclosureDefaults': 'Disclosure defaults',
+  'settings.projects.domains': 'Mga domain',
+  'settings.projects.glossary.title': 'Talasalitaan',
+  'settings.projects.glossary.term': 'Termino',
+  'settings.projects.glossary.preferred': 'Ginustong pagsasalin',
+  'settings.projects.glossary.prohibited': 'Huwag isalin bilang',
+  'settings.projects.glossary.context': 'Konteksto',
+  'settings.projects.glossary.keepUntranslated': 'Panatilihing hindi naisalin',
+  'settings.projects.localeRules.title': 'Mga panuntunan sa lokal',
+  'settings.projects.localeRules.formality': 'Formality',
+  'settings.projects.localeRules.pronouns': 'Mga panghalip at parangal',
+  'settings.projects.localeRules.idioms': 'Mga idyoma na dapat iwasan',
+  'settings.projects.localeRules.emoji': 'Mga pamantayan ng emoji at hashtag',
+  'settings.projects.localeRules.legal': 'Regional legal disclosures',
+  'settings.projects.localeRules.cta': 'Call to action ayon sa market',
+  'settings.projects.localeRules.reviewedExamples':
     'Mga halimbawang inaprubahan ng isang katutubong tagasuri',
 
   'settings.sets.title': 'Mga set',
@@ -72,7 +72,7 @@ export const settingsMessages = {
     'Ang pag-edit ng isang Set ay hindi binabago ang mga post na naaprubahan na o nakaiskedyul na.',
   'settings.signatures.title': 'Mga lagda',
   'settings.signatures.description':
-    'Pangwakas na text, hashtag, link o pagsisiwalat, na saklaw ng brand, platform at wika.',
+    'Pangwakas na text, hashtag, link o pagsisiwalat, na saklaw ng project, platform at wika.',
   'settings.signatures.autoApply': 'Awtomatikong magdagdag kapag tumugma ang konteksto',
 
   'settings.localization.title': 'Lokalisasyon',
@@ -81,7 +81,7 @@ export const settingsMessages = {
     'Ang wika ng app na ito para sa iyo. Hindi nito binabago ang wika ng iyong mga post.',
   'settings.localization.contentLocales': 'Mga wika ng nilalaman',
   'settings.localization.contentLocalesHelp':
-    'Ang mga wikang iyong pina-publish. Ang bawat brand ay maaaring magtakda ng mga panuntunan at isang glossary bawat wika.',
+    'Ang mga wikang iyong pina-publish. Ang bawat project ay maaaring magtakda ng mga panuntunan at isang glossary bawat wika.',
   'settings.localization.marketLocales': 'Mga merkado ng madla',
   'settings.localization.beta': 'Beta pagsasalin',
   'settings.localization.betaHelp':

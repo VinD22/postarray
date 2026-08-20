@@ -55,7 +55,7 @@ export const onboardingMessages = {
   'onboarding.checklist.connectAccount': 'Verbinden Sie ein Konto',
   'onboarding.checklist.firstPost': 'Veröffentlichen oder planen Sie einen Beitrag',
   'onboarding.checklist.inviteTeammate': 'Laden Sie einen Teamkollegen ein',
-  'onboarding.checklist.setBrandVoice': 'Beschreiben Sie Ihre Markenstimme',
+  'onboarding.checklist.setProjectVoice': 'Beschreiben Sie Ihre Markenstimme',
   'onboarding.checklist.tryAutomation': 'Versuchen Sie es mit einer Automatisierungsregel',
   'onboarding.checklist.remaining':
     '{count, plural, =0 {Alles erledigt} one {# Schritt übrig} other {# Schritte übrig}}',

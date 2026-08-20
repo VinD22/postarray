@@ -179,7 +179,7 @@ export const webComposerMessages = {
   'composerWeb.set.apply': 'このセットを使用する',
   'composerWeb.set.none': 'セットはまだ保存されていません。',
   'composerWeb.signature.pickerLabel': 'サイン',
-  'composerWeb.signature.scope': 'のために{brand}の上{provider}で{language}',
+  'composerWeb.signature.scope': 'のために{project}の上{provider}で{language}',
   'composerWeb.signature.previewHeading': '投稿の終わり方',
   'composerWeb.signature.notMatching':
     'この署名は別のブランド、プラットフォーム、または言語を対象としているため、ここでは提供されていません。',

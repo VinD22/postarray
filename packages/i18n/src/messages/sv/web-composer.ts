@@ -218,7 +218,7 @@ export const webComposerMessages = {
   'composerWeb.set.apply': 'Använd denna uppsättning',
   'composerWeb.set.none': 'Inga set sparade ännu.',
   'composerWeb.signature.pickerLabel': 'Signatur',
-  'composerWeb.signature.scope': 'För {brand} på {provider} i {language}',
+  'composerWeb.signature.scope': 'För {project} på {provider} i {language}',
   'composerWeb.signature.previewHeading': 'Hur det slutar inlägget',
   'composerWeb.signature.notMatching':
     'Denna signatur är avsedd för ett annat varumärke, plattform eller språk, så den erbjuds inte här.',
@@ -328,6 +328,15 @@ export const webComposerMessages = {
     'Exempel: launch_hero.jpg, 1600 x 900, alternativ textuppsättning, används i 2 inlägg.',
   'mediaLib.error.title': 'Biblioteket kunde inte laddas',
   'mediaLib.error.body': 'Dina filer är säkra. Ingenting förändrades av detta misslyckande.',
+  'mediaLib.offline.title': 'Biblioteket är inte tillgängligt offline',
+  'mediaLib.offline.body':
+    'Vi kan inte uppdatera biblioteket utan anslutning. Filer redan på denna skärm är oförändrade. Anslut igen och försök sedan igen.',
+  'mediaLib.rateLimited.title': 'Biblioteket behöver en kort paus',
+  'mediaLib.rateLimited.cause':
+    'API:et bad oss sakta ner medan dina filer laddades. Din lagrade media är säker.',
+  'mediaLib.rateLimited.resetLabel': 'Försök igen efter',
+  'mediaLib.rateLimited.alternative':
+    'Du kan fortsätta skriva utkast lokalt, men uppladdningar och biblioteksändringar väntar tills gränsen återställs.',
   'mediaLib.loading': 'Laddar ditt mediebibliotek',
   'mediaLib.permission.title': 'Du kan inte se detta arbetsytabibliotek',
   'mediaLib.permission.body':
@@ -359,6 +368,39 @@ export const webComposerMessages = {
   'mediaLib.upload.checkedAgainst': 'Kontrolleras mot de konton som valts i detta utkast.',
   'mediaLib.upload.noTargets':
     'Inga konton är valda, så filen kontrolleras endast mot standardinställningarna för arbetsytan.',
+  'mediaLib.import.urlLabel': 'Offentlig fil-URL',
+  'mediaLib.import.urlPlaceholder': 'https://cdn.example.com/launch-video.mp4',
+  'mediaLib.import.importing': 'Importerar media',
+  'mediaLib.import.succeeded': 'Filen finns i ditt bibliotek',
+  'mediaLib.import.scanPending':
+    'Relay registrerade dess källa. Publicering väntar tills säkerhetskontrollen är klar.',
+  'mediaLib.import.failed': 'Filen kunde inte importeras',
+  'mediaLib.import.failedHelp':
+    'Kontrollera att länken är offentlig och pekar direkt på en filtyp som stöds, och försök sedan igen.',
+  'mediaLib.import.readOnly': 'Anslut API:et för att importera filer i denna miljö.',
+  'mediaLib.import.offline': 'Anslut igen innan du importerar en fil.',
+  'mediaLib.import.issue.invalid': 'Ange en fullständig URL.',
+  'mediaLib.import.issue.scheme': 'Använd en HTTP- eller HTTPS-länk.',
+  'mediaLib.import.issue.credentials': 'Använd en länk utan användarnamn eller lösenord.',
+  'mediaLib.retention.title': 'Lagrade filer sparas i 30 dagar efter att inlägget skapats',
+  'mediaLib.retention.body':
+    'När en fil har bifogats ett inlägg raderar vi den permanent från Relay-lagringen 30 dagar efter att det inlägget skapades. Filer som väntar på att bifogas använder uppladdningsdatumet som reservdatum för borttagning. Inläggstext, publiceringskvitton och granskningshistorik förblir tillgängliga längre. Ett publicerat inlägg på en social plattform tas inte bort när dess lagrade fil upphör.',
+  'mediaLib.retention.limits':
+    'Bilder, ljud och PDF-filer kan vara upp till {imageSize}. Videor kan vara upp till {videoSize}.',
+  'mediaLib.retention.expiresLabel': 'Datum för filradering',
+  'mediaLib.retention.deleted': 'Permanent raderad',
+  'mediaLib.retention.deletedTitle': 'Denna lagrade fil har raderats',
+  'mediaLib.retention.deletedBody':
+    'Lagringsperioden på 30 dagar har löpt ut. Inläggstexten, publiceringskvittona och granskningshistoriken finns kvar.',
+  'mediaLib.processing.unavailableTitle': 'Denna fil är inte redo att publiceras',
+  'mediaLib.processing.unavailableBody':
+    'Bearbetning eller en säkerhetskontroll väntar fortfarande, eller så godkändes den inte. Ladda upp filen igen om detta tillstånd inte försvinner.',
+  'mediaLib.processing.pendingTitle': 'Säkerhetsskanning är inte tillgänglig före lansering',
+  'mediaLib.processing.pendingBody':
+    'Filen lagras i 30 dagar, men kan inte bifogas ett publicerat inlägg förrän säkerhetsskanning aktiveras.',
+  'mediaLib.processing.blockedTitle': 'Denna fil kan inte publiceras',
+  'mediaLib.processing.blockedBody':
+    'Filen godkändes inte i bearbetning eller en säkerhetskontroll. Ladda upp en annan fil.',
 
   'mediaLib.alt.heading': 'Alt text',
   'mediaLib.alt.help':

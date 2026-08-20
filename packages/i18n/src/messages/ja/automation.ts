@@ -28,7 +28,7 @@ export const automationMessages = {
   'automation.trigger.manual': '誰かがアプリ、API、MCP、または CLI から実行する',
   'automation.trigger.recurring': '定期的なスケジュールが起動する',
   'automation.condition.label': '条件',
-  'automation.condition.brand': 'ブランドは{brand}',
+  'automation.condition.project': 'ブランドは{project}',
   'automation.condition.campaign': 'キャンペーンは{campaign}',
   'automation.condition.account': 'アカウントは{account}',
   'automation.condition.platform': 'プラットフォームは{platform}',

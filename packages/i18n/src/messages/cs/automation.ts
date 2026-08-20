@@ -29,7 +29,7 @@ export const automationMessages = {
   'automation.trigger.recurring': 'spouští se opakující se plán',
 
   'automation.condition.label': 'Podmínky',
-  'automation.condition.brand': 'značka je {brand}',
+  'automation.condition.project': 'značka je {project}',
   'automation.condition.campaign': 'kampaň je {campaign}',
   'automation.condition.account': 'účet je {account}',
   'automation.condition.platform': 'platforma je {platform}',

@@ -1,0 +1,143 @@
+/**
+ * Bulk CSV import. See `en/import.ts`: this says drafts wherever drafts are
+ * what happens, and schedule only on the step where a person chooses it.
+ */
+export const importMessages = {
+  'import.title': 'CSV에서 게시물 가져오기',
+  'import.subtitle':
+    '스프레드시트를 업로드하고, 어떤 일이 일어날지 확인한 후 결정하세요. 업로드는 파일을 확인만 합니다. 아무것도 생성하지 않습니다.',
+
+  'import.step.upload': '업로드',
+  'import.step.columns': '열',
+  'import.step.review': '검토',
+  'import.step.apply': '적용',
+  'import.step.results': '결과',
+  'import.step.position': '{total}단계 중 {current}단계',
+
+  'import.upload.heading': 'CSV 파일 선택',
+  'import.upload.help': 'CSV만 가능합니다. .xlsx 같은 스프레드시트 파일은 읽을 수 없습니다. 먼저 시트를 CSV로 내보내세요.',
+  'import.upload.field': 'CSV 파일',
+  'import.upload.fieldHelp': '파일을 선택하거나 아래 상자에 행을 붙여넣으세요.',
+  'import.upload.paste': '또는 CSV 텍스트 붙여넣기',
+  'import.upload.pasteHelp': '헤더 행을 포함하세요. 무엇이든 만들어지기 전에 모두 확인됩니다.',
+  'import.upload.project': '프로젝트',
+  'import.upload.projectHelp': '한 파일의 모든 행은 이 프로젝트에 속합니다.',
+  'import.upload.submit': '이 파일 확인',
+  'import.upload.submitting': '파일 읽는 중',
+  'import.upload.allowPast': '이미 지난 시간 허용',
+  'import.upload.allowPastHelp':
+    '기본값은 꺼짐입니다. 과거 날짜의 행은 회원님이 대신 옮겨지는 대신 직접 고칠 수 있도록 보고됩니다.',
+  'import.upload.tooLarge': '이 파일은 {limit}자보다 큽니다. 분할한 후 다시 시도하세요.',
+  'import.upload.duplicate':
+    '이전에 업로드한 것과 같은 파일이므로, 두 번째 사본이 아니라 그 가져오기를 보고 있는 것입니다.',
+
+  'import.template.heading': '열이 의미하는 것',
+  'import.template.download': 'CSV 템플릿 다운로드',
+  'import.template.required': '필수 열',
+  'import.template.optional': '선택 열',
+  'import.column.external_row_id': '행에 대한 회원님만의 ID입니다. 파일 안에서 고유해야 합니다.',
+  'import.column.project': '행이 속한 프로젝트 이름 또는 ID입니다.',
+  'import.column.targets': 'set: 뒤에 대상 세트 ID를 붙이거나, 세로 막대로 구분한 계정 ID입니다.',
+  'import.column.caption': '게시물 텍스트입니다.',
+  'import.column.scheduled_local_time': '2026-09-01T10:00처럼 표기된 현지 날짜와 시간입니다.',
+  'import.column.time_zone': '현지 시간을 읽는 기준이 되는 IANA 시간대입니다. 예: Europe/Berlin.',
+  'import.column.media':
+    '미디어 ID, 이미 보유한 미디어의 체크섬 뒤에 붙는 sha256:, 또는 서버가 가져올 https 주소입니다.',
+  'import.column.title': '대상이 제목을 사용하는 경우의 제목입니다.',
+  'import.column.destination': '계정 안의 페이지, 보드 또는 채널입니다.',
+  'import.column.privacy': '대상이 기대하는 공개 범위 값입니다.',
+  'import.column.first_comment': '게시물 뒤에 첫 댓글로 게시되는 텍스트입니다.',
+  'import.column.approval_policy': '각 초안에 연결할 승인 정책입니다.',
+  'import.column.perPlatform':
+    '플랫폼 이름을 붙인 caption_ 또는 title_ 열은 해당 플랫폼만 재정의합니다. 예: caption_instagram.',
+
+  'import.columns.heading': '열 확인',
+  'import.columns.ok': '필수 열이 모두 있습니다.',
+  'import.columns.missing': '{count, plural, other {필수 열 #개가 없습니다}}',
+  'import.columns.unknown': '{count, plural, other {열 #개를 인식하지 못해 무시됩니다}}',
+  'import.columns.present': '발견된 열',
+
+  'import.review.heading': '이 파일이 하게 될 일',
+  'import.review.counts':
+    '{valid, plural, =0 {준비된 행이 없습니다} other {#개 행이 준비되었습니다}}, {invalid, plural, =0 {주의가 필요한 행이 없습니다} other {#개가 주의를 필요로 합니다}}.',
+  'import.review.empty': '이 파일에서 읽은 행이 없습니다.',
+  'import.review.rowsHeading': '행',
+  'import.review.filterAll': '모든 행',
+  'import.review.filterValid': '준비됨',
+  'import.review.filterInvalid': '주의 필요',
+  'import.review.filterFailed': '실패',
+  'import.review.downloadErrors': '문제를 CSV로 다운로드',
+  'import.review.parsedWith': '파서 {version}(으)로 읽음',
+
+  'import.table.row': '행 ID',
+  'import.table.line': '줄',
+  'import.table.state': '상태',
+  'import.table.caption': '문구',
+  'import.table.time': '예약됨',
+  'import.table.problems': '문제',
+  'import.table.draft': '초안',
+  'import.table.noProblems': '없음',
+
+  'import.state.pending': '미확인',
+  'import.state.valid': '준비됨',
+  'import.state.invalid': '주의 필요',
+  'import.state.applied': '초안 생성됨',
+  'import.state.skipped': '이미 완료됨',
+  'import.state.failed': '실패',
+
+  'import.job.state.uploaded': '업로드됨',
+  'import.job.state.validating': '확인 중',
+  'import.job.state.validated': '확인됨',
+  'import.job.state.applying': '적용 중',
+  'import.job.state.applied': '적용됨',
+  'import.job.state.failed': '읽을 수 없음',
+
+  'import.apply.heading': '준비된 행에 어떤 작업을 할까요?',
+  'import.apply.drafts': '초안 만들기',
+  'import.apply.draftsHelp':
+    '기본값입니다. 준비된 각 행은 회원님이 열고, 편집하고, 승인할 수 있는 초안이 됩니다. 아무것도 예약되지 않습니다.',
+  'import.apply.scheduled': '초안을 만들고 예약하기',
+  'import.apply.scheduledHelp':
+    '준비된 각 행은 초안이 되며 파일에 적힌 시간을 그대로 사용합니다. 시간이 정확할 때만 이 옵션을 선택하세요.',
+  'import.apply.confirm': '{count, plural, other {#개 행}} 적용',
+  'import.apply.confirmScheduled': '{count, plural, other {#개 행}} 생성 및 예약',
+  'import.apply.running': '행 적용 중',
+  'import.apply.safeToRepeat': '두 번 적용해도 안전합니다. 이미 초안을 만든 행은 그대로 둡니다.',
+
+  'import.results.heading': '결과',
+  'import.results.applied': '{count, plural, other {초안 #개 생성됨}}',
+  'import.results.skipped': '{count, plural, other {#개 행이 이미 완료됨}}',
+  'import.results.failed': '{count, plural, other {#개 행이 실패함}}',
+  'import.results.retry': '남은 행 다시 적용',
+  'import.results.openDrafts': '초안 열기',
+  'import.results.unavailable': '사용할 수 없음',
+
+  'import.history.heading': '이전 가져오기',
+  'import.history.empty': '아직 가져오기 내역이 없습니다.',
+  'import.history.open': '열기',
+
+  'import.a11y.rowsTable': '매니페스트 행과 그 문제',
+  'import.a11y.stepList': '가져오기 단계',
+  'import.a11y.uploadedFile': '선택한 파일: {filename}',
+
+  'import.error.emptyFile': '이 파일에는 행이 없습니다.',
+  'import.error.missingColumn': '{column} 열이 없습니다.',
+  'import.error.unknownColumn': '{column} 열을 인식하지 못해 무시됩니다.',
+  'import.error.duplicateRowId': '행 ID {value}이(가) 이 파일에서 두 번 이상 사용되었습니다.',
+  'import.error.required': '이 셀은 비워둘 수 없습니다.',
+  'import.error.invalidCell': '이 셀은 읽을 수 있는 형식이 아닙니다.',
+  'import.error.rowShape': '이 줄에는 셀이 {actual}개 있지만 헤더에는 {expected}개가 있습니다.',
+  'import.error.invalidLocalTime': '{value} 시간은 2026-09-01T10:00 같은 현지 날짜와 시간이 아닙니다.',
+  'import.error.invalidTimeZone': '{value} 시간대는 IANA 시간대 이름이 아닙니다.',
+  'import.error.nonexistentLocalTime': '{value} 시간은 {zone}에 존재하지 않습니다. 시계가 그 시간을 건너뜁니다.',
+  'import.error.ambiguousLocalTime': '{value} 시간은 그날 {zone}에서 두 번 발생합니다. 다른 시간을 선택하세요.',
+  'import.error.scheduleInPast': '{zone}의 {value} 시간은 이미 지났습니다.',
+  'import.error.invalidTargets': '{value} 값은 저장된 대상 세트도, 계정 ID 목록도 아닙니다.',
+  'import.error.invalidMedia': '{value} 값은 미디어 ID, sha256 체크섬, https 주소 중 어느 것도 아닙니다.',
+  'import.error.mediaNotFound': '이 작업공간에 {value}과(와) 일치하는 미디어가 없습니다.',
+  'import.error.mediaImportStarted': '{value}의 미디어를 가져오는 중입니다. 라이브러리에 들어오면 이 파일을 다시 적용하세요.',
+  'import.error.unknownVariantTarget': '이 행에는 {provider} 계정이 없어 {provider} 문구가 사용되지 않았습니다.',
+  'import.error.applyFailed': '이 행을 적용할 수 없었습니다. 참조: {code}.',
+  'import.error.alreadyApplied': '이 행은 이미 초안을 만들어서 그대로 두었습니다.',
+  'import.error.tooManyRows': '파일의 처음 {limit}개 행만 읽힙니다.',
+} as const;

@@ -27,7 +27,7 @@ export const webAnalyticsMessages = {
   'analytics.question.accounts': 'Vilka konton behöver uppmärksamhet?',
   'analytics.question.next': 'Vad är värt att testa härnäst?',
 
-  'analytics.filter.brand': 'Varumärke',
+  'analytics.filter.project': 'Varumärke',
   'analytics.filter.accounts': 'konton',
   'analytics.filter.allAccounts': 'Alla anslutna konton',
   'analytics.filter.range': 'Datumintervall',
@@ -445,7 +445,7 @@ export const webAnalyticsMessages = {
   'automation.param.signature': 'Signatur',
   'automation.param.disclosure': 'Avslöjande',
   'automation.param.locale': 'Språk',
-  'automation.param.brand': 'Varumärke',
+  'automation.param.project': 'Varumärke',
   'automation.param.campaign': 'Kampanj',
   'automation.param.account': 'konto',
   'automation.param.platform': 'Plattform',

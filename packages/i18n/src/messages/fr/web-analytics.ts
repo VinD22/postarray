@@ -27,7 +27,7 @@ export const webAnalyticsMessages = {
   'analytics.question.accounts': 'Quels comptes nécessitent une attention particulière ?',
   'analytics.question.next': 'Qu’est-ce qui vaut la peine d’être testé ensuite ?',
 
-  'analytics.filter.brand': 'Brand',
+  'analytics.filter.project': 'Project',
   'analytics.filter.accounts': 'Comptes',
   'analytics.filter.allAccounts': 'Tous les comptes connectés',
   'analytics.filter.range': 'Plage de dates',
@@ -453,7 +453,7 @@ export const webAnalyticsMessages = {
   'automation.param.signature': 'Signature',
   'automation.param.disclosure': 'Divulgation',
   'automation.param.locale': 'Langue',
-  'automation.param.brand': 'Brand',
+  'automation.param.project': 'Project',
   'automation.param.campaign': 'Campagne',
   'automation.param.account': 'Compte',
   'automation.param.platform': 'Plate-forme',

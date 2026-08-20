@@ -222,7 +222,7 @@ export const webComposerMessages = {
   'composerWeb.set.apply': 'Usa questo set',
   'composerWeb.set.none': 'Nessun set ancora salvato.',
   'composerWeb.signature.pickerLabel': 'Firma',
-  'composerWeb.signature.scope': 'Per {brand} su {provider} in {language}',
+  'composerWeb.signature.scope': 'Per {project} su {provider} in {language}',
   'composerWeb.signature.previewHeading': 'Come finisce il post',
   'composerWeb.signature.notMatching':
     'Questa firma ha come ambito un marchio, una piattaforma o una lingua diversa, quindi non è offerta qui.',
@@ -333,6 +333,15 @@ export const webComposerMessages = {
     'Esempio: launch_hero.jpg, 1600 x 900, set di testo alternativo, utilizzato in 2 post.',
   'mediaLib.error.title': 'Impossibile caricare la libreria',
   'mediaLib.error.body': 'I tuoi file sono al sicuro. Nulla è stato cambiato da questo fallimento.',
+  'mediaLib.offline.title': 'La libreria non è disponibile offline',
+  'mediaLib.offline.body':
+    'Non possiamo aggiornare la libreria senza una connessione. I file già su questa schermata non sono cambiati. Riconnettiti, poi riprova.',
+  'mediaLib.rateLimited.title': 'La libreria ha bisogno di una breve pausa',
+  'mediaLib.rateLimited.cause':
+    "L'API ci ha chiesto di rallentare durante il caricamento dei tuoi file. I tuoi media memorizzati sono al sicuro.",
+  'mediaLib.rateLimited.resetLabel': 'Riprova dopo',
+  'mediaLib.rateLimited.alternative':
+    'Puoi continuare a scrivere bozze localmente, ma i caricamenti e le modifiche alla libreria aspettano che il limite si azzeri.',
   'mediaLib.loading': 'Caricamento della libreria multimediale',
   'mediaLib.permission.title': "Non puoi vedere questa libreria dell'area di lavoro",
   'mediaLib.permission.body':
@@ -364,6 +373,40 @@ export const webComposerMessages = {
   'mediaLib.upload.checkedAgainst': 'Verificato rispetto ai conti selezionati in questa bozza.',
   'mediaLib.upload.noTargets':
     "Nessun account selezionato, quindi il file viene controllato solo rispetto alle impostazioni predefinite dell'area di lavoro.",
+  'mediaLib.import.urlLabel': 'URL del file pubblico',
+  'mediaLib.import.urlPlaceholder': 'https://cdn.example.com/launch-video.mp4',
+  'mediaLib.import.importing': 'Importazione del media in corso',
+  'mediaLib.import.succeeded': 'Il file è nella tua libreria',
+  'mediaLib.import.scanPending':
+    'Relay ha registrato la sua fonte. La pubblicazione attende che il controllo di sicurezza sia terminato.',
+  'mediaLib.import.failed': 'Non è stato possibile importare il file',
+  'mediaLib.import.failedHelp':
+    'Controlla che il link sia pubblico e punti direttamente a un file multimediale supportato, poi riprova.',
+  'mediaLib.import.readOnly': "Collega l'API per importare file in questo ambiente.",
+  'mediaLib.import.offline': 'Riconnettiti prima di importare un file.',
+  'mediaLib.import.issue.invalid': 'Inserisci un URL completo.',
+  'mediaLib.import.issue.scheme': 'Usa un link HTTP o HTTPS.',
+  'mediaLib.import.issue.credentials': 'Usa un link senza nome utente o password.',
+  'mediaLib.retention.title':
+    'I file memorizzati sono conservati per 30 giorni dopo la creazione del post',
+  'mediaLib.retention.body':
+    "Una volta che un file è collegato a un post, lo eliminiamo permanentemente dall'archivio di Relay 30 giorni dopo la creazione di quel post. I file in attesa di essere collegati usano la data di caricamento come ripiego per la pulizia. Il testo del post, le ricevute di pubblicazione e la cronologia di controllo restano disponibili più a lungo. Un post pubblicato su una piattaforma social non viene rimosso quando il suo file memorizzato scade.",
+  'mediaLib.retention.limits':
+    'Immagini, audio e file PDF possono arrivare a {imageSize}. I video possono arrivare a {videoSize}.',
+  'mediaLib.retention.expiresLabel': 'Data di eliminazione del file',
+  'mediaLib.retention.deleted': 'Eliminato permanentemente',
+  'mediaLib.retention.deletedTitle': 'Questo file memorizzato è stato eliminato',
+  'mediaLib.retention.deletedBody':
+    'Il periodo di conservazione di 30 giorni è terminato. Il testo del post, le ricevute di pubblicazione e la cronologia di controllo restano.',
+  'mediaLib.processing.unavailableTitle': 'Questo file non è pronto per la pubblicazione',
+  'mediaLib.processing.unavailableBody':
+    "L'elaborazione o un controllo di sicurezza sono ancora in sospeso, oppure non sono stati superati. Carica di nuovo il file se questo stato non si risolve.",
+  'mediaLib.processing.pendingTitle': 'La scansione di sicurezza non è disponibile in fase di prelancio',
+  'mediaLib.processing.pendingBody':
+    'Il file è memorizzato per 30 giorni, ma non può essere collegato a un post pubblicato finché la scansione di sicurezza non è attivata.',
+  'mediaLib.processing.blockedTitle': 'Questo file non può essere pubblicato',
+  'mediaLib.processing.blockedBody':
+    'Il file non ha superato la elaborazione o un controllo di sicurezza. Carica un file diverso.',
 
   'mediaLib.alt.heading': 'Testo alternativo',
   'mediaLib.alt.help':

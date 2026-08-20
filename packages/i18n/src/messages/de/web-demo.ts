@@ -43,6 +43,8 @@ export const webDemoMessages = {
     'Jedes Panel hier ist die Produktoberfläche mit Beispielinhalten. Kein Connector hat die Anbieterverifizierung abgeschlossen, es wird also heute über dieses Produkt auf keiner Plattform veröffentlicht. Wo der Ablauf endet, sagt die Seite das, statt den Rest auszumalen.',
   'web.demo.contents.title': 'Die sechs Schritte',
   'web.demo.stepLabel': 'Schritt {position} von {total}',
+  'web.demo.next': 'Weiter: {step}',
+  'web.demo.closing.pricing': 'Sehen Sie, was es kostet',
   'web.demo.closing.title': 'Das ist der ganze Kreislauf',
   'web.demo.closing.body':
     'Nichts oben ist eine Attrappe eines Produkts, das wir zu bauen hoffen. Es ist die Oberfläche, wie sie steht, mit der Veröffentlichungshälfte ehrlich als unfertig gekennzeichnet.',
@@ -62,6 +64,9 @@ export const webDemoMessages = {
   'web.demo.step.compose.title': 'Einmal schreiben, pro Plattform anpassen',
   'web.demo.step.compose.body':
     'Du schreibst einen Hauptentwurf. Ein Konto auszuwählen öffnet eine Überschreibung nur für dieses Konto, mit eigenen Grenzwerten und eigener Vorschau. Nichts, was du für LinkedIn schreibst, ändert, was X erhält, und die Prüfungen jeder Version laufen, bevor irgendetwas geplant wird.',
+  'web.demo.step.variants.title': 'Sehen Sie, was jedes Konto tatsächlich erhält',
+  'web.demo.step.variants.body':
+    'Aus einem Entwurf wird eine Version pro Konto, jede für die Plattform geschrieben, an die sie geht: eine kürzere Zeile für X, die vollständige Release Notiz für LinkedIn, eine Bildunterschrift und ein Alternativtext für Instagram. Sie bearbeiten jede davon, ohne die anderen anzurühren, und jede Version trägt die Prüfung, die für sie gilt.',
 
   'web.demo.step.schedule.title': 'Gib ihm eine Uhrzeit, oder übergib ihn der Warteschlange',
   'web.demo.step.schedule.body':
@@ -96,7 +101,8 @@ export const webDemoMessages = {
 
   'web.demo.schedule.label': 'Geplant',
   'web.demo.schedule.value': '{when} in {zone}',
-  'web.demo.schedule.approval': 'Eine Genehmigung ist erforderlich, bevor irgendetwas gesendet werden kann.',
+  'web.demo.schedule.approval':
+    'Eine Genehmigung ist erforderlich, bevor irgendetwas gesendet werden kann.',
   'web.demo.schedule.queue':
     'Die Warteschlange ist der andere Weg: Sie wählt den nächsten Slot, den deine Regeln in dieser Zeitzone erlauben.',
 
@@ -192,9 +198,11 @@ export const webDemoMessages = {
   'web.demo.digest.line.variants':
     'Drei plattformnative Versionen sind diese Woche aus einem Entwurf hervorgegangen.',
   'web.demo.digest.line.earliest': 'Dienstagmorgen war dein frühester Slot.',
-  'web.demo.digest.line.approval': 'Jede Version wurde genehmigt, bevor sie in die Warteschlange kam.',
+  'web.demo.digest.line.approval':
+    'Jede Version wurde genehmigt, bevor sie in die Warteschlange kam.',
   'web.demo.digest.line.alt': 'Jedes Bild trug einen von einer Person geschriebenen Alt-Text.',
-  'web.demo.digest.footer': 'Live-Analysen erscheinen hier, sobald deine Beiträge veröffentlicht werden.',
+  'web.demo.digest.footer':
+    'Live-Analysen erscheinen hier, sobald deine Beiträge veröffentlicht werden.',
 
   /* ---------------------------------------------------------------------- */
   /* Die drei hinzugefügten Tour-Schritte                                  */

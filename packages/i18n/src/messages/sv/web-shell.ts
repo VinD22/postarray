@@ -25,7 +25,6 @@ export const webShellMessages = {
   'shell.workspace.create': 'Skapa en arbetsyta',
   'shell.workspace.manage': 'Inställningar för arbetsyta',
   'shell.workspace.role': 'Du är {role} här',
-  'shell.brand.filterHint': 'Filtrera Home, Calendar och Analytics till detta varumärke.',
 
   /* -- Demo data --------------------------------------------------------- */
   'shell.demo.badge': 'Demodata',

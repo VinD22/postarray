@@ -52,7 +52,7 @@ export const onboardingMessages = {
   'onboarding.checklist.connectAccount': 'ربط حساب',
   'onboarding.checklist.firstPost': 'نشر أو جدولة منشور',
   'onboarding.checklist.inviteTeammate': 'قم بدعوة زميل في الفريق',
-  'onboarding.checklist.setBrandVoice': 'صف صوت علامتك التجارية',
+  'onboarding.checklist.setProjectVoice': 'صف صوت علامتك التجارية',
   'onboarding.checklist.tryAutomation': 'جرب قاعدة الأتمتة',
   'onboarding.checklist.remaining':
     '{count, plural, =0 {تم كل شيء} one {#خطوة لليسار} zero {متبقي # خطوة} two {متبقي # خطوة} few {متبقي # خطوة} many {متبقي # خطوة} other {متبقي # خطوة}}',

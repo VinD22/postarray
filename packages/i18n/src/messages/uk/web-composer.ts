@@ -222,7 +222,7 @@ export const webComposerMessages = {
   'composerWeb.set.apply': 'Використовуйте цей набір',
   'composerWeb.set.none': 'Ще немає збережених наборів.',
   'composerWeb.signature.pickerLabel': 'Підпис',
-  'composerWeb.signature.scope': 'для {brand} на {provider} в{language}',
+  'composerWeb.signature.scope': 'для {project} на {provider} в{language}',
   'composerWeb.signature.previewHeading': 'Як закінчується пост',
   'composerWeb.signature.notMatching':
     'Цей підпис стосується іншого бренду, платформи чи мови, тому він тут не пропонується.',
@@ -332,6 +332,15 @@ export const webComposerMessages = {
     'Приклад: launch_hero.jpg, 1600 на 900, набір альтернативного тексту, використано у 2 публікаціях.',
   'mediaLib.error.title': 'Не вдалося завантажити бібліотеку',
   'mediaLib.error.body': 'Ваші файли в безпеці. Ця невдача нічого не змінила.',
+  'mediaLib.offline.title': 'Бібліотека недоступна офлайн',
+  'mediaLib.offline.body':
+    'Ми не можемо оновити бібліотеку без підключення. Файли, які вже показані на цьому екрані, не змінилися. Підключіться знову і спробуйте ще раз.',
+  'mediaLib.rateLimited.title': 'Бібліотеці потрібна коротка пауза',
+  'mediaLib.rateLimited.cause':
+    'API попросив нас сповільнитися під час завантаження ваших файлів. Ваші збережені медіафайли в безпеці.',
+  'mediaLib.rateLimited.resetLabel': 'Спробуйте знову після',
+  'mediaLib.rateLimited.alternative':
+    'Ви можете продовжувати створювати чернетку локально, але завантаження та зміни бібліотеки чекають, поки ліміт не скинеться.',
   'mediaLib.loading': 'Завантаження медіатеки',
   'mediaLib.permission.title': 'Ви не бачите цю бібліотеку робочої області',
   'mediaLib.permission.body':
@@ -364,6 +373,39 @@ export const webComposerMessages = {
   'mediaLib.upload.noTargets':
     'Облікові записи не вибрано, тому файл перевіряється лише на відповідність стандартним параметрам робочої області.',
 
+  'mediaLib.import.urlLabel': 'Публічний URL файлу',
+  'mediaLib.import.urlPlaceholder': 'https://cdn.example.com/launch-video.mp4',
+  'mediaLib.import.importing': 'Імпортування медіа',
+  'mediaLib.import.succeeded': 'Файл у вашій бібліотеці',
+  'mediaLib.import.scanPending':
+    'Relay записав джерело файлу. Публікація чекає завершення перевірки безпеки.',
+  'mediaLib.import.failed': 'Файл не вдалося імпортувати',
+  'mediaLib.import.failedHelp':
+    'Перевірте, що посилання публічне та веде безпосередньо на підтримуваний медіафайл, потім спробуйте знову.',
+  'mediaLib.import.readOnly': 'Підключіть API, щоб імпортувати файли в цьому середовищі.',
+  'mediaLib.import.offline': 'Підключіться знову перед імпортуванням файлу.',
+  'mediaLib.import.issue.invalid': 'Введіть повний URL.',
+  'mediaLib.import.issue.scheme': 'Використовуйте посилання HTTP або HTTPS.',
+  'mediaLib.import.issue.credentials': 'Використовуйте посилання без імені користувача чи пароля.',
+  'mediaLib.retention.title': 'Збережені файли зберігаються 30 днів після створення публікації',
+  'mediaLib.retention.body':
+    'Щойно файл прикріплено до публікації, ми остаточно видаляємо його зі сховища Relay через 30 днів після створення цієї публікації. Для файлів, що очікують на прикріплення, датою очищення за замовчуванням є дата завантаження. Текст публікації, квитанції про публікацію та історія аудиту залишаються доступними довше. Публікація, яка вже вийшла на соціальній платформі, не видаляється, коли термін зберігання її файлу минає.',
+  'mediaLib.retention.limits':
+    'Зображення, аудіо та PDF-файли можуть бути розміром до {imageSize}. Відео можуть бути розміром до {videoSize}.',
+  'mediaLib.retention.expiresLabel': 'Дата видалення файлу',
+  'mediaLib.retention.deleted': 'Видалено назавжди',
+  'mediaLib.retention.deletedTitle': 'Цей збережений файл видалено',
+  'mediaLib.retention.deletedBody':
+    '30-денний період зберігання завершився. Текст публікації, квитанції про публікацію та історія аудиту залишаються.',
+  'mediaLib.processing.unavailableTitle': 'Цей файл ще не готовий до публікації',
+  'mediaLib.processing.unavailableBody':
+    'Обробка або перевірка безпеки все ще триває або не була пройдена. Завантажте файл знову, якщо цей стан не зникає.',
+  'mediaLib.processing.pendingTitle': 'Перевірка безпеки поки недоступна до запуску',
+  'mediaLib.processing.pendingBody':
+    'Файл зберігається 30 днів, але його не можна прикріпити до опублікованого допису, поки не увімкнено перевірку безпеки.',
+  'mediaLib.processing.blockedTitle': 'Цей файл не можна опублікувати',
+  'mediaLib.processing.blockedBody':
+    'Файл не пройшов обробку або перевірку безпеки. Завантажте інший файл.',
   'mediaLib.alt.heading': 'Альтернативний текст',
   'mediaLib.alt.help':
     'Опишіть, що важливо на зображенні для того, хто не бачить його. Зазвичай достатньо одного-двох речень.',

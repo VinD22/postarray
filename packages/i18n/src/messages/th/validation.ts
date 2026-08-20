@@ -26,6 +26,8 @@ export const validationMessages = {
   'validation.media_file_too_large.message': 'ไฟล์นี้คือ {actual} {provider} ยอมรับได้ถึง {limit}',
   'validation.media_mixed_types_unsupported.message':
     '{provider} ไม่สามารถเผยแพร่รูปภาพและวิดีโอในโพสต์เดียวกันได้',
+  'validation.media_unavailable.message':
+    'ไฟล์แนบไฟล์หนึ่งไม่พร้อมใช้งานอีกต่อไป ให้ลบออกจากโพสต์หรืออัปโหลดใหม่',
   'validation.alt_text_missing.message':
     'Alt text is missing on {count, plural, one {# image} other {# images}}.',
   'validation.alt_text_missing.hint': 'อธิบายภาพหรือทำเครื่องหมายเป็นการตกแต่ง',
@@ -55,12 +57,12 @@ export const validationMessages = {
   'validation.schedule_too_far_ahead.message':
     'สิ่งนี้อยู่ข้างหน้ามากกว่า {limit} look ข้างหน้าที่ตั้งไว้สำหรับข้อมูลรับรองนี้',
   'validation.schedule_outside_quiet_hours.message':
-    'ซึ่งอยู่ภายในชั่วโมงเงียบที่กำหนดไว้สำหรับ {brand}',
+    'ซึ่งอยู่ภายในชั่วโมงเงียบที่กำหนดไว้สำหรับ {project}',
   'validation.duplicate_within_window.message':
     'เนื้อหาที่คล้ายกันมากได้รับการกำหนดเวลาหรือเผยแพร่แล้วสำหรับ {account} ภายใน {window}',
-  'validation.blocked_term_present.message': 'ข้อความนี้มีคำที่ถูกบล็อกสำหรับ {brand}',
+  'validation.blocked_term_present.message': 'ข้อความนี้มีคำที่ถูกบล็อกสำหรับ {project}',
   'validation.unsupported_claim.message':
-    'การอ้างสิทธิ์นี้ไม่อยู่ในการอ้างสิทธิ์ที่ได้รับอนุมัติสำหรับ {brand}',
+    'การอ้างสิทธิ์นี้ไม่อยู่ในการอ้างสิทธิ์ที่ได้รับอนุมัติสำหรับ {project}',
   'validation.unsupported_claim.hint':
     'เพิ่มลงในคำกล่าวอ้างที่ได้รับอนุมัติพร้อมหลักฐาน หรือเปลี่ยนประโยคใหม่',
   'validation.cadence_exceeded.message':

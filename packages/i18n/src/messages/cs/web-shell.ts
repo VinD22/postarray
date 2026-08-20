@@ -25,7 +25,6 @@ export const webShellMessages = {
   'shell.workspace.create': 'Vytvořit pracovní prostor',
   'shell.workspace.manage': 'Nastavení pracovního prostoru',
   'shell.workspace.role': 'Jste {role} zde',
-  'shell.brand.filterHint': 'Filtrování domovské stránky, kalendáře a analýzy na tuto značku.',
 
   /* -- Demo data --------------------------------------------------------- */
   'shell.demo.badge': 'Ukázková data',

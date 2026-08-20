@@ -68,6 +68,17 @@ export const errorMessages = {
   'error.channel_limit_reached.message':
     'В этом рабочем пространстве уже используются все активные каналы {limit}.',
   'error.channel_limit_reached.action': 'Отключите канал перед подключением другого.',
+  'error.project_limit_reached.message':
+    'В этом рабочем пространстве уже используются все {limit} активных проектов.',
+  'error.project_limit_reached.action':
+    'Заархивируйте неактивный проект или измените лимит проектов для рабочего пространства.',
+  'error.project_has_connections.message':
+    'В этом проекте ещё есть {connected, plural, one {# подключённый канал} few {# подключённых канала} many {# подключённых каналов} other {# подключённых канала}}.',
+  'error.project_has_connections.action':
+    'Отключите все каналы в этом проекте перед архивированием.',
+  'error.project_last_active.message':
+    'В рабочем пространстве должен оставаться хотя бы один активный проект.',
+  'error.project_last_active.action': 'Создайте другой проект, прежде чем архивировать этот.',
   'error.connection_not_found.message': 'Этого соединения больше нет в этой рабочей области.',
   'error.connection_not_found.action':
     'Подключите учетную запись еще раз, чтобы продолжить публикацию в ней.',

@@ -32,6 +32,8 @@ export const validationMessages = {
     'Ten plik to {actual}. {provider} akceptuje do {limit}.',
   'validation.media_mixed_types_unsupported.message':
     '{provider} nie może publikować zdjęć i filmów w tym samym poście.',
+  'validation.media_unavailable.message':
+    'Załączony plik nie jest już dostępny. Usuń go z posta lub prześlij ponownie.',
   'validation.alt_text_missing.message':
     'Brak tekstu alternatywnego w {count, plural, one {# obraz} other {# obrazy} few {# obrazy} many {# obrazy}}.',
   'validation.alt_text_missing.hint': 'Opisz obraz lub oznacz go jako dekoracyjny.',
@@ -64,12 +66,12 @@ export const validationMessages = {
   'validation.schedule_too_far_ahead.message':
     'To dalej przed nami niż {limit} Ustawiono wyszukiwanie w przyszłości dla tego poświadczenia.',
   'validation.schedule_outside_quiet_hours.message':
-    'To przypada w godzinach ciszy ustalonych dla {brand}.',
+    'To przypada w godzinach ciszy ustalonych dla {project}.',
   'validation.duplicate_within_window.message':
     'Bardzo podobne treści są już zaplanowane lub opublikowane dla {account} w ciągu {window}.',
-  'validation.blocked_term_present.message': 'Tekst zawiera zablokowany termin dla {brand}.',
+  'validation.blocked_term_present.message': 'Tekst zawiera zablokowany termin dla {project}.',
   'validation.unsupported_claim.message':
-    'To roszczenie nie znajduje się w zatwierdzonych roszczeniach dotyczących {brand}.',
+    'To roszczenie nie znajduje się w zatwierdzonych roszczeniach dotyczących {project}.',
   'validation.unsupported_claim.hint':
     'Dodaj to do zatwierdzonych roszczeń wraz z dowodami lub przeformułuj wyrok.',
   'validation.cadence_exceeded.message':

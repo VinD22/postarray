@@ -220,7 +220,7 @@ export const webComposerMessages = {
   'composerWeb.set.apply': 'Gebruik deze set',
   'composerWeb.set.none': 'Nog geen sets opgeslagen.',
   'composerWeb.signature.pickerLabel': 'Handtekening',
-  'composerWeb.signature.scope': 'Voor {brand} op {provider} in {language}',
+  'composerWeb.signature.scope': 'Voor {project} op {provider} in {language}',
   'composerWeb.signature.previewHeading': 'Hoe het bericht eindigt',
   'composerWeb.signature.notMatching':
     'Deze handtekening is bedoeld voor een ander merk, platform of taal en wordt daarom hier niet aangeboden.',
@@ -330,6 +330,15 @@ export const webComposerMessages = {
     'Voorbeeld: launch_hero.jpg, 1600 bij 900, alt-tekstset, gebruikt in 2 berichten.',
   'mediaLib.error.title': 'De bibliotheek kan niet worden geladen',
   'mediaLib.error.body': 'Uw bestanden zijn veilig. Er veranderde niets door deze mislukking.',
+  'mediaLib.offline.title': 'De bibliotheek is offline niet beschikbaar',
+  'mediaLib.offline.body':
+    'We kunnen de bibliotheek niet vernieuwen zonder verbinding. Bestanden die al op dit scherm staan, zijn ongewijzigd. Maak opnieuw verbinding en probeer het dan opnieuw.',
+  'mediaLib.rateLimited.title': 'De bibliotheek heeft een korte pauze nodig',
+  'mediaLib.rateLimited.cause':
+    'De API vroeg ons langzamer te gaan tijdens het laden van je bestanden. Je opgeslagen media is veilig.',
+  'mediaLib.rateLimited.resetLabel': 'Probeer opnieuw na',
+  'mediaLib.rateLimited.alternative':
+    'Je kunt lokaal blijven conceptwerk doen, maar uploads en bibliotheekwijzigingen wachten tot de limiet opnieuw ingaat.',
   'mediaLib.loading': 'Uw mediabibliotheek laden',
   'mediaLib.permission.title': 'U kunt deze werkruimtebibliotheek niet zien',
   'mediaLib.permission.body':
@@ -362,6 +371,39 @@ export const webComposerMessages = {
     'Gecontroleerd tegen de rekeningen die in dit concept zijn geselecteerd.',
   'mediaLib.upload.noTargets':
     'Er zijn geen accounts geselecteerd, dus het bestand wordt alleen gecontroleerd aan de hand van de standaardwaarden van de werkruimte.',
+  'mediaLib.import.urlLabel': 'Openbare bestands-URL',
+  'mediaLib.import.urlPlaceholder': 'https://cdn.example.com/launch-video.mp4',
+  'mediaLib.import.importing': 'Media wordt geïmporteerd',
+  'mediaLib.import.succeeded': 'Het bestand staat in je bibliotheek',
+  'mediaLib.import.scanPending':
+    'Relay heeft de bron ervan vastgelegd. Publiceren wacht tot de veiligheidscontrole is voltooid.',
+  'mediaLib.import.failed': 'Het bestand kon niet worden geïmporteerd',
+  'mediaLib.import.failedHelp':
+    'Controleer of de link openbaar is en direct naar een ondersteund mediabestand verwijst, en probeer het dan opnieuw.',
+  'mediaLib.import.readOnly': 'Koppel de API om bestanden in deze omgeving te importeren.',
+  'mediaLib.import.offline': 'Maak opnieuw verbinding voordat je een bestand importeert.',
+  'mediaLib.import.issue.invalid': 'Voer een volledige URL in.',
+  'mediaLib.import.issue.scheme': 'Gebruik een HTTP- of HTTPS-link.',
+  'mediaLib.import.issue.credentials': 'Gebruik een link zonder gebruikersnaam of wachtwoord.',
+  'mediaLib.retention.title': 'Opgeslagen bestanden worden 30 dagen bewaard nadat het bericht is gemaakt',
+  'mediaLib.retention.body':
+    'Zodra een bestand aan een bericht is gekoppeld, verwijderen we het permanent uit de Relay-opslag 30 dagen nadat dat bericht is gemaakt. Bestanden die wachten om gekoppeld te worden, gebruiken de uploaddatum als opschoning-terugval. Berichttekst, publicatiebevestigingen en auditgeschiedenis blijven langer beschikbaar. Een gepubliceerd bericht op een sociaal platform wordt niet verwijderd wanneer het opgeslagen bestand verloopt.',
+  'mediaLib.retention.limits':
+    "Afbeeldingen, audio en PDF-bestanden mogen tot {imageSize} zijn. Video's mogen tot {videoSize} zijn.",
+  'mediaLib.retention.expiresLabel': 'Datum van bestandsverwijdering',
+  'mediaLib.retention.deleted': 'Permanent verwijderd',
+  'mediaLib.retention.deletedTitle': 'Dit opgeslagen bestand is verwijderd',
+  'mediaLib.retention.deletedBody':
+    'De opslagperiode van 30 dagen is verstreken. De berichttekst, publicatiebevestigingen en auditgeschiedenis blijven bewaard.',
+  'mediaLib.processing.unavailableTitle': 'Dit bestand is niet klaar om te publiceren',
+  'mediaLib.processing.unavailableBody':
+    'Verwerking of een veiligheidscontrole staat nog in behandeling, of is niet geslaagd. Upload het bestand opnieuw als deze status niet verdwijnt.',
+  'mediaLib.processing.pendingTitle': 'Veiligheidsscanning is niet beschikbaar vóór lancering',
+  'mediaLib.processing.pendingBody':
+    'Het bestand wordt 30 dagen bewaard, maar kan pas aan een gepubliceerd bericht worden gekoppeld zodra veiligheidsscanning is ingeschakeld.',
+  'mediaLib.processing.blockedTitle': 'Dit bestand kan niet worden gepubliceerd',
+  'mediaLib.processing.blockedBody':
+    'Het bestand is niet geslaagd voor verwerking of een veiligheidscontrole. Upload een ander bestand.',
 
   'mediaLib.alt.heading': 'Alt-tekst',
   'mediaLib.alt.help':

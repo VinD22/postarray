@@ -68,6 +68,16 @@ export const errorMessages = {
   'error.channel_limit_reached.message':
     'Ginagamit na ng workspace na ito ang lahat {limit} mga aktibong channel.',
   'error.channel_limit_reached.action': 'Idiskonekta ang isang channel bago kumonekta sa isa pa.',
+  'error.project_limit_reached.message':
+    'Nagamit na ng workspace na ito ang lahat ng {limit} aktibong proyekto.',
+  'error.project_limit_reached.action':
+    'I-archive ang isang hindi aktibong proyekto o baguhin ang allowance ng proyekto ng workspace.',
+  'error.project_has_connections.message':
+    'May {connected, plural, one {# konektadong channel} other {# konektadong channel}} pa ang proyektong ito.',
+  'error.project_has_connections.action':
+    'Idiskonekta ang lahat ng channel sa proyektong ito bago ito i-archive.',
+  'error.project_last_active.message': 'Dapat may kahit isang aktibong proyekto ang workspace.',
+  'error.project_last_active.action': 'Gumawa ng ibang proyekto bago i-archive ang isang ito.',
   'error.connection_not_found.message': 'Ang koneksyon na iyon ay wala na sa workspace na ito.',
   'error.connection_not_found.action':
     'Ikonekta muli ang account upang patuloy na mag-publish dito.',

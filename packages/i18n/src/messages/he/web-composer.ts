@@ -179,7 +179,7 @@ export const webComposerMessages = withHebrewPluralForms({
   'composerWeb.set.apply': 'השתמש בסט זה',
   'composerWeb.set.none': 'עדיין לא נשמרו סטים.',
   'composerWeb.signature.pickerLabel': 'חתימה',
-  'composerWeb.signature.scope': 'עבור {brand} ב-{provider} ב-{language}',
+  'composerWeb.signature.scope': 'עבור {project} ב-{provider} ב-{language}',
   'composerWeb.signature.previewHeading': 'איך זה מסיים את הפוסט',
   'composerWeb.signature.notMatching':
     'חתימה זו מיועדת למותג, פלטפורמה או שפה אחרת, ולכן היא אינה מוצעת כאן.',
@@ -274,6 +274,15 @@ export const webComposerMessages = withHebrewPluralForms({
     'דוגמה: launch_hero.jpg, 1600 על 900, ערכת טקסט חלופי, בשימוש ב-2 פוסטים.',
   'mediaLib.error.title': 'לא ניתן היה לטעון את הספרייה',
   'mediaLib.error.body': 'הקבצים שלך בטוחים. שום דבר לא השתנה בגלל הכישלון הזה.',
+  'mediaLib.offline.title': 'הספרייה לא זמינה במצב לא מקוון',
+  'mediaLib.offline.body':
+    'לא ניתן לרענן את הספרייה בלי חיבור. קבצים שכבר מוצגים במסך הזה לא השתנו. התחבר מחדש ונסה שוב.',
+  'mediaLib.rateLimited.title': 'הספרייה צריכה הפסקה קצרה',
+  'mediaLib.rateLimited.cause':
+    'ה-API ביקש מאיתנו להאט בזמן טעינת הקבצים שלך. המדיה השמורה שלך בטוחה.',
+  'mediaLib.rateLimited.resetLabel': 'נסה שוב אחרי',
+  'mediaLib.rateLimited.alternative':
+    'אפשר להמשיך לכתוב טיוטה מקומית, אבל העלאות ושינויים בספרייה ממתינים עד שהמגבלה מתאפסת.',
   'mediaLib.loading': 'טוען את ספריית המדיה שלך',
   'mediaLib.permission.title': 'אינך יכול לראות את ספריית סביבת העבודה הזו',
   'mediaLib.permission.body':
@@ -301,6 +310,38 @@ export const webComposerMessages = withHebrewPluralForms({
   'mediaLib.upload.checkedAgainst': 'נבדק מול החשבונות שנבחרו בטיוטה זו.',
   'mediaLib.upload.noTargets':
     'לא נבחרו חשבונות, כך שהקובץ נבדק מול ברירות המחדל של סביבת העבודה בלבד.',
+  'mediaLib.import.urlLabel': 'כתובת URL ציבורית של הקובץ',
+  'mediaLib.import.urlPlaceholder': 'https://cdn.example.com/launch-video.mp4',
+  'mediaLib.import.importing': 'מייבא מדיה',
+  'mediaLib.import.succeeded': 'הקובץ נמצא בספרייה שלך',
+  'mediaLib.import.scanPending':
+    'Relay רשם את המקור שלו. הפרסום ממתין עד שבדיקת הבטיחות תסתיים.',
+  'mediaLib.import.failed': 'לא ניתן היה לייבא את הקובץ',
+  'mediaLib.import.failedHelp':
+    'ודא שהקישור ציבורי ומצביע ישירות על קובץ מדיה נתמך, ואז נסה שוב.',
+  'mediaLib.import.readOnly': 'התחבר ל-API כדי לייבא קבצים בסביבה הזו.',
+  'mediaLib.import.offline': 'התחבר מחדש לפני ייבוא קובץ.',
+  'mediaLib.import.issue.invalid': 'הזן כתובת URL מלאה.',
+  'mediaLib.import.issue.scheme': 'השתמש בקישור HTTP או HTTPS.',
+  'mediaLib.import.issue.credentials': 'השתמש בקישור בלי שם משתמש או סיסמה.',
+  'mediaLib.retention.title': 'קבצים שמורים נשמרים 30 יום אחרי יצירת הפוסט',
+  'mediaLib.retention.body':
+    'ברגע שקובץ מצורף לפוסט, אנחנו מוחקים אותו לצמיתות מאחסון Relay כעבור 30 יום מיצירת הפוסט הזה. קבצים שממתינים לצירוף משתמשים בתאריך ההעלאה כגיבוי לניקוי. טקסט הפוסט, קבלות הפרסום והיסטוריית הביקורת נשארים זמינים לזמן ארוך יותר. פוסט שפורסם בפלטפורמה חברתית לא מוסר כאשר הקובץ השמור שלו פג תוקף.',
+  'mediaLib.retention.limits':
+    'תמונות, אודיו וקבצי PDF יכולים להיות עד {imageSize}. סרטונים יכולים להיות עד {videoSize}.',
+  'mediaLib.retention.expiresLabel': 'תאריך מחיקת הקובץ',
+  'mediaLib.retention.deleted': 'נמחק לצמיתות',
+  'mediaLib.retention.deletedTitle': 'הקובץ השמור הזה נמחק',
+  'mediaLib.retention.deletedBody':
+    'תקופת האחסון בת 30 הימים הסתיימה. טקסט הפוסט, קבלות הפרסום והיסטוריית הביקורת נשארים.',
+  'mediaLib.processing.unavailableTitle': 'הקובץ הזה לא מוכן לפרסום',
+  'mediaLib.processing.unavailableBody':
+    'העיבוד או בדיקת הבטיחות עדיין ממתינים, או שהם לא עברו. העלה את הקובץ שוב אם המצב הזה לא מתבהר.',
+  'mediaLib.processing.pendingTitle': 'סריקת בטיחות לא זמינה לפני ההשקה',
+  'mediaLib.processing.pendingBody':
+    'הקובץ נשמר למשך 30 יום, אבל אי אפשר לצרף אותו לפוסט מפורסם עד שסריקת הבטיחות תופעל.',
+  'mediaLib.processing.blockedTitle': 'לא ניתן לפרסם את הקובץ הזה',
+  'mediaLib.processing.blockedBody': 'הקובץ לא עבר את העיבוד או בדיקת הבטיחות. העלה קובץ אחר.',
   'mediaLib.alt.heading': 'טקסט חלופי',
   'mediaLib.alt.help':
     'תאר מה חשוב בתמונה עבור מישהו שלא יכול לראות אותה. בדרך כלל מספיקים משפט אחד או שניים.',

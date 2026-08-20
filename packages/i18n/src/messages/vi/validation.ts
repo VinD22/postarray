@@ -27,6 +27,8 @@ export const validationMessages = {
     'Tệp này là {actual}. {provider} chấp nhận tối đa {limit}.',
   'validation.media_mixed_types_unsupported.message':
     '{provider} không thể xuất bản hình ảnh và video trong cùng một bài đăng.',
+  'validation.media_unavailable.message':
+    'Một tệp đính kèm không còn khả dụng. Hãy xóa nó khỏi bài đăng hoặc tải lên lại.',
   'validation.alt_text_missing.message':
     'Alt text is missing on {count, plural, one {# image} other {# images}}.',
   'validation.alt_text_missing.hint': 'Mô tả hình ảnh hoặc đánh dấu nó là trang trí.',
@@ -59,12 +61,12 @@ export const validationMessages = {
   'validation.schedule_too_far_ahead.message':
     'Điều này còn tiến xa hơn so với cái nhìn trước của {limit} dành cho chứng chỉ này.',
   'validation.schedule_outside_quiet_hours.message':
-    'Điều này rơi vào khoảng thời gian yên tĩnh được đặt cho {brand}.',
+    'Điều này rơi vào khoảng thời gian yên tĩnh được đặt cho {project}.',
   'validation.duplicate_within_window.message':
     'Nội dung tương tự đã được lên lịch hoặc xuất bản cho {account} trong {window}.',
-  'validation.blocked_term_present.message': 'Văn bản chứa thuật ngữ bị chặn cho {brand}.',
+  'validation.blocked_term_present.message': 'Văn bản chứa thuật ngữ bị chặn cho {project}.',
   'validation.unsupported_claim.message':
-    'Xác nhận quyền sở hữu này không nằm trong các xác nhận quyền sở hữu đã được phê duyệt đối với {brand}.',
+    'Xác nhận quyền sở hữu này không nằm trong các xác nhận quyền sở hữu đã được phê duyệt đối với {project}.',
   'validation.unsupported_claim.hint':
     'Thêm nó vào các tuyên bố đã được phê duyệt kèm theo bằng chứng hoặc diễn đạt lại câu.',
   'validation.cadence_exceeded.message':

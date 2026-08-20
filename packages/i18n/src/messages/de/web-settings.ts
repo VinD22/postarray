@@ -27,8 +27,8 @@ export const webSettingsMessages = {
   'settings.ui.section.members': 'Mitglieder und Rollen',
   'settings.ui.section.membersSummary':
     'Wer ist in diesem Arbeitsbereich und was kann jede Person tun?',
-  'settings.ui.section.brands': 'Marken',
-  'settings.ui.section.brandsSummary':
+  'settings.ui.section.projects': 'Marken',
+  'settings.ui.section.projectsSummary':
     'Stimme, Zielgruppe, genehmigte Ansprüche, blockierte Begriffe, Gebietsschemaregeln, Domänen und das Glossar.',
   'settings.ui.section.agents': 'Agenten und API',
   'settings.ui.section.agentsSummary':
@@ -109,7 +109,7 @@ export const webSettingsMessages = {
   'settings.ui.members.scopeLimited': '{count, plural, one {# Marke} other {# Marken}}: {names}',
   'settings.ui.members.approvals.canApprove': 'Kann zustimmen',
   'settings.ui.members.approvals.cannotApprove': 'Kann nicht genehmigt werden',
-  'settings.ui.members.approvals.canApproveOwnBrands': 'Kann die aufgeführten Marken genehmigen',
+  'settings.ui.members.approvals.canApproveOwnProjects': 'Kann die aufgeführten Marken genehmigen',
   'settings.ui.members.lastActiveNever': 'Hat sich noch nicht angemeldet',
   'settings.ui.members.changeRole': 'Ändern Sie die Rolle für {name}',
   'settings.ui.members.remove': 'Entfernen Sie {name}',
@@ -161,43 +161,43 @@ export const webSettingsMessages = {
   'settings.ui.members.removeConsequence.approvals':
     'Darauf wartende Genehmigungsanfragen werden in die Warteschlange für einen anderen Genehmiger zurückgestellt.',
 
-  /* ------------------------------------------------------------------ brands */
+  /* ----------------------------------------------------------------- projects */
 
-  'settings.ui.brands.description':
+  'settings.ui.projects.description':
     'Eine Marke unterliegt den Regeln, anhand derer Inhalte überprüft werden: was Sie behaupten dürfen, was Sie nicht sagen dürfen und wie die einzelnen Sprachen geschrieben sind.',
-  'settings.ui.brands.listCaption': 'Marken in diesem Arbeitsbereich',
-  'settings.ui.brands.column.brand': 'Marke',
-  'settings.ui.brands.column.locales': 'Inhaltssprachen',
-  'settings.ui.brands.column.accounts': 'Konten',
-  'settings.ui.brands.column.updated': 'Aktualisiert',
-  'settings.ui.brands.accountCount':
+  'settings.ui.projects.listCaption': 'Marken in diesem Arbeitsbereich',
+  'settings.ui.projects.column.project': 'Marke',
+  'settings.ui.projects.column.locales': 'Inhaltssprachen',
+  'settings.ui.projects.column.accounts': 'Konten',
+  'settings.ui.projects.column.updated': 'Aktualisiert',
+  'settings.ui.projects.accountCount':
     '{count, plural, =0 {Keine Konten} one {# Konto} other {# Konten}}',
-  'settings.ui.brands.emptyTitle': 'Noch keine Marken',
-  'settings.ui.brands.emptyBody':
+  'settings.ui.projects.emptyTitle': 'Noch keine Marken',
+  'settings.ui.projects.emptyBody':
     'Eine Marke gruppiert Konten, Genehmigungsregeln und Sprachregeln. Die meisten Teams beginnen mit einer und fügen eine zweite hinzu, wenn ein Kunde oder ein Markt andere Regeln benötigt.',
-  'settings.ui.brands.emptyExample':
+  'settings.ui.projects.emptyExample':
     'Beispiel: Marke „Acme EU“, Sprachen Englisch und Deutsch, gesperrter Begriff „garantiert“, Offenlegung „Bezahlte Partnerschaft“ auf für Instagram.',
-  'settings.ui.brands.voiceHelp':
+  'settings.ui.projects.voiceHelp':
     'Wie diese Marke klingt. Wird verwendet, wenn Sie um eine Neufassung bitten und wenn Ansprüche überprüft werden.',
-  'settings.ui.brands.audienceHelp': 'Für wen der Inhalt gedacht ist, pro Markt.',
-  'settings.ui.brands.approvedClaimsHelp':
+  'settings.ui.projects.audienceHelp': 'Für wen der Inhalt gedacht ist, pro Markt.',
+  'settings.ui.projects.approvedClaimsHelp':
     'Aussagen, die ein Rezensent freigegeben hat. Alles außerhalb dieser Liste wird vor der Genehmigung markiert, nicht nach der Veröffentlichung.',
-  'settings.ui.brands.blockedTermsHelp':
+  'settings.ui.projects.blockedTermsHelp':
     'Wörter, die die Terminplanung für diese Marke blockieren. Eine pro Zeile.',
-  'settings.ui.brands.domainsHelp':
+  'settings.ui.projects.domainsHelp':
     'Domains, auf die diese Marke möglicherweise verlinkt und die durch diese gekürzt werden. Im Composer können nur verifizierte Domains ausgewählt werden.',
-  'settings.ui.brands.domainVerified': 'Verifiziert {date}',
-  'settings.ui.brands.domainPending': 'DNS-Eintrag noch nicht gesehen',
-  'settings.ui.brands.disclosureHelp':
+  'settings.ui.projects.domainVerified': 'Verifiziert {date}',
+  'settings.ui.projects.domainPending': 'DNS-Eintrag noch nicht gesehen',
+  'settings.ui.projects.disclosureHelp':
     'Wird standardmäßig im Composer für die hier ausgewählten Plattformen angewendet. Es kann vor der Genehmigung per Post geändert werden.',
-  'settings.ui.brands.glossaryHelp':
+  'settings.ui.projects.glossaryHelp':
     'Produktnamen, juristische Begriffe und alles, was eine Übersetzung unverändert überstehen muss.',
-  'settings.ui.brands.glossaryCaption': 'Geschützte Begriffe und deren Handhabung pro Sprache',
-  'settings.ui.brands.glossaryEmpty':
+  'settings.ui.projects.glossaryCaption': 'Geschützte Begriffe und deren Handhabung pro Sprache',
+  'settings.ui.projects.glossaryEmpty':
     'Noch keine geschützten Begriffe. Fügen Sie Produktnamen und Rechtsbegriffe hinzu, die nicht übersetzt oder umformuliert werden dürfen.',
-  'settings.ui.brands.localeRulesHelp':
+  'settings.ui.projects.localeRulesHelp':
     'Regeln pro Inhaltssprache. Sie werden beim Anpassen oder Transkreieren angewendet und dem Prüfer angezeigt.',
-  'settings.ui.brands.saveBrand': 'Marke speichern',
+  'settings.ui.projects.saveProject': 'Marke speichern',
 
   /* ------------------------------------------------------------ localization */
 
@@ -280,9 +280,9 @@ export const webSettingsMessages = {
   'settings.ui.data.deleteConnection': 'Revoke one social connection',
   'settings.ui.data.deleteConnectionHelp':
     'Removes Relay access to that account. The workspace, its content and its receipts stay.',
-  'settings.ui.data.deleteBrand': 'Delete a brand',
-  'settings.ui.data.deleteBrandHelp':
-    'Removes the brand, its rules and its glossary. Content published under it keeps its receipts.',
+  'settings.ui.data.deleteProject': 'Delete a project',
+  'settings.ui.data.deleteProjectHelp':
+    'Removes the project, its rules and its glossary. Content published under it keeps its receipts.',
   'settings.ui.data.deleteContent': 'Delete content and media',
   'settings.ui.data.deleteContentHelp':
     'Removes drafts and stored files. It does not remove anything already published on a platform.',
@@ -635,7 +635,7 @@ export const webSettingsMessages = {
   'billing.ui.conversionLabel': 'Converts',
   'billing.ui.channelsLabel': 'Active channels',
   'billing.ui.paymentMethodPolar': 'Payment method held by Polar',
-  'billing.ui.paymentMethodDescriptor': '{brand} ending {last4}, expires {expiry}',
+  'billing.ui.paymentMethodDescriptor': '{project} ending {last4}, expires {expiry}',
   'billing.ui.paymentMethodMissing': 'No payment method on file yet',
   'billing.ui.cancelBeforeDate': 'Cancel before {date} and you will not be charged.',
   'billing.ui.annualFraming': '$25/month billed annually. Save $48/year.',

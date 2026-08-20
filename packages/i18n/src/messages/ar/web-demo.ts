@@ -43,6 +43,8 @@ export const webDemoMessages = {
     'كل لوحة هنا هي واجهة المنتج بمحتوى نموذجي فيها. لم يكمل أي موصّل التحقق من المزوّد، لذا لا يُنشر شيء إلى أي منصة عبر هذا المنتج اليوم. حيث يتوقف تدفق العمل، تقول الصفحة ذلك بدلًا من رسم الباقي.',
   'web.demo.contents.title': 'الخطوات الست',
   'web.demo.stepLabel': 'الخطوة {position} من {total}',
+  'web.demo.next': 'التالي: {step}',
+  'web.demo.closing.pricing': 'اطّلع على التكلفة',
   'web.demo.closing.title': 'هذه هي الحلقة كاملة',
   'web.demo.closing.body':
     'لا شيء أعلاه نموذج أولي لمنتج نأمل بناءه. إنها الواجهة كما هي قائمة، مع تمييز نصف النشر بصدق كغير مكتمل.',
@@ -62,6 +64,9 @@ export const webDemoMessages = {
   'web.demo.step.compose.title': 'اكتب مرة واحدة، وكيّف حسب كل منصة',
   'web.demo.step.compose.body':
     'تكتب مسودة رئيسية. اختيار حساب واحد يفتح تجاوزًا لذلك الحساب وحده، بحدوده الخاصة ومعاينته الخاصة. ما تكتبه لـ LinkedIn لا يغيّر ما يتلقاه X، والفحوصات أسفل كل نسخة تعمل قبل جدولة أي شيء.',
+  'web.demo.step.variants.title': 'اطّلع على ما يتلقاه كل حساب فعليًا',
+  'web.demo.step.variants.body':
+    'تتحول المسودة الواحدة إلى نسخة لكل حساب، كل واحدة مكتوبة للمنصة التي تذهب إليها: سطر أقصر لـ X، وملاحظة الإصدار الكاملة لـ LinkedIn، وتعليق ونص بديل لـ Instagram. يمكنك تعديل أي منها دون المساس بالأخرى، وكل نسخة تحمل الفحص الذي ينطبق عليها.',
 
   'web.demo.step.schedule.title': 'أعطه وقتًا، أو سلّمه إلى قائمة الانتظار',
   'web.demo.step.schedule.body':
@@ -132,8 +137,7 @@ export const webDemoMessages = {
   'web.demo.sample.linkedin.check': 'دور المؤسسة وطول المنشور',
 
   'web.demo.sample.instagram.account': 'Instagram، @northbound.tools',
-  'web.demo.sample.instagram.body':
-    'نفس صورة الإصدار، بوصف كُتب للخلاصة ونص بديل كتبه شخص ما.',
+  'web.demo.sample.instagram.body': 'نفس صورة الإصدار، بوصف كُتب للخلاصة ونص بديل كتبه شخص ما.',
   'web.demo.sample.instagram.check': 'نوع الحساب، ونسبة العرض إلى الارتفاع، والنص البديل',
 
   /* ---------------------------------------------------------------------- */
@@ -158,16 +162,13 @@ export const webDemoMessages = {
 
   'web.demo.validate.label': 'الفحوصات قبل الجدولة',
   'web.demo.validate.check.length': 'حد الأحرف، لكل حساب',
-  'web.demo.validate.check.lengthDetail':
-    'تُقاس كل نسخة مقابل الحد الذي تعطيه المنصة لذلك الحساب.',
+  'web.demo.validate.check.lengthDetail': 'تُقاس كل نسخة مقابل الحد الذي تعطيه المنصة لذلك الحساب.',
   'web.demo.validate.check.altText': 'نص بديل على كل صورة',
-  'web.demo.validate.check.altTextDetail':
-    'صورة بلا وصف، أو غير مُعلَّمة كزخرفية، توقف الجدولة.',
+  'web.demo.validate.check.altTextDetail': 'صورة بلا وصف، أو غير مُعلَّمة كزخرفية، توقف الجدولة.',
   'web.demo.validate.check.firstComment': 'التعليق الأول مسموح هنا',
   'web.demo.validate.check.firstCommentDetail':
     'يُعرض التعليق الأول فقط على الحسابات التي تدعم منصاتها ذلك.',
-  'web.demo.validate.note':
-    'تعمل هذه في المؤلف قبل جدولة أي شيء، ومرة أخرى قبل إرسال أي شيء.',
+  'web.demo.validate.note': 'تعمل هذه في المؤلف قبل جدولة أي شيء، ومرة أخرى قبل إرسال أي شيء.',
 
   /* ---------------------------------------------------------------------- */
   /* النشر والإيصال (الخطوة 8)                                             */
@@ -189,8 +190,7 @@ export const webDemoMessages = {
 
   'web.demo.digest.label': 'أسبوعك، في جمل',
   'web.demo.digest.sample': 'نموذجي',
-  'web.demo.digest.line.variants':
-    'ثلاث نسخ خاصة بالمنصة صدرت من مسودة واحدة هذا الأسبوع.',
+  'web.demo.digest.line.variants': 'ثلاث نسخ خاصة بالمنصة صدرت من مسودة واحدة هذا الأسبوع.',
   'web.demo.digest.line.earliest': 'صباح الثلاثاء كان فتحتك الأبكر.',
   'web.demo.digest.line.approval': 'تمت الموافقة على كل نسخة قبل وضعها في قائمة الانتظار.',
   'web.demo.digest.line.alt': 'حملت كل صورة نصًا بديلًا كتبه شخص ما.',

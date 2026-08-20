@@ -216,7 +216,7 @@ export const webComposerMessages = {
   'composerWeb.set.apply': 'Use this Set',
   'composerWeb.set.none': 'No Sets saved yet.',
   'composerWeb.signature.pickerLabel': 'Signature',
-  'composerWeb.signature.scope': 'For project {brand} on {provider} in {language}',
+  'composerWeb.signature.scope': 'For project {project} on {provider} in {language}',
   'composerWeb.signature.previewHeading': 'How it ends the post',
   'composerWeb.signature.notMatching':
     'This signature is scoped to a different project, platform or language, so it is not offered here.',

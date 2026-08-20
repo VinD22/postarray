@@ -29,7 +29,7 @@ export const automationMessages = {
   'automation.trigger.recurring': 'حرائق الجدول الزمني المتكرر',
 
   'automation.condition.label': 'الشروط',
-  'automation.condition.brand': 'العلامة التجارية {brand}',
+  'automation.condition.project': 'العلامة التجارية {project}',
   'automation.condition.campaign': 'الحملة هي {campaign}',
   'automation.condition.account': 'الحساب هو {account}',
   'automation.condition.platform': 'المنصة هي {platform}',
@@ -127,7 +127,7 @@ export const automationMessages = {
   'automation.webhooks.urlLabel': 'عنوان URL لنقطة النهاية',
   'automation.webhooks.eventsLabel': 'الأحداث',
   'automation.webhooks.allEvents': 'جميع الأحداث',
-  'automation.webhooks.scopeLabel': 'Brands والحسابات',
+  'automation.webhooks.scopeLabel': 'Projects والحسابات',
   'automation.webhooks.allAccounts': 'جميع الحسابات',
   'automation.webhooks.secret': 'سر التوقيع',
   'automation.webhooks.secretShownOnce': 'يظهر هذا السر مرة واحدة. قم بتخزينه الآن.',

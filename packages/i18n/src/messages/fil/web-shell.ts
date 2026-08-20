@@ -25,7 +25,6 @@ export const webShellMessages = {
   'shell.workspace.create': 'Gumawa ng workspace',
   'shell.workspace.manage': 'Mga setting ng Workspace',
   'shell.workspace.role': 'ikaw ay {role} dito',
-  'shell.brand.filterHint': 'Pag-filter sa Home, Calendar at Analytics sa brand na ito.',
 
   /* -- Demo data --------------------------------------------------------- */
   'shell.demo.badge': 'Demo data',
@@ -214,7 +213,7 @@ export const webShellMessages = {
     'Ang susunod na screen ay si Polar, ang aming merchant of record. Ibinibigay ang access kapag kinumpirma ng Polar ang subscription, hindi kapag bumalik ang browser.',
   'onboarding.plan.factsTitle': 'Ano ang mangyayari kapag nagpatuloy ka',
   'onboarding.workspace.help':
-    'Hawak ng isang workspace ang iyong mga brand, konektadong account, draft, at resibo. Maaari kang lumikha ng higit pa sa ibang pagkakataon.',
+    'Hawak ng isang workspace ang iyong mga proyekto, konektadong account, draft, at resibo. Maaari kang lumikha ng higit pa sa ibang pagkakataon.',
   'onboarding.workspace.localeNote':
     'Binabago ng iyong wika sa interface ang app na ito. Pinipili ang mga wika ng nilalaman bawat post at hiwalay sa setting na ito.',
   'onboarding.workspace.timeZoneDetected': 'Nakita mula sa device na ito: {timeZone}',

@@ -36,6 +36,8 @@ export const validationMessages = {
     'Ang file na ito ay {actual}. {provider} tumatanggap ng hanggang {limit}.',
   'validation.media_mixed_types_unsupported.message':
     '{provider} hindi maaaring mag-publish ng mga larawan at video sa parehong post.',
+  'validation.media_unavailable.message':
+    'Isang naka-attach na file ay hindi na available. Alisin ito sa post o i-upload ulit.',
   'validation.alt_text_missing.message':
     'Nawawala ang alt text {count, plural, one {# larawan} other {# mga larawan}}.',
   'validation.alt_text_missing.hint': 'Ilarawan ang larawan, o markahan ito bilang pandekorasyon.',
@@ -59,7 +61,7 @@ export const validationMessages = {
   'validation.privacy_setting_required.hint':
     'Walang default. Piliin kung sino ang makakakita sa post na ito.',
   'validation.disclosure_required.message':
-    'Ang post na ito ay nangangailangan ng pagsisiwalat sa ilalim ng mga panuntunan ng brand para sa {market}.',
+    'Ang post na ito ay nangangailangan ng pagsisiwalat sa ilalim ng mga panuntunan ng project para sa {market}.',
   'validation.first_comment_unsupported.message':
     '{provider} ay hindi sumusuporta sa isang naka-iskedyul na unang komento para sa account na ito.',
   'validation.thread_unsupported.message':
@@ -70,13 +72,13 @@ export const validationMessages = {
   'validation.schedule_too_far_ahead.message':
     'Ito ay mas maaga kaysa sa {limit} tumingin sa unahan nakatakda para sa kredensyal na ito.',
   'validation.schedule_outside_quiet_hours.message':
-    'Ito ay nasa loob ng tahimik na oras na itinakda {brand}.',
+    'Ito ay nasa loob ng tahimik na oras na itinakda {project}.',
   'validation.duplicate_within_window.message':
     'Ang napakakatulad na nilalaman ay naka-iskedyul na o nai-publish para sa {account} sa loob {window}.',
   'validation.blocked_term_present.message':
-    'Ang teksto ay naglalaman ng isang naka-block na termino para sa {brand}.',
+    'Ang teksto ay naglalaman ng isang naka-block na termino para sa {project}.',
   'validation.unsupported_claim.message':
-    'Ang claim na ito ay wala sa inaprubahang claim para sa {brand}.',
+    'Ang claim na ito ay wala sa inaprubahang claim para sa {project}.',
   'validation.unsupported_claim.hint':
     'Idagdag ito sa mga naaprubahang claim na may ebidensya, o muling salitain ang pangungusap.',
   'validation.cadence_exceeded.message':

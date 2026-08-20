@@ -86,7 +86,7 @@ export const webCalendarMessages = {
   'web.calendar.allDayHeading': 'Zatím není přesný čas',
 
   'web.calendar.filter.group': 'Skupina zákazníků',
-  'web.calendar.filter.anyBrand': 'Jakákoli značka',
+  'web.calendar.filter.anyProject': 'Jakákoli značka',
   'web.calendar.filter.anyAccount': 'Jakýkoli účet',
   'web.calendar.filter.anyPlatform': 'Jakákoli platforma',
   'web.calendar.filter.anyStatus': 'Jakýkoli stav',
@@ -360,6 +360,12 @@ export const webCalendarMessages = {
     'Další obrazovka je {provider}, nikoli relé. Relé nikdy neuvidí vaše heslo.',
   'web.connection.connect.noWriteWithoutApproval':
     'Připojení účtu nic nepublikuje. Každý příspěvek se stále řídí těmito zásadami schvalování pracovního prostoru.',
+  'web.connection.projectScope.title': 'Kanály pro {project}',
+  'web.connection.projectScope.body':
+    'Nové kanály se připojují k této značce. Přepněte značku na horní liště, abyste spravovali jinou sadu.',
+  'web.connection.projectMissing.title': 'Vytvořte značku před připojením kanálu',
+  'web.connection.projectMissing.body':
+    'Značky udržují kanály, média, koncepty a harmonogramy různých produktů nebo klientů oddělené.',
 
   'web.connection.requirement.instagram':
     'Publikování na Instagramu vyžaduje profesionální účet, což znamená obchodní účet nebo účet tvůrce propojený se stránkou na Facebooku.',

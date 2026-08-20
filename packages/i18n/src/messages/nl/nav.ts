@@ -15,7 +15,6 @@ export const navMessages = {
   'nav.commandPalette': 'Commandopalet',
   'nav.account': 'Rekening',
   'nav.workspaceSwitcher': 'Wissel van werkruimte',
-  'nav.brandSwitcher': 'Van merk wisselen',
   'nav.skipToContent': 'Ga naar de hoofdinhoud',
   'nav.primaryLandmark': 'Primaire navigatie',
   'nav.moreItems': 'Meer',
@@ -26,7 +25,7 @@ export const navMessages = {
   'nav.theme.label': 'Thema',
 
   'settings.nav.members': 'Leden en rollen',
-  'settings.nav.brands': "Brand's",
+  'settings.nav.projects': 'Projecten',
   'settings.nav.agents': 'Agenten en API',
   'settings.nav.developerApps': 'Ontwikkelaar-apps',
   'settings.nav.webhooks': 'Webhaken',
@@ -65,8 +64,11 @@ export const navMessages = {
 
   'shell.workspace.label': 'Workspace',
   'shell.workspace.current': 'Huidige werkruimte: {name}',
-  'shell.brand.label': 'Brand',
-  'shell.brand.all': 'Alle merken',
+  'shell.project.label': 'Projecten',
+  'shell.project.none': 'Maak een project',
+  'shell.project.current': 'Huidig project: {name}',
+  'shell.project.manage': 'Projecten beheren',
+  'shell.project.all': 'Alle projecten',
   'shell.timeZone.label': 'Tijden weergegeven in {timeZone}',
   'shell.notifications.count':
     '{count, plural, =0 {Geen nieuwe meldingen} one {# nieuwe melding} other {# nieuwe meldingen}}',

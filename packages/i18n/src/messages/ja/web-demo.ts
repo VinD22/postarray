@@ -43,6 +43,8 @@ export const webDemoMessages = {
     'ここにあるすべてのパネルは、サンプルコンテンツが入った製品のインターフェースです。プロバイダー検証を完了したコネクターはまだなく、今日このプロダクトを通じてどのプラットフォームにも公開されません。ワークフローが止まる箇所では、残りを描くのではなく、ページがそう明記します。',
   'web.demo.contents.title': '6つのステップ',
   'web.demo.stepLabel': 'ステップ {position}/{total}',
+  'web.demo.next': '次: {step}',
+  'web.demo.closing.pricing': '費用を見る',
   'web.demo.closing.title': 'これがサイクルのすべてです',
   'web.demo.closing.body':
     '上記のいずれも、私たちが構築したいと願う製品の模型ではありません。これは現状のインターフェースそのものであり、公開の部分は未完成であると正直にマークされています。',
@@ -62,6 +64,9 @@ export const webDemoMessages = {
   'web.demo.step.compose.title': '一度書いて、プラットフォームごとに調整',
   'web.demo.step.compose.body':
     'マスター下書きを書きます。アカウントを1つ選択すると、そのアカウントだけの上書きが開き、独自の制限とプレビューがあります。LinkedInのために書いたものがXが受け取る内容を変えることはなく、各バージョンのチェックは何かが予定される前に実行されます。',
+  'web.demo.step.variants.title': '各アカウントが実際に受け取る内容を見る',
+  'web.demo.step.variants.body':
+    '1つの下書きがアカウントごとに1つのバージョンになり、それぞれ配信先のプラットフォームに合わせて書かれます。X には短い一文、LinkedIn には完全なリリースノート、Instagram にはキャプションと代替テキストです。どれか1つを編集しても他のバージョンには影響せず、各バージョンにはそれに適用される検証が伴います。',
 
   'web.demo.step.schedule.title': '時刻を設定するか、キューに任せる',
   'web.demo.step.schedule.body':

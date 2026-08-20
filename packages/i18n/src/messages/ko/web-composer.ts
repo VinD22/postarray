@@ -172,7 +172,7 @@ export const webComposerMessages = {
   'composerWeb.set.apply': '이 세트를 사용하세요',
   'composerWeb.set.none': '아직 저장된 세트가 없습니다.',
   'composerWeb.signature.pickerLabel': '서명',
-  'composerWeb.signature.scope': '을 위한{brand}~에{provider}~에{language}',
+  'composerWeb.signature.scope': '을 위한{project}~에{provider}~에{language}',
   'composerWeb.signature.previewHeading': '포스팅이 어떻게 끝나는지',
   'composerWeb.signature.notMatching':
     '이 서명은 다른 브랜드, 플랫폼 또는 언어로 범위가 지정되므로 여기서는 제공되지 않습니다.',
@@ -272,6 +272,15 @@ export const webComposerMessages = {
     '예: launch_hero.jpg, 1600 x 900, 대체 텍스트 세트, 게시물 2개에 사용됨.',
   'mediaLib.error.title': '라이브러리를 로드할 수 없습니다.',
   'mediaLib.error.body': '귀하의 파일은 안전합니다. 이 실패로 인해 아무것도 바뀌지 않았습니다.',
+  'mediaLib.offline.title': '오프라인에서는 라이브러리를 사용할 수 없습니다',
+  'mediaLib.offline.body':
+    '연결 없이는 라이브러리를 새로고침할 수 없습니다. 이 화면에 이미 표시된 파일은 변경되지 않았습니다. 다시 연결한 후 다시 시도하세요.',
+  'mediaLib.rateLimited.title': '라이브러리에 잠시 멈춤이 필요합니다',
+  'mediaLib.rateLimited.cause':
+    'API가 파일을 불러오는 동안 속도를 늦춰 달라고 요청했습니다. 저장된 미디어는 안전합니다.',
+  'mediaLib.rateLimited.resetLabel': '다음 이후 다시 시도',
+  'mediaLib.rateLimited.alternative':
+    '로컬에서 초안 작성은 계속할 수 있지만, 업로드와 라이브러리 변경은 한도가 재설정될 때까지 대기합니다.',
   'mediaLib.loading': '미디어 라이브러리 로드 중',
   'mediaLib.permission.title': '이 작업공간 라이브러리를 볼 수 없습니다',
   'mediaLib.permission.body':
@@ -300,6 +309,37 @@ export const webComposerMessages = {
   'mediaLib.upload.checkedAgainst': '이 초안에서 선택한 계정과 비교하여 확인했습니다.',
   'mediaLib.upload.noTargets':
     '선택된 계정이 없으므로 파일은 작업공간 기본값에 대해서만 확인됩니다.',
+  'mediaLib.import.urlLabel': '공개 파일 URL',
+  'mediaLib.import.urlPlaceholder': 'https://cdn.example.com/launch-video.mp4',
+  'mediaLib.import.importing': '미디어 가져오는 중',
+  'mediaLib.import.succeeded': '파일이 라이브러리에 있습니다',
+  'mediaLib.import.scanPending': 'Relay가 출처를 기록했습니다. 안전 검사가 끝날 때까지 게시가 대기합니다.',
+  'mediaLib.import.failed': '파일을 가져올 수 없습니다',
+  'mediaLib.import.failedHelp':
+    '링크가 공개되어 있고 지원되는 미디어 파일을 직접 가리키는지 확인한 후 다시 시도하세요.',
+  'mediaLib.import.readOnly': '이 환경에서 파일을 가져오려면 API에 연결하세요.',
+  'mediaLib.import.offline': '파일을 가져오기 전에 다시 연결하세요.',
+  'mediaLib.import.issue.invalid': '전체 URL을 입력하세요.',
+  'mediaLib.import.issue.scheme': 'HTTP 또는 HTTPS 링크를 사용하세요.',
+  'mediaLib.import.issue.credentials': '사용자 이름이나 비밀번호가 없는 링크를 사용하세요.',
+  'mediaLib.retention.title': '저장된 파일은 게시물 생성 후 30일 동안 보관됩니다',
+  'mediaLib.retention.body':
+    '파일이 게시물에 첨부되면, 해당 게시물이 생성된 후 30일이 지나면 Relay 저장소에서 영구적으로 삭제됩니다. 첨부를 기다리는 파일은 업로드 날짜를 정리 기준으로 사용합니다. 게시물 텍스트, 게시 영수증, 감사 기록은 더 오래 유지됩니다. 소셜 플랫폼에 이미 게시된 게시물은 저장된 파일의 보관 기간이 끝나도 삭제되지 않습니다.',
+  'mediaLib.retention.limits':
+    '이미지, 오디오, PDF 파일은 최대 {imageSize}까지 가능합니다. 동영상은 최대 {videoSize}까지 가능합니다.',
+  'mediaLib.retention.expiresLabel': '파일 삭제 날짜',
+  'mediaLib.retention.deleted': '영구적으로 삭제됨',
+  'mediaLib.retention.deletedTitle': '이 저장된 파일은 삭제되었습니다',
+  'mediaLib.retention.deletedBody':
+    '30일 보관 기간이 종료되었습니다. 게시물 텍스트, 게시 영수증, 감사 기록은 남아 있습니다.',
+  'mediaLib.processing.unavailableTitle': '이 파일은 아직 게시할 준비가 되지 않았습니다',
+  'mediaLib.processing.unavailableBody':
+    '처리 또는 안전 검사가 아직 진행 중이거나 통과하지 못했습니다. 이 상태가 해결되지 않으면 파일을 다시 업로드하세요.',
+  'mediaLib.processing.pendingTitle': '출시 전에는 안전 검사를 사용할 수 없습니다',
+  'mediaLib.processing.pendingBody':
+    '파일은 30일 동안 저장되지만, 안전 검사가 활성화될 때까지 게시된 게시물에 첨부할 수 없습니다.',
+  'mediaLib.processing.blockedTitle': '이 파일은 게시할 수 없습니다',
+  'mediaLib.processing.blockedBody': '파일이 처리 또는 안전 검사를 통과하지 못했습니다. 다른 파일을 업로드하세요.',
   'mediaLib.alt.heading': '대체 텍스트',
   'mediaLib.alt.help':
     '이미지를 볼 수 없는 사람을 위해 이미지에서 중요한 것이 무엇인지 설명해 보세요. 일반적으로 한두 문장이면 충분합니다.',

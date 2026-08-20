@@ -58,13 +58,13 @@ export const validationMessages = {
   'validation.schedule_too_far_ahead.message':
     'これはそれよりもさらに先のことです{limit}この資格情報に対して先読みセットを設定します。',
   'validation.schedule_outside_quiet_hours.message':
-    'これは、設定された静かな時間帯に該当します。{brand}。',
+    'これは、設定された静かな時間帯に該当します。{project}。',
   'validation.duplicate_within_window.message':
     '非常に類似したコンテンツがすでにスケジュールまたは公開されています{account}内で{window}。',
   'validation.blocked_term_present.message':
-    'テキストには禁止されている用語が含まれています{brand}。',
+    'テキストには禁止されている用語が含まれています{project}。',
   'validation.unsupported_claim.message':
-    'この主張は、以下の承認された主張には含まれていません。{brand}。',
+    'この主張は、以下の承認された主張には含まれていません。{project}。',
   'validation.unsupported_claim.hint':
     '証拠とともに承認された主張にそれを追加するか、文を言い直してください。',
   'validation.cadence_exceeded.message':

@@ -62,7 +62,7 @@ export const statusMessages = {
   'permission.denied.role': 'Hiervoor is de rol {role} nodig. Jij bent {currentRole}.',
   'permission.denied.scope': 'Deze referentie heeft de reikwijdte {scope} nodig.',
   'permission.denied.contactOwner': 'Vraag {owner} om deze te verlenen.',
-  'permission.denied.brandScope': 'Uw toegang is beperkt tot {brands}.',
+  'permission.denied.projectScope': 'Uw toegang is beperkt tot {projects}.',
   'permission.readOnly': 'Deze werkruimte is momenteel alleen-lezen.',
   'permission.mfaRequired': 'Bevestig met tweefactorauthenticatie om door te gaan.',
 

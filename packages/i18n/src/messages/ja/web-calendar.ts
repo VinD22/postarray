@@ -60,7 +60,7 @@ export const webCalendarMessages = {
   'web.calendar.nowLabel': '今',
   'web.calendar.allDayHeading': '正確な時間はまだありません',
   'web.calendar.filter.group': '顧客グループ',
-  'web.calendar.filter.anyBrand': 'どのブランドでも',
+  'web.calendar.filter.anyProject': 'どのブランドでも',
   'web.calendar.filter.anyAccount': '任意のアカウント',
   'web.calendar.filter.anyPlatform': 'あらゆるプラットフォーム',
   'web.calendar.filter.anyStatus': 'あらゆるステータス',

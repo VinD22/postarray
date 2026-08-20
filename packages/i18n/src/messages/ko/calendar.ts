@@ -16,7 +16,7 @@ export const calendarMessages = {
   'calendar.slotCount': '{count, plural, other {게시물 #개}}',
   'calendar.slotOverflow': '{count, plural, other {# 더}}',
   'calendar.newPostAt': '새 게시물:{time}',
-  'calendar.filter.brand': 'Brand',
+  'calendar.filter.project': 'Project',
   'calendar.filter.account': '계정',
   'calendar.filter.platform': '플랫폼',
   'calendar.filter.status': '상태',

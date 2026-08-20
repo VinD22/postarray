@@ -64,7 +64,7 @@ export const statusMessages = {
   'permission.denied.role': 'Для этого нужна роль {role}. Вы {currentRole}.',
   'permission.denied.scope': 'Для этих учетных данных требуется область действия {scope}.',
   'permission.denied.contactOwner': 'Попросите {owner} предоставить его.',
-  'permission.denied.brandScope': 'Ваш доступ ограничен {brands}.',
+  'permission.denied.projectScope': 'Ваш доступ ограничен {projects}.',
   'permission.readOnly': 'Эта рабочая область сейчас доступна только для чтения.',
   'permission.mfaRequired': 'Подтвердите двухфакторную аутентификацию, чтобы продолжить.',
 

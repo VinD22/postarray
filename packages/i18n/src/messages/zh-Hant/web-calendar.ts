@@ -58,7 +58,7 @@ export const webCalendarMessages = {
   'web.calendar.nowLabel': '現在',
   'web.calendar.allDayHeading': '還沒有確切時間',
   'web.calendar.filter.group': '客戶群',
-  'web.calendar.filter.anyBrand': '任何Brand',
+  'web.calendar.filter.anyProject': '任何Project',
   'web.calendar.filter.anyAccount': '任何帳號',
   'web.calendar.filter.anyPlatform': '任何平台',
   'web.calendar.filter.anyStatus': '任何狀態',
@@ -157,7 +157,7 @@ export const webCalendarMessages = {
   'web.calendar.rateLimited.resetUnknown': '{provider}沒有說何時重置。',
   'web.calendar.permission.requirementsLabel': '所需範圍',
   'web.calendar.permission.title': '您看不到此日曆',
-  'web.calendar.permission.body': '日曆存取權限按Brand授予。您的帳號不在此視圖中的Brand上。',
+  'web.calendar.permission.body': '日曆存取權限按Project授予。您的帳號不在此視圖中的Project上。',
   'web.receipt.breadcrumb.calendar': '日曆',
   'web.receipt.breadcrumb.post': '郵政',
   'web.receipt.heading': '{title}',
@@ -284,6 +284,12 @@ export const webCalendarMessages = {
     '下一個畫面是{provider}，不是 Relay。 Relay 永遠不會看到您的密碼。',
   'web.connection.connect.noWriteWithoutApproval':
     '連接帳號不會發布任何內容。每個貼文仍然遵循此Workspace核准政策。',
+  'web.connection.projectScope.title': '正在顯示 {project} 的頻道',
+  'web.connection.projectScope.body':
+    '新頻道會連線到此專案。請從頂端列切換專案以管理其他組合。',
+  'web.connection.projectMissing.title': '連接頻道前請先建立專案',
+  'web.connection.projectMissing.body':
+    '專案能讓不同產品或客戶的頻道、媒體、草稿與排程彼此分開。',
   'web.connection.requirement.instagram':
     'Instagram 發布需要專業帳號，這意味著連結到 Facebook 頁面的企業或創建者帳號。',
   'web.connection.requirement.facebook': 'Relay 發佈到 Facebook Pages。個人資料不能作為發布目標。',
@@ -346,7 +352,7 @@ export const webCalendarMessages = {
     '一組過濾日曆和分析。行動帳號會保留其現有的每個貼文、收據和指標。',
   'web.connection.group.empty.title': '還沒有客戶群',
   'web.connection.group.empty.body':
-    '一個團體就是一個客戶或一個Brand。將帳號分組以按客戶過濾日曆和分析。',
+    '一個團體就是一個客戶或一個Project。將帳號分組以按客戶過濾日曆和分析。',
   'web.connection.incident.title': '該帳號需要關注',
   'web.connection.incident.remediationHeading': '該怎麼辦',
   'web.connection.incident.scheduledOnHold':

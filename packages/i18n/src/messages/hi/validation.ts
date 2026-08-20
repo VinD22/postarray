@@ -63,11 +63,11 @@ export const validationMessages = {
   'validation.schedule_too_far_ahead.message':
     'ये उससे भी आगे है {limit} इस क्रेडेंशियल के लिए आगे देखें।',
   'validation.schedule_outside_quiet_hours.message':
-    'यह निर्धारित शांत घंटों के अंतर्गत आता है {brand}.',
+    'यह निर्धारित शांत घंटों के अंतर्गत आता है {project}.',
   'validation.duplicate_within_window.message':
     'बहुत समान सामग्री पहले से ही निर्धारित या प्रकाशित की गई है {account} भीतर {window}.',
-  'validation.blocked_term_present.message': 'पाठ में इसके लिए एक अवरुद्ध शब्द है {brand}.',
-  'validation.unsupported_claim.message': 'यह दावा स्वीकृत दावों में नहीं है {brand}.',
+  'validation.blocked_term_present.message': 'पाठ में इसके लिए एक अवरुद्ध शब्द है {project}.',
+  'validation.unsupported_claim.message': 'यह दावा स्वीकृत दावों में नहीं है {project}.',
   'validation.unsupported_claim.hint':
     'इसे साक्ष्य के साथ स्वीकृत दावों में जोड़ें, या वाक्य को दोबारा लिखें।',
   'validation.cadence_exceeded.message':

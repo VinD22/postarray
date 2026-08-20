@@ -5,8 +5,8 @@ export const webSettingsMessages = {
   'settings.ui.index.help': 'เลือกส่วน การเปลี่ยนแปลงทั้งหมดจะมาจากคุณและปรากฏในบันทึกการตรวจสอบ',
   'settings.ui.section.members': 'สมาชิกและบทบาท',
   'settings.ui.section.membersSummary': 'ใครอยู่ในพื้นที่ทำงานนี้และสิ่งที่แต่ละคนสามารถทำได้',
-  'settings.ui.section.brands': 'Brandวินาที',
-  'settings.ui.section.brandsSummary':
+  'settings.ui.section.projects': 'Projects',
+  'settings.ui.section.projectsSummary':
     'เสียง ผู้ชม การอ้างสิทธิ์ที่ได้รับอนุมัติ คำที่ถูกบล็อก กฎสถานที่ โดเมน และอภิธานศัพท์',
   'settings.ui.section.agents': 'ตัวแทนและ API',
   'settings.ui.section.agentsSummary':
@@ -74,10 +74,10 @@ export const webSettingsMessages = {
   'settings.ui.members.column.lastActive': 'ใช้งานครั้งล่าสุด',
   'settings.ui.members.column.actions': 'การดำเนินการ',
   'settings.ui.members.scopeAll': 'ทุกแบรนด์และบัญชี',
-  'settings.ui.members.scopeLimited': '{count, plural, one {# brand} other {# brands}}: {names}',
+  'settings.ui.members.scopeLimited': '{count, plural, one {# project} other {# projects}}: {names}',
   'settings.ui.members.approvals.canApprove': 'สามารถอนุมัติได้',
   'settings.ui.members.approvals.cannotApprove': 'ไม่สามารถอนุมัติได้',
-  'settings.ui.members.approvals.canApproveOwnBrands': 'สามารถอนุมัติสำหรับแบรนด์ที่ระบุไว้ได้',
+  'settings.ui.members.approvals.canApproveOwnProjects': 'สามารถอนุมัติสำหรับแบรนด์ที่ระบุไว้ได้',
   'settings.ui.members.lastActiveNever': 'ยังไม่ได้ลงชื่อเข้าใช้',
   'settings.ui.members.changeRole': 'เปลี่ยนบทบาทสำหรับ {name}',
   'settings.ui.members.remove': 'ลบ {name}',
@@ -88,7 +88,7 @@ export const webSettingsMessages = {
   'settings.ui.members.inviteBody':
     'พวกเขาได้รับอีเมลพร้อมลิงก์ คำเชิญจะหมดอายุหลังจากผ่านไปเจ็ดวัน และคุณสามารถเพิกถอนได้ก่อนถึงนั้น',
   'settings.ui.members.inviteRole': 'บทบาท',
-  'settings.ui.members.inviteScope': 'Brand ที่พวกเขาสามารถทำงานได้',
+  'settings.ui.members.inviteScope': 'Project ที่พวกเขาสามารถทำงานได้',
   'settings.ui.members.inviteScopeAll': 'ทุกแบรนด์ในพื้นที่ทำงานนี้',
   'settings.ui.members.inviteScopeSelected': 'เฉพาะแบรนด์ที่ฉันเลือก',
   'settings.ui.members.inviteApprovals': 'สามารถตัดสินใจขออนุมัติได้',
@@ -123,42 +123,69 @@ export const webSettingsMessages = {
     'การกระทำในอดีตจะยังคงอยู่ในบันทึกการตรวจสอบและในใบเสร็จรับเงิน',
   'settings.ui.members.removeConsequence.approvals':
     'คำขออนุมัติที่รออยู่จะกลับไปยังคิวสำหรับผู้อนุมัติรายอื่น',
-  'settings.ui.brands.description':
-    'แบรนด์มีกฎเกณฑ์ที่เนื้อหาจะถูกตรวจสอบ: สิ่งที่คุณอาจอ้างสิทธิ์ สิ่งที่คุณไม่สามารถพูด และวิธีเขียนแต่ละภาษา',
-  'settings.ui.brands.listCaption': 'Brand ในพื้นที่ทำงานนี้',
-  'settings.ui.brands.column.brand': 'Brand',
-  'settings.ui.brands.column.locales': 'ภาษาเนื้อหา',
-  'settings.ui.brands.column.accounts': 'บัญชี',
-  'settings.ui.brands.column.updated': 'อัปเดตแล้ว',
-  'settings.ui.brands.accountCount':
-    '{count, plural, =0 {No accounts} one {# account} other {# accounts}}',
-  'settings.ui.brands.emptyTitle': 'ยังไม่มียี่ห้อ',
-  'settings.ui.brands.emptyBody':
-    'บัญชีกลุ่มแบรนด์ กฎการอนุมัติ และกฎภาษา ทีมส่วนใหญ่เริ่มต้นด้วยหนึ่งและเพิ่มวินาทีเมื่อลูกค้าหรือตลาดต้องการกฎที่แตกต่างกัน',
-  'settings.ui.brands.emptyExample':
-    'ตัวอย่าง: แบรนด์ "Acme EU", ภาษาอังกฤษและเยอรมัน, คำที่ถูกบล็อก "รับประกัน", เปิดเผย "พันธมิตรแบบชำระเงิน" สำหรับ Instagram',
-  'settings.ui.brands.voiceHelp':
-    'แบรนด์นี้ฟังดูเป็นอย่างไร ใช้เมื่อคุณขอให้เขียนซ้ำและเมื่อมีการตรวจสอบการอ้างสิทธิ์',
-  'settings.ui.brands.audienceHelp': 'เนื้อหามีไว้สำหรับใครต่อตลาด',
-  'settings.ui.brands.approvedClaimsHelp':
-    'ข้อความที่ผู้ตรวจสอบได้เคลียร์แล้ว สิ่งใดก็ตามที่อยู่นอกรายการนี้จะถูกตั้งค่าสถานะก่อนการอนุมัติ ไม่ใช่หลังจากการเผยแพร่',
-  'settings.ui.brands.blockedTermsHelp':
-    'คำที่ขัดขวางการกำหนดเวลาสำหรับแบรนด์นี้ หนึ่งรายการต่อบรรทัด',
-  'settings.ui.brands.domainsHelp':
-    'โดเมนที่แบรนด์นี้อาจเชื่อมโยงและย่อให้สั้นลง สามารถเลือกได้เฉพาะโดเมนที่ยืนยันแล้วในตัวแต่งเพลง',
-  'settings.ui.brands.domainVerified': 'ตรวจสอบแล้ว {date}',
-  'settings.ui.brands.domainPending': 'ยังไม่เห็นบันทึก DNS',
-  'settings.ui.brands.disclosureHelp':
-    'นำไปใช้โดยค่าเริ่มต้นในตัวแต่งเพลงสำหรับแพลตฟอร์มที่คุณเลือกที่นี่ สามารถเปลี่ยนแปลงได้ต่อโพสต์ก่อนอนุมัติ',
-  'settings.ui.brands.glossaryHelp':
-    'ชื่อผลิตภัณฑ์ เงื่อนไขทางกฎหมาย และสิ่งใดก็ตามที่ต้องคงอยู่ในการแปลโดยไม่มีการเปลี่ยนแปลง',
-  'settings.ui.brands.glossaryCaption':
-    'ข้อกำหนดที่ได้รับการคุ้มครองและวิธีการจัดการแต่ละข้อตามภาษา',
-  'settings.ui.brands.glossaryEmpty':
-    'ยังไม่มีข้อกำหนดที่ได้รับการคุ้มครอง เพิ่มชื่อผลิตภัณฑ์และข้อกำหนดทางกฎหมายที่ต้องไม่มีการแปลหรือใช้ถ้อยคำใหม่',
-  'settings.ui.brands.localeRulesHelp':
-    'กฎตามภาษาของเนื้อหา สิ่งเหล่านี้จะนำไปใช้เมื่อคุณปรับเปลี่ยนหรือสร้าง และแสดงให้ผู้ตรวจสอบเห็น',
-  'settings.ui.brands.saveBrand': 'บันทึกแบรนด์',
+  'settings.ui.projects.description':
+    'แยกแต่ละผลิตภัณฑ์ ลูกค้า สิ่งพิมพ์ หรือกิจการออกจากกัน แต่ละโปรเจกต์มีช่องทาง สื่อ ฉบับร่าง กำหนดการ และกฎการเผยแพร่ของตนเอง',
+  'settings.ui.projects.listCaption': 'โปรเจกต์ในพื้นที่ทำงานนี้',
+  'settings.ui.projects.column.project': 'โปรเจกต์',
+  'settings.ui.projects.column.locales': 'ภาษาเนื้อหา',
+  'settings.ui.projects.column.accounts': 'บัญชี',
+  'settings.ui.projects.column.updated': 'อัปเดตแล้ว',
+  'settings.ui.projects.accountCount': '{count, plural, other {# บัญชี}}',
+  'settings.ui.projects.emptyTitle': 'สร้างโปรเจกต์แรกของคุณ',
+  'settings.ui.projects.emptyBody':
+    'โปรเจกต์ช่วยให้ผลิตภัณฑ์หรือลูกค้ารายหนึ่งซิงค์กันบนช่องทางโซเชียลของตน โดยไม่ปนสื่อ ฉบับร่าง หรือกำหนดการกับโปรเจกต์อื่น',
+  'settings.ui.projects.emptyExample':
+    'ตัวอย่าง: Acme App, Acme Podcast และลูกค้า Northwind อาจเป็นสามโปรเจกต์แยกกันในพื้นที่ทำงานเดียว',
+  'settings.ui.projects.voiceHelp':
+    'โปรเจกต์นี้ควรมีน้ำเสียงแบบไหน ใช้สำหรับคำแนะนำการตรวจทานและการตรวจสอบข้อความอ้างสิทธิ์',
+  'settings.ui.projects.audienceHelp': 'เนื้อหามีไว้สำหรับใคร ตามแต่ละตลาด',
+  'settings.ui.projects.approvedClaimsHelp':
+    'ข้อความที่ผู้ตรวจทานอนุมัติแล้ว สิ่งใดที่อยู่นอกรายการนี้จะถูกตั้งค่าสถานะก่อนการอนุมัติ ไม่ใช่หลังการเผยแพร่',
+  'settings.ui.projects.blockedTermsHelp':
+    'คำที่ขัดขวางการกำหนดเวลาสำหรับโปรเจกต์นี้ หนึ่งคำต่อบรรทัด',
+  'settings.ui.projects.domainsHelp':
+    'โดเมนที่โปรเจกต์นี้อาจเชื่อมโยงและย่อผ่านได้ เลือกได้เฉพาะโดเมนที่ยืนยันแล้วในตัวเขียนโพสต์',
+  'settings.ui.projects.domainVerified': 'ตรวจสอบแล้ว {date}',
+  'settings.ui.projects.domainPending': 'ยังไม่เห็นบันทึก DNS',
+  'settings.ui.projects.domainVerificationUnavailable': 'การยืนยันยังไม่ถูกสร้างขึ้น',
+  'settings.ui.projects.disclosureUnavailable':
+    'ค่าเริ่มต้นการเปิดเผยแยกตามช่องทางยังไม่ถูกสร้างขึ้น ให้เพิ่มการเปิดเผยที่จำเป็นในโพสต์เองจนกว่าฟีเจอร์นี้จะพร้อมใช้งาน',
+  'settings.ui.projects.glossaryUnavailable':
+    'คลังคำศัพท์ของพื้นที่ทำงานยังไม่ถูกสร้างขึ้น น้ำเสียง กลุ่มเป้าหมาย ข้อความที่อนุมัติแล้ว และคำที่ถูกบล็อกด้านบนยังคงถูกบันทึกและบังคับใช้',
+  'settings.ui.projects.localeRulesUnavailable':
+    'กฎการเขียนแยกตามภาษายังไม่ถูกสร้างขึ้น ภาษาและตลาดของพื้นที่ทำงานยังคงใช้งานได้ในหมวดการแปลเป็นภาษาท้องถิ่น',
+  'settings.ui.projects.disclosureHelp':
+    'นำไปใช้เป็นค่าเริ่มต้นในตัวเขียนโพสต์สำหรับแพลตฟอร์มที่คุณเลือกที่นี่ สามารถเปลี่ยนแปลงได้ต่อโพสต์ก่อนอนุมัติ',
+  'settings.ui.projects.glossaryHelp':
+    'ชื่อผลิตภัณฑ์ ศัพท์ทางกฎหมาย และสิ่งใดก็ตามที่ต้องคงเดิมไว้ในการแปล',
+  'settings.ui.projects.glossaryCaption':
+    'คำศัพท์ที่ได้รับการคุ้มครองและวิธีจัดการแต่ละคำตามภาษา',
+  'settings.ui.projects.glossaryEmpty':
+    'ยังไม่มีคำศัพท์ที่ได้รับการคุ้มครอง เพิ่มชื่อผลิตภัณฑ์และศัพท์ทางกฎหมายที่ต้องไม่ถูกแปลหรือเรียบเรียงใหม่',
+  'settings.ui.projects.localeRulesHelp':
+    'กฎตามแต่ละภาษาเนื้อหา สิ่งเหล่านี้จะถูกนำไปใช้เมื่อคุณปรับเนื้อหาหรือแปลใหม่ และแสดงให้ผู้ตรวจทานเห็น',
+  'settings.ui.projects.saveProject': 'บันทึกโปรเจกต์',
+  'settings.ui.projects.capacityTitle': 'ความจุของโปรเจกต์',
+  'settings.ui.projects.capacityHelp':
+    'แผนพื้นฐาน 29 ดอลลาร์รวม 3 โปรเจกต์ที่ใช้งานอยู่ พื้นที่ทำงานสามารถได้รับสิทธิ์สูงสุด 20 โปรเจกต์โดยไม่ต้องสร้างบัญชีอื่น',
+  'settings.ui.projects.capacitySummary': '{used} จาก {limit}',
+  'settings.ui.projects.atLimitTitle': 'พื้นที่ทำงานนี้ใช้ที่ว่างสำหรับโปรเจกต์หมดแล้ว',
+  'settings.ui.projects.atLimitBody':
+    'เก็บโปรเจกต์ที่ไม่ได้ใช้งานเข้าคลังหรือเปลี่ยนสิทธิ์ของพื้นที่ทำงานก่อนเพิ่มโปรเจกต์อีก ขีดจำกัดปัจจุบันคือ {limit}',
+  'settings.ui.projects.listLabel': 'เลือกโปรเจกต์ที่จะแก้ไข',
+  'settings.ui.projects.detailsTitle': 'รายละเอียดโปรเจกต์',
+  'settings.ui.projects.projectMeta': '{accounts, plural, =0 {ไม่มีช่องทาง} other {# ช่องทาง}} · อัปเดตแล้ว {updated}',
+  'settings.ui.projects.archiveAction': 'เก็บโปรเจกต์เข้าคลัง',
+  'settings.ui.projects.archiveTitle': 'เก็บ {project} เข้าคลังหรือไม่',
+  'settings.ui.projects.archiveBody':
+    'โปรเจกต์ที่ไม่ได้ใช้งานนี้จะออกจากพื้นที่ทำงานที่ใช้งานอยู่และคืนที่ว่างหนึ่งช่องสำหรับโปรเจกต์',
+  'settings.ui.projects.archiveChannels':
+    'ช่องทางที่เชื่อมต่อของโปรเจกต์นี้จะไม่ปรากฏในขั้นตอนการทำงานของโปรเจกต์ที่ใช้งานอยู่อีกต่อไป',
+  'settings.ui.projects.archiveHistory':
+    'ฉบับร่าง โพสต์ที่เผยแพร่แล้ว ใบเสร็จ และประวัติการตรวจสอบยังคงถูกเก็บไว้',
+  'settings.ui.projects.archiveLastDisabled': 'เก็บโปรเจกต์ที่ใช้งานอยู่อย่างน้อยหนึ่งโปรเจกต์ในพื้นที่ทำงาน',
+  'settings.ui.projects.archiveConnectedDisabled':
+    'ตัดการเชื่อมต่อช่องทางของโปรเจกต์นี้ก่อนเก็บเข้าคลัง',
   'settings.ui.localization.description':
     'การตั้งค่าแยกกันสามแบบ: ภาษาของแอพนี้ ภาษาที่คุณเผยแพร่ และตลาดที่คุณกำลังเขียนถึง การเปลี่ยนสิ่งหนึ่งไม่เคยเปลี่ยนสิ่งอื่น',
   'settings.ui.localization.interfaceOnlyEnglish':
@@ -230,8 +257,8 @@ export const webSettingsMessages = {
   'settings.ui.data.deleteConnection': 'เพิกถอนการเชื่อมต่อทางสังคมหนึ่งรายการ',
   'settings.ui.data.deleteConnectionHelp':
     'ลบการเข้าถึงบัญชีนั้น Relay พื้นที่ทำงาน เนื้อหา และใบเสร็จรับเงินจะยังคงอยู่',
-  'settings.ui.data.deleteBrand': 'ลบแบรนด์',
-  'settings.ui.data.deleteBrandHelp':
+  'settings.ui.data.deleteProject': 'ลบแบรนด์',
+  'settings.ui.data.deleteProjectHelp':
     'ลบแบรนด์ กฎเกณฑ์ และอภิธานศัพท์ออก เนื้อหาที่เผยแพร่ภายใต้จะเก็บใบเสร็จรับเงินไว้',
   'settings.ui.data.deleteContent': 'ลบเนื้อหาและสื่อ',
   'settings.ui.data.deleteContentHelp':
@@ -482,7 +509,7 @@ export const webSettingsMessages = {
   'developer.ui.webhooks.eventGroup.publishing': 'การเผยแพร่',
   'developer.ui.webhooks.eventGroup.automation': 'ระบบอัตโนมัติและฟีด',
   'developer.ui.webhooks.eventGroup.workspace': 'Workspace',
-  'developer.ui.webhooks.scopeTitle': 'Brand และบัญชี',
+  'developer.ui.webhooks.scopeTitle': 'Project และบัญชี',
   'developer.ui.webhooks.scopeAll': 'ทุกแบรนด์และบัญชี',
   'developer.ui.webhooks.scopeSelected': 'เฉพาะสิ่งที่ฉันเลือก',
   'developer.ui.webhooks.secretTitle': 'ความลับของการลงนาม',
@@ -545,7 +572,7 @@ export const webSettingsMessages = {
   'billing.ui.conversionLabel': 'แปลง',
   'billing.ui.channelsLabel': 'ช่องที่ใช้งานอยู่',
   'billing.ui.paymentMethodPolar': 'วิธีการชำระเงินที่ถือโดย Polar',
-  'billing.ui.paymentMethodDescriptor': '{brand} สิ้นสุด {last4} หมดอายุ {expiry}',
+  'billing.ui.paymentMethodDescriptor': '{project} สิ้นสุด {last4} หมดอายุ {expiry}',
   'billing.ui.paymentMethodMissing': 'ยังไม่มีวิธีการชำระเงินอยู่ในไฟล์',
   'billing.ui.cancelBeforeDate': 'ยกเลิกก่อน {date} และคุณจะไม่ถูกเรียกเก็บเงิน',
   'billing.ui.annualFraming': '$25/เดือน เรียกเก็บเงินเป็นรายปี ประหยัด $48/ปี',

@@ -86,7 +86,7 @@ export const webCalendarMessages = {
   'web.calendar.allDayHeading': 'Henüz kesin bir zaman yok',
 
   'web.calendar.filter.group': 'Müşteri grubu',
-  'web.calendar.filter.anyBrand': 'Herhangi bir marka',
+  'web.calendar.filter.anyProject': 'Herhangi bir marka',
   'web.calendar.filter.anyAccount': 'Herhangi bir hesap',
   'web.calendar.filter.anyPlatform': 'Herhangi bir platform',
   'web.calendar.filter.anyStatus': 'Herhangi bir durum',
@@ -362,6 +362,13 @@ export const webCalendarMessages = {
     "Bir sonraki ekran Röle değil {provider}'dır. Röle şifrenizi asla görmez.",
   'web.connection.connect.noWriteWithoutApproval':
     'Bir hesabın bağlanması hiçbir şey yayınlamaz. Her gönderi hâlâ bu çalışma alanı onay politikasını takip ediyor.',
+
+  'web.connection.projectScope.title': '{project} için kanallar gösteriliyor',
+  'web.connection.projectScope.body':
+    'Yeni kanallar bu markaya bağlanır. Başka bir seti yönetmek için üst çubuktan marka değiştirin.',
+  'web.connection.projectMissing.title': 'Bir kanal bağlamadan önce bir marka oluşturun',
+  'web.connection.projectMissing.body':
+    'Markalar, farklı ürün veya müşterilere ait kanalları, medyayı, taslakları ve planları ayrı tutar.',
 
   'web.connection.requirement.instagram':
     'Instagram yayıncılığının profesyonel bir hesaba ihtiyacı vardır; bu, bir Facebook Sayfasına bağlı bir işletme veya yaratıcı hesabı anlamına gelir.',

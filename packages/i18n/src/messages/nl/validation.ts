@@ -33,6 +33,8 @@ export const validationMessages = {
     'Dit bestand is {actual}. {provider} accepteert maximaal {limit}.',
   'validation.media_mixed_types_unsupported.message':
     '{provider} kan geen afbeeldingen en video in hetzelfde bericht publiceren.',
+  'validation.media_unavailable.message':
+    'Een bijgevoegd bestand is niet meer beschikbaar. Verwijder het uit het bericht of upload het opnieuw.',
   'validation.alt_text_missing.message':
     'Alt-tekst ontbreekt op {count, plural, one {# afbeelding} other {# afbeeldingen}}.',
   'validation.alt_text_missing.hint': 'Beschrijf de afbeelding of markeer deze als decoratief.',
@@ -65,12 +67,12 @@ export const validationMessages = {
   'validation.schedule_too_far_ahead.message':
     'Dit is verder vooruit dan de {limit}-vooruitblik die voor dit certificaat is vastgesteld.',
   'validation.schedule_outside_quiet_hours.message':
-    'Dit valt binnen de rustige uren die zijn vastgesteld voor {brand}.',
+    'Dit valt binnen de rustige uren die zijn vastgesteld voor {project}.',
   'validation.duplicate_within_window.message':
     'Zeer vergelijkbare inhoud is al gepland of gepubliceerd voor {account} binnen {window}.',
-  'validation.blocked_term_present.message': 'De tekst bevat een geblokkeerde term voor {brand}.',
+  'validation.blocked_term_present.message': 'De tekst bevat een geblokkeerde term voor {project}.',
   'validation.unsupported_claim.message':
-    'Deze claim staat niet in de goedgekeurde claims voor {brand}.',
+    'Deze claim staat niet in de goedgekeurde claims voor {project}.',
   'validation.unsupported_claim.hint':
     'Voeg het toe aan de goedgekeurde claims met bewijsmateriaal, of herformuleer de zin.',
   'validation.cadence_exceeded.message':

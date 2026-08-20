@@ -1,7 +1,7 @@
 /** Korean beta catalog. */
 export const composerMessages = {
   'composer.title': '구성하다',
-  'composer.titleWithBrand': '작성 대상{brand}',
+  'composer.titleWithProject': '작성 대상{project}',
   'composer.master.label': '마스터 드래프트',
   'composer.master.description':
     '여기에 한 번 써보세요. 호환 가능한 변경 사항은 선택한 모든 대상에 적용됩니다. 해당 계정만 받을 버전을 작성하려면 대상을 엽니다.',

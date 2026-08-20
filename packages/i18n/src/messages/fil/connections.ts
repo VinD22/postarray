@@ -64,7 +64,7 @@ export const connectionMessages = {
 
   'connection.group.title': 'Mga pangkat ng customer',
   'connection.group.description':
-    'Igrupo ang mga account ayon sa kliyente o brand para i-filter ang bawat screen.',
+    'Igrupo ang mga account ayon sa kliyente o project para i-filter ang bawat screen.',
   'connection.group.assign': 'Ilipat sa pangkat',
   'connection.group.none': 'Hindi nakapangkat',
   'connection.group.moveNote':

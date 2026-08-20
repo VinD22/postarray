@@ -86,7 +86,7 @@ export const webCalendarMessages = {
   'web.calendar.allDayHeading': "Non c'è ancora l'ora esatta",
 
   'web.calendar.filter.group': 'Gruppo di clienti',
-  'web.calendar.filter.anyBrand': 'Qualsiasi marca',
+  'web.calendar.filter.anyProject': 'Qualsiasi marca',
   'web.calendar.filter.anyAccount': 'Qualsiasi conto',
   'web.calendar.filter.anyPlatform': 'Qualsiasi piattaforma',
   'web.calendar.filter.anyStatus': 'Qualsiasi stato',
@@ -363,6 +363,12 @@ export const webCalendarMessages = {
     'La schermata successiva è {provider}, non Relay. Relay non vede mai la tua password.',
   'web.connection.connect.noWriteWithoutApproval':
     "Il collegamento di un account non pubblica nulla. Ogni post segue ancora questa politica di approvazione dell'area di lavoro.",
+  'web.connection.projectScope.title': 'Canali per {project}',
+  'web.connection.projectScope.body':
+    'I nuovi canali si collegano a questo marchio. Cambia marchio dalla barra superiore per gestirne un altro insieme.',
+  'web.connection.projectMissing.title': 'Crea un marchio prima di collegare un canale',
+  'web.connection.projectMissing.body':
+    'I marchi tengono separati canali, media, bozze e programmazioni di prodotti o clienti diversi.',
 
   'web.connection.requirement.instagram':
     'La pubblicazione su Instagram richiede un account professionale, ovvero un account aziendale o creativo collegato a una pagina Facebook.',

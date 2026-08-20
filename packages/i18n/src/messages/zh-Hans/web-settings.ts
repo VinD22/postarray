@@ -5,8 +5,8 @@ export const webSettingsMessages = {
   'settings.ui.index.help': '选择一个部分。每项更改均归因于您并显示在审核日志中。',
   'settings.ui.section.members': '成员和角色',
   'settings.ui.section.membersSummary': '谁在这个工作空间中以及每个人可以做什么。',
-  'settings.ui.section.brands': 'Brand',
-  'settings.ui.section.brandsSummary':
+  'settings.ui.section.projects': 'Project',
+  'settings.ui.section.projectsSummary':
     '声音、受众、批准的声​​明、阻止的术语、区域设置规则、域和术语表。',
   'settings.ui.section.agents': '代理和API',
   'settings.ui.section.agentsSummary': '服务帐户、范围、限制、凭证、活动和演练场地。',
@@ -62,10 +62,10 @@ export const webSettingsMessages = {
   'settings.ui.members.column.lastActive': '最后活跃',
   'settings.ui.members.column.actions': '行动',
   'settings.ui.members.scopeAll': '所有品牌和帐户',
-  'settings.ui.members.scopeLimited': '{count, plural, one {# brand} other {# brands}}：{names}',
+  'settings.ui.members.scopeLimited': '{count, plural, one {# project} other {# projects}}：{names}',
   'settings.ui.members.approvals.canApprove': '可以批准',
   'settings.ui.members.approvals.cannotApprove': '无法批准',
-  'settings.ui.members.approvals.canApproveOwnBrands': '可以批准列出的品牌',
+  'settings.ui.members.approvals.canApproveOwnProjects': '可以批准列出的品牌',
   'settings.ui.members.lastActiveNever': '尚未登录',
   'settings.ui.members.changeRole': '更改 {name} 的角色',
   'settings.ui.members.remove': '删除 {name}',
@@ -75,7 +75,7 @@ export const webSettingsMessages = {
   'settings.ui.members.inviteBody':
     '他们收到一封带有链接的电子邮件。邀请将在 7 天后过期，您可以在此之前撤销邀请。',
   'settings.ui.members.inviteRole': '角色',
-  'settings.ui.members.inviteScope': '他们可以工作的Brand',
+  'settings.ui.members.inviteScope': '他们可以工作的Project',
   'settings.ui.members.inviteScopeAll': '这个工作空间中的每个品牌',
   'settings.ui.members.inviteScopeSelected': '仅限我选择的品牌',
   'settings.ui.members.inviteApprovals': '可以决定批准​​请求',
@@ -108,37 +108,37 @@ export const webSettingsMessages = {
   'settings.ui.members.removeConsequence.audit': '他们过去的行为保留在审核日志和收据中。',
   'settings.ui.members.removeConsequence.approvals':
     '等待他们的批准请求将返回到另一个批准者的队列中。',
-  'settings.ui.brands.description':
+  'settings.ui.projects.description':
     '品牌有内容检查的规则：你可以主张什么，你不能说什么，以及每种语言的书写方式。',
-  'settings.ui.brands.listCaption': '此工作区中的Brand',
-  'settings.ui.brands.column.brand': 'Brand',
-  'settings.ui.brands.column.locales': '内容语言',
-  'settings.ui.brands.column.accounts': '账户',
-  'settings.ui.brands.column.updated': '已更新',
-  'settings.ui.brands.accountCount':
+  'settings.ui.projects.listCaption': '此工作区中的Project',
+  'settings.ui.projects.column.project': 'Project',
+  'settings.ui.projects.column.locales': '内容语言',
+  'settings.ui.projects.column.accounts': '账户',
+  'settings.ui.projects.column.updated': '已更新',
+  'settings.ui.projects.accountCount':
     '{count, plural, =0 {No accounts} one {# account} other {# accounts}}',
-  'settings.ui.brands.emptyTitle': '还没有品牌',
-  'settings.ui.brands.emptyBody':
+  'settings.ui.projects.emptyTitle': '还没有品牌',
+  'settings.ui.projects.emptyBody':
     '品牌对帐户、审批规则和语言规则进行分组。大多数团队都会从一个规则开始，当客户或市场需要不同的规则时，会添加第二个规则。',
-  'settings.ui.brands.emptyExample':
+  'settings.ui.projects.emptyExample':
     '示例：品牌“Acme EU”，语言为英语和德语，屏蔽术语“保证”，在 Instagram 上披露“付费合作伙伴关系”。',
-  'settings.ui.brands.voiceHelp': '这个品牌听起来怎么样。当您要求重写和检查声明时使用。',
-  'settings.ui.brands.audienceHelp': '每个市场的内容适合谁。',
-  'settings.ui.brands.approvedClaimsHelp':
+  'settings.ui.projects.voiceHelp': '这个品牌听起来怎么样。当您要求重写和检查声明时使用。',
+  'settings.ui.projects.audienceHelp': '每个市场的内容适合谁。',
+  'settings.ui.projects.approvedClaimsHelp':
     '审稿人已清除的声明。此列表之外的任何内容都会在批准之前而不是发布之后进行标记。',
-  'settings.ui.brands.blockedTermsHelp': '阻碍该品牌日程安排的词语。每行一个。',
-  'settings.ui.brands.domainsHelp':
+  'settings.ui.projects.blockedTermsHelp': '阻碍该品牌日程安排的词语。每行一个。',
+  'settings.ui.projects.domainsHelp':
     '该品牌可能链接到并缩短的域名。在编辑器中只能选择经过验证的域。',
-  'settings.ui.brands.domainVerified': '已验证 {date}',
-  'settings.ui.brands.domainPending': '尚未看到 DNS 记录',
-  'settings.ui.brands.disclosureHelp':
+  'settings.ui.projects.domainVerified': '已验证 {date}',
+  'settings.ui.projects.domainPending': '尚未看到 DNS 记录',
+  'settings.ui.projects.disclosureHelp':
     '默认情况下，在您在此处选择的平台的 Composer 中应用。在批准之前可以对每个帖子进行更改。',
-  'settings.ui.brands.glossaryHelp': '产品名称、法律术语以及任何翻译后必须保持不变的内容。',
-  'settings.ui.brands.glossaryCaption': '受保护术语以及每种语言如何处理每个术语',
-  'settings.ui.brands.glossaryEmpty': '尚无受保护条款。添加不得翻译或改写的产品名称和法律术语。',
-  'settings.ui.brands.localeRulesHelp':
+  'settings.ui.projects.glossaryHelp': '产品名称、法律术语以及任何翻译后必须保持不变的内容。',
+  'settings.ui.projects.glossaryCaption': '受保护术语以及每种语言如何处理每个术语',
+  'settings.ui.projects.glossaryEmpty': '尚无受保护条款。添加不得翻译或改写的产品名称和法律术语。',
+  'settings.ui.projects.localeRulesHelp':
     '每种内容语言的规则。它们会在您改编或创译时应用，并向审阅者展示。',
-  'settings.ui.brands.saveBrand': '保存品牌',
+  'settings.ui.projects.saveProject': '保存品牌',
   'settings.ui.localization.description':
     '三个单独的设置：此应用程序的语言、您发布的语言以及您正在编写的市场。改变一个永远不会改变另一个。',
   'settings.ui.localization.interfaceOnlyEnglish':
@@ -207,8 +207,8 @@ export const webSettingsMessages = {
   'settings.ui.data.deleteConnection': '撤销一项社交联系',
   'settings.ui.data.deleteConnectionHelp':
     'Relay。删除对该帐户的中继访问权限。工作区、其内容和收据将保留。',
-  'settings.ui.data.deleteBrand': '删除品牌',
-  'settings.ui.data.deleteBrandHelp': '删除品牌、其规则和术语表。在其下发布的内容保留其收据。',
+  'settings.ui.data.deleteProject': '删除品牌',
+  'settings.ui.data.deleteProjectHelp': '删除品牌、其规则和术语表。在其下发布的内容保留其收据。',
   'settings.ui.data.deleteContent': '删除内容和媒体',
   'settings.ui.data.deleteContentHelp': '删除草稿和存储的文件。它不会删除平台上已发布的任何内容。',
   'settings.ui.data.deleteAccount': '关闭此工作区',
@@ -433,7 +433,7 @@ export const webSettingsMessages = {
   'developer.ui.webhooks.eventGroup.publishing': '出版',
   'developer.ui.webhooks.eventGroup.automation': '自动化和饲料',
   'developer.ui.webhooks.eventGroup.workspace': 'Workspace。工作空间',
-  'developer.ui.webhooks.scopeTitle': 'Brand和账户',
+  'developer.ui.webhooks.scopeTitle': 'Project和账户',
   'developer.ui.webhooks.scopeAll': '每个品牌和帐户',
   'developer.ui.webhooks.scopeSelected': '仅限我选择的',
   'developer.ui.webhooks.secretTitle': '签名秘笈',
@@ -493,7 +493,7 @@ export const webSettingsMessages = {
   'billing.ui.conversionLabel': '转换',
   'billing.ui.channelsLabel': '活跃频道',
   'billing.ui.paymentMethodPolar': 'Polar 持有的付款方式',
-  'billing.ui.paymentMethodDescriptor': '{brand} 结束 {last4}，到期 {expiry}',
+  'billing.ui.paymentMethodDescriptor': '{project} 结束 {last4}，到期 {expiry}',
   'billing.ui.paymentMethodMissing': '尚未记录付款方式',
   'billing.ui.cancelBeforeDate': '在 {date} 之前取消，我们不会向您收取费用。',
   'billing.ui.annualFraming': '25 美元/月，按年计费。每年节省 48 美元。',

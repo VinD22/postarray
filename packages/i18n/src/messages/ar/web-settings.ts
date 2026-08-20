@@ -24,8 +24,8 @@ export const webSettingsMessages = {
 
   'settings.ui.section.members': 'الأعضاء والأدوار',
   'settings.ui.section.membersSummary': 'من الموجود في مساحة العمل هذه وما يمكن لكل شخص فعله.',
-  'settings.ui.section.brands': 'Brands',
-  'settings.ui.section.brandsSummary':
+  'settings.ui.section.projects': 'Projects',
+  'settings.ui.section.projectsSummary':
     'الصوت والجمهور والمطالبات المعتمدة والمصطلحات المحظورة وقواعد اللغة والمجالات والمسرد.',
   'settings.ui.section.agents': 'الوكلاء وواجهة برمجة التطبيقات',
   'settings.ui.section.agentsSummary':
@@ -103,7 +103,7 @@ export const webSettingsMessages = {
     '{count, plural, one {#علامة تجارية} zero {#العلامات التجارية} two {#العلامات التجارية} few {#العلامات التجارية} many {#العلامات التجارية} other {#العلامات التجارية}}: {names}',
   'settings.ui.members.approvals.canApprove': 'يمكن الموافقة',
   'settings.ui.members.approvals.cannotApprove': 'لا يمكن الموافقة',
-  'settings.ui.members.approvals.canApproveOwnBrands':
+  'settings.ui.members.approvals.canApproveOwnProjects':
     'يمكن الموافقة على العلامات التجارية المدرجة',
   'settings.ui.members.lastActiveNever': 'لم يسجل الدخول بعد',
   'settings.ui.members.changeRole': 'تغيير الدور لـ {name}',
@@ -114,7 +114,7 @@ export const webSettingsMessages = {
   'settings.ui.members.inviteBody':
     'يتلقون بريدًا إلكترونيًا يحتوي على رابط. تنتهي صلاحية الدعوة بعد سبعة أيام ويمكنك إلغاءها قبل ذلك.',
   'settings.ui.members.inviteRole': 'الدور',
-  'settings.ui.members.inviteScope': 'Brand يمكنهم العمل فيها',
+  'settings.ui.members.inviteScope': 'Project يمكنهم العمل فيها',
   'settings.ui.members.inviteScopeAll': 'كل علامة تجارية في مساحة العمل هذه',
   'settings.ui.members.inviteScopeSelected': 'فقط العلامات التجارية التي أختارها',
   'settings.ui.members.inviteApprovals': 'يمكن أن تقرر طلبات الموافقة',
@@ -150,43 +150,43 @@ export const webSettingsMessages = {
   'settings.ui.members.removeConsequence.approvals':
     'تعود طلبات الموافقة المنتظرة إلى قائمة الانتظار لمعتمد آخر.',
 
-  /* ------------------------------------------------------------------ brands */
+  /* ----------------------------------------------------------------- projects */
 
-  'settings.ui.brands.description':
+  'settings.ui.projects.description':
     'تحمل العلامة التجارية القواعد التي يتم فحص المحتوى وفقًا لها: ما قد تطالب به، وما لا يجوز لك قوله، وكيفية كتابة كل لغة.',
-  'settings.ui.brands.listCaption': 'Brands في مساحة العمل هذه',
-  'settings.ui.brands.column.brand': 'Brand',
-  'settings.ui.brands.column.locales': 'لغات المحتوى',
-  'settings.ui.brands.column.accounts': 'الحسابات',
-  'settings.ui.brands.column.updated': 'تم التحديث',
-  'settings.ui.brands.accountCount':
+  'settings.ui.projects.listCaption': 'Projects في مساحة العمل هذه',
+  'settings.ui.projects.column.project': 'Project',
+  'settings.ui.projects.column.locales': 'لغات المحتوى',
+  'settings.ui.projects.column.accounts': 'الحسابات',
+  'settings.ui.projects.column.updated': 'تم التحديث',
+  'settings.ui.projects.accountCount':
     '{count, plural, =0 {لا حسابات} one {# حساب} zero {#حسابات} two {#حسابات} few {#حسابات} many {#حسابات} other {#حسابات}}',
-  'settings.ui.brands.emptyTitle': 'لا توجد علامات تجارية حتى الآن',
-  'settings.ui.brands.emptyBody':
+  'settings.ui.projects.emptyTitle': 'لا توجد علامات تجارية حتى الآن',
+  'settings.ui.projects.emptyBody':
     'تجمع العلامة التجارية الحسابات وقواعد الموافقة وقواعد اللغة. تبدأ معظم الفرق بواحدة وتضيف ثانية عندما يحتاج العميل أو السوق إلى قواعد مختلفة.',
-  'settings.ui.brands.emptyExample':
+  'settings.ui.projects.emptyExample':
     'مثال: العلامة التجارية "Acme EU"، باللغتين الإنجليزية والألمانية، المصطلح المحظور "مضمون"، الكشف عن "شراكة مدفوعة الأجر" لـ Instagram.',
-  'settings.ui.brands.voiceHelp':
+  'settings.ui.projects.voiceHelp':
     'كيف تبدو هذه العلامة التجارية. يُستخدم عندما تطلب إعادة الكتابة وعندما يتم التحقق من المطالبات.',
-  'settings.ui.brands.audienceHelp': 'من هو المحتوى، لكل سوق.',
-  'settings.ui.brands.approvedClaimsHelp':
+  'settings.ui.projects.audienceHelp': 'من هو المحتوى، لكل سوق.',
+  'settings.ui.projects.approvedClaimsHelp':
     'البيانات التي قام المراجع بمسحها. يتم وضع علامة على أي شيء خارج هذه القائمة قبل الموافقة عليه، وليس بعد النشر.',
-  'settings.ui.brands.blockedTermsHelp':
+  'settings.ui.projects.blockedTermsHelp':
     'الكلمات التي تمنع الجدولة لهذه العلامة التجارية. واحد لكل سطر.',
-  'settings.ui.brands.domainsHelp':
+  'settings.ui.projects.domainsHelp':
     'النطاقات التي قد ترتبط بها هذه العلامة التجارية وتختصرها. يمكن تحديد المجالات التي تم التحقق منها فقط في الملحن.',
-  'settings.ui.brands.domainVerified': 'تم التحقق {date}',
-  'settings.ui.brands.domainPending': 'سجل DNS لم ير بعد',
-  'settings.ui.brands.disclosureHelp':
+  'settings.ui.projects.domainVerified': 'تم التحقق {date}',
+  'settings.ui.projects.domainPending': 'سجل DNS لم ير بعد',
+  'settings.ui.projects.disclosureHelp':
     'يتم تطبيقه افتراضيًا في الملحن للأنظمة الأساسية التي تختارها هنا. ويمكن تغييره لكل مشاركة قبل الموافقة عليها.',
-  'settings.ui.brands.glossaryHelp':
+  'settings.ui.projects.glossaryHelp':
     'أسماء المنتجات والمصطلحات القانونية وأي شيء يجب أن يبقى بعد الترجمة دون تغيير.',
-  'settings.ui.brands.glossaryCaption': 'المصطلحات المحمية وكيفية التعامل مع كل منها لكل لغة',
-  'settings.ui.brands.glossaryEmpty':
+  'settings.ui.projects.glossaryCaption': 'المصطلحات المحمية وكيفية التعامل مع كل منها لكل لغة',
+  'settings.ui.projects.glossaryEmpty':
     'لا توجد شروط محمية حتى الآن. أضف أسماء المنتجات والمصطلحات القانونية التي لا يجب ترجمتها أو إعادة صياغتها.',
-  'settings.ui.brands.localeRulesHelp':
+  'settings.ui.projects.localeRulesHelp':
     'القواعد لكل لغة المحتوى. يتم تطبيقها عند التكيف أو التحويل، ويتم عرضها للمراجع.',
-  'settings.ui.brands.saveBrand': 'حفظ العلامة التجارية',
+  'settings.ui.projects.saveProject': 'حفظ العلامة التجارية',
 
   /* ------------------------------------------------------------ localization */
 
@@ -267,8 +267,8 @@ export const webSettingsMessages = {
   'settings.ui.data.deleteConnection': 'قم بإلغاء اتصال اجتماعي واحد',
   'settings.ui.data.deleteConnectionHelp':
     'يزيل Relay الوصول إلى هذا الحساب. تبقى مساحة العمل ومحتواها وإيصالاتها.',
-  'settings.ui.data.deleteBrand': 'حذف علامة تجارية',
-  'settings.ui.data.deleteBrandHelp':
+  'settings.ui.data.deleteProject': 'حذف علامة تجارية',
+  'settings.ui.data.deleteProjectHelp':
     'يزيل العلامة التجارية وقواعدها ومعجمها. المحتوى المنشور تحته يحتفظ بإيصالاته.',
   'settings.ui.data.deleteContent': 'حذف المحتوى والوسائط',
   'settings.ui.data.deleteContentHelp':
@@ -534,7 +534,7 @@ export const webSettingsMessages = {
   'developer.ui.webhooks.eventGroup.publishing': 'النشر',
   'developer.ui.webhooks.eventGroup.automation': 'الأتمتة والأعلاف',
   'developer.ui.webhooks.eventGroup.workspace': 'Workspace',
-  'developer.ui.webhooks.scopeTitle': 'Brands والحسابات',
+  'developer.ui.webhooks.scopeTitle': 'Projects والحسابات',
   'developer.ui.webhooks.scopeAll': 'كل علامة تجارية وحساب',
   'developer.ui.webhooks.scopeSelected': 'فقط تلك التي أختارها',
   'developer.ui.webhooks.secretTitle': 'سر التوقيع',
@@ -599,7 +599,7 @@ export const webSettingsMessages = {
   'billing.ui.conversionLabel': 'المتحولين',
   'billing.ui.channelsLabel': 'القنوات النشطة',
   'billing.ui.paymentMethodPolar': 'طريقة الدفع التي تحتفظ بها Polar',
-  'billing.ui.paymentMethodDescriptor': '{brand} تنتهي بـ {last4}، تنتهي بـ {expiry}',
+  'billing.ui.paymentMethodDescriptor': '{project} تنتهي بـ {last4}، تنتهي بـ {expiry}',
   'billing.ui.paymentMethodMissing': 'لا توجد طريقة دفع مسجلة حتى الآن',
   'billing.ui.cancelBeforeDate': 'قم بالإلغاء قبل {date} ولن يتم تحصيل رسوم منك.',
   'billing.ui.annualFraming':

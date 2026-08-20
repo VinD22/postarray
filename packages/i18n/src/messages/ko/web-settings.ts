@@ -7,8 +7,8 @@ export const webSettingsMessages = {
     '섹션을 선택하세요. 모든 변경 사항은 귀하에게 귀속되며 감사 로그에 표시됩니다.',
   'settings.ui.section.members': '회원 및 역할',
   'settings.ui.section.membersSummary': '이 작업 공간에는 누가 있고 각 사람이 무엇을 할 수 있는지.',
-  'settings.ui.section.brands': '브랜드',
-  'settings.ui.section.brandsSummary':
+  'settings.ui.section.projects': '프로젝트',
+  'settings.ui.section.projectsSummary':
     '음성, 청중, 승인된 주장, 차단된 용어, 로케일 규칙, 도메인 및 용어집.',
   'settings.ui.section.agents': '에이전트 및 API',
   'settings.ui.section.agentsSummary': '서비스 계정, 범위, 한도, 자격 증명, 활동 및 연습 환경.',
@@ -76,7 +76,7 @@ export const webSettingsMessages = {
   'settings.ui.members.scopeLimited': '{count, plural, other {# 브랜드}}:{names}',
   'settings.ui.members.approvals.canApprove': '승인 가능',
   'settings.ui.members.approvals.cannotApprove': '승인할 수 없음',
-  'settings.ui.members.approvals.canApproveOwnBrands': '나열된 브랜드에 대해 승인할 수 있음',
+  'settings.ui.members.approvals.canApproveOwnProjects': '나열된 프로젝트에 대해 승인할 수 있음',
   'settings.ui.members.lastActiveNever': '아직 로그인하지 않았습니다.',
   'settings.ui.members.changeRole': '역할 변경{name}',
   'settings.ui.members.remove': '제거하다{name}',
@@ -121,39 +121,67 @@ export const webSettingsMessages = {
   'settings.ui.members.removeConsequence.audit': '과거 활동은 감사 로그와 영수증에 남아 있습니다.',
   'settings.ui.members.removeConsequence.approvals':
     '대기 중인 승인 요청은 다른 승인자의 대기열로 돌아갑니다.',
-  'settings.ui.brands.description':
+  'settings.ui.projects.description':
     '브랜드에는 주장할 수 있는 내용, 말하지 말아야 할 내용, 각 언어가 작성되는 방식 등 콘텐츠를 확인하는 규칙이 있습니다.',
-  'settings.ui.brands.listCaption': '이 작업공간의 브랜드',
-  'settings.ui.brands.column.brand': 'Brand',
-  'settings.ui.brands.column.locales': '콘텐츠 언어',
-  'settings.ui.brands.column.accounts': '계정',
-  'settings.ui.brands.column.updated': '업데이트됨',
-  'settings.ui.brands.accountCount': '{count, plural, other {#개의 계정}}',
-  'settings.ui.brands.emptyTitle': '아직 브랜드가 없습니다.',
-  'settings.ui.brands.emptyBody':
+  'settings.ui.projects.listCaption': '이 작업공간의 프로젝트',
+  'settings.ui.projects.column.project': '프로젝트',
+  'settings.ui.projects.column.locales': '콘텐츠 언어',
+  'settings.ui.projects.column.accounts': '계정',
+  'settings.ui.projects.column.updated': '업데이트됨',
+  'settings.ui.projects.accountCount': '{count, plural, other {#개의 계정}}',
+  'settings.ui.projects.emptyTitle': '아직 프로젝트가 없습니다.',
+  'settings.ui.projects.emptyBody':
     '브랜드 그룹 계정, 승인 규칙 및 언어 규칙. 대부분의 팀은 하나부터 시작하여 고객이나 시장에 다른 규칙이 필요할 때 두 번째 규칙을 추가합니다.',
-  'settings.ui.brands.emptyExample':
+  'settings.ui.projects.emptyExample':
     '예: 브랜드 "Acme EU", 영어 및 독일어 언어, 차단된 용어 "보장", Instagram에 대한 "유료 파트너십" 공개.',
-  'settings.ui.brands.voiceHelp':
-    '이 브랜드의 소리. 재작성을 요청하거나 클레임을 확인할 때 사용됩니다.',
-  'settings.ui.brands.audienceHelp': '시장별로 콘텐츠가 누구를 위한 것인지.',
-  'settings.ui.brands.approvedClaimsHelp':
+  'settings.ui.projects.voiceHelp':
+    '이 프로젝트의 소리. 재작성을 요청하거나 클레임을 확인할 때 사용됩니다.',
+  'settings.ui.projects.audienceHelp': '시장별로 콘텐츠가 누구를 위한 것인지.',
+  'settings.ui.projects.approvedClaimsHelp':
     '검토자가 지운 명령문입니다. 이 목록 밖의 모든 항목은 게시 후가 아니라 승인 전에 플래그가 지정됩니다.',
-  'settings.ui.brands.blockedTermsHelp': '이 브랜드의 일정을 방해하는 단어입니다. 한 줄에 하나씩.',
-  'settings.ui.brands.domainsHelp':
-    '이 브랜드가 연결되거나 단축될 수 있는 도메인입니다. 작성기에서는 확인된 도메인만 선택할 수 있습니다.',
-  'settings.ui.brands.domainVerified': '확인됨{date}',
-  'settings.ui.brands.domainPending': 'DNS 레코드가 아직 표시되지 않음',
-  'settings.ui.brands.disclosureHelp':
+  'settings.ui.projects.blockedTermsHelp': '이 프로젝트의 일정을 방해하는 단어입니다. 한 줄에 하나씩.',
+  'settings.ui.projects.domainsHelp':
+    '이 프로젝트가 연결되거나 단축될 수 있는 도메인입니다. 작성기에서는 확인된 도메인만 선택할 수 있습니다.',
+  'settings.ui.projects.domainVerified': '확인됨{date}',
+  'settings.ui.projects.domainPending': 'DNS 레코드가 아직 표시되지 않음',
+  'settings.ui.projects.domainVerificationUnavailable': '인증 기능은 아직 구현되지 않았습니다',
+  'settings.ui.projects.disclosureUnavailable':
+    '채널별 공개 문구 기본값은 아직 구현되지 않았습니다. 이 기능이 제공될 때까지 게시물에 필요한 공개 문구를 직접 추가하세요.',
+  'settings.ui.projects.glossaryUnavailable':
+    '작업공간 용어집은 아직 구현되지 않았습니다. 위의 어조, 대상, 승인된 주장, 차단된 용어는 저장되어 적용됩니다.',
+  'settings.ui.projects.localeRulesUnavailable':
+    '언어별 작성 규칙은 아직 구현되지 않았습니다. 작업공간 언어와 시장은 현지화에서 계속 사용할 수 있습니다.',
+  'settings.ui.projects.disclosureHelp':
     '여기에서 선택한 플랫폼에 대한 작성기에서 기본적으로 적용됩니다. 승인 전 게시물별로 변경될 수 있습니다.',
-  'settings.ui.brands.glossaryHelp':
+  'settings.ui.projects.glossaryHelp':
     '제품 이름, 법적 용어 및 번역 후에도 변경되지 않고 남아 있어야 하는 모든 사항.',
-  'settings.ui.brands.glossaryCaption': '보호되는 용어 및 각 용어가 언어별로 처리되는 방식',
-  'settings.ui.brands.glossaryEmpty':
+  'settings.ui.projects.glossaryCaption': '보호되는 용어 및 각 용어가 언어별로 처리되는 방식',
+  'settings.ui.projects.glossaryEmpty':
     '아직 보호된 약관이 없습니다. 번역하거나 바꿔 말하면 안 되는 제품 이름과 법률 용어를 추가하세요.',
-  'settings.ui.brands.localeRulesHelp':
+  'settings.ui.projects.localeRulesHelp':
     '콘텐츠 언어별 규칙. 이는 각색하거나 변환할 때 적용되며 리뷰어에게 표시됩니다.',
-  'settings.ui.brands.saveBrand': '브랜드 저장',
+  'settings.ui.projects.saveProject': '프로젝트 저장',
+  'settings.ui.projects.capacityTitle': '프로젝트 용량',
+  'settings.ui.projects.capacityHelp':
+    '$29 기본 요금제에는 활성 프로젝트 3개가 포함됩니다. 작업공간은 다른 계정을 만들지 않고도 최대 20개 프로젝트까지 권한을 받을 수 있습니다.',
+  'settings.ui.projects.capacitySummary': '{limit}개 중 {used}개',
+  'settings.ui.projects.atLimitTitle': '이 작업공간은 모든 프로젝트 슬롯을 사용했습니다',
+  'settings.ui.projects.atLimitBody':
+    '다른 프로젝트를 추가하기 전에 비활성 프로젝트를 보관하거나 작업공간 권한을 변경하세요. 현재 한도는 {limit}입니다.',
+  'settings.ui.projects.listLabel': '편집할 프로젝트를 선택하세요',
+  'settings.ui.projects.detailsTitle': '프로젝트 세부정보',
+  'settings.ui.projects.projectMeta':
+    '{accounts, plural, other {#개 채널}} · {updated} 업데이트됨',
+  'settings.ui.projects.archiveAction': '프로젝트 보관',
+  'settings.ui.projects.archiveTitle': '{project}을(를) 보관하시겠습니까?',
+  'settings.ui.projects.archiveBody':
+    '이 비활성 프로젝트는 활성 작업공간에서 나가고 프로젝트 슬롯 하나를 확보합니다.',
+  'settings.ui.projects.archiveChannels':
+    '연결된 채널은 활성 프로젝트 화면에 더 이상 표시되지 않습니다.',
+  'settings.ui.projects.archiveHistory': '초안, 게시된 게시물, 영수증, 감사 기록은 유지됩니다.',
+  'settings.ui.projects.archiveLastDisabled': '작업공간에 활성 프로젝트를 하나 이상 유지하세요.',
+  'settings.ui.projects.archiveConnectedDisabled':
+    '보관하기 전에 이 프로젝트의 채널 연결을 해제하세요.',
   'settings.ui.localization.description':
     '세 가지 개별 설정: 이 앱의 언어, 게시하는 언어, 글을 쓰는 시장. 하나를 바꾸는 것은 다른 것을 바꾸지 않습니다.',
   'settings.ui.localization.interfaceOnlyEnglish':
@@ -226,9 +254,9 @@ export const webSettingsMessages = {
   'settings.ui.data.deleteConnection': '하나의 소셜 연결 취소',
   'settings.ui.data.deleteConnectionHelp':
     '해당 계정에 대한 Relay 액세스 권한을 제거합니다. 작업 영역, 해당 콘텐츠 및 영수증은 그대로 유지됩니다.',
-  'settings.ui.data.deleteBrand': '브랜드 삭제',
-  'settings.ui.data.deleteBrandHelp':
-    '브랜드, 규칙 및 용어집을 제거합니다. 그 아래 게시된 콘텐츠는 영수증을 보관합니다.',
+  'settings.ui.data.deleteProject': '프로젝트 보관',
+  'settings.ui.data.deleteProjectHelp':
+    '프로젝트, 규칙 및 용어집을 제거합니다. 그 아래 게시된 콘텐츠는 영수증을 보관합니다.',
   'settings.ui.data.deleteContent': '콘텐츠 및 미디어 삭제',
   'settings.ui.data.deleteContentHelp':
     '초안과 저장된 파일을 제거합니다. 플랫폼에 이미 게시된 내용은 제거되지 않습니다.',
@@ -534,7 +562,7 @@ export const webSettingsMessages = {
   'billing.ui.conversionLabel': '개종하다',
   'billing.ui.channelsLabel': '활성 채널',
   'billing.ui.paymentMethodPolar': 'Polar가 보유하는 결제 수단',
-  'billing.ui.paymentMethodDescriptor': '{brand}종결{last4}, 만료{expiry}',
+  'billing.ui.paymentMethodDescriptor': '{project}종결{last4}, 만료{expiry}',
   'billing.ui.paymentMethodMissing': '아직 등록된 결제 수단이 없습니다.',
   'billing.ui.cancelBeforeDate': '이전에 취소{date}비용이 청구되지 않습니다.',
   'billing.ui.annualFraming': '매년 청구되는 월 $25. 연간 $48를 절약하세요.',

@@ -60,7 +60,7 @@ export const webCalendarMessages = {
   'web.calendar.nowLabel': 'ตอนนี้',
   'web.calendar.allDayHeading': 'ยังไม่มีเวลาที่แน่นอน',
   'web.calendar.filter.group': 'กลุ่มลูกค้า',
-  'web.calendar.filter.anyBrand': 'ยี่ห้อใดก็ได้',
+  'web.calendar.filter.anyProject': 'ยี่ห้อใดก็ได้',
   'web.calendar.filter.anyAccount': 'บัญชีใดก็ได้',
   'web.calendar.filter.anyPlatform': 'แพลตฟอร์มใดก็ได้',
   'web.calendar.filter.anyStatus': 'สถานะอะไรก็ได้',
@@ -299,6 +299,12 @@ export const webCalendarMessages = {
     'หน้าจอถัดไปคือ {provider} ไม่ใช่ Relay Relay ไม่เคยเห็นรหัสผ่านของคุณ',
   'web.connection.connect.noWriteWithoutApproval':
     'การเชื่อมต่อบัญชีไม่ได้เผยแพร่อะไรเลย ทุกโพสต์ยังคงเป็นไปตามนโยบายการอนุมัติพื้นที่ทำงานนี้',
+  'web.connection.projectScope.title': 'กำลังแสดงช่องทางสำหรับ {project}',
+  'web.connection.projectScope.body':
+    'ช่องทางใหม่จะเชื่อมต่อเข้ากับโปรเจกต์นี้ สลับโปรเจกต์จากแถบด้านบนเพื่อจัดการกลุ่มอื่น',
+  'web.connection.projectMissing.title': 'สร้างโปรเจกต์ก่อนเชื่อมต่อช่องทาง',
+  'web.connection.projectMissing.body':
+    'โปรเจกต์ช่วยแยกช่องทาง สื่อ ฉบับร่าง และกำหนดการของผลิตภัณฑ์หรือลูกค้าแต่ละรายออกจากกัน',
   'web.connection.requirement.instagram':
     'การเผยแพร่ Instagram จำเป็นต้องมีบัญชีแบบมืออาชีพ ซึ่งหมายถึงบัญชีธุรกิจหรือผู้สร้างที่เชื่อมโยงกับเพจ Facebook',
   'web.connection.requirement.facebook':

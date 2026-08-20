@@ -27,6 +27,8 @@ export const validationMessages = withHebrewPluralForms({
   'validation.media_file_too_large.message': 'הקובץ הזה הוא {actual}. {provider} מקבל עד {limit}.',
   'validation.media_mixed_types_unsupported.message':
     '{provider} לא יכול לפרסם תמונות ווידאו באותו פוסט.',
+  'validation.media_unavailable.message':
+    'קובץ מצורף כבר לא זמין. הסר אותו מהפוסט או העלה אותו שוב.',
   'validation.alt_text_missing.message':
     'חסר טקסט חלופי ב-{count, plural, one {# תמונה} other {# תמונות}}.',
   'validation.alt_text_missing.hint': 'תאר את התמונה, או סמן אותה כדקורטיבית.',
@@ -54,11 +56,11 @@ export const validationMessages = withHebrewPluralForms({
   'validation.schedule_in_past.message': 'הזמן הזה חלף ב-{timeZone}.',
   'validation.schedule_too_far_ahead.message':
     'זה רחוק יותר מהמבט קדימה של {limit} שהוגדר עבור אישור זה.',
-  'validation.schedule_outside_quiet_hours.message': 'זה נופל בשעות השקט שנקבעו עבור {brand}.',
+  'validation.schedule_outside_quiet_hours.message': 'זה נופל בשעות השקט שנקבעו עבור {project}.',
   'validation.duplicate_within_window.message':
     'תוכן דומה מאוד כבר מתוזמן או פורסם עבור {account} בתוך {window}.',
-  'validation.blocked_term_present.message': 'הטקסט מכיל מונח חסום עבור {brand}.',
-  'validation.unsupported_claim.message': 'תביעה זו אינה בתביעות המאושרות עבור {brand}.',
+  'validation.blocked_term_present.message': 'הטקסט מכיל מונח חסום עבור {project}.',
+  'validation.unsupported_claim.message': 'תביעה זו אינה בתביעות המאושרות עבור {project}.',
   'validation.unsupported_claim.hint': 'הוסף אותו לטענות שאושרו עם ראיות, או ניסוח מחדש את המשפט.',
   'validation.cadence_exceeded.message':
     '{account} יפרסם את {count, plural, one {# time} other {# פעמים}} באותו יום, מעבר למגבלה של {limit}.',

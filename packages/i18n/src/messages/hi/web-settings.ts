@@ -27,8 +27,8 @@ export const webSettingsMessages = {
   'settings.ui.section.members': 'सदस्य और भूमिकाएँ',
   'settings.ui.section.membersSummary':
     'इस कार्यक्षेत्र में कौन है और प्रत्येक व्यक्ति क्या कर सकता है।',
-  'settings.ui.section.brands': 'ZZZप्रोटेक्टेड11ZZZs',
-  'settings.ui.section.brandsSummary':
+  'settings.ui.section.projects': 'ZZZप्रोटेक्टेड11ZZZs',
+  'settings.ui.section.projectsSummary':
     'आवाज़, दर्शक, स्वीकृत दावे, अवरुद्ध शर्तें, स्थानीय नियम, डोमेन और शब्दावली।',
   'settings.ui.section.agents': 'एजेंट और API',
   'settings.ui.section.agentsSummary':
@@ -105,10 +105,10 @@ export const webSettingsMessages = {
   'settings.ui.members.column.lastActive': 'अंतिम सक्रिय',
   'settings.ui.members.column.actions': 'क्रियाएँ',
   'settings.ui.members.scopeAll': 'सभी ब्रांड और खाते',
-  'settings.ui.members.scopeLimited': '{count, plural, one {# brand} other {# brands}}: {names}',
+  'settings.ui.members.scopeLimited': '{count, plural, one {# project} other {# projects}}: {names}',
   'settings.ui.members.approvals.canApprove': 'अनुमोदन कर सकते हैं',
   'settings.ui.members.approvals.cannotApprove': 'अनुमोदन नहीं कर सकते',
-  'settings.ui.members.approvals.canApproveOwnBrands':
+  'settings.ui.members.approvals.canApproveOwnProjects':
     'सूचीबद्ध ब्रांडों के लिए अनुमोदन कर सकते हैं',
   'settings.ui.members.lastActiveNever': 'अभी तक साइन इन नहीं किया है',
   'settings.ui.members.changeRole': 'Change role for {name}',
@@ -119,7 +119,7 @@ export const webSettingsMessages = {
   'settings.ui.members.inviteBody':
     'उन्हें एक लिंक के साथ एक ईमेल प्राप्त होता है। आमंत्रण सात दिनों के बाद समाप्त हो जाता है और आप उससे पहले इसे रद्द कर सकते हैं।',
   'settings.ui.members.inviteRole': 'भूमिका',
-  'settings.ui.members.inviteScope': 'Brands में वे काम कर सकते हैं',
+  'settings.ui.members.inviteScope': 'Projects में वे काम कर सकते हैं',
   'settings.ui.members.inviteScopeAll': 'इस कार्यक्षेत्र में प्रत्येक ब्रांड',
   'settings.ui.members.inviteScopeSelected': 'केवल वे ब्रांड जो मैं चुनता हूं',
   'settings.ui.members.inviteApprovals': 'अनुमोदन अनुरोधों पर निर्णय ले सकते हैं',
@@ -158,43 +158,43 @@ export const webSettingsMessages = {
   'settings.ui.members.removeConsequence.approvals':
     'उन पर प्रतीक्षा कर रहे अनुमोदन अनुरोध किसी अन्य अनुमोदनकर्ता के लिए कतार में लौट आते हैं।',
 
-  /* ------------------------------------------------------------------ brands */
+  /* ----------------------------------------------------------------- projects */
 
-  'settings.ui.brands.description':
+  'settings.ui.projects.description':
     'एक ब्रांड में ऐसे नियम होते हैं जिनके आधार पर सामग्री की जाँच की जाती है: आप क्या दावा कर सकते हैं, आप क्या नहीं कह सकते हैं, और प्रत्येक भाषा कैसे लिखी जाती है।',
-  'settings.ui.brands.listCaption': 'इस कार्यक्षेत्र में Brands',
-  'settings.ui.brands.column.brand': 'ZZZप्रोटेक्टेड11ZZZ',
-  'settings.ui.brands.column.locales': 'सामग्री भाषाएँ',
-  'settings.ui.brands.column.accounts': 'लेखा',
-  'settings.ui.brands.column.updated': 'अद्यतन किया गया',
-  'settings.ui.brands.accountCount':
+  'settings.ui.projects.listCaption': 'इस कार्यक्षेत्र में Projects',
+  'settings.ui.projects.column.project': 'ZZZप्रोटेक्टेड11ZZZ',
+  'settings.ui.projects.column.locales': 'सामग्री भाषाएँ',
+  'settings.ui.projects.column.accounts': 'लेखा',
+  'settings.ui.projects.column.updated': 'अद्यतन किया गया',
+  'settings.ui.projects.accountCount':
     '{count, plural, =0 {No accounts} one {# account} other {# accounts}}',
-  'settings.ui.brands.emptyTitle': 'अभी तक कोई ब्रांड नहीं',
-  'settings.ui.brands.emptyBody':
+  'settings.ui.projects.emptyTitle': 'अभी तक कोई ब्रांड नहीं',
+  'settings.ui.projects.emptyBody':
     'एक ब्रांड खातों, अनुमोदन नियमों और भाषा नियमों को समूहित करता है। अधिकांश टीमें एक से शुरू करती हैं और जब किसी ग्राहक या बाज़ार को अलग-अलग नियमों की आवश्यकता होती है तो दूसरा जोड़ देती हैं।',
-  'settings.ui.brands.emptyExample':
+  'settings.ui.projects.emptyExample':
     'उदाहरण: ब्रांड "एक्मे ईयू", भाषाएं अंग्रेजी और जर्मन, अवरुद्ध शब्द "गारंटी", Instagram के लिए प्रकटीकरण "भुगतान साझेदारी"।',
-  'settings.ui.brands.voiceHelp':
+  'settings.ui.projects.voiceHelp':
     'यह ब्रांड कैसा लगता है. इसका उपयोग तब किया जाता है जब आप दोबारा लिखने के लिए कहते हैं और जब दावों की जाँच की जाती है।',
-  'settings.ui.brands.audienceHelp': 'सामग्री किसके लिए है, प्रति बाज़ार।',
-  'settings.ui.brands.approvedClaimsHelp':
+  'settings.ui.projects.audienceHelp': 'सामग्री किसके लिए है, प्रति बाज़ार।',
+  'settings.ui.projects.approvedClaimsHelp':
     'एक समीक्षक ने बयानों को साफ़ कर दिया है। इस सूची से बाहर की किसी भी चीज़ को अनुमोदन से पहले चिह्नित किया जाता है, प्रकाशन के बाद नहीं।',
-  'settings.ui.brands.blockedTermsHelp':
+  'settings.ui.projects.blockedTermsHelp':
     'ऐसे शब्द जो इस ब्रांड के लिए शेड्यूलिंग को अवरुद्ध करते हैं। प्रति पंक्ति एक।',
-  'settings.ui.brands.domainsHelp':
+  'settings.ui.projects.domainsHelp':
     'जिन डोमेन से यह ब्रांड लिंक कर सकता है और उन्हें छोटा कर सकता है। कंपोज़र में केवल सत्यापित डोमेन का चयन किया जा सकता है।',
-  'settings.ui.brands.domainVerified': 'Verified {date}',
-  'settings.ui.brands.domainPending': 'DNS रिकॉर्ड अभी तक नहीं देखा गया',
-  'settings.ui.brands.disclosureHelp':
+  'settings.ui.projects.domainVerified': 'Verified {date}',
+  'settings.ui.projects.domainPending': 'DNS रिकॉर्ड अभी तक नहीं देखा गया',
+  'settings.ui.projects.disclosureHelp':
     'यहां आपके द्वारा चुने गए प्लेटफ़ॉर्म के लिए कंपोज़र में डिफ़ॉल्ट रूप से लागू किया जाता है। अनुमोदन से पहले इसे प्रति पोस्ट बदला जा सकता है।',
-  'settings.ui.brands.glossaryHelp':
+  'settings.ui.projects.glossaryHelp':
     'उत्पाद के नाम, कानूनी शर्तें और ऐसी कोई भी चीज़ जिसका अनुवाद अपरिवर्तित रहना चाहिए।',
-  'settings.ui.brands.glossaryCaption': 'संरक्षित शब्द और प्रत्येक भाषा को कैसे संभाला जाता है',
-  'settings.ui.brands.glossaryEmpty':
+  'settings.ui.projects.glossaryCaption': 'संरक्षित शब्द और प्रत्येक भाषा को कैसे संभाला जाता है',
+  'settings.ui.projects.glossaryEmpty':
     'अभी तक कोई संरक्षित शर्तें नहीं. उत्पाद के नाम और कानूनी शब्द जोड़ें जिनका अनुवाद या पुनर्लेखन नहीं किया जाना चाहिए।',
-  'settings.ui.brands.localeRulesHelp':
+  'settings.ui.projects.localeRulesHelp':
     'प्रति सामग्री भाषा नियम. जब आप अनुकूलन या ट्रांसक्रिएट करते हैं तो उन्हें लागू किया जाता है और समीक्षक को दिखाया जाता है।',
-  'settings.ui.brands.saveBrand': 'ब्रांड सहेजें',
+  'settings.ui.projects.saveProject': 'ब्रांड सहेजें',
 
   /* ------------------------------------------------------------ localization */
 
@@ -277,8 +277,8 @@ export const webSettingsMessages = {
   'settings.ui.data.deleteConnection': 'एक सामाजिक संबंध रद्द करें',
   'settings.ui.data.deleteConnectionHelp':
     'उस खाते तक Relay पहुंच हटा देता है। कार्यक्षेत्र, उसकी सामग्री और उसकी प्राप्तियाँ बनी रहती हैं।',
-  'settings.ui.data.deleteBrand': 'एक ब्रांड हटाएँ',
-  'settings.ui.data.deleteBrandHelp':
+  'settings.ui.data.deleteProject': 'एक ब्रांड हटाएँ',
+  'settings.ui.data.deleteProjectHelp':
     'ब्रांड, उसके नियम और उसकी शब्दावली को हटा देता है। इसके अंतर्गत प्रकाशित सामग्री अपनी रसीदें रखती है।',
   'settings.ui.data.deleteContent': 'सामग्री और मीडिया हटाएँ',
   'settings.ui.data.deleteContentHelp':
@@ -551,7 +551,7 @@ export const webSettingsMessages = {
   'developer.ui.webhooks.eventGroup.publishing': 'प्रकाशन',
   'developer.ui.webhooks.eventGroup.automation': 'स्वचालन और फ़ीड',
   'developer.ui.webhooks.eventGroup.workspace': 'ZZZप्रोटेक्टेड10ZZZ',
-  'developer.ui.webhooks.scopeTitle': 'Brands और खाते',
+  'developer.ui.webhooks.scopeTitle': 'Projects और खाते',
   'developer.ui.webhooks.scopeAll': 'प्रत्येक ब्रांड और खाता',
   'developer.ui.webhooks.scopeSelected': 'केवल वे ही जिन्हें मैं चुनता हूं',
   'developer.ui.webhooks.secretTitle': 'हस्ताक्षर करने का रहस्य',
@@ -618,7 +618,7 @@ export const webSettingsMessages = {
   'billing.ui.conversionLabel': 'परिवर्तित करता है',
   'billing.ui.channelsLabel': 'सक्रिय चैनल',
   'billing.ui.paymentMethodPolar': 'भुगतान विधि पोलर के पास है',
-  'billing.ui.paymentMethodDescriptor': '{brand} ending {last4}, expires {expiry}',
+  'billing.ui.paymentMethodDescriptor': '{project} ending {last4}, expires {expiry}',
   'billing.ui.paymentMethodMissing': 'फ़ाइल पर अभी तक कोई भुगतान विधि नहीं है',
   'billing.ui.cancelBeforeDate': 'Cancel before {date} and you will not be charged.',
   'billing.ui.annualFraming': 'सालाना $25/माह का बिल भेजा जाता है। $48/वर्ष बचाएं।',

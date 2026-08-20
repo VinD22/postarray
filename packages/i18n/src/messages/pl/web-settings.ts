@@ -27,8 +27,8 @@ export const webSettingsMessages = {
   'settings.ui.section.members': 'Członkowie i role',
   'settings.ui.section.membersSummary':
     'Kto znajduje się w tym obszarze roboczym i co każda osoba może zrobić.',
-  'settings.ui.section.brands': 'Marki',
-  'settings.ui.section.brandsSummary':
+  'settings.ui.section.projects': 'Projekty',
+  'settings.ui.section.projectsSummary':
     'Głos, odbiorcy, zatwierdzone roszczenia, zablokowane terminy, reguły regionalne, domeny i glosariusz.',
   'settings.ui.section.agents': 'Agenci i API',
   'settings.ui.section.agentsSummary':
@@ -110,7 +110,7 @@ export const webSettingsMessages = {
     '{count, plural, one {# marka} other {# marki} few {# marki} many {# marki}}: {names}',
   'settings.ui.members.approvals.canApprove': 'Może zatwierdzić',
   'settings.ui.members.approvals.cannotApprove': 'Nie można zatwierdzić',
-  'settings.ui.members.approvals.canApproveOwnBrands': 'Może zatwierdzić wymienione marki',
+  'settings.ui.members.approvals.canApproveOwnProjects': 'Może zatwierdzić wymienione projekty',
   'settings.ui.members.lastActiveNever': 'Jeszcze się nie zalogował',
   'settings.ui.members.changeRole': 'Zmień rolę dla {name}',
   'settings.ui.members.remove': 'Usuń {name}',
@@ -157,44 +157,73 @@ export const webSettingsMessages = {
   'settings.ui.members.removeConsequence.approvals':
     'Oczekujące prośby o zatwierdzenie wracają do kolejki dla innej osoby zatwierdzającej.',
 
-  /* ------------------------------------------------------------------ brands */
+  /* ----------------------------------------------------------------- projects */
 
-  'settings.ui.brands.description':
+  'settings.ui.projects.description':
     'Marka rządzi się zasadami sprawdzania treści: czego możesz twierdzić, czego nie możesz mówić i jak jest napisany każdy język.',
-  'settings.ui.brands.listCaption': 'Marki w tym obszarze pracy',
-  'settings.ui.brands.column.brand': 'Marka',
-  'settings.ui.brands.column.locales': 'Języki treści',
-  'settings.ui.brands.column.accounts': 'Konta',
-  'settings.ui.brands.column.updated': 'Aktualizacja',
-  'settings.ui.brands.accountCount':
+  'settings.ui.projects.listCaption': 'Projekty w tym obszarze pracy',
+  'settings.ui.projects.column.project': 'Projekt',
+  'settings.ui.projects.column.locales': 'Języki treści',
+  'settings.ui.projects.column.accounts': 'Konta',
+  'settings.ui.projects.column.updated': 'Aktualizacja',
+  'settings.ui.projects.accountCount':
     '{count, plural, =0 {Brak kont} one {# konto} other {# konta} few {# konta} many {# konta}}',
-  'settings.ui.brands.emptyTitle': 'Brak jeszcze marek',
-  'settings.ui.brands.emptyBody':
+  'settings.ui.projects.emptyTitle': 'Brak jeszcze projektów',
+  'settings.ui.projects.emptyBody':
     'Marka grupuje konta, reguły zatwierdzania i reguły językowe. Większość zespołów zaczyna od jednego i dodaje drugie, gdy klient lub rynek potrzebuje innych zasad.',
-  'settings.ui.brands.emptyExample':
+  'settings.ui.projects.emptyExample':
     'Przykład: marka „Acme EU”, języki angielski i niemiecki, zablokowany termin „gwarantowany”, ujawnienie „Płatnego partnerstwa” na Instagramie.',
-  'settings.ui.brands.voiceHelp':
-    'Jak brzmi ta marka. Używane, gdy prosisz o przepisanie i sprawdzanie roszczeń.',
-  'settings.ui.brands.audienceHelp': 'Dla kogo przeznaczona jest treść, według rynku.',
-  'settings.ui.brands.approvedClaimsHelp':
+  'settings.ui.projects.voiceHelp':
+    'Jak brzmi ten projekt. Używane, gdy prosisz o przepisanie i sprawdzanie roszczeń.',
+  'settings.ui.projects.audienceHelp': 'Dla kogo przeznaczona jest treść, według rynku.',
+  'settings.ui.projects.approvedClaimsHelp':
     'Oświadczenia zatwierdzone przez recenzenta. Wszystko spoza tej listy jest oznaczane przed zatwierdzeniem, a nie po opublikowaniu.',
-  'settings.ui.brands.blockedTermsHelp':
-    'Słowa, które blokują harmonogram dla tej marki. Po jednym w wierszu.',
-  'settings.ui.brands.domainsHelp':
-    'Domeny, do których ta marka może prowadzić linki i które mogą być skracane. W kompozytorze można wybierać tylko zweryfikowane domeny.',
-  'settings.ui.brands.domainVerified': 'Zweryfikowano {date}',
-  'settings.ui.brands.domainPending': 'Nie widziano jeszcze rekordu DNS',
-  'settings.ui.brands.disclosureHelp':
+  'settings.ui.projects.blockedTermsHelp':
+    'Słowa, które blokują harmonogram dla tego projektu. Po jednym w wierszu.',
+  'settings.ui.projects.domainsHelp':
+    'Domeny, do których ten projekt może prowadzić linki i które mogą być skracane. W kompozytorze można wybierać tylko zweryfikowane domeny.',
+  'settings.ui.projects.domainVerified': 'Zweryfikowano {date}',
+  'settings.ui.projects.domainPending': 'Nie widziano jeszcze rekordu DNS',
+  'settings.ui.projects.domainVerificationUnavailable': 'Weryfikacja nie jest jeszcze zbudowana',
+  'settings.ui.projects.disclosureUnavailable':
+    'Domyślne ujawnienia dla poszczególnych kanałów nie są jeszcze zbudowane. Dodaj wymagane ujawnienie w poście, dopóki ta funkcja nie zostanie wydana.',
+  'settings.ui.projects.glossaryUnavailable':
+    'Słownik obszaru roboczego nie jest jeszcze zbudowany. Ton, odbiorcy, zatwierdzone twierdzenia i zablokowane terminy powyżej są zapisywane i egzekwowane.',
+  'settings.ui.projects.localeRulesUnavailable':
+    'Zasady pisania dla poszczególnych języków nie są jeszcze zbudowane. Języki i rynki obszaru roboczego pozostają dostępne w Lokalizacji.',
+  'settings.ui.projects.disclosureHelp':
     'Domyślnie stosowane w kompozytorze dla wybranych tutaj platform. Można go zmienić w każdym poście przed zatwierdzeniem.',
-  'settings.ui.brands.glossaryHelp':
+  'settings.ui.projects.glossaryHelp':
     'Nazwy produktów, terminy prawne i wszystko, co musi przetrwać tłumaczenie w niezmienionej formie.',
-  'settings.ui.brands.glossaryCaption':
+  'settings.ui.projects.glossaryCaption':
     'Terminy chronione i sposób postępowania z każdym z nich w zależności od języka',
-  'settings.ui.brands.glossaryEmpty':
+  'settings.ui.projects.glossaryEmpty':
     'Nie ma jeszcze chronionych terminów. Dodaj nazwy produktów i terminy prawne, których nie wolno tłumaczyć ani formułować inaczej.',
-  'settings.ui.brands.localeRulesHelp':
+  'settings.ui.projects.localeRulesHelp':
     'Reguły według języka treści. Są stosowane podczas adaptacji lub transkreacji i pokazywane recenzentowi.',
-  'settings.ui.brands.saveBrand': 'Zapisz markę',
+  'settings.ui.projects.saveProject': 'Zapisz projekt',
+  'settings.ui.projects.capacityTitle': 'Pojemność projektów',
+  'settings.ui.projects.capacityHelp':
+    'Plan podstawowy za 29 USD obejmuje 3 aktywne projekty. Obszar roboczy może mieć uprawnienie do 20 bez tworzenia kolejnego konta.',
+  'settings.ui.projects.capacitySummary': '{used} z {limit}',
+  'settings.ui.projects.atLimitTitle': 'Ten obszar roboczy wykorzystał każde miejsce na projekt',
+  'settings.ui.projects.atLimitBody':
+    'Zarchiwizuj nieaktywny projekt lub zmień uprawnienie obszaru roboczego przed dodaniem kolejnego. Obecny limit to {limit}.',
+  'settings.ui.projects.listLabel': 'Wybierz projekt do edycji',
+  'settings.ui.projects.detailsTitle': 'Szczegóły projektu',
+  'settings.ui.projects.projectMeta':
+    '{accounts, plural, =0 {Brak kanałów} one {# kanał} few {# kanały} many {# kanałów} other {# kanału}} · Zaktualizowano {updated}',
+  'settings.ui.projects.archiveAction': 'Archiwizuj projekt',
+  'settings.ui.projects.archiveTitle': 'Zarchiwizować {project}?',
+  'settings.ui.projects.archiveBody':
+    'Ten nieaktywny projekt opuszcza aktywny obszar roboczy i zwalnia jedno miejsce na projekt.',
+  'settings.ui.projects.archiveChannels':
+    'Jego połączone kanały przestają pojawiać się w przepływach aktywnych projektów.',
+  'settings.ui.projects.archiveHistory':
+    'Szkice, opublikowane posty, potwierdzenia i historia audytu są zachowywane.',
+  'settings.ui.projects.archiveLastDisabled': 'Zachowaj co najmniej jeden aktywny projekt w obszarze roboczym.',
+  'settings.ui.projects.archiveConnectedDisabled':
+    'Odłącz kanały tego projektu przed jego zarchiwizowaniem.',
 
   /* ------------------------------------------------------------ localization */
 
@@ -278,9 +307,9 @@ export const webSettingsMessages = {
   'settings.ui.data.deleteConnection': 'Unieważnij jedno połączenie społecznościowe',
   'settings.ui.data.deleteConnectionHelp':
     'Usuwa dostęp do tego konta przez przekaźnik. Przestrzeń robocza, jej zawartość i rachunki pozostają.',
-  'settings.ui.data.deleteBrand': 'Usuń markę',
-  'settings.ui.data.deleteBrandHelp':
-    'Usuwa markę, jej zasady i słownik. Treści publikowane pod nim zachowują swoje rachunki.',
+  'settings.ui.data.deleteProject': 'Archiwizuj projekt',
+  'settings.ui.data.deleteProjectHelp':
+    'Usuwa projekt, jego zasady i słownik. Treści publikowane pod nim zachowują swoje rachunki.',
   'settings.ui.data.deleteContent': 'Usuń zawartość i multimedia',
   'settings.ui.data.deleteContentHelp':
     'Usuwa wersje robocze i zapisane pliki. Nie usuwa niczego, co zostało już opublikowane na platformie.',
@@ -627,7 +656,7 @@ export const webSettingsMessages = {
   'billing.ui.conversionLabel': 'Konwersje',
   'billing.ui.channelsLabel': 'Aktywne kanały',
   'billing.ui.paymentMethodPolar': 'Metoda płatności posiadana przez firmę Polar',
-  'billing.ui.paymentMethodDescriptor': '{brand} zakończenie {last4}, wygasa {expiry}',
+  'billing.ui.paymentMethodDescriptor': '{project} zakończenie {last4}, wygasa {expiry}',
   'billing.ui.paymentMethodMissing': 'Nie ma jeszcze zapisanej metody płatności',
   'billing.ui.cancelBeforeDate': 'Anuluj przed {date}, a nie poniesiesz żadnych opłat.',
   'billing.ui.annualFraming': '25 USD miesięcznie, opłata roczna. Zaoszczędź 48 USD rocznie.',

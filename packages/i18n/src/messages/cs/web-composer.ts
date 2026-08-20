@@ -216,7 +216,7 @@ export const webComposerMessages = {
   'composerWeb.set.apply': 'Použít tuto sadu',
   'composerWeb.set.none': 'Zatím nejsou uloženy žádné sady.',
   'composerWeb.signature.pickerLabel': 'Podpis',
-  'composerWeb.signature.scope': 'Pro {brand} na {provider} v {language}',
+  'composerWeb.signature.scope': 'Pro {project} na {provider} v {language}',
   'composerWeb.signature.previewHeading': 'Jak končí příspěvek',
   'composerWeb.signature.notMatching':
     'Tento podpis se vztahuje na jinou značku, platformu nebo jazyk, takže zde není nabízen.',
@@ -326,6 +326,15 @@ export const webComposerMessages = {
     'Příklad: launch_hero.jpg, 1600 x 900, sada alternativního textu, použito ve 2 příspěvcích.',
   'mediaLib.error.title': 'Knihovnu nelze načíst',
   'mediaLib.error.body': 'Vaše soubory jsou v bezpečí. Tímto selháním se nic nezměnilo.',
+  'mediaLib.offline.title': 'Knihovna je offline nedostupná',
+  'mediaLib.offline.body':
+    'Bez připojení nemůžeme knihovnu obnovit. Soubory už na této obrazovce se nemění. Znovu se připojte a zkuste to znovu.',
+  'mediaLib.rateLimited.title': 'Knihovna potřebuje krátkou pauzu',
+  'mediaLib.rateLimited.cause':
+    'API nás požádalo, abychom zpomalili při načítání vašich souborů. Vaše uložená média jsou v bezpečí.',
+  'mediaLib.rateLimited.resetLabel': 'Zkuste to znovu po',
+  'mediaLib.rateLimited.alternative':
+    'Můžete pokračovat v místní tvorbě konceptů, ale nahrávání a změny knihovny čekají, dokud se limit neobnoví.',
   'mediaLib.loading': 'Načítání vaší knihovny médií',
   'mediaLib.permission.title': 'Tuto knihovnu pracovního prostoru nevidíte',
   'mediaLib.permission.body':
@@ -356,6 +365,39 @@ export const webComposerMessages = {
   'mediaLib.upload.checkedAgainst': 'Zkontrolováno s účty vybranými v tomto konceptu.',
   'mediaLib.upload.noTargets':
     'Nejsou vybrány žádné účty, takže se soubor kontroluje pouze podle výchozího nastavení pracovního prostoru.',
+  'mediaLib.import.urlLabel': 'Veřejná URL souboru',
+  'mediaLib.import.urlPlaceholder': 'https://cdn.example.com/launch-video.mp4',
+  'mediaLib.import.importing': 'Import médií',
+  'mediaLib.import.succeeded': 'Soubor je ve vaší knihovně',
+  'mediaLib.import.scanPending':
+    'Relay zaznamenal jeho zdroj. Publikování čeká, dokud nedokončí bezpečnostní kontrola.',
+  'mediaLib.import.failed': 'Soubor se nepodařilo importovat',
+  'mediaLib.import.failedHelp':
+    'Zkontrolujte, že odkaz je veřejný a vede přímo na podporovaný mediální soubor, pak to zkuste znovu.',
+  'mediaLib.import.readOnly': 'Připojte API pro import souborů v tomto prostředí.',
+  'mediaLib.import.offline': 'Před importem souboru se znovu připojte.',
+  'mediaLib.import.issue.invalid': 'Zadejte úplnou URL.',
+  'mediaLib.import.issue.scheme': 'Použijte odkaz HTTP nebo HTTPS.',
+  'mediaLib.import.issue.credentials': 'Použijte odkaz bez uživatelského jména nebo hesla.',
+  'mediaLib.retention.title': 'Uložené soubory se uchovávají 30 dní po vytvoření příspěvku',
+  'mediaLib.retention.body':
+    'Jakmile je soubor připojen k příspěvku, trvale jej odstraníme z úložiště Relay 30 dní po vytvoření tohoto příspěvku. Soubory čekající na připojení používají jako záložní datum pro vymazání datum nahrání. Text příspěvku, potvrzenky o publikaci a auditní historie zůstávají dostupné déle. Publikovaný příspěvek na sociální platformě se neodstraní, když vyprší jeho uložený soubor.',
+  'mediaLib.retention.limits':
+    'Obrázky, zvuk a PDF soubory mohou mít až {imageSize}. Videa mohou mít až {videoSize}.',
+  'mediaLib.retention.expiresLabel': 'Datum smazání souboru',
+  'mediaLib.retention.deleted': 'Trvale smazáno',
+  'mediaLib.retention.deletedTitle': 'Tento uložený soubor byl smazán',
+  'mediaLib.retention.deletedBody':
+    '30denní úložná doba skončila. Text příspěvku, potvrzenky o publikaci a auditní historie zůstávají.',
+  'mediaLib.processing.unavailableTitle': 'Tento soubor není připraven k publikování',
+  'mediaLib.processing.unavailableBody':
+    'Zpracování nebo bezpečnostní kontrola stále čeká, nebo neprošla. Nahrajte soubor znovu, pokud se tento stav nevyjasní.',
+  'mediaLib.processing.pendingTitle': 'Bezpečnostní skenování není v předstartovní fázi dostupné',
+  'mediaLib.processing.pendingBody':
+    'Soubor je uložen po dobu 30 dní, ale nelze jej připojit k publikovanému příspěvku, dokud není zapnuto bezpečnostní skenování.',
+  'mediaLib.processing.blockedTitle': 'Tento soubor nelze publikovat',
+  'mediaLib.processing.blockedBody':
+    'Soubor neprošel zpracováním nebo bezpečnostní kontrolou. Nahrajte jiný soubor.',
 
   'mediaLib.alt.heading': 'Alternativní text',
   'mediaLib.alt.help':

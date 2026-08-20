@@ -61,11 +61,11 @@ export const validationMessages = {
   'validation.schedule_in_past.message': 'لقد مر ذلك الوقت في {timeZone}.',
   'validation.schedule_too_far_ahead.message':
     'يعد هذا متقدمًا أكثر من {limit} التطلع إلى المستقبل المحدد لبيانات الاعتماد هذه.',
-  'validation.schedule_outside_quiet_hours.message': 'يقع هذا ضمن ساعات الهدوء المحددة لـ {brand}.',
+  'validation.schedule_outside_quiet_hours.message': 'يقع هذا ضمن ساعات الهدوء المحددة لـ {project}.',
   'validation.duplicate_within_window.message':
     'تمت جدولة محتوى مشابه جدًا أو نشره بالفعل لـ {account} داخل {window}.',
-  'validation.blocked_term_present.message': 'يحتوي النص على مصطلح محظور لـ {brand}.',
-  'validation.unsupported_claim.message': 'هذه المطالبة ليست ضمن المطالبات المعتمدة لـ {brand}.',
+  'validation.blocked_term_present.message': 'يحتوي النص على مصطلح محظور لـ {project}.',
+  'validation.unsupported_claim.message': 'هذه المطالبة ليست ضمن المطالبات المعتمدة لـ {project}.',
   'validation.unsupported_claim.hint':
     'إضافتها إلى الدعاوى المعتمدة مع الأدلة، أو إعادة صياغة الجملة.',
   'validation.cadence_exceeded.message':

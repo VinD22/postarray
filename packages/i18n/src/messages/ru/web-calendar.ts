@@ -86,7 +86,7 @@ export const webCalendarMessages = {
   'web.calendar.allDayHeading': 'Точного времени пока нет',
 
   'web.calendar.filter.group': 'Группа клиентов',
-  'web.calendar.filter.anyBrand': 'Любой бренд',
+  'web.calendar.filter.anyProject': 'Любой бренд',
   'web.calendar.filter.anyAccount': 'Любой аккаунт',
   'web.calendar.filter.anyPlatform': 'Любая платформа',
   'web.calendar.filter.anyStatus': 'Любой статус',
@@ -365,6 +365,13 @@ export const webCalendarMessages = {
     'Следующий экран, {provider}, а не Relay. Relay никогда не видит ваш пароль.',
   'web.connection.connect.noWriteWithoutApproval':
     'Подключение аккаунта ничего не публикует. Каждое сообщение по-прежнему соответствует этой политике одобрения рабочей области.',
+
+  'web.connection.projectScope.title': 'Показаны каналы для бренда {project}',
+  'web.connection.projectScope.body':
+    'Новые каналы подключаются к этому бренду. Переключите бренд на верхней панели, чтобы управлять другим набором.',
+  'web.connection.projectMissing.title': 'Создайте бренд, прежде чем подключать канал',
+  'web.connection.projectMissing.body':
+    'Бренды хранят каналы, медиафайлы, черновики и расписания разных продуктов или клиентов отдельно друг от друга.',
 
   'web.connection.requirement.instagram':
     'Для публикации Instagram требуется профессиональная учетная запись, то есть учетная запись компании или автора, связанная со страницей Facebook.',

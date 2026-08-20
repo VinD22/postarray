@@ -86,7 +86,7 @@ export const webCalendarMessages = {
   'web.calendar.allDayHeading': 'Nog geen exacte tijd',
 
   'web.calendar.filter.group': 'Klantengroep',
-  'web.calendar.filter.anyBrand': 'Elk merk',
+  'web.calendar.filter.anyProject': 'Elk merk',
   'web.calendar.filter.anyAccount': 'Elke rekening',
   'web.calendar.filter.anyPlatform': 'Elk platform',
   'web.calendar.filter.anyStatus': 'Elke status',
@@ -363,6 +363,12 @@ export const webCalendarMessages = {
     'Het volgende scherm is {provider}, niet Relay. Relay ziet nooit uw wachtwoord.',
   'web.connection.connect.noWriteWithoutApproval':
     'Als u een account koppelt, wordt er niets gepubliceerd. Elk bericht volgt nog steeds dit goedkeuringsbeleid voor werkruimten.',
+  'web.connection.projectScope.title': 'Kanalen voor {project}',
+  'web.connection.projectScope.body':
+    'Nieuwe kanalen koppelen aan dit merk. Wissel van merk via de bovenbalk om een andere set te beheren.',
+  'web.connection.projectMissing.title': 'Maak een merk voordat je een kanaal koppelt',
+  'web.connection.projectMissing.body':
+    'Merken houden kanalen, media, concepten en planningen van verschillende producten of klanten gescheiden.',
 
   'web.connection.requirement.instagram':
     'Voor publiceren op Instagram is een professioneel account nodig, dat wil zeggen een bedrijfs- of makersaccount dat aan een Facebook-pagina is gekoppeld.',

@@ -215,7 +215,7 @@ export const webComposerMessages = {
   'composerWeb.set.apply': 'استخدم هذه المجموعة',
   'composerWeb.set.none': 'لم يتم حفظ أي مجموعات حتى الآن.',
   'composerWeb.signature.pickerLabel': 'التوقيع',
-  'composerWeb.signature.scope': 'لـ {brand} على {provider} في {language}',
+  'composerWeb.signature.scope': 'لـ {project} على {provider} في {language}',
   'composerWeb.signature.previewHeading': 'كيف ينتهي هذا المنصب',
   'composerWeb.signature.notMatching':
     'هذا التوقيع مخصص لعلامة تجارية أو منصة أو لغة مختلفة، لذلك لا يتم تقديمه هنا.',

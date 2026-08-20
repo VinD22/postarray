@@ -57,7 +57,7 @@ export const statusMessages = {
   'permission.denied.role': 'Điều này cần có vai trò {role}. Bạn là {currentRole}.',
   'permission.denied.scope': 'Thông tin xác thực này cần có phạm vi {scope}.',
   'permission.denied.contactOwner': 'Hãy yêu cầu {owner} cấp nó.',
-  'permission.denied.brandScope': 'Quyền truy cập của bạn bị giới hạn ở {brands}.',
+  'permission.denied.projectScope': 'Quyền truy cập của bạn bị giới hạn ở {projects}.',
   'permission.readOnly': 'Không gian làm việc này hiện chỉ được đọc.',
   'permission.mfaRequired': 'Xác nhận bằng xác thực hai yếu tố để tiếp tục.',
   'rateLimit.title': 'Chậm lại một lát',

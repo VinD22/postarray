@@ -54,7 +54,7 @@ export const statusMessages = {
   'permission.denied.role': 'สิ่งนี้ต้องการบทบาท {role} คุณคือ {currentRole}',
   'permission.denied.scope': 'ข้อมูลรับรองนี้ต้องมีขอบเขต {scope}',
   'permission.denied.contactOwner': 'ขอให้ {owner} เพื่อให้อนุญาต',
-  'permission.denied.brandScope': 'การเข้าถึงของคุณถูกจำกัดอยู่ที่ {brands}',
+  'permission.denied.projectScope': 'การเข้าถึงของคุณถูกจำกัดอยู่ที่ {projects}',
   'permission.readOnly': 'พื้นที่ทำงานนี้อ่านได้อย่างเดียวในขณะนี้',
   'permission.mfaRequired': 'ยืนยันด้วยการรับรองความถูกต้องด้วยสองปัจจัยเพื่อดำเนินการต่อ',
   'rateLimit.title': 'ช้าลงสักครู่',

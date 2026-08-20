@@ -43,6 +43,8 @@ export const webDemoMessages = {
     'Todo painel aqui é a interface do produto com conteúdo de exemplo. Nenhum conector concluiu a verificação do provedor, então nada é publicado em nenhuma plataforma por meio deste produto hoje. Onde o fluxo de trabalho para, a página diz isso em vez de desenhar o resto.',
   'web.demo.contents.title': 'As seis etapas',
   'web.demo.stepLabel': 'Etapa {position} de {total}',
+  'web.demo.next': 'Próximo: {step}',
+  'web.demo.closing.pricing': 'Veja quanto custa',
   'web.demo.closing.title': 'Esse é todo o ciclo',
   'web.demo.closing.body':
     'Nada acima é uma maquete de um produto que esperamos construir. É a interface como ela está, com a metade da publicação marcada honestamente como inacabada.',
@@ -62,6 +64,9 @@ export const webDemoMessages = {
   'web.demo.step.compose.title': 'Escreva uma vez, adapte por plataforma',
   'web.demo.step.compose.body':
     'Você escreve um rascunho mestre. Selecionar uma conta abre uma sobreposição apenas para aquela conta, com seus próprios limites e sua própria pré-visualização. Nada que você escrever para o LinkedIn muda o que o X recebe, e as verificações de cada versão rodam antes de qualquer coisa ser agendada.',
+  'web.demo.step.variants.title': 'Veja o que cada conta realmente recebe',
+  'web.demo.step.variants.body':
+    'Um rascunho vira uma versão por conta, cada uma escrita para a plataforma à qual se destina: uma linha mais curta para o X, a nota de lançamento completa para o LinkedIn, uma legenda e texto alternativo para o Instagram. Você edita qualquer uma delas sem tocar nas outras, e cada versão carrega a verificação que se aplica a ela.',
 
   'web.demo.step.schedule.title': 'Defina um horário, ou entregue à fila',
   'web.demo.step.schedule.body':
@@ -96,7 +101,8 @@ export const webDemoMessages = {
 
   'web.demo.schedule.label': 'Agendado',
   'web.demo.schedule.value': '{when} em {zone}',
-  'web.demo.schedule.approval': 'Uma aprovação é necessária antes que qualquer coisa possa ser enviada.',
+  'web.demo.schedule.approval':
+    'Uma aprovação é necessária antes que qualquer coisa possa ser enviada.',
   'web.demo.schedule.queue':
     'A fila é a outra rota: ela escolhe o próximo horário que suas regras permitem, neste fuso horário.',
 

@@ -160,7 +160,7 @@ export const webMarketingMessages = {
     'Ang bawat panlabas na pagsusulat ay may dalang idempotency key, kaya ang isang manggagawa ay nag-crash pagkatapos na tanggapin ng platform ang isang post ay hindi lumikha ng pangalawa.',
   'web.home.pillars.adapt.title': 'Ibagay sa halip na duplicate',
   'web.home.pillars.adapt.body':
-    'Bawat variant ng platform na maaari mong i-override ang isang account nang paisa-isa, at transcreation sa halip na literal na pagsasalin, na may glossary ng brand at may pangalang tagasuri sa bawat wika.',
+    'Bawat variant ng platform na maaari mong i-override ang isang account nang paisa-isa, at transcreation sa halip na literal na pagsasalin, na may glossary ng project at may pangalang tagasuri sa bawat wika.',
   'web.home.pillars.adapt.proof':
     'Ang interface ay magagamit sa mga piling wika. Sinasaklaw ng adaptasyon ng nilalaman ang 30 wika ng nilalaman at bawat isa sa mga ito ay masusuri bago ito mag-publish.',
   'web.home.pillars.loop.title': 'Isara ang loop',
@@ -324,7 +324,7 @@ export const webMarketingMessages = {
     'Ang master na bersyon ay nagdadala ng ideya. Nakukuha ng bawat account ang haba, ang crop, ang mga setting at ang tono na inaasahan ng platform, at makikita mo silang lahat nang magkatabi bago ka gumawa.',
   'web.creators.job.languages.title': 'Mag-publish sa ibang wika nang hindi nanghuhula',
   'web.creators.job.languages.body':
-    'Pinapanatili ng transcreation ang layunin sa halip na ang mga salita, ginagamit ang glossary ng iyong brand, at minarkahan kung nabasa ito ng isang katutubong tagasuri. Walang naglalathala sa wikang hindi mo mapapatunayan maliban kung sasabihin mo ito.',
+    'Pinapanatili ng transcreation ang layunin sa halip na ang mga salita, ginagamit ang glossary ng iyong project, at minarkahan kung nabasa ito ng isang katutubong tagasuri. Walang naglalathala sa wikang hindi mo mapapatunayan maliban kung sasabihin mo ito.',
   'web.creators.job.rights.title': 'Panatilihin ang iyong rekord ng mga karapatan kasama ang file',
   'web.creators.job.rights.body':
     'Dinadala ng media kung saan ito nanggaling, kung sino ang may hawak ng mga karapatan at kung ito ay nilikha gamit ang isang generative tool. Ang mga platform ay lalong nagtatanong. Iniimbak ng Relay ang iyong sagot kasama ng asset sa halip na tanungin ka muli.',
@@ -349,7 +349,7 @@ export const webMarketingMessages = {
     'Ang bawat publikasyon ay gumagawa ng hindi nababagong resibo kasama ang panlabas na post ID at ang buong kasaysayan ng pagsubok. Kapag nagtanong ang isang kliyente kung may lumabas sa alas-nuwebe, ang sagot ay may timestamp at isang platform identifier na naka-attach.',
   'web.agencies.job.roles.title': 'Mga tungkulin na tumutugma sa kung paano nahahati ang gawain',
   'web.agencies.job.roles.body':
-    'May-ari, admin, manager, editor, approver, analyst at viewer, na saklaw sa bawat brand at bawat account. Walang limitasyong mga miyembro ng koponan, dahil ang pagsingil sa bawat upuan ay ginagawang magbahagi ang mga ahensya ng mga login at iyon ay isang problema sa seguridad.',
+    'May-ari, admin, manager, editor, approver, analyst at viewer, na saklaw sa bawat project at bawat account. Walang limitasyong mga miyembro ng koponan, dahil ang pagsingil sa bawat upuan ay ginagawang magbahagi ang mga ahensya ng mga login at iyon ay isang problema sa seguridad.',
   'web.agencies.limits.title': 'Ang hangganan, malinaw na nakasaad',
   'web.agencies.limits.body':
     'Sinasaklaw ng isang plano ang 30 aktibong social channel. Ang channel ay isang social account, Page, profile, grupo o koneksyon sa publikasyon. Kung kailangan mo ng higit sa 30, sabihin sa amin kung ano ang kailangan mo at bibigyan ka namin ng isang tuwid na sagot sa halip na isang nakatagong antas.',
@@ -371,7 +371,7 @@ export const webMarketingMessages = {
     'Mag-publish ng mga resulta, mga desisyon sa pag-apruba, kalusugan ng koneksyon at mga resulta ng pagpapatunay, pinirmahan, lumalaban sa replay at maihahatid muli mula sa dashboard.',
   'web.developers.safety.title': 'Ang modelo ng kaligtasan ng ahente',
   'web.developers.safety.body':
-    'Ang kredensyal ng ahente ay isang saklaw na account ng serbisyo, hindi isang kopya ng session ng isang tao. Nagdadala ito ng mga paghihigpit sa bawat brand, bawat account, bawat lokal, bawat domain, bawat cadence at bawat tingin, at muling pinapahintulutan ng server ang bawat tawag sa halip na magtiwala sa host ng ahente.',
+    'Ang kredensyal ng ahente ay isang saklaw na account ng serbisyo, hindi isang kopya ng session ng isang tao. Nagdadala ito ng mga paghihigpit sa bawat project, bawat account, bawat lokal, bawat domain, bawat cadence at bawat tingin, at muling pinapahintulutan ng server ang bawat tawag sa halip na magtiwala sa host ng ahente.',
   'web.developers.safety.injection':
     'Ang mga web page, feed, komento at tugon sa platform ay itinuturing bilang hindi pinagkakatiwalaang data. Ang output ng modelo ay muling na-validate nang deterministiko, dahil ang isang modelo na nagsasabing maayos ang isang post ay hindi isang desisyon sa seguridad.',
   'web.developers.safety.killSwitch':
@@ -399,7 +399,7 @@ export const webMarketingMessages = {
   'web.pricing.beside.channels':
     '30 active social channels. A channel is one social account, Page, profile, group or publication connection.',
   'web.pricing.beside.members':
-    'Unlimited team members, workspaces and brand groups. There is no per seat charge.',
+    'Unlimited team members, workspaces and project groups. There is no per seat charge.',
   'web.pricing.beside.fairUse':
     'Unlimited drafts, scheduled posts and stored receipts under a published fair use and anti spam policy. Those controls exist to protect your connected accounts and they apply identically to every subscriber.',
   'web.pricing.beside.metered':
@@ -538,7 +538,7 @@ export const webMarketingMessages = {
     'Isang backend, apat na paraan sa loob. Ang bawat seksyon ay nagdodokumento ng parehong mga kaso ng paggamit, kaya ang isang konsepto na natutunan mo sa REST API ay ang parehong konsepto sa MCP at sa CLI.',
   'web.docs.section.start.title': 'Pagsisimula',
   'web.docs.section.start.body':
-    'Pagpapatotoo, mga workspace, brand, at ang iyong unang na-publish na post.',
+    'Pagpapatotoo, mga workspace, project, at ang iyong unang na-publish na post.',
   'web.docs.section.api.title': 'REST API',
   'web.docs.section.api.body':
     'Mga mapagkukunan, pagination, idempotency, error code at mga limitasyon sa rate.',
@@ -777,7 +777,7 @@ export const webMarketingMessages = {
   'web.legal.privacy.rights.revoke':
     'Disconnect one social account without deleting the workspace. Tokens are revoked at the platform and deleted here.',
   'web.legal.privacy.rights.delete':
-    'Delete a brand, a piece of content, a media file or the entire account.',
+    'Delete a project, a piece of content, a media file or the entire account.',
   'web.legal.privacy.rights.cancelJobs':
     'Cancel scheduled jobs before deleting anything, so nothing publishes after you leave.',
   'web.legal.privacy.rights.sessions':
@@ -846,13 +846,13 @@ export const webMarketingMessages = {
   'web.legal.ai.features.text':
     'Text assistance in the composer: rewriting, shortening and adapting for a platform.',
   'web.legal.ai.features.translation':
-    'Translation and transcreation into your content languages, against your brand glossary.',
+    'Translation and transcreation into your content languages, against your project glossary.',
   'web.legal.ai.features.feedback': 'Content feedback and the four week growth plan.',
   'web.legal.ai.features.provider':
     'These features call DeepSeek. The model identifiers currently in use are published in the documentation and any change is listed on the changelog.',
   'web.legal.ai.data.title': 'What is sent, and what happens to it',
   'web.legal.ai.data.sent':
-    'Only the text you asked us to work on, the instruction, and the brand context you chose to attach. Credentials, tokens and other customers content are never in a model context.',
+    'Only the text you asked us to work on, the instruction, and the project context you chose to attach. Credentials, tokens and other customers content are never in a model context.',
   'web.legal.ai.data.training':
     'Your content is not used to train our models. We configure providers so it is not used to train theirs.',
   'web.legal.ai.data.optOut':
@@ -1335,7 +1335,7 @@ export const webMarketingMessages = {
   'web.legal.subprocessors.deepseek.purpose':
     'Text assistance, translation and transcreation, and planning suggestions.',
   'web.legal.subprocessors.deepseek.data':
-    'Only the text you submit to an AI feature and the brand context you attached to it.',
+    'Only the text you submit to an AI feature and the project context you attached to it.',
   'web.legal.subprocessors.hosting.label': 'Application hosting and content delivery',
   'web.legal.subprocessors.hosting.purpose':
     'Serving the web app, the API and the short link service.',

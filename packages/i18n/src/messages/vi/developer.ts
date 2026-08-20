@@ -6,7 +6,7 @@ export const developerMessages = {
   'developer.serviceAccount.title': 'Tài khoản dịch vụ',
   'developer.serviceAccount.create': 'Tạo tài khoản dịch vụ',
   'developer.serviceAccount.name': 'Tên',
-  'developer.serviceAccount.scopeBrands': 'Brand và các tài khoản có thể sử dụng',
+  'developer.serviceAccount.scopeProjects': 'Project và các tài khoản có thể sử dụng',
   'developer.serviceAccount.scopePlatforms': 'Nền tảng',
   'developer.serviceAccount.scopeLocales': 'Ngôn ngữ nội dung',
   'developer.serviceAccount.scopeDomains': 'Tên miền liên kết được phép',
@@ -102,7 +102,7 @@ export const developerMessages = {
     'Xóa ứng dụng này? Mọi khoản trợ cấp đều bị thu hồi và mã thông báo của nó ngừng hoạt động.',
   'developer.consent.title': '{app} muốn truy cập vào không gian làm việc của bạn',
   'developer.consent.workspace': 'Workspace',
-  'developer.consent.brands': 'Brand và tài khoản',
+  'developer.consent.projects': 'Project và tài khoản',
   'developer.consent.willBeAbleTo': '{app} sẽ có thể',
   'developer.consent.willNotBeAbleTo': '{app} sẽ không thể',
   'developer.consent.approvalStillApplies':

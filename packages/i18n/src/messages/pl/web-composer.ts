@@ -220,7 +220,7 @@ export const webComposerMessages = {
   'composerWeb.set.apply': 'Użyj tego zestawu',
   'composerWeb.set.none': 'Nie zapisano jeszcze żadnych zestawów.',
   'composerWeb.signature.pickerLabel': 'Podpis',
-  'composerWeb.signature.scope': 'Dla {brand} na {provider} w {language}',
+  'composerWeb.signature.scope': 'Dla {project} na {provider} w {language}',
   'composerWeb.signature.previewHeading': 'Jak kończy się post',
   'composerWeb.signature.notMatching':
     'Ten podpis jest ograniczony do innej marki, platformy lub języka, więc nie jest tutaj oferowany.',
@@ -331,6 +331,15 @@ export const webComposerMessages = {
     'Przykład: launch_hero.jpg, 1600 na 900, zestaw tekstu alternatywnego, użyty w 2 postach.',
   'mediaLib.error.title': 'Nie można załadować biblioteki',
   'mediaLib.error.body': 'Twoje pliki są bezpieczne. Ta awaria nic nie zmieniła.',
+  'mediaLib.offline.title': 'Biblioteka jest niedostępna offline',
+  'mediaLib.offline.body':
+    'Nie możemy odświeżyć biblioteki bez połączenia. Pliki już widoczne na tym ekranie są niezmienione. Połącz się ponownie, a potem spróbuj jeszcze raz.',
+  'mediaLib.rateLimited.title': 'Biblioteka potrzebuje krótkiej przerwy',
+  'mediaLib.rateLimited.cause':
+    'API poprosiło nas o zwolnienie podczas wczytywania Twoich plików. Twoje przechowywane media są bezpieczne.',
+  'mediaLib.rateLimited.resetLabel': 'Spróbuj ponownie po',
+  'mediaLib.rateLimited.alternative':
+    'Możesz nadal tworzyć szkice lokalnie, ale przesyłanie i zmiany w bibliotece czekają, aż limit się zresetuje.',
   'mediaLib.loading': 'Ładowanie biblioteki multimediów',
   'mediaLib.permission.title': 'Nie widzisz tej biblioteki obszaru roboczego',
   'mediaLib.permission.body':
@@ -362,6 +371,39 @@ export const webComposerMessages = {
     'Sprawdziliśmy w odniesieniu do rachunków wybranych w tej wersji roboczej.',
   'mediaLib.upload.noTargets':
     'Nie wybrano żadnych kont, więc plik jest sprawdzany tylko pod kątem ustawień domyślnych obszaru roboczego.',
+  'mediaLib.import.urlLabel': 'Publiczny URL pliku',
+  'mediaLib.import.urlPlaceholder': 'https://cdn.example.com/launch-video.mp4',
+  'mediaLib.import.importing': 'Importowanie mediów',
+  'mediaLib.import.succeeded': 'Plik jest w Twojej bibliotece',
+  'mediaLib.import.scanPending':
+    'Relay zapisał jego źródło. Publikacja czeka na zakończenie kontroli bezpieczeństwa.',
+  'mediaLib.import.failed': 'Nie udało się zaimportować pliku',
+  'mediaLib.import.failedHelp':
+    'Sprawdź, czy link jest publiczny i prowadzi bezpośrednio do obsługiwanego pliku multimedialnego, a potem spróbuj ponownie.',
+  'mediaLib.import.readOnly': 'Połącz API, aby importować pliki w tym środowisku.',
+  'mediaLib.import.offline': 'Połącz się ponownie przed zaimportowaniem pliku.',
+  'mediaLib.import.issue.invalid': 'Wprowadź pełny adres URL.',
+  'mediaLib.import.issue.scheme': 'Użyj linku HTTP lub HTTPS.',
+  'mediaLib.import.issue.credentials': 'Użyj linku bez nazwy użytkownika ani hasła.',
+  'mediaLib.retention.title': 'Przechowywane pliki są zachowywane przez 30 dni po utworzeniu posta',
+  'mediaLib.retention.body':
+    'Gdy plik zostanie dołączony do posta, trwale usuwamy go z przechowywania Relay 30 dni po utworzeniu tego posta. Pliki oczekujące na dołączenie używają daty przesłania jako rezerwowej daty czyszczenia. Tekst posta, potwierdzenia publikacji i historia audytu pozostają dostępne dłużej. Opublikowany post na platformie społecznościowej nie jest usuwany, gdy jego przechowywany plik wygasa.',
+  'mediaLib.retention.limits':
+    'Obrazy, dźwięk i pliki PDF mogą mieć do {imageSize}. Filmy mogą mieć do {videoSize}.',
+  'mediaLib.retention.expiresLabel': 'Data usunięcia pliku',
+  'mediaLib.retention.deleted': 'Trwale usunięty',
+  'mediaLib.retention.deletedTitle': 'Ten przechowywany plik został usunięty',
+  'mediaLib.retention.deletedBody':
+    '30-dniowy okres przechowywania zakończył się. Tekst posta, potwierdzenia publikacji i historia audytu pozostają.',
+  'mediaLib.processing.unavailableTitle': 'Ten plik nie jest gotowy do publikacji',
+  'mediaLib.processing.unavailableBody':
+    'Przetwarzanie lub kontrola bezpieczeństwa nadal oczekują albo się nie powiodły. Prześlij plik ponownie, jeśli ten stan się nie wyjaśni.',
+  'mediaLib.processing.pendingTitle': 'Skanowanie bezpieczeństwa jest niedostępne przed uruchomieniem',
+  'mediaLib.processing.pendingBody':
+    'Plik jest przechowywany przez 30 dni, ale nie można go dołączyć do opublikowanego posta, dopóki skanowanie bezpieczeństwa nie zostanie włączone.',
+  'mediaLib.processing.blockedTitle': 'Ten plik nie może zostać opublikowany',
+  'mediaLib.processing.blockedBody':
+    'Plik nie przeszedł przetwarzania ani kontroli bezpieczeństwa. Prześlij inny plik.',
 
   'mediaLib.alt.heading': 'Tekst alternatywny',
   'mediaLib.alt.help':

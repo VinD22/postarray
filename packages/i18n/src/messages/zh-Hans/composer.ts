@@ -1,7 +1,7 @@
 /** Simplified Chinese interface messages. */
 export const composerMessages = {
   'composer.title': '撰写',
-  'composer.titleWithBrand': '为 {brand} 撰写',
+  'composer.titleWithProject': '为 {project} 撰写',
   'composer.master.label': '主稿',
   'composer.master.description':
     '在此写一次。兼容的更改达到每个选定的目标。打开一个目标来编写仅该帐户将收到的版本。',

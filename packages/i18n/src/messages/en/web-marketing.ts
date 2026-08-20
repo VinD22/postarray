@@ -164,7 +164,7 @@ export const webMarketingMessages = {
     'Every external write carries an idempotency key, so a worker crash after the platform accepted a post does not create a second one.',
   'web.home.pillars.adapt.title': 'Adapt rather than duplicate',
   'web.home.pillars.adapt.body':
-    'Per platform variants that you can override one account at a time, and transcreation rather than literal translation, with a brand glossary and a named reviewer per language.',
+    'Per platform variants that you can override one account at a time, and transcreation rather than literal translation, with a project glossary and a named reviewer per language.',
   'web.home.pillars.adapt.proof':
     'The interface is available in selected languages. Content adaptation covers 30 content languages and every one of them is reviewable before it publishes.',
   'web.home.pillars.loop.title': 'Close the loop',
@@ -295,6 +295,31 @@ export const webMarketingMessages = {
     'Asking an agent to publish immediately does not publish. Relay mints a pending confirmation bound to the workspace, the grant, the post and a fingerprint of the exact accounts, and hands back a link on the Relay domain. You open it in your own session, see what will go out and where, and approve. Change the post afterwards and the fingerprint changes with it, which voids the approval.',
   'web.home.v2.agents.docsCta': 'Read the agent documentation',
 
+  /*
+   * The louder home page: an oversized two line hero, a reach figure derived
+   * from the launch cohort, and the bento band that replaced three separate
+   * sections (the connector grid, the surfaces list and the variant scene).
+   *
+   * Two things whoever edits these next needs to know.
+   *
+   * 1. `hero.headlineAccent` is a WHOLE SENTENCE, not a fragment of
+   *    `hero.headline`. It is the one phrase on the page set in the vermilion
+   *    action accent, and it is a separate key precisely so no translator is
+   *    ever asked to reorder around a coloured span. Nothing concatenates the
+   *    two: they are two lines of one heading, each complete on its own, and
+   *    either one read alone is still a sentence.
+   * 2. `hero.reachLabel` names what the figure beside it counts, and the
+   *    figure itself is `CORE_PROVIDER_IDS.length`, never a number typed into
+   *    this file. `hero.reachNote` is what keeps the figure honest: cohort
+   *    membership is intent, and availability is still per account per review,
+   *    which is exactly what `web.cta.trialFootnote` already says.
+   */
+  'web.home.v2.hero.headlineAccent': 'One draft, every network.',
+  'web.home.v2.hero.reachLabel': 'Networks in the launch cohort',
+  'web.home.v2.hero.reachNote':
+    'Availability is shown account by account as each platform completes its review.',
+  'web.home.v2.bento.networks.title': 'Where a post can go',
+
   /* ---------------------------------------------------------------------- */
   /* Product                                                                 */
   /* ---------------------------------------------------------------------- */
@@ -384,7 +409,7 @@ export const webMarketingMessages = {
     'The master version carries the idea. Each account gets its own length, media selection, settings and tone, and you can see the variants side by side before you commit.',
   'web.creators.job.languages.title': 'Publish in another language without guessing',
   'web.creators.job.languages.body':
-    'Transcreation keeps the intent rather than the words, uses your brand glossary, and marks whether a native reviewer has read it. Nothing publishes in a language you cannot vouch for unless you say so.',
+    'Transcreation keeps the intent rather than the words, uses your project glossary, and marks whether a native reviewer has read it. Nothing publishes in a language you cannot vouch for unless you say so.',
   'web.creators.job.rights.title': 'Keep your rights record with the file',
   'web.creators.job.rights.body':
     'Media carries where it came from, who holds the rights and whether it was created with a generative tool. Platforms increasingly ask. Relay stores your answer with the asset instead of asking you again.',
@@ -409,7 +434,7 @@ export const webMarketingMessages = {
     'Every publication produces an immutable receipt with the external post ID and the full attempt history. When a client asks whether something went out at nine, the answer has a timestamp and a platform identifier attached.',
   'web.agencies.job.roles.title': 'Roles that match how the work is split',
   'web.agencies.job.roles.body':
-    'Owner, admin, editor, approver, analyst and viewer, scoped per brand and per account. Each workspace includes the owner and up to 5 teammates. Every action is attributed to the person who completed it.',
+    'Owner, admin, editor, approver, analyst and viewer, scoped per project and per account. Each workspace includes the owner and up to 5 teammates. Every action is attributed to the person who completed it.',
   'web.agencies.limits.title': 'The boundary, stated plainly',
   'web.agencies.limits.body':
     'One plan covers 10 active social channels. A channel is one social account, Page, profile, group or publication connection. Disconnect a channel before adding another when all 10 are active.',
@@ -522,6 +547,12 @@ export const webMarketingMessages = {
    * matching the existing precedent for `web.pricing.*` above and
    * `web.home.v2.*` on the landing page.
    */
+  // The hero's two-line headline. The lead line names what actually varies
+  // between the three prices; the accent line is `billing.plan.single`
+  // reused verbatim rather than restated, because that sentence is already
+  // the reviewed "no feature tiers" claim and a second wording of it would be
+  // a second claim to keep in sync with the first.
+  'web.pricing.v2.hero.headline': 'What changes between prices is capacity, not capability.',
   'web.pricing.v2.closing.title': 'Start publishing on one plan',
   // Was a waiting-list sentence ("joining now reserves your place ... the trial
   // starts on the day checkout opens, not today"). It contradicted the note
@@ -614,7 +645,7 @@ export const webMarketingMessages = {
     'One backend, four ways in. Each section documents the same use cases, so a concept you learn in the REST API is the same concept in MCP and in the CLI.',
   'web.docs.section.start.title': 'Getting started',
   'web.docs.section.start.body':
-    'Authentication, workspaces, brands, and your first published post.',
+    'Authentication, workspaces, projects, and your first published post.',
   'web.docs.section.api.title': 'REST API',
   'web.docs.section.api.body': 'Resources, pagination, idempotency, error codes and rate limits.',
   'web.docs.section.mcp.title': 'MCP server',
@@ -847,7 +878,7 @@ export const webMarketingMessages = {
   'web.legal.privacy.rights.revoke':
     'Disconnect one social account without deleting the workspace. Tokens are revoked at the platform and deleted here.',
   'web.legal.privacy.rights.delete':
-    'Delete a brand, a piece of content, a media file or the entire account.',
+    'Delete a project, a piece of content, a media file or the entire account.',
   'web.legal.privacy.rights.cancelJobs':
     'Cancel scheduled jobs before deleting anything, so nothing publishes after you leave.',
   'web.legal.privacy.rights.sessions':
@@ -916,14 +947,14 @@ export const webMarketingMessages = {
   'web.legal.ai.features.text':
     'Text assistance in the composer: rewriting, shortening and adapting for a platform.',
   'web.legal.ai.features.translation':
-    'Translation and transcreation into your content languages, against your brand glossary.',
+    'Translation and transcreation into your content languages, against your project glossary.',
   'web.legal.ai.features.feedback':
     'Content feedback in the composer. Generated four week growth plans are not available in prelaunch.',
   'web.legal.ai.features.provider':
     'These features call DeepSeek. The model identifiers currently in use are published in the documentation and any change is listed on the changelog.',
   'web.legal.ai.data.title': 'What is sent, and what happens to it',
   'web.legal.ai.data.sent':
-    'Only the text you asked us to work on, the instruction, and the brand context you chose to attach. Credentials, tokens and other customers content are never in a model context.',
+    'Only the text you asked us to work on, the instruction, and the project context you chose to attach. Credentials, tokens and other customers content are never in a model context.',
   'web.legal.ai.data.training':
     'Your content is not used to train our models. We configure providers so it is not used to train theirs.',
   'web.legal.ai.data.optOut':
@@ -1409,7 +1440,7 @@ export const webMarketingMessages = {
   'web.legal.subprocessors.deepseek.purpose':
     'Text assistance, translation and transcreation, and planning suggestions.',
   'web.legal.subprocessors.deepseek.data':
-    'Only the text you submit to an AI feature and the brand context you attached to it.',
+    'Only the text you submit to an AI feature and the project context you attached to it.',
   'web.legal.subprocessors.hosting.label': 'Application hosting and content delivery',
   'web.legal.subprocessors.hosting.purpose':
     'Serving the web app, the API and the short link service.',
@@ -1492,16 +1523,37 @@ export const webMarketingMessages = {
   'web.marketing.v2.closing.body':
     'The seven day trial starts today and takes no card. Connector availability is shown account by account as each platform completes its review.',
 
-  // Three, matching `DEMO_ROWS` on the product page. The page currently
-  // renders only the body beneath its section rule, so this heading is held
-  // ready rather than live; it is corrected here so it cannot ship claiming a
-  // number the scene under it disproves.
+  // Three, matching `DEMO_ROWS` on the product page. It now sits directly
+  // above `EditorialVariantScene`, the section that actually has three rows;
+  // it used to sit above the seven-step sequence instead, which is a
+  // different count this heading would have disproved.
   'web.product.v2.demo.title': 'One brief, three platform-native drafts',
   'web.product.v2.demo.body':
     'The same scene from the home page, scoped to what the compose step actually produces.',
 
+  // The product page's hero and the heading over its seven-step sequence
+  // (WP-3 loud pass, editorial-marketing follow-up). New strings; recorded as
+  // reviewed-English-only keys in `beta-fallbacks.ts` alongside the rest of
+  // this namespace's v2 additions.
+  'web.product.v2.hero.headline': 'This is the publishing desk, not a text box.',
+  'web.product.v2.hero.headlineAccent':
+    'Source once, then adapt, approve and publish per platform.',
+  // `STEPS` on the page is seven items long; this heading states that count
+  // rather than a synonym for it, on the same principle `demo.title` above
+  // states three.
+  'web.product.v2.sequence.title': 'The same seven steps, every time.',
+  'web.product.v2.sequence.stepsStat': 'Steps from source to receipt',
+
   'web.integrations.v2.marqueeCaption':
     'Every connector on this page, publishing through its official API.',
+  // The integrations hero and its stats cell (same pass as the product page
+  // keys above). `platformsStat` and `capabilitiesStat` label counts derived
+  // from `CONNECTORS.length` and `CAPABILITY_COLUMNS.length` in
+  // `data/connectors.ts`, never typed here.
+  'web.integrations.v2.hero.headline': 'Every platform, one official connection.',
+  'web.integrations.v2.hero.headlineAccent': 'No scraping, no cookie replay, ever.',
+  'web.integrations.v2.platformsStat': 'Platforms in the launch cohort',
+  'web.integrations.v2.capabilitiesStat': 'Capabilities tracked per platform',
 
   /** The compare index's single honest claim: no invented competitor numbers. */
   'web.compare.v2.honest': 'No fabricated numbers',

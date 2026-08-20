@@ -32,7 +32,7 @@ export const automationMessages = {
   'automation.trigger.recurring': 'Ein wiederkehrender Zeitplan wird ausgelöst',
 
   'automation.condition.label': 'Bedingungen',
-  'automation.condition.brand': 'Die Marke ist {brand}',
+  'automation.condition.project': 'Die Marke ist {project}',
   'automation.condition.campaign': 'Die Kampagne ist {campaign}',
   'automation.condition.account': 'Das Konto lautet {account}',
   'automation.condition.platform': 'Die Plattform ist {platform}',

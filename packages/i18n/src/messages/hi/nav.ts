@@ -15,7 +15,6 @@ export const navMessages = {
   'nav.commandPalette': 'कमांड पैलेट',
   'nav.account': 'खाता',
   'nav.workspaceSwitcher': 'कार्यक्षेत्र बदलें',
-  'nav.brandSwitcher': 'ब्रांड बदलें',
   'nav.skipToContent': 'मुख्य सामग्री पर जाएँ',
   'nav.primaryLandmark': 'प्राथमिक नेविगेशन',
   'nav.moreItems': 'अधिक',
@@ -26,7 +25,7 @@ export const navMessages = {
   'nav.theme.label': 'थीम',
 
   'settings.nav.members': 'सदस्य और भूमिकाएँ',
-  'settings.nav.brands': 'ZZZप्रोटेक्टेड11ZZZs',
+  'settings.nav.projects': 'ZZZप्रोटेक्टेड11ZZZs',
   'settings.nav.agents': 'एजेंट और API',
   'settings.nav.developerApps': 'डेवलपर ऐप्स',
   'settings.nav.webhooks': 'वेबहुक',
@@ -65,8 +64,7 @@ export const navMessages = {
 
   'shell.workspace.label': 'ZZZप्रोटेक्टेड10ZZZ',
   'shell.workspace.current': 'वर्तमान कार्यक्षेत्र: {name}',
-  'shell.brand.label': 'ZZZप्रोटेक्टेड11ZZZ',
-  'shell.brand.all': 'सभी ब्रांड',
+  'shell.project.all': 'सभी ब्रांड',
   'shell.timeZone.label': 'टाइम्स में दिखाया गया है {timeZone}',
   'shell.notifications.count':
     '{count, plural, =0 {कोई नई सूचना नहीं} one {# नई अधिसूचना} other {# नई सूचनाएं}}',

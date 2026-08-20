@@ -18,7 +18,7 @@ export const calendarMessages = {
   'calendar.slotOverflow': '{count, plural, one {# más} many {# más} other {# más}}',
   'calendar.newPostAt': 'Nueva publicación at {time}',
 
-  'calendar.filter.brand': 'Brand',
+  'calendar.filter.project': 'Project',
   'calendar.filter.account': 'cuenta',
   'calendar.filter.platform': 'Plataforma',
   'calendar.filter.status': 'Estado',

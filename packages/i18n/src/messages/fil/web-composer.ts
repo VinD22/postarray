@@ -223,10 +223,10 @@ export const webComposerMessages = {
   'composerWeb.set.apply': 'Gamitin ang Set na ito',
   'composerWeb.set.none': 'Wala pang na-save na Set.',
   'composerWeb.signature.pickerLabel': 'Lagda',
-  'composerWeb.signature.scope': 'Para sa {brand} sa {provider} sa {language}',
+  'composerWeb.signature.scope': 'Para sa {project} sa {provider} sa {language}',
   'composerWeb.signature.previewHeading': 'Paano ito nagtatapos sa post',
   'composerWeb.signature.notMatching':
-    'Ang lagda na ito ay saklaw sa ibang brand, platform o wika, kaya hindi ito inaalok dito.',
+    'Ang lagda na ito ay saklaw sa ibang project, platform o wika, kaya hindi ito inaalok dito.',
 
   // --------------------------------------------------------------- assist
   'composerWeb.assist.menuLabel': 'Tumulong sa tekstong ito',
@@ -340,10 +340,19 @@ export const webComposerMessages = {
     'Halimbawa: launch_hero.jpg, 1600 by 900, alt text set, ginamit sa 2 post.',
   'mediaLib.error.title': 'Hindi ma-load ang library',
   'mediaLib.error.body': 'Ligtas ang iyong mga file. Walang nabago sa kabiguan na ito.',
+  'mediaLib.offline.title': 'Hindi available ang library nang offline',
+  'mediaLib.offline.body':
+    'Hindi namin ma-refresh ang library nang walang koneksyon. Hindi nagbabago ang mga file na nasa screen na ito. Kumonekta ulit, saka subukan ulit.',
+  'mediaLib.rateLimited.title': 'Kailangan ng maikling pahinga ang library',
+  'mediaLib.rateLimited.cause':
+    'Hiniling ng API na bagalan namin habang nilo-load ang iyong mga file. Ligtas ang iyong naka-store na media.',
+  'mediaLib.rateLimited.resetLabel': 'Subukan ulit pagkatapos ng',
+  'mediaLib.rateLimited.alternative':
+    'Maaari kang magpatuloy sa pag-draft nang lokal, pero maghihintay ang mga upload at pagbabago sa library hanggang ma-reset ang limitasyon.',
   'mediaLib.loading': 'Nilo-load ang iyong media library',
   'mediaLib.permission.title': 'Hindi mo makikita ang workspace library na ito',
   'mediaLib.permission.body':
-    'Ang panonood ng media ay nangangailangan ng tungkulin ng manonood o mas mataas sa brand na ito. Maaaring ibigay ito ng may-ari o admin.',
+    'Ang panonood ng media ay nangangailangan ng tungkulin ng manonood o mas mataas sa project na ito. Maaaring ibigay ito ng may-ari o admin.',
 
   'mediaLib.upload.heading': 'Magdagdag ng media',
   'mediaLib.upload.browse': 'Pumili ng mga file',
@@ -372,6 +381,39 @@ export const webComposerMessages = {
   'mediaLib.upload.noTargets':
     'Walang napiling mga account, kaya ang file ay sinusuri laban sa mga default ng workspace lamang.',
 
+  'mediaLib.import.urlLabel': 'Pampublikong URL ng file',
+  'mediaLib.import.urlPlaceholder': 'https://cdn.example.com/launch-video.mp4',
+  'mediaLib.import.importing': 'Ini-import ang media',
+  'mediaLib.import.succeeded': 'Nasa library mo na ang file',
+  'mediaLib.import.scanPending':
+    'Naitala na ng Relay ang pinagmulan nito. Maghihintay ang pag-publish hanggang matapos ang safety check.',
+  'mediaLib.import.failed': 'Hindi na-import ang file',
+  'mediaLib.import.failedHelp':
+    'Tiyaking pampubliko ang link at direktang tumuturo sa isang suportadong media file, saka subukan ulit.',
+  'mediaLib.import.readOnly': 'Kumonekta sa API para mag-import ng mga file sa environment na ito.',
+  'mediaLib.import.offline': 'Kumonekta ulit bago mag-import ng file.',
+  'mediaLib.import.issue.invalid': 'Maglagay ng kumpletong URL.',
+  'mediaLib.import.issue.scheme': 'Gumamit ng HTTP o HTTPS na link.',
+  'mediaLib.import.issue.credentials': 'Gumamit ng link na walang username o password.',
+  'mediaLib.retention.title': 'Ang mga naka-store na file ay itinatago nang 30 araw pagkatapos gawin ang post',
+  'mediaLib.retention.body':
+    'Kapag na-attach na ang isang file sa isang post, tuluyan naming baburahin ito mula sa Relay storage 30 araw pagkatapos gawin ang post na iyon. Ang mga file na naghihintay pang ma-attach ay gumagamit ng petsa ng upload bilang fallback para sa cleanup. Mananatiling available nang mas matagal ang teksto ng post, mga publication receipt, at audit history. Ang isang post na na-publish sa isang social platform ay hindi tinatanggal kapag nag-expire ang naka-store nitong file.',
+  'mediaLib.retention.limits':
+    'Ang mga larawan, audio, at PDF file ay maaaring hanggang {imageSize}. Ang mga video ay maaaring hanggang {videoSize}.',
+  'mediaLib.retention.expiresLabel': 'Petsa ng pagbura ng file',
+  'mediaLib.retention.deleted': 'Tuluyang nabura',
+  'mediaLib.retention.deletedTitle': 'Nabura na ang naka-store na file na ito',
+  'mediaLib.retention.deletedBody':
+    'Natapos na ang 30 araw na panahon ng storage. Nananatili ang teksto ng post, mga publication receipt, at audit history.',
+  'mediaLib.processing.unavailableTitle': 'Hindi pa handang i-publish ang file na ito',
+  'mediaLib.processing.unavailableBody':
+    'Nakabinbin pa ang pagproseso o safety check, o hindi ito pumasa. I-upload ulit ang file kung hindi nawawala ang status na ito.',
+  'mediaLib.processing.pendingTitle': 'Hindi pa available ang safety scanning sa prelaunch',
+  'mediaLib.processing.pendingBody':
+    'Naka-store ang file nang 30 araw, pero hindi ito ma-attach sa isang na-publish na post hanggang ma-enable ang safety scanning.',
+  'mediaLib.processing.blockedTitle': 'Hindi ma-publish ang file na ito',
+  'mediaLib.processing.blockedBody':
+    'Hindi pumasa ang file sa pagproseso o safety check. Mag-upload ng ibang file.',
   'mediaLib.alt.heading': 'Alt text',
   'mediaLib.alt.help':
     'Ilarawan kung ano ang mahalaga sa larawan para sa isang taong hindi ito nakikita. Karaniwang sapat na ang isa o dalawang pangungusap.',

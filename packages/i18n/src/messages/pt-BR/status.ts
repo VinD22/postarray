@@ -63,7 +63,7 @@ export const statusMessages = {
   'permission.denied.role': 'Isso precisa da função {role}. Você é {currentRole}.',
   'permission.denied.scope': 'Esta credencial precisa do escopo {scope}.',
   'permission.denied.contactOwner': 'Peça a {owner} para concedê-lo.',
-  'permission.denied.brandScope': 'Seu acesso é limitado a {brands}.',
+  'permission.denied.projectScope': 'Seu acesso é limitado a {projects}.',
   'permission.readOnly': 'Este espaço de trabalho é somente leitura no momento.',
   'permission.mfaRequired': 'Confirme com autenticação de dois fatores para continuar.',
 

@@ -57,7 +57,7 @@ export const webCalendarMessages = {
   'web.calendar.nowLabel': '现在',
   'web.calendar.allDayHeading': '还没有确切时间',
   'web.calendar.filter.group': '客户群体',
-  'web.calendar.filter.anyBrand': '任何品牌',
+  'web.calendar.filter.anyProject': '任何品牌',
   'web.calendar.filter.anyAccount': '任何账户',
   'web.calendar.filter.anyPlatform': '任何平台',
   'web.calendar.filter.anyStatus': '任何状态',

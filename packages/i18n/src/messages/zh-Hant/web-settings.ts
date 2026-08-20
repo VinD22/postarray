@@ -5,8 +5,8 @@ export const webSettingsMessages = {
   'settings.ui.index.help': '選擇一個部分。每項更改均歸因於您並顯示在審覈日誌中。',
   'settings.ui.section.members': '成員和角色',
   'settings.ui.section.membersSummary': '誰在這個工作空間中以及每個人可以做什麼。',
-  'settings.ui.section.brands': 'Brand',
-  'settings.ui.section.brandsSummary':
+  'settings.ui.section.projects': 'Project',
+  'settings.ui.section.projectsSummary':
     '聲音、受衆、批準的聲​​明、阻止的術語、區域設置規則、域和術語表。',
   'settings.ui.section.agents': '代理和API',
   'settings.ui.section.agentsSummary': '服務帳戶、範圍、限制、憑證、活動和演練場地。',
@@ -63,10 +63,10 @@ export const webSettingsMessages = {
   'settings.ui.members.column.actions': '行動',
   'settings.ui.members.scopeAll': '所有品牌和帳戶',
   'settings.ui.members.scopeLimited':
-    '{count, plural, one {# 個 Brand} other {# 個 Brand}}：{names}',
+    '{count, plural, one {# 個 Project} other {# 個 Project}}：{names}',
   'settings.ui.members.approvals.canApprove': '可以批準',
   'settings.ui.members.approvals.cannotApprove': '無法批準',
-  'settings.ui.members.approvals.canApproveOwnBrands': '可以批準列出的品牌',
+  'settings.ui.members.approvals.canApproveOwnProjects': '可以批準列出的品牌',
   'settings.ui.members.lastActiveNever': '尚未登錄',
   'settings.ui.members.changeRole': '更改 {name} 的角色',
   'settings.ui.members.remove': '刪除 {name}',
@@ -76,7 +76,7 @@ export const webSettingsMessages = {
   'settings.ui.members.inviteBody':
     '他們收到一封帶有鏈接的電子郵件。邀請將在 7 天後過期，您可以在此之前撤銷邀請。',
   'settings.ui.members.inviteRole': '角色',
-  'settings.ui.members.inviteScope': '他們可以工作的Brand',
+  'settings.ui.members.inviteScope': '他們可以工作的Project',
   'settings.ui.members.inviteScopeAll': '這個工作空間中的每個品牌',
   'settings.ui.members.inviteScopeSelected': '僅限我選擇的品牌',
   'settings.ui.members.inviteApprovals': '可以決定批準​​請求',
@@ -109,37 +109,60 @@ export const webSettingsMessages = {
   'settings.ui.members.removeConsequence.audit': '他們過去的行爲保留在審覈日誌和收據中。',
   'settings.ui.members.removeConsequence.approvals':
     '等待他們的批準請求將返回到另一個批準者的隊列中。',
-  'settings.ui.brands.description':
-    '品牌有內容檢查的規則：你可以主張什麼，你不能說什麼，以及每種語言的書寫方式。',
-  'settings.ui.brands.listCaption': '此工作區中的Brand',
-  'settings.ui.brands.column.brand': 'Brand',
-  'settings.ui.brands.column.locales': '內容語言',
-  'settings.ui.brands.column.accounts': '賬戶',
-  'settings.ui.brands.column.updated': '已更新',
-  'settings.ui.brands.accountCount':
-    '{count, plural, =0 {沒有帳號} one {# 個帳號} other {# 個帳號}}',
-  'settings.ui.brands.emptyTitle': '還沒有品牌',
-  'settings.ui.brands.emptyBody':
-    '品牌對帳戶、審批規則和語言規則進行分組。大多數團隊都會從一個規則開始，當客戶或市場需要不同的規則時，會添加第二個規則。',
-  'settings.ui.brands.emptyExample':
-    '示例：品牌“Acme EU”，語言爲英語和德語，屏蔽術語“保證”，在 Instagram 上披露“付費合作夥伴關係”。',
-  'settings.ui.brands.voiceHelp': '這個品牌聽起來怎麼樣。當您要求重寫和檢查聲明時使用。',
-  'settings.ui.brands.audienceHelp': '每個市場的內容適合誰。',
-  'settings.ui.brands.approvedClaimsHelp':
-    '審稿人已清除的聲明。此列表之外的任何內容都會在批準之前而不是發佈之後進行標記。',
-  'settings.ui.brands.blockedTermsHelp': '阻礙該品牌日程安排的詞語。每行一個。',
-  'settings.ui.brands.domainsHelp':
-    '該品牌可能鏈接到並縮短的域名。在編輯器中只能選擇經過驗證的域。',
-  'settings.ui.brands.domainVerified': '已驗證 {date}',
-  'settings.ui.brands.domainPending': '尚未看到 DNS 記錄',
-  'settings.ui.brands.disclosureHelp':
-    '默認情況下，在您在此處選擇的平臺的 Composer 中應用。在批準之前可以對每個帖子進行更改。',
-  'settings.ui.brands.glossaryHelp': '產品名稱、法律術語以及任何翻譯後必須保持不變的內容。',
-  'settings.ui.brands.glossaryCaption': '受保護術語以及每種語言如何處理每個術語',
-  'settings.ui.brands.glossaryEmpty': '尚無受保護條款。添加不得翻譯或改寫的產品名稱和法律術語。',
-  'settings.ui.brands.localeRulesHelp':
-    '每種內容語言的規則。它們會在您改編或創譯時應用，並向審閱者展示。',
-  'settings.ui.brands.saveBrand': '保存品牌',
+  'settings.ui.projects.description':
+    '讓每個產品、客戶、刊物或事業體彼此分開。每個專案都有各自的頻道、媒體、草稿、排程與發布規則。',
+  'settings.ui.projects.listCaption': '此工作區中的專案',
+  'settings.ui.projects.column.project': '專案',
+  'settings.ui.projects.column.locales': '內容語言',
+  'settings.ui.projects.column.accounts': '帳號',
+  'settings.ui.projects.column.updated': '已更新',
+  'settings.ui.projects.accountCount': '{count, plural, =0 {沒有帳號} other {# 個帳號}}',
+  'settings.ui.projects.emptyTitle': '建立你的第一個專案',
+  'settings.ui.projects.emptyBody':
+    '專案能讓一個產品或客戶在其社群頻道上保持同步，而不會將媒體、草稿或排程與其他專案混在一起。',
+  'settings.ui.projects.emptyExample':
+    '例如：Acme App、Acme Podcast 與客戶 Northwind 可以是同一個工作區中的三個不同專案。',
+  'settings.ui.projects.voiceHelp': '這個專案應該是什麼語氣。用於審閱指引與聲明檢查。',
+  'settings.ui.projects.audienceHelp': '每個市場的內容適合誰。',
+  'settings.ui.projects.approvedClaimsHelp':
+    '審閱者已核准的聲明。此列表之外的任何內容，都會在核准前而非發佈後被標記。',
+  'settings.ui.projects.blockedTermsHelp': '阻擋此專案排程的詞語。每行一個。',
+  'settings.ui.projects.domainsHelp':
+    '此專案可以連結並縮短的網域。只有已驗證的網域才能在撰寫工具中選用。',
+  'settings.ui.projects.domainVerified': '已驗證 {date}',
+  'settings.ui.projects.domainPending': '尚未看到 DNS 記錄',
+  'settings.ui.projects.domainVerificationUnavailable': '驗證功能尚未建置完成',
+  'settings.ui.projects.disclosureUnavailable':
+    '各頻道的預設揭露設定尚未建置完成。在此功能上線前，請直接在貼文中加入必要的揭露內容。',
+  'settings.ui.projects.glossaryUnavailable':
+    '工作區術語表尚未建置完成。以上的語氣、目標受眾、已核准聲明與封鎖詞語仍會儲存並生效。',
+  'settings.ui.projects.localeRulesUnavailable':
+    '各語言的撰寫規則尚未建置完成。工作區的語言與市場設定仍可在「本地化」中使用。',
+  'settings.ui.projects.disclosureHelp':
+    '預設會套用在你於此處選擇的平台的撰寫工具中。可以在核准前針對每篇貼文個別變更。',
+  'settings.ui.projects.glossaryHelp': '產品名稱、法律術語，以及任何翻譯後必須維持不變的內容。',
+  'settings.ui.projects.glossaryCaption': '受保護術語，以及每種語言如何處理每個術語',
+  'settings.ui.projects.glossaryEmpty': '尚無受保護術語。請新增不得翻譯或改寫的產品名稱與法律術語。',
+  'settings.ui.projects.localeRulesHelp':
+    '每種內容語言的規則。這些規則會在你改寫或創譯時套用，並顯示給審閱者。',
+  'settings.ui.projects.saveProject': '儲存專案',
+  'settings.ui.projects.capacityTitle': '專案容量',
+  'settings.ui.projects.capacityHelp':
+    '29 美元的基本方案包含 3 個啟用中的專案。工作區最多可取得 20 個專案的權限，無需另外建立帳號。',
+  'settings.ui.projects.capacitySummary': '{used} / {limit}',
+  'settings.ui.projects.atLimitTitle': '此工作區的專案名額已全數用盡',
+  'settings.ui.projects.atLimitBody':
+    '請先封存一個未使用的專案，或變更工作區的權限額度，才能新增其他專案。目前的上限為 {limit}。',
+  'settings.ui.projects.listLabel': '選擇要編輯的專案',
+  'settings.ui.projects.detailsTitle': '專案詳細資料',
+  'settings.ui.projects.projectMeta': '{accounts, plural, =0 {沒有頻道} other {# 個頻道}} ・ 已更新 {updated}',
+  'settings.ui.projects.archiveAction': '封存專案',
+  'settings.ui.projects.archiveTitle': '要封存 {project} 嗎？',
+  'settings.ui.projects.archiveBody': '此未使用的專案會離開啟用中的工作區，並釋出一個專案名額。',
+  'settings.ui.projects.archiveChannels': '其已連線的頻道將不再出現在啟用中專案的工作流程裡。',
+  'settings.ui.projects.archiveHistory': '草稿、已發布的貼文、收據與稽核紀錄都會保留。',
+  'settings.ui.projects.archiveLastDisabled': '工作區中請至少保留一個啟用中的專案。',
+  'settings.ui.projects.archiveConnectedDisabled': '封存此專案前，請先中斷其頻道的連線。',
   'settings.ui.localization.description':
     '三個單獨的設置：此應用程序的語言、您發佈的語言以及您正在編寫的市場。改變一個永遠不會改變另一個。',
   'settings.ui.localization.interfaceOnlyEnglish':
@@ -208,8 +231,8 @@ export const webSettingsMessages = {
   'settings.ui.data.deleteConnection': '撤銷一項社交聯繫',
   'settings.ui.data.deleteConnectionHelp':
     'Relay。刪除對該帳戶的中繼訪問權限。工作區、其內容和收據將保留。',
-  'settings.ui.data.deleteBrand': '刪除品牌',
-  'settings.ui.data.deleteBrandHelp': '刪除品牌、其規則和術語表。在其下發布的內容保留其收據。',
+  'settings.ui.data.deleteProject': '刪除品牌',
+  'settings.ui.data.deleteProjectHelp': '刪除品牌、其規則和術語表。在其下發布的內容保留其收據。',
   'settings.ui.data.deleteContent': '刪除內容和媒體',
   'settings.ui.data.deleteContentHelp': '刪除草稿和存儲的文件。它不會刪除平臺上已發佈的任何內容。',
   'settings.ui.data.deleteAccount': '關閉此工作區',
@@ -434,7 +457,7 @@ export const webSettingsMessages = {
   'developer.ui.webhooks.eventGroup.publishing': '出版',
   'developer.ui.webhooks.eventGroup.automation': '自動化和飼料',
   'developer.ui.webhooks.eventGroup.workspace': 'Workspace。工作空間',
-  'developer.ui.webhooks.scopeTitle': 'Brand和賬戶',
+  'developer.ui.webhooks.scopeTitle': 'Project和賬戶',
   'developer.ui.webhooks.scopeAll': '每個品牌和帳戶',
   'developer.ui.webhooks.scopeSelected': '僅限我選擇的',
   'developer.ui.webhooks.secretTitle': '簽名祕笈',
@@ -494,7 +517,7 @@ export const webSettingsMessages = {
   'billing.ui.conversionLabel': '轉換',
   'billing.ui.channelsLabel': '活躍頻道',
   'billing.ui.paymentMethodPolar': 'Polar 持有的付款方式',
-  'billing.ui.paymentMethodDescriptor': '{brand} 結束 {last4}，到期 {expiry}',
+  'billing.ui.paymentMethodDescriptor': '{project} 結束 {last4}，到期 {expiry}',
   'billing.ui.paymentMethodMissing': '尚未記錄付款方式',
   'billing.ui.cancelBeforeDate': '在 {date} 之前取消，我們不會向您收取費用。',
   'billing.ui.annualFraming': '25 美元/月，按年計費。每年節省 48 美元。',

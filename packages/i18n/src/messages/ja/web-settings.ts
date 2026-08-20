@@ -7,8 +7,8 @@ export const webSettingsMessages = {
     'セクションを選択します。すべての変更はユーザーによるものであり、監査ログに記録されます。',
   'settings.ui.section.members': 'メンバーと役割',
   'settings.ui.section.membersSummary': 'このワークスペースには誰がいて、各人が何ができるのか。',
-  'settings.ui.section.brands': 'ブランド',
-  'settings.ui.section.brandsSummary':
+  'settings.ui.section.projects': 'ブランド',
+  'settings.ui.section.projectsSummary':
     '音声、視聴者、承認された申し立て、ブロックされた用語、ロケール ルール、ドメイン、用語集。',
   'settings.ui.section.agents': 'エージェントとAPI',
   'settings.ui.section.agentsSummary':
@@ -80,7 +80,7 @@ export const webSettingsMessages = {
   'settings.ui.members.scopeLimited': '{count, plural, other {# ブランド}}:{names}',
   'settings.ui.members.approvals.canApprove': '承認できる',
   'settings.ui.members.approvals.cannotApprove': '承認できません',
-  'settings.ui.members.approvals.canApproveOwnBrands': 'リストされているブランドを承認できます',
+  'settings.ui.members.approvals.canApproveOwnProjects': 'リストされているブランドを承認できます',
   'settings.ui.members.lastActiveNever': 'まだサインインしていません',
   'settings.ui.members.changeRole': 'の役割を変更する{name}',
   'settings.ui.members.remove': '取り除く{name}',
@@ -126,39 +126,39 @@ export const webSettingsMessages = {
   'settings.ui.members.removeConsequence.audit': '彼らの過去の行動は監査ログと領収書に残ります。',
   'settings.ui.members.removeConsequence.approvals':
     '待機中の承認リクエストは、別の承認者のキューに戻ります。',
-  'settings.ui.brands.description':
+  'settings.ui.projects.description':
     'ブランドには、主張して​​よいこと、言ってはいけないこと、各言語の書き方など、コンテンツをチェックするためのルールが定められています。',
-  'settings.ui.brands.listCaption': 'このワークスペースのブランド',
-  'settings.ui.brands.column.brand': 'Brand',
-  'settings.ui.brands.column.locales': 'コンテンツ言語',
-  'settings.ui.brands.column.accounts': 'アカウント',
-  'settings.ui.brands.column.updated': '更新されました',
-  'settings.ui.brands.accountCount': '{count, plural, other {# アカウント}}',
-  'settings.ui.brands.emptyTitle': 'まだブランドはありません',
-  'settings.ui.brands.emptyBody':
+  'settings.ui.projects.listCaption': 'このワークスペースのブランド',
+  'settings.ui.projects.column.project': 'Project',
+  'settings.ui.projects.column.locales': 'コンテンツ言語',
+  'settings.ui.projects.column.accounts': 'アカウント',
+  'settings.ui.projects.column.updated': '更新されました',
+  'settings.ui.projects.accountCount': '{count, plural, other {# アカウント}}',
+  'settings.ui.projects.emptyTitle': 'まだブランドはありません',
+  'settings.ui.projects.emptyBody':
     'ブランドは、アカウント、承認ルール、および言語ルールをグループ化します。ほとんどのチームは 1 つから始めて、クライアントや市場が異なるルールを必要とする場合に 2 つ目を追加します。',
-  'settings.ui.brands.emptyExample':
+  'settings.ui.projects.emptyExample':
     '例: ブランド「Acme EU」、言語英語とドイツ語、ブロックされた用語「保証」、Instagram の開示「有料パートナーシップ」。',
-  'settings.ui.brands.voiceHelp':
+  'settings.ui.projects.voiceHelp':
     'このブランドがどう聞こえるか。リライトを要求する場合やクレームをチェックする場合に使用されます。',
-  'settings.ui.brands.audienceHelp': '市場ごとのコンテンツの対象者。',
-  'settings.ui.brands.approvedClaimsHelp':
+  'settings.ui.projects.audienceHelp': '市場ごとのコンテンツの対象者。',
+  'settings.ui.projects.approvedClaimsHelp':
     '査読者がクリアしたステートメント。このリスト以外のものには、公開後ではなく、承認前にフラグが立てられます。',
-  'settings.ui.brands.blockedTermsHelp': 'このブランドのスケジュールを妨げる単語。 1 行に 1 つ。',
-  'settings.ui.brands.domainsHelp':
+  'settings.ui.projects.blockedTermsHelp': 'このブランドのスケジュールを妨げる単語。 1 行に 1 つ。',
+  'settings.ui.projects.domainsHelp':
     'このブランドがリンクしたり短縮したりできるドメイン。 Composer では検証済みのドメインのみを選択できます。',
-  'settings.ui.brands.domainVerified': '確認済み{date}',
-  'settings.ui.brands.domainPending': 'DNS レコードがまだ表示されていません',
-  'settings.ui.brands.disclosureHelp':
+  'settings.ui.projects.domainVerified': '確認済み{date}',
+  'settings.ui.projects.domainPending': 'DNS レコードがまだ表示されていません',
+  'settings.ui.projects.disclosureHelp':
     'ここで選択したプラットフォームのコンポーザーにデフォルトで適用されます。承認前に投稿ごとに変更できます。',
-  'settings.ui.brands.glossaryHelp':
+  'settings.ui.projects.glossaryHelp':
     '製品名、法律用語など、翻訳後も変更せずに存続する必要があるもの。',
-  'settings.ui.brands.glossaryCaption': '保護された用語と言語ごとの各用語の処理方法',
-  'settings.ui.brands.glossaryEmpty':
+  'settings.ui.projects.glossaryCaption': '保護された用語と言語ごとの各用語の処理方法',
+  'settings.ui.projects.glossaryEmpty':
     '保護された用語はまだありません。翻訳または言い換えが禁止されている製品名と法律用語を追加します。',
-  'settings.ui.brands.localeRulesHelp':
+  'settings.ui.projects.localeRulesHelp':
     'コンテンツ言語ごとのルール。これらは、適応または再作成するときに適用され、レビュー担当者に表示されます。',
-  'settings.ui.brands.saveBrand': 'ブランドを保存',
+  'settings.ui.projects.saveProject': 'ブランドを保存',
   'settings.ui.localization.description':
     '3 つの個別の設定: このアプリの言語、公開する言語、および執筆対象の市場。 1 つを変更しても、もう 1 つが変わることはありません。',
   'settings.ui.localization.interfaceOnlyEnglish':
@@ -233,8 +233,8 @@ export const webSettingsMessages = {
   'settings.ui.data.deleteConnection': '1 つのソーシャル コネクションを取り消す',
   'settings.ui.data.deleteConnectionHelp':
     'そのアカウントへの Relay アクセスを削除します。ワークスペース、そのコンテンツ、およびその領収書は残ります。',
-  'settings.ui.data.deleteBrand': 'ブランドを削除する',
-  'settings.ui.data.deleteBrandHelp':
+  'settings.ui.data.deleteProject': 'ブランドを削除する',
+  'settings.ui.data.deleteProjectHelp':
     'ブランド、そのルール、用語集を削除します。その下で公開されたコンテンツは領収書を保持します。',
   'settings.ui.data.deleteContent': 'コンテンツとメディアを削除する',
   'settings.ui.data.deleteContentHelp':
@@ -545,7 +545,7 @@ export const webSettingsMessages = {
   'billing.ui.conversionLabel': '改宗者',
   'billing.ui.channelsLabel': 'アクティブなチャネル',
   'billing.ui.paymentMethodPolar': 'Polar が保有する支払い方法',
-  'billing.ui.paymentMethodDescriptor': '{brand}エンディング{last4}、有効期限が切れます{expiry}',
+  'billing.ui.paymentMethodDescriptor': '{project}エンディング{last4}、有効期限が切れます{expiry}',
   'billing.ui.paymentMethodMissing': 'まだ支払い方法が登録されていません',
   'billing.ui.cancelBeforeDate': '前にキャンセルしてください{date}そして料金は請求されません。',
   'billing.ui.annualFraming': '月額 25 ドルが毎年請求されます。年間 48 ドル節約できます。',

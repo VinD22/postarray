@@ -27,7 +27,7 @@ export const webAnalyticsMessages = {
   'analytics.question.accounts': 'किन खातों पर ध्यान देने की आवश्यकता है?',
   'analytics.question.next': 'आगे परीक्षण के लायक क्या है?',
 
-  'analytics.filter.brand': 'ZZZप्रोटेक्टेड11ZZZ',
+  'analytics.filter.project': 'ZZZप्रोटेक्टेड11ZZZ',
   'analytics.filter.accounts': 'लेखा',
   'analytics.filter.allAccounts': 'सभी जुड़े हुए खाते',
   'analytics.filter.range': 'तिथि सीमा',
@@ -443,7 +443,7 @@ export const webAnalyticsMessages = {
   'automation.param.signature': 'हस्ताक्षर',
   'automation.param.disclosure': 'प्रकटीकरण',
   'automation.param.locale': 'भाषा',
-  'automation.param.brand': 'ZZZप्रोटेक्टेड11ZZZ',
+  'automation.param.project': 'ZZZप्रोटेक्टेड11ZZZ',
   'automation.param.campaign': 'अभियान',
   'automation.param.account': 'खाता',
   'automation.param.platform': 'मंच',

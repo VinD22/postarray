@@ -29,7 +29,7 @@ export const automationMessages = {
   'automation.trigger.recurring': 'ett återkommande schema brinner',
 
   'automation.condition.label': 'Villkor',
-  'automation.condition.brand': 'varumärket är {brand}',
+  'automation.condition.project': 'varumärket är {project}',
   'automation.condition.campaign': 'kampanjen är {campaign}',
   'automation.condition.account': 'kontot är {account}',
   'automation.condition.platform': 'plattformen är {platform}',

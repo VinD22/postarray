@@ -26,8 +26,8 @@ export const webSettingsMessages = {
 
   'settings.ui.section.members': 'Members and roles',
   'settings.ui.section.membersSummary': 'Who is in this workspace and what each person can do.',
-  'settings.ui.section.brands': 'Projects',
-  'settings.ui.section.brandsSummary':
+  'settings.ui.section.projects': 'Projects',
+  'settings.ui.section.projectsSummary':
     'Separate channels, media, drafts, schedules and publishing rules for each product or client.',
   'settings.ui.section.agents': 'Agents and API',
   'settings.ui.section.agentsSummary':
@@ -114,7 +114,7 @@ export const webSettingsMessages = {
     '{count, plural, one {# project} other {# projects}}: {names}',
   'settings.ui.members.approvals.canApprove': 'Can approve',
   'settings.ui.members.approvals.cannotApprove': 'Cannot approve',
-  'settings.ui.members.approvals.canApproveOwnBrands': 'Can approve for the projects listed',
+  'settings.ui.members.approvals.canApproveOwnProjects': 'Can approve for the projects listed',
   'settings.ui.members.lastActiveNever': 'Has not signed in yet',
   'settings.ui.members.changeRole': 'Change role for {name}',
   'settings.ui.members.remove': 'Remove {name}',
@@ -161,50 +161,50 @@ export const webSettingsMessages = {
   'settings.ui.members.removeConsequence.approvals':
     'Approval requests waiting on them return to the queue for another approver.',
 
-  /* ------------------------------------------------------------------ brands */
+  /* ----------------------------------------------------------------- projects */
 
-  'settings.ui.brands.description':
+  'settings.ui.projects.description':
     'Keep each product, client, publication or venture separate. Every project has its own channels, media, drafts, schedule and publishing rules.',
-  'settings.ui.brands.listCaption': 'Projects in this workspace',
-  'settings.ui.brands.column.brand': 'Project',
-  'settings.ui.brands.column.locales': 'Content languages',
-  'settings.ui.brands.column.accounts': 'Accounts',
-  'settings.ui.brands.column.updated': 'Updated',
-  'settings.ui.brands.accountCount':
+  'settings.ui.projects.listCaption': 'Projects in this workspace',
+  'settings.ui.projects.column.project': 'Project',
+  'settings.ui.projects.column.locales': 'Content languages',
+  'settings.ui.projects.column.accounts': 'Accounts',
+  'settings.ui.projects.column.updated': 'Updated',
+  'settings.ui.projects.accountCount':
     '{count, plural, =0 {No accounts} one {# account} other {# accounts}}',
-  'settings.ui.brands.emptyTitle': 'Create your first project',
-  'settings.ui.brands.emptyBody':
+  'settings.ui.projects.emptyTitle': 'Create your first project',
+  'settings.ui.projects.emptyBody':
     'A project keeps one product or client in sync across its social channels without mixing media, drafts or schedules with another project.',
-  'settings.ui.brands.emptyExample':
+  'settings.ui.projects.emptyExample':
     'Example: Acme App, Acme Podcast and Client Northwind can be three separate projects in one workspace.',
-  'settings.ui.brands.voiceHelp':
+  'settings.ui.projects.voiceHelp':
     'How this project should sound. Used for review guidance and claim checks.',
-  'settings.ui.brands.audienceHelp': 'Who the content is for, per market.',
-  'settings.ui.brands.approvedClaimsHelp':
+  'settings.ui.projects.audienceHelp': 'Who the content is for, per market.',
+  'settings.ui.projects.approvedClaimsHelp':
     'Statements a reviewer has cleared. Anything outside this list is flagged before approval, not after publishing.',
-  'settings.ui.brands.blockedTermsHelp':
+  'settings.ui.projects.blockedTermsHelp':
     'Words that block scheduling for this project. One per line.',
-  'settings.ui.brands.domainsHelp':
+  'settings.ui.projects.domainsHelp':
     'Domains this project may link to and shorten through. Only verified domains can be selected in the composer.',
-  'settings.ui.brands.domainVerified': 'Verified {date}',
-  'settings.ui.brands.domainPending': 'DNS record not seen yet',
-  'settings.ui.brands.domainVerificationUnavailable': 'Verification is not built yet',
-  'settings.ui.brands.disclosureUnavailable':
+  'settings.ui.projects.domainVerified': 'Verified {date}',
+  'settings.ui.projects.domainPending': 'DNS record not seen yet',
+  'settings.ui.projects.domainVerificationUnavailable': 'Verification is not built yet',
+  'settings.ui.projects.disclosureUnavailable':
     'Per-channel disclosure defaults are not built yet. Add the required disclosure in the post until this ships.',
-  'settings.ui.brands.glossaryUnavailable':
+  'settings.ui.projects.glossaryUnavailable':
     'The workspace glossary is not built yet. Voice, audience, approved claims and blocked terms above are saved and enforced.',
-  'settings.ui.brands.localeRulesUnavailable':
+  'settings.ui.projects.localeRulesUnavailable':
     'Per-locale writing rules are not built yet. Workspace languages and markets remain available under Localization.',
-  'settings.ui.brands.disclosureHelp':
+  'settings.ui.projects.disclosureHelp':
     'Applied by default in the composer for the platforms you choose here. It can be changed per post before approval.',
-  'settings.ui.brands.glossaryHelp':
+  'settings.ui.projects.glossaryHelp':
     'Product names, legal terms and anything that must survive a translation unchanged.',
-  'settings.ui.brands.glossaryCaption': 'Protected terms and how each one is handled per language',
-  'settings.ui.brands.glossaryEmpty':
+  'settings.ui.projects.glossaryCaption': 'Protected terms and how each one is handled per language',
+  'settings.ui.projects.glossaryEmpty':
     'No protected terms yet. Add product names and legal terms that must not be translated or rephrased.',
-  'settings.ui.brands.localeRulesHelp':
+  'settings.ui.projects.localeRulesHelp':
     'Rules per content language. They are applied when you adapt or transcreate, and shown to the reviewer.',
-  'settings.ui.brands.saveBrand': 'Save project',
+  'settings.ui.projects.saveProject': 'Save project',
   'settings.ui.projects.capacityTitle': 'Project capacity',
   'settings.ui.projects.capacityHelp':
     'The $29 base plan includes 3 active projects. A workspace can be entitled for up to 20 without creating another account.',
@@ -355,8 +355,8 @@ export const webSettingsMessages = {
   'settings.ui.data.deleteConnection': 'Revoke one social connection',
   'settings.ui.data.deleteConnectionHelp':
     'Removes Relay access to that account. The workspace, its content and its receipts stay.',
-  'settings.ui.data.deleteBrand': 'Archive a project',
-  'settings.ui.data.deleteBrandHelp':
+  'settings.ui.data.deleteProject': 'Archive a project',
+  'settings.ui.data.deleteProjectHelp':
     'Open Projects to archive that publishing context. Content published under it keeps its receipts.',
   'settings.ui.data.deleteContent': 'Delete content and media',
   'settings.ui.data.deleteContentHelp':
@@ -726,7 +726,7 @@ export const webSettingsMessages = {
   'billing.ui.conversionLabel': 'Converts',
   'billing.ui.channelsLabel': 'Active channels',
   'billing.ui.paymentMethodPolar': 'Payment method held by Polar',
-  'billing.ui.paymentMethodDescriptor': '{brand} ending {last4}, expires {expiry}',
+  'billing.ui.paymentMethodDescriptor': '{project} ending {last4}, expires {expiry}',
   'billing.ui.paymentMethodMissing': 'No payment method on file yet',
   'billing.ui.cancelBeforeDate': 'Cancel before {date} and you will not be charged.',
   'billing.ui.annualFraming': '$25/month billed annually. Save $48/year.',

@@ -218,7 +218,7 @@ export const webComposerMessages = {
   'composerWeb.set.apply': 'इस सेट का प्रयोग करें',
   'composerWeb.set.none': 'अभी तक कोई सेट सहेजा नहीं गया.',
   'composerWeb.signature.pickerLabel': 'हस्ताक्षर',
-  'composerWeb.signature.scope': 'For {brand} on {provider} in {language}',
+  'composerWeb.signature.scope': 'For {project} on {provider} in {language}',
   'composerWeb.signature.previewHeading': 'पोस्ट कैसे ख़त्म होती है',
   'composerWeb.signature.notMatching':
     'यह हस्ताक्षर किसी भिन्न ब्रांड, प्लेटफ़ॉर्म या भाषा तक सीमित है, इसलिए इसे यहां पेश नहीं किया गया है।',

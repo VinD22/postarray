@@ -1,7 +1,7 @@
 /** vi beta catalog namespace. */
 export const composerMessages = {
   'composer.title': 'Soạn',
-  'composer.titleWithBrand': 'Soạn thư cho {brand}',
+  'composer.titleWithProject': 'Soạn thư cho {project}',
   'composer.master.label': 'bản thảo chính',
   'composer.master.description':
     'Viết một lần ở đây. Những thay đổi tương thích đạt được mọi mục tiêu đã chọn. Mở mục tiêu để viết phiên bản mà chỉ tài khoản đó mới nhận được.',

@@ -29,6 +29,8 @@ export const validationMessages = {
     'Este archivo es {actual}. {provider}acepta hasta {limit}.',
   'validation.media_mixed_types_unsupported.message':
     '{provider}No se pueden publicar imágenes y videos en la misma publicación.',
+  'validation.media_unavailable.message':
+    'Un archivo adjunto ya no está disponible. Quítelo de la publicación o vuelva a subirlo.',
   'validation.alt_text_missing.message':
     'Falta el texto alternativo {count, plural, one {#imagen} other {#imágenes} many {#imágenes}}.',
   'validation.alt_text_missing.hint': 'Describe la imagen o márcala como decorativa.',
@@ -61,12 +63,12 @@ export const validationMessages = {
   'validation.schedule_too_far_ahead.message':
     'Esto está más adelantado que el {limit}Mire hacia adelante establecido para esta credencial.',
   'validation.schedule_outside_quiet_hours.message':
-    'Esto cae dentro de las horas de silencio establecidas para {brand}.',
+    'Esto cae dentro de las horas de silencio establecidas para {project}.',
   'validation.duplicate_within_window.message':
     'Contenido muy similar ya está programado o publicado para {account}dentro {window}.',
-  'validation.blocked_term_present.message': 'El texto contiene un término bloqueado para {brand}.',
+  'validation.blocked_term_present.message': 'El texto contiene un término bloqueado para {project}.',
   'validation.unsupported_claim.message':
-    'Este reclamo no está entre los reclamos aprobados para {brand}.',
+    'Este reclamo no está entre los reclamos aprobados para {project}.',
   'validation.unsupported_claim.hint':
     'Agréguelo a las afirmaciones aprobadas con evidencia o reformule la oración.',
   'validation.cadence_exceeded.message':

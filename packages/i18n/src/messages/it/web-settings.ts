@@ -27,8 +27,8 @@ export const webSettingsMessages = {
   'settings.ui.section.members': 'Membri e ruoli',
   'settings.ui.section.membersSummary':
     "Chi è presente in quest'area di lavoro e cosa può fare ciascuna persona.",
-  'settings.ui.section.brands': 'Brands',
-  'settings.ui.section.brandsSummary':
+  'settings.ui.section.projects': 'Projects',
+  'settings.ui.section.projectsSummary':
     'Voce, pubblico, affermazioni approvate, termini bloccati, regole locali, domini e glossario.',
   'settings.ui.section.agents': 'Agenti e API',
   'settings.ui.section.agentsSummary':
@@ -110,7 +110,7 @@ export const webSettingsMessages = {
     '{count, plural, one {# marchio} many {# marchi} other {# marchi}}: {names}',
   'settings.ui.members.approvals.canApprove': 'Può approvare',
   'settings.ui.members.approvals.cannotApprove': 'Impossibile approvare',
-  'settings.ui.members.approvals.canApproveOwnBrands': 'Può approvare per i marchi elencati',
+  'settings.ui.members.approvals.canApproveOwnProjects': 'Può approvare per i marchi elencati',
   'settings.ui.members.lastActiveNever': "Non ha ancora effettuato l'accesso",
   'settings.ui.members.changeRole': 'Cambia ruolo per {name}',
   'settings.ui.members.remove': 'Rimuovere {name}',
@@ -121,7 +121,7 @@ export const webSettingsMessages = {
   'settings.ui.members.inviteBody':
     "Ricevono un'e-mail con un collegamento. L'invito scade dopo sette giorni e puoi revocarlo prima di allora.",
   'settings.ui.members.inviteRole': 'Ruolo',
-  'settings.ui.members.inviteScope': 'Brand in cui possono lavorare',
+  'settings.ui.members.inviteScope': 'Project in cui possono lavorare',
   'settings.ui.members.inviteScopeAll': 'Ogni marchio in questo spazio di lavoro',
   'settings.ui.members.inviteScopeSelected': 'Solo i marchi che seleziono',
   'settings.ui.members.inviteApprovals': 'Può decidere le richieste di approvazione',
@@ -160,44 +160,73 @@ export const webSettingsMessages = {
   'settings.ui.members.removeConsequence.approvals':
     'Le richieste di approvazione in attesa tornano in coda per un altro approvatore.',
 
-  /* ------------------------------------------------------------------ brands */
+  /* ----------------------------------------------------------------- projects */
 
-  'settings.ui.brands.description':
-    'Un marchio porta con sé le regole rispetto alle quali viene controllato il contenuto: cosa puoi affermare, cosa non puoi dire e come è scritta ciascuna lingua.',
-  'settings.ui.brands.listCaption': "Brand in quest'area di lavoro",
-  'settings.ui.brands.column.brand': 'Brand',
-  'settings.ui.brands.column.locales': 'Lingue dei contenuti',
-  'settings.ui.brands.column.accounts': 'Conti',
-  'settings.ui.brands.column.updated': 'Aggiornato',
-  'settings.ui.brands.accountCount':
+  'settings.ui.projects.description':
+    'Tieni separati ogni prodotto, cliente, pubblicazione o iniziativa. Ogni progetto ha i propri canali, contenuti multimediali, bozze, programmazione e regole di pubblicazione.',
+  'settings.ui.projects.listCaption': "Progetti in quest'area di lavoro",
+  'settings.ui.projects.column.project': 'Progetto',
+  'settings.ui.projects.column.locales': 'Lingue dei contenuti',
+  'settings.ui.projects.column.accounts': 'Conti',
+  'settings.ui.projects.column.updated': 'Aggiornato',
+  'settings.ui.projects.accountCount':
     '{count, plural, =0 {Nessun account} one {# account} many {# account} other {# account}}',
-  'settings.ui.brands.emptyTitle': 'Nessun marchio ancora',
-  'settings.ui.brands.emptyBody':
-    'Un marchio raggruppa account, regole di approvazione e regole linguistiche. La maggior parte dei team inizia con uno e ne aggiunge un secondo quando un cliente o un mercato necessitano di regole diverse.',
-  'settings.ui.brands.emptyExample':
-    'Esempio: marchio "Acme EU", lingue inglese e tedesco, termine bloccato "garantito", indicazione "Partnership a pagamento" su Instagram.',
-  'settings.ui.brands.voiceHelp':
-    'Come suona questo marchio. Utilizzato quando si richiede una riscrittura e quando vengono verificate le affermazioni.',
-  'settings.ui.brands.audienceHelp': 'A chi è rivolto il contenuto, per mercato.',
-  'settings.ui.brands.approvedClaimsHelp':
+  'settings.ui.projects.emptyTitle': 'Crea il tuo primo progetto',
+  'settings.ui.projects.emptyBody':
+    'Un progetto mantiene un prodotto o un cliente sincronizzato sui suoi canali social, senza mescolare contenuti multimediali, bozze o programmazioni con un altro progetto.',
+  'settings.ui.projects.emptyExample':
+    "Esempio: Acme App, Acme Podcast e Cliente Northwind possono essere tre progetti separati in un'unica area di lavoro.",
+  'settings.ui.projects.voiceHelp':
+    'Come dovrebbe suonare questo progetto. Utilizzato per le linee guida di revisione e per il controllo delle affermazioni.',
+  'settings.ui.projects.audienceHelp': 'A chi è rivolto il contenuto, per mercato.',
+  'settings.ui.projects.approvedClaimsHelp':
     "Dichiarazioni che un revisore ha autorizzato. Tutto ciò che non rientra in questo elenco viene contrassegnato prima dell'approvazione, non dopo la pubblicazione.",
-  'settings.ui.brands.blockedTermsHelp':
-    'Parole che bloccano la programmazione per questo marchio. Uno per riga.',
-  'settings.ui.brands.domainsHelp':
-    'Domini a cui questo marchio può collegarsi e abbreviarli. Solo i domini verificati possono essere selezionati nel compositore.',
-  'settings.ui.brands.domainVerified': '{date} verificato',
-  'settings.ui.brands.domainPending': 'Record DNS non ancora visto',
-  'settings.ui.brands.disclosureHelp':
+  'settings.ui.projects.blockedTermsHelp':
+    'Parole che bloccano la programmazione per questo progetto. Uno per riga.',
+  'settings.ui.projects.domainsHelp':
+    'Domini a cui questo progetto può collegarsi e che può abbreviare. Solo i domini verificati possono essere selezionati nel compositore.',
+  'settings.ui.projects.domainVerified': '{date} verificato',
+  'settings.ui.projects.domainPending': 'Record DNS non ancora visto',
+  'settings.ui.projects.domainVerificationUnavailable': 'La verifica non è ancora disponibile',
+  'settings.ui.projects.disclosureUnavailable':
+    'I valori predefiniti di divulgazione per canale non sono ancora disponibili. Aggiungi la divulgazione richiesta nel post finché questa funzione non sarà rilasciata.',
+  'settings.ui.projects.glossaryUnavailable':
+    "Il glossario dell'area di lavoro non è ancora disponibile. La voce, il pubblico, le affermazioni approvate e i termini bloccati qui sopra sono salvati e applicati.",
+  'settings.ui.projects.localeRulesUnavailable':
+    "Le regole di scrittura per lingua non sono ancora disponibili. Le lingue e i mercati dell'area di lavoro restano disponibili in Localizzazione.",
+  'settings.ui.projects.disclosureHelp':
     "Applicato per impostazione predefinita nel compositore per le piattaforme scelte qui. Può essere modificato per post prima dell'approvazione.",
-  'settings.ui.brands.glossaryHelp':
+  'settings.ui.projects.glossaryHelp':
     'Nomi di prodotti, termini legali e tutto ciò che deve sopravvivere inalterato ad una traduzione.',
-  'settings.ui.brands.glossaryCaption':
+  'settings.ui.projects.glossaryCaption':
     'Termini protetti e modalità di gestione di ciascuno di essi per lingua',
-  'settings.ui.brands.glossaryEmpty':
+  'settings.ui.projects.glossaryEmpty':
     'Nessun termine protetto ancora. Aggiungi nomi di prodotti e termini legali che non devono essere tradotti o riformulati.',
-  'settings.ui.brands.localeRulesHelp':
+  'settings.ui.projects.localeRulesHelp':
     "Regole per lingua del contenuto. Vengono applicati durante l'adattamento o la transcreazione e mostrati al revisore.",
-  'settings.ui.brands.saveBrand': 'Salva il marchio',
+  'settings.ui.projects.saveProject': 'Salva progetto',
+  'settings.ui.projects.capacityTitle': 'Capacità dei progetti',
+  'settings.ui.projects.capacityHelp':
+    "Il piano base da 29 $ include 3 progetti attivi. Un'area di lavoro può avere diritto fino a 20 senza creare un altro account.",
+  'settings.ui.projects.capacitySummary': '{used} di {limit}',
+  'settings.ui.projects.atLimitTitle': "Quest'area di lavoro ha usato ogni spazio per progetti",
+  'settings.ui.projects.atLimitBody':
+    "Archivia un progetto inattivo o cambia il diritto dell'area di lavoro prima di aggiungerne un altro. Il limite attuale è {limit}.",
+  'settings.ui.projects.listLabel': 'Scegli un progetto da modificare',
+  'settings.ui.projects.detailsTitle': 'Dettagli del progetto',
+  'settings.ui.projects.projectMeta':
+    '{accounts, plural, =0 {Nessun canale} one {# canale} many {# canali} other {# canali}} · Aggiornato {updated}',
+  'settings.ui.projects.archiveAction': 'Archivia progetto',
+  'settings.ui.projects.archiveTitle': 'Archiviare {project}?',
+  'settings.ui.projects.archiveBody':
+    "Questo progetto inattivo lascia l'area di lavoro attiva e libera uno spazio per progetti.",
+  'settings.ui.projects.archiveChannels':
+    'I suoi canali collegati smettono di comparire nei flussi dei progetti attivi.',
+  'settings.ui.projects.archiveHistory':
+    'Bozze, post pubblicati, ricevute e cronologia di controllo vengono conservati.',
+  'settings.ui.projects.archiveLastDisabled': "Mantieni almeno un progetto attivo nell'area di lavoro.",
+  'settings.ui.projects.archiveConnectedDisabled':
+    'Disconnetti i canali di questo progetto prima di archiviarlo.',
 
   /* ------------------------------------------------------------ localization */
 
@@ -281,9 +310,9 @@ export const webSettingsMessages = {
   'settings.ui.data.deleteConnection': 'Revoke one social connection',
   'settings.ui.data.deleteConnectionHelp':
     'Removes Relay access to that account. The workspace, its content and its receipts stay.',
-  'settings.ui.data.deleteBrand': 'Delete a brand',
-  'settings.ui.data.deleteBrandHelp':
-    'Removes the brand, its rules and its glossary. Content published under it keeps its receipts.',
+  'settings.ui.data.deleteProject': 'Delete a project',
+  'settings.ui.data.deleteProjectHelp':
+    'Removes the project, its rules and its glossary. Content published under it keeps its receipts.',
   'settings.ui.data.deleteContent': 'Delete content and media',
   'settings.ui.data.deleteContentHelp':
     'Removes drafts and stored files. It does not remove anything already published on a platform.',
@@ -568,7 +597,7 @@ export const webSettingsMessages = {
   'developer.ui.webhooks.eventGroup.publishing': 'Editoria',
   'developer.ui.webhooks.eventGroup.automation': 'Automazione e feed',
   'developer.ui.webhooks.eventGroup.workspace': 'Workspace',
-  'developer.ui.webhooks.scopeTitle': 'Brand e account',
+  'developer.ui.webhooks.scopeTitle': 'Project e account',
   'developer.ui.webhooks.scopeAll': 'Ogni marchio e account',
   'developer.ui.webhooks.scopeSelected': 'Solo quelli che seleziono',
   'developer.ui.webhooks.secretTitle': 'Firma segreta',
@@ -635,7 +664,7 @@ export const webSettingsMessages = {
   'billing.ui.conversionLabel': 'Converts',
   'billing.ui.channelsLabel': 'Active channels',
   'billing.ui.paymentMethodPolar': 'Payment method held by Polar',
-  'billing.ui.paymentMethodDescriptor': '{brand} ending {last4}, expires {expiry}',
+  'billing.ui.paymentMethodDescriptor': '{project} ending {last4}, expires {expiry}',
   'billing.ui.paymentMethodMissing': 'No payment method on file yet',
   'billing.ui.cancelBeforeDate': 'Cancel before {date} and you will not be charged.',
   'billing.ui.annualFraming': '$25/month billed annually. Save $48/year.',
@@ -824,15 +853,15 @@ export const webSettingsMessages = {
   'growth.ui.fourWeek.acceptAnnouncement': 'Bozza creata da questo brief.',
   'growth.ui.fourWeek.proposeAnnouncement': 'Proposta di calendario aggiunta per {date}.',
 
-  'growth.ui.ugc.promptAngle': 'Angle {number}',
-  'growth.ui.ugc.checklistTitle': 'Rights, consent and disclosure',
+  'growth.ui.ugc.promptAngle': 'Angolo {number}',
+  'growth.ui.ugc.checklistTitle': 'Diritti, consenso e trasparenza',
   'growth.ui.ugc.checklistHelp':
-    'Work through this with each participant before anything is published. Consent to appear is not consent to advertise.',
-  'growth.ui.ugc.incentiveNone': 'No incentive offered',
+    'Esamina questo aspetto con ogni partecipante prima che venga pubblicato qualcosa. Il consenso a comparire non è consenso a fare pubblicità.',
+  'growth.ui.ugc.incentiveNone': 'Nessun incentivo offerto',
   'growth.ui.ugc.incentiveDisclosure':
-    'An incentive must be disclosed on every post that results from it, by you and by the participant.',
+    'Un incentivo deve essere dichiarato in ogni post che ne deriva, sia da te che dal partecipante.',
   'growth.ui.ugc.honesty':
-    'This plans a campaign you run with real people. Relay does not find creators, contact them, write testimonials or create customer content.',
+    'Questo pianifica una campagna che gestisci tu con persone reali. Relay non cerca creator, non li contatta, non scrive testimonianze né crea contenuti per i clienti.',
 
   'growth.ui.opportunities.caption':
     'Opportunità verificate dal catalogo, classificate in base alla compatibilità con il tuo profilo',

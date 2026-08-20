@@ -27,8 +27,8 @@ export const webSettingsMessages = {
   'settings.ui.section.members': 'Üyeler ve roller',
   'settings.ui.section.membersSummary':
     'Bu çalışma alanında kimler var ve her bir kişi neler yapabilir?',
-  'settings.ui.section.brands': 'Markalar',
-  'settings.ui.section.brandsSummary':
+  'settings.ui.section.projects': 'Projeler',
+  'settings.ui.section.projectsSummary':
     'Ses, hedef kitle, onaylanmış hak talepleri, engellenen terimler, yerel ayar kuralları, alanlar ve sözlük.',
   'settings.ui.section.agents': 'Aracılar ve API',
   'settings.ui.section.agentsSummary':
@@ -108,7 +108,7 @@ export const webSettingsMessages = {
   'settings.ui.members.scopeLimited': '{count, plural, one {# marka} other {# marka}}: {names}',
   'settings.ui.members.approvals.canApprove': 'Onaylayabilir',
   'settings.ui.members.approvals.cannotApprove': 'Onaylanamıyor',
-  'settings.ui.members.approvals.canApproveOwnBrands': 'Listelenen markalar için onay verebilir',
+  'settings.ui.members.approvals.canApproveOwnProjects': 'Listelenen projeler için onay verebilir',
   'settings.ui.members.lastActiveNever': 'Henüz oturum açmadı',
   'settings.ui.members.changeRole': '{name} için rolü değiştirin',
   'settings.ui.members.remove': "{name}'ı kaldırın",
@@ -159,44 +159,73 @@ export const webSettingsMessages = {
   'settings.ui.members.removeConsequence.approvals':
     'Kendilerinde bekleyen onay istekleri başka bir onaylayan için kuyruğa geri döner.',
 
-  /* ------------------------------------------------------------------ brands */
+  /* ----------------------------------------------------------------- projects */
 
-  'settings.ui.brands.description':
+  'settings.ui.projects.description':
     'Bir marka, içeriğin kontrol edildiği kuralları taşır: ne iddia edebileceğiniz, ne söyleyemeyeceğiniz ve her dilin nasıl yazıldığı.',
-  'settings.ui.brands.listCaption': 'Bu çalışma alanındaki markalar',
-  'settings.ui.brands.column.brand': 'Marka',
-  'settings.ui.brands.column.locales': 'İçerik dilleri',
-  'settings.ui.brands.column.accounts': 'Hesaplar',
-  'settings.ui.brands.column.updated': 'Güncellendi',
-  'settings.ui.brands.accountCount':
+  'settings.ui.projects.listCaption': 'Bu çalışma alanındaki projeler',
+  'settings.ui.projects.column.project': 'Proje',
+  'settings.ui.projects.column.locales': 'İçerik dilleri',
+  'settings.ui.projects.column.accounts': 'Hesaplar',
+  'settings.ui.projects.column.updated': 'Güncellendi',
+  'settings.ui.projects.accountCount':
     '{count, plural, =0 {Hesap yok} one {# hesap} other {# hesap}}',
-  'settings.ui.brands.emptyTitle': 'Henüz marka yok',
-  'settings.ui.brands.emptyBody':
+  'settings.ui.projects.emptyTitle': 'Henüz proje yok',
+  'settings.ui.projects.emptyBody':
     'Bir marka, hesapları, onay kurallarını ve dil kurallarını gruplandırır. Çoğu ekip bir taneyle başlar ve bir müşterinin veya pazarın farklı kurallara ihtiyacı olduğunda bir saniye ekler.',
-  'settings.ui.brands.emptyExample':
+  'settings.ui.projects.emptyExample':
     'Örnek: "Acme EU" markası, İngilizce ve Almanca dilleri, "garantili" terimi engellendi, Instagram için "Ücretli ortaklık" açıklaması.',
-  'settings.ui.brands.voiceHelp':
-    'Bu marka kulağa nasıl geliyor? Yeniden yazma talebinde bulunduğunuzda ve talepler kontrol edildiğinde kullanılır.',
-  'settings.ui.brands.audienceHelp': 'Pazara göre içeriğin kime yönelik olduğu.',
-  'settings.ui.brands.approvedClaimsHelp':
+  'settings.ui.projects.voiceHelp':
+    'Bu proje kulağa nasıl geliyor? Yeniden yazma talebinde bulunduğunuzda ve talepler kontrol edildiğinde kullanılır.',
+  'settings.ui.projects.audienceHelp': 'Pazara göre içeriğin kime yönelik olduğu.',
+  'settings.ui.projects.approvedClaimsHelp':
     'Bir incelemecinin onayladığı ifadeler. Bu listenin dışındaki herhangi bir şey yayınlandıktan sonra değil, onaylanmadan önce işaretlenir.',
-  'settings.ui.brands.blockedTermsHelp':
-    'Bu marka için planlamayı engelleyen kelimeler. Her satıra bir tane.',
-  'settings.ui.brands.domainsHelp':
-    'Bu markanın bağlantı verebileceği ve kısaltabileceği alan adları. Oluşturucuda yalnızca doğrulanmış alanlar seçilebilir.',
-  'settings.ui.brands.domainVerified': 'Doğrulandı {date}',
-  'settings.ui.brands.domainPending': 'DNS kaydı henüz görülmedi',
-  'settings.ui.brands.disclosureHelp':
-    'Applied by default in the composer for the platforms you choose here. It can be changed per post before approval.',
-  'settings.ui.brands.glossaryHelp':
+  'settings.ui.projects.blockedTermsHelp':
+    'Bu proje için planlamayı engelleyen kelimeler. Her satıra bir tane.',
+  'settings.ui.projects.domainsHelp':
+    'Bu projenin bağlantı verebileceği ve kısaltabileceği alan adları. Oluşturucuda yalnızca doğrulanmış alanlar seçilebilir.',
+  'settings.ui.projects.domainVerified': 'Doğrulandı {date}',
+  'settings.ui.projects.domainPending': 'DNS kaydı henüz görülmedi',
+  'settings.ui.projects.domainVerificationUnavailable': 'Doğrulama henüz geliştirilmedi',
+  'settings.ui.projects.disclosureUnavailable':
+    'Kanal başına açıklama varsayılanları henüz geliştirilmedi. Bu özellik gelene kadar gerekli açıklamayı gönderiye ekleyin.',
+  'settings.ui.projects.glossaryUnavailable':
+    'Çalışma alanı sözlüğü henüz geliştirilmedi. Yukarıdaki ses, kitle, onaylanmış iddialar ve engellenen terimler kaydedilir ve uygulanır.',
+  'settings.ui.projects.localeRulesUnavailable':
+    'Dil başına yazım kuralları henüz geliştirilmedi. Çalışma alanı dilleri ve pazarları Yerelleştirme altında kullanılabilir olmaya devam ediyor.',
+  'settings.ui.projects.disclosureHelp':
+    'Burada seçtiğiniz platformlar için oluşturucuda varsayılan olarak uygulanır. Onaydan önce gönderi başına değiştirilebilir.',
+  'settings.ui.projects.glossaryHelp':
     'Ürün adları, yasal terimler ve çeviride değişmeden kalması gereken her şey.',
-  'settings.ui.brands.glossaryCaption':
+  'settings.ui.projects.glossaryCaption':
     'Korunan terimler ve her birinin dil bazında nasıl ele alındığı',
-  'settings.ui.brands.glossaryEmpty':
+  'settings.ui.projects.glossaryEmpty':
     'Henüz korumalı terim yok. Çevrilmemesi veya yeniden ifade edilmemesi gereken ürün adlarını ve yasal terimleri ekleyin.',
-  'settings.ui.brands.localeRulesHelp':
+  'settings.ui.projects.localeRulesHelp':
     'İçerik diline göre kurallar. Uyarladığınızda veya dönüştürdüğünüzde uygulanırlar ve inceleyene gösterilirler.',
-  'settings.ui.brands.saveBrand': 'Markayı kaydet',
+  'settings.ui.projects.saveProject': 'Projeyi kaydet',
+  'settings.ui.projects.capacityTitle': 'Proje kapasitesi',
+  'settings.ui.projects.capacityHelp':
+    'Temel $29 plan 3 aktif proje içerir. Bir çalışma alanı, başka bir hesap oluşturmadan 20 projeye kadar hak kazanabilir.',
+  'settings.ui.projects.capacitySummary': '{limit} üzerinden {used}',
+  'settings.ui.projects.atLimitTitle': 'Bu çalışma alanı tüm proje kotasını kullandı',
+  'settings.ui.projects.atLimitBody':
+    'Başka bir tane eklemeden önce etkin olmayan bir projeyi arşivleyin veya çalışma alanı hakkını değiştirin. Mevcut limit {limit}.',
+  'settings.ui.projects.listLabel': 'Düzenlemek için bir proje seçin',
+  'settings.ui.projects.detailsTitle': 'Proje ayrıntıları',
+  'settings.ui.projects.projectMeta':
+    '{accounts, plural, =0 {Kanal yok} one {# kanal} other {# kanal}} · Güncellendi {updated}',
+  'settings.ui.projects.archiveAction': 'Projeyi arşivle',
+  'settings.ui.projects.archiveTitle': '{project} arşivlensin mi?',
+  'settings.ui.projects.archiveBody':
+    'Bu etkin olmayan proje, etkin çalışma alanından ayrılır ve bir proje kotası boşaltır.',
+  'settings.ui.projects.archiveChannels':
+    'Bağlı kanalları artık etkin proje akışlarında görünmez.',
+  'settings.ui.projects.archiveHistory':
+    'Taslaklar, yayınlanan gönderiler, alındılar ve denetim geçmişi saklanır.',
+  'settings.ui.projects.archiveLastDisabled': 'Çalışma alanında en az bir etkin proje bulundurun.',
+  'settings.ui.projects.archiveConnectedDisabled':
+    'Arşivlemeden önce bu projenin kanallarının bağlantısını kesin.',
 
   /* ------------------------------------------------------------ localization */
 
@@ -279,9 +308,9 @@ export const webSettingsMessages = {
   'settings.ui.data.deleteConnection': 'Revoke one social connection',
   'settings.ui.data.deleteConnectionHelp':
     'Removes Relay access to that account. The workspace, its content and its receipts stay.',
-  'settings.ui.data.deleteBrand': 'Delete a brand',
-  'settings.ui.data.deleteBrandHelp':
-    'Removes the brand, its rules and its glossary. Content published under it keeps its receipts.',
+  'settings.ui.data.deleteProject': 'Bir projeyi arşivle',
+  'settings.ui.data.deleteProjectHelp':
+    'Projeyi, kurallarını ve terim sözlüğünü kaldırır. Bu proje altında yayınlanan içerik makbuzlarını korur.',
   'settings.ui.data.deleteContent': 'Delete content and media',
   'settings.ui.data.deleteContentHelp':
     'Removes drafts and stored files. It does not remove anything already published on a platform.',
@@ -621,7 +650,7 @@ export const webSettingsMessages = {
   'billing.ui.conversionLabel': 'Converts',
   'billing.ui.channelsLabel': 'Active channels',
   'billing.ui.paymentMethodPolar': 'Payment method held by Polar',
-  'billing.ui.paymentMethodDescriptor': '{brand} ending {last4}, expires {expiry}',
+  'billing.ui.paymentMethodDescriptor': '{project} ending {last4}, expires {expiry}',
   'billing.ui.paymentMethodMissing': 'No payment method on file yet',
   'billing.ui.cancelBeforeDate': 'Cancel before {date} and you will not be charged.',
   'billing.ui.annualFraming': '$25/month billed annually. Save $48/year.',
@@ -810,15 +839,15 @@ export const webSettingsMessages = {
   'growth.ui.fourWeek.acceptAnnouncement': 'Taslak bu brifingden oluşturuldu.',
   'growth.ui.fourWeek.proposeAnnouncement': '{date} için takvim teklifi eklendi.',
 
-  'growth.ui.ugc.promptAngle': 'Angle {number}',
-  'growth.ui.ugc.checklistTitle': 'Rights, consent and disclosure',
+  'growth.ui.ugc.promptAngle': 'Açı {number}',
+  'growth.ui.ugc.checklistTitle': 'Haklar, onay ve bilgilendirme',
   'growth.ui.ugc.checklistHelp':
-    'Work through this with each participant before anything is published. Consent to appear is not consent to advertise.',
-  'growth.ui.ugc.incentiveNone': 'No incentive offered',
+    'Herhangi bir şey yayınlanmadan önce bunu her katılımcıyla birlikte gözden geçirin. Görünmeye onay vermek, reklam yapmaya onay vermek anlamına gelmez.',
+  'growth.ui.ugc.incentiveNone': 'Herhangi bir teşvik sunulmadı',
   'growth.ui.ugc.incentiveDisclosure':
-    'An incentive must be disclosed on every post that results from it, by you and by the participant.',
+    'Bir teşvik, sizin ve katılımcının, bundan doğan her gönderide belirtilmelidir.',
   'growth.ui.ugc.honesty':
-    'This plans a campaign you run with real people. Relay does not find creators, contact them, write testimonials or create customer content.',
+    'Bu, gerçek kişilerle yürüttüğünüz bir kampanyayı planlar. Relay içerik üreticisi bulmaz, onlarla iletişime geçmez, referans yazmaz veya müşteri içeriği oluşturmaz.',
 
   'growth.ui.opportunities.caption':
     'Profilinize uygun olarak sıralanmış, katalogdan doğrulanmış fırsatlar',

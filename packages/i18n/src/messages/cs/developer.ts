@@ -7,7 +7,7 @@ export const developerMessages = {
   'developer.serviceAccount.title': 'Služební účty',
   'developer.serviceAccount.create': 'Vytvořit servisní účet',
   'developer.serviceAccount.name': 'Jméno',
-  'developer.serviceAccount.scopeBrands': 'Značky a účty, které může používat',
+  'developer.serviceAccount.scopeProjects': 'Značky a účty, které může používat',
   'developer.serviceAccount.scopePlatforms': 'Platformy',
   'developer.serviceAccount.scopeLocales': 'Jazyky obsahu',
   'developer.serviceAccount.scopeDomains': 'Povolené odkazové domény',
@@ -111,7 +111,7 @@ export const developerMessages = {
 
   'developer.consent.title': '{app} chce přístup k vašemu pracovnímu prostoru',
   'developer.consent.workspace': 'Pracovní prostor',
-  'developer.consent.brands': 'Značky a účty',
+  'developer.consent.projects': 'Značky a účty',
   'developer.consent.willBeAbleTo': '{app} bude moci',
   'developer.consent.willNotBeAbleTo': '{app} nebude moci',
   'developer.consent.approvalStillApplies':

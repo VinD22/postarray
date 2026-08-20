@@ -40,7 +40,7 @@ export const onboardingMessages = {
   'onboarding.checklist.connectAccount': '連線帳號',
   'onboarding.checklist.firstPost': '發布或排程一篇貼文',
   'onboarding.checklist.inviteTeammate': '邀請團隊成員',
-  'onboarding.checklist.setBrandVoice': '描述你的品牌語氣',
+  'onboarding.checklist.setProjectVoice': '描述你的品牌語氣',
   'onboarding.checklist.tryAutomation': '試用自動化規則',
   'onboarding.checklist.remaining': '{count, plural, =0 {全部完成} other {還剩 # 個步驟}}',
 } as const;

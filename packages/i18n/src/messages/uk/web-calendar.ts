@@ -86,7 +86,7 @@ export const webCalendarMessages = {
   'web.calendar.allDayHeading': 'Точного часу ще немає',
 
   'web.calendar.filter.group': 'Група клієнтів',
-  'web.calendar.filter.anyBrand': 'Будь-який бренд',
+  'web.calendar.filter.anyProject': 'Будь-який бренд',
   'web.calendar.filter.anyAccount': 'Будь-який рахунок',
   'web.calendar.filter.anyPlatform': 'Будь-яка платформа',
   'web.calendar.filter.anyStatus': 'Будь-який статус',
@@ -362,6 +362,13 @@ export const webCalendarMessages = {
     'Наступний екран {provider}, а не Relay. Relay ніколи не бачив ваш пароль.',
   'web.connection.connect.noWriteWithoutApproval':
     'Підключення облікового запису нічого не публікує. Кожна публікація досі відповідає цій політиці схвалення робочої області.',
+
+  'web.connection.projectScope.title': 'Показано канали для бренду {project}',
+  'web.connection.projectScope.body':
+    'Нові канали підключаються до цього бренду. Перемкніть бренд у верхній панелі, щоб керувати іншим набором.',
+  'web.connection.projectMissing.title': 'Створіть бренд, перш ніж підключати канал',
+  'web.connection.projectMissing.body':
+    'Бренди тримають канали, медіа, чернетки та розклади різних продуктів чи клієнтів окремо.',
 
   'web.connection.requirement.instagram':
     'Для публікації Instagram потрібен професійний обліковий запис, який означає обліковий запис компанії або творця, пов’язаний зі сторінкою Facebook.',

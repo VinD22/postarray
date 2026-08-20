@@ -68,6 +68,15 @@ export const errorMessages = {
   'error.channel_limit_reached.message':
     'W tym obszarze roboczym używane są już wszystkie {limit} aktywne kanały.',
   'error.channel_limit_reached.action': 'Odłącz kanał przed podłączeniem kolejnego.',
+  'error.project_limit_reached.message':
+    'Ten obszar roboczy używa już wszystkich {limit} aktywnych projektów.',
+  'error.project_limit_reached.action':
+    'Zarchiwizuj nieaktywny projekt lub zmień limit projektów obszaru roboczego.',
+  'error.project_has_connections.message':
+    'Ten projekt ma jeszcze {connected, plural, one {# połączony kanał} few {# połączone kanały} many {# połączonych kanałów} other {# połączonego kanału}}.',
+  'error.project_has_connections.action': 'Odłącz każdy kanał w tym projekcie przed jego zarchiwizowaniem.',
+  'error.project_last_active.message': 'Obszar roboczy musi zachować co najmniej jeden aktywny projekt.',
+  'error.project_last_active.action': 'Utwórz inny projekt przed zarchiwizowaniem tego.',
   'error.connection_not_found.message': 'Tego połączenia nie ma już w tym obszarze roboczym.',
   'error.connection_not_found.action': 'Połącz konto ponownie, aby dalej publikować na nim.',
   'error.connection_revoked.message': '{account} cofnął dostęp w dniu {provider}.',

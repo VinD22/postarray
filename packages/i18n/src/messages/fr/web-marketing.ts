@@ -387,7 +387,7 @@ export const webMarketingMessages = {
   'web.pricing.beside.channels':
     '30 active social channels. A channel is one social account, Page, profile, group or publication connection.',
   'web.pricing.beside.members':
-    'Unlimited team members, workspaces and brand groups. There is no per seat charge.',
+    'Unlimited team members, workspaces and project groups. There is no per seat charge.',
   'web.pricing.beside.fairUse':
     'Unlimited drafts, scheduled posts and stored receipts under a published fair use and anti spam policy. Those controls exist to protect your connected accounts and they apply identically to every subscriber.',
   'web.pricing.beside.metered':
@@ -753,7 +753,7 @@ export const webMarketingMessages = {
   'web.legal.privacy.rights.revoke':
     'Disconnect one social account without deleting the workspace. Tokens are revoked at the platform and deleted here.',
   'web.legal.privacy.rights.delete':
-    'Delete a brand, a piece of content, a media file or the entire account.',
+    'Delete a project, a piece of content, a media file or the entire account.',
   'web.legal.privacy.rights.cancelJobs':
     'Cancel scheduled jobs before deleting anything, so nothing publishes after you leave.',
   'web.legal.privacy.rights.sessions':
@@ -822,13 +822,13 @@ export const webMarketingMessages = {
   'web.legal.ai.features.text':
     'Text assistance in the composer: rewriting, shortening and adapting for a platform.',
   'web.legal.ai.features.translation':
-    'Translation and transcreation into your content languages, against your brand glossary.',
+    'Translation and transcreation into your content languages, against your project glossary.',
   'web.legal.ai.features.feedback': 'Content feedback and the four week growth plan.',
   'web.legal.ai.features.provider':
     'These features call DeepSeek. The model identifiers currently in use are published in the documentation and any change is listed on the changelog.',
   'web.legal.ai.data.title': 'What is sent, and what happens to it',
   'web.legal.ai.data.sent':
-    'Only the text you asked us to work on, the instruction, and the brand context you chose to attach. Credentials, tokens and other customers content are never in a model context.',
+    'Only the text you asked us to work on, the instruction, and the project context you chose to attach. Credentials, tokens and other customers content are never in a model context.',
   'web.legal.ai.data.training':
     'Your content is not used to train our models. We configure providers so it is not used to train theirs.',
   'web.legal.ai.data.optOut':
@@ -1307,7 +1307,7 @@ export const webMarketingMessages = {
   'web.legal.subprocessors.deepseek.purpose':
     'Text assistance, translation and transcreation, and planning suggestions.',
   'web.legal.subprocessors.deepseek.data':
-    'Only the text you submit to an AI feature and the brand context you attached to it.',
+    'Only the text you submit to an AI feature and the project context you attached to it.',
   'web.legal.subprocessors.hosting.label': 'Application hosting and content delivery',
   'web.legal.subprocessors.hosting.purpose':
     'Serving the web app, the API and the short link service.',

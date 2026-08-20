@@ -222,7 +222,7 @@ export const webComposerMessages = {
   'composerWeb.set.apply': 'Utilisez cet ensemble',
   'composerWeb.set.none': "Aucun ensemble n'a encore été enregistré.",
   'composerWeb.signature.pickerLabel': 'Signature',
-  'composerWeb.signature.scope': 'Pour {brand} sur {provider} dans {language}',
+  'composerWeb.signature.scope': 'Pour {project} sur {provider} dans {language}',
   'composerWeb.signature.previewHeading': 'Comment ça termine le post',
   'composerWeb.signature.notMatching':
     "Cette signature s'étend à une marque, une plateforme ou une langue différente, elle n'est donc pas proposée ici.",

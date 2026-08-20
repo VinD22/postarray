@@ -32,7 +32,7 @@ export const automationMessages = {
   'automation.trigger.recurring': 'isang umuulit na iskedyul ng apoy',
 
   'automation.condition.label': 'Mga kundisyon',
-  'automation.condition.brand': 'ang tatak ay {brand}',
+  'automation.condition.project': 'ang tatak ay {project}',
   'automation.condition.campaign': 'ang kampanya ay {campaign}',
   'automation.condition.account': 'ang account ay {account}',
   'automation.condition.platform': 'ang plataporma ay {platform}',

@@ -15,7 +15,6 @@ export const navMessages = {
   'nav.commandPalette': 'Палитра команд',
   'nav.account': 'Аккаунт',
   'nav.workspaceSwitcher': 'Переключить рабочее пространство',
-  'nav.brandSwitcher': 'Сменить бренд',
   'nav.skipToContent': 'Перейти к основному содержанию',
   'nav.primaryLandmark': 'Основная навигация',
   'nav.moreItems': 'Подробнее',
@@ -26,7 +25,7 @@ export const navMessages = {
   'nav.theme.label': 'Тема',
 
   'settings.nav.members': 'Участники и роли',
-  'settings.nav.brands': 'Brands',
+  'settings.nav.projects': 'Проекты',
   'settings.nav.agents': 'Агенты и API',
   'settings.nav.developerApps': 'Приложения для разработчиков',
   'settings.nav.webhooks': 'Вебхуки',
@@ -65,8 +64,11 @@ export const navMessages = {
 
   'shell.workspace.label': 'Workspace',
   'shell.workspace.current': 'Текущая рабочая область: {name}.',
-  'shell.brand.label': 'Brand',
-  'shell.brand.all': 'Все бренды',
+  'shell.project.label': 'Проекты',
+  'shell.project.none': 'Создать проект',
+  'shell.project.current': 'Текущий проект: {name}',
+  'shell.project.manage': 'Управление проектами',
+  'shell.project.all': 'Все проекты',
   'shell.timeZone.label': 'Время указано в {timeZone}.',
   'shell.notifications.count':
     '{count, plural, =0 {Нет новых уведомлений} one {# новое уведомление} few {# новых уведомлений} many {# новых уведомлений} other {# новых уведомлений}}',

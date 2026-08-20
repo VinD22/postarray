@@ -8,8 +8,8 @@ export const webSettingsMessages = {
   'settings.ui.section.members': 'Thành viên và vai trò',
   'settings.ui.section.membersSummary':
     'Ai ở trong không gian làm việc này và mỗi người có thể làm gì.',
-  'settings.ui.section.brands': 'Brands',
-  'settings.ui.section.brandsSummary':
+  'settings.ui.section.projects': 'Projects',
+  'settings.ui.section.projectsSummary':
     'Giọng nói, khán giả, xác nhận quyền sở hữu đã được phê duyệt, điều khoản bị chặn, quy tắc ngôn ngữ, tên miền và bảng thuật ngữ.',
   'settings.ui.section.agents': 'Đại lý và API',
   'settings.ui.section.agentsSummary':
@@ -80,10 +80,10 @@ export const webSettingsMessages = {
   'settings.ui.members.column.lastActive': 'Hoạt động lần cuối',
   'settings.ui.members.column.actions': 'hành động',
   'settings.ui.members.scopeAll': 'Tất cả thương hiệu và tài khoản',
-  'settings.ui.members.scopeLimited': '{count, plural, one {# brand} other {# brands}}: {names}',
+  'settings.ui.members.scopeLimited': '{count, plural, one {# project} other {# projects}}: {names}',
   'settings.ui.members.approvals.canApprove': 'Có thể phê duyệt',
   'settings.ui.members.approvals.cannotApprove': 'Không thể phê duyệt',
-  'settings.ui.members.approvals.canApproveOwnBrands':
+  'settings.ui.members.approvals.canApproveOwnProjects':
     'Có thể phê duyệt cho các thương hiệu được liệt kê',
   'settings.ui.members.lastActiveNever': 'Chưa đăng nhập',
   'settings.ui.members.changeRole': 'Thay đổi vai trò của {name}',
@@ -95,7 +95,7 @@ export const webSettingsMessages = {
   'settings.ui.members.inviteBody':
     'Họ nhận được một email có liên kết. Lời mời sẽ hết hạn sau bảy ngày và bạn có thể thu hồi lời mời trước thời điểm đó.',
   'settings.ui.members.inviteRole': 'Vai trò',
-  'settings.ui.members.inviteScope': 'Brand họ có thể làm việc',
+  'settings.ui.members.inviteScope': 'Project họ có thể làm việc',
   'settings.ui.members.inviteScopeAll': 'Mọi thương hiệu trong không gian làm việc này',
   'settings.ui.members.inviteScopeSelected': 'Chỉ những thương hiệu tôi chọn',
   'settings.ui.members.inviteApprovals': 'Có thể quyết định yêu cầu phê duyệt',
@@ -133,42 +133,71 @@ export const webSettingsMessages = {
     'Các hành động trước đây của họ vẫn được lưu trong nhật ký kiểm tra và trên biên lai.',
   'settings.ui.members.removeConsequence.approvals':
     'Các yêu cầu phê duyệt đang chờ họ quay trở lại hàng đợi dành cho người phê duyệt khác.',
-  'settings.ui.brands.description':
-    'Một thương hiệu có các quy tắc kiểm tra nội dung: bạn có thể tuyên bố điều gì, không được nói gì và mỗi ngôn ngữ được viết như thế nào.',
-  'settings.ui.brands.listCaption': 'Brand trong không gian làm việc này',
-  'settings.ui.brands.column.brand': 'Brand',
-  'settings.ui.brands.column.locales': 'Ngôn ngữ nội dung',
-  'settings.ui.brands.column.accounts': 'Tài khoản',
-  'settings.ui.brands.column.updated': 'Đã cập nhật',
-  'settings.ui.brands.accountCount':
-    '{count, plural, =0 {No accounts} one {# account} other {# accounts}}',
-  'settings.ui.brands.emptyTitle': 'Chưa có thương hiệu',
-  'settings.ui.brands.emptyBody':
-    'Một nhóm thương hiệu tài khoản, quy tắc phê duyệt và quy tắc ngôn ngữ. Hầu hết các nhóm bắt đầu với một quy tắc và thêm quy tắc thứ hai khi khách hàng hoặc thị trường cần các quy tắc khác.',
-  'settings.ui.brands.emptyExample':
-    'Ví dụ: thương hiệu "Acme EU", ngôn ngữ tiếng Anh và tiếng Đức, thuật ngữ bị chặn "được đảm bảo", tiết lộ "Quan hệ đối tác trả phí" cho Instagram.',
-  'settings.ui.brands.voiceHelp':
-    'Thương hiệu này nghe như thế nào. Được sử dụng khi bạn yêu cầu viết lại và khi yêu cầu được kiểm tra.',
-  'settings.ui.brands.audienceHelp': 'Nội dung dành cho ai, theo thị trường.',
-  'settings.ui.brands.approvedClaimsHelp':
-    'Tuyên bố mà người đánh giá đã xóa. Mọi thứ nằm ngoài danh sách này sẽ được gắn cờ trước khi phê duyệt chứ không phải sau khi xuất bản.',
-  'settings.ui.brands.blockedTermsHelp':
-    'Những từ chặn lịch trình cho thương hiệu này. Một trên mỗi dòng.',
-  'settings.ui.brands.domainsHelp':
-    'Các miền mà thương hiệu này có thể liên kết đến và rút ngắn. Chỉ những miền đã được xác minh mới có thể được chọn trong tệp Composer.',
-  'settings.ui.brands.domainVerified': 'Đã xác minh {date}',
-  'settings.ui.brands.domainPending': 'Bản ghi DNS chưa được nhìn thấy',
-  'settings.ui.brands.disclosureHelp':
-    'Được áp dụng theo mặc định trong trình soạn thảo cho nền tảng bạn chọn ở đây. Nó có thể được thay đổi trên mỗi bài viết trước khi phê duyệt.',
-  'settings.ui.brands.glossaryHelp':
-    'Tên sản phẩm, điều khoản pháp lý và bất cứ điều gì phải tồn tại trong bản dịch không thay đổi.',
-  'settings.ui.brands.glossaryCaption':
-    'Các điều khoản được bảo vệ và cách xử lý từng điều khoản theo ngôn ngữ',
-  'settings.ui.brands.glossaryEmpty':
-    'Chưa có điều khoản nào được bảo vệ. Thêm tên sản phẩm và điều khoản pháp lý không được dịch hoặc diễn đạt lại.',
-  'settings.ui.brands.localeRulesHelp':
-    'Quy tắc cho mỗi ngôn ngữ nội dung. Chúng được áp dụng khi bạn điều chỉnh hoặc chuyển đổi và hiển thị cho người đánh giá.',
-  'settings.ui.brands.saveBrand': 'Lưu thương hiệu',
+  'settings.ui.projects.description':
+    'Giữ cho mỗi sản phẩm, khách hàng, ấn phẩm hay dự án kinh doanh được tách biệt. Mỗi dự án có kênh, phương tiện, bản nháp, lịch đăng và quy tắc xuất bản riêng.',
+  'settings.ui.projects.listCaption': 'Dự án trong không gian làm việc này',
+  'settings.ui.projects.column.project': 'Dự án',
+  'settings.ui.projects.column.locales': 'Ngôn ngữ nội dung',
+  'settings.ui.projects.column.accounts': 'Tài khoản',
+  'settings.ui.projects.column.updated': 'Đã cập nhật',
+  'settings.ui.projects.accountCount':
+    '{count, plural, =0 {Không có tài khoản} other {# tài khoản}}',
+  'settings.ui.projects.emptyTitle': 'Tạo dự án đầu tiên của bạn',
+  'settings.ui.projects.emptyBody':
+    'Một dự án giữ cho một sản phẩm hoặc khách hàng đồng bộ trên các kênh xã hội của nó mà không trộn lẫn phương tiện, bản nháp hay lịch đăng với dự án khác.',
+  'settings.ui.projects.emptyExample':
+    'Ví dụ: Acme App, Acme Podcast và khách hàng Northwind có thể là ba dự án riêng biệt trong một không gian làm việc.',
+  'settings.ui.projects.voiceHelp':
+    'Dự án này nên nghe như thế nào. Dùng cho hướng dẫn xem lại và kiểm tra tuyên bố.',
+  'settings.ui.projects.audienceHelp': 'Nội dung dành cho ai, theo thị trường.',
+  'settings.ui.projects.approvedClaimsHelp':
+    'Tuyên bố mà người xem lại đã thông qua. Mọi thứ nằm ngoài danh sách này sẽ được gắn cờ trước khi phê duyệt chứ không phải sau khi xuất bản.',
+  'settings.ui.projects.blockedTermsHelp':
+    'Những từ chặn việc lên lịch cho dự án này. Một từ trên mỗi dòng.',
+  'settings.ui.projects.domainsHelp':
+    'Các miền mà dự án này có thể liên kết đến và rút ngắn qua. Chỉ những miền đã được xác minh mới có thể được chọn trong trình soạn thảo.',
+  'settings.ui.projects.domainVerified': 'Đã xác minh {date}',
+  'settings.ui.projects.domainPending': 'Bản ghi DNS chưa được nhìn thấy',
+  'settings.ui.projects.domainVerificationUnavailable': 'Xác minh chưa được xây dựng',
+  'settings.ui.projects.disclosureUnavailable':
+    'Mặc định tiết lộ theo từng kênh chưa được xây dựng. Hãy thêm tiết lộ bắt buộc trong bài đăng cho đến khi tính năng này ra mắt.',
+  'settings.ui.projects.glossaryUnavailable':
+    'Bảng thuật ngữ của không gian làm việc chưa được xây dựng. Giọng điệu, đối tượng, tuyên bố đã duyệt và thuật ngữ bị chặn ở trên vẫn được lưu và thực thi.',
+  'settings.ui.projects.localeRulesUnavailable':
+    'Quy tắc viết theo từng ngôn ngữ chưa được xây dựng. Ngôn ngữ và thị trường của không gian làm việc vẫn khả dụng trong mục Bản địa hóa.',
+  'settings.ui.projects.disclosureHelp':
+    'Được áp dụng theo mặc định trong trình soạn thảo cho các nền tảng bạn chọn ở đây. Có thể thay đổi trên mỗi bài đăng trước khi phê duyệt.',
+  'settings.ui.projects.glossaryHelp':
+    'Tên sản phẩm, thuật ngữ pháp lý và bất cứ điều gì phải giữ nguyên qua bản dịch.',
+  'settings.ui.projects.glossaryCaption':
+    'Các thuật ngữ được bảo vệ và cách mỗi thuật ngữ được xử lý theo từng ngôn ngữ',
+  'settings.ui.projects.glossaryEmpty':
+    'Chưa có thuật ngữ được bảo vệ nào. Thêm tên sản phẩm và thuật ngữ pháp lý không được dịch hay diễn đạt lại.',
+  'settings.ui.projects.localeRulesHelp':
+    'Quy tắc theo từng ngôn ngữ nội dung. Chúng được áp dụng khi bạn thích ứng hay chuyển ngữ, và được hiển thị cho người xem lại.',
+  'settings.ui.projects.saveProject': 'Lưu dự án',
+  'settings.ui.projects.capacityTitle': 'Sức chứa dự án',
+  'settings.ui.projects.capacityHelp':
+    'Gói cơ bản $29 bao gồm 3 dự án hoạt động. Một không gian làm việc có thể được cấp quyền tối đa 20 dự án mà không cần tạo tài khoản khác.',
+  'settings.ui.projects.capacitySummary': '{used} trên {limit}',
+  'settings.ui.projects.atLimitTitle': 'Không gian làm việc này đã dùng hết mọi chỗ dự án',
+  'settings.ui.projects.atLimitBody':
+    'Hãy lưu trữ một dự án không hoạt động hoặc thay đổi hạn mức của không gian làm việc trước khi thêm dự án khác. Giới hạn hiện tại là {limit}.',
+  'settings.ui.projects.listLabel': 'Chọn một dự án để chỉnh sửa',
+  'settings.ui.projects.detailsTitle': 'Chi tiết dự án',
+  'settings.ui.projects.projectMeta':
+    '{accounts, plural, =0 {Không có kênh} other {# kênh}} · Đã cập nhật {updated}',
+  'settings.ui.projects.archiveAction': 'Lưu trữ dự án',
+  'settings.ui.projects.archiveTitle': 'Lưu trữ {project}?',
+  'settings.ui.projects.archiveBody':
+    'Dự án không hoạt động này sẽ rời khỏi không gian làm việc đang hoạt động và giải phóng một chỗ dự án.',
+  'settings.ui.projects.archiveChannels':
+    'Các kênh đã kết nối của nó sẽ ngừng xuất hiện trong các luồng làm việc của dự án đang hoạt động.',
+  'settings.ui.projects.archiveHistory':
+    'Bản nháp, bài đăng đã xuất bản, biên nhận và lịch sử kiểm tra vẫn được giữ lại.',
+  'settings.ui.projects.archiveLastDisabled': 'Giữ ít nhất một dự án hoạt động trong không gian làm việc.',
+  'settings.ui.projects.archiveConnectedDisabled':
+    'Hãy ngắt kết nối các kênh của dự án này trước khi lưu trữ nó.',
   'settings.ui.localization.description':
     'Ba cài đặt riêng biệt: ngôn ngữ của ứng dụng này, ngôn ngữ bạn xuất bản và thị trường bạn đang viết. Thay đổi cái này không bao giờ thay đổi cái khác.',
   'settings.ui.localization.interfaceOnlyEnglish':
@@ -242,8 +271,8 @@ export const webSettingsMessages = {
   'settings.ui.data.deleteConnection': 'Thu hồi một kết nối xã hội',
   'settings.ui.data.deleteConnectionHelp':
     'Xóa quyền truy cập Relay vào tài khoản đó. Không gian làm việc, nội dung và biên lai của nó vẫn được giữ nguyên.',
-  'settings.ui.data.deleteBrand': 'Xóa một thương hiệu',
-  'settings.ui.data.deleteBrandHelp':
+  'settings.ui.data.deleteProject': 'Xóa một thương hiệu',
+  'settings.ui.data.deleteProjectHelp':
     'Loại bỏ thương hiệu, các quy tắc và bảng chú giải của nó. Nội dung được xuất bản theo nó giữ biên lai của nó.',
   'settings.ui.data.deleteContent': 'Xóa nội dung và phương tiện',
   'settings.ui.data.deleteContentHelp':
@@ -503,7 +532,7 @@ export const webSettingsMessages = {
   'developer.ui.webhooks.eventGroup.publishing': 'Xuất bản',
   'developer.ui.webhooks.eventGroup.automation': 'Tự động hóa và nguồn cấp dữ liệu',
   'developer.ui.webhooks.eventGroup.workspace': 'Workspace',
-  'developer.ui.webhooks.scopeTitle': 'Brand và tài khoản',
+  'developer.ui.webhooks.scopeTitle': 'Project và tài khoản',
   'developer.ui.webhooks.scopeAll': 'Mỗi thương hiệu và tài khoản',
   'developer.ui.webhooks.scopeSelected': 'Chỉ những người tôi chọn',
   'developer.ui.webhooks.secretTitle': 'Ký bí mật',
@@ -567,7 +596,7 @@ export const webSettingsMessages = {
   'billing.ui.conversionLabel': 'chuyển đổi',
   'billing.ui.channelsLabel': 'Kênh hoạt động',
   'billing.ui.paymentMethodPolar': 'Phương thức thanh toán do Polar nắm giữ',
-  'billing.ui.paymentMethodDescriptor': '{brand} kết thúc {last4}, hết hạn {expiry}',
+  'billing.ui.paymentMethodDescriptor': '{project} kết thúc {last4}, hết hạn {expiry}',
   'billing.ui.paymentMethodMissing': 'Chưa có phương thức thanh toán nào trong hồ sơ',
   'billing.ui.cancelBeforeDate': 'Hủy trước {date} và bạn sẽ không bị tính phí.',
   'billing.ui.annualFraming': '$25/tháng thanh toán hàng năm. Tiết kiệm $48/năm.',

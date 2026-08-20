@@ -61,7 +61,7 @@ export const webCalendarMessages = {
   'web.calendar.nowLabel': 'Sekarang',
   'web.calendar.allDayHeading': 'Belum ada waktu pastinya',
   'web.calendar.filter.group': 'Kelompok pelanggan',
-  'web.calendar.filter.anyBrand': 'Merek apa pun',
+  'web.calendar.filter.anyProject': 'Merek apa pun',
   'web.calendar.filter.anyAccount': 'Akun apa pun',
   'web.calendar.filter.anyPlatform': 'Platform apa pun',
   'web.calendar.filter.anyStatus': 'Status apa pun',

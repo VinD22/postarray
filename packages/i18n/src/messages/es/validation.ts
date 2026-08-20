@@ -66,12 +66,12 @@ export const validationMessages = {
   'validation.schedule_too_far_ahead.message':
     'Esto está más adelante que the {limit} anticipación establecida para esta credencial.',
   'validation.schedule_outside_quiet_hours.message':
-    'Esto cae dentro de las horas de silencio establecidas for {brand}.',
+    'Esto cae dentro de las horas de silencio establecidas for {project}.',
   'validation.duplicate_within_window.message':
     'Contenido muy similar ya está programado o publicado for {account} within {window}.',
-  'validation.blocked_term_present.message': 'El texto contiene un término bloqueado for {brand}.',
+  'validation.blocked_term_present.message': 'El texto contiene un término bloqueado for {project}.',
   'validation.unsupported_claim.message':
-    'Este reclamo no se encuentra entre los reclamos aprobados for {brand}.',
+    'Este reclamo no se encuentra entre los reclamos aprobados for {project}.',
   'validation.unsupported_claim.hint':
     'Agréguelo a las afirmaciones aprobadas con evidencia o reformule la oración.',
   'validation.cadence_exceeded.message':

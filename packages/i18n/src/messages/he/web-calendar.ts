@@ -60,7 +60,7 @@ export const webCalendarMessages = withHebrewPluralForms({
   'web.calendar.nowLabel': 'עכשיו',
   'web.calendar.allDayHeading': 'עדיין אין זמן מדויק',
   'web.calendar.filter.group': 'קבוצת לקוחות',
-  'web.calendar.filter.anyBrand': 'כל מותג',
+  'web.calendar.filter.anyProject': 'כל מותג',
   'web.calendar.filter.anyAccount': 'כל חשבון',
   'web.calendar.filter.anyPlatform': 'כל פלטפורמה',
   'web.calendar.filter.anyStatus': 'כל סטטוס',
@@ -296,6 +296,13 @@ export const webCalendarMessages = withHebrewPluralForms({
     'המסך הבא הוא {provider}, לא ממסר. ממסר לעולם לא רואה את הסיסמה שלך.',
   'web.connection.connect.noWriteWithoutApproval':
     'חיבור חשבון לא מפרסם כלום. כל פוסט עדיין עומד במדיניות אישור סביבת העבודה הזו.',
+  'web.connection.projectScope.title': 'מוצגים ערוצים עבור {project}',
+  'web.connection.projectScope.body':
+    'ערוצים חדשים מתחברים למותג הזה. החלף מותג מהסרגל העליון כדי לנהל קבוצה אחרת.',
+  'web.connection.projectMissing.title': 'צור מותג לפני חיבור ערוץ',
+  'web.connection.projectMissing.body':
+    'מותגים שומרים ערוצים, מדיה, טיוטות ולוחות זמנים של מוצרים או לקוחות שונים בנפרד.',
+
   'web.connection.requirement.instagram':
     'פרסום באינסטגרם צריך חשבון מקצועי, כלומר חשבון עסקי או יוצר המקושר לעמוד פייסבוק.',
   'web.connection.requirement.facebook':

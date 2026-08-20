@@ -19,7 +19,7 @@ export const calendarMessages = {
     '{count, plural, one {# více} other {# více} few {# více} many {# více}}',
   'calendar.newPostAt': 'Nový příspěvek na {time}',
 
-  'calendar.filter.brand': 'Značka',
+  'calendar.filter.project': 'Značka',
   'calendar.filter.account': 'Účet',
   'calendar.filter.platform': 'Platforma',
   'calendar.filter.status': 'Stav',

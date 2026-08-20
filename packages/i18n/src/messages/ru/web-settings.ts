@@ -27,8 +27,8 @@ export const webSettingsMessages = {
   'settings.ui.section.members': 'Участники и роли',
   'settings.ui.section.membersSummary':
     'Кто находится в этом рабочем пространстве и что может делать каждый человек.',
-  'settings.ui.section.brands': 'Brands',
-  'settings.ui.section.brandsSummary':
+  'settings.ui.section.projects': 'Проекты',
+  'settings.ui.section.projectsSummary':
     'Голос, аудитория, одобренные заявки, заблокированные термины, региональные правила, домены и глоссарий.',
   'settings.ui.section.agents': 'Агенты и API',
   'settings.ui.section.agentsSummary':
@@ -109,7 +109,7 @@ export const webSettingsMessages = {
     '{count, plural, one {# бренда} few {# бренда} many {# бренда} other {# бренда}}: {names}',
   'settings.ui.members.approvals.canApprove': 'Могу одобрить',
   'settings.ui.members.approvals.cannotApprove': 'Невозможно одобрить',
-  'settings.ui.members.approvals.canApproveOwnBrands': 'Может одобрить перечисленные бренды',
+  'settings.ui.members.approvals.canApproveOwnProjects': 'Может одобрить перечисленные проекты',
   'settings.ui.members.lastActiveNever': 'Еще не авторизовался',
   'settings.ui.members.changeRole': 'Изменить роль для {name}',
   'settings.ui.members.remove': 'Удалить {name}',
@@ -120,7 +120,7 @@ export const webSettingsMessages = {
   'settings.ui.members.inviteBody':
     'Они получают электронное письмо со ссылкой. Срок действия приглашения истекает через семь дней, и вы можете отозвать его до этого момента.',
   'settings.ui.members.inviteRole': 'Роль',
-  'settings.ui.members.inviteScope': 'Brand, в которых они могут работать',
+  'settings.ui.members.inviteScope': 'Project, в которых они могут работать',
   'settings.ui.members.inviteScopeAll': 'Каждый бренд в этом рабочем пространстве',
   'settings.ui.members.inviteScopeSelected': 'Только те бренды, которые я выбираю',
   'settings.ui.members.inviteApprovals': 'Может принимать решения по запросам на одобрение',
@@ -159,44 +159,74 @@ export const webSettingsMessages = {
   'settings.ui.members.removeConsequence.approvals':
     'Ожидающие их утверждения возвращаются в очередь для другого утверждающего.',
 
-  /* ------------------------------------------------------------------ brands */
+  /* ----------------------------------------------------------------- projects */
 
-  'settings.ui.brands.description':
+  'settings.ui.projects.description':
     'В бренде действуют правила, по которым проверяется контент: о чем вы можете заявлять, о чем нельзя говорить и как пишется каждый язык.',
-  'settings.ui.brands.listCaption': 'Brand в этой рабочей области',
-  'settings.ui.brands.column.brand': 'Brand',
-  'settings.ui.brands.column.locales': 'Языки контента',
-  'settings.ui.brands.column.accounts': 'Счета',
-  'settings.ui.brands.column.updated': 'Обновлено',
-  'settings.ui.brands.accountCount':
+  'settings.ui.projects.listCaption': 'Проекты в этой рабочей области',
+  'settings.ui.projects.column.project': 'Проект',
+  'settings.ui.projects.column.locales': 'Языки контента',
+  'settings.ui.projects.column.accounts': 'Счета',
+  'settings.ui.projects.column.updated': 'Обновлено',
+  'settings.ui.projects.accountCount':
     '{count, plural, =0 {Нет аккаунтов} one {# аккаунта} few {# аккаунтов} many {# аккаунтов} other {# аккаунтов}}',
-  'settings.ui.brands.emptyTitle': 'Брендов пока нет',
-  'settings.ui.brands.emptyBody':
+  'settings.ui.projects.emptyTitle': 'Проектов пока нет',
+  'settings.ui.projects.emptyBody':
     'Бренд группирует учетные записи, правила одобрения и языковые правила. Большинство команд начинают с одного и добавляют второе, когда клиенту или рынку нужны другие правила.',
-  'settings.ui.brands.emptyExample':
+  'settings.ui.projects.emptyExample':
     'Пример: бренд «Acme EU», языки: английский и немецкий, заблокирован термин «гарантировано», раскрытие «Платное партнерство» для Instagram.',
-  'settings.ui.brands.voiceHelp':
-    'Как звучит этот бренд. Используется, когда вы запрашиваете переписывание и когда проверяются претензии.',
-  'settings.ui.brands.audienceHelp': 'Для кого предназначен контент в зависимости от рынка.',
-  'settings.ui.brands.approvedClaimsHelp':
+  'settings.ui.projects.voiceHelp':
+    'Как звучит этот проект. Используется, когда вы запрашиваете переписывание и когда проверяются претензии.',
+  'settings.ui.projects.audienceHelp': 'Для кого предназначен контент в зависимости от рынка.',
+  'settings.ui.projects.approvedClaimsHelp':
     'Заявления, одобренные рецензентом. Все, что находится за пределами этого списка, помечается до утверждения, а не после публикации.',
-  'settings.ui.brands.blockedTermsHelp':
-    'Слова, которые блокируют планирование для этого бренда. По одному на строку.',
-  'settings.ui.brands.domainsHelp':
-    'Домены, на которые этот бренд может ссылаться и сокращать их. В композиторе можно выбрать только проверенные домены.',
-  'settings.ui.brands.domainVerified': 'Проверено {date}',
-  'settings.ui.brands.domainPending': 'DNS-запись еще не видна',
-  'settings.ui.brands.disclosureHelp':
+  'settings.ui.projects.blockedTermsHelp':
+    'Слова, которые блокируют планирование для этого проекта. По одному на строку.',
+  'settings.ui.projects.domainsHelp':
+    'Домены, на которые этот проект может ссылаться и сокращать их. В композиторе можно выбрать только проверенные домены.',
+  'settings.ui.projects.domainVerified': 'Проверено {date}',
+  'settings.ui.projects.domainPending': 'DNS-запись еще не видна',
+  'settings.ui.projects.domainVerificationUnavailable': 'Проверка пока не реализована',
+  'settings.ui.projects.disclosureUnavailable':
+    'Настройки раскрытия информации по каналам пока не реализованы. Добавляйте необходимое раскрытие прямо в публикации, пока эта функция не появится.',
+  'settings.ui.projects.glossaryUnavailable':
+    'Глоссарий рабочего пространства пока не реализован. Тон, аудитория, одобренные утверждения и запрещённые слова выше сохраняются и применяются.',
+  'settings.ui.projects.localeRulesUnavailable':
+    'Правила написания по языкам пока не реализованы. Языки и рынки рабочего пространства остаются доступными в разделе «Локализация».',
+  'settings.ui.projects.disclosureHelp':
     'Применяется по умолчанию в композиторе для выбранных вами здесь платформ. Его можно изменить для каждого сообщения до утверждения.',
-  'settings.ui.brands.glossaryHelp':
+  'settings.ui.projects.glossaryHelp':
     'Названия продуктов, юридические термины и все, что должно сохраниться при переводе, без изменений.',
-  'settings.ui.brands.glossaryCaption':
+  'settings.ui.projects.glossaryCaption':
     'Защищенные термины и способы обработки каждого из них в зависимости от языка',
-  'settings.ui.brands.glossaryEmpty':
+  'settings.ui.projects.glossaryEmpty':
     'Защищенных условий пока нет. Добавьте названия продуктов и юридические термины, которые нельзя переводить или перефразировать.',
-  'settings.ui.brands.localeRulesHelp':
+  'settings.ui.projects.localeRulesHelp':
     'Правила для каждого языка контента. Они применяются, когда вы адаптируете или транскреируете, и показываются рецензенту.',
-  'settings.ui.brands.saveBrand': 'Сохранить бренд',
+  'settings.ui.projects.saveProject': 'Сохранить проект',
+  'settings.ui.projects.capacityTitle': 'Вместимость проектов',
+  'settings.ui.projects.capacityHelp':
+    'Базовый план за $29 включает 3 активных проекта. Рабочее пространство может получить право на до 20 проектов без создания другого аккаунта.',
+  'settings.ui.projects.capacitySummary': '{used} из {limit}',
+  'settings.ui.projects.atLimitTitle': 'Это рабочее пространство использовало все слоты проектов',
+  'settings.ui.projects.atLimitBody':
+    'Заархивируйте неактивный проект или измените лимит рабочего пространства, прежде чем добавлять ещё один. Текущий лимит: {limit}.',
+  'settings.ui.projects.listLabel': 'Выберите проект для редактирования',
+  'settings.ui.projects.detailsTitle': 'Сведения о проекте',
+  'settings.ui.projects.projectMeta':
+    '{accounts, plural, =0 {Нет каналов} one {# канал} few {# канала} many {# каналов} other {# канала}} · Обновлено {updated}',
+  'settings.ui.projects.archiveAction': 'Архивировать проект',
+  'settings.ui.projects.archiveTitle': 'Архивировать {project}?',
+  'settings.ui.projects.archiveBody':
+    'Этот неактивный проект покидает активное рабочее пространство и освобождает один слот проекта.',
+  'settings.ui.projects.archiveChannels':
+    'Его подключённые каналы перестают появляться в потоках активных проектов.',
+  'settings.ui.projects.archiveHistory':
+    'Черновики, опубликованные посты, квитанции и история аудита сохраняются.',
+  'settings.ui.projects.archiveLastDisabled':
+    'Оставьте хотя бы один активный проект в рабочем пространстве.',
+  'settings.ui.projects.archiveConnectedDisabled':
+    'Отключите каналы этого проекта перед архивированием.',
 
   /* ------------------------------------------------------------ localization */
 
@@ -280,9 +310,9 @@ export const webSettingsMessages = {
   'settings.ui.data.deleteConnection': 'Отмените одну социальную связь',
   'settings.ui.data.deleteConnectionHelp':
     'Удаляет доступ Relay к этой учетной записи. Рабочая область, ее содержимое и квитанции остаются.',
-  'settings.ui.data.deleteBrand': 'Удалить бренд',
-  'settings.ui.data.deleteBrandHelp':
-    'Удаляет бренд, его правила и глоссарий. Контент, опубликованный под ним, сохраняет свои квитанции.',
+  'settings.ui.data.deleteProject': 'Архивировать проект',
+  'settings.ui.data.deleteProjectHelp':
+    'Удаляет проект, его правила и глоссарий. Контент, опубликованный под ним, сохраняет свои квитанции.',
   'settings.ui.data.deleteContent': 'Удаление контента и мультимедиа',
   'settings.ui.data.deleteContentHelp':
     'Удаляет черновики и сохраненные файлы. Он не удаляет ничего, уже опубликованное на платформе.',
@@ -568,7 +598,7 @@ export const webSettingsMessages = {
   'developer.ui.webhooks.eventGroup.publishing': 'Публикация',
   'developer.ui.webhooks.eventGroup.automation': 'Автоматизация и корма',
   'developer.ui.webhooks.eventGroup.workspace': 'Workspace',
-  'developer.ui.webhooks.scopeTitle': 'Brand и аккаунты',
+  'developer.ui.webhooks.scopeTitle': 'Project и аккаунты',
   'developer.ui.webhooks.scopeAll': 'Каждый бренд и аккаунт',
   'developer.ui.webhooks.scopeSelected': 'Только те, которые я выбираю',
   'developer.ui.webhooks.secretTitle': 'Секрет подписания',
@@ -638,7 +668,7 @@ export const webSettingsMessages = {
   'billing.ui.channelsLabel': 'Активные каналы',
   'billing.ui.paymentMethodPolar': 'Способ оплаты, принадлежащий Polar',
   'billing.ui.paymentMethodDescriptor':
-    '{brand} заканчивается {last4}, срок действия истекает {expiry}',
+    '{project} заканчивается {last4}, срок действия истекает {expiry}',
   'billing.ui.paymentMethodMissing': 'Способ оплаты пока отсутствует.',
   'billing.ui.cancelBeforeDate': 'Отмените подписку до {date}, и с вас не будет взиматься плата.',
   'billing.ui.annualFraming':

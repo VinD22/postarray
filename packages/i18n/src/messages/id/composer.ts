@@ -1,7 +1,7 @@
 /** id beta catalog namespace. */
 export const composerMessages = {
   'composer.title': 'Menulis',
-  'composer.titleWithBrand': 'Tulis untuk {brand}',
+  'composer.titleWithProject': 'Tulis untuk {project}',
   'composer.master.label': 'Draf induk',
   'composer.master.description':
     'Tulis sekali di sini. Perubahan yang kompatibel menjangkau setiap target yang dipilih. Buka target untuk menulis versi yang hanya akan diterima oleh akun tersebut.',

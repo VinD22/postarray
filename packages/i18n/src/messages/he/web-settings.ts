@@ -6,8 +6,8 @@ export const webSettingsMessages = withHebrewPluralForms({
   'settings.ui.index.help': 'בחר קטע. כל שינוי מיוחס לך ומופיע ביומן הביקורת.',
   'settings.ui.section.members': 'חברים ותפקידים',
   'settings.ui.section.membersSummary': 'מי נמצא במרחב העבודה הזה ומה כל אדם יכול לעשות.',
-  'settings.ui.section.brands': 'מותגים',
-  'settings.ui.section.brandsSummary':
+  'settings.ui.section.projects': 'פרויקטים',
+  'settings.ui.section.projectsSummary':
     'קול, קהל, תביעות מאושרות, מונחים חסומים, חוקי מיקום, דומיינים ומילון המונחים.',
   'settings.ui.section.agents': 'סוכנים וממשק API',
   'settings.ui.section.agentsSummary':
@@ -70,10 +70,10 @@ export const webSettingsMessages = withHebrewPluralForms({
   'settings.ui.members.column.lastActive': 'פעיל אחרון',
   'settings.ui.members.column.actions': 'פעולות',
   'settings.ui.members.scopeAll': 'כל המותגים והחשבונות',
-  'settings.ui.members.scopeLimited': '{count, plural, one {# brand} other {# brands}}: {names}',
+  'settings.ui.members.scopeLimited': '{count, plural, one {# project} other {# projects}}: {names}',
   'settings.ui.members.approvals.canApprove': 'יכול לאשר',
   'settings.ui.members.approvals.cannotApprove': 'לא ניתן לאשר',
-  'settings.ui.members.approvals.canApproveOwnBrands': 'יכול לאשר את המותגים הרשומים',
+  'settings.ui.members.approvals.canApproveOwnProjects': 'יכול לאשר את הפרויקטים הרשומים',
   'settings.ui.members.lastActiveNever': 'עדיין לא נכנס',
   'settings.ui.members.changeRole': 'שנה תפקיד עבור {name}',
   'settings.ui.members.remove': 'הסר את {name}',
@@ -117,40 +117,69 @@ export const webSettingsMessages = withHebrewPluralForms({
   'settings.ui.members.removeConsequence.audit': 'פעולות העבר שלהם נשארות ביומן הביקורת ובקבלות.',
   'settings.ui.members.removeConsequence.approvals':
     'בקשות אישור הממתינות להן חוזרות לתור למאשר אחר.',
-  'settings.ui.brands.description':
+  'settings.ui.projects.description':
     'מותג נושא את הכללים שתוכן נבדק מולם: מה אתה רשאי לטעון, מה אסור לומר, ואיך כל שפה נכתבת.',
-  'settings.ui.brands.listCaption': 'מותגים במרחב העבודה הזה',
-  'settings.ui.brands.column.brand': 'מותג',
-  'settings.ui.brands.column.locales': 'שפות תוכן',
-  'settings.ui.brands.column.accounts': 'חשבונות',
-  'settings.ui.brands.column.updated': 'עודכן',
-  'settings.ui.brands.accountCount':
+  'settings.ui.projects.listCaption': 'פרויקטים במרחב העבודה הזה',
+  'settings.ui.projects.column.project': 'פרויקט',
+  'settings.ui.projects.column.locales': 'שפות תוכן',
+  'settings.ui.projects.column.accounts': 'חשבונות',
+  'settings.ui.projects.column.updated': 'עודכן',
+  'settings.ui.projects.accountCount':
     '{count, plural, =0 {No accounts} one {# account} other {# accounts}}',
-  'settings.ui.brands.emptyTitle': 'עדיין אין מותגים',
-  'settings.ui.brands.emptyBody':
+  'settings.ui.projects.emptyTitle': 'עדיין אין פרויקטים',
+  'settings.ui.projects.emptyBody':
     'מותג מקבץ חשבונות, כללי אישור וכללי שפה. רוב הצוותים מתחילים באחד ומוסיפים שנייה כאשר לקוח או שוק זקוקים לכללים שונים.',
-  'settings.ui.brands.emptyExample':
+  'settings.ui.projects.emptyExample':
     'דוגמה: מותג "Acme EU", שפות אנגלית וגרמנית, מונח חסום "מובטח", גילוי נאות "שותפות בתשלום" עבור אינסטגרם.',
-  'settings.ui.brands.voiceHelp':
-    'איך המותג הזה נשמע. משמש כאשר אתה מבקש שכתוב וכאשר תביעות נבדקות.',
-  'settings.ui.brands.audienceHelp': 'למי מיועד התוכן, לפי שוק.',
-  'settings.ui.brands.approvedClaimsHelp':
+  'settings.ui.projects.voiceHelp':
+    'איך הפרויקט הזה נשמע. משמש כאשר אתה מבקש שכתוב וכאשר תביעות נבדקות.',
+  'settings.ui.projects.audienceHelp': 'למי מיועד התוכן, לפי שוק.',
+  'settings.ui.projects.approvedClaimsHelp':
     'הצהרות שסוקר ניקה. כל דבר מחוץ לרשימה זו מסומן לפני האישור, לא לאחר הפרסום.',
-  'settings.ui.brands.blockedTermsHelp': 'מילים שחוסמות תזמון עבור המותג הזה. אחד בכל שורה.',
-  'settings.ui.brands.domainsHelp':
-    'דומיינים שהמותג הזה עשוי לקשר אליהם ולהתקצר דרכם. ניתן לבחור רק דומיינים מאומתים במלחין.',
-  'settings.ui.brands.domainVerified': 'מאומת {date}',
-  'settings.ui.brands.domainPending': 'רשומת DNS עדיין לא נראתה',
-  'settings.ui.brands.disclosureHelp':
+  'settings.ui.projects.blockedTermsHelp': 'מילים שחוסמות תזמון עבור הפרויקט הזה. אחד בכל שורה.',
+  'settings.ui.projects.domainsHelp':
+    'דומיינים שהפרויקט הזה עשוי לקשר אליהם ולהתקצר דרכם. ניתן לבחור רק דומיינים מאומתים במלחין.',
+  'settings.ui.projects.domainVerified': 'מאומת {date}',
+  'settings.ui.projects.domainPending': 'רשומת DNS עדיין לא נראתה',
+  'settings.ui.projects.domainVerificationUnavailable': 'האימות עדיין לא נבנה',
+  'settings.ui.projects.disclosureUnavailable':
+    'ברירות מחדל לגילוי לפי ערוץ עדיין לא נבנו. הוסף את הגילוי הנדרש בפוסט עד שהתכונה הזו תושק.',
+  'settings.ui.projects.glossaryUnavailable':
+    'מילון המונחים של סביבת העבודה עדיין לא נבנה. הטון, הקהל, הטענות המאושרות והמונחים החסומים שלמעלה נשמרים ואוכפים.',
+  'settings.ui.projects.localeRulesUnavailable':
+    'כללי כתיבה לכל שפה עדיין לא נבנו. שפות ושווקים של סביבת העבודה נשארים זמינים תחת לוקליזציה.',
+  'settings.ui.projects.disclosureHelp':
     'מיושם כברירת מחדל במלחין עבור הפלטפורמות שתבחר כאן. ניתן לשנות אותו בכל פוסט לפני האישור.',
-  'settings.ui.brands.glossaryHelp':
+  'settings.ui.projects.glossaryHelp':
     'שמות מוצרים, מונחים משפטיים וכל מה שחייב לשרוד תרגום ללא שינוי.',
-  'settings.ui.brands.glossaryCaption': 'מונחים מוגנים וכיצד כל אחד מהם מטופל לפי שפה',
-  'settings.ui.brands.glossaryEmpty':
+  'settings.ui.projects.glossaryCaption': 'מונחים מוגנים וכיצד כל אחד מהם מטופל לפי שפה',
+  'settings.ui.projects.glossaryEmpty':
     'עדיין אין תנאים מוגנים. הוסף שמות מוצרים ומונחים משפטיים שאסור לתרגם או לנסח מחדש.',
-  'settings.ui.brands.localeRulesHelp':
+  'settings.ui.projects.localeRulesHelp':
     'כללים לכל שפת תוכן. הם מיושמים כאשר אתה מסתגל או משחזר, ומוצגים למבקר.',
-  'settings.ui.brands.saveBrand': 'שמור מותג',
+  'settings.ui.projects.saveProject': 'שמור פרויקט',
+  'settings.ui.projects.capacityTitle': 'קיבולת פרויקטים',
+  'settings.ui.projects.capacityHelp':
+    'התוכנית הבסיסית ב-$29 כוללת 3 פרויקטים פעילים. סביבת עבודה יכולה לקבל זכאות עד 20 פרויקטים בלי ליצור חשבון נוסף.',
+  'settings.ui.projects.capacitySummary': '{used} מתוך {limit}',
+  'settings.ui.projects.atLimitTitle': 'סביבת העבודה הזו ניצלה את כל מקומות הפרויקט',
+  'settings.ui.projects.atLimitBody':
+    'העבר לארכיון פרויקט לא פעיל או שנה את הזכאות של סביבת העבודה לפני הוספת עוד אחד. המגבלה הנוכחית היא {limit}.',
+  'settings.ui.projects.listLabel': 'בחר פרויקט לעריכה',
+  'settings.ui.projects.detailsTitle': 'פרטי הפרויקט',
+  'settings.ui.projects.projectMeta':
+    '{accounts, plural, =0 {אין ערוצים} one {# ערוץ} other {# ערוצים}} · עודכן {updated}',
+  'settings.ui.projects.archiveAction': 'העבר פרויקט לארכיון',
+  'settings.ui.projects.archiveTitle': 'להעביר את {project} לארכיון?',
+  'settings.ui.projects.archiveBody':
+    'הפרויקט הלא פעיל הזה עוזב את סביבת העבודה הפעילה ומפנה מקום פרויקט אחד.',
+  'settings.ui.projects.archiveChannels':
+    'הערוצים המחוברים שלו מפסיקים להופיע בתהליכי הפרויקטים הפעילים.',
+  'settings.ui.projects.archiveHistory':
+    'טיוטות, פוסטים שפורסמו, קבלות והיסטוריית ביקורת נשמרים.',
+  'settings.ui.projects.archiveLastDisabled': 'השאר לפחות פרויקט פעיל אחד בסביבת העבודה.',
+  'settings.ui.projects.archiveConnectedDisabled':
+    'נתק את הערוצים של הפרויקט הזה לפני העברתו לארכיון.',
   'settings.ui.localization.description':
     'שלוש הגדרות נפרדות: השפה של האפליקציה הזו, השפות בהן אתה מפרסם והשווקים שאתה כותב עבורם. שינוי אחד לעולם לא משנה את השני.',
   'settings.ui.localization.interfaceOnlyEnglish':
@@ -221,9 +250,9 @@ export const webSettingsMessages = withHebrewPluralForms({
   'settings.ui.data.deleteConnection': 'בטל קשר חברתי אחד',
   'settings.ui.data.deleteConnectionHelp':
     'מסיר גישת ממסר לחשבון זה. חלל העבודה, תוכנו וקבלותיו נשארים.',
-  'settings.ui.data.deleteBrand': 'מחק מותג',
-  'settings.ui.data.deleteBrandHelp':
-    'מסיר את המותג, הכללים שלו ומילון המונחים שלו. תוכן המתפרסם במסגרתו שומר את הקבלות שלו.',
+  'settings.ui.data.deleteProject': 'העבר פרויקט לארכיון',
+  'settings.ui.data.deleteProjectHelp':
+    'מסיר את הפרויקט, הכללים שלו ומילון המונחים שלו. תוכן המתפרסם במסגרתו שומר את הקבלות שלו.',
   'settings.ui.data.deleteContent': 'מחק תוכן ומדיה',
   'settings.ui.data.deleteContentHelp':
     'מסיר טיוטות וקבצים מאוחסנים. זה לא מסיר שום דבר שכבר פורסם בפלטפורמה.',
@@ -522,7 +551,7 @@ export const webSettingsMessages = withHebrewPluralForms({
   'billing.ui.conversionLabel': 'ממירים',
   'billing.ui.channelsLabel': 'ערוצים פעילים',
   'billing.ui.paymentMethodPolar': 'אמצעי התשלום בידי Polar',
-  'billing.ui.paymentMethodDescriptor': '{brand} המסתיים {last4}, פג תוקף {expiry}',
+  'billing.ui.paymentMethodDescriptor': '{project} המסתיים {last4}, פג תוקף {expiry}',
   'billing.ui.paymentMethodMissing': 'עדיין אין אמצעי תשלום רשום',
   'billing.ui.cancelBeforeDate': 'בטל לפני {date} ולא תחויב.',
   'billing.ui.annualFraming': '25 $ לחודש מחויב מדי שנה. חסוך $48 לשנה.',

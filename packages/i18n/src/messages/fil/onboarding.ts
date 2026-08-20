@@ -56,7 +56,7 @@ export const onboardingMessages = {
   'onboarding.checklist.connectAccount': 'Ikonekta ang isang account',
   'onboarding.checklist.firstPost': 'Mag-publish o mag-iskedyul ng post',
   'onboarding.checklist.inviteTeammate': 'Mag-imbita ng isang kasamahan sa koponan',
-  'onboarding.checklist.setBrandVoice': 'Ilarawan ang boses ng iyong brand',
+  'onboarding.checklist.setProjectVoice': 'Ilarawan ang boses ng iyong project',
   'onboarding.checklist.tryAutomation': 'Subukan ang isang panuntunan sa automation',
   'onboarding.checklist.remaining':
     '{count, plural, =0 {Tapos na lahat} one {# hakbang pakaliwa} other {# hakbang na natitira}}',

@@ -45,7 +45,7 @@ export const onboardingMessages = {
   'onboarding.checklist.connectAccount': 'アカウントを接続する',
   'onboarding.checklist.firstPost': '投稿を公開またはスケジュールする',
   'onboarding.checklist.inviteTeammate': 'チームメイトを招待する',
-  'onboarding.checklist.setBrandVoice': 'ブランドの声を説明してください',
+  'onboarding.checklist.setProjectVoice': 'ブランドの声を説明してください',
   'onboarding.checklist.tryAutomation': '自動化ルールを試してみる',
   'onboarding.checklist.remaining': '{count, plural, other {残り # ステップ}}',
 } as const;

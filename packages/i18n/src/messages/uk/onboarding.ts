@@ -55,7 +55,7 @@ export const onboardingMessages = {
   'onboarding.checklist.connectAccount': 'Підключіть обліковий запис',
   'onboarding.checklist.firstPost': 'Опублікуйте або заплануйте публікацію',
   'onboarding.checklist.inviteTeammate': 'Запросіть напарника',
-  'onboarding.checklist.setBrandVoice': 'Опишіть голос свого бренду',
+  'onboarding.checklist.setProjectVoice': 'Опишіть голос свого бренду',
   'onboarding.checklist.tryAutomation': 'Спробуйте правило автоматизації',
   'onboarding.checklist.remaining':
     '{count, plural, =0 {Все зроблено} one {# крок вліво} few {# кроків ліворуч} many {# кроків ліворуч} other {# кроків ліворуч}}',

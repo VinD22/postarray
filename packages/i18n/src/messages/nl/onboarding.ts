@@ -54,7 +54,7 @@ export const onboardingMessages = {
   'onboarding.checklist.connectAccount': 'Koppel een account',
   'onboarding.checklist.firstPost': 'Publiceer of plan een bericht',
   'onboarding.checklist.inviteTeammate': 'Nodig een teamgenoot uit',
-  'onboarding.checklist.setBrandVoice': 'Beschrijf uw merkstem',
+  'onboarding.checklist.setProjectVoice': 'Beschrijf uw merkstem',
   'onboarding.checklist.tryAutomation': 'Probeer een automatiseringsregel',
   'onboarding.checklist.remaining':
     '{count, plural, =0 {Alles gedaan} one {# stap naar links} other {# stappen naar links}}',

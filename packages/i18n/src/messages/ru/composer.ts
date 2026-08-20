@@ -1,7 +1,7 @@
 /** Composer: master draft, per target overrides, previews, validation, cost. */
 export const composerMessages = {
   'composer.title': 'Сочинить',
-  'composer.titleWithBrand': 'Напишите для {brand}',
+  'composer.titleWithProject': 'Напишите для {project}',
   'composer.master.label': 'Главный черновик',
   'composer.master.description':
     'Напишите один раз сюда. Совместимые изменения достигают каждой выбранной цели. Откройте цель, чтобы написать версию, которую получит только эта учетная запись.',

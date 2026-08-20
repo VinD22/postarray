@@ -15,7 +15,6 @@ export const navMessages = {
   'nav.commandPalette': 'Kommandopalett',
   'nav.account': 'konto',
   'nav.workspaceSwitcher': 'Byt arbetsyta',
-  'nav.brandSwitcher': 'Byt märke',
   'nav.skipToContent': 'Hoppa till huvudinnehållet',
   'nav.primaryLandmark': 'Primär navigering',
   'nav.moreItems': 'Mer',
@@ -26,7 +25,7 @@ export const navMessages = {
   'nav.theme.label': 'Tema',
 
   'settings.nav.members': 'Medlemmar och roller',
-  'settings.nav.brands': 'Varumärken',
+  'settings.nav.projects': 'Projekt',
   'settings.nav.agents': 'Agenter och API',
   'settings.nav.developerApps': 'Utvecklarappar',
   'settings.nav.webhooks': 'Webhooks',
@@ -65,8 +64,11 @@ export const navMessages = {
 
   'shell.workspace.label': 'Arbetsyta',
   'shell.workspace.current': 'Aktuell arbetsyta: {name}',
-  'shell.brand.label': 'Varumärke',
-  'shell.brand.all': 'Alla märken',
+  'shell.project.label': 'Projekt',
+  'shell.project.none': 'Skapa ett projekt',
+  'shell.project.current': 'Aktuellt projekt: {name}',
+  'shell.project.manage': 'Hantera projekt',
+  'shell.project.all': 'Alla projekt',
   'shell.timeZone.label': 'Tiderna visas i {timeZone}',
   'shell.notifications.count':
     '{count, plural, =0 {Inga nya aviseringar} one {# ny avisering} other {# nya aviseringar}}',

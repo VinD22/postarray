@@ -86,7 +86,7 @@ export const webCalendarMessages = {
   'web.calendar.allDayHeading': 'अभी कोई सटीक समय नहीं है',
 
   'web.calendar.filter.group': 'ग्राहक समूह',
-  'web.calendar.filter.anyBrand': 'कोई भी ब्रांड',
+  'web.calendar.filter.anyProject': 'कोई भी ब्रांड',
   'web.calendar.filter.anyAccount': 'कोई भी खाता',
   'web.calendar.filter.anyPlatform': 'कोई भी मंच',
   'web.calendar.filter.anyStatus': 'कोई भी स्थिति',

@@ -1,7 +1,7 @@
 /** Composer: master draft, per target overrides, previews, validation, cost. */
 export const composerMessages = {
   'composer.title': 'Oluştur',
-  'composer.titleWithBrand': '{brand} için oluşturun',
+  'composer.titleWithProject': '{project} için oluşturun',
   'composer.master.label': 'Ana taslak',
   'composer.master.description':
     'Buraya bir kere yaz. Uyumlu değişiklikler seçilen her hedefe ulaşır. Yalnızca hesabın alacağı sürümü yazmak için bir hedef açın.',

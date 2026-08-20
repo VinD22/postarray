@@ -27,7 +27,7 @@ export const webAnalyticsMessages = {
   'analytics.question.accounts': 'Welke rekeningen hebben aandacht nodig?',
   'analytics.question.next': 'Wat is het volgende waard om te testen?',
 
-  'analytics.filter.brand': 'Brand',
+  'analytics.filter.project': 'Project',
   'analytics.filter.accounts': 'Rekeningen',
   'analytics.filter.allAccounts': 'Alle gekoppelde accounts',
   'analytics.filter.range': 'Datumbereik',
@@ -449,7 +449,7 @@ export const webAnalyticsMessages = {
   'automation.param.signature': 'Handtekening',
   'automation.param.disclosure': 'Openbaarmaking',
   'automation.param.locale': 'Taal',
-  'automation.param.brand': 'Brand',
+  'automation.param.project': 'Project',
   'automation.param.campaign': 'Campagne',
   'automation.param.account': 'Rekening',
   'automation.param.platform': 'Platform',

@@ -15,7 +15,6 @@ export const navMessages = {
   'nav.commandPalette': 'Палітра команд',
   'nav.account': 'Обліковий запис',
   'nav.workspaceSwitcher': 'Перемикання робочого простору',
-  'nav.brandSwitcher': 'Змінити бренд',
   'nav.skipToContent': 'Перейти до основного вмісту',
   'nav.primaryLandmark': 'Основна навігація',
   'nav.moreItems': 'більше',
@@ -26,7 +25,7 @@ export const navMessages = {
   'nav.theme.label': 'Тема',
 
   'settings.nav.members': 'Члени та ролі',
-  'settings.nav.brands': 'Brands',
+  'settings.nav.projects': 'Проєкти',
   'settings.nav.agents': 'Агенти та API',
   'settings.nav.developerApps': 'Програми для розробників',
   'settings.nav.webhooks': 'Веб-хуки',
@@ -65,8 +64,11 @@ export const navMessages = {
 
   'shell.workspace.label': 'Workspace',
   'shell.workspace.current': 'Поточна робоча область:{name}',
-  'shell.brand.label': 'Brand',
-  'shell.brand.all': 'Всі бренди',
+  'shell.project.label': 'Проєкти',
+  'shell.project.none': 'Створити проєкт',
+  'shell.project.current': 'Поточний проєкт: {name}',
+  'shell.project.manage': 'Керування проєктами',
+  'shell.project.all': 'Всі проєкти',
   'shell.timeZone.label': 'Час, показаний у{timeZone}',
   'shell.notifications.count':
     '{count, plural, =0 {Немає нових сповіщень} one {# нове сповіщення} few {# нові сповіщення} many {# нові сповіщення} other {# нові сповіщення}}',

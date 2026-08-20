@@ -26,8 +26,8 @@ export const webSettingsMessages = {
   'settings.ui.section.members': 'Члени та ролі',
   'settings.ui.section.membersSummary':
     'Хто знаходиться в цьому робочому просторі та що кожна особа може робити.',
-  'settings.ui.section.brands': 'Brands',
-  'settings.ui.section.brandsSummary':
+  'settings.ui.section.projects': 'Проєкти',
+  'settings.ui.section.projectsSummary':
     'Голос, аудиторія, схвалені заявки, заблоковані терміни, правила мови, домени та глосарій.',
   'settings.ui.section.agents': 'Агенти та API',
   'settings.ui.section.agentsSummary':
@@ -107,7 +107,7 @@ export const webSettingsMessages = {
     '{count, plural, one {#бренд} few {# бренди} many {# бренди} other {# бренди}}:{names}',
   'settings.ui.members.approvals.canApprove': 'Може схвалити',
   'settings.ui.members.approvals.cannotApprove': 'Не можу схвалити',
-  'settings.ui.members.approvals.canApproveOwnBrands': 'Можна схвалити для перерахованих брендів',
+  'settings.ui.members.approvals.canApproveOwnProjects': 'Можна схвалити для перерахованих проєктів',
   'settings.ui.members.lastActiveNever': 'Ще не ввійшов',
   'settings.ui.members.changeRole': 'Змінити роль для{name}',
   'settings.ui.members.remove': 'видалити{name}',
@@ -118,7 +118,7 @@ export const webSettingsMessages = {
   'settings.ui.members.inviteBody':
     'Вони отримують електронний лист із посиланням. Термін дії запрошення закінчується через сім днів, і ви можете відкликати його до цього часу.',
   'settings.ui.members.inviteRole': 'роль',
-  'settings.ui.members.inviteScope': 'Brand, у яких вони можуть працювати',
+  'settings.ui.members.inviteScope': 'Project, у яких вони можуть працювати',
   'settings.ui.members.inviteScopeAll': 'Кожен бренд у цьому робочому просторі',
   'settings.ui.members.inviteScopeSelected': 'Тільки обрані мною бренди',
   'settings.ui.members.inviteApprovals': 'Може вирішувати запити на схвалення',
@@ -158,44 +158,74 @@ export const webSettingsMessages = {
   'settings.ui.members.removeConsequence.approvals':
     'Запити на схвалення, що очікують на них, повертаються в чергу для іншого схвалювача.',
 
-  /* ------------------------------------------------------------------ brands */
+  /* ----------------------------------------------------------------- projects */
 
-  'settings.ui.brands.description':
+  'settings.ui.projects.description':
     'Бренд має правила, за якими контент перевіряється: що ви можете стверджувати, що ви не можете говорити, і як кожна мова написана.',
-  'settings.ui.brands.listCaption': 'Brands у цій робочій області',
-  'settings.ui.brands.column.brand': 'Brand',
-  'settings.ui.brands.column.locales': 'Мови вмісту',
-  'settings.ui.brands.column.accounts': 'Облікові записи',
-  'settings.ui.brands.column.updated': 'Оновлено',
-  'settings.ui.brands.accountCount':
+  'settings.ui.projects.listCaption': 'Проєкти у цій робочій області',
+  'settings.ui.projects.column.project': 'Проєкт',
+  'settings.ui.projects.column.locales': 'Мови вмісту',
+  'settings.ui.projects.column.accounts': 'Облікові записи',
+  'settings.ui.projects.column.updated': 'Оновлено',
+  'settings.ui.projects.accountCount':
     '{count, plural, =0 {Немає облікових записів} one {# рахунок} few {# облікові записи} many {# облікові записи} other {# облікові записи}}',
-  'settings.ui.brands.emptyTitle': 'Брендів ще немає',
-  'settings.ui.brands.emptyBody':
+  'settings.ui.projects.emptyTitle': 'Проєктів ще немає',
+  'settings.ui.projects.emptyBody':
     'Бренд групує облікові записи, правила затвердження та правила мови. Більшість команд починають з одного й додають другий, коли клієнту чи ринку потрібні інші правила.',
-  'settings.ui.brands.emptyExample':
+  'settings.ui.projects.emptyExample':
     'Приклад: бренд "Acme EU", мови англійська та німецька, заблокований термін "гарантовано", розкриття інформації "Оплачене партнерство" для Instagram.',
-  'settings.ui.brands.voiceHelp':
-    'Як звучить цей бренд. Використовується, коли ви просите переписати та коли твердження перевіряються.',
-  'settings.ui.brands.audienceHelp': 'Для кого призначений контент, для кожного ринку.',
-  'settings.ui.brands.approvedClaimsHelp':
+  'settings.ui.projects.voiceHelp':
+    'Як звучить цей проєкт. Використовується, коли ви просите переписати та коли твердження перевіряються.',
+  'settings.ui.projects.audienceHelp': 'Для кого призначений контент, для кожного ринку.',
+  'settings.ui.projects.approvedClaimsHelp':
     'Заяви, які перевірив рецензент. Все, що виходить за межі цього списку, позначається перед схваленням, а не після публікації.',
-  'settings.ui.brands.blockedTermsHelp':
-    'Слова, які блокують планування для цього бренду. По одному на рядок.',
-  'settings.ui.brands.domainsHelp':
-    'Домени цього бренду можуть зв’язуватися та скорочуватися. Лише підтверджені домени можна вибрати в композиторі.',
-  'settings.ui.brands.domainVerified': 'Перевірено{date}',
-  'settings.ui.brands.domainPending': 'Запис DNS ще не видно',
-  'settings.ui.brands.disclosureHelp':
+  'settings.ui.projects.blockedTermsHelp':
+    'Слова, які блокують планування для цього проєкту. По одному на рядок.',
+  'settings.ui.projects.domainsHelp':
+    'Домени цього проєкту можуть зв’язуватися та скорочуватися. Лише підтверджені домени можна вибрати в композиторі.',
+  'settings.ui.projects.domainVerified': 'Перевірено{date}',
+  'settings.ui.projects.domainPending': 'Запис DNS ще не видно',
+  'settings.ui.projects.domainVerificationUnavailable': 'Перевірку ще не реалізовано',
+  'settings.ui.projects.disclosureUnavailable':
+    'Типові розкриття інформації для кожного каналу ще не реалізовано. Додавайте потрібне розкриття прямо в публікації, поки цієї функції немає.',
+  'settings.ui.projects.glossaryUnavailable':
+    'Глосарій робочої області ще не реалізовано. Тон, аудиторія, схвалені твердження та заборонені терміни вище зберігаються і застосовуються.',
+  'settings.ui.projects.localeRulesUnavailable':
+    'Правила написання для кожної мови ще не реалізовано. Мови та ринки робочої області залишаються доступними в розділі «Локалізація».',
+  'settings.ui.projects.disclosureHelp':
     'Застосовується за умовчанням у редакторі для вибраних тут платформ. Його можна змінити для кожної публікації до затвердження.',
-  'settings.ui.brands.glossaryHelp':
+  'settings.ui.projects.glossaryHelp':
     'Назви продуктів, юридичні умови та все, що має залишитися без змін після перекладу.',
-  'settings.ui.brands.glossaryCaption':
+  'settings.ui.projects.glossaryCaption':
     'Захищені терміни та способи обробки кожного з них для кожної мови',
-  'settings.ui.brands.glossaryEmpty':
+  'settings.ui.projects.glossaryEmpty':
     'Захищених термінів ще немає. Додайте назви продуктів і юридичні терміни, які не можна перекладати чи перефразовувати.',
-  'settings.ui.brands.localeRulesHelp':
+  'settings.ui.projects.localeRulesHelp':
     'Правила для кожної мови контенту. Вони застосовуються під час адаптації або транскреації та показуються рецензенту.',
-  'settings.ui.brands.saveBrand': 'Зберегти бренд',
+  'settings.ui.projects.saveProject': 'Зберегти проєкт',
+  'settings.ui.projects.capacityTitle': 'Місткість проєктів',
+  'settings.ui.projects.capacityHelp':
+    'Базовий план за $29 включає 3 активні проєкти. Робоча область може отримати право на до 20 проєктів без створення іншого облікового запису.',
+  'settings.ui.projects.capacitySummary': '{used} з {limit}',
+  'settings.ui.projects.atLimitTitle': 'Ця робоча область використала всі слоти проєктів',
+  'settings.ui.projects.atLimitBody':
+    'Заархівуйте неактивний проєкт або змініть ліміт робочої області, перш ніж додавати ще один. Поточний ліміт: {limit}.',
+  'settings.ui.projects.listLabel': 'Виберіть проєкт для редагування',
+  'settings.ui.projects.detailsTitle': 'Відомості про проєкт',
+  'settings.ui.projects.projectMeta':
+    '{accounts, plural, =0 {Немає каналів} one {# канал} few {# канали} many {# каналів} other {# канали}} · Оновлено {updated}',
+  'settings.ui.projects.archiveAction': 'Заархівувати проєкт',
+  'settings.ui.projects.archiveTitle': 'Заархівувати {project}?',
+  'settings.ui.projects.archiveBody':
+    'Цей неактивний проєкт залишає активну робочу область і звільняє один слот проєкту.',
+  'settings.ui.projects.archiveChannels':
+    'Його підключені канали більше не з’являються в потоках активних проєктів.',
+  'settings.ui.projects.archiveHistory':
+    'Чернетки, опубліковані дописи, квитанції та історія аудиту зберігаються.',
+  'settings.ui.projects.archiveLastDisabled':
+    'Залиште щонайменше один активний проєкт у робочій області.',
+  'settings.ui.projects.archiveConnectedDisabled':
+    'Від’єднайте канали цього проєкту перед архівуванням.',
 
   /* ------------------------------------------------------------ localization */
 
@@ -279,9 +309,9 @@ export const webSettingsMessages = {
   'settings.ui.data.deleteConnection': 'Скасувати один соціальний зв’язок',
   'settings.ui.data.deleteConnectionHelp':
     'Вилучає доступ Relay до цього облікового запису. Робоча область, її вміст і квитанції залишаються.',
-  'settings.ui.data.deleteBrand': 'Видалити бренд',
-  'settings.ui.data.deleteBrandHelp':
-    'Видаляє бренд, його правила та глосарій. Вміст, опублікований під ним, зберігає свої квитанції.',
+  'settings.ui.data.deleteProject': 'Заархівувати проєкт',
+  'settings.ui.data.deleteProjectHelp':
+    'Видаляє проєкт, його правила та глосарій. Вміст, опублікований під ним, зберігає свої квитанції.',
   'settings.ui.data.deleteContent': 'Видаліть вміст і медіа',
   'settings.ui.data.deleteContentHelp':
     'Видаляє чернетки та збережені файли. Він не видаляє нічого, що вже опубліковано на платформі.',
@@ -560,7 +590,7 @@ export const webSettingsMessages = {
   'developer.ui.webhooks.eventGroup.publishing': 'Видавництво',
   'developer.ui.webhooks.eventGroup.automation': 'Автоматика і канали',
   'developer.ui.webhooks.eventGroup.workspace': 'Workspace',
-  'developer.ui.webhooks.scopeTitle': 'Brand і облікові записи',
+  'developer.ui.webhooks.scopeTitle': 'Project і облікові записи',
   'developer.ui.webhooks.scopeAll': 'Кожен бренд і обліковий запис',
   'developer.ui.webhooks.scopeSelected': 'Тільки ті, які я вибираю',
   'developer.ui.webhooks.secretTitle': 'Секрет підпису',
@@ -626,7 +656,7 @@ export const webSettingsMessages = {
   'billing.ui.conversionLabel': 'Навертає',
   'billing.ui.channelsLabel': 'Активні канали',
   'billing.ui.paymentMethodPolar': 'Спосіб оплати здійснюється Polar',
-  'billing.ui.paymentMethodDescriptor': '{brand}закінчення {last4}, закінчується{expiry}',
+  'billing.ui.paymentMethodDescriptor': '{project}закінчення {last4}, закінчується{expiry}',
   'billing.ui.paymentMethodMissing': 'Метод оплати ще не зареєстровано',
   'billing.ui.cancelBeforeDate': 'Скасувати раніше {date} і з вас не стягуватиметься плата.',
   'billing.ui.annualFraming': '$25/місяць виставляється щорічно. Економте 48 доларів на рік.',

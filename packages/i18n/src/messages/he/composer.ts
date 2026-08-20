@@ -2,7 +2,7 @@ import { withHebrewPluralForms } from './catalog-helpers';
 
 export const composerMessages = withHebrewPluralForms({
   'composer.title': 'חיבור',
-  'composer.titleWithBrand': 'כתוב עבור {brand}',
+  'composer.titleWithProject': 'כתוב עבור {project}',
   'composer.master.label': 'טיוטה מאסטר',
   'composer.master.description':
     'כתבו כאן פעם אחת. שינויים תואמים מגיעים לכל יעד שנבחר. פתח יעד לכתוב גרסה שרק אותו חשבון יקבל.',

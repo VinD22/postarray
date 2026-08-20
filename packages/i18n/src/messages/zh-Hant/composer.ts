@@ -1,6 +1,6 @@
 export const composerMessages = {
   'composer.title': '撰寫',
-  'composer.titleWithBrand': '為 {brand} 撰寫',
+  'composer.titleWithProject': '為 {project} 撰寫',
   'composer.master.label': '主要草稿',
   'composer.master.description':
     '在這裡撰寫一次。相容的變更會套用至每個已選目標。開啟目標即可撰寫只有該帳號會收到的版本。',

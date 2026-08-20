@@ -26,8 +26,8 @@ export const webSettingsMessages = {
   'settings.ui.section.members': 'Mga miyembro at tungkulin',
   'settings.ui.section.membersSummary':
     'Sino ang nasa workspace na ito at kung ano ang magagawa ng bawat tao.',
-  'settings.ui.section.brands': 'Mga tatak',
-  'settings.ui.section.brandsSummary':
+  'settings.ui.section.projects': 'Mga tatak',
+  'settings.ui.section.projectsSummary':
     'Boses, audience, naaprubahang claim, naka-block na termino, lokal na panuntunan, domain at glossary.',
   'settings.ui.section.agents': 'Mga Ahente at API',
   'settings.ui.section.agentsSummary':
@@ -52,7 +52,7 @@ export const webSettingsMessages = {
     'Mga session, dalawang salik na pagpapatotoo, mga kredensyal, mga ahente, webhook at mga pagbibigay ng app.',
   'settings.ui.section.data': 'Mga kontrol sa data',
   'settings.ui.section.dataSummary':
-    'I-export, bawiin ang isang koneksyon, tanggalin ang isang brand, tanggalin ang nilalaman o isara ang account.',
+    'I-export, bawiin ang isang koneksyon, tanggalin ang isang project, tanggalin ang nilalaman o isara ang account.',
 
   /* ------------------------------------------------------- shared UI states */
 
@@ -104,11 +104,11 @@ export const webSettingsMessages = {
   'settings.ui.members.column.approvals': 'Mga pag-apruba',
   'settings.ui.members.column.lastActive': 'Huling aktibo',
   'settings.ui.members.column.actions': 'Mga aksyon',
-  'settings.ui.members.scopeAll': 'Lahat ng brand at account',
+  'settings.ui.members.scopeAll': 'Lahat ng project at account',
   'settings.ui.members.scopeLimited': '{count, plural, one {# tatak} other {# mga tatak}}: {names}',
   'settings.ui.members.approvals.canApprove': 'Pwedeng aprubahan',
   'settings.ui.members.approvals.cannotApprove': 'Hindi maaprubahan',
-  'settings.ui.members.approvals.canApproveOwnBrands':
+  'settings.ui.members.approvals.canApproveOwnProjects':
     'Maaaring mag-apruba para sa mga tatak na nakalista',
   'settings.ui.members.lastActiveNever': 'Hindi pa nakakapag-sign in',
   'settings.ui.members.changeRole': 'Baguhin ang tungkulin para sa {name}',
@@ -122,7 +122,7 @@ export const webSettingsMessages = {
     'Nakatanggap sila ng email na may link. Mag-e-expire ang imbitasyon pagkatapos ng pitong araw at maaari mo itong bawiin bago iyon.',
   'settings.ui.members.inviteRole': 'Tungkulin',
   'settings.ui.members.inviteScope': 'Mga tatak kung saan sila maaaring magtrabaho',
-  'settings.ui.members.inviteScopeAll': 'Bawat brand sa workspace na ito',
+  'settings.ui.members.inviteScopeAll': 'Bawat project sa workspace na ito',
   'settings.ui.members.inviteScopeSelected': 'Tanging ang mga tatak lamang ang aking pipiliin',
   'settings.ui.members.inviteApprovals': 'Maaaring magpasya ng mga kahilingan sa pag-apruba',
   'settings.ui.members.inviteApprovalsHelp':
@@ -135,7 +135,7 @@ export const webSettingsMessages = {
   'settings.ui.members.emptyBody':
     'Anyayahan ang mga taong sumulat, nag-apruba o nagbabasa ng mga resulta. Ang bawat isa ay nakakakuha ng tungkulin at saklaw ng tatak.',
   'settings.ui.members.emptyExample':
-    'Isang karaniwang hugis: isang may-ari para sa pagsingil, isang approver bawat brand, at mga editor na nag-draft ngunit hindi kailanman nagpa-publish.',
+    'Isang karaniwang hugis: isang may-ari para sa pagsingil, isang approver bawat project, at mga editor na nag-draft ngunit hindi kailanman nagpa-publish.',
   'settings.ui.members.roleReferenceTitle': 'Ano ang kayang gawin ng bawat tungkulin',
   'settings.ui.members.roleReferenceCaption':
     'Mga tungkulin at mga aksyon na pinapayagan ng bawat isa',
@@ -161,44 +161,73 @@ export const webSettingsMessages = {
   'settings.ui.members.removeConsequence.approvals':
     'Ang mga kahilingan sa pag-apruba na naghihintay sa kanila ay bumalik sa pila para sa isa pang approver.',
 
-  /* ------------------------------------------------------------------ brands */
+  /* ----------------------------------------------------------------- projects */
 
-  'settings.ui.brands.description':
-    'Ang isang brand ay nagdadala ng mga panuntunan kung saan sinusuri ang nilalaman: kung ano ang maaari mong i-claim, kung ano ang hindi mo maaaring sabihin, at kung paano isinusulat ang bawat wika.',
-  'settings.ui.brands.listCaption': 'Mga brand sa workspace na ito',
-  'settings.ui.brands.column.brand': 'Brand',
-  'settings.ui.brands.column.locales': 'Mga wika ng nilalaman',
-  'settings.ui.brands.column.accounts': 'Mga account',
-  'settings.ui.brands.column.updated': 'Na-update',
-  'settings.ui.brands.accountCount':
+  'settings.ui.projects.description':
+    'Ang isang project ay nagdadala ng mga panuntunan kung saan sinusuri ang nilalaman: kung ano ang maaari mong i-claim, kung ano ang hindi mo maaaring sabihin, at kung paano isinusulat ang bawat wika.',
+  'settings.ui.projects.listCaption': 'Mga project sa workspace na ito',
+  'settings.ui.projects.column.project': 'Proyekto',
+  'settings.ui.projects.column.locales': 'Mga wika ng nilalaman',
+  'settings.ui.projects.column.accounts': 'Mga account',
+  'settings.ui.projects.column.updated': 'Na-update',
+  'settings.ui.projects.accountCount':
     '{count, plural, =0 {Walang mga account} one {# account} other {# mga account}}',
-  'settings.ui.brands.emptyTitle': 'Wala pang tatak',
-  'settings.ui.brands.emptyBody':
-    "Ang isang brand ay nagpapangkat ng mga account, mga panuntunan sa pag-apruba at mga panuntunan sa wika. Karamihan sa mga koponan ay nagsisimula sa isa at nagdaragdag ng isang segundo kapag ang isang kliyente o isang market ay nangangailangan ng iba't ibang mga panuntunan.",
-  'settings.ui.brands.emptyExample':
-    'Halimbawa: brand na "Acme EU", mga wikang English at German, naka-block na terminong "guaranteed", pagsisiwalat na "Bayad na partnership" para sa Instagram.',
-  'settings.ui.brands.voiceHelp':
-    'Ano ang tunog ng tatak na ito. Ginagamit kapag humiling ka ng muling pagsulat at kapag nasuri ang mga claim.',
-  'settings.ui.brands.audienceHelp': 'Para kanino ang content, bawat market.',
-  'settings.ui.brands.approvedClaimsHelp':
+  'settings.ui.projects.emptyTitle': 'Gawin ang iyong unang proyekto',
+  'settings.ui.projects.emptyBody':
+    "Ang isang project ay nagpapangkat ng mga account, mga panuntunan sa pag-apruba at mga panuntunan sa wika. Karamihan sa mga koponan ay nagsisimula sa isa at nagdaragdag ng isang segundo kapag ang isang kliyente o isang market ay nangangailangan ng iba't ibang mga panuntunan.",
+  'settings.ui.projects.emptyExample':
+    'Halimbawa: maaaring maging tatlong hiwalay na project ang Acme App, Acme Podcast at kliyenteng Northwind sa iisang workspace.',
+  'settings.ui.projects.voiceHelp':
+    'Ano ang dapat na tunog ng project na ito. Ginagamit kapag humiling ka ng muling pagsulat at kapag nasuri ang mga claim.',
+  'settings.ui.projects.audienceHelp': 'Para kanino ang content, bawat market.',
+  'settings.ui.projects.approvedClaimsHelp':
     'Mga pahayag na na-clear ng isang reviewer. Ang anumang bagay sa labas ng listahang ito ay na-flag bago ang pag-apruba, hindi pagkatapos ng pag-publish.',
-  'settings.ui.brands.blockedTermsHelp':
-    'Mga salitang humaharang sa pag-iiskedyul para sa brand na ito. Isa sa bawat linya.',
-  'settings.ui.brands.domainsHelp':
-    'Mga domain na maaaring i-link at paikliin ng brand na ito. Ang mga na-verify na domain lamang ang maaaring piliin sa kompositor.',
-  'settings.ui.brands.domainVerified': 'Na-verify {date}',
-  'settings.ui.brands.domainPending': 'Hindi pa nakikita ang DNS record',
-  'settings.ui.brands.disclosureHelp':
-    'Applied by default in the composer for the platforms you choose here. It can be changed per post before approval.',
-  'settings.ui.brands.glossaryHelp':
+  'settings.ui.projects.blockedTermsHelp':
+    'Mga salitang humaharang sa pag-iiskedyul para sa project na ito. Isa sa bawat linya.',
+  'settings.ui.projects.domainsHelp':
+    'Mga domain na maaaring i-link at paikliin ng project na ito. Ang mga na-verify na domain lamang ang maaaring piliin sa kompositor.',
+  'settings.ui.projects.domainVerified': 'Na-verify {date}',
+  'settings.ui.projects.domainPending': 'Hindi pa nakikita ang DNS record',
+  'settings.ui.projects.domainVerificationUnavailable': 'Hindi pa nagagawa ang pag-verify',
+  'settings.ui.projects.disclosureUnavailable':
+    'Hindi pa nagagawa ang mga default na disclosure kada channel. Idagdag ang kinakailangang disclosure sa post mismo hanggang ma-launch ito.',
+  'settings.ui.projects.glossaryUnavailable':
+    'Hindi pa nagagawa ang glossary ng workspace. Nase-save at ipinapatupad pa rin ang tono, audience, na-approve na claim, at naka-block na termino sa itaas.',
+  'settings.ui.projects.localeRulesUnavailable':
+    'Hindi pa nagagawa ang mga panuntunan sa pagsulat kada locale. Available pa rin ang mga wika at market ng workspace sa ilalim ng Localization.',
+  'settings.ui.projects.disclosureHelp':
+    'Nailalapat bilang default sa kompositor para sa mga platform na pinili mo dito. Puwede itong baguhin kada post bago ang pag-apruba.',
+  'settings.ui.projects.glossaryHelp':
     'Mga pangalan ng produkto, legal na termino at anumang bagay na dapat mabuhay sa pagsasalin nang hindi nagbabago.',
-  'settings.ui.brands.glossaryCaption':
+  'settings.ui.projects.glossaryCaption':
     'Mga protektadong termino at kung paano pinangangasiwaan ang bawat isa sa bawat wika',
-  'settings.ui.brands.glossaryEmpty':
+  'settings.ui.projects.glossaryEmpty':
     'Wala pang protektadong tuntunin. Magdagdag ng mga pangalan ng produkto at legal na termino na hindi dapat isalin o i-rephrase.',
-  'settings.ui.brands.localeRulesHelp':
+  'settings.ui.projects.localeRulesHelp':
     'Mga panuntunan sa bawat wika ng nilalaman. Inilapat ang mga ito kapag nag-adapt ka o nag-transcreate, at ipinapakita sa reviewer.',
-  'settings.ui.brands.saveBrand': 'I-save ang tatak',
+  'settings.ui.projects.saveProject': 'I-save ang proyekto',
+  'settings.ui.projects.capacityTitle': 'Kapasidad ng proyekto',
+  'settings.ui.projects.capacityHelp':
+    'Kasama sa $29 na base plan ang 3 aktibong proyekto. Puwedeng magkaroon ang isang workspace ng entitlement na hanggang 20 nang hindi gumagawa ng ibang account.',
+  'settings.ui.projects.capacitySummary': '{used} sa {limit}',
+  'settings.ui.projects.atLimitTitle': 'Nagamit na ng workspace na ito ang lahat ng slot para sa proyekto',
+  'settings.ui.projects.atLimitBody':
+    'I-archive ang isang hindi aktibong proyekto o baguhin ang entitlement ng workspace bago magdagdag ng iba pa. Ang kasalukuyang limitasyon ay {limit}.',
+  'settings.ui.projects.listLabel': 'Pumili ng proyekto na i-e-edit',
+  'settings.ui.projects.detailsTitle': 'Mga detalye ng proyekto',
+  'settings.ui.projects.projectMeta':
+    '{accounts, plural, =0 {Walang channel} one {# channel} other {# na channel}} · Na-update {updated}',
+  'settings.ui.projects.archiveAction': 'I-archive ang proyekto',
+  'settings.ui.projects.archiveTitle': 'I-archive ang {project}?',
+  'settings.ui.projects.archiveBody':
+    'Aalis ang hindi aktibong proyektong ito sa aktibong workspace at magpapalaya ng isang slot para sa proyekto.',
+  'settings.ui.projects.archiveChannels':
+    'Titigil sa pagpapakita ang mga konektadong channel nito sa mga aktibong daloy ng proyekto.',
+  'settings.ui.projects.archiveHistory':
+    'Pananatilihin ang mga draft, na-publish na post, resibo, at audit history.',
+  'settings.ui.projects.archiveLastDisabled': 'Panatilihing may kahit isang aktibong proyekto sa workspace.',
+  'settings.ui.projects.archiveConnectedDisabled':
+    'Idiskonekta ang mga channel ng proyektong ito bago ito i-archive.',
 
   /* ------------------------------------------------------------ localization */
 
@@ -281,9 +310,9 @@ export const webSettingsMessages = {
   'settings.ui.data.deleteConnection': 'Revoke one social connection',
   'settings.ui.data.deleteConnectionHelp':
     'Removes Relay access to that account. The workspace, its content and its receipts stay.',
-  'settings.ui.data.deleteBrand': 'Delete a brand',
-  'settings.ui.data.deleteBrandHelp':
-    'Removes the brand, its rules and its glossary. Content published under it keeps its receipts.',
+  'settings.ui.data.deleteProject': 'Delete a project',
+  'settings.ui.data.deleteProjectHelp':
+    'Removes the project, its rules and its glossary. Content published under it keeps its receipts.',
   'settings.ui.data.deleteContent': 'Delete content and media',
   'settings.ui.data.deleteContentHelp':
     'Removes drafts and stored files. It does not remove anything already published on a platform.',
@@ -335,7 +364,7 @@ export const webSettingsMessages = {
   'developer.ui.agents.emptyBody':
     'Gumawa ng isa para sa bawat automation na iyong pinapatakbo. Nangangahulugan ang mga hiwalay na account na maaari mong bawiin ang isa nang hindi pinipigilan ang iba.',
   'developer.ui.agents.emptyExample':
-    'Halimbawa: Ang "Content agent", brand na Acme EU, ay maaaring mag-draft at mag-iskedyul ng hanggang 6 na post sa isang araw sa pagitan ng 07:00 at 22:00, hindi kailanman mag-publish kaagad.',
+    'Halimbawa: Ang "Content agent", project na Acme EU, ay maaaring mag-draft at mag-iskedyul ng hanggang 6 na post sa isang araw sa pagitan ng 07:00 at 22:00, hindi kailanman mag-publish kaagad.',
   'developer.ui.agents.step.identity': 'Pangalan at layunin',
   'developer.ui.agents.step.scope': 'Kung ano ang maabot nito',
   'developer.ui.agents.step.limits': 'Mga limitasyon',
@@ -569,7 +598,7 @@ export const webSettingsMessages = {
   'developer.ui.webhooks.eventGroup.automation': 'Automation at mga feed',
   'developer.ui.webhooks.eventGroup.workspace': 'Workspace',
   'developer.ui.webhooks.scopeTitle': 'Mga tatak at account',
-  'developer.ui.webhooks.scopeAll': 'Bawat brand at account',
+  'developer.ui.webhooks.scopeAll': 'Bawat project at account',
   'developer.ui.webhooks.scopeSelected': 'Tanging ang mga pipiliin ko',
   'developer.ui.webhooks.secretTitle': 'Lihim na pumipirma',
   'developer.ui.webhooks.secretBody':
@@ -636,7 +665,7 @@ export const webSettingsMessages = {
   'billing.ui.conversionLabel': 'Converts',
   'billing.ui.channelsLabel': 'Active channels',
   'billing.ui.paymentMethodPolar': 'Payment method held by Polar',
-  'billing.ui.paymentMethodDescriptor': '{brand} ending {last4}, expires {expiry}',
+  'billing.ui.paymentMethodDescriptor': '{project} ending {last4}, expires {expiry}',
   'billing.ui.paymentMethodMissing': 'No payment method on file yet',
   'billing.ui.cancelBeforeDate': 'Cancel before {date} and you will not be charged.',
   'billing.ui.annualFraming': '$25/month billed annually. Save $48/year.',
@@ -829,15 +858,15 @@ export const webSettingsMessages = {
   'growth.ui.fourWeek.acceptAnnouncement': 'Nalikha ang draft mula sa maikling ito.',
   'growth.ui.fourWeek.proposeAnnouncement': 'Idinagdag ang panukala sa kalendaryo para sa {date}.',
 
-  'growth.ui.ugc.promptAngle': 'Angle {number}',
-  'growth.ui.ugc.checklistTitle': 'Rights, consent and disclosure',
+  'growth.ui.ugc.promptAngle': 'Anggulo {number}',
+  'growth.ui.ugc.checklistTitle': 'Karapatan, pahintulot, at disclosure',
   'growth.ui.ugc.checklistHelp':
-    'Work through this with each participant before anything is published. Consent to appear is not consent to advertise.',
-  'growth.ui.ugc.incentiveNone': 'No incentive offered',
+    'Pag-usapan ito nang mabuti sa bawat kalahok bago ma-publish ang kahit ano. Ang pahintulot na lumitaw ay hindi pahintulot na mag-advertise.',
+  'growth.ui.ugc.incentiveNone': 'Walang inaalok na insentibo',
   'growth.ui.ugc.incentiveDisclosure':
-    'An incentive must be disclosed on every post that results from it, by you and by the participant.',
+    'Dapat isiwalat ang isang insentibo sa bawat post na resulta nito, kapwa ng iyo at ng kalahok.',
   'growth.ui.ugc.honesty':
-    'This plans a campaign you run with real people. Relay does not find creators, contact them, write testimonials or create customer content.',
+    'Nagpaplano ito ng isang kampanya na isasagawa mo kasama ang mga tunay na tao. Hindi naghahanap ang Relay ng mga creator, hindi ito nakikipag-ugnayan sa kanila, hindi sumusulat ng testimonial, o gumagawa ng nilalaman para sa customer.',
 
   'growth.ui.opportunities.caption':
     'Mga na-verify na pagkakataon mula sa catalog, na niraranggo ayon sa akma sa iyong profile',

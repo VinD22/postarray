@@ -53,7 +53,7 @@ export const statusMessages = withHebrewPluralForms({
   'permission.denied.role': 'זה צריך את התפקיד {role}. אתה {currentRole}.',
   'permission.denied.scope': 'אישור זה צריך את ההיקף {scope}.',
   'permission.denied.contactOwner': 'בקש מ{owner} להעניק זאת.',
-  'permission.denied.brandScope': 'הגישה שלך מוגבלת ל-{brands}.',
+  'permission.denied.projectScope': 'הגישה שלך מוגבלת ל-{projects}.',
   'permission.readOnly': 'סביבת עבודה זו ניתנת לקריאה בלבד כעת.',
   'permission.mfaRequired': 'אשר באמצעות אימות דו-גורמי כדי להמשיך.',
   'rateLimit.title': 'האט לרגע',
