@@ -72,6 +72,12 @@ export const TENANT_MODELS = new Set<string>([
   // necessary but never sufficient to read another member's memory.
   'rememberedTarget',
 
+  // First-run progress (0076). Workspace scoped like everything else here, and
+  // additionally self-row at the database, for the same reason: workspace
+  // membership is necessary but never sufficient to read another member's
+  // onboarding.
+  'onboardingState',
+
   // Automation
   'automationRule',
   'automationRuleRun',

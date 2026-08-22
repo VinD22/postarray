@@ -86,6 +86,7 @@ export const ID_PREFIXES = {
   set: 'set',
   signature: 'sig',
   rememberedTargets: 'remtgt',
+  onboardingState: 'onboarding',
   seoKeywordTarget: 'kwtarget',
 } as const;
 

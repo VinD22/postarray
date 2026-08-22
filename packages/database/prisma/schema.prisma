@@ -80,6 +80,19 @@ enum MembershipState {
   @@schema("app")
 }
 
+/// What the person said they are here to do, captured once in onboarding.
+/// It personalises the first-run copy and nothing else: no entitlement, no
+/// limit and no pricing decision reads this column.
+enum OnboardingUseCase {
+  creator
+  team
+  agency
+  developer
+
+  @@map("onboarding_use_case")
+  @@schema("app")
+}
+
 enum InvitationState {
   pending
   accepted
@@ -761,6 +774,7 @@ model User {
   memberships        Membership[]
   sessions           UserSession[]
   consents           Consent[]
+  onboardingStates   OnboardingState[]
   rememberedTargets  RememberedTarget[]
   agentConfirmations AgentConfirmation[] @relation("AgentConfirmationApprover")
 
@@ -816,6 +830,7 @@ model Workspace {
   auditEvents             AuditEvent[]
   sessions                UserSession[]
   consents                Consent[]
+  onboardingStates        OnboardingState[]
   projects                Project[]
   businessProfiles        BusinessProfile[]
   projectSources          ProjectSource[]
@@ -1088,6 +1103,42 @@ model Consent {
   @@index([workspaceId])
   @@index([userId, kind])
   @@map("consents")
+  @@schema("app")
+}
+
+/// First-run progress, per person, per workspace.
+///
+/// Onboarding is a property of a member, not of a workspace: two people who
+/// join the same workspace each walk their own first run, and one finishing it
+/// must not silently mark the other done. The row is the *explicit* record of
+/// what the person did; whether onboarding is finished is decided by the
+/// application service, which also reads real signals (an active project, a
+/// live connection) so an established workspace is never sent back to step one
+/// merely because this table is younger than the account.
+model OnboardingState {
+  id                  String             @id @default(dbgenerated("app.new_id('onboarding')"))
+  workspaceId         String             @map("workspace_id")
+  userId              String             @map("user_id")
+  useCase             OnboardingUseCase? @map("use_case")
+  /// Step ids from the first-run sequence, in the order they were finished.
+  /// A plain array rather than one boolean column per step, because the
+  /// sequence is product copy and changes more often than this schema should.
+  completedSteps      String[]           @default([]) @map("completed_steps")
+  /// Set when the person returns from checkout, not when they open the step.
+  checkoutConfirmedAt DateTime?          @map("checkout_confirmed_at") @db.Timestamptz(6)
+  /// Set once, when the person reaches the receipt. Never cleared by a later
+  /// edit, so finishing onboarding is not something a refresh can undo.
+  completedAt         DateTime?          @map("completed_at") @db.Timestamptz(6)
+  createdAt           DateTime           @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt           DateTime           @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  workspace Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([workspaceId, userId])
+  @@index([workspaceId])
+  @@index([userId])
+  @@map("onboarding_states")
   @@schema("app")
 }
 

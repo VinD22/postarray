@@ -15,7 +15,9 @@ import type {
   LinkSpec,
   MediaKind,
   MentionRef,
+  MetricAggregation,
   MetricAvailability,
+  MetricDenominator,
   MetricScope,
   MetricUnit,
   NormalizedMetricName,
@@ -531,6 +533,157 @@ export interface MetricObservationView {
   readonly derivationRestricted: boolean;
 }
 
+/* -------------------------------------------------------------------------
+   The analytics overview
+   ------------------------------------------------------------------------- */
+
+/**
+ * Everything one load of the analytics overview renders.
+ *
+ * Two rules shape every type below. A number never travels without the
+ * provider's own field name, definition, unit and observation time, so the
+ * reader can always answer "says who". And a metric we could not read is
+ * `unavailable_*` with `value: null`, never `0`: substituting a zero would
+ * report a measurement nobody made.
+ *
+ * Nothing here is derived across providers. A baseline is the account's own
+ * trailing median of comparable posts, computed by `@relay/analytics-domain`,
+ * with the sample size and every confounder stated beside it.
+ */
+
+export interface AnalyticsAccountRef {
+  readonly connectionId: string;
+  /** The handle as the provider spells it, without a leading sigil. */
+  readonly handle: string;
+  readonly displayName: string;
+  readonly provider: ProviderId;
+}
+
+export interface MetricDefinitionView {
+  readonly normalizedName: NormalizedMetricName;
+  readonly provider: ProviderId;
+  /** The provider's own field name, for example `impression_count`. */
+  readonly providerField: string;
+  /** The provider's own wording. Catalog data, not translated product copy. */
+  readonly definition: string;
+  readonly definitionSourceUrl?: string | undefined;
+  readonly unit: MetricUnit;
+  readonly denominator: MetricDenominator;
+  readonly aggregation: MetricAggregation;
+  readonly historyWindowDays: number | null;
+  /**
+   * When a human last checked this definition against provider docs, or null
+   * when nobody has. Null renders as "not yet checked"; it must never be
+   * substituted with an epoch, which reads as a real verification date.
+   */
+  readonly lastVerifiedAt: string | null;
+}
+
+export interface MetricReadingView {
+  readonly normalizedName: NormalizedMetricName;
+  readonly provider: ProviderId;
+  readonly availability: MetricAvailability;
+  /** Non null only when availability is `available`. Never a substituted zero. */
+  readonly value: number | null;
+  readonly observedAt: string;
+  readonly freshnessSeconds: number;
+  readonly definition: MetricDefinitionView;
+}
+
+export interface BaselinePostView {
+  readonly contentItemId: string;
+  readonly title: string;
+  readonly publishedAt: string;
+  readonly value: number;
+}
+
+export interface BaselineComparisonView {
+  readonly metric: NormalizedMetricName;
+  readonly median: number;
+  readonly sampleSize: number;
+  /** Signed ratio against the median. 0.58 means 58 percent above. */
+  readonly deltaRatio: number;
+  readonly direction: 'above' | 'below' | 'level';
+  /** True when the sample is too small to say anything beyond "test again". */
+  readonly smallSample: boolean;
+  readonly comparablePosts: readonly BaselinePostView[];
+  /** Posts left out because the metric was unavailable for them. */
+  readonly excludedCount: number;
+  readonly confounders: readonly string[];
+  readonly format: ContentKind;
+}
+
+export interface PostComparisonRowView {
+  readonly contentItemId: string;
+  readonly title: string;
+  readonly account: AnalyticsAccountRef;
+  readonly format: ContentKind;
+  readonly publishedAt: string;
+  readonly reading: MetricReadingView;
+  /** Null when there are not enough comparable posts to form a baseline. */
+  readonly baseline: BaselineComparisonView | null;
+  readonly receiptUrl?: string | undefined;
+}
+
+export interface AccountFreshnessRowView {
+  readonly account: AnalyticsAccountRef;
+  readonly state: 'fresh' | 'aging' | 'stale' | 'never' | 'syncing';
+  readonly lastSuccessAt: string | null;
+  readonly nextAttemptAt: string | null;
+  readonly providerDelaySeconds: number | null;
+}
+
+export interface AccountAttentionRowView {
+  readonly account: AnalyticsAccountRef;
+  readonly reason: 'permission_missing' | 'access_expired' | 'stale' | 'sync_failing' | 'no_posts';
+  readonly since: string | null;
+  readonly consecutiveFailures: number;
+  /** A sanitized reason code. Never a provider payload. */
+  readonly failureCode: string | null;
+}
+
+export interface AnalyticsRangeView {
+  readonly start: string;
+  readonly end: string;
+  readonly preset: '7d' | '30d' | '90d' | 'custom';
+}
+
+export interface AnalyticsOverviewView {
+  readonly range: AnalyticsRangeView;
+  readonly rankMetric: NormalizedMetricName;
+  readonly rows: readonly PostComparisonRowView[];
+  readonly freshness: readonly AccountFreshnessRowView[];
+  readonly attention: readonly AccountAttentionRowView[];
+  /**
+   * Written observations about the period.
+   *
+   * Always empty today. The insight engine in `@relay/analytics-domain` is not
+   * wired to this read yet, and an invented sentence about a user's numbers is
+   * exactly the thing this product must never ship. An empty list renders as no
+   * observations, which is true.
+   */
+  readonly observations: readonly [];
+  readonly accountsRequested: number;
+  readonly accountsWithData: number;
+  readonly accountsWithoutData: readonly AccountAttentionRowView[];
+}
+
+export interface SeriesPointView {
+  readonly bucketStart: string;
+  readonly bucketSeconds: number;
+  /** Null means no observation was collected. It does not mean zero. */
+  readonly value: number | null;
+}
+
+export interface MetricSeriesView {
+  readonly id: string;
+  readonly normalizedName: NormalizedMetricName;
+  readonly unit: MetricUnit;
+  /** The provider field name. The client owns the translated legend label. */
+  readonly label: string;
+  readonly points: readonly SeriesPointView[];
+}
+
 export interface ComparisonRow {
   readonly normalizedName: NormalizedMetricName;
   readonly unit: MetricUnit;
@@ -839,3 +992,26 @@ export interface AuditEventView {
   readonly correlationId: string | null;
   readonly createdAt: string;
 }
+
+/**
+ * First-run progress for one person in one workspace.
+ *
+ * Three of these fields are read from the explicit record (`useCase`, the
+ * step list, `complete`); the rest are counted from real rows, because a
+ * "connected" flag that disagrees with the connections list is worse than no
+ * flag at all.
+ */
+export interface OnboardingStateView {
+  readonly checkoutConfirmed: boolean;
+  readonly workspaceNamed: boolean;
+  readonly useCase: OnboardingUseCase | null;
+  readonly connectionCount: number;
+  readonly firstPostScheduled: boolean;
+  /** The most recent publication receipt, when one exists. Never invented. */
+  readonly firstReceiptId: string | null;
+  readonly completedSteps: readonly string[];
+  readonly complete: boolean;
+}
+
+export const ONBOARDING_USE_CASES = ['creator', 'team', 'agency', 'developer'] as const;
+export type OnboardingUseCase = (typeof ONBOARDING_USE_CASES)[number];

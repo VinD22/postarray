@@ -47,6 +47,7 @@ export type {
   DataDeletionWorkflowInput,
   DataLifecycleService,
   ProjectService,
+  OnboardingService,
   BulkImportService,
   BulkImportWorkflowInput,
   BulkImportWorkflowOutput,
@@ -135,6 +136,7 @@ export type {
 export { pendingGrantEnvelopeFromRow, pendingGrantEnvelopeToRow } from './oauth-pending-envelope';
 
 export { normalizeAliasForLookup } from './services/identity';
+export { deriveOnboardingComplete, mergeStep } from './services/onboarding';
 export {
   cancelPublishOutboxPayloadSchema,
   pausePublishOutboxPayloadSchema,
@@ -158,6 +160,18 @@ export {
 } from './outbox';
 
 export type {
+  AccountAttentionRowView,
+  AccountFreshnessRowView,
+  AnalyticsAccountRef,
+  AnalyticsOverviewView,
+  AnalyticsRangeView,
+  BaselineComparisonView,
+  BaselinePostView,
+  MetricDefinitionView,
+  MetricReadingView,
+  MetricSeriesView,
+  PostComparisonRowView,
+  SeriesPointView,
   AgentConfirmationSummary,
   AgentConfirmationView,
   ApiKeyView,
@@ -166,6 +180,8 @@ export type {
   AuditEventView,
   AutomationRuleView,
   ProjectView,
+  OnboardingStateView,
+  OnboardingUseCase,
   BusinessProfileView,
   CalendarEntry,
   CanonicalPreview,
@@ -208,7 +224,7 @@ export type {
   WorkspaceView,
 } from './views';
 
-export { CONNECTION_HEALTH } from './views';
+export { CONNECTION_HEALTH, ONBOARDING_USE_CASES } from './views';
 
 /** Local implementations of every outbound port, so the product runs offline. */
 export {

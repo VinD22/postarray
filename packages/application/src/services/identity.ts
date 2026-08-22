@@ -16,6 +16,7 @@ import type {
   UserSecurityProfile,
 } from '../types';
 import { workspaceSlug } from '../internal/workspace-slug';
+import { deriveOnboardingComplete } from './onboarding';
 
 const ASCII_ALIAS = /^[a-z][a-z0-9._-]{2,29}$/;
 const RESERVED_ALIASES = new Set([
@@ -214,6 +215,14 @@ export function createIdentityService(deps: ServiceDeps): IdentityService {
                       socialConnections: { select: { id: true } },
                     },
                   },
+                  // The explicit first-run record for this person in this
+                  // workspace. Read in the same query as everything else the
+                  // session needs, so resolving a session stays one round trip.
+                  onboardingStates: {
+                    where: { userId },
+                    take: 1,
+                    select: { completedAt: true },
+                  },
                 },
               },
             },
@@ -262,7 +271,21 @@ export function createIdentityService(deps: ServiceDeps): IdentityService {
           connectionIds: project.socialConnections.map((connection) => connection.id),
         })),
         scopes: delegableScopes(activeMembership.role),
-        onboardingComplete: true,
+        // The real value, not a constant. `deriveOnboardingComplete` is
+        // deliberately conservative about the direction that hurts: an
+        // established workspace with a project and a live connection reads as
+        // onboarded even when no explicit record exists, because this flag
+        // gates a redirect on every signed-in page and dumping existing
+        // customers into a setup wizard they finished months ago is a worse
+        // failure than letting one new account skip it.
+        onboardingComplete: deriveOnboardingComplete({
+          explicitlyCompleted: activeMembership.workspace.onboardingStates[0]?.completedAt != null,
+          activeProjectCount: activeMembership.workspace.projects.length,
+          connectionCount: activeMembership.workspace.projects.reduce(
+            (total, project) => total + project.socialConnections.length,
+            0,
+          ),
+        }),
       };
     },
 

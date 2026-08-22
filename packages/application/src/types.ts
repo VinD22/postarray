@@ -24,6 +24,7 @@ import type {
   MentionRef,
   MetricObservation,
   MetricScope,
+  NormalizedMetricName,
   OperationRef,
   OpportunityRecord,
   Paginated,
@@ -74,6 +75,7 @@ import type { OAuthPendingDiscoveryPort } from './ports/oauth-pending';
 import type { OAuthAccountSelectionView } from './ports/oauth-pending';
 
 import type {
+  AnalyticsOverviewView,
   ActionItemCategory,
   ActionItemView,
   AgentConfirmationSummary,
@@ -83,6 +85,8 @@ import type {
   AuditEventView,
   AutomationRuleView,
   ProjectView,
+  OnboardingStateView,
+  OnboardingUseCase,
   BusinessProfileView,
   CalendarEntry,
   CanonicalPreview,
@@ -103,6 +107,7 @@ import type {
   MembershipView,
   MentionEntityView,
   MetricObservationView,
+  MetricSeriesView,
   OAuthAppView,
   OAuthGrantView,
   PostVariantView,
@@ -1377,6 +1382,24 @@ export interface ProjectService {
   delete(ctx: ActorContext, projectId: string): Promise<void>;
 }
 
+/**
+ * Onboarding: the first sixty seconds, stored per person per workspace.
+ *
+ * Reading is safe for any member and for a machine caller; writing requires a
+ * person, because a service account has no first run.
+ */
+export interface OnboardingService {
+  getState(ctx: ActorContext): Promise<OnboardingStateView>;
+  setUseCase(
+    ctx: ActorContext,
+    input: { readonly useCase: OnboardingUseCase; readonly projectId?: string },
+  ): Promise<OnboardingStateView>;
+  /** Records one step as finished. Re-recording a step is not an error. */
+  completeStep(ctx: ActorContext, input: { readonly step: string }): Promise<OnboardingStateView>;
+  /** Marks the whole sequence finished, whatever step the person is on. */
+  complete(ctx: ActorContext): Promise<OnboardingStateView>;
+}
+
 export interface ConnectionService {
   listAvailableProviders(ctx: ActorContext): Promise<readonly ProviderId[]>;
   list(
@@ -1931,6 +1954,24 @@ export interface MediaService {
 }
 
 export interface AnalyticsService {
+  getOverview(
+    ctx: ActorContext,
+    input: {
+      readonly connectionIds: readonly string[];
+      readonly projectId?: string | undefined;
+      readonly range: { readonly from: string; readonly to: string };
+      readonly metric: NormalizedMetricName;
+      readonly contentKind?: ContentKind | undefined;
+    },
+  ): Promise<AnalyticsOverviewView>;
+  getMetricSeries(
+    ctx: ActorContext,
+    input: {
+      readonly connectionId: string;
+      readonly metric: NormalizedMetricName;
+      readonly range: { readonly from: string; readonly to: string };
+    },
+  ): Promise<MetricSeriesView>;
   getPostMetrics(
     ctx: ActorContext,
     input: { readonly receiptId: string },
@@ -2442,6 +2483,7 @@ export interface Services {
   readonly workspaces: WorkspaceService;
   readonly members: MembershipService;
   readonly projects: ProjectService;
+  readonly onboarding: OnboardingService;
   readonly connections: ConnectionService;
   readonly content: ContentService;
   readonly validation: ValidationService;

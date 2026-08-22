@@ -9,6 +9,7 @@ import { createAuditService } from './audit';
 import { createAutomationRuleService } from './automation-rules';
 import { createBillingService } from './billing';
 import { createProjectService } from './projects';
+import { createOnboardingService } from './onboarding';
 import { createBulkImportService } from './bulk-import';
 import { createWorkerBulkImportService } from './worker-bulk-import';
 import { createConnectionService } from './connections';
@@ -68,6 +69,7 @@ export function createServices(deps: ServiceDeps): Services {
     workspaces: createWorkspaceService(deps),
     members: createMembershipService(deps),
     projects: createProjectService(deps),
+    onboarding: createOnboardingService(deps),
     connections: createConnectionService(deps),
     content,
     validation,

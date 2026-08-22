@@ -28,10 +28,17 @@ const baseline = readFileSync(path.join(packageRoot, 'migrations/0004_core_schem
  * with `DEFAULT app.new_id('brand')`. 0004 cannot be edited to say `'project'`
  * for the same edit-detection reason as above, so the new default's marker
  * lives here instead.
+ *
+ * `0076_onboarding_states.sql` is the `seo_keyword_targets` situation again:
+ * first-run progress had no system of record at all, and the table was written
+ * long after 0004 was applied and checksummed. It creates one table, keyed on
+ * (workspace_id, user_id), enables and forces RLS in the same file and repeats
+ * `private.assert_rls_complete()` at the end, exactly as 0073 to 0075 do.
  */
 const POST_BASELINE_TABLE_EXCEPTIONS = [
   '0074_seo_keyword_targets.sql',
   '0075_rename_brand_to_project.sql',
+  '0076_onboarding_states.sql',
 ];
 
 function modelIdDefaults(source: string): ReadonlyMap<string, string> {
