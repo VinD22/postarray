@@ -16,6 +16,16 @@ const ROUTES = [
   // is audited separately.
   '/tools/character-counter/x',
   '/tools/social-media-image-sizes',
+  // The Unicode text style cluster. The hub carries every style the engine
+  // has, so it is the widest instance of the result list; one destination page
+  // stands for the other three, which differ only in which styles they pass
+  // and in their own copy.
+  '/tools/font-generator',
+  '/tools/instagram-fonts',
+  // The hand maintained image dimensions cluster: the index and one platform
+  // page, which is a different table shape from the generated specs pages.
+  '/specs/dimensions',
+  '/specs/dimensions/youtube',
   '/sign-in',
   '/home',
   '/compose',

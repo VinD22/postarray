@@ -301,4 +301,213 @@ export const webToolDirectoryMessages = {
   'web.toolDirectory.videoScriptTimer.faq.budget.q': 'What does the word budget mean?',
   'web.toolDirectory.videoScriptTimer.faq.budget.a':
     'For one target length and one pace, it is the number of words that fit in that many seconds, rounded down. "Words left" subtracts the actual word count of your script from that budget; once your script runs longer than the budget, it shows how many words are over instead.',
+  /* ---------------------------------------------------------------------- */
+  /* Unicode text styles: the hub and four destination pages                 */
+  /* ---------------------------------------------------------------------- */
+
+  /*
+   * One rule governs every sentence below. This cluster substitutes Unicode
+   * look-alike code points; it does not make, host or link a font file, and no
+   * string here may imply otherwise. The second rule is that we have measured
+   * no platform's handling of these code points, so no string here says a style
+   * "works" anywhere. It says paste it and look.
+   */
+
+  'web.toolDirectory.fontGenerator.sample': 'Type something here',
+  'web.toolDirectory.fontGenerator.field.draft.label': 'Your text',
+  'web.toolDirectory.fontGenerator.field.draft.help':
+    'Styled as you type, in this tab. There is no request carrying it anywhere, nothing is stored and nothing about what you type is measured.',
+  'web.toolDirectory.fontGenerator.result.title': 'Every style, from what you typed',
+  'web.toolDirectory.fontGenerator.result.sampleNote':
+    'Showing sample text until you type. Copy any row with the button under it.',
+  'web.toolDirectory.fontGenerator.result.liveNote':
+    'Copy any row with the button under it, then paste it where you want it.',
+  'web.toolDirectory.fontGenerator.result.label': '{style}, styled version of your text',
+
+  'web.toolDirectory.fontGenerator.accessibility.title': 'Read this before you style a whole bio',
+  'web.toolDirectory.fontGenerator.accessibility.body':
+    'These are not letters wearing a font. Each one is a different Unicode character that happens to look like a letter, so a screen reader announces it wrongly, letter by letter, or skips it entirely. Search does not match it against the plain word either. A person using a screen reader may hear your styled name as a run of noise, and someone searching for you may not find you.',
+  'web.toolDirectory.fontGenerator.accessibility.advice':
+    'The safe way to use this is sparingly: one styled word for emphasis, with your name, your handle and anything a reader needs to understand or find you left as ordinary text. A fully styled bio is a bio some people cannot read.',
+
+  'web.toolDirectory.fontGenerator.explainer.title': 'What this actually does',
+  'web.toolDirectory.fontGenerator.explainer.body':
+    'Unicode contains alphabets that were added for mathematics, phonetics and legacy typesetting: a bold serif alphabet, a script alphabet, a double-struck alphabet, small capitals, letters inside circles, and more. This tool swaps each letter you type for its look-alike in one of those alphabets. The result is plain text, which is why it survives a copy and paste into a field that offers no formatting at all.',
+  'web.toolDirectory.fontGenerator.explainer.extra':
+    'It is not a font, and there is no file to download. If you came here looking for a typeface to install, this is the wrong tool and we would rather say so than waste your time.',
+  'web.toolDirectory.fontGenerator.platformNote':
+    'Support varies. Some apps keep these characters exactly as pasted, some normalise them back to plain letters, and some show a box where a device has no glyph for them. We have not tested any platform, so the honest instruction is the same everywhere: paste it into the real field on the device you care about, and look at it before you save.',
+
+  'web.toolDirectory.fontGenerator.faq.notAFont.q': 'Is this a font I can download?',
+  'web.toolDirectory.fontGenerator.faq.notAFont.a':
+    'No. There is no font file here and nothing to install. This swaps each letter for a different Unicode character that looks like a styled version of it, which is why the result can be pasted into a bio or a caption that has no formatting controls. If you need an actual typeface file, you need a type foundry or a font library, not this page.',
+  'web.toolDirectory.fontGenerator.faq.accessibility.q': 'Will a screen reader read this?',
+  'web.toolDirectory.fontGenerator.faq.accessibility.a':
+    'Badly, or not at all. A screen reader reads the character it is given, and these characters are not the letters they resemble, so they are announced wrongly or skipped. The same goes for search and for anything that matches text. Use one styled word where it earns its place, and leave your name, your handle and the words a reader needs as ordinary text.',
+  'web.toolDirectory.fontGenerator.faq.support.q': 'Will these show up correctly everywhere?',
+  'web.toolDirectory.fontGenerator.faq.support.a':
+    'We cannot promise that, and we have measured none of it. Whether a style survives depends on the platform, the app version and the device font, and any of the three can change without notice. Paste it where you plan to use it, look at it on a phone as well as a desktop, and keep the plain version if it comes out wrong.',
+  'web.toolDirectory.fontGenerator.faq.download.q':
+    'Can I get a tattoo font, a graffiti font or Old English here?',
+  'web.toolDirectory.fontGenerator.faq.download.a':
+    'No. Those are typeface files you install, and this page cannot give you one. The closest thing here is the fraktur alphabet, which is a Unicode alphabet with a blackletter shape, and it is still text rather than a font. Sending you away is the right answer more often than pretending otherwise.',
+
+  'web.toolDirectory.fontGenerator.style.boldSerif.name': 'Bold',
+  'web.toolDirectory.fontGenerator.style.boldSerif.note':
+    'The mathematical bold serif alphabet. Letters and digits both.',
+  'web.toolDirectory.fontGenerator.style.italicSerif.name': 'Italic',
+  'web.toolDirectory.fontGenerator.style.italicSerif.note':
+    'The mathematical italic serif alphabet. Digits stay as typed, because the block has none.',
+  'web.toolDirectory.fontGenerator.style.boldItalicSerif.name': 'Bold italic',
+  'web.toolDirectory.fontGenerator.style.boldItalicSerif.note':
+    'The mathematical bold italic serif alphabet. Letters only.',
+  'web.toolDirectory.fontGenerator.style.script.name': 'Script',
+  'web.toolDirectory.fontGenerator.style.script.note':
+    'The mathematical script alphabet, the closest thing Unicode has to handwriting. Letters only.',
+  'web.toolDirectory.fontGenerator.style.scriptBold.name': 'Bold script',
+  'web.toolDirectory.fontGenerator.style.scriptBold.note':
+    'The heavier weight of the same script alphabet. Letters only.',
+  'web.toolDirectory.fontGenerator.style.fraktur.name': 'Fraktur',
+  'web.toolDirectory.fontGenerator.style.fraktur.note':
+    'The blackletter alphabet Unicode carries for mathematics. Letters only, and it is text rather than a gothic font file.',
+  'web.toolDirectory.fontGenerator.style.doubleStruck.name': 'Outline',
+  'web.toolDirectory.fontGenerator.style.doubleStruck.note':
+    'The double-struck alphabet, the one used for number sets in mathematics. Letters and digits.',
+  'web.toolDirectory.fontGenerator.style.sans.name': 'Sans serif',
+  'web.toolDirectory.fontGenerator.style.sans.note':
+    'The plain sans-serif alphabet. Subtle by design, and easy to mistake for unstyled text.',
+  'web.toolDirectory.fontGenerator.style.sansBold.name': 'Sans bold',
+  'web.toolDirectory.fontGenerator.style.sansBold.note':
+    'The bold weight of the sans-serif alphabet. Letters and digits.',
+  'web.toolDirectory.fontGenerator.style.sansItalic.name': 'Sans italic',
+  'web.toolDirectory.fontGenerator.style.sansItalic.note':
+    'The sloped sans-serif alphabet. Letters only.',
+  'web.toolDirectory.fontGenerator.style.monospace.name': 'Monospace',
+  'web.toolDirectory.fontGenerator.style.monospace.note':
+    'The fixed-width alphabet. Every character occupies the same advance width.',
+  'web.toolDirectory.fontGenerator.style.smallCaps.name': 'Small caps',
+  'web.toolDirectory.fontGenerator.style.smallCaps.note':
+    'Phonetic small capital letters. Unicode has no small capital X, so an x stays lower case rather than being faked with something else.',
+  'web.toolDirectory.fontGenerator.style.circled.name': 'Circled',
+  'web.toolDirectory.fontGenerator.style.circled.note':
+    'Letters and digits inside circles, from the enclosed alphanumerics block.',
+  'web.toolDirectory.fontGenerator.style.squared.name': 'Squared',
+  'web.toolDirectory.fontGenerator.style.squared.note':
+    'Letters inside squares. The block has capitals only, so lower case is raised to capitals first.',
+  'web.toolDirectory.fontGenerator.style.fullwidth.name': 'Wide',
+  'web.toolDirectory.fontGenerator.style.fullwidth.note':
+    'The fullwidth forms, sized for the square grid CJK text is set on. Spaces widen too.',
+  'web.toolDirectory.fontGenerator.style.strikethrough.name': 'Strikethrough',
+  'web.toolDirectory.fontGenerator.style.strikethrough.note':
+    'Your own letters, each followed by a combining long stroke. The line is drawn by the mark, so it can render unevenly.',
+  'web.toolDirectory.fontGenerator.style.underline.name': 'Underline',
+  'web.toolDirectory.fontGenerator.style.underline.note':
+    'Your own letters, each followed by a combining low line. Same caveat: the line comes from the mark, not from the font.',
+
+  /* The hub */
+
+  'web.meta.toolDirectory.fontGenerator.title': 'Font changer and fancy font generator',
+  'web.meta.toolDirectory.fontGenerator.description':
+    'A font changer for bios and captions: type once and see every fancy font style, bold, italic, cursive script, outline, small caps and more, with one tap to copy. Unicode text, not a font file. Runs in your browser.',
+  'web.toolDirectory.fontGenerator.name': 'Font changer',
+  'web.toolDirectory.fontGenerator.summary':
+    'Type once, see every Unicode text style, copy the one you want. Not a font file.',
+  'web.toolDirectory.fontGenerator.title': 'Font changer and fancy font generator',
+  'web.toolDirectory.fontGenerator.lede':
+    'Type your text once and see it in every style this tool can make, then copy the one you want. These are Unicode characters you can paste anywhere, not a font you install.',
+
+  /* Instagram */
+
+  'web.meta.toolDirectory.instagramFonts.title': 'Instagram fonts: an Instagram font generator',
+  'web.meta.toolDirectory.instagramFonts.description':
+    'Instagram fonts for your bio and captions. Type once, see every style, copy in one tap. Unicode text rather than a font file, with a plain warning about what styled text does to screen readers and search.',
+  'web.toolDirectory.instagramFonts.name': 'Instagram fonts',
+  'web.toolDirectory.instagramFonts.summary':
+    'Styled text for an Instagram bio or caption, with the accessibility cost stated plainly.',
+  'web.toolDirectory.instagramFonts.title': 'Instagram fonts',
+  'web.toolDirectory.instagramFonts.lede':
+    'Type your bio or caption once and copy it in whichever style you want. It pastes into Instagram as ordinary text, because that is what it is: Unicode characters, not a font.',
+  'web.toolDirectory.instagramFonts.explainer.title': 'Why a bio can be styled at all',
+  'web.toolDirectory.instagramFonts.explainer.body':
+    'Instagram gives you no formatting controls in a bio or a caption, so every styled bio you have seen was made this way: the letters were swapped for Unicode look-alikes before being pasted in. Nothing is installed and nothing is added to your account.',
+  'web.toolDirectory.instagramFonts.explainer.extra':
+    'Keep your name and your handle as plain letters. They are what somebody types when they search for you, and a styled version of them is a different string as far as any search is concerned.',
+  'web.toolDirectory.instagramFonts.platformNote':
+    'We have not tested how Instagram handles any of these characters, and we will not tell you a style is safe there. Support can differ between the iOS app, the Android app and the web, and between a bio, a caption and a comment. Paste it into the real field, look at it, and save only if it came out right.',
+  'web.toolDirectory.instagramFonts.faq.bio.q': 'How do I put a styled font in my Instagram bio?',
+  'web.toolDirectory.instagramFonts.faq.bio.a':
+    'Type the text above, copy the style you want, then paste it into the bio field in Edit profile and save. If the characters come back as plain letters, or as empty boxes, that field or that app version did not accept them, and the plain version is the one to keep.',
+
+  /* Discord */
+
+  'web.meta.toolDirectory.discordFonts.title': 'Discord fonts: styled text for Discord',
+  'web.meta.toolDirectory.discordFonts.description':
+    'Discord fonts for a username, a status or a message. Type once, copy any style. Unicode text rather than a font file, with the accessibility cost stated plainly and a note on when Discord markdown is the better tool.',
+  'web.toolDirectory.discordFonts.name': 'Discord fonts',
+  'web.toolDirectory.discordFonts.summary':
+    'Styled text for a Discord name, status or message, and when to use markdown instead.',
+  'web.toolDirectory.discordFonts.title': 'Discord fonts',
+  'web.toolDirectory.discordFonts.lede':
+    'Styled text for a display name, a status or a message, copied in one tap. It is Unicode text, so it goes anywhere Discord accepts typing.',
+  'web.toolDirectory.discordFonts.explainer.title': 'Where markdown is the better answer',
+  'web.toolDirectory.discordFonts.explainer.body':
+    'Inside a message, Discord already formats text: asterisks around a word make it bold, underscores make it italic, and a pair of tildes strikes it through. That is real formatting, it is read correctly by a screen reader, and it stays searchable, so use it whenever you are writing a message rather than naming something.',
+  'web.toolDirectory.discordFonts.explainer.extra':
+    'This page is for the places markdown does not reach, such as a display name or a status, where the only way to change how the text looks is to change the characters themselves. That is why the strikethrough and underline styles are left off this page: Discord does both properly, and a combining mark is the worse way to get the same look.',
+  'web.toolDirectory.discordFonts.platformNote':
+    'We have not tested how Discord handles any of these characters, and support can differ between the desktop app, the browser and mobile, and between a nickname, a status and a message. Some servers also reject unusual characters in a nickname. Paste it in the real place and look before you commit to it.',
+  'web.toolDirectory.discordFonts.faq.markdown.q':
+    'Should I use this or Discord markdown for a message?',
+  'web.toolDirectory.discordFonts.faq.markdown.a':
+    'Markdown, every time, for a message. Wrapping a word in asterisks gives you real bold that a screen reader announces correctly and search can still match. Use this page for a display name or a status, where markdown does not apply.',
+
+  /* Facebook */
+
+  'web.meta.toolDirectory.facebookFonts.title': 'Facebook fonts: styled text for posts and bios',
+  'web.meta.toolDirectory.facebookFonts.description':
+    'Facebook fonts for a post, a bio or a page name. Type once, copy any style in one tap. Unicode text rather than a font file, with a plain warning about screen readers and about text that stops being searchable.',
+  'web.toolDirectory.facebookFonts.name': 'Facebook fonts',
+  'web.toolDirectory.facebookFonts.summary':
+    'Styled text for a Facebook post or bio, with the search and screen reader cost stated plainly.',
+  'web.toolDirectory.facebookFonts.title': 'Facebook fonts',
+  'web.toolDirectory.facebookFonts.lede':
+    'Type a post or a bio once and copy it in whichever style you want. It pastes into Facebook as ordinary text, because these are Unicode characters rather than a font.',
+  'web.toolDirectory.facebookFonts.explainer.title': 'What styling costs you here',
+  'web.toolDirectory.facebookFonts.explainer.body':
+    'Facebook has no formatting controls in a post or a bio, so styled text is made by swapping the letters for Unicode look-alikes. Nothing is installed and nothing changes about your account.',
+  'web.toolDirectory.facebookFonts.explainer.extra':
+    'The cost is bigger on Facebook than on most places, because Facebook search is how people find a page, a group or a person. A styled page name is a different string from the plain one, so somebody typing the plain spelling may not reach you.',
+  'web.toolDirectory.facebookFonts.platformNote':
+    'We have not tested how Facebook handles any of these characters. Behaviour can differ between the app and the browser, and a name field may have rules a post does not. Paste it into the real field and look at the result before you save it.',
+  'web.toolDirectory.facebookFonts.faq.search.q': 'Will people still find my page if I style it?',
+  'web.toolDirectory.facebookFonts.faq.search.a':
+    'Possibly not. Styled characters are not the letters they resemble, so a search for the plain spelling of your name has nothing to match. If being findable matters, keep the name plain and put the styling somewhere it costs you less.',
+
+  /* Cursive */
+
+  'web.meta.toolDirectory.cursiveFonts.title': 'Cursive font generator: cursive fonts to copy',
+  'web.meta.toolDirectory.cursiveFonts.description':
+    'A cursive font generator for bios and captions: script, bold script and italic cursive fonts you can copy in one tap. Unicode text rather than a font file, with a plain note about screen readers and search.',
+  'web.toolDirectory.cursiveFonts.name': 'Cursive font generator',
+  'web.toolDirectory.cursiveFonts.summary':
+    'Script and italic styles only, for when cursive is the thing you actually want.',
+  'web.toolDirectory.cursiveFonts.title': 'Cursive font generator',
+  'web.toolDirectory.cursiveFonts.lede':
+    'The joined and sloped styles on their own: script, bold script and three italics. Type once, copy the one you like, paste it anywhere text goes.',
+  'web.toolDirectory.cursiveFonts.explainer.title': 'How close to real cursive this gets',
+  'web.toolDirectory.cursiveFonts.explainer.body':
+    'Unicode has one script alphabet and one bold script alphabet, added for mathematics rather than for handwriting. They are the most cursive-looking letters that exist as plain text, and this page shows them beside the italics for comparison, so you can pick by eye instead of by name.',
+  'web.toolDirectory.cursiveFonts.explainer.extra':
+    'The letters do not join up the way handwriting does, and they cannot: each one is a separate character with its own shape. If you want genuinely connected lettering you want a typeface, and a typeface is a file this page cannot give you.',
+  'web.toolDirectory.cursiveFonts.platformNote':
+    'The script alphabets are among the less widely supported ones, so an older device may show a box instead of a letter. We have tested no platform. Paste it where you intend to use it, check it on a phone as well as a computer, and keep the plain version if it does not render.',
+  'web.toolDirectory.cursiveFonts.faq.joined.q': 'Why do the letters not join up?',
+  'web.toolDirectory.cursiveFonts.faq.joined.a':
+    'Because each one is an individual Unicode character rather than a letter drawn by a font that knows what comes next. Joining is something a typeface does with its own shaping rules, and plain text has none. What you see here is as connected as copy and paste cursive gets.',
+
+  /* The directory group */
+
+  'web.toolDirectory.group.textStyles.title': 'Text styles you can paste',
+  'web.toolDirectory.group.textStyles.body':
+    'These substitute Unicode look-alike characters for the letters you type, which is why the result pastes into a bio or a caption that has no formatting controls. None of them is a font file, and every one of them costs you something: styled text is read poorly by a screen reader and is not matched by search.',
 } as const;

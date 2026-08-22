@@ -70,6 +70,11 @@ export default async function SpecsIndexPage({
           <p className="mt-2">
             <TextLink href={ROUTES.schedule}>{t.t('web.schedule.index.title')}</TextLink>
           </p>
+          <p className="mt-2">
+            <TextLink href={ROUTES.specsDimensions}>
+              {t.t('web.specs.dimensions.index.link')}
+            </TextLink>
+          </p>
         </Split>
       </Section>
 

@@ -218,6 +218,14 @@ export const BETA_ENGLISH_FALLBACK_PREFIXES = [
   'web.specs.',
   'web.meta.specs.',
   'web.meta.specsPlatform.',
+  // The image dimensions pages under /specs/dimensions. Same reasoning as the
+  // namespace above, plus one of its own: these values are hand maintained
+  // rather than generated, so each page names the official document it read
+  // and the day it read it. A machine translation that blurred a stated
+  // minimum into a recommendation would put words in a platform's mouth. Beta
+  // locales keep the reviewed English source until a person translates them.
+  'web.meta.dimensions.',
+  'web.meta.dimensionsPlatform.',
   // The generated free tool directory: a character counter per platform and the
   // consolidated media limits table. Every sentence in this namespace either
   // states a platform counting rule, states a recorded ceiling, or promises

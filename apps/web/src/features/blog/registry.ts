@@ -4,12 +4,16 @@ import { clientAccountsAsSeparateProjects } from './articles/client-accounts-as-
 import { connectionsExpireBeforeYouNotice } from './articles/connections-expire-before-you-notice';
 import { engagementRateExplained } from './articles/engagement-rate-explained';
 import { firstCommentsAndReplyChains } from './articles/first-comments-and-reply-chains';
+import { howMuchYouTubePaysPerView } from './articles/how-much-youtube-pays-per-view';
+import { howToScheduleFacebookPosts } from './articles/how-to-schedule-facebook-posts';
+import { howToSeeYourYouTubeSubscribers } from './articles/how-to-see-your-youtube-subscribers';
 import { idempotentSchedulingThroughAnApi } from './articles/idempotent-scheduling-through-an-api';
 import { mediaPreflightBeforeTheCalendar } from './articles/media-preflight-before-the-calendar';
 import { oneIdeaAdaptedPerPlatform } from './articles/one-idea-adapted-per-platform';
 import { postingCadenceYouCanKeep } from './articles/posting-cadence-you-can-keep';
 import { queueSlotsOrFixedTimes } from './articles/queue-slots-or-fixed-times';
 import { schedulingAcrossTimeZones } from './articles/scheduling-across-time-zones';
+import { whatTheMetaAdLibraryIs } from './articles/what-the-meta-ad-library-is';
 import { whenHalfAPostPublishes } from './articles/when-half-a-post-publishes';
 import type { BlogArticle } from './types';
 
@@ -38,6 +42,10 @@ const ARTICLES: readonly BlogArticle[] = [
   connectionsExpireBeforeYouNotice,
   mediaPreflightBeforeTheCalendar,
   idempotentSchedulingThroughAnApi,
+  howToSeeYourYouTubeSubscribers,
+  howToScheduleFacebookPosts,
+  whatTheMetaAdLibraryIs,
+  howMuchYouTubePaysPerView,
 ];
 
 /** Newest first, by last substantive edit, then by publication, then by slug. */

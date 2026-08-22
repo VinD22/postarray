@@ -56,8 +56,27 @@ const TEXT_TOOL_ROUTES: ReadonlySet<string> = new Set([
 ]);
 const TEXT_TOOL_LINKS = TOOL_LINKS.filter((link) => TEXT_TOOL_ROUTES.has(link.href));
 
+/**
+ * The Unicode text stylers: a hub and four pages named after where the text is
+ * being pasted. Grouped apart from the text utilities above because they are
+ * not the same kind of thing. Those shape the words; these swap the letters for
+ * look-alike characters, which is a trade with a real cost, and the group body
+ * states that cost before anybody clicks.
+ */
+const TEXT_STYLE_ROUTES: ReadonlySet<string> = new Set([
+  ROUTES.toolFontGenerator,
+  ROUTES.toolInstagramFonts,
+  ROUTES.toolDiscordFonts,
+  ROUTES.toolFacebookFonts,
+  ROUTES.toolCursiveFontGenerator,
+]);
+const TEXT_STYLE_LINKS = TOOL_LINKS.filter((link) => TEXT_STYLE_ROUTES.has(link.href));
+
 const CALCULATOR_LINKS = TOOL_LINKS.filter(
-  (link) => link.href !== ROUTES.toolImageSizes && !TEXT_TOOL_ROUTES.has(link.href),
+  (link) =>
+    link.href !== ROUTES.toolImageSizes &&
+    !TEXT_TOOL_ROUTES.has(link.href) &&
+    !TEXT_STYLE_ROUTES.has(link.href),
 );
 
 /**
@@ -67,10 +86,10 @@ const CALCULATOR_LINKS = TOOL_LINKS.filter(
  * it does; nothing here promises the product publishes anywhere, because it
  * does not yet.
  *
- * Four groups, because the directory now has four kinds of thing in it: the
+ * Five groups, because the directory now has five kinds of thing in it: the
  * calculators a person opens once, the per platform counters they bookmark,
- * the caption-shaping text utilities, and the media table they check before
- * exporting artwork. The counters are generated from the publishing-limits
+ * the caption-shaping text utilities, the Unicode text stylers, and the media table
+ * they check before exporting artwork. The counters are generated from the publishing-limits
  * dataset, so a platform with no recorded ceiling is absent from this list
  * rather than present with nothing to say.
  */
@@ -133,6 +152,25 @@ export default async function ToolsIndexPage({
         <Body className="mt-3">{t.t('web.toolDirectory.group.text.body')}</Body>
         <ul className="border-border-bold mt-8 border-t-2">
           {TEXT_TOOL_LINKS.map((link) => (
+            <li key={link.href} className="border-border-default border-b py-8">
+              <h3 className="text-title-md text-text-primary">
+                <TextLink href={link.href}>{t.format(link.labelKey)}</TextLink>
+              </h3>
+              {link.descriptionKey === undefined ? null : (
+                <p className="text-body-md text-text-tertiary mt-2 max-w-[68ch] leading-[1.6]">
+                  {t.format(link.descriptionKey)}
+                </p>
+              )}
+            </li>
+          ))}
+        </ul>
+      </Section>
+
+      <Section id="text-styles" ariaLabel={t.t('web.toolDirectory.group.textStyles.title')}>
+        <Subheading as="h2">{t.t('web.toolDirectory.group.textStyles.title')}</Subheading>
+        <Body className="mt-3">{t.t('web.toolDirectory.group.textStyles.body')}</Body>
+        <ul className="border-border-bold mt-8 border-t-2">
+          {TEXT_STYLE_LINKS.map((link) => (
             <li key={link.href} className="border-border-default border-b py-8">
               <h3 className="text-title-md text-text-primary">
                 <TextLink href={link.href}>{t.format(link.labelKey)}</TextLink>

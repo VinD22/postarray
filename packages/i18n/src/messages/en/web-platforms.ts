@@ -223,4 +223,63 @@ export const webPlatformsMessages = {
     'The media types {platform} accepts through its official API, read from the same generated dataset the preflight checker measures a file against.',
   'web.specs.constraint.fileTypes.description':
     'Which media types {platform} accepts, with the official document the list came from and the date a person read it.',
+
+  /* ---------------------------------------------------------------------- */
+  /* Image dimensions cluster (/specs/dimensions)                           */
+  /*                                                                        */
+  /* Unlike everything above, the numbers these pages render come from a    */
+  /* hand maintained dataset rather than a generated one. The copy below is */
+  /* written to say so on the page, because a reader deserves to know which */
+  /* kind of source they are reading.                                       */
+  /* ---------------------------------------------------------------------- */
+
+  'web.meta.dimensions.title': 'Image sizes and dimensions, platform by platform',
+  'web.meta.dimensions.description':
+    'The pixel sizes each platform publishes for its own image surfaces, every one carrying the official page it was read from and the date a person read it.',
+  'web.meta.dimensionsPlatform.title': '{platform} image sizes and dimensions',
+  'web.meta.dimensionsPlatform.description':
+    'Every image size {platform} publishes for its own surfaces, with the official page each number came from and the date a person read it.',
+
+  'web.specs.dimensions.index.title': 'Image sizes and dimensions',
+  'web.specs.dimensions.index.lede':
+    'One page per platform, listing the pixel sizes that platform publishes for its own surfaces. A surface is here only when the platform states a size for it in its own documentation. Nothing is measured off a screenshot and nothing is copied from a size chart.',
+  'web.specs.dimensions.index.listLabel': 'Platforms with recorded image sizes',
+  'web.specs.dimensions.index.count':
+    '{count, plural, one {# recorded size} other {# recorded sizes}}',
+  'web.specs.dimensions.index.link': 'Image sizes and dimensions',
+  'web.specs.dimensions.index.methodTitle': 'Where these sizes come from',
+  'web.specs.dimensions.index.methodBody':
+    'A person opens the platform help centre or developer documentation, finds the sentence that states the pixels, and records the numbers with that page and the date. The limits in the rest of this section are generated from connector code instead. These are not, and that difference is why every row here carries its own source.',
+  'web.specs.dimensions.index.missingTitle': 'Why a surface can be missing',
+  'web.specs.dimensions.index.missingBody':
+    'Plenty of surfaces have a size everyone repeats and no platform publishes. Those are absent here. A guess set in the same type as a documented figure would read as a fact, so the rule is the same one the rest of this section follows: no source, no row, no page.',
+
+  'web.specs.dimensions.platform.listLabel': 'Recorded image sizes for this platform',
+  'web.specs.dimensions.platform.title': 'What {platform} publishes',
+  'web.specs.dimensions.platform.body':
+    'Each row states the surface, the pixel size, the aspect ratio when the platform prints one, and what kind of figure it is. A minimum, a maximum and a recommendation are different claims, so they are labelled differently rather than flattened into one column.',
+  'web.specs.dimensions.platform.ratioUnstated': 'Not stated',
+  'web.specs.dimensions.platform.freshnessTitle': 'How current this is',
+  'web.specs.dimensions.platform.freshnessBody':
+    'A platform can change a surface without announcing it. The date beside each source is the day a person last opened that page and read the numbers on it. A reading that goes stale fails a test in this repository rather than sitting here quietly.',
+  'web.specs.dimensions.platform.limitsLink': 'See the recorded publishing limits too',
+  'web.specs.dimensions.platform.sourceLabel': 'Official platform documentation',
+
+  'web.specs.dimensions.variant.feedPhotoTallest': 'Feed photo, tallest supported',
+  'web.specs.dimensions.variant.feedPhotoWidest': 'Feed photo, widest supported',
+  'web.specs.dimensions.variant.reelCover': 'Reel cover photo',
+  'web.specs.dimensions.variant.videoThumbnail': 'Video thumbnail',
+  'web.specs.dimensions.variant.channelBanner': 'Channel banner',
+  'web.specs.dimensions.variant.channelBannerSafeArea': 'Channel banner safe area',
+  'web.specs.dimensions.variant.serverBanner': 'Server banner',
+  'web.specs.dimensions.variant.headerImage': 'Header image',
+  'web.specs.dimensions.variant.pageCoverPhoto': 'Page cover photo',
+  'web.specs.dimensions.variant.profilePicture': 'Profile picture',
+  'web.specs.dimensions.variant.videoWatermark': 'Video watermark',
+
+  'web.specs.dimensions.basis.minimum': 'Stated minimum',
+  'web.specs.dimensions.basis.maximum': 'Stated maximum',
+  'web.specs.dimensions.basis.recommended': 'Recommended by the platform',
+  'web.specs.dimensions.basis.rendered': 'The size it is displayed at',
+  'web.specs.dimensions.basis.safeArea': 'Area that is never cropped',
 } as const;

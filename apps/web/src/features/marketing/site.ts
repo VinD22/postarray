@@ -3,6 +3,7 @@ import type { MessageKey } from '@relay/i18n/translate';
 import { COMPARISON_SLUGS, comparisonPath } from '@/features/comparisons/slugs';
 import { PLATFORM_SLUGS } from '@/features/platforms/registry';
 import { USE_CASE_PAGES } from '@/features/platforms/use-cases';
+import { DIMENSION_PLATFORM_SLUGS } from '@/features/specs/dimensions';
 import { SPEC_PAIRS, SPEC_PLATFORM_SLUGS } from '@/features/specs/registry';
 import { CHARACTER_COUNTER_SLUGS } from '@/features/tools/character-counter';
 
@@ -50,6 +51,11 @@ export const ROUTES = {
   /** The generated post specs cluster. `/specs/<platform>/<constraint>`, one
    *  page per value the publishing-limits dataset actually carries. */
   specs: '/specs',
+  /** The hand maintained image dimensions cluster. `/specs/dimensions` and one
+   *  child per platform, driven by `features/specs/dimensions`. The values it
+   *  renders are not generated, which is why every row carries its own source
+   *  URL and read date and why a staleness test guards the dataset. */
+  specsDimensions: '/specs/dimensions',
   /** The free tools index. Each tool below is its own indexable page. */
   tools: '/tools',
   toolPostPreflight: '/tools/post-preflight',
@@ -64,6 +70,13 @@ export const ROUTES = {
   toolCaseConverter: '/tools/case-converter',
   toolInvisibleCharacter: '/tools/invisible-character',
   toolVideoScriptTimer: '/tools/video-script-timer',
+  /** The Unicode text style cluster. A hub and four destination pages. These
+   *  substitute look-alike code points; they do not produce a font file. */
+  toolFontGenerator: '/tools/font-generator',
+  toolInstagramFonts: '/tools/instagram-fonts',
+  toolDiscordFonts: '/tools/discord-fonts',
+  toolFacebookFonts: '/tools/facebook-fonts',
+  toolCursiveFontGenerator: '/tools/cursive-font-generator',
   legal: '/legal',
   terms: '/legal/terms',
   privacy: '/legal/privacy',
@@ -101,6 +114,11 @@ export function toUseCasePath(slug: string): string {
 /** `/specs/instagram`, for a platform the limits dataset actually has values for. */
 export function specsPlatformPath(slug: string): string {
   return `${ROUTES.specs}/${slug}`;
+}
+
+/** `/specs/dimensions/instagram`, for a platform with at least one sourced size. */
+export function dimensionsPlatformPath(slug: string): string {
+  return `${ROUTES.specsDimensions}/${slug}`;
 }
 
 /** `/specs/instagram/image-size`, for one recorded value. */
@@ -144,6 +162,16 @@ export const SPEC_CONSTRAINT_ROUTES: readonly string[] = SPEC_PAIRS.map((pair) =
 );
 
 /**
+ * The image dimensions cluster.
+ *
+ * Derived from `features/specs/dimensions`, which only lists a platform that
+ * has at least one row carrying an official source URL and a read date. A
+ * platform nobody has sourced a size for never reaches the sitemap.
+ */
+export const DIMENSION_PLATFORM_ROUTES: readonly string[] =
+  DIMENSION_PLATFORM_SLUGS.map(dimensionsPlatformPath);
+
+/**
  * One character counter per platform with a recorded body text ceiling.
  *
  * Derived the same way and for the same reason as the specs cluster:
@@ -176,6 +204,7 @@ export const MARKETING_ROUTES = [
   ...COMPARISON_PAGE_ROUTES,
   ...SPEC_PLATFORM_ROUTES,
   ...SPEC_CONSTRAINT_ROUTES,
+  ...DIMENSION_PLATFORM_ROUTES,
   ...CHARACTER_COUNTER_ROUTES,
 ];
 
@@ -241,6 +270,11 @@ export const RESOURCE_LINKS: readonly SiteLink[] = [
     labelKey: 'web.specs.index.title',
     descriptionKey: 'web.specs.index.lede',
   },
+  {
+    href: ROUTES.specsDimensions,
+    labelKey: 'web.specs.dimensions.index.title',
+    descriptionKey: 'web.specs.dimensions.index.lede',
+  },
 ];
 
 /**
@@ -305,6 +339,31 @@ export const TOOL_LINKS: readonly SiteLink[] = [
     href: ROUTES.toolVideoScriptTimer,
     labelKey: 'web.toolDirectory.videoScriptTimer.name',
     descriptionKey: 'web.toolDirectory.videoScriptTimer.summary',
+  },
+  {
+    href: ROUTES.toolFontGenerator,
+    labelKey: 'web.toolDirectory.fontGenerator.name',
+    descriptionKey: 'web.toolDirectory.fontGenerator.summary',
+  },
+  {
+    href: ROUTES.toolInstagramFonts,
+    labelKey: 'web.toolDirectory.instagramFonts.name',
+    descriptionKey: 'web.toolDirectory.instagramFonts.summary',
+  },
+  {
+    href: ROUTES.toolDiscordFonts,
+    labelKey: 'web.toolDirectory.discordFonts.name',
+    descriptionKey: 'web.toolDirectory.discordFonts.summary',
+  },
+  {
+    href: ROUTES.toolFacebookFonts,
+    labelKey: 'web.toolDirectory.facebookFonts.name',
+    descriptionKey: 'web.toolDirectory.facebookFonts.summary',
+  },
+  {
+    href: ROUTES.toolCursiveFontGenerator,
+    labelKey: 'web.toolDirectory.cursiveFonts.name',
+    descriptionKey: 'web.toolDirectory.cursiveFonts.summary',
   },
 ];
 
