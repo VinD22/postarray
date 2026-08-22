@@ -29,7 +29,7 @@ import { systemClock } from './clock';
  * for the case where the redirect domain itself is in trouble.
  */
 
-const DEFAULT_PORT = 8081;
+const DEFAULT_PORT = 3002;
 /** Short on purpose: it is the upper bound on how long a disabled link lives. */
 const LOOKUP_HIT_TTL_SECONDS = 30;
 const LOOKUP_MISS_TTL_SECONDS = 10;

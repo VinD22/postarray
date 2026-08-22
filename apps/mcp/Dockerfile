@@ -64,7 +64,7 @@ RUN pnpm --filter @relay/database exec prisma generate
 # --------------------------------------------------------------------- runtime
 FROM base AS runtime
 ENV NODE_ENV=production
-ENV PORT=8082
+ENV PORT=3003
 ENV NODE_OPTIONS=--enable-source-maps
 
 COPY --from=prod-deps --chown=node:node /app/node_modules /app/node_modules
@@ -75,11 +75,11 @@ COPY --from=build --chown=node:node /app/apps/mcp/package.json /app/apps/mcp/pac
 WORKDIR /app/apps/mcp
 
 USER node
-EXPOSE 8082
+EXPOSE 3003
 
 # `HEALTH_PATH` in src/http.ts. It answers before authentication so an
 # orchestrator does not need a token to ask.
 HEALTHCHECK --interval=30s --timeout=5s --start-period=20s --retries=3 \
-  CMD node -e "fetch('http://127.0.0.1:'+(process.env.PORT||8082)+'/healthz').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"
+  CMD node -e "fetch('http://127.0.0.1:'+(process.env.PORT||3003)+'/healthz').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"
 
 CMD ["node", "dist/main.mjs"]

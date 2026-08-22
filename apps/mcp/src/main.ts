@@ -27,7 +27,7 @@ import type { AuditSink, RelayServicePort } from './ports';
  * identical in both.
  */
 
-const DEFAULT_PORT = 8082;
+const DEFAULT_PORT = 3003;
 
 const systemClock = { now: () => Date.now() };
 

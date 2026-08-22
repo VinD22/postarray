@@ -25,7 +25,7 @@ Two consequences worth stating plainly:
 ## Running it
 
 ```bash
-pnpm --filter @relay/api dev        # http://localhost:4000
+pnpm --filter @relay/api dev        # http://localhost:3001
 pnpm --filter @relay/api test
 pnpm --filter @relay/api typecheck
 ```

@@ -81,7 +81,7 @@ RUN pnpm --filter @relay/database exec prisma generate
 # --------------------------------------------------------------------- runtime
 FROM base AS runtime
 ENV NODE_ENV=production
-ENV PORT=4000
+ENV PORT=3001
 ENV NODE_OPTIONS=--enable-source-maps
 
 COPY --from=prod-deps --chown=node:node /app/node_modules /app/node_modules
@@ -92,12 +92,12 @@ COPY --from=build --chown=node:node /app/apps/api/package.json /app/apps/api/pac
 WORKDIR /app/apps/api
 
 USER node
-EXPOSE 4000
+EXPOSE 3001
 
 # The container orchestrator reads readiness from the application, which knows
 # whether its dependencies are actually reachable.
 HEALTHCHECK --interval=30s --timeout=5s --start-period=20s --retries=3 \
-  CMD node -e "fetch('http://127.0.0.1:'+(process.env.PORT||4000)+'/readyz').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"
+  CMD node -e "fetch('http://127.0.0.1:'+(process.env.PORT||3001)+'/readyz').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"
 
 # Signals are delivered to the process itself, not to a shell, so SIGTERM reaches
 # the graceful shutdown handler and in-flight publishes drain.

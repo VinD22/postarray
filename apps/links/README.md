@@ -74,7 +74,7 @@ a fixed pattern and are not sequential.
 ## Configuration
 
 `loadConfigFor('links')` requires `SHORT_LINK_BASE_URL` and `DATABASE_URL`.
-`SHORT_LINK_HASH_KEY` is required by the dedupe path. `PORT` defaults to 8081.
+`SHORT_LINK_HASH_KEY` is required by the dedupe path. `PORT` defaults to 3002.
 
 ## Testing
 

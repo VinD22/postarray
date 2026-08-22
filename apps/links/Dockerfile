@@ -51,7 +51,7 @@ RUN --mount=type=cache,id=pnpm,target=/pnpm/store \
 # --------------------------------------------------------------------- runtime
 FROM base AS runtime
 ENV NODE_ENV=production
-ENV PORT=8081
+ENV PORT=3002
 ENV NODE_OPTIONS=--enable-source-maps
 
 COPY --from=prod-deps --chown=node:node /app/node_modules /app/node_modules
@@ -62,11 +62,11 @@ COPY --from=build --chown=node:node /app/apps/links/package.json /app/apps/links
 WORKDIR /app/apps/links
 
 USER node
-EXPOSE 8081
+EXPOSE 3002
 
 # `/healthz` is a real route on this server (src/server.ts), and it reports the
 # store and the click sink rather than only that the process answered.
 HEALTHCHECK --interval=30s --timeout=5s --start-period=15s --retries=3 \
-  CMD node -e "fetch('http://127.0.0.1:'+(process.env.PORT||8081)+'/healthz').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"
+  CMD node -e "fetch('http://127.0.0.1:'+(process.env.PORT||3002)+'/healthz').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"
 
 CMD ["node", "dist/main.mjs"]
