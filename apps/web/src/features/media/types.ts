@@ -149,5 +149,7 @@ export interface UploadItem {
     readonly key: string;
     readonly values: Record<string, string | number>;
   } | null;
+  /** The correlation id of the failure, so support can find the same request. */
+  readonly errorReference?: string;
   readonly mediaId: string | null;
 }

@@ -293,3 +293,98 @@ export async function request<T>(path: string, options: RequestOptions = {}): Pr
     return undefined as T;
   }
 }
+
+/**
+ * Send raw bytes to an upload ticket URL.
+ *
+ * An upload ticket points at one of two very different places and they must not
+ * be treated the same way:
+ *
+ *  - **Relay's own storage.** The ticket URL sits on the configured API origin
+ *    (`{API_URL}/v1/media/uploads/...`). That endpoint authenticates the caller
+ *    from the session cookie and requires `media:write`, and the browser is on a
+ *    different origin (web 3000, api 3001), where `fetch` omits credentials by
+ *    default. So this PUT needs exactly what every other mutation gets:
+ *    `credentials: 'include'`, the CSRF token, the active workspace and a
+ *    correlation id. Without them the upload 401s or 403s.
+ *  - **A remote signed URL** (S3 or R2 presigned PUT). The signature covers the
+ *    request; sending cookies or extra Relay headers is at best useless and at
+ *    worst breaks the signature or leaks the session to a third party origin.
+ *    Those requests carry the ticket's own headers and nothing else, with
+ *    credentials explicitly omitted.
+ *
+ * The two are told apart by origin, not by guessing at the path: same origin as
+ * the configured API base means it is ours.
+ */
+export function isRelayUploadUrl(uploadUrl: string): boolean {
+  const baseUrl = apiConfig.baseUrl;
+  if (baseUrl === null) {
+    return false;
+  }
+  try {
+    return new URL(uploadUrl).origin === new URL(baseUrl).origin;
+  } catch {
+    return false;
+  }
+}
+
+export interface UploadRequestOptions {
+  readonly method?: 'PUT' | 'POST';
+  /** Headers the upload ticket said to send. Always forwarded verbatim. */
+  readonly ticketHeaders?: Readonly<Record<string, string>>;
+  readonly signal?: AbortSignal;
+}
+
+/**
+ * Throws `ApiError` on failure, like `request`, so a caller never inspects a
+ * status code.
+ */
+export async function sendUpload(
+  uploadUrl: string,
+  body: Blob,
+  options: UploadRequestOptions = {},
+): Promise<void> {
+  const correlationId = newCorrelationId();
+  const headers: Record<string, string> = { ...options.ticketHeaders };
+  const relayOwned = isRelayUploadUrl(uploadUrl);
+
+  if (relayOwned) {
+    headers[API_HEADERS.correlationId] = correlationId;
+    headers[API_HEADERS.apiVersion] = apiConfig.apiVersion;
+    const cookieSource = typeof document === 'undefined' ? undefined : document.cookie;
+    const csrfToken = readCookie(cookieSource, 'relay_csrf');
+    if (csrfToken !== undefined) {
+      headers[API_HEADERS.csrfToken] = csrfToken;
+    }
+    const workspaceId = readCookie(cookieSource, 'relay_ws');
+    if (workspaceId !== undefined) {
+      headers[API_HEADERS.workspaceId] = workspaceId;
+    }
+  }
+
+  let response: Response;
+  try {
+    response = await fetch(uploadUrl, {
+      method: options.method ?? 'PUT',
+      // Relay's own endpoint authenticates from the session cookie across
+      // origins. A presigned third party URL must never receive it.
+      credentials: relayOwned ? 'include' : 'omit',
+      headers,
+      body,
+      ...(options.signal === undefined ? {} : { signal: options.signal }),
+    });
+  } catch {
+    const online = typeof navigator === 'undefined' ? true : navigator.onLine;
+    throw online ? ApiError.network(correlationId) : ApiError.offline(correlationId);
+  }
+
+  if (!response.ok) {
+    const problem = await readProblem(response);
+    throw ApiError.fromProblem(
+      problem,
+      response.status,
+      response.headers.get(API_HEADERS.correlationId) ?? correlationId,
+      parseRetryAfter(response),
+    );
+  }
+}

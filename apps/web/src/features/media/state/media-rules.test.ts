@@ -73,11 +73,28 @@ describe('checkFile', () => {
       { name: 'hero.png', mimeType: 'image/png', bytes: 50_000_000, kind: 'image' },
       RULES,
     );
-    const rejection = verdict.rejections.find(
-      (entry) => entry.key === 'mediaLib.upload.rejectedSize',
-    );
-    expect(rejection?.values.limit).toBe(5_242_880);
+    const limits = verdict.rejections
+      .filter((entry) => entry.key === 'mediaLib.upload.rejectedSize')
+      .map((entry) => entry.values.limit);
+    // Both blockers are reported: the workspace ceiling and the strictest
+    // account limit, so the user is not told one at a time.
+    expect(limits).toContain(20 * 1024 * 1024);
+    expect(limits).toContain(5_242_880);
     expect(verdict.usable).toBe(false);
+  });
+
+  it('refuses a file over the workspace ceiling even when an account would take it', () => {
+    const verdict = checkFile(
+      { name: 'huge.mp4', mimeType: 'video/mp4', bytes: 600 * 1024 * 1024, kind: 'video' },
+      RULES,
+    );
+    expect(verdict.usable).toBe(false);
+    expect(
+      verdict.rejections.some(
+        (entry) =>
+          entry.connectionId === 'workspace-default' && entry.values.limit === 500 * 1024 * 1024,
+      ),
+    ).toBe(true);
   });
 
   it('accepts a file every account allows', () => {

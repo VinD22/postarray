@@ -12,7 +12,14 @@ export { newCorrelationId, newIdempotencyKey } from './correlation';
 export { keys } from './keys';
 export { ApiProvider } from './provider';
 export { createQueryClient, queryClientConfig } from './query-client';
-export { request, type HttpMethod, type RequestOptions } from './transport';
+export {
+  isRelayUploadUrl,
+  request,
+  sendUpload,
+  type HttpMethod,
+  type RequestOptions,
+  type UploadRequestOptions,
+} from './transport';
 export * from './types';
 export type { ConnectionListQuery } from './resources/connections';
 export type { AgentConfirmationView } from '@relay/application';

@@ -10,6 +10,7 @@
  */
 
 import { useCallback, useEffect, useMemo, useState, type ReactNode } from 'react';
+import { useSearchParams } from 'next/navigation';
 import { useTranslations } from '@relay/i18n/react';
 
 import {
@@ -49,6 +50,21 @@ export interface LibraryClientProps {
 export function LibraryClient(props: LibraryClientProps): ReactNode {
   const t = useTranslations();
   const [online, setOnline] = useState(true);
+
+  // Two links elsewhere in the product point here with an intent attached: the
+  // composer's "edit this picture" (`?asset=`) and the command palette's
+  // "upload media" (`?upload=1`). Both were silently dropped before this.
+  const searchParams = useSearchParams();
+  const requestedAssetId = searchParams.get('asset');
+  const uploadRequested = searchParams.get('upload') === '1';
+
+  useEffect(() => {
+    if (!uploadRequested || typeof document === 'undefined') {
+      return;
+    }
+    const heading = document.getElementById('upload-heading');
+    heading?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }, [uploadRequested]);
 
   useEffect(() => {
     if (typeof window === 'undefined') {
@@ -92,6 +108,7 @@ export function LibraryClient(props: LibraryClientProps): ReactNode {
       online={online}
       importEnabled={props.importEnabled}
       timeZone={props.timeZone}
+      {...(requestedAssetId === null ? {} : { initialOpenAssetId: requestedAssetId })}
       {...(props.rateLimitResetAt ? { rateLimitResetAt: props.rateLimitResetAt } : {})}
       onRetry={props.onRefresh}
       onFiles={queue.enqueue}

@@ -14,6 +14,8 @@ import { useCallback, useRef, useState } from 'react';
 import { useAnnouncer } from '@relay/design-system/hooks';
 import type { MediaKind } from '@relay/contracts';
 
+import { ApiError } from '@/lib/api';
+
 import { checkFile, type AccountRule } from '../state/media-rules';
 import type { UploadItem } from '../types';
 
@@ -132,9 +134,17 @@ export function useUploadQueue({
         patch(id, { status: 'done', mediaId });
         announce(messages.complete(file.name), 'polite');
         onUploaded(mediaId);
-      } catch {
+      } catch (error) {
         if (!controller.signal.aborted) {
-          patch(id, { status: 'failed' });
+          // A failed upload has to say why. The typed error already carries a
+          // user-safe catalog key and the values it interpolates, so the item
+          // renders the real reason rather than a bare "failed".
+          const apiError = ApiError.fromUnknown(error, null);
+          patch(id, {
+            status: 'failed',
+            reason: { key: apiError.messageKey, values: apiError.messageValues },
+            ...(apiError.correlationId === null ? {} : { errorReference: apiError.correlationId }),
+          });
           announce(messages.failed(file.name), 'assertive');
         }
       } finally {

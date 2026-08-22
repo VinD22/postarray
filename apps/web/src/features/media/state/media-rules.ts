@@ -46,42 +46,52 @@ export interface FileVerdict {
   readonly usable: boolean;
 }
 
+const WORKSPACE_RULE_LABEL = 'workspace-default';
+
+/**
+ * The workspace storage ceiling, which applies whatever the targets accept.
+ *
+ * A provider limit can only ever be stricter in practice, but it is read from a
+ * capability snapshot that may be newer or older than this build, so the
+ * workspace ceiling is checked first and independently rather than being
+ * assumed to be implied by it.
+ */
+function workspaceCeiling(file: CandidateFile): FileRejection | null {
+  if (!UPLOADABLE_MEDIA_MIME_TYPES.some((mimeType) => mimeType === file.mimeType)) {
+    return {
+      connectionId: WORKSPACE_RULE_LABEL,
+      accountLabel: WORKSPACE_RULE_LABEL,
+      key: 'mediaLib.upload.rejectedType',
+      values: { name: file.name, mimeType: file.mimeType },
+    };
+  }
+  const limit = file.kind === 'video' ? VIDEO_UPLOAD_LIMIT_BYTES : IMAGE_UPLOAD_LIMIT_BYTES;
+  if (file.bytes > limit) {
+    return {
+      connectionId: WORKSPACE_RULE_LABEL,
+      accountLabel: WORKSPACE_RULE_LABEL,
+      key: 'mediaLib.upload.rejectedSize',
+      values: { name: file.name, size: file.bytes, limit },
+    };
+  }
+  return null;
+}
+
 export function checkFile(file: CandidateFile, rules: readonly AccountRule[]): FileVerdict {
+  // Checked first and always. A file over the workspace ceiling cannot be
+  // uploaded whatever the targets accept, so the answer is never "some accounts
+  // would take this". The per-account reasons are still collected below, so the
+  // user sees the whole picture rather than one blocker at a time.
+  const ceiling = workspaceCeiling(file);
+
   if (rules.length === 0) {
-    if (!UPLOADABLE_MEDIA_MIME_TYPES.some((mimeType) => mimeType === file.mimeType)) {
-      return {
-        acceptedBy: [],
-        rejections: [
-          {
-            connectionId: 'workspace-default',
-            accountLabel: 'workspace-default',
-            key: 'mediaLib.upload.rejectedType',
-            values: { name: file.name, mimeType: file.mimeType },
-          },
-        ],
-        usable: false,
-      };
-    }
-    const limit = file.kind === 'video' ? VIDEO_UPLOAD_LIMIT_BYTES : IMAGE_UPLOAD_LIMIT_BYTES;
-    if (file.bytes > limit) {
-      return {
-        acceptedBy: [],
-        rejections: [
-          {
-            connectionId: 'workspace-default',
-            accountLabel: 'workspace-default',
-            key: 'mediaLib.upload.rejectedSize',
-            values: { name: file.name, size: file.bytes, limit },
-          },
-        ],
-        usable: false,
-      };
-    }
-    return { acceptedBy: [], rejections: [], usable: true };
+    return ceiling === null
+      ? { acceptedBy: [], rejections: [], usable: true }
+      : { acceptedBy: [], rejections: [ceiling], usable: false };
   }
 
   const acceptedBy: string[] = [];
-  const rejections: FileRejection[] = [];
+  const rejections: FileRejection[] = ceiling === null ? [] : [ceiling];
 
   for (const rule of rules) {
     const media = rule.capabilities.media;
@@ -125,7 +135,7 @@ export function checkFile(file: CandidateFile, rules: readonly AccountRule[]): F
     acceptedBy.push(rule.accountLabel);
   }
 
-  return { acceptedBy, rejections, usable: acceptedBy.length > 0 };
+  return { acceptedBy, rejections, usable: ceiling === null && acceptedBy.length > 0 };
 }
 
 /** The smallest byte ceiling across the selected accounts, for the dropzone copy. */

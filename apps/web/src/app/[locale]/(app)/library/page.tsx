@@ -7,12 +7,13 @@
  */
 
 import type { Metadata } from 'next';
-import { cookies } from 'next/headers';
+import { cookies, headers } from 'next/headers';
 import type { CapabilitySnapshot } from '@relay/contracts';
 
 import { isDemoMode } from '@/lib/api/config';
 import { ApiError } from '@/lib/api/error';
 import { api } from '@/lib/api';
+import type { ForwardAuth } from '@/lib/api/transport';
 import { requireSession } from '@/lib/auth/require-session';
 import { ACTIVE_PROJECT_COOKIE, resolveActiveProject } from '@/lib/auth/project-selection';
 import { getRequestIntl } from '@/lib/i18n/server';
@@ -55,14 +56,30 @@ export default async function LibraryPage(): Promise<React.ReactElement> {
       const session = await requireSession('/library');
       timeZone = session.workspace.timeZone;
       const cookieStore = await cookies();
+      // Every read below is its own request from the Next server, so each one
+      // needs the session cookie and the client fingerprint forwarded
+      // explicitly, exactly as `/compose` does. Without this the API sees
+      // Node's own user agent, the fingerprint check fails, and the library
+      // renders its error state for a perfectly healthy session.
+      const requestHeaders = await headers();
+      const forward: ForwardAuth = {
+        forwardCookie: cookieStore
+          .getAll()
+          .map((entry) => `${entry.name}=${entry.value}`)
+          .join('; '),
+        forwardHeaders: {
+          userAgent: requestHeaders.get('user-agent') ?? undefined,
+          acceptLanguage: requestHeaders.get('accept-language') ?? undefined,
+        },
+      };
       const project = resolveActiveProject(
         session.projects,
         cookieStore.get(ACTIVE_PROJECT_COOKIE)?.value,
       );
       projectId = project?.id ?? null;
       const [page, connections] = await Promise.all([
-        api.media.list(projectId === null ? {} : { projectId: projectId }),
-        api.connections.list(projectId === null ? {} : { projectId: projectId }),
+        api.media.list(projectId === null ? {} : { projectId: projectId }, forward),
+        api.connections.list(projectId === null ? {} : { projectId: projectId }, forward),
       ]);
       assets = page.data.map(mediaAssetFromApi);
       rules = await Promise.all(
@@ -71,6 +88,7 @@ export default async function LibraryPage(): Promise<React.ReactElement> {
           accountLabel: connection.displayName,
           capabilities: (await api.connections.getCapabilities(
             connection.id,
+            forward,
           )) as CapabilitySnapshot,
         })),
       );

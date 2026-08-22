@@ -25,9 +25,11 @@ import { EmptyState } from '@relay/design-system/patterns';
 import { useTranslations } from '@relay/i18n/react';
 import { formatBytes } from '@relay/i18n';
 
+import type { UploadTransport } from '../hooks/use-upload-queue';
 import { checkFile, type AccountRule } from '../state/media-rules';
 import type { MediaAsset } from '../types';
 import { MediaPolicyNotice } from './media-policy-notice';
+import { UploadDropZone } from './upload-drop-zone';
 
 export interface MediaPickerDialogProps {
   readonly open: boolean;
@@ -37,6 +39,17 @@ export interface MediaPickerDialogProps {
   /** The account name when picking for one target, null for the master draft. */
   readonly targetLabel: string | null;
   readonly onConfirm: (mediaIds: readonly string[]) => void;
+  /**
+   * When present the dialog can upload as well as pick, so attaching a photo
+   * to a post never means leaving the composer for the library. Absent in read
+   * only surfaces such as demo mode.
+   */
+  readonly transport?: UploadTransport;
+  /**
+   * Called after a file has been committed, so the caller can reload the asset
+   * list. The uploaded id is already selected by the time this runs.
+   */
+  readonly onUploaded?: (mediaId: string) => void;
 }
 
 export function MediaPickerDialog({
@@ -46,6 +59,8 @@ export function MediaPickerDialog({
   rules,
   targetLabel,
   onConfirm,
+  transport,
+  onUploaded,
 }: MediaPickerDialogProps): ReactNode {
   const t = useTranslations();
   const [selected, setSelected] = useState<readonly string[]>([]);
@@ -76,6 +91,23 @@ export function MediaPickerDialog({
           <div className="mb-3">
             <MediaPolicyNotice rules={rules} />
           </div>
+
+          {transport === undefined ? null : (
+            <div className="mb-4">
+              <UploadDropZone
+                rules={rules}
+                transport={transport}
+                onUploaded={(mediaId) => {
+                  // A file the user just uploaded on purpose is the file they
+                  // want, so it arrives already selected.
+                  setSelected((current) =>
+                    current.includes(mediaId) ? current : [...current, mediaId],
+                  );
+                  onUploaded?.(mediaId);
+                }}
+              />
+            </div>
+          )}
 
           {assets.length === 0 ? (
             <EmptyState

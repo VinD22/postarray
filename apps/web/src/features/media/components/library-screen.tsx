@@ -8,7 +8,7 @@
  * rather than clipping ten columns sideways.
  */
 
-import { useMemo, useState, type ReactNode } from 'react';
+import { useEffect, useMemo, useState, type ReactNode } from 'react';
 import { LayoutGrid, Rows3 } from 'lucide-react';
 import {
   Button,
@@ -66,6 +66,11 @@ export interface LibraryScreenProps {
   readonly errorMessage?: string;
   readonly errorReference?: string;
   readonly rateLimitResetAt?: string;
+  /**
+   * Opens one asset's detail on arrival. This is how `/library?asset={id}`
+   * lands somewhere: without it the link is silently the plain library.
+   */
+  readonly initialOpenAssetId?: string | null;
   readonly onRetry?: () => void;
   readonly onFiles: (files: readonly File[]) => void;
   readonly onImportUrl: (url: string) => Promise<void>;
@@ -86,7 +91,14 @@ export interface LibraryScreenProps {
 export function LibraryScreen(props: LibraryScreenProps): ReactNode {
   const t = useTranslations();
   const [view, setView] = useState<'grid' | 'list'>('grid');
-  const [openAssetId, setOpenAssetId] = useState<string | null>(null);
+  const [openAssetId, setOpenAssetId] = useState<string | null>(props.initialOpenAssetId ?? null);
+
+  const requestedAssetId = props.initialOpenAssetId ?? null;
+  useEffect(() => {
+    if (requestedAssetId !== null) {
+      setOpenAssetId(requestedAssetId);
+    }
+  }, [requestedAssetId]);
 
   const openAsset = useMemo(
     () => props.assets.find((asset) => asset.id === openAssetId) ?? null,

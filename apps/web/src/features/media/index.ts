@@ -11,6 +11,7 @@ export { MediaDetail } from './components/media-detail';
 export { mediaAssetFromApi } from './state/from-api';
 export { mediaPolicyLimits } from './state/media-policy';
 export { MediaPickerDialog } from './components/media-picker-dialog';
+export type { MediaPickerDialogProps } from './components/media-picker-dialog';
 export { PictureEditor } from './components/picture-editor';
 export { DerivativeDialog } from './components/derivative-dialog';
 export type { DerivativeDialogProps } from './components/derivative-dialog';
@@ -35,6 +36,9 @@ export {
 } from './state/derivative-plan';
 export type { DerivativeCrop, DerivativePlan } from './state/derivative-plan';
 export { UploadPanel } from './components/upload-panel';
+export { UploadDropZone } from './components/upload-drop-zone';
+export type { UploadDropZoneProps } from './components/upload-drop-zone';
+export { createUploadTransport } from './state/upload-transport';
 export { MediaPolicyNotice } from './components/media-policy-notice';
 export { AltTextForm } from './components/alt-text-form';
 export { RightsForm } from './components/rights-form';
