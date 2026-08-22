@@ -37,3 +37,10 @@ export {
   platformFitCheckPrompt,
 } from './review';
 export { analyticsSummaryPrompt, experimentSuggestionPrompt, growthPlanPrompt } from './analysis';
+export {
+  assistantRoutePrompt,
+  assistantRouteResultSchema,
+  assistantWeekPlanPrompt,
+  assistantWeekPlanResultSchema,
+} from './assistant';
+export type { AssistantRouteResult, AssistantWeekPlanResult } from './assistant';

@@ -1,6 +1,8 @@
 import { a11yMessages } from './a11y';
 import { actionMessages } from './actions';
 import { analyticsMessages } from './analytics';
+import { assistantMessages } from './assistant';
+import { assistantWebMessages } from './assistant-web';
 import { authMessages } from './auth';
 import { automationMessages } from './automation';
 import { billingMessages } from './billing';
@@ -52,6 +54,8 @@ import { webDemoMessages } from './web-demo';
  */
 export const en = {
   ...navMessages,
+  ...assistantMessages,
+  ...assistantWebMessages,
   ...actionMessages,
   ...commonMessages,
   ...composerMessages,

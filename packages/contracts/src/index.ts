@@ -28,3 +28,6 @@ export * from './api';
 export * from './scopes';
 export * from './plan-limits';
 export * from './launch-policy';
+
+export * from './assistant';
+export * from './assistant-catalog';

@@ -18,6 +18,7 @@ import { createCredentialVaultService } from './credentials';
 import { createDataDeletionService } from './data-deletion';
 import { createDataExportService } from './data-exports';
 import { createDataLifecycleService } from './data-lifecycle';
+import { createAssistantService } from './assistant';
 import { createGrowthService } from './growth';
 import { createHealthService } from './health';
 import { createIdentityService } from './identity';
@@ -65,29 +66,52 @@ export function createServices(deps: ServiceDeps): Services {
   const media = createMediaService(deps);
   const bulkImports = createBulkImportService(deps, content, scheduling, media);
 
+  const connections = createConnectionService(deps);
+  const queueRules = createQueueRuleService(deps);
+  const approvals = createApprovalService(deps);
+  const receipts = createReceiptService(deps);
+  const actionCenter = createActionCenterService(deps);
+  const agentConfirmations = createAgentConfirmationService(deps);
+  const growth = createGrowthService(deps, content);
+  // The assistant is handed the same instances every other surface uses. A
+  // second content service here would be a second set of rules about what a
+  // draft is, and a second confirmation service would be a second gate.
+  const assistant = createAssistantService(deps, {
+    content,
+    connections,
+    growth,
+    queueRules,
+    scheduling,
+    approvals,
+    receipts,
+    actionCenter,
+    agentConfirmations,
+  });
+
   return {
     workspaces: createWorkspaceService(deps),
     members: createMembershipService(deps),
     projects: createProjectService(deps),
     onboarding: createOnboardingService(deps),
-    connections: createConnectionService(deps),
+    connections,
     content,
     validation,
-    approvals: createApprovalService(deps),
+    approvals,
     scheduling,
-    queueRules: createQueueRuleService(deps),
+    queueRules,
     postingSets: createPostingSetService(deps),
     rememberedTargets: createRememberedTargetService(deps),
     publishing: createPublishingService(deps, validation),
-    agentConfirmations: createAgentConfirmationService(deps),
-    receipts: createReceiptService(deps),
-    actionCenter: createActionCenterService(deps),
+    agentConfirmations,
+    receipts,
+    actionCenter,
     media,
     analytics: createAnalyticsService(deps),
     shortLinks: createShortLinkService(deps),
     automationRules: createAutomationRuleService(deps),
     rss: createRssService(deps),
-    growth: createGrowthService(deps, content),
+    growth,
+    assistant,
     webhooks: createWebhookService(deps),
     credentials: createCredentialVaultService(deps),
     apiKeys: createApiKeyService(deps),

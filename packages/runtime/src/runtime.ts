@@ -601,6 +601,27 @@ function aiAdapter(config: RelayConfig, logger: Logger, clock: Clock): AiGateway
   const gateway = createAiGatewayFromConfig({ config, logger, clock });
   return {
     isAvailable: () => gateway.status().availability === 'ready',
+    // The assistant's only path from a model to structured data. The gateway
+    // applies the schema, the budget and the guardrails; nothing is added here.
+    completeStructured: async <TOut>(schema: { parse(value: unknown): TOut }, request: unknown) => {
+      const result = await gateway.completeStructured<TOut>(
+        schema as unknown as Parameters<typeof gateway.completeStructured<TOut>>[0],
+        request as Parameters<typeof gateway.completeStructured<TOut>>[1],
+      );
+      return {
+        output: result.output,
+        meta: {
+          provider: result.meta.provider,
+          model: result.meta.model,
+          promptId: result.meta.promptId,
+          promptVersion: result.meta.promptVersion,
+          inputTokens: result.meta.inputTokens,
+          outputTokens: result.meta.outputTokens,
+          costMicros: result.meta.costMicros,
+          degraded: result.meta.degraded,
+        },
+      };
+    },
   };
 }
 

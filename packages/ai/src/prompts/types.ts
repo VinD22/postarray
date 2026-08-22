@@ -31,6 +31,8 @@ export const PROMPT_IDS = [
   'experiment-suggestion',
   'post-feedback',
   'growth-plan',
+  'assistant-route',
+  'assistant-week-plan',
 ] as const;
 export const promptIdSchema = z.enum(PROMPT_IDS);
 export type PromptId = z.infer<typeof promptIdSchema>;

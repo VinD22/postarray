@@ -1,4 +1,12 @@
 import type {
+  AssistantActionOutput,
+  AssistantTurnRequest,
+  AssistantTurnResponse,
+  CheckPlatformFitOutput,
+  PlanWeekOutput,
+  ReportFailuresOutput,
+  ReportWeekOutput,
+  SuggestCaptionOutput,
   ApprovalLevel,
   BulkImportApplyMode,
   BulkImportCounts,
@@ -602,8 +610,77 @@ export interface OAuthProviderResolver {
   resolve(provider: ProviderId): OAuthProviderBinding | null;
 }
 
+/**
+ * The AI gateway port.
+ *
+ * Restated structurally rather than imported, exactly like `BillingGateway`
+ * and `SchedulerPort`: the application package depends on contracts, authz,
+ * database and connectors, and nothing else. `@relay/ai`'s real gateway
+ * satisfies this shape, and a test double is two functions rather than a
+ * provider, a circuit breaker and a budget guard.
+ *
+ * There is no image method and no video method on this port, in either
+ * package. V1 generates neither.
+ */
+export interface UntrustedSourceInput {
+  readonly id: string;
+  readonly origin:
+    | 'imported_site'
+    | 'rss_item'
+    | 'social_text'
+    | 'webhook_body'
+    | 'uploaded_file'
+    | 'provider_response'
+    | 'catalog_record'
+    | 'user_note';
+  readonly label: string;
+  readonly text: string;
+  readonly retrievedAt: string;
+}
+
+export interface AiCallRequest {
+  readonly context: {
+    readonly workspaceId: string;
+    readonly projectId: string | null;
+    readonly locale: string;
+    readonly contentLanguage: string | null;
+    readonly correlationId: string;
+  };
+  readonly promptId: string;
+  readonly variables: Readonly<
+    Record<string, string | number | boolean | null | readonly string[]>
+  >;
+  readonly untrustedSources?: readonly UntrustedSourceInput[];
+}
+
+/** What one model call cost and which exact prompt version produced it. */
+export interface AiCallMeta {
+  readonly provider: string;
+  readonly model: string;
+  readonly promptId: string;
+  readonly promptVersion: string;
+  readonly inputTokens: number;
+  readonly outputTokens: number;
+  readonly costMicros: number;
+  readonly degraded: boolean;
+}
+
+export interface AiStructuredOutcome<TOut> {
+  readonly output: TOut;
+  readonly meta: AiCallMeta;
+}
+
 export interface AiGateway {
   isAvailable(): boolean;
+  /**
+   * The only path from a model to structured data. The schema is applied to
+   * the parsed output before the caller sees it, so free text can never become
+   * a write.
+   */
+  completeStructured<TOut>(
+    schema: { parse(value: unknown): TOut },
+    request: AiCallRequest,
+  ): Promise<AiStructuredOutcome<TOut>>;
 }
 
 export interface EntitlementCheck {
@@ -2479,6 +2556,45 @@ export interface WorkerBulkImportService {
   ): Promise<BulkImportWorkflowOutput>;
 }
 
+/**
+ * The conversational assistant.
+ *
+ * Read capabilities return view models labelled `suggestion`. Mutating
+ * capabilities never write on the first call: they create a durable agent
+ * confirmation and return `awaiting_confirmation`, and only a second call
+ * carrying that confirmation id reaches an existing application service.
+ *
+ * There is no image capability and no video capability on this interface.
+ */
+export interface AssistantService {
+  plan(ctx: ActorContext, input: unknown): Promise<PlanWeekOutput>;
+  suggestCaption(ctx: ActorContext, input: unknown): Promise<SuggestCaptionOutput>;
+  checkPlatformFit(ctx: ActorContext, input: unknown): Promise<CheckPlatformFitOutput>;
+  reportWeek(ctx: ActorContext, input: unknown): Promise<ReportWeekOutput>;
+  reportFailures(ctx: ActorContext, input: unknown): Promise<ReportFailuresOutput>;
+  turn(ctx: ActorContext, request: AssistantTurnRequest): Promise<AssistantTurnResponse>;
+  draftPost(
+    ctx: ActorContext,
+    input: unknown,
+    confirmationId?: string,
+  ): Promise<AssistantActionOutput>;
+  adaptDraftText(
+    ctx: ActorContext,
+    input: unknown,
+    confirmationId?: string,
+  ): Promise<AssistantActionOutput>;
+  schedulePost(
+    ctx: ActorContext,
+    input: unknown,
+    confirmationId?: string,
+  ): Promise<AssistantActionOutput>;
+  requestApproval(
+    ctx: ActorContext,
+    input: unknown,
+    confirmationId?: string,
+  ): Promise<AssistantActionOutput>;
+}
+
 export interface Services {
   readonly workspaces: WorkspaceService;
   readonly members: MembershipService;
@@ -2502,6 +2618,7 @@ export interface Services {
   readonly automationRules: AutomationRuleService;
   readonly rss: RssService;
   readonly growth: GrowthService;
+  readonly assistant: AssistantService;
   readonly webhooks: WebhookService;
   readonly credentials: CredentialVaultService;
   readonly apiKeys: ApiKeyService;

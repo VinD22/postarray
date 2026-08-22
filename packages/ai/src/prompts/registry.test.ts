@@ -20,9 +20,10 @@ describe('prompt registry', () => {
     expect(new Set(listPrompts().map((prompt) => prompt.id)).size).toBe(PROMPT_IDS.length);
   });
 
-  // Sixteen since the weekly digest was added; the registry is append-only, so
-  // this count grows with a documented entry and never shrinks.
-  it('ships the sixteen V1 capabilities', () => {
+  // The registry is append-only, so this count grows with a documented entry
+  // and never shrinks. Nineteen since the assistant's routing and week-plan
+  // prompts were added.
+  it('ships the documented V1 capabilities', () => {
     expect(PROMPT_IDS).toContain('draft-from-brief');
     expect(PROMPT_IDS).toContain('transcreate');
     expect(PROMPT_IDS).toContain('alt-text');
@@ -32,7 +33,10 @@ describe('prompt registry', () => {
     expect(PROMPT_IDS).toContain('weekly-digest');
     // Per-post feedback: one post against the account's own baseline.
     expect(PROMPT_IDS).toContain('post-feedback');
-    expect(PROMPT_IDS).toHaveLength(17);
+    // The conversational assistant: one routing prompt, one planning prompt.
+    expect(PROMPT_IDS).toContain('assistant-route');
+    expect(PROMPT_IDS).toContain('assistant-week-plan');
+    expect(PROMPT_IDS).toHaveLength(19);
   });
 
   it('versions every prompt as YYYY-MM-DD.N', () => {

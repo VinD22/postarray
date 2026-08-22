@@ -203,6 +203,20 @@ export function createRefusingServices(): Services {
       delete: refuse('feed'),
       getHealth: refuse('feed'),
     },
+    // The assistant proposes and reports. Every double here refuses rather
+    // than pretending, so a route test cannot pass on an invented answer.
+    assistant: {
+      turn: refuse('assistant'),
+      plan: refuse('assistant'),
+      suggestCaption: refuse('assistant'),
+      checkPlatformFit: refuse('assistant'),
+      reportWeek: refuse('assistant'),
+      reportFailures: refuse('assistant'),
+      draftPost: refuse('assistant'),
+      adaptDraftText: refuse('assistant'),
+      schedulePost: refuse('assistant'),
+      requestApproval: refuse('assistant'),
+    },
     growth: {
       getBusinessProfile: () => Promise.resolve(null),
       upsertBusinessProfile: refuse('profile'),

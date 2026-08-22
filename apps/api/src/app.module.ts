@@ -34,6 +34,7 @@ import { ConnectionsModule } from './modules/connections/connections.module';
 import { ContentModule } from './modules/content/content.module';
 import { DataModule } from './modules/data/data.module';
 import { DeveloperAppsModule } from './modules/developer-apps/developer-apps.module';
+import { AssistantModule } from './modules/assistant/assistant.module';
 import { GrowthModule } from './modules/growth/growth.module';
 import { HealthModule } from './modules/health/health.module';
 import { MediaModule } from './modules/media/media.module';
@@ -106,6 +107,7 @@ export class AppModule implements NestModule {
         AutomationRulesModule,
         RssModule,
         GrowthModule,
+        AssistantModule,
         WebhooksModule,
         BillingModule,
         ApiKeysModule,

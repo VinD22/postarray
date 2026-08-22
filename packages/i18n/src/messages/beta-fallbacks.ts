@@ -86,6 +86,20 @@ export const LOCALE_FILLED_PREFIXES = [
 
 export const BETA_ENGLISH_FALLBACK_PREFIXES = [
   'billing.',
+  // What the assistant did, and what it deliberately did not do. Every one of
+  // these sentences draws the line between a proposal and a write, and a
+  // machine translation that blurred "once you confirm it" into something
+  // vaguer would leave somebody believing a post was scheduled when it was
+  // not. Beta locales keep the reviewed English source until a person
+  // translates it.
+  'assistant.',
+  // The assistant screen in the web app. Every sentence either labels a
+  // suggestion as a suggestion or states exactly what a confirmation will
+  // write, to which accounts, at what time. A machine translation that
+  // softened "nothing has been written yet" would leave somebody believing a
+  // post was scheduled when it was not. Beta locales keep the reviewed
+  // English source until a person translates it.
+  'assistantWeb.',
   // What the composer says when a save, an approval request, a schedule or a
   // publish did not go through. Each sentence states exactly what did not
   // happen, and a machine translation that blurred "was not published" into

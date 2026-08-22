@@ -25,6 +25,7 @@ import {
   postFeedbackPrompt,
   weeklyDigestPrompt,
 } from './analysis';
+import { assistantRoutePrompt, assistantWeekPlanPrompt } from './assistant';
 
 /**
  * The prompt registry.
@@ -53,6 +54,8 @@ export const PROMPT_REGISTRY: Readonly<Record<PromptId, PromptModule>> = Object.
   'experiment-suggestion': experimentSuggestionPrompt,
   'post-feedback': postFeedbackPrompt,
   'growth-plan': growthPlanPrompt,
+  'assistant-route': assistantRoutePrompt,
+  'assistant-week-plan': assistantWeekPlanPrompt,
 });
 
 export function listPrompts(): readonly PromptModule[] {
