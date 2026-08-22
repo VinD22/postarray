@@ -14,6 +14,7 @@
 
 import type {
   CapabilitySnapshot,
+  ContentKind,
   ContentVersion,
   CreationSurface,
   ApprovalLevel,
@@ -22,6 +23,7 @@ import type {
   IanaTimeZone,
   IsoInstant,
   MediaDerivativeOperation,
+  NormalizedMetricName,
   OperationRef,
   OpportunityRecord,
   Paginated,
@@ -44,10 +46,13 @@ import type {
   AuditEventView as ApplicationAuditEventView,
   AutomationRuleView as ApplicationAutomationRuleView,
   ProjectView as ApplicationProjectView,
+  OnboardingStateView as ApplicationOnboardingStateView,
+  OnboardingUseCase as ApplicationOnboardingUseCase,
   BusinessProfileView as ApplicationBusinessProfileView,
   CalendarEntry as ApplicationCalendarEntry,
   CanonicalPreview as ApplicationCanonicalPreview,
   CheckoutSessionView as ApplicationCheckoutSessionView,
+  AnalyticsOverviewView as ApplicationAnalyticsOverviewView,
   ComparisonReport as ApplicationComparisonReport,
   ConnectionView as ApplicationConnectionView,
   ContentItemView as ApplicationContentItemView,
@@ -68,6 +73,7 @@ import type {
   MembershipView as ApplicationMembershipView,
   MentionEntityView as ApplicationMentionEntityView,
   MetricObservationView as ApplicationMetricObservationView,
+  MetricSeriesView as ApplicationMetricSeriesView,
   OAuthAppView as ApplicationOAuthAppView,
   OAuthGrantView as ApplicationOAuthGrantView,
   PortalLinkView as ApplicationPortalLinkView,
@@ -197,6 +203,8 @@ export type WorkspaceView = ApplicationWorkspaceView;
 export type MembershipView = ApplicationMembershipView;
 export type InvitationView = ApplicationInvitationView;
 export type ProjectView = ApplicationProjectView;
+export type OnboardingStateView = ApplicationOnboardingStateView;
+export type OnboardingUseCase = ApplicationOnboardingUseCase;
 export type ConnectionView = ApplicationConnectionView;
 export type ProviderDestination = ApplicationProviderDestinationView;
 export type MentionEntity = ApplicationMentionEntityView;
@@ -211,6 +219,7 @@ export type MediaEditOperation = ApplicationMediaEditOperation;
 export type MediaDerivativeView = ApplicationMediaDerivativeView;
 export type MediaDerivativeRequest = ApplicationMediaDerivativeRequest;
 export type ComparisonReport = ApplicationComparisonReport;
+export type AnalyticsOverviewView = ApplicationAnalyticsOverviewView;
 export type ExperimentView = ApplicationExperimentView;
 export type ShortLinkView = ApplicationShortLinkView;
 export type ShortLinkStats = ApplicationShortLinkStats;
@@ -234,6 +243,7 @@ export type PublishJobView = ApplicationPublishJobView;
 export type PublicationReceiptView = ApplicationPublicationReceiptView;
 export type ReceiptSummaryView = ApplicationReceiptSummaryView;
 export type MetricObservationView = ApplicationMetricObservationView;
+export type MetricSeriesView = ApplicationMetricSeriesView;
 export type EntitlementStateView = ApplicationEntitlementStateView;
 export type UsageSummaryView = ApplicationUsageSummaryView;
 export type CheckoutSessionView = ApplicationCheckoutSessionView;
@@ -509,6 +519,24 @@ export interface MediaService {
 }
 
 export interface AnalyticsService {
+  getOverview(
+    ctx: ActorContext,
+    input: {
+      connectionIds: readonly string[];
+      projectId?: string | undefined;
+      range: { from: string; to: string };
+      metric: NormalizedMetricName;
+      contentKind?: ContentKind | undefined;
+    },
+  ): Promise<AnalyticsOverviewView>;
+  getMetricSeries(
+    ctx: ActorContext,
+    input: {
+      connectionId: string;
+      metric: NormalizedMetricName;
+      range: { from: string; to: string };
+    },
+  ): Promise<MetricSeriesView>;
   getPostMetrics(
     ctx: ActorContext,
     input: { receiptId: string },

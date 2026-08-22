@@ -86,6 +86,13 @@ export const LOCALE_FILLED_PREFIXES = [
 
 export const BETA_ENGLISH_FALLBACK_PREFIXES = [
   'billing.',
+  // What the composer says when a save, an approval request, a schedule or a
+  // publish did not go through. Each sentence states exactly what did not
+  // happen, and a machine translation that blurred "was not published" into
+  // something vaguer would leave somebody believing a post went out when it
+  // did not. Beta locales keep the reviewed English source until a person
+  // translates it.
+  'composerWeb.commitFailed.',
   // Transactional security and invitation mail stays in reviewed English
   // until each beta locale has a human-reviewed delivery template.
   'email.',
@@ -93,6 +100,12 @@ export const BETA_ENGLISH_FALLBACK_PREFIXES = [
   // the code-entry and provider-availability wording is human reviewed.
   'auth.emailOnly.',
   'auth.otp.',
+  // Choosing a new password from a reset link. The screen states exactly what
+  // a link can and cannot still do, and a machine translation that softened
+  // "expired or already used" into something vaguer would leave somebody
+  // retrying a dead link. Beta locales keep the reviewed English source until
+  // a person translates it.
+  'auth.newPassword.',
   'developer.confirmation.',
   'error.agent_confirmation_',
   'settings.data.',
@@ -245,6 +258,10 @@ export const BETA_ENGLISH_FALLBACK_PREFIXES = [
 
 /** B5-controlled keys whose namespace also contains ordinary interface copy. */
 export const BETA_ENGLISH_FALLBACK_KEYS = [
+  // Added when `lastVerifiedAt` became nullable so an unverified metric
+  // definition stops rendering a fabricated 1970 verification date. Reviewed
+  // English until a reviewer covers it in each locale.
+  'analytics.definition.notVerified',
   // Google Business Profile joined the public connector matrix after the
   // catalogs were last translated, and `noVideo` came with it. Reviewed English
   // until a reviewer covers them in each locale.

@@ -117,6 +117,7 @@ export const webAnalyticsMessages = {
   'analytics.definition.observedAt': 'Observed {dateTime}.',
   'analytics.definition.sourceLink': 'Provider documentation',
   'analytics.definition.verifiedOn': 'Checked against provider documentation on {date}.',
+  'analytics.definition.notVerified': 'Not yet checked against provider documentation.',
   'analytics.definition.panelTitle': 'Metric definitions in this view',
   'analytics.definition.panelIntro':
     'Every number on this screen comes from one named provider field. The definitions below are also repeated next to each value, so nothing important lives only in a tooltip.',

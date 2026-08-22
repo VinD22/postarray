@@ -2,11 +2,19 @@ import type { MetricUnit, NormalizedMetricName, Paginated } from '@relay/contrac
 
 import type { ActorContext, AnalyticsService, PageQuery, ServiceDeps } from '../types';
 import type {
+  AnalyticsOverviewView,
   ComparisonReport,
   ComparisonRow,
   ExperimentView,
   MetricObservationView,
+  MetricSeriesView,
 } from '../views';
+import {
+  readOverview,
+  readSeries,
+  type OverviewInput,
+  type SeriesInput,
+} from './analytics-overview';
 
 import { recordAudit } from '../internal/audit';
 import { notFound } from '../internal/errors';
@@ -111,6 +119,29 @@ async function observationsFor(db: Db, where: Record<string, unknown>): Promise<
 
 export function createAnalyticsService(deps: ServiceDeps): AnalyticsService {
   return {
+    /**
+     * Everything the overview screen renders, in one read.
+     *
+     * Assembled here rather than by the browser so the client does not fan out
+     * one request per connection, and so the baseline is computed once, from
+     * the same history, by `@relay/analytics-domain`.
+     */
+    async getOverview(ctx: ActorContext, input: OverviewInput): Promise<AnalyticsOverviewView> {
+      return authorized(deps, ctx, 'analytics.read', undefined, async (db) =>
+        readOverview(db, deps.clock.now(), input),
+      );
+    },
+
+    async getMetricSeries(ctx: ActorContext, input: SeriesInput): Promise<MetricSeriesView> {
+      return authorized(
+        deps,
+        ctx,
+        'analytics.read',
+        { connectionId: input.connectionId },
+        async (db) => readSeries(db, deps.clock.now(), input),
+      );
+    },
+
     async getPostMetrics(
       ctx: ActorContext,
       input: { receiptId: string },

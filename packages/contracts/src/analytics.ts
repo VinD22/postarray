@@ -72,7 +72,10 @@ export const metricDefinitionSchema = z
     availability: metricAvailabilitySchema,
     aggregation: metricAggregationSchema,
     historyWindowDays: z.number().int().positive().nullable(),
-    lastVerifiedAt: isoInstantSchema,
+    // Null when nobody has checked this definition against the provider's
+    // documentation. It must stay nullable: substituting an epoch here renders
+    // as a real date and claims a verification that never happened.
+    lastVerifiedAt: isoInstantSchema.nullable(),
   })
   .strict();
 export type MetricDefinition = z.infer<typeof metricDefinitionSchema>;

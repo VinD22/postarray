@@ -53,6 +53,24 @@ export type MetricSeriesQuery = MetricWindow & {
   readonly metric: string;
 };
 
+/** The wire shape of `POST /v1/analytics/comparisons`. */
+export interface ComparisonReport {
+  readonly subjectLabel: string;
+  readonly baselineLabel: string;
+  readonly sampleSize: number;
+  readonly rows: readonly {
+    readonly normalizedName: string;
+    readonly unit: string;
+    readonly subject: number | null;
+    readonly baseline: number | null;
+    readonly deltaPercent: number | null;
+    readonly availability: string;
+    readonly comparable: boolean;
+    readonly caveatKeys: readonly string[];
+  }[];
+  readonly caveatKeys: readonly string[];
+}
+
 export const analyticsApi = {
   /**
    * Everything the overview screen renders: the ranked rows, the per account
@@ -94,20 +112,35 @@ export const analyticsApi = {
     call(`/analytics/accounts/${connectionId}`, { query }, () => []),
 
   /**
-   * Compare a post against the user's own recent baseline. There is no
-   * cross-platform leaderboard here: the caller names one normalized metric.
+   * Compare a set of published posts, or a period, against the account's own
+   * baseline. There is no cross-platform leaderboard here.
+   *
+   * A POST because the request names a list of receipts, which does not belong
+   * in a query string, and `sideEffectFree` because it is a read: it creates
+   * nothing, so it needs no idempotency key. The endpoint is
+   * `POST /v1/analytics/comparisons`; there has never been a
+   * `GET /v1/analytics/compare` to call.
    */
-  compare: (query: {
-    contentItemId: string;
-    metricName: string;
-    baselineSize: number;
-  }): Promise<{
-    value: number | null;
-    baselineMedian: number | null;
-    deltaPercent: number | null;
-    sampleSize: number;
-    comparabilityNoteKey: string | null;
-  } | null> => call('/analytics/compare', { query }, () => null),
+  compare: (input: {
+    baseline: 'trailing_median' | 'previous_period';
+    receiptIds?: readonly string[];
+    period?: MetricWindow & { readonly ianaTimeZone: string };
+    connectionId?: string;
+  }): Promise<ComparisonReport | null> =>
+    call(
+      '/analytics/comparisons',
+      {
+        method: 'POST',
+        sideEffectFree: true,
+        body: {
+          baseline: input.baseline,
+          ...(input.receiptIds === undefined ? {} : { receiptIds: [...input.receiptIds] }),
+          ...(input.period === undefined ? {} : { period: input.period }),
+          ...(input.connectionId === undefined ? {} : { connectionId: input.connectionId }),
+        },
+      },
+      () => null,
+    ),
 
   listExperiments: (
     query: { cursor?: string; limit?: number } = {},

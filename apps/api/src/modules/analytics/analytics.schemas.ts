@@ -1,5 +1,7 @@
 import { z } from 'zod';
 
+import { contentKindSchema, isoInstantSchema, normalizedMetricNameSchema } from '@relay/contracts';
+
 import { cursorQuerySchema, timeRangeSchema, timeRangeShape } from '../../common/pagination';
 import { connectionIdSchema, receiptIdSchema, shortTextSchema } from '../../common/schemas';
 
@@ -15,6 +17,53 @@ import { connectionIdSchema, receiptIdSchema, shortTextSchema } from '../../comm
  * views and "the provider did not tell us" are different facts, and merging
  * them is how a dashboard talks a customer out of a channel that was working.
  */
+
+/**
+ * The overview read.
+ *
+ * `connectionIds` arrives as one comma separated parameter rather than a
+ * repeated key: repeated query keys are the least portable thing in HTTP and
+ * this endpoint is called from five surfaces. An empty list means every
+ * connected account in scope, which is what the screen asks for on first load.
+ */
+export const overviewQuerySchema = z
+  .object({
+    projectId: z.string().trim().min(1).max(128).optional(),
+    connectionIds: z
+      .string()
+      .trim()
+      .optional()
+      .transform((value) =>
+        value === undefined || value.length === 0
+          ? []
+          : value
+              .split(',')
+              .map((entry) => entry.trim())
+              .filter((entry) => entry.length > 0),
+      ),
+    from: isoInstantSchema,
+    to: isoInstantSchema,
+    metric: normalizedMetricNameSchema,
+    contentKind: contentKindSchema.optional(),
+  })
+  .strict();
+
+export const metricSeriesQuerySchema = z
+  .object({
+    metric: normalizedMetricNameSchema,
+    from: isoInstantSchema,
+    to: isoInstantSchema,
+  })
+  .strict();
+
+/** The path-parameter form of the account read. `?connectionId=` also works. */
+export const accountRangeQuerySchema = z
+  .object({
+    from: isoInstantSchema,
+    to: isoInstantSchema,
+    ianaTimeZone: timeRangeShape.ianaTimeZone.optional(),
+  })
+  .strict();
 
 export const accountMetricsQuerySchema = z
   .object({ connectionId: connectionIdSchema, ...timeRangeShape })
@@ -46,6 +95,9 @@ export const createExperimentSchema = z
   })
   .strict();
 
+export type OverviewQuery = z.infer<typeof overviewQuerySchema>;
+export type MetricSeriesQuery = z.infer<typeof metricSeriesQuerySchema>;
+export type AccountRangeQuery = z.infer<typeof accountRangeQuerySchema>;
 export type AccountMetricsQuery = z.infer<typeof accountMetricsQuerySchema>;
 export type CompareRequestInput = z.infer<typeof compareRequestSchema>;
 export type CreateExperimentInput = z.infer<typeof createExperimentSchema>;

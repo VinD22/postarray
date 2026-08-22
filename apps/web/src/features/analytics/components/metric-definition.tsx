@@ -98,9 +98,11 @@ export function MetricDefinitionBody({ definition }: MetricDefinitionBodyProps):
       />
 
       <p className="text-body-sm text-text-tertiary">
-        {t('analytics.definition.verifiedOn', {
-          date: format.date(definition.lastVerifiedAt),
-        })}
+        {definition.lastVerifiedAt === null
+          ? t('analytics.definition.notVerified')
+          : t('analytics.definition.verifiedOn', {
+              date: format.date(definition.lastVerifiedAt),
+            })}
       </p>
 
       {definition.definitionSourceUrl ? (

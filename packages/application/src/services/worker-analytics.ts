@@ -95,7 +95,9 @@ async function definitionIdFor(
       availability: STORED_AVAILABILITY[observation.availability],
       appliesToPost: scope === 'post',
       appliesToAccount: scope === 'account',
-      ...(mapping === null ? {} : { lastVerifiedAt: new Date(mapping.definition.lastVerifiedAt) }),
+      ...(mapping === null || mapping.definition.lastVerifiedAt === null
+        ? {}
+        : { lastVerifiedAt: new Date(mapping.definition.lastVerifiedAt) }),
     },
     update: {},
     select: { id: true },
