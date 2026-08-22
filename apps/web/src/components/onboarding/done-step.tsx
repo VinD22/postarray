@@ -2,21 +2,32 @@
 
 import { Link } from '@/components/link';
 import { useSearchParams } from 'next/navigation';
+import { useEffect } from 'react';
 
 import { Timeline, type TimelineEvent } from '@relay/design-system/patterns';
 import { Button, Separator } from '@relay/design-system/primitives';
 
 import { CelebrationBurst, KineticHeadline, MagneticButton } from '@/components/motion';
+import { api } from '@/lib/api';
 import { useSession } from '@/lib/auth/session-context';
 import { useFormatters, useTranslations } from '@/lib/i18n';
 
 /**
  * Step 7: the receipt, and one next action.
  *
- * The timeline shown here is the same one the publication receipt uses. Two
- * steps have happened, the rest are pending, and they are labelled pending
- * rather than hidden, because the point of the receipt is that a person can see
- * what is still to come.
+ * The timeline shown here is the same one the publication receipt uses: the
+ * step that has actually happened, then the ones that are still to come,
+ * labelled pending rather than hidden, because the point of a receipt is that a
+ * person can see what is still ahead of them.
+ *
+ * The scheduled instant is the one the compose step really sent to the API,
+ * carried here in the query string. It is not recomputed and it is certainly
+ * not `new Date()`: this screen used to stamp both "created" and "scheduled"
+ * with the current time, so a post scheduled for Tuesday read as scheduled for
+ * now. A receipt that invents its own timestamps is worse than no receipt, so
+ * when the instant is absent the timeline is not rendered at all rather than
+ * filled in with something plausible. There is no "created" row for the same
+ * reason: nothing on this screen knows when the draft was created.
  *
  * The one deliberately celebratory moment in the signed-in product (WP-4):
  * the heading rises in via `KineticHeadline` and a one-time burst plays
@@ -38,42 +49,48 @@ export function DoneStep() {
   const searchParams = useSearchParams();
   const contentItemId = searchParams.get('post');
 
-  const now = new Date().toISOString();
+  const scheduledAt = readInstant(searchParams.get('scheduledAt'));
 
-  const events: TimelineEvent[] = [
-    {
-      id: 'created',
-      title: t('receipt.timeline.created', { actor: t('receipt.surface.web') }),
-      timestamp: format.dateTime(now),
-      isoTimestamp: now,
-      outcome: 'completed',
-    },
-    {
-      id: 'scheduled',
-      title: t('receipt.timeline.scheduled', {
-        local: format.dateTime(now),
-        timeZone: workspace.timeZone,
-      }),
-      timestamp: format.dateTime(now),
-      isoTimestamp: now,
-      outcome: 'completed',
-    },
-    {
-      id: 'revalidated',
-      title: t('receipt.timeline.revalidated'),
-      outcome: 'pending',
-    },
-    {
-      id: 'dispatched',
-      title: t('receipt.timeline.dispatched', { provider: t('common.unknown') }),
-      outcome: 'pending',
-    },
-    {
-      id: 'analytics',
-      title: t('receipt.timeline.analyticsSynced'),
-      outcome: 'pending',
-    },
-  ];
+  // Reaching the receipt is what finishes the first run, so it is recorded
+  // here rather than inferred. Recording is idempotent on the server, and a
+  // failure never blocks the screen: completion is also derived from the real
+  // project and connection this person now has.
+  useEffect(() => {
+    void api.onboarding.complete({ step: 'done' }).catch(() => {
+      // Nothing to tell the person. Their post is scheduled either way.
+    });
+  }, []);
+
+  const events: TimelineEvent[] =
+    scheduledAt === null
+      ? []
+      : [
+          {
+            id: 'scheduled',
+            title: t('receipt.timeline.scheduled', {
+              local: format.dateTime(scheduledAt),
+              timeZone: workspace.timeZone,
+            }),
+            timestamp: format.dateTime(scheduledAt),
+            isoTimestamp: scheduledAt,
+            outcome: 'completed',
+          },
+          {
+            id: 'revalidated',
+            title: t('receipt.timeline.revalidated'),
+            outcome: 'pending',
+          },
+          {
+            id: 'dispatched',
+            title: t('receipt.timeline.dispatched', { provider: t('common.unknown') }),
+            outcome: 'pending',
+          },
+          {
+            id: 'analytics',
+            title: t('receipt.timeline.analyticsSynced'),
+            outcome: 'pending',
+          },
+        ];
 
   return (
     <div className="flex flex-col gap-8">
@@ -93,7 +110,9 @@ export function DoneStep() {
         </p>
       </div>
 
-      <Timeline label={t('receipt.timeline.title')} events={events} />
+      {events.length === 0 ? null : (
+        <Timeline label={t('receipt.timeline.title')} events={events} />
+      )}
 
       <Separator />
 
@@ -104,7 +123,7 @@ export function DoneStep() {
             { href: '/connections', labelKey: 'onboarding.done.nextStep.connectMore' },
             { href: '/settings/members', labelKey: 'onboarding.done.nextStep.inviteTeam' },
             { href: '/settings/projects', labelKey: 'onboarding.done.nextStep.setApproval' },
-            { href: '/settings/agents', labelKey: 'onboarding.done.nextStep.exploreApi' },
+            { href: '/settings/developer-apps', labelKey: 'onboarding.done.nextStep.exploreApi' },
           ].map((entry) => (
             <li key={entry.href} className="border-border-subtle border-b">
               <Link
@@ -130,4 +149,19 @@ export function DoneStep() {
       </div>
     </div>
   );
+}
+
+/**
+ * The scheduled instant, or nothing.
+ *
+ * A query parameter is caller-supplied text. It is parsed rather than trusted,
+ * and anything that is not a real instant produces `null`, which renders as no
+ * timeline instead of as `Invalid Date`.
+ */
+function readInstant(value: string | null): string | null {
+  if (value === null || value === '') {
+    return null;
+  }
+  const parsed = Date.parse(value);
+  return Number.isNaN(parsed) ? null : new Date(parsed).toISOString();
 }

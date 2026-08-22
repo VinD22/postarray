@@ -273,6 +273,11 @@ export function ConnectStep() {
             variant="ghost"
             size="lg"
             onClick={() => {
+              // Skipping is still progress through the sequence: recorded so a
+              // refresh does not put the person back on a step they declined.
+              void api.onboarding.complete({ step: 'connect' }).catch(() => {
+                // Never blocks the route. Progress is derived from rows too.
+              });
               router.push('/onboarding/compose');
             }}
           >

@@ -46,8 +46,7 @@ import { ConnectionRow } from './connection-row';
 import { ConnectionsTabs } from './connections-tabs';
 import { GroupList, MoveGroupDialog } from './connection-groups';
 import { PermissionsSheet } from './permissions-sheet';
-import { OAuthAccountSelectionPanel } from './oauth-account-selection';
-import { OAuthCallbackNotice } from './oauth-callback-notice';
+import { OAuthReturnPanel } from './oauth-return';
 import { useProviderName } from './provider';
 import { sortByUrgency } from './health';
 import {
@@ -64,7 +63,8 @@ import {
   useReconnectConnection,
   useResumeConnection,
 } from './use-connections';
-import type { ConnectionRow as Row, PermissionView } from './types';
+import type { ConnectionRow as Row, RequestedScope } from './types';
+import { buildPermissions } from './permissions';
 
 const ANY = '__any__';
 
@@ -87,7 +87,7 @@ export interface ConnectionsScreenProps {
    * the server so the pre-OAuth explainer describes the real consent screen
    * rather than a hard-coded guess.
    */
-  permissionsByProvider?: Readonly<Record<string, readonly PermissionView[]>>;
+  permissionsByProvider?: Readonly<Record<string, readonly RequestedScope[]>>;
 }
 
 export function ConnectionsScreen({
@@ -99,8 +99,22 @@ export function ConnectionsScreen({
   const { announce } = useAnnouncer();
   const { project } = useSession();
 
-  const { query: connections, rows } = useConnectionRows(
+  const { query: connections, rows: connectionRows } = useConnectionRows(
     project === null ? {} : { projectId: project.id },
+  );
+
+  /**
+   * The permission table for each account, resolved from what the provider
+   * actually granted. Before this the rows carried no permissions at all and
+   * the inspect sheet showed an empty table.
+   */
+  const rows = useMemo<readonly Row[]>(
+    () =>
+      connectionRows.map((row) => ({
+        ...row,
+        permissions: buildPermissions(row.provider, row.grantedScopes),
+      })),
+    [connectionRows],
   );
   const groups = useCustomerGroups();
 
@@ -215,8 +229,7 @@ export function ConnectionsScreen({
             description={t('web.connection.projectScope.body')}
           />
         )}
-        <OAuthCallbackNotice />
-        <OAuthAccountSelectionPanel />
+        <OAuthReturnPanel />
       </div>
 
       <ConnectionsTabs

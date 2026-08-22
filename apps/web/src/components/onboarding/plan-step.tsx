@@ -7,6 +7,7 @@ import { Button, Label, RadioGroup, RadioGroupItem } from '@relay/design-system/
 import { cn, panelSurface } from '@relay/design-system/utils';
 
 import { ApiError, api, newIdempotencyKey } from '@/lib/api';
+import { BASE_TIER_KEY, findTier } from '@/features/billing/tiers';
 import { useFormatters, useTranslations } from '@/lib/i18n';
 
 type Interval = 'monthly' | 'annual';
@@ -14,12 +15,31 @@ type Interval = 'monthly' | 'annual';
 const TRIAL_DAYS = 7;
 const DAY_MS = 86_400_000;
 
-const AMOUNTS: Readonly<
-  Record<Interval, { readonly amountMinor: number; readonly currency: string }>
-> = {
-  monthly: { amountMinor: 2900, currency: 'USD' },
-  annual: { amountMinor: 30_000, currency: 'USD' },
-};
+/**
+ * The two figures, read from the one place that holds them.
+ *
+ * This step used to carry its own `2900` and `30000`, which disagreed with the
+ * marketing pricing (2500 and 25000) that the same person had just read. Two
+ * copies of a price is one price and one bug, and the bug is the one on the
+ * screen where somebody is about to hand over a card. `tiers.ts` is the web
+ * app's mirror of `packages/billing/src/tiers.ts`, and it is what the pricing
+ * page and the home teaser already read, so a reprice moves all three together
+ * or not at all.
+ */
+const BASE_TIER = findTier(BASE_TIER_KEY);
+
+function amountFor(interval: Interval): {
+  readonly amountMinor: number;
+  readonly currency: string;
+} {
+  if (BASE_TIER === null) {
+    throw new Error('The base tier is missing from WEB_PLAN_TIERS.');
+  }
+  return {
+    amountMinor: interval === 'monthly' ? BASE_TIER.monthlyPriceMinor : BASE_TIER.annualPriceMinor,
+    currency: BASE_TIER.currency,
+  };
+}
 
 /**
  * Step 2: the billing choice.
@@ -51,7 +71,7 @@ export function PlanStep() {
   const [error, setError] = useState<string | null>(null);
 
   const firstChargeAt = new Date(Date.now() + TRIAL_DAYS * DAY_MS);
-  const amount = AMOUNTS[interval];
+  const amount = amountFor(interval);
   const formattedAmount = format.money(amount);
   const formattedDate = format.date(firstChargeAt, 'long');
 

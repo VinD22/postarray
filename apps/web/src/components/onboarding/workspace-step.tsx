@@ -14,9 +14,8 @@ import {
   SelectValue,
 } from '@relay/design-system/primitives';
 
-import { ACTIVE_LOCALES } from '@relay/i18n';
-
-import { ApiError, api, newIdempotencyKey } from '@/lib/api';
+import { ApiError, api } from '@/lib/api';
+import { useSession } from '@/lib/auth/session-context';
 import { useFormatters, useLocalizedRouter, useTranslations } from '@/lib/i18n';
 
 /**
@@ -40,16 +39,28 @@ const COMMON_TIME_ZONES = [
 ] as const;
 
 /**
- * Step 3: name the workspace, choose the scheduling zone and the interface
- * language.
+ * Step 3: name the workspace and choose the scheduling zone.
  *
  * The zone is stored with every schedule, which is why it is asked once, here,
  * and never inferred silently from the browser at publish time.
+ *
+ * Signup already creates a personal workspace, so this step renames that one
+ * rather than creating a second. It used to call `workspaces.create`
+ * unconditionally, which left every new account holding two workspaces before
+ * it had a single connection, and put the person's projects in whichever of
+ * them the session happened to select.
+ *
+ * There is no interface language control here. There was one, permanently
+ * disabled and pinned to English, which reads as a broken dropdown rather than
+ * as a decision. V1 ships English only; the language is a Settings choice on
+ * the day a second catalog is reviewed, and until then the honest interface is
+ * no control at all.
  */
 export function WorkspaceStep() {
   const t = useTranslations();
   const format = useFormatters();
   const router = useLocalizedRouter();
+  const { workspace } = useSession();
 
   const detected = useMemo(() => {
     try {
@@ -64,7 +75,7 @@ export function WorkspaceStep() {
     return [...set];
   }, [detected]);
 
-  const [name, setName] = useState('');
+  const [name, setName] = useState(workspace.name);
   const [timeZone, setTimeZone] = useState(detected);
   const [pending, setPending] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -74,7 +85,15 @@ export function WorkspaceStep() {
     setPending(true);
     setError(null);
     try {
-      await api.workspaces.create({ name, timeZone, locale: 'en' }, newIdempotencyKey('workspace'));
+      // The session always carries a workspace: signup creates one. Renaming it
+      // is what this step is for. Creating a second one here is how an account
+      // ends up with "Personal" and "Acme" side by side on day one.
+      await api.workspaces.update(workspace.id, { name, ianaTimeZone: timeZone });
+      try {
+        await api.onboarding.complete({ step: 'workspace' });
+      } catch {
+        // Progress is derived from real rows too, so the next read still knows.
+      }
       router.push('/onboarding/use-case');
     } catch (caught) {
       setPending(false);
@@ -137,27 +156,6 @@ export function WorkspaceStep() {
       <p className="text-body-sm text-text-tertiary">
         {t('onboarding.workspace.timeZoneDetected', { timeZone: detected })}
       </p>
-
-      <Field
-        label={t('onboarding.workspace.locale')}
-        description={t('onboarding.workspace.localeNote')}
-      >
-        {(control) => (
-          <Select value="en" disabled name="locale">
-            <SelectTrigger id={control.id} aria-describedby={control['aria-describedby']}>
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              {/* Endonyms, so a language always names itself in its own script. */}
-              {ACTIVE_LOCALES.map((locale) => (
-                <SelectItem key={locale.bcp47} value={locale.bcp47}>
-                  {locale.endonym}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        )}
-      </Field>
 
       <div>
         <Button

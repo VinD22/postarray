@@ -5,6 +5,8 @@ export { ConnectionsRouteError, ConnectionsRouteFallback } from './connections-f
 export { ConnectionRow, type ConnectionRowProps } from './connection-row';
 export { ConnectDialog, CONNECTABLE_PROVIDERS } from './connect-dialog';
 export { PermissionsSheet } from './permissions-sheet';
+export { REQUESTED_SCOPES, buildPermissions } from './permissions';
+export { OAuthReturnPanel } from './oauth-return';
 export { CapabilityMatrixView } from './capability-matrix-view';
 export { GroupList, MoveGroupDialog } from './connection-groups';
 export { AccountIdentity, ProviderMark, useAccountTypeName, useProviderName } from './provider';
@@ -46,5 +48,7 @@ export {
   type ConnectionLimitation,
   type ConnectionRow as ConnectionRowModel,
   type CustomerGroup,
+  type PermissionState,
   type PermissionView,
+  type RequestedScope,
 } from './types';

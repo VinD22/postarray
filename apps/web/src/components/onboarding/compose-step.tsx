@@ -13,6 +13,8 @@ import { useConnections } from '@/lib/api/hooks';
 import { useSession } from '@/lib/auth/session-context';
 import { useFormatters, useLocalizedRouter, useTranslations } from '@/lib/i18n';
 import { providerDotKey } from '@/components/shell/action-center-catalog';
+import { OAuthReturnPanel } from '@/features/connections/oauth-return';
+import { zonedToInstant } from '@/features/composer/state/time';
 
 const VALIDATION_DEBOUNCE_MS = 300;
 
@@ -116,7 +118,18 @@ export function ComposeStep() {
 
       await api.content.setTargets(draft.id, { targets: [{ connectionId: connection.id }] });
 
-      const scheduledAt = new Date(scheduledLocal).toISOString();
+      // `datetime-local` yields a wall clock reading with no zone attached.
+      // `new Date(...)` would resolve it in whatever zone the browser happens to
+      // be in and then we would label the result with the workspace zone, which
+      // is how a first post lands hours away from the time somebody chose. The
+      // composer already solves this; the same conversion is used here rather
+      // than a second copy of the date maths.
+      const [localDate, localTime] = scheduledLocal.split('T');
+      if (localDate === undefined || localTime === undefined) {
+        setPending(false);
+        return;
+      }
+      const scheduledAt = zonedToInstant(localDate, localTime.slice(0, 5), workspace.timeZone);
       await api.scheduling.schedule(
         { contentItemId: draft.id, scheduledAt, timeZone: workspace.timeZone },
         newIdempotencyKey('schedule'),
@@ -129,7 +142,21 @@ export function ComposeStep() {
         }),
         'polite',
       );
-      router.push(`/onboarding/done?post=${draft.id}`);
+
+      // Recorded so a refresh resumes at the receipt rather than sending the
+      // person back through a post they already scheduled. A failure here must
+      // not lose the post they just made, so it never blocks the route.
+      try {
+        await api.onboarding.complete({ step: 'compose' });
+      } catch {
+        // Progress is derived from real rows too, so the next read still knows.
+      }
+
+      // The receipt renders the instant that was actually scheduled, passed
+      // here rather than re-derived, so nothing on that screen is invented.
+      router.push(
+        `/onboarding/done?post=${draft.id}&scheduledAt=${encodeURIComponent(scheduledAt)}`,
+      );
     } catch (caught) {
       setPending(false);
       const message = ApiError.is(caught)
@@ -150,15 +177,22 @@ export function ComposeStep() {
 
   if (!connection) {
     return (
-      <EmptyState
-        title={t('empty.connections.title')}
-        description={t('empty.connections.body')}
-        action={
-          <Button variant="primary" asChild>
-            <Link href="/onboarding/connect">{t('empty.connections.action')}</Link>
-          </Button>
-        }
-      />
+      <div className="flex flex-col gap-6">
+        {/* The connect step sends the browser here after a provider consent
+            screen, so this is a `returnUrl` landing page and has to finish the
+            handshake. Without it the person completes a real consent screen and
+            reads "no connections" on the way back. */}
+        <OAuthReturnPanel />
+        <EmptyState
+          title={t('empty.connections.title')}
+          description={t('empty.connections.body')}
+          action={
+            <Button variant="primary" asChild>
+              <Link href="/onboarding/connect">{t('empty.connections.action')}</Link>
+            </Button>
+          }
+        />
+      </div>
     );
   }
 
@@ -172,6 +206,12 @@ export function ComposeStep() {
           {t('onboarding.compose.help')}
         </p>
       </div>
+
+      {/* This page is a `returnUrl`, so it renders the return handling whether
+          or not an account has already arrived: a person who connects a second
+          account, or who lands here with a selection still to make, gets the
+          same panels the connections screen gives them. */}
+      <OAuthReturnPanel />
 
       {error === null ? null : <Notice tone="destructive" liveness="alert" title={error} />}
 
