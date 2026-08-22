@@ -67,7 +67,8 @@ export const errorMessages = {
     'Dự án này vẫn còn {connected, plural, other {# kênh đã kết nối}}.',
   'error.project_has_connections.action':
     'Ngắt kết nối mọi kênh trong dự án này trước khi lưu trữ nó.',
-  'error.project_last_active.message': 'Một không gian làm việc phải giữ ít nhất một dự án hoạt động.',
+  'error.project_last_active.message':
+    'Một không gian làm việc phải giữ ít nhất một dự án hoạt động.',
   'error.project_last_active.action': 'Tạo một dự án khác trước khi lưu trữ dự án này.',
   'error.connection_not_found.message': 'Kết nối đó không còn trong không gian làm việc này nữa.',
   'error.connection_not_found.action':

@@ -47,7 +47,8 @@ export const webBlogMessages = {
   'web.blog.byline.editorial.name': 'La redazione di ricerca sulla pubblicazione',
   'web.blog.byline.editorial.role': 'Scrive e mantiene questi articoli',
   'web.blog.byline.platform.name': 'La redazione della documentazione di piattaforma',
-  'web.blog.byline.platform.role': 'Verifica ogni frase sulle piattaforme rispetto alla sua fonte ufficiale',
+  'web.blog.byline.platform.role':
+    'Verifica ogni frase sulle piattaforme rispetto alla sua fonte ufficiale',
 
   'web.blog.feed.title': 'Scritti sulle operazioni di pubblicazione',
   'web.blog.feed.description':
@@ -55,10 +56,12 @@ export const webBlogMessages = {
   'web.blog.feed.label': 'Feed RSS',
 
   'web.blog.empty.title': 'Qui non è stato ancora pubblicato nulla',
-  'web.blog.empty.body': 'I primi articoli sono in scrittura. Il feed li conterrà quando saranno pubblicati.',
+  'web.blog.empty.body':
+    'I primi articoli sono in scrittura. Il feed li conterrà quando saranno pubblicati.',
 
   'web.blog.label.language': 'Leggi questo in',
   'web.blog.label.notTranslated':
     'Questo articolo non è ancora scritto nella tua lingua. Viene mostrata la versione inglese.',
-  'web.blog.label.languageCount': '{count, plural, one {# lingua} many {# lingue} other {# lingue}}',
+  'web.blog.label.languageCount':
+    '{count, plural, one {# lingua} many {# lingue} other {# lingue}}',
 } as const;

@@ -17,7 +17,8 @@ export const statusMessages = {
   'empty.analytics.noPermission':
     'Ang account na ito ay hindi nagbigay ng access sa analytics. Kumonekta muli upang idagdag ito.',
   'empty.approvals.title': 'Walang naghihintay sa iyo',
-  'empty.approvals.body': 'Lalabas dito ang mga kahilingan sa pag-apruba para sa iyong mga project.',
+  'empty.approvals.body':
+    'Lalabas dito ang mga kahilingan sa pag-apruba para sa iyong mga project.',
   'empty.library.title': 'Walang laman ang iyong library',
   'empty.library.body':
     'Mag-upload ng mga larawan at video, o i-import ang mga ito mula sa isang URL o sa API.',

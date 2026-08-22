@@ -75,7 +75,8 @@ export const webPlatformsMessages = {
 
   'web.schedule.unit.utf16':
     'UTF-16 코드 단위 기준이며, 대부분의 편집기가 문자 수로 보고하는 방식입니다.',
-  'web.schedule.unit.grapheme': '자소 기준이므로, 여러 코드 포인트로 이루어진 이모지도 여전히 문자 하나로 계산됩니다.',
+  'web.schedule.unit.grapheme':
+    '자소 기준이므로, 여러 코드 포인트로 이루어진 이모지도 여전히 문자 하나로 계산됩니다.',
   'web.schedule.unit.weighted': '대부분의 비라틴 문자가 1이 아닌 2로 계산되는 가중치 방식입니다.',
 
   'web.schedule.link.none': '링크는 상한에 포함되지 않습니다.',

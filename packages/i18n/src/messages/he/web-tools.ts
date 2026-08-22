@@ -27,7 +27,8 @@ export const webToolsMessages = withHebrewPluralForms({
     'חלק אינטראקציות בטווח הגעה, עוקבים או חשיפות. שלושה חישובים פשוטים, בלי אמת מידה מומצאת.',
 
   'web.tools.index.title': 'כלים חינמיים',
-  'web.tools.index.summary': 'מחשבונים קטנים שבנויים על אותם נתוני מגבלות פלטפורמה שהמחברים שלנו קוראים.',
+  'web.tools.index.summary':
+    'מחשבונים קטנים שבנויים על אותם נתוני מגבלות פלטפורמה שהמחברים שלנו קוראים.',
   'web.tools.index.lede':
     'ארבעה כלים קטנים, בנויים על אותם נתוני מגבלות פלטפורמה שהמחברים שלנו משתמשים בהם. בלי חשבון, בלי העלאה, בלי מעקב אחרי מה שאתה כותב.',
   'web.tools.index.dataTitle': 'מאיפה המספרים מגיעים',
@@ -53,7 +54,8 @@ export const webToolsMessages = withHebrewPluralForms({
   'web.tools.shared.otherTools': 'כלים אחרים',
 
   'web.tools.preflight.name': 'בודק טרום-פרסום',
-  'web.tools.preflight.summary': 'טיוטה אחת, נבדקת מול מגבלות הטקסט והמדיה של עשר פלטפורמות בבת אחת.',
+  'web.tools.preflight.summary':
+    'טיוטה אחת, נבדקת מול מגבלות הטקסט והמדיה של עשר פלטפורמות בבת אחת.',
   'web.tools.utm.name': 'בונה קישורי UTM',
   'web.tools.utm.summary': 'בנה כתובת URL מתויגת לקמפיין בלי לפגוע במחרוזת השאילתה שכבר הייתה לה.',
   'web.tools.youtubeTitle.name': 'בודק אורך כותרת YouTube',
@@ -100,7 +102,8 @@ export const webToolsMessages = withHebrewPluralForms({
   'web.tools.preflight.status.unavailable': 'לא זמין',
   'web.tools.preflight.count.label':
     '{count} מתוך {limit} {unit, select, grapheme {תווים} utf16 {יחידות קוד} weighted {תווים משוקללים} other {תווים}}',
-  'web.tools.preflight.finding.textOver': 'חורג מהמגבלה ב-{over, plural, one {תו #} other {# תווים}}.',
+  'web.tools.preflight.finding.textOver':
+    'חורג מהמגבלה ב-{over, plural, one {תו #} other {# תווים}}.',
   'web.tools.preflight.finding.textNear': 'במרחק {remaining} תווים מהמגבלה.',
   'web.tools.preflight.finding.textFits': 'הגוף מתאים.',
   'web.tools.preflight.finding.linkFixed':
@@ -111,7 +114,8 @@ export const webToolsMessages = withHebrewPluralForms({
   'web.tools.preflight.finding.videosOver':
     'הפלטפורמה הזו מקבלת {limit, plural, =0 {אפס סרטונים} one {סרטון #} other {# סרטונים}} בפוסט אחד.',
   'web.tools.preflight.finding.bytesOver': 'הקובץ גדול מהתקרה של {limit}.',
-  'web.tools.preflight.finding.bytesUnknown': 'אין תקרת בייטים מפורסמת לסוג המדיה הזה, אז הגודל לא נבדק.',
+  'web.tools.preflight.finding.bytesUnknown':
+    'אין תקרת בייטים מפורסמת לסוג המדיה הזה, אז הגודל לא נבדק.',
   'web.tools.preflight.finding.durationOver': 'ארוך מהתקרה של {limit} שניות.',
   'web.tools.preflight.finding.durationUnder': 'קצר מהמינימום של {limit} שניות.',
   'web.tools.preflight.finding.durationUnknown': 'אין תקרת משך מפורסמת, אז האורך לא נבדק.',
@@ -148,7 +152,8 @@ export const webToolsMessages = withHebrewPluralForms({
   'web.tools.utm.field.term.label': 'מונח הקמפיין',
   'web.tools.utm.field.term.help': 'אופציונלי. באופן מסורתי מילת המפתח בתשלום.',
   'web.tools.utm.field.content.label': 'תוכן הקמפיין',
-  'web.tools.utm.field.content.help': 'אופציונלי. מפריד בין שני קישורים לאותו דף, למשל שתי גרסאות של פוסט.',
+  'web.tools.utm.field.content.help':
+    'אופציונלי. מפריד בין שני קישורים לאותו דף, למשל שתי גרסאות של פוסט.',
   'web.tools.utm.result.title': 'כתובת ה-URL המתויגת שלך',
   'web.tools.utm.result.empty': 'הזן כתובת URL יעד כדי לראות את התוצאה.',
   'web.tools.utm.result.label': 'כתובת URL מורכבת',
@@ -192,7 +197,8 @@ export const webToolsMessages = withHebrewPluralForms({
     'במונה הזה כן, כי אנחנו סופרים גרפמות. פלטפורמה שסופרת יחידות קוד באופן פנימי עשויה לגבות יותר עבור אותו אמוג׳י, ולכן בודק הטרום-פרסום מיישם כל כלל פלטפורמה בנפרד.',
 
   'web.tools.timeZone.title': 'מתכנן אזורי זמן ושעון קיץ',
-  'web.tools.timeZone.lede': 'חריץ שבועי שנראה יציב ביומן שלך זז עבור חצי מהקהל שלך פעמיים בשנה. זה מראה איפה ומתי.',
+  'web.tools.timeZone.lede':
+    'חריץ שבועי שנראה יציב ביומן שלך זז עבור חצי מהקהל שלך פעמיים בשנה. זה מראה איפה ומתי.',
   'web.tools.timeZone.explainer.title': 'למה שעה מקומית קבועה היא לא זמן קבוע',
   'web.tools.timeZone.explainer.body':
     'זמן אומר משהו רק כשמצורף אליו אזור. אזורים משנים את ההיסט שלהם בתאריכים שונים לפי מדינה, ושני אזורים שמרוחקים חמש שעות בינואר יכולים להיות מרוחקים ארבע שעות באפריל. לוח זמנים ששמור כרגע ועוד אזור שורד את זה. לוח זמנים ששמור כשעה מקומית לא.',

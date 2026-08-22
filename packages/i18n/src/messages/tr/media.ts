@@ -12,7 +12,8 @@ export const mediaMessages = {
   'mediaLib.derivative.apply': 'Bu sürümü kaydet',
   'mediaLib.derivative.applying': 'Bu sürüm kaydediliyor',
   'mediaLib.derivative.discard': 'Değişiklikleri at',
-  'mediaLib.derivative.noChanges': 'Henüz kaydedilecek bir şey yok. Yukarıdaki bir değeri değiştirin.',
+  'mediaLib.derivative.noChanges':
+    'Henüz kaydedilecek bir şey yok. Yukarıdaki bir değeri değiştirin.',
 
   'mediaLib.derivative.tab.crop': 'Kırp',
   'mediaLib.derivative.tab.transform': 'Döndür ve yeniden boyutlandır',
@@ -36,8 +37,7 @@ export const mediaMessages = {
   'mediaLib.derivative.qualityHint':
     'Düşük kalite daha küçük bir dosya oluşturur. JPEG ve WebP için geçerlidir. PNG kayıpsızdır ve bunu yok sayar.',
   'mediaLib.derivative.projected': 'Bu sürüm {width} x {height} piksel olacak.',
-  'mediaLib.derivative.projectedUnavailable':
-    'Bu sürümün boyutu, oluşturulana kadar kullanılamaz.',
+  'mediaLib.derivative.projectedUnavailable': 'Bu sürümün boyutu, oluşturulana kadar kullanılamaz.',
 
   'mediaLib.derivative.listHeading': 'Sürümler',
   'mediaLib.derivative.original': 'Orijinal',

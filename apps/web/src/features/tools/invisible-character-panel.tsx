@@ -38,7 +38,10 @@ export function InvisibleCharacterPanel(): ReactElement {
         ))}
       </ul>
 
-      <section aria-labelledby="invisible-character-paste-test-heading" className="flex flex-col gap-3">
+      <section
+        aria-labelledby="invisible-character-paste-test-heading"
+        className="flex flex-col gap-3"
+      >
         <h2 id="invisible-character-paste-test-heading" className="text-title-sm text-text-primary">
           {t.full('web.toolDirectory.invisibleCharacter.pasteTest.title')}
         </h2>

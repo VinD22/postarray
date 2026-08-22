@@ -36,8 +36,7 @@ export const mediaMessages = {
   'mediaLib.derivative.qualityHint':
     'Более низкое качество уменьшает размер файла. Применяется к JPEG и WebP. PNG работает без потерь и игнорирует этот параметр.',
   'mediaLib.derivative.projected': 'Эта версия будет иметь размер {width} × {height} пикселей.',
-  'mediaLib.derivative.projectedUnavailable':
-    'Размер этой версии недоступен, пока она не создана.',
+  'mediaLib.derivative.projectedUnavailable': 'Размер этой версии недоступен, пока она не создана.',
 
   'mediaLib.derivative.listHeading': 'Версии',
   'mediaLib.derivative.original': 'Оригинал',
@@ -47,8 +46,7 @@ export const mediaMessages = {
   'mediaLib.derivative.select': 'Использовать эту версию',
   'mediaLib.derivative.selected': 'Используется для этой публикации',
   'mediaLib.derivative.useOriginal': 'Использовать оригинал',
-  'mediaLib.derivative.processing':
-    'Эта версия создаётся. Она появится здесь, когда будет готова.',
+  'mediaLib.derivative.processing': 'Эта версия создаётся. Она появится здесь, когда будет готова.',
   'mediaLib.derivative.alreadyExists':
     'Вы уже делали точно такое же редактирование раньше, поэтому мы повторно использовали ту версию вместо создания второй.',
   'mediaLib.derivative.failedTitle': 'Эту версию не удалось создать',

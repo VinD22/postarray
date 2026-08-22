@@ -33,7 +33,8 @@ export const webBlogMessages = {
   'web.blog.byline.editorial.name': 'Das Team für Veröffentlichungsforschung',
   'web.blog.byline.editorial.role': 'Schreibt und pflegt diese Artikel',
   'web.blog.byline.platform.name': 'Das Team für Plattformdokumentation',
-  'web.blog.byline.platform.role': 'Prüft jeden Satz über eine Plattform gegen ihre offizielle Quelle',
+  'web.blog.byline.platform.role':
+    'Prüft jeden Satz über eine Plattform gegen ihre offizielle Quelle',
 
   'web.blog.feed.title': 'Texte über Veröffentlichungsabläufe',
   'web.blog.feed.description':
@@ -47,6 +48,5 @@ export const webBlogMessages = {
   'web.blog.label.language': 'Lesen auf',
   'web.blog.label.notTranslated':
     'Dieser Artikel ist noch nicht in deiner Sprache geschrieben. Die englische Version wird angezeigt.',
-  'web.blog.label.languageCount':
-    '{count, plural, one {# Sprache} other {# Sprachen}}',
+  'web.blog.label.languageCount': '{count, plural, one {# Sprache} other {# Sprachen}}',
 } as const;

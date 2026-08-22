@@ -65,11 +65,16 @@ export function ColumnReport({
       {issues.length === 0 ? null : (
         <ul className="flex flex-col gap-1">
           {issues.map((issue) => (
-            <li key={`${issue.key}:${issue.column ?? ''}`} className="text-body-sm text-text-secondary">
+            <li
+              key={`${issue.key}:${issue.column ?? ''}`}
+              className="text-body-sm text-text-secondary"
+            >
               {issue.key === 'import.error.emptyFile'
                 ? t.full('import.error.emptyFile')
                 : issue.key === 'import.error.tooManyRows'
-                  ? t.full('import.error.tooManyRows', { limit: Number(issue.values['limit'] ?? 0) })
+                  ? t.full('import.error.tooManyRows', {
+                      limit: Number(issue.values['limit'] ?? 0),
+                    })
                   : issue.key}
             </li>
           ))}

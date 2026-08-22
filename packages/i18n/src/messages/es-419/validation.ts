@@ -66,7 +66,8 @@ export const validationMessages = {
     'Esto cae dentro de las horas de silencio establecidas para {project}.',
   'validation.duplicate_within_window.message':
     'Contenido muy similar ya está programado o publicado para {account}dentro {window}.',
-  'validation.blocked_term_present.message': 'El texto contiene un término bloqueado para {project}.',
+  'validation.blocked_term_present.message':
+    'El texto contiene un término bloqueado para {project}.',
   'validation.unsupported_claim.message':
     'Este reclamo no está entre los reclamos aprobados para {project}.',
   'validation.unsupported_claim.hint':

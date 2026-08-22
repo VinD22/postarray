@@ -29,7 +29,9 @@ describe('convertCase: title', () => {
     const body = 'read the recap at https://example.test/MyPost #bigNews from @TeamRelay';
     const result = convertCase(body, 'title');
 
-    expect(result.text).toBe('Read The Recap At https://example.test/MyPost #bigNews From @TeamRelay');
+    expect(result.text).toBe(
+      'Read The Recap At https://example.test/MyPost #bigNews From @TeamRelay',
+    );
   });
 
   it('keeps an apostrophe inside a word as one token', () => {

@@ -45,8 +45,10 @@ export function ProjectsScreen(): ReactNode {
 
   const save = useSettingsMutation({
     section,
-    mutationFn: (input: { projectId: string; patch: Parameters<typeof projectsGateway.update>[1] }) =>
-      projectsGateway.update(input.projectId, input.patch),
+    mutationFn: (input: {
+      projectId: string;
+      patch: Parameters<typeof projectsGateway.update>[1];
+    }) => projectsGateway.update(input.projectId, input.patch),
     invalidate: [PROJECTS_KEY],
   });
 

@@ -97,7 +97,10 @@ export function GrowthScreen(): ReactNode {
   });
 
   const availableLocales = useMemo(
-    () => Array.from(new Set((projects.data ?? []).flatMap((project) => project.contentLocales))).sort(),
+    () =>
+      Array.from(
+        new Set((projects.data ?? []).flatMap((project) => project.contentLocales)),
+      ).sort(),
     [projects.data],
   );
 

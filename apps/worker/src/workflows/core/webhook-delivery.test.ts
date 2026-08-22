@@ -9,14 +9,10 @@ import { webhookDeliveryDescriptor } from './webhook-delivery.core';
 
 describe('webhook delivery workflow', () => {
   it('dead-letters after the retry budget is exhausted', async () => {
-    const run = await runWorkflow(
-      webhookDeliveryDescriptor,
-      makeWebhookInput({ maxAttempts: 3 }),
-      {
-        workflowId: 'whd:ws_test:whd_dead',
-        simulatorOptions: { webhookScript: ['failed', 'failed', 'failed'] },
-      },
-    );
+    const run = await runWorkflow(webhookDeliveryDescriptor, makeWebhookInput({ maxAttempts: 3 }), {
+      workflowId: 'whd:ws_test:whd_dead',
+      simulatorOptions: { webhookScript: ['failed', 'failed', 'failed'] },
+    });
 
     expect(run.output).toMatchObject({
       deliveryId: 'whd_1',
@@ -31,17 +27,13 @@ describe('webhook delivery workflow', () => {
 
   it('disables the endpoint when consecutive failures cross the threshold', async () => {
     const priorFailures = ENDPOINT_FAILURE_THRESHOLD - 1;
-    const run = await runWorkflow(
-      webhookDeliveryDescriptor,
-      makeWebhookInput({ maxAttempts: 1 }),
-      {
-        workflowId: 'whd:ws_test:whd_disable',
-        simulatorOptions: {
-          webhookConsecutiveFailures: priorFailures,
-          webhookScript: ['failed'],
-        },
+    const run = await runWorkflow(webhookDeliveryDescriptor, makeWebhookInput({ maxAttempts: 1 }), {
+      workflowId: 'whd:ws_test:whd_disable',
+      simulatorOptions: {
+        webhookConsecutiveFailures: priorFailures,
+        webhookScript: ['failed'],
       },
-    );
+    });
 
     expect(run.output).toMatchObject({
       deadLettered: true,
@@ -67,14 +59,10 @@ describe('webhook delivery workflow', () => {
   });
 
   it('records attempt progression before dead-lettering', async () => {
-    const run = await runWorkflow(
-      webhookDeliveryDescriptor,
-      makeWebhookInput({ maxAttempts: 2 }),
-      {
-        workflowId: 'whd:ws_test:whd_attempts',
-        simulatorOptions: { webhookScript: ['failed', 'failed'] },
-      },
-    );
+    const run = await runWorkflow(webhookDeliveryDescriptor, makeWebhookInput({ maxAttempts: 2 }), {
+      workflowId: 'whd:ws_test:whd_attempts',
+      simulatorOptions: { webhookScript: ['failed', 'failed'] },
+    });
 
     expect(
       activityHistory(run.commands).filter((name) => name === 'recordWebhookAttempt').length,

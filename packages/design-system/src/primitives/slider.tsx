@@ -54,7 +54,7 @@ export const Slider = forwardRef<HTMLSpanElement, SliderProps>(function Slider(
             // raised shadow so the knob still reads against the track without
             // a 2px outline. The accent clears 3:1 on both themes' surfaces.
             'border-accent bg-surface-raised shadow-raised block size-4 rounded-full border',
-            'disabled:border-border-subtle disabled:shadow-none disabled:cursor-not-allowed',
+            'disabled:border-border-subtle disabled:cursor-not-allowed disabled:shadow-none',
             focusRing,
           )}
         />

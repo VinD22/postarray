@@ -40,8 +40,7 @@ export const webBlogMessages = {
   'web.blog.feed.label': 'Umpan RSS',
 
   'web.blog.empty.title': 'Belum ada yang diterbitkan di sini',
-  'web.blog.empty.body':
-    'Artikel pertama sedang ditulis. Umpan akan membawanya begitu terbit.',
+  'web.blog.empty.body': 'Artikel pertama sedang ditulis. Umpan akan membawanya begitu terbit.',
 
   'web.blog.label.language': 'Baca dalam bahasa',
   'web.blog.label.notTranslated':

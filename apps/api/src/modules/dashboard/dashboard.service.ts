@@ -127,8 +127,8 @@ export class DashboardService {
     const now = this.clock.now();
     const windowStart = new Date(now.getTime() - query.days * DAY_MS);
 
-    const [receiptPage, calendarPage, attentionPage, connectionPage, projectPage] = await Promise.all(
-      [
+    const [receiptPage, calendarPage, attentionPage, connectionPage, projectPage] =
+      await Promise.all([
         this.services.receipts.listRecent(ctx, { limit: RECEIPT_PAGE_LIMIT }),
         this.services.scheduling.getCalendar(ctx, {
           from: now.toISOString(),
@@ -138,8 +138,7 @@ export class DashboardService {
         this.services.actionCenter.list(ctx, { limit: ATTENTION_LIMIT }),
         this.services.connections.list(ctx, { limit: RECEIPT_PAGE_LIMIT }),
         this.services.projects.list(ctx, { limit: RECEIPT_PAGE_LIMIT }),
-      ],
-    );
+      ]);
 
     const inWindow = receiptPage.data.filter((receipt) => {
       const at = Date.parse(receipt.publishedAt);

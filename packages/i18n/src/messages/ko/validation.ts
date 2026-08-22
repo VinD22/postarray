@@ -58,7 +58,8 @@ export const validationMessages = {
   'validation.schedule_in_past.message': '그 시간이 지나갔어{timeZone}.',
   'validation.schedule_too_far_ahead.message':
     '이는 과거보다 훨씬 앞서 있다.{limit}이 자격 증명을 미리 설정해 보세요.',
-  'validation.schedule_outside_quiet_hours.message': '이는 설정된 조용한 시간에 속합니다.{project}.',
+  'validation.schedule_outside_quiet_hours.message':
+    '이는 설정된 조용한 시간에 속합니다.{project}.',
   'validation.duplicate_within_window.message':
     '매우 유사한 콘텐츠가 이미 예약되었거나 게시되었습니다.{account}이내에{window}.',
   'validation.blocked_term_present.message': '텍스트에 차단된 용어가 포함되어 있습니다.{project}.',

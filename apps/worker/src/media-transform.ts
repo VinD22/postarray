@@ -1,4 +1,8 @@
-import type { MediaTransformFn, MediaTransformInput, MediaTransformResult } from '@relay/application';
+import type {
+  MediaTransformFn,
+  MediaTransformInput,
+  MediaTransformResult,
+} from '@relay/application';
 import { MediaInvalidError, type MediaDerivativeOperation } from '@relay/contracts';
 import sharp from 'sharp';
 import type { OutputInfo, Sharp } from 'sharp';
@@ -42,10 +46,7 @@ function invalidMedia(reason: string, cause?: unknown): MediaInvalidError {
   });
 }
 
-function applyOperations(
-  image: Sharp,
-  operations: readonly MediaDerivativeOperation[],
-): Sharp {
+function applyOperations(image: Sharp, operations: readonly MediaDerivativeOperation[]): Sharp {
   let pipeline = image;
   // The operations arrive already canonicalized into pipeline order by
   // `planMediaDerivative`, so this loop applies them in the order the preset

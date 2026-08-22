@@ -245,7 +245,8 @@ export const webDemoMessages = {
   'web.demo.digest.line.earliest': 'Sáng thứ Ba là khung giờ sớm nhất của bạn.',
   'web.demo.digest.line.approval': 'Mỗi phiên bản đều được phê duyệt trước khi vào hàng đợi.',
   'web.demo.digest.line.alt': 'Mỗi ảnh đều mang văn bản thay thế do một người viết.',
-  'web.demo.digest.footer': 'Số liệu phân tích trực tiếp sẽ xuất hiện ở đây khi các bài đăng của bạn được đăng.',
+  'web.demo.digest.footer':
+    'Số liệu phân tích trực tiếp sẽ xuất hiện ở đây khi các bài đăng của bạn được đăng.',
 
   /* ---------------------------------------------------------------------- */
   /* The three added walkthrough steps                                       */

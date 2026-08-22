@@ -11,7 +11,8 @@ export const webBlogMessages = {
   'web.blog.lede':
     '게시 작업의 원리에 관한 노트입니다. 일정 규모를 어떻게 정하는지, 한 주가 밀렸을 때 대기열이 어떻게 동작하는지, 플랫폼마다 실제로 무엇이 다른지, 클라이언트 작업이 어떻게 분리된 상태를 유지하는지를 다룹니다.',
 
-  'web.blog.notice.prelaunch.title': '이 글들은 문제에 관한 것이며, 아직 사용할 수 있는 제품에 관한 것이 아닙니다',
+  'web.blog.notice.prelaunch.title':
+    '이 글들은 문제에 관한 것이며, 아직 사용할 수 있는 제품에 관한 것이 아닙니다',
   'web.blog.notice.prelaunch.body':
     '여기에 있는 커넥터 중 제공업체 검증을 완료한 것은 없으므로, 오늘 이 제품을 통해 어떤 플랫폼에도 아무것도 게시되지 않습니다. 아래의 모든 플랫폼 규칙에는 출처가 된 공식 문서와 사람이 그것을 읽은 날짜가 함께 표시됩니다.',
 
@@ -46,6 +47,7 @@ export const webBlogMessages = {
   'web.blog.empty.body': '첫 글을 작성하고 있습니다. 게시되면 피드에 표시됩니다.',
 
   'web.blog.label.language': '다음 언어로 읽기',
-  'web.blog.label.notTranslated': '이 글은 아직 회원님의 언어로 작성되지 않았습니다. 영어 버전을 표시합니다.',
+  'web.blog.label.notTranslated':
+    '이 글은 아직 회원님의 언어로 작성되지 않았습니다. 영어 버전을 표시합니다.',
   'web.blog.label.languageCount': '{count, plural, other {#개 언어}}',
 } as const;

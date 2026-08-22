@@ -87,9 +87,7 @@ export function DerivativeDialog({
               height: source.height,
             }}
             processing={state.processing}
-            {...(selectedDerivativeId === undefined
-              ? {}
-              : { selectedDerivativeId })}
+            {...(selectedDerivativeId === undefined ? {} : { selectedDerivativeId })}
             {...(onSelectDerivative === undefined ? {} : { onSelect: onSelectDerivative })}
           />
         </DialogBody>

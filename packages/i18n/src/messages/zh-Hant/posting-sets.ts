@@ -31,7 +31,8 @@ export const postingSetMessages = {
   'calendar.hold.resumeTitle': '要繼續發布此貼文嗎？',
   'calendar.hold.resumeBody': '它將於 {timeZone} 的 {time} 發布。',
   'calendar.hold.resumeMissedTitle': '該時間已經過去',
-  'calendar.hold.resumeMissedBody': '此貼文原訂於暫停期間的 {time} 發布，請選擇新的時間，以免你一繼續就立即發布。',
+  'calendar.hold.resumeMissedBody':
+    '此貼文原訂於暫停期間的 {time} 發布，請選擇新的時間，以免你一繼續就立即發布。',
   'calendar.hold.resumeTimeLabel': '新的發布時間',
   'calendar.hold.resumeConfirm': '繼續',
 
@@ -39,14 +40,17 @@ export const postingSetMessages = {
   'calendar.hold.resumed': '已繼續。將於 {time} 發布。',
 
   'calendar.hold.blocked.published': '此貼文已經發布，暫停無法將它從平台上收回。',
-  'calendar.hold.blocked.inFlight': '此貼文正在發送中，現在暫停已經太遲，若中途停止，可能導致只發布了一部分。',
+  'calendar.hold.blocked.inFlight':
+    '此貼文正在發送中，現在暫停已經太遲，若中途停止，可能導致只發布了一部分。',
   'calendar.hold.blocked.finished': '此貼文已經完成，因此沒有可暫停的內容。',
-  'calendar.hold.blocked.billing': '此貼文因工作區失去完整存取權限而被暫留，繼續發布屬於帳務事項，而非排程事項。',
+  'calendar.hold.blocked.billing':
+    '此貼文因工作區失去完整存取權限而被暫留，繼續發布屬於帳務事項，而非排程事項。',
   'calendar.hold.blocked.billingAction': '前往帳務頁面',
 
   /* ------------------------------------------------------- posting sets */
   'set.title': '發文組合',
-  'set.lede': '一個已儲存的答案，回答「我要發給誰，以及怎麼發」。套用組合會將其設定複製到新的草稿中。',
+  'set.lede':
+    '一個已儲存的答案，回答「我要發給誰，以及怎麼發」。套用組合會將其設定複製到新的草稿中。',
   'set.appliedOnce':
     '組合只會在你套用時被讀取一次。之後編輯它，只會改變下一則貼文的起始內容。已用它建立的草稿與已排程貼文，會維持完全不變。',
   'set.empty.title': '尚無組合',
@@ -97,7 +101,8 @@ export const postingSetMessages = {
   'set.defaults.bodyPrefix': '貼文前置文字',
   'set.defaults.bodySuffix': '貼文後置文字',
   'set.defaults.requireAltText': '要求每張圖片都有替代文字',
-  'set.defaults.requireAltTextHint': '在每張圖片都有替代文字之前，以此組合建立的貼文無法排程至該平台。',
+  'set.defaults.requireAltTextHint':
+    '在每張圖片都有替代文字之前，以此組合建立的貼文無法排程至該平台。',
   'set.defaults.empty': '沒有任何平台預設值，每個帳號都會從主要貼文開始。',
 
   'set.error.nameTaken': '此專案中已有其他組合使用該名稱。',

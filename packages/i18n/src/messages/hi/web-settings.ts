@@ -105,7 +105,8 @@ export const webSettingsMessages = {
   'settings.ui.members.column.lastActive': 'अंतिम सक्रिय',
   'settings.ui.members.column.actions': 'क्रियाएँ',
   'settings.ui.members.scopeAll': 'सभी ब्रांड और खाते',
-  'settings.ui.members.scopeLimited': '{count, plural, one {# project} other {# projects}}: {names}',
+  'settings.ui.members.scopeLimited':
+    '{count, plural, one {# project} other {# projects}}: {names}',
   'settings.ui.members.approvals.canApprove': 'अनुमोदन कर सकते हैं',
   'settings.ui.members.approvals.cannotApprove': 'अनुमोदन नहीं कर सकते',
   'settings.ui.members.approvals.canApproveOwnProjects':

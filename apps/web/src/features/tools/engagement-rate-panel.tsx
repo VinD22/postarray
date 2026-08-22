@@ -5,7 +5,11 @@ import { Field, Input } from '@relay/design-system/primitives';
 import { formatPercent } from '@relay/i18n/format';
 import { useI18n, useTranslations } from '@relay/i18n/react';
 
-import { ENGAGEMENT_RATE_BASES, engagementRates, type EngagementRateInput } from './engagement-rate';
+import {
+  ENGAGEMENT_RATE_BASES,
+  engagementRates,
+  type EngagementRateInput,
+} from './engagement-rate';
 
 /**
  * The engagement rate calculator.

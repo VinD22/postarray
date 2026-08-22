@@ -65,7 +65,8 @@ export const webToolsMessages = {
     'Chúng tôi chưa có kết nối cho nền tảng này, nên chưa có giới hạn đã xác minh để hiển thị. Chúng tôi thà không nói gì còn hơn đoán mò.',
   'web.tools.shared.copy': 'Sao chép',
   'web.tools.shared.copied': 'Đã sao chép',
-  'web.tools.shared.copyFailed': 'Trình duyệt của bạn đã chặn việc sao chép. Hãy chọn văn bản và sao chép nó.',
+  'web.tools.shared.copyFailed':
+    'Trình duyệt của bạn đã chặn việc sao chép. Hãy chọn văn bản và sao chép nó.',
   'web.tools.shared.faqTitle': 'Câu hỏi',
   'web.tools.shared.baselineTitle': 'Các con số này mô tả tài khoản nào',
   'web.tools.shared.baselineBody':
@@ -80,7 +81,8 @@ export const webToolsMessages = {
   'web.tools.preflight.summary':
     'Một bản nháp, được kiểm tra theo giới hạn văn bản và phương tiện của mười nền tảng cùng lúc.',
   'web.tools.utm.name': 'Trình tạo liên kết UTM',
-  'web.tools.utm.summary': 'Xây dựng một URL chiến dịch có gắn thẻ mà không làm hỏng chuỗi truy vấn đã có.',
+  'web.tools.utm.summary':
+    'Xây dựng một URL chiến dịch có gắn thẻ mà không làm hỏng chuỗi truy vấn đã có.',
   'web.tools.youtubeTitle.name': 'Công cụ kiểm tra độ dài tiêu đề YouTube',
   'web.tools.youtubeTitle.summary': 'Đo một tiêu đề theo cách một người đếm ký tự.',
   'web.tools.timeZone.name': 'Bộ lập kế hoạch múi giờ và giờ mùa hè',
@@ -130,8 +132,7 @@ export const webToolsMessages = {
   'web.tools.preflight.status.unavailable': 'Không khả dụng',
   'web.tools.preflight.count.label':
     '{count} trên {limit} {unit, select, grapheme {ký tự} utf16 {đơn vị mã} weighted {ký tự có trọng số} other {ký tự}}',
-  'web.tools.preflight.finding.textOver':
-    'Vượt giới hạn {over, plural, other {# ký tự}}.',
+  'web.tools.preflight.finding.textOver': 'Vượt giới hạn {over, plural, other {# ký tự}}.',
   'web.tools.preflight.finding.textNear': 'Còn cách giới hạn {remaining} ký tự.',
   'web.tools.preflight.finding.textFits': 'Nội dung vừa vặn.',
   'web.tools.preflight.finding.linkFixed':
@@ -182,7 +183,8 @@ export const webToolsMessages = {
   'web.tools.utm.field.medium.label': 'Kênh chiến dịch',
   'web.tools.utm.field.medium.help': 'Loại liên kết. Ví dụ: mạng xã hội, email hoặc giới thiệu.',
   'web.tools.utm.field.campaign.label': 'Tên chiến dịch',
-  'web.tools.utm.field.campaign.help': 'Đợt ra mắt, chương trình khuyến mãi hoặc chủ đề mà liên kết này thuộc về.',
+  'web.tools.utm.field.campaign.help':
+    'Đợt ra mắt, chương trình khuyến mãi hoặc chủ đề mà liên kết này thuộc về.',
   'web.tools.utm.field.term.label': 'Từ khóa chiến dịch',
   'web.tools.utm.field.term.help': 'Tùy chọn. Theo truyền thống là từ khóa trả phí.',
   'web.tools.utm.field.content.label': 'Nội dung chiến dịch',
@@ -242,7 +244,8 @@ export const webToolsMessages = {
   'web.tools.timeZone.title': 'Bộ lập kế hoạch múi giờ và giờ mùa hè',
   'web.tools.timeZone.lede':
     'Một khung giờ hằng tuần trông ổn định trên lịch của bạn lại dịch chuyển đối với một nửa khán giả của bạn hai lần một năm. Công cụ này cho thấy ở đâu và khi nào.',
-  'web.tools.timeZone.explainer.title': 'Vì sao một giờ địa phương cố định không phải là một thời điểm cố định',
+  'web.tools.timeZone.explainer.title':
+    'Vì sao một giờ địa phương cố định không phải là một thời điểm cố định',
   'web.tools.timeZone.explainer.body':
     'Một thời điểm chỉ có ý nghĩa khi đi kèm một múi giờ. Các múi giờ thay đổi độ lệch của chúng vào những ngày khác nhau theo từng quốc gia, và hai vùng cách nhau năm giờ vào tháng Một có thể chỉ còn cách nhau bốn giờ vào tháng Tư. Một lịch đăng được lưu dưới dạng một thời điểm cộng một múi giờ sẽ vượt qua điều đó. Một lịch đăng lưu dưới dạng một giờ địa phương thì không.',
   'web.tools.timeZone.field.date.label': 'Ngày',
@@ -260,7 +263,8 @@ export const webToolsMessages = {
   'web.tools.timeZone.faq.dst.q': 'Giờ dịch chuyển theo hướng nào?',
   'web.tools.timeZone.faq.dst.a':
     'Điều đó phụ thuộc vào múi giờ và hướng của sự thay đổi, đó là lý do bảng hiển thị giờ địa phương thực tế sau bốn tuần thay vì mô tả quy tắc. Độ lệch cho mỗi múi giờ được đọc từ cơ sở dữ liệu múi giờ trong trình duyệt của bạn.',
-  'web.tools.timeZone.faq.storage.q': 'Một bài đăng đã lên lịch nên lưu thời điểm của nó như thế nào?',
+  'web.tools.timeZone.faq.storage.q':
+    'Một bài đăng đã lên lịch nên lưu thời điểm của nó như thế nào?',
   'web.tools.timeZone.faq.storage.a':
     'Dưới dạng một thời điểm cộng múi giờ IANA mà người đó đã chọn, không bao giờ là một giờ địa phương đơn thuần. Đó là những gì chúng tôi làm nội bộ, và đó là lý do một bài đăng được lên lịch trước một lần đổi giờ vẫn đến đúng giờ địa phương dự định.',
 
@@ -282,7 +286,8 @@ export const webToolsMessages = {
   'web.tools.engagementRate.field.followers.label': 'Người theo dõi',
   'web.tools.engagementRate.field.followers.help': 'Quy mô tài khoản tại thời điểm đăng bài.',
   'web.tools.engagementRate.field.impressions.label': 'Lượt hiển thị',
-  'web.tools.engagementRate.field.impressions.help': 'Tổng số lượt xem, kể cả một người đã xem hai lần.',
+  'web.tools.engagementRate.field.impressions.help':
+    'Tổng số lượt xem, kể cả một người đã xem hai lần.',
   'web.tools.engagementRate.result.title': 'Tỷ lệ tương tác, theo ba cách',
   'web.tools.engagementRate.result.empty': 'không khả dụng',
   'web.tools.engagementRate.result.note':

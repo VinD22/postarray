@@ -25,16 +25,17 @@ export const queueMessages = {
   'queue.field.name': 'Название правила',
   'queue.field.nameHelp': 'Название, которое вы узнаете позже, например Будние утра.',
   'queue.field.timeZone': 'Часовой пояс',
-  'queue.field.timeZoneHelp':
-    'Окна, дневной лимит и запретные даты все читаются в этом поясе.',
+  'queue.field.timeZoneHelp': 'Окна, дневной лимит и запретные даты все читаются в этом поясе.',
   'queue.field.minimumGap': 'Минимальный интервал',
-  'queue.field.minimumGapHelp': 'Минуты между двумя публикациями. Ноль означает отсутствие правила интервала.',
+  'queue.field.minimumGapHelp':
+    'Минуты между двумя публикациями. Ноль означает отсутствие правила интервала.',
   'queue.field.maximumPerDay': 'Максимум в день',
   'queue.field.maximumPerDayHelp':
     'Оставьте пустым для отсутствия дневного лимита. Ноль означает, что это правило ничего не предлагает.',
   'queue.field.maximumPerDayUnlimited': 'Без дневного лимита',
   'queue.field.priority': 'Приоритет',
-  'queue.field.priorityHelp': 'Используется правило с самым высоким приоритетом, способное предложить слот.',
+  'queue.field.priorityHelp':
+    'Используется правило с самым высоким приоритетом, способное предложить слот.',
   'queue.field.enabled': 'Использовать это правило',
 
   'queue.windows.heading': 'Еженедельные окна',
@@ -59,7 +60,8 @@ export const queueMessages = {
   'queue.weekday.7': 'Воскресенье',
 
   'queue.blackouts.heading': 'Запретные даты',
-  'queue.blackouts.help': 'Даты, в которые этот проект не будет публиковать, читаются в часовом поясе правила.',
+  'queue.blackouts.help':
+    'Даты, в которые этот проект не будет публиковать, читаются в часовом поясе правила.',
   'queue.blackouts.empty': 'Запретных дат нет.',
   'queue.blackouts.add': 'Добавить запретную дату',
   'queue.blackouts.remove': 'Удалить запретную дату',
@@ -87,12 +89,15 @@ export const queueMessages = {
 
   'queue.reason.noRulesConfigured':
     'В этом проекте не настроено ни одного правила очереди, поэтому окно не применялось.',
-  'queue.reason.fallbackFirstFreeHour': 'Вместо этого был использован первый свободный час после текущего момента.',
+  'queue.reason.fallbackFirstFreeHour':
+    'Вместо этого был использован первый свободный час после текущего момента.',
   'queue.reason.matchedRule': 'Правило {name} выбрало это время в часовом поясе {zone}.',
   'queue.reason.matchedWindow': 'Оно попадает в окно с {start} до {end} в часовом поясе {zone}.',
-  'queue.reason.minimumGap': 'Оно отстоит как минимум на {minutes} минут от каждой другой публикации.',
+  'queue.reason.minimumGap':
+    'Оно отстоит как минимум на {minutes} минут от каждой другой публикации.',
   'queue.reason.noMinimumGap': 'Это правило не задаёт минимальный интервал между публикациями.',
-  'queue.reason.dailyCap': 'В этот день вмещается не более {limit} публикаций, и он ещё не заполнен.',
+  'queue.reason.dailyCap':
+    'В этот день вмещается не более {limit} публикаций, и он ещё не заполнен.',
   'queue.reason.dailyCapUnlimited': 'Это правило не задаёт дневной лимит.',
   'queue.reason.blackoutSkipped':
     'Чтобы дойти до него, было пропущено {days, plural, one {# запретный день} few {# запретных дня} many {# запретных дней} other {# запретного дня}}.',

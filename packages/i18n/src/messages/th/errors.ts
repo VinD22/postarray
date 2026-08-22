@@ -57,9 +57,9 @@ export const errorMessages = {
     'เก็บโปรเจกต์ที่ไม่ได้ใช้งานเข้าคลังหรือเปลี่ยนสิทธิ์จำนวนโปรเจกต์ของพื้นที่ทำงาน',
   'error.project_has_connections.message':
     'โปรเจกต์นี้ยังมี {connected, plural, other {# ช่องทางที่เชื่อมต่ออยู่}}',
-  'error.project_has_connections.action':
-    'ตัดการเชื่อมต่อทุกช่องทางในโปรเจกต์นี้ก่อนเก็บเข้าคลัง',
-  'error.project_last_active.message': 'พื้นที่ทำงานต้องมีโปรเจกต์ที่ใช้งานอยู่อย่างน้อยหนึ่งโปรเจกต์',
+  'error.project_has_connections.action': 'ตัดการเชื่อมต่อทุกช่องทางในโปรเจกต์นี้ก่อนเก็บเข้าคลัง',
+  'error.project_last_active.message':
+    'พื้นที่ทำงานต้องมีโปรเจกต์ที่ใช้งานอยู่อย่างน้อยหนึ่งโปรเจกต์',
   'error.project_last_active.action': 'สร้างโปรเจกต์อื่นก่อนเก็บโปรเจกต์นี้เข้าคลัง',
   'error.connection_not_found.message': 'การเชื่อมต่อนั้นไม่อยู่ในพื้นที่ทำงานนี้อีกต่อไป',
   'error.connection_not_found.action': 'เชื่อมต่อบัญชีอีกครั้งเพื่อเผยแพร่ต่อไป',

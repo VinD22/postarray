@@ -6,7 +6,8 @@ export const postingSetMessages = {
   'calendar.hold.badgeBilling': '請求により一時停止中',
   'calendar.hold.term': '一時停止',
   'calendar.hold.byPerson': '{date}にあなたが一時停止しました。',
-  'calendar.hold.byBilling': 'ワークスペースが完全なアクセス権を失ったため、{date}に一時停止されました。',
+  'calendar.hold.byBilling':
+    'ワークスペースが完全なアクセス権を失ったため、{date}に一時停止されました。',
   'calendar.hold.none': '一時停止していません',
 
   'calendar.hold.confirmTitle': 'この投稿を一時停止しますか?',
@@ -35,7 +36,8 @@ export const postingSetMessages = {
     'この投稿はすでに送信済みです。一時停止してもプラットフォームから取り戻すことはできません。',
   'calendar.hold.blocked.inFlight':
     'この投稿は現在送信中です。一時停止するには遅すぎ、途中で止めると部分的にしか公開されない状態になる恐れがあります。',
-  'calendar.hold.blocked.finished': 'この投稿はすでに完了しているため、一時停止するものがありません。',
+  'calendar.hold.blocked.finished':
+    'この投稿はすでに完了しているため、一時停止するものがありません。',
   'calendar.hold.blocked.billing':
     'ワークスペースが完全なアクセス権を失ったため、この投稿は一時停止中です。再開するには請求の問題を解決する必要があり、スケジュールの問題ではありません。',
   'calendar.hold.blocked.billingAction': '請求設定へ',
@@ -47,12 +49,14 @@ export const postingSetMessages = {
   'set.appliedOnce':
     'Setは適用した時に一度だけ読み込まれます。後で編集しても、次の投稿の開始内容が変わるだけです。すでにそこから作成した下書きや予定投稿は、そのまま変わりません。',
   'set.empty.title': 'まだSetがありません',
-  'set.empty.body': '投稿ごとに同じアカウントリストを作り直すのをやめるために、Setを作成しましょう。',
+  'set.empty.body':
+    '投稿ごとに同じアカウントリストを作り直すのをやめるために、Setを作成しましょう。',
   'set.create': '新しいSet',
   'set.edit': 'Setを編集',
   'set.archive': 'Setをアーカイブ',
   'set.archived': 'アーカイブ済み',
-  'set.archivedNote': 'アーカイブされたSetはセレクターに表示されません。そこから作成された投稿は変わりません。',
+  'set.archivedNote':
+    'アーカイブされたSetはセレクターに表示されません。そこから作成された投稿は変わりません。',
   'set.showArchived': 'アーカイブ済みを表示',
   'set.saved': 'Setを保存しました。',
   'set.archivedToast': 'Setをアーカイブしました。すでに作成された投稿は変わりません。',
@@ -99,7 +103,8 @@ export const postingSetMessages = {
   'set.defaults.requireAltText': 'すべての画像に代替テキストを必須にする',
   'set.defaults.requireAltTextHint':
     'このSetから作成された投稿は、すべての画像に代替テキストが付くまでこのプラットフォームに予定できません。',
-  'set.defaults.empty': 'プラットフォームごとの既定値はありません。すべてのアカウントはマスター投稿から開始します。',
+  'set.defaults.empty':
+    'プラットフォームごとの既定値はありません。すべてのアカウントはマスター投稿から開始します。',
 
   'set.error.nameTaken': 'このプロジェクトの別のSetがすでにその名前を使用しています。',
   'set.error.archived': 'このSetはアーカイブされています。編集する前に復元してください。',
@@ -118,7 +123,8 @@ export const postingSetMessages = {
   'targetMemory.setting.enabled': 'オン',
   'targetMemory.setting.disabled': 'オフ',
   'targetMemory.setting.saved': '設定を保存しました。',
-  'targetMemory.setting.cleared': '設定を保存しました。このプロジェクトの保存済み選択は削除されました。',
+  'targetMemory.setting.cleared':
+    '設定を保存しました。このプロジェクトの保存済み選択は削除されました。',
 
   'targetMemory.composer.restored':
     '前回の{count, plural, other {#件のアカウント}}から開始しました。',

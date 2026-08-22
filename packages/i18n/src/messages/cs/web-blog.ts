@@ -47,7 +47,8 @@ export const webBlogMessages = {
   'web.blog.byline.editorial.name': 'Výzkumná redakce pro publikování',
   'web.blog.byline.editorial.role': 'Píše a spravuje tyto články',
   'web.blog.byline.platform.name': 'Redakce dokumentace platforem',
-  'web.blog.byline.platform.role': 'Ověřuje každou větu o platformě proti jejímu oficiálnímu zdroji',
+  'web.blog.byline.platform.role':
+    'Ověřuje každou větu o platformě proti jejímu oficiálnímu zdroji',
 
   'web.blog.feed.title': 'Texty o publikačním provozu',
   'web.blog.feed.description':

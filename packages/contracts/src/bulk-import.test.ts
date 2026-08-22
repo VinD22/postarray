@@ -80,9 +80,9 @@ describe('bulk import media references', () => {
   });
 
   it('has no shape that can carry a filesystem path', () => {
-    expect(
-      bulkImportMediaRefSchema.safeParse({ kind: 'path', value: '/etc/passwd' }).success,
-    ).toBe(false);
+    expect(bulkImportMediaRefSchema.safeParse({ kind: 'path', value: '/etc/passwd' }).success).toBe(
+      false,
+    );
     expect(
       bulkImportMediaRefSchema.safeParse({ kind: 'url', value: 'file:///etc/passwd' }).success,
     ).toBe(false);
@@ -95,9 +95,9 @@ describe('bulk import row payload', () => {
   });
 
   it('refuses a zone that is not a tz database name', () => {
-    expect(
-      bulkImportRowPayloadSchema.safeParse(payload({ ianaTimeZone: 'CEST' })).success,
-    ).toBe(false);
+    expect(bulkImportRowPayloadSchema.safeParse(payload({ ianaTimeZone: 'CEST' })).success).toBe(
+      false,
+    );
   });
 
   it('refuses an instant with no offset, because that is a naive timestamp', () => {

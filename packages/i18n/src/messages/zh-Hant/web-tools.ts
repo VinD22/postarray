@@ -26,15 +26,20 @@ export const webToolsMessages = {
   'web.meta.tools.description':
     '為在多個平台發文的人提供的小型私密工具：各平台限制檢查、UTM 連結產生器、YouTube 標題長度檢查，以及時區規劃工具。',
   'web.meta.tools.preflight.title': '貼文發布前檢查工具',
-  'web.meta.tools.preflight.description': '將一則草稿對照十個平台的文字與媒體限制進行檢查，並附有每項限制的來源與讀取日期。',
+  'web.meta.tools.preflight.description':
+    '將一則草稿對照十個平台的文字與媒體限制進行檢查，並附有每項限制的來源與讀取日期。',
   'web.meta.tools.utm.title': 'UTM 連結產生器',
-  'web.meta.tools.utm.description': '組合帶有標籤的行銷活動 URL，並了解每個 UTM 參數的意義，完全在你的瀏覽器中運作。',
+  'web.meta.tools.utm.description':
+    '組合帶有標籤的行銷活動 URL，並了解每個 UTM 參數的意義，完全在你的瀏覽器中運作。',
   'web.meta.tools.youtubeTitle.title': 'YouTube 標題長度檢查工具',
-  'web.meta.tools.youtubeTitle.description': '依照人類計算字元的方式，對照官方文件記載的上限來衡量 YouTube 標題。',
+  'web.meta.tools.youtubeTitle.description':
+    '依照人類計算字元的方式，對照官方文件記載的上限來衡量 YouTube 標題。',
   'web.meta.tools.timeZone.title': '時區與夏令時間規劃工具',
-  'web.meta.tools.timeZone.description': '在多個受眾時區檢視同一個發布時間，並找出因夏令時間變動而使本地時間移動的週次。',
+  'web.meta.tools.timeZone.description':
+    '在多個受眾時區檢視同一個發布時間，並找出因夏令時間變動而使本地時間移動的週次。',
   'web.meta.tools.engagementRate.title': '互動率計算工具',
-  'web.meta.tools.engagementRate.description': '將互動次數除以觸及、追蹤者或曝光次數，三種簡單計算方式，沒有捏造的基準值。',
+  'web.meta.tools.engagementRate.description':
+    '將互動次數除以觸及、追蹤者或曝光次數，三種簡單計算方式，沒有捏造的基準值。',
 
   /* ---------------------------------------------------------------------- */
   /* Shared tool furniture                                                   */
@@ -42,16 +47,21 @@ export const webToolsMessages = {
 
   'web.tools.index.title': '免費工具',
   'web.tools.index.summary': '以我們的連接器所讀取的相同平台限制資料為基礎的小型計算工具。',
-  'web.tools.index.lede': '四個小型工具，以我們的連接器所使用的相同平台限制資料為基礎。不需帳號、不需上傳，也不會追蹤你輸入的內容。',
+  'web.tools.index.lede':
+    '四個小型工具，以我們的連接器所使用的相同平台限制資料為基礎。不需帳號、不需上傳，也不會追蹤你輸入的內容。',
   'web.tools.index.dataTitle': '這些數字從何而來',
-  'web.tools.index.dataBody': '每項限制都是從此程式碼庫中的連接器功能程式碼產生，每一列平台都附有其來源的官方文件頁面，以及有人閱讀該頁面的日期。',
-  'web.tools.index.honesty': '這些工具不會發布任何內容。目前尚無任何連接器完成供應商驗證，因此此處尚無任何工具能連線帳號。',
+  'web.tools.index.dataBody':
+    '每項限制都是從此程式碼庫中的連接器功能程式碼產生，每一列平台都附有其來源的官方文件頁面，以及有人閱讀該頁面的日期。',
+  'web.tools.index.honesty':
+    '這些工具不會發布任何內容。目前尚無任何連接器完成供應商驗證，因此此處尚無任何工具能連線帳號。',
   'web.tools.shared.privacyTitle': '此工具在你的瀏覽器中運作',
-  'web.tools.shared.privacyBody': '你輸入的所有內容都只留在此頁面上，沒有任何伺服器請求、沒有儲存，也沒有任何分析事件會帶走你的文字。',
+  'web.tools.shared.privacyBody':
+    '你輸入的所有內容都只留在此頁面上，沒有任何伺服器請求、沒有儲存，也沒有任何分析事件會帶走你的文字。',
   'web.tools.shared.sourceLink': '平台文件',
   'web.tools.shared.sourceRead': '閱讀於 {date}',
   'web.tools.shared.unavailable': '無法使用',
-  'web.tools.shared.unavailableWhy': '我們尚未提供此平台的連接器，因此沒有已驗證的限制可顯示。我們寧可什麼都不說，也不願用猜的。',
+  'web.tools.shared.unavailableWhy':
+    '我們尚未提供此平台的連接器，因此沒有已驗證的限制可顯示。我們寧可什麼都不說，也不願用猜的。',
   'web.tools.shared.copy': '複製',
   'web.tools.shared.copied': '已複製',
   'web.tools.shared.copyFailed': '你的瀏覽器封鎖了複製功能，請自行選取文字並複製。',
@@ -74,20 +84,24 @@ export const webToolsMessages = {
   'web.tools.timeZone.name': '時區與夏令時間規劃工具',
   'web.tools.timeZone.summary': '在多個受眾時區檢視同一個發布時間，並標示出夏令時間的變動。',
   'web.tools.engagementRate.name': '互動率計算工具',
-  'web.tools.engagementRate.summary': '互動次數除以觸及、追蹤者或曝光次數，不查詢任何資料，也不做任何基準比較。',
+  'web.tools.engagementRate.summary':
+    '互動次數除以觸及、追蹤者或曝光次數，不查詢任何資料，也不做任何基準比較。',
 
   /* ---------------------------------------------------------------------- */
   /* Post preflight checker                                                  */
   /* ---------------------------------------------------------------------- */
 
   'web.tools.preflight.title': '貼文發布前檢查工具',
-  'web.tools.preflight.lede': '貼上一則草稿，選擇你要發布的平台，搶先看看哪些平台會拒絕它，而不是等到 API 回傳錯誤才發現。',
+  'web.tools.preflight.lede':
+    '貼上一則草稿，選擇你要發布的平台，搶先看看哪些平台會拒絕它，而不是等到 API 回傳錯誤才發現。',
   'web.tools.preflight.explainer.title': '為何字元計數器還不夠',
   'web.tools.preflight.explainer.body':
     '各平台對「一個字元」的定義並不一致。有些以編碼單位計算，因此一個表情符號會佔用兩個單位；有些以字素計算，因此一面旗幟或一個家庭表情符號只算一個；有些會將每個連結改寫為固定寬度，因此 200 字元的 URL 與 20 字元的 URL 佔用的字元數相同。此工具會分別套用每個平台的規則。',
-  'web.tools.preflight.explainer.counting': '此草稿是用瀏覽器的 Intl 分段器來衡量，該分段器會將文字拆解成讀者所稱的「字元」單位，再依照平台規則進行調整。',
+  'web.tools.preflight.explainer.counting':
+    '此草稿是用瀏覽器的 Intl 分段器來衡量，該分段器會將文字拆解成讀者所稱的「字元」單位，再依照平台規則進行調整。',
   'web.tools.preflight.field.draft.label': '你的草稿',
-  'web.tools.preflight.field.draft.help': '貼上貼文內文，連結會自動被偵測，以便依各平台套用其相應的計算成本。',
+  'web.tools.preflight.field.draft.help':
+    '貼上貼文內文，連結會自動被偵測，以便依各平台套用其相應的計算成本。',
   'web.tools.preflight.field.platforms.label': '要檢查的平台',
   'web.tools.preflight.field.platforms.help': '你發布到多少平台，就選多少。',
   'web.tools.preflight.field.mediaKind.label': '附加的媒體',
@@ -104,7 +118,8 @@ export const webToolsMessages = {
   'web.tools.preflight.field.dimensions.help': '選填。僅用於顯示你將發布的長寬比。',
   'web.tools.preflight.results.title': '各平台的結果',
   'web.tools.preflight.results.empty': '請至少選擇一個平台以查看結果。',
-  'web.tools.preflight.results.summary': '{fail, plural, =0 {沒有阻擋項目} other {# 項將會失敗}}，{warning, plural, =0 {沒有警告} other {# 項值得留意}}。',
+  'web.tools.preflight.results.summary':
+    '{fail, plural, =0 {沒有阻擋項目} other {# 項將會失敗}}，{warning, plural, =0 {沒有警告} other {# 項值得留意}}。',
   'web.tools.preflight.status.pass': '符合限制',
   'web.tools.preflight.status.warning': '值得留意',
   'web.tools.preflight.status.fail': '將會失敗',
@@ -114,10 +129,13 @@ export const webToolsMessages = {
   'web.tools.preflight.finding.textOver': '超出限制 {over, plural, other {# 個字元}}。',
   'web.tools.preflight.finding.textNear': '距離限制還剩 {remaining} 個字元。',
   'web.tools.preflight.finding.textFits': '內文符合限制。',
-  'web.tools.preflight.finding.linkFixed': '每個連結都會被改寫為固定寬度，因此無論實際長度為何，每個連結都計為 {cost} 個字元。',
+  'web.tools.preflight.finding.linkFixed':
+    '每個連結都會被改寫為固定寬度，因此無論實際長度為何，每個連結都計為 {cost} 個字元。',
   'web.tools.preflight.finding.linkActual': '連結的計算值，等於它所佔用的字元數。',
-  'web.tools.preflight.finding.imagesOver': '此平台單則貼文接受 {limit, plural, =0 {沒有任何圖片} other {# 張圖片}}。',
-  'web.tools.preflight.finding.videosOver': '此平台單則貼文接受 {limit, plural, =0 {沒有任何影片} other {# 部影片}}。',
+  'web.tools.preflight.finding.imagesOver':
+    '此平台單則貼文接受 {limit, plural, =0 {沒有任何圖片} other {# 張圖片}}。',
+  'web.tools.preflight.finding.videosOver':
+    '此平台單則貼文接受 {limit, plural, =0 {沒有任何影片} other {# 部影片}}。',
   'web.tools.preflight.finding.bytesOver': '此檔案大於 {limit} 的上限。',
   'web.tools.preflight.finding.bytesUnknown': '此媒體類型尚無公開的位元組上限，因此未檢查大小。',
   'web.tools.preflight.finding.durationOver': '超過 {limit} 秒的上限。',
@@ -132,7 +150,8 @@ export const webToolsMessages = {
   'web.tools.preflight.faq.accuracy.a':
     '每項限制都是從我們程式碼庫中的連接器程式碼產生，而非手動輸入到頁面上，每一列平台都會顯示其來源的官方文件，以及有人閱讀該文件的日期。若某平台變更了數字，只需修改一處程式碼，此處的每個工具就會跟著更新。',
   'web.tools.preflight.faq.privacy.q': '我的草稿會被上傳嗎？',
-  'web.tools.preflight.faq.privacy.a': '不會。此檢查在你的瀏覽器中運作，沒有任何請求會帶走你的文字，不會儲存任何內容，關閉分頁就足以將它捨棄。',
+  'web.tools.preflight.faq.privacy.a':
+    '不會。此檢查在你的瀏覽器中運作，沒有任何請求會帶走你的文字，不會儲存任何內容，關閉分頁就足以將它捨棄。',
   'web.tools.preflight.faq.publish.q': '這個工具能幫我發布嗎？',
   'web.tools.preflight.faq.publish.a':
     '目前還不行。尚無任何連接器完成供應商驗證，因此此網站目前尚未透過任何工具發布到任何平台。此頁面是限制檢查工具，而非撰寫工具。',
@@ -142,7 +161,8 @@ export const webToolsMessages = {
   /* ---------------------------------------------------------------------- */
 
   'web.tools.utm.title': 'UTM 連結產生器',
-  'web.tools.utm.lede': '在不遺失原有查詢字串的情況下，為 URL 加上行銷活動參數，也不必猜測每個參數代表什麼意思。',
+  'web.tools.utm.lede':
+    '在不遺失原有查詢字串的情況下，為 URL 加上行銷活動參數，也不必猜測每個參數代表什麼意思。',
   'web.tools.utm.explainer.title': '每個參數的用途',
   'web.tools.utm.explainer.body':
     'UTM 參數是由分析工具讀取的，而不是由你所發布的平台讀取。它們會隨著 URL 一起傳遞，因此任何看到連結的人也都會看到它們。請保持簡短、小寫且一致，因為同一個活動的兩種拼寫方式，會在報表中變成兩個不同的列。',
@@ -158,7 +178,8 @@ export const webToolsMessages = {
   'web.tools.utm.field.term.label': '行銷活動關鍵字',
   'web.tools.utm.field.term.help': '選填。傳統上用於付費關鍵字。',
   'web.tools.utm.field.content.label': '行銷活動內容',
-  'web.tools.utm.field.content.help': '選填。用於區分指向同一頁面的兩個連結，例如同一則貼文的兩個版本。',
+  'web.tools.utm.field.content.help':
+    '選填。用於區分指向同一頁面的兩個連結，例如同一則貼文的兩個版本。',
   'web.tools.utm.result.title': '你的標籤 URL',
   'web.tools.utm.result.empty': '請輸入目的地 URL 以查看結果。',
   'web.tools.utm.result.label': '組合出的 URL',
@@ -168,7 +189,8 @@ export const webToolsMessages = {
   'web.tools.utm.faq.encoding.a':
     '它們會被進行百分比編碼，這正是讓連結能在貼到貼文中後仍正常運作的原因。空格會變成加號，帶重音的字母則會變成其編碼後的形式，分析工具會將這兩者解碼還原。',
   'web.tools.utm.faq.existing.q': '這會破壞已經帶有參數的 URL 嗎？',
-  'web.tools.utm.faq.existing.a': '不會。既有的參數會依原本順序保留，只有你填入的 UTM 參數才會被新增或取代。URL 結尾的片段標記仍會留在結尾。',
+  'web.tools.utm.faq.existing.a':
+    '不會。既有的參數會依原本順序保留，只有你填入的 UTM 參數才會被新增或取代。URL 結尾的片段標記仍會留在結尾。',
   'web.tools.utm.faq.privacy.q': '我的 URL 會被傳送到別處嗎？',
   'web.tools.utm.faq.privacy.a': '不會。此 URL 是在你的瀏覽器中組合而成，永遠不會離開此頁面。',
 
@@ -177,7 +199,8 @@ export const webToolsMessages = {
   /* ---------------------------------------------------------------------- */
 
   'web.tools.youtubeTitle.title': 'YouTube 標題長度檢查工具',
-  'web.tools.youtubeTitle.lede': '只要多一個字元，標題就會在上傳時被拒絕。只是偏長的標題，則會在你未曾選擇的位置被截斷。',
+  'web.tools.youtubeTitle.lede':
+    '只要多一個字元，標題就會在上傳時被拒絕。只是偏長的標題，則會在你未曾選擇的位置被截斷。',
   'web.tools.youtubeTitle.explainer.title': '兩種不同的限制',
   'web.tools.youtubeTitle.explainer.body':
     '硬性上限是上傳端點所接受的範圍。而標題會在哪裡顯示則是另一個問題：搜尋結果、側邊欄與手機各自會在不同的位置截斷標題，且這些截斷點沒有一個是公開記載的。此工具說明的是文件記載的上限，並呈現你標題的形狀，不會捏造截斷的字數。',
@@ -186,8 +209,10 @@ export const webToolsMessages = {
   'web.tools.youtubeTitle.result.count': '{count} / {limit} 個字元',
   'web.tools.youtubeTitle.result.over': '超出 {over, plural, other {# 個字元}}，上傳將會被拒絕。',
   'web.tools.youtubeTitle.result.fits': '在文件記載的上限內。',
-  'web.tools.youtubeTitle.result.front': '前 {count} 個字元的權重最高，因為那大致就是窄版版面所能容納的範圍。你的標題開頭為：{preview}',
-  'web.tools.youtubeTitle.result.unavailable': '此版本中無法取得標題限制，因此此處不會進行任何檢查。',
+  'web.tools.youtubeTitle.result.front':
+    '前 {count} 個字元的權重最高，因為那大致就是窄版版面所能容納的範圍。你的標題開頭為：{preview}',
+  'web.tools.youtubeTitle.result.unavailable':
+    '此版本中無法取得標題限制，因此此處不會進行任何檢查。',
   'web.tools.youtubeTitle.faq.limit.q': '此限制從何而來？',
   'web.tools.youtubeTitle.faq.limit.a':
     '來自官方的 videos insert 參考文件，並由我們上傳工具會使用的相同連接器程式碼產生到此頁面。有人最後一次閱讀該頁面的日期，會顯示在數字旁邊。',
@@ -203,7 +228,8 @@ export const webToolsMessages = {
   /* ---------------------------------------------------------------------- */
 
   'web.tools.timeZone.title': '時區與夏令時間規劃工具',
-  'web.tools.timeZone.lede': '在你的行事曆上看起來穩定的每週時段，每年會有兩次讓一半的受眾感到時間移動了。此工具會顯示何時、何地會發生這種情況。',
+  'web.tools.timeZone.lede':
+    '在你的行事曆上看起來穩定的每週時段，每年會有兩次讓一半的受眾感到時間移動了。此工具會顯示何時、何地會發生這種情況。',
   'web.tools.timeZone.explainer.title': '為何固定的本地時間並非固定的時刻',
   'web.tools.timeZone.explainer.body':
     '一個時間只有在附上時區時才有意義。各時區在不同國家會於不同日期改變其偏移量，一月時相差五小時的兩個地區，到了四月可能只相差四小時。以「一個時刻加上一個時區」儲存的排程能撐過這種變化，以「本地時間」儲存的排程則不能。',
@@ -214,7 +240,8 @@ export const webToolsMessages = {
   'web.tools.timeZone.field.audience.help': '選擇你讀者實際所在的時區。',
   'web.tools.timeZone.result.title': '同一個時刻，在你所選的每個地方',
   'web.tools.timeZone.result.empty': '請至少選擇一個受眾時區。',
-  'web.tools.timeZone.result.shift': '此日期與四週後同一個星期幾之間，會發生一次夏令時間變動，因此本地時間會移動。',
+  'web.tools.timeZone.result.shift':
+    '此日期與四週後同一個星期幾之間，會發生一次夏令時間變動，因此本地時間會移動。',
   'web.tools.timeZone.result.stable': '未來四週內偏移量不會改變。',
   'web.tools.timeZone.result.later': '四週後為 {time}。',
   'web.tools.timeZone.result.invalidDate': '請輸入日期與時間以查看比較結果。',
@@ -236,7 +263,8 @@ export const webToolsMessages = {
   'web.tools.engagementRate.explainer.body':
     '觸及、追蹤者與曝光次數回答的是不同的問題。以觸及計算的比率，說明的是實際看到貼文的人做出了什麼反應；以追蹤者計算的比率，說明的是不論貼文是否觸及所有人，你的受眾中有多少比例產生了互動；以曝光次數計算的比率，則會計入包括重複瀏覽在內的每一次瀏覽。將以一種方式計算的比率，拿來和以另一種方式計算的比率相比，是造成互動數字看起來不對勁的常見原因。',
   'web.tools.engagementRate.field.interactions.label': '互動次數',
-  'web.tools.engagementRate.field.interactions.help': '你正在衡量的這則貼文中，按讚、留言、分享與收藏加總後的數字。',
+  'web.tools.engagementRate.field.interactions.help':
+    '你正在衡量的這則貼文中，按讚、留言、分享與收藏加總後的數字。',
   'web.tools.engagementRate.field.reach.label': '觸及',
   'web.tools.engagementRate.field.reach.help': '至少看過此貼文一次的帳號數。',
   'web.tools.engagementRate.field.followers.label': '追蹤者',

@@ -92,7 +92,10 @@ async function resolveMedia(
   for (const ref of refs) {
     const found = await runInWorkspace(input.deps, input.ctx, async (db) => {
       if (ref.kind === 'id') {
-        return db.mediaAsset.findFirst({ where: { id: ref.value, deletedAt: null }, select: { id: true } });
+        return db.mediaAsset.findFirst({
+          where: { id: ref.value, deletedAt: null },
+          select: { id: true },
+        });
       }
       if (ref.kind === 'checksum') {
         return db.mediaAsset.findFirst({

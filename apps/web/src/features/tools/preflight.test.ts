@@ -73,10 +73,7 @@ describe('preflight text rules', () => {
 
 describe('preflight media rules', () => {
   it('fails when there are more images than the platform accepts', () => {
-    const row = evaluateProvider(
-      { ...BASE, draft: 'hi', mediaKind: 'image', imageCount: 9 },
-      'x',
-    );
+    const row = evaluateProvider({ ...BASE, draft: 'hi', mediaKind: 'image', imageCount: 9 }, 'x');
     expect(row.status).toBe('fail');
     expect(codesFor(row)).toContain('imagesOver');
   });

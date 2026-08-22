@@ -41,12 +41,14 @@ export const webBlogMessages = {
   'web.blog.label.cluster': 'Ämne',
   'web.blog.label.articleList': 'Artiklar',
   'web.blog.label.backToIndex': 'Alla artiklar',
-  'web.blog.label.count': '{count, plural, =0 {Inga artiklar än} one {# artikel} other {# artiklar}}',
+  'web.blog.label.count':
+    '{count, plural, =0 {Inga artiklar än} one {# artikel} other {# artiklar}}',
 
   'web.blog.byline.editorial.name': 'Publiceringsredaktionen',
   'web.blog.byline.editorial.role': 'Skriver och underhåller dessa artiklar',
   'web.blog.byline.platform.name': 'Redaktionen för plattformsdokumentation',
-  'web.blog.byline.platform.role': 'Kontrollerar varje mening om en plattform mot dess officiella källa',
+  'web.blog.byline.platform.role':
+    'Kontrollerar varje mening om en plattform mot dess officiella källa',
 
   'web.blog.feed.title': 'Texter om publiceringsarbete',
   'web.blog.feed.description':

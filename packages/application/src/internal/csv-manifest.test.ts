@@ -115,7 +115,9 @@ describe('parseCsvManifest', () => {
   });
 
   it('reports a scheduled time that has already passed instead of moving it', () => {
-    const manifest = parse(`${HEADER}\n${row('r1', { scheduled_local_time: '2026-01-01T10:00' })}\n`);
+    const manifest = parse(
+      `${HEADER}\n${row('r1', { scheduled_local_time: '2026-01-01T10:00' })}\n`,
+    );
     expect(keys(manifest.rows[0]?.issues ?? [])).toContain('import.error.scheduleInPast');
   });
 

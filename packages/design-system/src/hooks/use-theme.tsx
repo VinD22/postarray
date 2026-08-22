@@ -1,13 +1,6 @@
 'use client';
 
-import {
-  createContext,
-  useCallback,
-  useContext,
-  useMemo,
-  useState,
-  type ReactNode,
-} from 'react';
+import { createContext, useCallback, useContext, useMemo, useState, type ReactNode } from 'react';
 
 import { THEME_MEDIA_QUERY, THEME_STORAGE_KEY, themeBootstrapScript } from '../theme-bootstrap';
 import { useIsomorphicLayoutEffect } from './use-isomorphic-layout-effect';

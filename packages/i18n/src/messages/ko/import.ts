@@ -15,7 +15,8 @@ export const importMessages = {
   'import.step.position': '{total}단계 중 {current}단계',
 
   'import.upload.heading': 'CSV 파일 선택',
-  'import.upload.help': 'CSV만 가능합니다. .xlsx 같은 스프레드시트 파일은 읽을 수 없습니다. 먼저 시트를 CSV로 내보내세요.',
+  'import.upload.help':
+    'CSV만 가능합니다. .xlsx 같은 스프레드시트 파일은 읽을 수 없습니다. 먼저 시트를 CSV로 내보내세요.',
   'import.upload.field': 'CSV 파일',
   'import.upload.fieldHelp': '파일을 선택하거나 아래 상자에 행을 붙여넣으세요.',
   'import.upload.paste': '또는 CSV 텍스트 붙여넣기',
@@ -127,16 +128,22 @@ export const importMessages = {
   'import.error.required': '이 셀은 비워둘 수 없습니다.',
   'import.error.invalidCell': '이 셀은 읽을 수 있는 형식이 아닙니다.',
   'import.error.rowShape': '이 줄에는 셀이 {actual}개 있지만 헤더에는 {expected}개가 있습니다.',
-  'import.error.invalidLocalTime': '{value} 시간은 2026-09-01T10:00 같은 현지 날짜와 시간이 아닙니다.',
+  'import.error.invalidLocalTime':
+    '{value} 시간은 2026-09-01T10:00 같은 현지 날짜와 시간이 아닙니다.',
   'import.error.invalidTimeZone': '{value} 시간대는 IANA 시간대 이름이 아닙니다.',
-  'import.error.nonexistentLocalTime': '{value} 시간은 {zone}에 존재하지 않습니다. 시계가 그 시간을 건너뜁니다.',
-  'import.error.ambiguousLocalTime': '{value} 시간은 그날 {zone}에서 두 번 발생합니다. 다른 시간을 선택하세요.',
+  'import.error.nonexistentLocalTime':
+    '{value} 시간은 {zone}에 존재하지 않습니다. 시계가 그 시간을 건너뜁니다.',
+  'import.error.ambiguousLocalTime':
+    '{value} 시간은 그날 {zone}에서 두 번 발생합니다. 다른 시간을 선택하세요.',
   'import.error.scheduleInPast': '{zone}의 {value} 시간은 이미 지났습니다.',
   'import.error.invalidTargets': '{value} 값은 저장된 대상 세트도, 계정 ID 목록도 아닙니다.',
-  'import.error.invalidMedia': '{value} 값은 미디어 ID, sha256 체크섬, https 주소 중 어느 것도 아닙니다.',
+  'import.error.invalidMedia':
+    '{value} 값은 미디어 ID, sha256 체크섬, https 주소 중 어느 것도 아닙니다.',
   'import.error.mediaNotFound': '이 작업공간에 {value}과(와) 일치하는 미디어가 없습니다.',
-  'import.error.mediaImportStarted': '{value}의 미디어를 가져오는 중입니다. 라이브러리에 들어오면 이 파일을 다시 적용하세요.',
-  'import.error.unknownVariantTarget': '이 행에는 {provider} 계정이 없어 {provider} 문구가 사용되지 않았습니다.',
+  'import.error.mediaImportStarted':
+    '{value}의 미디어를 가져오는 중입니다. 라이브러리에 들어오면 이 파일을 다시 적용하세요.',
+  'import.error.unknownVariantTarget':
+    '이 행에는 {provider} 계정이 없어 {provider} 문구가 사용되지 않았습니다.',
   'import.error.applyFailed': '이 행을 적용할 수 없었습니다. 참조: {code}.',
   'import.error.alreadyApplied': '이 행은 이미 초안을 만들어서 그대로 두었습니다.',
   'import.error.tooManyRows': '파일의 처음 {limit}개 행만 읽힙니다.',

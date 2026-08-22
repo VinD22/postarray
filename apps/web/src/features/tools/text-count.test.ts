@@ -61,10 +61,7 @@ describe('grapheme counting', () => {
 describe('link detection', () => {
   it('finds every http and https URL in order', () => {
     const urls = detectUrls('see https://example.test/a and http://example.test/b now');
-    expect(urls.map((url) => url.url)).toEqual([
-      'https://example.test/a',
-      'http://example.test/b',
-    ]);
+    expect(urls.map((url) => url.url)).toEqual(['https://example.test/a', 'http://example.test/b']);
   });
 
   it('leaves trailing sentence punctuation out of the link', () => {

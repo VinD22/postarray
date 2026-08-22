@@ -224,7 +224,8 @@ export const webSettingsMessages = {
     'I suoi canali collegati smettono di comparire nei flussi dei progetti attivi.',
   'settings.ui.projects.archiveHistory':
     'Bozze, post pubblicati, ricevute e cronologia di controllo vengono conservati.',
-  'settings.ui.projects.archiveLastDisabled': "Mantieni almeno un progetto attivo nell'area di lavoro.",
+  'settings.ui.projects.archiveLastDisabled':
+    "Mantieni almeno un progetto attivo nell'area di lavoro.",
   'settings.ui.projects.archiveConnectedDisabled':
     'Disconnetti i canali di questo progetto prima di archiviarlo.',
 

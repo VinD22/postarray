@@ -40,8 +40,7 @@ export const webBlogMessages = {
   'web.blog.feed.label': 'RSS फ़ीड',
 
   'web.blog.empty.title': 'यहां अभी तक कुछ भी प्रकाशित नहीं हुआ',
-  'web.blog.empty.body':
-    'पहले लेख लिखे जा रहे हैं। प्रकाशित होते ही फ़ीड उन्हें ले आएगी।',
+  'web.blog.empty.body': 'पहले लेख लिखे जा रहे हैं। प्रकाशित होते ही फ़ीड उन्हें ले आएगी।',
 
   'web.blog.label.language': 'इस भाषा में पढ़ें',
   'web.blog.label.notTranslated':

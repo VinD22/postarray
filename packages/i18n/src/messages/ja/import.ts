@@ -16,7 +16,8 @@ export const importMessages = {
   'import.upload.field': 'CSVファイル',
   'import.upload.fieldHelp': 'ファイルを選択するか、以下のボックスに行を貼り付けてください。',
   'import.upload.paste': 'またはCSVテキストを貼り付け',
-  'import.upload.pasteHelp': 'ヘッダー行を含めてください。何かが作成される前にすべてが確認されます。',
+  'import.upload.pasteHelp':
+    'ヘッダー行を含めてください。何かが作成される前にすべてが確認されます。',
   'import.upload.project': 'プロジェクト',
   'import.upload.projectHelp': '1つのファイル内の各行はこのプロジェクトに属します。',
   'import.upload.submit': 'このファイルを確認',
@@ -34,8 +35,7 @@ export const importMessages = {
   'import.template.optional': '任意列',
   'import.column.external_row_id': '行の独自ID。ファイル内で一意である必要があります。',
   'import.column.project': 'その行が属するプロジェクトの名前またはID。',
-  'import.column.targets':
-    'set: に続くターゲットセットID、または縦棒で区切られたアカウントID。',
+  'import.column.targets': 'set: に続くターゲットセットID、または縦棒で区切られたアカウントID。',
   'import.column.caption': '投稿テキスト。',
   'import.column.scheduled_local_time': 'ローカルの日付と時刻。2026-09-01T10:00の形式で記入。',
   'import.column.time_zone': 'そのローカル時刻を読み取るIANAゾーン。例: Europe/Berlin。',
@@ -125,7 +125,8 @@ export const importMessages = {
   'import.error.duplicateRowId': '行ID {value}がこのファイル内で複数回使用されています。',
   'import.error.required': 'このセルは空にできません。',
   'import.error.invalidCell': 'このセルは読み取れない形式です。',
-  'import.error.rowShape': 'この行には{actual}個のセルがありますが、ヘッダーには{expected}個あります。',
+  'import.error.rowShape':
+    'この行には{actual}個のセルがありますが、ヘッダーには{expected}個あります。',
   'import.error.invalidLocalTime':
     '時刻{value}は2026-09-01T10:00のようなローカルの日付と時刻ではありません。',
   'import.error.invalidTimeZone': 'ゾーン{value}はIANAタイムゾーン名ではありません。',

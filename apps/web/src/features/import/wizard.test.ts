@@ -43,7 +43,10 @@ describe('import wizard steps', () => {
   it('stops on the column check when a required column is missing', () => {
     const withMissing = report();
     expect(
-      stepFor({ ...withMissing, columns: { ...withMissing.columns, missingRequired: ['caption'] } }),
+      stepFor({
+        ...withMissing,
+        columns: { ...withMissing.columns, missingRequired: ['caption'] },
+      }),
     ).toBe('columns');
   });
 
@@ -60,7 +63,9 @@ describe('import wizard steps', () => {
   it('refuses to offer apply for a file that produced no ready rows', () => {
     expect(
       canApply(
-        report({ counts: { total: 2, valid: 0, invalid: 2, applied: null, failed: null, skipped: null } }),
+        report({
+          counts: { total: 2, valid: 0, invalid: 2, applied: null, failed: null, skipped: null },
+        }),
       ),
     ).toBe(false);
   });
@@ -88,7 +93,13 @@ describe('import template and problem export', () => {
         state: 'invalid',
         payload: null,
         validation: null,
-        issues: [{ key: 'import.error.invalidTimeZone', column: 'time_zone', values: { value: 'Mars/Olympus' } }],
+        issues: [
+          {
+            key: 'import.error.invalidTimeZone',
+            column: 'time_zone',
+            values: { value: 'Mars/Olympus' },
+          },
+        ],
         contentItemId: null,
         publishJobId: null,
         appliedAt: null,

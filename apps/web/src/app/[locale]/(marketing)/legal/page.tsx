@@ -3,10 +3,7 @@ import type { ReactNode } from 'react';
 import { Badge } from '@relay/design-system/primitives';
 
 import { Lede, Meta, Section } from '@/features/marketing/components/layout';
-import {
-  EditorialDisplay,
-  EditorialSection,
-} from '@/features/marketing/components/editorial';
+import { EditorialDisplay, EditorialSection } from '@/features/marketing/components/editorial';
 import { RowLink } from '@/features/marketing/components/links';
 import { formatDate, marketingTranslator } from '@/features/marketing/i18n';
 import { pageMetadata } from '@/features/marketing/seo';

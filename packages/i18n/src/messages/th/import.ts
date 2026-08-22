@@ -46,8 +46,7 @@ export const importMessages = {
   'import.template.optional': 'คอลัมน์เสริม',
   'import.column.external_row_id': 'รหัสของคุณเองสำหรับแถวนั้น ต้องไม่ซ้ำกันภายในไฟล์',
   'import.column.project': 'ชื่อหรือรหัสโปรเจกต์ที่แถวนั้นเป็นของ',
-  'import.column.targets':
-    'เริ่มด้วย set: ตามด้วยรหัส Set บัญชี หรือรหัสบัญชีคั่นด้วยเส้นตั้ง',
+  'import.column.targets': 'เริ่มด้วย set: ตามด้วยรหัส Set บัญชี หรือรหัสบัญชีคั่นด้วยเส้นตั้ง',
   'import.column.caption': 'ข้อความของโพสต์',
   'import.column.scheduled_local_time': 'วันที่และเวลาท้องถิ่น เขียนในรูปแบบ 2026-09-01T10:00',
   'import.column.time_zone': 'เขตเวลา IANA ที่ใช้อ่านเวลาท้องถิ่นนั้น เช่น Europe/Berlin',
@@ -146,8 +145,7 @@ export const importMessages = {
   'import.error.ambiguousLocalTime':
     'เวลา {value} เกิดขึ้นสองครั้งในเขตเวลา {zone} ในวันนั้น ให้เลือกเวลาอื่น',
   'import.error.scheduleInPast': 'เวลา {value} ในเขตเวลา {zone} ผ่านไปแล้ว',
-  'import.error.invalidTargets':
-    'ค่า {value} ไม่ใช่ Set บัญชีที่บันทึกไว้หรือรายการรหัสบัญชี',
+  'import.error.invalidTargets': 'ค่า {value} ไม่ใช่ Set บัญชีที่บันทึกไว้หรือรายการรหัสบัญชี',
   'import.error.invalidMedia': 'ค่า {value} ไม่ใช่รหัสสื่อ เช็คซัม sha256 หรือที่อยู่ https',
   'import.error.mediaNotFound': 'ไม่มีสื่อในพื้นที่ทำงานนี้ที่ตรงกับ {value}',
   'import.error.mediaImportStarted':

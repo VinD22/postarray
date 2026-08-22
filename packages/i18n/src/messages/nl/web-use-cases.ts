@@ -66,7 +66,8 @@ export const webUseCaseMessages = {
   /* ---------------------------------------------------------------------- */
 
   'web.useCases.approvals.title': 'Goedkeuringsworkflows',
-  'web.useCases.approvals.lede': 'Een goedkeuring is alleen iets waard als het goedgekeurde ook is wat naar buiten gaat.',
+  'web.useCases.approvals.lede':
+    'Een goedkeuring is alleen iets waard als het goedgekeurde ook is wat naar buiten gaat.',
   'web.useCases.approvals.problem':
     'Goedkeuringen leven meestal buiten de tool die publiceert. Een screenshot gaat naar een klant, de klant antwoordt ja, en dan verandert de tekst. De goedkeuring verwijst nu naar een concept dat niemand heeft, en de tool heeft geen idee, dus publiceert het wat het laatst is meegegeven.',
   'web.useCases.approvals.approach1':

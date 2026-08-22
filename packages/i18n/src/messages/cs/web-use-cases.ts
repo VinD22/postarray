@@ -66,7 +66,8 @@ export const webUseCaseMessages = {
   /* ---------------------------------------------------------------------- */
 
   'web.useCases.approvals.title': 'Schvalovací postupy',
-  'web.useCases.approvals.lede': 'Schválení má cenu jen tehdy, když to, co bylo schváleno, je to, co jde ven.',
+  'web.useCases.approvals.lede':
+    'Schválení má cenu jen tehdy, když to, co bylo schváleno, je to, co jde ven.',
   'web.useCases.approvals.problem':
     'Schválení obvykle žijí mimo nástroj, který publikuje. Snímek obrazovky jde klientovi, klient odpoví ano, a pak se text změní. Schválení teď odkazuje na koncept, který nikdo nemá, a nástroj o tom neví, takže publikuje to, co dostal naposledy.',
   'web.useCases.approvals.approach1':

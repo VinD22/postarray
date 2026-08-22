@@ -40,11 +40,7 @@ export interface LineMaskHeadlineProps {
  * largest type on the page, where a tight display line-height could otherwise
  * shave a descender.
  */
-export function LineMaskHeadline({
-  children,
-  as: Tag = 'h1',
-  className,
-}: LineMaskHeadlineProps) {
+export function LineMaskHeadline({ children, as: Tag = 'h1', className }: LineMaskHeadlineProps) {
   const RenderTag = Tag as ElementType;
   const scope = useRef<HTMLElement>(null);
   const motionOk = useMotionOk();
@@ -93,9 +89,5 @@ export function LineMaskHeadline({
     { scope, dependencies: [motionOk, children] },
   );
 
-  return createElement(
-    RenderTag,
-    { ref: scope as Ref<HTMLElement>, className },
-    children,
-  );
+  return createElement(RenderTag, { ref: scope as Ref<HTMLElement>, className }, children);
 }

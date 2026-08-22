@@ -79,7 +79,7 @@ export const webDemoMessages = {
 
   'web.demo.step.connect.title': 'Koppel een account',
   'web.demo.step.connect.body':
-    'Koppelen verloopt alleen via officiële platform-API\'s, en vertelt je wat het platform van het account vereist voordat je begint. Vandaag stopt elke connector bij verificatie, daarom zegt elke rij hieronder dat in plaats van een groen vinkje te tonen.',
+    "Koppelen verloopt alleen via officiële platform-API's, en vertelt je wat het platform van het account vereist voordat je begint. Vandaag stopt elke connector bij verificatie, daarom zegt elke rij hieronder dat in plaats van een groen vinkje te tonen.",
 
   'web.demo.step.compose.title': 'Schrijf het één keer, pas het per platform aan',
   'web.demo.step.compose.body':
@@ -122,12 +122,14 @@ export const webDemoMessages = {
 
   'web.demo.schedule.label': 'Gepland',
   'web.demo.schedule.value': '{when} in {zone}',
-  'web.demo.schedule.approval': 'Er is één goedkeuring vereist voordat er iets kan worden verzonden.',
+  'web.demo.schedule.approval':
+    'Er is één goedkeuring vereist voordat er iets kan worden verzonden.',
   'web.demo.schedule.queue':
     'De wachtrij is de andere route: die kiest het volgende tijdstip dat je regels toestaan, in deze tijdzone.',
 
   'web.demo.week.label': 'De week',
-  'web.demo.week.caption': 'Dezelfde drie berichten op de kalender, gelezen in de tijdzone van het merk.',
+  'web.demo.week.caption':
+    'Dezelfde drie berichten op de kalender, gelezen in de tijdzone van het merk.',
   'web.demo.week.empty': 'Niets gepland',
 
   'web.demo.receipt.label': 'Ontvangstbevestiging tot nu toe',
@@ -245,7 +247,8 @@ export const webDemoMessages = {
   'web.demo.digest.line.earliest': 'Dinsdagochtend was je vroegste tijdstip.',
   'web.demo.digest.line.approval': 'Elke versie werd goedgekeurd voordat ze in de wachtrij kwam.',
   'web.demo.digest.line.alt': 'Elke afbeelding droeg alt-tekst geschreven door een persoon.',
-  'web.demo.digest.footer': 'Live analyses verschijnen hier zodra je berichten worden gepubliceerd.',
+  'web.demo.digest.footer':
+    'Live analyses verschijnen hier zodra je berichten worden gepubliceerd.',
 
   /* ---------------------------------------------------------------------- */
   /* The three added walkthrough steps                                       */

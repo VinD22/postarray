@@ -398,7 +398,8 @@ export const webComposerMessages = {
   'mediaLib.processing.unavailableTitle': 'Ten plik nie jest gotowy do publikacji',
   'mediaLib.processing.unavailableBody':
     'Przetwarzanie lub kontrola bezpieczeństwa nadal oczekują albo się nie powiodły. Prześlij plik ponownie, jeśli ten stan się nie wyjaśni.',
-  'mediaLib.processing.pendingTitle': 'Skanowanie bezpieczeństwa jest niedostępne przed uruchomieniem',
+  'mediaLib.processing.pendingTitle':
+    'Skanowanie bezpieczeństwa jest niedostępne przed uruchomieniem',
   'mediaLib.processing.pendingBody':
     'Plik jest przechowywany przez 30 dni, ale nie można go dołączyć do opublikowanego posta, dopóki skanowanie bezpieczeństwa nie zostanie włączone.',
   'mediaLib.processing.blockedTitle': 'Ten plik nie może zostać opublikowany',

@@ -347,7 +347,9 @@ describe('a project id from another workspace', () => {
   });
 
   it('is refused as a list filter rather than answered with an empty page', async () => {
-    await expect(service().list(ctx, { projectId: OTHER_WORKSPACE_PROJECT_ID })).rejects.toMatchObject({
+    await expect(
+      service().list(ctx, { projectId: OTHER_WORKSPACE_PROJECT_ID }),
+    ).rejects.toMatchObject({
       code: 'NOT_FOUND',
     });
   });

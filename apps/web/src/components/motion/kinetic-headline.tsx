@@ -80,9 +80,5 @@ export function KineticHeadline({
     { scope, dependencies: [motionOk, effectiveSplit, children, trigger] },
   );
 
-  return createElement(
-    RenderTag,
-    { ref: scope as Ref<HTMLElement>, className },
-    children,
-  );
+  return createElement(RenderTag, { ref: scope as Ref<HTMLElement>, className }, children);
 }

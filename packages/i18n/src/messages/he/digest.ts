@@ -7,7 +7,8 @@ import { withHebrewPluralForms } from './catalog-helpers';
  */
 export const digestMessages = withHebrewPluralForms({
   'email.digest.subject': 'השבוע שלך ב-{workspaceName}',
-  'email.digest.intro': 'הנה מה שאנחנו יכולים לראות עבור {workspaceName} בין {windowStart} ל-{windowEnd}.',
+  'email.digest.intro':
+    'הנה מה שאנחנו יכולים לראות עבור {workspaceName} בין {windowStart} ל-{windowEnd}.',
   'email.digest.noData':
     'לא הצלחנו למדוד שום דבר השבוע. כשמספר חסר, הוא חסר כי לא הצלחנו לקרוא אותו, לא כי הוא היה אפס.',
   'email.digest.footer':

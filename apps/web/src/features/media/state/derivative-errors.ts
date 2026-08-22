@@ -18,10 +18,7 @@ import { describeApiError } from '@/features/settings/lib/api-error';
 
 type Translator = ReturnType<typeof useTranslations>;
 
-function numberAt(
-  values: Readonly<Record<string, string | number>>,
-  key: string,
-): number | null {
+function numberAt(values: Readonly<Record<string, string | number>>, key: string): number | null {
   const value = values[key];
   return typeof value === 'number' ? value : null;
 }

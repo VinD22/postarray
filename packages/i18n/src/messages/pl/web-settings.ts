@@ -221,7 +221,8 @@ export const webSettingsMessages = {
     'Jego połączone kanały przestają pojawiać się w przepływach aktywnych projektów.',
   'settings.ui.projects.archiveHistory':
     'Szkice, opublikowane posty, potwierdzenia i historia audytu są zachowywane.',
-  'settings.ui.projects.archiveLastDisabled': 'Zachowaj co najmniej jeden aktywny projekt w obszarze roboczym.',
+  'settings.ui.projects.archiveLastDisabled':
+    'Zachowaj co najmniej jeden aktywny projekt w obszarze roboczym.',
   'settings.ui.projects.archiveConnectedDisabled':
     'Odłącz kanały tego projektu przed jego zarchiwizowaniem.',
 

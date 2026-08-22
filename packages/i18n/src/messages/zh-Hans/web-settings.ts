@@ -62,7 +62,8 @@ export const webSettingsMessages = {
   'settings.ui.members.column.lastActive': '最后活跃',
   'settings.ui.members.column.actions': '行动',
   'settings.ui.members.scopeAll': '所有品牌和帐户',
-  'settings.ui.members.scopeLimited': '{count, plural, one {# project} other {# projects}}：{names}',
+  'settings.ui.members.scopeLimited':
+    '{count, plural, one {# project} other {# projects}}：{names}',
   'settings.ui.members.approvals.canApprove': '可以批准',
   'settings.ui.members.approvals.cannotApprove': '无法批准',
   'settings.ui.members.approvals.canApproveOwnProjects': '可以批准列出的品牌',

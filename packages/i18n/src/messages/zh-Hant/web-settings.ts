@@ -142,7 +142,8 @@ export const webSettingsMessages = {
     '預設會套用在你於此處選擇的平台的撰寫工具中。可以在核准前針對每篇貼文個別變更。',
   'settings.ui.projects.glossaryHelp': '產品名稱、法律術語，以及任何翻譯後必須維持不變的內容。',
   'settings.ui.projects.glossaryCaption': '受保護術語，以及每種語言如何處理每個術語',
-  'settings.ui.projects.glossaryEmpty': '尚無受保護術語。請新增不得翻譯或改寫的產品名稱與法律術語。',
+  'settings.ui.projects.glossaryEmpty':
+    '尚無受保護術語。請新增不得翻譯或改寫的產品名稱與法律術語。',
   'settings.ui.projects.localeRulesHelp':
     '每種內容語言的規則。這些規則會在你改寫或創譯時套用，並顯示給審閱者。',
   'settings.ui.projects.saveProject': '儲存專案',
@@ -155,7 +156,8 @@ export const webSettingsMessages = {
     '請先封存一個未使用的專案，或變更工作區的權限額度，才能新增其他專案。目前的上限為 {limit}。',
   'settings.ui.projects.listLabel': '選擇要編輯的專案',
   'settings.ui.projects.detailsTitle': '專案詳細資料',
-  'settings.ui.projects.projectMeta': '{accounts, plural, =0 {沒有頻道} other {# 個頻道}} ・ 已更新 {updated}',
+  'settings.ui.projects.projectMeta':
+    '{accounts, plural, =0 {沒有頻道} other {# 個頻道}} ・ 已更新 {updated}',
   'settings.ui.projects.archiveAction': '封存專案',
   'settings.ui.projects.archiveTitle': '要封存 {project} 嗎？',
   'settings.ui.projects.archiveBody': '此未使用的專案會離開啟用中的工作區，並釋出一個專案名額。',

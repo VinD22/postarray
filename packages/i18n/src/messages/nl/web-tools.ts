@@ -65,7 +65,8 @@ export const webToolsMessages = {
     'We leveren nog geen connector voor dit platform, dus we hebben geen geverifieerde limiet om te tonen. We zeggen liever niets dan te gokken.',
   'web.tools.shared.copy': 'Kopiëren',
   'web.tools.shared.copied': 'Gekopieerd',
-  'web.tools.shared.copyFailed': 'Je browser blokkeerde het kopiëren. Selecteer de tekst en kopieer die.',
+  'web.tools.shared.copyFailed':
+    'Je browser blokkeerde het kopiëren. Selecteer de tekst en kopieer die.',
   'web.tools.shared.faqTitle': 'Vragen',
   'web.tools.shared.baselineTitle': 'Welk account deze cijfers beschrijven',
   'web.tools.shared.baselineBody':
@@ -110,11 +111,12 @@ export const webToolsMessages = {
   'web.tools.preflight.field.platforms.help': 'Kies er zoveel als je gebruikt om te publiceren.',
   'web.tools.preflight.field.mediaKind.label': 'Bijgevoegde media',
   'web.tools.preflight.field.mediaKind.none': 'Geen media',
-  'web.tools.preflight.field.mediaKind.image': "Afbeeldingen",
+  'web.tools.preflight.field.mediaKind.image': 'Afbeeldingen',
   'web.tools.preflight.field.mediaKind.video': 'Eén video',
   'web.tools.preflight.field.mediaCount.label': 'Hoeveel afbeeldingen',
   'web.tools.preflight.field.byteSize.label': 'Bestandsgrootte in megabytes',
-  'web.tools.preflight.field.byteSize.help': 'Het grootste enkele bestand. Laat leeg om over te slaan.',
+  'web.tools.preflight.field.byteSize.help':
+    'Het grootste enkele bestand. Laat leeg om over te slaan.',
   'web.tools.preflight.field.duration.label': 'Videolengte in seconden',
   'web.tools.preflight.field.duration.help': 'Laat leeg om de duurcontrole over te slaan.',
   'web.tools.preflight.field.width.label': 'Mediabreedte in pixels',
@@ -141,7 +143,7 @@ export const webToolsMessages = {
   'web.tools.preflight.finding.imagesOver':
     'Dit platform accepteert {limit, plural, =0 {geen afbeeldingen} one {# afbeelding} other {# afbeeldingen}} in één bericht.',
   'web.tools.preflight.finding.videosOver':
-    'Dit platform accepteert {limit, plural, =0 {geen video} one {# video} other {# video\'s}} in één bericht.',
+    "Dit platform accepteert {limit, plural, =0 {geen video} one {# video} other {# video's}} in één bericht.",
   'web.tools.preflight.finding.bytesOver': 'Het bestand is groter dan het plafond van {limit}.',
   'web.tools.preflight.finding.bytesUnknown':
     'Geen gepubliceerd byteplafond voor dit mediatype, dus de grootte is niet gecontroleerd.',
@@ -183,7 +185,8 @@ export const webToolsMessages = {
   'web.tools.utm.field.medium.label': 'Campagnemedium',
   'web.tools.utm.field.medium.help': 'Het soort link. Bijvoorbeeld social, e-mail of referral.',
   'web.tools.utm.field.campaign.label': 'Campagnenaam',
-  'web.tools.utm.field.campaign.help': 'De lancering, promotie of het thema waartoe deze link behoort.',
+  'web.tools.utm.field.campaign.help':
+    'De lancering, promotie of het thema waartoe deze link behoort.',
   'web.tools.utm.field.term.label': 'Campagneterm',
   'web.tools.utm.field.term.help': 'Optioneel. Traditioneel het betaalde trefwoord.',
   'web.tools.utm.field.content.label': 'Campagne-inhoud',
@@ -203,7 +206,8 @@ export const webToolsMessages = {
   'web.tools.utm.faq.existing.a':
     'Nee. Bestaande parameters worden in hun oorspronkelijke volgorde bewaard, en alleen een UTM-parameter die je invulde, wordt toegevoegd of vervangen. Een fragment aan het einde van de URL blijft aan het einde.',
   'web.tools.utm.faq.privacy.q': 'Wordt mijn URL ergens naartoe gestuurd?',
-  'web.tools.utm.faq.privacy.a': 'Nee. De URL wordt in je browser samengesteld en verlaat deze pagina nooit.',
+  'web.tools.utm.faq.privacy.a':
+    'Nee. De URL wordt in je browser samengesteld en verlaat deze pagina nooit.',
 
   /* ---------------------------------------------------------------------- */
   /* YouTube title length checker                                            */
@@ -244,7 +248,7 @@ export const webToolsMessages = {
     'Een wekelijks tijdslot dat stabiel lijkt in je agenda, verschuift voor de helft van je publiek twee keer per jaar. Dit toont waar en wanneer.',
   'web.tools.timeZone.explainer.title': 'Waarom een vaste lokale tijd geen vaste tijd is',
   'web.tools.timeZone.explainer.body':
-    'Een tijdstip betekent alleen iets met een zone erbij. Zones veranderen hun verschil op data die per land verschillen, en twee regio\'s die in januari vijf uur uit elkaar liggen, kunnen in april vier uur uit elkaar liggen. Een schema opgeslagen als moment plus zone overleeft dat. Een schema opgeslagen als lokaal uur niet.',
+    "Een tijdstip betekent alleen iets met een zone erbij. Zones veranderen hun verschil op data die per land verschillen, en twee regio's die in januari vijf uur uit elkaar liggen, kunnen in april vier uur uit elkaar liggen. Een schema opgeslagen als moment plus zone overleeft dat. Een schema opgeslagen als lokaal uur niet.",
   'web.tools.timeZone.field.date.label': 'Datum',
   'web.tools.timeZone.field.time.label': 'Tijd',
   'web.tools.timeZone.field.zone.label': 'Jouw zone',
@@ -280,7 +284,8 @@ export const webToolsMessages = {
   'web.tools.engagementRate.field.reach.label': 'Bereik',
   'web.tools.engagementRate.field.reach.help': 'Accounts die het bericht minstens één keer zagen.',
   'web.tools.engagementRate.field.followers.label': 'Volgers',
-  'web.tools.engagementRate.field.followers.help': 'De accountgrootte op het moment van het bericht.',
+  'web.tools.engagementRate.field.followers.help':
+    'De accountgrootte op het moment van het bericht.',
   'web.tools.engagementRate.field.impressions.label': 'Vertoningen',
   'web.tools.engagementRate.field.impressions.help':
     'Totaal aantal weergaven, inclusief een persoon die het twee keer zag.',

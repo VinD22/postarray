@@ -20,7 +20,8 @@ export const importMessages = {
   'import.upload.field': 'Файл CSV',
   'import.upload.fieldHelp': 'Выберите файл или вставьте строки в поле ниже.',
   'import.upload.paste': 'Или вставьте текст CSV',
-  'import.upload.pasteHelp': 'Включите строку заголовка. Всё проверяется прежде, чем что-либо создаётся.',
+  'import.upload.pasteHelp':
+    'Включите строку заголовка. Всё проверяется прежде, чем что-либо создаётся.',
   'import.upload.project': 'Проект',
   'import.upload.projectHelp': 'Каждая строка в одном файле принадлежит этому проекту.',
   'import.upload.submit': 'Проверить этот файл',
@@ -36,13 +37,15 @@ export const importMessages = {
   'import.template.download': 'Скачать шаблон CSV',
   'import.template.required': 'Обязательные столбцы',
   'import.template.optional': 'Необязательные столбцы',
-  'import.column.external_row_id': 'Ваш собственный идентификатор строки. Должен быть уникальным внутри файла.',
+  'import.column.external_row_id':
+    'Ваш собственный идентификатор строки. Должен быть уникальным внутри файла.',
   'import.column.project': 'Название или идентификатор проекта, которому принадлежит строка.',
   'import.column.targets':
     'Либо set: и затем идентификатор набора целей, либо идентификаторы аккаунтов, разделённые вертикальной чертой.',
   'import.column.caption': 'Текст публикации.',
   'import.column.scheduled_local_time': 'Локальные дата и время, записанные как 2026-09-01T10:00.',
-  'import.column.time_zone': 'Пояс IANA, в котором читается локальное время, например Europe/Berlin.',
+  'import.column.time_zone':
+    'Пояс IANA, в котором читается локальное время, например Europe/Berlin.',
   'import.column.media':
     'Идентификатор медиафайла, sha256: и затем контрольная сумма уже имеющегося у вас медиафайла, или адрес https для загрузки сервером.',
   'import.column.title': 'Заголовок, там, где место назначения его использует.',
@@ -133,7 +136,8 @@ export const importMessages = {
   'import.error.emptyFile': 'В этом файле нет строк.',
   'import.error.missingColumn': 'Столбец {column} отсутствует.',
   'import.error.unknownColumn': 'Столбец {column} не распознан, поэтому он игнорируется.',
-  'import.error.duplicateRowId': 'Идентификатор строки {value} используется в этом файле более одного раза.',
+  'import.error.duplicateRowId':
+    'Идентификатор строки {value} используется в этом файле более одного раза.',
   'import.error.required': 'Эта ячейка не может быть пустой.',
   'import.error.invalidCell': 'Эта ячейка не в формате, который мы можем прочитать.',
   'import.error.rowShape': 'В этой строке {actual} ячеек, а в заголовке {expected}.',
@@ -149,12 +153,14 @@ export const importMessages = {
     'Значение {value} не является сохранённым набором целей или списком идентификаторов аккаунтов.',
   'import.error.invalidMedia':
     'Значение {value} не является идентификатором медиафайла, контрольной суммой sha256 или адресом https.',
-  'import.error.mediaNotFound': 'В этом рабочем пространстве нет медиафайла, соответствующего {value}.',
+  'import.error.mediaNotFound':
+    'В этом рабочем пространстве нет медиафайла, соответствующего {value}.',
   'import.error.mediaImportStarted':
     'Медиафайл по адресу {value} загружается. Примените этот файл снова, как только он окажется в библиотеке.',
   'import.error.unknownVariantTarget':
     'В этой строке нет аккаунта {provider}, поэтому текст для {provider} не был использован.',
   'import.error.applyFailed': 'Эту строку не удалось применить. Код: {code}.',
-  'import.error.alreadyApplied': 'Эта строка уже создала черновик, поэтому она осталась нетронутой.',
+  'import.error.alreadyApplied':
+    'Эта строка уже создала черновик, поэтому она осталась нетронутой.',
   'import.error.tooManyRows': 'Из файла читаются только первые {limit} строк.',
 } as const;

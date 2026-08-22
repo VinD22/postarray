@@ -18,10 +18,7 @@ import { registerBuiltInProviders } from '../src/providers/index';
 import { CONNECTOR_SOURCE } from '../../../apps/web/src/features/marketing/data/connectors';
 
 const here = dirname(fileURLToPath(import.meta.url));
-const outputPath = join(
-  here,
-  '../../../apps/web/src/features/marketing/data/publishing-limits.ts',
-);
+const outputPath = join(here, '../../../apps/web/src/features/marketing/data/publishing-limits.ts');
 
 const { deps } = createTestDeps();
 const registry = createConnectorRegistry([], { clock: deps.clock });

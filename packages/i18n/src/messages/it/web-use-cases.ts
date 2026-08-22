@@ -31,7 +31,7 @@ export const webUseCaseMessages = {
 
   'web.useCases.index.title': "Casi d'uso",
   'web.useCases.index.lede':
-    "Tre flussi di lavoro attorno ai quali viene costruito questo prodotto. Ogni pagina dice cosa costa oggi quel flusso a un team, come il prodotto è progettato per gestirlo, e quali parti sono realmente costruite.",
+    'Tre flussi di lavoro attorno ai quali viene costruito questo prodotto. Ogni pagina dice cosa costa oggi quel flusso a un team, come il prodotto è progettato per gestirlo, e quali parti sono realmente costruite.',
   'web.useCases.index.listLabel': "Casi d'uso",
 
   'web.useCases.notice.title': 'Questo descrive un progetto, non un servizio funzionante',
@@ -66,7 +66,8 @@ export const webUseCaseMessages = {
   /* ---------------------------------------------------------------------- */
 
   'web.useCases.approvals.title': 'Flussi di approvazione',
-  'web.useCases.approvals.lede': "Un'approvazione vale qualcosa solo se la cosa approvata è la cosa che esce.",
+  'web.useCases.approvals.lede':
+    "Un'approvazione vale qualcosa solo se la cosa approvata è la cosa che esce.",
   'web.useCases.approvals.problem':
     "Le approvazioni di solito vivono fuori dallo strumento che pubblica. Uno screenshot va a un cliente, il cliente risponde sì, e poi il testo cambia. L'approvazione ora si riferisce a una bozza che nessuno ha, e lo strumento non ne ha idea, quindi pubblica qualunque cosa gli sia stata data per ultima.",
   'web.useCases.approvals.approach1':
@@ -94,5 +95,5 @@ export const webUseCaseMessages = {
   'web.useCases.crossPlatform.approach3':
     'Ogni limite di piattaforma mostrato in qualsiasi punto di questo sito è generato dal registro dei connettori e porta il documento da cui proviene e la data in cui una persona lo ha letto.',
   'web.useCases.crossPlatform.today':
-    "Il compositore, le versioni per singola destinazione, le regole di validazione e il dataset dei limiti generato sono costruiti. Il passo di pubblicazione no: nessun connettore è verificato in produzione, quindi una bozza validata può essere programmata internamente e non può raggiungere una piattaforma.",
+    'Il compositore, le versioni per singola destinazione, le regole di validazione e il dataset dei limiti generato sono costruiti. Il passo di pubblicazione no: nessun connettore è verificato in produzione, quindi una bozza validata può essere programmata internamente e non può raggiungere una piattaforma.',
 } as const;

@@ -7,12 +7,7 @@ import {
   type SocialCredentialStorageRow,
   type StoredCredentialRecord,
 } from '@relay/application';
-import {
-  ERROR_CODES,
-  RelayError,
-  type AccountType,
-  type ProviderId,
-} from '@relay/contracts';
+import { ERROR_CODES, RelayError, type AccountType, type ProviderId } from '@relay/contracts';
 import {
   appendAuditEvent,
   Prisma,
@@ -135,9 +130,7 @@ function toPrismaWrite(input: CredentialStoreWrite): {
     accessTokenNonce: prismaBytes(storage.accessTokenNonce),
     accessTokenAuthTag: prismaBytes(storage.accessTokenAuthTag),
     refreshTokenCiphertext:
-      storage.refreshTokenCiphertext === null
-        ? null
-        : prismaBytes(storage.refreshTokenCiphertext),
+      storage.refreshTokenCiphertext === null ? null : prismaBytes(storage.refreshTokenCiphertext),
     refreshTokenNonce:
       storage.refreshTokenNonce === null ? null : prismaBytes(storage.refreshTokenNonce),
     refreshTokenAuthTag:

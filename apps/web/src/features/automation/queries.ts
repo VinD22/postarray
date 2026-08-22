@@ -109,7 +109,10 @@ export function useSaveRule() {
       if (projectId === undefined) throw new Error('ACTIVE_PROJECT_REQUIRED');
       const saved =
         draft.id === null
-          ? await api.automationRules.create(toRuleInput(draft, projectId), newIdempotencyKey('rule'))
+          ? await api.automationRules.create(
+              toRuleInput(draft, projectId),
+              newIdempotencyKey('rule'),
+            )
           : await api.automationRules.update(draft.id, toRuleInput(draft, projectId));
       return toRuleDraft(requireValue(saved, 'RULE_SAVE_NOT_AVAILABLE'));
     },

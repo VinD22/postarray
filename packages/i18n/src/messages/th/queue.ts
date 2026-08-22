@@ -27,8 +27,7 @@ export const queueMessages = {
   'queue.field.name': 'ชื่อกฎ',
   'queue.field.nameHelp': 'ชื่อที่คุณจะจำได้ในภายหลัง เช่น เช้าวันธรรมดา',
   'queue.field.timeZone': 'เขตเวลา',
-  'queue.field.timeZoneHelp':
-    'ช่วงเวลา จำนวนต่อวัน และวันที่ห้ามโพสต์ ทั้งหมดถูกอ่านในเขตเวลานี้',
+  'queue.field.timeZoneHelp': 'ช่วงเวลา จำนวนต่อวัน และวันที่ห้ามโพสต์ ทั้งหมดถูกอ่านในเขตเวลานี้',
   'queue.field.minimumGap': 'ระยะห่างขั้นต่ำ',
   'queue.field.minimumGapHelp': 'จำนวนนาทีระหว่างสองโพสต์ ศูนย์หมายถึงไม่มีกฎการเว้นระยะ',
   'queue.field.maximumPerDay': 'สูงสุดต่อวัน',

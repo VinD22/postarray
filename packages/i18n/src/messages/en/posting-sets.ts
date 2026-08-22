@@ -61,7 +61,8 @@ export const postingSetMessages = {
   'set.edit': 'Edit Set',
   'set.archive': 'Archive Set',
   'set.archived': 'Archived',
-  'set.archivedNote': 'Archived Sets are hidden from the picker. Posts made from them are unchanged.',
+  'set.archivedNote':
+    'Archived Sets are hidden from the picker. Posts made from them are unchanged.',
   'set.showArchived': 'Show archived',
   'set.saved': 'Set saved.',
   'set.archivedToast': 'Set archived. Posts already made from it are unchanged.',

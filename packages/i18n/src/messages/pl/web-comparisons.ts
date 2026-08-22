@@ -28,7 +28,8 @@ export const webComparisonMessages = {
   'web.comparison.label.backToIndex': 'Wszystkie porównania',
 
   'web.comparison.table.title': 'Co robi każda opcja',
-  'web.comparison.table.caption': 'Jedno twierdzenie na wiersz, ze źródłem stojącym za każdą odpowiedzią',
+  'web.comparison.table.caption':
+    'Jedno twierdzenie na wiersz, ze źródłem stojącym za każdą odpowiedzią',
 
   'web.comparison.bestFor.title': 'Które pasuje',
   'web.comparison.bestFor.ours': 'Wybierz ten produkt, gdy',

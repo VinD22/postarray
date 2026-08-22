@@ -37,8 +37,7 @@ export const engagementRateExplained: BlogArticle = {
       title: 'Engagement rate, explained: three formulas that are not interchangeable',
       description:
         'Reach, followers and impressions give three different engagement rates from the same post. Here is what each one actually measures, and a calculator that runs all three.',
-      lede:
-        'A lot of "my engagement rate looks wrong" confusion is not a measurement problem. It is two rates calculated with different denominators being compared as if they were the same number.',
+      lede: 'A lot of "my engagement rate looks wrong" confusion is not a measurement problem. It is two rates calculated with different denominators being compared as if they were the same number.',
       blocks: [
         {
           kind: 'takeaways',
@@ -60,7 +59,7 @@ export const engagementRateExplained: BlogArticle = {
         },
         {
           kind: 'paragraph',
-          text: 'Reach based rate tends to run higher than follower based rate, because reach is usually smaller than the follower count. If a spreadsheet compares last month\'s reach based rate against this month\'s follower based rate, the drop it reports may be a change in formula, not a change in the audience.',
+          text: "Reach based rate tends to run higher than follower based rate, because reach is usually smaller than the follower count. If a spreadsheet compares last month's reach based rate against this month's follower based rate, the drop it reports may be a change in formula, not a change in the audience.",
         },
         {
           kind: 'heading',
@@ -110,8 +109,7 @@ export const engagementRateExplained: BlogArticle = {
       title: 'Tasa de interacción explicada: tres fórmulas que no son intercambiables',
       description:
         'Alcance, seguidores e impresiones dan tres tasas de interacción distintas para la misma publicación. Qué mide cada una, y una calculadora que resuelve las tres.',
-      lede:
-        'Buena parte de la confusión con "mi tasa de interacción se ve mal" no es un problema de medición. Es comparar dos tasas calculadas con denominadores distintos como si fueran el mismo número.',
+      lede: 'Buena parte de la confusión con "mi tasa de interacción se ve mal" no es un problema de medición. Es comparar dos tasas calculadas con denominadores distintos como si fueran el mismo número.',
       blocks: [
         {
           kind: 'takeaways',
@@ -183,8 +181,7 @@ export const engagementRateExplained: BlogArticle = {
       title: 'Taxa de engajamento explicada: três fórmulas que não são intercambiáveis',
       description:
         'Alcance, seguidores e impressões dão três taxas de engajamento diferentes para o mesmo post. O que cada uma mede de fato, e uma calculadora que resolve as três.',
-      lede:
-        'Boa parte da confusão de "minha taxa de engajamento parece errada" não é um problema de medição. É comparar duas taxas calculadas com denominadores diferentes como se fossem o mesmo número.',
+      lede: 'Boa parte da confusão de "minha taxa de engajamento parece errada" não é um problema de medição. É comparar duas taxas calculadas com denominadores diferentes como se fossem o mesmo número.',
       blocks: [
         {
           kind: 'takeaways',
@@ -256,8 +253,7 @@ export const engagementRateExplained: BlogArticle = {
       title: 'Engagement-Rate erklärt: drei Formeln, die nicht austauschbar sind',
       description:
         'Reichweite, Follower und Impressionen ergeben drei unterschiedliche Engagement-Raten für denselben Beitrag. Was jede davon wirklich misst, plus ein Rechner für alle drei.',
-      lede:
-        'Ein großer Teil der Verwirrung bei "meine Engagement-Rate sieht falsch aus" ist kein Messproblem. Es werden zwei Raten mit unterschiedlichem Nenner verglichen, als wären sie dieselbe Zahl.',
+      lede: 'Ein großer Teil der Verwirrung bei "meine Engagement-Rate sieht falsch aus" ist kein Messproblem. Es werden zwei Raten mit unterschiedlichem Nenner verglichen, als wären sie dieselbe Zahl.',
       blocks: [
         {
           kind: 'takeaways',
@@ -329,15 +325,14 @@ export const engagementRateExplained: BlogArticle = {
       title: "Taux d'engagement expliqué : trois formules qui ne sont pas interchangeables",
       description:
         "Portée, abonnés et impressions donnent trois taux d'engagement différents pour la même publication. Ce que chacun mesure vraiment, avec un calculateur pour les trois.",
-      lede:
-        'Une bonne partie de la confusion "mon taux d\'engagement semble faux" n\'est pas un problème de mesure. C\'est comparer deux taux calculés avec des dénominateurs différents comme s\'ils étaient le même chiffre.',
+      lede: "Une bonne partie de la confusion \"mon taux d'engagement semble faux\" n'est pas un problème de mesure. C'est comparer deux taux calculés avec des dénominateurs différents comme s'ils étaient le même chiffre.",
       blocks: [
         {
           kind: 'takeaways',
           title: 'En résumé',
           items: [
             "Le taux d'engagement par portée, par abonnés et par impressions sont trois chiffres différents et valides pour la même publication.",
-            'Comparer un taux calculé d\'une façon avec un autre calculé différemment donne un chiffre qui semble faux même quand les deux sont corrects.',
+            "Comparer un taux calculé d'une façon avec un autre calculé différemment donne un chiffre qui semble faux même quand les deux sont corrects.",
             "Il n'existe pas de bon taux universel auquel se comparer. Cela dépend de la plateforme, du format et de la taille de l'audience.",
           ],
         },
@@ -352,7 +347,7 @@ export const engagementRateExplained: BlogArticle = {
         },
         {
           kind: 'paragraph',
-          text: 'Le taux basé sur la portée est généralement plus élevé que celui basé sur les abonnés, car la portée est habituellement inférieure au nombre d\'abonnés. Si un tableau compare le taux par portée du mois dernier au taux par abonnés de ce mois, la baisse rapportée peut être un changement de formule, pas un changement d\'audience.',
+          text: "Le taux basé sur la portée est généralement plus élevé que celui basé sur les abonnés, car la portée est habituellement inférieure au nombre d'abonnés. Si un tableau compare le taux par portée du mois dernier au taux par abonnés de ce mois, la baisse rapportée peut être un changement de formule, pas un changement d'audience.",
         },
         {
           kind: 'heading',
@@ -402,8 +397,7 @@ export const engagementRateExplained: BlogArticle = {
       title: 'エンゲージメント率を解説：互換性のない3つの計算式',
       description:
         'リーチ、フォロワー、インプレッションでは、同じ投稿でも3つの異なるエンゲージメント率になります。それぞれが実際に何を測っているか、3つとも計算できるツール付きで解説します。',
-      lede:
-        '「エンゲージメント率がおかしい」という混乱の多くは、測定の問題ではありません。分母の違う2つの率を、同じ数字であるかのように比較していることが原因です。',
+      lede: '「エンゲージメント率がおかしい」という混乱の多くは、測定の問題ではありません。分母の違う2つの率を、同じ数字であるかのように比較していることが原因です。',
       blocks: [
         {
           kind: 'takeaways',
@@ -475,8 +469,7 @@ export const engagementRateExplained: BlogArticle = {
       title: 'Engagement rate dijelaskan: tiga rumus yang tidak bisa saling ditukar',
       description:
         'Reach, followers, dan impressions menghasilkan tiga engagement rate berbeda dari postingan yang sama. Apa yang sebenarnya diukur masing-masing, plus kalkulator untuk ketiganya.',
-      lede:
-        'Banyak kebingungan "engagement rate saya kelihatan salah" sebenarnya bukan masalah pengukuran. Itu adalah dua rate yang dihitung dengan penyebut berbeda dibandingkan seolah angka yang sama.',
+      lede: 'Banyak kebingungan "engagement rate saya kelihatan salah" sebenarnya bukan masalah pengukuran. Itu adalah dua rate yang dihitung dengan penyebut berbeda dibandingkan seolah angka yang sama.',
       blocks: [
         {
           kind: 'takeaways',

@@ -166,7 +166,8 @@ export const webSettingsMessages = {
     'Aplicado por defecto en el compositor para las plataformas que elijas aquí. Se puede cambiar por publicación antes de la aprobación.',
   'settings.ui.projects.glossaryHelp':
     'Nombres de productos, términos legales y cualquier cosa que deba sobrevivir a una traducción sin cambios.',
-  'settings.ui.projects.glossaryCaption': 'Términos protegidos y cómo se maneja cada uno por idioma',
+  'settings.ui.projects.glossaryCaption':
+    'Términos protegidos y cómo se maneja cada uno por idioma',
   'settings.ui.projects.glossaryEmpty':
     'Aún no hay términos protegidos. Agregue nombres de productos y términos legales que no se deben traducir ni reformular.',
   'settings.ui.projects.localeRulesHelp':
@@ -176,7 +177,8 @@ export const webSettingsMessages = {
   'settings.ui.projects.capacityHelp':
     'El plan base de $29 incluye 3 proyectos activos. Un espacio de trabajo puede tener acceso a hasta 20 sin crear otra cuenta.',
   'settings.ui.projects.capacitySummary': '{used} de {limit}',
-  'settings.ui.projects.atLimitTitle': 'Este espacio de trabajo ya usó todos los espacios de proyecto',
+  'settings.ui.projects.atLimitTitle':
+    'Este espacio de trabajo ya usó todos los espacios de proyecto',
   'settings.ui.projects.atLimitBody':
     'Archive un proyecto inactivo o cambie el derecho del espacio de trabajo antes de agregar otro. El límite actual es {limit}.',
   'settings.ui.projects.listLabel': 'Elija un proyecto para editar',
@@ -191,7 +193,8 @@ export const webSettingsMessages = {
     'Sus canales conectados dejarán de aparecer en los flujos de proyectos activos.',
   'settings.ui.projects.archiveHistory':
     'Los borradores, publicaciones publicadas, recibos e historial de auditoría se conservan.',
-  'settings.ui.projects.archiveLastDisabled': 'Conserve al menos un proyecto activo en el espacio de trabajo.',
+  'settings.ui.projects.archiveLastDisabled':
+    'Conserve al menos un proyecto activo en el espacio de trabajo.',
   'settings.ui.projects.archiveConnectedDisabled':
     'Desconecte los canales de este proyecto antes de archivarlo.',
   'settings.ui.localization.description':

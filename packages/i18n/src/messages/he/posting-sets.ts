@@ -45,7 +45,8 @@ export const postingSetMessages = withHebrewPluralForms({
   'calendar.hold.blocked.billingAction': 'עבור לחיוב',
 
   'set.title': 'ערכות פרסום',
-  'set.lede': 'תשובה שמורה לשאלה "למי אני מפרסם את זה, ואיך". החלת ערכה מעתיקה את ההגדרות שלה לטיוטה חדשה.',
+  'set.lede':
+    'תשובה שמורה לשאלה "למי אני מפרסם את זה, ואיך". החלת ערכה מעתיקה את ההגדרות שלה לטיוטה חדשה.',
   'set.appliedOnce':
     'ערכה נקראת פעם אחת, כשאתה מחיל אותה. עריכתה מאוחר יותר משנה את נקודת ההתחלה של הפוסט הבא. טיוטות ופוסטים מתוזמנים שכבר יצרת ממנה נשארים בדיוק כפי שהם.',
   'set.empty.title': 'עדיין אין ערכות',
@@ -79,12 +80,14 @@ export const postingSetMessages = withHebrewPluralForms({
   'set.approval.policy_auto': 'מה שמדיניות סביבת העבודה אומרת',
 
   'set.slot.next_free_slot': 'החריץ הפנוי הבא מהתור',
-  'set.slot.next_free_slotHint': 'משתמש בכללי התור של הפרויקט הזה כדי להציע זמן. הוא מציע; אתה מאשר.',
+  'set.slot.next_free_slotHint':
+    'משתמש בכללי התור של הפרויקט הזה כדי להציע זמן. הוא מציע; אתה מאשר.',
   'set.slot.pick_time': 'בקש ממני זמן',
   'set.slot.pick_timeHint': 'החלת הערכה משאירה את הזמן ריק כדי שתבחר.',
   'set.slot.draft_only': 'השאר כטיוטה',
   'set.slot.draft_onlyHint': 'החלת הערכה לא נוגעת בלוח הזמנים בכלל.',
-  'set.slot.noRules': 'לפרויקט הזה עדיין אין כללי תור, אז התור יציע את השעה הפנויה הראשונה ויגיד זאת.',
+  'set.slot.noRules':
+    'לפרויקט הזה עדיין אין כללי תור, אז התור יציע את השעה הפנויה הראשונה ויגיד זאת.',
   'set.slot.rulesLink': 'כללי תור',
 
   'set.defaults.title': 'ברירות מחדל לכל פלטפורמה',

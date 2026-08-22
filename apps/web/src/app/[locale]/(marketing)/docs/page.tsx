@@ -10,10 +10,7 @@ import {
   Split,
   Subheading,
 } from '@/features/marketing/components/layout';
-import {
-  EditorialDisplay,
-  EditorialSection,
-} from '@/features/marketing/components/editorial';
+import { EditorialDisplay, EditorialSection } from '@/features/marketing/components/editorial';
 import { TextLink } from '@/features/marketing/components/links';
 import { DOC_PRINCIPLES, DOC_SECTIONS } from '@/features/marketing/data/catalogs';
 import { marketingTranslator } from '@/features/marketing/i18n';

@@ -59,7 +59,8 @@ export const mediaMessages = {
   'mediaLib.derivative.select': 'Dùng phiên bản này',
   'mediaLib.derivative.selected': 'Đang dùng cho bài đăng này',
   'mediaLib.derivative.useOriginal': 'Dùng bản gốc',
-  'mediaLib.derivative.processing': 'Phiên bản này đang được tạo. Nó sẽ xuất hiện ở đây khi sẵn sàng.',
+  'mediaLib.derivative.processing':
+    'Phiên bản này đang được tạo. Nó sẽ xuất hiện ở đây khi sẵn sàng.',
   'mediaLib.derivative.alreadyExists':
     'Bạn đã thực hiện đúng chỉnh sửa này trước đây, nên chúng tôi dùng lại phiên bản đó thay vì tạo một bản thứ hai.',
   'mediaLib.derivative.failedTitle': 'Không thể tạo phiên bản này',
@@ -75,7 +76,8 @@ export const mediaMessages = {
     'Relay không tạo ra ảnh hay video. Trình chỉnh sửa này chỉ cắt, xoay, đổi kích thước, chuyển đổi và nén những gì bạn đã tải lên.',
 
   // ==================================================== refusals ====
-  'error.media_derivative_no_operations.message': 'Hãy chọn ít nhất một thay đổi trước khi lưu một phiên bản.',
+  'error.media_derivative_no_operations.message':
+    'Hãy chọn ít nhất một thay đổi trước khi lưu một phiên bản.',
   'error.media_derivative_duplicate_operation.message':
     'Mỗi loại thay đổi chỉ có thể xuất hiện một lần. Hãy xóa {operation} thứ hai.',
   'error.media_derivative_crop_out_of_bounds.message':

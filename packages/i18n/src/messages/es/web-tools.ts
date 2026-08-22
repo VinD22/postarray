@@ -61,7 +61,8 @@ export const webToolsMessages = {
   'web.tools.preflight.summary':
     'Un borrador, verificado contra los límites de texto y medios de diez plataformas a la vez.',
   'web.tools.utm.name': 'Constructor de enlaces UTM',
-  'web.tools.utm.summary': 'Compón una URL de campaña etiquetada sin estropear la query string que ya tenía.',
+  'web.tools.utm.summary':
+    'Compón una URL de campaña etiquetada sin estropear la query string que ya tenía.',
   'web.tools.youtubeTitle.name': 'Verificador de longitud de título de YouTube',
   'web.tools.youtubeTitle.summary': 'Mide un título como lo cuenta una persona.',
   'web.tools.timeZone.name': 'Planificador de zona horaria y horario de verano',
@@ -94,9 +95,11 @@ export const webToolsMessages = {
   'web.tools.preflight.field.mediaKind.video': 'Un video',
   'web.tools.preflight.field.mediaCount.label': 'Cuántas imágenes',
   'web.tools.preflight.field.byteSize.label': 'Tamaño del archivo en megabytes',
-  'web.tools.preflight.field.byteSize.help': 'El archivo único más grande. Déjalo vacío para saltarlo.',
+  'web.tools.preflight.field.byteSize.help':
+    'El archivo único más grande. Déjalo vacío para saltarlo.',
   'web.tools.preflight.field.duration.label': 'Duración del video en segundos',
-  'web.tools.preflight.field.duration.help': 'Déjalo vacío para saltar la verificación de duración.',
+  'web.tools.preflight.field.duration.help':
+    'Déjalo vacío para saltar la verificación de duración.',
   'web.tools.preflight.field.width.label': 'Ancho del medio en píxeles',
   'web.tools.preflight.field.height.label': 'Alto del medio en píxeles',
   'web.tools.preflight.field.dimensions.help':
@@ -156,14 +159,17 @@ export const webToolsMessages = {
   'web.tools.utm.explainer.body':
     'Los parámetros UTM los leen las herramientas de análisis, no la plataforma en la que publicas. Viajan en la URL, así que cualquiera que vea el enlace los ve. Mantenlos cortos, en minúsculas y consistentes, porque dos formas de escribir la misma campaña se convierten en dos filas en un informe.',
   'web.tools.utm.field.url.label': 'URL de destino',
-  'web.tools.utm.field.url.help': 'La página a la que quieres que llegue la gente, incluyendo https.',
+  'web.tools.utm.field.url.help':
+    'La página a la que quieres que llegue la gente, incluyendo https.',
   'web.tools.utm.field.url.invalid': 'Eso no se interpreta como una URL http o https.',
   'web.tools.utm.field.source.label': 'Origen de la campaña',
-  'web.tools.utm.field.source.help': 'De dónde vino el clic. Por ejemplo el nombre de una plataforma.',
+  'web.tools.utm.field.source.help':
+    'De dónde vino el clic. Por ejemplo el nombre de una plataforma.',
   'web.tools.utm.field.medium.label': 'Medio de la campaña',
   'web.tools.utm.field.medium.help': 'El tipo de enlace. Por ejemplo social, email o referido.',
   'web.tools.utm.field.campaign.label': 'Nombre de la campaña',
-  'web.tools.utm.field.campaign.help': 'El lanzamiento, promoción o tema al que pertenece este enlace.',
+  'web.tools.utm.field.campaign.help':
+    'El lanzamiento, promoción o tema al que pertenece este enlace.',
   'web.tools.utm.field.term.label': 'Término de la campaña',
   'web.tools.utm.field.term.help': 'Opcional. Tradicionalmente la palabra clave pagada.',
   'web.tools.utm.field.content.label': 'Contenido de la campaña',
@@ -230,12 +236,14 @@ export const webToolsMessages = {
   'web.tools.timeZone.field.time.label': 'Hora',
   'web.tools.timeZone.field.zone.label': 'Tu zona',
   'web.tools.timeZone.field.audience.label': 'Zonas de audiencia',
-  'web.tools.timeZone.field.audience.help': 'Elige las zonas en las que realmente están tus lectores.',
+  'web.tools.timeZone.field.audience.help':
+    'Elige las zonas en las que realmente están tus lectores.',
   'web.tools.timeZone.result.title': 'El mismo momento, en todas las que elegiste',
   'web.tools.timeZone.result.empty': 'Elige al menos una zona de audiencia.',
   'web.tools.timeZone.result.shift':
     'Un cambio de horario de verano cae entre esta fecha y el mismo día de la semana cuatro semanas después, así que la hora local se mueve.',
-  'web.tools.timeZone.result.stable': 'Sin cambio de desplazamiento en las próximas cuatro semanas.',
+  'web.tools.timeZone.result.stable':
+    'Sin cambio de desplazamiento en las próximas cuatro semanas.',
   'web.tools.timeZone.result.later': 'Cuatro semanas después, {time}.',
   'web.tools.timeZone.result.invalidDate': 'Escribe una fecha y una hora para ver la comparación.',
   'web.tools.timeZone.faq.dst.q': '¿Hacia qué lado se mueve la hora?',
@@ -259,11 +267,14 @@ export const webToolsMessages = {
   'web.tools.engagementRate.field.interactions.help':
     'Me gusta, comentarios, veces compartida y guardados sumados, de la publicación que estás midiendo.',
   'web.tools.engagementRate.field.reach.label': 'Alcance',
-  'web.tools.engagementRate.field.reach.help': 'Cuentas que vieron la publicación al menos una vez.',
+  'web.tools.engagementRate.field.reach.help':
+    'Cuentas que vieron la publicación al menos una vez.',
   'web.tools.engagementRate.field.followers.label': 'Seguidores',
-  'web.tools.engagementRate.field.followers.help': 'El tamaño de la cuenta en el momento de la publicación.',
+  'web.tools.engagementRate.field.followers.help':
+    'El tamaño de la cuenta en el momento de la publicación.',
   'web.tools.engagementRate.field.impressions.label': 'Impresiones',
-  'web.tools.engagementRate.field.impressions.help': 'Total de visualizaciones, incluyendo a alguien que la vio dos veces.',
+  'web.tools.engagementRate.field.impressions.help':
+    'Total de visualizaciones, incluyendo a alguien que la vio dos veces.',
   'web.tools.engagementRate.result.title': 'Tasa de interacción, de tres formas',
   'web.tools.engagementRate.result.empty': 'no disponible',
   'web.tools.engagementRate.result.note':

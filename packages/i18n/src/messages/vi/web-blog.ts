@@ -41,8 +41,7 @@ export const webBlogMessages = {
   'web.blog.label.cluster': 'Chủ đề',
   'web.blog.label.articleList': 'Bài viết',
   'web.blog.label.backToIndex': 'Tất cả bài viết',
-  'web.blog.label.count':
-    '{count, plural, =0 {Chưa có bài viết nào} other {# bài viết}}',
+  'web.blog.label.count': '{count, plural, =0 {Chưa có bài viết nào} other {# bài viết}}',
 
   'web.blog.byline.editorial.name': 'Ban nghiên cứu về xuất bản',
   'web.blog.byline.editorial.role': 'Viết và duy trì các bài viết này',

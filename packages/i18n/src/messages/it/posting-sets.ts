@@ -23,7 +23,7 @@ export const postingSetMessages = {
   'calendar.hold.confirmBody':
     'Questo post resterà dove si trova e non verrà pubblicato alle {time}. Puoi riprenderlo in qualsiasi momento prima di allora, oppure scegliere un nuovo orario se quello è già passato.',
   'calendar.hold.confirmScope':
-    "Mettere in pausa interrompe ciò che non è ancora successo. Tutto ciò che è già stato pubblicato su una piattaforma resta pubblicato, e la pausa non lo elimina né lo modifica.",
+    'Mettere in pausa interrompe ciò che non è ancora successo. Tutto ciò che è già stato pubblicato su una piattaforma resta pubblicato, e la pausa non lo elimina né lo modifica.',
   'calendar.hold.confirmNoteLabel': 'Perché stai mettendo in pausa questo? (facoltativo)',
   'calendar.hold.confirmNoteHint':
     'Conservato nel registro di controllo per il tuo team. Non viene inviato a nessuna piattaforma.',
@@ -44,7 +44,7 @@ export const postingSetMessages = {
   'calendar.hold.blocked.published':
     'Questo post è già stato pubblicato. Mettere in pausa non può ritirarlo dalla piattaforma.',
   'calendar.hold.blocked.inFlight':
-    "Questo post è in fase di invio in questo momento. È troppo tardi per metterlo in pausa, e interromperlo a metà potrebbe lasciarlo pubblicato solo in parte.",
+    'Questo post è in fase di invio in questo momento. È troppo tardi per metterlo in pausa, e interromperlo a metà potrebbe lasciarlo pubblicato solo in parte.',
   'calendar.hold.blocked.finished':
     "Questo post è già concluso, quindi non c'è nulla da mettere in pausa.",
   'calendar.hold.blocked.billing':
@@ -58,12 +58,14 @@ export const postingSetMessages = {
   'set.appliedOnce':
     'Un Set viene letto una sola volta, quando lo applichi. Modificarlo in seguito cambia da cosa inizia il prossimo post. Le bozze e i post programmati che hai già creato da esso restano esattamente come sono.',
   'set.empty.title': 'Ancora nessun Set',
-  'set.empty.body': 'Creane uno per smettere di ricostruire lo stesso elenco di account per ogni post.',
+  'set.empty.body':
+    'Creane uno per smettere di ricostruire lo stesso elenco di account per ogni post.',
   'set.create': 'Nuovo Set',
   'set.edit': 'Modifica Set',
   'set.archive': 'Archivia Set',
   'set.archived': 'Archiviato',
-  'set.archivedNote': 'I Set archiviati sono nascosti dal selettore. I post creati da essi restano invariati.',
+  'set.archivedNote':
+    'I Set archiviati sono nascosti dal selettore. I post creati da essi restano invariati.',
   'set.showArchived': 'Mostra archiviati',
   'set.saved': 'Set salvato.',
   'set.archivedToast': 'Set archiviato. I post già creati da esso restano invariati.',
@@ -112,7 +114,8 @@ export const postingSetMessages = {
   'set.defaults.requireAltText': 'Richiedi testo alternativo su ogni immagine',
   'set.defaults.requireAltTextHint':
     'Un post creato da questo Set non può essere programmato su questa piattaforma finché ogni immagine non ha un testo alternativo.',
-  'set.defaults.empty': 'Nessun predefinito per piattaforma. Ogni account parte dal post principale.',
+  'set.defaults.empty':
+    'Nessun predefinito per piattaforma. Ogni account parte dal post principale.',
 
   'set.error.nameTaken': 'Un altro Set in questo marchio usa già quel nome.',
   'set.error.archived': 'Questo Set è archiviato. Ripristinalo prima di modificarlo.',
@@ -125,13 +128,15 @@ export const postingSetMessages = {
     "Quando questa opzione è attiva, il compositore avvia ogni nuovo post con gli account che quella persona ha scelto l'ultima volta in questo marchio. È disattivata finché non la attivi.",
   'targetMemory.setting.stored':
     "Viene conservato solo l'elenco degli account, e solo per la persona che li ha scelti. Nessuna didascalia, nessun orario, nessuna impostazione di privacy e nessuno stato di approvazione viene memorizzato, e nessun altro nel marchio può vedere il tuo elenco.",
-  'targetMemory.setting.offNote': 'Mentre questa opzione è disattivata, non viene memorizzato nulla.',
+  'targetMemory.setting.offNote':
+    'Mentre questa opzione è disattivata, non viene memorizzato nulla.',
   'targetMemory.setting.turnOffWarning':
     'Disattivare questa opzione elimina ogni selezione salvata in questo marchio, per tutti.',
   'targetMemory.setting.enabled': 'Attivo',
   'targetMemory.setting.disabled': 'Disattivo',
   'targetMemory.setting.saved': 'Impostazione salvata.',
-  'targetMemory.setting.cleared': 'Impostazione salvata. Le selezioni salvate in questo marchio sono state eliminate.',
+  'targetMemory.setting.cleared':
+    'Impostazione salvata. Le selezioni salvate in questo marchio sono state eliminate.',
 
   'targetMemory.composer.restored':
     "{count, plural, one {Iniziato con # account dall'ultima volta.} many {Iniziato con # account dall'ultima volta.} other {Iniziato con # account dall'ultima volta.}}",

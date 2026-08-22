@@ -74,8 +74,10 @@ export const errorMessages = {
     'Zarchiwizuj nieaktywny projekt lub zmień limit projektów obszaru roboczego.',
   'error.project_has_connections.message':
     'Ten projekt ma jeszcze {connected, plural, one {# połączony kanał} few {# połączone kanały} many {# połączonych kanałów} other {# połączonego kanału}}.',
-  'error.project_has_connections.action': 'Odłącz każdy kanał w tym projekcie przed jego zarchiwizowaniem.',
-  'error.project_last_active.message': 'Obszar roboczy musi zachować co najmniej jeden aktywny projekt.',
+  'error.project_has_connections.action':
+    'Odłącz każdy kanał w tym projekcie przed jego zarchiwizowaniem.',
+  'error.project_last_active.message':
+    'Obszar roboczy musi zachować co najmniej jeden aktywny projekt.',
   'error.project_last_active.action': 'Utwórz inny projekt przed zarchiwizowaniem tego.',
   'error.connection_not_found.message': 'Tego połączenia nie ma już w tym obszarze roboczym.',
   'error.connection_not_found.action': 'Połącz konto ponownie, aby dalej publikować na nim.',

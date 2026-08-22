@@ -24,7 +24,8 @@ export const importMessages = {
   'import.upload.allowPast': 'Permitir horarios que ya pasaron',
   'import.upload.allowPastHelp':
     'Desactivado por defecto. Una fila con fecha en el pasado se reporta para que la corrijas, en lugar de moverla por ti.',
-  'import.upload.tooLarge': 'Ese archivo es más grande que {limit} caracteres. Divídelo e inténtalo de nuevo.',
+  'import.upload.tooLarge':
+    'Ese archivo es más grande que {limit} caracteres. Divídelo e inténtalo de nuevo.',
   'import.upload.duplicate':
     'Este es el mismo archivo que subiste antes, así que estás viendo esa importación en lugar de una segunda copia.',
 
@@ -38,13 +39,15 @@ export const importMessages = {
     'Un conjunto: seguido de un id de conjunto de cuentas, o ids de cuenta separados por barra vertical.',
   'import.column.caption': 'El texto de la publicación.',
   'import.column.scheduled_local_time': 'Fecha y hora local, escritas como 2026-09-01T10:00.',
-  'import.column.time_zone': 'La zona IANA en la que se lee esa hora local, por ejemplo Europe/Berlin.',
+  'import.column.time_zone':
+    'La zona IANA en la que se lee esa hora local, por ejemplo Europe/Berlin.',
   'import.column.media':
     'Un id de medio, sha256: seguido del checksum de un medio que ya tienes, o una dirección https para que el servidor lo busque.',
   'import.column.title': 'Un título, donde el destino use uno.',
   'import.column.destination': 'La página, tablero o canal dentro de la cuenta.',
   'import.column.privacy': 'El valor de privacidad que espera el destino.',
-  'import.column.first_comment': 'Texto publicado como el primer comentario después de la publicación.',
+  'import.column.first_comment':
+    'Texto publicado como el primer comentario después de la publicación.',
   'import.column.approval_policy': 'La política de aprobación que se adjunta a cada borrador.',
   'import.column.perPlatform':
     'Una columna caption_ o title_ con el nombre de una plataforma sobrescribe solo esa plataforma, por ejemplo caption_instagram.',

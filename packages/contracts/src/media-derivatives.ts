@@ -79,7 +79,10 @@ export const mediaDerivativeOperationSchema = z.discriminatedUnion('op', [
 export type MediaDerivativeOperation = z.infer<typeof mediaDerivativeOperationSchema>;
 export type MediaDerivativeOperationKind = MediaDerivativeOperation['op'];
 
-export const mediaDerivativeOperationsSchema = z.array(mediaDerivativeOperationSchema).min(1).max(5);
+export const mediaDerivativeOperationsSchema = z
+  .array(mediaDerivativeOperationSchema)
+  .min(1)
+  .max(5);
 
 /**
  * The pipeline is fixed, not scripted.
@@ -134,9 +137,10 @@ export function canonicalizeMediaDerivativeOperations(
   return [...operations].sort((left, right) => pipelineIndex(left.op) - pipelineIndex(right.op));
 }
 
-function presetSubject(
-  operations: readonly MediaDerivativeOperation[],
-): { readonly version: 1; readonly operations: readonly MediaDerivativeOperation[] } {
+function presetSubject(operations: readonly MediaDerivativeOperation[]): {
+  readonly version: 1;
+  readonly operations: readonly MediaDerivativeOperation[];
+} {
   return { version: 1, operations: canonicalizeMediaDerivativeOperations(operations) };
 }
 

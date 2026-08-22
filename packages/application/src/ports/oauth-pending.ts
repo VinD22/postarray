@@ -29,7 +29,10 @@ export interface OAuthPendingDiscoveryRecord {
 
 export interface OAuthPendingDiscoveryPort {
   create(input: OAuthPendingDiscoveryRecord): Promise<void>;
-  find(input: { readonly workspaceId: string; readonly transactionId: string }): Promise<OAuthPendingDiscoveryRecord | null>;
+  find(input: {
+    readonly workspaceId: string;
+    readonly transactionId: string;
+  }): Promise<OAuthPendingDiscoveryRecord | null>;
 }
 
 export interface OAuthAccountSelectionView {

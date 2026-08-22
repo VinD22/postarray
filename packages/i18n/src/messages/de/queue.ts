@@ -22,19 +22,22 @@ export const queueMessages = {
   'queue.field.timeZoneHelp':
     'Zeitfenster, die tägliche Zählung und Sperrtermine werden alle in dieser Zone gelesen.',
   'queue.field.minimumGap': 'Mindestabstand',
-  'queue.field.minimumGapHelp': 'Minuten zwischen zwei Beiträgen. Null bedeutet keine Abstandsregel.',
+  'queue.field.minimumGapHelp':
+    'Minuten zwischen zwei Beiträgen. Null bedeutet keine Abstandsregel.',
   'queue.field.maximumPerDay': 'Maximum pro Tag',
   'queue.field.maximumPerDayHelp':
     'Leer lassen für kein Tageslimit. Null bedeutet, diese Regel schlägt nichts vor.',
   'queue.field.maximumPerDayUnlimited': 'Kein Tageslimit',
   'queue.field.priority': 'Priorität',
-  'queue.field.priorityHelp': 'Die Regel mit der höchsten Priorität, die einen Slot anbieten kann, wird verwendet.',
+  'queue.field.priorityHelp':
+    'Die Regel mit der höchsten Priorität, die einen Slot anbieten kann, wird verwendet.',
   'queue.field.enabled': 'Diese Regel verwenden',
 
   'queue.windows.heading': 'Wöchentliche Zeitfenster',
   'queue.windows.help':
     'Wähle die lokalen Stunden, in denen dieses Projekt veröffentlichen darf. Nutze die Tages- und Zeitfelder oder die Schaltflächen im Raster.',
-  'queue.windows.empty': 'Noch keine Zeitfenster. Eine Regel ohne Zeitfenster kann nie einen Slot anbieten.',
+  'queue.windows.empty':
+    'Noch keine Zeitfenster. Eine Regel ohne Zeitfenster kann nie einen Slot anbieten.',
   'queue.windows.add': 'Zeitfenster hinzufügen',
   'queue.windows.remove': 'Zeitfenster entfernen',
   'queue.windows.entry': '{weekday}, {start} bis {end}',
@@ -53,7 +56,8 @@ export const queueMessages = {
   'queue.weekday.7': 'Sonntag',
 
   'queue.blackouts.heading': 'Sperrtermine',
-  'queue.blackouts.help': 'Termine, an denen dieses Projekt nicht veröffentlicht, gelesen in der Zeitzone der Regel.',
+  'queue.blackouts.help':
+    'Termine, an denen dieses Projekt nicht veröffentlicht, gelesen in der Zeitzone der Regel.',
   'queue.blackouts.empty': 'Keine Sperrtermine.',
   'queue.blackouts.add': 'Sperrtermin hinzufügen',
   'queue.blackouts.remove': 'Sperrtermin entfernen',
@@ -84,7 +88,8 @@ export const queueMessages = {
   'queue.reason.fallbackFirstFreeHour': 'Es wurde die erste freie Stunde ab jetzt verwendet.',
   'queue.reason.matchedRule': 'Die Regel {name} hat diese Uhrzeit gewählt, in {zone}.',
   'queue.reason.matchedWindow': 'Sie fällt in das Zeitfenster {start} bis {end} in {zone}.',
-  'queue.reason.minimumGap': 'Sie liegt mindestens {minutes} Minuten von jedem anderen Beitrag entfernt.',
+  'queue.reason.minimumGap':
+    'Sie liegt mindestens {minutes} Minuten von jedem anderen Beitrag entfernt.',
   'queue.reason.noMinimumGap': 'Diese Regel legt keinen Mindestabstand zwischen Beiträgen fest.',
   'queue.reason.dailyCap': 'Dieser Tag fasst höchstens {limit} Beiträge, und ist nicht voll.',
   'queue.reason.dailyCapUnlimited': 'Diese Regel legt kein Tageslimit fest.',
@@ -94,7 +99,8 @@ export const queueMessages = {
     'Die erste Uhrzeit im Zeitfenster existiert an diesem Datum in {zone} nicht, also wurde die nächste verwendet, die es gibt.',
   'queue.reason.dstAmbiguousFirst':
     'Diese Ortszeit kommt an diesem Datum in {zone} zweimal vor. Es wurde das erste Vorkommen verwendet.',
-  'queue.reason.priorityChosen': 'Diese Regel hat Priorität {priority}, die höchste, die anbieten konnte.',
+  'queue.reason.priorityChosen':
+    'Diese Regel hat Priorität {priority}, die höchste, die anbieten konnte.',
   'queue.reason.connectionScoped':
     'Diese Regel gilt für {count, plural, one {# Konto} other {# Konten}}.',
   'queue.reason.horizonExhausted': 'Innerhalb von {days} Tagen war kein Zeitfenster frei.',

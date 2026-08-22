@@ -25,7 +25,10 @@ interface WebglErrorBoundaryState {
  * decorative marketing chrome falling back to an equally finished state, not
  * an application error worth a report.
  */
-export class WebglErrorBoundary extends Component<WebglErrorBoundaryProps, WebglErrorBoundaryState> {
+export class WebglErrorBoundary extends Component<
+  WebglErrorBoundaryProps,
+  WebglErrorBoundaryState
+> {
   override state: WebglErrorBoundaryState = { failed: false };
 
   static getDerivedStateFromError(): WebglErrorBoundaryState {

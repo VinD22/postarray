@@ -130,7 +130,10 @@ export function ProjectEditor({
             )}
           </Field>
 
-          <Field label={t('settings.projects.voice')} description={t('settings.ui.projects.voiceHelp')}>
+          <Field
+            label={t('settings.projects.voice')}
+            description={t('settings.ui.projects.voiceHelp')}
+          >
             {(control) => (
               <Textarea
                 {...control}

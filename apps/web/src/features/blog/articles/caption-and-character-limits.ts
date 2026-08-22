@@ -47,8 +47,7 @@ export const captionAndCharacterLimits: BlogArticle = {
       title: 'Caption and character limits by platform, from the documented source',
       description:
         'X counts 280 weighted characters, Instagram counts up to 2,200 graphemes, LinkedIn and TikTok each set their own ceiling. Here is each limit with its source and a checker.',
-      lede:
-        'A caption that fits on one platform can be rejected on another, because "character" does not mean the same thing everywhere. Here is what each platform actually counts, with the document that says so.',
+      lede: 'A caption that fits on one platform can be rejected on another, because "character" does not mean the same thing everywhere. Here is what each platform actually counts, with the document that says so.',
       blocks: [
         {
           kind: 'takeaways',
@@ -72,11 +71,11 @@ export const captionAndCharacterLimits: BlogArticle = {
         },
         {
           kind: 'paragraph',
-          text: 'A plain ASCII sentence costs the same everywhere. The disagreement starts with anything else: an accented letter, an emoji, a flag built from two regional indicator symbols, or a link. Some platforms count in UTF-16 code units, so a character outside the common range can cost two. Some count grapheme clusters, the units a person would actually call a character, so a family emoji built from several code points still costs one. A caption that measures fine on one platform can measure differently on another for exactly this reason, before either platform\'s length ceiling even enters the picture.',
+          text: "A plain ASCII sentence costs the same everywhere. The disagreement starts with anything else: an accented letter, an emoji, a flag built from two regional indicator symbols, or a link. Some platforms count in UTF-16 code units, so a character outside the common range can cost two. Some count grapheme clusters, the units a person would actually call a character, so a family emoji built from several code points still costs one. A caption that measures fine on one platform can measure differently on another for exactly this reason, before either platform's length ceiling even enters the picture.",
         },
         {
           kind: 'paragraph',
-          text: 'Links complicate the count further. Some platforms rewrite every link to a fixed width regardless of the URL\'s real length; others count the URL exactly as typed. A 90 character link can cost the same as a 20 character one on a platform that rewrites, and cost 90 characters on one that does not.',
+          text: "Links complicate the count further. Some platforms rewrite every link to a fixed width regardless of the URL's real length; others count the URL exactly as typed. A 90 character link can cost the same as a 20 character one on a platform that rewrites, and cost 90 characters on one that does not.",
         },
         {
           kind: 'heading',
@@ -85,13 +84,13 @@ export const captionAndCharacterLimits: BlogArticle = {
         },
         {
           kind: 'paragraph',
-          text: 'X documents a 280 character ceiling using its own weighted counting scheme, where certain characters and every link cost a fixed 23 characters regardless of the URL\'s real length. Instagram documents a 2,200 character caption ceiling, counted by grapheme, with no separate weighting for a link. LinkedIn and TikTok each publish their own ceiling and their own counting rule in their API documentation, and neither matches X\'s scheme or each other\'s exactly. None of the four documents a universal Unicode standard as the rule; each states its own.',
+          text: "X documents a 280 character ceiling using its own weighted counting scheme, where certain characters and every link cost a fixed 23 characters regardless of the URL's real length. Instagram documents a 2,200 character caption ceiling, counted by grapheme, with no separate weighting for a link. LinkedIn and TikTok each publish their own ceiling and their own counting rule in their API documentation, and neither matches X's scheme or each other's exactly. None of the four documents a universal Unicode standard as the rule; each states its own.",
         },
         {
           kind: 'tool',
           tool: 'preflight',
           caption:
-            'Paste a real draft, pick the platforms you post to, and see which ones would accept it and which would reject it, each measured by that platform\'s own documented counting rule.',
+            "Paste a real draft, pick the platforms you post to, and see which ones would accept it and which would reject it, each measured by that platform's own documented counting rule.",
         },
         {
           kind: 'faq',
@@ -102,7 +101,7 @@ export const captionAndCharacterLimits: BlogArticle = {
             },
             {
               q: 'Does a link always cost a fixed number of characters?',
-              a: "Only on a platform that documents a fixed link weighting. X states 23 characters for every link regardless of its real length. A platform that does not document a fixed weighting counts the URL as typed, so a long link costs more of the ceiling than a short one.",
+              a: 'Only on a platform that documents a fixed link weighting. X states 23 characters for every link regardless of its real length. A platform that does not document a fixed weighting counts the URL as typed, so a long link costs more of the ceiling than a short one.',
             },
           ],
         },
@@ -117,8 +116,7 @@ export const captionAndCharacterLimits: BlogArticle = {
       title: 'Límite de caracteres por plataforma, según la fuente documentada',
       description:
         'X cuenta 280 caracteres ponderados, Instagram hasta 2200 grafemas, LinkedIn y TikTok fijan cada uno su propio tope. Cada límite con su fuente y un verificador.',
-      lede:
-        'Un texto que cabe en una plataforma puede ser rechazado en otra, porque "carácter" no significa lo mismo en todas partes. Esto es lo que cada plataforma realmente cuenta, con el documento que lo respalda.',
+      lede: 'Un texto que cabe en una plataforma puede ser rechazado en otra, porque "carácter" no significa lo mismo en todas partes. Esto es lo que cada plataforma realmente cuenta, con el documento que lo respalda.',
       blocks: [
         {
           kind: 'takeaways',
@@ -187,8 +185,7 @@ export const captionAndCharacterLimits: BlogArticle = {
       title: 'Limite de caracteres por plataforma, segundo a fonte documentada',
       description:
         'X conta 280 caracteres ponderados, Instagram até 2.200 grafemas, LinkedIn e TikTok definem cada um seu próprio teto. Cada limite com sua fonte e um verificador.',
-      lede:
-        'Um texto que cabe em uma plataforma pode ser rejeitado em outra, porque "caractere" não significa a mesma coisa em todo lugar. Veja o que cada plataforma realmente conta, com o documento que comprova.',
+      lede: 'Um texto que cabe em uma plataforma pode ser rejeitado em outra, porque "caractere" não significa a mesma coisa em todo lugar. Veja o que cada plataforma realmente conta, com o documento que comprova.',
       blocks: [
         {
           kind: 'takeaways',
@@ -257,8 +254,7 @@ export const captionAndCharacterLimits: BlogArticle = {
       title: 'Zeichenlimits je Plattform, aus der dokumentierten Quelle',
       description:
         'X zählt 280 gewichtete Zeichen, Instagram bis zu 2.200 Graphemcluster, LinkedIn und TikTok legen jeweils ihre eigene Obergrenze fest. Jedes Limit mit Quelle und einem Prüfwerkzeug.',
-      lede:
-        'Ein Text, der auf einer Plattform passt, kann auf einer anderen abgelehnt werden, weil "Zeichen" nicht überall dasselbe bedeutet. So zählt jede Plattform tatsächlich, mit dem Dokument, das es belegt.',
+      lede: 'Ein Text, der auf einer Plattform passt, kann auf einer anderen abgelehnt werden, weil "Zeichen" nicht überall dasselbe bedeutet. So zählt jede Plattform tatsächlich, mit dem Dokument, das es belegt.',
       blocks: [
         {
           kind: 'takeaways',
@@ -326,16 +322,15 @@ export const captionAndCharacterLimits: BlogArticle = {
     fr: {
       title: 'Limites de caractères par plateforme, selon la source documentée',
       description:
-        'X compte 280 caractères pondérés, Instagram jusqu\'à 2 200 graphèmes, LinkedIn et TikTok fixent chacun leur propre plafond. Chaque limite avec sa source et un vérificateur.',
-      lede:
-        'Un texte qui tient sur une plateforme peut être rejeté sur une autre, car "caractère" ne veut pas dire la même chose partout. Voici ce que chaque plateforme compte réellement, avec le document qui le prouve.',
+        "X compte 280 caractères pondérés, Instagram jusqu'à 2 200 graphèmes, LinkedIn et TikTok fixent chacun leur propre plafond. Chaque limite avec sa source et un vérificateur.",
+      lede: 'Un texte qui tient sur une plateforme peut être rejeté sur une autre, car "caractère" ne veut pas dire la même chose partout. Voici ce que chaque plateforme compte réellement, avec le document qui le prouve.',
       blocks: [
         {
           kind: 'takeaways',
           title: 'En résumé',
           items: [
             "Une limite de caractères n'est pas un chiffre universel. Chaque plateforme définit son propre plafond et sa propre méthode de comptage.",
-            'Certaines plateformes comptent des unités de code Unicode, d\'autres des graphèmes, donc un emoji ou un drapeau peut coûter un nombre différent selon où il est publié.',
+            "Certaines plateformes comptent des unités de code Unicode, d'autres des graphèmes, donc un emoji ou un drapeau peut coûter un nombre différent selon où il est publié.",
             'Vérifiez un brouillon réel sur toutes les plateformes à la fois avec le vérificateur ci-dessous, plutôt que de compter à la main.',
           ],
         },
@@ -397,8 +392,7 @@ export const captionAndCharacterLimits: BlogArticle = {
       title: 'プラットフォーム別の文字数制限を、公式資料に基づいて解説',
       description:
         'Xは280の重み付き文字、Instagramは最大2200書記素、LinkedInとTikTokはそれぞれ独自の上限を設けています。各制限を出典とチェッカー付きで紹介します。',
-      lede:
-        'あるプラットフォームで収まる文章が、別のプラットフォームでは弾かれることがあります。「文字」の意味がどこでも同じとは限らないからです。各プラットフォームが実際に何を数えているかを、根拠となる資料とともに紹介します。',
+      lede: 'あるプラットフォームで収まる文章が、別のプラットフォームでは弾かれることがあります。「文字」の意味がどこでも同じとは限らないからです。各プラットフォームが実際に何を数えているかを、根拠となる資料とともに紹介します。',
       blocks: [
         {
           kind: 'takeaways',
@@ -467,8 +461,7 @@ export const captionAndCharacterLimits: BlogArticle = {
       title: 'Batas jumlah karakter per platform, dari sumber yang terdokumentasi',
       description:
         'X menghitung 280 karakter berbobot, Instagram sampai 2.200 grapheme, LinkedIn dan TikTok masing-masing menetapkan batasnya sendiri. Tiap batas lengkap dengan sumber dan alat pengecek.',
-      lede:
-        'Teks yang muat di satu platform bisa ditolak di platform lain, karena "karakter" tidak berarti sama di mana-mana. Ini yang sebenarnya dihitung tiap platform, lengkap dengan dokumen yang menjadi acuannya.',
+      lede: 'Teks yang muat di satu platform bisa ditolak di platform lain, karena "karakter" tidak berarti sama di mana-mana. Ini yang sebenarnya dihitung tiap platform, lengkap dengan dokumen yang menjadi acuannya.',
       blocks: [
         {
           kind: 'takeaways',

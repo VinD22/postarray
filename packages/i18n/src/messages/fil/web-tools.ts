@@ -65,7 +65,8 @@ export const webToolsMessages = {
     'Wala pa kaming koneksyon para sa platform na ito, kaya wala kaming na-verify na limitasyon na ipapakita. Mas gusto naming walang sabihin kaysa manghula.',
   'web.tools.shared.copy': 'Kopyahin',
   'web.tools.shared.copied': 'Nakopya',
-  'web.tools.shared.copyFailed': 'Hinarang ng browser mo ang pagkopya. Piliin ang teksto at kopyahin ito.',
+  'web.tools.shared.copyFailed':
+    'Hinarang ng browser mo ang pagkopya. Piliin ang teksto at kopyahin ito.',
   'web.tools.shared.faqTitle': 'Mga tanong',
   'web.tools.shared.baselineTitle': 'Aling account ang inilalarawan ng mga numerong ito',
   'web.tools.shared.baselineBody':
@@ -80,9 +81,11 @@ export const webToolsMessages = {
   'web.tools.preflight.summary':
     'Isang draft, chine-check laban sa mga limitasyon ng teksto at media ng sampung platform nang sabay.',
   'web.tools.utm.name': 'Panggawa ng UTM link',
-  'web.tools.utm.summary': 'Gumawa ng naka-tag na campaign URL nang hindi sinisira ang query string na dati na roon.',
+  'web.tools.utm.summary':
+    'Gumawa ng naka-tag na campaign URL nang hindi sinisira ang query string na dati na roon.',
   'web.tools.youtubeTitle.name': 'Tagasuri ng haba ng pamagat sa YouTube',
-  'web.tools.youtubeTitle.summary': 'Sukatin ang isang pamagat sa paraang binibilang ng isang tao ang mga character.',
+  'web.tools.youtubeTitle.summary':
+    'Sukatin ang isang pamagat sa paraang binibilang ng isang tao ang mga character.',
   'web.tools.timeZone.name': 'Time zone at daylight saving planner',
   'web.tools.timeZone.summary':
     'Isang oras ng pag-post sa maraming time zone ng audience, may markang lugar ang mga daylight saving shift.',
@@ -113,9 +116,11 @@ export const webToolsMessages = {
   'web.tools.preflight.field.mediaKind.video': 'Isang video',
   'web.tools.preflight.field.mediaCount.label': 'Ilang larawan',
   'web.tools.preflight.field.byteSize.label': 'Laki ng file, sa megabyte',
-  'web.tools.preflight.field.byteSize.help': 'Ang pinakamalaking single file. Iwanang blangko para laktawan.',
+  'web.tools.preflight.field.byteSize.help':
+    'Ang pinakamalaking single file. Iwanang blangko para laktawan.',
   'web.tools.preflight.field.duration.label': 'Haba ng video, sa segundo',
-  'web.tools.preflight.field.duration.help': 'Iwanang blangko para laktawan ang pag-check ng duration.',
+  'web.tools.preflight.field.duration.help':
+    'Iwanang blangko para laktawan ang pag-check ng duration.',
   'web.tools.preflight.field.width.label': 'Lapad ng media, sa pixel',
   'web.tools.preflight.field.height.label': 'Taas ng media, sa pixel',
   'web.tools.preflight.field.dimensions.help':
@@ -136,7 +141,8 @@ export const webToolsMessages = {
   'web.tools.preflight.finding.textFits': 'Kasya ang katawan.',
   'web.tools.preflight.finding.linkFixed':
     'Isinusulat ulit ang bawat link sa fixed width, kaya may halagang {cost} character ang bawat isa anuman ang totoong haba nito.',
-  'web.tools.preflight.finding.linkActual': 'May halaga ang mga link na eksaktong bilang ng character na sinasakop nila.',
+  'web.tools.preflight.finding.linkActual':
+    'May halaga ang mga link na eksaktong bilang ng character na sinasakop nila.',
   'web.tools.preflight.finding.imagesOver':
     'Tumatanggap ang platform na ito ng {limit, plural, =0 {walang larawan} other {# larawan}} sa isang post.',
   'web.tools.preflight.finding.videosOver':
@@ -150,7 +156,8 @@ export const webToolsMessages = {
     'Walang na-publish na duration ceiling, kaya hindi na-check ang haba.',
   'web.tools.preflight.finding.altText':
     'Tinatanggap ang alt text hanggang {limit} character, na sulit gamitin.',
-  'web.tools.preflight.finding.ratio': 'Mag-pu-publish ka sa halagang humigit-kumulang {ratio} sa 1.',
+  'web.tools.preflight.finding.ratio':
+    'Mag-pu-publish ka sa halagang humigit-kumulang {ratio} sa 1.',
   'web.tools.preflight.faq.counting.q': 'Paano mo binibilang ang mga character?',
   'web.tools.preflight.faq.counting.a':
     'Sa grapheme, gamit ang Intl segmenter ng browser, na siyang unit na ibig sabihin ng isang mambabasa sa isang character. Kung saan nagdodokumento ang isang platform ng ibang panuntunan, tulad ng pagbilang ng code unit o pagsingil ng fixed width kada link, ina-apply iyon sa ibabaw nito.',
@@ -216,7 +223,8 @@ export const webToolsMessages = {
   'web.tools.youtubeTitle.explainer.body':
     'Ang hard ceiling ay ang tinatanggap ng upload endpoint. Ang saan ipinapakita ang isang pamagat ay ibang tanong: naiiba ang punto ng pagputol ng isang search result, sidebar, at telepono, at wala sa mga puntong iyon ang na-publish. Sinasabi ng tool na ito ang naka-dokumentong ceiling at ipinapakita ang hugis ng pamagat mo, at hindi ito gumagawa ng gawa-gawang truncation number.',
   'web.tools.youtubeTitle.field.title.label': 'Pamagat ng video',
-  'web.tools.youtubeTitle.field.title.help': 'Binibilang bawat grapheme, kaya may halagang isa ang isang emoji.',
+  'web.tools.youtubeTitle.field.title.help':
+    'Binibilang bawat grapheme, kaya may halagang isa ang isang emoji.',
   'web.tools.youtubeTitle.result.count': '{count} sa {limit} character',
   'web.tools.youtubeTitle.result.over':
     'Sobra nang {over, plural, one {# character} other {# character}}. Tatanggihan ang upload.',
@@ -242,25 +250,29 @@ export const webToolsMessages = {
   'web.tools.timeZone.title': 'Time zone at daylight saving planner',
   'web.tools.timeZone.lede':
     'Isang lingguhang slot na mukhang stable sa kalendaryo mo ay lumilipat para sa kalahati ng audience mo dalawang beses sa isang taon. Ipinapakita nito kung saan at kailan.',
-  'web.tools.timeZone.explainer.title': 'Bakit hindi fixed na oras ang isang fixed na lokal na oras',
+  'web.tools.timeZone.explainer.title':
+    'Bakit hindi fixed na oras ang isang fixed na lokal na oras',
   'web.tools.timeZone.explainer.body':
     'May kahulugan lang ang isang oras kung may kasamang time zone. Nagbabago ang offset ng mga time zone sa mga petsang naiiba kada bansa, at ang dalawang rehiyong limang oras ang layo sa Enero ay puwedeng apat na oras na lang ang layo sa Abril. Nakakaligtas dito ang isang schedule na naka-store bilang isang instant kasama ang isang zone. Hindi nakakaligtas ang isang schedule na naka-store bilang isang lokal na oras.',
   'web.tools.timeZone.field.date.label': 'Petsa',
   'web.tools.timeZone.field.time.label': 'Oras',
   'web.tools.timeZone.field.zone.label': 'Zone mo',
   'web.tools.timeZone.field.audience.label': 'Mga time zone ng audience',
-  'web.tools.timeZone.field.audience.help': 'Piliin ang mga zone na talagang kinaroroonan ng mga mambabasa mo.',
+  'web.tools.timeZone.field.audience.help':
+    'Piliin ang mga zone na talagang kinaroroonan ng mga mambabasa mo.',
   'web.tools.timeZone.result.title': 'Ang parehong sandali, sa lahat ng napili mo',
   'web.tools.timeZone.result.empty': 'Pumili ng kahit isang time zone ng audience.',
   'web.tools.timeZone.result.shift':
     'May daylight saving change na mangyayari sa pagitan ng petsang ito at ng parehong weekday apat na linggo ang layo, kaya lumilipat ang lokal na oras.',
   'web.tools.timeZone.result.stable': 'Walang pagbabago ng offset sa susunod na apat na linggo.',
   'web.tools.timeZone.result.later': 'Apat na linggo mula ngayon, {time}.',
-  'web.tools.timeZone.result.invalidDate': 'Maglagay ng petsa at oras para makita ang paghahambing.',
+  'web.tools.timeZone.result.invalidDate':
+    'Maglagay ng petsa at oras para makita ang paghahambing.',
   'web.tools.timeZone.faq.dst.q': 'Saang direksyon lumilipat ang oras?',
   'web.tools.timeZone.faq.dst.a':
     'Nakadepende ito sa zone at direksyon ng pagbabago, kaya ipinapakita ng table ang totoong lokal na oras apat na linggo mula ngayon sa halip na ilarawan ang panuntunan. Binabasa mula sa time zone database ng browser mo ang offset ng bawat zone.',
-  'web.tools.timeZone.faq.storage.q': 'Paano dapat i-store ng isang naka-iskedyul na post ang oras nito?',
+  'web.tools.timeZone.faq.storage.q':
+    'Paano dapat i-store ng isang naka-iskedyul na post ang oras nito?',
   'web.tools.timeZone.faq.storage.a':
     'Bilang isang instant kasama ang IANA zone na pinili ng tao, hindi kailanman bilang isang plain na lokal na oras. Iyon ang ginagawa namin sa loob ng sistema, at iyon ang dahilan kung bakit ang isang post na naka-iskedyul bago ang isang pagbabago ng orasan ay tumatama pa rin sa nilalayong lokal na oras.',
 
@@ -278,11 +290,13 @@ export const webToolsMessages = {
   'web.tools.engagementRate.field.interactions.help':
     'Mga like, comment, share, at save na pinagsama, mula sa post na sinusukat mo.',
   'web.tools.engagementRate.field.reach.label': 'Reach',
-  'web.tools.engagementRate.field.reach.help': 'Mga account na nakakita sa post nang kahit isang beses.',
+  'web.tools.engagementRate.field.reach.help':
+    'Mga account na nakakita sa post nang kahit isang beses.',
   'web.tools.engagementRate.field.followers.label': 'Mga follower',
   'web.tools.engagementRate.field.followers.help': 'Ang laki ng account noong panahon ng post.',
   'web.tools.engagementRate.field.impressions.label': 'Mga impression',
-  'web.tools.engagementRate.field.impressions.help': 'Kabuuang view, kasama ang isang taong nakakita nito nang dalawang beses.',
+  'web.tools.engagementRate.field.impressions.help':
+    'Kabuuang view, kasama ang isang taong nakakita nito nang dalawang beses.',
   'web.tools.engagementRate.result.title': 'Engagement rate, sa tatlong paraan',
   'web.tools.engagementRate.result.empty': 'hindi available',
   'web.tools.engagementRate.result.note':

@@ -99,8 +99,10 @@ export const webPlatformsMessages = {
   'web.schedule.value.markdownYes': 'Accepterat',
   'web.schedule.value.markdownNo': 'Publicerat som vanliga tecken',
 
-  'web.schedule.unit.utf16': 'Per UTF-16-kodenhet, vilket är vad de flesta redigerare rapporterar som teckenantal.',
-  'web.schedule.unit.grapheme': 'Per grafem, så en emoji gjord av flera kodpunkter kostar ändå ett tecken.',
+  'web.schedule.unit.utf16':
+    'Per UTF-16-kodenhet, vilket är vad de flesta redigerare rapporterar som teckenantal.',
+  'web.schedule.unit.grapheme':
+    'Per grafem, så en emoji gjord av flera kodpunkter kostar ändå ett tecken.',
   'web.schedule.unit.weighted':
     'Enligt ett viktat schema där de flesta icke-latinska tecken kostar två i stället för ett.',
 

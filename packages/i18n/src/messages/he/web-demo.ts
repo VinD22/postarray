@@ -13,7 +13,8 @@ export const webDemoMessages = withHebrewPluralForms({
     'סיור מודרך בתהליך הפרסום, מפרויקט חדש ועד לקבלה, מוצג בממשק האמיתי עם תוכן לדוגמה. שום דבר עדיין לא מתפרסם, והסיור אומר איפה הגבול הזה.',
 
   'web.demo.nav.label': 'ראה איך זה עובד',
-  'web.demo.nav.summary': 'סיור מודרך במוצר בסדר שבו אתה פוגש אותו, בנוי מהממשק האמיתי עם תוכן לדוגמה.',
+  'web.demo.nav.summary':
+    'סיור מודרך במוצר בסדר שבו אתה פוגש אותו, בנוי מהממשק האמיתי עם תוכן לדוגמה.',
 
   'web.demo.frame.badge': 'הדגמה',
   'web.demo.frame.sample':
@@ -135,8 +136,7 @@ export const webDemoMessages = withHebrewPluralForms({
 
   'web.demo.validate.label': 'בדיקות לפני תזמון',
   'web.demo.validate.check.length': 'מגבלת תווים, לכל חשבון',
-  'web.demo.validate.check.lengthDetail':
-    'כל גרסה נמדדת מול המגבלה שהפלטפורמה נותנת לחשבון הזה.',
+  'web.demo.validate.check.lengthDetail': 'כל גרסה נמדדת מול המגבלה שהפלטפורמה נותנת לחשבון הזה.',
   'web.demo.validate.check.altText': 'טקסט חלופי בכל תמונה',
   'web.demo.validate.check.altTextDetail':
     'תמונה ללא תיאור, או ללא סימון כדקורטיבית, עוצרת את התזמון.',

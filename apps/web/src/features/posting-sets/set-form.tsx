@@ -116,7 +116,9 @@ export function SetForm({
     >
       <Notice tone="info" title={t('set.title')} description={t('set.appliedOnce')} />
 
-      {errorKey ? <Notice tone="destructive" title={t('set.edit')} description={t(errorKey)} /> : null}
+      {errorKey ? (
+        <Notice tone="destructive" title={t('set.edit')} description={t(errorKey)} />
+      ) : null}
 
       <Field label={t('set.field.name')} description={t('set.field.nameHint')} required>
         {(control) => (
@@ -220,10 +222,7 @@ export function SetForm({
         )}
       </Field>
 
-      <Field
-        label={t('set.field.schedule')}
-        description={t(`set.slot.${value.slotBehavior}Hint`)}
-      >
+      <Field label={t('set.field.schedule')} description={t(`set.slot.${value.slotBehavior}Hint`)}>
         {(control) => (
           <Select
             value={value.slotBehavior}

@@ -14,8 +14,7 @@ export const postingSetMessages = {
   'calendar.hold.confirmScope':
     '暂停会阻止尚未发生的事情。任何已经发布到平台的内容仍将保持发布状态，暂停不会删除或编辑它。',
   'calendar.hold.confirmNoteLabel': '为什么要暂停此项？（可选）',
-  'calendar.hold.confirmNoteHint':
-    '保存在团队的审计记录中，不会发送给任何平台。',
+  'calendar.hold.confirmNoteHint': '保存在团队的审计记录中，不会发送给任何平台。',
   'calendar.hold.confirm': '暂停此帖子',
   'calendar.hold.cancel': '保持计划',
 
@@ -30,8 +29,7 @@ export const postingSetMessages = {
   'calendar.hold.paused': '已暂停。在您恢复之前不会发布。',
   'calendar.hold.resumed': '已恢复。将于 {time} 发布。',
 
-  'calendar.hold.blocked.published':
-    '此帖子已经发布。暂停无法将其从平台上撤回。',
+  'calendar.hold.blocked.published': '此帖子已经发布。暂停无法将其从平台上撤回。',
   'calendar.hold.blocked.inFlight':
     '此帖子正在发送中，暂停已为时过晚，中途停止可能导致其发布不完整。',
   'calendar.hold.blocked.finished': '此帖子已经结束，因此没有可暂停的内容。',
@@ -75,19 +73,16 @@ export const postingSetMessages = {
   'set.approval.policy_auto': '遵循工作区策略',
 
   'set.slot.next_free_slot': '队列中的下一个空闲时段',
-  'set.slot.next_free_slotHint':
-    '使用此项目的队列规则来提议一个时间。它只是提议；由您来接受。',
+  'set.slot.next_free_slotHint': '使用此项目的队列规则来提议一个时间。它只是提议；由您来接受。',
   'set.slot.pick_time': '让我自己选择时间',
   'set.slot.pick_timeHint': '应用发布集会将时间留空，由您选择。',
   'set.slot.draft_only': '保留为草稿',
   'set.slot.draft_onlyHint': '应用发布集完全不会涉及排期。',
-  'set.slot.noRules':
-    '此项目尚无队列规则，因此队列将提议第一个空闲小时，并会说明这一点。',
+  'set.slot.noRules': '此项目尚无队列规则，因此队列将提议第一个空闲小时，并会说明这一点。',
   'set.slot.rulesLink': '队列规则',
 
   'set.defaults.title': '各平台默认设置',
-  'set.defaults.body':
-    '复制到每个新帖子中的初始值。您之后可以在创作器中更改其中任何一项。',
+  'set.defaults.body': '复制到每个新帖子中的初始值。您之后可以在创作器中更改其中任何一项。',
   'set.defaults.add': '添加平台',
   'set.defaults.remove': '移除 {platform} 的默认设置',
   'set.defaults.privacy': '隐私',
@@ -110,19 +105,16 @@ export const postingSetMessages = {
   'targetMemory.setting.stored':
     '仅保存账户列表，且仅针对选择它们的那位用户。不会保存任何说明文字、时间、隐私设置或审批状态，项目中的其他任何人都无法看到您的列表。',
   'targetMemory.setting.offNote': '关闭时，不会保存任何内容。',
-  'targetMemory.setting.turnOffWarning':
-    '关闭此项会删除此项目中每个人已保存的所有选择。',
+  'targetMemory.setting.turnOffWarning': '关闭此项会删除此项目中每个人已保存的所有选择。',
   'targetMemory.setting.enabled': '开启',
   'targetMemory.setting.disabled': '关闭',
   'targetMemory.setting.saved': '设置已保存。',
   'targetMemory.setting.cleared': '设置已保存。此项目中已保存的选择已被删除。',
 
-  'targetMemory.composer.restored':
-    '{count, plural, other {已使用上次的 # 个账户开始。}}',
+  'targetMemory.composer.restored': '{count, plural, other {已使用上次的 # 个账户开始。}}',
   'targetMemory.composer.droppedSome':
     '{count, plural, other {您上次使用的 # 个账户因需要注意而被排除。}}',
-  'targetMemory.composer.droppedAll':
-    '您上次使用的账户目前都不可用，因此未预先选择任何账户。',
+  'targetMemory.composer.droppedAll': '您上次使用的账户目前都不可用，因此未预先选择任何账户。',
   'targetMemory.composer.undo': '清除选择',
   'targetMemory.composer.forget': '停止记住我的账户',
   'targetMemory.composer.forgotten': '您已保存的选择已被删除。',

@@ -55,11 +55,13 @@ export const mediaMessages = {
   'mediaLib.derivative.original': 'Originale',
   'mediaLib.derivative.originalHint': 'Sempre conservato. Mai sovrascritto.',
   'mediaLib.derivative.item': '{width} per {height}, {mimeType}, {size}',
-  'mediaLib.derivative.empty': "Ancora nessuna versione modificata. L'originale è l'unico file qui.",
+  'mediaLib.derivative.empty':
+    "Ancora nessuna versione modificata. L'originale è l'unico file qui.",
   'mediaLib.derivative.select': 'Usa questa versione',
   'mediaLib.derivative.selected': 'In uso per questo post',
   'mediaLib.derivative.useOriginal': "Usa l'originale",
-  'mediaLib.derivative.processing': 'Questa versione è in fase di creazione. Comparirà qui quando sarà pronta.',
+  'mediaLib.derivative.processing':
+    'Questa versione è in fase di creazione. Comparirà qui quando sarà pronta.',
   'mediaLib.derivative.alreadyExists':
     'Hai già fatto esattamente questa modifica in precedenza, quindi abbiamo riutilizzato quella versione invece di crearne una seconda.',
   'mediaLib.derivative.failedTitle': 'Non è stato possibile creare questa versione',
@@ -75,7 +77,8 @@ export const mediaMessages = {
     'Relay non genera immagini o video. Questo editor si limita a ritagliare, ruotare, ridimensionare, convertire e comprimere ciò che hai caricato.',
 
   // ==================================================== refusals ====
-  'error.media_derivative_no_operations.message': 'Scegli almeno una modifica prima di salvare una versione.',
+  'error.media_derivative_no_operations.message':
+    'Scegli almeno una modifica prima di salvare una versione.',
   'error.media_derivative_duplicate_operation.message':
     'Ogni tipo di modifica può comparire una sola volta. Rimuovi il secondo {operation}.',
   'error.media_derivative_crop_out_of_bounds.message':

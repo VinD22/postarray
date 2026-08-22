@@ -75,7 +75,8 @@ export const mediaMessages = {
     'Relay does not generate images or video. This editor only crops, rotates, resizes, converts and compresses what you uploaded.',
 
   // ==================================================== refusals ====
-  'error.media_derivative_no_operations.message': 'Choose at least one change before saving a version.',
+  'error.media_derivative_no_operations.message':
+    'Choose at least one change before saving a version.',
   'error.media_derivative_duplicate_operation.message':
     'Each kind of change can appear once. Remove the second {operation}.',
   'error.media_derivative_crop_out_of_bounds.message':

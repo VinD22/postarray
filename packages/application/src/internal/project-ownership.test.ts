@@ -66,7 +66,9 @@ function unscopedDb(): Db {
 describe('requireProjectOwnership', () => {
   it('returns the project this workspace owns', async () => {
     const seen: Recorded[] = [];
-    await expect(requireProjectOwnership(scopedDb(seen), actor, OWN_PROJECT)).resolves.toMatchObject({
+    await expect(
+      requireProjectOwnership(scopedDb(seen), actor, OWN_PROJECT),
+    ).resolves.toMatchObject({
       id: OWN_PROJECT,
       workspaceId: 'ws_1',
     });
@@ -91,7 +93,9 @@ describe('requireProjectOwnership', () => {
 
   it('refuses a project that does not exist at all, with the same answer', async () => {
     const seen: Recorded[] = [];
-    await expect(requireProjectOwnership(scopedDb(seen), actor, 'project_nope')).rejects.toMatchObject({
+    await expect(
+      requireProjectOwnership(scopedDb(seen), actor, 'project_nope'),
+    ).rejects.toMatchObject({
       code: 'NOT_FOUND',
     });
   });

@@ -72,7 +72,8 @@ export const webPlatformsMessages = {
   'web.schedule.limits.mimeTypes': 'Tipos de arquivo aceitos',
   'web.schedule.limits.markdown': 'Marcas de formatação',
 
-  'web.schedule.value.characters': '{count, plural, one {# caractere} many {# caracteres} other {# caracteres}}',
+  'web.schedule.value.characters':
+    '{count, plural, one {# caractere} many {# caracteres} other {# caracteres}}',
   'web.schedule.value.files': '{count, plural, =0 {Nenhum} one {# arquivo} other {# arquivos}}',
   'web.schedule.value.durationRange': 'Entre {min} e {max}',
   'web.schedule.value.durationMax': 'Até {max}',
@@ -98,7 +99,8 @@ export const webPlatformsMessages = {
   'web.schedule.capabilities.title': 'O que está construído para {platform}',
   'web.schedule.capabilities.lede':
     'Gerado a partir do registro de conectores, não escrito aqui. "Não oferecido pela plataforma" é um fato sobre a plataforma e é definitivo. "Ainda não construído" é um fato sobre este produto e é o padrão honesto enquanto nenhum conector concluiu sua definição de pronto.',
-  'web.schedule.capabilities.unavailable.title': 'Ainda não há registro de capacidade para {platform}',
+  'web.schedule.capabilities.unavailable.title':
+    'Ainda não há registro de capacidade para {platform}',
   'web.schedule.capabilities.unavailable.body':
     'Não há adaptador nesta versão, então o registro não tem nada a reportar. A linha vai aparecer na matriz de capacidades assim que houver algo real a dizer.',
   'web.schedule.capabilities.matrixLink': 'Ler a matriz de capacidades completa',

@@ -8,4 +8,3 @@ export function createWorkerGateway(context: WorkerGatewayFactoryContext): Worke
   lastGatewayContext = context;
   return createPrelaunchGateway();
 }
-

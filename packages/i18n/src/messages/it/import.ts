@@ -28,7 +28,8 @@ export const importMessages = {
   'import.upload.field': 'File CSV',
   'import.upload.fieldHelp': 'Seleziona un file, oppure incolla le righe nel riquadro qui sotto.',
   'import.upload.paste': 'Oppure incolla il testo CSV',
-  'import.upload.pasteHelp': 'Includi la riga di intestazione. Tutto viene controllato prima che venga creato qualcosa.',
+  'import.upload.pasteHelp':
+    'Includi la riga di intestazione. Tutto viene controllato prima che venga creato qualcosa.',
   'import.upload.project': 'Marchio',
   'import.upload.projectHelp': 'Ogni riga in un file appartiene a questo marchio.',
   'import.upload.submit': 'Controlla questo file',
@@ -44,13 +45,15 @@ export const importMessages = {
   'import.template.download': 'Scarica un CSV modello',
   'import.template.required': 'Colonne obbligatorie',
   'import.template.optional': 'Colonne facoltative',
-  'import.column.external_row_id': "Il tuo id per la riga. Deve essere univoco all'interno del file.",
+  'import.column.external_row_id':
+    "Il tuo id per la riga. Deve essere univoco all'interno del file.",
   'import.column.project': "Il nome o l'id del marchio a cui appartiene la riga.",
   'import.column.targets':
     'Set: seguito da un id di set di destinazione, oppure id di account separati da una barra verticale.',
   'import.column.caption': 'Il testo del post.',
   'import.column.scheduled_local_time': 'Data e ora locali, scritte come 2026-09-01T10:00.',
-  'import.column.time_zone': "Il fuso IANA in cui viene letta quell'ora locale, ad esempio Europe/Berlin.",
+  'import.column.time_zone':
+    "Il fuso IANA in cui viene letta quell'ora locale, ad esempio Europe/Berlin.",
   'import.column.media':
     'Un id media, sha256: seguito dal checksum di un media che possiedi già, oppure un indirizzo https da cui il server deve recuperarlo.',
   'import.column.title': 'Un titolo, dove la destinazione ne usa uno.',
@@ -119,10 +122,12 @@ export const importMessages = {
     'Applicare due volte è sicuro. Una riga che ha già creato una bozza viene lasciata invariata.',
 
   'import.results.heading': 'Risultati',
-  'import.results.applied': '{count, plural, one {# bozza creata} many {# bozze create} other {# bozze create}}',
+  'import.results.applied':
+    '{count, plural, one {# bozza creata} many {# bozze create} other {# bozze create}}',
   'import.results.skipped':
     '{count, plural, one {# riga era già stata fatta} many {# righe erano già state fatte} other {# righe erano già state fatte}}',
-  'import.results.failed': '{count, plural, one {# riga fallita} many {# righe fallite} other {# righe fallite}}',
+  'import.results.failed':
+    '{count, plural, one {# riga fallita} many {# righe fallite} other {# righe fallite}}',
   'import.results.retry': 'Applica di nuovo le righe rimanenti',
   'import.results.openDrafts': 'Apri le bozze',
   'import.results.unavailable': 'non disponibile',
@@ -137,7 +142,8 @@ export const importMessages = {
 
   'import.error.emptyFile': 'Quel file non contiene righe.',
   'import.error.missingColumn': 'La colonna {column} è mancante.',
-  'import.error.unknownColumn': 'La colonna {column} non è stata riconosciuta, quindi viene ignorata.',
+  'import.error.unknownColumn':
+    'La colonna {column} non è stata riconosciuta, quindi viene ignorata.',
   'import.error.duplicateRowId': "L'id riga {value} è usato più di una volta in questo file.",
   'import.error.required': 'Questa cella non può essere vuota.',
   'import.error.invalidCell': 'Questa cella non è in un formato che possiamo leggere.',
@@ -145,7 +151,8 @@ export const importMessages = {
   'import.error.invalidLocalTime':
     "L'orario {value} non è una data e ora locale come 2026-09-01T10:00.",
   'import.error.invalidTimeZone': 'Il fuso {value} non è un nome di fuso orario IANA.',
-  'import.error.nonexistentLocalTime': "L'orario {value} non esiste in {zone}. Le lancette lo saltano.",
+  'import.error.nonexistentLocalTime':
+    "L'orario {value} non esiste in {zone}. Le lancette lo saltano.",
   'import.error.ambiguousLocalTime':
     "L'orario {value} si verifica due volte in {zone} in quel giorno. Scegli un orario diverso.",
   'import.error.scheduleInPast': "L'orario {value} in {zone} è già passato.",
@@ -159,6 +166,7 @@ export const importMessages = {
   'import.error.unknownVariantTarget':
     'Questa riga non ha un account {provider}, quindi il testo per {provider} non è stato usato.',
   'import.error.applyFailed': 'Non è stato possibile applicare questa riga. Riferimento: {code}.',
-  'import.error.alreadyApplied': 'Questa riga ha già creato una bozza, quindi è stata lasciata invariata.',
+  'import.error.alreadyApplied':
+    'Questa riga ha già creato una bozza, quindi è stata lasciata invariata.',
   'import.error.tooManyRows': 'Vengono lette solo le prime {limit} righe di un file.',
 } as const;

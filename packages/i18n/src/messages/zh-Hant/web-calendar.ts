@@ -285,11 +285,9 @@ export const webCalendarMessages = {
   'web.connection.connect.noWriteWithoutApproval':
     '連接帳號不會發布任何內容。每個貼文仍然遵循此Workspace核准政策。',
   'web.connection.projectScope.title': '正在顯示 {project} 的頻道',
-  'web.connection.projectScope.body':
-    '新頻道會連線到此專案。請從頂端列切換專案以管理其他組合。',
+  'web.connection.projectScope.body': '新頻道會連線到此專案。請從頂端列切換專案以管理其他組合。',
   'web.connection.projectMissing.title': '連接頻道前請先建立專案',
-  'web.connection.projectMissing.body':
-    '專案能讓不同產品或客戶的頻道、媒體、草稿與排程彼此分開。',
+  'web.connection.projectMissing.body': '專案能讓不同產品或客戶的頻道、媒體、草稿與排程彼此分開。',
   'web.connection.requirement.instagram':
     'Instagram 發布需要專業帳號，這意味著連結到 Facebook 頁面的企業或創建者帳號。',
   'web.connection.requirement.facebook': 'Relay 發佈到 Facebook Pages。個人資料不能作為發布目標。',

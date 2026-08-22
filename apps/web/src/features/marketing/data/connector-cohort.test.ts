@@ -40,9 +40,10 @@ describe('the public connector list', () => {
       'reddit',
       'medium',
     ]) {
-      expect(published.has(offPromise as never), `${offPromise} must stay off the public site`).toBe(
-        false,
-      );
+      expect(
+        published.has(offPromise as never),
+        `${offPromise} must stay off the public site`,
+      ).toBe(false);
     }
   });
 });

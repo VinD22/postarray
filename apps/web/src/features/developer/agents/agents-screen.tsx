@@ -76,7 +76,10 @@ export function AgentsScreen(): ReactNode {
   });
 
   const contentLocales = useMemo(
-    () => Array.from(new Set((projects.data ?? []).flatMap((project) => project.contentLocales))).sort(),
+    () =>
+      Array.from(
+        new Set((projects.data ?? []).flatMap((project) => project.contentLocales)),
+      ).sort(),
     [projects.data],
   );
 
@@ -137,7 +140,10 @@ export function AgentsScreen(): ReactNode {
 
         {creating ? (
           <ServiceAccountForm
-            projects={(projects.data ?? []).map((project) => ({ id: project.id, name: project.name }))}
+            projects={(projects.data ?? []).map((project) => ({
+              id: project.id,
+              name: project.name,
+            }))}
             connections={connections.data ?? []}
             contentLocales={contentLocales}
             timeZone={formatters.timeZone}
@@ -263,7 +269,9 @@ export function AgentsScreen(): ReactNode {
                             definition:
                               selected.projectScope.length === 0
                                 ? t('common.all')
-                                : formatters.list(selected.projectScope.map((project) => project.name)),
+                                : formatters.list(
+                                    selected.projectScope.map((project) => project.name),
+                                  ),
                           },
                           {
                             id: 'accounts',

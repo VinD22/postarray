@@ -47,7 +47,8 @@ export const mediaMessages = {
   'mediaLib.derivative.qualityHint':
     'Nižší kvalita znamená menší soubor. Platí pro JPEG a WebP. PNG je bezztrátový a toto nastavení ignoruje.',
   'mediaLib.derivative.projected': 'Tato verze bude mít {width} krát {height} pixelů.',
-  'mediaLib.derivative.projectedUnavailable': 'Velikost této verze je nedostupná, dokud nebude vytvořena.',
+  'mediaLib.derivative.projectedUnavailable':
+    'Velikost této verze je nedostupná, dokud nebude vytvořena.',
 
   // ==================================================== the versions list ====
   'mediaLib.derivative.listHeading': 'Verze',
@@ -74,7 +75,8 @@ export const mediaMessages = {
     'Relay negeneruje obrázky ani video. Tento editor pouze ořezává, otáčí, mění velikost, převádí a komprimuje to, co jste nahráli.',
 
   // ==================================================== refusals ====
-  'error.media_derivative_no_operations.message': 'Před uložením verze vyberte alespoň jednu změnu.',
+  'error.media_derivative_no_operations.message':
+    'Před uložením verze vyberte alespoň jednu změnu.',
   'error.media_derivative_duplicate_operation.message':
     'Každý druh změny se může objevit jen jednou. Odeberte druhý {operation}.',
   'error.media_derivative_crop_out_of_bounds.message':

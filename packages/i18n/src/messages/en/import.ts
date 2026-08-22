@@ -28,7 +28,8 @@ export const importMessages = {
   'import.upload.field': 'CSV file',
   'import.upload.fieldHelp': 'Select a file, or paste the rows into the box below.',
   'import.upload.paste': 'Or paste CSV text',
-  'import.upload.pasteHelp': 'Include the header row. Everything is checked before anything is made.',
+  'import.upload.pasteHelp':
+    'Include the header row. Everything is checked before anything is made.',
   'import.upload.project': 'Project',
   'import.upload.projectHelp': 'Every row in one file belongs to this project.',
   'import.upload.submit': 'Check this file',

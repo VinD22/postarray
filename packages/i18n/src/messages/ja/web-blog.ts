@@ -40,8 +40,7 @@ export const webBlogMessages = {
   'web.blog.feed.label': 'RSSフィード',
 
   'web.blog.empty.title': 'まだここには何も公開されていません',
-  'web.blog.empty.body':
-    '最初の記事は執筆中です。公開され次第、フィードに追加されます。',
+  'web.blog.empty.body': '最初の記事は執筆中です。公開され次第、フィードに追加されます。',
 
   'web.blog.label.language': '読む言語',
   'web.blog.label.notTranslated':

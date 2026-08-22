@@ -47,7 +47,8 @@ export const webBlogMessages = {
   'web.blog.byline.editorial.name': 'El equipo de investigación de publicación',
   'web.blog.byline.editorial.role': 'Escribe y mantiene estos artículos',
   'web.blog.byline.platform.name': 'El equipo de documentación de plataformas',
-  'web.blog.byline.platform.role': 'Verifica cada frase sobre una plataforma contra su fuente oficial',
+  'web.blog.byline.platform.role':
+    'Verifica cada frase sobre una plataforma contra su fuente oficial',
 
   'web.blog.feed.title': 'Artículos sobre operaciones de publicación',
   'web.blog.feed.description':

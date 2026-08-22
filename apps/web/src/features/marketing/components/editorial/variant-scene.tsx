@@ -52,10 +52,7 @@ export function EditorialVariantScene({
   className,
 }: EditorialVariantSceneProps): ReactNode {
   return (
-    <StaggerList
-      stagger={0.07}
-      className={cn('flex flex-wrap items-stretch gap-5', className)}
-    >
+    <StaggerList stagger={0.07} className={cn('flex flex-wrap items-stretch gap-5', className)}>
       <div data-stagger-item className="w-full sm:w-60">
         <EditorialCard tone="inverted" interactive={false} className="h-full">
           <Eyebrow tone="inherit">{masterLabel}</Eyebrow>

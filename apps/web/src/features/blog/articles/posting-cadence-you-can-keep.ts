@@ -58,7 +58,11 @@ export const postingCadenceYouCanKeep: BlogArticle = {
             ['Draft the source version', '45 minutes', 'The writer'],
             ['Adapt for each destination', '30 minutes', 'The writer'],
             ['Prepare and describe the media', '25 minutes', 'The writer or a designer'],
-            ['Review and approval', '20 minutes of work, up to two days of waiting', 'Someone else'],
+            [
+              'Review and approval',
+              '20 minutes of work, up to two days of waiting',
+              'Someone else',
+            ],
             ['Check what actually published', '10 minutes', 'Whoever is on call'],
           ],
         },

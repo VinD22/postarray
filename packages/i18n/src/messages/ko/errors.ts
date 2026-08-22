@@ -58,7 +58,8 @@ export const errorMessages = {
     '비활성 프로젝트를 보관하거나 작업공간의 프로젝트 허용량을 변경하세요.',
   'error.project_has_connections.message':
     '이 프로젝트에는 아직 연결된 채널이 {connected, plural, other {#개}} 있습니다.',
-  'error.project_has_connections.action': '보관하기 전에 이 프로젝트의 모든 채널 연결을 해제하세요.',
+  'error.project_has_connections.action':
+    '보관하기 전에 이 프로젝트의 모든 채널 연결을 해제하세요.',
   'error.project_last_active.message': '작업공간에는 활성 프로젝트가 하나 이상 있어야 합니다.',
   'error.project_last_active.action': '이 프로젝트를 보관하기 전에 다른 프로젝트를 만드세요.',
   'error.connection_not_found.message': '해당 연결은 더 이상 이 작업 영역에 없습니다.',

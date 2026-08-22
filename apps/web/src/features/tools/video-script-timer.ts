@@ -44,7 +44,10 @@ export interface ScriptDurationEstimate {
 }
 
 /** How long `wordCount` words take to read aloud at `pace`. */
-export function estimateSpokenDuration(wordCount: number, pace: ScriptPace): ScriptDurationEstimate {
+export function estimateSpokenDuration(
+  wordCount: number,
+  pace: ScriptPace,
+): ScriptDurationEstimate {
   const seconds = pace.wordsPerMinute > 0 ? (wordCount / pace.wordsPerMinute) * 60 : 0;
   return { paceId: pace.id, wordsPerMinute: pace.wordsPerMinute, wordCount, seconds };
 }
@@ -60,7 +63,11 @@ export interface WordBudget {
 }
 
 /** The word budget for one target duration at one pace, against an actual word count. */
-export function wordBudgetFor(targetSeconds: number, pace: ScriptPace, wordCount: number): WordBudget {
+export function wordBudgetFor(
+  targetSeconds: number,
+  pace: ScriptPace,
+  wordCount: number,
+): WordBudget {
   const wordBudget = Math.floor((pace.wordsPerMinute * targetSeconds) / 60);
   return {
     targetSeconds,

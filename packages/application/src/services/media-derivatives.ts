@@ -5,10 +5,7 @@ import {
   type MediaDerivativeOperation,
 } from '@relay/contracts';
 
-import {
-  produceDerivative,
-  type DerivativeStore,
-} from './media-derivative-pipeline';
+import { produceDerivative, type DerivativeStore } from './media-derivative-pipeline';
 
 import type {
   ActorContext,
@@ -260,7 +257,6 @@ export function createMediaDerivativeService(deps: ServiceDeps): MediaDerivative
     },
   };
 }
-
 
 function workerContext(ctx: WorkflowActorContext): ActorContext {
   return { ...ctx, scopes: [], actorType: ctx.actorType };

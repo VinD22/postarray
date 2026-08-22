@@ -27,8 +27,7 @@ export const webToolsMessages = {
   /* ---------------------------------------------------------------------- */
 
   'web.tools.index.title': '免费工具',
-  'web.tools.index.summary':
-    '基于我们连接器所读取的同一平台限制数据构建的小型计算器。',
+  'web.tools.index.summary': '基于我们连接器所读取的同一平台限制数据构建的小型计算器。',
   'web.tools.index.lede':
     '四个小工具，基于我们连接器所使用的同一平台限制数据构建。无需账户、无需上传、不追踪您所输入的内容。',
   'web.tools.index.dataTitle': '这些数字从何而来',
@@ -58,15 +57,13 @@ export const webToolsMessages = {
   /* ---------------------------------------------------------------------- */
 
   'web.tools.preflight.name': '发布前检查工具',
-  'web.tools.preflight.summary':
-    '一份草稿，一次性对照十个平台的文本和媒体限制进行检查。',
+  'web.tools.preflight.summary': '一份草稿，一次性对照十个平台的文本和媒体限制进行检查。',
   'web.tools.utm.name': 'UTM 链接构建器',
   'web.tools.utm.summary': '在不破坏已有查询字符串的情况下构建带标记的活动 URL。',
   'web.tools.youtubeTitle.name': 'YouTube 标题长度检查器',
   'web.tools.youtubeTitle.summary': '按照人们计数字符的方式测量标题。',
   'web.tools.timeZone.name': '时区与夏令时规划器',
-  'web.tools.timeZone.summary':
-    '在多个受众时区中查看同一个发布时间，并标出夏令时变化。',
+  'web.tools.timeZone.summary': '在多个受众时区中查看同一个发布时间，并标出夏令时变化。',
   'web.tools.engagementRate.name': '互动率计算器',
   'web.tools.engagementRate.summary':
     '互动数除以覆盖人数、粉丝数或展示次数。不查找任何数据，也不进行任何基准比较。',
@@ -99,8 +96,7 @@ export const webToolsMessages = {
   'web.tools.preflight.field.duration.help': '留空则跳过时长检查。',
   'web.tools.preflight.field.width.label': '媒体宽度（像素）',
   'web.tools.preflight.field.height.label': '媒体高度（像素）',
-  'web.tools.preflight.field.dimensions.help':
-    '可选。仅用于显示您将要发布的宽高比。',
+  'web.tools.preflight.field.dimensions.help': '可选。仅用于显示您将要发布的宽高比。',
   'web.tools.preflight.results.title': '各平台的结果',
   'web.tools.preflight.results.empty': '请至少选择一个平台以查看结果。',
   'web.tools.preflight.results.summary':
@@ -111,8 +107,7 @@ export const webToolsMessages = {
   'web.tools.preflight.status.unavailable': '不可用',
   'web.tools.preflight.count.label':
     '{count} / {limit} {unit, select, grapheme {字符} utf16 {代码单元} weighted {加权字符} other {字符}}',
-  'web.tools.preflight.finding.textOver':
-    '超出上限 {over, plural, other {# 个字符}}。',
+  'web.tools.preflight.finding.textOver': '超出上限 {over, plural, other {# 个字符}}。',
   'web.tools.preflight.finding.textNear': '距离上限还剩 {remaining} 个字符。',
   'web.tools.preflight.finding.textFits': '正文符合要求。',
   'web.tools.preflight.finding.linkFixed':
@@ -123,14 +118,11 @@ export const webToolsMessages = {
   'web.tools.preflight.finding.videosOver':
     '此平台在一篇帖子中接受 {limit, plural, =0 {不接受视频} other {# 段视频}}。',
   'web.tools.preflight.finding.bytesOver': '该文件超过了 {limit} 的上限。',
-  'web.tools.preflight.finding.bytesUnknown':
-    '此媒体类型没有已发布的字节上限，因此未检查大小。',
+  'web.tools.preflight.finding.bytesUnknown': '此媒体类型没有已发布的字节上限，因此未检查大小。',
   'web.tools.preflight.finding.durationOver': '超过了 {limit} 秒的上限。',
   'web.tools.preflight.finding.durationUnder': '短于 {limit} 秒的最短要求。',
-  'web.tools.preflight.finding.durationUnknown':
-    '没有已发布的时长上限，因此未检查长度。',
-  'web.tools.preflight.finding.altText':
-    '替代文本最多可接受 {limit} 个字符，值得使用。',
+  'web.tools.preflight.finding.durationUnknown': '没有已发布的时长上限，因此未检查长度。',
+  'web.tools.preflight.finding.altText': '替代文本最多可接受 {limit} 个字符，值得使用。',
   'web.tools.preflight.finding.ratio': '您将以约 {ratio} 比 1 的比例发布。',
   'web.tools.preflight.faq.counting.q': '你们如何计数字符？',
   'web.tools.preflight.faq.counting.a':
@@ -172,10 +164,8 @@ export const webToolsMessages = {
   'web.tools.utm.result.title': '您的带标记 URL',
   'web.tools.utm.result.empty': '请输入目标 URL 以查看结果。',
   'web.tools.utm.result.label': '生成的 URL',
-  'web.tools.utm.result.preserved':
-    '您的 URL 原有的查询字符串会完全按您输入的样子保留。',
-  'web.tools.utm.result.replaced':
-    '您的 URL 已包含这些参数中的一个，您在此处输入的值会将其替换。',
+  'web.tools.utm.result.preserved': '您的 URL 原有的查询字符串会完全按您输入的样子保留。',
+  'web.tools.utm.result.replaced': '您的 URL 已包含这些参数中的一个，您在此处输入的值会将其替换。',
   'web.tools.utm.faq.encoding.q': '空格和重音符号会怎样处理？',
   'web.tools.utm.faq.encoding.a':
     '它们会被进行百分号编码，这使得链接在粘贴到帖子中后仍能正常工作。空格会变成加号，带重音的字母会变成其编码形式，分析工具会将两者解码还原。',
@@ -183,8 +173,7 @@ export const webToolsMessages = {
   'web.tools.utm.faq.existing.a':
     '不会。现有参数会按其原始顺序保留，只有您填写的 UTM 参数会被添加或替换。URL 末尾的片段标识符仍会保留在末尾。',
   'web.tools.utm.faq.privacy.q': '我的 URL 会被发送到某处吗？',
-  'web.tools.utm.faq.privacy.a':
-    '不会。URL 在您的浏览器中生成，从不离开此页面。',
+  'web.tools.utm.faq.privacy.a': '不会。URL 在您的浏览器中生成，从不离开此页面。',
 
   /* ---------------------------------------------------------------------- */
   /* YouTube 标题长度检查器                                                  */
@@ -199,8 +188,7 @@ export const webToolsMessages = {
   'web.tools.youtubeTitle.field.title.label': '视频标题',
   'web.tools.youtubeTitle.field.title.help': '按字素计数，因此一个表情符号计为一个字符。',
   'web.tools.youtubeTitle.result.count': '{count} / {limit} 个字符',
-  'web.tools.youtubeTitle.result.over':
-    '超出 {over, plural, other {# 个字符}}。上传将被拒绝。',
+  'web.tools.youtubeTitle.result.over': '超出 {over, plural, other {# 个字符}}。上传将被拒绝。',
   'web.tools.youtubeTitle.result.fits': '在已记录的上限之内。',
   'web.tools.youtubeTitle.result.front':
     '前 {count} 个字符权重最大，因为这大约是窄版布局所能容纳的空间。您的标题开头为：{preview}',

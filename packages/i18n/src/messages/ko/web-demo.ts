@@ -70,7 +70,8 @@ export const webDemoMessages = {
 
   'web.demo.project.label': '프로젝트',
   'web.demo.project.zone': '시간대: {zone}',
-  'web.demo.project.scope': '초안, 계정, 승인, 영수증은 이 프로젝트에만 속하며 다른 어디에도 속하지 않습니다.',
+  'web.demo.project.scope':
+    '초안, 계정, 승인, 영수증은 이 프로젝트에만 속하며 다른 어디에도 속하지 않습니다.',
 
   'web.demo.accounts.label': '이 프로젝트의 계정',
   'web.demo.accounts.state': '검증 미완료',
@@ -85,7 +86,8 @@ export const webDemoMessages = {
   'web.demo.schedule.label': '예약됨',
   'web.demo.schedule.value': '{zone} 기준 {when}',
   'web.demo.schedule.approval': '무엇이든 전송되기 전에 하나의 승인이 필요합니다.',
-  'web.demo.schedule.queue': '대기열은 또 다른 경로입니다. 이 시간대에서 규칙이 허용하는 다음 슬롯을 선택합니다.',
+  'web.demo.schedule.queue':
+    '대기열은 또 다른 경로입니다. 이 시간대에서 규칙이 허용하는 다음 슬롯을 선택합니다.',
 
   'web.demo.week.label': '주간',
   'web.demo.week.caption': '캘린더의 동일한 세 게시물이며, 프로젝트 시간대로 표시됩니다.',
@@ -133,7 +135,8 @@ export const webDemoMessages = {
 
   'web.demo.validate.label': '예약 전 확인 사항',
   'web.demo.validate.check.length': '계정별 문자 제한',
-  'web.demo.validate.check.lengthDetail': '각 버전은 플랫폼이 해당 계정에 부여한 한도에 따라 측정됩니다.',
+  'web.demo.validate.check.lengthDetail':
+    '각 버전은 플랫폼이 해당 계정에 부여한 한도에 따라 측정됩니다.',
   'web.demo.validate.check.altText': '모든 이미지의 대체 텍스트',
   'web.demo.validate.check.altTextDetail':
     '설명이 없거나 장식용으로 표시되지 않은 이미지는 예약을 중단시킵니다.',
@@ -155,7 +158,8 @@ export const webDemoMessages = {
 
   'web.demo.digest.label': '문장으로 보는 이번 주',
   'web.demo.digest.sample': '샘플',
-  'web.demo.digest.line.variants': '이번 주에는 초안 하나에서 플랫폼 네이티브 버전 세 개가 나갔습니다.',
+  'web.demo.digest.line.variants':
+    '이번 주에는 초안 하나에서 플랫폼 네이티브 버전 세 개가 나갔습니다.',
   'web.demo.digest.line.earliest': '화요일 아침이 가장 이른 슬롯이었습니다.',
   'web.demo.digest.line.approval': '모든 버전은 대기열에 들어가기 전에 승인되었습니다.',
   'web.demo.digest.line.alt': '모든 이미지에는 사람이 작성한 대체 텍스트가 있었습니다.',

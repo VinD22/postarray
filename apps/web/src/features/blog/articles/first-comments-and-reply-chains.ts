@@ -142,7 +142,11 @@ export const firstCommentsAndReplyChains: BlogArticle = {
           text: 'Whichever you choose, the record afterwards has to say which parts published and which did not, with the platform identifier for each part that succeeded. A single status of published or failed cannot describe a chain, and a tool that only offers those two is hiding the state you actually need.',
         },
 
-        { kind: 'heading', id: 'writing', text: 'Write the chain so any prefix of it stands alone' },
+        {
+          kind: 'heading',
+          id: 'writing',
+          text: 'Write the chain so any prefix of it stands alone',
+        },
         {
           kind: 'paragraph',
           text: 'The editorial version of the same rule is stricter and more useful than any retry policy. Write so that the first post is complete on its own, the first two are complete on their own, and so on. A chain built this way degrades into a shorter chain rather than into nonsense.',

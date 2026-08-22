@@ -130,7 +130,6 @@ async function seedPeopleAndWorkspace(tx: RlsTransactionClient): Promise<void> {
       },
       update: {},
     });
-
   }
 
   await tx.workspace.upsert({

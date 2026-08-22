@@ -226,7 +226,10 @@ describe('the pause state matrix', () => {
     'refuses to hold a %s job, because the side effect is in flight',
     async (state) => {
       seedJob({ state });
-      await expectRefusal(service().pause(ctx, { jobId: 'job_1' }), 'errors.job_already_dispatching');
+      await expectRefusal(
+        service().pause(ctx, { jobId: 'job_1' }),
+        'errors.job_already_dispatching',
+      );
     },
   );
 
@@ -305,7 +308,10 @@ describe('resume', () => {
       pausedReason: 'user',
       pausedByUserId: 'user_1',
     });
-    await expectRefusal(service().resume(ctx, { jobId: 'job_1' }), 'errors.resume_requires_new_time');
+    await expectRefusal(
+      service().resume(ctx, { jobId: 'job_1' }),
+      'errors.resume_requires_new_time',
+    );
     // Nothing was released and nothing was signalled, so nothing publishes.
     expect(jobs[0]?.pausedAt).not.toBeNull();
     expect(outbox).toHaveLength(0);

@@ -83,9 +83,7 @@ const fakeDb = {
   },
   mediaAsset: {
     findFirst: async ({ where }: { where: Record<string, unknown> }) =>
-      where['id'] === MEDIA || where['checksumSha256'] === 'a'.repeat(64)
-        ? { id: MEDIA }
-        : null,
+      where['id'] === MEDIA || where['checksumSha256'] === 'a'.repeat(64) ? { id: MEDIA } : null,
   },
   bulkImportJob: {
     findFirst: async ({ where }: { where: Record<string, unknown> }) =>

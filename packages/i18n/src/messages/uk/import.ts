@@ -20,7 +20,8 @@ export const importMessages = {
   'import.upload.field': 'Файл CSV',
   'import.upload.fieldHelp': 'Виберіть файл або вставте рядки в поле нижче.',
   'import.upload.paste': 'Або вставте текст CSV',
-  'import.upload.pasteHelp': 'Включіть рядок заголовка. Усе перевіряється перш ніж щось буде створено.',
+  'import.upload.pasteHelp':
+    'Включіть рядок заголовка. Усе перевіряється перш ніж щось буде створено.',
   'import.upload.project': 'Проєкт',
   'import.upload.projectHelp': 'Кожен рядок в одному файлі належить цьому проєкту.',
   'import.upload.submit': 'Перевірити цей файл',
@@ -28,7 +29,8 @@ export const importMessages = {
   'import.upload.allowPast': 'Дозволити час, що вже минув',
   'import.upload.allowPastHelp':
     'За замовчуванням вимкнено. Рядок із датою в минулому повідомляється, щоб ви могли його виправити, а не переноситься за вас.',
-  'import.upload.tooLarge': 'Цей файл більший за {limit} символів. Розділіть його і спробуйте знову.',
+  'import.upload.tooLarge':
+    'Цей файл більший за {limit} символів. Розділіть його і спробуйте знову.',
   'import.upload.duplicate':
     'Це той самий файл, який ви завантажували раніше, тому ви дивитеся на той імпорт, а не на його другу копію.',
 
@@ -36,7 +38,8 @@ export const importMessages = {
   'import.template.download': 'Завантажити шаблон CSV',
   'import.template.required': 'Обовʼязкові стовпці',
   'import.template.optional': 'Необовʼязкові стовпці',
-  'import.column.external_row_id': 'Ваш власний ідентифікатор рядка. Має бути унікальним усередині файлу.',
+  'import.column.external_row_id':
+    'Ваш власний ідентифікатор рядка. Має бути унікальним усередині файлу.',
   'import.column.project': 'Назва або ідентифікатор проєкту, якому належить рядок.',
   'import.column.targets':
     'Або set: і далі ідентифікатор набору цілей, або ідентифікатори облікових записів, розділені вертикальною рискою.',
@@ -133,7 +136,8 @@ export const importMessages = {
   'import.error.emptyFile': 'У цьому файлі немає рядків.',
   'import.error.missingColumn': 'Стовпець {column} відсутній.',
   'import.error.unknownColumn': 'Стовпець {column} не розпізнано, тому його ігноровано.',
-  'import.error.duplicateRowId': 'Ідентифікатор рядка {value} використовується в цьому файлі більше одного разу.',
+  'import.error.duplicateRowId':
+    'Ідентифікатор рядка {value} використовується в цьому файлі більше одного разу.',
   'import.error.required': 'Ця клітинка не може бути порожньою.',
   'import.error.invalidCell': 'Ця клітинка не в форматі, який ми можемо прочитати.',
   'import.error.rowShape': 'У цьому рядку {actual} клітинок, а в заголовку {expected}.',
@@ -142,7 +146,8 @@ export const importMessages = {
   'import.error.invalidTimeZone': 'Пояс {value} не є назвою часового поясу IANA.',
   'import.error.nonexistentLocalTime':
     'Час {value} не існує в {zone}. Годинники перестрибують через нього.',
-  'import.error.ambiguousLocalTime': 'Час {value} настає двічі в {zone} того дня. Виберіть інший час.',
+  'import.error.ambiguousLocalTime':
+    'Час {value} настає двічі в {zone} того дня. Виберіть інший час.',
   'import.error.scheduleInPast': 'Час {value} у {zone} уже минув.',
   'import.error.invalidTargets':
     'Значення {value} не є збереженим набором цілей або списком ідентифікаторів облікових записів.',

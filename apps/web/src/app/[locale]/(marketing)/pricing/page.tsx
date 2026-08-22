@@ -18,13 +18,7 @@ import {
   annualIntervalBadge,
   tierColumns,
 } from '@/features/marketing/components/editorial/tier-columns';
-import {
-  Body,
-  Container,
-  Heading,
-  Lede,
-  Subheading,
-} from '@/features/marketing/components/layout';
+import { Body, Container, Heading, Lede, Subheading } from '@/features/marketing/components/layout';
 import { Cta, TextLink } from '@/features/marketing/components/links';
 import { marketingTranslator } from '@/features/marketing/i18n';
 import { GradientWash } from '@/features/marketing/components/scene';
@@ -103,7 +97,10 @@ export default async function PricingPage({
         <GradientWash accent="warm" placement="top" />
         <div className="relative max-w-[46rem]">
           <Eyebrow className="mb-6">{t.t('web.home.v2.sticker.trial')}</Eyebrow>
-          <HeroHeadline lead={t.t('web.pricing.v2.hero.headline')} accent={t.t('billing.plan.single')} />
+          <HeroHeadline
+            lead={t.t('web.pricing.v2.hero.headline')}
+            accent={t.t('billing.plan.single')}
+          />
           <Lede className="mt-8">{t.t('web.pricing.lede')}</Lede>
           <div className="mt-8">
             <Cta href={ROUTES.signUp}>{t.t('web.cta.startTrial')}</Cta>

@@ -86,7 +86,8 @@ const fakeDb = {
   },
   rememberedTarget: {
     findFirst: async ({ where }: { where: { projectId: string; userId: string } }) =>
-      memories.find((row) => row.projectId === where.projectId && row.userId === where.userId) ?? null,
+      memories.find((row) => row.projectId === where.projectId && row.userId === where.userId) ??
+      null,
     create: async ({ data }: { data: Omit<MemoryRow, 'id' | 'updatedAt'> }) => {
       const row: MemoryRow = {
         id: `remtgt_${memories.length + 1}`,

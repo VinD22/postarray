@@ -112,7 +112,10 @@ function gated(noteKey: MessageKey, citation: Citation): CapabilityCell {
   return { state: 'not_implemented', noteKey, citation };
 }
 
-function registryState(provider: ProviderId, column: CapabilityColumn): CapabilityState | undefined {
+function registryState(
+  provider: ProviderId,
+  column: CapabilityColumn,
+): CapabilityState | undefined {
   if (!(provider in REGISTRY_MARKETING_CAPABILITY_STATES)) {
     return undefined;
   }
@@ -132,11 +135,7 @@ function effectiveCell(
     return hand;
   }
   const fromRegistry = registryState(provider, column);
-  if (
-    fromRegistry === undefined ||
-    fromRegistry === hand.state ||
-    fromRegistry === 'supported'
-  ) {
+  if (fromRegistry === undefined || fromRegistry === hand.state || fromRegistry === 'supported') {
     return hand;
   }
   if (

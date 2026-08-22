@@ -75,9 +75,9 @@ describe('media derivative operations', () => {
   });
 
   it('serializes a payload that does not depend on key order', () => {
-    expect(mediaDerivativePresetPayload([{ op: 'crop', x: 0, y: 0, width: 800, height: 600 }])).toBe(
-      mediaDerivativePresetPayload([{ height: 600, width: 800, y: 0, x: 0, op: 'crop' }]),
-    );
+    expect(
+      mediaDerivativePresetPayload([{ op: 'crop', x: 0, y: 0, width: 800, height: 600 }]),
+    ).toBe(mediaDerivativePresetPayload([{ height: 600, width: 800, y: 0, x: 0, op: 'crop' }]));
   });
 
   it('records the most structural change as the row kind', () => {
@@ -119,33 +119,41 @@ describe('planMediaDerivative', () => {
   });
 
   it('rejects a resize that would enlarge, because nothing here invents detail', () => {
-    expect(refusalKey(() =>
-      planMediaDerivative(SOURCE, [{ op: 'resize', width: 3200, height: 2400 }]),
-    )).toBe('errors.media_derivative_upscale_rejected');
+    expect(
+      refusalKey(() => planMediaDerivative(SOURCE, [{ op: 'resize', width: 3200, height: 2400 }])),
+    ).toBe('errors.media_derivative_upscale_rejected');
   });
 
   it('rejects a source it cannot decode', () => {
-    expect(refusalKey(() =>
-      planMediaDerivative({ mimeType: 'video/mp4', width: 100, height: 100 }, [RESIZE]),
-    )).toBe('errors.media_derivative_source_unsupported');
+    expect(
+      refusalKey(() =>
+        planMediaDerivative({ mimeType: 'video/mp4', width: 100, height: 100 }, [RESIZE]),
+      ),
+    ).toBe('errors.media_derivative_source_unsupported');
   });
 
   it('reports unknown dimensions instead of guessing them', () => {
-    expect(refusalKey(() =>
-      planMediaDerivative({ mimeType: 'image/jpeg', width: null, height: null }, [RESIZE]),
-    )).toBe('errors.media_derivative_dimensions_unknown');
+    expect(
+      refusalKey(() =>
+        planMediaDerivative({ mimeType: 'image/jpeg', width: null, height: null }, [RESIZE]),
+      ),
+    ).toBe('errors.media_derivative_dimensions_unknown');
   });
 
   it('rejects a quality setting on a lossless target', () => {
-    expect(refusalKey(() =>
-      planMediaDerivative(SOURCE, [{ op: 'convert', format: 'image/png' }, COMPRESS]),
-    )).toBe('errors.media_derivative_quality_unsupported');
+    expect(
+      refusalKey(() =>
+        planMediaDerivative(SOURCE, [{ op: 'convert', format: 'image/png' }, COMPRESS]),
+      ),
+    ).toBe('errors.media_derivative_quality_unsupported');
   });
 
   it('requires an explicit target format for a source it cannot re-encode in family', () => {
-    expect(refusalKey(() =>
-      planMediaDerivative({ mimeType: 'image/gif', width: 100, height: 100 }, [COMPRESS]),
-    )).toBe('errors.media_derivative_format_required');
+    expect(
+      refusalKey(() =>
+        planMediaDerivative({ mimeType: 'image/gif', width: 100, height: 100 }, [COMPRESS]),
+      ),
+    ).toBe('errors.media_derivative_format_required');
     expect(
       planMediaDerivative({ mimeType: 'image/gif', width: 100, height: 100 }, [
         { op: 'convert', format: 'image/webp' },
@@ -154,8 +162,8 @@ describe('planMediaDerivative', () => {
   });
 
   it('rejects a conversion to the format the file already is', () => {
-    expect(refusalKey(() =>
-      planMediaDerivative(SOURCE, [{ op: 'convert', format: 'image/jpeg' }]),
-    )).toBe('errors.media_derivative_no_change');
+    expect(
+      refusalKey(() => planMediaDerivative(SOURCE, [{ op: 'convert', format: 'image/jpeg' }])),
+    ).toBe('errors.media_derivative_no_change');
   });
 });

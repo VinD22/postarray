@@ -28,7 +28,8 @@ export const webComparisonMessages = {
   'web.comparison.label.backToIndex': 'Lahat ng paghahambing',
 
   'web.comparison.table.title': 'Ano ang kaya ng bawat opsyon',
-  'web.comparison.table.caption': 'Isang claim bawat row, kasama ang source sa likod ng bawat sagot',
+  'web.comparison.table.caption':
+    'Isang claim bawat row, kasama ang source sa likod ng bawat sagot',
 
   'web.comparison.bestFor.title': 'Alin ang bagay para sa iyo',
   'web.comparison.bestFor.ours': 'Piliin ang produktong ito kapag',

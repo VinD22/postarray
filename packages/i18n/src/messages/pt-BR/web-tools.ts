@@ -61,7 +61,8 @@ export const webToolsMessages = {
   'web.tools.preflight.summary':
     'Um rascunho, verificado contra os limites de texto e mídia de dez plataformas de uma vez.',
   'web.tools.utm.name': 'Construtor de link UTM',
-  'web.tools.utm.summary': 'Monte uma URL de campanha marcada sem estragar a query string que ela já tinha.',
+  'web.tools.utm.summary':
+    'Monte uma URL de campanha marcada sem estragar a query string que ela já tinha.',
   'web.tools.youtubeTitle.name': 'Verificador de tamanho de título do YouTube',
   'web.tools.youtubeTitle.summary': 'Meça um título do jeito que uma pessoa conta caracteres.',
   'web.tools.timeZone.name': 'Planejador de fuso horário e horário de verão',
@@ -156,7 +157,8 @@ export const webToolsMessages = {
   'web.tools.utm.explainer.body':
     'Os parâmetros UTM são lidos por ferramentas de análise, não pela plataforma em que você publica. Eles viajam na URL, então qualquer um que veja o link os vê. Mantenha-os curtos, em minúsculas e consistentes, porque duas grafias da mesma campanha viram duas linhas em um relatório.',
   'web.tools.utm.field.url.label': 'URL de destino',
-  'web.tools.utm.field.url.help': 'A página onde você quer que as pessoas cheguem, incluindo https.',
+  'web.tools.utm.field.url.help':
+    'A página onde você quer que as pessoas cheguem, incluindo https.',
   'web.tools.utm.field.url.invalid': 'Isso não é interpretado como uma URL http ou https.',
   'web.tools.utm.field.source.label': 'Origem da campanha',
   'web.tools.utm.field.source.help': 'De onde veio o clique. Por exemplo o nome de uma plataforma.',
@@ -183,8 +185,7 @@ export const webToolsMessages = {
   'web.tools.utm.faq.existing.a':
     'Não. Os parâmetros existentes são preservados na ordem original, e apenas um parâmetro UTM que você preencheu é adicionado ou substituído. Um fragmento no fim da URL fica no fim.',
   'web.tools.utm.faq.privacy.q': 'Minha URL é enviada para algum lugar?',
-  'web.tools.utm.faq.privacy.a':
-    'Não. A URL é composta no seu navegador e nunca sai desta página.',
+  'web.tools.utm.faq.privacy.a': 'Não. A URL é composta no seu navegador e nunca sai desta página.',
 
   /* ---------------------------------------------------------------------- */
   /* Verificador de tamanho de título do YouTube                           */
@@ -230,12 +231,14 @@ export const webToolsMessages = {
   'web.tools.timeZone.field.time.label': 'Hora',
   'web.tools.timeZone.field.zone.label': 'Seu fuso',
   'web.tools.timeZone.field.audience.label': 'Fusos da audiência',
-  'web.tools.timeZone.field.audience.help': 'Escolha os fusos em que seus leitores realmente estão.',
+  'web.tools.timeZone.field.audience.help':
+    'Escolha os fusos em que seus leitores realmente estão.',
   'web.tools.timeZone.result.title': 'O mesmo momento, em todos que você escolheu',
   'web.tools.timeZone.result.empty': 'Escolha ao menos um fuso de audiência.',
   'web.tools.timeZone.result.shift':
     'Uma mudança de horário de verão cai entre esta data e o mesmo dia da semana quatro semanas depois, então a hora local se move.',
-  'web.tools.timeZone.result.stable': 'Nenhuma mudança de deslocamento nas próximas quatro semanas.',
+  'web.tools.timeZone.result.stable':
+    'Nenhuma mudança de deslocamento nas próximas quatro semanas.',
   'web.tools.timeZone.result.later': 'Quatro semanas depois, {time}.',
   'web.tools.timeZone.result.invalidDate': 'Digite uma data e uma hora para ver a comparação.',
   'web.tools.timeZone.faq.dst.q': 'Para que lado a hora se move?',
@@ -263,7 +266,8 @@ export const webToolsMessages = {
   'web.tools.engagementRate.field.followers.label': 'Seguidores',
   'web.tools.engagementRate.field.followers.help': 'O tamanho da conta no momento do post.',
   'web.tools.engagementRate.field.impressions.label': 'Impressões',
-  'web.tools.engagementRate.field.impressions.help': 'Total de visualizações, incluindo alguém que viu duas vezes.',
+  'web.tools.engagementRate.field.impressions.help':
+    'Total de visualizações, incluindo alguém que viu duas vezes.',
   'web.tools.engagementRate.result.title': 'Taxa de engajamento, de três formas',
   'web.tools.engagementRate.result.empty': 'indisponível',
   'web.tools.engagementRate.result.note':

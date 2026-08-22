@@ -193,48 +193,53 @@ class DatabaseBillingGateway implements BillingGateway {
   }
 
   async getEntitlements(workspaceId: string) {
-    return withWorkspaceContext(this.#prisma, { workspaceId, role: 'service_role' }, async (db) => {
-      const [subscription, activeChannelCount, activeMemberCount] = await Promise.all([
-        db.subscription.findFirst({
-          orderBy: { updatedAt: 'desc' },
-          include: { polarCustomer: { select: { portalUrl: true } } },
-        }),
-        db.socialConnection.count({ where: { status: { not: 'disconnected' } } }),
-        db.membership.count({ where: { state: { in: ['invited', 'active'] } } }),
-      ]);
-      if (subscription === null) {
+    return withWorkspaceContext(
+      this.#prisma,
+      { workspaceId, role: 'service_role' },
+      async (db) => {
+        const [subscription, activeChannelCount, activeMemberCount] = await Promise.all([
+          db.subscription.findFirst({
+            orderBy: { updatedAt: 'desc' },
+            include: { polarCustomer: { select: { portalUrl: true } } },
+          }),
+          db.socialConnection.count({ where: { status: { not: 'disconnected' } } }),
+          db.membership.count({ where: { state: { in: ['invited', 'active'] } } }),
+        ]);
+        if (subscription === null) {
+          return {
+            status: 'none' as const,
+            interval: null,
+            trialEndsAt: null,
+            firstChargeAt: null,
+            firstChargeAmount: null,
+            renewalAmount: null,
+            portalUrl: null,
+            activeChannelCount,
+            channelLimit: ACTIVE_CHANNEL_ALLOWANCE,
+            activeMemberCount,
+            memberLimit: MEMBER_ALLOWANCE,
+          };
+        }
+        const amount = { amountMinor: subscription.amountMinor, currency: subscription.currency };
         return {
-          status: 'none' as const,
-          interval: null,
-          trialEndsAt: null,
-          firstChargeAt: null,
-          firstChargeAmount: null,
-          renewalAmount: null,
-          portalUrl: null,
+          status: subscription.status,
+          interval: subscription.interval === 'month' ? ('monthly' as const) : ('annual' as const),
+          trialEndsAt: subscription.trialEndsAt?.toISOString() ?? null,
+          firstChargeAt:
+            subscription.status === 'trialing'
+              ? (subscription.trialEndsAt?.toISOString() ?? null)
+              : null,
+          firstChargeAmount: subscription.status === 'trialing' ? amount : null,
+          renewalAmount: amount,
+          portalUrl: subscription.polarCustomer.portalUrl,
           activeChannelCount,
           channelLimit: ACTIVE_CHANNEL_ALLOWANCE,
           activeMemberCount,
           memberLimit: MEMBER_ALLOWANCE,
         };
-      }
-      const amount = { amountMinor: subscription.amountMinor, currency: subscription.currency };
-      return {
-        status: subscription.status,
-        interval: subscription.interval === 'month' ? ('monthly' as const) : ('annual' as const),
-        trialEndsAt: subscription.trialEndsAt?.toISOString() ?? null,
-        firstChargeAt:
-          subscription.status === 'trialing'
-            ? (subscription.trialEndsAt?.toISOString() ?? null)
-            : null,
-        firstChargeAmount: subscription.status === 'trialing' ? amount : null,
-        renewalAmount: amount,
-        portalUrl: subscription.polarCustomer.portalUrl,
-        activeChannelCount,
-        channelLimit: ACTIVE_CHANNEL_ALLOWANCE,
-        activeMemberCount,
-        memberLimit: MEMBER_ALLOWANCE,
-      };
-    }, WORKSPACE_TX_OPTIONS);
+      },
+      WORKSPACE_TX_OPTIONS,
+    );
   }
 
   async getUsage(
@@ -247,60 +252,65 @@ class DatabaseBillingGateway implements BillingGateway {
         ? new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), 1))
         : new Date(range.from);
     const periodEnd = range === undefined ? now : new Date(range.to);
-    return withWorkspaceContext(this.#prisma, { workspaceId, role: 'service_role' }, async (db) => {
-      const events = await db.usageEvent.findMany({
-        where: { occurredAt: { gte: periodStart, lte: periodEnd } },
-        orderBy: { occurredAt: 'asc' },
-        select: {
-          meterKey: true,
-          quantity: true,
-          costMinor: true,
-          costCurrency: true,
-          provider: true,
-        },
-      });
-      const grouped = new Map<
-        string,
-        {
-          provider: ProviderId | null;
-          count: number;
-          amountMinor: number;
-          currency: string;
+    return withWorkspaceContext(
+      this.#prisma,
+      { workspaceId, role: 'service_role' },
+      async (db) => {
+        const events = await db.usageEvent.findMany({
+          where: { occurredAt: { gte: periodStart, lte: periodEnd } },
+          orderBy: { occurredAt: 'asc' },
+          select: {
+            meterKey: true,
+            quantity: true,
+            costMinor: true,
+            costCurrency: true,
+            provider: true,
+          },
+        });
+        const grouped = new Map<
+          string,
+          {
+            provider: ProviderId | null;
+            count: number;
+            amountMinor: number;
+            currency: string;
+          }
+        >();
+        for (const event of events) {
+          const parsedProvider = providerIdSchema.safeParse(event.provider);
+          const key = `${event.provider ?? 'none'}:${event.meterKey}:${event.costCurrency ?? 'USD'}`;
+          const current = grouped.get(key) ?? {
+            provider: parsedProvider.success ? parsedProvider.data : null,
+            count: 0,
+            amountMinor: 0,
+            currency: event.costCurrency ?? 'USD',
+          };
+          current.count += Number(event.quantity);
+          current.amountMinor += event.costMinor ?? 0;
+          grouped.set(key, current);
         }
-      >();
-      for (const event of events) {
-        const parsedProvider = providerIdSchema.safeParse(event.provider);
-        const key = `${event.provider ?? 'none'}:${event.meterKey}:${event.costCurrency ?? 'USD'}`;
-        const current = grouped.get(key) ?? {
-          provider: parsedProvider.success ? parsedProvider.data : null,
-          count: 0,
-          amountMinor: 0,
-          currency: event.costCurrency ?? 'USD',
-        };
-        current.count += Number(event.quantity);
-        current.amountMinor += event.costMinor ?? 0;
-        grouped.set(key, current);
-      }
-      const lines = [...grouped.entries()].map(([key, value]) => {
-        const operation = key.split(':')[1] ?? key;
-        const unitMinor = value.count === 0 ? 0 : Math.round(value.amountMinor / value.count);
+        const lines = [...grouped.entries()].map(([key, value]) => {
+          const operation = key.split(':')[1] ?? key;
+          const unitMinor = value.count === 0 ? 0 : Math.round(value.amountMinor / value.count);
+          return {
+            provider: value.provider,
+            operation,
+            count: value.count,
+            unitAmount: { amountMinor: unitMinor, currency: value.currency },
+            amount: { amountMinor: value.amountMinor, currency: value.currency },
+          };
+        });
         return {
-          provider: value.provider,
-          operation,
-          count: value.count,
-          unitAmount: { amountMinor: unitMinor, currency: value.currency },
-          amount: { amountMinor: value.amountMinor, currency: value.currency },
+          periodStart: periodStart.toISOString(),
+          total: {
+            amountMinor: lines.reduce((sum, line) => sum + line.amount.amountMinor, 0),
+            currency: 'USD',
+          },
+          lines,
         };
-      });
-      return {
-        periodStart: periodStart.toISOString(),
-        total: {
-          amountMinor: lines.reduce((sum, line) => sum + line.amount.amountMinor, 0),
-          currency: 'USD',
-        },
-        lines,
-      };
-    }, WORKSPACE_TX_OPTIONS);
+      },
+      WORKSPACE_TX_OPTIONS,
+    );
   }
 
   async createCheckout(input: Parameters<BillingGateway['createCheckout']>[0]) {

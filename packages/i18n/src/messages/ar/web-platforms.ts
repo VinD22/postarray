@@ -81,8 +81,7 @@ export const webPlatformsMessages = {
   'web.schedule.value.markdownYes': 'مقبول',
   'web.schedule.value.markdownNo': 'يُنشر كأحرف عادية',
 
-  'web.schedule.unit.utf16':
-    'بوحدة كود UTF-16، وهي ما تُبلغ عنه معظم المحررات كعدد أحرف.',
+  'web.schedule.unit.utf16': 'بوحدة كود UTF-16، وهي ما تُبلغ عنه معظم المحررات كعدد أحرف.',
   'web.schedule.unit.grapheme':
     'بالغرافيم، لذا الرمز التعبيري المكوّن من عدة نقاط كود لا يزال يكلّف حرفًا واحدًا.',
   'web.schedule.unit.weighted':

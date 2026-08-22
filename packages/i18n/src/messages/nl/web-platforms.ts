@@ -99,8 +99,10 @@ export const webPlatformsMessages = {
   'web.schedule.value.markdownYes': 'Geaccepteerd',
   'web.schedule.value.markdownNo': 'Gepubliceerd als platte tekens',
 
-  'web.schedule.unit.utf16': 'Per UTF-16-code-eenheid, wat de meeste editors rapporteren als tekenaantal.',
-  'web.schedule.unit.grapheme': 'Per grafeem, zodat een emoji van meerdere codepunten toch één teken kost.',
+  'web.schedule.unit.utf16':
+    'Per UTF-16-code-eenheid, wat de meeste editors rapporteren als tekenaantal.',
+  'web.schedule.unit.grapheme':
+    'Per grafeem, zodat een emoji van meerdere codepunten toch één teken kost.',
   'web.schedule.unit.weighted':
     'Volgens een gewogen schema waarbij de meeste niet-Latijnse tekens twee in plaats van één kosten.',
 

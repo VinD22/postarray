@@ -74,7 +74,8 @@ export const webSettingsMessages = {
   'settings.ui.members.column.lastActive': 'ใช้งานครั้งล่าสุด',
   'settings.ui.members.column.actions': 'การดำเนินการ',
   'settings.ui.members.scopeAll': 'ทุกแบรนด์และบัญชี',
-  'settings.ui.members.scopeLimited': '{count, plural, one {# project} other {# projects}}: {names}',
+  'settings.ui.members.scopeLimited':
+    '{count, plural, one {# project} other {# projects}}: {names}',
   'settings.ui.members.approvals.canApprove': 'สามารถอนุมัติได้',
   'settings.ui.members.approvals.cannotApprove': 'ไม่สามารถอนุมัติได้',
   'settings.ui.members.approvals.canApproveOwnProjects': 'สามารถอนุมัติสำหรับแบรนด์ที่ระบุไว้ได้',
@@ -158,8 +159,7 @@ export const webSettingsMessages = {
     'นำไปใช้เป็นค่าเริ่มต้นในตัวเขียนโพสต์สำหรับแพลตฟอร์มที่คุณเลือกที่นี่ สามารถเปลี่ยนแปลงได้ต่อโพสต์ก่อนอนุมัติ',
   'settings.ui.projects.glossaryHelp':
     'ชื่อผลิตภัณฑ์ ศัพท์ทางกฎหมาย และสิ่งใดก็ตามที่ต้องคงเดิมไว้ในการแปล',
-  'settings.ui.projects.glossaryCaption':
-    'คำศัพท์ที่ได้รับการคุ้มครองและวิธีจัดการแต่ละคำตามภาษา',
+  'settings.ui.projects.glossaryCaption': 'คำศัพท์ที่ได้รับการคุ้มครองและวิธีจัดการแต่ละคำตามภาษา',
   'settings.ui.projects.glossaryEmpty':
     'ยังไม่มีคำศัพท์ที่ได้รับการคุ้มครอง เพิ่มชื่อผลิตภัณฑ์และศัพท์ทางกฎหมายที่ต้องไม่ถูกแปลหรือเรียบเรียงใหม่',
   'settings.ui.projects.localeRulesHelp':
@@ -174,7 +174,8 @@ export const webSettingsMessages = {
     'เก็บโปรเจกต์ที่ไม่ได้ใช้งานเข้าคลังหรือเปลี่ยนสิทธิ์ของพื้นที่ทำงานก่อนเพิ่มโปรเจกต์อีก ขีดจำกัดปัจจุบันคือ {limit}',
   'settings.ui.projects.listLabel': 'เลือกโปรเจกต์ที่จะแก้ไข',
   'settings.ui.projects.detailsTitle': 'รายละเอียดโปรเจกต์',
-  'settings.ui.projects.projectMeta': '{accounts, plural, =0 {ไม่มีช่องทาง} other {# ช่องทาง}} · อัปเดตแล้ว {updated}',
+  'settings.ui.projects.projectMeta':
+    '{accounts, plural, =0 {ไม่มีช่องทาง} other {# ช่องทาง}} · อัปเดตแล้ว {updated}',
   'settings.ui.projects.archiveAction': 'เก็บโปรเจกต์เข้าคลัง',
   'settings.ui.projects.archiveTitle': 'เก็บ {project} เข้าคลังหรือไม่',
   'settings.ui.projects.archiveBody':
@@ -183,7 +184,8 @@ export const webSettingsMessages = {
     'ช่องทางที่เชื่อมต่อของโปรเจกต์นี้จะไม่ปรากฏในขั้นตอนการทำงานของโปรเจกต์ที่ใช้งานอยู่อีกต่อไป',
   'settings.ui.projects.archiveHistory':
     'ฉบับร่าง โพสต์ที่เผยแพร่แล้ว ใบเสร็จ และประวัติการตรวจสอบยังคงถูกเก็บไว้',
-  'settings.ui.projects.archiveLastDisabled': 'เก็บโปรเจกต์ที่ใช้งานอยู่อย่างน้อยหนึ่งโปรเจกต์ในพื้นที่ทำงาน',
+  'settings.ui.projects.archiveLastDisabled':
+    'เก็บโปรเจกต์ที่ใช้งานอยู่อย่างน้อยหนึ่งโปรเจกต์ในพื้นที่ทำงาน',
   'settings.ui.projects.archiveConnectedDisabled':
     'ตัดการเชื่อมต่อช่องทางของโปรเจกต์นี้ก่อนเก็บเข้าคลัง',
   'settings.ui.localization.description':

@@ -315,7 +315,11 @@ function checkRestrictions(
   const approvedDomains = restrictions.approvedDomains ?? [];
 
   for (const target of request.targets) {
-    if (projectIds.length > 0 && target.projectId !== null && !projectIds.includes(target.projectId)) {
+    if (
+      projectIds.length > 0 &&
+      target.projectId !== null &&
+      !projectIds.includes(target.projectId)
+    ) {
       blockers.push(
         note('project_not_preauthorized', { projectId: target.projectId }, target.connectionId),
       );

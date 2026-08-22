@@ -71,9 +71,7 @@ describe('resuming', () => {
 
 describe('server refusals', () => {
   it('maps the refusals this screen has copy for', () => {
-    expect(refusalMessageKey('errors.job_paused_by_billing')).toBe(
-      'calendar.hold.blocked.billing',
-    );
+    expect(refusalMessageKey('errors.job_paused_by_billing')).toBe('calendar.hold.blocked.billing');
     expect(refusalMessageKey('errors.job_already_published')).toBe(
       'calendar.hold.blocked.published',
     );

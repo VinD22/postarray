@@ -34,7 +34,8 @@ export const postingSetMessages = {
     'Postingan ini sudah terbit. Menjeda tidak dapat menariknya kembali dari platform.',
   'calendar.hold.blocked.inFlight':
     'Postingan ini sedang dikirim sekarang. Sudah terlambat untuk menjedanya, dan menghentikannya di tengah jalan dapat membuatnya terbit sebagian.',
-  'calendar.hold.blocked.finished': 'Postingan ini sudah selesai, jadi tidak ada yang perlu dijeda.',
+  'calendar.hold.blocked.finished':
+    'Postingan ini sudah selesai, jadi tidak ada yang perlu dijeda.',
   'calendar.hold.blocked.billing':
     'Postingan ini ditahan karena ruang kerja kehilangan akses penuh. Melanjutkannya adalah masalah penagihan, bukan penjadwalan.',
   'calendar.hold.blocked.billingAction': 'Buka penagihan',
@@ -45,12 +46,14 @@ export const postingSetMessages = {
   'set.appliedOnce':
     'Set dibaca sekali, saat Anda menerapkannya. Mengeditnya nanti mengubah apa yang menjadi awal postingan berikutnya. Draf dan postingan terjadwal yang sudah Anda buat darinya tetap seperti apa adanya.',
   'set.empty.title': 'Belum ada Set',
-  'set.empty.body': 'Buat satu untuk berhenti membangun ulang daftar akun yang sama untuk setiap postingan.',
+  'set.empty.body':
+    'Buat satu untuk berhenti membangun ulang daftar akun yang sama untuk setiap postingan.',
   'set.create': 'Set baru',
   'set.edit': 'Edit Set',
   'set.archive': 'Arsipkan Set',
   'set.archived': 'Diarsipkan',
-  'set.archivedNote': 'Set yang diarsipkan disembunyikan dari pemilih. Postingan yang dibuat darinya tidak berubah.',
+  'set.archivedNote':
+    'Set yang diarsipkan disembunyikan dari pemilih. Postingan yang dibuat darinya tidak berubah.',
   'set.showArchived': 'Tampilkan yang diarsipkan',
   'set.saved': 'Set disimpan.',
   'set.archivedToast': 'Set diarsipkan. Postingan yang sudah dibuat darinya tidak berubah.',
@@ -65,7 +68,8 @@ export const postingSetMessages = {
   'set.field.signature': 'Tanda tangan',
   'set.field.signatureNone': 'Tanpa tanda tangan',
   'set.field.approval': 'Persetujuan',
-  'set.field.approvalHint': 'Persetujuan yang dibutuhkan postingan yang dibuat dari Set ini sebelum dapat diterbitkan.',
+  'set.field.approvalHint':
+    'Persetujuan yang dibutuhkan postingan yang dibuat dari Set ini sebelum dapat diterbitkan.',
   'set.field.schedule': 'Kapan menerbitkan',
 
   'set.approval.none': 'Tidak perlu persetujuan',
@@ -115,7 +119,8 @@ export const postingSetMessages = {
   'targetMemory.setting.enabled': 'Aktif',
   'targetMemory.setting.disabled': 'Nonaktif',
   'targetMemory.setting.saved': 'Pengaturan disimpan.',
-  'targetMemory.setting.cleared': 'Pengaturan disimpan. Pilihan tersimpan di proyek ini telah dihapus.',
+  'targetMemory.setting.cleared':
+    'Pengaturan disimpan. Pilihan tersimpan di proyek ini telah dihapus.',
 
   'targetMemory.composer.restored':
     '{count, plural, other {Dimulai dengan # akun dari terakhir kali.}}',

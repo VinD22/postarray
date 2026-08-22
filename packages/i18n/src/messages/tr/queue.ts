@@ -27,7 +27,8 @@ export const queueMessages = {
   'queue.field.timeZoneHelp':
     'Pencereler, günlük sayım ve kapalı tarihlerin hepsi bu dilimde okunur.',
   'queue.field.minimumGap': 'Minimum boşluk',
-  'queue.field.minimumGapHelp': 'İki gönderi arasındaki dakika. Sıfır, aralık kuralı olmadığı anlamına gelir.',
+  'queue.field.minimumGapHelp':
+    'İki gönderi arasındaki dakika. Sıfır, aralık kuralı olmadığı anlamına gelir.',
   'queue.field.maximumPerDay': 'Gün başına maksimum',
   'queue.field.maximumPerDayHelp':
     'Günlük sınır olmaması için boş bırakın. Sıfır, bu kuralın hiçbir şey önermediği anlamına gelir.',

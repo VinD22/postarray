@@ -8,11 +8,7 @@ import type {
 
 import type { ActorContext, Services } from '../../application/port';
 import { SERVICES } from '../../application/tokens';
-import type {
-  ListImportRowsQuery,
-  ListImportsQuery,
-  UploadImportInput,
-} from './import.schemas';
+import type { ListImportRowsQuery, ListImportsQuery, UploadImportInput } from './import.schemas';
 
 /**
  * Transport-level delegation for bulk import.

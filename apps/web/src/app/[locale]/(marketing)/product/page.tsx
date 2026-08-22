@@ -216,7 +216,7 @@ export default async function ProductPage({
               locale={locale}
               label={t.t('web.product.v2.sequence.stepsStat')}
             />
-            <Subheading as="h3" className="mt-8 text-title-sm">
+            <Subheading as="h3" className="text-title-sm mt-8">
               {t.t('web.product.shot.pending')}
             </Subheading>
             <Body className="mt-3">{t.t('web.product.shot.caption')}</Body>

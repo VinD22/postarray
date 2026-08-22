@@ -13,7 +13,7 @@ describe('INVISIBLE_CHARACTERS', () => {
     expect(new Set(codepoints).size).toBe(INVISIBLE_CHARACTERS.length);
   });
 
-  it('states the codepoint as U+ followed by the character\'s real hex value', () => {
+  it("states the codepoint as U+ followed by the character's real hex value", () => {
     for (const entry of INVISIBLE_CHARACTERS) {
       const hex = entry.char.codePointAt(0)?.toString(16).toUpperCase();
       expect(entry.codepoint).toBe(`U+${hex}`);

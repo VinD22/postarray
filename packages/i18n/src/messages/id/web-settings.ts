@@ -80,7 +80,8 @@ export const webSettingsMessages = {
   'settings.ui.members.column.lastActive': 'Terakhir aktif',
   'settings.ui.members.column.actions': 'Tindakan',
   'settings.ui.members.scopeAll': 'Semua merek dan akun',
-  'settings.ui.members.scopeLimited': '{count, plural, one {# project} other {# projects}}: {names}',
+  'settings.ui.members.scopeLimited':
+    '{count, plural, one {# project} other {# projects}}: {names}',
   'settings.ui.members.approvals.canApprove': 'Dapat menyetujui',
   'settings.ui.members.approvals.cannotApprove': 'Tidak dapat menyetujui',
   'settings.ui.members.approvals.canApproveOwnProjects': 'Dapat menyetujui merek yang terdaftar',
@@ -566,7 +567,8 @@ export const webSettingsMessages = {
   'billing.ui.conversionLabel': 'Bertobat',
   'billing.ui.channelsLabel': 'Saluran aktif',
   'billing.ui.paymentMethodPolar': 'Metode pembayaran dipegang oleh Polar',
-  'billing.ui.paymentMethodDescriptor': '{project} berakhir {last4}, habis masa berlakunya {expiry}',
+  'billing.ui.paymentMethodDescriptor':
+    '{project} berakhir {last4}, habis masa berlakunya {expiry}',
   'billing.ui.paymentMethodMissing': 'Belum ada metode pembayaran yang tercatat',
   'billing.ui.cancelBeforeDate': 'Batalkan sebelum {date} dan Anda tidak akan dikenakan biaya.',
   'billing.ui.annualFraming': '$25/bulan ditagih setiap tahun. Hemat $48/tahun.',

@@ -650,7 +650,9 @@ export function HeroDemo({
                         // so all nine are drawn. In the column, nine hairlines
                         // read as nine underlines, so only the step being
                         // played carries one.
-                        index === active ? 'bg-border-subtle' : 'bg-border-subtle lg:bg-transparent',
+                        index === active
+                          ? 'bg-border-subtle'
+                          : 'bg-border-subtle lg:bg-transparent',
                       )}
                     >
                       <span

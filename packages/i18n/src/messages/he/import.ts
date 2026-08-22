@@ -6,7 +6,8 @@ import { withHebrewPluralForms } from './catalog-helpers';
  */
 export const importMessages = withHebrewPluralForms({
   'import.title': 'ייבוא פוסטים מקובץ CSV',
-  'import.subtitle': 'העלה גיליון אלקטרוני, קרא מה הוא יעשה, ואז החלט. ההעלאה בודקת את הקובץ. היא לא יוצרת כלום.',
+  'import.subtitle':
+    'העלה גיליון אלקטרוני, קרא מה הוא יעשה, ואז החלט. ההעלאה בודקת את הקובץ. היא לא יוצרת כלום.',
 
   'import.step.upload': 'העלאה',
   'import.step.columns': 'עמודות',
@@ -16,7 +17,8 @@ export const importMessages = withHebrewPluralForms({
   'import.step.position': 'שלב {current} מתוך {total}',
 
   'import.upload.heading': 'בחר קובץ CSV',
-  'import.upload.help': 'CSV בלבד. קבצי גיליון אלקטרוני כמו .xlsx לא נקראים. ייצא את הגיליון שלך כ-CSV קודם.',
+  'import.upload.help':
+    'CSV בלבד. קבצי גיליון אלקטרוני כמו .xlsx לא נקראים. ייצא את הגיליון שלך כ-CSV קודם.',
   'import.upload.field': 'קובץ CSV',
   'import.upload.fieldHelp': 'בחר קובץ, או הדבק את השורות בתיבה למטה.',
   'import.upload.paste': 'או הדבק טקסט CSV',
@@ -29,7 +31,8 @@ export const importMessages = withHebrewPluralForms({
   'import.upload.allowPastHelp':
     'כבוי כברירת מחדל. שורה עם תאריך בעבר מדווחת כדי שתוכל לתקן אותה, במקום שהיא תוזז בשבילך.',
   'import.upload.tooLarge': 'הקובץ הזה גדול מ-{limit} תווים. פצל אותו ונסה שוב.',
-  'import.upload.duplicate': 'זה אותו קובץ שהעלית קודם, אז אתה מסתכל על הייבוא ההוא ולא על עותק שני שלו.',
+  'import.upload.duplicate':
+    'זה אותו קובץ שהעלית קודם, אז אתה מסתכל על הייבוא ההוא ולא על עותק שני שלו.',
 
   'import.template.heading': 'מה המשמעות של העמודות',
   'import.template.download': 'הורד תבנית CSV',
@@ -136,7 +139,8 @@ export const importMessages = withHebrewPluralForms({
   'import.error.invalidTargets': 'הערך {value} אינו ערכת יעד שמורה או רשימת מזהי חשבונות.',
   'import.error.invalidMedia': 'הערך {value} אינו מזהה מדיה, סכום ביקורת sha256 או כתובת https.',
   'import.error.mediaNotFound': 'אין מדיה בסביבת העבודה הזו התואמת ל-{value}.',
-  'import.error.mediaImportStarted': 'המדיה ב-{value} נמשכת כרגע. החל את הקובץ הזה שוב ברגע שהיא בספרייה.',
+  'import.error.mediaImportStarted':
+    'המדיה ב-{value} נמשכת כרגע. החל את הקובץ הזה שוב ברגע שהיא בספרייה.',
   'import.error.unknownVariantTarget':
     'לשורה הזו אין חשבון {provider}, אז הכיתוב של {provider} לא נעשה בו שימוש.',
   'import.error.applyFailed': 'לא ניתן היה להחיל את השורה הזו. הפניה: {code}.',

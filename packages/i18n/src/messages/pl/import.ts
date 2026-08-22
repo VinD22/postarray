@@ -28,7 +28,8 @@ export const importMessages = {
   'import.upload.field': 'Plik CSV',
   'import.upload.fieldHelp': 'Wybierz plik albo wklej wiersze w polu poniżej.',
   'import.upload.paste': 'Albo wklej tekst CSV',
-  'import.upload.pasteHelp': 'Uwzględnij wiersz nagłówka. Wszystko jest sprawdzane, zanim cokolwiek zostanie utworzone.',
+  'import.upload.pasteHelp':
+    'Uwzględnij wiersz nagłówka. Wszystko jest sprawdzane, zanim cokolwiek zostanie utworzone.',
   'import.upload.project': 'Marka',
   'import.upload.projectHelp': 'Każdy wiersz w jednym pliku należy do tej marki.',
   'import.upload.submit': 'Sprawdź ten plik',
@@ -36,7 +37,8 @@ export const importMessages = {
   'import.upload.allowPast': 'Zezwól na terminy, które już minęły',
   'import.upload.allowPastHelp':
     'Domyślnie wyłączone. Wiersz z datą w przeszłości jest zgłaszany, abyś mógł go poprawić, zamiast być za ciebie przesunięty.',
-  'import.upload.tooLarge': 'Ten plik jest większy niż {limit} znaków. Podziel go i spróbuj ponownie.',
+  'import.upload.tooLarge':
+    'Ten plik jest większy niż {limit} znaków. Podziel go i spróbuj ponownie.',
   'import.upload.duplicate':
     'To ten sam plik, który przesłałeś wcześniej, więc patrzysz na tamten import, a nie na jego drugą kopię.',
 
@@ -44,13 +46,15 @@ export const importMessages = {
   'import.template.download': 'Pobierz szablon CSV',
   'import.template.required': 'Wymagane kolumny',
   'import.template.optional': 'Opcjonalne kolumny',
-  'import.column.external_row_id': 'Twój własny identyfikator wiersza. Musi być unikalny w obrębie pliku.',
+  'import.column.external_row_id':
+    'Twój własny identyfikator wiersza. Musi być unikalny w obrębie pliku.',
   'import.column.project': 'Nazwa lub identyfikator marki, do której należy wiersz.',
   'import.column.targets':
     'Set: a następnie identyfikator zestawu docelowego, albo identyfikatory kont oddzielone kreską pionową.',
   'import.column.caption': 'Tekst posta.',
   'import.column.scheduled_local_time': 'Lokalna data i godzina, zapisana jako 2026-09-01T10:00.',
-  'import.column.time_zone': 'Strefa IANA, w której odczytywana jest ta lokalna godzina, na przykład Europe/Berlin.',
+  'import.column.time_zone':
+    'Strefa IANA, w której odczytywana jest ta lokalna godzina, na przykład Europe/Berlin.',
   'import.column.media':
     'Identyfikator mediów, sha256: a następnie suma kontrolna mediów, które już masz, albo adres https, z którego serwer ma je pobrać.',
   'import.column.title': 'Tytuł, tam gdzie miejsce docelowe go używa.',
@@ -141,14 +145,16 @@ export const importMessages = {
   'import.error.emptyFile': 'Ten plik nie ma wierszy.',
   'import.error.missingColumn': 'Brakuje kolumny {column}.',
   'import.error.unknownColumn': 'Kolumna {column} nie została rozpoznana, więc jest ignorowana.',
-  'import.error.duplicateRowId': 'Identyfikator wiersza {value} jest użyty więcej niż raz w tym pliku.',
+  'import.error.duplicateRowId':
+    'Identyfikator wiersza {value} jest użyty więcej niż raz w tym pliku.',
   'import.error.required': 'Ta komórka nie może być pusta.',
   'import.error.invalidCell': 'Ta komórka nie jest w formacie, który możemy odczytać.',
   'import.error.rowShape': 'Ten wiersz ma {actual} komórek, ale nagłówek ma ich {expected}.',
   'import.error.invalidLocalTime':
     'Godzina {value} nie jest lokalną datą i godziną, taką jak 2026-09-01T10:00.',
   'import.error.invalidTimeZone': 'Strefa {value} nie jest nazwą strefy czasowej IANA.',
-  'import.error.nonexistentLocalTime': 'Godzina {value} nie istnieje w strefie {zone}. Zegary ją pomijają.',
+  'import.error.nonexistentLocalTime':
+    'Godzina {value} nie istnieje w strefie {zone}. Zegary ją pomijają.',
   'import.error.ambiguousLocalTime':
     'Godzina {value} występuje dwukrotnie w strefie {zone} tego dnia. Wybierz inną godzinę.',
   'import.error.scheduleInPast': 'Godzina {value} w strefie {zone} już minęła.',

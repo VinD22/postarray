@@ -117,10 +117,12 @@ beforeEach(() => {
 
 describe('a project id from another workspace', () => {
   it('is refused as a list filter rather than answered with an empty page', async () => {
-    await expect(service().list(ctx, { projectId: OTHER_WORKSPACE_PROJECT })).rejects.toMatchObject({
-      code: 'NOT_FOUND',
-      messageKey: 'errors.not_found.project',
-    });
+    await expect(service().list(ctx, { projectId: OTHER_WORKSPACE_PROJECT })).rejects.toMatchObject(
+      {
+        code: 'NOT_FOUND',
+        messageKey: 'errors.not_found.project',
+      },
+    );
     expect(touched).toEqual([]);
   });
 

@@ -40,11 +40,13 @@ export const mediaMessages = {
   'mediaLib.derivative.original': 'オリジナル',
   'mediaLib.derivative.originalHint': '常に保持されます。上書きされることはありません。',
   'mediaLib.derivative.item': '{width}×{height}、{mimeType}、{size}',
-  'mediaLib.derivative.empty': 'まだ編集済みのバージョンはありません。オリジナルがここにある唯一のファイルです。',
+  'mediaLib.derivative.empty':
+    'まだ編集済みのバージョンはありません。オリジナルがここにある唯一のファイルです。',
   'mediaLib.derivative.select': 'このバージョンを使用',
   'mediaLib.derivative.selected': 'この投稿で使用中',
   'mediaLib.derivative.useOriginal': 'オリジナルを使用',
-  'mediaLib.derivative.processing': 'このバージョンは作成中です。準備ができるとここに表示されます。',
+  'mediaLib.derivative.processing':
+    'このバージョンは作成中です。準備ができるとここに表示されます。',
   'mediaLib.derivative.alreadyExists':
     '以前まったく同じ編集を行っているため、2つ目を作成する代わりにそのバージョンを再利用しました。',
   'mediaLib.derivative.failedTitle': 'このバージョンは作成できませんでした',
@@ -60,7 +62,8 @@ export const mediaMessages = {
     'このツールは画像や動画を生成しません。このエディターはアップロードしたものをトリミング、回転、サイズ変更、変換、圧縮するだけです。',
 
   // ==================================================== 拒否 ====
-  'error.media_derivative_no_operations.message': 'バージョンを保存する前に少なくとも1つの変更を選んでください。',
+  'error.media_derivative_no_operations.message':
+    'バージョンを保存する前に少なくとも1つの変更を選んでください。',
   'error.media_derivative_duplicate_operation.message':
     '各種類の変更は1回だけ指定できます。2つ目の{operation}を削除してください。',
   'error.media_derivative_crop_out_of_bounds.message':
@@ -75,7 +78,8 @@ export const mediaMessages = {
     '保存するフォーマットを選んでください。{sourceMimeType}ファイルはここではそのまま保存できません。',
   'error.media_derivative_quality_unsupported.message':
     'PNGは可逆圧縮のため、画質設定は何の効果もありません。設定を削除するか、JPEGまたはWebPで保存してください。',
-  'error.media_derivative_no_change.message': 'それはこのファイルがすでに使用しているフォーマットです。',
+  'error.media_derivative_no_change.message':
+    'それはこのファイルがすでに使用しているフォーマットです。',
   'error.media_derivative_source_unavailable.message':
     'このバージョンの元になるファイルはストレージにもう存在しません。',
   'error.media_derivative_preset_mismatch.message':

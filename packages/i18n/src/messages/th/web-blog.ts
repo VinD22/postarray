@@ -56,7 +56,6 @@ export const webBlogMessages = {
   'web.blog.empty.body': 'บทความแรก ๆ กำลังถูกเขียนอยู่ ฟีดจะมีบทความเหล่านั้นเมื่อพร้อม',
 
   'web.blog.label.language': 'อ่านเป็นภาษา',
-  'web.blog.label.notTranslated':
-    'บทความนี้ยังไม่ได้เขียนเป็นภาษาของคุณ กำลังแสดงฉบับภาษาอังกฤษ',
+  'web.blog.label.notTranslated': 'บทความนี้ยังไม่ได้เขียนเป็นภาษาของคุณ กำลังแสดงฉบับภาษาอังกฤษ',
   'web.blog.label.languageCount': '{count, plural, other {# ภาษา}}',
 } as const;

@@ -44,7 +44,8 @@ export const webToolsMessages = {
     'Мы пока не поставляем коннектор для этой платформы, поэтому у нас нет проверенного ограничения, чтобы его показать. Мы предпочитаем ничего не говорить, чем гадать.',
   'web.tools.shared.copy': 'Копировать',
   'web.tools.shared.copied': 'Скопировано',
-  'web.tools.shared.copyFailed': 'Ваш браузер заблокировал копирование. Выделите текст и скопируйте его.',
+  'web.tools.shared.copyFailed':
+    'Ваш браузер заблокировал копирование. Выделите текст и скопируйте его.',
   'web.tools.shared.faqTitle': 'Вопросы',
   'web.tools.shared.baselineTitle': 'Какой аккаунт описывают эти числа',
   'web.tools.shared.baselineBody':
@@ -55,7 +56,8 @@ export const webToolsMessages = {
   'web.tools.preflight.summary':
     'Один черновик, проверенный по ограничениям текста и медиа десяти платформ одновременно.',
   'web.tools.utm.name': 'Конструктор UTM-ссылок',
-  'web.tools.utm.summary': 'Постройте помеченный URL кампании, не испортив уже имевшуюся строку запроса.',
+  'web.tools.utm.summary':
+    'Постройте помеченный URL кампании, не испортив уже имевшуюся строку запроса.',
   'web.tools.youtubeTitle.name': 'Проверка длины заголовка YouTube',
   'web.tools.youtubeTitle.summary': 'Измерьте заголовок так, как человек считает символы.',
   'web.tools.timeZone.name': 'Планировщик часовых поясов и перехода на летнее время',
@@ -84,9 +86,11 @@ export const webToolsMessages = {
   'web.tools.preflight.field.mediaKind.video': 'Одно видео',
   'web.tools.preflight.field.mediaCount.label': 'Сколько изображений',
   'web.tools.preflight.field.byteSize.label': 'Размер файла в мегабайтах',
-  'web.tools.preflight.field.byteSize.help': 'Самый большой отдельный файл. Оставьте пустым, чтобы пропустить.',
+  'web.tools.preflight.field.byteSize.help':
+    'Самый большой отдельный файл. Оставьте пустым, чтобы пропустить.',
   'web.tools.preflight.field.duration.label': 'Длина видео в секундах',
-  'web.tools.preflight.field.duration.help': 'Оставьте пустым, чтобы пропустить проверку длительности.',
+  'web.tools.preflight.field.duration.help':
+    'Оставьте пустым, чтобы пропустить проверку длительности.',
   'web.tools.preflight.field.width.label': 'Ширина медиа в пикселях',
   'web.tools.preflight.field.height.label': 'Высота медиа в пикселях',
   'web.tools.preflight.field.dimensions.help':
@@ -149,7 +153,8 @@ export const webToolsMessages = {
   'web.tools.utm.field.medium.label': 'Канал кампании',
   'web.tools.utm.field.medium.help': 'Вид ссылки. Например, соцсети, email или реферал.',
   'web.tools.utm.field.campaign.label': 'Название кампании',
-  'web.tools.utm.field.campaign.help': 'Запуск, промо-акция или тема, к которой относится эта ссылка.',
+  'web.tools.utm.field.campaign.help':
+    'Запуск, промо-акция или тема, к которой относится эта ссылка.',
   'web.tools.utm.field.term.label': 'Термин кампании',
   'web.tools.utm.field.term.help': 'Необязательно. Традиционно платное ключевое слово.',
   'web.tools.utm.field.content.label': 'Содержимое кампании',
@@ -169,7 +174,8 @@ export const webToolsMessages = {
   'web.tools.utm.faq.existing.a':
     'Нет. Существующие параметры сохраняются в исходном порядке, и добавляется или заменяется только заполненный вами параметр UTM. Фрагмент в конце URL остаётся в конце.',
   'web.tools.utm.faq.privacy.q': 'Отправляется ли мой URL куда-либо?',
-  'web.tools.utm.faq.privacy.a': 'Нет. URL составляется в вашем браузере и никогда не покидает эту страницу.',
+  'web.tools.utm.faq.privacy.a':
+    'Нет. URL составляется в вашем браузере и никогда не покидает эту страницу.',
 
   'web.tools.youtubeTitle.title': 'Проверка длины заголовка YouTube',
   'web.tools.youtubeTitle.lede':
@@ -200,14 +206,16 @@ export const webToolsMessages = {
   'web.tools.timeZone.title': 'Планировщик часовых поясов и перехода на летнее время',
   'web.tools.timeZone.lede':
     'Еженедельный слот, который выглядит стабильным в вашем календаре, сдвигается для половины вашей аудитории дважды в год. Это показывает где и когда.',
-  'web.tools.timeZone.explainer.title': 'Почему фиксированное местное время это не фиксированное время',
+  'web.tools.timeZone.explainer.title':
+    'Почему фиксированное местное время это не фиксированное время',
   'web.tools.timeZone.explainer.body':
     'Время имеет смысл только с прикреплённым поясом. Пояса меняют своё смещение в даты, которые различаются по странам, и два региона, которые в январе разделены пятью часами, в апреле могут быть разделены четырьмя. Расписание, хранимое как момент плюс пояс, переживает это. Расписание, хранимое как местный час, нет.',
   'web.tools.timeZone.field.date.label': 'Дата',
   'web.tools.timeZone.field.time.label': 'Время',
   'web.tools.timeZone.field.zone.label': 'Ваш пояс',
   'web.tools.timeZone.field.audience.label': 'Пояса аудитории',
-  'web.tools.timeZone.field.audience.help': 'Выберите пояса, в которых действительно находятся ваши читатели.',
+  'web.tools.timeZone.field.audience.help':
+    'Выберите пояса, в которых действительно находятся ваши читатели.',
   'web.tools.timeZone.result.title': 'Тот же момент, везде, где вы выбрали',
   'web.tools.timeZone.result.empty': 'Выберите хотя бы один пояс аудитории.',
   'web.tools.timeZone.result.shift':
@@ -236,7 +244,8 @@ export const webToolsMessages = {
   'web.tools.engagementRate.field.followers.label': 'Подписчики',
   'web.tools.engagementRate.field.followers.help': 'Размер аккаунта на момент публикации.',
   'web.tools.engagementRate.field.impressions.label': 'Показы',
-  'web.tools.engagementRate.field.impressions.help': 'Общее число просмотров, включая человека, увидевшего дважды.',
+  'web.tools.engagementRate.field.impressions.help':
+    'Общее число просмотров, включая человека, увидевшего дважды.',
   'web.tools.engagementRate.result.title': 'Коэффициент вовлечённости, тремя способами',
   'web.tools.engagementRate.result.empty': 'недоступно',
   'web.tools.engagementRate.result.note':

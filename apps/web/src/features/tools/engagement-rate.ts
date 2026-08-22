@@ -63,8 +63,6 @@ export function engagementRate(
 }
 
 /** Every basis at once, in `ENGAGEMENT_RATE_BASES` order. */
-export function engagementRates(
-  input: EngagementRateInput,
-): readonly EngagementRateResult[] {
+export function engagementRates(input: EngagementRateInput): readonly EngagementRateResult[] {
   return ENGAGEMENT_RATE_BASES.map((basis) => engagementRate(basis, input));
 }

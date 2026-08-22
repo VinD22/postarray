@@ -65,7 +65,8 @@ export const webToolsMessages = {
     'Pro tuto platformu zatím nedodáváme konektor, takže nemáme ověřený limit k zobrazení. Raději neřekneme nic, než abychom hádali.',
   'web.tools.shared.copy': 'Kopírovat',
   'web.tools.shared.copied': 'Zkopírováno',
-  'web.tools.shared.copyFailed': 'Váš prohlížeč zablokoval kopírování. Vyberte text a zkopírujte jej.',
+  'web.tools.shared.copyFailed':
+    'Váš prohlížeč zablokoval kopírování. Vyberte text a zkopírujte jej.',
   'web.tools.shared.faqTitle': 'Otázky',
   'web.tools.shared.baselineTitle': 'Který účet tato čísla popisují',
   'web.tools.shared.baselineBody':
@@ -80,7 +81,8 @@ export const webToolsMessages = {
   'web.tools.preflight.summary':
     'Jeden koncept, zkontrolovaný proti textovým a mediálním limitům deseti platforem najednou.',
   'web.tools.utm.name': 'Tvůrce odkazů UTM',
-  'web.tools.utm.summary': 'Sestavte označenou kampaňovou URL, aniž byste poškodili dotazovací řetězec, který měla.',
+  'web.tools.utm.summary':
+    'Sestavte označenou kampaňovou URL, aniž byste poškodili dotazovací řetězec, který měla.',
   'web.tools.youtubeTitle.name': 'Kontrola délky titulků YouTube',
   'web.tools.youtubeTitle.summary': 'Změřte titulek tak, jak počítá znaky člověk.',
   'web.tools.timeZone.name': 'Plánovač časových pásem a letního času',
@@ -113,7 +115,8 @@ export const webToolsMessages = {
   'web.tools.preflight.field.mediaKind.video': 'Jedno video',
   'web.tools.preflight.field.mediaCount.label': 'Kolik obrázků',
   'web.tools.preflight.field.byteSize.label': 'Velikost souboru v megabajtech',
-  'web.tools.preflight.field.byteSize.help': 'Největší jednotlivý soubor. Nechte prázdné pro přeskočení.',
+  'web.tools.preflight.field.byteSize.help':
+    'Největší jednotlivý soubor. Nechte prázdné pro přeskočení.',
   'web.tools.preflight.field.duration.label': 'Délka videa v sekundách',
   'web.tools.preflight.field.duration.help': 'Nechte prázdné pro přeskočení kontroly délky.',
   'web.tools.preflight.field.width.label': 'Šířka médií v pixelech',
@@ -182,7 +185,8 @@ export const webToolsMessages = {
   'web.tools.utm.field.medium.label': 'Médium kampaně',
   'web.tools.utm.field.medium.help': 'Druh odkazu. Například social, e-mail nebo doporučení.',
   'web.tools.utm.field.campaign.label': 'Název kampaně',
-  'web.tools.utm.field.campaign.help': 'Spuštění, propagace nebo téma, ke kterému tento odkaz patří.',
+  'web.tools.utm.field.campaign.help':
+    'Spuštění, propagace nebo téma, ke kterému tento odkaz patří.',
   'web.tools.utm.field.term.label': 'Termín kampaně',
   'web.tools.utm.field.term.help': 'Volitelné. Tradičně placené klíčové slovo.',
   'web.tools.utm.field.content.label': 'Obsah kampaně',
@@ -202,7 +206,8 @@ export const webToolsMessages = {
   'web.tools.utm.faq.existing.a':
     'Ne. Existující parametry se zachovávají v původním pořadí a přidán nebo nahrazen je pouze parametr UTM, který jste vyplnili. Fragment na konci URL zůstává na konci.',
   'web.tools.utm.faq.privacy.q': 'Je moje URL někam odesílána?',
-  'web.tools.utm.faq.privacy.a': 'Ne. URL je sestavena ve vašem prohlížeči a nikdy tuto stránku neopustí.',
+  'web.tools.utm.faq.privacy.a':
+    'Ne. URL je sestavena ve vašem prohlížeči a nikdy tuto stránku neopustí.',
 
   /* ---------------------------------------------------------------------- */
   /* YouTube title length checker                                            */

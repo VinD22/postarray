@@ -31,8 +31,7 @@ export const mediaMessages = {
   'mediaLib.derivative.qualityHint':
     'الجودة الأقل تنتج ملفًا أصغر. تنطبق على JPEG وWebP. صيغة PNG بلا فقدان وتتجاهلها.',
   'mediaLib.derivative.projected': 'ستكون هذه النسخة بمقاس {width} في {height} بكسل.',
-  'mediaLib.derivative.projectedUnavailable':
-    'حجم هذه النسخة غير متاح حتى يتم إنشاؤها.',
+  'mediaLib.derivative.projectedUnavailable': 'حجم هذه النسخة غير متاح حتى يتم إنشاؤها.',
 
   'mediaLib.derivative.listHeading': 'النسخ',
   'mediaLib.derivative.original': 'الأصل',
@@ -46,8 +45,7 @@ export const mediaMessages = {
   'mediaLib.derivative.alreadyExists':
     'قمت بهذا التعديل بالضبط من قبل، لذا أعدنا استخدام تلك النسخة بدلًا من إنشاء نسخة ثانية.',
   'mediaLib.derivative.failedTitle': 'تعذّر إنشاء هذه النسخة',
-  'mediaLib.derivative.failedBody':
-    'لم يُحفظ شيء وأصلك لم يُلمس. غيّر القيم وحاول مجددًا.',
+  'mediaLib.derivative.failedBody': 'لم يُحفظ شيء وأصلك لم يُلمس. غيّر القيم وحاول مجددًا.',
   'mediaLib.derivative.openEditor': 'تحرير {name}',
 
   'mediaLib.derivative.unsupportedTitle': 'التحرير يعمل مع الصور فقط',

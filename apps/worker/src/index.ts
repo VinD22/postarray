@@ -134,10 +134,7 @@ export {
 } from './worker';
 
 export { createWorkerGateway } from './prelaunch-gateway';
-export {
-  createWorkerConnectorRuntime,
-  type WorkerConnectorRuntime,
-} from './connector-runtime';
+export { createWorkerConnectorRuntime, type WorkerConnectorRuntime } from './connector-runtime';
 export type { WorkerGatewayFactoryContext } from './main';
 export {
   MEDIA_RETENTION_ASSET_BATCH,

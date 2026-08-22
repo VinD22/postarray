@@ -140,7 +140,7 @@ function BlockContent({ block, locale }: { block: BlogBlock; locale: string }): 
     case 'takeaways':
       return (
         <div className="border-border-bold bg-surface-raised space-y-3 border-2 p-6">
-          <p className="text-body-sm text-text-tertiary font-mono uppercase tracking-wide">
+          <p className="text-body-sm text-text-tertiary font-mono tracking-wide uppercase">
             {block.title}
           </p>
           <ul className="space-y-2">

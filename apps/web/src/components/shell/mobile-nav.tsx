@@ -136,7 +136,7 @@ export function MobileNav() {
               // ink in light, paper in dark, with a hairline border and a soft
               // lift rather than the poster palette's yellow slab behind a 2px
               // outline and an offset block.
-              'bg-surface-inverted text-text-inverted border-border-strong border shadow-raised',
+              'bg-surface-inverted text-text-inverted border-border-strong shadow-raised border',
               canPublish ? 'hover:bg-text-secondary' : 'pointer-events-none opacity-60',
             )}
           >

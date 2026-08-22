@@ -247,11 +247,7 @@ function parseVariants(
  * either comes from the row or from an explicit option, and otherwise the row
  * is invalid.
  */
-function resolveSchedule(
-  local: string,
-  zone: string,
-  problems: BulkImportIssue[],
-): string | null {
+function resolveSchedule(local: string, zone: string, problems: BulkImportIssue[]): string | null {
   const [datePart = '', timePart = ''] = local.split('T');
   const [year, month, day] = datePart.split('-').map((part) => Number.parseInt(part, 10));
   const [hour, minute] = timePart.split(':').map((part) => Number.parseInt(part, 10));
@@ -318,7 +314,8 @@ function normalizeRow(
     problems.push(issue('import.error.invalidTimeZone', 'time_zone', { value: short(zoneRaw) }));
   }
 
-  const targets = targetsRaw === '' ? { setId: null, connectionIds: [] } : parseTargets(targetsRaw, problems);
+  const targets =
+    targetsRaw === '' ? { setId: null, connectionIds: [] } : parseTargets(targetsRaw, problems);
   if (targets.setId === null && targets.connectionIds.length === 0 && targetsRaw !== '') {
     problems.push(issue('import.error.invalidTargets', 'targets', { value: short(targetsRaw) }));
   }
@@ -384,7 +381,11 @@ export function parseCsvManifest(text: string, context: CsvManifestOptions): Csv
   if (header === undefined) {
     return {
       parserVersion: CSV_MANIFEST_PARSER_VERSION,
-      columns: { present: [], missingRequired: [...BULK_IMPORT_REQUIRED_COLUMNS], unrecognized: [] },
+      columns: {
+        present: [],
+        missingRequired: [...BULK_IMPORT_REQUIRED_COLUMNS],
+        unrecognized: [],
+      },
       rows: [],
       issues: [issue('import.error.emptyFile', null, {})],
     };
@@ -394,7 +395,9 @@ export function parseCsvManifest(text: string, context: CsvManifestOptions): Csv
     ...columns.missingRequired.map((column) =>
       issue('import.error.missingColumn', column, { column }),
     ),
-    ...columns.unrecognized.map((column) => issue('import.error.unknownColumn', column, { column })),
+    ...columns.unrecognized.map((column) =>
+      issue('import.error.unknownColumn', column, { column }),
+    ),
   ];
 
   const body = records.slice(1);

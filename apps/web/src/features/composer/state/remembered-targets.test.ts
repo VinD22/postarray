@@ -20,10 +20,9 @@ function channel(connectionId: string, health = 'active', authorized = true): Co
 
 describe('opting out', () => {
   it('restores nothing and says nothing when the project has not opted in', () => {
-    const restored = restoreSelection(
-      memory({ enabled: false, connectionIds: ['conn_a'] }),
-      [channel('conn_a')],
-    );
+    const restored = restoreSelection(memory({ enabled: false, connectionIds: ['conn_a'] }), [
+      channel('conn_a'),
+    ]);
     expect(restored.connectionIds).toEqual([]);
     expect(restored.noticeKey).toBeNull();
   });

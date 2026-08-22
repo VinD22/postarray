@@ -72,8 +72,10 @@ export const errorMessages = {
     "Archivia un progetto inattivo o cambia il limite di progetti dell'area di lavoro.",
   'error.project_has_connections.message':
     'Questo progetto ha ancora {connected, plural, one {# canale collegato} many {# canali collegati} other {# canali collegati}}.',
-  'error.project_has_connections.action': 'Disconnetti ogni canale in questo progetto prima di archiviarlo.',
-  'error.project_last_active.message': "Un'area di lavoro deve mantenere almeno un progetto attivo.",
+  'error.project_has_connections.action':
+    'Disconnetti ogni canale in questo progetto prima di archiviarlo.',
+  'error.project_last_active.message':
+    "Un'area di lavoro deve mantenere almeno un progetto attivo.",
   'error.project_last_active.action': 'Crea un altro progetto prima di archiviare questo.',
   'error.connection_not_found.message': "Quella connessione non è più in quest'area di lavoro.",
   'error.connection_not_found.action':

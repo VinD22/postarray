@@ -36,7 +36,8 @@ export const importMessages = {
   'import.upload.allowPast': 'Permitir horarios que ya pasaron',
   'import.upload.allowPastHelp':
     'Desactivado de forma predeterminada. Una fila con fecha pasada se informa para que la corrijas, en lugar de moverla por ti.',
-  'import.upload.tooLarge': 'Ese archivo supera los {limit} caracteres. Divídelo y vuelve a intentar.',
+  'import.upload.tooLarge':
+    'Ese archivo supera los {limit} caracteres. Divídelo y vuelve a intentar.',
   'import.upload.duplicate':
     'Este es el mismo archivo que subiste antes, así que estás viendo esa importación en lugar de una segunda copia.',
 
@@ -50,13 +51,15 @@ export const importMessages = {
     'Ya sea set: seguido de un id de conjunto de destinos, o ids de cuenta separados por una barra vertical.',
   'import.column.caption': 'El texto de la publicación.',
   'import.column.scheduled_local_time': 'Fecha y hora local, escrita como 2026-09-01T10:00.',
-  'import.column.time_zone': 'La zona IANA en la que se lee esa hora local, por ejemplo Europe/Berlin.',
+  'import.column.time_zone':
+    'La zona IANA en la que se lee esa hora local, por ejemplo Europe/Berlin.',
   'import.column.media':
     'Un id de medio, sha256: seguido del checksum de un medio que ya tienes, o una dirección https para que el servidor lo obtenga.',
   'import.column.title': 'Un título, donde el destino use uno.',
   'import.column.destination': 'La página, tablero o canal dentro de la cuenta.',
   'import.column.privacy': 'El valor de privacidad que espera el destino.',
-  'import.column.first_comment': 'Texto publicado como el primer comentario después de la publicación.',
+  'import.column.first_comment':
+    'Texto publicado como el primer comentario después de la publicación.',
   'import.column.approval_policy': 'La política de aprobación que se adjuntará a cada borrador.',
   'import.column.perPlatform':
     'Una columna caption_ o title_ nombrada según una plataforma reemplaza solo esa plataforma, por ejemplo caption_instagram.',
@@ -123,7 +126,8 @@ export const importMessages = {
     '{count, plural, one {#borrador creado} other {#borradores creados} many {#borradores creados}}',
   'import.results.skipped':
     '{count, plural, one {#fila ya estaba hecha} other {#filas ya estaban hechas} many {#filas ya estaban hechas}}',
-  'import.results.failed': '{count, plural, one {#fila falló} other {#filas fallaron} many {#filas fallaron}}',
+  'import.results.failed':
+    '{count, plural, one {#fila falló} other {#filas fallaron} many {#filas fallaron}}',
   'import.results.retry': 'Aplicar de nuevo las filas restantes',
   'import.results.openDrafts': 'Abrir los borradores',
   'import.results.unavailable': 'no disponible',
@@ -146,8 +150,7 @@ export const importMessages = {
   'import.error.invalidLocalTime':
     'La hora {value} no es una fecha y hora local como 2026-09-01T10:00.',
   'import.error.invalidTimeZone': 'La zona {value} no es un nombre de zona horaria IANA.',
-  'import.error.nonexistentLocalTime':
-    'La hora {value} no existe en {zone}. El reloj la salta.',
+  'import.error.nonexistentLocalTime': 'La hora {value} no existe en {zone}. El reloj la salta.',
   'import.error.ambiguousLocalTime':
     'La hora {value} ocurre dos veces en {zone} ese día. Elige una hora diferente.',
   'import.error.scheduleInPast': 'La hora {value} en {zone} ya pasó.',

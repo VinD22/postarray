@@ -25,24 +25,28 @@ export const queueMessages = {
     'Lưu trữ sẽ dừng các đề xuất trong tương lai. Các khung giờ đã được đặt trước vẫn giữ nguyên thời điểm và lý do của chúng.',
 
   'queue.field.name': 'Tên quy tắc',
-  'queue.field.nameHelp': 'Một cái tên bạn sẽ nhận ra sau này, ví dụ: Buổi sáng các ngày trong tuần.',
+  'queue.field.nameHelp':
+    'Một cái tên bạn sẽ nhận ra sau này, ví dụ: Buổi sáng các ngày trong tuần.',
   'queue.field.timeZone': 'Múi giờ',
   'queue.field.timeZoneHelp':
     'Khung giờ, số lượng đăng mỗi ngày và các ngày không đăng bài đều được đọc theo múi giờ này.',
   'queue.field.minimumGap': 'Khoảng cách tối thiểu',
-  'queue.field.minimumGapHelp': 'Số phút giữa hai bài đăng. Bằng 0 nghĩa là không có quy tắc giãn cách.',
+  'queue.field.minimumGapHelp':
+    'Số phút giữa hai bài đăng. Bằng 0 nghĩa là không có quy tắc giãn cách.',
   'queue.field.maximumPerDay': 'Tối đa mỗi ngày',
   'queue.field.maximumPerDayHelp':
     'Để trống nếu không giới hạn theo ngày. Bằng 0 nghĩa là quy tắc này không đề xuất gì cả.',
   'queue.field.maximumPerDayUnlimited': 'Không giới hạn theo ngày',
   'queue.field.priority': 'Mức ưu tiên',
-  'queue.field.priorityHelp': 'Quy tắc có mức ưu tiên cao nhất có thể đề xuất khung giờ sẽ được dùng.',
+  'queue.field.priorityHelp':
+    'Quy tắc có mức ưu tiên cao nhất có thể đề xuất khung giờ sẽ được dùng.',
   'queue.field.enabled': 'Dùng quy tắc này',
 
   'queue.windows.heading': 'Khung giờ hằng tuần',
   'queue.windows.help':
     'Chọn các giờ theo múi giờ địa phương mà dự án này có thể đăng bài. Dùng các trường ngày và giờ, hoặc các nút trên lưới.',
-  'queue.windows.empty': 'Chưa có khung giờ nào. Một quy tắc không có khung giờ sẽ không bao giờ đề xuất được thời điểm nào.',
+  'queue.windows.empty':
+    'Chưa có khung giờ nào. Một quy tắc không có khung giờ sẽ không bao giờ đề xuất được thời điểm nào.',
   'queue.windows.add': 'Thêm khung giờ',
   'queue.windows.remove': 'Xóa khung giờ',
   'queue.windows.entry': '{weekday}, {start} đến {end}',
@@ -61,7 +65,8 @@ export const queueMessages = {
   'queue.weekday.7': 'Chủ Nhật',
 
   'queue.blackouts.heading': 'Ngày không đăng bài',
-  'queue.blackouts.help': 'Những ngày dự án này sẽ không đăng bài, được đọc theo múi giờ của quy tắc.',
+  'queue.blackouts.help':
+    'Những ngày dự án này sẽ không đăng bài, được đọc theo múi giờ của quy tắc.',
   'queue.blackouts.empty': 'Không có ngày không đăng bài nào.',
   'queue.blackouts.add': 'Thêm ngày không đăng bài',
   'queue.blackouts.remove': 'Xóa ngày không đăng bài',
@@ -101,7 +106,8 @@ export const queueMessages = {
     'Thời điểm đầu tiên trong khung giờ không tồn tại vào ngày đó theo {zone}, nên thời điểm tiếp theo tồn tại đã được dùng.',
   'queue.reason.dstAmbiguousFirst':
     'Giờ địa phương đó xảy ra hai lần theo {zone} vào ngày đó. Lần xuất hiện đầu tiên đã được dùng.',
-  'queue.reason.priorityChosen': 'Quy tắc này có mức ưu tiên {priority}, mức cao nhất có thể đề xuất.',
+  'queue.reason.priorityChosen':
+    'Quy tắc này có mức ưu tiên {priority}, mức cao nhất có thể đề xuất.',
   'queue.reason.connectionScoped': 'Quy tắc này áp dụng cho {count, plural, other {# tài khoản}}.',
   'queue.reason.horizonExhausted': 'Không có khung giờ nào trống trong vòng {days} ngày.',
 } as const;

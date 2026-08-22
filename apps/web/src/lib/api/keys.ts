@@ -32,8 +32,10 @@ export const keys = {
   calendar: (workspaceId: string, range: { from: string; to: string; projectId?: string }) =>
     ['ws', workspaceId, 'calendar', range] as const,
 
-  postingSets: (workspaceId: string, filter: { projectId?: string; includeArchived?: boolean } = {}) =>
-    ['ws', workspaceId, 'posting-sets', filter] as const,
+  postingSets: (
+    workspaceId: string,
+    filter: { projectId?: string; includeArchived?: boolean } = {},
+  ) => ['ws', workspaceId, 'posting-sets', filter] as const,
   postingSet: (workspaceId: string, setId: string) =>
     ['ws', workspaceId, 'posting-set', setId] as const,
   // Per person as well as per workspace at the database; the key only has to be

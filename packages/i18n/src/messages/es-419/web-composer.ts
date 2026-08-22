@@ -336,7 +336,8 @@ export const webComposerMessages = {
   'mediaLib.import.issue.invalid': 'Ingrese una URL completa.',
   'mediaLib.import.issue.scheme': 'Use un enlace HTTP o HTTPS.',
   'mediaLib.import.issue.credentials': 'Use un enlace sin nombre de usuario ni contraseña.',
-  'mediaLib.retention.title': 'Los archivos almacenados se conservan 30 días después de crear la publicación',
+  'mediaLib.retention.title':
+    'Los archivos almacenados se conservan 30 días después de crear la publicación',
   'mediaLib.retention.body':
     'Una vez que un archivo se adjunta a una publicación, lo eliminamos de forma permanente del almacenamiento de Relay 30 días después de crearse esa publicación. Los archivos que esperan ser adjuntados usan la fecha de subida como referencia de limpieza. El texto de la publicación, los recibos de publicación y el historial de auditoría siguen disponibles por más tiempo. Una publicación ya publicada en una plataforma social no se elimina cuando vence su archivo almacenado.',
   'mediaLib.retention.limits':
@@ -349,7 +350,8 @@ export const webComposerMessages = {
   'mediaLib.processing.unavailableTitle': 'Este archivo aún no está listo para publicarse',
   'mediaLib.processing.unavailableBody':
     'El procesamiento o la verificación de seguridad todavía están pendientes, o no se aprobaron. Vuelva a subir el archivo si este estado no se resuelve.',
-  'mediaLib.processing.pendingTitle': 'El escaneo de seguridad no está disponible antes del lanzamiento',
+  'mediaLib.processing.pendingTitle':
+    'El escaneo de seguridad no está disponible antes del lanzamiento',
   'mediaLib.processing.pendingBody':
     'El archivo se almacena durante 30 días, pero no se puede adjuntar a una publicación publicada hasta que se habilite el escaneo de seguridad.',
   'mediaLib.processing.blockedTitle': 'Este archivo no se puede publicar',

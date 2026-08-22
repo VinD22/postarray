@@ -46,7 +46,8 @@ export const webToolsMessages = {
     'हम अभी तक इस प्लेटफ़ॉर्म के लिए कनेक्टर शिप नहीं करते, इसलिए दिखाने के लिए हमारे पास कोई सत्यापित सीमा नहीं है। हम अनुमान लगाने के बजाय कुछ न कहना पसंद करेंगे।',
   'web.tools.shared.copy': 'कॉपी करें',
   'web.tools.shared.copied': 'कॉपी किया गया',
-  'web.tools.shared.copyFailed': 'आपके ब्राउज़र ने कॉपी को ब्लॉक कर दिया। टेक्स्ट चुनें और कॉपी करें।',
+  'web.tools.shared.copyFailed':
+    'आपके ब्राउज़र ने कॉपी को ब्लॉक कर दिया। टेक्स्ट चुनें और कॉपी करें।',
   'web.tools.shared.faqTitle': 'प्रश्न',
   'web.tools.shared.baselineTitle': 'ये संख्याएं किस खाते का वर्णन करती हैं',
   'web.tools.shared.baselineBody':
@@ -61,9 +62,11 @@ export const webToolsMessages = {
   'web.tools.preflight.summary':
     'एक ड्राफ्ट, एक साथ दस प्लेटफ़ॉर्म की पाठ और मीडिया सीमाओं के विरुद्ध जांचा गया।',
   'web.tools.utm.name': 'UTM लिंक बिल्डर',
-  'web.tools.utm.summary': 'पहले से मौजूद क्वेरी स्ट्रिंग को बिगाड़े बिना एक टैग किया गया कैंपेन URL बनाएं।',
+  'web.tools.utm.summary':
+    'पहले से मौजूद क्वेरी स्ट्रिंग को बिगाड़े बिना एक टैग किया गया कैंपेन URL बनाएं।',
   'web.tools.youtubeTitle.name': 'YouTube शीर्षक लंबाई जांचकर्ता',
-  'web.tools.youtubeTitle.summary': 'एक शीर्षक को उसी तरह मापें जिस तरह कोई व्यक्ति अक्षर गिनता है।',
+  'web.tools.youtubeTitle.summary':
+    'एक शीर्षक को उसी तरह मापें जिस तरह कोई व्यक्ति अक्षर गिनता है।',
   'web.tools.timeZone.name': 'समय क्षेत्र और डेलाइट सेविंग योजनाकार',
   'web.tools.timeZone.summary':
     'कई दर्शक क्षेत्रों में एक पोस्टिंग समय, डेलाइट सेविंग बदलावों को चिह्नित किया गया।',
@@ -117,7 +120,8 @@ export const webToolsMessages = {
   'web.tools.preflight.finding.textFits': 'मुख्य भाग फिट बैठता है।',
   'web.tools.preflight.finding.linkFixed':
     'हर लिंक को एक निश्चित चौड़ाई में फिर से लिखा जाता है, इसलिए इसकी वास्तविक लंबाई चाहे जो हो, प्रत्येक {cost} अक्षरों की लागत रखता है।',
-  'web.tools.preflight.finding.linkActual': 'लिंक उतने ही अक्षरों के रूप में गिने जाते हैं जितनी जगह वे लेते हैं।',
+  'web.tools.preflight.finding.linkActual':
+    'लिंक उतने ही अक्षरों के रूप में गिने जाते हैं जितनी जगह वे लेते हैं।',
   'web.tools.preflight.finding.imagesOver':
     'यह प्लेटफ़ॉर्म एक पोस्ट में {limit, plural, =0 {कोई छवि नहीं} one {# छवि} other {# छवियां}} स्वीकार करता है।',
   'web.tools.preflight.finding.videosOver':
@@ -197,7 +201,8 @@ export const webToolsMessages = {
   'web.tools.youtubeTitle.explainer.body':
     'कठोर सीमा वह है जिसे अपलोड एंडपॉइंट स्वीकार करता है। शीर्षक कहां दिखाया जाता है यह एक अलग सवाल है: एक खोज परिणाम, एक साइडबार और एक फ़ोन सभी शीर्षक को अलग बिंदु पर काटते हैं, और उन कटौती बिंदुओं में से कोई भी प्रकाशित नहीं होता। यह टूल दस्तावेज़ीकृत सीमा बताता है और आपके शीर्षक का आकार दिखाता है, और यह कोई कटौती संख्या नहीं गढ़ता।',
   'web.tools.youtubeTitle.field.title.label': 'वीडियो शीर्षक',
-  'web.tools.youtubeTitle.field.title.help': 'ग्रैफ़ीम द्वारा गिना गया, इसलिए एक इमोजी की लागत एक होती है।',
+  'web.tools.youtubeTitle.field.title.help':
+    'ग्रैफ़ीम द्वारा गिना गया, इसलिए एक इमोजी की लागत एक होती है।',
   'web.tools.youtubeTitle.result.count': '{limit} में से {count} अक्षर',
   'web.tools.youtubeTitle.result.over':
     '{over, plural, one {# अक्षर} other {# अक्षर}} से अधिक। अपलोड अस्वीकार कर दिया जाएगा।',
@@ -263,7 +268,8 @@ export const webToolsMessages = {
   'web.tools.engagementRate.field.followers.label': 'फॉलोअर्स',
   'web.tools.engagementRate.field.followers.help': 'पोस्ट के समय खाते का आकार।',
   'web.tools.engagementRate.field.impressions.label': 'इंप्रेशन',
-  'web.tools.engagementRate.field.impressions.help': 'कुल दृश्य, उस व्यक्ति सहित जिसने इसे दो बार देखा।',
+  'web.tools.engagementRate.field.impressions.help':
+    'कुल दृश्य, उस व्यक्ति सहित जिसने इसे दो बार देखा।',
   'web.tools.engagementRate.result.title': 'सहभागिता दर, तीन तरीकों से',
   'web.tools.engagementRate.result.empty': 'अनुपलब्ध',
   'web.tools.engagementRate.result.note':

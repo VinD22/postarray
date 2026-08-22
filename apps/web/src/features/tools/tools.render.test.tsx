@@ -111,9 +111,7 @@ describe('time zone planner markup', () => {
   it('asks for a date before it shows a comparison', () => {
     render(mount(<ZonePlannerPanel sourceZone="UTC" />));
 
-    expect(
-      screen.getByText('Enter a date and a time to see the comparison.'),
-    ).toBeInTheDocument();
+    expect(screen.getByText('Enter a date and a time to see the comparison.')).toBeInTheDocument();
   });
 
   it('names every zone control', () => {
@@ -148,8 +146,6 @@ describe('engagement rate calculator markup', () => {
   it('states plainly that there is no universal benchmark to compare against', () => {
     render(mount(<EngagementRatePanel />));
 
-    expect(
-      screen.getByText(/no universal good rate to compare against/iu),
-    ).toBeInTheDocument();
+    expect(screen.getByText(/no universal good rate to compare against/iu)).toBeInTheDocument();
   });
 });

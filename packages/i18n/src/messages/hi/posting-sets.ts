@@ -34,7 +34,8 @@ export const postingSetMessages = {
     'यह पोस्ट पहले ही प्रकाशित हो चुकी है। रोकना इसे प्लेटफ़ॉर्म से वापस नहीं ला सकता।',
   'calendar.hold.blocked.inFlight':
     'यह पोस्ट अभी भेजी जा रही है। इसे रोकने में बहुत देर हो चुकी है, और बीच में रोकने से यह आधी प्रकाशित रह सकती है।',
-  'calendar.hold.blocked.finished': 'यह पोस्ट पहले ही समाप्त हो चुकी है, इसलिए रोकने के लिए कुछ नहीं है।',
+  'calendar.hold.blocked.finished':
+    'यह पोस्ट पहले ही समाप्त हो चुकी है, इसलिए रोकने के लिए कुछ नहीं है।',
   'calendar.hold.blocked.billing':
     'यह पोस्ट रुकी हुई है क्योंकि वर्कस्पेस ने पूरी पहुंच खो दी। इसे फिर से शुरू करना एक बिलिंग मामला है, शेड्यूलिंग नहीं।',
   'calendar.hold.blocked.billingAction': 'बिलिंग पर जाएं',
@@ -50,7 +51,8 @@ export const postingSetMessages = {
   'set.edit': 'सेट संपादित करें',
   'set.archive': 'सेट को संग्रहित करें',
   'set.archived': 'संग्रहित',
-  'set.archivedNote': 'संग्रहित सेट चयनकर्ता से छिपे होते हैं। उनसे बनाई गई पोस्ट अपरिवर्तित रहती हैं।',
+  'set.archivedNote':
+    'संग्रहित सेट चयनकर्ता से छिपे होते हैं। उनसे बनाई गई पोस्ट अपरिवर्तित रहती हैं।',
   'set.showArchived': 'संग्रहित दिखाएं',
   'set.saved': 'सेट सहेजा गया।',
   'set.archivedToast': 'सेट संग्रहित किया गया। इससे पहले से बनी पोस्ट अपरिवर्तित रहती हैं।',
@@ -65,7 +67,8 @@ export const postingSetMessages = {
   'set.field.signature': 'हस्ताक्षर',
   'set.field.signatureNone': 'कोई हस्ताक्षर नहीं',
   'set.field.approval': 'अनुमोदन',
-  'set.field.approvalHint': 'इस सेट से बनी पोस्ट को प्रकाशित होने से पहले जिस अनुमोदन की आवश्यकता है।',
+  'set.field.approvalHint':
+    'इस सेट से बनी पोस्ट को प्रकाशित होने से पहले जिस अनुमोदन की आवश्यकता है।',
   'set.field.schedule': 'कब प्रकाशित करें',
 
   'set.approval.none': 'किसी अनुमोदन की आवश्यकता नहीं',

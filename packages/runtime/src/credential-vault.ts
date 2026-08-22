@@ -8,7 +8,12 @@ import {
 import type { CredentialVaultPort } from '@relay/application';
 import type { RelayConfig } from '@relay/config';
 import { ERROR_CODES, RelayError } from '@relay/contracts';
-import { DecryptCommand, EncryptCommand, KMSClient, type KMSClientConfig } from '@aws-sdk/client-kms';
+import {
+  DecryptCommand,
+  EncryptCommand,
+  KMSClient,
+  type KMSClientConfig,
+} from '@aws-sdk/client-kms';
 import type { Logger } from '@relay/observability';
 
 export function asCredentialVaultPort(vault: CredentialVault): CredentialVaultPort {

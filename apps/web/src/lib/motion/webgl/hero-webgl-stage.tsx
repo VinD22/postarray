@@ -58,7 +58,10 @@ const MAX_DPR = 2;
 
 type IdleDeadline = { readonly didTimeout: boolean; readonly timeRemaining: () => number };
 type WindowWithIdleCallback = Window & {
-  requestIdleCallback?: (callback: (deadline: IdleDeadline) => void, opts?: { timeout: number }) => number;
+  requestIdleCallback?: (
+    callback: (deadline: IdleDeadline) => void,
+    opts?: { timeout: number },
+  ) => number;
   cancelIdleCallback?: (handle: number) => void;
 };
 
@@ -119,7 +122,10 @@ export function HeroWebglStage({ className }: HeroWebglStageProps): ReactNode {
   // Computed once on the client (this component never renders the canvas
   // during SSR, so `window` is always defined by the time this actually
   // matters); a fixed value rather than something re-derived every frame.
-  const dpr = useMemo(() => (typeof window === 'undefined' ? 1 : Math.min(window.devicePixelRatio, MAX_DPR)), []);
+  const dpr = useMemo(
+    () => (typeof window === 'undefined' ? 1 : Math.min(window.devicePixelRatio, MAX_DPR)),
+    [],
+  );
 
   const active = intersecting && !documentHidden;
 

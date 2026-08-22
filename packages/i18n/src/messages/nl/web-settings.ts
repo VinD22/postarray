@@ -108,7 +108,8 @@ export const webSettingsMessages = {
   'settings.ui.members.scopeLimited': '{count, plural, one {# merk} other {# merken}}: {names}',
   'settings.ui.members.approvals.canApprove': 'Kan goedkeuren',
   'settings.ui.members.approvals.cannotApprove': 'Kan niet goedkeuren',
-  'settings.ui.members.approvals.canApproveOwnProjects': 'Kan goedkeuren voor de vermelde projecten',
+  'settings.ui.members.approvals.canApproveOwnProjects':
+    'Kan goedkeuren voor de vermelde projecten',
   'settings.ui.members.lastActiveNever': 'Heeft zich nog niet aangemeld',
   'settings.ui.members.changeRole': 'Verander de rol voor {name}',
   'settings.ui.members.remove': '{name} verwijderen',

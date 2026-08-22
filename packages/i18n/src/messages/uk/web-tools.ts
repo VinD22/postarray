@@ -44,7 +44,8 @@ export const webToolsMessages = {
     'Ми ще не постачаємо конектор для цієї платформи, тому в нас немає перевіреного обмеження, щоб його показати. Ми краще нічого не скажемо, ніж будемо вгадувати.',
   'web.tools.shared.copy': 'Копіювати',
   'web.tools.shared.copied': 'Скопійовано',
-  'web.tools.shared.copyFailed': 'Ваш браузер заблокував копіювання. Виділіть текст і скопіюйте його.',
+  'web.tools.shared.copyFailed':
+    'Ваш браузер заблокував копіювання. Виділіть текст і скопіюйте його.',
   'web.tools.shared.faqTitle': 'Питання',
   'web.tools.shared.baselineTitle': 'Який обліковий запис описують ці числа',
   'web.tools.shared.baselineBody':
@@ -55,7 +56,8 @@ export const webToolsMessages = {
   'web.tools.preflight.summary':
     'Одна чернетка, перевірена за обмеженнями тексту й медіа десяти платформ одночасно.',
   'web.tools.utm.name': 'Конструктор UTM-посилань',
-  'web.tools.utm.summary': 'Побудуйте позначений URL кампанії, не зіпсувавши вже наявний рядок запиту.',
+  'web.tools.utm.summary':
+    'Побудуйте позначений URL кампанії, не зіпсувавши вже наявний рядок запиту.',
   'web.tools.youtubeTitle.name': 'Перевірка довжини заголовка YouTube',
   'web.tools.youtubeTitle.summary': 'Виміряйте заголовок так, як людина рахує символи.',
   'web.tools.timeZone.name': 'Планувальник часових поясів і переходу на літній час',
@@ -84,15 +86,18 @@ export const webToolsMessages = {
   'web.tools.preflight.field.mediaKind.video': 'Одне відео',
   'web.tools.preflight.field.mediaCount.label': 'Скільки зображень',
   'web.tools.preflight.field.byteSize.label': 'Розмір файлу в мегабайтах',
-  'web.tools.preflight.field.byteSize.help': 'Найбільший окремий файл. Залиште порожнім, щоб пропустити.',
+  'web.tools.preflight.field.byteSize.help':
+    'Найбільший окремий файл. Залиште порожнім, щоб пропустити.',
   'web.tools.preflight.field.duration.label': 'Довжина відео в секундах',
-  'web.tools.preflight.field.duration.help': 'Залиште порожнім, щоб пропустити перевірку тривалості.',
+  'web.tools.preflight.field.duration.help':
+    'Залиште порожнім, щоб пропустити перевірку тривалості.',
   'web.tools.preflight.field.width.label': 'Ширина медіа в пікселях',
   'web.tools.preflight.field.height.label': 'Висота медіа в пікселях',
   'web.tools.preflight.field.dimensions.help':
     'Необовʼязково. Використовується лише для показу співвідношення сторін, яке ви публікуватимете.',
   'web.tools.preflight.results.title': 'Результат за платформою',
-  'web.tools.preflight.results.empty': 'Виберіть щонайменше одну платформу, щоб побачити результат.',
+  'web.tools.preflight.results.empty':
+    'Виберіть щонайменше одну платформу, щоб побачити результат.',
   'web.tools.preflight.results.summary':
     '{fail, plural, =0 {Нічого не блокує} other {# не пройде}}, {warning, plural, =0 {без попереджень} other {# варто перевірити}}.',
   'web.tools.preflight.status.pass': 'Вміщується',
@@ -149,7 +154,8 @@ export const webToolsMessages = {
   'web.tools.utm.field.medium.label': 'Канал кампанії',
   'web.tools.utm.field.medium.help': 'Вид посилання. Наприклад, соцмережі, email або реферал.',
   'web.tools.utm.field.campaign.label': 'Назва кампанії',
-  'web.tools.utm.field.campaign.help': 'Запуск, промоакція або тема, до якої належить це посилання.',
+  'web.tools.utm.field.campaign.help':
+    'Запуск, промоакція або тема, до якої належить це посилання.',
   'web.tools.utm.field.term.label': 'Термін кампанії',
   'web.tools.utm.field.term.help': 'Необовʼязково. Традиційно платне ключове слово.',
   'web.tools.utm.field.content.label': 'Вміст кампанії',
@@ -169,7 +175,8 @@ export const webToolsMessages = {
   'web.tools.utm.faq.existing.a':
     'Ні. Наявні параметри зберігаються в початковому порядку, і додається або замінюється лише заповнений вами параметр UTM. Фрагмент наприкінці URL залишається наприкінці.',
   'web.tools.utm.faq.privacy.q': 'Чи надсилається мій URL кудись?',
-  'web.tools.utm.faq.privacy.a': 'Ні. URL складається у вашому браузері і ніколи не залишає цю сторінку.',
+  'web.tools.utm.faq.privacy.a':
+    'Ні. URL складається у вашому браузері і ніколи не залишає цю сторінку.',
 
   'web.tools.youtubeTitle.title': 'Перевірка довжини заголовка YouTube',
   'web.tools.youtubeTitle.lede':
@@ -207,7 +214,8 @@ export const webToolsMessages = {
   'web.tools.timeZone.field.time.label': 'Час',
   'web.tools.timeZone.field.zone.label': 'Ваш пояс',
   'web.tools.timeZone.field.audience.label': 'Пояси аудиторії',
-  'web.tools.timeZone.field.audience.help': 'Виберіть пояси, у яких справді перебувають ваші читачі.',
+  'web.tools.timeZone.field.audience.help':
+    'Виберіть пояси, у яких справді перебувають ваші читачі.',
   'web.tools.timeZone.result.title': 'Той самий момент, усюди, де ви вибрали',
   'web.tools.timeZone.result.empty': 'Виберіть щонайменше один пояс аудиторії.',
   'web.tools.timeZone.result.shift':
@@ -232,7 +240,8 @@ export const webToolsMessages = {
   'web.tools.engagementRate.field.interactions.help':
     'Лайки, коментарі, поширення та збереження, додані разом, із публікації, яку ви вимірюєте.',
   'web.tools.engagementRate.field.reach.label': 'Охоплення',
-  'web.tools.engagementRate.field.reach.help': 'Облікові записи, що побачили публікацію принаймні один раз.',
+  'web.tools.engagementRate.field.reach.help':
+    'Облікові записи, що побачили публікацію принаймні один раз.',
   'web.tools.engagementRate.field.followers.label': 'Підписники',
   'web.tools.engagementRate.field.followers.help': 'Розмір облікового запису на момент публікації.',
   'web.tools.engagementRate.field.impressions.label': 'Покази',

@@ -65,7 +65,8 @@ export const webToolsMessages = {
     'Non abbiamo ancora un connettore per questa piattaforma, quindi non abbiamo un limite verificato da mostrare. Preferiamo non dire nulla piuttosto che indovinare.',
   'web.tools.shared.copy': 'Copia',
   'web.tools.shared.copied': 'Copiato',
-  'web.tools.shared.copyFailed': 'Il tuo browser ha bloccato la copia. Seleziona il testo e copialo.',
+  'web.tools.shared.copyFailed':
+    'Il tuo browser ha bloccato la copia. Seleziona il testo e copialo.',
   'web.tools.shared.faqTitle': 'Domande',
   'web.tools.shared.baselineTitle': 'Quale account descrivono questi numeri',
   'web.tools.shared.baselineBody':
@@ -80,9 +81,11 @@ export const webToolsMessages = {
   'web.tools.preflight.summary':
     'Una bozza, controllata rispetto ai limiti di testo e media di dieci piattaforme contemporaneamente.',
   'web.tools.utm.name': 'Generatore di link UTM',
-  'web.tools.utm.summary': 'Costruisci un URL di campagna taggato senza rovinare la query string che aveva.',
+  'web.tools.utm.summary':
+    'Costruisci un URL di campagna taggato senza rovinare la query string che aveva.',
   'web.tools.youtubeTitle.name': 'Controllo della lunghezza dei titoli YouTube',
-  'web.tools.youtubeTitle.summary': 'Misura un titolo nel modo in cui una persona conta i caratteri.',
+  'web.tools.youtubeTitle.summary':
+    'Misura un titolo nel modo in cui una persona conta i caratteri.',
   'web.tools.timeZone.name': 'Pianificatore di fusi orari e ora legale',
   'web.tools.timeZone.summary':
     "Un orario di pubblicazione in più fusi orari del pubblico, con i cambi d'ora legale segnalati.",
@@ -99,7 +102,7 @@ export const webToolsMessages = {
     'Incolla una bozza, scegli le piattaforme su cui pubblichi, e scopri quali la rifiuterebbero prima di scoprirlo da un errore API.',
   'web.tools.preflight.explainer.title': 'Perché un contatore di caratteri non basta',
   'web.tools.preflight.explainer.body':
-    "Le piattaforme non concordano su cosa sia un carattere. Alcune contano le unità di codice, quindi una emoji costa due. Alcune contano i grafemi, quindi una bandiera o una emoji di famiglia costa uno. Alcune riscrivono ogni link a una larghezza fissa, quindi un URL di 200 caratteri costa quanto uno di 20. Questo strumento applica separatamente la regola di ciascuna piattaforma.",
+    'Le piattaforme non concordano su cosa sia un carattere. Alcune contano le unità di codice, quindi una emoji costa due. Alcune contano i grafemi, quindi una bandiera o una emoji di famiglia costa uno. Alcune riscrivono ogni link a una larghezza fissa, quindi un URL di 200 caratteri costa quanto uno di 20. Questo strumento applica separatamente la regola di ciascuna piattaforma.',
   'web.tools.preflight.explainer.counting':
     'La bozza viene misurata con il segmentatore Intl del browser, che divide il testo nelle unità che un lettore chiamerebbe caratteri, poi adattata alla regola della piattaforma.',
   'web.tools.preflight.field.draft.label': 'La tua bozza',
@@ -113,7 +116,8 @@ export const webToolsMessages = {
   'web.tools.preflight.field.mediaKind.video': 'Un video',
   'web.tools.preflight.field.mediaCount.label': 'Quante immagini',
   'web.tools.preflight.field.byteSize.label': 'Dimensione del file in megabyte',
-  'web.tools.preflight.field.byteSize.help': 'Il file singolo più grande. Lascia vuoto per saltare.',
+  'web.tools.preflight.field.byteSize.help':
+    'Il file singolo più grande. Lascia vuoto per saltare.',
   'web.tools.preflight.field.duration.label': 'Durata del video in secondi',
   'web.tools.preflight.field.duration.help': 'Lascia vuoto per saltare il controllo della durata.',
   'web.tools.preflight.field.width.label': 'Larghezza del media in pixel',
@@ -170,7 +174,7 @@ export const webToolsMessages = {
 
   'web.tools.utm.title': 'Generatore di link UTM',
   'web.tools.utm.lede':
-    "Aggiungi parametri di campagna a un URL senza perdere la query string che aveva già, e senza indovinare cosa significhi ciascun parametro.",
+    'Aggiungi parametri di campagna a un URL senza perdere la query string che aveva già, e senza indovinare cosa significhi ciascun parametro.',
   'web.tools.utm.explainer.title': 'A cosa serve ogni parametro',
   'web.tools.utm.explainer.body':
     "I parametri UTM vengono letti dagli strumenti di analisi, non dalla piattaforma su cui pubblichi. Viaggiano nell'URL, quindi chiunque veda il link li vede. Tienili brevi, minuscoli e coerenti, perché due grafie della stessa campagna diventano due righe in un report.",
@@ -178,11 +182,13 @@ export const webToolsMessages = {
   'web.tools.utm.field.url.help': 'La pagina su cui vuoi far atterrare le persone, incluso https.',
   'web.tools.utm.field.url.invalid': 'Questo non viene interpretato come un URL http o https.',
   'web.tools.utm.field.source.label': 'Fonte della campagna',
-  'web.tools.utm.field.source.help': 'Da dove è arrivato il clic. Ad esempio il nome di una piattaforma.',
+  'web.tools.utm.field.source.help':
+    'Da dove è arrivato il clic. Ad esempio il nome di una piattaforma.',
   'web.tools.utm.field.medium.label': 'Mezzo della campagna',
   'web.tools.utm.field.medium.help': 'Il tipo di link. Ad esempio social, email o referral.',
   'web.tools.utm.field.campaign.label': 'Nome della campagna',
-  'web.tools.utm.field.campaign.help': 'Il lancio, la promozione o il tema a cui appartiene questo link.',
+  'web.tools.utm.field.campaign.help':
+    'Il lancio, la promozione o il tema a cui appartiene questo link.',
   'web.tools.utm.field.term.label': 'Termine della campagna',
   'web.tools.utm.field.term.help': 'Facoltativo. Tradizionalmente la parola chiave a pagamento.',
   'web.tools.utm.field.content.label': 'Contenuto della campagna',
@@ -197,12 +203,13 @@ export const webToolsMessages = {
     'Il tuo URL portava già uno di questi parametri. Il valore che hai inserito qui lo sostituisce.',
   'web.tools.utm.faq.encoding.q': 'Cosa succede a spazi e accenti?',
   'web.tools.utm.faq.encoding.a':
-    "Vengono codificati in percentuale, il che è ciò che permette a un link di sopravvivere quando viene incollato in un post. Uno spazio diventa un segno più e una lettera accentata diventa la sua forma codificata, e gli strumenti di analisi decodificano entrambi.",
+    'Vengono codificati in percentuale, il che è ciò che permette a un link di sopravvivere quando viene incollato in un post. Uno spazio diventa un segno più e una lettera accentata diventa la sua forma codificata, e gli strumenti di analisi decodificano entrambi.',
   'web.tools.utm.faq.existing.q': 'Rompe un URL che ha già dei parametri?',
   'web.tools.utm.faq.existing.a':
     "No. I parametri esistenti vengono conservati nel loro ordine originale, e viene aggiunto o sostituito solo un parametro UTM che hai compilato. Un frammento alla fine dell'URL resta alla fine.",
   'web.tools.utm.faq.privacy.q': 'Il mio URL viene inviato da qualche parte?',
-  'web.tools.utm.faq.privacy.a': "No. L'URL viene composto nel tuo browser e non lascia mai questa pagina.",
+  'web.tools.utm.faq.privacy.a':
+    "No. L'URL viene composto nel tuo browser e non lascia mai questa pagina.",
 
   /* ---------------------------------------------------------------------- */
   /* YouTube title length checker                                            */
@@ -248,18 +255,21 @@ export const webToolsMessages = {
   'web.tools.timeZone.field.time.label': 'Ora',
   'web.tools.timeZone.field.zone.label': 'Il tuo fuso',
   'web.tools.timeZone.field.audience.label': 'Fusi del pubblico',
-  'web.tools.timeZone.field.audience.help': 'Scegli i fusi in cui si trovano davvero i tuoi lettori.',
+  'web.tools.timeZone.field.audience.help':
+    'Scegli i fusi in cui si trovano davvero i tuoi lettori.',
   'web.tools.timeZone.result.title': 'Lo stesso momento, ovunque tu abbia scelto',
   'web.tools.timeZone.result.empty': 'Scegli almeno un fuso del pubblico.',
   'web.tools.timeZone.result.shift':
     "Un cambio d'ora legale cade tra questa data e lo stesso giorno della settimana quattro settimane dopo, quindi l'ora locale si sposta.",
   'web.tools.timeZone.result.stable': 'Nessun cambio di scarto nelle prossime quattro settimane.',
   'web.tools.timeZone.result.later': 'Quattro settimane dopo, {time}.',
-  'web.tools.timeZone.result.invalidDate': 'Inserisci una data e un orario per vedere il confronto.',
+  'web.tools.timeZone.result.invalidDate':
+    'Inserisci una data e un orario per vedere il confronto.',
   'web.tools.timeZone.faq.dst.q': "In che direzione si sposta l'ora?",
   'web.tools.timeZone.faq.dst.a':
     "Dipende dal fuso e dalla direzione del cambio, motivo per cui la tabella mostra l'orario locale effettivo tra quattro settimane invece di descrivere la regola. Lo scarto per ciascun fuso viene letto dal database dei fusi orari del tuo browser.",
-  'web.tools.timeZone.faq.storage.q': 'Come dovrebbe memorizzare il suo orario un post programmato?',
+  'web.tools.timeZone.faq.storage.q':
+    'Come dovrebbe memorizzare il suo orario un post programmato?',
   'web.tools.timeZone.faq.storage.a':
     "Come un istante più il fuso IANA scelto dalla persona, mai come un'ora locale ingenua. È quello che facciamo internamente, ed è il motivo per cui un post programmato prima di un cambio d'ora atterra comunque all'ora locale prevista.",
 
@@ -279,7 +289,8 @@ export const webToolsMessages = {
   'web.tools.engagementRate.field.reach.label': 'Copertura',
   'web.tools.engagementRate.field.reach.help': 'Account che hanno visto il post almeno una volta.',
   'web.tools.engagementRate.field.followers.label': 'Follower',
-  'web.tools.engagementRate.field.followers.help': "La dimensione dell'account al momento del post.",
+  'web.tools.engagementRate.field.followers.help':
+    "La dimensione dell'account al momento del post.",
   'web.tools.engagementRate.field.impressions.label': 'Impression',
   'web.tools.engagementRate.field.impressions.help':
     'Visualizzazioni totali, incluse quelle di una persona che lo ha visto due volte.',

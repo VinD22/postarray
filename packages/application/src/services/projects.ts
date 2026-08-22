@@ -142,7 +142,10 @@ export function createProjectService(deps: ServiceDeps): ProjectService {
 
     async get(ctx: ActorContext, projectId: string): Promise<ProjectView> {
       return authorized(deps, ctx, 'project.read', { projectId }, async (db) => {
-        const row = await db.project.findFirst({ where: { id: projectId }, select: PROJECT_SELECT });
+        const row = await db.project.findFirst({
+          where: { id: projectId },
+          select: PROJECT_SELECT,
+        });
         if (row === null) {
           throw notFound('project', projectId);
         }
@@ -181,7 +184,10 @@ export function createProjectService(deps: ServiceDeps): ProjectService {
       patch: Partial<ProjectView>,
     ): Promise<ProjectView> {
       return authorized(deps, ctx, 'project.write', { projectId }, async (db, actor) => {
-        const before = await db.project.findFirst({ where: { id: projectId }, select: PROJECT_SELECT });
+        const before = await db.project.findFirst({
+          where: { id: projectId },
+          select: PROJECT_SELECT,
+        });
         if (before === null) {
           throw notFound('project', projectId);
         }
@@ -218,7 +224,10 @@ export function createProjectService(deps: ServiceDeps): ProjectService {
 
     async archive(ctx: ActorContext, projectId: string): Promise<ProjectView> {
       return authorized(deps, ctx, 'project.delete', { projectId }, async (db, actor) => {
-        const before = await db.project.findFirst({ where: { id: projectId }, select: PROJECT_SELECT });
+        const before = await db.project.findFirst({
+          where: { id: projectId },
+          select: PROJECT_SELECT,
+        });
         if (before === null) {
           throw notFound('project', projectId);
         }
@@ -241,7 +250,10 @@ export function createProjectService(deps: ServiceDeps): ProjectService {
 
     async delete(ctx: ActorContext, projectId: string): Promise<void> {
       await authorized(deps, ctx, 'project.delete', { projectId }, async (db, actor) => {
-        const row = await db.project.findFirst({ where: { id: projectId }, select: PROJECT_SELECT });
+        const row = await db.project.findFirst({
+          where: { id: projectId },
+          select: PROJECT_SELECT,
+        });
         if (row === null) {
           throw notFound('project', projectId);
         }

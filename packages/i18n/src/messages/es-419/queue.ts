@@ -15,7 +15,8 @@ export const queueMessages = {
   'queue.rules.empty':
     'Aún no hay reglas de cola. Hasta que agregues una, el próximo horario es simplemente la primera hora libre.',
   'queue.rules.create': 'Nueva regla de cola',
-  'queue.rules.count': '{count, plural, =0 {Sin reglas} one {#regla} other {#reglas} many {#reglas}}',
+  'queue.rules.count':
+    '{count, plural, =0 {Sin reglas} one {#regla} other {#reglas} many {#reglas}}',
   'queue.rules.enabled': 'En uso',
   'queue.rules.disabled': 'Pausada',
   'queue.rules.archived': 'Archivada',
@@ -30,19 +31,22 @@ export const queueMessages = {
   'queue.field.timeZoneHelp':
     'Los horarios, la cantidad diaria y las fechas de bloqueo se leen todos en esta zona horaria.',
   'queue.field.minimumGap': 'Separación mínima',
-  'queue.field.minimumGapHelp': 'Minutos entre dos publicaciones. Cero significa que no hay regla de separación.',
+  'queue.field.minimumGapHelp':
+    'Minutos entre dos publicaciones. Cero significa que no hay regla de separación.',
   'queue.field.maximumPerDay': 'Máximo por día',
   'queue.field.maximumPerDayHelp':
     'Deja vacío si no hay límite diario. Cero significa que esta regla no propone nada.',
   'queue.field.maximumPerDayUnlimited': 'Sin límite diario',
   'queue.field.priority': 'Prioridad',
-  'queue.field.priorityHelp': 'Se usa la regla con la prioridad más alta que pueda ofrecer un horario.',
+  'queue.field.priorityHelp':
+    'Se usa la regla con la prioridad más alta que pueda ofrecer un horario.',
   'queue.field.enabled': 'Usar esta regla',
 
   'queue.windows.heading': 'Horarios semanales',
   'queue.windows.help':
     'Elige las horas locales en que este proyecto puede publicar. Usa los campos de día y hora, o los botones de la cuadrícula.',
-  'queue.windows.empty': 'Aún no hay horarios. Una regla sin horarios nunca podrá ofrecer un espacio.',
+  'queue.windows.empty':
+    'Aún no hay horarios. Una regla sin horarios nunca podrá ofrecer un espacio.',
   'queue.windows.add': 'Agregar horario',
   'queue.windows.remove': 'Quitar horario',
   'queue.windows.entry': '{weekday}, de {start} a {end}',
@@ -61,7 +65,8 @@ export const queueMessages = {
   'queue.weekday.7': 'Domingo',
 
   'queue.blackouts.heading': 'Fechas bloqueadas',
-  'queue.blackouts.help': 'Fechas en las que este proyecto no publicará, leídas en la zona horaria de la regla.',
+  'queue.blackouts.help':
+    'Fechas en las que este proyecto no publicará, leídas en la zona horaria de la regla.',
   'queue.blackouts.empty': 'No hay fechas bloqueadas.',
   'queue.blackouts.add': 'Agregar bloqueo',
   'queue.blackouts.remove': 'Quitar bloqueo',
@@ -89,7 +94,8 @@ export const queueMessages = {
 
   'queue.reason.noRulesConfigured':
     'Este proyecto no tiene reglas de cola configuradas, así que no se aplicó ningún horario.',
-  'queue.reason.fallbackFirstFreeHour': 'Se usó en su lugar la primera hora libre a partir de ahora.',
+  'queue.reason.fallbackFirstFreeHour':
+    'Se usó en su lugar la primera hora libre a partir de ahora.',
   'queue.reason.matchedRule': 'La regla {name} eligió esta hora, en {zone}.',
   'queue.reason.matchedWindow': 'Cae dentro del horario de {start} a {end} en {zone}.',
   'queue.reason.minimumGap': 'Está al menos a {minutes} minutos de cualquier otra publicación.',
@@ -102,7 +108,8 @@ export const queueMessages = {
     'La primera hora del horario no existe en esa fecha en {zone}, así que se usó la siguiente que sí existe.',
   'queue.reason.dstAmbiguousFirst':
     'Esa hora local ocurre dos veces en {zone} en esa fecha. Se usó la primera vez que ocurre.',
-  'queue.reason.priorityChosen': 'Esta regla tiene prioridad {priority}, la más alta que podía ofrecer.',
+  'queue.reason.priorityChosen':
+    'Esta regla tiene prioridad {priority}, la más alta que podía ofrecer.',
   'queue.reason.connectionScoped':
     'Esta regla cubre {count, plural, one {#cuenta} other {#cuentas} many {#cuentas}}.',
   'queue.reason.horizonExhausted': 'No hubo ningún horario libre dentro de {days} días.',

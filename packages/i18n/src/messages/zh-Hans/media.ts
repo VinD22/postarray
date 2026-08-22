@@ -31,8 +31,7 @@ export const mediaMessages = {
   'mediaLib.derivative.qualityHint':
     '较低的质量会生成较小的文件。适用于 JPEG 和 WebP。PNG 为无损格式，会忽略此设置。',
   'mediaLib.derivative.projected': '此版本的尺寸将为 {width} × {height} 像素。',
-  'mediaLib.derivative.projectedUnavailable':
-    '此版本生成之前，其尺寸不可用。',
+  'mediaLib.derivative.projectedUnavailable': '此版本生成之前，其尺寸不可用。',
 
   'mediaLib.derivative.listHeading': '版本',
   'mediaLib.derivative.original': '原图',
@@ -46,8 +45,7 @@ export const mediaMessages = {
   'mediaLib.derivative.alreadyExists':
     '您之前已进行过完全相同的编辑，因此我们复用了该版本，而不是生成第二个。',
   'mediaLib.derivative.failedTitle': '无法生成此版本',
-  'mediaLib.derivative.failedBody':
-    '没有保存任何内容，您的原图未受影响。请更改数值后重试。',
+  'mediaLib.derivative.failedBody': '没有保存任何内容，您的原图未受影响。请更改数值后重试。',
   'mediaLib.derivative.openEditor': '编辑 {name}',
 
   'mediaLib.derivative.unsupportedTitle': '编辑功能仅适用于图片',
@@ -73,8 +71,7 @@ export const mediaMessages = {
   'error.media_derivative_quality_unsupported.message':
     'PNG 为无损格式，因此质量设置不会产生任何效果。请移除该设置，或改为保存为 JPEG 或 WebP。',
   'error.media_derivative_no_change.message': '这已经是此文件当前使用的格式。',
-  'error.media_derivative_source_unavailable.message':
-    '此版本原本要生成自的文件已不在存储中。',
+  'error.media_derivative_source_unavailable.message': '此版本原本要生成自的文件已不在存储中。',
   'error.media_derivative_preset_mismatch.message':
     '此编辑请求与其所描述的更改不匹配。未生成任何内容，请从编辑器重试。',
   'error.media_derivative_empty_result.message':

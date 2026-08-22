@@ -55,11 +55,13 @@ export const mediaMessages = {
   'mediaLib.derivative.original': 'Origineel',
   'mediaLib.derivative.originalHint': 'Altijd bewaard. Nooit overschreven.',
   'mediaLib.derivative.item': '{width} bij {height}, {mimeType}, {size}',
-  'mediaLib.derivative.empty': 'Nog geen bewerkte versies. Het origineel is hier het enige bestand.',
+  'mediaLib.derivative.empty':
+    'Nog geen bewerkte versies. Het origineel is hier het enige bestand.',
   'mediaLib.derivative.select': 'Gebruik deze versie',
   'mediaLib.derivative.selected': 'In gebruik voor dit bericht',
   'mediaLib.derivative.useOriginal': 'Gebruik het origineel',
-  'mediaLib.derivative.processing': 'Deze versie wordt gemaakt. Hij verschijnt hier zodra hij klaar is.',
+  'mediaLib.derivative.processing':
+    'Deze versie wordt gemaakt. Hij verschijnt hier zodra hij klaar is.',
   'mediaLib.derivative.alreadyExists':
     'Je hebt deze exacte bewerking al eerder gemaakt, dus we hebben die versie hergebruikt in plaats van een tweede te maken.',
   'mediaLib.derivative.failedTitle': 'Deze versie kon niet worden gemaakt',
@@ -75,7 +77,8 @@ export const mediaMessages = {
     'Relay genereert geen afbeeldingen of video. Deze editor snijdt alleen bij, roteert, wijzigt het formaat, converteert en comprimeert wat je hebt geüpload.',
 
   // ==================================================== refusals ====
-  'error.media_derivative_no_operations.message': 'Kies minstens één wijziging voordat je een versie opslaat.',
+  'error.media_derivative_no_operations.message':
+    'Kies minstens één wijziging voordat je een versie opslaat.',
   'error.media_derivative_duplicate_operation.message':
     'Elk soort wijziging kan één keer voorkomen. Verwijder de tweede {operation}.',
   'error.media_derivative_crop_out_of_bounds.message':

@@ -40,11 +40,13 @@ export const mediaMessages = {
   'mediaLib.derivative.original': 'Original',
   'mediaLib.derivative.originalHint': 'Siempre se conserva. Nunca se sobrescribe.',
   'mediaLib.derivative.item': '{width} por {height}, {mimeType}, {size}',
-  'mediaLib.derivative.empty': 'Todavía no hay versiones editadas. El original es el único archivo aquí.',
+  'mediaLib.derivative.empty':
+    'Todavía no hay versiones editadas. El original es el único archivo aquí.',
   'mediaLib.derivative.select': 'Usar esta versión',
   'mediaLib.derivative.selected': 'En uso en esta publicación',
   'mediaLib.derivative.useOriginal': 'Usar el original',
-  'mediaLib.derivative.processing': 'Esta versión se está generando. Aparecerá aquí cuando esté lista.',
+  'mediaLib.derivative.processing':
+    'Esta versión se está generando. Aparecerá aquí cuando esté lista.',
   'mediaLib.derivative.alreadyExists':
     'Ya hiciste exactamente esta edición antes, así que reutilizamos esa versión en lugar de crear una segunda.',
   'mediaLib.derivative.failedTitle': 'Esta versión no se pudo generar',
@@ -60,7 +62,8 @@ export const mediaMessages = {
     'La herramienta no genera imágenes ni videos. Este editor solo recorta, gira, redimensiona, convierte y comprime lo que subiste.',
 
   // ==================================================== rechazos ====
-  'error.media_derivative_no_operations.message': 'Elige al menos un cambio antes de guardar una versión.',
+  'error.media_derivative_no_operations.message':
+    'Elige al menos un cambio antes de guardar una versión.',
   'error.media_derivative_duplicate_operation.message':
     'Cada tipo de cambio puede aparecer una vez. Quita el segundo {operation}.',
   'error.media_derivative_crop_out_of_bounds.message':

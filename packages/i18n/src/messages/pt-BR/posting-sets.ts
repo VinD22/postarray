@@ -31,8 +31,7 @@ export const postingSetMessages = {
   'calendar.hold.paused': 'Pausado. Não vai sair até você retomá-lo.',
   'calendar.hold.resumed': 'Retomado. Vai sair às {time}.',
 
-  'calendar.hold.blocked.published':
-    'Este post já saiu. Pausar não pode retirá-lo da plataforma.',
+  'calendar.hold.blocked.published': 'Este post já saiu. Pausar não pode retirá-lo da plataforma.',
   'calendar.hold.blocked.inFlight':
     'Este post está sendo enviado agora. É tarde demais para pausá-lo, e interromper na metade poderia deixá-lo publicado apenas parcialmente.',
   'calendar.hold.blocked.finished': 'Este post já está concluído, então não há nada para pausar.',
@@ -52,7 +51,8 @@ export const postingSetMessages = {
   'set.edit': 'Editar Set',
   'set.archive': 'Arquivar Set',
   'set.archived': 'Arquivado',
-  'set.archivedNote': 'Sets arquivados ficam ocultos no seletor. Posts feitos a partir deles não mudam.',
+  'set.archivedNote':
+    'Sets arquivados ficam ocultos no seletor. Posts feitos a partir deles não mudam.',
   'set.showArchived': 'Mostrar arquivados',
   'set.saved': 'Set salvo.',
   'set.archivedToast': 'Set arquivado. Posts já criados a partir dele não mudam.',
@@ -67,7 +67,8 @@ export const postingSetMessages = {
   'set.field.signature': 'Assinatura',
   'set.field.signatureNone': 'Sem assinatura',
   'set.field.approval': 'Aprovação',
-  'set.field.approvalHint': 'A aprovação que um post feito a partir deste Set precisa antes de poder publicar.',
+  'set.field.approvalHint':
+    'A aprovação que um post feito a partir deste Set precisa antes de poder publicar.',
   'set.field.schedule': 'Quando publicar',
 
   'set.approval.none': 'Nenhuma aprovação necessária',
@@ -118,7 +119,8 @@ export const postingSetMessages = {
   'targetMemory.setting.enabled': 'Ativado',
   'targetMemory.setting.disabled': 'Desativado',
   'targetMemory.setting.saved': 'Configuração salva.',
-  'targetMemory.setting.cleared': 'Configuração salva. As seleções salvas neste projeto foram excluídas.',
+  'targetMemory.setting.cleared':
+    'Configuração salva. As seleções salvas neste projeto foram excluídas.',
 
   'targetMemory.composer.restored':
     '{count, plural, one {Começou com # conta da última vez.} many {Começou com # contas da última vez.} other {Começou com # contas da última vez.}}',

@@ -56,7 +56,8 @@ export const panelSurface = 'bg-surface-raised border border-border-default roun
  * `panelSurface`. Migrate those three and this export goes; do not add a
  * fourth.
  */
-export const panelPoster = 'bg-surface-raised border border-border-default rounded-lg shadow-raised';
+export const panelPoster =
+  'bg-surface-raised border border-border-default rounded-lg shadow-raised';
 
 /**
  * Press feedback. Editorial edition: a quiet 1px vertical settle plus the

@@ -199,7 +199,8 @@ export const webSettingsMessages = {
     'Applied by default in the composer for the platforms you choose here. It can be changed per post before approval.',
   'settings.ui.projects.glossaryHelp':
     'Product names, legal terms and anything that must survive a translation unchanged.',
-  'settings.ui.projects.glossaryCaption': 'Protected terms and how each one is handled per language',
+  'settings.ui.projects.glossaryCaption':
+    'Protected terms and how each one is handled per language',
   'settings.ui.projects.glossaryEmpty':
     'No protected terms yet. Add product names and legal terms that must not be translated or rephrased.',
   'settings.ui.projects.localeRulesHelp':

@@ -14,7 +14,10 @@ import {
 import type { ActorContext, PageQuery, QueueRuleService, ServiceDeps } from '../types';
 
 import { recordAudit } from '../internal/audit';
-import { requireProjectOwnership, requireProjectOwnershipIfPresent } from '../internal/project-ownership';
+import {
+  requireProjectOwnership,
+  requireProjectOwnershipIfPresent,
+} from '../internal/project-ownership';
 import { invalid, notFound } from '../internal/errors';
 import { withIdempotency } from '../internal/idempotency';
 import { pageArgs, toPage } from '../internal/pagination';
@@ -91,43 +94,49 @@ export function createQueueRuleService(deps: ServiceDeps): QueueRuleService {
         body: parsed,
         resourceIdOf: (view) => view.id,
         run: async () =>
-          authorized(deps, ctx, 'rule.write', { projectId: parsed.projectId }, async (db, actor) => {
-            await requireProjectOwnership(db, actor, parsed.projectId);
-            if (actor.userId === null) {
-              throw invalid('errors.queue_rule_requires_person', { projectId: parsed.projectId });
-            }
-            const duplicate = await db.queueRule.findFirst({
-              where: { projectId: parsed.projectId, name: parsed.name, archivedAt: null },
-              select: { id: true },
-            });
-            if (duplicate !== null) {
-              throw conflict('errors.queue_rule_name_taken', { name: parsed.name });
-            }
-            const created = await db.queueRule.create({
-              data: {
-                workspaceId: actor.workspace.id,
-                projectId: parsed.projectId,
-                name: parsed.name,
-                ianaTimeZone: parsed.ianaTimeZone,
-                windows: [...parsed.windows],
-                minimumGapMinutes: parsed.minimumGapMinutes,
-                maximumPerDay: parsed.maximumPerDay,
-                blackouts: [...parsed.blackouts],
-                connectionIds: [...parsed.connectionIds],
-                priority: parsed.priority,
-                enabled: parsed.enabled,
-                createdByUserId: actor.userId,
-              },
-              select: QUEUE_RULE_SELECT,
-            });
-            await recordAudit(db, actor, {
-              action: 'queue_rule.created',
-              targetType: 'queue_rule',
-              targetId: created.id,
-              after: toRuleView(created),
-            });
-            return toRuleView(created);
-          }),
+          authorized(
+            deps,
+            ctx,
+            'rule.write',
+            { projectId: parsed.projectId },
+            async (db, actor) => {
+              await requireProjectOwnership(db, actor, parsed.projectId);
+              if (actor.userId === null) {
+                throw invalid('errors.queue_rule_requires_person', { projectId: parsed.projectId });
+              }
+              const duplicate = await db.queueRule.findFirst({
+                where: { projectId: parsed.projectId, name: parsed.name, archivedAt: null },
+                select: { id: true },
+              });
+              if (duplicate !== null) {
+                throw conflict('errors.queue_rule_name_taken', { name: parsed.name });
+              }
+              const created = await db.queueRule.create({
+                data: {
+                  workspaceId: actor.workspace.id,
+                  projectId: parsed.projectId,
+                  name: parsed.name,
+                  ianaTimeZone: parsed.ianaTimeZone,
+                  windows: [...parsed.windows],
+                  minimumGapMinutes: parsed.minimumGapMinutes,
+                  maximumPerDay: parsed.maximumPerDay,
+                  blackouts: [...parsed.blackouts],
+                  connectionIds: [...parsed.connectionIds],
+                  priority: parsed.priority,
+                  enabled: parsed.enabled,
+                  createdByUserId: actor.userId,
+                },
+                select: QUEUE_RULE_SELECT,
+              });
+              await recordAudit(db, actor, {
+                action: 'queue_rule.created',
+                targetType: 'queue_rule',
+                targetId: created.id,
+                after: toRuleView(created),
+              });
+              return toRuleView(created);
+            },
+          ),
       });
     },
 
@@ -236,57 +245,63 @@ export function createQueueRuleService(deps: ServiceDeps): QueueRuleService {
         body: input,
         resourceIdOf: (view) => view.id,
         run: async () =>
-          authorized(deps, ctx, 'post.schedule', { projectId: input.projectId }, async (db, actor) => {
-            await requireProjectOwnership(db, actor, input.projectId);
-            if (actor.userId === null) {
-              throw invalid('errors.queue_rule_requires_person', { projectId: input.projectId });
-            }
-            const context = await readQueueContext(
-              db,
-              deps.clock,
-              actor.workspace.defaultTimeZone,
-              input,
-            );
-            const proposal = findNextSlot({
-              rules: context.rules,
-              occupied: context.occupied,
-              reserved: context.reserved,
-              after: context.after,
-              fallbackTimeZone: context.timeZone,
-            });
-            const now = deps.clock.now();
-            const created = await db.queueSlotReservation.create({
-              data: {
-                workspaceId: actor.workspace.id,
-                projectId: input.projectId,
-                queueRuleId: proposal.queueRuleId,
-                state: 'proposed',
-                scheduledFor: new Date(proposal.instant),
-                scheduledTimeZone: proposal.ianaTimeZone,
-                localDateTime: proposal.localDateTime,
-                // Frozen here, and never re-read from the live rule again.
-                ruleSnapshot: freezeSnapshot(proposal, context.rules, context.timeZone, now),
-                ...(input.contentItemId === undefined
-                  ? {}
-                  : { contentItemId: input.contentItemId }),
-                expiresAt: new Date(now.getTime() + QUEUE_PROPOSAL_TTL_SECONDS * 1000),
-                createdByUserId: actor.userId,
-              },
-              select: RESERVATION_SELECT,
-            });
-            await recordAudit(db, actor, {
-              action: 'queue_slot.proposed',
-              targetType: 'queue_slot_reservation',
-              targetId: created.id,
-              after: {
-                instant: proposal.instant,
-                ianaTimeZone: proposal.ianaTimeZone,
-                queueRuleId: proposal.queueRuleId,
-              },
-              metadata: { reasonKeys: proposal.reasons.map((entry) => entry.key) },
-            });
-            return toReservationView(created);
-          }),
+          authorized(
+            deps,
+            ctx,
+            'post.schedule',
+            { projectId: input.projectId },
+            async (db, actor) => {
+              await requireProjectOwnership(db, actor, input.projectId);
+              if (actor.userId === null) {
+                throw invalid('errors.queue_rule_requires_person', { projectId: input.projectId });
+              }
+              const context = await readQueueContext(
+                db,
+                deps.clock,
+                actor.workspace.defaultTimeZone,
+                input,
+              );
+              const proposal = findNextSlot({
+                rules: context.rules,
+                occupied: context.occupied,
+                reserved: context.reserved,
+                after: context.after,
+                fallbackTimeZone: context.timeZone,
+              });
+              const now = deps.clock.now();
+              const created = await db.queueSlotReservation.create({
+                data: {
+                  workspaceId: actor.workspace.id,
+                  projectId: input.projectId,
+                  queueRuleId: proposal.queueRuleId,
+                  state: 'proposed',
+                  scheduledFor: new Date(proposal.instant),
+                  scheduledTimeZone: proposal.ianaTimeZone,
+                  localDateTime: proposal.localDateTime,
+                  // Frozen here, and never re-read from the live rule again.
+                  ruleSnapshot: freezeSnapshot(proposal, context.rules, context.timeZone, now),
+                  ...(input.contentItemId === undefined
+                    ? {}
+                    : { contentItemId: input.contentItemId }),
+                  expiresAt: new Date(now.getTime() + QUEUE_PROPOSAL_TTL_SECONDS * 1000),
+                  createdByUserId: actor.userId,
+                },
+                select: RESERVATION_SELECT,
+              });
+              await recordAudit(db, actor, {
+                action: 'queue_slot.proposed',
+                targetType: 'queue_slot_reservation',
+                targetId: created.id,
+                after: {
+                  instant: proposal.instant,
+                  ianaTimeZone: proposal.ianaTimeZone,
+                  queueRuleId: proposal.queueRuleId,
+                },
+                metadata: { reasonKeys: proposal.reasons.map((entry) => entry.key) },
+              });
+              return toReservationView(created);
+            },
+          ),
       });
     },
 

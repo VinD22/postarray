@@ -219,7 +219,11 @@ export function buildConnectorContractCases(): readonly ConnectorContractCase[] 
     observedAt: '2026-08-04T12:00:00.000Z',
     grantedScopes: xScopes,
   });
-  const xDraft = testDraft({ connection: xConnection, capabilities: xCapabilities, body: 'Hello.' });
+  const xDraft = testDraft({
+    connection: xConnection,
+    capabilities: xCapabilities,
+    body: 'Hello.',
+  });
   const xPostId = '1900000000000000001';
 
   const youTubeScopes = [

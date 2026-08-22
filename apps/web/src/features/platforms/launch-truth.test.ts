@@ -120,9 +120,7 @@ describe('platform pages hold no claim of their own', () => {
     // widened record is the honest way to ask "is it there?" rather than
     // asserting a key the generator never emitted.
     const states: Readonly<Record<string, unknown>> = REGISTRY_MARKETING_CAPABILITY_STATES;
-    const withoutAdapter = PLATFORM_PAGES.filter(
-      (page) => states[page.provider] === undefined,
-    );
+    const withoutAdapter = PLATFORM_PAGES.filter((page) => states[page.provider] === undefined);
     expect(withoutAdapter.length).toBeGreaterThan(0);
   });
 });

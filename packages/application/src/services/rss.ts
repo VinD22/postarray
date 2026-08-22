@@ -244,41 +244,47 @@ export function createRssService(deps: ServiceDeps): RssService {
         pollIntervalSeconds?: number;
       },
     ): Promise<RssFeedView> {
-      return authorized(deps, ctx, 'rss.write', { projectId: input.projectId }, async (db, actor) => {
-        if (actor.userId === null) {
-          throw invalid('errors.rss_requires_user', {});
-        }
-        await assertFetchable(input.feedUrl);
+      return authorized(
+        deps,
+        ctx,
+        'rss.write',
+        { projectId: input.projectId },
+        async (db, actor) => {
+          if (actor.userId === null) {
+            throw invalid('errors.rss_requires_user', {});
+          }
+          await assertFetchable(input.feedUrl);
 
-        const created = await db.rssFeed.create({
-          data: {
-            workspaceId: actor.workspace.id,
-            projectId: input.projectId,
-            title: input.title,
-            feedUrl: input.feedUrl,
-            connectionIds: [...(input.connectionIds ?? [])],
-            publishPolicy: input.publishPolicy ?? 'draft',
-            pollIntervalSeconds: Math.max(
-              MIN_POLL_INTERVAL_SECONDS,
-              input.pollIntervalSeconds ?? 900,
-            ),
-            // Existing items are marked as seen so adding a feed never floods
-            // the calendar with a year of backlog.
-            markCurrentAsSeen: true,
-            createdByUserId: actor.userId,
-          },
-          select: FEED_SELECT,
-        });
+          const created = await db.rssFeed.create({
+            data: {
+              workspaceId: actor.workspace.id,
+              projectId: input.projectId,
+              title: input.title,
+              feedUrl: input.feedUrl,
+              connectionIds: [...(input.connectionIds ?? [])],
+              publishPolicy: input.publishPolicy ?? 'draft',
+              pollIntervalSeconds: Math.max(
+                MIN_POLL_INTERVAL_SECONDS,
+                input.pollIntervalSeconds ?? 900,
+              ),
+              // Existing items are marked as seen so adding a feed never floods
+              // the calendar with a year of backlog.
+              markCurrentAsSeen: true,
+              createdByUserId: actor.userId,
+            },
+            select: FEED_SELECT,
+          });
 
-        await recordAudit(db, actor, {
-          action: 'workspace.updated',
-          targetType: 'rss_feed',
-          targetId: created.id,
-          after: { feedUrl: input.feedUrl, publishPolicy: created.publishPolicy },
-        });
+          await recordAudit(db, actor, {
+            action: 'workspace.updated',
+            targetType: 'rss_feed',
+            targetId: created.id,
+            after: { feedUrl: input.feedUrl, publishPolicy: created.publishPolicy },
+          });
 
-        return toView(created);
-      });
+          return toView(created);
+        },
+      );
     },
 
     async update(

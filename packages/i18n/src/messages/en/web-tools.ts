@@ -282,7 +282,8 @@ export const webToolsMessages = {
   'web.tools.engagementRate.field.followers.label': 'Followers',
   'web.tools.engagementRate.field.followers.help': 'The account size at the time of the post.',
   'web.tools.engagementRate.field.impressions.label': 'Impressions',
-  'web.tools.engagementRate.field.impressions.help': 'Total views, including a person who saw it twice.',
+  'web.tools.engagementRate.field.impressions.help':
+    'Total views, including a person who saw it twice.',
   'web.tools.engagementRate.result.title': 'Engagement rate, three ways',
   'web.tools.engagementRate.result.empty': 'unavailable',
   'web.tools.engagementRate.result.note':

@@ -22,19 +22,22 @@ export const queueMessages = {
   'queue.field.timeZoneHelp':
     'As janelas, a contagem diária e as datas de bloqueio são todas lidas neste fuso.',
   'queue.field.minimumGap': 'Intervalo mínimo',
-  'queue.field.minimumGapHelp': 'Minutos entre dois posts. Zero significa nenhuma regra de espaçamento.',
+  'queue.field.minimumGapHelp':
+    'Minutos entre dois posts. Zero significa nenhuma regra de espaçamento.',
   'queue.field.maximumPerDay': 'Máximo por dia',
   'queue.field.maximumPerDayHelp':
     'Deixe em branco para não ter limite diário. Zero significa que esta regra não propõe nada.',
   'queue.field.maximumPerDayUnlimited': 'Sem limite diário',
   'queue.field.priority': 'Prioridade',
-  'queue.field.priorityHelp': 'A regra de maior prioridade que puder oferecer um horário é a usada.',
+  'queue.field.priorityHelp':
+    'A regra de maior prioridade que puder oferecer um horário é a usada.',
   'queue.field.enabled': 'Usar esta regra',
 
   'queue.windows.heading': 'Janelas semanais',
   'queue.windows.help':
     'Escolha os horários locais em que este projeto pode publicar. Use os campos de dia e hora, ou os botões na grade.',
-  'queue.windows.empty': 'Ainda não há janelas. Uma regra sem janela nunca pode oferecer um horário.',
+  'queue.windows.empty':
+    'Ainda não há janelas. Uma regra sem janela nunca pode oferecer um horário.',
   'queue.windows.add': 'Adicionar janela',
   'queue.windows.remove': 'Remover janela',
   'queue.windows.entry': '{weekday}, das {start} às {end}',
@@ -53,7 +56,8 @@ export const queueMessages = {
   'queue.weekday.7': 'Domingo',
 
   'queue.blackouts.heading': 'Datas bloqueadas',
-  'queue.blackouts.help': 'Datas em que este projeto não vai publicar, lidas no fuso horário da regra.',
+  'queue.blackouts.help':
+    'Datas em que este projeto não vai publicar, lidas no fuso horário da regra.',
   'queue.blackouts.empty': 'Nenhuma data bloqueada.',
   'queue.blackouts.add': 'Adicionar bloqueio',
   'queue.blackouts.remove': 'Remover bloqueio',
@@ -94,7 +98,8 @@ export const queueMessages = {
     'O primeiro horário da janela não existe naquela data em {zone}, então o próximo que existe foi usado.',
   'queue.reason.dstAmbiguousFirst':
     'Esse horário local acontece duas vezes em {zone} naquela data. A primeira ocorrência foi usada.',
-  'queue.reason.priorityChosen': 'Esta regra tem prioridade {priority}, a mais alta que pôde oferecer.',
+  'queue.reason.priorityChosen':
+    'Esta regra tem prioridade {priority}, a mais alta que pôde oferecer.',
   'queue.reason.connectionScoped':
     'Esta regra cobre {count, plural, one {# conta} many {# contas} other {# contas}}.',
   'queue.reason.horizonExhausted': 'Nenhuma janela ficou livre em {days} dias.',

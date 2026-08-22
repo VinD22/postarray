@@ -65,9 +65,7 @@ export function restoreSelection(
   const filtered = filterRememberedTargets(remembered.connectionIds, available);
   const dropped = [
     ...remembered.droppedConnectionIds,
-    ...filtered.droppedConnectionIds.filter(
-      (id) => !remembered.droppedConnectionIds.includes(id),
-    ),
+    ...filtered.droppedConnectionIds.filter((id) => !remembered.droppedConnectionIds.includes(id)),
   ];
 
   if (filtered.connectionIds.length === 0) {
@@ -81,7 +79,8 @@ export function restoreSelection(
   return {
     connectionIds: filtered.connectionIds,
     droppedConnectionIds: dropped,
-    noticeKey: dropped.length > 0 ? 'targetMemory.composer.droppedSome' : 'targetMemory.composer.restored',
+    noticeKey:
+      dropped.length > 0 ? 'targetMemory.composer.droppedSome' : 'targetMemory.composer.restored',
   };
 }
 

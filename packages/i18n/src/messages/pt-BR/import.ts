@@ -16,7 +16,8 @@ export const importMessages = {
   'import.upload.field': 'Arquivo CSV',
   'import.upload.fieldHelp': 'Selecione um arquivo, ou cole as linhas na caixa abaixo.',
   'import.upload.paste': 'Ou cole o texto CSV',
-  'import.upload.pasteHelp': 'Inclua a linha de cabeçalho. Tudo é verificado antes de qualquer coisa ser criada.',
+  'import.upload.pasteHelp':
+    'Inclua a linha de cabeçalho. Tudo é verificado antes de qualquer coisa ser criada.',
   'import.upload.project': 'Projeto',
   'import.upload.projectHelp': 'Toda linha em um arquivo pertence a este projeto.',
   'import.upload.submit': 'Verificar este arquivo',
@@ -24,7 +25,8 @@ export const importMessages = {
   'import.upload.allowPast': 'Permitir horários que já passaram',
   'import.upload.allowPastHelp':
     'Desativado por padrão. Uma linha datada no passado é reportada para você corrigir, em vez de ser movida por nós.',
-  'import.upload.tooLarge': 'Esse arquivo é maior que {limit} caracteres. Divida-o e tente de novo.',
+  'import.upload.tooLarge':
+    'Esse arquivo é maior que {limit} caracteres. Divida-o e tente de novo.',
   'import.upload.duplicate':
     'Este é o mesmo arquivo que você enviou antes, então você está vendo aquela importação em vez de uma segunda cópia dela.',
 
@@ -32,13 +34,15 @@ export const importMessages = {
   'import.template.download': 'Baixar um modelo de CSV',
   'import.template.required': 'Colunas obrigatórias',
   'import.template.optional': 'Colunas opcionais',
-  'import.column.external_row_id': 'Seu próprio id para a linha. Precisa ser único dentro do arquivo.',
+  'import.column.external_row_id':
+    'Seu próprio id para a linha. Precisa ser único dentro do arquivo.',
   'import.column.project': 'O nome ou id do projeto ao qual a linha pertence.',
   'import.column.targets':
     'Um conjunto: seguido de um id de conjunto de contas, ou ids de conta separados por barra vertical.',
   'import.column.caption': 'O texto do post.',
   'import.column.scheduled_local_time': 'Data e hora local, escritas como 2026-09-01T10:00.',
-  'import.column.time_zone': 'O fuso IANA em que essa hora local é lida, por exemplo Europe/Berlin.',
+  'import.column.time_zone':
+    'O fuso IANA em que essa hora local é lida, por exemplo Europe/Berlin.',
   'import.column.media':
     'Um id de mídia, sha256: seguido do checksum de uma mídia que você já tem, ou um endereço https para o servidor buscar.',
   'import.column.title': 'Um título, onde o destino usar um.',

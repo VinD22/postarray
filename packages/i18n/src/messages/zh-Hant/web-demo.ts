@@ -35,7 +35,8 @@ export const webDemoMessages = {
   /* ---------------------------------------------------------------------- */
 
   'web.demo.frame.badge': '示範',
-  'web.demo.frame.sample': '這是以真實介面建構、填入不存在公司的範例內容的示範，並非真實帳號，此處沒有任何內容會被送出。',
+  'web.demo.frame.sample':
+    '這是以真實介面建構、填入不存在公司的範例內容的示範，並非真實帳號，此處沒有任何內容會被送出。',
 
   'web.demo.control.pause': '暫停示範',
   'web.demo.control.play': '播放示範',
@@ -45,7 +46,8 @@ export const webDemoMessages = {
   /* The home page hero demonstration                                        */
   /* ---------------------------------------------------------------------- */
 
-  'web.demo.hero.caption': '一份草稿變成每個平台各一個版本，取得一個時間，並出現在這一週中。這是範例內容，並非真實帳號。',
+  'web.demo.hero.caption':
+    '一份草稿變成每個平台各一個版本，取得一個時間，並出現在這一週中。這是範例內容，並非真實帳號。',
   'web.demo.hero.more': '走過完整的工作流程',
 
   /* ---------------------------------------------------------------------- */
@@ -63,7 +65,8 @@ export const webDemoMessages = {
   'web.demo.next': '下一步：{step}',
   'web.demo.closing.pricing': '查看價格',
   'web.demo.closing.title': '這就是完整的循環',
-  'web.demo.closing.body': '以上內容並非我們希望打造的產品模型，而是介面目前的實際樣貌，並誠實標示發布這一半尚未完成。',
+  'web.demo.closing.body':
+    '以上內容並非我們希望打造的產品模型，而是介面目前的實際樣貌，並誠實標示發布這一半尚未完成。',
 
   /* ---------------------------------------------------------------------- */
   /* The six steps                                                           */
@@ -90,7 +93,8 @@ export const webDemoMessages = {
     '時間會以「一個時刻加上專案時區」儲存，絕不會是單純的本地時間，因此夏令時間的變動不會在你不知情的情況下移動任何內容。佇列是另一條路徑：它會採用你所設定規則所允許的下一個時段。',
 
   'web.demo.step.calendar.title': '查看行事曆',
-  'web.demo.step.calendar.body': '這一週會顯示每則貼文的平台、帳號、狀態與時間。移動一則貼文既可以用按鈕，也可以用拖曳，因此行事曆完全可以只用鍵盤操作。',
+  'web.demo.step.calendar.body':
+    '這一週會顯示每則貼文的平台、帳號、狀態與時間。移動一則貼文既可以用按鈕，也可以用拖曳，因此行事曆完全可以只用鍵盤操作。',
 
   'web.demo.step.receipt.title': '事後閱讀收據',
   'web.demo.step.receipt.body':
@@ -106,7 +110,8 @@ export const webDemoMessages = {
 
   'web.demo.accounts.label': '此專案中的帳號',
   'web.demo.accounts.state': '驗證尚未完成',
-  'web.demo.accounts.note': '每一列都會顯示權杖健康狀態、已授予的權限，以及最後一次成功發布的貼文。目前這些帳號都無法發布。',
+  'web.demo.accounts.note':
+    '每一列都會顯示權杖健康狀態、已授予的權限，以及最後一次成功發布的貼文。目前這些帳號都無法發布。',
 
   'web.demo.master.label': '主要草稿',
   'web.demo.master.project': '位於專案 {project}',
@@ -141,18 +146,22 @@ export const webDemoMessages = {
   'web.demo.sample.actor': 'Ada，範例團隊成員',
   'web.demo.sample.approver': 'Ravi，範例審閱者',
   'web.demo.sample.policy': '送出前需要一次核准',
-  'web.demo.sample.master': 'Northbound 2.4 今日推出。匯入速度更快，搜尋新增了鍵盤快捷鍵，兩位使用者回報的匯出錯誤也已修復。',
+  'web.demo.sample.master':
+    'Northbound 2.4 今日推出。匯入速度更快，搜尋新增了鍵盤快捷鍵，兩位使用者回報的匯出錯誤也已修復。',
 
   'web.demo.sample.x.account': 'X, @northbound',
-  'web.demo.sample.x.body': 'Northbound 2.4 已推出。匯入速度更快、支援鍵盤搜尋，該匯出錯誤也已修復。',
+  'web.demo.sample.x.body':
+    'Northbound 2.4 已推出。匯入速度更快、支援鍵盤搜尋，該匯出錯誤也已修復。',
   'web.demo.sample.x.check': '字元數與串文順序',
 
   'web.demo.sample.linkedin.account': 'LinkedIn, Northbound Tools',
-  'web.demo.sample.linkedin.body': 'Northbound 2.4 今日推出。發布說明完整解釋了匯入的變更與匯出的修復內容。',
+  'web.demo.sample.linkedin.body':
+    'Northbound 2.4 今日推出。發布說明完整解釋了匯入的變更與匯出的修復內容。',
   'web.demo.sample.linkedin.check': '組織角色與貼文長度',
 
   'web.demo.sample.instagram.account': 'Instagram, @northbound.tools',
-  'web.demo.sample.instagram.body': '同一張發布圖片，搭配為動態消息撰寫的文案，以及由真人撰寫的替代文字。',
+  'web.demo.sample.instagram.body':
+    '同一張發布圖片，搭配為動態消息撰寫的文案，以及由真人撰寫的替代文字。',
   'web.demo.sample.instagram.check': '帳號類型、長寬比與替代文字',
 
   /* ---------------------------------------------------------------------- */
@@ -193,7 +202,8 @@ export const webDemoMessages = {
   'web.demo.validate.check.altTextDetail': '沒有描述、也未標示為裝飾用途的圖片，會阻擋排程。',
   'web.demo.validate.check.firstComment': '此處是否允許第一則留言',
   'web.demo.validate.check.firstCommentDetail': '第一則留言僅在其平台支援此功能的帳號上提供。',
-  'web.demo.validate.note': '這些檢查會在任何內容被排程之前於撰寫工具中執行，並在任何內容送出之前再次執行。',
+  'web.demo.validate.note':
+    '這些檢查會在任何內容被排程之前於撰寫工具中執行，並在任何內容送出之前再次執行。',
 
   /* ---------------------------------------------------------------------- */
   /* Publish and receipt (step 8)                                            */

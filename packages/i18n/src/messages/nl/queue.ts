@@ -36,13 +36,15 @@ export const queueMessages = {
     'Laat leeg voor geen dagelijkse limiet. Nul betekent dat deze regel niets voorstelt.',
   'queue.field.maximumPerDayUnlimited': 'Geen dagelijkse limiet',
   'queue.field.priority': 'Prioriteit',
-  'queue.field.priorityHelp': 'De regel met de hoogste prioriteit die een tijdstip kan aanbieden, wordt gebruikt.',
+  'queue.field.priorityHelp':
+    'De regel met de hoogste prioriteit die een tijdstip kan aanbieden, wordt gebruikt.',
   'queue.field.enabled': 'Gebruik deze regel',
 
   'queue.windows.heading': 'Wekelijkse vensters',
   'queue.windows.help':
     'Kies de lokale uren waarin dit merk mag publiceren. Gebruik de dag- en tijdvelden, of de knoppen op het rooster.',
-  'queue.windows.empty': 'Nog geen vensters. Een regel zonder venster kan nooit een tijdstip aanbieden.',
+  'queue.windows.empty':
+    'Nog geen vensters. Een regel zonder venster kan nooit een tijdstip aanbieden.',
   'queue.windows.add': 'Venster toevoegen',
   'queue.windows.remove': 'Venster verwijderen',
   'queue.windows.entry': '{weekday}, van {start} tot {end}',
@@ -61,7 +63,8 @@ export const queueMessages = {
   'queue.weekday.7': 'Zondag',
 
   'queue.blackouts.heading': 'Blackout-data',
-  'queue.blackouts.help': 'Data waarop dit merk niet zal publiceren, gelezen in de tijdzone van de regel.',
+  'queue.blackouts.help':
+    'Data waarop dit merk niet zal publiceren, gelezen in de tijdzone van de regel.',
   'queue.blackouts.empty': 'Geen blackout-data.',
   'queue.blackouts.add': 'Blackout toevoegen',
   'queue.blackouts.remove': 'Blackout verwijderen',
@@ -89,7 +92,8 @@ export const queueMessages = {
 
   'queue.reason.noRulesConfigured':
     'Dit merk heeft geen wachtrijregels ingesteld, dus is er geen venster toegepast.',
-  'queue.reason.fallbackFirstFreeHour': 'In plaats daarvan is het eerste vrije uur vanaf nu gebruikt.',
+  'queue.reason.fallbackFirstFreeHour':
+    'In plaats daarvan is het eerste vrije uur vanaf nu gebruikt.',
   'queue.reason.matchedRule': 'Regel {name} heeft dit tijdstip gekozen, in {zone}.',
   'queue.reason.matchedWindow': 'Het valt binnen het venster van {start} tot {end} in {zone}.',
   'queue.reason.minimumGap': 'Het ligt minstens {minutes} minuten van elk ander bericht.',
@@ -102,7 +106,8 @@ export const queueMessages = {
     'De eerste tijd in het venster bestaat niet op die datum in {zone}, dus is de eerstvolgende die wel bestaat gebruikt.',
   'queue.reason.dstAmbiguousFirst':
     'Dat lokale tijdstip komt die datum twee keer voor in {zone}. Het eerste moment is gebruikt.',
-  'queue.reason.priorityChosen': 'Deze regel heeft prioriteit {priority}, de hoogste die kon aanbieden.',
+  'queue.reason.priorityChosen':
+    'Deze regel heeft prioriteit {priority}, de hoogste die kon aanbieden.',
   'queue.reason.connectionScoped':
     'Deze regel geldt voor {count, plural, one {# account} other {# accounts}}.',
   'queue.reason.horizonExhausted': 'Binnen {days} dagen was geen venster vrij.',

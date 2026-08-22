@@ -65,8 +65,7 @@ export const webToolsMessages = {
   'web.tools.youtubeTitle.name': 'فاحص طول عنوان YouTube',
   'web.tools.youtubeTitle.summary': 'قِس عنوانًا بنفس الطريقة التي يحسب بها شخص الأحرف.',
   'web.tools.timeZone.name': 'مخطط المنطقة الزمنية والتوقيت الصيفي',
-  'web.tools.timeZone.summary':
-    'وقت نشر واحد عبر عدة مناطق جمهور، مع تمييز تحولات التوقيت الصيفي.',
+  'web.tools.timeZone.summary': 'وقت نشر واحد عبر عدة مناطق جمهور، مع تمييز تحولات التوقيت الصيفي.',
   'web.tools.engagementRate.name': 'حاسبة معدل التفاعل',
   'web.tools.engagementRate.summary':
     'التفاعلات مقسومة على الوصول أو المتابعين أو مرات الظهور. لا شيء يُبحث عنه، ولا شيء يُقاس بمعيار.',
@@ -127,8 +126,7 @@ export const webToolsMessages = {
     'لا يوجد حد بايت منشور لهذا النوع من الوسائط، لذا لم يُفحص الحجم.',
   'web.tools.preflight.finding.durationOver': 'أطول من حد {limit} ثانية.',
   'web.tools.preflight.finding.durationUnder': 'أقصر من الحد الأدنى {limit} ثانية.',
-  'web.tools.preflight.finding.durationUnknown':
-    'لا يوجد حد مدة منشور، لذا لم يُفحص الطول.',
+  'web.tools.preflight.finding.durationUnknown': 'لا يوجد حد مدة منشور، لذا لم يُفحص الطول.',
   'web.tools.preflight.finding.altText':
     'يُقبل النص البديل حتى {limit} حرفًا، وهو يستحق الاستخدام.',
   'web.tools.preflight.finding.ratio': 'ستنشر بنسبة حوالي {ratio} إلى 1.',
@@ -183,8 +181,7 @@ export const webToolsMessages = {
   'web.tools.utm.faq.existing.a':
     'لا. تُحفظ المعلمات الموجودة بترتيبها الأصلي، ويُضاف أو يُستبدل فقط معلمة UTM التي ملأتها. يبقى الجزء الملحق في نهاية عنوان URL في نهايته.',
   'web.tools.utm.faq.privacy.q': 'هل يُرسل عنواني إلى مكان ما؟',
-  'web.tools.utm.faq.privacy.a':
-    'لا. يُؤلَّف عنوان URL في متصفحك ولا يغادر هذه الصفحة أبدًا.',
+  'web.tools.utm.faq.privacy.a': 'لا. يُؤلَّف عنوان URL في متصفحك ولا يغادر هذه الصفحة أبدًا.',
 
   /* ---------------------------------------------------------------------- */
   /* فاحص طول عنوان YouTube                                                 */

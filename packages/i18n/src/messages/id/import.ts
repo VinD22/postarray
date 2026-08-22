@@ -37,7 +37,8 @@ export const importMessages = {
   'import.column.targets':
     'Salah satu: diawali dengan id set target, atau id akun dipisahkan tanda garis vertikal.',
   'import.column.caption': 'Teks postingan.',
-  'import.column.scheduled_local_time': 'Tanggal dan waktu lokal, ditulis sebagai 2026-09-01T10:00.',
+  'import.column.scheduled_local_time':
+    'Tanggal dan waktu lokal, ditulis sebagai 2026-09-01T10:00.',
   'import.column.time_zone': 'Zona IANA tempat waktu lokal dibaca, misalnya Europe/Berlin.',
   'import.column.media':
     'Id media, sha256: diikuti checksum media yang sudah Anda miliki, atau alamat https untuk diambil oleh server.',
@@ -52,8 +53,7 @@ export const importMessages = {
   'import.columns.heading': 'Pemeriksaan kolom',
   'import.columns.ok': 'Setiap kolom wajib ada.',
   'import.columns.missing': '{count, plural, other {# kolom wajib tidak ada}}',
-  'import.columns.unknown':
-    '{count, plural, other {# kolom tidak dikenali dan diabaikan}}',
+  'import.columns.unknown': '{count, plural, other {# kolom tidak dikenali dan diabaikan}}',
   'import.columns.present': 'Kolom yang ditemukan',
 
   'import.review.heading': 'Apa yang akan dilakukan berkas ini',
@@ -130,15 +130,12 @@ export const importMessages = {
   'import.error.invalidLocalTime':
     'Waktu {value} bukan tanggal dan waktu lokal seperti 2026-09-01T10:00.',
   'import.error.invalidTimeZone': 'Zona {value} bukan nama zona waktu IANA.',
-  'import.error.nonexistentLocalTime':
-    'Waktu {value} tidak ada di {zone}. Jam melompatinya.',
+  'import.error.nonexistentLocalTime': 'Waktu {value} tidak ada di {zone}. Jam melompatinya.',
   'import.error.ambiguousLocalTime':
     'Waktu {value} terjadi dua kali di {zone} pada hari itu. Pilih waktu lain.',
   'import.error.scheduleInPast': 'Waktu {value} di {zone} sudah lewat.',
-  'import.error.invalidTargets':
-    'Nilai {value} bukan set target tersimpan atau daftar id akun.',
-  'import.error.invalidMedia':
-    'Nilai {value} bukan id media, checksum sha256, atau alamat https.',
+  'import.error.invalidTargets': 'Nilai {value} bukan set target tersimpan atau daftar id akun.',
+  'import.error.invalidMedia': 'Nilai {value} bukan id media, checksum sha256, atau alamat https.',
   'import.error.mediaNotFound': 'Tidak ada media di ruang kerja ini yang cocok dengan {value}.',
   'import.error.mediaImportStarted':
     'Media di {value} sedang diambil. Terapkan berkas ini lagi setelah berada di pustaka.',

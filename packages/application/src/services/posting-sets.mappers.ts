@@ -1,4 +1,8 @@
-import { postingSetTargetDefaultSchema, type PostingSetTargetDefault, type PostingSetView } from '@relay/contracts';
+import {
+  postingSetTargetDefaultSchema,
+  type PostingSetTargetDefault,
+  type PostingSetView,
+} from '@relay/contracts';
 
 /**
  * Row shape, selection and projection for a Posting Set.
@@ -93,4 +97,3 @@ export function toPostingSetView(row: PostingSetRow): PostingSetView {
     updatedAt: row.updatedAt.toISOString(),
   };
 }
-

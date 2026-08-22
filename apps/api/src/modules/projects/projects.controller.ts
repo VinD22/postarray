@@ -5,7 +5,11 @@ import type { ActorContext, ProjectView } from '../../application/port';
 import { Actor, Idempotent, RequireScope } from '../../common/decorators';
 import { projectIdSchema } from '../../common/schemas';
 import { parseBody, parseParams, parseQuery } from '../../common/zod';
-import { createProjectSchema, listProjectsQuerySchema, updateProjectSchema } from './projects.schemas';
+import {
+  createProjectSchema,
+  listProjectsQuerySchema,
+  updateProjectSchema,
+} from './projects.schemas';
 import { ProjectsService } from './projects.service';
 
 /** Projects: the posting identity a connection and a schedule belong to. */

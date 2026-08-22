@@ -190,7 +190,8 @@ export const webSettingsMessages = {
     'Aplicado por defecto en el compositor para las plataformas que elijas aquí. Se puede cambiar por publicación antes de la aprobación.',
   'settings.ui.projects.glossaryHelp':
     'Nombres de productos, términos legales y cualquier cosa que deba sobrevivir a una traducción sin cambios.',
-  'settings.ui.projects.glossaryCaption': 'Términos protegidos y cómo se maneja cada uno por idioma',
+  'settings.ui.projects.glossaryCaption':
+    'Términos protegidos y cómo se maneja cada uno por idioma',
   'settings.ui.projects.glossaryEmpty':
     'Aún no hay términos protegidos. Agregue nombres de productos y términos legales que no se deben traducir ni reformular.',
   'settings.ui.projects.localeRulesHelp':

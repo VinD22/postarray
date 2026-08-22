@@ -37,8 +37,7 @@ export const webBlogMessages = {
   'web.blog.byline.editorial.name': 'Редакція публікаційних досліджень',
   'web.blog.byline.editorial.role': 'Пише і веде ці статті',
   'web.blog.byline.platform.name': 'Відділ документації платформ',
-  'web.blog.byline.platform.role':
-    'Перевіряє кожне твердження про платформу за офіційним джерелом',
+  'web.blog.byline.platform.role': 'Перевіряє кожне твердження про платформу за офіційним джерелом',
 
   'web.blog.feed.title': 'Статті про операції публікації',
   'web.blog.feed.description':

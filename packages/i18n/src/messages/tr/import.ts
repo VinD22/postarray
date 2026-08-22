@@ -56,7 +56,8 @@ export const importMessages = {
 
   'import.columns.heading': 'Sütun kontrolü',
   'import.columns.ok': 'Gerekli her sütun mevcut.',
-  'import.columns.missing': '{count, plural, one {# zorunlu sütun eksik} other {# zorunlu sütun eksik}}',
+  'import.columns.missing':
+    '{count, plural, one {# zorunlu sütun eksik} other {# zorunlu sütun eksik}}',
   'import.columns.unknown':
     '{count, plural, one {# sütun tanınmadı ve yok sayılıyor} other {# sütun tanınmadı ve yok sayılıyor}}',
   'import.columns.present': 'Bulunan sütunlar',
@@ -104,16 +105,19 @@ export const importMessages = {
   'import.apply.scheduledHelp':
     'Her hazır satır bir taslak olur ve dosyada yazılı zamanı alır. Bunu yalnızca zamanlar doğruysa seçin.',
   'import.apply.confirm': '{count, plural, one {# satırı} other {# satırı}} uygula',
-  'import.apply.confirmScheduled': '{count, plural, one {# satırı} other {# satırı}} oluştur ve planla',
+  'import.apply.confirmScheduled':
+    '{count, plural, one {# satırı} other {# satırı}} oluştur ve planla',
   'import.apply.running': 'Satırlar uygulanıyor',
   'import.apply.safeToRepeat':
     'İki kez uygulamak güvenlidir. Zaten bir taslak oluşturmuş bir satır olduğu gibi bırakılır.',
 
   'import.results.heading': 'Sonuçlar',
-  'import.results.applied': '{count, plural, one {# taslak oluşturuldu} other {# taslak oluşturuldu}}',
+  'import.results.applied':
+    '{count, plural, one {# taslak oluşturuldu} other {# taslak oluşturuldu}}',
   'import.results.skipped':
     '{count, plural, one {# satır zaten yapılmıştı} other {# satır zaten yapılmıştı}}',
-  'import.results.failed': '{count, plural, one {# satır başarısız oldu} other {# satır başarısız oldu}}',
+  'import.results.failed':
+    '{count, plural, one {# satır başarısız oldu} other {# satır başarısız oldu}}',
   'import.results.retry': 'Kalan satırları tekrar uygula',
   'import.results.openDrafts': 'Taslakları aç',
   'import.results.unavailable': 'kullanılamıyor',
@@ -151,6 +155,7 @@ export const importMessages = {
   'import.error.unknownVariantTarget':
     'Bu satırda bir {provider} hesabı yok, bu yüzden {provider} başlığı kullanılmadı.',
   'import.error.applyFailed': 'Bu satır uygulanamadı. Referans: {code}.',
-  'import.error.alreadyApplied': 'Bu satır zaten bir taslak oluşturdu, bu yüzden olduğu gibi bırakıldı.',
+  'import.error.alreadyApplied':
+    'Bu satır zaten bir taslak oluşturdu, bu yüzden olduğu gibi bırakıldı.',
   'import.error.tooManyRows': 'Bir dosyanın yalnızca ilk {limit} satırı okunur.',
 } as const;

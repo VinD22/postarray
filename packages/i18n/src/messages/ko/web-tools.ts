@@ -25,7 +25,8 @@ export const webToolsMessages = {
     '상호작용을 도달, 팔로워 또는 노출수로 나눕니다. 세 가지 단순 계산이며, 지어낸 기준값은 없습니다.',
 
   'web.tools.index.title': '무료 도구',
-  'web.tools.index.summary': '저희 커넥터가 읽는 것과 동일한 플랫폼 한도 데이터를 기반으로 만든 소규모 계산기입니다.',
+  'web.tools.index.summary':
+    '저희 커넥터가 읽는 것과 동일한 플랫폼 한도 데이터를 기반으로 만든 소규모 계산기입니다.',
   'web.tools.index.lede':
     '저희 커넥터가 사용하는 것과 동일한 플랫폼 한도 데이터를 기반으로 만든 네 가지 소규모 도구입니다. 계정 없음, 업로드 없음, 입력 내용 추적 없음.',
   'web.tools.index.dataTitle': '수치의 출처',
@@ -51,15 +52,18 @@ export const webToolsMessages = {
   'web.tools.shared.otherTools': '다른 도구',
 
   'web.tools.preflight.name': '게시 사전 점검기',
-  'web.tools.preflight.summary': '초안 하나를 열 개 플랫폼의 텍스트 및 미디어 한도와 동시에 대조해 확인합니다.',
+  'web.tools.preflight.summary':
+    '초안 하나를 열 개 플랫폼의 텍스트 및 미디어 한도와 동시에 대조해 확인합니다.',
   'web.tools.utm.name': 'UTM 링크 빌더',
   'web.tools.utm.summary': '기존 쿼리 문자열을 훼손하지 않고 태그가 붙은 캠페인 URL을 만드세요.',
   'web.tools.youtubeTitle.name': 'YouTube 제목 길이 확인기',
   'web.tools.youtubeTitle.summary': '사람이 문자를 세는 방식으로 제목을 측정합니다.',
   'web.tools.timeZone.name': '시간대 및 서머타임 플래너',
-  'web.tools.timeZone.summary': '서머타임 변경이 표시된, 여러 대상 시간대에서의 하나의 게시 시간입니다.',
+  'web.tools.timeZone.summary':
+    '서머타임 변경이 표시된, 여러 대상 시간대에서의 하나의 게시 시간입니다.',
   'web.tools.engagementRate.name': '참여율 계산기',
-  'web.tools.engagementRate.summary': '도달, 팔로워 또는 노출수로 나눈 상호작용입니다. 조회도, 기준값 비교도 없습니다.',
+  'web.tools.engagementRate.summary':
+    '도달, 팔로워 또는 노출수로 나눈 상호작용입니다. 조회도, 기준값 비교도 없습니다.',
 
   'web.tools.preflight.title': '게시 사전 점검기',
   'web.tools.preflight.lede':
@@ -85,7 +89,8 @@ export const webToolsMessages = {
   'web.tools.preflight.field.duration.help': '길이 확인을 건너뛰려면 비워 두세요.',
   'web.tools.preflight.field.width.label': '픽셀 단위 미디어 너비',
   'web.tools.preflight.field.height.label': '픽셀 단위 미디어 높이',
-  'web.tools.preflight.field.dimensions.help': '선택 사항입니다. 게시할 종횡비를 표시하는 데만 사용됩니다.',
+  'web.tools.preflight.field.dimensions.help':
+    '선택 사항입니다. 게시할 종횡비를 표시하는 데만 사용됩니다.',
   'web.tools.preflight.results.title': '플랫폼별 결과',
   'web.tools.preflight.results.empty': '결과를 보려면 플랫폼을 하나 이상 선택하세요.',
   'web.tools.preflight.results.summary':
@@ -111,8 +116,10 @@ export const webToolsMessages = {
     '이 미디어 종류에 대해 공개된 바이트 상한이 없어 크기를 확인하지 않았습니다.',
   'web.tools.preflight.finding.durationOver': '{limit}초 상한보다 깁니다.',
   'web.tools.preflight.finding.durationUnder': '{limit}초 최소값보다 짧습니다.',
-  'web.tools.preflight.finding.durationUnknown': '공개된 길이 상한이 없어 길이를 확인하지 않았습니다.',
-  'web.tools.preflight.finding.altText': '대체 텍스트는 최대 {limit}자까지 허용되므로 사용할 가치가 있습니다.',
+  'web.tools.preflight.finding.durationUnknown':
+    '공개된 길이 상한이 없어 길이를 확인하지 않았습니다.',
+  'web.tools.preflight.finding.altText':
+    '대체 텍스트는 최대 {limit}자까지 허용되므로 사용할 가치가 있습니다.',
   'web.tools.preflight.finding.ratio': '약 {ratio}:1 비율로 게시하게 됩니다.',
   'web.tools.preflight.faq.counting.q': '문자를 어떻게 세나요?',
   'web.tools.preflight.faq.counting.a':
@@ -151,7 +158,8 @@ export const webToolsMessages = {
   'web.tools.utm.result.empty': '결과를 보려면 대상 URL을 입력하세요.',
   'web.tools.utm.result.label': '작성된 URL',
   'web.tools.utm.result.preserved': 'URL에 이미 있던 쿼리 문자열은 입력한 그대로 유지됩니다.',
-  'web.tools.utm.result.replaced': 'URL에 이미 이 매개변수 중 하나가 있었습니다. 여기서 입력한 값이 이를 대체합니다.',
+  'web.tools.utm.result.replaced':
+    'URL에 이미 이 매개변수 중 하나가 있었습니다. 여기서 입력한 값이 이를 대체합니다.',
   'web.tools.utm.faq.encoding.q': '공백과 억양 부호는 어떻게 되나요?',
   'web.tools.utm.faq.encoding.a':
     '퍼센트 인코딩되며, 이는 링크가 게시물에 붙여넣어져도 살아남게 하는 방식입니다. 공백은 더하기 기호가 되고 억양 부호가 있는 문자는 인코딩된 형태가 되며, 분석 도구가 둘 다 다시 디코딩합니다.',
@@ -159,7 +167,8 @@ export const webToolsMessages = {
   'web.tools.utm.faq.existing.a':
     '아니요. 기존 매개변수는 원래 순서대로 유지되며, 입력한 UTM 매개변수만 추가되거나 대체됩니다. URL 끝에 있는 프래그먼트는 끝에 그대로 남습니다.',
   'web.tools.utm.faq.privacy.q': '제 URL이 어딘가로 전송되나요?',
-  'web.tools.utm.faq.privacy.a': '아니요. URL은 브라우저에서 작성되며 이 페이지를 절대 벗어나지 않습니다.',
+  'web.tools.utm.faq.privacy.a':
+    '아니요. URL은 브라우저에서 작성되며 이 페이지를 절대 벗어나지 않습니다.',
 
   'web.tools.youtubeTitle.title': 'YouTube 제목 길이 확인기',
   'web.tools.youtubeTitle.lede':
@@ -170,11 +179,13 @@ export const webToolsMessages = {
   'web.tools.youtubeTitle.field.title.label': '동영상 제목',
   'web.tools.youtubeTitle.field.title.help': '자소 단위로 계산되므로 이모지는 1로 계산됩니다.',
   'web.tools.youtubeTitle.result.count': '{limit}자 중 {count}자',
-  'web.tools.youtubeTitle.result.over': '{over, plural, other {#자}} 초과합니다. 업로드가 거부됩니다.',
+  'web.tools.youtubeTitle.result.over':
+    '{over, plural, other {#자}} 초과합니다. 업로드가 거부됩니다.',
   'web.tools.youtubeTitle.result.fits': '문서화된 상한 이내입니다.',
   'web.tools.youtubeTitle.result.front':
     '처음 {count}자가 가장 큰 비중을 차지합니다. 좁은 레이아웃에서 대략 그만큼의 공간이 있기 때문입니다. 제목은 이렇게 시작합니다: {preview}',
-  'web.tools.youtubeTitle.result.unavailable': '이 빌드에서는 제목 한도를 사용할 수 없어 여기서는 아무것도 확인되지 않습니다.',
+  'web.tools.youtubeTitle.result.unavailable':
+    '이 빌드에서는 제목 한도를 사용할 수 없어 여기서는 아무것도 확인되지 않습니다.',
   'web.tools.youtubeTitle.faq.limit.q': '한도는 어디서 오나요?',
   'web.tools.youtubeTitle.faq.limit.a':
     '저희 업로더가 사용할 것과 동일한 커넥터 코드에서 이 페이지로 생성된, 공식 videos insert 참조 문서에서 옵니다. 누군가 그 페이지를 마지막으로 읽은 날짜가 수치 옆에 표시됩니다.',

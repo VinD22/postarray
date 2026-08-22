@@ -15,7 +15,8 @@ export const postingSetMessages = {
   'calendar.hold.badgeBilling': 'Pausada por facturación',
   'calendar.hold.term': 'Retención',
   'calendar.hold.byPerson': 'Pausaste esto el {date}.',
-  'calendar.hold.byBilling': 'Se pausó el {date} porque este espacio de trabajo perdió el acceso completo.',
+  'calendar.hold.byBilling':
+    'Se pausó el {date} porque este espacio de trabajo perdió el acceso completo.',
   'calendar.hold.none': 'Sin pausar',
 
   'calendar.hold.confirmTitle': '¿Pausar esta publicación?',
@@ -56,7 +57,8 @@ export const postingSetMessages = {
   'set.appliedOnce':
     'Un Conjunto se lee una sola vez, cuando lo aplicas. Editarlo después cambia lo que la próxima publicación toma como punto de partida. Los borradores y publicaciones programadas que ya creaste a partir de él se quedan exactamente como están.',
   'set.empty.title': 'Aún no hay Conjuntos',
-  'set.empty.body': 'Crea uno para dejar de reconstruir la misma lista de cuentas en cada publicación.',
+  'set.empty.body':
+    'Crea uno para dejar de reconstruir la misma lista de cuentas en cada publicación.',
   'set.create': 'Nuevo Conjunto',
   'set.edit': 'Editar Conjunto',
   'set.archive': 'Archivar Conjunto',
@@ -72,13 +74,15 @@ export const postingSetMessages = {
   'set.field.description': 'Descripción',
   'set.field.descriptionHint': 'Opcional. Para qué sirve este Conjunto.',
   'set.field.targets': 'Cuentas',
-  'set.field.targetsHint': 'Cada cuenta con la que empieza una publicación creada a partir de este Conjunto.',
+  'set.field.targetsHint':
+    'Cada cuenta con la que empieza una publicación creada a partir de este Conjunto.',
   'set.field.targetCount':
     '{count, plural, =0 {Sin cuentas} one {#cuenta} other {#cuentas} many {#cuentas}}',
   'set.field.signature': 'Firma',
   'set.field.signatureNone': 'Sin firma',
   'set.field.approval': 'Aprobación',
-  'set.field.approvalHint': 'La aprobación que necesita una publicación creada a partir de este Conjunto antes de poder publicarse.',
+  'set.field.approvalHint':
+    'La aprobación que necesita una publicación creada a partir de este Conjunto antes de poder publicarse.',
   'set.field.schedule': 'Cuándo publicar',
 
   'set.approval.none': 'No se necesita aprobación',
@@ -110,12 +114,14 @@ export const postingSetMessages = {
   'set.defaults.requireAltText': 'Exigir texto alternativo en cada imagen',
   'set.defaults.requireAltTextHint':
     'Una publicación creada a partir de este Conjunto no se puede programar para esta plataforma hasta que cada imagen tenga texto alternativo.',
-  'set.defaults.empty': 'Sin valores predeterminados por plataforma. Cada cuenta parte de la publicación principal.',
+  'set.defaults.empty':
+    'Sin valores predeterminados por plataforma. Cada cuenta parte de la publicación principal.',
 
   'set.error.nameTaken': 'Otro Conjunto en este proyecto ya usa ese nombre.',
   'set.error.archived': 'Este Conjunto está archivado. Restáuralo antes de editarlo.',
   'set.error.duplicateTarget': 'Esa cuenta ya está en este Conjunto.',
-  'set.error.duplicatePlatform': 'Este Conjunto ya tiene valores predeterminados para esa plataforma.',
+  'set.error.duplicatePlatform':
+    'Este Conjunto ya tiene valores predeterminados para esa plataforma.',
 
   /* --------------------------------------------------- remembered targets */
   'targetMemory.setting.title': 'Recordar cuentas entre publicaciones',
@@ -123,13 +129,15 @@ export const postingSetMessages = {
     'Cuando esto está activado, el compositor inicia cada nueva publicación con las cuentas que esa persona eligió la última vez en este proyecto. Está desactivado a menos que tú lo actives.',
   'targetMemory.setting.stored':
     'Solo se guarda la lista de cuentas, y solo para la persona que las eligió. No se guarda ningún texto, hora, ajuste de privacidad ni estado de aprobación, y nadie más en el proyecto puede ver tu lista.',
-  'targetMemory.setting.offNote': 'Mientras esto está desactivado, no se guarda absolutamente nada.',
+  'targetMemory.setting.offNote':
+    'Mientras esto está desactivado, no se guarda absolutamente nada.',
   'targetMemory.setting.turnOffWarning':
     'Desactivar esto elimina cada selección guardada en este proyecto, para todos.',
   'targetMemory.setting.enabled': 'Activado',
   'targetMemory.setting.disabled': 'Desactivado',
   'targetMemory.setting.saved': 'Configuración guardada.',
-  'targetMemory.setting.cleared': 'Configuración guardada. Se eliminaron las selecciones guardadas en este proyecto.',
+  'targetMemory.setting.cleared':
+    'Configuración guardada. Se eliminaron las selecciones guardadas en este proyecto.',
 
   'targetMemory.composer.restored':
     '{count, plural, one {Se inició con #cuenta de la última vez.} other {Se inició con #cuentas de la última vez.} many {Se inició con #cuentas de la última vez.}}',

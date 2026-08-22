@@ -15,7 +15,8 @@ export const postingSetMessages = {
   'calendar.hold.badgeBilling': 'Pozastaveno kvůli fakturaci',
   'calendar.hold.term': 'Pozastavení',
   'calendar.hold.byPerson': 'Pozastaveno vámi dne {date}.',
-  'calendar.hold.byBilling': 'Pozastaveno dne {date}, protože tento pracovní prostor ztratil plný přístup.',
+  'calendar.hold.byBilling':
+    'Pozastaveno dne {date}, protože tento pracovní prostor ztratil plný přístup.',
   'calendar.hold.none': 'Nepozastaveno',
 
   'calendar.hold.confirmTitle': 'Pozastavit tento příspěvek?',
@@ -56,12 +57,14 @@ export const postingSetMessages = {
   'set.appliedOnce':
     'Sada se čte pouze jednou, ve chvíli, kdy ji použijete. Její pozdější úprava mění, čím začíná další příspěvek. Koncepty a naplánované příspěvky, které jste z ní už vytvořili, zůstávají přesně tak, jak jsou.',
   'set.empty.title': 'Zatím žádné Sady',
-  'set.empty.body': 'Vytvořte jednu, abyste přestali znovu sestavovat stejný seznam účtů pro každý příspěvek.',
+  'set.empty.body':
+    'Vytvořte jednu, abyste přestali znovu sestavovat stejný seznam účtů pro každý příspěvek.',
   'set.create': 'Nová Sada',
   'set.edit': 'Upravit Sadu',
   'set.archive': 'Archivovat Sadu',
   'set.archived': 'Archivováno',
-  'set.archivedNote': 'Archivované Sady jsou skryté ve výběru. Příspěvky z nich vytvořené se nemění.',
+  'set.archivedNote':
+    'Archivované Sady jsou skryté ve výběru. Příspěvky z nich vytvořené se nemění.',
   'set.showArchived': 'Zobrazit archivované',
   'set.saved': 'Sada uložena.',
   'set.archivedToast': 'Sada archivována. Příspěvky z ní již vytvořené se nemění.',
@@ -110,7 +113,8 @@ export const postingSetMessages = {
   'set.defaults.requireAltText': 'Vyžadovat alternativní text u každého obrázku',
   'set.defaults.requireAltTextHint':
     'Příspěvek vytvořený z této Sady nelze naplánovat na tuto platformu, dokud každý obrázek nemá alternativní text.',
-  'set.defaults.empty': 'Žádné výchozí hodnoty podle platformy. Každý účet začíná od hlavního příspěvku.',
+  'set.defaults.empty':
+    'Žádné výchozí hodnoty podle platformy. Každý účet začíná od hlavního příspěvku.',
 
   'set.error.nameTaken': 'Jiná Sada v této značce už tento název používá.',
   'set.error.archived': 'Tato Sada je archivovaná. Před úpravou ji obnovte.',

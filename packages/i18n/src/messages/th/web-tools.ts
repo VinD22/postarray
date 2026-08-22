@@ -118,7 +118,8 @@ export const webToolsMessages = {
   'web.tools.preflight.field.duration.help': 'เว้นว่างเพื่อข้ามการตรวจสอบความยาว',
   'web.tools.preflight.field.width.label': 'ความกว้างของสื่อ เป็นพิกเซล',
   'web.tools.preflight.field.height.label': 'ความสูงของสื่อ เป็นพิกเซล',
-  'web.tools.preflight.field.dimensions.help': 'ไม่บังคับ ใช้เพียงเพื่อแสดงสัดส่วนภาพที่คุณจะเผยแพร่',
+  'web.tools.preflight.field.dimensions.help':
+    'ไม่บังคับ ใช้เพียงเพื่อแสดงสัดส่วนภาพที่คุณจะเผยแพร่',
   'web.tools.preflight.results.title': 'ผลลัพธ์แยกตามแพลตฟอร์ม',
   'web.tools.preflight.results.empty': 'เลือกอย่างน้อยหนึ่งแพลตฟอร์มเพื่อดูผลลัพธ์',
   'web.tools.preflight.results.summary':
@@ -146,7 +147,8 @@ export const webToolsMessages = {
   'web.tools.preflight.finding.durationUnder': 'สั้นกว่าขั้นต่ำ {limit} วินาที',
   'web.tools.preflight.finding.durationUnknown':
     'ยังไม่มีเพดานความยาวที่เผยแพร่ จึงยังไม่ได้ตรวจสอบความยาว',
-  'web.tools.preflight.finding.altText': 'ข้อความแสดงแทนรับได้สูงสุด {limit} ตัวอักษร ควรใช้ให้คุ้มค่า',
+  'web.tools.preflight.finding.altText':
+    'ข้อความแสดงแทนรับได้สูงสุด {limit} ตัวอักษร ควรใช้ให้คุ้มค่า',
   'web.tools.preflight.finding.ratio': 'คุณกำลังจะเผยแพร่ที่อัตราส่วนประมาณ {ratio} ต่อ 1',
   'web.tools.preflight.faq.counting.q': 'คุณนับตัวอักษรอย่างไร',
   'web.tools.preflight.faq.counting.a':
@@ -278,7 +280,8 @@ export const webToolsMessages = {
   'web.tools.engagementRate.field.followers.label': 'ผู้ติดตาม',
   'web.tools.engagementRate.field.followers.help': 'ขนาดบัญชีในขณะที่โพสต์นั้นถูกโพสต์',
   'web.tools.engagementRate.field.impressions.label': 'การแสดงผล',
-  'web.tools.engagementRate.field.impressions.help': 'จำนวนการเข้าชมทั้งหมด รวมถึงคนที่เห็นสองครั้ง',
+  'web.tools.engagementRate.field.impressions.help':
+    'จำนวนการเข้าชมทั้งหมด รวมถึงคนที่เห็นสองครั้ง',
   'web.tools.engagementRate.result.title': 'อัตราการมีส่วนร่วม สามแบบ',
   'web.tools.engagementRate.result.empty': 'ไม่พร้อมใช้งาน',
   'web.tools.engagementRate.result.note':

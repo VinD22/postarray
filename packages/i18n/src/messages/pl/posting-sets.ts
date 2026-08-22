@@ -61,7 +61,8 @@ export const postingSetMessages = {
   'set.edit': 'Edytuj Zestaw',
   'set.archive': 'Archiwizuj Zestaw',
   'set.archived': 'Zarchiwizowany',
-  'set.archivedNote': 'Zarchiwizowane Zestawy są ukryte w selektorze. Posty z nich utworzone pozostają bez zmian.',
+  'set.archivedNote':
+    'Zarchiwizowane Zestawy są ukryte w selektorze. Posty z nich utworzone pozostają bez zmian.',
   'set.showArchived': 'Pokaż zarchiwizowane',
   'set.saved': 'Zestaw zapisany.',
   'set.archivedToast': 'Zestaw zarchiwizowany. Posty już z niego utworzone pozostają bez zmian.',
@@ -110,7 +111,8 @@ export const postingSetMessages = {
   'set.defaults.requireAltText': 'Wymagaj tekstu alternatywnego dla każdego obrazu',
   'set.defaults.requireAltTextHint':
     'Post utworzony z tego Zestawu nie może zostać zaplanowany na tej platformie, dopóki każdy obraz nie ma tekstu alternatywnego.',
-  'set.defaults.empty': 'Brak wartości domyślnych dla platform. Każde konto zaczyna od postu głównego.',
+  'set.defaults.empty':
+    'Brak wartości domyślnych dla platform. Każde konto zaczyna od postu głównego.',
 
   'set.error.nameTaken': 'Inny Zestaw w tej marce już używa tej nazwy.',
   'set.error.archived': 'Ten Zestaw jest zarchiwizowany. Przywróć go przed edycją.',
@@ -129,7 +131,8 @@ export const postingSetMessages = {
   'targetMemory.setting.enabled': 'Włączone',
   'targetMemory.setting.disabled': 'Wyłączone',
   'targetMemory.setting.saved': 'Ustawienie zapisane.',
-  'targetMemory.setting.cleared': 'Ustawienie zapisane. Zapisane wybory w tej marce zostały usunięte.',
+  'targetMemory.setting.cleared':
+    'Ustawienie zapisane. Zapisane wybory w tej marce zostały usunięte.',
 
   'targetMemory.composer.restored':
     '{count, plural, one {Rozpoczęto z # kontem z ostatniego razu.} few {Rozpoczęto z # kontami z ostatniego razu.} many {Rozpoczęto z # kontami z ostatniego razu.} other {Rozpoczęto z # konta z ostatniego razu.}}',

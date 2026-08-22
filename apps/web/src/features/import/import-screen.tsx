@@ -81,7 +81,10 @@ export function ImportScreen(): ReactElement {
         </h2>
         <p className="text-body-sm text-text-secondary">{t.full('import.upload.help')}</p>
 
-        <Field label={t.full('import.upload.field')} description={t.full('import.upload.fieldHelp')}>
+        <Field
+          label={t.full('import.upload.field')}
+          description={t.full('import.upload.fieldHelp')}
+        >
           {(control) => (
             <Input
               id={control.id}
@@ -95,7 +98,10 @@ export function ImportScreen(): ReactElement {
           )}
         </Field>
 
-        <Field label={t.full('import.upload.paste')} description={t.full('import.upload.pasteHelp')}>
+        <Field
+          label={t.full('import.upload.paste')}
+          description={t.full('import.upload.pasteHelp')}
+        >
           {(control) => (
             <Textarea
               id={control.id ?? pasteId}
@@ -236,9 +242,7 @@ export function ImportScreen(): ReactElement {
                 {t.full('import.apply.confirmScheduled', { count: counts?.valid ?? 0 })}
               </Button>
             </div>
-            <p className="text-body-sm text-text-tertiary">
-              {t.full('import.apply.safeToRepeat')}
-            </p>
+            <p className="text-body-sm text-text-tertiary">{t.full('import.apply.safeToRepeat')}</p>
           </section>
 
           {report.job.appliedAt === null ? null : (

@@ -59,7 +59,9 @@ async function createProject(
   payload: Record<string, unknown>,
   secret: string,
 ): Promise<request.Response> {
-  const call = request(harness.server).post('/v1/projects').set('authorization', `Bearer ${secret}`);
+  const call = request(harness.server)
+    .post('/v1/projects')
+    .set('authorization', `Bearer ${secret}`);
   if (key !== undefined) {
     call.set('idempotency-key', key);
   }

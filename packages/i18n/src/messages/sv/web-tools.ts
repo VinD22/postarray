@@ -65,7 +65,8 @@ export const webToolsMessages = {
     'Vi levererar ännu ingen anslutning för denna plattform, så vi har ingen verifierad gräns att visa. Vi säger hellre inget än att gissa.',
   'web.tools.shared.copy': 'Kopiera',
   'web.tools.shared.copied': 'Kopierat',
-  'web.tools.shared.copyFailed': 'Din webbläsare blockerade kopieringen. Markera texten och kopiera den.',
+  'web.tools.shared.copyFailed':
+    'Din webbläsare blockerade kopieringen. Markera texten och kopiera den.',
   'web.tools.shared.faqTitle': 'Frågor',
   'web.tools.shared.baselineTitle': 'Vilket konto dessa siffror beskriver',
   'web.tools.shared.baselineBody':
@@ -113,7 +114,8 @@ export const webToolsMessages = {
   'web.tools.preflight.field.mediaKind.video': 'En video',
   'web.tools.preflight.field.mediaCount.label': 'Hur många bilder',
   'web.tools.preflight.field.byteSize.label': 'Filstorlek i megabyte',
-  'web.tools.preflight.field.byteSize.help': 'Den största enskilda filen. Lämna tomt för att hoppa över.',
+  'web.tools.preflight.field.byteSize.help':
+    'Den största enskilda filen. Lämna tomt för att hoppa över.',
   'web.tools.preflight.field.duration.label': 'Videolängd i sekunder',
   'web.tools.preflight.field.duration.help': 'Lämna tomt för att hoppa över längdkontrollen.',
   'web.tools.preflight.field.width.label': 'Mediabredd i pixlar',
@@ -202,7 +204,8 @@ export const webToolsMessages = {
   'web.tools.utm.faq.existing.a':
     'Nej. Befintliga parametrar bevaras i sin ursprungliga ordning, och endast en UTM-parameter du fyllde i läggs till eller ersätts. Ett fragment i slutet av URL:en förblir i slutet.',
   'web.tools.utm.faq.privacy.q': 'Skickas min URL någonstans?',
-  'web.tools.utm.faq.privacy.a': 'Nej. URL:en sätts samman i din webbläsare och lämnar aldrig denna sida.',
+  'web.tools.utm.faq.privacy.a':
+    'Nej. URL:en sätts samman i din webbläsare och lämnar aldrig denna sida.',
 
   /* ---------------------------------------------------------------------- */
   /* YouTube title length checker                                            */

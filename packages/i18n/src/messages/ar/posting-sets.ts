@@ -14,8 +14,7 @@ export const postingSetMessages = {
   'calendar.hold.confirmScope':
     'الإيقاف المؤقت يوقف ما لم يحدث بعد. أي شيء نُشر بالفعل على منصة يبقى منشورًا، والإيقاف المؤقت لا يحذفه أو يعدّله.',
   'calendar.hold.confirmNoteLabel': 'لماذا توقف هذا مؤقتًا؟ (اختياري)',
-  'calendar.hold.confirmNoteHint':
-    'يُحفظ في سجل التدقيق لفريقك. لا يُرسل إلى أي منصة.',
+  'calendar.hold.confirmNoteHint': 'يُحفظ في سجل التدقيق لفريقك. لا يُرسل إلى أي منصة.',
   'calendar.hold.confirm': 'إيقاف هذا المنشور مؤقتًا',
   'calendar.hold.cancel': 'تركه مجدولًا',
 
@@ -87,8 +86,7 @@ export const postingSetMessages = {
   'set.slot.rulesLink': 'قواعد قائمة الانتظار',
 
   'set.defaults.title': 'الإعدادات الافتراضية لكل منصة',
-  'set.defaults.body':
-    'قيم أولية تُنسخ في كل منشور جديد. يمكنك تغيير أي منها لاحقًا في المؤلف.',
+  'set.defaults.body': 'قيم أولية تُنسخ في كل منشور جديد. يمكنك تغيير أي منها لاحقًا في المؤلف.',
   'set.defaults.add': 'إضافة منصة',
   'set.defaults.remove': 'إزالة إعدادات {platform}',
   'set.defaults.privacy': 'الخصوصية',
@@ -111,8 +109,7 @@ export const postingSetMessages = {
   'targetMemory.setting.stored':
     'تُحفظ قائمة الحسابات فقط، وفقط للشخص الذي اختارها. لا يُحفظ أي وصف أو وقت أو إعداد خصوصية أو حالة موافقة، ولا يمكن لأي شخص آخر في المشروع رؤية قائمتك.',
   'targetMemory.setting.offNote': 'أثناء تعطيل هذا، لا يُحفظ شيء إطلاقًا.',
-  'targetMemory.setting.turnOffWarning':
-    'تعطيل هذا يحذف كل اختيار محفوظ في هذا المشروع، للجميع.',
+  'targetMemory.setting.turnOffWarning': 'تعطيل هذا يحذف كل اختيار محفوظ في هذا المشروع، للجميع.',
   'targetMemory.setting.enabled': 'مفعّل',
   'targetMemory.setting.disabled': 'معطّل',
   'targetMemory.setting.saved': 'تم حفظ الإعداد.',

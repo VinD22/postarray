@@ -103,7 +103,11 @@ export const oneIdeaAdaptedPerPlatform: BlogArticle = {
           body: 'Deciding that Tuesday is a carousel day and then discovering the destination has no carousel is a planning failure that no amount of rewriting fixes. Establish the accepted shapes per destination once, write them down, and plan inside them.',
         },
 
-        { kind: 'heading', id: 'review', text: 'Some destinations gate you before your first post' },
+        {
+          kind: 'heading',
+          id: 'review',
+          text: 'Some destinations gate you before your first post',
+        },
         {
           kind: 'paragraph',
           text: 'A second class of difference is procedural rather than structural. Several platforms require an approval step before an application may publish on a real account, and the gate is often about what visibility you are allowed to set rather than whether you can call the endpoint.',
@@ -152,9 +156,15 @@ export const oneIdeaAdaptedPerPlatform: BlogArticle = {
           caption: 'A default split',
           columns: ['Hold constant', 'Vary per destination'],
           rows: [
-            ['The claim and the evidence for it', 'The opening line and how much context it assumes'],
+            [
+              'The claim and the evidence for it',
+              'The opening line and how much context it assumes',
+            ],
             ['Names, numbers and dates', 'Length, and whether the argument is one post or a chain'],
-            ['The action you are asking for', 'Where the link sits, and whether there is one at all'],
+            [
+              'The action you are asking for',
+              'Where the link sits, and whether there is one at all',
+            ],
             ['Required disclosures', 'Media format and how the media is described'],
           ],
         },

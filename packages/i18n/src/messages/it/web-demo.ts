@@ -37,7 +37,7 @@ export const webDemoMessages = {
 
   'web.demo.frame.badge': 'Dimostrazione',
   'web.demo.frame.sample':
-    'Una dimostrazione costruita dalla vera interfaccia, riempita con contenuti di esempio per un\'azienda che non esiste. Non un account reale. Niente qui invia nulla.',
+    "Una dimostrazione costruita dalla vera interfaccia, riempita con contenuti di esempio per un'azienda che non esiste. Non un account reale. Niente qui invia nulla.",
 
   'web.demo.control.pause': 'Metti in pausa la dimostrazione',
   'web.demo.control.play': 'Avvia la dimostrazione',
@@ -48,7 +48,7 @@ export const webDemoMessages = {
   /* ---------------------------------------------------------------------- */
 
   'web.demo.hero.caption':
-    "Una bozza diventa una versione per piattaforma, riceve un orario, e atterra sulla settimana. Contenuti di esempio, non un account reale.",
+    'Una bozza diventa una versione per piattaforma, riceve un orario, e atterra sulla settimana. Contenuti di esempio, non un account reale.',
   'web.demo.hero.more': "Percorri l'intero flusso di lavoro",
 
   /* ---------------------------------------------------------------------- */
@@ -60,14 +60,14 @@ export const webDemoMessages = {
     'Nove passaggi, da un workspace vuoto al registro di cosa è successo. Ognuno mostra la superficie che staresti realmente guardando, con contenuti di esempio dentro. Niente in questa pagina si muove da solo, quindi puoi leggerla al tuo ritmo.',
   'web.demo.notice.title': 'Questa è una dimostrazione, non un account reale',
   'web.demo.notice.body':
-    'Ogni pannello qui è l\'interfaccia del prodotto con contenuti di esempio dentro. Nessun connettore ha superato la verifica del provider, quindi oggi niente viene pubblicato su nessuna piattaforma tramite questo prodotto. Dove il flusso di lavoro si ferma, la pagina lo dice invece di disegnare il resto.',
+    "Ogni pannello qui è l'interfaccia del prodotto con contenuti di esempio dentro. Nessun connettore ha superato la verifica del provider, quindi oggi niente viene pubblicato su nessuna piattaforma tramite questo prodotto. Dove il flusso di lavoro si ferma, la pagina lo dice invece di disegnare il resto.",
   'web.demo.contents.title': 'I nove passaggi',
   'web.demo.stepLabel': 'Passaggio {position} di {total}',
   'web.demo.next': 'Avanti: {step}',
   'web.demo.closing.pricing': 'Guarda quanto costa',
   'web.demo.closing.title': 'Questo è tutto il ciclo',
   'web.demo.closing.body':
-    'Niente qui sopra è un abbozzo di un prodotto che speriamo di costruire. È l\'interfaccia così com\'è, con la metà relativa alla pubblicazione onestamente segnalata come non finita.',
+    "Niente qui sopra è un abbozzo di un prodotto che speriamo di costruire. È l'interfaccia così com'è, con la metà relativa alla pubblicazione onestamente segnalata come non finita.",
 
   /* ---------------------------------------------------------------------- */
   /* The six steps                                                           */
@@ -75,7 +75,7 @@ export const webDemoMessages = {
 
   'web.demo.step.project.title': 'Crea un marchio',
   'web.demo.step.project.body':
-    "Un marchio contiene account, bozze, approvazioni e un fuso orario. Ogni interrogazione nel prodotto è limitata a uno solo, nel servizio applicativo e di nuovo nel database, così un cliente non può vedere un altro cliente per errore.",
+    'Un marchio contiene account, bozze, approvazioni e un fuso orario. Ogni interrogazione nel prodotto è limitata a uno solo, nel servizio applicativo e di nuovo nel database, così un cliente non può vedere un altro cliente per errore.',
 
   'web.demo.step.connect.title': 'Collega un account',
   'web.demo.step.connect.body':
@@ -87,7 +87,7 @@ export const webDemoMessages = {
 
   'web.demo.step.variants.title': 'Vedi cosa riceve davvero ciascun account',
   'web.demo.step.variants.body':
-    "Una bozza diventa una versione per account, ognuna scritta per la piattaforma a cui va: una riga più breve per X, la nota di rilascio completa per LinkedIn, una didascalia e testo alternativo per Instagram. Puoi modificarne una qualsiasi senza toccare le altre, e ogni versione porta il controllo che le si applica.",
+    'Una bozza diventa una versione per account, ognuna scritta per la piattaforma a cui va: una riga più breve per X, la nota di rilascio completa per LinkedIn, una didascalia e testo alternativo per Instagram. Puoi modificarne una qualsiasi senza toccare le altre, e ogni versione porta il controllo che le si applica.',
 
   'web.demo.step.schedule.title': 'Dagli un orario, oppure affidalo alla coda',
   'web.demo.step.schedule.body':
@@ -95,7 +95,7 @@ export const webDemoMessages = {
 
   'web.demo.step.calendar.title': 'Guarda il calendario',
   'web.demo.step.calendar.body':
-    'La settimana mostra la piattaforma, l\'account, lo stato e l\'orario per ogni post. Spostarne uno è un pulsante oltre che un trascinamento, quindi il calendario è completamente utilizzabile da tastiera.',
+    "La settimana mostra la piattaforma, l'account, lo stato e l'orario per ogni post. Spostarne uno è un pulsante oltre che un trascinamento, quindi il calendario è completamente utilizzabile da tastiera.",
 
   'web.demo.step.receipt.title': 'Leggi la ricevuta dopo',
   'web.demo.step.receipt.body':
@@ -122,9 +122,10 @@ export const webDemoMessages = {
 
   'web.demo.schedule.label': 'Programmato',
   'web.demo.schedule.value': '{when} in {zone}',
-  'web.demo.schedule.approval': "È richiesta un'approvazione prima che qualcosa possa essere inviato.",
+  'web.demo.schedule.approval':
+    "È richiesta un'approvazione prima che qualcosa possa essere inviato.",
   'web.demo.schedule.queue':
-    'La coda è l\'altra strada: sceglie il prossimo spazio consentito dalle tue regole, in questo fuso orario.',
+    "La coda è l'altra strada: sceglie il prossimo spazio consentito dalle tue regole, in questo fuso orario.",
 
   'web.demo.week.label': 'La settimana',
   'web.demo.week.caption': 'Gli stessi tre post sul calendario, letti nel fuso orario del marchio.',
@@ -148,14 +149,14 @@ export const webDemoMessages = {
   'web.demo.sample.project': 'Northbound Tools (esempio)',
   'web.demo.sample.actor': 'Ada, collega di esempio',
   'web.demo.sample.approver': 'Ravi, revisore di esempio',
-  'web.demo.sample.policy': 'Un\'approvazione prima dell\'invio',
+  'web.demo.sample.policy': "Un'approvazione prima dell'invio",
   'web.demo.sample.master':
     'Northbound 2.4 è uscito oggi. Le importazioni sono più veloci, la ricerca ha una scorciatoia da tastiera, ed è risolto il bug di esportazione segnalato da due di voi.',
 
   'web.demo.sample.x.account': 'X, @northbound',
   'web.demo.sample.x.body':
     'Northbound 2.4 è uscito. Importazioni più veloci, ricerca da tastiera, e quel bug di esportazione è risolto.',
-  'web.demo.sample.x.check': "Conteggio dei caratteri e ordine del thread",
+  'web.demo.sample.x.check': 'Conteggio dei caratteri e ordine del thread',
 
   'web.demo.sample.linkedin.account': 'LinkedIn, Northbound Tools',
   'web.demo.sample.linkedin.body':
@@ -201,7 +202,7 @@ export const webDemoMessages = {
   'web.demo.validate.label': 'Controlli prima della programmazione',
   'web.demo.validate.check.length': 'Limite di caratteri, per account',
   'web.demo.validate.check.lengthDetail':
-    'Ogni versione viene misurata rispetto al limite che la piattaforma dà a quell\'account.',
+    "Ogni versione viene misurata rispetto al limite che la piattaforma dà a quell'account.",
   'web.demo.validate.check.altText': 'Testo alternativo su ogni immagine',
   'web.demo.validate.check.altTextDetail':
     "Un'immagine senza descrizione, o senza essere contrassegnata come decorativa, blocca la programmazione.",
@@ -245,7 +246,8 @@ export const webDemoMessages = {
   'web.demo.digest.line.earliest': 'Martedì mattina è stato il tuo spazio più presto.',
   'web.demo.digest.line.approval': 'Ogni versione è stata approvata prima di essere messa in coda.',
   'web.demo.digest.line.alt': 'Ogni immagine portava testo alternativo scritto da una persona.',
-  'web.demo.digest.footer': 'Le analisi live appariranno qui man mano che i tuoi post vengono pubblicati.',
+  'web.demo.digest.footer':
+    'Le analisi live appariranno qui man mano che i tuoi post vengono pubblicati.',
 
   /* ---------------------------------------------------------------------- */
   /* The three added walkthrough steps                                       */
@@ -261,5 +263,5 @@ export const webDemoMessages = {
 
   'web.demo.step.digest.title': 'Leggi il riepilogo settimanale',
   'web.demo.step.digest.body':
-    "Il riepilogo descrive cosa ha fatto il prodotto in frasi: quante versioni sono uscite da una bozza, quale spazio è stato il più presto, cosa è stato approvato. Non porta cifre di coinvolgimento, perché le analisi arrivano dalle piattaforme dopo che un post viene pubblicato e niente viene ancora pubblicato.",
+    'Il riepilogo descrive cosa ha fatto il prodotto in frasi: quante versioni sono uscite da una bozza, quale spazio è stato il più presto, cosa è stato approvato. Non porta cifre di coinvolgimento, perché le analisi arrivano dalle piattaforme dopo che un post viene pubblicato e niente viene ancora pubblicato.',
 } as const;

@@ -80,7 +80,8 @@ export const webSettingsMessages = {
   'settings.ui.members.column.lastActive': 'Hoạt động lần cuối',
   'settings.ui.members.column.actions': 'hành động',
   'settings.ui.members.scopeAll': 'Tất cả thương hiệu và tài khoản',
-  'settings.ui.members.scopeLimited': '{count, plural, one {# project} other {# projects}}: {names}',
+  'settings.ui.members.scopeLimited':
+    '{count, plural, one {# project} other {# projects}}: {names}',
   'settings.ui.members.approvals.canApprove': 'Có thể phê duyệt',
   'settings.ui.members.approvals.cannotApprove': 'Không thể phê duyệt',
   'settings.ui.members.approvals.canApproveOwnProjects':
@@ -195,7 +196,8 @@ export const webSettingsMessages = {
     'Các kênh đã kết nối của nó sẽ ngừng xuất hiện trong các luồng làm việc của dự án đang hoạt động.',
   'settings.ui.projects.archiveHistory':
     'Bản nháp, bài đăng đã xuất bản, biên nhận và lịch sử kiểm tra vẫn được giữ lại.',
-  'settings.ui.projects.archiveLastDisabled': 'Giữ ít nhất một dự án hoạt động trong không gian làm việc.',
+  'settings.ui.projects.archiveLastDisabled':
+    'Giữ ít nhất một dự án hoạt động trong không gian làm việc.',
   'settings.ui.projects.archiveConnectedDisabled':
     'Hãy ngắt kết nối các kênh của dự án này trước khi lưu trữ nó.',
   'settings.ui.localization.description':

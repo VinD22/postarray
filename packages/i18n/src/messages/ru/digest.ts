@@ -5,7 +5,8 @@
  */
 export const digestMessages = {
   'email.digest.subject': 'Ваша неделя в {workspaceName}',
-  'email.digest.intro': 'Вот что мы можем видеть для {workspaceName} с {windowStart} по {windowEnd}.',
+  'email.digest.intro':
+    'Вот что мы можем видеть для {workspaceName} с {windowStart} по {windowEnd}.',
   'email.digest.noData':
     'Мы ничего не смогли измерить на этой неделе. Если число отсутствует, оно отсутствует потому, что мы не смогли его прочитать, а не потому, что оно было равно нулю.',
   'email.digest.footer':

@@ -50,8 +50,7 @@ describe('sitemap', () => {
     const blogUrls = new Set(
       BLOG_ARTICLES.map(
         (article) =>
-          articleAlternates(blogArticlePath(article.slug), 'en', articleLocales(article))
-            .canonical,
+          articleAlternates(blogArticlePath(article.slug), 'en', articleLocales(article)).canonical,
       ),
     );
 

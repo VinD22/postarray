@@ -221,7 +221,8 @@ export const webSettingsMessages = {
     'Jeho propojené kanály přestanou zobrazovat se v tocích aktivních projektů.',
   'settings.ui.projects.archiveHistory':
     'Koncepty, publikované příspěvky, potvrzenky a auditní historie se zachovávají.',
-  'settings.ui.projects.archiveLastDisabled': 'Zachovejte v pracovním prostoru alespoň jeden aktivní projekt.',
+  'settings.ui.projects.archiveLastDisabled':
+    'Zachovejte v pracovním prostoru alespoň jeden aktivní projekt.',
   'settings.ui.projects.archiveConnectedDisabled': 'Před archivací odpojte kanály tohoto projektu.',
 
   /* ------------------------------------------------------------ localization */

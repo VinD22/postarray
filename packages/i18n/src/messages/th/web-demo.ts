@@ -199,7 +199,8 @@ export const webDemoMessages = {
 
   'web.demo.validate.label': 'การตรวจสอบก่อนกำหนดเวลา',
   'web.demo.validate.check.length': 'ขีดจำกัดตัวอักษร แยกตามบัญชี',
-  'web.demo.validate.check.lengthDetail': 'แต่ละเวอร์ชันถูกวัดเทียบกับขีดจำกัดที่แพลตฟอร์มให้กับบัญชีนั้น',
+  'web.demo.validate.check.lengthDetail':
+    'แต่ละเวอร์ชันถูกวัดเทียบกับขีดจำกัดที่แพลตฟอร์มให้กับบัญชีนั้น',
   'web.demo.validate.check.altText': 'ข้อความแสดงแทนทุกภาพ',
   'web.demo.validate.check.altTextDetail':
     'ภาพที่ไม่มีคำอธิบาย หรือไม่ได้ทำเครื่องหมายว่าเป็นการตกแต่ง จะหยุดการกำหนดเวลา',

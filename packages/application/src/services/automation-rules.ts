@@ -419,57 +419,63 @@ export function createAutomationRuleService(deps: ServiceDeps): AutomationRuleSe
     },
 
     async create(ctx: ActorContext, input: AutomationRuleInput): Promise<AutomationRuleView> {
-      return authorized(deps, ctx, 'rule.write', { projectId: input.projectId }, async (db, actor) => {
-        if (actor.userId === null) {
-          throw invalid('errors.rule_requires_user', {});
-        }
-        assertThresholdGuards(input);
-        assertPreauthorized(input);
-        for (const connectionId of input.preauthorizedConnectionIds ?? []) {
-          guard(actor, 'post.schedule', { connectionId, projectId: input.projectId });
-        }
+      return authorized(
+        deps,
+        ctx,
+        'rule.write',
+        { projectId: input.projectId },
+        async (db, actor) => {
+          if (actor.userId === null) {
+            throw invalid('errors.rule_requires_user', {});
+          }
+          assertThresholdGuards(input);
+          assertPreauthorized(input);
+          for (const connectionId of input.preauthorizedConnectionIds ?? []) {
+            guard(actor, 'post.schedule', { connectionId, projectId: input.projectId });
+          }
 
-        const created = await db.automationRule.create({
-          data: {
-            workspaceId: actor.workspace.id,
-            projectId: input.projectId,
-            name: input.name,
-            state: 'draft',
-            trigger: toJson({ kind: input.trigger.kind, config: input.trigger.config ?? {} }),
-            conditions: toJson(
-              (input.conditions ?? []).map((condition) => ({
-                kind: condition.kind,
-                config: condition.config ?? {},
-              })),
-            ),
-            actions: toJson(
-              input.actions.map((action) => ({
-                kind: action.kind,
-                config: action.config ?? {},
-              })),
-            ),
-            delaySeconds: input.delaySeconds ?? 0,
-            endCondition: toJson(input.endCondition ?? { kind: 'manual' }),
-            requiresApproval: input.requiresApproval ?? true,
-            preauthorizedConnectionIds: [...(input.preauthorizedConnectionIds ?? [])],
-            maxExecutionsPerSource: input.maxExecutionsPerSource ?? null,
-            maxExecutions: input.endCondition?.kind === 'count' ? input.endCondition.runs : null,
-            cooldownSeconds: input.cooldownSeconds ?? null,
-            measurementWindowSeconds: input.measurementWindowSeconds ?? null,
-            createdByUserId: actor.userId,
-          },
-          select: RULE_SELECT,
-        });
+          const created = await db.automationRule.create({
+            data: {
+              workspaceId: actor.workspace.id,
+              projectId: input.projectId,
+              name: input.name,
+              state: 'draft',
+              trigger: toJson({ kind: input.trigger.kind, config: input.trigger.config ?? {} }),
+              conditions: toJson(
+                (input.conditions ?? []).map((condition) => ({
+                  kind: condition.kind,
+                  config: condition.config ?? {},
+                })),
+              ),
+              actions: toJson(
+                input.actions.map((action) => ({
+                  kind: action.kind,
+                  config: action.config ?? {},
+                })),
+              ),
+              delaySeconds: input.delaySeconds ?? 0,
+              endCondition: toJson(input.endCondition ?? { kind: 'manual' }),
+              requiresApproval: input.requiresApproval ?? true,
+              preauthorizedConnectionIds: [...(input.preauthorizedConnectionIds ?? [])],
+              maxExecutionsPerSource: input.maxExecutionsPerSource ?? null,
+              maxExecutions: input.endCondition?.kind === 'count' ? input.endCondition.runs : null,
+              cooldownSeconds: input.cooldownSeconds ?? null,
+              measurementWindowSeconds: input.measurementWindowSeconds ?? null,
+              createdByUserId: actor.userId,
+            },
+            select: RULE_SELECT,
+          });
 
-        await recordAudit(db, actor, {
-          action: 'automation_rule.paused',
-          targetType: 'automation_rule',
-          targetId: created.id,
-          after: { state: 'draft', actions: input.actions.map((action) => action.kind) },
-        });
+          await recordAudit(db, actor, {
+            action: 'automation_rule.paused',
+            targetType: 'automation_rule',
+            targetId: created.id,
+            after: { state: 'draft', actions: input.actions.map((action) => action.kind) },
+          });
 
-        return toView(created);
-      });
+          return toView(created);
+        },
+      );
     },
 
     async update(

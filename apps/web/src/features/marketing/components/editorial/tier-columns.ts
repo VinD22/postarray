@@ -180,9 +180,7 @@ export function tierColumns({
       // price and its checklist and says so plainly, which is a smaller claim
       // than a button that cannot charge.
       ...(anchored && buyable.has(tier.key) ? { cta: { href: ctaHref, label: ctaLabel } } : {}),
-      ...(buyable.has(tier.key)
-        ? {}
-        : { unavailableNote: t.t('web.pricing.tierGrid.notOpenYet') }),
+      ...(buyable.has(tier.key) ? {} : { unavailableNote: t.t('web.pricing.tierGrid.notOpenYet') }),
     };
   });
 }

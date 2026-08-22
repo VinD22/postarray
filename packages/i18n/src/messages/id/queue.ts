@@ -28,13 +28,15 @@ export const queueMessages = {
     'Kosongkan untuk tanpa batas harian. Nol berarti aturan ini tidak mengusulkan apa pun.',
   'queue.field.maximumPerDayUnlimited': 'Tanpa batas harian',
   'queue.field.priority': 'Prioritas',
-  'queue.field.priorityHelp': 'Aturan prioritas tertinggi yang dapat menawarkan slot adalah yang digunakan.',
+  'queue.field.priorityHelp':
+    'Aturan prioritas tertinggi yang dapat menawarkan slot adalah yang digunakan.',
   'queue.field.enabled': 'Gunakan aturan ini',
 
   'queue.windows.heading': 'Jendela mingguan',
   'queue.windows.help':
     'Pilih jam lokal proyek ini boleh memposting. Gunakan kolom hari dan waktu, atau tombol pada grid.',
-  'queue.windows.empty': 'Belum ada jendela. Aturan tanpa jendela tidak pernah dapat menawarkan slot.',
+  'queue.windows.empty':
+    'Belum ada jendela. Aturan tanpa jendela tidak pernah dapat menawarkan slot.',
   'queue.windows.add': 'Tambah jendela',
   'queue.windows.remove': 'Hapus jendela',
   'queue.windows.entry': '{weekday}, {start} sampai {end}',
@@ -53,7 +55,8 @@ export const queueMessages = {
   'queue.weekday.7': 'Minggu',
 
   'queue.blackouts.heading': 'Tanggal larangan',
-  'queue.blackouts.help': 'Tanggal proyek ini tidak akan memposting, dibaca dalam zona waktu aturan.',
+  'queue.blackouts.help':
+    'Tanggal proyek ini tidak akan memposting, dibaca dalam zona waktu aturan.',
   'queue.blackouts.empty': 'Tidak ada tanggal larangan.',
   'queue.blackouts.add': 'Tambah larangan',
   'queue.blackouts.remove': 'Hapus larangan',
@@ -80,7 +83,8 @@ export const queueMessages = {
 
   'queue.reason.noRulesConfigured':
     'Proyek ini tidak memiliki aturan antrean yang dikonfigurasi, jadi tidak ada jendela yang berlaku.',
-  'queue.reason.fallbackFirstFreeHour': 'Jam kosong pertama setelah sekarang digunakan sebagai gantinya.',
+  'queue.reason.fallbackFirstFreeHour':
+    'Jam kosong pertama setelah sekarang digunakan sebagai gantinya.',
   'queue.reason.matchedRule': 'Aturan {name} memilih waktu ini, di {zone}.',
   'queue.reason.matchedWindow': 'Ini jatuh dalam jendela {start} sampai {end} di {zone}.',
   'queue.reason.minimumGap': 'Setidaknya {minutes} menit dari setiap postingan lain.',
@@ -93,7 +97,8 @@ export const queueMessages = {
     'Waktu pertama dalam jendela tidak ada pada tanggal itu di {zone}, jadi waktu berikutnya yang ada digunakan.',
   'queue.reason.dstAmbiguousFirst':
     'Waktu lokal itu terjadi dua kali di {zone} pada tanggal itu. Kejadian pertama digunakan.',
-  'queue.reason.priorityChosen': 'Aturan ini memiliki prioritas {priority}, tertinggi yang dapat menawarkan.',
+  'queue.reason.priorityChosen':
+    'Aturan ini memiliki prioritas {priority}, tertinggi yang dapat menawarkan.',
   'queue.reason.connectionScoped': 'Aturan ini mencakup {count, plural, other {# akun}}.',
   'queue.reason.horizonExhausted': 'Tidak ada jendela kosong dalam {days} hari.',
 } as const;

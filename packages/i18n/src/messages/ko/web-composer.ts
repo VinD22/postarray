@@ -313,7 +313,8 @@ export const webComposerMessages = {
   'mediaLib.import.urlPlaceholder': 'https://cdn.example.com/launch-video.mp4',
   'mediaLib.import.importing': '미디어 가져오는 중',
   'mediaLib.import.succeeded': '파일이 라이브러리에 있습니다',
-  'mediaLib.import.scanPending': 'Relay가 출처를 기록했습니다. 안전 검사가 끝날 때까지 게시가 대기합니다.',
+  'mediaLib.import.scanPending':
+    'Relay가 출처를 기록했습니다. 안전 검사가 끝날 때까지 게시가 대기합니다.',
   'mediaLib.import.failed': '파일을 가져올 수 없습니다',
   'mediaLib.import.failedHelp':
     '링크가 공개되어 있고 지원되는 미디어 파일을 직접 가리키는지 확인한 후 다시 시도하세요.',
@@ -339,7 +340,8 @@ export const webComposerMessages = {
   'mediaLib.processing.pendingBody':
     '파일은 30일 동안 저장되지만, 안전 검사가 활성화될 때까지 게시된 게시물에 첨부할 수 없습니다.',
   'mediaLib.processing.blockedTitle': '이 파일은 게시할 수 없습니다',
-  'mediaLib.processing.blockedBody': '파일이 처리 또는 안전 검사를 통과하지 못했습니다. 다른 파일을 업로드하세요.',
+  'mediaLib.processing.blockedBody':
+    '파일이 처리 또는 안전 검사를 통과하지 못했습니다. 다른 파일을 업로드하세요.',
   'mediaLib.alt.heading': '대체 텍스트',
   'mediaLib.alt.help':
     '이미지를 볼 수 없는 사람을 위해 이미지에서 중요한 것이 무엇인지 설명해 보세요. 일반적으로 한두 문장이면 충분합니다.',

@@ -28,7 +28,8 @@ export const importMessages = {
   'import.upload.field': 'CSV-bestand',
   'import.upload.fieldHelp': 'Selecteer een bestand, of plak de rijen in het vak hieronder.',
   'import.upload.paste': 'Of plak CSV-tekst',
-  'import.upload.pasteHelp': 'Neem de kopregel op. Alles wordt gecontroleerd voordat er iets wordt gemaakt.',
+  'import.upload.pasteHelp':
+    'Neem de kopregel op. Alles wordt gecontroleerd voordat er iets wordt gemaakt.',
   'import.upload.project': 'Merk',
   'import.upload.projectHelp': 'Elke rij in één bestand hoort bij dit merk.',
   'import.upload.submit': 'Controleer dit bestand',
@@ -36,7 +37,8 @@ export const importMessages = {
   'import.upload.allowPast': 'Sta tijden toe die al zijn verstreken',
   'import.upload.allowPastHelp':
     'Standaard uit. Een rij met een datum in het verleden wordt gerapporteerd zodat je het zelf kunt herstellen, in plaats van dat het voor je wordt verplaatst.',
-  'import.upload.tooLarge': 'Dat bestand is groter dan {limit} tekens. Splits het en probeer het opnieuw.',
+  'import.upload.tooLarge':
+    'Dat bestand is groter dan {limit} tekens. Splits het en probeer het opnieuw.',
   'import.upload.duplicate':
     'Dit is hetzelfde bestand dat je eerder hebt geüpload, dus je bekijkt die import in plaats van een tweede kopie ervan.',
 
@@ -50,7 +52,8 @@ export const importMessages = {
     "Ofwel set: gevolgd door een doelset-id, ofwel account-id's gescheiden door een verticale streep.",
   'import.column.caption': 'De berichttekst.',
   'import.column.scheduled_local_time': 'Lokale datum en tijd, geschreven als 2026-09-01T10:00.',
-  'import.column.time_zone': 'De IANA-zone waarin die lokale tijd wordt gelezen, bijvoorbeeld Europe/Berlin.',
+  'import.column.time_zone':
+    'De IANA-zone waarin die lokale tijd wordt gelezen, bijvoorbeeld Europe/Berlin.',
   'import.column.media':
     'Een media-id, sha256: gevolgd door de checksum van media die je al hebt, of een https-adres waar de server het kan ophalen.',
   'import.column.title': 'Een titel, waar de bestemming er een gebruikt.',
@@ -119,7 +122,8 @@ export const importMessages = {
 
   'import.results.heading': 'Resultaten',
   'import.results.applied': '{count, plural, one {# concept gemaakt} other {# concepten gemaakt}}',
-  'import.results.skipped': '{count, plural, one {# rij was al gedaan} other {# rijen waren al gedaan}}',
+  'import.results.skipped':
+    '{count, plural, one {# rij was al gedaan} other {# rijen waren al gedaan}}',
   'import.results.failed': '{count, plural, one {# rij mislukt} other {# rijen mislukt}}',
   'import.results.retry': 'Pas de overige rijen opnieuw toe',
   'import.results.openDrafts': 'Open de concepten',
@@ -140,15 +144,18 @@ export const importMessages = {
   'import.error.required': 'Deze cel mag niet leeg zijn.',
   'import.error.invalidCell': 'Deze cel is niet in een vorm die we kunnen lezen.',
   'import.error.rowShape': 'Deze regel heeft {actual} cellen maar de kop heeft er {expected}.',
-  'import.error.invalidLocalTime': 'De tijd {value} is geen lokale datum en tijd zoals 2026-09-01T10:00.',
+  'import.error.invalidLocalTime':
+    'De tijd {value} is geen lokale datum en tijd zoals 2026-09-01T10:00.',
   'import.error.invalidTimeZone': 'De zone {value} is geen IANA-tijdzonenaam.',
-  'import.error.nonexistentLocalTime': 'De tijd {value} bestaat niet in {zone}. De klok springt eroverheen.',
+  'import.error.nonexistentLocalTime':
+    'De tijd {value} bestaat niet in {zone}. De klok springt eroverheen.',
   'import.error.ambiguousLocalTime':
     'De tijd {value} komt die dag twee keer voor in {zone}. Kies een andere tijd.',
   'import.error.scheduleInPast': 'De tijd {value} in {zone} is al verstreken.',
   'import.error.invalidTargets':
     "De waarde {value} is geen opgeslagen doelset of lijst van account-id's.",
-  'import.error.invalidMedia': 'De waarde {value} is geen media-id, sha256-checksum of https-adres.',
+  'import.error.invalidMedia':
+    'De waarde {value} is geen media-id, sha256-checksum of https-adres.',
   'import.error.mediaNotFound': 'Geen media in deze werkruimte komt overeen met {value}.',
   'import.error.mediaImportStarted':
     'De media op {value} wordt opgehaald. Pas dit bestand opnieuw toe zodra het in de bibliotheek staat.',

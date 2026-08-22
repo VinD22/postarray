@@ -75,7 +75,8 @@ export const mediaMessages = {
     'Relay nie generuje obrazów ani wideo. Ten edytor jedynie przycina, obraca, zmienia rozmiar, konwertuje i kompresuje to, co przesłałeś.',
 
   // ==================================================== refusals ====
-  'error.media_derivative_no_operations.message': 'Wybierz co najmniej jedną zmianę przed zapisaniem wersji.',
+  'error.media_derivative_no_operations.message':
+    'Wybierz co najmniej jedną zmianę przed zapisaniem wersji.',
   'error.media_derivative_duplicate_operation.message':
     'Każdy rodzaj zmiany może wystąpić tylko raz. Usuń drugi {operation}.',
   'error.media_derivative_crop_out_of_bounds.message':

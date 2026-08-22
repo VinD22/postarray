@@ -307,7 +307,8 @@ export const webComposerMessages = {
   'mediaLib.retention.title': '儲存的檔案會在貼文建立後保留 30 天',
   'mediaLib.retention.body':
     '檔案附加到貼文後，我們會在該貼文建立 30 天後，將其從 Relay 儲存空間中永久刪除。尚未附加的檔案則以上傳日期作為清除的備援依據。貼文文字、發布收據與稽核紀錄會保留更長的時間。已在社群平台上發布的貼文，不會因儲存檔案到期而被移除。',
-  'mediaLib.retention.limits': '圖片、音訊與 PDF 檔案最大可達 {imageSize}。影片最大可達 {videoSize}。',
+  'mediaLib.retention.limits':
+    '圖片、音訊與 PDF 檔案最大可達 {imageSize}。影片最大可達 {videoSize}。',
   'mediaLib.retention.expiresLabel': '檔案刪除日期',
   'mediaLib.retention.deleted': '已永久刪除',
   'mediaLib.retention.deletedTitle': '此儲存檔案已被刪除',

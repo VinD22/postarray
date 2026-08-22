@@ -210,7 +210,8 @@ export const webSettingsMessages = {
   'settings.ui.projects.capacityHelp':
     'Kasama sa $29 na base plan ang 3 aktibong proyekto. Puwedeng magkaroon ang isang workspace ng entitlement na hanggang 20 nang hindi gumagawa ng ibang account.',
   'settings.ui.projects.capacitySummary': '{used} sa {limit}',
-  'settings.ui.projects.atLimitTitle': 'Nagamit na ng workspace na ito ang lahat ng slot para sa proyekto',
+  'settings.ui.projects.atLimitTitle':
+    'Nagamit na ng workspace na ito ang lahat ng slot para sa proyekto',
   'settings.ui.projects.atLimitBody':
     'I-archive ang isang hindi aktibong proyekto o baguhin ang entitlement ng workspace bago magdagdag ng iba pa. Ang kasalukuyang limitasyon ay {limit}.',
   'settings.ui.projects.listLabel': 'Pumili ng proyekto na i-e-edit',
@@ -225,7 +226,8 @@ export const webSettingsMessages = {
     'Titigil sa pagpapakita ang mga konektadong channel nito sa mga aktibong daloy ng proyekto.',
   'settings.ui.projects.archiveHistory':
     'Pananatilihin ang mga draft, na-publish na post, resibo, at audit history.',
-  'settings.ui.projects.archiveLastDisabled': 'Panatilihing may kahit isang aktibong proyekto sa workspace.',
+  'settings.ui.projects.archiveLastDisabled':
+    'Panatilihing may kahit isang aktibong proyekto sa workspace.',
   'settings.ui.projects.archiveConnectedDisabled':
     'Idiskonekta ang mga channel ng proyektong ito bago ito i-archive.',
 

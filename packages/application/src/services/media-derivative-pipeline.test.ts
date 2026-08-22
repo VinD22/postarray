@@ -1,4 +1,8 @@
-import { RelayError, mediaDerivativePresetKey, type MediaDerivativeOperation } from '@relay/contracts';
+import {
+  RelayError,
+  mediaDerivativePresetKey,
+  type MediaDerivativeOperation,
+} from '@relay/contracts';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import type { MediaDerivativeView, MediaTransformInput, MediaTransformResult } from '../types';

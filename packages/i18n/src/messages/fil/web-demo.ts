@@ -127,7 +127,8 @@ export const webDemoMessages = {
     'Ang queue ang ibang ruta: pinipili nito ang susunod na slot na pinapayagan ng mga panuntunan mo, sa time zone na ito.',
 
   'web.demo.week.label': 'Ang linggo',
-  'web.demo.week.caption': 'Ang parehong tatlong post sa kalendaryo, binasa sa time zone ng project.',
+  'web.demo.week.caption':
+    'Ang parehong tatlong post sa kalendaryo, binasa sa time zone ng project.',
   'web.demo.week.empty': 'Walang naka-iskedyul',
 
   'web.demo.receipt.label': 'Resibo sa ngayon',

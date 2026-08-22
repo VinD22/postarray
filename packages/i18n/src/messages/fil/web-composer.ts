@@ -395,7 +395,8 @@ export const webComposerMessages = {
   'mediaLib.import.issue.invalid': 'Maglagay ng kumpletong URL.',
   'mediaLib.import.issue.scheme': 'Gumamit ng HTTP o HTTPS na link.',
   'mediaLib.import.issue.credentials': 'Gumamit ng link na walang username o password.',
-  'mediaLib.retention.title': 'Ang mga naka-store na file ay itinatago nang 30 araw pagkatapos gawin ang post',
+  'mediaLib.retention.title':
+    'Ang mga naka-store na file ay itinatago nang 30 araw pagkatapos gawin ang post',
   'mediaLib.retention.body':
     'Kapag na-attach na ang isang file sa isang post, tuluyan naming baburahin ito mula sa Relay storage 30 araw pagkatapos gawin ang post na iyon. Ang mga file na naghihintay pang ma-attach ay gumagamit ng petsa ng upload bilang fallback para sa cleanup. Mananatiling available nang mas matagal ang teksto ng post, mga publication receipt, at audit history. Ang isang post na na-publish sa isang social platform ay hindi tinatanggal kapag nag-expire ang naka-store nitong file.',
   'mediaLib.retention.limits':

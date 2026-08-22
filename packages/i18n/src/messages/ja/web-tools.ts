@@ -46,7 +46,8 @@ export const webToolsMessages = {
     'このプラットフォーム用のコネクターはまだ提供していないため、表示できる検証済みの制限がありません。推測するより、何も言わない方を選びます。',
   'web.tools.shared.copy': 'コピー',
   'web.tools.shared.copied': 'コピーしました',
-  'web.tools.shared.copyFailed': 'ブラウザがコピーをブロックしました。テキストを選択してコピーしてください。',
+  'web.tools.shared.copyFailed':
+    'ブラウザがコピーをブロックしました。テキストを選択してコピーしてください。',
   'web.tools.shared.faqTitle': '質問',
   'web.tools.shared.baselineTitle': 'これらの数字がどのアカウントを表しているか',
   'web.tools.shared.baselineBody':
@@ -61,7 +62,8 @@ export const webToolsMessages = {
   'web.tools.preflight.summary':
     '10のプラットフォームのテキスト・メディア制限に対して、1つの下書きを一度にチェックします。',
   'web.tools.utm.name': 'UTMリンクビルダー',
-  'web.tools.utm.summary': '元々あったクエリ文字列を壊すことなく、タグ付きキャンペーンURLを作成します。',
+  'web.tools.utm.summary':
+    '元々あったクエリ文字列を壊すことなく、タグ付きキャンペーンURLを作成します。',
   'web.tools.youtubeTitle.name': 'YouTubeタイトル長チェッカー',
   'web.tools.youtubeTitle.summary': '人が数える方法でタイトルを測定します。',
   'web.tools.timeZone.name': 'タイムゾーン・夏時間プランナー',
@@ -94,15 +96,18 @@ export const webToolsMessages = {
   'web.tools.preflight.field.mediaKind.video': '動画1本',
   'web.tools.preflight.field.mediaCount.label': '画像の枚数',
   'web.tools.preflight.field.byteSize.label': 'ファイルサイズ(メガバイト)',
-  'web.tools.preflight.field.byteSize.help': '最大の単一ファイル。スキップする場合は空欄のままにしてください。',
+  'web.tools.preflight.field.byteSize.help':
+    '最大の単一ファイル。スキップする場合は空欄のままにしてください。',
   'web.tools.preflight.field.duration.label': '動画の長さ(秒)',
-  'web.tools.preflight.field.duration.help': '長さのチェックをスキップする場合は空欄のままにしてください。',
+  'web.tools.preflight.field.duration.help':
+    '長さのチェックをスキップする場合は空欄のままにしてください。',
   'web.tools.preflight.field.width.label': 'メディアの幅(ピクセル)',
   'web.tools.preflight.field.height.label': 'メディアの高さ(ピクセル)',
   'web.tools.preflight.field.dimensions.help':
     '任意。公開しようとしているアスペクト比を表示するためだけに使われます。',
   'web.tools.preflight.results.title': 'プラットフォームごとの結果',
-  'web.tools.preflight.results.empty': '結果を見るには少なくとも1つのプラットフォームを選んでください。',
+  'web.tools.preflight.results.empty':
+    '結果を見るには少なくとも1つのプラットフォームを選んでください。',
   'web.tools.preflight.results.summary':
     '{fail, plural, =0 {ブロックするものはありません} other {#件が失敗します}}、{warning, plural, =0 {警告なし} other {#件要確認}}。',
   'web.tools.preflight.status.pass': '収まる',
@@ -196,7 +201,8 @@ export const webToolsMessages = {
   'web.tools.youtubeTitle.explainer.body':
     'ハードな上限は、アップロードエンドポイントが受け付ける値です。タイトルがどこに表示されるかは別の問題です。検索結果、サイドバー、スマートフォンではそれぞれ異なる位置でタイトルが切り詰められ、そのどの切り取り位置も公開されていません。このツールは文書化された上限を示し、あなたのタイトルの形を表示しますが、作り話の切り詰め数字を作り出すことはありません。',
   'web.tools.youtubeTitle.field.title.label': '動画タイトル',
-  'web.tools.youtubeTitle.field.title.help': '書記素で数えるため、絵文字は1文字としてカウントされます。',
+  'web.tools.youtubeTitle.field.title.help':
+    '書記素で数えるため、絵文字は1文字としてカウントされます。',
   'web.tools.youtubeTitle.result.count': '{limit}文字中{count}',
   'web.tools.youtubeTitle.result.over':
     '{over, plural, other {#文字}}超過しています。アップロードは拒否されます。',

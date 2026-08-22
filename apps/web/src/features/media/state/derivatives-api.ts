@@ -11,7 +11,13 @@
 import { call } from '@/lib/api/call';
 
 export type DerivativeOperation =
-  | { readonly op: 'crop'; readonly x: number; readonly y: number; readonly width: number; readonly height: number }
+  | {
+      readonly op: 'crop';
+      readonly x: number;
+      readonly y: number;
+      readonly width: number;
+      readonly height: number;
+    }
   | { readonly op: 'rotate'; readonly degrees: 90 | 180 | 270 }
   | { readonly op: 'resize'; readonly width: number; readonly height: number }
   | { readonly op: 'convert'; readonly format: DerivativeFormat }

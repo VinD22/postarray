@@ -139,7 +139,8 @@ export const webSettingsMessages = {
   'settings.ui.projects.audienceHelp': '시장별로 콘텐츠가 누구를 위한 것인지.',
   'settings.ui.projects.approvedClaimsHelp':
     '검토자가 지운 명령문입니다. 이 목록 밖의 모든 항목은 게시 후가 아니라 승인 전에 플래그가 지정됩니다.',
-  'settings.ui.projects.blockedTermsHelp': '이 프로젝트의 일정을 방해하는 단어입니다. 한 줄에 하나씩.',
+  'settings.ui.projects.blockedTermsHelp':
+    '이 프로젝트의 일정을 방해하는 단어입니다. 한 줄에 하나씩.',
   'settings.ui.projects.domainsHelp':
     '이 프로젝트가 연결되거나 단축될 수 있는 도메인입니다. 작성기에서는 확인된 도메인만 선택할 수 있습니다.',
   'settings.ui.projects.domainVerified': '확인됨{date}',
@@ -170,8 +171,7 @@ export const webSettingsMessages = {
     '다른 프로젝트를 추가하기 전에 비활성 프로젝트를 보관하거나 작업공간 권한을 변경하세요. 현재 한도는 {limit}입니다.',
   'settings.ui.projects.listLabel': '편집할 프로젝트를 선택하세요',
   'settings.ui.projects.detailsTitle': '프로젝트 세부정보',
-  'settings.ui.projects.projectMeta':
-    '{accounts, plural, other {#개 채널}} · {updated} 업데이트됨',
+  'settings.ui.projects.projectMeta': '{accounts, plural, other {#개 채널}} · {updated} 업데이트됨',
   'settings.ui.projects.archiveAction': '프로젝트 보관',
   'settings.ui.projects.archiveTitle': '{project}을(를) 보관하시겠습니까?',
   'settings.ui.projects.archiveBody':

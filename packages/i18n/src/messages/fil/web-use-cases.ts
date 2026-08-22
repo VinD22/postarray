@@ -34,7 +34,8 @@ export const webUseCaseMessages = {
     'Tatlong workflow na pinagbubuuan ng produktong ito. Sinasabi ng bawat page kung magkano ang gastos ng workflow para sa isang team ngayon, paano dinisenyo ang produkto para hawakan ito, at aling parte talaga ang nagawa na.',
   'web.useCases.index.listLabel': 'Mga use case',
 
-  'web.useCases.notice.title': 'Inilalarawan nito ang isang disenyo, hindi isang tumatakbong serbisyo',
+  'web.useCases.notice.title':
+    'Inilalarawan nito ang isang disenyo, hindi isang tumatakbong serbisyo',
   'web.useCases.notice.body':
     'Walang koneksyon na na-verify sa production, kaya wala pang na-publish saanman sa page na ito. Kung nagawa na ang isang parte ng workflow, sinasabi ito. Kung hindi pa, sinasabi rin ito.',
 

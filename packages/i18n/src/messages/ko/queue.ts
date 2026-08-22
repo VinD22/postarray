@@ -9,7 +9,8 @@ export const queueMessages = {
     '이 프로젝트가 언제, 어떤 간격으로 게시할지를 나타냅니다. 사람이 시간을 수락하지 않으면 아무것도 게시되지 않습니다.',
 
   'queue.rules.heading': '대기열 규칙',
-  'queue.rules.empty': '아직 대기열 규칙이 없습니다. 규칙을 추가하기 전까지 다음 슬롯은 단순히 가장 빠른 빈 시간입니다.',
+  'queue.rules.empty':
+    '아직 대기열 규칙이 없습니다. 규칙을 추가하기 전까지 다음 슬롯은 단순히 가장 빠른 빈 시간입니다.',
   'queue.rules.create': '새 대기열 규칙',
   'queue.rules.count': '{count, plural, other {규칙 #개}}',
   'queue.rules.enabled': '사용 중',
@@ -17,7 +18,8 @@ export const queueMessages = {
   'queue.rules.archived': '보관됨',
   'queue.rules.edit': '규칙 편집',
   'queue.rules.archive': '규칙 보관',
-  'queue.rules.archiveHelp': '보관하면 향후 제안이 중단됩니다. 이미 예약된 슬롯은 시간과 사유를 그대로 유지합니다.',
+  'queue.rules.archiveHelp':
+    '보관하면 향후 제안이 중단됩니다. 이미 예약된 슬롯은 시간과 사유를 그대로 유지합니다.',
 
   'queue.field.name': '규칙 이름',
   'queue.field.nameHelp': '나중에 알아볼 수 있는 이름, 예를 들어 평일 아침.',
@@ -30,7 +32,8 @@ export const queueMessages = {
     '일일 한도를 두지 않으려면 비워 두세요. 0은 이 규칙이 아무것도 제안하지 않는다는 뜻입니다.',
   'queue.field.maximumPerDayUnlimited': '일일 한도 없음',
   'queue.field.priority': '우선순위',
-  'queue.field.priorityHelp': '슬롯을 제안할 수 있는 규칙 중 우선순위가 가장 높은 규칙이 사용됩니다.',
+  'queue.field.priorityHelp':
+    '슬롯을 제안할 수 있는 규칙 중 우선순위가 가장 높은 규칙이 사용됩니다.',
   'queue.field.enabled': '이 규칙 사용',
 
   'queue.windows.heading': '주간 윈도',
@@ -80,13 +83,15 @@ export const queueMessages = {
   'queue.slot.accepted': '{timeZone} 기준 {local}로 예약되었습니다.',
   'queue.slot.notAutomatic': '이 시간을 선택하기 전까지는 아무것도 예약되지 않습니다.',
 
-  'queue.reason.noRulesConfigured': '이 프로젝트에는 설정된 대기열 규칙이 없어 어떤 윈도도 적용되지 않았습니다.',
+  'queue.reason.noRulesConfigured':
+    '이 프로젝트에는 설정된 대기열 규칙이 없어 어떤 윈도도 적용되지 않았습니다.',
   'queue.reason.fallbackFirstFreeHour': '대신 지금 이후 가장 빠른 빈 시간이 사용되었습니다.',
   'queue.reason.matchedRule': '{zone} 시간대에서 {name} 규칙이 이 시간을 선택했습니다.',
   'queue.reason.matchedWindow': '{zone} 시간대의 {start}~{end} 윈도에 해당합니다.',
   'queue.reason.minimumGap': '다른 모든 게시물로부터 최소 {minutes}분 떨어져 있습니다.',
   'queue.reason.noMinimumGap': '이 규칙은 게시물 사이 최소 간격을 설정하지 않습니다.',
-  'queue.reason.dailyCap': '그날은 최대 {limit}개의 게시물을 담을 수 있으며, 아직 다 차지 않았습니다.',
+  'queue.reason.dailyCap':
+    '그날은 최대 {limit}개의 게시물을 담을 수 있으며, 아직 다 차지 않았습니다.',
   'queue.reason.dailyCapUnlimited': '이 규칙은 일일 한도를 설정하지 않습니다.',
   'queue.reason.blackoutSkipped':
     '여기에 도달하기 위해 차단일 {days, plural, other {#일}}을(를) 건너뛰었습니다.',

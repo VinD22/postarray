@@ -14,10 +14,7 @@ import {
   Subheading,
 } from '@/features/marketing/components/layout';
 import { TextLink } from '@/features/marketing/components/links';
-import {
-  EditorialSection,
-  EditorialDisplay,
-} from '@/features/marketing/components/editorial';
+import { EditorialSection, EditorialDisplay } from '@/features/marketing/components/editorial';
 import { marketingTranslator } from '@/features/marketing/i18n';
 import { breadcrumbJsonLd, faqJsonLd } from '@/features/marketing/seo';
 import { ROUTES, TOOL_LINKS } from '@/features/marketing/site';

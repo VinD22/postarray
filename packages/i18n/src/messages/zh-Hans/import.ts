@@ -11,8 +11,7 @@ export const importMessages = {
   'import.step.position': '第 {current} 步，共 {total} 步',
 
   'import.upload.heading': '选择一个 CSV 文件',
-  'import.upload.help':
-    '仅支持 CSV。不会读取 .xlsx 等电子表格文件。请先将您的表格导出为 CSV。',
+  'import.upload.help': '仅支持 CSV。不会读取 .xlsx 等电子表格文件。请先将您的表格导出为 CSV。',
   'import.upload.field': 'CSV 文件',
   'import.upload.fieldHelp': '选择一个文件，或将行粘贴到下方的文本框中。',
   'import.upload.paste': '或粘贴 CSV 文本',
@@ -34,8 +33,7 @@ export const importMessages = {
   'import.template.optional': '可选列',
   'import.column.external_row_id': '此行的您自己的 id。它在文件内必须唯一。',
   'import.column.project': '此行所属的项目名称或 id。',
-  'import.column.targets':
-    '两种之一：以目标集 id 开头，或以竖线分隔的账户 id。',
+  'import.column.targets': '两种之一：以目标集 id 开头，或以竖线分隔的账户 id。',
   'import.column.caption': '帖子文本。',
   'import.column.scheduled_local_time': '本地日期和时间，写作 2026-09-01T10:00。',
   'import.column.time_zone': '本地时间所依据的 IANA 时区，例如 Europe/Berlin。',
@@ -100,8 +98,7 @@ export const importMessages = {
   'import.apply.confirm': '应用 {count, plural, other {# 行}}',
   'import.apply.confirmScheduled': '创建并安排 {count, plural, other {# 行}}',
   'import.apply.running': '正在应用行',
-  'import.apply.safeToRepeat':
-    '应用两次是安全的。已经生成草稿的行不会被再次处理。',
+  'import.apply.safeToRepeat': '应用两次是安全的。已经生成草稿的行不会被再次处理。',
 
   'import.results.heading': '结果',
   'import.results.applied': '{count, plural, other {已创建 # 个草稿}}',
@@ -126,16 +123,13 @@ export const importMessages = {
   'import.error.required': '此单元格不能为空。',
   'import.error.invalidCell': '此单元格的格式无法读取。',
   'import.error.rowShape': '此行有 {actual} 个单元格，但表头有 {expected} 个。',
-  'import.error.invalidLocalTime':
-    '时间 {value} 不是如 2026-09-01T10:00 这样的本地日期和时间。',
+  'import.error.invalidLocalTime': '时间 {value} 不是如 2026-09-01T10:00 这样的本地日期和时间。',
   'import.error.invalidTimeZone': '区域 {value} 不是 IANA 时区名称。',
-  'import.error.nonexistentLocalTime':
-    '时间 {value} 在 {zone} 中不存在，时钟跳过了它。',
+  'import.error.nonexistentLocalTime': '时间 {value} 在 {zone} 中不存在，时钟跳过了它。',
   'import.error.ambiguousLocalTime':
     '时间 {value} 在 {zone} 的那一天出现了两次。请选择一个不同的时间。',
   'import.error.scheduleInPast': '{zone} 中的时间 {value} 已经过去。',
-  'import.error.invalidTargets':
-    '值 {value} 既不是已保存的目标集，也不是账户 id 列表。',
+  'import.error.invalidTargets': '值 {value} 既不是已保存的目标集，也不是账户 id 列表。',
   'import.error.invalidMedia':
     '值 {value} 既不是媒体 id，也不是 sha256 校验和，也不是 https 地址。',
   'import.error.mediaNotFound': '此工作区中没有与 {value} 匹配的媒体。',

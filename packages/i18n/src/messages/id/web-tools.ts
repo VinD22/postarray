@@ -131,7 +131,8 @@ export const webToolsMessages = {
     'Tidak ada batas durasi terdokumentasi, jadi panjangnya tidak diperiksa.',
   'web.tools.preflight.finding.altText':
     'Teks alternatif diterima hingga {limit} karakter, yang layak digunakan.',
-  'web.tools.preflight.finding.ratio': 'Anda akan menerbitkan dengan rasio sekitar {ratio} banding 1.',
+  'web.tools.preflight.finding.ratio':
+    'Anda akan menerbitkan dengan rasio sekitar {ratio} banding 1.',
   'web.tools.preflight.faq.counting.q': 'Bagaimana Anda menghitung karakter?',
   'web.tools.preflight.faq.counting.a':
     'Berdasarkan grafem, menggunakan segmenter Intl browser, yang merupakan unit yang dimaksud pembaca sebagai karakter. Di mana platform mendokumentasikan aturan berbeda, seperti menghitung unit kode atau membebankan lebar tetap per tautan, aturan itu diterapkan di atasnya.',
@@ -163,7 +164,8 @@ export const webToolsMessages = {
   'web.tools.utm.field.medium.label': 'Media kampanye',
   'web.tools.utm.field.medium.help': 'Jenis tautan. Misalnya sosial, email, atau rujukan.',
   'web.tools.utm.field.campaign.label': 'Nama kampanye',
-  'web.tools.utm.field.campaign.help': 'Peluncuran, promosi, atau tema tempat tautan ini menjadi bagian.',
+  'web.tools.utm.field.campaign.help':
+    'Peluncuran, promosi, atau tema tempat tautan ini menjadi bagian.',
   'web.tools.utm.field.term.label': 'Istilah kampanye',
   'web.tools.utm.field.term.help': 'Opsional. Secara tradisional kata kunci berbayar.',
   'web.tools.utm.field.content.label': 'Konten kampanye',
@@ -197,7 +199,8 @@ export const webToolsMessages = {
   'web.tools.youtubeTitle.explainer.body':
     'Batas keras adalah apa yang diterima titik akhir unggahan. Di mana judul ditampilkan adalah pertanyaan terpisah: hasil pencarian, sidebar, dan ponsel semuanya memotong judul di titik berbeda, dan tidak satu pun dari titik potong itu dipublikasikan. Alat ini menyatakan batas terdokumentasi dan menunjukkan bentuk judul Anda, dan tidak merekayasa angka pemotongan.',
   'web.tools.youtubeTitle.field.title.label': 'Judul video',
-  'web.tools.youtubeTitle.field.title.help': 'Dihitung berdasarkan grafem, jadi emoji berbiaya satu.',
+  'web.tools.youtubeTitle.field.title.help':
+    'Dihitung berdasarkan grafem, jadi emoji berbiaya satu.',
   'web.tools.youtubeTitle.result.count': '{count} dari {limit} karakter',
   'web.tools.youtubeTitle.result.over':
     'Melebihi {over, plural, other {# karakter}}. Unggahan akan ditolak.',
@@ -241,7 +244,8 @@ export const webToolsMessages = {
   'web.tools.timeZone.faq.dst.q': 'Ke arah mana jam bergeser?',
   'web.tools.timeZone.faq.dst.a':
     'Tergantung zona dan arah perubahan, itulah sebabnya tabel menunjukkan waktu lokal sebenarnya empat minggu kemudian alih-alih menjelaskan aturannya. Selisih untuk setiap zona dibaca dari basis data zona waktu browser Anda.',
-  'web.tools.timeZone.faq.storage.q': 'Bagaimana seharusnya postingan terjadwal menyimpan waktunya?',
+  'web.tools.timeZone.faq.storage.q':
+    'Bagaimana seharusnya postingan terjadwal menyimpan waktunya?',
   'web.tools.timeZone.faq.storage.a':
     'Sebagai momen ditambah zona IANA yang dipilih orang itu, tidak pernah sebagai waktu lokal murni. Itulah yang kami lakukan secara internal, dan itulah sebabnya postingan yang dijadwalkan sebelum perubahan jam tetap mendarat pada jam lokal yang dimaksudkan.',
 
@@ -263,7 +267,8 @@ export const webToolsMessages = {
   'web.tools.engagementRate.field.followers.label': 'Pengikut',
   'web.tools.engagementRate.field.followers.help': 'Ukuran akun pada saat postingan.',
   'web.tools.engagementRate.field.impressions.label': 'Tayangan',
-  'web.tools.engagementRate.field.impressions.help': 'Total tampilan, termasuk orang yang melihatnya dua kali.',
+  'web.tools.engagementRate.field.impressions.help':
+    'Total tampilan, termasuk orang yang melihatnya dua kali.',
   'web.tools.engagementRate.result.title': 'Tingkat keterlibatan, tiga cara',
   'web.tools.engagementRate.result.empty': 'tidak tersedia',
   'web.tools.engagementRate.result.note':

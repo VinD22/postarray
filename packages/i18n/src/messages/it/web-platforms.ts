@@ -92,15 +92,17 @@ export const webPlatformsMessages = {
   'web.schedule.limits.mimeTypes': 'Tipi di file accettati',
   'web.schedule.limits.markdown': 'Segni di formattazione',
 
-  'web.schedule.value.characters': '{count, plural, one {# carattere} many {# caratteri} other {# caratteri}}',
-  'web.schedule.value.files': '{count, plural, =0 {Nessuno} one {# file} many {# file} other {# file}}',
+  'web.schedule.value.characters':
+    '{count, plural, one {# carattere} many {# caratteri} other {# caratteri}}',
+  'web.schedule.value.files':
+    '{count, plural, =0 {Nessuno} one {# file} many {# file} other {# file}}',
   'web.schedule.value.durationRange': 'Tra {min} e {max}',
   'web.schedule.value.durationMax': 'Fino a {max}',
   'web.schedule.value.markdownYes': 'Accettato',
   'web.schedule.value.markdownNo': 'Pubblicato come caratteri semplici',
 
   'web.schedule.unit.utf16':
-    "Per unità di codice UTF-16, che è ciò che la maggior parte degli editor riporta come conteggio dei caratteri.",
+    'Per unità di codice UTF-16, che è ciò che la maggior parte degli editor riporta come conteggio dei caratteri.',
   'web.schedule.unit.grapheme':
     "Per grafema, così un'emoji composta da più punti di codice costa comunque un carattere.",
   'web.schedule.unit.weighted':

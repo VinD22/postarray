@@ -4,10 +4,7 @@ import { EmptyState } from '@relay/design-system/patterns';
 import { Badge } from '@relay/design-system/primitives';
 
 import { Lede, Meta, Section } from '@/features/marketing/components/layout';
-import {
-  EditorialDisplay,
-  EditorialSection,
-} from '@/features/marketing/components/editorial';
+import { EditorialDisplay, EditorialSection } from '@/features/marketing/components/editorial';
 import { TextLink } from '@/features/marketing/components/links';
 import { CHANGELOG, CHANGELOG_KIND_LABEL_KEY } from '@/features/marketing/data/catalogs';
 import { formatDate, marketingTranslator } from '@/features/marketing/i18n';

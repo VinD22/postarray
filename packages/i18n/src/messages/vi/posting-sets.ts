@@ -15,7 +15,8 @@ export const postingSetMessages = {
   'calendar.hold.badgeBilling': 'Tạm dừng do thanh toán',
   'calendar.hold.term': 'Tạm giữ',
   'calendar.hold.byPerson': 'Bạn đã tạm dừng vào {date}.',
-  'calendar.hold.byBilling': 'Đã tạm dừng vào {date} vì không gian làm việc này mất quyền truy cập đầy đủ.',
+  'calendar.hold.byBilling':
+    'Đã tạm dừng vào {date} vì không gian làm việc này mất quyền truy cập đầy đủ.',
   'calendar.hold.none': 'Không tạm dừng',
 
   'calendar.hold.confirmTitle': 'Tạm dừng bài đăng này?',
@@ -56,12 +57,14 @@ export const postingSetMessages = {
   'set.appliedOnce':
     'Một Bộ chỉ được đọc một lần, khi bạn áp dụng nó. Chỉnh sửa nó sau đó chỉ thay đổi điều bài đăng tiếp theo bắt đầu từ. Các bản nháp và bài đã lên lịch mà bạn đã tạo từ nó vẫn giữ nguyên như cũ.',
   'set.empty.title': 'Chưa có Bộ nào',
-  'set.empty.body': 'Tạo một Bộ để không phải xây lại cùng một danh sách tài khoản cho mỗi bài đăng.',
+  'set.empty.body':
+    'Tạo một Bộ để không phải xây lại cùng một danh sách tài khoản cho mỗi bài đăng.',
   'set.create': 'Bộ mới',
   'set.edit': 'Chỉnh sửa Bộ',
   'set.archive': 'Lưu trữ Bộ',
   'set.archived': 'Đã lưu trữ',
-  'set.archivedNote': 'Các Bộ đã lưu trữ bị ẩn khỏi bộ chọn. Các bài đăng đã tạo từ chúng không thay đổi.',
+  'set.archivedNote':
+    'Các Bộ đã lưu trữ bị ẩn khỏi bộ chọn. Các bài đăng đã tạo từ chúng không thay đổi.',
   'set.showArchived': 'Hiện các mục đã lưu trữ',
   'set.saved': 'Đã lưu Bộ.',
   'set.archivedToast': 'Đã lưu trữ Bộ. Các bài đăng đã tạo từ nó không thay đổi.',
@@ -76,7 +79,8 @@ export const postingSetMessages = {
   'set.field.signature': 'Chữ ký',
   'set.field.signatureNone': 'Không có chữ ký',
   'set.field.approval': 'Phê duyệt',
-  'set.field.approvalHint': 'Sự phê duyệt mà một bài đăng tạo từ Bộ này cần trước khi có thể xuất bản.',
+  'set.field.approvalHint':
+    'Sự phê duyệt mà một bài đăng tạo từ Bộ này cần trước khi có thể xuất bản.',
   'set.field.schedule': 'Khi nào xuất bản',
 
   'set.approval.none': 'Không cần phê duyệt',
@@ -108,7 +112,8 @@ export const postingSetMessages = {
   'set.defaults.requireAltText': 'Yêu cầu văn bản thay thế cho mọi ảnh',
   'set.defaults.requireAltTextHint':
     'Một bài đăng tạo từ Bộ này không thể được lên lịch cho nền tảng đó cho đến khi mọi ảnh đều có văn bản thay thế.',
-  'set.defaults.empty': 'Không có mặc định theo nền tảng nào. Mọi tài khoản bắt đầu từ bài đăng gốc.',
+  'set.defaults.empty':
+    'Không có mặc định theo nền tảng nào. Mọi tài khoản bắt đầu từ bài đăng gốc.',
 
   'set.error.nameTaken': 'Một Bộ khác trong dự án này đã dùng tên đó rồi.',
   'set.error.archived': 'Bộ này đã được lưu trữ. Hãy khôi phục nó trước khi chỉnh sửa.',
@@ -127,7 +132,8 @@ export const postingSetMessages = {
   'targetMemory.setting.enabled': 'Bật',
   'targetMemory.setting.disabled': 'Tắt',
   'targetMemory.setting.saved': 'Đã lưu thiết lập.',
-  'targetMemory.setting.cleared': 'Đã lưu thiết lập. Các lựa chọn đã lưu trong dự án này đã bị xóa.',
+  'targetMemory.setting.cleared':
+    'Đã lưu thiết lập. Các lựa chọn đã lưu trong dự án này đã bị xóa.',
 
   'targetMemory.composer.restored':
     '{count, plural, other {Đã bắt đầu với # tài khoản từ lần trước.}}',

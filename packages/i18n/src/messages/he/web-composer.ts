@@ -314,11 +314,9 @@ export const webComposerMessages = withHebrewPluralForms({
   'mediaLib.import.urlPlaceholder': 'https://cdn.example.com/launch-video.mp4',
   'mediaLib.import.importing': 'מייבא מדיה',
   'mediaLib.import.succeeded': 'הקובץ נמצא בספרייה שלך',
-  'mediaLib.import.scanPending':
-    'Relay רשם את המקור שלו. הפרסום ממתין עד שבדיקת הבטיחות תסתיים.',
+  'mediaLib.import.scanPending': 'Relay רשם את המקור שלו. הפרסום ממתין עד שבדיקת הבטיחות תסתיים.',
   'mediaLib.import.failed': 'לא ניתן היה לייבא את הקובץ',
-  'mediaLib.import.failedHelp':
-    'ודא שהקישור ציבורי ומצביע ישירות על קובץ מדיה נתמך, ואז נסה שוב.',
+  'mediaLib.import.failedHelp': 'ודא שהקישור ציבורי ומצביע ישירות על קובץ מדיה נתמך, ואז נסה שוב.',
   'mediaLib.import.readOnly': 'התחבר ל-API כדי לייבא קבצים בסביבה הזו.',
   'mediaLib.import.offline': 'התחבר מחדש לפני ייבוא קובץ.',
   'mediaLib.import.issue.invalid': 'הזן כתובת URL מלאה.',

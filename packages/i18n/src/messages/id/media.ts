@@ -38,7 +38,8 @@ export const mediaMessages = {
   'mediaLib.derivative.original': 'Asli',
   'mediaLib.derivative.originalHint': 'Selalu disimpan. Tidak pernah ditimpa.',
   'mediaLib.derivative.item': '{width} kali {height}, {mimeType}, {size}',
-  'mediaLib.derivative.empty': 'Belum ada versi yang diedit. Aslinya adalah satu-satunya berkas di sini.',
+  'mediaLib.derivative.empty':
+    'Belum ada versi yang diedit. Aslinya adalah satu-satunya berkas di sini.',
   'mediaLib.derivative.select': 'Gunakan versi ini',
   'mediaLib.derivative.selected': 'Digunakan untuk postingan ini',
   'mediaLib.derivative.useOriginal': 'Gunakan yang asli',
@@ -57,7 +58,8 @@ export const mediaMessages = {
   'mediaLib.derivative.nonGenerative':
     'Relay tidak menghasilkan gambar atau video. Editor ini hanya memotong, memutar, mengubah ukuran, mengonversi, dan mengompres apa yang Anda unggah.',
 
-  'error.media_derivative_no_operations.message': 'Pilih setidaknya satu perubahan sebelum menyimpan versi.',
+  'error.media_derivative_no_operations.message':
+    'Pilih setidaknya satu perubahan sebelum menyimpan versi.',
   'error.media_derivative_duplicate_operation.message':
     'Setiap jenis perubahan hanya dapat muncul sekali. Hapus {operation} yang kedua.',
   'error.media_derivative_crop_out_of_bounds.message':

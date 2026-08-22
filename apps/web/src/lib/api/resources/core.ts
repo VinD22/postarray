@@ -64,7 +64,9 @@ export const projectsApi = {
     call(
       `/projects/${projectId}`,
       {},
-      () => demoProjects.find((project) => project.id === projectId) ?? requireFirst(demoProjects, 'project'),
+      () =>
+        demoProjects.find((project) => project.id === projectId) ??
+        requireFirst(demoProjects, 'project'),
     ),
   create: (input: { name: string }, idempotencyKey: string): Promise<ProjectView> =>
     call('/projects', { method: 'POST', body: input, idempotencyKey }, () => ({
@@ -79,7 +81,7 @@ export const projectsApi = {
       domains: [],
       defaultTimeZone: demoSession.workspace.timeZone,
       defaultShortLinkOn: false,
-    rememberTargetsEnabled: false,
+      rememberTargetsEnabled: false,
       archived: false,
       connectionIds: [],
       createdAt: new Date().toISOString(),
@@ -88,11 +90,15 @@ export const projectsApi = {
   update: (
     projectId: string,
     input: Partial<
-      Pick<ProjectView, 'name' | 'voice' | 'audience' | 'approvedClaims' | 'blockedTerms' | 'domains'>
+      Pick<
+        ProjectView,
+        'name' | 'voice' | 'audience' | 'approvedClaims' | 'blockedTerms' | 'domains'
+      >
     >,
   ): Promise<ProjectView> =>
     call(`/projects/${projectId}`, { method: 'PATCH', body: input }, () => ({
-      ...(demoProjects.find((project) => project.id === projectId) ?? requireFirst(demoProjects, 'project')),
+      ...(demoProjects.find((project) => project.id === projectId) ??
+        requireFirst(demoProjects, 'project')),
       ...input,
       updatedAt: new Date().toISOString(),
     })),

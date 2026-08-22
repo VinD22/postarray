@@ -89,7 +89,10 @@ export const clientAccountsAsSeparateProjects: BlogArticle = {
               'People and roles',
               'Access is per engagement. A freelancer on one client should not be able to see another.',
             ],
-            ['Approval chain', 'Who signs off is a term of that contract, and it differs by client.'],
+            [
+              'Approval chain',
+              'Who signs off is a term of that contract, and it differs by client.',
+            ],
             [
               'Time zone and posting windows',
               'The audience of one client is not the audience of another.',

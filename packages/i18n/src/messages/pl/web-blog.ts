@@ -47,7 +47,8 @@ export const webBlogMessages = {
   'web.blog.byline.editorial.name': 'Zespół badawczy ds. publikacji',
   'web.blog.byline.editorial.role': 'Pisze i utrzymuje te artykuły',
   'web.blog.byline.platform.name': 'Zespół ds. dokumentacji platform',
-  'web.blog.byline.platform.role': 'Sprawdza każde zdanie o platformie względem jej oficjalnego źródła',
+  'web.blog.byline.platform.role':
+    'Sprawdza każde zdanie o platformie względem jej oficjalnego źródła',
 
   'web.blog.feed.title': 'Teksty o działaniach publikacyjnych',
   'web.blog.feed.description':
@@ -55,7 +56,8 @@ export const webBlogMessages = {
   'web.blog.feed.label': 'Kanał RSS',
 
   'web.blog.empty.title': 'Nic tu jeszcze nie opublikowano',
-  'web.blog.empty.body': 'Pierwsze artykuły są w trakcie pisania. Kanał poniesie je, gdy będą gotowe.',
+  'web.blog.empty.body':
+    'Pierwsze artykuły są w trakcie pisania. Kanał poniesie je, gdy będą gotowe.',
 
   'web.blog.label.language': 'Czytaj to w',
   'web.blog.label.notTranslated':

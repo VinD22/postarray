@@ -55,7 +55,8 @@ export const webToolsMessages = {
   'web.tools.preflight.summary':
     'Bir taslak, aynı anda on platformun metin ve medya sınırlarına karşı kontrol edilir.',
   'web.tools.utm.name': 'UTM bağlantı oluşturucu',
-  'web.tools.utm.summary': 'Sahip olduğu sorgu dizisini bozmadan etiketli bir kampanya URL’si oluşturun.',
+  'web.tools.utm.summary':
+    'Sahip olduğu sorgu dizisini bozmadan etiketli bir kampanya URL’si oluşturun.',
   'web.tools.youtubeTitle.name': 'YouTube başlık uzunluğu kontrolü',
   'web.tools.youtubeTitle.summary': 'Bir başlığı, bir kişinin karakterleri saydığı şekilde ölçün.',
   'web.tools.timeZone.name': 'Saat dilimi ve yaz saati planlayıcısı',
@@ -169,7 +170,8 @@ export const webToolsMessages = {
   'web.tools.utm.faq.existing.a':
     'Hayır. Mevcut parametreler orijinal sıralarında korunur ve yalnızca doldurduğunuz bir UTM parametresi eklenir veya değiştirilir. URL’nin sonundaki bir parça sonda kalır.',
   'web.tools.utm.faq.privacy.q': 'URL’m herhangi bir yere gönderiliyor mu?',
-  'web.tools.utm.faq.privacy.a': 'Hayır. URL tarayıcınızda oluşturulur ve bu sayfadan asla ayrılmaz.',
+  'web.tools.utm.faq.privacy.a':
+    'Hayır. URL tarayıcınızda oluşturulur ve bu sayfadan asla ayrılmaz.',
 
   'web.tools.youtubeTitle.title': 'YouTube başlık uzunluğu kontrolü',
   'web.tools.youtubeTitle.lede':
@@ -178,7 +180,8 @@ export const webToolsMessages = {
   'web.tools.youtubeTitle.explainer.body':
     'Sert tavan, yükleme uç noktasının kabul ettiğidir. Bir başlığın nerede gösterildiği ayrı bir sorudur: bir arama sonucu, bir kenar çubuğu ve bir telefon, bir başlığı farklı bir noktada keser ve bu kesme noktalarının hiçbiri yayınlanmaz. Bu araç belgelenmiş tavanı belirtir ve size başlığınızın şeklini gösterir, bir kesme sayısı uydurmaz.',
   'web.tools.youtubeTitle.field.title.label': 'Video başlığı',
-  'web.tools.youtubeTitle.field.title.help': 'Grafeme göre sayılır, bu yüzden bir emoji bire mal olur.',
+  'web.tools.youtubeTitle.field.title.help':
+    'Grafeme göre sayılır, bu yüzden bir emoji bire mal olur.',
   'web.tools.youtubeTitle.result.count': '{limit} karakterden {count}',
   'web.tools.youtubeTitle.result.over':
     '{over, plural, one {# karakter} other {# karakter}} fazla. Yükleme reddedilirdi.',
@@ -236,7 +239,8 @@ export const webToolsMessages = {
   'web.tools.engagementRate.field.followers.label': 'Takipçiler',
   'web.tools.engagementRate.field.followers.help': 'Gönderi anındaki hesap boyutu.',
   'web.tools.engagementRate.field.impressions.label': 'Gösterimler',
-  'web.tools.engagementRate.field.impressions.help': 'İki kez gören bir kişi dahil, toplam görüntüleme.',
+  'web.tools.engagementRate.field.impressions.help':
+    'İki kez gören bir kişi dahil, toplam görüntüleme.',
   'web.tools.engagementRate.result.title': 'Etkileşim oranı, üç şekilde',
   'web.tools.engagementRate.result.empty': 'kullanılamıyor',
   'web.tools.engagementRate.result.note':

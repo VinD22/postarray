@@ -20,8 +20,7 @@ export const queueMessages = {
   'queue.field.name': 'اسم القاعدة',
   'queue.field.nameHelp': 'اسم ستتعرّف عليه لاحقًا، مثل صباحات أيام الأسبوع.',
   'queue.field.timeZone': 'المنطقة الزمنية',
-  'queue.field.timeZoneHelp':
-    'تُقرأ النوافذ والعدد اليومي وتواريخ الحظر كلها في هذه المنطقة.',
+  'queue.field.timeZoneHelp': 'تُقرأ النوافذ والعدد اليومي وتواريخ الحظر كلها في هذه المنطقة.',
   'queue.field.minimumGap': 'الحد الأدنى للفاصل',
   'queue.field.minimumGapHelp': 'دقائق بين منشورين. الصفر يعني عدم وجود قاعدة تباعد.',
   'queue.field.maximumPerDay': 'الحد الأقصى يوميًا',
@@ -54,7 +53,8 @@ export const queueMessages = {
   'queue.weekday.7': 'الأحد',
 
   'queue.blackouts.heading': 'تواريخ الحظر',
-  'queue.blackouts.help': 'التواريخ التي لن ينشر فيها هذا المشروع، تُقرأ في المنطقة الزمنية للقاعدة.',
+  'queue.blackouts.help':
+    'التواريخ التي لن ينشر فيها هذا المشروع، تُقرأ في المنطقة الزمنية للقاعدة.',
   'queue.blackouts.empty': 'لا توجد تواريخ حظر.',
   'queue.blackouts.add': 'إضافة حظر',
   'queue.blackouts.remove': 'إزالة حظر',
@@ -95,7 +95,8 @@ export const queueMessages = {
     'أول وقت في النافذة غير موجود في ذلك التاريخ في {zone}، لذا استُخدم الوقت التالي الموجود.',
   'queue.reason.dstAmbiguousFirst':
     'ذلك الوقت المحلي يحدث مرتين في {zone} في ذلك التاريخ. استُخدمت الحالة الأولى.',
-  'queue.reason.priorityChosen': 'هذه القاعدة لها الأولوية {priority}، وهي الأعلى التي يمكنها العرض.',
+  'queue.reason.priorityChosen':
+    'هذه القاعدة لها الأولوية {priority}، وهي الأعلى التي يمكنها العرض.',
   'queue.reason.connectionScoped':
     'تغطي هذه القاعدة {count, plural, one {حسابًا واحدًا} zero {# حساب} two {حسابين} few {# حسابات} many {# حسابًا} other {# حساب}}.',
   'queue.reason.horizonExhausted': 'لم تكن أي نافذة خالية خلال {days} يوم.',

@@ -58,7 +58,8 @@ export const settingsMessages = {
   'settings.projects.localeRules.emoji': '絵文字とハッシュタグの規範',
   'settings.projects.localeRules.legal': '地域の法的開示',
   'settings.projects.localeRules.cta': '市場別の行動喚起',
-  'settings.projects.localeRules.reviewedExamples': 'ネイティブのレビュー担当者によって承認された例',
+  'settings.projects.localeRules.reviewedExamples':
+    'ネイティブのレビュー担当者によって承認された例',
   'settings.sets.title': 'セット',
   'settings.sets.description':
     'ターゲット、バリアント、設定、コメント、遅延の再利用可能なグループ。セットを適用すると、独立したドラフトが作成されます。',

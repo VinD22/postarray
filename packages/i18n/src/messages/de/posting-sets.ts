@@ -6,7 +6,8 @@ export const postingSetMessages = {
   'calendar.hold.badgeBilling': 'Durch Abrechnung pausiert',
   'calendar.hold.term': 'Pause',
   'calendar.hold.byPerson': 'Von dir am {date} pausiert.',
-  'calendar.hold.byBilling': 'Am {date} pausiert, weil dieser Workspace den vollen Zugriff verloren hat.',
+  'calendar.hold.byBilling':
+    'Am {date} pausiert, weil dieser Workspace den vollen Zugriff verloren hat.',
   'calendar.hold.none': 'Nicht pausiert',
 
   'calendar.hold.confirmTitle': 'Diesen Beitrag pausieren?',
@@ -35,7 +36,8 @@ export const postingSetMessages = {
     'Dieser Beitrag ist schon raus. Pausieren kann ihn nicht von der Plattform zurückholen.',
   'calendar.hold.blocked.inFlight':
     'Dieser Beitrag wird gerade gesendet. Es ist zu spät, ihn zu pausieren, und ein Abbruch mittendrin könnte ihn nur teilweise veröffentlicht lassen.',
-  'calendar.hold.blocked.finished': 'Dieser Beitrag ist bereits abgeschlossen, es gibt also nichts zu pausieren.',
+  'calendar.hold.blocked.finished':
+    'Dieser Beitrag ist bereits abgeschlossen, es gibt also nichts zu pausieren.',
   'calendar.hold.blocked.billing':
     'Dieser Beitrag ist in Pause, weil der Workspace den vollen Zugriff verloren hat. Ihn fortzusetzen ist eine Abrechnungsfrage, keine Planungsfrage.',
   'calendar.hold.blocked.billingAction': 'Zur Abrechnung',
@@ -47,12 +49,14 @@ export const postingSetMessages = {
   'set.appliedOnce':
     'Ein Set wird einmal gelesen, wenn du es anwendest. Es später zu bearbeiten ändert, womit der nächste Beitrag startet. Entwürfe und geplante Beiträge, die du bereits daraus erstellt hast, bleiben genau, wie sie sind.',
   'set.empty.title': 'Noch keine Sets',
-  'set.empty.body': 'Erstelle eines, damit du nicht bei jedem Beitrag dieselbe Kontoliste neu aufbauen musst.',
+  'set.empty.body':
+    'Erstelle eines, damit du nicht bei jedem Beitrag dieselbe Kontoliste neu aufbauen musst.',
   'set.create': 'Neues Set',
   'set.edit': 'Set bearbeiten',
   'set.archive': 'Set archivieren',
   'set.archived': 'Archiviert',
-  'set.archivedNote': 'Archivierte Sets sind in der Auswahl ausgeblendet. Beiträge, die daraus erstellt wurden, bleiben unverändert.',
+  'set.archivedNote':
+    'Archivierte Sets sind in der Auswahl ausgeblendet. Beiträge, die daraus erstellt wurden, bleiben unverändert.',
   'set.showArchived': 'Archivierte anzeigen',
   'set.saved': 'Set gespeichert.',
   'set.archivedToast': 'Set archiviert. Bereits daraus erstellte Beiträge bleiben unverändert.',
@@ -67,7 +71,8 @@ export const postingSetMessages = {
   'set.field.signature': 'Signatur',
   'set.field.signatureNone': 'Keine Signatur',
   'set.field.approval': 'Genehmigung',
-  'set.field.approvalHint': 'Die Genehmigung, die ein aus diesem Set erstellter Beitrag vor der Veröffentlichung braucht.',
+  'set.field.approvalHint':
+    'Die Genehmigung, die ein aus diesem Set erstellter Beitrag vor der Veröffentlichung braucht.',
   'set.field.schedule': 'Wann veröffentlichen',
 
   'set.approval.none': 'Keine Genehmigung nötig',
@@ -118,7 +123,8 @@ export const postingSetMessages = {
   'targetMemory.setting.enabled': 'An',
   'targetMemory.setting.disabled': 'Aus',
   'targetMemory.setting.saved': 'Einstellung gespeichert.',
-  'targetMemory.setting.cleared': 'Einstellung gespeichert. Gespeicherte Auswahlen in diesem Projekt wurden gelöscht.',
+  'targetMemory.setting.cleared':
+    'Einstellung gespeichert. Gespeicherte Auswahlen in diesem Projekt wurden gelöscht.',
 
   'targetMemory.composer.restored':
     '{count, plural, one {Mit # Konto von letztem Mal gestartet.} other {Mit # Konten von letztem Mal gestartet.}}',

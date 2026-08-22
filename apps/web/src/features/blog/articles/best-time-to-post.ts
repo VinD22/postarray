@@ -43,8 +43,7 @@ export const bestTimeToPost: BlogArticle = {
       title: 'Best time to post: the honest answer is a calculation, not a chart',
       description:
         'There is no universal best hour to post on Instagram or TikTok. Here is how to find your own answer from your audience time zones instead of a guessed chart.',
-      lede:
-        'Every "best time to post" chart you will find online is an average across accounts that are not yours. The useful version of the question is not what hour is best in general, but what local hour your own audience is actually in when you publish.',
+      lede: 'Every "best time to post" chart you will find online is an average across accounts that are not yours. The useful version of the question is not what hour is best in general, but what local hour your own audience is actually in when you publish.',
       blocks: [
         {
           kind: 'takeaways',
@@ -116,8 +115,7 @@ export const bestTimeToPost: BlogArticle = {
       title: 'Mejor hora para publicar: la respuesta honesta es un cálculo, no una tabla',
       description:
         'No existe una hora universal ideal para publicar en Instagram o TikTok. Así se calcula tu propia respuesta a partir de las zonas horarias de tu audiencia, no de una tabla genérica.',
-      lede:
-        'Cualquier tabla de "mejor hora para publicar" que encuentres en línea es un promedio de cuentas que no son la tuya. La pregunta útil no es qué hora es mejor en general, sino en qué hora local está realmente tu audiencia cuando publicas.',
+      lede: 'Cualquier tabla de "mejor hora para publicar" que encuentres en línea es un promedio de cuentas que no son la tuya. La pregunta útil no es qué hora es mejor en general, sino en qué hora local está realmente tu audiencia cuando publicas.',
       blocks: [
         {
           kind: 'takeaways',
@@ -189,8 +187,7 @@ export const bestTimeToPost: BlogArticle = {
       title: 'Melhor horário para postar: a resposta honesta é um cálculo, não uma tabela',
       description:
         'Não existe um horário universal ideal para postar no Instagram ou no TikTok. Veja como calcular sua própria resposta a partir dos fusos horários da sua audiência, em vez de uma tabela genérica.',
-      lede:
-        'Toda tabela de "melhor horário para postar" que você encontra por aí é uma média de contas que não são a sua. A pergunta útil não é qual horário é melhor em geral, e sim em que horário local sua audiência realmente está quando você publica.',
+      lede: 'Toda tabela de "melhor horário para postar" que você encontra por aí é uma média de contas que não são a sua. A pergunta útil não é qual horário é melhor em geral, e sim em que horário local sua audiência realmente está quando você publica.',
       blocks: [
         {
           kind: 'takeaways',
@@ -262,8 +259,7 @@ export const bestTimeToPost: BlogArticle = {
       title: 'Bester Zeitpunkt zum Posten: die ehrliche Antwort ist eine Rechnung, kein Diagramm',
       description:
         'Es gibt keine universelle beste Uhrzeit zum Posten auf Instagram oder TikTok. So berechnest du deine eigene Antwort anhand der Zeitzonen deines Publikums statt eines geschätzten Diagramms.',
-      lede:
-        'Jede online zu findende Tabelle zur "besten Zeit zum Posten" ist ein Durchschnitt über Konten, die nicht deine sind. Die eigentlich nützliche Frage lautet nicht, welche Uhrzeit allgemein am besten ist, sondern in welcher Ortszeit dein Publikum tatsächlich ist, wenn du veröffentlichst.',
+      lede: 'Jede online zu findende Tabelle zur "besten Zeit zum Posten" ist ein Durchschnitt über Konten, die nicht deine sind. Die eigentlich nützliche Frage lautet nicht, welche Uhrzeit allgemein am besten ist, sondern in welcher Ortszeit dein Publikum tatsächlich ist, wenn du veröffentlichst.',
       blocks: [
         {
           kind: 'takeaways',
@@ -335,16 +331,15 @@ export const bestTimeToPost: BlogArticle = {
       title: 'Meilleur moment pour publier : la réponse honnête est un calcul, pas un tableau',
       description:
         "Il n'existe pas d'heure universelle idéale pour publier sur Instagram ou TikTok. Voici comment calculer votre propre réponse à partir des fuseaux horaires de votre audience.",
-      lede:
-        'Tout tableau de "meilleur moment pour publier" trouvé en ligne est une moyenne sur des comptes qui ne sont pas le vôtre. La question utile n\'est pas quelle heure est la meilleure en général, mais dans quel fuseau horaire local se trouve réellement votre audience quand vous publiez.',
+      lede: 'Tout tableau de "meilleur moment pour publier" trouvé en ligne est une moyenne sur des comptes qui ne sont pas le vôtre. La question utile n\'est pas quelle heure est la meilleure en général, mais dans quel fuseau horaire local se trouve réellement votre audience quand vous publiez.',
       blocks: [
         {
           kind: 'takeaways',
           title: 'En résumé',
           items: [
             "Aucune heure n'est la meilleure pour tous les comptes. Les tableaux publiés font une moyenne sur des audiences qui ne sont pas la vôtre.",
-            "La question à laquelle on peut vraiment répondre : à quoi ressemble une même heure de publication dans chaque fuseau de votre audience.",
-            'Utilisez le calculateur ci-dessous avec les fuseaux réels de votre audience, plutôt qu\'une moyenne mondiale devinée.',
+            'La question à laquelle on peut vraiment répondre : à quoi ressemble une même heure de publication dans chaque fuseau de votre audience.',
+            "Utilisez le calculateur ci-dessous avec les fuseaux réels de votre audience, plutôt qu'une moyenne mondiale devinée.",
           ],
         },
         {
@@ -354,7 +349,7 @@ export const bestTimeToPost: BlogArticle = {
         },
         {
           kind: 'paragraph',
-          text: 'Un tableau du "meilleur moment pour publier sur Instagram" est construit en faisant la moyenne de l\'engagement sur un large ensemble mixte de comptes, puis en indiquant l\'heure où cette moyenne est la plus élevée. Ce chiffre décrit le jeu de données dont il est issu, pas votre compte. Si votre audience est concentrée dans une région pendant que le jeu de données penche vers une autre, l\'heure publiée peut pointer vers un moment où la majorité de vos propres lecteurs dort.',
+          text: "Un tableau du \"meilleur moment pour publier sur Instagram\" est construit en faisant la moyenne de l'engagement sur un large ensemble mixte de comptes, puis en indiquant l'heure où cette moyenne est la plus élevée. Ce chiffre décrit le jeu de données dont il est issu, pas votre compte. Si votre audience est concentrée dans une région pendant que le jeu de données penche vers une autre, l'heure publiée peut pointer vers un moment où la majorité de vos propres lecteurs dort.",
         },
         {
           kind: 'paragraph',
@@ -373,7 +368,7 @@ export const bestTimeToPost: BlogArticle = {
           kind: 'tool',
           tool: 'zone-planner',
           caption:
-            'Choisissez une date, une heure et votre fuseau, ajoutez les fuseaux où se trouve votre audience, et voyez le même instant dans chacun d\'eux, y compris si un changement d\'heure le déplace dans les quatre prochaines semaines.',
+            "Choisissez une date, une heure et votre fuseau, ajoutez les fuseaux où se trouve votre audience, et voyez le même instant dans chacun d'eux, y compris si un changement d'heure le déplace dans les quatre prochaines semaines.",
         },
         {
           kind: 'heading',
@@ -408,8 +403,7 @@ export const bestTimeToPost: BlogArticle = {
       title: '投稿に最適な時間帯は「表」ではなく「計算」で決める',
       description:
         'InstagramやTikTokに「万人共通の最適な時間帯」は存在しません。当て推量の表ではなく、自分のオーディエンスのタイムゾーンから答えを計算する方法を紹介します。',
-      lede:
-        'ネットで見つかる「投稿のベストタイム」の表は、どれも自分のアカウントではない集団の平均にすぎません。本当に意味のある問いは「一般的に何時が最適か」ではなく、「投稿した瞬間、実際のオーディエンスは現地で何時にいるか」です。',
+      lede: 'ネットで見つかる「投稿のベストタイム」の表は、どれも自分のアカウントではない集団の平均にすぎません。本当に意味のある問いは「一般的に何時が最適か」ではなく、「投稿した瞬間、実際のオーディエンスは現地で何時にいるか」です。',
       blocks: [
         {
           kind: 'takeaways',
@@ -481,8 +475,7 @@ export const bestTimeToPost: BlogArticle = {
       title: 'Waktu terbaik untuk posting: jawaban jujurnya adalah hitungan, bukan tabel',
       description:
         'Tidak ada satu waktu terbaik universal untuk posting di Instagram atau TikTok. Ini cara menghitung jawabanmu sendiri dari zona waktu audiens, bukan dari tabel tebakan.',
-      lede:
-        'Setiap tabel "waktu terbaik untuk posting" yang kamu temukan online adalah rata-rata dari akun yang bukan akunmu. Pertanyaan yang benar-benar berguna bukan jam berapa yang terbaik secara umum, melainkan jam berapa waktu lokal audiensmu saat kamu benar-benar memposting.',
+      lede: 'Setiap tabel "waktu terbaik untuk posting" yang kamu temukan online adalah rata-rata dari akun yang bukan akunmu. Pertanyaan yang benar-benar berguna bukan jam berapa yang terbaik secara umum, melainkan jam berapa waktu lokal audiensmu saat kamu benar-benar memposting.',
       blocks: [
         {
           kind: 'takeaways',

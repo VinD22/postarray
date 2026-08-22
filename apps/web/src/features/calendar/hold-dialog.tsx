@@ -54,11 +54,7 @@ export interface HoldDialogProps {
   /** Injected so the missed-instant branch is testable and not clock-flaky. */
   now?: Date;
   onPause: (input: { entry: CalendarEntry; note: string | null }) => void;
-  onResume: (input: {
-    entry: CalendarEntry;
-    toInstant?: string;
-    timeZone?: string;
-  }) => void;
+  onResume: (input: { entry: CalendarEntry; toInstant?: string; timeZone?: string }) => void;
 }
 
 /**
@@ -111,7 +107,8 @@ export function HoldDialog({
   const at = now ?? new Date();
   const needsNewTime = intent === 'resume' && resumeNeedsNewTime(entry.scheduledAt, at);
   const chosenInstant = localTime === '' ? null : instantFromLocal(localTime, timeZone);
-  const readyToResume = !needsNewTime || (chosenInstant !== null && chosenInstant.getTime() > at.getTime());
+  const readyToResume =
+    !needsNewTime || (chosenInstant !== null && chosenInstant.getTime() > at.getTime());
 
   const handleConfirm = (): void => {
     if (intent === 'pause') {

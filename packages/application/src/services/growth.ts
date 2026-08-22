@@ -277,90 +277,96 @@ export function createGrowthService(deps: ServiceDeps, content: ContentService):
           body: input,
           resourceIdOf: (profile) => profile.id,
           run: () =>
-            authorized(deps, ctx, 'growth.write', { projectId: input.projectId }, async (db, actor) => {
-              await requireProjectOwnership(db, actor, input.projectId);
-              const existing =
-                input.profileId === undefined
-                  ? await db.businessProfile.findFirst({
-                      where: { projectId: input.projectId },
-                      orderBy: { version: 'desc' },
-                      select: PROFILE_SELECT,
-                    })
-                  : await db.businessProfile.findFirst({
-                      where: { id: input.profileId },
-                      select: PROFILE_SELECT,
-                    });
+            authorized(
+              deps,
+              ctx,
+              'growth.write',
+              { projectId: input.projectId },
+              async (db, actor) => {
+                await requireProjectOwnership(db, actor, input.projectId);
+                const existing =
+                  input.profileId === undefined
+                    ? await db.businessProfile.findFirst({
+                        where: { projectId: input.projectId },
+                        orderBy: { version: 'desc' },
+                        select: PROFILE_SELECT,
+                      })
+                    : await db.businessProfile.findFirst({
+                        where: { id: input.profileId },
+                        select: PROFILE_SELECT,
+                      });
 
-              const data = {
-                projectId: input.projectId,
-                productName: input.productName,
-                productUrl: input.siteUrl,
-                description: input.description,
-                category: input.category,
-                markets: [...(input.markets ?? [])],
-                languages: [...(input.contentLocales ?? [])],
-                idealCustomer: input.idealCustomer ?? null,
-                objective: input.objective,
-                conversionEvent: input.conversionEvent ?? null,
-                proofAssets: [...(input.proofAssets ?? [])],
-                competitors: toJson([...(input.competitors ?? [])]),
-                weeklyCapacityHours: input.weeklyCapacityHours ?? null,
-                prohibitedClaims: [...(input.prohibitedClaims ?? [])],
-                prohibitedTopics: [...(input.prohibitedTopics ?? [])],
-                completenessScore: Math.round(
-                  (100 *
-                    [
-                      input.productName,
-                      input.description,
-                      input.objective,
-                      input.conversionEvent ?? '',
-                      (input.contentLocales ?? []).join(','),
-                    ].filter((value) => value.trim() !== '').length) /
-                    REQUIRED_PROFILE_FIELDS.length,
-                ),
-              };
+                const data = {
+                  projectId: input.projectId,
+                  productName: input.productName,
+                  productUrl: input.siteUrl,
+                  description: input.description,
+                  category: input.category,
+                  markets: [...(input.markets ?? [])],
+                  languages: [...(input.contentLocales ?? [])],
+                  idealCustomer: input.idealCustomer ?? null,
+                  objective: input.objective,
+                  conversionEvent: input.conversionEvent ?? null,
+                  proofAssets: [...(input.proofAssets ?? [])],
+                  competitors: toJson([...(input.competitors ?? [])]),
+                  weeklyCapacityHours: input.weeklyCapacityHours ?? null,
+                  prohibitedClaims: [...(input.prohibitedClaims ?? [])],
+                  prohibitedTopics: [...(input.prohibitedTopics ?? [])],
+                  completenessScore: Math.round(
+                    (100 *
+                      [
+                        input.productName,
+                        input.description,
+                        input.objective,
+                        input.conversionEvent ?? '',
+                        (input.contentLocales ?? []).join(','),
+                      ].filter((value) => value.trim() !== '').length) /
+                      REQUIRED_PROFILE_FIELDS.length,
+                  ),
+                };
 
-              const selectedConnections =
-                input.existingChannels === undefined || input.existingChannels.length === 0
-                  ? []
-                  : await db.socialConnection.findMany({
-                      where: { id: { in: [...input.existingChannels] } },
-                      select: { provider: true },
-                    });
-              const existingChannels = [
-                ...new Set(
-                  selectedConnections.map((connection) => toProviderId(connection.provider)),
-                ),
-              ];
+                const selectedConnections =
+                  input.existingChannels === undefined || input.existingChannels.length === 0
+                    ? []
+                    : await db.socialConnection.findMany({
+                        where: { id: { in: [...input.existingChannels] } },
+                        select: { provider: true },
+                      });
+                const existingChannels = [
+                  ...new Set(
+                    selectedConnections.map((connection) => toProviderId(connection.provider)),
+                  ),
+                ];
 
-              // A confirmed profile is never edited in place: a change produces a
-              // new revision so a plan can name the revision it was built from.
-              const row =
-                existing === null || existing.confirmedAt !== null
-                  ? await db.businessProfile.create({
-                      data: {
-                        ...data,
-                        existingChannels: toJson(existingChannels),
-                        workspaceId: actor.workspace.id,
-                        version: (existing?.version ?? 0) + 1,
-                      },
-                      select: PROFILE_SELECT,
-                    })
-                  : await db.businessProfile.update({
-                      where: { id: existing.id },
-                      data: { ...data, existingChannels: toJson(existingChannels) },
-                      select: PROFILE_SELECT,
-                    });
+                // A confirmed profile is never edited in place: a change produces a
+                // new revision so a plan can name the revision it was built from.
+                const row =
+                  existing === null || existing.confirmedAt !== null
+                    ? await db.businessProfile.create({
+                        data: {
+                          ...data,
+                          existingChannels: toJson(existingChannels),
+                          workspaceId: actor.workspace.id,
+                          version: (existing?.version ?? 0) + 1,
+                        },
+                        select: PROFILE_SELECT,
+                      })
+                    : await db.businessProfile.update({
+                        where: { id: existing.id },
+                        data: { ...data, existingChannels: toJson(existingChannels) },
+                        select: PROFILE_SELECT,
+                      });
 
-              await recordAudit(db, actor, {
-                action: 'workspace.updated',
-                targetType: 'business_profile',
-                targetId: row.id,
-                after: { revision: row.version, projectId: input.projectId },
-              });
+                await recordAudit(db, actor, {
+                  action: 'workspace.updated',
+                  targetType: 'business_profile',
+                  targetId: row.id,
+                  after: { revision: row.version, projectId: input.projectId },
+                });
 
-              return toProfileView(row);
-            }),
+                return toProfileView(row);
+              },
+            ),
         },
         deps.clock,
       );

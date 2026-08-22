@@ -36,7 +36,8 @@ export const importMessages = {
   'import.upload.allowPast': 'Payagan ang mga oras na nakalipas na',
   'import.upload.allowPastHelp':
     'Naka-off bilang default. Ire-report ang row na may petsang nakaraan para maayos mo ito, sa halip na awtomatikong ilipat.',
-  'import.upload.tooLarge': 'Mas malaki sa {limit} na character ang file na iyon. Hatiin ito at subukan ulit.',
+  'import.upload.tooLarge':
+    'Mas malaki sa {limit} na character ang file na iyon. Hatiin ito at subukan ulit.',
   'import.upload.duplicate':
     'Ito ang parehong file na na-upload mo na noon, kaya tinitingnan mo ang import na iyon sa halip na ikalawang kopya nito.',
 
@@ -44,13 +45,15 @@ export const importMessages = {
   'import.template.download': 'Mag-download ng template na CSV',
   'import.template.required': 'Mga kinakailangang column',
   'import.template.optional': 'Mga opsyonal na column',
-  'import.column.external_row_id': 'Ang sarili mong id para sa row. Dapat ito ay natatangi sa loob ng file.',
+  'import.column.external_row_id':
+    'Ang sarili mong id para sa row. Dapat ito ay natatangi sa loob ng file.',
   'import.column.project': 'Ang pangalan o id ng project na pag-aari ng row.',
   'import.column.targets':
     'Alinman sa set: na sinusundan ng id ng isang target set, o mga id ng account na pinaghihiwalay ng vertical bar.',
   'import.column.caption': 'Ang teksto ng post.',
   'import.column.scheduled_local_time': 'Petsa at oras na lokal, isinulat bilang 2026-09-01T10:00.',
-  'import.column.time_zone': 'Ang IANA zone kung saan babasahin ang oras na lokal, halimbawa Europe/Berlin.',
+  'import.column.time_zone':
+    'Ang IANA zone kung saan babasahin ang oras na lokal, halimbawa Europe/Berlin.',
   'import.column.media':
     'Isang media id, sha256: na sinusundan ng checksum ng media na mayroon ka na, o isang https address na kukunin ng server.',
   'import.column.title': 'Isang pamagat, kung saan gumagamit nito ang destinasyon.',
@@ -112,7 +115,8 @@ export const importMessages = {
   'import.apply.scheduledHelp':
     'Ang bawat row na handa ay nagiging draft at kukunin ang oras na nakasulat sa file. Piliin ito kung tama lang ang mga oras.',
   'import.apply.confirm': 'I-apply ang {count, plural, one {# row} other {# row}}',
-  'import.apply.confirmScheduled': 'Gumawa at i-iskedyul ang {count, plural, one {# row} other {# row}}',
+  'import.apply.confirmScheduled':
+    'Gumawa at i-iskedyul ang {count, plural, one {# row} other {# row}}',
   'import.apply.running': 'Ina-apply ang mga row',
   'import.apply.safeToRepeat':
     'Ligtas na i-apply nang dalawang beses. Ang row na nakagawa na ng draft ay hindi na gagalawin.',
@@ -137,7 +141,8 @@ export const importMessages = {
   'import.error.emptyFile': 'Walang row ang file na iyon.',
   'import.error.missingColumn': 'Kulang ang column na {column}.',
   'import.error.unknownColumn': 'Hindi nakilala ang column na {column}, kaya binalewala ito.',
-  'import.error.duplicateRowId': 'Ginamit nang mahigit isang beses ang row id na {value} sa file na ito.',
+  'import.error.duplicateRowId':
+    'Ginamit nang mahigit isang beses ang row id na {value} sa file na ito.',
   'import.error.required': 'Hindi puwedeng blangko ang cell na ito.',
   'import.error.invalidCell': 'Wala sa hugis na mababasa namin ang cell na ito.',
   'import.error.rowShape': 'May {actual} cell ang linyang ito pero {expected} ang header.',

@@ -144,9 +144,7 @@ export function DerivativeEditor({
       <Tabs defaultValue="crop">
         <TabsList>
           <TabsTrigger value="crop">{t.full('mediaLib.derivative.tab.crop')}</TabsTrigger>
-          <TabsTrigger value="transform">
-            {t.full('mediaLib.derivative.tab.transform')}
-          </TabsTrigger>
+          <TabsTrigger value="transform">{t.full('mediaLib.derivative.tab.transform')}</TabsTrigger>
           <TabsTrigger value="output">{t.full('mediaLib.derivative.tab.output')}</TabsTrigger>
         </TabsList>
 

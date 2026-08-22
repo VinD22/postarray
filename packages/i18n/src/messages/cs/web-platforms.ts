@@ -101,7 +101,8 @@ export const webPlatformsMessages = {
   'web.schedule.value.markdownYes': 'Přijímáno',
   'web.schedule.value.markdownNo': 'Publikováno jako prostý text',
 
-  'web.schedule.unit.utf16': 'Podle jednotky kódu UTF-16, což většina editorů uvádí jako počet znaků.',
+  'web.schedule.unit.utf16':
+    'Podle jednotky kódu UTF-16, což většina editorů uvádí jako počet znaků.',
   'web.schedule.unit.grapheme':
     'Podle grafému, takže emoji složené z několika kódových bodů stále stojí jeden znak.',
   'web.schedule.unit.weighted':

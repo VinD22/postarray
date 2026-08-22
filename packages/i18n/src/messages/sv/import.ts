@@ -112,14 +112,16 @@ export const importMessages = {
   'import.apply.scheduledHelp':
     'Varje klar rad blir ett utkast och tar tiden som är skriven i filen. Välj detta bara om tiderna är rätt.',
   'import.apply.confirm': 'Tillämpa {count, plural, one {# rad} other {# rader}}',
-  'import.apply.confirmScheduled': 'Skapa och schemalägg {count, plural, one {# rad} other {# rader}}',
+  'import.apply.confirmScheduled':
+    'Skapa och schemalägg {count, plural, one {# rad} other {# rader}}',
   'import.apply.running': 'Tillämpar rader',
   'import.apply.safeToRepeat':
     'Att tillämpa två gånger är säkert. En rad som redan skapat ett utkast lämnas orörd.',
 
   'import.results.heading': 'Resultat',
   'import.results.applied': '{count, plural, one {# utkast skapat} other {# utkast skapade}}',
-  'import.results.skipped': '{count, plural, one {# rad var redan gjord} other {# rader var redan gjorda}}',
+  'import.results.skipped':
+    '{count, plural, one {# rad var redan gjord} other {# rader var redan gjorda}}',
   'import.results.failed': '{count, plural, one {# rad misslyckades} other {# rader misslyckades}}',
   'import.results.retry': 'Tillämpa återstående rader igen',
   'import.results.openDrafts': 'Öppna utkasten',
@@ -140,12 +142,16 @@ export const importMessages = {
   'import.error.required': 'Denna cell får inte vara tom.',
   'import.error.invalidCell': 'Denna cell är inte i en form vi kan läsa.',
   'import.error.rowShape': 'Denna rad har {actual} celler men rubriken har {expected}.',
-  'import.error.invalidLocalTime': 'Tiden {value} är inte ett lokalt datum och tid som 2026-09-01T10:00.',
+  'import.error.invalidLocalTime':
+    'Tiden {value} är inte ett lokalt datum och tid som 2026-09-01T10:00.',
   'import.error.invalidTimeZone': 'Zonen {value} är inte ett IANA-tidszonsnamn.',
-  'import.error.nonexistentLocalTime': 'Tiden {value} finns inte i {zone}. Klockan hoppar över den.',
-  'import.error.ambiguousLocalTime': 'Tiden {value} inträffar två gånger i {zone} den dagen. Välj en annan tid.',
+  'import.error.nonexistentLocalTime':
+    'Tiden {value} finns inte i {zone}. Klockan hoppar över den.',
+  'import.error.ambiguousLocalTime':
+    'Tiden {value} inträffar två gånger i {zone} den dagen. Välj en annan tid.',
   'import.error.scheduleInPast': 'Tiden {value} i {zone} har redan passerat.',
-  'import.error.invalidTargets': 'Värdet {value} är inte ett sparat målset eller en lista av konto-id:n.',
+  'import.error.invalidTargets':
+    'Värdet {value} är inte ett sparat målset eller en lista av konto-id:n.',
   'import.error.invalidMedia':
     'Värdet {value} är inte ett media-id, en sha256-kontrollsumma eller en https-adress.',
   'import.error.mediaNotFound': 'Inget media i denna arbetsyta matchar {value}.',

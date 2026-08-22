@@ -30,13 +30,15 @@ export const queueMessages = {
   'queue.field.timeZone': 'Časové pásmo',
   'queue.field.timeZoneHelp': 'Okna, denní počet a data blackoutu se čtou v tomto pásmu.',
   'queue.field.minimumGap': 'Minimální rozestup',
-  'queue.field.minimumGapHelp': 'Minuty mezi dvěma příspěvky. Nula znamená žádné pravidlo rozestupu.',
+  'queue.field.minimumGapHelp':
+    'Minuty mezi dvěma příspěvky. Nula znamená žádné pravidlo rozestupu.',
   'queue.field.maximumPerDay': 'Maximum za den',
   'queue.field.maximumPerDayHelp':
     'Ponechte prázdné pro žádný denní limit. Nula znamená, že toto pravidlo nic nenavrhuje.',
   'queue.field.maximumPerDayUnlimited': 'Žádný denní limit',
   'queue.field.priority': 'Priorita',
-  'queue.field.priorityHelp': 'Použije se pravidlo s nejvyšší prioritou, které může nabídnout termín.',
+  'queue.field.priorityHelp':
+    'Použije se pravidlo s nejvyšší prioritou, které může nabídnout termín.',
   'queue.field.enabled': 'Použít toto pravidlo',
 
   'queue.windows.heading': 'Týdenní okna',
@@ -61,7 +63,8 @@ export const queueMessages = {
   'queue.weekday.7': 'Neděle',
 
   'queue.blackouts.heading': 'Data blackoutu',
-  'queue.blackouts.help': 'Data, kdy tato značka nebude publikovat, čtená v časovém pásmu pravidla.',
+  'queue.blackouts.help':
+    'Data, kdy tato značka nebude publikovat, čtená v časovém pásmu pravidla.',
   'queue.blackouts.empty': 'Žádná data blackoutu.',
   'queue.blackouts.add': 'Přidat blackout',
   'queue.blackouts.remove': 'Odebrat blackout',
@@ -102,7 +105,8 @@ export const queueMessages = {
     'První čas v okně v tomto datu v pásmu {zone} neexistuje, proto byl použit nejbližší další, který existuje.',
   'queue.reason.dstAmbiguousFirst':
     'Tento místní čas nastává v pásmu {zone} v daném datu dvakrát. Byl použit první výskyt.',
-  'queue.reason.priorityChosen': 'Toto pravidlo má prioritu {priority}, nejvyšší, jakou mohlo nabídnout.',
+  'queue.reason.priorityChosen':
+    'Toto pravidlo má prioritu {priority}, nejvyšší, jakou mohlo nabídnout.',
   'queue.reason.connectionScoped':
     'Toto pravidlo pokrývá {count, plural, one {# účet} few {# účty} many {# účtu} other {# účtů}}.',
   'queue.reason.horizonExhausted': 'Do {days} dní nebylo žádné okno volné.',

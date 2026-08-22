@@ -40,11 +40,13 @@ export const mediaMessages = {
   'mediaLib.derivative.original': 'Original',
   'mediaLib.derivative.originalHint': 'Wird immer behalten. Nie überschrieben.',
   'mediaLib.derivative.item': '{width} mal {height}, {mimeType}, {size}',
-  'mediaLib.derivative.empty': 'Noch keine bearbeiteten Versionen. Das Original ist die einzige Datei hier.',
+  'mediaLib.derivative.empty':
+    'Noch keine bearbeiteten Versionen. Das Original ist die einzige Datei hier.',
   'mediaLib.derivative.select': 'Diese Version verwenden',
   'mediaLib.derivative.selected': 'Für diesen Beitrag im Einsatz',
   'mediaLib.derivative.useOriginal': 'Original verwenden',
-  'mediaLib.derivative.processing': 'Diese Version wird erstellt. Sie erscheint hier, sobald sie fertig ist.',
+  'mediaLib.derivative.processing':
+    'Diese Version wird erstellt. Sie erscheint hier, sobald sie fertig ist.',
   'mediaLib.derivative.alreadyExists':
     'Du hast genau diese Bearbeitung schon einmal gemacht, also haben wir diese Version wiederverwendet, statt eine zweite zu erstellen.',
   'mediaLib.derivative.failedTitle': 'Diese Version konnte nicht erstellt werden',
@@ -60,7 +62,8 @@ export const mediaMessages = {
     'Das Werkzeug erzeugt keine Bilder oder Videos. Dieser Editor schneidet nur zu, dreht, skaliert, konvertiert und komprimiert, was du hochgeladen hast.',
 
   // ==================================================== Ablehnungen ====
-  'error.media_derivative_no_operations.message': 'Wähle mindestens eine Änderung, bevor du eine Version speicherst.',
+  'error.media_derivative_no_operations.message':
+    'Wähle mindestens eine Änderung, bevor du eine Version speicherst.',
   'error.media_derivative_duplicate_operation.message':
     'Jede Art von Änderung darf einmal vorkommen. Entferne das zweite {operation}.',
   'error.media_derivative_crop_out_of_bounds.message':
@@ -75,7 +78,8 @@ export const mediaMessages = {
     'Wähle ein Format zum Speichern. Eine {sourceMimeType}-Datei kann hier nicht als sich selbst gespeichert werden.',
   'error.media_derivative_quality_unsupported.message':
     'PNG ist verlustfrei, eine Qualitätseinstellung würde also nichts bewirken. Entferne sie, oder speichere als JPEG oder WebP.',
-  'error.media_derivative_no_change.message': 'Das ist bereits das Format, das diese Datei verwendet.',
+  'error.media_derivative_no_change.message':
+    'Das ist bereits das Format, das diese Datei verwendet.',
   'error.media_derivative_source_unavailable.message':
     'Die Datei, aus der diese Version stammen würde, ist nicht mehr im Speicher.',
   'error.media_derivative_preset_mismatch.message':

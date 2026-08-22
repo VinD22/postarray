@@ -29,10 +29,7 @@ export const MARKETING_CAPABILITY_COLUMNS = [
 export type MarketingCapabilityColumn = (typeof MARKETING_CAPABILITY_COLUMNS)[number];
 
 export type MarketingCapabilityState =
-  | 'supported'
-  | 'unsupported'
-  | 'not_implemented'
-  | 'requires_review';
+  'supported' | 'unsupported' | 'not_implemented' | 'requires_review';
 
 const COLUMN_FEATURES: Readonly<
   Record<MarketingCapabilityColumn, ConnectorFeature | readonly ConnectorFeature[]>
@@ -112,7 +109,9 @@ export function buildPublicMarketingCapabilityStates(
 /** Registry-backed capability states for the public marketing matrix. */
 export function buildMarketingCapabilityStates(
   registry: ConnectorRegistry,
-): Readonly<Record<ProviderId, Readonly<Record<MarketingCapabilityColumn, MarketingCapabilityState>>>> {
+): Readonly<
+  Record<ProviderId, Readonly<Record<MarketingCapabilityColumn, MarketingCapabilityState>>>
+> {
   const matrix = registry.supportMatrix();
   const output = {} as Record<
     ProviderId,

@@ -28,7 +28,8 @@ export const importMessages = {
   'import.upload.field': 'Soubor CSV',
   'import.upload.fieldHelp': 'Vyberte soubor, nebo vložte řádky do pole níže.',
   'import.upload.paste': 'Nebo vložte text CSV',
-  'import.upload.pasteHelp': 'Zahrňte řádek záhlaví. Vše se kontroluje předtím, než je cokoli vytvořeno.',
+  'import.upload.pasteHelp':
+    'Zahrňte řádek záhlaví. Vše se kontroluje předtím, než je cokoli vytvořeno.',
   'import.upload.project': 'Značka',
   'import.upload.projectHelp': 'Každý řádek v jednom souboru patří této značce.',
   'import.upload.submit': 'Zkontrolovat tento soubor',
@@ -36,7 +37,8 @@ export const importMessages = {
   'import.upload.allowPast': 'Povolit časy, které už uplynuly',
   'import.upload.allowPastHelp':
     'Ve výchozím nastavení vypnuto. Řádek s datem v minulosti je ohlášen, abyste jej mohli opravit, místo aby byl přesunut za vás.',
-  'import.upload.tooLarge': 'Tento soubor je větší než {limit} znaků. Rozdělte jej a zkuste to znovu.',
+  'import.upload.tooLarge':
+    'Tento soubor je větší než {limit} znaků. Rozdělte jej a zkuste to znovu.',
   'import.upload.duplicate':
     'Toto je stejný soubor, který jste nahráli dříve, takže se díváte na tamten import, ne na jeho druhou kopii.',
 
@@ -49,7 +51,8 @@ export const importMessages = {
   'import.column.targets': 'Set: následované id cílové sady, nebo id účtů oddělená svislou čarou.',
   'import.column.caption': 'Text příspěvku.',
   'import.column.scheduled_local_time': 'Místní datum a čas, zapsané jako 2026-09-01T10:00.',
-  'import.column.time_zone': 'Zóna IANA, ve které se tento místní čas čte, například Europe/Berlin.',
+  'import.column.time_zone':
+    'Zóna IANA, ve které se tento místní čas čte, například Europe/Berlin.',
   'import.column.media':
     'Id média, sha256: následované kontrolním součtem média, které již máte, nebo adresa https, ze které jej má server stáhnout.',
   'import.column.title': 'Titulek, tam kde jej cíl používá.',
@@ -110,7 +113,8 @@ export const importMessages = {
   'import.apply.scheduled': 'Vytvořit koncepty a naplánovat je',
   'import.apply.scheduledHelp':
     'Každý připravený řádek se stane konceptem a převezme čas zapsaný v souboru. Zvolte to pouze tehdy, pokud jsou časy správné.',
-  'import.apply.confirm': 'Použít {count, plural, one {# řádek} few {# řádky} many {# řádku} other {# řádků}}',
+  'import.apply.confirm':
+    'Použít {count, plural, one {# řádek} few {# řádky} many {# řádku} other {# řádků}}',
   'import.apply.confirmScheduled':
     'Vytvořit a naplánovat {count, plural, one {# řádek} few {# řádky} many {# řádku} other {# řádků}}',
   'import.apply.running': 'Používání řádků',
@@ -145,7 +149,8 @@ export const importMessages = {
   'import.error.rowShape': 'Tento řádek má {actual} buněk, ale záhlaví jich má {expected}.',
   'import.error.invalidLocalTime': 'Čas {value} není místní datum a čas jako 2026-09-01T10:00.',
   'import.error.invalidTimeZone': 'Zóna {value} není název časové zóny IANA.',
-  'import.error.nonexistentLocalTime': 'Čas {value} v pásmu {zone} toho dne neexistuje. Hodiny jej přeskočí.',
+  'import.error.nonexistentLocalTime':
+    'Čas {value} v pásmu {zone} toho dne neexistuje. Hodiny jej přeskočí.',
   'import.error.ambiguousLocalTime':
     'Čas {value} nastává toho dne v pásmu {zone} dvakrát. Vyberte jiný čas.',
   'import.error.scheduleInPast': 'Čas {value} v pásmu {zone} už uplynul.',

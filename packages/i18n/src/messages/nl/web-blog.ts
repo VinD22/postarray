@@ -41,7 +41,8 @@ export const webBlogMessages = {
   'web.blog.label.cluster': 'Onderwerp',
   'web.blog.label.articleList': 'Artikelen',
   'web.blog.label.backToIndex': 'Alle artikelen',
-  'web.blog.label.count': '{count, plural, =0 {Nog geen artikelen} one {# artikel} other {# artikelen}}',
+  'web.blog.label.count':
+    '{count, plural, =0 {Nog geen artikelen} one {# artikel} other {# artikelen}}',
 
   'web.blog.byline.editorial.name': 'De redactie publicatieonderzoek',
   'web.blog.byline.editorial.role': 'Schrijft en onderhoudt deze artikelen',
@@ -54,7 +55,8 @@ export const webBlogMessages = {
   'web.blog.feed.label': 'RSS-feed',
 
   'web.blog.empty.title': 'Hier is nog niets gepubliceerd',
-  'web.blog.empty.body': 'De eerste artikelen worden geschreven. De feed draagt ze zodra ze online staan.',
+  'web.blog.empty.body':
+    'De eerste artikelen worden geschreven. De feed draagt ze zodra ze online staan.',
 
   'web.blog.label.language': 'Lees dit in',
   'web.blog.label.notTranslated':

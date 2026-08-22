@@ -101,7 +101,10 @@ export function ThreadSplitterPanel(): ReactElement {
                           total: result.parts.length,
                         })}
                       </h3>
-                      <StatusTag status={status} label={t(`web.tools.preflight.status.${status}`)} />
+                      <StatusTag
+                        status={status}
+                        label={t(`web.tools.preflight.status.${status}`)}
+                      />
                     </div>
                     <p className="text-body-md text-text-primary mt-2 whitespace-pre-wrap">
                       {part.text}

@@ -70,7 +70,8 @@ export const webSettingsMessages = withHebrewPluralForms({
   'settings.ui.members.column.lastActive': 'פעיל אחרון',
   'settings.ui.members.column.actions': 'פעולות',
   'settings.ui.members.scopeAll': 'כל המותגים והחשבונות',
-  'settings.ui.members.scopeLimited': '{count, plural, one {# project} other {# projects}}: {names}',
+  'settings.ui.members.scopeLimited':
+    '{count, plural, one {# project} other {# projects}}: {names}',
   'settings.ui.members.approvals.canApprove': 'יכול לאשר',
   'settings.ui.members.approvals.cannotApprove': 'לא ניתן לאשר',
   'settings.ui.members.approvals.canApproveOwnProjects': 'יכול לאשר את הפרויקטים הרשומים',
@@ -175,8 +176,7 @@ export const webSettingsMessages = withHebrewPluralForms({
     'הפרויקט הלא פעיל הזה עוזב את סביבת העבודה הפעילה ומפנה מקום פרויקט אחד.',
   'settings.ui.projects.archiveChannels':
     'הערוצים המחוברים שלו מפסיקים להופיע בתהליכי הפרויקטים הפעילים.',
-  'settings.ui.projects.archiveHistory':
-    'טיוטות, פוסטים שפורסמו, קבלות והיסטוריית ביקורת נשמרים.',
+  'settings.ui.projects.archiveHistory': 'טיוטות, פוסטים שפורסמו, קבלות והיסטוריית ביקורת נשמרים.',
   'settings.ui.projects.archiveLastDisabled': 'השאר לפחות פרויקט פעיל אחד בסביבת העבודה.',
   'settings.ui.projects.archiveConnectedDisabled':
     'נתק את הערוצים של הפרויקט הזה לפני העברתו לארכיון.',

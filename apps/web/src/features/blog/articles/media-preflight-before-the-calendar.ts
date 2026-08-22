@@ -178,7 +178,11 @@ export const mediaPreflightBeforeTheCalendar: BlogArticle = {
           body: 'Some platforms rewrite every link to a fixed width whatever the original length, so a long tracking URL costs the same as a short one. Others charge the characters the URL actually occupies. That single difference decides whether a piece of writing fits.',
         },
 
-        { kind: 'heading', id: 'media', text: 'Media ceilings decide the shape before anybody writes' },
+        {
+          kind: 'heading',
+          id: 'media',
+          text: 'Media ceilings decide the shape before anybody writes',
+        },
         {
           kind: 'table',
           caption: 'Media ceilings as recorded in the dataset',

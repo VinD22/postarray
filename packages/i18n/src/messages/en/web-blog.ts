@@ -61,6 +61,5 @@ export const webBlogMessages = {
   'web.blog.label.language': 'Read this in',
   'web.blog.label.notTranslated':
     'This article is not yet written in your language. Showing the English version.',
-  'web.blog.label.languageCount':
-    '{count, plural, one {# language} other {# languages}}',
+  'web.blog.label.languageCount': '{count, plural, one {# language} other {# languages}}',
 } as const;

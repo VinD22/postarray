@@ -2,7 +2,14 @@
 
 import { useEffect, useMemo, useRef } from 'react';
 import { Canvas, useFrame, type RootState } from '@react-three/fiber';
-import { BufferGeometry, Line, LineBasicMaterial, Vector3, type Mesh, type MeshBasicMaterial } from 'three';
+import {
+  BufferGeometry,
+  Line,
+  LineBasicMaterial,
+  Vector3,
+  type Mesh,
+  type MeshBasicMaterial,
+} from 'three';
 
 /**
  * The hero's one WebGL element: one draft, fanning out to several distinct,
@@ -127,7 +134,13 @@ function SpokeLine({ to, color }: { readonly to: Vector3; readonly color: string
   return <primitive object={line} />;
 }
 
-function DestinationNode({ position, color }: { readonly position: Vector3; readonly color: string }) {
+function DestinationNode({
+  position,
+  color,
+}: {
+  readonly position: Vector3;
+  readonly color: string;
+}) {
   return (
     <mesh position={position}>
       <octahedronGeometry args={[0.1, 0]} />

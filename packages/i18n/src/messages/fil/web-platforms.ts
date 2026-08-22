@@ -67,7 +67,8 @@ export const webPlatformsMessages = {
   'web.schedule.limits.title': 'Mga limitasyong ipinapatupad ng {platform}',
   'web.schedule.limits.lede':
     'Binasa para sa isang bagong konektadong account na walang elevated eligibility. Puwedeng itaas o ibaba ng isang platform ang alinman sa mga ito nang hindi sinasabi kaninuman, kaya dala ng bawat set ang petsang binasa ito.',
-  'web.schedule.limits.unavailable.title': 'Hindi pa naka-record ang mga limitasyon para sa {platform}',
+  'web.schedule.limits.unavailable.title':
+    'Hindi pa naka-record ang mga limitasyon para sa {platform}',
   'web.schedule.limits.unavailable.body':
     'Walang adapter ang build na ito para sa platform na ito, kaya walang naka-record na ceiling para ipakita. Mas malala ang isang gawa-gawang numero kaysa sa wala.',
   'web.schedule.limits.sourceLabel': 'Opisyal na dokumentasyon ng platform',
@@ -102,7 +103,8 @@ export const webPlatformsMessages = {
     'Sa isang weighted na scheme kung saan karamihan sa mga character na hindi Latin ay may halagang dalawa sa halip na isa.',
 
   'web.schedule.link.none': 'Hindi binibilang ang mga link sa ceiling.',
-  'web.schedule.link.actual': 'Ang isang link ay may halagang eksaktong bilang ng character na sinasakop nito.',
+  'web.schedule.link.actual':
+    'Ang isang link ay may halagang eksaktong bilang ng character na sinasakop nito.',
   'web.schedule.link.fixed':
     'Isinusulat ulit ang bawat link sa platform shortener at may halagang {count, plural, one {# character} other {# character}} anuman ang totoong haba nito.',
 
@@ -137,7 +139,8 @@ export const webPlatformsMessages = {
   'web.specs.index.lede':
     'Isang page kada limitasyon, kada platform. Sinasabi ng bawat page ang naka-record na value, ang opisyal na dokumentong pinagmulan nito, at ang petsang binasa iyon ng isang tao. Wala ritong na-type nang manwal: nagawa ang mga value mula sa connector code, kaya may page lang kung may value ang dataset.',
   'web.specs.index.listLabel': 'Mga platform na may naka-record na limitasyon',
-  'web.specs.index.count': '{count, plural, one {# naka-record na limitasyon} other {# na naka-record na limitasyon}}',
+  'web.specs.index.count':
+    '{count, plural, one {# naka-record na limitasyon} other {# na naka-record na limitasyon}}',
   'web.specs.index.missingTitle': 'Bakit puwedeng kulang ang isang platform dito',
   'web.specs.index.missingBody':
     'Lalabas lang ang isang platform kung may adapter ang build na ito para dito at may kahit isang value ang nagawang dataset. Walang page ang platform na walang naka-record, dahil mas malala ang isang page na nakabatay sa gawa-gawang numero kaysa sa walang page.',

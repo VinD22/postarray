@@ -24,7 +24,8 @@ export const postingSetMessages = {
   'calendar.hold.confirmScope':
     'Att pausa stoppar det som inte har hänt än. Allt som redan publicerats till en plattform förblir publicerat, och pausning tar inte bort eller ändrar det.',
   'calendar.hold.confirmNoteLabel': 'Varför pausar du detta? (valfritt)',
-  'calendar.hold.confirmNoteHint': 'Sparas i granskningsloggen för ditt team. Skickas inte till någon plattform.',
+  'calendar.hold.confirmNoteHint':
+    'Sparas i granskningsloggen för ditt team. Skickas inte till någon plattform.',
   'calendar.hold.confirm': 'Pausa detta inlägg',
   'calendar.hold.cancel': 'Lämna det schemalagt',
 
@@ -60,7 +61,8 @@ export const postingSetMessages = {
   'set.edit': 'Redigera Uppsättning',
   'set.archive': 'Arkivera Uppsättning',
   'set.archived': 'Arkiverad',
-  'set.archivedNote': 'Arkiverade Uppsättningar döljs i väljaren. Inlägg gjorda från dem påverkas inte.',
+  'set.archivedNote':
+    'Arkiverade Uppsättningar döljs i väljaren. Inlägg gjorda från dem påverkas inte.',
   'set.showArchived': 'Visa arkiverade',
   'set.saved': 'Uppsättning sparad.',
   'set.archivedToast': 'Uppsättning arkiverad. Inlägg redan gjorda från den påverkas inte.',

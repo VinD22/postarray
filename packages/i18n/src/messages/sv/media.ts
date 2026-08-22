@@ -47,7 +47,8 @@ export const mediaMessages = {
   'mediaLib.derivative.qualityHint':
     'Lägre kvalitet ger en mindre fil. Gäller JPEG och WebP. PNG är förlustfritt och ignorerar det.',
   'mediaLib.derivative.projected': 'Denna version blir {width} gånger {height} pixlar.',
-  'mediaLib.derivative.projectedUnavailable': 'Storleken på denna version är inte tillgänglig förrän den skapas.',
+  'mediaLib.derivative.projectedUnavailable':
+    'Storleken på denna version är inte tillgänglig förrän den skapas.',
 
   // ==================================================== the versions list ====
   'mediaLib.derivative.listHeading': 'Versioner',
@@ -62,7 +63,8 @@ export const mediaMessages = {
   'mediaLib.derivative.alreadyExists':
     'Du har gjort exakt denna redigering tidigare, så vi återanvände den versionen i stället för att göra en till.',
   'mediaLib.derivative.failedTitle': 'Denna version kunde inte skapas',
-  'mediaLib.derivative.failedBody': 'Inget sparades och ditt original är orört. Ändra värdena och försök igen.',
+  'mediaLib.derivative.failedBody':
+    'Inget sparades och ditt original är orört. Ändra värdena och försök igen.',
   'mediaLib.derivative.openEditor': 'Redigera {name}',
 
   'mediaLib.derivative.unsupportedTitle': 'Redigering fungerar bara på bilder',
@@ -73,7 +75,8 @@ export const mediaMessages = {
     'Relay genererar inte bilder eller video. Denna redigerare beskär, roterar, ändrar storlek på, konverterar och komprimerar bara det du laddade upp.',
 
   // ==================================================== refusals ====
-  'error.media_derivative_no_operations.message': 'Välj minst en ändring innan du sparar en version.',
+  'error.media_derivative_no_operations.message':
+    'Välj minst en ändring innan du sparar en version.',
   'error.media_derivative_duplicate_operation.message':
     'Varje typ av ändring kan förekomma en gång. Ta bort den andra {operation}.',
   'error.media_derivative_crop_out_of_bounds.message':

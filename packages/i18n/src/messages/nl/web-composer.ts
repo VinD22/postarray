@@ -385,7 +385,8 @@ export const webComposerMessages = {
   'mediaLib.import.issue.invalid': 'Voer een volledige URL in.',
   'mediaLib.import.issue.scheme': 'Gebruik een HTTP- of HTTPS-link.',
   'mediaLib.import.issue.credentials': 'Gebruik een link zonder gebruikersnaam of wachtwoord.',
-  'mediaLib.retention.title': 'Opgeslagen bestanden worden 30 dagen bewaard nadat het bericht is gemaakt',
+  'mediaLib.retention.title':
+    'Opgeslagen bestanden worden 30 dagen bewaard nadat het bericht is gemaakt',
   'mediaLib.retention.body':
     'Zodra een bestand aan een bericht is gekoppeld, verwijderen we het permanent uit de Relay-opslag 30 dagen nadat dat bericht is gemaakt. Bestanden die wachten om gekoppeld te worden, gebruiken de uploaddatum als opschoning-terugval. Berichttekst, publicatiebevestigingen en auditgeschiedenis blijven langer beschikbaar. Een gepubliceerd bericht op een sociaal platform wordt niet verwijderd wanneer het opgeslagen bestand verloopt.',
   'mediaLib.retention.limits':

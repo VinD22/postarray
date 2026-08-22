@@ -15,7 +15,8 @@ export const postingSetMessages = {
   'calendar.hold.badgeBilling': 'Naka-pause dahil sa billing',
   'calendar.hold.term': 'Pause',
   'calendar.hold.byPerson': 'Na-pause mo ito noong {date}.',
-  'calendar.hold.byBilling': 'Na-pause noong {date} dahil nawalan ng buong access ang workspace na ito.',
+  'calendar.hold.byBilling':
+    'Na-pause noong {date} dahil nawalan ng buong access ang workspace na ito.',
   'calendar.hold.none': 'Hindi naka-pause',
 
   'calendar.hold.confirmTitle': 'I-pause ang post na ito?',
@@ -56,12 +57,14 @@ export const postingSetMessages = {
   'set.appliedOnce':
     'Isang beses lang binabasa ang isang Set, kapag inapply mo ito. Ang pag-edit dito pagkatapos ay nagbabago lang sa simula ng susunod na post. Mananatiling eksaktong pareho ang mga draft at naka-iskedyul na post na nagawa mo na mula rito.',
   'set.empty.title': 'Wala pang Set',
-  'set.empty.body': 'Gumawa ng isa para hindi mo na kailangang gawin ulit ang parehong listahan ng account sa bawat post.',
+  'set.empty.body':
+    'Gumawa ng isa para hindi mo na kailangang gawin ulit ang parehong listahan ng account sa bawat post.',
   'set.create': 'Bagong Set',
   'set.edit': 'I-edit ang Set',
   'set.archive': 'I-archive ang Set',
   'set.archived': 'Naka-archive',
-  'set.archivedNote': 'Nakatago sa picker ang mga naka-archive na Set. Hindi nagbabago ang mga post na nagawa mula sa mga ito.',
+  'set.archivedNote':
+    'Nakatago sa picker ang mga naka-archive na Set. Hindi nagbabago ang mga post na nagawa mula sa mga ito.',
   'set.showArchived': 'Ipakita ang mga naka-archive',
   'set.saved': 'Na-save ang Set.',
   'set.archivedToast': 'Na-archive ang Set. Hindi nagbabago ang mga post na nagawa na mula rito.',
@@ -72,11 +75,13 @@ export const postingSetMessages = {
   'set.field.descriptionHint': 'Opsyonal. Para saan ang Set na ito.',
   'set.field.targets': 'Mga account',
   'set.field.targetsHint': 'Bawat account na sisimulan ng post na nagawa mula sa Set na ito.',
-  'set.field.targetCount': '{count, plural, =0 {Walang account} one {# account} other {# na account}}',
+  'set.field.targetCount':
+    '{count, plural, =0 {Walang account} one {# account} other {# na account}}',
   'set.field.signature': 'Lagda',
   'set.field.signatureNone': 'Walang lagda',
   'set.field.approval': 'Pag-apruba',
-  'set.field.approvalHint': 'Ang pag-apruba na kailangan bago ma-publish ng post na nagawa mula sa Set na ito.',
+  'set.field.approvalHint':
+    'Ang pag-apruba na kailangan bago ma-publish ng post na nagawa mula sa Set na ito.',
   'set.field.schedule': 'Kailan i-publish',
 
   'set.approval.none': 'Walang kailangang pag-apruba',
@@ -108,7 +113,8 @@ export const postingSetMessages = {
   'set.defaults.requireAltText': 'Kailanganin ang alt text sa bawat larawan',
   'set.defaults.requireAltTextHint':
     "Hindi maiiskedyul sa platform na iyon ang post na nagawa mula sa Set na ito hangga't walang alt text ang bawat larawan.",
-  'set.defaults.empty': 'Walang default kada platform. Nagsisimula ang bawat account mula sa pangunahing post.',
+  'set.defaults.empty':
+    'Walang default kada platform. Nagsisimula ang bawat account mula sa pangunahing post.',
 
   'set.error.nameTaken': 'May ibang Set na sa project na ito ang gumagamit na ng pangalang iyon.',
   'set.error.archived': 'Naka-archive na ang Set na ito. Ibalik ito bago i-edit.',
@@ -127,7 +133,8 @@ export const postingSetMessages = {
   'targetMemory.setting.enabled': 'Naka-on',
   'targetMemory.setting.disabled': 'Naka-off',
   'targetMemory.setting.saved': 'Na-save ang setting.',
-  'targetMemory.setting.cleared': 'Na-save ang setting. Nabura ang mga naka-save na seleksyon sa project na ito.',
+  'targetMemory.setting.cleared':
+    'Na-save ang setting. Nabura ang mga naka-save na seleksyon sa project na ito.',
 
   'targetMemory.composer.restored':
     '{count, plural, one {Nagsimula gamit ang # account mula sa huling beses.} other {Nagsimula gamit ang # na account mula sa huling beses.}}',

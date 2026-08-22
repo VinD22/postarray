@@ -51,7 +51,8 @@ export const webComparisonMessages = {
   'web.comparison.method.title': '此頁面如何製作',
   'web.comparison.method.body':
     '每一列都是一項主張，並附有其來源文件，以及有人閱讀該文件的日期。沒有競品的螢幕截圖，沒有照抄的功能文字，也沒有捏造的弱點。',
-  'web.comparison.method.cadence': '每份比較至少每 90 天重新檢查一次，並在平台或選項變更了某一列所陳述的內容時，立即更新。',
+  'web.comparison.method.cadence':
+    '每份比較至少每 90 天重新檢查一次，並在平台或選項變更了某一列所陳述的內容時，立即更新。',
 
   'web.comparison.questions.title': '問題',
   'web.comparison.sources.title': '本頁引用的來源',

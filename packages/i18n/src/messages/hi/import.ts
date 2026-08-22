@@ -16,7 +16,8 @@ export const importMessages = {
   'import.upload.field': 'CSV फ़ाइल',
   'import.upload.fieldHelp': 'एक फ़ाइल चुनें, या नीचे बॉक्स में पंक्तियां पेस्ट करें।',
   'import.upload.paste': 'या CSV टेक्स्ट पेस्ट करें',
-  'import.upload.pasteHelp': 'हेडर पंक्ति शामिल करें। कुछ भी बनाए जाने से पहले सब कुछ जांचा जाता है।',
+  'import.upload.pasteHelp':
+    'हेडर पंक्ति शामिल करें। कुछ भी बनाए जाने से पहले सब कुछ जांचा जाता है।',
   'import.upload.project': 'प्रोजेक्ट',
   'import.upload.projectHelp': 'एक फ़ाइल में हर पंक्ति इसी प्रोजेक्ट से संबंधित है।',
   'import.upload.submit': 'इस फ़ाइल की जांच करें',
@@ -24,7 +25,8 @@ export const importMessages = {
   'import.upload.allowPast': 'बीत चुके समय की अनुमति दें',
   'import.upload.allowPastHelp':
     'डिफ़ॉल्ट रूप से बंद। अतीत की तारीख वाली पंक्ति की रिपोर्ट दी जाती है ताकि आप इसे स्वयं ठीक कर सकें, इसे स्वतः स्थानांतरित नहीं किया जाता।',
-  'import.upload.tooLarge': 'वह फ़ाइल {limit} अक्षरों से बड़ी है। इसे विभाजित करें और फिर से कोशिश करें।',
+  'import.upload.tooLarge':
+    'वह फ़ाइल {limit} अक्षरों से बड़ी है। इसे विभाजित करें और फिर से कोशिश करें।',
   'import.upload.duplicate':
     'यह वही फ़ाइल है जिसे आपने पहले अपलोड किया था, इसलिए आप इसकी दूसरी प्रति के बजाय वही आयात देख रहे हैं।',
 
@@ -32,13 +34,16 @@ export const importMessages = {
   'import.template.download': 'एक टेम्पलेट CSV डाउनलोड करें',
   'import.template.required': 'आवश्यक कॉलम',
   'import.template.optional': 'वैकल्पिक कॉलम',
-  'import.column.external_row_id': 'इस पंक्ति के लिए आपकी अपनी id। यह फ़ाइल के भीतर अद्वितीय होनी चाहिए।',
+  'import.column.external_row_id':
+    'इस पंक्ति के लिए आपकी अपनी id। यह फ़ाइल के भीतर अद्वितीय होनी चाहिए।',
   'import.column.project': 'वह प्रोजेक्ट नाम या id जिससे यह पंक्ति संबंधित है।',
   'import.column.targets':
     'या तो: लक्ष्य सेट id से पहले, या ऊर्ध्वाधर पट्टी से अलग किए गए खाता id।',
   'import.column.caption': 'पोस्ट का पाठ।',
-  'import.column.scheduled_local_time': 'स्थानीय तारीख और समय, 2026-09-01T10:00 के रूप में लिखा गया।',
-  'import.column.time_zone': 'वह IANA क्षेत्र जिसमें स्थानीय समय पढ़ा जाता है, उदाहरण के लिए Europe/Berlin।',
+  'import.column.scheduled_local_time':
+    'स्थानीय तारीख और समय, 2026-09-01T10:00 के रूप में लिखा गया।',
+  'import.column.time_zone':
+    'वह IANA क्षेत्र जिसमें स्थानीय समय पढ़ा जाता है, उदाहरण के लिए Europe/Berlin।',
   'import.column.media':
     'एक मीडिया id, sha256: जिसके बाद आपके पास पहले से मौजूद मीडिया का चेकसम, या सर्वर के लाने के लिए एक https पता।',
   'import.column.title': 'एक शीर्षक, जहां गंतव्य इसका उपयोग करता है।',
@@ -140,14 +145,14 @@ export const importMessages = {
   'import.error.scheduleInPast': '{zone} में समय {value} पहले ही बीत चुका है।',
   'import.error.invalidTargets':
     'मान {value} न तो एक सहेजा गया लक्ष्य सेट है और न ही खाता id की सूची।',
-  'import.error.invalidMedia':
-    'मान {value} न तो मीडिया id है, न sha256 चेकसम, न ही https पता।',
+  'import.error.invalidMedia': 'मान {value} न तो मीडिया id है, न sha256 चेकसम, न ही https पता।',
   'import.error.mediaNotFound': 'इस वर्कस्पेस में कोई मीडिया {value} से मेल नहीं खाता।',
   'import.error.mediaImportStarted':
     '{value} पर मीडिया लाया जा रहा है। इसके लाइब्रेरी में आने के बाद इस फ़ाइल को फिर से लागू करें।',
   'import.error.unknownVariantTarget':
     'इस पंक्ति में कोई {provider} खाता नहीं है, इसलिए {provider} कैप्शन का उपयोग नहीं किया गया।',
   'import.error.applyFailed': 'यह पंक्ति लागू नहीं की जा सकी। संदर्भ: {code}।',
-  'import.error.alreadyApplied': 'इस पंक्ति ने पहले ही एक ड्राफ्ट बना दिया, इसलिए इसे नहीं छेड़ा गया।',
+  'import.error.alreadyApplied':
+    'इस पंक्ति ने पहले ही एक ड्राफ्ट बना दिया, इसलिए इसे नहीं छेड़ा गया।',
   'import.error.tooManyRows': 'फ़ाइल की केवल पहली {limit} पंक्तियां पढ़ी जाती हैं।',
 } as const;

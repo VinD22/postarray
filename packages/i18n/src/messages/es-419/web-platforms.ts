@@ -72,8 +72,10 @@ export const webPlatformsMessages = {
   'web.schedule.limits.mimeTypes': 'Tipos de archivo aceptados',
   'web.schedule.limits.markdown': 'Marcas de formato',
 
-  'web.schedule.value.characters': '{count, plural, one {# carácter} many {# caracteres} other {# caracteres}}',
-  'web.schedule.value.files': '{count, plural, =0 {Ninguno} one {# archivo} many {# archivos} other {# archivos}}',
+  'web.schedule.value.characters':
+    '{count, plural, one {# carácter} many {# caracteres} other {# caracteres}}',
+  'web.schedule.value.files':
+    '{count, plural, =0 {Ninguno} one {# archivo} many {# archivos} other {# archivos}}',
   'web.schedule.value.durationRange': 'Entre {min} y {max}',
   'web.schedule.value.durationMax': 'Hasta {max}',
   'web.schedule.value.markdownYes': 'Aceptado',
@@ -98,7 +100,8 @@ export const webPlatformsMessages = {
   'web.schedule.capabilities.title': 'Qué está construido para {platform}',
   'web.schedule.capabilities.lede':
     'Generado a partir del registro de conectores, no escrito a mano aquí. "No ofrecido por la plataforma" es un hecho sobre la plataforma y es definitivo. "Todavía no construido" es un hecho sobre este producto y es la opción honesta por defecto mientras ningún conector haya completado su definición de listo.',
-  'web.schedule.capabilities.unavailable.title': 'Todavía no hay registro de capacidad para {platform}',
+  'web.schedule.capabilities.unavailable.title':
+    'Todavía no hay registro de capacidad para {platform}',
   'web.schedule.capabilities.unavailable.body':
     'No hay adaptador en esta versión, así que el registro no tiene nada que reportar. La fila aparecerá en la matriz de capacidades en cuanto haya algo real que decir.',
   'web.schedule.capabilities.matrixLink': 'Leer la matriz de capacidades completa',

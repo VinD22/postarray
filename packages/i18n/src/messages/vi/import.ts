@@ -28,7 +28,8 @@ export const importMessages = {
   'import.upload.field': 'Tệp CSV',
   'import.upload.fieldHelp': 'Chọn một tệp, hoặc dán các dòng vào ô bên dưới.',
   'import.upload.paste': 'Hoặc dán văn bản CSV',
-  'import.upload.pasteHelp': 'Bao gồm dòng tiêu đề. Mọi thứ được kiểm tra trước khi bất cứ điều gì được tạo.',
+  'import.upload.pasteHelp':
+    'Bao gồm dòng tiêu đề. Mọi thứ được kiểm tra trước khi bất cứ điều gì được tạo.',
   'import.upload.project': 'Dự án',
   'import.upload.projectHelp': 'Mọi dòng trong một tệp đều thuộc về dự án này.',
   'import.upload.submit': 'Kiểm tra tệp này',
@@ -64,8 +65,7 @@ export const importMessages = {
   'import.columns.heading': 'Kiểm tra cột',
   'import.columns.ok': 'Mọi cột bắt buộc đều có mặt.',
   'import.columns.missing': '{count, plural, other {# cột bắt buộc đang thiếu}}',
-  'import.columns.unknown':
-    '{count, plural, other {# cột không được nhận diện và bị bỏ qua}}',
+  'import.columns.unknown': '{count, plural, other {# cột không được nhận diện và bị bỏ qua}}',
   'import.columns.present': 'Các cột tìm thấy',
 
   'import.review.heading': 'Tệp này sẽ làm gì',
@@ -151,7 +151,8 @@ export const importMessages = {
     'Giá trị {value} không phải là một Set tài khoản đã lưu hay danh sách id tài khoản.',
   'import.error.invalidMedia':
     'Giá trị {value} không phải là id phương tiện, checksum sha256 hay địa chỉ https.',
-  'import.error.mediaNotFound': 'Không có phương tiện nào trong không gian làm việc này khớp với {value}.',
+  'import.error.mediaNotFound':
+    'Không có phương tiện nào trong không gian làm việc này khớp với {value}.',
   'import.error.mediaImportStarted':
     'Phương tiện tại {value} đang được tải về. Hãy áp dụng tệp này lại khi nó đã có trong thư viện.',
   'import.error.unknownVariantTarget':

@@ -15,14 +15,15 @@ export const queueMessages = {
   'queue.rules.empty':
     'Ancora nessuna regola della coda. Finché non ne aggiungi una, il prossimo spazio è semplicemente la prima ora libera.',
   'queue.rules.create': 'Nuova regola della coda',
-  'queue.rules.count': '{count, plural, =0 {Nessuna regola} one {# regola} many {# regole} other {# regole}}',
+  'queue.rules.count':
+    '{count, plural, =0 {Nessuna regola} one {# regola} many {# regole} other {# regole}}',
   'queue.rules.enabled': 'In uso',
   'queue.rules.disabled': 'In pausa',
   'queue.rules.archived': 'Archiviata',
   'queue.rules.edit': 'Modifica regola',
   'queue.rules.archive': 'Archivia regola',
   'queue.rules.archiveHelp':
-    "Archiviare interrompe le proposte future. Gli spazi già riservati mantengono il loro orario e il loro motivo.",
+    'Archiviare interrompe le proposte future. Gli spazi già riservati mantengono il loro orario e il loro motivo.',
 
   'queue.field.name': 'Nome della regola',
   'queue.field.nameHelp': 'Un nome che riconoscerai in seguito, ad esempio Mattine feriali.',
@@ -30,19 +31,22 @@ export const queueMessages = {
   'queue.field.timeZoneHelp':
     'Le finestre, il conteggio giornaliero e le date di blackout sono tutti letti in questo fuso.',
   'queue.field.minimumGap': 'Intervallo minimo',
-  'queue.field.minimumGapHelp': 'Minuti tra due post. Zero significa nessuna regola di distanziamento.',
+  'queue.field.minimumGapHelp':
+    'Minuti tra due post. Zero significa nessuna regola di distanziamento.',
   'queue.field.maximumPerDay': 'Massimo al giorno',
   'queue.field.maximumPerDayHelp':
     'Lascia vuoto per nessun limite giornaliero. Zero significa che questa regola non propone nulla.',
   'queue.field.maximumPerDayUnlimited': 'Nessun limite giornaliero',
   'queue.field.priority': 'Priorità',
-  'queue.field.priorityHelp': 'La regola con la priorità più alta che può offrire uno spazio è quella utilizzata.',
+  'queue.field.priorityHelp':
+    'La regola con la priorità più alta che può offrire uno spazio è quella utilizzata.',
   'queue.field.enabled': 'Usa questa regola',
 
   'queue.windows.heading': 'Finestre settimanali',
   'queue.windows.help':
     'Scegli le ore locali in cui questo marchio può pubblicare. Usa i campi giorno e ora, oppure i pulsanti sulla griglia.',
-  'queue.windows.empty': 'Ancora nessuna finestra. Una regola senza finestra non può mai offrire uno spazio.',
+  'queue.windows.empty':
+    'Ancora nessuna finestra. Una regola senza finestra non può mai offrire uno spazio.',
   'queue.windows.add': 'Aggiungi finestra',
   'queue.windows.remove': 'Rimuovi finestra',
   'queue.windows.entry': '{weekday}, dalle {start} alle {end}',
@@ -61,7 +65,8 @@ export const queueMessages = {
   'queue.weekday.7': 'Domenica',
 
   'queue.blackouts.heading': 'Date di blackout',
-  'queue.blackouts.help': 'Date in cui questo marchio non pubblicherà, lette nel fuso orario della regola.',
+  'queue.blackouts.help':
+    'Date in cui questo marchio non pubblicherà, lette nel fuso orario della regola.',
   'queue.blackouts.empty': 'Nessuna data di blackout.',
   'queue.blackouts.add': 'Aggiungi blackout',
   'queue.blackouts.remove': 'Rimuovi blackout',
@@ -99,10 +104,11 @@ export const queueMessages = {
   'queue.reason.blackoutSkipped':
     '{days, plural, one {È stato saltato # giorno di blackout} many {Sono stati saltati # giorni di blackout} other {Sono stati saltati # giorni di blackout}} per raggiungerlo.',
   'queue.reason.dstNonexistentSkipped':
-    "Il primo orario nella finestra non esiste in quella data in {zone}, quindi è stato usato il successivo che esiste.",
+    'Il primo orario nella finestra non esiste in quella data in {zone}, quindi è stato usato il successivo che esiste.',
   'queue.reason.dstAmbiguousFirst':
     "Quell'orario locale si verifica due volte in {zone} in quella data. È stata usata la prima occorrenza.",
-  'queue.reason.priorityChosen': 'Questa regola ha priorità {priority}, la più alta che potesse offrire.',
+  'queue.reason.priorityChosen':
+    'Questa regola ha priorità {priority}, la più alta che potesse offrire.',
   'queue.reason.connectionScoped':
     'Questa regola copre {count, plural, one {# account} many {# account} other {# account}}.',
   'queue.reason.horizonExhausted': 'Nessuna finestra libera entro {days} giorni.',

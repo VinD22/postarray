@@ -27,7 +27,8 @@ export const queueMessages = {
   'queue.field.name': 'Regelnamn',
   'queue.field.nameHelp': 'Ett namn du känner igen senare, till exempel Vardagsmorgnar.',
   'queue.field.timeZone': 'Tidszon',
-  'queue.field.timeZoneHelp': 'Fönster, det dagliga antalet och blackout-datum läses alla i denna zon.',
+  'queue.field.timeZoneHelp':
+    'Fönster, det dagliga antalet och blackout-datum läses alla i denna zon.',
   'queue.field.minimumGap': 'Minsta mellanrum',
   'queue.field.minimumGapHelp': 'Minuter mellan två inlägg. Noll betyder ingen avståndsregel.',
   'queue.field.maximumPerDay': 'Max per dag',
@@ -70,7 +71,8 @@ export const queueMessages = {
 
   'queue.connections.heading': 'Konton',
   'queue.connections.all': 'Alla konton i detta varumärke',
-  'queue.connections.scoped': '{count, plural, one {# konto} other {# konton}} som denna regel gäller för',
+  'queue.connections.scoped':
+    '{count, plural, one {# konto} other {# konton}} som denna regel gäller för',
 
   'queue.slot.heading': 'Nästa köplats',
   'queue.slot.action': 'Använd nästa köplats',
@@ -87,7 +89,8 @@ export const queueMessages = {
 
   'queue.reason.noRulesConfigured':
     'Detta varumärke har inga köregler konfigurerade, så inget fönster tillämpades.',
-  'queue.reason.fallbackFirstFreeHour': 'Den första lediga timmen från och med nu användes istället.',
+  'queue.reason.fallbackFirstFreeHour':
+    'Den första lediga timmen från och med nu användes istället.',
   'queue.reason.matchedRule': 'Regeln {name} valde denna tid, i {zone}.',
   'queue.reason.matchedWindow': 'Den faller inom fönstret {start} till {end} i {zone}.',
   'queue.reason.minimumGap': 'Den ligger minst {minutes} minuter från varje annat inlägg.',
@@ -100,7 +103,9 @@ export const queueMessages = {
     'Den första tiden i fönstret finns inte det datumet i {zone}, så nästa som finns användes istället.',
   'queue.reason.dstAmbiguousFirst':
     'Den lokala tiden inträffar två gånger i {zone} det datumet. Den första förekomsten användes.',
-  'queue.reason.priorityChosen': 'Denna regel har prioritet {priority}, den högsta som kunde erbjuda.',
-  'queue.reason.connectionScoped': 'Denna regel omfattar {count, plural, one {# konto} other {# konton}}.',
+  'queue.reason.priorityChosen':
+    'Denna regel har prioritet {priority}, den högsta som kunde erbjuda.',
+  'queue.reason.connectionScoped':
+    'Denna regel omfattar {count, plural, one {# konto} other {# konton}}.',
   'queue.reason.horizonExhausted': 'Inget fönster var ledigt inom {days} dagar.',
 } as const;

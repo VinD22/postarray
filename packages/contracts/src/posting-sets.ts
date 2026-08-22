@@ -93,7 +93,10 @@ export const postingSetInputShape = z
 
 /** One default per platform, one entry per channel. */
 export function refinePostingSetInput(
-  set: { readonly targetDefaults: readonly { readonly provider: string }[]; readonly connectionIds: readonly string[] },
+  set: {
+    readonly targetDefaults: readonly { readonly provider: string }[];
+    readonly connectionIds: readonly string[];
+  },
   ctx: z.RefinementCtx,
 ): void {
   const seen = new Set<string>();

@@ -219,8 +219,7 @@ export const webSettingsMessages = {
   'settings.ui.projects.archiveTitle': '{project} arşivlensin mi?',
   'settings.ui.projects.archiveBody':
     'Bu etkin olmayan proje, etkin çalışma alanından ayrılır ve bir proje kotası boşaltır.',
-  'settings.ui.projects.archiveChannels':
-    'Bağlı kanalları artık etkin proje akışlarında görünmez.',
+  'settings.ui.projects.archiveChannels': 'Bağlı kanalları artık etkin proje akışlarında görünmez.',
   'settings.ui.projects.archiveHistory':
     'Taslaklar, yayınlanan gönderiler, alındılar ve denetim geçmişi saklanır.',
   'settings.ui.projects.archiveLastDisabled': 'Çalışma alanında en az bir etkin proje bulundurun.',

@@ -1,10 +1,7 @@
 import type { WorkerActivities } from '../../activities/types';
 import { toIsoInstant } from '../../runtime/deterministic';
 import type { ChildWorkflowDescriptor, WorkflowRuntime } from '../../runtime/types';
-import type {
-  MediaDerivativeWorkflowInput,
-  MediaDerivativeWorkflowOutput,
-} from '../inputs';
+import type { MediaDerivativeWorkflowInput, MediaDerivativeWorkflowOutput } from '../inputs';
 
 /**
  * Produce one non-generative media derivative.

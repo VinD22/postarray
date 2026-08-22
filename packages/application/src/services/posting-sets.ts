@@ -11,7 +11,10 @@ import {
 import type { ActorContext, PageQuery, PostingSetService, ServiceDeps } from '../types';
 
 import { recordAudit } from '../internal/audit';
-import { requireProjectOwnership, requireProjectOwnershipIfPresent } from '../internal/project-ownership';
+import {
+  requireProjectOwnership,
+  requireProjectOwnershipIfPresent,
+} from '../internal/project-ownership';
 import { invalid, notFound } from '../internal/errors';
 import { withIdempotency } from '../internal/idempotency';
 import { toJson } from '../internal/json';
@@ -101,37 +104,45 @@ export function createPostingSetService(deps: ServiceDeps): PostingSetService {
         body: parsed,
         resourceIdOf: (view) => view.id,
         run: async () =>
-          authorized(deps, ctx, 'content.write', { projectId: parsed.projectId }, async (db, actor) => {
-            await requireProjectOwnership(db, actor, parsed.projectId);
-            if (actor.userId === null) {
-              throw invalid('errors.posting_set_requires_person', { projectId: parsed.projectId });
-            }
-            await assertNameFree(db, { projectId: parsed.projectId, name: parsed.name });
+          authorized(
+            deps,
+            ctx,
+            'content.write',
+            { projectId: parsed.projectId },
+            async (db, actor) => {
+              await requireProjectOwnership(db, actor, parsed.projectId);
+              if (actor.userId === null) {
+                throw invalid('errors.posting_set_requires_person', {
+                  projectId: parsed.projectId,
+                });
+              }
+              await assertNameFree(db, { projectId: parsed.projectId, name: parsed.name });
 
-            const created = await db.postingSet.create({
-              data: {
-                workspaceId: actor.workspace.id,
-                projectId: parsed.projectId,
-                name: parsed.name,
-                description: parsed.description,
-                connectionIds: [...parsed.connectionIds],
-                targetDefaults: toJson(parsed.targetDefaults),
-                signatureId: parsed.signatureId,
-                approvalPolicy: parsed.approvalPolicy,
-                slotBehavior: parsed.slotBehavior,
-                createdByUserId: actor.userId,
-              },
-              select: SET_SELECT,
-            });
-            const view = toPostingSetView(created as PostingSetRow);
-            await recordAudit(db, actor, {
-              action: 'posting_set.created',
-              targetType: 'posting_set',
-              targetId: view.id,
-              after: view,
-            });
-            return view;
-          }),
+              const created = await db.postingSet.create({
+                data: {
+                  workspaceId: actor.workspace.id,
+                  projectId: parsed.projectId,
+                  name: parsed.name,
+                  description: parsed.description,
+                  connectionIds: [...parsed.connectionIds],
+                  targetDefaults: toJson(parsed.targetDefaults),
+                  signatureId: parsed.signatureId,
+                  approvalPolicy: parsed.approvalPolicy,
+                  slotBehavior: parsed.slotBehavior,
+                  createdByUserId: actor.userId,
+                },
+                select: SET_SELECT,
+              });
+              const view = toPostingSetView(created as PostingSetRow);
+              await recordAudit(db, actor, {
+                action: 'posting_set.created',
+                targetType: 'posting_set',
+                targetId: view.id,
+                after: view,
+              });
+              return view;
+            },
+          ),
       });
     },
 

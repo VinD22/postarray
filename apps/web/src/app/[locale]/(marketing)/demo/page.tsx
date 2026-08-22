@@ -315,7 +315,10 @@ export default async function DemoPage({
                   */
                   <p className="text-body-sm mt-8 flex items-center gap-2">
                     <ArrowDown aria-hidden="true" className="text-text-tertiary size-4 shrink-0" />
-                    <TextLink href={`#${next.id}`} className="inline-flex min-h-11 min-w-0 items-center">
+                    <TextLink
+                      href={`#${next.id}`}
+                      className="inline-flex min-h-11 min-w-0 items-center"
+                    >
                       {t.format('web.demo.next', { step: t.format(next.shortKey) })}
                     </TextLink>
                   </p>

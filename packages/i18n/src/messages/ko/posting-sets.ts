@@ -19,7 +19,8 @@ export const postingSetMessages = {
   'calendar.hold.confirmScope':
     '일시중지는 아직 일어나지 않은 일을 멈춥니다. 이미 플랫폼에 게시된 것은 그대로 게시된 상태로 남으며, 일시중지가 이를 삭제하거나 수정하지 않습니다.',
   'calendar.hold.confirmNoteLabel': '왜 일시중지하시나요? (선택 사항)',
-  'calendar.hold.confirmNoteHint': '팀을 위한 감사 기록에 보관됩니다. 어떤 플랫폼에도 전송되지 않습니다.',
+  'calendar.hold.confirmNoteHint':
+    '팀을 위한 감사 기록에 보관됩니다. 어떤 플랫폼에도 전송되지 않습니다.',
   'calendar.hold.confirm': '이 게시물 일시중지',
   'calendar.hold.cancel': '예약 상태 유지',
 
@@ -44,7 +45,8 @@ export const postingSetMessages = {
   'calendar.hold.blocked.billingAction': '결제로 이동',
 
   'set.title': '게시 세트',
-  'set.lede': '"이것을 누구에게, 어떻게 게시할지"에 대한 저장된 답변입니다. 세트를 적용하면 그 설정이 새 초안에 복사됩니다.',
+  'set.lede':
+    '"이것을 누구에게, 어떻게 게시할지"에 대한 저장된 답변입니다. 세트를 적용하면 그 설정이 새 초안에 복사됩니다.',
   'set.appliedOnce':
     '세트는 적용할 때 한 번 읽힙니다. 나중에 세트를 편집하면 다음 게시물이 시작되는 값이 바뀝니다. 이미 세트로 만든 초안과 예약된 게시물은 그대로 유지됩니다.',
   'set.empty.title': '아직 세트가 없습니다',
@@ -53,7 +55,8 @@ export const postingSetMessages = {
   'set.edit': '세트 편집',
   'set.archive': '세트 보관',
   'set.archived': '보관됨',
-  'set.archivedNote': '보관된 세트는 선택 목록에서 숨겨집니다. 세트로 만든 게시물은 변경되지 않습니다.',
+  'set.archivedNote':
+    '보관된 세트는 선택 목록에서 숨겨집니다. 세트로 만든 게시물은 변경되지 않습니다.',
   'set.showArchived': '보관된 항목 표시',
   'set.saved': '세트가 저장되었습니다.',
   'set.archivedToast': '세트가 보관되었습니다. 이미 만든 게시물은 변경되지 않습니다.',
@@ -78,16 +81,19 @@ export const postingSetMessages = {
   'set.approval.policy_auto': '작업공간 정책에 따름',
 
   'set.slot.next_free_slot': '대기열의 다음 빈 슬롯',
-  'set.slot.next_free_slotHint': '이 프로젝트의 대기열 규칙을 사용해 시간을 제안합니다. 제안만 하며, 수락은 회원님이 합니다.',
+  'set.slot.next_free_slotHint':
+    '이 프로젝트의 대기열 규칙을 사용해 시간을 제안합니다. 제안만 하며, 수락은 회원님이 합니다.',
   'set.slot.pick_time': '시간을 물어봐 주세요',
   'set.slot.pick_timeHint': '세트를 적용해도 시간은 비워 두어 직접 선택할 수 있습니다.',
   'set.slot.draft_only': '초안으로 남겨두기',
   'set.slot.draft_onlyHint': '세트를 적용해도 일정은 전혀 건드리지 않습니다.',
-  'set.slot.noRules': '이 프로젝트에는 아직 대기열 규칙이 없으므로, 대기열은 가장 빠른 빈 시간을 제안하고 그렇게 안내합니다.',
+  'set.slot.noRules':
+    '이 프로젝트에는 아직 대기열 규칙이 없으므로, 대기열은 가장 빠른 빈 시간을 제안하고 그렇게 안내합니다.',
   'set.slot.rulesLink': '대기열 규칙',
 
   'set.defaults.title': '플랫폼별 기본값',
-  'set.defaults.body': '새 게시물마다 복사되는 초기 값입니다. 이후 컴포저에서 언제든 변경할 수 있습니다.',
+  'set.defaults.body':
+    '새 게시물마다 복사되는 초기 값입니다. 이후 컴포저에서 언제든 변경할 수 있습니다.',
   'set.defaults.add': '플랫폼 추가',
   'set.defaults.remove': '{platform} 기본값 제거',
   'set.defaults.privacy': '공개 범위',
@@ -110,11 +116,13 @@ export const postingSetMessages = {
   'targetMemory.setting.stored':
     '계정 목록만 저장되며, 그것도 선택한 사람에 한해서만 저장됩니다. 문구, 시간, 공개 범위 설정, 승인 상태는 저장되지 않으며, 프로젝트의 다른 누구도 회원님의 목록을 볼 수 없습니다.',
   'targetMemory.setting.offNote': '이 기능이 꺼져 있는 동안에는 아무것도 저장되지 않습니다.',
-  'targetMemory.setting.turnOffWarning': '이 기능을 끄면 이 프로젝트의 저장된 모든 선택 항목이 모든 사람에 대해 삭제됩니다.',
+  'targetMemory.setting.turnOffWarning':
+    '이 기능을 끄면 이 프로젝트의 저장된 모든 선택 항목이 모든 사람에 대해 삭제됩니다.',
   'targetMemory.setting.enabled': '켜짐',
   'targetMemory.setting.disabled': '꺼짐',
   'targetMemory.setting.saved': '설정이 저장되었습니다.',
-  'targetMemory.setting.cleared': '설정이 저장되었습니다. 이 프로젝트에 저장된 선택 항목이 삭제되었습니다.',
+  'targetMemory.setting.cleared':
+    '설정이 저장되었습니다. 이 프로젝트에 저장된 선택 항목이 삭제되었습니다.',
 
   'targetMemory.composer.restored': '{count, plural, other {지난번 계정 #개로 시작함.}}',
   'targetMemory.composer.droppedSome':

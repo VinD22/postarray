@@ -205,7 +205,12 @@ export async function calendarList(
     method: 'GET',
     path: ROUTES.calendar(),
     schema: paginated(calendarEntrySchema),
-    query: { ...pageQuery(options), from: options.from, to: options.to, projectId: options.projectId },
+    query: {
+      ...pageQuery(options),
+      from: options.from,
+      to: options.to,
+      projectId: options.projectId,
+    },
   });
 
   renderSuccess({ ...render, correlationId: response.correlationId }, response.data, [

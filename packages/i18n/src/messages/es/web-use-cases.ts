@@ -57,8 +57,7 @@ export const webUseCaseMessages = {
   /* ---------------------------------------------------------------------- */
 
   'web.useCases.approvals.title': 'Flujos de aprobación',
-  'web.useCases.approvals.lede':
-    'Una aprobación solo vale algo si lo aprobado es lo que sale.',
+  'web.useCases.approvals.lede': 'Una aprobación solo vale algo si lo aprobado es lo que sale.',
   'web.useCases.approvals.problem':
     'Las aprobaciones suelen vivir fuera de la herramienta que publica. Una captura de pantalla va a un cliente, el cliente responde que sí, y entonces el texto cambia. La aprobación ahora se refiere a un borrador que nadie tiene, y la herramienta no lo sabe, así que publica lo último que se le entregó.',
   'web.useCases.approvals.approach1':

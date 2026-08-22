@@ -65,7 +65,8 @@ export const webToolsMessages = {
     'Nie dostarczamy jeszcze łącznika dla tej platformy, więc nie mamy zweryfikowanego limitu do pokazania. Wolimy nie mówić nic niż zgadywać.',
   'web.tools.shared.copy': 'Kopiuj',
   'web.tools.shared.copied': 'Skopiowano',
-  'web.tools.shared.copyFailed': 'Twoja przeglądarka zablokowała kopiowanie. Zaznacz tekst i skopiuj go.',
+  'web.tools.shared.copyFailed':
+    'Twoja przeglądarka zablokowała kopiowanie. Zaznacz tekst i skopiuj go.',
   'web.tools.shared.faqTitle': 'Pytania',
   'web.tools.shared.baselineTitle': 'Które konto opisują te liczby',
   'web.tools.shared.baselineBody':
@@ -80,7 +81,8 @@ export const webToolsMessages = {
   'web.tools.preflight.summary':
     'Jeden szkic, sprawdzony jednocześnie względem limitów tekstu i mediów dziesięciu platform.',
   'web.tools.utm.name': 'Generator linków UTM',
-  'web.tools.utm.summary': 'Zbuduj oznaczony adres URL kampanii, nie psując posiadanego ciągu zapytania.',
+  'web.tools.utm.summary':
+    'Zbuduj oznaczony adres URL kampanii, nie psując posiadanego ciągu zapytania.',
   'web.tools.youtubeTitle.name': 'Sprawdzanie długości tytułów YouTube',
   'web.tools.youtubeTitle.summary': 'Zmierz tytuł tak, jak człowiek liczy znaki.',
   'web.tools.timeZone.name': 'Planer stref czasowych i czasu letniego',
@@ -113,7 +115,8 @@ export const webToolsMessages = {
   'web.tools.preflight.field.mediaKind.video': 'Jeden film',
   'web.tools.preflight.field.mediaCount.label': 'Ile obrazów',
   'web.tools.preflight.field.byteSize.label': 'Rozmiar pliku w megabajtach',
-  'web.tools.preflight.field.byteSize.help': 'Największy pojedynczy plik. Zostaw puste, aby pominąć.',
+  'web.tools.preflight.field.byteSize.help':
+    'Największy pojedynczy plik. Zostaw puste, aby pominąć.',
   'web.tools.preflight.field.duration.label': 'Długość filmu w sekundach',
   'web.tools.preflight.field.duration.help': 'Zostaw puste, aby pominąć sprawdzanie długości.',
   'web.tools.preflight.field.width.label': 'Szerokość mediów w pikselach',
@@ -182,7 +185,8 @@ export const webToolsMessages = {
   'web.tools.utm.field.medium.label': 'Nośnik kampanii',
   'web.tools.utm.field.medium.help': 'Rodzaj linku. Na przykład social, e-mail lub polecenie.',
   'web.tools.utm.field.campaign.label': 'Nazwa kampanii',
-  'web.tools.utm.field.campaign.help': 'Uruchomienie, promocja lub motyw, do którego należy ten link.',
+  'web.tools.utm.field.campaign.help':
+    'Uruchomienie, promocja lub motyw, do którego należy ten link.',
   'web.tools.utm.field.term.label': 'Termin kampanii',
   'web.tools.utm.field.term.help': 'Opcjonalnie. Tradycyjnie płatne słowo kluczowe.',
   'web.tools.utm.field.content.label': 'Treść kampanii',
@@ -249,12 +253,14 @@ export const webToolsMessages = {
   'web.tools.timeZone.field.time.label': 'Godzina',
   'web.tools.timeZone.field.zone.label': 'Twoja strefa',
   'web.tools.timeZone.field.audience.label': 'Strefy odbiorców',
-  'web.tools.timeZone.field.audience.help': 'Wybierz strefy, w których naprawdę są Twoi czytelnicy.',
+  'web.tools.timeZone.field.audience.help':
+    'Wybierz strefy, w których naprawdę są Twoi czytelnicy.',
   'web.tools.timeZone.result.title': 'Ta sama chwila, wszędzie, gdzie wybrałeś',
   'web.tools.timeZone.result.empty': 'Wybierz co najmniej jedną strefę odbiorców.',
   'web.tools.timeZone.result.shift':
     'Zmiana czasu letniego przypada między tą datą a tym samym dniem tygodnia cztery tygodnie później, więc godzina lokalna się przesuwa.',
-  'web.tools.timeZone.result.stable': 'Brak zmiany przesunięcia w ciągu najbliższych czterech tygodni.',
+  'web.tools.timeZone.result.stable':
+    'Brak zmiany przesunięcia w ciągu najbliższych czterech tygodni.',
   'web.tools.timeZone.result.later': 'Cztery tygodnie później, {time}.',
   'web.tools.timeZone.result.invalidDate': 'Wprowadź datę i godzinę, aby zobaczyć porównanie.',
   'web.tools.timeZone.faq.dst.q': 'W którą stronę przesuwa się godzina?',

@@ -70,7 +70,8 @@ export const errorMessages = {
     'Este proyecto todavía tiene {connected, plural, one {#canal conectado} other {#canales conectados} many {#canales conectados}}.',
   'error.project_has_connections.action':
     'Desconecte todos los canales de este proyecto antes de archivarlo.',
-  'error.project_last_active.message': 'Un espacio de trabajo debe conservar al menos un proyecto activo.',
+  'error.project_last_active.message':
+    'Un espacio de trabajo debe conservar al menos un proyecto activo.',
   'error.project_last_active.action': 'Cree otro proyecto antes de archivar este.',
   'error.connection_not_found.message': 'Esa conexión ya no está en este espacio de trabajo.',
   'error.connection_not_found.action':

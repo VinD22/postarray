@@ -52,7 +52,8 @@ export function pendingGrantEnvelopeFromRow(row: {
       workspaceId: context['workspaceId'] ?? '',
       connectionId: context['connectionId'] ?? '',
       provider: context['provider'] ?? '',
-      credentialKind: (context['credentialKind'] ?? 'provider_secret') as EncryptedCredential['aadContext']['credentialKind'],
+      credentialKind: (context['credentialKind'] ??
+        'provider_secret') as EncryptedCredential['aadContext']['credentialKind'],
     },
     createdAt: row.createdAt.toISOString(),
   };

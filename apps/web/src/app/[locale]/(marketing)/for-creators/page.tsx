@@ -84,7 +84,7 @@ export default async function ForCreatorsPage({
             typographic panel that does not pretend to be a device.
           */}
           <div className="lg:col-span-5">
-            <div className="border-border-default bg-surface-raised space-y-4 rounded-lg border p-8 shadow-raised">
+            <div className="border-border-default bg-surface-raised shadow-raised space-y-4 rounded-lg border p-8">
               <Eyebrow>{t.t('web.creators.title')}</Eyebrow>
               <EditorialPlatformCycler
                 platforms={platformNames}

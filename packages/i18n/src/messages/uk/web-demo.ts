@@ -119,7 +119,8 @@ export const webDemoMessages = {
   'web.demo.sample.instagram.account': 'Instagram, @northbound.tools',
   'web.demo.sample.instagram.body':
     'Те саме зображення випуску, з підписом, написаним для стрічки, і альтернативним текстом, написаним людиною.',
-  'web.demo.sample.instagram.check': 'Тип облікового запису, співвідношення сторін і альтернативний текст',
+  'web.demo.sample.instagram.check':
+    'Тип облікового запису, співвідношення сторін і альтернативний текст',
 
   'web.demo.tour.stepsLabel': 'Кроки туру',
   'web.demo.tour.jump': 'Показати крок {position}: {step}',
@@ -163,7 +164,8 @@ export const webDemoMessages = {
   'web.demo.digest.line.earliest': 'Ранок вівторка був вашим найранішим слотом.',
   'web.demo.digest.line.approval': 'Кожну версію схвалено до того, як вона потрапила в чергу.',
   'web.demo.digest.line.alt': 'Кожне зображення несло альтернативний текст, написаний людиною.',
-  'web.demo.digest.footer': 'Аналітика в реальному часі зʼявляється тут у міру публікації ваших дописів.',
+  'web.demo.digest.footer':
+    'Аналітика в реальному часі зʼявляється тут у міру публікації ваших дописів.',
 
   'web.demo.step.validate.title': 'Перевірте, перш ніж це буде заплановано',
   'web.demo.step.validate.body':

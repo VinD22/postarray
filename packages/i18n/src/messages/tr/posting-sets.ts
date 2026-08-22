@@ -52,12 +52,14 @@ export const postingSetMessages = {
   'set.appliedOnce':
     'Bir Set, uyguladığınızda bir kez okunur. Onu daha sonra düzenlemek, bir sonraki gönderinin neyden başladığını değiştirir. Ondan zaten yaptığınız taslaklar ve planlanmış gönderiler tam olarak oldukları gibi kalır.',
   'set.empty.title': 'Henüz Set yok',
-  'set.empty.body': 'Her gönderi için aynı hesap listesini yeniden oluşturmayı bırakmak için bir tane oluşturun.',
+  'set.empty.body':
+    'Her gönderi için aynı hesap listesini yeniden oluşturmayı bırakmak için bir tane oluşturun.',
   'set.create': 'Yeni Set',
   'set.edit': 'Seti düzenle',
   'set.archive': 'Seti arşivle',
   'set.archived': 'Arşivlendi',
-  'set.archivedNote': 'Arşivlenmiş Setler seçiciden gizlenir. Onlardan yapılan gönderiler değişmez.',
+  'set.archivedNote':
+    'Arşivlenmiş Setler seçiciden gizlenir. Onlardan yapılan gönderiler değişmez.',
   'set.showArchived': 'Arşivlenenleri göster',
   'set.saved': 'Set kaydedildi.',
   'set.archivedToast': 'Set arşivlendi. Ondan zaten yapılmış gönderiler değişmez.',
@@ -72,7 +74,8 @@ export const postingSetMessages = {
   'set.field.signature': 'İmza',
   'set.field.signatureNone': 'İmza yok',
   'set.field.approval': 'Onay',
-  'set.field.approvalHint': 'Bu Setten yapılan bir gönderinin yayınlanmadan önce ihtiyaç duyduğu onay.',
+  'set.field.approvalHint':
+    'Bu Setten yapılan bir gönderinin yayınlanmadan önce ihtiyaç duyduğu onay.',
   'set.field.schedule': 'Ne zaman yayınlanacak',
 
   'set.approval.none': 'Onay gerekmiyor',

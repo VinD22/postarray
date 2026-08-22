@@ -38,7 +38,8 @@ export const importMessages = {
     'أحد الأمرين: يبدأ بمعرّف مجموعة أهداف، أو معرّفات حسابات مفصولة بشرطة عمودية.',
   'import.column.caption': 'نص المنشور.',
   'import.column.scheduled_local_time': 'التاريخ والوقت المحلي، مكتوبًا كـ 2026-09-01T10:00.',
-  'import.column.time_zone': 'المنطقة الزمنية من IANA التي يُقرأ فيها الوقت المحلي، مثل Europe/Berlin.',
+  'import.column.time_zone':
+    'المنطقة الزمنية من IANA التي يُقرأ فيها الوقت المحلي، مثل Europe/Berlin.',
   'import.column.media':
     'معرّف وسائط، أو sha256: متبوعًا بمجموع تحقق لوسائط تملكها بالفعل، أو عنوان https يجلبه الخادم.',
   'import.column.title': 'عنوان، حيث تستخدمه الوجهة.',
@@ -104,8 +105,7 @@ export const importMessages = {
   'import.apply.confirmScheduled':
     'إنشاء وجدولة {count, plural, one {صف واحد} zero {# صف} two {صفين} few {# صفوف} many {# صفًا} other {# صف}}',
   'import.apply.running': 'جارٍ تطبيق الصفوف',
-  'import.apply.safeToRepeat':
-    'التطبيق مرتين آمن. الصف الذي أنشأ مسودة بالفعل يُترك دون تغيير.',
+  'import.apply.safeToRepeat': 'التطبيق مرتين آمن. الصف الذي أنشأ مسودة بالفعل يُترك دون تغيير.',
 
   'import.results.heading': 'النتائج',
   'import.results.applied':
@@ -133,11 +133,9 @@ export const importMessages = {
   'import.error.required': 'لا يمكن أن تكون هذه الخلية فارغة.',
   'import.error.invalidCell': 'هذه الخلية ليست بالشكل الذي يمكننا قراءته.',
   'import.error.rowShape': 'هذا السطر يحتوي على {actual} خلية بينما العناوين تحتوي على {expected}.',
-  'import.error.invalidLocalTime':
-    'الوقت {value} ليس تاريخًا ووقتًا محليين مثل 2026-09-01T10:00.',
+  'import.error.invalidLocalTime': 'الوقت {value} ليس تاريخًا ووقتًا محليين مثل 2026-09-01T10:00.',
   'import.error.invalidTimeZone': 'المنطقة {value} ليست اسم منطقة زمنية من IANA.',
-  'import.error.nonexistentLocalTime':
-    'الوقت {value} غير موجود في {zone}. الساعات تتخطاه.',
+  'import.error.nonexistentLocalTime': 'الوقت {value} غير موجود في {zone}. الساعات تتخطاه.',
   'import.error.ambiguousLocalTime':
     'الوقت {value} يحدث مرتين في {zone} في ذلك اليوم. اختر وقتًا مختلفًا.',
   'import.error.scheduleInPast': 'الوقت {value} في {zone} قد مرّ بالفعل.',

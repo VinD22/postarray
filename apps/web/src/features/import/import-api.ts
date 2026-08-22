@@ -53,7 +53,11 @@ export const importApi = {
 
   /** Creates drafts. Schedules nothing. */
   applyAsDrafts: (importJobId: string, idempotencyKey: string): Promise<BulkImportReport> =>
-    call(`/imports/${importJobId}/apply`, { method: 'POST', body: {}, idempotencyKey }, unavailable),
+    call(
+      `/imports/${importJobId}/apply`,
+      { method: 'POST', body: {}, idempotencyKey },
+      unavailable,
+    ),
 
   /** The deliberate second choice. */
   applyAsScheduled: (importJobId: string, idempotencyKey: string): Promise<BulkImportReport> =>

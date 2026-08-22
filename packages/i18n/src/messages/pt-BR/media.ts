@@ -44,7 +44,8 @@ export const mediaMessages = {
   'mediaLib.derivative.select': 'Usar esta versão',
   'mediaLib.derivative.selected': 'Em uso neste post',
   'mediaLib.derivative.useOriginal': 'Usar o original',
-  'mediaLib.derivative.processing': 'Esta versão está sendo gerada. Ela aparece aqui quando estiver pronta.',
+  'mediaLib.derivative.processing':
+    'Esta versão está sendo gerada. Ela aparece aqui quando estiver pronta.',
   'mediaLib.derivative.alreadyExists':
     'Você já fez exatamente essa edição antes, então reaproveitamos aquela versão em vez de criar uma segunda.',
   'mediaLib.derivative.failedTitle': 'Esta versão não pôde ser gerada',
@@ -60,7 +61,8 @@ export const mediaMessages = {
     'A ferramenta não gera imagens nem vídeos. Este editor apenas recorta, gira, redimensiona, converte e comprime o que você enviou.',
 
   // ==================================================== recusas ====
-  'error.media_derivative_no_operations.message': 'Escolha ao menos uma mudança antes de salvar uma versão.',
+  'error.media_derivative_no_operations.message':
+    'Escolha ao menos uma mudança antes de salvar uma versão.',
   'error.media_derivative_duplicate_operation.message':
     'Cada tipo de mudança pode aparecer uma vez. Remova o segundo {operation}.',
   'error.media_derivative_crop_out_of_bounds.message':

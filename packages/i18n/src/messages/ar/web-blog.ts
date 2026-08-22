@@ -7,8 +7,7 @@ export const webBlogMessages = {
   'web.blog.lede':
     'ملاحظات حول آلية عمل النشر: كيف يُقاس حجم الجدول، وكيف تتصرف قائمة الانتظار عندما ينزلق أسبوع، وما الذي يختلف فعليًا بين المنصات، وكيف تبقى أعمال العملاء منفصلة.',
 
-  'web.blog.notice.prelaunch.title':
-    'هذه المقالات عن المشكلة، وليست عن منتج يمكنك استخدامه بعد',
+  'web.blog.notice.prelaunch.title': 'هذه المقالات عن المشكلة، وليست عن منتج يمكنك استخدامه بعد',
   'web.blog.notice.prelaunch.body':
     'لم يكمل أي موصّل هنا التحقق من المزوّد، لذا لا يُنشر شيء إلى أي منصة عبر هذا المنتج اليوم. كل قاعدة منصة أدناه تحمل الوثيقة الرسمية التي جاءت منها والتاريخ الذي قرأها فيه شخص ما.',
 
@@ -41,12 +40,10 @@ export const webBlogMessages = {
   'web.blog.feed.label': 'موجز RSS',
 
   'web.blog.empty.title': 'لا يوجد شيء منشور هنا بعد',
-  'web.blog.empty.body':
-    'المقالات الأولى قيد الكتابة. سيحملها الموجز فور نشرها.',
+  'web.blog.empty.body': 'المقالات الأولى قيد الكتابة. سيحملها الموجز فور نشرها.',
 
   'web.blog.label.language': 'اقرأ بلغة',
-  'web.blog.label.notTranslated':
-    'لم تُكتب هذه المقالة بلغتك بعد. يُعرض الإصدار الإنجليزي.',
+  'web.blog.label.notTranslated': 'لم تُكتب هذه المقالة بلغتك بعد. يُعرض الإصدار الإنجليزي.',
   'web.blog.label.languageCount':
     '{count, plural, one {لغة واحدة} zero {# لغة} two {لغتان} few {# لغات} many {# لغة} other {# لغة}}',
 } as const;

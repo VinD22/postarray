@@ -173,7 +173,8 @@ export const webToolDirectoryMessages = {
   'web.toolDirectory.hashtagCounter.result.noDuplicates': 'No hashtag repeats in this post.',
   'web.toolDirectory.hashtagCounter.result.noLimitData':
     'This does not check the total against a platform ceiling: see "Does this check the 30 hashtag limit Instagram publishes?" below for why.',
-  'web.toolDirectory.hashtagCounter.faq.limit.q': 'Does this check the 30 hashtag limit Instagram publishes?',
+  'web.toolDirectory.hashtagCounter.faq.limit.q':
+    'Does this check the 30 hashtag limit Instagram publishes?',
   'web.toolDirectory.hashtagCounter.faq.limit.a':
     'Not today. Instagram publishes a 30 hashtag cap, but every number the tools on this site state comes from our generated publishing-limits dataset, beside the official source and the date a person read it, and that dataset does not carry a hashtag count field yet. Rather than type an unsourced number into this page, it counts and flags repeats and leaves the ceiling check for when that field exists.',
   'web.toolDirectory.hashtagCounter.faq.duplicate.q': 'Why does a repeated hashtag matter?',
@@ -212,7 +213,8 @@ export const webToolDirectoryMessages = {
   'web.toolDirectory.caseConverter.faq.protected.q': 'Does this change my links or hashtags?',
   'web.toolDirectory.caseConverter.faq.protected.a':
     'No. Every URL, #hashtag and @mention is detected first and copied through unchanged in every mode, including sentence case, which still capitalizes the real sentence text around them.',
-  'web.toolDirectory.caseConverter.faq.titleRule.q': 'How does Title Case decide what to capitalize?',
+  'web.toolDirectory.caseConverter.faq.titleRule.q':
+    'How does Title Case decide what to capitalize?',
   'web.toolDirectory.caseConverter.faq.titleRule.a':
     'It capitalizes the first letter of every word outside a protected link, hashtag or mention, and lowercases the rest of that word. It does not lowercase short connecting words such as "a" or "of" the way some house style guides do, since that is a style choice rather than a fact this tool can make for you.',
 
@@ -251,12 +253,12 @@ export const webToolDirectoryMessages = {
   'web.toolDirectory.invisibleCharacter.pasteTest.result.empty': 'Nothing pasted yet.',
   'web.toolDirectory.invisibleCharacter.pasteTest.result.none':
     'No character from the list above was found in what you pasted.',
-  'web.toolDirectory.invisibleCharacter.pasteTest.result.found': '{name}: found {count, plural, one {once} other {# times}}.',
+  'web.toolDirectory.invisibleCharacter.pasteTest.result.found':
+    '{name}: found {count, plural, one {once} other {# times}}.',
   'web.toolDirectory.invisibleCharacter.faq.why.q': 'Why would I want an invisible character?',
   'web.toolDirectory.invisibleCharacter.faq.why.a':
     'Most often to keep a genuinely blank line inside a caption or bio field that automatically deletes a line made only of ordinary whitespace, or, for the joiner and non-joiner, to control how a font combines the characters next to them.',
-  'web.toolDirectory.invisibleCharacter.faq.reliability.q':
-    'Will these survive on every platform?',
+  'web.toolDirectory.invisibleCharacter.faq.reliability.q': 'Will these survive on every platform?',
   'web.toolDirectory.invisibleCharacter.faq.reliability.a':
     'We cannot promise that. No connector on this site has been verified against a live platform yet, and some platforms strip zero-width characters deliberately. Test on the destination before relying on one.',
 

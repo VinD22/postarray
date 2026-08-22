@@ -61,7 +61,8 @@ export const mediaMessages = {
   'mediaLib.derivative.nonGenerative':
     'Relay는 이미지나 동영상을 생성하지 않습니다. 이 편집기는 업로드한 항목을 자르고, 회전하고, 크기를 조정하고, 변환하고, 압축하기만 합니다.',
 
-  'error.media_derivative_no_operations.message': '버전을 저장하기 전에 변경 사항을 하나 이상 선택하세요.',
+  'error.media_derivative_no_operations.message':
+    '버전을 저장하기 전에 변경 사항을 하나 이상 선택하세요.',
   'error.media_derivative_duplicate_operation.message':
     '각 종류의 변경은 한 번만 나타날 수 있습니다. 두 번째 {operation}을(를) 제거하세요.',
   'error.media_derivative_crop_out_of_bounds.message':
@@ -77,7 +78,8 @@ export const mediaMessages = {
   'error.media_derivative_quality_unsupported.message':
     'PNG는 무손실이므로 품질 설정은 아무 효과가 없습니다. 설정을 제거하거나 JPEG 또는 WebP로 저장하세요.',
   'error.media_derivative_no_change.message': '이 파일이 이미 사용 중인 형식입니다.',
-  'error.media_derivative_source_unavailable.message': '이 버전의 원본이 될 파일이 더 이상 저장소에 없습니다.',
+  'error.media_derivative_source_unavailable.message':
+    '이 버전의 원본이 될 파일이 더 이상 저장소에 없습니다.',
   'error.media_derivative_preset_mismatch.message':
     '이 편집 요청이 설명하는 변경 사항과 일치하지 않습니다. 아무것도 만들어지지 않았습니다. 편집기에서 다시 시도하세요.',
   'error.media_derivative_empty_result.message':

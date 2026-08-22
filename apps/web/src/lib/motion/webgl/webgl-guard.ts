@@ -88,7 +88,8 @@ export function readWebglHardwareSignals(): WebglHardwareSignals {
  */
 export function shouldSkipWebgl(signals: WebglHardwareSignals): boolean {
   if (signals.saveData) return true;
-  if (signals.deviceMemory !== undefined && signals.deviceMemory < MIN_DEVICE_MEMORY_GB) return true;
+  if (signals.deviceMemory !== undefined && signals.deviceMemory < MIN_DEVICE_MEMORY_GB)
+    return true;
   if (
     signals.hardwareConcurrency !== undefined &&
     signals.hardwareConcurrency <= MAX_SKIPPED_HARDWARE_CONCURRENCY

@@ -80,9 +80,7 @@ export function UtmBuilder(): ReactElement {
         </h2>
 
         {result.url === null ? (
-          <p className="text-body-sm text-text-tertiary">
-            {t.full('web.tools.utm.result.empty')}
-          </p>
+          <p className="text-body-sm text-text-tertiary">{t.full('web.tools.utm.result.empty')}</p>
         ) : (
           <>
             <output

@@ -61,7 +61,10 @@ export default async function IntegrationsPage({
         same review-status `Notice` that keeps "official" from meaning
         anything before a platform has actually approved it.
       */}
-      <EditorialSection className="isolate overflow-hidden" containerClassName="py-20 md:py-28 lg:py-32">
+      <EditorialSection
+        className="isolate overflow-hidden"
+        containerClassName="py-20 md:py-28 lg:py-32"
+      >
         <GradientWash accent="cool" placement="top" />
         <div className="relative max-w-[52rem]">
           <HeroHeadline

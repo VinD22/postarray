@@ -73,8 +73,7 @@ export const errorMessages = {
     'Bu projede hâlâ {connected, plural, one {# bağlı kanal} other {# bağlı kanal}} var.',
   'error.project_has_connections.action':
     'Arşivlemeden önce bu projedeki her kanalın bağlantısını kesin.',
-  'error.project_last_active.message':
-    'Bir çalışma alanı en az bir etkin proje bulundurmalıdır.',
+  'error.project_last_active.message': 'Bir çalışma alanı en az bir etkin proje bulundurmalıdır.',
   'error.project_last_active.action': 'Bunu arşivlemeden önce başka bir proje oluşturun.',
   'error.connection_not_found.message': 'Bu bağlantı artık bu çalışma alanında değil.',
   'error.connection_not_found.action': 'Yayınlamaya devam etmek için hesabı tekrar bağlayın.',

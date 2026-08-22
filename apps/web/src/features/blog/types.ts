@@ -212,7 +212,12 @@ export function contentStrings(content: BlogArticleContent): readonly string[] {
     }
   });
 
-  return [content.title, content.description, ...(content.lede === undefined ? [] : [content.lede]), ...fromBlocks];
+  return [
+    content.title,
+    content.description,
+    ...(content.lede === undefined ? [] : [content.lede]),
+    ...fromBlocks,
+  ];
 }
 
 /** Every string in every language of an article, plus the source titles. */

@@ -66,7 +66,10 @@ function toSegments(body: string): readonly Segment[] {
     if (span.offset > cursor) {
       segments.push({ text: body.slice(cursor, span.offset), protectedSpan: false });
     }
-    segments.push({ text: body.slice(span.offset, span.offset + span.length), protectedSpan: true });
+    segments.push({
+      text: body.slice(span.offset, span.offset + span.length),
+      protectedSpan: true,
+    });
     cursor = span.offset + span.length;
   }
   if (cursor < body.length) {
@@ -135,11 +138,15 @@ export function convertCase(body: string, mode: CaseConversionMode): CaseConvers
     switch (mode) {
       case 'upper':
         return segments
-          .map((segment) => (segment.protectedSpan ? segment.text : segment.text.toLocaleUpperCase()))
+          .map((segment) =>
+            segment.protectedSpan ? segment.text : segment.text.toLocaleUpperCase(),
+          )
           .join('');
       case 'lower':
         return segments
-          .map((segment) => (segment.protectedSpan ? segment.text : segment.text.toLocaleLowerCase()))
+          .map((segment) =>
+            segment.protectedSpan ? segment.text : segment.text.toLocaleLowerCase(),
+          )
           .join('');
       case 'title':
         return segments

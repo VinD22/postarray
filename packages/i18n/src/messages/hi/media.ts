@@ -31,8 +31,7 @@ export const mediaMessages = {
   'mediaLib.derivative.qualityHint':
     'कम गुणवत्ता एक छोटी फ़ाइल बनाती है। यह JPEG और WebP पर लागू होती है। PNG हानिरहित है और इसे अनदेखा करता है।',
   'mediaLib.derivative.projected': 'यह संस्करण {width} गुणा {height} पिक्सेल का होगा।',
-  'mediaLib.derivative.projectedUnavailable':
-    'इस संस्करण का आकार बनने तक अनुपलब्ध है।',
+  'mediaLib.derivative.projectedUnavailable': 'इस संस्करण का आकार बनने तक अनुपलब्ध है।',
 
   'mediaLib.derivative.listHeading': 'संस्करण',
   'mediaLib.derivative.original': 'मूल',
@@ -72,7 +71,8 @@ export const mediaMessages = {
     'सहेजने के लिए एक प्रारूप चुनें। {sourceMimeType} फ़ाइल यहां स्वयं के रूप में वापस सहेजी नहीं जा सकती।',
   'error.media_derivative_quality_unsupported.message':
     'PNG हानिरहित है, इसलिए गुणवत्ता सेटिंग का कोई असर नहीं होगा। इसे हटाएं, या JPEG या WebP के रूप में सहेजें।',
-  'error.media_derivative_no_change.message': 'यह वही प्रारूप है जो यह फ़ाइल पहले से उपयोग करती है।',
+  'error.media_derivative_no_change.message':
+    'यह वही प्रारूप है जो यह फ़ाइल पहले से उपयोग करती है।',
   'error.media_derivative_source_unavailable.message':
     'जिस फ़ाइल से यह संस्करण आना था वह अब भंडारण में नहीं है।',
   'error.media_derivative_preset_mismatch.message':

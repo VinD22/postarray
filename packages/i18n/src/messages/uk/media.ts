@@ -47,8 +47,7 @@ export const mediaMessages = {
   'mediaLib.derivative.select': 'Використати цю версію',
   'mediaLib.derivative.selected': 'Використовується для цієї публікації',
   'mediaLib.derivative.useOriginal': 'Використати оригінал',
-  'mediaLib.derivative.processing':
-    'Ця версія створюється. Вона з’явиться тут, коли буде готова.',
+  'mediaLib.derivative.processing': 'Ця версія створюється. Вона з’явиться тут, коли буде готова.',
   'mediaLib.derivative.alreadyExists':
     'Ви вже робили точно таке саме редагування раніше, тому ми повторно використали ту версію замість створення другої.',
   'mediaLib.derivative.failedTitle': 'Цю версію не вдалося створити',

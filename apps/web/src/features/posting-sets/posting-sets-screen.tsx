@@ -41,7 +41,8 @@ export interface PostingSetsScreenProps {
   signatures?: readonly SignatureOption[];
 }
 
-type Editing = { readonly mode: 'create' } | { readonly mode: 'edit'; readonly set: PostingSetView };
+type Editing =
+  { readonly mode: 'create' } | { readonly mode: 'edit'; readonly set: PostingSetView };
 
 export function PostingSetsScreen({
   projectId,
@@ -72,10 +73,7 @@ export function PostingSetsScreen({
       slotBehavior: value.slotBehavior,
     };
     if (editing?.mode === 'edit') {
-      update.mutate(
-        { setId: editing.set.id, patch },
-        { onSuccess: () => setEditing(null) },
-      );
+      update.mutate({ setId: editing.set.id, patch }, { onSuccess: () => setEditing(null) });
       return;
     }
     create.mutate(
@@ -120,12 +118,11 @@ export function PostingSetsScreen({
       {/* The rule, said before anybody edits anything. */}
       <Notice tone="info" title={t('set.title')} description={t('set.appliedOnce')} />
 
-      {query.isPending ? <LoadingState label={t('loading.default')}>{t('loading.default')}</LoadingState> : null}
+      {query.isPending ? (
+        <LoadingState label={t('loading.default')}>{t('loading.default')}</LoadingState>
+      ) : null}
       {query.isError ? (
-        <ErrorState
-          title={t('error.unknown.message')}
-          description={t('error.unknown.action')}
-        />
+        <ErrorState title={t('error.unknown.message')} description={t('error.unknown.action')} />
       ) : null}
 
       {query.data !== undefined && query.data.data.length === 0 ? (
@@ -141,9 +138,7 @@ export function PostingSetsScreen({
             <div className="flex min-w-0 flex-col gap-2">
               <div className="flex flex-wrap items-center gap-2">
                 <h3 className="text-heading-sm text-text-primary">{set.name}</h3>
-                {set.archivedAt !== null ? (
-                  <Badge tone="neutral">{t('set.archived')}</Badge>
-                ) : null}
+                {set.archivedAt !== null ? <Badge tone="neutral">{t('set.archived')}</Badge> : null}
               </div>
               {set.description === null ? null : (
                 <p className="text-body-sm text-text-secondary">{set.description}</p>

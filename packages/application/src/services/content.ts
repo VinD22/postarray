@@ -22,7 +22,10 @@ import type {
 } from '../views';
 
 import { recordAudit } from '../internal/audit';
-import { requireProjectOwnership, requireProjectOwnershipIfPresent } from '../internal/project-ownership';
+import {
+  requireProjectOwnership,
+  requireProjectOwnershipIfPresent,
+} from '../internal/project-ownership';
 import {
   loadAggregate,
   reapprovalRequired,
@@ -240,67 +243,73 @@ export function createContentService(deps: ServiceDeps): ContentService {
         body: input,
         resourceIdOf: (view) => view.id,
         run: async () =>
-          authorized(deps, ctx, 'content.write', { projectId: input.projectId }, async (db, actor) => {
-            await requireProjectOwnership(db, actor, input.projectId);
+          authorized(
+            deps,
+            ctx,
+            'content.write',
+            { projectId: input.projectId },
+            async (db, actor) => {
+              await requireProjectOwnership(db, actor, input.projectId);
 
-            const targets = await resolveTargets(db, input.targets ?? []);
-            for (const target of targets) {
-              guard(actor, 'content.write', { connectionId: target.connectionId });
-            }
+              const targets = await resolveTargets(db, input.targets ?? []);
+              for (const target of targets) {
+                guard(actor, 'content.write', { connectionId: target.connectionId });
+              }
 
-            const item = await db.contentItem.create({
-              data: {
-                workspaceId: actor.workspace.id,
+              const item = await db.contentItem.create({
+                data: {
+                  workspaceId: actor.workspace.id,
+                  projectId: input.projectId,
+                  campaignId: input.campaignId ?? null,
+                  title: input.title ?? null,
+                  state: 'draft',
+                  approvalPolicy: toApprovalPolicy(input.approvalPolicy ?? 'none'),
+                  surface: toStoredSurfaceValue(ctx),
+                  creationMethod: 'human',
+                  ...(actor.userId === null ? {} : { createdByUserId: actor.userId }),
+                  ...(ctx.actorType === 'service_account'
+                    ? { createdByServiceAccountId: ctx.actorId }
+                    : {}),
+                  correlationId: ctx.correlationId,
+                },
+                select: { id: true, createdAt: true },
+              });
+
+              const master = buildMaster({
+                id: item.id,
+                workspaceId: ctx.workspaceId,
                 projectId: input.projectId,
                 campaignId: input.campaignId ?? null,
-                title: input.title ?? null,
-                state: 'draft',
-                approvalPolicy: toApprovalPolicy(input.approvalPolicy ?? 'none'),
-                surface: toStoredSurfaceValue(ctx),
-                creationMethod: 'human',
-                ...(actor.userId === null ? {} : { createdByUserId: actor.userId }),
-                ...(ctx.actorType === 'service_account'
-                  ? { createdByServiceAccountId: ctx.actorId }
-                  : {}),
-                correlationId: ctx.correlationId,
-              },
-              select: { id: true, createdAt: true },
-            });
+                draft: input,
+                defaultLocale: actor.workspace.defaultLocale,
+                surface: ctx.surface,
+              });
 
-            const master = buildMaster({
-              id: item.id,
-              workspaceId: ctx.workspaceId,
-              projectId: input.projectId,
-              campaignId: input.campaignId ?? null,
-              draft: input,
-              defaultLocale: actor.workspace.defaultLocale,
-              surface: ctx.surface,
-            });
+              const written = await writeVersion(db, actor, {
+                contentItemId: item.id,
+                master,
+                variants: variantSpecsFrom(targets, input.targets ?? [], new Map()),
+                previousRevision: 0,
+              });
 
-            const written = await writeVersion(db, actor, {
-              contentItemId: item.id,
-              master,
-              variants: variantSpecsFrom(targets, input.targets ?? [], new Map()),
-              previousRevision: 0,
-            });
+              await anchorMediaRetentionToPost(
+                db,
+                actor.workspace.id,
+                master.mediaIds,
+                item.createdAt,
+              );
 
-            await anchorMediaRetentionToPost(
-              db,
-              actor.workspace.id,
-              master.mediaIds,
-              item.createdAt,
-            );
+              await recordAudit(db, actor, {
+                action: 'content.drafted',
+                targetType: 'content_item',
+                targetId: item.id,
+                after: { checksum: written.checksum, targetCount: targets.length },
+                metadata: { projectId: input.projectId, revision: written.revision },
+              });
 
-            await recordAudit(db, actor, {
-              action: 'content.drafted',
-              targetType: 'content_item',
-              targetId: item.id,
-              after: { checksum: written.checksum, targetCount: targets.length },
-              metadata: { projectId: input.projectId, revision: written.revision },
-            });
-
-            return toContentItemView(await loadAggregate(db, item.id));
-          }),
+              return toContentItemView(await loadAggregate(db, item.id));
+            },
+          ),
       });
     },
 

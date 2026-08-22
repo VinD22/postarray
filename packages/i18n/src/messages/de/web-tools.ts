@@ -46,7 +46,8 @@ export const webToolsMessages = {
     'Wir liefern für diese Plattform noch keinen Connector, wir haben also keinen verifizierten Grenzwert zu zeigen. Wir sagen lieber nichts, als zu raten.',
   'web.tools.shared.copy': 'Kopieren',
   'web.tools.shared.copied': 'Kopiert',
-  'web.tools.shared.copyFailed': 'Dein Browser hat das Kopieren blockiert. Wähle den Text aus und kopiere ihn.',
+  'web.tools.shared.copyFailed':
+    'Dein Browser hat das Kopieren blockiert. Wähle den Text aus und kopiere ihn.',
   'web.tools.shared.faqTitle': 'Fragen',
   'web.tools.shared.baselineTitle': 'Welches Konto diese Zahlen beschreiben',
   'web.tools.shared.baselineBody':
@@ -61,7 +62,8 @@ export const webToolsMessages = {
   'web.tools.preflight.summary':
     'Ein Entwurf, geprüft gegen die Text- und Medien-Grenzwerte von zehn Plattformen auf einmal.',
   'web.tools.utm.name': 'UTM-Link-Baukasten',
-  'web.tools.utm.summary': 'Baue eine getaggte Kampagnen-URL, ohne die Query-String zu verunstalten, die sie schon hatte.',
+  'web.tools.utm.summary':
+    'Baue eine getaggte Kampagnen-URL, ohne die Query-String zu verunstalten, die sie schon hatte.',
   'web.tools.youtubeTitle.name': 'YouTube-Titellängenprüfung',
   'web.tools.youtubeTitle.summary': 'Miss einen Titel so, wie eine Person Zeichen zählt.',
   'web.tools.timeZone.name': 'Zeitzonen- und Sommerzeitplaner',
@@ -94,7 +96,8 @@ export const webToolsMessages = {
   'web.tools.preflight.field.mediaKind.video': 'Ein Video',
   'web.tools.preflight.field.mediaCount.label': 'Wie viele Bilder',
   'web.tools.preflight.field.byteSize.label': 'Dateigröße in Megabyte',
-  'web.tools.preflight.field.byteSize.help': 'Die größte einzelne Datei. Leer lassen, um zu überspringen.',
+  'web.tools.preflight.field.byteSize.help':
+    'Die größte einzelne Datei. Leer lassen, um zu überspringen.',
   'web.tools.preflight.field.duration.label': 'Videolänge in Sekunden',
   'web.tools.preflight.field.duration.help': 'Leer lassen, um die Dauerprüfung zu überspringen.',
   'web.tools.preflight.field.width.label': 'Medienbreite in Pixeln',
@@ -156,14 +159,16 @@ export const webToolsMessages = {
   'web.tools.utm.explainer.body':
     'UTM-Parameter werden von Analysewerkzeugen gelesen, nicht von der Plattform, auf der du veröffentlichst. Sie reisen in der URL mit, jeder, der den Link sieht, sieht sie also auch. Halte sie kurz, klein geschrieben und einheitlich, denn zwei Schreibweisen derselben Kampagne werden zwei Zeilen in einem Bericht.',
   'web.tools.utm.field.url.label': 'Ziel-URL',
-  'web.tools.utm.field.url.help': 'Die Seite, auf der Menschen landen sollen, einschließlich https.',
+  'web.tools.utm.field.url.help':
+    'Die Seite, auf der Menschen landen sollen, einschließlich https.',
   'web.tools.utm.field.url.invalid': 'Das lässt sich nicht als http- oder https-URL lesen.',
   'web.tools.utm.field.source.label': 'Kampagnenquelle',
   'web.tools.utm.field.source.help': 'Woher der Klick kam. Zum Beispiel ein Plattformname.',
   'web.tools.utm.field.medium.label': 'Kampagnenmedium',
   'web.tools.utm.field.medium.help': 'Die Art des Links. Zum Beispiel social, email oder referral.',
   'web.tools.utm.field.campaign.label': 'Kampagnenname',
-  'web.tools.utm.field.campaign.help': 'Der Launch, die Aktion oder das Thema, zu dem dieser Link gehört.',
+  'web.tools.utm.field.campaign.help':
+    'Der Launch, die Aktion oder das Thema, zu dem dieser Link gehört.',
   'web.tools.utm.field.term.label': 'Kampagnenbegriff',
   'web.tools.utm.field.term.help': 'Optional. Traditionell das bezahlte Schlüsselwort.',
   'web.tools.utm.field.content.label': 'Kampagneninhalt',
@@ -230,14 +235,16 @@ export const webToolsMessages = {
   'web.tools.timeZone.field.time.label': 'Uhrzeit',
   'web.tools.timeZone.field.zone.label': 'Deine Zone',
   'web.tools.timeZone.field.audience.label': 'Zielgruppenzeitzonen',
-  'web.tools.timeZone.field.audience.help': 'Wähle die Zonen, in denen deine Leser tatsächlich sind.',
+  'web.tools.timeZone.field.audience.help':
+    'Wähle die Zonen, in denen deine Leser tatsächlich sind.',
   'web.tools.timeZone.result.title': 'Derselbe Moment, in allen, die du gewählt hast',
   'web.tools.timeZone.result.empty': 'Wähle mindestens eine Zielgruppenzeitzone.',
   'web.tools.timeZone.result.shift':
     'Ein Sommerzeitwechsel fällt zwischen dieses Datum und denselben Wochentag vier Wochen später, die Ortszeit verschiebt sich also.',
   'web.tools.timeZone.result.stable': 'Kein Versatzwechsel in den nächsten vier Wochen.',
   'web.tools.timeZone.result.later': 'Vier Wochen später, {time}.',
-  'web.tools.timeZone.result.invalidDate': 'Gib ein Datum und eine Uhrzeit ein, um den Vergleich zu sehen.',
+  'web.tools.timeZone.result.invalidDate':
+    'Gib ein Datum und eine Uhrzeit ein, um den Vergleich zu sehen.',
   'web.tools.timeZone.faq.dst.q': 'In welche Richtung verschiebt sich die Uhrzeit?',
   'web.tools.timeZone.faq.dst.a':
     'Das hängt von der Zone und der Richtung des Wechsels ab, weshalb die Tabelle die tatsächliche Ortszeit vier Wochen später zeigt, statt die Regel zu beschreiben. Der Versatz jeder Zone wird aus der Zeitzonendatenbank deines Browsers gelesen.',
@@ -259,11 +266,13 @@ export const webToolsMessages = {
   'web.tools.engagementRate.field.interactions.help':
     'Likes, Kommentare, Weiterleitungen und Speicherungen zusammengezählt, vom Beitrag, den du misst.',
   'web.tools.engagementRate.field.reach.label': 'Reichweite',
-  'web.tools.engagementRate.field.reach.help': 'Konten, die den Beitrag mindestens einmal gesehen haben.',
+  'web.tools.engagementRate.field.reach.help':
+    'Konten, die den Beitrag mindestens einmal gesehen haben.',
   'web.tools.engagementRate.field.followers.label': 'Follower',
   'web.tools.engagementRate.field.followers.help': 'Die Kontogröße zum Zeitpunkt des Beitrags.',
   'web.tools.engagementRate.field.impressions.label': 'Impressionen',
-  'web.tools.engagementRate.field.impressions.help': 'Gesamtansichten, einschließlich einer Person, die zweimal gesehen hat.',
+  'web.tools.engagementRate.field.impressions.help':
+    'Gesamtansichten, einschließlich einer Person, die zweimal gesehen hat.',
   'web.tools.engagementRate.result.title': 'Interaktionsrate, auf drei Arten',
   'web.tools.engagementRate.result.empty': 'nicht verfügbar',
   'web.tools.engagementRate.result.note':

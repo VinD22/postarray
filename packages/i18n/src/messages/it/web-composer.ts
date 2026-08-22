@@ -401,7 +401,8 @@ export const webComposerMessages = {
   'mediaLib.processing.unavailableTitle': 'Questo file non è pronto per la pubblicazione',
   'mediaLib.processing.unavailableBody':
     "L'elaborazione o un controllo di sicurezza sono ancora in sospeso, oppure non sono stati superati. Carica di nuovo il file se questo stato non si risolve.",
-  'mediaLib.processing.pendingTitle': 'La scansione di sicurezza non è disponibile in fase di prelancio',
+  'mediaLib.processing.pendingTitle':
+    'La scansione di sicurezza non è disponibile in fase di prelancio',
   'mediaLib.processing.pendingBody':
     'Il file è memorizzato per 30 giorni, ma non può essere collegato a un post pubblicato finché la scansione di sicurezza non è attivata.',
   'mediaLib.processing.blockedTitle': 'Questo file non può essere pubblicato',

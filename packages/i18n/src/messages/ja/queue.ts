@@ -19,8 +19,7 @@ export const queueMessages = {
   'queue.field.name': 'ルール名',
   'queue.field.nameHelp': '後で見分けられる名前、例えば「平日の朝」など。',
   'queue.field.timeZone': 'タイムゾーン',
-  'queue.field.timeZoneHelp':
-    '時間枠、1日あたりの件数、休止日はすべてこのゾーンで読み取られます。',
+  'queue.field.timeZoneHelp': '時間枠、1日あたりの件数、休止日はすべてこのゾーンで読み取られます。',
   'queue.field.minimumGap': '最小間隔',
   'queue.field.minimumGapHelp': '投稿間の分数。0は間隔ルールなしを意味します。',
   'queue.field.maximumPerDay': '1日の最大件数',
@@ -53,7 +52,8 @@ export const queueMessages = {
   'queue.weekday.7': '日曜日',
 
   'queue.blackouts.heading': '休止日',
-  'queue.blackouts.help': 'このプロジェクトが投稿しない日付。ルールのタイムゾーンで読み取られます。',
+  'queue.blackouts.help':
+    'このプロジェクトが投稿しない日付。ルールのタイムゾーンで読み取られます。',
   'queue.blackouts.empty': '休止日はありません。',
   'queue.blackouts.add': '休止日を追加',
   'queue.blackouts.remove': '休止日を削除',
@@ -63,8 +63,7 @@ export const queueMessages = {
 
   'queue.connections.heading': 'アカウント',
   'queue.connections.all': 'このプロジェクトの全アカウント',
-  'queue.connections.scoped':
-    'このルールが適用される{count, plural, other {#件のアカウント}}',
+  'queue.connections.scoped': 'このルールが適用される{count, plural, other {#件のアカウント}}',
 
   'queue.slot.heading': '次のキュー枠',
   'queue.slot.action': '次のキュー枠を使用',
@@ -94,7 +93,8 @@ export const queueMessages = {
     '時間枠の最初の時刻はその日付の{zone}に存在しないため、存在する次の時刻が使用されました。',
   'queue.reason.dstAmbiguousFirst':
     'そのローカル時刻はその日付の{zone}で2回発生します。最初の発生が使用されました。',
-  'queue.reason.priorityChosen': 'このルールは優先度{priority}を持ち、提供可能な中で最も高いものでした。',
+  'queue.reason.priorityChosen':
+    'このルールは優先度{priority}を持ち、提供可能な中で最も高いものでした。',
   'queue.reason.connectionScoped':
     'このルールは{count, plural, other {#件のアカウント}}を対象としています。',
   'queue.reason.horizonExhausted': '{days}日以内に空いている時間枠がありませんでした。',

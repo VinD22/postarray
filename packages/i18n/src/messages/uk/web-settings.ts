@@ -107,7 +107,8 @@ export const webSettingsMessages = {
     '{count, plural, one {#бренд} few {# бренди} many {# бренди} other {# бренди}}:{names}',
   'settings.ui.members.approvals.canApprove': 'Може схвалити',
   'settings.ui.members.approvals.cannotApprove': 'Не можу схвалити',
-  'settings.ui.members.approvals.canApproveOwnProjects': 'Можна схвалити для перерахованих проєктів',
+  'settings.ui.members.approvals.canApproveOwnProjects':
+    'Можна схвалити для перерахованих проєктів',
   'settings.ui.members.lastActiveNever': 'Ще не ввійшов',
   'settings.ui.members.changeRole': 'Змінити роль для{name}',
   'settings.ui.members.remove': 'видалити{name}',

@@ -79,12 +79,9 @@ export const webPlatformsMessages = {
   'web.schedule.value.markdownYes': '支持',
   'web.schedule.value.markdownNo': '以纯字符形式发布',
 
-  'web.schedule.unit.utf16':
-    '按 UTF-16 代码单元计算，这是大多数编辑器所报告的字符计数方式。',
-  'web.schedule.unit.grapheme':
-    '按字素计算，因此由多个码位组成的表情符号仍只计为一个字符。',
-  'web.schedule.unit.weighted':
-    '按加权方案计算，大多数非拉丁字符计为两个而非一个。',
+  'web.schedule.unit.utf16': '按 UTF-16 代码单元计算，这是大多数编辑器所报告的字符计数方式。',
+  'web.schedule.unit.grapheme': '按字素计算，因此由多个码位组成的表情符号仍只计为一个字符。',
+  'web.schedule.unit.weighted': '按加权方案计算，大多数非拉丁字符计为两个而非一个。',
 
   'web.schedule.link.none': '链接不计入上限。',
   'web.schedule.link.actual': '链接的成本恰好等于其所占用的字符数。',

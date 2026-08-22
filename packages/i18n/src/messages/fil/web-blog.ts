@@ -47,7 +47,8 @@ export const webBlogMessages = {
   'web.blog.byline.editorial.name': 'Ang publishing research desk',
   'web.blog.byline.editorial.role': 'Sumusulat at nangangasiwa sa mga artikulong ito',
   'web.blog.byline.platform.name': 'Ang platform documentation desk',
-  'web.blog.byline.platform.role': 'Sinusuri ang bawat pangungusap tungkol sa platform laban sa opisyal na source nito',
+  'web.blog.byline.platform.role':
+    'Sinusuri ang bawat pangungusap tungkol sa platform laban sa opisyal na source nito',
 
   'web.blog.feed.title': 'Mga sulatin tungkol sa publishing operations',
   'web.blog.feed.description':

@@ -78,7 +78,7 @@ export function OAuthAccountSelectionPanel(): ReactNode {
           const checked = selected.includes(account.externalAccountId);
           const disabled = !account.eligible;
           return (
-            <label key={account.externalAccountId} className="flex gap-2 items-start">
+            <label key={account.externalAccountId} className="flex items-start gap-2">
               <input
                 type="checkbox"
                 disabled={disabled}

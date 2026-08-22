@@ -15,7 +15,8 @@ export const postingSetMessages = {
   'calendar.hold.badgeBilling': 'Gepauzeerd wegens facturering',
   'calendar.hold.term': 'Pauze',
   'calendar.hold.byPerson': 'Door jou gepauzeerd op {date}.',
-  'calendar.hold.byBilling': 'Gepauzeerd op {date} omdat deze werkruimte volledige toegang verloor.',
+  'calendar.hold.byBilling':
+    'Gepauzeerd op {date} omdat deze werkruimte volledige toegang verloor.',
   'calendar.hold.none': 'Niet gepauzeerd',
 
   'calendar.hold.confirmTitle': 'Dit bericht pauzeren?',
@@ -56,15 +57,18 @@ export const postingSetMessages = {
   'set.appliedOnce':
     'Een Set wordt maar één keer gelezen, op het moment dat je hem toepast. Hem later bewerken verandert waarmee het volgende bericht begint. Concepten en geplande berichten die je er al van hebt gemaakt, blijven precies zoals ze zijn.',
   'set.empty.title': 'Nog geen Sets',
-  'set.empty.body': 'Maak er een aan om te stoppen met het opnieuw opbouwen van dezelfde accountlijst voor elk bericht.',
+  'set.empty.body':
+    'Maak er een aan om te stoppen met het opnieuw opbouwen van dezelfde accountlijst voor elk bericht.',
   'set.create': 'Nieuwe Set',
   'set.edit': 'Set bewerken',
   'set.archive': 'Set archiveren',
   'set.archived': 'Gearchiveerd',
-  'set.archivedNote': 'Gearchiveerde Sets zijn verborgen in de kiezer. Berichten die ervan zijn gemaakt, blijven ongewijzigd.',
+  'set.archivedNote':
+    'Gearchiveerde Sets zijn verborgen in de kiezer. Berichten die ervan zijn gemaakt, blijven ongewijzigd.',
   'set.showArchived': 'Toon gearchiveerde',
   'set.saved': 'Set opgeslagen.',
-  'set.archivedToast': 'Set gearchiveerd. Berichten die er al van zijn gemaakt, blijven ongewijzigd.',
+  'set.archivedToast':
+    'Set gearchiveerd. Berichten die er al van zijn gemaakt, blijven ongewijzigd.',
 
   'set.field.name': 'Naam',
   'set.field.nameHint': 'Waar je later naar zoekt in de kiezer. Eén per merk.',
@@ -109,7 +113,8 @@ export const postingSetMessages = {
   'set.defaults.requireAltText': 'Alt-tekst verplicht op elke afbeelding',
   'set.defaults.requireAltTextHint':
     'Een bericht dat van deze Set is gemaakt, kan pas voor dit platform worden gepland als elke afbeelding alt-tekst heeft.',
-  'set.defaults.empty': 'Geen standaardwaarden per platform. Elk account start vanuit het hoofdbericht.',
+  'set.defaults.empty':
+    'Geen standaardwaarden per platform. Elk account start vanuit het hoofdbericht.',
 
   'set.error.nameTaken': 'Een andere Set in dit merk gebruikt die naam al.',
   'set.error.archived': 'Deze Set is gearchiveerd. Herstel hem voordat je hem bewerkt.',
@@ -128,7 +133,8 @@ export const postingSetMessages = {
   'targetMemory.setting.enabled': 'Aan',
   'targetMemory.setting.disabled': 'Uit',
   'targetMemory.setting.saved': 'Instelling opgeslagen.',
-  'targetMemory.setting.cleared': 'Instelling opgeslagen. Opgeslagen selecties in dit merk zijn verwijderd.',
+  'targetMemory.setting.cleared':
+    'Instelling opgeslagen. Opgeslagen selecties in dit merk zijn verwijderd.',
 
   'targetMemory.composer.restored':
     '{count, plural, one {Gestart met # account van de vorige keer.} other {Gestart met # accounts van de vorige keer.}}',

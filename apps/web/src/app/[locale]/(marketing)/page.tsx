@@ -373,7 +373,7 @@ export default async function HomePage({
               overclaiming, because cohort membership is intent and a connector
               is available account by account as its provider review lands.
             */}
-            <div className="border-border-default border-t pt-6 lg:col-span-4 lg:col-start-9 lg:border-t-0 lg:border-s lg:ps-8 lg:pt-0">
+            <div className="border-border-default border-t pt-6 lg:col-span-4 lg:col-start-9 lg:border-s lg:border-t-0 lg:ps-8 lg:pt-0">
               <EditorialBigNumber
                 value={CONNECTOR_PROVIDERS.length}
                 locale={locale}

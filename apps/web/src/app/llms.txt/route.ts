@@ -51,7 +51,10 @@ export async function GET(): Promise<Response> {
       const content = articleContent(article, 'en');
       const locales = articleLocales(article);
       const url = absoluteUrl(blogArticlePath(article.slug));
-      const languageNote = locales.length > 1 ? ` (also in ${locales.filter((locale) => locale !== 'en').join(', ')})` : '';
+      const languageNote =
+        locales.length > 1
+          ? ` (also in ${locales.filter((locale) => locale !== 'en').join(', ')})`
+          : '';
       return `- [${content.title}](${url}): ${content.description}${languageNote}`;
     }),
     '',

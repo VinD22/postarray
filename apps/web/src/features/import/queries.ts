@@ -49,10 +49,7 @@ export function useImportRows(importJobId: string | null, state: BulkImportRowSt
     staleTime: THIRTY_SECONDS,
     queryFn: async (): Promise<readonly BulkImportRowView[]> => {
       if (importJobId === null) return [];
-      const page = await importApi.listRows(
-        importJobId,
-        state === 'all' ? {} : { state },
-      );
+      const page = await importApi.listRows(importJobId, state === 'all' ? {} : { state });
       return page.data;
     },
   });

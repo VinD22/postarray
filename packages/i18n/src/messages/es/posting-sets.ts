@@ -47,12 +47,14 @@ export const postingSetMessages = {
   'set.appliedOnce':
     'Un Set se lee una vez, cuando lo aplicas. Editarlo después cambia con qué empieza la siguiente publicación. Los borradores y publicaciones programadas que ya creaste a partir de él quedan exactamente como están.',
   'set.empty.title': 'Todavía no hay Sets',
-  'set.empty.body': 'Crea uno para dejar de reconstruir la misma lista de cuentas en cada publicación.',
+  'set.empty.body':
+    'Crea uno para dejar de reconstruir la misma lista de cuentas en cada publicación.',
   'set.create': 'Nuevo Set',
   'set.edit': 'Editar Set',
   'set.archive': 'Archivar Set',
   'set.archived': 'Archivado',
-  'set.archivedNote': 'Los Sets archivados quedan ocultos en el selector. Las publicaciones hechas a partir de ellos no cambian.',
+  'set.archivedNote':
+    'Los Sets archivados quedan ocultos en el selector. Las publicaciones hechas a partir de ellos no cambian.',
   'set.showArchived': 'Mostrar archivados',
   'set.saved': 'Set guardado.',
   'set.archivedToast': 'Set archivado. Las publicaciones ya creadas a partir de él no cambian.',
@@ -62,12 +64,15 @@ export const postingSetMessages = {
   'set.field.description': 'Descripción',
   'set.field.descriptionHint': 'Opcional. Para qué sirve este Set.',
   'set.field.targets': 'Cuentas',
-  'set.field.targetsHint': 'Toda cuenta con la que empieza una publicación hecha a partir de este Set.',
-  'set.field.targetCount': '{count, plural, =0 {Ninguna cuenta} one {# cuenta} many {# cuentas} other {# cuentas}}',
+  'set.field.targetsHint':
+    'Toda cuenta con la que empieza una publicación hecha a partir de este Set.',
+  'set.field.targetCount':
+    '{count, plural, =0 {Ninguna cuenta} one {# cuenta} many {# cuentas} other {# cuentas}}',
   'set.field.signature': 'Firma',
   'set.field.signatureNone': 'Sin firma',
   'set.field.approval': 'Aprobación',
-  'set.field.approvalHint': 'La aprobación que necesita una publicación hecha a partir de este Set antes de poder publicarse.',
+  'set.field.approvalHint':
+    'La aprobación que necesita una publicación hecha a partir de este Set antes de poder publicarse.',
   'set.field.schedule': 'Cuándo publicar',
 
   'set.approval.none': 'No hace falta aprobación',
@@ -99,7 +104,8 @@ export const postingSetMessages = {
   'set.defaults.requireAltText': 'Exigir texto alternativo en toda imagen',
   'set.defaults.requireAltTextHint':
     'Una publicación hecha a partir de este Set no se puede programar para esta plataforma hasta que toda imagen tenga texto alternativo.',
-  'set.defaults.empty': 'Sin valores predeterminados por plataforma. Toda cuenta parte de la publicación maestra.',
+  'set.defaults.empty':
+    'Sin valores predeterminados por plataforma. Toda cuenta parte de la publicación maestra.',
 
   'set.error.nameTaken': 'Otro Set en este proyecto ya usa ese nombre.',
   'set.error.archived': 'Este Set está archivado. Restáuralo antes de editarlo.',
@@ -118,7 +124,8 @@ export const postingSetMessages = {
   'targetMemory.setting.enabled': 'Activado',
   'targetMemory.setting.disabled': 'Desactivado',
   'targetMemory.setting.saved': 'Configuración guardada.',
-  'targetMemory.setting.cleared': 'Configuración guardada. Se eliminaron las selecciones guardadas en este proyecto.',
+  'targetMemory.setting.cleared':
+    'Configuración guardada. Se eliminaron las selecciones guardadas en este proyecto.',
 
   'targetMemory.composer.restored':
     '{count, plural, one {Empezó con # cuenta de la última vez.} many {Empezó con # cuentas de la última vez.} other {Empezó con # cuentas de la última vez.}}',

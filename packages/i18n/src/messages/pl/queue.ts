@@ -36,7 +36,8 @@ export const queueMessages = {
     'Pozostaw puste, aby nie ustawiać dziennego limitu. Zero oznacza, że ta reguła niczego nie proponuje.',
   'queue.field.maximumPerDayUnlimited': 'Brak dziennego limitu',
   'queue.field.priority': 'Priorytet',
-  'queue.field.priorityHelp': 'Używana jest reguła o najwyższym priorytecie, która może zaproponować termin.',
+  'queue.field.priorityHelp':
+    'Używana jest reguła o najwyższym priorytecie, która może zaproponować termin.',
   'queue.field.enabled': 'Użyj tej reguły',
 
   'queue.windows.heading': 'Okna tygodniowe',
@@ -61,7 +62,8 @@ export const queueMessages = {
   'queue.weekday.7': 'Niedziela',
 
   'queue.blackouts.heading': 'Daty wykluczeń',
-  'queue.blackouts.help': 'Daty, w które ta marka nie będzie publikować, odczytywane w strefie czasowej reguły.',
+  'queue.blackouts.help':
+    'Daty, w które ta marka nie będzie publikować, odczytywane w strefie czasowej reguły.',
   'queue.blackouts.empty': 'Brak dat wykluczeń.',
   'queue.blackouts.add': 'Dodaj wykluczenie',
   'queue.blackouts.remove': 'Usuń wykluczenie',
@@ -102,7 +104,8 @@ export const queueMessages = {
     'Pierwsza godzina w oknie nie istnieje tego dnia w strefie {zone}, więc użyto najbliższej kolejnej, która istnieje.',
   'queue.reason.dstAmbiguousFirst':
     'Ta lokalna godzina występuje tego dnia dwukrotnie w strefie {zone}. Użyto pierwszego wystąpienia.',
-  'queue.reason.priorityChosen': 'Ta reguła ma priorytet {priority}, najwyższy, jaki mógł zaoferować.',
+  'queue.reason.priorityChosen':
+    'Ta reguła ma priorytet {priority}, najwyższy, jaki mógł zaoferować.',
   'queue.reason.connectionScoped':
     'Ta reguła obejmuje {count, plural, one {# konto} few {# konta} many {# kont} other {# konta}}.',
   'queue.reason.horizonExhausted': 'W ciągu {days} dni nie było wolnego okna.',

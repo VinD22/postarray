@@ -75,8 +75,8 @@ export const connectionsApi = {
           query.projectId === undefined
             ? null
             : new Set(
-                demoSession.projects.find((project) => project.id === query.projectId)?.connectionIds ??
-                  [],
+                demoSession.projects.find((project) => project.id === query.projectId)
+                  ?.connectionIds ?? [],
               );
         return page(
           demoConnections.filter(

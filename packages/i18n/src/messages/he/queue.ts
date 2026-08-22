@@ -7,7 +7,8 @@ import { withHebrewPluralForms } from './catalog-helpers';
  */
 export const queueMessages = withHebrewPluralForms({
   'queue.title': 'תור הפרסום',
-  'queue.subtitle': 'מתי הפרויקט הזה מוכן לפרסם, ובאיזה מרווח. שום דבר לא מתפרסם בלי שאדם מאשר את הזמן.',
+  'queue.subtitle':
+    'מתי הפרויקט הזה מוכן לפרסם, ובאיזה מרווח. שום דבר לא מתפרסם בלי שאדם מאשר את הזמן.',
 
   'queue.rules.heading': 'כללי תור',
   'queue.rules.empty': 'עדיין אין כללי תור. עד שתוסיף אחד, החריץ הבא הוא פשוט השעה הפנויה הראשונה.',
@@ -28,7 +29,8 @@ export const queueMessages = withHebrewPluralForms({
   'queue.field.minimumGap': 'מרווח מינימלי',
   'queue.field.minimumGapHelp': 'דקות בין שני פוסטים. אפס פירושו שאין כלל מרווח.',
   'queue.field.maximumPerDay': 'מקסימום ליום',
-  'queue.field.maximumPerDayHelp': 'השאר ריק כדי שלא תהיה מגבלה יומית. אפס פירושו שהכלל הזה לא מציע כלום.',
+  'queue.field.maximumPerDayHelp':
+    'השאר ריק כדי שלא תהיה מגבלה יומית. אפס פירושו שהכלל הזה לא מציע כלום.',
   'queue.field.maximumPerDayUnlimited': 'אין מגבלה יומית',
   'queue.field.priority': 'עדיפות',
   'queue.field.priorityHelp': 'הכלל בעדיפות הגבוהה ביותר שיכול להציע חריץ הוא זה שבשימוש.',
@@ -89,12 +91,14 @@ export const queueMessages = withHebrewPluralForms({
   'queue.reason.noMinimumGap': 'הכלל הזה לא קובע מרווח מינימלי בין פוסטים.',
   'queue.reason.dailyCap': 'היום הזה מכיל לכל היותר {limit} פוסטים, והוא עוד לא מלא.',
   'queue.reason.dailyCapUnlimited': 'הכלל הזה לא קובע מגבלה יומית.',
-  'queue.reason.blackoutSkipped': '{days, plural, one {# יום חסימה} other {# ימי חסימה}} דולגו כדי להגיע אליו.',
+  'queue.reason.blackoutSkipped':
+    '{days, plural, one {# יום חסימה} other {# ימי חסימה}} דולגו כדי להגיע אליו.',
   'queue.reason.dstNonexistentSkipped':
     'הזמן הראשון בחלון לא קיים בתאריך הזה באזור {zone}, אז נעשה שימוש בזמן הבא שכן קיים.',
   'queue.reason.dstAmbiguousFirst':
     'הזמן המקומי הזה קורה פעמיים באזור {zone} בתאריך הזה. נעשה שימוש במופע הראשון.',
   'queue.reason.priorityChosen': 'לכלל הזה יש עדיפות {priority}, הגבוהה ביותר שיכלה להציע.',
-  'queue.reason.connectionScoped': 'הכלל הזה מכסה {count, plural, one {# חשבון} other {# חשבונות}}.',
+  'queue.reason.connectionScoped':
+    'הכלל הזה מכסה {count, plural, one {# חשבון} other {# חשבונות}}.',
   'queue.reason.horizonExhausted': 'לא נמצא חלון פנוי בתוך {days} ימים.',
 });

@@ -195,11 +195,13 @@ export const webDemoMessages = {
 
   'web.demo.digest.label': 'Tu semana, en frases',
   'web.demo.digest.sample': 'Ejemplo',
-  'web.demo.digest.line.variants': 'Tres versiones nativas de plataforma salieron de un borrador esta semana.',
+  'web.demo.digest.line.variants':
+    'Tres versiones nativas de plataforma salieron de un borrador esta semana.',
   'web.demo.digest.line.earliest': 'La mañana del martes fue tu horario más temprano.',
   'web.demo.digest.line.approval': 'Toda versión se aprobó antes de entrar en la cola.',
   'web.demo.digest.line.alt': 'Toda imagen tenía texto alternativo escrito por una persona.',
-  'web.demo.digest.footer': 'Los análisis en vivo aparecen aquí a medida que se publica tu contenido.',
+  'web.demo.digest.footer':
+    'Los análisis en vivo aparecen aquí a medida que se publica tu contenido.',
 
   /* ---------------------------------------------------------------------- */
   /* Los tres pasos añadidos al recorrido                                  */

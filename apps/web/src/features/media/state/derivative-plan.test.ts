@@ -48,15 +48,7 @@ describe('derivative plan', () => {
       plan({ crop: { x: 1, y: 2, width: 3, height: 4 }, format: 'image/jpeg', quality: 80 }),
     );
     const keys = new Set(operations.flatMap((operation) => Object.keys(operation)));
-    expect([...keys].sort()).toEqual([
-      'format',
-      'height',
-      'op',
-      'quality',
-      'width',
-      'x',
-      'y',
-    ]);
+    expect([...keys].sort()).toEqual(['format', 'height', 'op', 'quality', 'width', 'x', 'y']);
   });
 
   it('projects the size the version will be', () => {

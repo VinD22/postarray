@@ -55,11 +55,13 @@ export const mediaMessages = {
   'mediaLib.derivative.original': 'Original',
   'mediaLib.derivative.originalHint': 'Siempre se conserva. Nunca se sobrescribe.',
   'mediaLib.derivative.item': '{width} por {height}, {mimeType}, {size}',
-  'mediaLib.derivative.empty': 'Aún no hay versiones editadas. El original es el único archivo aquí.',
+  'mediaLib.derivative.empty':
+    'Aún no hay versiones editadas. El original es el único archivo aquí.',
   'mediaLib.derivative.select': 'Usar esta versión',
   'mediaLib.derivative.selected': 'En uso para esta publicación',
   'mediaLib.derivative.useOriginal': 'Usar el original',
-  'mediaLib.derivative.processing': 'Esta versión se está generando. Aparecerá aquí cuando esté lista.',
+  'mediaLib.derivative.processing':
+    'Esta versión se está generando. Aparecerá aquí cuando esté lista.',
   'mediaLib.derivative.alreadyExists':
     'Ya hiciste exactamente esta misma edición antes, así que reutilizamos esa versión en lugar de crear una segunda.',
   'mediaLib.derivative.failedTitle': 'No se pudo generar esta versión',

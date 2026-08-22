@@ -17,7 +17,8 @@ export const queueMessages = {
     'संग्रहित करना भविष्य के प्रस्तावों को रोकता है। पहले से आरक्षित स्लॉट अपना समय और कारण बनाए रखते हैं।',
 
   'queue.field.name': 'नियम का नाम',
-  'queue.field.nameHelp': 'एक नाम जिसे आप बाद में पहचानेंगे, उदाहरण के लिए सप्ताह के दिनों की सुबह।',
+  'queue.field.nameHelp':
+    'एक नाम जिसे आप बाद में पहचानेंगे, उदाहरण के लिए सप्ताह के दिनों की सुबह।',
   'queue.field.timeZone': 'समय क्षेत्र',
   'queue.field.timeZoneHelp':
     'विंडो, दैनिक गिनती और ब्लैकआउट तारीखें सभी इस क्षेत्र में पढ़ी जाती हैं।',
@@ -28,7 +29,8 @@ export const queueMessages = {
     'कोई दैनिक सीमा न होने के लिए खाली छोड़ दें। शून्य का मतलब यह नियम कुछ प्रस्तावित नहीं करता।',
   'queue.field.maximumPerDayUnlimited': 'कोई दैनिक सीमा नहीं',
   'queue.field.priority': 'प्राथमिकता',
-  'queue.field.priorityHelp': 'सबसे उच्च प्राथमिकता वाला नियम जो स्लॉट दे सकता है वही उपयोग किया जाता है।',
+  'queue.field.priorityHelp':
+    'सबसे उच्च प्राथमिकता वाला नियम जो स्लॉट दे सकता है वही उपयोग किया जाता है।',
   'queue.field.enabled': 'इस नियम का उपयोग करें',
 
   'queue.windows.heading': 'साप्ताहिक विंडो',
@@ -53,7 +55,8 @@ export const queueMessages = {
   'queue.weekday.7': 'रविवार',
 
   'queue.blackouts.heading': 'ब्लैकआउट तारीखें',
-  'queue.blackouts.help': 'वे तारीखें जिन पर यह प्रोजेक्ट पोस्ट नहीं करेगा, नियम के समय क्षेत्र में पढ़ी गईं।',
+  'queue.blackouts.help':
+    'वे तारीखें जिन पर यह प्रोजेक्ट पोस्ट नहीं करेगा, नियम के समय क्षेत्र में पढ़ी गईं।',
   'queue.blackouts.empty': 'कोई ब्लैकआउट तारीख नहीं।',
   'queue.blackouts.add': 'ब्लैकआउट जोड़ें',
   'queue.blackouts.remove': 'ब्लैकआउट हटाएं',
@@ -63,7 +66,8 @@ export const queueMessages = {
 
   'queue.connections.heading': 'खाते',
   'queue.connections.all': 'इस प्रोजेक्ट में हर खाता',
-  'queue.connections.scoped': '{count, plural, one {# खाता} other {# खाते}} जिन पर यह नियम लागू होता है',
+  'queue.connections.scoped':
+    '{count, plural, one {# खाता} other {# खाते}} जिन पर यह नियम लागू होता है',
 
   'queue.slot.heading': 'अगला कतार स्लॉट',
   'queue.slot.action': 'अगले कतार स्लॉट का उपयोग करें',
@@ -93,7 +97,8 @@ export const queueMessages = {
     'विंडो में पहला समय {zone} में उस तारीख पर मौजूद नहीं है, इसलिए अगला मौजूद समय उपयोग किया गया।',
   'queue.reason.dstAmbiguousFirst':
     'वह स्थानीय समय {zone} में उस तारीख पर दो बार होता है। पहली घटना उपयोग की गई।',
-  'queue.reason.priorityChosen': 'इस नियम की प्राथमिकता {priority} है, जो प्रस्ताव दे सकने वाली सबसे उच्च है।',
+  'queue.reason.priorityChosen':
+    'इस नियम की प्राथमिकता {priority} है, जो प्रस्ताव दे सकने वाली सबसे उच्च है।',
   'queue.reason.connectionScoped':
     'यह नियम {count, plural, one {# खाते} other {# खातों}} को कवर करता है।',
   'queue.reason.horizonExhausted': '{days} दिनों के भीतर कोई विंडो खाली नहीं थी।',

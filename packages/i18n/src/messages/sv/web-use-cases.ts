@@ -48,7 +48,8 @@ export const webUseCaseMessages = {
   /* ---------------------------------------------------------------------- */
 
   'web.useCases.clients.title': 'Hantera flera kunder',
-  'web.useCases.clients.lede': 'Arbete för en kund ska aldrig vara ett felklick från en annan kunds publik.',
+  'web.useCases.clients.lede':
+    'Arbete för en kund ska aldrig vara ett felklick från en annan kunds publik.',
   'web.useCases.clients.problem':
     'De flesta team separerar kunder genom att vara försiktiga. Ett delat konto rymmer varje ansluten sida, en kalender rymmer varje schema, och det enda som står mellan en kunds utkast och fel publik är personen som tittar på skärmen klockan sex på kvällen. När någon lämnar teamet, försvinner separationen med vanan.',
   'web.useCases.clients.approach1':
@@ -65,7 +66,8 @@ export const webUseCaseMessages = {
   /* ---------------------------------------------------------------------- */
 
   'web.useCases.approvals.title': 'Godkännandeflöden',
-  'web.useCases.approvals.lede': 'Ett godkännande är bara värt något om det som godkändes är det som går ut.',
+  'web.useCases.approvals.lede':
+    'Ett godkännande är bara värt något om det som godkändes är det som går ut.',
   'web.useCases.approvals.problem':
     'Godkännanden lever oftast utanför verktyget som publicerar. En skärmdump går till en kund, kunden svarar ja, och sedan ändras texten. Godkännandet syftar nu på ett utkast ingen har, och verktyget vet inget om det, så det publicerar vad det senast fick.',
   'web.useCases.approvals.approach1':

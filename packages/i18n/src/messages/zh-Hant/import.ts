@@ -12,7 +12,8 @@
  */
 export const importMessages = {
   'import.title': '從 CSV 匯入貼文',
-  'import.subtitle': '上傳試算表，先確認它會做什麼，再決定是否套用。上傳只會檢查檔案，不會建立任何內容。',
+  'import.subtitle':
+    '上傳試算表，先確認它會做什麼，再決定是否套用。上傳只會檢查檔案，不會建立任何內容。',
 
   'import.step.upload': '上傳',
   'import.step.columns': '欄位',
@@ -32,9 +33,11 @@ export const importMessages = {
   'import.upload.submit': '檢查此檔案',
   'import.upload.submitting': '正在讀取檔案',
   'import.upload.allowPast': '允許已過去的時間',
-  'import.upload.allowPastHelp': '預設為關閉。日期在過去的資料列會被回報，讓你自行修正，而不會被自動調整。',
+  'import.upload.allowPastHelp':
+    '預設為關閉。日期在過去的資料列會被回報，讓你自行修正，而不會被自動調整。',
   'import.upload.tooLarge': '該檔案超過 {limit} 個字元。請將它拆分後再試一次。',
-  'import.upload.duplicate': '這是你先前已上傳過的相同檔案，因此你看到的是那次匯入，而非第二份副本。',
+  'import.upload.duplicate':
+    '這是你先前已上傳過的相同檔案，因此你看到的是那次匯入，而非第二份副本。',
 
   'import.template.heading': '各欄位的意義',
   'import.template.download': '下載 CSV 範本',
@@ -98,7 +101,8 @@ export const importMessages = {
 
   'import.apply.heading': '要對已就緒的資料列做什麼？',
   'import.apply.drafts': '建立草稿',
-  'import.apply.draftsHelp': '預設選項。每一列已就緒的資料都會成為可開啟、編輯與核准的草稿，不會排程任何內容。',
+  'import.apply.draftsHelp':
+    '預設選項。每一列已就緒的資料都會成為可開啟、編輯與核准的草稿，不會排程任何內容。',
   'import.apply.scheduled': '建立草稿並排程',
   'import.apply.scheduledHelp':
     '每一列已就緒的資料都會成為草稿，並採用檔案中寫定的時間。只有在時間正確時才選擇此選項。',
@@ -138,8 +142,10 @@ export const importMessages = {
   'import.error.invalidTargets': '值 {value} 並非已儲存的目標組合，也不是帳號 ID 清單。',
   'import.error.invalidMedia': '值 {value} 並非媒體 ID、sha256 校驗碼或 https 位址。',
   'import.error.mediaNotFound': '此工作區中沒有符合 {value} 的媒體。',
-  'import.error.mediaImportStarted': '正在擷取 {value} 的媒體。待其進入媒體庫後，請再次套用此檔案。',
-  'import.error.unknownVariantTarget': '此資料列沒有 {provider} 帳號，因此未使用 {provider} 的內容。',
+  'import.error.mediaImportStarted':
+    '正在擷取 {value} 的媒體。待其進入媒體庫後，請再次套用此檔案。',
+  'import.error.unknownVariantTarget':
+    '此資料列沒有 {provider} 帳號，因此未使用 {provider} 的內容。',
   'import.error.applyFailed': '無法套用此資料列。參考代碼：{code}。',
   'import.error.alreadyApplied': '此資料列先前已建立草稿，因此未被變更。',
   'import.error.tooManyRows': '檔案僅會讀取前 {limit} 列。',

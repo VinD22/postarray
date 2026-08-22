@@ -47,7 +47,8 @@ export const mediaMessages = {
   'mediaLib.derivative.qualityHint':
     'คุณภาพที่ต่ำลงทำให้ไฟล์เล็กลง ใช้ได้กับ JPEG และ WebP ส่วน PNG ไม่มีการสูญเสียข้อมูลและจะไม่สนใจค่านี้',
   'mediaLib.derivative.projected': 'เวอร์ชันนี้จะมีขนาด {width} x {height} พิกเซล',
-  'mediaLib.derivative.projectedUnavailable': 'ขนาดของเวอร์ชันนี้จะยังไม่พร้อมใช้งานจนกว่าจะสร้างเสร็จ',
+  'mediaLib.derivative.projectedUnavailable':
+    'ขนาดของเวอร์ชันนี้จะยังไม่พร้อมใช้งานจนกว่าจะสร้างเสร็จ',
 
   // ==================================================== the versions list ====
   'mediaLib.derivative.listHeading': 'เวอร์ชันต่าง ๆ',
@@ -74,7 +75,8 @@ export const mediaMessages = {
     'Relay ไม่สร้างภาพหรือวิดีโอขึ้นมาใหม่ เครื่องมือแก้ไขนี้ทำได้เพียงครอบตัด หมุน ปรับขนาด แปลงรูปแบบ และบีบอัดสิ่งที่คุณอัปโหลดเท่านั้น',
 
   // ==================================================== refusals ====
-  'error.media_derivative_no_operations.message': 'เลือกการเปลี่ยนแปลงอย่างน้อยหนึ่งอย่างก่อนบันทึกเวอร์ชัน',
+  'error.media_derivative_no_operations.message':
+    'เลือกการเปลี่ยนแปลงอย่างน้อยหนึ่งอย่างก่อนบันทึกเวอร์ชัน',
   'error.media_derivative_duplicate_operation.message':
     'การเปลี่ยนแปลงแต่ละประเภทปรากฏได้เพียงครั้งเดียว ให้ลบ {operation} ตัวที่สองออก',
   'error.media_derivative_crop_out_of_bounds.message':

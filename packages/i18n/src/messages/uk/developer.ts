@@ -7,7 +7,8 @@ export const developerMessages = {
   'developer.serviceAccount.title': 'Сервісні облікові записи',
   'developer.serviceAccount.create': 'Створіть обліковий запис служби',
   'developer.serviceAccount.name': "Ім'я",
-  'developer.serviceAccount.scopeProjects': 'Project та облікові записи, які він може використовувати',
+  'developer.serviceAccount.scopeProjects':
+    'Project та облікові записи, які він може використовувати',
   'developer.serviceAccount.scopePlatforms': 'Платформи',
   'developer.serviceAccount.scopeLocales': 'Мови вмісту',
   'developer.serviceAccount.scopeDomains': 'Дозволені домени посилань',

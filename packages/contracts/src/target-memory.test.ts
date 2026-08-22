@@ -8,11 +8,7 @@ import { filterRememberedTargets, type OfferableChannel } from './target-memory'
  * with a channel being silently reselected here.
  */
 
-function channel(
-  connectionId: string,
-  health: string,
-  authorized = true,
-): OfferableChannel {
+function channel(connectionId: string, health: string, authorized = true): OfferableChannel {
   return { connectionId, health, authorized };
 }
 
@@ -20,10 +16,10 @@ const REMEMBERED = ['conn_a', 'conn_b', 'conn_c', 'conn_d', 'conn_e'];
 
 describe('filterRememberedTargets', () => {
   it('keeps active authorized channels in remembered order', () => {
-    const result = filterRememberedTargets(['conn_b', 'conn_a'], [
-      channel('conn_a', 'active'),
-      channel('conn_b', 'active'),
-    ]);
+    const result = filterRememberedTargets(
+      ['conn_b', 'conn_a'],
+      [channel('conn_a', 'active'), channel('conn_b', 'active')],
+    );
     expect(result.connectionIds).toEqual(['conn_b', 'conn_a']);
     expect(result.droppedConnectionIds).toEqual([]);
   });

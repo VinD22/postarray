@@ -59,7 +59,8 @@ export const settingsMessages = {
   'settings.projects.localeRules.emoji': 'Tiêu chuẩn về biểu tượng cảm xúc và hashtag',
   'settings.projects.localeRules.legal': 'Tiết lộ pháp lý khu vực',
   'settings.projects.localeRules.cta': 'Kêu gọi hành động theo thị trường',
-  'settings.projects.localeRules.reviewedExamples': 'Các ví dụ đã được người đánh giá gốc phê duyệt',
+  'settings.projects.localeRules.reviewedExamples':
+    'Các ví dụ đã được người đánh giá gốc phê duyệt',
   'settings.sets.title': 'bộ',
   'settings.sets.description':
     'Một nhóm mục tiêu, biến thể, cài đặt, nhận xét và độ trễ có thể tái sử dụng. Việc áp dụng Bộ sẽ tạo ra một bản nháp độc lập.',

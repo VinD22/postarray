@@ -68,10 +68,7 @@ export const targetMemoryApi = {
   read: (projectId: string): Promise<RememberedTargetsView> =>
     call(`/projects/${projectId}/remembered-targets`, {}, () => optedOut(projectId)),
 
-  remember: (
-    projectId: string,
-    connectionIds: readonly string[],
-  ): Promise<RememberedTargetsView> =>
+  remember: (projectId: string, connectionIds: readonly string[]): Promise<RememberedTargetsView> =>
     call(
       `/projects/${projectId}/remembered-targets`,
       { method: 'PUT', body: { connectionIds: [...connectionIds] } },

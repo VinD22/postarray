@@ -127,7 +127,9 @@ export function AnalyticsOverviewScreen({
     announce(
       t('analytics.filter.applied', {
         count:
-          (next.projectId ? 1 : 0) + (next.format ? 1 : 0) + (next.connectionIds.length > 0 ? 1 : 0),
+          (next.projectId ? 1 : 0) +
+          (next.format ? 1 : 0) +
+          (next.connectionIds.length > 0 ? 1 : 0),
         results: rows.length,
       }),
       'polite',

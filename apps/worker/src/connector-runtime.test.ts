@@ -45,4 +45,3 @@ describe('worker connector runtime composition', () => {
     runtime.close();
   });
 });
-

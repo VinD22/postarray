@@ -27,8 +27,7 @@ export const webUseCaseMessages = {
   'web.useCases.section.related': '相关内容',
 
   'web.useCases.clients.title': '管理多个客户',
-  'web.useCases.clients.lede':
-    '一个客户的工作绝不应该因为一次点击失误就送达另一个客户的受众。',
+  'web.useCases.clients.lede': '一个客户的工作绝不应该因为一次点击失误就送达另一个客户的受众。',
   'web.useCases.clients.problem':
     '大多数团队靠小心谨慎来隔离客户。一个共享账户持有每一个已连接的页面，一个日历持有每一个排期，在客户草稿与错误受众之间，唯一的屏障是那个在晚上六点盯着屏幕的人。当有人离开团队时，这种隔离也会随着那份习惯一起消失。',
   'web.useCases.clients.approach1':
@@ -41,8 +40,7 @@ export const webUseCaseMessages = {
     '项目、限定在项目范围内的成员资格，以及其背后的行级安全策略均已构建并经过测试，其中包括尝试跨项目读取并确保其失败的测试。方案根据团队所需的项目数量而定。目前尚无任何项目向任何平台发布任何内容。',
 
   'web.useCases.approvals.title': '审批工作流',
-  'web.useCases.approvals.lede':
-    '只有当被批准的内容正是最终发布的内容时，审批才有意义。',
+  'web.useCases.approvals.lede': '只有当被批准的内容正是最终发布的内容时，审批才有意义。',
   'web.useCases.approvals.problem':
     '审批通常发生在发布工具之外。截图被发送给客户，客户回复“可以”，然后文案又被更改。此时审批所指向的草稿已不属于任何人，而工具对此一无所知，于是它会发布最后一次收到的任何内容。',
   'web.useCases.approvals.approach1':
