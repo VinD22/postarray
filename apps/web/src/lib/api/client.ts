@@ -31,6 +31,7 @@ import {
 import { analyticsApi, growthApi, shortLinksApi } from './resources/insights';
 import { mediaApi } from './resources/media';
 import { postingSetsApi, targetMemoryApi } from './resources/posting-sets';
+import { serviceAccountsApi } from './resources/service-accounts';
 import { dataDeletionApi, dataExportsApi } from './resources/data';
 import {
   apiKeysApi,
@@ -63,6 +64,7 @@ export const api = {
   growth: growthApi,
   webhooks: webhooksApi,
   apiKeys: apiKeysApi,
+  serviceAccounts: serviceAccountsApi,
   oauthApps: oauthAppsApi,
   billing: billingApi,
   members: membersApi,

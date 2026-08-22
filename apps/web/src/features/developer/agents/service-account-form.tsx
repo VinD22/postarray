@@ -85,8 +85,10 @@ export function ServiceAccountForm({
   const [domains, setDomains] = useState('');
   const [maxPostsPerDay, setMaxPostsPerDay] = useState(6);
   const [lookAheadDays, setLookAheadDays] = useState(14);
-  const [quietStart, setQuietStart] = useState('22:00');
-  const [quietEnd, setQuietEnd] = useState('07:00');
+  // A full day, because a narrower window has nowhere to be stored and the API
+  // refuses a restriction it could not enforce rather than pretending to keep it.
+  const [quietStart, setQuietStart] = useState('00:00');
+  const [quietEnd, setQuietEnd] = useState('00:00');
   const [approvalLevel, setApprovalLevel] = useState<ApprovalLevel>(2);
   const [expiresInDays, setExpiresInDays] = useState<number | null>(90);
   const [nameError, setNameError] = useState<string | null>(null);

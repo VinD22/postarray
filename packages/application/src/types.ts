@@ -133,8 +133,20 @@ import type {
   WebhookEndpointView,
   WorkspaceView,
 } from './views';
+import type {
+  IssuedServiceAccountCredentialView,
+  ServiceAccountDryRunView,
+  ServiceAccountView,
+} from './services/service-account-views';
+import type { CreateServiceAccountInput } from './services/service-accounts';
 
 export * from './views';
+export type {
+  IssuedServiceAccountCredentialView,
+  ServiceAccountDryRunView,
+  ServiceAccountView,
+} from './services/service-account-views';
+export type { CreateServiceAccountInput } from './services/service-accounts';
 
 /**
  * The shared application service contract.
@@ -157,6 +169,16 @@ export interface ActorContext {
   readonly locale: string;
   /** Set by the surface when the human explicitly confirmed a level 3 action. */
   readonly humanConfirmed?: boolean;
+  /**
+   * The credential row that proved this identity, when the surface knows it.
+   *
+   * A service account is identified by the account, not by the key it
+   * presented, so the actor id cannot answer "was the presented credential
+   * revoked". This can. The edge index is what normally stops a rotated key,
+   * and this is the second answer for the window in which that index and the
+   * durable row disagree.
+   */
+  readonly credentialId?: string;
   /** The developer application the call arrived through, when there is one. */
   readonly clientId?: string;
   readonly ipAddress?: string;
@@ -2356,6 +2378,39 @@ export interface ApiKeyService {
   revoke(ctx: ActorContext, apiKeyId: string): Promise<ApiKeyView>;
 }
 
+/**
+ * Service accounts: the identity an agent acts as.
+ *
+ * `list` cannot return a credential — `ServiceAccountView` has no field for one
+ * — and `create` and `rotateCredential` are the only calls that ever produce
+ * plaintext, once each.
+ */
+export interface ServiceAccountService {
+  list(ctx: ActorContext): Promise<readonly ServiceAccountView[]>;
+  create(
+    ctx: ActorContext,
+    input: CreateServiceAccountInput,
+  ): Promise<IssuedServiceAccountCredentialView>;
+  rotateCredential(
+    ctx: ActorContext,
+    serviceAccountId: string,
+  ): Promise<IssuedServiceAccountCredentialView>;
+  setEnabled(
+    ctx: ActorContext,
+    serviceAccountId: string,
+    enabled: boolean,
+  ): Promise<ServiceAccountView>;
+  /** A rehearsal. Runs the same gates and performs no work. */
+  dryRun(
+    ctx: ActorContext,
+    input: {
+      readonly serviceAccountId: string;
+      readonly tool: string;
+      readonly args: Readonly<Record<string, unknown>>;
+    },
+  ): Promise<ServiceAccountDryRunView>;
+}
+
 export interface OAuthAppService {
   list(ctx: ActorContext, query?: PageQuery): Promise<Paginated<OAuthAppView>>;
   get(ctx: ActorContext, appId: string): Promise<OAuthAppView>;
@@ -2622,6 +2677,7 @@ export interface Services {
   readonly webhooks: WebhookService;
   readonly credentials: CredentialVaultService;
   readonly apiKeys: ApiKeyService;
+  readonly serviceAccounts: ServiceAccountService;
   readonly oauthApps: OAuthAppService;
   readonly billing: CustomerBillingService;
   readonly identity: IdentityService;

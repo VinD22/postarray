@@ -51,6 +51,10 @@ export class ActorContextFactory {
       approvalLevel: principal.approvalLevel,
       locale: this.resolveLocale(principal, input.acceptLanguage),
       ...(input.idempotencyKey === undefined ? {} : { idempotencyKey: input.idempotencyKey }),
+      // Which credential proved this identity. The application layer re-checks
+      // its revocation, so a rotated key is refused there too and not only by
+      // the edge index that normally stops it.
+      ...(principal.credentialId === undefined ? {} : { credentialId: principal.credentialId }),
     };
     return context;
   }

@@ -13,6 +13,7 @@
 
 import { ApiError, api, newIdempotencyKey, type OAuthAppView as ApiOAuthAppView } from '@/lib/api';
 import type { BusinessProfileView } from '@/lib/api/types';
+import type { ServiceAccountApiView } from '@/lib/api/resources/service-accounts';
 import { ERROR_CODES } from '@relay/contracts';
 import type {
   GrowthExportFormat,
@@ -367,11 +368,83 @@ export const securityGateway = {
 
 /* -------------------------------------------------------- service accounts */
 
+const APPROVAL_LEVEL_BY_NAME: Readonly<Record<string, ApprovalLevel>> = {
+  level_0_read: 0,
+  level_1_draft: 1,
+  level_2_scheduled: 2,
+  level_3_confirm: 3,
+};
+
+const APPROVAL_LEVEL_BY_INDEX = [
+  'level_0_read',
+  'level_1_draft',
+  'level_2_scheduled',
+  'level_3_confirm',
+] as const;
+
+/**
+ * Quiet hours have no column in `app.service_accounts`, so no account has a
+ * window and the API refuses a narrowed one rather than accepting a restriction
+ * it cannot enforce. A full day is what every account actually has.
+ */
+const FULL_DAY = '00:00';
+
+function toServiceAccountView(
+  account: ServiceAccountApiView,
+  projectNames: ReadonlyMap<string, string>,
+  connectionLabels: ReadonlyMap<string, string>,
+): ServiceAccountView {
+  return {
+    id: account.id,
+    name: account.name,
+    purpose: account.purpose,
+    state: account.state,
+    scopes: account.scopes,
+    projectScope: account.projectIds.map((id) => ({ id, name: projectNames.get(id) ?? id })),
+    connectionIds: account.connectionIds,
+    connectionLabels: account.connectionIds.map((id) => connectionLabels.get(id) ?? id),
+    contentLocales: account.contentLocales,
+    allowedDomains: account.allowedDomains,
+    // Null is "no ceiling", so it travels as null. Collapsing it to 0 would
+    // report an agent that may publish without limit as one that may not
+    // publish at all, which is the exact inversion AGENTS.md rule 8 forbids.
+    maxPostsPerDay: account.maxPostsPerDay,
+    lookAheadDays: account.lookAheadDays,
+    quietHoursStart: FULL_DAY,
+    quietHoursEnd: FULL_DAY,
+    timeZone: account.timeZone,
+    approvalLevel: APPROVAL_LEVEL_BY_NAME[account.approvalLevel] ?? 0,
+    createdAt: account.createdAt,
+    createdByName: account.createdByName ?? '',
+    lastUsedAt: account.lastUsedAt,
+    credentialExpiresAt: account.credentialExpiresAt,
+  };
+}
+
 export const agentsGateway = {
   async list(): Promise<readonly ServiceAccountView[]> {
-    return notImplemented('service_accounts');
+    // Labels are joined here rather than embedded in the API response, so the
+    // account endpoint stays a list of identities and nothing else.
+    const [accounts, projects, connections] = await Promise.all([
+      api.serviceAccounts.list(),
+      api.projects.list(),
+      api.connections.list(),
+    ]);
+    const projectNames = new Map(projects.data.map((project) => [project.id, project.name]));
+    const connectionLabels = new Map(
+      connections.data.map((connection) => [
+        connection.id,
+        connection.handle === null
+          ? connection.displayName
+          : `${connection.displayName} (${connection.handle})`,
+      ]),
+    );
+    return accounts.data.map((account) =>
+      toServiceAccountView(account, projectNames, connectionLabels),
+    );
   },
 
+  /** The secret exists in this response and nowhere else, exactly once. */
   async create(input: {
     name: string;
     purpose: string;
@@ -387,19 +460,40 @@ export const agentsGateway = {
     approvalLevel: ApprovalLevel;
     expiresInDays: number | null;
   }): Promise<OneTimeCredential> {
-    void input;
-    return notImplemented('service_accounts');
+    const issued = await api.serviceAccounts.create(
+      {
+        name: input.name,
+        purpose: input.purpose,
+        scopes: input.scopes,
+        projectIds: input.projectIds,
+        connectionIds: input.connectionIds,
+        contentLocales: input.contentLocales,
+        allowedDomains: input.allowedDomains,
+        maxPostsPerDay: input.maxPostsPerDay,
+        lookAheadDays: input.lookAheadDays,
+        quietHoursStart: input.quietHoursStart,
+        quietHoursEnd: input.quietHoursEnd,
+        approvalLevel: APPROVAL_LEVEL_BY_INDEX[input.approvalLevel] ?? 'level_0_read',
+        expiresInDays: input.expiresInDays,
+      },
+      newIdempotencyKey('service_account'),
+    );
+    if (issued === null) {
+      return notImplemented('service_accounts');
+    }
+    return { value: issued.secret, expiresAt: issued.expiresAt };
   },
 
   async rotate(serviceAccountId: string): Promise<OneTimeCredential> {
-    void serviceAccountId;
-    return notImplemented('service_accounts');
+    const issued = await api.serviceAccounts.rotate(serviceAccountId);
+    if (issued === null) {
+      return notImplemented('service_accounts');
+    }
+    return { value: issued.secret, expiresAt: issued.expiresAt };
   },
 
   async setEnabled(serviceAccountId: string, enabled: boolean): Promise<void> {
-    void serviceAccountId;
-    void enabled;
-    return notImplemented('service_accounts');
+    await api.serviceAccounts.setEnabled(serviceAccountId, enabled);
   },
 
   async activity(serviceAccountId: string): Promise<readonly AgentActivityView[]> {
@@ -423,8 +517,10 @@ export const agentsGateway = {
     tool: string;
     args: unknown;
   }): Promise<{ outcome: 'ok' | 'denied'; body: unknown; reason: string | null }> {
-    void input;
-    return notImplemented('service_accounts');
+    return api.serviceAccounts.dryRun(input.serviceAccountId, {
+      tool: input.tool,
+      args: input.args,
+    });
   },
 };
 

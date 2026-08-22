@@ -74,6 +74,17 @@ describe('redactString', () => {
     expect(masked).toContain('provider replied with');
   });
 
+  it('masks a whole Relay credential, and keeps the public client id readable', () => {
+    // Not a real credential: a shape-correct string built for this assertion.
+    const fake = `rly_ak_ABCDEFGH_${'0123456789abcdef'.repeat(2)}`;
+    const masked = redactString(`agent presented ${fake} for rly_pk_ABCDEFGH`);
+    expect(masked).not.toContain('0123456789abcdef');
+    expect(masked).toContain(REDACTION_MASK);
+    // The public client id carries no secret and is what a support engineer
+    // reads the line to find, so it survives.
+    expect(masked).toContain('rly_pk_ABCDEFGH');
+  });
+
   it('masks a bearer credential', () => {
     expect(redactString('Authorization: Bearer abc123def456ghi')).toContain(
       `Bearer ${REDACTION_MASK}`,
@@ -100,6 +111,13 @@ describe('redactString', () => {
 
   it('leaves ordinary text untouched', () => {
     expect(redactString('published 3 posts to 2 accounts')).toBe('published 3 posts to 2 accounts');
+  });
+});
+
+describe('the plaintext key', () => {
+  it('masks a freshly minted credential carried under its application-layer name', () => {
+    const masked = redactRecord({ plaintext: 'rly_ak_ABCDEFGH_deadbeefdeadbeefdead' });
+    expect(masked['plaintext']).toBe(REDACTION_MASK);
   });
 });
 

@@ -191,6 +191,26 @@ export async function loadActor(
     projectScope = intersect(membership.projectScope, account.projectScope);
     connectionScope = account.connectionScope;
     credentialExpired = account.disabledAt !== null;
+
+    // Rotation revokes the durable key row and then drops the edge index
+    // entry. Those are two writes, so there is a window in which the index
+    // still verifies a credential the workspace has already replaced. Checking
+    // the row here closes it: a revoked or expired credential is refused by
+    // the application layer even if the edge still recognises it.
+    if (ctx.credentialId !== undefined) {
+      const credential = await db.apiKey.findFirst({
+        where: { id: ctx.credentialId, workspaceId: ctx.workspaceId },
+        select: { revokedAt: true, expiresAt: true },
+      });
+      if (
+        credential === null ||
+        credential.revokedAt !== null ||
+        (credential.expiresAt !== null && credential.expiresAt.getTime() <= clock.now().getTime())
+      ) {
+        credentialExpired = true;
+      }
+    }
+
     const cap = approvalLevelFromInt(account.maxApprovalLevel);
     restrictions = {
       projectIds: projectScope,

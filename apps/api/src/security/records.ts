@@ -56,6 +56,15 @@ export type SessionRecord = z.infer<typeof sessionRecordSchema>;
 export const apiKeyRecordSchema = z
   .object({
     apiKeyId: idSchema(ID_PREFIXES.apiKey),
+    /**
+     * Set when this key belongs to a service account.
+     *
+     * The application layer identifies a service-account actor by the account's
+     * own id, not by whichever credential authenticated it: rotating a
+     * credential must not change who the agent is. Absent for a plain workspace
+     * key, which has no account behind it.
+     */
+    serviceAccountId: idSchema(ID_PREFIXES.serviceAccount).nullable().default(null),
     workspaceId,
     createdByUserId: userId,
     name: z.string().min(1).max(120),

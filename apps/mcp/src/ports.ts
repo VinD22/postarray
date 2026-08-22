@@ -140,6 +140,53 @@ export interface ReceiptSummary {
   readonly publishedAt: string;
 }
 
+export interface ReceiptDetailSummary {
+  readonly id: string;
+  readonly publishJobId: string;
+  readonly connectionId: string;
+  readonly provider: ProviderId;
+  readonly externalPostId: string;
+  readonly permalink: string | null;
+  readonly contentVersionChecksum: string;
+  readonly scheduledInstant: string;
+  readonly publishedAt: string;
+}
+
+/** The compact receipt row the recovery tools page through. */
+export interface ReceiptRowSummary {
+  readonly receiptId: string;
+  readonly contentItemId: string;
+  readonly provider: ProviderId;
+  readonly accountLabel: string;
+  readonly state: PublishState;
+  readonly publishedAt: string;
+  readonly permalink: string | null;
+  readonly failedItemCount: number;
+}
+
+/**
+ * One stored media asset. Uploaded or imported only: there is no generative
+ * media in this product, so there is no field here that could describe one.
+ */
+export interface MediaAssetSummary {
+  readonly id: string;
+  readonly projectId: string | null;
+  readonly kind: string;
+  readonly mimeType: string;
+  readonly byteSize: number;
+  readonly width: number | null;
+  readonly height: number | null;
+  readonly durationMs: number | null;
+  readonly fileName: string | null;
+  readonly altText: string | null;
+  readonly scanState: string;
+  readonly originKind: string;
+  readonly originUrl: string | null;
+  readonly retentionExpiresAt: string;
+  readonly storageAvailable: boolean;
+  readonly createdAt: string;
+}
+
 export interface MetricObservationSummary {
   readonly normalizedName: NormalizedMetricName;
   readonly provider: ProviderId;
@@ -266,6 +313,28 @@ export interface RelayServicePort {
 
   readonly receipts: {
     listForJob(ctx: ActorContextLike, jobId: string): Promise<readonly ReceiptSummary[]>;
+    get(ctx: ActorContextLike, receiptId: string): Promise<ReceiptDetailSummary>;
+    listRecent(
+      ctx: ActorContextLike,
+      input?: { readonly cursor?: string; readonly limit?: number },
+    ): Promise<PageLike<ReceiptRowSummary>>;
+  };
+
+  readonly media: {
+    importFromUrl(
+      ctx: ActorContextLike,
+      input: { readonly url: string; readonly projectId?: string | null },
+    ): Promise<OperationRefLike>;
+    get(ctx: ActorContextLike, mediaId: string): Promise<MediaAssetSummary>;
+    list(
+      ctx: ActorContextLike,
+      input?: {
+        readonly cursor?: string;
+        readonly limit?: number;
+        readonly projectId?: string;
+        readonly kind?: string;
+      },
+    ): Promise<PageLike<MediaAssetSummary>>;
   };
 
   readonly analytics: {

@@ -13,6 +13,7 @@ import { authLogin, authLogout, authWhoAmI } from './commands/auth';
 import type { LoginFlow } from './commands/auth';
 import { configGet, configSet, configUnset } from './commands/config';
 import { linksCreate, linksStats } from './commands/links';
+import { mediaGet, mediaImport, mediaList, mediaUpload } from './commands/media';
 import {
   postsCancel,
   postsPreview,
@@ -315,6 +316,74 @@ export function buildProgram(deps: CliDeps, state: ProgramState): Command {
         limit?: number;
       }>();
       await postsList(context, render, options);
+    },
+  });
+
+  // --------------------------------------------------------------- media ----
+  const media = program
+    .command('media')
+    .description('the media library. Nothing here generates media');
+
+  const mediaListCommand = media
+    .command('list')
+    .description('assets in this workspace. Risk: read')
+    .option('--project-id <id>')
+    .option('--kind <kind>', 'image, video, gif, document or audio')
+    .option('--cursor <cursor>')
+    .option('--limit <n>', 'page size', (value) => Number.parseInt(value, 10));
+  attach(mediaListCommand, {
+    name: 'media list',
+    run: async (context, render) => {
+      const options = mediaListCommand.opts<{
+        projectId?: string;
+        kind?: string;
+        cursor?: string;
+        limit?: number;
+      }>();
+      await mediaList(context, render, options);
+    },
+  });
+
+  const mediaGetCommand = media
+    .command('get <media-id>')
+    .description('one asset, its scan state and its retention date. Risk: read');
+  attach(mediaGetCommand, {
+    name: 'media get',
+    run: async (context, render) => {
+      const [mediaId] = mediaGetCommand.args;
+      await mediaGet(context, render, mediaId ?? '');
+    },
+  });
+
+  const mediaUploadCommand = media
+    .command('upload <file>')
+    .description(
+      'upload a local file and hand it to processing. Risk: reversible. Requires --idempotency-key and media:write',
+    )
+    .option('--project-id <id>')
+    .option('--idempotency-key <key>');
+  attach(mediaUploadCommand, {
+    name: 'media upload',
+    run: async (context, render) => {
+      const [file] = mediaUploadCommand.args;
+      const options = mediaUploadCommand.opts<{ projectId?: string; idempotencyKey?: string }>();
+      await mediaUpload(context, render, file ?? '', options);
+    },
+  });
+
+  const mediaImportCommand = media
+    .command('import <url>')
+    .description(
+      'import a finished file by URL. Risk: reversible. Requires --idempotency-key and media:write',
+    )
+    .option('--project-id <id>')
+    .option('--idempotency-key <key>');
+  attach(mediaImportCommand, {
+    name: 'media import',
+    run: async (context, render) => {
+      const [url] = mediaImportCommand.args;
+      const options = mediaImportCommand.opts<{ projectId?: string; idempotencyKey?: string }>();
+      await mediaImport(context, render, url ?? '', options);
     },
   });
 

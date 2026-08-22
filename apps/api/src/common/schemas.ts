@@ -31,6 +31,7 @@ export const ruleIdSchema = idSchema(ID_PREFIXES.rule);
 export const feedIdSchema = idSchema(ID_PREFIXES.feed);
 export const shortLinkIdSchema = idSchema(ID_PREFIXES.shortLink);
 export const apiKeyIdSchema = idSchema(ID_PREFIXES.apiKey);
+export const serviceAccountIdSchema = idSchema(ID_PREFIXES.serviceAccount);
 export const oauthClientIdSchema = idSchema(ID_PREFIXES.oauthClient);
 export const oauthGrantIdSchema = idSchema(ID_PREFIXES.oauthGrant);
 export const webhookEndpointIdSchema = idSchema(ID_PREFIXES.webhookEndpoint);

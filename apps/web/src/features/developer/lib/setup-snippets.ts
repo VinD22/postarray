@@ -4,7 +4,13 @@
  * Every snippet reads the credential from an environment variable rather than
  * embedding it, because the most common way a service account leaks is a
  * config file committed to a repository. The placeholder name is the same in
- * all six so a user who sets it once is done.
+ * every one of them, so a user who sets it once is done.
+ *
+ * This is the only snippet generator. The product's connect screen and the
+ * marketing page both read it, which is what stops the two from documenting
+ * different configuration for the same client. `audience` is the only thing
+ * that differs between them: the connect screen offers the clients a person
+ * actually points at Relay, the marketing page shows everything.
  */
 
 export const CREDENTIAL_ENV_VAR = 'RELAY_SERVICE_TOKEN';
@@ -14,26 +20,77 @@ export interface SetupClient {
   readonly labelKey: string;
   readonly language: string;
   readonly filename: string | null;
+  /**
+   * `client` is an MCP client or the CLI: something a person connects to a
+   * workspace, and therefore something the connect screen offers. `workflow`
+   * is an orchestrator we document but do not walk anyone through.
+   */
+  readonly audience: 'client' | 'workflow';
 }
 
 export const SETUP_CLIENTS: readonly SetupClient[] = [
   {
     id: 'claude-code',
-    labelKey: 'developer.setup.claudeCode',
+    labelKey: 'developer.connect.client.claudeCode',
     language: 'json',
     filename: '.mcp.json',
+    audience: 'client',
   },
-  { id: 'codex', labelKey: 'developer.setup.codex', language: 'toml', filename: 'config.toml' },
-  { id: 'hermes', labelKey: 'developer.setup.hermes', language: 'yaml', filename: 'hermes.yaml' },
-  { id: 'buzz', labelKey: 'developer.setup.buzz', language: 'yaml', filename: 'workflow.yaml' },
-  { id: 'cli', labelKey: 'developer.setup.cli', language: 'bash', filename: null },
+  {
+    id: 'claude-desktop',
+    labelKey: 'developer.connect.client.claudeDesktop',
+    language: 'json',
+    filename: 'claude_desktop_config.json',
+    audience: 'client',
+  },
+  {
+    id: 'codex',
+    labelKey: 'developer.connect.client.codex',
+    language: 'toml',
+    filename: 'config.toml',
+    audience: 'client',
+  },
+  {
+    id: 'cursor',
+    labelKey: 'developer.connect.client.cursor',
+    language: 'json',
+    filename: '.cursor/mcp.json',
+    audience: 'client',
+  },
   {
     id: 'generic-mcp',
-    labelKey: 'developer.setup.genericMcp',
+    labelKey: 'developer.connect.client.genericMcp',
     language: 'json',
     filename: 'mcp.json',
+    audience: 'client',
+  },
+  {
+    id: 'cli',
+    labelKey: 'developer.connect.client.cli',
+    language: 'bash',
+    filename: null,
+    audience: 'client',
+  },
+  {
+    id: 'hermes',
+    labelKey: 'developer.setup.hermes',
+    language: 'yaml',
+    filename: 'hermes.yaml',
+    audience: 'workflow',
+  },
+  {
+    id: 'buzz',
+    labelKey: 'developer.setup.buzz',
+    language: 'yaml',
+    filename: 'workflow.yaml',
+    audience: 'workflow',
   },
 ];
+
+/** The clients the connect screen offers, in the order it offers them. */
+export const CONNECT_CLIENTS: readonly SetupClient[] = SETUP_CLIENTS.filter(
+  (client) => client.audience === 'client',
+);
 
 export interface SnippetInput {
   readonly mcpEndpoint: string;
@@ -55,6 +112,35 @@ export function buildSnippet(clientId: string, input: SnippetInput): string {
         `      "url": "${mcpEndpoint}",`,
         '      "headers": {',
         `        "Authorization": "Bearer ${token}"`,
+        '      }',
+        '    }',
+        '  }',
+        '}',
+      ].join('\n');
+
+    case 'claude-desktop':
+      return [
+        '{',
+        '  "mcpServers": {',
+        '    "relay": {',
+        '      "command": "npx",',
+        '      "args": ["-y", "mcp-remote", "' + mcpEndpoint + '"],',
+        '      "env": {',
+        '        "' + CREDENTIAL_ENV_VAR + '": "' + token + '"',
+        '      }',
+        '    }',
+        '  }',
+        '}',
+      ].join('\n');
+
+    case 'cursor':
+      return [
+        '{',
+        '  "mcpServers": {',
+        '    "relay": {',
+        '      "url": "' + mcpEndpoint + '",',
+        '      "headers": {',
+        '        "Authorization": "Bearer ' + token + '"',
         '      }',
         '    }',
         '  }',
@@ -103,9 +189,10 @@ export function buildSnippet(clientId: string, input: SnippetInput): string {
     case 'cli':
       return [
         `export ${CREDENTIAL_ENV_VAR}="paste-the-credential-here"`,
-        `relay auth login --token "${token}" --api-url ${apiBaseUrl}`,
-        'relay connections list --json',
-        'relay draft create --brief ./brief.md --json',
+        `relay config set apiUrl ${apiBaseUrl}`,
+        'relay auth login',
+        'relay accounts list --json',
+        'relay media upload ./launch.png --idempotency-key launch-image-1 --json',
       ].join('\n');
 
     case 'generic-mcp':

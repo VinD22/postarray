@@ -172,7 +172,9 @@ export class AuthGuard implements CanActivate {
     }
     return {
       actorType: 'service_account',
-      actorId: record.apiKeyId,
+      // The account is the actor; the key is only how it proved it. A rotation
+      // must not change who the audit log says acted.
+      actorId: record.serviceAccountId ?? record.apiKeyId,
       credentialKind: 'api_key',
       userId: record.createdByUserId,
       clientId: undefined,

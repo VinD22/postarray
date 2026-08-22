@@ -134,8 +134,10 @@ export interface ServiceAccountView {
   readonly connectionLabels: readonly string[];
   readonly contentLocales: readonly string[];
   readonly allowedDomains: readonly string[];
-  readonly maxPostsPerDay: number;
-  readonly lookAheadDays: number;
+  /** Null means no cadence ceiling. It is never 0: 0 would mean "may not publish". */
+  readonly maxPostsPerDay: number | null;
+  /** Null means no look-ahead ceiling. Never 0, which would mean "today only". */
+  readonly lookAheadDays: number | null;
   readonly quietHoursStart: string;
   readonly quietHoursEnd: string;
   readonly timeZone: string;

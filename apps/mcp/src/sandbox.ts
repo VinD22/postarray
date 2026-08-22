@@ -22,11 +22,14 @@ import type {
   ConnectionSummary,
   ContentItemSummary,
   CreateDraftInputLike,
+  MediaAssetSummary,
   MetricObservationSummary,
   OperationRefLike,
   PageLike,
   PreviewSummary,
   PublishJobSummary,
+  ReceiptDetailSummary,
+  ReceiptRowSummary,
   ReceiptSummary,
   RelayServicePort,
   ScheduleSpecLike,
@@ -123,6 +126,7 @@ interface SandboxState {
   readonly contentItems: Map<string, ContentItemSummary>;
   readonly jobs: Map<string, PublishJobSummary>;
   readonly receipts: Map<string, ReceiptSummary[]>;
+  readonly media: Map<string, MediaAssetSummary>;
   readonly auditLog: AuditRecordInput[];
 }
 
@@ -168,6 +172,7 @@ export function createSandboxServices(options: SandboxOptions): SandboxServices 
     contentItems: new Map(),
     jobs: new Map(),
     receipts: new Map(),
+    media: new Map(),
     auditLog: [],
   };
 
@@ -416,6 +421,104 @@ export function createSandboxServices(options: SandboxOptions): SandboxServices 
       async listForJob(ctx, jobId): Promise<readonly ReceiptSummary[]> {
         assertWorkspace(ctx);
         return state.receipts.get(jobId) ?? [];
+      },
+      async get(ctx, receiptId): Promise<ReceiptDetailSummary> {
+        assertWorkspace(ctx);
+        for (const [jobId, receipts] of state.receipts) {
+          const match = receipts.find((receipt) => receipt.id === receiptId);
+          if (match !== undefined) {
+            return {
+              id: match.id,
+              publishJobId: jobId,
+              connectionId: state.jobs.get(jobId)?.connectionId ?? 'conn_sandbox_1',
+              provider: FAKE_PROVIDER,
+              externalPostId: match.externalPostId,
+              permalink: match.permalink,
+              contentVersionChecksum: createHash('sha256').update(match.id).digest('hex'),
+              scheduledInstant: match.publishedAt,
+              publishedAt: match.publishedAt,
+            };
+          }
+        }
+        throw notFound('RECEIPT_NOT_FOUND');
+      },
+      async listRecent(ctx, input): Promise<PageLike<ReceiptRowSummary>> {
+        assertWorkspace(ctx);
+        const limit = input?.limit ?? 10;
+        const rows: ReceiptRowSummary[] = [];
+        for (const [jobId, receipts] of state.receipts) {
+          for (const receipt of receipts) {
+            rows.push({
+              receiptId: receipt.id,
+              contentItemId: state.jobs.get(jobId)?.contentItemId ?? jobId,
+              provider: FAKE_PROVIDER,
+              accountLabel: 'Sandbox account 1',
+              state: 'published',
+              publishedAt: receipt.publishedAt,
+              permalink: receipt.permalink,
+              failedItemCount: 0,
+            });
+          }
+        }
+        rows.reverse();
+        const data = rows.slice(0, limit);
+        return { data, pageInfo: { nextCursor: null, hasMore: rows.length > limit, limit } };
+      },
+    },
+
+    media: {
+      async importFromUrl(ctx, input): Promise<OperationRefLike> {
+        assertWorkspace(ctx);
+        // The sandbox never performs a network fetch. It records the asset the
+        // real service would have created, so an agent can rehearse the
+        // import-then-poll sequence without a byte leaving the process.
+        const id = `media_${randomUUID().replace(/-/g, '').slice(0, 20)}`;
+        const now = options.clock.now();
+        state.media.set(id, {
+          id,
+          projectId: input.projectId ?? SANDBOX_PROJECT_ID,
+          kind: 'image',
+          mimeType: 'image/png',
+          byteSize: 1024,
+          width: 64,
+          height: 64,
+          durationMs: null,
+          fileName: 'sandbox-import.png',
+          altText: null,
+          scanState: 'clean',
+          originKind: 'url_import',
+          originUrl: input.url,
+          retentionExpiresAt: iso(now + 30 * 86_400_000),
+          storageAvailable: true,
+          createdAt: iso(now),
+        });
+        return {
+          operationId: `op_${randomUUID().replace(/-/g, '').slice(0, 20)}`,
+          status: 'succeeded',
+          resourceType: 'media_asset',
+          resourceId: id,
+        };
+      },
+      async get(ctx, mediaId): Promise<MediaAssetSummary> {
+        assertWorkspace(ctx);
+        const asset = state.media.get(mediaId);
+        if (asset === undefined) {
+          throw notFound('MEDIA_NOT_FOUND');
+        }
+        return asset;
+      },
+      async list(ctx, input): Promise<PageLike<MediaAssetSummary>> {
+        assertWorkspace(ctx);
+        const limit = input?.limit ?? 10;
+        const all = [...state.media.values()].reverse();
+        const filtered =
+          input?.projectId === undefined
+            ? all
+            : all.filter((asset) => asset.projectId === input.projectId);
+        return {
+          data: filtered.slice(0, limit),
+          pageInfo: { nextCursor: null, hasMore: filtered.length > limit, limit },
+        };
       },
     },
 

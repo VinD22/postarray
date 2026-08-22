@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import type { ReactNode } from 'react';
 
+import { buildSnippet } from '@/features/developer/lib/setup-snippets';
 import {
   ClosingCta,
   EditorialCard,
@@ -24,15 +25,22 @@ import { pageMetadata } from '@/features/marketing/seo';
 import { ROUTES } from '@/features/marketing/site';
 
 /**
- * The exact `cli` snippet lines from `features/developer/lib/setup-snippets.ts`
- * (the developer portal's own copyable CLI setup), reused verbatim rather
- * than invented, so this terminal never shows a command the product does
- * not actually have.
+ * The `cli` snippet from `features/developer/lib/setup-snippets.ts` (the
+ * developer portal's own copyable CLI setup), generated rather than retyped,
+ * so this terminal cannot show a command the CLI does not have. The two lines
+ * kept are the two that do something: the `config`/`login` pair above them is
+ * setup, and this block is about what the tool is for.
+ *
+ * `relay.example` is the RFC 2606 example domain. Nothing here is live.
  */
-const TERMINAL_LINES = [
-  'relay connections list --json',
-  'relay draft create --brief ./brief.md --json',
-] as const;
+const TERMINAL_LINES = buildSnippet('cli', {
+  mcpEndpoint: 'https://mcp.relay.example/mcp',
+  apiBaseUrl: 'https://api.relay.example',
+  serviceAccountName: 'relay-agent',
+})
+  .split('\n')
+  .filter((line) => line.startsWith('relay '))
+  .slice(-2);
 
 export async function generateMetadata({
   params,

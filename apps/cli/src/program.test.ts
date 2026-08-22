@@ -29,7 +29,7 @@ interface Recorded {
   readonly url: string;
   readonly method: string;
   readonly headers: Record<string, string>;
-  readonly body: string | undefined;
+  readonly body: string | Uint8Array | undefined;
 }
 
 function fakeFetch(responder: (recorded: Recorded) => { status: number; body: unknown }): {

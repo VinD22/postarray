@@ -5,10 +5,12 @@
  * the primary navigation: none of these answer a daily question, and putting
  * them in the nav would push the six that do off the screen.
  *
- * Only sections that exist are listed. Agents and referrals both route to a
- * screen that says they are not built (the `agentsGateway` methods still return
- * `not_implemented`), and a navigation entry is an invitation. The routes stay
- * reachable by URL so a direct link still explains itself; nothing offers them.
+ * Only sections that exist are listed, because a navigation entry is an
+ * invitation. Agents is listed again now that the service-account endpoints
+ * are real and `/settings/agents` renders the connect screen rather than a
+ * not-built notice. Referrals is still unlisted for the original reason: its
+ * gateway still returns `not_implemented`. Its route stays reachable by URL so
+ * a direct link explains itself; nothing offers it.
  */
 export interface SettingsSectionDescriptor {
   readonly id: string;
@@ -31,6 +33,13 @@ export const SETTINGS_SECTIONS: readonly SettingsSectionDescriptor[] = [
     href: '/settings/projects',
     titleKey: 'settings.ui.section.projects',
     summaryKey: 'settings.ui.section.projectsSummary',
+    availability: 'available',
+  },
+  {
+    id: 'agents',
+    href: '/settings/agents',
+    titleKey: 'settings.ui.section.agents',
+    summaryKey: 'settings.ui.section.agentsSummary',
     availability: 'available',
   },
   {

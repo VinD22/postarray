@@ -1,3 +1,5 @@
+import { readFile } from 'node:fs/promises';
+
 import { RelayError } from '@relay/contracts';
 
 import { createApiClient } from './api/client';
@@ -49,6 +51,11 @@ export function toIsoInstant(epochMs: number): string {
   return new Date(epochMs).toISOString();
 }
 
+/** Reads a local file. Injected so `media upload` is testable without a disk. */
+export type FileReader = (path: string) => Promise<Uint8Array>;
+
+export const nodeFileReader: FileReader = async (path) => new Uint8Array(await readFile(path));
+
 export interface CliDeps {
   readonly configStore: ConfigStore;
   readonly credentialStore: CredentialStore;
@@ -57,6 +64,7 @@ export interface CliDeps {
   readonly fetch?: FetchLike;
   readonly oauthTransport?: OAuthTransport;
   readonly clock?: Clock;
+  readonly readFile?: FileReader;
 }
 
 export interface CliContext {
@@ -69,7 +77,7 @@ export interface CliContext {
   readonly locale: string;
   readonly writer: Writer;
   readonly clock: Clock;
-  readonly deps: CliDeps;
+  readonly deps: CliDeps & { readonly readFile: FileReader };
   readonly oauthTransport: OAuthTransport;
   readonly clientId: string;
   /** Present only when a credential exists. Never rendered. */
@@ -155,7 +163,7 @@ export async function createContext(options: GlobalOptions, deps: CliDeps): Prom
     locale,
     writer,
     clock,
-    deps,
+    deps: { ...deps, readFile: deps.readFile ?? nodeFileReader },
     oauthTransport,
     clientId,
     credential,

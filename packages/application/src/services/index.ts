@@ -33,6 +33,7 @@ import { createReceiptService } from './receipts';
 import { createRememberedTargetService } from './remembered-targets';
 import { createRssService } from './rss';
 import { createSchedulingService } from './scheduling';
+import { createServiceAccountService } from './service-accounts';
 import { createShortLinkService } from './short-links';
 import { createValidationService } from './validation';
 import { createWebhookService } from './webhooks';
@@ -115,6 +116,7 @@ export function createServices(deps: ServiceDeps): Services {
     webhooks: createWebhookService(deps),
     credentials: createCredentialVaultService(deps),
     apiKeys: createApiKeyService(deps),
+    serviceAccounts: createServiceAccountService(deps),
     oauthApps: createOAuthAppService(deps),
     billing: createBillingService(deps),
     identity: createIdentityService(deps),

@@ -22,6 +22,10 @@ const EXPECTED_READ = [
   'get_analytics',
   'get_growth_plan',
   'list_growth_opportunities',
+  'get_media',
+  'list_media',
+  'list_recent_receipts',
+  'get_receipt',
 ];
 
 const EXPECTED_REVERSIBLE = [
@@ -29,6 +33,7 @@ const EXPECTED_REVERSIBLE = [
   'request_approval',
   'generate_growth_plan',
   'create_campaign_from_plan',
+  'import_media',
 ];
 
 const EXPECTED_CONSEQUENTIAL = ['schedule_post', 'publish_post', 'cancel_post'];

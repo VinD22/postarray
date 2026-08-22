@@ -58,6 +58,9 @@ import type {
   ContentItemView as ApplicationContentItemView,
   ContentVersionView as ApplicationContentVersionView,
   CreatedApiKeyView as ApplicationCreatedApiKeyView,
+  IssuedServiceAccountCredentialView as ApplicationIssuedServiceAccountCredentialView,
+  ServiceAccountDryRunView as ApplicationServiceAccountDryRunView,
+  ServiceAccountView as ApplicationServiceAccountView,
   CreatedOAuthAppView as ApplicationCreatedOAuthAppView,
   DataExportView as ApplicationDataExportView,
   EntitlementStateView as ApplicationEntitlementStateView,
@@ -235,6 +238,9 @@ export type WebhookEndpointView = ApplicationWebhookEndpointView;
 export type WebhookDeliveryView = ApplicationWebhookDeliveryView;
 export type ApiKeyView = ApplicationApiKeyView;
 export type CreatedApiKeyView = ApplicationCreatedApiKeyView;
+export type ServiceAccountView = ApplicationServiceAccountView;
+export type IssuedServiceAccountCredentialView = ApplicationIssuedServiceAccountCredentialView;
+export type ServiceAccountDryRunView = ApplicationServiceAccountDryRunView;
 export type OAuthAppView = ApplicationOAuthAppView;
 export type CreatedOAuthAppView = ApplicationCreatedOAuthAppView;
 export type OAuthGrantView = ApplicationOAuthGrantView;

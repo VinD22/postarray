@@ -4,6 +4,8 @@ import { providerIdSchema, summarizeCapabilities } from '@relay/contracts';
 import { RESOURCE_URIS, defineTool, pageInputShape, resourceLink } from './registry';
 import type { ToolDefinition, ToolResult } from './registry';
 import type { MetricObservationSummary } from '../ports';
+import { MEDIA_READ_TOOLS } from './read-media';
+import { RECEIPT_READ_TOOLS } from './read-receipts';
 
 /**
  * Read tools.
@@ -483,4 +485,6 @@ export const READ_TOOLS: readonly ToolDefinition[] = [
   getAnalyticsTool,
   getGrowthPlanTool,
   listGrowthOpportunitiesTool,
+  ...MEDIA_READ_TOOLS,
+  ...RECEIPT_READ_TOOLS,
 ];

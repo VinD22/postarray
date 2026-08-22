@@ -32,6 +32,10 @@ relay auth whoami
 | `posts publish --confirm --idempotency-key` | **consequential** | |
 | `posts cancel <job-id> --idempotency-key` | **consequential** | |
 | `calendar list --from --to` | read | |
+| `media list` | read | `--project-id`, `--kind image\|video\|gif\|document\|audio` |
+| `media get <media-id>` | read | scan state, retention date, unknown dimensions as `unavailable` |
+| `media upload <file> --idempotency-key` | reversible | ticket, bytes, finalize. Nothing is generated |
+| `media import <url> --idempotency-key` | reversible | the server fetches the URL and returns an operation handle |
 | `receipts get <id>` | read | |
 | `analytics post <receipt-id>` | read | unavailable metrics are labelled, never `0` |
 | `analytics account <connection-id>` | read | |
@@ -109,10 +113,44 @@ That is why `posts schedule` validates after creating the draft and before
 scheduling it, and why `--dry-run` reports the plan rather than the validation
 result.
 
+## Media
+
+V1 accepts finished media and never generates it. There is no `--prompt`, no
+`--model` and no `generate` subcommand, and a test asserts there never is one.
+
+```sh
+relay media upload ./launch.png --idempotency-key launch-image-1 --json
+relay media import https://acme.example/launch.png --idempotency-key launch-import-1 --json
+relay media list --kind image --json
+```
+
+`upload` makes exactly three calls, in this order, and invents no part of any
+of them:
+
+1. `POST /v1/media/uploads` with the file name, the declared type, the byte
+   size and a SHA-256 the CLI computes from the bytes it is about to send. The
+   server issues a short-lived ticket scoped to one object key.
+2. The ticket's own method, URL and headers, with the file as the body. The
+   bearer token is attached **only** when the ticket points back at your API
+   host; a presigned object-store URL is already authorized and never receives
+   it.
+3. `POST /v1/media/{id}/finalize`, under the key `<your-key>:finalize`.
+
+The asset comes back `scanState: "pending"` and `storageAvailable: false`.
+That is not a failure: MIME sniffing, checksum re-verification, the malware
+scan and metadata extraction all run after the bytes land, and nothing is
+published from an asset before they finish. Width, height and duration are
+`null` until the pipeline has extracted them, and the human output prints
+`unavailable` rather than `0`.
+
+`import` returns the RFC-shaped operation handle rather than an asset, because
+the server has to fetch the URL first. `resourceId` is the media id once the
+operation succeeded and `null` while it has not.
+
 ## Consequential guarantees
 
-- `schedule`, `publish`, `cancel` and `links create` require
-  `--idempotency-key`. Repeating a request with the same key returns the
+- `schedule`, `publish`, `cancel`, `links create`, `media upload` and
+  `media import` require `--idempotency-key`. Repeating a request with the same key returns the
   original result instead of publishing twice.
 - `publish` additionally requires `--confirm`. Immediate publication needs an
   explicit human decision.

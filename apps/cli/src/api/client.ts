@@ -19,7 +19,11 @@ export type FetchLike = (
   init: {
     method: string;
     headers: Record<string, string>;
-    body?: string;
+    /**
+     * JSON for every API call. Raw bytes only for a media upload, which sends
+     * the file exactly as the server's upload ticket instructed.
+     */
+    body?: string | Uint8Array;
     signal?: AbortSignal;
   },
 ) => Promise<{

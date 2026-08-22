@@ -202,9 +202,65 @@ export const createCampaignFromPlanTool = defineTool({
   },
 });
 
+export const importMediaTool = defineTool({
+  name: 'import_media',
+  risk: 'reversible',
+  summary: 'Import a media file into the workspace library from a URL the person supplied.',
+  sideEffects:
+    'fetches the URL and stores the file inside Relay. Nothing is attached to a draft, nothing is scheduled and nothing reaches a platform',
+  scopes: ['media:write'],
+  approvalLevel: 'level_1_draft',
+  // Import is a network fetch that costs bandwidth and storage, and a retrying
+  // agent would otherwise store the same file several times over.
+  requiresIdempotencyKey: true,
+  requiresHumanConfirmation: false,
+  inputSchema: z.object({
+    /**
+     * A URL the person gave. The application service is what validates the
+     * scheme, the host and the size; this tool never fetches anything itself.
+     */
+    url: z.string().min(1).max(2048),
+    project_id: z.string().min(1).optional(),
+    ...idempotencyInputShape,
+  }),
+  async run(context, input): Promise<ToolResult> {
+    const operation = await context.services.media.importFromUrl(context.actor, {
+      url: input.url,
+      ...(input.project_id === undefined ? {} : { projectId: input.project_id }),
+    });
+
+    return {
+      data: {
+        operation_id: operation.operationId,
+        status: operation.status,
+        resource_type: operation.resourceType,
+        media_id: operation.resourceId,
+        next_step: 'get_media',
+      },
+      resourceLinks:
+        operation.resourceId === null
+          ? [
+              resourceLink(
+                RESOURCE_URIS.operation(operation.operationId),
+                'import operation',
+                'The import that is still running.',
+              ),
+            ]
+          : [
+              resourceLink(
+                RESOURCE_URIS.media(operation.resourceId),
+                'media asset',
+                'The imported asset.',
+              ),
+            ],
+    };
+  },
+});
+
 export const REVERSIBLE_TOOLS = [
   draftPostTool,
   requestApprovalTool,
   generateGrowthPlanTool,
   createCampaignFromPlanTool,
+  importMediaTool,
 ];

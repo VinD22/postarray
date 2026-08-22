@@ -31,6 +31,11 @@ export const REDACTED_KEYS: readonly RegExp[] = [
   /session/i,
   /otp/i,
   /pin\b/i,
+  // The application layer names a freshly minted credential `plaintext`. That
+  // word matches none of the patterns above, so without this line the one
+  // field in the codebase that is definitionally a secret would be the one
+  // field the safety net missed.
+  /plain_?text/i,
 ];
 
 /** Key names that match a pattern but are safe and useful to keep. */
@@ -55,6 +60,14 @@ const BEARER_PATTERN = /\b(bearer|basic|token)\s+[A-Za-z0-9._~+/=-]{8,}/gi;
 // instead of the credential.
 const AUTH_ASSIGNMENT_PATTERN =
   /\b((?:access|refresh|id|api|auth|client)[_-]?(?:token|secret|key)|password)\b(\s*[=:]\s*)("?)[^\s"'&,;]{6,}\3/gi;
+/**
+ * A whole Relay credential in free text: `<prefix><public id>_<secret>`.
+ *
+ * Only the forms that carry a secret half are listed. `rly_pk_` is a public
+ * client id with nothing secret in it, and masking it would hide the very
+ * identifier a support engineer is reading the log to find.
+ */
+const RELAY_CREDENTIAL_PATTERN = /\brly_(?:ak|cs|at|rt|ac)_[0-9A-Za-z]{8}_[0-9A-Za-z]{16,}/g;
 const URL_CREDENTIALS_PATTERN = /\b([a-z][a-z0-9+.-]*:\/\/)([^/\s:@]+):([^/\s@]+)@/gi;
 const QUERY_SECRET_PATTERN =
   /([?&](?:access_token|refresh_token|id_token|api_key|apikey|key|token|signature|code|state)=)[^&\s]+/gi;
@@ -80,6 +93,7 @@ export function isRedactedKey(key: string): boolean {
 /** Mask secret-looking substrings inside free text. */
 export function redactString(value: string): string {
   return value
+    .replace(RELAY_CREDENTIAL_PATTERN, REDACTION_MASK)
     .replace(
       URL_CREDENTIALS_PATTERN,
       (_match, scheme: string, user: string) => `${scheme}${user}:${REDACTION_MASK}@`,

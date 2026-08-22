@@ -179,6 +179,8 @@ export const RESOURCE_URIS = {
   contentItem: (id: string) => `relay://content/${id}`,
   job: (id: string) => `relay://jobs/${id}`,
   receipt: (id: string) => `relay://receipts/${id}`,
+  media: (id: string) => `relay://media/${id}`,
+  operation: (id: string) => `relay://operations/${id}`,
   plan: (id: string) => `relay://growth/plans/${id}`,
   opportunity: (id: string) => `relay://growth/opportunities/${id}`,
   calendar: (from: string, to: string) => `relay://calendar?from=${from}&to=${to}`,

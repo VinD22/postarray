@@ -1,5 +1,3 @@
-import { createHash, randomBytes, timingSafeEqual } from 'node:crypto';
-
 import { narrowScopes } from '@relay/authz';
 import { normalizeScopes, type Paginated, type Scope } from '@relay/contracts';
 
@@ -7,6 +5,7 @@ import type { ActorContext, ApiKeyService, PageQuery, ServiceDeps } from '../typ
 import type { ApiKeyView, CreatedApiKeyView } from '../views';
 
 import { recordAudit } from '../internal/audit';
+import { HASH_ALGORITHM, mintApiKeySecret } from '../internal/api-key-secret';
 import { invalid, notFound } from '../internal/errors';
 import { pageArgs, toPage } from '../internal/pagination';
 import { authorized } from '../internal/runtime';
@@ -24,7 +23,6 @@ import { authorized } from '../internal/runtime';
  * privileges never flow wholesale into an automation identity.
  */
 
-const KEY_PREFIX = 'rly_ak';
 const MAX_EXPIRY_DAYS = 365;
 
 const API_KEY_SELECT = {
@@ -69,24 +67,6 @@ function toView(row: ApiKeyRow): ApiKeyView {
     revokedAt: row.revokedAt?.toISOString() ?? null,
     createdAt: row.createdAt.toISOString(),
   };
-}
-
-/**
- * Deterministic hash of the secret. Argon2id is the production algorithm and is
- * applied by the verification service that owns the parameters; this package
- * stores what that service computes. Until it is wired we store a SHA-256 with
- * a per-key salt, which is recorded in `hashAlgorithm` so a migration is
- * mechanical rather than archaeological.
- */
-function hashSecret(secret: string, salt: string): string {
-  return createHash('sha256').update(`${salt}:${secret}`).digest('hex');
-}
-
-/** Constant time comparison, so a verification loop leaks no timing signal. */
-export function secretMatches(candidateHash: string, storedHash: string): boolean {
-  const left = Buffer.from(candidateHash, 'utf8');
-  const right = Buffer.from(storedHash, 'utf8');
-  return left.length === right.length && timingSafeEqual(left, right);
 }
 
 export function createApiKeyService(deps: ServiceDeps): ApiKeyService {
@@ -146,20 +126,15 @@ export function createApiKeyService(deps: ServiceDeps): ApiKeyService {
           });
         }
 
-        // Hex stays inside the public credential grammar used by every edge.
-        // base64url may contain '-' or '_', which makes separator parsing
-        // ambiguous and previously produced intermittently unusable keys.
-        const prefix = `${KEY_PREFIX}_${randomBytes(6).toString('hex').slice(0, 8)}`;
-        const secret = randomBytes(32).toString('hex');
-        const salt = randomBytes(16).toString('base64url');
+        const minted = mintApiKeySecret();
 
         const created = await db.apiKey.create({
           data: {
             workspaceId: actor.workspace.id,
             name: input.name,
-            prefix,
-            secretHash: `${salt}$${hashSecret(secret, salt)}`,
-            hashAlgorithm: 'sha256-salted',
+            prefix: minted.prefix,
+            secretHash: minted.storedHash,
+            hashAlgorithm: HASH_ALGORITHM,
             scopes: [...narrowed.granted],
             serviceAccountId: input.serviceAccountId ?? null,
             expiresAt,
@@ -172,12 +147,16 @@ export function createApiKeyService(deps: ServiceDeps): ApiKeyService {
           action: 'api_key.created',
           targetType: 'api_key',
           targetId: created.id,
-          after: { prefix, scopes: [...narrowed.granted], expiresAt: expiresAt.toISOString() },
+          after: {
+            prefix: minted.prefix,
+            scopes: [...narrowed.granted],
+            expiresAt: expiresAt.toISOString(),
+          },
           metadata: { refusedScopes: [...narrowed.refused] },
         });
 
         // The only time the plaintext exists outside the caller's memory.
-        return { key: toView(created), plaintext: `${prefix}_${secret}` };
+        return { key: toView(created), plaintext: minted.plaintext };
       });
     },
 

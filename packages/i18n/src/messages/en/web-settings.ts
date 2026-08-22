@@ -461,6 +461,8 @@ export const webSettingsMessages = {
   'developer.ui.agents.summaryAccounts': 'Accounts it can reach',
   'developer.ui.agents.summaryMaxActions':
     'At most {count, plural, one {# external publication} other {# external publications}} per day.',
+  'developer.ui.agents.noCadenceCeiling': 'No daily ceiling on external publications.',
+  'developer.ui.agents.noLookAheadCeiling': 'No limit on how far ahead it may schedule.',
   'developer.ui.agents.summaryApproval': 'Approval behaviour',
   'developer.ui.agents.summaryCreate': 'Create service account',
   'developer.ui.agents.detailTitle': 'Service account',

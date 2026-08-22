@@ -45,6 +45,13 @@ export function toRelayServicePort(services: Services): RelayServicePort {
     },
     receipts: {
       listForJob: (ctx, jobId) => services.receipts.listForJob(ctx, jobId),
+      get: (ctx, receiptId) => services.receipts.get(ctx, receiptId),
+      listRecent: (ctx, input) => services.receipts.listRecent(ctx, input),
+    },
+    media: {
+      importFromUrl: (ctx, input) => services.media.importFromUrl(ctx, input),
+      get: (ctx, mediaId) => services.media.get(ctx, mediaId),
+      list: (ctx, input) => services.media.list(ctx, input),
     },
     analytics: {
       getPostMetrics: (ctx, input) => services.analytics.getPostMetrics(ctx, input),

@@ -11,6 +11,7 @@ import { commonMessages } from './common';
 import { composerMessages } from './composer';
 import { connectionMessages } from './connections';
 import { developerMessages } from './developer';
+import { developerConnectMessages } from './developer-connect';
 import { emailMessages } from './email';
 import { errorMessages } from './errors';
 import { growthMessages } from './growth';
@@ -85,6 +86,7 @@ export const en = {
   ...a11yMessages,
   ...webMarketingMessages,
   ...webSettingsMessages,
+  ...developerConnectMessages,
   ...webShellMessages,
   ...webBlogMessages,
   ...webToolsMessages,

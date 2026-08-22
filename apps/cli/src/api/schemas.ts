@@ -12,6 +12,7 @@ import {
   isoInstantSchema,
   localeSchema,
   metricAvailabilitySchema,
+  mediaKindSchema,
   metricUnitSchema,
   normalizedMetricNameSchema,
   opportunityRecordSchema,
@@ -177,6 +178,52 @@ export const shortLinkStatsSchema = z.object({
   sourceKey: z.literal('analytics.source.first_party_redirect'),
 });
 export type ShortLinkStats = z.infer<typeof shortLinkStatsSchema>;
+
+/**
+ * A media asset as the library reports it.
+ *
+ * Only the fields the CLI prints. `altText`, the dimensions and the duration
+ * are nullable because the pipeline genuinely does not always know them, and a
+ * `--json` consumer needs to tell "not extracted" apart from zero.
+ */
+export const mediaAssetViewSchema = z.object({
+  id: z.string().min(1),
+  workspaceId: z.string().min(1),
+  projectId: z.string().min(1).nullable(),
+  kind: mediaKindSchema,
+  fileName: z.string().nullable(),
+  mimeType: z.string().min(1),
+  byteSize: z.number().int().nonnegative(),
+  width: z.number().int().nullable(),
+  height: z.number().int().nullable(),
+  durationMs: z.number().int().nullable(),
+  checksumSha256: z.string().min(1),
+  altText: z.string().nullable(),
+  altTextWaived: z.boolean(),
+  scanState: z.enum(['pending', 'clean', 'suspicious', 'infected', 'failed']),
+  originKind: z.string().min(1),
+  originUrl: z.string().nullable(),
+  retentionExpiresAt: z.string().min(1),
+  storageAvailable: z.boolean(),
+  createdAt: isoInstantSchema,
+});
+export type MediaAssetView = z.infer<typeof mediaAssetViewSchema>;
+
+/**
+ * A short-lived, single-object upload ticket. The CLI never invents any part
+ * of it: the URL, the method and every header come from the server, which is
+ * what lets the same command work against local storage and against a
+ * presigned object-store URL without knowing which is in use.
+ */
+export const uploadTicketSchema = z.object({
+  mediaId: z.string().min(1),
+  uploadUrl: z.string().min(1),
+  method: z.enum(['PUT', 'POST']),
+  headers: z.record(z.string(), z.string()),
+  expiresAt: isoInstantSchema,
+  retentionExpiresAt: isoInstantSchema,
+});
+export type UploadTicket = z.infer<typeof uploadTicketSchema>;
 
 export const automationRuleViewSchema = z.object({
   id: z.string().min(1),

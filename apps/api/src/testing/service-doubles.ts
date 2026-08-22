@@ -257,6 +257,13 @@ export function createRefusingServices(): Services {
       revoke: refuse('connection'),
     },
     apiKeys: { list: page, create: refuse('api_key'), revoke: refuse('api_key') },
+    serviceAccounts: {
+      list: async () => [],
+      create: refuse('service_account'),
+      rotateCredential: refuse('service_account'),
+      setEnabled: refuse('service_account'),
+      dryRun: refuse('service_account'),
+    },
     oauthApps: {
       list: page,
       get: refuse('app'),

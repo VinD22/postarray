@@ -121,6 +121,13 @@ export const BETA_ENGLISH_FALLBACK_PREFIXES = [
   // a person translates it.
   'auth.newPassword.',
   'developer.confirmation.',
+  // Connecting an AI client to a workspace. Every sentence is either an exact
+  // statement about a credential that cannot be retrieved again, or a
+  // statement about what the workspace did and did not record. A machine
+  // translation that softened "this screen cannot show it to you again" would
+  // leave somebody believing they can come back for it. Beta locales keep the
+  // reviewed English source until a person translates it.
+  'developer.connect.',
   'error.agent_confirmation_',
   'settings.data.',
   'web.legal.',
@@ -306,6 +313,12 @@ export const BETA_ENGLISH_FALLBACK_KEYS = [
   'settings.ui.projects.glossaryUnavailable',
   'settings.ui.projects.localeRulesUnavailable',
   'settings.ui.security.killSwitchUnavailable',
+  // "No ceiling" is the opposite of "a ceiling of zero". A machine translation
+  // that blurs the two describes an agent's real powers wrongly in both
+  // directions, so beta locales keep the reviewed English until a person
+  // translates it.
+  'developer.ui.agents.noCadenceCeiling',
+  'developer.ui.agents.noLookAheadCeiling',
   'developer.ui.webhooks.secretRotationUnavailable',
   'actionCenter.filter.billing',
   // WP-8 composer redesign (loud system pass): new strings, English only

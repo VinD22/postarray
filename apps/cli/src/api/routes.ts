@@ -27,6 +27,12 @@ export const ROUTES = {
   publications: () => '/v1/publications',
   job: (jobId: string) => `/v1/jobs/${encodeURIComponent(jobId)}`,
 
+  media: () => '/v1/media',
+  mediaItem: (mediaId: string) => `/v1/media/${encodeURIComponent(mediaId)}`,
+  mediaUploads: () => '/v1/media/uploads',
+  mediaFinalize: (mediaId: string) => `/v1/media/${encodeURIComponent(mediaId)}/finalize`,
+  mediaImports: () => '/v1/media/imports',
+
   calendar: () => '/v1/calendar',
   receipt: (receiptId: string) => `/v1/receipts/${encodeURIComponent(receiptId)}`,
 
