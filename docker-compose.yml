@@ -11,7 +11,8 @@
 #
 # The app boots without any of these except Postgres. Redis falls back to an
 # in-memory limiter for a single process, Temporal falls back to an in-process
-# test scheduler, and mail is written to the console.
+# test scheduler, and mail is written to the console (there is no SMTP
+# transport; email uses the Resend HTTP API or a logging fallback).
 
 name: relay
 
@@ -121,30 +122,13 @@ services:
     ports:
       - '127.0.0.1:8233:8233'
 
-  # Catches every outbound email locally. Nothing leaves the machine, which is
-  # what you want when a test fixture contains an address that looks real.
-  mailpit:
-    image: axllent/mailpit:v1.21
-    container_name: relay-mailpit
-    restart: unless-stopped
-    environment:
-      MP_MAX_MESSAGES: 500
-      MP_SMTP_AUTH_ACCEPT_ANY: 1
-      MP_SMTP_AUTH_ALLOW_INSECURE: 1
-      MP_DATABASE: /data/mailpit.db
-    ports:
-      - '127.0.0.1:8025:8025' # web UI
-      - '127.0.0.1:1025:1025' # SMTP
-    volumes:
-      - mailpit-data:/data
-    healthcheck:
-      test: ['CMD', '/mailpit', 'readyz']
-      interval: 10s
-      timeout: 5s
-      retries: 10
+# A mailpit SMTP catcher used to run here, but nothing in the codebase speaks
+# SMTP: transactional email goes through the Resend HTTP API
+# (packages/runtime/src/resend-mailer.ts) and falls back to a logging mailer
+# locally, so local email is read in the API's console output. Reintroduce a
+# catcher only together with an actual SMTP transport.
 
 volumes:
   postgres-data:
   redis-data:
   temporal-postgres-data:
-  mailpit-data:

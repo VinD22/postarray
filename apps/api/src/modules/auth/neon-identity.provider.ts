@@ -70,7 +70,28 @@ export class NeonIdentityProvider implements IdentityProvider {
   ) {}
 
   private get baseUrl(): string {
-    return requireConfigValue(this.config.neon.authBaseUrl, 'NEON_AUTH_BASE_URL');
+    const baseUrl = this.config.neon.authBaseUrl;
+    if (baseUrl === undefined) {
+      // A raw ConfigValidationError here would surface as an opaque 500 on the
+      // first signup attempt. Name the exact variables and the remedy instead,
+      // and hand the caller the same typed unavailability the rest of the
+      // identity path uses.
+      this.logger.error(
+        {
+          missingEnvVars: ['NEON_AUTH_BASE_URL', 'NEON_AUTH_COOKIE_SECRET', 'NEON_AUTH_JWKS_URL'],
+          remedy:
+            'Provision Neon Auth for this project (Neon console > Auth, or the Neon MCP ' +
+            'provision_neon_auth action), then set the NEON_AUTH_* variables in .env. ' +
+            'See docs/runbooks/local-development.md.',
+        },
+        'identity_provider_not_configured',
+      );
+      throw new RelayError(ERROR_CODES.PROVIDER_UNAVAILABLE, {
+        messageKey: 'error.provider_unavailable.message',
+        details: { subsystem: 'identity', reason: 'not_configured' },
+      });
+    }
+    return baseUrl;
   }
 
   private async call(

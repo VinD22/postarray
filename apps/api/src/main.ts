@@ -17,13 +17,30 @@ import { resolveServices } from './runtime/services';
  * without a database, a Redis, a Temporal cluster or a network.
  */
 
-const DEFAULT_PORT = 4000;
+const DEFAULT_PORT = 3001;
 /** How long to let in-flight work finish before the process exits. */
 const SHUTDOWN_GRACE_MS = 25_000;
 
 async function bootstrap(): Promise<void> {
   const config = loadConfigFor('api');
   const logger = createLogger({ service: 'api' });
+
+  // Say it once at boot instead of letting the first signup attempt discover
+  // it. The API still starts: every other surface works without an identity
+  // provider, and auth routes return a typed PROVIDER_UNAVAILABLE until the
+  // variables are set.
+  if (config.neon.authBaseUrl === undefined || config.neon.authCookieSecret === undefined) {
+    logger.warn(
+      {
+        missingEnvVars: ['NEON_AUTH_BASE_URL', 'NEON_AUTH_COOKIE_SECRET', 'NEON_AUTH_JWKS_URL'],
+        remedy:
+          'Sign-up and sign-in are disabled. Provision Neon Auth for this project ' +
+          '(Neon console > Auth, or the Neon MCP provision_neon_auth action), then set ' +
+          'the NEON_AUTH_* variables in .env. See docs/runbooks/local-development.md.',
+      },
+      'identity_provider_not_configured',
+    );
+  }
 
   await startTracing('relay-api');
 

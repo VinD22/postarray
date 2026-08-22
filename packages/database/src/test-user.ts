@@ -60,7 +60,11 @@ export async function createTestUser(options: TestUserOptions = {}): Promise<Tes
         '(mcp__neon__provision_neon_auth), or pass authBaseUrl explicitly.',
     );
   }
-  const apiUrl = options.apiUrl ?? process.env['API_URL'] ?? 'http://localhost:4000';
+  const apiUrl = options.apiUrl ?? process.env['API_URL'] ?? 'http://localhost:3001';
+  // Neon Auth validates the Origin header against its trusted origins, which
+  // is the app URL, not the API URL. Use the same origin the API's own
+  // identity provider sends so a locally provisioned Neon Auth accepts both.
+  const origin = new URL(process.env['APP_URL'] ?? 'http://localhost:3000').origin;
   const email = options.email ?? DEFAULT_EMAIL;
   const password = options.password ?? DEFAULT_PASSWORD;
   const displayName = options.displayName ?? DEFAULT_DISPLAY_NAME;
@@ -83,9 +87,9 @@ export async function createTestUser(options: TestUserOptions = {}): Promise<Tes
 
     logger.info('db.testUser.start', { email });
 
-    const signUpResponse = await fetch(`${authBaseUrl}/sign-up/email`, {
+    const signUpResponse = await fetch(`${authBaseUrl.replace(/\/+$/, '')}/sign-up/email`, {
       method: 'POST',
-      headers: { 'content-type': 'application/json', origin: new URL(apiUrl).origin },
+      headers: { 'content-type': 'application/json', origin },
       body: JSON.stringify({ email, password, name: displayName }),
     });
 
@@ -107,7 +111,7 @@ export async function createTestUser(options: TestUserOptions = {}): Promise<Tes
     // it would have failed for the tester too.
     const signInResponse = await fetch(`${apiUrl}/v1/auth/signin`, {
       method: 'POST',
-      headers: { 'content-type': 'application/json', origin: new URL(apiUrl).origin },
+      headers: { 'content-type': 'application/json', origin },
       body: JSON.stringify({ identifier: email, password }),
     });
     if (!signInResponse.ok) {
