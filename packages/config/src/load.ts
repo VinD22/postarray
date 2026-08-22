@@ -60,6 +60,11 @@ export interface CoreConfig {
   readonly apiUrl: string | undefined;
   /** Public canonical origin used by the web surface's SEO metadata. */
   readonly siteOrigin: string | undefined;
+  /**
+   * Development/test opt-in that lets the `fake` simulator be dispatched.
+   * Never honored in production; `isFakeConnectorDispatchable` owns the gate.
+   */
+  readonly allowFakeConnector: boolean;
   readonly logLevel: LogLevel;
 }
 
@@ -314,6 +319,7 @@ function toConfig(
       appUrl: env.APP_URL,
       apiUrl: env.API_URL,
       siteOrigin: env.NEXT_PUBLIC_SITE_ORIGIN,
+      allowFakeConnector: env.RELAY_ALLOW_FAKE_CONNECTOR,
       logLevel: env.LOG_LEVEL,
     },
     database: {

@@ -5,6 +5,7 @@ import {
   connectorVaultFromHandles,
   createAuthorizationUrl,
   createConnectorRegistry,
+  createFakeConnector,
   registerBuiltInProviders,
   type BuiltInProvider,
   type ConnectorLogger,
@@ -14,6 +15,7 @@ import {
 } from '@relay/connectors';
 import {
   detectCapabilities,
+  isFakeConnectorDispatchable,
   verifiedConnectorsForEnvironment,
   type RelayConfig,
 } from '@relay/config';
@@ -204,7 +206,13 @@ export class VerifiedConnectorRegistry implements ApplicationConnectorRegistry {
   }
 
   has(provider: ProviderId): boolean {
-    if (provider === 'fake') return false;
+    // The simulator stays behind a triple guard: never in production, only
+    // with the explicit RELAY_ALLOW_FAKE_CONNECTOR opt-in, and only when the
+    // capability detector still reports it usable (checked below through
+    // `describe`, like every other provider). Absent the opt-in, this keeps
+    // the original production safety fence: the simulator is not a live,
+    // dispatchable connector.
+    if (provider === 'fake' && !isFakeConnectorDispatchable(this.#config)) return false;
     try {
       return this.#registry.describe(provider, this.#capabilities).configured;
     } catch {
@@ -371,14 +379,26 @@ export function createVerifiedConnectorRegistry(input: {
     { verifiedProviders: builtInVerifiedProviders(input.config) },
   );
 
+  // The simulator is registered only behind the triple guard: development or
+  // test NODE_ENV, the explicit RELAY_ALLOW_FAKE_CONNECTOR opt-in, and the
+  // capability detector reporting it usable. In production none of these can
+  // hold, so no fake adapter object even exists in the registry there.
+  const fakeEnabled = isFakeConnectorDispatchable(input.config);
+  if (fakeEnabled) {
+    registry.register(
+      createFakeConnector({ clock: input.clock, logger: connectorLogger(input.logger) }),
+    );
+  }
+
   // Keep this assertion close to composition. It makes an accidental provider
   // omission a boot-time failure instead of a silently incomplete capability
   // matrix when a new built-in adapter is added.
-  if (registry.providers().length !== BUILT_IN_PROVIDERS.length) {
+  const expected = BUILT_IN_PROVIDERS.length + (fakeEnabled ? 1 : 0);
+  if (registry.providers().length !== expected) {
     throw new RelayError(ERROR_CODES.INTERNAL, {
       details: {
         reason: 'built_in_connector_registration_incomplete',
-        expected: BUILT_IN_PROVIDERS.length,
+        expected,
         actual: registry.providers().length,
       },
     });

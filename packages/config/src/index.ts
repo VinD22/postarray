@@ -83,6 +83,7 @@ export {
   type SubsystemName,
   VERIFIED_PRODUCTION_CONNECTORS,
   VERIFIED_DEVELOPMENT_TEST_CONNECTORS,
+  isFakeConnectorDispatchable,
   verifiedConnectorsForEnvironment,
 } from './capabilities';
 

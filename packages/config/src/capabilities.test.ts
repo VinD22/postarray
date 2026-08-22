@@ -6,6 +6,7 @@ import {
   capabilityLevel,
   capabilityReason,
   detectCapabilities,
+  isFakeConnectorDispatchable,
   getCapability,
   listCapabilities,
   missingEnvVars,
@@ -104,6 +105,33 @@ describe('detectCapabilities', () => {
   it('never exposes the simulator in production', () => {
     const capabilities = capabilitiesFor({ NODE_ENV: 'production' });
     expect(capabilities.connectors.fake).toBe('disabled:simulator-not-available');
+  });
+
+  describe('isFakeConnectorDispatchable', () => {
+    it('fails closed in production even when RELAY_ALLOW_FAKE_CONNECTOR is true', () => {
+      const config = loadConfig({
+        ...minimal,
+        NODE_ENV: 'production',
+        RELAY_ALLOW_FAKE_CONNECTOR: 'true',
+      });
+      expect(isFakeConnectorDispatchable(config)).toBe(false);
+    });
+
+    it('stays off in development and test until the flag is set', () => {
+      expect(isFakeConnectorDispatchable(loadConfig(minimal))).toBe(false);
+      expect(isFakeConnectorDispatchable(loadConfig({ ...minimal, NODE_ENV: 'test' }))).toBe(false);
+    });
+
+    it('turns on only with the explicit opt-in in development or test', () => {
+      expect(
+        isFakeConnectorDispatchable(loadConfig({ ...minimal, RELAY_ALLOW_FAKE_CONNECTOR: 'true' })),
+      ).toBe(true);
+      expect(
+        isFakeConnectorDispatchable(
+          loadConfig({ ...minimal, NODE_ENV: 'test', RELAY_ALLOW_FAKE_CONNECTOR: 'true' }),
+        ),
+      ).toBe(true);
+    });
   });
 
   it('goes live once the supporting services are configured', () => {

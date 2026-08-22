@@ -355,6 +355,21 @@ export function verifiedConnectorsForEnvironment(
     : VERIFIED_DEVELOPMENT_TEST_CONNECTORS;
 }
 
+/**
+ * The triple guard on the in-repo provider simulator becoming dispatchable.
+ * All three must hold: NODE_ENV is development or test (never production),
+ * the operator set RELAY_ALLOW_FAKE_CONNECTOR explicitly, and the capability
+ * detector still reports the `fake` connector usable. The first two are
+ * evaluated here; the third stays with the runtime registry so a disabled
+ * capability status keeps its normal meaning. Production fails closed
+ * unconditionally: the flag is ignored there.
+ */
+export function isFakeConnectorDispatchable(config: Pick<RelayConfig, 'core'>): boolean {
+  if (config.core.isProduction) return false;
+  if (!config.core.isDevelopment && !config.core.isTest) return false;
+  return config.core.allowFakeConnector;
+}
+
 export function detectCapabilities(config: RelayConfig): RuntimeCapabilities {
   const capabilities: RuntimeCapabilities = {
     database: detectDatabase(config),

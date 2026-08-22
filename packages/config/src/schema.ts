@@ -149,6 +149,12 @@ const coreShape = {
   API_URL: httpUrl.optional(),
   NEXT_PUBLIC_SITE_ORIGIN: httpOrigin.optional(),
   NEXT_PUBLIC_ENABLE_PSEUDO_LOCALES: booleanish().default(false),
+  /**
+   * Development and test only. Opts the in-repo `fake` provider simulator into
+   * being dispatchable so the local publish loop can close. The runtime
+   * ignores this flag entirely when NODE_ENV is `production`.
+   */
+  RELAY_ALLOW_FAKE_CONNECTOR: booleanish().default(false),
   LOG_LEVEL: z.enum(LOG_LEVELS).default('info'),
 };
 

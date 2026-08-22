@@ -108,6 +108,63 @@ describe('createVerifiedConnectorRegistry', () => {
     expect(registry.has('fake')).toBe(false);
   });
 
+  it('never dispatches the fake connector in production, even with the opt-in flag set', () => {
+    const registry = createVerifiedConnectorRegistry({
+      config: config({ NODE_ENV: 'production', RELAY_ALLOW_FAKE_CONNECTOR: 'true' }),
+      logger,
+      clock: { now: () => new Date('2026-08-07T00:00:00.000Z') },
+    });
+
+    expect(registry.has('fake')).toBe(false);
+    expect(() => registry.verifiedConnector('fake', 'publish')).toThrowError(
+      expect.objectContaining({ code: 'CAPABILITY_NOT_IMPLEMENTED' }),
+    );
+  });
+
+  it('keeps the fake connector undispatchable in development without the opt-in flag', () => {
+    const registry = createVerifiedConnectorRegistry({
+      config: config(),
+      logger,
+      clock: { now: () => new Date('2026-08-07T00:00:00.000Z') },
+    });
+
+    expect(registry.has('fake')).toBe(false);
+    expect(() => registry.verifiedConnector('fake', 'publish')).toThrowError(
+      expect.objectContaining({ code: 'CAPABILITY_NOT_IMPLEMENTED' }),
+    );
+  });
+
+  it('dispatches the fake connector in development once RELAY_ALLOW_FAKE_CONNECTOR is set', () => {
+    const registry = createVerifiedConnectorRegistry({
+      config: config({ RELAY_ALLOW_FAKE_CONNECTOR: 'true' }),
+      logger,
+      clock: { now: () => new Date('2026-08-07T00:00:00.000Z') },
+    });
+
+    expect(registry.has('fake')).toBe(true);
+    expect(registry.verifiedConnector('fake', 'publish')).toBeDefined();
+  });
+
+  it('dispatches the fake connector under NODE_ENV=test with the opt-in flag', () => {
+    const registry = createVerifiedConnectorRegistry({
+      config: config({ NODE_ENV: 'test', RELAY_ALLOW_FAKE_CONNECTOR: 'true' }),
+      logger,
+      clock: { now: () => new Date('2026-08-07T00:00:00.000Z') },
+    });
+
+    expect(registry.has('fake')).toBe(true);
+  });
+
+  it('keeps the fake connector undispatchable under NODE_ENV=test without the flag', () => {
+    const registry = createVerifiedConnectorRegistry({
+      config: config({ NODE_ENV: 'test' }),
+      logger,
+      clock: { now: () => new Date('2026-08-07T00:00:00.000Z') },
+    });
+
+    expect(registry.has('fake')).toBe(false);
+  });
+
   it('keeps Bluesky unavailable in production while the production allow-list is empty', () => {
     const registry = createVerifiedConnectorRegistry({
       config: config({ NODE_ENV: 'production' }),
