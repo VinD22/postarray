@@ -8,6 +8,7 @@
 
 import { actionCenterApi } from './resources/action-center';
 import { agentConfirmationsApi } from './resources/agent-confirmations';
+import { assistantApi } from './resources/assistant';
 import { authApi, onboardingApi } from './resources/auth';
 import { connectionsApi } from './resources/connections';
 import {
@@ -71,6 +72,7 @@ export const api = {
   health: healthApi,
   actionCenter: actionCenterApi,
   agentConfirmations: agentConfirmationsApi,
+  assistant: assistantApi,
 } as const;
 
 export type Api = typeof api;

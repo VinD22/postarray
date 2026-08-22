@@ -1,5 +1,6 @@
 import {
   BarChart3,
+  MessagesSquare,
   CalendarDays,
   FolderOpen,
   House,
@@ -10,7 +11,14 @@ import {
 } from 'lucide-react';
 
 /**
- * The seven primary destinations. Fixed, in this order, on every screen.
+ * The eight primary destinations. Fixed, in this order, on every screen.
+ *
+ * The assistant earns the eighth slot on the same test the others answer: it
+ * is the only place you can say what you want in your own words and be shown,
+ * before anything happens, exactly what would happen. It is a destination
+ * rather than a verb inside another screen because a conversation has to be
+ * somewhere you can come back to. It never acts on its own: every action it
+ * proposes goes through the same confirmation a person approves by hand.
  *
  * Compose is not here. It is a persistent primary action in the shell, because
  * composing is something you start from anywhere, not a place you go. AI as a
@@ -58,6 +66,15 @@ export const NAV_ITEMS: readonly NavItem[] = [
     labelKey: 'nav.analytics',
     icon: BarChart3,
     inBottomBar: true,
+  },
+  {
+    id: 'assistant',
+    href: '/assistant',
+    // The screen's own title key. Nav has no separate word for this
+    // destination, and inventing one would be two strings to keep in step.
+    labelKey: 'assistantWeb.title',
+    icon: MessagesSquare,
+    inBottomBar: false,
   },
   {
     id: 'growth',
