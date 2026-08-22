@@ -24,6 +24,7 @@ import { WORKSPACE_HEADER } from '../../guards/workspace.guard';
 import { clientFingerprint } from '../../security/csrf';
 import { AuthService, type EstablishedSession } from './auth.service';
 import {
+  completePasswordResetSchema,
   magicLinkSchema,
   passwordStepUpSchema,
   passwordResetSchema,
@@ -199,6 +200,36 @@ export class AuthController {
       }
       return { status: 'accepted' as const };
     });
+  }
+
+  /**
+   * Finish a reset by setting the new password.
+   *
+   * This is the one place in the reset flow that answers honestly, because the
+   * caller is holding a token from their own inbox and a uniform 202 here would
+   * leave somebody with an expired link staring at a success screen and a
+   * password that never changed. It still reveals nothing about which account
+   * the token belonged to, and it establishes no session: the new password is
+   * then used at sign-in, once, deliberately.
+   */
+  @Public()
+  @Post('password-reset/complete')
+  @RateLimit({ limit: 5, windowSeconds: 900 })
+  @HttpCode(200)
+  async completePasswordReset(@Body() body: unknown): Promise<{ status: 'reset' }> {
+    const input = parseBody(completePasswordResetSchema, body);
+    const reset = await withUniformTiming(() =>
+      this.auth.provider.completePasswordReset({
+        token: input.token,
+        newPassword: input.newPassword,
+      }),
+    );
+    if (!reset) {
+      throw new ValidationFailedError({
+        details: { field: 'token', reason: 'invalid_or_expired' },
+      });
+    }
+    return { status: 'reset' as const };
   }
 
   /**

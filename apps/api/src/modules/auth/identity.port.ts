@@ -74,6 +74,17 @@ export interface IdentityProvider {
   /** Send a password reset. Always reports success to the caller. */
   sendPasswordReset(input: { email: string; locale: string }): Promise<void>;
 
+  /**
+   * Set a new password from a reset token.
+   *
+   * Unlike the send half, this one is allowed to fail visibly: the person is
+   * holding a link from their own inbox, and telling them plainly that it has
+   * expired is what lets them ask for another. It still reveals nothing about
+   * which account the token belonged to. False covers every failure uniformly:
+   * unknown token, consumed token, expired token.
+   */
+  completePasswordReset(input: { token: string; newPassword: string }): Promise<boolean>;
+
   /** Invalidate the provider-side session. */
   signOut(providerSessionId: string): Promise<void>;
 

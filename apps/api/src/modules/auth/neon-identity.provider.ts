@@ -220,6 +220,20 @@ export class NeonIdentityProvider implements IdentityProvider {
     });
   }
 
+  async completePasswordReset(input: { token: string; newPassword: string }): Promise<boolean> {
+    const result = await this.call('reset-password', {
+      method: 'POST',
+      body: { token: input.token, newPassword: input.newPassword },
+    });
+    if (result.status >= 400) {
+      // Deliberately not logged with the token or the status text: a rejected
+      // reset says nothing we want in a log line, and the person already knows.
+      this.logger.info({ status: result.status }, 'identity_password_reset_rejected');
+      return false;
+    }
+    return true;
+  }
+
   async signOut(providerSessionId: string): Promise<void> {
     await this.call('sign-out', { method: 'POST', cookie: providerSessionId, body: {} });
   }

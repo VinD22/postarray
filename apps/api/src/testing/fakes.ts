@@ -85,6 +85,8 @@ export class FakeIdentityProvider implements IdentityProvider {
   readonly signUpCalls: SignUpInput[] = [];
   readonly magicLinks: { email: string; locale: string }[] = [];
   readonly passwordResets: { email: string; locale: string }[] = [];
+  readonly completedPasswordResets: { token: string; newPassword: string }[] = [];
+  passwordResetToken = 'reset-token-for-tests-only-not-a-credential';
   readonly signOuts: string[] = [];
   dummyVerifications = 0;
   otpCode = '123456';
@@ -141,6 +143,11 @@ export class FakeIdentityProvider implements IdentityProvider {
   sendPasswordReset(input: { email: string; locale: string }): Promise<void> {
     this.passwordResets.push(input);
     return Promise.resolve();
+  }
+
+  completePasswordReset(input: { token: string; newPassword: string }): Promise<boolean> {
+    this.completedPasswordResets.push(input);
+    return Promise.resolve(input.token === this.passwordResetToken);
   }
 
   signOut(providerSessionId: string): Promise<void> {

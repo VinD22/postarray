@@ -73,6 +73,22 @@ export const passwordResetSchema = z
   })
   .strict();
 
+/**
+ * Completing a reset. The token is a body field, never a query parameter: the
+ * link lands in a browser, and a credential in a URL ends up in history, a
+ * referrer header and every proxy log between here and there.
+ *
+ * There is no `confirmPassword` field. Whether the two boxes on the form match
+ * is a question for the form, not for the server, and sending the same secret
+ * twice only widens what a log could capture.
+ */
+export const completePasswordResetSchema = z
+  .object({
+    token: z.string().trim().min(16).max(512),
+    newPassword: passwordSchema,
+  })
+  .strict();
+
 export const signOutSchema = z
   .object({
     /**

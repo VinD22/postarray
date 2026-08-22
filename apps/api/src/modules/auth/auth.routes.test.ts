@@ -109,6 +109,43 @@ describe('authentication routes', () => {
     });
   });
 
+  it('sets a new password from a valid reset token and establishes no session', async () => {
+    const response = await request(harness.server).post('/v1/auth/password-reset/complete').send({
+      token: harness.identity.passwordResetToken,
+      newPassword: 'a long replacement password',
+    });
+
+    expect(response.status).toBe(200);
+    expect(response.body).toEqual({ status: 'reset' });
+    expect(harness.identity.completedPasswordResets[0]).toMatchObject({
+      token: harness.identity.passwordResetToken,
+    });
+    // Nothing is signed in by resetting. The new password is used at sign-in,
+    // once, deliberately.
+    expect(response.headers['set-cookie']).toBeUndefined();
+  });
+
+  it('refuses an expired or already used reset token without naming an account', async () => {
+    const response = await request(harness.server)
+      .post('/v1/auth/password-reset/complete')
+      .send({ token: 'a-stale-token-that-was-already-used', newPassword: 'a long new password' });
+
+    expect(response.status).toBe(422);
+    const serialized = JSON.stringify(response.body);
+    expect(serialized).toContain('VALIDATION_FAILED');
+    // The refusal says the token is no good, never whose token it was.
+    expect(serialized).not.toContain('example.test');
+  });
+
+  it('refuses a new password below the length policy before reaching the provider', async () => {
+    const response = await request(harness.server)
+      .post('/v1/auth/password-reset/complete')
+      .send({ token: harness.identity.passwordResetToken, newPassword: 'short' });
+
+    expect(response.status).toBe(422);
+    expect(harness.identity.completedPasswordResets).toEqual([]);
+  });
+
   it('returns the selected tenant in the browser session bootstrap', async () => {
     const workspaceA = newIdFor('workspace');
     const workspaceB = newIdFor('workspace');

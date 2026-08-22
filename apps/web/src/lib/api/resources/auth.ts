@@ -7,6 +7,7 @@
  */
 
 import { call } from '../call';
+import type { ForwardAuth } from '../transport';
 import { demoOnboardingState } from '../fixtures';
 import type { ManagedSessionView, OnboardingStateView, OnboardingUseCase } from '../types';
 
@@ -103,6 +104,25 @@ export const authApi = {
       expiresAt: new Date(Date.now() + 3_600_000).toISOString(),
     })),
 
+  /**
+   * Finish a reset with the token from the email.
+   *
+   * The token travels in the body, never the query string, so it does not land
+   * in browser history, a referrer header or a proxy log. Unlike the request
+   * half, this one is allowed to fail visibly: the person is holding a link
+   * from their own inbox, and telling them the link expired is what lets them
+   * ask for another.
+   */
+  completePasswordReset: (input: {
+    token: string;
+    newPassword: string;
+  }): Promise<{
+    status: 'reset';
+  }> =>
+    call('/auth/password-reset/complete', { method: 'POST', body: input }, () => ({
+      status: 'reset' as const,
+    })),
+
   requestPasswordReset: (
     input: { identifier: string; locale: string },
     idempotencyKey: string,
@@ -113,7 +133,16 @@ export const authApi = {
 };
 
 export const onboardingApi = {
-  getState: (): Promise<OnboardingStateView> => call('/onboarding', {}, () => demoOnboardingState),
+  /**
+   * Where this person is in the first run.
+   *
+   * Read from a Server Component as well as from the browser, so it takes the
+   * same `ForwardAuth` every other server-side read takes. Without it the Next
+   * server calls the API with no session cookie and Node's own user agent, the
+   * fingerprint check fails, and the entry point 401s for a healthy session.
+   */
+  getState: (forward: ForwardAuth = {}): Promise<OnboardingStateView> =>
+    call('/onboarding', { ...forward }, () => demoOnboardingState),
 
   setUseCase: (input: { useCase: OnboardingUseCase }): Promise<OnboardingStateView> =>
     call('/onboarding/use-case', { method: 'PATCH', body: input }, () => ({

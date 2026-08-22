@@ -52,6 +52,12 @@ export function createRefusingServices(): Services {
       archive: refuse('project'),
       delete: refuse('project'),
     },
+    onboarding: {
+      getState: refuse('onboarding'),
+      setUseCase: refuse('onboarding'),
+      completeStep: refuse('onboarding'),
+      complete: refuse('onboarding'),
+    },
     connections: {
       listAvailableProviders: () => Promise.resolve([]),
       list: page,
@@ -158,6 +164,8 @@ export function createRefusingServices(): Services {
       purgeExpired: refuse('media'),
     },
     analytics: {
+      getOverview: refuse('analytics_overview'),
+      getMetricSeries: refuse('metric_series'),
       getPostMetrics: refuse('receipt'),
       getAccountMetrics: refuse('connection'),
       compare: refuse('comparison'),
