@@ -22,12 +22,24 @@ import type { CapabilitySnapshot } from '@relay/contracts';
 
 export type { CapabilitySnapshot, ConnectionHealth, ConnectionView };
 
-/** One OAuth scope, and what the product actually uses it for. */
-export interface PermissionView {
+/** One OAuth scope Relay asks for, and what the product uses it for. */
+export interface RequestedScope {
   readonly scope: string;
-  readonly granted: boolean;
   /** Catalog key for the sentence explaining why it is needed. */
   readonly purposeKey: string;
+}
+
+/**
+ * Three states, not two.
+ *
+ * `unknown` is what to show when Relay has no record of the grant. Showing that
+ * as `not_granted` is a false negative, and a false negative here tells a
+ * person their working account is broken.
+ */
+export type PermissionState = 'granted' | 'not_granted' | 'unknown';
+
+export interface PermissionView extends RequestedScope {
+  readonly state: PermissionState;
 }
 
 /** A production or beta limitation that changes what a person should expect. */

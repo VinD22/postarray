@@ -53,6 +53,7 @@ export default async function ComposePage({
   let assets: readonly MediaAsset[] = [];
   let errorMessage: string | undefined;
   let errorReference: string | undefined;
+  let activeProjectId: string | null = null;
 
   if (isDemoMode) {
     bootstrap = SEED_BOOTSTRAP;
@@ -88,9 +89,11 @@ export default async function ComposePage({
             assets={assets}
             contentLocales={['en', 'es', 'de', 'fr', 'ja']}
             approvalRequired={false}
+            uploadEnabled={false}
           />
         );
       }
+      activeProjectId = selectedProject.id;
       const [loadedComposer, mediaPage] = await Promise.all([
         loadComposer({
           contentItemId,
@@ -120,6 +123,8 @@ export default async function ComposePage({
       assets={assets}
       contentLocales={['en', 'es', 'de', 'fr', 'ja']}
       approvalRequired={false}
+      projectId={activeProjectId}
+      uploadEnabled={!isDemoMode && status === 'ready'}
       {...(errorMessage ? { errorMessage } : {})}
       {...(errorReference ? { errorReference } : {})}
     />

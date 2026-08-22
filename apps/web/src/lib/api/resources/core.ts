@@ -165,6 +165,8 @@ export const workspacesApi = {
   update: (
     workspaceId: string,
     patch: {
+      /** Renaming the workspace onboarding created, rather than making a second. */
+      readonly name?: string;
       readonly defaultLocale?: string;
       readonly ianaTimeZone?: string;
       readonly contentLocales?: readonly string[];
@@ -175,7 +177,7 @@ export const workspacesApi = {
   ): Promise<ApplicationWorkspaceView> =>
     call(`/workspaces/${workspaceId}`, { method: 'PATCH', body: patch }, () => ({
       id: demoSession.workspace.id,
-      name: demoSession.workspace.name,
+      name: patch.name ?? demoSession.workspace.name,
       slug: demoSession.workspace.slug,
       status: 'trialing',
       defaultLocale: patch.defaultLocale ?? demoSession.workspace.locale,

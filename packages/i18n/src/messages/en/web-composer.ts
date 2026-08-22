@@ -269,6 +269,14 @@ export const webComposerMessages = {
   // ------------------------------------------------------------ page-level
   'composerWeb.page.newDraft': 'New draft',
   'composerWeb.page.loading': 'Loading the draft, its targets and their limits',
+  // A failed commit has to be visible, not only announced. These are the
+  // titles the sheet shows and the toast repeats; the sentence underneath them
+  // is the typed error's own user-safe message and its remediation.
+  'composerWeb.commitFailed.draft': 'This draft was not saved.',
+  'composerWeb.commitFailed.approval': 'The approval request was not sent.',
+  'composerWeb.commitFailed.schedule': 'This post was not scheduled.',
+  'composerWeb.commitFailed.publish': 'Publishing did not finish.',
+
   'composerWeb.page.errorTitle': 'This draft could not be opened',
   'composerWeb.page.errorBody':
     'Nothing was lost. Try again, and if it keeps failing the reference below helps support find the request.',

@@ -3,149 +3,21 @@
 /**
  * Route entry for connections.
  *
- * The scope list per provider is authored here rather than fetched, because it
- * describes what Relay's own OAuth client asks for. Each entry is a scope the
- * provider names plus the catalog key for the sentence saying what it is used
- * for, so the pre-OAuth explainer is specific rather than a paraphrase of the
- * provider's consent screen.
- *
- * TODO(web): read this from `beginOAuth`, which already returns the scope list
- * the consent screen will show, once it is fetched before the handoff rather
- * than at it.
+ * The scope table lives in `./permissions.ts`. It carries only what Relay asks
+ * each provider for and why. Whether a scope was granted is a fact about one
+ * account and comes from that account's `grantedScopes`, resolved per row in
+ * `connections-screen.tsx`.
  */
 
 import type { ReactNode } from 'react';
 import { ConnectionsScreen } from './connections-screen';
-import type { PermissionView } from './types';
-
-const PERMISSIONS: Readonly<Record<string, readonly PermissionView[]>> = {
-  x: [
-    { scope: 'tweet.read', granted: false, purposeKey: 'web.connection.purpose.readPosts' },
-    { scope: 'tweet.write', granted: false, purposeKey: 'web.connection.purpose.publish' },
-    { scope: 'users.read', granted: false, purposeKey: 'web.connection.purpose.identity' },
-    { scope: 'offline.access', granted: false, purposeKey: 'web.connection.purpose.refresh' },
-  ],
-  linkedin: [
-    { scope: 'w_member_social', granted: false, purposeKey: 'web.connection.purpose.publish' },
-    {
-      scope: 'r_organization_social',
-      granted: false,
-      purposeKey: 'web.connection.purpose.analytics',
-    },
-    { scope: 'openid', granted: false, purposeKey: 'web.connection.purpose.identity' },
-  ],
-  instagram: [
-    {
-      scope: 'instagram_content_publish',
-      granted: false,
-      purposeKey: 'web.connection.purpose.publish',
-    },
-    {
-      scope: 'instagram_manage_insights',
-      granted: false,
-      purposeKey: 'web.connection.purpose.analytics',
-    },
-    {
-      scope: 'pages_show_list',
-      granted: false,
-      purposeKey: 'web.connection.purpose.chooseDestination',
-    },
-  ],
-  facebook: [
-    {
-      scope: 'pages_manage_posts',
-      granted: false,
-      purposeKey: 'web.connection.purpose.publish',
-    },
-    {
-      scope: 'pages_read_engagement',
-      granted: false,
-      purposeKey: 'web.connection.purpose.analytics',
-    },
-    {
-      scope: 'pages_show_list',
-      granted: false,
-      purposeKey: 'web.connection.purpose.chooseDestination',
-    },
-  ],
-  youtube: [
-    {
-      scope: 'youtube.upload',
-      granted: false,
-      purposeKey: 'web.connection.purpose.publish',
-    },
-    {
-      scope: 'yt-analytics.readonly',
-      granted: false,
-      purposeKey: 'web.connection.purpose.analytics',
-    },
-  ],
-  tiktok: [
-    { scope: 'video.publish', granted: false, purposeKey: 'web.connection.purpose.publish' },
-    { scope: 'user.info.basic', granted: false, purposeKey: 'web.connection.purpose.identity' },
-  ],
-  threads: [
-    {
-      scope: 'threads_content_publish',
-      granted: false,
-      purposeKey: 'web.connection.purpose.publish',
-    },
-    {
-      scope: 'threads_basic',
-      granted: false,
-      purposeKey: 'web.connection.purpose.identity',
-    },
-  ],
-  bluesky: [
-    { scope: 'app-password', granted: false, purposeKey: 'web.connection.purpose.publish' },
-  ],
-  mastodon: [
-    { scope: 'read', granted: false, purposeKey: 'web.connection.purpose.identity' },
-    { scope: 'write:statuses', granted: false, purposeKey: 'web.connection.purpose.publish' },
-  ],
-  telegram: [{ scope: 'bot', granted: false, purposeKey: 'web.connection.purpose.publish' }],
-  reddit: [
-    { scope: 'identity', granted: false, purposeKey: 'web.connection.purpose.identity' },
-    { scope: 'submit', granted: false, purposeKey: 'web.connection.purpose.publish' },
-    {
-      scope: 'mysubreddits',
-      granted: false,
-      purposeKey: 'web.connection.purpose.chooseDestination',
-    },
-  ],
-  wordpress: [{ scope: 'posts', granted: false, purposeKey: 'web.connection.purpose.publish' }],
-  medium: [
-    { scope: 'basicProfile', granted: false, purposeKey: 'web.connection.purpose.identity' },
-    { scope: 'publishPost', granted: false, purposeKey: 'web.connection.purpose.publish' },
-  ],
-  devto: [{ scope: 'article', granted: false, purposeKey: 'web.connection.purpose.publish' }],
-  pinterest: [
-    { scope: 'user_accounts:read', granted: false, purposeKey: 'web.connection.purpose.identity' },
-    {
-      scope: 'boards:read',
-      granted: false,
-      purposeKey: 'web.connection.purpose.chooseDestination',
-    },
-    { scope: 'pins:read', granted: false, purposeKey: 'web.connection.purpose.readPosts' },
-    { scope: 'pins:write', granted: false, purposeKey: 'web.connection.purpose.publish' },
-  ],
-  discord: [{ scope: 'bot', granted: false, purposeKey: 'web.connection.purpose.publish' }],
-  slack: [
-    { scope: 'users:read', granted: false, purposeKey: 'web.connection.purpose.identity' },
-    {
-      scope: 'channels:read',
-      granted: false,
-      purposeKey: 'web.connection.purpose.chooseDestination',
-    },
-    { scope: 'chat:write', granted: false, purposeKey: 'web.connection.purpose.publish' },
-  ],
-};
+import { REQUESTED_SCOPES } from './permissions';
 
 export function ConnectionsContainer(): ReactNode {
   return (
     <ConnectionsScreen
       connectionHrefPattern="/connections/{id}"
-      permissionsByProvider={PERMISSIONS}
+      permissionsByProvider={REQUESTED_SCOPES}
     />
   );
 }

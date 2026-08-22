@@ -7,6 +7,10 @@
  * the query cache or the URL lives here. The projects come from the session
  * rather than from the entries, so the project filter shows names a person
  * recognises instead of identifiers.
+ *
+ * No `customerGroups` are passed. A customer group is not a project, nothing in
+ * the API returns a group on a calendar entry, and passing the project list
+ * under both names rendered two identical filters side by side.
  */
 
 import type { ReactNode } from 'react';
@@ -23,7 +27,6 @@ export function CalendarContainer(): ReactNode {
       postHrefPattern="/posts/{id}"
       defaultProjectId={project?.id ?? null}
       projects={projects.map((entry) => ({ id: entry.id, name: entry.name }))}
-      customerGroups={projects.map((entry) => ({ id: entry.id, name: entry.name }))}
     />
   );
 }

@@ -56,6 +56,10 @@ function toConnection(connection: ApplicationConnectionView): ConnectionView {
     lastPublishedAt: connection.lastPublishedAt,
     lastAnalyticsSyncAt: connection.lastAnalyticsSyncAt,
     capabilitySnapshotVersion: connection.capabilityVersion,
+    // An empty array is what the column defaults to before any grant has been
+    // recorded, so it cannot be read as "nothing was granted". Unknown is the
+    // honest answer, and the screens render it as unknown.
+    grantedScopes: connection.grantedScopes.length === 0 ? null : [...connection.grantedScopes],
   };
 }
 

@@ -230,6 +230,7 @@ describe('connection ordering', () => {
       handle: '@acme',
       avatarUrl: null,
       health: 'healthy',
+      grantedScopes: null,
       connectedAt: '2026-06-12T00:00:00.000Z',
       connectedByName: 'Ana Ruiz',
       expiresAt: null,
@@ -255,11 +256,24 @@ describe('connection ordering', () => {
       missingPermissionCount(
         row({
           permissions: [
-            { scope: 'w_member_social', granted: true, purposeKey: 'x' },
-            { scope: 'r_organization_social', granted: false, purposeKey: 'y' },
+            { scope: 'w_member_social', state: 'granted' as const, purposeKey: 'x' },
+            { scope: 'r_organization_social', state: 'not_granted' as const, purposeKey: 'y' },
           ],
         }),
       ),
     ).toBe(1);
+  });
+
+  it('does not count an unknown grant as missing', () => {
+    expect(
+      missingPermissionCount(
+        row({
+          permissions: [
+            { scope: 'w_member_social', state: 'unknown' as const, purposeKey: 'x' },
+            { scope: 'openid', state: 'unknown' as const, purposeKey: 'y' },
+          ],
+        }),
+      ),
+    ).toBe(0);
   });
 });

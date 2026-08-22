@@ -315,7 +315,8 @@ export function ConnectionRow({
                   provider: providerName(row.provider),
                   account: row.displayName,
                   permission:
-                    (row.permissions ?? []).find((permission) => !permission.granted)?.scope ?? '',
+                    (row.permissions ?? []).find((permission) => permission.state === 'not_granted')
+                      ?.scope ?? '',
                   date: row.expiresAt ? format.date(row.expiresAt) : '',
                 })}
               </span>
@@ -398,7 +399,20 @@ export function ConnectionRow({
               <ul className="flex flex-wrap gap-1.5">
                 {(row.permissions ?? []).map((permission) => (
                   <li key={permission.scope}>
-                    <Badge tone={permission.granted ? 'success' : 'warning'}>
+                    {/*
+                      Three states, three tones. An unknown grant is neutral,
+                      not a warning: Relay has no record of it, which is not the
+                      same as the provider having withheld it.
+                    */}
+                    <Badge
+                      tone={
+                        permission.state === 'granted'
+                          ? 'success'
+                          : permission.state === 'not_granted'
+                            ? 'warning'
+                            : 'outline'
+                      }
+                    >
                       {permission.scope}
                     </Badge>
                   </li>

@@ -46,7 +46,7 @@ export function ImportRouteError({
           title={t('import.title')}
           description={t('import.subtitle')}
           onRetry={onRetry}
-          retryLabel={t('actions.retry')}
+          retryLabel={t('action.retry')}
           {...(reference
             ? { reference: { label: t('receipt.correlationId'), value: reference } }
             : {})}

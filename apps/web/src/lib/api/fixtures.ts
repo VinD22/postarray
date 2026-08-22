@@ -145,6 +145,7 @@ export const demoConnections: readonly ConnectionView[] = [
     lastPublishedAt: at(-5 * HOUR),
     lastAnalyticsSyncAt: at(-58),
     capabilitySnapshotVersion: '14',
+    grantedScopes: ['tweet.read', 'tweet.write', 'users.read', 'offline.access'],
   },
   {
     id: 'conn_demo00000000000000002',
@@ -161,6 +162,7 @@ export const demoConnections: readonly ConnectionView[] = [
     lastPublishedAt: at(-2 * DAY),
     lastAnalyticsSyncAt: at(-3 * HOUR),
     capabilitySnapshotVersion: '14',
+    grantedScopes: ['w_member_social', 'openid'],
   },
   {
     id: 'conn_demo00000000000000003',
@@ -177,6 +179,7 @@ export const demoConnections: readonly ConnectionView[] = [
     lastPublishedAt: at(-DAY),
     lastAnalyticsSyncAt: at(-9 * HOUR),
     capabilitySnapshotVersion: '12',
+    grantedScopes: ['instagram_content_publish', 'instagram_manage_insights', 'pages_show_list'],
   },
   {
     id: 'conn_demo00000000000000004',
@@ -193,6 +196,8 @@ export const demoConnections: readonly ConnectionView[] = [
     lastPublishedAt: null,
     lastAnalyticsSyncAt: null,
     capabilitySnapshotVersion: '9',
+    // Never recorded for this account, so the permissions read as unknown.
+    grantedScopes: null,
   },
 ];
 
@@ -498,4 +503,6 @@ export const demoOnboardingState: OnboardingStateView = {
   connectionCount: 0,
   firstPostScheduled: false,
   firstReceiptId: null,
+  completedSteps: [],
+  complete: false,
 };

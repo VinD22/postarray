@@ -115,15 +115,32 @@ export function PermissionsSheet({
                 </TableHeader>
                 <TableBody>
                   {permissions.map((permission) => (
-                    <TableRow key={permission.scope} attention={!permission.granted}>
+                    <TableRow key={permission.scope} attention={permission.state === 'not_granted'}>
                       <TableRowHeader>
                         <Code>{permission.scope}</Code>
                       </TableRowHeader>
                       <TableCell>
-                        <Badge tone={permission.granted ? 'success' : 'warning'}>
-                          {permission.granted
+                        {/*
+                          `unknown` is its own state. Rendering it as "Missing"
+                          would be a false negative, and a table of false
+                          negatives on a working account is the single loudest
+                          way to tell somebody their account is broken when it
+                          is not.
+                        */}
+                        <Badge
+                          tone={
+                            permission.state === 'granted'
+                              ? 'success'
+                              : permission.state === 'not_granted'
+                                ? 'warning'
+                                : 'outline'
+                          }
+                        >
+                          {permission.state === 'granted'
                             ? t('connection.permissions.granted')
-                            : t('connection.permissions.missing')}
+                            : permission.state === 'not_granted'
+                              ? t('connection.permissions.missing')
+                              : t('common.unknown')}
                         </Badge>
                       </TableCell>
                       <TableCell className="text-text-secondary">

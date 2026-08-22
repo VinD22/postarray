@@ -47,6 +47,18 @@ export const authMessages = {
   'auth.resetPassword.title': 'Choose a new password',
   'auth.resetPassword.sent': 'If that address has an account, reset instructions are on their way.',
   'auth.resetPassword.done': 'Your password is updated. Sign in with it.',
+
+  /* -- Choosing the new password, from the link in the email ------------- */
+  'auth.newPassword.help':
+    'Choose a password you have not used here before. It signs you in on every device.',
+  'auth.newPassword.label': 'New password',
+  'auth.newPassword.confirmLabel': 'Confirm new password',
+  'auth.newPassword.mismatch': 'The two passwords do not match.',
+  'auth.newPassword.submit': 'Save new password',
+  'auth.newPassword.linkMissing': 'This page needs the link from your reset email.',
+  'auth.newPassword.linkInvalid': 'This reset link has expired or has already been used.',
+  'auth.newPassword.linkInvalidAction': 'Request a new link',
+  'auth.newPassword.signInNow': 'Sign in',
   'auth.noAccount': 'No account yet?',
   'auth.haveAccount': 'Already have an account?',
   'auth.terms.accept':

@@ -35,7 +35,7 @@ import {
 import { useTranslations } from '@relay/i18n/react';
 import { CORE_PROVIDER_IDS } from '@relay/contracts';
 import { ProviderMark, useProviderName } from './provider';
-import type { PermissionView } from './types';
+import type { RequestedScope } from './types';
 import type { ProviderId } from '@/lib/api/types';
 
 /**
@@ -70,7 +70,7 @@ export interface ConnectDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   /** Scopes for the selected provider, from `getCapabilities`. */
-  permissionsByProvider: Readonly<Record<string, readonly PermissionView[]>>;
+  permissionsByProvider: Readonly<Record<string, readonly RequestedScope[]>>;
   availableProviders: readonly ProviderId[];
   projectName: string | null;
   starting: boolean;

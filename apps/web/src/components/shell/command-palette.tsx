@@ -124,6 +124,18 @@ export function CommandPalette({
         },
       },
       {
+        // `/import` had zero links to it anywhere in the product. It works, so
+        // it gets one affordance rather than being deleted. It uses the
+        // screen's own title key: the palette has no separate word for this
+        // destination and inventing one would be two strings to keep in step.
+        id: 'import',
+        label: t('import.title'),
+        group: actionGroup,
+        run: () => {
+          go('/import');
+        },
+      },
+      {
         id: 'rule',
         label: t('palette.action.createRule'),
         group: actionGroup,

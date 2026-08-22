@@ -27,7 +27,14 @@ import {
   type MediaLookup,
   type ScheduleIntent,
 } from '@/features/composer';
-import { MediaPickerDialog, type AccountRule, type MediaAsset } from '@/features/media';
+import {
+  MediaPickerDialog,
+  createUploadTransport,
+  type AccountRule,
+  type MediaAsset,
+} from '@/features/media';
+import { useRouter } from 'next/navigation';
+
 import { useLocalizedRouter } from '@/lib/i18n';
 import { api, newIdempotencyKey } from '@/lib/api';
 import {
@@ -44,6 +51,10 @@ export interface ComposeClientProps {
   readonly assets: readonly MediaAsset[];
   readonly contentLocales: readonly string[];
   readonly approvalRequired: boolean;
+  /** Needed to reserve uploads against the right project from the composer. */
+  readonly projectId?: string | null;
+  /** False in demo mode, where uploading would write nothing. */
+  readonly uploadEnabled?: boolean;
   readonly errorMessage?: string;
   readonly errorReference?: string;
 }
@@ -103,6 +114,8 @@ export function ComposeClient(props: ComposeClientProps): ReactNode {
       assets={props.assets}
       contentLocales={props.contentLocales}
       approvalRequired={props.approvalRequired}
+      projectId={props.projectId ?? null}
+      uploadEnabled={props.uploadEnabled ?? true}
     />
   );
 }
@@ -112,11 +125,15 @@ function ComposeReady({
   assets,
   contentLocales,
   approvalRequired,
+  projectId,
+  uploadEnabled,
 }: {
   readonly bootstrap: ComposerBootstrap;
   readonly assets: readonly MediaAsset[];
   readonly contentLocales: readonly string[];
   readonly approvalRequired: boolean;
+  readonly projectId: string | null;
+  readonly uploadEnabled: boolean;
 }): ReactNode {
   const media = useMemo<MediaLookup>(
     () => ({
@@ -147,7 +164,12 @@ function ComposeReady({
       approvalRequired={approvalRequired}
       onSave={saveComposer}
     >
-      <ComposeSurface assets={assets} contentLocales={contentLocales} />
+      <ComposeSurface
+        assets={assets}
+        contentLocales={contentLocales}
+        projectId={projectId}
+        uploadEnabled={uploadEnabled}
+      />
     </ComposerProvider>
   );
 }
@@ -155,13 +177,23 @@ function ComposeReady({
 function ComposeSurface({
   assets,
   contentLocales,
+  projectId,
+  uploadEnabled,
 }: {
   readonly assets: readonly MediaAsset[];
   readonly contentLocales: readonly string[];
+  readonly projectId: string | null;
+  readonly uploadEnabled: boolean;
 }): ReactNode {
   const router = useLocalizedRouter();
+  const nextRouter = useRouter();
   const { bootstrap, state, dispatch, summaries, totals, saveNow } = useComposer();
   const [pickerScope, setPickerScope] = useState<string | null | 'closed'>('closed');
+
+  const uploadTransport = useMemo(
+    () => (uploadEnabled ? createUploadTransport(projectId) : undefined),
+    [projectId, uploadEnabled],
+  );
 
   const rules = useMemo<AccountRule[]>(
     () =>
@@ -237,7 +269,12 @@ function ComposeSurface({
           newIdempotencyKey('publish'),
         );
       }
-      router.push(`/calendar?contentItemId=${encodeURIComponent(state.master.id)}`);
+      // The receipt page is the confirmation. `/calendar?contentItemId=` was a
+      // parameter nothing on the calendar reads, so the user landed on an
+      // unfiltered month with no sign anything had happened. `/posts/{id}`
+      // renders the real thing: the job, every target and, once it exists, the
+      // provider receipt. It is also the href the calendar itself links to.
+      router.push(`/posts/${encodeURIComponent(state.master.id)}`);
     },
     [router, saveNow, state.master.id, state.master.schedule, totals.targetCount],
   );
@@ -272,6 +309,8 @@ function ComposeSurface({
         rules={rules}
         targetLabel={targetLabel}
         onConfirm={addMedia}
+        {...(uploadTransport === undefined ? {} : { transport: uploadTransport })}
+        onUploaded={() => nextRouter.refresh()}
       />
     </>
   );

@@ -4,6 +4,11 @@
  * Settings is deliberately one destination with sections rather than entries in
  * the primary navigation: none of these answer a daily question, and putting
  * them in the nav would push the six that do off the screen.
+ *
+ * Only sections that exist are listed. Agents and referrals both route to a
+ * screen that says they are not built (the `agentsGateway` methods still return
+ * `not_implemented`), and a navigation entry is an invitation. The routes stay
+ * reachable by URL so a direct link still explains itself; nothing offers them.
  */
 export interface SettingsSectionDescriptor {
   readonly id: string;
@@ -29,13 +34,6 @@ export const SETTINGS_SECTIONS: readonly SettingsSectionDescriptor[] = [
     availability: 'available',
   },
   {
-    id: 'agents',
-    href: '/settings/agents',
-    titleKey: 'settings.ui.section.agents',
-    summaryKey: 'settings.ui.section.agentsSummary',
-    availability: 'not_implemented',
-  },
-  {
     id: 'developer-apps',
     href: '/settings/developer-apps',
     titleKey: 'settings.ui.section.apps',
@@ -55,13 +53,6 @@ export const SETTINGS_SECTIONS: readonly SettingsSectionDescriptor[] = [
     titleKey: 'settings.ui.section.billing',
     summaryKey: 'settings.ui.section.billingSummary',
     availability: 'available',
-  },
-  {
-    id: 'referrals',
-    href: '/settings/referrals',
-    titleKey: 'settings.ui.section.referrals',
-    summaryKey: 'settings.ui.section.referralsSummary',
-    availability: 'not_implemented',
   },
   {
     id: 'localization',

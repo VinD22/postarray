@@ -93,9 +93,14 @@ export function deriveHealth(expiresAt: string | null, now: Date = new Date()): 
   return 'healthy';
 }
 
-/** The count of permissions the provider has not granted. */
+/**
+ * The count of permissions the provider is known to have withheld.
+ *
+ * A permission whose state is `unknown` is not counted. Counting it would turn
+ * "we have no record" into a warning badge on a healthy account.
+ */
 export function missingPermissionCount(row: ConnectionRow): number {
-  return (row.permissions ?? []).filter((permission) => !permission.granted).length;
+  return (row.permissions ?? []).filter((permission) => permission.state === 'not_granted').length;
 }
 
 /** Sort so the accounts that need a person come first. */

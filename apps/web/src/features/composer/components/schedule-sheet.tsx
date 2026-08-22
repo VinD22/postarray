@@ -28,6 +28,7 @@ import {
   SheetFooter,
   SheetHeader,
   SheetTitle,
+  useToast,
 } from '@relay/design-system/primitives';
 import { DefinitionList, Notice } from '@relay/design-system/patterns';
 import { useAnnouncer } from '@relay/design-system/hooks';
@@ -39,6 +40,7 @@ import { resolveVariant } from '@relay/contracts';
 import { useMotionOk } from '@/lib/motion/use-motion-ok';
 import { NextSlotPanel } from '@/features/queue/components/next-slot-panel';
 import { useComposer } from '../composer-context';
+import { describeCommitFailure, type CommitFailure } from '../state/commit-failure';
 import { PROVIDER_LABEL } from './provider-identity';
 import { RepeatPanel } from './repeat-panel';
 import { isoDateIn, isoTimeIn, zonedToInstant } from '../state/time';
@@ -65,7 +67,9 @@ export function ScheduleSheet({
   const t = useTranslations();
   const { announce } = useAnnouncer();
   const { bootstrap, state, dispatch, summaries, totals, online } = useComposer();
+  const { toast } = useToast();
   const [busy, setBusy] = useState<ScheduleIntent | null>(null);
+  const [failure, setFailure] = useState<CommitFailure | null>(null);
   const [justScheduled, setJustScheduled] = useState(false);
   const motionOk = useMotionOk();
 
@@ -94,6 +98,7 @@ export function ScheduleSheet({
 
   const commit = (intent: ScheduleIntent): void => {
     setBusy(intent);
+    setFailure(null);
     onCommit(intent)
       .then(() => {
         if (intent === 'schedule' && instant !== null) {
@@ -131,8 +136,19 @@ export function ScheduleSheet({
         onOpenChange(false);
         setBusy(null);
       })
-      .catch(() => {
+      .catch((error: unknown) => {
+        // A failure has to reach a sighted user too. Before this the sheet just
+        // stopped spinning and stayed open, which reads as "nothing happened"
+        // rather than "this did not go out". The announcement stays; the toast
+        // and the inline notice are the visual channel beside it.
+        const described = describeCommitFailure(intent, error);
         announce(t.full('a11y.announce.publishFailed'), 'assertive');
+        setFailure(described);
+        toast({
+          title: t.full(described.titleKey),
+          description: t(described.messageKey, described.values),
+          tone: 'destructive',
+        });
         setBusy(null);
       });
   };
@@ -374,6 +390,25 @@ export function ScheduleSheet({
 
           {online ? null : (
             <Notice tone="warning" title={t.full('composerWeb.review.offlineBlocked')} />
+          )}
+
+          {failure === null ? null : (
+            <Notice
+              tone="destructive"
+              liveness="alert"
+              title={t.full(failure.titleKey)}
+              description={
+                <>
+                  <span className="block">{t(failure.messageKey, failure.values)}</span>
+                  <span className="block">{t(failure.actionKey, failure.values)}</span>
+                  {failure.correlationId === null ? null : (
+                    <span className="text-label text-text-tertiary block">
+                      {t.full('error.reference', { correlationId: failure.correlationId })}
+                    </span>
+                  )}
+                </>
+              }
+            />
           )}
         </SheetBody>
 

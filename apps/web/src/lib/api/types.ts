@@ -171,6 +171,14 @@ export interface ConnectionView {
   readonly lastPublishedAt: IsoInstant | null;
   readonly lastAnalyticsSyncAt: IsoInstant | null;
   readonly capabilitySnapshotVersion: string | null;
+  /**
+   * The scopes the provider actually granted, as it named them.
+   *
+   * `null` means Relay has no record of the grant, which is a different fact
+   * from "the provider granted nothing". The UI must render the first as
+   * unknown and never as denied.
+   */
+  readonly grantedScopes: readonly string[] | null;
 }
 
 export interface ConnectionDestination {
@@ -435,5 +443,9 @@ export interface OnboardingStateView {
   readonly useCase: OnboardingUseCase | null;
   readonly connectionCount: number;
   readonly firstPostScheduled: boolean;
+  /** The most recent publication receipt, when one exists. Never invented. */
   readonly firstReceiptId: string | null;
+  /** Step ids this person finished, in the order they finished them. */
+  readonly completedSteps: readonly string[];
+  readonly complete: boolean;
 }
