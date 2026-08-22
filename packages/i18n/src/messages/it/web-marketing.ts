@@ -472,7 +472,7 @@ export const webMarketingMessages = {
   'web.status.title': 'Stato',
   'web.status.lede':
     "Lo stato di ogni superficie Relay e di ogni connettore. Lo stato del connettore copre il nostro adattatore e l'API della piattaforma da cui dipende.",
-  'web.status.updated': 'Selezionato {time}',
+  'web.status.updated': 'Gli stati sono impostati manualmente. Ultimo aggiornamento {time}.',
   'web.status.surfaces.title': 'Superfici',
   'web.status.connectors.title': 'Connettori',
   'web.status.level.operational': 'Funzionante normalmente',

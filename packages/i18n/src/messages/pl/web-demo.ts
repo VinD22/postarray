@@ -70,7 +70,7 @@ export const webDemoMessages = {
     'Nic powyżej nie jest makietą produktu, który mamy nadzieję zbudować. To interfejs w obecnym stanie, z połową dotyczącą publikacji uczciwie oznaczoną jako niedokończoną.',
 
   /* ---------------------------------------------------------------------- */
-  /* The six steps                                                           */
+  /* The nine steps                                                          */
   /* ---------------------------------------------------------------------- */
 
   'web.demo.step.project.title': 'Utwórz markę',

@@ -464,7 +464,7 @@ export const webMarketingMessages = {
   'web.status.title': 'Status',
   'web.status.lede':
     'Der Zustand jeder Relaisoberfläche und jedes Anschlusses. Der Connector-Status deckt unseren Adapter und die Plattform-API ab, von der er abhängt.',
-  'web.status.updated': 'Überprüft {time}',
+  'web.status.updated': 'Die Status werden von Hand gepflegt. Zuletzt aktualisiert {time}.',
   'web.status.surfaces.title': 'Oberflächen',
   'web.status.connectors.title': 'Anschlüsse',
   'web.status.level.operational': 'Funktioniert normal',

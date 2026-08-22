@@ -381,7 +381,7 @@ export const webMarketingMessages = {
   'web.status.title': 'สถานะ',
   'web.status.lede':
     'สถานะของพื้นผิวทุกๆ Relay และตัวเชื่อมต่อทุกตัว สถานะของตัวเชื่อมต่อครอบคลุมอะแดปเตอร์ของเราและ API ของแพลตฟอร์มที่ขึ้นอยู่กับ',
-  'web.status.updated': 'ตรวจสอบแล้ว {time}',
+  'web.status.updated': 'สถานะถูกตั้งค่าด้วยตนเอง อัปเดตล่าสุด {time}',
   'web.status.surfaces.title': 'พื้นผิว',
   'web.status.connectors.title': 'ขั้วต่อ',
   'web.status.level.operational': 'ใช้งานได้ปกติ',

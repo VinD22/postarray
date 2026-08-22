@@ -470,7 +470,7 @@ export const webMarketingMessages = {
   'web.status.title': 'Status',
   'web.status.lede':
     'De staat van elk Relay-oppervlak en elke connector. De connectorstatus omvat onze adapter en de platform-API waarvan deze afhankelijk is.',
-  'web.status.updated': '{time} gecontroleerd',
+  'web.status.updated': 'Statussen worden handmatig bijgehouden. Laatst bijgewerkt {time}.',
   'web.status.surfaces.title': 'Oppervlakken',
   'web.status.connectors.title': 'Connectoren',
   'web.status.level.operational': 'Normaal functionerend',

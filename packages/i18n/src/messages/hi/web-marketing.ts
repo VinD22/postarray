@@ -469,7 +469,7 @@ export const webMarketingMessages = {
   'web.status.title': 'स्थिति',
   'web.status.lede':
     'प्रत्येक Relay सतह और प्रत्येक कनेक्टर की स्थिति। कनेक्टर स्थिति हमारे एडाप्टर और प्लेटफ़ॉर्म API को कवर करती है जिस पर यह निर्भर करता है।',
-  'web.status.updated': 'Checked {time}',
+  'web.status.updated': 'स्थितियां हाथ से सेट की जाती हैं। अंतिम अपडेट {time}।',
   'web.status.surfaces.title': 'सतहें',
   'web.status.connectors.title': 'कनेक्टर्स',
   'web.status.level.operational': 'सामान्य रूप से संचालन',

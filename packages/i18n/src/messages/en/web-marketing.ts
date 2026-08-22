@@ -595,7 +595,7 @@ export const webMarketingMessages = {
   'web.status.title': 'Status',
   'web.status.lede':
     'The state of every Relay surface and every connector. Connector state covers our adapter and the platform API it depends on.',
-  'web.status.updated': 'Checked {time}',
+  'web.status.updated': 'Statuses are set by hand. Last updated {time}.',
   'web.status.surfaces.title': 'Surfaces',
   'web.status.connectors.title': 'Connectors',
   'web.status.level.operational': 'Operating normally',

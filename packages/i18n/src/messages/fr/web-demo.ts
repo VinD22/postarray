@@ -37,11 +37,11 @@ export const webDemoMessages = {
 
   'web.demo.title': "Comment ça marche, dans l'ordre où vous le découvrez",
   'web.demo.lede':
-    "Six étapes, d'un workspace vide jusqu'au registre de ce qui s'est passé. Chacune montre la surface que vous regarderiez réellement, avec du contenu d'exemple dedans.",
+    "Neuf étapes, d'un workspace vide jusqu'au registre de ce qui s'est passé. Chacune montre la surface que vous regarderiez réellement, avec du contenu d'exemple dedans.",
   'web.demo.notice.title': 'Ceci est une démonstration, pas un compte réel',
   'web.demo.notice.body':
     "Chaque panneau ici est l'interface du produit avec du contenu d'exemple. Aucun connecteur n'a terminé la vérification du fournisseur, rien n'est donc publié sur aucune plateforme via ce produit aujourd'hui. Là où le flux de travail s'arrête, la page le dit plutôt que de dessiner le reste.",
-  'web.demo.contents.title': 'Les six étapes',
+  'web.demo.contents.title': 'Les neuf étapes',
   'web.demo.stepLabel': 'Étape {position} sur {total}',
   'web.demo.next': 'Suivant : {step}',
   'web.demo.closing.pricing': 'Voyez ce que cela coûte',
@@ -50,7 +50,7 @@ export const webDemoMessages = {
     "Rien ci-dessus n'est une maquette d'un produit que nous espérons construire. C'est l'interface telle qu'elle est, avec la moitié publication honnêtement marquée comme inachevée.",
 
   /* ---------------------------------------------------------------------- */
-  /* Les six étapes                                                         */
+  /* Les neuf étapes                                                         */
   /* ---------------------------------------------------------------------- */
 
   'web.demo.step.project.title': 'Créer un projet',

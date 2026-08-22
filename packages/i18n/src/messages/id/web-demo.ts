@@ -37,11 +37,11 @@ export const webDemoMessages = {
 
   'web.demo.title': 'Cara kerjanya, dalam urutan Anda menemuinya',
   'web.demo.lede':
-    'Enam langkah, dari ruang kerja kosong sampai catatan tentang apa yang terjadi. Setiap langkah menunjukkan permukaan yang benar-benar akan Anda lihat, dengan konten contoh di dalamnya.',
+    'Sembilan langkah, dari ruang kerja kosong sampai catatan tentang apa yang terjadi. Setiap langkah menunjukkan permukaan yang benar-benar akan Anda lihat, dengan konten contoh di dalamnya.',
   'web.demo.notice.title': 'Ini adalah demonstrasi, bukan akun aktif',
   'web.demo.notice.body':
     'Setiap panel di sini adalah antarmuka produk dengan konten contoh di dalamnya. Belum ada konektor yang menyelesaikan verifikasi penyedia, jadi tidak ada yang terbit ke platform mana pun melalui produk ini hari ini. Di mana alur kerja berhenti, halaman mengatakannya alih-alih menggambar sisanya.',
-  'web.demo.contents.title': 'Enam langkah',
+  'web.demo.contents.title': 'Sembilan langkah',
   'web.demo.stepLabel': 'Langkah {position} dari {total}',
   'web.demo.next': 'Berikutnya: {step}',
   'web.demo.closing.pricing': 'Lihat berapa biayanya',
@@ -50,7 +50,7 @@ export const webDemoMessages = {
     'Tidak ada yang di atas adalah tiruan dari produk yang kami harap dapat kami bangun. Ini adalah antarmuka sebagaimana adanya, dengan bagian penerbitan ditandai dengan jujur sebagai belum selesai.',
 
   /* ---------------------------------------------------------------------- */
-  /* Enam langkah                                                            */
+  /* Sembilan langkah                                                            */
   /* ---------------------------------------------------------------------- */
 
   'web.demo.step.project.title': 'Buat proyek',

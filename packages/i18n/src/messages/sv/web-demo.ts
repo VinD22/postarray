@@ -70,7 +70,7 @@ export const webDemoMessages = {
     'Inget ovan är en mockup av en produkt vi hoppas bygga. Det är gränssnittet som det står, med publiceringshalvan ärligt märkt som oavslutad.',
 
   /* ---------------------------------------------------------------------- */
-  /* The six steps                                                           */
+  /* The nine steps                                                          */
   /* ---------------------------------------------------------------------- */
 
   'web.demo.step.project.title': 'Skapa ett varumärke',

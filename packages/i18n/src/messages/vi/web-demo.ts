@@ -70,7 +70,7 @@ export const webDemoMessages = {
     'Không có gì ở trên là bản dựng thử của một sản phẩm chúng tôi hy vọng sẽ xây dựng. Đó là giao diện đúng như hiện trạng, với nửa phần đăng bài được đánh dấu trung thực là chưa hoàn thiện.',
 
   /* ---------------------------------------------------------------------- */
-  /* The six steps                                                           */
+  /* The nine steps                                                          */
   /* ---------------------------------------------------------------------- */
 
   'web.demo.step.project.title': 'Tạo một dự án',

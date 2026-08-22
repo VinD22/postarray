@@ -70,7 +70,7 @@ export const webDemoMessages = {
     "Niente qui sopra è un abbozzo di un prodotto che speriamo di costruire. È l'interfaccia così com'è, con la metà relativa alla pubblicazione onestamente segnalata come non finita.",
 
   /* ---------------------------------------------------------------------- */
-  /* The six steps                                                           */
+  /* The nine steps                                                          */
   /* ---------------------------------------------------------------------- */
 
   'web.demo.step.project.title': 'Crea un marchio',

@@ -457,7 +457,7 @@ export const webMarketingMessages = {
   'web.status.title': 'Stan',
   'web.status.lede':
     'Stan każdej powierzchni przekaźnika i każdego złącza. Stan złącza obejmuje nasz adapter i interfejs API platformy, od którego jest zależny.',
-  'web.status.updated': 'Sprawdzone {time}',
+  'web.status.updated': 'Statusy ustawiamy ręcznie. Ostatnia aktualizacja {time}.',
   'web.status.surfaces.title': 'Powierzchnie',
   'web.status.connectors.title': 'Złącza',
   'web.status.level.operational': 'Działa normalnie',

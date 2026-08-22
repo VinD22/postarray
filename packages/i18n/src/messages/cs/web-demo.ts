@@ -70,7 +70,7 @@ export const webDemoMessages = {
     'Nic výše není maketou produktu, který doufáme postavit. Je to rozhraní tak, jak je, s publikační polovinou poctivě označenou jako nedokončenou.',
 
   /* ---------------------------------------------------------------------- */
-  /* The six steps                                                           */
+  /* The nine steps                                                          */
   /* ---------------------------------------------------------------------- */
 
   'web.demo.step.project.title': 'Vytvořte značku',

@@ -454,7 +454,7 @@ export const webMarketingMessages = {
   'web.status.title': 'Stav',
   'web.status.lede':
     'Stav každého povrchu relé a každého konektoru. Stav konektoru pokrývá náš adaptér a platformu API, na které závisí.',
-  'web.status.updated': 'Zaškrtnuto {time}',
+  'web.status.updated': 'Stavy nastavujeme ručně. Poslední aktualizace {time}.',
   'web.status.surfaces.title': 'Povrchy',
   'web.status.connectors.title': 'Konektory',
   'web.status.level.operational': 'Funguje normálně',

@@ -70,7 +70,7 @@ export const webDemoMessages = {
     'Wala sa itaas ang isang mock up ng produktong sana namin gawin. Ito ang interface ayon sa kasalukuyan, na tapat na tinatandaan ang kalahati ng publishing bilang hindi pa tapos.',
 
   /* ---------------------------------------------------------------------- */
-  /* The six steps                                                           */
+  /* The nine steps                                                          */
   /* ---------------------------------------------------------------------- */
 
   'web.demo.step.project.title': 'Gumawa ng project',

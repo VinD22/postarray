@@ -25,10 +25,12 @@ rechecked before anyone commits money or code to them.
 
 ### Local
 
-`pnpm docker:up` starts Postgres, Redis, Temporal and Mailpit. `pnpm db:migrate &&
+`pnpm docker:up` starts Postgres, Redis and Temporal. `pnpm db:migrate &&
 pnpm db:seed` then `pnpm dev`. Ports are in the README. The seeded workspace includes a
-**fake provider** so the whole compose, approve, schedule, publish, receipt and analytics
-loop is exercisable offline with no provider account at all. An absent optional service
+**fake provider**; with `RELAY_ALLOW_FAKE_CONNECTOR=true` set in `.env` (honored only when
+`NODE_ENV` is development or test, never in production) the whole compose, approve,
+schedule, publish, receipt and analytics loop is exercisable offline with no provider
+account at all. An absent optional service
 degrades to a truthful "not configured" message; it never crashes an unrelated surface.
 
 ### Preview

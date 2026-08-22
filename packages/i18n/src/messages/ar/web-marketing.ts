@@ -462,7 +462,7 @@ export const webMarketingMessages = {
   'web.status.title': 'الحالة',
   'web.status.lede':
     'حالة كل سطح Relay وكل موصل. تغطي حالة الموصل المحول الخاص بنا وواجهة برمجة تطبيقات النظام الأساسي التي تعتمد عليها.',
-  'web.status.updated': 'تم الفحص {time}',
+  'web.status.updated': 'يتم تحديث الحالات يدويًا. آخر تحديث {time}.',
   'web.status.surfaces.title': 'الأسطح',
   'web.status.connectors.title': 'موصلات',
   'web.status.level.operational': 'تعمل بشكل طبيعي',

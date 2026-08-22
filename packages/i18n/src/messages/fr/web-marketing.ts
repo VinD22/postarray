@@ -465,7 +465,7 @@ export const webMarketingMessages = {
   'web.status.title': 'Statut',
   'web.status.lede':
     "L'état de chaque surface Relay et de chaque connecteur. L’état du connecteur couvre notre adaptateur et l’API de plate-forme dont il dépend.",
-  'web.status.updated': 'À carreaux {time}',
+  'web.status.updated': 'Les statuts sont mis à jour à la main. Dernière mise à jour : {time}.',
   'web.status.surfaces.title': 'Surfaces',
   'web.status.connectors.title': 'Connecteurs',
   'web.status.level.operational': 'Fonctionnant normalement',

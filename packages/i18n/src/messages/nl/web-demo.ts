@@ -70,7 +70,7 @@ export const webDemoMessages = {
     'Niets hierboven is een mock-up van een product dat we hopen te bouwen. Het is de interface zoals hij nu is, met de publicatiehelft eerlijk gemarkeerd als onaf.',
 
   /* ---------------------------------------------------------------------- */
-  /* The six steps                                                           */
+  /* The nine steps                                                          */
   /* ---------------------------------------------------------------------- */
 
   'web.demo.step.project.title': 'Maak een merk',

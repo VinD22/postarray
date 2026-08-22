@@ -488,7 +488,7 @@ export const webMarketingMessages = {
   'web.status.title': 'Katayuan',
   'web.status.lede':
     'Ang estado ng bawat Relay surface at bawat connector. Sinasaklaw ng estado ng konektor ang aming adaptor at ang platform na API kung saan ito nakasalalay.',
-  'web.status.updated': 'Sinuri {time}',
+  'web.status.updated': 'Mano-manong itinatakda ang mga status. Huling na-update {time}.',
   'web.status.surfaces.title': 'Mga ibabaw',
   'web.status.connectors.title': 'Mga konektor',
   'web.status.level.operational': 'Normal na gumagana',

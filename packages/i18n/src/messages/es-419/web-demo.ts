@@ -37,11 +37,11 @@ export const webDemoMessages = {
 
   'web.demo.title': 'Cómo funciona, en el orden en que lo vas descubriendo',
   'web.demo.lede':
-    'Seis pasos, desde un espacio de trabajo vacío hasta el registro de lo que ocurrió. Cada uno muestra la superficie que realmente estarías viendo, con contenido de ejemplo en ella.',
+    'Nueve pasos, desde un espacio de trabajo vacío hasta el registro de lo que ocurrió. Cada uno muestra la superficie que realmente estarías viendo, con contenido de ejemplo en ella.',
   'web.demo.notice.title': 'Esto es una demostración, no una cuenta real',
   'web.demo.notice.body':
     'Cada panel aquí es la interfaz del producto con contenido de ejemplo. Ningún conector completó la verificación del proveedor, así que hoy no se publica nada en ninguna plataforma a través de este producto. Donde el flujo de trabajo se detiene, la página lo dice en lugar de dibujar el resto.',
-  'web.demo.contents.title': 'Los seis pasos',
+  'web.demo.contents.title': 'Los nueve pasos',
   'web.demo.stepLabel': 'Paso {position} de {total}',
   'web.demo.next': 'Siguiente: {step}',
   'web.demo.closing.pricing': 'Mira cuánto cuesta',
@@ -50,7 +50,7 @@ export const webDemoMessages = {
     'Nada de lo anterior es una maqueta de un producto que esperamos construir. Es la interfaz tal como está, con la mitad de la publicación marcada honestamente como inconclusa.',
 
   /* ---------------------------------------------------------------------- */
-  /* Los seis pasos                                                          */
+  /* Los nueve pasos                                                          */
   /* ---------------------------------------------------------------------- */
 
   'web.demo.step.project.title': 'Crear un proyecto',

@@ -37,11 +37,11 @@ export const webDemoMessages = {
 
   'web.demo.title': 'Wie es funktioniert, in der Reihenfolge, in der du ihm begegnest',
   'web.demo.lede':
-    'Sechs Schritte, von einem leeren Workspace bis zum Protokoll dessen, was passiert ist. Jeder zeigt die Oberfläche, die du tatsächlich sehen würdest, mit Beispielinhalten darin.',
+    'Neun Schritte, von einem leeren Workspace bis zum Protokoll dessen, was passiert ist. Jeder zeigt die Oberfläche, die du tatsächlich sehen würdest, mit Beispielinhalten darin.',
   'web.demo.notice.title': 'Dies ist eine Demonstration, kein echtes Konto',
   'web.demo.notice.body':
     'Jedes Panel hier ist die Produktoberfläche mit Beispielinhalten. Kein Connector hat die Anbieterverifizierung abgeschlossen, es wird also heute über dieses Produkt auf keiner Plattform veröffentlicht. Wo der Ablauf endet, sagt die Seite das, statt den Rest auszumalen.',
-  'web.demo.contents.title': 'Die sechs Schritte',
+  'web.demo.contents.title': 'Die neun Schritte',
   'web.demo.stepLabel': 'Schritt {position} von {total}',
   'web.demo.next': 'Weiter: {step}',
   'web.demo.closing.pricing': 'Sehen Sie, was es kostet',
@@ -50,7 +50,7 @@ export const webDemoMessages = {
     'Nichts oben ist eine Attrappe eines Produkts, das wir zu bauen hoffen. Es ist die Oberfläche, wie sie steht, mit der Veröffentlichungshälfte ehrlich als unfertig gekennzeichnet.',
 
   /* ---------------------------------------------------------------------- */
-  /* Die sechs Schritte                                                     */
+  /* Die neun Schritte                                                     */
   /* ---------------------------------------------------------------------- */
 
   'web.demo.step.project.title': 'Ein Projekt erstellen',

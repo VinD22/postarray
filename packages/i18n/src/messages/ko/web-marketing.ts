@@ -373,7 +373,7 @@ export const webMarketingMessages = {
   'web.status.title': '상태',
   'web.status.lede':
     '모든 Relay 표면과 모든 커넥터의 상태. 커넥터 상태에는 어댑터와 어댑터가 의존하는 플랫폼 API가 포함됩니다.',
-  'web.status.updated': '체크됨{time}',
+  'web.status.updated': '상태는 수동으로 설정됩니다. 마지막 업데이트 {time}.',
   'web.status.surfaces.title': '표면',
   'web.status.connectors.title': '커넥터',
   'web.status.level.operational': '정상적으로 작동 중',

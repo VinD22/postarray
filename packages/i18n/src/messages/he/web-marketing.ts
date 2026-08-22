@@ -362,7 +362,7 @@ export const webMarketingMessages = withHebrewPluralForms({
   'web.status.title': 'סטטוס',
   'web.status.lede':
     'המצב של כל משטח ממסר וכל מחבר. מצב המחבר מכסה את המתאם שלנו ואת ה-API של הפלטפורמה שהוא תלוי בו.',
-  'web.status.updated': 'נבדק {time}',
+  'web.status.updated': 'הסטטוסים נקבעים ידנית. עודכן לאחרונה {time}.',
   'web.status.surfaces.title': 'משטחים',
   'web.status.connectors.title': 'מחברים',
   'web.status.level.operational': 'פועל כרגיל',

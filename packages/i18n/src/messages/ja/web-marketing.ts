@@ -380,7 +380,7 @@ export const webMarketingMessages = {
   'web.status.title': '状態',
   'web.status.lede':
     'すべての Relay 表面とすべてのコネクタの状態。コネクタの状態は、アダプタとそれが依存するプラットフォーム API をカバーします。',
-  'web.status.updated': 'チェック済み{time}',
+  'web.status.updated': 'ステータスは手動で設定しています。最終更新 {time}。',
   'web.status.surfaces.title': '表面',
   'web.status.connectors.title': 'コネクタ',
   'web.status.level.operational': '正常に動作しています',

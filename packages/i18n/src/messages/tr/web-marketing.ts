@@ -472,7 +472,7 @@ export const webMarketingMessages = {
   'web.status.title': 'Durum',
   'web.status.lede':
     "Her Röle yüzeyinin ve her konektörün durumu. Bağlayıcı durumu, bağdaştırıcımızı ve bağlı olduğu platform API'sini kapsar.",
-  'web.status.updated': 'Kontrol edildi {time}',
+  'web.status.updated': 'Durumlar elle ayarlanır. Son güncelleme {time}.',
   'web.status.surfaces.title': 'Yüzeyler',
   'web.status.connectors.title': 'Konektörler',
   'web.status.level.operational': 'Normal şekilde çalışıyor',

@@ -118,7 +118,7 @@ export function SignaturePanel(): ReactNode {
             items={[
               {
                 id: 'project',
-                term: t.full('composer.campaign.label'),
+                term: t.full('settings.ui.projects.column.project'),
                 definition: currentOption.projectId ?? t.full('common.all'),
               },
               {

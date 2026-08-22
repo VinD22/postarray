@@ -388,7 +388,7 @@ export const webMarketingMessages = {
   'web.status.title': 'Status',
   'web.status.lede':
     'Keadaan setiap permukaan Relay dan setiap konektor. Status konektor mencakup adaptor kami dan API platform tempat ia bergantung.',
-  'web.status.updated': 'Diperiksa {time}',
+  'web.status.updated': 'Status diatur secara manual. Terakhir diperbarui {time}.',
   'web.status.surfaces.title': 'Permukaan',
   'web.status.connectors.title': 'Konektor',
   'web.status.level.operational': 'Beroperasi normal',

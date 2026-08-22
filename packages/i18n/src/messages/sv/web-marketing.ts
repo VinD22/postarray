@@ -473,7 +473,7 @@ export const webMarketingMessages = {
   'web.status.title': 'Status',
   'web.status.lede':
     'Tillståndet för varje reläyta och varje kontakt. Anslutningsstatus täcker vår adapter och plattformens API som den beror på.',
-  'web.status.updated': 'Markerad {time}',
+  'web.status.updated': 'Statusarna sätts för hand. Senast uppdaterad {time}.',
   'web.status.surfaces.title': 'Ytor',
   'web.status.connectors.title': 'Kontakter',
   'web.status.level.operational': 'Fungerar normalt',

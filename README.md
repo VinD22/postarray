@@ -20,7 +20,8 @@ in the capability matrix.
 ### What is verified
 
 `pnpm verify` is green: every package typechecks, lints and passes its tests
-(2,422 of them), every app builds, and the web app serves all 65 of its routes.
+(more than 3,600 test cases across 406 test files at the last count), every app
+builds, and the web app serves all 98 of its routes.
 Connectors are covered by contract tests against recorded fixtures and an
 in-process provider simulator that reproduces the documented failure modes.
 Publishing is covered by Temporal replay tests and a chaos suite that asserts
@@ -61,7 +62,7 @@ Requires Node 22+, pnpm 10+, Docker (for local Postgres, Redis and Temporal).
 ```bash
 cp .env.example .env          # placeholders only; add real keys locally
 pnpm install
-pnpm docker:up                # postgres, redis, temporal, mailpit
+pnpm docker:up                # postgres, redis, temporal
 pnpm db:migrate && pnpm db:seed
 pnpm dev
 ```
@@ -73,16 +74,17 @@ pnpm dev
 | MCP server | http://localhost:3003/mcp |
 | Short links | http://localhost:3002 |
 | Temporal UI | http://localhost:8233 |
-| Mail catcher | http://localhost:8025 |
 
 The app boots without any provider keys. Unconfigured connectors and services
 are reported as "not configured" and hidden from user-facing flows rather than
-crashing the process. The seeded workspace includes a fake provider so the full
-compose, approve, schedule, publish and receipt loop is exercisable offline.
+crashing the process. The seeded workspace includes a fake provider; set
+`RELAY_ALLOW_FAKE_CONNECTOR=true` in `.env` (development and test only, never
+production) to make it dispatchable, and the full compose, approve, schedule,
+publish and receipt loop is exercisable offline.
 
 ## What is in V1
 
-Workspaces, brands and roles. Email and password, magic-link and
+Workspaces, projects and roles. Email and password, magic-link and
 username-alias sign-in. Connections for X, LinkedIn, Instagram, Facebook Pages,
 YouTube and TikTok, with Threads and Bluesky as approval-delay fallbacks. One
 composer with a master draft and explicit per-target overrides, live platform
@@ -134,9 +136,10 @@ because X charges per operation.
 
 ## Localization
 
-V1 ships English only. The product is built for 30 languages: every string is an
-ICU message with a stable intent-based key, layout uses logical CSS properties
-and tolerates RTL and 30-50% text expansion, and a pseudo-locale runs in CI.
+The interface ships in 25 active locales, with 7 more planned (the registry is
+`packages/i18n/src/locales.ts`). Every string is an ICU message with a stable
+intent-based key, layout uses logical CSS properties and tolerates RTL and
+30-50% text expansion, and a pseudo-locale runs in CI.
 Adding a language is a catalog file plus a config entry, not a refactor. See
 `packages/i18n/README.md`.
 

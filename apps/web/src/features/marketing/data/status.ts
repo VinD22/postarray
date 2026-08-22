@@ -8,9 +8,13 @@ import type { MessageKey } from '@relay/i18n/translate';
  * is still being built reports `not_live`, which is a different sentence from
  * "operating normally" and is the only honest thing to say today.
  *
- * TODO(web): replace the static array with `api.health.get()` once the health
- * endpoint is deployed. The shape below matches its response so the page does
- * not need rewriting.
+ * The data here is maintained by hand and stamped with `STATUS_CHECKED_AT`,
+ * and the page copy says so. The API exposes `GET /v1/status`
+ * (apps/api/src/modules/health), but no API deployment is serving traffic
+ * yet, so this static marketing page cannot honestly read a live signal.
+ * When the API is deployed, wire this page to that endpoint and drop the
+ * hand-maintained array. Until then: whoever edits a level below must also
+ * update `STATUS_CHECKED_AT`.
  */
 
 export type StatusLevel =
@@ -41,7 +45,8 @@ export interface Incident {
   readonly followUp: string;
 }
 
-export const STATUS_CHECKED_AT = '2026-08-04T09:00:00.000Z';
+/** When a human last verified the levels below. Update on every edit. */
+export const STATUS_CHECKED_AT = '2026-08-22T09:00:00.000Z';
 
 export const SURFACE_STATUS: readonly StatusEntry[] = [
   { id: 'web', nameKey: 'web.status.surface.web', level: 'not_live' },

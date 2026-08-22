@@ -473,7 +473,7 @@ export const webMarketingMessages = {
   'web.status.title': 'Статус',
   'web.status.lede':
     'Стан кожної поверхні Relay і кожного роз’єму. Стан роз’єму стосується нашого адаптера та платформи API, від якої він залежить.',
-  'web.status.updated': 'Перевірено{time}',
+  'web.status.updated': 'Статуси виставляються вручну. Останнє оновлення {time}.',
   'web.status.surfaces.title': 'Поверхні',
   'web.status.connectors.title': "Роз'єми",
   'web.status.level.operational': 'Працює нормально',

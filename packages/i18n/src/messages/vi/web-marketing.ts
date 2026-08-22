@@ -389,7 +389,7 @@ export const webMarketingMessages = {
   'web.status.title': 'Trạng thái',
   'web.status.lede':
     'Trạng thái của mọi bề mặt Relay và mọi đầu nối. Trạng thái trình kết nối bao gồm bộ điều hợp của chúng tôi và API nền tảng mà nó phụ thuộc vào.',
-  'web.status.updated': 'Đã kiểm tra {time}',
+  'web.status.updated': 'Trạng thái được đặt thủ công. Cập nhật lần cuối {time}.',
   'web.status.surfaces.title': 'Bề mặt',
   'web.status.connectors.title': 'Đầu nối',
   'web.status.level.operational': 'Hoạt động bình thường',

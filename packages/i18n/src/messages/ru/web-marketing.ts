@@ -476,7 +476,7 @@ export const webMarketingMessages = {
   'web.status.title': 'Статус',
   'web.status.lede':
     'Состояние каждой поверхности Relay и каждого разъема. Состояние соединителя охватывает наш адаптер и API платформы, от которого он зависит.',
-  'web.status.updated': 'Проверено {time}',
+  'web.status.updated': 'Статусы выставляются вручную. Последнее обновление {time}.',
   'web.status.surfaces.title': 'Поверхности',
   'web.status.connectors.title': 'Разъемы',
   'web.status.level.operational': 'Работает нормально',

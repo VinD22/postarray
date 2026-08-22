@@ -72,16 +72,21 @@ connector. Those were planning assumptions, not launch facts.
 
 ### Interface and localization
 
-- The interface follows the paper, electric-blue, sunshine and blush design
-  direction with an inky dark theme, strong type hierarchy, ink outlines and
-  hard shadows.
+- The interface follows the editorial design system that AGENTS.md describes
+  as shipped: warm paper and near-black ink, a terracotta primary accent with
+  marigold and ultramarine reserved for the marketing scene vocabulary,
+  hierarchy carried by type and space, diffuse tonal elevation, and a designed
+  (not inverted) dark theme.
 - Loading, empty, error and unavailable states exist across the primary product
   screens. The remaining state audit is a release gate below.
 - Twenty-five locale routes build successfully. English remains the controlling
   catalog for legal, billing and newly added security statements until each
   beta translation receives human review. A beta locale must fall back to the
   complete English message, never a stale commercial claim or a raw key.
-- The current production build generates 1,629 localized pages.
+- The production build statically generates every marketing and product route
+  for every active locale. The exact page count moves with the route and
+  locale registries, so treat the build output, not this document, as the
+  figure of record.
 
 ## Verified repository gates
 
@@ -89,14 +94,19 @@ connector. Those were planning assumptions, not launch facts.
 | --- | --- | --- |
 | Type checking, lint and unit tests | Green | `pnpm verify` |
 | Production compilation | Green | `pnpm build` |
-| Localized route generation | Green | 1,629 pages in the Next.js build |
+| Localized route generation | Green | Every locale route generates in the Next.js build |
 | Connector simulator and contract suites | Green locally | No live provider network in tests |
-| RLS integration suite | Not run against Neon | A migrated isolated branch and cross-workspace test run |
+| RLS integration suite | Green against Neon (130/130 on 2026-08-22, PG 18) | Re-run on a migrated branch after any policy or migration change |
 | Browser smoke and accessibility baseline | Green locally | Demo-mode critical routes in both themes, keyboard skip link, reduced motion, pseudo-locale and RTL checks |
 | Production-authenticated browser pass | Pending | Authenticated critical journeys against the deployed release environment |
 | Performance budget | Pending | Production-like Lighthouse and API latency evidence |
 | Production dependency scan | Green locally | `pnpm audit --prod --audit-level high`; CI repeats it |
 | Full-history secret scan | Pending for release | Gitleaks CI artifact against the release commit and history |
+
+As of 2026-08-22 the RLS integration suite passes 130 of 130 against the Neon
+main branch on PostgreSQL 18, with all 34 migrations applied. This supersedes
+the 120/126 figure recorded in `docs/planning/25`: applying migration 0073,
+which creates the `relay_app` role, is what resolved the six former failures.
 
 The final repository gate is `pnpm release:check`. It requires
 `DIRECT_DATABASE_URL` or `DATABASE_URL` to target an already migrated isolated

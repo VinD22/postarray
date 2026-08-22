@@ -355,7 +355,7 @@ export const webMarketingMessages = {
   'web.status.title': '地位',
   'web.status.lede':
     'Relay。每个中继表面和每个连接器的状态。连接器状态涵盖了我们的适配器及其所依赖的平台 API。',
-  'web.status.updated': '检查{time}',
+  'web.status.updated': '状态由人工设置。最后更新于{time}。',
   'web.status.surfaces.title': '表面',
   'web.status.connectors.title': '连接器',
   'web.status.level.operational': '运行正常',

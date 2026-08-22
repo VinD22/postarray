@@ -51,11 +51,15 @@ describe('preflight checker markup', () => {
     const user = userEvent.setup();
     render(mount(<PreflightChecker />));
 
-    await user.type(screen.getByLabelText('Your draft'), 'a'.repeat(320));
+    // The test needs the field to hold 320 characters, not 320 keystrokes:
+    // paste the value in one gesture, then wait for the result region to
+    // settle instead of asserting on the same tick.
+    await user.click(screen.getByLabelText('Your draft'));
+    await user.paste('a'.repeat(320));
 
     const region = screen.getByRole('region', { name: 'Result by platform' });
-    expect(within(region).getAllByText('Would fail').length).toBeGreaterThan(0);
-    expect(within(region).getByText(/320 of 280/u)).toBeInTheDocument();
+    expect((await within(region).findAllByText('Would fail')).length).toBeGreaterThan(0);
+    expect(await within(region).findByText(/320 of 280/u)).toBeInTheDocument();
   });
 
   it('cites the source and the date beside every platform it has a limit for', () => {

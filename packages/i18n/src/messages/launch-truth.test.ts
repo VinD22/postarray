@@ -23,12 +23,12 @@ describe('launch truth', () => {
     expect(en['web.developers.safety.body']).toContain('not built yet');
     expect(en['web.developers.safety.killSwitch']).toContain('not built yet');
     expect(en['web.legal.ai.features.feedback']).toContain('not available');
-    // The product is sold from launch, so these no longer guard a prelaunch
-    // disclaimer. What they still guard is the pair of claims a paid page is
-    // most tempted to soften: that beginning a trial costs nothing and takes no
-    // card, and that a connector is available only once its own provider review
-    // passes. Neither may be dropped while checkout is open and connectors are
-    // still being reviewed one at a time.
+    // Checkout is closed during prelaunch: scripts/release-check.js fails the
+    // release if BILLING_CHECKOUT_ENABLED is truthy, and docs/planning/16
+    // requires it false. These strings are pinned now so the pair of claims a
+    // paid page is most tempted to soften cannot be softened when checkout
+    // does open: that beginning a trial costs nothing and takes no card, and
+    // that a connector is available only once its own provider review passes.
     expect(en['web.pricing.prelaunch.primaryNote']).toContain('No card');
     expect(en['web.pricing.prelaunch.secondaryNote']).toContain('Connector availability');
     expect(en['web.pricing.beside.data']).toContain('CSV and media archives are not available yet');

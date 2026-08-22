@@ -355,7 +355,7 @@ export const webMarketingMessages = {
   'web.status.title': '地位',
   'web.status.lede':
     '每個Relay表面和每個連接器的狀態。連接器狀態涵蓋了我們的適配器及其所依賴的平台 API。',
-  'web.status.updated': '已檢查{time}',
+  'web.status.updated': '狀態由人工設定。最後更新於{time}。',
   'web.status.surfaces.title': '表面',
   'web.status.connectors.title': '連接器',
   'web.status.level.operational': '運作正常',

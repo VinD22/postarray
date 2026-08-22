@@ -319,7 +319,7 @@ export const webMarketingMessages = {
   'web.status.title': 'Estado',
   'web.status.lede':
     'El estado de cada superficie Relay y de cada conector. El estado del conector cubre nuestro adaptador y la API de plataforma de la que depende.',
-  'web.status.updated': 'Comprobado {time}',
+  'web.status.updated': 'Los estados se fijan a mano. Última actualización: {time}.',
   'web.status.surfaces.title': 'Superficies',
   'web.status.connectors.title': 'Conectores',
   'web.status.level.operational': 'Operando normalmente',
