@@ -7,7 +7,7 @@ export const developerMessages = {
   'developer.serviceAccount.title': 'Serviceaccounts',
   'developer.serviceAccount.create': 'Maak een serviceaccount aan',
   'developer.serviceAccount.name': 'Naam',
-  'developer.serviceAccount.scopeProjects': "Project's en accounts die het kan gebruiken",
+  'developer.serviceAccount.scopeProjects': 'Projecten en accounts die het kan gebruiken',
   'developer.serviceAccount.scopePlatforms': 'Platformen',
   'developer.serviceAccount.scopeLocales': 'Inhoud talen',
   'developer.serviceAccount.scopeDomains': 'Toegestane linkdomeinen',
@@ -111,7 +111,7 @@ export const developerMessages = {
 
   'developer.consent.title': '{app} wil toegang tot uw werkruimte',
   'developer.consent.workspace': 'Workspace',
-  'developer.consent.projects': "Project's en accounts",
+  'developer.consent.projects': 'Projecten en accounts',
   'developer.consent.willBeAbleTo': '{app} zal dat kunnen',
   'developer.consent.willNotBeAbleTo': '{app} zal dit niet kunnen',
   'developer.consent.approvalStillApplies':

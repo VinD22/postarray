@@ -58,7 +58,7 @@ export const validationMessages = {
   'validation.privacy_setting_required.hint':
     'По умолчанию нет. Выберите, кто сможет видеть эту публикацию.',
   'validation.disclosure_required.message':
-    'Этот пост требует раскрытия информации в соответствии с правилами бренда {market}.',
+    'Этот пост требует раскрытия информации в соответствии с правилами проекта {market}.',
   'validation.first_comment_unsupported.message':
     '{provider} не поддерживает запланированный первый комментарий для этой учетной записи.',
   'validation.thread_unsupported.message':

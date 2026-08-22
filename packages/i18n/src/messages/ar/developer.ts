@@ -7,7 +7,7 @@ export const developerMessages = {
   'developer.serviceAccount.title': 'حسابات الخدمة',
   'developer.serviceAccount.create': 'إنشاء حساب الخدمة',
   'developer.serviceAccount.name': 'الاسم',
-  'developer.serviceAccount.scopeProjects': 'Projects والحسابات التي يمكنه استخدامها',
+  'developer.serviceAccount.scopeProjects': 'المشاريع والحسابات التي يمكنه استخدامها',
   'developer.serviceAccount.scopePlatforms': 'المنصات',
   'developer.serviceAccount.scopeLocales': 'لغات المحتوى',
   'developer.serviceAccount.scopeDomains': 'مجالات الارتباط المسموح بها',
@@ -110,7 +110,7 @@ export const developerMessages = {
 
   'developer.consent.title': '{app} يريد الوصول إلى مساحة العمل الخاصة بك',
   'developer.consent.workspace': 'Workspace',
-  'developer.consent.projects': 'Projects والحسابات',
+  'developer.consent.projects': 'المشاريع والحسابات',
   'developer.consent.willBeAbleTo': '{app} سيكون قادرًا على ذلك',
   'developer.consent.willNotBeAbleTo': '{app} لن يتمكن من ذلك',
   'developer.consent.approvalStillApplies':

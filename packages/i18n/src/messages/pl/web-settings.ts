@@ -53,7 +53,7 @@ export const webSettingsMessages = {
     'Sesje, uwierzytelnianie dwuskładnikowe, dane uwierzytelniające, agenci, webhooki i granty aplikacji.',
   'settings.ui.section.data': 'Kontrola danych',
   'settings.ui.section.dataSummary':
-    'Eksportuj, anuluj połączenie, usuń markę, usuń zawartość lub zamknij konto.',
+    'Eksportuj, anuluj połączenie, usuń projekt, usuń zawartość lub zamknij konto.',
 
   /* ------------------------------------------------------- shared UI states */
 
@@ -105,9 +105,9 @@ export const webSettingsMessages = {
   'settings.ui.members.column.approvals': 'Zatwierdzenia',
   'settings.ui.members.column.lastActive': 'Ostatni aktywny',
   'settings.ui.members.column.actions': 'Działania',
-  'settings.ui.members.scopeAll': 'Wszystkie marki i konta',
+  'settings.ui.members.scopeAll': 'Wszystkie projekty i konta',
   'settings.ui.members.scopeLimited':
-    '{count, plural, one {# marka} other {# marki} few {# marki} many {# marki}}: {names}',
+    '{count, plural, one {# projekt} few {# projekty} many {# projektów} other {# projektu}}: {names}',
   'settings.ui.members.approvals.canApprove': 'Może zatwierdzić',
   'settings.ui.members.approvals.cannotApprove': 'Nie można zatwierdzić',
   'settings.ui.members.approvals.canApproveOwnProjects': 'Może zatwierdzić wymienione projekty',
@@ -121,9 +121,9 @@ export const webSettingsMessages = {
   'settings.ui.members.inviteBody':
     'Otrzymują e-mail z linkiem. Zaproszenie wygasa po siedmiu dniach i możesz je wcześniej odwołać.',
   'settings.ui.members.inviteRole': 'Rola',
-  'settings.ui.members.inviteScope': 'Marki, w których mogą pracować',
-  'settings.ui.members.inviteScopeAll': 'Każda marka w tym obszarze pracy',
-  'settings.ui.members.inviteScopeSelected': 'Tylko wybrane przeze mnie marki',
+  'settings.ui.members.inviteScope': 'Projekty, w których mogą pracować',
+  'settings.ui.members.inviteScopeAll': 'Każdy projekt w tym obszarze pracy',
+  'settings.ui.members.inviteScopeSelected': 'Tylko wybrane przeze mnie projekty',
   'settings.ui.members.inviteApprovals': 'Może decydować o prośbach o zatwierdzenie',
   'settings.ui.members.inviteApprovalsHelp':
     'Można to przypisać tylko rolom, które obejmują już recenzję. Jest to niezależne od edycji.',
@@ -133,9 +133,9 @@ export const webSettingsMessages = {
   'settings.ui.members.inviteResend': 'Wyślij zaproszenie ponownie',
   'settings.ui.members.emptyTitle': 'Jesteś tu jedyną osobą',
   'settings.ui.members.emptyBody':
-    'Zaproś osoby, które piszą, zatwierdzają lub czytają wyniki. Każdy otrzymuje rolę i zakres marki.',
+    'Zaproś osoby, które piszą, zatwierdzają lub czytają wyniki. Każdy otrzymuje rolę i zakres projektu.',
   'settings.ui.members.emptyExample':
-    'Powszechny kształt: jeden właściciel do celów rozliczeń, jedna osoba zatwierdzająca na markę i redaktorzy, którzy piszą, ale nigdy nie publikują.',
+    'Powszechny kształt: jeden właściciel do celów rozliczeń, jedna osoba zatwierdzająca na projekt i redaktorzy, którzy piszą, ale nigdy nie publikują.',
   'settings.ui.members.roleReferenceTitle': 'Co może zrobić każda rola',
   'settings.ui.members.roleReferenceCaption': 'Role i działania, na które pozwala każda z nich',
   'settings.ui.members.roleColumn.role': 'Rola',
@@ -160,7 +160,7 @@ export const webSettingsMessages = {
   /* ----------------------------------------------------------------- projects */
 
   'settings.ui.projects.description':
-    'Marka rządzi się zasadami sprawdzania treści: czego możesz twierdzić, czego nie możesz mówić i jak jest napisany każdy język.',
+    'Projekt rządzi się zasadami sprawdzania treści: czego możesz twierdzić, czego nie możesz mówić i jak jest napisany każdy język.',
   'settings.ui.projects.listCaption': 'Projekty w tym obszarze pracy',
   'settings.ui.projects.column.project': 'Projekt',
   'settings.ui.projects.column.locales': 'Języki treści',
@@ -170,9 +170,9 @@ export const webSettingsMessages = {
     '{count, plural, =0 {Brak kont} one {# konto} other {# konta} few {# konta} many {# konta}}',
   'settings.ui.projects.emptyTitle': 'Brak jeszcze projektów',
   'settings.ui.projects.emptyBody':
-    'Marka grupuje konta, reguły zatwierdzania i reguły językowe. Większość zespołów zaczyna od jednego i dodaje drugie, gdy klient lub rynek potrzebuje innych zasad.',
+    'Projekt grupuje konta, reguły zatwierdzania i reguły językowe. Większość zespołów zaczyna od jednego i dodaje drugi, gdy klient lub rynek potrzebuje innych zasad.',
   'settings.ui.projects.emptyExample':
-    'Przykład: marka „Acme EU”, języki angielski i niemiecki, zablokowany termin „gwarantowany”, ujawnienie „Płatnego partnerstwa” na Instagramie.',
+    'Przykład: projekt „Acme EU”, języki angielski i niemiecki, zablokowany termin „gwarantowany”, ujawnienie „Płatnego partnerstwa” na Instagramie.',
   'settings.ui.projects.voiceHelp':
     'Jak brzmi ten projekt. Używane, gdy prosisz o przepisanie i sprawdzanie roszczeń.',
   'settings.ui.projects.audienceHelp': 'Dla kogo przeznaczona jest treść, według rynku.',
@@ -363,7 +363,7 @@ export const webSettingsMessages = {
   'developer.ui.agents.emptyBody':
     'Utwórz jedną dla każdej uruchomionej automatyzacji. Oddzielne konta oznaczają, że możesz unieważnić jedno bez zatrzymywania pozostałych.',
   'developer.ui.agents.emptyExample':
-    'Przykład: „Agent ds. treści”, marka Acme EU, może przygotować i zaplanować do 6 postów dziennie między 07:00 a 22:00, nigdy nie publikuje natychmiast.',
+    'Przykład: „Agent ds. treści”, projekt Acme EU, może przygotować i zaplanować do 6 postów dziennie między 07:00 a 22:00, nigdy nie publikuje natychmiast.',
   'developer.ui.agents.step.identity': 'Nazwa i cel',
   'developer.ui.agents.step.scope': 'Co może osiągnąć',
   'developer.ui.agents.step.limits': 'Limity',
@@ -590,8 +590,8 @@ export const webSettingsMessages = {
   'developer.ui.webhooks.eventGroup.publishing': 'Publikowanie',
   'developer.ui.webhooks.eventGroup.automation': 'Automatyzacja i kanały',
   'developer.ui.webhooks.eventGroup.workspace': 'Przestrzeń robocza',
-  'developer.ui.webhooks.scopeTitle': 'Marki i konta',
-  'developer.ui.webhooks.scopeAll': 'Każda marka i konto',
+  'developer.ui.webhooks.scopeTitle': 'Projekty i konta',
+  'developer.ui.webhooks.scopeAll': 'Każdy projekt i konto',
   'developer.ui.webhooks.scopeSelected': 'Tylko te, które wybiorę',
   'developer.ui.webhooks.secretTitle': 'Tajne podpisywanie',
   'developer.ui.webhooks.secretBody':

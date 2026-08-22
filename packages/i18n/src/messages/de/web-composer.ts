@@ -226,7 +226,7 @@ export const webComposerMessages = {
   'composerWeb.signature.scope': 'Für {project} auf {provider} in {language}',
   'composerWeb.signature.previewHeading': 'Wie es den Beitrag beendet',
   'composerWeb.signature.notMatching':
-    'Diese Signatur bezieht sich auf eine andere Marke, Plattform oder Sprache und wird daher hier nicht angeboten.',
+    'Diese Signatur bezieht sich auf ein anderes Projekt, eine andere Plattform oder eine andere Sprache und wird daher hier nicht angeboten.',
 
   // --------------------------------------------------------------- assist
   'composerWeb.assist.menuLabel': 'Helfen Sie mit diesem Text',
@@ -338,7 +338,7 @@ export const webComposerMessages = {
   'mediaLib.loading': 'Laden Ihrer Medienbibliothek',
   'mediaLib.permission.title': 'Sie können diese Arbeitsbereichsbibliothek nicht sehen',
   'mediaLib.permission.body':
-    'Für das Ansehen von Medien ist die Zuschauerrolle oder höher für diese Marke erforderlich. Ein Eigentümer oder Administrator kann es gewähren.',
+    'Für das Ansehen von Medien ist in diesem Projekt die Zuschauerrolle oder höher erforderlich. Ein Eigentümer oder Administrator kann sie gewähren.',
 
   'mediaLib.upload.heading': 'Medien hinzufügen',
   'mediaLib.upload.browse': 'Wählen Sie Dateien aus',
@@ -471,4 +471,54 @@ export const webComposerMessages = {
     '{count, plural, =0 {Dateien auswählen} one {# Datei hinzufügen} other {# Dateien hinzufügen}}',
   'mediaLib.picker.forMaster': 'Ergänzung zum Master-Entwurf',
   'mediaLib.picker.forVariant': 'Ergänzung zur Version nur für {account}',
+  'composerWeb.commitFailed.draft': 'Dieser Entwurf wurde nicht gespeichert.',
+  'composerWeb.commitFailed.approval': 'Die Genehmigungsanfrage wurde nicht gesendet.',
+  'composerWeb.commitFailed.schedule': 'Dieser Beitrag wurde nicht geplant.',
+  'composerWeb.commitFailed.publish': 'Die Veröffentlichung wurde nicht abgeschlossen.',
+  'mediaLib.offline.title': 'Die Bibliothek ist offline nicht verfügbar',
+  'mediaLib.offline.body':
+    'Ohne Verbindung können wir die Bibliothek nicht aktualisieren. Dateien, die bereits auf diesem Bildschirm sind, bleiben unverändert. Stellen Sie die Verbindung wieder her und versuchen Sie es erneut.',
+  'mediaLib.rateLimited.title': 'Die Bibliothek braucht eine kurze Pause',
+  'mediaLib.rateLimited.cause':
+    'Die API hat uns gebeten, beim Laden Ihrer Dateien langsamer zu machen. Ihre gespeicherten Medien sind sicher.',
+  'mediaLib.rateLimited.resetLabel': 'Erneut versuchen nach',
+  'mediaLib.rateLimited.alternative':
+    'Sie können lokal weiter Entwürfe schreiben, aber Uploads und Änderungen in der Bibliothek warten, bis das Limit zurückgesetzt wird.',
+  'mediaLib.import.urlLabel': 'Öffentliche Datei-URL',
+  'mediaLib.import.urlPlaceholder': 'https://cdn.example.com/launch-video.mp4',
+  'mediaLib.import.importing': 'Medien werden importiert',
+  'mediaLib.import.succeeded': 'Die Datei ist in Ihrer Bibliothek',
+  'mediaLib.import.scanPending':
+    'Relay hat ihre Quelle aufgezeichnet. Die Veröffentlichung wartet, bis die Sicherheitsprüfung abgeschlossen ist.',
+  'mediaLib.import.failed': 'Die Datei konnte nicht importiert werden',
+  'mediaLib.import.failedHelp':
+    'Prüfen Sie, ob der Link öffentlich ist und direkt auf eine unterstützte Mediendatei verweist, und versuchen Sie es erneut.',
+  'mediaLib.import.readOnly':
+    'Verbinden Sie die API, um in dieser Umgebung Dateien zu importieren.',
+  'mediaLib.import.offline':
+    'Stellen Sie die Verbindung wieder her, bevor Sie eine Datei importieren.',
+  'mediaLib.import.issue.invalid': 'Geben Sie eine vollständige URL ein.',
+  'mediaLib.import.issue.scheme': 'Verwenden Sie einen HTTP- oder HTTPS-Link.',
+  'mediaLib.import.issue.credentials':
+    'Verwenden Sie einen Link ohne Benutzernamen und ohne Passwort.',
+  'mediaLib.retention.title':
+    'Gespeicherte Dateien werden 30 Tage nach Erstellung des Beitrags aufbewahrt',
+  'mediaLib.retention.body':
+    'Sobald eine Datei an einen Beitrag angehängt ist, löschen wir sie 30 Tage nach Erstellung dieses Beitrags endgültig aus dem Relay-Speicher. Für Dateien, die noch auf einen Anhang warten, gilt das Upload-Datum als Ersatzgrundlage für die Bereinigung. Beitragstext, Veröffentlichungsbelege und Prüfhistorie bleiben länger verfügbar. Ein auf einer sozialen Plattform veröffentlichter Beitrag wird nicht entfernt, wenn seine gespeicherte Datei abläuft.',
+  'mediaLib.retention.limits':
+    'Bilder, Audio und PDF-Dateien dürfen bis zu {imageSize} groß sein. Videos dürfen bis zu {videoSize} groß sein.',
+  'mediaLib.retention.expiresLabel': 'Löschdatum der Datei',
+  'mediaLib.retention.deleted': 'Endgültig gelöscht',
+  'mediaLib.retention.deletedTitle': 'Diese gespeicherte Datei wurde gelöscht',
+  'mediaLib.retention.deletedBody':
+    'Der Speicherzeitraum von 30 Tagen ist abgelaufen. Beitragstext, Veröffentlichungsbelege und Prüfhistorie bleiben erhalten.',
+  'mediaLib.processing.unavailableTitle': 'Diese Datei ist nicht zur Veröffentlichung bereit',
+  'mediaLib.processing.unavailableBody':
+    'Die Verarbeitung oder eine Sicherheitsprüfung steht noch aus oder wurde nicht bestanden. Laden Sie die Datei erneut hoch, wenn dieser Zustand bleibt.',
+  'mediaLib.processing.pendingTitle': 'Sicherheitsprüfungen sind vor dem Start nicht verfügbar',
+  'mediaLib.processing.pendingBody':
+    'Die Datei wird 30 Tage gespeichert, kann aber erst an einen veröffentlichten Beitrag angehängt werden, wenn die Sicherheitsprüfung aktiviert ist.',
+  'mediaLib.processing.blockedTitle': 'Diese Datei kann nicht veröffentlicht werden',
+  'mediaLib.processing.blockedBody':
+    'Die Datei hat die Verarbeitung oder eine Sicherheitsprüfung nicht bestanden. Laden Sie eine andere Datei hoch.',
 } as const;

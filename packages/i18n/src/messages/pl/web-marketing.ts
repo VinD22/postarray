@@ -158,7 +158,7 @@ export const webMarketingMessages = {
     'Każdy zapis zewnętrzny zawiera klucz idempotencji, więc awaria procesu roboczego po przyjęciu posta przez platformę nie powoduje utworzenia drugiego.',
   'web.home.pillars.adapt.title': 'Dostosuj zamiast powielać',
   'web.home.pillars.adapt.body':
-    'W przypadku różnych platform można zastąpić jedno konto na raz i dokonać transkreacji zamiast dosłownego tłumaczenia, korzystając ze glosariusza marki i wyznaczonego recenzenta w każdym języku.',
+    'W przypadku różnych platform można zastąpić jedno konto na raz i dokonać transkreacji zamiast dosłownego tłumaczenia, korzystając z glosariusza projektu i wyznaczonego recenzenta w każdym języku.',
   'web.home.pillars.adapt.proof':
     'Interfejs jest dostępny w wybranych językach. Adaptacja treści obejmuje 30 języków treści i każdy z nich można sprawdzić przed publikacją.',
   'web.home.pillars.loop.title': 'Zamknij pętlę',
@@ -306,7 +306,7 @@ export const webMarketingMessages = {
     'Wersja główna niesie ze sobą tę ideę. Każde konto ma długość, kadrowanie, ustawienia i ton, jakich oczekuje platforma, a przed zatwierdzeniem możesz zobaczyć je wszystkie obok siebie.',
   'web.creators.job.languages.title': 'Opublikuj w innym języku bez zgadywania',
   'web.creators.job.languages.body':
-    'Transkreacja zachowuje intencję, a nie słowa, korzysta ze słownika Twojej marki i zaznacza, czy przeczytał go natywny recenzent. Nic nie jest publikowane w języku, za który nie możesz ręczyć, chyba że tak powiesz.',
+    'Transkreacja zachowuje intencję, a nie słowa, korzysta ze słownika Twojego projektu i zaznacza, czy przeczytał go natywny recenzent. Nic nie jest publikowane w języku, za który nie możesz ręczyć, chyba że tak powiesz.',
   'web.creators.job.rights.title': 'Przechowuj dokumentację swoich praw w pliku',
   'web.creators.job.rights.body':
     'Media niosą ze sobą informację, skąd pochodzą, kto ma prawa i czy zostały utworzone za pomocą narzędzia generatywnego. Platformy coraz częściej pytają. Przekaźnik przechowuje Twoją odpowiedź w zasobie, zamiast pytać Cię ponownie.',
@@ -331,7 +331,7 @@ export const webMarketingMessages = {
     'Każda publikacja generuje niezmienne potwierdzenie z zewnętrznym identyfikatorem poczty i pełną historią prób. Gdy klient pyta, czy coś poszło nie tak o dziewiątej, odpowiedź zawiera znacznik czasu i identyfikator platformy.',
   'web.agencies.job.roles.title': 'Role odpowiadające sposobowi podziału pracy',
   'web.agencies.job.roles.body':
-    'Właściciel, administrator, menedżer, redaktor, osoba zatwierdzająca, analityk i przeglądający, w zakresie według marki i konta. Nieograniczona liczba członków zespołu, ponieważ pobieranie opłat za miejsce powoduje, że agencje dzielą się loginami, co stanowi problem bezpieczeństwa.',
+    'Właściciel, administrator, menedżer, redaktor, osoba zatwierdzająca, analityk i przeglądający, w zakresie według projektu i konta. Nieograniczona liczba członków zespołu, ponieważ pobieranie opłat za miejsce powoduje, że agencje dzielą się loginami, co stanowi problem bezpieczeństwa.',
   'web.agencies.limits.title': 'Granica wyraźnie określona',
   'web.agencies.limits.body':
     'Jeden plan obejmuje 30 aktywnych kanałów społecznościowych. Kanał to jedno konto społecznościowe, strona, profil, grupa lub połączenie z publikacją. Jeśli potrzebujesz więcej niż 30, powiedz nam, czego potrzebujesz, a my damy Ci prostą odpowiedź, a nie ukryty poziom.',
@@ -507,7 +507,7 @@ export const webMarketingMessages = {
     'Jeden backend, cztery sposoby. Każda sekcja dokumentuje te same przypadki użycia, więc koncepcja, której nauczysz się w REST API, jest tą samą koncepcją w MCP i CLI.',
   'web.docs.section.start.title': 'Pierwsze kroki',
   'web.docs.section.start.body':
-    'Uwierzytelnianie, obszary robocze, marki i Twój pierwszy opublikowany post.',
+    'Uwierzytelnianie, obszary robocze, projekty i Twój pierwszy opublikowany post.',
   'web.docs.section.api.title': 'API REST',
   'web.docs.section.api.body': 'Zasoby, paginacja, idempotencja, kody błędów i limity szybkości.',
   'web.docs.section.mcp.title': 'Serwer MCP',

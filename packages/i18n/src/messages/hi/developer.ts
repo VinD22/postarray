@@ -7,7 +7,7 @@ export const developerMessages = {
   'developer.serviceAccount.title': 'सेवा खाते',
   'developer.serviceAccount.create': 'एक सेवा खाता बनाएँ',
   'developer.serviceAccount.name': 'नाम',
-  'developer.serviceAccount.scopeProjects': 'Projects और खाते जिनका वह उपयोग कर सकता है',
+  'developer.serviceAccount.scopeProjects': 'परियोजनाएं और खाते जिनका वह उपयोग कर सकता है',
   'developer.serviceAccount.scopePlatforms': 'प्लेटफार्म',
   'developer.serviceAccount.scopeLocales': 'सामग्री भाषाएँ',
   'developer.serviceAccount.scopeDomains': 'अनुमत लिंक डोमेन',
@@ -111,7 +111,7 @@ export const developerMessages = {
 
   'developer.consent.title': '{app} आपके कार्यक्षेत्र तक पहुंच चाहता है',
   'developer.consent.workspace': 'ZZZप्रोटेक्टेड10ZZZ',
-  'developer.consent.projects': 'Projects और खाते',
+  'developer.consent.projects': 'परियोजनाएं और खाते',
   'developer.consent.willBeAbleTo': '{app} के लिए योग्य होगा',
   'developer.consent.willNotBeAbleTo': '{app} में सक्षम नहीं होगा',
   'developer.consent.approvalStillApplies':

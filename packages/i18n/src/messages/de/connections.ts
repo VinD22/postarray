@@ -62,7 +62,7 @@ export const connectionMessages = {
 
   'connection.group.title': 'Kontogruppen',
   'connection.group.description':
-    'Gruppieren Sie Konten nach Kunde oder Marke, um jeden Bildschirm zu filtern.',
+    'Projekte halten jedes Produkt oder jeden Kunden und dessen Konten getrennt.',
   'connection.group.assign': 'In die Gruppe verschieben',
   'connection.group.none': 'Nicht gruppiert',
   'connection.group.moveNote':

@@ -18,7 +18,7 @@ export const calendarMessages = {
   'calendar.slotOverflow': '{count, plural, one {# daha fazla} other {# daha fazla}}',
   'calendar.newPostAt': "{time}'da yeni gönderi",
 
-  'calendar.filter.project': 'Marka',
+  'calendar.filter.project': 'Proje',
   'calendar.filter.account': 'Hesap',
   'calendar.filter.platform': 'platformu',
   'calendar.filter.status': 'Durum',

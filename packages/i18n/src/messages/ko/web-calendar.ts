@@ -60,7 +60,7 @@ export const webCalendarMessages = {
   'web.calendar.nowLabel': '지금',
   'web.calendar.allDayHeading': '아직 정확한 시간은 없습니다',
   'web.calendar.filter.group': '고객그룹',
-  'web.calendar.filter.anyProject': '모든 브랜드',
+  'web.calendar.filter.anyProject': '모든 프로젝트',
   'web.calendar.filter.anyAccount': '모든 계정',
   'web.calendar.filter.anyPlatform': '모든 플랫폼',
   'web.calendar.filter.anyStatus': '모든 상태',
@@ -163,7 +163,7 @@ export const webCalendarMessages = {
   'web.calendar.permission.requirementsLabel': '필수 범위',
   'web.calendar.permission.title': '이 캘린더를 볼 수 없습니다',
   'web.calendar.permission.body':
-    '캘린더 접근 권한은 브랜드별로 부여됩니다. 귀하의 계정은 이 보기의 브랜드에 포함되어 있지 않습니다.',
+    '캘린더 접근 권한은 프로젝트별로 부여됩니다. 귀하의 계정은 이 보기의 프로젝트에 포함되어 있지 않습니다.',
   'web.receipt.breadcrumb.calendar': '달력',
   'web.receipt.breadcrumb.post': '우편',
   'web.receipt.heading': '{title}',
@@ -305,10 +305,10 @@ export const webCalendarMessages = {
     '계정을 연결해도 아무 것도 게시되지 않습니다. 모든 게시물은 여전히 ​​이 작업공간 승인 정책을 따릅니다.',
   'web.connection.projectScope.title': '{project}의 채널을 표시하고 있습니다',
   'web.connection.projectScope.body':
-    '새 채널은 이 브랜드에 연결됩니다. 다른 세트를 관리하려면 상단 표시줄에서 브랜드를 전환하세요.',
-  'web.connection.projectMissing.title': '채널을 연결하기 전에 브랜드를 만드세요',
+    '새 채널은 이 프로젝트에 연결됩니다. 다른 세트를 관리하려면 상단 표시줄에서 프로젝트를 전환하세요.',
+  'web.connection.projectMissing.title': '채널을 연결하기 전에 프로젝트를 만드세요',
   'web.connection.projectMissing.body':
-    '브랜드는 서로 다른 제품이나 고객의 채널, 미디어, 초안, 일정을 분리해서 유지합니다.',
+    '프로젝트는 서로 다른 제품이나 고객의 채널, 미디어, 초안, 일정을 분리해서 유지합니다.',
 
   'web.connection.requirement.instagram':
     'Instagram 게시하려면 전문가 계정이 필요합니다. 즉, Facebook 페이지에 연결된 비즈니스 또는 제작자 계정을 의미합니다.',
@@ -381,7 +381,7 @@ export const webCalendarMessages = {
     '그룹은 달력과 분석을 필터링합니다. 계정을 이동하면 이미 보유하고 있는 모든 게시물, 영수증 및 지표가 유지됩니다.',
   'web.connection.group.empty.title': '아직 고객 그룹이 없습니다.',
   'web.connection.group.empty.body':
-    '그룹은 고객이거나 브랜드입니다. 고객별로 달력 및 분석을 필터링하는 그룹 계정입니다.',
+    '그룹은 고객이거나 프로젝트입니다. 고객별로 달력 및 분석을 필터링하는 그룹 계정입니다.',
   'web.connection.incident.title': '이 계정은 주의가 필요합니다',
   'web.connection.incident.remediationHeading': '해야 할 일',
   'web.connection.incident.scheduledOnHold':

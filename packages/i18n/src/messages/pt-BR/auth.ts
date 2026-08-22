@@ -69,4 +69,14 @@ export const authMessages = {
   'auth.rateLimited':
     'Muitas tentativas. Tente novamente em {minutes, plural, one {# minuto} other {# minutos} many {# minutos}}.',
   'auth.genericFailure': 'Isso não funcionou. Verifique os detalhes e tente novamente.',
+  'auth.newPassword.help':
+    'Escolha uma senha que você ainda não tenha usado aqui. Ela conecta você em todos os dispositivos.',
+  'auth.newPassword.label': 'Nova senha',
+  'auth.newPassword.confirmLabel': 'Confirme a nova senha',
+  'auth.newPassword.mismatch': 'As duas senhas não coincidem.',
+  'auth.newPassword.submit': 'Salvar a nova senha',
+  'auth.newPassword.linkMissing': 'Esta página precisa do link do seu e-mail de redefinição.',
+  'auth.newPassword.linkInvalid': 'Este link de redefinição expirou ou já foi usado.',
+  'auth.newPassword.linkInvalidAction': 'Solicitar um novo link',
+  'auth.newPassword.signInNow': 'Entrar',
 } as const;

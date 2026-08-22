@@ -57,7 +57,7 @@ export const validationMessages = {
   'validation.privacy_setting_required.hint':
     'Non esiste un valore predefinito. Scegli chi può vedere questo post.',
   'validation.disclosure_required.message':
-    "Questo post necessita di un'informativa ai sensi delle regole del marchio per {market}.",
+    "Questo post necessita di un'informativa ai sensi delle regole del progetto per {market}.",
   'validation.first_comment_unsupported.message':
     '{provider} non supporta un primo commento pianificato per questo account.',
   'validation.thread_unsupported.message':

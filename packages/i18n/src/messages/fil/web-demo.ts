@@ -25,7 +25,7 @@ export const webDemoMessages = {
 
   'web.meta.demo.title': 'Tingnan kung paano gumagana ang Relay',
   'web.meta.demo.description':
-    'Isang guided tour ng publishing workflow, mula sa isang bagong project hanggang sa resibo, ipinapakita sa totoong interface na may sample content. Wala pang na-publish, at sinasabi ng tour kung nasaan ang linyang iyon.',
+    'Isang guided tour ng publishing workflow, mula sa isang bagong proyekto hanggang sa resibo, ipinapakita sa totoong interface na may sample content. Wala pang na-publish, at sinasabi ng tour kung nasaan ang linyang iyon.',
 
   'web.demo.nav.label': 'Tingnan itong gumagana',
   'web.demo.nav.summary':
@@ -73,9 +73,9 @@ export const webDemoMessages = {
   /* The nine steps                                                          */
   /* ---------------------------------------------------------------------- */
 
-  'web.demo.step.project.title': 'Gumawa ng project',
+  'web.demo.step.project.title': 'Gumawa ng proyekto',
   'web.demo.step.project.body':
-    'Hawak ng isang project ang mga account, draft, pag-apruba, at time zone. Nakasakop ang bawat query sa produkto sa isang project, sa application service at muli sa database, kaya hindi makikita ng isang kliyente ang ibang kliyente nang di-sinasadya.',
+    'Hawak ng isang proyekto ang mga account, draft, pag-apruba, at time zone. Nakasakop ang bawat query sa produkto sa isang proyekto, sa application service at muli sa database, kaya hindi makikita ng isang kliyente ang ibang kliyente nang di-sinasadya.',
 
   'web.demo.step.connect.title': 'Ikonekta ang isang account',
   'web.demo.step.connect.body':
@@ -91,7 +91,7 @@ export const webDemoMessages = {
 
   'web.demo.step.schedule.title': 'Bigyan ito ng oras, o ibigay sa queue',
   'web.demo.step.schedule.body':
-    'Isang instant kasama ang time zone ng project ang naka-store bilang oras, hindi kailanman isang plain na lokal na oras, kaya walang gumagalaw sa ilalim mo kapag may pagbabago ng daylight saving. Ang queue ang ibang ruta: kinukuha nito ang susunod na slot na pinapayagan ng mga panuntunang itinakda mo.',
+    'Isang instant kasama ang time zone ng proyekto ang naka-store bilang oras, hindi kailanman isang plain na lokal na oras, kaya walang gumagalaw sa ilalim mo kapag may pagbabago ng daylight saving. Ang queue ang ibang ruta: kinukuha nito ang susunod na slot na pinapayagan ng mga panuntunang itinakda mo.',
 
   'web.demo.step.calendar.title': 'Panoorin ang kalendaryo',
   'web.demo.step.calendar.body':
@@ -108,15 +108,15 @@ export const webDemoMessages = {
   'web.demo.project.label': 'Proyekto',
   'web.demo.project.zone': 'Time zone: {zone}',
   'web.demo.project.scope':
-    'Ang mga draft, account, pag-apruba, at resibo ay pag-aari ng project na ito at wala nang iba.',
+    'Ang mga draft, account, pag-apruba, at resibo ay pag-aari ng proyektong ito at wala nang iba.',
 
-  'web.demo.accounts.label': 'Mga account sa project na ito',
+  'web.demo.accounts.label': 'Mga account sa proyektong ito',
   'web.demo.accounts.state': 'Hindi pa kumpleto ang verification',
   'web.demo.accounts.note':
     'Dadalhin ng bawat row ang kalusugan ng token, ang mga permisong ipinagkaloob, at ang huling matagumpay na post. Wala sa mga iyon ang makapagpu-publish ngayon.',
 
   'web.demo.master.label': 'Pangunahing draft',
-  'web.demo.master.project': 'Sa project na {project}',
+  'web.demo.master.project': 'Sa proyektong {project}',
 
   'web.demo.variants.label': 'Ang natatanggap ng bawat account',
 
@@ -128,7 +128,7 @@ export const webDemoMessages = {
 
   'web.demo.week.label': 'Ang linggo',
   'web.demo.week.caption':
-    'Ang parehong tatlong post sa kalendaryo, binasa sa time zone ng project.',
+    'Ang parehong tatlong post sa kalendaryo, binasa sa time zone ng proyekto.',
   'web.demo.week.empty': 'Walang naka-iskedyul',
 
   'web.demo.receipt.label': 'Resibo sa ngayon',
@@ -180,7 +180,7 @@ export const webDemoMessages = {
 
   'web.demo.tour.stepsLabel': 'Mga hakbang ng tour',
   'web.demo.tour.jump': 'Ipakita ang hakbang {position}: {step}',
-  'web.demo.tour.step.project': 'Gumawa ng project',
+  'web.demo.tour.step.project': 'Gumawa ng proyekto',
   'web.demo.tour.step.connect': 'Ikonekta ang mga account',
   'web.demo.tour.step.compose': 'Mag-compose nang isang beses',
   'web.demo.tour.step.variants': 'I-adapt kada platform',

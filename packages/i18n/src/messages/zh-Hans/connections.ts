@@ -49,7 +49,7 @@ export const connectionMessages = {
   'connection.incident.reviewRestricted':
     '{provider} 已限制此应用程序等待审核。来自 {account} 的帖子将私下发布，直至审核完成。',
   'connection.group.title': '客户群体',
-  'connection.group.description': '按客户或品牌对帐户进行分组以过滤每个屏幕。',
+  'connection.group.description': '按客户或项目对帐户进行分组以过滤每个屏幕。',
   'connection.group.assign': '移至群组',
   'connection.group.none': '未分组',
   'connection.group.moveNote': '移动帐户会保留其帖子、收据和分析。',

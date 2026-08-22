@@ -70,7 +70,7 @@ export const postingSetMessages = {
   'set.archivedToast': 'Sada archivována. Příspěvky z ní již vytvořené se nemění.',
 
   'set.field.name': 'Název',
-  'set.field.nameHint': 'Podle čeho ji později poznáte ve výběru. Jedna na značku.',
+  'set.field.nameHint': 'Podle čeho ji později poznáte ve výběru. Jedna na projekt.',
   'set.field.description': 'Popis',
   'set.field.descriptionHint': 'Volitelné. K čemu tato Sada slouží.',
   'set.field.targets': 'Účty',
@@ -92,13 +92,13 @@ export const postingSetMessages = {
 
   'set.slot.next_free_slot': 'Další volný termín z fronty',
   'set.slot.next_free_slotHint':
-    'Použije pravidla fronty této značky k navržení termínu. Navrhuje; vy potvrzujete.',
+    'Použije pravidla fronty tohoto projektu k navržení termínu. Navrhuje; vy potvrzujete.',
   'set.slot.pick_time': 'Zeptejte se mě na čas',
   'set.slot.pick_timeHint': 'Použití Sady ponechá čas prázdný, abyste jej vybrali vy.',
   'set.slot.draft_only': 'Nechat jako koncept',
   'set.slot.draft_onlyHint': 'Použití Sady se vůbec nedotkne plánu.',
   'set.slot.noRules':
-    'Tato značka zatím nemá pravidla fronty, takže fronta nabídne první volnou hodinu a řekne to.',
+    'Tento projekt zatím nemá pravidla fronty, takže fronta nabídne první volnou hodinu a řekne to.',
   'set.slot.rulesLink': 'Pravidla fronty',
 
   'set.defaults.title': 'Výchozí hodnoty podle platformy',
@@ -116,7 +116,7 @@ export const postingSetMessages = {
   'set.defaults.empty':
     'Žádné výchozí hodnoty podle platformy. Každý účet začíná od hlavního příspěvku.',
 
-  'set.error.nameTaken': 'Jiná Sada v této značce už tento název používá.',
+  'set.error.nameTaken': 'Jiná Sada v tomto projektu už tento název používá.',
   'set.error.archived': 'Tato Sada je archivovaná. Před úpravou ji obnovte.',
   'set.error.duplicateTarget': 'Tento účet je již v této Sadě.',
   'set.error.duplicatePlatform': 'Tato Sada už má výchozí hodnoty pro tuto platformu.',
@@ -124,16 +124,17 @@ export const postingSetMessages = {
   /* --------------------------------------------------- remembered targets */
   'targetMemory.setting.title': 'Pamatovat si účty mezi příspěvky',
   'targetMemory.setting.body':
-    'Když je toto zapnuto, editor začne každý nový příspěvek s účty, které daná osoba vybrala naposledy v této značce. Je vypnuto, dokud jej nezapnete.',
+    'Když je toto zapnuto, editor začne každý nový příspěvek s účty, které daná osoba vybrala naposledy v tomto projektu. Je vypnuto, dokud jej nezapnete.',
   'targetMemory.setting.stored':
-    'Ukládá se pouze seznam účtů, a to jen pro osobu, která je vybrala. Neukládá se žádný popisek, čas, nastavení soukromí ani stav schválení, a nikdo jiný ve značce nevidí váš seznam.',
+    'Ukládá se pouze seznam účtů, a to jen pro osobu, která je vybrala. Neukládá se žádný popisek, čas, nastavení soukromí ani stav schválení, a nikdo jiný v projektu nevidí váš seznam.',
   'targetMemory.setting.offNote': 'Dokud je toto vypnuto, neukládá se vůbec nic.',
   'targetMemory.setting.turnOffWarning':
-    'Vypnutím se smažou všechny uložené výběry v této značce, pro všechny.',
+    'Vypnutím se smažou všechny uložené výběry v tomto projektu, pro všechny.',
   'targetMemory.setting.enabled': 'Zapnuto',
   'targetMemory.setting.disabled': 'Vypnuto',
   'targetMemory.setting.saved': 'Nastavení uloženo.',
-  'targetMemory.setting.cleared': 'Nastavení uloženo. Uložené výběry v této značce byly smazány.',
+  'targetMemory.setting.cleared':
+    'Nastavení uloženo. Uložené výběry v tomto projektu byly smazány.',
 
   'targetMemory.composer.restored':
     '{count, plural, one {Zahájeno s # účtem z minula.} few {Zahájeno s # účty z minula.} many {Zahájeno s # účtu z minula.} other {Zahájeno s # účty z minula.}}',

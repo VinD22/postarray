@@ -17,7 +17,7 @@ export const webUseCaseMessages = {
     'Trzy przepływy pracy, wokół których budowany jest ten produkt: prowadzenie kilku klientów w jednym miejscu, zatwierdzanie pracy przed publikacją i przeniesienie jednego pomysłu na kilka platform bez przepisywania go.',
   'web.meta.useCase.clients.title': 'Zarządzanie wieloma klientami',
   'web.meta.useCase.clients.description':
-    'Osobne marki, osobne połączone konta, osobne zatwierdzenia i osobne raportowanie, dla zespołów publikujących w imieniu innych osób.',
+    'Osobne projekty, osobne połączone konta, osobne zatwierdzenia i osobne raportowanie, dla zespołów publikujących w imieniu innych osób.',
   'web.meta.useCase.approvals.title': 'Przepływy zatwierdzania',
   'web.meta.useCase.approvals.description':
     'Jak szkic staje się zatwierdzonym postem: kto go sprawdza, co unieważnia zatwierdzenie i dlaczego ta sama reguła obowiązuje na każdej powierzchni.',
@@ -53,13 +53,13 @@ export const webUseCaseMessages = {
   'web.useCases.clients.problem':
     'Większość zespołów rozdziela klientów przez uważność. Jedno wspólne konto zawiera każdą połączoną stronę, jeden kalendarz zawiera każdy harmonogram, a jedyną rzeczą stojącą między szkicem klienta a niewłaściwymi odbiorcami jest osoba patrząca na ekran o 18:00. Gdy ktoś odchodzi z zespołu, rozdzielenie odchodzi razem z nawykiem.',
   'web.useCases.clients.approach1':
-    'Marka jest jednostką rozdzielenia. Połączone konta, szkice, kolejki, media i potwierdzenia należą do marki, a członek widzi tylko marki, do których został dodany.',
+    'Projekt jest jednostką rozdzielenia. Połączone konta, szkice, kolejki, media i potwierdzenia należą do projektu, a członek widzi tylko projekty, do których został dodany.',
   'web.useCases.clients.approach2':
     'Rozdzielenie jest egzekwowane trzykrotnie: przy uwierzytelnianiu, w usłudze aplikacji, która autoryzuje działanie, i w samej bazie danych poprzez zabezpieczenia na poziomie wiersza. Bycie zalogowanym nigdy nie jest traktowane jako uprawnienie.',
   'web.useCases.clients.approach3':
     'Raportowanie podąża za tą samą granicą, więc raport dla poszczególnego klienta jest domyślnym kształtem, a nie arkuszem kalkulacyjnym składanym ręcznie przez kogoś.',
   'web.useCases.clients.today':
-    'Marki, członkostwo ograniczone do marki oraz stojące za nimi zasady bezpieczeństwa na poziomie wiersza są zbudowane i przetestowane, w tym testy próbujące odczytów między markami, które muszą zawieść. Plany są dobierane według liczby marek potrzebnych zespołowi. Z żadnej marki nic nie jest jeszcze publikowane na żadnej platformie.',
+    'Projekty, członkostwo ograniczone do projektu oraz stojące za nimi zasady bezpieczeństwa na poziomie wiersza są zbudowane i przetestowane, w tym testy próbujące odczytów między projektami, które muszą zawieść. Plany są dobierane według liczby projektów potrzebnych zespołowi. Z żadnego projektu nic nie jest jeszcze publikowane na żadnej platformie.',
 
   /* ---------------------------------------------------------------------- */
   /* Approval workflows                                                     */

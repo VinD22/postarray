@@ -31,17 +31,17 @@ export const settingsMessages = {
   'settings.role.viewer.label': 'दर्शक',
   'settings.role.owner.description': 'बिलिंग, सुरक्षा और विलोपन सहित सब कुछ।',
   'settings.role.admin.description': 'बिलिंग और कार्यक्षेत्र हटाने के अलावा सब कुछ।',
-  'settings.role.manager.description': 'ब्रांड, कनेक्शन, शेड्यूल और नियम प्रबंधित करें।',
+  'settings.role.manager.description': 'परियोजनाएं, कनेक्शन, शेड्यूल और नियम प्रबंधित करें।',
   'settings.role.editor.description': 'सामग्री बनाएं और संपादित करें, अनुमोदन का अनुरोध करें।',
   'settings.role.approver.description':
     'सामग्री को स्वीकृत या अस्वीकार करें और जो स्वीकृत है उसे शेड्यूल करें।',
   'settings.role.analyst.description': 'विश्लेषण और रसीदें पढ़ें.',
   'settings.role.viewer.description': 'केवल पढ़ें.',
-  'settings.role.scopeLabel': 'ब्रांड और खातों तक सीमित',
+  'settings.role.scopeLabel': 'परियोजनाओं और खातों तक सीमित',
   'settings.role.mfaRequired': 'स्वामियों को दो कारक प्रमाणीकरण का उपयोग करना होगा।',
 
   'settings.projects.title': 'ZZZप्रोटेक्टेड11ZZZs',
-  'settings.projects.add': 'एक ब्रांड जोड़ें',
+  'settings.projects.add': 'एक परियोजना जोड़ें',
   'settings.projects.voice': 'आवाज',
   'settings.projects.audience': 'दर्शक',
   'settings.projects.approvedClaims': 'स्वीकृत दावे',
@@ -70,7 +70,7 @@ export const settingsMessages = {
     'किसी सेट को संपादित करने से पहले से स्वीकृत या शेड्यूल किए गए पोस्ट नहीं बदलते हैं।',
   'settings.signatures.title': 'हस्ताक्षर',
   'settings.signatures.description':
-    'समापन पाठ, हैशटैग, लिंक या प्रकटीकरण, ब्रांड, प्लेटफ़ॉर्म और भाषा के आधार पर।',
+    'समापन पाठ, हैशटैग, लिंक या प्रकटीकरण, परियोजना, प्लेटफ़ॉर्म और भाषा के आधार पर।',
   'settings.signatures.autoApply': 'संदर्भ मेल खाने पर स्वचालित रूप से जोड़ें',
 
   'settings.localization.title': 'स्थानीयकरण',
@@ -79,7 +79,7 @@ export const settingsMessages = {
     'इस ऐप की भाषा आपके लिए. यह आपके पोस्ट की भाषा नहीं बदलता है.',
   'settings.localization.contentLocales': 'सामग्री भाषाएँ',
   'settings.localization.contentLocalesHelp':
-    'आप जिन भाषाओं में प्रकाशित करते हैं। प्रत्येक ब्रांड प्रति भाषा नियम और एक शब्दावली निर्धारित कर सकता है।',
+    'आप जिन भाषाओं में प्रकाशित करते हैं। प्रत्येक परियोजना प्रति भाषा नियम और एक शब्दावली निर्धारित कर सकती है।',
   'settings.localization.marketLocales': 'श्रोता बाजार',
   'settings.localization.beta': 'बीटा अनुवाद',
   'settings.localization.betaHelp':

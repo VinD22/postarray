@@ -16,7 +16,7 @@ export const statusMessages = {
   'empty.analytics.noPermission':
     'Akun ini belum memberikan akses analitik. Hubungkan kembali untuk menambahkannya.',
   'empty.approvals.title': 'Tidak ada yang menunggumu',
-  'empty.approvals.body': 'Permintaan persetujuan untuk merek Anda muncul di sini.',
+  'empty.approvals.body': 'Permintaan persetujuan untuk proyek Anda muncul di sini.',
   'empty.library.title': 'Perpustakaan Anda kosong',
   'empty.library.body': 'Unggah gambar dan video, atau impor dari URL atau API.',
   'empty.library.action': 'Unggah media',

@@ -39,7 +39,7 @@ export const validationMessages = {
   'validation.link_destination_unverified.message': '此工作区的链接域 {domain} 未经过验证。',
   'validation.privacy_setting_required.message': '{provider} 在发布之前需要明确的隐私选择。',
   'validation.privacy_setting_required.hint': '没有默认值。选择谁可以看到此帖子。',
-  'validation.disclosure_required.message': '这篇文章需要根据 {market} 的品牌规则进行披露。',
+  'validation.disclosure_required.message': '这篇文章需要根据 {market} 的项目规则进行披露。',
   'validation.first_comment_unsupported.message': '{provider} 不支持此帐户的预定第一条评论。',
   'validation.thread_unsupported.message': '{provider} 不支持此帐户的线程。',
   'validation.repeat_end_required.message': '重复帖子需要结束日期或重复次数。',

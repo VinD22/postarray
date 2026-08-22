@@ -24,7 +24,7 @@ export const navMessages = {
   'nav.theme.system': '比赛系统',
   'nav.theme.label': '主题',
   'settings.nav.members': '成员和角色',
-  'settings.nav.projects': 'Project',
+  'settings.nav.projects': '项目',
   'settings.nav.agents': '代理和API',
   'settings.nav.developerApps': '开发者应用程序',
   'settings.nav.webhooks': '网络钩子',
@@ -61,7 +61,7 @@ export const navMessages = {
   'nav.public.support': '支持',
   'shell.workspace.label': 'Workspace。工作空间',
   'shell.workspace.current': '当前工作空间：{name}',
-  'shell.project.all': '所有品牌',
+  'shell.project.all': '所有项目',
   'shell.timeZone.label': '{timeZone} 中显示的时间',
   'shell.notifications.count':
     '{count, plural, =0 {No new notifications} one {# new notification} other {# new notifications}}',

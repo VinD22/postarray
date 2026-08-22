@@ -86,7 +86,7 @@ export const webCalendarMessages = {
   'web.calendar.allDayHeading': 'Wala pang eksaktong oras',
 
   'web.calendar.filter.group': 'Grupo ng customer',
-  'web.calendar.filter.anyProject': 'Kahit anong project',
+  'web.calendar.filter.anyProject': 'Kahit anong proyekto',
   'web.calendar.filter.anyAccount': 'Kahit anong account',
   'web.calendar.filter.anyPlatform': 'Kahit anong platform',
   'web.calendar.filter.anyStatus': 'Kahit anong status',
@@ -202,7 +202,7 @@ export const webCalendarMessages = {
   'web.calendar.permission.requirementsLabel': 'Kinakailangang saklaw',
   'web.calendar.permission.title': 'Hindi mo makikita ang kalendaryong ito',
   'web.calendar.permission.body':
-    'Ang access sa kalendaryo ay ibinibigay sa bawat project. Ang iyong account ay wala sa mga project sa view na ito.',
+    'Ang access sa kalendaryo ay ibinibigay sa bawat proyekto. Ang iyong account ay wala sa mga proyekto sa view na ito.',
 
   /* ---------------------------------------------------------------------
    * Post job and publication receipt
@@ -448,7 +448,7 @@ export const webCalendarMessages = {
     'Sinasala ng isang grupo ang kalendaryo at analytics. Ang paglipat ng isang account ay nagpapanatili sa bawat post, resibo at sukatan na mayroon na ito.',
   'web.connection.group.empty.title': 'Wala pang grupo ng customer',
   'web.connection.group.empty.body':
-    'Ang isang grupo ay isang kliyente o isang tatak. Igrupo ang mga account para i-filter ang kalendaryo at analytics ayon sa customer.',
+    'Ang isang grupo ay isang kliyente o isang proyekto. Igrupo ang mga account para i-filter ang kalendaryo at analytics ayon sa customer.',
 
   'web.connection.incident.title': 'Ang account na ito ay nangangailangan ng pansin',
   'web.connection.incident.remediationHeading': 'Ano ang gagawin',

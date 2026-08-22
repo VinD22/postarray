@@ -62,7 +62,7 @@ export const connectionMessages = {
 
   'connection.group.title': 'Müşteri grupları',
   'connection.group.description':
-    'Her ekranı filtrelemek için hesapları müşteriye veya markaya göre gruplayın.',
+    'Her ekranı filtrelemek için hesapları müşteriye veya projeye göre gruplayın.',
   'connection.group.assign': 'Gruba taşı',
   'connection.group.none': 'Gruplandırılmamış',
   'connection.group.moveNote':

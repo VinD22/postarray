@@ -25,7 +25,7 @@ export const webDemoMessages = {
 
   'web.meta.demo.title': 'Bekijk hoe Relay werkt',
   'web.meta.demo.description':
-    'Een geleide rondleiding door de publicatieworkflow, van een nieuw merk tot de ontvangstbevestiging, getoond in de echte interface met voorbeeldinhoud. Er wordt nog niets gepubliceerd, en de rondleiding laat zien waar die grens ligt.',
+    'Een geleide rondleiding door de publicatieworkflow, van een nieuw project tot de ontvangstbevestiging, getoond in de echte interface met voorbeeldinhoud. Er wordt nog niets gepubliceerd, en de rondleiding laat zien waar die grens ligt.',
 
   'web.demo.nav.label': 'Zie het in actie',
   'web.demo.nav.summary':
@@ -73,9 +73,9 @@ export const webDemoMessages = {
   /* The nine steps                                                          */
   /* ---------------------------------------------------------------------- */
 
-  'web.demo.step.project.title': 'Maak een merk',
+  'web.demo.step.project.title': 'Maak een project',
   'web.demo.step.project.body':
-    'Een merk bevat accounts, concepten, goedkeuringen en een tijdzone. Elke query in het product is beperkt tot één merk, in de toepassingsservice en opnieuw in de database, zodat een klant niet per ongeluk een andere klant kan zien.',
+    'Een project bevat accounts, concepten, goedkeuringen en een tijdzone. Elke query in het product is beperkt tot één project, in de toepassingsservice en opnieuw in de database, zodat een klant niet per ongeluk een andere klant kan zien.',
 
   'web.demo.step.connect.title': 'Koppel een account',
   'web.demo.step.connect.body':
@@ -91,7 +91,7 @@ export const webDemoMessages = {
 
   'web.demo.step.schedule.title': 'Geef het een tijdstip, of geef het aan de wachtrij',
   'web.demo.step.schedule.body':
-    'Een tijdstip wordt opgeslagen als een moment plus de tijdzone van het merk, nooit als een naïeve lokale tijd, zodat een zomertijdverandering niets onder je verschuift. De wachtrij is de andere route: die neemt het volgende tijdstip dat de regels die je hebt ingesteld toestaan.',
+    'Een tijdstip wordt opgeslagen als een moment plus de tijdzone van het project, nooit als een naïeve lokale tijd, zodat een zomertijdverandering niets onder je verschuift. De wachtrij is de andere route: die neemt het volgende tijdstip dat de regels die je hebt ingesteld toestaan.',
 
   'web.demo.step.calendar.title': 'Bekijk de kalender',
   'web.demo.step.calendar.body':
@@ -105,18 +105,18 @@ export const webDemoMessages = {
   /* Panel labels                                                            */
   /* ---------------------------------------------------------------------- */
 
-  'web.demo.project.label': 'Merk',
+  'web.demo.project.label': 'Project',
   'web.demo.project.zone': 'Tijdzone: {zone}',
   'web.demo.project.scope':
-    'Concepten, accounts, goedkeuringen en ontvangstbevestigingen horen bij dit merk en nergens anders.',
+    'Concepten, accounts, goedkeuringen en ontvangstbevestigingen horen bij dit project en nergens anders.',
 
-  'web.demo.accounts.label': 'Accounts in dit merk',
+  'web.demo.accounts.label': 'Accounts in dit project',
   'web.demo.accounts.state': 'Verificatie niet voltooid',
   'web.demo.accounts.note':
     'Elke rij zou de tokenstatus, de verleende rechten en het laatst geslaagde bericht dragen. Geen enkele daarvan kan vandaag publiceren.',
 
   'web.demo.master.label': 'Hoofdconcept',
-  'web.demo.master.project': 'In merk {project}',
+  'web.demo.master.project': 'In project {project}',
 
   'web.demo.variants.label': 'Wat elk account ontvangt',
 
@@ -129,7 +129,7 @@ export const webDemoMessages = {
 
   'web.demo.week.label': 'De week',
   'web.demo.week.caption':
-    'Dezelfde drie berichten op de kalender, gelezen in de tijdzone van het merk.',
+    'Dezelfde drie berichten op de kalender, gelezen in de tijdzone van het project.',
   'web.demo.week.empty': 'Niets gepland',
 
   'web.demo.receipt.label': 'Ontvangstbevestiging tot nu toe',
@@ -181,7 +181,7 @@ export const webDemoMessages = {
 
   'web.demo.tour.stepsLabel': 'Rondleidingsstappen',
   'web.demo.tour.jump': 'Toon stap {position}: {step}',
-  'web.demo.tour.step.project': 'Maak een merk',
+  'web.demo.tour.step.project': 'Maak een project',
   'web.demo.tour.step.connect': 'Koppel accounts',
   'web.demo.tour.step.compose': 'Eén keer opstellen',
   'web.demo.tour.step.variants': 'Aanpassen per platform',

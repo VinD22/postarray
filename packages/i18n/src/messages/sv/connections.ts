@@ -61,7 +61,7 @@ export const connectionMessages = {
 
   'connection.group.title': 'Kundgrupper',
   'connection.group.description':
-    'Gruppera konton efter kund eller varumärke för att filtrera varje skärm.',
+    'Gruppera konton efter kund eller projekt för att filtrera varje skärm.',
   'connection.group.assign': 'Flytta till grupp',
   'connection.group.none': 'Ogrupperad',
   'connection.group.moveNote': 'Att flytta ett konto behåller dess inlägg, kvitton och analyser.',

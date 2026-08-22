@@ -15,7 +15,7 @@
 export const webBlogMessages = {
   'web.blog.meta.title': 'Scritti sulle operazioni di pubblicazione',
   'web.blog.meta.description':
-    'Articoli su cadenza di pubblicazione, modelli di programmazione, fusi orari, adattamento per piattaforma e gestione del lavoro clienti come marchi separati.',
+    'Articoli su cadenza di pubblicazione, modelli di programmazione, fusi orari, adattamento per piattaforma e gestione del lavoro clienti come progetti separati.',
 
   'web.blog.title': 'Scritti',
   'web.blog.lede':

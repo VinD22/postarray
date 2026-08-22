@@ -27,7 +27,7 @@ export const webAnalyticsMessages = {
   'analytics.question.accounts': 'Które konta wymagają uwagi?',
   'analytics.question.next': 'Co warto przetestować w następnej kolejności?',
 
-  'analytics.filter.project': 'Marka',
+  'analytics.filter.project': 'Projekt',
   'analytics.filter.accounts': 'Konta',
   'analytics.filter.allAccounts': 'Wszystkie połączone konta',
   'analytics.filter.range': 'Zakres dat',
@@ -445,7 +445,7 @@ export const webAnalyticsMessages = {
   'automation.param.signature': 'Podpis',
   'automation.param.disclosure': 'Ujawnienie',
   'automation.param.locale': 'Język',
-  'automation.param.project': 'Marka',
+  'automation.param.project': 'Projekt',
   'automation.param.campaign': 'Kampania',
   'automation.param.account': 'Konto',
   'automation.param.platform': 'Platforma',

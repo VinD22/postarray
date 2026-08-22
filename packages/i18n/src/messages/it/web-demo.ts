@@ -25,7 +25,7 @@ export const webDemoMessages = {
 
   'web.meta.demo.title': 'Guarda come funziona Relay',
   'web.meta.demo.description':
-    'Un tour guidato del flusso di pubblicazione, da un nuovo marchio alla ricevuta, mostrato nella vera interfaccia con contenuti di esempio. Niente viene ancora pubblicato, e il tour dice dove si trova quel confine.',
+    'Un tour guidato del flusso di pubblicazione, da un nuovo progetto alla ricevuta, mostrato nella vera interfaccia con contenuti di esempio. Niente viene ancora pubblicato, e il tour dice dove si trova quel confine.',
 
   'web.demo.nav.label': 'Guardalo funzionare',
   'web.demo.nav.summary':
@@ -73,9 +73,9 @@ export const webDemoMessages = {
   /* The nine steps                                                          */
   /* ---------------------------------------------------------------------- */
 
-  'web.demo.step.project.title': 'Crea un marchio',
+  'web.demo.step.project.title': 'Crea un progetto',
   'web.demo.step.project.body':
-    'Un marchio contiene account, bozze, approvazioni e un fuso orario. Ogni interrogazione nel prodotto è limitata a uno solo, nel servizio applicativo e di nuovo nel database, così un cliente non può vedere un altro cliente per errore.',
+    'Un progetto contiene account, bozze, approvazioni e un fuso orario. Ogni interrogazione nel prodotto è limitata a uno solo, nel servizio applicativo e di nuovo nel database, così un cliente non può vedere un altro cliente per errore.',
 
   'web.demo.step.connect.title': 'Collega un account',
   'web.demo.step.connect.body':
@@ -91,7 +91,7 @@ export const webDemoMessages = {
 
   'web.demo.step.schedule.title': 'Dagli un orario, oppure affidalo alla coda',
   'web.demo.step.schedule.body':
-    "Un orario è memorizzato come istante più il fuso orario del marchio, mai come un'ora locale ingenua, così un cambio d'ora legale non ti sposta nulla sotto i piedi. La coda è l'altra strada: prende il prossimo spazio consentito dalle regole che hai impostato.",
+    "Un orario è memorizzato come istante più il fuso orario del progetto, mai come un'ora locale ingenua, così un cambio d'ora legale non ti sposta nulla sotto i piedi. La coda è l'altra strada: prende il prossimo spazio consentito dalle regole che hai impostato.",
 
   'web.demo.step.calendar.title': 'Guarda il calendario',
   'web.demo.step.calendar.body':
@@ -105,18 +105,18 @@ export const webDemoMessages = {
   /* Panel labels                                                            */
   /* ---------------------------------------------------------------------- */
 
-  'web.demo.project.label': 'Marchio',
+  'web.demo.project.label': 'Progetto',
   'web.demo.project.zone': 'Fuso orario: {zone}',
   'web.demo.project.scope':
-    'Bozze, account, approvazioni e ricevute appartengono a questo marchio e a nessun altro.',
+    'Bozze, account, approvazioni e ricevute appartengono a questo progetto e a nessun altro.',
 
-  'web.demo.accounts.label': 'Account in questo marchio',
+  'web.demo.accounts.label': 'Account in questo progetto',
   'web.demo.accounts.state': 'Verifica non completata',
   'web.demo.accounts.note':
     "Ogni riga porterebbe lo stato del token, i permessi concessi e l'ultimo post riuscito. Nessuno di essi può pubblicare oggi.",
 
   'web.demo.master.label': 'Bozza principale',
-  'web.demo.master.project': 'Nel marchio {project}',
+  'web.demo.master.project': 'Nel progetto {project}',
 
   'web.demo.variants.label': 'Cosa riceve ciascun account',
 
@@ -128,7 +128,8 @@ export const webDemoMessages = {
     "La coda è l'altra strada: sceglie il prossimo spazio consentito dalle tue regole, in questo fuso orario.",
 
   'web.demo.week.label': 'La settimana',
-  'web.demo.week.caption': 'Gli stessi tre post sul calendario, letti nel fuso orario del marchio.',
+  'web.demo.week.caption':
+    'Gli stessi tre post sul calendario, letti nel fuso orario del progetto.',
   'web.demo.week.empty': 'Niente programmato',
 
   'web.demo.receipt.label': 'Ricevuta finora',
@@ -180,7 +181,7 @@ export const webDemoMessages = {
 
   'web.demo.tour.stepsLabel': 'Passaggi del tour',
   'web.demo.tour.jump': 'Mostra il passaggio {position}: {step}',
-  'web.demo.tour.step.project': 'Crea un marchio',
+  'web.demo.tour.step.project': 'Crea un progetto',
   'web.demo.tour.step.connect': 'Collega account',
   'web.demo.tour.step.compose': 'Componi una volta',
   'web.demo.tour.step.variants': 'Adatta per piattaforma',

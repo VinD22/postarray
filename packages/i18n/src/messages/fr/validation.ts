@@ -55,7 +55,7 @@ export const validationMessages = {
   'validation.privacy_setting_required.hint':
     "Il n'y a pas de défaut. Choisissez qui peut voir ce message.",
   'validation.disclosure_required.message':
-    'Ce message nécessite une divulgation conformément aux règles de marque pour {market}.',
+    'Cette publication nécessite une divulgation conformément aux règles du projet pour {market}.',
   'validation.first_comment_unsupported.message':
     '{provider} ne prend pas en charge un premier commentaire programmé pour ce compte.',
   'validation.thread_unsupported.message':
@@ -97,4 +97,12 @@ export const validationMessages = {
   'validation.field.mustMatch': 'Ces deux valeurs doivent correspondre.',
   'validation.field.alreadyTaken': "C'est déjà utilisé.",
   'validation.field.unsafeValue': "Cette valeur n'est pas autorisée ici.",
+  'validation.media_unavailable.message':
+    "Un fichier joint n'est plus disponible. Retirez-le de la publication ou téléversez-le à nouveau.",
+  'validation.media_rights_undeclared.message':
+    'Déclarez les droits et le consentement de chaque fichier joint avant de publier.',
+  'validation.media_not_ready.message':
+    "Un fichier joint n'a pas encore passé le traitement et les contrôles de sécurité.",
+  'validation.media_scan_blocked.message':
+    "Un fichier joint n'a pas passé son contrôle de sécurité et ne peut pas être publié.",
 } as const;

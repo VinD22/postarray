@@ -61,7 +61,8 @@ export const connectionMessages = {
     '{provider} heeft deze app beperkt in afwachting van beoordeling. Berichten van {account} publiceren privé totdat de beoordeling is voltooid.',
 
   'connection.group.title': 'Klantgroepen',
-  'connection.group.description': 'Groepeer accounts op klant of merk om elk scherm te filteren.',
+  'connection.group.description':
+    'Groepeer accounts op klant of project om elk scherm te filteren.',
   'connection.group.assign': 'Verplaats naar groep',
   'connection.group.none': 'Niet gegroepeerd',
   'connection.group.moveNote':

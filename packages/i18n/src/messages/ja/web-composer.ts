@@ -182,7 +182,7 @@ export const webComposerMessages = {
   'composerWeb.signature.scope': 'のために{project}の上{provider}で{language}',
   'composerWeb.signature.previewHeading': '投稿の終わり方',
   'composerWeb.signature.notMatching':
-    'この署名は別のブランド、プラットフォーム、または言語を対象としているため、ここでは提供されていません。',
+    'この署名は別のプロジェクト、プラットフォーム、または言語を対象としているため、ここでは提供されていません。',
   'composerWeb.assist.menuLabel': 'このテキストを手伝ってください',
   'composerWeb.assist.unavailableTitle': 'テキストアシスタントが設定されていません',
   'composerWeb.assist.unavailableBody':
@@ -282,7 +282,7 @@ export const webComposerMessages = {
   'mediaLib.loading': 'メディア ライブラリをロードしています',
   'mediaLib.permission.title': 'このワークスペース ライブラリは表示されません',
   'mediaLib.permission.body':
-    'メディアを閲覧するには、このブランドの閲覧者ロール以上が必要です。所有者または管理者がそれを許可できます。',
+    'メディアを閲覧するには、このプロジェクトの閲覧者ロール以上が必要です。所有者または管理者がそれを許可できます。',
   'mediaLib.upload.heading': 'メディアを追加する',
   'mediaLib.upload.browse': 'ファイルの選択',
   'mediaLib.upload.dropHint':

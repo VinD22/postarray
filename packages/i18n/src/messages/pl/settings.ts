@@ -33,16 +33,16 @@ export const settingsMessages = {
   'settings.role.owner.description': 'Wszystko, w tym rozliczenia, bezpieczeństwo i usuwanie.',
   'settings.role.admin.description': 'Wszystko oprócz rozliczeń i usunięcia obszaru roboczego.',
   'settings.role.manager.description':
-    'Zarządzaj markami, połączeniami, harmonogramami i zasadami.',
+    'Zarządzaj projektami, połączeniami, harmonogramami i zasadami.',
   'settings.role.editor.description': 'Twórz i edytuj treści, poproś o zatwierdzenie.',
   'settings.role.approver.description': 'Zatwierdź lub odrzuć treść i zaplanuj zatwierdzenie.',
   'settings.role.analyst.description': 'Przeczytaj statystyki i rachunki.',
   'settings.role.viewer.description': 'Tylko do odczytu.',
-  'settings.role.scopeLabel': 'Ograniczenie do marek i kont',
+  'settings.role.scopeLabel': 'Ograniczenie do projektów i kont',
   'settings.role.mfaRequired': 'Właściciele muszą korzystać z uwierzytelniania dwuskładnikowego.',
 
-  'settings.projects.title': 'Marki',
-  'settings.projects.add': 'Dodaj markę',
+  'settings.projects.title': 'Projekty',
+  'settings.projects.add': 'Dodaj projekt',
   'settings.projects.voice': 'Głos',
   'settings.projects.audience': 'Odbiorcy',
   'settings.projects.approvedClaims': 'Zatwierdzone roszczenia',
@@ -72,7 +72,7 @@ export const settingsMessages = {
     'Edytowanie zestawu nie powoduje zmiany postów, które są już zatwierdzone lub zaplanowane.',
   'settings.signatures.title': 'Podpisy',
   'settings.signatures.description':
-    'Tekst końcowy, hashtagi, linki lub ujawnienia, w zakresie marki, platformy i języka.',
+    'Tekst końcowy, hashtagi, linki lub ujawnienia, w zakresie projektu, platformy i języka.',
   'settings.signatures.autoApply': 'Dodaj automatycznie, gdy kontekst pasuje',
 
   'settings.localization.title': 'Lokalizacja',
@@ -81,7 +81,7 @@ export const settingsMessages = {
     'Język tej aplikacji dla Ciebie. Nie zmienia to języka Twoich postów.',
   'settings.localization.contentLocales': 'Języki treści',
   'settings.localization.contentLocalesHelp':
-    'Języki, w których publikujesz. Każda marka może ustawić zasady i glosariusz dla każdego języka.',
+    'Języki, w których publikujesz. Każdy projekt może ustawić zasady i glosariusz dla każdego języka.',
   'settings.localization.marketLocales': 'Rynki odbiorców',
   'settings.localization.beta': 'Tłumaczenie wersji beta',
   'settings.localization.betaHelp':

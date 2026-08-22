@@ -182,7 +182,7 @@ export const webComposerMessages = withHebrewPluralForms({
   'composerWeb.signature.scope': 'עבור {project} ב-{provider} ב-{language}',
   'composerWeb.signature.previewHeading': 'איך זה מסיים את הפוסט',
   'composerWeb.signature.notMatching':
-    'חתימה זו מיועדת למותג, פלטפורמה או שפה אחרת, ולכן היא אינה מוצעת כאן.',
+    'חתימה זו מיועדת לפרויקט, פלטפורמה או שפה אחרת, ולכן היא אינה מוצעת כאן.',
   'composerWeb.assist.menuLabel': 'עזור עם הטקסט הזה',
   'composerWeb.assist.unavailableTitle': 'סיוע טקסט אינו מוגדר',
   'composerWeb.assist.unavailableBody':
@@ -286,7 +286,7 @@ export const webComposerMessages = withHebrewPluralForms({
   'mediaLib.loading': 'טוען את ספריית המדיה שלך',
   'mediaLib.permission.title': 'אינך יכול לראות את ספריית סביבת העבודה הזו',
   'mediaLib.permission.body':
-    'צפייה במדיה זקוקה לתפקיד צופה או יותר במותג זה. בעלים או מנהל יכולים להעניק זאת.',
+    'צפייה במדיה זקוקה לתפקיד צופה או יותר בפרויקט זה. בעלים או מנהל יכולים להעניק זאת.',
   'mediaLib.upload.heading': 'הוסף מדיה',
   'mediaLib.upload.browse': 'בחר קבצים',
   'mediaLib.upload.dropHint': 'גרור קבצים לכאן, או בחר אותם. ההעלאות מתחדשות אם החיבור נופל.',

@@ -111,7 +111,7 @@ export const webMarketingMessages = {
     '每个外部写入都带有幂等密钥，因此平台接受帖子后的工作线程崩溃不会创建第二个帖子。',
   'web.home.pillars.adapt.title': '适应而不是重复',
   'web.home.pillars.adapt.body':
-    '您可以一次覆盖一个帐户的每个平台变体，以及创译而不是直译，并带有品牌术语表和每种语言的指定审阅者。',
+    '您可以一次覆盖一个帐户的每个平台变体，以及创译而不是直译，并带有项目术语表和每种语言的指定审阅者。',
   'web.home.pillars.adapt.proof':
     '该界面有选定的语言版本。内容改编涵盖30种内容语言，每一种内容在发布前都会经过审核。',
   'web.home.pillars.loop.title': '关闭循环',
@@ -230,7 +230,7 @@ export const webMarketingMessages = {
     '主版本承载了这个想法。每个帐户都会获得平台期望的长度、裁剪、设置和语气，并且在提交之前您可以并排查看所有这些内容。',
   'web.creators.job.languages.title': '不用猜测就可以用另一种语言发布',
   'web.creators.job.languages.body':
-    '创译保留意图而不是文字，使用您的品牌术语表，并标记本地审阅者是否已阅读它。除非您这么说，否则任何内容都不会以您无法保证的语言发表。',
+    '创译保留意图而不是文字，使用您的项目术语表，并标记本地审阅者是否已阅读它。除非您这么说，否则任何内容都不会以您无法保证的语言发表。',
   'web.creators.job.rights.title': '将您的权利记录与文件一起保存',
   'web.creators.job.rights.body':
     '媒体记录了它的来源、谁拥有权利以及它是否是使用生成工具创建的。平台的要求越来越多。 Relay 将您的答案与资产一起存储，而不是再次询问您。',
@@ -254,7 +254,7 @@ export const webMarketingMessages = {
     '每个出版物都会生成一个不可变的收据，其中包含外部帖子 ID 和完整的尝试历史记录。当客户询问九点是否发生了什么事时，答案会附带一个时间戳和一个平台标识符。',
   'web.agencies.job.roles.title': '与工作分配方式相匹配的角色',
   'web.agencies.job.roles.body':
-    '所有者、管理员、经理、编辑、审批者、分析师和查看者，按品牌和帐户划分范围。团队成员不受限制，因为按席位收费会使各机构共享登录信息，这是一个安全问题。',
+    '所有者、管理员、经理、编辑、审批者、分析师和查看者，按项目和帐户划分范围。团队成员不受限制，因为按席位收费会使各机构共享登录信息，这是一个安全问题。',
   'web.agencies.limits.title': '边界，明确规定',
   'web.agencies.limits.body':
     '一项计划覆盖 30 个活跃的社交渠道。频道是一个社交帐户、页面、个人资料、群组或出版物连接。如果您需要超过 30 个，请告诉我们您需要什么，我们将为您提供直接答案，而不是隐藏层。',
@@ -393,7 +393,7 @@ export const webMarketingMessages = {
   'web.docs.lede':
     '一个后端，四种进入方式。每个部分都记录相同的用例，因此您在 REST API 中学到的概念与 MCP 和 CLI 中的概念相同。',
   'web.docs.section.start.title': '入门',
-  'web.docs.section.start.body': '身份验证、工作区、品牌和您的第一篇发布的帖子。',
+  'web.docs.section.start.body': '身份验证、工作区、项目和您的第一篇发布的帖子。',
   'web.docs.section.api.title': '休息API',
   'web.docs.section.api.body': '资源、分页、幂等性、错误代码和速率限制。',
   'web.docs.section.mcp.title': 'MCP服务器',

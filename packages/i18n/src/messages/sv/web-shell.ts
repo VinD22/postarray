@@ -204,7 +204,7 @@ export const webShellMessages = {
     'Nästa skärm är Polar, vår rekordhandlare. Åtkomst ges när Polar bekräftar prenumerationen, inte när webbläsaren kommer tillbaka.',
   'onboarding.plan.factsTitle': 'Vad händer när du fortsätter',
   'onboarding.workspace.help':
-    'En arbetsyta innehåller dina varumärken, anslutna konton, utkast och kvitton. Du kan skapa fler senare.',
+    'En arbetsyta innehåller dina projekt, anslutna konton, utkast och kvitton. Du kan skapa fler senare.',
   'onboarding.workspace.localeNote':
     'Ditt gränssnittsspråk ändrar den här appen. Innehållsspråk väljs per inlägg och är separata från den här inställningen.',
   'onboarding.workspace.timeZoneDetected': 'Upptäckt från den här enheten: {timeZone}',

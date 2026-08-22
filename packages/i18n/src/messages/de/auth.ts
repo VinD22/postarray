@@ -78,4 +78,15 @@ export const authMessages = {
     'Zu viele Versuche. Versuchen Sie es erneut in {minutes, plural, one {# Minute} other {# Minuten}}.',
   'auth.genericFailure':
     'Das hat nicht funktioniert. Überprüfen Sie die Details und versuchen Sie es erneut.',
+  'auth.newPassword.help':
+    'Wählen Sie ein Passwort, das Sie hier noch nicht verwendet haben. Es meldet Sie auf allen Geräten an.',
+  'auth.newPassword.label': 'Neues Passwort',
+  'auth.newPassword.confirmLabel': 'Neues Passwort bestätigen',
+  'auth.newPassword.mismatch': 'Die beiden Passwörter stimmen nicht überein.',
+  'auth.newPassword.submit': 'Neues Passwort speichern',
+  'auth.newPassword.linkMissing': 'Diese Seite benötigt den Link aus Ihrer Zurücksetzungs-E-Mail.',
+  'auth.newPassword.linkInvalid':
+    'Dieser Link zum Zurücksetzen ist abgelaufen oder wurde bereits verwendet.',
+  'auth.newPassword.linkInvalidAction': 'Neuen Link anfordern',
+  'auth.newPassword.signInNow': 'Anmelden',
 } as const;

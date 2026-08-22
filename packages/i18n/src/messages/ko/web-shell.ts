@@ -180,7 +180,7 @@ export const webShellMessages = {
     '다음 화면은 우리의 기록상 판매자인 Polar입니다. 브라우저가 다시 돌아올 때가 아니라 Polar가 구독을 확인할 때 액세스가 허용됩니다.',
   'onboarding.plan.factsTitle': '계속하면 어떻게 되나요?',
   'onboarding.workspace.help':
-    '작업 공간에는 브랜드, 연결된 계정, 초안 및 영수증이 보관됩니다. 나중에 더 만들 수 있습니다.',
+    '작업 공간에는 프로젝트, 연결된 계정, 초안 및 영수증이 보관됩니다. 나중에 더 만들 수 있습니다.',
   'onboarding.workspace.localeNote':
     '인터페이스 언어가 이 앱을 변경합니다. 콘텐츠 언어는 게시물별로 선택되며 이 설정과 별개입니다.',
   'onboarding.workspace.timeZoneDetected': '이 장치에서 감지됨:{timeZone}',

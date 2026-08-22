@@ -31,17 +31,17 @@ export const settingsMessages = {
   'settings.role.viewer.label': 'Tittare',
   'settings.role.owner.description': 'Allt, inklusive fakturering, säkerhet och radering.',
   'settings.role.admin.description': 'Allt utom fakturering och borttagning av arbetsyta.',
-  'settings.role.manager.description': 'Hantera varumärken, kopplingar, scheman och regler.',
+  'settings.role.manager.description': 'Hantera projekt, kopplingar, scheman och regler.',
   'settings.role.editor.description': 'Skapa och redigera innehåll, begär godkännande.',
   'settings.role.approver.description':
     'Godkänn eller avvisa innehåll och schemalägg vad som godkänns.',
   'settings.role.analyst.description': 'Läs analyser och kvitton.',
   'settings.role.viewer.description': 'Endast läs.',
-  'settings.role.scopeLabel': 'Begränsa till varumärken och konton',
+  'settings.role.scopeLabel': 'Begränsa till projekt och konton',
   'settings.role.mfaRequired': 'Ägare måste använda tvåfaktorsautentisering.',
 
-  'settings.projects.title': 'Varumärken',
-  'settings.projects.add': 'Lägg till ett varumärke',
+  'settings.projects.title': 'Projekt',
+  'settings.projects.add': 'Lägg till ett projekt',
   'settings.projects.voice': 'Röst',
   'settings.projects.audience': 'Publik',
   'settings.projects.approvedClaims': 'Godkända anspråk',
@@ -70,7 +70,7 @@ export const settingsMessages = {
     'Att redigera en uppsättning ändrar inte inlägg som redan är godkända eller schemalagda.',
   'settings.signatures.title': 'Signaturer',
   'settings.signatures.description':
-    'Avslutningstext, hashtags, länkar eller avslöjanden, avgränsat efter varumärke, plattform och språk.',
+    'Avslutningstext, hashtags, länkar eller avslöjanden, avgränsat efter projekt, plattform och språk.',
   'settings.signatures.autoApply': 'Lägg till automatiskt när sammanhanget matchar',
 
   'settings.localization.title': 'Lokalisering',
@@ -79,7 +79,7 @@ export const settingsMessages = {
     'Språket för denna app för dig. Det ändrar inte språket i dina inlägg.',
   'settings.localization.contentLocales': 'Innehållsspråk',
   'settings.localization.contentLocalesHelp':
-    'Språken du publicerar på. Varje varumärke kan sätta regler och en ordlista per språk.',
+    'Språken du publicerar på. Varje projekt kan sätta regler och en ordlista per språk.',
   'settings.localization.marketLocales': 'Publikmarknader',
   'settings.localization.beta': 'Betaöversättning',
   'settings.localization.betaHelp':

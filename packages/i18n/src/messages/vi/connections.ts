@@ -54,8 +54,7 @@ export const connectionMessages = {
   'connection.incident.reviewRestricted':
     '{provider} đã hạn chế ứng dụng này đang chờ xem xét. Các bài đăng từ {account} xuất bản riêng tư cho đến khi quá trình xem xét hoàn tất.',
   'connection.group.title': 'Nhóm khách hàng',
-  'connection.group.description':
-    'Nhóm tài khoản theo khách hàng hoặc thương hiệu để lọc mọi màn hình.',
+  'connection.group.description': 'Nhóm tài khoản theo khách hàng hoặc dự án để lọc mọi màn hình.',
   'connection.group.assign': 'Di chuyển đến nhóm',
   'connection.group.none': 'Đã tách nhóm',
   'connection.group.moveNote':

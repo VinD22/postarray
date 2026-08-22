@@ -5,7 +5,7 @@ export const webSettingsMessages = {
   'settings.ui.index.help': 'เลือกส่วน การเปลี่ยนแปลงทั้งหมดจะมาจากคุณและปรากฏในบันทึกการตรวจสอบ',
   'settings.ui.section.members': 'สมาชิกและบทบาท',
   'settings.ui.section.membersSummary': 'ใครอยู่ในพื้นที่ทำงานนี้และสิ่งที่แต่ละคนสามารถทำได้',
-  'settings.ui.section.projects': 'Projects',
+  'settings.ui.section.projects': 'โปรเจกต์',
   'settings.ui.section.projectsSummary':
     'เสียง ผู้ชม การอ้างสิทธิ์ที่ได้รับอนุมัติ คำที่ถูกบล็อก กฎสถานที่ โดเมน และอภิธานศัพท์',
   'settings.ui.section.agents': 'ตัวแทนและ API',
@@ -30,7 +30,7 @@ export const webSettingsMessages = {
   'settings.ui.section.securitySummary':
     'เซสชัน, การตรวจสอบสิทธิ์แบบสองปัจจัย, ข้อมูลประจำตัว, ตัวแทน, เว็บฮุค และการอนุญาตแอป',
   'settings.ui.section.data': 'การควบคุมข้อมูล',
-  'settings.ui.section.dataSummary': 'ส่งออก เพิกถอนการเชื่อมต่อ ลบแบรนด์ ลบเนื้อหา หรือปิดบัญชี',
+  'settings.ui.section.dataSummary': 'ส่งออก เพิกถอนการเชื่อมต่อ ลบโปรเจกต์ ลบเนื้อหา หรือปิดบัญชี',
   'settings.ui.state.loading': 'กำลังโหลด {section}',
   'settings.ui.state.errorTitle': 'เราไม่สามารถโหลด {section} ได้',
   'settings.ui.state.errorRetry': 'ลองอีกครั้ง',
@@ -73,12 +73,12 @@ export const webSettingsMessages = {
   'settings.ui.members.column.approvals': 'การอนุมัติ',
   'settings.ui.members.column.lastActive': 'ใช้งานครั้งล่าสุด',
   'settings.ui.members.column.actions': 'การดำเนินการ',
-  'settings.ui.members.scopeAll': 'ทุกแบรนด์และบัญชี',
+  'settings.ui.members.scopeAll': 'ทุกโปรเจกต์และบัญชี',
   'settings.ui.members.scopeLimited':
     '{count, plural, one {# project} other {# projects}}: {names}',
   'settings.ui.members.approvals.canApprove': 'สามารถอนุมัติได้',
   'settings.ui.members.approvals.cannotApprove': 'ไม่สามารถอนุมัติได้',
-  'settings.ui.members.approvals.canApproveOwnProjects': 'สามารถอนุมัติสำหรับแบรนด์ที่ระบุไว้ได้',
+  'settings.ui.members.approvals.canApproveOwnProjects': 'สามารถอนุมัติสำหรับโปรเจกต์ที่ระบุไว้ได้',
   'settings.ui.members.lastActiveNever': 'ยังไม่ได้ลงชื่อเข้าใช้',
   'settings.ui.members.changeRole': 'เปลี่ยนบทบาทสำหรับ {name}',
   'settings.ui.members.remove': 'ลบ {name}',
@@ -89,9 +89,9 @@ export const webSettingsMessages = {
   'settings.ui.members.inviteBody':
     'พวกเขาได้รับอีเมลพร้อมลิงก์ คำเชิญจะหมดอายุหลังจากผ่านไปเจ็ดวัน และคุณสามารถเพิกถอนได้ก่อนถึงนั้น',
   'settings.ui.members.inviteRole': 'บทบาท',
-  'settings.ui.members.inviteScope': 'Project ที่พวกเขาสามารถทำงานได้',
-  'settings.ui.members.inviteScopeAll': 'ทุกแบรนด์ในพื้นที่ทำงานนี้',
-  'settings.ui.members.inviteScopeSelected': 'เฉพาะแบรนด์ที่ฉันเลือก',
+  'settings.ui.members.inviteScope': 'โปรเจกต์ที่พวกเขาสามารถทำงานได้',
+  'settings.ui.members.inviteScopeAll': 'ทุกโปรเจกต์ในพื้นที่ทำงานนี้',
+  'settings.ui.members.inviteScopeSelected': 'เฉพาะโปรเจกต์ที่ฉันเลือก',
   'settings.ui.members.inviteApprovals': 'สามารถตัดสินใจขออนุมัติได้',
   'settings.ui.members.inviteApprovalsHelp':
     'เฉพาะบทบาทที่มีการทบทวนอยู่แล้วเท่านั้นที่สามารถให้สิ่งนี้ได้ มันแยกจากการแก้ไข',
@@ -101,9 +101,9 @@ export const webSettingsMessages = {
   'settings.ui.members.inviteResend': 'ส่งคำเชิญอีกครั้ง',
   'settings.ui.members.emptyTitle': 'คุณเป็นคนเดียวที่นี่',
   'settings.ui.members.emptyBody':
-    'เชิญผู้ที่เขียน อนุมัติ หรืออ่านผลลัพธ์ แต่ละคนได้รับบทบาทและขอบเขตของแบรนด์',
+    'เชิญผู้ที่เขียน อนุมัติ หรืออ่านผลลัพธ์ แต่ละคนได้รับบทบาทและขอบเขตของโปรเจกต์',
   'settings.ui.members.emptyExample':
-    'รูปแบบทั่วไป: เจ้าของการเรียกเก็บเงินหนึ่งราย ผู้อนุมัติหนึ่งรายต่อแบรนด์ และบรรณาธิการที่ร่างแต่ไม่เคยเผยแพร่',
+    'รูปแบบทั่วไป: เจ้าของการเรียกเก็บเงินหนึ่งราย ผู้อนุมัติหนึ่งรายต่อโปรเจกต์ และบรรณาธิการที่ร่างแต่ไม่เคยเผยแพร่',
   'settings.ui.members.roleReferenceTitle': 'แต่ละบทบาททำอะไรได้บ้าง',
   'settings.ui.members.roleReferenceCaption': 'บทบาทและการกระทำที่แต่ละคนอนุญาต',
   'settings.ui.members.roleColumn.role': 'บทบาท',
@@ -308,7 +308,7 @@ export const webSettingsMessages = {
   'developer.ui.agents.emptyBody':
     'สร้างหนึ่งรายการสำหรับแต่ละระบบอัตโนมัติที่คุณเรียกใช้ บัญชีที่แยกกันหมายความว่าคุณสามารถเพิกถอนบัญชีหนึ่งได้โดยไม่ต้องหยุดบัญชีอื่น',
   'developer.ui.agents.emptyExample':
-    'ตัวอย่าง: "ตัวแทนเนื้อหา" ซึ่งเป็นแบรนด์ Acme EU อาจร่างและกำหนดเวลาโพสต์ได้สูงสุด 6 โพสต์ต่อวันระหว่างเวลา 07:00 น. - 22:00 น. โดยจะไม่มีการเผยแพร่ทันที',
+    'ตัวอย่าง: "ตัวแทนเนื้อหา" ซึ่งเป็นโปรเจกต์ Acme EU อาจร่างและกำหนดเวลาโพสต์ได้สูงสุด 6 โพสต์ต่อวันระหว่างเวลา 07:00 น. - 22:00 น. โดยจะไม่มีการเผยแพร่ทันที',
   'developer.ui.agents.step.identity': 'ชื่อและวัตถุประสงค์',
   'developer.ui.agents.step.scope': 'สิ่งที่สามารถเข้าถึงได้',
   'developer.ui.agents.step.limits': 'ขีดจำกัด',
@@ -511,8 +511,8 @@ export const webSettingsMessages = {
   'developer.ui.webhooks.eventGroup.publishing': 'การเผยแพร่',
   'developer.ui.webhooks.eventGroup.automation': 'ระบบอัตโนมัติและฟีด',
   'developer.ui.webhooks.eventGroup.workspace': 'Workspace',
-  'developer.ui.webhooks.scopeTitle': 'Project และบัญชี',
-  'developer.ui.webhooks.scopeAll': 'ทุกแบรนด์และบัญชี',
+  'developer.ui.webhooks.scopeTitle': 'โปรเจกต์และบัญชี',
+  'developer.ui.webhooks.scopeAll': 'ทุกโปรเจกต์และบัญชี',
   'developer.ui.webhooks.scopeSelected': 'เฉพาะสิ่งที่ฉันเลือก',
   'developer.ui.webhooks.secretTitle': 'ความลับของการลงนาม',
   'developer.ui.webhooks.secretBody':

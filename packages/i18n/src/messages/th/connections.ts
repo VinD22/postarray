@@ -53,7 +53,7 @@ export const connectionMessages = {
   'connection.incident.reviewRestricted':
     '{provider} ได้จำกัดแอปนี้ไว้ระหว่างการตรวจสอบ โพสต์จาก {account} เผยแพร่แบบส่วนตัวจนกว่าการตรวจสอบจะเสร็จสิ้น',
   'connection.group.title': 'กลุ่มลูกค้า',
-  'connection.group.description': 'จัดกลุ่มบัญชีตามลูกค้าหรือแบรนด์เพื่อกรองทุกหน้าจอ',
+  'connection.group.description': 'จัดกลุ่มบัญชีตามลูกค้าหรือโปรเจกต์เพื่อกรองทุกหน้าจอ',
   'connection.group.assign': 'ย้ายไปกลุ่ม',
   'connection.group.none': 'ไม่ได้จัดกลุ่ม',
   'connection.group.moveNote': 'การย้ายบัญชีจะเก็บโพสต์ ใบเสร็จรับเงิน และการวิเคราะห์ไว้',

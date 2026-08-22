@@ -116,7 +116,7 @@ export const webMarketingMessages = {
     'Cada escritura externa lleva una clave de idempotencia, por lo que una falla del trabajador después de que la plataforma aceptó una publicación no crea una segunda.',
   'web.home.pillars.adapt.title': 'Adaptar en lugar de duplicar',
   'web.home.pillars.adapt.body':
-    'Variantes por plataforma que puede anular una cuenta a la vez y transcreación en lugar de traducción literal, con un glosario de marca y un revisor designado por idioma.',
+    'Variantes por plataforma que puede anular una cuenta a la vez y transcreación en lugar de traducción literal, con un glosario del proyecto y un revisor designado por idioma.',
   'web.home.pillars.adapt.proof':
     'La interfaz está disponible en idiomas seleccionados. La adaptación de contenido cubre 30 idiomas de contenido y cada uno de ellos es revisable antes de su publicación.',
   'web.home.pillars.loop.title': 'cerrar el ciclo',
@@ -242,7 +242,7 @@ export const webMarketingMessages = {
     'La versión maestra lleva la idea. Cada cuenta obtiene la longitud, el recorte, la configuración y el tono que espera la plataforma, y ​​puedes verlos todos uno al lado del otro antes de comprometerte.',
   'web.creators.job.languages.title': 'Publicar en otro idioma sin adivinar',
   'web.creators.job.languages.body':
-    'La transcreación mantiene la intención en lugar de las palabras, utiliza el glosario de su marca y marca si un revisor nativo lo ha leído. Nada se publica en un idioma que no puedas garantizar a menos que tú lo digas.',
+    'La transcreación mantiene la intención en lugar de las palabras, utiliza el glosario de su proyecto y marca si un revisor nativo lo ha leído. Nada se publica en un idioma que no puedas garantizar a menos que tú lo digas.',
   'web.creators.job.rights.title': 'Mantenga su registro de derechos con el expediente.',
   'web.creators.job.rights.body':
     'Los medios transmiten de dónde vinieron, quién posee los derechos y si fueron creados con una herramienta generativa. Las plataformas cada vez preguntan más. Relay almacena su respuesta con el activo en lugar de volver a preguntarle.',
@@ -266,7 +266,7 @@ export const webMarketingMessages = {
     'Cada publicación genera un recibo inmutable con el ID de la publicación externa y el historial completo de intentos. Cuando un cliente pregunta si algo salió a las nueve, la respuesta tiene adjunta una marca de tiempo y un identificador de plataforma.',
   'web.agencies.job.roles.title': 'Roles que coinciden con cómo se divide el trabajo.',
   'web.agencies.job.roles.body':
-    'Propietario, administrador, gerente, editor, aprobador, analista y espectador, con alcance por marca y por cuenta. Miembros del equipo ilimitados, porque el cobro por asiento hace que las agencias compartan inicios de sesión y eso es un problema de seguridad.',
+    'Propietario, administrador, gerente, editor, aprobador, analista y espectador, con alcance por proyecto y por cuenta. Miembros del equipo ilimitados, porque el cobro por asiento hace que las agencias compartan inicios de sesión y eso es un problema de seguridad.',
   'web.agencies.limits.title': 'El límite, expresado claramente',
   'web.agencies.limits.body':
     'Un plan cubre 30 canales sociales activos. Un canal es una cuenta social, página, perfil, grupo o conexión de publicación. Si necesita más de 30, díganos qué necesita y le daremos una respuesta directa en lugar de un nivel oculto.',
@@ -359,7 +359,7 @@ export const webMarketingMessages = {
     'Un backend, cuatro entradas. Cada sección documenta los mismos casos de uso, por lo que un concepto que aprende en la API REST es el mismo concepto en MCP y en la CLI.',
   'web.docs.section.start.title': 'Empezando',
   'web.docs.section.start.body':
-    'Autenticación, espacios de trabajo, marcas y tu primera publicación publicada.',
+    'Autenticación, espacios de trabajo, proyectos y tu primera publicación publicada.',
   'web.docs.section.api.title': 'API DESCANSO',
   'web.docs.section.api.body':
     'Recursos, paginación, idempotencia, códigos de error y límites de tarifas.',

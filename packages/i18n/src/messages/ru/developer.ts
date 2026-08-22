@@ -8,7 +8,7 @@ export const developerMessages = {
   'developer.serviceAccount.create': 'Создать учетную запись службы',
   'developer.serviceAccount.name': 'Имя',
   'developer.serviceAccount.scopeProjects':
-    'Project и учетные записи, которые он может использовать',
+    'Проекты и учетные записи, которые он может использовать',
   'developer.serviceAccount.scopePlatforms': 'Платформы',
   'developer.serviceAccount.scopeLocales': 'Языки контента',
   'developer.serviceAccount.scopeDomains': 'Разрешенные домены ссылок',
@@ -113,7 +113,7 @@ export const developerMessages = {
 
   'developer.consent.title': '{app} хочет получить доступ к вашему рабочему пространству',
   'developer.consent.workspace': 'Workspace',
-  'developer.consent.projects': 'Project и аккаунты',
+  'developer.consent.projects': 'Проекты и аккаунты',
   'developer.consent.willBeAbleTo': '{app} сможет',
   'developer.consent.willNotBeAbleTo': '{app} не сможет',
   'developer.consent.approvalStillApplies':

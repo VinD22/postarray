@@ -71,7 +71,7 @@ export const postingSetMessages = {
   'set.archivedToast': 'Set archiviato. I post già creati da esso restano invariati.',
 
   'set.field.name': 'Nome',
-  'set.field.nameHint': 'Ciò che cercherai nel selettore. Uno per marchio.',
+  'set.field.nameHint': 'Ciò che cercherai nel selettore. Uno per progetto.',
   'set.field.description': 'Descrizione',
   'set.field.descriptionHint': 'Facoltativo. A cosa serve questo Set.',
   'set.field.targets': 'Account',
@@ -93,13 +93,13 @@ export const postingSetMessages = {
 
   'set.slot.next_free_slot': 'Prossimo spazio libero dalla coda',
   'set.slot.next_free_slotHint':
-    'Usa le regole della coda di questo marchio per proporre un orario. Propone; tu accetti.',
+    'Usa le regole della coda di questo progetto per proporre un orario. Propone; tu accetti.',
   'set.slot.pick_time': 'Chiedimi un orario',
   'set.slot.pick_timeHint': "Applicare il Set lascia l'orario vuoto perché tu lo scelga.",
   'set.slot.draft_only': 'Lascialo come bozza',
   'set.slot.draft_onlyHint': 'Applicare il Set non tocca affatto la programmazione.',
   'set.slot.noRules':
-    'Questo marchio non ha ancora regole della coda, quindi la coda proporrà la prima ora libera e lo dirà.',
+    'Questo progetto non ha ancora regole della coda, quindi la coda proporrà la prima ora libera e lo dirà.',
   'set.slot.rulesLink': 'Regole della coda',
 
   'set.defaults.title': 'Predefiniti per piattaforma',
@@ -117,7 +117,7 @@ export const postingSetMessages = {
   'set.defaults.empty':
     'Nessun predefinito per piattaforma. Ogni account parte dal post principale.',
 
-  'set.error.nameTaken': 'Un altro Set in questo marchio usa già quel nome.',
+  'set.error.nameTaken': 'Un altro Set in questo progetto usa già quel nome.',
   'set.error.archived': 'Questo Set è archiviato. Ripristinalo prima di modificarlo.',
   'set.error.duplicateTarget': "Quell'account è già in questo Set.",
   'set.error.duplicatePlatform': 'Questo Set ha già dei predefiniti per quella piattaforma.',
@@ -125,18 +125,18 @@ export const postingSetMessages = {
   /* --------------------------------------------------- remembered targets */
   'targetMemory.setting.title': "Ricorda gli account tra un post e l'altro",
   'targetMemory.setting.body':
-    "Quando questa opzione è attiva, il compositore avvia ogni nuovo post con gli account che quella persona ha scelto l'ultima volta in questo marchio. È disattivata finché non la attivi.",
+    "Quando questa opzione è attiva, il compositore avvia ogni nuovo post con gli account che quella persona ha scelto l'ultima volta in questo progetto. È disattivata finché non la attivi.",
   'targetMemory.setting.stored':
-    "Viene conservato solo l'elenco degli account, e solo per la persona che li ha scelti. Nessuna didascalia, nessun orario, nessuna impostazione di privacy e nessuno stato di approvazione viene memorizzato, e nessun altro nel marchio può vedere il tuo elenco.",
+    "Viene conservato solo l'elenco degli account, e solo per la persona che li ha scelti. Nessuna didascalia, nessun orario, nessuna impostazione di privacy e nessuno stato di approvazione viene memorizzato, e nessun altro nel progetto può vedere il tuo elenco.",
   'targetMemory.setting.offNote':
     'Mentre questa opzione è disattivata, non viene memorizzato nulla.',
   'targetMemory.setting.turnOffWarning':
-    'Disattivare questa opzione elimina ogni selezione salvata in questo marchio, per tutti.',
+    'Disattivare questa opzione elimina ogni selezione salvata in questo progetto, per tutti.',
   'targetMemory.setting.enabled': 'Attivo',
   'targetMemory.setting.disabled': 'Disattivo',
   'targetMemory.setting.saved': 'Impostazione salvata.',
   'targetMemory.setting.cleared':
-    'Impostazione salvata. Le selezioni salvate in questo marchio sono state eliminate.',
+    'Impostazione salvata. Le selezioni salvate in questo progetto sono state eliminate.',
 
   'targetMemory.composer.restored':
     "{count, plural, one {Iniziato con # account dall'ultima volta.} many {Iniziato con # account dall'ultima volta.} other {Iniziato con # account dall'ultima volta.}}",

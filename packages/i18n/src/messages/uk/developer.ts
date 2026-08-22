@@ -8,7 +8,7 @@ export const developerMessages = {
   'developer.serviceAccount.create': 'Створіть обліковий запис служби',
   'developer.serviceAccount.name': "Ім'я",
   'developer.serviceAccount.scopeProjects':
-    'Project та облікові записи, які він може використовувати',
+    'Проекти та облікові записи, які він може використовувати',
   'developer.serviceAccount.scopePlatforms': 'Платформи',
   'developer.serviceAccount.scopeLocales': 'Мови вмісту',
   'developer.serviceAccount.scopeDomains': 'Дозволені домени посилань',
@@ -112,7 +112,7 @@ export const developerMessages = {
 
   'developer.consent.title': '{app}хоче отримати доступ до свого робочого простору',
   'developer.consent.workspace': 'Workspace',
-  'developer.consent.projects': 'Project і облікові записи',
+  'developer.consent.projects': 'Проекти і облікові записи',
   'developer.consent.willBeAbleTo': '{app}можете',
   'developer.consent.willNotBeAbleTo': '{app}не можете',
   'developer.consent.approvalStillApplies':

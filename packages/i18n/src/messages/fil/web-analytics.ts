@@ -27,7 +27,7 @@ export const webAnalyticsMessages = {
   'analytics.question.accounts': 'Aling mga account ang nangangailangan ng pansin?',
   'analytics.question.next': 'Ano ang susunod na sulit na pagsubok?',
 
-  'analytics.filter.project': 'Project',
+  'analytics.filter.project': 'Proyekto',
   'analytics.filter.accounts': 'Mga account',
   'analytics.filter.allAccounts': 'Lahat ng konektadong account',
   'analytics.filter.range': 'Saklaw ng petsa',
@@ -450,7 +450,7 @@ export const webAnalyticsMessages = {
   'automation.param.signature': 'Lagda',
   'automation.param.disclosure': 'Pagbubunyag',
   'automation.param.locale': 'Wika',
-  'automation.param.project': 'Project',
+  'automation.param.project': 'Proyekto',
   'automation.param.campaign': 'Kampanya',
   'automation.param.account': 'Account',
   'automation.param.platform': 'Plataporma',

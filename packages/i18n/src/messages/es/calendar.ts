@@ -101,4 +101,21 @@ export const calendarMessages = {
   'approval.reapproval.reason.privacy': 'La configuración de privacidad o divulgación cambió.',
   'approval.reapproval.reason.locale': 'El idioma del contenido cambió.',
   'approval.expiresAt': 'Esta solicitud caduca el on {date}.',
+  'approval.content.title': 'Variantes por plataforma',
+  'approval.content.master': 'Borrador maestro',
+  'approval.content.language': 'Idioma del contenido',
+  'approval.content.media': 'Medios',
+  'approval.content.mediaCount':
+    '{count, plural, =0 {Ningún archivo subido} one {# archivo subido} many {# archivos subidos} other {# archivos subidos}}',
+  'approval.content.destination': 'Destino',
+  'approval.content.privacy': 'Visibilidad',
+  'approval.content.schedule': 'Hora de publicación',
+  'approval.content.cost': 'Costo estimado de la plataforma',
+  'approval.content.costUnavailable': 'No disponible',
+  'approval.changed.title': 'La publicación cambió después de esta solicitud',
+  'approval.changed.body':
+    'Esta pantalla muestra una versión más reciente. No decidas esta solicitud. Pide al autor que la envíe de nuevo.',
+  'approval.notFound.title': 'Esta aprobación ya no está pendiente',
+  'approval.notFound.body':
+    'Puede que ya tenga una decisión, que haya caducado o que no esté disponible para tu rol.',
 } as const;

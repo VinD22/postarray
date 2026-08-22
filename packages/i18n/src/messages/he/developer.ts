@@ -7,7 +7,7 @@ export const developerMessages = withHebrewPluralForms({
   'developer.serviceAccount.title': 'חשבונות שירות',
   'developer.serviceAccount.create': 'צור חשבון שירות',
   'developer.serviceAccount.name': 'שם',
-  'developer.serviceAccount.scopeProjects': 'מותגים וחשבונות שבהם הוא יכול להשתמש',
+  'developer.serviceAccount.scopeProjects': 'פרויקטים וחשבונות שבהם הוא יכול להשתמש',
   'developer.serviceAccount.scopePlatforms': 'פלטפורמות',
   'developer.serviceAccount.scopeLocales': 'שפות תוכן',
   'developer.serviceAccount.scopeDomains': 'דומיינים של קישורים מותרים',
@@ -98,7 +98,7 @@ export const developerMessages = withHebrewPluralForms({
     'למחוק את האפליקציה הזו? כל מענק מבוטל והאסימונים שלו מפסיקים לעבוד.',
   'developer.consent.title': '{app} רוצה גישה לסביבת העבודה שלך',
   'developer.consent.workspace': 'סביבת עבודה',
-  'developer.consent.projects': 'מותגים וחשבונות',
+  'developer.consent.projects': 'פרויקטים וחשבונות',
   'developer.consent.willBeAbleTo': '{app} יוכל',
   'developer.consent.willNotBeAbleTo': '{app} לא יוכל',
   'developer.consent.approvalStillApplies':

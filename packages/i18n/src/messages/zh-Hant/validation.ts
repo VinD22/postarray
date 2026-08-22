@@ -37,7 +37,7 @@ export const validationMessages = {
   'validation.link_destination_unverified.message': '連結網域 {domain} 尚未針對此 Workspace 驗證。',
   'validation.privacy_setting_required.message': '{provider} 要求在發布前明確選擇隱私權設定。',
   'validation.privacy_setting_required.hint': '沒有預設值。請選擇誰可以看到此貼文。',
-  'validation.disclosure_required.message': '依 {market} 的 Project 規則，此貼文需要揭露。',
+  'validation.disclosure_required.message': '依 {market} 的專案規則，此貼文需要揭露。',
   'validation.first_comment_unsupported.message': '{provider} 不支援此帳號排程首則留言。',
   'validation.thread_unsupported.message': '{provider} 不支援此帳號的討論串。',
   'validation.repeat_end_required.message': '重複貼文需要結束日期或重複次數。',

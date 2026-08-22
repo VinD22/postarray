@@ -9,7 +9,7 @@
 export const queueMessages = {
   'queue.title': 'Coda di pubblicazione',
   'queue.subtitle':
-    "Quando questo marchio è disposto a pubblicare e con quale distanza. Niente viene pubblicato senza che una persona accetti l'orario.",
+    "Quando questo progetto è disposto a pubblicare e con quale distanza. Niente viene pubblicato senza che una persona accetti l'orario.",
 
   'queue.rules.heading': 'Regole della coda',
   'queue.rules.empty':
@@ -44,7 +44,7 @@ export const queueMessages = {
 
   'queue.windows.heading': 'Finestre settimanali',
   'queue.windows.help':
-    'Scegli le ore locali in cui questo marchio può pubblicare. Usa i campi giorno e ora, oppure i pulsanti sulla griglia.',
+    'Scegli le ore locali in cui questo progetto può pubblicare. Usa i campi giorno e ora, oppure i pulsanti sulla griglia.',
   'queue.windows.empty':
     'Ancora nessuna finestra. Una regola senza finestra non può mai offrire uno spazio.',
   'queue.windows.add': 'Aggiungi finestra',
@@ -66,7 +66,7 @@ export const queueMessages = {
 
   'queue.blackouts.heading': 'Date di blackout',
   'queue.blackouts.help':
-    'Date in cui questo marchio non pubblicherà, lette nel fuso orario della regola.',
+    'Date in cui questo progetto non pubblicherà, lette nel fuso orario della regola.',
   'queue.blackouts.empty': 'Nessuna data di blackout.',
   'queue.blackouts.add': 'Aggiungi blackout',
   'queue.blackouts.remove': 'Rimuovi blackout',
@@ -75,7 +75,7 @@ export const queueMessages = {
   'queue.blackouts.entry': 'Da {from} a {to}',
 
   'queue.connections.heading': 'Account',
-  'queue.connections.all': 'Ogni account in questo marchio',
+  'queue.connections.all': 'Ogni account in questo progetto',
   'queue.connections.scoped':
     '{count, plural, one {# account} many {# account} other {# account}} a cui si applica questa regola',
 
@@ -93,7 +93,7 @@ export const queueMessages = {
   'queue.slot.notAutomatic': 'Niente viene programmato finché non scegli questo orario.',
 
   'queue.reason.noRulesConfigured':
-    'Questo marchio non ha regole della coda configurate, quindi non è stata applicata nessuna finestra.',
+    'Questo progetto non ha regole della coda configurate, quindi non è stata applicata nessuna finestra.',
   'queue.reason.fallbackFirstFreeHour': 'È stata usata invece la prima ora libera da adesso.',
   'queue.reason.matchedRule': 'La regola {name} ha scelto questo orario, in {zone}.',
   'queue.reason.matchedWindow': 'Rientra nella finestra dalle {start} alle {end} in {zone}.',

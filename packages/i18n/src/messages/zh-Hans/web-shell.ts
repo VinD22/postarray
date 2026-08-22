@@ -170,7 +170,7 @@ export const webShellMessages = {
   'onboarding.plan.checkoutHint':
     '下一个屏幕是 Polar，我们的记录商家。当 Polar 确认订阅时（而不是浏览器返回时）会授予访问权限。',
   'onboarding.plan.factsTitle': '当你继续时会发生什么',
-  'onboarding.workspace.help': '工作区保存您的品牌、关联帐户、汇票和收据。您可以稍后创建更多。',
+  'onboarding.workspace.help': '工作区保存您的项目、关联帐户、汇票和收据。您可以稍后创建更多。',
   'onboarding.workspace.localeNote':
     '您的界面语言会改变此应用程序。内容语言是根据帖子选择的，并且与此设置无关。',
   'onboarding.workspace.timeZoneDetected': '从此设备检测到：{timeZone}',

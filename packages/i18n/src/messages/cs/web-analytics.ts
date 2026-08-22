@@ -27,7 +27,7 @@ export const webAnalyticsMessages = {
   'analytics.question.accounts': 'Kterým účtům je třeba věnovat pozornost?',
   'analytics.question.next': 'Co stojí za to vyzkoušet dále?',
 
-  'analytics.filter.project': 'Značka',
+  'analytics.filter.project': 'Projekt',
   'analytics.filter.accounts': 'Účty',
   'analytics.filter.allAccounts': 'Všechny propojené účty',
   'analytics.filter.range': 'Období',
@@ -440,7 +440,7 @@ export const webAnalyticsMessages = {
   'automation.param.signature': 'Podpis',
   'automation.param.disclosure': 'Zveřejnění',
   'automation.param.locale': 'Jazyk',
-  'automation.param.project': 'Značka',
+  'automation.param.project': 'Projekt',
   'automation.param.campaign': 'Kampaň',
   'automation.param.account': 'Účet',
   'automation.param.platform': 'Platforma',

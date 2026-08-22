@@ -121,7 +121,7 @@ export const webMarketingMessages = {
     'Setiap penulisan eksternal membawa kunci idempotensi, sehingga error pekerja setelah platform menerima postingan tidak akan membuat postingan kedua.',
   'web.home.pillars.adapt.title': 'Beradaptasi daripada menduplikasi',
   'web.home.pillars.adapt.body':
-    'Per varian platform yang dapat Anda ganti satu akun dalam satu waktu, dan transkreasi, bukan terjemahan literal, dengan glosarium merek dan pengulas bernama per bahasa.',
+    'Per varian platform yang dapat Anda ganti satu akun dalam satu waktu, dan transkreasi, bukan terjemahan literal, dengan glosarium proyek dan pengulas bernama per bahasa.',
   'web.home.pillars.adapt.proof':
     'Antarmuka tersedia dalam bahasa tertentu. Adaptasi konten mencakup 30 bahasa konten dan semuanya dapat ditinjau sebelum dipublikasikan.',
   'web.home.pillars.loop.title': 'Tutup lingkarannya',
@@ -253,7 +253,7 @@ export const webMarketingMessages = {
     'Versi master membawa ide tersebut. Setiap akun mendapatkan durasi, pemotongan, pengaturan, dan warna yang diharapkan platform, dan Anda dapat melihat semuanya secara berdampingan sebelum Anda berkomitmen.',
   'web.creators.job.languages.title': 'Publikasikan dalam bahasa lain tanpa menebak-nebak',
   'web.creators.job.languages.body':
-    'Transkreasi mempertahankan maksud dan bukan kata-katanya, menggunakan glosarium merek Anda, dan menandai apakah pengulas asli telah membacanya. Tidak ada yang diterbitkan dalam bahasa yang tidak dapat Anda jamin kecuali Anda mengatakannya.',
+    'Transkreasi mempertahankan maksud dan bukan kata-katanya, menggunakan glosarium proyek Anda, dan menandai apakah pengulas asli telah membacanya. Tidak ada yang diterbitkan dalam bahasa yang tidak dapat Anda jamin kecuali Anda mengatakannya.',
   'web.creators.job.rights.title': 'Simpan catatan hak Anda dengan file tersebut',
   'web.creators.job.rights.body':
     'Media membawa dari mana asalnya, siapa yang memegang haknya dan apakah diciptakan dengan alat generatif. Platform semakin banyak bertanya. Relay menyimpan jawaban Anda dengan aset alih-alih menanyakannya lagi.',
@@ -277,7 +277,7 @@ export const webMarketingMessages = {
     'Setiap publikasi menghasilkan tanda terima yang tidak dapat diubah dengan ID postingan eksternal dan riwayat upaya lengkap. Saat klien bertanya apakah terjadi sesuatu pada pukul sembilan, jawabannya memiliki stempel waktu dan pengenal platform terlampir.',
   'web.agencies.job.roles.title': 'Peran yang sesuai dengan cara pembagian pekerjaan',
   'web.agencies.job.roles.body':
-    'Pemilik, admin, manajer, editor, pemberi persetujuan, analis, dan pemirsa, dicakup per merek dan per akun. Anggota tim tidak terbatas, karena pengisian per kursi membuat agensi berbagi login dan itu merupakan masalah keamanan.',
+    'Pemilik, admin, manajer, editor, pemberi persetujuan, analis, dan pemirsa, dicakup per proyek dan per akun. Anggota tim tidak terbatas, karena pengisian per kursi membuat agensi berbagi login dan itu merupakan masalah keamanan.',
   'web.agencies.limits.title': 'Batasnya, dinyatakan dengan jelas',
   'web.agencies.limits.body':
     'Satu paket mencakup 30 saluran sosial aktif. Saluran adalah satu akun sosial, Halaman, profil, grup, atau koneksi publikasi. Jika Anda membutuhkan lebih dari 30, beri tahu kami apa yang Anda butuhkan dan kami akan memberi Anda jawaban langsung, bukan jawaban tersembunyi.',
@@ -428,7 +428,7 @@ export const webMarketingMessages = {
     'Satu backend, empat cara masuk. Setiap bagian mendokumentasikan kasus penggunaan yang sama, sehingga konsep yang Anda pelajari di REST API adalah konsep yang sama di MCP dan CLI.',
   'web.docs.section.start.title': 'Memulai',
   'web.docs.section.start.body':
-    'Otentikasi, ruang kerja, merek, dan postingan pertama Anda yang dipublikasikan.',
+    'Otentikasi, ruang kerja, proyek, dan postingan pertama Anda yang dipublikasikan.',
   'web.docs.section.api.title': 'API REST',
   'web.docs.section.api.body':
     'Sumber daya, penomoran halaman, idempotensi, kode kesalahan, dan batas kecepatan.',

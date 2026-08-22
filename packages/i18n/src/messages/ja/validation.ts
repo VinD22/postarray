@@ -48,7 +48,7 @@ export const validationMessages = {
   'validation.privacy_setting_required.hint':
     'デフォルトはありません。この投稿を閲覧できる人を選択してください。',
   'validation.disclosure_required.message':
-    'この投稿は、ブランド ルールに基づいて開示が必要です。{market}。',
+    'この投稿は、プロジェクト ルールに基づいて開示が必要です。{market}。',
   'validation.first_comment_unsupported.message':
     '{provider}は、このアカウントのスケジュールされた最初のコメントをサポートしていません。',
   'validation.thread_unsupported.message':

@@ -17,7 +17,7 @@ export const statusMessages = {
   'empty.analytics.noPermission':
     'Dieses Konto hat keinen Analysezugriff gewährt. Stellen Sie die Verbindung erneut her, um es hinzuzufügen.',
   'empty.approvals.title': 'Nichts wartet auf dich',
-  'empty.approvals.body': 'Hier werden Genehmigungsanfragen für Ihre Marken angezeigt.',
+  'empty.approvals.body': 'Hier werden Genehmigungsanfragen für Ihre Projekte angezeigt.',
   'empty.library.title': 'Ihre Bibliothek ist leer',
   'empty.library.body':
     'Laden Sie Bilder und Videos hoch oder importieren Sie sie von einer URL oder der API.',

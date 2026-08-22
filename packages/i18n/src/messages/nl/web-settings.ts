@@ -52,7 +52,7 @@ export const webSettingsMessages = {
     'Sessies, tweefactorauthenticatie, inloggegevens, agenten, webhooks en app-subsidies.',
   'settings.ui.section.data': 'Gegevenscontroles',
   'settings.ui.section.dataSummary':
-    'Exporteer, trek een verbinding in, verwijder een merk, verwijder content of sluit het account.',
+    'Exporteer, trek een verbinding in, verwijder een project, verwijder content of sluit het account.',
 
   /* ------------------------------------------------------- shared UI states */
 
@@ -104,8 +104,9 @@ export const webSettingsMessages = {
   'settings.ui.members.column.approvals': 'Goedkeuringen',
   'settings.ui.members.column.lastActive': 'Laatst actief',
   'settings.ui.members.column.actions': 'Acties',
-  'settings.ui.members.scopeAll': 'Alle merken en accounts',
-  'settings.ui.members.scopeLimited': '{count, plural, one {# merk} other {# merken}}: {names}',
+  'settings.ui.members.scopeAll': 'Alle projecten en accounts',
+  'settings.ui.members.scopeLimited':
+    '{count, plural, one {# project} other {# projecten}}: {names}',
   'settings.ui.members.approvals.canApprove': 'Kan goedkeuren',
   'settings.ui.members.approvals.cannotApprove': 'Kan niet goedkeuren',
   'settings.ui.members.approvals.canApproveOwnProjects':
@@ -120,9 +121,9 @@ export const webSettingsMessages = {
   'settings.ui.members.inviteBody':
     'Ze ontvangen een e-mail met een link. De uitnodiging vervalt na zeven dagen en u kunt deze vóór die tijd intrekken.',
   'settings.ui.members.inviteRole': 'Rol',
-  'settings.ui.members.inviteScope': "Project's waarin ze kunnen werken",
-  'settings.ui.members.inviteScopeAll': 'Elk merk in deze werkruimte',
-  'settings.ui.members.inviteScopeSelected': 'Alleen de merken die ik selecteer',
+  'settings.ui.members.inviteScope': 'Projecten waarin ze kunnen werken',
+  'settings.ui.members.inviteScopeAll': 'Elk project in deze werkruimte',
+  'settings.ui.members.inviteScopeSelected': 'Alleen de projecten die ik selecteer',
   'settings.ui.members.inviteApprovals': 'Kan goedkeuringsverzoeken beslissen',
   'settings.ui.members.inviteApprovalsHelp':
     'Alleen rollen waarin beoordeling al is opgenomen, kunnen dit krijgen. Het staat los van bewerken.',
@@ -132,9 +133,9 @@ export const webSettingsMessages = {
   'settings.ui.members.inviteResend': 'Verstuur de uitnodiging opnieuw',
   'settings.ui.members.emptyTitle': 'Jij bent de enige persoon hier',
   'settings.ui.members.emptyBody':
-    'Nodig de mensen uit die de resultaten schrijven, goedkeuren of lezen. Ieder krijgt een rol en een merkbereik.',
+    'Nodig de mensen uit die de resultaten schrijven, goedkeuren of lezen. Ieder krijgt een rol en een projectbereik.',
   'settings.ui.members.emptyExample':
-    'Een veel voorkomende vorm: één eigenaar voor de facturering, één goedkeurder per merk en redacteuren die opstellen maar nooit publiceren.',
+    'Een veel voorkomende vorm: één eigenaar voor de facturering, één goedkeurder per project en redacteuren die opstellen maar nooit publiceren.',
   'settings.ui.members.roleReferenceTitle': 'Wat elke rol kan doen',
   'settings.ui.members.roleReferenceCaption': 'Rollen en de acties die elke rol toestaat',
   'settings.ui.members.roleColumn.role': 'Rol',
@@ -162,7 +163,7 @@ export const webSettingsMessages = {
   /* ----------------------------------------------------------------- projects */
 
   'settings.ui.projects.description':
-    'Een merk hanteert de regels waaraan inhoud wordt getoetst: wat je mag beweren, wat je niet mag zeggen en hoe elke taal is geschreven.',
+    'Een project hanteert de regels waaraan inhoud wordt getoetst: wat je mag beweren, wat je niet mag zeggen en hoe elke taal is geschreven.',
   'settings.ui.projects.listCaption': 'Projecten in deze werkruimte',
   'settings.ui.projects.column.project': 'Project',
   'settings.ui.projects.column.locales': 'Inhoud talen',
@@ -172,9 +173,9 @@ export const webSettingsMessages = {
     '{count, plural, =0 {Geen accounts} one {# account} other {# accounts}}',
   'settings.ui.projects.emptyTitle': 'Nog geen projecten',
   'settings.ui.projects.emptyBody':
-    'Een merk groepeert accounts, goedkeuringsregels en taalregels. De meeste teams beginnen met één en voegen er een tweede aan toe als een klant of een markt andere regels nodig heeft.',
+    'Een project groepeert accounts, goedkeuringsregels en taalregels. De meeste teams beginnen met één en voegen er een tweede aan toe als een klant of een markt andere regels nodig heeft.',
   'settings.ui.projects.emptyExample':
-    'Voorbeeld: merk "Acme EU", talen Engels en Duits, geblokkeerde term "gegarandeerd", vermelding "Betaald partnerschap" op Instagram.',
+    'Voorbeeld: project "Acme EU", talen Engels en Duits, geblokkeerde term "gegarandeerd", vermelding "Betaald partnerschap" op Instagram.',
   'settings.ui.projects.voiceHelp':
     'Hoe dit project klinkt. Wordt gebruikt wanneer u om herschrijving vraagt ​​en wanneer claims worden gecontroleerd.',
   'settings.ui.projects.audienceHelp': 'Voor wie is de content bedoeld, per markt.',
@@ -361,7 +362,7 @@ export const webSettingsMessages = {
   'developer.ui.agents.emptyBody':
     'Maak er één voor elke automatisering die u uitvoert. Afzonderlijke accounts betekenen dat u er één kunt intrekken zonder de andere te stoppen.',
   'developer.ui.agents.emptyExample':
-    'Voorbeeld: "Content agent", merk Acme EU, mag maximaal 6 berichten per dag opstellen en plannen tussen 07:00 en 22:00 uur, en publiceert nooit onmiddellijk.',
+    'Voorbeeld: "Content agent", project Acme EU, mag maximaal 6 berichten per dag opstellen en plannen tussen 07:00 en 22:00 uur, en publiceert nooit onmiddellijk.',
   'developer.ui.agents.step.identity': 'Naam en doel',
   'developer.ui.agents.step.scope': 'Wat het kan bereiken',
   'developer.ui.agents.step.limits': 'Grenzen',
@@ -587,8 +588,8 @@ export const webSettingsMessages = {
   'developer.ui.webhooks.eventGroup.publishing': 'Publiceren',
   'developer.ui.webhooks.eventGroup.automation': 'Automatisering en feeds',
   'developer.ui.webhooks.eventGroup.workspace': 'Workspace',
-  'developer.ui.webhooks.scopeTitle': "Project's en accounts",
-  'developer.ui.webhooks.scopeAll': 'Elk merk en account',
+  'developer.ui.webhooks.scopeTitle': 'Projecten en accounts',
+  'developer.ui.webhooks.scopeAll': 'Elk project en account',
   'developer.ui.webhooks.scopeSelected': 'Alleen degene die ik selecteer',
   'developer.ui.webhooks.secretTitle': 'Ondertekening geheim',
   'developer.ui.webhooks.secretBody':

@@ -16,7 +16,7 @@ export const statusMessages = {
   'empty.analytics.noPermission':
     'इस खाते ने एनालिटिक्स एक्सेस प्रदान नहीं किया है. इसे जोड़ने के लिए पुनः कनेक्ट करें.',
   'empty.approvals.title': 'कुछ भी आपका इंतजार नहीं कर रहा है',
-  'empty.approvals.body': 'आपके ब्रांड के लिए अनुमोदन अनुरोध यहां दिखाई देते हैं।',
+  'empty.approvals.body': 'आपकी परियोजनाओं के लिए अनुमोदन अनुरोध यहां दिखाई देते हैं।',
   'empty.library.title': 'आपकी लाइब्रेरी खाली है',
   'empty.library.body': 'छवियाँ और वीडियो अपलोड करें, या उन्हें URL या API से आयात करें।',
   'empty.library.action': 'मीडिया अपलोड करें',

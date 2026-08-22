@@ -226,7 +226,7 @@ export const webComposerMessages = {
   'composerWeb.signature.scope': 'Para sa {project} sa {provider} sa {language}',
   'composerWeb.signature.previewHeading': 'Paano ito nagtatapos sa post',
   'composerWeb.signature.notMatching':
-    'Ang lagda na ito ay saklaw sa ibang project, platform o wika, kaya hindi ito inaalok dito.',
+    'Ang lagda na ito ay saklaw sa ibang proyekto, platform o wika, kaya hindi ito inaalok dito.',
 
   // --------------------------------------------------------------- assist
   'composerWeb.assist.menuLabel': 'Tumulong sa tekstong ito',
@@ -352,7 +352,7 @@ export const webComposerMessages = {
   'mediaLib.loading': 'Nilo-load ang iyong media library',
   'mediaLib.permission.title': 'Hindi mo makikita ang workspace library na ito',
   'mediaLib.permission.body':
-    'Ang panonood ng media ay nangangailangan ng tungkulin ng manonood o mas mataas sa project na ito. Maaaring ibigay ito ng may-ari o admin.',
+    'Ang panonood ng media ay nangangailangan ng tungkulin ng manonood o mas mataas sa proyektong ito. Maaaring ibigay ito ng may-ari o admin.',
 
   'mediaLib.upload.heading': 'Magdagdag ng media',
   'mediaLib.upload.browse': 'Pumili ng mga file',

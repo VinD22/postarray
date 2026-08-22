@@ -223,7 +223,7 @@ export const webComposerMessages = {
   'composerWeb.signature.scope': 'Voor {project} op {provider} in {language}',
   'composerWeb.signature.previewHeading': 'Hoe het bericht eindigt',
   'composerWeb.signature.notMatching':
-    'Deze handtekening is bedoeld voor een ander merk, platform of taal en wordt daarom hier niet aangeboden.',
+    'Deze handtekening is bedoeld voor een ander project, platform of taal en wordt daarom hier niet aangeboden.',
 
   // --------------------------------------------------------------- assist
   'composerWeb.assist.menuLabel': 'Help mee met deze tekst',
@@ -342,7 +342,7 @@ export const webComposerMessages = {
   'mediaLib.loading': 'Uw mediabibliotheek laden',
   'mediaLib.permission.title': 'U kunt deze werkruimtebibliotheek niet zien',
   'mediaLib.permission.body':
-    'Voor het bekijken van media is de kijkersrol of hoger bij dit merk vereist. Een eigenaar of beheerder kan dit verlenen.',
+    'Voor het bekijken van media is de kijkersrol of hoger bij dit project vereist. Een eigenaar of beheerder kan dit verlenen.',
 
   'mediaLib.upload.heading': 'Media toevoegen',
   'mediaLib.upload.browse': 'Kies bestanden',

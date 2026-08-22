@@ -61,7 +61,7 @@ export const webCalendarMessages = {
   'web.calendar.nowLabel': 'Sekarang',
   'web.calendar.allDayHeading': 'Belum ada waktu pastinya',
   'web.calendar.filter.group': 'Kelompok pelanggan',
-  'web.calendar.filter.anyProject': 'Merek apa pun',
+  'web.calendar.filter.anyProject': 'Proyek apa pun',
   'web.calendar.filter.anyAccount': 'Akun apa pun',
   'web.calendar.filter.anyPlatform': 'Platform apa pun',
   'web.calendar.filter.anyStatus': 'Status apa pun',
@@ -167,7 +167,7 @@ export const webCalendarMessages = {
   'web.calendar.permission.requirementsLabel': 'Ruang lingkup yang diperlukan',
   'web.calendar.permission.title': 'Anda tidak dapat melihat kalender ini',
   'web.calendar.permission.body':
-    'Akses kalender diberikan per merek. Akun Anda tidak termasuk dalam merek dalam tampilan ini.',
+    'Akses kalender diberikan per proyek. Akun Anda tidak termasuk dalam proyek dalam tampilan ini.',
   'web.receipt.breadcrumb.calendar': 'Kalender',
   'web.receipt.breadcrumb.post': 'Posting',
   'web.receipt.heading': '{title}',
@@ -379,7 +379,7 @@ export const webCalendarMessages = {
     'Grup memfilter kalender dan analitik. Memindahkan akun akan menyimpan semua postingan, tanda terima, dan metrik yang sudah dimilikinya.',
   'web.connection.group.empty.title': 'Belum ada grup pelanggan',
   'web.connection.group.empty.body':
-    'Grup adalah klien atau merek. Kelompokkan akun untuk memfilter kalender dan analitik berdasarkan pelanggan.',
+    'Grup adalah klien atau proyek. Kelompokkan akun untuk memfilter kalender dan analitik berdasarkan pelanggan.',
   'web.connection.incident.title': 'Akun ini perlu mendapat perhatian',
   'web.connection.incident.remediationHeading': 'Apa yang harus dilakukan',
   'web.connection.incident.scheduledOnHold':

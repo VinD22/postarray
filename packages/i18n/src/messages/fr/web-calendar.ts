@@ -86,7 +86,7 @@ export const webCalendarMessages = {
   'web.calendar.allDayHeading': "Pas encore d'heure exacte",
 
   'web.calendar.filter.group': 'Groupe de clients',
-  'web.calendar.filter.anyProject': "N'importe quelle marque",
+  'web.calendar.filter.anyProject': "N'importe quel projet",
   'web.calendar.filter.anyAccount': "N'importe quel compte",
   'web.calendar.filter.anyPlatform': "N'importe quelle plateforme",
   'web.calendar.filter.anyStatus': "N'importe quel statut",
@@ -200,7 +200,7 @@ export const webCalendarMessages = {
   'web.calendar.permission.requirementsLabel': 'Portée requise',
   'web.calendar.permission.title': 'Vous ne pouvez pas voir ce calendrier',
   'web.calendar.permission.body':
-    "L’accès au calendrier est accordé par marque. Votre compte n'est pas sur les marques dans cette vue.",
+    "L'accès au calendrier est accordé par projet. Votre compte ne figure sur aucun des projets de cette vue.",
 
   /* ---------------------------------------------------------------------
    * Post job and publication receipt
@@ -441,11 +441,17 @@ export const webCalendarMessages = {
     'Un groupe filtre le calendrier et les analyses. Le déplacement d’un compte conserve toutes les publications, reçus et statistiques dont il dispose déjà.',
   'web.connection.group.empty.title': "Aucun groupe de clients pour l'instant",
   'web.connection.group.empty.body':
-    'Un groupe est un client ou une marque. Regroupez les comptes pour filtrer le calendrier et les analyses par client.',
+    'Un projet réunit un produit ou un client et ses comptes connectés dans le calendrier et les analyses.',
 
   'web.connection.incident.title': "Ce compte a besoin d'attention",
   'web.connection.incident.remediationHeading': "Ce qu'il faut faire",
   'web.connection.incident.scheduledOnHold':
     '{count, plural, one {# post programmé est en attente} many {# posts programmés sont en attente} other {# posts programmés sont en attente}} pour ce compte.',
   'web.connection.incident.nothingLost': "Rien n'est perdu et rien n'est dupliqué.",
+  'web.connection.projectScope.title': 'Affichage des canaux de {project}',
+  'web.connection.projectScope.body':
+    'Les nouveaux canaux se connectent à ce projet. Changez de projet dans la barre du haut pour gérer un autre ensemble.',
+  'web.connection.projectMissing.title': 'Créez un projet avant de connecter un canal',
+  'web.connection.projectMissing.body':
+    'Les projets gardent séparés les canaux, les médias, les brouillons et les calendriers de produits ou de clients différents.',
 } as const;

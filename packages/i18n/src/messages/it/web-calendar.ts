@@ -86,7 +86,7 @@ export const webCalendarMessages = {
   'web.calendar.allDayHeading': "Non c'è ancora l'ora esatta",
 
   'web.calendar.filter.group': 'Gruppo di clienti',
-  'web.calendar.filter.anyProject': 'Qualsiasi marca',
+  'web.calendar.filter.anyProject': 'Qualsiasi progetto',
   'web.calendar.filter.anyAccount': 'Qualsiasi conto',
   'web.calendar.filter.anyPlatform': 'Qualsiasi piattaforma',
   'web.calendar.filter.anyStatus': 'Qualsiasi stato',
@@ -199,7 +199,7 @@ export const webCalendarMessages = {
   'web.calendar.permission.requirementsLabel': 'Ambito richiesto',
   'web.calendar.permission.title': 'Non puoi vedere questo calendario',
   'web.calendar.permission.body':
-    "L'accesso al calendario è concesso per marchio. Il tuo account non è presente sui marchi in questa visualizzazione.",
+    "L'accesso al calendario è concesso per progetto. Il tuo account non è presente sui progetti in questa visualizzazione.",
 
   /* ---------------------------------------------------------------------
    * Post job and publication receipt
@@ -365,10 +365,10 @@ export const webCalendarMessages = {
     "Il collegamento di un account non pubblica nulla. Ogni post segue ancora questa politica di approvazione dell'area di lavoro.",
   'web.connection.projectScope.title': 'Canali per {project}',
   'web.connection.projectScope.body':
-    'I nuovi canali si collegano a questo marchio. Cambia marchio dalla barra superiore per gestirne un altro insieme.',
-  'web.connection.projectMissing.title': 'Crea un marchio prima di collegare un canale',
+    'I nuovi canali si collegano a questo progetto. Cambia progetto dalla barra superiore per gestirne un altro insieme.',
+  'web.connection.projectMissing.title': 'Crea un progetto prima di collegare un canale',
   'web.connection.projectMissing.body':
-    'I marchi tengono separati canali, media, bozze e programmazioni di prodotti o clienti diversi.',
+    'I progetti tengono separati canali, media, bozze e programmazioni di prodotti o clienti diversi.',
 
   'web.connection.requirement.instagram':
     'La pubblicazione su Instagram richiede un account professionale, ovvero un account aziendale o creativo collegato a una pagina Facebook.',
@@ -446,7 +446,7 @@ export const webCalendarMessages = {
     'Un gruppo filtra il calendario e le analisi. Lo spostamento di un account mantiene tutti i post, le ricevute e le metriche già presenti.',
   'web.connection.group.empty.title': 'Nessun gruppo di clienti ancora',
   'web.connection.group.empty.body':
-    'Un gruppo è un cliente o un marchio. Account di gruppo per filtrare il calendario e le analisi per cliente.',
+    'Un gruppo è un cliente o un progetto. Account di gruppo per filtrare il calendario e le analisi per cliente.',
 
   'web.connection.incident.title': 'Questo account richiede attenzione',
   'web.connection.incident.remediationHeading': 'Cosa fare',

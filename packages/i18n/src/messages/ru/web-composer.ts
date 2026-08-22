@@ -223,7 +223,7 @@ export const webComposerMessages = {
   'composerWeb.signature.scope': 'Для {project} на {provider} в {language}',
   'composerWeb.signature.previewHeading': 'Чем заканчивается пост',
   'composerWeb.signature.notMatching':
-    'Эта подпись привязана к другому бренду, платформе или языку, поэтому здесь она не предлагается.',
+    'Эта подпись привязана к другому проекту, платформе или языку, поэтому здесь она не предлагается.',
 
   // --------------------------------------------------------------- assist
   'composerWeb.assist.menuLabel': 'Помогите с этим текстом',
@@ -342,7 +342,7 @@ export const webComposerMessages = {
   'mediaLib.loading': 'Загрузка вашей медиатеки',
   'mediaLib.permission.title': 'Вы не можете видеть эту библиотеку рабочей области.',
   'mediaLib.permission.body':
-    'Для просмотра медиа требуется роль зрителя или выше в этом бренде. Владелец или администратор может предоставить его.',
+    'Для просмотра медиа требуется роль зрителя или выше в этом проекте. Владелец или администратор может предоставить его.',
 
   'mediaLib.upload.heading': 'Добавить медиа',
   'mediaLib.upload.browse': 'Выберите файлы',

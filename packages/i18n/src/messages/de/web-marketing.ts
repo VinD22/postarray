@@ -161,7 +161,7 @@ export const webMarketingMessages = {
     'Jeder externe Schreibvorgang trägt einen Idempotenzschlüssel, sodass ein Worker-Absturz, nachdem die Plattform einen Beitrag angenommen hat, keinen zweiten erstellt.',
   'web.home.pillars.adapt.title': 'Anpassen statt duplizieren',
   'web.home.pillars.adapt.body':
-    'Plattformspezifische Varianten, mit denen Sie jeweils ein Konto überschreiben können, und Transkreation statt wörtlicher Übersetzung, mit einem Markenglossar und einem benannten Prüfer pro Sprache.',
+    'Plattformspezifische Varianten, mit denen Sie jeweils ein Konto überschreiben können, und Transkreation statt wörtlicher Übersetzung, mit einem Projektglossar und einem benannten Prüfer pro Sprache.',
   'web.home.pillars.adapt.proof':
     'Die Benutzeroberfläche ist in ausgewählten Sprachen verfügbar. Die Inhaltsanpassung umfasst 30 Inhaltssprachen und jede einzelne davon kann vor der Veröffentlichung überprüft werden.',
   'web.home.pillars.loop.title': 'Schließen Sie den Kreislauf',
@@ -311,7 +311,7 @@ export const webMarketingMessages = {
     'Die Masterversion trägt die Idee. Jedes Konto erhält die Länge, den Zuschnitt, die Einstellungen und den Ton, die die Plattform erwartet, und Sie können sie alle nebeneinander sehen, bevor Sie sich verpflichten.',
   'web.creators.job.languages.title': 'Veröffentlichen Sie in einer anderen Sprache, ohne zu raten',
   'web.creators.job.languages.body':
-    'Die Transkreation behält die Absicht und nicht die Worte bei, verwendet Ihr Markenglossar und markiert, ob ein nativer Rezensent es gelesen hat. Nichts wird in einer Sprache veröffentlicht, für die Sie nicht bürgen können, es sei denn, Sie sagen es.',
+    'Die Transkreation behält die Absicht und nicht die Worte bei, verwendet Ihr Projektglossar und markiert, ob ein muttersprachlicher Prüfer es gelesen hat. Nichts wird in einer Sprache veröffentlicht, für die Sie nicht bürgen können, es sei denn, Sie sagen es.',
   'web.creators.job.rights.title': 'Bewahren Sie Ihr Rechteverzeichnis mit der Akte auf',
   'web.creators.job.rights.body':
     'In den Medien ist angegeben, woher sie stammen, wer die Rechte besitzt und ob sie mit einem generativen Werkzeug erstellt wurden. Plattformen fragen zunehmend nach. Relay speichert Ihre Antwort mit dem Asset, anstatt Sie erneut zu fragen.',
@@ -336,7 +336,7 @@ export const webMarketingMessages = {
     'Für jede Veröffentlichung wird eine unveränderliche Quittung mit der externen Beitrags-ID und dem vollständigen Versuchsverlauf erstellt. Wenn ein Kunde fragt, ob um neun etwas ausgefallen ist, sind an die Antwort ein Zeitstempel und eine Plattformkennung angehängt.',
   'web.agencies.job.roles.title': 'Rollen, die zur Arbeitsaufteilung passen',
   'web.agencies.job.roles.body':
-    'Eigentümer, Administrator, Manager, Redakteur, Genehmiger, Analyst und Betrachter, je Marke und Konto. Unbegrenzte Teammitglieder, da die Abrechnung pro Sitzplatz dazu führt, dass Agenturen Logins teilen, und das ein Sicherheitsproblem darstellt.',
+    'Eigentümer, Administrator, Redakteur, Genehmiger, Analyst und Betrachter, je Projekt und Konto. Jeder Arbeitsbereich umfasst den Eigentümer und bis zu 5 Teammitglieder. Jede Aktion wird der Person zugeordnet, die sie ausgeführt hat.',
   'web.agencies.limits.title': 'Die Grenze, klar ausgedrückt',
   'web.agencies.limits.body':
     'Ein Plan deckt 30 aktive soziale Kanäle ab. Ein Kanal ist ein soziales Konto, eine Seite, ein Profil, eine Gruppe oder eine Publikationsverbindung. Wenn Sie mehr als 30 benötigen, sagen Sie uns, was Sie brauchen, und wir geben Ihnen eine klare Antwort und keine versteckte Ebene.',
@@ -514,7 +514,7 @@ export const webMarketingMessages = {
     'Ein Backend, vier Wege hinein. Jeder Abschnitt dokumentiert die gleichen Anwendungsfälle, sodass ein Konzept, das Sie in der REST-API lernen, dasselbe Konzept in MCP und in der CLI ist.',
   'web.docs.section.start.title': 'Erste Schritte',
   'web.docs.section.start.body':
-    'Authentifizierung, Arbeitsbereiche, Marken und Ihr erster veröffentlichter Beitrag.',
+    'Authentifizierung, Arbeitsbereiche, Projekte und Ihr erster veröffentlichter Beitrag.',
   'web.docs.section.api.title': 'REST-API',
   'web.docs.section.api.body':
     'Ressourcen, Paginierung, Idempotenz, Fehlercodes und Ratenbeschränkungen.',

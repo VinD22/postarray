@@ -9,7 +9,7 @@
 export const queueMessages = {
   'queue.title': 'Fronta publikování',
   'queue.subtitle':
-    'Kdy je tato značka ochotná publikovat a s jakým odstupem. Nic se nepublikuje, dokud to v daném čase někdo neschválí.',
+    'Kdy je tento projekt ochoten publikovat a s jakým odstupem. Nic se nepublikuje, dokud to v daném čase někdo neschválí.',
 
   'queue.rules.heading': 'Pravidla fronty',
   'queue.rules.empty':
@@ -43,7 +43,7 @@ export const queueMessages = {
 
   'queue.windows.heading': 'Týdenní okna',
   'queue.windows.help':
-    'Vyberte místní hodiny, ve kterých tato značka smí publikovat. Použijte pole dne a času, nebo tlačítka v mřížce.',
+    'Vyberte místní hodiny, ve kterých tento projekt smí publikovat. Použijte pole dne a času, nebo tlačítka v mřížce.',
   'queue.windows.empty': 'Zatím žádná okna. Pravidlo bez okna nikdy nemůže nabídnout termín.',
   'queue.windows.add': 'Přidat okno',
   'queue.windows.remove': 'Odebrat okno',
@@ -64,7 +64,7 @@ export const queueMessages = {
 
   'queue.blackouts.heading': 'Data blackoutu',
   'queue.blackouts.help':
-    'Data, kdy tato značka nebude publikovat, čtená v časovém pásmu pravidla.',
+    'Data, kdy tento projekt nebude publikovat, čtená v časovém pásmu pravidla.',
   'queue.blackouts.empty': 'Žádná data blackoutu.',
   'queue.blackouts.add': 'Přidat blackout',
   'queue.blackouts.remove': 'Odebrat blackout',
@@ -73,7 +73,7 @@ export const queueMessages = {
   'queue.blackouts.entry': 'Od {from} do {to}',
 
   'queue.connections.heading': 'Účty',
-  'queue.connections.all': 'Každý účet v této značce',
+  'queue.connections.all': 'Každý účet v tomto projektu',
   'queue.connections.scoped':
     '{count, plural, one {# účet} few {# účty} many {# účtu} other {# účtů}}, na které se toto pravidlo vztahuje',
 
@@ -91,7 +91,7 @@ export const queueMessages = {
   'queue.slot.notAutomatic': 'Nic není naplánováno, dokud tento čas nevyberete.',
 
   'queue.reason.noRulesConfigured':
-    'Tato značka nemá nastavená žádná pravidla fronty, takže nebylo použito žádné okno.',
+    'Tento projekt nemá nastavená žádná pravidla fronty, takže nebylo použito žádné okno.',
   'queue.reason.fallbackFirstFreeHour': 'Místo toho byla použita první volná hodina od teď.',
   'queue.reason.matchedRule': 'Pravidlo {name} vybralo tento čas, v pásmu {zone}.',
   'queue.reason.matchedWindow': 'Spadá do okna od {start} do {end} v pásmu {zone}.',

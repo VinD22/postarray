@@ -73,4 +73,14 @@ export const authMessages = {
   'auth.rateLimited':
     'Demasiados intentos. Inténtalo de nuevo in {minutes, plural, one {# minutos} many {# minutos} other {# minutos}}.',
   'auth.genericFailure': 'Eso no funcionó. Verifique los detalles y vuelva a intentarlo.',
+  'auth.newPassword.help':
+    'Elige una contraseña que no hayas usado aquí antes. Te da acceso en todos los dispositivos.',
+  'auth.newPassword.label': 'Nueva contraseña',
+  'auth.newPassword.confirmLabel': 'Confirma la nueva contraseña',
+  'auth.newPassword.mismatch': 'Las dos contraseñas no coinciden.',
+  'auth.newPassword.submit': 'Guardar la nueva contraseña',
+  'auth.newPassword.linkMissing': 'Esta página necesita el enlace del correo de restablecimiento.',
+  'auth.newPassword.linkInvalid': 'Este enlace de restablecimiento caducó o ya se usó.',
+  'auth.newPassword.linkInvalidAction': 'Solicitar un enlace nuevo',
+  'auth.newPassword.signInNow': 'Iniciar sesión',
 } as const;

@@ -27,7 +27,7 @@ export const webSettingsMessages = {
   'settings.ui.section.members': 'Mitglieder und Rollen',
   'settings.ui.section.membersSummary':
     'Wer ist in diesem Arbeitsbereich und was kann jede Person tun?',
-  'settings.ui.section.projects': 'Marken',
+  'settings.ui.section.projects': 'Projekte',
   'settings.ui.section.projectsSummary':
     'Stimme, Zielgruppe, genehmigte Ansprüche, blockierte Begriffe, Gebietsschemaregeln, Domänen und das Glossar.',
   'settings.ui.section.agents': 'Agenten und API',
@@ -53,7 +53,7 @@ export const webSettingsMessages = {
     'Sitzungen, Zwei-Faktor-Authentifizierung, Anmeldeinformationen, Agenten, Webhooks und App-Zuweisungen.',
   'settings.ui.section.data': 'Datenkontrollen',
   'settings.ui.section.dataSummary':
-    'Exportieren, eine Verbindung widerrufen, eine Marke löschen, Inhalte löschen oder das Konto schließen.',
+    'Finden Sie die richtige Stelle, um eine Verbindung zu trennen, ein Projekt zu archivieren oder Inhalte zu löschen.',
 
   /* ------------------------------------------------------- shared UI states */
 
@@ -105,11 +105,13 @@ export const webSettingsMessages = {
   'settings.ui.members.column.approvals': 'Zulassungen',
   'settings.ui.members.column.lastActive': 'Zuletzt aktiv',
   'settings.ui.members.column.actions': 'Aktionen',
-  'settings.ui.members.scopeAll': 'Alle Marken und Konten',
-  'settings.ui.members.scopeLimited': '{count, plural, one {# Marke} other {# Marken}}: {names}',
+  'settings.ui.members.scopeAll': 'Alle Projekte und Konten',
+  'settings.ui.members.scopeLimited':
+    '{count, plural, one {# Projekt} other {# Projekte}}: {names}',
   'settings.ui.members.approvals.canApprove': 'Kann zustimmen',
   'settings.ui.members.approvals.cannotApprove': 'Kann nicht genehmigt werden',
-  'settings.ui.members.approvals.canApproveOwnProjects': 'Kann die aufgeführten Marken genehmigen',
+  'settings.ui.members.approvals.canApproveOwnProjects':
+    'Kann für die aufgeführten Projekte genehmigen',
   'settings.ui.members.lastActiveNever': 'Hat sich noch nicht angemeldet',
   'settings.ui.members.changeRole': 'Ändern Sie die Rolle für {name}',
   'settings.ui.members.remove': 'Entfernen Sie {name}',
@@ -120,9 +122,9 @@ export const webSettingsMessages = {
   'settings.ui.members.inviteBody':
     'Sie erhalten eine E-Mail mit einem Link. Die Einladung läuft nach sieben Tagen ab und Sie können sie bis dahin widerrufen.',
   'settings.ui.members.inviteRole': 'Rolle',
-  'settings.ui.members.inviteScope': 'Marken, mit denen sie arbeiten können',
-  'settings.ui.members.inviteScopeAll': 'Jede Marke in diesem Arbeitsbereich',
-  'settings.ui.members.inviteScopeSelected': 'Nur die Marken, die ich auswähle',
+  'settings.ui.members.inviteScope': 'Projekte, in denen sie arbeiten können',
+  'settings.ui.members.inviteScopeAll': 'Jedes Projekt in diesem Arbeitsbereich',
+  'settings.ui.members.inviteScopeSelected': 'Nur die Projekte, die ich auswähle',
   'settings.ui.members.inviteApprovals': 'Kann über Genehmigungsanfragen entscheiden',
   'settings.ui.members.inviteApprovalsHelp':
     'Dies können nur Rollen erhalten, die bereits eine Überprüfung beinhalten. Es ist von der Bearbeitung getrennt.',
@@ -132,9 +134,9 @@ export const webSettingsMessages = {
   'settings.ui.members.inviteResend': 'Senden Sie die Einladung erneut',
   'settings.ui.members.emptyTitle': 'Du bist die einzige Person hier',
   'settings.ui.members.emptyBody':
-    'Laden Sie die Personen ein, die Ergebnisse schreiben, genehmigen oder lesen. Jeder bekommt eine Rolle und einen Markenumfang.',
+    'Laden Sie die Personen ein, die Ergebnisse schreiben, genehmigen oder lesen. Jede Person erhält eine Rolle und einen Projektumfang.',
   'settings.ui.members.emptyExample':
-    'Eine gemeinsame Form: ein Eigentümer für die Abrechnung, ein Genehmiger pro Marke und Redakteure, die Entwürfe entwerfen, aber nie veröffentlichen.',
+    'Eine übliche Form: ein Eigentümer für die Abrechnung, ein Genehmiger pro Projekt und Redakteure, die Entwürfe schreiben, aber nie veröffentlichen.',
   'settings.ui.members.roleReferenceTitle': 'Was jede Rolle tun kann',
   'settings.ui.members.roleReferenceCaption': 'Rollen und die Aktionen, die jede einzelne zulässt',
   'settings.ui.members.roleColumn.role': 'Rolle',
@@ -164,28 +166,28 @@ export const webSettingsMessages = {
   /* ----------------------------------------------------------------- projects */
 
   'settings.ui.projects.description':
-    'Eine Marke unterliegt den Regeln, anhand derer Inhalte überprüft werden: was Sie behaupten dürfen, was Sie nicht sagen dürfen und wie die einzelnen Sprachen geschrieben sind.',
-  'settings.ui.projects.listCaption': 'Marken in diesem Arbeitsbereich',
-  'settings.ui.projects.column.project': 'Marke',
+    'Halten Sie jedes Produkt, jeden Kunden, jede Publikation und jedes Vorhaben getrennt. Jedes Projekt hat eigene Kanäle, Medien, Entwürfe, Zeitpläne und Veröffentlichungsregeln.',
+  'settings.ui.projects.listCaption': 'Projekte in diesem Arbeitsbereich',
+  'settings.ui.projects.column.project': 'Projekt',
   'settings.ui.projects.column.locales': 'Inhaltssprachen',
   'settings.ui.projects.column.accounts': 'Konten',
   'settings.ui.projects.column.updated': 'Aktualisiert',
   'settings.ui.projects.accountCount':
     '{count, plural, =0 {Keine Konten} one {# Konto} other {# Konten}}',
-  'settings.ui.projects.emptyTitle': 'Noch keine Marken',
+  'settings.ui.projects.emptyTitle': 'Erstellen Sie Ihr erstes Projekt',
   'settings.ui.projects.emptyBody':
-    'Eine Marke gruppiert Konten, Genehmigungsregeln und Sprachregeln. Die meisten Teams beginnen mit einer und fügen eine zweite hinzu, wenn ein Kunde oder ein Markt andere Regeln benötigt.',
+    'Ein Projekt hält ein Produkt oder einen Kunden über seine sozialen Kanäle hinweg synchron, ohne Medien, Entwürfe oder Zeitpläne mit einem anderen Projekt zu vermischen.',
   'settings.ui.projects.emptyExample':
-    'Beispiel: Marke „Acme EU“, Sprachen Englisch und Deutsch, gesperrter Begriff „garantiert“, Offenlegung „Bezahlte Partnerschaft“ auf für Instagram.',
+    'Beispiel: Acme App, Acme Podcast und Kunde Northwind können drei getrennte Projekte in einem Arbeitsbereich sein.',
   'settings.ui.projects.voiceHelp':
-    'Wie diese Marke klingt. Wird verwendet, wenn Sie um eine Neufassung bitten und wenn Ansprüche überprüft werden.',
+    'Wie dieses Projekt klingen soll. Wird als Leitfaden für die Prüfung und für die Prüfung von Aussagen verwendet.',
   'settings.ui.projects.audienceHelp': 'Für wen der Inhalt gedacht ist, pro Markt.',
   'settings.ui.projects.approvedClaimsHelp':
     'Aussagen, die ein Rezensent freigegeben hat. Alles außerhalb dieser Liste wird vor der Genehmigung markiert, nicht nach der Veröffentlichung.',
   'settings.ui.projects.blockedTermsHelp':
-    'Wörter, die die Terminplanung für diese Marke blockieren. Eine pro Zeile.',
+    'Wörter, die die Terminplanung für dieses Projekt blockieren. Ein Wort pro Zeile.',
   'settings.ui.projects.domainsHelp':
-    'Domains, auf die diese Marke möglicherweise verlinkt und die durch diese gekürzt werden. Im Composer können nur verifizierte Domains ausgewählt werden.',
+    'Domains, auf die dieses Projekt verlinken und über die es kürzen darf. Im Composer können nur verifizierte Domains ausgewählt werden.',
   'settings.ui.projects.domainVerified': 'Verifiziert {date}',
   'settings.ui.projects.domainPending': 'DNS-Eintrag noch nicht gesehen',
   'settings.ui.projects.disclosureHelp':
@@ -197,7 +199,7 @@ export const webSettingsMessages = {
     'Noch keine geschützten Begriffe. Fügen Sie Produktnamen und Rechtsbegriffe hinzu, die nicht übersetzt oder umformuliert werden dürfen.',
   'settings.ui.projects.localeRulesHelp':
     'Regeln pro Inhaltssprache. Sie werden beim Anpassen oder Transkreieren angewendet und dem Prüfer angezeigt.',
-  'settings.ui.projects.saveProject': 'Marke speichern',
+  'settings.ui.projects.saveProject': 'Projekt speichern',
 
   /* ------------------------------------------------------------ localization */
 
@@ -334,7 +336,7 @@ export const webSettingsMessages = {
   'developer.ui.agents.emptyBody':
     'Erstellen Sie eine für jede von Ihnen ausgeführte Automatisierung. Separate Konten bedeuten, dass Sie eines widerrufen können, ohne die anderen zu sperren.',
   'developer.ui.agents.emptyExample':
-    'Beispiel: „Content-Agent“, Marke Acme EU, kann bis zu 6 Beiträge pro Tag zwischen 07:00 und 22:00 Uhr verfassen und planen, veröffentlicht jedoch nie sofort.',
+    'Beispiel: „Content-Agent“, Projekt Acme EU, kann bis zu 6 Beiträge pro Tag zwischen 07:00 und 22:00 Uhr verfassen und planen, veröffentlicht jedoch nie sofort.',
   'developer.ui.agents.step.identity': 'Name und Zweck',
   'developer.ui.agents.step.scope': 'Was es erreichen kann',
   'developer.ui.agents.step.limits': 'Grenzen',
@@ -566,8 +568,8 @@ export const webSettingsMessages = {
   'developer.ui.webhooks.eventGroup.publishing': 'Veröffentlichung',
   'developer.ui.webhooks.eventGroup.automation': 'Automatisierung und Feeds',
   'developer.ui.webhooks.eventGroup.workspace': 'Arbeitsbereich',
-  'developer.ui.webhooks.scopeTitle': 'Marken und Konten',
-  'developer.ui.webhooks.scopeAll': 'Jede Marke und jedes Konto',
+  'developer.ui.webhooks.scopeTitle': 'Projekte und Konten',
+  'developer.ui.webhooks.scopeAll': 'Jedes Projekt und jedes Konto',
   'developer.ui.webhooks.scopeSelected': 'Nur die, die ich auswähle',
   'developer.ui.webhooks.secretTitle': 'Unterzeichnungsgeheimnis',
   'developer.ui.webhooks.secretBody':
@@ -912,4 +914,32 @@ export const webSettingsMessages = {
   'growth.ui.export.schemaNote':
     'Alle drei Formate stammen aus einem validierten Schema, Version {version}. Die strukturierten Ansichten sind sicher für die Quellcodeverwaltung und enthalten keine Geheimnisse.',
   'growth.ui.export.previewLabel': 'Vorschau exportieren',
+  'settings.ui.projects.domainVerificationUnavailable': 'Die Verifizierung ist noch nicht gebaut',
+  'settings.ui.projects.disclosureUnavailable':
+    'Offenlegungsvorgaben pro Kanal sind noch nicht gebaut. Fügen Sie die erforderliche Offenlegung so lange im Beitrag hinzu.',
+  'settings.ui.projects.glossaryUnavailable':
+    'Das Glossar des Arbeitsbereichs ist noch nicht gebaut. Stimme, Zielgruppe, freigegebene Aussagen und gesperrte Begriffe oben werden gespeichert und durchgesetzt.',
+  'settings.ui.projects.localeRulesUnavailable':
+    'Schreibregeln pro Sprache sind noch nicht gebaut. Sprachen und Märkte des Arbeitsbereichs bleiben unter Lokalisierung verfügbar.',
+  'settings.ui.projects.capacityTitle': 'Projektkapazität',
+  'settings.ui.projects.capacitySummary': '{used} von {limit}',
+  'settings.ui.projects.atLimitTitle': 'Dieser Arbeitsbereich hat jeden Projektplatz belegt',
+  'settings.ui.projects.atLimitBody':
+    'Archivieren Sie ein inaktives Projekt oder ändern Sie die Berechtigung des Arbeitsbereichs, bevor Sie ein weiteres hinzufügen. Das aktuelle Limit ist {limit}.',
+  'settings.ui.projects.listLabel': 'Wählen Sie ein Projekt zum Bearbeiten',
+  'settings.ui.projects.detailsTitle': 'Projektdetails',
+  'settings.ui.projects.projectMeta':
+    '{accounts, plural, =0 {Keine Kanäle} one {# Kanal} other {# Kanäle}} · Aktualisiert {updated}',
+  'settings.ui.projects.archiveAction': 'Projekt archivieren',
+  'settings.ui.projects.archiveTitle': '{project} archivieren?',
+  'settings.ui.projects.archiveBody':
+    'Dieses inaktive Projekt verlässt den aktiven Arbeitsbereich und gibt einen Projektplatz frei.',
+  'settings.ui.projects.archiveChannels':
+    'Seine verbundenen Kanäle erscheinen nicht mehr in den Abläufen aktiver Projekte.',
+  'settings.ui.projects.archiveHistory':
+    'Entwürfe, veröffentlichte Beiträge, Belege und Prüfhistorie bleiben erhalten.',
+  'settings.ui.projects.archiveLastDisabled':
+    'Behalten Sie mindestens ein aktives Projekt im Arbeitsbereich.',
+  'settings.ui.projects.archiveConnectedDisabled':
+    'Trennen Sie die Kanäle dieses Projekts, bevor Sie es archivieren.',
 } as const;

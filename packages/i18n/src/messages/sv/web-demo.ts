@@ -25,7 +25,7 @@ export const webDemoMessages = {
 
   'web.meta.demo.title': 'Se hur Relay fungerar',
   'web.meta.demo.description':
-    'En guidad rundtur genom publiceringsarbetsflödet, från ett nytt varumärke till kvittot, visad i det verkliga gränssnittet med exempelinnehåll. Inget publiceras än, och rundturen visar var den gränsen går.',
+    'En guidad rundtur genom publiceringsarbetsflödet, från ett nytt projekt till kvittot, visad i det verkliga gränssnittet med exempelinnehåll. Inget publiceras än, och rundturen visar var den gränsen går.',
 
   'web.demo.nav.label': 'Se det i action',
   'web.demo.nav.summary':
@@ -73,9 +73,9 @@ export const webDemoMessages = {
   /* The nine steps                                                          */
   /* ---------------------------------------------------------------------- */
 
-  'web.demo.step.project.title': 'Skapa ett varumärke',
+  'web.demo.step.project.title': 'Skapa ett projekt',
   'web.demo.step.project.body':
-    'Ett varumärke rymmer konton, utkast, godkännanden och en tidszon. Varje fråga i produkten är begränsad till ett, i applikationstjänsten och igen i databasen, så en kund kan inte se en annan kund av misstag.',
+    'Ett projekt rymmer konton, utkast, godkännanden och en tidszon. Varje fråga i produkten är begränsad till ett, i applikationstjänsten och igen i databasen, så en kund kan inte se en annan kund av misstag.',
 
   'web.demo.step.connect.title': 'Anslut ett konto',
   'web.demo.step.connect.body':
@@ -91,7 +91,7 @@ export const webDemoMessages = {
 
   'web.demo.step.schedule.title': 'Ge det en tid, eller lämna det till kön',
   'web.demo.step.schedule.body':
-    'En tid lagras som ett ögonblick plus varumärkets tidszon, aldrig som en naiv lokal tid, så en sommartidsändring flyttar inget under dig. Kön är den andra vägen: den tar nästa plats som dina regler tillåter.',
+    'En tid lagras som ett ögonblick plus projektets tidszon, aldrig som en naiv lokal tid, så en sommartidsändring flyttar inget under dig. Kön är den andra vägen: den tar nästa plats som dina regler tillåter.',
 
   'web.demo.step.calendar.title': 'Titta på kalendern',
   'web.demo.step.calendar.body':
@@ -105,18 +105,18 @@ export const webDemoMessages = {
   /* Panel labels                                                            */
   /* ---------------------------------------------------------------------- */
 
-  'web.demo.project.label': 'Varumärke',
+  'web.demo.project.label': 'Projekt',
   'web.demo.project.zone': 'Tidszon: {zone}',
   'web.demo.project.scope':
-    'Utkast, konton, godkännanden och kvitton hör till detta varumärke och ingen annanstans.',
+    'Utkast, konton, godkännanden och kvitton hör till detta projekt och ingen annanstans.',
 
-  'web.demo.accounts.label': 'Konton i detta varumärke',
+  'web.demo.accounts.label': 'Konton i detta projekt',
   'web.demo.accounts.state': 'Verifiering inte klar',
   'web.demo.accounts.note':
     'Varje rad skulle bära tokenhälsa, beviljade behörigheter och det senaste lyckade inlägget. Ingen av dem kan publicera idag.',
 
   'web.demo.master.label': 'Huvudutkast',
-  'web.demo.master.project': 'I varumärket {project}',
+  'web.demo.master.project': 'I projektet {project}',
 
   'web.demo.variants.label': 'Vad varje konto får',
 
@@ -127,7 +127,7 @@ export const webDemoMessages = {
     'Kön är den andra vägen: den väljer nästa plats dina regler tillåter, i denna tidszon.',
 
   'web.demo.week.label': 'Veckan',
-  'web.demo.week.caption': 'Samma tre inlägg i kalendern, lästa i varumärkets tidszon.',
+  'web.demo.week.caption': 'Samma tre inlägg i kalendern, lästa i projektets tidszon.',
   'web.demo.week.empty': 'Inget schemalagt',
 
   'web.demo.receipt.label': 'Kvitto hittills',
@@ -179,7 +179,7 @@ export const webDemoMessages = {
 
   'web.demo.tour.stepsLabel': 'Rundturssteg',
   'web.demo.tour.jump': 'Visa steg {position}: {step}',
-  'web.demo.tour.step.project': 'Skapa ett varumärke',
+  'web.demo.tour.step.project': 'Skapa ett projekt',
   'web.demo.tour.step.connect': 'Anslut konton',
   'web.demo.tour.step.compose': 'Skriv en gång',
   'web.demo.tour.step.variants': 'Anpassa per plattform',

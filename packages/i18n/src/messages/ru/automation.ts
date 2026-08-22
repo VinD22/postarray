@@ -30,7 +30,7 @@ export const automationMessages = {
   'automation.trigger.recurring': 'повторяющийся график срабатывает',
 
   'automation.condition.label': 'Условия',
-  'automation.condition.project': 'бренд {project}',
+  'automation.condition.project': 'проект {project}',
   'automation.condition.campaign': 'кампания {campaign}',
   'automation.condition.account': 'аккаунт {account}',
   'automation.condition.platform': 'платформа {platform}',
@@ -129,7 +129,7 @@ export const automationMessages = {
   'automation.webhooks.urlLabel': 'URL-адрес конечной точки',
   'automation.webhooks.eventsLabel': 'События',
   'automation.webhooks.allEvents': 'Все события',
-  'automation.webhooks.scopeLabel': 'Project и аккаунты',
+  'automation.webhooks.scopeLabel': 'Проекты и аккаунты',
   'automation.webhooks.allAccounts': 'Все аккаунты',
   'automation.webhooks.secret': 'Секрет подписания',
   'automation.webhooks.secretShownOnce': 'Этот секрет раскрывается один раз. Сохраните его сейчас.',

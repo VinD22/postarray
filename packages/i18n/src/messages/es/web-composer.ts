@@ -221,7 +221,7 @@ export const webComposerMessages = {
   'composerWeb.signature.scope': 'For {project} on {provider} in {language}',
   'composerWeb.signature.previewHeading': 'Como termina el post',
   'composerWeb.signature.notMatching':
-    'Esta firma está dirigida a una marca, plataforma o idioma diferente, por lo que no se ofrece aquí.',
+    'Esta firma está dirigida a un proyecto, una plataforma o un idioma diferentes, por lo que no se ofrece aquí.',
 
   // --------------------------------------------------------------- assist
   'composerWeb.assist.menuLabel': 'Ayuda con este texto',
@@ -332,7 +332,7 @@ export const webComposerMessages = {
   'mediaLib.loading': 'Cargando tu biblioteca multimedia',
   'mediaLib.permission.title': 'No puedes ver esta biblioteca de espacio de trabajo',
   'mediaLib.permission.body':
-    'La visualización de medios necesita el rol de espectador o superior en esta marca. Un propietario o administrador puede otorgarlo.',
+    'La visualización de medios necesita el rol de espectador o superior en este proyecto. Un propietario o administrador puede otorgarlo.',
 
   'mediaLib.upload.heading': 'Agregar medios',
   'mediaLib.upload.browse': 'Elige archivos',
@@ -464,4 +464,52 @@ export const webComposerMessages = {
     '{count, plural, =0 {Elegir archivos} one {Agregar # archivo} many {Agregar # archivos} other {Agregar # archivos}}',
   'mediaLib.picker.forMaster': 'Agregar al borrador maestro',
   'mediaLib.picker.forVariant': 'Agregando a la versión for {account} solamente',
+  'composerWeb.commitFailed.draft': 'Este borrador no se guardó.',
+  'composerWeb.commitFailed.approval': 'La solicitud de aprobación no se envió.',
+  'composerWeb.commitFailed.schedule': 'Esta publicación no se programó.',
+  'composerWeb.commitFailed.publish': 'La publicación no terminó.',
+  'mediaLib.offline.title': 'La biblioteca no está disponible sin conexión',
+  'mediaLib.offline.body':
+    'No podemos actualizar la biblioteca sin conexión. Los archivos que ya están en esta pantalla no cambian. Vuelve a conectarte e inténtalo de nuevo.',
+  'mediaLib.rateLimited.title': 'La biblioteca necesita una pausa breve',
+  'mediaLib.rateLimited.cause':
+    'La API nos pidió ir más despacio mientras cargábamos tus archivos. Tus medios almacenados están a salvo.',
+  'mediaLib.rateLimited.resetLabel': 'Vuelve a intentarlo después de',
+  'mediaLib.rateLimited.alternative':
+    'Puedes seguir redactando localmente, pero las subidas y los cambios en la biblioteca esperan hasta que se restablezca el límite.',
+  'mediaLib.import.urlLabel': 'URL pública del archivo',
+  'mediaLib.import.urlPlaceholder': 'https://cdn.example.com/launch-video.mp4',
+  'mediaLib.import.importing': 'Importando medios',
+  'mediaLib.import.succeeded': 'El archivo está en tu biblioteca',
+  'mediaLib.import.scanPending':
+    'Relay registró su origen. La publicación espera hasta que termine la comprobación de seguridad.',
+  'mediaLib.import.failed': 'No se pudo importar el archivo',
+  'mediaLib.import.failedHelp':
+    'Comprueba que el enlace sea público y apunte directamente a un archivo de medios compatible, luego inténtalo de nuevo.',
+  'mediaLib.import.readOnly': 'Conecta la API para importar archivos en este entorno.',
+  'mediaLib.import.offline': 'Vuelve a conectarte antes de importar un archivo.',
+  'mediaLib.import.issue.invalid': 'Introduce una URL completa.',
+  'mediaLib.import.issue.scheme': 'Usa un enlace HTTP o HTTPS.',
+  'mediaLib.import.issue.credentials': 'Usa un enlace sin nombre de usuario ni contraseña.',
+  'mediaLib.retention.title':
+    'Los archivos almacenados se conservan 30 días después de crear la publicación',
+  'mediaLib.retention.body':
+    'Cuando un archivo se adjunta a una publicación, lo eliminamos de forma permanente del almacenamiento de Relay 30 días después de crear esa publicación. Los archivos que esperan a ser adjuntados usan la fecha de subida como referencia de limpieza. El texto de la publicación, los recibos de publicación y el historial de auditoría siguen disponibles más tiempo. Una publicación ya publicada en una plataforma social no se elimina cuando caduca su archivo almacenado.',
+  'mediaLib.retention.limits':
+    'Las imágenes, el audio y los archivos PDF pueden pesar hasta {imageSize}. Los videos pueden pesar hasta {videoSize}.',
+  'mediaLib.retention.expiresLabel': 'Fecha de eliminación del archivo',
+  'mediaLib.retention.deleted': 'Eliminado de forma permanente',
+  'mediaLib.retention.deletedTitle': 'Este archivo almacenado se eliminó',
+  'mediaLib.retention.deletedBody':
+    'El periodo de almacenamiento de 30 días terminó. El texto de la publicación, los recibos de publicación y el historial de auditoría permanecen.',
+  'mediaLib.processing.unavailableTitle': 'Este archivo no está listo para publicarse',
+  'mediaLib.processing.unavailableBody':
+    'El procesamiento o una comprobación de seguridad sigue pendiente, o no se superó. Vuelve a subir el archivo si este estado no se resuelve.',
+  'mediaLib.processing.pendingTitle':
+    'El análisis de seguridad no está disponible antes del lanzamiento',
+  'mediaLib.processing.pendingBody':
+    'El archivo se almacena durante 30 días, pero no se puede adjuntar a una publicación publicada hasta que se habilite el análisis de seguridad.',
+  'mediaLib.processing.blockedTitle': 'Este archivo no se puede publicar',
+  'mediaLib.processing.blockedBody':
+    'El archivo no pasó el procesamiento o una comprobación de seguridad. Sube un archivo diferente.',
 } as const;

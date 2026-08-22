@@ -1,6 +1,8 @@
 import { a11yMessages } from './a11y';
 import { actionMessages } from './actions';
 import { analyticsMessages } from './analytics';
+import { assistantMessages } from './assistant';
+import { assistantWebMessages } from './assistant-web';
 import { authMessages } from './auth';
 import { automationMessages } from './automation';
 import { billingMessages } from './billing';
@@ -44,10 +46,12 @@ import { withoutBetaEnglishFallbacks } from '../beta-fallbacks';
  */
 export const fr = {
   ...navMessages,
+  ...withoutBetaEnglishFallbacks(assistantMessages, 'fr'),
+  ...withoutBetaEnglishFallbacks(assistantWebMessages, 'fr'),
   ...actionMessages,
   ...commonMessages,
   ...composerMessages,
-  ...webComposerMessages,
+  ...withoutBetaEnglishFallbacks(webComposerMessages, 'fr'),
   ...calendarMessages,
   ...receiptMessages,
   ...connectionMessages,
@@ -60,7 +64,7 @@ export const fr = {
   // `settings.data.*` includes privacy and consent controls.
   ...withoutBetaEnglishFallbacks(settingsMessages, 'fr'),
   ...developerMessages,
-  ...authMessages,
+  ...withoutBetaEnglishFallbacks(authMessages, 'fr'),
   ...onboardingMessages,
   ...emailMessages,
   ...errorMessages,

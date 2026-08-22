@@ -61,7 +61,7 @@ export const connectionMessages = {
 
   'connection.group.title': 'ग्राहक समूह',
   'connection.group.description':
-    'प्रत्येक स्क्रीन को फ़िल्टर करने के लिए क्लाइंट या ब्रांड के अनुसार समूह खाते।',
+    'प्रत्येक स्क्रीन को फ़िल्टर करने के लिए क्लाइंट या परियोजना के अनुसार समूह खाते।',
   'connection.group.assign': 'समूह में ले जाएँ',
   'connection.group.none': 'असमूहीकृत',
   'connection.group.moveNote':

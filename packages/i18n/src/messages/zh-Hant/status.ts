@@ -11,7 +11,7 @@ export const statusMessages = {
   'empty.analytics.body': '第一篇貼文上線夠久，平台回報資料後才會顯示指標。',
   'empty.analytics.noPermission': '此帳號未授予分析存取權。請重新連線以新增。',
   'empty.approvals.title': '沒有等待你處理的項目',
-  'empty.approvals.body': '你的 Project 的核准請求會顯示在這裡。',
+  'empty.approvals.body': '你的專案的核准請求會顯示在這裡。',
   'empty.library.title': '你的媒體庫是空的',
   'empty.library.body': '上傳圖片和影片，或從 URL 或 API 匯入。',
   'empty.library.action': '上傳媒體',

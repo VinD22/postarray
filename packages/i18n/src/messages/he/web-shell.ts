@@ -177,7 +177,7 @@ export const webShellMessages = withHebrewPluralForms({
     'המסך הבא הוא Polar, סוחר השיא שלנו. הגישה ניתנת כאשר Polar מאשרת את המנוי, לא כאשר הדפדפן חוזר.',
   'onboarding.plan.factsTitle': 'מה קורה כשאתה ממשיך',
   'onboarding.workspace.help':
-    'סביבת עבודה מכילה את המותגים, החשבונות המחוברים, הטיוטות והקבלות שלך. תוכל ליצור עוד מאוחר יותר.',
+    'סביבת עבודה מכילה את הפרויקטים, החשבונות המחוברים, הטיוטות והקבלות שלך. תוכל ליצור עוד מאוחר יותר.',
   'onboarding.workspace.localeNote':
     'שפת הממשק שלך משנה את האפליקציה הזו. שפות תוכן נבחרות לכל פוסט והן נפרדות מהגדרה זו.',
   'onboarding.workspace.timeZoneDetected': 'זוהה ממכשיר זה: {timeZone}',

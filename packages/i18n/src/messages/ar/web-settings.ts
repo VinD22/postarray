@@ -24,7 +24,7 @@ export const webSettingsMessages = {
 
   'settings.ui.section.members': 'الأعضاء والأدوار',
   'settings.ui.section.membersSummary': 'من الموجود في مساحة العمل هذه وما يمكن لكل شخص فعله.',
-  'settings.ui.section.projects': 'Projects',
+  'settings.ui.section.projects': 'المشاريع',
   'settings.ui.section.projectsSummary':
     'الصوت والجمهور والمطالبات المعتمدة والمصطلحات المحظورة وقواعد اللغة والمجالات والمسرد.',
   'settings.ui.section.agents': 'الوكلاء وواجهة برمجة التطبيقات',
@@ -50,7 +50,7 @@ export const webSettingsMessages = {
     'الجلسات والمصادقة الثنائية وبيانات الاعتماد والوكلاء وخطافات الويب ومنح التطبيقات.',
   'settings.ui.section.data': 'ضوابط البيانات',
   'settings.ui.section.dataSummary':
-    'تصدير أو إلغاء اتصال أو حذف علامة تجارية أو حذف محتوى أو إغلاق الحساب.',
+    'تصدير أو إلغاء اتصال أو حذف مشروع أو حذف محتوى أو إغلاق الحساب.',
 
   /* ------------------------------------------------------- shared UI states */
 
@@ -98,13 +98,12 @@ export const webSettingsMessages = {
   'settings.ui.members.column.approvals': 'الموافقات',
   'settings.ui.members.column.lastActive': 'آخر نشاط',
   'settings.ui.members.column.actions': 'الإجراءات',
-  'settings.ui.members.scopeAll': 'جميع العلامات التجارية والحسابات',
+  'settings.ui.members.scopeAll': 'جميع المشاريع والحسابات',
   'settings.ui.members.scopeLimited':
-    '{count, plural, one {#علامة تجارية} zero {#العلامات التجارية} two {#العلامات التجارية} few {#العلامات التجارية} many {#العلامات التجارية} other {#العلامات التجارية}}: {names}',
+    '{count, plural, one {#مشروع} zero {#مشاريع} two {#مشروعان} few {#مشاريع} many {#مشروعًا} other {#مشاريع}}: {names}',
   'settings.ui.members.approvals.canApprove': 'يمكن الموافقة',
   'settings.ui.members.approvals.cannotApprove': 'لا يمكن الموافقة',
-  'settings.ui.members.approvals.canApproveOwnProjects':
-    'يمكن الموافقة على العلامات التجارية المدرجة',
+  'settings.ui.members.approvals.canApproveOwnProjects': 'يمكن الموافقة على المشاريع المدرجة',
   'settings.ui.members.lastActiveNever': 'لم يسجل الدخول بعد',
   'settings.ui.members.changeRole': 'تغيير الدور لـ {name}',
   'settings.ui.members.remove': 'إزالة {name}',
@@ -114,9 +113,9 @@ export const webSettingsMessages = {
   'settings.ui.members.inviteBody':
     'يتلقون بريدًا إلكترونيًا يحتوي على رابط. تنتهي صلاحية الدعوة بعد سبعة أيام ويمكنك إلغاءها قبل ذلك.',
   'settings.ui.members.inviteRole': 'الدور',
-  'settings.ui.members.inviteScope': 'Project يمكنهم العمل فيها',
-  'settings.ui.members.inviteScopeAll': 'كل علامة تجارية في مساحة العمل هذه',
-  'settings.ui.members.inviteScopeSelected': 'فقط العلامات التجارية التي أختارها',
+  'settings.ui.members.inviteScope': 'المشاريع التي يمكنهم العمل فيها',
+  'settings.ui.members.inviteScopeAll': 'كل مشروع في مساحة العمل هذه',
+  'settings.ui.members.inviteScopeSelected': 'فقط المشاريع التي أختارها',
   'settings.ui.members.inviteApprovals': 'يمكن أن تقرر طلبات الموافقة',
   'settings.ui.members.inviteApprovalsHelp':
     'يمكن منح هذا فقط للأدوار التي تتضمن مراجعة بالفعل. وهو منفصل عن التحرير.',
@@ -126,9 +125,9 @@ export const webSettingsMessages = {
   'settings.ui.members.inviteResend': 'أرسل الدعوة مرة أخرى',
   'settings.ui.members.emptyTitle': 'أنت الشخص الوحيد هنا',
   'settings.ui.members.emptyBody':
-    'قم بدعوة الأشخاص الذين يكتبون النتائج أو يوافقون عليها أو يقرؤونها. كل واحد يحصل على دور ونطاق العلامة التجارية.',
+    'قم بدعوة الأشخاص الذين يكتبون النتائج أو يوافقون عليها أو يقرؤونها. كل واحد يحصل على دور ونطاق مشروع.',
   'settings.ui.members.emptyExample':
-    'شكل مشترك: مالك واحد للفواتير، ومعتمد واحد لكل علامة تجارية، ومحررون يقومون بالصياغة ولكنهم لا ينشرون مطلقًا.',
+    'شكل مشترك: مالك واحد للفواتير، ومعتمد واحد لكل مشروع، ومحررون يقومون بالصياغة ولكنهم لا ينشرون مطلقًا.',
   'settings.ui.members.roleReferenceTitle': 'ما يمكن أن يفعله كل دور',
   'settings.ui.members.roleReferenceCaption': 'الأدوار والإجراءات التي يسمح بها كل واحد',
   'settings.ui.members.roleColumn.role': 'الدور',
@@ -153,28 +152,27 @@ export const webSettingsMessages = {
   /* ----------------------------------------------------------------- projects */
 
   'settings.ui.projects.description':
-    'تحمل العلامة التجارية القواعد التي يتم فحص المحتوى وفقًا لها: ما قد تطالب به، وما لا يجوز لك قوله، وكيفية كتابة كل لغة.',
-  'settings.ui.projects.listCaption': 'Projects في مساحة العمل هذه',
-  'settings.ui.projects.column.project': 'Project',
+    'يحمل المشروع القواعد التي يتم فحص المحتوى وفقًا لها: ما قد تطالب به، وما لا يجوز لك قوله، وكيفية كتابة كل لغة.',
+  'settings.ui.projects.listCaption': 'المشاريع في مساحة العمل هذه',
+  'settings.ui.projects.column.project': 'المشروع',
   'settings.ui.projects.column.locales': 'لغات المحتوى',
   'settings.ui.projects.column.accounts': 'الحسابات',
   'settings.ui.projects.column.updated': 'تم التحديث',
   'settings.ui.projects.accountCount':
     '{count, plural, =0 {لا حسابات} one {# حساب} zero {#حسابات} two {#حسابات} few {#حسابات} many {#حسابات} other {#حسابات}}',
-  'settings.ui.projects.emptyTitle': 'لا توجد علامات تجارية حتى الآن',
+  'settings.ui.projects.emptyTitle': 'لا توجد مشاريع حتى الآن',
   'settings.ui.projects.emptyBody':
-    'تجمع العلامة التجارية الحسابات وقواعد الموافقة وقواعد اللغة. تبدأ معظم الفرق بواحدة وتضيف ثانية عندما يحتاج العميل أو السوق إلى قواعد مختلفة.',
+    'يجمع المشروع الحسابات وقواعد الموافقة وقواعد اللغة. تبدأ معظم الفرق بواحد وتضيف ثانيًا عندما يحتاج العميل أو السوق إلى قواعد مختلفة.',
   'settings.ui.projects.emptyExample':
-    'مثال: العلامة التجارية "Acme EU"، باللغتين الإنجليزية والألمانية، المصطلح المحظور "مضمون"، الكشف عن "شراكة مدفوعة الأجر" لـ Instagram.',
+    'مثال: المشروع "Acme EU"، باللغتين الإنجليزية والألمانية، المصطلح المحظور "مضمون"، الكشف عن "شراكة مدفوعة الأجر" لـ Instagram.',
   'settings.ui.projects.voiceHelp':
-    'كيف تبدو هذه العلامة التجارية. يُستخدم عندما تطلب إعادة الكتابة وعندما يتم التحقق من المطالبات.',
+    'كيف يبدو هذا المشروع. يُستخدم عندما تطلب إعادة الكتابة وعندما يتم التحقق من المطالبات.',
   'settings.ui.projects.audienceHelp': 'من هو المحتوى، لكل سوق.',
   'settings.ui.projects.approvedClaimsHelp':
     'البيانات التي قام المراجع بمسحها. يتم وضع علامة على أي شيء خارج هذه القائمة قبل الموافقة عليه، وليس بعد النشر.',
-  'settings.ui.projects.blockedTermsHelp':
-    'الكلمات التي تمنع الجدولة لهذه العلامة التجارية. واحد لكل سطر.',
+  'settings.ui.projects.blockedTermsHelp': 'الكلمات التي تمنع الجدولة لهذا المشروع. واحدة لكل سطر.',
   'settings.ui.projects.domainsHelp':
-    'النطاقات التي قد ترتبط بها هذه العلامة التجارية وتختصرها. يمكن تحديد المجالات التي تم التحقق منها فقط في الملحن.',
+    'النطاقات التي قد يرتبط بها هذا المشروع ويختصرها. يمكن تحديد المجالات التي تم التحقق منها فقط في الملحن.',
   'settings.ui.projects.domainVerified': 'تم التحقق {date}',
   'settings.ui.projects.domainPending': 'سجل DNS لم ير بعد',
   'settings.ui.projects.disclosureHelp':
@@ -186,7 +184,7 @@ export const webSettingsMessages = {
     'لا توجد شروط محمية حتى الآن. أضف أسماء المنتجات والمصطلحات القانونية التي لا يجب ترجمتها أو إعادة صياغتها.',
   'settings.ui.projects.localeRulesHelp':
     'القواعد لكل لغة المحتوى. يتم تطبيقها عند التكيف أو التحويل، ويتم عرضها للمراجع.',
-  'settings.ui.projects.saveProject': 'حفظ العلامة التجارية',
+  'settings.ui.projects.saveProject': 'حفظ المشروع',
 
   /* ------------------------------------------------------------ localization */
 
@@ -318,7 +316,7 @@ export const webSettingsMessages = {
   'developer.ui.agents.emptyBody':
     'قم بإنشاء واحدة لكل عملية أتمتة تقوم بتشغيلها. الحسابات المنفصلة تعني أنه يمكنك إلغاء أحد الحسابات دون إيقاف الحسابات الأخرى.',
   'developer.ui.agents.emptyExample':
-    'مثال: "وكيل المحتوى"، العلامة التجارية Acme EU، قد يقوم بصياغة وجدولة ما يصل إلى 6 منشورات يوميًا بين الساعة 07:00 و22:00، ولا يتم النشر على الفور أبدًا.',
+    'مثال: "وكيل المحتوى"، المشروع Acme EU، قد يقوم بصياغة وجدولة ما يصل إلى 6 منشورات يوميًا بين الساعة 07:00 و22:00، ولا يتم النشر على الفور أبدًا.',
   'developer.ui.agents.step.identity': 'الاسم والغرض',
   'developer.ui.agents.step.scope': 'ما يمكن أن تصل إليه',
   'developer.ui.agents.step.limits': 'حدود',
@@ -534,8 +532,8 @@ export const webSettingsMessages = {
   'developer.ui.webhooks.eventGroup.publishing': 'النشر',
   'developer.ui.webhooks.eventGroup.automation': 'الأتمتة والأعلاف',
   'developer.ui.webhooks.eventGroup.workspace': 'Workspace',
-  'developer.ui.webhooks.scopeTitle': 'Projects والحسابات',
-  'developer.ui.webhooks.scopeAll': 'كل علامة تجارية وحساب',
+  'developer.ui.webhooks.scopeTitle': 'المشاريع والحسابات',
+  'developer.ui.webhooks.scopeAll': 'كل مشروع وحساب',
   'developer.ui.webhooks.scopeSelected': 'فقط تلك التي أختارها',
   'developer.ui.webhooks.secretTitle': 'سر التوقيع',
   'developer.ui.webhooks.secretBody':

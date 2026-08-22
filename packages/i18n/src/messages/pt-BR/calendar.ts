@@ -100,4 +100,21 @@ export const calendarMessages = {
     'As configurações de privacidade ou divulgação foram alteradas.',
   'approval.reapproval.reason.locale': 'O idioma do conteúdo mudou.',
   'approval.expiresAt': 'Esta solicitação expira em {date}.',
+  'approval.content.title': 'Variantes por plataforma',
+  'approval.content.master': 'Rascunho mestre',
+  'approval.content.language': 'Idioma do conteúdo',
+  'approval.content.media': 'Mídia',
+  'approval.content.mediaCount':
+    '{count, plural, =0 {Nenhum arquivo enviado} one {# arquivo enviado} other {# arquivos enviados} many {# arquivos enviados}}',
+  'approval.content.destination': 'Destino',
+  'approval.content.privacy': 'Visibilidade',
+  'approval.content.schedule': 'Horário de publicação',
+  'approval.content.cost': 'Custo estimado da plataforma',
+  'approval.content.costUnavailable': 'Indisponível',
+  'approval.changed.title': 'A publicação mudou depois desta solicitação',
+  'approval.changed.body':
+    'Esta tela está mostrando uma versão mais recente. Não decida esta solicitação. Peça ao autor que a envie novamente.',
+  'approval.notFound.title': 'Esta aprovação não está mais pendente',
+  'approval.notFound.body':
+    'Ela pode já ter uma decisão, pode ter expirado ou pode não estar disponível para a sua função.',
 } as const;

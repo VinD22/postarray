@@ -54,7 +54,7 @@ export const connectionMessages = {
     '{provider}검토 대기 중으로 이 앱을 제한했습니다. 다음의 게시물{account}검토가 완료될 때까지 비공개로 게시하세요.',
   'connection.group.title': '고객 그룹',
   'connection.group.description':
-    '클라이언트 또는 브랜드별로 계정을 그룹화하여 모든 화면을 필터링합니다.',
+    '클라이언트 또는 프로젝트별로 계정을 그룹화하여 모든 화면을 필터링합니다.',
   'connection.group.assign': '그룹으로 이동',
   'connection.group.none': '그룹 해제됨',
   'connection.group.moveNote': '계정을 이동해도 게시물, 영수증, 분석이 유지됩니다.',

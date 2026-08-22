@@ -53,7 +53,7 @@ export const webSettingsMessages = {
     'Oturumlar, iki faktörlü kimlik doğrulama, kimlik bilgileri, aracılar, web kancaları ve uygulama bağışları.',
   'settings.ui.section.data': 'Veri kontrolleri',
   'settings.ui.section.dataSummary':
-    'Dışa aktarın, bağlantıyı iptal edin, markayı silin, içeriği silin veya hesabı kapatın.',
+    'Dışa aktarın, bağlantıyı iptal edin, projeyi silin, içeriği silin veya hesabı kapatın.',
 
   /* ------------------------------------------------------- shared UI states */
 
@@ -104,8 +104,8 @@ export const webSettingsMessages = {
   'settings.ui.members.column.approvals': 'Onaylar',
   'settings.ui.members.column.lastActive': 'Son aktif',
   'settings.ui.members.column.actions': 'Eylemler',
-  'settings.ui.members.scopeAll': 'Tüm markalar ve hesaplar',
-  'settings.ui.members.scopeLimited': '{count, plural, one {# marka} other {# marka}}: {names}',
+  'settings.ui.members.scopeAll': 'Tüm projeler ve hesaplar',
+  'settings.ui.members.scopeLimited': '{count, plural, one {# proje} other {# proje}}: {names}',
   'settings.ui.members.approvals.canApprove': 'Onaylayabilir',
   'settings.ui.members.approvals.cannotApprove': 'Onaylanamıyor',
   'settings.ui.members.approvals.canApproveOwnProjects': 'Listelenen projeler için onay verebilir',
@@ -119,9 +119,9 @@ export const webSettingsMessages = {
   'settings.ui.members.inviteBody':
     'Bağlantı içeren bir e-posta alırlar. Davetin süresi yedi gün sonra dolar ve bu tarihten önce iptal edebilirsiniz.',
   'settings.ui.members.inviteRole': 'Rol',
-  'settings.ui.members.inviteScope': 'Çalışabilecekleri markalar',
-  'settings.ui.members.inviteScopeAll': 'Bu çalışma alanındaki her marka',
-  'settings.ui.members.inviteScopeSelected': 'Sadece seçtiğim markalar',
+  'settings.ui.members.inviteScope': 'Çalışabilecekleri projeler',
+  'settings.ui.members.inviteScopeAll': 'Bu çalışma alanındaki her proje',
+  'settings.ui.members.inviteScopeSelected': 'Sadece seçtiğim projeler',
   'settings.ui.members.inviteApprovals': 'Onay isteklerine karar verebilir',
   'settings.ui.members.inviteApprovalsHelp':
     'Yalnızca halihazırda inceleme içeren rollere bu verilebilir. Düzenlemekten ayrıdır.',
@@ -131,9 +131,9 @@ export const webSettingsMessages = {
   'settings.ui.members.inviteResend': 'Daveti tekrar gönder',
   'settings.ui.members.emptyTitle': 'Buradaki tek kişi sensin',
   'settings.ui.members.emptyBody':
-    'Sonuçları yazan, onaylayan veya okuyan kişileri davet edin. Her biri bir rol ve marka kapsamına sahip olur.',
+    'Sonuçları yazan, onaylayan veya okuyan kişileri davet edin. Her biri bir rol ve proje kapsamına sahip olur.',
   'settings.ui.members.emptyExample':
-    'Ortak bir şekil: faturalandırma için bir sahip, marka başına bir onaylayan ve taslak hazırlayan ancak asla yayınlamayan editörler.',
+    'Ortak bir şekil: faturalandırma için bir sahip, proje başına bir onaylayan ve taslak hazırlayan ancak asla yayınlamayan editörler.',
   'settings.ui.members.roleReferenceTitle': 'Her rolün yapabilecekleri',
   'settings.ui.members.roleReferenceCaption': 'Roller ve her birinin izin verdiği eylemler',
   'settings.ui.members.roleColumn.role': 'Rol',
@@ -162,7 +162,7 @@ export const webSettingsMessages = {
   /* ----------------------------------------------------------------- projects */
 
   'settings.ui.projects.description':
-    'Bir marka, içeriğin kontrol edildiği kuralları taşır: ne iddia edebileceğiniz, ne söyleyemeyeceğiniz ve her dilin nasıl yazıldığı.',
+    'Bir proje, içeriğin kontrol edildiği kuralları taşır: ne iddia edebileceğiniz, ne söyleyemeyeceğiniz ve her dilin nasıl yazıldığı.',
   'settings.ui.projects.listCaption': 'Bu çalışma alanındaki projeler',
   'settings.ui.projects.column.project': 'Proje',
   'settings.ui.projects.column.locales': 'İçerik dilleri',
@@ -172,9 +172,9 @@ export const webSettingsMessages = {
     '{count, plural, =0 {Hesap yok} one {# hesap} other {# hesap}}',
   'settings.ui.projects.emptyTitle': 'Henüz proje yok',
   'settings.ui.projects.emptyBody':
-    'Bir marka, hesapları, onay kurallarını ve dil kurallarını gruplandırır. Çoğu ekip bir taneyle başlar ve bir müşterinin veya pazarın farklı kurallara ihtiyacı olduğunda bir saniye ekler.',
+    'Bir proje, hesapları, onay kurallarını ve dil kurallarını gruplandırır. Çoğu ekip bir taneyle başlar ve bir müşterinin veya pazarın farklı kurallara ihtiyacı olduğunda ikincisini ekler.',
   'settings.ui.projects.emptyExample':
-    'Örnek: "Acme EU" markası, İngilizce ve Almanca dilleri, "garantili" terimi engellendi, Instagram için "Ücretli ortaklık" açıklaması.',
+    'Örnek: "Acme EU" projesi, İngilizce ve Almanca dilleri, "garantili" terimi engellendi, Instagram için "Ücretli ortaklık" açıklaması.',
   'settings.ui.projects.voiceHelp':
     'Bu proje kulağa nasıl geliyor? Yeniden yazma talebinde bulunduğunuzda ve talepler kontrol edildiğinde kullanılır.',
   'settings.ui.projects.audienceHelp': 'Pazara göre içeriğin kime yönelik olduğu.',
@@ -361,7 +361,7 @@ export const webSettingsMessages = {
   'developer.ui.agents.emptyBody':
     'Çalıştırdığınız her otomasyon için bir tane oluşturun. Ayrı hesaplar, diğerlerini durdurmadan birini iptal edebileceğiniz anlamına gelir.',
   'developer.ui.agents.emptyExample':
-    'Örnek: "İçerik aracısı", Acme EU markası, 07:00 ile 22:00 arasında günde en fazla 6 gönderi hazırlayabilir ve planlayabilir, hiçbir zaman hemen yayınlamaz.',
+    'Örnek: "İçerik aracısı", Acme EU projesi, 07:00 ile 22:00 arasında günde en fazla 6 gönderi hazırlayabilir ve planlayabilir, hiçbir zaman hemen yayınlamaz.',
   'developer.ui.agents.step.identity': 'İsim ve amaç',
   'developer.ui.agents.step.scope': 'Neye ulaşabilir',
   'developer.ui.agents.step.limits': 'Sınırlar',
@@ -582,8 +582,8 @@ export const webSettingsMessages = {
   'developer.ui.webhooks.eventGroup.publishing': 'Yayınlama',
   'developer.ui.webhooks.eventGroup.automation': "Otomasyon ve feed'ler",
   'developer.ui.webhooks.eventGroup.workspace': 'Çalışma alanı',
-  'developer.ui.webhooks.scopeTitle': 'Markalar ve hesaplar',
-  'developer.ui.webhooks.scopeAll': 'Her marka ve hesap',
+  'developer.ui.webhooks.scopeTitle': 'Projeler ve hesaplar',
+  'developer.ui.webhooks.scopeAll': 'Her proje ve hesap',
   'developer.ui.webhooks.scopeSelected': 'Sadece seçtiklerim',
   'developer.ui.webhooks.secretTitle': 'Gizli imza',
   'developer.ui.webhooks.secretBody':

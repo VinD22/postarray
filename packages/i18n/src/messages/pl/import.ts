@@ -30,8 +30,8 @@ export const importMessages = {
   'import.upload.paste': 'Albo wklej tekst CSV',
   'import.upload.pasteHelp':
     'Uwzględnij wiersz nagłówka. Wszystko jest sprawdzane, zanim cokolwiek zostanie utworzone.',
-  'import.upload.project': 'Marka',
-  'import.upload.projectHelp': 'Każdy wiersz w jednym pliku należy do tej marki.',
+  'import.upload.project': 'Projekt',
+  'import.upload.projectHelp': 'Każdy wiersz w jednym pliku należy do tego projektu.',
   'import.upload.submit': 'Sprawdź ten plik',
   'import.upload.submitting': 'Odczytywanie pliku',
   'import.upload.allowPast': 'Zezwól na terminy, które już minęły',
@@ -48,7 +48,7 @@ export const importMessages = {
   'import.template.optional': 'Opcjonalne kolumny',
   'import.column.external_row_id':
     'Twój własny identyfikator wiersza. Musi być unikalny w obrębie pliku.',
-  'import.column.project': 'Nazwa lub identyfikator marki, do której należy wiersz.',
+  'import.column.project': 'Nazwa lub identyfikator projektu, do którego należy wiersz.',
   'import.column.targets':
     'Set: a następnie identyfikator zestawu docelowego, albo identyfikatory kont oddzielone kreską pionową.',
   'import.column.caption': 'Tekst posta.',

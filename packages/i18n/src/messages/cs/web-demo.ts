@@ -25,7 +25,7 @@ export const webDemoMessages = {
 
   'web.meta.demo.title': 'Podívejte se, jak Relay funguje',
   'web.meta.demo.description':
-    'Řízená prohlídka publikačního postupu, od nové značky až po potvrzenku, zobrazená ve skutečném rozhraní s ukázkovým obsahem. Zatím se nic nepublikuje a prohlídka říká, kde ta hranice je.',
+    'Řízená prohlídka publikačního postupu, od nového projektu až po potvrzenku, zobrazená ve skutečném rozhraní s ukázkovým obsahem. Zatím se nic nepublikuje a prohlídka říká, kde ta hranice je.',
 
   'web.demo.nav.label': 'Podívejte se, jak to funguje',
   'web.demo.nav.summary':
@@ -73,9 +73,9 @@ export const webDemoMessages = {
   /* The nine steps                                                          */
   /* ---------------------------------------------------------------------- */
 
-  'web.demo.step.project.title': 'Vytvořte značku',
+  'web.demo.step.project.title': 'Vytvořte projekt',
   'web.demo.step.project.body':
-    'Značka obsahuje účty, koncepty, schválení a časové pásmo. Každý dotaz v produktu je omezen na jednu značku, v aplikační službě a znovu v databázi, takže klient nemůže náhodou vidět jiného klienta.',
+    'Projekt obsahuje účty, koncepty, schválení a časové pásmo. Každý dotaz v produktu je omezen na jeden projekt, v aplikační službě a znovu v databázi, takže klient nemůže náhodou vidět jiného klienta.',
 
   'web.demo.step.connect.title': 'Připojte účet',
   'web.demo.step.connect.body':
@@ -91,7 +91,7 @@ export const webDemoMessages = {
 
   'web.demo.step.schedule.title': 'Dejte tomu čas, nebo to předejte frontě',
   'web.demo.step.schedule.body':
-    'Čas se ukládá jako okamžik plus časové pásmo značky, nikdy jako naivní místní čas, takže vám změna letního času nic neposune. Fronta je druhá cesta: bere další termín povolený pravidly, která jste nastavili.',
+    'Čas se ukládá jako okamžik plus časové pásmo projektu, nikdy jako naivní místní čas, takže vám změna letního času nic neposune. Fronta je druhá cesta: bere další termín povolený pravidly, která jste nastavili.',
 
   'web.demo.step.calendar.title': 'Sledujte kalendář',
   'web.demo.step.calendar.body':
@@ -105,18 +105,18 @@ export const webDemoMessages = {
   /* Panel labels                                                            */
   /* ---------------------------------------------------------------------- */
 
-  'web.demo.project.label': 'Značka',
+  'web.demo.project.label': 'Projekt',
   'web.demo.project.zone': 'Časové pásmo: {zone}',
   'web.demo.project.scope':
-    'Koncepty, účty, schválení a potvrzenky patří této značce a nikam jinam.',
+    'Koncepty, účty, schválení a potvrzenky patří tomuto projektu a nikam jinam.',
 
-  'web.demo.accounts.label': 'Účty v této značce',
+  'web.demo.accounts.label': 'Účty v tomto projektu',
   'web.demo.accounts.state': 'Ověření nedokončeno',
   'web.demo.accounts.note':
     'Každý řádek by nesl stav tokenu, udělená oprávnění a poslední úspěšný příspěvek. Žádný z nich dnes nemůže publikovat.',
 
   'web.demo.master.label': 'Hlavní koncept',
-  'web.demo.master.project': 'Ve značce {project}',
+  'web.demo.master.project': 'V projektu {project}',
 
   'web.demo.variants.label': 'Co dostane každý účet',
 
@@ -127,7 +127,7 @@ export const webDemoMessages = {
     'Fronta je druhá cesta: vybere další termín povolený vašimi pravidly, v tomto časovém pásmu.',
 
   'web.demo.week.label': 'Týden',
-  'web.demo.week.caption': 'Stejné tři příspěvky v kalendáři, čtené v časovém pásmu značky.',
+  'web.demo.week.caption': 'Stejné tři příspěvky v kalendáři, čtené v časovém pásmu projektu.',
   'web.demo.week.empty': 'Nic naplánováno',
 
   'web.demo.receipt.label': 'Potvrzenka zatím',
@@ -179,7 +179,7 @@ export const webDemoMessages = {
 
   'web.demo.tour.stepsLabel': 'Kroky prohlídky',
   'web.demo.tour.jump': 'Zobrazit krok {position}: {step}',
-  'web.demo.tour.step.project': 'Vytvořte značku',
+  'web.demo.tour.step.project': 'Vytvořte projekt',
   'web.demo.tour.step.connect': 'Připojit účty',
   'web.demo.tour.step.compose': 'Napsat jednou',
   'web.demo.tour.step.variants': 'Přizpůsobit pro platformu',

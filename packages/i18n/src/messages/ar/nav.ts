@@ -25,7 +25,7 @@ export const navMessages = {
   'nav.theme.label': 'الموضوع',
 
   'settings.nav.members': 'الأعضاء والأدوار',
-  'settings.nav.projects': 'Projects',
+  'settings.nav.projects': 'المشاريع',
   'settings.nav.agents': 'الوكلاء وواجهة برمجة التطبيقات',
   'settings.nav.developerApps': 'تطبيقات المطورين',
   'settings.nav.webhooks': 'خطافات الويب',
@@ -64,7 +64,7 @@ export const navMessages = {
 
   'shell.workspace.label': 'Workspace',
   'shell.workspace.current': 'مساحة العمل الحالية: {name}',
-  'shell.project.all': 'جميع العلامات التجارية',
+  'shell.project.all': 'جميع المشاريع',
   'shell.timeZone.label': 'الأوقات المعروضة في {timeZone}',
   'shell.notifications.count':
     '{count, plural, =0 {لا توجد إشعارات جديدة} one {#إخطار جديد} zero {# إشعارات جديدة} two {# إشعارات جديدة} few {# إشعارات جديدة} many {# إشعارات جديدة} other {# إشعارات جديدة}}',

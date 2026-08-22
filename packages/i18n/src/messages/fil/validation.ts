@@ -61,7 +61,7 @@ export const validationMessages = {
   'validation.privacy_setting_required.hint':
     'Walang default. Piliin kung sino ang makakakita sa post na ito.',
   'validation.disclosure_required.message':
-    'Ang post na ito ay nangangailangan ng pagsisiwalat sa ilalim ng mga panuntunan ng project para sa {market}.',
+    'Ang post na ito ay nangangailangan ng pagsisiwalat sa ilalim ng mga panuntunan ng proyekto para sa {market}.',
   'validation.first_comment_unsupported.message':
     '{provider} ay hindi sumusuporta sa isang naka-iskedyul na unang komento para sa account na ito.',
   'validation.thread_unsupported.message':

@@ -30,16 +30,16 @@ export const settingsMessages = {
   'settings.role.owner.description':
     'ทุกอย่าง รวมถึงการเรียกเก็บเงิน การรักษาความปลอดภัย และการลบข้อมูล',
   'settings.role.admin.description': 'ทุกอย่างยกเว้นการเรียกเก็บเงินและการลบพื้นที่ทำงาน',
-  'settings.role.manager.description': 'จัดการแบรนด์ การเชื่อมต่อ กำหนดการ และกฎเกณฑ์',
+  'settings.role.manager.description': 'จัดการโปรเจกต์ การเชื่อมต่อ กำหนดการ และกฎเกณฑ์',
   'settings.role.editor.description': 'สร้างและแก้ไขเนื้อหาขออนุมัติ',
   'settings.role.approver.description':
     'อนุมัติหรือปฏิเสธเนื้อหา และกำหนดเวลาสิ่งที่ได้รับการอนุมัติ',
   'settings.role.analyst.description': 'อ่านการวิเคราะห์และใบเสร็จรับเงิน',
   'settings.role.viewer.description': 'อ่านอย่างเดียว',
-  'settings.role.scopeLabel': 'จำกัดเฉพาะแบรนด์และบัญชี',
+  'settings.role.scopeLabel': 'จำกัดเฉพาะโปรเจกต์และบัญชี',
   'settings.role.mfaRequired': 'เจ้าของต้องใช้การรับรองความถูกต้องด้วยสองปัจจัย',
-  'settings.projects.title': 'Projects',
-  'settings.projects.add': 'เพิ่มแบรนด์',
+  'settings.projects.title': 'โปรเจกต์',
+  'settings.projects.add': 'เพิ่มโปรเจกต์',
   'settings.projects.voice': 'เสียง',
   'settings.projects.audience': 'ผู้ชม',
   'settings.projects.approvedClaims': 'การเรียกร้องที่ได้รับอนุมัติ',
@@ -68,7 +68,7 @@ export const settingsMessages = {
     'การแก้ไขชุดจะไม่เปลี่ยนแปลงโพสต์ที่ได้รับการอนุมัติหรือกำหนดเวลาไว้แล้ว',
   'settings.signatures.title': 'ลายเซ็น',
   'settings.signatures.description':
-    'ข้อความปิด แฮชแท็ก ลิงก์หรือการเปิดเผย ขอบเขตตามแบรนด์ แพลตฟอร์ม และภาษา',
+    'ข้อความปิด แฮชแท็ก ลิงก์หรือการเปิดเผย ขอบเขตตามโปรเจกต์ แพลตฟอร์ม และภาษา',
   'settings.signatures.autoApply': 'เพิ่มโดยอัตโนมัติเมื่อบริบทตรงกัน',
   'settings.localization.title': 'รองรับหลายภาษา',
   'settings.localization.interfaceLocale': 'ภาษาอินเทอร์เฟซ',
@@ -76,7 +76,7 @@ export const settingsMessages = {
     'ภาษาของแอพนี้สำหรับคุณ มันไม่ได้เปลี่ยนภาษาของโพสต์ของคุณ',
   'settings.localization.contentLocales': 'ภาษาเนื้อหา',
   'settings.localization.contentLocalesHelp':
-    'ภาษาที่คุณเผยแพร่ แต่ละแบรนด์สามารถตั้งกฎและอภิธานศัพท์ตามภาษาได้',
+    'ภาษาที่คุณเผยแพร่ แต่ละโปรเจกต์สามารถตั้งกฎและอภิธานศัพท์ตามภาษาได้',
   'settings.localization.marketLocales': 'ตลาดผู้ชม',
   'settings.localization.beta': 'การแปลเบต้า',
   'settings.localization.betaHelp':

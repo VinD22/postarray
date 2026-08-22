@@ -54,7 +54,7 @@ export const errorMessages = withHebrewPluralForms({
   'error.project_limit_reached.action':
     'העבר לארכיון פרויקט לא פעיל או שנה את מכסת הפרויקטים של סביבת העבודה.',
   'error.project_has_connections.message':
-    'לפרויקט הזה עדיין יש {connected, plural, one {# ערוץ מחובר} other {# ערוצים מחוברים}}.',
+    'לפרויקט הזה עדיין יש {connected, plural, one {# ערוץ מחובר} other {# ערוצים מחוברים} two {# ערוצים מחוברים}}.',
   'error.project_has_connections.action': 'נתק כל ערוץ בפרויקט הזה לפני העברתו לארכיון.',
   'error.project_last_active.message': 'בסביבת עבודה חייב להישאר לפחות פרויקט פעיל אחד.',
   'error.project_last_active.action': 'צור פרויקט נוסף לפני העברת זה לארכיון.',

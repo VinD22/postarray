@@ -15,7 +15,7 @@
 export const webBlogMessages = {
   'web.blog.meta.title': 'Artikelen over publicatiewerk',
   'web.blog.meta.description':
-    'Artikelen over publicatieritme, planningsmodellen, tijdzones, aanpassing per platform en het gescheiden runnen van klantwerk als aparte merken.',
+    'Artikelen over publicatieritme, planningsmodellen, tijdzones, aanpassing per platform en het gescheiden runnen van klantwerk als aparte projecten.',
 
   'web.blog.title': 'Artikelen',
   'web.blog.lede':

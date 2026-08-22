@@ -30,8 +30,8 @@ export const importMessages = {
   'import.upload.paste': 'Oppure incolla il testo CSV',
   'import.upload.pasteHelp':
     'Includi la riga di intestazione. Tutto viene controllato prima che venga creato qualcosa.',
-  'import.upload.project': 'Marchio',
-  'import.upload.projectHelp': 'Ogni riga in un file appartiene a questo marchio.',
+  'import.upload.project': 'Progetto',
+  'import.upload.projectHelp': 'Ogni riga in un file appartiene a questo progetto.',
   'import.upload.submit': 'Controlla questo file',
   'import.upload.submitting': 'Lettura del file in corso',
   'import.upload.allowPast': 'Consenti orari già passati',
@@ -47,7 +47,7 @@ export const importMessages = {
   'import.template.optional': 'Colonne facoltative',
   'import.column.external_row_id':
     "Il tuo id per la riga. Deve essere univoco all'interno del file.",
-  'import.column.project': "Il nome o l'id del marchio a cui appartiene la riga.",
+  'import.column.project': "Il nome o l'id del progetto a cui appartiene la riga.",
   'import.column.targets':
     'Set: seguito da un id di set di destinazione, oppure id di account separati da una barra verticale.',
   'import.column.caption': 'Il testo del post.',

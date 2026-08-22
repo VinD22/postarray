@@ -172,7 +172,7 @@ export const webComposerMessages = {
   'composerWeb.signature.pickerLabel': '簽名',
   'composerWeb.signature.scope': '為了{project}在{provider}在{language}',
   'composerWeb.signature.previewHeading': '貼文如何結束',
-  'composerWeb.signature.notMatching': '此簽名適用於不同的Project、平台或語言，因此此處不提供。',
+  'composerWeb.signature.notMatching': '此簽名適用於不同的專案、平台或語言，因此此處不提供。',
   'composerWeb.assist.menuLabel': '協助處理此文本',
   'composerWeb.assist.unavailableTitle': '未配置文字幫助',
   'composerWeb.assist.unavailableBody':
@@ -271,7 +271,7 @@ export const webComposerMessages = {
     '您仍可以在本機繼續撰寫草稿，但上傳與媒體庫的變更需等到限制解除後才能進行。',
   'mediaLib.loading': '載入您的媒體庫',
   'mediaLib.permission.title': '您看不到此Workspace庫',
-  'mediaLib.permission.body': '觀看媒體需要該Project的觀眾角色或更高階。所有者或管理員可以授予它。',
+  'mediaLib.permission.body': '觀看媒體需要該專案的觀眾角色或更高階。所有者或管理員可以授予它。',
   'mediaLib.upload.heading': '新增媒體',
   'mediaLib.upload.browse': '選擇文件',
   'mediaLib.upload.dropHint': '將文件拖至此處，或選擇它們。如果連線斷開，上傳將會恢復。',

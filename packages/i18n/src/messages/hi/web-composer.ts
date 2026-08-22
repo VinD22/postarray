@@ -221,7 +221,7 @@ export const webComposerMessages = {
   'composerWeb.signature.scope': 'For {project} on {provider} in {language}',
   'composerWeb.signature.previewHeading': 'पोस्ट कैसे ख़त्म होती है',
   'composerWeb.signature.notMatching':
-    'यह हस्ताक्षर किसी भिन्न ब्रांड, प्लेटफ़ॉर्म या भाषा तक सीमित है, इसलिए इसे यहां पेश नहीं किया गया है।',
+    'यह हस्ताक्षर किसी भिन्न परियोजना, प्लेटफ़ॉर्म या भाषा तक सीमित है, इसलिए इसे यहां पेश नहीं किया गया है।',
 
   // --------------------------------------------------------------- assist
   'composerWeb.assist.menuLabel': 'इस पाठ में सहायता करें',
@@ -331,7 +331,7 @@ export const webComposerMessages = {
   'mediaLib.loading': 'आपकी मीडिया लाइब्रेरी लोड हो रही है',
   'mediaLib.permission.title': 'आप इस कार्यस्थान लाइब्रेरी को नहीं देख सकते',
   'mediaLib.permission.body':
-    'मीडिया को देखने के लिए इस ब्रांड पर दर्शक की भूमिका या उससे अधिक की आवश्यकता होती है। कोई स्वामी या व्यवस्थापक इसे अनुदान दे सकता है.',
+    'मीडिया को देखने के लिए इस परियोजना पर दर्शक की भूमिका या उससे अधिक की आवश्यकता होती है। कोई स्वामी या व्यवस्थापक इसे अनुदान दे सकता है.',
 
   'mediaLib.upload.heading': 'मीडिया जोड़ें',
   'mediaLib.upload.browse': 'फ़ाइलें चुनें',

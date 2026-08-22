@@ -61,7 +61,7 @@ export const webCalendarMessages = {
   'web.calendar.nowLabel': 'bây giờ',
   'web.calendar.allDayHeading': 'Chưa có thời gian chính xác',
   'web.calendar.filter.group': 'Nhóm khách hàng',
-  'web.calendar.filter.anyProject': 'Bất kỳ thương hiệu',
+  'web.calendar.filter.anyProject': 'Bất kỳ dự án',
   'web.calendar.filter.anyAccount': 'Bất kỳ tài khoản nào',
   'web.calendar.filter.anyPlatform': 'Bất kỳ nền tảng nào',
   'web.calendar.filter.anyStatus': 'Bất kỳ trạng thái nào',
@@ -167,7 +167,7 @@ export const webCalendarMessages = {
   'web.calendar.permission.requirementsLabel': 'Phạm vi bắt buộc',
   'web.calendar.permission.title': 'Bạn không thể xem lịch này',
   'web.calendar.permission.body':
-    'Quyền truy cập lịch được cấp cho mỗi thương hiệu. Tài khoản của bạn không có trên các thương hiệu ở chế độ xem này.',
+    'Quyền truy cập lịch được cấp cho mỗi dự án. Tài khoản của bạn không có trên các dự án ở chế độ xem này.',
   'web.receipt.breadcrumb.calendar': 'Lịch',
   'web.receipt.breadcrumb.post': 'bài đăng',
   'web.receipt.heading': '{title}',
@@ -385,7 +385,7 @@ export const webCalendarMessages = {
     'Một nhóm lọc lịch và phân tích. Việc di chuyển một tài khoản sẽ giữ lại mọi bài đăng, biên nhận và số liệu mà nó đã có.',
   'web.connection.group.empty.title': 'Chưa có nhóm khách hàng nào',
   'web.connection.group.empty.body':
-    'Một nhóm là một khách hàng hoặc một thương hiệu. Nhóm tài khoản để lọc lịch và phân tích theo khách hàng.',
+    'Một nhóm là một khách hàng hoặc một dự án. Nhóm tài khoản để lọc lịch và phân tích theo khách hàng.',
   'web.connection.incident.title': 'Tài khoản này cần được chú ý',
   'web.connection.incident.remediationHeading': 'phải làm gì',
   'web.connection.incident.scheduledOnHold':

@@ -57,7 +57,7 @@ export const webCalendarMessages = {
   'web.calendar.nowLabel': '现在',
   'web.calendar.allDayHeading': '还没有确切时间',
   'web.calendar.filter.group': '客户群体',
-  'web.calendar.filter.anyProject': '任何品牌',
+  'web.calendar.filter.anyProject': '任何项目',
   'web.calendar.filter.anyAccount': '任何账户',
   'web.calendar.filter.anyPlatform': '任何平台',
   'web.calendar.filter.anyStatus': '任何状态',
@@ -156,7 +156,7 @@ export const webCalendarMessages = {
   'web.calendar.rateLimited.resetUnknown': '{provider} 没有说明何时重置。',
   'web.calendar.permission.requirementsLabel': '所需范围',
   'web.calendar.permission.title': '您看不到此日历',
-  'web.calendar.permission.body': '日历访问权限按品牌授予。您的帐户不在此视图中的品牌上。',
+  'web.calendar.permission.body': '日历访问权限按项目授予。您的帐户不在此视图中的项目上。',
   'web.receipt.breadcrumb.calendar': '日历',
   'web.receipt.breadcrumb.post': '邮政',
   'web.receipt.heading': '{title}',
@@ -348,7 +348,7 @@ export const webCalendarMessages = {
     '一组过滤日历和分析。移动帐户会保留其已有的每个帖子、收据和指标。',
   'web.connection.group.empty.title': '还没有客户群',
   'web.connection.group.empty.body':
-    '一个团体就是一个客户或一个品牌。对帐户进行分组以按客户过滤日历和分析。',
+    '一个团体就是一个客户或一个项目。对帐户进行分组以按客户过滤日历和分析。',
   'web.connection.incident.title': '该账号需要关注',
   'web.connection.incident.remediationHeading': '该怎么办',
   'web.connection.incident.scheduledOnHold':

@@ -8,7 +8,7 @@ export const webSettingsMessages = {
   'settings.ui.section.members': 'Thành viên và vai trò',
   'settings.ui.section.membersSummary':
     'Ai ở trong không gian làm việc này và mỗi người có thể làm gì.',
-  'settings.ui.section.projects': 'Projects',
+  'settings.ui.section.projects': 'Dự án',
   'settings.ui.section.projectsSummary':
     'Giọng nói, khán giả, xác nhận quyền sở hữu đã được phê duyệt, điều khoản bị chặn, quy tắc ngôn ngữ, tên miền và bảng thuật ngữ.',
   'settings.ui.section.agents': 'Đại lý và API',
@@ -34,7 +34,7 @@ export const webSettingsMessages = {
     'Phiên, xác thực hai yếu tố, thông tin xác thực, đại lý, webhooks và cấp ứng dụng.',
   'settings.ui.section.data': 'Kiểm soát dữ liệu',
   'settings.ui.section.dataSummary':
-    'Xuất, thu hồi kết nối, xóa thương hiệu, xóa nội dung hoặc đóng tài khoản.',
+    'Xuất, thu hồi kết nối, xóa dự án, xóa nội dung hoặc đóng tài khoản.',
   'settings.ui.state.loading': 'Đang tải {section}',
   'settings.ui.state.errorTitle': 'Chúng tôi không thể tải {section}',
   'settings.ui.state.errorRetry': 'Thử lại',
@@ -79,13 +79,13 @@ export const webSettingsMessages = {
   'settings.ui.members.column.approvals': 'Phê duyệt',
   'settings.ui.members.column.lastActive': 'Hoạt động lần cuối',
   'settings.ui.members.column.actions': 'hành động',
-  'settings.ui.members.scopeAll': 'Tất cả thương hiệu và tài khoản',
+  'settings.ui.members.scopeAll': 'Tất cả dự án và tài khoản',
   'settings.ui.members.scopeLimited':
     '{count, plural, one {# project} other {# projects}}: {names}',
   'settings.ui.members.approvals.canApprove': 'Có thể phê duyệt',
   'settings.ui.members.approvals.cannotApprove': 'Không thể phê duyệt',
   'settings.ui.members.approvals.canApproveOwnProjects':
-    'Có thể phê duyệt cho các thương hiệu được liệt kê',
+    'Có thể phê duyệt cho các dự án được liệt kê',
   'settings.ui.members.lastActiveNever': 'Chưa đăng nhập',
   'settings.ui.members.changeRole': 'Thay đổi vai trò của {name}',
   'settings.ui.members.remove': 'Xóa {name}',
@@ -96,9 +96,9 @@ export const webSettingsMessages = {
   'settings.ui.members.inviteBody':
     'Họ nhận được một email có liên kết. Lời mời sẽ hết hạn sau bảy ngày và bạn có thể thu hồi lời mời trước thời điểm đó.',
   'settings.ui.members.inviteRole': 'Vai trò',
-  'settings.ui.members.inviteScope': 'Project họ có thể làm việc',
-  'settings.ui.members.inviteScopeAll': 'Mọi thương hiệu trong không gian làm việc này',
-  'settings.ui.members.inviteScopeSelected': 'Chỉ những thương hiệu tôi chọn',
+  'settings.ui.members.inviteScope': 'Dự án họ có thể làm việc trong đó',
+  'settings.ui.members.inviteScopeAll': 'Mọi dự án trong không gian làm việc này',
+  'settings.ui.members.inviteScopeSelected': 'Chỉ những dự án tôi chọn',
   'settings.ui.members.inviteApprovals': 'Có thể quyết định yêu cầu phê duyệt',
   'settings.ui.members.inviteApprovalsHelp':
     'Chỉ những vai trò đã bao gồm đánh giá mới có thể được giao việc này. Nó tách biệt với việc chỉnh sửa.',
@@ -108,9 +108,9 @@ export const webSettingsMessages = {
   'settings.ui.members.inviteResend': 'Gửi lại lời mời',
   'settings.ui.members.emptyTitle': 'Bạn là người duy nhất ở đây',
   'settings.ui.members.emptyBody':
-    'Mời những người viết, phê duyệt hoặc đọc kết quả. Mỗi người có một vai trò và phạm vi thương hiệu.',
+    'Mời những người viết, phê duyệt hoặc đọc kết quả. Mỗi người có một vai trò và phạm vi dự án.',
   'settings.ui.members.emptyExample':
-    'Hình dạng chung: một chủ sở hữu chịu trách nhiệm thanh toán, một người phê duyệt cho mỗi thương hiệu và những biên tập viên soạn thảo nhưng không bao giờ xuất bản.',
+    'Hình dạng chung: một chủ sở hữu chịu trách nhiệm thanh toán, một người phê duyệt cho mỗi dự án và những biên tập viên soạn thảo nhưng không bao giờ xuất bản.',
   'settings.ui.members.roleReferenceTitle': 'Mỗi vai trò có thể làm gì',
   'settings.ui.members.roleReferenceCaption': 'Vai trò và hành động mà mỗi vai trò cho phép',
   'settings.ui.members.roleColumn.role': 'Vai trò',
@@ -323,7 +323,7 @@ export const webSettingsMessages = {
   'developer.ui.agents.emptyBody':
     'Tạo một cái cho mỗi lần tự động hóa bạn chạy. Các tài khoản riêng biệt có nghĩa là bạn có thể thu hồi một tài khoản mà không cần dừng các tài khoản khác.',
   'developer.ui.agents.emptyExample':
-    'Ví dụ: "Đại lý nội dung", thương hiệu Acme EU, có thể soạn thảo và lên lịch tối đa 6 bài đăng mỗi ngày trong khoảng thời gian từ 07:00 đến 22:00, không bao giờ xuất bản ngay lập tức.',
+    'Ví dụ: "Đại lý nội dung", dự án Acme EU, có thể soạn thảo và lên lịch tối đa 6 bài đăng mỗi ngày trong khoảng thời gian từ 07:00 đến 22:00, không bao giờ xuất bản ngay lập tức.',
   'developer.ui.agents.step.identity': 'Tên và mục đích',
   'developer.ui.agents.step.scope': 'Những gì nó có thể đạt được',
   'developer.ui.agents.step.limits': 'Giới hạn',
@@ -534,8 +534,8 @@ export const webSettingsMessages = {
   'developer.ui.webhooks.eventGroup.publishing': 'Xuất bản',
   'developer.ui.webhooks.eventGroup.automation': 'Tự động hóa và nguồn cấp dữ liệu',
   'developer.ui.webhooks.eventGroup.workspace': 'Workspace',
-  'developer.ui.webhooks.scopeTitle': 'Project và tài khoản',
-  'developer.ui.webhooks.scopeAll': 'Mỗi thương hiệu và tài khoản',
+  'developer.ui.webhooks.scopeTitle': 'Dự án và tài khoản',
+  'developer.ui.webhooks.scopeAll': 'Mỗi dự án và tài khoản',
   'developer.ui.webhooks.scopeSelected': 'Chỉ những người tôi chọn',
   'developer.ui.webhooks.secretTitle': 'Ký bí mật',
   'developer.ui.webhooks.secretBody':

@@ -15,7 +15,7 @@
 export const webBlogMessages = {
   'web.blog.meta.title': 'Texty o publikačním provozu',
   'web.blog.meta.description':
-    'Články o rytmu publikování, modelech plánování, časových pásmech, přizpůsobení pro jednotlivé platformy a vedení klientské práce jako samostatných značek.',
+    'Články o rytmu publikování, modelech plánování, časových pásmech, přizpůsobení pro jednotlivé platformy a vedení klientské práce jako samostatných projektů.',
 
   'web.blog.title': 'Texty',
   'web.blog.lede':

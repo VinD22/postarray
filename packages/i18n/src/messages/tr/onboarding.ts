@@ -54,7 +54,7 @@ export const onboardingMessages = {
   'onboarding.checklist.connectAccount': 'Bir hesap bağlayın',
   'onboarding.checklist.firstPost': 'Gönderi yayınlama veya planlama',
   'onboarding.checklist.inviteTeammate': 'Bir takım arkadaşını davet et',
-  'onboarding.checklist.setProjectVoice': 'Marka sesinizi tanımlayın',
+  'onboarding.checklist.setProjectVoice': 'Proje sesinizi tanımlayın',
   'onboarding.checklist.tryAutomation': 'Bir otomasyon kuralını deneyin',
   'onboarding.checklist.remaining':
     '{count, plural, =0 {Hepsi tamamlandı} one {# adım sola} other {# adım kaldı}}',

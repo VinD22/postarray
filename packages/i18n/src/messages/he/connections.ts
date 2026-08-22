@@ -53,7 +53,7 @@ export const connectionMessages = withHebrewPluralForms({
   'connection.incident.reviewRestricted':
     '{provider} הגביל את האפליקציה הזו בהמתנה לבדיקה. פוסטים מ-{account} מתפרסמים באופן פרטי עד לסיום הבדיקה.',
   'connection.group.title': 'קבוצות לקוחות',
-  'connection.group.description': 'קבץ חשבונות לפי לקוח או מותג כדי לסנן כל מסך.',
+  'connection.group.description': 'קבץ חשבונות לפי לקוח או פרויקט כדי לסנן כל מסך.',
   'connection.group.assign': 'העבר לקבוצה',
   'connection.group.none': 'לא מקובצים',
   'connection.group.moveNote': 'העברת חשבון שומרת על הפוסטים, הקבלות והניתוחים שלו.',

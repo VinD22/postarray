@@ -17,7 +17,7 @@ export const statusMessages = {
   'empty.analytics.noPermission':
     'Bu hesaba analiz erişimi izni verilmedi. Eklemek için yeniden bağlanın.',
   'empty.approvals.title': 'Seni bekleyen hiçbir şey yok',
-  'empty.approvals.body': 'Markalarınıza ilişkin onay talepleri burada görünür.',
+  'empty.approvals.body': 'Projelerinize ilişkin onay talepleri burada görünür.',
   'empty.library.title': 'Kitaplığınız boş',
   'empty.library.body':
     "Görüntüleri ve videoları yükleyin veya bunları bir URL'den veya API'den içe aktarın.",

@@ -213,7 +213,7 @@ export const webShellMessages = {
     "L'écran suivant est Polar, notre marchand attitré. L'accès est accordé lorsque Polar confirme l'abonnement, et non lorsque le navigateur revient.",
   'onboarding.plan.factsTitle': 'Que se passe-t-il lorsque vous continuez',
   'onboarding.workspace.help':
-    'Un espace de travail contient vos marques, vos comptes connectés, vos traites et vos reçus. Vous pourrez en créer davantage plus tard.',
+    'Un espace de travail contient vos projets, vos comptes connectés, vos brouillons et vos reçus. Vous pourrez en créer davantage plus tard.',
   'onboarding.workspace.localeNote':
     'La langue de votre interface change cette application. Les langues du contenu sont choisies par publication et sont distinctes de ce paramètre.',
   'onboarding.workspace.timeZoneDetected': 'Détecté à partir de cet appareil : {timeZone}',

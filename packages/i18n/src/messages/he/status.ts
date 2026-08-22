@@ -15,7 +15,7 @@ export const statusMessages = withHebrewPluralForms({
   'empty.analytics.noPermission':
     'חשבון זה לא העניק גישה לניתוח נתונים. התחבר מחדש כדי להוסיף אותו.',
   'empty.approvals.title': 'שום דבר לא מחכה לך',
-  'empty.approvals.body': 'בקשות אישור עבור המותגים שלך מופיעות כאן.',
+  'empty.approvals.body': 'בקשות אישור עבור הפרויקטים שלך מופיעות כאן.',
   'empty.library.title': 'הספרייה שלך ריקה',
   'empty.library.body': 'העלה תמונות ווידאו, או ייבא אותם מכתובת אתר או ממשק API.',
   'empty.library.action': 'העלה מדיה',

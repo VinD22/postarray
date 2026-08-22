@@ -54,7 +54,7 @@ export const onboardingMessages = {
   'onboarding.checklist.connectAccount': 'Anslut ett konto',
   'onboarding.checklist.firstPost': 'Publicera eller schemalägg ett inlägg',
   'onboarding.checklist.inviteTeammate': 'Bjud in en lagkamrat',
-  'onboarding.checklist.setProjectVoice': 'Beskriv din varumärkesröst',
+  'onboarding.checklist.setProjectVoice': 'Beskriv din projektröst',
   'onboarding.checklist.tryAutomation': 'Prova en automatiseringsregel',
   'onboarding.checklist.remaining':
     '{count, plural, =0 {Allt klart} one {# steg kvar} other {# steg kvar}}',

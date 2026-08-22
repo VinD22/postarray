@@ -14,7 +14,7 @@ export const statusMessages = {
   'empty.analytics.noPermission':
     '이 계정에는 분석 액세스 권한이 부여되지 않았습니다. 추가하려면 다시 연결하세요.',
   'empty.approvals.title': '당신을 기다리는 것은 아무것도 없습니다',
-  'empty.approvals.body': '브랜드에 대한 승인 요청이 여기에 표시됩니다.',
+  'empty.approvals.body': '프로젝트에 대한 승인 요청이 여기에 표시됩니다.',
   'empty.library.title': '라이브러리가 비어 있습니다.',
   'empty.library.body': '이미지와 비디오를 업로드하거나 URL 또는 API에서 가져옵니다.',
   'empty.library.action': '미디어 업로드',

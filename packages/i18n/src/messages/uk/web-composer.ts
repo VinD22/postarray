@@ -225,7 +225,7 @@ export const webComposerMessages = {
   'composerWeb.signature.scope': 'для {project} на {provider} в{language}',
   'composerWeb.signature.previewHeading': 'Як закінчується пост',
   'composerWeb.signature.notMatching':
-    'Цей підпис стосується іншого бренду, платформи чи мови, тому він тут не пропонується.',
+    'Цей підпис стосується іншого проекту, платформи чи мови, тому він тут не пропонується.',
 
   // --------------------------------------------------------------- assist
   'composerWeb.assist.menuLabel': 'Допоможіть із цим текстом',
@@ -344,7 +344,7 @@ export const webComposerMessages = {
   'mediaLib.loading': 'Завантаження медіатеки',
   'mediaLib.permission.title': 'Ви не бачите цю бібліотеку робочої області',
   'mediaLib.permission.body':
-    'Для перегляду медіа-файлів потрібна роль глядача або вище на цьому бренді. Власник або адміністратор може надати це.',
+    'Для перегляду медіа-файлів потрібна роль глядача або вище на цьому проекті. Власник або адміністратор може надати це.',
 
   'mediaLib.upload.heading': 'Додайте медіа',
   'mediaLib.upload.browse': 'Виберіть файли',

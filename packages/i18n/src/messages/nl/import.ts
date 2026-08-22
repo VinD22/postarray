@@ -30,8 +30,8 @@ export const importMessages = {
   'import.upload.paste': 'Of plak CSV-tekst',
   'import.upload.pasteHelp':
     'Neem de kopregel op. Alles wordt gecontroleerd voordat er iets wordt gemaakt.',
-  'import.upload.project': 'Merk',
-  'import.upload.projectHelp': 'Elke rij in één bestand hoort bij dit merk.',
+  'import.upload.project': 'Project',
+  'import.upload.projectHelp': 'Elke rij in één bestand hoort bij dit project.',
   'import.upload.submit': 'Controleer dit bestand',
   'import.upload.submitting': 'Bestand wordt gelezen',
   'import.upload.allowPast': 'Sta tijden toe die al zijn verstreken',
@@ -47,7 +47,7 @@ export const importMessages = {
   'import.template.required': 'Verplichte kolommen',
   'import.template.optional': 'Optionele kolommen',
   'import.column.external_row_id': 'Je eigen id voor de rij. Moet uniek zijn binnen het bestand.',
-  'import.column.project': 'De merknaam of het merk-id waartoe de rij hoort.',
+  'import.column.project': 'De projectnaam of het project-id waartoe de rij hoort.',
   'import.column.targets':
     "Ofwel set: gevolgd door een doelset-id, ofwel account-id's gescheiden door een verticale streep.",
   'import.column.caption': 'De berichttekst.',

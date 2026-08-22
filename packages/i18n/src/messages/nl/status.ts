@@ -16,7 +16,7 @@ export const statusMessages = {
   'empty.analytics.noPermission':
     'Dit account heeft geen analysetoegang verleend. Maak opnieuw verbinding om het toe te voegen.',
   'empty.approvals.title': 'Er wacht niets op je',
-  'empty.approvals.body': 'Goedkeuringsverzoeken voor uw merken verschijnen hier.',
+  'empty.approvals.body': 'Goedkeuringsverzoeken voor uw projecten verschijnen hier.',
   'empty.library.title': 'Je bibliotheek is leeg',
   'empty.library.body': 'Upload afbeeldingen en video, of importeer ze vanaf een URL of de API.',
   'empty.library.action': 'Media uploaden',

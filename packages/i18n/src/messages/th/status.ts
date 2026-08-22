@@ -14,7 +14,7 @@ export const statusMessages = {
   'empty.analytics.noPermission':
     'บัญชีนี้ไม่ได้ให้สิทธิ์การเข้าถึงการวิเคราะห์ เชื่อมต่อใหม่เพื่อเพิ่ม',
   'empty.approvals.title': 'ไม่มีอะไรรอคุณอยู่',
-  'empty.approvals.body': 'คำขออนุมัติสำหรับแบรนด์ของคุณปรากฏที่นี่',
+  'empty.approvals.body': 'คำขออนุมัติสำหรับโปรเจกต์ของคุณปรากฏที่นี่',
   'empty.library.title': 'ห้องสมุดของคุณว่างเปล่า',
   'empty.library.body': 'อัปโหลดรูปภาพและวิดีโอหรือนำเข้าจาก URL หรือ API',
   'empty.library.action': 'อัพโหลดสื่อ',

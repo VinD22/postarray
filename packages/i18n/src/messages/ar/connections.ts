@@ -61,8 +61,7 @@ export const connectionMessages = {
     '{provider} قام بتقييد هذا التطبيق في انتظار المراجعة. يتم نشر المشاركات من {account} بشكل خاص حتى اكتمال المراجعة.',
 
   'connection.group.title': 'مجموعات العملاء',
-  'connection.group.description':
-    'قم بتجميع الحسابات حسب العميل أو العلامة التجارية لتصفية كل شاشة.',
+  'connection.group.description': 'قم بتجميع الحسابات حسب العميل أو المشروع لتصفية كل شاشة.',
   'connection.group.assign': 'الانتقال إلى المجموعة',
   'connection.group.none': 'غير مجمعة',
   'connection.group.moveNote': 'يؤدي نقل الحساب إلى الاحتفاظ بمنشوراته وإيصالاته وتحليلاته.',

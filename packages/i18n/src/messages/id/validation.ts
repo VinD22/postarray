@@ -50,7 +50,7 @@ export const validationMessages = {
   'validation.privacy_setting_required.hint':
     'Tidak ada standarnya. Pilih siapa yang dapat melihat postingan ini.',
   'validation.disclosure_required.message':
-    'Postingan ini memerlukan pengungkapan berdasarkan aturan merek untuk {market}.',
+    'Postingan ini memerlukan pengungkapan berdasarkan aturan proyek untuk {market}.',
   'validation.first_comment_unsupported.message':
     '{provider} tidak mendukung komentar pertama yang dijadwalkan untuk akun ini.',
   'validation.thread_unsupported.message': '{provider} tidak mendukung thread untuk akun ini.',

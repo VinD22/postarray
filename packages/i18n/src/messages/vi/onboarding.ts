@@ -46,7 +46,7 @@ export const onboardingMessages = {
   'onboarding.checklist.connectAccount': 'Kết nối một tài khoản',
   'onboarding.checklist.firstPost': 'Xuất bản hoặc lên lịch đăng bài',
   'onboarding.checklist.inviteTeammate': 'Mời đồng đội',
-  'onboarding.checklist.setProjectVoice': 'Mô tả tiếng nói thương hiệu của bạn',
+  'onboarding.checklist.setProjectVoice': 'Mô tả tiếng nói dự án của bạn',
   'onboarding.checklist.tryAutomation': 'Hãy thử một quy tắc tự động hóa',
   'onboarding.checklist.remaining':
     '{count, plural, =0 {All done} one {# step left} other {# steps left}}',

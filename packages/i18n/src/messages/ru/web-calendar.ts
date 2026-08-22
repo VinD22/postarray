@@ -86,7 +86,7 @@ export const webCalendarMessages = {
   'web.calendar.allDayHeading': 'Точного времени пока нет',
 
   'web.calendar.filter.group': 'Группа клиентов',
-  'web.calendar.filter.anyProject': 'Любой бренд',
+  'web.calendar.filter.anyProject': 'Любой проект',
   'web.calendar.filter.anyAccount': 'Любой аккаунт',
   'web.calendar.filter.anyPlatform': 'Любая платформа',
   'web.calendar.filter.anyStatus': 'Любой статус',
@@ -199,7 +199,7 @@ export const webCalendarMessages = {
   'web.calendar.permission.requirementsLabel': 'Требуемый объем',
   'web.calendar.permission.title': 'Вы не можете видеть этот календарь',
   'web.calendar.permission.body':
-    'Доступ к календарю предоставляется для каждого бренда. Ваша учетная запись не относится к брендам в этом представлении.',
+    'Доступ к календарю предоставляется для каждого проекта. Ваша учетная запись не относится к проектам в этом представлении.',
 
   /* ---------------------------------------------------------------------
    * Post job and publication receipt
@@ -366,12 +366,12 @@ export const webCalendarMessages = {
   'web.connection.connect.noWriteWithoutApproval':
     'Подключение аккаунта ничего не публикует. Каждое сообщение по-прежнему соответствует этой политике одобрения рабочей области.',
 
-  'web.connection.projectScope.title': 'Показаны каналы для бренда {project}',
+  'web.connection.projectScope.title': 'Показаны каналы для проекта {project}',
   'web.connection.projectScope.body':
-    'Новые каналы подключаются к этому бренду. Переключите бренд на верхней панели, чтобы управлять другим набором.',
-  'web.connection.projectMissing.title': 'Создайте бренд, прежде чем подключать канал',
+    'Новые каналы подключаются к этому проекту. Переключите проект на верхней панели, чтобы управлять другим набором.',
+  'web.connection.projectMissing.title': 'Создайте проект, прежде чем подключать канал',
   'web.connection.projectMissing.body':
-    'Бренды хранят каналы, медиафайлы, черновики и расписания разных продуктов или клиентов отдельно друг от друга.',
+    'Проекты хранят каналы, медиафайлы, черновики и расписания разных продуктов или клиентов отдельно друг от друга.',
 
   'web.connection.requirement.instagram':
     'Для публикации Instagram требуется профессиональная учетная запись, то есть учетная запись компании или автора, связанная со страницей Facebook.',
@@ -449,7 +449,7 @@ export const webCalendarMessages = {
     'Группа фильтрует календарь и аналитику. При перемещении учетной записи сохраняются все сообщения, квитанции и показатели, которые у нее уже есть.',
   'web.connection.group.empty.title': 'Пока нет групп клиентов',
   'web.connection.group.empty.body':
-    'Группа, это клиент или бренд. Группируйте учетные записи для фильтрации календаря и аналитики по клиентам.',
+    'Группа, это клиент или проект. Группируйте учетные записи для фильтрации календаря и аналитики по клиентам.',
 
   'web.connection.incident.title': 'Этот аккаунт требует внимания',
   'web.connection.incident.remediationHeading': 'Что делать?',

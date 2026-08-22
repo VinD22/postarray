@@ -25,7 +25,7 @@ export const webDemoMessages = {
 
   'web.meta.demo.title': 'Zobacz, jak działa Relay',
   'web.meta.demo.description':
-    'Prowadzona wycieczka po przepływie publikacji, od nowej marki po potwierdzenie, pokazana w prawdziwym interfejsie z przykładową treścią. Nic jeszcze nie jest publikowane, a wycieczka pokazuje, gdzie przebiega ta granica.',
+    'Prowadzona wycieczka po przepływie publikacji, od nowego projektu po potwierdzenie, pokazana w prawdziwym interfejsie z przykładową treścią. Nic jeszcze nie jest publikowane, a wycieczka pokazuje, gdzie przebiega ta granica.',
 
   'web.demo.nav.label': 'Zobacz, jak to działa',
   'web.demo.nav.summary':
@@ -73,9 +73,9 @@ export const webDemoMessages = {
   /* The nine steps                                                          */
   /* ---------------------------------------------------------------------- */
 
-  'web.demo.step.project.title': 'Utwórz markę',
+  'web.demo.step.project.title': 'Utwórz projekt',
   'web.demo.step.project.body':
-    'Marka zawiera konta, szkice, zatwierdzenia i strefę czasową. Każde zapytanie w produkcie jest ograniczone do jednej marki, w usłudze aplikacji i ponownie w bazie danych, więc klient nie może przypadkowo zobaczyć innego klienta.',
+    'Projekt zawiera konta, szkice, zatwierdzenia i strefę czasową. Każde zapytanie w produkcie jest ograniczone do jednego projektu, w usłudze aplikacji i ponownie w bazie danych, więc klient nie może przypadkowo zobaczyć innego klienta.',
 
   'web.demo.step.connect.title': 'Połącz konto',
   'web.demo.step.connect.body':
@@ -91,7 +91,7 @@ export const webDemoMessages = {
 
   'web.demo.step.schedule.title': 'Nadaj termin albo oddaj to kolejce',
   'web.demo.step.schedule.body':
-    'Termin jest przechowywany jako moment plus strefa czasowa marki, nigdy jako naiwny czas lokalny, więc zmiana czasu letniego niczego pod Tobą nie przesuwa. Kolejka to druga droga: bierze następny termin dozwolony przez ustawione przez Ciebie reguły.',
+    'Termin jest przechowywany jako moment plus strefa czasowa projektu, nigdy jako naiwny czas lokalny, więc zmiana czasu letniego niczego pod Tobą nie przesuwa. Kolejka to druga droga: bierze następny termin dozwolony przez ustawione przez Ciebie reguły.',
 
   'web.demo.step.calendar.title': 'Obserwuj kalendarz',
   'web.demo.step.calendar.body':
@@ -105,10 +105,10 @@ export const webDemoMessages = {
   /* Panel labels                                                            */
   /* ---------------------------------------------------------------------- */
 
-  'web.demo.project.label': 'Marka',
+  'web.demo.project.label': 'Projekt',
   'web.demo.project.zone': 'Strefa czasowa: {zone}',
   'web.demo.project.scope':
-    'Szkice, konta, zatwierdzenia i potwierdzenia należą do tej marki i nigdzie indziej.',
+    'Szkice, konta, zatwierdzenia i potwierdzenia należą do tego projektu i nigdzie indziej.',
 
   'web.demo.accounts.label': 'Konta w tej marce',
   'web.demo.accounts.state': 'Weryfikacja niekompletna',
@@ -127,7 +127,8 @@ export const webDemoMessages = {
     'Kolejka to druga droga: wybiera następny termin dozwolony przez Twoje reguły, w tej strefie czasowej.',
 
   'web.demo.week.label': 'Tydzień',
-  'web.demo.week.caption': 'Te same trzy posty w kalendarzu, odczytane w strefie czasowej marki.',
+  'web.demo.week.caption':
+    'Te same trzy posty w kalendarzu, odczytane w strefie czasowej projektu.',
   'web.demo.week.empty': 'Nic zaplanowane',
 
   'web.demo.receipt.label': 'Potwierdzenie dotychczasowe',
@@ -179,7 +180,7 @@ export const webDemoMessages = {
 
   'web.demo.tour.stepsLabel': 'Kroki wycieczki',
   'web.demo.tour.jump': 'Pokaż krok {position}: {step}',
-  'web.demo.tour.step.project': 'Utwórz markę',
+  'web.demo.tour.step.project': 'Utwórz projekt',
   'web.demo.tour.step.connect': 'Połącz konta',
   'web.demo.tour.step.compose': 'Skomponuj raz',
   'web.demo.tour.step.variants': 'Dostosuj do platformy',

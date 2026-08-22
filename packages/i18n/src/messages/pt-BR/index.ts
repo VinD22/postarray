@@ -1,6 +1,8 @@
 import { a11yMessages } from './a11y';
 import { actionMessages } from './actions';
 import { analyticsMessages } from './analytics';
+import { assistantMessages } from './assistant';
+import { assistantWebMessages } from './assistant-web';
 import { authMessages } from './auth';
 import { automationMessages } from './automation';
 import { billingMessages } from './billing';
@@ -48,7 +50,7 @@ export const ptBR = {
   ...a11yMessages,
   ...actionMessages,
   ...analyticsMessages,
-  ...authMessages,
+  ...withoutBetaEnglishFallbacks(authMessages, 'pt-BR'),
   ...automationMessages,
   ...billingMessages,
   ...calendarMessages,
@@ -62,6 +64,8 @@ export const ptBR = {
   ...importMessages,
   ...mediaMessages,
   ...navMessages,
+  ...withoutBetaEnglishFallbacks(assistantMessages, 'pt-BR'),
+  ...withoutBetaEnglishFallbacks(assistantWebMessages, 'pt-BR'),
   ...onboardingMessages,
   ...postingSetMessages,
   ...queueMessages,
@@ -74,7 +78,7 @@ export const ptBR = {
   ...webBlogMessages,
   ...webCalendarMessages,
   ...webComparisonMessages,
-  ...webComposerMessages,
+  ...withoutBetaEnglishFallbacks(webComposerMessages, 'pt-BR'),
   ...webDemoMessages,
   ...withoutBetaEnglishFallbacks(webMarketingMessages, 'pt-BR'),
   ...webPlatformsMessages,

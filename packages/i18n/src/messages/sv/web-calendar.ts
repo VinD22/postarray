@@ -86,7 +86,7 @@ export const webCalendarMessages = {
   'web.calendar.allDayHeading': 'Ingen exakt tid än',
 
   'web.calendar.filter.group': 'Kundgrupp',
-  'web.calendar.filter.anyProject': 'Vilket märke som helst',
+  'web.calendar.filter.anyProject': 'Vilket projekt som helst',
   'web.calendar.filter.anyAccount': 'Vilket konto som helst',
   'web.calendar.filter.anyPlatform': 'Vilken plattform som helst',
   'web.calendar.filter.anyStatus': 'Vilken status som helst',
@@ -199,7 +199,7 @@ export const webCalendarMessages = {
   'web.calendar.permission.requirementsLabel': 'Erforderligt omfattning',
   'web.calendar.permission.title': 'Du kan inte se den här kalendern',
   'web.calendar.permission.body':
-    'Kalenderåtkomst beviljas per varumärke. Ditt konto finns inte på varumärkena i den här vyn.',
+    'Kalenderåtkomst beviljas per projekt. Ditt konto finns inte på projekten i den här vyn.',
 
   /* ---------------------------------------------------------------------
    * Post job and publication receipt
@@ -363,10 +363,10 @@ export const webCalendarMessages = {
     'Att ansluta ett konto publicerar ingenting. Varje inlägg följer fortfarande denna policy för godkännande av arbetsytan.',
   'web.connection.projectScope.title': 'Kanaler för {project}',
   'web.connection.projectScope.body':
-    'Nya kanaler ansluter till detta varumärke. Byt varumärke i det övre fältet för att hantera en annan uppsättning.',
-  'web.connection.projectMissing.title': 'Skapa ett varumärke innan du ansluter en kanal',
+    'Nya kanaler ansluter till detta projekt. Byt projekt i det övre fältet för att hantera en annan uppsättning.',
+  'web.connection.projectMissing.title': 'Skapa ett projekt innan du ansluter en kanal',
   'web.connection.projectMissing.body':
-    'Varumärken håller kanaler, media, utkast och scheman för olika produkter eller kunder separata.',
+    'Projekt håller kanaler, media, utkast och scheman för olika produkter eller kunder separata.',
 
   'web.connection.requirement.instagram':
     'Instagram-publicering behöver ett professionellt konto, vilket innebär ett företags- eller skaparkonto kopplat till en Facebook-sida.',
@@ -444,7 +444,7 @@ export const webCalendarMessages = {
     'En grupp filtrerar kalendern och analyserna. När du flyttar ett konto behålls varje inlägg, kvitto och mätvärde som det redan har.',
   'web.connection.group.empty.title': 'Inga kundgrupper ännu',
   'web.connection.group.empty.body':
-    'En grupp är en kund eller ett varumärke. Gruppera konton för att filtrera kalendern och analyser efter kund.',
+    'En grupp är en kund eller ett projekt. Gruppera konton för att filtrera kalendern och analyser efter kund.',
 
   'web.connection.incident.title': 'Detta konto behöver uppmärksamhet',
   'web.connection.incident.remediationHeading': 'Vad ska man göra',

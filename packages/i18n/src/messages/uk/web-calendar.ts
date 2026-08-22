@@ -86,7 +86,7 @@ export const webCalendarMessages = {
   'web.calendar.allDayHeading': 'Точного часу ще немає',
 
   'web.calendar.filter.group': 'Група клієнтів',
-  'web.calendar.filter.anyProject': 'Будь-який бренд',
+  'web.calendar.filter.anyProject': 'Будь-який проект',
   'web.calendar.filter.anyAccount': 'Будь-який рахунок',
   'web.calendar.filter.anyPlatform': 'Будь-яка платформа',
   'web.calendar.filter.anyStatus': 'Будь-який статус',
@@ -199,7 +199,7 @@ export const webCalendarMessages = {
   'web.calendar.permission.requirementsLabel': 'Необхідний обсяг',
   'web.calendar.permission.title': 'Ви не бачите цей календар',
   'web.calendar.permission.body':
-    'Доступ до календаря надається кожному бренду. Ваш обліковий запис не відображається на брендах у цьому перегляді.',
+    'Доступ до календаря надається кожному проекту. Ваш обліковий запис не відображається на проектах у цьому перегляді.',
 
   /* ---------------------------------------------------------------------
    * Post job and publication receipt
@@ -363,12 +363,12 @@ export const webCalendarMessages = {
   'web.connection.connect.noWriteWithoutApproval':
     'Підключення облікового запису нічого не публікує. Кожна публікація досі відповідає цій політиці схвалення робочої області.',
 
-  'web.connection.projectScope.title': 'Показано канали для бренду {project}',
+  'web.connection.projectScope.title': 'Показано канали для проекту {project}',
   'web.connection.projectScope.body':
-    'Нові канали підключаються до цього бренду. Перемкніть бренд у верхній панелі, щоб керувати іншим набором.',
-  'web.connection.projectMissing.title': 'Створіть бренд, перш ніж підключати канал',
+    'Нові канали підключаються до цього проекту. Перемкніть проект у верхній панелі, щоб керувати іншим набором.',
+  'web.connection.projectMissing.title': 'Створіть проект, перш ніж підключати канал',
   'web.connection.projectMissing.body':
-    'Бренди тримають канали, медіа, чернетки та розклади різних продуктів чи клієнтів окремо.',
+    'Проекти тримають канали, медіа, чернетки та розклади різних продуктів чи клієнтів окремо.',
 
   'web.connection.requirement.instagram':
     'Для публікації Instagram потрібен професійний обліковий запис, який означає обліковий запис компанії або творця, пов’язаний зі сторінкою Facebook.',
@@ -446,7 +446,7 @@ export const webCalendarMessages = {
     'Група фільтрує календар і аналітику. Переміщення облікового запису зберігає всі публікації, квитанції та показники, які в ньому вже є.',
   'web.connection.group.empty.title': 'Груп клієнтів ще немає',
   'web.connection.group.empty.body':
-    'Група – це клієнт або бренд. Групуйте облікові записи, щоб фільтрувати календар і аналітику за клієнтами.',
+    'Група – це клієнт або проект. Групуйте облікові записи, щоб фільтрувати календар і аналітику за клієнтами.',
 
   'web.connection.incident.title': 'Цей обліковий запис потребує уваги',
   'web.connection.incident.remediationHeading': 'Що робити',

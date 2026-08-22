@@ -60,7 +60,7 @@ export const webCalendarMessages = withHebrewPluralForms({
   'web.calendar.nowLabel': 'עכשיו',
   'web.calendar.allDayHeading': 'עדיין אין זמן מדויק',
   'web.calendar.filter.group': 'קבוצת לקוחות',
-  'web.calendar.filter.anyProject': 'כל מותג',
+  'web.calendar.filter.anyProject': 'כל פרויקט',
   'web.calendar.filter.anyAccount': 'כל חשבון',
   'web.calendar.filter.anyPlatform': 'כל פלטפורמה',
   'web.calendar.filter.anyStatus': 'כל סטטוס',
@@ -164,7 +164,7 @@ export const webCalendarMessages = withHebrewPluralForms({
   'web.calendar.permission.requirementsLabel': 'היקף נדרש',
   'web.calendar.permission.title': 'אתה לא יכול לראות את לוח השנה הזה',
   'web.calendar.permission.body':
-    'גישה ליומן ניתנת לכל מותג. החשבון שלך לא נמצא במותגים בתצוגה זו.',
+    'גישה ליומן ניתנת לכל פרויקט. החשבון שלך לא נמצא בפרויקטים בתצוגה זו.',
   'web.receipt.breadcrumb.calendar': 'לוח שנה',
   'web.receipt.breadcrumb.post': 'פוסט',
   'web.receipt.heading': '{title}',
@@ -298,10 +298,10 @@ export const webCalendarMessages = withHebrewPluralForms({
     'חיבור חשבון לא מפרסם כלום. כל פוסט עדיין עומד במדיניות אישור סביבת העבודה הזו.',
   'web.connection.projectScope.title': 'מוצגים ערוצים עבור {project}',
   'web.connection.projectScope.body':
-    'ערוצים חדשים מתחברים למותג הזה. החלף מותג מהסרגל העליון כדי לנהל קבוצה אחרת.',
-  'web.connection.projectMissing.title': 'צור מותג לפני חיבור ערוץ',
+    'ערוצים חדשים מתחברים לפרויקט הזה. החלף פרויקט מהסרגל העליון כדי לנהל קבוצה אחרת.',
+  'web.connection.projectMissing.title': 'צור פרויקט לפני חיבור ערוץ',
   'web.connection.projectMissing.body':
-    'מותגים שומרים ערוצים, מדיה, טיוטות ולוחות זמנים של מוצרים או לקוחות שונים בנפרד.',
+    'פרויקטים שומרים ערוצים, מדיה, טיוטות ולוחות זמנים של מוצרים או לקוחות שונים בנפרד.',
 
   'web.connection.requirement.instagram':
     'פרסום באינסטגרם צריך חשבון מקצועי, כלומר חשבון עסקי או יוצר המקושר לעמוד פייסבוק.',
@@ -310,7 +310,7 @@ export const webCalendarMessages = withHebrewPluralForms({
   'web.connection.requirement.linkedin':
     'כדי לפרסם עבור ארגון אתה צריך תפקיד של מנהל תוכן בדף הלינקדאין הזה.',
   'web.connection.requirement.youtube':
-    'עד ש-Google תסיים את ביקורת האפליקציה, העלאות מהפרויקט הזה מתפרסמות כפרטיות. תוכל לשנות את הנראות ביוטיוב לאחר מכן.',
+    'עד ש-Google תסיים את ביקורת האפליקציה, העלאות מהפרויקט הזה מתפרסמות כפרטיות. תוכל לשנות את הנראות בYouTube לאחר מכן.',
   'web.connection.requirement.tiktok':
     'TikTok דורש ממך לבחור את הקהל עבור כל פוסט בעצמך. ממסר לא יכול לבחור אחד מראש עבורך.',
   'web.connection.requirement.x':
@@ -372,7 +372,7 @@ export const webCalendarMessages = withHebrewPluralForms({
     'קבוצה מסננת את לוח השנה והניתוח. העברת חשבון שומרת כל פוסט, קבלה ומדד שכבר יש לו.',
   'web.connection.group.empty.title': 'עדיין אין קבוצות לקוחות',
   'web.connection.group.empty.body':
-    'קבוצה היא לקוח או מותג. קבוצת חשבונות לסינון לוח השנה וניתוח לפי לקוח.',
+    'קבוצה היא לקוח או פרויקט. קבוצת חשבונות לסינון לוח השנה וניתוח לפי לקוח.',
   'web.connection.incident.title': 'חשבון זה דורש תשומת לב',
   'web.connection.incident.remediationHeading': 'מה לעשות',
   'web.connection.incident.scheduledOnHold':

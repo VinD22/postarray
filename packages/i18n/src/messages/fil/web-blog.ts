@@ -15,7 +15,7 @@
 export const webBlogMessages = {
   'web.blog.meta.title': 'Mga sulatin tungkol sa publishing operations',
   'web.blog.meta.description':
-    'Mga artikulo tungkol sa cadence ng pag-post, mga modelo ng pag-iiskedyul, time zone, pag-adapt kada platform, at pagpapatakbo ng gawaing kliyente bilang magkakahiwalay na project.',
+    'Mga artikulo tungkol sa cadence ng pag-post, mga modelo ng pag-iiskedyul, time zone, pag-adapt kada platform, at pagpapatakbo ng gawaing kliyente bilang magkakahiwalay na proyekto.',
 
   'web.blog.title': 'Mga sulatin',
   'web.blog.lede':

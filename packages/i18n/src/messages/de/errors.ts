@@ -220,4 +220,16 @@ export const errorMessages = {
   'error.reference': 'Referenz {correlationId}',
   'error.reportToSupport': 'Senden Sie dies an den Support',
   'error.contentPreserved': 'Ihr Inhalt bleibt erhalten. Es wurde nichts veröffentlicht.',
+  'error.project_limit_reached.message':
+    'Dieser Arbeitsbereich nutzt bereits alle {limit} aktiven Projekte.',
+  'error.project_limit_reached.action':
+    'Archivieren Sie ein inaktives Projekt oder ändern Sie das Projektkontingent des Arbeitsbereichs.',
+  'error.project_has_connections.message':
+    'Dieses Projekt hat noch {connected, plural, one {# verbundenen Kanal} other {# verbundene Kanäle}}.',
+  'error.project_has_connections.action':
+    'Trennen Sie jeden Kanal in diesem Projekt, bevor Sie es archivieren.',
+  'error.project_last_active.message':
+    'Ein Arbeitsbereich muss mindestens ein aktives Projekt behalten.',
+  'error.project_last_active.action':
+    'Erstellen Sie ein weiteres Projekt, bevor Sie dieses archivieren.',
 } as const;

@@ -17,7 +17,7 @@ export const calendarMessages = {
   'calendar.slotOverflow': '{count, plural, one {# mehr} other {# mehr}}',
   'calendar.newPostAt': 'Neuer Beitrag um {time}',
 
-  'calendar.filter.project': 'Marke',
+  'calendar.filter.project': 'Projekt',
   'calendar.filter.account': 'Konto',
   'calendar.filter.platform': 'Plattform',
   'calendar.filter.status': 'Status',
@@ -103,4 +103,21 @@ export const calendarMessages = {
     'Die Datenschutz- oder Offenlegungseinstellungen wurden geändert.',
   'approval.reapproval.reason.locale': 'Die Inhaltssprache hat sich geändert.',
   'approval.expiresAt': 'Diese Anfrage läuft am {date} ab.',
+  'approval.content.title': 'Plattformvarianten',
+  'approval.content.master': 'Hauptentwurf',
+  'approval.content.language': 'Inhaltssprache',
+  'approval.content.media': 'Medien',
+  'approval.content.mediaCount':
+    '{count, plural, =0 {Keine hochgeladenen Dateien} one {# hochgeladene Datei} other {# hochgeladene Dateien}}',
+  'approval.content.destination': 'Ziel',
+  'approval.content.privacy': 'Sichtbarkeit',
+  'approval.content.schedule': 'Veröffentlichungszeit',
+  'approval.content.cost': 'Geschätzte Plattformkosten',
+  'approval.content.costUnavailable': 'Nicht verfügbar',
+  'approval.changed.title': 'Der Beitrag hat sich nach dieser Anfrage geändert',
+  'approval.changed.body':
+    'Dieser Bildschirm zeigt eine neuere Version. Entscheiden Sie diese Anfrage nicht. Bitten Sie die verfassende Person, sie erneut einzureichen.',
+  'approval.notFound.title': 'Diese Genehmigung wartet nicht mehr',
+  'approval.notFound.body':
+    'Sie hat möglicherweise bereits eine Entscheidung, ist abgelaufen oder steht Ihrer Rolle nicht zur Verfügung.',
 } as const;

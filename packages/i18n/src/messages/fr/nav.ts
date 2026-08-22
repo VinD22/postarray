@@ -25,7 +25,7 @@ export const navMessages = {
   'nav.theme.label': 'Thème',
 
   'settings.nav.members': 'Membres et rôles',
-  'settings.nav.projects': 'Marques',
+  'settings.nav.projects': 'Projets',
   'settings.nav.agents': 'Agents et API',
   'settings.nav.developerApps': 'Applications de développement',
   'settings.nav.webhooks': 'Webhooks',
@@ -73,4 +73,8 @@ export const navMessages = {
   'shell.feedback.open': 'Envoyer des commentaires',
   'shell.feedback.correlationId': 'Référence diagnostique : {correlationId}',
   'shell.signedInAs': 'Connecté en tant que {email}',
+  'shell.project.label': 'Projets',
+  'shell.project.none': 'Créer un projet',
+  'shell.project.current': 'Projet actuel : {name}',
+  'shell.project.manage': 'Gérer les projets',
 } as const;

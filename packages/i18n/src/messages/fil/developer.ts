@@ -7,7 +7,7 @@ export const developerMessages = {
   'developer.serviceAccount.title': 'Mga account ng serbisyo',
   'developer.serviceAccount.create': 'Gumawa ng account ng serbisyo',
   'developer.serviceAccount.name': 'Pangalan',
-  'developer.serviceAccount.scopeProjects': 'Mga project at account na magagamit nito',
+  'developer.serviceAccount.scopeProjects': 'Mga proyekto at account na magagamit nito',
   'developer.serviceAccount.scopePlatforms': 'Mga plataporma',
   'developer.serviceAccount.scopeLocales': 'Mga wika ng nilalaman',
   'developer.serviceAccount.scopeDomains': 'Pinapayagan ang mga domain ng link',
@@ -112,7 +112,7 @@ export const developerMessages = {
 
   'developer.consent.title': '{app} wants access to your workspace',
   'developer.consent.workspace': 'Workspace',
-  'developer.consent.projects': 'Projects and accounts',
+  'developer.consent.projects': 'Mga proyekto at account',
   'developer.consent.willBeAbleTo': '{app} will be able to',
   'developer.consent.willNotBeAbleTo': '{app} will not be able to',
   'developer.consent.approvalStillApplies':

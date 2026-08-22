@@ -53,7 +53,7 @@ export const webSettingsMessages = {
     'Sessioner, tvåfaktorsautentisering, referenser, agenter, webhooks och appbidrag.',
   'settings.ui.section.data': 'Datakontroller',
   'settings.ui.section.dataSummary':
-    'Exportera, återkalla en anslutning, ta bort ett varumärke, radera innehåll eller stäng kontot.',
+    'Exportera, återkalla en anslutning, ta bort ett projekt, radera innehåll eller stäng kontot.',
 
   /* ------------------------------------------------------- shared UI states */
 
@@ -105,9 +105,8 @@ export const webSettingsMessages = {
   'settings.ui.members.column.approvals': 'Godkännanden',
   'settings.ui.members.column.lastActive': 'Senast aktiv',
   'settings.ui.members.column.actions': 'Åtgärder',
-  'settings.ui.members.scopeAll': 'Alla märken och konton',
-  'settings.ui.members.scopeLimited':
-    '{count, plural, one {# varumärke} other {# varumärken}}: {names}',
+  'settings.ui.members.scopeAll': 'Alla projekt och konton',
+  'settings.ui.members.scopeLimited': '{count, plural, one {# projekt} other {# projekt}}: {names}',
   'settings.ui.members.approvals.canApprove': 'Kan godkänna',
   'settings.ui.members.approvals.cannotApprove': 'Kan inte godkänna',
   'settings.ui.members.approvals.canApproveOwnProjects': 'Kan godkänna de angivna projekten',
@@ -121,9 +120,9 @@ export const webSettingsMessages = {
   'settings.ui.members.inviteBody':
     'De får ett mejl med en länk. Inbjudan går ut efter sju dagar och du kan återkalla den innan dess.',
   'settings.ui.members.inviteRole': 'Roll',
-  'settings.ui.members.inviteScope': 'Varumärken de kan arbeta i',
-  'settings.ui.members.inviteScopeAll': 'Alla märken i denna arbetsyta',
-  'settings.ui.members.inviteScopeSelected': 'Bara de märken jag väljer',
+  'settings.ui.members.inviteScope': 'Projekt de kan arbeta i',
+  'settings.ui.members.inviteScopeAll': 'Alla projekt i denna arbetsyta',
+  'settings.ui.members.inviteScopeSelected': 'Bara de projekt jag väljer',
   'settings.ui.members.inviteApprovals': 'Kan besluta om godkännandeförfrågningar',
   'settings.ui.members.inviteApprovalsHelp':
     'Endast roller som redan inkluderar granskning kan ges detta. Det är separat från redigering.',
@@ -133,9 +132,9 @@ export const webSettingsMessages = {
   'settings.ui.members.inviteResend': 'Skicka inbjudan igen',
   'settings.ui.members.emptyTitle': 'Du är den enda personen här',
   'settings.ui.members.emptyBody':
-    'Bjud in personerna som skriver, godkänner eller läser resultat. Var och en får en roll och en varumärkesomfång.',
+    'Bjud in personerna som skriver, godkänner eller läser resultat. Var och en får en roll och ett projektomfång.',
   'settings.ui.members.emptyExample':
-    'En vanlig form: en ägare för fakturering, en godkännare per varumärke och redaktörer som skriver ut men aldrig publicerar.',
+    'En vanlig form: en ägare för fakturering, en godkännare per projekt och redaktörer som skriver ut men aldrig publicerar.',
   'settings.ui.members.roleReferenceTitle': 'Vad varje roll kan göra',
   'settings.ui.members.roleReferenceCaption': 'Roller och de handlingar var och en tillåter',
   'settings.ui.members.roleColumn.role': 'Roll',
@@ -163,7 +162,7 @@ export const webSettingsMessages = {
   /* ----------------------------------------------------------------- projects */
 
   'settings.ui.projects.description':
-    'Ett varumärke bär reglerna som innehåll kontrolleras mot: vad du får hävda, vad du inte får säga och hur varje språk är skrivet.',
+    'Ett projekt bär reglerna som innehåll kontrolleras mot: vad du får hävda, vad du inte får säga och hur varje språk är skrivet.',
   'settings.ui.projects.listCaption': 'Projekt i denna arbetsyta',
   'settings.ui.projects.column.project': 'Projekt',
   'settings.ui.projects.column.locales': 'Innehållsspråk',
@@ -173,9 +172,9 @@ export const webSettingsMessages = {
     '{count, plural, =0 {Inga konton} one {# konto} other {# konton}}',
   'settings.ui.projects.emptyTitle': 'Inga projekt än',
   'settings.ui.projects.emptyBody':
-    'Ett varumärke grupperar konton, godkännanderegler och språkregler. De flesta team börjar med en och lägger till en andra när en kund eller en marknad behöver andra regler.',
+    'Ett projekt grupperar konton, godkännanderegler och språkregler. De flesta team börjar med ett och lägger till ytterligare ett när en kund eller en marknad behöver andra regler.',
   'settings.ui.projects.emptyExample':
-    'Exempel: varumärke "Acme EU", språk engelska och tyska, blockerad term "garanterad", avslöjande "Betalt partnerskap" på för Instagram.',
+    'Exempel: projekt "Acme EU", språk engelska och tyska, blockerad term "garanterad", avslöjande "Betalt partnerskap" på för Instagram.',
   'settings.ui.projects.voiceHelp':
     'Hur det här projektet låter. Används när du ber om en omskrivning och när anspråk kontrolleras.',
   'settings.ui.projects.audienceHelp': 'Vem innehållet är till för, per marknad.',
@@ -362,7 +361,7 @@ export const webSettingsMessages = {
   'developer.ui.agents.emptyBody':
     'Skapa en för varje automatisering du kör. Separata konton innebär att du kan återkalla ett utan att stoppa de andra.',
   'developer.ui.agents.emptyExample':
-    'Exempel: "Innehållsagent", varumärke Acme EU, kan utarbeta och schemalägga upp till 6 inlägg om dagen mellan 07:00 och 22:00, publicerar aldrig omedelbart.',
+    'Exempel: "Innehållsagent", projekt Acme EU, kan utarbeta och schemalägga upp till 6 inlägg om dagen mellan 07:00 och 22:00, publicerar aldrig omedelbart.',
   'developer.ui.agents.step.identity': 'Namn och syfte',
   'developer.ui.agents.step.scope': 'Vad den kan nå',
   'developer.ui.agents.step.limits': 'Gränser',
@@ -581,8 +580,8 @@ export const webSettingsMessages = {
   'developer.ui.webhooks.eventGroup.publishing': 'Publicering',
   'developer.ui.webhooks.eventGroup.automation': 'Automation och foder',
   'developer.ui.webhooks.eventGroup.workspace': 'Arbetsyta',
-  'developer.ui.webhooks.scopeTitle': 'Varumärken och konton',
-  'developer.ui.webhooks.scopeAll': 'Varje varumärke och konto',
+  'developer.ui.webhooks.scopeTitle': 'Projekt och konton',
+  'developer.ui.webhooks.scopeAll': 'Varje projekt och konto',
   'developer.ui.webhooks.scopeSelected': 'Bara de jag väljer',
   'developer.ui.webhooks.secretTitle': 'Undertecknande hemlighet',
   'developer.ui.webhooks.secretBody':

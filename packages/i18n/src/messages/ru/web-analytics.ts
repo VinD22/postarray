@@ -27,7 +27,7 @@ export const webAnalyticsMessages = {
   'analytics.question.accounts': 'Какие аккаунты требуют внимания?',
   'analytics.question.next': 'Что стоит протестировать дальше?',
 
-  'analytics.filter.project': 'Project',
+  'analytics.filter.project': 'Проект',
   'analytics.filter.accounts': 'Счета',
   'analytics.filter.allAccounts': 'Все подключенные аккаунты',
   'analytics.filter.range': 'Диапазон дат',
@@ -445,7 +445,7 @@ export const webAnalyticsMessages = {
   'automation.param.signature': 'Подпись',
   'automation.param.disclosure': 'Раскрытие информации',
   'automation.param.locale': 'Язык',
-  'automation.param.project': 'Project',
+  'automation.param.project': 'Проект',
   'automation.param.campaign': 'Кампания',
   'automation.param.account': 'Аккаунт',
   'automation.param.platform': 'Платформа',

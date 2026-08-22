@@ -27,7 +27,7 @@ export const webAnalyticsMessages = {
   'analytics.question.accounts': 'Hangi hesaplara dikkat edilmesi gerekiyor?',
   'analytics.question.next': 'Bundan sonra test etmeye değer olan şey nedir?',
 
-  'analytics.filter.project': 'Marka',
+  'analytics.filter.project': 'Proje',
   'analytics.filter.accounts': 'Hesaplar',
   'analytics.filter.allAccounts': 'Bağlı tüm hesaplar',
   'analytics.filter.range': 'Tarih aralığı',
@@ -442,7 +442,7 @@ export const webAnalyticsMessages = {
   'automation.param.signature': 'İmza',
   'automation.param.disclosure': 'Açıklama',
   'automation.param.locale': 'Dil',
-  'automation.param.project': 'Marka',
+  'automation.param.project': 'Proje',
   'automation.param.campaign': 'Kampanya',
   'automation.param.account': 'Hesap',
   'automation.param.platform': 'platformu',

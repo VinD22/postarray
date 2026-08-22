@@ -25,7 +25,7 @@ export const navMessages = {
   'nav.theme.label': 'Tema',
 
   'settings.nav.members': 'Membri e ruoli',
-  'settings.nav.projects': 'Projects',
+  'settings.nav.projects': 'Progetti',
   'settings.nav.agents': 'Agenti e API',
   'settings.nav.developerApps': 'App per sviluppatori',
   'settings.nav.webhooks': 'Webhook',

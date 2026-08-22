@@ -8,7 +8,7 @@ export const webSettingsMessages = {
   'settings.ui.section.members': 'Anggota dan peran',
   'settings.ui.section.membersSummary':
     'Siapa yang ada di ruang kerja ini dan apa yang dapat dilakukan setiap orang.',
-  'settings.ui.section.projects': 'Project',
+  'settings.ui.section.projects': 'Proyek',
   'settings.ui.section.projectsSummary':
     'Suara, audiens, klaim yang disetujui, istilah yang diblokir, aturan lokal, domain, dan glosarium.',
   'settings.ui.section.agents': 'Agen dan API',
@@ -34,7 +34,7 @@ export const webSettingsMessages = {
     'Sesi, autentikasi dua faktor, kredensial, agen, webhook, dan hibah aplikasi.',
   'settings.ui.section.data': 'Kontrol data',
   'settings.ui.section.dataSummary':
-    'Ekspor, cabut koneksi, hapus merek, hapus konten, atau tutup akun.',
+    'Ekspor, cabut koneksi, hapus proyek, hapus konten, atau tutup akun.',
   'settings.ui.state.loading': 'Memuat {section}',
   'settings.ui.state.errorTitle': 'Kami tidak dapat memuat {section}',
   'settings.ui.state.errorRetry': 'Coba lagi',
@@ -79,12 +79,12 @@ export const webSettingsMessages = {
   'settings.ui.members.column.approvals': 'Persetujuan',
   'settings.ui.members.column.lastActive': 'Terakhir aktif',
   'settings.ui.members.column.actions': 'Tindakan',
-  'settings.ui.members.scopeAll': 'Semua merek dan akun',
+  'settings.ui.members.scopeAll': 'Semua proyek dan akun',
   'settings.ui.members.scopeLimited':
     '{count, plural, one {# project} other {# projects}}: {names}',
   'settings.ui.members.approvals.canApprove': 'Dapat menyetujui',
   'settings.ui.members.approvals.cannotApprove': 'Tidak dapat menyetujui',
-  'settings.ui.members.approvals.canApproveOwnProjects': 'Dapat menyetujui merek yang terdaftar',
+  'settings.ui.members.approvals.canApproveOwnProjects': 'Dapat menyetujui proyek yang terdaftar',
   'settings.ui.members.lastActiveNever': 'Belum masuk',
   'settings.ui.members.changeRole': 'Ubah peran untuk {name}',
   'settings.ui.members.remove': 'Hapus {name}',
@@ -95,9 +95,9 @@ export const webSettingsMessages = {
   'settings.ui.members.inviteBody':
     'Mereka menerima email dengan tautan. Undangan akan habis masa berlakunya setelah tujuh hari dan Anda dapat membatalkannya sebelum tanggal tersebut.',
   'settings.ui.members.inviteRole': 'Peran',
-  'settings.ui.members.inviteScope': 'Project tempat mereka dapat bekerja',
-  'settings.ui.members.inviteScopeAll': 'Setiap merek di ruang kerja ini',
-  'settings.ui.members.inviteScopeSelected': 'Hanya merek yang saya pilih',
+  'settings.ui.members.inviteScope': 'Proyek tempat mereka dapat bekerja',
+  'settings.ui.members.inviteScopeAll': 'Setiap proyek di ruang kerja ini',
+  'settings.ui.members.inviteScopeSelected': 'Hanya proyek yang saya pilih',
   'settings.ui.members.inviteApprovals': 'Dapat memutuskan permintaan persetujuan',
   'settings.ui.members.inviteApprovalsHelp':
     'Hanya peran yang sudah menyertakan ulasan yang dapat diberikan ini. Ini terpisah dari pengeditan.',
@@ -107,9 +107,9 @@ export const webSettingsMessages = {
   'settings.ui.members.inviteResend': 'Kirim undangan lagi',
   'settings.ui.members.emptyTitle': 'Anda adalah satu-satunya orang di sini',
   'settings.ui.members.emptyBody':
-    'Undang orang yang menulis, menyetujui, atau membaca hasilnya. Masing-masing mendapat peran dan cakupan merek.',
+    'Undang orang yang menulis, menyetujui, atau membaca hasilnya. Masing-masing mendapat peran dan cakupan proyek.',
   'settings.ui.members.emptyExample':
-    'Bentuk umum: satu pemilik penagihan, satu pemberi persetujuan per merek, dan editor yang membuat draf tetapi tidak pernah memublikasikannya.',
+    'Bentuk umum: satu pemilik penagihan, satu pemberi persetujuan per proyek, dan editor yang membuat draf tetapi tidak pernah memublikasikannya.',
   'settings.ui.members.roleReferenceTitle': 'Apa yang bisa dilakukan setiap peran',
   'settings.ui.members.roleReferenceCaption':
     'Peran dan tindakan yang diperbolehkan oleh masing-masing peran',
@@ -133,28 +133,28 @@ export const webSettingsMessages = {
   'settings.ui.members.removeConsequence.approvals':
     'Permintaan persetujuan yang menunggunya kembali ke antrean untuk pemberi persetujuan lain.',
   'settings.ui.projects.description':
-    'Sebuah merek memiliki aturan yang harus dipatuhi: apa yang boleh Anda klaim, apa yang tidak boleh Anda katakan, dan bagaimana setiap bahasa ditulis.',
-  'settings.ui.projects.listCaption': 'Projects di ruang kerja ini',
-  'settings.ui.projects.column.project': 'Project',
+    'Sebuah proyek memiliki aturan yang harus dipatuhi: apa yang boleh Anda klaim, apa yang tidak boleh Anda katakan, dan bagaimana setiap bahasa ditulis.',
+  'settings.ui.projects.listCaption': 'Proyek di ruang kerja ini',
+  'settings.ui.projects.column.project': 'Proyek',
   'settings.ui.projects.column.locales': 'Bahasa konten',
   'settings.ui.projects.column.accounts': 'Akun',
   'settings.ui.projects.column.updated': 'Diperbarui',
   'settings.ui.projects.accountCount':
     '{count, plural, =0 {No accounts} one {# account} other {# accounts}}',
-  'settings.ui.projects.emptyTitle': 'Belum ada merek',
+  'settings.ui.projects.emptyTitle': 'Belum ada proyek',
   'settings.ui.projects.emptyBody':
-    'Sebuah merek mengelompokkan akun, aturan persetujuan, dan aturan bahasa. Kebanyakan tim memulai dengan satu aturan dan menambahkan aturan kedua ketika klien atau pasar membutuhkan aturan yang berbeda.',
+    'Sebuah proyek mengelompokkan akun, aturan persetujuan, dan aturan bahasa. Kebanyakan tim memulai dengan satu aturan dan menambahkan aturan kedua ketika klien atau pasar membutuhkan aturan yang berbeda.',
   'settings.ui.projects.emptyExample':
-    'Contoh: merek "Acme EU", bahasa Inggris dan Jerman, istilah "dijamin" diblokir, pengungkapan "Kemitraan berbayar" aktif untuk Instagram.',
+    'Contoh: proyek "Acme EU", bahasa Inggris dan Jerman, istilah "dijamin" diblokir, pengungkapan "Kemitraan berbayar" aktif untuk Instagram.',
   'settings.ui.projects.voiceHelp':
-    'Bagaimana merek ini terdengar. Digunakan saat Anda meminta penulisan ulang dan saat klaim diperiksa.',
+    'Bagaimana proyek ini terdengar. Digunakan saat Anda meminta penulisan ulang dan saat klaim diperiksa.',
   'settings.ui.projects.audienceHelp': 'Untuk siapa konten tersebut, per pasar.',
   'settings.ui.projects.approvedClaimsHelp':
     'Pernyataan yang telah diselesaikan oleh pengulas. Apa pun di luar daftar ini ditandai sebelum disetujui, bukan setelah dipublikasikan.',
   'settings.ui.projects.blockedTermsHelp':
-    'Kata-kata yang menghalangi penjadwalan untuk merek ini. Satu per baris.',
+    'Kata-kata yang menghalangi penjadwalan untuk proyek ini. Satu per baris.',
   'settings.ui.projects.domainsHelp':
-    'Domain yang mungkin ditautkan dan diperpendek oleh merek ini. Hanya domain terverifikasi yang dapat dipilih di komposer.',
+    'Domain yang mungkin ditautkan dan diperpendek oleh proyek ini. Hanya domain terverifikasi yang dapat dipilih di komposer.',
   'settings.ui.projects.domainVerified': '{date} terverifikasi',
   'settings.ui.projects.domainPending': 'Catatan DNS belum terlihat',
   'settings.ui.projects.disclosureHelp':
@@ -167,7 +167,7 @@ export const webSettingsMessages = {
     'Belum ada persyaratan yang dilindungi. Tambahkan nama produk dan istilah hukum yang tidak boleh diterjemahkan atau diungkapkan ulang.',
   'settings.ui.projects.localeRulesHelp':
     'Aturan per bahasa konten. Aturan ini diterapkan saat Anda mengadaptasi atau melakukan transkreasi, dan ditampilkan kepada peninjau.',
-  'settings.ui.projects.saveProject': 'Simpan merek',
+  'settings.ui.projects.saveProject': 'Simpan proyek',
   'settings.ui.localization.description':
     'Tiga pengaturan terpisah: bahasa aplikasi ini, bahasa yang Anda publikasikan, dan pasar tempat Anda menulis. Mengubah yang satu tidak akan pernah mengubah yang lain.',
   'settings.ui.localization.interfaceOnlyEnglish':
@@ -290,7 +290,7 @@ export const webSettingsMessages = {
   'developer.ui.agents.emptyBody':
     'Buat satu untuk setiap otomatisasi yang Anda jalankan. Akun terpisah berarti Anda dapat mencabut satu akun tanpa menghentikan akun lainnya.',
   'developer.ui.agents.emptyExample':
-    'Contoh: "Agen konten", merek Acme EU, dapat membuat draf dan menjadwalkan hingga 6 postingan sehari antara pukul 07:00 dan 22:00, tidak pernah langsung dipublikasikan.',
+    'Contoh: "Agen konten", proyek Acme EU, dapat membuat draf dan menjadwalkan hingga 6 postingan sehari antara pukul 07:00 dan 22:00, tidak pernah langsung dipublikasikan.',
   'developer.ui.agents.step.identity': 'Nama dan tujuan',
   'developer.ui.agents.step.scope': 'Apa yang bisa dijangkaunya',
   'developer.ui.agents.step.limits': 'Batasan',
@@ -502,8 +502,8 @@ export const webSettingsMessages = {
   'developer.ui.webhooks.eventGroup.publishing': 'Penerbitan',
   'developer.ui.webhooks.eventGroup.automation': 'Otomatisasi dan umpan',
   'developer.ui.webhooks.eventGroup.workspace': 'Workspace',
-  'developer.ui.webhooks.scopeTitle': 'Project dan akun',
-  'developer.ui.webhooks.scopeAll': 'Setiap merek dan akun',
+  'developer.ui.webhooks.scopeTitle': 'Proyek dan akun',
+  'developer.ui.webhooks.scopeAll': 'Setiap proyek dan akun',
   'developer.ui.webhooks.scopeSelected': 'Hanya yang saya pilih',
   'developer.ui.webhooks.secretTitle': 'Rahasia penandatanganan',
   'developer.ui.webhooks.secretBody':

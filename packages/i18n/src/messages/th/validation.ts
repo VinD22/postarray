@@ -48,7 +48,7 @@ export const validationMessages = {
     '{provider} จำเป็นต้องมีตัวเลือกความเป็นส่วนตัวที่ชัดเจนก่อนที่จะเผยแพร่',
   'validation.privacy_setting_required.hint': 'ไม่มีค่าเริ่มต้น เลือกผู้ที่สามารถเห็นโพสต์นี้',
   'validation.disclosure_required.message':
-    'โพสต์นี้จำเป็นต้องเปิดเผยภายใต้กฎของแบรนด์สำหรับ {market}',
+    'โพสต์นี้จำเป็นต้องเปิดเผยภายใต้กฎของโปรเจกต์สำหรับ {market}',
   'validation.first_comment_unsupported.message':
     '{provider} ไม่สนับสนุนการแสดงความคิดเห็นแรกตามกำหนดการสำหรับบัญชีนี้',
   'validation.thread_unsupported.message': '{provider} ไม่รองรับเธรดสำหรับบัญชีนี้',

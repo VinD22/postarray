@@ -213,7 +213,7 @@ export const webShellMessages = {
     "La schermata successiva è Polar, il nostro commerciante registrato. L'accesso viene concesso quando Polar conferma l'abbonamento, non quando il browser si ripristina.",
   'onboarding.plan.factsTitle': 'Cosa succede se continui?',
   'onboarding.workspace.help':
-    'Uno spazio di lavoro contiene i tuoi marchi, account collegati, bozze e ricevute. Puoi crearne altri in seguito.',
+    'Uno spazio di lavoro contiene i tuoi progetti, account collegati, bozze e ricevute. Puoi crearne altri in seguito.',
   'onboarding.workspace.localeNote':
     "La lingua dell'interfaccia cambia questa app. Le lingue dei contenuti vengono scelte per post e sono separate da questa impostazione.",
   'onboarding.workspace.timeZoneDetected': 'Rilevato da questo dispositivo: {timeZone}',

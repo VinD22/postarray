@@ -63,7 +63,7 @@ export const connectionMessages = {
 
   'connection.group.title': 'Groupes de clients',
   'connection.group.description':
-    'Regroupez les comptes par client ou par marque pour filtrer chaque écran.',
+    'Les projets gardent séparés chaque produit ou client et ses comptes.',
   'connection.group.assign': 'Passer au groupe',
   'connection.group.none': 'Non groupé',
   'connection.group.moveNote':

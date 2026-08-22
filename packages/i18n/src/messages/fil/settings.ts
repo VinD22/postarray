@@ -32,17 +32,17 @@ export const settingsMessages = {
   'settings.role.owner.description': 'Lahat, kabilang ang pagsingil, seguridad at pagtanggal.',
   'settings.role.admin.description': 'Lahat maliban sa pagsingil at pagtanggal ng workspace.',
   'settings.role.manager.description':
-    'Pamahalaan ang mga tatak, koneksyon, iskedyul at panuntunan.',
+    'Pamahalaan ang mga proyekto, koneksyon, iskedyul at panuntunan.',
   'settings.role.editor.description': 'Lumikha at mag-edit ng nilalaman, humiling ng pag-apruba.',
   'settings.role.approver.description':
     'Aprubahan o tanggihan ang nilalaman, at iiskedyul kung ano ang naaprubahan.',
   'settings.role.analyst.description': 'Basahin ang analytics at mga resibo.',
   'settings.role.viewer.description': 'Basahin lamang.',
-  'settings.role.scopeLabel': 'Limitahan sa mga project at account',
+  'settings.role.scopeLabel': 'Limitahan sa mga proyekto at account',
   'settings.role.mfaRequired': 'Dapat gumamit ang mga may-ari ng dalawang salik na pagpapatotoo.',
 
-  'settings.projects.title': 'Mga tatak',
-  'settings.projects.add': 'Magdagdag ng tatak',
+  'settings.projects.title': 'Mga proyekto',
+  'settings.projects.add': 'Magdagdag ng proyekto',
   'settings.projects.voice': 'Boses',
   'settings.projects.audience': 'Madla',
   'settings.projects.approvedClaims': 'Mga naaprubahang claim',
@@ -72,7 +72,7 @@ export const settingsMessages = {
     'Ang pag-edit ng isang Set ay hindi binabago ang mga post na naaprubahan na o nakaiskedyul na.',
   'settings.signatures.title': 'Mga lagda',
   'settings.signatures.description':
-    'Pangwakas na text, hashtag, link o pagsisiwalat, na saklaw ng project, platform at wika.',
+    'Pangwakas na text, hashtag, link o pagsisiwalat, na saklaw ng proyekto, platform at wika.',
   'settings.signatures.autoApply': 'Awtomatikong magdagdag kapag tumugma ang konteksto',
 
   'settings.localization.title': 'Lokalisasyon',
@@ -81,7 +81,7 @@ export const settingsMessages = {
     'Ang wika ng app na ito para sa iyo. Hindi nito binabago ang wika ng iyong mga post.',
   'settings.localization.contentLocales': 'Mga wika ng nilalaman',
   'settings.localization.contentLocalesHelp':
-    'Ang mga wikang iyong pina-publish. Ang bawat project ay maaaring magtakda ng mga panuntunan at isang glossary bawat wika.',
+    'Ang mga wikang iyong pina-publish. Ang bawat proyekto ay maaaring magtakda ng mga panuntunan at isang glossary bawat wika.',
   'settings.localization.marketLocales': 'Mga merkado ng madla',
   'settings.localization.beta': 'Beta pagsasalin',
   'settings.localization.betaHelp':

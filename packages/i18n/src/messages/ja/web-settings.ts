@@ -7,7 +7,7 @@ export const webSettingsMessages = {
     'セクションを選択します。すべての変更はユーザーによるものであり、監査ログに記録されます。',
   'settings.ui.section.members': 'メンバーと役割',
   'settings.ui.section.membersSummary': 'このワークスペースには誰がいて、各人が何ができるのか。',
-  'settings.ui.section.projects': 'ブランド',
+  'settings.ui.section.projects': 'プロジェクト',
   'settings.ui.section.projectsSummary':
     '音声、視聴者、承認された申し立て、ブロックされた用語、ロケール ルール、ドメイン、用語集。',
   'settings.ui.section.agents': 'エージェントとAPI',
@@ -33,7 +33,7 @@ export const webSettingsMessages = {
     'セッション、2 要素認証、資格情報、エージェント、Webhook、アプリの許可。',
   'settings.ui.section.data': 'データ管理',
   'settings.ui.section.dataSummary':
-    'エクスポート、接続の取り消し、ブランドの削除、コンテンツの削除、またはアカウントの閉鎖を行います。',
+    'エクスポート、接続の取り消し、プロジェクトの削除、コンテンツの削除、またはアカウントの閉鎖を行います。',
   'settings.ui.state.loading': '読み込み中{section}',
   'settings.ui.state.errorTitle': 'ロードできませんでした{section}',
   'settings.ui.state.errorRetry': 'もう一度やり直してください',
@@ -76,11 +76,12 @@ export const webSettingsMessages = {
   'settings.ui.members.column.approvals': '承認',
   'settings.ui.members.column.lastActive': '最後にアクティブだった',
   'settings.ui.members.column.actions': 'アクション',
-  'settings.ui.members.scopeAll': 'すべてのブランドとアカウント',
-  'settings.ui.members.scopeLimited': '{count, plural, other {# ブランド}}:{names}',
+  'settings.ui.members.scopeAll': 'すべてのプロジェクトとアカウント',
+  'settings.ui.members.scopeLimited': '{count, plural, other {# プロジェクト}}:{names}',
   'settings.ui.members.approvals.canApprove': '承認できる',
   'settings.ui.members.approvals.cannotApprove': '承認できません',
-  'settings.ui.members.approvals.canApproveOwnProjects': 'リストされているブランドを承認できます',
+  'settings.ui.members.approvals.canApproveOwnProjects':
+    'リストされているプロジェクトを承認できます',
   'settings.ui.members.lastActiveNever': 'まだサインインしていません',
   'settings.ui.members.changeRole': 'の役割を変更する{name}',
   'settings.ui.members.remove': '取り除く{name}',
@@ -91,9 +92,9 @@ export const webSettingsMessages = {
   'settings.ui.members.inviteBody':
     'リンクが記載された電子メールを受信します。招待は 7 日後に期限切れになり、それまでに取り消すことができます。',
   'settings.ui.members.inviteRole': '役割',
-  'settings.ui.members.inviteScope': '彼らが働けるブランド',
-  'settings.ui.members.inviteScopeAll': 'このワークスペース内のすべてのブランド',
-  'settings.ui.members.inviteScopeSelected': '私が選んだブランドのみ',
+  'settings.ui.members.inviteScope': '彼らが働けるプロジェクト',
+  'settings.ui.members.inviteScopeAll': 'このワークスペース内のすべてのプロジェクト',
+  'settings.ui.members.inviteScopeSelected': '私が選んだプロジェクトのみ',
   'settings.ui.members.inviteApprovals': '承認リクエストを決定できる',
   'settings.ui.members.inviteApprovalsHelp':
     'すでにレビューが含まれているロールのみにこれを与えることができます。編集とは別です。',
@@ -103,9 +104,9 @@ export const webSettingsMessages = {
   'settings.ui.members.inviteResend': '招待状をもう一度送信します',
   'settings.ui.members.emptyTitle': 'ここにいるのはあなただけです',
   'settings.ui.members.emptyBody':
-    '結果を書いたり、承認したり、読んだりする人を招待します。それぞれに役割とブランドの範囲が与えられます。',
+    '結果を書いたり、承認したり、読んだりする人を招待します。それぞれに役割とプロジェクトの範囲が与えられます。',
   'settings.ui.members.emptyExample':
-    '一般的な形式: 請求担当者が 1 名、ブランドごとに承認者が 1 名、下書きはするが公開しない編集者。',
+    '一般的な形式: 請求担当者が 1 名、プロジェクトごとに承認者が 1 名、下書きはするが公開しない編集者。',
   'settings.ui.members.roleReferenceTitle': 'それぞれの役割でできること',
   'settings.ui.members.roleReferenceCaption': '役割とそれぞれに許可されるアクション',
   'settings.ui.members.roleColumn.role': '役割',
@@ -127,26 +128,27 @@ export const webSettingsMessages = {
   'settings.ui.members.removeConsequence.approvals':
     '待機中の承認リクエストは、別の承認者のキューに戻ります。',
   'settings.ui.projects.description':
-    'ブランドには、主張して​​よいこと、言ってはいけないこと、各言語の書き方など、コンテンツをチェックするためのルールが定められています。',
-  'settings.ui.projects.listCaption': 'このワークスペースのブランド',
-  'settings.ui.projects.column.project': 'Project',
+    'プロジェクトには、主張して​​よいこと、言ってはいけないこと、各言語の書き方など、コンテンツをチェックするためのルールが定められています。',
+  'settings.ui.projects.listCaption': 'このワークスペースのプロジェクト',
+  'settings.ui.projects.column.project': 'プロジェクト',
   'settings.ui.projects.column.locales': 'コンテンツ言語',
   'settings.ui.projects.column.accounts': 'アカウント',
   'settings.ui.projects.column.updated': '更新されました',
   'settings.ui.projects.accountCount': '{count, plural, other {# アカウント}}',
-  'settings.ui.projects.emptyTitle': 'まだブランドはありません',
+  'settings.ui.projects.emptyTitle': 'まだプロジェクトはありません',
   'settings.ui.projects.emptyBody':
-    'ブランドは、アカウント、承認ルール、および言語ルールをグループ化します。ほとんどのチームは 1 つから始めて、クライアントや市場が異なるルールを必要とする場合に 2 つ目を追加します。',
+    'プロジェクトは、アカウント、承認ルール、および言語ルールをグループ化します。ほとんどのチームは 1 つから始めて、クライアントや市場が異なるルールを必要とする場合に 2 つ目を追加します。',
   'settings.ui.projects.emptyExample':
-    '例: ブランド「Acme EU」、言語英語とドイツ語、ブロックされた用語「保証」、Instagram の開示「有料パートナーシップ」。',
+    '例: プロジェクト「Acme EU」、言語英語とドイツ語、ブロックされた用語「保証」、Instagram の開示「有料パートナーシップ」。',
   'settings.ui.projects.voiceHelp':
-    'このブランドがどう聞こえるか。リライトを要求する場合やクレームをチェックする場合に使用されます。',
+    'このプロジェクトがどう聞こえるか。リライトを要求する場合やクレームをチェックする場合に使用されます。',
   'settings.ui.projects.audienceHelp': '市場ごとのコンテンツの対象者。',
   'settings.ui.projects.approvedClaimsHelp':
     '査読者がクリアしたステートメント。このリスト以外のものには、公開後ではなく、承認前にフラグが立てられます。',
-  'settings.ui.projects.blockedTermsHelp': 'このブランドのスケジュールを妨げる単語。 1 行に 1 つ。',
+  'settings.ui.projects.blockedTermsHelp':
+    'このプロジェクトのスケジュールを妨げる単語。 1 行に 1 つ。',
   'settings.ui.projects.domainsHelp':
-    'このブランドがリンクしたり短縮したりできるドメイン。 Composer では検証済みのドメインのみを選択できます。',
+    'このプロジェクトがリンクしたり短縮したりできるドメイン。 Composer では検証済みのドメインのみを選択できます。',
   'settings.ui.projects.domainVerified': '確認済み{date}',
   'settings.ui.projects.domainPending': 'DNS レコードがまだ表示されていません',
   'settings.ui.projects.disclosureHelp':
@@ -158,7 +160,7 @@ export const webSettingsMessages = {
     '保護された用語はまだありません。翻訳または言い換えが禁止されている製品名と法律用語を追加します。',
   'settings.ui.projects.localeRulesHelp':
     'コンテンツ言語ごとのルール。これらは、適応または再作成するときに適用され、レビュー担当者に表示されます。',
-  'settings.ui.projects.saveProject': 'ブランドを保存',
+  'settings.ui.projects.saveProject': 'プロジェクトを保存',
   'settings.ui.localization.description':
     '3 つの個別の設定: このアプリの言語、公開する言語、および執筆対象の市場。 1 つを変更しても、もう 1 つが変わることはありません。',
   'settings.ui.localization.interfaceOnlyEnglish':
@@ -280,7 +282,7 @@ export const webSettingsMessages = {
   'developer.ui.agents.emptyBody':
     '実行するオートメーションごとに 1 つ作成します。個別のアカウントは、他のアカウントを停止することなく 1 つを取り消すことができることを意味します。',
   'developer.ui.agents.emptyExample':
-    '例: Acme EU ブランドの「コンテンツ エージェント」は、07:00 から 22:00 までに 1 日あたり最大 6 件の投稿の下書きとスケジュールを作成できますが、すぐには公開されません。',
+    '例: Acme EU プロジェクトの「コンテンツ エージェント」は、07:00 から 22:00 までに 1 日あたり最大 6 件の投稿の下書きとスケジュールを作成できますが、すぐには公開されません。',
   'developer.ui.agents.step.identity': '名前と目的',
   'developer.ui.agents.step.scope': 'それが到達できるもの',
   'developer.ui.agents.step.limits': '限界',
@@ -484,8 +486,8 @@ export const webSettingsMessages = {
   'developer.ui.webhooks.eventGroup.publishing': '出版',
   'developer.ui.webhooks.eventGroup.automation': '自動化とフィード',
   'developer.ui.webhooks.eventGroup.workspace': 'Workspace',
-  'developer.ui.webhooks.scopeTitle': 'ブランドとアカウント',
-  'developer.ui.webhooks.scopeAll': 'あらゆるブランドとアカウント',
+  'developer.ui.webhooks.scopeTitle': 'プロジェクトとアカウント',
+  'developer.ui.webhooks.scopeAll': 'あらゆるプロジェクトとアカウント',
   'developer.ui.webhooks.scopeSelected': '私が選んだものだけ',
   'developer.ui.webhooks.secretTitle': '署名の秘密',
   'developer.ui.webhooks.secretBody':

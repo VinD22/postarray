@@ -16,7 +16,7 @@ export const calendarMessages = {
   'calendar.slotCount': '{count, plural, =0 {Nothing scheduled} one {# post} other {# posts}}',
   'calendar.slotOverflow': '{count, plural, one {# more} other {# more}}',
   'calendar.newPostAt': 'Bài đăng mới tại {time}',
-  'calendar.filter.project': 'Project',
+  'calendar.filter.project': 'Dự án',
   'calendar.filter.account': 'Tài khoản',
   'calendar.filter.platform': 'Nền tảng',
   'calendar.filter.status': 'Trạng thái',

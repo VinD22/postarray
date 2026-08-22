@@ -17,7 +17,7 @@ export const webUseCaseMessages = {
     'Drie workflows waar dit product omheen wordt gebouwd: meerdere klanten op één plek beheren, werk laten goedkeuren voordat het naar buiten gaat, en één idee naar meerdere platforms brengen zonder het te herschrijven.',
   'web.meta.useCase.clients.title': 'Meerdere klanten beheren',
   'web.meta.useCase.clients.description':
-    'Aparte merken, aparte gekoppelde accounts, aparte goedkeuringen en aparte rapportage, voor teams die publiceren namens andere mensen.',
+    'Aparte projecten, aparte gekoppelde accounts, aparte goedkeuringen en aparte rapportage, voor teams die publiceren namens andere mensen.',
   'web.meta.useCase.approvals.title': 'Goedkeuringsworkflows',
   'web.meta.useCase.approvals.description':
     'Hoe een concept een goedgekeurd bericht wordt: wie het beoordeelt, wat een goedkeuring ongeldig maakt, en waarom dezelfde regel op elk oppervlak geldt.',
@@ -53,13 +53,13 @@ export const webUseCaseMessages = {
   'web.useCases.clients.problem':
     'De meeste teams scheiden klanten door voorzichtig te zijn. Eén gedeeld account bevat elke gekoppelde pagina, één agenda bevat elke planning, en het enige dat tussen het concept van een klant en het verkeerde publiek staat, is de persoon die om 18 uur naar het scherm kijkt. Als iemand het team verlaat, verdwijnt de scheiding met de gewoonte.',
   'web.useCases.clients.approach1':
-    'Een merk is de eenheid van scheiding. Gekoppelde accounts, concepten, wachtrijen, media en bevestigingen horen bij een merk, en een lid ziet alleen de merken waaraan hij of zij is toegevoegd.',
+    'Een project is de eenheid van scheiding. Gekoppelde accounts, concepten, wachtrijen, media en bevestigingen horen bij een project, en een lid ziet alleen de projecten waaraan hij of zij is toegevoegd.',
   'web.useCases.clients.approach2':
     'De scheiding wordt drie keer afgedwongen: bij authenticatie, in de toepassingsservice die de actie autoriseert, en in de database zelf via beveiliging op rijniveau. Ingelogd zijn wordt nooit als toestemming behandeld.',
   'web.useCases.clients.approach3':
     'Rapportage volgt dezelfde grens, dus een rapport per klant is de standaardvorm in plaats van een spreadsheet die iemand met de hand samenstelt.',
   'web.useCases.clients.today':
-    'Merken, merk-gescoopt lidmaatschap en de beveiligingsregels op rijniveau daarachter zijn gebouwd en getest, inclusief tests die lezen tussen merken proberen en verifiëren dat die mislukken. Abonnementen zijn afgestemd op hoeveel merken een team nodig heeft. Er wordt nog vanuit geen enkel merk naar een platform gepubliceerd.',
+    'Projecten, projectgebonden lidmaatschap en de beveiligingsregels op rijniveau daarachter zijn gebouwd en getest, inclusief tests die lezen tussen projecten proberen en verifiëren dat die mislukken. Abonnementen zijn afgestemd op hoeveel projecten een team nodig heeft. Er wordt nog vanuit geen enkel project naar een platform gepubliceerd.',
 
   /* ---------------------------------------------------------------------- */
   /* Approval workflows                                                     */

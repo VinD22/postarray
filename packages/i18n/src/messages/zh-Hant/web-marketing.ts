@@ -111,7 +111,7 @@ export const webMarketingMessages = {
     '每個外部寫入都帶有冪等密鑰，因此平台接受貼文後的工作線程崩潰不會創建第二個貼文。',
   'web.home.pillars.adapt.title': '適應而不是重複',
   'web.home.pillars.adapt.body':
-    '您可以一次涵蓋一個帳號的每個平台變體，以及創譯而不是直譯，並帶有Project術語表和每種語言的指定審查員。',
+    '您可以一次涵蓋一個帳號的每個平台變體，以及創譯而不是直譯，並帶有專案術語表和每種語言的指定審查員。',
   'web.home.pillars.adapt.proof':
     '此介面有選定的語言版本。內容改編涵蓋30種內容語言，每種內容在發布前都會經過審核。',
   'web.home.pillars.loop.title': '關閉循環',
@@ -230,7 +230,7 @@ export const webMarketingMessages = {
     '主版本承載了這個想法。每個帳號都會獲得平台期望的長度、裁剪、設定和語氣，並且在提交之前您可以並排查看所有這些內容。',
   'web.creators.job.languages.title': '不用猜測就可以用另一種語言發布',
   'web.creators.job.languages.body':
-    '創譯保留意圖而不是文字，使用您的Project術語表，並標記本地審查者是否已閱讀它。除非您這麼說，否則任何內容都不會以您無法保證的語言發表。',
+    '創譯保留意圖而不是文字，使用您的專案術語表，並標記本地審查者是否已閱讀它。除非您這麼說，否則任何內容都不會以您無法保證的語言發表。',
   'web.creators.job.rights.title': '將您的權利記錄與文件一起保存',
   'web.creators.job.rights.body':
     '媒體記錄了它的來源、誰擁有權利以及它是否是使用生成工具創建的。平台的要求越來越多。 Relay 將您的答案與資產一起存儲，而不是再次詢問您。',
@@ -254,7 +254,7 @@ export const webMarketingMessages = {
     '每個出版物都會產生一個不可變的收據，其中包含外部貼文 ID 和完整的嘗試歷史記錄。當客戶詢問九點是否發生了什麼事時，答案會附帶一個時間戳記和一個平台識別碼。',
   'web.agencies.job.roles.title': '與工作分配方式相符的角色',
   'web.agencies.job.roles.body':
-    '所有者、管理員、經理、編輯、審批者、分析師和查看者，按Project和帳號劃分範圍。團隊成員不受限制，因為按席位收費會使各機構共享登入訊息，這是一個安全問題。',
+    '所有者、管理員、經理、編輯、審批者、分析師和查看者，按專案和帳號劃分範圍。團隊成員不受限制，因為按席位收費會使各機構共享登入訊息，這是一個安全問題。',
   'web.agencies.limits.title': '邊界，明確規定',
   'web.agencies.limits.body':
     '一項計劃涵蓋 30 個活躍的社交管道。頻道是一個社交帳號、頁面、個人資料、群組或出版物連結。如果您需要超過 30 個，請告訴我們您需要什麼，我們將為您提供直接答案，而不是隱藏層。',
@@ -393,7 +393,7 @@ export const webMarketingMessages = {
   'web.docs.lede':
     '一個後端，四種進入方式。每個部分都記錄相同的用例，因此您在 REST API 中學到的概念與 MCP 和 CLI 中的概念相同。',
   'web.docs.section.start.title': '入門',
-  'web.docs.section.start.body': '身份驗證、Workspace、Project和您的第一篇發布的貼文。',
+  'web.docs.section.start.body': '身份驗證、Workspace、專案和您的第一篇發布的貼文。',
   'web.docs.section.api.title': '休息API',
   'web.docs.section.api.body': '資源、分頁、冪等性、錯誤代碼和速率限制。',
   'web.docs.section.mcp.title': 'MCP伺服器',

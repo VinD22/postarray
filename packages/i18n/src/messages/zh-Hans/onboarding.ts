@@ -41,7 +41,7 @@ export const onboardingMessages = {
   'onboarding.checklist.connectAccount': '连接账户',
   'onboarding.checklist.firstPost': '发布或安排帖子',
   'onboarding.checklist.inviteTeammate': '邀请队友',
-  'onboarding.checklist.setProjectVoice': '描述您的品牌声音',
+  'onboarding.checklist.setProjectVoice': '描述您的项目声音',
   'onboarding.checklist.tryAutomation': '尝试自动化规则',
   'onboarding.checklist.remaining':
     '{count, plural, =0 {All done} one {# step left} other {# steps left}}',

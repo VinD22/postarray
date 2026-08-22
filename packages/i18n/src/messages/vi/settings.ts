@@ -30,16 +30,16 @@ export const settingsMessages = {
   'settings.role.owner.description': 'Mọi thứ, bao gồm thanh toán, bảo mật và xóa.',
   'settings.role.admin.description':
     'Mọi thứ ngoại trừ việc thanh toán và xóa không gian làm việc.',
-  'settings.role.manager.description': 'Quản lý thương hiệu, kết nối, lịch trình và quy tắc.',
+  'settings.role.manager.description': 'Quản lý dự án, kết nối, lịch trình và quy tắc.',
   'settings.role.editor.description': 'Tạo và chỉnh sửa nội dung, yêu cầu phê duyệt.',
   'settings.role.approver.description':
     'Phê duyệt hoặc từ chối nội dung và lên lịch những nội dung được phê duyệt.',
   'settings.role.analyst.description': 'Đọc phân tích và biên lai.',
   'settings.role.viewer.description': 'Chỉ đọc.',
-  'settings.role.scopeLabel': 'Giới hạn đối với thương hiệu và tài khoản',
+  'settings.role.scopeLabel': 'Giới hạn đối với dự án và tài khoản',
   'settings.role.mfaRequired': 'Chủ sở hữu phải sử dụng xác thực hai yếu tố.',
-  'settings.projects.title': 'Projects',
-  'settings.projects.add': 'Thêm thương hiệu',
+  'settings.projects.title': 'Dự án',
+  'settings.projects.add': 'Thêm dự án',
   'settings.projects.voice': 'Giọng nói',
   'settings.projects.audience': 'khán giả',
   'settings.projects.approvedClaims': 'Xác nhận quyền sở hữu đã được phê duyệt',
@@ -68,7 +68,7 @@ export const settingsMessages = {
     'Chỉnh sửa Tập hợp không thay đổi các bài đăng đã được phê duyệt hoặc lên lịch.',
   'settings.signatures.title': 'Chữ ký',
   'settings.signatures.description':
-    'Văn bản đóng, thẻ bắt đầu bằng #, liên kết hoặc thông tin tiết lộ, được sắp xếp theo thương hiệu, nền tảng và ngôn ngữ.',
+    'Văn bản đóng, thẻ bắt đầu bằng #, liên kết hoặc thông tin tiết lộ, được sắp xếp theo dự án, nền tảng và ngôn ngữ.',
   'settings.signatures.autoApply': 'Tự động thêm khi ngữ cảnh phù hợp',
   'settings.localization.title': 'Bản địa hóa',
   'settings.localization.interfaceLocale': 'Ngôn ngữ giao diện',
@@ -76,7 +76,7 @@ export const settingsMessages = {
     'Ngôn ngữ của ứng dụng này dành cho bạn. Nó không thay đổi ngôn ngữ của bài viết của bạn.',
   'settings.localization.contentLocales': 'Ngôn ngữ nội dung',
   'settings.localization.contentLocalesHelp':
-    'Ngôn ngữ bạn xuất bản. Mỗi thương hiệu có thể đặt quy tắc và bảng thuật ngữ cho mỗi ngôn ngữ.',
+    'Ngôn ngữ bạn xuất bản. Mỗi dự án có thể đặt quy tắc và bảng thuật ngữ cho mỗi ngôn ngữ.',
   'settings.localization.marketLocales': 'Thị trường đối tượng',
   'settings.localization.beta': 'Bản dịch thử nghiệm',
   'settings.localization.betaHelp':

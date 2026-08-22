@@ -211,7 +211,7 @@ export const webShellMessages = {
     'A próxima tela é Polar, nosso comerciante oficial. O acesso é concedido quando a Polar confirma a assinatura, não quando o navegador volta.',
   'onboarding.plan.factsTitle': 'O que acontece quando você continua',
   'onboarding.workspace.help':
-    'Um espaço de trabalho contém suas marcas, contas conectadas, rascunhos e recibos. Você pode criar mais posteriormente.',
+    'Um espaço de trabalho contém seus projetos, contas conectadas, rascunhos e recibos. Você pode criar mais posteriormente.',
   'onboarding.workspace.localeNote':
     'O idioma da sua interface altera este aplicativo. Os idiomas do conteúdo são escolhidos por publicação e são separados desta configuração.',
   'onboarding.workspace.timeZoneDetected': 'Detectado neste dispositivo: {timeZone}',

@@ -16,7 +16,7 @@ export const calendarMessages = {
   'calendar.slotCount': '{count, plural, =0 {Nothing scheduled} one {# post} other {# posts}}',
   'calendar.slotOverflow': '{count, plural, one {# more} other {# more}}',
   'calendar.newPostAt': 'Postingan baru di {time}',
-  'calendar.filter.project': 'Project',
+  'calendar.filter.project': 'Proyek',
   'calendar.filter.account': 'Akun',
   'calendar.filter.platform': 'Peron',
   'calendar.filter.status': 'Status',

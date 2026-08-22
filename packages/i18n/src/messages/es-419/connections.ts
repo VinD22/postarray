@@ -55,7 +55,8 @@ export const connectionMessages = {
   'connection.incident.reviewRestricted':
     '{provider}ha restringido esta aplicación pendiente de revisión. Publicaciones de {account}publicar de forma privada hasta que se complete la revisión.',
   'connection.group.title': 'Grupos de clientes',
-  'connection.group.description': 'Agrupa cuentas por cliente o marca para filtrar cada pantalla.',
+  'connection.group.description':
+    'Agrupa cuentas por cliente o proyecto para filtrar cada pantalla.',
   'connection.group.assign': 'Mover al grupo',
   'connection.group.none': 'Desagrupados',
   'connection.group.moveNote':

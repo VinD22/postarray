@@ -5,7 +5,7 @@ export const webSettingsMessages = {
   'settings.ui.index.help': '選擇一個部分。每項更改均歸因於您並顯示在審覈日誌中。',
   'settings.ui.section.members': '成員和角色',
   'settings.ui.section.membersSummary': '誰在這個工作空間中以及每個人可以做什麼。',
-  'settings.ui.section.projects': 'Project',
+  'settings.ui.section.projects': '專案',
   'settings.ui.section.projectsSummary':
     '聲音、受衆、批準的聲​​明、阻止的術語、區域設置規則、域和術語表。',
   'settings.ui.section.agents': '代理和API',
@@ -24,7 +24,7 @@ export const webSettingsMessages = {
   'settings.ui.section.securitySummary':
     '會話、兩因素身份驗證、憑據、代理、Webhooks 和應用程序授權。',
   'settings.ui.section.data': '數據控制',
-  'settings.ui.section.dataSummary': '導出、撤銷連接、刪除品牌、刪除內容或關閉帳戶。',
+  'settings.ui.section.dataSummary': '導出、撤銷連接、刪除專案、刪除內容或關閉帳戶。',
   'settings.ui.state.loading': '正在加載{section}',
   'settings.ui.state.errorTitle': '我們無法加載 {section}',
   'settings.ui.state.errorRetry': '再試一次',
@@ -61,12 +61,12 @@ export const webSettingsMessages = {
   'settings.ui.members.column.approvals': '批準',
   'settings.ui.members.column.lastActive': '最後活躍',
   'settings.ui.members.column.actions': '行動',
-  'settings.ui.members.scopeAll': '所有品牌和帳戶',
+  'settings.ui.members.scopeAll': '所有專案和帳戶',
   'settings.ui.members.scopeLimited':
     '{count, plural, one {# 個 Project} other {# 個 Project}}：{names}',
   'settings.ui.members.approvals.canApprove': '可以批準',
   'settings.ui.members.approvals.cannotApprove': '無法批準',
-  'settings.ui.members.approvals.canApproveOwnProjects': '可以批準列出的品牌',
+  'settings.ui.members.approvals.canApproveOwnProjects': '可以批準列出的專案',
   'settings.ui.members.lastActiveNever': '尚未登錄',
   'settings.ui.members.changeRole': '更改 {name} 的角色',
   'settings.ui.members.remove': '刪除 {name}',
@@ -76,9 +76,9 @@ export const webSettingsMessages = {
   'settings.ui.members.inviteBody':
     '他們收到一封帶有鏈接的電子郵件。邀請將在 7 天後過期，您可以在此之前撤銷邀請。',
   'settings.ui.members.inviteRole': '角色',
-  'settings.ui.members.inviteScope': '他們可以工作的Project',
-  'settings.ui.members.inviteScopeAll': '這個工作空間中的每個品牌',
-  'settings.ui.members.inviteScopeSelected': '僅限我選擇的品牌',
+  'settings.ui.members.inviteScope': '他們可以工作的專案',
+  'settings.ui.members.inviteScopeAll': '這個工作空間中的每個專案',
+  'settings.ui.members.inviteScopeSelected': '僅限我選擇的專案',
   'settings.ui.members.inviteApprovals': '可以決定批準​​請求',
   'settings.ui.members.inviteApprovalsHelp':
     '只有已經包含審覈的角色才能獲得此權限。它與編輯是分開的。',
@@ -88,9 +88,9 @@ export const webSettingsMessages = {
   'settings.ui.members.inviteResend': '再次發送邀請',
   'settings.ui.members.emptyTitle': '你是這裏唯一的人',
   'settings.ui.members.emptyBody':
-    '邀請撰寫、批準或閱讀結果的人員。每個人都有一個角色和一個品牌範圍。',
+    '邀請撰寫、批準或閱讀結果的人員。每個人都有一個角色和一個專案範圍。',
   'settings.ui.members.emptyExample':
-    '常見的形式：一名負責計費的所有者，每個品牌一名審批者，以及起草但從不發佈的編輯。',
+    '常見的形式：一名負責計費的所有者，每個專案一名審批者，以及起草但從不發佈的編輯。',
   'settings.ui.members.roleReferenceTitle': '每個角色可以做什麼',
   'settings.ui.members.roleReferenceCaption': '角色和每個角色允許的操作',
   'settings.ui.members.roleColumn.role': '角色',
@@ -275,7 +275,7 @@ export const webSettingsMessages = {
   'developer.ui.agents.emptyBody':
     '爲您運行的每個自動化創建一個。單獨的帳戶意味着您可以撤銷一個帳戶而無需停止其他帳戶。',
   'developer.ui.agents.emptyExample':
-    '示例：“內容代理”，品牌 Acme EU，每天可以在 07:00 到 22:00 之間起草和安排最多 6 個帖子，從不立即發佈。',
+    '示例：“內容代理”，專案 Acme EU，每天可以在 07:00 到 22:00 之間起草和安排最多 6 個帖子，從不立即發佈。',
   'developer.ui.agents.step.identity': '名稱和目的',
   'developer.ui.agents.step.scope': '能達到什麼程度',
   'developer.ui.agents.step.limits': '限制',
@@ -459,8 +459,8 @@ export const webSettingsMessages = {
   'developer.ui.webhooks.eventGroup.publishing': '出版',
   'developer.ui.webhooks.eventGroup.automation': '自動化和飼料',
   'developer.ui.webhooks.eventGroup.workspace': 'Workspace。工作空間',
-  'developer.ui.webhooks.scopeTitle': 'Project和賬戶',
-  'developer.ui.webhooks.scopeAll': '每個品牌和帳戶',
+  'developer.ui.webhooks.scopeTitle': '專案和賬戶',
+  'developer.ui.webhooks.scopeAll': '每個專案和帳戶',
   'developer.ui.webhooks.scopeSelected': '僅限我選擇的',
   'developer.ui.webhooks.secretTitle': '簽名祕笈',
   'developer.ui.webhooks.secretBody':

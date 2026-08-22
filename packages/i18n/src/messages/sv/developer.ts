@@ -7,7 +7,7 @@ export const developerMessages = {
   'developer.serviceAccount.title': 'Servicekonton',
   'developer.serviceAccount.create': 'Skapa ett tjänstekonto',
   'developer.serviceAccount.name': 'Namn',
-  'developer.serviceAccount.scopeProjects': 'Varumärken och konton den kan använda',
+  'developer.serviceAccount.scopeProjects': 'Projekt och konton den kan använda',
   'developer.serviceAccount.scopePlatforms': 'Plattformar',
   'developer.serviceAccount.scopeLocales': 'Innehållsspråk',
   'developer.serviceAccount.scopeDomains': 'Tillåtna länkdomäner',
@@ -110,7 +110,7 @@ export const developerMessages = {
 
   'developer.consent.title': '{app} wants access to your workspace',
   'developer.consent.workspace': 'Workspace',
-  'developer.consent.projects': 'Projects and accounts',
+  'developer.consent.projects': 'Projekt och konton',
   'developer.consent.willBeAbleTo': '{app} will be able to',
   'developer.consent.willNotBeAbleTo': '{app} will not be able to',
   'developer.consent.approvalStillApplies':

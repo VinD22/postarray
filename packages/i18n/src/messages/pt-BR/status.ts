@@ -16,7 +16,7 @@ export const statusMessages = {
   'empty.analytics.noPermission':
     'Esta conta não concedeu acesso analítico. Reconecte para adicioná-lo.',
   'empty.approvals.title': 'Nada esperando por você',
-  'empty.approvals.body': 'As solicitações de aprovação para suas marcas aparecem aqui.',
+  'empty.approvals.body': 'As solicitações de aprovação dos seus projetos aparecem aqui.',
   'empty.library.title': 'Sua biblioteca está vazia',
   'empty.library.body': 'Faça upload de imagens e vídeos ou importe-os de um URL ou da API.',
   'empty.library.action': 'Carregar mídia',

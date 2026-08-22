@@ -46,7 +46,7 @@ export const onboardingMessages = {
   'onboarding.checklist.connectAccount': 'Hubungkan akun',
   'onboarding.checklist.firstPost': 'Publikasikan atau jadwalkan postingan',
   'onboarding.checklist.inviteTeammate': 'Undang rekan satu tim',
-  'onboarding.checklist.setProjectVoice': 'Jelaskan suara merek Anda',
+  'onboarding.checklist.setProjectVoice': 'Jelaskan suara proyek Anda',
   'onboarding.checklist.tryAutomation': 'Coba aturan otomatisasi',
   'onboarding.checklist.remaining':
     '{count, plural, =0 {All done} one {# step left} other {# steps left}}',

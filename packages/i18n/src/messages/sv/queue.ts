@@ -9,7 +9,7 @@
 export const queueMessages = {
   'queue.title': 'Publiceringskö',
   'queue.subtitle':
-    'När detta varumärke får publicera, och med hur stort mellanrum. Inget publiceras utan att en person accepterar tidpunkten.',
+    'När detta projekt får publicera, och med hur stort mellanrum. Inget publiceras utan att en person accepterar tidpunkten.',
 
   'queue.rules.heading': 'Köregler',
   'queue.rules.empty':
@@ -41,7 +41,7 @@ export const queueMessages = {
 
   'queue.windows.heading': 'Veckofönster',
   'queue.windows.help':
-    'Välj de lokala timmar då detta varumärke får publicera. Använd dag- och tidsfälten, eller knapparna i rutnätet.',
+    'Välj de lokala timmar då detta projekt får publicera. Använd dag- och tidsfälten, eller knapparna i rutnätet.',
   'queue.windows.empty': 'Inga fönster än. En regel utan fönster kan aldrig erbjuda en lucka.',
   'queue.windows.add': 'Lägg till fönster',
   'queue.windows.remove': 'Ta bort fönster',
@@ -61,7 +61,7 @@ export const queueMessages = {
   'queue.weekday.7': 'Söndag',
 
   'queue.blackouts.heading': 'Blackout-datum',
-  'queue.blackouts.help': 'Datum då detta varumärke inte publicerar, lästa i regelns tidszon.',
+  'queue.blackouts.help': 'Datum då detta projekt inte publicerar, lästa i regelns tidszon.',
   'queue.blackouts.empty': 'Inga blackout-datum.',
   'queue.blackouts.add': 'Lägg till blackout',
   'queue.blackouts.remove': 'Ta bort blackout',
@@ -70,7 +70,7 @@ export const queueMessages = {
   'queue.blackouts.entry': '{from} till {to}',
 
   'queue.connections.heading': 'Konton',
-  'queue.connections.all': 'Alla konton i detta varumärke',
+  'queue.connections.all': 'Alla konton i detta projekt',
   'queue.connections.scoped':
     '{count, plural, one {# konto} other {# konton}} som denna regel gäller för',
 
@@ -88,7 +88,7 @@ export const queueMessages = {
   'queue.slot.notAutomatic': 'Inget schemaläggs förrän du väljer denna tid.',
 
   'queue.reason.noRulesConfigured':
-    'Detta varumärke har inga köregler konfigurerade, så inget fönster tillämpades.',
+    'Detta projekt har inga köregler konfigurerade, så inget fönster tillämpades.',
   'queue.reason.fallbackFirstFreeHour':
     'Den första lediga timmen från och med nu användes istället.',
   'queue.reason.matchedRule': 'Regeln {name} valde denna tid, i {zone}.',

@@ -191,4 +191,15 @@ export const errorMessages = {
   'error.reference': 'Referência {correlationId}',
   'error.reportToSupport': 'Envie isto para suporte',
   'error.contentPreserved': 'Seu conteúdo é preservado. Nada foi publicado.',
+  'error.project_limit_reached.message':
+    'Este espaço de trabalho já usa todos os {limit} projetos ativos.',
+  'error.project_limit_reached.action':
+    'Arquive um projeto inativo ou altere a cota de projetos do espaço de trabalho.',
+  'error.project_has_connections.message':
+    'Este projeto ainda tem {connected, plural, one {# canal conectado} other {# canais conectados} many {# canais conectados}}.',
+  'error.project_has_connections.action':
+    'Desconecte todos os canais deste projeto antes de arquivá-lo.',
+  'error.project_last_active.message':
+    'Um espaço de trabalho precisa manter pelo menos um projeto ativo.',
+  'error.project_last_active.action': 'Crie outro projeto antes de arquivar este.',
 } as const;

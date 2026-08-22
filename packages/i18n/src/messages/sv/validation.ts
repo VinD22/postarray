@@ -56,7 +56,7 @@ export const validationMessages = {
   'validation.privacy_setting_required.hint':
     'Det finns ingen standard. Välj vem som kan se det här inlägget.',
   'validation.disclosure_required.message':
-    'Det här inlägget behöver offentliggöras enligt varumärkesreglerna för {market}.',
+    'Det här inlägget behöver offentliggöras enligt projektreglerna för {market}.',
   'validation.first_comment_unsupported.message':
     '{provider} stöder inte en schemalagd första kommentar för det här kontot.',
   'validation.thread_unsupported.message': '{provider} stöder inte trådar för detta konto.',

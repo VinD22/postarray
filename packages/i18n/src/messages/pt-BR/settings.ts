@@ -31,16 +31,16 @@ export const settingsMessages = {
   'settings.role.viewer.label': 'Visualizador',
   'settings.role.owner.description': 'Tudo, incluindo faturamento, segurança e exclusão.',
   'settings.role.admin.description': 'Tudo, exceto faturamento e exclusão de espaço de trabalho.',
-  'settings.role.manager.description': 'Gerencie marcas, conexões, horários e regras.',
+  'settings.role.manager.description': 'Gerencie projetos, conexões, horários e regras.',
   'settings.role.editor.description': 'Crie e edite conteúdo, solicite aprovação.',
   'settings.role.approver.description': 'Aprove ou rejeite conteúdo e agende o que for aprovado.',
   'settings.role.analyst.description': 'Leia análises e recibos.',
   'settings.role.viewer.description': 'Somente leitura.',
-  'settings.role.scopeLabel': 'Limite a marcas e contas',
+  'settings.role.scopeLabel': 'Limitar a projetos e contas',
   'settings.role.mfaRequired': 'Os proprietários devem usar autenticação de dois fatores.',
 
   'settings.projects.title': 'Projects',
-  'settings.projects.add': 'Adicione uma marca',
+  'settings.projects.add': 'Adicionar projeto',
   'settings.projects.voice': 'Voz',
   'settings.projects.audience': 'Público',
   'settings.projects.approvedClaims': 'Reivindicações aprovadas',
@@ -67,7 +67,7 @@ export const settingsMessages = {
     'Editar um conjunto não altera publicações que já foram aprovadas ou agendadas.',
   'settings.signatures.title': 'Assinaturas',
   'settings.signatures.description':
-    'Texto de fechamento, hashtags, links ou divulgações, com escopo definido por marca, plataforma e idioma.',
+    'Texto de fechamento, hashtags, links ou divulgações, com escopo definido por projeto, plataforma e idioma.',
   'settings.signatures.autoApply': 'Adicionar automaticamente quando o contexto corresponder',
 
   'settings.localization.title': 'Localização',
@@ -76,7 +76,7 @@ export const settingsMessages = {
     'O idioma deste aplicativo para você. Isso não altera o idioma de suas publicações.',
   'settings.localization.contentLocales': 'Idiomas do conteúdo',
   'settings.localization.contentLocalesHelp':
-    'Os idiomas em que você publica. Cada marca pode definir regras e um glossário por idioma.',
+    'Os idiomas em que você publica. Cada projeto pode definir regras e um glossário por idioma.',
   'settings.localization.marketLocales': 'Mercados de público',
   'settings.localization.beta': 'Tradução beta',
   'settings.localization.betaHelp':

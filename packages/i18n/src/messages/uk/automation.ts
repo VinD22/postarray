@@ -29,7 +29,7 @@ export const automationMessages = {
   'automation.trigger.recurring': 'спрацьовує повторюваний розклад',
 
   'automation.condition.label': 'умови',
-  'automation.condition.project': 'бренд є {project}',
+  'automation.condition.project': 'проект є {project}',
   'automation.condition.campaign': 'кампанія є {campaign}',
   'automation.condition.account': 'рахунок є {account}',
   'automation.condition.platform': 'платформа є {platform}',
@@ -127,7 +127,7 @@ export const automationMessages = {
   'automation.webhooks.urlLabel': 'Кінцева точка URL',
   'automation.webhooks.eventsLabel': 'Події',
   'automation.webhooks.allEvents': 'Всі події',
-  'automation.webhooks.scopeLabel': 'Project і облікові записи',
+  'automation.webhooks.scopeLabel': 'Проекти і облікові записи',
   'automation.webhooks.allAccounts': 'Всі рахунки',
   'automation.webhooks.secret': 'Секрет підпису',
   'automation.webhooks.secretShownOnce': 'Цей секрет показують один раз. Зберігайте його зараз.',

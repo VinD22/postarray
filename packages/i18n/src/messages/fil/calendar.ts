@@ -17,7 +17,7 @@ export const calendarMessages = {
   'calendar.slotOverflow': '{count, plural, one {# higit pa} other {# higit pa}}',
   'calendar.newPostAt': 'Bagong post sa {time}',
 
-  'calendar.filter.project': 'Project',
+  'calendar.filter.project': 'Proyekto',
   'calendar.filter.account': 'Account',
   'calendar.filter.platform': 'Plataporma',
   'calendar.filter.status': 'Katayuan',

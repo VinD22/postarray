@@ -53,7 +53,7 @@ export const webSettingsMessages = {
     'Сеансы, двухфакторная аутентификация, учетные данные, агенты, веб-перехватчики и разрешения приложений.',
   'settings.ui.section.data': 'Элементы управления данными',
   'settings.ui.section.dataSummary':
-    'Экспортируйте, отмените соединение, удалите бренд, удалите контент или закройте учетную запись.',
+    'Экспортируйте, отмените соединение, удалите проект, удалите контент или закройте учетную запись.',
 
   /* ------------------------------------------------------- shared UI states */
 
@@ -104,9 +104,9 @@ export const webSettingsMessages = {
   'settings.ui.members.column.approvals': 'Разрешения',
   'settings.ui.members.column.lastActive': 'Последний активный',
   'settings.ui.members.column.actions': 'Действия',
-  'settings.ui.members.scopeAll': 'Все бренды и аккаунты',
+  'settings.ui.members.scopeAll': 'Все проекты и аккаунты',
   'settings.ui.members.scopeLimited':
-    '{count, plural, one {# бренда} few {# бренда} many {# бренда} other {# бренда}}: {names}',
+    '{count, plural, one {# проект} few {# проекта} many {# проектов} other {# проекта}}: {names}',
   'settings.ui.members.approvals.canApprove': 'Могу одобрить',
   'settings.ui.members.approvals.cannotApprove': 'Невозможно одобрить',
   'settings.ui.members.approvals.canApproveOwnProjects': 'Может одобрить перечисленные проекты',
@@ -120,9 +120,9 @@ export const webSettingsMessages = {
   'settings.ui.members.inviteBody':
     'Они получают электронное письмо со ссылкой. Срок действия приглашения истекает через семь дней, и вы можете отозвать его до этого момента.',
   'settings.ui.members.inviteRole': 'Роль',
-  'settings.ui.members.inviteScope': 'Project, в которых они могут работать',
-  'settings.ui.members.inviteScopeAll': 'Каждый бренд в этом рабочем пространстве',
-  'settings.ui.members.inviteScopeSelected': 'Только те бренды, которые я выбираю',
+  'settings.ui.members.inviteScope': 'Проекты, в которых они могут работать',
+  'settings.ui.members.inviteScopeAll': 'Каждый проект в этом рабочем пространстве',
+  'settings.ui.members.inviteScopeSelected': 'Только те проекты, которые я выбираю',
   'settings.ui.members.inviteApprovals': 'Может принимать решения по запросам на одобрение',
   'settings.ui.members.inviteApprovalsHelp':
     'Это можно сделать только для ролей, которые уже включают проверку. Это отдельно от редактирования.',
@@ -132,9 +132,9 @@ export const webSettingsMessages = {
   'settings.ui.members.inviteResend': 'Отправить приглашение еще раз',
   'settings.ui.members.emptyTitle': 'Ты единственный человек здесь',
   'settings.ui.members.emptyBody':
-    'Пригласите людей, которые напишут, одобряют или читают результаты. Каждый получает роль и сферу деятельности бренда.',
+    'Пригласите людей, которые пишут, одобряют или читают результаты. Каждый получает роль и область проекта.',
   'settings.ui.members.emptyExample':
-    'Общая форма: один владелец для выставления счетов, один утверждающий от каждого бренда и редакторы, которые пишут, но никогда не публикуют.',
+    'Общая форма: один владелец для выставления счетов, один утверждающий от каждого проекта и редакторы, которые пишут, но никогда не публикуют.',
   'settings.ui.members.roleReferenceTitle': 'Что может каждая роль',
   'settings.ui.members.roleReferenceCaption': 'Роли и действия, которые позволяет каждая из них',
   'settings.ui.members.roleColumn.role': 'Роль',
@@ -162,7 +162,7 @@ export const webSettingsMessages = {
   /* ----------------------------------------------------------------- projects */
 
   'settings.ui.projects.description':
-    'В бренде действуют правила, по которым проверяется контент: о чем вы можете заявлять, о чем нельзя говорить и как пишется каждый язык.',
+    'В проекте действуют правила, по которым проверяется контент: о чем вы можете заявлять, о чем нельзя говорить и как пишется каждый язык.',
   'settings.ui.projects.listCaption': 'Проекты в этой рабочей области',
   'settings.ui.projects.column.project': 'Проект',
   'settings.ui.projects.column.locales': 'Языки контента',
@@ -172,9 +172,9 @@ export const webSettingsMessages = {
     '{count, plural, =0 {Нет аккаунтов} one {# аккаунта} few {# аккаунтов} many {# аккаунтов} other {# аккаунтов}}',
   'settings.ui.projects.emptyTitle': 'Проектов пока нет',
   'settings.ui.projects.emptyBody':
-    'Бренд группирует учетные записи, правила одобрения и языковые правила. Большинство команд начинают с одного и добавляют второе, когда клиенту или рынку нужны другие правила.',
+    'Проект группирует учетные записи, правила одобрения и языковые правила. Большинство команд начинают с одного и добавляют второй, когда клиенту или рынку нужны другие правила.',
   'settings.ui.projects.emptyExample':
-    'Пример: бренд «Acme EU», языки: английский и немецкий, заблокирован термин «гарантировано», раскрытие «Платное партнерство» для Instagram.',
+    'Пример: проект «Acme EU», языки: английский и немецкий, заблокирован термин «гарантировано», раскрытие «Платное партнерство» для Instagram.',
   'settings.ui.projects.voiceHelp':
     'Как звучит этот проект. Используется, когда вы запрашиваете переписывание и когда проверяются претензии.',
   'settings.ui.projects.audienceHelp': 'Для кого предназначен контент в зависимости от рынка.',
@@ -367,7 +367,7 @@ export const webSettingsMessages = {
   'developer.ui.agents.emptyBody':
     'Создайте его для каждой запускаемой вами автоматизации. Отдельные учетные записи означают, что вы можете отозвать одну, не останавливая другие.',
   'developer.ui.agents.emptyExample':
-    'Пример: «Контент-агент», бренд Acme EU, может создавать и планировать до 6 публикаций в день с 07:00 до 22:00, но никогда не публикует немедленно.',
+    'Пример: «Контент-агент», проект Acme EU, может создавать и планировать до 6 публикаций в день с 07:00 до 22:00, но никогда не публикует немедленно.',
   'developer.ui.agents.step.identity': 'Название и цель',
   'developer.ui.agents.step.scope': 'Чего он может достичь',
   'developer.ui.agents.step.limits': 'Пределы',
@@ -598,8 +598,8 @@ export const webSettingsMessages = {
   'developer.ui.webhooks.eventGroup.publishing': 'Публикация',
   'developer.ui.webhooks.eventGroup.automation': 'Автоматизация и корма',
   'developer.ui.webhooks.eventGroup.workspace': 'Workspace',
-  'developer.ui.webhooks.scopeTitle': 'Project и аккаунты',
-  'developer.ui.webhooks.scopeAll': 'Каждый бренд и аккаунт',
+  'developer.ui.webhooks.scopeTitle': 'Проекты и аккаунты',
+  'developer.ui.webhooks.scopeAll': 'Каждый проект и аккаунт',
   'developer.ui.webhooks.scopeSelected': 'Только те, которые я выбираю',
   'developer.ui.webhooks.secretTitle': 'Секрет подписания',
   'developer.ui.webhooks.secretBody':

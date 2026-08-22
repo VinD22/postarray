@@ -55,7 +55,7 @@ export const validationMessages = {
   'validation.privacy_setting_required.hint':
     'Não há padrão. Escolha quem pode ver esta publicação.',
   'validation.disclosure_required.message':
-    'Esta publicação precisa de divulgação de acordo com as regras da marca para {market}.',
+    'Esta publicação precisa de divulgação de acordo com as regras do projeto para {market}.',
   'validation.first_comment_unsupported.message':
     '{provider} não suporta um primeiro comentário agendado para esta conta.',
   'validation.thread_unsupported.message': '{provider} não suporta conversas para esta conta.',
@@ -96,4 +96,12 @@ export const validationMessages = {
   'validation.field.mustMatch': 'Esses dois valores devem corresponder.',
   'validation.field.alreadyTaken': 'Isso já está em uso.',
   'validation.field.unsafeValue': 'Esse valor não é permitido aqui.',
+  'validation.media_unavailable.message':
+    'Um arquivo anexado não está mais disponível. Remova-o da publicação ou envie-o novamente.',
+  'validation.media_rights_undeclared.message':
+    'Declare os direitos e o consentimento de cada arquivo anexado antes de publicar.',
+  'validation.media_not_ready.message':
+    'Um arquivo anexado ainda não passou pelo processamento e pelas verificações de segurança.',
+  'validation.media_scan_blocked.message':
+    'Um arquivo anexado não passou na verificação de segurança e não pode ser publicado.',
 } as const;

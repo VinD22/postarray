@@ -9,7 +9,7 @@
 export const queueMessages = {
   'queue.title': 'Publicatiewachtrij',
   'queue.subtitle':
-    'Wanneer dit merk mag publiceren, en met hoeveel tussenruimte. Niets wordt gepubliceerd zonder dat iemand het tijdstip accepteert.',
+    'Wanneer dit project mag publiceren, en met hoeveel tussenruimte. Niets wordt gepubliceerd zonder dat iemand het tijdstip accepteert.',
 
   'queue.rules.heading': 'Wachtrijregels',
   'queue.rules.empty':
@@ -42,7 +42,7 @@ export const queueMessages = {
 
   'queue.windows.heading': 'Wekelijkse vensters',
   'queue.windows.help':
-    'Kies de lokale uren waarin dit merk mag publiceren. Gebruik de dag- en tijdvelden, of de knoppen op het rooster.',
+    'Kies de lokale uren waarin dit project mag publiceren. Gebruik de dag- en tijdvelden, of de knoppen op het rooster.',
   'queue.windows.empty':
     'Nog geen vensters. Een regel zonder venster kan nooit een tijdstip aanbieden.',
   'queue.windows.add': 'Venster toevoegen',
@@ -64,7 +64,7 @@ export const queueMessages = {
 
   'queue.blackouts.heading': 'Blackout-data',
   'queue.blackouts.help':
-    'Data waarop dit merk niet zal publiceren, gelezen in de tijdzone van de regel.',
+    'Data waarop dit project niet zal publiceren, gelezen in de tijdzone van de regel.',
   'queue.blackouts.empty': 'Geen blackout-data.',
   'queue.blackouts.add': 'Blackout toevoegen',
   'queue.blackouts.remove': 'Blackout verwijderen',
@@ -73,7 +73,7 @@ export const queueMessages = {
   'queue.blackouts.entry': '{from} tot {to}',
 
   'queue.connections.heading': 'Accounts',
-  'queue.connections.all': 'Elk account in dit merk',
+  'queue.connections.all': 'Elk account in dit project',
   'queue.connections.scoped':
     '{count, plural, one {# account} other {# accounts}} waarop deze regel van toepassing is',
 
@@ -91,7 +91,7 @@ export const queueMessages = {
   'queue.slot.notAutomatic': 'Er wordt niets gepland totdat je dit tijdstip kiest.',
 
   'queue.reason.noRulesConfigured':
-    'Dit merk heeft geen wachtrijregels ingesteld, dus is er geen venster toegepast.',
+    'Dit project heeft geen wachtrijregels ingesteld, dus is er geen venster toegepast.',
   'queue.reason.fallbackFirstFreeHour':
     'In plaats daarvan is het eerste vrije uur vanaf nu gebruikt.',
   'queue.reason.matchedRule': 'Regel {name} heeft dit tijdstip gekozen, in {zone}.',

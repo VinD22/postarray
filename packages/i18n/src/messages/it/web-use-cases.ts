@@ -17,7 +17,7 @@ export const webUseCaseMessages = {
     "Tre flussi di lavoro attorno ai quali viene costruito questo prodotto: gestire più clienti in un unico posto, far approvare il lavoro prima che esca, e portare un'idea su più piattaforme senza riscriverla.",
   'web.meta.useCase.clients.title': 'Gestione di più clienti',
   'web.meta.useCase.clients.description':
-    'Marchi separati, account collegati separati, approvazioni separate e reportistica separata, per i team che pubblicano per conto di altre persone.',
+    'Progetti separati, account collegati separati, approvazioni separate e reportistica separata, per i team che pubblicano per conto di altre persone.',
   'web.meta.useCase.approvals.title': 'Flussi di approvazione',
   'web.meta.useCase.approvals.description':
     "Come una bozza diventa un post approvato: chi la revisiona, cosa invalida un'approvazione, e perché la stessa regola vale su ogni superficie.",
@@ -53,13 +53,13 @@ export const webUseCaseMessages = {
   'web.useCases.clients.problem':
     "La maggior parte dei team separa i clienti stando attenta. Un unico account condiviso contiene ogni pagina collegata, un unico calendario contiene ogni programmazione, e l'unica cosa che si frappone tra la bozza di un cliente e il pubblico sbagliato è la persona che guarda lo schermo alle 18. Quando qualcuno lascia il team, la separazione se ne va con l'abitudine.",
   'web.useCases.clients.approach1':
-    "Un marchio è l'unità di separazione. Account collegati, bozze, code, media e ricevute appartengono a un marchio, e un membro vede solo i marchi a cui è stato aggiunto.",
+    "Un progetto è l'unità di separazione. Account collegati, bozze, code, media e ricevute appartengono a un progetto, e un membro vede solo i progetti a cui è stato aggiunto.",
   'web.useCases.clients.approach2':
     "La separazione viene applicata tre volte: all'autenticazione, nel servizio applicativo che autorizza l'azione, e nel database stesso tramite la sicurezza a livello di riga. Essere autenticati non viene mai trattato come un permesso.",
   'web.useCases.clients.approach3':
     'La reportistica segue lo stesso confine, quindi un report per cliente è la forma predefinita anziché un foglio di calcolo che qualcuno assembla a mano.',
   'web.useCases.clients.today':
-    "I marchi, l'appartenenza limitata al marchio e le politiche di sicurezza a livello di riga dietro di essi sono costruiti e testati, inclusi test che tentano letture tra marchi diversi e verificano che falliscano. I piani sono dimensionati in base a quanti marchi serve a un team. Niente viene ancora pubblicato su una piattaforma da nessun marchio.",
+    "I progetti, l'appartenenza limitata al progetto e le politiche di sicurezza a livello di riga dietro di essi sono costruiti e testati, inclusi test che tentano letture tra progetti diversi e verificano che falliscano. I piani sono dimensionati in base a quanti progetti servono a un team. Niente viene ancora pubblicato su una piattaforma da nessun progetto.",
 
   /* ---------------------------------------------------------------------- */
   /* Approval workflows                                                     */

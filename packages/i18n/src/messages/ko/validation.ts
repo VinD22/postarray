@@ -49,7 +49,7 @@ export const validationMessages = {
   'validation.privacy_setting_required.hint':
     '기본값은 없습니다. 이 게시물을 볼 수 있는 사람을 선택하세요.',
   'validation.disclosure_required.message':
-    '이 게시물에는 브랜드 규칙에 따른 공개가 필요합니다.{market}.',
+    '이 게시물에는 프로젝트 규칙에 따른 공개가 필요합니다.{market}.',
   'validation.first_comment_unsupported.message':
     '{provider}이 계정에 대해 예약된 첫 번째 댓글을 지원하지 않습니다.',
   'validation.thread_unsupported.message': '{provider}이 계정에 대한 스레드를 지원하지 않습니다.',

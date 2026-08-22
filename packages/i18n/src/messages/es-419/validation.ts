@@ -53,7 +53,7 @@ export const validationMessages = {
   'validation.privacy_setting_required.hint':
     'No hay ningún valor predeterminado. Elige quién puede ver esta publicación.',
   'validation.disclosure_required.message':
-    'Esta publicación necesita una divulgación según las reglas de marca para {market}.',
+    'Esta publicación necesita una divulgación según las reglas del proyecto para {market}.',
   'validation.first_comment_unsupported.message':
     '{provider}no admite un primer comentario programado para esta cuenta.',
   'validation.thread_unsupported.message': '{provider}no admite hilos para esta cuenta.',

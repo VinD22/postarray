@@ -221,7 +221,7 @@ export const webComposerMessages = {
   'composerWeb.signature.scope': 'För {project} på {provider} i {language}',
   'composerWeb.signature.previewHeading': 'Hur det slutar inlägget',
   'composerWeb.signature.notMatching':
-    'Denna signatur är avsedd för ett annat varumärke, plattform eller språk, så den erbjuds inte här.',
+    'Denna signatur är avsedd för ett annat projekt, plattform eller språk, så den erbjuds inte här.',
 
   // --------------------------------------------------------------- assist
   'composerWeb.assist.menuLabel': 'Hjälp till med denna text',
@@ -340,7 +340,7 @@ export const webComposerMessages = {
   'mediaLib.loading': 'Laddar ditt mediebibliotek',
   'mediaLib.permission.title': 'Du kan inte se detta arbetsytabibliotek',
   'mediaLib.permission.body':
-    'Att titta på media behöver tittarrollen eller högre på detta varumärke. En ägare eller administratör kan bevilja det.',
+    'Att titta på media behöver tittarrollen eller högre på detta projekt. En ägare eller administratör kan bevilja det.',
 
   'mediaLib.upload.heading': 'Lägg till media',
   'mediaLib.upload.browse': 'Välj filer',

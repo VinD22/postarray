@@ -32,7 +32,7 @@ export const automationMessages = {
   'automation.trigger.recurring': 'uruchamia się harmonogram cykliczny',
 
   'automation.condition.label': 'Warunki',
-  'automation.condition.project': 'marka to {project}',
+  'automation.condition.project': 'projekt to {project}',
   'automation.condition.campaign': 'kampania to {campaign}',
   'automation.condition.account': 'konto to {account}',
   'automation.condition.platform': 'platforma to {platform}',
@@ -130,7 +130,7 @@ export const automationMessages = {
   'automation.webhooks.urlLabel': 'URL punktu końcowego',
   'automation.webhooks.eventsLabel': 'Wydarzenia',
   'automation.webhooks.allEvents': 'Wszystkie zdarzenia',
-  'automation.webhooks.scopeLabel': 'Marki i konta',
+  'automation.webhooks.scopeLabel': 'Projekty i konta',
   'automation.webhooks.allAccounts': 'Wszystkie konta',
   'automation.webhooks.secret': 'Tajne podpisywanie',
   'automation.webhooks.secretShownOnce': 'Ten sekret jest pokazywany raz. Zapisz go teraz.',

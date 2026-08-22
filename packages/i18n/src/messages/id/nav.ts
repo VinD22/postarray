@@ -24,7 +24,7 @@ export const navMessages = {
   'nav.theme.system': 'Sistem pertandingan',
   'nav.theme.label': 'Tema',
   'settings.nav.members': 'Anggota dan peran',
-  'settings.nav.projects': 'Project',
+  'settings.nav.projects': 'Proyek',
   'settings.nav.agents': 'Agen dan API',
   'settings.nav.developerApps': 'Aplikasi pengembang',
   'settings.nav.webhooks': 'Webhook',
@@ -61,7 +61,7 @@ export const navMessages = {
   'nav.public.support': 'Dukungan',
   'shell.workspace.label': 'Workspace',
   'shell.workspace.current': 'Ruang kerja saat ini: {name}',
-  'shell.project.all': 'Semua merek',
+  'shell.project.all': 'Semua proyek',
   'shell.timeZone.label': 'Waktu ditampilkan di {timeZone}',
   'shell.notifications.count':
     '{count, plural, =0 {No new notifications} one {# new notification} other {# new notifications}}',

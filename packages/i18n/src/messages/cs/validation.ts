@@ -55,7 +55,7 @@ export const validationMessages = {
   'validation.privacy_setting_required.hint':
     'Neexistuje žádné výchozí nastavení. Vyberte, kdo může vidět tento příspěvek.',
   'validation.disclosure_required.message':
-    'Tento příspěvek vyžaduje zveřejnění podle pravidel značky pro {market}.',
+    'Tento příspěvek vyžaduje zveřejnění podle pravidel projektu pro {market}.',
   'validation.first_comment_unsupported.message':
     '{provider} nepodporuje naplánovaný první komentář pro tento účet.',
   'validation.thread_unsupported.message': '{provider} nepodporuje vlákna pro tento účet.',

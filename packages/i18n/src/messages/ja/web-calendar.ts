@@ -60,7 +60,7 @@ export const webCalendarMessages = {
   'web.calendar.nowLabel': '今',
   'web.calendar.allDayHeading': '正確な時間はまだありません',
   'web.calendar.filter.group': '顧客グループ',
-  'web.calendar.filter.anyProject': 'どのブランドでも',
+  'web.calendar.filter.anyProject': 'どのプロジェクトでも',
   'web.calendar.filter.anyAccount': '任意のアカウント',
   'web.calendar.filter.anyPlatform': 'あらゆるプラットフォーム',
   'web.calendar.filter.anyStatus': 'あらゆるステータス',
@@ -163,7 +163,7 @@ export const webCalendarMessages = {
   'web.calendar.permission.requirementsLabel': '必要な範囲',
   'web.calendar.permission.title': 'このカレンダーは表示されません',
   'web.calendar.permission.body':
-    'カレンダーへのアクセスはブランドごとに付与されます。あなたのアカウントはこのビューのブランドに含まれていません。',
+    'カレンダーへのアクセスはプロジェクトごとに付与されます。あなたのアカウントはこのビューのプロジェクトに含まれていません。',
   'web.receipt.breadcrumb.calendar': 'カレンダー',
   'web.receipt.breadcrumb.post': '役職',
   'web.receipt.heading': '{title}',
@@ -372,7 +372,7 @@ export const webCalendarMessages = {
     'グループはカレンダーと分析をフィルターします。アカウントを移動すると、アカウントがすでに持っているすべての投稿、領収書、指標が保持されます。',
   'web.connection.group.empty.title': 'まだ顧客グループがありません',
   'web.connection.group.empty.body':
-    'グループはクライアントまたはブランドです。アカウントをグループ化して、顧客ごとにカレンダーと分析をフィルタリングします。',
+    'グループはクライアントまたはプロジェクトです。アカウントをグループ化して、顧客ごとにカレンダーと分析をフィルタリングします。',
   'web.connection.incident.title': 'このアカウントには注意が必要です',
   'web.connection.incident.remediationHeading': '何をするか',
   'web.connection.incident.scheduledOnHold':

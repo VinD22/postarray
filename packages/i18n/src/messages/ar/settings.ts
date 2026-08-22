@@ -32,18 +32,17 @@ export const settingsMessages = {
   'settings.role.viewer.label': 'عارض',
   'settings.role.owner.description': 'كل شيء، بما في ذلك الفوترة والأمن والحذف.',
   'settings.role.admin.description': 'كل شيء باستثناء الفوترة وحذف مساحة العمل.',
-  'settings.role.manager.description':
-    'إدارة العلامات التجارية والاتصالات والجداول الزمنية والقواعد.',
+  'settings.role.manager.description': 'إدارة المشاريع والاتصالات والجداول الزمنية والقواعد.',
   'settings.role.editor.description': 'إنشاء وتحرير المحتوى وطلب الموافقة.',
   'settings.role.approver.description':
     'الموافقة على المحتوى أو رفضه، وجدولة ما سيتم الموافقة عليه.',
   'settings.role.analyst.description': 'قراءة التحليلات والإيصالات.',
   'settings.role.viewer.description': 'اقرأ فقط.',
-  'settings.role.scopeLabel': 'يقتصر على العلامات التجارية والحسابات',
+  'settings.role.scopeLabel': 'يقتصر على المشاريع والحسابات',
   'settings.role.mfaRequired': 'يجب على المالكين استخدام المصادقة الثنائية.',
 
-  'settings.projects.title': 'Projects',
-  'settings.projects.add': 'أضف علامة تجارية',
+  'settings.projects.title': 'المشاريع',
+  'settings.projects.add': 'أضف مشروعًا',
   'settings.projects.voice': 'صوت',
   'settings.projects.audience': 'الجمهور',
   'settings.projects.approvedClaims': 'المطالبات المعتمدة',
@@ -72,7 +71,7 @@ export const settingsMessages = {
     'لا يؤدي تحرير المجموعة إلى تغيير المنشورات التي تمت الموافقة عليها أو جدولتها بالفعل.',
   'settings.signatures.title': 'التوقيعات',
   'settings.signatures.description':
-    'إغلاق النص أو علامات التصنيف أو الروابط أو الإفصاحات، ويتم تحديد نطاقها حسب العلامة التجارية والنظام الأساسي واللغة.',
+    'إغلاق النص أو علامات التصنيف أو الروابط أو الإفصاحات، ويتم تحديد نطاقها حسب المشروع والنظام الأساسي واللغة.',
   'settings.signatures.autoApply': 'أضف تلقائيًا عندما يتطابق السياق',
 
   'settings.localization.title': 'التعريب',
@@ -80,7 +79,7 @@ export const settingsMessages = {
   'settings.localization.interfaceLocaleHelp': 'لغة هذا التطبيق بالنسبة لك. لا يغير لغة مشاركاتك.',
   'settings.localization.contentLocales': 'لغات المحتوى',
   'settings.localization.contentLocalesHelp':
-    'اللغات التي تنشر بها. يمكن لكل علامة تجارية وضع قواعد ومسرد لكل لغة.',
+    'اللغات التي تنشر بها. يمكن لكل مشروع وضع قواعد ومسرد لكل لغة.',
   'settings.localization.marketLocales': 'أسواق الجمهور',
   'settings.localization.beta': 'ترجمة بيتا',
   'settings.localization.betaHelp':

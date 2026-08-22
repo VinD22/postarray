@@ -211,7 +211,7 @@ export const webShellMessages = {
     'Następny ekran to Polar, nasz rekordowy sprzedawca. Dostęp jest przyznawany, gdy Polar potwierdzi subskrypcję, a nie po ponownym uruchomieniu przeglądarki.',
   'onboarding.plan.factsTitle': 'Co się stanie, jeśli będziesz kontynuować',
   'onboarding.workspace.help':
-    'Obszar roboczy przechowuje Twoje marki, połączone konta, wersje robocze i rachunki. Możesz utworzyć więcej później.',
+    'Obszar roboczy przechowuje Twoje projekty, połączone konta, wersje robocze i rachunki. Możesz utworzyć więcej później.',
   'onboarding.workspace.localeNote':
     'Twój język interfejsu zmienia tę aplikację. Języki treści są wybierane dla poszczególnych postów i są niezależne od tego ustawienia.',
   'onboarding.workspace.timeZoneDetected': 'Wykryto na tym urządzeniu: {timeZone}',

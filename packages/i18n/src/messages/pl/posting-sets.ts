@@ -68,7 +68,7 @@ export const postingSetMessages = {
   'set.archivedToast': 'Zestaw zarchiwizowany. Posty już z niego utworzone pozostają bez zmian.',
 
   'set.field.name': 'Nazwa',
-  'set.field.nameHint': 'To, czego będziesz szukać później w selektorze. Jedna na markę.',
+  'set.field.nameHint': 'To, czego będziesz szukać później w selektorze. Jeden na projekt.',
   'set.field.description': 'Opis',
   'set.field.descriptionHint': 'Opcjonalnie. Do czego służy ten Zestaw.',
   'set.field.targets': 'Konta',
@@ -90,13 +90,13 @@ export const postingSetMessages = {
 
   'set.slot.next_free_slot': 'Następny wolny termin z kolejki',
   'set.slot.next_free_slotHint':
-    'Wykorzystuje reguły kolejki tej marki do zaproponowania terminu. Proponuje; Ty akceptujesz.',
+    'Wykorzystuje reguły kolejki tego projektu do zaproponowania terminu. Proponuje; Ty akceptujesz.',
   'set.slot.pick_time': 'Zapytaj mnie o termin',
   'set.slot.pick_timeHint': 'Zastosowanie Zestawu pozostawia termin pusty, abyś go wybrał.',
   'set.slot.draft_only': 'Zostaw jako szkic',
   'set.slot.draft_onlyHint': 'Zastosowanie Zestawu w ogóle nie dotyka harmonogramu.',
   'set.slot.noRules':
-    'Ta marka nie ma jeszcze reguł kolejki, więc kolejka zaproponuje pierwszą wolną godzinę i to powie.',
+    'Ten projekt nie ma jeszcze reguł kolejki, więc kolejka zaproponuje pierwszą wolną godzinę i to powie.',
   'set.slot.rulesLink': 'Reguły kolejki',
 
   'set.defaults.title': 'Wartości domyślne dla platformy',

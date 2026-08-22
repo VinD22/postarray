@@ -51,7 +51,7 @@ export const webSettingsMessages = {
     'Relace, dvoufaktorové ověřování, přihlašovací údaje, agenti, webhooky a granty aplikací.',
   'settings.ui.section.data': 'Ovládací prvky dat',
   'settings.ui.section.dataSummary':
-    'Exportujte, zrušte připojení, smažte značku, odstraňte obsah nebo zavřete účet.',
+    'Exportujte, zrušte připojení, smažte projekt, odstraňte obsah nebo zavřete účet.',
 
   /* ------------------------------------------------------- shared UI states */
 
@@ -102,9 +102,9 @@ export const webSettingsMessages = {
   'settings.ui.members.column.approvals': 'Schválení',
   'settings.ui.members.column.lastActive': 'Poslední aktivní',
   'settings.ui.members.column.actions': 'Akce',
-  'settings.ui.members.scopeAll': 'Všechny značky a účty',
+  'settings.ui.members.scopeAll': 'Všechny projekty a účty',
   'settings.ui.members.scopeLimited':
-    '{count, plural, one {# značka} other {# značky} few {# značky} many {# značky}}: {names}',
+    '{count, plural, one {# projekt} few {# projekty} many {# projektu} other {# projektů}}: {names}',
   'settings.ui.members.approvals.canApprove': 'Může schválit',
   'settings.ui.members.approvals.cannotApprove': 'Nelze schválit',
   'settings.ui.members.approvals.canApproveOwnProjects': 'Lze schválit pro uvedené projekty',
@@ -118,9 +118,9 @@ export const webSettingsMessages = {
   'settings.ui.members.inviteBody':
     'Obdrží e-mail s odkazem. Platnost pozvánky vyprší po sedmi dnech a do té doby ji můžete odvolat.',
   'settings.ui.members.inviteRole': 'Role',
-  'settings.ui.members.inviteScope': 'Značky, se kterými mohou pracovat',
-  'settings.ui.members.inviteScopeAll': 'Každá značka v tomto pracovním prostoru',
-  'settings.ui.members.inviteScopeSelected': 'Pouze mnou vybrané značky',
+  'settings.ui.members.inviteScope': 'Projekty, se kterými mohou pracovat',
+  'settings.ui.members.inviteScopeAll': 'Každý projekt v tomto pracovním prostoru',
+  'settings.ui.members.inviteScopeSelected': 'Pouze mnou vybrané projekty',
   'settings.ui.members.inviteApprovals': 'Může rozhodnout o žádostech o schválení',
   'settings.ui.members.inviteApprovalsHelp':
     'Toto lze přidělit pouze rolím, které již zahrnují recenzi. Je oddělená od úprav.',
@@ -130,9 +130,9 @@ export const webSettingsMessages = {
   'settings.ui.members.inviteResend': 'Pošlete pozvánku znovu',
   'settings.ui.members.emptyTitle': 'Jste zde jediná osoba',
   'settings.ui.members.emptyBody':
-    'Pozvěte lidi, kteří píší, schvalují nebo čtou výsledky. Každý dostane roli a rozsah značky.',
+    'Pozvěte lidi, kteří píší, schvalují nebo čtou výsledky. Každý dostane roli a rozsah projektu.',
   'settings.ui.members.emptyExample':
-    'Obvyklý tvar: jeden vlastník pro fakturaci, jeden schvalovatel na značku a redaktoři, kteří navrhují, ale nikdy nepublikují.',
+    'Obvyklý tvar: jeden vlastník pro fakturaci, jeden schvalovatel na projekt a redaktoři, kteří navrhují, ale nikdy nepublikují.',
   'settings.ui.members.roleReferenceTitle': 'Co může každá role dělat',
   'settings.ui.members.roleReferenceCaption': 'Role a akce, které každá z nich umožňuje',
   'settings.ui.members.roleColumn.role': 'Role',
@@ -160,7 +160,7 @@ export const webSettingsMessages = {
   /* ----------------------------------------------------------------- projects */
 
   'settings.ui.projects.description':
-    'Značka má pravidla, podle kterých je obsah kontrolován: co si můžete nárokovat, co nesmíte říkat a jak jsou jednotlivé jazyky napsány.',
+    'Projekt má pravidla, podle kterých je obsah kontrolován: co si můžete nárokovat, co nesmíte říkat a jak jsou jednotlivé jazyky napsány.',
   'settings.ui.projects.listCaption': 'Projekty v tomto pracovním prostoru',
   'settings.ui.projects.column.project': 'Projekt',
   'settings.ui.projects.column.locales': 'Jazyky obsahu',
@@ -170,9 +170,9 @@ export const webSettingsMessages = {
     '{count, plural, =0 {Žádné účty} one {# účet} other {# účty} few {# účty} many {# účty}}',
   'settings.ui.projects.emptyTitle': 'Zatím žádné projekty',
   'settings.ui.projects.emptyBody':
-    'Značka seskupuje účty, pravidla schvalování a jazyková pravidla. Většina týmů začíná s jedním a přidává druhý, když klient nebo trh potřebuje jiná pravidla.',
+    'Projekt seskupuje účty, pravidla schvalování a jazyková pravidla. Většina týmů začíná s jedním a přidává druhý, když klient nebo trh potřebuje jiná pravidla.',
   'settings.ui.projects.emptyExample':
-    'Příklad: značka „Acme EU“, jazyky angličtina a němčina, blokovaný výraz „zaručeno“, zveřejnění „placeného partnerství“ na Instagramu.',
+    'Příklad: projekt „Acme EU“, jazyky angličtina a němčina, blokovaný výraz „zaručeno“, zveřejnění „placeného partnerství“ na Instagramu.',
   'settings.ui.projects.voiceHelp':
     'Jak tento projekt zní. Používá se, když žádáte o přepsání a když se kontrolují nároky.',
   'settings.ui.projects.audienceHelp': 'Pro koho je obsah určen podle trhu.',
@@ -360,7 +360,7 @@ export const webSettingsMessages = {
   'developer.ui.agents.emptyBody':
     'Vytvořte jeden pro každou automatizaci, kterou spustíte. Oddělené účty znamenají, že můžete jeden odvolat, aniž byste zastavili ostatní.',
   'developer.ui.agents.emptyExample':
-    'Příklad: "Obsahový agent", značka Acme EU, může navrhnout a naplánovat až 6 příspěvků denně mezi 7:00 a 22:00, nikdy se nepublikuje okamžitě.',
+    'Příklad: "Obsahový agent", projekt Acme EU, může navrhnout a naplánovat až 6 příspěvků denně mezi 7:00 a 22:00, nikdy se nepublikuje okamžitě.',
   'developer.ui.agents.step.identity': 'Název a účel',
   'developer.ui.agents.step.scope': 'Čeho může dosáhnout',
   'developer.ui.agents.step.limits': 'Limity',
@@ -583,8 +583,8 @@ export const webSettingsMessages = {
   'developer.ui.webhooks.eventGroup.publishing': 'Publikování',
   'developer.ui.webhooks.eventGroup.automation': 'Automatizace a zdroje',
   'developer.ui.webhooks.eventGroup.workspace': 'Pracovní prostor',
-  'developer.ui.webhooks.scopeTitle': 'Značky a účty',
-  'developer.ui.webhooks.scopeAll': 'Každá značka a účet',
+  'developer.ui.webhooks.scopeTitle': 'Projekty a účty',
+  'developer.ui.webhooks.scopeAll': 'Každý projekt a účet',
   'developer.ui.webhooks.scopeSelected': 'Pouze ty, které vyberu',
   'developer.ui.webhooks.secretTitle': 'Tajný podpis',
   'developer.ui.webhooks.secretBody':

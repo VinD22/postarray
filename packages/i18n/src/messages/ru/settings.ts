@@ -32,16 +32,16 @@ export const settingsMessages = {
   'settings.role.viewer.label': 'Зритель',
   'settings.role.owner.description': 'Все, включая выставление счетов, безопасность и удаление.',
   'settings.role.admin.description': 'Все, кроме выставления счетов и удаления рабочей области.',
-  'settings.role.manager.description': 'Управляйте брендами, связями, расписаниями и правилами.',
+  'settings.role.manager.description': 'Управляйте проектами, связями, расписаниями и правилами.',
   'settings.role.editor.description': 'Создавайте и редактируйте контент, запрашивайте одобрение.',
   'settings.role.approver.description': 'Утвердите или отклоните контент и запланируйте одобрение.',
   'settings.role.analyst.description': 'Читайте аналитику и чеки.',
   'settings.role.viewer.description': 'Только чтение.',
-  'settings.role.scopeLabel': 'Ограничение по брендам и аккаунтам',
+  'settings.role.scopeLabel': 'Ограничение по проектам и аккаунтам',
   'settings.role.mfaRequired': 'Владельцы должны использовать двухфакторную аутентификацию.',
 
-  'settings.projects.title': 'Projects',
-  'settings.projects.add': 'Добавить бренд',
+  'settings.projects.title': 'Проекты',
+  'settings.projects.add': 'Добавить проект',
   'settings.projects.voice': 'Голос',
   'settings.projects.audience': 'Аудитория',
   'settings.projects.approvedClaims': 'Одобренные претензии',
@@ -70,7 +70,7 @@ export const settingsMessages = {
     'Редактирование набора не меняет публикации, которые уже одобрены или запланированы.',
   'settings.signatures.title': 'Подписи',
   'settings.signatures.description':
-    'Заключительный текст, хэштеги, ссылки или раскрытия информации в зависимости от бренда, платформы и языка.',
+    'Заключительный текст, хэштеги, ссылки или раскрытия информации в зависимости от проекта, платформы и языка.',
   'settings.signatures.autoApply': 'Добавлять автоматически при совпадении контекста',
 
   'settings.localization.title': 'Локализация',
@@ -79,7 +79,7 @@ export const settingsMessages = {
     'Язык этого приложения для вас. Это не меняет язык ваших сообщений.',
   'settings.localization.contentLocales': 'Языки контента',
   'settings.localization.contentLocalesHelp':
-    'Языки, на которых вы публикуете. Каждый бренд может устанавливать правила и глоссарий для каждого языка.',
+    'Языки, на которых вы публикуете. Каждый проект может устанавливать правила и глоссарий для каждого языка.',
   'settings.localization.marketLocales': 'Рынки аудитории',
   'settings.localization.beta': 'Бета-перевод',
   'settings.localization.betaHelp':

@@ -63,7 +63,7 @@ export const connectionMessages = {
 
   'connection.group.title': 'Skupiny zákazníků',
   'connection.group.description':
-    'Seskupit účty podle klienta nebo značky a filtrovat každou obrazovku.',
+    'Seskupit účty podle klienta nebo projektu a filtrovat každou obrazovku.',
   'connection.group.assign': 'Přesunout do skupiny',
   'connection.group.none': 'Neseskupeno',
   'connection.group.moveNote':

@@ -214,7 +214,7 @@ export const webShellMessages = {
     'Het volgende scherm is Polar, onze bekende handelaar. Toegang wordt verleend wanneer Polar het abonnement bevestigt, niet wanneer de browser terugkomt.',
   'onboarding.plan.factsTitle': 'Wat gebeurt er als je doorgaat',
   'onboarding.workspace.help':
-    'Een werkruimte bevat uw merken, gekoppelde accounts, concepten en bonnen. Je kunt er later meer maken.',
+    'Een werkruimte bevat uw projecten, gekoppelde accounts, concepten en bonnen. Je kunt er later meer maken.',
   'onboarding.workspace.localeNote':
     'Uw interfacetaal verandert deze app. Inhoudstalen worden per bericht gekozen en staan ​​los van deze instelling.',
   'onboarding.workspace.timeZoneDetected': 'Gedetecteerd door dit apparaat: {timeZone}',

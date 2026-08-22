@@ -57,7 +57,7 @@ export const validationMessages = {
   'validation.privacy_setting_required.hint':
     'Es gibt keinen Standardwert. Wählen Sie aus, wer diesen Beitrag sehen kann.',
   'validation.disclosure_required.message':
-    'Dieser Beitrag erfordert eine Offenlegung gemäß den Markenregeln für {market}.',
+    'Dieser Beitrag erfordert eine Offenlegung gemäß den Projektregeln für {market}.',
   'validation.first_comment_unsupported.message':
     '{provider} unterstützt keinen geplanten ersten Kommentar für dieses Konto.',
   'validation.thread_unsupported.message': '{provider} unterstützt keine Threads für dieses Konto.',
@@ -99,4 +99,12 @@ export const validationMessages = {
   'validation.field.mustMatch': 'Diese beiden Werte müssen übereinstimmen.',
   'validation.field.alreadyTaken': 'Das ist bereits im Einsatz.',
   'validation.field.unsafeValue': 'Dieser Wert ist hier nicht zulässig.',
+  'validation.media_unavailable.message':
+    'Eine angehängte Datei ist nicht mehr verfügbar. Entfernen Sie sie aus dem Beitrag oder laden Sie sie erneut hoch.',
+  'validation.media_rights_undeclared.message':
+    'Erklären Sie die Rechte und die Einwilligung für jede angehängte Datei, bevor Sie veröffentlichen.',
+  'validation.media_not_ready.message':
+    'Eine angehängte Datei hat die Verarbeitung und die Sicherheitsprüfungen noch nicht bestanden.',
+  'validation.media_scan_blocked.message':
+    'Eine angehängte Datei hat ihre Sicherheitsprüfung nicht bestanden und kann nicht veröffentlicht werden.',
 } as const;

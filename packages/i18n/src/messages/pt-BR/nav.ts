@@ -64,7 +64,7 @@ export const navMessages = {
 
   'shell.workspace.label': 'Workspace',
   'shell.workspace.current': 'Área de trabalho atual: {name}',
-  'shell.project.all': 'Todas as marcas',
+  'shell.project.all': 'Todos os projetos',
   'shell.timeZone.label': 'Tempos mostrados em {timeZone}',
   'shell.notifications.count':
     '{count, plural, =0 {Sem novas notificações} one {# nova notificação} other {# novas notificações} many {# novas notificações}}',
@@ -73,4 +73,8 @@ export const navMessages = {
   'shell.feedback.open': 'Enviar comentários',
   'shell.feedback.correlationId': 'Referência de diagnóstico: {correlationId}',
   'shell.signedInAs': 'Conectado como {email}',
+  'shell.project.label': 'Projetos',
+  'shell.project.none': 'Criar um projeto',
+  'shell.project.current': 'Projeto atual: {name}',
+  'shell.project.manage': 'Gerenciar projetos',
 } as const;

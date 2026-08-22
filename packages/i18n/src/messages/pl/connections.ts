@@ -62,7 +62,7 @@ export const connectionMessages = {
 
   'connection.group.title': 'Grupy klientów',
   'connection.group.description':
-    'Grupuj konta według klienta lub marki, aby filtrować każdy ekran.',
+    'Grupuj konta według klienta lub projektu, aby filtrować każdy ekran.',
   'connection.group.assign': 'Przejdź do grupy',
   'connection.group.none': 'Rozgrupowane',
   'connection.group.moveNote':

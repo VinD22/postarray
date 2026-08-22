@@ -32,17 +32,17 @@ export const settingsMessages = {
   'settings.role.viewer.label': 'Prohlížeč',
   'settings.role.owner.description': 'Vše včetně fakturace, zabezpečení a mazání.',
   'settings.role.admin.description': 'Vše kromě fakturace a mazání pracovního prostoru.',
-  'settings.role.manager.description': 'Spravujte značky, připojení, plány a pravidla.',
+  'settings.role.manager.description': 'Spravujte projekty, připojení, plány a pravidla.',
   'settings.role.editor.description': 'Vytvářejte a upravujte obsah, požádejte o schválení.',
   'settings.role.approver.description':
     'Schvalte nebo odmítněte obsah a naplánujte, co bude schváleno.',
   'settings.role.analyst.description': 'Přečtěte si analýzy a účtenky.',
   'settings.role.viewer.description': 'Pouze pro čtení.',
-  'settings.role.scopeLabel': 'Omezení na značky a účty',
+  'settings.role.scopeLabel': 'Omezení na projekty a účty',
   'settings.role.mfaRequired': 'Vlastníci musí používat dvoufaktorové ověřování.',
 
-  'settings.projects.title': 'Značky',
-  'settings.projects.add': 'Přidat značku',
+  'settings.projects.title': 'Projekty',
+  'settings.projects.add': 'Přidat projekt',
   'settings.projects.voice': 'Hlas',
   'settings.projects.audience': 'Publikum',
   'settings.projects.approvedClaims': 'Schválené nároky',
@@ -71,7 +71,7 @@ export const settingsMessages = {
     'Úprava sady nezmění příspěvky, které jsou již schváleny nebo naplánovány.',
   'settings.signatures.title': 'Podpisy',
   'settings.signatures.description':
-    'Závěrečný text, hashtagy, odkazy nebo zveřejnění v rozsahu podle značky, platformy a jazyka.',
+    'Závěrečný text, hashtagy, odkazy nebo zveřejnění v rozsahu podle projektu, platformy a jazyka.',
   'settings.signatures.autoApply': 'Přidat automaticky, když se kontext shoduje',
 
   'settings.localization.title': 'Lokalizace',
@@ -80,7 +80,7 @@ export const settingsMessages = {
     'Jazyk této aplikace pro vás. Nemění to jazyk vašich příspěvků.',
   'settings.localization.contentLocales': 'Jazyky obsahu',
   'settings.localization.contentLocalesHelp':
-    'Jazyky, ve kterých publikujete. Každá značka může nastavit pravidla a slovník pro každý jazyk.',
+    'Jazyky, ve kterých publikujete. Každý projekt může nastavit pravidla a slovník pro každý jazyk.',
   'settings.localization.marketLocales': 'Trhy s publikem',
   'settings.localization.beta': 'Beta překlad',
   'settings.localization.betaHelp':

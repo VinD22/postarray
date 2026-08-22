@@ -31,17 +31,18 @@ export const settingsMessages = {
   'settings.role.viewer.label': 'Zuschauer',
   'settings.role.owner.description': 'Alles, inklusive Abrechnung, Sicherheit und Löschung.',
   'settings.role.admin.description': 'Alles außer Abrechnung und Löschung des Arbeitsbereichs.',
-  'settings.role.manager.description': 'Verwalten Sie Marken, Verbindungen, Zeitpläne und Regeln.',
+  'settings.role.manager.description':
+    'Verwalten Sie Projekte, Verbindungen, Zeitpläne und Regeln.',
   'settings.role.editor.description': 'Inhalte erstellen und bearbeiten, Genehmigung einholen.',
   'settings.role.approver.description':
     'Genehmigen oder lehnen Sie Inhalte ab und planen Sie, was genehmigt wird.',
   'settings.role.analyst.description': 'Lesen Sie Analysen und Quittungen.',
   'settings.role.viewer.description': 'Nur lesen.',
-  'settings.role.scopeLabel': 'Beschränken Sie sich auf Marken und Konten',
+  'settings.role.scopeLabel': 'Auf Projekte und Konten beschränken',
   'settings.role.mfaRequired': 'Besitzer müssen eine Zwei-Faktor-Authentifizierung verwenden.',
 
   'settings.projects.title': 'Projects',
-  'settings.projects.add': 'Fügen Sie eine Marke hinzu',
+  'settings.projects.add': 'Projekt hinzufügen',
   'settings.projects.voice': 'Stimme',
   'settings.projects.audience': 'Publikum',
   'settings.projects.approvedClaims': 'Genehmigte Ansprüche',
@@ -71,7 +72,7 @@ export const settingsMessages = {
     'Durch das Bearbeiten eines Sets werden Beiträge, die bereits genehmigt oder geplant sind, nicht geändert.',
   'settings.signatures.title': 'Unterschriften',
   'settings.signatures.description':
-    'Schlusstext, Hashtags, Links oder Offenlegungen, gegliedert nach Marke, Plattform und Sprache.',
+    'Schlusstext, Hashtags, Links oder Offenlegungen, gegliedert nach Projekt, Plattform und Sprache.',
   'settings.signatures.autoApply': 'Automatisch hinzufügen, wenn der Kontext übereinstimmt',
 
   'settings.localization.title': 'Lokalisierung',
@@ -80,7 +81,7 @@ export const settingsMessages = {
     'Die Sprache dieser App für Sie. Die Sprache Ihrer Beiträge ändert sich dadurch nicht.',
   'settings.localization.contentLocales': 'Inhaltssprachen',
   'settings.localization.contentLocalesHelp':
-    'Die Sprachen, in denen Sie veröffentlichen. Jede Marke kann Regeln und ein Glossar pro Sprache festlegen.',
+    'Die Sprachen, in denen Sie veröffentlichen. Jedes Projekt kann Regeln und ein Glossar pro Sprache festlegen.',
   'settings.localization.marketLocales': 'Zielgruppenmärkte',
   'settings.localization.beta': 'Beta-Übersetzung',
   'settings.localization.betaHelp':

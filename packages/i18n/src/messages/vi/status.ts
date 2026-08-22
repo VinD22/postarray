@@ -17,7 +17,7 @@ export const statusMessages = {
   'empty.analytics.noPermission':
     'Tài khoản này chưa được cấp quyền truy cập phân tích. Kết nối lại để thêm nó.',
   'empty.approvals.title': 'Không có gì chờ đợi bạn',
-  'empty.approvals.body': 'Yêu cầu phê duyệt cho thương hiệu của bạn xuất hiện ở đây.',
+  'empty.approvals.body': 'Yêu cầu phê duyệt cho dự án của bạn xuất hiện ở đây.',
   'empty.library.title': 'Thư viện của bạn trống',
   'empty.library.body': 'Tải hình ảnh và video lên hoặc nhập chúng từ URL hoặc API.',
   'empty.library.action': 'Tải lên phương tiện',

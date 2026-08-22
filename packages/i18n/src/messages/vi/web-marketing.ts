@@ -122,7 +122,7 @@ export const webMarketingMessages = {
     'Mỗi lần ghi bên ngoài đều mang một khóa tạm thời, do đó, một lỗi của nhân viên xảy ra sau khi nền tảng chấp nhận một bài đăng sẽ không tạo ra khóa thứ hai.',
   'web.home.pillars.adapt.title': 'Thích ứng thay vì trùng lặp',
   'web.home.pillars.adapt.body':
-    'Trên mỗi biến thể nền tảng, bạn có thể ghi đè từng tài khoản một và dịch sáng tạo thay vì dịch nghĩa đen, với bảng thuật ngữ thương hiệu và người đánh giá có tên cho mỗi ngôn ngữ.',
+    'Trên mỗi biến thể nền tảng, bạn có thể ghi đè từng tài khoản một và dịch sáng tạo thay vì dịch nghĩa đen, với bảng thuật ngữ dự án và người đánh giá có tên cho mỗi ngôn ngữ.',
   'web.home.pillars.adapt.proof':
     'Giao diện có sẵn trong các ngôn ngữ được chọn. Việc điều chỉnh nội dung bao gồm 30 ngôn ngữ nội dung và mỗi ngôn ngữ trong số đó đều có thể xem xét được trước khi xuất bản.',
   'web.home.pillars.loop.title': 'Đóng vòng lặp',
@@ -254,7 +254,7 @@ export const webMarketingMessages = {
     'Phiên bản chính mang ý tưởng. Mỗi tài khoản sẽ có độ dài, phần cắt, cài đặt và âm sắc mà nền tảng mong đợi và bạn có thể xem tất cả chúng cạnh nhau trước khi cam kết.',
   'web.creators.job.languages.title': 'Xuất bản bằng ngôn ngữ khác mà không cần đoán',
   'web.creators.job.languages.body':
-    'Dịch sáng tạo giữ nguyên ý định chứ không phải từ ngữ, sử dụng bảng thuật ngữ thương hiệu của bạn và đánh dấu xem người đánh giá gốc đã đọc nó hay chưa. Không có gì xuất bản bằng ngôn ngữ mà bạn không thể đảm bảo trừ khi bạn nói như vậy.',
+    'Dịch sáng tạo giữ nguyên ý định chứ không phải từ ngữ, sử dụng bảng thuật ngữ dự án của bạn và đánh dấu xem người đánh giá gốc đã đọc nó hay chưa. Không có gì xuất bản bằng ngôn ngữ mà bạn không thể đảm bảo trừ khi bạn nói như vậy.',
   'web.creators.job.rights.title': 'Giữ hồ sơ quyền của bạn với tập tin',
   'web.creators.job.rights.body':
     'Phương tiện truyền thông cho biết nó đến từ đâu, ai nắm giữ các quyền và liệu nó có được tạo ra bằng một công cụ tổng hợp hay không. Nền tảng ngày càng yêu cầu. Relay lưu trữ câu trả lời của bạn cùng với nội dung thay vì hỏi lại bạn.',
@@ -278,7 +278,7 @@ export const webMarketingMessages = {
     'Mỗi ấn phẩm đều tạo ra một biên nhận bất biến với ID bài đăng bên ngoài và toàn bộ lịch sử lần thử. Khi khách hàng hỏi liệu có chuyện gì xảy ra lúc 9 giờ không, câu trả lời có kèm theo dấu thời gian và mã nhận dạng nền tảng.',
   'web.agencies.job.roles.title': 'Vai trò phù hợp với cách phân chia công việc',
   'web.agencies.job.roles.body':
-    'Chủ sở hữu, quản trị viên, người quản lý, biên tập viên, người phê duyệt, nhà phân tích và người xem, trong phạm vi mỗi thương hiệu và mỗi tài khoản. Thành viên nhóm không giới hạn, vì tính phí trên mỗi chỗ ngồi khiến các đại lý chia sẻ thông tin đăng nhập và đó là vấn đề bảo mật.',
+    'Chủ sở hữu, quản trị viên, người quản lý, biên tập viên, người phê duyệt, nhà phân tích và người xem, trong phạm vi mỗi dự án và mỗi tài khoản. Thành viên nhóm không giới hạn, vì tính phí trên mỗi chỗ ngồi khiến các đại lý chia sẻ thông tin đăng nhập và đó là vấn đề bảo mật.',
   'web.agencies.limits.title': 'Ranh giới, được nêu rõ ràng',
   'web.agencies.limits.body':
     'Một kế hoạch bao gồm 30 kênh xã hội đang hoạt động. Kênh là một kết nối tài khoản xã hội, Trang, hồ sơ, nhóm hoặc ấn phẩm. Nếu bạn cần nhiều hơn 30, hãy cho chúng tôi biết bạn cần gì và chúng tôi sẽ cung cấp cho bạn câu trả lời thẳng thắn thay vì cấp độ ẩn.',
@@ -429,7 +429,7 @@ export const webMarketingMessages = {
     'Một chương trình phụ trợ, bốn cách tham gia. Mỗi phần ghi lại các trường hợp sử dụng giống nhau, vì vậy khái niệm bạn học trong REST API cũng chính là khái niệm trong MCP và trong CLI.',
   'web.docs.section.start.title': 'Bắt đầu',
   'web.docs.section.start.body':
-    'Xác thực, không gian làm việc, thương hiệu và bài đăng được xuất bản đầu tiên của bạn.',
+    'Xác thực, không gian làm việc, dự án và bài đăng được xuất bản đầu tiên của bạn.',
   'web.docs.section.api.title': 'API REST',
   'web.docs.section.api.body': 'Tài nguyên, phân trang, bình thường, mã lỗi và giới hạn tốc độ.',
   'web.docs.section.mcp.title': 'máy chủ MCP',

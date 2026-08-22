@@ -54,7 +54,7 @@ export const validationMessages = {
   'validation.privacy_setting_required.hint':
     'Немає замовчування. Виберіть, хто може бачити цю публікацію.',
   'validation.disclosure_required.message':
-    'Ця публікація потребує розкриття інформації відповідно до правил бренду {market}.',
+    'Ця публікація потребує розкриття інформації відповідно до правил проекту {market}.',
   'validation.first_comment_unsupported.message':
     '{provider}не підтримується запланований перший коментар для цього запису.',
   'validation.thread_unsupported.message':

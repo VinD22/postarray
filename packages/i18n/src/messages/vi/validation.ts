@@ -51,7 +51,7 @@ export const validationMessages = {
   'validation.privacy_setting_required.hint':
     'Không có mặc định. Chọn người có thể xem bài đăng này.',
   'validation.disclosure_required.message':
-    'Bài đăng này cần được tiết lộ theo quy tắc thương hiệu dành cho {market}.',
+    'Bài đăng này cần được tiết lộ theo quy tắc dự án dành cho {market}.',
   'validation.first_comment_unsupported.message':
     '{provider} không hỗ trợ nhận xét đầu tiên được lên lịch cho tài khoản này.',
   'validation.thread_unsupported.message': '{provider} không hỗ trợ chủ đề cho tài khoản này.',

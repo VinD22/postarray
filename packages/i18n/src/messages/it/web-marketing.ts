@@ -162,7 +162,7 @@ export const webMarketingMessages = {
     'Ogni scrittura esterna porta con sé una chiave di idempotenza, quindi un arresto anomalo del lavoratore dopo che la piattaforma ha accettato un post non ne crea un secondo.',
   'web.home.pillars.adapt.title': 'Adattare anziché duplicare',
   'web.home.pillars.adapt.body':
-    'Varianti per piattaforma che puoi sovrascrivere un account alla volta e transcreazione anziché traduzione letterale, con un glossario del marchio e un revisore nominato per lingua.',
+    'Varianti per piattaforma che puoi sovrascrivere un account alla volta e transcreazione anziché traduzione letterale, con un glossario del progetto e un revisore nominato per lingua.',
   'web.home.pillars.adapt.proof':
     "L'interfaccia è disponibile nelle lingue selezionate. L'adattamento dei contenuti copre 30 lingue di contenuto e ognuna di esse è revisionabile prima della pubblicazione.",
   'web.home.pillars.loop.title': 'Chiudi il ciclo',
@@ -319,7 +319,7 @@ export const webMarketingMessages = {
     "La versione master porta l'idea. Ogni account ottiene la lunghezza, il ritaglio, le impostazioni e il tono che la piattaforma si aspetta e puoi vederli tutti fianco a fianco prima di impegnarti.",
   'web.creators.job.languages.title': "Pubblica in un'altra lingua senza indovinare",
   'web.creators.job.languages.body':
-    "La transcreazione mantiene l'intento piuttosto che le parole, utilizza il glossario del tuo marchio e segnala se un recensore nativo lo ha letto. Niente viene pubblicato in una lingua per la quale non puoi garantire a meno che tu non lo dica.",
+    "La transcreazione mantiene l'intento piuttosto che le parole, utilizza il glossario del tuo progetto e segnala se un recensore nativo lo ha letto. Niente viene pubblicato in una lingua per la quale non puoi garantire a meno che tu non lo dica.",
   'web.creators.job.rights.title': 'Conserva il record dei tuoi diritti insieme al file',
   'web.creators.job.rights.body':
     'I media raccontano da dove provengono, chi ne detiene i diritti e se sono stati creati con uno strumento generativo. Le piattaforme lo chiedono sempre più. Relay memorizza la tua risposta con la risorsa invece di chiedertela nuovamente.',
@@ -344,7 +344,7 @@ export const webMarketingMessages = {
     "Ogni pubblicazione produce una ricevuta immutabile con l'ID postale esterno e la cronologia completa dei tentativi. Quando un cliente chiede se è successo qualcosa alle nove, alla risposta sono allegati un timestamp e un identificatore della piattaforma.",
   'web.agencies.job.roles.title': 'Ruoli che corrispondono al modo in cui è suddiviso il lavoro',
   'web.agencies.job.roles.body':
-    'Proprietario, amministratore, manager, redattore, approvatore, analista e visualizzatore, con ambito per project e per account. Membri del team illimitati, perché la tariffazione per posto fa sì che le agenzie condividano gli accessi e questo è un problema di sicurezza.',
+    'Proprietario, amministratore, manager, redattore, approvatore, analista e visualizzatore, con ambito per progetto e per account. Membri del team illimitati, perché la tariffazione per posto fa sì che le agenzie condividano gli accessi e questo è un problema di sicurezza.',
   'web.agencies.limits.title': 'Il confine, detto chiaramente',
   'web.agencies.limits.body':
     'Un piano copre 30 canali social attivi. Un canale è un account social, una pagina, un profilo, un gruppo o una connessione a una pubblicazione. Se te ne servono più di 30, dicci di cosa hai bisogno e ti daremo una risposta diretta anziché un livello nascosto.',
@@ -522,7 +522,7 @@ export const webMarketingMessages = {
     "Un backend, quattro vie d'accesso. Ogni sezione documenta gli stessi casi d'uso, quindi un concetto che impari nell'API REST è lo stesso concetto in MCP e nella CLI.",
   'web.docs.section.start.title': 'Iniziare',
   'web.docs.section.start.body':
-    'Autenticazione, spazi di lavoro, marchi e il tuo primo post pubblicato.',
+    'Autenticazione, spazi di lavoro, progetti e il tuo primo post pubblicato.',
   'web.docs.section.api.title': 'API REST',
   'web.docs.section.api.body':
     'Risorse, impaginazione, idempotenza, codici di errore e limiti di velocità.',

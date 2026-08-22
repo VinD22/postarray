@@ -61,7 +61,7 @@ export const webCalendarMessages = {
   'web.calendar.nowLabel': 'ahora',
   'web.calendar.allDayHeading': 'Aún no hay hora exacta',
   'web.calendar.filter.group': 'grupo de clientes',
-  'web.calendar.filter.anyProject': 'cualquier marca',
+  'web.calendar.filter.anyProject': 'cualquier proyecto',
   'web.calendar.filter.anyAccount': 'cualquier cuenta',
   'web.calendar.filter.anyPlatform': 'Cualquier plataforma',
   'web.calendar.filter.anyStatus': 'cualquier estado',
@@ -166,7 +166,7 @@ export const webCalendarMessages = {
   'web.calendar.permission.requirementsLabel': 'Alcance requerido',
   'web.calendar.permission.title': 'No puedes ver este calendario',
   'web.calendar.permission.body':
-    'El acceso al calendario se otorga por marca. Su cuenta no está en las marcas en esta vista.',
+    'El acceso al calendario se otorga por proyecto. Su cuenta no está en los proyectos de esta vista.',
   'web.receipt.breadcrumb.calendar': 'Calendario',
   'web.receipt.breadcrumb.post': 'Publicar',
   'web.receipt.heading': '{title}',
@@ -382,7 +382,7 @@ export const webCalendarMessages = {
     'Un grupo filtra el calendario y las analíticas. Al mover una cuenta se conservan todas las publicaciones, recibos y métricas que ya tiene.',
   'web.connection.group.empty.title': 'Aún no hay grupos de clientes',
   'web.connection.group.empty.body':
-    'Un grupo es un cliente o una marca. Cuentas grupales para filtrar el calendario y analíticas por cliente.',
+    'Un grupo es un cliente o un proyecto. Agrupa cuentas para filtrar el calendario y las analíticas por cliente.',
   'web.connection.incident.title': 'Esta cuenta necesita atención.',
   'web.connection.incident.remediationHeading': 'que hacer',
   'web.connection.incident.scheduledOnHold':

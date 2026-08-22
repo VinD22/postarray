@@ -14,7 +14,7 @@ export const statusMessages = {
   'empty.analytics.noPermission':
     'لم يمنح هذا الحساب حق الوصول إلى التحليلات. أعد الاتصال لإضافته.',
   'empty.approvals.title': 'لا شيء في انتظارك',
-  'empty.approvals.body': 'تظهر طلبات الموافقة على علاماتك التجارية هنا.',
+  'empty.approvals.body': 'تظهر طلبات الموافقة على مشاريعك هنا.',
   'empty.library.title': 'مكتبتك فارغة',
   'empty.library.body':
     'قم بتحميل الصور ومقاطع الفيديو، أو قم باستيرادها من عنوان URL أو واجهة برمجة التطبيقات.',

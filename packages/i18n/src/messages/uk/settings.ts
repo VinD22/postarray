@@ -32,17 +32,17 @@ export const settingsMessages = {
   'settings.role.viewer.label': 'Переглядач',
   'settings.role.owner.description': 'Все, включаючи виставлення рахунків, безпеку та видалення.',
   'settings.role.admin.description': 'Усе, крім виставлення рахунків і видалення робочої області.',
-  'settings.role.manager.description': 'Керуйте брендами, зв’язками, графіками та правилами.',
+  'settings.role.manager.description': 'Керуйте проектами, зв’язками, графіками та правилами.',
   'settings.role.editor.description': 'Створюйте та редагуйте вміст, запитуйте схвалення.',
   'settings.role.approver.description':
     'Схвалюйте або відхиляйте вміст і плануйте те, що буде схвалено.',
   'settings.role.analyst.description': 'Читайте аналітику та квитанції.',
   'settings.role.viewer.description': 'Тільки для читання.',
-  'settings.role.scopeLabel': 'Обмеження брендами та обліковими записами',
+  'settings.role.scopeLabel': 'Обмеження проектами та обліковими записами',
   'settings.role.mfaRequired': 'Власники повинні використовувати двофакторну аутентифікацію.',
 
-  'settings.projects.title': 'Projects',
-  'settings.projects.add': 'Додайте бренд',
+  'settings.projects.title': 'Проекти',
+  'settings.projects.add': 'Додайте проект',
   'settings.projects.voice': 'Голос',
   'settings.projects.audience': 'Аудиторія',
   'settings.projects.approvedClaims': 'Затверджені претензії',
@@ -71,7 +71,7 @@ export const settingsMessages = {
     'Редагування набору не змінює публікації, які вже затверджені або заплановані.',
   'settings.signatures.title': 'Підписи',
   'settings.signatures.description':
-    'Закриваючий текст, хеш-теги, посилання або розкриття інформації за брендом, платформою та мовою.',
+    'Закриваючий текст, хеш-теги, посилання або розкриття інформації за проектом, платформою та мовою.',
   'settings.signatures.autoApply': 'Додавати автоматично, коли контекст збігається',
 
   'settings.localization.title': 'Локалізація',
@@ -80,7 +80,7 @@ export const settingsMessages = {
     'Мова цієї програми для вас. Це не змінює мову ваших публікацій.',
   'settings.localization.contentLocales': 'Мови вмісту',
   'settings.localization.contentLocalesHelp':
-    'Мови, якими ви публікуєте. Кожен бренд може встановлювати правила та глосарій для кожної мови.',
+    'Мови, якими ви публікуєте. Кожен проект може встановлювати правила та глосарій для кожної мови.',
   'settings.localization.marketLocales': 'Ринки аудиторії',
   'settings.localization.beta': 'Бета переклад',
   'settings.localization.betaHelp':

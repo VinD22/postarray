@@ -191,7 +191,7 @@ export const webComposerMessages = {
   'composerWeb.signature.scope': 'Untuk {project} di {provider} di {language}',
   'composerWeb.signature.previewHeading': 'Bagaimana ini mengakhiri postingan',
   'composerWeb.signature.notMatching':
-    'Tanda tangan ini terbatas pada merek, platform, atau bahasa yang berbeda, sehingga tidak ditawarkan di sini.',
+    'Tanda tangan ini terbatas pada proyek, platform, atau bahasa yang berbeda, sehingga tidak ditawarkan di sini.',
   'composerWeb.assist.menuLabel': 'Bantu dengan teks ini',
   'composerWeb.assist.unavailableTitle': 'Bantuan teks tidak dikonfigurasi',
   'composerWeb.assist.unavailableBody':
@@ -291,7 +291,7 @@ export const webComposerMessages = {
   'mediaLib.loading': 'Memuat perpustakaan media Anda',
   'mediaLib.permission.title': 'Anda tidak dapat melihat perpustakaan ruang kerja ini',
   'mediaLib.permission.body':
-    'Media penayangan memerlukan peran pemirsa atau lebih tinggi pada merek ini. Pemilik atau admin dapat memberikannya.',
+    'Media penayangan memerlukan peran pemirsa atau lebih tinggi pada proyek ini. Pemilik atau admin dapat memberikannya.',
   'mediaLib.upload.heading': 'Tambahkan media',
   'mediaLib.upload.browse': 'Pilih file',
   'mediaLib.upload.dropHint':

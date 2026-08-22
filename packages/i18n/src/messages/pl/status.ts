@@ -16,7 +16,7 @@ export const statusMessages = {
   'empty.analytics.noPermission':
     'To konto nie przyznało dostępu do statystyk. Połącz się ponownie, aby go dodać.',
   'empty.approvals.title': 'Nic na Ciebie nie czeka',
-  'empty.approvals.body': 'Tutaj pojawiają się prośby o zatwierdzenie Twoich marek.',
+  'empty.approvals.body': 'Tutaj pojawiają się prośby o zatwierdzenie Twoich projektów.',
   'empty.library.title': 'Twoja biblioteka jest pusta',
   'empty.library.body':
     'Prześlij obrazy i filmy lub zaimportuj je z adresu URL lub interfejsu API.',

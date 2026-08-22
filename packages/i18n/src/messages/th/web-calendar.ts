@@ -163,7 +163,7 @@ export const webCalendarMessages = {
   'web.calendar.permission.requirementsLabel': 'ขอบเขตที่จำเป็น',
   'web.calendar.permission.title': 'คุณไม่สามารถดูปฏิทินนี้ได้',
   'web.calendar.permission.body':
-    'ให้สิทธิ์การเข้าถึงปฏิทินต่อแบรนด์ บัญชีของคุณไม่ได้อยู่ในแบรนด์ในมุมมองนี้',
+    'ให้สิทธิ์การเข้าถึงปฏิทินต่อโปรเจกต์ บัญชีของคุณไม่ได้อยู่ในโปรเจกต์ในมุมมองนี้',
   'web.receipt.breadcrumb.calendar': 'ปฏิทิน',
   'web.receipt.breadcrumb.post': 'โพสต์',
   'web.receipt.heading': '{title}',
@@ -376,7 +376,7 @@ export const webCalendarMessages = {
     'กลุ่มกรองปฏิทินและการวิเคราะห์ การย้ายบัญชีจะเก็บทุกโพสต์ ใบเสร็จรับเงิน และตัวชี้วัดที่มีอยู่แล้ว',
   'web.connection.group.empty.title': 'ยังไม่มีกลุ่มลูกค้า',
   'web.connection.group.empty.body':
-    'กลุ่มคือลูกค้าหรือแบรนด์ จัดกลุ่มบัญชีเพื่อกรองปฏิทินและการวิเคราะห์ตามลูกค้า',
+    'กลุ่มคือลูกค้าหรือโปรเจกต์ จัดกลุ่มบัญชีเพื่อกรองปฏิทินและการวิเคราะห์ตามลูกค้า',
   'web.connection.incident.title': 'บัญชีนี้ต้องการความสนใจ',
   'web.connection.incident.remediationHeading': 'จะทำอย่างไร',
   'web.connection.incident.scheduledOnHold':

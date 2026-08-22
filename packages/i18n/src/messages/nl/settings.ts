@@ -31,16 +31,16 @@ export const settingsMessages = {
   'settings.role.viewer.label': 'Kijker',
   'settings.role.owner.description': 'Alles, inclusief facturering, beveiliging en verwijdering.',
   'settings.role.admin.description': 'Alles behalve facturering en verwijdering van werkruimte.',
-  'settings.role.manager.description': "Beheer merken, verbindingen, schema's en regels.",
+  'settings.role.manager.description': "Beheer projecten, verbindingen, schema's en regels.",
   'settings.role.editor.description': 'Creëer en bewerk inhoud, vraag goedkeuring aan.',
   'settings.role.approver.description': 'Keur inhoud goed of af en plan wat wordt goedgekeurd.',
   'settings.role.analyst.description': 'Lees analyses en ontvangstbewijzen.',
   'settings.role.viewer.description': 'Alleen lezen.',
-  'settings.role.scopeLabel': 'Beperk tot merken en accounts',
+  'settings.role.scopeLabel': 'Beperk tot projecten en accounts',
   'settings.role.mfaRequired': 'Eigenaars moeten tweefactorauthenticatie gebruiken.',
 
-  'settings.projects.title': "Project's",
-  'settings.projects.add': 'Voeg een merk toe',
+  'settings.projects.title': 'Projecten',
+  'settings.projects.add': 'Voeg een project toe',
   'settings.projects.voice': 'Stem',
   'settings.projects.audience': 'Publiek',
   'settings.projects.approvedClaims': 'Goedgekeurde claims',
@@ -70,7 +70,7 @@ export const settingsMessages = {
     'Als u een set bewerkt, worden berichten die al zijn goedgekeurd of gepland niet gewijzigd.',
   'settings.signatures.title': 'Handtekeningen',
   'settings.signatures.description':
-    'Slottekst, hashtags, links of mededelingen, gerangschikt per merk, platform en taal.',
+    'Slottekst, hashtags, links of mededelingen, gerangschikt per project, platform en taal.',
   'settings.signatures.autoApply': 'Automatisch toevoegen wanneer de context overeenkomt',
 
   'settings.localization.title': 'Lokalisatie',
@@ -79,7 +79,7 @@ export const settingsMessages = {
     'De taal van deze app voor jou. Het verandert niets aan de taal van uw berichten.',
   'settings.localization.contentLocales': 'Inhoud talen',
   'settings.localization.contentLocalesHelp':
-    'De talen waarin je publiceert. Elk merk kan per taal regels en een woordenlijst instellen.',
+    'De talen waarin je publiceert. Elk project kan per taal regels en een woordenlijst instellen.',
   'settings.localization.marketLocales': 'Publiekmarkten',
   'settings.localization.beta': 'Bèta-vertaling',
   'settings.localization.betaHelp':

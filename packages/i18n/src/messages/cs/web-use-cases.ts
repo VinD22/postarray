@@ -17,7 +17,7 @@ export const webUseCaseMessages = {
     'Tři pracovní postupy, kolem kterých je tento produkt budován: vedení několika klientů na jednom místě, schvalování práce před jejím zveřejněním a přenesení jednoho nápadu na několik platforem bez jeho přepisování.',
   'web.meta.useCase.clients.title': 'Správa více klientů',
   'web.meta.useCase.clients.description':
-    'Oddělené značky, oddělené propojené účty, oddělená schvalování a oddělené reportování pro týmy publikující jménem jiných lidí.',
+    'Oddělené projekty, oddělené propojené účty, oddělená schvalování a oddělené reportování pro týmy publikující jménem jiných lidí.',
   'web.meta.useCase.approvals.title': 'Schvalovací postupy',
   'web.meta.useCase.approvals.description':
     'Jak se z konceptu stává schválený příspěvek: kdo jej kontroluje, co ruší schválení a proč stejné pravidlo platí na každém povrchu.',
@@ -53,13 +53,13 @@ export const webUseCaseMessages = {
   'web.useCases.clients.problem':
     'Většina týmů odděluje klienty tím, že jsou opatrné. Jeden sdílený účet obsahuje každou propojenou stránku, jeden kalendář obsahuje každý plán, a jedinou věcí mezi konceptem klienta a špatným publikem je osoba, která se v 18 hodin dívá na obrazovku. Když někdo odejde z týmu, oddělení odchází spolu se zvykem.',
   'web.useCases.clients.approach1':
-    'Značka je jednotkou oddělení. Propojené účty, koncepty, fronty, média a potvrzení patří značce a člen vidí jen značky, do kterých byl přidán.',
+    'Projekt je jednotkou oddělení. Propojené účty, koncepty, fronty, média a potvrzení patří projektu a člen vidí jen projekty, do kterých byl přidán.',
   'web.useCases.clients.approach2':
     'Oddělení je vynucováno třikrát: při ověřování, v aplikační službě, která akci autorizuje, a v samotné databázi prostřednictvím zabezpečení na úrovni řádků. Přihlášení nikdy není považováno za oprávnění.',
   'web.useCases.clients.approach3':
     'Reportování se řídí stejnou hranicí, takže report pro jednotlivého klienta je výchozí podobou, ne tabulkou, kterou někdo ručně sestavuje.',
   'web.useCases.clients.today':
-    'Značky, členství omezené na značku a bezpečnostní pravidla na úrovni řádků za nimi jsou postavené a otestované, včetně testů, které se pokoušejí o čtení napříč značkami a ověřují, že selžou. Plány jsou dimenzovány podle toho, kolik značek tým potřebuje. Z žádné značky se zatím na žádnou platformu nic nepublikuje.',
+    'Projekty, členství omezené na projekt a bezpečnostní pravidla na úrovni řádků za nimi jsou postavené a otestované, včetně testů, které se pokoušejí o čtení napříč projekty a ověřují, že selžou. Plány jsou dimenzovány podle toho, kolik projektů tým potřebuje. Z žádného projektu se zatím na žádnou platformu nic nepublikuje.',
 
   /* ---------------------------------------------------------------------- */
   /* Approval workflows                                                     */

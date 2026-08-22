@@ -52,7 +52,7 @@ export const validationMessages = {
     'يتطلب {provider} خيارًا صريحًا للخصوصية قبل النشر.',
   'validation.privacy_setting_required.hint': 'لا يوجد افتراضي. اختر من يمكنه رؤية هذه المشاركة.',
   'validation.disclosure_required.message':
-    'يحتاج هذا المنشور إلى إفصاح بموجب قواعد العلامة التجارية لـ {market}.',
+    'يحتاج هذا المنشور إلى إفصاح بموجب قواعد المشروع لـ {market}.',
   'validation.first_comment_unsupported.message':
     '{provider} لا يدعم التعليق الأول المجدول لهذا الحساب.',
   'validation.thread_unsupported.message': '{provider} لا يدعم المواضيع لهذا الحساب.',

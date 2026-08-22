@@ -208,7 +208,7 @@ export const webShellMessages = {
     'Další obrazovkou je Polar, náš rekordní obchodník. Přístup je udělen, když Polar potvrdí předplatné, nikoli když se prohlížeč vrátí.',
   'onboarding.plan.factsTitle': 'Co se stane, když budete pokračovat',
   'onboarding.workspace.help':
-    'Pracovní prostor obsahuje vaše značky, propojené účty, koncepty a účtenky. Později můžete vytvořit další.',
+    'Pracovní prostor obsahuje vaše projekty, propojené účty, koncepty a účtenky. Později můžete vytvořit další.',
   'onboarding.workspace.localeNote':
     'Jazyk vašeho rozhraní změní tuto aplikaci. Jazyky obsahu se vybírají u příspěvku a jsou oddělené od tohoto nastavení.',
   'onboarding.workspace.timeZoneDetected': 'Zjištěno z tohoto zařízení: {timeZone}',

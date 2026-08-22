@@ -12,7 +12,7 @@ export const statusMessages = {
   'empty.analytics.body': '在您的第一篇帖子发布足够长的时间以便平台对其进行报告后，指标就会出现。',
   'empty.analytics.noPermission': '该帐户尚未授予分析访问权限。重新连接即可添加。',
   'empty.approvals.title': '没有什么在等你',
-  'empty.approvals.body': '您的品牌的批准请求将显示在此处。',
+  'empty.approvals.body': '您的项目的批准请求将显示在此处。',
   'empty.library.title': '你的图书馆是空的',
   'empty.library.body': '上传图像和视频，或从 URL 或 API 导入它们。',
   'empty.library.action': '上传媒体',

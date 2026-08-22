@@ -17,7 +17,7 @@ export const statusMessages = {
     "Questo account non ha concesso l'accesso all'analisi. Riconnettiti per aggiungerlo.",
   'empty.approvals.title': 'Niente ti aspetta',
   'empty.approvals.body':
-    'Le richieste di approvazione per i tuoi marchi vengono visualizzate qui.',
+    'Le richieste di approvazione per i tuoi progetti vengono visualizzate qui.',
   'empty.library.title': 'La tua libreria è vuota',
   'empty.library.body': "Carica immagini e video o importali da un URL o dall'API.",
   'empty.library.action': 'Carica contenuti multimediali',

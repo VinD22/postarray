@@ -86,7 +86,7 @@ export const webCalendarMessages = {
   'web.calendar.allDayHeading': 'अभी कोई सटीक समय नहीं है',
 
   'web.calendar.filter.group': 'ग्राहक समूह',
-  'web.calendar.filter.anyProject': 'कोई भी ब्रांड',
+  'web.calendar.filter.anyProject': 'कोई भी परियोजना',
   'web.calendar.filter.anyAccount': 'कोई भी खाता',
   'web.calendar.filter.anyPlatform': 'कोई भी मंच',
   'web.calendar.filter.anyStatus': 'कोई भी स्थिति',
@@ -199,7 +199,7 @@ export const webCalendarMessages = {
   'web.calendar.permission.requirementsLabel': 'आवश्यक दायरा',
   'web.calendar.permission.title': 'आप यह कैलेंडर नहीं देख सकते',
   'web.calendar.permission.body':
-    'प्रति ब्रांड कैलेंडर एक्सेस प्रदान किया जाता है। इस दृश्य में आपका खाता ब्रांडों पर नहीं है.',
+    'प्रति परियोजना कैलेंडर एक्सेस प्रदान किया जाता है। इस दृश्य में आपका खाता इन परियोजनाओं पर नहीं है।',
 
   /* ---------------------------------------------------------------------
    * Post job and publication receipt
@@ -438,7 +438,7 @@ export const webCalendarMessages = {
     'एक समूह कैलेंडर और विश्लेषण को फ़िल्टर करता है। किसी खाते को स्थानांतरित करने से उसमें पहले से मौजूद प्रत्येक पोस्ट, रसीद और मीट्रिक रहती है।',
   'web.connection.group.empty.title': 'अभी तक कोई ग्राहक समूह नहीं',
   'web.connection.group.empty.body':
-    'एक समूह एक ग्राहक या एक ब्रांड है। ग्राहक द्वारा कैलेंडर और एनालिटिक्स को फ़िल्टर करने के लिए समूह खाते।',
+    'एक समूह एक ग्राहक या एक परियोजना है। ग्राहक द्वारा कैलेंडर और एनालिटिक्स को फ़िल्टर करने के लिए समूह खाते।',
 
   'web.connection.incident.title': 'इस खाते पर ध्यान देने की जरूरत है',
   'web.connection.incident.remediationHeading': 'क्या करें?',

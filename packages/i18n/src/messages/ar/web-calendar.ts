@@ -84,7 +84,7 @@ export const webCalendarMessages = {
   'web.calendar.allDayHeading': 'لا يوجد وقت محدد بعد',
 
   'web.calendar.filter.group': 'مجموعة العملاء',
-  'web.calendar.filter.anyProject': 'أي علامة تجارية',
+  'web.calendar.filter.anyProject': 'أي مشروع',
   'web.calendar.filter.anyAccount': 'أي حساب',
   'web.calendar.filter.anyPlatform': 'أي منصة',
   'web.calendar.filter.anyStatus': 'أي حالة',
@@ -196,7 +196,7 @@ export const webCalendarMessages = {
   'web.calendar.permission.requirementsLabel': 'النطاق المطلوب',
   'web.calendar.permission.title': 'لا يمكنك رؤية هذا التقويم',
   'web.calendar.permission.body':
-    'يتم منح الوصول إلى التقويم لكل علامة تجارية. حسابك ليس على العلامات التجارية في هذا العرض.',
+    'يتم منح الوصول إلى التقويم لكل مشروع. حسابك ليس ضمن المشاريع في هذا العرض.',
 
   /* ---------------------------------------------------------------------
    * Post job and publication receipt
@@ -432,7 +432,7 @@ export const webCalendarMessages = {
     'تقوم المجموعة بتصفية التقويم والتحليلات. يؤدي نقل الحساب إلى الاحتفاظ بكل منشور وإيصال ومقياس موجود بالفعل.',
   'web.connection.group.empty.title': 'لا توجد مجموعات العملاء حتى الآن',
   'web.connection.group.empty.body':
-    'المجموعة هي عميل أو علامة تجارية. حسابات المجموعة لتصفية التقويم والتحليلات حسب العميل.',
+    'المجموعة هي عميل أو مشروع. قم بتجميع الحسابات لتصفية التقويم والتحليلات حسب العميل.',
 
   'web.connection.incident.title': 'هذا الحساب يحتاج إلى الاهتمام',
   'web.connection.incident.remediationHeading': 'ما يجب القيام به',

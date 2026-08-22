@@ -53,7 +53,7 @@ export const webSettingsMessages = {
     'सत्र, दो कारक प्रमाणीकरण, क्रेडेंशियल्स, एजेंट, वेबहुक और ऐप अनुदान।',
   'settings.ui.section.data': 'डेटा नियंत्रण',
   'settings.ui.section.dataSummary':
-    'निर्यात करें, कनेक्शन रद्द करें, ब्रांड हटाएं, सामग्री हटाएं या खाता बंद करें।',
+    'निर्यात करें, कनेक्शन रद्द करें, परियोजना हटाएं, सामग्री हटाएं या खाता बंद करें।',
 
   /* ------------------------------------------------------- shared UI states */
 
@@ -104,13 +104,13 @@ export const webSettingsMessages = {
   'settings.ui.members.column.approvals': 'स्वीकृतियाँ',
   'settings.ui.members.column.lastActive': 'अंतिम सक्रिय',
   'settings.ui.members.column.actions': 'क्रियाएँ',
-  'settings.ui.members.scopeAll': 'सभी ब्रांड और खाते',
+  'settings.ui.members.scopeAll': 'सभी परियोजनाएं और खाते',
   'settings.ui.members.scopeLimited':
     '{count, plural, one {# project} other {# projects}}: {names}',
   'settings.ui.members.approvals.canApprove': 'अनुमोदन कर सकते हैं',
   'settings.ui.members.approvals.cannotApprove': 'अनुमोदन नहीं कर सकते',
   'settings.ui.members.approvals.canApproveOwnProjects':
-    'सूचीबद्ध ब्रांडों के लिए अनुमोदन कर सकते हैं',
+    'सूचीबद्ध परियोजनाओं के लिए अनुमोदन कर सकते हैं',
   'settings.ui.members.lastActiveNever': 'अभी तक साइन इन नहीं किया है',
   'settings.ui.members.changeRole': 'Change role for {name}',
   'settings.ui.members.remove': 'Remove {name}',
@@ -120,9 +120,9 @@ export const webSettingsMessages = {
   'settings.ui.members.inviteBody':
     'उन्हें एक लिंक के साथ एक ईमेल प्राप्त होता है। आमंत्रण सात दिनों के बाद समाप्त हो जाता है और आप उससे पहले इसे रद्द कर सकते हैं।',
   'settings.ui.members.inviteRole': 'भूमिका',
-  'settings.ui.members.inviteScope': 'Projects में वे काम कर सकते हैं',
-  'settings.ui.members.inviteScopeAll': 'इस कार्यक्षेत्र में प्रत्येक ब्रांड',
-  'settings.ui.members.inviteScopeSelected': 'केवल वे ब्रांड जो मैं चुनता हूं',
+  'settings.ui.members.inviteScope': 'वे जिन परियोजनाओं में काम कर सकते हैं',
+  'settings.ui.members.inviteScopeAll': 'इस कार्यक्षेत्र में प्रत्येक परियोजना',
+  'settings.ui.members.inviteScopeSelected': 'केवल वे परियोजनाएं जो मैं चुनता हूं',
   'settings.ui.members.inviteApprovals': 'अनुमोदन अनुरोधों पर निर्णय ले सकते हैं',
   'settings.ui.members.inviteApprovalsHelp':
     'केवल वे भूमिकाएँ जिनमें पहले से ही समीक्षा शामिल है, उन्हें यह दिया जा सकता है। यह संपादन से अलग है.',
@@ -132,9 +132,9 @@ export const webSettingsMessages = {
   'settings.ui.members.inviteResend': 'पुनः आमंत्रण भेजें',
   'settings.ui.members.emptyTitle': 'आप यहां एकमात्र व्यक्ति हैं',
   'settings.ui.members.emptyBody':
-    'उन लोगों को आमंत्रित करें जो परिणाम लिखते हैं, अनुमोदित करते हैं या पढ़ते हैं। प्रत्येक को एक भूमिका और एक ब्रांड का दायरा मिलता है।',
+    'उन लोगों को आमंत्रित करें जो परिणाम लिखते हैं, अनुमोदित करते हैं या पढ़ते हैं। प्रत्येक को एक भूमिका और एक परियोजना का दायरा मिलता है।',
   'settings.ui.members.emptyExample':
-    'एक सामान्य आकार: बिलिंग के लिए एक मालिक, प्रति ब्रांड एक अनुमोदक, और संपादक जो मसौदा तैयार करते हैं लेकिन कभी प्रकाशित नहीं करते।',
+    'एक सामान्य आकार: बिलिंग के लिए एक मालिक, प्रति परियोजना एक अनुमोदक, और संपादक जो मसौदा तैयार करते हैं लेकिन कभी प्रकाशित नहीं करते।',
   'settings.ui.members.roleReferenceTitle': 'प्रत्येक भूमिका क्या कर सकती है',
   'settings.ui.members.roleReferenceCaption':
     'भूमिकाएँ और क्रियाएँ जिनकी प्रत्येक व्यक्ति अनुमति देता है',
@@ -162,28 +162,28 @@ export const webSettingsMessages = {
   /* ----------------------------------------------------------------- projects */
 
   'settings.ui.projects.description':
-    'एक ब्रांड में ऐसे नियम होते हैं जिनके आधार पर सामग्री की जाँच की जाती है: आप क्या दावा कर सकते हैं, आप क्या नहीं कह सकते हैं, और प्रत्येक भाषा कैसे लिखी जाती है।',
-  'settings.ui.projects.listCaption': 'इस कार्यक्षेत्र में Projects',
+    'एक परियोजना में ऐसे नियम होते हैं जिनके आधार पर सामग्री की जाँच की जाती है: आप क्या दावा कर सकते हैं, आप क्या नहीं कह सकते हैं, और प्रत्येक भाषा कैसे लिखी जाती है।',
+  'settings.ui.projects.listCaption': 'इस कार्यक्षेत्र की परियोजनाएं',
   'settings.ui.projects.column.project': 'ZZZप्रोटेक्टेड11ZZZ',
   'settings.ui.projects.column.locales': 'सामग्री भाषाएँ',
   'settings.ui.projects.column.accounts': 'लेखा',
   'settings.ui.projects.column.updated': 'अद्यतन किया गया',
   'settings.ui.projects.accountCount':
     '{count, plural, =0 {No accounts} one {# account} other {# accounts}}',
-  'settings.ui.projects.emptyTitle': 'अभी तक कोई ब्रांड नहीं',
+  'settings.ui.projects.emptyTitle': 'अभी तक कोई परियोजना नहीं',
   'settings.ui.projects.emptyBody':
-    'एक ब्रांड खातों, अनुमोदन नियमों और भाषा नियमों को समूहित करता है। अधिकांश टीमें एक से शुरू करती हैं और जब किसी ग्राहक या बाज़ार को अलग-अलग नियमों की आवश्यकता होती है तो दूसरा जोड़ देती हैं।',
+    'एक परियोजना खातों, अनुमोदन नियमों और भाषा नियमों को समूहित करती है। अधिकांश टीमें एक से शुरू करती हैं और जब किसी ग्राहक या बाज़ार को अलग-अलग नियमों की आवश्यकता होती है तो दूसरी जोड़ देती हैं।',
   'settings.ui.projects.emptyExample':
-    'उदाहरण: ब्रांड "एक्मे ईयू", भाषाएं अंग्रेजी और जर्मन, अवरुद्ध शब्द "गारंटी", Instagram के लिए प्रकटीकरण "भुगतान साझेदारी"।',
+    'उदाहरण: परियोजना "एक्मे ईयू", भाषाएं अंग्रेजी और जर्मन, अवरुद्ध शब्द "गारंटी", Instagram के लिए प्रकटीकरण "भुगतान साझेदारी"।',
   'settings.ui.projects.voiceHelp':
-    'यह ब्रांड कैसा लगता है. इसका उपयोग तब किया जाता है जब आप दोबारा लिखने के लिए कहते हैं और जब दावों की जाँच की जाती है।',
+    'यह परियोजना कैसी लगती है। इसका उपयोग तब किया जाता है जब आप दोबारा लिखने के लिए कहते हैं और जब दावों की जाँच की जाती है।',
   'settings.ui.projects.audienceHelp': 'सामग्री किसके लिए है, प्रति बाज़ार।',
   'settings.ui.projects.approvedClaimsHelp':
     'एक समीक्षक ने बयानों को साफ़ कर दिया है। इस सूची से बाहर की किसी भी चीज़ को अनुमोदन से पहले चिह्नित किया जाता है, प्रकाशन के बाद नहीं।',
   'settings.ui.projects.blockedTermsHelp':
-    'ऐसे शब्द जो इस ब्रांड के लिए शेड्यूलिंग को अवरुद्ध करते हैं। प्रति पंक्ति एक।',
+    'ऐसे शब्द जो इस परियोजना के लिए शेड्यूलिंग को अवरुद्ध करते हैं। प्रति पंक्ति एक।',
   'settings.ui.projects.domainsHelp':
-    'जिन डोमेन से यह ब्रांड लिंक कर सकता है और उन्हें छोटा कर सकता है। कंपोज़र में केवल सत्यापित डोमेन का चयन किया जा सकता है।',
+    'जिन डोमेन से यह परियोजना लिंक कर सकती है और उन्हें छोटा कर सकती है। कंपोज़र में केवल सत्यापित डोमेन का चयन किया जा सकता है।',
   'settings.ui.projects.domainVerified': 'Verified {date}',
   'settings.ui.projects.domainPending': 'DNS रिकॉर्ड अभी तक नहीं देखा गया',
   'settings.ui.projects.disclosureHelp':
@@ -195,7 +195,7 @@ export const webSettingsMessages = {
     'अभी तक कोई संरक्षित शर्तें नहीं. उत्पाद के नाम और कानूनी शब्द जोड़ें जिनका अनुवाद या पुनर्लेखन नहीं किया जाना चाहिए।',
   'settings.ui.projects.localeRulesHelp':
     'प्रति सामग्री भाषा नियम. जब आप अनुकूलन या ट्रांसक्रिएट करते हैं तो उन्हें लागू किया जाता है और समीक्षक को दिखाया जाता है।',
-  'settings.ui.projects.saveProject': 'ब्रांड सहेजें',
+  'settings.ui.projects.saveProject': 'परियोजना सहेजें',
 
   /* ------------------------------------------------------------ localization */
 
@@ -333,7 +333,7 @@ export const webSettingsMessages = {
   'developer.ui.agents.emptyBody':
     'आपके द्वारा चलाए जाने वाले प्रत्येक स्वचालन के लिए एक बनाएं। अलग-अलग खातों का मतलब है कि आप दूसरे को रोके बिना एक को रद्द कर सकते हैं।',
   'developer.ui.agents.emptyExample':
-    'उदाहरण: "कंटेंट एजेंट", ब्रांड एक्मे ईयू, 07:00 और 22:00 के बीच एक दिन में 6 पोस्ट तक ड्राफ्ट और शेड्यूल कर सकता है, कभी भी तुरंत प्रकाशित नहीं होता है।',
+    'उदाहरण: "कंटेंट एजेंट", परियोजना एक्मे ईयू, 07:00 और 22:00 के बीच एक दिन में 6 पोस्ट तक ड्राफ्ट और शेड्यूल कर सकता है, कभी भी तुरंत प्रकाशित नहीं होता है।',
   'developer.ui.agents.step.identity': 'नाम और उद्देश्य',
   'developer.ui.agents.step.scope': 'यह कहां तक पहुंच सकता है',
   'developer.ui.agents.step.limits': 'सीमाएँ',
@@ -552,8 +552,8 @@ export const webSettingsMessages = {
   'developer.ui.webhooks.eventGroup.publishing': 'प्रकाशन',
   'developer.ui.webhooks.eventGroup.automation': 'स्वचालन और फ़ीड',
   'developer.ui.webhooks.eventGroup.workspace': 'ZZZप्रोटेक्टेड10ZZZ',
-  'developer.ui.webhooks.scopeTitle': 'Projects और खाते',
-  'developer.ui.webhooks.scopeAll': 'प्रत्येक ब्रांड और खाता',
+  'developer.ui.webhooks.scopeTitle': 'परियोजनाएं और खाते',
+  'developer.ui.webhooks.scopeAll': 'प्रत्येक परियोजना और खाता',
   'developer.ui.webhooks.scopeSelected': 'केवल वे ही जिन्हें मैं चुनता हूं',
   'developer.ui.webhooks.secretTitle': 'हस्ताक्षर करने का रहस्य',
   'developer.ui.webhooks.secretBody':

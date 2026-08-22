@@ -52,7 +52,7 @@ export const webSettingsMessages = {
     'Сеанси, двофакторна автентифікація, облікові дані, агенти, веб-перехоплення та надання додатків.',
   'settings.ui.section.data': 'Контроль даних',
   'settings.ui.section.dataSummary':
-    'Експортувати, скасувати підключення, видалити бренд, видалити вміст або закрити обліковий запис.',
+    'Експортувати, скасувати підключення, видалити проект, видалити вміст або закрити обліковий запис.',
 
   /* ------------------------------------------------------- shared UI states */
 
@@ -102,9 +102,9 @@ export const webSettingsMessages = {
   'settings.ui.members.column.approvals': 'Дозволи',
   'settings.ui.members.column.lastActive': 'Останній активний',
   'settings.ui.members.column.actions': 'Дії',
-  'settings.ui.members.scopeAll': 'Усі бренди та облікові записи',
+  'settings.ui.members.scopeAll': 'Усі проекти та облікові записи',
   'settings.ui.members.scopeLimited':
-    '{count, plural, one {#бренд} few {# бренди} many {# бренди} other {# бренди}}:{names}',
+    '{count, plural, one {# проект} few {# проекти} many {# проектів} other {# проекти}}: {names}',
   'settings.ui.members.approvals.canApprove': 'Може схвалити',
   'settings.ui.members.approvals.cannotApprove': 'Не можу схвалити',
   'settings.ui.members.approvals.canApproveOwnProjects':
@@ -119,9 +119,9 @@ export const webSettingsMessages = {
   'settings.ui.members.inviteBody':
     'Вони отримують електронний лист із посиланням. Термін дії запрошення закінчується через сім днів, і ви можете відкликати його до цього часу.',
   'settings.ui.members.inviteRole': 'роль',
-  'settings.ui.members.inviteScope': 'Project, у яких вони можуть працювати',
-  'settings.ui.members.inviteScopeAll': 'Кожен бренд у цьому робочому просторі',
-  'settings.ui.members.inviteScopeSelected': 'Тільки обрані мною бренди',
+  'settings.ui.members.inviteScope': 'Проекти, у яких вони можуть працювати',
+  'settings.ui.members.inviteScopeAll': 'Кожен проект у цьому робочому просторі',
+  'settings.ui.members.inviteScopeSelected': 'Тільки обрані мною проекти',
   'settings.ui.members.inviteApprovals': 'Може вирішувати запити на схвалення',
   'settings.ui.members.inviteApprovalsHelp':
     'Це можна надати лише ролям, які вже включають перегляд. Це окремо від редагування.',
@@ -131,9 +131,9 @@ export const webSettingsMessages = {
   'settings.ui.members.inviteResend': 'Надішліть запрошення ще раз',
   'settings.ui.members.emptyTitle': 'Ви тут єдина людина',
   'settings.ui.members.emptyBody':
-    'Запросіть людей, які пишуть, затверджують або читають результати. Кожен отримує свою роль і сферу бренду.',
+    'Запросіть людей, які пишуть, затверджують або читають результати. Кожен отримує свою роль і сферу проекту.',
   'settings.ui.members.emptyExample':
-    'Загальна форма: один власник для виставлення рахунків, один затверджувач для кожного бренду та редактори, які пишуть проекти, але ніколи не публікують.',
+    'Загальна форма: один власник для виставлення рахунків, один затверджувач для кожного проекту та редактори, які готують чернетки, але ніколи не публікують.',
   'settings.ui.members.roleReferenceTitle': 'Що може зробити кожна роль',
   'settings.ui.members.roleReferenceCaption': 'Ролі та дії, які дозволяє кожна з них',
   'settings.ui.members.roleColumn.role': 'роль',
@@ -162,7 +162,7 @@ export const webSettingsMessages = {
   /* ----------------------------------------------------------------- projects */
 
   'settings.ui.projects.description':
-    'Бренд має правила, за якими контент перевіряється: що ви можете стверджувати, що ви не можете говорити, і як кожна мова написана.',
+    'Проект має правила, за якими контент перевіряється: що ви можете стверджувати, що ви не можете говорити, і як кожна мова написана.',
   'settings.ui.projects.listCaption': 'Проєкти у цій робочій області',
   'settings.ui.projects.column.project': 'Проєкт',
   'settings.ui.projects.column.locales': 'Мови вмісту',
@@ -172,9 +172,9 @@ export const webSettingsMessages = {
     '{count, plural, =0 {Немає облікових записів} one {# рахунок} few {# облікові записи} many {# облікові записи} other {# облікові записи}}',
   'settings.ui.projects.emptyTitle': 'Проєктів ще немає',
   'settings.ui.projects.emptyBody':
-    'Бренд групує облікові записи, правила затвердження та правила мови. Більшість команд починають з одного й додають другий, коли клієнту чи ринку потрібні інші правила.',
+    'Проект групує облікові записи, правила затвердження та правила мови. Більшість команд починають з одного й додають другий, коли клієнту чи ринку потрібні інші правила.',
   'settings.ui.projects.emptyExample':
-    'Приклад: бренд "Acme EU", мови англійська та німецька, заблокований термін "гарантовано", розкриття інформації "Оплачене партнерство" для Instagram.',
+    'Приклад: проект "Acme EU", мови англійська та німецька, заблокований термін "гарантовано", розкриття інформації "Оплачене партнерство" для Instagram.',
   'settings.ui.projects.voiceHelp':
     'Як звучить цей проєкт. Використовується, коли ви просите переписати та коли твердження перевіряються.',
   'settings.ui.projects.audienceHelp': 'Для кого призначений контент, для кожного ринку.',
@@ -364,7 +364,7 @@ export const webSettingsMessages = {
   'developer.ui.agents.emptyBody':
     'Створіть по одному для кожної автоматизації, яку ви запускаєте. Окремі облікові записи означають, що ви можете відкликати один, не зупиняючи інших.',
   'developer.ui.agents.emptyExample':
-    'Приклад: «Контент-агент», бренд Acme EU, може створювати та планувати до 6 публікацій на день між 07:00 і 22:00, ніколи не публікує негайно.',
+    'Приклад: «Контент-агент», проект Acme EU, може створювати та планувати до 6 публікацій на день між 07:00 і 22:00, ніколи не публікує негайно.',
   'developer.ui.agents.step.identity': 'Назва та призначення',
   'developer.ui.agents.step.scope': 'Чого він може досягти',
   'developer.ui.agents.step.limits': 'Межі',
@@ -591,8 +591,8 @@ export const webSettingsMessages = {
   'developer.ui.webhooks.eventGroup.publishing': 'Видавництво',
   'developer.ui.webhooks.eventGroup.automation': 'Автоматика і канали',
   'developer.ui.webhooks.eventGroup.workspace': 'Workspace',
-  'developer.ui.webhooks.scopeTitle': 'Project і облікові записи',
-  'developer.ui.webhooks.scopeAll': 'Кожен бренд і обліковий запис',
+  'developer.ui.webhooks.scopeTitle': 'Проекти і облікові записи',
+  'developer.ui.webhooks.scopeAll': 'Кожен проект і обліковий запис',
   'developer.ui.webhooks.scopeSelected': 'Тільки ті, які я вибираю',
   'developer.ui.webhooks.secretTitle': 'Секрет підпису',
   'developer.ui.webhooks.secretBody':

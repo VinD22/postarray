@@ -56,7 +56,7 @@ export const validationMessages = {
   'validation.privacy_setting_required.hint':
     'Nie ma wartości domyślnej. Wybierz, kto może zobaczyć ten post.',
   'validation.disclosure_required.message':
-    'Ten post wymaga ujawnienia zgodnie z zasadami marki dla {market}.',
+    'Ten post wymaga ujawnienia zgodnie z zasadami projektu dla {market}.',
   'validation.first_comment_unsupported.message':
     '{provider} nie obsługuje zaplanowanego pierwszego komentarza dla tego konta.',
   'validation.thread_unsupported.message': '{provider} nie obsługuje wątków dla tego konta.',

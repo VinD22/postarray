@@ -42,7 +42,7 @@ export const onboardingMessages = withHebrewPluralForms({
   'onboarding.checklist.connectAccount': 'חבר חשבון',
   'onboarding.checklist.firstPost': 'פרסם או תזמן פוסט',
   'onboarding.checklist.inviteTeammate': 'הזמן חבר לקבוצה',
-  'onboarding.checklist.setProjectVoice': 'תאר את קול המותג שלך',
+  'onboarding.checklist.setProjectVoice': 'תאר את קול הפרויקט שלך',
   'onboarding.checklist.tryAutomation': 'נסה כלל אוטומציה',
   'onboarding.checklist.remaining':
     '{count, plural, =0 {הכל נעשה} one {# צעד שמאלה} other {# צעדים נותרו}}',

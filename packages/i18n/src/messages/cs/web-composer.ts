@@ -219,7 +219,7 @@ export const webComposerMessages = {
   'composerWeb.signature.scope': 'Pro {project} na {provider} v {language}',
   'composerWeb.signature.previewHeading': 'Jak končí příspěvek',
   'composerWeb.signature.notMatching':
-    'Tento podpis se vztahuje na jinou značku, platformu nebo jazyk, takže zde není nabízen.',
+    'Tento podpis se vztahuje na jiný projekt, platformu nebo jazyk, takže zde není nabízen.',
 
   // --------------------------------------------------------------- assist
   'composerWeb.assist.menuLabel': 'Pomozte s tímto textem',
@@ -338,7 +338,7 @@ export const webComposerMessages = {
   'mediaLib.loading': 'Načítání vaší knihovny médií',
   'mediaLib.permission.title': 'Tuto knihovnu pracovního prostoru nevidíte',
   'mediaLib.permission.body':
-    'Prohlížení médií vyžaduje u této značky roli diváka nebo vyšší. Vlastník nebo správce jej může udělit.',
+    'Prohlížení médií vyžaduje u tohoto projektu roli diváka nebo vyšší. Vlastník nebo správce jej může udělit.',
 
   'mediaLib.upload.heading': 'Přidat média',
   'mediaLib.upload.browse': 'Vyberte soubory',

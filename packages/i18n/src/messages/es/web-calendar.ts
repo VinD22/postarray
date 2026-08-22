@@ -86,7 +86,7 @@ export const webCalendarMessages = {
   'web.calendar.allDayHeading': 'Aún no hay hora exacta',
 
   'web.calendar.filter.group': 'grupo de clientes',
-  'web.calendar.filter.anyProject': 'cualquier marca',
+  'web.calendar.filter.anyProject': 'Cualquier proyecto',
   'web.calendar.filter.anyAccount': 'cualquier cuenta',
   'web.calendar.filter.anyPlatform': 'Cualquier plataforma',
   'web.calendar.filter.anyStatus': 'cualquier estado',
@@ -199,7 +199,7 @@ export const webCalendarMessages = {
   'web.calendar.permission.requirementsLabel': 'Alcance requerido',
   'web.calendar.permission.title': 'No puedes ver este calendario',
   'web.calendar.permission.body':
-    'El acceso al calendario se otorga por marca. Su cuenta no está en las marcas en esta vista.',
+    'El acceso al calendario se otorga por proyecto. Su cuenta no está en los proyectos de esta vista.',
 
   /* ---------------------------------------------------------------------
    * Post job and publication receipt
@@ -438,11 +438,17 @@ export const webCalendarMessages = {
     'Un grupo filtra el calendario y las analíticas. Al mover una cuenta se conservan todas las publicaciones, recibos y métricas que ya tiene.',
   'web.connection.group.empty.title': 'Aún no hay grupos de clientes',
   'web.connection.group.empty.body':
-    'Un grupo es un cliente o una marca. Cuentas grupales para filtrar el calendario y analíticas por cliente.',
+    'Un proyecto mantiene juntos un producto o cliente y sus cuentas conectadas en el calendario y las analíticas.',
 
   'web.connection.incident.title': 'Esta cuenta necesita atención.',
   'web.connection.incident.remediationHeading': 'que hacer',
   'web.connection.incident.scheduledOnHold':
     '{count, plural, one {# publicación programada está en espera} many {# publicaciones programadas están en espera} other {# publicaciones programadas están en espera}} para esta cuenta.',
   'web.connection.incident.nothingLost': 'Nada se pierde y nada se duplica.',
+  'web.connection.projectScope.title': 'Mostrando los canales de {project}',
+  'web.connection.projectScope.body':
+    'Los canales nuevos se conectan a este proyecto. Cambia de proyecto desde la barra superior para gestionar otro conjunto.',
+  'web.connection.projectMissing.title': 'Crea un proyecto antes de conectar un canal',
+  'web.connection.projectMissing.body':
+    'Los proyectos mantienen separados los canales, los medios, los borradores y las programaciones de distintos productos o clientes.',
 } as const;

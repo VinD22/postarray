@@ -56,7 +56,7 @@ export const validationMessages = {
   'validation.privacy_setting_required.hint':
     'Varsayılan yoktur. Bu gönderiyi kimlerin görebileceğini seçin.',
   'validation.disclosure_required.message':
-    'Bu gönderinin {market} marka kuralları kapsamında açıklanması gerekiyor.',
+    'Bu gönderinin {market} proje kuralları kapsamında açıklanması gerekiyor.',
   'validation.first_comment_unsupported.message':
     '{provider} bu hesap için planlanmış bir ilk yorumu desteklemiyor.',
   'validation.thread_unsupported.message':

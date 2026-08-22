@@ -53,7 +53,7 @@ export const validationMessages = {
   'validation.privacy_setting_required.hint':
     'कोई डिफ़ॉल्ट नहीं है. चुनें कि इस पोस्ट को कौन देख सकता है.',
   'validation.disclosure_required.message':
-    'इस पोस्ट के लिए ब्रांड नियमों के तहत प्रकटीकरण की आवश्यकता है {market}.',
+    'इस पोस्ट के लिए परियोजना नियमों के तहत प्रकटीकरण की आवश्यकता है {market}.',
   'validation.first_comment_unsupported.message':
     '{provider} इस खाते के लिए निर्धारित पहली टिप्पणी का समर्थन नहीं करता.',
   'validation.thread_unsupported.message': '{provider} इस खाते के लिए थ्रेड का समर्थन नहीं करता.',

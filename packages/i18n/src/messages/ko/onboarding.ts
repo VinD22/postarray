@@ -44,7 +44,7 @@ export const onboardingMessages = {
   'onboarding.checklist.connectAccount': '계정 연결',
   'onboarding.checklist.firstPost': '게시물 게시 또는 예약',
   'onboarding.checklist.inviteTeammate': '팀원 초대',
-  'onboarding.checklist.setProjectVoice': '브랜드 보이스를 설명하세요',
+  'onboarding.checklist.setProjectVoice': '프로젝트 보이스를 설명하세요',
   'onboarding.checklist.tryAutomation': '자동화 규칙을 사용해 보세요',
   'onboarding.checklist.remaining': '{count, plural, other {#걸음 남음}}',
 } as const;

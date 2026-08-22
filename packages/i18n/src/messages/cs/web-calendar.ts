@@ -86,7 +86,7 @@ export const webCalendarMessages = {
   'web.calendar.allDayHeading': 'Zatím není přesný čas',
 
   'web.calendar.filter.group': 'Skupina zákazníků',
-  'web.calendar.filter.anyProject': 'Jakákoli značka',
+  'web.calendar.filter.anyProject': 'Jakýkoli projekt',
   'web.calendar.filter.anyAccount': 'Jakýkoli účet',
   'web.calendar.filter.anyPlatform': 'Jakákoli platforma',
   'web.calendar.filter.anyStatus': 'Jakýkoli stav',
@@ -199,7 +199,7 @@ export const webCalendarMessages = {
   'web.calendar.permission.requirementsLabel': 'Požadovaný rozsah',
   'web.calendar.permission.title': 'Tento kalendář nevidíte',
   'web.calendar.permission.body':
-    'Přístup do kalendáře je udělen pro každou značku. Váš účet není u značek v tomto zobrazení.',
+    'Přístup do kalendáře je udělen pro každý projekt. Váš účet není u projektů v tomto zobrazení.',
 
   /* ---------------------------------------------------------------------
    * Post job and publication receipt
@@ -362,10 +362,10 @@ export const webCalendarMessages = {
     'Připojení účtu nic nepublikuje. Každý příspěvek se stále řídí těmito zásadami schvalování pracovního prostoru.',
   'web.connection.projectScope.title': 'Kanály pro {project}',
   'web.connection.projectScope.body':
-    'Nové kanály se připojují k této značce. Přepněte značku na horní liště, abyste spravovali jinou sadu.',
-  'web.connection.projectMissing.title': 'Vytvořte značku před připojením kanálu',
+    'Nové kanály se připojují k tomuto projektu. Přepněte projekt na horní liště, abyste spravovali jinou sadu.',
+  'web.connection.projectMissing.title': 'Vytvořte projekt před připojením kanálu',
   'web.connection.projectMissing.body':
-    'Značky udržují kanály, média, koncepty a harmonogramy různých produktů nebo klientů oddělené.',
+    'Projekty udržují kanály, média, koncepty a harmonogramy různých produktů nebo klientů oddělené.',
 
   'web.connection.requirement.instagram':
     'Publikování na Instagramu vyžaduje profesionální účet, což znamená obchodní účet nebo účet tvůrce propojený se stránkou na Facebooku.',
@@ -443,7 +443,7 @@ export const webCalendarMessages = {
     'Skupina filtruje kalendář a analýzy. Přesunutím účtu zůstane zachován každý příspěvek, účtenka a metrika, kterou již má.',
   'web.connection.group.empty.title': 'Zatím žádné zákaznické skupiny',
   'web.connection.group.empty.body':
-    'Skupina je klient nebo značka. Seskupte účty a filtrujte kalendář a analýzy podle zákazníka.',
+    'Skupina je klient nebo projekt. Seskupte účty a filtrujte kalendář a analýzy podle zákazníka.',
 
   'web.connection.incident.title': 'Tento účet vyžaduje pozornost',
   'web.connection.incident.remediationHeading': 'Co dělat',

@@ -73,4 +73,15 @@ export const authMessages = {
   'auth.rateLimited':
     'Trop de tentatives. Réessayez dans {minutes, plural, one {# minute} many {# minutes} other {# minutes}}.',
   'auth.genericFailure': "Cela n'a pas fonctionné. Vérifiez les détails et réessayez.",
+  'auth.newPassword.help':
+    "Choisissez un mot de passe que vous n'avez pas déjà utilisé ici. Il vous connecte sur tous vos appareils.",
+  'auth.newPassword.label': 'Nouveau mot de passe',
+  'auth.newPassword.confirmLabel': 'Confirmez le nouveau mot de passe',
+  'auth.newPassword.mismatch': 'Les deux mots de passe ne correspondent pas.',
+  'auth.newPassword.submit': 'Enregistrer le nouveau mot de passe',
+  'auth.newPassword.linkMissing':
+    'Cette page a besoin du lien reçu dans votre e-mail de réinitialisation.',
+  'auth.newPassword.linkInvalid': 'Ce lien de réinitialisation a expiré ou a déjà été utilisé.',
+  'auth.newPassword.linkInvalidAction': 'Demander un nouveau lien',
+  'auth.newPassword.signInNow': 'Se connecter',
 } as const;

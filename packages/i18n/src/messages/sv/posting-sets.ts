@@ -68,7 +68,7 @@ export const postingSetMessages = {
   'set.archivedToast': 'Uppsättning arkiverad. Inlägg redan gjorda från den påverkas inte.',
 
   'set.field.name': 'Namn',
-  'set.field.nameHint': 'Vad du kommer leta efter i väljaren senare. En per varumärke.',
+  'set.field.nameHint': 'Vad du kommer leta efter i väljaren senare. En per projekt.',
   'set.field.description': 'Beskrivning',
   'set.field.descriptionHint': 'Valfritt. Vad denna Uppsättning är till för.',
   'set.field.targets': 'Konton',
@@ -89,13 +89,13 @@ export const postingSetMessages = {
 
   'set.slot.next_free_slot': 'Nästa lediga plats från kön',
   'set.slot.next_free_slotHint':
-    'Använder detta varumärkes köregler för att föreslå en tid. Den föreslår; du accepterar.',
+    'Använder detta projekts köregler för att föreslå en tid. Den föreslår; du accepterar.',
   'set.slot.pick_time': 'Fråga mig om en tid',
   'set.slot.pick_timeHint': 'Att tillämpa Uppsättningen lämnar tiden tom för dig att välja.',
   'set.slot.draft_only': 'Lämna det som utkast',
   'set.slot.draft_onlyHint': 'Att tillämpa Uppsättningen rör inte schemat alls.',
   'set.slot.noRules':
-    'Detta varumärke har inga köregler än, så kön kommer föreslå den första lediga timmen och säga det.',
+    'Detta projekt har inga köregler än, så kön kommer föreslå den första lediga timmen och säga det.',
   'set.slot.rulesLink': 'Köregler',
 
   'set.defaults.title': 'Standardvärden per plattform',
@@ -112,7 +112,7 @@ export const postingSetMessages = {
     'Ett inlägg gjort från denna Uppsättning kan inte schemaläggas till denna plattform förrän varje bild har alt-text.',
   'set.defaults.empty': 'Inga standardvärden per plattform. Varje konto utgår från huvudinlägget.',
 
-  'set.error.nameTaken': 'En annan Uppsättning i detta varumärke använder redan det namnet.',
+  'set.error.nameTaken': 'En annan Uppsättning i detta projekt använder redan det namnet.',
   'set.error.archived': 'Denna Uppsättning är arkiverad. Återställ den innan du redigerar.',
   'set.error.duplicateTarget': 'Det kontot finns redan i denna Uppsättning.',
   'set.error.duplicatePlatform': 'Denna Uppsättning har redan standardvärden för den plattformen.',
@@ -120,16 +120,16 @@ export const postingSetMessages = {
   /* --------------------------------------------------- remembered targets */
   'targetMemory.setting.title': 'Kom ihåg konton mellan inlägg',
   'targetMemory.setting.body':
-    'När detta är på börjar redigeraren varje nytt inlägg med de konton personen valde senast i detta varumärke. Det är av tills du slår på det.',
+    'När detta är på börjar redigeraren varje nytt inlägg med de konton personen valde senast i detta projekt. Det är av tills du slår på det.',
   'targetMemory.setting.stored':
-    'Endast listan över konton sparas, och bara för personen som valde dem. Ingen bildtext, tid, sekretessinställning eller godkännandestatus sparas, och ingen annan i varumärket kan se din lista.',
+    'Endast listan över konton sparas, och bara för personen som valde dem. Ingen bildtext, tid, sekretessinställning eller godkännandestatus sparas, och ingen annan i projektet kan se din lista.',
   'targetMemory.setting.offNote': 'Medan detta är av sparas ingenting alls.',
   'targetMemory.setting.turnOffWarning':
-    'Att stänga av detta raderar alla sparade val i detta varumärke, för alla.',
+    'Att stänga av detta raderar alla sparade val i detta projekt, för alla.',
   'targetMemory.setting.enabled': 'På',
   'targetMemory.setting.disabled': 'Av',
   'targetMemory.setting.saved': 'Inställning sparad.',
-  'targetMemory.setting.cleared': 'Inställning sparad. Sparade val i detta varumärke har raderats.',
+  'targetMemory.setting.cleared': 'Inställning sparad. Sparade val i detta projekt har raderats.',
 
   'targetMemory.composer.restored':
     '{count, plural, one {Startade med # konto från senast.} other {Startade med # konton från senast.}}',

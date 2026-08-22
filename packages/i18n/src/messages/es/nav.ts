@@ -25,7 +25,7 @@ export const navMessages = {
   'nav.theme.label': 'Tema',
 
   'settings.nav.members': 'Miembros y roles',
-  'settings.nav.projects': 'Marcas',
+  'settings.nav.projects': 'Proyectos',
   'settings.nav.agents': 'Agentes y API',
   'settings.nav.developerApps': 'Aplicaciones para desarrolladores',
   'settings.nav.webhooks': 'Ganchos web',
@@ -64,7 +64,7 @@ export const navMessages = {
 
   'shell.workspace.label': 'Workspace',
   'shell.workspace.current': 'Espacio de trabajo actual: {name}',
-  'shell.project.all': 'Todas las marcas',
+  'shell.project.all': 'Todos los proyectos',
   'shell.timeZone.label': 'Horas mostradas in {timeZone}',
   'shell.notifications.count':
     '{count, plural, =0 {No hay notificaciones nuevas} one {# notificación nueva} many {# notificaciones nuevas} other {# notificaciones nuevas}}',
@@ -73,4 +73,8 @@ export const navMessages = {
   'shell.feedback.open': 'Enviar comentarios',
   'shell.feedback.correlationId': 'Referencia de diagnóstico: {correlationId}',
   'shell.signedInAs': 'Firmado en as {email}',
+  'shell.project.label': 'Proyectos',
+  'shell.project.none': 'Crear un proyecto',
+  'shell.project.current': 'Proyecto actual: {name}',
+  'shell.project.manage': 'Gestionar proyectos',
 } as const;

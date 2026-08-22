@@ -7,7 +7,7 @@ export const developerMessages = {
   'developer.serviceAccount.title': 'Hizmet hesapları',
   'developer.serviceAccount.create': 'Hizmet hesabı oluşturun',
   'developer.serviceAccount.name': 'İsim',
-  'developer.serviceAccount.scopeProjects': 'Kullanabileceği markalar ve hesaplar',
+  'developer.serviceAccount.scopeProjects': 'Kullanabileceği projeler ve hesaplar',
   'developer.serviceAccount.scopePlatforms': 'Platformlar',
   'developer.serviceAccount.scopeLocales': 'İçerik dilleri',
   'developer.serviceAccount.scopeDomains': 'İzin verilen bağlantı alanları',
@@ -110,7 +110,7 @@ export const developerMessages = {
 
   'developer.consent.title': '{app} wants access to your workspace',
   'developer.consent.workspace': 'Workspace',
-  'developer.consent.projects': 'Projects and accounts',
+  'developer.consent.projects': 'Projeler ve hesaplar',
   'developer.consent.willBeAbleTo': '{app} will be able to',
   'developer.consent.willNotBeAbleTo': '{app} will not be able to',
   'developer.consent.approvalStillApplies':

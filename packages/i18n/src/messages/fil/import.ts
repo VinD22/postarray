@@ -30,7 +30,7 @@ export const importMessages = {
   'import.upload.paste': 'O i-paste ang CSV text',
   'import.upload.pasteHelp': 'Isama ang header row. Nachecheck ang lahat bago may gawin.',
   'import.upload.project': 'Proyekto',
-  'import.upload.projectHelp': 'Ang bawat row sa isang file ay pag-aari ng project na ito.',
+  'import.upload.projectHelp': 'Ang bawat row sa isang file ay pag-aari ng proyektong ito.',
   'import.upload.submit': 'I-check ang file na ito',
   'import.upload.submitting': 'Binabasa ang file',
   'import.upload.allowPast': 'Payagan ang mga oras na nakalipas na',
@@ -47,7 +47,7 @@ export const importMessages = {
   'import.template.optional': 'Mga opsyonal na column',
   'import.column.external_row_id':
     'Ang sarili mong id para sa row. Dapat ito ay natatangi sa loob ng file.',
-  'import.column.project': 'Ang pangalan o id ng project na pag-aari ng row.',
+  'import.column.project': 'Ang pangalan o id ng proyektong pag-aari ng row.',
   'import.column.targets':
     'Alinman sa set: na sinusundan ng id ng isang target set, o mga id ng account na pinaghihiwalay ng vertical bar.',
   'import.column.caption': 'Ang teksto ng post.',

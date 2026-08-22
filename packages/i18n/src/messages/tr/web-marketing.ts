@@ -159,7 +159,7 @@ export const webMarketingMessages = {
     'Her harici yazma bir önemsizlik anahtarı taşır, bu nedenle platform bir gönderiyi kabul ettikten sonra çalışanın çökmesi ikinci bir gönderi oluşturmaz.',
   'web.home.pillars.adapt.title': 'Kopyalamak yerine uyarlayın',
   'web.home.pillars.adapt.body':
-    'Bir marka sözlüğü ve her dil için adlandırılmış bir incelemeci ile, her seferinde bir hesabı ve birebir çeviri yerine yaratıcı çeviriyi geçersiz kılabileceğiniz platform değişkenleri başına.',
+    'Bir proje sözlüğü ve her dil için adlandırılmış bir incelemeci ile, her seferinde bir hesabı ve birebir çeviri yerine yaratıcı çeviriyi geçersiz kılabileceğiniz platform değişkenleri başına.',
   'web.home.pillars.adapt.proof':
     'Arayüz seçilen dillerde mevcuttur. İçerik uyarlaması 30 içerik dilini kapsar ve bunların her biri yayınlanmadan önce incelenebilir.',
   'web.home.pillars.loop.title': 'Döngüyü kapat',
@@ -320,7 +320,7 @@ export const webMarketingMessages = {
     'Ana sürüm fikri taşır. Her hesap, platformun beklediği uzunluğu, kırpmayı, ayarları ve tonu alır ve taahhütte bulunmadan önce hepsini yan yana görebilirsiniz.',
   'web.creators.job.languages.title': 'Tahmin etmeden başka bir dilde yayınlayın',
   'web.creators.job.languages.body':
-    'Transcreation kelimelerden ziyade amacı korur, marka sözlüğünüzü kullanır ve yerel bir incelemecinin onu okuyup okumadığını işaretler. Siz söylemediğiniz sürece, garanti edemeyeceğiniz bir dilde hiçbir şey yayınlanmaz.',
+    'Transcreation kelimelerden ziyade amacı korur, proje sözlüğünüzü kullanır ve yerel bir incelemecinin onu okuyup okumadığını işaretler. Siz söylemediğiniz sürece, garanti edemeyeceğiniz bir dilde hiçbir şey yayınlanmaz.',
   'web.creators.job.rights.title': 'Hak kaydınızı dosyayla birlikte saklayın',
   'web.creators.job.rights.body':
     'Medya nereden geldiğini, hakların kimde olduğunu ve üretken bir araçla yaratılıp yaratılmadığını taşır. Platformlar giderek daha fazla soruyor. Relay, size tekrar sormak yerine cevabınızı varlıkla birlikte saklar.',
@@ -345,7 +345,7 @@ export const webMarketingMessages = {
     'Her yayın, harici posta kimliğini ve tam deneme geçmişini içeren değişmez bir makbuz üretir. Bir müşteri saat dokuzda bir şeyler olup olmadığını sorduğunda yanıta bir zaman damgası ve bir platform tanımlayıcı iliştirilmiştir.',
   'web.agencies.job.roles.title': 'İşin bölünme şekliyle eşleşen roller',
   'web.agencies.job.roles.body':
-    'Marka ve hesap başına kapsam dahilinde sahip, yönetici, yönetici, editör, onaylayan, analist ve görüntüleyici. Sınırsız ekip üyesi, çünkü koltuk başına ücretlendirme ajansların oturum açma bilgilerini paylaşmasına neden olur ve bu bir güvenlik sorunudur.',
+    'Proje ve hesap başına kapsam dahilinde sahip, yönetici, yönetici, editör, onaylayan, analist ve görüntüleyici. Sınırsız ekip üyesi, çünkü koltuk başına ücretlendirme ajansların oturum açma bilgilerini paylaşmasına neden olur ve bu bir güvenlik sorunudur.',
   'web.agencies.limits.title': 'Sınır açıkça ifade edildi',
   'web.agencies.limits.body':
     "Bir plan 30 aktif sosyal kanalı kapsar. Kanal, bir sosyal hesap, Sayfa, profil, grup veya yayın bağlantısıdır. 30'dan fazlasına ihtiyacınız varsa bize neye ihtiyacınız olduğunu söyleyin, size gizli bir aşama yerine doğrudan bir yanıt verelim.",
@@ -522,7 +522,7 @@ export const webMarketingMessages = {
     "Bir arka uç, dört giriş yolu. Her bölüm aynı kullanım örneklerini belgelediğinden, REST API'de öğrendiğiniz bir kavram, MCP ve CLI'de aynı kavramdır.",
   'web.docs.section.start.title': 'Başlarken',
   'web.docs.section.start.body':
-    'Kimlik doğrulama, çalışma alanları, markalar ve yayınlanan ilk gönderiniz.',
+    'Kimlik doğrulama, çalışma alanları, projeler ve yayınlanan ilk gönderiniz.',
   'web.docs.section.api.title': "REST API'si",
   'web.docs.section.api.body':
     'Kaynaklar, sayfalandırma, eksiklik, hata kodları ve oran sınırları.',

@@ -86,7 +86,7 @@ export const webCalendarMessages = {
   'web.calendar.allDayHeading': 'Nog geen exacte tijd',
 
   'web.calendar.filter.group': 'Klantengroep',
-  'web.calendar.filter.anyProject': 'Elk merk',
+  'web.calendar.filter.anyProject': 'Elk project',
   'web.calendar.filter.anyAccount': 'Elke rekening',
   'web.calendar.filter.anyPlatform': 'Elk platform',
   'web.calendar.filter.anyStatus': 'Elke status',
@@ -200,7 +200,7 @@ export const webCalendarMessages = {
   'web.calendar.permission.requirementsLabel': 'Vereiste reikwijdte',
   'web.calendar.permission.title': 'Je kunt deze kalender niet zien',
   'web.calendar.permission.body':
-    'Agendatoegang wordt verleend per merk. Uw account staat niet op de merken in deze weergave.',
+    'Agendatoegang wordt verleend per project. Uw account staat niet op de projecten in deze weergave.',
 
   /* ---------------------------------------------------------------------
    * Post job and publication receipt
@@ -365,10 +365,10 @@ export const webCalendarMessages = {
     'Als u een account koppelt, wordt er niets gepubliceerd. Elk bericht volgt nog steeds dit goedkeuringsbeleid voor werkruimten.',
   'web.connection.projectScope.title': 'Kanalen voor {project}',
   'web.connection.projectScope.body':
-    'Nieuwe kanalen koppelen aan dit merk. Wissel van merk via de bovenbalk om een andere set te beheren.',
-  'web.connection.projectMissing.title': 'Maak een merk voordat je een kanaal koppelt',
+    'Nieuwe kanalen koppelen aan dit project. Wissel van project via de bovenbalk om een andere set te beheren.',
+  'web.connection.projectMissing.title': 'Maak een project voordat je een kanaal koppelt',
   'web.connection.projectMissing.body':
-    'Merken houden kanalen, media, concepten en planningen van verschillende producten of klanten gescheiden.',
+    'Projecten houden kanalen, media, concepten en planningen van verschillende producten of klanten gescheiden.',
 
   'web.connection.requirement.instagram':
     'Voor publiceren op Instagram is een professioneel account nodig, dat wil zeggen een bedrijfs- of makersaccount dat aan een Facebook-pagina is gekoppeld.',
@@ -446,7 +446,7 @@ export const webCalendarMessages = {
     'Een groep filtert de agenda en analyses. Als u een account verplaatst, blijven alle berichten, ontvangstbewijzen en statistieken die het al heeft, behouden.',
   'web.connection.group.empty.title': 'Nog geen klantgroepen',
   'web.connection.group.empty.body':
-    'Een groep is een klant of een merk. Groepeer accounts om de agenda en analyses per klant te filteren.',
+    'Een groep is een klant of een project. Groepeer accounts om de agenda en analyses per klant te filteren.',
 
   'web.connection.incident.title': 'Deze rekening heeft aandacht nodig',
   'web.connection.incident.remediationHeading': 'Wat te doen',

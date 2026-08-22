@@ -15,7 +15,7 @@ export const statusMessages = {
   'empty.analytics.noPermission':
     'Det här kontot har inte beviljats analysåtkomst. Återanslut för att lägga till den.',
   'empty.approvals.title': 'Inget väntar på dig',
-  'empty.approvals.body': 'Godkännandeförfrågningar för dina varumärken visas här.',
+  'empty.approvals.body': 'Godkännandeförfrågningar för dina projekt visas här.',
   'empty.library.title': 'Ditt bibliotek är tomt',
   'empty.library.body': 'Ladda upp bilder och video, eller importera dem från en URL eller API.',
   'empty.library.action': 'Ladda upp media',

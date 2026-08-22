@@ -29,7 +29,7 @@ export const automationMessages = {
   'automation.trigger.recurring': 'ett återkommande schema brinner',
 
   'automation.condition.label': 'Villkor',
-  'automation.condition.project': 'varumärket är {project}',
+  'automation.condition.project': 'projektet är {project}',
   'automation.condition.campaign': 'kampanjen är {campaign}',
   'automation.condition.account': 'kontot är {account}',
   'automation.condition.platform': 'plattformen är {platform}',
@@ -126,7 +126,7 @@ export const automationMessages = {
   'automation.webhooks.urlLabel': 'Endpoint URL',
   'automation.webhooks.eventsLabel': 'Händelser',
   'automation.webhooks.allEvents': 'Alla evenemang',
-  'automation.webhooks.scopeLabel': 'Varumärken och konton',
+  'automation.webhooks.scopeLabel': 'Projekt och konton',
   'automation.webhooks.allAccounts': 'Alla konton',
   'automation.webhooks.secret': 'Undertecknande hemlighet',
   'automation.webhooks.secretShownOnce': 'Denna hemlighet visas en gång. Förvara den nu.',

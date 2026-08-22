@@ -190,7 +190,7 @@ export const webShellMessages = {
     'Màn hình tiếp theo là Polar, thương gia nổi tiếng của chúng tôi. Quyền truy cập được cấp khi Polar xác nhận đăng ký chứ không phải khi trình duyệt quay lại.',
   'onboarding.plan.factsTitle': 'Điều gì xảy ra khi bạn tiếp tục',
   'onboarding.workspace.help':
-    'Không gian làm việc chứa thương hiệu của bạn, các tài khoản được kết nối, bản nháp và biên lai. Bạn có thể tạo thêm sau này.',
+    'Không gian làm việc chứa dự án của bạn, các tài khoản được kết nối, bản nháp và biên lai. Bạn có thể tạo thêm sau này.',
   'onboarding.workspace.localeNote':
     'Ngôn ngữ giao diện của bạn thay đổi ứng dụng này. Ngôn ngữ nội dung được chọn cho mỗi bài đăng và tách biệt với cài đặt này.',
   'onboarding.workspace.timeZoneDetected': 'Được phát hiện từ thiết bị này: {timeZone}',

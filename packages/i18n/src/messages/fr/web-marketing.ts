@@ -162,7 +162,7 @@ export const webMarketingMessages = {
     "Chaque écriture externe comporte une clé d'idempotence, donc un crash de travailleur après que la plateforme a accepté une publication n'en crée pas une seconde.",
   'web.home.pillars.adapt.title': "S'adapter plutôt que dupliquer",
   'web.home.pillars.adapt.body':
-    'Variantes par plate-forme que vous pouvez remplacer un compte à la fois, et transcréation plutôt que traduction littérale, avec un glossaire de marque et un réviseur nommé par langue.',
+    'Variantes par plateforme que vous pouvez remplacer un compte à la fois, et transcréation plutôt que traduction littérale, avec un glossaire du projet et un réviseur nommé par langue.',
   'web.home.pillars.adapt.proof':
     "L'interface est disponible dans certaines langues. L'adaptation du contenu couvre 30 langues de contenu et chacune d'entre elles peut être révisée avant sa publication.",
   'web.home.pillars.loop.title': 'Fermer la boucle',
@@ -311,7 +311,7 @@ export const webMarketingMessages = {
     "La version principale porte l'idée. Chaque compte obtient la longueur, le recadrage, les paramètres et le ton attendu par la plate-forme, et vous pouvez tous les voir côte à côte avant de vous engager.",
   'web.creators.job.languages.title': 'Publiez dans une autre langue sans deviner',
   'web.creators.job.languages.body':
-    "La transcréation conserve l'intention plutôt que les mots, utilise le glossaire de votre marque et indique si un évaluateur natif l'a lu. Rien n'est publié dans une langue dont vous ne pouvez garantir que si vous le dites.",
+    "La transcréation conserve l'intention plutôt que les mots, utilise le glossaire de votre projet et indique si un réviseur natif l'a lu. Rien n'est publié dans une langue dont vous ne pouvez pas répondre, sauf si vous le décidez.",
   'web.creators.job.rights.title': 'Conservez votre dossier de droits avec le dossier',
   'web.creators.job.rights.body':
     "Les médias indiquent d'où ils viennent, qui détient les droits et s'ils ont été créés avec un outil génératif. Les plateformes le demandent de plus en plus. Relay stocke votre réponse avec l'actif au lieu de vous demander à nouveau.",
@@ -337,7 +337,7 @@ export const webMarketingMessages = {
   'web.agencies.job.roles.title':
     'Des rôles qui correspondent à la façon dont le travail est réparti',
   'web.agencies.job.roles.body':
-    "Propriétaire, administrateur, gestionnaire, éditeur, approbateur, analyste et spectateur, définis par marque et par compte. Membres d'équipe illimités, car la facturation par siège oblige les agences à partager les connexions et c'est un problème de sécurité.",
+    "Propriétaire, administrateur, éditeur, approbateur, analyste et lecteur, définis par projet et par compte. Chaque espace de travail comprend le propriétaire et jusqu'à 5 coéquipiers. Chaque action est attribuée à la personne qui l'a effectuée.",
   'web.agencies.limits.title': 'La frontière, clairement énoncée',
   'web.agencies.limits.body':
     "Un plan couvre 30 canaux sociaux actifs. Un canal est un compte social, une page, un profil, un groupe ou une connexion à une publication. Si vous en avez besoin de plus de 30, dites-nous ce dont vous avez besoin et nous vous donnerons une réponse claire plutôt qu'un niveau caché.",
@@ -515,7 +515,7 @@ export const webMarketingMessages = {
     "Un backend, quatre façons d'y accéder. Chaque section documente les mêmes cas d'utilisation, donc un concept que vous apprenez dans l'API REST est le même concept dans MCP et dans la CLI.",
   'web.docs.section.start.title': 'Commencer',
   'web.docs.section.start.body':
-    'Authentification, espaces de travail, marques et votre premier article publié.',
+    'Authentification, espaces de travail, projets et votre première publication.',
   'web.docs.section.api.title': 'API REST',
   'web.docs.section.api.body':
     "Ressources, pagination, idempotence, codes d'erreur et limites de débit.",

@@ -179,7 +179,7 @@ export const webShellMessages = {
     '次の画面は、当社の登録販売者である Polar です。アクセスは、ブラウザが戻ったときではなく、Polar がサブスクリプションを確認したときに許可されます。',
   'onboarding.plan.factsTitle': '続けるとどうなるか',
   'onboarding.workspace.help':
-    'ワークスペースには、ブランド、接続されたアカウント、下書き、領収書が保存されます。後でさらに作成することもできます。',
+    'ワークスペースには、プロジェクト、接続されたアカウント、下書き、領収書が保存されます。後でさらに作成することもできます。',
   'onboarding.workspace.localeNote':
     'インターフェイス言語によってこのアプリが変更されます。コンテンツ言語は投稿ごとに選択され、この設定とは別のものです。',
   'onboarding.workspace.timeZoneDetected': 'このデバイスから検出されました:{timeZone}',

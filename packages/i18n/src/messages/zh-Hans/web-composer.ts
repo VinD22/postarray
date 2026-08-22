@@ -179,7 +179,7 @@ export const webComposerMessages = {
   'composerWeb.signature.pickerLabel': '签名',
   'composerWeb.signature.scope': '对于 {language} 中 {provider} 上的 {project}',
   'composerWeb.signature.previewHeading': '帖子如何结束',
-  'composerWeb.signature.notMatching': '此签名适用于不同的品牌、平台或语言，因此此处不提供。',
+  'composerWeb.signature.notMatching': '此签名适用于不同的项目、平台或语言，因此此处不提供。',
   'composerWeb.assist.menuLabel': '协助处理此文本',
   'composerWeb.assist.unavailableTitle': '未配置文本帮助',
   'composerWeb.assist.unavailableBody':
@@ -272,7 +272,7 @@ export const webComposerMessages = {
   'mediaLib.error.body': '您的文件是安全的。这次失败并没有改变什么。',
   'mediaLib.loading': '加载您的媒体库',
   'mediaLib.permission.title': '您看不到此工作区库',
-  'mediaLib.permission.body': '观看媒体需要该品牌的观众角色或更高级别。所有者或管理员可以授予它。',
+  'mediaLib.permission.body': '观看媒体需要该项目的观众角色或更高级别。所有者或管理员可以授予它。',
   'mediaLib.upload.heading': '添加媒体',
   'mediaLib.upload.browse': '选择文件',
   'mediaLib.upload.dropHint': '将文件拖至此处，或选择它们。如果连接断开，上传将恢复。',

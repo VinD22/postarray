@@ -48,7 +48,8 @@ export const validationMessages = withHebrewPluralForms({
     'תחום הקישור {domain} אינו מאומת עבור סביבת עבודה זו.',
   'validation.privacy_setting_required.message': '{provider} דורש בחירת פרטיות מפורשת לפני הפרסום.',
   'validation.privacy_setting_required.hint': 'אין ברירת מחדל. בחר מי יכול לראות את הפוסט הזה.',
-  'validation.disclosure_required.message': 'פוסט זה זקוק לחשיפה במסגרת כללי המותג עבור {market}.',
+  'validation.disclosure_required.message':
+    'פוסט זה זקוק לחשיפה במסגרת כללי הפרויקט עבור {market}.',
   'validation.first_comment_unsupported.message':
     '{provider} אינו תומך בהערה ראשונה מתוזמנת עבור חשבון זה.',
   'validation.thread_unsupported.message': '{provider} אינו תומך בשרשורים עבור חשבון זה.',

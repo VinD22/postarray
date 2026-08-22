@@ -186,7 +186,7 @@ export const webShellMessages = {
     'Layar berikutnya adalah Polar, pedagang tercatat kami. Akses diberikan saat Polar mengonfirmasi langganan, bukan saat browser kembali.',
   'onboarding.plan.factsTitle': 'Apa yang terjadi jika Anda melanjutkan',
   'onboarding.workspace.help':
-    'Ruang kerja menyimpan merek, akun terhubung, draf, dan tanda terima Anda. Anda dapat membuat lebih banyak lagi nanti.',
+    'Ruang kerja menyimpan proyek, akun terhubung, draf, dan tanda terima Anda. Anda dapat membuat lebih banyak lagi nanti.',
   'onboarding.workspace.localeNote':
     'Bahasa antarmuka Anda mengubah aplikasi ini. Bahasa konten dipilih per postingan dan terpisah dari pengaturan ini.',
   'onboarding.workspace.timeZoneDetected': 'Terdeteksi dari perangkat ini: {timeZone}',

@@ -71,7 +71,7 @@ export const postingSetMessages = {
     'Set gearchiveerd. Berichten die er al van zijn gemaakt, blijven ongewijzigd.',
 
   'set.field.name': 'Naam',
-  'set.field.nameHint': 'Waar je later naar zoekt in de kiezer. Eén per merk.',
+  'set.field.nameHint': 'Waar je later naar zoekt in de kiezer. Eén per project.',
   'set.field.description': 'Beschrijving',
   'set.field.descriptionHint': 'Optioneel. Waarvoor deze Set is.',
   'set.field.targets': 'Accounts',
@@ -92,13 +92,13 @@ export const postingSetMessages = {
 
   'set.slot.next_free_slot': 'Volgend vrij tijdstip uit de wachtrij',
   'set.slot.next_free_slotHint':
-    'Gebruikt de wachtrijregels van dit merk om een tijdstip voor te stellen. Het stelt voor; jij accepteert.',
+    'Gebruikt de wachtrijregels van dit project om een tijdstip voor te stellen. Het stelt voor; jij accepteert.',
   'set.slot.pick_time': 'Vraag mij om een tijdstip',
   'set.slot.pick_timeHint': 'Het toepassen van de Set laat het tijdstip leeg zodat jij het kiest.',
   'set.slot.draft_only': 'Laat het als concept staan',
   'set.slot.draft_onlyHint': 'Het toepassen van de Set raakt de planning helemaal niet aan.',
   'set.slot.noRules':
-    'Dit merk heeft nog geen wachtrijregels, dus de wachtrij zal het eerste vrije uur voorstellen en dat ook zeggen.',
+    'Dit project heeft nog geen wachtrijregels, dus de wachtrij zal het eerste vrije uur voorstellen en dat ook zeggen.',
   'set.slot.rulesLink': 'Wachtrijregels',
 
   'set.defaults.title': 'Standaardwaarden per platform',
@@ -116,7 +116,7 @@ export const postingSetMessages = {
   'set.defaults.empty':
     'Geen standaardwaarden per platform. Elk account start vanuit het hoofdbericht.',
 
-  'set.error.nameTaken': 'Een andere Set in dit merk gebruikt die naam al.',
+  'set.error.nameTaken': 'Een andere Set in dit project gebruikt die naam al.',
   'set.error.archived': 'Deze Set is gearchiveerd. Herstel hem voordat je hem bewerkt.',
   'set.error.duplicateTarget': 'Dat account zit al in deze Set.',
   'set.error.duplicatePlatform': 'Deze Set heeft al standaardwaarden voor dat platform.',
@@ -124,17 +124,17 @@ export const postingSetMessages = {
   /* --------------------------------------------------- remembered targets */
   'targetMemory.setting.title': 'Accounts onthouden tussen berichten',
   'targetMemory.setting.body':
-    'Als dit aan staat, begint de opsteller elk nieuw bericht met de accounts die die persoon de vorige keer koos in dit merk. Het staat uit totdat je het aanzet.',
+    'Als dit aan staat, begint de opsteller elk nieuw bericht met de accounts die die persoon de vorige keer koos in dit project. Het staat uit totdat je het aanzet.',
   'targetMemory.setting.stored':
-    'Alleen de lijst met accounts wordt bewaard, en alleen voor de persoon die ze koos. Er wordt geen bijschrift, geen tijd, geen privacy-instelling en geen goedkeuringsstatus opgeslagen, en niemand anders in het merk kan jouw lijst zien.',
+    'Alleen de lijst met accounts wordt bewaard, en alleen voor de persoon die ze koos. Er wordt geen bijschrift, geen tijd, geen privacy-instelling en geen goedkeuringsstatus opgeslagen, en niemand anders in het project kan jouw lijst zien.',
   'targetMemory.setting.offNote': 'Zolang dit uit staat, wordt er helemaal niets opgeslagen.',
   'targetMemory.setting.turnOffWarning':
-    'Dit uitzetten verwijdert elke opgeslagen selectie in dit merk, voor iedereen.',
+    'Dit uitzetten verwijdert elke opgeslagen selectie in dit project, voor iedereen.',
   'targetMemory.setting.enabled': 'Aan',
   'targetMemory.setting.disabled': 'Uit',
   'targetMemory.setting.saved': 'Instelling opgeslagen.',
   'targetMemory.setting.cleared':
-    'Instelling opgeslagen. Opgeslagen selecties in dit merk zijn verwijderd.',
+    'Instelling opgeslagen. Opgeslagen selecties in dit project zijn verwijderd.',
 
   'targetMemory.composer.restored':
     '{count, plural, one {Gestart met # account van de vorige keer.} other {Gestart met # accounts van de vorige keer.}}',

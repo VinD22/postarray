@@ -32,17 +32,17 @@ export const settingsMessages = {
   'settings.role.owner.description': 'Faturalandırma, güvenlik ve silme dahil her şey.',
   'settings.role.admin.description':
     'Faturalandırma ve çalışma alanının silinmesi dışında her şey.',
-  'settings.role.manager.description': 'Markaları, bağlantıları, programları ve kuralları yönetin.',
+  'settings.role.manager.description': 'Projeleri, bağlantıları, programları ve kuralları yönetin.',
   'settings.role.editor.description': 'İçerik oluşturun ve düzenleyin, onay isteyin.',
   'settings.role.approver.description':
     'İçeriği onaylayın veya reddedin ve neyin onaylanacağını planlayın.',
   'settings.role.analyst.description': 'Analizleri ve makbuzları okuyun.',
   'settings.role.viewer.description': 'Salt okunur.',
-  'settings.role.scopeLabel': 'Markalar ve hesaplarla sınırlayın',
+  'settings.role.scopeLabel': 'Projeler ve hesaplarla sınırlayın',
   'settings.role.mfaRequired': 'Sahiplerin iki faktörlü kimlik doğrulama kullanması gerekir.',
 
-  'settings.projects.title': 'Markalar',
-  'settings.projects.add': 'Marka ekle',
+  'settings.projects.title': 'Projeler',
+  'settings.projects.add': 'Proje ekle',
   'settings.projects.voice': 'Ses',
   'settings.projects.audience': 'Seyirci',
   'settings.projects.approvedClaims': 'Onaylanmış hak talepleri',
@@ -72,7 +72,7 @@ export const settingsMessages = {
     'Bir Seti düzenlemek, halihazırda onaylanmış veya planlanmış gönderileri değiştirmez.',
   'settings.signatures.title': 'İmzalar',
   'settings.signatures.description':
-    "Markaya, platforma ve dile göre kapsamı belirlenen kapanış metni, hashtag'ler, bağlantılar veya açıklamalar.",
+    "Projeye, platforma ve dile göre kapsamı belirlenen kapanış metni, hashtag'ler, bağlantılar veya açıklamalar.",
   'settings.signatures.autoApply': 'Bağlam eşleştiğinde otomatik olarak ekle',
 
   'settings.localization.title': 'Yerelleştirme',
@@ -81,7 +81,7 @@ export const settingsMessages = {
     'Bu uygulamanın dili sizin için. Gönderilerinizin dilini değiştirmez.',
   'settings.localization.contentLocales': 'İçerik dilleri',
   'settings.localization.contentLocalesHelp':
-    'Yayınladığınız diller. Her marka, dillere göre kurallar ve sözlükler belirleyebilir.',
+    'Yayınladığınız diller. Her proje, dillere göre kurallar ve sözlükler belirleyebilir.',
   'settings.localization.marketLocales': 'İzleyici pazarları',
   'settings.localization.beta': 'Beta çevirisi',
   'settings.localization.betaHelp':

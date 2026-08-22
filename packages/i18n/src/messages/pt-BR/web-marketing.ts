@@ -152,7 +152,7 @@ export const webMarketingMessages = {
     'Cada gravação externa carrega uma chave de idempotência, portanto, uma falha do trabalhador após a plataforma aceitar uma publicação não cria uma segunda.',
   'web.home.pillars.adapt.title': 'Adapte em vez de duplicar',
   'web.home.pillars.adapt.body':
-    'Por variantes de plataforma que você pode substituir uma conta por vez, e transcriação em vez de tradução literal, com um glossário de marca e um revisor nomeado por idioma.',
+    'Variantes por plataforma que você pode substituir uma conta por vez, e transcriação em vez de tradução literal, com um glossário do projeto e um revisor nomeado por idioma.',
   'web.home.pillars.adapt.proof':
     'A interface está disponível em idiomas selecionados. A adaptação de conteúdo abrange 30 idiomas de conteúdo e cada um deles pode ser revisado antes de ser publicado.',
   'web.home.pillars.loop.title': 'Feche o ciclo',
@@ -297,7 +297,7 @@ export const webMarketingMessages = {
     'A versão master carrega a ideia. Cada conta obtém o comprimento, o corte, as configurações e o tom que a plataforma espera, e você pode ver todos eles lado a lado antes de confirmar.',
   'web.creators.job.languages.title': 'Publique em outro idioma sem adivinhar',
   'web.creators.job.languages.body':
-    'Transcreation mantém a intenção em vez das palavras, usa o glossário da sua marca e marca se um revisor nativo o leu. Nada é publicado em um idioma que você não possa garantir, a menos que você o diga.',
+    'A transcriação mantém a intenção em vez das palavras, usa o glossário do seu projeto e marca se um revisor nativo o leu. Nada é publicado em um idioma que você não possa garantir, a menos que você o diga.',
   'web.creators.job.rights.title': 'Mantenha seu registro de direitos com o arquivo',
   'web.creators.job.rights.body':
     'Media carrega de onde veio, quem detém os direitos e se foi criada com uma ferramenta generativa. As plataformas perguntam cada vez mais. Relay armazena sua resposta com o ativo em vez de perguntar novamente.',
@@ -322,7 +322,7 @@ export const webMarketingMessages = {
     'Cada publicação produz um recibo imutável com o ID da publicação externa e o histórico completo de tentativas. Quando um cliente pergunta se algo saiu às nove, a resposta tem um carimbo de data e hora e um identificador de plataforma anexados.',
   'web.agencies.job.roles.title': 'Funções que correspondem à forma como o trabalho é dividido',
   'web.agencies.job.roles.body':
-    'Proprietário, administrador, gerente, editor, aprovador, analista e visualizador, com escopo por marca e por conta. Membros da equipe ilimitados, pois a cobrança por assento faz com que as agências compartilhem logins e isso é um problema de segurança.',
+    'Proprietário, administrador, editor, aprovador, analista e visualizador, com escopo por projeto e por conta. Cada espaço de trabalho inclui o proprietário e até 5 colegas de equipe. Cada ação é atribuída à pessoa que a concluiu.',
   'web.agencies.limits.title': 'O limite, declarado claramente',
   'web.agencies.limits.body':
     'Um plano cobre 30 canais sociais ativos. Um canal é uma conexão de conta social, página, perfil, grupo ou publicação. Se precisar de mais de 30, diga-nos o que precisa e lhe daremos uma resposta direta, em vez de uma camada oculta.',
@@ -437,7 +437,7 @@ export const webMarketingMessages = {
     'Um back-end, quatro entradas. Cada seção documenta os mesmos casos de uso, portanto, um conceito que você aprende na API REST é o mesmo conceito no MCP e na CLI.',
   'web.docs.section.start.title': 'Primeiros passos',
   'web.docs.section.start.body':
-    'Autenticação, espaços de trabalho, marcas e sua primeira publicação publicada.',
+    'Autenticação, espaços de trabalho, projetos e sua primeira publicação.',
   'web.docs.section.api.title': 'API REST',
   'web.docs.section.api.body':
     'Recursos, paginação, idempotência, códigos de erro e limites de taxa.',

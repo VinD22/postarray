@@ -29,7 +29,7 @@ export const webSettingsMessages = {
     '세션, 2단계 인증, 자격 증명, 에이전트, 웹후크 및 앱 부여.',
   'settings.ui.section.data': '데이터 통제',
   'settings.ui.section.dataSummary':
-    '내보내기, 연결 취소, 브랜드 삭제, 콘텐츠 삭제 또는 계정 폐쇄.',
+    '내보내기, 연결 취소, 프로젝트 삭제, 콘텐츠 삭제 또는 계정 폐쇄.',
   'settings.ui.state.loading': '로드 중{section}',
   'settings.ui.state.errorTitle': '로드할 수 없습니다.{section}',
   'settings.ui.state.errorRetry': '다시 시도하세요',
@@ -72,8 +72,8 @@ export const webSettingsMessages = {
   'settings.ui.members.column.approvals': '승인',
   'settings.ui.members.column.lastActive': '마지막 활동',
   'settings.ui.members.column.actions': '행위',
-  'settings.ui.members.scopeAll': '모든 브랜드 및 계정',
-  'settings.ui.members.scopeLimited': '{count, plural, other {# 브랜드}}:{names}',
+  'settings.ui.members.scopeAll': '모든 프로젝트 및 계정',
+  'settings.ui.members.scopeLimited': '{count, plural, other {# 프로젝트}}:{names}',
   'settings.ui.members.approvals.canApprove': '승인 가능',
   'settings.ui.members.approvals.cannotApprove': '승인할 수 없음',
   'settings.ui.members.approvals.canApproveOwnProjects': '나열된 프로젝트에 대해 승인할 수 있음',
@@ -87,9 +87,9 @@ export const webSettingsMessages = {
   'settings.ui.members.inviteBody':
     '링크가 포함된 이메일을 받습니다. 초대는 7일 후에 만료되며 그 전에 취소할 수 있습니다.',
   'settings.ui.members.inviteRole': '역할',
-  'settings.ui.members.inviteScope': '일할 수 있는 브랜드',
-  'settings.ui.members.inviteScopeAll': '이 작업 공간의 모든 브랜드',
-  'settings.ui.members.inviteScopeSelected': '내가 선택한 브랜드만',
+  'settings.ui.members.inviteScope': '일할 수 있는 프로젝트',
+  'settings.ui.members.inviteScopeAll': '이 작업 공간의 모든 프로젝트',
+  'settings.ui.members.inviteScopeSelected': '내가 선택한 프로젝트만',
   'settings.ui.members.inviteApprovals': '승인요청 결정 가능',
   'settings.ui.members.inviteApprovalsHelp':
     '이미 검토가 포함된 역할에만 이 권한을 부여할 수 있습니다. 편집과는 별개입니다.',
@@ -99,9 +99,9 @@ export const webSettingsMessages = {
   'settings.ui.members.inviteResend': '초대장을 다시 보내세요',
   'settings.ui.members.emptyTitle': '당신은 여기 유일한 사람입니다',
   'settings.ui.members.emptyBody':
-    '결과를 작성, 승인 또는 읽는 사람들을 초대하세요. 각각은 역할과 브랜드 범위를 갖습니다.',
+    '결과를 작성, 승인 또는 읽는 사람들을 초대하세요. 각각은 역할과 프로젝트 범위를 갖습니다.',
   'settings.ui.members.emptyExample':
-    '일반적인 형태는 청구 소유자 한 명, 브랜드당 승인자 한 명, 초안을 작성하지만 게시하지는 않는 편집자입니다.',
+    '일반적인 형태는 청구 소유자 한 명, 프로젝트당 승인자 한 명, 초안을 작성하지만 게시하지는 않는 편집자입니다.',
   'settings.ui.members.roleReferenceTitle': '각 역할이 수행할 수 있는 작업',
   'settings.ui.members.roleReferenceCaption': '역할과 각 역할이 허용하는 작업',
   'settings.ui.members.roleColumn.role': '역할',
@@ -122,7 +122,7 @@ export const webSettingsMessages = {
   'settings.ui.members.removeConsequence.approvals':
     '대기 중인 승인 요청은 다른 승인자의 대기열로 돌아갑니다.',
   'settings.ui.projects.description':
-    '브랜드에는 주장할 수 있는 내용, 말하지 말아야 할 내용, 각 언어가 작성되는 방식 등 콘텐츠를 확인하는 규칙이 있습니다.',
+    '프로젝트에는 주장할 수 있는 내용, 말하지 말아야 할 내용, 각 언어가 작성되는 방식 등 콘텐츠를 확인하는 규칙이 있습니다.',
   'settings.ui.projects.listCaption': '이 작업공간의 프로젝트',
   'settings.ui.projects.column.project': '프로젝트',
   'settings.ui.projects.column.locales': '콘텐츠 언어',
@@ -131,9 +131,9 @@ export const webSettingsMessages = {
   'settings.ui.projects.accountCount': '{count, plural, other {#개의 계정}}',
   'settings.ui.projects.emptyTitle': '아직 프로젝트가 없습니다.',
   'settings.ui.projects.emptyBody':
-    '브랜드 그룹 계정, 승인 규칙 및 언어 규칙. 대부분의 팀은 하나부터 시작하여 고객이나 시장에 다른 규칙이 필요할 때 두 번째 규칙을 추가합니다.',
+    '프로젝트는 계정, 승인 규칙 및 언어 규칙을 묶습니다. 대부분의 팀은 하나로 시작하고, 고객이나 시장에 다른 규칙이 필요할 때 두 번째를 추가합니다.',
   'settings.ui.projects.emptyExample':
-    '예: 브랜드 "Acme EU", 영어 및 독일어 언어, 차단된 용어 "보장", Instagram에 대한 "유료 파트너십" 공개.',
+    '예: 프로젝트 "Acme EU", 영어 및 독일어 언어, 차단된 용어 "보장", Instagram에 대한 "유료 파트너십" 공개.',
   'settings.ui.projects.voiceHelp':
     '이 프로젝트의 소리. 재작성을 요청하거나 클레임을 확인할 때 사용됩니다.',
   'settings.ui.projects.audienceHelp': '시장별로 콘텐츠가 누구를 위한 것인지.',
@@ -299,7 +299,7 @@ export const webSettingsMessages = {
   'developer.ui.agents.emptyBody':
     '실행하는 각 자동화에 대해 하나씩 만듭니다. 별도의 계정을 사용하면 다른 계정을 중지하지 않고도 하나를 취소할 수 있습니다.',
   'developer.ui.agents.emptyExample':
-    '예: Acme EU 브랜드인 "콘텐츠 에이전트"는 오전 7시부터 오후 22시 사이에 하루 최대 6개의 게시물 초안을 작성하고 예약할 수 있으며 즉시 게시되지는 않습니다.',
+    '예: Acme EU 프로젝트인 "콘텐츠 에이전트"는 오전 7시부터 오후 22시 사이에 하루 최대 6개의 게시물 초안을 작성하고 예약할 수 있으며 즉시 게시되지는 않습니다.',
   'developer.ui.agents.step.identity': '이름과 목적',
   'developer.ui.agents.step.scope': '도달할 수 있는 것',
   'developer.ui.agents.step.limits': '제한',
@@ -502,8 +502,8 @@ export const webSettingsMessages = {
   'developer.ui.webhooks.eventGroup.publishing': '출판',
   'developer.ui.webhooks.eventGroup.automation': '자동화 및 피드',
   'developer.ui.webhooks.eventGroup.workspace': 'Workspace',
-  'developer.ui.webhooks.scopeTitle': '브랜드 및 계정',
-  'developer.ui.webhooks.scopeAll': '모든 브랜드와 계정',
+  'developer.ui.webhooks.scopeTitle': '프로젝트 및 계정',
+  'developer.ui.webhooks.scopeAll': '모든 프로젝트와 계정',
   'developer.ui.webhooks.scopeSelected': '내가 선택한 것들만',
   'developer.ui.webhooks.secretTitle': '서명 비밀',
   'developer.ui.webhooks.secretBody':

@@ -15,7 +15,7 @@ export const statusMessages = {
   'empty.analytics.noPermission':
     'Цей обліковий запис не має доступу до аналітики. Повторно підключіться, щоб додати його.',
   'empty.approvals.title': 'Тебе нічого не чекає',
-  'empty.approvals.body': 'Тут відображаються запити на схвалення для ваших брендів.',
+  'empty.approvals.body': 'Тут відображаються запити на схвалення для ваших проектів.',
   'empty.library.title': 'Ваша бібліотека порожня',
   'empty.library.body': 'Завантажте зображення та відео або імпортуйте їх із URL або API.',
   'empty.library.action': 'Завантажте медіа',

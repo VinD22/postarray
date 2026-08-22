@@ -17,7 +17,7 @@ export const webUseCaseMessages = {
     'Tatlong workflow na pinagbubuuan ng produktong ito: pagpapatakbo ng maraming kliyente sa isang lugar, pagpapaaproba ng trabaho bago ito ilabas, at pagdadala ng isang ideya sa maraming platform nang hindi ito isinusulat ulit.',
   'web.meta.useCase.clients.title': 'Pamamahala ng maraming kliyente',
   'web.meta.useCase.clients.description':
-    'Magkakahiwalay na project, magkakahiwalay na konektadong account, magkakahiwalay na pag-apruba, at magkakahiwalay na report, para sa mga team na nagpu-publish para sa ibang tao.',
+    'Magkakahiwalay na proyekto, magkakahiwalay na konektadong account, magkakahiwalay na pag-apruba, at magkakahiwalay na report, para sa mga team na nagpu-publish para sa ibang tao.',
   'web.meta.useCase.approvals.title': 'Mga workflow ng pag-apruba',
   'web.meta.useCase.approvals.description':
     'Paano nagiging aprubadong post ang isang draft: sino ang nagre-review nito, ano ang nagpapawalang-bisa sa isang pag-apruba, at bakit ang parehong panuntunan ang umiiral sa bawat surface.',
@@ -54,13 +54,13 @@ export const webUseCaseMessages = {
   'web.useCases.clients.problem':
     'Pinaghihiwalay ng karamihan sa mga team ang mga kliyente sa pamamagitan ng pag-iingat. Isang shared account ang may hawak ng bawat konektadong page, isang kalendaryo ang may hawak ng bawat iskedyul, at ang tanging humaharang sa isang draft ng kliyente at maling audience ay ang taong nakatingin sa screen alas-sais ng gabi. Kapag umalis ang isang tao sa team, umaalis din ang paghihiwalay kasama ng gawi nito.',
   'web.useCases.clients.approach1':
-    'Ang project ay ang unit ng paghihiwalay. Ang mga konektadong account, draft, queue, media, at resibo ay pag-aari ng isang project, at nakikita lang ng miyembro ang mga project na kinabibilangan niya.',
+    'Ang proyekto ay ang unit ng paghihiwalay. Ang mga konektadong account, draft, queue, media, at resibo ay pag-aari ng isang proyekto, at nakikita lang ng miyembro ang mga proyektong kinabibilangan niya.',
   'web.useCases.clients.approach2':
     'Ipinapatupad ang paghihiwalay nang tatlong beses: sa authentication, sa application service na nagpapahintulot sa aksyon, at sa database mismo sa pamamagitan ng row level security. Hindi kailanman itinuturing na pahintulot ang pagiging naka-sign in.',
   'web.useCases.clients.approach3':
     'Sinusunod ng reporting ang parehong hangganan, kaya ang isang report kada kliyente ang default na hugis sa halip na isang spreadsheet na iaayos ng isang tao nang manwal.',
   'web.useCases.clients.today':
-    'Ang mga project, ang project-scoped na membership, at ang mga row level security policy sa likod ng mga ito ay nagawa na at nasubok, kasama ang mga test na sumusubok mag-cross-project read at nagpapatunay na nabibigo ang mga ito. Sinusukat ang laki ng mga plano batay sa bilang ng project na kailangan ng isang team. Wala pang na-publish sa isang platform mula sa anumang project.',
+    'Ang mga proyekto, ang membership na naka-scope sa proyekto, at ang mga row level security policy sa likod ng mga ito ay nagawa na at nasubok, kasama ang mga test na sumusubok magbasa sa pagitan ng mga proyekto at nagpapatunay na nabibigo ang mga ito. Sinusukat ang laki ng mga plano batay sa bilang ng proyektong kailangan ng isang team. Wala pang na-publish sa isang platform mula sa anumang proyekto.',
 
   /* ---------------------------------------------------------------------- */
   /* Approval workflows                                                     */

@@ -103,4 +103,21 @@ export const calendarMessages = {
     'Les paramètres de confidentialité ou de divulgation ont été modifiés.',
   'approval.reapproval.reason.locale': 'La langue du contenu a changé.',
   'approval.expiresAt': 'Cette demande expire le {date}.',
+  'approval.content.title': 'Variantes par plateforme',
+  'approval.content.master': 'Brouillon principal',
+  'approval.content.language': 'Langue du contenu',
+  'approval.content.media': 'Médias',
+  'approval.content.mediaCount':
+    '{count, plural, =0 {Aucun fichier téléversé} one {# fichier téléversé} many {# fichiers téléversés} other {# fichiers téléversés}}',
+  'approval.content.destination': 'Destination',
+  'approval.content.privacy': 'Visibilité',
+  'approval.content.schedule': 'Heure de publication',
+  'approval.content.cost': 'Coût estimé de la plateforme',
+  'approval.content.costUnavailable': 'Indisponible',
+  'approval.changed.title': 'La publication a changé après cette demande',
+  'approval.changed.body':
+    'Cet écran affiche une version plus récente. Ne décidez pas de cette demande. Demandez à son auteur de la soumettre à nouveau.',
+  'approval.notFound.title': "Cette approbation n'est plus en attente",
+  'approval.notFound.body':
+    "Elle a peut-être déjà une décision, elle a peut-être expiré, ou elle n'est peut-être pas accessible à votre rôle.",
 } as const;

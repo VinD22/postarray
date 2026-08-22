@@ -114,7 +114,7 @@ export const webMarketingMessages = {
     '모든 외부 쓰기에는 멱등성 키가 있으므로 플랫폼이 게시물을 수락한 후 작업자 충돌이 발생해도 두 번째 게시물이 생성되지 않습니다.',
   'web.home.pillars.adapt.title': '복제보다는 적응',
   'web.home.pillars.adapt.body':
-    '한 번에 하나의 계정을 재정의할 수 있는 플랫폼별 변형과 브랜드 용어집 및 언어별 명명된 리뷰어를 통해 문자 그대로의 번역이 아닌 트랜스크리에이션이 가능합니다.',
+    '한 번에 하나의 계정을 재정의할 수 있는 플랫폼별 변형과 프로젝트 용어집 및 언어별 명명된 리뷰어를 통해 문자 그대로의 번역이 아닌 트랜스크리에이션이 가능합니다.',
   'web.home.pillars.adapt.proof':
     '인터페이스는 선택한 언어로 제공됩니다. 콘텐츠 각색은 30개 콘텐츠 언어를 다루며 게시 전에 모든 언어를 검토할 수 있습니다.',
   'web.home.pillars.loop.title': '루프를 닫으세요',
@@ -243,7 +243,7 @@ export const webMarketingMessages = {
     '마스터 버전에는 아이디어가 담겨 있습니다. 각 계정은 플랫폼이 기대하는 길이, 자르기, 설정 및 톤을 가져오며 커밋하기 전에 모든 계정을 나란히 볼 수 있습니다.',
   'web.creators.job.languages.title': '추측하지 않고 다른 언어로 게시',
   'web.creators.job.languages.body':
-    'Transcreation은 단어보다는 의도를 유지하고 브랜드 용어집을 사용하며 네이티브 리뷰어가 읽었는지 여부를 표시합니다. 귀하가 말하지 않는 한 귀하가 보증할 수 없는 언어로 출판되는 것은 없습니다.',
+    'Transcreation은 단어보다는 의도를 유지하고 프로젝트 용어집을 사용하며 네이티브 리뷰어가 읽었는지 여부를 표시합니다. 귀하가 말하지 않는 한 귀하가 보증할 수 없는 언어로 출판되는 것은 없습니다.',
   'web.creators.job.rights.title': '파일과 함께 귀하의 권리 기록을 보관하세요',
   'web.creators.job.rights.body':
     '미디어는 출처, 권리 보유자, 생성 도구를 사용하여 제작되었는지 여부를 전달합니다. 플랫폼은 점점 더 많은 것을 요구하고 있습니다. Relay은 사용자에게 다시 묻는 대신 답변을 자산과 함께 저장합니다.',
@@ -267,7 +267,7 @@ export const webMarketingMessages = {
     '모든 게시는 외부 게시물 ID와 전체 시도 기록이 포함된 변경 불가능한 영수증을 생성합니다. 클라이언트가 9시에 문제가 발생했는지 묻는 경우 답변에는 타임스탬프와 플랫폼 식별자가 첨부되어 있습니다.',
   'web.agencies.job.roles.title': '업무 분할 방식에 맞는 역할',
   'web.agencies.job.roles.body':
-    '소유자, 관리자, 관리자, 편집자, 승인자, 분석가 및 뷰어가 브랜드 및 계정별로 범위가 지정됩니다. 팀원 수는 무제한입니다. 좌석당 요금을 청구하면 대행사가 로그인을 공유하게 되고 이는 보안 문제가 되기 때문입니다.',
+    '소유자, 관리자, 관리자, 편집자, 승인자, 분석가 및 뷰어가 프로젝트 및 계정별로 범위가 지정됩니다. 팀원 수는 무제한입니다. 좌석당 요금을 청구하면 대행사가 로그인을 공유하게 되고 이는 보안 문제가 되기 때문입니다.',
   'web.agencies.limits.title': '명확하게 명시된 경계',
   'web.agencies.limits.body':
     '하나의 플랜에는 30개의 활성 소셜 채널이 포함됩니다. 채널은 하나의 소셜 계정, 페이지, 프로필, 그룹 또는 출판물 연결입니다. 30개 이상 필요한 경우 무엇이 필요한지 알려주시면 숨겨진 티어보다는 바로 답변해드리겠습니다.',
@@ -412,7 +412,7 @@ export const webMarketingMessages = {
   'web.docs.lede':
     '하나의 백엔드, 네 가지 방법. 각 섹션은 동일한 사용 사례를 문서화하므로 REST API에서 배우는 개념은 MCP와 CLI에서 동일한 개념입니다.',
   'web.docs.section.start.title': '시작하기',
-  'web.docs.section.start.body': '인증, 작업 공간, 브랜드 및 첫 번째 게시 게시물.',
+  'web.docs.section.start.body': '인증, 작업 공간, 프로젝트 및 첫 번째 게시 게시물.',
   'web.docs.section.api.title': 'REST API',
   'web.docs.section.api.body': '리소스, 페이지 매김, 멱등성, 오류 코드 및 속도 제한.',
   'web.docs.section.mcp.title': 'MCP 서버',

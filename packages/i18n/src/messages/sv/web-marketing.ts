@@ -157,7 +157,7 @@ export const webMarketingMessages = {
     'Varje extern skrivning har en idempotensnyckel, så en arbetarkrasch efter att plattformen accepterat ett inlägg skapar inte en andra.',
   'web.home.pillars.adapt.title': 'Anpassa snarare än duplicera',
   'web.home.pillars.adapt.body':
-    'Per plattformsvarianter som du kan åsidosätta ett konto i taget, och transcreation snarare än bokstavlig översättning, med en varumärkesordlista och en namngiven granskare per språk.',
+    'Per plattformsvarianter som du kan åsidosätta ett konto i taget, och transcreation snarare än bokstavlig översättning, med en projektordlista och en namngiven granskare per språk.',
   'web.home.pillars.adapt.proof':
     'Gränssnittet är tillgängligt på utvalda språk. Innehållsanpassning täcker 30 innehållsspråk och vart och ett av dem kan granskas innan det publiceras.',
   'web.home.pillars.loop.title': 'Stäng slingan',
@@ -320,7 +320,7 @@ export const webMarketingMessages = {
     'Masterversionen bär idén. Varje konto får längden, skörden, inställningarna och tonen som plattformen förväntar sig, och du kan se dem alla sida vid sida innan du förbinder dig.',
   'web.creators.job.languages.title': 'Publicera på ett annat språk utan att gissa',
   'web.creators.job.languages.body':
-    'Transcreation behåller avsikten snarare än orden, använder din varumärkesordlista och markerar om en inbyggd recensent har läst den. Ingenting publiceras på ett språk du inte kan gå i god för om du inte säger det.',
+    'Transcreation behåller avsikten snarare än orden, använder din projektordlista och markerar om en inbyggd recensent har läst den. Ingenting publiceras på ett språk du inte kan gå i god för om du inte säger det.',
   'web.creators.job.rights.title': 'Spara dina rättigheter tillsammans med filen',
   'web.creators.job.rights.body':
     'Media bär varifrån det kommer, vem som har rättigheterna och om det skapades med ett generativt verktyg. Plattformar frågar alltmer. Relay lagrar ditt svar med tillgången istället för att fråga dig igen.',
@@ -345,7 +345,7 @@ export const webMarketingMessages = {
     'Varje publikation producerar ett oföränderligt kvitto med det externa inläggets ID och hela försökshistoriken. När en klient frågar om något gick ut vid nio, har svaret en tidsstämpel och en plattformsidentifierare bifogade.',
   'web.agencies.job.roles.title': 'Roller som matchar hur arbetet är uppdelat',
   'web.agencies.job.roles.body':
-    'Ägare, administratör, chef, redaktör, godkännare, analytiker och tittare, omfattning per varumärke och per konto. Obegränsat antal teammedlemmar, eftersom laddning per plats gör att byråer delar inloggningar och det är ett säkerhetsproblem.',
+    'Ägare, administratör, chef, redaktör, godkännare, analytiker och tittare, omfattning per projekt och per konto. Obegränsat antal teammedlemmar, eftersom laddning per plats gör att byråer delar inloggningar och det är ett säkerhetsproblem.',
   'web.agencies.limits.title': 'Gränsen, klart och tydligt',
   'web.agencies.limits.body':
     'En plan omfattar 30 aktiva sociala kanaler. En kanal är ett socialt konto, sida, profil, grupp eller publikationsanslutning. Om du behöver fler än 30, berätta vad du behöver så ger vi dig ett rakt svar snarare än en dold nivå.',
@@ -523,7 +523,7 @@ export const webMarketingMessages = {
     'En backend, fyra vägar in. Varje avsnitt dokumenterar samma användningsfall, så ett koncept du lär dig i REST API är samma koncept i MCP och i CLI.',
   'web.docs.section.start.title': 'Komma igång',
   'web.docs.section.start.body':
-    'Autentisering, arbetsytor, varumärken och ditt första publicerade inlägg.',
+    'Autentisering, arbetsytor, projekt och ditt första publicerade inlägg.',
   'web.docs.section.api.title': 'REST API',
   'web.docs.section.api.body': 'Resurser, paginering, idempotens, felkoder och hastighetsgränser.',
   'web.docs.section.mcp.title': 'MCP-server',

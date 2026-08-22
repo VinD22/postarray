@@ -206,4 +206,15 @@ export const errorMessages = {
   'error.reference': 'Référence {correlationId}',
   'error.reportToSupport': 'Envoyez ceci au support',
   'error.contentPreserved': "Votre contenu est préservé. Rien n'a été publié.",
+  'error.project_limit_reached.message':
+    'Cet espace de travail utilise déjà ses {limit} projets actifs.',
+  'error.project_limit_reached.action':
+    "Archivez un projet inactif ou modifiez le quota de projets de l'espace de travail.",
+  'error.project_has_connections.message':
+    'Ce projet a encore {connected, plural, one {# canal connecté} many {# canaux connectés} other {# canaux connectés}}.',
+  'error.project_has_connections.action':
+    "Déconnectez tous les canaux de ce projet avant de l'archiver.",
+  'error.project_last_active.message':
+    'Un espace de travail doit conserver au moins un projet actif.',
+  'error.project_last_active.action': "Créez un autre projet avant d'archiver celui-ci.",
 } as const;

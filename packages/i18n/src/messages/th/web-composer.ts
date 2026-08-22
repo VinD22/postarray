@@ -183,7 +183,7 @@ export const webComposerMessages = {
   'composerWeb.signature.scope': 'สำหรับ {project} บน {provider} ใน {language}',
   'composerWeb.signature.previewHeading': 'กระทู้จะจบยังไง.',
   'composerWeb.signature.notMatching':
-    'ลายเซ็นนี้จำกัดขอบเขตไว้ที่แบรนด์ แพลตฟอร์ม หรือภาษาอื่น ดังนั้นจึงไม่มีการนำเสนอที่นี่',
+    'ลายเซ็นนี้จำกัดขอบเขตไว้ที่โปรเจกต์ แพลตฟอร์ม หรือภาษาอื่น ดังนั้นจึงไม่มีการนำเสนอที่นี่',
   'composerWeb.assist.menuLabel': 'ช่วยด้วยข้อความนี้',
   'composerWeb.assist.unavailableTitle': 'ไม่ได้กำหนดค่าความช่วยเหลือทางข้อความ',
   'composerWeb.assist.unavailableBody':
@@ -292,7 +292,7 @@ export const webComposerMessages = {
   'mediaLib.loading': 'กำลังโหลดไลบรารีสื่อของคุณ',
   'mediaLib.permission.title': 'คุณไม่เห็นไลบรารีพื้นที่ทำงานนี้',
   'mediaLib.permission.body':
-    'การรับชมสื่อต้องมีบทบาทเป็นผู้ชมหรือสูงกว่าสำหรับแบรนด์นี้ เจ้าของหรือผู้ดูแลระบบสามารถให้สิทธิ์ได้',
+    'การรับชมสื่อต้องมีบทบาทเป็นผู้ชมหรือสูงกว่าสำหรับโปรเจกต์นี้ เจ้าของหรือผู้ดูแลระบบสามารถให้สิทธิ์ได้',
   'mediaLib.upload.heading': 'เพิ่มสื่อ',
   'mediaLib.upload.browse': 'เลือกไฟล์',
   'mediaLib.upload.dropHint':

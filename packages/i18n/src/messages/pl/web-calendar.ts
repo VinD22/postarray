@@ -86,7 +86,7 @@ export const webCalendarMessages = {
   'web.calendar.allDayHeading': 'Nie ma jeszcze dokładnego czasu',
 
   'web.calendar.filter.group': 'Grupa klientów',
-  'web.calendar.filter.anyProject': 'Dowolna marka',
+  'web.calendar.filter.anyProject': 'Dowolny projekt',
   'web.calendar.filter.anyAccount': 'Dowolne konto',
   'web.calendar.filter.anyPlatform': 'Dowolna platforma',
   'web.calendar.filter.anyStatus': 'Dowolny stan',
@@ -201,7 +201,7 @@ export const webCalendarMessages = {
   'web.calendar.permission.requirementsLabel': 'Wymagany zakres',
   'web.calendar.permission.title': 'Nie możesz zobaczyć tego kalendarza',
   'web.calendar.permission.body':
-    'Dostęp do Kalendarza jest przyznawany dla każdej marki. Twoje konto nie znajduje się w markach w tym widoku.',
+    'Dostęp do Kalendarza jest przyznawany dla każdego projektu. Twoje konto nie znajduje się w projektach w tym widoku.',
 
   /* ---------------------------------------------------------------------
    * Post job and publication receipt
@@ -366,10 +366,10 @@ export const webCalendarMessages = {
     'Podłączenie konta nie powoduje żadnej publikacji. Każdy post nadal jest zgodny z tymi zasadami zatwierdzania przestrzeni roboczej.',
   'web.connection.projectScope.title': 'Kanały dla {project}',
   'web.connection.projectScope.body':
-    'Nowe kanały łączą się z tą marką. Przełącz markę na górnym pasku, aby zarządzać innym zestawem.',
-  'web.connection.projectMissing.title': 'Utwórz markę przed połączeniem kanału',
+    'Nowe kanały łączą się z tym projektem. Przełącz projekt na górnym pasku, aby zarządzać innym zestawem.',
+  'web.connection.projectMissing.title': 'Utwórz projekt przed połączeniem kanału',
   'web.connection.projectMissing.body':
-    'Marki utrzymują oddzielnie kanały, media, szkice i harmonogramy różnych produktów lub klientów.',
+    'Projekty utrzymują oddzielnie kanały, media, szkice i harmonogramy różnych produktów lub klientów.',
 
   'web.connection.requirement.instagram':
     'Publikowanie na Instagramie wymaga konta profesjonalnego, co oznacza konto firmowe lub twórcy połączone ze stroną na Facebooku.',
@@ -447,7 +447,7 @@ export const webCalendarMessages = {
     'Grupa filtruje kalendarz i statystyki. Przeniesienie konta powoduje zachowanie wszystkich wpisów, potwierdzeń i danych, które już zawiera.',
   'web.connection.group.empty.title': 'Nie ma jeszcze grup klientów',
   'web.connection.group.empty.body':
-    'Grupa to klient lub marka. Grupuj konta, aby filtrować kalendarz i statystyki według klientów.',
+    'Grupa to klient lub projekt. Grupuj konta, aby filtrować kalendarz i statystyki według klientów.',
 
   'web.connection.incident.title': 'To konto wymaga uwagi',
   'web.connection.incident.remediationHeading': 'Co robić',

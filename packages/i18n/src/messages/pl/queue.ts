@@ -9,7 +9,7 @@
 export const queueMessages = {
   'queue.title': 'Kolejka publikacji',
   'queue.subtitle':
-    'Kiedy ta marka może publikować i w jakich odstępach. Nic nie zostaje opublikowane, dopóki ktoś nie zaakceptuje godziny.',
+    'Kiedy ten projekt może publikować i w jakich odstępach. Nic nie zostaje opublikowane, dopóki ktoś nie zaakceptuje godziny.',
 
   'queue.rules.heading': 'Reguły kolejki',
   'queue.rules.empty':
@@ -42,7 +42,7 @@ export const queueMessages = {
 
   'queue.windows.heading': 'Okna tygodniowe',
   'queue.windows.help':
-    'Wybierz lokalne godziny, w których ta marka może publikować. Użyj pól dnia i godziny albo przycisków na siatce.',
+    'Wybierz lokalne godziny, w których ten projekt może publikować. Użyj pól dnia i godziny albo przycisków na siatce.',
   'queue.windows.empty': 'Brak jeszcze okien. Reguła bez okna nigdy nie może zaproponować terminu.',
   'queue.windows.add': 'Dodaj okno',
   'queue.windows.remove': 'Usuń okno',
@@ -63,7 +63,7 @@ export const queueMessages = {
 
   'queue.blackouts.heading': 'Daty wykluczeń',
   'queue.blackouts.help':
-    'Daty, w które ta marka nie będzie publikować, odczytywane w strefie czasowej reguły.',
+    'Daty, w które ten projekt nie będzie publikować, odczytywane w strefie czasowej reguły.',
   'queue.blackouts.empty': 'Brak dat wykluczeń.',
   'queue.blackouts.add': 'Dodaj wykluczenie',
   'queue.blackouts.remove': 'Usuń wykluczenie',
@@ -90,7 +90,7 @@ export const queueMessages = {
   'queue.slot.notAutomatic': 'Nic nie zostanie zaplanowane, dopóki nie wybierzesz tego terminu.',
 
   'queue.reason.noRulesConfigured':
-    'Ta marka nie ma skonfigurowanych reguł kolejki, więc nie zastosowano żadnego okna.',
+    'Ten projekt nie ma skonfigurowanych reguł kolejki, więc nie zastosowano żadnego okna.',
   'queue.reason.fallbackFirstFreeHour': 'Zamiast tego użyto pierwszej wolnej godziny od teraz.',
   'queue.reason.matchedRule': 'Reguła {name} wybrała ten termin, w strefie {zone}.',
   'queue.reason.matchedWindow': 'Mieści się w oknie od {start} do {end} w strefie {zone}.',

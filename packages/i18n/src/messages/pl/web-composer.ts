@@ -223,7 +223,7 @@ export const webComposerMessages = {
   'composerWeb.signature.scope': 'Dla {project} na {provider} w {language}',
   'composerWeb.signature.previewHeading': 'Jak kończy się post',
   'composerWeb.signature.notMatching':
-    'Ten podpis jest ograniczony do innej marki, platformy lub języka, więc nie jest tutaj oferowany.',
+    'Ten podpis jest ograniczony do innego projektu, platformy lub języka, więc nie jest tutaj oferowany.',
 
   // --------------------------------------------------------------- assist
   'composerWeb.assist.menuLabel': 'Pomóż z tym tekstem',
@@ -343,7 +343,7 @@ export const webComposerMessages = {
   'mediaLib.loading': 'Ładowanie biblioteki multimediów',
   'mediaLib.permission.title': 'Nie widzisz tej biblioteki obszaru roboczego',
   'mediaLib.permission.body':
-    'Oglądanie multimediów wymaga w przypadku tej marki roli widza lub wyższej. Może to przyznać właściciel lub administrator.',
+    'Oglądanie multimediów wymaga w przypadku tego projektu roli widza lub wyższej. Może to przyznać właściciel lub administrator.',
 
   'mediaLib.upload.heading': 'Dodaj multimedia',
   'mediaLib.upload.browse': 'Wybierz pliki',

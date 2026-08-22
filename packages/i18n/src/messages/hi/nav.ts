@@ -64,7 +64,7 @@ export const navMessages = {
 
   'shell.workspace.label': 'ZZZप्रोटेक्टेड10ZZZ',
   'shell.workspace.current': 'वर्तमान कार्यक्षेत्र: {name}',
-  'shell.project.all': 'सभी ब्रांड',
+  'shell.project.all': 'सभी परियोजनाएं',
   'shell.timeZone.label': 'टाइम्स में दिखाया गया है {timeZone}',
   'shell.notifications.count':
     '{count, plural, =0 {कोई नई सूचना नहीं} one {# नई अधिसूचना} other {# नई सूचनाएं}}',

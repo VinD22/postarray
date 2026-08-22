@@ -17,7 +17,7 @@ export const calendarMessages = withHebrewPluralForms({
   'calendar.slotCount': '{count, plural, =0 {שום דבר לא מתוזמן} one {# post} other {# פוסטים}}',
   'calendar.slotOverflow': '{count, plural, one {# עוד} other {# עוד}}',
   'calendar.newPostAt': 'פוסט חדש ב-{time}',
-  'calendar.filter.project': 'מותג',
+  'calendar.filter.project': 'פרויקט',
   'calendar.filter.account': 'חשבון',
   'calendar.filter.platform': 'פלטפורמה',
   'calendar.filter.status': 'סטטוס',

@@ -160,7 +160,7 @@ export const webMarketingMessages = {
     'Ang bawat panlabas na pagsusulat ay may dalang idempotency key, kaya ang isang manggagawa ay nag-crash pagkatapos na tanggapin ng platform ang isang post ay hindi lumikha ng pangalawa.',
   'web.home.pillars.adapt.title': 'Ibagay sa halip na duplicate',
   'web.home.pillars.adapt.body':
-    'Bawat variant ng platform na maaari mong i-override ang isang account nang paisa-isa, at transcreation sa halip na literal na pagsasalin, na may glossary ng project at may pangalang tagasuri sa bawat wika.',
+    'Bawat variant ng platform na maaari mong i-override ang isang account nang paisa-isa, at transcreation sa halip na literal na pagsasalin, na may glossary ng proyekto at may pangalang tagasuri sa bawat wika.',
   'web.home.pillars.adapt.proof':
     'Ang interface ay magagamit sa mga piling wika. Sinasaklaw ng adaptasyon ng nilalaman ang 30 wika ng nilalaman at bawat isa sa mga ito ay masusuri bago ito mag-publish.',
   'web.home.pillars.loop.title': 'Isara ang loop',
@@ -324,7 +324,7 @@ export const webMarketingMessages = {
     'Ang master na bersyon ay nagdadala ng ideya. Nakukuha ng bawat account ang haba, ang crop, ang mga setting at ang tono na inaasahan ng platform, at makikita mo silang lahat nang magkatabi bago ka gumawa.',
   'web.creators.job.languages.title': 'Mag-publish sa ibang wika nang hindi nanghuhula',
   'web.creators.job.languages.body':
-    'Pinapanatili ng transcreation ang layunin sa halip na ang mga salita, ginagamit ang glossary ng iyong project, at minarkahan kung nabasa ito ng isang katutubong tagasuri. Walang naglalathala sa wikang hindi mo mapapatunayan maliban kung sasabihin mo ito.',
+    'Pinapanatili ng transcreation ang layunin sa halip na ang mga salita, ginagamit ang glossary ng iyong proyekto, at minarkahan kung nabasa ito ng isang katutubong tagasuri. Walang naglalathala sa wikang hindi mo mapapatunayan maliban kung sasabihin mo ito.',
   'web.creators.job.rights.title': 'Panatilihin ang iyong rekord ng mga karapatan kasama ang file',
   'web.creators.job.rights.body':
     'Dinadala ng media kung saan ito nanggaling, kung sino ang may hawak ng mga karapatan at kung ito ay nilikha gamit ang isang generative tool. Ang mga platform ay lalong nagtatanong. Iniimbak ng Relay ang iyong sagot kasama ng asset sa halip na tanungin ka muli.',
@@ -349,7 +349,7 @@ export const webMarketingMessages = {
     'Ang bawat publikasyon ay gumagawa ng hindi nababagong resibo kasama ang panlabas na post ID at ang buong kasaysayan ng pagsubok. Kapag nagtanong ang isang kliyente kung may lumabas sa alas-nuwebe, ang sagot ay may timestamp at isang platform identifier na naka-attach.',
   'web.agencies.job.roles.title': 'Mga tungkulin na tumutugma sa kung paano nahahati ang gawain',
   'web.agencies.job.roles.body':
-    'May-ari, admin, manager, editor, approver, analyst at viewer, na saklaw sa bawat project at bawat account. Walang limitasyong mga miyembro ng koponan, dahil ang pagsingil sa bawat upuan ay ginagawang magbahagi ang mga ahensya ng mga login at iyon ay isang problema sa seguridad.',
+    'May-ari, admin, manager, editor, approver, analyst at viewer, na saklaw sa bawat proyekto at bawat account. Walang limitasyong mga miyembro ng koponan, dahil ang pagsingil sa bawat upuan ay ginagawang magbahagi ang mga ahensya ng mga login at iyon ay isang problema sa seguridad.',
   'web.agencies.limits.title': 'Ang hangganan, malinaw na nakasaad',
   'web.agencies.limits.body':
     'Sinasaklaw ng isang plano ang 30 aktibong social channel. Ang channel ay isang social account, Page, profile, grupo o koneksyon sa publikasyon. Kung kailangan mo ng higit sa 30, sabihin sa amin kung ano ang kailangan mo at bibigyan ka namin ng isang tuwid na sagot sa halip na isang nakatagong antas.',
@@ -538,7 +538,7 @@ export const webMarketingMessages = {
     'Isang backend, apat na paraan sa loob. Ang bawat seksyon ay nagdodokumento ng parehong mga kaso ng paggamit, kaya ang isang konsepto na natutunan mo sa REST API ay ang parehong konsepto sa MCP at sa CLI.',
   'web.docs.section.start.title': 'Pagsisimula',
   'web.docs.section.start.body':
-    'Pagpapatotoo, mga workspace, project, at ang iyong unang na-publish na post.',
+    'Pagpapatotoo, mga workspace, proyekto, at ang iyong unang na-publish na post.',
   'web.docs.section.api.title': 'REST API',
   'web.docs.section.api.body':
     'Mga mapagkukunan, pagination, idempotency, error code at mga limitasyon sa rate.',

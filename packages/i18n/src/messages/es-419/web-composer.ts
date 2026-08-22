@@ -189,7 +189,7 @@ export const webComposerMessages = {
   'composerWeb.signature.scope': 'Para {project}en {provider}en {language}',
   'composerWeb.signature.previewHeading': 'Como termina el post',
   'composerWeb.signature.notMatching':
-    'Esta firma está dirigida a una marca, plataforma o idioma diferente, por lo que no se ofrece aquí.',
+    'Esta firma está dirigida a un proyecto, plataforma o idioma diferente, por lo que no se ofrece aquí.',
   'composerWeb.assist.menuLabel': 'Ayuda con este texto',
   'composerWeb.assist.unavailableTitle': 'La asistencia de texto no está configurada',
   'composerWeb.assist.unavailableBody':
@@ -296,7 +296,7 @@ export const webComposerMessages = {
   'mediaLib.loading': 'Cargando tu biblioteca multimedia',
   'mediaLib.permission.title': 'No puedes ver esta biblioteca de espacio de trabajo',
   'mediaLib.permission.body':
-    'La visualización de medios necesita el rol de espectador o superior en esta marca. Un propietario o administrador puede otorgarlo.',
+    'La visualización de medios necesita el rol de espectador o superior en este proyecto. Un propietario o administrador puede otorgarlo.',
   'mediaLib.upload.heading': 'Agregar medios',
   'mediaLib.upload.browse': 'Elige archivos',
   'mediaLib.upload.dropHint':

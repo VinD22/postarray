@@ -63,7 +63,7 @@ export const connectionMessages = {
 
   'connection.group.title': 'Групи клієнтів',
   'connection.group.description':
-    'Групуйте облікові записи за клієнтом або брендом, щоб фільтрувати кожен екран.',
+    'Групуйте облікові записи за клієнтом або проектом, щоб фільтрувати кожен екран.',
   'connection.group.assign': 'Перейти до групи',
   'connection.group.none': 'Розгрупований',
   'connection.group.moveNote':

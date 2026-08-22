@@ -70,7 +70,7 @@ export const postingSetMessages = {
   'set.archivedToast': 'Na-archive ang Set. Hindi nagbabago ang mga post na nagawa na mula rito.',
 
   'set.field.name': 'Pangalan',
-  'set.field.nameHint': 'Ang hahanapin mo sa picker. Isa bawat project.',
+  'set.field.nameHint': 'Ang hahanapin mo sa picker. Isa bawat proyekto.',
   'set.field.description': 'Deskripsyon',
   'set.field.descriptionHint': 'Opsyonal. Para saan ang Set na ito.',
   'set.field.targets': 'Mga account',
@@ -92,13 +92,13 @@ export const postingSetMessages = {
 
   'set.slot.next_free_slot': 'Susunod na libreng slot mula sa queue',
   'set.slot.next_free_slotHint':
-    'Ginagamit ang mga panuntunan ng queue ng project na ito para mag-alok ng oras. Nag-aalok ito; ikaw ang tatanggap.',
+    'Ginagamit ang mga panuntunan ng queue ng proyektong ito para mag-alok ng oras. Nag-aalok ito; ikaw ang tatanggap.',
   'set.slot.pick_time': 'Patanungin mo ako ng oras',
   'set.slot.pick_timeHint': 'Iiwanang blangko ng pag-apply sa Set ang oras para pumili ka.',
   'set.slot.draft_only': 'Panatilihin itong draft lang',
   'set.slot.draft_onlyHint': 'Hindi ganap na ginagalaw ng pag-apply sa Set ang iskedyul.',
   'set.slot.noRules':
-    'Wala pang panuntunan ng queue ang project na ito, kaya ia-alok ng queue ang unang libreng oras at sasabihin ito.',
+    'Wala pang panuntunan ng queue ang proyektong ito, kaya ia-alok ng queue ang unang libreng oras at sasabihin ito.',
   'set.slot.rulesLink': 'Mga panuntunan ng queue',
 
   'set.defaults.title': 'Mga default kada platform',
@@ -116,7 +116,7 @@ export const postingSetMessages = {
   'set.defaults.empty':
     'Walang default kada platform. Nagsisimula ang bawat account mula sa pangunahing post.',
 
-  'set.error.nameTaken': 'May ibang Set na sa project na ito ang gumagamit na ng pangalang iyon.',
+  'set.error.nameTaken': 'May ibang Set na sa proyektong ito ang gumagamit na ng pangalang iyon.',
   'set.error.archived': 'Naka-archive na ang Set na ito. Ibalik ito bago i-edit.',
   'set.error.duplicateTarget': 'Nasa Set na ito na ang account na iyon.',
   'set.error.duplicatePlatform': 'May default na ang Set na ito para sa platform na iyon.',
@@ -124,17 +124,17 @@ export const postingSetMessages = {
   /* --------------------------------------------------- remembered targets */
   'targetMemory.setting.title': 'Alalahanin ang mga account sa pagitan ng mga post',
   'targetMemory.setting.body':
-    'Kapag naka-on ito, sinisimulan ng composer ang bawat bagong post gamit ang mga account na pinili ng taong iyon huling beses sa project na ito. Naka-off ito maliban kung i-on mo ito.',
+    'Kapag naka-on ito, sinisimulan ng composer ang bawat bagong post gamit ang mga account na pinili ng taong iyon huling beses sa proyektong ito. Naka-off ito maliban kung i-on mo ito.',
   'targetMemory.setting.stored':
-    'Ang listahan lang ng mga account ang naitatago, at para lang sa taong pumili sa mga ito. Walang caption, oras, privacy setting, o approval state na naitatago, at walang ibang tao sa project ang makakakita ng listahan mo.',
+    'Ang listahan lang ng mga account ang naitatago, at para lang sa taong pumili sa mga ito. Walang caption, oras, privacy setting, o approval state na naitatago, at walang ibang tao sa proyekto ang makakakita ng listahan mo.',
   'targetMemory.setting.offNote': 'Habang naka-off ito, wala talagang naitatago.',
   'targetMemory.setting.turnOffWarning':
-    'Ang pag-off nito ay magbubura ng bawat naka-save na seleksyon sa project na ito, para sa lahat.',
+    'Ang pag-off nito ay magbubura ng bawat naka-save na seleksyon sa proyektong ito, para sa lahat.',
   'targetMemory.setting.enabled': 'Naka-on',
   'targetMemory.setting.disabled': 'Naka-off',
   'targetMemory.setting.saved': 'Na-save ang setting.',
   'targetMemory.setting.cleared':
-    'Na-save ang setting. Nabura ang mga naka-save na seleksyon sa project na ito.',
+    'Na-save ang setting. Nabura ang mga naka-save na seleksyon sa proyektong ito.',
 
   'targetMemory.composer.restored':
     '{count, plural, one {Nagsimula gamit ang # account mula sa huling beses.} other {Nagsimula gamit ang # na account mula sa huling beses.}}',

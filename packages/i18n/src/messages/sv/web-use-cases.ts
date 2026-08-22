@@ -17,7 +17,7 @@ export const webUseCaseMessages = {
     'Tre arbetsflöden som denna produkt byggs kring: att driva flera kunder på ett ställe, få arbete godkänt innan det går ut, och ta en idé till flera plattformar utan att skriva om den.',
   'web.meta.useCase.clients.title': 'Hantera flera kunder',
   'web.meta.useCase.clients.description':
-    'Separata varumärken, separata anslutna konton, separata godkännanden och separat rapportering, för team som publicerar å andra personers vägnar.',
+    'Separata projekt, separata anslutna konton, separata godkännanden och separat rapportering, för team som publicerar å andra personers vägnar.',
   'web.meta.useCase.approvals.title': 'Godkännandeflöden',
   'web.meta.useCase.approvals.description':
     'Hur ett utkast blir ett godkänt inlägg: vem granskar det, vad ogiltigförklarar ett godkännande, och varför samma regel gäller på varje yta.',
@@ -53,13 +53,13 @@ export const webUseCaseMessages = {
   'web.useCases.clients.problem':
     'De flesta team separerar kunder genom att vara försiktiga. Ett delat konto rymmer varje ansluten sida, en kalender rymmer varje schema, och det enda som står mellan en kunds utkast och fel publik är personen som tittar på skärmen klockan sex på kvällen. När någon lämnar teamet, försvinner separationen med vanan.',
   'web.useCases.clients.approach1':
-    'Ett varumärke är separationsenheten. Anslutna konton, utkast, köer, media och kvitton hör till ett varumärke, och en medlem ser bara de varumärken de har lagts till i.',
+    'Ett projekt är separationsenheten. Anslutna konton, utkast, köer, media och kvitton hör till ett projekt, och en medlem ser bara de projekt de har lagts till i.',
   'web.useCases.clients.approach2':
     'Separationen upprätthålls tre gånger: vid autentisering, i applikationstjänsten som auktoriserar åtgärden, och i själva databasen genom radnivåsäkerhet. Att vara inloggad behandlas aldrig som behörighet.',
   'web.useCases.clients.approach3':
     'Rapportering följer samma gräns, så en rapport per kund är standardformen snarare än ett kalkylblad någon sätter ihop för hand.',
   'web.useCases.clients.today':
-    'Varumärken, varumärkesbegränsat medlemskap och säkerhetspolicyerna på radnivå bakom dem är byggda och testade, inklusive tester som försöker läsa över varumärken och verifierar att de misslyckas. Planer dimensioneras efter hur många varumärken ett team behöver. Inget publiceras än till en plattform från något varumärke.',
+    'Projekt, projektbegränsat medlemskap och säkerhetspolicyerna på radnivå bakom dem är byggda och testade, inklusive tester som försöker läsa över projekt och verifierar att de misslyckas. Planer dimensioneras efter hur många projekt ett team behöver. Inget publiceras än till en plattform från något projekt.',
 
   /* ---------------------------------------------------------------------- */
   /* Approval workflows                                                     */

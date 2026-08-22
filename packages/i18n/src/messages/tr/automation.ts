@@ -31,7 +31,7 @@ export const automationMessages = {
   'automation.trigger.recurring': 'yinelenen bir program tetikleniyor',
 
   'automation.condition.label': 'Koşullar',
-  'automation.condition.project': 'marka {project}',
+  'automation.condition.project': 'proje {project}',
   'automation.condition.campaign': 'kampanya {campaign}',
   'automation.condition.account': 'hesap {account}',
   'automation.condition.platform': 'platform {platform}',
@@ -129,7 +129,7 @@ export const automationMessages = {
   'automation.webhooks.urlLabel': "Uç nokta URL'si",
   'automation.webhooks.eventsLabel': 'Etkinlikler',
   'automation.webhooks.allEvents': 'Tüm etkinlikler',
-  'automation.webhooks.scopeLabel': 'Markalar ve hesaplar',
+  'automation.webhooks.scopeLabel': 'Projeler ve hesaplar',
   'automation.webhooks.allAccounts': 'Tüm hesaplar',
   'automation.webhooks.secret': 'Gizli imza',
   'automation.webhooks.secretShownOnce': 'Bu sır bir kez gösterilir. Şimdi saklayın.',

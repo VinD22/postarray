@@ -218,7 +218,7 @@ export const webComposerMessages = {
   'composerWeb.signature.scope': "{language}'de {provider}'de {project} için",
   'composerWeb.signature.previewHeading': 'Gönderi nasıl bitiyor',
   'composerWeb.signature.notMatching':
-    'Bu imza farklı bir marka, platform veya dile yönelik olduğundan burada sunulmamaktadır.',
+    'Bu imza farklı bir proje, platform veya dile yönelik olduğundan burada sunulmamaktadır.',
 
   // --------------------------------------------------------------- assist
   'composerWeb.assist.menuLabel': 'Bu metinle ilgili yardım',
@@ -337,7 +337,7 @@ export const webComposerMessages = {
   'mediaLib.loading': 'Medya kitaplığınızı yükleme',
   'mediaLib.permission.title': 'Bu çalışma alanı kitaplığını göremezsiniz',
   'mediaLib.permission.body':
-    'Medyayı görüntülemek için bu markada izleyici rolü veya daha yüksek bir rol gerekiyor. Bir sahip veya yönetici bu izni verebilir.',
+    'Medyayı görüntülemek için bu projede izleyici rolü veya daha yüksek bir rol gerekiyor. Bir sahip veya yönetici bu izni verebilir.',
 
   'mediaLib.upload.heading': 'Medya ekle',
   'mediaLib.upload.browse': 'Dosyaları seçin',

@@ -27,7 +27,7 @@ export const webAnalyticsMessages = {
   'analytics.question.accounts': 'ما هي الحسابات التي تحتاج إلى الاهتمام؟',
   'analytics.question.next': 'ما الذي يستحق الاختبار بعد ذلك؟',
 
-  'analytics.filter.project': 'Project',
+  'analytics.filter.project': 'المشروع',
   'analytics.filter.accounts': 'الحسابات',
   'analytics.filter.allAccounts': 'جميع الحسابات المرتبطة',
   'analytics.filter.range': 'النطاق الزمني',
@@ -435,7 +435,7 @@ export const webAnalyticsMessages = {
   'automation.param.signature': 'التوقيع',
   'automation.param.disclosure': 'الإفصاح',
   'automation.param.locale': 'اللغة',
-  'automation.param.project': 'Project',
+  'automation.param.project': 'المشروع',
   'automation.param.campaign': 'حملة',
   'automation.param.account': 'الحساب',
   'automation.param.platform': 'منصة',

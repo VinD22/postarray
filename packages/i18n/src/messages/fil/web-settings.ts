@@ -26,7 +26,7 @@ export const webSettingsMessages = {
   'settings.ui.section.members': 'Mga miyembro at tungkulin',
   'settings.ui.section.membersSummary':
     'Sino ang nasa workspace na ito at kung ano ang magagawa ng bawat tao.',
-  'settings.ui.section.projects': 'Mga tatak',
+  'settings.ui.section.projects': 'Mga proyekto',
   'settings.ui.section.projectsSummary':
     'Boses, audience, naaprubahang claim, naka-block na termino, lokal na panuntunan, domain at glossary.',
   'settings.ui.section.agents': 'Mga Ahente at API',
@@ -52,7 +52,7 @@ export const webSettingsMessages = {
     'Mga session, dalawang salik na pagpapatotoo, mga kredensyal, mga ahente, webhook at mga pagbibigay ng app.',
   'settings.ui.section.data': 'Mga kontrol sa data',
   'settings.ui.section.dataSummary':
-    'I-export, bawiin ang isang koneksyon, tanggalin ang isang project, tanggalin ang nilalaman o isara ang account.',
+    'I-export, bawiin ang isang koneksyon, tanggalin ang isang proyekto, tanggalin ang nilalaman o isara ang account.',
 
   /* ------------------------------------------------------- shared UI states */
 
@@ -104,12 +104,13 @@ export const webSettingsMessages = {
   'settings.ui.members.column.approvals': 'Mga pag-apruba',
   'settings.ui.members.column.lastActive': 'Huling aktibo',
   'settings.ui.members.column.actions': 'Mga aksyon',
-  'settings.ui.members.scopeAll': 'Lahat ng project at account',
-  'settings.ui.members.scopeLimited': '{count, plural, one {# tatak} other {# mga tatak}}: {names}',
+  'settings.ui.members.scopeAll': 'Lahat ng proyekto at account',
+  'settings.ui.members.scopeLimited':
+    '{count, plural, one {# proyekto} other {# proyekto}}: {names}',
   'settings.ui.members.approvals.canApprove': 'Pwedeng aprubahan',
   'settings.ui.members.approvals.cannotApprove': 'Hindi maaprubahan',
   'settings.ui.members.approvals.canApproveOwnProjects':
-    'Maaaring mag-apruba para sa mga tatak na nakalista',
+    'Maaaring mag-apruba para sa mga proyektong nakalista',
   'settings.ui.members.lastActiveNever': 'Hindi pa nakakapag-sign in',
   'settings.ui.members.changeRole': 'Baguhin ang tungkulin para sa {name}',
   'settings.ui.members.remove': 'Alisin {name}',
@@ -121,9 +122,9 @@ export const webSettingsMessages = {
   'settings.ui.members.inviteBody':
     'Nakatanggap sila ng email na may link. Mag-e-expire ang imbitasyon pagkatapos ng pitong araw at maaari mo itong bawiin bago iyon.',
   'settings.ui.members.inviteRole': 'Tungkulin',
-  'settings.ui.members.inviteScope': 'Mga tatak kung saan sila maaaring magtrabaho',
-  'settings.ui.members.inviteScopeAll': 'Bawat project sa workspace na ito',
-  'settings.ui.members.inviteScopeSelected': 'Tanging ang mga tatak lamang ang aking pipiliin',
+  'settings.ui.members.inviteScope': 'Mga proyekto kung saan sila maaaring magtrabaho',
+  'settings.ui.members.inviteScopeAll': 'Bawat proyekto sa workspace na ito',
+  'settings.ui.members.inviteScopeSelected': 'Tanging ang mga proyekto lamang ang aking pipiliin',
   'settings.ui.members.inviteApprovals': 'Maaaring magpasya ng mga kahilingan sa pag-apruba',
   'settings.ui.members.inviteApprovalsHelp':
     'Tanging mga tungkulin na may kasamang pagsusuri ang maaaring ibigay nito. Ito ay hiwalay sa pag-edit.',
@@ -133,9 +134,9 @@ export const webSettingsMessages = {
   'settings.ui.members.inviteResend': 'Ipadala muli ang imbitasyon',
   'settings.ui.members.emptyTitle': 'Ikaw lang ang tao dito',
   'settings.ui.members.emptyBody':
-    'Anyayahan ang mga taong sumulat, nag-apruba o nagbabasa ng mga resulta. Ang bawat isa ay nakakakuha ng tungkulin at saklaw ng tatak.',
+    'Anyayahan ang mga taong sumulat, nag-apruba o nagbabasa ng mga resulta. Ang bawat isa ay nakakakuha ng tungkulin at saklaw ng proyekto.',
   'settings.ui.members.emptyExample':
-    'Isang karaniwang hugis: isang may-ari para sa pagsingil, isang approver bawat project, at mga editor na nag-draft ngunit hindi kailanman nagpa-publish.',
+    'Isang karaniwang hugis: isang may-ari para sa pagsingil, isang approver bawat proyekto, at mga editor na nag-draft ngunit hindi kailanman nagpa-publish.',
   'settings.ui.members.roleReferenceTitle': 'Ano ang kayang gawin ng bawat tungkulin',
   'settings.ui.members.roleReferenceCaption':
     'Mga tungkulin at mga aksyon na pinapayagan ng bawat isa',
@@ -164,8 +165,8 @@ export const webSettingsMessages = {
   /* ----------------------------------------------------------------- projects */
 
   'settings.ui.projects.description':
-    'Ang isang project ay nagdadala ng mga panuntunan kung saan sinusuri ang nilalaman: kung ano ang maaari mong i-claim, kung ano ang hindi mo maaaring sabihin, at kung paano isinusulat ang bawat wika.',
-  'settings.ui.projects.listCaption': 'Mga project sa workspace na ito',
+    'Ang isang proyekto ay nagdadala ng mga panuntunan kung saan sinusuri ang nilalaman: kung ano ang maaari mong i-claim, kung ano ang hindi mo maaaring sabihin, at kung paano isinusulat ang bawat wika.',
+  'settings.ui.projects.listCaption': 'Mga proyekto sa workspace na ito',
   'settings.ui.projects.column.project': 'Proyekto',
   'settings.ui.projects.column.locales': 'Mga wika ng nilalaman',
   'settings.ui.projects.column.accounts': 'Mga account',
@@ -174,18 +175,18 @@ export const webSettingsMessages = {
     '{count, plural, =0 {Walang mga account} one {# account} other {# mga account}}',
   'settings.ui.projects.emptyTitle': 'Gawin ang iyong unang proyekto',
   'settings.ui.projects.emptyBody':
-    "Ang isang project ay nagpapangkat ng mga account, mga panuntunan sa pag-apruba at mga panuntunan sa wika. Karamihan sa mga koponan ay nagsisimula sa isa at nagdaragdag ng isang segundo kapag ang isang kliyente o isang market ay nangangailangan ng iba't ibang mga panuntunan.",
+    "Ang isang proyekto ay nagpapangkat ng mga account, mga panuntunan sa pag-apruba at mga panuntunan sa wika. Karamihan sa mga koponan ay nagsisimula sa isa at nagdaragdag ng pangalawa kapag ang isang kliyente o isang market ay nangangailangan ng iba't ibang mga panuntunan.",
   'settings.ui.projects.emptyExample':
-    'Halimbawa: maaaring maging tatlong hiwalay na project ang Acme App, Acme Podcast at kliyenteng Northwind sa iisang workspace.',
+    'Halimbawa: maaaring maging tatlong hiwalay na proyekto ang Acme App, Acme Podcast at kliyenteng Northwind sa iisang workspace.',
   'settings.ui.projects.voiceHelp':
-    'Ano ang dapat na tunog ng project na ito. Ginagamit kapag humiling ka ng muling pagsulat at kapag nasuri ang mga claim.',
+    'Ano ang dapat na tunog ng proyektong ito. Ginagamit kapag humiling ka ng muling pagsulat at kapag nasuri ang mga claim.',
   'settings.ui.projects.audienceHelp': 'Para kanino ang content, bawat market.',
   'settings.ui.projects.approvedClaimsHelp':
     'Mga pahayag na na-clear ng isang reviewer. Ang anumang bagay sa labas ng listahang ito ay na-flag bago ang pag-apruba, hindi pagkatapos ng pag-publish.',
   'settings.ui.projects.blockedTermsHelp':
-    'Mga salitang humaharang sa pag-iiskedyul para sa project na ito. Isa sa bawat linya.',
+    'Mga salitang humaharang sa pag-iiskedyul para sa proyektong ito. Isa sa bawat linya.',
   'settings.ui.projects.domainsHelp':
-    'Mga domain na maaaring i-link at paikliin ng project na ito. Ang mga na-verify na domain lamang ang maaaring piliin sa kompositor.',
+    'Mga domain na maaaring i-link at paikliin ng proyektong ito. Ang mga na-verify na domain lamang ang maaaring piliin sa kompositor.',
   'settings.ui.projects.domainVerified': 'Na-verify {date}',
   'settings.ui.projects.domainPending': 'Hindi pa nakikita ang DNS record',
   'settings.ui.projects.domainVerificationUnavailable': 'Hindi pa nagagawa ang pag-verify',
@@ -366,7 +367,7 @@ export const webSettingsMessages = {
   'developer.ui.agents.emptyBody':
     'Gumawa ng isa para sa bawat automation na iyong pinapatakbo. Nangangahulugan ang mga hiwalay na account na maaari mong bawiin ang isa nang hindi pinipigilan ang iba.',
   'developer.ui.agents.emptyExample':
-    'Halimbawa: Ang "Content agent", project na Acme EU, ay maaaring mag-draft at mag-iskedyul ng hanggang 6 na post sa isang araw sa pagitan ng 07:00 at 22:00, hindi kailanman mag-publish kaagad.',
+    'Halimbawa: Ang "Content agent", proyektong Acme EU, ay maaaring mag-draft at mag-iskedyul ng hanggang 6 na post sa isang araw sa pagitan ng 07:00 at 22:00, hindi kailanman mag-publish kaagad.',
   'developer.ui.agents.step.identity': 'Pangalan at layunin',
   'developer.ui.agents.step.scope': 'Kung ano ang maabot nito',
   'developer.ui.agents.step.limits': 'Mga limitasyon',
@@ -599,8 +600,8 @@ export const webSettingsMessages = {
   'developer.ui.webhooks.eventGroup.publishing': 'Paglalathala',
   'developer.ui.webhooks.eventGroup.automation': 'Automation at mga feed',
   'developer.ui.webhooks.eventGroup.workspace': 'Workspace',
-  'developer.ui.webhooks.scopeTitle': 'Mga tatak at account',
-  'developer.ui.webhooks.scopeAll': 'Bawat project at account',
+  'developer.ui.webhooks.scopeTitle': 'Mga proyekto at account',
+  'developer.ui.webhooks.scopeAll': 'Bawat proyekto at account',
   'developer.ui.webhooks.scopeSelected': 'Tanging ang mga pipiliin ko',
   'developer.ui.webhooks.secretTitle': 'Lihim na pumipirma',
   'developer.ui.webhooks.secretBody':

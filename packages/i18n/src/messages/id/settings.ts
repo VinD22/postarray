@@ -29,16 +29,16 @@ export const settingsMessages = {
   'settings.role.viewer.label': 'Penampil',
   'settings.role.owner.description': 'Semuanya, termasuk penagihan, keamanan, dan penghapusan.',
   'settings.role.admin.description': 'Semuanya kecuali penagihan dan penghapusan ruang kerja.',
-  'settings.role.manager.description': 'Kelola merek, koneksi, jadwal, dan aturan.',
+  'settings.role.manager.description': 'Kelola proyek, koneksi, jadwal, dan aturan.',
   'settings.role.editor.description': 'Buat dan edit konten, minta persetujuan.',
   'settings.role.approver.description':
     'Setujui atau tolak konten, dan jadwalkan apa yang disetujui.',
   'settings.role.analyst.description': 'Baca analitik dan tanda terima.',
   'settings.role.viewer.description': 'Hanya baca.',
-  'settings.role.scopeLabel': 'Batasi pada merek dan akun',
+  'settings.role.scopeLabel': 'Batasi pada proyek dan akun',
   'settings.role.mfaRequired': 'Pemilik harus menggunakan otentikasi dua faktor.',
-  'settings.projects.title': 'Project',
-  'settings.projects.add': 'Tambahkan merek',
+  'settings.projects.title': 'Proyek',
+  'settings.projects.add': 'Tambahkan proyek',
   'settings.projects.voice': 'Suara',
   'settings.projects.audience': 'Penonton',
   'settings.projects.approvedClaims': 'Klaim yang disetujui',
@@ -66,7 +66,7 @@ export const settingsMessages = {
     'Mengedit Kumpulan tidak mengubah postingan yang telah disetujui atau dijadwalkan.',
   'settings.signatures.title': 'Tanda tangan',
   'settings.signatures.description':
-    'Teks penutup, hashtag, tautan, atau pengungkapan, yang dicakup berdasarkan merek, platform, dan bahasa.',
+    'Teks penutup, hashtag, tautan, atau pengungkapan, yang dicakup berdasarkan proyek, platform, dan bahasa.',
   'settings.signatures.autoApply': 'Tambahkan secara otomatis ketika konteksnya cocok',
   'settings.localization.title': 'Lokalisasi',
   'settings.localization.interfaceLocale': 'Bahasa antarmuka',
@@ -74,7 +74,7 @@ export const settingsMessages = {
     'Bahasa aplikasi ini untuk Anda. Itu tidak mengubah bahasa postingan Anda.',
   'settings.localization.contentLocales': 'Bahasa konten',
   'settings.localization.contentLocalesHelp':
-    'Bahasa yang Anda gunakan untuk mempublikasikan. Setiap merek dapat menetapkan aturan dan glosarium per bahasa.',
+    'Bahasa yang Anda gunakan untuk mempublikasikan. Setiap proyek dapat menetapkan aturan dan glosarium per bahasa.',
   'settings.localization.marketLocales': 'Pasar audiens',
   'settings.localization.beta': 'Terjemahan beta',
   'settings.localization.betaHelp':

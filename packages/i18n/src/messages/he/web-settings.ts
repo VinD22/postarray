@@ -29,7 +29,7 @@ export const webSettingsMessages = withHebrewPluralForms({
   'settings.ui.section.securitySummary':
     'הפעלות, אימות דו-גורמי, אישורים, סוכנים, webhooks ומענקים לאפליקציות.',
   'settings.ui.section.data': 'בקרות נתונים',
-  'settings.ui.section.dataSummary': 'ייצא, בטל חיבור, מחק מותג, מחק תוכן או סגור את החשבון.',
+  'settings.ui.section.dataSummary': 'ייצא, בטל חיבור, מחק פרויקט, מחק תוכן או סגור את החשבון.',
   'settings.ui.state.loading': 'טוען {section}',
   'settings.ui.state.errorTitle': 'לא יכולנו לטעון את {section}',
   'settings.ui.state.errorRetry': 'נסה שוב',
@@ -69,7 +69,7 @@ export const webSettingsMessages = withHebrewPluralForms({
   'settings.ui.members.column.approvals': 'אישורים',
   'settings.ui.members.column.lastActive': 'פעיל אחרון',
   'settings.ui.members.column.actions': 'פעולות',
-  'settings.ui.members.scopeAll': 'כל המותגים והחשבונות',
+  'settings.ui.members.scopeAll': 'כל הפרויקטים והחשבונות',
   'settings.ui.members.scopeLimited':
     '{count, plural, one {# project} other {# projects}}: {names}',
   'settings.ui.members.approvals.canApprove': 'יכול לאשר',
@@ -84,9 +84,9 @@ export const webSettingsMessages = withHebrewPluralForms({
   'settings.ui.members.inviteBody':
     'הם מקבלים מייל עם קישור. תוקף ההזמנה יפוג לאחר שבעה ימים ותוכל לבטל אותה לפני כן.',
   'settings.ui.members.inviteRole': 'תפקיד',
-  'settings.ui.members.inviteScope': 'מותגים שהם יכולים לעבוד בהם',
-  'settings.ui.members.inviteScopeAll': 'כל מותג בסביבת העבודה הזו',
-  'settings.ui.members.inviteScopeSelected': 'רק המותגים שאני בוחרת',
+  'settings.ui.members.inviteScope': 'פרויקטים שהם יכולים לעבוד בהם',
+  'settings.ui.members.inviteScopeAll': 'כל פרויקט בסביבת העבודה הזו',
+  'settings.ui.members.inviteScopeSelected': 'רק הפרויקטים שאני בוחרת',
   'settings.ui.members.inviteApprovals': 'יכול להחליט בקשות אישור',
   'settings.ui.members.inviteApprovalsHelp':
     'רק תפקידים שכבר כוללים ביקורת יכולים לקבל זאת. זה נפרד מהעריכה.',
@@ -96,9 +96,9 @@ export const webSettingsMessages = withHebrewPluralForms({
   'settings.ui.members.inviteResend': 'שלח שוב את ההזמנה',
   'settings.ui.members.emptyTitle': 'אתה האדם היחיד כאן',
   'settings.ui.members.emptyBody':
-    'הזמן את האנשים שכותבים, מאשרים או קוראים תוצאות. כל אחד מקבל תפקיד והיקף מותג.',
+    'הזמן את האנשים שכותבים, מאשרים או קוראים תוצאות. כל אחד מקבל תפקיד והיקף פרויקט.',
   'settings.ui.members.emptyExample':
-    'צורה נפוצה: בעלים אחד לחיוב, מאשר אחד לכל מותג, ועורכים שמנסחים טיוטה אך לעולם אינם מפרסמים.',
+    'צורה נפוצה: בעלים אחד לחיוב, מאשר אחד לכל פרויקט, ועורכים שמנסחים טיוטה אך לעולם אינם מפרסמים.',
   'settings.ui.members.roleReferenceTitle': 'מה כל תפקיד יכול לעשות',
   'settings.ui.members.roleReferenceCaption': 'תפקידים והפעולות שכל אחד מאפשר',
   'settings.ui.members.roleColumn.role': 'תפקיד',
@@ -119,7 +119,7 @@ export const webSettingsMessages = withHebrewPluralForms({
   'settings.ui.members.removeConsequence.approvals':
     'בקשות אישור הממתינות להן חוזרות לתור למאשר אחר.',
   'settings.ui.projects.description':
-    'מותג נושא את הכללים שתוכן נבדק מולם: מה אתה רשאי לטעון, מה אסור לומר, ואיך כל שפה נכתבת.',
+    'פרויקט נושא את הכללים שתוכן נבדק מולם: מה אתה רשאי לטעון, מה אסור לומר, ואיך כל שפה נכתבת.',
   'settings.ui.projects.listCaption': 'פרויקטים במרחב העבודה הזה',
   'settings.ui.projects.column.project': 'פרויקט',
   'settings.ui.projects.column.locales': 'שפות תוכן',
@@ -129,9 +129,9 @@ export const webSettingsMessages = withHebrewPluralForms({
     '{count, plural, =0 {No accounts} one {# account} other {# accounts}}',
   'settings.ui.projects.emptyTitle': 'עדיין אין פרויקטים',
   'settings.ui.projects.emptyBody':
-    'מותג מקבץ חשבונות, כללי אישור וכללי שפה. רוב הצוותים מתחילים באחד ומוסיפים שנייה כאשר לקוח או שוק זקוקים לכללים שונים.',
+    'פרויקט מקבץ חשבונות, כללי אישור וכללי שפה. רוב הצוותים מתחילים באחד ומוסיפים שנייה כאשר לקוח או שוק זקוקים לכללים שונים.',
   'settings.ui.projects.emptyExample':
-    'דוגמה: מותג "Acme EU", שפות אנגלית וגרמנית, מונח חסום "מובטח", גילוי נאות "שותפות בתשלום" עבור אינסטגרם.',
+    'דוגמה: פרויקט "Acme EU", שפות אנגלית וגרמנית, מונח חסום "מובטח", גילוי נאות "שותפות בתשלום" עבור Instagram.',
   'settings.ui.projects.voiceHelp':
     'איך הפרויקט הזה נשמע. משמש כאשר אתה מבקש שכתוב וכאשר תביעות נבדקות.',
   'settings.ui.projects.audienceHelp': 'למי מיועד התוכן, לפי שוק.',
@@ -139,7 +139,7 @@ export const webSettingsMessages = withHebrewPluralForms({
     'הצהרות שסוקר ניקה. כל דבר מחוץ לרשימה זו מסומן לפני האישור, לא לאחר הפרסום.',
   'settings.ui.projects.blockedTermsHelp': 'מילים שחוסמות תזמון עבור הפרויקט הזה. אחד בכל שורה.',
   'settings.ui.projects.domainsHelp':
-    'דומיינים שהפרויקט הזה עשוי לקשר אליהם ולהתקצר דרכם. ניתן לבחור רק דומיינים מאומתים במלחין.',
+    'דומיינים שהפרויקט הזה עשוי לקשר אליהם ולהתקצר דרכם. ניתן לבחור רק דומיינים מאומתים בComposer.',
   'settings.ui.projects.domainVerified': 'מאומת {date}',
   'settings.ui.projects.domainPending': 'רשומת DNS עדיין לא נראתה',
   'settings.ui.projects.domainVerificationUnavailable': 'האימות עדיין לא נבנה',
@@ -295,7 +295,7 @@ export const webSettingsMessages = withHebrewPluralForms({
   'developer.ui.agents.emptyBody':
     'צור אחד עבור כל אוטומציה שאתה מפעיל. חשבונות נפרדים פירושם שאתה יכול לבטל אחד מבלי לעצור את האחרים.',
   'developer.ui.agents.emptyExample':
-    'דוגמה: "סוכן תוכן", המותג Acme EU, רשאי לנסח ולתזמן עד 6 פוסטים ביום בין השעות 07:00 ל-22:00, לעולם לא מפרסם באופן מיידי.',
+    'דוגמה: "סוכן תוכן", הפרויקט Acme EU, רשאי לנסח ולתזמן עד 6 פוסטים ביום בין השעות 07:00 ל-22:00, לעולם לא מפרסם באופן מיידי.',
   'developer.ui.agents.step.identity': 'שם ומטרה',
   'developer.ui.agents.step.scope': 'למה זה יכול להגיע',
   'developer.ui.agents.step.limits': 'גבולות',
@@ -490,8 +490,8 @@ export const webSettingsMessages = withHebrewPluralForms({
   'developer.ui.webhooks.eventGroup.publishing': 'הוצאה לאור',
   'developer.ui.webhooks.eventGroup.automation': 'אוטומציה והזנות',
   'developer.ui.webhooks.eventGroup.workspace': 'סביבת עבודה',
-  'developer.ui.webhooks.scopeTitle': 'מותגים וחשבונות',
-  'developer.ui.webhooks.scopeAll': 'כל מותג וחשבון',
+  'developer.ui.webhooks.scopeTitle': 'פרויקטים וחשבונות',
+  'developer.ui.webhooks.scopeAll': 'כל פרויקט וחשבון',
   'developer.ui.webhooks.scopeSelected': 'רק אלה שאני בוחרת',
   'developer.ui.webhooks.secretTitle': 'סוד חתימה',
   'developer.ui.webhooks.secretBody':

@@ -31,7 +31,7 @@ export const automationMessages = {
   'automation.trigger.recurring': 'een terugkerend schema wordt geactiveerd',
 
   'automation.condition.label': 'Voorwaarden',
-  'automation.condition.project': 'het merk is {project}',
+  'automation.condition.project': 'het project is {project}',
   'automation.condition.campaign': 'de campagne is {campaign}',
   'automation.condition.account': 'het account is {account}',
   'automation.condition.platform': 'het platform is {platform}',
@@ -130,7 +130,7 @@ export const automationMessages = {
   'automation.webhooks.urlLabel': 'Eindpunt-URL',
   'automation.webhooks.eventsLabel': 'Evenementen',
   'automation.webhooks.allEvents': 'Alle evenementen',
-  'automation.webhooks.scopeLabel': "Project's en accounts",
+  'automation.webhooks.scopeLabel': 'Projecten en accounts',
   'automation.webhooks.allAccounts': 'Alle rekeningen',
   'automation.webhooks.secret': 'Ondertekening geheim',
   'automation.webhooks.secretShownOnce': 'Dit geheim wordt één keer getoond. Bewaar het nu.',

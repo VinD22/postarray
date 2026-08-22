@@ -55,7 +55,7 @@ export const connectionMessages = {
     '{provider}はこのアプリをレビュー保留中に制限しました。からの投稿{account}審査が完了するまで非公開で公開します。',
   'connection.group.title': '顧客グループ',
   'connection.group.description':
-    'クライアントまたはブランドごとにアカウントをグループ化し、すべての画面をフィルタリングします。',
+    'クライアントまたはプロジェクトごとにアカウントをグループ化し、すべての画面をフィルタリングします。',
   'connection.group.assign': 'グループに移動',
   'connection.group.none': 'グループ化されていない',
   'connection.group.moveNote': 'アカウントを移動しても、その投稿、領収書、分析は保持されます。',

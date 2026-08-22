@@ -32,7 +32,7 @@ export const automationMessages = {
   'automation.trigger.recurring': 'Ein wiederkehrender Zeitplan wird ausgelöst',
 
   'automation.condition.label': 'Bedingungen',
-  'automation.condition.project': 'Die Marke ist {project}',
+  'automation.condition.project': 'Das Projekt ist {project}',
   'automation.condition.campaign': 'Die Kampagne ist {campaign}',
   'automation.condition.account': 'Das Konto lautet {account}',
   'automation.condition.platform': 'Die Plattform ist {platform}',
@@ -134,7 +134,7 @@ export const automationMessages = {
   'automation.webhooks.urlLabel': 'Endpunkt-URL',
   'automation.webhooks.eventsLabel': 'Ereignisse',
   'automation.webhooks.allEvents': 'Alle Ereignisse',
-  'automation.webhooks.scopeLabel': 'Marken und Konten',
+  'automation.webhooks.scopeLabel': 'Projekte und Konten',
   'automation.webhooks.allAccounts': 'Alle Konten',
   'automation.webhooks.secret': 'Unterzeichnungsgeheimnis',
   'automation.webhooks.secretShownOnce':

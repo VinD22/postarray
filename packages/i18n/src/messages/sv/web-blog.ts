@@ -15,7 +15,7 @@
 export const webBlogMessages = {
   'web.blog.meta.title': 'Texter om publiceringsarbete',
   'web.blog.meta.description':
-    'Artiklar om publiceringstakt, schemaläggningsmodeller, tidszoner, anpassning per plattform och att driva kunduppdrag som separata varumärken.',
+    'Artiklar om publiceringstakt, schemaläggningsmodeller, tidszoner, anpassning per plattform och att driva kunduppdrag som separata projekt.',
 
   'web.blog.title': 'Texter',
   'web.blog.lede':

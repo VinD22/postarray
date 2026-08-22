@@ -190,7 +190,7 @@ export const webComposerMessages = {
   'composerWeb.signature.scope': 'Dành cho {project} trên {provider} trong {language}',
   'composerWeb.signature.previewHeading': 'Cách kết thúc bài viết',
   'composerWeb.signature.notMatching':
-    'Chữ ký này dành cho một thương hiệu, nền tảng hoặc ngôn ngữ khác, vì vậy nó không được cung cấp ở đây.',
+    'Chữ ký này dành cho một dự án, nền tảng hoặc ngôn ngữ khác, vì vậy nó không được cung cấp ở đây.',
   'composerWeb.assist.menuLabel': 'Hỗ trợ văn bản này',
   'composerWeb.assist.unavailableTitle': 'Hỗ trợ văn bản chưa được định cấu hình',
   'composerWeb.assist.unavailableBody':
@@ -299,7 +299,7 @@ export const webComposerMessages = {
   'mediaLib.loading': 'Đang tải thư viện phương tiện của bạn',
   'mediaLib.permission.title': 'Bạn không thể thấy thư viện không gian làm việc này',
   'mediaLib.permission.body':
-    'Việc xem phương tiện truyền thông cần có vai trò người xem trở lên đối với thương hiệu này. Chủ sở hữu hoặc quản trị viên có thể cấp nó.',
+    'Việc xem phương tiện truyền thông cần có vai trò người xem trở lên đối với dự án này. Chủ sở hữu hoặc quản trị viên có thể cấp nó.',
   'mediaLib.upload.heading': 'Thêm phương tiện',
   'mediaLib.upload.browse': 'Chọn tập tin',
   'mediaLib.upload.dropHint':

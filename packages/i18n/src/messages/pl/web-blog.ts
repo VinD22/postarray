@@ -15,7 +15,7 @@
 export const webBlogMessages = {
   'web.blog.meta.title': 'Teksty o działaniach publikacyjnych',
   'web.blog.meta.description':
-    'Artykuły o częstotliwości publikacji, modelach planowania, strefach czasowych, dostosowaniu do platformy i prowadzeniu pracy dla klientów jako osobnych marek.',
+    'Artykuły o częstotliwości publikacji, modelach planowania, strefach czasowych, dostosowaniu do platformy i prowadzeniu pracy dla klientów jako osobnych projektów.',
 
   'web.blog.title': 'Teksty',
   'web.blog.lede':

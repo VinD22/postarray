@@ -175,7 +175,7 @@ export const webComposerMessages = {
   'composerWeb.signature.scope': '을 위한{project}~에{provider}~에{language}',
   'composerWeb.signature.previewHeading': '포스팅이 어떻게 끝나는지',
   'composerWeb.signature.notMatching':
-    '이 서명은 다른 브랜드, 플랫폼 또는 언어로 범위가 지정되므로 여기서는 제공되지 않습니다.',
+    '이 서명은 다른 프로젝트, 플랫폼 또는 언어로 범위가 지정되므로 여기서는 제공되지 않습니다.',
   'composerWeb.assist.menuLabel': '이 텍스트를 도와주세요',
   'composerWeb.assist.unavailableTitle': '텍스트 지원이 구성되지 않았습니다.',
   'composerWeb.assist.unavailableBody':
@@ -284,7 +284,7 @@ export const webComposerMessages = {
   'mediaLib.loading': '미디어 라이브러리 로드 중',
   'mediaLib.permission.title': '이 작업공간 라이브러리를 볼 수 없습니다',
   'mediaLib.permission.body':
-    '미디어를 시청하려면 이 브랜드에 대한 뷰어 이상의 역할이 필요합니다. 소유자나 관리자가 이를 부여할 수 있습니다.',
+    '미디어를 시청하려면 이 프로젝트에 대한 뷰어 이상의 역할이 필요합니다. 소유자나 관리자가 이를 부여할 수 있습니다.',
   'mediaLib.upload.heading': '미디어 추가',
   'mediaLib.upload.browse': '파일 선택',
   'mediaLib.upload.dropHint':

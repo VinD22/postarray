@@ -29,7 +29,7 @@ export const automationMessages = {
   'automation.trigger.recurring': 'spouští se opakující se plán',
 
   'automation.condition.label': 'Podmínky',
-  'automation.condition.project': 'značka je {project}',
+  'automation.condition.project': 'projekt je {project}',
   'automation.condition.campaign': 'kampaň je {campaign}',
   'automation.condition.account': 'účet je {account}',
   'automation.condition.platform': 'platforma je {platform}',
@@ -127,7 +127,7 @@ export const automationMessages = {
   'automation.webhooks.urlLabel': 'Adresa URL koncového bodu',
   'automation.webhooks.eventsLabel': 'Události',
   'automation.webhooks.allEvents': 'Všechny události',
-  'automation.webhooks.scopeLabel': 'Značky a účty',
+  'automation.webhooks.scopeLabel': 'Projekty a účty',
   'automation.webhooks.allAccounts': 'Všechny účty',
   'automation.webhooks.secret': 'Tajný podpis',
   'automation.webhooks.secretShownOnce': 'Toto tajemství se zobrazí jednou. Uložte si to hned.',

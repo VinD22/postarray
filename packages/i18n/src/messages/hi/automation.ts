@@ -30,7 +30,7 @@ export const automationMessages = {
   'automation.trigger.recurring': 'एक आवर्ती शेड्यूल सक्रिय हो जाता है',
 
   'automation.condition.label': 'शर्तें',
-  'automation.condition.project': 'ब्रांड है {project}',
+  'automation.condition.project': 'परियोजना है {project}',
   'automation.condition.campaign': 'अभियान है {campaign}',
   'automation.condition.account': 'खाता है {account}',
   'automation.condition.platform': 'मंच है {platform}',
@@ -128,7 +128,7 @@ export const automationMessages = {
   'automation.webhooks.urlLabel': 'समापन बिंदु URL',
   'automation.webhooks.eventsLabel': 'घटनाएँ',
   'automation.webhooks.allEvents': 'सभी घटनाएँ',
-  'automation.webhooks.scopeLabel': 'Projects और खाते',
+  'automation.webhooks.scopeLabel': 'परियोजनाएं और खाते',
   'automation.webhooks.allAccounts': 'सभी खाते',
   'automation.webhooks.secret': 'हस्ताक्षर करने का रहस्य',
   'automation.webhooks.secretShownOnce': 'यह रहस्य एक बार दिखाया गया है। इसे अभी स्टोर करें.',

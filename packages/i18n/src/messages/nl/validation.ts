@@ -57,7 +57,7 @@ export const validationMessages = {
   'validation.privacy_setting_required.hint':
     'Er is geen standaard. Kies wie dit bericht kan zien.',
   'validation.disclosure_required.message':
-    'Dit bericht heeft openbaarmaking nodig onder de merkregels voor {market}.',
+    'Dit bericht heeft openbaarmaking nodig onder de projectregels voor {market}.',
   'validation.first_comment_unsupported.message':
     '{provider} ondersteunt geen geplande eerste reactie voor dit account.',
   'validation.thread_unsupported.message': '{provider} ondersteunt geen threads voor dit account.',

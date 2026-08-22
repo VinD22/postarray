@@ -27,7 +27,7 @@ export const webAnalyticsMessages = {
   'analytics.question.accounts': 'Які облікові записи потребують уваги?',
   'analytics.question.next': 'Що варто тестувати далі?',
 
-  'analytics.filter.project': 'Project',
+  'analytics.filter.project': 'Проект',
   'analytics.filter.accounts': 'Облікові записи',
   'analytics.filter.allAccounts': 'Усі підключені облікові записи',
   'analytics.filter.range': 'Діапазон дат',
@@ -443,7 +443,7 @@ export const webAnalyticsMessages = {
   'automation.param.signature': 'Підпис',
   'automation.param.disclosure': 'Розкриття',
   'automation.param.locale': 'Мова',
-  'automation.param.project': 'Project',
+  'automation.param.project': 'Проект',
   'automation.param.campaign': 'Кампанія',
   'automation.param.account': 'Обліковий запис',
   'automation.param.platform': 'Платформа',

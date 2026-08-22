@@ -32,7 +32,7 @@ export const automationMessages = {
   'automation.trigger.recurring': 'isang umuulit na iskedyul ng apoy',
 
   'automation.condition.label': 'Mga kundisyon',
-  'automation.condition.project': 'ang tatak ay {project}',
+  'automation.condition.project': 'ang proyekto ay {project}',
   'automation.condition.campaign': 'ang kampanya ay {campaign}',
   'automation.condition.account': 'ang account ay {account}',
   'automation.condition.platform': 'ang plataporma ay {platform}',
@@ -131,7 +131,7 @@ export const automationMessages = {
   'automation.webhooks.urlLabel': 'URL ng Endpoint',
   'automation.webhooks.eventsLabel': 'Mga kaganapan',
   'automation.webhooks.allEvents': 'Lahat ng kaganapan',
-  'automation.webhooks.scopeLabel': 'Mga tatak at account',
+  'automation.webhooks.scopeLabel': 'Mga proyekto at account',
   'automation.webhooks.allAccounts': 'Lahat ng account',
   'automation.webhooks.secret': 'Lihim na pumipirma',
   'automation.webhooks.secretShownOnce':

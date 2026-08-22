@@ -86,7 +86,7 @@ export const webCalendarMessages = {
   'web.calendar.allDayHeading': 'Henüz kesin bir zaman yok',
 
   'web.calendar.filter.group': 'Müşteri grubu',
-  'web.calendar.filter.anyProject': 'Herhangi bir marka',
+  'web.calendar.filter.anyProject': 'Herhangi bir proje',
   'web.calendar.filter.anyAccount': 'Herhangi bir hesap',
   'web.calendar.filter.anyPlatform': 'Herhangi bir platform',
   'web.calendar.filter.anyStatus': 'Herhangi bir durum',
@@ -200,7 +200,7 @@ export const webCalendarMessages = {
   'web.calendar.permission.requirementsLabel': 'Gerekli kapsam',
   'web.calendar.permission.title': 'Bu takvimi göremezsiniz',
   'web.calendar.permission.body':
-    'Marka başına takvim erişimi verilir. Hesabınız bu görünümdeki markalarda yer almıyor.',
+    'Proje başına takvim erişimi verilir. Hesabınız bu görünümdeki projelerde yer almıyor.',
 
   /* ---------------------------------------------------------------------
    * Post job and publication receipt
@@ -365,10 +365,10 @@ export const webCalendarMessages = {
 
   'web.connection.projectScope.title': '{project} için kanallar gösteriliyor',
   'web.connection.projectScope.body':
-    'Yeni kanallar bu markaya bağlanır. Başka bir seti yönetmek için üst çubuktan marka değiştirin.',
-  'web.connection.projectMissing.title': 'Bir kanal bağlamadan önce bir marka oluşturun',
+    'Yeni kanallar bu projeye bağlanır. Başka bir seti yönetmek için üst çubuktan proje değiştirin.',
+  'web.connection.projectMissing.title': 'Bir kanal bağlamadan önce bir proje oluşturun',
   'web.connection.projectMissing.body':
-    'Markalar, farklı ürün veya müşterilere ait kanalları, medyayı, taslakları ve planları ayrı tutar.',
+    'Projeler, farklı ürün veya müşterilere ait kanalları, medyayı, taslakları ve planları ayrı tutar.',
 
   'web.connection.requirement.instagram':
     'Instagram yayıncılığının profesyonel bir hesaba ihtiyacı vardır; bu, bir Facebook Sayfasına bağlı bir işletme veya yaratıcı hesabı anlamına gelir.',
@@ -446,7 +446,7 @@ export const webCalendarMessages = {
     'Bir grup takvimi ve analizleri filtreler. Bir hesabın taşınması, halihazırda sahip olduğu tüm gönderileri, makbuzları ve ölçümleri korur.',
   'web.connection.group.empty.title': 'Henüz müşteri grubu yok',
   'web.connection.group.empty.body':
-    'Grup bir müşteri veya markadır. Takvimi ve analizleri müşteriye göre filtrelemek için hesapları gruplayın.',
+    'Grup bir müşteri veya projedir. Takvimi ve analizleri müşteriye göre filtrelemek için hesapları gruplayın.',
 
   'web.connection.incident.title': 'Bu hesaba dikkat edilmesi gerekiyor',
   'web.connection.incident.remediationHeading': 'Ne yapmalı',

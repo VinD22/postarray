@@ -62,7 +62,8 @@ export const connectionMessages = {
     '{provider} ha restringido esta aplicación pendiente de revisión. Las publicaciones from {account} se publican de forma privada hasta que se completa la revisión.',
 
   'connection.group.title': 'Grupos de clientes',
-  'connection.group.description': 'Agrupa cuentas por cliente o marca para filtrar cada pantalla.',
+  'connection.group.description':
+    'Los proyectos mantienen separados cada producto o cliente y sus cuentas.',
   'connection.group.assign': 'Mover al grupo',
   'connection.group.none': 'Desagrupados',
   'connection.group.moveNote':

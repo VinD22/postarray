@@ -15,7 +15,7 @@ export const calendarMessages = {
   'calendar.slotCount': '{count, plural, =0 {沒有排程內容} other {# 篇貼文}}',
   'calendar.slotOverflow': '{count, plural, other {另外 # 篇}}',
   'calendar.newPostAt': '於 {time} 新增貼文',
-  'calendar.filter.project': 'Project',
+  'calendar.filter.project': '專案',
   'calendar.filter.account': '帳號',
   'calendar.filter.platform': '平台',
   'calendar.filter.status': '狀態',

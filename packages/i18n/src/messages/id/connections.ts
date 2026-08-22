@@ -54,7 +54,7 @@ export const connectionMessages = {
     '{provider} telah membatasi aplikasi ini sambil menunggu peninjauan. Postingan dari {account} dipublikasikan secara pribadi hingga peninjauan selesai.',
   'connection.group.title': 'Kelompok pelanggan',
   'connection.group.description':
-    'Kelompokkan akun berdasarkan klien atau merek untuk memfilter setiap layar.',
+    'Kelompokkan akun berdasarkan klien atau proyek untuk memfilter setiap layar.',
   'connection.group.assign': 'Pindah ke grup',
   'connection.group.none': 'Tidak dikelompokkan',
   'connection.group.moveNote':

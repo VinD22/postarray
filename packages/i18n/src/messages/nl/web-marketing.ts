@@ -159,7 +159,7 @@ export const webMarketingMessages = {
     'Elke externe schrijfbewerking bevat een idempotency-sleutel, dus een crash van een werker nadat het platform een bericht heeft geaccepteerd, creëert geen tweede.',
   'web.home.pillars.adapt.title': 'Aanpassen in plaats van dupliceren',
   'web.home.pillars.adapt.body':
-    'Varianten per platform waarmee u één account tegelijk kunt overschrijven, en transcreatie in plaats van letterlijke vertaling, met een merkwoordenlijst en een benoemde recensent per taal.',
+    'Varianten per platform waarmee u één account tegelijk kunt overschrijven, en transcreatie in plaats van letterlijke vertaling, met een projectwoordenlijst en een benoemde recensent per taal.',
   'web.home.pillars.adapt.proof':
     'De interface is beschikbaar in geselecteerde talen. Inhoudsaanpassing omvat 30 inhoudstalen en elk daarvan kan worden beoordeeld voordat het wordt gepubliceerd.',
   'web.home.pillars.loop.title': 'Sluit de lus',
@@ -316,7 +316,7 @@ export const webMarketingMessages = {
     'De masterversie draagt het idee over. Elk account krijgt de lengte, de uitsnede, de instellingen en de toon die het platform verwacht, en je kunt ze allemaal naast elkaar zien voordat je een commit maakt.',
   'web.creators.job.languages.title': 'Publiceer in een andere taal zonder te raden',
   'web.creators.job.languages.body':
-    'Transcreatie houdt de intentie vast in plaats van de woorden, gebruikt de woordenlijst van uw merk en geeft aan of een native recensent het heeft gelezen. Er wordt niets gepubliceerd in een taal waar u niet voor kunt instaan, tenzij u het zegt.',
+    'Transcreatie houdt de intentie vast in plaats van de woorden, gebruikt de woordenlijst van uw project en geeft aan of een native recensent het heeft gelezen. Er wordt niets gepubliceerd in een taal waar u niet voor kunt instaan, tenzij u het zegt.',
   'web.creators.job.rights.title': 'Bewaar uw rechtenregistratie bij het bestand',
   'web.creators.job.rights.body':
     'Media geven aan waar het vandaan komt, wie de rechten heeft en of het met een generatief hulpmiddel is gemaakt. Platformen vragen er steeds meer om. Relay slaat uw antwoord op bij het item in plaats van u opnieuw te vragen.',
@@ -342,7 +342,7 @@ export const webMarketingMessages = {
     'Elke publicatie produceert een onveranderlijk ontvangstbewijs met het externe post-ID en de volledige poginggeschiedenis. Wanneer een klant vraagt ​​of er om negen uur iets is uitgegaan, is het antwoord voorzien van een tijdstempel en een platform-ID.',
   'web.agencies.job.roles.title': 'Rollen die aansluiten bij de manier waarop het werk is verdeeld',
   'web.agencies.job.roles.body':
-    'Eigenaar, beheerder, manager, redacteur, goedkeurder, analist en kijker, per merk en per account. Onbeperkt aantal teamleden, omdat het in rekening brengen per stoel ervoor zorgt dat bureaus logins delen en dat is een veiligheidsprobleem.',
+    'Eigenaar, beheerder, manager, redacteur, goedkeurder, analist en kijker, per project en per account. Onbeperkt aantal teamleden, omdat het in rekening brengen per stoel ervoor zorgt dat bureaus logins delen en dat is een veiligheidsprobleem.',
   'web.agencies.limits.title': 'De grens, duidelijk aangegeven',
   'web.agencies.limits.body':
     'Eén plan omvat 30 actieve sociale kanalen. Een kanaal is één sociaal account, pagina, profiel, groep of publicatieverbinding. Als u er meer dan 30 nodig heeft, vertel ons dan wat u nodig heeft en wij geven u een duidelijk antwoord in plaats van een verborgen niveau.',
@@ -520,7 +520,7 @@ export const webMarketingMessages = {
     "Eén backend, vier manieren. Elke sectie documenteert dezelfde gebruiksscenario's, dus een concept dat u leert in de REST API is hetzelfde concept in MCP en in de CLI.",
   'web.docs.section.start.title': 'Aan de slag',
   'web.docs.section.start.body':
-    'Authenticatie, werkruimten, merken en uw eerste gepubliceerde bericht.',
+    'Authenticatie, werkruimten, projecten en uw eerste gepubliceerde bericht.',
   'web.docs.section.api.title': 'REST-API',
   'web.docs.section.api.body': 'Bronnen, paginering, idempotentie, foutcodes en tarieflimieten.',
   'web.docs.section.mcp.title': 'MCP-server',

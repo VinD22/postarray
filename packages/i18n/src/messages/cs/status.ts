@@ -15,7 +15,7 @@ export const statusMessages = {
   'empty.analytics.noPermission':
     'Tento účet neudělil analytický přístup. Znovu se připojte a přidejte jej.',
   'empty.approvals.title': 'Nic na vás nečeká',
-  'empty.approvals.body': 'Zde se zobrazují žádosti o schválení vašich značek.',
+  'empty.approvals.body': 'Zde se zobrazují žádosti o schválení vašich projektů.',
   'empty.library.title': 'Vaše knihovna je prázdná',
   'empty.library.body':
     'Nahrajte obrázky a videa nebo je importujte z adresy URL nebo rozhraní API.',

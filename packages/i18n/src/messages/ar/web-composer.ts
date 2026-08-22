@@ -218,7 +218,7 @@ export const webComposerMessages = {
   'composerWeb.signature.scope': 'لـ {project} على {provider} في {language}',
   'composerWeb.signature.previewHeading': 'كيف ينتهي هذا المنصب',
   'composerWeb.signature.notMatching':
-    'هذا التوقيع مخصص لعلامة تجارية أو منصة أو لغة مختلفة، لذلك لا يتم تقديمه هنا.',
+    'هذا التوقيع مخصص لمشروع أو منصة أو لغة مختلفة، لذلك لا يتم تقديمه هنا.',
 
   // --------------------------------------------------------------- assist
   'composerWeb.assist.menuLabel': 'مساعدة في هذا النص',
@@ -327,7 +327,7 @@ export const webComposerMessages = {
   'mediaLib.loading': 'تحميل مكتبة الوسائط الخاصة بك',
   'mediaLib.permission.title': 'لا يمكنك رؤية مكتبة مساحة العمل هذه',
   'mediaLib.permission.body':
-    'يتطلب عرض الوسائط دور المشاهد أو أعلى في هذه العلامة التجارية. يمكن للمالك أو المسؤول منحها.',
+    'يتطلب عرض الوسائط دور المشاهد أو أعلى في هذا المشروع. يمكن للمالك أو المسؤول منحه.',
 
   'mediaLib.upload.heading': 'أضف الوسائط',
   'mediaLib.upload.browse': 'اختر الملفات',

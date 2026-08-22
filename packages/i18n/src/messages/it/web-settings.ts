@@ -27,7 +27,7 @@ export const webSettingsMessages = {
   'settings.ui.section.members': 'Membri e ruoli',
   'settings.ui.section.membersSummary':
     "Chi è presente in quest'area di lavoro e cosa può fare ciascuna persona.",
-  'settings.ui.section.projects': 'Projects',
+  'settings.ui.section.projects': 'Progetti',
   'settings.ui.section.projectsSummary':
     'Voce, pubblico, affermazioni approvate, termini bloccati, regole locali, domini e glossario.',
   'settings.ui.section.agents': 'Agenti e API',
@@ -53,7 +53,7 @@ export const webSettingsMessages = {
     'Sessioni, autenticazione a due fattori, credenziali, agenti, webhook e concessioni di app.',
   'settings.ui.section.data': 'Controlli sui dati',
   'settings.ui.section.dataSummary':
-    "Esporta, revoca una connessione, elimina un marchio, elimina contenuti o chiudi l'account.",
+    "Esporta, revoca una connessione, elimina un progetto, elimina contenuti o chiudi l'account.",
 
   /* ------------------------------------------------------- shared UI states */
 
@@ -105,12 +105,12 @@ export const webSettingsMessages = {
   'settings.ui.members.column.approvals': 'Approvazioni',
   'settings.ui.members.column.lastActive': 'Ultimo attivo',
   'settings.ui.members.column.actions': 'Azioni',
-  'settings.ui.members.scopeAll': 'Tutti i marchi e gli account',
+  'settings.ui.members.scopeAll': 'Tutti i progetti e gli account',
   'settings.ui.members.scopeLimited':
-    '{count, plural, one {# marchio} many {# marchi} other {# marchi}}: {names}',
+    '{count, plural, one {# progetto} many {# progetti} other {# progetti}}: {names}',
   'settings.ui.members.approvals.canApprove': 'Può approvare',
   'settings.ui.members.approvals.cannotApprove': 'Impossibile approvare',
-  'settings.ui.members.approvals.canApproveOwnProjects': 'Può approvare per i marchi elencati',
+  'settings.ui.members.approvals.canApproveOwnProjects': 'Può approvare per i progetti elencati',
   'settings.ui.members.lastActiveNever': "Non ha ancora effettuato l'accesso",
   'settings.ui.members.changeRole': 'Cambia ruolo per {name}',
   'settings.ui.members.remove': 'Rimuovere {name}',
@@ -121,9 +121,9 @@ export const webSettingsMessages = {
   'settings.ui.members.inviteBody':
     "Ricevono un'e-mail con un collegamento. L'invito scade dopo sette giorni e puoi revocarlo prima di allora.",
   'settings.ui.members.inviteRole': 'Ruolo',
-  'settings.ui.members.inviteScope': 'Project in cui possono lavorare',
-  'settings.ui.members.inviteScopeAll': 'Ogni marchio in questo spazio di lavoro',
-  'settings.ui.members.inviteScopeSelected': 'Solo i marchi che seleziono',
+  'settings.ui.members.inviteScope': 'Progetti in cui possono lavorare',
+  'settings.ui.members.inviteScopeAll': 'Ogni progetto in questo spazio di lavoro',
+  'settings.ui.members.inviteScopeSelected': 'Solo i progetti che seleziono',
   'settings.ui.members.inviteApprovals': 'Può decidere le richieste di approvazione',
   'settings.ui.members.inviteApprovalsHelp':
     'Questo può essere assegnato solo ai ruoli che già includono la revisione. È separato dalla modifica.',
@@ -133,9 +133,9 @@ export const webSettingsMessages = {
   'settings.ui.members.inviteResend': "Invia nuovamente l'invito",
   'settings.ui.members.emptyTitle': "Tu sei l'unica persona qui",
   'settings.ui.members.emptyBody':
-    'Invita le persone che scrivono, approvano o leggono i risultati. Ognuno ha un ruolo e un ambito di applicazione del marchio.',
+    'Invita le persone che scrivono, approvano o leggono i risultati. Ognuno ha un ruolo e un ambito di applicazione del progetto.',
   'settings.ui.members.emptyExample':
-    'Una forma comune: un proprietario per la fatturazione, un approvatore per marchio e redattori che redigono ma non pubblicano mai.',
+    'Una forma comune: un proprietario per la fatturazione, un approvatore per progetto e redattori che redigono ma non pubblicano mai.',
   'settings.ui.members.roleReferenceTitle': 'Cosa può fare ciascun ruolo',
   'settings.ui.members.roleReferenceCaption': 'Ruoli e azioni consentite da ciascuno',
   'settings.ui.members.roleColumn.role': 'Ruolo',
@@ -365,7 +365,7 @@ export const webSettingsMessages = {
   'developer.ui.agents.emptyBody':
     'Creane uno per ogni automazione che esegui. Con account separati puoi revocarne uno senza interrompere gli altri.',
   'developer.ui.agents.emptyExample':
-    'Esempio: "Content agent", marchio Acme EU, può redigere e programmare fino a 6 post al giorno tra le 07:00 e le 22:00, non pubblica mai immediatamente.',
+    'Esempio: "Content agent", progetto Acme EU, può redigere e programmare fino a 6 post al giorno tra le 07:00 e le 22:00, non pubblica mai immediatamente.',
   'developer.ui.agents.step.identity': 'Nome e scopo',
   'developer.ui.agents.step.scope': 'Cosa può raggiungere',
   'developer.ui.agents.step.limits': 'Limiti',
@@ -598,8 +598,8 @@ export const webSettingsMessages = {
   'developer.ui.webhooks.eventGroup.publishing': 'Editoria',
   'developer.ui.webhooks.eventGroup.automation': 'Automazione e feed',
   'developer.ui.webhooks.eventGroup.workspace': 'Workspace',
-  'developer.ui.webhooks.scopeTitle': 'Project e account',
-  'developer.ui.webhooks.scopeAll': 'Ogni marchio e account',
+  'developer.ui.webhooks.scopeTitle': 'Progetti e account',
+  'developer.ui.webhooks.scopeAll': 'Ogni progetto e account',
   'developer.ui.webhooks.scopeSelected': 'Solo quelli che seleziono',
   'developer.ui.webhooks.secretTitle': 'Firma segreta',
   'developer.ui.webhooks.secretBody':

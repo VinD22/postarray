@@ -207,7 +207,7 @@ export const webShellMessages = {
     "Bir sonraki ekran kayıtlı satıcımız Polar'dır. Erişim, tarayıcı geri geldiğinde değil, Polar aboneliği onayladığında verilir.",
   'onboarding.plan.factsTitle': 'Devam ettiğinizde ne olur?',
   'onboarding.workspace.help':
-    'Bir çalışma alanı markalarınızı, bağlı hesaplarınızı, taslaklarınızı ve makbuzlarınızı barındırır. Daha sonra daha fazlasını oluşturabilirsiniz.',
+    'Bir çalışma alanı projelerinizi, bağlı hesaplarınızı, taslaklarınızı ve makbuzlarınızı barındırır. Daha sonra daha fazlasını oluşturabilirsiniz.',
   'onboarding.workspace.localeNote':
     'Arayüz diliniz bu uygulamayı değiştiriyor. İçerik dilleri gönderi başına seçilir ve bu ayardan ayrıdır.',
   'onboarding.workspace.timeZoneDetected': 'Bu cihazdan algılandı: {timeZone}',

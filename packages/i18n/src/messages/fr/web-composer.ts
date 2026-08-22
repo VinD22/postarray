@@ -225,7 +225,7 @@ export const webComposerMessages = {
   'composerWeb.signature.scope': 'Pour {project} sur {provider} dans {language}',
   'composerWeb.signature.previewHeading': 'Comment ça termine le post',
   'composerWeb.signature.notMatching':
-    "Cette signature s'étend à une marque, une plateforme ou une langue différente, elle n'est donc pas proposée ici.",
+    "Cette signature est limitée à un autre projet, une autre plateforme ou une autre langue, elle n'est donc pas proposée ici.",
 
   // --------------------------------------------------------------- assist
   'composerWeb.assist.menuLabel': 'Aide avec ce texte',
@@ -336,7 +336,7 @@ export const webComposerMessages = {
   'mediaLib.loading': 'Chargement de votre médiathèque',
   'mediaLib.permission.title': "Vous ne pouvez pas voir cette bibliothèque d'espace de travail",
   'mediaLib.permission.body':
-    "La visualisation des médias nécessite le rôle de téléspectateur ou supérieur sur cette marque. Un propriétaire ou un administrateur peut l'accorder.",
+    "La visualisation des médias nécessite le rôle de lecteur ou supérieur sur ce projet. Un propriétaire ou un administrateur peut l'accorder.",
 
   'mediaLib.upload.heading': 'Ajouter un média',
   'mediaLib.upload.browse': 'Choisir des fichiers',
@@ -468,4 +468,52 @@ export const webComposerMessages = {
     '{count, plural, =0 {Choisir des fichiers} one {Ajouter # fichier} many {Ajouter # fichiers} other {Ajouter # fichiers}}',
   'mediaLib.picker.forMaster': 'Ajout au brouillon principal',
   'mediaLib.picker.forVariant': 'Ajout à la version pour {account} seulement',
+  'composerWeb.commitFailed.draft': "Ce brouillon n'a pas été enregistré.",
+  'composerWeb.commitFailed.approval': "La demande d'approbation n'a pas été envoyée.",
+  'composerWeb.commitFailed.schedule': "Cette publication n'a pas été planifiée.",
+  'composerWeb.commitFailed.publish': "La publication ne s'est pas terminée.",
+  'mediaLib.offline.title': 'La bibliothèque est indisponible hors connexion',
+  'mediaLib.offline.body':
+    'Nous ne pouvons pas actualiser la bibliothèque sans connexion. Les fichiers déjà présents sur cet écran sont inchangés. Reconnectez-vous, puis réessayez.',
+  'mediaLib.rateLimited.title': "La bibliothèque a besoin d'une courte pause",
+  'mediaLib.rateLimited.cause':
+    "L'API nous a demandé de ralentir pendant le chargement de vos fichiers. Vos médias stockés sont intacts.",
+  'mediaLib.rateLimited.resetLabel': 'Réessayez après',
+  'mediaLib.rateLimited.alternative':
+    'Vous pouvez continuer à rédiger en local, mais les téléversements et les modifications de la bibliothèque attendent la réinitialisation de la limite.',
+  'mediaLib.import.urlLabel': 'URL publique du fichier',
+  'mediaLib.import.urlPlaceholder': 'https://cdn.example.com/launch-video.mp4',
+  'mediaLib.import.importing': 'Importation des médias',
+  'mediaLib.import.succeeded': 'Le fichier est dans votre bibliothèque',
+  'mediaLib.import.scanPending':
+    'Relay a enregistré sa source. La publication attend la fin du contrôle de sécurité.',
+  'mediaLib.import.failed': "Le fichier n'a pas pu être importé",
+  'mediaLib.import.failedHelp':
+    'Vérifiez que le lien est public et pointe directement vers un fichier média pris en charge, puis réessayez.',
+  'mediaLib.import.readOnly': "Connectez l'API pour importer des fichiers dans cet environnement.",
+  'mediaLib.import.offline': "Reconnectez-vous avant d'importer un fichier.",
+  'mediaLib.import.issue.invalid': 'Saisissez une URL complète.',
+  'mediaLib.import.issue.scheme': 'Utilisez un lien HTTP ou HTTPS.',
+  'mediaLib.import.issue.credentials': "Utilisez un lien sans nom d'utilisateur ni mot de passe.",
+  'mediaLib.retention.title':
+    'Les fichiers stockés sont conservés 30 jours après la création de la publication',
+  'mediaLib.retention.body':
+    "Une fois qu'un fichier est joint à une publication, nous le supprimons définitivement du stockage Relay 30 jours après la création de cette publication. Les fichiers en attente de pièce jointe utilisent la date de téléversement comme repère de nettoyage. Le texte de la publication, les reçus de publication et l'historique d'audit restent disponibles plus longtemps. Une publication déjà parue sur une plateforme sociale n'est pas retirée lorsque son fichier stocké expire.",
+  'mediaLib.retention.limits':
+    "Les images, l'audio et les fichiers PDF peuvent aller jusqu'à {imageSize}. Les vidéos peuvent aller jusqu'à {videoSize}.",
+  'mediaLib.retention.expiresLabel': 'Date de suppression du fichier',
+  'mediaLib.retention.deleted': 'Supprimé définitivement',
+  'mediaLib.retention.deletedTitle': 'Ce fichier stocké a été supprimé',
+  'mediaLib.retention.deletedBody':
+    "La période de stockage de 30 jours est terminée. Le texte de la publication, les reçus de publication et l'historique d'audit restent disponibles.",
+  'mediaLib.processing.unavailableTitle': "Ce fichier n'est pas prêt à être publié",
+  'mediaLib.processing.unavailableBody':
+    "Le traitement ou un contrôle de sécurité est encore en attente, ou n'a pas été validé. Téléversez à nouveau le fichier si cet état persiste.",
+  'mediaLib.processing.pendingTitle':
+    "L'analyse de sécurité n'est pas disponible avant le lancement",
+  'mediaLib.processing.pendingBody':
+    "Le fichier est stocké pendant 30 jours, mais il ne peut pas être joint à une publication publiée tant que l'analyse de sécurité n'est pas activée.",
+  'mediaLib.processing.blockedTitle': 'Ce fichier ne peut pas être publié',
+  'mediaLib.processing.blockedBody':
+    "Le fichier n'a pas passé le traitement ou un contrôle de sécurité. Téléversez un autre fichier.",
 } as const;

@@ -5,7 +5,7 @@ export const webSettingsMessages = {
   'settings.ui.index.help': '选择一个部分。每项更改均归因于您并显示在审核日志中。',
   'settings.ui.section.members': '成员和角色',
   'settings.ui.section.membersSummary': '谁在这个工作空间中以及每个人可以做什么。',
-  'settings.ui.section.projects': 'Project',
+  'settings.ui.section.projects': '项目',
   'settings.ui.section.projectsSummary':
     '声音、受众、批准的声​​明、阻止的术语、区域设置规则、域和术语表。',
   'settings.ui.section.agents': '代理和API',
@@ -24,7 +24,7 @@ export const webSettingsMessages = {
   'settings.ui.section.securitySummary':
     '会话、两因素身份验证、凭据、代理、Webhooks 和应用程序授权。',
   'settings.ui.section.data': '数据控制',
-  'settings.ui.section.dataSummary': '导出、撤销连接、删除品牌、删除内容或关闭帐户。',
+  'settings.ui.section.dataSummary': '导出、撤销连接、删除项目、删除内容或关闭帐户。',
   'settings.ui.state.loading': '正在加载{section}',
   'settings.ui.state.errorTitle': '我们无法加载 {section}',
   'settings.ui.state.errorRetry': '再试一次',
@@ -61,12 +61,12 @@ export const webSettingsMessages = {
   'settings.ui.members.column.approvals': '批准',
   'settings.ui.members.column.lastActive': '最后活跃',
   'settings.ui.members.column.actions': '行动',
-  'settings.ui.members.scopeAll': '所有品牌和帐户',
+  'settings.ui.members.scopeAll': '所有项目和帐户',
   'settings.ui.members.scopeLimited':
     '{count, plural, one {# project} other {# projects}}：{names}',
   'settings.ui.members.approvals.canApprove': '可以批准',
   'settings.ui.members.approvals.cannotApprove': '无法批准',
-  'settings.ui.members.approvals.canApproveOwnProjects': '可以批准列出的品牌',
+  'settings.ui.members.approvals.canApproveOwnProjects': '可以批准列出的项目',
   'settings.ui.members.lastActiveNever': '尚未登录',
   'settings.ui.members.changeRole': '更改 {name} 的角色',
   'settings.ui.members.remove': '删除 {name}',
@@ -76,9 +76,9 @@ export const webSettingsMessages = {
   'settings.ui.members.inviteBody':
     '他们收到一封带有链接的电子邮件。邀请将在 7 天后过期，您可以在此之前撤销邀请。',
   'settings.ui.members.inviteRole': '角色',
-  'settings.ui.members.inviteScope': '他们可以工作的Project',
-  'settings.ui.members.inviteScopeAll': '这个工作空间中的每个品牌',
-  'settings.ui.members.inviteScopeSelected': '仅限我选择的品牌',
+  'settings.ui.members.inviteScope': '他们可以工作的项目',
+  'settings.ui.members.inviteScopeAll': '这个工作空间中的每个项目',
+  'settings.ui.members.inviteScopeSelected': '仅限我选择的项目',
   'settings.ui.members.inviteApprovals': '可以决定批准​​请求',
   'settings.ui.members.inviteApprovalsHelp':
     '只有已经包含审核的角色才能获得此权限。它与编辑是分开的。',
@@ -88,9 +88,9 @@ export const webSettingsMessages = {
   'settings.ui.members.inviteResend': '再次发送邀请',
   'settings.ui.members.emptyTitle': '你是这里唯一的人',
   'settings.ui.members.emptyBody':
-    '邀请撰写、批准或阅读结果的人员。每个人都有一个角色和一个品牌范围。',
+    '邀请撰写、批准或阅读结果的人员。每个人都有一个角色和一个项目范围。',
   'settings.ui.members.emptyExample':
-    '常见的形式：一名负责计费的所有者，每个品牌一名审批者，以及起草但从不发布的编辑。',
+    '常见的形式：一名负责计费的所有者，每个项目一名审批者，以及起草但从不发布的编辑。',
   'settings.ui.members.roleReferenceTitle': '每个角色可以做什么',
   'settings.ui.members.roleReferenceCaption': '角色和每个角色允许的操作',
   'settings.ui.members.roleColumn.role': '角色',
@@ -110,26 +110,26 @@ export const webSettingsMessages = {
   'settings.ui.members.removeConsequence.approvals':
     '等待他们的批准请求将返回到另一个批准者的队列中。',
   'settings.ui.projects.description':
-    '品牌有内容检查的规则：你可以主张什么，你不能说什么，以及每种语言的书写方式。',
-  'settings.ui.projects.listCaption': '此工作区中的Project',
-  'settings.ui.projects.column.project': 'Project',
+    '项目有内容检查的规则：你可以主张什么，你不能说什么，以及每种语言的书写方式。',
+  'settings.ui.projects.listCaption': '此工作区中的项目',
+  'settings.ui.projects.column.project': '项目',
   'settings.ui.projects.column.locales': '内容语言',
   'settings.ui.projects.column.accounts': '账户',
   'settings.ui.projects.column.updated': '已更新',
   'settings.ui.projects.accountCount':
     '{count, plural, =0 {No accounts} one {# account} other {# accounts}}',
-  'settings.ui.projects.emptyTitle': '还没有品牌',
+  'settings.ui.projects.emptyTitle': '还没有项目',
   'settings.ui.projects.emptyBody':
-    '品牌对帐户、审批规则和语言规则进行分组。大多数团队都会从一个规则开始，当客户或市场需要不同的规则时，会添加第二个规则。',
+    '项目对帐户、审批规则和语言规则进行分组。大多数团队都会从一个规则开始，当客户或市场需要不同的规则时，会添加第二个规则。',
   'settings.ui.projects.emptyExample':
-    '示例：品牌“Acme EU”，语言为英语和德语，屏蔽术语“保证”，在 Instagram 上披露“付费合作伙伴关系”。',
-  'settings.ui.projects.voiceHelp': '这个品牌听起来怎么样。当您要求重写和检查声明时使用。',
+    '示例：项目“Acme EU”，语言为英语和德语，屏蔽术语“保证”，在 Instagram 上披露“付费合作伙伴关系”。',
+  'settings.ui.projects.voiceHelp': '这个项目听起来怎么样。当您要求重写和检查声明时使用。',
   'settings.ui.projects.audienceHelp': '每个市场的内容适合谁。',
   'settings.ui.projects.approvedClaimsHelp':
     '审稿人已清除的声明。此列表之外的任何内容都会在批准之前而不是发布之后进行标记。',
-  'settings.ui.projects.blockedTermsHelp': '阻碍该品牌日程安排的词语。每行一个。',
+  'settings.ui.projects.blockedTermsHelp': '阻碍该项目日程安排的词语。每行一个。',
   'settings.ui.projects.domainsHelp':
-    '该品牌可能链接到并缩短的域名。在编辑器中只能选择经过验证的域。',
+    '该项目可能链接到并缩短的域名。在编辑器中只能选择经过验证的域。',
   'settings.ui.projects.domainVerified': '已验证 {date}',
   'settings.ui.projects.domainPending': '尚未看到 DNS 记录',
   'settings.ui.projects.disclosureHelp':
@@ -139,7 +139,7 @@ export const webSettingsMessages = {
   'settings.ui.projects.glossaryEmpty': '尚无受保护条款。添加不得翻译或改写的产品名称和法律术语。',
   'settings.ui.projects.localeRulesHelp':
     '每种内容语言的规则。它们会在您改编或创译时应用，并向审阅者展示。',
-  'settings.ui.projects.saveProject': '保存品牌',
+  'settings.ui.projects.saveProject': '保存项目',
   'settings.ui.localization.description':
     '三个单独的设置：此应用程序的语言、您发布的语言以及您正在编写的市场。改变一个永远不会改变另一个。',
   'settings.ui.localization.interfaceOnlyEnglish':
@@ -250,7 +250,7 @@ export const webSettingsMessages = {
   'developer.ui.agents.emptyBody':
     '为您运行的每个自动化创建一个。单独的帐户意味着您可以撤销一个帐户而无需停止其他帐户。',
   'developer.ui.agents.emptyExample':
-    '示例：“内容代理”，品牌 Acme EU，每天可以在 07:00 到 22:00 之间起草和安排最多 6 个帖子，从不立即发布。',
+    '示例：“内容代理”，项目 Acme EU，每天可以在 07:00 到 22:00 之间起草和安排最多 6 个帖子，从不立即发布。',
   'developer.ui.agents.step.identity': '名称和目的',
   'developer.ui.agents.step.scope': '能达到什么程度',
   'developer.ui.agents.step.limits': '限制',
@@ -434,8 +434,8 @@ export const webSettingsMessages = {
   'developer.ui.webhooks.eventGroup.publishing': '出版',
   'developer.ui.webhooks.eventGroup.automation': '自动化和饲料',
   'developer.ui.webhooks.eventGroup.workspace': 'Workspace。工作空间',
-  'developer.ui.webhooks.scopeTitle': 'Project和账户',
-  'developer.ui.webhooks.scopeAll': '每个品牌和帐户',
+  'developer.ui.webhooks.scopeTitle': '项目和账户',
+  'developer.ui.webhooks.scopeAll': '每个项目和帐户',
   'developer.ui.webhooks.scopeSelected': '仅限我选择的',
   'developer.ui.webhooks.secretTitle': '签名秘笈',
   'developer.ui.webhooks.secretBody':

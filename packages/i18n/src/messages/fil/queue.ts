@@ -9,7 +9,7 @@
 export const queueMessages = {
   'queue.title': 'Queue ng pag-post',
   'queue.subtitle':
-    'Kailan handang mag-post ang project na ito, at gaano kalayo ang agwat. Walang na-post nang walang taong tumanggap sa oras na iyon.',
+    'Kailan handang mag-post ang proyektong ito, at gaano kalayo ang agwat. Walang na-post nang walang taong tumanggap sa oras na iyon.',
 
   'queue.rules.heading': 'Mga panuntunan ng queue',
   'queue.rules.empty':
@@ -44,7 +44,7 @@ export const queueMessages = {
 
   'queue.windows.heading': 'Lingguhang mga window',
   'queue.windows.help':
-    'Pumili ng mga lokal na oras na puwedeng mag-post ang project na ito. Gamitin ang mga field ng araw at oras, o ang mga button sa grid.',
+    'Pumili ng mga lokal na oras na puwedeng mag-post ang proyektong ito. Gamitin ang mga field ng araw at oras, o ang mga button sa grid.',
   'queue.windows.empty':
     'Wala pang window. Hindi kailanman makakapag-alok ng slot ang panuntunang walang window.',
   'queue.windows.add': 'Magdagdag ng window',
@@ -66,7 +66,7 @@ export const queueMessages = {
 
   'queue.blackouts.heading': 'Mga blackout date',
   'queue.blackouts.help':
-    'Mga araw na hindi mag-po-post ang project na ito, binabasa sa time zone ng panuntunan.',
+    'Mga araw na hindi mag-po-post ang proyektong ito, binabasa sa time zone ng panuntunan.',
   'queue.blackouts.empty': 'Walang blackout date.',
   'queue.blackouts.add': 'Magdagdag ng blackout',
   'queue.blackouts.remove': 'Alisin ang blackout',
@@ -75,7 +75,7 @@ export const queueMessages = {
   'queue.blackouts.entry': '{from} hanggang {to}',
 
   'queue.connections.heading': 'Mga account',
-  'queue.connections.all': 'Lahat ng account sa project na ito',
+  'queue.connections.all': 'Lahat ng account sa proyektong ito',
   'queue.connections.scoped':
     '{count, plural, one {# account} other {# na account}} na sinasaklaw ng panuntunang ito',
 
@@ -93,7 +93,7 @@ export const queueMessages = {
   'queue.slot.notAutomatic': 'Walang naka-iskedyul hanggang pumili ka ng oras na ito.',
 
   'queue.reason.noRulesConfigured':
-    'Walang naka-configure na panuntunan ng queue ang project na ito, kaya walang naging window na inilapat.',
+    'Walang naka-configure na panuntunan ng queue ang proyektong ito, kaya walang naging window na inilapat.',
   'queue.reason.fallbackFirstFreeHour': 'Ginamit sa halip ang unang libreng oras simula ngayon.',
   'queue.reason.matchedRule': 'Pinili ng panuntunang {name} ang oras na ito, sa {zone}.',
   'queue.reason.matchedWindow': 'Nasa loob ito ng window na {start} hanggang {end} sa {zone}.',

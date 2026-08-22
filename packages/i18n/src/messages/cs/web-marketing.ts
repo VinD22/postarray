@@ -158,7 +158,7 @@ export const webMarketingMessages = {
     'Každý externí zápis nese klíč idempotence, takže pád pracovníka po přijetí příspěvku platformou nevytvoří druhý.',
   'web.home.pillars.adapt.title': 'Přizpůsobte spíše než duplikujte',
   'web.home.pillars.adapt.body':
-    'U jednotlivých variant platformy, které můžete přepsat jeden účet po druhém, a transcreation spíše než doslovný překlad, s glosářem značky a jmenovaným recenzentem pro každý jazyk.',
+    'U jednotlivých variant platformy, které můžete přepsat jeden účet po druhém, a transcreation spíše než doslovný překlad, s glosářem projektu a jmenovaným recenzentem pro každý jazyk.',
   'web.home.pillars.adapt.proof':
     'Rozhraní je k dispozici ve vybraných jazycích. Adaptace obsahu pokrývá 30 jazyků obsahu a každý z nich lze před zveřejněním zkontrolovat.',
   'web.home.pillars.loop.title': 'Uzavřete smyčku',
@@ -304,7 +304,7 @@ export const webMarketingMessages = {
     'Hlavní verze nese myšlenku. Každý účet získá délku, oříznutí, nastavení a tón, který platforma očekává, a můžete je všechny vidět vedle sebe, než se zapíšete.',
   'web.creators.job.languages.title': 'Publikovat v jiném jazyce bez hádání',
   'web.creators.job.languages.body':
-    'Přepis zachovává záměr spíše než slova, používá glosář vaší značky a označí, zda jej četl nativní recenzent. Nic není publikováno v jazyce, za který nemůžete ručit, pokud to neřeknete.',
+    'Přepis zachovává záměr spíše než slova, používá glosář vašeho projektu a označí, zda jej četl nativní recenzent. Nic není publikováno v jazyce, za který nemůžete ručit, pokud to neřeknete.',
   'web.creators.job.rights.title': 'Uchovávejte záznam o svých právech u souboru',
   'web.creators.job.rights.body':
     'Média nesou, odkud pochází, kdo je držitelem práv a zda byla vytvořena pomocí generativního nástroje. Platformy se stále více ptají. Relay uloží vaši odpověď s aktivem, místo aby se vás znovu zeptal.',
@@ -329,7 +329,7 @@ export const webMarketingMessages = {
     'Každá publikace vytváří neměnnou účtenku s externím ID příspěvku a úplnou historií pokusů. Když se klient zeptá, zda se něco pokazilo v devět, odpověď má připojené časové razítko a identifikátor platformy.',
   'web.agencies.job.roles.title': 'Role, které odpovídají tomu, jak je práce rozdělena',
   'web.agencies.job.roles.body':
-    'Vlastník, správce, manažer, editor, schvalovatel, analytik a divák, v rozsahu podle značky a účtu. Neomezený počet členů týmu, protože poplatky za sedadlo nutí agentury sdílet přihlášení a to je bezpečnostní problém.',
+    'Vlastník, správce, manažer, editor, schvalovatel, analytik a divák, v rozsahu podle projektu a účtu. Neomezený počet členů týmu, protože poplatky za sedadlo nutí agentury sdílet přihlášení a to je bezpečnostní problém.',
   'web.agencies.limits.title': 'Hranice, jasně vyjádřená',
   'web.agencies.limits.body':
     'Jeden plán pokrývá 30 aktivních sociálních kanálů. Kanál je jeden sociální účet, stránka, profil, skupina nebo připojení k publikaci. Pokud potřebujete více než 30, řekněte nám, co potřebujete, a my vám dáme přímou odpověď, nikoli skrytou úroveň.',
@@ -504,7 +504,7 @@ export const webMarketingMessages = {
     'Jeden backend, čtyři cesty dovnitř. Každá sekce dokumentuje stejné případy použití, takže koncept, který se naučíte v REST API, je stejný koncept v MCP a v CLI.',
   'web.docs.section.start.title': 'Začínáme',
   'web.docs.section.start.body':
-    'Autentizace, pracovní prostory, značky a váš první publikovaný příspěvek.',
+    'Autentizace, pracovní prostory, projekty a váš první publikovaný příspěvek.',
   'web.docs.section.api.title': 'REST API',
   'web.docs.section.api.body': 'Zdroje, stránkování, idempotence, chybové kódy a limity sazeb.',
   'web.docs.section.mcp.title': 'MCP server',
