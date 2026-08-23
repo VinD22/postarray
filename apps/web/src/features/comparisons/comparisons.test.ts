@@ -1,4 +1,4 @@
-import { en } from '@relay/i18n';
+import { PUBLIC_LOCALE_CODES, en } from '@relay/i18n';
 import { formatLintResult, lintCatalog } from '@relay/i18n/lint';
 import { describe, expect, it } from 'vitest';
 
@@ -12,7 +12,12 @@ import {
   findComparisonPage,
 } from './registry';
 import { COMPARISON_SLUGS } from './slugs';
-import { comparisonSources, comparisonStrings, isInternalSource } from './types';
+import {
+  comparisonLocales,
+  comparisonSources,
+  comparisonStrings,
+  isInternalSource,
+} from './types';
 
 /**
  * The invariants that make a comparison page safe to publish.
@@ -63,6 +68,10 @@ describe('comparison registry', () => {
       expect(page.nextReview, page.slug).toMatch(ISO_DATE);
       expect(page.nextReview > page.checked, page.slug).toBe(true);
       expect(page.description.length, page.slug).toBeLessThanOrEqual(200);
+      expect(comparisonLocales(page), page.slug).toContain('en');
+      for (const locale of comparisonLocales(page)) {
+        expect(PUBLIC_LOCALE_CODES, `${page.slug}: ${locale}`).toContain(locale);
+      }
     }
   });
 

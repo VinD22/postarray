@@ -1,3 +1,6 @@
+import { createTranslator, en, getDirection } from '@relay/i18n';
+import type { Translator } from '@relay/i18n';
+
 /**
  * A self-contained API reference page.
  *
@@ -21,6 +24,7 @@ function escapeHtml(value: string): string {
 }
 
 interface OperationRow {
+  readonly operationId: string;
   readonly method: string;
   readonly path: string;
   readonly summary: string;
@@ -55,6 +59,7 @@ function collectRows(document: Record<string, unknown>): Map<string, OperationRo
         : [];
       const rows = grouped.get(tag) ?? [];
       rows.push({
+        operationId: typeof operation['operationId'] === 'string' ? operation['operationId'] : '',
         method: method.toUpperCase(),
         path,
         summary: typeof operation['summary'] === 'string' ? operation['summary'] : '',
@@ -68,6 +73,22 @@ function collectRows(document: Record<string, unknown>): Map<string, OperationRo
     }
   }
   return grouped;
+}
+
+const ENGLISH_TRANSLATOR = createTranslator('en', en);
+
+function text(translator: Translator, key: string, fallback: string): string {
+  const value = translator.format(key);
+  return value.length > 0 ? value : fallback;
+}
+
+function operationSummary(translator: Translator, row: OperationRow): string {
+  // Operation summaries remain in `/openapi.json` for compatibility. A
+  // localized presentation may opt into `developer.api.operation.*` keys as
+  // they are reviewed, while an absent translation truthfully shows the
+  // source summary rather than inventing a description.
+  const translated = text(translator, `developer.api.operation.${row.operationId}`, '');
+  return translated.length > 0 ? translated : row.summary;
 }
 
 const STYLES = `
@@ -92,7 +113,14 @@ a { color: var(--accent); }
 `;
 
 /** Render the page. `nonce` tags the inline style so the CSP stays strict. */
-export function renderReference(document: Record<string, unknown>, nonce: string): string {
+export function renderReference(
+  document: Record<string, unknown>,
+  nonce: string,
+  options: { readonly locale?: string; readonly translator?: Translator } = {},
+): string {
+  const locale = options.locale ?? 'en';
+  const translator = options.translator ?? ENGLISH_TRANSLATOR;
+  const direction = getDirection(locale);
   const info = (document['info'] ?? {}) as Record<string, unknown>;
   const grouped = collectRows(document);
   const sections = [...grouped.entries()]
@@ -111,29 +139,37 @@ export function renderReference(document: Record<string, unknown>, nonce: string
           return `<tr><td class="method">${escapeHtml(row.method)}</td><td class="path">${escapeHtml(
             row.path,
           )}${badges.length > 0 ? `<div class="tags">${badges}</div>` : ''}</td><td class="summary">${escapeHtml(
-            row.summary,
+            operationSummary(translator, row),
           )}</td></tr>`;
         })
         .join('');
-      return `<h2>${escapeHtml(tag)}</h2><div class="scroll"><table><thead><tr><th>Method</th><th>Path</th><th>Summary</th></tr></thead><tbody>${body}</tbody></table></div>`;
+      return `<h2>${escapeHtml(tag)}</h2><div class="scroll"><table><thead><tr><th>${escapeHtml(
+        text(translator, 'developer.api.method', 'Method'),
+      )}</th><th>${escapeHtml(text(translator, 'developer.api.path', 'Path'))}</th><th>${escapeHtml(
+        text(translator, 'common.summary', 'Summary'),
+      )}</th></tr></thead><tbody>${body}</tbody></table></div>`;
     })
     .join('');
 
   return `<!doctype html>
-<html lang="en" dir="ltr">
+<html lang="${escapeHtml(locale)}" dir="${escapeHtml(direction)}">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex">
-<title>${escapeHtml(String(info['title'] ?? 'Relay API'))}</title>
+<title>${escapeHtml(text(translator, 'developer.title', String(info['title'] ?? 'Relay API')))}</title>
 <style nonce="${escapeHtml(nonce)}">${STYLES}</style>
 </head>
 <body>
 <main>
-<h1>${escapeHtml(String(info['title'] ?? 'Relay API'))} <span class="tag">${escapeHtml(
+<h1>${escapeHtml(text(translator, 'developer.title', String(info['title'] ?? 'Relay API')))} <span class="tag">${escapeHtml(
     String(info['version'] ?? ''),
   )}</span></h1>
-<p class="lede">${escapeHtml(String(info['description'] ?? ''))} The machine readable document is at <a href="/openapi.json">/openapi.json</a>.</p>
+<p class="lede">${escapeHtml(
+    text(translator, 'web.docs.lede', String(info['description'] ?? '')),
+  )} <a href="/openapi.json">${escapeHtml(
+    text(translator, 'developer.docs.openapi', 'OpenAPI document'),
+  )}</a>.</p>
 ${sections}
 </main>
 </body>

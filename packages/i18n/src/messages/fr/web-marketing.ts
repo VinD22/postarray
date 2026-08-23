@@ -164,7 +164,7 @@ export const webMarketingMessages = {
   'web.home.pillars.adapt.body':
     'Variantes par plateforme que vous pouvez remplacer un compte à la fois, et transcréation plutôt que traduction littérale, avec un glossaire du projet et un réviseur nommé par langue.',
   'web.home.pillars.adapt.proof':
-    "L'interface est disponible dans certaines langues. L'adaptation du contenu couvre 30 langues de contenu et chacune d'entre elles peut être révisée avant sa publication.",
+    "L'interface est disponible dans certaines langues. L'adaptation du contenu couvre 20 langues de contenu et chacune d'entre elles peut être révisée avant sa publication.",
   'web.home.pillars.loop.title': 'Fermer la boucle',
   'web.home.pillars.loop.body':
     "Des analyses qui nomment la métrique, la plate-forme qui l'a signalée, le dénominateur et la date de sa dernière actualisation. Lorsqu'une plateforme ne signale pas quelque chose, Relay l'indique au lieu d'afficher un zéro.",

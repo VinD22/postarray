@@ -23,6 +23,7 @@ import {
 import { useTranslations } from '@relay/i18n/react';
 
 import { useComposer } from '../composer-context';
+import { contentLocaleLabel } from '../content-locale-options';
 import { BodyField, type CounterTarget } from './body-field';
 import { GlobalEditDialog } from './global-edit-dialog';
 import { LinkControls } from './link-controls';
@@ -121,7 +122,7 @@ export function MasterPanel({
               <SelectContent>
                 {contentLocales.map((locale) => (
                   <SelectItem key={locale} value={locale}>
-                    {locale}
+                    {contentLocaleLabel(locale)}
                   </SelectItem>
                 ))}
               </SelectContent>

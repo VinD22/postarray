@@ -162,7 +162,7 @@ export const webMarketingMessages = {
   'web.home.pillars.adapt.body':
     'Bawat variant ng platform na maaari mong i-override ang isang account nang paisa-isa, at transcreation sa halip na literal na pagsasalin, na may glossary ng proyekto at may pangalang tagasuri sa bawat wika.',
   'web.home.pillars.adapt.proof':
-    'Ang interface ay magagamit sa mga piling wika. Sinasaklaw ng adaptasyon ng nilalaman ang 30 wika ng nilalaman at bawat isa sa mga ito ay masusuri bago ito mag-publish.',
+    'Ang interface ay magagamit sa mga piling wika. Sinasaklaw ng adaptasyon ng nilalaman ang 20 wika ng nilalaman at bawat isa sa mga ito ay masusuri bago ito mag-publish.',
   'web.home.pillars.loop.title': 'Isara ang loop',
   'web.home.pillars.loop.body':
     'Analytics na pinangalanan ang sukatan, ang platform na nag-ulat nito, ang denominator at kung kailan ito huling na-refresh. Kung saan ang isang platform ay hindi nag-uulat ng isang bagay, Relay ang nagsasabi nito sa halip na magpakita ng zero.',

@@ -12,6 +12,7 @@ import { composerMessages } from './composer';
 import { connectionMessages } from './connections';
 import { developerMessages } from './developer';
 import { developerConnectMessages } from './developer-connect';
+import { digestMessages } from './digest';
 import { emailMessages } from './email';
 import { errorMessages } from './errors';
 import { growthMessages } from './growth';
@@ -76,6 +77,7 @@ export const en = {
   ...billingMessages,
   ...settingsMessages,
   ...developerMessages,
+  ...digestMessages,
   ...emailMessages,
   ...authMessages,
   ...onboardingMessages,
@@ -115,6 +117,8 @@ export {
   composerMessages,
   connectionMessages,
   developerMessages,
+  developerConnectMessages,
+  digestMessages,
   emailMessages,
   errorMessages,
   growthMessages,

@@ -63,6 +63,7 @@ const OUR_PRODUCT: ComparisonSource = {
 
 export const buildYourOwnIntegration: ComparisonPage = {
   slug: 'build-your-own-integration',
+  contentLocales: ['en'],
   title: 'This product compared with building your own integration',
   description:
     'What you take on when you write the platform integrations yourself, and what this product does not do for you today.',

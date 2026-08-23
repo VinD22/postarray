@@ -159,7 +159,7 @@ export const webMarketingMessages = {
   'web.home.pillars.adapt.body':
     'Per plattformsvarianter som du kan åsidosätta ett konto i taget, och transcreation snarare än bokstavlig översättning, med en projektordlista och en namngiven granskare per språk.',
   'web.home.pillars.adapt.proof':
-    'Gränssnittet är tillgängligt på utvalda språk. Innehållsanpassning täcker 30 innehållsspråk och vart och ett av dem kan granskas innan det publiceras.',
+    'Gränssnittet är tillgängligt på utvalda språk. Innehållsanpassning täcker 20 innehållsspråk och vart och ett av dem kan granskas innan det publiceras.',
   'web.home.pillars.loop.title': 'Stäng slingan',
   'web.home.pillars.loop.body':
     'Analyser som namnger måttet, plattformen som rapporterade det, nämnaren och när det senast uppdaterades. Där en plattform inte rapporterar något säger Relay det istället för att visa en nolla.',

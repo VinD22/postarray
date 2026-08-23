@@ -113,7 +113,7 @@ export const webMarketingMessages = {
   'web.home.pillars.adapt.body':
     '您可以一次覆盖一个帐户的每个平台变体，以及创译而不是直译，并带有项目术语表和每种语言的指定审阅者。',
   'web.home.pillars.adapt.proof':
-    '该界面有选定的语言版本。内容改编涵盖30种内容语言，每一种内容在发布前都会经过审核。',
+    '该界面有选定的语言版本。内容改编涵盖20种内容语言，每一种内容在发布前都会经过审核。',
   'web.home.pillars.loop.title': '关闭循环',
   'web.home.pillars.loop.body':
     '为指标命名的分析、报告该指标的平台、分母以及上次刷新时间。如果平台没有报告某些内容，Relay 会直接说明，而不是显示零。',

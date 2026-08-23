@@ -59,9 +59,9 @@ describe('locale review gate', () => {
     }
   });
 
-  it('names fifteen promise locales that are all real and all switched on', () => {
-    expect(REVIEW_PROMISE_LOCALE_CODES).toHaveLength(15);
-    expect(new Set(REVIEW_PROMISE_LOCALE_CODES).size).toBe(15);
+  it('names twenty promise locales that are all real and all switched on', () => {
+    expect(REVIEW_PROMISE_LOCALE_CODES).toHaveLength(20);
+    expect(new Set(REVIEW_PROMISE_LOCALE_CODES).size).toBe(20);
     for (const code of REVIEW_PROMISE_LOCALE_CODES) {
       expect(ACTIVE_LOCALE_CODES, code).toContain(code);
     }
@@ -194,10 +194,87 @@ describe('review gate rules', () => {
     );
     expect(rules).toContain('duplicate-review');
   });
+
+  it('requires a signed record for every locale in the final roster', () => {
+    const findings = checkAllLocaleReviews([review], {
+      ...sourcesFor(complete),
+      requiredLocaleCodes: ['de', 'fr'],
+    });
+    expect(findings).toEqual([
+      {
+        rule: 'review-missing',
+        locale: 'fr',
+        detail: 'No signed review record exists for this required public locale.',
+      },
+    ]);
+  });
+
+  it('can enforce the final zero-fallback launch gate', () => {
+    const sources = sourcesFor(complete);
+    const rules = checkLocaleReview(review, {
+      ...sources,
+      allowEnglishFallbacks: false,
+    }).map((finding) => finding.rule);
+    expect(rules).toContain('catalog-incomplete');
+  });
+
+  it('enforces specialist approvals, digests and contextual evidence when requested', () => {
+    const findings = checkLocaleReview(review, {
+      ...sourcesFor(complete),
+      requiredApprovals: ['legal', 'seo'],
+      requireDigests: true,
+      requireEvidence: true,
+    });
+    expect(findings.map((finding) => finding.rule)).toEqual(
+      expect.arrayContaining([
+        'approval-missing',
+        'catalog-digest-missing',
+        'source-digest-missing',
+        'review-evidence-missing',
+      ]),
+    );
+  });
+
+  it('accepts complete evidence metadata in the final review shape', () => {
+    const findings = checkLocaleReview(
+      {
+        ...review,
+        approvals: [
+          { area: 'legal', reviewer: 'Lena Weber', reviewedOn: '2026-08-02' },
+          { area: 'seo', reviewer: 'Sam Ortiz', reviewedOn: '2026-08-02' },
+        ],
+        catalogDigest: 'a'.repeat(64),
+        sourceDigest: 'b'.repeat(64),
+        evidence: ['/artifacts/i18n/de/catalog.png', 'https://example.test/review/de'],
+      },
+      {
+        ...sourcesFor(complete),
+        requiredApprovals: ['legal', 'seo'],
+        requireDigests: true,
+        requireEvidence: true,
+      },
+    );
+    expect(findings).toEqual([]);
+  });
+
+  it('rejects malformed review digests and evidence references', () => {
+    const findings = checkLocaleReview(
+      {
+        ...review,
+        catalogDigest: 'not-a-digest',
+        sourceDigest: 'also-not-a-digest',
+        evidence: ['screenshot.png', 'screenshot.png'],
+      },
+      { ...sourcesFor(complete), requireDigests: true, requireEvidence: true },
+    );
+    expect(findings.map((finding) => finding.rule)).toEqual(
+      expect.arrayContaining(['catalog-digest-invalid', 'source-digest-invalid', 'review-evidence-invalid']),
+    );
+  });
 });
 
 /**
- * The honest state of the fifteen, recorded as a test rather than as prose in
+ * The honest state of the twenty, recorded as a test rather than as prose in
  * a pull request, so the gap is visible every time the suite runs.
  *
  * It asserts the two facts that are true today and would have to change before

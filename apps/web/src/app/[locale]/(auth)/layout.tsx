@@ -38,8 +38,15 @@ const ASIDE_POINTS = [
 
 const ASIDE_SCENE_PROVIDERS = ['x', 'linkedin', 'instagram'] as const;
 
-export default async function AuthLayout({ children }: { readonly children: ReactNode }) {
-  const intl = await getStaticIntl();
+export default async function AuthLayout({
+  children,
+  params,
+}: {
+  readonly children: ReactNode;
+  readonly params: Promise<{ readonly locale: string }>;
+}) {
+  const { locale } = await params;
+  const intl = await getStaticIntl(locale);
 
   const sceneCards: AsideSceneCard[] = ASIDE_SCENE_PROVIDERS.map((provider) => ({
     provider,

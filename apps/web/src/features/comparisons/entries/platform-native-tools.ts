@@ -64,6 +64,7 @@ const OUR_METHODOLOGY: ComparisonSource = {
 
 export const platformNativeTools: ComparisonPage = {
   slug: 'platform-native-tools',
+  contentLocales: ['en'],
   title: "This product compared with the platforms' own scheduling tools",
   description:
     'What the platforms schedule for free, what could not be verified from their own help pages today, and what this product does not do at all.',

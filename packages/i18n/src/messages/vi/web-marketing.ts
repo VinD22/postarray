@@ -124,7 +124,7 @@ export const webMarketingMessages = {
   'web.home.pillars.adapt.body':
     'Trên mỗi biến thể nền tảng, bạn có thể ghi đè từng tài khoản một và dịch sáng tạo thay vì dịch nghĩa đen, với bảng thuật ngữ dự án và người đánh giá có tên cho mỗi ngôn ngữ.',
   'web.home.pillars.adapt.proof':
-    'Giao diện có sẵn trong các ngôn ngữ được chọn. Việc điều chỉnh nội dung bao gồm 30 ngôn ngữ nội dung và mỗi ngôn ngữ trong số đó đều có thể xem xét được trước khi xuất bản.',
+    'Giao diện có sẵn trong các ngôn ngữ được chọn. Việc điều chỉnh nội dung bao gồm 20 ngôn ngữ nội dung và mỗi ngôn ngữ trong số đó đều có thể xem xét được trước khi xuất bản.',
   'web.home.pillars.loop.title': 'Đóng vòng lặp',
   'web.home.pillars.loop.body':
     'Phân tích đặt tên cho chỉ số, nền tảng đã báo cáo chỉ số đó, mẫu số và thời điểm chỉ số được làm mới lần cuối. Khi nền tảng không báo cáo điều gì đó, Relay sẽ báo cáo điều đó thay vì hiển thị số 0.',

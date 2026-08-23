@@ -16,7 +16,7 @@ import {
   Textarea,
 } from '@relay/design-system/primitives';
 import { DefinitionList, Notice, PageHeader } from '@relay/design-system/patterns';
-import { ACTIVE_LOCALES, ALL_LOCALES, toDate } from '@relay/i18n';
+import { ACTIVE_LOCALES, toDate } from '@relay/i18n';
 import { useI18n, useTranslations } from '@relay/i18n/react';
 
 import { AsyncBoundary } from '../lib/async-boundary';
@@ -27,6 +27,7 @@ import { fromLines, toLines } from '../lib/lines';
 import { useSettingsMutation } from '../lib/use-settings-mutation';
 import { SettingRow, SettingsPanel, SettingsStack } from '../components/section';
 import { LOCALE_COOKIE, localizedHref } from '@/lib/i18n/routing';
+import { CONTENT_LOCALE_OPTIONS } from './localization-options';
 
 /** A fixed sample instant, so the preview never depends on when it is read. */
 const PREVIEW_INSTANT = '2026-08-11T14:30:00.000Z';
@@ -155,7 +156,7 @@ export function LocalizationScreen(): ReactNode {
                 description={t('settings.localization.contentLocalesHelp')}
               >
                 <ul className="grid gap-x-4 sm:grid-cols-2 lg:grid-cols-3">
-                  {ALL_LOCALES.map((locale) => {
+                  {CONTENT_LOCALE_OPTIONS.map((locale) => {
                     const checked = current.contentLocales.includes(locale.bcp47);
                     return (
                       <li key={locale.bcp47}>

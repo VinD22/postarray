@@ -1,6 +1,7 @@
 # @relay/web
 
-The Relay web surface: the product shell, authentication, onboarding and Home.
+The Relay web surface: the product shell, authentication, onboarding, marketing
+site, and localized public feeds.
 
 Next.js 16 (App Router, React Server Components by default), React 19,
 TypeScript in strict mode, Tailwind CSS v4 driven entirely by the tokens in
@@ -58,9 +59,10 @@ src/
     layout.tsx        html, fonts, theme bootstrap, providers
     globals.css       the only app stylesheet
     error.tsx         typed error boundary, renders a real remediation
-    (auth)/           sign in, sign up, magic link, password reset
-    (app)/            the signed-in area: shell + Home
-    (onboarding)/     first run, six steps
+    [locale]/         locale-aware public, auth, app and onboarding routes
+      (auth)/         sign in, sign up, magic link, password reset
+      (app)/          the signed-in area: shell + Home
+      (onboarding)/   first run, six steps
   components/
     shell/            navigation, command palette, Action center, menus
     home/             the Home sections
@@ -135,9 +137,10 @@ const intl = await getRequestIntl();
 intl.t.format('home.title');
 ```
 
-V1 ships English only. The routing, the negotiation and the provider structure
-are already locale aware, so adding a language is a catalog file plus a status
-change in `@relay/i18n`, with no route or component changes. Layout uses
+The public beta ships with an explicit 20-locale interface roster. The routing,
+negotiation and provider structure are locale aware, so adding a future language
+is a catalog file plus a status change in `@relay/i18n`, with no route or
+component changes. Layout uses
 logical properties throughout (`ps-*`, `border-e`, `text-start`) and no text
 container has a fixed width, so RTL is a `dir` attribute and a 40 percent
 longer translation still wraps.

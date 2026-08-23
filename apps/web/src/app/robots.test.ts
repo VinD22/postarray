@@ -9,7 +9,24 @@ describe('robots', () => {
 
     expect(rule?.allow).toBe('/');
     expect(rule?.disallow).toEqual(
-      expect.arrayContaining(['/sign-in', '/*/sign-in', '/settings', '/*/settings']),
+      expect.arrayContaining([
+        '/sign-in',
+        '/sign-in/*',
+        '/*/sign-in',
+        '/*/sign-in/*',
+        '/settings',
+        '/settings/*',
+        '/*/settings',
+        '/*/settings/*',
+        '/consent',
+        '/consent/*',
+        '/*/consent',
+        '/*/consent/*',
+        '/confirm',
+        '/confirm/*',
+        '/*/confirm',
+        '/*/confirm/*',
+      ]),
     );
     expect(result.sitemap).toMatch(/\/sitemap\.xml$/);
   });

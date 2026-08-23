@@ -33,6 +33,7 @@ import { mediaApi } from './resources/media';
 import { postingSetsApi, targetMemoryApi } from './resources/posting-sets';
 import { serviceAccountsApi } from './resources/service-accounts';
 import { dataDeletionApi, dataExportsApi } from './resources/data';
+import { oauthApi } from './resources/oauth';
 import {
   apiKeysApi,
   automationRulesApi,
@@ -75,6 +76,7 @@ export const api = {
   actionCenter: actionCenterApi,
   agentConfirmations: agentConfirmationsApi,
   assistant: assistantApi,
+  oauth: oauthApi,
 } as const;
 
 export type Api = typeof api;

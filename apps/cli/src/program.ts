@@ -1,13 +1,17 @@
 import { Command, CommanderError, Option } from 'commander';
 
 import { RelayError } from '@relay/contracts';
+import { createTranslator, en, loadCatalog } from '@relay/i18n';
+import type { Translator } from '@relay/i18n';
 
 import { assertNoTokenInArgv } from './config/credentials';
 import { createContext } from './context';
+import { resolveCliLocale } from './context';
 import type { CliContext, CliDeps, GlobalOptions } from './context';
 import { EXIT_OK, EXIT_USAGE, exitCodeFor } from './exit-codes';
 import { processWriter, renderFailure } from './output';
 import type { RenderInput, Writer } from './output';
+import { localizeHelp } from './help';
 
 import { authLogin, authLogout, authWhoAmI } from './commands/auth';
 import type { LoginFlow } from './commands/auth';
@@ -48,6 +52,8 @@ import {
 
 export const VERSION = '0.1.0';
 
+const englishHelpTranslator = createTranslator('en', en);
+
 interface CommandRunInput {
   readonly name: string;
   readonly run: (context: CliContext, render: RenderInput) => Promise<void>;
@@ -57,6 +63,7 @@ interface ProgramState {
   exitCode: number;
   json: boolean;
   writer: Writer;
+  translator?: Translator;
 }
 
 function globalsFrom(command: Command): GlobalOptions {
@@ -65,6 +72,7 @@ function globalsFrom(command: Command): GlobalOptions {
     profile?: string;
     apiUrl?: string;
     workspaceId?: string;
+    locale?: string;
     dryRun?: boolean;
     yes?: boolean;
   }>();
@@ -75,54 +83,90 @@ function globalsFrom(command: Command): GlobalOptions {
     workspaceId: options.workspaceId,
     dryRun: options.dryRun === true,
     yes: options.yes === true,
+    locale: options.locale,
   };
 }
 
-export function buildProgram(deps: CliDeps, state: ProgramState): Command {
+function argvOption(argv: readonly string[], name: string): string | undefined {
+  const prefix = `${name}=`;
+  for (let index = 0; index < argv.length; index += 1) {
+    const value = argv[index];
+    if (value === name) {
+      return argv[index + 1];
+    }
+    if (value?.startsWith(prefix)) {
+      return value.slice(prefix.length);
+    }
+  }
+  return undefined;
+}
+
+async function helpTranslatorFor(
+  argv: readonly string[],
+  deps: CliDeps,
+): Promise<Translator> {
+  try {
+    const config = await deps.configStore.read();
+    const profileName = argvOption(argv, '--profile') ?? deps.env.RELAY_PROFILE ?? config.defaultProfile;
+    const profile = config.profiles[profileName] ?? {};
+    const locale = resolveCliLocale({ locale: argvOption(argv, '--locale') }, profile, deps.env);
+    return createTranslator(locale, await loadCatalog(locale));
+  } catch {
+    return englishHelpTranslator;
+  }
+}
+
+export function buildProgram(
+  deps: CliDeps,
+  state: ProgramState,
+  helpTranslator: Translator = englishHelpTranslator,
+): Command {
   const program = new Command();
 
   program
     .name('relay')
-    .description('Relay publishing control plane')
+    .description(localizeHelp(helpTranslator, 'root'))
     .version(VERSION, '-V, --version')
     .configureOutput({
       writeOut: (text) => state.writer.out(text.replace(/\n$/, '')),
       writeErr: (text) => state.writer.err(text.replace(/\n$/, '')),
     })
     .exitOverride()
-    .option('--json', 'stable machine readable output', false)
-    .option('--profile <name>', 'configuration profile')
-    .option('--api-url <url>', 'API base URL')
-    .option('--workspace-id <id>', 'workspace to act in')
-    .option('--dry-run', 'show the external actions instead of performing them', false)
-    .option('--yes', 'skip interactive confirmation where one is offered', false);
+    .option('--json', localizeHelp(helpTranslator, 'optionJson'), false)
+    .option('--profile <name>', localizeHelp(helpTranslator, 'optionProfile'))
+    .option('--api-url <url>', localizeHelp(helpTranslator, 'optionApiUrl'))
+    .option('--workspace-id <id>', localizeHelp(helpTranslator, 'optionWorkspaceId'))
+    .option('--locale <bcp47>', localizeHelp(helpTranslator, 'optionLocale'))
+    .option('--dry-run', localizeHelp(helpTranslator, 'optionDryRun'), false)
+    .option('--yes', localizeHelp(helpTranslator, 'optionYes'), false);
 
   const attach = (command: Command, input: CommandRunInput): Command =>
     command.action(async () => {
       const options = globalsFrom(command);
       state.json = options.json;
+      const context = await createContext(options, { ...deps, writer: state.writer });
       const render: RenderInput = {
         command: input.name,
         json: options.json,
         writer: state.writer,
+        translator: context.translator,
       };
-      const context = await createContext(options, { ...deps, writer: state.writer });
       await input.run(context, render);
     });
 
   // ---------------------------------------------------------------- auth ----
-  const auth = program.command('auth').description('authentication');
+  const auth = program.command('auth').description(localizeHelp(helpTranslator, 'authGroup'));
 
   const loginCommand = auth
     .command('login')
-    .description('obtain a scoped grant. Risk: read. No token is ever printed')
+    .description(localizeHelp(helpTranslator, 'authLogin'))
     .addOption(
-      new Option('--flow <flow>', 'authorization flow')
+      new Option('--flow <flow>', localizeHelp(helpTranslator, 'authFlow'))
         .choices(['device', 'authorization-code'])
         .default('device'),
     )
-    .option('--scope <scope...>', 'scopes to request')
-    .option('--workspace <id>', 'workspace to bind the grant to');
+    .option('--scope <scope...>', localizeHelp(helpTranslator, 'authScopes'))
+    .option('--workspace <id>', localizeHelp(helpTranslator, 'authWorkspace'));
   attach(loginCommand, {
     name: 'auth login',
     run: async (context, render) => {
@@ -139,26 +183,26 @@ export function buildProgram(deps: CliDeps, state: ProgramState): Command {
     },
   });
 
-  attach(auth.command('logout').description('revoke the grant and forget it locally'), {
+  attach(auth.command('logout').description(localizeHelp(helpTranslator, 'authLogout')), {
     name: 'auth logout',
     run: authLogout,
   });
 
-  attach(auth.command('whoami').description('subject, workspace, scopes and approval level'), {
+  attach(auth.command('whoami').description(localizeHelp(helpTranslator, 'authWhoami')), {
     name: 'auth whoami',
     run: authWhoAmI,
   });
 
   // ------------------------------------------------------------ accounts ----
-  const accounts = program.command('accounts').description('connected accounts');
+  const accounts = program.command('accounts').description(localizeHelp(helpTranslator, 'accountsGroup'));
 
   const accountsListCommand = accounts
     .command('list')
-    .description('connected accounts and their health. Risk: read')
+    .description(localizeHelp(helpTranslator, 'accountsList'))
     .option('--provider <provider>')
     .option('--project-id <id>')
     .option('--cursor <cursor>')
-    .option('--limit <n>', 'page size', (value) => Number.parseInt(value, 10));
+    .option('--limit <n>', localizeHelp(helpTranslator, 'pageSize'), (value) => Number.parseInt(value, 10));
   attach(accountsListCommand, {
     name: 'accounts list',
     run: async (context, render) => {
@@ -174,7 +218,7 @@ export function buildProgram(deps: CliDeps, state: ProgramState): Command {
 
   const capabilitiesCommand = accounts
     .command('capabilities <connection-id>')
-    .description('what this account may do right now. Risk: read');
+    .description(localizeHelp(helpTranslator, 'accountsCapabilities'));
   attach(capabilitiesCommand, {
     name: 'accounts capabilities',
     run: async (context, render) => {
@@ -184,14 +228,12 @@ export function buildProgram(deps: CliDeps, state: ProgramState): Command {
   });
 
   // --------------------------------------------------------------- posts ----
-  const posts = program.command('posts').description('drafts, schedules and publications');
+  const posts = program.command('posts').description(localizeHelp(helpTranslator, 'postsGroup'));
 
   const validateCommand = posts
     .command('validate [file]')
-    .description(
-      'deterministic preflight against live platform limits. Risk: read with --content-item. With a file it first creates the draft, which publishes nothing but does need --idempotency-key and drafts:write',
-    )
-    .option('--content-item <id>', 'validate an existing draft instead of a file')
+    .description(localizeHelp(helpTranslator, 'postsValidate'))
+    .option('--content-item <id>', localizeHelp(helpTranslator, 'postsExistingDraft'))
     .option('--project-id <id>')
     .option('--idempotency-key <key>');
   attach(validateCommand, {
@@ -214,7 +256,7 @@ export function buildProgram(deps: CliDeps, state: ProgramState): Command {
 
   const previewCommand = posts
     .command('preview')
-    .description('exact platform variant preview. Risk: read')
+    .description(localizeHelp(helpTranslator, 'postsPreview'))
     .requiredOption('--content-item <id>')
     .requiredOption('--target <id>', 'connection id of the target');
   attach(previewCommand, {
@@ -230,9 +272,7 @@ export function buildProgram(deps: CliDeps, state: ProgramState): Command {
 
   const scheduleCommand = posts
     .command('schedule <file>')
-    .description(
-      'create a draft and schedule it. Risk: consequential. Requires --idempotency-key and posts:schedule',
-    )
+    .description(localizeHelp(helpTranslator, 'postsSchedule'))
     .option('--idempotency-key <key>')
     .option('--project-id <id>');
   attach(scheduleCommand, {
@@ -246,14 +286,12 @@ export function buildProgram(deps: CliDeps, state: ProgramState): Command {
 
   const publishCommand = posts
     .command('publish')
-    .description(
-      'publish immediately. Risk: consequential. Requires --confirm, --idempotency-key and posts:publish',
-    )
+    .description(localizeHelp(helpTranslator, 'postsPublish'))
     .option('--content-item <id>')
     .option('--file <path>')
     .option('--project-id <id>')
     .option('--idempotency-key <key>')
-    .option('--confirm', 'explicit human confirmation for immediate publication', false);
+    .option('--confirm', localizeHelp(helpTranslator, 'postsConfirm'), false);
   attach(publishCommand, {
     name: 'posts publish',
     run: async (context, render) => {
@@ -276,7 +314,7 @@ export function buildProgram(deps: CliDeps, state: ProgramState): Command {
 
   const statusCommand = posts
     .command('status <job-id>')
-    .description('publish job state, attempts and receipt. Risk: read');
+    .description(localizeHelp(helpTranslator, 'postsStatus'));
   attach(statusCommand, {
     name: 'posts status',
     run: async (context, render) => {
@@ -287,7 +325,7 @@ export function buildProgram(deps: CliDeps, state: ProgramState): Command {
 
   const cancelCommand = posts
     .command('cancel <job-id>')
-    .description('cancel a scheduled job. Risk: consequential. Requires posts:cancel')
+    .description(localizeHelp(helpTranslator, 'postsCancel'))
     .option('--reason <reason>')
     .option('--idempotency-key <key>');
   attach(cancelCommand, {
@@ -301,11 +339,11 @@ export function buildProgram(deps: CliDeps, state: ProgramState): Command {
 
   const postsListCommand = posts
     .command('list')
-    .description('content items in this workspace. Risk: read')
+    .description(localizeHelp(helpTranslator, 'postsList'))
     .option('--state <state>')
     .option('--project-id <id>')
     .option('--cursor <cursor>')
-    .option('--limit <n>', 'page size', (value) => Number.parseInt(value, 10));
+    .option('--limit <n>', localizeHelp(helpTranslator, 'pageSize'), (value) => Number.parseInt(value, 10));
   attach(postsListCommand, {
     name: 'posts list',
     run: async (context, render) => {
@@ -322,15 +360,15 @@ export function buildProgram(deps: CliDeps, state: ProgramState): Command {
   // --------------------------------------------------------------- media ----
   const media = program
     .command('media')
-    .description('the media library. Nothing here generates media');
+    .description(localizeHelp(helpTranslator, 'mediaGroup'));
 
   const mediaListCommand = media
     .command('list')
-    .description('assets in this workspace. Risk: read')
+    .description(localizeHelp(helpTranslator, 'mediaList'))
     .option('--project-id <id>')
-    .option('--kind <kind>', 'image, video, gif, document or audio')
+    .option('--kind <kind>', localizeHelp(helpTranslator, 'mediaKind'))
     .option('--cursor <cursor>')
-    .option('--limit <n>', 'page size', (value) => Number.parseInt(value, 10));
+    .option('--limit <n>', localizeHelp(helpTranslator, 'pageSize'), (value) => Number.parseInt(value, 10));
   attach(mediaListCommand, {
     name: 'media list',
     run: async (context, render) => {
@@ -346,7 +384,7 @@ export function buildProgram(deps: CliDeps, state: ProgramState): Command {
 
   const mediaGetCommand = media
     .command('get <media-id>')
-    .description('one asset, its scan state and its retention date. Risk: read');
+    .description(localizeHelp(helpTranslator, 'mediaGet'));
   attach(mediaGetCommand, {
     name: 'media get',
     run: async (context, render) => {
@@ -357,9 +395,7 @@ export function buildProgram(deps: CliDeps, state: ProgramState): Command {
 
   const mediaUploadCommand = media
     .command('upload <file>')
-    .description(
-      'upload a local file and hand it to processing. Risk: reversible. Requires --idempotency-key and media:write',
-    )
+    .description(localizeHelp(helpTranslator, 'mediaUpload'))
     .option('--project-id <id>')
     .option('--idempotency-key <key>');
   attach(mediaUploadCommand, {
@@ -373,9 +409,7 @@ export function buildProgram(deps: CliDeps, state: ProgramState): Command {
 
   const mediaImportCommand = media
     .command('import <url>')
-    .description(
-      'import a finished file by URL. Risk: reversible. Requires --idempotency-key and media:write',
-    )
+    .description(localizeHelp(helpTranslator, 'mediaImport'))
     .option('--project-id <id>')
     .option('--idempotency-key <key>');
   attach(mediaImportCommand, {
@@ -388,15 +422,15 @@ export function buildProgram(deps: CliDeps, state: ProgramState): Command {
   });
 
   // ------------------------------------------------------------ calendar ----
-  const calendar = program.command('calendar').description('scheduled work');
+  const calendar = program.command('calendar').description(localizeHelp(helpTranslator, 'calendarGroup'));
   const calendarListCommand = calendar
     .command('list')
-    .description('scheduled entries in a window. Risk: read')
+    .description(localizeHelp(helpTranslator, 'calendarList'))
     .requiredOption('--from <instant>')
     .requiredOption('--to <instant>')
     .option('--project-id <id>')
     .option('--cursor <cursor>')
-    .option('--limit <n>', 'page size', (value) => Number.parseInt(value, 10));
+    .option('--limit <n>', localizeHelp(helpTranslator, 'pageSize'), (value) => Number.parseInt(value, 10));
   attach(calendarListCommand, {
     name: 'calendar list',
     run: async (context, render) => {
@@ -412,10 +446,10 @@ export function buildProgram(deps: CliDeps, state: ProgramState): Command {
   });
 
   // ------------------------------------------------------------ receipts ----
-  const receipts = program.command('receipts').description('publication receipts');
+  const receipts = program.command('receipts').description(localizeHelp(helpTranslator, 'receiptsGroup'));
   const receiptsGetCommand = receipts
     .command('get <receipt-id>')
-    .description('immutable evidence of one publication. Risk: read');
+    .description(localizeHelp(helpTranslator, 'receiptsGet'));
   attach(receiptsGetCommand, {
     name: 'receipts get',
     run: async (context, render) => {
@@ -425,11 +459,11 @@ export function buildProgram(deps: CliDeps, state: ProgramState): Command {
   });
 
   // ----------------------------------------------------------- analytics ----
-  const analytics = program.command('analytics').description('metrics with their definitions');
+  const analytics = program.command('analytics').description(localizeHelp(helpTranslator, 'analyticsGroup'));
 
   const analyticsPostCommand = analytics
     .command('post <receipt-id>')
-    .description('post metrics. Unavailable metrics are labelled, never zero. Risk: read');
+    .description(localizeHelp(helpTranslator, 'analyticsPost'));
   attach(analyticsPostCommand, {
     name: 'analytics post',
     run: async (context, render) => {
@@ -440,7 +474,7 @@ export function buildProgram(deps: CliDeps, state: ProgramState): Command {
 
   const analyticsAccountCommand = analytics
     .command('account <connection-id>')
-    .description('account metrics. Risk: read')
+    .description(localizeHelp(helpTranslator, 'analyticsAccount'))
     .option('--from <instant>')
     .option('--to <instant>');
   attach(analyticsAccountCommand, {
@@ -453,12 +487,12 @@ export function buildProgram(deps: CliDeps, state: ProgramState): Command {
   });
 
   // -------------------------------------------------------------- growth ----
-  const growth = program.command('growth').description('growth advisor');
-  const plan = growth.command('plan').description('growth plans');
+  const growth = program.command('growth').description(localizeHelp(helpTranslator, 'growthGroup'));
+  const plan = growth.command('plan').description(localizeHelp(helpTranslator, 'growthPlan'));
 
   const planGetCommand = plan
     .command('get <plan-id>')
-    .description('a versioned plan summary. Risk: read');
+    .description(localizeHelp(helpTranslator, 'growthPlanGet'));
   attach(planGetCommand, {
     name: 'growth plan get',
     run: async (context, render) => {
@@ -469,9 +503,9 @@ export function buildProgram(deps: CliDeps, state: ProgramState): Command {
 
   const planExportCommand = plan
     .command('export <plan-id>')
-    .description('export a plan. Risk: read')
+    .description(localizeHelp(helpTranslator, 'growthPlanExport'))
     .addOption(
-      new Option('--format <format>', 'export format')
+      new Option('--format <format>', localizeHelp(helpTranslator, 'growthFormat'))
         .choices(['markdown', 'json', 'yaml'])
         .default('markdown'),
     );
@@ -485,13 +519,13 @@ export function buildProgram(deps: CliDeps, state: ProgramState): Command {
   });
 
   // --------------------------------------------------------------- rules ----
-  const rules = program.command('rules').description('automation rules');
+  const rules = program.command('rules').description(localizeHelp(helpTranslator, 'rulesGroup'));
 
   const rulesListCommand = rules
     .command('list')
-    .description('rules and their limits. Risk: read')
+    .description(localizeHelp(helpTranslator, 'rulesList'))
     .option('--cursor <cursor>')
-    .option('--limit <n>', 'page size', (value) => Number.parseInt(value, 10));
+    .option('--limit <n>', localizeHelp(helpTranslator, 'pageSize'), (value) => Number.parseInt(value, 10));
   attach(rulesListCommand, {
     name: 'rules list',
     run: async (context, render) => {
@@ -502,7 +536,7 @@ export function buildProgram(deps: CliDeps, state: ProgramState): Command {
 
   const rulesTestCommand = rules
     .command('test <rule-id>')
-    .description('test run against a sample event. Performs no external action. Risk: read');
+    .description(localizeHelp(helpTranslator, 'rulesTest'));
   attach(rulesTestCommand, {
     name: 'rules test',
     run: async (context, render) => {
@@ -512,11 +546,11 @@ export function buildProgram(deps: CliDeps, state: ProgramState): Command {
   });
 
   // --------------------------------------------------------------- links ----
-  const links = program.command('links').description('tracked short links');
+  const links = program.command('links').description(localizeHelp(helpTranslator, 'linksGroup'));
 
   const linksCreateCommand = links
     .command('create <destination>')
-    .description('mint a tracked short link. Risk: reversible. Requires --idempotency-key')
+    .description(localizeHelp(helpTranslator, 'linksCreate'))
     .option('--campaign-id <id>')
     .option('--domain-id <id>')
     .option('--utm-source <value>')
@@ -545,10 +579,10 @@ export function buildProgram(deps: CliDeps, state: ProgramState): Command {
 
   const linksStatsCommand = links
     .command('stats <link-id>')
-    .description('first-party redirect measurements. Risk: read')
+    .description(localizeHelp(helpTranslator, 'linksStats'))
     .option('--from <instant>')
     .option('--to <instant>')
-    .option('--time-zone <iana-zone>', 'reporting time zone', 'UTC');
+    .option('--time-zone <iana-zone>', localizeHelp(helpTranslator, 'reportingTimeZone'), 'UTC');
   attach(linksStatsCommand, {
     name: 'links stats',
     run: async (context, render) => {
@@ -559,11 +593,11 @@ export function buildProgram(deps: CliDeps, state: ProgramState): Command {
   });
 
   // -------------------------------------------------------------- config ----
-  const config = program.command('config').description('CLI settings. Never credentials');
+  const config = program.command('config').description(localizeHelp(helpTranslator, 'configGroup'));
 
   const configSetCommand = config
     .command('set <key> <value>')
-    .description('set apiUrl, workspaceId, locale, output or profile');
+    .description(localizeHelp(helpTranslator, 'configSet'));
   attach(configSetCommand, {
     name: 'config set',
     run: async (context, render) => {
@@ -572,7 +606,7 @@ export function buildProgram(deps: CliDeps, state: ProgramState): Command {
     },
   });
 
-  const configUnsetCommand = config.command('unset <key>').description('clear one setting');
+  const configUnsetCommand = config.command('unset <key>').description(localizeHelp(helpTranslator, 'configUnset'));
   attach(configUnsetCommand, {
     name: 'config unset',
     run: async (context, render) => {
@@ -581,7 +615,7 @@ export function buildProgram(deps: CliDeps, state: ProgramState): Command {
     },
   });
 
-  const configGetCommand = config.command('get [key]').description('read settings');
+  const configGetCommand = config.command('get [key]').description(localizeHelp(helpTranslator, 'configGet'));
   attach(configGetCommand, {
     name: 'config get',
     run: async (context, render) => {
@@ -609,7 +643,9 @@ export async function runCli(argv: readonly string[], deps: CliDeps): Promise<Ru
 
   try {
     assertNoTokenInArgv(argv);
-    const program = buildProgram({ ...deps, writer }, state);
+    const helpTranslator = await helpTranslatorFor(argv, deps);
+    state.translator = helpTranslator;
+    const program = buildProgram({ ...deps, writer }, state, helpTranslator);
     await program.parseAsync([...argv], { from: 'user' });
     return { exitCode: state.exitCode };
   } catch (error) {
@@ -618,7 +654,7 @@ export async function runCli(argv: readonly string[], deps: CliDeps): Promise<Ru
       return { exitCode: error.exitCode === 0 ? EXIT_OK : EXIT_USAGE };
     }
     const relayError = RelayError.fromUnknown(error);
-    renderFailure({ command: 'relay', json: state.json, writer }, relayError);
+    renderFailure({ command: 'relay', json: state.json, writer, translator: state.translator }, relayError);
     return { exitCode: exitCodeFor(relayError.code) };
   }
 }

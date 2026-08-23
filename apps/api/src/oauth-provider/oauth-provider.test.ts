@@ -1,6 +1,7 @@
 import { randomBytes } from 'node:crypto';
 
 import { newIdFor } from '@relay/contracts';
+import { ACTIVE_LOCALE_CODES } from '@relay/i18n';
 import request from 'supertest';
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 
@@ -105,6 +106,7 @@ describe('discovery', () => {
     // Advertising `plain` would invite a client to use it; we do not accept it.
     expect(response.body.grant_types_supported).toEqual(['authorization_code', 'refresh_token']);
     expect(response.body.token_endpoint).toContain('/oauth/token');
+    expect(response.body.ui_locales_supported).toEqual([...ACTIVE_LOCALE_CODES]);
   });
 
   it('publishes the protected resource identifier a token must be bound to', async () => {

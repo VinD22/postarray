@@ -1,6 +1,7 @@
 import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
 import type { ReactNode } from 'react';
+import { DEFAULT_LOCALE } from '@relay/i18n';
 
 import { ComparisonCellView } from '@/features/comparisons/components/comparison-cell';
 import { comparisonDisclosures } from '@/features/comparisons/disclosures';
@@ -9,7 +10,11 @@ import {
   comparisonPath,
   findComparisonPage,
 } from '@/features/comparisons/registry';
-import { comparisonSources, isInternalSource } from '@/features/comparisons/types';
+import {
+  comparisonLocales,
+  comparisonSources,
+  isInternalSource,
+} from '@/features/comparisons/types';
 import type { ComparisonCell, ComparisonVerdict } from '@/features/comparisons/types';
 import {
   EditorialDisplay,
@@ -74,7 +79,13 @@ export async function generateMetadata({
     return {};
   }
 
-  return contentPageMetadata(page.title, page.description, comparisonPath(page.slug), locale);
+  return contentPageMetadata(
+    page.title,
+    page.description,
+    comparisonPath(page.slug),
+    locale,
+    comparisonLocales(page),
+  );
 }
 
 export default async function ComparisonPage({
@@ -91,6 +102,7 @@ export default async function ComparisonPage({
   const t = await marketingTranslator(locale);
   const disclosures = comparisonDisclosures();
   const sources = comparisonSources(page);
+  const contentLocale = comparisonLocales(page).includes(locale) ? locale : DEFAULT_LOCALE;
 
   const cellView = (cell: ComparisonCell): ReactNode => (
     <ComparisonCellView
@@ -259,7 +271,7 @@ export default async function ComparisonPage({
         </div>
       </Container>
 
-      <JsonLd node={faqJsonLd([...page.questions], locale)} />
+      <JsonLd node={faqJsonLd([...page.questions], contentLocale)} />
       <JsonLd
         node={breadcrumbJsonLd(
           [
@@ -267,7 +279,7 @@ export default async function ComparisonPage({
             { name: t.t('web.compare.title'), path: ROUTES.compare },
             { name: page.title, path: comparisonPath(page.slug) },
           ],
-          locale,
+          contentLocale,
         )}
       />
     </>

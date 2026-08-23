@@ -1,6 +1,14 @@
 import { readFile } from 'node:fs/promises';
 
 import { RelayError } from '@relay/contracts';
+import {
+  ACTIVE_LOCALE_CODES,
+  DEFAULT_LOCALE,
+  createTranslator,
+  loadCatalog,
+  resolveLocale,
+} from '@relay/i18n';
+import type { Translator } from '@relay/i18n';
 
 import { createApiClient } from './api/client';
 import type { ApiClient, FetchLike } from './api/client';
@@ -29,6 +37,10 @@ export interface CliEnvironment {
   readonly RELAY_CLIENT_ID?: string | undefined;
   readonly API_URL?: string | undefined;
   readonly NO_COLOR?: string | undefined;
+  readonly RELAY_LOCALE?: string | undefined;
+  readonly LC_ALL?: string | undefined;
+  readonly LC_MESSAGES?: string | undefined;
+  readonly LANG?: string | undefined;
 }
 
 export interface GlobalOptions {
@@ -38,6 +50,7 @@ export interface GlobalOptions {
   readonly workspaceId?: string | undefined;
   readonly dryRun: boolean;
   readonly yes: boolean;
+  readonly locale?: string | undefined;
 }
 
 export interface Clock {
@@ -75,6 +88,7 @@ export interface CliContext {
   readonly apiUrl: string;
   readonly workspaceId: string | null;
   readonly locale: string;
+  readonly translator: Translator;
   readonly writer: Writer;
   readonly clock: Clock;
   readonly deps: CliDeps & { readonly readFile: FileReader };
@@ -88,7 +102,25 @@ export interface CliContext {
 /** The first-party public client id the CLI identifies itself as. */
 export const DEFAULT_CLIENT_ID = 'rly_pk_relay_cli';
 
-const DEFAULT_LOCALE = 'en';
+/** Resolve a human-facing locale without widening the API's locale contract. */
+export function resolveCliLocale(
+  options: Pick<GlobalOptions, 'locale'>,
+  profile: Pick<Profile, 'locale'>,
+  env: Pick<CliEnvironment, 'RELAY_LOCALE' | 'LC_ALL' | 'LC_MESSAGES' | 'LANG'>,
+): string {
+  const requested =
+    options.locale ??
+    profile.locale ??
+    env.RELAY_LOCALE ??
+    env.LC_ALL ??
+    env.LC_MESSAGES ??
+    env.LANG;
+  // POSIX environments commonly expose values such as `pt_BR.UTF-8` or
+  // `de_DE@euro`, while the locale registry uses BCP-47. Strip the encoding
+  // and modifier before handing the value to the shared resolver.
+  const bcp47 = requested?.trim().split(/[.@]/, 1)[0]?.replace(/_/g, '-');
+  return resolveLocale(bcp47 ?? null, ACTIVE_LOCALE_CODES, DEFAULT_LOCALE);
+}
 
 function requireApiUrl(candidate: string | undefined): string {
   if (candidate === undefined || candidate.trim().length === 0) {
@@ -140,7 +172,8 @@ export async function createContext(options: GlobalOptions, deps: CliDeps): Prom
     credential?.workspaceId ??
     null;
 
-  const locale = profile.locale ?? DEFAULT_LOCALE;
+  const locale = resolveCliLocale(options, profile, deps.env);
+  const translator = createTranslator(locale, await loadCatalog(locale));
   const writer = deps.writer ?? processWriter;
   const clock = deps.clock ?? systemClock;
   const oauthTransport = deps.oauthTransport ?? createFetchTransport();
@@ -161,6 +194,7 @@ export async function createContext(options: GlobalOptions, deps: CliDeps): Prom
     apiUrl,
     workspaceId,
     locale,
+    translator,
     writer,
     clock,
     deps: { ...deps, readFile: deps.readFile ?? nodeFileReader },

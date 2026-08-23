@@ -1,7 +1,7 @@
 import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
 import type { ReactNode } from 'react';
-import { ACTIVE_LOCALES } from '@relay/i18n';
+import { ACTIVE_LOCALES, DEFAULT_LOCALE } from '@relay/i18n';
 
 import { Reveal } from '@/components/motion';
 import { ArticleBody } from '@/features/blog/components/article-body';
@@ -89,6 +89,11 @@ export default async function BlogArticlePage({
   const headings = articleHeadings(content);
   const faq = articleFaq(content);
   const locales = articleLocales(article);
+  // If the requested interface locale has no article translation, the body,
+  // canonical and structured-data language all remain English together.
+  const contentLocale = hasArticleLocale(article, locale) ? locale : DEFAULT_LOCALE;
+  const structuredTranslator =
+    contentLocale === locale ? t : await marketingTranslator(contentLocale);
   const authorName = t.format(article.author.nameKey);
   const reviewerName =
     article.reviewer === undefined ? undefined : t.format(article.reviewer.nameKey);
@@ -249,18 +254,18 @@ export default async function BlogArticlePage({
         <JsonLd
           node={faqJsonLd(
             faq.map((entry) => ({ question: entry.q, answer: entry.a })),
-            locale,
+            contentLocale,
           )}
         />
       )}
       <JsonLd
         node={breadcrumbJsonLd(
           [
-            { name: t.t('web.brand.name'), path: ROUTES.home },
-            { name: t.t('web.blog.title'), path: ROUTES.blog },
+            { name: structuredTranslator.t('web.brand.name'), path: ROUTES.home },
+            { name: structuredTranslator.t('web.blog.title'), path: ROUTES.blog },
             { name: content.title, path: blogArticlePath(article.slug) },
           ],
-          locale,
+          contentLocale,
         )}
       />
     </Container>

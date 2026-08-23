@@ -163,7 +163,7 @@ export const webMarketingMessages = {
   'web.home.pillars.adapt.body':
     'Plattformspezifische Varianten, mit denen Sie jeweils ein Konto überschreiben können, und Transkreation statt wörtlicher Übersetzung, mit einem Projektglossar und einem benannten Prüfer pro Sprache.',
   'web.home.pillars.adapt.proof':
-    'Die Benutzeroberfläche ist in ausgewählten Sprachen verfügbar. Die Inhaltsanpassung umfasst 30 Inhaltssprachen und jede einzelne davon kann vor der Veröffentlichung überprüft werden.',
+    'Die Benutzeroberfläche ist in ausgewählten Sprachen verfügbar. Die Inhaltsanpassung umfasst 20 Inhaltssprachen und jede einzelne davon kann vor der Veröffentlichung überprüft werden.',
   'web.home.pillars.loop.title': 'Schließen Sie den Kreislauf',
   'web.home.pillars.loop.body':
     'Analysen, die die Metrik, die Plattform, die sie gemeldet hat, den Nenner und den Zeitpunkt der letzten Aktualisierung benennen. Wenn eine Plattform etwas nicht meldet, sagt Relay dies, anstatt eine Null anzuzeigen.',

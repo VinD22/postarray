@@ -35,6 +35,18 @@ export interface LocaleReview {
   /** ISO 8601 calendar date, `YYYY-MM-DD`, in UTC. The day the review ended. */
   readonly reviewedOn: string;
   /**
+   * Optional specialist sign-offs for copy whose correctness is not purely
+   * linguistic. The final launch gate can require these areas without making
+   * a beta review record pretend that a legal or security review happened.
+   */
+  readonly approvals?: readonly LocaleReviewApproval[];
+  /** SHA-256 digest of the reviewed locale catalog, when recorded by CI. */
+  readonly catalogDigest?: string;
+  /** SHA-256 digest of the reviewed English source, when recorded by CI. */
+  readonly sourceDigest?: string;
+  /** Links or repository paths containing the contextual review evidence. */
+  readonly evidence?: readonly string[];
+  /**
    * Keys whose translated value is intentionally byte-identical to English:
    * proper nouns, ISO codes, symbols. The reviewer states them explicitly so
    * an untranslated sentence cannot hide among the legitimate ones.
@@ -42,8 +54,23 @@ export interface LocaleReview {
   readonly identicalToEnglish?: readonly string[];
 }
 
+export type LocaleReviewArea =
+  | 'catalog'
+  | 'editorial'
+  | 'seo'
+  | 'legal'
+  | 'billing'
+  | 'security'
+  | 'accessibility';
+
+export interface LocaleReviewApproval {
+  readonly area: LocaleReviewArea;
+  readonly reviewer: string;
+  readonly reviewedOn: string;
+}
+
 /**
- * The fifteen locales the founder named as the public multilingual promise.
+ * The twenty locales the founder named as the public multilingual promise.
  *
  * This is the *target*, not a claim. Membership here changes no behaviour and
  * grants no locale a reviewed badge; it exists so the gate can report the gap
@@ -66,17 +93,20 @@ export const REVIEW_PROMISE_LOCALE_CODES: readonly string[] = [
   'ja',
   'ko',
   'zh-Hans',
+  'ru',
+  'uk',
+  'he',
+  'vi',
+  'th',
 ];
 
 /**
  * Signed reviews. One entry per locale, added only after `review-gate.ts`
  * passes for it.
  *
- * Empty on purpose today. Every one of the fifteen catalogs is complete and
- * lint clean, but no named human reviewer exists for any of them, and naming a
- * reviewer is a founder decision, not an engineering one. Writing a name here
- * that nobody agreed to would make the reviewed badge a lie in fifteen
- * languages at once. See `docs/planning/15-multilingual-rollout.md`.
+ * Empty on purpose today. Every catalog may be lint clean while still lacking
+ * a named human reviewer. Writing a name here that nobody agreed to would make
+ * the reviewed badge a lie in all twenty languages at once.
  */
 export const LOCALE_REVIEWS: readonly LocaleReview[] = [];
 

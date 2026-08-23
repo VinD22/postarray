@@ -9,6 +9,7 @@ import { commonMessages } from './common';
 import { composerMessages } from './composer';
 import { connectionMessages } from './connections';
 import { developerMessages } from './developer';
+import { digestMessages } from './digest';
 import { emailMessages } from './email';
 import { errorMessages } from './errors';
 import { growthMessages } from './growth';
@@ -57,6 +58,7 @@ export const ar = {
   ...growthMessages,
   ...withoutBetaEnglishFallbacks(settingsMessages, 'ar'),
   ...developerMessages,
+  ...digestMessages,
   ...authMessages,
   ...onboardingMessages,
   ...emailMessages,

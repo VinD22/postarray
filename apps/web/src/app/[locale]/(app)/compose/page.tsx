@@ -15,6 +15,7 @@ import { isDemoMode } from '@/lib/api/config';
 import { ApiError } from '@/lib/api/error';
 import type { ForwardAuth } from '@/lib/api/transport';
 import { SEED_BOOTSTRAP, type ComposerBootstrap } from '@/features/composer';
+import { COMPOSER_CONTENT_LOCALES } from '@/features/composer/content-locale-options';
 import { SEED_ASSETS, mediaAssetFromApi, type MediaAsset } from '@/features/media';
 import { loadComposer } from '@/features/composer/data/composer-gateway';
 import { requireSession } from '@/lib/auth/require-session';
@@ -87,7 +88,7 @@ export default async function ComposePage({
             status={status}
             bootstrap={null}
             assets={assets}
-            contentLocales={['en', 'es', 'de', 'fr', 'ja']}
+            contentLocales={COMPOSER_CONTENT_LOCALES}
             approvalRequired={false}
             uploadEnabled={false}
           />
@@ -121,7 +122,7 @@ export default async function ComposePage({
       status={status}
       bootstrap={bootstrap}
       assets={assets}
-      contentLocales={['en', 'es', 'de', 'fr', 'ja']}
+      contentLocales={COMPOSER_CONTENT_LOCALES}
       approvalRequired={false}
       projectId={activeProjectId}
       uploadEnabled={!isDemoMode && status === 'ready'}

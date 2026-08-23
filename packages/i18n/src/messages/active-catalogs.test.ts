@@ -4,6 +4,7 @@ import { ACTIVE_LOCALE_CODES } from '../locales';
 import { formatLintResult, lintCatalog } from '../lint';
 import { en, loadCatalog } from './index';
 import { isBetaEnglishFallbackKey } from './beta-fallbacks';
+import { inspectCatalogFamilies, isCatalogFamilyComplete } from './catalog-coverage';
 
 describe('active catalogs', () => {
   it.each(ACTIVE_LOCALE_CODES)(
@@ -21,6 +22,25 @@ describe('active catalogs', () => {
         (key) => !isBetaEnglishFallbackKey(key, locale) && catalog[key] === undefined,
       );
       expect(missingNonB5Keys).toEqual([]);
+
+      const familyCoverage = inspectCatalogFamilies(
+        en,
+        catalog,
+        (key) => isBetaEnglishFallbackKey(key, locale),
+      );
+      expect(familyCoverage.map((family) => family.prefix)).toEqual([
+        'a11y.',
+        'email.',
+        'digest.',
+        'state.',
+      ]);
+      for (const family of familyCoverage) {
+        expect(family.referenceKeys.length, `${locale}:${family.prefix}`).toBeGreaterThan(0);
+        expect(
+          isCatalogFamilyComplete(family),
+          `${locale}:${family.prefix} has an undeclared omission: ${family.missingKeys.join(', ')}`,
+        ).toBe(true);
+      }
     },
     20_000,
   );

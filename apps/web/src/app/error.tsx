@@ -1,17 +1,31 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useMemo, useState } from 'react';
+import { usePathname } from 'next/navigation';
 
 import { ErrorState } from '@relay/design-system/patterns';
 import { Button } from '@relay/design-system/primitives';
-import { createTranslator, en } from '@relay/i18n';
+import {
+  CATALOGS,
+  createTranslator,
+  DEFAULT_LOCALE,
+  en,
+  PUBLIC_LOCALE_CODES,
+  type Translator,
+} from '@relay/i18n';
 
 import { ApiError } from '@/lib/api';
 
 // Next renders this boundary outside the route layout that mounts I18nProvider.
-// It must therefore use the controlling catalog directly, otherwise a real
-// route failure is hidden by a second “provider missing” failure.
-const fallbackTranslator = createTranslator('en', en);
+// It therefore resolves the locale from the URL and loads the matching static
+// catalog itself. English is the first-paint fallback while that split chunk
+// loads, never a reason to hide a localized error behind a provider failure.
+export function localeFromPathname(pathname: string | null): string {
+  const firstSegment = pathname?.split('/')[1] ?? '';
+  return PUBLIC_LOCALE_CODES.some((locale) => locale === firstSegment)
+    ? firstSegment
+    : DEFAULT_LOCALE;
+}
 
 /**
  * The route error boundary.
@@ -27,7 +41,33 @@ export default function RouteError({
   readonly error: Error & { digest?: string };
   readonly reset: () => void;
 }) {
-  const t = fallbackTranslator.format;
+  const pathname = usePathname();
+  const locale = localeFromPathname(pathname);
+  const [translator, setTranslator] = useState<Translator>(() =>
+    createTranslator(locale, en),
+  );
+
+  useEffect(() => {
+    let mounted = true;
+    const loader = CATALOGS[locale] ?? CATALOGS[DEFAULT_LOCALE];
+    if (loader === undefined) {
+      return () => {
+        mounted = false;
+      };
+    }
+    void loader()
+      .then((catalog) => {
+        if (mounted) {
+          setTranslator(createTranslator(locale, catalog));
+        }
+      })
+      .catch(() => undefined);
+    return () => {
+      mounted = false;
+    };
+  }, [locale]);
+
+  const t = useMemo(() => translator.format, [translator]);
 
   useEffect(() => {
     // The server already logged this with its correlation id. Re-logging the

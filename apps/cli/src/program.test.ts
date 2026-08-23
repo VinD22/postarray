@@ -3,6 +3,7 @@ import { describe, expect, it } from 'vitest';
 import { createMemoryConfigStore } from './config/store';
 import { createMemoryCredentialStore } from './config/credentials';
 import type { StoredCredential } from './config/credentials';
+import { createContext } from './context';
 import { createMemoryWriter } from './output';
 import type { JsonEnvelope } from './output';
 import { EXIT_CODES, EXIT_OK, EXIT_USAGE } from './exit-codes';
@@ -205,6 +206,88 @@ describe('exit codes', () => {
     const dependencies = deps();
     const result = await runCli(['--help'], dependencies);
     expect(result.exitCode).toBe(EXIT_OK);
+  });
+});
+
+describe('human locale selection', () => {
+  it('uses an explicit locale for help while keeping command vocabulary stable', async () => {
+    const dependencies = deps();
+    const result = await runCli(['--locale', 'es', '--help'], dependencies);
+
+    expect(result.exitCode).toBe(EXIT_OK);
+    const help = dependencies.writer.stdout.join('\n');
+    // This is an existing reviewed catalog message, not a CLI-specific copy
+    // fixture. It proves Commander receives the locale-bound translator.
+    expect(help).toContain('Agentes y API');
+    expect(help).toContain('accounts');
+  });
+
+  it('localizes nested command help without translating command or option names', async () => {
+    const dependencies = deps();
+    const result = await runCli(['--locale', 'es', 'accounts', 'list', '--help'], dependencies);
+
+    expect(result.exitCode).toBe(EXIT_OK);
+    const help = dependencies.writer.stdout.join('\n');
+    expect(help).toContain('Conexiones');
+    expect(help).toContain('accounts list');
+    expect(help).toContain('--limit');
+  });
+
+  it('resolves locale precedence as flag, profile, Relay env, then OS env', async () => {
+    const explicit = deps({
+      env: { RELAY_LOCALE: 'fr', LANG: 'de' },
+    });
+    const explicitContext = await createContext(
+      { json: false, profile: undefined, apiUrl: undefined, workspaceId: undefined, dryRun: false, yes: false, locale: 'ja' },
+      explicit,
+    );
+    expect(explicitContext.locale).toBe('ja');
+
+    const profile = deps({
+      configStore: createMemoryConfigStore({
+        version: 1,
+        defaultProfile: 'default',
+        profiles: { default: { apiUrl: API_URL, locale: 'fr' } },
+      }),
+      env: { RELAY_LOCALE: 'de', LANG: 'ja' },
+    });
+    const profileContext = await createContext(
+      { json: false, profile: undefined, apiUrl: undefined, workspaceId: undefined, dryRun: false, yes: false },
+      profile,
+    );
+    expect(profileContext.locale).toBe('fr');
+
+    const posix = deps({ env: { LANG: 'de_DE.UTF-8' } });
+    const posixContext = await createContext(
+      { json: false, profile: undefined, apiUrl: undefined, workspaceId: undefined, dryRun: false, yes: false },
+      posix,
+    );
+    expect(posixContext.locale).toBe('de');
+  });
+
+  it('localizes human API errors without changing the machine error envelope', async () => {
+    const { fetch } = fakeFetch(() => ({
+      status: 403,
+      body: {
+        type: 'urn:relay:error:scope_insufficient',
+        title: 'SCOPE_INSUFFICIENT',
+        status: 403,
+        code: 'SCOPE_INSUFFICIENT',
+        messageKey: 'error.insufficient_scope.message',
+        retryable: false,
+        detail: { scope: 'accounts:read' },
+      },
+    }));
+    const dependencies = deps({ fetch });
+    const result = await runCli(['accounts', 'list', '--locale', 'es'], dependencies);
+
+    expect(result.exitCode).toBe(EXIT_CODES.SCOPE_INSUFFICIENT);
+    const human = dependencies.writer.stderr.join('\n');
+    expect(human).toContain('error=SCOPE_INSUFFICIENT messageKey=error.insufficient_scope.message');
+    // This particular catalog entry is currently an approved English
+    // fallback. The important contract is that the translator is used and no
+    // raw ICU key leaks into human output while the JSON shape stays stable.
+    expect(human.split('\n')).not.toContain('error.insufficient_scope.message');
   });
 });
 

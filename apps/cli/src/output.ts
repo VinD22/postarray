@@ -96,6 +96,8 @@ export interface RenderInput {
   readonly writer: Writer;
   readonly correlationId?: string | null;
   readonly plannedExternalActions?: readonly PlannedExternalAction[];
+  /** Locale-bound translator for human diagnostics. JSON never uses this. */
+  readonly translator?: Translator;
 }
 
 export function renderSuccess(input: RenderInput, data: unknown, human: readonly string[]): void {
@@ -133,7 +135,7 @@ export function renderFailure(input: RenderInput, error: RelayError): void {
     return;
   }
   input.writer.err(`error=${problem.code} messageKey=${problem.messageKey}`);
-  const sentence = describe(problem.messageKey);
+  const sentence = describe(problem.messageKey, undefined, input.translator);
   if (sentence.length > 0) {
     input.writer.err(sentence);
   }
@@ -152,8 +154,9 @@ const translator: Translator = createTranslator(DEFAULT_LOCALE, en);
 export function describe(
   messageKey: string,
   values?: Readonly<Record<string, string | number | boolean | null | undefined>>,
+  activeTranslator: Translator = translator,
 ): string {
-  return translator.format(messageKey, values);
+  return activeTranslator.format(messageKey, values);
 }
 
 const COLUMN_GAP = '  ';

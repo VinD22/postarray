@@ -68,6 +68,13 @@ export interface ComparisonQuestion {
 export interface ComparisonPage {
   /** URL segment under `/compare`. Stable once published. */
   readonly slug: string;
+  /**
+   * Languages in which the comparison claims and prose are actually written.
+   * The page may still render localized interface chrome for another locale,
+   * but SEO must not advertise that page as translated until this list says it
+   * is. English is required because it is the canonical fallback.
+   */
+  readonly contentLocales: readonly string[];
   readonly title: string;
   /** Meta description and index summary. One sentence. */
   readonly description: string;
@@ -93,6 +100,11 @@ export interface ComparisonPage {
   readonly checked: string;
   /** ISO calendar date the next check is due. Never earlier than `checked`. */
   readonly nextReview: string;
+}
+
+/** The content languages eligible for a comparison's indexable URL cluster. */
+export function comparisonLocales(page: ComparisonPage): readonly string[] {
+  return page.contentLocales;
 }
 
 /** Every string on a comparison page that a reader will actually see. */

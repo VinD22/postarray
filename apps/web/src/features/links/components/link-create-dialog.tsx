@@ -157,7 +157,7 @@ export function LinkCreateDialog({
                 {t('analytics.links.createUtm')}
               </legend>
               <div className="grid gap-3 sm:grid-cols-2">
-                <Field label="utm_source">
+                <Field label={t('composerWeb.links.utmSource')}>
                   {(control) => (
                     <Input
                       {...control}
@@ -167,7 +167,7 @@ export function LinkCreateDialog({
                     />
                   )}
                 </Field>
-                <Field label="utm_medium">
+                <Field label={t('composerWeb.links.utmMedium')}>
                   {(control) => (
                     <Input
                       {...control}

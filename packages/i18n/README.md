@@ -4,8 +4,10 @@ Every user visible string in Relay lives here, along with the locale registry,
 the ICU runtime, the `Intl` formatters, the pseudo locale generator and the
 catalog lint rules.
 
-V1 ships English only. The architecture is built so that adding a language is a
-catalog file plus a config entry, never a refactor. No component changes.
+The current launch roster contains 20 interface locales. The architecture keeps
+adding or retiring a language to a catalog and registry change, never a
+component refactor. Every non-English locale is beta until native review signs
+off the running product.
 
 ```ts
 import { createTranslator, formatDateTime, resolveLocale } from '@relay/i18n';
@@ -14,8 +16,8 @@ import { createTranslator, formatDateTime, resolveLocale } from '@relay/i18n';
 | Entry point | Contents |
 | --- | --- |
 | `@relay/i18n` | everything below except the React binding |
-| `@relay/i18n/locales` | the 32 locale descriptors, `resolveLocale`, `isRtl` |
-| `@relay/i18n/messages` | the English catalog and the catalog registry |
+| `@relay/i18n/locales` | the public 20-locale roster, compatibility descriptors, `resolveLocale`, `isRtl` |
+| `@relay/i18n/messages` | the English catalog and lazy catalog registry |
 | `@relay/i18n/format` | `Intl` formatters, all locale and time zone explicit |
 | `@relay/i18n/translate` | `createTranslator` and the ICU runtime |
 | `@relay/i18n/pseudo` | `en-XA` and `en-XB` generators for CI |

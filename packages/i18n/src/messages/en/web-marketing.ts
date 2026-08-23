@@ -166,7 +166,7 @@ export const webMarketingMessages = {
   'web.home.pillars.adapt.body':
     'Per platform variants that you can override one account at a time, and transcreation rather than literal translation, with a project glossary and a named reviewer per language.',
   'web.home.pillars.adapt.proof':
-    'The interface is available in selected languages. Content adaptation covers 30 content languages and every one of them is reviewable before it publishes.',
+    'The interface is available in selected languages. Content adaptation covers 20 content languages and every one of them is reviewable before it publishes.',
   'web.home.pillars.loop.title': 'Close the loop',
   'web.home.pillars.loop.body':
     'Analytics that name the metric, the platform that reported it, the denominator and when it was last refreshed. Where a platform does not report something, Relay says so instead of showing a zero.',

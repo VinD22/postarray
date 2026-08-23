@@ -123,7 +123,7 @@ export const webMarketingMessages = {
   'web.home.pillars.adapt.body':
     'Per varian platform yang dapat Anda ganti satu akun dalam satu waktu, dan transkreasi, bukan terjemahan literal, dengan glosarium proyek dan pengulas bernama per bahasa.',
   'web.home.pillars.adapt.proof':
-    'Antarmuka tersedia dalam bahasa tertentu. Adaptasi konten mencakup 30 bahasa konten dan semuanya dapat ditinjau sebelum dipublikasikan.',
+    'Antarmuka tersedia dalam bahasa tertentu. Adaptasi konten mencakup 20 bahasa konten dan semuanya dapat ditinjau sebelum dipublikasikan.',
   'web.home.pillars.loop.title': 'Tutup lingkarannya',
   'web.home.pillars.loop.body':
     'Analisis yang memberi nama metrik, platform yang melaporkannya, penyebutnya, dan kapan terakhir kali disegarkan. Jika platform tidak melaporkan sesuatu, Relay akan melaporkannya alih-alih menunjukkan angka nol.',

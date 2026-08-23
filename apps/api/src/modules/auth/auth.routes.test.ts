@@ -109,6 +109,26 @@ describe('authentication routes', () => {
     });
   });
 
+  it('rejects retired and planned interface locales at the auth boundary', async () => {
+    const response = await request(harness.server)
+      .post('/v1/auth/signup')
+      .send({
+        email: 'owner@example.test',
+        password: 'a long test password',
+        displayName: 'Launch Owner',
+        locale: 'es-419',
+        timeZone: 'Asia/Kolkata',
+        termsVersionHash: 'a'.repeat(64),
+        privacyVersionHash: 'b'.repeat(64),
+        acceptedTerms: true,
+    });
+
+    expect(response.status).toBe(422);
+    expect(response.body.code).toBe('VALIDATION_FAILED');
+    expect(harness.identity.signUpCalls).toEqual([]);
+    expect(harness.identity.magicLinks).toEqual([]);
+  });
+
   it('sets a new password from a valid reset token and establishes no session', async () => {
     const response = await request(harness.server).post('/v1/auth/password-reset/complete').send({
       token: harness.identity.passwordResetToken,

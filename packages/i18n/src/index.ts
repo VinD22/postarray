@@ -1,9 +1,9 @@
 /**
  * `@relay/i18n`
  *
- * Every user visible string in the product lives here. V1 ships English only,
- * and adding a language is a catalog file plus a status change in
- * `locales.ts`. See README.md.
+ * Every user visible string in the product lives here. The public interface
+ * roster is explicit in `locales.ts`; adding a catalog never makes a locale
+ * public by itself. See README.md.
  *
  * The React binding is exported from `@relay/i18n/react` rather than from this
  * entry point, so server code and the CLI never pull React in.
@@ -16,6 +16,9 @@ export {
   ALL_LOCALE_CODES,
   DEFAULT_LOCALE,
   PLANNED_LOCALES,
+  PUBLIC_LOCALE_CODES,
+  RETIRED_LOCALES,
+  RETIRED_LOCALE_CODES,
   REVIEWED_LOCALES,
   REVIEWED_LOCALE_CODE_LIST,
   canonicalizeLocaleTag,
@@ -24,6 +27,7 @@ export {
   getLocale,
   isActiveLocale,
   isReviewedLocale,
+  isRetiredLocale,
   isRtl,
   parseAcceptLanguage,
   requireLocale,
@@ -34,6 +38,7 @@ export type {
   LocaleCode,
   LocaleDescriptor,
   LocaleFormatting,
+  PublicLocaleCode,
   LocaleReviewStatus,
   LocaleStatus,
   PluralCategory,
@@ -47,12 +52,31 @@ export {
   REVIEW_PROMISE_LOCALE_CODES,
   getLocaleReview,
 } from './reviews';
-export type { LocaleReview } from './reviews';
+export type { LocaleReview, LocaleReviewApproval, LocaleReviewArea } from './reviews';
 
-export { CATALOGS, en, loadCatalog, messageKeys } from './messages/index';
+export {
+  CATALOGS,
+  auditCatalog,
+  BETA_FALLBACK_CATALOG_MODULES,
+  BETA_FALLBACK_CATALOG_MODULE_PREFIXES,
+  checkCatalogModuleParity,
+  en,
+  findUnallowedMissingCatalogModules,
+  inspectCatalogFamilies,
+  isCatalogAuditLaunchReady,
+  isCatalogFamilyComplete,
+  isCatalogModuleParityClean,
+  loadCatalog,
+  messageKeys,
+  REQUIRED_CATALOG_FAMILY_PREFIXES,
+} from './messages/index';
 export type {
   Catalog,
+  CatalogAudit,
+  CatalogFamilyCoverage,
   CatalogLoader,
+  CatalogModuleName,
+  CatalogModuleParity,
   EnglishCatalog,
   MessageKey,
   PartialCatalog,

@@ -119,6 +119,22 @@ export const developerMessages = {
   'developer.consent.allow': 'Allow access',
   'developer.consent.deny': 'Do not allow',
   'developer.consent.developerIdentity': 'Published by {developer}',
+  'developer.consent.notFirstParty': 'This app is not built by Relay.',
+  'developer.consent.clientId': 'Client ID',
+  'developer.consent.selectWorkspace': 'Choose the workspace this app can use',
+  'developer.consent.workspaceHelp':
+    'The app receives access only to the workspace you choose here.',
+  'developer.consent.loading': 'Loading the access request',
+  'developer.consent.missingRequest':
+    'This access request is missing or has expired. Start the connection again from the app that sent you here.',
+  'developer.consent.errorTitle': 'This access request could not be loaded',
+  'developer.consent.errorBody':
+    'Nothing has been granted. Try the connection again, or return to the app that sent you here.',
+  'developer.consent.returning': 'Returning you to {app}',
+  'developer.consent.approvalLevel': 'Approval policy: {level}',
+  'developer.consent.approval_level.level_2_scheduled':
+    'The app may schedule within your workspace limits. Publishing still needs the approval required by your workspace.',
+  'developer.consent.submitting': 'Saving your choice',
 
   'developer.grants.title': 'Apps with access',
   'developer.grants.grantedOn': 'Granted {date}',
@@ -178,4 +194,56 @@ export const developerMessages = {
   'developer.confirmation.passwordLabel': 'Current password',
   'developer.confirmation.verifyAndApprove': 'Verify and approve',
   'developer.confirmation.actionErrorTitle': 'The publication was not approved',
+
+  // CLI help is catalog copy too. Command and option names stay stable in
+  // `apps/cli`; these descriptions are the human-facing part of that
+  // contract and can be translated independently.
+  'cli.help.option.json': 'stable machine-readable output',
+  'cli.help.option.profile': 'configuration profile',
+  'cli.help.option.apiUrl': 'API base URL',
+  'cli.help.option.workspaceId': 'workspace to act in',
+  'cli.help.option.dryRun': 'show the external actions instead of performing them',
+  'cli.help.option.yes': 'skip interactive confirmation where one is offered',
+  'cli.help.auth.flow': 'authorization flow',
+  'cli.help.auth.scopes': 'scopes to request',
+  'cli.help.auth.workspace': 'workspace to bind the grant to',
+  'cli.help.auth.logout': 'revoke the grant and forget it locally',
+  'cli.help.auth.whoami': 'subject, workspace, scopes and approval level',
+  'cli.help.posts.validate':
+    'deterministic preflight against live platform limits. Risk: read with --content-item. With a file it first creates the draft, which publishes nothing but does need --idempotency-key and drafts:write',
+  'cli.help.posts.existingDraft': 'validate an existing draft instead of a file',
+  'cli.help.posts.preview': 'exact platform variant preview. Risk: read',
+  'cli.help.posts.schedule':
+    'schedule approved content. Risk: consequential. Requires --idempotency-key and posts:schedule',
+  'cli.help.posts.publish':
+    'publish now. Risk: consequential. Requires --confirm, --idempotency-key and posts:publish',
+  'cli.help.posts.confirm': 'explicit human confirmation for immediate publication',
+  'cli.help.posts.status': 'publish job state, attempts and receipt. Risk: read',
+  'cli.help.posts.cancel':
+    'cancel a scheduled job. Risk: consequential. Requires posts:cancel',
+  'cli.help.posts.list': 'content items in this workspace. Risk: read',
+  'cli.help.media.list': 'assets in this workspace. Risk: read',
+  'cli.help.media.kind': 'image, video, gif, document or audio',
+  'cli.help.media.get': 'one asset, its scan state and its retention date. Risk: read',
+  'cli.help.media.upload':
+    'upload a local file and hand it to processing. Risk: reversible. Requires --idempotency-key and media:write',
+  'cli.help.media.import':
+    'import a finished file by URL. Risk: reversible. Requires --idempotency-key and media:write',
+  'cli.help.calendar.list': 'scheduled entries in a window. Risk: read',
+  'cli.help.receipts.get': 'immutable evidence of one publication. Risk: read',
+  'cli.help.analytics.post':
+    'post metrics. Unavailable metrics are labelled, never zero. Risk: read',
+  'cli.help.analytics.account': 'account metrics. Risk: read',
+  'cli.help.growth.planGet': 'a versioned plan summary. Risk: read',
+  'cli.help.growth.planExport': 'export a plan. Risk: read',
+  'cli.help.growth.format': 'export format',
+  'cli.help.rules.list': 'rules and their limits. Risk: read',
+  'cli.help.rules.test':
+    'test run against a sample event. Performs no external action. Risk: read',
+  'cli.help.links.create':
+    'mint a tracked short link. Risk: reversible. Requires --idempotency-key',
+  'cli.help.links.stats': 'first-party redirect measurements. Risk: read',
+  'cli.help.config.set': 'set apiUrl, workspaceId, locale, output or profile',
+  'cli.help.config.unset': 'clear one setting',
+  'cli.help.config.get': 'read settings',
 } as const;

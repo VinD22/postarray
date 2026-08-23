@@ -11,6 +11,7 @@ export {
   DEFAULT_CLIENT_ID,
   createContext,
   requireCredential,
+  resolveCliLocale,
   systemClock,
   toIsoInstant,
   type CliContext,

@@ -51,4 +51,11 @@ export type {
   RuleView,
 } from './resources/platform';
 export type { EstablishedSession, PasswordCredentials } from './resources/auth';
+export type {
+  OAuthConsentClientView,
+  OAuthConsentDecisionInput,
+  OAuthConsentDecisionView,
+  OAuthConsentScopeView,
+  OAuthConsentView,
+} from './resources/oauth';
 export type { DataExportDownload } from './resources/data';

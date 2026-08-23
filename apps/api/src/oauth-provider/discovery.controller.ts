@@ -1,5 +1,6 @@
 import { Controller, Get, Inject } from '@nestjs/common';
 import { ALL_SCOPES } from '@relay/contracts';
+import { ACTIVE_LOCALE_CODES } from '@relay/i18n';
 
 import { Public } from '../common/decorators';
 import { CODE_CHALLENGE_METHOD } from './pkce';
@@ -51,7 +52,10 @@ export class OAuthDiscoveryController {
       revocation_endpoint_auth_methods_supported: ['client_secret_post', 'none'],
       introspection_endpoint_auth_methods_supported: ['client_secret_post'],
       service_documentation: `${base}/docs`,
-      ui_locales_supported: ['en'],
+      // Keep this list derived from the public locale registry so OAuth
+      // clients never advertise a language the web consent surface cannot
+      // actually render. The machine-readable discovery shape is unchanged.
+      ui_locales_supported: [...ACTIVE_LOCALE_CODES],
     };
   }
 

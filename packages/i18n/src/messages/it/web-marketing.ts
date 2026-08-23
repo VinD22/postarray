@@ -164,7 +164,7 @@ export const webMarketingMessages = {
   'web.home.pillars.adapt.body':
     'Varianti per piattaforma che puoi sovrascrivere un account alla volta e transcreazione anziché traduzione letterale, con un glossario del progetto e un revisore nominato per lingua.',
   'web.home.pillars.adapt.proof':
-    "L'interfaccia è disponibile nelle lingue selezionate. L'adattamento dei contenuti copre 30 lingue di contenuto e ognuna di esse è revisionabile prima della pubblicazione.",
+    "L'interfaccia è disponibile nelle lingue selezionate. L'adattamento dei contenuti copre 20 lingue di contenuto e ognuna di esse è revisionabile prima della pubblicazione.",
   'web.home.pillars.loop.title': 'Chiudi il ciclo',
   'web.home.pillars.loop.body':
     "Analisi che denominano la metrica, la piattaforma che l'ha riportata, il denominatore e quando è stata aggiornata l'ultima volta. Laddove una piattaforma non segnala qualcosa, Relay lo dice invece di mostrare uno zero.",

@@ -161,7 +161,7 @@ export const webMarketingMessages = {
   'web.home.pillars.adapt.body':
     'Bir proje sözlüğü ve her dil için adlandırılmış bir incelemeci ile, her seferinde bir hesabı ve birebir çeviri yerine yaratıcı çeviriyi geçersiz kılabileceğiniz platform değişkenleri başına.',
   'web.home.pillars.adapt.proof':
-    'Arayüz seçilen dillerde mevcuttur. İçerik uyarlaması 30 içerik dilini kapsar ve bunların her biri yayınlanmadan önce incelenebilir.',
+    'Arayüz seçilen dillerde mevcuttur. İçerik uyarlaması 20 içerik dilini kapsar ve bunların her biri yayınlanmadan önce incelenebilir.',
   'web.home.pillars.loop.title': 'Döngüyü kapat',
   'web.home.pillars.loop.body':
     'Metriği, bunu bildiren platformu, paydayı ve en son ne zaman yenilendiğini adlandıran analizler. Platformun bir şeyi raporlamadığı durumlarda Relay sıfır göstermek yerine bunu söylüyor.',

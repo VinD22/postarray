@@ -1,6 +1,6 @@
 import { NextResponse, type NextRequest } from 'next/server';
 
-import { DEFAULT_LOCALE } from '@relay/i18n';
+import { DEFAULT_LOCALE, RETIRED_LOCALE_CODES } from '@relay/i18n';
 
 import { isWebLocale } from '@/lib/i18n/development-pseudo-locales';
 import { LOCALE_COOKIE } from '@/lib/i18n/routing';
@@ -26,6 +26,18 @@ export function proxy(request: NextRequest): NextResponse {
   const firstSegment = segments[1] ?? '';
 
   if (firstSegment === DEFAULT_LOCALE) {
+    const redirectUrl = request.nextUrl.clone();
+    const remainder = segments.slice(2).join('/');
+    redirectUrl.pathname = remainder.length === 0 ? '/' : `/${remainder}`;
+    return NextResponse.redirect(redirectUrl, 301);
+  }
+
+  // Retired locales remain in the catalog registry for compatibility, but
+  // must not leave crawlable duplicate URLs behind. Preserve the route and
+  // query string while sending old navigational URLs to English.
+  if (
+    RETIRED_LOCALE_CODES.some((code) => code.toLowerCase() === firstSegment.toLowerCase())
+  ) {
     const redirectUrl = request.nextUrl.clone();
     const remainder = segments.slice(2).join('/');
     redirectUrl.pathname = remainder.length === 0 ? '/' : `/${remainder}`;

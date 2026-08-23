@@ -301,8 +301,11 @@ describe('enumeration', () => {
     expect((await request()).statusCode).toBe(404);
     const throttled = await request();
     expect(throttled.statusCode).toBe(429);
-    expect(throttled.headers['content-language']).toBe('es-419');
-    expect(throttled.body).toContain('<html lang="es-419" dir="ltr">');
+    // Latin American Spanish is retired from the interface roster, so the
+    // short-link service resolves its regional preference to the active
+    // Spanish catalog rather than emitting a retired language tag.
+    expect(throttled.headers['content-language']).toBe('es');
+    expect(throttled.body).toContain('<html lang="es" dir="ltr">');
     expect(throttled.body).toContain('Baja la velocidad por un momento');
     await server.app.close();
   });

@@ -5,7 +5,7 @@ import { createPseudoCatalog, isPseudoLocale } from '../pseudo';
 export { en };
 export type { EnglishCatalog, MessageKey };
 
-/** A complete catalog. Only English is complete in V1. */
+/** A complete catalog. Launch review promotes a locale only after parity. */
 export type Catalog = Readonly<Record<MessageKey, string>>;
 
 /**
@@ -69,3 +69,22 @@ export async function loadCatalog(locale: string): Promise<PartialCatalog> {
 export function messageKeys(): readonly MessageKey[] {
   return (Object.keys(en) as MessageKey[]).sort();
 }
+
+export {
+  BETA_FALLBACK_CATALOG_MODULES,
+  BETA_FALLBACK_CATALOG_MODULE_PREFIXES,
+  checkCatalogModuleParity,
+  findUnallowedMissingCatalogModules,
+  isCatalogModuleParityClean,
+} from './module-parity';
+export type { CatalogModuleName, CatalogModuleParity } from './module-parity';
+
+export {
+  inspectCatalogFamilies,
+  isCatalogFamilyComplete,
+  REQUIRED_CATALOG_FAMILY_PREFIXES,
+} from './catalog-coverage';
+export type { CatalogFamilyCoverage } from './catalog-coverage';
+
+export { auditCatalog, isCatalogAuditLaunchReady } from './catalog-audit';
+export type { CatalogAudit } from './catalog-audit';

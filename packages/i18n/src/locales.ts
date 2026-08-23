@@ -19,7 +19,13 @@ import { REVIEWED_LOCALE_CODES } from './reviews';
 
 export type TextDirection = 'ltr' | 'rtl';
 
-export type LocaleStatus = 'active' | 'planned';
+/** Rollout state for an interface locale.
+ *
+ * `retired` deliberately remains a first-class state. Retired locale URLs and
+ * saved preferences need to be recognised so hosts can redirect them safely,
+ * while they must never be exposed as a currently supported interface locale.
+ */
+export type LocaleStatus = 'active' | 'planned' | 'retired';
 
 /** Translation-review state shown wherever an interface locale is selected. */
 export type LocaleReviewStatus = 'beta' | 'reviewed';
@@ -96,7 +102,7 @@ const LOCALE_METADATA = [
     defaultDateFormat: 'd MMM y',
     weekStartsOn: 0,
     hourCycle: 'h12',
-    status: 'active',
+    status: 'retired',
   },
   {
     bcp47: 'pt-BR',
@@ -192,7 +198,7 @@ const LOCALE_METADATA = [
     defaultDateFormat: 'd. M. y',
     weekStartsOn: 1,
     hourCycle: 'h23',
-    status: 'active',
+    status: 'retired',
   },
   {
     bcp47: 'sv',
@@ -204,7 +210,7 @@ const LOCALE_METADATA = [
     defaultDateFormat: 'd MMM y',
     weekStartsOn: 1,
     hourCycle: 'h23',
-    status: 'active',
+    status: 'retired',
   },
   {
     bcp47: 'nb',
@@ -396,7 +402,7 @@ const LOCALE_METADATA = [
     defaultDateFormat: 'MMM d, y',
     weekStartsOn: 0,
     hourCycle: 'h12',
-    status: 'active',
+    status: 'retired',
   },
   {
     bcp47: 'zh-Hans',
@@ -420,7 +426,7 @@ const LOCALE_METADATA = [
     defaultDateFormat: 'y/M/d',
     weekStartsOn: 0,
     hourCycle: 'h12',
-    status: 'active',
+    status: 'retired',
   },
   {
     bcp47: 'ja',
@@ -462,11 +468,43 @@ const LOCALE_LIST = LOCALE_METADATA.map((locale) => ({
   reviewStatus: reviewStatusFor(locale.bcp47),
 })) satisfies readonly LocaleDescriptor[];
 
-/** Every locale in the plan, active and planned. */
+/** Every registered locale, including future and retired compatibility tags. */
 export const ALL_LOCALES: readonly LocaleDescriptor[] = LOCALE_LIST;
 
 /** Union of every planned BCP-47 tag. */
 export type LocaleCode = (typeof LOCALE_LIST)[number]['bcp47'];
+
+/**
+ * The only interface locales exposed by the product at launch.
+ *
+ * Keep this list explicit instead of deriving it from catalog directories. A
+ * catalog may exist for a future or retired locale, but that must never make
+ * the locale public by accident.
+ */
+export const PUBLIC_LOCALE_CODES = [
+  'en',
+  'es',
+  'pt-BR',
+  'fr',
+  'de',
+  'it',
+  'nl',
+  'pl',
+  'tr',
+  'id',
+  'ar',
+  'hi',
+  'ja',
+  'ko',
+  'zh-Hans',
+  'ru',
+  'uk',
+  'he',
+  'vi',
+  'th',
+] as const;
+
+export type PublicLocaleCode = (typeof PUBLIC_LOCALE_CODES)[number];
 
 /** The controlling locale. Every fallback ends here. */
 export const DEFAULT_LOCALE = 'en';
@@ -475,14 +513,23 @@ const BY_LOWER_CASE_CODE = new Map<string, LocaleDescriptor>(
   LOCALE_LIST.map((locale) => [locale.bcp47.toLowerCase(), locale]),
 );
 
-/** Locales enabled in the product right now. */
+const PUBLIC_LOCALE_CODE_SET: ReadonlySet<string> = new Set(PUBLIC_LOCALE_CODES);
+
+/** Locales enabled in the product right now, constrained by the public roster. */
 export const ACTIVE_LOCALES: readonly LocaleDescriptor[] = LOCALE_LIST.filter(
-  (locale) => locale.status === 'active',
+  (locale) => locale.status === 'active' && PUBLIC_LOCALE_CODE_SET.has(locale.bcp47),
 );
 
 /** Locales with real metadata but no reviewed catalog yet. */
 export const PLANNED_LOCALES: readonly LocaleDescriptor[] = LOCALE_LIST.filter(
   (locale) => locale.status === 'planned',
+);
+
+/** Locales whose catalogs remain available for compatibility, but are no
+ * longer offered as interface locales. Hosts should redirect their old URLs
+ * to the default locale and resolve saved preferences to English. */
+export const RETIRED_LOCALES: readonly LocaleDescriptor[] = LOCALE_LIST.filter(
+  (locale) => locale.status === 'retired',
 );
 
 /**
@@ -506,6 +553,11 @@ export function isReviewedLocale(code: string): boolean {
 }
 
 export const ACTIVE_LOCALE_CODES: readonly string[] = ACTIVE_LOCALES.map((locale) => locale.bcp47);
+
+/** Codes in the retired compatibility set. */
+export const RETIRED_LOCALE_CODES: readonly string[] = RETIRED_LOCALES.map(
+  (locale) => locale.bcp47,
+);
 
 export const ALL_LOCALE_CODES: readonly string[] = LOCALE_LIST.map((locale) => locale.bcp47);
 
@@ -778,5 +830,11 @@ export function resolveLocale(
 
 /** Whether a tag is currently switched on in the product. */
 export function isActiveLocale(code: string): boolean {
-  return getLocale(code)?.status === 'active';
+  const locale = getLocale(code);
+  return locale?.status === 'active' && PUBLIC_LOCALE_CODE_SET.has(locale.bcp47);
+}
+
+/** Whether a tag belongs to the retired compatibility set. */
+export function isRetiredLocale(code: string): boolean {
+  return getLocale(code)?.status === 'retired';
 }

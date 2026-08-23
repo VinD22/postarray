@@ -42,7 +42,7 @@ export async function getStaticIntl(locale = DEFAULT_LOCALE): Promise<RequestInt
   };
 }
 
-/** True while exactly one locale is active, so negotiation cannot change the answer. */
+/** True when the active roster has more than one locale, so negotiation can matter. */
 export const localeNegotiationIsMeaningful = ACTIVE_LOCALE_CODES.length > 1;
 
 /**

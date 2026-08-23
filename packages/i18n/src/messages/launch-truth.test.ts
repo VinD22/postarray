@@ -52,5 +52,5 @@ describe('launch truth', () => {
         expect(catalog[key], `${locale}:${key}`).toBeUndefined();
       }
     }
-  }, 20_000);
+  }, 60_000);
 });

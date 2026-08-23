@@ -2,7 +2,7 @@
 
 import { useId, useMemo, useRef, useState, type KeyboardEvent, type ReactNode } from 'react';
 import { Globe2 } from 'lucide-react';
-import { usePathname } from 'next/navigation';
+import { usePathname, useSearchParams } from 'next/navigation';
 import {
   ACTIVE_LOCALE_CODES,
   ACTIVE_LOCALES,
@@ -41,6 +41,17 @@ export function unprefixedLocalePath(pathname: string): string {
   return remainder.length === 0 ? '/' : `/${remainder}`;
 }
 
+/** Preserve the current query string when switching the interface locale. */
+export function appendSearchParams(path: string, search: string): string {
+  const params = new URLSearchParams(search);
+  const serialized = params.toString();
+  return serialized.length === 0 ? path : `${path}?${serialized}`;
+}
+
+interface LanguagePickerViewProps {
+  readonly search: string;
+}
+
 function localeMatchesQuery(locale: LocaleDescriptor, query: string): boolean {
   const needle = normalizeLanguagePickerSearch(query.trim());
   if (needle.length === 0) {
@@ -63,7 +74,7 @@ function persistLocale(locale: string): void {
  * only from usePathname, so this client enhancement does not make marketing
  * pages depend on cookies, headers or request data.
  */
-export function LanguagePicker(): ReactNode {
+function LanguagePickerView({ search }: LanguagePickerViewProps): ReactNode {
   const pathname = usePathname();
   const t = useTranslations();
   const { locale: currentLocale } = useI18n();
@@ -171,7 +182,7 @@ export function LanguagePicker(): ReactNode {
                       optionRefs.current.set(locale.bcp47, node);
                     }
                   }}
-                  href={localizedHref(currentPath, locale.bcp47)}
+                  href={appendSearchParams(localizedHref(currentPath, locale.bcp47), search)}
                   lang={locale.bcp47}
                   dir={locale.direction}
                   aria-current={isCurrent ? 'true' : undefined}
@@ -200,4 +211,15 @@ export function LanguagePicker(): ReactNode {
       </DropdownMenuContent>
     </DropdownMenu>
   );
+}
+
+/** The hydrated picker includes the current query string in locale links. */
+export function LanguagePicker(): ReactNode {
+  const searchParams = useSearchParams();
+  return <LanguagePickerView search={searchParams?.toString() ?? ''} />;
+}
+
+/** Static fallback used while the query-aware picker hydrates. */
+export function LanguagePickerFallback(): ReactNode {
+  return <LanguagePickerView search="" />;
 }

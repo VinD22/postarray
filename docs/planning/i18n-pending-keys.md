@@ -9,6 +9,7 @@ and the reason here so every active translation can pick it up before release.
 | `a11y.languagePicker.label` | Multilingual rollout | Accessible picker trigger label. |
 | `a11y.languagePicker.filterLabel` | Multilingual rollout | Accessible picker filter label. |
 | `a11y.languagePicker.announceChanged` | Multilingual rollout | Polite language-change announcement. |
+| `cli.help.*` | Developer surfaces | Commander help descriptions are catalog-owned; beta locales use the reviewed English source until native CLI review. |
 | Existing locale-status copy | Multilingual rollout | Replaced obsolete English-only interface claims in `web-marketing`, `web-shell`, and `web-settings`. |
 | `web.provider.google_business_profile` | Launch cohort pivot (A0/A2) | Platform display name for the new Google Business Profile provider id. |
 | `web.connection.requirement.google_business_profile` | Launch cohort pivot (A0/A2) | States the owner or manager role a person needs on the business location before the OAuth handoff. |
@@ -57,7 +58,7 @@ and the reason here so every active translation can pick it up before release.
 | `web.blog.cluster.*` | Blog and SEO delta (C1/C3) | The four editorial clusters. Also used as the RSS category for each item. |
 | `web.blog.label.*` | Blog and SEO delta (C1/C3) | Published, updated, written by, reviewed by, sources, read on, index and back links. |
 | `web.blog.byline.*` | Blog and SEO delta (C1/C3) | The two standing desk names and their roles. Names, so a translation keeps them recognizable rather than literal. |
-| `web.blog.feed.*` | Blog and SEO delta (C1/C3) | RSS channel title and description, and the visible feed link label. The feed itself is English only. |
+| `web.blog.feed.*` | Blog and SEO delta (C1/C3) | RSS channel title and description, and the visible feed link label. Each public locale now has its own feed URL; untranslated articles are omitted. |
 | `web.blog.empty.*` | Blog and SEO delta (C1/C3) | Index empty state, so an emptied registry never renders a bare heading. |
 | `web.meta.tools.*` | Free tools (C2/C4) | Title and description for the tools index and each of the four tool pages. |
 | `web.tools.index.*` | Free tools (C2/C4) | The tools index: title, lede, one line summary, where the numbers come from, and the sentence that says these tools do not publish anything. |

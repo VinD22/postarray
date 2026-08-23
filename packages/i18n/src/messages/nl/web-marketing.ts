@@ -161,7 +161,7 @@ export const webMarketingMessages = {
   'web.home.pillars.adapt.body':
     'Varianten per platform waarmee u één account tegelijk kunt overschrijven, en transcreatie in plaats van letterlijke vertaling, met een projectwoordenlijst en een benoemde recensent per taal.',
   'web.home.pillars.adapt.proof':
-    'De interface is beschikbaar in geselecteerde talen. Inhoudsaanpassing omvat 30 inhoudstalen en elk daarvan kan worden beoordeeld voordat het wordt gepubliceerd.',
+    'De interface is beschikbaar in geselecteerde talen. Inhoudsaanpassing omvat 20 inhoudstalen en elk daarvan kan worden beoordeeld voordat het wordt gepubliceerd.',
   'web.home.pillars.loop.title': 'Sluit de lus',
   'web.home.pillars.loop.body':
     'Analytics die de statistiek een naam geven, het platform dat deze heeft gerapporteerd, de noemer en wanneer deze voor het laatst is vernieuwd. Waar een platform iets niet rapporteert, zegt Relay dat in plaats van een nul te tonen.',

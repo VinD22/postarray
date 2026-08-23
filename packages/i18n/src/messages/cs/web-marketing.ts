@@ -160,7 +160,7 @@ export const webMarketingMessages = {
   'web.home.pillars.adapt.body':
     'U jednotlivých variant platformy, které můžete přepsat jeden účet po druhém, a transcreation spíše než doslovný překlad, s glosářem projektu a jmenovaným recenzentem pro každý jazyk.',
   'web.home.pillars.adapt.proof':
-    'Rozhraní je k dispozici ve vybraných jazycích. Adaptace obsahu pokrývá 30 jazyků obsahu a každý z nich lze před zveřejněním zkontrolovat.',
+    'Rozhraní je k dispozici ve vybraných jazycích. Adaptace obsahu pokrývá 20 jazyků obsahu a každý z nich lze před zveřejněním zkontrolovat.',
   'web.home.pillars.loop.title': 'Uzavřete smyčku',
   'web.home.pillars.loop.body':
     'Analytics, které pojmenovávají metriku, platformu, která ji nahlásila, jmenovatel a kdy byla naposledy aktualizována. Tam, kde platforma něco nehlásí, Relay to řekne namísto zobrazení nuly.',

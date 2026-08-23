@@ -88,7 +88,10 @@ function requireIdempotencyKey(value: string | undefined): string {
   return parsed.data;
 }
 
-function validationLines(result: ValidationResult): readonly string[] {
+function validationLines(
+  result: ValidationResult,
+  translator?: RenderInput['translator'],
+): readonly string[] {
   const summary = summarizeValidation(result);
   return [
     `ok=${String(result.ok)} errors=${summary.errorCount} warnings=${summary.warningCount} info=${summary.infoCount}`,
@@ -104,7 +107,7 @@ function validationLines(result: ValidationResult): readonly string[] {
             issue.code,
             issue.targetId ?? '',
             issue.field ?? '',
-            describe(issue.messageKey, issue.params),
+            describe(issue.messageKey, issue.params, translator),
           ]),
         )),
   ];
@@ -238,7 +241,7 @@ export async function postsValidate(
   renderSuccess(
     { ...render, correlationId: response.correlationId },
     { contentItemId, validation: response.data },
-    [`contentItemId=${contentItemId ?? ''}`, ...validationLines(response.data)],
+    [`contentItemId=${contentItemId ?? ''}`, ...validationLines(response.data, render.translator)],
   );
 
   if (!response.data.ok) {
@@ -453,7 +456,7 @@ export async function postsSchedule(
     { contentItemId, validation: validation.data, job: scheduled.data },
     [
       `contentItemId=${contentItemId}`,
-      ...validationLines(validation.data),
+      ...validationLines(validation.data, render.translator),
       ...renderTable(
         ['jobId', 'provider', 'state', 'scheduledInstant', 'zone', 'approvalState'],
         [
@@ -510,7 +513,7 @@ export async function postsPublish(
     renderSuccess(
       { ...render, correlationId: validation.correlationId },
       { dryRun: true, validation: validation.data },
-      [...validationLines(validation.data), 'plan=serverSide'],
+      [...validationLines(validation.data, render.translator), 'plan=serverSide'],
     );
     return;
   }

@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { ACTIVE_LOCALE_CODES, DEFAULT_LOCALE } from '@relay/i18n';
+import { DEFAULT_LOCALE, PUBLIC_LOCALE_CODES } from '@relay/i18n';
 import type { MessageKey } from '@relay/i18n/translate';
 
 import { marketingTranslator } from './i18n';
@@ -37,7 +37,10 @@ export function localeAlternates(path: string, locale: string = DEFAULT_LOCALE):
     canonical: absoluteUrl(path, locale),
     languages: {
       ...Object.fromEntries(
-        ACTIVE_LOCALE_CODES.map((activeLocale) => [activeLocale, absoluteUrl(path, activeLocale)]),
+        PUBLIC_LOCALE_CODES.map((publicLocale) => [
+          publicLocale,
+          absoluteUrl(path, publicLocale),
+        ]),
       ),
       'x-default': absoluteUrl(path, DEFAULT_LOCALE),
     },
@@ -48,10 +51,10 @@ export function localeAlternates(path: string, locale: string = DEFAULT_LOCALE):
  * The reciprocal hreflang cluster for a piece of content that does not exist
  * in every active locale, such as a blog article.
  *
- * `localeAlternates` assumes the same page renders at every active locale
+ * `localeAlternates` assumes the same page renders at every public locale
  * path, which is true of catalog-driven marketing pages and false of an
- * article that was only ever written in some of them. Advertising all 25
- * languages for writing that exists in three is the duplicate content problem
+ * article that was only ever written in some of them. Advertising every public
+ * language for writing that exists in three is the duplicate content problem
  * this function exists to avoid: `languages` lists only `availableLocales`,
  * and the canonical points at the current locale only when that locale is one
  * of them. A reader on a locale with no translation is served the English
@@ -106,10 +109,14 @@ export function toOpenGraphLocale(locale: string): string | undefined {
  * Shared by `pageMetadata` and `articleMetadata` so the two cannot drift into
  * advertising different alternate locale sets for the same site.
  */
-export function openGraphAlternateLocales(locale: string): string[] {
+export function openGraphAlternateLocales(
+  locale: string,
+  eligibleLocales: readonly string[] = PUBLIC_LOCALE_CODES,
+): string[] {
   return [
     ...new Set(
-      ACTIVE_LOCALE_CODES.filter((activeLocale) => activeLocale !== locale)
+      eligibleLocales
+        .filter((activeLocale) => activeLocale !== locale)
         .map(toOpenGraphLocale)
         .filter((activeLocale): activeLocale is string => activeLocale !== undefined),
     ),
@@ -171,16 +178,19 @@ export async function contentPageMetadata(
   description: string,
   path: string,
   locale: string = DEFAULT_LOCALE,
+  eligibleLocales: readonly string[] = PUBLIC_LOCALE_CODES,
 ): Promise<Metadata> {
   const t = await marketingTranslator(locale);
-  const url = absoluteUrl(path, locale);
-  const openGraphLocale = toOpenGraphLocale(locale);
-  const alternateLocales = openGraphAlternateLocales(locale);
+  const canonicalLocale = eligibleLocales.includes(locale) ? locale : DEFAULT_LOCALE;
+  const alternates = articleAlternates(path, locale, eligibleLocales);
+  const url = alternates.canonical;
+  const openGraphLocale = toOpenGraphLocale(canonicalLocale);
+  const alternateLocales = openGraphAlternateLocales(canonicalLocale, eligibleLocales);
 
   return {
     title,
     description,
-    alternates: localeAlternates(path, locale),
+    alternates,
     openGraph: {
       type: 'website',
       url,
@@ -336,8 +346,12 @@ export interface ArticleSeoInput {
  */
 export async function articleJsonLd(input: ArticleSeoInput): Promise<JsonLdNode> {
   const locale = input.locale ?? DEFAULT_LOCALE;
+  const contentLocale =
+    input.availableLocales === undefined || input.availableLocales.includes(locale)
+      ? locale
+      : DEFAULT_LOCALE;
   const t = await marketingTranslator(locale);
-  const url = absoluteUrl(input.path, locale);
+  const url = absoluteUrl(input.path, contentLocale);
   const sourceUrls = input.sourceUrls ?? [];
 
   return {
@@ -345,7 +359,7 @@ export async function articleJsonLd(input: ArticleSeoInput): Promise<JsonLdNode>
     '@type': 'Article',
     headline: input.headline,
     description: input.description,
-    inLanguage: locale,
+    inLanguage: contentLocale,
     url,
     mainEntityOfPage: { '@type': 'WebPage', '@id': url },
     datePublished: calendarDateToInstant(input.published),
@@ -374,13 +388,20 @@ export async function articleJsonLd(input: ArticleSeoInput): Promise<JsonLdNode>
 export async function articleMetadata(input: ArticleSeoInput): Promise<Metadata> {
   const locale = input.locale ?? DEFAULT_LOCALE;
   const t = await marketingTranslator(locale);
-  const url = absoluteUrl(input.path, locale);
   const alternates =
     input.availableLocales === undefined
       ? localeAlternates(input.path, locale)
       : articleAlternates(input.path, locale, input.availableLocales);
-  const openGraphLocale = toOpenGraphLocale(locale);
-  const alternateLocales = openGraphAlternateLocales(locale);
+  const canonicalLocale =
+    input.availableLocales === undefined || input.availableLocales.includes(locale)
+      ? locale
+      : DEFAULT_LOCALE;
+  const url = alternates.canonical;
+  const openGraphLocale = toOpenGraphLocale(canonicalLocale);
+  const alternateLocales = openGraphAlternateLocales(
+    canonicalLocale,
+    input.availableLocales ?? PUBLIC_LOCALE_CODES,
+  );
 
   return {
     title: input.headline,

@@ -50,11 +50,9 @@ const COMMON_TIME_ZONES = [
  * it had a single connection, and put the person's projects in whichever of
  * them the session happened to select.
  *
- * There is no interface language control here. There was one, permanently
- * disabled and pinned to English, which reads as a broken dropdown rather than
- * as a decision. V1 ships English only; the language is a Settings choice on
- * the day a second catalog is reviewed, and until then the honest interface is
- * no control at all.
+ * There is no interface language control here. Language is a Settings choice
+ * after the workspace exists, so onboarding does not duplicate that setting or
+ * make a new account choose between two sources of truth.
  */
 export function WorkspaceStep() {
   const t = useTranslations();

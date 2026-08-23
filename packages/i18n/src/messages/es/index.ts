@@ -11,6 +11,7 @@ import { commonMessages } from './common';
 import { composerMessages } from './composer';
 import { connectionMessages } from './connections';
 import { developerMessages } from './developer';
+import { digestMessages } from './digest';
 import { emailMessages } from './email';
 import { errorMessages } from './errors';
 import { growthMessages } from './growth';
@@ -71,6 +72,7 @@ export const es = {
   // `settings.data.*` includes privacy and consent controls.
   ...withoutBetaEnglishFallbacks(settingsMessages, 'es'),
   ...developerMessages,
+  ...digestMessages,
   ...withoutBetaEnglishFallbacks(authMessages, 'es'),
   ...onboardingMessages,
   ...emailMessages,
@@ -113,6 +115,7 @@ export {
   composerMessages,
   connectionMessages,
   developerMessages,
+  digestMessages,
   errorMessages,
   growthMessages,
   navMessages,

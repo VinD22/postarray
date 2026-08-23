@@ -81,6 +81,26 @@ describe('weekly digest workflow core', () => {
     expect(calls).toEqual(['buildWeeklyDigest', 'sendWeeklyDigestEmail']);
   });
 
+  it('passes the workspace locale through to the email activity', async () => {
+    const locales: string[] = [];
+    const { activities } = makeActivities();
+    const localizedActivities: DigestActivities = {
+      ...activities,
+      async sendWeeklyDigestEmail(input) {
+        locales.push(input.ctx.locale);
+        return { sent: true, skippedReasonKey: null };
+      },
+    };
+
+    await runWeeklyDigest(
+      fakeRuntime(),
+      localizedActivities,
+      makeInput({ ctx: { ...CTX, locale: 'es' } }),
+    );
+
+    expect(locales).toEqual(['es']);
+  });
+
   it('does not email a workspace that switched the digest off', async () => {
     const { activities, calls } = makeActivities({ enabled: false, stored: false, rowCount: 0 });
 

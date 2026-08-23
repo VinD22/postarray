@@ -160,7 +160,7 @@ export const webMarketingMessages = {
   'web.home.pillars.adapt.body':
     'W przypadku różnych platform można zastąpić jedno konto na raz i dokonać transkreacji zamiast dosłownego tłumaczenia, korzystając z glosariusza projektu i wyznaczonego recenzenta w każdym języku.',
   'web.home.pillars.adapt.proof':
-    'Interfejs jest dostępny w wybranych językach. Adaptacja treści obejmuje 30 języków treści i każdy z nich można sprawdzić przed publikacją.',
+    'Interfejs jest dostępny w wybranych językach. Adaptacja treści obejmuje 20 języków treści i każdy z nich można sprawdzić przed publikacją.',
   'web.home.pillars.loop.title': 'Zamknij pętlę',
   'web.home.pillars.loop.body':
     'Analizy określające nazwę metryki, platformę, która ją zgłosiła, mianownik i datę ostatniego odświeżenia. Jeśli platforma czegoś nie zgłasza, Relay to mówi, zamiast pokazywać zero.',

@@ -1,4 +1,4 @@
-import { ACTIVE_LOCALE_CODES, DEFAULT_LOCALE, en } from '@relay/i18n';
+import { DEFAULT_LOCALE, PUBLIC_LOCALE_CODES, en } from '@relay/i18n';
 import { describe, expect, it } from 'vitest';
 
 import {
@@ -7,6 +7,7 @@ import {
   articleJsonLd,
   articleMetadata,
   jsonLdScript,
+  toOpenGraphLocale,
   websiteJsonLd,
 } from '@/features/marketing/seo';
 
@@ -43,7 +44,7 @@ describe('article alternates', () => {
     const subject = requireArticle();
     const path = blogArticlePath(subject.slug);
     const locales = articleLocales(subject);
-    const untranslated = ACTIVE_LOCALE_CODES.find((locale) => !locales.includes(locale));
+    const untranslated = PUBLIC_LOCALE_CODES.find((locale) => !locales.includes(locale));
     if (untranslated === undefined) {
       // Every active locale happens to have this article; nothing to assert.
       return;
@@ -85,7 +86,8 @@ describe('article metadata', () => {
     expect(openGraph?.type).toBe('article');
     expect(openGraph?.publishedTime).toBe('2026-08-01T00:00:00.000Z');
     expect(openGraph?.modifiedTime).toBe('2026-08-10T00:00:00.000Z');
-    expect(openGraph?.locale).toBe('de_DE');
+    const contentLocale = articleLocales(subject).includes('de') ? 'de' : 'en';
+    expect(openGraph?.locale).toBe(toOpenGraphLocale(contentLocale));
     expect(openGraph?.authors).toEqual([en['web.blog.byline.editorial.name']]);
   });
 });

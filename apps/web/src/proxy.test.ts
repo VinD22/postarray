@@ -39,4 +39,14 @@ describe('locale proxy', () => {
     );
     expect(response.cookies.get(LOCALE_COOKIE)?.value).toBe('ar');
   });
+
+  it('redirects retired locale URLs to the equivalent English URL', () => {
+    const request = new NextRequest('https://relay.test/es-419/pricing?source=legacy');
+    const response = proxy(request);
+
+    expect(response.status).toBe(301);
+    expect(response.headers.get('location')).toBe(
+      'https://relay.test/pricing?source=legacy',
+    );
+  });
 });

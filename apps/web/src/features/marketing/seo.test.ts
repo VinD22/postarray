@@ -1,9 +1,10 @@
-import { ACTIVE_LOCALE_CODES, DEFAULT_LOCALE } from '@relay/i18n';
+import { DEFAULT_LOCALE, PUBLIC_LOCALE_CODES } from '@relay/i18n';
 import { describe, expect, it } from 'vitest';
 
 import { MARKETING_ROUTES } from './site';
 import {
   absoluteUrl,
+  contentPageMetadata,
   faqJsonLd,
   jsonLdScript,
   localeAlternates,
@@ -16,14 +17,14 @@ import {
 describe('localeAlternates', () => {
   it('keeps each canonical self-referential and emits a reciprocal cluster for every route', () => {
     for (const path of MARKETING_ROUTES) {
-      for (const locale of ACTIVE_LOCALE_CODES) {
+      for (const locale of PUBLIC_LOCALE_CODES) {
         const alternates = localeAlternates(path, locale);
 
         expect(alternates.canonical).toBe(absoluteUrl(path, locale));
         expect(alternates.languages[locale]).toBe(absoluteUrl(path, locale));
         expect(alternates.languages['x-default']).toBe(absoluteUrl(path, DEFAULT_LOCALE));
 
-        for (const alternateLocale of ACTIVE_LOCALE_CODES) {
+        for (const alternateLocale of PUBLIC_LOCALE_CODES) {
           expect(alternates.languages[alternateLocale]).toBe(absoluteUrl(path, alternateLocale));
         }
       }
@@ -62,6 +63,29 @@ describe('localized metadata and structured data', () => {
 
     expect(metadata.alternates?.canonical).toBe(absoluteUrl('/pricing', 'de'));
     expect(metadata.openGraph?.locale).toBe('de_DE');
+  });
+
+  it('does not advertise untranslated content as a localized page', async () => {
+    const metadata = await contentPageMetadata(
+      'English comparison title',
+      'English comparison description',
+      '/compare/platform-native-tools',
+      'de',
+      ['en'],
+    );
+
+    expect(metadata.alternates?.canonical).toBe(
+      absoluteUrl('/compare/platform-native-tools', 'en'),
+    );
+    expect(metadata.alternates?.languages).toEqual({
+      en: absoluteUrl('/compare/platform-native-tools', 'en'),
+      'x-default': absoluteUrl('/compare/platform-native-tools', 'en'),
+    });
+    expect(metadata.openGraph?.url).toBe(
+      absoluteUrl('/compare/platform-native-tools', 'en'),
+    );
+    expect(metadata.openGraph?.locale).toBe('en_US');
+    expect(metadata.openGraph?.alternateLocale).toBeUndefined();
   });
 
   it('sets a language on application and FAQ markup without advertising a closed offer', async () => {

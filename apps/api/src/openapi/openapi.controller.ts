@@ -1,9 +1,16 @@
 import { randomBytes } from 'node:crypto';
 
-import { Controller, Get, Header, Inject, Res } from '@nestjs/common';
+import { Controller, Get, Header, Inject, Req, Res } from '@nestjs/common';
 import type { RelayConfig } from '@relay/config';
 import { API_VERSION } from '@relay/contracts';
+import {
+  ACTIVE_LOCALE_CODES,
+  createTranslator,
+  loadCatalog,
+  resolveLocale,
+} from '@relay/i18n';
 import type { Response } from 'express';
+import type { Request } from 'express';
 
 import { RELAY_CONFIG } from '../application/tokens';
 import { Public } from '../common/decorators';
@@ -36,10 +43,18 @@ export class OpenApiController {
 
   @Public()
   @Get('docs')
-  docs(@Res() response: Response): void {
+  async docs(@Req() request: Request, @Res() response: Response): Promise<void> {
     const nonce = randomBytes(16).toString('base64');
     const document = buildOpenApiDocument({ serverUrl: this.serverUrl, version: API_VERSION });
+    const requestedLocale =
+      typeof request.query['lang'] === 'string'
+        ? request.query['lang']
+        : request.headers['accept-language'];
+    const locale = resolveLocale(requestedLocale ?? null, ACTIVE_LOCALE_CODES);
+    const translator = createTranslator(locale, await loadCatalog(locale));
     response.setHeader('content-type', 'text/html; charset=utf-8');
+    response.setHeader('content-language', locale);
+    response.setHeader('vary', 'Accept-Language');
     response.setHeader(
       'content-security-policy',
       [
@@ -51,6 +66,6 @@ export class OpenApiController {
         "frame-ancestors 'none'",
       ].join('; '),
     );
-    response.status(200).send(renderReference(document, nonce));
+    response.status(200).send(renderReference(document, nonce, { locale, translator }));
   }
 }

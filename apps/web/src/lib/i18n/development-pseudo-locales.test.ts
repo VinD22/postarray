@@ -1,9 +1,11 @@
 import { describe, expect, it } from 'vitest';
+import { PUBLIC_LOCALE_CODES } from '@relay/i18n';
 
 import {
   getWebLocaleDirection,
   isWebLocale,
   pseudoLocalesAreEnabled,
+  STATIC_WEB_LOCALE_CODES,
 } from './development-pseudo-locales';
 
 describe('pseudoLocalesAreEnabled', () => {
@@ -20,5 +22,10 @@ describe('pseudoLocalesAreEnabled', () => {
     expect(isWebLocale('en-XB', true)).toBe(true);
     expect(getWebLocaleDirection('en-XA')).toBe('ltr');
     expect(getWebLocaleDirection('en-XB')).toBe('rtl');
+  });
+
+  it('generates every public locale for the localized route tree', () => {
+    expect(STATIC_WEB_LOCALE_CODES).toHaveLength(PUBLIC_LOCALE_CODES.length);
+    expect(new Set(STATIC_WEB_LOCALE_CODES)).toEqual(new Set(PUBLIC_LOCALE_CODES));
   });
 });

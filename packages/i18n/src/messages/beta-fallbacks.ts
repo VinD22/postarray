@@ -5,7 +5,7 @@
  */
 
 /**
- * Locales that carry a real translation of the eleven namespaces listed in
+ * Locales that carry real translations for the catalog families listed in
  * `LOCALE_FILLED_PREFIXES`, not the whole B5 backlog.
  *
  * This is a narrow, additive exception, not a locale-wide override. Every
@@ -50,8 +50,8 @@ export const FULL_COVERAGE_LOCALE_CODES = [
 ] as const;
 
 /**
- * The eleven namespaces a `FULL_COVERAGE_LOCALE_CODES` locale has actually
- * translated: content and product-description copy (the blog, the free
+ * The catalog families a `FULL_COVERAGE_LOCALE_CODES` locale has actually
+ * translated include content and product-description copy (the blog, the free
  * tools, the per-platform scheduler pages, the use case pages, the
  * comparison page chrome, the in-page demonstration, bulk CSV import, the
  * non-generative media editor, posting sets and holds, queue rules, and
@@ -63,6 +63,7 @@ export const FULL_COVERAGE_LOCALE_CODES = [
  */
 export const LOCALE_FILLED_PREFIXES = [
   'email.',
+  'digest.',
   'queue.',
   'web.blog.',
   'web.tools.',
@@ -85,6 +86,10 @@ export const LOCALE_FILLED_PREFIXES = [
 ] as const;
 
 export const BETA_ENGLISH_FALLBACK_PREFIXES = [
+  // Weekly digest copy is translated for every active launch locale. It still
+  // remains subject to the normal human review gate, but missing keys are no
+  // longer allowed as an English fallback.
+  'digest.',
   'billing.',
   // What the assistant did, and what it deliberately did not do. Every one of
   // these sentences draws the line between a proposal and a write, and a
@@ -121,6 +126,10 @@ export const BETA_ENGLISH_FALLBACK_PREFIXES = [
   // a person translates it.
   'auth.newPassword.',
   'developer.confirmation.',
+  // CLI help is catalog-owned, but the beta locale catalogs do not yet carry
+  // these descriptions. The English source remains the safe fallback until
+  // each command surface is reviewed in its target language.
+  'cli.help.',
   // Connecting an AI client to a workspace. Every sentence is either an exact
   // statement about a credential that cannot be retrieved again, or a
   // statement about what the workspace did and did not record. A machine

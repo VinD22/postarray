@@ -1,6 +1,6 @@
 'use client';
 
-import type { ReactNode } from 'react';
+import { Suspense, type ReactNode } from 'react';
 import { usePathname } from 'next/navigation';
 import { Menu, X } from 'lucide-react';
 import { cn } from '@relay/design-system/utils';
@@ -11,7 +11,7 @@ import { ThemePicker } from '@/components/theme-picker';
 import { localizedHref } from '@/lib/i18n/routing';
 
 import { Container } from './layout';
-import { LanguagePicker } from './language-picker';
+import { LanguagePicker, LanguagePickerFallback } from './language-picker';
 
 export interface HeaderLink {
   readonly href: string;
@@ -111,7 +111,9 @@ export function SiteHeader(props: SiteHeaderProps): ReactNode {
 
           <div className="hidden shrink-0 items-center gap-1 xl:flex">
             <ThemePicker />
-            <LanguagePicker />
+            <Suspense fallback={<LanguagePickerFallback />}>
+              <LanguagePicker />
+            </Suspense>
             <Link
               href={signIn.href}
               className={cn(
@@ -178,7 +180,9 @@ export function SiteHeader(props: SiteHeaderProps): ReactNode {
                   </ul>
                   <div className="flex flex-wrap items-center gap-3 py-4">
                     <ThemePicker />
-                    <LanguagePicker />
+                    <Suspense fallback={<LanguagePickerFallback />}>
+                      <LanguagePicker />
+                    </Suspense>
                     <Link
                       href={startTrial.href}
                       className={cn(

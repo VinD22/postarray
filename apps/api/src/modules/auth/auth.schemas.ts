@@ -1,4 +1,5 @@
 import { ianaTimeZoneSchema, localeSchema } from '@relay/contracts';
+import { isActiveLocale } from '@relay/i18n';
 import { z } from 'zod';
 
 /**
@@ -27,12 +28,21 @@ export const passwordSchema = z.string().min(12).max(256);
 
 export const identifierSchema = z.string().trim().min(3).max(320);
 
+/** Authentication preferences must name a currently public interface locale.
+ * Content-language fields intentionally remain broader, but an auth flow must
+ * never persist a retired or merely planned route prefix in an identity or
+ * email redirect.
+ */
+const interfaceLocaleSchema = localeSchema.refine(isActiveLocale, {
+  error: 'UNSUPPORTED_INTERFACE_LOCALE',
+});
+
 export const signUpSchema = z
   .object({
     email: z.string().trim().min(3).max(320).toLowerCase(),
     password: passwordSchema,
     displayName: z.string().trim().min(1).max(100),
-    locale: localeSchema.default('en'),
+    locale: interfaceLocaleSchema.default('en'),
     timeZone: ianaTimeZoneSchema.default('UTC'),
     /** Exact version hashes of the documents the person actually saw. */
     termsVersionHash: z.string().regex(/^[0-9a-f]{64}$/),
@@ -51,7 +61,7 @@ export const signInSchema = z
 export const magicLinkSchema = z
   .object({
     identifier: identifierSchema,
-    locale: localeSchema.default('en'),
+    locale: interfaceLocaleSchema.default('en'),
   })
   .strict();
 
@@ -69,7 +79,7 @@ export const verifyOtpSchema = z
 export const passwordResetSchema = z
   .object({
     identifier: identifierSchema,
-    locale: localeSchema.default('en'),
+    locale: interfaceLocaleSchema.default('en'),
   })
   .strict();
 
