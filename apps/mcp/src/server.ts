@@ -21,7 +21,7 @@ import type { VerifiedGrant } from './auth/verifier';
  * the SDK happens to depend on.
  */
 
-export const SERVER_NAME = 'relay';
+export const SERVER_NAME = 'postarray';
 export const SERVER_VERSION = '0.1.0';
 
 export interface McpServerOptions {

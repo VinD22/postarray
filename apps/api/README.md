@@ -65,7 +65,7 @@ property, not a preference.
 - **A request carrying both a cookie and a bearer token is refused.** Resolving
   it by precedence is how privilege confusion bugs start.
 - **A bearer token is checked against this resource's audience.** A token minted
-  for another Relay resource does not work here.
+  for another Post Array resource does not work here.
 - **A credential never travels in a URL.** Passwords, one-time codes and OAuth
   codes are request bodies or headers, never query parameters we emit.
 - **Missing data is `unavailable`, never `0`.** That is enforced upstream, and
@@ -195,7 +195,7 @@ never publish directly.
 
 Entitlement state, metered usage, hosted checkout and the customer portal, plus
 the Polar receiver. The checkout redirect grants nothing: entitlements come only
-from verified webhook state plus reconciliation. Relay never sees a card number.
+from verified webhook state plus reconciliation. Post Array never sees a card number.
 
 ### `/v1/api-keys`, `/v1/developer/apps`, `/v1/developer/grants`
 

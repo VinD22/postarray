@@ -119,7 +119,7 @@ connector"). Detail and rationale: `docs/planning/05-social-connectors.md`.
 - [ ] Media preparation is idempotent on `(asset, connection, variant)`; a retry does not re-upload.
 - [ ] Where the provider pulls media from a URL, the URL is on a verified owned domain and is
       short-lived.
-- [ ] No Relay watermark, logo or promotional marking is added to any published content.
+- [ ] No Post Array watermark, logo or promotional marking is added to any published content.
 
 ## 5. Publication receipt
 

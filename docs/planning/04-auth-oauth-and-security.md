@@ -8,7 +8,7 @@ Provider-dependent claims cite `docs/research/06-source-register.md`, compiled 4
 Every row marked **re-verify before implementation** must be re-fetched and re-dated by the
 named owner before the corresponding code is written.
 
-This document is authoritative for identity, authorization and security in Relay. If another
+This document is authoritative for identity, authorization and security in Post Array. If another
 planning document disagrees with it on a security control, this document wins and the other
 document gets a correction ticket.
 
@@ -41,7 +41,7 @@ document gets a correction ticket.
 
 ## 1. Identity model
 
-Relay separates four things that are commonly conflated. Confusing them is the root cause of
+Post Array separates four things that are commonly conflated. Confusing them is the root cause of
 most multi-tenant authorization bugs, so the vocabulary is fixed here.
 
 | Concept | Table | What it is | What it is not |
@@ -376,7 +376,7 @@ and challenge flow we design against (source register: Supabase Auth overview, 4
 Required for the workspace **owner** role at all times. If a user is promoted to owner without
 MFA enrolled, they enter a grace state: they keep read access and must enrol before any of the
 step-up actions below. The grace window is 7 days, after which owner privileges are suspended
-(not the account, only the elevated privileges) and the previous owner or Relay support is the
+(not the account, only the elevated privileges) and the previous owner or Post Array support is the
 recovery path.
 
 ### 5.3 Step-up (re-authentication) actions
@@ -463,7 +463,7 @@ is on the critical path for review. RECOMMENDED DEFAULT: two Meta apps, two Goog
 
 ## 7. Third-party developer OAuth applications
 
-Relay is an OAuth **authorization server** for third-party developers. A developer registers an
+Post Array is an OAuth **authorization server** for third-party developers. A developer registers an
 app; an end user consents; the app receives a token that works across REST and remote MCP with
 exactly the scopes granted. This mirrors the capability described in research 02 section 13 and
 research 07 "Developer OAuth applications", implemented independently. Our token naming, console
@@ -513,8 +513,8 @@ rely on PKCE.
 sequenceDiagram
   participant App as Third-party app
   participant UA as User agent
-  participant AS as Relay authorization server
-  participant RS as Relay API / MCP
+  participant AS as Post Array authorization server
+  participant RS as Post Array API / MCP
   App->>UA: 302 /oauth/authorize with client_id, redirect_uri, scope, state, S256 challenge
   UA->>AS: GET /oauth/authorize
   AS->>AS: validate client, exact redirect, scope subset, PKCE present
@@ -530,7 +530,7 @@ sequenceDiagram
 Consent screen requirements (product-visible copy, no em dashes):
 
 - Names the app, shows its logo, links its privacy policy and terms, and states
-  "This app is not built by Relay."
+  "This app is not built by Post Array."
 - Requires the user to pick **one workspace**, and optionally to narrow to specific brands and
   specific connected accounts.
 - Lists scopes in plain language, grouped into **Read** and **Consequential**, with the
@@ -593,7 +593,7 @@ Per research 03 section 8 and research 07: create app, one-time secret display, 
 redacted request logs (90 day retention, bodies redacted to field names plus sizes), webhook
 registration, rate-limit state, active-grant inspection, disable and delete.
 
-Relay prefixes: `rly_pk_` (public client id), `rly_cs_` (client secret, shown once), `rly_at_`
+Post Array prefixes: `rly_pk_` (public client id), `rly_cs_` (client secret, shown once), `rly_at_`
 (access), `rly_rt_` (refresh), `rly_ak_` (workspace API key).
 
 ---
@@ -624,7 +624,7 @@ approval level. The tool set is exactly the one in research 02 section 13. Addit
   and arguments.
 - Consequential tools (`schedule_post`, `publish_post`, `cancel_post`,
   `create_campaign_from_plan`) require an `idempotency_key` argument and are rejected without one.
-- Account IDs are resolved **server-side**. A tool argument is a Relay connection ID that the
+- Account IDs are resolved **server-side**. A tool argument is a Post Array connection ID that the
   ActorContext already permits. A tool never accepts a raw provider handle and looks it up with
   ambient authority.
 - Tool results are compact and structured, with resource links instead of dumps. A tool that could
@@ -886,7 +886,7 @@ launch by research 05 section 9. Each row names the control and where it is test
 | STRIDE | Threat | Control | Test |
 | --- | --- | --- | --- |
 | Tampering | Content changes between approval and dispatch | Immutable `content_versions`; the receipt stores the version hash; a mismatch at dispatch aborts and requires reapproval | `approval-drift.test.ts` |
-| Repudiation | "Relay posted something I never approved" | Publication receipt records surface, actor, approval decision, exact content hash and permalink | receipt tests |
+| Repudiation | "Post Array posted something I never approved" | Publication receipt records surface, actor, approval decision, exact content hash and permalink | receipt tests |
 | Denial of service | A malicious or buggy client schedules 10,000 posts | Cadence budgets, plan fair use, per-actor rate limits, bulk escalation at 5 external publications | `cadence-budget.test.ts` |
 | Elevation | An agent publishes to an account outside its narrowing | `connectionIds` intersection enforced in the use case and again by RLS on the connection read | `agent-narrowing.test.ts` |
 | Tampering | Duplicate publication after a worker crash | Idempotency key unique per workspace; query provider status or external ID before repeating a create where provider idempotency is absent | chaos tests, `AGENTS.md` mandate |
@@ -922,7 +922,7 @@ launch by research 05 section 9. Each row names the control and where it is test
 | Repudiation | "I was charged without being told" | Store the exact checkout disclosure version the user saw: `$0 due today`, the exact conversion date, the exact amount, the interval and the cancellation path | consent evidence test |
 | Denial of service | Webhook replay floods the inbox | Event ID dedupe plus a replay window | `webhook-replay.test.ts` |
 | Elevation | Trial abuse farms | Polar's repeat-trial abuse prevention plus product-side rate and risk controls. We do **not** fingerprint cards ourselves | manual review runbook |
-| Information disclosure | Card data in our systems | We never see it. Polar hosted checkout only. There is no card number in any Relay database, log or backup | data-flow review, launch gate |
+| Information disclosure | Card data in our systems | We never see it. Polar hosted checkout only. There is no card number in any Post Array database, log or backup | data-flow review, launch gate |
 
 Note for anyone writing billing copy: do **not** claim a `$2` verification hold. Polar's trial
 documentation establishes payment-method collection and a deferred charge, not that specific hold
@@ -1003,7 +1003,7 @@ exists anywhere in the codebase, and a lint rule enforces it.
 6. On every redirect, repeat steps 1 to 5. Maximum 3 redirects.
 7. Enforce a 10 second connect timeout, a 30 second total timeout, and a hard response size
    cap (10 MB for RSS and metadata, a per-connector configured cap for media).
-8. Strip cookies and any Relay header. Send no ambient credential. Ever.
+8. Strip cookies and any Post Array header. Send no ambient credential. Ever.
 9. Log the final resolved IP and hostname in the audit trail for the fetch.
 ```
 
@@ -1057,7 +1057,7 @@ internal networks, so a bug in step 4 still cannot reach an internal service.
 
 **Outbound** (our events to customer endpoints):
 
-- HMAC-SHA256 over `timestamp + "." + raw_body`, sent in a `Relay-Signature` header with a key ID
+- HMAC-SHA256 over `timestamp + "." + raw_body`, sent in a `Post Array-Signature` header with a key ID
   so rotation is possible. Documented verification snippet in the public docs.
 - Timestamp in a separate header, and we tell customers to reject anything older than 5 minutes.
 - Exponential backoff with jitter: 0s, 30s, 2m, 10m, 1h, 6h, 24h, then dead-letter.

@@ -1,12 +1,13 @@
-# AGENTS.md — engineering conventions for Relay
+# AGENTS.md — engineering conventions for Post Array
 
 Read this before writing any code. It is the shared contract between every
 person and every agent working in this repository.
 
-`Relay` is a working codename. Naming is an open founder decision. It appears
-only in package scopes (`@relay/*`), the repo name, and internal docs. All
-user-visible product copy lives in `packages/i18n` so a rename is a catalog
-edit, not a code migration.
+The product is **Post Array** (postarray.com). `relay` was the working codename
+and survives only where renaming it would buy nothing: the `@relay/*` package
+scopes and code symbols like `RelayError`. Every user-visible string lives in
+`packages/i18n`, which is what made the rename a catalog edit rather than a
+migration, and is why it must stay that way.
 
 ## What we are building
 

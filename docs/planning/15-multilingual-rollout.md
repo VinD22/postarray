@@ -111,7 +111,7 @@ meaning and the native reviewer owns release approval.
 7. Record the native reviewer, date, glossary version, source/catalog digests, and evidence for all
    required areas in `LOCALE_REVIEWS`. Never invent a reviewer or use a blanket acknowledgement.
 
-Required glossary terms include Relay, Composer, Growth Advisor, Action Center, Workspace, post,
+Required glossary terms include Post Array, Composer, Growth Advisor, Action Center, Workspace, post,
 draft, schedule, publish, approve, connection, and every connector name. Product nouns and provider
 names must not drift between catalog, SEO title, email, CLI, and API reference.
 

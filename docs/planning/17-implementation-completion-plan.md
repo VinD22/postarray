@@ -6,7 +6,7 @@ The team-ready execution handoff is [18-team-release-handoff.md](18-team-release
 Use that companion document for owner assignments, dependencies, evidence and
 release sequencing.
 
-This is the developer handoff for finishing Relay from the current repository
+This is the developer handoff for finishing Post Array from the current repository
 checkpoint. It is deliberately execution-oriented. `16-launch-recovery-and-
 release-gates.md` remains the release authority; this document turns its open
 gates into work packages with owners, dependencies and evidence.
@@ -49,13 +49,13 @@ expiry, and records auditable state transitions. V1 remains JSON-only.
 
 The checkpoint also wires the local deletion vertical slice through the same
 application service used by the worker. Deletion snapshots workspace scope,
-cancels active publish jobs, removes Relay credentials, pages through
+cancels active publish jobs, removes Post Array credentials, pages through
 tenant-prefixed storage, tombstones publication analytics as `unavailable`,
 removes automation and integration secrets, and records idempotent audit
 transitions. Local and memory storage adapters have cursor-based listing, and
 the Neon S3-compatible adapter has the corresponding paginated primitive. The
 worker remains fail-closed for publishing and for provider-side revocation:
-the deletion activity marks a connection revoked and removes its Relay
+the deletion activity marks a connection revoked and removes its Post Array
 credential, but does not claim an official provider revoke until a verified
 connector adapter exists.
 
@@ -67,7 +67,7 @@ the Settings screen. Request and cancel operations are idempotent, the durable
 `0061_deletion_request_idempotency.sql` guard closes the database race when KV
 coordination is unavailable, and Temporal plus inline scheduling use the same
 workflow input. Destructive-step failures move the request to an auditable
-`failed` state without leaking provider details. Completion removes Relay
+`failed` state without leaking provider details. Completion removes Post Array
 credentials, scheduled work, stored objects, memberships and active sessions,
 expires export objects, tombstones analytics and soft-deletes the workspace so
 retention-bound audit and publication evidence can remain addressable. Published
@@ -79,11 +79,11 @@ workspace-scoped credential store/vault and a verified connector execution seam
 in the codebase. The credential adapters and resolver are not yet composed into
 worker activities, OAuth completion still lacks connection creation and account
 selection persistence, and no provider is enabled. It still needs a private
-Relay Neon Storage bucket, an isolated Relay Neon branch with migrations
+Post Array Neon Storage bucket, an isolated Post Array Neon branch with migrations
 through `0063_credential_envelope_v1.sql`, live Temporal replay and crash
 evidence, verified provider-side revoke adapters, and an authenticated browser
 pass.
-The MCP-connected `ldr-app` project is not the Relay database and must not be
+The MCP-connected `ldr-app` project is not the Post Array database and must not be
 modified.
 
 The latest integrations checkpoints compose the complete built-in adapter
@@ -120,7 +120,7 @@ the production-like evidence is reproducible from the release commit.
 | Priority | Owner | Dependency | Deliverable and acceptance evidence |
 | --- | --- | --- | --- |
 | P0 | Release captain | None | Freeze origin, legal/support contacts, feature flags and public capability copy. Produce a signed release decision and claim scan. |
-| P0 | Database and tenancy | Release captain | Create an isolated Relay Neon branch, apply migrations through `0063`, verify the ledger, exercise RLS with two workspaces, and record backup/restore evidence. |
+| P0 | Database and tenancy | Release captain | Create an isolated Post Array Neon branch, apply migrations through `0063`, verify the ledger, exercise RLS with two workspaces, and record backup/restore evidence. |
 | P0 | Storage and data rights | Database and tenancy | Promote the local export builder to production with a KMS-backed encryption adapter, private Neon Storage, checksum verification, expiry/purge retries, and a deployment smoke. Evidence: fixture archive with secrets absent, envelope decrypt test, object purge transcript, and two replayed failure cases. |
 | P0 | Worker and application | Storage and data rights | Make export and deletion workflows resumable and idempotent across worker crash, timeout, duplicate start, revoked access and storage failure. Add DB state-transition/audit tests and Temporal replay histories. The local deletion request lifecycle, cancellation and failure state are now wired; production evidence and remaining activity promotion are still required. |
 | P0 | Integrations | Worker and application | Promote one official connector through its definition of done, including OAuth review/scopes, capability snapshot, publish/read-back, revoked-token and duplicate-publication canaries. Keep every other connector explicitly `not_implemented`, `awaiting provider review` or `unsupported`. |
@@ -138,10 +138,10 @@ the release commit on an isolated environment.
 
 | ID | Owner | Scope | Acceptance gate |
 | --- | --- | --- | --- |
-| REL-001 | Database and tenancy | Create the isolated Relay Neon release branch, apply migrations through `0063`, verify checksums, seed two workspaces and run the full RLS matrix. | Cross-workspace reads and writes fail for every tenant table, including export, deletion, OAuth transactions and credentials; backup and restore report is attached; `pnpm release:check` is green against the branch. |
+| REL-001 | Database and tenancy | Create the isolated Post Array Neon release branch, apply migrations through `0063`, verify checksums, seed two workspaces and run the full RLS matrix. | Cross-workspace reads and writes fail for every tenant table, including export, deletion, OAuth transactions and credentials; backup and restore report is attached; `pnpm release:check` is green against the branch. |
 | REL-002 | Security/platform | Verify and promote the KMS adapter for `DataExportEncryptionPort`, including key version metadata, rotation, access policy and startup fail-closed behavior. | A key rotation decrypts old envelopes and encrypts new ones; no local key or plaintext appears in production logs, fixtures or object metadata. |
 | REL-003 | Storage/data rights | Provision private Neon Storage, run the health sentinel, exercise signed upload/head/read/delete, and promote the export builder's KMS path. | Export fixture contains the documented allow-list only, checksum matches the object, expiry and purge are deterministic, and missing objects produce a recoverable error. |
-| REL-004 | Application/worker | Promote the owner-only deletion request lifecycle in `274914f` to the isolated environment. Validate real Prisma/RLS, step-up and workspace-name confirmation, idempotency races, storage failures, cancellation races, media derivatives, automation/feed cleanup and the distinction between Relay credential revocation and provider-side revoke. | A witnessed request exposes a seven-day status and cancel path, then a replayed deletion leaves no Relay credential or tenant storage object behind, expires export objects, revokes memberships/sessions, records tombstones and audit events, resumes after every injected failure point, and reports provider revoke as unavailable until its connector gate is signed. |
+| REL-004 | Application/worker | Promote the owner-only deletion request lifecycle in `274914f` to the isolated environment. Validate real Prisma/RLS, step-up and workspace-name confirmation, idempotency races, storage failures, cancellation races, media derivatives, automation/feed cleanup and the distinction between Post Array credential revocation and provider-side revoke. | A witnessed request exposes a seven-day status and cancel path, then a replayed deletion leaves no Post Array credential or tenant storage object behind, expires export objects, revokes memberships/sessions, records tombstones and audit events, resumes after every injected failure point, and reports provider revoke as unavailable until its connector gate is signed. |
 | REL-005 | Temporal/reliability | Add export and deletion replay histories plus crash points before storage write, after storage write and before/after the durable state update. | Duplicate workflow starts produce one workflow; retries produce one receipt and one effective object; all replay histories pass on the pinned worker build. |
 | REL-006 | Integrations | Promote one official provider, starting with LinkedIn, through `docs/connectors/definition-of-done.md`. Keep all other providers explicitly unavailable. | OAuth review/scopes, account discovery, capability snapshot, text/media publish, read-back, revoked-token and duplicate-publication canaries are signed. |
 | REL-007 | Product frontend | Make connector capabilities and provider limitations visible before compose and schedule. Complete partial-success, rate-limit, offline and permission-denied states. | Every enabled capability has a recovery action and an i18n key; unavailable is never rendered as zero; axe, keyboard, RTL and pseudo-locale checks stay green. |
@@ -188,7 +188,7 @@ isolated release environment:
 ### Workspace deletion request definition of done
 
 The closure slice in `274914f` is locally complete. It is a release blocker
-until the following evidence is witnessed against the isolated Relay
+until the following evidence is witnessed against the isolated Post Array
 environment:
 
 1. Only the workspace owner can request or cancel closure. The API requires
@@ -205,12 +205,12 @@ environment:
    rate-limit and offline behavior have an accessible recovery path. A failure
    never claims provider-side access removal and records only a safe message
    key, not provider payloads or credentials.
-4. Execution cancels scheduled Relay jobs before deleting anything, removes
-   Relay credentials and integration secrets, pages through storage, expires
+4. Execution cancels scheduled Post Array jobs before deleting anything, removes
+   Post Array credentials and integration secrets, pages through storage, expires
    export objects, revokes memberships and active sessions, tombstones
    analytics as `unavailable`, and records immutable audit transitions. Media
    deletion is retried safely for the one-month retention policy. Published
-   posts remain on their platforms and are never shown as erased by Relay.
+   posts remain on their platforms and are never shown as erased by Post Array.
 5. Because audit events and publication receipts have a retention floor, the
    workspace is soft-deleted at completion. The retention pruner owns later
    hard deletion. The runbook must document the retained evidence, backup
@@ -302,7 +302,7 @@ Owner: platform engineer. Dependencies: B and C.
 4. Validate and promote the owner-only deletion request and workflow gateway
    wired in `274914f` against the real database and storage ports. Every page is
    resumable and idempotent. Record the seven-day request, cancellation,
-   canceled jobs, Relay credential revocation, deleted objects, expired export
+   canceled jobs, Post Array credential revocation, deleted objects, expired export
    objects, revoked memberships/sessions, tombstoned receipts and final state.
    Do not describe a provider grant as revoked until the connector has an
    official revoke operation and evidence.

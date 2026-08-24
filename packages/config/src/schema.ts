@@ -154,7 +154,7 @@ const coreShape = {
    * being dispatchable so the local publish loop can close. The runtime
    * ignores this flag entirely when NODE_ENV is `production`.
    */
-  RELAY_ALLOW_FAKE_CONNECTOR: booleanish().default(false),
+  POSTARRAY_ALLOW_FAKE_CONNECTOR: booleanish().default(false),
   LOG_LEVEL: z.enum(LOG_LEVELS).default('info'),
 };
 

@@ -1,6 +1,6 @@
 # @relay/web
 
-The Relay web surface: the product shell, authentication, onboarding, marketing
+The Post Array web surface: the product shell, authentication, onboarding, marketing
 site, and localized public feeds.
 
 Next.js 16 (App Router, React Server Components by default), React 19,

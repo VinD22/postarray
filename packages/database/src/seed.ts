@@ -13,7 +13,7 @@ import { serviceRoleClaims, withRlsContext } from './tenancy/rls-context';
  * projects, a `fake` provider connection with a complete capability snapshot,
  * five posts spread across draft, validation-needed, scheduled and published
  * with receipts, attempts and metric observations (publishing through the fake
- * connection additionally requires RELAY_ALLOW_FAKE_CONNECTOR=true, which is
+ * connection additionally requires POSTARRAY_ALLOW_FAKE_CONNECTOR=true, which is
  * honored only outside production), one automation rule with a
  * run, one RSS feed, one tracked short link with clicks, a trialing
  * subscription, and three verified records in each curated catalog.

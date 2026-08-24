@@ -9,7 +9,7 @@ const ONE_YEAR_IN_SECONDS = 31_536_000;
 
 function withLocaleRewrite(request: NextRequest, locale: string, pathname: string): NextResponse {
   const requestHeaders = new Headers(request.headers);
-  requestHeaders.set('x-relay-locale', locale);
+  requestHeaders.set('x-postarray-locale', locale);
   const url = request.nextUrl.clone();
   url.pathname = pathname;
   return NextResponse.rewrite(url, { request: { headers: requestHeaders } });

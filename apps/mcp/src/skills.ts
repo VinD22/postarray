@@ -110,9 +110,9 @@ const DESCRIPTION =
 export const SKILLS: readonly SkillDefinition[] = [
   {
     host: 'claude-code',
-    name: 'relay-publishing',
+    name: 'postarray-publishing',
     description: DESCRIPTION,
-    path: 'claude-code/relay-publishing/SKILL.md',
+    path: 'claude-code/postarray-publishing/SKILL.md',
     body: body(
       'claude-code',
       'Post Array publishing',
@@ -121,9 +121,9 @@ export const SKILLS: readonly SkillDefinition[] = [
   },
   {
     host: 'codex',
-    name: 'relay-publishing',
+    name: 'postarray-publishing',
     description: DESCRIPTION,
-    path: 'codex/relay-publishing.md',
+    path: 'codex/postarray-publishing.md',
     body: body(
       'codex',
       'Post Array publishing',
@@ -132,9 +132,9 @@ export const SKILLS: readonly SkillDefinition[] = [
   },
   {
     host: 'hermes',
-    name: 'relay-publishing',
+    name: 'postarray-publishing',
     description: DESCRIPTION,
-    path: 'hermes/relay-publishing.md',
+    path: 'hermes/postarray-publishing.md',
     body: body(
       'hermes',
       'Post Array publishing',

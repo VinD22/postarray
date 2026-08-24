@@ -358,7 +358,7 @@ export function verifiedConnectorsForEnvironment(
 /**
  * The triple guard on the in-repo provider simulator becoming dispatchable.
  * All three must hold: NODE_ENV is development or test (never production),
- * the operator set RELAY_ALLOW_FAKE_CONNECTOR explicitly, and the capability
+ * the operator set POSTARRAY_ALLOW_FAKE_CONNECTOR explicitly, and the capability
  * detector still reports the `fake` connector usable. The first two are
  * evaluated here; the third stays with the runtime registry so a disabled
  * capability status keeps its normal meaning. Production fails closed

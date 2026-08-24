@@ -1,4 +1,4 @@
-# The Relay publishing workflow
+# The Post Array publishing workflow
 
 This is the shared body of the three host skills in this directory. It is
 duplicated into each host's own file because a skill has to be readable on its
@@ -17,9 +17,9 @@ read.
 1. `list_accounts` to see which accounts exist and whether they are healthy.
 2. `get_capabilities` for each account you intend to use. Character limits,
    media rules and cost differ per account, and `unsupported` (the platform does
-   not offer it) is not the same as `not_implemented` (Relay has not built it).
+   not offer it) is not the same as `not_implemented` (Post Array has not built it).
    Never treat them as the same.
-3. `draft_post` with one master body and one entry per target account. Use Relay
+3. `draft_post` with one master body and one entry per target account. Use Post Array
    connection ids. A raw platform handle is never accepted.
 4. `validate_post`. Fix every `error` before going further. A `warning` is a
    judgement call; explain it to the person rather than silently ignoring it.

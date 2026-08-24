@@ -59,12 +59,12 @@ Create in the Polar sandbox first, then production. Record the IDs in the enviro
 
 | Product | Tier | Type | Price | Interval | Trial | Env var |
 | --- | --- | --- | --- | --- | --- | --- |
-| Relay Monthly | `relay_standard` | Recurring subscription | $29.00 USD | month | 7 days | `POLAR_MONTHLY_PRODUCT_ID` |
-| Relay Annual | `relay_standard` | Recurring subscription | $300.00 USD | year | 7 days | `POLAR_ANNUAL_PRODUCT_ID` |
-| Relay Growth Monthly | `relay_growth` | Recurring subscription | $59.00 USD | month | 7 days | `POLAR_GROWTH_MONTHLY_PRODUCT_ID` |
-| Relay Growth Annual | `relay_growth` | Recurring subscription | $612.00 USD | year | 7 days | `POLAR_GROWTH_ANNUAL_PRODUCT_ID` |
-| Relay Studio Monthly | `relay_studio` | Recurring subscription | $119.00 USD | month | 7 days | `POLAR_STUDIO_MONTHLY_PRODUCT_ID` |
-| Relay Studio Annual | `relay_studio` | Recurring subscription | $1,236.00 USD | year | 7 days | `POLAR_STUDIO_ANNUAL_PRODUCT_ID` |
+| Post Array Monthly | `relay_standard` | Recurring subscription | $29.00 USD | month | 7 days | `POLAR_MONTHLY_PRODUCT_ID` |
+| Post Array Annual | `relay_standard` | Recurring subscription | $300.00 USD | year | 7 days | `POLAR_ANNUAL_PRODUCT_ID` |
+| Post Array Growth Monthly | `relay_growth` | Recurring subscription | $59.00 USD | month | 7 days | `POLAR_GROWTH_MONTHLY_PRODUCT_ID` |
+| Post Array Growth Annual | `relay_growth` | Recurring subscription | $612.00 USD | year | 7 days | `POLAR_GROWTH_ANNUAL_PRODUCT_ID` |
+| Post Array Studio Monthly | `relay_studio` | Recurring subscription | $119.00 USD | month | 7 days | `POLAR_STUDIO_MONTHLY_PRODUCT_ID` |
+| Post Array Studio Annual | `relay_studio` | Recurring subscription | $1,236.00 USD | year | 7 days | `POLAR_STUDIO_ANNUAL_PRODUCT_ID` |
 | X API usage | n/a | Usage-based meter | pass-through, see section 8 | monthly in arrears | n/a | `POLAR_X_USAGE_METER_ID` |
 
 Every annual price divides into twelve whole dollars, so the "per month, billed annually" framing
@@ -141,12 +141,12 @@ Assume the customer confirms checkout on 4 August 2026 at 14:00 UTC on the month
 | When | What happens | Who does it |
 | --- | --- | --- |
 | Day 0, 14:00 UTC | Checkout confirms. $0.00 charged. Subscription created as `trialing`. | Polar |
-| Day 0, +seconds | `subscription.created` webhook arrives, signature verified, entitlements granted. | Relay |
-| Day 0 | In-app confirmation: "$0.00 charged today. Your first charge is $29.00 on 11 August 2026." | Relay |
+| Day 0, +seconds | `subscription.created` webhook arrives, signature verified, entitlements granted. | Post Array |
+| Day 0 | In-app confirmation: "$0.00 charged today. Your first charge is $29.00 on 11 August 2026." | Post Array |
 | Day 4 | Polar sends its pre-conversion reminder. | Polar |
-| Day 6 | Relay sends a trial status summary with the exact amount and date, what the workspace achieved, an export link and a `Manage or cancel` link. It must not obscure or contradict Polar's reminder. | Relay |
+| Day 6 | Post Array sends a trial status summary with the exact amount and date, what the workspace achieved, an export link and a `Manage or cancel` link. It must not obscure or contradict Polar's reminder. | Post Array |
 | Day 7, 14:00 UTC | Polar charges $29.00 if not cancelled. Subscription becomes `active`. | Polar |
-| Day 7 | Relay sends exactly one of: payment receipt and continuity note, cancellation confirmation, or failed-payment remediation. Never a generic success message. | Relay |
+| Day 7 | Post Array sends exactly one of: payment receipt and continuity note, cancellation confirmation, or failed-payment remediation. Never a generic success message. | Post Array |
 
 Source for trial mechanics: `https://polar.sh/docs/features/subscriptions/trials`, verified
 4 August 2026, **re-verify before implementation**.
@@ -189,9 +189,9 @@ the customer saw.
 ```mermaid
 sequenceDiagram
   participant U as User
-  participant W as Relay web
+  participant W as Post Array web
   participant P as Polar
-  participant A as Relay API
+  participant A as Post Array API
   U->>W: Choose monthly or annual
   W->>A: POST /v1/billing/checkout-sessions {interval, idempotencyKey}
   A->>P: Create checkout session (customer, product, success URL)
@@ -259,7 +259,7 @@ Processing rules:
 
 Entitlements are **derived**, never hand-set. One function, one table of truth:
 
-| Polar subscription status | Relay entitlement state | Publish and schedule | AI | Analytics read | Data export | Banner |
+| Polar subscription status | Post Array entitlement state | Publish and schedule | AI | Analytics read | Data export | Banner |
 | --- | --- | --- | --- | --- | --- | --- |
 | `trialing` | `full` | yes | yes | yes | yes | Trial, N days left, exact date and amount |
 | `active` | `full` | yes | yes | yes | yes | none |
@@ -334,7 +334,7 @@ than five drifts in an hour pages the on-call engineer.
 - Payment methods, invoices, receipts and cancellation are handled in **Polar's hosted customer portal**.
   We link to it. We do not rebuild it. Source:
   `https://polar.sh/docs/features/customer-portal/introduction`, verified 4 August 2026.
-- Interval change (monthly to annual or back) is offered in Relay and executed through Polar. The
+- Interval change (monthly to annual or back) is offered in Post Array and executed through Polar. The
   confirmation states the proration outcome and the next charge date and amount before confirming.
 - Cancellation is self-service, reachable in two clicks from Settings, and never requires contacting
   support. The confirmation, when cancelling before trial conversion, reads:
@@ -353,7 +353,7 @@ than five drifts in an hour pages the on-call engineer.
 
 | Day | State | Behaviour |
 | --- | --- | --- |
-| 0 | `past_due` | Polar begins its retry schedule. Relay stays fully functional. Owner and billing-admin emailed with the exact amount, the reason class returned by Polar, and a portal link. Banner in app |
+| 0 | `past_due` | Polar begins its retry schedule. Post Array stays fully functional. Owner and billing-admin emailed with the exact amount, the reason class returned by Polar, and a portal link. Banner in app |
 | 1 to 7 | `full_grace` | Everything continues, including scheduled dispatch. Banner states the exact date read-only begins |
 | 8 | `read_only` | New publishing and scheduling stop. AI stops. Reading, analytics, receipts and export continue |
 | 8 | Scheduled work | Approved scheduled posts are set to `Paused by billing` with an Action Center item. They are **not** cancelled and **not** dispatched. Temporal workflows are signalled to pause, not terminated |

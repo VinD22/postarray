@@ -24,11 +24,11 @@ connector. Those were planning assumptions, not launch facts.
 - V1 supports uploaded media. URL import is implemented locally through the
   shared application service and web Library, but production Storage, scanning,
   worker streaming and CLI/MCP parity remain release gates. In-app media editing
-  is not built. Relay does not offer AI image or video generation.
+  is not built. Post Array does not offer AI image or video generation.
 - A connector is offered in production only after its definition of done is
   satisfied. Credentials alone do not make a connector verified.
 - The in-repository `fake` connector is for tests and local development only.
-- Relay remains a codename. A public name must be selected before public URLs,
+- Post Array remains a codename. A public name must be selected before public URLs,
   legal documents, email identity and OAuth applications are finalized.
 
 ## What is implemented now

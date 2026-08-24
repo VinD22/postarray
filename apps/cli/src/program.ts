@@ -124,7 +124,7 @@ export function buildProgram(
   const program = new Command();
 
   program
-    .name('relay')
+    .name('postarray')
     .description(localizeHelp(helpTranslator, 'root'))
     .version(VERSION, '-V, --version')
     .configureOutput({
@@ -654,7 +654,7 @@ export async function runCli(argv: readonly string[], deps: CliDeps): Promise<Ru
       return { exitCode: error.exitCode === 0 ? EXIT_OK : EXIT_USAGE };
     }
     const relayError = RelayError.fromUnknown(error);
-    renderFailure({ command: 'relay', json: state.json, writer, translator: state.translator }, relayError);
+    renderFailure({ command: 'postarray', json: state.json, writer, translator: state.translator }, relayError);
     return { exitCode: exitCodeFor(relayError.code) };
   }
 }

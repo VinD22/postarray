@@ -67,7 +67,7 @@ These must be resolved before any real connector can be enabled.
    `packages/application/src/services/connections.ts` constructs
    `/v1/oauth/{provider}/start`, but no controller exposes that route. The actual
    social routes are `/v1/connections/oauth/begin` and
-   `/v1/connections/callback/:provider`; `/oauth/*` is Relay's separate OAuth
+   `/v1/connections/callback/:provider`; `/oauth/*` is Post Array's separate OAuth
    authorization server. Add a provider start/callback service that consumes each
    adapter's `authorization()` definition, builds the exact redirect URI, exchanges
    the code through the connector OAuth helper, discovers accounts and stores the

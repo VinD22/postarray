@@ -108,11 +108,11 @@ describe('detectCapabilities', () => {
   });
 
   describe('isFakeConnectorDispatchable', () => {
-    it('fails closed in production even when RELAY_ALLOW_FAKE_CONNECTOR is true', () => {
+    it('fails closed in production even when POSTARRAY_ALLOW_FAKE_CONNECTOR is true', () => {
       const config = loadConfig({
         ...minimal,
         NODE_ENV: 'production',
-        RELAY_ALLOW_FAKE_CONNECTOR: 'true',
+        POSTARRAY_ALLOW_FAKE_CONNECTOR: 'true',
       });
       expect(isFakeConnectorDispatchable(config)).toBe(false);
     });
@@ -124,11 +124,11 @@ describe('detectCapabilities', () => {
 
     it('turns on only with the explicit opt-in in development or test', () => {
       expect(
-        isFakeConnectorDispatchable(loadConfig({ ...minimal, RELAY_ALLOW_FAKE_CONNECTOR: 'true' })),
+        isFakeConnectorDispatchable(loadConfig({ ...minimal, POSTARRAY_ALLOW_FAKE_CONNECTOR: 'true' })),
       ).toBe(true);
       expect(
         isFakeConnectorDispatchable(
-          loadConfig({ ...minimal, NODE_ENV: 'test', RELAY_ALLOW_FAKE_CONNECTOR: 'true' }),
+          loadConfig({ ...minimal, NODE_ENV: 'test', POSTARRAY_ALLOW_FAKE_CONNECTOR: 'true' }),
         ),
       ).toBe(true);
     });

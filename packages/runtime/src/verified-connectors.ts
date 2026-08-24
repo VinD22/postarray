@@ -207,7 +207,7 @@ export class VerifiedConnectorRegistry implements ApplicationConnectorRegistry {
 
   has(provider: ProviderId): boolean {
     // The simulator stays behind a triple guard: never in production, only
-    // with the explicit RELAY_ALLOW_FAKE_CONNECTOR opt-in, and only when the
+    // with the explicit POSTARRAY_ALLOW_FAKE_CONNECTOR opt-in, and only when the
     // capability detector still reports it usable (checked below through
     // `describe`, like every other provider). Absent the opt-in, this keeps
     // the original production safety fence: the simulator is not a live,
@@ -380,7 +380,7 @@ export function createVerifiedConnectorRegistry(input: {
   );
 
   // The simulator is registered only behind the triple guard: development or
-  // test NODE_ENV, the explicit RELAY_ALLOW_FAKE_CONNECTOR opt-in, and the
+  // test NODE_ENV, the explicit POSTARRAY_ALLOW_FAKE_CONNECTOR opt-in, and the
   // capability detector reporting it usable. In production none of these can
   // hold, so no fake adapter object even exists in the registry there.
   const fakeEnabled = isFakeConnectorDispatchable(input.config);

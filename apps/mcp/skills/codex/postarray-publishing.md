@@ -1,19 +1,16 @@
----
-name: relay-publishing
-description: Draft, validate, preview, approve, schedule and publish social posts through Relay, with receipts and the same approval policy as the app. Use when the user asks to write, review, schedule or publish a social post, or to look at what is scheduled or how a post performed.
----
+# Post Array publishing
 
-# Relay publishing
-
-Use this skill whenever the task involves social publishing. It calls the Relay
-remote MCP server, which enforces the same permissions, approval policy,
-idempotency and receipts as the Relay web app.
+Add the Post Array MCP server to your Codex configuration as a remote HTTP server
+with OAuth, then follow this workflow whenever the task involves social
+publishing.
 
 ## Configuration
 
-Add Relay as a remote HTTP MCP server and authorize it with `/mcp`. Authorization
-is OAuth against Relay's own issuer. Claude Code performs the flow; you never
-paste a token into this file, and this file never contains one.
+Configure Post Array as a remote HTTP MCP server. Authorization is OAuth against
+Post Array's own issuer; Codex performs the flow. Never place a bearer token in the
+configuration file or in this skill. If your Codex version needs the exact
+transport and auth field names, take them from the Codex documentation rather
+than from memory: they have changed more than once.
 
 ## The workflow
 
@@ -23,9 +20,9 @@ read.
 1. `list_accounts` to see which accounts exist and whether they are healthy.
 2. `get_capabilities` for each account you intend to use. Character limits,
    media rules and cost differ per account, and `unsupported` (the platform does
-   not offer it) is not the same as `not_implemented` (Relay has not built it).
+   not offer it) is not the same as `not_implemented` (Post Array has not built it).
    Never treat them as the same.
-3. `draft_post` with one master body and one entry per target account. Use Relay
+3. `draft_post` with one master body and one entry per target account. Use Post Array
    connection ids. A raw platform handle is never accepted.
 4. `validate_post`. Fix every `error` before going further. A `warning` is a
    judgement call; explain it to the person rather than silently ignoring it.

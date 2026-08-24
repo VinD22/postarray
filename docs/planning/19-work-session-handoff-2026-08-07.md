@@ -7,14 +7,14 @@ Branch: `redesign/loud-and-alive`
 Window covered: approximately the previous 6 to 7 hours of team work.
 
 This document records what was implemented, where it lives, what was verified,
-and what remains before Relay can be released. It is intentionally explicit
+and what remains before Post Array can be released. It is intentionally explicit
 about local implementation versus production evidence. No social provider is
-enabled for production, no Relay Neon project was modified, and paid checkout
+enabled for production, no Post Array Neon project was modified, and paid checkout
 remains fail-closed.
 
 ## 1. Executive outcome
 
-The session moved Relay from a broad prelaunch scaffold to a substantially
+The session moved Post Array from a broad prelaunch scaffold to a substantially
 harder release candidate foundation:
 
 - release checks, migration verification, accessibility browser gates and
@@ -193,8 +193,8 @@ Implemented:
 
 - a reusable media policy notice in upload and picker surfaces;
 - displayed limits derived from the same account rules used by validation;
-- localized explanation of the 20 MiB non-video and 500 MiB video Relay limits;
-- clear separation between Relay storage expiry and posts already published on
+- localized explanation of the 20 MiB non-video and 500 MiB video Post Array limits;
+- clear separation between Post Array storage expiry and posts already published on
   a social platform.
 
 ### `e3e0fdd fix(media): anchor retention to post creation`
@@ -338,11 +338,11 @@ Implemented:
   confirmation;
 - durable seven-day cooling-off schedule and cancellation;
 - deterministic workflow and idempotency keys;
-- deletion scope snapshot, scheduled-job cancellation, Relay credential and
+- deletion scope snapshot, scheduled-job cancellation, Post Array credential and
   integration-secret removal, paginated storage cleanup, export expiry,
   membership/session revocation and analytics tombstoning as `unavailable`;
 - failure states and audit transitions that do not leak provider details;
-- explicit distinction between removing Relay credentials and revoking access
+- explicit distinction between removing Post Array credentials and revoking access
   at an external provider.
 
 ## 6. Release, UI and accessibility hardening in the same window
@@ -415,18 +415,18 @@ Known verification limitation:
 
 ## 9. Neon MCP finding
 
-The available Neon MCP inventory did not contain a Relay project. It contained
+The available Neon MCP inventory did not contain a Post Array project. It contained
 unrelated projects, including `ldr-app`. No remote database, branch, migration,
-storage object or secret was modified. A Relay-owned isolated Neon project or
+storage object or secret was modified. A Post Array-owned isolated Neon project or
 branch must be provisioned before database evidence can be collected.
 
 ## 10. Pending work, in release order
 
-### P0. Create and verify the Relay release environment
+### P0. Create and verify the Post Array release environment
 
 Owner: platform/database.
 
-1. Provision a Relay-owned isolated Neon branch.
+1. Provision a Post Array-owned isolated Neon branch.
 2. Apply and verify migrations through
    `0063_credential_envelope_v1.sql`.
 3. Run the complete two-workspace RLS matrix, including OAuth transactions,
