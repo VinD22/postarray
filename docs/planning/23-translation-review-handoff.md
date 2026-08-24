@@ -1,6 +1,6 @@
 # 23. Translation Review Handoff
 
-**Audience:** the developer who will make the fifteen-language promise true.
+**Audience:** the developer who will make the twenty-five-language promise true.
 
 **Status:** the engineering is finished. What remains is human review, one locale
 at a time. You do not need to translate anything from scratch.
@@ -14,7 +14,7 @@ at a time. You do not need to translate anything from scratch.
 Read this section carefully, because the job is smaller and stranger than it
 sounds.
 
-Every one of the fifteen catalogs is **already complete and already lint clean**.
+Every one of the twenty-five catalogs is **already complete and already lint clean**.
 There are roughly 4,700 keys per locale across 27 namespaces, and the machinery
 around them (ICU parsing, typed keys, plural categories, pseudo-locales,
 formatters, routing) has been in place for a while.
@@ -34,19 +34,19 @@ So your job is:
 Each locale you sign flips its badge from `beta` to `reviewed` in the language
 picker. Each one you do not sign stays `beta`, which is honest and costs nothing.
 
-**Do not batch-sign fifteen locales in one pull request.** One locale per pull
+**Do not batch-sign locales in one pull request.** One locale per pull
 request, so a bad review can be reverted without touching the others.
 
 ---
 
 ## 2. Why it was left this way
 
-The temptation was to write fifteen names into a file and call the feature done.
+The temptation was to write twenty-five names into a file and call the feature done.
 The reason that did not happen is worth internalising before you start:
 
 `reviewStatus` is not decoration. It drives a badge that tells a paying customer
 "a person has checked this language." If nobody has, the badge is a lie in
-fifteen languages simultaneously, and it is the kind of lie that is discovered
+twenty-five languages simultaneously, and it is the kind of lie that is discovered
 by exactly the customer it hurts most.
 
 Machine translation gets you a catalog. It does not get you the badge.
@@ -93,9 +93,15 @@ Suggested order, easiest to hardest:
    plural rules, most reviewers available.
 3. **`pl`, `tr`, `id`** next. Polish has the most demanding plural logic in the
    set; Turkish has the dotted and dotless `i` casing trap.
-4. **`ar`, `hi`, `ja`, `ko`, `zh-Hans`** last. Arabic is right-to-left and needs
-   a layout pass, not just a text pass. CJK needs a line-breaking and font check.
-   Hindi needs a script rendering check.
+3b. **`cs`, `sv`, `ru`, `uk`, `es-419`, `fil`, `vi`, `id`** next. Slavic plural
+   categories are as demanding as Polish; `es-419` is a regional variant whose
+   review is mostly about where it must differ from `es` rather than a fresh
+   read.
+4. **`ar`, `he`, `hi`, `th`, `ja`, `ko`, `zh-Hans`, `zh-Hant`** last. Arabic and
+   Hebrew are right-to-left and need a layout pass, not just a text pass. CJK
+   needs a line-breaking and font check, and `zh-Hant` is a script conversion
+   from `zh-Hans` only in the places where that is actually correct. Hindi and
+   Thai need script rendering checks.
 
 ---
 
