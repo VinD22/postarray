@@ -11,7 +11,7 @@ export const errorMessages = {
   'error.internal.message': 'Det här är ett problem från vår sida, inte med ditt innehåll.',
   'error.internal.action':
     'Ditt arbete är sparat. Vi har blivit larmade. Försök igen om några minuter.',
-  'error.not_implemented.message': 'Relay har inte byggt detta ännu.',
+  'error.not_implemented.message': 'Post Array har inte byggt detta ännu.',
   'error.not_implemented.action': 'Följ ändringsloggen för när den skickas.',
   'error.offline.message': 'Du är offline.',
   'error.offline.action':
@@ -57,6 +57,10 @@ export const errorMessages = {
   'error.subscription_past_due.action': 'Uppdatera betalningsmetoden i Polar-portalen.',
   'error.trial_expired.message': 'Rättegången avslutades {date}.',
   'error.trial_expired.action': 'Starta prenumerationen för att fortsätta publicera.',
+  'error.post_credits_exhausted.message':
+    'Den här arbetsytan har använt alla sina gratisinlägg. Allt annat fungerar som vanligt.',
+  'error.post_credits_exhausted.action':
+    'Välj en plan för att fortsätta publicera. Dina konton förblir anslutna och dina utkast och scheman finns kvar.',
   'error.entitlement_missing.message': 'Den här arbetsytan har inte åtkomst till den funktionen.',
   'error.entitlement_missing.action':
     'Kontrollera faktureringsinställningarna eller kontakta supporten.',
@@ -95,7 +99,7 @@ export const errorMessages = {
     'Inlägg publiceras privat tills recensionen går igenom. Vi uppdaterar den här sidan när den ändras.',
   'error.capability_unsupported.message': '{provider} erbjuder inte detta via sitt officiella API.',
   'error.capability_unsupported.action': 'Använd ett format som detta konto stöder.',
-  'error.capability_not_implemented.message': 'Relay har inte byggt detta för {provider} än.',
+  'error.capability_not_implemented.message': 'Post Array har inte byggt detta för {provider} än.',
   'error.capability_not_implemented.action':
     'Funktionssidan listar vad varje anslutning kan göra idag.',
   'error.capability_requires_review.message':

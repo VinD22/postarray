@@ -203,8 +203,8 @@ describe('the web tier table', () => {
   });
 
   it('derives the channel allowance from the project allowance, never from a price', () => {
-    expect(displayChannelAllowance(findTier(BASE_TIER_KEY))).toBe(15);
-    expect(displayChannelAllowance(findTier('relay_growth'))).toBe(50);
+    expect(displayChannelAllowance(findTier(BASE_TIER_KEY))).toBe(30);
+    expect(displayChannelAllowance(findTier('relay_growth'))).toBe(100);
     expect(displayChannelAllowance(findTier('relay_studio'))).toBe(MAX_CHANNEL_LIMIT);
     expect(displayChannelAllowance(null)).toBeNull();
     expect(displayChannelAllowance(findTier('relay_nonexistent'))).toBeNull();

@@ -94,6 +94,6 @@ export const statusMessages = {
     'यह प्रकाशित नहीं होगा. ड्राफ्ट यहीं रहता है इसलिए आप इसे फिर से शेड्यूल कर सकते हैं।',
   'confirm.publishNow.title': 'अभी प्रकाशित करें?',
   'confirm.publishNow.body':
-    '{count, plural, one {यह प्रकाशित करता है # तुरंत खाता} other {यह प्रकाशित करता है # तुरंत खाते}}. इसे Relay से वापस नहीं बुलाया जा सकता।',
+    '{count, plural, one {यह प्रकाशित करता है # तुरंत खाता} other {यह प्रकाशित करता है # तुरंत खाते}}. इसे Post Array से वापस नहीं बुलाया जा सकता।',
   'confirm.typeToConfirm': 'प्रकार {word} पुष्टि करने के लिए.',
 } as const;

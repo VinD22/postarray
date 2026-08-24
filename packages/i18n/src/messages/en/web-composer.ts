@@ -155,7 +155,7 @@ export const webComposerMessages = {
   'composerWeb.entity.lookupUnsupported':
     '{provider} does not offer entity lookup for this account type.',
   'composerWeb.entity.lookupNotBuilt':
-    'Relay has not built entity lookup for {provider} yet. Nothing is guessed in the meantime.',
+    'Post Array has not built entity lookup for {provider} yet. Nothing is guessed in the meantime.',
   'composerWeb.entity.searchHint': 'Type at least two characters, then choose a result.',
   'composerWeb.entity.searchFailed': 'The search did not complete. Try again.',
   'composerWeb.entity.resultCount':
@@ -174,7 +174,7 @@ export const webComposerMessages = {
   'composerWeb.links.utmTerm': 'Term',
   'composerWeb.links.utmContent': 'Content',
   'composerWeb.links.domainVerified': '{domain}, verified for this workspace',
-  'composerWeb.links.domainDefault': 'Relay default domain',
+  'composerWeb.links.domainDefault': 'Post Array default domain',
   'composerWeb.links.domainNone': 'No branded domain is verified yet.',
   'composerWeb.links.notAllowedHere': '{account} does not allow a link here.',
 
@@ -282,7 +282,7 @@ export const webComposerMessages = {
     'Nothing was lost. Try again, and if it keeps failing the reference below helps support find the request.',
   'composerWeb.page.noConnectionsTitle': 'Connect an account before composing',
   'composerWeb.page.noConnectionsBody':
-    'A draft needs at least one connected account so Relay knows the limits, the preview and the settings to show.',
+    'A draft needs at least one connected account so Post Array knows the limits, the preview and the settings to show.',
   'composerWeb.page.noConnectionsExample':
     'Example: with X and LinkedIn connected, one draft becomes two native versions with their own counters.',
   'composerWeb.page.permissionTitle': 'You cannot create posts in this workspace',
@@ -362,7 +362,7 @@ export const webComposerMessages = {
   'mediaLib.import.importing': 'Importing media',
   'mediaLib.import.succeeded': 'The file is in your library',
   'mediaLib.import.scanPending':
-    'Relay recorded its source. Publishing waits until the safety check finishes.',
+    'Post Array recorded its source. Publishing waits until the safety check finishes.',
   'mediaLib.import.failed': 'The file could not be imported',
   'mediaLib.import.failedHelp':
     'Check that the link is public and points directly to a supported media file, then try again.',
@@ -373,7 +373,7 @@ export const webComposerMessages = {
   'mediaLib.import.issue.credentials': 'Use a link without a username or password.',
   'mediaLib.retention.title': 'Stored files are kept for 30 days after the post is created',
   'mediaLib.retention.body':
-    'Once a file is attached to a post, we permanently delete it from Relay storage 30 days after that post is created. Files waiting to be attached use the upload date as a cleanup fallback. Post text, publication receipts and audit history remain available longer. A published post on a social platform is not removed when its stored file expires.',
+    'Once a file is attached to a post, we permanently delete it from Post Array storage 30 days after that post is created. Files waiting to be attached use the upload date as a cleanup fallback. Post text, publication receipts and audit history remain available longer. A published post on a social platform is not removed when its stored file expires.',
   'mediaLib.retention.limits':
     'Images, audio and PDF files can be up to {imageSize}. Videos can be up to {videoSize}.',
   'mediaLib.retention.expiresLabel': 'File deletion date',
@@ -487,7 +487,7 @@ export const webComposerMessages = {
   'mediaLib.provenance.contentCredentialsNone':
     'This file carries no embedded content credentials. That is common and does not mean anything is wrong.',
   'mediaLib.provenance.unverified':
-    'These details come from the source, not from Relay. Check them before you rely on them.',
+    'These details come from the source, not from Post Array. Check them before you rely on them.',
 
   'mediaLib.picker.title': 'Choose media',
   'mediaLib.picker.description': 'Files are checked against the accounts selected in this draft.',

@@ -39,21 +39,21 @@ export const webCalendarMessages = {
   'web.connection.requirement.mastodon':
     'Mastodon, kendi sunucunuzda oluşturduğunuz erişim belirteciyle bağlanır, şifrenizle değil.',
   'web.connection.requirement.telegram':
-    'Relay bir bot olarak yayınlar. Gönderim yapmak istediğiniz kanala veya gruba botu ekleyin.',
+    'Post Array bir bot olarak yayınlar. Gönderim yapmak istediğiniz kanala veya gruba botu ekleyin.',
   'web.connection.requirement.reddit':
     "Reddit'e yazmak onaylı bir uygulama gerektirir ve her gönderinin bir başlığa ve subreddit'e ihtiyacı vardır.",
   'web.connection.requirement.wordpress':
-    "Relay, WordPress'te oluşturduğunuz bir uygulama parolasıyla sitenin REST API'si üzerinden yayınlar.",
+    "Post Array, WordPress'te oluşturduğunuz bir uygulama parolasıyla sitenin REST API'si üzerinden yayınlar.",
   'web.connection.requirement.medium':
-    'Medium OAuth ile bağlanır ve Relay Markdown ile herkese açık hikayeler yayınlar.',
+    'Medium OAuth ile bağlanır ve Post Array Markdown ile herkese açık hikayeler yayınlar.',
   'web.connection.requirement.devto':
     'Dev.to, Dev.to ayarlarınızda oluşturulan bir API anahtarıyla bağlanır.',
   'web.connection.requirement.pinterest':
     "Pinterest'e yazmak onaylı uygulama erişimi gerektirir ve bir pin görsel ve size ait bir pano gerektirir.",
   'web.connection.requirement.discord':
-    'Relay bir bot olarak yayınlar. Gönderim yapmak istediğiniz sunuculara ve kanallara botu ekleyin.',
+    'Post Array bir bot olarak yayınlar. Gönderim yapmak istediğiniz sunuculara ve kanallara botu ekleyin.',
   'web.connection.requirement.slack':
-    'Relay bir uygulama olarak yayınlar. Gönderim yapmak istediğiniz kanallara uygulamayı ekleyin.',
+    'Post Array bir uygulama olarak yayınlar. Gönderim yapmak istediğiniz kanallara uygulamayı ekleyin.',
   'web.provider.fake': 'Test konektörü',
 
   'web.accountType.personal_profile': 'Kişisel profil',
@@ -166,7 +166,7 @@ export const webCalendarMessages = {
 
   'web.calendar.published.title': 'Bu yazı zaten yayınlandı',
   'web.calendar.published.body':
-    "{provider} saat {permalinkLabel}'de bir gönderi var. Relay'deki girişin taşınması, platformdaki gönderiyi taşımaz. Ne olmasını istediğinizi seçin.",
+    "{provider} saat {permalinkLabel}'de bir gönderi var. Post Array'deki girişin taşınması, platformdaki gönderiyi taşımaz. Ne olmasını istediğinizi seçin.",
   'web.calendar.published.optionLocal': 'Yalnızca yerel kaydı güncelle',
   'web.calendar.published.optionLocalHint':
     'Makbuz gerçek yayın süresini korur. Yalnızca planlama girişi taşınır, böylece takviminiz planınızla eşleşir.',
@@ -270,7 +270,7 @@ export const webCalendarMessages = {
 
   'web.receipt.analytics.never': 'Analytics bu gönderi için henüz senkronize edilmedi.',
   'web.receipt.analytics.explain':
-    "Sağlayıcılar kendi programlarına göre toplanırlar. Aşağıdaki zaman, sayıların doğru olduğu zaman değil, Relay'in bunları en son okuduğu zamandır.",
+    "Sağlayıcılar kendi programlarına göre toplanırlar. Aşağıdaki zaman, sayıların doğru olduğu zaman değil, Post Array'in bunları en son okuduğu zamandır.",
 
   'web.receipt.export.download': 'Makbuzu indirin',
   'web.receipt.export.copyReference': 'Makbuz referansını kopyalayın',
@@ -373,7 +373,7 @@ export const webCalendarMessages = {
   'web.connection.requirement.instagram':
     'Instagram yayıncılığının profesyonel bir hesaba ihtiyacı vardır; bu, bir Facebook Sayfasına bağlı bir işletme veya yaratıcı hesabı anlamına gelir.',
   'web.connection.requirement.facebook':
-    'Relay, Facebook Sayfalarında yayın yapar. Kişisel profil yayınlama hedefi olamaz.',
+    'Post Array, Facebook Sayfalarında yayın yapar. Kişisel profil yayınlama hedefi olamaz.',
   'web.connection.requirement.linkedin':
     'Bir kuruluş için içerik yayınlamak için söz konusu LinkedIn Sayfasında içerik yöneticisi rolüne ihtiyacınız vardır.',
   'web.connection.requirement.youtube':
@@ -389,11 +389,11 @@ export const webCalendarMessages = {
   'web.connection.requirement.generic':
     'Platformun kendisinden bu hesaba paylaşım yapmak için izne ihtiyacınız var. Röle bunu kabul edemez.',
 
-  'web.connection.purpose.publish': "Planladığınız gönderileri Relay'de yayınlamak.",
+  'web.connection.purpose.publish': "Planladığınız gönderileri Post Array'de yayınlamak.",
   'web.connection.purpose.readPosts':
     'Yayınlanan bir yayının tekrar okunması, böylece makbuzun yayında olduğunu kanıtlayabilir.',
   'web.connection.purpose.identity':
-    "Relay'de tam hesap adı gösteriliyor, böylece hiçbir zaman yanlış hesapta yayınlamazsınız.",
+    "Post Array'de tam hesap adı gösteriliyor, böylece hiçbir zaman yanlış hesapta yayınlamazsınız.",
   'web.connection.purpose.analytics':
     'Bu platformun kendi gönderileriniz için raporladığı ölçümleri okumak.',
   'web.connection.purpose.refresh':
@@ -404,7 +404,7 @@ export const webCalendarMessages = {
   'web.connection.permissions.title': '{account} ile ilgili izinler',
   'web.connection.permissions.scopeColumn': 'İzin',
   'web.connection.permissions.stateColumn': 'Eyalet',
-  'web.connection.permissions.purposeColumn': 'Relay bunu ne için kullanıyor?',
+  'web.connection.permissions.purposeColumn': 'Post Array bunu ne için kullanıyor?',
   'web.connection.permissions.missingWarning':
     '{count, plural, one {# izin eksik} other {# izin eksik}}. Aşağıdaki özellikleri geri yüklemek için yeniden bağlanın ve kabul edin.',
   'web.connection.permissions.snapshot': '{provider} {relativeTime} arası okuyun',
@@ -418,7 +418,7 @@ export const webCalendarMessages = {
   'web.connection.capability.legend.supported':
     'Röle, doğru türde bağlı bir hesap için bunu bugün yapabilir.',
   'web.connection.capability.legend.not_implemented':
-    'Platform bunu sunuyor ve Relay bunu henüz oluşturmadı. Bağlayıcı yol haritasındadır.',
+    'Platform bunu sunuyor ve Post Array bunu henüz oluşturmadı. Bağlayıcı yol haritasındadır.',
   'web.connection.capability.legend.unsupported':
     "Platform bunu resmi API'si aracılığıyla sunmuyor, dolayısıyla hiçbir araç bunu güvenli bir şekilde yapamaz.",
   'web.connection.capability.legend.requires_review':

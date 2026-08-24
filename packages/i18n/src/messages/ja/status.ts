@@ -84,6 +84,6 @@ export const statusMessages = {
     '公開しません。下書きはここに残るので、再度スケジュールすることができます。',
   'confirm.publishNow.title': '今すぐ公開しますか?',
   'confirm.publishNow.body':
-    '{count, plural, other {これは # 個のアカウントにすぐに公開されます}}。 Relay からリコールすることはできません。',
+    '{count, plural, other {これは # 個のアカウントにすぐに公開されます}}。 Post Array からリコールすることはできません。',
   'confirm.typeToConfirm': 'タイプ{word}確認するために。',
 } as const;

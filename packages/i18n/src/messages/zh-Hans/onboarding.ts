@@ -1,6 +1,6 @@
 /** Simplified Chinese interface messages. */
 export const onboardingMessages = {
-  'onboarding.title': 'Relay。设置中继',
+  'onboarding.title': 'Post Array。设置中继',
   'onboarding.progress': '{total} 的步骤 {current}',
   'onboarding.skipForNow': '暂时跳过',
   'onboarding.goal': '十分钟内即可验证预定帖子。',

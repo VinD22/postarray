@@ -1,6 +1,6 @@
 /** First run: checkout, workspace, role, first connection, first post. */
 export const onboardingMessages = {
-  'onboarding.title': 'إعداد Relay',
+  'onboarding.title': 'إعداد Post Array',
   'onboarding.progress': 'الخطوة {current} من {total}',
   'onboarding.skipForNow': 'تخطي الآن',
   'onboarding.goal': 'تم التحقق من مشاركة مجدولة في أقل من عشر دقائق.',

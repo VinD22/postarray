@@ -150,7 +150,7 @@ function assertUsableWorkspaceId(workspaceId: string): void {
   if (!isId(ID_PREFIXES.workspace, workspaceId)) {
     throw new DatabaseError(
       DATABASE_ERROR_CODES.workspaceScopeMissing,
-      'withWorkspace requires a valid Relay workspace identifier.',
+      'withWorkspace requires a valid Post Array workspace identifier.',
       { workspaceId },
     );
   }

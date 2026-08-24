@@ -36,6 +36,7 @@ export const navMessages = {
   'settings.nav.profile': 'Hồ sơ của bạn',
   'settings.nav.notifications': 'Tùy chọn thông báo',
   'nav.public.product': 'sản phẩm',
+  'nav.public.demo': 'Bản demo',
   'nav.public.integrations': 'Tích hợp',
   'nav.public.forCreators': 'Dành cho người sáng tạo',
   'nav.public.forAgencies': 'Dành cho đại lý',

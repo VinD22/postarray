@@ -76,7 +76,7 @@ describe('the tier table', () => {
       const allowance = tierProjectAllowance(key);
       expect(allowance, key).toBeGreaterThanOrEqual(1);
       expect(allowance, key).toBeLessThanOrEqual(MAX_PROJECT_LIMIT);
-      expect(allowance, key).toBeLessThanOrEqual(20);
+      expect(allowance, key).toBeLessThanOrEqual(25);
     }
   });
 
@@ -89,11 +89,11 @@ describe('the tier table', () => {
     expect(growth.annualProductIdEnvKey).toBe('POLAR_GROWTH_ANNUAL_PRODUCT_ID');
   });
 
-  it('prices Studio at $100 monthly, $1,000 annual, twenty projects', () => {
+  it('prices Studio at $100 monthly, $1,000 annual, twenty-five projects', () => {
     const studio = planTier('relay_studio');
     expect(studio.monthlyPriceMinor).toBe(10_000);
     expect(studio.annualPriceMinor).toBe(100_000);
-    expect(studio.projectAllowance).toBe(20);
+    expect(studio.projectAllowance).toBe(25);
     expect(studio.monthlyProductIdEnvKey).toBe('POLAR_STUDIO_MONTHLY_PRODUCT_ID');
     expect(studio.annualProductIdEnvKey).toBe('POLAR_STUDIO_ANNUAL_PRODUCT_ID');
   });
@@ -123,13 +123,13 @@ describe('the tier table', () => {
 
 /**
  * Channels are derived from projects, not sold. This is what lets a ten and a
- * twenty project tier exist without a per-channel price appearing anywhere.
+ * twenty-five project tier exist without a per-channel price appearing anywhere.
  */
 describe('the channel allowance a tier implies', () => {
-  it('derives five channels per project, pooled across the workspace', () => {
-    expect(tierChannelAllowance('relay_standard')).toBe(15);
-    expect(tierChannelAllowance('relay_growth')).toBe(50);
-    expect(tierChannelAllowance('relay_studio')).toBe(100);
+  it('derives ten channels per project, one per launch platform, pooled across the workspace', () => {
+    expect(tierChannelAllowance('relay_standard')).toBe(30);
+    expect(tierChannelAllowance('relay_growth')).toBe(100);
+    expect(tierChannelAllowance('relay_studio')).toBe(250);
   });
 
   it('never exceeds the authorization ceiling on any tier', () => {
@@ -349,6 +349,6 @@ describe('mapping a Polar product to a tier', () => {
   it('grants the capacity the mapped tier sells, projects and channels alike', () => {
     const growth = tierForProductId('prod_gro', { prod_gro: 'relay_growth' });
     expect(tierProjectAllowance(growth)).toBe(10);
-    expect(tierChannelAllowance(growth)).toBe(50);
+    expect(tierChannelAllowance(growth)).toBe(100);
   });
 });

@@ -260,7 +260,7 @@ async function seedOpportunities(tx: RlsTransactionClient): Promise<void> {
       categories: ['software'],
       submissionMethod: 'manual_form',
       submissionRules:
-        'Seed record. Relay never submits a listing on a user behalf, and never creates an account for one.',
+        'Seed record. Post Array never submits a listing on a user behalf, and never creates an account for one.',
       costMinor: 0,
       selfPromotionAllowed: true,
     },
@@ -295,7 +295,7 @@ async function seedOpportunities(tx: RlsTransactionClient): Promise<void> {
         'Seed record. Paid placement is disclosed as advertising and is never presented as editorial coverage.',
       costMinor: 0,
       selfPromotionAllowed: true,
-      disclosureRules: 'Paid placement must be labelled. Relay never buys or exchanges links.',
+      disclosureRules: 'Paid placement must be labelled. Post Array never buys or exchanges links.',
     },
   ];
 

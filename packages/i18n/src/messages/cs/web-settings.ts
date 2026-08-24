@@ -266,7 +266,7 @@ export const webSettingsMessages = {
   'settings.ui.security.grantScopes': 'Udělená oprávnění',
   'settings.ui.security.socialPermissionsTitle': 'Oprávnění k sociálnímu účtu',
   'settings.ui.security.socialPermissionsBody':
-    'Co každý připojený účet umožnil Relay dělat, ze snímku schopností pořízeného v době připojení.',
+    'Co každý připojený účet umožnil Post Array dělat, ze snímku schopností pořízeného v době připojení.',
   'settings.ui.security.viewInSection': 'Spravovat v {section}',
   'settings.ui.security.emptySessions': 'Přihlášena je pouze tato relace.',
   'settings.ui.security.emptyGrants':
@@ -481,7 +481,7 @@ export const webSettingsMessages = {
     'Zaregistrujte aplikaci, aby jí ostatní lidé mohli udělit přístup ke svému pracovnímu prostoru. Každá aplikace má svou vlastní identitu, svůj vlastní seznam povolených přesměrování a vlastní audit trail.',
   'developer.ui.apps.emptyTitle': 'Žádné registrované aplikace',
   'developer.ui.apps.emptyBody':
-    'Zaregistrujte aplikaci, když jiný produkt potřebuje jednat jménem uživatele Relay. Pro vlastní automatizaci použijte místo toho servisní účet.',
+    'Zaregistrujte aplikaci, když jiný produkt potřebuje jednat jménem uživatele Post Array. Pro vlastní automatizaci použijte místo toho servisní účet.',
   'developer.ui.apps.emptyExample':
     'Příklad: "Acme Publisher", důvěrný klient, přesměrování https://acme.example/oauth/callback, rozsahy účty:čtení a koncepty:zápis.',
   'developer.ui.apps.typeHelp':
@@ -504,7 +504,7 @@ export const webSettingsMessages = {
   'developer.ui.apps.scopeGroup.consequential': 'Následná oprávnění',
   'developer.ui.apps.scopeGroupHelp.read': 'Umožňují aplikaci podívat se na data. Nic se nemění.',
   'developer.ui.apps.scopeGroupHelp.reversible':
-    'Umožňují aplikaci vytvářet nebo upravovat věci uvnitř Relay. Na platformu se nic nedostane.',
+    'Umožňují aplikaci vytvářet nebo upravovat věci uvnitř Post Array. Na platformu se nic nedostane.',
   'developer.ui.apps.scopeGroupHelp.consequential':
     'Můžou způsobit příspěvek na skutečném účtu nebo změnit, kdo se může dostat k vašim účtům. Jsou vždy uvedeny samostatně a nikdy nejsou spojeny.',
   'developer.ui.apps.noBundling':
@@ -729,8 +729,6 @@ export const webSettingsMessages = {
   'billing.ui.canceledNotice': 'Toto předplatné je zrušeno.',
   'billing.ui.resume': 'Začněte předplatné znovu',
   'billing.ui.noSubscriptionTitle': 'Žádné předplatné v tomto pracovním prostoru',
-  'billing.ui.noSubscriptionBody':
-    'Zahajte sedmidenní zkušební verzi pro publikování. Polar vybírá platební metodu a dnes si nic neúčtuje.',
   'billing.ui.noSubscriptionExample':
     'Měsíčně 29 $. Roční je 300 USD, což je 25 USD měsíčně účtováno ročně. Ušetřete 48 $ ročně.',
   'billing.ui.overChannelLimitAction': 'Zkontrolujte připojené kanály',
@@ -845,7 +843,7 @@ export const webSettingsMessages = {
   'growth.ui.ugc.incentiveDisclosure':
     'Pobídka musí být zveřejněna u každého příspěvku, který z něj vyplývá, vámi i účastníkem.',
   'growth.ui.ugc.honesty':
-    'Toto plánuje kampaň, kterou spustíte se skutečnými lidmi. Relay nenachází tvůrce, nekontaktuje je, nepíše reference ani nevytváří zákaznický obsah.',
+    'Toto plánuje kampaň, kterou spustíte se skutečnými lidmi. Post Array nenachází tvůrce, nekontaktuje je, nepíše reference ani nevytváří zákaznický obsah.',
 
   'growth.ui.opportunities.caption':
     'Ověřené příležitosti z katalogu, seřazené podle shody s vaším profilem',
@@ -868,7 +866,7 @@ export const webSettingsMessages = {
   'growth.ui.opportunities.prepareRules': 'Jejich pravidla, citovaná',
   'growth.ui.opportunities.prepareChecklist': 'Co mít připraveno',
   'growth.ui.opportunities.prepareManual':
-    'Toto odešlete sami na jejich webu. Relay nevyplňuje formuláře, nevytváří účty ani nikomu neposílá e-maily.',
+    'Toto odešlete sami na jejich webu. Post Array nevyplňuje formuláře, nevytváří účty ani nikomu neposílá e-maily.',
   'growth.ui.opportunities.pitchTitle': 'Návrh nabídky',
   'growth.ui.opportunities.pitchHelp':
     'Před odesláním jej upravte. Používá pouze fakta, která jste potvrdili.',

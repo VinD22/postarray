@@ -46,7 +46,7 @@ export function fakeConnectionRef(
     provider: 'fake',
     accountType: 'personal_profile',
     externalAccountId: 'fake-acct-profile-1',
-    displayName: 'Relay Demo Profile',
+    displayName: 'Post Array Demo Profile',
     grantedScopes: ['fake.read', 'fake.write', 'fake.offline'],
     accessToken: leaseSecret({
       secret: 'fake-access-token-for-local-development',

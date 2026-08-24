@@ -227,7 +227,7 @@ export const webSettingsMessages = {
   'settings.ui.security.grantScopes': 'الأذونات الممنوحة',
   'settings.ui.security.socialPermissionsTitle': 'أذونات الحساب الاجتماعي',
   'settings.ui.security.socialPermissionsBody':
-    'ما سمح كل حساب متصل لـ Relay بالقيام به، من لقطة القدرة التي تم التقاطها في وقت الاتصال.',
+    'ما سمح كل حساب متصل لـ Post Array بالقيام به، من لقطة القدرة التي تم التقاطها في وقت الاتصال.',
   'settings.ui.security.viewInSection': 'إدارة في {section}',
   'settings.ui.security.emptySessions': 'تم تسجيل الدخول إلى هذه الجلسة فقط.',
   'settings.ui.security.emptyGrants':
@@ -264,7 +264,7 @@ export const webSettingsMessages = {
   'settings.ui.data.deleteBody': 'اختر أصغر شيء يحل مشكلتك. كل خيار أدناه يقول ما يبقى.',
   'settings.ui.data.deleteConnection': 'قم بإلغاء اتصال اجتماعي واحد',
   'settings.ui.data.deleteConnectionHelp':
-    'يزيل Relay الوصول إلى هذا الحساب. تبقى مساحة العمل ومحتواها وإيصالاتها.',
+    'يزيل Post Array الوصول إلى هذا الحساب. تبقى مساحة العمل ومحتواها وإيصالاتها.',
   'settings.ui.data.deleteProject': 'حذف علامة تجارية',
   'settings.ui.data.deleteProjectHelp':
     'يزيل العلامة التجارية وقواعدها ومعجمها. المحتوى المنشور تحته يحتفظ بإيصالاته.',
@@ -292,7 +292,7 @@ export const webSettingsMessages = {
   /* --------------------------------------------------------------- referrals */
 
   'settings.ui.referral.description':
-    'شارك Relay برابط مكشوف. اللجنة ليست مشروطة أبدًا بمراجعة إيجابية.',
+    'شارك Post Array برابط مكشوف. اللجنة ليست مشروطة أبدًا بمراجعة إيجابية.',
   'settings.ui.referral.linkLabel': 'رابط الإحالة الخاص بك',
   'settings.ui.referral.tableCaption': 'الاشتراكات المنسوبة وحالة عمولتها',
   'settings.ui.referral.column.signup': 'الاشتراك',
@@ -434,7 +434,7 @@ export const webSettingsMessages = {
     'قم بتسجيل تطبيق حتى يتمكن الآخرون من منحه حق الوصول إلى مساحة العمل الخاصة بهم. يتمتع كل تطبيق بهويته الخاصة، وقائمة السماح بإعادة التوجيه الخاصة به، ومسار التدقيق الخاص به.',
   'developer.ui.apps.emptyTitle': 'لم يتم تسجيل أي تطبيقات',
   'developer.ui.apps.emptyBody':
-    'قم بتسجيل تطبيق عندما يحتاج منتج آخر إلى التصرف نيابة عن مستخدم Relay. من أجل التشغيل الآلي الخاص بك، استخدم حساب الخدمة بدلاً من ذلك.',
+    'قم بتسجيل تطبيق عندما يحتاج منتج آخر إلى التصرف نيابة عن مستخدم Post Array. من أجل التشغيل الآلي الخاص بك، استخدم حساب الخدمة بدلاً من ذلك.',
   'developer.ui.apps.emptyExample':
     'مثال: "Acme Publisher"، عميل سري، إعادة توجيه حسابات النطاقات https://acme.example/oauth/callback,: القراءة والمسودات: الكتابة.',
   'developer.ui.apps.typeHelp':
@@ -457,7 +457,7 @@ export const webSettingsMessages = {
   'developer.ui.apps.scopeGroup.consequential': 'الأذونات التبعية',
   'developer.ui.apps.scopeGroupHelp.read': 'هذه تتيح للتطبيق الاطلاع على البيانات. لا شيء يتغير.',
   'developer.ui.apps.scopeGroupHelp.reversible':
-    'يتيح ذلك للتطبيق إنشاء أو تعديل الأشياء داخل Relay. لا شيء يصل إلى المنصة.',
+    'يتيح ذلك للتطبيق إنشاء أو تعديل الأشياء داخل Post Array. لا شيء يصل إلى المنصة.',
   'developer.ui.apps.scopeGroupHelp.consequential':
     'يمكن أن يؤدي ذلك إلى نشر منشور على حساب حقيقي، أو تغيير من يمكنه الوصول إلى حساباتك. يتم إدراجها دائمًا بشكل منفصل ولا يتم تجميعها أبدًا.',
   'developer.ui.apps.noBundling':
@@ -615,7 +615,7 @@ export const webSettingsMessages = {
   'billing.ui.allowanceMetered':
     'X وبعض مقدمي الخدمة الآخرين يتقاضون رسومًا مقابل كل عملية. يتم تمرير هذه الرسوم بالتكلفة ولا تشكل جزءًا من سعر الخطة.',
   'billing.ui.allowanceNoMedia':
-    'لا يتم تضمين إنشاء الصور وإنشاء الفيديو ولا يتم بيعهما. Relay لا يقوم بإنشاء الوسائط.',
+    'لا يتم تضمين إنشاء الصور وإنشاء الفيديو ولا يتم بيعهما. Post Array لا يقوم بإنشاء الوسائط.',
   'billing.ui.readFairUse': 'اقرأ سياسة الاستخدام العادل',
   'billing.ui.readMeteredPolicy': 'اقرأ كيفية احتساب تكلفة الاستخدام المقنن',
   'billing.ui.usageCaption': 'يتم قياس استخدام الموفر خلال هذه الفترة، ويتم إصدار فاتورة بالتكلفة',
@@ -676,8 +676,6 @@ export const webSettingsMessages = {
   'billing.ui.canceledNotice': 'تم إلغاء هذا الاشتراك.',
   'billing.ui.resume': 'ابدأ الاشتراك مرة أخرى',
   'billing.ui.noSubscriptionTitle': 'لا يوجد اشتراك في مساحة العمل هذه',
-  'billing.ui.noSubscriptionBody':
-    'ابدأ النسخة التجريبية التي تستغرق سبعة أيام للنشر. تجمع Polar طريقة الدفع ولا تفرض أي رسوم اليوم.',
   'billing.ui.noSubscriptionExample':
     'الشهري 29 دولارًا. تبلغ التكلفة السنوية 300 دولارًا أمريكيًا، أي 25 دولارًا شهريًا يتم إصدار فاتورة بها سنويًا. وفر 48 دولارًا سنويًا.',
   'billing.ui.overChannelLimitAction': 'مراجعة القنوات المتصلة',
@@ -792,7 +790,7 @@ export const webSettingsMessages = {
   'growth.ui.ugc.incentiveDisclosure':
     'يجب الإفصاح عن الحافز على كل مشاركة تنتج عنه، من قبلك ومن قبل المشارك.',
   'growth.ui.ugc.honesty':
-    'يخطط هذا لحملة تديرها مع أشخاص حقيقيين. Relay لا يعثر على منشئي المحتوى أو يتصل بهم أو يكتب شهادات أو ينشئ محتوى للعملاء.',
+    'يخطط هذا لحملة تديرها مع أشخاص حقيقيين. Post Array لا يعثر على منشئي المحتوى أو يتصل بهم أو يكتب شهادات أو ينشئ محتوى للعملاء.',
 
   'growth.ui.opportunities.caption':
     'الفرص التي تم التحقق منها من الكتالوج، مرتبة حسب ما يتناسب مع ملفك الشخصي',
@@ -815,7 +813,7 @@ export const webSettingsMessages = {
   'growth.ui.opportunities.prepareRules': 'قواعدهم، نقلا عن',
   'growth.ui.opportunities.prepareChecklist': 'ما يجب أن يكون جاهزا',
   'growth.ui.opportunities.prepareManual':
-    'يمكنك تقديم هذا بنفسك على موقعهم. Relay لا يملأ النماذج أو ينشئ حسابات أو يرسل بريدًا إلكترونيًا إلى أي شخص.',
+    'يمكنك تقديم هذا بنفسك على موقعهم. Post Array لا يملأ النماذج أو ينشئ حسابات أو يرسل بريدًا إلكترونيًا إلى أي شخص.',
   'growth.ui.opportunities.pitchTitle': 'مسودة الملعب',
   'growth.ui.opportunities.pitchHelp': 'قم بتحريره قبل إرساله. ويستخدم فقط الحقائق التي أكدتها.',
   'growth.ui.opportunities.submittedOn': 'تم الإرسال {date}',
@@ -832,7 +830,7 @@ export const webSettingsMessages = {
   'growth.ui.tools.emptyBody':
     'يحتاج كل إدخال إلى سعر محدد وشروط حقوق محددة وقيود محددة قبل ظهوره هنا.',
   'growth.ui.tools.emptyExample':
-    'يوضح الإدخال ما هو الأفضل له، ولماذا يناسب خطتك، وما لا يمكنه فعله، والمهارات التي يحتاجها، وكيف يعود الإخراج إلى Relay، ومتى تم التحقق من السعر آخر مرة.',
+    'يوضح الإدخال ما هو الأفضل له، ولماذا يناسب خطتك، وما لا يمكنه فعله، والمهارات التي يحتاجها، وكيف يعود الإخراج إلى Post Array، ومتى تم التحقق من السعر آخر مرة.',
   'growth.ui.tools.openSite': 'افتح الموقع الرسمي لـ {name}',
   'growth.ui.tools.stale': 'تجاوز تاريخ المراجعة. مستبعد من الخطط التي تم إنشاؤها.',
 

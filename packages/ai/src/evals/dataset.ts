@@ -83,7 +83,7 @@ export const EN_EVAL_CASES: readonly EvalCase[] = [
       sourceLanguage: 'en',
       targetLanguage: 'de',
       register: 'formal',
-      protectedTerms: ['Relay'],
+      protectedTerms: ['Post Array'],
     },
     expectation: { allowedNumbers: [], mustNotContain: ['guarantee'] },
   },

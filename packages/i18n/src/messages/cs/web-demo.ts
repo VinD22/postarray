@@ -23,7 +23,7 @@ export const webDemoMessages = {
   /* Metadata and navigation                                                 */
   /* ---------------------------------------------------------------------- */
 
-  'web.meta.demo.title': 'Podívejte se, jak Relay funguje',
+  'web.meta.demo.title': 'Podívejte se, jak Post Array funguje',
   'web.meta.demo.description':
     'Řízená prohlídka publikačního postupu, od nového projektu až po potvrzenku, zobrazená ve skutečném rozhraní s ukázkovým obsahem. Zatím se nic nepublikuje a prohlídka říká, kde ta hranice je.',
 
@@ -47,6 +47,10 @@ export const webDemoMessages = {
   /* The home page hero demonstration                                        */
   /* ---------------------------------------------------------------------- */
 
+  'web.demo.hero.viewCta': 'Podívat se na demo',
+  'web.demo.hero.projectsLine':
+    'Jeden účet spravuje více podniků. Každý projekt je samostatný podnik s vlastními připojenými účty, vlastním kalendářem a vlastním schvalováním a přepínáte mezi nimi z jediné nabídky, jako se přepíná služba ve vyhledávací konzoli.',
+  'web.demo.hero.projectsChip': '{count, plural, one {# účet} few {# účty} many {# účtu} other {# účtů}}',
   'web.demo.hero.caption':
     'Jeden koncept se stane verzí pro každou platformu, dostane čas a přistane v týdnu. Ukázkový obsah, ne živý účet.',
   'web.demo.hero.more': 'Projděte si celý pracovní postup',

@@ -39,21 +39,21 @@ export const webCalendarMessages = {
   'web.connection.requirement.mastodon':
     'Mastodon se připojuje přístupovým tokenem vytvořeným na vaší instanci, ne heslem.',
   'web.connection.requirement.telegram':
-    'Relay publikuje jako bot. Přidejte bota do kanálu nebo skupiny, kam chcete publikovat.',
+    'Post Array publikuje jako bot. Přidejte bota do kanálu nebo skupiny, kam chcete publikovat.',
   'web.connection.requirement.reddit':
     'Psaní na Redditu vyžaduje schválenou aplikaci a každý příspěvek potřebuje nadpis a subreddit.',
   'web.connection.requirement.wordpress':
-    'Relay publikuje přes REST API webu s heslem aplikace vytvořeným ve WordPressu.',
+    'Post Array publikuje přes REST API webu s heslem aplikace vytvořeným ve WordPressu.',
   'web.connection.requirement.medium':
-    'Medium se připojuje přes OAuth a Relay publikuje veřejné příběhy v Markdownu.',
+    'Medium se připojuje přes OAuth a Post Array publikuje veřejné příběhy v Markdownu.',
   'web.connection.requirement.devto':
     'Dev.to se připojuje klíčem API vytvořeným v nastavení Dev.to.',
   'web.connection.requirement.pinterest':
     'Psaní na Pinterestu vyžaduje schválený přístup aplikace a pin potřebuje obrázek a vlastní nástěnku.',
   'web.connection.requirement.discord':
-    'Relay publikuje jako bot. Přidejte bota na servery a kanály, kam chcete publikovat.',
+    'Post Array publikuje jako bot. Přidejte bota na servery a kanály, kam chcete publikovat.',
   'web.connection.requirement.slack':
-    'Relay publikuje jako aplikace. Přidejte aplikaci do kanálů, kam chcete publikovat.',
+    'Post Array publikuje jako aplikace. Přidejte aplikaci do kanálů, kam chcete publikovat.',
   'web.provider.fake': 'Testovací konektor',
 
   'web.accountType.personal_profile': 'Osobní profil',
@@ -269,7 +269,7 @@ export const webCalendarMessages = {
 
   'web.receipt.analytics.never': 'Analytics se pro tento příspěvek ještě nesynchronizoval.',
   'web.receipt.analytics.explain':
-    'Poskytovatelé agregují podle svých vlastních plánů. Níže uvedený čas je čas, kdy je Relay naposledy četla, nikoli kdy byla čísla pravdivá.',
+    'Poskytovatelé agregují podle svých vlastních plánů. Níže uvedený čas je čas, kdy je Post Array naposledy četla, nikoli kdy byla čísla pravdivá.',
 
   'web.receipt.export.download': 'Stáhněte si účtenku',
   'web.receipt.export.copyReference': 'Zkopírujte odkaz na účtenku',
@@ -370,7 +370,7 @@ export const webCalendarMessages = {
   'web.connection.requirement.instagram':
     'Publikování na Instagramu vyžaduje profesionální účet, což znamená obchodní účet nebo účet tvůrce propojený se stránkou na Facebooku.',
   'web.connection.requirement.facebook':
-    'Relay publikuje na facebookových stránkách. Osobní profil nemůže být cílem publikování.',
+    'Post Array publikuje na facebookových stránkách. Osobní profil nemůže být cílem publikování.',
   'web.connection.requirement.linkedin':
     'K publikování pro organizaci potřebujete roli správce obsahu na této stránce LinkedIn.',
   'web.connection.requirement.youtube':
@@ -386,11 +386,11 @@ export const webCalendarMessages = {
   'web.connection.requirement.generic':
     'Potřebujete oprávnění k přidávání příspěvků na tento účet ze samotné platformy. Relé to nemůže udělit.',
 
-  'web.connection.purpose.publish': 'Publikování příspěvků, které naplánujete v Relay.',
+  'web.connection.purpose.publish': 'Publikování příspěvků, které naplánujete v Post Array.',
   'web.connection.purpose.readPosts':
-    'Čtení příspěvku Relay zveřejněný, aby účtenka mohla prokázat, že je aktivní.',
+    'Čtení příspěvku Post Array zveřejněný, aby účtenka mohla prokázat, že je aktivní.',
   'web.connection.purpose.identity':
-    'V Relay se zobrazuje přesný název účtu, takže nikdy nepublikujete na nesprávném účtu.',
+    'V Post Array se zobrazuje přesný název účtu, takže nikdy nepublikujete na nesprávném účtu.',
   'web.connection.purpose.analytics':
     'Čtení metrik, které tato platforma uvádí pro vaše vlastní příspěvky.',
   'web.connection.purpose.refresh':
@@ -415,7 +415,7 @@ export const webCalendarMessages = {
   'web.connection.capability.legend.supported':
     'Relé to dnes dokáže pro připojený účet správného typu.',
   'web.connection.capability.legend.not_implemented':
-    'Platforma to nabízí a Relay to ještě nepostavilo. Je na mapě konektoru.',
+    'Platforma to nabízí a Post Array to ještě nepostavilo. Je na mapě konektoru.',
   'web.connection.capability.legend.unsupported':
     'Platforma to prostřednictvím svého oficiálního API nenabízí, takže to žádný nástroj nemůže bezpečně provést.',
   'web.connection.capability.legend.requires_review':

@@ -70,7 +70,7 @@ export const growthMessages = {
   'growth.ugc.review': 'Đánh giá tiêu chí',
   'growth.ugc.reuse': 'Kế hoạch tái sử dụng',
   'growth.ugc.boundary':
-    'Điều này lên kế hoạch cho một chiến dịch bạn thực hiện với những người thực sự. Relay không tìm người sáng tạo, liên hệ với họ hoặc viết lời chứng thực.',
+    'Điều này lên kế hoạch cho một chiến dịch bạn thực hiện với những người thực sự. Post Array không tìm người sáng tạo, liên hệ với họ hoặc viết lời chứng thực.',
   'growth.opportunities.title': 'Cơ hội thăng tiến',
   'growth.opportunities.help':
     'Danh sách được đánh giá từ danh mục của chúng tôi, được xếp hạng theo mức độ phù hợp. Chuẩn bị một bài nộp tốt là công việc. Không có gửi số lượng lớn.',
@@ -91,7 +91,7 @@ export const growthMessages = {
   'growth.opportunities.noGuarantee':
     'Một trận đấu là một gợi ý. Nó không phải là một liên kết được hứa hẹn, một vị trí hay một thứ hạng.',
   'growth.opportunities.boundary':
-    'Relay không gửi biểu mẫu, tạo tài khoản, liên hệ qua email, đăng lên cộng đồng hoặc mua liên kết.',
+    'Post Array không gửi biểu mẫu, tạo tài khoản, liên hệ qua email, đăng lên cộng đồng hoặc mua liên kết.',
   'growth.opportunities.empty':
     'Chưa có cơ hội được xác minh nào phù hợp với hồ sơ này. Một danh sách trống sẽ tốt hơn một danh sách được phát minh ra.',
   'growth.tools.title': 'Radar công cụ',
@@ -101,7 +101,7 @@ export const growthMessages = {
   'growth.tools.whyItFits': 'Tại sao nó phù hợp',
   'growth.tools.limitations': 'Hạn chế',
   'growth.tools.requiredSkills': 'Kỹ năng bạn cần',
-  'growth.tools.handoff': 'Cách đầu ra quay trở lại Relay',
+  'growth.tools.handoff': 'Cách đầu ra quay trở lại Post Array',
   'growth.tools.rights': 'Quyền và ghi chú về quyền riêng tư',
   'growth.tools.priceChecked': 'Giá được kiểm tra lần cuối {date}',
   'growth.tools.affiliateDisclosure':

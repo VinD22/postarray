@@ -87,7 +87,7 @@ export const automationMessages = {
   'automation.rules.versionHistory': 'ประวัติเวอร์ชัน',
   'automation.notPermitted.title': 'ไม่สามารถสร้างกฎนี้ได้',
   'automation.notPermitted.body':
-    'Relay จะไม่ทำการถูกใจ ติดตาม การตอบกลับหรือข้อความที่ไม่พึงประสงค์ การโพสต์ซ้ำจำนวนมาก หรือสิ่งอื่นใดที่ขึ้นอยู่กับการทำงานอัตโนมัติของเบราว์เซอร์ {provider} ห้าม และเราก็ทำเช่นกัน',
+    'Post Array จะไม่ทำการถูกใจ ติดตาม การตอบกลับหรือข้อความที่ไม่พึงประสงค์ การโพสต์ซ้ำจำนวนมาก หรือสิ่งอื่นใดที่ขึ้นอยู่กับการทำงานอัตโนมัติของเบราว์เซอร์ {provider} ห้าม และเราก็ทำเช่นกัน',
   'automation.notPermitted.providerCapability':
     '{provider} ไม่มี {action} ผ่าน API อย่างเป็นทางการ ดังนั้นจึงไม่สามารถเลือกการดำเนินการนี้ได้',
   'automation.rss.title': 'RSS โพสต์อัตโนมัติ',
@@ -98,7 +98,7 @@ export const automationMessages = {
   'automation.rss.markSeen': 'ปฏิบัติต่อรายการล่าสุดในปัจจุบันตามที่เห็นแล้ว',
   'automation.rss.targets': 'เผยแพร่ไปที่',
   'automation.rss.template': 'เทมเพลตข้อความ',
-  'automation.rss.templateHelp': 'ใช้ฟิลด์ฟีดที่คุณแมป Relay ไม่สร้างรูปภาพสำหรับรายการฟีด',
+  'automation.rss.templateHelp': 'ใช้ฟิลด์ฟีดที่คุณแมป Post Array ไม่สร้างรูปภาพสำหรับรายการฟีด',
   'automation.rss.policy.draft': 'สร้างแบบร่าง',
   'automation.rss.policy.approval': 'สร้างแบบร่างและขออนุมัติ',
   'automation.rss.policy.nextSlot': 'กำหนดการในช่องว่างถัดไป',

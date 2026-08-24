@@ -10,7 +10,7 @@ export const errorMessages = {
   'error.unknown.action': 'حاول مرة أخرى. إذا استمر حدوث ذلك، أرسل لنا المرجع أدناه.',
   'error.internal.message': 'هذه مشكلة من جانبنا، وليس مع المحتوى الخاص بك.',
   'error.internal.action': 'تم حفظ عملك. لقد تم تنبيهنا. حاول مرة أخرى خلال بضع دقائق.',
-  'error.not_implemented.message': 'Relay لم يقم ببناء هذا بعد.',
+  'error.not_implemented.message': 'Post Array لم يقم ببناء هذا بعد.',
   'error.not_implemented.action': 'اتبع سجل التغيير عندما يتم الشحن.',
   'error.offline.message': 'أنت غير متصل.',
   'error.offline.action':
@@ -52,6 +52,10 @@ export const errorMessages = {
   'error.subscription_past_due.action': 'تحديث طريقة الدفع في البوابة القطبية.',
   'error.trial_expired.message': 'انتهت المحاكمة في {date}.',
   'error.trial_expired.action': 'ابدأ الاشتراك لمواصلة النشر.',
+  'error.post_credits_exhausted.message':
+    'استهلكت مساحة العمل هذه كل منشوراتها المجانية. كل شيء آخر لا يزال يعمل.',
+  'error.post_credits_exhausted.action':
+    'اختر خطة لمواصلة النشر. تبقى حساباتك متصلة ويتم الاحتفاظ بمسوداتك وجدولتك.',
   'error.entitlement_missing.message': 'لا تملك مساحة العمل هذه حق الوصول إلى هذه الميزة.',
   'error.entitlement_missing.action': 'تحقق من إعدادات الفوترة، أو اتصل بالدعم.',
   'error.channel_limit_reached.message': 'تستخدم مساحة العمل هذه بالفعل جميع قنوات {limit} النشطة.',
@@ -76,7 +80,7 @@ export const errorMessages = {
   'error.capability_unsupported.message':
     '{provider} لا يقدم ذلك من خلال واجهة برمجة التطبيقات الرسمية الخاصة به.',
   'error.capability_unsupported.action': 'استخدم تنسيقًا يدعمه هذا الحساب.',
-  'error.capability_not_implemented.message': 'Relay لم يقم ببناء هذا لـ {provider} حتى الآن.',
+  'error.capability_not_implemented.message': 'Post Array لم يقم ببناء هذا لـ {provider} حتى الآن.',
   'error.capability_not_implemented.action': 'تسرد صفحة الإمكانات ما يمكن لكل موصل فعله اليوم.',
   'error.capability_requires_review.message':
     '{provider} لا يمنح هذا إلا بعد مراجعة التطبيق أو الحساب.',

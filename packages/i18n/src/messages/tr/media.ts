@@ -60,7 +60,7 @@ export const mediaMessages = {
     'Video, ses ve belgeler burada düzenlenemez. Dosyayı yüklemeden önce hazırlayın. Orijinal yüklemeniz her iki durumda da asla değişmez.',
 
   'mediaLib.derivative.nonGenerative':
-    'Relay resim veya video üretmez. Bu düzenleyici yalnızca yüklediğinizi kırpar, döndürür, yeniden boyutlandırır, dönüştürür ve sıkıştırır.',
+    'Post Array resim veya video üretmez. Bu düzenleyici yalnızca yüklediğinizi kırpar, döndürür, yeniden boyutlandırır, dönüştürür ve sıkıştırır.',
 
   'error.media_derivative_no_operations.message':
     'Bir sürüm kaydetmeden önce en az bir değişiklik seçin.',

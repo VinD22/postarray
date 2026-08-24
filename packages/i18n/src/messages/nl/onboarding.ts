@@ -1,6 +1,6 @@
 /** First run: checkout, workspace, role, first connection, first post. */
 export const onboardingMessages = {
-  'onboarding.title': 'Stel Relay in',
+  'onboarding.title': 'Stel Post Array in',
   'onboarding.progress': 'Stap {current} van {total}',
   'onboarding.skipForNow': 'Overslaan voor nu',
   'onboarding.goal': 'Een geverifieerd gepland bericht in minder dan tien minuten.',

@@ -8,7 +8,7 @@
  * next step rather than reporting that something failed.
  *
  * The vocabulary is deliberate. Nothing here says generate, enhance, upscale,
- * restore or fix, because Relay does not do any of those and copy that hinted
+ * restore or fix, because Post Array does not do any of those and copy that hinted
  * otherwise would be the first half of a promise the product cannot keep. The
  * word used throughout is "version": an edit adds one, and the original stays
  * exactly where it was.
@@ -70,7 +70,7 @@ export const mediaMessages = {
     '此處無法編輯影片、音訊與文件，請在上傳前先行準備好檔案。無論如何，你上傳的原始檔案都不會被變更。',
 
   'mediaLib.derivative.nonGenerative':
-    'Relay 不會生成圖片或影片。此編輯工具只會裁切、旋轉、調整尺寸、轉換與壓縮你上傳的內容。',
+    'Post Array 不會生成圖片或影片。此編輯工具只會裁切、旋轉、調整尺寸、轉換與壓縮你上傳的內容。',
 
   // ==================================================== refusals ====
   'error.media_derivative_no_operations.message': '請先選擇至少一項變更，再儲存版本。',

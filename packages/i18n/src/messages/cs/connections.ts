@@ -95,7 +95,7 @@ export const connectionMessages = {
   'capability.explain.unsupported':
     '{provider} to prostřednictvím svého oficiálního rozhraní API nenabízí, takže to žádný nástroj nemůže bezpečně provést.',
   'capability.explain.not_implemented':
-    '{provider} to nabízí, ale Relay to ještě nepostavilo. Je na mapě konektoru.',
+    '{provider} to nabízí, ale Post Array to ještě nepostavilo. Je na mapě konektoru.',
   'capability.explain.requires_review':
     '{provider} toto uděluje až poté, co zkontroluje aplikaci nebo účet. Dokud tato kontrola neprojde, zůstane nedostupná.',
   'capability.explain.beta':

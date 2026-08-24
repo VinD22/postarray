@@ -5,7 +5,7 @@ export const errorMessages = {
   'error.internal.message': 'นี่เป็นปัญหาจากฝั่งเรา ไม่ใช่กับเนื้อหาของคุณ',
   'error.internal.action':
     'งานของคุณจะถูกบันทึกไว้ เราได้รับการแจ้งเตือน โปรดลองอีกครั้งในอีกสักครู่',
-  'error.not_implemented.message': 'Relay ยังไม่ได้สร้างสิ่งนี้',
+  'error.not_implemented.message': 'Post Array ยังไม่ได้สร้างสิ่งนี้',
   'error.not_implemented.action': 'ปฏิบัติตามบันทึกการเปลี่ยนแปลงว่ามีการจัดส่งเมื่อใด',
   'error.offline.message': 'คุณออฟไลน์อยู่',
   'error.offline.action':
@@ -46,6 +46,10 @@ export const errorMessages = {
   'error.subscription_past_due.action': 'อัปเดตวิธีการชำระเงินในพอร์ทัล Polar',
   'error.trial_expired.message': 'การทดลองสิ้นสุดเมื่อ {date}',
   'error.trial_expired.action': 'เริ่มสมัครสมาชิกเพื่อเผยแพร่ต่อ',
+  'error.post_credits_exhausted.message':
+    'พื้นที่ทำงานนี้ใช้โพสต์ฟรีครบแล้ว ส่วนอื่นยังใช้งานได้ตามปกติ',
+  'error.post_credits_exhausted.action':
+    'เลือกแพ็กเกจเพื่อเผยแพร่ต่อ บัญชีของคุณยังเชื่อมต่ออยู่ และแบบร่างกับกำหนดเวลาจะถูกเก็บไว้',
   'error.entitlement_missing.message': 'พื้นที่ทำงานนี้ไม่มีสิทธิ์เข้าถึงฟีเจอร์นั้น',
   'error.entitlement_missing.action': 'ตรวจสอบการตั้งค่าการเรียกเก็บเงินหรือติดต่อฝ่ายสนับสนุน',
   'error.channel_limit_reached.message':
@@ -83,7 +87,7 @@ export const errorMessages = {
     'โพสต์เผยแพร่แบบส่วนตัวจนกว่าการตรวจสอบจะผ่าน เราอัปเดตหน้านี้เมื่อมีการเปลี่ยนแปลง',
   'error.capability_unsupported.message': '{provider} ไม่ได้นำเสนอสิ่งนี้ผ่าน API อย่างเป็นทางการ',
   'error.capability_unsupported.action': 'ใช้รูปแบบที่บัญชีนี้รองรับ',
-  'error.capability_not_implemented.message': 'Relay ยังไม่ได้สร้างสิ่งนี้สำหรับ {provider}',
+  'error.capability_not_implemented.message': 'Post Array ยังไม่ได้สร้างสิ่งนี้สำหรับ {provider}',
   'error.capability_not_implemented.action':
     'หน้าความสามารถแสดงรายการสิ่งที่ตัวเชื่อมต่อแต่ละตัวสามารถทำได้ในปัจจุบัน',
   'error.capability_requires_review.message':

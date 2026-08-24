@@ -268,7 +268,7 @@ export const webSettingsMessages = {
   'settings.ui.security.grantScopes': 'Toegekende machtigingen',
   'settings.ui.security.socialPermissionsTitle': 'Machtigingen voor sociale accounts',
   'settings.ui.security.socialPermissionsBody':
-    'Wat elk verbonden account Relay heeft toegestaan te doen, op basis van de capaciteitsmomentopname die is gemaakt tijdens de verbinding.',
+    'Wat elk verbonden account Post Array heeft toegestaan te doen, op basis van de capaciteitsmomentopname die is gemaakt tijdens de verbinding.',
   'settings.ui.security.viewInSection': 'Beheer in {section}',
   'settings.ui.security.emptySessions': 'Alleen deze sessie is aangemeld.',
   'settings.ui.security.emptyGrants':
@@ -307,7 +307,7 @@ export const webSettingsMessages = {
     'Choose the smallest thing that solves your problem. Each option below says what survives.',
   'settings.ui.data.deleteConnection': 'Revoke one social connection',
   'settings.ui.data.deleteConnectionHelp':
-    'Removes Relay access to that account. The workspace, its content and its receipts stay.',
+    'Removes Post Array access to that account. The workspace, its content and its receipts stay.',
   'settings.ui.data.deleteProject': 'Archiveer een project',
   'settings.ui.data.deleteProjectHelp':
     'Verwijdert het project, de regels en het glossarium ervan. Content die eronder is gepubliceerd, behoudt de bijbehorende ontvangstbevestigingen.',
@@ -337,7 +337,7 @@ export const webSettingsMessages = {
   /* --------------------------------------------------------------- referrals */
 
   'settings.ui.referral.description':
-    'Deel Relay met een bekendgemaakte link. De Commissie is nooit afhankelijk van een positieve beoordeling.',
+    'Deel Post Array met een bekendgemaakte link. De Commissie is nooit afhankelijk van een positieve beoordeling.',
   'settings.ui.referral.linkLabel': 'Uw verwijzingslink',
   'settings.ui.referral.tableCaption': 'Toegekende aanmeldingen en hun commissiestatus',
   'settings.ui.referral.column.signup': 'Aanmelden',
@@ -484,7 +484,7 @@ export const webSettingsMessages = {
     'Registreer een applicatie zodat andere mensen deze toegang kunnen verlenen tot hun werkruimte. Elke app heeft zijn eigen identiteit, zijn eigen toelatingslijst voor omleidingen en zijn eigen audittrail.',
   'developer.ui.apps.emptyTitle': 'Geen apps geregistreerd',
   'developer.ui.apps.emptyBody':
-    'Registreer een app wanneer een ander product namens een Relay-gebruiker moet handelen. Gebruik voor uw eigen automatisering in plaats daarvan een serviceaccount.',
+    'Registreer een app wanneer een ander product namens een Post Array-gebruiker moet handelen. Gebruik voor uw eigen automatisering in plaats daarvan een serviceaccount.',
   'developer.ui.apps.emptyExample':
     'Voorbeeld: "Acme Publisher", vertrouwelijke client, redirect https://acme.example/oauth/callback, scopes accounts:read en drafts:write.',
   'developer.ui.apps.typeHelp':
@@ -508,7 +508,7 @@ export const webSettingsMessages = {
   'developer.ui.apps.scopeGroupHelp.read':
     'Hiermee kan de app gegevens bekijken. Er verandert niets.',
   'developer.ui.apps.scopeGroupHelp.reversible':
-    'Hiermee kan de app dingen binnen Relay maken of bewerken. Niets bereikt een platform.',
+    'Hiermee kan de app dingen binnen Post Array maken of bewerken. Niets bereikt een platform.',
   'developer.ui.apps.scopeGroupHelp.consequential':
     'Deze kunnen een bericht op een echt account veroorzaken of wijzigen wie uw accounts kan bereiken. Ze worden altijd apart vermeld en nooit gebundeld.',
   'developer.ui.apps.noBundling':
@@ -672,7 +672,7 @@ export const webSettingsMessages = {
   'billing.ui.allowanceMetered':
     'X and some other providers charge per operation. Those charges are passed through at cost and are not part of the plan price.',
   'billing.ui.allowanceNoMedia':
-    'Image generation and video generation are not included and are not sold. Relay does not generate media.',
+    'Image generation and video generation are not included and are not sold. Post Array does not generate media.',
   'billing.ui.readFairUse': 'Read the fair use policy',
   'billing.ui.readMeteredPolicy': 'Read how metered usage is billed',
   'billing.ui.usageCaption': 'Metered provider usage this period, billed at cost',
@@ -732,8 +732,6 @@ export const webSettingsMessages = {
   'billing.ui.canceledNotice': 'This subscription is canceled.',
   'billing.ui.resume': 'Start the subscription again',
   'billing.ui.noSubscriptionTitle': 'No subscription on this workspace',
-  'billing.ui.noSubscriptionBody':
-    'Start the seven day trial to publish. Polar collects a payment method and charges nothing today.',
   'billing.ui.noSubscriptionExample':
     'Monthly is $29. Annual is $300, which is $25/month billed annually. Save $48/year.',
   'billing.ui.overChannelLimitAction': 'Review connected channels',
@@ -852,7 +850,7 @@ export const webSettingsMessages = {
   'growth.ui.ugc.incentiveDisclosure':
     'Een vergoeding moet worden vermeld bij elke post die eruit voortkomt, door jou en door de deelnemer.',
   'growth.ui.ugc.honesty':
-    'Dit plant een campagne die je zelf uitvoert met echte mensen. Relay zoekt geen creators, neemt geen contact met hen op, schrijft geen testimonials en maakt geen klantcontent.',
+    'Dit plant een campagne die je zelf uitvoert met echte mensen. Post Array zoekt geen creators, neemt geen contact met hen op, schrijft geen testimonials en maakt geen klantcontent.',
 
   'growth.ui.opportunities.caption':
     'Geverifieerde vacatures uit de catalogus, gerangschikt op basis van uw profiel',
@@ -875,7 +873,7 @@ export const webSettingsMessages = {
   'growth.ui.opportunities.prepareRules': 'Hun regels, geciteerd',
   'growth.ui.opportunities.prepareChecklist': 'Wat je klaar moet hebben',
   'growth.ui.opportunities.prepareManual':
-    'Deze geef je zelf aan op hun site. Relay vult geen formulieren in, maakt geen accounts aan en e-mailt niemand.',
+    'Deze geef je zelf aan op hun site. Post Array vult geen formulieren in, maakt geen accounts aan en e-mailt niemand.',
   'growth.ui.opportunities.pitchTitle': 'Pitch ontwerp',
   'growth.ui.opportunities.pitchHelp':
     'Bewerk het voordat u het verzendt. Er worden alleen de feiten gebruikt die u hebt bevestigd.',
@@ -893,7 +891,7 @@ export const webSettingsMessages = {
   'growth.ui.tools.emptyBody':
     'Elke inzending heeft een gecontroleerde prijs, gecontroleerde rechtenvoorwaarden en een benoemde beperking nodig voordat deze hier verschijnt.',
   'growth.ui.tools.emptyExample':
-    'Een vermelding vermeldt waar het het beste voor is, waarom het bij uw plan past, wat het niet kan, welke vaardigheden het nodig heeft, hoe de output terugkomt in Relay en wanneer de prijs voor het laatst is gecontroleerd.',
+    'Een vermelding vermeldt waar het het beste voor is, waarom het bij uw plan past, wat het niet kan, welke vaardigheden het nodig heeft, hoe de output terugkomt in Post Array en wanneer de prijs voor het laatst is gecontroleerd.',
   'growth.ui.tools.openSite': 'Open de officiële site voor {name}',
   'growth.ui.tools.stale': 'De beoordelingsdatum is voorbij. Uitgesloten van gegenereerde plannen.',
 

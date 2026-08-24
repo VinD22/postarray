@@ -115,7 +115,7 @@ export const DEFAULT_FAKE_ACCOUNTS: readonly FakeAccount[] = Object.freeze([
   {
     externalAccountId: 'fake-acct-profile-1',
     accountType: 'personal_profile',
-    displayName: 'Relay Demo Profile',
+    displayName: 'Post Array Demo Profile',
     handle: 'relaydemo',
     avatarUrl: 'https://example.invalid/avatar/profile.png',
     profileUrl: 'https://example.invalid/relaydemo',
@@ -127,7 +127,7 @@ export const DEFAULT_FAKE_ACCOUNTS: readonly FakeAccount[] = Object.freeze([
   {
     externalAccountId: 'fake-acct-page-1',
     accountType: 'page',
-    displayName: 'Relay Demo Page',
+    displayName: 'Post Array Demo Page',
     handle: 'relaydemopage',
     avatarUrl: 'https://example.invalid/avatar/page.png',
     profileUrl: 'https://example.invalid/relaydemopage',
@@ -139,7 +139,7 @@ export const DEFAULT_FAKE_ACCOUNTS: readonly FakeAccount[] = Object.freeze([
   {
     externalAccountId: 'fake-acct-consumer-1',
     accountType: 'personal_profile',
-    displayName: 'Relay Demo Consumer Account',
+    displayName: 'Post Array Demo Consumer Account',
     handle: 'relaydemoconsumer',
     avatarUrl: 'https://example.invalid/avatar/consumer.png',
     profileUrl: 'https://example.invalid/relaydemoconsumer',
@@ -175,7 +175,7 @@ export const DEFAULT_FAKE_MENTIONS: readonly FakeMention[] = Object.freeze([
   },
   {
     externalId: 'fake-mention-relay',
-    displayLabel: 'Relay',
+    displayLabel: 'Post Array',
     handle: 'relay',
     kind: 'organization',
   },

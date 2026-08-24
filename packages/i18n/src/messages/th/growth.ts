@@ -70,7 +70,7 @@ export const growthMessages = {
   'growth.ugc.review': 'เกณฑ์การพิจารณา',
   'growth.ugc.reuse': 'แผนการใช้ซ้ำ',
   'growth.ugc.boundary':
-    'นี่เป็นการวางแผนแคมเปญที่คุณใช้งานกับคนจริง Relay ไม่พบผู้สร้าง ติดต่อพวกเขาหรือเขียนคำรับรอง',
+    'นี่เป็นการวางแผนแคมเปญที่คุณใช้งานกับคนจริง Post Array ไม่พบผู้สร้าง ติดต่อพวกเขาหรือเขียนคำรับรอง',
   'growth.opportunities.title': 'โอกาสในการส่งเสริมการขาย',
   'growth.opportunities.help':
     'รายการที่ตรวจสอบแล้วจากแค็ตตาล็อกของเรา จัดอันดับตามความเหมาะสม การเตรียมการส่งผลงานที่ดีคืองาน ไม่มีการส่งจำนวนมาก',
@@ -91,7 +91,7 @@ export const growthMessages = {
   'growth.opportunities.noGuarantee':
     'การแข่งขันเป็นข้อเสนอแนะ ไม่ใช่ลิงก์ที่สัญญาไว้ ตำแหน่ง หรือการจัดอันดับ',
   'growth.opportunities.boundary':
-    'Relay ไม่ส่งแบบฟอร์ม สร้างบัญชี อีเมลติดต่อ โพสต์ในชุมชน หรือซื้อลิงก์',
+    'Post Array ไม่ส่งแบบฟอร์ม สร้างบัญชี อีเมลติดต่อ โพสต์ในชุมชน หรือซื้อลิงก์',
   'growth.opportunities.empty':
     'ยังไม่มีโอกาสที่ยืนยันแล้วตรงกับโปรไฟล์นี้ รายการว่างดีกว่ารายการที่สร้างขึ้น',
   'growth.tools.title': 'เรดาร์เครื่องมือ',
@@ -101,7 +101,7 @@ export const growthMessages = {
   'growth.tools.whyItFits': 'ทำไมมันเข้ากัน.',
   'growth.tools.limitations': 'ข้อจำกัด',
   'growth.tools.requiredSkills': 'ทักษะที่คุณต้องการ',
-  'growth.tools.handoff': 'วิธีที่เอาต์พุตกลับมาเป็น Relay',
+  'growth.tools.handoff': 'วิธีที่เอาต์พุตกลับมาเป็น Post Array',
   'growth.tools.rights': 'หมายเหตุเกี่ยวกับสิทธิและความเป็นส่วนตัว',
   'growth.tools.priceChecked': 'ราคาเช็คล่าสุด {date}',
   'growth.tools.affiliateDisclosure': 'เราอาจได้รับค่าคอมมิชชั่นจากลิงค์นี้ มันไม่เปลี่ยนอันดับ',

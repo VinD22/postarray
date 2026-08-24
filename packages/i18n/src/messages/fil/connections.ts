@@ -39,7 +39,7 @@ export const connectionMessages = {
   'connection.permissions.granted': 'ipinagkaloob',
   'connection.permissions.missing': 'Hindi pinagbigyan',
   'connection.permissions.explainBeforeOAuth':
-    'Magtatanong si Relay {provider} para sa mga pahintulot na ito. Maaari kang magdiskonekta anumang oras.',
+    'Magtatanong si Post Array {provider} para sa mga pahintulot na ito. Maaari kang magdiskonekta anumang oras.',
   'connection.permissions.whyNeeded': 'Bakit kailangan ito',
 
   'connection.reconnect.title': 'Kumonekta muli {account}',
@@ -93,11 +93,11 @@ export const connectionMessages = {
   'capability.level.requires_review': 'Nangangailangan ng pagsusuri sa platform',
   'capability.level.beta': 'Beta',
   'capability.level.unknown': 'Hindi magagamit',
-  'capability.explain.supported': 'Magagawa ito ng Relay para sa account na ito ngayon.',
+  'capability.explain.supported': 'Magagawa ito ng Post Array para sa account na ito ngayon.',
   'capability.explain.unsupported':
     '{provider} ay hindi nag-aalok nito sa pamamagitan ng opisyal nitong API, kaya walang tool ang makakagawa nito nang ligtas.',
   'capability.explain.not_implemented':
-    '{provider} nag-aalok nito, ngunit hindi pa ito binuo ng Relay. Ito ay nasa roadmap ng connector.',
+    '{provider} nag-aalok nito, ngunit hindi pa ito binuo ng Post Array. Ito ay nasa roadmap ng connector.',
   'capability.explain.requires_review':
     '{provider} ibibigay lang ito pagkatapos nitong suriin ang app o ang account. Ito ay mananatiling hindi available hanggang sa matapos ang pagsusuring iyon.',
   'capability.explain.beta':

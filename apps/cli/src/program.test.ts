@@ -233,7 +233,7 @@ describe('human locale selection', () => {
     expect(help).toContain('--limit');
   });
 
-  it('resolves locale precedence as flag, profile, Relay env, then OS env', async () => {
+  it('resolves locale precedence as flag, profile, Post Array env, then OS env', async () => {
     const explicit = deps({
       env: { RELAY_LOCALE: 'fr', LANG: 'de' },
     });

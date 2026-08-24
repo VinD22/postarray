@@ -187,9 +187,9 @@ describe('the tier presentations every pricing surface renders', () => {
       channels: tier.channelAllowance,
     }));
     expect(rendered).toEqual([
-      { tier: 'relay_standard', month: '$25', year: '$250', projects: 3, channels: 15 },
-      { tier: 'relay_growth', month: '$50', year: '$500', projects: 10, channels: 50 },
-      { tier: 'relay_studio', month: '$100', year: '$1,000', projects: 20, channels: 100 },
+      { tier: 'relay_standard', month: '$25', year: '$250', projects: 3, channels: 30 },
+      { tier: 'relay_growth', month: '$50', year: '$500', projects: 10, channels: 100 },
+      { tier: 'relay_studio', month: '$100', year: '$1,000', projects: 25, channels: 250 },
     ]);
   });
 

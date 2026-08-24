@@ -11,7 +11,7 @@
  */
 export const billingMessages = {
   'billing.title': 'Facturering',
-  'billing.plan.name': 'Relay',
+  'billing.plan.name': 'Post Array',
   'billing.plan.single': 'Eén plan. Elke functie. Geen niveaus.',
   'billing.plan.monthlyPrice': '$ 29/maand',
   'billing.plan.annualPrice': '$ 300/jaar',
@@ -34,7 +34,6 @@ export const billingMessages = {
   'billing.plan.fairUse':
     'Eerlijk gebruik betekent anti-spam-, tarief- en providerkostencontroles die uw accounts beschermen. Ze werken hetzelfde voor elke abonnee.',
 
-  'billing.trial.length': 'Op proef van zeven dagen met elke functie',
   'billing.trial.dueToday': 'Vandaag $ 0 verschuldigd',
   'billing.trial.paymentMethodRequired':
     'Polar verzamelt nu een betaalmethode en brengt vandaag niets in rekening.',
@@ -94,7 +93,7 @@ export const billingMessages = {
   'billing.usage.estimatedBeforeAction': 'Deze actie wordt geschat op {amount}.',
   'billing.usage.periodTotal': '{amount} gebruikt sinds {date}',
   'billing.usage.noMediaCredits':
-    "Er zijn geen credits voor het genereren van afbeeldingen of video's, omdat Relay geen media genereert.",
+    "Er zijn geen credits voor het genereren van afbeeldingen of video's, omdat Post Array geen media genereert.",
 
   'billing.downgrade.overLimit':
     'Deze werkruimte heeft {count, plural, one {# kanaal} other {# kanalen}} over de limiet. Nieuwe acties op die kanalen worden geblokkeerd. Niets is voor u afgesloten.',

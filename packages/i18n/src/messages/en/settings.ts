@@ -122,7 +122,7 @@ export const settingsMessages = {
     'Preparing your export. It keeps running if you close this page.',
   'settings.data.deletionRequest': 'Request deletion',
   'settings.data.deletionExplain':
-    'Deletion cancels scheduled workflows, removes Relay credentials, deletes stored media and marks erased analytics unavailable. Provider-side access removal is only claimed when a connector confirms it.',
+    'Deletion cancels scheduled workflows, removes Post Array credentials, deletes stored media and marks erased analytics unavailable. Provider-side access removal is only claimed when a connector confirms it.',
   'settings.data.retention': 'Retention',
   'settings.data.consents': 'Consents',
   'settings.data.consent.productAnalytics': 'Product analytics',

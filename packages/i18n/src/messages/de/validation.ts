@@ -65,7 +65,7 @@ export const validationMessages = {
     'Ein sich wiederholender Beitrag benötigt ein Ende date oder ein number von Wiederholungen.',
   'validation.schedule_in_past.message': 'Dass time in {timeZone} übergeben wurde.',
   'validation.schedule_too_far_ahead.message':
-    'Dies ist weiter voraus als die für diesen Berechtigungsnachweis festgelegte {limit} Vorschau.',
+    'Beiträge können bis zu {limit} im Voraus geplant werden; genauso lange werden hochgeladene Medien aufbewahrt.',
   'validation.schedule_outside_quiet_hours.message':
     'Dies fällt in die Ruhezeiten, die für {project} festgelegt sind.',
   'validation.duplicate_within_window.message':

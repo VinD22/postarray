@@ -53,7 +53,7 @@ export const mediaMessages = {
     '视频、音频和文档无法在此处编辑。请在上传前准备好文件。无论哪种情况，您原始上传的内容都不会更改。',
 
   'mediaLib.derivative.nonGenerative':
-    'Relay 不生成图片或视频。此编辑器只对您上传的内容进行裁剪、旋转、调整大小、转换和压缩。',
+    'Post Array 不生成图片或视频。此编辑器只对您上传的内容进行裁剪、旋转、调整大小、转换和压缩。',
 
   'error.media_derivative_no_operations.message': '保存版本前请至少选择一项更改。',
   'error.media_derivative_duplicate_operation.message':

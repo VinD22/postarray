@@ -36,6 +36,7 @@ export const navMessages = {
   'settings.nav.profile': 'Profil Anda',
   'settings.nav.notifications': 'Preferensi notifikasi',
   'nav.public.product': 'Produk',
+  'nav.public.demo': 'Demo',
   'nav.public.integrations': 'Integrasi',
   'nav.public.forCreators': 'Untuk pencipta',
   'nav.public.forAgencies': 'Untuk agensi',

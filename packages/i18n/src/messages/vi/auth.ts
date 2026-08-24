@@ -3,7 +3,6 @@ export const authMessages = {
   'auth.signIn.title': 'Đăng nhập',
   'auth.signIn.subtitle': 'Xuất bản, phê duyệt và xem chính xác những gì đã xảy ra.',
   'auth.signUp.title': 'Tạo tài khoản của bạn',
-  'auth.signUp.subtitle': 'Bảy ngày với mọi tính năng. $0 đến hạn hôm nay.',
   'auth.continueWithGoogle': 'Tiếp tục với Google',
   'auth.continueWithFacebook': 'Tiếp tục với Facebook',
   'auth.orUseEmail': 'Hoặc sử dụng email của bạn',

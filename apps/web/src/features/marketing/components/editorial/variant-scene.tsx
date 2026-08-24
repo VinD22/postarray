@@ -52,14 +52,25 @@ export function EditorialVariantScene({
   className,
 }: EditorialVariantSceneProps): ReactNode {
   return (
-    <StaggerList stagger={0.07} className={cn('flex flex-wrap items-stretch gap-5', className)}>
-      <div data-stagger-item className="w-full sm:w-60">
+    <StaggerList
+      stagger={0.07}
+      className={cn(
+        // Auto-fill rather than fixed 15rem cards in a wrapping flex row: the
+        // fixed version tiled to whatever multiple of 240px fit and left the
+        // remainder of the cell empty — a visible column of nothing beside the
+        // scene. The tracks now share the width they are given, so the scene
+        // ends where its container does at every size.
+        'grid grid-cols-[repeat(auto-fill,minmax(min(15rem,100%),1fr))] items-stretch gap-5',
+        className,
+      )}
+    >
+      <div data-stagger-item>
         <EditorialCard tone="inverted" interactive={false} className="h-full">
           <Eyebrow tone="inherit">{masterLabel}</Eyebrow>
         </EditorialCard>
       </div>
       {rows.map((row) => (
-        <div key={row.id} data-stagger-item className="w-full sm:w-60">
+        <div key={row.id} data-stagger-item>
           <EditorialCard className="h-full">
             <div className="flex items-center gap-2">
               <ProviderMark provider={row.provider} labelledBySibling />

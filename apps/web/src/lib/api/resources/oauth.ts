@@ -60,7 +60,7 @@ export const oauthApi = {
       { query: { request_id: requestId } },
       () => ({
         client: {
-          name: 'Relay demo client',
+          name: 'Post Array demo client',
           clientId: 'client_demo',
           homepageUrl: 'https://example.com',
           privacyPolicyUrl: 'https://example.com/privacy',

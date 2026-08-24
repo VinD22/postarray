@@ -64,7 +64,7 @@ export const validationMessages = {
     'Powtarzający się post wymaga daty zakończenia lub określonej liczby powtórzeń.',
   'validation.schedule_in_past.message': 'Ten czas minął w {timeZone}.',
   'validation.schedule_too_far_ahead.message':
-    'To dalej przed nami niż {limit} Ustawiono wyszukiwanie w przyszłości dla tego poświadczenia.',
+    'Posty można planować z wyprzedzeniem do {limit}; tyle samo przechowywane są przesłane multimedia.',
   'validation.schedule_outside_quiet_hours.message':
     'To przypada w godzinach ciszy ustalonych dla {project}.',
   'validation.duplicate_within_window.message':

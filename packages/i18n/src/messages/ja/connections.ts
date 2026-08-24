@@ -33,7 +33,7 @@ export const connectionMessages = {
   'connection.permissions.granted': '付与された',
   'connection.permissions.missing': '付与されません',
   'connection.permissions.explainBeforeOAuth':
-    'Relay は尋ねます{provider}これらの権限のために。いつでも切断できます。',
+    'Post Array は尋ねます{provider}これらの権限のために。いつでも切断できます。',
   'connection.permissions.whyNeeded': 'なぜこれが必要なのか',
   'connection.reconnect.title': '再接続{account}',
   'connection.reconnect.body':
@@ -82,11 +82,11 @@ export const connectionMessages = {
   'capability.level.beta': 'ベータ',
   'capability.level.unknown': '利用不可',
   'capability.explain.supported':
-    'Relay は今日からこのアカウントに対してこれを行うことができます。',
+    'Post Array は今日からこのアカウントに対してこれを行うことができます。',
   'capability.explain.unsupported':
     '{provider}はこれを公式 API を通じて提供していないため、これを安全に実行できるツールはありません。',
   'capability.explain.not_implemented':
-    '{provider}はこれを提供していますが、Relay はまだそれを構築していません。これはコネクタのロードマップに記載されています。',
+    '{provider}はこれを提供していますが、Post Array はまだそれを構築していません。これはコネクタのロードマップに記載されています。',
   'capability.explain.requires_review':
     '{provider}これは、アプリまたはアカウントをレビューした後にのみ許可されます。その審査が通るまでは利用できなくなります。',
   'capability.explain.beta':

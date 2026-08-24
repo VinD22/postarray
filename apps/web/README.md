@@ -137,7 +137,7 @@ const intl = await getRequestIntl();
 intl.t.format('home.title');
 ```
 
-The public beta ships with an explicit 20-locale interface roster. The routing,
+The public beta ships with an explicit 25-locale interface roster. The routing,
 negotiation and provider structure are locale aware, so adding a future language
 is a catalog file plus a status change in `@relay/i18n`, with no route or
 component changes. Layout uses

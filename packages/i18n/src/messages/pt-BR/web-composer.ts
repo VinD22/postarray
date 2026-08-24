@@ -155,7 +155,7 @@ export const webComposerMessages = {
   'composerWeb.entity.lookupUnsupported':
     '{provider} não oferece pesquisa de entidade para este tipo de conta.',
   'composerWeb.entity.lookupNotBuilt':
-    'Relay ainda não criou a pesquisa de entidade para {provider}. Enquanto isso, nada é adivinhado.',
+    'Post Array ainda não criou a pesquisa de entidade para {provider}. Enquanto isso, nada é adivinhado.',
   'composerWeb.entity.searchHint': 'Digite pelo menos dois caracteres e escolha um resultado.',
   'composerWeb.entity.resultCount':
     '{count, plural, =0 {Sem correspondências} one {# correspondência} other {# correspondências} many {# correspondências}}',
@@ -173,7 +173,7 @@ export const webComposerMessages = {
   'composerWeb.links.utmTerm': 'Termo',
   'composerWeb.links.utmContent': 'Conteúdo',
   'composerWeb.links.domainVerified': '{domain}, verificado para este espaço de trabalho',
-  'composerWeb.links.domainDefault': 'Relay domínio padrão',
+  'composerWeb.links.domainDefault': 'Post Array domínio padrão',
   'composerWeb.links.domainNone': 'Nenhum domínio de marca foi verificado ainda.',
   'composerWeb.links.notAllowedHere': '{account} não permite um link aqui.',
 
@@ -241,7 +241,7 @@ export const webComposerMessages = {
   'composerWeb.assist.failed':
     'A solicitação de assistência não foi concluída. Seu texto permanece inalterado.',
   'composerWeb.assist.noMediaGeneration':
-    'Relay não cria imagens ou vídeos. Traga os arquivos finalizados para a biblioteca e publique-os aqui.',
+    'Post Array não cria imagens ou vídeos. Traga os arquivos finalizados para a biblioteca e publique-os aqui.',
 
   // ------------------------------------------------------------- autosave
   'composerWeb.autosave.pinned':
@@ -291,7 +291,7 @@ export const webComposerMessages = {
     'Nada foi perdido. Tente novamente e, se continuar falhando, a referência abaixo ajudará o suporte a encontrar a solicitação.',
   'composerWeb.page.noConnectionsTitle': 'Conecte uma conta antes de compor',
   'composerWeb.page.noConnectionsBody':
-    'Um rascunho precisa de pelo menos uma conta conectada, então Relay conhece os limites, a visualização e as configurações a serem exibidas.',
+    'Um rascunho precisa de pelo menos uma conta conectada, então Post Array conhece os limites, a visualização e as configurações a serem exibidas.',
   'composerWeb.page.noConnectionsExample':
     'Exemplo: com X e LinkedIn conectados, um rascunho se torna duas versões nativas com seus próprios contadores.',
   'composerWeb.page.permissionTitle': 'Você não pode criar publicações nesta área de trabalho',
@@ -322,7 +322,7 @@ export const webComposerMessages = {
 
   'mediaLib.empty.title': 'Nenhuma mídia ainda',
   'mediaLib.empty.body':
-    'Carregue as imagens e vídeos que você já possui ou importe um arquivo de uma URL. Relay verifica o tipo e o tamanho em cada conta em que você publica.',
+    'Carregue as imagens e vídeos que você já possui ou importe um arquivo de uma URL. Post Array verifica o tipo e o tamanho em cada conta em que você publica.',
   'mediaLib.empty.example':
     'Exemplo: launch_hero.jpg, 1600 por 900, conjunto de texto alternativo, usado em 2 publicações.',
   'mediaLib.error.title': 'A biblioteca não pôde ser carregada',
@@ -451,7 +451,7 @@ export const webComposerMessages = {
   'mediaLib.provenance.contentCredentialsNone':
     'Este arquivo não contém credenciais de conteúdo incorporadas. Isso é comum e não significa que algo esteja errado.',
   'mediaLib.provenance.unverified':
-    'Esses detalhes vêm da fonte, não de Relay. Verifique-os antes de confiar neles.',
+    'Esses detalhes vêm da fonte, não de Post Array. Verifique-os antes de confiar neles.',
 
   'mediaLib.picker.title': 'Escolha mídia',
   'mediaLib.picker.description':
@@ -478,7 +478,7 @@ export const webComposerMessages = {
   'mediaLib.import.importing': 'Importando mídia',
   'mediaLib.import.succeeded': 'O arquivo está na sua biblioteca',
   'mediaLib.import.scanPending':
-    'O Relay registrou a origem dele. A publicação espera até a verificação de segurança terminar.',
+    'O Post Array registrou a origem dele. A publicação espera até a verificação de segurança terminar.',
   'mediaLib.import.failed': 'Não foi possível importar o arquivo',
   'mediaLib.import.failedHelp':
     'Verifique se o link é público e aponta diretamente para um arquivo de mídia compatível, depois tente novamente.',
@@ -490,7 +490,7 @@ export const webComposerMessages = {
   'mediaLib.retention.title':
     'Os arquivos armazenados são mantidos por 30 dias após a criação da publicação',
   'mediaLib.retention.body':
-    'Assim que um arquivo é anexado a uma publicação, nós o excluímos permanentemente do armazenamento do Relay 30 dias depois da criação dessa publicação. Arquivos à espera de anexo usam a data de envio como referência de limpeza. O texto da publicação, os recibos de publicação e o histórico de auditoria continuam disponíveis por mais tempo. Uma publicação já publicada em uma plataforma social não é removida quando o arquivo armazenado dela expira.',
+    'Assim que um arquivo é anexado a uma publicação, nós o excluímos permanentemente do armazenamento do Post Array 30 dias depois da criação dessa publicação. Arquivos à espera de anexo usam a data de envio como referência de limpeza. O texto da publicação, os recibos de publicação e o histórico de auditoria continuam disponíveis por mais tempo. Uma publicação já publicada em uma plataforma social não é removida quando o arquivo armazenado dela expira.',
   'mediaLib.retention.limits':
     'Imagens, áudio e arquivos PDF podem ter até {imageSize}. Vídeos podem ter até {videoSize}.',
   'mediaLib.retention.expiresLabel': 'Data de exclusão do arquivo',

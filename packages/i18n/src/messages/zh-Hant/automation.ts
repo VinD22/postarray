@@ -83,7 +83,7 @@ export const automationMessages = {
   'automation.rules.versionHistory': '版本歷程',
   'automation.notPermitted.title': '無法建立此規則',
   'automation.notPermitted.body':
-    'Relay 不會自動化按讚、追蹤、未請求的回覆或訊息、重複大量發布，或任何依賴瀏覽器自動化的行為。{provider} 禁止這麼做，我們也禁止。',
+    'Post Array 不會自動化按讚、追蹤、未請求的回覆或訊息、重複大量發布，或任何依賴瀏覽器自動化的行為。{provider} 禁止這麼做，我們也禁止。',
   'automation.notPermitted.providerCapability':
     '{provider} 未透過官方 API 提供 {action}，因此無法為它選取此操作。',
   'automation.rss.title': 'RSS 自動發布',
@@ -94,7 +94,7 @@ export const automationMessages = {
   'automation.rss.markSeen': '將目前最新項目視為已看過',
   'automation.rss.targets': '發布至',
   'automation.rss.template': '文字範本',
-  'automation.rss.templateHelp': '使用你已對應的摘要欄位。Relay 不會為摘要項目產生圖片。',
+  'automation.rss.templateHelp': '使用你已對應的摘要欄位。Post Array 不會為摘要項目產生圖片。',
   'automation.rss.policy.draft': '建立草稿',
   'automation.rss.policy.approval': '建立草稿並請求核准',
   'automation.rss.policy.nextSlot': '排程至下一個可用時段',

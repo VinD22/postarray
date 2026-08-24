@@ -67,7 +67,7 @@ export const developerMessages = {
   'developer.activity.empty': '尚無呼叫。',
   'developer.activity.redacted': '請求和回應主體會移除密鑰後儲存。',
   'developer.apps.title': '開發人員應用程式',
-  'developer.apps.subtitle': '讓其他產品依使用者授予的權限透過 Relay 操作。',
+  'developer.apps.subtitle': '讓其他產品依使用者授予的權限透過 Post Array 操作。',
   'developer.apps.create': '註冊應用程式',
   'developer.apps.name': '應用程式名稱',
   'developer.apps.type.label': '用戶端類型',

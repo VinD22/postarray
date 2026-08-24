@@ -6,7 +6,7 @@ export const errorMessages = {
   'error.internal.message': 'Ini adalah masalah di pihak kami, bukan pada konten Anda.',
   'error.internal.action':
     'Pekerjaan Anda disimpan. Kami telah diperingatkan. Coba lagi dalam beberapa menit.',
-  'error.not_implemented.message': 'Relay belum membuat ini.',
+  'error.not_implemented.message': 'Post Array belum membuat ini.',
   'error.not_implemented.action': 'Ikuti log perubahan saat dikirimkan.',
   'error.offline.message': 'Anda sedang luring.',
   'error.offline.action':
@@ -51,6 +51,10 @@ export const errorMessages = {
   'error.subscription_past_due.action': 'Perbarui metode pembayaran di portal Polar.',
   'error.trial_expired.message': 'Uji coba berakhir pada {date}.',
   'error.trial_expired.action': 'Mulai berlangganan untuk melanjutkan penerbitan.',
+  'error.post_credits_exhausted.message':
+    'Ruang kerja ini telah memakai semua posting gratisnya. Semua yang lain tetap berjalan.',
+  'error.post_credits_exhausted.action':
+    'Pilih paket untuk terus memublikasikan. Akun Anda tetap terhubung dan draf serta jadwal Anda tersimpan.',
   'error.entitlement_missing.message': 'Ruang kerja ini tidak memiliki akses ke fitur tersebut.',
   'error.entitlement_missing.action': 'Periksa pengaturan penagihan, atau hubungi dukungan.',
   'error.channel_limit_reached.message':
@@ -82,7 +86,7 @@ export const errorMessages = {
     'Postingan dipublikasikan secara pribadi hingga peninjauan lolos. Kami memperbarui halaman ini jika ada perubahan.',
   'error.capability_unsupported.message': '{provider} tidak menawarkan ini melalui API resminya.',
   'error.capability_unsupported.action': 'Gunakan format yang didukung akun ini.',
-  'error.capability_not_implemented.message': 'Relay belum membuat ini untuk {provider}.',
+  'error.capability_not_implemented.message': 'Post Array belum membuat ini untuk {provider}.',
   'error.capability_not_implemented.action':
     'Halaman kemampuan mencantumkan apa yang dapat dilakukan setiap konektor saat ini.',
   'error.capability_requires_review.message':

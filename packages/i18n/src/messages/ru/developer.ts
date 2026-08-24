@@ -84,7 +84,7 @@ export const developerMessages = {
 
   'developer.apps.title': 'Приложения для разработчиков',
   'developer.apps.subtitle':
-    'Позвольте другому продукту действовать через Relay с разрешениями, предоставленными ему пользователем.',
+    'Позвольте другому продукту действовать через Post Array с разрешениями, предоставленными ему пользователем.',
   'developer.apps.create': 'Зарегистрировать приложение',
   'developer.apps.name': 'Название приложения',
   'developer.apps.type.label': 'Тип клиента',

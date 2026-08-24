@@ -151,7 +151,7 @@ export const assistantWeekPlanPrompt: PromptModule<AssistantWeekPlanResult> = {
       name: 'two-post-week',
       variables: {
         postCount: 2,
-        businessProfile: 'Relay is a publishing control plane for small teams.',
+        businessProfile: 'Post Array is a publishing control plane for small teams.',
         connectedProviders: ['x', 'linkedin'],
         contentLocale: 'en',
         prohibitedClaims: [],
@@ -161,7 +161,7 @@ export const assistantWeekPlanPrompt: PromptModule<AssistantWeekPlanResult> = {
           {
             dayOffset: 0,
             angle: 'What the product does',
-            body: 'Relay publishes to every account you connected, and shows you exactly what happened.',
+            body: 'Post Array publishes to every account you connected, and shows you exactly what happened.',
             suggestedProviders: ['linkedin'],
           },
           {

@@ -1,18 +1,16 @@
 /** vi beta catalog namespace. */
 export const webMarketingMessages = {
-  'web.brand.name': 'Relay',
+  'web.brand.name': 'Post Array',
   'web.brand.tagline': 'Mặt phẳng kiểm soát xuất bản đa ngôn ngữ dành cho mọi người và đại lý.',
   'web.skipToContent': 'Chuyển đến nội dung chính',
   'web.nav.label': 'Điều hướng trang web',
   'web.nav.openMenu': 'Thực đơn',
   'web.nav.closeMenu': 'Đóng thực đơn',
   'web.nav.footerLabel': 'Điều hướng chân trang',
-  'web.cta.startTrial': 'Bắt đầu dùng thử 7 ngày',
+  'web.cta.startTrial': 'Bắt đầu miễn phí, không cần thẻ',
   'web.cta.seePricing': 'Xem giá',
   'web.cta.seeCapabilities': 'Đọc ma trận khả năng',
   'web.cta.readDocs': 'Đọc tài liệu',
-  'web.cta.trialFootnote':
-    'Polar thu thập phương thức thanh toán, tính phí $0 ngay hôm nay và hiển thị chính xác ngày tính phí đầu tiên trước khi bạn xác nhận.',
   'web.label.lastReviewed': 'Đánh giá lần cuối {date}',
   'web.label.nextReview': 'Đánh giá tiếp theo {date}',
   'web.label.researchDate': 'Đã nghiên cứu {date}',
@@ -27,43 +25,41 @@ export const webMarketingMessages = {
   'web.correction.title': 'Tìm thấy điều gì đó không ổn trên trang này',
   'web.correction.body':
     'Các quy tắc của nền tảng thay đổi và chúng tôi đã hiểu sai. Gửi URL và những gì không chính xác và chúng tôi sẽ sửa trang hoặc gỡ bỏ nó.',
-  'web.correction.email': 'Correction@relay.example',
-  'web.meta.home.title': 'Relay, mặt phẳng kiểm soát xuất bản đa ngôn ngữ',
+  'web.correction.email': 'Correction@postarray.com',
+  'web.meta.home.title': 'Post Array, mặt phẳng kiểm soát xuất bản đa ngôn ngữ',
   'web.meta.home.description':
     'Biến một ý tưởng có nguồn gốc thành nội dung gốc trên nền tảng, phê duyệt ý tưởng đó một lần, xuất bản ý tưởng đó một cách đáng tin cậy thông qua API nền tảng chính thức và tìm hiểu những điều cần cải thiện tiếp theo.',
-  'web.meta.product.title': 'Relay hoạt động như thế nào',
+  'web.meta.product.title': 'Post Array hoạt động như thế nào',
   'web.meta.product.description':
     'Hướng dẫn sử dụng bàn xuất bản: soạn một lần, điều chỉnh cho mỗi nền tảng, xác thực theo giới hạn thực, phê duyệt, lên lịch, xuất bản và giữ biên lai.',
-  'web.meta.integrations.title': 'Nền tảng Relay xuất bản lên',
+  'web.meta.integrations.title': 'Nền tảng Post Array xuất bản lên',
   'web.meta.integrations.description':
-    'Relay kết nối với nền tảng nào, mỗi kết nối có thể làm gì ngày hôm nay và bản thân nền tảng đó không cho phép những gì.',
+    'Post Array kết nối với nền tảng nào, mỗi kết nối có thể làm gì ngày hôm nay và bản thân nền tảng đó không cho phép những gì.',
   'web.meta.capabilities.title': 'Ma trận khả năng kết nối',
   'web.meta.capabilities.description':
     'Bảng mỗi nền tảng, mỗi khả năng được tạo từ các định nghĩa trình kết nối của chúng tôi, tách biệt những gì chúng tôi đã xây dựng với những gì nền tảng không cung cấp.',
-  'web.meta.creators.title': 'Relay dành cho người sáng tạo',
+  'web.meta.creators.title': 'Post Array dành cho người sáng tạo',
   'web.meta.creators.description':
     'Dành cho những người sáng tạo solo xuất bản cùng một ý tưởng ở nhiều định dạng và ngôn ngữ mà không cần viết lại năm lần.',
-  'web.meta.agencies.title': 'Relay dành cho đại lý',
+  'web.meta.agencies.title': 'Post Array dành cho đại lý',
   'web.meta.agencies.description':
     'Tách khách hàng, phê duyệt, liên kết đánh giá có thể chia sẻ, biên nhận và báo cáo cho các nhóm xuất bản thay mặt cho người khác.',
-  'web.meta.developers.title': 'Relay dành cho nhà phát triển',
+  'web.meta.developers.title': 'Post Array dành cho nhà phát triển',
   'web.meta.developers.description':
     'Một phần phụ trợ đằng sau ứng dụng web, API REST, máy chủ MCP từ xa, CLI và webhook đã ký. Quy tắc phê duyệt giống nhau trên mọi bề mặt.',
   'web.meta.pricing.title': 'Định giá',
-  'web.meta.pricing.description':
-    'Một kế hoạch. 29 đô la một tháng, hoặc 300 đô la một năm, tức là 25 đô la một tháng được thanh toán hàng năm. 30 kênh hoạt động, thành viên nhóm không giới hạn, không có cấp độ tính năng.',
   'web.meta.resources.title': 'Tài nguyên',
   'web.meta.resources.description':
     'Trạng thái, nhật ký thay đổi, tài liệu, phương pháp, so sánh, radar công cụ và danh mục cơ hội.',
   'web.meta.status.title': 'Trạng thái',
   'web.meta.status.description':
-    'Trạng thái hiện tại của mọi bề mặt Relay và mọi đầu nối, cùng với lịch sử sự cố.',
+    'Trạng thái hiện tại của mọi bề mặt Post Array và mọi đầu nối, cùng với lịch sử sự cố.',
   'web.meta.changelog.title': 'Nhật ký thay đổi',
   'web.meta.changelog.description':
     'Những gì đã được vận chuyển, những gì đã thay đổi đối với đầu nối và những gì đã được sửa chữa.',
   'web.meta.docs.title': 'Tài liệu',
   'web.meta.docs.description':
-    'REST API, máy chủ MCP, CLI và tài liệu webhook để xây dựng trên Relay.',
+    'REST API, máy chủ MCP, CLI và tài liệu webhook để xây dựng trên Post Array.',
   'web.meta.methodology.title': 'Phương pháp luận',
   'web.meta.methodology.description':
     'Cách chúng tôi nghiên cứu các tuyên bố về nền tảng, cách chúng tôi ghi ngày tháng, cách chúng tôi so sánh các sản phẩm khác và cách chúng tôi sửa lỗi.',
@@ -82,9 +78,7 @@ export const webMarketingMessages = {
   'web.home.promise':
     'Biến một ý tưởng có nguồn gốc thành nội dung gốc trên nền tảng, phê duyệt ý tưởng đó một lần, xuất bản ý tưởng đó một cách đáng tin cậy và tìm hiểu những điều cần cải thiện tiếp theo.',
   'web.home.lede':
-    'Relay là một cơ quan xuất bản dành cho những người chịu trách nhiệm về những gì được đưa ra. Bạn viết một lần, điều chỉnh cho mỗi nền tảng, xem giới hạn thực sự trước khi lên lịch, nhận được sự phê duyệt mà bạn cần, xuất bản thông qua API nền tảng chính thức và giữ biên lai cho mỗi bài đăng.',
-  'web.home.summaryLine':
-    'Một gói ở mức 29 đô la một tháng hoặc 300 đô la một năm. 30 kênh xã hội đang hoạt động, thành viên nhóm không giới hạn, không có cấp độ tính năng. Bản dùng thử bảy ngày thu thập một phương thức thanh toán và tính phí 0 USD khi thanh toán.',
+    'Post Array là một cơ quan xuất bản dành cho những người chịu trách nhiệm về những gì được đưa ra. Bạn viết một lần, điều chỉnh cho mỗi nền tảng, xem giới hạn thực sự trước khi lên lịch, nhận được sự phê duyệt mà bạn cần, xuất bản thông qua API nền tảng chính thức và giữ biên lai cho mỗi bài đăng.',
   'web.home.example.title': 'Một ý tưởng, năm phiên bản dành cho nền tảng gốc',
   'web.home.example.body':
     'Trình soạn nhạc bắt đầu với phiên bản chính. Việc chọn một tài khoản sẽ chỉ mở ghi đè cho tài khoản đó, với các giới hạn trực tiếp và bản xem trước riêng của tài khoản đó. Không có gì bạn viết cho LinkedIn thay đổi những gì X nhận được.',
@@ -114,7 +108,7 @@ export const webMarketingMessages = {
   'web.home.example.bluesky.variant': 'Làm chủ văn bản bằng thẻ liên kết',
   'web.home.example.bluesky.check':
     'Số ký tự, độ phân giải thẻ liên kết, văn bản thay thế hiện tại',
-  'web.home.pillars.title': 'Những gì Relay được xây dựng để làm tốt',
+  'web.home.pillars.title': 'Những gì Post Array được xây dựng để làm tốt',
   'web.home.pillars.confidence.title': 'Tự tin xuất bản',
   'web.home.pillars.confidence.body':
     'Bản xem trước thực sự cho mỗi tài khoản, chính sách xác định và kiểm tra nền tảng trước khi mọi thứ được xếp hàng, yêu cầu phê duyệt mà không gian làm việc của bạn yêu cầu, biên nhận không thể thay đổi với ID bài đăng bên ngoài và trạng thái hoạt động cho mọi kết nối.',
@@ -127,7 +121,7 @@ export const webMarketingMessages = {
     'Giao diện có sẵn trong các ngôn ngữ được chọn. Việc điều chỉnh nội dung bao gồm 20 ngôn ngữ nội dung và mỗi ngôn ngữ trong số đó đều có thể xem xét được trước khi xuất bản.',
   'web.home.pillars.loop.title': 'Đóng vòng lặp',
   'web.home.pillars.loop.body':
-    'Phân tích đặt tên cho chỉ số, nền tảng đã báo cáo chỉ số đó, mẫu số và thời điểm chỉ số được làm mới lần cuối. Khi nền tảng không báo cáo điều gì đó, Relay sẽ báo cáo điều đó thay vì hiển thị số 0.',
+    'Phân tích đặt tên cho chỉ số, nền tảng đã báo cáo chỉ số đó, mẫu số và thời điểm chỉ số được làm mới lần cuối. Khi nền tảng không báo cáo điều gì đó, Post Array sẽ báo cáo điều đó thay vì hiển thị số 0.',
   'web.home.pillars.loop.proof':
     'Một bài đăng được so sánh với điểm trung bình của chính bạn thay vì so với điểm số mà không ai có thể kiểm tra.',
   'web.home.pillars.anywhere.title': 'Làm việc từ nơi bạn đang ở',
@@ -139,18 +133,18 @@ export const webMarketingMessages = {
   'web.home.pillars.economics.body':
     'Một mức giá, mọi tính năng được cung cấp, 30 kênh hoạt động và số lượng thành viên nhóm không giới hạn. Việc sử dụng nền tảng mà nhà cung cấp tính phí cho mỗi hoạt động được chuyển qua theo chi phí và được hiển thị trước khi bạn xác nhận hành động.',
   'web.home.pillars.economics.proof':
-    'Không có hệ thống ghi nhận việc tạo hình ảnh hoặc video vì Relay không tạo ra phương tiện.',
-  'web.home.honest.title': 'Những gì Relay không làm',
+    'Không có hệ thống ghi nhận việc tạo hình ảnh hoặc video vì Post Array không tạo ra phương tiện.',
+  'web.home.honest.title': 'Những gì Post Array không làm',
   'web.home.honest.lede':
     'Đây là những ranh giới, không phải là một lộ trình trêu chọc. Nếu một trong số chúng thay đổi, nó sẽ thay đổi trong nhật ký thay đổi trước tiên.',
   'web.home.honest.noMedia':
-    'Không tạo hình ảnh AI và không tạo video AI. Relay điều chỉnh, phê duyệt, xuất bản và đo lường phương tiện bạn mang theo.',
+    'Không tạo hình ảnh AI và không tạo video AI. Post Array điều chỉnh, phê duyệt, xuất bản và đo lường phương tiện bạn mang theo.',
   'web.home.honest.noAutomationOfEngagement':
     'Không có lượt thích, theo dõi, đăng lại, trả lời không mong muốn hoặc tin nhắn trực tiếp. Không có nhóm tương tác và không có tương tác bịa đặt.',
   'web.home.honest.noUnofficial':
     'Không tự động hóa trình duyệt, không phát lại cookie, không thu thập dữ liệu và không có điểm cuối đăng bài không chính thức. Chỉ API nền tảng chính thức.',
   'web.home.honest.noPromises':
-    'Không có lời hứa nào về phạm vi tiếp cận, xếp hạng hoặc mức độ tương tác. Relay có thể cho bạn biết điều gì đã xảy ra và những gì cần kiểm tra tiếp theo. Nó không thể cho bạn biết khán giả sẽ làm gì.',
+    'Không có lời hứa nào về phạm vi tiếp cận, xếp hạng hoặc mức độ tương tác. Post Array có thể cho bạn biết điều gì đã xảy ra và những gì cần kiểm tra tiếp theo. Nó không thể cho bạn biết khán giả sẽ làm gì.',
   'web.home.honest.noUnattendedPublishing':
     'Không có xuất bản không giám sát theo mặc định. Một đại lý có thể soạn thảo, xác nhận và yêu cầu phê duyệt. Con người quyết định trước khi mọi thứ được công khai, trừ khi bạn cố tình chọn không tham gia một chính sách cụ thể.',
   'web.home.surfaces.title': 'Năm bề mặt, một phụ trợ',
@@ -174,7 +168,6 @@ export const webMarketingMessages = {
   'web.home.closing.body':
     'Kết nối một tài khoản, soạn thảo một bài đăng, xem quá trình xác thực, lên lịch và đọc biên nhận. Đó là toàn bộ sản phẩm trong khoảng mười phút.',
   'web.home.v2.heroTemplate': 'Các bài đăng gốc, có thương hiệu dành cho {platform}.',
-  'web.home.v2.sticker.trial': 'dùng thử 7 ngày',
   'web.home.v2.sticker.official': 'Chỉ API chính thức',
   'web.home.v2.marqueeCaption': 'Chỉ các API chính thức.',
   'web.home.v2.surfacesStat': 'Bề mặt trên một phụ trợ được chia sẻ',
@@ -226,7 +219,7 @@ export const webMarketingMessages = {
     'Một hành động mà vai trò của bạn không cho phép, đặt tên cho vai trò đó.',
   'web.integrations.title': 'Nền tảng',
   'web.integrations.lede':
-    'Relay kết nối thông qua API nền tảng chính thức. Mỗi trình kết nối có chủ sở hữu được đặt tên, URL chính sách được ghi lại và ngày xem xét. Một trình kết nối không được liệt kê là được hỗ trợ cho đến khi nó vượt qua định nghĩa trình kết nối là xong.',
+    'Post Array kết nối thông qua API nền tảng chính thức. Mỗi trình kết nối có chủ sở hữu được đặt tên, URL chính sách được ghi lại và ngày xem xét. Một trình kết nối không được liệt kê là được hỗ trợ cho đến khi nó vượt qua định nghĩa trình kết nối là xong.',
   'web.integrations.reviewNotice.title':
     'Không có trình kết nối nào được mô tả là chính thức trước khi nền tảng phê duyệt nó',
   'web.integrations.reviewNotice.body':
@@ -248,7 +241,7 @@ export const webMarketingMessages = {
     'Mọi xác nhận quyền sở hữu nền tảng trong bảng này đều liên kết đến tài liệu chính thức mà nó xuất phát và ngày chúng tôi đọc nó lần cuối.',
   'web.creators.title': 'Dành cho người sáng tạo',
   'web.creators.lede':
-    'Bạn xuất bản cùng một ý tưởng ở nhiều định dạng, đôi khi bằng nhiều ngôn ngữ và bạn là cả nhóm. Công việc mà Relay loại bỏ là đánh máy lại, cắt xén lại và kiểm tra.',
+    'Bạn xuất bản cùng một ý tưởng ở nhiều định dạng, đôi khi bằng nhiều ngôn ngữ và bạn là cả nhóm. Công việc mà Post Array loại bỏ là đánh máy lại, cắt xén lại và kiểm tra.',
   'web.creators.job.adapt.title': 'Viết một lần, gửi năm phiên bản gốc',
   'web.creators.job.adapt.body':
     'Phiên bản chính mang ý tưởng. Mỗi tài khoản sẽ có độ dài, phần cắt, cài đặt và âm sắc mà nền tảng mong đợi và bạn có thể xem tất cả chúng cạnh nhau trước khi cam kết.',
@@ -257,13 +250,13 @@ export const webMarketingMessages = {
     'Dịch sáng tạo giữ nguyên ý định chứ không phải từ ngữ, sử dụng bảng thuật ngữ dự án của bạn và đánh dấu xem người đánh giá gốc đã đọc nó hay chưa. Không có gì xuất bản bằng ngôn ngữ mà bạn không thể đảm bảo trừ khi bạn nói như vậy.',
   'web.creators.job.rights.title': 'Giữ hồ sơ quyền của bạn với tập tin',
   'web.creators.job.rights.body':
-    'Phương tiện truyền thông cho biết nó đến từ đâu, ai nắm giữ các quyền và liệu nó có được tạo ra bằng một công cụ tổng hợp hay không. Nền tảng ngày càng yêu cầu. Relay lưu trữ câu trả lời của bạn cùng với nội dung thay vì hỏi lại bạn.',
+    'Phương tiện truyền thông cho biết nó đến từ đâu, ai nắm giữ các quyền và liệu nó có được tạo ra bằng một công cụ tổng hợp hay không. Nền tảng ngày càng yêu cầu. Post Array lưu trữ câu trả lời của bạn cùng với nội dung thay vì hỏi lại bạn.',
   'web.creators.job.cost.title': 'Biết chi phí trước khi bạn đăng',
   'web.creators.job.cost.body':
-    'X tính phí cho mỗi hoạt động và tính phí nhiều hơn cho bài đăng có chứa URL. Relay ước tính rằng trước khi bạn xác nhận, do đó, một tuần nặng liên kết là một quyết định chứ không phải là một hóa đơn bất ngờ.',
+    'X tính phí cho mỗi hoạt động và tính phí nhiều hơn cho bài đăng có chứa URL. Post Array ước tính rằng trước khi bạn xác nhận, do đó, một tuần nặng liên kết là một quyết định chứ không phải là một hóa đơn bất ngờ.',
   'web.creators.notFor.title': 'Đây không phải là gì',
   'web.creators.notFor.body':
-    'Relay không tạo hình ảnh hoặc video, không chạy tự động tương tác và không dự đoán bài đăng sẽ hoạt động như thế nào. Nếu đó là những công cụ bạn muốn thì các sản phẩm khác sẽ thực hiện chúng và chúng tôi muốn bạn biết ngay bây giờ.',
+    'Post Array không tạo hình ảnh hoặc video, không chạy tự động tương tác và không dự đoán bài đăng sẽ hoạt động như thế nào. Nếu đó là những công cụ bạn muốn thì các sản phẩm khác sẽ thực hiện chúng và chúng tôi muốn bạn biết ngay bây giờ.',
   'web.agencies.title': 'Dành cho đại lý',
   'web.agencies.lede':
     'Bạn xuất bản thay mặt cho người khác, điều này khiến việc ghi công, phê duyệt và bằng chứng trở thành một phần của công việc hơn là một sự tế nhị.',
@@ -284,7 +277,7 @@ export const webMarketingMessages = {
     'Một kế hoạch bao gồm 30 kênh xã hội đang hoạt động. Kênh là một kết nối tài khoản xã hội, Trang, hồ sơ, nhóm hoặc ấn phẩm. Nếu bạn cần nhiều hơn 30, hãy cho chúng tôi biết bạn cần gì và chúng tôi sẽ cung cấp cho bạn câu trả lời thẳng thắn thay vì cấp độ ẩn.',
   'web.developers.title': 'Dành cho nhà phát triển',
   'web.developers.lede':
-    'Xuất bản là một phần của quy trình làm việc trong đó lỗi xảy ra công khai và vĩnh viễn. Relay cung cấp cho bạn một phần phụ trợ, lỗi đánh máy, tính tạm thời trên mỗi lần viết và một mô hình phê duyệt mà tác nhân không thể nói theo cách của mình.',
+    'Xuất bản là một phần của quy trình làm việc trong đó lỗi xảy ra công khai và vĩnh viễn. Post Array cung cấp cho bạn một phần phụ trợ, lỗi đánh máy, tính tạm thời trên mỗi lần viết và một mô hình phê duyệt mà tác nhân không thể nói theo cách của mình.',
   'web.developers.surface.api.title': 'API REST',
   'web.developers.surface.api.body':
     'Các khóa API có phạm vi, một khóa bình thường được yêu cầu cho mỗi lần ghi, phân trang con trỏ và một phong bì lỗi được đánh máy mang mã ổn định, khóa thông báo và các chi tiết được vệ sinh. Không có tải trọng nào của nhà cung cấp nào được phản ánh lại cho bạn ở dạng thô.',
@@ -306,10 +299,8 @@ export const webMarketingMessages = {
     'Mọi tác nhân và mọi không gian làm việc đều có một công cụ tắt để dừng công việc đang chờ xử lý mà không xóa nó.',
   'web.developers.openSource.title': 'quân mở',
   'web.developers.openSource.body':
-    'Hợp đồng trình kết nối, CLI, ví dụ lược đồ, định nghĩa công cụ MCP và trình mô phỏng nhà cung cấp là những phần bạn cần xây dựng dựa trên Relay mà không cần tài khoản hộp cát. Khi kho lưu trữ chưa được xuất bản, trang này sẽ nói như vậy thay vì liên kết đến không có gì.',
+    'Hợp đồng trình kết nối, CLI, ví dụ lược đồ, định nghĩa công cụ MCP và trình mô phỏng nhà cung cấp là những phần bạn cần xây dựng dựa trên Post Array mà không cần tài khoản hộp cát. Khi kho lưu trữ chưa được xuất bản, trang này sẽ nói như vậy thay vì liên kết đến không có gì.',
   'web.pricing.title': 'Một kế hoạch',
-  'web.pricing.lede':
-    'Không có tầng tính năng nên không có bảng so sánh để đọc. Cả hai khoảng thời gian thanh toán đều mở khóa mọi tính năng được vận chuyển.',
   'web.pricing.intervalHeading': 'Chọn cách bạn thanh toán',
   'web.pricing.monthlyLabel': 'Thanh toán hàng tháng',
   'web.pricing.annualLabel': 'Thanh toán hàng năm',
@@ -325,15 +316,9 @@ export const webMarketingMessages = {
   'web.pricing.beside.fairUse':
     'Bản nháp không giới hạn, bài đăng được lên lịch và biên lai được lưu trữ theo chính sách sử dụng hợp lý và chống thư rác đã được công bố. Những biện pháp kiểm soát đó tồn tại để bảo vệ các tài khoản được kết nối của bạn và chúng áp dụng giống hệt nhau cho mọi người đăng ký.',
   'web.pricing.beside.metered':
-    'X tính phí cho mỗi hoạt động API và tính phí nhiều hơn cho bài đăng có chứa URL. Relay chuyển thông tin đó theo giá gốc, ước tính thông tin đó trước khi bạn xác nhận hành động và hiển thị thông tin đó trong cách sử dụng của bạn. Các khoản phí nền tảng khác chỉ được chuyển qua khi chúng được tiết lộ trước hành động.',
+    'X tính phí cho mỗi hoạt động API và tính phí nhiều hơn cho bài đăng có chứa URL. Post Array chuyển thông tin đó theo giá gốc, ước tính thông tin đó trước khi bạn xác nhận hành động và hiển thị thông tin đó trong cách sử dụng của bạn. Các khoản phí nền tảng khác chỉ được chuyển qua khi chúng được tiết lộ trước hành động.',
   'web.pricing.beside.noMedia':
-    'Việc tạo hình ảnh AI và tạo video AI không được bao gồm và không được bán. Không có tín dụng phương tiện nào vì Relay không tạo ra phương tiện.',
-  'web.pricing.beside.trial':
-    'Bản dùng thử kéo dài bảy ngày với mọi tính năng. Polar thu thập phương thức thanh toán khi thanh toán và tính phí $0 ngay hôm nay. Số tiền và ngày tính phí đầu tiên chính xác được hiển thị bên cạnh hành động bắt đầu trước khi bạn xác nhận.',
-  'web.pricing.beside.conversion':
-    'Nếu bạn không làm gì, bản dùng thử sẽ chuyển đổi vào ngày thứ bảy thành khoảng thời gian bạn đã chọn và Polar sẽ tính số tiền hiển thị khi thanh toán. Polar gửi email nhắc nhở ba ngày trước khi điều đó xảy ra.',
-  'web.pricing.beside.cancel':
-    'Hủy khỏi Cài đặt bất kỳ lúc nào mà không cần liên hệ với bộ phận hỗ trợ. Hủy trước khi chuyển đổi bản dùng thử và không tính phí. Hủy sau đó và bạn giữ quyền truy cập cho đến khi thời gian thanh toán kết thúc.',
+    'Việc tạo hình ảnh AI và tạo video AI không được bao gồm và không được bán. Không có tín dụng phương tiện nào vì Post Array không tạo ra phương tiện.',
   'web.pricing.beside.data':
     'Không có gì bị xóa khi đăng ký kết thúc. Bạn có thể xuất nội dung, biên lai và phân tích của mình và bạn có thể tự xóa chúng.',
   'web.pricing.included.title': 'Bao gồm, trong cả hai khoảng',
@@ -355,13 +340,8 @@ export const webMarketingMessages = {
     'Không phải hôm nay. Liệu sẽ có phiên bản tự lưu trữ hay không và theo giấy phép nào, là một quyết định mở. Chúng tôi sẽ công bố câu trả lời thay vì ngụ ý một câu trả lời.',
   'web.pricing.faq.xCost.q': 'X thực sự sẽ tiêu tốn của tôi bao nhiêu',
   'web.pricing.faq.xCost.a':
-    'Nó phụ thuộc vào số lượng bài đăng bạn xuất bản và số lượng bài đăng trong số đó chứa URL, bởi vì X định giá những bài đăng đó khác nhau. Relay ước tính từng hành động trước khi bạn xác nhận và tính tổng hành động đó trong chế độ xem mức sử dụng của bạn. Chúng tôi không đánh dấu nó.',
-  'web.pricing.faq.trialAbuse.q': 'Tôi có thể bắt đầu thử lần thứ hai được không',
-  'web.pricing.faq.trialAbuse.a':
-    'Các thử nghiệm lặp lại bị giới hạn bởi Polar. Nếu bạn có lý do chính đáng, hãy liên hệ với bộ phận hỗ trợ và sẽ có người xem xét lý do đó.',
+    'Nó phụ thuộc vào số lượng bài đăng bạn xuất bản và số lượng bài đăng trong số đó chứa URL, bởi vì X định giá những bài đăng đó khác nhau. Post Array ước tính từng hành động trước khi bạn xác nhận và tính tổng hành động đó trong chế độ xem mức sử dụng của bạn. Chúng tôi không đánh dấu nó.',
   'web.pricing.v2.closing.title': 'Bảy ngày để dùng thử, bằng chính tài khoản của bạn',
-  'web.pricing.v2.closing.body':
-    'Bắt đầu dùng thử, kết nối các tài khoản bạn thực sự chạy và xem cảm giác xác thực và lập lịch trước khi tính phí.',
   'web.resources.title': 'Tài nguyên',
   'web.resources.lede':
     'Sự thật về hoạt động của sản phẩm và nghiên cứu đằng sau bất kỳ điều gì chúng tôi khẳng định về nền tảng.',
@@ -388,7 +368,7 @@ export const webMarketingMessages = {
     'Tiêu chuẩn biên tập yêu cầu dữ liệu sản phẩm gốc, quy trình làm việc có thể tái tạo, nguồn nền tảng chính có ngày xác minh và người biên tập có tên. Các hướng dẫn đầu tiên xuất bản khi họ gặp nó.',
   'web.status.title': 'Trạng thái',
   'web.status.lede':
-    'Trạng thái của mọi bề mặt Relay và mọi đầu nối. Trạng thái trình kết nối bao gồm bộ điều hợp của chúng tôi và API nền tảng mà nó phụ thuộc vào.',
+    'Trạng thái của mọi bề mặt Post Array và mọi đầu nối. Trạng thái trình kết nối bao gồm bộ điều hợp của chúng tôi và API nền tảng mà nó phụ thuộc vào.',
   'web.status.updated': 'Trạng thái được đặt thủ công. Cập nhật lần cuối {time}.',
   'web.status.surfaces.title': 'Bề mặt',
   'web.status.connectors.title': 'Đầu nối',
@@ -423,7 +403,7 @@ export const webMarketingMessages = {
   'web.changelog.kind.security': 'Bảo mật',
   'web.changelog.empty': 'Chưa có gì được vận chuyển công khai',
   'web.changelog.emptyBody':
-    'Relay đang được xây dựng. Mục đầu tiên ở đây là thứ đầu tiên khách hàng có thể sử dụng, không phải là cột mốc quan trọng về bản thân chúng tôi.',
+    'Post Array đang được xây dựng. Mục đầu tiên ở đây là thứ đầu tiên khách hàng có thể sử dụng, không phải là cột mốc quan trọng về bản thân chúng tôi.',
   'web.docs.title': 'Tài liệu',
   'web.docs.lede':
     'Một chương trình phụ trợ, bốn cách tham gia. Mỗi phần ghi lại các trường hợp sử dụng giống nhau, vì vậy khái niệm bạn học trong REST API cũng chính là khái niệm trong MCP và trong CLI.',
@@ -510,7 +490,7 @@ export const webMarketingMessages = {
     'Mỗi trang cần có thông tin xác thực mới về giá cả và tài liệu của sản phẩm khác. Họ xuất bản từng cái một khi công việc đó kết thúc.',
   'web.toolRadar.title': 'Radar công cụ sáng tạo',
   'web.toolRadar.lede':
-    'Relay không tạo ra hình ảnh hoặc video. Nó giúp bạn quyết định nên sử dụng công cụ chuyên dụng nào và đưa tài sản đã hoàn thiện vào với hồ sơ quyền của nó còn nguyên vẹn.',
+    'Post Array không tạo ra hình ảnh hoặc video. Nó giúp bạn quyết định nên sử dụng công cụ chuyên dụng nào và đưa tài sản đã hoàn thiện vào với hồ sơ quyền của nó còn nguyên vẹn.',
   'web.toolRadar.record.title': 'Những gì mọi bản ghi đều phải mang theo',
   'web.toolRadar.record.url': 'URL chính thức và tổ chức sở hữu sản phẩm.',
   'web.toolRadar.record.useCase':
@@ -535,7 +515,7 @@ export const webMarketingMessages = {
   'web.opportunities.rules.curated':
     'Mỗi mục nhập là một bản ghi được xem xét có URL chính thức, quy tắc gửi hiện tại và ngày xác minh. Không có gì được phát hiện bởi một mô hình và được trình bày dưới dạng đã được xác minh.',
   'web.opportunities.rules.noAutomation':
-    'Relay không bao giờ gửi biểu mẫu, xóa liên hệ, gửi email hoặc bài đăng hàng loạt tới cộng đồng cho bạn. Bạn thực hiện việc nộp hồ sơ.',
+    'Post Array không bao giờ gửi biểu mẫu, xóa liên hệ, gửi email hoặc bài đăng hàng loạt tới cộng đồng cho bạn. Bạn thực hiện việc nộp hồ sơ.',
   'web.opportunities.rules.noGuarantee':
     'Danh sách không phải là lời hứa xếp hạng và liên kết không phải là chiến lược tăng trưởng. Chúng tôi đưa ra các yêu cầu về sự phù hợp, đối tượng, nỗ lực, chi phí và tiết lộ để bạn có thể quyết định xem liệu nó có xứng đáng với buổi chiều của bạn hay không.',
   'web.opportunities.rules.stale':
@@ -546,39 +526,39 @@ export const webMarketingMessages = {
     'Mỗi quy tắc đích phải được một người đọc và ghi lại trước khi có thể đề xuất. Các danh mục được liệt kê ở trên để bạn có thể thấy hình dạng của những gì sắp xảy ra.',
   'web.legal.title': 'Pháp lý và chính sách',
   'web.legal.lede':
-    'Các tài liệu chi phối việc sử dụng Relay. Trong trường hợp từ ngữ phải được soạn thảo bởi luật sư của một công ty và khu vực pháp lý cụ thể, trang này sẽ nói như vậy thay vì giả vờ.',
+    'Các tài liệu chi phối việc sử dụng Post Array. Trong trường hợp từ ngữ phải được soạn thảo bởi luật sư của một công ty và khu vực pháp lý cụ thể, trang này sẽ nói như vậy thay vì giả vờ.',
   'web.legal.counselPending.title': 'Đang chờ luật sư xem xét trước khi ra mắt',
   'web.legal.counselPending.body':
-    'Nội dung trên trang này phản ánh cách sản phẩm thực sự hoạt động và chính xác ở thời điểm hiện tại. Từ ngữ pháp lý ràng buộc, khu vực tài phán điều chỉnh và các điều khoản trách nhiệm pháp lý đang được soạn thảo với cố vấn có trình độ và sẽ thay thế văn bản này trước khi Relay được cung cấp rộng rãi. Trang này không phải là tư vấn pháp lý và cũng chưa phải là hợp đồng.',
+    'Nội dung trên trang này phản ánh cách sản phẩm thực sự hoạt động và chính xác ở thời điểm hiện tại. Từ ngữ pháp lý ràng buộc, khu vực tài phán điều chỉnh và các điều khoản trách nhiệm pháp lý đang được soạn thảo với cố vấn có trình độ và sẽ thay thế văn bản này trước khi Post Array được cung cấp rộng rãi. Trang này không phải là tư vấn pháp lý và cũng chưa phải là hợp đồng.',
   'web.legal.contact.title': 'Liên hệ',
-  'web.legal.contact.privacy': 'quyền riêng tư@relay.example',
-  'web.legal.contact.legal': 'legal@relay.example',
-  'web.legal.contact.security': 'security@relay.example',
-  'web.legal.contact.abuse': 'lạm dụng@relay.example',
-  'web.legal.contact.copyright': 'bản quyền@relay.example',
-  'web.legal.contact.affiliates': 'chi nhánh@relay.example',
-  'web.legal.contact.accessibility': 'khả năng truy cập@relay.example',
+  'web.legal.contact.privacy': 'quyền riêng tư@postarray.com',
+  'web.legal.contact.legal': 'legal@postarray.com',
+  'web.legal.contact.security': 'security@postarray.com',
+  'web.legal.contact.abuse': 'lạm dụng@postarray.com',
+  'web.legal.contact.copyright': 'bản quyền@postarray.com',
+  'web.legal.contact.affiliates': 'chi nhánh@postarray.com',
+  'web.legal.contact.accessibility': 'khả năng truy cập@postarray.com',
   'web.legal.entity.pending':
     'Thực thể hợp đồng, địa chỉ đã đăng ký và cơ quan tài phán quản lý là một quyết định mở và sẽ được nêu tên ở đây trước khi ra mắt.',
   'web.legal.index.updated': 'Đã cập nhật {date}',
   'web.legal.terms.title': 'Điều khoản dịch vụ',
   'web.legal.terms.summary':
-    'Relay đồng ý cung cấp những gì, bạn đồng ý làm gì và điều gì sẽ xảy ra khi một trong hai bên dừng lại.',
+    'Post Array đồng ý cung cấp những gì, bạn đồng ý làm gì và điều gì sẽ xảy ra khi một trong hai bên dừng lại.',
   'web.legal.terms.service.title': 'Dịch vụ là gì',
   'web.legal.terms.service.body':
-    'Relay là một dịch vụ được lưu trữ để tạo, phê duyệt, lên lịch và xuất bản nội dung lên các nền tảng xã hội thông qua các API chính thức của nền tảng đó, cùng với các biên lai, phân tích và hồ sơ kiểm tra. Nó không phải là một nền tảng xã hội và nó không kiểm soát bất kỳ nền tảng nào thực hiện với một bài đăng sau khi nó được xuất bản.',
+    'Post Array là một dịch vụ được lưu trữ để tạo, phê duyệt, lên lịch và xuất bản nội dung lên các nền tảng xã hội thông qua các API chính thức của nền tảng đó, cùng với các biên lai, phân tích và hồ sơ kiểm tra. Nó không phải là một nền tảng xã hội và nó không kiểm soát bất kỳ nền tảng nào thực hiện với một bài đăng sau khi nó được xuất bản.',
   'web.legal.terms.content.title': 'Nội dung của bạn vẫn là của bạn',
   'web.legal.terms.content.body':
-    'Bạn giữ quyền sở hữu mọi thứ bạn tải lên, viết hoặc nhập. Bạn chỉ cấp cho Relay giấy phép cần thiết để lưu trữ, xử lý, điều chỉnh nó thành các biến thể mà bạn yêu cầu và truyền nó đến các tài khoản bạn đã chọn. Giấy phép đó kết thúc khi bạn xóa nội dung, ngoài những hồ sơ mà chúng tôi bắt buộc phải lưu giữ.',
+    'Bạn giữ quyền sở hữu mọi thứ bạn tải lên, viết hoặc nhập. Bạn chỉ cấp cho Post Array giấy phép cần thiết để lưu trữ, xử lý, điều chỉnh nó thành các biến thể mà bạn yêu cầu và truyền nó đến các tài khoản bạn đã chọn. Giấy phép đó kết thúc khi bạn xóa nội dung, ngoài những hồ sơ mà chúng tôi bắt buộc phải lưu giữ.',
   'web.legal.terms.warranties.title': 'Những gì bạn đang xác nhận khi bạn xuất bản',
   'web.legal.terms.warranties.body':
     'Rằng bạn được phép xuất bản lên các tài khoản bạn đã kết nối, rằng bạn giữ quyền đối với nội dung và phương tiện, rằng bạn có sự đồng ý cần thiết đối với bất kỳ người nào xuất hiện trong đó và việc xuất bản đó không vi phạm các quy tắc của nền tảng đích.',
   'web.legal.terms.platforms.title': 'Sự phụ thuộc vào nền tảng',
   'web.legal.terms.platforms.body':
-    'Trình kết nối phụ thuộc vào API của bên thứ ba mà các công ty đó kiểm soát. Một nền tảng có thể thay đổi API, hạn chế quyền, thu hồi ứng dụng hoặc đóng quyền truy cập mà không cần thông báo trước. Relay không thể đảm bảo rằng bất kỳ trình kết nối nào vẫn khả dụng và việc trình kết nối không khả dụng không phải là sự thất bại của thỏa thuận này. Chúng tôi sẽ cho bạn biết trên trang trạng thái và nhật ký thay đổi khi điều đó xảy ra.',
+    'Trình kết nối phụ thuộc vào API của bên thứ ba mà các công ty đó kiểm soát. Một nền tảng có thể thay đổi API, hạn chế quyền, thu hồi ứng dụng hoặc đóng quyền truy cập mà không cần thông báo trước. Post Array không thể đảm bảo rằng bất kỳ trình kết nối nào vẫn khả dụng và việc trình kết nối không khả dụng không phải là sự thất bại của thỏa thuận này. Chúng tôi sẽ cho bạn biết trên trang trạng thái và nhật ký thay đổi khi điều đó xảy ra.',
   'web.legal.terms.ai.title': 'Đầu ra AI',
   'web.legal.terms.ai.body':
-    'Các tính năng hỗ trợ văn bản, dịch thuật, dịch sáng tạo và lập kế hoạch đưa ra đề xuất. Chúng có thể sai, lỗi thời hoặc không phù hợp. Bạn có trách nhiệm xem xét bất cứ điều gì bạn xuất bản. Relay không tạo ra hình ảnh hoặc video.',
+    'Các tính năng hỗ trợ văn bản, dịch thuật, dịch sáng tạo và lập kế hoạch đưa ra đề xuất. Chúng có thể sai, lỗi thời hoặc không phù hợp. Bạn có trách nhiệm xem xét bất cứ điều gì bạn xuất bản. Post Array không tạo ra hình ảnh hoặc video.',
   'web.legal.terms.billing.title': 'Thanh toán',
   'web.legal.terms.billing.body':
     'Polar là người buôn bán kỷ lục. Polar xử lý việc thanh toán, thuế, hóa đơn và hoàn tiền. Đăng ký tự động gia hạn theo khoảng thời gian bạn chọn cho đến khi bạn hủy. Việc sử dụng nền tảng mà nhà cung cấp tính phí cho mỗi hoạt động được lập hóa đơn riêng theo chi phí và được tiết lộ trước hành động phát sinh.',
@@ -596,7 +576,7 @@ export const webMarketingMessages = {
     'Quyền truy cập có lập trình còn được điều chỉnh bởi Điều khoản API và MCP, bao gồm giới hạn tỷ lệ, yêu cầu về phạm vi và quy tắc rằng tài khoản dịch vụ không bao giờ kế thừa toàn bộ quyền của con người.',
   'web.legal.privacy.title': 'Chính sách bảo mật',
   'web.legal.privacy.summary':
-    'Relay thu thập những gì, tại sao, ai xử lý nó, nó được lưu giữ trong bao lâu và làm cách nào để lấy nó ra hoặc xóa nó đi.',
+    'Post Array thu thập những gì, tại sao, ai xử lý nó, nó được lưu giữ trong bao lâu và làm cách nào để lấy nó ra hoặc xóa nó đi.',
   'web.legal.privacy.collect.title': 'Những gì chúng tôi nắm giữ',
   'web.legal.privacy.collect.account':
     'Tài khoản và hồ sơ: tên, email, tư cách thành viên và vai trò của không gian làm việc.',
@@ -607,9 +587,9 @@ export const webMarketingMessages = {
   'web.legal.privacy.collect.schedules':
     'Lịch trình, quyết định phê duyệt, biên lai xuất bản và các sự kiện kiểm toán.',
   'web.legal.privacy.collect.analytics':
-    'Số liệu được truy xuất từ các nền tảng về bài đăng bạn đã xuất bản thông qua Relay.',
+    'Số liệu được truy xuất từ các nền tảng về bài đăng bạn đã xuất bản thông qua Post Array.',
   'web.legal.privacy.collect.billing':
-    'Tài liệu tham khảo thanh toán do Polar nắm giữ. Relay không lưu trữ thông tin thẻ của bạn.',
+    'Tài liệu tham khảo thanh toán do Polar nắm giữ. Post Array không lưu trữ thông tin thẻ của bạn.',
   'web.legal.privacy.collect.technical':
     'Dữ liệu nhật ký và thiết bị cần thiết để vận hành và bảo mật dịch vụ, được sắp xếp lại theo mặc định.',
   'web.legal.privacy.collect.agent':
@@ -642,13 +622,13 @@ export const webMarketingMessages = {
     'Tùy chọn đồng ý được lập phiên bản và có thể kiểm tra được, vì vậy bạn có thể xem những gì bạn đã đồng ý và khi nào.',
   'web.legal.privacy.deletion.title': 'Xóa dữ liệu được giữ tại một nền tảng',
   'web.legal.privacy.deletion.body':
-    'Ngắt kết nối tài khoản trong Relay sẽ thu hồi mã thông báo trên nền tảng và xóa thông tin xác thực tại đây. Nội dung đã được xuất bản trên nền tảng sẽ được quản lý bởi nền tảng đó và phải bị xóa ở đó. Trong trường hợp nền tảng yêu cầu xóa dữ liệu phái sinh trong một khoảng thời gian cố định sau khi thu hồi, chúng tôi sẽ đáp ứng khoảng thời gian đó. Đối với dữ liệu Google và YouTube, khoảng thời gian đó hiện là 30 ngày.',
+    'Ngắt kết nối tài khoản trong Post Array sẽ thu hồi mã thông báo trên nền tảng và xóa thông tin xác thực tại đây. Nội dung đã được xuất bản trên nền tảng sẽ được quản lý bởi nền tảng đó và phải bị xóa ở đó. Trong trường hợp nền tảng yêu cầu xóa dữ liệu phái sinh trong một khoảng thời gian cố định sau khi thu hồi, chúng tôi sẽ đáp ứng khoảng thời gian đó. Đối với dữ liệu Google và YouTube, khoảng thời gian đó hiện là 30 ngày.',
   'web.legal.privacy.transfers.title': 'Chuyển khoản quốc tế',
   'web.legal.privacy.transfers.body':
     'Các khu vực lưu trữ và cơ chế chuyển nhượng đang được hoàn thiện với sự tư vấn và sẽ được nêu tên ở đây cùng với các biện pháp bảo vệ được áp dụng trước khi ra mắt.',
   'web.legal.aup.title': 'Chính sách sử dụng được chấp nhận',
   'web.legal.aup.summary':
-    'Relay giúp bạn xuất bản nội dung mà bạn được phép xuất bản. Nó không được xây dựng để giúp bất kỳ ai trốn tránh giới hạn nền tảng, giả mạo xác nhận hoặc gửi tin nhắn không mong muốn.',
+    'Post Array giúp bạn xuất bản nội dung mà bạn được phép xuất bản. Nó không được xây dựng để giúp bất kỳ ai trốn tránh giới hạn nền tảng, giả mạo xác nhận hoặc gửi tin nhắn không mong muốn.',
   'web.legal.aup.prohibited.title': 'Không được phép',
   'web.legal.aup.prohibited.spam':
     'Thư rác, tin nhắn hàng loạt không được yêu cầu, câu trả lời hoặc đề cập, mồi nhử tương tác và nội dung không mong muốn lặp lại.',
@@ -690,10 +670,10 @@ export const webMarketingMessages = {
     'Nếu có thể, chúng tôi chặn trước hành động bên ngoài chứ không phải sau hành động đó và chúng tôi ghi lại lý do, phiên bản quy tắc và đường dẫn khiếu nại. Hành vi lặp đi lặp lại hoặc nghiêm trọng sẽ được một người đánh giá về độ tin cậy. Bạn sẽ được thông báo điều gì đã xảy ra mà không có mức độ chi tiết nào có thể giúp ai đó trốn tránh việc kiểm tra. Mọi quyết định đều có thể bị kháng cáo và hủy bỏ.',
   'web.legal.aup.report.title': 'Báo cáo lạm dụng',
   'web.legal.aup.report.body':
-    'Nếu nội dung được xuất bản qua Relay vi phạm các quy tắc này, hãy cho chúng tôi biết. Bao gồm URL bài đăng và lỗi của nó.',
+    'Nếu nội dung được xuất bản qua Post Array vi phạm các quy tắc này, hãy cho chúng tôi biết. Bao gồm URL bài đăng và lỗi của nó.',
   'web.legal.ai.title': 'Chính sách nội dung được tạo và sử dụng AI',
   'web.legal.ai.summary':
-    'Những tính năng nào sử dụng mô hình, nội dung nào được gửi, nội dung nào được lưu giữ, bạn chịu trách nhiệm về những gì và tại sao Relay không tạo ra phương tiện.',
+    'Những tính năng nào sử dụng mô hình, nội dung nào được gửi, nội dung nào được lưu giữ, bạn chịu trách nhiệm về những gì và tại sao Post Array không tạo ra phương tiện.',
   'web.legal.ai.features.title': 'Trường hợp mô hình được sử dụng',
   'web.legal.ai.features.text':
     'Hỗ trợ văn bản trong trình soạn thảo: viết lại, rút ngắn và điều chỉnh cho phù hợp với nền tảng.',
@@ -714,7 +694,7 @@ export const webMarketingMessages = {
     'Một mô hình có thể tự tin sai. Bạn có trách nhiệm kiểm tra sự thật, tuyên bố, tên, con số và giọng điệu trước khi xuất bản cũng như bất kỳ tiết lộ nào mà nền tảng yêu cầu. Không có tính năng AI nào đảm bảo phạm vi tiếp cận, mức độ tương tác hoặc xếp hạng và không có tính năng nào được cung cấp dưới dạng đó.',
   'web.legal.ai.disclosure.title': 'Tiết lộ và xuất xứ',
   'web.legal.ai.disclosure.body':
-    'Relay ghi lại xem nội dung có được AI hỗ trợ trong lịch sử nội bộ hay không, nhắc nhở bạn khi nền tảng yêu cầu tiết lộ phương tiện truyền thông tổng hợp hoặc bị thay đổi, đồng thời lưu trữ nguồn gốc mà bạn cung cấp cùng với nội dung đã nhập. Khi một nền tảng cung cấp trường tiết lộ, Relay sẽ đặt trường đó từ khai báo của bạn thay vì đoán.',
+    'Post Array ghi lại xem nội dung có được AI hỗ trợ trong lịch sử nội bộ hay không, nhắc nhở bạn khi nền tảng yêu cầu tiết lộ phương tiện truyền thông tổng hợp hoặc bị thay đổi, đồng thời lưu trữ nguồn gốc mà bạn cung cấp cùng với nội dung đã nhập. Khi một nền tảng cung cấp trường tiết lộ, Post Array sẽ đặt trường đó từ khai báo của bạn thay vì đoán.',
   'web.legal.ai.blocks.title': 'Những tính năng AI từ chối',
   'web.legal.ai.blocks.impersonation': 'Mạo danh người thật hoặc người của công chúng.',
   'web.legal.ai.blocks.ncii': 'Hình ảnh thân mật không có sự đồng thuận, dưới mọi hình thức.',
@@ -724,7 +704,7 @@ export const webMarketingMessages = {
     'Trình bày URL được tạo theo mô hình dưới dạng cơ hội được xác minh. Các đề xuất về cơ hội và công cụ chỉ đến từ danh mục được tuyển chọn.',
   'web.legal.ai.noMedia.title': 'Tại sao không có hình ảnh hoặc video',
   'web.legal.ai.noMedia.body':
-    'Relay chưa thu thập hệ thống hình ảnh đã được xác minh, chi tiết sản phẩm, quyền tài sản, quyền tương tự và bối cảnh chiến dịch mà đầu ra sẵn sàng của thương hiệu sẽ yêu cầu và trong quá trình tạo ứng dụng sẽ cần có sự đồng ý, xuất xứ, đánh giá an toàn và kiểm soát chi phí của chính nó. Khả năng, cấp phép, giá cả và khả năng lưu giữ của mô hình truyền thông cũng thay đổi nhanh chóng, đó là lý do tại sao đề xuất công cụ của chúng tôi luôn có ngày tháng. Bạn giữ quyền kiểm soát sáng tạo bằng cách chọn một công cụ chuyên dụng và nhập nội dung được phê duyệt. Relay xử lý việc điều chỉnh, phê duyệt, xuất bản và đo lường.',
+    'Post Array chưa thu thập hệ thống hình ảnh đã được xác minh, chi tiết sản phẩm, quyền tài sản, quyền tương tự và bối cảnh chiến dịch mà đầu ra sẵn sàng của thương hiệu sẽ yêu cầu và trong quá trình tạo ứng dụng sẽ cần có sự đồng ý, xuất xứ, đánh giá an toàn và kiểm soát chi phí của chính nó. Khả năng, cấp phép, giá cả và khả năng lưu giữ của mô hình truyền thông cũng thay đổi nhanh chóng, đó là lý do tại sao đề xuất công cụ của chúng tôi luôn có ngày tháng. Bạn giữ quyền kiểm soát sáng tạo bằng cách chọn một công cụ chuyên dụng và nhập nội dung được phê duyệt. Post Array xử lý việc điều chỉnh, phê duyệt, xuất bản và đo lường.',
   'web.legal.ai.noMedia.caveat':
     'Một công cụ xuất hiện trong radar của chúng tôi không phải là một tuyên bố rằng đầu ra của nó là an toàn hoặc đã được cấp phép. Những cảnh báo được ghi lại trong tài liệu của nó được hiển thị cùng với nó và tuyên bố về quyền thông thường của bạn vẫn được áp dụng.',
   'web.legal.cookies.title': 'Chính sách cookie',
@@ -757,13 +737,11 @@ export const webMarketingMessages = {
   'web.legal.subprocessors.column.region': 'Vùng xử lý',
   'web.legal.subprocessors.platforms.title': 'Nền tảng xã hội không phải là bộ xử lý phụ',
   'web.legal.subprocessors.platforms.body':
-    'Khi bạn xuất bản, Relay sẽ truyền nội dung của bạn đến tài khoản nền tảng mà bạn đã chọn theo hướng dẫn của bạn. Những nền tảng đó là những người kiểm soát độc lập những gì họ nhận được và các điều khoản riêng của họ chi phối nó.',
+    'Khi bạn xuất bản, Post Array sẽ truyền nội dung của bạn đến tài khoản nền tảng mà bạn đã chọn theo hướng dẫn của bạn. Những nền tảng đó là những người kiểm soát độc lập những gì họ nhận được và các điều khoản riêng của họ chi phối nó.',
   'web.legal.refunds.title': 'Chính sách hoàn tiền và hủy bỏ',
   'web.legal.refunds.summary':
     'Cách hủy, điều gì xảy ra với dữ liệu của bạn và khi nào bạn nhận lại được tiền.',
   'web.legal.refunds.cancel.title': 'Đang hủy',
-  'web.legal.refunds.cancel.body':
-    'Hủy khỏi Cài đặt mà không liên hệ với bộ phận hỗ trợ. Việc hủy trong thời gian dùng thử bảy ngày có nghĩa là không tính phí và màn hình hủy sẽ xác nhận điều đó bằng văn bản. Việc hủy sau khi dùng thử sẽ giữ quyền truy cập của bạn cho đến hết thời gian bạn đã trả tiền.',
   'web.legal.refunds.refund.title': 'Hoàn tiền',
   'web.legal.refunds.refund.body':
     'Nếu dịch vụ không hoạt động như mô tả, hãy liên hệ với bộ phận hỗ trợ và chúng tôi sẽ hoàn lại tiền trong thời gian bị ảnh hưởng. Quyền rút tiền bắt buộc của người tiêu dùng, bao gồm cả thời gian tạm dừng theo luật định áp dụng cho bạn, được tôn trọng đầy đủ và không bị giới hạn bởi bất kỳ điều gì trên trang này. Khoản tiền hoàn lại được thực hiện bởi Polar, người bán trong hồ sơ của chúng tôi, cho phương thức thanh toán ban đầu.',
@@ -778,10 +756,10 @@ export const webMarketingMessages = {
     'Polar thử lại và gửi email cho bạn. Trong thời gian ân hạn việc xuất bản vẫn tiếp tục. Sau đó, không gian làm việc sẽ chuyển sang chế độ chỉ đọc và các bài đăng đã lên lịch sẽ dừng lại. Không có gì bị ngắt kết nối và không có gì bị xóa.',
   'web.legal.dmca.title': 'Bản quyền và gỡ xuống',
   'web.legal.dmca.summary':
-    'Cách báo cáo nội dung do Relay lưu trữ vi phạm quyền của bạn và cách phản hồi nếu nội dung của bạn bị xóa.',
+    'Cách báo cáo nội dung do Post Array lưu trữ vi phạm quyền của bạn và cách phản hồi nếu nội dung của bạn bị xóa.',
   'web.legal.dmca.scope.title': 'Những gì chúng ta có thể hành động',
   'web.legal.dmca.scope.body':
-    'Relay có thể xóa tài liệu được lưu trữ trong hệ thống của chúng tôi, chẳng hạn như tệp phương tiện hoặc bản nháp. Nội dung đã được xuất bản trên nền tảng xã hội vẫn tồn tại trên nền tảng đó và phải được báo cáo cho nền tảng đó vì chúng tôi không thể xóa bài đăng mà chúng tôi không lưu trữ. Chúng tôi sẽ cho bạn biết điều nào trong hai điều này áp dụng cho báo cáo của bạn.',
+    'Post Array có thể xóa tài liệu được lưu trữ trong hệ thống của chúng tôi, chẳng hạn như tệp phương tiện hoặc bản nháp. Nội dung đã được xuất bản trên nền tảng xã hội vẫn tồn tại trên nền tảng đó và phải được báo cáo cho nền tảng đó vì chúng tôi không thể xóa bài đăng mà chúng tôi không lưu trữ. Chúng tôi sẽ cho bạn biết điều nào trong hai điều này áp dụng cho báo cáo của bạn.',
   'web.legal.dmca.notice.title': 'Gửi thông báo',
   'web.legal.dmca.notice.identify':
     'Xác định tác phẩm có bản quyền và tài liệu mà bạn cho rằng vi phạm tác phẩm đó bằng URL mà chúng tôi có thể truy cập.',
@@ -799,7 +777,7 @@ export const webMarketingMessages = {
     'Các tài khoản vi phạm nhiều lần sẽ bị đình chỉ và sau đó bị chấm dứt. Các thông báo có ý đồ xấu, được sử dụng để xóa nội dung của đối thủ cạnh tranh, cũng là cơ sở để chấm dứt.',
   'web.legal.security.title': 'Bảo mật và tiết lộ có trách nhiệm',
   'web.legal.security.summary':
-    'Cách Relay bảo vệ thông tin xác thực mà bạn tin cậy và cách báo cáo sự cố bạn tìm thấy.',
+    'Cách Post Array bảo vệ thông tin xác thực mà bạn tin cậy và cách báo cáo sự cố bạn tìm thấy.',
   'web.legal.security.tokens.title': 'Thông tin xã hội',
   'web.legal.security.tokens.body':
     'Mã thông báo nền tảng được mã hóa bằng mã hóa đường bao dưới một khóa được quản lý, được xoay, lưu trữ ngoài nội dung và dữ liệu thanh toán, đồng thời được loại bỏ khỏi mọi nhật ký. Mã thông báo không bao giờ được gửi tới trình duyệt, không bao giờ được đặt trong ngữ cảnh mô hình và không bao giờ được đưa vào thông báo lỗi.',
@@ -832,10 +810,10 @@ export const webMarketingMessages = {
     'Chúng tôi có kế hoạch ứng phó sự cố với những người ra quyết định cụ thể, mức độ nghiêm trọng, nhiệm vụ lưu giữ bằng chứng và thông báo. Các sự cố ảnh hưởng đến việc xuất bản sẽ được công bố trên trang trạng thái kèm theo dòng thời gian và những thay đổi sau đó, bao gồm cả những sự cố chúng tôi đã gây ra.',
   'web.legal.accessibility.title': 'Tuyên bố về khả năng truy cập',
   'web.legal.accessibility.summary':
-    'Relay tiêu chuẩn được xây dựng dựa trên những gì chúng tôi đã xác minh, những gì chúng tôi biết là chưa đúng và cách thông báo cho chúng tôi.',
+    'Post Array tiêu chuẩn được xây dựng dựa trên những gì chúng tôi đã xác minh, những gì chúng tôi biết là chưa đúng và cách thông báo cho chúng tôi.',
   'web.legal.accessibility.standard.title': 'tiêu chuẩn',
   'web.legal.accessibility.standard.body':
-    'Relay nhắm mục tiêu WCAG 2.2 cấp AA trên sản phẩm và trang web này. Khả năng truy cập là một yêu cầu hợp nhất ở đây, không phải là vé sau này và màn hình bị lỗi sẽ không xuất xưởng.',
+    'Post Array nhắm mục tiêu WCAG 2.2 cấp AA trên sản phẩm và trang web này. Khả năng truy cập là một yêu cầu hợp nhất ở đây, không phải là vé sau này và màn hình bị lỗi sẽ không xuất xưởng.',
   'web.legal.accessibility.measures.title': 'Điều đó có ý nghĩa gì trong thực tế',
   'web.legal.accessibility.measures.keyboard':
     'Mọi thứ đều có thể hoạt động được từ bàn phím, với vòng lấy nét hiển thị và thứ tự lấy nét hợp lý. Không có sự tương tác kéo chỉ ở bất cứ đâu.',
@@ -874,7 +852,7 @@ export const webMarketingMessages = {
     'Một cuộc gọi có thể không được xuất bản âm thầm tới mọi tài khoản được kết nối. Hành động hàng loạt, tên miền mới, tài khoản mới, danh mục nhạy cảm, chứng thực có trả phí, thay đổi quyền riêng tư hoặc nội dung bị thay đổi sau khi phê duyệt luôn leo thang theo quyết định của con người. Mọi tác nhân và mọi không gian làm việc đều có một kill switch.',
   'web.legal.apiTerms.prohibited.title': 'Không được phép thông qua API',
   'web.legal.apiTerms.prohibited.body':
-    'Bán lại quyền truy cập mà không có thỏa thuận bằng văn bản, sử dụng Relay làm phương tiện chuyển tiếp cho nội dung mà bạn không được phép xuất bản, lách chính sách phê duyệt và bất kỳ hành vi sử dụng nào vi phạm Chính sách sử dụng được chấp nhận. Quyền truy cập có lập trình phải tuân theo các biện pháp kiểm soát chống thư rác giống như ứng dụng web.',
+    'Bán lại quyền truy cập mà không có thỏa thuận bằng văn bản, sử dụng Post Array làm phương tiện chuyển tiếp cho nội dung mà bạn không được phép xuất bản, lách chính sách phê duyệt và bất kỳ hành vi sử dụng nào vi phạm Chính sách sử dụng được chấp nhận. Quyền truy cập có lập trình phải tuân theo các biện pháp kiểm soát chống thư rác giống như ứng dụng web.',
   'web.legal.apiTerms.changes.title': 'Thay đổi chính sách',
   'web.legal.apiTerms.changes.body':
     'Phụ gia thay đổi xuất xưởng mà không cần thông báo trước. Các thay đổi có thể xảy ra sẽ nhận được phiên bản mới, khoảng thời gian ngừng sử dụng được công bố và ghi chú di chuyển trên nhật ký thay đổi. Mã lỗi không thay đổi ý nghĩa trong một phiên bản.',
@@ -898,7 +876,7 @@ export const webMarketingMessages = {
   'web.legal.affiliate.prohibited.cookieStuffing':
     'Nhồi nhét cookie, nhấp chuột bắt buộc, tự giới thiệu và chiếm đoạt phiếu giảm giá.',
   'web.legal.affiliate.prohibited.claims':
-    'Phát minh ra kết quả của khách hàng, bịa đặt lời chứng thực hoặc tuyên bố Relay làm điều gì đó mà nó không làm, bao gồm bất kỳ điều gì về việc tạo phương tiện truyền thông AI.',
+    'Phát minh ra kết quả của khách hàng, bịa đặt lời chứng thực hoặc tuyên bố Post Array làm điều gì đó mà nó không làm, bao gồm bất kỳ điều gì về việc tạo phương tiện truyền thông AI.',
   'web.legal.affiliate.prohibited.trademark':
     'Đăng ký tên miền, địa chỉ hoặc danh sách ứng dụng sử dụng tên của chúng tôi theo cách gợi ý rằng bạn là công ty.',
   'web.marketing.provider.x.label': 'X',
@@ -912,35 +890,35 @@ export const webMarketingMessages = {
   'web.marketing.provider.x.accountTypes':
     'Tài khoản X cá nhân hoặc doanh nghiệp mà bạn kiểm soát.',
   'web.marketing.provider.x.restriction':
-    'Việc đăng bài tự động yêu cầu chủ tài khoản thể hiện sự đồng ý, Relay ghi lại. Không được phép đăng các bài đăng trùng lặp hoặc về cơ bản giống nhau trên các tài khoản và không được tạo các câu trả lời tự động không được yêu cầu.',
+    'Việc đăng bài tự động yêu cầu chủ tài khoản thể hiện sự đồng ý, Post Array ghi lại. Không được phép đăng các bài đăng trùng lặp hoặc về cơ bản giống nhau trên các tài khoản và không được tạo các câu trả lời tự động không được yêu cầu.',
   'web.marketing.provider.x.cost':
-    'X tính phí cho mỗi hoạt động API và tính phí nhiều hơn cho bài đăng có chứa URL. Relay ước tính chi phí trước khi bạn xác nhận và chuyển nó mà không cần tăng thêm.',
+    'X tính phí cho mỗi hoạt động API và tính phí nhiều hơn cho bài đăng có chứa URL. Post Array ước tính chi phí trước khi bạn xác nhận và chuyển nó mà không cần tăng thêm.',
   'web.marketing.provider.linkedin.accountTypes':
     'Hồ sơ thành viên hoặc Trang của tổ chức nơi bạn giữ đúng vai trò.',
   'web.marketing.provider.linkedin.restriction':
-    'Việc xuất bản thay mặt cho một tổ chức cần có sản phẩm Quản lý cộng đồng đã được phê duyệt và danh tính doanh nghiệp đã được xác minh. Phân tích bài đăng của thành viên phụ thuộc vào quyền đọc LinkedIn đã đóng cửa đối với các ứng dụng mới, vì vậy Relay sẽ không cung cấp nó.',
+    'Việc xuất bản thay mặt cho một tổ chức cần có sản phẩm Quản lý cộng đồng đã được phê duyệt và danh tính doanh nghiệp đã được xác minh. Phân tích bài đăng của thành viên phụ thuộc vào quyền đọc LinkedIn đã đóng cửa đối với các ứng dụng mới, vì vậy Post Array sẽ không cung cấp nó.',
   'web.marketing.provider.linkedin.cost':
     'Không tính phí cho mỗi hoạt động. Áp dụng giới hạn hàng ngày của thành viên và ứng dụng.',
   'web.marketing.provider.instagram.accountTypes':
     'Tài khoản Instagram chuyên nghiệp, doanh nghiệp hoặc người sáng tạo.',
   'web.marketing.provider.instagram.restriction':
-    'Xuất bản nội dung Instagram chỉ dành cho các tài khoản chuyên nghiệp. Bất kỳ ứng dụng nào cũng không thể xuất bản tài khoản người tiêu dùng lên, kể cả ứng dụng này. Quá trình xuất bản sử dụng vùng chứa và trình tự xuất bản chính thức, đồng thời Relay xác nhận trạng thái cuối cùng thay vì báo cáo quá trình tải lên thành công.',
+    'Xuất bản nội dung Instagram chỉ dành cho các tài khoản chuyên nghiệp. Bất kỳ ứng dụng nào cũng không thể xuất bản tài khoản người tiêu dùng lên, kể cả ứng dụng này. Quá trình xuất bản sử dụng vùng chứa và trình tự xuất bản chính thức, đồng thời Post Array xác nhận trạng thái cuối cùng thay vì báo cáo quá trình tải lên thành công.',
   'web.marketing.provider.instagram.cost':
     'Không tính phí cho mỗi hoạt động. Cần phải xem xét ứng dụng meta và xác minh doanh nghiệp.',
   'web.marketing.provider.facebook.accountTypes': 'Trang Facebook mà bạn quản lý.',
   'web.marketing.provider.facebook.restriction':
-    'Mục tiêu xuất bản là một Trang. Việc tự động hóa hồ sơ cá nhân không được API cung cấp và Relay không thử làm điều đó.',
+    'Mục tiêu xuất bản là một Trang. Việc tự động hóa hồ sơ cá nhân không được API cung cấp và Post Array không thử làm điều đó.',
   'web.marketing.provider.facebook.cost':
     'Không tính phí cho mỗi hoạt động. Cần phải xem xét ứng dụng meta và xác minh doanh nghiệp.',
   'web.marketing.provider.youtube.accountTypes':
     'Kênh YouTube được kết nối thông qua tài khoản Google của bạn.',
   'web.marketing.provider.youtube.restriction':
-    'Dự án chưa vượt qua quá trình kiểm tra tuân thủ API của Google chỉ có thể tải lên dưới dạng riêng tư. Relay sẽ không mô tả tải lên công khai là có sẵn cho đến khi quá trình kiểm tra đó vượt qua và màn hình kết nối cho biết trạng thái tải lên của bạn sẽ đến.',
+    'Dự án chưa vượt qua quá trình kiểm tra tuân thủ API của Google chỉ có thể tải lên dưới dạng riêng tư. Post Array sẽ không mô tả tải lên công khai là có sẵn cho đến khi quá trình kiểm tra đó vượt qua và màn hình kết nối cho biết trạng thái tải lên của bạn sẽ đến.',
   'web.marketing.provider.youtube.cost':
     'Không tính phí cho mỗi hoạt động. Hạn ngạch hàng ngày được áp dụng và không thể chia sẻ giữa các dự án.',
   'web.marketing.provider.tiktok.accountTypes': 'Tài khoản TikTok có ủy quyền Đăng trực tiếp.',
   'web.marketing.provider.tiktok.restriction':
-    'Cho đến khi quá trình kiểm tra API đăng nội dung vượt qua, các bài đăng sẽ ở chế độ riêng tư và áp dụng giới hạn cho mỗi tài khoản. Tại thời điểm xuất bản, Relay tìm nạp thông tin của người sáng tạo hiện tại, hiển thị các tùy chọn bảo mật có sẵn mà không cần chọn trước, đồng thời yêu cầu cài đặt nhận xét, song ca và ghép nối cũng như khai báo nội dung thương mại.',
+    'Cho đến khi quá trình kiểm tra API đăng nội dung vượt qua, các bài đăng sẽ ở chế độ riêng tư và áp dụng giới hạn cho mỗi tài khoản. Tại thời điểm xuất bản, Post Array tìm nạp thông tin của người sáng tạo hiện tại, hiển thị các tùy chọn bảo mật có sẵn mà không cần chọn trước, đồng thời yêu cầu cài đặt nhận xét, song ca và ghép nối cũng như khai báo nội dung thương mại.',
   'web.marketing.provider.tiktok.cost':
     'Không tính phí cho mỗi hoạt động. Chế độ chưa được kiểm tra áp dụng giới hạn đăng bài hàng ngày.',
   'web.marketing.provider.threads.accountTypes':
@@ -1013,7 +991,7 @@ export const webMarketingMessages = {
   'web.capabilities.buildState.title':
     'Chưa có trình kết nối nào đang mang lưu lượng truy cập của khách hàng',
   'web.capabilities.buildState.body':
-    'Relay đang được xây dựng. Bảng này phản ánh các định nghĩa về trình kết nối như hiện nay, đó là lý do tại sao hầu hết các ô đều đọc là chưa được xây dựng. Một ô chỉ được hỗ trợ sau khi trình kết nối đó vượt qua định nghĩa hoàn thành, bao gồm các thử nghiệm hợp đồng đối với các thiết bị cố định nền tảng đã ghi. Các ô cho biết một nền tảng không cung cấp thứ gì đó hoặc đưa nó vào sau một bài đánh giá, là thông tin thực tế về nền tảng đó và là thông tin cuối cùng.',
+    'Post Array đang được xây dựng. Bảng này phản ánh các định nghĩa về trình kết nối như hiện nay, đó là lý do tại sao hầu hết các ô đều đọc là chưa được xây dựng. Một ô chỉ được hỗ trợ sau khi trình kết nối đó vượt qua định nghĩa hoàn thành, bao gồm các thử nghiệm hợp đồng đối với các thiết bị cố định nền tảng đã ghi. Các ô cho biết một nền tảng không cung cấp thứ gì đó hoặc đưa nó vào sau một bài đánh giá, là thông tin thực tế về nền tảng đó và là thông tin cuối cùng.',
   'web.capabilities.note.instagramProfessional':
     'Chỉ tài khoản chuyên nghiệp. Bất kỳ ứng dụng nào cũng không thể xuất bản tài khoản người tiêu dùng.',
   'web.capabilities.note.facebookPagesOnly': 'Chỉ các trang. API không xuất bản lên hồ sơ cá nhân.',
@@ -1033,7 +1011,7 @@ export const webMarketingMessages = {
   'web.capabilities.note.xConsent':
     'Cần có sự đồng ý được ghi lại từ chủ tài khoản để đăng bài tự động.',
   'web.capabilities.note.xDisclosure':
-    'Nền tảng này cung cấp trường được tạo bằng AI mà Relay đặt từ khai báo của bạn.',
+    'Nền tảng này cung cấp trường được tạo bằng AI mà Post Array đặt từ khai báo của bạn.',
   'web.capabilities.note.noDestinations':
     'Nền tảng này không có khái niệm đích đến như Trang, bảng hoặc cộng đồng.',
   'web.capabilities.note.noThreads': 'Nền tảng này không có chuỗi bài đăng gốc.',
@@ -1045,7 +1023,7 @@ export const webMarketingMessages = {
     'Nền tảng này không cung cấp tùy chọn quyền riêng tư cho mỗi bài đăng thông qua API của nó.',
   'web.capabilities.note.noThumbnail':
     'Nền tảng này không chấp nhận hình thu nhỏ tùy chỉnh thông qua API của nó.',
-  'web.capabilities.note.inBuild': 'Nền tảng cung cấp điều này. Relay vẫn chưa xuất xưởng.',
+  'web.capabilities.note.inBuild': 'Nền tảng cung cấp điều này. Post Array vẫn chưa xuất xưởng.',
   'web.capabilities.note.noCarousel': 'Nền tảng không cung cấp băng chuyền vuốt.',
   'web.capabilities.note.noDisclosure':
     'Nền tảng không có trường công bố cho nội dung AI hoặc thương mại.',
@@ -1071,7 +1049,7 @@ export const webMarketingMessages = {
   'web.status.surface.analytics': 'Bộ sưu tập phân tích',
   'web.status.surface.links': 'Chuyển hướng liên kết ngắn',
   'web.status.surface.checkout': 'Thanh toán và thanh toán',
-  'web.status.preLaunch.title': 'Relay hiện chưa có sẵn',
+  'web.status.preLaunch.title': 'Post Array hiện chưa có sẵn',
   'web.status.preLaunch.body':
     'Trang này hoạt động trước khi có sản phẩm, do đó thói quen báo cáo tồn tại từ khách hàng đầu tiên thay vì được thêm vào sau lần ngừng hoạt động đầu tiên. Các bề mặt vẫn đang được xây dựng sẽ được đánh dấu như vậy thay vì được hiển thị là khỏe mạnh.',
   'web.compare.product.postiz': 'Đăng',
@@ -1122,8 +1100,6 @@ export const webMarketingMessages = {
   'web.legal.subprocessors.hosting.purpose': 'Phục vụ ứng dụng web, API và dịch vụ liên kết ngắn.',
   'web.legal.subprocessors.hosting.data': 'Yêu cầu siêu dữ liệu và nhật ký được biên tập lại.',
   'web.legal.subprocessors.email.label': 'Gửi email giao dịch',
-  'web.legal.subprocessors.email.purpose':
-    'Đăng nhập liên kết, yêu cầu phê duyệt, xuất bản thông báo kết quả và nhắc nhở dùng thử.',
   'web.legal.subprocessors.email.data': 'Tên, địa chỉ email và nội dung tin nhắn.',
   'web.legal.subprocessors.monitoring.label': 'Giám sát lỗi và hiệu suất',
   'web.legal.subprocessors.monitoring.purpose': 'Chẩn đoán lỗi trong xuất bản và trong giao diện.',
@@ -1168,13 +1144,11 @@ export const webMarketingMessages = {
   'web.footer.legal': 'pháp lý',
   'web.footer.developers': 'Nhà phát triển',
   'web.footer.statement':
-    'Relay chỉ xuất bản thông qua API nền tảng chính thức. Tính khả dụng của trình kết nối phụ thuộc vào sự phê duyệt mà nền tảng kiểm soát và mọi tuyên bố về khả năng trên trang web này đều được ghi ngày tháng và có nguồn gốc.',
+    'Post Array chỉ xuất bản thông qua API nền tảng chính thức. Tính khả dụng của trình kết nối phụ thuộc vào sự phê duyệt mà nền tảng kiểm soát và mọi tuyên bố về khả năng trên trang web này đều được ghi ngày tháng và có nguồn gốc.',
   'web.footer.noAffiliation':
     'Tên và nhãn hiệu nền tảng thuộc về chủ sở hữu của họ. Việc sử dụng chúng ở đây xác định một trình kết nối và không ngụ ý sự chứng thực hoặc hợp tác.',
-  'web.footer.copyright': 'Relay {year}',
+  'web.footer.copyright': 'Post Array {year}',
   'web.marketing.v2.closing.title': 'Hãy thử nó trên tài khoản của riêng bạn',
-  'web.marketing.v2.closing.body':
-    'Bảy ngày, kết nối thực sự, không có dữ liệu demo theo giai đoạn. Hủy bỏ bất cứ lúc nào trước khi nó chuyển đổi.',
   'web.product.v2.demo.title': 'Một bản nháp ngắn gọn, năm bản nháp dành cho nền tảng',
   'web.product.v2.demo.body':
     'Cảnh tương tự từ trang chủ, liên quan đến những gì bước soạn thư thực sự tạo ra.',

@@ -3,7 +3,7 @@ export const webDemoMessages = {
   /* 元数据与导航                                                            */
   /* ---------------------------------------------------------------------- */
 
-  'web.meta.demo.title': '了解 Relay 的工作方式',
+  'web.meta.demo.title': '了解 Post Array 的工作方式',
   'web.meta.demo.description':
     '从新建项目到收据的发布流程引导之旅，在真实界面中以示例内容展示。目前尚无任何内容发布，此引导会说明该界限所在。',
 
@@ -26,6 +26,10 @@ export const webDemoMessages = {
   /* 主页英雄区演示                                                          */
   /* ---------------------------------------------------------------------- */
 
+  'web.demo.hero.viewCta': '查看演示',
+  'web.demo.hero.projectsLine':
+    '一个账号经营多个业务。每个项目都是一个独立的业务，有自己连接的账号、自己的日历和自己的审批流程；你在一个菜单里切换它们，就像在搜索控制台里切换资源一样。',
+  'web.demo.hero.projectsChip': '{count, plural, other {# 个账号}}',
   'web.demo.hero.caption':
     '一份草稿变成各平台的版本，获得一个时间，并落入当周日程。这是示例内容，不是实际账户。',
   'web.demo.hero.more': '走完整个工作流程',

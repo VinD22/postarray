@@ -8,7 +8,7 @@ import { withHebrewPluralForms } from './catalog-helpers';
  * English, matching the other translated catalogs.
  */
 export const webDemoMessages = withHebrewPluralForms({
-  'web.meta.demo.title': 'ראה איך Relay עובד',
+  'web.meta.demo.title': 'ראה איך Post Array עובד',
   'web.meta.demo.description':
     'סיור מודרך בתהליך הפרסום, מפרויקט חדש ועד לקבלה, מוצג בממשק האמיתי עם תוכן לדוגמה. שום דבר עדיין לא מתפרסם, והסיור אומר איפה הגבול הזה.',
 
@@ -24,6 +24,10 @@ export const webDemoMessages = withHebrewPluralForms({
   'web.demo.control.play': 'הפעל את ההדגמה',
   'web.demo.control.replay': 'הפעל את ההדגמה שוב',
 
+  'web.demo.hero.viewCta': 'לצפות בהדגמה',
+  'web.demo.hero.projectsLine':
+    'חשבון אחד מנהל כמה עסקים. כל פרויקט הוא עסק בפני עצמו, עם חשבונות מחוברים משלו, לוח שנה משלו ואישורים משלו, ועוברים ביניהם מתפריט אחד, כמו שמחליפים נכס בקונסולת חיפוש.',
+  'web.demo.hero.projectsChip': '{count, plural, one {חשבון אחד} other {# חשבונות}}',
   'web.demo.hero.caption':
     'טיוטה אחת הופכת לגרסה לכל פלטפורמה, מקבלת זמן ונוחתת בשבוע. תוכן לדוגמה, לא חשבון פעיל.',
   'web.demo.hero.more': 'עבור על כל תהליך העבודה',

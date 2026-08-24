@@ -9,7 +9,7 @@
  *    verification date in the page that renders it. No adjective stands in for
  *    a number.
  *  - Nothing here promises reach, ranking, engagement or "going" anywhere.
- *  - Nothing here describes AI image or AI video generation as a Relay
+ *  - Nothing here describes AI image or AI video generation as a Post Array
  *    feature, because it is not one.
  *  - No integration is called official until the provider has approved it. The
  *    connector matrix uses `capability.level.*` from `connections.ts` so the
@@ -22,7 +22,7 @@ export const webMarketingMessages = {
   /* Shared marketing furniture                                              */
   /* ---------------------------------------------------------------------- */
 
-  'web.brand.name': 'Relay',
+  'web.brand.name': 'Post Array',
   'web.brand.tagline': 'The multilingual publishing control plane for people and agents.',
   'web.skipToContent': 'Skip to the main content',
   'web.nav.label': 'Site navigation',
@@ -30,17 +30,20 @@ export const webMarketingMessages = {
   'web.nav.closeMenu': 'Close the menu',
   'web.nav.footerLabel': 'Footer navigation',
 
-  'web.cta.startTrial': 'Start your free trial',
+  'web.cta.startTrial': 'Start free, no card',
   'web.cta.seePricing': 'See the price',
   'web.cta.seeCapabilities': 'Read the capability matrix',
   'web.cta.readDocs': 'Read the documentation',
-  // One trial story, stated the same way everywhere it appears: it starts the
+  // One free-plan story, stated the same way everywhere it appears: signing
   // day you sign up and beginning it takes no card. `web.pricing.beside.*`,
   // `web.pricing.prelaunch.*`, `web.pricing.v2.closing.body` and
   // `web.home.v2.sticker.trial` all repeat exactly this, because three pages
-  // disagreeing about when a trial starts is a defect, not a wording choice.
+  // disagreeing about what is free is a defect, not a wording choice. There is
+  // no trial clock any more: the free plan is a small number of published
+  // posts, everything before publishing is unmetered, and credits can be added
+  // by hand for referrals.
   'web.cta.trialFootnote':
-    'Relay costs $25 a month, or $250 a year, which is two months free. The seven day trial starts today and beginning it takes no card. Connector availability is shown account by account as each platform completes its review.',
+    'Post Array costs $25 a month, or $250 a year, which is two months free. Starting is free and takes no card: connect your accounts, schedule as much as you like, and your first published posts are on us. Connector availability is shown account by account as each platform completes its review.',
 
   'web.label.lastReviewed': 'Last reviewed {date}',
   'web.label.nextReview': 'Next review {date}',
@@ -58,48 +61,48 @@ export const webMarketingMessages = {
   'web.correction.title': 'Found something wrong on this page',
   'web.correction.body':
     'Platform rules change and we get things wrong. Send the URL and what is inaccurate and we will correct the page or retire it.',
-  'web.correction.email': 'corrections@relay.example',
+  'web.correction.email': 'corrections@postarray.com',
 
   /* ---------------------------------------------------------------------- */
   /* Metadata                                                                */
   /* ---------------------------------------------------------------------- */
 
-  'web.meta.home.title': 'Relay, the multilingual publishing control plane',
+  'web.meta.home.title': 'Post Array, the multilingual publishing control plane',
   'web.meta.home.description':
     'Turn one sourced idea into platform-native content, approve it once, publish it reliably through official platform APIs, and learn what to improve next.',
-  'web.meta.product.title': 'How Relay works',
+  'web.meta.product.title': 'How Post Array works',
   'web.meta.product.description':
     'A walk through of the publishing desk: compose once, adapt per platform, validate against the real limits, approve, schedule, publish, and keep the receipt.',
-  'web.meta.integrations.title': 'Platforms Relay publishes to',
+  'web.meta.integrations.title': 'Platforms Post Array publishes to',
   'web.meta.integrations.description':
-    'Which platforms Relay connects to, what each connection can do today, and what the platform itself does not allow.',
+    'Which platforms Post Array connects to, what each connection can do today, and what the platform itself does not allow.',
   'web.meta.capabilities.title': 'Connector capability matrix',
   'web.meta.capabilities.description':
     'A per platform, per capability table generated from our connector definitions, separating what we have built from what the platform does not offer.',
-  'web.meta.creators.title': 'Relay for creators',
+  'web.meta.creators.title': 'Post Array for creators',
   'web.meta.creators.description':
     'For solo creators publishing the same idea in several formats and languages without rewriting it five times.',
-  'web.meta.agencies.title': 'Relay for agencies',
+  'web.meta.agencies.title': 'Post Array for agencies',
   'web.meta.agencies.description':
     'Client separation, approvals, shareable review links, receipts and reporting for teams that publish on behalf of other people.',
-  'web.meta.developers.title': 'Relay for developers',
+  'web.meta.developers.title': 'Post Array for developers',
   'web.meta.developers.description':
     'One backend behind the web app, the REST API, a remote MCP server, the CLI and signed webhooks. Same approval rules on every surface.',
   'web.meta.pricing.title': 'Pricing',
   'web.meta.pricing.description':
-    'Relay costs $25 a month, or $250 a year with two months free, and a seven day trial that takes no card. Every feature is included at every price, including the remote MCP server an agent connects to.',
+    'Post Array costs $25 a month, or $250 a year with two months free. Starting is free and takes no card, with your first published posts included. Every feature is included at every price, including the remote MCP server an agent connects to.',
   'web.meta.resources.title': 'Resources',
   'web.meta.resources.description':
     'Status, changelog, documentation, methodology, comparisons, the tool radar and the opportunity catalog.',
   'web.meta.status.title': 'Status',
   'web.meta.status.description':
-    'Current state of every Relay surface and every connector, plus the incident history.',
+    'Current state of every Post Array surface and every connector, plus the incident history.',
   'web.meta.changelog.title': 'Changelog',
   'web.meta.changelog.description':
     'What shipped, what changed for connectors, and what was corrected.',
   'web.meta.docs.title': 'Documentation',
   'web.meta.docs.description':
-    'REST API, MCP server, CLI and webhook documentation for building on Relay.',
+    'REST API, MCP server, CLI and webhook documentation for building on Post Array.',
   'web.meta.methodology.title': 'Methodology',
   'web.meta.methodology.description':
     'How we research platform claims, how we date them, how we compare other products, and how we correct mistakes.',
@@ -123,9 +126,9 @@ export const webMarketingMessages = {
   'web.home.promise':
     'Turn one sourced idea into platform-native content, approve it once, publish it reliably, and learn what to improve next.',
   'web.home.lede':
-    'Relay is a publishing desk for people who are accountable for what goes out. You write once, adapt per platform, see the real limits before you schedule, get the approval you need, publish through official platform APIs, and keep a receipt for every post.',
+    'Post Array is a publishing desk for people who are accountable for what goes out. You write once, adapt per platform, see the real limits before you schedule, get the approval you need, publish through official platform APIs, and keep a receipt for every post.',
   'web.home.summaryLine':
-    'One plan, and every feature is in it, including the remote MCP server an agent connects to. What a plan buys is active project capacity. The seven day trial needs no card.',
+    'One plan, and every feature is in it, including the remote MCP server an agent connects to. What a plan buys is active project capacity. Starting is free, takes no card, and includes your first published posts.',
 
   // Five, because the scene under this heading renders five rows
   // (`EXAMPLE_ROWS` on the home page). It said "ten" while showing five, which
@@ -156,7 +159,7 @@ export const webMarketingMessages = {
   'web.home.example.bluesky.variant': 'Master text with the link card',
   'web.home.example.bluesky.check': 'Character count, link card resolution, alt text present',
 
-  'web.home.pillars.title': 'What Relay is built to be good at',
+  'web.home.pillars.title': 'What Post Array is built to be good at',
   'web.home.pillars.confidence.title': 'Publish with confidence',
   'web.home.pillars.confidence.body':
     'A true preview per account, deterministic policy and platform checks before anything is queued, the approval your workspace requires, an immutable receipt with the external post ID, and a health state for every connection.',
@@ -169,7 +172,7 @@ export const webMarketingMessages = {
     'The interface is available in selected languages. Content adaptation covers 20 content languages and every one of them is reviewable before it publishes.',
   'web.home.pillars.loop.title': 'Close the loop',
   'web.home.pillars.loop.body':
-    'Analytics that name the metric, the platform that reported it, the denominator and when it was last refreshed. Where a platform does not report something, Relay says so instead of showing a zero.',
+    'Analytics that name the metric, the platform that reported it, the denominator and when it was last refreshed. Where a platform does not report something, Post Array says so instead of showing a zero.',
   'web.home.pillars.loop.proof':
     'A post is compared against your own median rather than against a score nobody can audit.',
   'web.home.pillars.anywhere.title': 'Work from where you already are',
@@ -181,19 +184,19 @@ export const webMarketingMessages = {
   'web.home.pillars.economics.body':
     'One price, every shipped feature, 10 active channels and an owner plus 5 teammates. Platform usage that a provider charges per operation is passed through at cost and shown before you confirm the action.',
   'web.home.pillars.economics.proof':
-    'There is no image or video generation credit system, because Relay does not generate media.',
+    'There is no image or video generation credit system, because Post Array does not generate media.',
 
-  'web.home.honest.title': 'What Relay does not do',
+  'web.home.honest.title': 'What Post Array does not do',
   'web.home.honest.lede':
     'These are boundaries, not a roadmap tease. If one of them changes, it changes on the changelog first.',
   'web.home.honest.noMedia':
-    'No AI image generation and no AI video generation. Relay adapts, approves, publishes and measures the media you bring.',
+    'No AI image generation and no AI video generation. Post Array adapts, approves, publishes and measures the media you bring.',
   'web.home.honest.noAutomationOfEngagement':
     'No automatic likes, follows, reposts, unsolicited replies or direct messages. No engagement pods and no fabricated engagement.',
   'web.home.honest.noUnofficial':
     'No browser automation, no cookie replay, no scraping and no unofficial posting endpoints. Official platform APIs only.',
   'web.home.honest.noPromises':
-    'No promise about reach, ranking or engagement. Relay can tell you what happened and what to test next. It cannot tell you what an audience will do.',
+    'No promise about reach, ranking or engagement. Post Array can tell you what happened and what to test next. It cannot tell you what an audience will do.',
   'web.home.honest.noUnattendedPublishing':
     'No unattended publishing by default. An agent can draft, validate and request approval. A human decides before anything becomes public, unless you deliberately opt a specific policy out.',
 
@@ -228,7 +231,7 @@ export const webMarketingMessages = {
    * `web.home.pillars.economics.*` above.
    */
   'web.home.v2.heroTemplate': 'Native, on-brand posts for {platform}.',
-  'web.home.v2.sticker.trial': 'Seven day free trial. No card required.',
+  'web.home.v2.sticker.trial': 'Free to start. No card. Your first published posts are on us.',
   'web.home.v2.sticker.official': 'Official APIs only',
   'web.home.v2.marqueeCaption': 'Official APIs only.',
   'web.home.v2.surfacesStat': 'Surfaces on one shared backend',
@@ -253,10 +256,10 @@ export const webMarketingMessages = {
    *    owner, and until they added it every beta locale would fail the
    *    catalog parity gate.
    */
-  'web.home.v2.hero.providersLabel': 'Networks Relay publishes to',
+  'web.home.v2.hero.providersLabel': 'Networks Post Array publishes to',
   'web.home.v2.hero.headline': 'Post everywhere from your AI agent.',
   'web.home.v2.hero.subhead':
-    'Connect Claude Code, Codex, Hermes or any MCP client to the Relay MCP server and it can draft, check platform limits and schedule posts. Not using an agent? The web app, a REST API, a CLI and signed webhooks do the same work.',
+    'Connect Claude Code, Codex, Hermes or any MCP client to the Post Array MCP server and it can draft, check platform limits and schedule posts. Not using an agent? The web app, a REST API, a CLI and signed webhooks do the same work.',
   'web.home.v2.hero.agentsCta': 'See what an agent can do',
 
   'web.home.v2.agents.title': 'Your agent gets tools, not a text box',
@@ -265,10 +268,10 @@ export const webMarketingMessages = {
   'web.home.v2.agents.connect.title': 'Connecting is one config block',
   'web.home.v2.agents.connect.step.credential.title': 'Point the client at the endpoint',
   'web.home.v2.agents.connect.step.credential.body':
-    'Create a credential in Relay, then paste the workspace MCP endpoint into your client. The credential is read from an environment variable rather than written into the file, because a config committed to a repository is the most common way one leaks.',
+    'Create a credential in Post Array, then paste the workspace MCP endpoint into your client. The credential is read from an environment variable rather than written into the file, because a config committed to a repository is the most common way one leaks.',
   'web.home.v2.agents.connect.step.authorize.title': 'The client authorizes over OAuth',
   'web.home.v2.agents.connect.step.authorize.body':
-    'Relay compares the token audience against this server as an exact string, never a prefix, and re-verifies the grant on every call. A revoked grant stops working in the middle of a long lived agent session.',
+    'Post Array compares the token audience against this server as an exact string, never a prefix, and re-verifies the grant on every call. A revoked grant stops working in the middle of a long lived agent session.',
   'web.home.v2.agents.connect.step.work.title': 'The agent reads your accounts, then works',
   'web.home.v2.agents.connect.step.work.body':
     'It lists the accounts you connected, reads the live platform limits for each one, and drafts against those rather than against a guess. Account ids are resolved on the server, so a raw handle is never accepted.',
@@ -286,13 +289,13 @@ export const webMarketingMessages = {
     'Nothing changes. Each one answers with a bounded page and a link, so a calendar of ten thousand entries comes back as ten and a cursor instead of filling the context window.',
   'web.home.v2.agents.tier.reversible.label': 'Reversible',
   'web.home.v2.agents.tier.reversible.rule':
-    'Changes something inside Relay and publishes nothing. A draft sits in the workspace until a person, or a grant you gave for scheduling, moves it forward.',
+    'Changes something inside Post Array and publishes nothing. A draft sits in the workspace until a person, or a grant you gave for scheduling, moves it forward.',
   'web.home.v2.agents.tier.consequential.label': 'Consequential',
   'web.home.v2.agents.tier.consequential.rule':
     'Reaches a platform. Each one requires an idempotency key, rejected rather than defaulted, so an agent retrying in a loop cannot post the same thing twice.',
   'web.home.v2.agents.confirm.title': 'Publishing right now needs a person',
   'web.home.v2.agents.confirm.body':
-    'Asking an agent to publish immediately does not publish. Relay mints a pending confirmation bound to the workspace, the grant, the post and a fingerprint of the exact accounts, and hands back a link on the Relay domain. You open it in your own session, see what will go out and where, and approve. Change the post afterwards and the fingerprint changes with it, which voids the approval.',
+    'Asking an agent to publish immediately does not publish. Post Array mints a pending confirmation bound to the workspace, the grant, the post and a fingerprint of the exact accounts, and hands back a link on the Post Array domain. You open it in your own session, see what will go out and where, and approve. Change the post afterwards and the fingerprint changes with it, which voids the approval.',
   'web.home.v2.agents.docsCta': 'Read the agent documentation',
 
   /*
@@ -375,7 +378,7 @@ export const webMarketingMessages = {
 
   'web.integrations.title': 'Platforms',
   'web.integrations.lede':
-    'Relay connects through official platform APIs. Each connector has a named owner, a recorded policy URL and a review date. A connector is not listed as supported until it passes the connector definition of done.',
+    'Post Array connects through official platform APIs. Each connector has a named owner, a recorded policy URL and a review date. A connector is not listed as supported until it passes the connector definition of done.',
   'web.integrations.reviewNotice.title':
     'No connector is described as official before the platform approves it',
   'web.integrations.reviewNotice.body':
@@ -403,7 +406,7 @@ export const webMarketingMessages = {
 
   'web.creators.title': 'For creators',
   'web.creators.lede':
-    'You publish the same idea in several formats, sometimes in more than one language, and you are the whole team. Relay keeps the text variants, media selection and platform checks together.',
+    'You publish the same idea in several formats, sometimes in more than one language, and you are the whole team. Post Array keeps the text variants, media selection and platform checks together.',
   'web.creators.job.adapt.title': 'Write it once, ship five native versions',
   'web.creators.job.adapt.body':
     'The master version carries the idea. Each account gets its own length, media selection, settings and tone, and you can see the variants side by side before you commit.',
@@ -412,13 +415,13 @@ export const webMarketingMessages = {
     'Transcreation keeps the intent rather than the words, uses your project glossary, and marks whether a native reviewer has read it. Nothing publishes in a language you cannot vouch for unless you say so.',
   'web.creators.job.rights.title': 'Keep your rights record with the file',
   'web.creators.job.rights.body':
-    'Media carries where it came from, who holds the rights and whether it was created with a generative tool. Platforms increasingly ask. Relay stores your answer with the asset instead of asking you again.',
+    'Media carries where it came from, who holds the rights and whether it was created with a generative tool. Platforms increasingly ask. Post Array stores your answer with the asset instead of asking you again.',
   'web.creators.job.cost.title': 'Know the cost before you post',
   'web.creators.job.cost.body':
-    'X charges per operation and charges more for a post containing a URL. Relay estimates that before you confirm, so a link heavy week is a decision rather than an invoice surprise.',
+    'X charges per operation and charges more for a post containing a URL. Post Array estimates that before you confirm, so a link heavy week is a decision rather than an invoice surprise.',
   'web.creators.notFor.title': 'What this is not',
   'web.creators.notFor.body':
-    'Relay does not generate images or video, does not run engagement automation, and does not predict how a post will perform. If those are the tools you want, other products do them and we would rather you know now.',
+    'Post Array does not generate images or video, does not run engagement automation, and does not predict how a post will perform. If those are the tools you want, other products do them and we would rather you know now.',
 
   'web.agencies.title': 'For agencies',
   'web.agencies.lede':
@@ -441,7 +444,7 @@ export const webMarketingMessages = {
 
   'web.developers.title': 'For developers',
   'web.developers.lede':
-    'Publishing is the part of a workflow where a mistake is public and permanent. Relay gives you one backend, typed errors, idempotency on every write and an approval model that an agent cannot talk its way around.',
+    'Publishing is the part of a workflow where a mistake is public and permanent. Post Array gives you one backend, typed errors, idempotency on every write and an approval model that an agent cannot talk its way around.',
   'web.developers.surface.api.title': 'REST API',
   'web.developers.surface.api.body':
     'Scoped API keys, an idempotency key required on every write, cursor pagination, and a typed error envelope carrying a stable code, a message key and sanitized details. No provider payload is ever reflected back to you raw.',
@@ -463,7 +466,7 @@ export const webMarketingMessages = {
     'Revoke an API key to stop future calls. Pause a social connection to stop new work for that account. A workspace-wide kill switch is not built yet.',
   'web.developers.openSource.title': 'Open pieces',
   'web.developers.openSource.body':
-    'The connector contract, the CLI, schema examples, MCP tool definitions and the provider simulator are the parts you need to build against Relay without a sandbox account. Where a repository is not published yet, this page says so rather than linking to nothing.',
+    'The connector contract, the CLI, schema examples, MCP tool definitions and the provider simulator are the parts you need to build against Post Array without a sandbox account. Where a repository is not published yet, this page says so rather than linking to nothing.',
 
   /* ---------------------------------------------------------------------- */
   /* Pricing                                                                 */
@@ -476,7 +479,7 @@ export const webMarketingMessages = {
   // prose is a price that survives a reprice and starts lying: this sentence
   // used to say "$29 a month or $300 a year" and was doing exactly that.
   'web.pricing.lede':
-    'There are no feature tiers. Every feature is included at every price, including the MCP server an agent connects to, and the seven day free trial starts without a card.',
+    'There are no feature tiers. Every feature is included at every price, including the MCP server an agent connects to, and starting is free with no card.',
   'web.pricing.intervalHeading': 'Choose how you pay',
   'web.pricing.monthlyLabel': 'Billed monthly',
   'web.pricing.annualLabel': 'Billed annually',
@@ -488,9 +491,9 @@ export const webMarketingMessages = {
   // `BASE_TIER_PRESENTATION.annualFraming` in packages/billing/src/products.ts.
   'web.pricing.annualFraming': 'Save $50 a year. That is 2 months free.',
   'web.pricing.prelaunch.primaryNote':
-    'Your seven day trial starts today. No card is collected to begin it, and you choose monthly or annual when it ends.',
+    'Signing up is free. No card is collected: connect your accounts, schedule freely, and publish your first posts on us. Choose monthly or annual when you are ready for more.',
   'web.pricing.prelaunch.secondaryNote':
-    'Cancel at any time from Settings during the trial and you are charged nothing. Connector availability is shown account by account as each platform completes its review.',
+    'Nothing is charged until you choose a plan. Connector availability is shown account by account as each platform completes its review.',
   'web.pricing.perMonthNote':
     'Prices are in US dollars. Taxes and merchant terms are shown at checkout before you confirm.',
 
@@ -502,15 +505,15 @@ export const webMarketingMessages = {
   'web.pricing.beside.fairUse':
     'Unlimited drafts, scheduled posts and stored receipts under a published fair use and anti spam policy. Those controls exist to protect your connected accounts and they apply identically to every subscriber.',
   'web.pricing.beside.metered':
-    'X charges per API operation and charges more for a post that contains a URL. Relay passes that through at cost, estimates it before you confirm the action, and shows it in your usage. Other platform fees are passed through only when they are disclosed before the action.',
+    'X charges per API operation and charges more for a post that contains a URL. Post Array passes that through at cost, estimates it before you confirm the action, and shows it in your usage. Other platform fees are passed through only when they are disclosed before the action.',
   'web.pricing.beside.noMedia':
-    'AI image generation and AI video generation are not included and are not sold. There are no media credits, because Relay does not generate media.',
+    'AI image generation and AI video generation are not included and are not sold. There are no media credits, because Post Array does not generate media.',
   'web.pricing.beside.trial':
-    'The trial starts today and runs for seven days with every shipped feature. Beginning it takes no card. Polar shows the exact first charge amount and date before you confirm a subscription.',
+    'The free plan is a handful of published posts, not a countdown. Connecting accounts, composing and scheduling are free and unmetered; a credit is spent only when a post actually goes out. Polar shows the exact charge amount and date before you confirm a subscription.',
   'web.pricing.beside.conversion':
-    'An uncanceled trial converts on day seven to the interval you chose. Polar emails a reminder three days before that happens.',
+    'When the free posts are used up, the next publish asks you to choose a plan. Nothing converts by itself and nothing is charged without a checkout you confirm.',
   'web.pricing.beside.cancel':
-    'Cancel from Settings without contacting support. Cancel during the trial and no charge is attempted.',
+    'Cancel from Settings without contacting support. On the free plan there is nothing to cancel and no charge is ever attempted.',
   'web.pricing.beside.data':
     'Post text, receipts and audit history remain under the data policy. Uploaded files are permanently deleted 30 days after upload. Workspace export is available as structured JSON; CSV and media archives are not available yet.',
 
@@ -535,10 +538,10 @@ export const webMarketingMessages = {
     'Not today. Whether there will be a self hosted edition, and under which licence, is an open decision. We will publish the answer rather than imply one.',
   'web.pricing.faq.xCost.q': 'How much will X actually cost me',
   'web.pricing.faq.xCost.a':
-    'It depends on how many posts you publish and how many of them contain a URL, because X prices those differently. Relay estimates each action before you confirm it and totals it in your usage view. We do not mark it up.',
-  'web.pricing.faq.trialAbuse.q': 'Can I start a second trial',
+    'It depends on how many posts you publish and how many of them contain a URL, because X prices those differently. Post Array estimates each action before you confirm it and totals it in your usage view. We do not mark it up.',
+  'web.pricing.faq.trialAbuse.q': 'Can I get more free posts',
   'web.pricing.faq.trialAbuse.a':
-    'Repeat trials are limited by Polar. If you have a legitimate reason, contact support and a person will look at it.',
+    'Yes. Refer someone to Post Array, or tell people about it publicly, and contact support: a person adds posts to your workspace by hand. Creating workspaces to farm the signup grant is noticed and closed.',
 
   /*
    * Pricing v2 (WP-2, loud system). Additive only: every key above this
@@ -558,7 +561,7 @@ export const webMarketingMessages = {
   // starts on the day checkout opens, not today"). It contradicted the note
   // beside the button on the same page, so it now tells the one story.
   'web.pricing.v2.closing.body':
-    'Signing up starts the seven day trial today and collects no card. Which connectors are available is shown for your account, platform by platform, as each review completes.',
+    'Signing up is free. No card is collected, and your first published posts are included. Which connectors are available is shown for your account, platform by platform, as each review completes.',
 
   /* ---------------------------------------------------------------------- */
   /* Resources index                                                         */
@@ -594,7 +597,7 @@ export const webMarketingMessages = {
 
   'web.status.title': 'Status',
   'web.status.lede':
-    'The state of every Relay surface and every connector. Connector state covers our adapter and the platform API it depends on.',
+    'The state of every Post Array surface and every connector. Connector state covers our adapter and the platform API it depends on.',
   'web.status.updated': 'Statuses are set by hand. Last updated {time}.',
   'web.status.surfaces.title': 'Surfaces',
   'web.status.connectors.title': 'Connectors',
@@ -634,7 +637,7 @@ export const webMarketingMessages = {
   'web.changelog.kind.security': 'Security',
   'web.changelog.empty': 'Nothing has shipped publicly yet',
   'web.changelog.emptyBody':
-    'Relay is in build. The first entry here is the first thing a customer can use, not a milestone about ourselves.',
+    'Post Array is in build. The first entry here is the first thing a customer can use, not a milestone about ourselves.',
 
   /* ---------------------------------------------------------------------- */
   /* Docs shell                                                              */
@@ -739,7 +742,7 @@ export const webMarketingMessages = {
 
   'web.toolRadar.title': 'Creative tool radar',
   'web.toolRadar.lede':
-    'Relay does not generate images or video. It does help you decide which specialist tool to use and bring the finished asset in with its rights record intact.',
+    'Post Array does not generate images or video. It does help you decide which specialist tool to use and bring the finished asset in with its rights record intact.',
   'web.toolRadar.record.title': 'What every record has to carry',
   'web.toolRadar.record.url': 'The official URL and the organization that owns the product.',
   'web.toolRadar.record.useCase':
@@ -769,7 +772,7 @@ export const webMarketingMessages = {
   'web.opportunities.rules.curated':
     'Every entry is a reviewed record with an official URL, the current submission rules and a verification date. Nothing is discovered by a model and presented as verified.',
   'web.opportunities.rules.noAutomation':
-    'Relay never submits a form, scrapes a contact, sends bulk email or posts to a community for you. You do the submission.',
+    'Post Array never submits a form, scrapes a contact, sends bulk email or posts to a community for you. You do the submission.',
   'web.opportunities.rules.noGuarantee':
     'A listing is not a ranking promise and a link is not a growth strategy. We show fit, audience, effort, cost and disclosure requirements so you can decide whether it is worth your afternoon.',
   'web.opportunities.rules.stale':
@@ -785,18 +788,18 @@ export const webMarketingMessages = {
 
   'web.legal.title': 'Legal and policies',
   'web.legal.lede':
-    'The documents that govern using Relay. Where the wording has to be drafted by a lawyer for a specific company and jurisdiction, the page says so instead of pretending.',
+    'The documents that govern using Post Array. Where the wording has to be drafted by a lawyer for a specific company and jurisdiction, the page says so instead of pretending.',
   'web.legal.counselPending.title': 'Pending review by counsel before launch',
   'web.legal.counselPending.body':
-    'The substance on this page reflects how the product actually behaves and is accurate today. The binding legal wording, the governing jurisdiction and the liability terms are being drafted with qualified counsel and will replace this text before Relay is generally available. This page is not legal advice and it is not a contract yet.',
+    'The substance on this page reflects how the product actually behaves and is accurate today. The binding legal wording, the governing jurisdiction and the liability terms are being drafted with qualified counsel and will replace this text before Post Array is generally available. This page is not legal advice and it is not a contract yet.',
   'web.legal.contact.title': 'Contact',
-  'web.legal.contact.privacy': 'privacy@relay.example',
-  'web.legal.contact.legal': 'legal@relay.example',
-  'web.legal.contact.security': 'security@relay.example',
-  'web.legal.contact.abuse': 'abuse@relay.example',
-  'web.legal.contact.copyright': 'copyright@relay.example',
-  'web.legal.contact.affiliates': 'affiliates@relay.example',
-  'web.legal.contact.accessibility': 'accessibility@relay.example',
+  'web.legal.contact.privacy': 'privacy@postarray.com',
+  'web.legal.contact.legal': 'legal@postarray.com',
+  'web.legal.contact.security': 'security@postarray.com',
+  'web.legal.contact.abuse': 'abuse@postarray.com',
+  'web.legal.contact.copyright': 'copyright@postarray.com',
+  'web.legal.contact.affiliates': 'affiliates@postarray.com',
+  'web.legal.contact.accessibility': 'accessibility@postarray.com',
   'web.legal.contact.prelaunch':
     'Contact channels will be published here before general availability. No legal or support inbox is operating during this preview.',
   'web.legal.entity.pending':
@@ -806,22 +809,22 @@ export const webMarketingMessages = {
   /* Terms ---------------------------------------------------------------- */
   'web.legal.terms.title': 'Terms of Service',
   'web.legal.terms.summary':
-    'What Relay agrees to provide, what you agree to do, and what happens when either side stops.',
+    'What Post Array agrees to provide, what you agree to do, and what happens when either side stops.',
   'web.legal.terms.service.title': 'What the service is',
   'web.legal.terms.service.body':
-    'Relay is a hosted service for creating, approving, scheduling and publishing content to social platforms through those platforms official APIs, together with the receipts, analytics and audit records that result. It is not a social platform and it does not control what any platform does with a post once it is published.',
+    'Post Array is a hosted service for creating, approving, scheduling and publishing content to social platforms through those platforms official APIs, together with the receipts, analytics and audit records that result. It is not a social platform and it does not control what any platform does with a post once it is published.',
   'web.legal.terms.content.title': 'Your content stays yours',
   'web.legal.terms.content.body':
-    'You keep ownership of everything you upload, write or import. You grant Relay only the licence needed to store it, process it, adapt it into the variants you ask for, and transmit it to the accounts you selected. That licence ends when you delete the content, apart from records we are required to keep.',
+    'You keep ownership of everything you upload, write or import. You grant Post Array only the licence needed to store it, process it, adapt it into the variants you ask for, and transmit it to the accounts you selected. That licence ends when you delete the content, apart from records we are required to keep.',
   'web.legal.terms.warranties.title': 'What you are confirming when you publish',
   'web.legal.terms.warranties.body':
     'That you are authorized to publish to the accounts you connected, that you hold the rights to the content and the media, that you have the consent required for any person appearing in it, and that publishing it does not breach the destination platform rules.',
   'web.legal.terms.platforms.title': 'Platform dependence',
   'web.legal.terms.platforms.body':
-    'Connectors depend on third party APIs that those companies control. A platform can change its API, restrict a permission, revoke an application or close access with little notice. Relay cannot guarantee that any connector remains available, and a connector becoming unavailable is not a failure of this agreement. We will tell you on the status page and the changelog when it happens.',
+    'Connectors depend on third party APIs that those companies control. A platform can change its API, restrict a permission, revoke an application or close access with little notice. Post Array cannot guarantee that any connector remains available, and a connector becoming unavailable is not a failure of this agreement. We will tell you on the status page and the changelog when it happens.',
   'web.legal.terms.ai.title': 'AI output',
   'web.legal.terms.ai.body':
-    'Text assistance, translation, transcreation and planning features produce suggestions. They can be wrong, out of date or unsuitable. You are responsible for reviewing anything you publish. Relay does not generate images or video.',
+    'Text assistance, translation, transcreation and planning features produce suggestions. They can be wrong, out of date or unsuitable. You are responsible for reviewing anything you publish. Post Array does not generate images or video.',
   'web.legal.terms.billing.title': 'Payment',
   'web.legal.terms.billing.body':
     'Polar is the merchant of record. Polar handles checkout, taxes, invoices and refunds. Subscriptions renew automatically at the interval you chose until you cancel. Platform usage that a provider charges per operation is billed separately at cost and is disclosed before the action that incurs it.',
@@ -841,7 +844,7 @@ export const webMarketingMessages = {
   /* Privacy -------------------------------------------------------------- */
   'web.legal.privacy.title': 'Privacy Policy',
   'web.legal.privacy.summary':
-    'What Relay collects, why, who processes it, how long it is kept, and how to get it out or have it deleted.',
+    'What Post Array collects, why, who processes it, how long it is kept, and how to get it out or have it deleted.',
   'web.legal.privacy.collect.title': 'What we hold',
   'web.legal.privacy.collect.account':
     'Account and profile: your name, email, workspace membership and role.',
@@ -852,9 +855,9 @@ export const webMarketingMessages = {
   'web.legal.privacy.collect.schedules':
     'Schedules, approval decisions, publication receipts and audit events.',
   'web.legal.privacy.collect.analytics':
-    'Metrics retrieved from platforms about posts you published through Relay.',
+    'Metrics retrieved from platforms about posts you published through Post Array.',
   'web.legal.privacy.collect.billing':
-    'Billing references held by Polar. Relay does not store your card details.',
+    'Billing references held by Polar. Post Array does not store your card details.',
   'web.legal.privacy.collect.technical':
     'Device and log data needed to operate and secure the service, redacted by default.',
   'web.legal.privacy.collect.agent':
@@ -887,7 +890,7 @@ export const webMarketingMessages = {
     'Consent preferences are versioned and auditable, so you can see what you agreed to and when.',
   'web.legal.privacy.deletion.title': 'Deleting data held at a platform',
   'web.legal.privacy.deletion.body':
-    'Disconnecting an account in Relay revokes the token at the platform and deletes the credential here. Content already published on a platform is governed by that platform and has to be deleted there. Where a platform requires deletion of derived data within a fixed period after revocation, we meet that period. For Google and YouTube data that period is currently 30 days.',
+    'Disconnecting an account in Post Array revokes the token at the platform and deletes the credential here. Content already published on a platform is governed by that platform and has to be deleted there. Where a platform requires deletion of derived data within a fixed period after revocation, we meet that period. For Google and YouTube data that period is currently 30 days.',
   'web.legal.privacy.transfers.title': 'International transfers',
   'web.legal.privacy.transfers.body':
     'Hosting regions and the transfer mechanism are being finalized with counsel and will be named here, together with the safeguards that apply, before launch.',
@@ -895,7 +898,7 @@ export const webMarketingMessages = {
   /* Acceptable use ------------------------------------------------------- */
   'web.legal.aup.title': 'Acceptable Use Policy',
   'web.legal.aup.summary':
-    'Relay helps you publish content you are authorized to publish. It is not built to help anyone evade a platform limit, fake an endorsement or send unwanted messages.',
+    'Post Array helps you publish content you are authorized to publish. It is not built to help anyone evade a platform limit, fake an endorsement or send unwanted messages.',
   'web.legal.aup.prohibited.title': 'Not permitted',
   'web.legal.aup.prohibited.spam':
     'Spam, unsolicited bulk messages, replies or mentions, engagement bait, and repeated unwanted content.',
@@ -937,12 +940,12 @@ export const webMarketingMessages = {
     'Where we can, we block before the external action rather than after it, and we record the reason, the rule version and the appeal path. Repeated or serious behaviour goes to a trust review by a person. You will be told what happened, without a level of detail that would help someone evade the check. Every decision can be appealed and reversed.',
   'web.legal.aup.report.title': 'Reporting abuse',
   'web.legal.aup.report.body':
-    'If content published through Relay breaks these rules, tell us. Include the post URL and what is wrong with it.',
+    'If content published through Post Array breaks these rules, tell us. Include the post URL and what is wrong with it.',
 
   /* AI policy ------------------------------------------------------------ */
   'web.legal.ai.title': 'AI Use and Generated Content Policy',
   'web.legal.ai.summary':
-    'Which features use a model, what is sent, what is kept, what you stay responsible for, and why Relay does not generate media.',
+    'Which features use a model, what is sent, what is kept, what you stay responsible for, and why Post Array does not generate media.',
   'web.legal.ai.features.title': 'Where a model is used',
   'web.legal.ai.features.text':
     'Text assistance in the composer: rewriting, shortening and adapting for a platform.',
@@ -964,7 +967,7 @@ export const webMarketingMessages = {
     'A model can be confidently wrong. You are responsible for checking facts, claims, names, numbers and tone before you publish, and for any disclosure a platform requires. No AI feature guarantees reach, engagement or ranking, and none is offered as one.',
   'web.legal.ai.disclosure.title': 'Disclosure and provenance',
   'web.legal.ai.disclosure.body':
-    'Relay records whether content was AI assisted in its internal history, reminds you where a platform requires an altered or synthetic media disclosure, and stores the provenance you provide with an imported asset. Where a platform offers a disclosure field, Relay sets it from your declaration rather than guessing.',
+    'Post Array records whether content was AI assisted in its internal history, reminds you where a platform requires an altered or synthetic media disclosure, and stores the provenance you provide with an imported asset. Where a platform offers a disclosure field, Post Array sets it from your declaration rather than guessing.',
   'web.legal.ai.blocks.title': 'What the AI features refuse',
   'web.legal.ai.blocks.impersonation': 'Impersonating a real person or a public figure.',
   'web.legal.ai.blocks.ncii': 'Non consensual intimate imagery, in any form.',
@@ -974,7 +977,7 @@ export const webMarketingMessages = {
     'Presenting a model generated URL as a verified opportunity. Opportunity and tool recommendations come only from the curated catalog.',
   'web.legal.ai.noMedia.title': 'Why there is no image or video generation',
   'web.legal.ai.noMedia.body':
-    'Relay has not collected the verified visual system, product detail, asset rights, likeness permissions and campaign context that brand ready output would require, and in app generation would need its own consent, provenance, safety evaluation and cost controls. Media model capability, licensing, pricing and retention also change quickly, which is why our tool recommendations carry dates. You keep creative control by choosing a specialist tool and importing the approved asset. Relay handles adaptation, approval, publishing and measurement.',
+    'Post Array has not collected the verified visual system, product detail, asset rights, likeness permissions and campaign context that brand ready output would require, and in app generation would need its own consent, provenance, safety evaluation and cost controls. Media model capability, licensing, pricing and retention also change quickly, which is why our tool recommendations carry dates. You keep creative control by choosing a specialist tool and importing the approved asset. Post Array handles adaptation, approval, publishing and measurement.',
   'web.legal.ai.noMedia.caveat':
     'A tool appearing in our radar is not a statement that its output is safe or rights cleared. Its documented caveats are shown with it and your normal rights declaration still applies.',
 
@@ -1011,7 +1014,7 @@ export const webMarketingMessages = {
   'web.legal.subprocessors.column.region': 'Processing region',
   'web.legal.subprocessors.platforms.title': 'Social platforms are not subprocessors',
   'web.legal.subprocessors.platforms.body':
-    'When you publish, Relay transmits your content to the platform account you selected, at your instruction. Those platforms are independent controllers of what they receive and their own terms govern it.',
+    'When you publish, Post Array transmits your content to the platform account you selected, at your instruction. Those platforms are independent controllers of what they receive and their own terms govern it.',
 
   /* Refunds -------------------------------------------------------------- */
   'web.legal.refunds.title': 'Refund and Cancellation Policy',
@@ -1019,7 +1022,7 @@ export const webMarketingMessages = {
     'How to cancel, what happens to your data, and when you get money back.',
   'web.legal.refunds.cancel.title': 'Cancelling',
   'web.legal.refunds.cancel.body':
-    'Cancel from Settings without contacting support. Cancelling during the seven day trial means no charge is attempted and the cancellation screen confirms that in writing. Cancelling after the trial keeps your access until the end of the period you already paid for.',
+    'Cancel from Settings without contacting support. On the free plan no charge is ever attempted, and there is nothing to cancel. Cancelling a paid plan keeps your access until the end of the period you already paid for.',
   'web.legal.refunds.refund.title': 'Refunds',
   'web.legal.refunds.refund.body':
     'If the service did not work as described, contact support and we will refund the affected period. Mandatory consumer withdrawal rights, including the statutory cooling off period where it applies to you, are honoured in full and are not limited by anything on this page. Refunds are issued by Polar, our merchant of record, to the original payment method.',
@@ -1036,10 +1039,10 @@ export const webMarketingMessages = {
   /* DMCA ----------------------------------------------------------------- */
   'web.legal.dmca.title': 'Copyright and Takedown',
   'web.legal.dmca.summary':
-    'How to report content hosted by Relay that infringes your rights, and how to respond if yours was removed.',
+    'How to report content hosted by Post Array that infringes your rights, and how to respond if yours was removed.',
   'web.legal.dmca.scope.title': 'What we can act on',
   'web.legal.dmca.scope.body':
-    'Relay can remove material stored in our systems, such as a media file or a draft. Content already published on a social platform lives on that platform and has to be reported to it, because we cannot delete a post we do not host. We will tell you which of the two applies to your report.',
+    'Post Array can remove material stored in our systems, such as a media file or a draft. Content already published on a social platform lives on that platform and has to be reported to it, because we cannot delete a post we do not host. We will tell you which of the two applies to your report.',
   'web.legal.dmca.notice.title': 'Sending a notice',
   'web.legal.dmca.notice.identify':
     'Identify the copyrighted work and the material you say infringes it, with a URL we can reach.',
@@ -1059,7 +1062,7 @@ export const webMarketingMessages = {
   /* Security ------------------------------------------------------------- */
   'web.legal.security.title': 'Security and Responsible Disclosure',
   'web.legal.security.summary':
-    'How Relay protects the credentials you trust it with, and how to report a problem you find.',
+    'How Post Array protects the credentials you trust it with, and how to report a problem you find.',
   'web.legal.security.tokens.title': 'Social credentials',
   'web.legal.security.tokens.body':
     'Platform tokens are encrypted with envelope encryption under a managed key, rotated, stored apart from content and billing data, and redacted from every log. A token is never sent to a browser, never placed in a model context and never included in an error message.',
@@ -1094,10 +1097,10 @@ export const webMarketingMessages = {
   /* Accessibility -------------------------------------------------------- */
   'web.legal.accessibility.title': 'Accessibility Statement',
   'web.legal.accessibility.summary':
-    'The standard Relay is built to, what we have verified, what we know is not right yet, and how to tell us.',
+    'The standard Post Array is built to, what we have verified, what we know is not right yet, and how to tell us.',
   'web.legal.accessibility.standard.title': 'The standard',
   'web.legal.accessibility.standard.body':
-    'Relay targets WCAG 2.2 level AA across the product and this site. Accessibility is a merge requirement here, not a later ticket, and a screen that fails it does not ship.',
+    'Post Array targets WCAG 2.2 level AA across the product and this site. Accessibility is a merge requirement here, not a later ticket, and a screen that fails it does not ship.',
   'web.legal.accessibility.measures.title': 'What that means in practice',
   'web.legal.accessibility.measures.keyboard':
     'Everything is operable from the keyboard, with a visible focus ring and a logical focus order. There is no drag only interaction anywhere.',
@@ -1138,7 +1141,7 @@ export const webMarketingMessages = {
     'A single call may not silently publish to every connected account. Bulk actions, a new domain, a new account, a sensitive category, a paid endorsement, a privacy change or content altered after approval always escalate for a human decision. Every agent and every workspace has a kill switch.',
   'web.legal.apiTerms.prohibited.title': 'Not permitted through the API',
   'web.legal.apiTerms.prohibited.body':
-    'Reselling access without a written agreement, using Relay as a relay for content you are not authorized to publish, circumventing approval policy, and any use that breaks the Acceptable Use Policy. Programmatic access is subject to the same anti spam controls as the web app.',
+    'Reselling access without a written agreement, using Post Array as a relay for content you are not authorized to publish, circumventing approval policy, and any use that breaks the Acceptable Use Policy. Programmatic access is subject to the same anti spam controls as the web app.',
   'web.legal.apiTerms.changes.title': 'Change policy',
   'web.legal.apiTerms.changes.body':
     'Additive changes ship without notice. Breaking changes get a new version, an announced deprecation window and a migration note on the changelog. Error codes do not change meaning within a version.',
@@ -1164,7 +1167,7 @@ export const webMarketingMessages = {
   'web.legal.affiliate.prohibited.cookieStuffing':
     'Cookie stuffing, forced clicks, self referral and coupon squatting.',
   'web.legal.affiliate.prohibited.claims':
-    'Inventing customer results, fabricating a testimonial, or claiming Relay does something it does not, including anything about AI media generation.',
+    'Inventing customer results, fabricating a testimonial, or claiming Post Array does something it does not, including anything about AI media generation.',
   'web.legal.affiliate.prohibited.trademark':
     'Registering a domain, handle or app listing that uses our name in a way that suggests you are the company.',
 
@@ -1183,40 +1186,40 @@ export const webMarketingMessages = {
 
   'web.marketing.provider.x.accountTypes': 'A personal or business X account you control.',
   'web.marketing.provider.x.restriction':
-    'Automated posting requires the account holder express consent, which Relay records. Duplicate or substantially similar posts across accounts are not permitted, and unsolicited automated replies are not built.',
+    'Automated posting requires the account holder express consent, which Post Array records. Duplicate or substantially similar posts across accounts are not permitted, and unsolicited automated replies are not built.',
   'web.marketing.provider.x.cost':
-    'X charges for each API operation and charges more for a post containing a URL. Relay estimates the cost before you confirm and passes it through without a markup.',
+    'X charges for each API operation and charges more for a post containing a URL. Post Array estimates the cost before you confirm and passes it through without a markup.',
 
   'web.marketing.provider.linkedin.accountTypes':
     'A member profile, or an organization Page where you hold the right role.',
   'web.marketing.provider.linkedin.restriction':
-    'Publishing on behalf of an organization needs an approved Community Management product and a verified business identity. Member post analytics depend on a read permission LinkedIn has closed to new applications, so Relay will not offer it.',
+    'Publishing on behalf of an organization needs an approved Community Management product and a verified business identity. Member post analytics depend on a read permission LinkedIn has closed to new applications, so Post Array will not offer it.',
   'web.marketing.provider.linkedin.cost':
     'No per operation charge. Application and member daily limits apply.',
 
   'web.marketing.provider.instagram.accountTypes':
     'A professional Instagram account, business or creator.',
   'web.marketing.provider.instagram.restriction':
-    'Instagram content publishing is available for professional accounts only. A consumer account cannot be published to by any application, including this one. Publishing uses the official container and publish sequence, and Relay confirms the final state rather than reporting the upload as success.',
+    'Instagram content publishing is available for professional accounts only. A consumer account cannot be published to by any application, including this one. Publishing uses the official container and publish sequence, and Post Array confirms the final state rather than reporting the upload as success.',
   'web.marketing.provider.instagram.cost':
     'No per operation charge. Meta app review and business verification are required.',
 
   'web.marketing.provider.facebook.accountTypes': 'A Facebook Page you administer.',
   'web.marketing.provider.facebook.restriction':
-    'The publishing target is a Page. Automating a personal profile is not offered by the API and Relay does not attempt it.',
+    'The publishing target is a Page. Automating a personal profile is not offered by the API and Post Array does not attempt it.',
   'web.marketing.provider.facebook.cost':
     'No per operation charge. Meta app review and business verification are required.',
 
   'web.marketing.provider.youtube.accountTypes':
     'A YouTube channel connected through your Google account.',
   'web.marketing.provider.youtube.restriction':
-    'A project that has not passed the Google API compliance audit can upload only as private. Relay will not describe public uploading as available until that audit passes, and the connection screen states which state your uploads will land in.',
+    'A project that has not passed the Google API compliance audit can upload only as private. Post Array will not describe public uploading as available until that audit passes, and the connection screen states which state your uploads will land in.',
   'web.marketing.provider.youtube.cost':
     'No per operation charge. A daily quota applies and cannot be shared across projects.',
 
   'web.marketing.provider.tiktok.accountTypes': 'A TikTok account with Direct Post authorization.',
   'web.marketing.provider.tiktok.restriction':
-    'Until the Content Posting API audit passes, posts are private and per account caps apply. At publish time Relay fetches the current creator information, shows the available privacy options without preselecting one, and asks for the comment, duet and stitch settings and the commercial content declaration.',
+    'Until the Content Posting API audit passes, posts are private and per account caps apply. At publish time Post Array fetches the current creator information, shows the available privacy options without preselecting one, and asks for the comment, duet and stitch settings and the commercial content declaration.',
   'web.marketing.provider.tiktok.cost':
     'No per operation charge. Unaudited mode applies daily posting caps.',
 
@@ -1309,7 +1312,7 @@ export const webMarketingMessages = {
     '{supported, plural, one {# capability supported} other {# capabilities supported}}, {requiresReview, plural, one {# waiting on a platform review} other {# waiting on a platform review}}, {notImplemented, plural, one {# not built yet} other {# not built yet}}, {unsupported, plural, one {# the platform does not offer} other {# the platform does not offer}}.',
   'web.capabilities.buildState.title': 'No connector is carrying customer traffic yet',
   'web.capabilities.buildState.body':
-    'Relay is in build. This table reflects the connector definitions as they stand today, which is why most cells read as not built yet. A cell only becomes supported after that connector passes its definition of done, including contract tests against the recorded platform fixtures. The cells that say a platform does not offer something, or gates it behind a review, are facts about the platform and are already final.',
+    'Post Array is in build. This table reflects the connector definitions as they stand today, which is why most cells read as not built yet. A cell only becomes supported after that connector passes its definition of done, including contract tests against the recorded platform fixtures. The cells that say a platform does not offer something, or gates it behind a review, are facts about the platform and are already final.',
   'web.capabilities.note.instagramProfessional':
     'Professional accounts only. A consumer account cannot be published to by any application.',
   'web.capabilities.note.facebookPagesOnly':
@@ -1330,7 +1333,7 @@ export const webMarketingMessages = {
   'web.capabilities.note.xConsent':
     'Requires recorded consent from the account holder for automated posting.',
   'web.capabilities.note.xDisclosure':
-    'The platform provides a made with AI field, which Relay sets from your declaration.',
+    'The platform provides a made with AI field, which Post Array sets from your declaration.',
   'web.capabilities.note.noDestinations':
     'This platform has no destination concept such as a Page, board or community.',
   'web.capabilities.note.noThreads': 'This platform has no native multi post sequence.',
@@ -1342,7 +1345,7 @@ export const webMarketingMessages = {
     'This platform does not offer a per post privacy option through its API.',
   'web.capabilities.note.noThumbnail':
     'This platform does not accept a custom thumbnail through its API.',
-  'web.capabilities.note.inBuild': 'The platform offers this. Relay has not shipped it yet.',
+  'web.capabilities.note.inBuild': 'The platform offers this. Post Array has not shipped it yet.',
   'web.capabilities.note.noCarousel': 'The platform does not offer a swipeable carousel product.',
   'web.capabilities.note.noVideo': 'This post type accepts text or a single image, never video.',
   'web.capabilities.note.noDisclosure':
@@ -1374,7 +1377,7 @@ export const webMarketingMessages = {
   'web.status.surface.analytics': 'Analytics collection',
   'web.status.surface.links': 'Short link redirects',
   'web.status.surface.checkout': 'Checkout and billing',
-  'web.status.preLaunch.title': 'Relay is not generally available yet',
+  'web.status.preLaunch.title': 'Post Array is not generally available yet',
   'web.status.preLaunch.body':
     'This page is live before the product is, so that the reporting habit exists from the first customer rather than being added after the first outage. Surfaces still in build are marked as such instead of being shown as healthy.',
 
@@ -1447,7 +1450,7 @@ export const webMarketingMessages = {
   'web.legal.subprocessors.hosting.data': 'Request metadata and redacted logs.',
   'web.legal.subprocessors.email.label': 'Transactional email delivery',
   'web.legal.subprocessors.email.purpose':
-    'Sign in links, approval requests, publish result notifications and trial reminders.',
+    'Sign in links, approval requests and publish result notifications.',
   'web.legal.subprocessors.email.data': 'Name, email address and the message content.',
   'web.legal.subprocessors.monitoring.label': 'Error and performance monitoring',
   'web.legal.subprocessors.monitoring.purpose':
@@ -1499,10 +1502,10 @@ export const webMarketingMessages = {
   'web.footer.legal': 'Legal',
   'web.footer.developers': 'Developers',
   'web.footer.statement':
-    'Relay publishes through official platform APIs only. Connector availability depends on approvals that the platforms control, and every capability claim on this site is dated and sourced.',
+    'Post Array publishes through official platform APIs only. Connector availability depends on approvals that the platforms control, and every capability claim on this site is dated and sourced.',
   'web.footer.noAffiliation':
     'Platform names and marks belong to their owners. Their use here identifies a connector and does not imply endorsement or partnership.',
-  'web.footer.copyright': 'Relay {year}',
+  'web.footer.copyright': 'Post Array {year}',
 
   /* ---------------------------------------------------------------------- */
   /* WP-3 (loud system) — remaining marketing pages. Additive only: every    */
@@ -1516,12 +1519,12 @@ export const webMarketingMessages = {
   /**
    * Reused by every WP-3 page whose closing band has no page-specific copy,
    * which is thirteen pages, so it is the sentence most likely to contradict
-   * the pricing page. It carries the same trial story as
-   * `web.cta.trialFootnote`: starts today, no card.
+   * the pricing page. It carries the same free-plan story as
+   * `web.cta.trialFootnote`: free to start, no card, first posts included.
    */
   'web.marketing.v2.closing.title': 'Run it on your own accounts',
   'web.marketing.v2.closing.body':
-    'The seven day trial starts today and takes no card. Connector availability is shown account by account as each platform completes its review.',
+    'Starting is free, takes no card, and includes your first published posts. Connector availability is shown account by account as each platform completes its review.',
 
   // Three, matching `DEMO_ROWS` on the product page. It now sits directly
   // above `EditorialVariantScene`, the section that actually has three rows;
@@ -1576,7 +1579,7 @@ export const webMarketingMessages = {
   'web.pricing.tierGrid.heading': 'Three sizes of the same product',
   'web.pricing.tierGrid.startHere': 'Start here',
   'web.pricing.tierGrid.baseDelta':
-    'Every feature Relay has, on {count, plural, one {# active project} other {# active projects}}.',
+    'Every feature Post Array has, on {count, plural, one {# active project} other {# active projects}}.',
   'web.pricing.tierGrid.stepDelta':
     'Everything in {tier}, plus {added, plural, one {# more active project} other {# more active projects}}.',
   'web.pricing.tierGrid.notPurchasable':
@@ -1642,7 +1645,7 @@ export const webMarketingMessages = {
 
   'web.pricing.checklist.title': 'Included at both prices',
   'web.pricing.plan.trialNote':
-    'The seven day trial starts the day you sign up and takes no card. You choose monthly or yearly when it ends, and Polar shows the exact amount and date before you confirm.',
+    'Start free with no card: connect your accounts, schedule as much as you like, and your first published posts are included. When you choose a plan, Polar shows the exact amount and date before you confirm.',
   'web.pricing.plan.taxNote':
     'Prices are in US dollars. Taxes and merchant terms are shown at checkout before you confirm.',
   'web.pricing.plan.capacityTitle': 'More capacity than one plan covers',

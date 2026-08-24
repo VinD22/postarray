@@ -8,8 +8,8 @@
  */
 export const webShellMessages = {
   /* -- Document and shell chrome ----------------------------------------- */
-  'shell.appName': 'Relay',
-  'shell.documentTitle': '{page} · Relay',
+  'shell.appName': 'Post Array',
+  'shell.documentTitle': '{page} · Post Array',
   'shell.tagline': 'Un desk editoriale per persone e agenti.',
   'shell.menu.open': 'Apri il menù',
   'shell.menu.title': 'Menù',
@@ -30,7 +30,7 @@ export const webShellMessages = {
   'shell.demo.badge': 'Dati dimostrativi',
   'shell.demo.title': 'Stai guardando i dati demo',
   'shell.demo.body':
-    "L'API Relay non è raggiungibile da questo browser, quindi le schermate vengono riempite con un'area di lavoro di esempio seminata. Niente qui è collegato ad un conto reale e niente può essere pubblicato.",
+    "L'API Post Array non è raggiungibile da questo browser, quindi le schermate vengono riempite con un'area di lavoro di esempio seminata. Niente qui è collegato ad un conto reale e niente può essere pubblicato.",
   'shell.demo.howToConnect':
     "Imposta NEXT_PUBLIC_RELAY_API_URL e riavvia l'app per utilizzare i dati in tempo reale.",
 
@@ -147,7 +147,7 @@ export const webShellMessages = {
   'home.trial.manage': 'Gestisci o annulla',
   'home.error.title': 'Impossibile caricare la casa',
   'home.error.body':
-    "Il tuo spazio di lavoro è intatto. Si tratta di un problema nel raggiungimento dell'API Relay.",
+    "Il tuo spazio di lavoro è intatto. Si tratta di un problema nel raggiungimento dell'API Post Array.",
 
   /* -- Auth: provider consent, alias sign in, honest failure ------------- */
   'auth.aside.title': 'Pubblica tramite API ufficiali e guarda esattamente cosa è successo.',
@@ -159,9 +159,9 @@ export const webShellMessages = {
     "Lo stesso flusso di lavoro dall'app Web, dall'API REST, da MCP, dalla CLI e dai webhook.",
   'auth.provider.title': 'Prima di continuare',
   'auth.provider.google.access':
-    'Google condivide il tuo nome, indirizzo email e immagine del profilo con Relay. Relay non può leggere Gmail, Drive o Calendar.',
+    'Google condivide il tuo nome, indirizzo email e immagine del profilo con Post Array. Post Array non può leggere Gmail, Drive o Calendar.',
   'auth.provider.facebook.access':
-    'Facebook condivide il tuo nome, indirizzo email e immagine del profilo con Relay. Collegare una Pagina su cui pubblicare è un passaggio separato che approverai in seguito.',
+    'Facebook condivide il tuo nome, indirizzo email e immagine del profilo con Post Array. Collegare una Pagina su cui pubblicare è un passaggio separato che approverai in seguito.',
   'auth.provider.note': 'Questo ti fa accedere. Non collega un account su cui pubblicare.',
   'auth.continueWithEmail': "Continua con l'e-mail",
   'auth.method.password': "Parola d'ordine",
@@ -183,9 +183,7 @@ export const webShellMessages = {
   'auth.failure.provider':
     "L'accesso con {provider} non è stato completato. Niente è stato cambiato.",
   'auth.failure.network':
-    'Non siamo riusciti a raggiungere Relay. Controlla la connessione e riprova.',
-  'auth.signUp.trialNote':
-    'Sette giorni interi di prova. È richiesto un metodo di pagamento. $ 0 con scadenza oggi.',
+    'Non siamo riusciti a raggiungere Post Array. Controlla la connessione e riprova.',
   'auth.signUp.emailInUseNote':
     'Se questo indirizzo dispone già di un account, invieremo via email un collegamento di accesso invece di crearne un secondo.',
   'auth.legal.readTerms': 'Leggi i Termini',
@@ -219,7 +217,7 @@ export const webShellMessages = {
   'onboarding.workspace.timeZoneDetected': 'Rilevato da questo dispositivo: {timeZone}',
   'onboarding.connect.permissionsTitle': 'Cosa verrà richiesto {provider}',
   'onboarding.connect.permissionsFooter':
-    "Relay non richiede mai un'autorizzazione che non utilizza e puoi disconnetterti in qualsiasi momento.",
+    "Post Array non richiede mai un'autorizzazione che non utilizza e puoi disconnetterti in qualsiasi momento.",
   'onboarding.connect.chooseProvider': 'Scegli una piattaforma',
   'onboarding.connect.opensProvider': 'Continuando si apre {provider} in questa scheda.',
   'onboarding.compose.help':

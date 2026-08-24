@@ -95,6 +95,6 @@ export const statusMessages = {
     'Non verrà pubblicato. La bozza rimane qui in modo da poterla programmare di nuovo.',
   'confirm.publishNow.title': 'Pubblicare adesso?',
   'confirm.publishNow.body':
-    '{count, plural, one {Pubblica immediatamente su # account} many {Pubblica immediatamente su # account} other {Pubblica immediatamente su # account}}. Non può essere richiamato da Relay.',
+    '{count, plural, one {Pubblica immediatamente su # account} many {Pubblica immediatamente su # account} other {Pubblica immediatamente su # account}}. Non può essere richiamato da Post Array.',
   'confirm.typeToConfirm': 'Digitare {word} per confermare.',
 } as const;

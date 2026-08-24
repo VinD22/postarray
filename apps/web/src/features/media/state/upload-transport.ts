@@ -6,9 +6,9 @@
  * The library and the composer both put files into the same place, so they use
  * the same transport rather than each hand-rolling a `fetch`. The bytes go
  * through `sendUpload`, which decides by origin whether the ticket points at
- * Relay's own storage endpoint (session cookie, CSRF token and workspace
+ * Post Array's own storage endpoint (session cookie, CSRF token and workspace
  * header required, because web and api are different origins) or at a remote
- * presigned URL (no cookies, no Relay headers, the signature is the credential).
+ * presigned URL (no cookies, no Post Array headers, the signature is the credential).
  */
 
 import { api, newIdempotencyKey, sendUpload } from '@/lib/api';

@@ -295,7 +295,7 @@ export const webComposerMessages = {
     'Nic nie zginęło. Spróbuj ponownie, a jeśli nadal się nie powiedzie, poniższy odnośnik pomoże zespołowi pomocy znaleźć żądanie.',
   'composerWeb.page.noConnectionsTitle': 'Połącz konto przed tworzeniem',
   'composerWeb.page.noConnectionsBody':
-    'Wersja robocza wymaga co najmniej jednego połączonego konta, aby Relay znał limity, podgląd i ustawienia do wyświetlenia.',
+    'Wersja robocza wymaga co najmniej jednego połączonego konta, aby Post Array znał limity, podgląd i ustawienia do wyświetlenia.',
   'composerWeb.page.noConnectionsExample':
     'Przykład: po połączeniu X i LinkedIn jedna wersja robocza staje się dwiema wersjami natywnymi z własnymi licznikami.',
   'composerWeb.page.permissionTitle': 'Nie możesz tworzyć postów w tym obszarze roboczym',
@@ -376,7 +376,7 @@ export const webComposerMessages = {
   'mediaLib.import.importing': 'Importowanie mediów',
   'mediaLib.import.succeeded': 'Plik jest w Twojej bibliotece',
   'mediaLib.import.scanPending':
-    'Relay zapisał jego źródło. Publikacja czeka na zakończenie kontroli bezpieczeństwa.',
+    'Post Array zapisał jego źródło. Publikacja czeka na zakończenie kontroli bezpieczeństwa.',
   'mediaLib.import.failed': 'Nie udało się zaimportować pliku',
   'mediaLib.import.failedHelp':
     'Sprawdź, czy link jest publiczny i prowadzi bezpośrednio do obsługiwanego pliku multimedialnego, a potem spróbuj ponownie.',
@@ -387,7 +387,7 @@ export const webComposerMessages = {
   'mediaLib.import.issue.credentials': 'Użyj linku bez nazwy użytkownika ani hasła.',
   'mediaLib.retention.title': 'Przechowywane pliki są zachowywane przez 30 dni po utworzeniu posta',
   'mediaLib.retention.body':
-    'Gdy plik zostanie dołączony do posta, trwale usuwamy go z przechowywania Relay 30 dni po utworzeniu tego posta. Pliki oczekujące na dołączenie używają daty przesłania jako rezerwowej daty czyszczenia. Tekst posta, potwierdzenia publikacji i historia audytu pozostają dostępne dłużej. Opublikowany post na platformie społecznościowej nie jest usuwany, gdy jego przechowywany plik wygasa.',
+    'Gdy plik zostanie dołączony do posta, trwale usuwamy go z przechowywania Post Array 30 dni po utworzeniu tego posta. Pliki oczekujące na dołączenie używają daty przesłania jako rezerwowej daty czyszczenia. Tekst posta, potwierdzenia publikacji i historia audytu pozostają dostępne dłużej. Opublikowany post na platformie społecznościowej nie jest usuwany, gdy jego przechowywany plik wygasa.',
   'mediaLib.retention.limits':
     'Obrazy, dźwięk i pliki PDF mogą mieć do {imageSize}. Filmy mogą mieć do {videoSize}.',
   'mediaLib.retention.expiresLabel': 'Data usunięcia pliku',
@@ -499,7 +499,7 @@ export const webComposerMessages = {
   'mediaLib.provenance.contentCredentialsNone':
     'Ten plik nie zawiera żadnych danych uwierzytelniających osadzonych treści. Jest to powszechne i nie oznacza, że coś jest nie tak.',
   'mediaLib.provenance.unverified':
-    'Te szczegóły pochodzą ze źródła, a nie z Relay. Sprawdź je, zanim na nich zaczniesz polegać.',
+    'Te szczegóły pochodzą ze źródła, a nie z Post Array. Sprawdź je, zanim na nich zaczniesz polegać.',
 
   'mediaLib.picker.title': 'Wybierz multimedia',
   'mediaLib.picker.description': 'Pliki są sprawdzane z kontami wybranymi w tej wersji roboczej.',

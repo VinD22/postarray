@@ -99,7 +99,7 @@ export const automationMessages = {
 
   'automation.notPermitted.title': 'Deze regel kan niet worden gemaakt',
   'automation.notPermitted.body':
-    'Relay automatiseert geen likes, volgers, ongevraagde antwoorden of berichten, dubbele massaposts of iets anders dat afhankelijk is van browserautomatisering. {provider} verbiedt het en wij ook.',
+    'Post Array automatiseert geen likes, volgers, ongevraagde antwoorden of berichten, dubbele massaposts of iets anders dat afhankelijk is van browserautomatisering. {provider} verbiedt het en wij ook.',
   'automation.notPermitted.providerCapability':
     '{provider} biedt {action} niet aan via de officiële API, dus deze actie kan er niet voor worden geselecteerd.',
 
@@ -112,7 +112,7 @@ export const automationMessages = {
   'automation.rss.targets': 'Publiceren naar',
   'automation.rss.template': 'Tekstsjabloon',
   'automation.rss.templateHelp':
-    'Gebruik de feedvelden die u in kaart heeft gebracht. Relay genereert geen afbeeldingen voor feeditems.',
+    'Gebruik de feedvelden die u in kaart heeft gebracht. Post Array genereert geen afbeeldingen voor feeditems.',
   'automation.rss.policy.draft': 'Maak een concept',
   'automation.rss.policy.approval': 'Maak een concept en vraag goedkeuring aan',
   'automation.rss.policy.nextSlot': 'Plan het volgende vrije slot in',

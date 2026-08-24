@@ -4,7 +4,7 @@
  * Inspect permissions.
  *
  * Three columns: the scope as the provider names it, whether it was granted,
- * and what Relay uses it for. The third column is the one that matters. A
+ * and what Post Array uses it for. The third column is the one that matters. A
  * scope list without purposes is a compliance artefact; with purposes it is
  * the answer to "why does this tool need that".
  *

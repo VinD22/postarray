@@ -12,7 +12,7 @@ export const errorMessages = {
   'error.internal.message': 'Ito ay isang problema sa aming panig, hindi sa iyong nilalaman.',
   'error.internal.action':
     'Ang iyong gawa ay nai-save. Naalerto na kami. Subukang muli sa loob ng ilang minuto.',
-  'error.not_implemented.message': 'Hindi pa ito nagagawa ng Relay.',
+  'error.not_implemented.message': 'Hindi pa ito nagagawa ng Post Array.',
   'error.not_implemented.action': 'Sundin ang changelog kung kailan ito ipapadala.',
   'error.offline.message': 'Offline ka.',
   'error.offline.action':
@@ -62,6 +62,10 @@ export const errorMessages = {
   'error.subscription_past_due.action': 'I-update ang paraan ng pagbabayad sa Polar portal.',
   'error.trial_expired.message': 'Natapos ang paglilitis noong {date}.',
   'error.trial_expired.action': 'Simulan ang subscription upang magpatuloy sa pag-publish.',
+  'error.post_credits_exhausted.message':
+    'Nagamit na ng workspace na ito ang lahat ng libreng post nito. Gumagana pa rin ang lahat ng iba.',
+  'error.post_credits_exhausted.action':
+    'Pumili ng plano para makapagpatuloy sa pag-publish. Nananatiling konektado ang iyong mga account at nakatago ang iyong mga draft at iskedyul.',
   'error.entitlement_missing.message': 'Walang access ang workspace na ito sa feature na iyon.',
   'error.entitlement_missing.action':
     'Tingnan ang mga setting ng pagsingil, o makipag-ugnayan sa suporta.',
@@ -104,7 +108,7 @@ export const errorMessages = {
   'error.capability_unsupported.message':
     '{provider} ay hindi nag-aalok nito sa pamamagitan ng opisyal nitong API.',
   'error.capability_unsupported.action': 'Gumamit ng format na sinusuportahan ng account na ito.',
-  'error.capability_not_implemented.message': 'Hindi ito ginawa ni Relay {provider} pa.',
+  'error.capability_not_implemented.message': 'Hindi ito ginawa ni Post Array {provider} pa.',
   'error.capability_not_implemented.action':
     'Ang pahina ng kakayahan ay naglilista kung ano ang magagawa ng bawat connector ngayon.',
   'error.capability_requires_review.message':

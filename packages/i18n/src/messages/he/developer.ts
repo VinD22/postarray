@@ -72,7 +72,7 @@ export const developerMessages = withHebrewPluralForms({
   'developer.activity.empty': 'עדיין אין שיחות.',
   'developer.activity.redacted': 'גופי הבקשות והתגובה מאוחסנים עם הסודות שהוסרו.',
   'developer.apps.title': 'אפליקציות למפתחים',
-  'developer.apps.subtitle': 'אפשר למוצר אחר לפעול באמצעות Relay עם ההרשאות שמשתמש מעניק לו.',
+  'developer.apps.subtitle': 'אפשר למוצר אחר לפעול באמצעות Post Array עם ההרשאות שמשתמש מעניק לו.',
   'developer.apps.create': 'רשום אפליקציה',
   'developer.apps.name': 'שם האפליקציה',
   'developer.apps.type.label': 'סוג לקוח',

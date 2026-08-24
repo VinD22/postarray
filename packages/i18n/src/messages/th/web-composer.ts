@@ -128,7 +128,7 @@ export const webComposerMessages = {
     '{count, plural, =0 {No mentions} one {# mention} other {# mentions}}, {resolved} matched to a real account',
   'composerWeb.entity.lookupUnsupported': '{provider} ไม่มีการค้นหาเอนทิตีสำหรับบัญชีประเภทนี้',
   'composerWeb.entity.lookupNotBuilt':
-    'Relay ยังไม่ได้สร้างการค้นหาเอนทิตีสำหรับ {provider} ไม่มีอะไรคาดเดาได้ในระหว่างนี้',
+    'Post Array ยังไม่ได้สร้างการค้นหาเอนทิตีสำหรับ {provider} ไม่มีอะไรคาดเดาได้ในระหว่างนี้',
   'composerWeb.entity.searchHint': 'พิมพ์อย่างน้อยสองตัวอักขระ จากนั้นเลือกผลลัพธ์',
   'composerWeb.entity.resultCount':
     '{count, plural, =0 {No matches} one {# match} other {# matches}}',
@@ -144,7 +144,7 @@ export const webComposerMessages = {
   'composerWeb.links.utmTerm': 'ระยะเวลา',
   'composerWeb.links.utmContent': 'เนื้อหา',
   'composerWeb.links.domainVerified': '{domain} ได้รับการตรวจสอบแล้วสำหรับพื้นที่ทำงานนี้',
-  'composerWeb.links.domainDefault': 'Relay โดเมนเริ่มต้น',
+  'composerWeb.links.domainDefault': 'Post Array โดเมนเริ่มต้น',
   'composerWeb.links.domainNone': 'ยังไม่มีโดเมนที่มีแบรนด์ได้รับการยืนยัน',
   'composerWeb.links.notAllowedHere': '{account} ไม่อนุญาตให้มีลิงก์ที่นี่',
   'composerWeb.sequence.kindComment': 'ความคิดเห็น',
@@ -202,7 +202,7 @@ export const webComposerMessages = {
     'ไม่พบแหล่งที่มาสำหรับการอ้างสิทธิ์นี้ ตรวจสอบก่อนที่จะเผยแพร่',
   'composerWeb.assist.failed': 'คำร้องขอความช่วยเหลือไม่เสร็จสมบูรณ์ ข้อความของคุณไม่เปลี่ยนแปลง',
   'composerWeb.assist.noMediaGeneration':
-    'Relay ไม่สร้างภาพหรือวิดีโอ นำไฟล์ที่เสร็จแล้วเข้าห้องสมุดแล้วเผยแพร่ที่นี่',
+    'Post Array ไม่สร้างภาพหรือวิดีโอ นำไฟล์ที่เสร็จแล้วเข้าห้องสมุดแล้วเผยแพร่ที่นี่',
   'composerWeb.autosave.pinned':
     'นี่คือเวอร์ชันที่ได้รับอนุมัติ การแก้ไขจะสร้างเวอร์ชันใหม่และล้างการอนุมัติ',
   'composerWeb.autosave.pinnedAcknowledge': 'แก้ไขและเคลียร์การอนุมัติ',
@@ -247,7 +247,7 @@ export const webComposerMessages = {
     'ไม่มีอะไรสูญหาย ลองอีกครั้ง และหากยังคงล้มเหลว การอ้างอิงด้านล่างจะช่วยให้ฝ่ายสนับสนุนค้นหาคำขอได้',
   'composerWeb.page.noConnectionsTitle': 'เชื่อมต่อบัญชีก่อนที่จะเขียน',
   'composerWeb.page.noConnectionsBody':
-    'ฉบับร่างต้องมีบัญชีที่เชื่อมต่ออย่างน้อยหนึ่งบัญชี ดังนั้น Relay จึงทราบขีดจำกัด การแสดงตัวอย่าง และการตั้งค่าที่จะแสดง',
+    'ฉบับร่างต้องมีบัญชีที่เชื่อมต่ออย่างน้อยหนึ่งบัญชี ดังนั้น Post Array จึงทราบขีดจำกัด การแสดงตัวอย่าง และการตั้งค่าที่จะแสดง',
   'composerWeb.page.noConnectionsExample':
     'ตัวอย่าง: เมื่อเชื่อมต่อ X และ LinkedIn แบบร่างหนึ่งฉบับจะกลายเป็นสองเวอร์ชันดั้งเดิมที่มีตัวนับของตัวเอง',
   'composerWeb.page.permissionTitle': 'คุณไม่สามารถสร้างโพสต์ในพื้นที่ทำงานนี้ได้',
@@ -275,7 +275,7 @@ export const webComposerMessages = {
   'mediaLib.openDetail': 'เปิด {name}',
   'mediaLib.empty.title': 'ยังไม่มีสื่อ',
   'mediaLib.empty.body':
-    'อัปโหลดรูปภาพและวิดีโอที่คุณมีอยู่แล้วหรือนำเข้าไฟล์จาก URL Relay ตรวจสอบประเภทและขนาดกับแต่ละบัญชีที่คุณเผยแพร่',
+    'อัปโหลดรูปภาพและวิดีโอที่คุณมีอยู่แล้วหรือนำเข้าไฟล์จาก URL Post Array ตรวจสอบประเภทและขนาดกับแต่ละบัญชีที่คุณเผยแพร่',
   'mediaLib.empty.example':
     'ตัวอย่าง: launch_hero.jpg, 1600 x 900, ชุดข้อความแสดงแทน ใช้ใน 2 โพสต์',
   'mediaLib.error.title': 'ไม่สามารถโหลดไลบรารีได้',
@@ -321,7 +321,7 @@ export const webComposerMessages = {
   'mediaLib.import.importing': 'กำลังนำเข้าสื่อ',
   'mediaLib.import.succeeded': 'ไฟล์อยู่ในไลบรารีของคุณแล้ว',
   'mediaLib.import.scanPending':
-    'Relay บันทึกแหล่งที่มาของไฟล์แล้ว การเผยแพร่จะรอจนกว่าการตรวจสอบความปลอดภัยจะเสร็จสิ้น',
+    'Post Array บันทึกแหล่งที่มาของไฟล์แล้ว การเผยแพร่จะรอจนกว่าการตรวจสอบความปลอดภัยจะเสร็จสิ้น',
   'mediaLib.import.failed': 'ไม่สามารถนำเข้าไฟล์ได้',
   'mediaLib.import.failedHelp':
     'ตรวจสอบว่าลิงก์เป็นสาธารณะและชี้ตรงไปยังไฟล์สื่อที่รองรับ แล้วลองใหม่',
@@ -332,7 +332,7 @@ export const webComposerMessages = {
   'mediaLib.import.issue.credentials': 'ใช้ลิงก์ที่ไม่มีชื่อผู้ใช้หรือรหัสผ่าน',
   'mediaLib.retention.title': 'ไฟล์ที่จัดเก็บไว้จะถูกเก็บไว้ 30 วันหลังจากสร้างโพสต์',
   'mediaLib.retention.body':
-    'เมื่อไฟล์ถูกแนบเข้ากับโพสต์แล้ว เราจะลบไฟล์นั้นออกจากพื้นที่จัดเก็บของ Relay อย่างถาวรใน 30 วันหลังจากสร้างโพสต์นั้น ไฟล์ที่รอการแนบจะใช้วันที่อัปโหลดเป็นจุดล้างข้อมูลสำรอง ข้อความโพสต์ ใบเสร็จการเผยแพร่ และประวัติการตรวจสอบยังคงพร้อมใช้งานนานกว่านั้น โพสต์ที่เผยแพร่แล้วบนแพลตฟอร์มโซเชียลจะไม่ถูกลบเมื่อไฟล์ที่จัดเก็บไว้หมดอายุ',
+    'เมื่อไฟล์ถูกแนบเข้ากับโพสต์แล้ว เราจะลบไฟล์นั้นออกจากพื้นที่จัดเก็บของ Post Array อย่างถาวรใน 30 วันหลังจากสร้างโพสต์นั้น ไฟล์ที่รอการแนบจะใช้วันที่อัปโหลดเป็นจุดล้างข้อมูลสำรอง ข้อความโพสต์ ใบเสร็จการเผยแพร่ และประวัติการตรวจสอบยังคงพร้อมใช้งานนานกว่านั้น โพสต์ที่เผยแพร่แล้วบนแพลตฟอร์มโซเชียลจะไม่ถูกลบเมื่อไฟล์ที่จัดเก็บไว้หมดอายุ',
   'mediaLib.retention.limits':
     'รูปภาพ เสียง และไฟล์ PDF มีขนาดได้สูงสุด {imageSize} วิดีโอมีขนาดได้สูงสุด {videoSize}',
   'mediaLib.retention.expiresLabel': 'วันที่ลบไฟล์',
@@ -432,7 +432,7 @@ export const webComposerMessages = {
   'mediaLib.provenance.contentCredentialsNone':
     'ไฟล์นี้ไม่มีข้อมูลรับรองเนื้อหาที่ฝังอยู่ นั่นเป็นเรื่องปกติและไม่ได้หมายความว่ามีอะไรผิดปกติ',
   'mediaLib.provenance.unverified':
-    'รายละเอียดเหล่านี้มาจากแหล่งที่มา ไม่ใช่จาก Relay โปรดตรวจสอบก่อนที่จะเชื่อถือ',
+    'รายละเอียดเหล่านี้มาจากแหล่งที่มา ไม่ใช่จาก Post Array โปรดตรวจสอบก่อนที่จะเชื่อถือ',
   'mediaLib.picker.title': 'เลือกสื่อ',
   'mediaLib.picker.description': 'ไฟล์จะถูกตรวจสอบกับบัญชีที่เลือกในแบบร่างนี้',
   'mediaLib.picker.confirm':

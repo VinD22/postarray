@@ -75,7 +75,7 @@ export const growthMessages = {
   'growth.ugc.review': 'Bewertungskriterien',
   'growth.ugc.reuse': 'Wiederverwendungsplan',
   'growth.ugc.boundary':
-    'Dies ist eine Kampagne, die Sie mit echten Menschen durchführen. Relay findet keine Ersteller, kontaktiert sie nicht und schreibt keine Erfahrungsberichte.',
+    'Dies ist eine Kampagne, die Sie mit echten Menschen durchführen. Post Array findet keine Ersteller, kontaktiert sie nicht und schreibt keine Erfahrungsberichte.',
 
   'growth.opportunities.title': 'Chancen zur Bekanntheitssteigerung',
   'growth.opportunities.help':
@@ -97,7 +97,7 @@ export const growthMessages = {
   'growth.opportunities.noGuarantee':
     'Eine Übereinstimmung ist ein Vorschlag. Es handelt sich nicht um einen versprochenen Link, eine Platzierung oder ein Ranking.',
   'growth.opportunities.boundary':
-    'Relay sendet keine Formulare, erstellt keine Konten, sendet keine E-Mail-Kontakte, postet nicht in Communities und kauft keine Links.',
+    'Post Array sendet keine Formulare, erstellt keine Konten, sendet keine E-Mail-Kontakte, postet nicht in Communities und kauft keine Links.',
   'growth.opportunities.empty':
     'Zu diesem Profil passen noch keine verifizierten Chancen. Eine leere Liste ist besser als eine erfundene.',
 
@@ -108,7 +108,7 @@ export const growthMessages = {
   'growth.tools.whyItFits': 'Warum es passt',
   'growth.tools.limitations': 'Einschränkungen',
   'growth.tools.requiredSkills': 'Fähigkeiten, die Sie brauchen',
-  'growth.tools.handoff': 'Wie die Ausgabe zurück in Relay gelangt',
+  'growth.tools.handoff': 'Wie die Ausgabe zurück in Post Array gelangt',
   'growth.tools.rights': 'Hinweise zu Rechten und Datenschutz',
   'growth.tools.priceChecked': 'Zuletzt überprüfter Preis {date}',
   'growth.tools.affiliateDisclosure':

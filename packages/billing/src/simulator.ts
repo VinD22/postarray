@@ -98,31 +98,31 @@ function simulatedProduct(
 }
 
 export const SIMULATOR_PRODUCTS: readonly SimulatedProduct[] = Object.freeze([
-  simulatedProduct(SIMULATOR_MONTHLY_PRODUCT_ID, 'relay_standard', 'month', 'Relay Monthly'),
-  simulatedProduct(SIMULATOR_ANNUAL_PRODUCT_ID, 'relay_standard', 'year', 'Relay Annual'),
+  simulatedProduct(SIMULATOR_MONTHLY_PRODUCT_ID, 'relay_standard', 'month', 'Post Array Monthly'),
+  simulatedProduct(SIMULATOR_ANNUAL_PRODUCT_ID, 'relay_standard', 'year', 'Post Array Annual'),
   simulatedProduct(
     SIMULATOR_GROWTH_MONTHLY_PRODUCT_ID,
     'relay_growth',
     'month',
-    'Relay Growth Monthly',
+    'Post Array Growth Monthly',
   ),
   simulatedProduct(
     SIMULATOR_GROWTH_ANNUAL_PRODUCT_ID,
     'relay_growth',
     'year',
-    'Relay Growth Annual',
+    'Post Array Growth Annual',
   ),
   simulatedProduct(
     SIMULATOR_STUDIO_MONTHLY_PRODUCT_ID,
     'relay_studio',
     'month',
-    'Relay Studio Monthly',
+    'Post Array Studio Monthly',
   ),
   simulatedProduct(
     SIMULATOR_STUDIO_ANNUAL_PRODUCT_ID,
     'relay_studio',
     'year',
-    'Relay Studio Annual',
+    'Post Array Studio Annual',
   ),
 ]);
 
@@ -290,7 +290,7 @@ export class LocalPolarSimulator implements PolarClient {
     if (entry !== undefined) {
       return entry.name;
     }
-    return this.intervalOf(productId) === 'year' ? 'Relay Annual' : 'Relay Monthly';
+    return this.intervalOf(productId) === 'year' ? 'Post Array Annual' : 'Post Array Monthly';
   }
 
   private advancePeriod(instant: string, interval: BillingInterval): string {

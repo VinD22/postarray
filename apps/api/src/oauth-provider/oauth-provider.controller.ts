@@ -94,7 +94,7 @@ export class OAuthProviderController {
         privacyPolicyUrl: pending.client.privacyPolicyUrl,
         termsUrl: pending.client.termsUrl,
         logoUrl: pending.client.logoUrl,
-        // The screen states "This app is not built by Relay" when this is false.
+        // The screen states "This app is not built by Post Array" when this is false.
         firstParty: pending.client.firstParty,
       },
       consentNonce: pending.consentNonce,

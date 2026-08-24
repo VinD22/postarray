@@ -74,7 +74,7 @@ describe('redactString', () => {
     expect(masked).toContain('provider replied with');
   });
 
-  it('masks a whole Relay credential, and keeps the public client id readable', () => {
+  it('masks a whole Post Array credential, and keeps the public client id readable', () => {
     // Not a real credential: a shape-correct string built for this assertion.
     const fake = `rly_ak_ABCDEFGH_${'0123456789abcdef'.repeat(2)}`;
     const masked = redactString(`agent presented ${fake} for rly_pk_ABCDEFGH`);

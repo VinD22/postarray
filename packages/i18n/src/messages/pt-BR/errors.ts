@@ -12,7 +12,7 @@ export const errorMessages = {
   'error.internal.message': 'Este é um problema da nossa parte, não do seu conteúdo.',
   'error.internal.action':
     'Seu trabalho está salvo. Fomos alertados. Tente novamente em alguns minutos.',
-  'error.not_implemented.message': 'Relay ainda não construiu isso.',
+  'error.not_implemented.message': 'Post Array ainda não construiu isso.',
   'error.not_implemented.action': 'Siga o changelog para quando for lançado.',
   'error.offline.message': 'Você está off-line.',
   'error.offline.action':
@@ -58,6 +58,10 @@ export const errorMessages = {
   'error.subscription_past_due.action': 'Atualize a forma de pagamento no portal Polar.',
   'error.trial_expired.message': 'O teste terminou em {date}.',
   'error.trial_expired.action': 'Inicie a assinatura para continuar publicando.',
+  'error.post_credits_exhausted.message':
+    'Este espaço de trabalho usou todas as suas publicações gratuitas. Todo o restante continua funcionando.',
+  'error.post_credits_exhausted.action':
+    'Escolha um plano para continuar publicando. Suas contas continuam conectadas e seus rascunhos e agendamentos são mantidos.',
   'error.entitlement_missing.message': 'Este espaço de trabalho não tem acesso a esse recurso.',
   'error.entitlement_missing.action':
     'Verifique as configurações de faturamento ou entre em contato com o suporte.',
@@ -88,7 +92,7 @@ export const errorMessages = {
   'error.capability_unsupported.message':
     '{provider} não oferece isso por meio de sua API oficial.',
   'error.capability_unsupported.action': 'Use um formato compatível com esta conta.',
-  'error.capability_not_implemented.message': 'Relay ainda não construiu isso para {provider}.',
+  'error.capability_not_implemented.message': 'Post Array ainda não construiu isso para {provider}.',
   'error.capability_not_implemented.action':
     'A página de capacidade lista o que cada conector pode fazer hoje.',
   'error.capability_requires_review.message':

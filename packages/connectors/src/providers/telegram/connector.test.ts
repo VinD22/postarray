@@ -37,7 +37,7 @@ const getMeRoute = {
   match: '/getMe',
   body: {
     ok: true,
-    result: { id: 42, is_bot: true, first_name: 'Relay Bot', username: 'relay_bot' },
+    result: { id: 42, is_bot: true, first_name: 'Post Array Bot', username: 'relay_bot' },
   },
 };
 

@@ -102,7 +102,7 @@ export type LinkMode = 'original' | 'tracked';
 
 export interface LinkPlan {
   readonly mode: LinkMode;
-  /** Null means the Relay default short domain. */
+  /** Null means the Post Array default short domain. */
   readonly brandedDomain: string | null;
   readonly utm: NonNullable<LinkSpec['utm']>;
 }

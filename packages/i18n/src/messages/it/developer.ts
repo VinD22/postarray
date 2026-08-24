@@ -83,7 +83,7 @@ export const developerMessages = {
 
   'developer.apps.title': 'App per sviluppatori',
   'developer.apps.subtitle':
-    'Consenti a un altro prodotto di agire tramite Relay con le autorizzazioni concesse da un utente.',
+    'Consenti a un altro prodotto di agire tramite Post Array con le autorizzazioni concesse da un utente.',
   'developer.apps.create': "Registra un'app",
   'developer.apps.name': "Nome dell'app",
   'developer.apps.type.label': 'Tipologia cliente',

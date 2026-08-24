@@ -70,7 +70,7 @@ export const validationMessages = {
     'Ang isang umuulit na post ay nangangailangan ng isang petsa ng pagtatapos o isang bilang ng mga pag-uulit.',
   'validation.schedule_in_past.message': 'Lumipas ang oras na iyon {timeZone}.',
   'validation.schedule_too_far_ahead.message':
-    'Ito ay mas maaga kaysa sa {limit} tumingin sa unahan nakatakda para sa kredensyal na ito.',
+    'Maaaring i-iskedyul ang mga post nang hanggang {limit} nang maaga, na siya ring tagal ng pag-iimbak ng na-upload na media.',
   'validation.schedule_outside_quiet_hours.message':
     'Ito ay nasa loob ng tahimik na oras na itinakda {project}.',
   'validation.duplicate_within_window.message':

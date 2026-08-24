@@ -1,14 +1,33 @@
-/**
- * The weekly digest email. Only the `email.digest.*` keys are translated here
- * (the `digest.*` in-app keys are outside this locale's current coverage and
- * fall back to English).
- */
+/** Weekly digest copy for the Traditional Chinese interface. */
 export const digestMessages = {
+  'digest.title': '本週',
+  'digest.subtitle': '我們在 {windowStart} 至 {windowEnd} 期間所看到的內容。',
+  'digest.empty': '本週尚無可彙整的內容。發布一些內容後就會顯示在這裡。',
+  'digest.regenerate': '重新建立本週摘要',
+  'digest.generating': '正在建立本週摘要',
+  'digest.source.deterministic': '根據你的發布記錄與自有數據撰寫，未使用寫作助理。',
+  'digest.source.ai': '由助理根據你的自有記錄撰寫。其中的每個數字皆已核對。',
+  'digest.unavailable.aiOff': '寫作助理已關閉，因此這是簡易版本，並無遺漏。',
+  'digest.unavailable.rejected': '助理版本與你的數據不符，已被捨棄。這是簡易版本。',
+  'digest.headline.published':
+    '{published, plural, =0 {沒有完成任何貼文} other {在 {windowStart} 至 {windowEnd} 期間完成了 # 則貼文}}。',
+  'digest.headline.nothingPublished': '在 {windowStart} 至 {windowEnd} 期間沒有發布任何內容。',
+  'digest.outcome.published': '{count, plural, other {# 則貼文已在 {provider} 上完成}}。',
+  'digest.outcome.partial': '{count, plural, other {# 則貼文在 {provider} 上僅送達部分目的地}}。',
+  'digest.outcome.failed': '{count, plural, other {# 則貼文未能在 {provider} 上發出}}。',
+  'digest.metrics.noneYet': '本週尚未收到任何衡量數據。這表示我們尚不清楚這些貼文的表現，而非表現不佳。',
+  'digest.freshness.statement':
+    '{label, select, fresh {數據最後同步於 {lastObservedAt}。} stale {自 {lastObservedAt} 後未再同步，因此上方數據可能已過時。} other {尚未同步任何數據，因此上方沒有任何衡量結果。}}',
+  'digest.narrative.headline': '{statement}',
+  'digest.narrative.observation': '{statement}',
+  'digest.narrative.confounder': '值得注意：{confounder}',
+  'digest.narrative.notSupported': '{statement}',
+  'digest.narrative.nextAction': '{statement}',
+  'digest.settings.title': '每週摘要電子郵件',
+  'digest.settings.description': '每週一封簡短電子郵件，彙整已發布內容與可衡量的成果。預設為開啟。',
+  'digest.settings.enabled': '寄送每週摘要',
   'email.digest.subject': '你在 {workspaceName} 的這一週',
-  'email.digest.intro':
-    '以下是我們在 {windowStart} 到 {windowEnd} 期間，於 {workspaceName} 觀察到的內容。',
-  'email.digest.noData':
-    '我們這週未能測得任何數據。若某個數字缺漏，是因為我們無法讀取它，而不是因為它是零。',
-  'email.digest.footer':
-    '你收到此郵件是因為 {workspaceName} 已啟用每週摘要功能。可在工作區設定中關閉。',
+  'email.digest.intro': '以下是我們在 {windowStart} 到 {windowEnd} 期間，於 {workspaceName} 觀察到的內容。',
+  'email.digest.noData': '我們這週未能測得任何數據。若某個數字缺漏，是因為我們無法讀取它，而不是因為它是零。',
+  'email.digest.footer': '你收到此郵件是因為 {workspaceName} 已啟用每週摘要功能。可在工作區設定中關閉。',
 } as const;

@@ -70,7 +70,7 @@ export const growthMessages = {
   'growth.ugc.review': '審査基準',
   'growth.ugc.reuse': 'リユース計画',
   'growth.ugc.boundary':
-    'これは、実際の人々と実行するキャンペーンを計画します。 Relay は、クリエイターを見つけたり、連絡したり、紹介文を書いたりすることはありません。',
+    'これは、実際の人々と実行するキャンペーンを計画します。 Post Array は、クリエイターを見つけたり、連絡したり、紹介文を書いたりすることはありません。',
   'growth.opportunities.title': '昇進の機会',
   'growth.opportunities.help':
     'カタログのリストをレビューし、フィット感によってランク付けしました。良い提出物を準備するのが仕事です。一括送信はありません。',
@@ -91,7 +91,7 @@ export const growthMessages = {
   'growth.opportunities.noGuarantee':
     '一致は提案です。これはリンク、掲載、ランキングを約束するものではありません。',
   'growth.opportunities.boundary':
-    'Relay は、フォームの送信、アカウントの作成、連絡先へのメール送信、コミュニティへの投稿、リンクの購入を行いません。',
+    'Post Array は、フォームの送信、アカウントの作成、連絡先へのメール送信、コミュニティへの投稿、リンクの購入を行いません。',
   'growth.opportunities.empty':
     'このプロフィールに一致する確認済みの案件はまだありません。空のリストは、でっち上げたリストよりも優れています。',
   'growth.tools.title': 'ツールレーダー',
@@ -101,7 +101,7 @@ export const growthMessages = {
   'growth.tools.whyItFits': 'なぜフィットするのか',
   'growth.tools.limitations': '制限事項',
   'growth.tools.requiredSkills': '必要なスキル',
-  'growth.tools.handoff': '出力が Relay にどのように返されるか',
+  'growth.tools.handoff': '出力が Post Array にどのように返されるか',
   'growth.tools.rights': '権利とプライバシーに関する注意事項',
   'growth.tools.priceChecked': '最後に確認した価格{date}',
   'growth.tools.affiliateDisclosure':

@@ -89,7 +89,7 @@ export const statusMessages = {
     'It will not publish. The draft stays here so you can schedule it again.',
   'confirm.publishNow.title': 'Publish now?',
   'confirm.publishNow.body':
-    '{count, plural, one {This publishes to # account immediately} other {This publishes to # accounts immediately}}. It cannot be recalled from Relay.',
+    '{count, plural, one {This publishes to # account immediately} other {This publishes to # accounts immediately}}. It cannot be recalled from Post Array.',
   'confirm.typeToConfirm': 'Type {word} to confirm.',
 
   /* -- Empty scenes ------------------------------------------------------

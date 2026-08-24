@@ -36,7 +36,7 @@ export const connectionMessages = {
   'connection.permissions.granted': 'मान लिया',
   'connection.permissions.missing': 'नहीं दिया गया',
   'connection.permissions.explainBeforeOAuth':
-    'Relay पूछेगा {provider} इन अनुमतियों के लिए. आप किसी भी समय डिस्कनेक्ट कर सकते हैं.',
+    'Post Array पूछेगा {provider} इन अनुमतियों के लिए. आप किसी भी समय डिस्कनेक्ट कर सकते हैं.',
   'connection.permissions.whyNeeded': 'इसकी आवश्यकता क्यों है',
 
   'connection.reconnect.title': 'रिकनेक्ट {account}',
@@ -90,11 +90,11 @@ export const connectionMessages = {
   'capability.level.requires_review': 'मंच समीक्षा की जरूरत है',
   'capability.level.beta': 'बीटा',
   'capability.level.unknown': 'अनुपलब्ध',
-  'capability.explain.supported': 'Relay आज इस खाते के लिए ऐसा कर सकता है।',
+  'capability.explain.supported': 'Post Array आज इस खाते के लिए ऐसा कर सकता है।',
   'capability.explain.unsupported':
     '{provider} यह अपने आधिकारिक API के माध्यम से इसकी पेशकश नहीं करता है, इसलिए कोई भी उपकरण इसे सुरक्षित रूप से नहीं कर सकता है।',
   'capability.explain.not_implemented':
-    '{provider} यह ऑफ़र करता है, लेकिन Relay ने इसे अभी तक नहीं बनाया है। यह कनेक्टर रोडमैप पर है.',
+    '{provider} यह ऑफ़र करता है, लेकिन Post Array ने इसे अभी तक नहीं बनाया है। यह कनेक्टर रोडमैप पर है.',
   'capability.explain.requires_review':
     '{provider} ऐप या खाते की समीक्षा करने के बाद ही यह अनुदान देता है। यह तब तक अनुपलब्ध रहता है जब तक कि समीक्षा पारित नहीं हो जाती.',
   'capability.explain.beta':

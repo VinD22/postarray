@@ -81,6 +81,6 @@ export const statusMessages = {
     '게시되지 않습니다. 초안은 여기에 남아 있으므로 다시 예약할 수 있습니다.',
   'confirm.publishNow.title': '지금 게시하시겠습니까?',
   'confirm.publishNow.body':
-    '{count, plural, other {#개 계정에 즉시 게시됩니다.}}. Relay에서 회수할 수 없습니다.',
+    '{count, plural, other {#개 계정에 즉시 게시됩니다.}}. Post Array에서 회수할 수 없습니다.',
   'confirm.typeToConfirm': '유형{word}확인하기 위해.',
 } as const;

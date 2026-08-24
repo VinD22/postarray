@@ -39,7 +39,7 @@ export const webAnalyticsMessages = {
 
   'analytics.rankMetric.label': 'Ранжувати публікації за',
   'analytics.rankMetric.help':
-    'У Relay немає комбінованої оцінки. Виберіть один показник, визначенню якого ви довіряєте, і таблицю буде впорядковано лише за цим показником.',
+    'У Post Array немає комбінованої оцінки. Виберіть один показник, визначенню якого ви довіряєте, і таблицю буде впорядковано лише за цим показником.',
   'analytics.rankMetric.chosen':
     'Рейтинг за {metric}, як повідомляю кожного постачальника облікових записів.',
 
@@ -105,7 +105,7 @@ export const webAnalyticsMessages = {
   'analytics.evidence.confounder.followers':
     'Послідовник розраховує на {account} змінено на {percent} протягом цього періоду.',
   'analytics.evidence.confounder.paid':
-    'Relay не може сказати, чи було якесь із цих дописів платне розповсюдження.',
+    'Post Array не може сказати, чи було якесь із цих дописів платне розповсюдження.',
   'analytics.evidence.confounder.provider':
     '{provider}змінив спосіб звітування {metric} всередині цього періоду.',
 
@@ -141,7 +141,7 @@ export const webAnalyticsMessages = {
   'analytics.unit.count': 'Підрахунок подій',
   'analytics.unit.seconds': 'секунд',
   'analytics.unit.percent': 'Відсоток, який провайдер уже розрахував',
-  'analytics.unit.ratio': 'Коефіцієнт Relay, розрахований на основі двох полів постачальника',
+  'analytics.unit.ratio': 'Коефіцієнт Post Array, розрахований на основі двох полів постачальника',
   'analytics.unit.currency_minor': 'Сума грошей у другорядних одиницях',
 
   'analytics.denominator.none': 'Це підрахунок, а не ставка. Він не має знаменника.',
@@ -161,7 +161,7 @@ export const webAnalyticsMessages = {
   'analytics.format.thread': 'Нитка',
 
   'analytics.value.unavailableReason.notImplemented':
-    'Relay не створив зіставлення для цього показника {provider} ще.',
+    'Post Array не створив зіставлення для цього показника {provider} ще.',
   'analytics.value.estimated': 'Розрахункова',
   'analytics.value.estimatedMethod': 'Метод: {method}.',
 
@@ -290,7 +290,7 @@ export const webAnalyticsMessages = {
     'Analytics потрібна роль аналітика або вище. Власник або адміністратор цієї робочої області може надати її.',
   'analytics.state.rateLimitTitle': '{provider}обмежує швидкість аналітичних запитів',
   'analytics.state.rateLimitCause':
-    'Обліковий запис використав свою частку квоти постачальника для цього вікна. Relay не повторює ще більше, оскільки це призведе до затримки публікації.',
+    'Обліковий запис використав свою частку квоти постачальника для цього вікна. Post Array не повторює ще більше, оскільки це призведе до затримки публікації.',
   'analytics.state.rateLimitAlternative':
     'Звужте діапазон дат або фільтр облікового запису, який вимагає від постачальника менше.',
   'analytics.state.rateLimitReset': 'Прохання резюме',
@@ -302,7 +302,7 @@ export const webAnalyticsMessages = {
   'analytics.links.new': 'Створіть відстежене посилання',
   'analytics.links.empty': 'Поки немає відстежених посилань',
   'analytics.links.emptyBody':
-    'Відстежуване посилання: це коротке переспрямування URL Relay, тож ви можете бачити кліки, навіть якщо платформа не повідомляє про них. Початкове призначення ніколи не змінюється без запису аудиту.',
+    'Відстежуване посилання: це коротке переспрямування URL Post Array, тож ви можете бачити кліки, навіть якщо платформа не повідомляє про них. Початкове призначення ніколи не змінюється без запису аудиту.',
   'analytics.links.emptyExample':
     'Приклад: relay.to/a7Kq2 переспрямовує на acme.com/blog/launch із кампанією q3-launch.',
   'analytics.links.table.caption':
@@ -333,7 +333,7 @@ export const webAnalyticsMessages = {
   'analytics.links.destinationHistoryRow': '{destination}, активний з {start} до{end}',
   'analytics.links.destinationHistoryCurrent': '{destination}, активний з{start}',
   'analytics.links.domainLabel': 'Короткий домен',
-  'analytics.links.domainDefault': 'Домен за замовчуванням Relay',
+  'analytics.links.domainDefault': 'Домен за замовчуванням Post Array',
   'analytics.links.domainVerified': 'Перевірено DNS увімкнено{date}',
   'analytics.links.domainPending': 'Очікування запису DNS',
   'analytics.links.domainPendingHelp':
@@ -356,7 +356,7 @@ export const webAnalyticsMessages = {
   'analytics.links.abuseAction': 'Повідомити про це посилання',
   'analytics.links.measurementLabel': 'Перше вимірювання перенаправлення',
   'analytics.links.measurementExplained':
-    'Relay зараховує запит, коли служба переадресації запитується для цього URL. Дедуплікований клік видаляє повторні запити від того самого відвідувача всередині короткого вікна, а запити, які відповідають відомим шаблонам сканера, виключаються, а не видаляються.',
+    'Post Array зараховує запит, коли служба переадресації запитується для цього URL. Дедуплікований клік видаляє повторні запити від того самого відвідувача всередині короткого вікна, а запити, які відповідають відомим шаблонам сканера, виключаються, а не видаляються.',
   'analytics.links.botsNote':
     '{count, plural, one {#запит} few {# запити} many {# запити} other {# запити}} були класифіковані як автоматизовані та виключені з дедуплікованого підрахунку.',
   'analytics.links.series.title': 'Запити та дедупліковані кліки з часом',
@@ -379,7 +379,7 @@ export const webAnalyticsMessages = {
   'analytics.links.noEventsBody':
     'Це посилання не запитувалося з моменту його створення. Це справжній нуль, виміряний нашою власною службою переадресації.',
   'analytics.links.compareWarning':
-    '{provider}звіти {providerValue} кліків посилань для цієї публікації. Relay записано {relayValue} дедуплікованих кліків. Ці дві враховують різні події, і жодна не замінює інше.',
+    '{provider}звіти {providerValue} кліків посилань для цієї публікації. Post Array записано {relayValue} дедуплікованих кліків. Ці дві враховують різні події, і жодна не замінює інше.',
   'analytics.links.errorTitle': 'Не вдалося завантажити статистику посилання',
   'analytics.links.errorBody':
     'Служба перенаправлення все ще працює, тому посилання продовжує надсилати відвідувачів до місця призначення. Впливає лише на звітність.',
@@ -389,7 +389,7 @@ export const webAnalyticsMessages = {
   'analytics.links.createCampaign': 'Назва кампанії',
   'analytics.links.createSlug': 'Нестандартне закінчення',
   'analytics.links.createSlugHelp':
-    'Залиште це поле пустим, і Relay згенерує коротку випадкову кінцівку.',
+    'Залиште це поле пустим, і Post Array згенерує коротку випадкову кінцівку.',
   'analytics.links.createUtm': 'Параметри UTM',
   'analytics.links.blockedScheme': 'Приймаються лише адреси https.',
   'analytics.links.blockedPrivate':
@@ -539,7 +539,7 @@ export const webAnalyticsMessages = {
     '{count, plural, one {#дія є} few {# дії є} many {# дії є} other {# дії є}} немає в списку, після вибраних облікових записів не можна їх виконати.',
   'automation.picker.hiddenDetail': '{action}недоступний для {provider}.{reason}',
   'automation.picker.consequential': 'Створює щось на платформі',
-  'automation.picker.internalOnly': 'Залишається всередині Relay',
+  'automation.picker.internalOnly': 'Залишається всередині Post Array',
 
   'automation.accounts.label': 'Облікові записи, на які може діяти це правило',
   'automation.accounts.help':
@@ -641,7 +641,7 @@ export const webAnalyticsMessages = {
   'automation.test.conditionFailed': '{condition}не пройшов, тому правило тут зупинилося',
   'automation.test.actionSimulated': '{action}біг би',
   'automation.test.actionSkipped': '{action}буде пропущено:{reason}',
-  'automation.test.noExternalEffect': 'Під час цього тесту Relay нічого не залишилося.',
+  'automation.test.noExternalEffect': 'Під час цього тесту Post Array нічого не залишилося.',
   'automation.test.failed': 'Тест не виконується:{reason}',
 
   'automation.runs.table.caption': 'Останні запуски цього правила.',
@@ -703,7 +703,7 @@ export const webAnalyticsMessages = {
     'Перетворіть канал на чернетки або заплановані публікації з такою ж перевіркою та схваленням, як і будь-що, що ви пишете самі.',
   'automation.rss.empty': 'Ще немає каналів',
   'automation.rss.emptyBody':
-    'Додайте канал, і Relay перевірить його за розкладом. Кожен новий елемент стає чернеткою, запланованим дописом або запитом на схвалення, залежно від того, що ви виберете.',
+    'Додайте канал, і Post Array перевірить його за розкладом. Кожен новий елемент стає чернеткою, запланованим дописом або запитом на схвалення, залежно від того, що ви виберете.',
   'automation.rss.emptyExample':
     'Приклад: канал блогу Acme створює чернетку для X і LinkedIn щоразу, коли публікується стаття, і чекає на схвалення.',
   'automation.rss.table.caption': 'Подає опитування цієї робочої області.',
@@ -720,7 +720,7 @@ export const webAnalyticsMessages = {
   'automation.rss.stepOf': 'Крок {current} з{total}',
 
   'automation.rss.urlHelp':
-    'Relay отримує канал з наших серверів, а не з вашого браузера. Приватні мережеві адреси не надаються.',
+    'Post Array отримує канал з наших серверів, а не з вашого браузера. Приватні мережеві адреси не надаються.',
   'automation.rss.validateAction': 'Перевірте цей канал',
   'automation.rss.validateFailed': 'Ця адреса не повернула читабельний канал',
   'automation.rss.validateFailedReason': 'Що я отримав назад:{reason}',
@@ -733,7 +733,7 @@ export const webAnalyticsMessages = {
   'automation.rss.previewNoImage': 'У цьому елементі немає зображення',
   'automation.rss.previewImageAlt': 'Зображення з елемента каналу{title}',
   'automation.rss.previewNoDate':
-    'Цей елемент не має позначки часу, тому Relay використовує час, коли його вперше побачив.',
+    'Цей елемент не має позначки часу, тому Post Array використовує час, коли його вперше побачив.',
   'automation.rss.previewFieldsTitle': 'Поля, які надає цей канал',
   'automation.rss.previewFieldMissing': 'Немає в цій стрічці',
 
@@ -761,7 +761,7 @@ export const webAnalyticsMessages = {
   'automation.rss.templatePreview': 'Попередній перегляд із найновішим елементом',
   'automation.rss.adaptWithAi': 'Адаптуйте текст для кожної цілі',
   'automation.rss.adaptHelp':
-    'Формулювання переписується відповідно до кожної платформи та відображається як відмінність, яку ви приймаєте або відхиляєте. Медіафайли надходять із елемента каналу. Relay не створює зображень.',
+    'Формулювання переписується відповідно до кожної платформи та відображається як відмінність, яку ви приймаєте або відхиляєте. Медіафайли надходять із елемента каналу. Post Array не створює зображень.',
   'automation.rss.noImageGeneration':
     'Якщо елемент каналу не має зображення, публікація виходить без нього.',
   'automation.rss.imageFromFeed': 'Використовуйте зображення з елемента каналу, якщо воно є',
@@ -799,13 +799,13 @@ export const webAnalyticsMessages = {
   'automation.rss.resumeFeed': 'Відновити цей канал',
   'automation.rss.deleteTitle': 'видалити {title}?',
   'automation.rss.deleteBody':
-    'Relay припиняє перевірку цього каналу. Чернетки та публікації, створені ним, залишаються такими, як вони є.',
+    'Post Array припиняє перевірку цього каналу. Чернетки та публікації, створені ним, залишаються такими, як вони є.',
   'automation.rss.errorTitle': 'Не вдалося прочитати цей канал',
   'automation.rss.errorBody':
-    'Relay продовжує перевірку за звичайним графіком. З часткової відповіді нічого не було опубліковано.',
+    'Post Array продовжує перевірку за звичайним графіком. З часткової відповіді нічого не було опубліковано.',
 
   /* ----------------------------------------------------------------------
-     What Relay refuses to automate
+     What Post Array refuses to automate
      ---------------------------------------------------------------------- */
   'automation.refuse.title': 'Недоступно в жодному правилі',
   'automation.refuse.body':

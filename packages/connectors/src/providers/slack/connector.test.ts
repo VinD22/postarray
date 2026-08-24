@@ -37,7 +37,7 @@ const authRoute = {
     user_id: 'U1',
     user: 'relay',
     team_id: 'T1',
-    team: 'Relay Workspace',
+    team: 'Post Array Workspace',
     url: null,
   },
 };
@@ -95,7 +95,7 @@ describe('slack connector', () => {
     );
     expect(accounts).toHaveLength(1);
     expect(accounts[0]?.externalAccountId).toBe('U1');
-    expect(accounts[0]?.displayName).toBe('Relay Workspace');
+    expect(accounts[0]?.displayName).toBe('Post Array Workspace');
   });
 
   it('lists channels as destinations, excluding archived ones', async () => {

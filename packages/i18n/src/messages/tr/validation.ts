@@ -65,7 +65,7 @@ export const validationMessages = {
     'Tekrarlanan bir gönderinin bitiş tarihi veya bir dizi tekrarı olması gerekir.',
   'validation.schedule_in_past.message': 'Bu süre {timeZone} yılında geçti.',
   'validation.schedule_too_far_ahead.message':
-    'Bu, bu kimlik bilgisi için belirlenen {limit} ileriye bakış setinden daha ileridedir.',
+    'Gönderiler en fazla {limit} öncesine kadar planlanabilir; yüklenen medya da bu süre boyunca saklanır.',
   'validation.schedule_outside_quiet_hours.message':
     'Bu, {project} için ayarlanan sessiz saatlerin içindedir.',
   'validation.duplicate_within_window.message':

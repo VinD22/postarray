@@ -21,15 +21,25 @@ import {
   type StoragePort,
 } from '@relay/application';
 import {
-  ACTIVE_CHANNEL_ALLOWANCE,
   HttpPolarClient,
   MEMBER_ALLOWANCE,
   createCheckoutSession,
   isKnownPolarEventType,
   polarSubscriptionSchema,
+  postCreditPosture,
+  productTiersFromProductIds,
+  tierForProductId,
+  tierProjectAllowance,
 } from '@relay/billing';
 import type { RelayConfig } from '@relay/config';
-import { ERROR_CODES, RelayError, providerIdSchema, type ProviderId } from '@relay/contracts';
+import {
+  ERROR_CODES,
+  RelayError,
+  channelAllowanceForProjects,
+  normalizeChannelLimit,
+  providerIdSchema,
+  type ProviderId,
+} from '@relay/contracts';
 import {
   appendAuditEvent,
   createPrismaClient,
@@ -127,6 +137,14 @@ class DatabaseBillingGateway implements BillingGateway {
         ? entitlement.booleanValue === true
         : entitlement.numericValue !== null);
     if (!enabled || entitlement === null) {
+      // Publishing has a floor no other entitlement has: the free plan. A
+      // workspace with no verified subscription is not refused outright, it is
+      // asked whether it still has publishing credits. Everything else keeps
+      // the strict rule, because "no subscription" genuinely does mean no API
+      // surface, no extra members, and so on.
+      if (input.key === 'publishing.enabled') {
+        return this.#checkPostCredits(input.workspaceId);
+      }
       return {
         allowed: false,
         reasonKey: 'errors.entitlement_missing',
@@ -159,6 +177,59 @@ class DatabaseBillingGateway implements BillingGateway {
       limit,
       used,
     };
+  }
+
+  /**
+   * The free plan's answer to "may this workspace publish".
+   *
+   * The balance row is created by migration 0077 for every workspace, but a
+   * missing row still normalizes to the opening grant rather than to zero: an
+   * unreadable balance is our failure, and the reader is almost always someone
+   * who has not published anything yet. The actual spend happens elsewhere
+   * (`app.spend_post_credit`, called when the receipt is written), atomically,
+   * so this preflight can be generous without ever letting a fourth free post
+   * through.
+   */
+  async #checkPostCredits(workspaceId: string): Promise<{
+    readonly allowed: boolean;
+    readonly reasonKey: string | null;
+    readonly limit: number | null;
+    readonly used: number | null;
+  }> {
+    const row = await withWorkspaceContext(
+      this.#prisma,
+      { workspaceId, role: 'service_role' },
+      async (db) =>
+        db.postCreditBalance.findUnique({
+          where: { workspaceId },
+          select: { balance: true },
+        }),
+    );
+    const posture = postCreditPosture({ plan: 'free', balance: row?.balance });
+    return {
+      allowed: posture.canPublish,
+      reasonKey: posture.canPublish ? null : 'error.post_credits_exhausted.message',
+      limit: null,
+      used: posture.remaining,
+    };
+  }
+
+  /**
+   * One atomic statement: `app.spend_post_credit` (migration 0077) decides
+   * whether the workspace is on the free plan (a verified paid entitlement
+   * makes it a no-op), decrements only if a credit is there, and writes the
+   * ledger row in the same breath. Raw SQL is deliberately outside the
+   * workspace-scoped client: the function is `SECURITY DEFINER`, takes the
+   * workspace id explicitly, and is the single place a balance ever goes down.
+   */
+  async spendPostCredit(input: {
+    readonly workspaceId: string;
+    readonly contentItemId: string | null;
+  }): Promise<number | null> {
+    const rows = await this.#prisma.$queryRaw<
+      { spend_post_credit: number | null }[]
+    >`SELECT app.spend_post_credit(${input.workspaceId}, ${input.contentItemId})`;
+    return rows[0]?.spend_post_credit ?? null;
   }
 
   async recordUsage(input: {
@@ -197,14 +268,27 @@ class DatabaseBillingGateway implements BillingGateway {
       this.#prisma,
       { workspaceId, role: 'service_role' },
       async (db) => {
-        const [subscription, activeChannelCount, activeMemberCount] = await Promise.all([
-          db.subscription.findFirst({
-            orderBy: { updatedAt: 'desc' },
-            include: { polarCustomer: { select: { portalUrl: true } } },
-          }),
-          db.socialConnection.count({ where: { status: { not: 'disconnected' } } }),
-          db.membership.count({ where: { state: { in: ['invited', 'active'] } } }),
-        ]);
+        const [subscription, activeChannelCount, activeMemberCount, channelEntitlement] =
+          await Promise.all([
+            db.subscription.findFirst({
+              orderBy: { updatedAt: 'desc' },
+              include: { polarCustomer: { select: { portalUrl: true } } },
+            }),
+            db.socialConnection.count({ where: { status: { not: 'disconnected' } } }),
+            db.membership.count({ where: { state: { in: ['invited', 'active'] } } }),
+            db.entitlement.findFirst({
+              where: {
+                key: 'channels.active.max',
+                effectiveFrom: { lte: this.#clock.now() },
+                OR: [{ effectiveUntil: null }, { effectiveUntil: { gt: this.#clock.now() } }],
+              },
+              orderBy: { effectiveFrom: 'desc' },
+              select: { numericValue: true },
+            }),
+          ]);
+        // The limit the settings screen reports is the one the database
+        // enforces: the entitlement when one exists, the floor when none does.
+        const channelLimit = normalizeChannelLimit(channelEntitlement?.numericValue);
         if (subscription === null) {
           return {
             status: 'none' as const,
@@ -215,7 +299,7 @@ class DatabaseBillingGateway implements BillingGateway {
             renewalAmount: null,
             portalUrl: null,
             activeChannelCount,
-            channelLimit: ACTIVE_CHANNEL_ALLOWANCE,
+            channelLimit,
             activeMemberCount,
             memberLimit: MEMBER_ALLOWANCE,
           };
@@ -233,7 +317,7 @@ class DatabaseBillingGateway implements BillingGateway {
           renewalAmount: amount,
           portalUrl: subscription.polarCustomer.portalUrl,
           activeChannelCount,
-          channelLimit: ACTIVE_CHANNEL_ALLOWANCE,
+          channelLimit,
           activeMemberCount,
           memberLimit: MEMBER_ALLOWANCE,
         };
@@ -552,11 +636,27 @@ class DatabaseBillingGateway implements BillingGateway {
           graceEndsAt > this.#clock.now()) ||
         (subscription.status === 'canceled' && periodEnd !== null && periodEnd > this.#clock.now());
       const effectiveUntil = enabled ? null : this.#clock.now();
+      // The numeric limits are tier-aware: the tier is resolved from the Polar
+      // product id, projects come from the tier table and channels are derived
+      // from projects (ten per project, one per launch platform). This used to
+      // write the no-entitlement channel floor for every subscriber and no
+      // project allowance at all, which meant a Growth or Studio purchase
+      // bought capacity the database never heard about.
+      const tierKey = tierForProductId(
+        subscription.productId,
+        productTiersFromProductIds(process.env),
+      );
+      const projectAllowance = tierProjectAllowance(tierKey);
       const entitlements = [
+        {
+          key: 'projects.active.max',
+          kind: 'numeric_limit' as const,
+          numericValue: projectAllowance,
+        },
         {
           key: 'channels.active.max',
           kind: 'numeric_limit' as const,
-          numericValue: ACTIVE_CHANNEL_ALLOWANCE,
+          numericValue: channelAllowanceForProjects(projectAllowance),
         },
         { key: 'team.members.max', kind: 'numeric_limit' as const, numericValue: MEMBER_ALLOWANCE },
         { key: 'publishing.enabled', kind: 'boolean_flag' as const, booleanValue: enabled },

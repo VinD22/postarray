@@ -114,7 +114,7 @@ export const connectionsApi = {
   /**
    * Start the OAuth handoff. Returns the provider consent URL and the exact
    * scopes the consent screen will show, so the permissions can be explained
-   * before the user leaves Relay.
+   * before the user leaves Post Array.
    */
   beginOAuth: (
     input: { provider: ProviderId; projectId: string; returnUrl: string },

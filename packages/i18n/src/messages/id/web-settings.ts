@@ -204,7 +204,7 @@ export const webSettingsMessages = {
   'settings.ui.security.grantScopes': 'Izin yang diberikan',
   'settings.ui.security.socialPermissionsTitle': 'Izin akun sosial',
   'settings.ui.security.socialPermissionsBody':
-    'Apa yang diizinkan oleh setiap akun yang terhubung untuk dilakukan oleh Relay, dari snapshot kemampuan yang diambil pada waktu koneksi.',
+    'Apa yang diizinkan oleh setiap akun yang terhubung untuk dilakukan oleh Post Array, dari snapshot kemampuan yang diambil pada waktu koneksi.',
   'settings.ui.security.viewInSection': 'Kelola di {section}',
   'settings.ui.security.emptySessions': 'Hanya sesi ini yang masuk.',
   'settings.ui.security.emptyGrants':
@@ -240,7 +240,7 @@ export const webSettingsMessages = {
     'Pilih hal terkecil yang memecahkan masalah Anda. Setiap opsi di bawah menunjukkan apa yang bertahan.',
   'settings.ui.data.deleteConnection': 'Cabut satu koneksi sosial',
   'settings.ui.data.deleteConnectionHelp':
-    'Menghapus akses Relay ke akun itu. Ruang kerja, isinya, dan kuitansinya tetap ada.',
+    'Menghapus akses Post Array ke akun itu. Ruang kerja, isinya, dan kuitansinya tetap ada.',
   'settings.ui.data.deleteProject': 'Hapus merek',
   'settings.ui.data.deleteProjectHelp':
     'Menghapus merek, aturannya, dan glosariumnya. Konten yang diterbitkan di bawahnya menyimpan kuitansinya.',
@@ -268,7 +268,7 @@ export const webSettingsMessages = {
     'Postingan yang sudah ada di platform tidak dihapus. Hapus yang ada di platform.',
   'settings.ui.data.exportFirst': 'Ekspor data Anda sebelum Anda menghapusnya.',
   'settings.ui.referral.description':
-    'Bagikan Relay dengan tautan yang diungkapkan. Komisi tidak pernah bergantung pada tinjauan positif.',
+    'Bagikan Post Array dengan tautan yang diungkapkan. Komisi tidak pernah bergantung pada tinjauan positif.',
   'settings.ui.referral.linkLabel': 'Tautan referensi Anda',
   'settings.ui.referral.tableCaption': 'Pendaftaran yang diatribusikan dan status komisinya',
   'settings.ui.referral.column.signup': 'Daftar',
@@ -404,7 +404,7 @@ export const webSettingsMessages = {
     'Daftarkan aplikasi agar orang lain dapat memberinya akses ke ruang kerja mereka. Setiap aplikasi memiliki identitasnya sendiri, daftar pengalihan yang diizinkan, dan jejak auditnya sendiri.',
   'developer.ui.apps.emptyTitle': 'Tidak ada aplikasi yang terdaftar',
   'developer.ui.apps.emptyBody':
-    'Daftarkan aplikasi ketika produk lain perlu bertindak atas nama pengguna Relay. Untuk otomatisasi Anda sendiri, gunakan akun layanan sebagai gantinya.',
+    'Daftarkan aplikasi ketika produk lain perlu bertindak atas nama pengguna Post Array. Untuk otomatisasi Anda sendiri, gunakan akun layanan sebagai gantinya.',
   'developer.ui.apps.emptyExample':
     'Contoh: "Acme Publisher", klien rahasia, pengalihan https://acme.example/oauth/callback, cakupan akun:baca dan draf:tulis.',
   'developer.ui.apps.typeHelp':
@@ -428,7 +428,7 @@ export const webSettingsMessages = {
   'developer.ui.apps.scopeGroupHelp.read':
     'Ini memungkinkan aplikasi melihat data. Tidak ada yang berubah.',
   'developer.ui.apps.scopeGroupHelp.reversible':
-    'Ini memungkinkan aplikasi membuat atau mengedit sesuatu di dalam Relay. Tidak ada yang mencapai platform.',
+    'Ini memungkinkan aplikasi membuat atau mengedit sesuatu di dalam Post Array. Tidak ada yang mencapai platform.',
   'developer.ui.apps.scopeGroupHelp.consequential':
     'Hal ini dapat menyebabkan postingan di akun nyata, atau mengubah siapa yang dapat menghubungi akun Anda. Mereka selalu dicantumkan secara terpisah dan tidak pernah dibundel.',
   'developer.ui.apps.noBundling':
@@ -585,7 +585,7 @@ export const webSettingsMessages = {
   'billing.ui.allowanceMetered':
     'X dan beberapa penyedia lainnya mengenakan biaya per operasi. Biaya tersebut dibebankan sebesar biayanya dan bukan merupakan bagian dari harga paket.',
   'billing.ui.allowanceNoMedia':
-    'Pembuatan gambar dan pembuatan video tidak termasuk dan tidak dijual. Relay tidak menghasilkan media.',
+    'Pembuatan gambar dan pembuatan video tidak termasuk dan tidak dijual. Post Array tidak menghasilkan media.',
   'billing.ui.readFairUse': 'Baca kebijakan penggunaan wajar',
   'billing.ui.readMeteredPolicy': 'Baca cara penagihan penggunaan terukur',
   'billing.ui.usageCaption':
@@ -646,8 +646,6 @@ export const webSettingsMessages = {
   'billing.ui.canceledNotice': 'Langganan ini dibatalkan.',
   'billing.ui.resume': 'Mulai berlangganan lagi',
   'billing.ui.noSubscriptionTitle': 'Tidak ada langganan di ruang kerja ini',
-  'billing.ui.noSubscriptionBody':
-    'Mulai uji coba tujuh hari untuk dipublikasikan. Polar mengumpulkan metode pembayaran dan tidak mengenakan biaya apa pun hari ini.',
   'billing.ui.noSubscriptionExample':
     'Bulanan adalah $29. Tahunan adalah $300, yaitu $25/bulan yang ditagih setiap tahun. Hemat $48/tahun.',
   'billing.ui.overChannelLimitAction': 'Tinjau saluran yang terhubung',
@@ -759,7 +757,7 @@ export const webSettingsMessages = {
   'growth.ui.ugc.incentiveDisclosure':
     'Insentif harus diungkapkan pada setiap postingan yang dihasilkan darinya, oleh Anda, dan oleh peserta.',
   'growth.ui.ugc.honesty':
-    'Ini merencanakan kampanye yang Anda jalankan dengan orang sungguhan. Relay tidak menemukan pembuat, menghubungi mereka, menulis testimonial, atau membuat konten pelanggan.',
+    'Ini merencanakan kampanye yang Anda jalankan dengan orang sungguhan. Post Array tidak menemukan pembuat, menghubungi mereka, menulis testimonial, atau membuat konten pelanggan.',
   'growth.ui.opportunities.caption':
     'Peluang terverifikasi dari katalog, diberi peringkat berdasarkan kesesuaian dengan profil Anda',
   'growth.ui.opportunities.column.opportunity': 'Peluang',
@@ -781,7 +779,7 @@ export const webSettingsMessages = {
   'growth.ui.opportunities.prepareRules': 'Aturan mereka, dikutip',
   'growth.ui.opportunities.prepareChecklist': 'Apa yang harus dipersiapkan',
   'growth.ui.opportunities.prepareManual':
-    'Anda mengirimkannya sendiri di situs mereka. Relay tidak mengisi formulir, membuat akun atau mengirim email kepada siapa pun.',
+    'Anda mengirimkannya sendiri di situs mereka. Post Array tidak mengisi formulir, membuat akun atau mengirim email kepada siapa pun.',
   'growth.ui.opportunities.pitchTitle': 'Draf promosi',
   'growth.ui.opportunities.pitchHelp':
     'Edit sebelum Anda mengirimkannya. Ini hanya menggunakan fakta yang Anda konfirmasi.',
@@ -798,7 +796,7 @@ export const webSettingsMessages = {
   'growth.ui.tools.emptyBody':
     'Setiap entri memerlukan harga yang diperiksa, ketentuan hak yang diperiksa, dan batasan yang disebutkan sebelum muncul di sini.',
   'growth.ui.tools.emptyExample':
-    'Sebuah entri menyatakan kegunaan terbaiknya, mengapa sesuai dengan rencana Anda, apa yang tidak dapat dilakukan, keterampilan yang dibutuhkan, bagaimana output kembali ke Relay, dan kapan harga terakhir diperiksa.',
+    'Sebuah entri menyatakan kegunaan terbaiknya, mengapa sesuai dengan rencana Anda, apa yang tidak dapat dilakukan, keterampilan yang dibutuhkan, bagaimana output kembali ke Post Array, dan kapan harga terakhir diperiksa.',
   'growth.ui.tools.openSite': 'Buka situs resmi untuk {name}',
   'growth.ui.tools.stale':
     'Melewati tanggal peninjauannya. Dikecualikan dari rencana yang dihasilkan.',

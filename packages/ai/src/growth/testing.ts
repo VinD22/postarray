@@ -21,7 +21,7 @@ export function makeBusinessProfile(overrides: Partial<BusinessProfile> = {}): B
     id: TEST_PROFILE_ID,
     workspaceId: TEST_WORKSPACE_ID,
     revision: 1,
-    productName: 'Relay',
+    productName: 'Post Array',
     siteUrl: 'https://example.test',
     description: 'A publishing control plane for small teams.',
     category: 'software',

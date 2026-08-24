@@ -232,7 +232,7 @@ export const webSettingsMessages = {
   'settings.ui.security.grantScopes': 'Permissões concedidas',
   'settings.ui.security.socialPermissionsTitle': 'Permissões de conta social',
   'settings.ui.security.socialPermissionsBody':
-    'O que cada conta conectada permitiu que Relay fizesse, a partir do instantâneo de capacidade obtido no momento da conexão.',
+    'O que cada conta conectada permitiu que Post Array fizesse, a partir do instantâneo de capacidade obtido no momento da conexão.',
   'settings.ui.security.viewInSection': 'Gerenciar em {section}',
   'settings.ui.security.emptySessions': 'Somente esta sessão está conectada.',
   'settings.ui.security.emptyGrants':
@@ -248,7 +248,7 @@ export const webSettingsMessages = {
   /* --------------------------------------------------------------- referrals */
 
   'settings.ui.referral.description':
-    'Compartilhe Relay com um link divulgado. A Comissão nunca está condicionada a uma avaliação positiva.',
+    'Compartilhe Post Array com um link divulgado. A Comissão nunca está condicionada a uma avaliação positiva.',
   'settings.ui.referral.linkLabel': 'Seu link de indicação',
   'settings.ui.referral.tableCaption': 'Inscrições atribuídas e seu estado de comissão',
   'settings.ui.referral.column.signup': 'Inscreva-se',
@@ -397,7 +397,7 @@ export const webSettingsMessages = {
     'Registre um aplicativo para que outras pessoas possam conceder acesso ao seu espaço de trabalho. Cada aplicativo tem sua própria identidade, sua própria lista de permissões de redirecionamento e sua própria trilha de auditoria.',
   'developer.ui.apps.emptyTitle': 'Nenhum aplicativo registrado',
   'developer.ui.apps.emptyBody':
-    'Registre um aplicativo quando outro produto precisar agir em nome de um usuário Relay. Para sua própria automação, use uma conta de serviço.',
+    'Registre um aplicativo quando outro produto precisar agir em nome de um usuário Post Array. Para sua própria automação, use uma conta de serviço.',
   'developer.ui.apps.emptyExample':
     'Exemplo: "Acme Publisher", cliente confidencial, redirecionamento https://acme.example/oauth/callback, escopos de contas: leitura e rascunhos: gravação.',
   'developer.ui.apps.typeHelp':
@@ -421,7 +421,7 @@ export const webSettingsMessages = {
   'developer.ui.apps.scopeGroupHelp.read':
     'Eles permitem que o aplicativo analise os dados. Nada muda.',
   'developer.ui.apps.scopeGroupHelp.reversible':
-    'Eles permitem que o aplicativo crie ou edite coisas dentro de Relay. Nada chega a uma plataforma.',
+    'Eles permitem que o aplicativo crie ou edite coisas dentro de Post Array. Nada chega a uma plataforma.',
   'developer.ui.apps.scopeGroupHelp.consequential':
     'Isso pode causar uma publicação em uma conta real ou alterar quem pode acessar suas contas. Eles são sempre listados separadamente e nunca são agrupados.',
   'developer.ui.apps.noBundling':
@@ -583,7 +583,7 @@ export const webSettingsMessages = {
   'billing.ui.allowanceMetered':
     'X e alguns outros provedores cobram por operação. Essas cobranças são repassadas ao custo e não fazem parte do preço do plano.',
   'billing.ui.allowanceNoMedia':
-    'A geração de imagem e a geração de vídeo não estão incluídas e não são vendidas. Relay não gera mídia.',
+    'A geração de imagem e a geração de vídeo não estão incluídas e não são vendidas. Post Array não gera mídia.',
   'billing.ui.readFairUse': 'Leia a política de uso justo',
   'billing.ui.readMeteredPolicy': 'Leia como o uso medido é cobrado',
   'billing.ui.usageCaption': 'Uso medido do provedor neste período, cobrado pelo custo',
@@ -645,8 +645,6 @@ export const webSettingsMessages = {
   'billing.ui.canceledNotice': 'Esta assinatura foi cancelada.',
   'billing.ui.resume': 'Inicie a assinatura novamente',
   'billing.ui.noSubscriptionTitle': 'Sem assinatura neste espaço de trabalho',
-  'billing.ui.noSubscriptionBody':
-    'Inicie o teste de sete dias para publicar. A Polar coleta uma forma de pagamento e não cobra nada hoje.',
   'billing.ui.noSubscriptionExample':
     'O mês custa US$ 29. O valor anual é de US$ 300, o que equivale a US$ 25/mês cobrado anualmente. Economize $ 48/ano.',
   'billing.ui.overChannelLimitAction': 'Revisar canais conectados',
@@ -766,7 +764,7 @@ export const webSettingsMessages = {
   'growth.ui.ugc.incentiveDisclosure':
     'Um incentivo deverá ser divulgado em cada publicação que dele resultar, por você e pelo participante.',
   'growth.ui.ugc.honesty':
-    'Isso planeja uma campanha que você realiza com pessoas reais. Relay não encontra criadores, não os contata, escreve depoimentos ou cria conteúdo para clientes.',
+    'Isso planeja uma campanha que você realiza com pessoas reais. Post Array não encontra criadores, não os contata, escreve depoimentos ou cria conteúdo para clientes.',
 
   'growth.ui.opportunities.caption':
     'Oportunidades verificadas no catálogo, classificadas por adequação ao seu perfil',
@@ -789,7 +787,7 @@ export const webSettingsMessages = {
   'growth.ui.opportunities.prepareRules': 'Suas regras, citadas',
   'growth.ui.opportunities.prepareChecklist': 'O que preparar',
   'growth.ui.opportunities.prepareManual':
-    'Você mesmo envia isso no site deles. Relay não preenche formulários, cria contas ou envia e-mails para ninguém.',
+    'Você mesmo envia isso no site deles. Post Array não preenche formulários, cria contas ou envia e-mails para ninguém.',
   'growth.ui.opportunities.pitchTitle': 'Rascunho do argumento de venda',
   'growth.ui.opportunities.pitchHelp':
     'Edite antes de enviá-lo. Ele usa apenas os fatos que você confirmou.',
@@ -808,7 +806,7 @@ export const webSettingsMessages = {
   'growth.ui.tools.emptyBody':
     'Cada inscrição precisa de um preço verificado, termos de direitos verificados e uma limitação nomeada antes de aparecer aqui.',
   'growth.ui.tools.emptyExample':
-    'Uma entrada diz para que é melhor, por que se adapta ao seu plano, o que não pode fazer, as habilidades necessárias, como o resultado volta para Relay e quando o preço foi verificado pela última vez.',
+    'Uma entrada diz para que é melhor, por que se adapta ao seu plano, o que não pode fazer, as habilidades necessárias, como o resultado volta para Post Array e quando o preço foi verificado pela última vez.',
   'growth.ui.tools.openSite': 'Abra o site oficial de {name}',
   'growth.ui.tools.stale': 'Passou a data de revisão. Excluído dos planos gerados.',
 

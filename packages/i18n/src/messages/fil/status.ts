@@ -98,6 +98,6 @@ export const statusMessages = {
     'Hindi ito maglalathala. Nananatili rito ang draft para maiiskedyul mo itong muli.',
   'confirm.publishNow.title': 'I-publish ngayon?',
   'confirm.publishNow.body':
-    '{count, plural, one {Ito ay naglalathala sa # account agad} other {Ito ay naglalathala sa # mga account kaagad}}. Hindi ito maalala mula sa Relay.',
+    '{count, plural, one {Ito ay naglalathala sa # account agad} other {Ito ay naglalathala sa # mga account kaagad}}. Hindi ito maalala mula sa Post Array.',
   'confirm.typeToConfirm': 'Uri {word} para kumpirmahin.',
 } as const;

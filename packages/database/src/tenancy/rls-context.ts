@@ -24,7 +24,7 @@ import { withWorkspace, type WorkspaceScopedClient } from './workspace-scope';
 export type RlsRole = 'anon' | 'authenticated' | 'service_role';
 
 export interface RlsClaims {
-  /** Relay user id. Read by `app.current_user_id()`. */
+  /** Post Array user id. Read by `app.current_user_id()`. */
   readonly userId?: string;
   /**
    * Narrows the actor to one workspace. It intersects with real membership in
@@ -32,7 +32,7 @@ export interface RlsClaims {
    */
   readonly workspaceId?: string;
   readonly role?: RlsRole;
-  /** Neon Auth subject, when the Relay user id has not been resolved yet. */
+  /** Neon Auth subject, when the Post Array user id has not been resolved yet. */
   readonly authSubjectId?: string;
   /** The developer application acting on the user's behalf, for the audit line. */
   readonly clientId?: string;
@@ -154,7 +154,7 @@ function assertRelayId(value: string, prefix: string, field: string): void {
   if (!isId(prefix, value)) {
     throw new DatabaseError(
       DATABASE_ERROR_CODES.invalidRlsContext,
-      `RLS claim "${field}" must be a valid Relay identifier.`,
+      `RLS claim "${field}" must be a valid Post Array identifier.`,
       { field },
     );
   }

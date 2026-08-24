@@ -36,7 +36,7 @@ export const connectionMessages = {
   'connection.permissions.granted': 'Beviljas',
   'connection.permissions.missing': 'Inte beviljat',
   'connection.permissions.explainBeforeOAuth':
-    'Relay kommer att fråga {provider} om dessa behörigheter. Du kan koppla från när som helst.',
+    'Post Array kommer att fråga {provider} om dessa behörigheter. Du kan koppla från när som helst.',
   'connection.permissions.whyNeeded': 'Varför detta behövs',
 
   'connection.reconnect.title': 'Återanslut {account}',
@@ -89,11 +89,11 @@ export const connectionMessages = {
   'capability.level.requires_review': 'Behöver granskning av plattformen',
   'capability.level.beta': 'Beta',
   'capability.level.unknown': 'Ej tillgänglig',
-  'capability.explain.supported': 'Relay kan göra detta för detta konto idag.',
+  'capability.explain.supported': 'Post Array kan göra detta för detta konto idag.',
   'capability.explain.unsupported':
     '{provider} erbjuder inte detta via sitt officiella API, så inget verktyg kan göra det säkert.',
   'capability.explain.not_implemented':
-    '{provider} erbjuder detta, men Relay har inte byggt det ännu. Det finns på anslutningsfärdplanen.',
+    '{provider} erbjuder detta, men Post Array har inte byggt det ännu. Det finns på anslutningsfärdplanen.',
   'capability.explain.requires_review':
     '{provider} beviljar detta endast efter att den granskat appen eller kontot. Den förblir otillgänglig tills den recensionen går igenom.',
   'capability.explain.beta':

@@ -1,7 +1,7 @@
 /**
  * Redaction.
  *
- * Nothing in Relay logs, traces, receipts or support tooling may contain a
+ * Nothing in Post Array logs, traces, receipts or support tooling may contain a
  * token. `redact` deep clones a value, masks any key that looks like a secret,
  * and masks anything inside a string that looks like a JWT or a bearer token.
  *
@@ -61,7 +61,7 @@ const BEARER_PATTERN = /\b(bearer|basic|token)\s+[A-Za-z0-9._~+/=-]{8,}/gi;
 const AUTH_ASSIGNMENT_PATTERN =
   /\b((?:access|refresh|id|api|auth|client)[_-]?(?:token|secret|key)|password)\b(\s*[=:]\s*)("?)[^\s"'&,;]{6,}\3/gi;
 /**
- * A whole Relay credential in free text: `<prefix><public id>_<secret>`.
+ * A whole Post Array credential in free text: `<prefix><public id>_<secret>`.
  *
  * Only the forms that carry a secret half are listed. `rly_pk_` is a public
  * client id with nothing secret in it, and masking it would hide the very

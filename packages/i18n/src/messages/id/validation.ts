@@ -58,7 +58,7 @@ export const validationMessages = {
     'Postingan yang berulang memerlukan tanggal akhir atau beberapa pengulangan.',
   'validation.schedule_in_past.message': 'Waktu itu telah berlalu di {timeZone}.',
   'validation.schedule_too_far_ahead.message':
-    'Hal ini jauh lebih maju dibandingkan {limit} yang ditetapkan untuk kredensial ini.',
+    'Postingan dapat dijadwalkan hingga {limit} sebelumnya, yang juga merupakan lama media yang diunggah disimpan.',
   'validation.schedule_outside_quiet_hours.message':
     'Ini termasuk dalam jam tenang yang ditetapkan untuk {project}.',
   'validation.duplicate_within_window.message':

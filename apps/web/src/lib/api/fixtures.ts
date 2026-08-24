@@ -470,7 +470,7 @@ export const demoAudit: readonly AuditEventView[] = [
   {
     id: 'aud_demo01',
     at: at(-5 * HOUR),
-    actorName: 'Relay',
+    actorName: 'Post Array',
     surface: 'web',
     action: 'post.published',
     subject: 'Launch thread',

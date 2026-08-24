@@ -8,8 +8,8 @@
  */
 export const webShellMessages = {
   /* -- Document and shell chrome ----------------------------------------- */
-  'shell.appName': 'Relay',
-  'shell.documentTitle': '{page} · Relay',
+  'shell.appName': 'Post Array',
+  'shell.documentTitle': '{page} · Post Array',
   'shell.tagline': 'A publishing desk for people and agents.',
   'shell.menu.open': 'Open the menu',
   'shell.menu.title': 'Menu',
@@ -30,7 +30,7 @@ export const webShellMessages = {
   'shell.demo.badge': 'Demo data',
   'shell.demo.title': 'You are looking at demo data',
   'shell.demo.body':
-    'The Relay API is not reachable from this browser, so the screens are filled with a seeded example workspace. Nothing here is connected to a real account and nothing can publish.',
+    'The Post Array API is not reachable from this browser, so the screens are filled with a seeded example workspace. Nothing here is connected to a real account and nothing can publish.',
   'shell.demo.howToConnect': 'Set NEXT_PUBLIC_RELAY_API_URL and restart the app to use live data.',
 
   /* -- Connectivity ------------------------------------------------------ */
@@ -141,7 +141,7 @@ export const webShellMessages = {
     'Trial, {days, plural, =0 {ends today} one {# day left} other {# days left}}. Converts {date} to {amount}.',
   'home.trial.manage': 'Manage or cancel',
   'home.error.title': 'Home could not load',
-  'home.error.body': 'Your workspace is intact. This is a problem reaching the Relay API.',
+  'home.error.body': 'Your workspace is intact. This is a problem reaching the Post Array API.',
 
   /* -- Home, second pass: the stat row and the weekly digest card --------
      Every tile here is a count we can actually read. A tile whose read
@@ -174,9 +174,9 @@ export const webShellMessages = {
     'The same workflow from the web app, the REST API, MCP, the CLI and webhooks.',
   'auth.provider.title': 'Before you continue',
   'auth.provider.google.access':
-    'Google shares your name, email address and profile picture with Relay. Relay cannot read your Gmail, Drive or Calendar.',
+    'Google shares your name, email address and profile picture with Post Array. Post Array cannot read your Gmail, Drive or Calendar.',
   'auth.provider.facebook.access':
-    'Facebook shares your name, email address and profile picture with Relay. Connecting a Page to publish to is a separate step you approve later.',
+    'Facebook shares your name, email address and profile picture with Post Array. Connecting a Page to publish to is a separate step you approve later.',
   'auth.provider.note': 'This signs you in. It does not connect an account to publish to.',
   'auth.continueWithEmail': 'Continue with email',
   'auth.method.password': 'Password',
@@ -196,8 +196,8 @@ export const webShellMessages = {
     'That username and password do not match an account. Check both and try again.',
   'auth.failure.noAccountLeak': 'For your safety we do not say whether an address is registered.',
   'auth.failure.provider': 'The sign in with {provider} did not complete. Nothing was changed.',
-  'auth.failure.network': 'We could not reach Relay. Check your connection and try again.',
-  'auth.signUp.trialNote': 'Seven full trial days. A payment method is required. $0 due today.',
+  'auth.failure.network': 'We could not reach Post Array. Check your connection and try again.',
+  'auth.signUp.trialNote': 'No card and no countdown. Connect accounts, schedule freely, and your first published posts are included.',
   'auth.signUp.emailInUseNote':
     'If this address already has an account, we email a sign in link instead of creating a second one.',
   'auth.legal.readTerms': 'Read the Terms',
@@ -230,7 +230,7 @@ export const webShellMessages = {
   'onboarding.workspace.timeZoneDetected': 'Detected from this device: {timeZone}',
   'onboarding.connect.permissionsTitle': 'What {provider} will be asked for',
   'onboarding.connect.permissionsFooter':
-    'Relay never asks for a permission it does not use, and you can disconnect at any time.',
+    'Post Array never asks for a permission it does not use, and you can disconnect at any time.',
   'onboarding.connect.chooseProvider': 'Choose a platform',
   'onboarding.connect.opensProvider': 'Continuing opens {provider} in this tab.',
   'onboarding.compose.help':

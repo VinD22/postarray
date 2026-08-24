@@ -9,7 +9,7 @@
  *    verification date in the page that renders it. No adjective stands in for
  *    a number.
  *  - Nothing here promises reach, ranking, engagement or "going" anywhere.
- *  - Nothing here describes AI image or AI video generation as a Relay
+ *  - Nothing here describes AI image or AI video generation as a Post Array
  *    feature, because it is not one.
  *  - No integration is called official until the provider has approved it. The
  *    connector matrix uses `capability.level.*` from `connections.ts` so the
@@ -30,12 +30,10 @@ export const webMarketingMessages = {
   'web.nav.closeMenu': 'Zavřít nabídku',
   'web.nav.footerLabel': 'Navigace v zápatí',
 
-  'web.cta.startTrial': 'Zahajte 7denní zkušební verzi',
+  'web.cta.startTrial': 'Začněte zdarma, bez karty',
   'web.cta.seePricing': 'Zobrazit cenu',
   'web.cta.seeCapabilities': 'Přečtěte si matici schopností',
   'web.cta.readDocs': 'Přečtěte si dokumentaci',
-  'web.cta.trialFootnote':
-    'Polar vyzvedne platební metodu, dnes naúčtuje 0 USD a před potvrzením zobrazí přesné datum prvního naúčtování.',
 
   'web.label.lastReviewed': 'Poslední kontrola {date}',
   'web.label.nextReview': 'Další recenze {date}',
@@ -59,15 +57,15 @@ export const webMarketingMessages = {
   /* Metadata                                                                */
   /* ---------------------------------------------------------------------- */
 
-  'web.meta.home.title': 'Relay, vícejazyčná řídicí rovina publikování',
+  'web.meta.home.title': 'Post Array, vícejazyčná řídicí rovina publikování',
   'web.meta.home.description':
     'Přeměňte jeden získaný nápad na obsah nativní platformy, jednou jej schválte, spolehlivě publikujte prostřednictvím oficiálních rozhraní API platformy a zjistěte, co dále zlepšit.',
   'web.meta.product.title': 'Jak relé funguje',
   'web.meta.product.description':
     'Prohlídka publikačního pultu: pište jednou, přizpůsobte se pro každou platformu, ověřujte podle skutečných limitů, schvalujte, plánujte, publikujte a uschovejte účtenku.',
-  'web.meta.integrations.title': 'Platforms Relay publikuje na',
+  'web.meta.integrations.title': 'Platforms Post Array publikuje na',
   'web.meta.integrations.description':
-    'K jakým platformám se Relay připojuje, co dnes každé připojení umí a co samotná platforma neumožňuje.',
+    'K jakým platformám se Post Array připojuje, co dnes každé připojení umí a co samotná platforma neumožňuje.',
   'web.meta.capabilities.title': 'Matrice schopností konektoru',
   'web.meta.capabilities.description':
     'Tabulka pro jednotlivé platformy, podle schopností vygenerovaná z našich definic konektorů, oddělující to, co jsme vytvořili, od toho, co platforma nenabízí.',
@@ -81,8 +79,6 @@ export const webMarketingMessages = {
   'web.meta.developers.description':
     'Jeden backend za webovou aplikací, REST API, vzdálený MCP server, CLI a podepsané webhooky. Stejná pravidla schvalování na každém povrchu.',
   'web.meta.pricing.title': 'Cena',
-  'web.meta.pricing.description':
-    'Jeden plán. 29 $ měsíčně nebo 300 $ ročně, což je 25 $ měsíčně účtovaných ročně. 30 aktivních kanálů, neomezený počet členů týmu, žádné úrovně funkcí.',
   'web.meta.resources.title': 'Zdroje',
   'web.meta.resources.description':
     'Stav, changelog, dokumentace, metodika, srovnání, radar nástrojů a katalog příležitostí.',
@@ -93,7 +89,7 @@ export const webMarketingMessages = {
   'web.meta.changelog.description': 'Co bylo dodáno, co se změnilo u konektorů a co bylo opraveno.',
   'web.meta.docs.title': 'Dokumentace',
   'web.meta.docs.description':
-    'REST API, MCP server, CLI a dokumentace webhooku pro budování na Relay.',
+    'REST API, MCP server, CLI a dokumentace webhooku pro budování na Post Array.',
   'web.meta.methodology.title': 'Metodika',
   'web.meta.methodology.description':
     'Jak zkoumáme nároky na platformě, jak je datujeme, jak porovnáváme jiné produkty a jak opravujeme chyby.',
@@ -117,9 +113,7 @@ export const webMarketingMessages = {
   'web.home.promise':
     'Přeměňte jeden získaný nápad na obsah nativní platformy, jednou jej schválte, spolehlivě publikujte a zjistěte, co dále zlepšit.',
   'web.home.lede':
-    'Relay je vydavatelský stůl pro lidi, kteří jsou zodpovědní za to, co vyjde. Napíšete jednou, přizpůsobíte se pro každou platformu, uvidíte skutečné limity, než naplánujete, získáte potřebný souhlas, publikujete prostřednictvím oficiálních rozhraní API platformy a u každého příspěvku si ponecháte potvrzení.',
-  'web.home.summaryLine':
-    'Jeden tarif za 29 $ měsíčně nebo 300 $ ročně. 30 aktivních sociálních kanálů, neomezený počet členů týmu, žádné úrovně funkcí. Sedmidenní zkušební verze vybírá platební metodu a účtuje 0 $ při placení.',
+    'Post Array je vydavatelský stůl pro lidi, kteří jsou zodpovědní za to, co vyjde. Napíšete jednou, přizpůsobíte se pro každou platformu, uvidíte skutečné limity, než naplánujete, získáte potřebný souhlas, publikujete prostřednictvím oficiálních rozhraní API platformy a u každého příspěvku si ponecháte potvrzení.',
 
   'web.home.example.title': 'Jeden nápad, pět verzí nativních pro platformu',
   'web.home.example.body':
@@ -163,7 +157,7 @@ export const webMarketingMessages = {
     'Rozhraní je k dispozici ve vybraných jazycích. Adaptace obsahu pokrývá 20 jazyků obsahu a každý z nich lze před zveřejněním zkontrolovat.',
   'web.home.pillars.loop.title': 'Uzavřete smyčku',
   'web.home.pillars.loop.body':
-    'Analytics, které pojmenovávají metriku, platformu, která ji nahlásila, jmenovatel a kdy byla naposledy aktualizována. Tam, kde platforma něco nehlásí, Relay to řekne namísto zobrazení nuly.',
+    'Analytics, které pojmenovávají metriku, platformu, která ji nahlásila, jmenovatel a kdy byla naposledy aktualizována. Tam, kde platforma něco nehlásí, Post Array to řekne namísto zobrazení nuly.',
   'web.home.pillars.loop.proof':
     'Příspěvek se porovnává spíše s vaším vlastním mediánem než se skóre, které nikdo nemůže zkontrolovat.',
   'web.home.pillars.anywhere.title': 'Pracujte z místa, kde již jste',
@@ -175,13 +169,13 @@ export const webMarketingMessages = {
   'web.home.pillars.economics.body':
     'Jedna cena, každá dodávaná funkce, 30 aktivních kanálů a neomezený počet členů týmu. Využití platformy, které si poskytovatel účtuje za operaci, je zahrnuto v ceně a zobrazeno před potvrzením akce.',
   'web.home.pillars.economics.proof':
-    'Neexistuje žádný kreditní systém pro generování obrázků nebo videa, protože Relay negeneruje média.',
+    'Neexistuje žádný kreditní systém pro generování obrázků nebo videa, protože Post Array negeneruje média.',
 
   'web.home.honest.title': 'Co relé nedělá',
   'web.home.honest.lede':
     'Toto jsou hranice, nikoli škádlení s plánem. Pokud se jeden z nich změní, změní se nejprve v changelogu.',
   'web.home.honest.noMedia':
-    'Žádné AI generování obrazu a žádné AI generování videa. Relay přizpůsobuje, schvaluje, publikuje a měří média, která přinášíte.',
+    'Žádné AI generování obrazu a žádné AI generování videa. Post Array přizpůsobuje, schvaluje, publikuje a měří média, která přinášíte.',
   'web.home.honest.noAutomationOfEngagement':
     'Žádné automatické lajky, sledování, opětovné příspěvky, nevyžádané odpovědi ani přímé zprávy. Žádné moduly zapojení a žádné vymyšlené zapojení.',
   'web.home.honest.noUnofficial':
@@ -298,7 +292,7 @@ export const webMarketingMessages = {
 
   'web.creators.title': 'Pro tvůrce',
   'web.creators.lede':
-    'Zveřejňujete stejný nápad v několika formátech, někdy ve více než jednom jazyce, a jste celý tým. Práce, kterou Relay odstraňuje, je přepisování, opětovné ořezávání a kontrola.',
+    'Zveřejňujete stejný nápad v několika formátech, někdy ve více než jednom jazyce, a jste celý tým. Práce, kterou Post Array odstraňuje, je přepisování, opětovné ořezávání a kontrola.',
   'web.creators.job.adapt.title': 'Napište to jednou, odešlete pět nativních verzí',
   'web.creators.job.adapt.body':
     'Hlavní verze nese myšlenku. Každý účet získá délku, oříznutí, nastavení a tón, který platforma očekává, a můžete je všechny vidět vedle sebe, než se zapíšete.',
@@ -307,13 +301,13 @@ export const webMarketingMessages = {
     'Přepis zachovává záměr spíše než slova, používá glosář vašeho projektu a označí, zda jej četl nativní recenzent. Nic není publikováno v jazyce, za který nemůžete ručit, pokud to neřeknete.',
   'web.creators.job.rights.title': 'Uchovávejte záznam o svých právech u souboru',
   'web.creators.job.rights.body':
-    'Média nesou, odkud pochází, kdo je držitelem práv a zda byla vytvořena pomocí generativního nástroje. Platformy se stále více ptají. Relay uloží vaši odpověď s aktivem, místo aby se vás znovu zeptal.',
+    'Média nesou, odkud pochází, kdo je držitelem práv a zda byla vytvořena pomocí generativního nástroje. Platformy se stále více ptají. Post Array uloží vaši odpověď s aktivem, místo aby se vás znovu zeptal.',
   'web.creators.job.cost.title': 'Znáte cenu před odesláním příspěvku',
   'web.creators.job.cost.body':
-    'X účtuje za operaci a účtuje více za příspěvek obsahující adresu URL. Relay to odhadne, než to potvrdíte, takže náročný týden na odkaz je spíše rozhodnutím než překvapením z faktury.',
+    'X účtuje za operaci a účtuje více za příspěvek obsahující adresu URL. Post Array to odhadne, než to potvrdíte, takže náročný týden na odkaz je spíše rozhodnutím než překvapením z faktury.',
   'web.creators.notFor.title': 'Co to není',
   'web.creators.notFor.body':
-    'Relay negeneruje obrázky ani video, nespouští automatizaci zapojení a nepředpovídá, jak bude příspěvek fungovat. Pokud to jsou nástroje, které chcete, dělají je jiné produkty a my bychom byli raději, kdybyste to věděli hned.',
+    'Post Array negeneruje obrázky ani video, nespouští automatizaci zapojení a nepředpovídá, jak bude příspěvek fungovat. Pokud to jsou nástroje, které chcete, dělají je jiné produkty a my bychom byli raději, kdybyste to věděli hned.',
 
   'web.agencies.title': 'Pro agentury',
   'web.agencies.lede':
@@ -336,7 +330,7 @@ export const webMarketingMessages = {
 
   'web.developers.title': 'Pro vývojáře',
   'web.developers.lede':
-    'Publikování je část pracovního postupu, kde je chyba veřejná a trvalá. Relay vám poskytuje jeden backend, typové chyby, idempotenci při každém zápisu a schvalovací model, který si agent nedokáže vymluvit.',
+    'Publikování je část pracovního postupu, kde je chyba veřejná a trvalá. Post Array vám poskytuje jeden backend, typové chyby, idempotenci při každém zápisu a schvalovací model, který si agent nedokáže vymluvit.',
   'web.developers.surface.api.title': 'REST API',
   'web.developers.surface.api.body':
     'Klíče API s rozsahem, klíč idempotency vyžadovaný při každém zápisu, stránkování kurzoru a napsaná chybová obálka se stabilním kódem, klíč zprávy a vyčištěné detaily. Žádné užitečné zatížení poskytovatele se vám nikdy neodrazí v nezpracované podobě.',
@@ -358,15 +352,13 @@ export const webMarketingMessages = {
     'Každý agent a každý pracovní prostor má přepínač zabíjení, který zastaví čekající práci, aniž by jej smazal.',
   'web.developers.openSource.title': 'Otevřené kusy',
   'web.developers.openSource.body':
-    'Smlouva o konektoru, rozhraní příkazového řádku, příklady schémat, definice nástrojů MCP a simulátor poskytovatele jsou součásti, které potřebujete sestavit proti Relay bez účtu sandbox. Tam, kde repozitář ještě není publikován, je to na této stránce uvedeno spíše než odkaz na nic.',
+    'Smlouva o konektoru, rozhraní příkazového řádku, příklady schémat, definice nástrojů MCP a simulátor poskytovatele jsou součásti, které potřebujete sestavit proti Post Array bez účtu sandbox. Tam, kde repozitář ještě není publikován, je to na této stránce uvedeno spíše než odkaz na nic.',
 
   /* ---------------------------------------------------------------------- */
   /* Pricing                                                                 */
   /* ---------------------------------------------------------------------- */
 
   'web.pricing.title': 'Jeden plán',
-  'web.pricing.lede':
-    'Neexistují žádné úrovně funkcí, takže neexistuje žádná srovnávací tabulka ke čtení. Oba fakturační intervaly odemknou všechny dodané funkce.',
   'web.pricing.intervalHeading': 'Vyberte si způsob platby',
   'web.pricing.monthlyLabel': 'Účtováno měsíčně',
   'web.pricing.annualLabel': 'Fakturováno ročně',
@@ -385,13 +377,7 @@ export const webMarketingMessages = {
   'web.pricing.beside.metered':
     'X účtuje za operaci API a účtuje více za příspěvek, který obsahuje adresu URL. Relé to projde za cenu, odhadne to, než akci potvrdíte, a ukáže to při vašem použití. Ostatní poplatky za platformu se promítají pouze tehdy, když jsou zveřejněny před akcí.',
   'web.pricing.beside.noMedia':
-    'Generování obrazu AI a generování videa AI nejsou součástí dodávky a neprodávají se. Nejsou zde žádné titulky médií, protože Relay negeneruje média.',
-  'web.pricing.beside.trial':
-    'Zkušební verze běží po dobu sedmi dnů s každou funkcí. Polar vybírá platební metodu u pokladny a dnes účtuje 0 USD. Než to potvrdíte, vedle počáteční akce se zobrazí přesná částka a datum prvního poplatku.',
-  'web.pricing.beside.conversion':
-    'Pokud nic neuděláte, zkušební den se sedmý den převede na vámi zvolený interval a společnost Polar si naúčtuje částku uvedenou u pokladny. Polar pošle e-mail s připomenutím tři dny předtím, než se tak stane.',
-  'web.pricing.beside.cancel':
-    'Zrušit v Nastavení kdykoli bez kontaktování podpory. Zrušte před převodem zkušební verze a neproběhne žádný pokus o nabití. Poté zrušte a ponecháte si přístup až do konce placeného období.',
+    'Generování obrazu AI a generování videa AI nejsou součástí dodávky a neprodávají se. Nejsou zde žádné titulky médií, protože Post Array negeneruje média.',
   'web.pricing.beside.data':
     'Po skončení předplatného se nic nesmaže. Svůj obsah, účtenky a analýzy můžete exportovat a sami je můžete smazat.',
 
@@ -416,10 +402,7 @@ export const webMarketingMessages = {
     'Dnes ne. Zda bude edice s vlastním hostitelem a pod jakou licencí, je otevřené rozhodnutí. Odpověď zveřejníme spíše než naznačíme jednu.',
   'web.pricing.faq.xCost.q': 'Kolik mě X skutečně bude stát',
   'web.pricing.faq.xCost.a':
-    'Záleží na tom, kolik příspěvků publikujete a kolik z nich obsahuje URL, protože X je oceňuje jinak. Relay odhadne každou akci předtím, než ji potvrdíte, a sečte ji ve vašem zobrazení využití. Neoznačujeme to.',
-  'web.pricing.faq.trialAbuse.q': 'Mohu zahájit druhou zkušební verzi',
-  'web.pricing.faq.trialAbuse.a':
-    'Opakované pokusy jsou omezeny společností Polar. Pokud máte legitimní důvod, kontaktujte podporu a osoba se na to podívá.',
+    'Záleží na tom, kolik příspěvků publikujete a kolik z nich obsahuje URL, protože X je oceňuje jinak. Post Array odhadne každou akci předtím, než ji potvrdíte, a sečte ji ve vašem zobrazení využití. Neoznačujeme to.',
 
   /* ---------------------------------------------------------------------- */
   /* Resources index                                                         */
@@ -629,7 +612,7 @@ export const webMarketingMessages = {
   'web.opportunities.rules.curated':
     'Každý záznam je zkontrolovaný záznam s oficiální adresou URL, aktuálními pravidly pro odesílání a datem ověření. Modelem není nic objeveno a prezentováno jako ověřené.',
   'web.opportunities.rules.noAutomation':
-    'Relay za vás nikdy neodesílá formulář, neodepisuje kontakt, neposílá hromadné e-maily nebo příspěvky do komunity. Odešlete vy.',
+    'Post Array za vás nikdy neodesílá formulář, neodepisuje kontakt, neposílá hromadné e-maily nebo příspěvky do komunity. Odešlete vy.',
   'web.opportunities.rules.noGuarantee':
     'Zápis není příslib hodnocení a odkaz není strategie růstu. Ukážeme vám zdatnost, publikum, úsilí, náklady a požadavky na zveřejnění, takže se můžete rozhodnout, zda to za vaše odpoledne stojí.',
   'web.opportunities.rules.stale':
@@ -645,13 +628,13 @@ export const webMarketingMessages = {
 
   'web.legal.title': 'Právní předpisy a zásady',
   'web.legal.lede':
-    'Dokumenty, které řídí používání Relay. V případě, že formulaci musí navrhnout právník pro konkrétní společnost a jurisdikci, stránka to říká namísto předstírání.',
+    'Dokumenty, které řídí používání Post Array. V případě, že formulaci musí navrhnout právník pro konkrétní společnost a jurisdikci, stránka to říká namísto předstírání.',
   'web.legal.counselPending.title': 'Čeká na posouzení právníkem před spuštěním',
   'web.legal.counselPending.body':
-    'Látka na této stránce odráží, jak se produkt skutečně chová, a je dnes přesný. Závazné právní znění, rozhodná jurisdikce a podmínky odpovědnosti jsou připravovány s kvalifikovaným právníkem a nahradí tento text dříve, než bude služba Relay obecně dostupná. Tato stránka nepředstavuje právní poradenství a zatím to není smlouva.',
+    'Látka na této stránce odráží, jak se produkt skutečně chová, a je dnes přesný. Závazné právní znění, rozhodná jurisdikce a podmínky odpovědnosti jsou připravovány s kvalifikovaným právníkem a nahradí tento text dříve, než bude služba Post Array obecně dostupná. Tato stránka nepředstavuje právní poradenství a zatím to není smlouva.',
   'web.legal.contact.title': 'Kontakt',
   'web.legal.contact.privacy': 'soukromí@relé.příklad',
-  'web.legal.contact.legal': 'legal@relay.example',
+  'web.legal.contact.legal': 'legal@postarray.com',
   'web.legal.contact.security': 'zabezpečení@relé.příklad',
   'web.legal.contact.abuse': 'zneužívání@relé.příklad',
   'web.legal.contact.copyright': 'copyright@relé.příklad',
@@ -664,19 +647,19 @@ export const webMarketingMessages = {
   /* Terms ---------------------------------------------------------------- */
   'web.legal.terms.title': 'Smluvní podmínky',
   'web.legal.terms.summary':
-    'Co Relay souhlasí s poskytnutím, s čím souhlasíte a co se stane, když se kterákoli strana zastaví.',
+    'Co Post Array souhlasí s poskytnutím, s čím souhlasíte a co se stane, když se kterákoli strana zastaví.',
   'web.legal.terms.service.title': 'Co je to služba',
   'web.legal.terms.service.body':
-    'Relay je hostovaná služba pro vytváření, schvalování, plánování a publikování obsahu na sociálních platformách prostřednictvím oficiálních rozhraní API těchto platforem spolu s příjmy, analýzami a záznamy auditu, které z toho vyplývají. Není to sociální platforma a nekontroluje, co kterákoli platforma udělá s příspěvkem po jeho zveřejnění.',
+    'Post Array je hostovaná služba pro vytváření, schvalování, plánování a publikování obsahu na sociálních platformách prostřednictvím oficiálních rozhraní API těchto platforem spolu s příjmy, analýzami a záznamy auditu, které z toho vyplývají. Není to sociální platforma a nekontroluje, co kterákoli platforma udělá s příspěvkem po jeho zveřejnění.',
   'web.legal.terms.content.title': 'Váš obsah zůstane váš',
   'web.legal.terms.content.body':
-    'Zůstáváte vlastnictvím všeho, co nahrajete, napíšete nebo importujete. Relay udělujete pouze licenci potřebnou k jeho uložení, zpracování, přizpůsobení variantám, které požadujete, a přenosu na vámi vybrané účty. Tato licence končí, když smažete obsah, kromě záznamů, které jsme povinni uchovávat.',
+    'Zůstáváte vlastnictvím všeho, co nahrajete, napíšete nebo importujete. Post Array udělujete pouze licenci potřebnou k jeho uložení, zpracování, přizpůsobení variantám, které požadujete, a přenosu na vámi vybrané účty. Tato licence končí, když smažete obsah, kromě záznamů, které jsme povinni uchovávat.',
   'web.legal.terms.warranties.title': 'Co potvrzujete zveřejněním',
   'web.legal.terms.warranties.body':
     'Že jste oprávněni publikovat na připojených účtech, že jste držiteli práv k obsahu a médiím, že máte souhlas vyžadovaný pro jakoukoli osobu, která se v něm objevuje, a že zveřejnění neporušuje pravidla cílové platformy.',
   'web.legal.terms.platforms.title': 'Závislost na platformě',
   'web.legal.terms.platforms.body':
-    'Konektory závisí na API třetích stran, které tyto společnosti ovládají. Platforma může změnit své API, omezit oprávnění, zrušit aplikaci nebo zavřít přístup bez upozornění. Relay nemůže zaručit, že jakýkoli konektor zůstane dostupný, a nedostupnost konektoru není selháním této smlouvy. Až k tomu dojde, budeme vás informovat na stavové stránce a v protokolu změn.',
+    'Konektory závisí na API třetích stran, které tyto společnosti ovládají. Platforma může změnit své API, omezit oprávnění, zrušit aplikaci nebo zavřít přístup bez upozornění. Post Array nemůže zaručit, že jakýkoli konektor zůstane dostupný, a nedostupnost konektoru není selháním této smlouvy. Až k tomu dojde, budeme vás informovat na stavové stránce a v protokolu změn.',
   'web.legal.terms.ai.title': 'Výstup AI',
   'web.legal.terms.ai.body':
     'Pomoc s textem, překlad, přetvoření a plánování poskytují návrhy. Mohou být chybné, zastaralé nebo nevhodné. Jste odpovědní za kontrolu všeho, co publikujete. Relé negeneruje obrázky ani video.',
@@ -699,7 +682,7 @@ export const webMarketingMessages = {
   /* Privacy -------------------------------------------------------------- */
   'web.legal.privacy.title': 'Zásady ochrany osobních údajů',
   'web.legal.privacy.summary':
-    'Co Relay shromažďuje, proč, kdo to zpracovává, jak dlouho je uchováváno a jak to dostat ven nebo nechat smazat.',
+    'Co Post Array shromažďuje, proč, kdo to zpracovává, jak dlouho je uchováváno a jak to dostat ven nebo nechat smazat.',
   'web.legal.privacy.collect.title': 'Co držíme',
   'web.legal.privacy.collect.account':
     'Účet a profil: vaše jméno, e-mail, členství v pracovním prostoru a role.',
@@ -710,7 +693,7 @@ export const webMarketingMessages = {
   'web.legal.privacy.collect.schedules':
     'Rozvrhy, rozhodnutí o schválení, potvrzení o publikaci a auditní události.',
   'web.legal.privacy.collect.analytics':
-    'Metriky získané z platforem o příspěvcích, které jste publikovali prostřednictvím Relay.',
+    'Metriky získané z platforem o příspěvcích, které jste publikovali prostřednictvím Post Array.',
   'web.legal.privacy.collect.billing':
     'Fakturační reference držené společností Polar. Relé neukládá podrobnosti o vaší kartě.',
   'web.legal.privacy.collect.technical':
@@ -744,7 +727,7 @@ export const webMarketingMessages = {
     'Předvolby souhlasu jsou verzované a kontrolovatelné, takže můžete vidět, s čím jste souhlasili a kdy.',
   'web.legal.privacy.deletion.title': 'Mazání dat uložených na platformě',
   'web.legal.privacy.deletion.body':
-    'Odpojením účtu v Relay se zruší token na platformě a smaže se zde pověření. Obsah již publikovaný na platformě se řídí touto platformou a musí být smazán. Pokud platforma vyžaduje smazání odvozených dat během pevně stanoveného období po odvolání, dodržíme tuto lhůtu. Pro data Google a YouTube je toto období aktuálně 30 dní.',
+    'Odpojením účtu v Post Array se zruší token na platformě a smaže se zde pověření. Obsah již publikovaný na platformě se řídí touto platformou a musí být smazán. Pokud platforma vyžaduje smazání odvozených dat během pevně stanoveného období po odvolání, dodržíme tuto lhůtu. Pro data Google a YouTube je toto období aktuálně 30 dní.',
   'web.legal.privacy.transfers.title': 'Mezinárodní převody',
   'web.legal.privacy.transfers.body':
     'Hostitelské regiony a přenosový mechanismus se dokončují s právním zástupcem a budou zde uvedeny spolu s příslušnými bezpečnostními opatřeními před spuštěním.',
@@ -752,7 +735,7 @@ export const webMarketingMessages = {
   /* Acceptable use ------------------------------------------------------- */
   'web.legal.aup.title': 'Zásady přijatelného užívání',
   'web.legal.aup.summary':
-    'Relay vám pomáhá publikovat obsah, ke kterému máte oprávnění. Není vytvořen tak, aby pomohl komukoli vyhnout se limitu platformy, předstírat doporučení nebo odesílat nevyžádané zprávy.',
+    'Post Array vám pomáhá publikovat obsah, ke kterému máte oprávnění. Není vytvořen tak, aby pomohl komukoli vyhnout se limitu platformy, předstírat doporučení nebo odesílat nevyžádané zprávy.',
   'web.legal.aup.prohibited.title': 'Není povoleno',
   'web.legal.aup.prohibited.spam':
     'Spam, nevyžádané hromadné zprávy, odpovědi nebo zmínky, návnada na zapojení a opakovaný nevyžádaný obsah.',
@@ -794,12 +777,12 @@ export const webMarketingMessages = {
     'Kde je to možné, blokujeme před externí akcí, nikoli po ní, a zaznamenáváme důvod, verzi pravidla a cestu odvolání. Opakované nebo závažné chování vede k prověření důvěryhodnosti osobou. Bude vám řečeno, co se stalo, bez úrovně podrobností, které by někomu pomohly vyhnout se kontrole. Proti každému rozhodnutí se lze odvolat a zrušit.',
   'web.legal.aup.report.title': 'Hlášení zneužití',
   'web.legal.aup.report.body':
-    'Pokud obsah publikovaný prostřednictvím Relay porušuje tato pravidla, řekněte nám to. Uveďte URL příspěvku a co je na něm špatně.',
+    'Pokud obsah publikovaný prostřednictvím Post Array porušuje tato pravidla, řekněte nám to. Uveďte URL příspěvku a co je na něm špatně.',
 
   /* AI policy ------------------------------------------------------------ */
   'web.legal.ai.title': 'Používání umělé inteligence a zásady generovaného obsahu',
   'web.legal.ai.summary':
-    'Které funkce používají model, co se odesílá, co se uchovává, za co zůstáváte odpovědní a proč Relay negeneruje média.',
+    'Které funkce používají model, co se odesílá, co se uchovává, za co zůstáváte odpovědní a proč Post Array negeneruje média.',
   'web.legal.ai.features.title': 'Kde se model používá',
   'web.legal.ai.features.text':
     'Textová pomoc při skládání: přepisování, zkrácení a přizpůsobení pro platformu.',
@@ -820,7 +803,7 @@ export const webMarketingMessages = {
     'Model může být s jistotou špatný. Jste odpovědní za kontrolu faktů, tvrzení, jmen, čísel a tónu před zveřejněním a za jakékoli zveřejnění, které platforma vyžaduje. Žádná funkce umělé inteligence nezaručuje dosah, zapojení nebo hodnocení a žádná není nabízena jako jedna.',
   'web.legal.ai.disclosure.title': 'Zveřejnění a původ',
   'web.legal.ai.disclosure.body':
-    'Relay zaznamenává, zda byl obsah ve své interní historii podporován umělou inteligencí, připomene vám, kde platforma vyžaduje zveřejnění změněných nebo syntetických médií, a ukládá původ, který poskytnete s importovaným aktivem. Pokud platforma nabízí pole pro zveřejnění, Relay je nastaví z vašeho prohlášení, nikoli hádání.',
+    'Post Array zaznamenává, zda byl obsah ve své interní historii podporován umělou inteligencí, připomene vám, kde platforma vyžaduje zveřejnění změněných nebo syntetických médií, a ukládá původ, který poskytnete s importovaným aktivem. Pokud platforma nabízí pole pro zveřejnění, Post Array je nastaví z vašeho prohlášení, nikoli hádání.',
   'web.legal.ai.blocks.title': 'Co funkce umělé inteligence odmítají',
   'web.legal.ai.blocks.impersonation': 'Vydávání se za skutečnou osobu nebo veřejnou osobnost.',
   'web.legal.ai.blocks.ncii': 'Nekonsensuální intimní snímky v jakékoli formě.',
@@ -830,7 +813,7 @@ export const webMarketingMessages = {
     'Představení adresy URL vygenerované modelem jako ověřená příležitost. Doporučení příležitostí a nástrojů pocházejí pouze z kurátorského katalogu.',
   'web.legal.ai.noMedia.title': 'Proč neexistuje generování obrázků nebo videí',
   'web.legal.ai.noMedia.body':
-    'Relay neshromáždil ověřený vizuální systém, podrobnosti o produktu, práva k aktivům, oprávnění k podobenství a kontext kampaně, které by výstup připravený pro značku vyžadoval, a při generování aplikací by potřeboval svůj vlastní souhlas, původ, hodnocení bezpečnosti a kontroly nákladů. Schopnost mediálního modelu, licencování, ceny a retence se také rychle mění, a proto naše doporučení týkající se nástrojů obsahují data. Výběrem specializovaného nástroje a importem schváleného díla si ponecháte kreativní kontrolu. Relé se stará o adaptaci, schvalování, publikování a měření.',
+    'Post Array neshromáždil ověřený vizuální systém, podrobnosti o produktu, práva k aktivům, oprávnění k podobenství a kontext kampaně, které by výstup připravený pro značku vyžadoval, a při generování aplikací by potřeboval svůj vlastní souhlas, původ, hodnocení bezpečnosti a kontroly nákladů. Schopnost mediálního modelu, licencování, ceny a retence se také rychle mění, a proto naše doporučení týkající se nástrojů obsahují data. Výběrem specializovaného nástroje a importem schváleného díla si ponecháte kreativní kontrolu. Relé se stará o adaptaci, schvalování, publikování a měření.',
   'web.legal.ai.noMedia.caveat':
     'Nástroj, který se objevuje v našem radaru, není prohlášením, že jeho výstup je bezpečný nebo že jsou práva vymazána. Jeho zdokumentovaná upozornění jsou uvedena spolu s ním a vaše normální prohlášení o právech stále platí.',
 
@@ -867,14 +850,12 @@ export const webMarketingMessages = {
   'web.legal.subprocessors.column.region': 'Oblast zpracování',
   'web.legal.subprocessors.platforms.title': 'Sociální platformy nejsou subprocesory',
   'web.legal.subprocessors.platforms.body':
-    'Když publikujete, Relay přenese váš obsah na účet platformy, který jste vybrali, podle vašich pokynů. Tyto platformy jsou nezávislými správci toho, co dostávají, a řídí to jejich vlastními podmínkami.',
+    'Když publikujete, Post Array přenese váš obsah na účet platformy, který jste vybrali, podle vašich pokynů. Tyto platformy jsou nezávislými správci toho, co dostávají, a řídí to jejich vlastními podmínkami.',
 
   /* Refunds -------------------------------------------------------------- */
   'web.legal.refunds.title': 'Zásady vrácení peněz a zrušení',
   'web.legal.refunds.summary': 'Jak zrušit, co se stane s vašimi daty a kdy dostanete peníze zpět.',
   'web.legal.refunds.cancel.title': 'Rušení',
-  'web.legal.refunds.cancel.body':
-    'Zrušit v Nastavení bez kontaktování podpory. Zrušení během sedmidenní zkušební doby znamená, že nedojde k žádnému poplatku a obrazovka zrušení to písemně potvrdí. Zrušením po zkušební době zůstane váš přístup až do konce období, za které jste již zaplatili.',
   'web.legal.refunds.refund.title': 'Vrácení peněz',
   'web.legal.refunds.refund.body':
     'Pokud služba nefungovala podle popisu, kontaktujte podporu a my vám vrátíme peníze za dotčené období. Povinná práva spotřebitele na odstoupení od smlouvy, včetně zákonné lhůty na rozmyšlenou, pokud se na vás vztahuje, jsou plně respektována a nejsou ničím na této stránce omezena. Vrácení peněz provádí společnost Polar, náš registrovaný obchodník, původní platební metodou.',
@@ -891,7 +872,7 @@ export const webMarketingMessages = {
   /* DMCA ----------------------------------------------------------------- */
   'web.legal.dmca.title': 'Autorská práva a zastavení šíření',
   'web.legal.dmca.summary':
-    'Jak nahlásit obsah hostovaný službou Relay, který porušuje vaše práva, a jak reagovat, pokud byl váš odstraněn.',
+    'Jak nahlásit obsah hostovaný službou Post Array, který porušuje vaše práva, a jak reagovat, pokud byl váš odstraněn.',
   'web.legal.dmca.scope.title': 'Na základě čeho můžeme jednat',
   'web.legal.dmca.scope.body':
     'Přenos může odstranit materiál uložený v našich systémech, jako je mediální soubor nebo koncept. Obsah již publikovaný na sociální platformě žije na této platformě a musí jí být nahlášen, protože nemůžeme smazat příspěvek, který nehostíme. Řekneme vám, která z těchto dvou se na vaši zprávu vztahuje.',
@@ -914,7 +895,7 @@ export const webMarketingMessages = {
   /* Security ------------------------------------------------------------- */
   'web.legal.security.title': 'Bezpečnost a zodpovědné zveřejnění',
   'web.legal.security.summary':
-    'Jak Relay chrání přihlašovací údaje, kterým důvěřujete, a jak nahlásit problém, který najdete.',
+    'Jak Post Array chrání přihlašovací údaje, kterým důvěřujete, a jak nahlásit problém, který najdete.',
   'web.legal.security.tokens.title': 'Pověření pro sociální sítě',
   'web.legal.security.tokens.body':
     'Tokeny platformy jsou zašifrovány pomocí šifrování obálek pod spravovaným klíčem, otočeny, uloženy odděleně od obsahu a fakturačních dat a odstraněny z každého protokolu. Token není nikdy odeslán do prohlížeče, nikdy není umístěn v kontextu modelu a nikdy není zahrnut do chybové zprávy.',
@@ -952,7 +933,7 @@ export const webMarketingMessages = {
     'Standardní relé je postaveno na tom, co jsme ověřili, o čem víme, že ještě není v pořádku, a jak nám to sdělit.',
   'web.legal.accessibility.standard.title': 'Standard',
   'web.legal.accessibility.standard.body':
-    'Relay cílí na WCAG 2.2 úrovně AA napříč produktem a touto stránkou. Přístupnost je zde požadavek sloučení, nikoli pozdější tiket a obrazovka, která selže, se neodešle.',
+    'Post Array cílí na WCAG 2.2 úrovně AA napříč produktem a touto stránkou. Přístupnost je zde požadavek sloučení, nikoli pozdější tiket a obrazovka, která selže, se neodešle.',
   'web.legal.accessibility.measures.title': 'Co to znamená v praxi',
   'web.legal.accessibility.measures.keyboard':
     'Vše je ovladatelné z klávesnice s viditelným kroužkem ostření a logickým pořadím ostření. Nikde neexistuje žádná interakce typu drag only.',
@@ -993,7 +974,7 @@ export const webMarketingMessages = {
     'Jeden hovor se nemusí tiše publikovat do všech připojených účtů. Hromadné akce, nová doména, nový účet, citlivá kategorie, placená podpora, změna soukromí nebo obsah pozměněný po schválení vždy eskalují na lidské rozhodnutí. Každý agent a každý pracovní prostor má přepínač zabíjení.',
   'web.legal.apiTerms.prohibited.title': 'Není povoleno prostřednictvím rozhraní API',
   'web.legal.apiTerms.prohibited.body':
-    'Další prodej přístupu bez písemné dohody, používání služby Relay jako předávání obsahu, který nemáte oprávnění publikovat, obcházení zásad schvalování a jakékoli použití, které porušuje zásady přijatelného užívání. Programatický přístup podléhá stejným antispamovým kontrolám jako webová aplikace.',
+    'Další prodej přístupu bez písemné dohody, používání služby Post Array jako předávání obsahu, který nemáte oprávnění publikovat, obcházení zásad schvalování a jakékoli použití, které porušuje zásady přijatelného užívání. Programatický přístup podléhá stejným antispamovým kontrolám jako webová aplikace.',
   'web.legal.apiTerms.changes.title': 'Změnit zásady',
   'web.legal.apiTerms.changes.body':
     'Další změny jsou odesílány bez upozornění. Překonané změny dostanou novou verzi, ohlášené okno ukončení podpory a poznámku o migraci v changelogu. Chybové kódy nemění význam v rámci verze.',
@@ -1018,7 +999,7 @@ export const webMarketingMessages = {
   'web.legal.affiliate.prohibited.cookieStuffing':
     'Naplňování cookies, nucená kliknutí, vlastní doporučení a kupon squatting.',
   'web.legal.affiliate.prohibited.claims':
-    'Vymýšlení zákaznických výsledků, výroba posudku nebo tvrzení, že Relay dělá něco, co nedělá, včetně všeho o generování médií AI.',
+    'Vymýšlení zákaznických výsledků, výroba posudku nebo tvrzení, že Post Array dělá něco, co nedělá, včetně všeho o generování médií AI.',
   'web.legal.affiliate.prohibited.trademark':
     'Registrace domény, popisovače nebo záznamu aplikace, které používají naše jméno způsobem, který naznačuje, že jste ta společnost.',
 
@@ -1037,40 +1018,40 @@ export const webMarketingMessages = {
 
   'web.marketing.provider.x.accountTypes': 'Osobní nebo firemní účet X, který ovládáte.',
   'web.marketing.provider.x.restriction':
-    'Automatické odesílání vyžaduje výslovný souhlas majitele účtu, který Relay zaznamenává. Duplicitní nebo v podstatě podobné příspěvky napříč účty nejsou povoleny a nevyžádané automatické odpovědi nejsou vytvářeny.',
+    'Automatické odesílání vyžaduje výslovný souhlas majitele účtu, který Post Array zaznamenává. Duplicitní nebo v podstatě podobné příspěvky napříč účty nejsou povoleny a nevyžádané automatické odpovědi nejsou vytvářeny.',
   'web.marketing.provider.x.cost':
     'X si účtuje poplatky za každou operaci API a účtuje více za příspěvek obsahující adresu URL. Relé odhadne cenu ještě před potvrzením a předá ji bez přirážky.',
 
   'web.marketing.provider.linkedin.accountTypes':
     'Členský profil nebo stránka organizace, kde zastáváte správnou roli.',
   'web.marketing.provider.linkedin.restriction':
-    'Publikování jménem organizace vyžaduje schválený produkt správy komunity a ověřenou obchodní identitu. Analýza členských příspěvků závisí na oprávnění ke čtení, které LinkedIn uzavřel pro nové aplikace, takže je Relay nenabízí.',
+    'Publikování jménem organizace vyžaduje schválený produkt správy komunity a ověřenou obchodní identitu. Analýza členských příspěvků závisí na oprávnění ke čtení, které LinkedIn uzavřel pro nové aplikace, takže je Post Array nenabízí.',
   'web.marketing.provider.linkedin.cost':
     'Žádný provozní poplatek. Platí denní limity pro aplikace a členy.',
 
   'web.marketing.provider.instagram.accountTypes':
     'Profesionální instagramový účet, firma nebo tvůrce.',
   'web.marketing.provider.instagram.restriction':
-    'Publikování obsahu na Instagramu je k dispozici pouze pro profesionální účty. Spotřebitelský účet nemůže být publikován žádnou aplikací, včetně této. Publishing používá oficiální kontejner a sekvenci publikování a Relay potvrzuje konečný stav spíše než oznamuje nahrání jako úspěšné.',
+    'Publikování obsahu na Instagramu je k dispozici pouze pro profesionální účty. Spotřebitelský účet nemůže být publikován žádnou aplikací, včetně této. Publishing používá oficiální kontejner a sekvenci publikování a Post Array potvrzuje konečný stav spíše než oznamuje nahrání jako úspěšné.',
   'web.marketing.provider.instagram.cost':
     'Žádný provozní poplatek. Je vyžadována kontrola meta aplikace a ověření firmy.',
 
   'web.marketing.provider.facebook.accountTypes': 'Stránka na Facebooku, kterou spravujete.',
   'web.marketing.provider.facebook.restriction':
-    'Cílem publikování je stránka. Automatizaci osobního profilu API nenabízí a Relay se o ni nepokouší.',
+    'Cílem publikování je stránka. Automatizaci osobního profilu API nenabízí a Post Array se o ni nepokouší.',
   'web.marketing.provider.facebook.cost':
     'Žádný provozní poplatek. Je vyžadována kontrola meta aplikace a ověření firmy.',
 
   'web.marketing.provider.youtube.accountTypes':
     'Kanál YouTube propojený prostřednictvím vašeho účtu Google.',
   'web.marketing.provider.youtube.restriction':
-    'Projekt, který neprošel auditem souladu s Google API, lze nahrát pouze jako soukromý. Relay nebude popisovat veřejné nahrávání jako dostupné, dokud tento audit neprojde a na obrazovce připojení nebude uvedeno, do kterého stavu se vaše nahrávání dostane.',
+    'Projekt, který neprošel auditem souladu s Google API, lze nahrát pouze jako soukromý. Post Array nebude popisovat veřejné nahrávání jako dostupné, dokud tento audit neprojde a na obrazovce připojení nebude uvedeno, do kterého stavu se vaše nahrávání dostane.',
   'web.marketing.provider.youtube.cost':
     'Žádný provozní poplatek. Platí denní kvóta a nelze ji sdílet mezi projekty.',
 
   'web.marketing.provider.tiktok.accountTypes': 'Účet TikTok s autorizací Direct Post.',
   'web.marketing.provider.tiktok.restriction':
-    'Dokud neprojde audit rozhraní Content Posting API, jsou příspěvky soukromé a platí omezení pro jednotlivé účty. V době publikování Relay načte aktuální informace o tvůrci, zobrazí dostupné možnosti ochrany osobních údajů, aniž by jednu předem vybral, a požádá o komentář, nastavení duetu a stehu a prohlášení o komerčním obsahu.',
+    'Dokud neprojde audit rozhraní Content Posting API, jsou příspěvky soukromé a platí omezení pro jednotlivé účty. V době publikování Post Array načte aktuální informace o tvůrci, zobrazí dostupné možnosti ochrany osobních údajů, aniž by jednu předem vybral, a požádá o komentář, nastavení duetu a stehu a prohlášení o komerčním obsahu.',
   'web.marketing.provider.tiktok.cost':
     'Žádný provozní poplatek. Neauditovaný režim používá denní limity pro příspěvky.',
 
@@ -1169,7 +1150,7 @@ export const webMarketingMessages = {
   'web.capabilities.note.xConsent':
     'Vyžaduje zaznamenaný souhlas majitele účtu pro automatizované zveřejňování.',
   'web.capabilities.note.xDisclosure':
-    'Platforma poskytuje pole made with AI, které Relay nastavuje z vaší deklarace.',
+    'Platforma poskytuje pole made with AI, které Post Array nastavuje z vaší deklarace.',
   'web.capabilities.note.noDestinations':
     'Tato platforma nemá žádný cílový koncept, jako je stránka, nástěnka nebo komunita.',
   'web.capabilities.note.noThreads': 'Tato platforma nemá žádnou nativní sekvenci více příspěvků.',
@@ -1286,8 +1267,6 @@ export const webMarketingMessages = {
     'Poskytování webové aplikace, rozhraní API a služby krátkých odkazů.',
   'web.legal.subprocessors.hosting.data': 'Vyžádejte si metadata a redigované protokoly.',
   'web.legal.subprocessors.email.label': 'Transakční doručování e-mailů',
-  'web.legal.subprocessors.email.purpose':
-    'Odkazy na přihlášení, žádosti o schválení, oznámení o zveřejnění výsledků a připomenutí zkušebních verzí.',
   'web.legal.subprocessors.email.data': 'Jméno, e-mailová adresa a obsah zprávy.',
   'web.legal.subprocessors.monitoring.label': 'Sledování chyb a výkonu',
   'web.legal.subprocessors.monitoring.purpose': 'Diagnostika selhání při publikování a v rozhraní.',
@@ -1338,7 +1317,7 @@ export const webMarketingMessages = {
   'web.footer.legal': 'Právní',
   'web.footer.developers': 'Vývojáři',
   'web.footer.statement':
-    'Relay publikuje pouze prostřednictvím oficiálních rozhraní API platformy. Dostupnost konektoru závisí na schváleních, která řídí platformy, a každý nárok na funkci na tomto webu je datován a pochází.',
+    'Post Array publikuje pouze prostřednictvím oficiálních rozhraní API platformy. Dostupnost konektoru závisí na schváleních, která řídí platformy, a každý nárok na funkci na tomto webu je datován a pochází.',
   'web.footer.noAffiliation':
     'Názvy a značky platforem patří jejich vlastníkům. Jejich použití zde identifikuje konektor a neznamená podporu nebo partnerství.',
   'web.footer.copyright': 'Relé {year}',

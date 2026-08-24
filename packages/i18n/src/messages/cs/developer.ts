@@ -82,7 +82,7 @@ export const developerMessages = {
 
   'developer.apps.title': 'Aplikace pro vývojáře',
   'developer.apps.subtitle':
-    'Nechte jiný produkt jednat prostřednictvím Relay s oprávněními, která mu uživatel udělí.',
+    'Nechte jiný produkt jednat prostřednictvím Post Array s oprávněními, která mu uživatel udělí.',
   'developer.apps.create': 'Zaregistrujte si aplikaci',
   'developer.apps.name': 'Název aplikace',
   'developer.apps.type.label': 'Typ klienta',

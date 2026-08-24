@@ -8,8 +8,8 @@
  */
 export const webShellMessages = {
   /* -- Document and shell chrome ----------------------------------------- */
-  'shell.appName': 'Relay',
-  'shell.documentTitle': '{page} · Relay',
+  'shell.appName': 'Post Array',
+  'shell.documentTitle': '{page} · Post Array',
   'shell.tagline': 'مكتب نشر للأشخاص والوكلاء.',
   'shell.menu.open': 'افتح القائمة',
   'shell.menu.title': 'القائمة',
@@ -30,7 +30,7 @@ export const webShellMessages = {
   'shell.demo.badge': 'البيانات التجريبية',
   'shell.demo.title': 'أنت تنظر إلى البيانات التجريبية',
   'shell.demo.body':
-    'لا يمكن الوصول إلى واجهة برمجة التطبيقات Relay من هذا المتصفح، لذا تمتلئ الشاشات بمساحة عمل نموذجية. لا يوجد شيء هنا مرتبط بحساب حقيقي ولا يمكن نشر أي شيء.',
+    'لا يمكن الوصول إلى واجهة برمجة التطبيقات Post Array من هذا المتصفح، لذا تمتلئ الشاشات بمساحة عمل نموذجية. لا يوجد شيء هنا مرتبط بحساب حقيقي ولا يمكن نشر أي شيء.',
   'shell.demo.howToConnect':
     'قم بتعيين NEXT_PUBLIC_RELAY_API_URL وأعد تشغيل التطبيق لاستخدام البيانات المباشرة.',
 
@@ -140,7 +140,7 @@ export const webShellMessages = {
     'محاكمة، {days, plural, =0 {ينتهي اليوم} one {بقي #يوم} zero {متبقي # يوم} two {متبقي # يوم} few {متبقي # يوم} many {متبقي # يوم} other {متبقي # يوم}}. يحول {date} إلى {amount}.',
   'home.trial.manage': 'إدارة أو إلغاء',
   'home.error.title': 'تعذر تحميل المنزل',
-  'home.error.body': 'مساحة العمل الخاصة بك سليمة. هذه مشكلة في الوصول إلى Relay API.',
+  'home.error.body': 'مساحة العمل الخاصة بك سليمة. هذه مشكلة في الوصول إلى Post Array API.',
 
   /* -- Auth: provider consent, alias sign in, honest failure ------------- */
   'auth.aside.title': 'انشر من خلال واجهات برمجة التطبيقات الرسمية وشاهد ما حدث بالضبط.',
@@ -151,9 +151,9 @@ export const webShellMessages = {
   'auth.aside.point.surfaces': 'نفس سير العمل من تطبيق الويب وREST API وMCP وCLI وخطافات الويب.',
   'auth.provider.title': 'قبل المتابعة',
   'auth.provider.google.access':
-    'تشارك Google اسمك وعنوان بريدك الإلكتروني وصورة ملفك الشخصي مع Relay. لا يستطيع Relay قراءة Gmail أو Drive أو التقويم.',
+    'تشارك Google اسمك وعنوان بريدك الإلكتروني وصورة ملفك الشخصي مع Post Array. لا يستطيع Post Array قراءة Gmail أو Drive أو التقويم.',
   'auth.provider.facebook.access':
-    'يشارك Facebook اسمك وعنوان بريدك الإلكتروني وصورة ملفك الشخصي مع Relay. يعد ربط الصفحة للنشر بها خطوة منفصلة توافق عليها لاحقًا.',
+    'يشارك Facebook اسمك وعنوان بريدك الإلكتروني وصورة ملفك الشخصي مع Post Array. يعد ربط الصفحة للنشر بها خطوة منفصلة توافق عليها لاحقًا.',
   'auth.provider.note': 'يؤدي هذا إلى تسجيل دخولك. ولا يربط حسابًا للنشر فيه.',
   'auth.continueWithEmail': 'تواصل مع البريد الإلكتروني',
   'auth.method.password': 'كلمة المرور',
@@ -173,8 +173,7 @@ export const webShellMessages = {
     'اسم المستخدم وكلمة المرور لا يتطابقان مع الحساب. تحقق من كليهما وحاول مرة أخرى.',
   'auth.failure.noAccountLeak': 'من أجل سلامتك، لا نذكر ما إذا كان العنوان مسجلاً أم لا.',
   'auth.failure.provider': 'تسجيل الدخول بـ {provider} لم يكتمل. لم يتغير شيء.',
-  'auth.failure.network': 'لم نتمكن من الوصول إلى Relay. تحقق من اتصالك وحاول مرة أخرى.',
-  'auth.signUp.trialNote': 'سبعة أيام تجريبية كاملة. مطلوب طريقة الدفع. 0 دولار مستحقة اليوم.',
+  'auth.failure.network': 'لم نتمكن من الوصول إلى Post Array. تحقق من اتصالك وحاول مرة أخرى.',
   'auth.signUp.emailInUseNote':
     'إذا كان لهذا العنوان حساب بالفعل، فسنرسل إليك رابط تسجيل الدخول عبر البريد الإلكتروني بدلاً من إنشاء رابط ثانٍ.',
   'auth.legal.readTerms': 'اقرأ الشروط',
@@ -207,7 +206,7 @@ export const webShellMessages = {
   'onboarding.workspace.timeZoneDetected': 'تم اكتشافه من هذا الجهاز: {timeZone}',
   'onboarding.connect.permissionsTitle': 'ما الذي سيتم طلبه من {provider}',
   'onboarding.connect.permissionsFooter':
-    'Relay لا يطلب أبدًا إذنًا لا يستخدمه، ويمكنك قطع الاتصال في أي وقت.',
+    'Post Array لا يطلب أبدًا إذنًا لا يستخدمه، ويمكنك قطع الاتصال في أي وقت.',
   'onboarding.connect.chooseProvider': 'اختر منصة',
   'onboarding.connect.opensProvider': 'الاستمرار يفتح {provider} في علامة التبويب هذه.',
   'onboarding.compose.help': 'اكتب المنشور، ثم تحقق من المعاينة والتحقق قبل اختيار الوقت.',

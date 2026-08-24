@@ -47,7 +47,7 @@ describe('ResendMailer', () => {
     const mailer = new ResendMailer({
       apiUrl: 'https://api.resend.com/emails',
       apiKey: 'test_key',
-      from: 'Relay <mail@example.com>',
+      from: 'Post Array <mail@example.com>',
       logger: testLogger,
       fetchImpl,
     });
@@ -57,7 +57,7 @@ describe('ResendMailer', () => {
     const request = fetchImpl.mock.calls[0];
     expect(request?.[0]).toBe('https://api.resend.com/emails');
     expect(JSON.parse(String(request?.[1]?.body))).toEqual({
-      from: 'Relay <mail@example.com>',
+      from: 'Post Array <mail@example.com>',
       to: ['person@example.com'],
       subject: 'You were invited to Studio North',
       text: 'You were invited to Studio North with the editor role. Accept the invitation here: https://relay.example/invitations/accept?token=hidden. This link expires at 2026-08-07T00:00:00.000Z.',
@@ -114,7 +114,7 @@ describe('ResendMailer', () => {
     const mailer = new ResendMailer({
       apiUrl: 'https://api.resend.com/emails',
       apiKey: 'test_key',
-      from: 'Relay <mail@example.com>',
+      from: 'Post Array <mail@example.com>',
       logger: testLogger,
       fetchImpl,
     });
@@ -123,7 +123,7 @@ describe('ResendMailer', () => {
 
     const request = fetchImpl.mock.calls[0];
     expect(JSON.parse(String(request?.[1]?.body))).toEqual({
-      from: 'Relay <mail@example.com>',
+      from: 'Post Array <mail@example.com>',
       to: ['person@example.com'],
       subject: 'Tu semana en Studio North',
       text: 'Esto es lo que podemos ver para Studio North entre 2026-08-03 y 2026-08-09.',

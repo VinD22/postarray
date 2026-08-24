@@ -12,7 +12,7 @@ export const errorMessages = {
   'error.internal.message': 'Dies ist ein Problem auf unserer Seite, nicht bei Ihren Inhalten.',
   'error.internal.action':
     'Ihre Arbeit wird gespeichert. Wir wurden alarmiert. Versuchen Sie es in ein paar Minuten noch einmal.',
-  'error.not_implemented.message': 'Relay hat dies noch nicht gebaut.',
+  'error.not_implemented.message': 'Post Array hat dies noch nicht gebaut.',
   'error.not_implemented.action': 'Befolgen Sie das Änderungsprotokoll, wenn es versendet wird.',
   'error.offline.message': 'Du bist offline.',
   'error.offline.action':
@@ -68,6 +68,10 @@ export const errorMessages = {
   'error.trial_expired.message': 'Der Prozess endete am {date}.',
   'error.trial_expired.action':
     'Starten Sie das Abonnement, um mit der Veröffentlichung fortzufahren.',
+  'error.post_credits_exhausted.message':
+    'Dieser Arbeitsbereich hat alle kostenlosen Beiträge verbraucht. Alles andere funktioniert weiterhin.',
+  'error.post_credits_exhausted.action':
+    'Wählen Sie einen Tarif, um weiter zu veröffentlichen. Ihre Konten bleiben verbunden und Ihre Entwürfe und Planungen bleiben erhalten.',
   'error.entitlement_missing.message':
     'Dieser Arbeitsbereich hat keinen Zugriff auf diese Funktion.',
   'error.entitlement_missing.action':
@@ -103,7 +107,7 @@ export const errorMessages = {
   'error.capability_unsupported.message':
     '{provider} bietet dies nicht über seine offizielle API an.',
   'error.capability_unsupported.action': 'Verwenden Sie ein Format, das dieses Konto unterstützt.',
-  'error.capability_not_implemented.message': 'Relay hat dies für {provider} noch nicht erstellt.',
+  'error.capability_not_implemented.message': 'Post Array hat dies für {provider} noch nicht erstellt.',
   'error.capability_not_implemented.action':
     'Auf der Funktionsseite wird aufgeführt, was jeder Connector heute leisten kann.',
   'error.capability_requires_review.message':

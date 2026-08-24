@@ -17,7 +17,7 @@ export interface ConnectPanelProps {
   readonly serviceAccountName: string;
   /**
    * The credential, for the one render after it was created or rotated. `null`
-   * every other time, which is the honest state: Relay stores a hash and this
+   * every other time, which is the honest state: Post Array stores a hash and this
    * screen has nothing to show.
    */
   readonly credential: OneTimeCredential | null;
@@ -43,7 +43,7 @@ export interface ConnectPanelProps {
  * visitor reads cannot describe different software.
  *
  * The status line states only what was recorded. There is no reachability
- * check behind it and no "online" indicator: Relay cannot see the agent, only
+ * check behind it and no "online" indicator: Post Array cannot see the agent, only
  * the calls the agent made.
  */
 export function ConnectPanel(props: ConnectPanelProps): ReactNode {

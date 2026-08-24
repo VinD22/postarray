@@ -63,7 +63,7 @@ export const validationMessages = {
     'Opakující se příspěvek potřebuje datum ukončení nebo počet opakování.',
   'validation.schedule_in_past.message': 'Ten čas uplynul v {timeZone}.',
   'validation.schedule_too_far_ahead.message':
-    'Toto je dále než {limit} nastavení tohoto pověření dopředu.',
+    'Příspěvky lze naplánovat až {limit} dopředu, což je také doba, po kterou uchováváme nahraná média.',
   'validation.schedule_outside_quiet_hours.message':
     'Toto spadá do klidových hodin nastavených na {project}.',
   'validation.duplicate_within_window.message':

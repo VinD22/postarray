@@ -31,7 +31,7 @@ export const CONFLICT_WINDOW_MINUTES = 60;
 /**
  * Media preparation lead time, in seconds, by media kind.
  *
- * These are Relay's own pipeline minimums, not provider claims: a video has to
+ * These are Post Array's own pipeline minimums, not provider claims: a video has to
  * be fetched, transcoded and uploaded to a container before the platform will
  * accept it, and scheduling one for ninety seconds from now would fail at
  * dispatch instead of at the moment the person could still fix it.

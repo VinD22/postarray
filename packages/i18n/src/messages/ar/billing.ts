@@ -11,7 +11,7 @@
  */
 export const billingMessages = {
   'billing.title': 'الفواتير',
-  'billing.plan.name': 'Relay',
+  'billing.plan.name': 'Post Array',
   'billing.plan.single': 'خطة واحدة. كل ميزة. لا طبقات.',
   'billing.plan.monthlyPrice': '29 دولارًا شهريًا',
   'billing.plan.annualPrice': '300 دولار في السنة',
@@ -33,7 +33,6 @@ export const billingMessages = {
   'billing.plan.fairUse':
     'الاستخدام العادل يعني مكافحة البريد العشوائي، وضبط الأسعار وتكلفة مقدم الخدمة الذي يحمي حساباتك. إنهم يعملون بنفس الطريقة لكل مشترك.',
 
-  'billing.trial.length': 'تجربة لمدة سبعة أيام مع كل ميزة',
   'billing.trial.dueToday': '0 دولار مستحقة اليوم',
   'billing.trial.paymentMethodRequired': 'تجمع Polar طريقة الدفع الآن ولا تفرض أي رسوم اليوم.',
   'billing.trial.firstCharge': 'الشحنة الأولى {amount} على {date}',
@@ -91,7 +90,7 @@ export const billingMessages = {
   'billing.usage.estimatedBeforeAction': 'يقدر هذا الإجراء بـ {amount}.',
   'billing.usage.periodTotal': '{amount} مستخدم منذ {date}',
   'billing.usage.noMediaCredits':
-    'لا توجد أرصدة لإنشاء الصور أو الفيديو، لأن Relay لا يقوم بإنشاء الوسائط.',
+    'لا توجد أرصدة لإنشاء الصور أو الفيديو، لأن Post Array لا يقوم بإنشاء الوسائط.',
 
   'billing.downgrade.overLimit':
     'مساحة العمل هذه لديها {count, plural, one {#قناة} zero {#قنوات} two {#قنوات} few {#قنوات} many {#قنوات} other {#قنوات}} فوق الحد. يتم حظر الإجراءات الجديدة على تلك القنوات. لم يتم قطع أي شيء بالنسبة لك.',

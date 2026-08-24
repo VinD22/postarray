@@ -74,7 +74,7 @@ export type ReportFailuresOutput = z.infer<typeof reportFailuresOutputSchema>;
  *
  * `awaiting_confirmation` is the only state a mutating tool can return on a
  * first call: the durable confirmation row exists, nothing has been written,
- * and a person has to approve it in Relay before a second call can execute it.
+ * and a person has to approve it in Post Array before a second call can execute it.
  * `proposal_only` is the honest answer for an action the durable confirmation
  * mechanism cannot yet fingerprint, and it means literally nothing happened.
  */

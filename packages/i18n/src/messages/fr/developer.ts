@@ -83,7 +83,7 @@ export const developerMessages = {
 
   'developer.apps.title': 'Applications de développement',
   'developer.apps.subtitle':
-    "Laissez un autre produit agir via Relay avec les autorisations qu'un utilisateur lui accorde.",
+    "Laissez un autre produit agir via Post Array avec les autorisations qu'un utilisateur lui accorde.",
   'developer.apps.create': 'Enregistrer une application',
   'developer.apps.name': "Nom de l'application",
   'developer.apps.type.label': 'Type de client',

@@ -100,6 +100,6 @@ export const statusMessages = {
     'Es wird nicht veröffentlicht. Der Entwurf bleibt hier, sodass Sie ihn erneut planen können.',
   'confirm.publishNow.title': 'Jetzt veröffentlichen?',
   'confirm.publishNow.body':
-    '{count, plural, one {Dies wird sofort auf # Konto veröffentlicht} other {Dies wird sofort auf # Konten veröffentlicht}}. Es kann nicht von Relay zurückgerufen werden.',
+    '{count, plural, one {Dies wird sofort auf # Konto veröffentlicht} other {Dies wird sofort auf # Konten veröffentlicht}}. Es kann nicht von Post Array zurückgerufen werden.',
   'confirm.typeToConfirm': 'Geben Sie zur Bestätigung {word} ein.',
 } as const;

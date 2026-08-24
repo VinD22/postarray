@@ -236,7 +236,7 @@ export const webSettingsMessages = {
   'settings.ui.security.grantScopes': 'Quyền được cấp',
   'settings.ui.security.socialPermissionsTitle': 'Quyền tài khoản xã hội',
   'settings.ui.security.socialPermissionsBody':
-    'Những việc mà mỗi tài khoản được kết nối đã cho phép Relay thực hiện, từ ảnh chụp nhanh về khả năng được chụp tại thời điểm kết nối.',
+    'Những việc mà mỗi tài khoản được kết nối đã cho phép Post Array thực hiện, từ ảnh chụp nhanh về khả năng được chụp tại thời điểm kết nối.',
   'settings.ui.security.viewInSection': 'Quản lý trong {section}',
   'settings.ui.security.emptySessions': 'Chỉ phiên này được đăng nhập.',
   'settings.ui.security.emptyGrants':
@@ -272,7 +272,7 @@ export const webSettingsMessages = {
     'Hãy chọn điều nhỏ nhất có thể giải quyết được vấn đề của bạn. Mỗi tùy chọn dưới đây cho biết những gì còn tồn tại.',
   'settings.ui.data.deleteConnection': 'Thu hồi một kết nối xã hội',
   'settings.ui.data.deleteConnectionHelp':
-    'Xóa quyền truy cập Relay vào tài khoản đó. Không gian làm việc, nội dung và biên lai của nó vẫn được giữ nguyên.',
+    'Xóa quyền truy cập Post Array vào tài khoản đó. Không gian làm việc, nội dung và biên lai của nó vẫn được giữ nguyên.',
   'settings.ui.data.deleteProject': 'Xóa một thương hiệu',
   'settings.ui.data.deleteProjectHelp':
     'Loại bỏ thương hiệu, các quy tắc và bảng chú giải của nó. Nội dung được xuất bản theo nó giữ biên lai của nó.',
@@ -301,7 +301,7 @@ export const webSettingsMessages = {
     'Các bài đăng đã tồn tại trên nền tảng sẽ không bị xóa. Loại bỏ những thứ đó trên nền tảng.',
   'settings.ui.data.exportFirst': 'Xuất dữ liệu của bạn trước khi xóa nó.',
   'settings.ui.referral.description':
-    'Chia sẻ Relay với liên kết được tiết lộ. Hoa hồng không bao giờ có điều kiện trên một đánh giá tích cực.',
+    'Chia sẻ Post Array với liên kết được tiết lộ. Hoa hồng không bao giờ có điều kiện trên một đánh giá tích cực.',
   'settings.ui.referral.linkLabel': 'Liên kết giới thiệu của bạn',
   'settings.ui.referral.tableCaption': 'Đăng ký được phân bổ và trạng thái hoa hồng của họ',
   'settings.ui.referral.column.signup': 'Đăng ký',
@@ -435,7 +435,7 @@ export const webSettingsMessages = {
     'Đăng ký một ứng dụng để người khác có thể cấp cho nó quyền truy cập vào không gian làm việc của họ. Mỗi ứng dụng có danh tính riêng, danh sách cho phép chuyển hướng riêng và quy trình kiểm tra riêng.',
   'developer.ui.apps.emptyTitle': 'Không có ứng dụng nào được đăng ký',
   'developer.ui.apps.emptyBody':
-    'Đăng ký ứng dụng khi một sản phẩm khác cần hoạt động thay mặt cho người dùng Relay. Để tự động hóa của riêng bạn, thay vào đó hãy sử dụng tài khoản dịch vụ.',
+    'Đăng ký ứng dụng khi một sản phẩm khác cần hoạt động thay mặt cho người dùng Post Array. Để tự động hóa của riêng bạn, thay vào đó hãy sử dụng tài khoản dịch vụ.',
   'developer.ui.apps.emptyExample':
     'Ví dụ: "Nhà xuất bản Acme", khách hàng bí mật, chuyển hướng https://acme.example/oauth/callback, phạm vi tài khoản:đọc và bản nháp:viết.',
   'developer.ui.apps.typeHelp':
@@ -459,7 +459,7 @@ export const webSettingsMessages = {
   'developer.ui.apps.scopeGroupHelp.read':
     'Những thứ này cho phép ứng dụng xem dữ liệu. Không có gì thay đổi.',
   'developer.ui.apps.scopeGroupHelp.reversible':
-    'Những điều này cho phép ứng dụng tạo hoặc chỉnh sửa mọi thứ bên trong Relay. Không có gì đạt đến một nền tảng.',
+    'Những điều này cho phép ứng dụng tạo hoặc chỉnh sửa mọi thứ bên trong Post Array. Không có gì đạt đến một nền tảng.',
   'developer.ui.apps.scopeGroupHelp.consequential':
     'Những điều này có thể tạo ra một bài đăng trên tài khoản thực hoặc thay đổi người có thể truy cập tài khoản của bạn. Chúng luôn được liệt kê riêng biệt và không bao giờ được gộp lại.',
   'developer.ui.apps.noBundling':
@@ -616,7 +616,7 @@ export const webSettingsMessages = {
   'billing.ui.allowanceMetered':
     'X và một số nhà cung cấp khác tính phí cho mỗi hoạt động. Những khoản phí đó được chuyển theo giá gốc và không phải là một phần của giá gói.',
   'billing.ui.allowanceNoMedia':
-    'Việc tạo hình ảnh và tạo video không được bao gồm và không được bán. Relay không tạo ra phương tiện truyền thông.',
+    'Việc tạo hình ảnh và tạo video không được bao gồm và không được bán. Post Array không tạo ra phương tiện truyền thông.',
   'billing.ui.readFairUse': 'Đọc chính sách sử dụng hợp lý',
   'billing.ui.readMeteredPolicy': 'Đọc cách tính phí sử dụng theo đồng hồ đo',
   'billing.ui.usageCaption':
@@ -679,8 +679,6 @@ export const webSettingsMessages = {
   'billing.ui.canceledNotice': 'Đăng ký này đã bị hủy.',
   'billing.ui.resume': 'Bắt đầu đăng ký lại',
   'billing.ui.noSubscriptionTitle': 'Không có đăng ký trên không gian làm việc này',
-  'billing.ui.noSubscriptionBody':
-    'Bắt đầu dùng thử bảy ngày để xuất bản. Polar thu thập một phương thức thanh toán và không tính phí ngày hôm nay.',
   'billing.ui.noSubscriptionExample':
     'Hàng tháng là $29. Hàng năm là $300, tức là $25/tháng được thanh toán hàng năm. Tiết kiệm $48/năm.',
   'billing.ui.overChannelLimitAction': 'Xem lại các kênh được kết nối',
@@ -793,7 +791,7 @@ export const webSettingsMessages = {
   'growth.ui.ugc.incentiveDisclosure':
     'Khuyến khích phải được công bố trên mỗi bài đăng do bạn và người tham gia tạo ra.',
   'growth.ui.ugc.honesty':
-    'Điều này lên kế hoạch cho một chiến dịch bạn thực hiện với những người thực sự. Relay không tìm người sáng tạo, liên hệ với họ, viết lời chứng thực hoặc tạo nội dung của khách hàng.',
+    'Điều này lên kế hoạch cho một chiến dịch bạn thực hiện với những người thực sự. Post Array không tìm người sáng tạo, liên hệ với họ, viết lời chứng thực hoặc tạo nội dung của khách hàng.',
   'growth.ui.opportunities.caption':
     'Cơ hội được xác minh từ danh mục, được xếp hạng theo mức độ phù hợp với hồ sơ của bạn',
   'growth.ui.opportunities.column.opportunity': 'Cơ hội',
@@ -815,7 +813,7 @@ export const webSettingsMessages = {
   'growth.ui.opportunities.prepareRules': 'Quy tắc của họ, được trích dẫn',
   'growth.ui.opportunities.prepareChecklist': 'Những gì cần chuẩn bị sẵn',
   'growth.ui.opportunities.prepareManual':
-    'Bạn tự gửi cái này trên trang web của họ. Relay không điền vào biểu mẫu, tạo tài khoản hoặc gửi email cho bất kỳ ai.',
+    'Bạn tự gửi cái này trên trang web của họ. Post Array không điền vào biểu mẫu, tạo tài khoản hoặc gửi email cho bất kỳ ai.',
   'growth.ui.opportunities.pitchTitle': 'bản thảo quảng cáo chiêu hàng',
   'growth.ui.opportunities.pitchHelp':
     'Chỉnh sửa nó trước khi bạn gửi nó. Nó chỉ sử dụng những sự kiện bạn đã xác nhận.',
@@ -833,7 +831,7 @@ export const webSettingsMessages = {
   'growth.ui.tools.emptyBody':
     'Mỗi mục đều cần có mức giá đã được kiểm tra, các điều khoản về quyền đã được kiểm tra và giới hạn được đặt tên trước khi nó xuất hiện ở đây.',
   'growth.ui.tools.emptyExample':
-    'Một mục nhập cho biết nó phù hợp nhất cho mục đích gì, tại sao nó phù hợp với kế hoạch của bạn, nó không thể làm gì, những kỹ năng nó cần, cách đầu ra quay trở lại Relay và thời điểm giá được kiểm tra lần cuối.',
+    'Một mục nhập cho biết nó phù hợp nhất cho mục đích gì, tại sao nó phù hợp với kế hoạch của bạn, nó không thể làm gì, những kỹ năng nó cần, cách đầu ra quay trở lại Post Array và thời điểm giá được kiểm tra lần cuối.',
   'growth.ui.tools.openSite': 'Mở trang web chính thức cho {name}',
   'growth.ui.tools.stale': 'Quá ngày xem xét của nó. Loại trừ khỏi các kế hoạch được tạo ra.',
   'growth.ui.item.explainTitle': 'Tại sao điều này được đề xuất',

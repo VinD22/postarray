@@ -1,15 +1,15 @@
 /**
- * What Relay asks each provider for, and what it actually got.
+ * What Post Array asks each provider for, and what it actually got.
  *
  * The requested list is authored here rather than fetched, because it describes
- * what Relay's own OAuth client asks for: the scope the provider names, plus
+ * what Post Array's own OAuth client asks for: the scope the provider names, plus
  * the catalog key for the sentence saying what it is used for. That sentence is
  * the point. A scope list without purposes is a compliance artefact.
  *
  * What is deliberately *not* authored here is whether a scope was granted. That
  * is a fact about one connected account and it comes from
  * `connection.grantedScopes`, which the API reads from
- * `app.social_connections.granted_scopes`. Where Relay has no record of the
+ * `app.social_connections.granted_scopes`. Where Post Array has no record of the
  * grant the answer is `unknown`, never `not_granted`: a false negative here
  * puts a wall of warnings on a perfectly healthy account, which reads to a
  * non-technical user as "my account is broken".
@@ -89,7 +89,7 @@ export const REQUESTED_SCOPES: Readonly<Record<string, readonly RequestedScope[]
 /**
  * Resolve one account's permission table.
  *
- * `grantedScopes === null` means Relay has no record of what the provider
+ * `grantedScopes === null` means Post Array has no record of what the provider
  * granted. Every row is then `unknown`. It is not `not_granted`, and nothing
  * downstream may count it as missing.
  */

@@ -32,7 +32,7 @@ export class ConfigValidationError extends Error {
   readonly envFile = ENV_FILE_HINT;
 
   constructor(issues: readonly ConfigIssue[], service?: string) {
-    const scope = service === undefined ? 'Relay' : `Relay ${service}`;
+    const scope = service === undefined ? 'Post Array' : `Post Array ${service}`;
     const lines = [
       `${scope} cannot start: ${issues.length} environment ${
         issues.length === 1 ? 'variable is' : 'variables are'

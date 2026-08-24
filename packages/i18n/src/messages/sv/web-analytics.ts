@@ -108,7 +108,7 @@ export const webAnalyticsMessages = {
   'analytics.evidence.confounder.followers':
     'Antalet följare på {account} ändrades med {percent} under denna period.',
   'analytics.evidence.confounder.paid':
-    'Relay kan inte avgöra om något av dessa inlägg har fått betald distribution.',
+    'Post Array kan inte avgöra om något av dessa inlägg har fått betald distribution.',
   'analytics.evidence.confounder.provider':
     '{provider} ändrade hur den rapporterar {metric} under denna period.',
 
@@ -164,7 +164,7 @@ export const webAnalyticsMessages = {
   'analytics.format.thread': 'Tråd',
 
   'analytics.value.unavailableReason.notImplemented':
-    'Relay har inte byggt mappningen för detta mått på {provider} ännu.',
+    'Post Array har inte byggt mappningen för detta mått på {provider} ännu.',
   'analytics.value.estimated': 'Uppskattad',
   'analytics.value.estimatedMethod': 'Metod: {method}.',
 
@@ -292,7 +292,7 @@ export const webAnalyticsMessages = {
     'Analytics behöver analytikerrollen eller högre. En ägare eller administratör av denna arbetsyta kan bevilja den.',
   'analytics.state.rateLimitTitle': '{provider} är hastighetsbegränsande analysförfrågningar',
   'analytics.state.rateLimitCause':
-    'Kontot har använt sin andel av leverantörskvoten för det här fönstret. Relay försöker inte igen hårdare, eftersom det skulle försena publiceringen.',
+    'Kontot har använt sin andel av leverantörskvoten för det här fönstret. Post Array försöker inte igen hårdare, eftersom det skulle försena publiceringen.',
   'analytics.state.rateLimitAlternative':
     'Begränsa datumintervallet eller kontofiltret, vilket ber leverantören om mindre.',
   'analytics.state.rateLimitReset': 'Begäran återupptas',
@@ -392,7 +392,7 @@ export const webAnalyticsMessages = {
   'analytics.links.createCampaign': 'Kampanjens namn',
   'analytics.links.createSlug': 'Anpassad avslutning',
   'analytics.links.createSlugHelp':
-    'Lämna detta tomt och Relay genererar ett kort slumpmässigt slut.',
+    'Lämna detta tomt och Post Array genererar ett kort slumpmässigt slut.',
   'analytics.links.createUtm': 'UTM-parametrar',
   'analytics.links.blockedScheme': 'Endast https-destinationer accepteras.',
   'analytics.links.blockedPrivate':
@@ -639,7 +639,7 @@ export const webAnalyticsMessages = {
   'automation.test.conditionFailed': '{condition} gick inte igenom, så här stannade regeln',
   'automation.test.actionSimulated': '{action} skulle köras',
   'automation.test.actionSkipped': '{action} skulle hoppas över: {reason}',
-  'automation.test.noExternalEffect': 'Ingenting lämnade Relay under detta test.',
+  'automation.test.noExternalEffect': 'Ingenting lämnade Post Array under detta test.',
   'automation.test.failed': 'Testet kunde inte slutföras: {reason}',
 
   'automation.runs.table.caption': 'Senaste körningar av denna regel.',
@@ -701,7 +701,7 @@ export const webAnalyticsMessages = {
     'Förvandla ett flöde till utkast eller schemalagda inlägg, med samma validering och godkännande som allt du skriver själv.',
   'automation.rss.empty': 'Inga flöden ännu',
   'automation.rss.emptyBody':
-    'Lägg till ett flöde och Relay kontrollerar det enligt ett schema. Varje ny post blir ett utkast, ett schemalagt inlägg eller en godkännandebegäran, vilket du än väljer.',
+    'Lägg till ett flöde och Post Array kontrollerar det enligt ett schema. Varje ny post blir ett utkast, ett schemalagt inlägg eller en godkännandebegäran, vilket du än väljer.',
   'automation.rss.emptyExample':
     'Exempel: Acme-bloggflödet skapar ett utkast för X och LinkedIn varje gång en artikel publiceras och väntar på en godkännare.',
   'automation.rss.table.caption': 'Matar den här arbetsytan omröstningar.',
@@ -718,7 +718,7 @@ export const webAnalyticsMessages = {
   'automation.rss.stepOf': 'Steg {current} av {total}',
 
   'automation.rss.urlHelp':
-    'Relay hämtar flödet från våra servrar, inte från din webbläsare. Privata nätverksadresser nekas.',
+    'Post Array hämtar flödet från våra servrar, inte från din webbläsare. Privata nätverksadresser nekas.',
   'automation.rss.validateAction': 'Kolla detta flöde',
   'automation.rss.validateFailed': 'Den adressen returnerade inte ett läsbart flöde',
   'automation.rss.validateFailedReason': 'Vad vi fick tillbaka: {reason}',
@@ -731,7 +731,7 @@ export const webAnalyticsMessages = {
   'automation.rss.previewNoImage': 'Ingen bild i detta objekt',
   'automation.rss.previewImageAlt': 'Bild från flödesobjektet {title}',
   'automation.rss.previewNoDate':
-    'Det här objektet har ingen tidsstämpel, så Relay använder den tid det såg det först.',
+    'Det här objektet har ingen tidsstämpel, så Post Array använder den tid det såg det först.',
   'automation.rss.previewFieldsTitle': 'Fält som detta flöde tillhandahåller',
   'automation.rss.previewFieldMissing': 'Finns inte i detta flöde',
 
@@ -803,7 +803,7 @@ export const webAnalyticsMessages = {
     'Reläet fortsätter att kontrollera det normala schemat. Inget publicerades från ett partiellt svar.',
 
   /* ----------------------------------------------------------------------
-     What Relay refuses to automate
+     What Post Array refuses to automate
      ---------------------------------------------------------------------- */
   'automation.refuse.title': 'Inte tillgänglig i någon regel',
   'automation.refuse.body':

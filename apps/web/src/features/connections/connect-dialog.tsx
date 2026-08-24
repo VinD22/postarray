@@ -6,7 +6,7 @@
  * Two things happen here that must happen before a person leaves for the
  * provider, not after:
  *
- *  1. The exact permissions being requested are listed, each with what Relay
+ *  1. The exact permissions being requested are listed, each with what Post Array
  *     uses it for. A consent screen that says "manage your pages" is the
  *     provider's sentence; this is ours.
  *  2. The account type requirement is stated up front. Instagram publishing

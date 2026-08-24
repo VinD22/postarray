@@ -39,21 +39,21 @@ export const webCalendarMessages = {
   'web.connection.requirement.mastodon':
     'Mastodon आपके अपने इंस्टेंस पर बनाए गए एक्सेस टोकन से जुड़ता है, आपके पासवर्ड से नहीं।',
   'web.connection.requirement.telegram':
-    'Relay एक बॉट के रूप में पोस्ट करता है। जिस चैनल या ग्रुप में पोस्ट करना है उसमें बॉट जोड़ें।',
+    'Post Array एक बॉट के रूप में पोस्ट करता है। जिस चैनल या ग्रुप में पोस्ट करना है उसमें बॉट जोड़ें।',
   'web.connection.requirement.reddit':
     'Reddit पर लिखने के लिए अनुमोदित ऐप आवश्यक है, और हर पोस्ट को शीर्षक और सबरेडिट चाहिए।',
   'web.connection.requirement.wordpress':
-    'Relay वर्डप्रेस में बनाए गए ऐप पासवर्ड से साइट के REST API के माध्यम से प्रकाशित करता है।',
+    'Post Array वर्डप्रेस में बनाए गए ऐप पासवर्ड से साइट के REST API के माध्यम से प्रकाशित करता है।',
   'web.connection.requirement.medium':
-    'Medium OAuth से जुड़ता है और Relay मार्कडाउन में सार्वजनिक कहानियाँ प्रकाशित करता है।',
+    'Medium OAuth से जुड़ता है और Post Array मार्कडाउन में सार्वजनिक कहानियाँ प्रकाशित करता है।',
   'web.connection.requirement.devto':
     'Dev.to आपकी Dev.to सेटिंग्स में बनाई गई API कुंजी से जुड़ता है।',
   'web.connection.requirement.pinterest':
     'Pinterest पर लिखने के लिए अनुमोदित ऐप पहुँच आवश्यक है, और पिन को छवि और अपना बोर्ड चाहिए।',
   'web.connection.requirement.discord':
-    'Relay एक बॉट के रूप में पोस्ट करता है। जिन सर्वरों और चैनलों में पोस्ट करना है उनमें बॉट जोड़ें।',
+    'Post Array एक बॉट के रूप में पोस्ट करता है। जिन सर्वरों और चैनलों में पोस्ट करना है उनमें बॉट जोड़ें।',
   'web.connection.requirement.slack':
-    'Relay एक ऐप के रूप में पोस्ट करता है। जिन चैनलों में पोस्ट करना है उनमें ऐप जोड़ें।',
+    'Post Array एक ऐप के रूप में पोस्ट करता है। जिन चैनलों में पोस्ट करना है उनमें ऐप जोड़ें।',
   'web.provider.fake': 'कनेक्टर का परीक्षण करें',
 
   'web.accountType.personal_profile': 'व्यक्तिगत प्रोफ़ाइल',
@@ -164,7 +164,7 @@ export const webCalendarMessages = {
 
   'web.calendar.published.title': 'यह पोस्ट पहले ही प्रकाशित हो चुकी है',
   'web.calendar.published.body':
-    'A post exists on {provider} at {permalinkLabel}. Moving the entry in Relay does not move the post on the platform. Choose what you want to happen.',
+    'A post exists on {provider} at {permalinkLabel}. Moving the entry in Post Array does not move the post on the platform. Choose what you want to happen.',
   'web.calendar.published.optionLocal': 'स्थानीय रिकार्ड को ही अपडेट करें',
   'web.calendar.published.optionLocalHint':
     'रसीद वास्तविक प्रकाशन समय रखती है। केवल नियोजन प्रविष्टि चलती है, इसलिए आपका कैलेंडर आपकी योजना से मेल खाता है।',
@@ -269,7 +269,7 @@ export const webCalendarMessages = {
 
   'web.receipt.analytics.never': 'एनालिटिक्स ने अभी तक इस पोस्ट के लिए समन्वयन नहीं किया है।',
   'web.receipt.analytics.explain':
-    'प्रदाता अपने स्वयं के शेड्यूल पर एकत्रित होते हैं। नीचे दिया गया समय वह है जब Relay ने उन्हें आखिरी बार पढ़ा था, न कि तब जब संख्याएँ सत्य थीं।',
+    'प्रदाता अपने स्वयं के शेड्यूल पर एकत्रित होते हैं। नीचे दिया गया समय वह है जब Post Array ने उन्हें आखिरी बार पढ़ा था, न कि तब जब संख्याएँ सत्य थीं।',
 
   'web.receipt.export.download': 'रसीद डाउनलोड करें',
   'web.receipt.export.copyReference': 'रसीद संदर्भ की प्रतिलिपि बनाएँ',
@@ -281,11 +281,11 @@ export const webCalendarMessages = {
     'पुनः प्रयास कभी भी उस लक्ष्य को नहीं छूता जो पहले से ही एक बाहरी पोस्ट उत्पन्न कर चुका है।',
 
   'web.receipt.remediation.user_action_required':
-    'This needs a change in Relay or on {provider} before it can run again.',
+    'This needs a change in Post Array or on {provider} before it can run again.',
   'web.receipt.remediation.content_invalid':
     'Edit the content so it passes {provider} validation, then schedule it again.',
   'web.receipt.remediation.transient_provider':
-    '{provider} returned a temporary error. Relay retried on its own schedule.',
+    '{provider} returned a temporary error. Post Array retried on its own schedule.',
   'web.receipt.remediation.permanent_provider':
     '{provider} refused this permanently. Retrying the same content will not change the answer.',
   'web.receipt.remediation.internal':
@@ -348,30 +348,30 @@ export const webCalendarMessages = {
   'web.connection.disconnect.consequence.scheduled':
     '{count, plural, one {# scheduled post} other {# scheduled posts}} for this account will not publish.',
   'web.connection.disconnect.consequence.published':
-    'Posts already published stay on {provider}. Relay does not delete them.',
+    'Posts already published stay on {provider}. Post Array does not delete them.',
   'web.connection.disconnect.consequence.analytics':
     'पहले से एकत्र किए गए मेट्रिक्स इस कार्यक्षेत्र में बने रहते हैं और अपडेट होना बंद कर देते हैं।',
 
   'web.connection.connect.title': 'एक खाता कनेक्ट करें',
   'web.connection.connect.chooseProvider': 'कौन सा मंच',
-  'web.connection.connect.permissionHeading': 'What Relay will ask {provider} for',
+  'web.connection.connect.permissionHeading': 'What Post Array will ask {provider} for',
   'web.connection.connect.requirementHeading': 'इससे पहले कि आप जारी रखें',
   'web.connection.connect.continue': 'Continue to {provider}',
   'web.connection.connect.handoffNote':
-    'The next screen is {provider}, not Relay. Relay never sees your password.',
+    'The next screen is {provider}, not Post Array. Post Array never sees your password.',
   'web.connection.connect.noWriteWithoutApproval':
     'किसी खाते को जोड़ने से कुछ भी प्रकाशित नहीं होता है. प्रत्येक पोस्ट अभी भी इस कार्यक्षेत्र अनुमोदन नीति का पालन करती है।',
 
   'web.connection.requirement.instagram':
     'Instagram प्रकाशन के लिए एक पेशेवर खाते की आवश्यकता होती है, जिसका अर्थ है फेसबुक पेज से जुड़ा एक व्यवसाय या निर्माता खाता।',
   'web.connection.requirement.facebook':
-    'Relay Facebook Pages पर प्रकाशित होता है। एक व्यक्तिगत प्रोफ़ाइल प्रकाशन लक्ष्य नहीं हो सकती.',
+    'Post Array Facebook Pages पर प्रकाशित होता है। एक व्यक्तिगत प्रोफ़ाइल प्रकाशन लक्ष्य नहीं हो सकती.',
   'web.connection.requirement.linkedin':
     'किसी संगठन के लिए प्रकाशित करने के लिए आपको उस LinkedIn पृष्ठ पर एक सामग्री व्यवस्थापक भूमिका की आवश्यकता होती है।',
   'web.connection.requirement.youtube':
     'जब तक Google ऐप ऑडिट पूरा नहीं कर लेता, तब तक इस प्रोजेक्ट के अपलोड निजी के रूप में प्रकाशित होंगे। आप बाद में YouTube पर दृश्यता बदल सकते हैं।',
   'web.connection.requirement.tiktok':
-    'TikTok के लिए आवश्यक है कि आप प्रत्येक पोस्ट के लिए दर्शकों का चयन स्वयं करें। Relay आपके लिए किसी एक का पूर्व-चयन नहीं कर सकता।',
+    'TikTok के लिए आवश्यक है कि आप प्रत्येक पोस्ट के लिए दर्शकों का चयन स्वयं करें। Post Array आपके लिए किसी एक का पूर्व-चयन नहीं कर सकता।',
   'web.connection.requirement.x':
     'प्रति ऑपरेशन एक्स शुल्क। एक पोस्ट जिसमें URL शामिल है, उसकी कीमत एक सादे टेक्स्ट पोस्ट से अधिक है, और अनुमान आपके शेड्यूल करने से पहले दिखाया जाता है।',
   'web.connection.requirement.threads':
@@ -379,13 +379,13 @@ export const webCalendarMessages = {
   'web.connection.requirement.bluesky':
     'Bluesky आपके Bluesky सेटिंग्स में बनाए गए ऐप पासवर्ड से कनेक्ट होता है, न कि आपके अकाउंट पासवर्ड से।',
   'web.connection.requirement.generic':
-    'आपको इस खाते पर पोस्ट करने के लिए प्लेटफ़ॉर्म से ही अनुमति की आवश्यकता है। Relay इसे प्रदान नहीं कर सकता।',
+    'आपको इस खाते पर पोस्ट करने के लिए प्लेटफ़ॉर्म से ही अनुमति की आवश्यकता है। Post Array इसे प्रदान नहीं कर सकता।',
 
-  'web.connection.purpose.publish': 'Relay में आपके द्वारा शेड्यूल किए गए पोस्ट प्रकाशित करना।',
+  'web.connection.purpose.publish': 'Post Array में आपके द्वारा शेड्यूल किए गए पोस्ट प्रकाशित करना।',
   'web.connection.purpose.readPosts':
-    'Relay द्वारा प्रकाशित एक पोस्ट को दोबारा पढ़ना, ताकि रसीद यह साबित कर सके कि यह लाइव है।',
+    'Post Array द्वारा प्रकाशित एक पोस्ट को दोबारा पढ़ना, ताकि रसीद यह साबित कर सके कि यह लाइव है।',
   'web.connection.purpose.identity':
-    'Relay में सटीक खाता नाम दिखाया जा रहा है, ताकि आप कभी भी गलत खाता प्रकाशित न करें।',
+    'Post Array में सटीक खाता नाम दिखाया जा रहा है, ताकि आप कभी भी गलत खाता प्रकाशित न करें।',
   'web.connection.purpose.analytics':
     'आपके अपने पोस्ट के लिए यह प्लेटफ़ॉर्म रिपोर्ट करने वाले मेट्रिक्स को पढ़ना।',
   'web.connection.purpose.refresh':
@@ -396,7 +396,7 @@ export const webCalendarMessages = {
   'web.connection.permissions.title': 'Permissions on {account}',
   'web.connection.permissions.scopeColumn': 'अनुमति',
   'web.connection.permissions.stateColumn': 'राज्य',
-  'web.connection.permissions.purposeColumn': 'Relay इसका उपयोग किस लिए करता है',
+  'web.connection.permissions.purposeColumn': 'Post Array इसका उपयोग किस लिए करता है',
   'web.connection.permissions.missingWarning':
     '{count, plural, one {# permission is missing} other {# permissions are missing}}. Reconnect and accept it to restore the features below.',
   'web.connection.permissions.snapshot': 'Read from {provider} {relativeTime}',
@@ -408,9 +408,9 @@ export const webCalendarMessages = {
   'web.connection.capability.featureColumn': 'क्षमता',
   'web.connection.capability.legendTitle': 'इसे कैसे पढ़ें',
   'web.connection.capability.legend.supported':
-    'Relay सही प्रकार के कनेक्टेड खाते के लिए आज ही ऐसा कर सकता है।',
+    'Post Array सही प्रकार के कनेक्टेड खाते के लिए आज ही ऐसा कर सकता है।',
   'web.connection.capability.legend.not_implemented':
-    'प्लेटफ़ॉर्म इसे प्रदान करता है और Relay ने इसे अभी तक नहीं बनाया है। यह कनेक्टर रोडमैप पर है.',
+    'प्लेटफ़ॉर्म इसे प्रदान करता है और Post Array ने इसे अभी तक नहीं बनाया है। यह कनेक्टर रोडमैप पर है.',
   'web.connection.capability.legend.unsupported':
     'प्लेटफ़ॉर्म इसे अपने आधिकारिक API के माध्यम से पेश नहीं करता है, इसलिए कोई भी टूल इसे सुरक्षित रूप से नहीं कर सकता है।',
   'web.connection.capability.legend.requires_review':

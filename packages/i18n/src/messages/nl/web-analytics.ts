@@ -39,7 +39,7 @@ export const webAnalyticsMessages = {
 
   'analytics.rankMetric.label': 'Rangschik berichten op',
   'analytics.rankMetric.help':
-    'Er is geen gecombineerde score in Relay. Kies één metriek waarvan u de definitie vertrouwt, en de tabel wordt alleen op die metriek geordend.',
+    'Er is geen gecombineerde score in Post Array. Kies één metriek waarvan u de definitie vertrouwt, en de tabel wordt alleen op die metriek geordend.',
   'analytics.rankMetric.chosen':
     'Gerangschikt op {metric}, zoals gerapporteerd door elke accountaanbieder.',
 
@@ -108,7 +108,7 @@ export const webAnalyticsMessages = {
   'analytics.evidence.confounder.followers':
     'Het aantal volgers op {account} is tijdens deze periode gewijzigd door {percent}.',
   'analytics.evidence.confounder.paid':
-    'Relay kan niet zeggen of deze berichten een betaalde distributie hebben ontvangen.',
+    'Post Array kan niet zeggen of deze berichten een betaalde distributie hebben ontvangen.',
   'analytics.evidence.confounder.provider':
     '{provider} heeft in deze periode de manier gewijzigd waarop {metric} wordt gerapporteerd.',
 
@@ -147,7 +147,7 @@ export const webAnalyticsMessages = {
   'analytics.unit.count': 'Een telling van gebeurtenissen',
   'analytics.unit.seconds': 'Seconden',
   'analytics.unit.percent': 'Een percentage dat de aanbieder al heeft berekend',
-  'analytics.unit.ratio': 'Een ratio Relay berekend op basis van twee providervelden',
+  'analytics.unit.ratio': 'Een ratio Post Array berekend op basis van twee providervelden',
   'analytics.unit.currency_minor': 'Een geldbedrag in kleine eenheden',
 
   'analytics.denominator.none': 'Dit is een telling, geen tarief. Het heeft geen noemer.',
@@ -168,7 +168,7 @@ export const webAnalyticsMessages = {
   'analytics.format.thread': 'Draad',
 
   'analytics.value.unavailableReason.notImplemented':
-    'Relay heeft de mapping voor deze statistiek nog niet op {provider} gebouwd.',
+    'Post Array heeft de mapping voor deze statistiek nog niet op {provider} gebouwd.',
   'analytics.value.estimated': 'Geschat',
   'analytics.value.estimatedMethod': 'Methode: {method}.',
 
@@ -297,7 +297,7 @@ export const webAnalyticsMessages = {
     'Analytics heeft de rol van analist of hoger nodig. Een eigenaar of beheerder van deze werkruimte kan deze verlenen.',
   'analytics.state.rateLimitTitle': '{provider} zijn snelheidsbeperkende analyseverzoeken',
   'analytics.state.rateLimitCause':
-    'Het account heeft zijn deel van het providerquotum voor dit venster opgebruikt. Relay probeert het niet harder, omdat dat de publicatie zou vertragen.',
+    'Het account heeft zijn deel van het providerquotum voor dit venster opgebruikt. Post Array probeert het niet harder, omdat dat de publicatie zou vertragen.',
   'analytics.state.rateLimitAlternative':
     'Verfijn het datumbereik of het accountfilter, waarbij de aanbieder om minder vraagt.',
   'analytics.state.rateLimitReset': 'Verzoeken CV',
@@ -309,7 +309,7 @@ export const webAnalyticsMessages = {
   'analytics.links.new': 'Maak een bijgehouden link',
   'analytics.links.empty': 'Nog geen gevolgde links',
   'analytics.links.emptyBody':
-    'Een bijgehouden link is een korte URL waar Relay doorheen verwijst, zodat u klikken kunt zien, zelfs als een platform geen klikken rapporteert. De oorspronkelijke bestemming wordt nooit gewijzigd zonder een auditinvoer.',
+    'Een bijgehouden link is een korte URL waar Post Array doorheen verwijst, zodat u klikken kunt zien, zelfs als een platform geen klikken rapporteert. De oorspronkelijke bestemming wordt nooit gewijzigd zonder een auditinvoer.',
   'analytics.links.emptyExample':
     'Voorbeeld: relay.to/a7Kq2 verwijst door naar acme.com/blog/launch met campagne q3-launch.',
   'analytics.links.table.caption':
@@ -341,7 +341,7 @@ export const webAnalyticsMessages = {
   'analytics.links.destinationHistoryRow': '{destination}, actief van {start} tot {end}',
   'analytics.links.destinationHistoryCurrent': '{destination}, actief sinds {start}',
   'analytics.links.domainLabel': 'Kort domein',
-  'analytics.links.domainDefault': 'Relay standaarddomein',
+  'analytics.links.domainDefault': 'Post Array standaarddomein',
   'analytics.links.domainVerified': 'Geverifieerd door DNS op {date}',
   'analytics.links.domainPending': 'Wachten op het DNS-record',
   'analytics.links.domainPendingHelp':
@@ -364,7 +364,7 @@ export const webAnalyticsMessages = {
   'analytics.links.abuseAction': 'Rapporteer deze link',
   'analytics.links.measurementLabel': 'Meting van omleiding door eerste partij',
   'analytics.links.measurementExplained':
-    'Relay telt een verzoek wanneer de omleidingsservice om deze URL wordt gevraagd. Een gededupliceerde klik verwijdert herhaalde verzoeken van dezelfde bezoeker binnen een kort venster, en verzoeken die overeenkomen met bekende crawlerpatronen worden uitgesloten in plaats van verwijderd.',
+    'Post Array telt een verzoek wanneer de omleidingsservice om deze URL wordt gevraagd. Een gededupliceerde klik verwijdert herhaalde verzoeken van dezelfde bezoeker binnen een kort venster, en verzoeken die overeenkomen met bekende crawlerpatronen worden uitgesloten in plaats van verwijderd.',
   'analytics.links.botsNote':
     '{count, plural, one {# verzoek} other {# verzoeken}} zijn geclassificeerd als geautomatiseerd en zijn uitgesloten van de ontdubbelde telling.',
   'analytics.links.series.title': 'Verzoeken en gededupliceerde klikken in de loop van de tijd',
@@ -387,7 +387,7 @@ export const webAnalyticsMessages = {
   'analytics.links.noEventsBody':
     'Deze link is niet meer aangevraagd sinds deze is gemaakt. Dat is een echte nul, gemeten door onze eigen omleidingsdienst.',
   'analytics.links.compareWarning':
-    '{provider} rapporteert {providerValue}-linkklikken voor dit bericht. Relay registreerde {relayValue} gededupliceerde klikken. De twee tellen verschillende gebeurtenissen en geen van beide vervangt de andere.',
+    '{provider} rapporteert {providerValue}-linkklikken voor dit bericht. Post Array registreerde {relayValue} gededupliceerde klikken. De twee tellen verschillende gebeurtenissen en geen van beide vervangt de andere.',
   'analytics.links.errorTitle': 'Linkstatistieken konden niet worden geladen',
   'analytics.links.errorBody':
     'De omleidingsservice werkt nog steeds, dus de link blijft bezoekers naar de bestemming sturen. Alleen de rapportage wordt beïnvloed.',
@@ -396,7 +396,7 @@ export const webAnalyticsMessages = {
     'Moet een openbaar https-adres zijn. Privénetwerkadressen en omleidingsketens worden afgewezen door de omleidingsservice.',
   'analytics.links.createCampaign': 'Campagnenaam',
   'analytics.links.createSlug': 'Aangepast einde',
-  'analytics.links.createSlugHelp': 'Laat dit leeg en Relay genereert een kort willekeurig einde.',
+  'analytics.links.createSlugHelp': 'Laat dit leeg en Post Array genereert een kort willekeurig einde.',
   'analytics.links.createUtm': 'UTM-parameters',
   'analytics.links.blockedScheme': 'Alleen https-bestemmingen worden geaccepteerd.',
   'analytics.links.blockedPrivate':
@@ -547,7 +547,7 @@ export const webAnalyticsMessages = {
     '{count, plural, one {# actie is} other {# acties zijn}} niet vermeld omdat de geselecteerde accounts deze niet kunnen uitvoeren.',
   'automation.picker.hiddenDetail': '{action} is niet beschikbaar voor {provider}. {reason}',
   'automation.picker.consequential': 'Creëert iets op een platform',
-  'automation.picker.internalOnly': 'Blijft binnen Relay',
+  'automation.picker.internalOnly': 'Blijft binnen Post Array',
 
   'automation.accounts.label': 'Accounts waarop deze regel van toepassing kan zijn',
   'automation.accounts.help':
@@ -650,7 +650,7 @@ export const webAnalyticsMessages = {
   'automation.test.conditionFailed': '{condition} ging niet door, dus de regel stopte hier',
   'automation.test.actionSimulated': '{action} zou worden uitgevoerd',
   'automation.test.actionSkipped': '{action} zou worden overgeslagen: {reason}',
-  'automation.test.noExternalEffect': 'Tijdens deze test is er niets meer van Relay overgebleven.',
+  'automation.test.noExternalEffect': 'Tijdens deze test is er niets meer van Post Array overgebleven.',
   'automation.test.failed': 'De test kan niet worden voltooid: {reason}',
 
   'automation.runs.table.caption': 'Recente uitvoeringen van deze regel.',
@@ -712,7 +712,7 @@ export const webAnalyticsMessages = {
     'Zet een feed om in concepten of geplande berichten, met dezelfde validatie en goedkeuring als alles wat u zelf schrijft.',
   'automation.rss.empty': 'Nog geen feeds',
   'automation.rss.emptyBody':
-    'Voeg een feed toe en Relay controleert deze volgens een schema. Elk nieuw item wordt een concept, een gepland bericht of een goedkeuringsverzoek, wat u ook kiest.',
+    'Voeg een feed toe en Post Array controleert deze volgens een schema. Elk nieuw item wordt een concept, een gepland bericht of een goedkeuringsverzoek, wat u ook kiest.',
   'automation.rss.emptyExample':
     'Voorbeeld: de Acme-blogfeed maakt elke keer dat een artikel wordt gepubliceerd een concept voor X en LinkedIn, en wacht op goedkeuring.',
   'automation.rss.table.caption': 'Voedt peilingen van deze werkruimte.',
@@ -729,7 +729,7 @@ export const webAnalyticsMessages = {
   'automation.rss.stepOf': 'Stap {current} van {total}',
 
   'automation.rss.urlHelp':
-    'Relay haalt de feed op van onze servers, niet van uw browser. Privénetwerkadressen worden geweigerd.',
+    'Post Array haalt de feed op van onze servers, niet van uw browser. Privénetwerkadressen worden geweigerd.',
   'automation.rss.validateAction': 'Controleer deze feed',
   'automation.rss.validateFailed': 'Dat adres heeft geen leesbare feed opgeleverd',
   'automation.rss.validateFailedReason': 'Wat we terug kregen: {reason}',
@@ -742,7 +742,7 @@ export const webAnalyticsMessages = {
   'automation.rss.previewNoImage': 'Geen afbeelding in dit artikel',
   'automation.rss.previewImageAlt': 'Afbeelding uit het feeditem {title}',
   'automation.rss.previewNoDate':
-    'Dit item heeft geen tijdstempel, dus Relay gebruikt de tijd waarop het het voor het eerst zag.',
+    'Dit item heeft geen tijdstempel, dus Post Array gebruikt de tijd waarop het het voor het eerst zag.',
   'automation.rss.previewFieldsTitle': 'Velden die deze feed biedt',
   'automation.rss.previewFieldMissing': 'Niet aanwezig in deze feed',
 
@@ -770,7 +770,7 @@ export const webAnalyticsMessages = {
   'automation.rss.templatePreview': 'Preview met het nieuwste item',
   'automation.rss.adaptWithAi': 'Pas de tekst voor elk doel aan',
   'automation.rss.adaptHelp':
-    'De formulering is herschreven om op elk platform te passen en wordt weergegeven als een verschil dat u accepteert of afwijst. Media zijn afkomstig van het feeditem. Relay genereert geen afbeeldingen.',
+    'De formulering is herschreven om op elk platform te passen en wordt weergegeven als een verschil dat u accepteert of afwijst. Media zijn afkomstig van het feeditem. Post Array genereert geen afbeeldingen.',
   'automation.rss.noImageGeneration':
     'Als een feeditem geen afbeelding heeft, wordt het bericht zonder afbeelding verzonden.',
   'automation.rss.imageFromFeed': 'Gebruik de afbeelding uit het feeditem als deze er is',
@@ -808,13 +808,13 @@ export const webAnalyticsMessages = {
   'automation.rss.resumeFeed': 'Hervat deze feed',
   'automation.rss.deleteTitle': '{title} verwijderen?',
   'automation.rss.deleteBody':
-    'Relay stopt met het controleren van deze feed. Concepten en berichten die al zijn gemaakt, blijven precies zoals ze zijn.',
+    'Post Array stopt met het controleren van deze feed. Concepten en berichten die al zijn gemaakt, blijven precies zoals ze zijn.',
   'automation.rss.errorTitle': 'Deze feed kan niet worden gelezen',
   'automation.rss.errorBody':
-    'Relay blijft het normale schema controleren. Van een gedeeltelijke reactie is niets gepubliceerd.',
+    'Post Array blijft het normale schema controleren. Van een gedeeltelijke reactie is niets gepubliceerd.',
 
   /* ----------------------------------------------------------------------
-     What Relay refuses to automate
+     What Post Array refuses to automate
      ---------------------------------------------------------------------- */
   'automation.refuse.title': 'In geen enkele regel beschikbaar',
   'automation.refuse.body':

@@ -66,7 +66,7 @@ import {
  * - Comment, duet and stitch settings are explicit user choices, only where the creator
  *   info says they are available.
  * - Commercial content and music rights declarations are collected where applicable.
- * - **No Relay watermark or logo is ever added.** There is no code path that composites
+ * - **No Post Array watermark or logo is ever added.** There is no code path that composites
  *   anything onto a video.
  * - Pull from URL uses a verified owned domain.
  * - **An upload alone is not success.** We poll until TikTok reports a terminal state and a

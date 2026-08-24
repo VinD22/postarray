@@ -3,7 +3,6 @@ export const authMessages = {
   'auth.signIn.title': '登录',
   'auth.signIn.subtitle': '发布、批准并查看到底发生了什么。',
   'auth.signUp.title': '创建您的帐户',
-  'auth.signUp.subtitle': '每项功能都需要 7 天时间。今天到期 0 美元。',
   'auth.continueWithGoogle': '继续使用 Google',
   'auth.continueWithFacebook': '继续使用 Facebook',
   'auth.orUseEmail': '或使用您的电子邮件',

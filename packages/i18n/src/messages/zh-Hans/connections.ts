@@ -31,7 +31,7 @@ export const connectionMessages = {
   'connection.permissions.granted': '的确',
   'connection.permissions.missing': '未授予',
   'connection.permissions.explainBeforeOAuth':
-    'Relay 将向 {provider} 请求这些权限。您可以随时断开连接。',
+    'Post Array 将向 {provider} 请求这些权限。您可以随时断开连接。',
   'connection.permissions.whyNeeded': '为什么需要这个',
   'connection.reconnect.title': '重新连接 {account}',
   'connection.reconnect.body': '此帐户的预定帖子将被暂停，直到重新连接为止。什么都没有丢失。',
@@ -73,11 +73,11 @@ export const connectionMessages = {
   'capability.level.requires_review': '需要平台审核',
   'capability.level.beta': '贝塔',
   'capability.level.unknown': '不可用',
-  'capability.explain.supported': '今天，Relay 可以为此帐户执行此操作。',
+  'capability.explain.supported': '今天，Post Array 可以为此帐户执行此操作。',
   'capability.explain.unsupported':
     '{provider} 不通过其官方 API 提供此服务，因此没有工具可以安全地做到这一点。',
   'capability.explain.not_implemented':
-    '{provider} 提供了此功能，但 Relay 尚未构建它。它位于连接器路线图上。',
+    '{provider} 提供了此功能，但 Post Array 尚未构建它。它位于连接器路线图上。',
   'capability.explain.requires_review':
     '{provider} 仅在审核应用程序或帐户后才授予此权限。在审核通过之前，它一直不可用。',
   'capability.explain.beta':

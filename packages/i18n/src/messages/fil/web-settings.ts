@@ -273,7 +273,7 @@ export const webSettingsMessages = {
   'settings.ui.security.grantScopes': 'Mga binigay na pahintulot',
   'settings.ui.security.socialPermissionsTitle': 'Mga pahintulot sa social account',
   'settings.ui.security.socialPermissionsBody':
-    'Ano ang pinahintulutan ng bawat konektadong account na gawin ng Relay, mula sa snapshot ng kakayahan na kinuha sa oras ng koneksyon.',
+    'Ano ang pinahintulutan ng bawat konektadong account na gawin ng Post Array, mula sa snapshot ng kakayahan na kinuha sa oras ng koneksyon.',
   'settings.ui.security.viewInSection': 'Pamahalaan sa {section}',
   'settings.ui.security.emptySessions': 'Tanging ang session na ito ang naka-sign in.',
   'settings.ui.security.emptyGrants':
@@ -312,7 +312,7 @@ export const webSettingsMessages = {
     'Choose the smallest thing that solves your problem. Each option below says what survives.',
   'settings.ui.data.deleteConnection': 'Revoke one social connection',
   'settings.ui.data.deleteConnectionHelp':
-    'Removes Relay access to that account. The workspace, its content and its receipts stay.',
+    'Removes Post Array access to that account. The workspace, its content and its receipts stay.',
   'settings.ui.data.deleteProject': 'Delete a project',
   'settings.ui.data.deleteProjectHelp':
     'Removes the project, its rules and its glossary. Content published under it keeps its receipts.',
@@ -342,7 +342,7 @@ export const webSettingsMessages = {
   /* --------------------------------------------------------------- referrals */
 
   'settings.ui.referral.description':
-    'Ibahagi ang Relay sa isang isiniwalat na link. Ang komisyon ay hindi kailanman may kondisyon sa isang positibong pagsusuri.',
+    'Ibahagi ang Post Array sa isang isiniwalat na link. Ang komisyon ay hindi kailanman may kondisyon sa isang positibong pagsusuri.',
   'settings.ui.referral.linkLabel': 'Ang iyong referral link',
   'settings.ui.referral.tableCaption': 'Mga nauugnay na pag-signup at estado ng kanilang komisyon',
   'settings.ui.referral.column.signup': 'Signup',
@@ -495,7 +495,7 @@ export const webSettingsMessages = {
     'Magrehistro ng isang application upang ang ibang mga tao ay mabigyan ito ng access sa kanilang workspace. Ang bawat app ay may sariling pagkakakilanlan, sarili nitong redirect allowlist at sarili nitong audit trail.',
   'developer.ui.apps.emptyTitle': 'Walang nakarehistrong app',
   'developer.ui.apps.emptyBody':
-    'Magrehistro ng app kapag kailangang kumilos ang isa pang produkto sa ngalan ng isang user ng Relay. Para sa sarili mong automation, gumamit na lang ng service account.',
+    'Magrehistro ng app kapag kailangang kumilos ang isa pang produkto sa ngalan ng isang user ng Post Array. Para sa sarili mong automation, gumamit na lang ng service account.',
   'developer.ui.apps.emptyExample':
     'Halimbawa: "Acme Publisher", kumpidensyal na kliyente, pag-redirect ng https://acme.example/oauth/callback, sumasaklaw sa mga account:read at drafts:write.',
   'developer.ui.apps.typeHelp':
@@ -519,7 +519,7 @@ export const webSettingsMessages = {
   'developer.ui.apps.scopeGroupHelp.read':
     'Hinahayaan ng mga ito ang app na tumingin sa data. Walang nagbabago.',
   'developer.ui.apps.scopeGroupHelp.reversible':
-    'Hinahayaan ng mga ito ang app na gumawa o mag-edit ng mga bagay sa loob ng Relay. Walang nakakarating sa isang plataporma.',
+    'Hinahayaan ng mga ito ang app na gumawa o mag-edit ng mga bagay sa loob ng Post Array. Walang nakakarating sa isang plataporma.',
   'developer.ui.apps.scopeGroupHelp.consequential':
     'Ang mga ito ay maaaring magdulot ng isang post sa isang tunay na account, o magbago kung sino ang makakaabot sa iyong mga account. Palagi silang nakalista nang hiwalay at hindi kailanman naka-bundle.',
   'developer.ui.apps.noBundling':
@@ -685,7 +685,7 @@ export const webSettingsMessages = {
   'billing.ui.allowanceMetered':
     'X and some other providers charge per operation. Those charges are passed through at cost and are not part of the plan price.',
   'billing.ui.allowanceNoMedia':
-    'Image generation and video generation are not included and are not sold. Relay does not generate media.',
+    'Image generation and video generation are not included and are not sold. Post Array does not generate media.',
   'billing.ui.readFairUse': 'Read the fair use policy',
   'billing.ui.readMeteredPolicy': 'Read how metered usage is billed',
   'billing.ui.usageCaption': 'Metered provider usage this period, billed at cost',
@@ -745,8 +745,6 @@ export const webSettingsMessages = {
   'billing.ui.canceledNotice': 'This subscription is canceled.',
   'billing.ui.resume': 'Start the subscription again',
   'billing.ui.noSubscriptionTitle': 'No subscription on this workspace',
-  'billing.ui.noSubscriptionBody':
-    'Start the seven day trial to publish. Polar collects a payment method and charges nothing today.',
   'billing.ui.noSubscriptionExample':
     'Monthly is $29. Annual is $300, which is $25/month billed annually. Save $48/year.',
   'billing.ui.overChannelLimitAction': 'Review connected channels',
@@ -869,7 +867,7 @@ export const webSettingsMessages = {
   'growth.ui.ugc.incentiveDisclosure':
     'Dapat isiwalat ang isang insentibo sa bawat post na resulta nito, kapwa ng iyo at ng kalahok.',
   'growth.ui.ugc.honesty':
-    'Nagpaplano ito ng isang kampanya na isasagawa mo kasama ang mga tunay na tao. Hindi naghahanap ang Relay ng mga creator, hindi ito nakikipag-ugnayan sa kanila, hindi sumusulat ng testimonial, o gumagawa ng nilalaman para sa customer.',
+    'Nagpaplano ito ng isang kampanya na isasagawa mo kasama ang mga tunay na tao. Hindi naghahanap ang Post Array ng mga creator, hindi ito nakikipag-ugnayan sa kanila, hindi sumusulat ng testimonial, o gumagawa ng nilalaman para sa customer.',
 
   'growth.ui.opportunities.caption':
     'Mga na-verify na pagkakataon mula sa catalog, na niraranggo ayon sa akma sa iyong profile',
@@ -892,7 +890,7 @@ export const webSettingsMessages = {
   'growth.ui.opportunities.prepareRules': 'Ang kanilang mga tuntunin, sinipi',
   'growth.ui.opportunities.prepareChecklist': 'Ano ang dapat ihanda',
   'growth.ui.opportunities.prepareManual':
-    'Ikaw mismo ang nagsusumite nito sa kanilang site. Ang Relay ay hindi pumupuno ng mga form, lumikha ng mga account o mag-email sa sinuman.',
+    'Ikaw mismo ang nagsusumite nito sa kanilang site. Ang Post Array ay hindi pumupuno ng mga form, lumikha ng mga account o mag-email sa sinuman.',
   'growth.ui.opportunities.pitchTitle': 'Pitch draft',
   'growth.ui.opportunities.pitchHelp':
     'I-edit ito bago mo ipadala. Ginagamit lang nito ang mga katotohanang kinumpirma mo.',
@@ -911,7 +909,7 @@ export const webSettingsMessages = {
   'growth.ui.tools.emptyBody':
     'Ang bawat entry ay nangangailangan ng isang naka-check na presyo, naka-check na mga tuntunin ng karapatan at isang pinangalanang limitasyon bago ito lumitaw dito.',
   'growth.ui.tools.emptyExample':
-    'Sinasabi ng isang entry kung para saan ito pinakamahusay, kung bakit ito umaangkop sa iyong plano, kung ano ang hindi nito magagawa, ang mga kasanayang kailangan nito, kung paano bumalik ang output sa Relay, at kung kailan huling nasuri ang presyo.',
+    'Sinasabi ng isang entry kung para saan ito pinakamahusay, kung bakit ito umaangkop sa iyong plano, kung ano ang hindi nito magagawa, ang mga kasanayang kailangan nito, kung paano bumalik ang output sa Post Array, at kung kailan huling nasuri ang presyo.',
   'growth.ui.tools.openSite': 'Buksan ang opisyal na site para sa {name}',
   'growth.ui.tools.stale':
     'Lumipas ang petsa ng pagsusuri nito. Hindi kasama sa mga nabuong plano.',

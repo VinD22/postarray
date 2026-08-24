@@ -10,7 +10,7 @@ export const errorMessages = {
   'error.unknown.action': 'Try again. If it keeps happening, send us the reference below.',
   'error.internal.message': 'This is a problem on our side, not with your content.',
   'error.internal.action': 'Your work is saved. We have been alerted. Try again in a few minutes.',
-  'error.not_implemented.message': 'Relay has not built this yet.',
+  'error.not_implemented.message': 'Post Array has not built this yet.',
   'error.not_implemented.action': 'Follow the changelog for when it ships.',
   'error.offline.message': 'You are offline.',
   'error.offline.action':
@@ -52,6 +52,10 @@ export const errorMessages = {
   'error.subscription_past_due.action': 'Update the payment method in the Polar portal.',
   'error.trial_expired.message': 'The trial ended on {date}.',
   'error.trial_expired.action': 'Start the subscription to continue publishing.',
+  'error.post_credits_exhausted.message':
+    'This workspace has used all of its free posts. Everything else still works.',
+  'error.post_credits_exhausted.action':
+    'Choose a plan to keep publishing. Your accounts stay connected and your drafts and schedules are kept.',
   'error.entitlement_missing.message': 'This workspace does not have access to that feature.',
   'error.entitlement_missing.action': 'Check the billing settings, or contact support.',
   'error.channel_limit_reached.message': 'This workspace already uses all {limit} active channels.',
@@ -88,7 +92,7 @@ export const errorMessages = {
   'error.capability_unsupported.message':
     '{provider} does not offer this through its official API.',
   'error.capability_unsupported.action': 'Use a format this account supports.',
-  'error.capability_not_implemented.message': 'Relay has not built this for {provider} yet.',
+  'error.capability_not_implemented.message': 'Post Array has not built this for {provider} yet.',
   'error.capability_not_implemented.action':
     'The capability page lists what each connector can do today.',
   'error.capability_requires_review.message':

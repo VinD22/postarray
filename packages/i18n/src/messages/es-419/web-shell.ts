@@ -1,7 +1,7 @@
 /** Spanish (Latin America) beta catalog. B5 legal, billing and consent messages deliberately use English fallback. */
 export const webShellMessages = {
-  'shell.appName': 'Relay',
-  'shell.documentTitle': '{page}· Relay',
+  'shell.appName': 'Post Array',
+  'shell.documentTitle': '{page}· Post Array',
   'shell.tagline': 'Una mesa de publicación para personas y agentes.',
   'shell.menu.open': 'abre el menú',
   'shell.menu.title': 'Menú',
@@ -20,7 +20,7 @@ export const webShellMessages = {
   'shell.demo.badge': 'Datos de demostración',
   'shell.demo.title': 'Estás viendo datos de demostración.',
   'shell.demo.body':
-    'No se puede acceder a la API Relay desde este navegador, por lo que las pantallas están llenas de un espacio de trabajo de ejemplo inicializado. Nada aquí está conectado a una cuenta real y nada se puede publicar.',
+    'No se puede acceder a la API Post Array desde este navegador, por lo que las pantallas están llenas de un espacio de trabajo de ejemplo inicializado. Nada aquí está conectado a una cuenta real y nada se puede publicar.',
   'shell.demo.howToConnect':
     'Configure NEXT_PUBLIC_RELAY_API_URL y reinicie la aplicación para usar datos en vivo.',
   'shell.offline.title': 'Estás desconectado',
@@ -124,7 +124,7 @@ export const webShellMessages = {
   'home.advisor.start': 'Iniciar el perfil empresarial',
   'home.error.title': 'Inicio no se pudo cargar',
   'home.error.body':
-    'Tu espacio de trabajo está intacto. Este es un problema al alcanzar la API Relay.',
+    'Tu espacio de trabajo está intacto. Este es un problema al alcanzar la API Post Array.',
   'auth.aside.title': 'Publique a través de API oficiales y vea exactamente qué sucedió.',
   'auth.aside.point.receipts':
     'Cada publicación produce un recibo: quién la aprobó, cuándo se envió, qué devolvió la plataforma.',
@@ -134,9 +134,9 @@ export const webShellMessages = {
     'El mismo flujo de trabajo desde la aplicación web, la API REST, MCP, la CLI y los webhooks.',
   'auth.provider.title': 'Antes de continuar',
   'auth.provider.google.access':
-    'Google comparte su nombre, dirección de correo electrónico e imagen de perfil con Relay. Relay no puede leer Gmail, Drive o Calendar.',
+    'Google comparte su nombre, dirección de correo electrónico e imagen de perfil con Post Array. Post Array no puede leer Gmail, Drive o Calendar.',
   'auth.provider.facebook.access':
-    'Facebook comparte su nombre, dirección de correo electrónico y foto de perfil con Relay. Conectar una página para publicar es un paso independiente que apruebas más adelante.',
+    'Facebook comparte su nombre, dirección de correo electrónico y foto de perfil con Post Array. Conectar una página para publicar es un paso independiente que apruebas más adelante.',
   'auth.provider.note': 'Esto inicia sesión. No conecta una cuenta para publicar.',
   'auth.continueWithEmail': 'Continuar con el correo electrónico',
   'auth.method.password': 'Contraseña',
@@ -157,9 +157,7 @@ export const webShellMessages = {
   'auth.failure.noAccountLeak': 'Por su seguridad, no decimos si una dirección está registrada.',
   'auth.failure.provider': 'El inicio de sesión con {provider}no completó. No se cambió nada.',
   'auth.failure.network':
-    'No pudimos comunicarnos con Relay. Comprueba tu conexión y vuelve a intentarlo.',
-  'auth.signUp.trialNote':
-    'Siete días de prueba completos. Se requiere un método de pago. $0 a pagar hoy.',
+    'No pudimos comunicarnos con Post Array. Comprueba tu conexión y vuelve a intentarlo.',
   'auth.signUp.emailInUseNote':
     'Si esta dirección ya tiene una cuenta, le enviamos por correo electrónico un enlace de inicio de sesión en lugar de crear una segunda.',
   'auth.legal.readTerms': 'Lea los términos',
@@ -190,7 +188,7 @@ export const webShellMessages = {
   'onboarding.workspace.timeZoneDetected': 'Detectado desde este dispositivo: {timeZone}',
   'onboarding.connect.permissionsTitle': 'que {provider}se le pedirá',
   'onboarding.connect.permissionsFooter':
-    'Relay nunca solicita un permiso que no utiliza y puedes desconectarte en cualquier momento.',
+    'Post Array nunca solicita un permiso que no utiliza y puedes desconectarte en cualquier momento.',
   'onboarding.connect.chooseProvider': 'Elige una plataforma',
   'onboarding.connect.opensProvider': 'Aperturas continuas {provider}en esta pestaña.',
   'onboarding.compose.help':

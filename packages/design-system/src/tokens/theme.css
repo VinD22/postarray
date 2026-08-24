@@ -1081,10 +1081,12 @@
   --z-index-tooltip: 90;
   --z-index-cursor: 100;
 
-  /* --- Layout. Editorial wants air: wider gutters and a narrower reading
-     measure than a dense dashboard. --------------------------------------- */
+  /* --- Layout. Editorial wants air, but air belongs inside the measure, not
+     beside it: the marketing shell is the same width as the navigation that
+     sits above it, and individual text blocks keep their own `ch` caps so the
+     reading line never stretches with the container. ---------------------- */
   --layout-app-max: 110rem;
-  --layout-marketing-max: 80rem;
+  --layout-marketing-max: 110rem;
   --layout-gutter: clamp(1.25rem, 4vw, 5rem);
 
   /* --- Breakpoints matching the responsive test matrix ------------------- */

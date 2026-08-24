@@ -218,7 +218,7 @@ export const webSettingsMessages = {
   'settings.ui.security.grantScopes': '부여된 권한',
   'settings.ui.security.socialPermissionsTitle': '소셜 계정 권한',
   'settings.ui.security.socialPermissionsBody':
-    '연결 시 찍은 기능 스냅샷에서, 각 연결된 계정이 Relay에 허용한 작업.',
+    '연결 시 찍은 기능 스냅샷에서, 각 연결된 계정이 Post Array에 허용한 작업.',
   'settings.ui.security.viewInSection': '관리{section}',
   'settings.ui.security.emptySessions': '이 세션만 로그인되어 있습니다.',
   'settings.ui.security.emptyGrants':
@@ -253,7 +253,7 @@ export const webSettingsMessages = {
     '문제를 해결하는 가장 작은 것을 선택하십시오. 아래의 각 옵션은 무엇이 살아남는지를 나타냅니다.',
   'settings.ui.data.deleteConnection': '하나의 소셜 연결 취소',
   'settings.ui.data.deleteConnectionHelp':
-    '해당 계정에 대한 Relay 액세스 권한을 제거합니다. 작업 영역, 해당 콘텐츠 및 영수증은 그대로 유지됩니다.',
+    '해당 계정에 대한 Post Array 액세스 권한을 제거합니다. 작업 영역, 해당 콘텐츠 및 영수증은 그대로 유지됩니다.',
   'settings.ui.data.deleteProject': '프로젝트 보관',
   'settings.ui.data.deleteProjectHelp':
     '프로젝트, 규칙 및 용어집을 제거합니다. 그 아래 게시된 콘텐츠는 영수증을 보관합니다.',
@@ -277,7 +277,7 @@ export const webSettingsMessages = {
     '이미 플랫폼에 게시된 게시물은 삭제되지 않습니다. 플랫폼에서 해당 항목을 제거하십시오.',
   'settings.ui.data.exportFirst': '데이터를 삭제하기 전에 내보내십시오.',
   'settings.ui.referral.description':
-    '공개된 링크로 Relay을 공유하세요. 커미션은 결코 긍정적인 리뷰를 조건으로 하지 않습니다.',
+    '공개된 링크로 Post Array을 공유하세요. 커미션은 결코 긍정적인 리뷰를 조건으로 하지 않습니다.',
   'settings.ui.referral.linkLabel': '귀하의 추천 링크',
   'settings.ui.referral.tableCaption': '기여된 가입 및 커미션 상태',
   'settings.ui.referral.column.signup': '가입',
@@ -405,7 +405,7 @@ export const webSettingsMessages = {
     '다른 사람들이 자신의 작업 공간에 대한 액세스 권한을 부여할 수 있도록 애플리케이션을 등록하세요. 각 앱에는 자체 ID, 리디렉션 허용 목록 및 감사 추적이 있습니다.',
   'developer.ui.apps.emptyTitle': '등록된 앱이 없습니다.',
   'developer.ui.apps.emptyBody':
-    '다른 제품이 Relay 사용자를 대신하여 작동해야 하는 경우 앱을 등록하세요. 자체 자동화를 위해서는 대신 서비스 계정을 사용하세요.',
+    '다른 제품이 Post Array 사용자를 대신하여 작동해야 하는 경우 앱을 등록하세요. 자체 자동화를 위해서는 대신 서비스 계정을 사용하세요.',
   'developer.ui.apps.emptyExample':
     '예: "Acme 게시자", 기밀 클라이언트, 리디렉션 https://acme.example/oauth/callback, 범위 계정:읽기 및 초안:쓰기.',
   'developer.ui.apps.typeHelp':
@@ -429,7 +429,7 @@ export const webSettingsMessages = {
   'developer.ui.apps.scopeGroupHelp.read':
     '이를 통해 앱은 데이터를 볼 수 있습니다. 아무것도 변하지 않습니다.',
   'developer.ui.apps.scopeGroupHelp.reversible':
-    '이를 통해 앱은 Relay 내부에서 항목을 생성하거나 편집할 수 있습니다. 아무것도 플랫폼에 도달하지 않습니다.',
+    '이를 통해 앱은 Post Array 내부에서 항목을 생성하거나 편집할 수 있습니다. 아무것도 플랫폼에 도달하지 않습니다.',
   'developer.ui.apps.scopeGroupHelp.consequential':
     '이로 인해 실제 계정에 게시물이 게시되거나 귀하의 계정에 접근할 수 있는 사람이 변경될 수 있습니다. 항상 별도로 나열되며 번들로 제공되지 않습니다.',
   'developer.ui.apps.noBundling':
@@ -579,7 +579,7 @@ export const webSettingsMessages = {
   'billing.ui.allowanceMetered':
     'X 및 기타 일부 제공업체는 작업당 비용을 청구합니다. 해당 요금은 비용으로 처리되며 요금제 가격에 포함되지 않습니다.',
   'billing.ui.allowanceNoMedia':
-    '이미지 생성 및 비디오 생성은 포함되지 않으며 판매되지 않습니다. Relay은 미디어를 생성하지 않습니다.',
+    '이미지 생성 및 비디오 생성은 포함되지 않으며 판매되지 않습니다. Post Array은 미디어를 생성하지 않습니다.',
   'billing.ui.readFairUse': '공정 사용 정책 읽기',
   'billing.ui.readMeteredPolicy': '측정된 사용량이 청구되는 방식을 읽어보세요.',
   'billing.ui.usageCaption': '이 기간의 측정된 공급자 사용량은 비용으로 청구됩니다.',
@@ -639,8 +639,6 @@ export const webSettingsMessages = {
   'billing.ui.canceledNotice': '이 구독이 취소되었습니다.',
   'billing.ui.resume': '구독을 다시 시작하세요',
   'billing.ui.noSubscriptionTitle': '이 작업공간에는 구독이 없습니다.',
-  'billing.ui.noSubscriptionBody':
-    '게시하려면 7일 평가판을 시작하세요. Polar는 오늘 결제 방법을 수집하고 요금을 청구하지 않습니다.',
   'billing.ui.noSubscriptionExample':
     '월 $29입니다. 연간 요금은 $300이며, 연간 청구액은 월 $25입니다. 연간 $48를 절약하세요.',
   'billing.ui.overChannelLimitAction': '연결된 채널 검토',
@@ -747,7 +745,7 @@ export const webSettingsMessages = {
   'growth.ui.ugc.incentiveDisclosure':
     '귀하와 참가자는 인센티브를 통해 생성되는 모든 게시물에 대해 인센티브를 공개해야 합니다.',
   'growth.ui.ugc.honesty':
-    '이것은 실제 사람들과 함께 운영하는 캠페인을 계획합니다. Relay은 제작자를 찾거나 연락하거나 추천서를 작성하거나 고객 콘텐츠를 생성하지 않습니다.',
+    '이것은 실제 사람들과 함께 운영하는 캠페인을 계획합니다. Post Array은 제작자를 찾거나 연락하거나 추천서를 작성하거나 고객 콘텐츠를 생성하지 않습니다.',
   'growth.ui.opportunities.caption': '귀하의 프로필에 맞는 순위에 따라 카탈로그에서 검증된 기회',
   'growth.ui.opportunities.column.opportunity': '기회',
   'growth.ui.opportunities.column.type': '유형',
@@ -768,7 +766,7 @@ export const webSettingsMessages = {
   'growth.ui.opportunities.prepareRules': '인용된 그들의 규칙',
   'growth.ui.opportunities.prepareChecklist': '준비해야 할 것',
   'growth.ui.opportunities.prepareManual':
-    '해당 사이트에 직접 제출하세요. Relay은 양식을 작성하거나 계정을 생성하거나 누구에게도 이메일을 보내지 않습니다.',
+    '해당 사이트에 직접 제출하세요. Post Array은 양식을 작성하거나 계정을 생성하거나 누구에게도 이메일을 보내지 않습니다.',
   'growth.ui.opportunities.pitchTitle': '피치 초안',
   'growth.ui.opportunities.pitchHelp': '보내기 전에 편집하세요. 본인이 확인한 사실만을 이용합니다.',
   'growth.ui.opportunities.submittedOn': '제출된{date}',
@@ -784,7 +782,7 @@ export const webSettingsMessages = {
   'growth.ui.tools.emptyBody':
     '모든 항목은 여기에 표시되기 전에 확인된 가격, 확인된 권리 조건 및 명명된 제한 사항이 필요합니다.',
   'growth.ui.tools.emptyExample':
-    '항목에는 무엇이 가장 적합한지, 왜 계획에 맞는지, 무엇을 할 수 없는지, 필요한 기술, 출력이 Relay로 다시 들어오는 방법 및 가격이 마지막으로 확인된 시기가 나와 있습니다.',
+    '항목에는 무엇이 가장 적합한지, 왜 계획에 맞는지, 무엇을 할 수 없는지, 필요한 기술, 출력이 Post Array로 다시 들어오는 방법 및 가격이 마지막으로 확인된 시기가 나와 있습니다.',
   'growth.ui.tools.openSite': '공식 사이트를 열어보세요{name}',
   'growth.ui.tools.stale': '검토 날짜가 지났습니다. 생성된 계획에서 제외됩니다.',
   'growth.ui.item.explainTitle': '이것이 제안된 이유',

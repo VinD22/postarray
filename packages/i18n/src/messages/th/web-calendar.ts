@@ -20,20 +20,20 @@ export const webCalendarMessages = {
   'web.connection.requirement.mastodon':
     'Mastodon เชื่อมต่อด้วยโทเคนการเข้าถึงที่คุณสร้างบนอินสแตนซ์ของคุณเอง ไม่ใช่รหัสผ่านของคุณ',
   'web.connection.requirement.telegram':
-    'Relay โพสต์ในฐานะบอท เพิ่มบอทลงในช่องหรือกลุ่มที่คุณต้องการโพสต์',
+    'Post Array โพสต์ในฐานะบอท เพิ่มบอทลงในช่องหรือกลุ่มที่คุณต้องการโพสต์',
   'web.connection.requirement.reddit':
     'การเขียนบน Reddit ต้องมีแอปที่ได้รับอนุมัติ และทุกโพสต์ต้องมีชื่อเรื่องและ subreddit',
   'web.connection.requirement.wordpress':
-    'Relay เผยแพร่ผ่าน REST API ของเว็บไซต์ด้วยรหัสผ่านแอปที่คุณสร้างใน WordPress',
+    'Post Array เผยแพร่ผ่าน REST API ของเว็บไซต์ด้วยรหัสผ่านแอปที่คุณสร้างใน WordPress',
   'web.connection.requirement.medium':
-    'Medium เชื่อมต่อผ่าน OAuth และ Relay เผยแพร่เรื่องสาธารณะในรูปแบบ Markdown',
+    'Medium เชื่อมต่อผ่าน OAuth และ Post Array เผยแพร่เรื่องสาธารณะในรูปแบบ Markdown',
   'web.connection.requirement.devto':
     'Dev.to เชื่อมต่อด้วยคีย์ API ที่สร้างในการตั้งค่า Dev.to ของคุณ',
   'web.connection.requirement.pinterest':
     'การเขียนบน Pinterest ต้องมีการอนุมัติการเข้าถึงแอป และพินต้องมีรูปภาพและบอร์ดของคุณเอง',
   'web.connection.requirement.discord':
-    'Relay โพสต์ในฐานะบอท เพิ่มบอทลงในเซิร์ฟเวอร์และช่องที่คุณต้องการโพสต์',
-  'web.connection.requirement.slack': 'Relay โพสต์ในฐานะแอป เพิ่มแอปลงในช่องที่คุณต้องการโพสต์',
+    'Post Array โพสต์ในฐานะบอท เพิ่มบอทลงในเซิร์ฟเวอร์และช่องที่คุณต้องการโพสต์',
+  'web.connection.requirement.slack': 'Post Array โพสต์ในฐานะแอป เพิ่มแอปลงในช่องที่คุณต้องการโพสต์',
   'web.provider.fake': 'ขั้วต่อทดสอบ',
   'web.accountType.personal_profile': 'โปรไฟล์ส่วนตัว',
   'web.accountType.creator_profile': 'บัญชีผู้สร้าง',
@@ -132,7 +132,7 @@ export const webCalendarMessages = {
   'web.calendar.reschedule.pastBody': 'เลือกเวลาในอนาคตหรือเผยแพร่ตอนนี้แทน',
   'web.calendar.published.title': 'โพสต์นี้ถูกเผยแพร่แล้ว',
   'web.calendar.published.body':
-    'มีโพสต์อยู่ที่ {provider} ที่ {permalinkLabel} การย้ายรายการใน Relay จะไม่ย้ายโพสต์บนแพลตฟอร์ม เลือกสิ่งที่คุณต้องการให้เกิดขึ้น',
+    'มีโพสต์อยู่ที่ {provider} ที่ {permalinkLabel} การย้ายรายการใน Post Array จะไม่ย้ายโพสต์บนแพลตฟอร์ม เลือกสิ่งที่คุณต้องการให้เกิดขึ้น',
   'web.calendar.published.optionLocal': 'อัปเดตบันทึกในเครื่องเท่านั้น',
   'web.calendar.published.optionLocalHint':
     'ใบเสร็จรับเงินจะคงเวลาการเผยแพร่ตามจริง เฉพาะรายการการวางแผนเท่านั้นที่จะย้าย ดังนั้นปฏิทินของคุณจึงตรงกับแผนของคุณ',
@@ -222,7 +222,7 @@ export const webCalendarMessages = {
     '{provider} ไม่คิดค่าใช้จ่ายต่อการดำเนินการสำหรับประเภทการลงรายการบัญชีนี้',
   'web.receipt.analytics.never': 'Analytics ยังไม่ได้ซิงค์สำหรับโพสต์นี้',
   'web.receipt.analytics.explain':
-    'ผู้ให้บริการจะรวมกำหนดการของตนเอง เวลาด้านล่างคือเวลาที่ Relay อ่านครั้งสุดท้าย ไม่ใช่เวลาที่ตัวเลขเป็นจริง',
+    'ผู้ให้บริการจะรวมกำหนดการของตนเอง เวลาด้านล่างคือเวลาที่ Post Array อ่านครั้งสุดท้าย ไม่ใช่เวลาที่ตัวเลขเป็นจริง',
   'web.receipt.export.download': 'ดาวน์โหลดใบเสร็จรับเงิน',
   'web.receipt.export.copyReference': 'คัดลอกการอ้างอิงใบเสร็จรับเงิน',
   'web.receipt.export.denied':
@@ -230,11 +230,11 @@ export const webCalendarMessages = {
   'web.receipt.partial.retryFailedOnly': 'ลองใหม่เฉพาะเป้าหมายที่ล้มเหลว',
   'web.receipt.partial.retryHint': 'การลองใหม่จะไม่แตะเป้าหมายที่สร้างโพสต์ภายนอกแล้ว',
   'web.receipt.remediation.user_action_required':
-    'สิ่งนี้จำเป็นต้องเปลี่ยนแปลงใน Relay หรือ {provider} ก่อนจึงจะสามารถทำงานได้อีกครั้ง',
+    'สิ่งนี้จำเป็นต้องเปลี่ยนแปลงใน Post Array หรือ {provider} ก่อนจึงจะสามารถทำงานได้อีกครั้ง',
   'web.receipt.remediation.content_invalid':
     'แก้ไขเนื้อหาเพื่อให้ผ่านการตรวจสอบความถูกต้อง {provider} จากนั้นกำหนดเวลาอีกครั้ง',
   'web.receipt.remediation.transient_provider':
-    '{provider} ส่งกลับข้อผิดพลาดชั่วคราว Relay ลองอีกครั้งตามกำหนดเวลาของตัวเอง',
+    '{provider} ส่งกลับข้อผิดพลาดชั่วคราว Post Array ลองอีกครั้งตามกำหนดเวลาของตัวเอง',
   'web.receipt.remediation.permanent_provider':
     '{provider} ปฏิเสธสิ่งนี้อย่างถาวร การลองเนื้อหาเดิมซ้ำจะไม่เปลี่ยนคำตอบ',
   'web.receipt.remediation.internal': 'นี่เป็นความผิดของเรา มันถูกบันทึกไว้โดยมีการอ้างอิงด้านล่าง',
@@ -287,16 +287,16 @@ export const webCalendarMessages = {
   'web.connection.disconnect.consequence.scheduled':
     '{count, plural, one {# scheduled post} other {# scheduled posts}} for this account will not publish.',
   'web.connection.disconnect.consequence.published':
-    'โพสต์ที่เผยแพร่แล้วยังคงอยู่ใน {provider} Relay จะไม่ลบโพสต์เหล่านั้น',
+    'โพสต์ที่เผยแพร่แล้วยังคงอยู่ใน {provider} Post Array จะไม่ลบโพสต์เหล่านั้น',
   'web.connection.disconnect.consequence.analytics':
     'เมตริกที่รวบรวมไว้แล้วจะยังคงอยู่ในพื้นที่ทำงานนี้และหยุดการอัปเดต',
   'web.connection.connect.title': 'เชื่อมต่อบัญชี',
   'web.connection.connect.chooseProvider': 'แพลตฟอร์มไหน',
-  'web.connection.connect.permissionHeading': 'สิ่งที่ Relay จะถาม {provider} เพื่อ',
+  'web.connection.connect.permissionHeading': 'สิ่งที่ Post Array จะถาม {provider} เพื่อ',
   'web.connection.connect.requirementHeading': 'ก่อนที่คุณจะดำเนินการต่อ',
   'web.connection.connect.continue': 'ดำเนินการต่อไปที่ {provider}',
   'web.connection.connect.handoffNote':
-    'หน้าจอถัดไปคือ {provider} ไม่ใช่ Relay Relay ไม่เคยเห็นรหัสผ่านของคุณ',
+    'หน้าจอถัดไปคือ {provider} ไม่ใช่ Post Array Post Array ไม่เคยเห็นรหัสผ่านของคุณ',
   'web.connection.connect.noWriteWithoutApproval':
     'การเชื่อมต่อบัญชีไม่ได้เผยแพร่อะไรเลย ทุกโพสต์ยังคงเป็นไปตามนโยบายการอนุมัติพื้นที่ทำงานนี้',
   'web.connection.projectScope.title': 'กำลังแสดงช่องทางสำหรับ {project}',
@@ -308,13 +308,13 @@ export const webCalendarMessages = {
   'web.connection.requirement.instagram':
     'การเผยแพร่ Instagram จำเป็นต้องมีบัญชีแบบมืออาชีพ ซึ่งหมายถึงบัญชีธุรกิจหรือผู้สร้างที่เชื่อมโยงกับเพจ Facebook',
   'web.connection.requirement.facebook':
-    'Relay เผยแพร่ไปที่ Facebook Pages โปรไฟล์ส่วนบุคคลไม่สามารถเป็นเป้าหมายการเผยแพร่ได้',
+    'Post Array เผยแพร่ไปที่ Facebook Pages โปรไฟล์ส่วนบุคคลไม่สามารถเป็นเป้าหมายการเผยแพร่ได้',
   'web.connection.requirement.linkedin':
     'หากต้องการเผยแพร่สำหรับองค์กร คุณต้องมีบทบาทผู้ดูแลระบบเนื้อหาบนเพจ LinkedIn นั้น',
   'web.connection.requirement.youtube':
     'จนกว่า Google จะตรวจสอบแอปเสร็จสิ้น การอัปโหลดจากโปรเจ็กต์นี้จะเผยแพร่แบบส่วนตัว คุณสามารถเปลี่ยนการเปิดเผยบน YouTube ได้ในภายหลัง',
   'web.connection.requirement.tiktok':
-    'TikTok กำหนดให้คุณต้องเลือกผู้ชมสำหรับแต่ละโพสต์ด้วยตนเอง Relay ไม่สามารถเลือกไว้ล่วงหน้าให้คุณได้',
+    'TikTok กำหนดให้คุณต้องเลือกผู้ชมสำหรับแต่ละโพสต์ด้วยตนเอง Post Array ไม่สามารถเลือกไว้ล่วงหน้าให้คุณได้',
   'web.connection.requirement.x':
     'ค่าบริการ X ต่อการดำเนินการ โพสต์ที่มี URL มีค่าใช้จ่ายมากกว่าโพสต์ข้อความธรรมดา และค่าประมาณจะแสดงก่อนที่คุณจะกำหนดเวลา',
   'web.connection.requirement.threads':
@@ -322,12 +322,12 @@ export const webCalendarMessages = {
   'web.connection.requirement.bluesky':
     'Bluesky เชื่อมต่อกับรหัสผ่านสำหรับแอปที่สร้างขึ้นในการตั้งค่า Bluesky ของคุณ ไม่ใช่รหัสผ่านบัญชีของคุณ',
   'web.connection.requirement.generic':
-    'คุณต้องได้รับอนุญาตจึงจะโพสต์ในบัญชีนี้จากแพลตฟอร์มได้ Relay ไม่สามารถให้ได้',
-  'web.connection.purpose.publish': 'การเผยแพร่โพสต์ที่คุณกำหนดเวลาไว้ใน Relay',
+    'คุณต้องได้รับอนุญาตจึงจะโพสต์ในบัญชีนี้จากแพลตฟอร์มได้ Post Array ไม่สามารถให้ได้',
+  'web.connection.purpose.publish': 'การเผยแพร่โพสต์ที่คุณกำหนดเวลาไว้ใน Post Array',
   'web.connection.purpose.readPosts':
-    'อ่านโพสต์ที่เผยแพร่แล้ว Relay เพื่อให้ใบเสร็จรับเงินสามารถพิสูจน์ได้ว่าเผยแพร่อยู่',
+    'อ่านโพสต์ที่เผยแพร่แล้ว Post Array เพื่อให้ใบเสร็จรับเงินสามารถพิสูจน์ได้ว่าเผยแพร่อยู่',
   'web.connection.purpose.identity':
-    'แสดงชื่อบัญชีตรงกันทุกประการใน Relay เพื่อให้คุณไม่ต้องเผยแพร่ผิดบัญชี',
+    'แสดงชื่อบัญชีตรงกันทุกประการใน Post Array เพื่อให้คุณไม่ต้องเผยแพร่ผิดบัญชี',
   'web.connection.purpose.analytics': 'การอ่านตัวชี้วัดที่แพลตฟอร์มนี้รายงานสำหรับโพสต์ของคุณเอง',
   'web.connection.purpose.refresh':
     'รักษาการเข้าถึงอย่างต่อเนื่อง ดังนั้นการโพสต์ตามกำหนดเวลาจะไม่ล้มเหลวในชั่วข้ามคืน',
@@ -336,7 +336,7 @@ export const webCalendarMessages = {
   'web.connection.permissions.title': 'สิทธิ์ใน {account}',
   'web.connection.permissions.scopeColumn': 'การอนุญาต',
   'web.connection.permissions.stateColumn': 'รัฐ',
-  'web.connection.permissions.purposeColumn': 'Relay ใช้ทำอะไร',
+  'web.connection.permissions.purposeColumn': 'Post Array ใช้ทำอะไร',
   'web.connection.permissions.missingWarning':
     '{count, plural, one {# permission is missing} other {# permissions are missing}}. Reconnect and accept it to restore the features below.',
   'web.connection.permissions.snapshot': 'อ่านจาก {provider} {relativeTime}',
@@ -347,9 +347,9 @@ export const webCalendarMessages = {
   'web.connection.capability.featureColumn': 'ความสามารถ',
   'web.connection.capability.legendTitle': 'อ่านเรื่องนี้ยังไงครับ',
   'web.connection.capability.legend.supported':
-    'Relay สามารถทำได้วันนี้สำหรับบัญชีที่เชื่อมต่อประเภทที่ถูกต้อง',
+    'Post Array สามารถทำได้วันนี้สำหรับบัญชีที่เชื่อมต่อประเภทที่ถูกต้อง',
   'web.connection.capability.legend.not_implemented':
-    'แพลตฟอร์มนำเสนอสิ่งนี้และ Relay ยังไม่ได้สร้างมัน อยู่ในแผนงานการเชื่อมต่อ',
+    'แพลตฟอร์มนำเสนอสิ่งนี้และ Post Array ยังไม่ได้สร้างมัน อยู่ในแผนงานการเชื่อมต่อ',
   'web.connection.capability.legend.unsupported':
     'แพลตฟอร์มไม่ได้นำเสนอสิ่งนี้ผ่าน API อย่างเป็นทางการ ดังนั้นจึงไม่มีเครื่องมือใดที่สามารถทำได้อย่างปลอดภัย',
   'web.connection.capability.legend.requires_review':

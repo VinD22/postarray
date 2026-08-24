@@ -23,7 +23,7 @@ export const webDemoMessages = {
   /* Metadata and navigation                                                 */
   /* ---------------------------------------------------------------------- */
 
-  'web.meta.demo.title': 'Tingnan kung paano gumagana ang Relay',
+  'web.meta.demo.title': 'Tingnan kung paano gumagana ang Post Array',
   'web.meta.demo.description':
     'Isang guided tour ng publishing workflow, mula sa isang bagong proyekto hanggang sa resibo, ipinapakita sa totoong interface na may sample content. Wala pang na-publish, at sinasabi ng tour kung nasaan ang linyang iyon.',
 
@@ -47,6 +47,10 @@ export const webDemoMessages = {
   /* The home page hero demonstration                                        */
   /* ---------------------------------------------------------------------- */
 
+  'web.demo.hero.viewCta': 'Tingnan ang demo',
+  'web.demo.hero.projectsLine':
+    'Isang account ang nagpapatakbo ng maraming negosyo. Ang bawat proyekto ay sarili nitong negosyo, may sariling mga naka-konektang account, sariling kalendaryo at sariling mga pag-apruba, at lumilipat ka sa pagitan ng mga ito mula sa iisang menu, tulad ng paglipat ng property sa isang search console.',
+  'web.demo.hero.projectsChip': '{count, plural, one {# account} other {# na account}}',
   'web.demo.hero.caption':
     'Isang draft ay nagiging isang bersyon kada platform, nabibigyan ng oras, at napupunta sa linggo. Sample content, hindi live na account.',
   'web.demo.hero.more': 'Dumaan sa buong workflow',

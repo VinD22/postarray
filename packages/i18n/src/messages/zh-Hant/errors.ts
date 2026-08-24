@@ -3,7 +3,7 @@ export const errorMessages = {
   'error.unknown.action': '請再試一次。若持續發生，請將下方參考編號傳給我們。',
   'error.internal.message': '這是我們端的問題，與你的內容無關。',
   'error.internal.action': '你的工作已儲存。我們已收到通知。幾分鐘後再試。',
-  'error.not_implemented.message': 'Relay 尚未建置此功能。',
+  'error.not_implemented.message': 'Post Array 尚未建置此功能。',
   'error.not_implemented.action': '請追蹤更新日誌以瞭解推出時間。',
   'error.offline.message': '你目前離線。',
   'error.offline.action': '你的草稿會保留在這台裝置。連線恢復後即可發布和排程。',
@@ -43,6 +43,10 @@ export const errorMessages = {
   'error.subscription_past_due.action': '在 Polar 入口網站更新付款方式。',
   'error.trial_expired.message': '試用已於 {date} 結束。',
   'error.trial_expired.action': '開始訂閱以繼續發布。',
+  'error.post_credits_exhausted.message':
+    '此工作區已用完所有免費發佈次數。其他功能仍可正常使用。',
+  'error.post_credits_exhausted.action':
+    '選擇一個方案即可繼續發佈。你的帳號仍保持連結，草稿和排程都會保留。',
   'error.entitlement_missing.message': '此 Workspace 無法存取該功能。',
   'error.entitlement_missing.action': '檢查帳務設定，或聯絡支援團隊。',
   'error.channel_limit_reached.message': '此 Workspace 已使用全部 {limit} 個啟用中的頻道。',
@@ -71,7 +75,7 @@ export const errorMessages = {
   'error.connection_review_pending.action': '通過審查前，貼文會私密發布。變更時我們會更新此頁。',
   'error.capability_unsupported.message': '{provider} 未透過官方 API 提供此功能。',
   'error.capability_unsupported.action': '使用此帳號支援的格式。',
-  'error.capability_not_implemented.message': 'Relay 尚未為 {provider} 建置此功能。',
+  'error.capability_not_implemented.message': 'Post Array 尚未為 {provider} 建置此功能。',
   'error.capability_not_implemented.action': '功能頁面列出每個連接器目前可做的事。',
   'error.capability_requires_review.message': '{provider} 僅會在審查應用程式或帳號後授予此功能。',
   'error.capability_requires_review.action': '通過審查前維持無法使用。',

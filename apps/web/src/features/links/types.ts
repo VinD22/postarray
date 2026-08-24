@@ -1,7 +1,7 @@
 /**
  * Tracked links.
  *
- * These numbers come from Relay's own redirect service, not from a platform.
+ * These numbers come from Post Array's own redirect service, not from a platform.
  * That distinction is carried in the type names and repeated on screen: a
  * `RedirectMeasurement` is a count of requests our service handled, and it is
  * never interchangeable with a provider's native link click figure. The two

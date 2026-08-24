@@ -23,7 +23,7 @@ export const webDemoMessages = {
   /* Metadata and navigation                                                 */
   /* ---------------------------------------------------------------------- */
 
-  'web.meta.demo.title': 'Xem Relay hoạt động như thế nào',
+  'web.meta.demo.title': 'Xem Post Array hoạt động như thế nào',
   'web.meta.demo.description':
     'Một hành trình có hướng dẫn qua quy trình đăng bài, từ một dự án mới đến biên nhận, được hiển thị trong giao diện thật với nội dung mẫu. Chưa có gì được đăng, và hành trình này chỉ rõ ranh giới đó ở đâu.',
 
@@ -47,6 +47,10 @@ export const webDemoMessages = {
   /* The home page hero demonstration                                        */
   /* ---------------------------------------------------------------------- */
 
+  'web.demo.hero.viewCta': 'Xem bản demo',
+  'web.demo.hero.projectsLine':
+    'Một tài khoản vận hành nhiều doanh nghiệp. Mỗi dự án là một doanh nghiệp riêng, với các tài khoản đã kết nối, lịch và quy trình phê duyệt riêng, và bạn chuyển giữa chúng từ một menu duy nhất, giống như chuyển thuộc tính trong một bảng điều khiển tìm kiếm.',
+  'web.demo.hero.projectsChip': '{count, plural, other {# tài khoản}}',
   'web.demo.hero.caption':
     'Một bản nháp trở thành một phiên bản cho từng nền tảng, nhận một thời điểm, và xuất hiện trên tuần. Nội dung mẫu, không phải tài khoản thật.',
   'web.demo.hero.more': 'Đi qua toàn bộ quy trình',

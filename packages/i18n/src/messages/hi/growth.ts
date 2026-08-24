@@ -75,7 +75,7 @@ export const growthMessages = {
   'growth.ugc.review': 'समीक्षा मानदंड',
   'growth.ugc.reuse': 'पुन: उपयोग योजना',
   'growth.ugc.boundary':
-    'यह आपके द्वारा वास्तविक लोगों के साथ चलाए जाने वाले अभियान की योजना है। Relay रचनाकारों को नहीं ढूंढता, उनसे संपर्क नहीं करता या प्रशंसापत्र नहीं लिखता।',
+    'यह आपके द्वारा वास्तविक लोगों के साथ चलाए जाने वाले अभियान की योजना है। Post Array रचनाकारों को नहीं ढूंढता, उनसे संपर्क नहीं करता या प्रशंसापत्र नहीं लिखता।',
 
   'growth.opportunities.title': 'पदोन्नति के अवसर',
   'growth.opportunities.help':
@@ -97,7 +97,7 @@ export const growthMessages = {
   'growth.opportunities.noGuarantee':
     'एक मैच एक सुझाव है. यह कोई वादा किया गया लिंक, प्लेसमेंट या रैंकिंग नहीं है।',
   'growth.opportunities.boundary':
-    'Relay फॉर्म जमा नहीं करता, खाते नहीं बनाता, ईमेल संपर्क नहीं करता, समुदायों में पोस्ट नहीं करता या लिंक नहीं खरीदता।',
+    'Post Array फॉर्म जमा नहीं करता, खाते नहीं बनाता, ईमेल संपर्क नहीं करता, समुदायों में पोस्ट नहीं करता या लिंक नहीं खरीदता।',
   'growth.opportunities.empty':
     'अभी तक कोई भी सत्यापित अवसर इस प्रोफ़ाइल से मेल नहीं खाता है। एक ख़ाली सूची किसी आविष्कृत सूची से बेहतर है।',
 
@@ -108,7 +108,7 @@ export const growthMessages = {
   'growth.tools.whyItFits': 'यह क्यों फिट बैठता है',
   'growth.tools.limitations': 'सीमाएँ',
   'growth.tools.requiredSkills': 'आपके लिए आवश्यक कौशल',
-  'growth.tools.handoff': 'आउटपुट Relay में वापस कैसे आता है',
+  'growth.tools.handoff': 'आउटपुट Post Array में वापस कैसे आता है',
   'growth.tools.rights': 'अधिकार और गोपनीयता नोट',
   'growth.tools.priceChecked': 'कीमत की अंतिम बार जाँच की गई {date}',
   'growth.tools.affiliateDisclosure':

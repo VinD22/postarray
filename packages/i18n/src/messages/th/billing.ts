@@ -1,7 +1,7 @@
 /** th beta catalog namespace. */
 export const billingMessages = {
   'billing.title': 'การเรียกเก็บเงิน',
-  'billing.plan.name': 'Relay',
+  'billing.plan.name': 'Post Array',
   'billing.plan.single': 'แผนหนึ่ง ทุกคุณสมบัติ ไม่มีชั้น.',
   'billing.plan.monthlyPrice': '$29/เดือน',
   'billing.plan.annualPrice': '$300/ปี',
@@ -22,7 +22,6 @@ export const billingMessages = {
   'billing.plan.includes.support': 'การสนับสนุนทางอีเมลและในแอป',
   'billing.plan.fairUse':
     'การใช้งานที่เหมาะสมหมายถึงการป้องกันสแปม อัตรา และการควบคุมต้นทุนของผู้ให้บริการที่ปกป้องบัญชีของคุณ พวกเขาทำงานเหมือนกันสำหรับสมาชิกทุกคน',
-  'billing.trial.length': 'ทดลองใช้งานเจ็ดวันพร้อมทุกฟีเจอร์',
   'billing.trial.dueToday': '$0 ครบกำหนดชำระวันนี้',
   'billing.trial.paymentMethodRequired':
     'Polar รวบรวมวิธีการชำระเงินทันทีและไม่เรียกเก็บเงินใดๆ ในวันนี้',
@@ -76,7 +75,7 @@ export const billingMessages = {
   'billing.usage.estimatedBeforeAction': 'การดำเนินการนี้คาดว่าจะอยู่ที่ {amount}',
   'billing.usage.periodTotal': '{amount} ใช้ตั้งแต่ {date}',
   'billing.usage.noMediaCredits':
-    'ไม่มีเครดิตการสร้างรูปภาพหรือวิดีโอ เนื่องจาก Relay ไม่ได้สร้างสื่อ',
+    'ไม่มีเครดิตการสร้างรูปภาพหรือวิดีโอ เนื่องจาก Post Array ไม่ได้สร้างสื่อ',
   'billing.downgrade.overLimit':
     'This workspace has {count, plural, one {# channel} other {# channels}} over the limit. New actions on those channels are blocked. Nothing is disconnected for you.',
   'billing.mediaGeneration.title': 'เหตุใดเราไม่สร้างภาพหรือวิดีโอ',

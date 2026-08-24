@@ -2,7 +2,7 @@
  * Seeded example content.
  *
  * Used by the tests and by the local development route so the composer can be
- * exercised before the API is reachable. Everything here is a plausible Relay
+ * exercised before the API is reachable. Everything here is a plausible Post Array
  * workspace: no invented performance claim, no customer logo, no metric.
  * Capability values mirror the shapes in `docs/research/06-source-register.md`
  * and are re-verified per connector before release, which is exactly why the

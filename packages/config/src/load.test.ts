@@ -199,7 +199,7 @@ describe('loadConfigFor', () => {
       loadConfigFor('worker', {});
       throw new Error('expected a failure');
     } catch (caught) {
-      expect((caught as Error).message).toContain('Relay worker');
+      expect((caught as Error).message).toContain('Post Array worker');
     }
   });
 

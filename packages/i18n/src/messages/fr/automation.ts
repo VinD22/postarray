@@ -99,7 +99,7 @@ export const automationMessages = {
 
   'automation.notPermitted.title': 'Cette règle ne peut pas être créée',
   'automation.notPermitted.body':
-    "Relay n'automatise pas les likes, les suivis, les réponses ou messages non sollicités, les publications de masse en double ou tout ce qui dépend de l'automatisation du navigateur. {provider} l'interdit et nous aussi.",
+    "Post Array n'automatise pas les likes, les suivis, les réponses ou messages non sollicités, les publications de masse en double ou tout ce qui dépend de l'automatisation du navigateur. {provider} l'interdit et nous aussi.",
   'automation.notPermitted.providerCapability':
     "{provider} n'offre pas {action} via son API officielle, cette action n'est donc pas sélectionnable pour celui-ci.",
 
@@ -112,7 +112,7 @@ export const automationMessages = {
   'automation.rss.targets': 'Publier sur',
   'automation.rss.template': 'Modèle de texte',
   'automation.rss.templateHelp':
-    "Utilisez les champs de flux que vous avez mappés. Relay ne génère pas d'images pour les éléments de flux.",
+    "Utilisez les champs de flux que vous avez mappés. Post Array ne génère pas d'images pour les éléments de flux.",
   'automation.rss.policy.draft': 'Créer un brouillon',
   'automation.rss.policy.approval': 'Créer un brouillon et demander l’approbation',
   'automation.rss.policy.nextSlot': 'Programmer dans le prochain créneau libre',

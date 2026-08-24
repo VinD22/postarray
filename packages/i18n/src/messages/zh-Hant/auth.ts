@@ -2,7 +2,6 @@ export const authMessages = {
   'auth.signIn.title': '登入',
   'auth.signIn.subtitle': '發布、核准，並查看確切發生的事。',
   'auth.signUp.title': '建立帳號',
-  'auth.signUp.subtitle': '所有功能試用七天。今天應付 $0。',
   'auth.continueWithGoogle': '使用 Google 繼續',
   'auth.continueWithFacebook': '使用 Facebook 繼續',
   'auth.orUseEmail': '或使用電子郵件',

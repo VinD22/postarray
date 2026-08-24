@@ -24,7 +24,7 @@ export const receiptMessages = {
   'receipt.actor.user': '{name}',
   'receipt.actor.serviceAccount': 'Tài khoản dịch vụ {name}',
   'receipt.actor.oauthApp': '{app} diễn xuất cho {name}',
-  'receipt.actor.system': 'Relay',
+  'receipt.actor.system': 'Post Array',
   'receipt.timeline.title': 'Dòng thời gian',
   'receipt.timeline.created': 'Bản nháp được tạo bởi {actor}',
   'receipt.timeline.approvalRequested': 'Yêu cầu phê duyệt từ {approver}',

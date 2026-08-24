@@ -56,7 +56,7 @@ export const mediaMessages = {
     'Video, audio, dan dokumen tidak dapat diedit di sini. Siapkan berkas sebelum Anda mengunggahnya. Unggahan asli Anda tetap tidak berubah.',
 
   'mediaLib.derivative.nonGenerative':
-    'Relay tidak menghasilkan gambar atau video. Editor ini hanya memotong, memutar, mengubah ukuran, mengonversi, dan mengompres apa yang Anda unggah.',
+    'Post Array tidak menghasilkan gambar atau video. Editor ini hanya memotong, memutar, mengubah ukuran, mengonversi, dan mengompres apa yang Anda unggah.',
 
   'error.media_derivative_no_operations.message':
     'Pilih setidaknya satu perubahan sebelum menyimpan versi.',

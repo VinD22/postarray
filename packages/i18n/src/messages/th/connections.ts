@@ -32,7 +32,7 @@ export const connectionMessages = {
   'connection.permissions.granted': 'ได้รับ',
   'connection.permissions.missing': 'ไม่ได้รับ',
   'connection.permissions.explainBeforeOAuth':
-    'Relay จะถาม {provider} สำหรับการอนุญาตเหล่านี้ คุณสามารถยกเลิกการเชื่อมต่อได้ตลอดเวลา',
+    'Post Array จะถาม {provider} สำหรับการอนุญาตเหล่านี้ คุณสามารถยกเลิกการเชื่อมต่อได้ตลอดเวลา',
   'connection.permissions.whyNeeded': 'เหตุใดจึงจำเป็น',
   'connection.reconnect.title': 'เชื่อมต่อ {account} อีกครั้ง',
   'connection.reconnect.body':
@@ -78,11 +78,11 @@ export const connectionMessages = {
   'capability.level.requires_review': 'ต้องการการตรวจสอบแพลตฟอร์ม',
   'capability.level.beta': 'เบต้า',
   'capability.level.unknown': 'ไม่พร้อมใช้งาน',
-  'capability.explain.supported': 'Relay สามารถทำได้สำหรับบัญชีนี้วันนี้',
+  'capability.explain.supported': 'Post Array สามารถทำได้สำหรับบัญชีนี้วันนี้',
   'capability.explain.unsupported':
     '{provider} ไม่ได้นำเสนอสิ่งนี้ผ่าน API อย่างเป็นทางการ ดังนั้นจึงไม่มีเครื่องมือใดที่สามารถทำได้อย่างปลอดภัย',
   'capability.explain.not_implemented':
-    '{provider} เสนอสิ่งนี้ แต่ Relay ยังไม่ได้สร้างมันขึ้นมา อยู่ในแผนงานการเชื่อมต่อ',
+    '{provider} เสนอสิ่งนี้ แต่ Post Array ยังไม่ได้สร้างมันขึ้นมา อยู่ในแผนงานการเชื่อมต่อ',
   'capability.explain.requires_review':
     '{provider} ให้สิทธิ์นี้เฉพาะหลังจากที่ตรวจสอบแอปหรือบัญชีแล้วเท่านั้น จะไม่สามารถใช้งานได้จนกว่าการตรวจสอบจะผ่าน',
   'capability.explain.beta':

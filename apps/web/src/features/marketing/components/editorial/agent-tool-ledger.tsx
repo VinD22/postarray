@@ -4,11 +4,11 @@ import { cn } from '@relay/design-system/utils';
 import type { AgentToolRisk } from '../../data/agent-tools';
 
 /**
- * The agent tool ledger: what an agent connected to Relay can actually call,
+ * The agent tool ledger: what an agent connected to Post Array can actually call,
  * grouped by how much damage a call can do.
  *
  * This is deliberately not three feature cards. Blast radius is a ladder —
- * reads change nothing, reversible calls change something inside Relay, and
+ * reads change nothing, reversible calls change something inside Post Array, and
  * consequential calls reach a platform — and three equal boxes would flatten
  * the one thing worth understanding here. It is a ledger: three rows, each a
  * label plus a rule plus the real tool names, in ascending order of

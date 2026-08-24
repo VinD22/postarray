@@ -1,18 +1,16 @@
 /** Traditional Chinese marketing copy. */
 export const webMarketingMessages = {
-  'web.brand.name': 'Relay',
+  'web.brand.name': 'Post Array',
   'web.brand.tagline': '面向人員和代理商的多語言發布控制平面。',
   'web.skipToContent': '跳至主要內容',
   'web.nav.label': '網站導航',
   'web.nav.openMenu': '選單',
   'web.nav.closeMenu': '關閉選單',
   'web.nav.footerLabel': '頁尾導航',
-  'web.cta.startTrial': '開始 7 天試用',
+  'web.cta.startTrial': '免費開始，無需信用卡',
   'web.cta.seePricing': '查看價格',
   'web.cta.seeCapabilities': '讀取能力矩陣',
   'web.cta.readDocs': '閱讀文件',
-  'web.cta.trialFootnote':
-    'Polar 收集付款方式，今天收費 0 美元，並在您確認之前顯示確切的首次收費日期。',
   'web.label.lastReviewed': '最後評論{date}',
   'web.label.nextReview': '下一篇評論{date}',
   'web.label.researchDate': '研究過{date}',
@@ -27,39 +25,37 @@ export const webMarketingMessages = {
   'web.correction.title': '發現此頁面有問題',
   'web.correction.body':
     '平台規則發生變化，我們就會犯錯。發送 URL 以及不準確的內容，我們將更正該頁面或將其撤銷。',
-  'web.correction.email': 'Corrections@relay.example',
-  'web.meta.home.title': 'Relay，多國語言發布控制平面',
+  'web.correction.email': 'Corrections@postarray.com',
+  'web.meta.home.title': 'Post Array，多國語言發布控制平面',
   'web.meta.home.description':
     '將一個來源創意轉化為平台原生內容，核准一次，透過官方平台 API 可靠地發布，並了解下一步需要改進的內容。',
-  'web.meta.product.title': 'Relay 的工作原理',
+  'web.meta.product.title': 'Post Array 的工作原理',
   'web.meta.product.description':
     '發布台概覽：編寫一次、根據平台進行調整、根據實際限制進行驗證、核准、安排、發布並保留收據。',
-  'web.meta.integrations.title': '平台 Relay 發佈到',
+  'web.meta.integrations.title': '平台 Post Array 發佈到',
   'web.meta.integrations.description':
-    'Relay 連接到哪些平台，每個連接現在可以做什麼，以及平臺本身不允許做什麼。',
+    'Post Array 連接到哪些平台，每個連接現在可以做什麼，以及平臺本身不允許做什麼。',
   'web.meta.capabilities.title': '連接器能力矩陣',
   'web.meta.capabilities.description':
     '根據我們的連接器定義產生的每個平台、每個功能表，將我們建立的內容與平台不提供的內容分開。',
-  'web.meta.creators.title': '創作者的 Relay',
+  'web.meta.creators.title': '創作者的 Post Array',
   'web.meta.creators.description':
     '對於獨立創作者來說，以多種格式和語言發布相同的想法，而無需重寫五次。',
-  'web.meta.agencies.title': 'Relay 機構用',
+  'web.meta.agencies.title': 'Post Array 機構用',
   'web.meta.agencies.description':
     '代表其他人發布的團隊的客戶分離、核准、可共享審核連結、收據和報告。',
-  'web.meta.developers.title': 'Relay 供開發者使用',
+  'web.meta.developers.title': 'Post Array 供開發者使用',
   'web.meta.developers.description':
     'Web 應用程式背後的一個後端、REST API、遠端 MCP 伺服器、CLI 和簽署的 Webhooks。每個表面上的核准規則相同。',
   'web.meta.pricing.title': '定價',
-  'web.meta.pricing.description':
-    '一個計劃。每月 29 美元，或每年 300 美元，即每月 25 美元，按年計費。 30 個活躍頻道，無限團隊成員，無功能層級。',
   'web.meta.resources.title': '資源',
   'web.meta.resources.description': '狀態、變更日誌、文件、方法、比較、工具雷達和機會目錄。',
   'web.meta.status.title': '地位',
-  'web.meta.status.description': '每個 Relay 表面和每個連接器的當前狀態，以及事件歷史記錄。',
+  'web.meta.status.description': '每個 Post Array 表面和每個連接器的當前狀態，以及事件歷史記錄。',
   'web.meta.changelog.title': '變更日誌',
   'web.meta.changelog.description': '發布了什麼、連接器發生了什麼變化以及糾正了什麼。',
   'web.meta.docs.title': '文件',
-  'web.meta.docs.description': '用於在 Relay 上建立的 REST API、MCP 伺服器、CLI 和 Webhook 文件。',
+  'web.meta.docs.description': '用於在 Post Array 上建立的 REST API、MCP 伺服器、CLI 和 Webhook 文件。',
   'web.meta.methodology.title': '方法論',
   'web.meta.methodology.description':
     '我們如何研究平台聲明、如何確定其日期、如何比較其他產品以及如何糾正錯誤。',
@@ -77,9 +73,7 @@ export const webMarketingMessages = {
   'web.home.promise':
     '將一個來源創意轉化為平台原生內容，核准一次，可靠地發布，並了解下一步需要改進的內容。',
   'web.home.lede':
-    'Relay 是一個出版台，專為那些對所發布的內容負責的人而設計。您編寫一次，根據平台進行調整，在安排之前查看真正的限制，獲得所需的核准，透過官方平台 API 發布，並為每個貼文保留收據。',
-  'web.home.summaryLine':
-    '一項計劃的價格為每月 29 美元或每年 300 美元。 30 個活躍的社交管道，無限的團隊成員，沒有功能等級。 7 天試用會收集付款方式並在結帳時收取 0 美元費用。',
+    'Post Array 是一個出版台，專為那些對所發布的內容負責的人而設計。您編寫一次，根據平台進行調整，在安排之前查看真正的限制，獲得所需的核准，透過官方平台 API 發布，並為每個貼文保留收據。',
   'web.home.example.title': '一個想法，五個平台原生版本',
   'web.home.example.body':
     '作曲家從主版本開始。選擇帳號將僅開啟該帳號的覆蓋，具有自己的即時限制和自己的預覽。你為 LinkedIn 所寫的任何內容都不會改變 X 收到的內容。',
@@ -103,7 +97,7 @@ export const webMarketingMessages = {
   'web.home.example.bluesky.account': 'Bluesky，北行.範例',
   'web.home.example.bluesky.variant': '帶有連結卡的母版文本',
   'web.home.example.bluesky.check': '字元數、連結卡解析度、替代文字存在',
-  'web.home.pillars.title': 'Relay 的優點',
+  'web.home.pillars.title': 'Post Array 的優點',
   'web.home.pillars.confidence.title': '放心發布',
   'web.home.pillars.confidence.body':
     '每個帳號的真實預覽、確定性策略和平台在任何內容排隊之前進行檢查、Workspace所需的核准、帶有外部貼文 ID 的不可變收據以及每個連線的運作狀況。',
@@ -116,7 +110,7 @@ export const webMarketingMessages = {
     '此介面有選定的語言版本。內容改編涵蓋20種內容語言，每種內容在發布前都會經過審核。',
   'web.home.pillars.loop.title': '關閉循環',
   'web.home.pillars.loop.body':
-    '為指標命名的分析、報告該指標的平台、分母以及上次刷新時間。如果平台沒有報告某些內容，Relay 會這樣表示，而不是顯示零。',
+    '為指標命名的分析、報告該指標的平台、分母以及上次刷新時間。如果平台沒有報告某些內容，Post Array 會這樣表示，而不是顯示零。',
   'web.home.pillars.loop.proof':
     '貼文會與您自己的中位數進行比較，而不是與無人可以審核的分數進行比較。',
   'web.home.pillars.anywhere.title': '從您所在的地方開始工作',
@@ -127,18 +121,18 @@ export const webMarketingMessages = {
   'web.home.pillars.economics.title': '您可以預測的經濟狀況',
   'web.home.pillars.economics.body':
     '統一價格、所有已發布的功能、30 個活躍頻道和無限的團隊成員。提供者按操作收取的平台使用費將按成本傳遞，並在您確認操作之前顯示。',
-  'web.home.pillars.economics.proof': '沒有圖像或視訊生成信用系統，因為 Relay 不產生媒體。',
-  'web.home.honest.title': 'Relay 不做什麼',
+  'web.home.pillars.economics.proof': '沒有圖像或視訊生成信用系統，因為 Post Array 不產生媒體。',
+  'web.home.honest.title': 'Post Array 不做什麼',
   'web.home.honest.lede':
     '這些是邊界，而不是路線圖。如果其中之一發生更改，它會首先在更改日誌中更改。',
   'web.home.honest.noMedia':
-    '沒有人工智慧影像生成，也沒有人工智慧影片生成。 Relay 改編、核准、發布和衡量您帶來的媒體。',
+    '沒有人工智慧影像生成，也沒有人工智慧影片生成。 Post Array 改編、核准、發布和衡量您帶來的媒體。',
   'web.home.honest.noAutomationOfEngagement':
     '不會自動按讚、追蹤、轉發、主動回覆或直接訊息。沒有訂婚艙，也沒有捏造的訂婚。',
   'web.home.honest.noUnofficial':
     '沒有瀏覽器自動化，沒有 cookie 重播，沒有抓取，也沒有非官方發布端點。僅限官方平台 API。',
   'web.home.honest.noPromises':
-    '不承諾覆蓋範圍、排名或參與度。 Relay 可以告訴您發生了什麼事以及接下來要測試什麼。它無法告訴你觀眾會做什麼。',
+    '不承諾覆蓋範圍、排名或參與度。 Post Array 可以告訴您發生了什麼事以及接下來要測試什麼。它無法告訴你觀眾會做什麼。',
   'web.home.honest.noUnattendedPublishing':
     '預設沒有無人值守發布。代理人可以起草、驗證和請求核准。除非您故意選擇退出特定政策，否則人類會在任何事情公開之前做出決定。',
   'web.home.surfaces.title': '五個表面，一個後端',
@@ -158,7 +152,6 @@ export const webMarketingMessages = {
   'web.home.closing.body':
     '連接一個帳號，起草一篇文章，觀察驗證運行，安排驗證並閱讀收據。這就是大約十分鐘內的整個產品。',
   'web.home.v2.heroTemplate': '原生Brand貼文{platform}。',
-  'web.home.v2.sticker.trial': '7 天試用',
   'web.home.v2.sticker.official': '僅官方 API',
   'web.home.v2.marqueeCaption': '僅限官方 API。',
   'web.home.v2.surfacesStat': '一個共享後端上的表面',
@@ -204,7 +197,7 @@ export const webMarketingMessages = {
   'web.product.states.permission': '您的角色不允許的操作，請命名允許的角色。',
   'web.integrations.title': '平台',
   'web.integrations.lede':
-    'Relay透過官方平台API連線。每個連接器都有指定的擁有者、記錄的政策 URL 和審核日期。連接器在通過完成的連接器定義之前不會被列為受支援。',
+    'Post Array透過官方平台API連線。每個連接器都有指定的擁有者、記錄的政策 URL 和審核日期。連接器在通過完成的連接器定義之前不會被列為受支援。',
   'web.integrations.reviewNotice.title': '在平台核准之前，沒有任何連接器被描述為官方的',
   'web.integrations.reviewNotice.body':
     '有些平台需要先進行應用程式審查，然後才能代表客戶發布應用程式。如果審查很突出，連接器會這樣說，並準確描述在通過之前受到限制的內容。',
@@ -224,7 +217,7 @@ export const webMarketingMessages = {
     '此表中的每個平台聲明都連結到其來源的官方文件以及我們上次閱讀它的日期。',
   'web.creators.title': '對於創作者',
   'web.creators.lede':
-    '您以多種格式（有時以多種語言）發布相同的想法，並且您是整個團隊。 Relay 刪除的工作是重新打字、重新裁剪和檢查。',
+    '您以多種格式（有時以多種語言）發布相同的想法，並且您是整個團隊。 Post Array 刪除的工作是重新打字、重新裁剪和檢查。',
   'web.creators.job.adapt.title': '寫一次，發布五個本機版本',
   'web.creators.job.adapt.body':
     '主版本承載了這個想法。每個帳號都會獲得平台期望的長度、裁剪、設定和語氣，並且在提交之前您可以並排查看所有這些內容。',
@@ -233,13 +226,13 @@ export const webMarketingMessages = {
     '創譯保留意圖而不是文字，使用您的專案術語表，並標記本地審查者是否已閱讀它。除非您這麼說，否則任何內容都不會以您無法保證的語言發表。',
   'web.creators.job.rights.title': '將您的權利記錄與文件一起保存',
   'web.creators.job.rights.body':
-    '媒體記錄了它的來源、誰擁有權利以及它是否是使用生成工具創建的。平台的要求越來越多。 Relay 將您的答案與資產一起存儲，而不是再次詢問您。',
+    '媒體記錄了它的來源、誰擁有權利以及它是否是使用生成工具創建的。平台的要求越來越多。 Post Array 將您的答案與資產一起存儲，而不是再次詢問您。',
   'web.creators.job.cost.title': '發文前先了解費用',
   'web.creators.job.cost.body':
-    'X 按操作收費，並且對包含 URL 的貼文收取更多費用。 Relay估計在你確認之前，所以連結重周是一個決定而不是發票意外。',
+    'X 按操作收費，並且對包含 URL 的貼文收取更多費用。 Post Array估計在你確認之前，所以連結重周是一個決定而不是發票意外。',
   'web.creators.notFor.title': '這不是什麼',
   'web.creators.notFor.body':
-    'Relay 不會產生圖像或影片，不會運行參與自動化，也不會預測貼文的表現。如果這些是您想要的工具，其他產品也可以，我們希望您現在就知道。',
+    'Post Array 不會產生圖像或影片，不會運行參與自動化，也不會預測貼文的表現。如果這些是您想要的工具，其他產品也可以，我們希望您現在就知道。',
   'web.agencies.title': '對於機構',
   'web.agencies.lede':
     '你代表其他人發表文章，這使得歸屬、核准和證據成為工作的一部分，而不是一種禮貌。',
@@ -260,7 +253,7 @@ export const webMarketingMessages = {
     '一項計劃涵蓋 30 個活躍的社交管道。頻道是一個社交帳號、頁面、個人資料、群組或出版物連結。如果您需要超過 30 個，請告訴我們您需要什麼，我們將為您提供直接答案，而不是隱藏層。',
   'web.developers.title': '對於開發商',
   'web.developers.lede':
-    '發布是工作流程的一部分，錯誤是公開且永久的。 Relay 為您提供一個後端、輸入錯誤、每次寫入的冪等性以及代理無法繞過的核准模型。',
+    '發布是工作流程的一部分，錯誤是公開且永久的。 Post Array 為您提供一個後端、輸入錯誤、每次寫入的冪等性以及代理無法繞過的核准模型。',
   'web.developers.surface.api.title': '休息API',
   'web.developers.surface.api.body':
     '作用域 API 金鑰、每次寫入所需的冪等性金鑰、遊標分頁以及攜帶穩定程式碼、訊息金鑰和經過淨化的詳細資訊的類型化錯誤信封。沒有任何提供者有效負載會原始地反映給您。',
@@ -282,10 +275,8 @@ export const webMarketingMessages = {
     '每個代理程式和每個Workspace都有一個終止開關，可以停止待處理的工作而不刪除它。',
   'web.developers.openSource.title': '開件',
   'web.developers.openSource.body':
-    '連接器合約、CLI、模式範例、MCP 工具定義和提供者模擬器是您在沒有沙箱帳號的情況下針對 Relay 建置所需的部分。如果儲存庫尚未發布，則此頁面會說明這一點，而不是連結到任何內容。',
+    '連接器合約、CLI、模式範例、MCP 工具定義和提供者模擬器是您在沒有沙箱帳號的情況下針對 Post Array 建置所需的部分。如果儲存庫尚未發布，則此頁面會說明這一點，而不是連結到任何內容。',
   'web.pricing.title': '一項計劃',
-  'web.pricing.lede':
-    '沒有功能層，因此沒有可供閱讀的比較表。兩個計費間隔均可解鎖所有已發佈的功能。',
   'web.pricing.intervalHeading': '選擇您的付款方式',
   'web.pricing.monthlyLabel': '按月計費',
   'web.pricing.annualLabel': '按年計費',
@@ -299,15 +290,9 @@ export const webMarketingMessages = {
   'web.pricing.beside.fairUse':
     '根據已發布的合理使用和反垃圾郵件政策，無限草稿、預定貼文和儲存收據。這些控制措施的存在是為了保護您連結的帳號，並且它們同樣適用於每個訂閱者。',
   'web.pricing.beside.metered':
-    'X 按 API 操作收費，並對包含 URL 的貼文收取更多費用。 Relay 按成本傳遞該訊息，在您確認操作之前對其進行估計，並在您的使用中顯示它。其他平台費用只有在行動前揭露時才會轉嫁。',
+    'X 按 API 操作收費，並對包含 URL 的貼文收取更多費用。 Post Array 按成本傳遞該訊息，在您確認操作之前對其進行估計，並在您的使用中顯示它。其他平台費用只有在行動前揭露時才會轉嫁。',
   'web.pricing.beside.noMedia':
-    'AI影像生成和AI視訊生成不包含在內且不出售。沒有媒體積分，因為 Relay 不產生媒體。',
-  'web.pricing.beside.trial':
-    '每個功能的試用期為 7 天。 Polar 在結帳時收集付款方式，今天收取 0 美元。在您確認之前，確切的首次收費金額和日期將顯示在開始操作旁邊。',
-  'web.pricing.beside.conversion':
-    '如果您不採取任何行動，試用期將在第七天轉換為您選擇的時間間隔，並且 Polar 會按照結帳時顯示的金額收取費用。在此之前三天，Polar 會透過電子郵件發送提醒。',
-  'web.pricing.beside.cancel':
-    '隨時從「設定」取消，無需聯絡支援人員。在試用轉換之前取消，並且不會嘗試收費。之後取消，您就可以保留存取權限，直到付費期結束。',
+    'AI影像生成和AI視訊生成不包含在內且不出售。沒有媒體積分，因為 Post Array 不產生媒體。',
   'web.pricing.beside.data':
     '訂閱結束時不會刪除任何內容。您可以匯出內容、收據和分析，並且可以自行刪除它們。',
   'web.pricing.included.title': '包括在兩個間隔中',
@@ -329,13 +314,8 @@ export const webMarketingMessages = {
     '不是今天。是否會有自架版本以及在何種許可下，都是一個開放的決定。我們將公佈答案，而不是暗示答案。',
   'web.pricing.faq.xCost.q': 'X 實際上要花我多少錢',
   'web.pricing.faq.xCost.a':
-    '這取決於您發布的貼文數量以及其中包含 URL 的貼文數量，因為 X 對這些貼文的定價不同。 Relay 在您確認每個操作之前對其進行估計，並在使用情況視圖中對其進行總計。我們不對其進行標記。',
-  'web.pricing.faq.trialAbuse.q': '我可以開始第二次試用嗎',
-  'web.pricing.faq.trialAbuse.a':
-    '重複試驗受到 Polar 的限制。如果您有正當理由，請聯絡支援人員，會有人查看。',
+    '這取決於您發布的貼文數量以及其中包含 URL 的貼文數量，因為 X 對這些貼文的定價不同。 Post Array 在您確認每個操作之前對其進行估計，並在使用情況視圖中對其進行總計。我們不對其進行標記。',
   'web.pricing.v2.closing.title': '7 天試用期，用您自己的帳號',
-  'web.pricing.v2.closing.body':
-    '開始試用，連接您實際運行的帳號，並在收費之前查看驗證和安排的感覺如何。',
   'web.resources.title': '資源',
   'web.resources.lede': '有關產品的操作真相，以及我們對平台的任何聲明背後的研究。',
   'web.resources.status.body': '每個表面和每個連接器的當前狀態以及事件歷史記錄。',
@@ -354,7 +334,7 @@ export const webMarketingMessages = {
     '編輯標準需要原始產品資料、可重複的工作流程、帶有驗證日期的主要平台來源以及指定的手動編輯。第一批指南在遇到它時發布。',
   'web.status.title': '地位',
   'web.status.lede':
-    '每個Relay表面和每個連接器的狀態。連接器狀態涵蓋了我們的適配器及其所依賴的平台 API。',
+    '每個Post Array表面和每個連接器的狀態。連接器狀態涵蓋了我們的適配器及其所依賴的平台 API。',
   'web.status.updated': '狀態由人工設定。最後更新於{time}。',
   'web.status.surfaces.title': '表面',
   'web.status.connectors.title': '連接器',
@@ -388,7 +368,7 @@ export const webMarketingMessages = {
   'web.changelog.kind.security': '安全',
   'web.changelog.empty': '尚未公開發布任何內容',
   'web.changelog.emptyBody':
-    'Relay 正在建造中。這裡的第一個條目是客戶可以使用的第一個東西，而不是我們自己的里程碑。',
+    'Post Array 正在建造中。這裡的第一個條目是客戶可以使用的第一個東西，而不是我們自己的里程碑。',
   'web.docs.title': '文件',
   'web.docs.lede':
     '一個後端，四種進入方式。每個部分都記錄相同的用例，因此您在 REST API 中學到的概念與 MCP 和 CLI 中的概念相同。',
@@ -461,7 +441,7 @@ export const webMarketingMessages = {
     '每個頁面都需要根據其他產品自己的定價和文件進行新的事實檢查。當工作完成後，他們一次發布一份。',
   'web.toolRadar.title': '創意工具雷達',
   'web.toolRadar.lede':
-    'Relay 不產生影像或影片。它確實可以幫助您決定使用哪種專業工具，並將成品資產保留其權利記錄完好無損。',
+    'Post Array 不產生影像或影片。它確實可以幫助您決定使用哪種專業工具，並將成品資產保留其權利記錄完好無損。',
   'web.toolRadar.record.title': '每張唱片必須攜帶什麼',
   'web.toolRadar.record.url': '官方 URL 和擁有該產品的組織。',
   'web.toolRadar.record.useCase': '建議的工作流程及其記錄的限制。',
@@ -481,7 +461,7 @@ export const webMarketingMessages = {
   'web.opportunities.rules.curated':
     '每個條目都是經過審核的記錄，帶有官方 URL、當前提交規則和驗證日期。模型沒有發現任何內容並以經過驗證的方式呈現。',
   'web.opportunities.rules.noAutomation':
-    'Relay 絕不會為您提交表單、刪除聯絡人、向社群發送大量電子郵件或貼文。你做提交。',
+    'Post Array 絕不會為您提交表單、刪除聯絡人、向社群發送大量電子郵件或貼文。你做提交。',
   'web.opportunities.rules.noGuarantee':
     '列表不是排名承諾，連結也不是成長策略。我們會展示適合度、受眾群體、努力程度、成本和揭露要求，以便您決定是否值得花一個下午的時間。',
   'web.opportunities.rules.stale': '超過審核日期的記錄將被標記或隱藏，而不是顯示為目前記錄。',
@@ -491,37 +471,37 @@ export const webMarketingMessages = {
     '每個目的地規則都必須由專人閱讀並記錄後才能推薦。上面列出了類別，以便您可以了解即將推出的內容。',
   'web.legal.title': '法律和政策',
   'web.legal.lede':
-    '管理使用 Relay 的文件。如果措辭必須由特定公司和司法管轄區的律師起草，則該頁面會如此說明，而不是假裝。',
+    '管理使用 Post Array 的文件。如果措辭必須由特定公司和司法管轄區的律師起草，則該頁面會如此說明，而不是假裝。',
   'web.legal.counselPending.title': '啟動前等待律師審查',
   'web.legal.counselPending.body':
-    '此頁面上的內容反映了產品的實際行為方式並且在今天是準確的。具有約束力的法律措辭、管轄管轄權和責任條款正在由合格的律師起草，並將在 Relay 普遍可用之前取代本文本。此頁面不是法律建議，也不是合約。',
+    '此頁面上的內容反映了產品的實際行為方式並且在今天是準確的。具有約束力的法律措辭、管轄管轄權和責任條款正在由合格的律師起草，並將在 Post Array 普遍可用之前取代本文本。此頁面不是法律建議，也不是合約。',
   'web.legal.contact.title': '聯絡方式',
-  'web.legal.contact.privacy': 'privacy@relay.example',
-  'web.legal.contact.legal': 'legal@relay.example',
-  'web.legal.contact.security': 'security@relay.example',
-  'web.legal.contact.abuse': 'abuse@relay.example',
-  'web.legal.contact.copyright': 'copyright@relay.example',
-  'web.legal.contact.affiliates': 'affiliates@relay.example',
-  'web.legal.contact.accessibility': 'accessibility@relay.example',
+  'web.legal.contact.privacy': 'privacy@postarray.com',
+  'web.legal.contact.legal': 'legal@postarray.com',
+  'web.legal.contact.security': 'security@postarray.com',
+  'web.legal.contact.abuse': 'abuse@postarray.com',
+  'web.legal.contact.copyright': 'copyright@postarray.com',
+  'web.legal.contact.affiliates': 'affiliates@postarray.com',
+  'web.legal.contact.accessibility': 'accessibility@postarray.com',
   'web.legal.entity.pending': '締約實體、其註冊地址及管轄地仍待決定，並會在啟動前於此列明。',
   'web.legal.index.updated': '更新於 {date}',
   'web.legal.terms.title': '服務條款',
-  'web.legal.terms.summary': 'Relay 同意提供的服務、您同意採取的行動，以及任一方停止時會發生的事。',
+  'web.legal.terms.summary': 'Post Array 同意提供的服務、您同意採取的行動，以及任一方停止時會發生的事。',
   'web.legal.terms.service.title': '服務內容',
   'web.legal.terms.service.body':
-    'Relay 是一項託管服務，透過各平台的官方 API 建立、核准、排程及發佈社群平台內容，並提供由此產生的收據、分析資料及稽核記錄。它不是社群平台，也不控制任何平台在貼文發佈後如何處理該貼文。',
+    'Post Array 是一項託管服務，透過各平台的官方 API 建立、核准、排程及發佈社群平台內容，並提供由此產生的收據、分析資料及稽核記錄。它不是社群平台，也不控制任何平台在貼文發佈後如何處理該貼文。',
   'web.legal.terms.content.title': '您的內容仍屬於您',
   'web.legal.terms.content.body':
-    '您保有上傳、撰寫或匯入之一切內容的所有權。您僅授予 Relay 儲存、處理、依您的要求將其調整為不同版本，以及傳送至所選帳號所需的授權。除依法必須保留的記錄外，您刪除內容時，該授權即告終止。',
+    '您保有上傳、撰寫或匯入之一切內容的所有權。您僅授予 Post Array 儲存、處理、依您的要求將其調整為不同版本，以及傳送至所選帳號所需的授權。除依法必須保留的記錄外，您刪除內容時，該授權即告終止。',
   'web.legal.terms.warranties.title': '您發佈時所確認的事項',
   'web.legal.terms.warranties.body':
     '您有權向已連結的帳號發佈內容，擁有內容及媒體的權利，已取得其中任何人物所需的同意，且發佈不會違反目標平台規則。',
   'web.legal.terms.platforms.title': '對平台的依賴',
   'web.legal.terms.platforms.body':
-    '連接器依賴由這些公司控制的第三方 API。平台可在短時間通知下變更 API、限制權限、撤銷應用程式或關閉存取。Relay 無法保證任何連接器持續可用，連接器變得不可用亦不構成本協議的違約。發生時，我們會在狀態頁及變更日誌通知您。',
+    '連接器依賴由這些公司控制的第三方 API。平台可在短時間通知下變更 API、限制權限、撤銷應用程式或關閉存取。Post Array 無法保證任何連接器持續可用，連接器變得不可用亦不構成本協議的違約。發生時，我們會在狀態頁及變更日誌通知您。',
   'web.legal.terms.ai.title': 'AI 輸出',
   'web.legal.terms.ai.body':
-    '文字輔助、翻譯、創譯及規劃功能會提出建議。它們可能錯誤、過時或不適當。您有責任審閱任何將發佈的內容。Relay 不生成影像或影片。',
+    '文字輔助、翻譯、創譯及規劃功能會提出建議。它們可能錯誤、過時或不適當。您有責任審閱任何將發佈的內容。Post Array 不生成影像或影片。',
   'web.legal.terms.billing.title': '付款',
   'web.legal.terms.billing.body':
     'Polar 是名義商家。Polar 處理結帳、稅款、發票及退款。訂閱會按您所選週期自動續訂，直到您取消為止。提供商按操作收取的平台使用費會按成本另行計費，並會在產生費用的操作前揭露。',
@@ -538,7 +518,7 @@ export const webMarketingMessages = {
   'web.legal.terms.developer.body':
     '程式化存取亦受 API 與 MCP 條款約束，包括速率限制、範圍要求及服務帳號絕不繼承人類完整權限的規則。',
   'web.legal.privacy.title': '隱私權政策',
-  'web.legal.privacy.summary': 'Relay 蒐集什麼、為何蒐集、由誰處理、保存多久，以及如何匯出或刪除。',
+  'web.legal.privacy.summary': 'Post Array 蒐集什麼、為何蒐集、由誰處理、保存多久，以及如何匯出或刪除。',
   'web.legal.privacy.collect.title': '我們持有的資料',
   'web.legal.privacy.collect.account':
     '帳號及個人資料：您的姓名、電子郵件、工作空間成員資格及角色。',
@@ -547,9 +527,9 @@ export const webMarketingMessages = {
   'web.legal.privacy.collect.content':
     '您建立、上傳或匯入的內容及媒體，包括您為其記錄的權利與來源。',
   'web.legal.privacy.collect.schedules': '排程、核准決定、發佈收據及稽核事件。',
-  'web.legal.privacy.collect.analytics': '從平台擷取的、與您透過 Relay 發佈貼文有關的指標。',
+  'web.legal.privacy.collect.analytics': '從平台擷取的、與您透過 Post Array 發佈貼文有關的指標。',
   'web.legal.privacy.collect.billing':
-    '由 Polar 持有的帳務參考資料。Relay 不儲存您的卡片詳細資料。',
+    '由 Polar 持有的帳務參考資料。Post Array 不儲存您的卡片詳細資料。',
   'web.legal.privacy.collect.technical': '營運及保護服務所需的裝置與日誌資料，預設會經過遮蔽。',
   'web.legal.privacy.collect.agent':
     '代理程式及 API 活動：哪一項憑證採取哪一項操作，以輸入雜湊值而非輸入內容記錄。',
@@ -575,13 +555,13 @@ export const webMarketingMessages = {
     '同意偏好設有版本並可稽核，因此您可查看同意了什麼及何時同意。',
   'web.legal.privacy.deletion.title': '刪除保存在平台的資料',
   'web.legal.privacy.deletion.body':
-    '在 Relay 中中斷帳號連結會撤銷平台上的權杖並刪除此處的憑證。已在平台發佈的內容受該平台規範，必須在該處刪除。若平台要求在撤銷後固定期限內刪除衍生資料，我們會遵守該期限。Google 與 YouTube 資料目前的期限為 30 天。',
+    '在 Post Array 中中斷帳號連結會撤銷平台上的權杖並刪除此處的憑證。已在平台發佈的內容受該平台規範，必須在該處刪除。若平台要求在撤銷後固定期限內刪除衍生資料，我們會遵守該期限。Google 與 YouTube 資料目前的期限為 30 天。',
   'web.legal.privacy.transfers.title': '國際傳輸',
   'web.legal.privacy.transfers.body':
     '託管區域及傳輸機制正與法律顧問敲定，並會在啟動前於此列明，以及適用的保障措施。',
   'web.legal.aup.title': '可接受使用政策',
   'web.legal.aup.summary':
-    'Relay 協助您發佈有權發佈的內容。它不是為協助任何人規避平台限制、偽造背書或傳送不受歡迎訊息而建置。',
+    'Post Array 協助您發佈有權發佈的內容。它不是為協助任何人規避平台限制、偽造背書或傳送不受歡迎訊息而建置。',
   'web.legal.aup.prohibited.title': '不允許的行為',
   'web.legal.aup.prohibited.spam':
     '垃圾訊息、未經請求的大量訊息、回覆或提及、引誘互動，以及重複的不受歡迎內容。',
@@ -619,10 +599,10 @@ export const webMarketingMessages = {
     '在可行時，我們會在外部操作之前而非之後阻擋，並記錄原因、規則版本及申訴途徑。重複或嚴重行為會交由真人信任審查。您會得知發生了什麼，但不會取得足以協助規避檢查的細節。每項決定皆可申訴及撤銷。',
   'web.legal.aup.report.title': '回報濫用',
   'web.legal.aup.report.body':
-    '若透過 Relay 發佈的內容違反這些規則，請告訴我們。請附上貼文 URL 及問題所在。',
+    '若透過 Post Array 發佈的內容違反這些規則，請告訴我們。請附上貼文 URL 及問題所在。',
   'web.legal.ai.title': 'AI 使用及生成內容政策',
   'web.legal.ai.summary':
-    '哪些功能使用模型、傳送什麼、保留什麼、您仍須負責什麼，以及 Relay 為何不生成媒體。',
+    '哪些功能使用模型、傳送什麼、保留什麼、您仍須負責什麼，以及 Post Array 為何不生成媒體。',
   'web.legal.ai.features.title': '使用模型的地方',
   'web.legal.ai.features.text': '撰寫器中的文字輔助：為平台改寫、縮短及調整。',
   'web.legal.ai.features.translation': '依您的品牌術語表翻譯及創譯為內容語言。',
@@ -641,7 +621,7 @@ export const webMarketingMessages = {
     '模型可能非常自信地犯錯。您有責任在發佈前檢查事實、聲明、名稱、數字及語氣，並完成平台要求的任何揭露。沒有 AI 功能保證觸及、互動或排名，也不以此作為承諾提供。',
   'web.legal.ai.disclosure.title': '揭露與來源',
   'web.legal.ai.disclosure.body':
-    'Relay 會在內部歷程中記錄內容是否有 AI 輔助，並在平台要求揭露經修改或合成媒體時提醒您，且會儲存您隨匯入資產提供的來源資料。若平台提供揭露欄位，Relay 會依您的聲明設定，而非猜測。',
+    'Post Array 會在內部歷程中記錄內容是否有 AI 輔助，並在平台要求揭露經修改或合成媒體時提醒您，且會儲存您隨匯入資產提供的來源資料。若平台提供揭露欄位，Post Array 會依您的聲明設定，而非猜測。',
   'web.legal.ai.blocks.title': 'AI 功能拒絕的事項',
   'web.legal.ai.blocks.impersonation': '冒充真實人物或公眾人物。',
   'web.legal.ai.blocks.ncii': '任何形式的未經同意私密影像。',
@@ -650,7 +630,7 @@ export const webMarketingMessages = {
     '將模型生成的 URL 表示為已驗證的機會。機會與工具推薦僅來自精選目錄。',
   'web.legal.ai.noMedia.title': '為何沒有影像或影片生成',
   'web.legal.ai.noMedia.body':
-    'Relay 尚未蒐集品牌可用輸出所需的已驗證視覺系統、產品細節、資產權利、肖像許可及活動情境，而應用程式內生成也需要自身的同意、來源、安全評估及成本控制。媒體模型的能力、授權、定價及保留政策也迅速變化，這正是我們的工具推薦會附上日期的原因。您可透過選擇專業工具並匯入核准資產，保有創意控制。Relay 處理調整、核准、發佈及衡量。',
+    'Post Array 尚未蒐集品牌可用輸出所需的已驗證視覺系統、產品細節、資產權利、肖像許可及活動情境，而應用程式內生成也需要自身的同意、來源、安全評估及成本控制。媒體模型的能力、授權、定價及保留政策也迅速變化，這正是我們的工具推薦會附上日期的原因。您可透過選擇專業工具並匯入核准資產，保有創意控制。Post Array 處理調整、核准、發佈及衡量。',
   'web.legal.ai.noMedia.caveat':
     '工具出現在我們的雷達中，並不表示其輸出安全或權利已釐清。我們會一併顯示其已記錄的注意事項，您的一般權利聲明仍然適用。',
   'web.legal.cookies.title': 'Cookie 政策',
@@ -681,12 +661,10 @@ export const webMarketingMessages = {
   'web.legal.subprocessors.column.region': '處理區域',
   'web.legal.subprocessors.platforms.title': '社群平台不是次處理者',
   'web.legal.subprocessors.platforms.body':
-    '當您發佈時，Relay 會依您的指示將內容傳送至您選擇的平台帳號。這些平台是其所接收資料的獨立控制者，並由其自身條款規範。',
+    '當您發佈時，Post Array 會依您的指示將內容傳送至您選擇的平台帳號。這些平台是其所接收資料的獨立控制者，並由其自身條款規範。',
   'web.legal.refunds.title': '退款及取消政策',
   'web.legal.refunds.summary': '如何取消、您的資料會如何處理，以及何時可以取回款項。',
   'web.legal.refunds.cancel.title': '取消',
-  'web.legal.refunds.cancel.body':
-    '可從「設定」取消，無須聯絡支援人員。在七天試用期間取消，即不會嘗試收費，取消畫面會以書面確認。試用後取消，您可持續存取至已付款期間結束。',
   'web.legal.refunds.refund.title': '退款',
   'web.legal.refunds.refund.body':
     '若服務未如所述運作，請聯絡支援，我們會退還受影響期間的款項。包括在適用於您的法定冷靜期內的強制消費者撤回權，都將完整遵守，不受本頁任何內容限制。退款由我們的名義商家 Polar 發放至原付款方式。',
@@ -701,10 +679,10 @@ export const webMarketingMessages = {
     'Polar 會重試並寄送電子郵件。在寬限期內，發佈會繼續。寬限期後，工作空間變為唯讀，排程貼文停止。不會中斷任何連結，也不會刪除任何資料。',
   'web.legal.dmca.title': '著作權與下架',
   'web.legal.dmca.summary':
-    '如何回報由 Relay 託管、侵害您權利的內容，以及若您的內容被移除時如何回應。',
+    '如何回報由 Post Array 託管、侵害您權利的內容，以及若您的內容被移除時如何回應。',
   'web.legal.dmca.scope.title': '我們可以處理的範圍',
   'web.legal.dmca.scope.body':
-    'Relay 可移除儲存在我們系統中的素材，例如媒體檔案或草稿。已發佈至社群平台的內容位於該平台，必須向該平台回報，因為我們無法刪除未託管的貼文。我們會告訴您哪一種情況適用於您的回報。',
+    'Post Array 可移除儲存在我們系統中的素材，例如媒體檔案或草稿。已發佈至社群平台的內容位於該平台，必須向該平台回報，因為我們無法刪除未託管的貼文。我們會告訴您哪一種情況適用於您的回報。',
   'web.legal.dmca.notice.title': '提出通知',
   'web.legal.dmca.notice.identify':
     '提供受著作權保護的作品及您認為侵權之素材，並附上我們可存取的 URL。',
@@ -719,7 +697,7 @@ export const webMarketingMessages = {
   'web.legal.dmca.repeat.body':
     '重複侵權的帳號會先遭暫停，後遭終止。惡意通知，例如用來移除競爭者內容的通知，亦可構成終止理由。',
   'web.legal.security.title': '安全性與負責任揭露',
-  'web.legal.security.summary': 'Relay 如何保護您託付的憑證，以及如何回報您發現的問題。',
+  'web.legal.security.summary': 'Post Array 如何保護您託付的憑證，以及如何回報您發現的問題。',
   'web.legal.security.tokens.title': '社群憑證',
   'web.legal.security.tokens.body':
     '平台權杖以受管理金鑰進行信封加密、輪替，並與內容及帳務資料分開儲存，且會自所有日誌遮蔽。權杖絕不傳送至瀏覽器、不會置於模型情境，也不會包含於錯誤訊息。',
@@ -750,10 +728,10 @@ export const webMarketingMessages = {
     '我們有事故回應計畫，包含指定決策者、嚴重性等級、證據保存及通知責任。影響發佈的事故會在狀態頁公開，包含時間線及後續變更，也包括由我們造成的事故。',
   'web.legal.accessibility.title': '無障礙聲明',
   'web.legal.accessibility.summary':
-    'Relay 建置所依循的標準、已驗證的內容、目前已知不足之處，以及如何告訴我們。',
+    'Post Array 建置所依循的標準、已驗證的內容、目前已知不足之處，以及如何告訴我們。',
   'web.legal.accessibility.standard.title': '標準',
   'web.legal.accessibility.standard.body':
-    'Relay 的產品及本網站目標為 WCAG 2.2 AA 等級。無障礙在此是合併要求，而非日後的工作項目；未通過的畫面不會推出。',
+    'Post Array 的產品及本網站目標為 WCAG 2.2 AA 等級。無障礙在此是合併要求，而非日後的工作項目；未通過的畫面不會推出。',
   'web.legal.accessibility.measures.title': '實務上的意義',
   'web.legal.accessibility.measures.keyboard':
     '所有功能均可用鍵盤操作，具有可見焦點框及合理的焦點順序。任何地方都沒有只能拖曳的互動。',
@@ -789,7 +767,7 @@ export const webMarketingMessages = {
     '單一呼叫不得悄悄發佈至每個已連結帳號。大量操作、新網域、新帳號、敏感類別、付費背書、隱私權變更，或核准後修改的內容，一律會升級交由真人決定。每個代理程式與工作空間都有終止開關。',
   'web.legal.apiTerms.prohibited.title': '不得透過 API 進行的行為',
   'web.legal.apiTerms.prohibited.body':
-    '未經書面協議轉售存取權、將 Relay 作為發佈未獲授權內容的中繼、規避核准政策，以及任何違反可接受使用政策的用途。程式化存取同樣受 Web 應用程式的反垃圾訊息控制。',
+    '未經書面協議轉售存取權、將 Post Array 作為發佈未獲授權內容的中繼、規避核准政策，以及任何違反可接受使用政策的用途。程式化存取同樣受 Web 應用程式的反垃圾訊息控制。',
   'web.legal.apiTerms.changes.title': '變更政策',
   'web.legal.apiTerms.changes.body':
     '新增性變更無須通知即可推出。破壞性變更會有新版本、公告的淘汰期限及變更日誌中的遷移說明。錯誤代碼在同一版本中不會改變意義。',
@@ -811,7 +789,7 @@ export const webMarketingMessages = {
     '未經請求的電子郵件、大量社群發文，或在未要求的討論串中投放連結。',
   'web.legal.affiliate.prohibited.cookieStuffing': 'Cookie 填充、強制點擊、自我推薦及優惠券搶註。',
   'web.legal.affiliate.prohibited.claims':
-    '捏造客戶成果、偽造推薦證言，或聲稱 Relay 能做其做不到的事，包括任何關於 AI 媒體生成的說法。',
+    '捏造客戶成果、偽造推薦證言，或聲稱 Post Array 能做其做不到的事，包括任何關於 AI 媒體生成的說法。',
   'web.legal.affiliate.prohibited.trademark':
     '註冊以暗示您是本公司的方式使用我們名稱的網域、帳號名稱或應用程式列表。',
   'web.marketing.provider.x.label': 'X',
@@ -824,28 +802,28 @@ export const webMarketingMessages = {
   'web.marketing.provider.bluesky.label': 'Bluesky',
   'web.marketing.provider.x.accountTypes': '您控制的個人或商業 X 帳號。',
   'web.marketing.provider.x.restriction':
-    '自動發文需要帳號持有人的明確同意，Relay 會記錄該同意。不允許跨帳號發布重複或實質相似的貼文，也未建置未經請求的自動回覆。',
+    '自動發文需要帳號持有人的明確同意，Post Array 會記錄該同意。不允許跨帳號發布重複或實質相似的貼文，也未建置未經請求的自動回覆。',
   'web.marketing.provider.x.cost':
-    'X 會針對每次 API 操作收費，包含 URL 的貼文費用更高。Relay 會在您確認前估計成本，並原價轉嫁。',
+    'X 會針對每次 API 操作收費，包含 URL 的貼文費用更高。Post Array 會在您確認前估計成本，並原價轉嫁。',
   'web.marketing.provider.linkedin.accountTypes': '會員個人檔案，或您擔任正確角色的組織專頁。',
   'web.marketing.provider.linkedin.restriction':
-    '代表組織發佈需要獲核准的 Community Management 產品及已驗證的商業身分。會員貼文分析依賴 LinkedIn 已不再開放給新應用程式的讀取權限，因此 Relay 不會提供。',
+    '代表組織發佈需要獲核准的 Community Management 產品及已驗證的商業身分。會員貼文分析依賴 LinkedIn 已不再開放給新應用程式的讀取權限，因此 Post Array 不會提供。',
   'web.marketing.provider.linkedin.cost': '不按操作收費。適用應用程式與會員每日限制。',
   'web.marketing.provider.instagram.accountTypes': '專業 Instagram 帳號，商業或創作者帳號。',
   'web.marketing.provider.instagram.restriction':
-    'Instagram 內容發佈僅限專業帳號。任何應用程式都無法向一般帳號發佈，包括本服務。發佈使用官方容器與發佈流程，Relay 會確認最終狀態，而非把上傳視為成功。',
+    'Instagram 內容發佈僅限專業帳號。任何應用程式都無法向一般帳號發佈，包括本服務。發佈使用官方容器與發佈流程，Post Array 會確認最終狀態，而非把上傳視為成功。',
   'web.marketing.provider.instagram.cost': '不按操作收費。需要 Meta 應用程式審查及商業驗證。',
   'web.marketing.provider.facebook.accountTypes': '您管理的 Facebook 粉絲專頁。',
   'web.marketing.provider.facebook.restriction':
-    '發佈目標是粉絲專頁。API 不提供個人檔案自動化，Relay 也不會嘗試。',
+    '發佈目標是粉絲專頁。API 不提供個人檔案自動化，Post Array 也不會嘗試。',
   'web.marketing.provider.facebook.cost': '不按操作收費。需要 Meta 應用程式審查及商業驗證。',
   'web.marketing.provider.youtube.accountTypes': '透過 Google 帳號連結的 YouTube 頻道。',
   'web.marketing.provider.youtube.restriction':
-    '未通過 Google API 合規稽核的專案只能以私人方式上傳。在通過稽核前，Relay 不會將公開上傳描述為可用，連結畫面會說明上傳將落在何種狀態。',
+    '未通過 Google API 合規稽核的專案只能以私人方式上傳。在通過稽核前，Post Array 不會將公開上傳描述為可用，連結畫面會說明上傳將落在何種狀態。',
   'web.marketing.provider.youtube.cost': '不按操作收費。適用每日配額，且不能跨專案共用。',
   'web.marketing.provider.tiktok.accountTypes': '獲得 Direct Post 授權的 TikTok 帳號。',
   'web.marketing.provider.tiktok.restriction':
-    '在通過 Content Posting API 稽核前，貼文為私人且適用每帳號上限。發佈時 Relay 會取得目前創作者資訊，顯示可用的隱私選項而不預先選擇，並詢問留言、合拍、拼接設定及商業內容聲明。',
+    '在通過 Content Posting API 稽核前，貼文為私人且適用每帳號上限。發佈時 Post Array 會取得目前創作者資訊，顯示可用的隱私選項而不預先選擇，並詢問留言、合拍、拼接設定及商業內容聲明。',
   'web.marketing.provider.tiktok.cost': '不按操作收費。未稽核模式適用每日發文上限。',
   'web.marketing.provider.threads.accountTypes': '連結至專業 Instagram 帳號的 Threads 個人檔案。',
   'web.marketing.provider.threads.restriction':
@@ -910,7 +888,7 @@ export const webMarketingMessages = {
     '{supported, plural, one {支援 # 項功能} other {支援 # 項功能}}，{requiresReview, plural, one {# 項等待平台審查} other {# 項等待平台審查}}，{notImplemented, plural, one {# 項尚未建置} other {# 項尚未建置}}，{unsupported, plural, one {# 項為平台未提供} other {# 項為平台未提供}}。',
   'web.capabilities.buildState.title': '尚無連接器承載客戶流量',
   'web.capabilities.buildState.body':
-    'Relay 正在建置中。此表反映目前的連接器定義，因此大多數儲存格顯示為尚未建置。只有連接器通過其完成定義後，儲存格才會變為已支援，其中包括針對已記錄平台固定裝置的合約測試。標示平台不提供某項功能或須經審查才開放的儲存格，是平台本身的事實，且已是最終狀態。',
+    'Post Array 正在建置中。此表反映目前的連接器定義，因此大多數儲存格顯示為尚未建置。只有連接器通過其完成定義後，儲存格才會變為已支援，其中包括針對已記錄平台固定裝置的合約測試。標示平台不提供某項功能或須經審查才開放的儲存格，是平台本身的事實，且已是最終狀態。',
   'web.capabilities.note.instagramProfessional': '僅限專業帳號。任何應用程式均無法向一般帳號發佈。',
   'web.capabilities.note.facebookPagesOnly': '僅限粉絲專頁。API 不會發佈至個人檔案。',
   'web.capabilities.note.youtubeAudit': '在通過 Google API 合規稽核前，上傳會以私人狀態落地。',
@@ -924,7 +902,7 @@ export const webMarketingMessages = {
   'web.capabilities.note.linkedinDocuments': 'LinkedIn 是唯一已連結且有文件貼文類型的平台。',
   'web.capabilities.note.metaReview': '需要 Meta 應用程式審查及企業驗證。',
   'web.capabilities.note.xConsent': '自動發文需要帳號持有人的已記錄同意。',
-  'web.capabilities.note.xDisclosure': '平台提供「使用 AI 製作」欄位，Relay 會依您的聲明設定。',
+  'web.capabilities.note.xDisclosure': '平台提供「使用 AI 製作」欄位，Post Array 會依您的聲明設定。',
   'web.capabilities.note.noDestinations': '此平台沒有粉絲專頁、看板或社群等目的地概念。',
   'web.capabilities.note.noThreads': '此平台沒有原生多貼文序列。',
   'web.capabilities.note.noDocuments': '此平台沒有文件貼文類型。',
@@ -932,7 +910,7 @@ export const webMarketingMessages = {
   'web.capabilities.note.noAltText': '此平台不接受透過發佈 API 提供替代文字。',
   'web.capabilities.note.noPrivacyChoice': '此平台不透過其 API 提供逐則貼文的隱私選項。',
   'web.capabilities.note.noThumbnail': '此平台不接受透過其 API 提供自訂縮圖。',
-  'web.capabilities.note.inBuild': '平台提供此功能。Relay 尚未推出。',
+  'web.capabilities.note.inBuild': '平台提供此功能。Post Array 尚未推出。',
   'web.capabilities.note.noCarousel': '該平台不提供可滑動的輪播。',
   'web.capabilities.note.noDisclosure': '該平台沒有 AI 或商業內容的揭露欄位。',
   'web.capabilities.note.noAnalytics': '該平台不透過官方 API 提供互動指標。',
@@ -953,7 +931,7 @@ export const webMarketingMessages = {
   'web.status.surface.analytics': '分析資料蒐集',
   'web.status.surface.links': '短連結重新導向',
   'web.status.surface.checkout': '結帳與帳務',
-  'web.status.preLaunch.title': 'Relay 尚未全面開放',
+  'web.status.preLaunch.title': 'Post Array 尚未全面開放',
   'web.status.preLaunch.body':
     '此頁會在產品之前上線，讓回報習慣自第一位客戶起就存在，而非在第一次中斷後才加入。仍在建置中的介面會如實標示，而不是顯示為正常。',
   'web.compare.product.postiz': 'Postiz',
@@ -998,7 +976,6 @@ export const webMarketingMessages = {
   'web.legal.subprocessors.hosting.purpose': '提供 Web 應用程式、API 及短連結服務。',
   'web.legal.subprocessors.hosting.data': '請求中繼資料及經遮蔽的日誌。',
   'web.legal.subprocessors.email.label': '交易電子郵件傳遞',
-  'web.legal.subprocessors.email.purpose': '登入連結、核准請求、發佈結果通知及試用提醒。',
   'web.legal.subprocessors.email.data': '姓名、電子郵件地址及訊息內容。',
   'web.legal.subprocessors.monitoring.label': '錯誤與效能監測',
   'web.legal.subprocessors.monitoring.purpose': '診斷發佈及介面中的失敗。',
@@ -1037,12 +1014,11 @@ export const webMarketingMessages = {
   'web.footer.legal': '法律',
   'web.footer.developers': '開發者',
   'web.footer.statement':
-    'Relay 僅透過官方平台 API 發佈。連接器可用性取決於平台控制的核准，且本網站每項功能聲明均附有日期及來源。',
+    'Post Array 僅透過官方平台 API 發佈。連接器可用性取決於平台控制的核准，且本網站每項功能聲明均附有日期及來源。',
   'web.footer.noAffiliation':
     '平台名稱及標誌屬於其擁有者。此處使用僅為識別連接器，不表示背書或合作關係。',
-  'web.footer.copyright': 'Relay {year}',
+  'web.footer.copyright': 'Post Array {year}',
   'web.marketing.v2.closing.title': '在您自己的帳號上試用',
-  'web.marketing.v2.closing.body': '七天、真實連接器，沒有預先安排的示範資料。轉換前可隨時取消。',
   'web.product.v2.demo.title': '一份簡述，五份平台原生草稿',
   'web.product.v2.demo.body': '與首頁相同的情境，聚焦於撰寫步驟實際產生的內容。',
   'web.integrations.v2.marqueeCaption': '此頁每個連接器均透過其官方 API 發佈。',

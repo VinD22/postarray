@@ -1,4 +1,5 @@
-import { pauseRefusal, scheduleSpecSchema, type ScheduleSpec } from '@relay/contracts';
+import {
+  MAX_SCHEDULE_HORIZON_DAYS, pauseRefusal, scheduleSpecSchema, type ScheduleSpec } from '@relay/contracts';
 
 import type { ActorContext, ServiceDeps } from '../types';
 import type { PublishJobView } from '../views';
@@ -221,6 +222,17 @@ export function createSchedulingPause(deps: ServiceDeps): SchedulingPauseOperati
               next = new Date(spec.instant);
               if (next.getTime() <= now.getTime()) {
                 throw invalid('errors.schedule_in_past', { instant: spec.instant });
+              }
+              // The thirty day horizon, here too: resuming a paused job with a
+              // new time is a reschedule and must not be the loophole.
+              if (
+                next.getTime() >
+                now.getTime() + MAX_SCHEDULE_HORIZON_DAYS * 24 * 60 * 60 * 1000
+              ) {
+                throw invalid('validation.schedule_too_far_ahead.message', {
+                  limit: `${MAX_SCHEDULE_HORIZON_DAYS} days`,
+                  instant: spec.instant,
+                });
               }
               // Same confirmation the reschedule path uses, and deliberately
               // the same message key: a clock change is a clock change whether

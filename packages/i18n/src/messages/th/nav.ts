@@ -36,6 +36,7 @@ export const navMessages = {
   'settings.nav.profile': 'โปรไฟล์ของคุณ',
   'settings.nav.notifications': 'การตั้งค่าการแจ้งเตือน',
   'nav.public.product': 'สินค้า',
+  'nav.public.demo': 'เดโม',
   'nav.public.integrations': 'บูรณาการ',
   'nav.public.forCreators': 'สำหรับผู้สร้าง',
   'nav.public.forAgencies': 'สำหรับหน่วยงาน',

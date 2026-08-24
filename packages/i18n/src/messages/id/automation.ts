@@ -93,7 +93,7 @@ export const automationMessages = {
   'automation.rules.versionHistory': 'Riwayat versi',
   'automation.notPermitted.title': 'Aturan ini tidak dapat dibuat',
   'automation.notPermitted.body':
-    'Relay tidak mengotomatiskan suka, mengikuti, balasan atau pesan yang tidak diminta, duplikat postingan massal atau apa pun yang bergantung pada otomatisasi browser. {provider} melarangnya dan kami pun demikian.',
+    'Post Array tidak mengotomatiskan suka, mengikuti, balasan atau pesan yang tidak diminta, duplikat postingan massal atau apa pun yang bergantung pada otomatisasi browser. {provider} melarangnya dan kami pun demikian.',
   'automation.notPermitted.providerCapability':
     '{provider} tidak menawarkan {action} melalui API resminya, jadi tindakan ini tidak dapat dipilih untuk itu.',
   'automation.rss.title': 'Posting otomatis RSS',
@@ -105,7 +105,7 @@ export const automationMessages = {
   'automation.rss.targets': 'Publikasikan ke',
   'automation.rss.template': 'Templat teks',
   'automation.rss.templateHelp':
-    'Gunakan kolom feed yang Anda petakan. Relay tidak menghasilkan gambar untuk item feed.',
+    'Gunakan kolom feed yang Anda petakan. Post Array tidak menghasilkan gambar untuk item feed.',
   'automation.rss.policy.draft': 'Buat draf',
   'automation.rss.policy.approval': 'Buat draf dan minta persetujuan',
   'automation.rss.policy.nextSlot': 'Jadwalkan di slot gratis berikutnya',

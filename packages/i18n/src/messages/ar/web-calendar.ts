@@ -39,20 +39,20 @@ export const webCalendarMessages = {
   'web.connection.requirement.mastodon':
     'يتصل ماستودون برمز وصول تنشئه على خادمك الخاص، وليس بكلمة مرورك.',
   'web.connection.requirement.telegram':
-    'ينشر Relay كبوت. أضف البوت إلى القناة أو المجموعة التي تريد النشر فيها.',
+    'ينشر Post Array كبوت. أضف البوت إلى القناة أو المجموعة التي تريد النشر فيها.',
   'web.connection.requirement.reddit':
     'الكتابة في ريديت تتطلب تطبيقاً معتمداً، وكل منشور يحتاج عنواناً ومجتمعاً.',
   'web.connection.requirement.wordpress':
-    'ينشر Relay عبر واجهة REST للموقع بكلمة مرور تطبيق تنشئها في ووردبريس.',
+    'ينشر Post Array عبر واجهة REST للموقع بكلمة مرور تطبيق تنشئها في ووردبريس.',
   'web.connection.requirement.medium':
-    'يتصل ميديوم عبر OAuth وينشر Relay قصصاً عامة بصيغة ماركداون.',
+    'يتصل ميديوم عبر OAuth وينشر Post Array قصصاً عامة بصيغة ماركداون.',
   'web.connection.requirement.devto': 'يتصل ديف تو بمفتاح واجهة تنشئه في إعدادات ديف تو.',
   'web.connection.requirement.pinterest':
     'الكتابة في بينترست تتطلب وصول تطبيق معتمداً، والدبوس يحتاج صورة ولوحة خاصة بك.',
   'web.connection.requirement.discord':
-    'ينشر Relay كبوت. أضف البوت إلى الخوادم والقنوات التي تريد النشر فيها.',
+    'ينشر Post Array كبوت. أضف البوت إلى الخوادم والقنوات التي تريد النشر فيها.',
   'web.connection.requirement.slack':
-    'ينشر Relay كتطبيق. أضف التطبيق إلى القنوات التي تريد النشر فيها.',
+    'ينشر Post Array كتطبيق. أضف التطبيق إلى القنوات التي تريد النشر فيها.',
   'web.provider.fake': 'موصل الاختبار',
 
   'web.accountType.personal_profile': 'الملف الشخصي',
@@ -163,7 +163,7 @@ export const webCalendarMessages = {
 
   'web.calendar.published.title': 'تم نشر هذه التدوينة بالفعل',
   'web.calendar.published.body':
-    'يوجد منشور على {provider} على {permalinkLabel}. لا يؤدي نقل الإدخال في Relay إلى نقل المنشور على المنصة. اختر ما تريد أن يحدث.',
+    'يوجد منشور على {provider} على {permalinkLabel}. لا يؤدي نقل الإدخال في Post Array إلى نقل المنشور على المنصة. اختر ما تريد أن يحدث.',
   'web.calendar.published.optionLocal': 'تحديث السجل المحلي فقط',
   'web.calendar.published.optionLocalHint':
     'يحافظ الإيصال على وقت النشر الحقيقي. يتم نقل إدخال التخطيط فقط، بحيث يتطابق التقويم الخاص بك مع خطتك.',
@@ -265,7 +265,7 @@ export const webCalendarMessages = {
 
   'web.receipt.analytics.never': 'لم تتم مزامنة التحليلات لهذه المشاركة بعد.',
   'web.receipt.analytics.explain':
-    'يتم تجميع مقدمي الخدمة وفقًا لجداولهم الخاصة. الوقت أدناه هو آخر مرة قرأ فيها Relay هذه الأرقام، وليس عندما كانت الأرقام صحيحة.',
+    'يتم تجميع مقدمي الخدمة وفقًا لجداولهم الخاصة. الوقت أدناه هو آخر مرة قرأ فيها Post Array هذه الأرقام، وليس عندما كانت الأرقام صحيحة.',
 
   'web.receipt.export.download': 'قم بتنزيل الإيصال',
   'web.receipt.export.copyReference': 'انسخ مرجع الإيصال',
@@ -277,11 +277,11 @@ export const webCalendarMessages = {
     'لا تمس إعادة المحاولة مطلقًا الهدف الذي أنتج بالفعل منشورًا خارجيًا.',
 
   'web.receipt.remediation.user_action_required':
-    'يحتاج هذا إلى تغيير في Relay أو في {provider} قبل أن يتمكن من التشغيل مرة أخرى.',
+    'يحتاج هذا إلى تغيير في Post Array أو في {provider} قبل أن يتمكن من التشغيل مرة أخرى.',
   'web.receipt.remediation.content_invalid':
     'قم بتحرير المحتوى حتى يجتاز التحقق من صحة {provider}، ثم قم بجدولته مرة أخرى.',
   'web.receipt.remediation.transient_provider':
-    '{provider} أرجع خطأً مؤقتًا. Relay تمت إعادة المحاولة وفقًا لجدوله الخاص.',
+    '{provider} أرجع خطأً مؤقتًا. Post Array تمت إعادة المحاولة وفقًا لجدوله الخاص.',
   'web.receipt.remediation.permanent_provider':
     '{provider} رفض هذا نهائيًا. لن تؤدي إعادة محاولة نفس المحتوى إلى تغيير الإجابة.',
   'web.receipt.remediation.internal': 'وكان هذا خطأ من جانبنا. يتم تسجيله مع المرجع أدناه.',
@@ -342,30 +342,30 @@ export const webCalendarMessages = {
   'web.connection.disconnect.consequence.scheduled':
     '{count, plural, one {# مشاركة مجدولة} zero {# منشورات مجدولة} two {# منشورات مجدولة} few {# منشورات مجدولة} many {# منشورات مجدولة} other {# منشورات مجدولة}} لهذا الحساب لن ينشر.',
   'web.connection.disconnect.consequence.published':
-    'المنشورات المنشورة بالفعل تبقى على {provider}. Relay لا يحذفها.',
+    'المنشورات المنشورة بالفعل تبقى على {provider}. Post Array لا يحذفها.',
   'web.connection.disconnect.consequence.analytics':
     'تبقى المقاييس التي تم جمعها بالفعل في مساحة العمل هذه وتتوقف عن التحديث.',
 
   'web.connection.connect.title': 'ربط حساب',
   'web.connection.connect.chooseProvider': 'أي منصة',
-  'web.connection.connect.permissionHeading': 'ما الذي سيطلبه Relay من {provider}',
+  'web.connection.connect.permissionHeading': 'ما الذي سيطلبه Post Array من {provider}',
   'web.connection.connect.requirementHeading': 'قبل المتابعة',
   'web.connection.connect.continue': 'المتابعة إلى {provider}',
   'web.connection.connect.handoffNote':
-    'الشاشة التالية هي {provider}، وليس Relay. Relay لا يرى كلمة المرور الخاصة بك أبدًا.',
+    'الشاشة التالية هي {provider}، وليس Post Array. Post Array لا يرى كلمة المرور الخاصة بك أبدًا.',
   'web.connection.connect.noWriteWithoutApproval':
     'ربط الحساب لا ينشر أي شيء. لا تزال كل مشاركة تتبع سياسة الموافقة على مساحة العمل هذه.',
 
   'web.connection.requirement.instagram':
     'يحتاج نشر Instagram إلى حساب احترافي، مما يعني حساب عمل أو منشئ مرتبط بصفحة فيسبوك.',
   'web.connection.requirement.facebook':
-    'Relay ينشر على Facebook Pages. لا يمكن أن يكون الملف الشخصي هدفًا للنشر.',
+    'Post Array ينشر على Facebook Pages. لا يمكن أن يكون الملف الشخصي هدفًا للنشر.',
   'web.connection.requirement.linkedin':
     'للنشر لمؤسسة، تحتاج إلى دور مسؤول المحتوى في صفحة LinkedIn تلك.',
   'web.connection.requirement.youtube':
     'وإلى أن تكمل Google تدقيق التطبيق، يتم نشر التحميلات من هذا المشروع على أنها خاصة. يمكنك تغيير الرؤية على YouTube بعد ذلك.',
   'web.connection.requirement.tiktok':
-    'TikTok يتطلب منك اختيار الجمهور لكل منشور بنفسك. Relay لا يمكنه تحديد واحد لك مسبقًا.',
+    'TikTok يتطلب منك اختيار الجمهور لكل منشور بنفسك. Post Array لا يمكنه تحديد واحد لك مسبقًا.',
   'web.connection.requirement.x':
     'رسوم X لكل عملية. يكلف المنشور الذي يحتوي على عنوان URL أكثر من منشور النص العادي، ويتم عرض التقدير قبل الجدولة.',
   'web.connection.requirement.threads':
@@ -373,13 +373,13 @@ export const webCalendarMessages = {
   'web.connection.requirement.bluesky':
     'يتصل Bluesky بكلمة مرور التطبيق التي تم إنشاؤها في إعدادات Bluesky، وليس بكلمة مرور حسابك.',
   'web.connection.requirement.generic':
-    'تحتاج إلى إذن للنشر على هذا الحساب من المنصة نفسها. Relay لا يمكنه منحها.',
+    'تحتاج إلى إذن للنشر على هذا الحساب من المنصة نفسها. Post Array لا يمكنه منحها.',
 
-  'web.connection.purpose.publish': 'نشر المنشورات التي قمت بجدولتها في Relay.',
+  'web.connection.purpose.publish': 'نشر المنشورات التي قمت بجدولتها في Post Array.',
   'web.connection.purpose.readPosts':
-    'إعادة قراءة منشور Relay المنشور، حتى يتمكن الإيصال من إثبات أنه مباشر.',
+    'إعادة قراءة منشور Post Array المنشور، حتى يتمكن الإيصال من إثبات أنه مباشر.',
   'web.connection.purpose.identity':
-    'إظهار اسم الحساب الدقيق في Relay، حتى لا تنشر أبدًا إلى الحساب الخطأ.',
+    'إظهار اسم الحساب الدقيق في Post Array، حتى لا تنشر أبدًا إلى الحساب الخطأ.',
   'web.connection.purpose.analytics':
     'قراءة المقاييس التي يبلغ عنها هذا النظام الأساسي لمشاركاتك الخاصة.',
   'web.connection.purpose.refresh':
@@ -390,7 +390,7 @@ export const webCalendarMessages = {
   'web.connection.permissions.title': 'الأذونات على {account}',
   'web.connection.permissions.scopeColumn': 'إذن',
   'web.connection.permissions.stateColumn': 'الدولة',
-  'web.connection.permissions.purposeColumn': 'فيما يستخدمه Relay',
+  'web.connection.permissions.purposeColumn': 'فيما يستخدمه Post Array',
   'web.connection.permissions.missingWarning':
     '{count, plural, one {#الإذن مفقود} zero {# إذن مفقود} two {# إذن مفقود} few {# إذن مفقود} many {# إذن مفقود} other {# إذن مفقود}}. أعد الاتصال واقبله لاستعادة الميزات أدناه.',
   'web.connection.permissions.snapshot': 'اقرأ من {provider} {relativeTime}',
@@ -402,9 +402,9 @@ export const webCalendarMessages = {
   'web.connection.capability.featureColumn': 'القدرة',
   'web.connection.capability.legendTitle': 'كيف تقرأ هذا',
   'web.connection.capability.legend.supported':
-    'Relay يمكنه القيام بذلك اليوم للحصول على حساب متصل من النوع الصحيح.',
+    'Post Array يمكنه القيام بذلك اليوم للحصول على حساب متصل من النوع الصحيح.',
   'web.connection.capability.legend.not_implemented':
-    'تقدم المنصة هذا ولم تقم Relay ببنائه بعد. إنه موجود على خريطة طريق الموصل.',
+    'تقدم المنصة هذا ولم تقم Post Array ببنائه بعد. إنه موجود على خريطة طريق الموصل.',
   'web.connection.capability.legend.unsupported':
     'لا تقدم المنصة هذا من خلال واجهة برمجة التطبيقات (API) الرسمية الخاصة بها، لذلك لا توجد أداة يمكنها القيام بذلك بأمان.',
   'web.connection.capability.legend.requires_review':

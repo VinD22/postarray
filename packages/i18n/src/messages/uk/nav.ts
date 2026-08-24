@@ -38,6 +38,7 @@ export const navMessages = {
   'settings.nav.notifications': 'Параметри сповіщень',
 
   'nav.public.product': 'Продукт',
+  'nav.public.demo': 'Демо',
   'nav.public.integrations': 'Інтеграції',
   'nav.public.forCreators': 'Для творців',
   'nav.public.forAgencies': 'Для агентств',
@@ -45,7 +46,7 @@ export const navMessages = {
   'nav.public.pricing': 'Ціноутворення',
   'nav.public.resources': 'Ресурси',
   'nav.public.signIn': 'Увійдіть',
-  'nav.public.startTrial': 'Почніть безкоштовно',
+  'nav.public.startTrial': 'Почати безкоштовно',
   'nav.public.docs': 'Документація',
   'nav.public.changelog': 'Журнал змін',
   'nav.public.status': 'Статус',

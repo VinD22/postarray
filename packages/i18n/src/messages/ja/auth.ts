@@ -3,7 +3,6 @@ export const authMessages = {
   'auth.signIn.title': 'サインイン',
   'auth.signIn.subtitle': '公開して承認し、何が起こったのかを正確に確認します。',
   'auth.signUp.title': 'アカウントを作成する',
-  'auth.signUp.subtitle': 'すべての機能を使用して 7 日間。今日の期限は $0 です。',
   'auth.continueWithGoogle': 'Google を続ける',
   'auth.continueWithFacebook': 'Facebookを続ける',
   'auth.orUseEmail': 'またはメールアドレスを使用してください',

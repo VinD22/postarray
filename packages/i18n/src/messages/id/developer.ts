@@ -74,7 +74,7 @@ export const developerMessages = {
   'developer.activity.redacted': 'Badan permintaan dan respons disimpan dengan rahasia dihapus.',
   'developer.apps.title': 'Aplikasi pengembang',
   'developer.apps.subtitle':
-    'Biarkan produk lain bertindak melalui Relay dengan izin yang diberikan pengguna.',
+    'Biarkan produk lain bertindak melalui Post Array dengan izin yang diberikan pengguna.',
   'developer.apps.create': 'Daftarkan aplikasi',
   'developer.apps.name': 'Nama aplikasi',
   'developer.apps.type.label': 'Tipe klien',

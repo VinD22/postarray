@@ -22,7 +22,7 @@ import type { CapabilitySnapshot } from '@relay/contracts';
 
 export type { CapabilitySnapshot, ConnectionHealth, ConnectionView };
 
-/** One OAuth scope Relay asks for, and what the product uses it for. */
+/** One OAuth scope Post Array asks for, and what the product uses it for. */
 export interface RequestedScope {
   readonly scope: string;
   /** Catalog key for the sentence explaining why it is needed. */
@@ -32,7 +32,7 @@ export interface RequestedScope {
 /**
  * Three states, not two.
  *
- * `unknown` is what to show when Relay has no record of the grant. Showing that
+ * `unknown` is what to show when Post Array has no record of the grant. Showing that
  * as `not_granted` is a false negative, and a false negative here tells a
  * person their working account is broken.
  */

@@ -30,7 +30,7 @@ export const connectionMessages = {
   'connection.permissions.granted': '已授予',
   'connection.permissions.missing': '未授予',
   'connection.permissions.explainBeforeOAuth':
-    'Relay 將向 {provider} 要求這些權限。你隨時可以中斷連線。',
+    'Post Array 將向 {provider} 要求這些權限。你隨時可以中斷連線。',
   'connection.permissions.whyNeeded': '為何需要此權限',
   'connection.reconnect.title': '重新連線 {account}',
   'connection.reconnect.body': '此帳號的排程貼文暫停，直到重新連線。沒有內容遺失。',
@@ -72,11 +72,11 @@ export const connectionMessages = {
   'capability.level.requires_review': '需要平台審查',
   'capability.level.beta': '測試版',
   'capability.level.unknown': '無法取得',
-  'capability.explain.supported': 'Relay 今日可為此帳號執行這項功能。',
+  'capability.explain.supported': 'Post Array 今日可為此帳號執行這項功能。',
   'capability.explain.unsupported':
     '{provider} 未透過官方 API 提供此功能，因此任何工具都無法安全執行。',
   'capability.explain.not_implemented':
-    '{provider} 有提供此功能，但 Relay 尚未建置。它在連接器藍圖上。',
+    '{provider} 有提供此功能，但 Post Array 尚未建置。它在連接器藍圖上。',
   'capability.explain.requires_review':
     '{provider} 只會在審查應用程式或帳號後授予此功能。通過審查前維持無法使用。',
   'capability.explain.beta': '此功能可以運作，但仍有未完成驗證的限制。使用前請檢查結果。',

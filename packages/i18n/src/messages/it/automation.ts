@@ -97,7 +97,7 @@ export const automationMessages = {
 
   'automation.notPermitted.title': 'Questa regola non può essere creata',
   'automation.notPermitted.body':
-    "Relay non automatizza i Mi piace, i follower, le risposte o i messaggi non richiesti, i duplicati di post di massa o qualsiasi cosa che dipenda dall'automazione del browser. {provider} lo vieta e anche noi.",
+    "Post Array non automatizza i Mi piace, i follower, le risposte o i messaggi non richiesti, i duplicati di post di massa o qualsiasi cosa che dipenda dall'automazione del browser. {provider} lo vieta e anche noi.",
   'automation.notPermitted.providerCapability':
     '{provider} non offre {action} tramite la sua API ufficiale, quindi questa azione non è selezionabile.',
 
@@ -110,7 +110,7 @@ export const automationMessages = {
   'automation.rss.targets': 'Pubblica su',
   'automation.rss.template': 'Modello di testo',
   'automation.rss.templateHelp':
-    'Utilizza i campi del feed che hai mappato. Relay non genera immagini per gli elementi del feed.',
+    'Utilizza i campi del feed che hai mappato. Post Array non genera immagini per gli elementi del feed.',
   'automation.rss.policy.draft': 'Crea una bozza',
   'automation.rss.policy.approval': "Crea una bozza e richiedi l'approvazione",
   'automation.rss.policy.nextSlot': 'Programma nel prossimo slot libero',

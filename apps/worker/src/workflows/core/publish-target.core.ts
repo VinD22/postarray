@@ -136,7 +136,7 @@ const ACTION_REQUIRED_CODES: readonly string[] = [
 ];
 
 /**
- * Pull a Relay error code out of anything thrown across an activity boundary.
+ * Pull a Post Array error code out of anything thrown across an activity boundary.
  * Temporal wraps failures, so the code may be on the error, on its `cause`, or
  * carried as the failure `type`.
  */

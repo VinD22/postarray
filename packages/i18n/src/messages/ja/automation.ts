@@ -89,7 +89,7 @@ export const automationMessages = {
   'automation.rules.versionHistory': 'バージョン履歴',
   'automation.notPermitted.title': 'このルールは作成できません',
   'automation.notPermitted.body':
-    'Relay は、いいね、フォロー、未承諾の返信やメッセージ、重複した大量投稿、またはブラウザーの自動化に依存するものは自動化しません。{provider}はそれを禁止しており、私たちも同様です。',
+    'Post Array は、いいね、フォロー、未承諾の返信やメッセージ、重複した大量投稿、またはブラウザーの自動化に依存するものは自動化しません。{provider}はそれを禁止しており、私たちも同様です。',
   'automation.notPermitted.providerCapability':
     '{provider}提供しません{action}公式 API を介して実行されるため、このアクションは選択できません。',
   'automation.rss.title': 'RSS自動投稿',
@@ -101,7 +101,7 @@ export const automationMessages = {
   'automation.rss.targets': '公開先',
   'automation.rss.template': 'テキストテンプレート',
   'automation.rss.templateHelp':
-    'マッピングしたフィードフィールドを使用します。 Relay はフィード項目の画像を生成しません。',
+    'マッピングしたフィードフィールドを使用します。 Post Array はフィード項目の画像を生成しません。',
   'automation.rss.policy.draft': 'ドラフトを作成する',
   'automation.rss.policy.approval': 'ドラフトを作成して承認をリクエストする',
   'automation.rss.policy.nextSlot': '次の空きスロットにスケジュールを設定する',

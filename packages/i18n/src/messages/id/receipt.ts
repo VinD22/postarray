@@ -23,7 +23,7 @@ export const receiptMessages = {
   'receipt.actor.user': '{name}',
   'receipt.actor.serviceAccount': 'Akun layanan {name}',
   'receipt.actor.oauthApp': '{app} akting untuk {name}',
-  'receipt.actor.system': 'Relay',
+  'receipt.actor.system': 'Post Array',
   'receipt.timeline.title': 'Garis waktu',
   'receipt.timeline.created': 'Draf dibuat oleh {actor}',
   'receipt.timeline.approvalRequested': 'Persetujuan diminta dari {approver}',

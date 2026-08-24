@@ -59,5 +59,10 @@ export function proxy(request: NextRequest): NextResponse {
 }
 
 export const config = {
-  matcher: ['/((?!_next|api|.*\\..*).*)'],
+  // The exclusions are the routes that must reach the app root untouched.
+  // `_next` and anything with a file extension were always excluded; the
+  // generated metadata routes have neither a prefix nor an extension, so
+  // without naming them the fallthrough rewrote `/icon` to `/en/icon`, which
+  // does not exist, and every share card and favicon 404ed.
+  matcher: ['/((?!_next|api|icon|apple-icon|opengraph-image|twitter-image|.*\\..*).*)'],
 };

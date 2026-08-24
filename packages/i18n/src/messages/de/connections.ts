@@ -37,7 +37,7 @@ export const connectionMessages = {
   'connection.permissions.granted': 'Gewährt',
   'connection.permissions.missing': 'Nicht gewährt',
   'connection.permissions.explainBeforeOAuth':
-    'Relay wird {provider} um diese Berechtigungen bitten. Sie können die Verbindung jederzeit in den Einstellungen trennen.',
+    'Post Array wird {provider} um diese Berechtigungen bitten. Sie können die Verbindung jederzeit in den Einstellungen trennen.',
   'connection.permissions.whyNeeded': 'Warum das nötig ist',
 
   'connection.reconnect.title': 'Erneut verbinden {account}',
@@ -92,11 +92,11 @@ export const connectionMessages = {
   'capability.level.requires_review': 'Plattformüberprüfung erforderlich',
   'capability.level.beta': 'Beta',
   'capability.level.unknown': 'Nicht verfügbar',
-  'capability.explain.supported': 'Relay kann dies heute für dieses Konto tun.',
+  'capability.explain.supported': 'Post Array kann dies heute für dieses Konto tun.',
   'capability.explain.unsupported':
     '{provider} bietet dies nicht über seine offizielle API an, sodass kein Tool dies sicher tun kann.',
   'capability.explain.not_implemented':
-    '{provider} bietet dies an, aber Relay hat es noch nicht erstellt. Es steht auf der Connector-Roadmap.',
+    '{provider} bietet dies an, aber Post Array hat es noch nicht erstellt. Es steht auf der Connector-Roadmap.',
   'capability.explain.requires_review':
     '{provider} gewährt dies erst, nachdem es die App oder das Konto überprüft hat. Es bleibt nicht verfügbar, bis diese Überprüfung abgeschlossen ist.',
   'capability.explain.beta':

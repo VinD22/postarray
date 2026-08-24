@@ -70,34 +70,42 @@ export interface LocaleReviewApproval {
 }
 
 /**
- * The twenty locales the founder named as the public multilingual promise.
+ * The twenty-five locales the founder named as the public multilingual promise.
  *
  * This is the *target*, not a claim. Membership here changes no behaviour and
  * grants no locale a reviewed badge; it exists so the gate can report the gap
  * between the promise and the signed reviews, and so the marketing surface
  * never has to hardcode a count.
+ *
+ * Widening from 20 to 25 was a one-line change here plus flipping the five
+ * retired locales to active in `locales.ts`. See `docs/planning/23`.
  */
 export const REVIEW_PROMISE_LOCALE_CODES: readonly string[] = [
   'en',
   'es',
+  'es-419',
   'pt-BR',
   'fr',
   'de',
   'it',
   'nl',
   'pl',
+  'cs',
+  'sv',
   'tr',
-  'id',
-  'ar',
-  'hi',
-  'ja',
-  'ko',
-  'zh-Hans',
   'ru',
   'uk',
+  'ar',
   'he',
+  'hi',
+  'id',
   'vi',
   'th',
+  'fil',
+  'zh-Hans',
+  'zh-Hant',
+  'ja',
+  'ko',
 ];
 
 /**

@@ -78,7 +78,7 @@ const ctx: ActorContext = {
 };
 
 const PROFILE = {
-  productName: 'Relay',
+  productName: 'Post Array',
   siteUrl: 'https://relay.example',
   description: 'A publishing control plane for small teams.',
   category: 'software',

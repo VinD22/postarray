@@ -5,7 +5,7 @@
 **Status:** the engineering is finished. What remains is human review, one locale
 at a time. You do not need to translate anything from scratch.
 
-**Prepared:** 10 August 2026.
+**Prepared:** 10 August 2026. **Addendum 4b added 24 August 2026.**
 
 ---
 
@@ -69,20 +69,21 @@ Machine translation gets you a catalog. It does not get you the badge.
 
 ---
 
-## 4. The fifteen
+## 4. The twenty-five
 
 Listed in `REVIEW_PROMISE_LOCALE_CODES` in `packages/i18n/src/reviews.ts`:
 
-`en`, `es`, `pt-BR`, `fr`, `de`, `it`, `nl`, `pl`, `tr`, `id`, `ar`, `hi`, `ja`,
-`ko`, `zh-Hans`.
+`en`, `es`, `es-419`, `pt-BR`, `fr`, `de`, `it`, `nl`, `pl`, `cs`, `sv`, `tr`,
+`ru`, `uk`, `ar`, `he`, `hi`, `id`, `vi`, `th`, `fil`, `zh-Hans`, `zh-Hant`,
+`ja`, `ko`.
 
-Membership in that list is a **target, not a claim**. It changes no behaviour and
-grants no badge. It exists so the gate can report the gap between the promise and
-the signed reviews.
+This is the twenty-five the product now promises. Membership is a **target, not
+a claim**. It changes no behaviour and grants no badge. It exists so the gate
+can report the gap between the promise and the signed reviews.
 
-About ten further locales are active beyond these fifteen. They stay `beta`
-indefinitely and that is fine. Do not promote one just because its catalog looks
-tidy; the promise list is the founder's scope decision.
+Every active locale is now in the promise list. A locale stays `beta` until a
+named human has read its catalog and signed it. Do not sign a locale because
+its catalog looks tidy; the badge must mean a person checked it.
 
 Suggested order, easiest to hardest:
 
@@ -95,6 +96,40 @@ Suggested order, easiest to hardest:
 4. **`ar`, `hi`, `ja`, `ko`, `zh-Hans`** last. Arabic is right-to-left and needs
    a layout pass, not just a text pass. CJK needs a line-breaking and font check.
    Hindi needs a script rendering check.
+
+---
+
+## 4b. The 24 August batch: the free plan replaced the trial
+
+Read this before reviewing any locale, because the largest recent copy change
+happened after this document was written.
+
+The seven day trial no longer exists. The product now has a free plan: no card,
+a small grant of publishing credits spent only when a post actually publishes,
+and manual referral credits. Every English sentence that promised a trial was
+rewritten, and the stale translations of those sentences were **deliberately
+deleted** from every locale catalog rather than left lying. Those keys now fall
+back to the reviewed English source, and the list of them lives in one place:
+
+`packages/i18n/src/messages/beta-fallbacks.ts`, in the block of
+`BETA_ENGLISH_FALLBACK_KEYS` commented "The trial was replaced by the free
+plan" (pricing, auth, legal-refunds and billing keys), plus the
+`billing.credits.*` and `error.post_credits_exhausted.*` families that are new
+with the free plan.
+
+When you review a locale, translating that batch **is part of signing it**:
+remove each key you translate from the fallback list only when every active
+locale carries it, which in practice means leave the list alone and simply add
+the translations to your locale; the coverage tests reconcile the two. Never
+resurrect a deleted trial sentence from git history: the English changed
+because the product changed, and the old translation is a claim about a trial
+that no longer exists.
+
+Also new since the original handoff, already translated into every active
+locale by machine and needing native review rather than fresh work:
+`validation.schedule_too_far_ahead.message` (the 30 day scheduling horizon),
+`nav.public.demo`, `web.demo.hero.viewCta`, `web.demo.hero.projectsLine`,
+`web.demo.hero.projectsChip`, and `error.post_credits_exhausted.*`.
 
 ---
 

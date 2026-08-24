@@ -96,6 +96,6 @@ export const statusMessages = {
     'Yayınlanmayacak. Taslak burada kalır, böylece yeniden planlayabilirsiniz.',
   'confirm.publishNow.title': 'Şimdi yayınlansın mı?',
   'confirm.publishNow.body':
-    "{count, plural, one {Bu hemen # hesaba yayınlanır} other {Bu hemen # hesaba yayınlanır}}. Relay'den geri çağrılamaz.",
+    "{count, plural, one {Bu hemen # hesaba yayınlanır} other {Bu hemen # hesaba yayınlanır}}. Post Array'den geri çağrılamaz.",
   'confirm.typeToConfirm': 'Onaylamak için {word} yazın.',
 } as const;

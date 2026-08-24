@@ -1,6 +1,6 @@
 /** Spanish (Latin America) beta catalog. B5 legal, billing and consent messages deliberately use English fallback. */
 export const onboardingMessages = {
-  'onboarding.title': 'Configurar Relay',
+  'onboarding.title': 'Configurar Post Array',
   'onboarding.progress': 'paso {current}de {total}',
   'onboarding.skipForNow': 'Saltar por ahora',
   'onboarding.goal': 'Una publicación programada verificada en menos de diez minutos.',

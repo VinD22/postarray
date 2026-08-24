@@ -135,7 +135,7 @@ export const webComposerMessages = {
   'composerWeb.entity.lookupUnsupported':
     '{provider} không cung cấp tính năng tra cứu thực thể cho loại tài khoản này.',
   'composerWeb.entity.lookupNotBuilt':
-    'Relay chưa xây dựng tính năng tra cứu thực thể cho {provider}. Không có gì được đoán trong khi chờ đợi.',
+    'Post Array chưa xây dựng tính năng tra cứu thực thể cho {provider}. Không có gì được đoán trong khi chờ đợi.',
   'composerWeb.entity.searchHint': 'Nhập ít nhất hai ký tự, sau đó chọn một kết quả.',
   'composerWeb.entity.resultCount':
     '{count, plural, =0 {No matches} one {# match} other {# matches}}',
@@ -151,7 +151,7 @@ export const webComposerMessages = {
   'composerWeb.links.utmTerm': 'kỳ hạn',
   'composerWeb.links.utmContent': 'Nội dung',
   'composerWeb.links.domainVerified': '{domain}, đã được xác minh cho không gian làm việc này',
-  'composerWeb.links.domainDefault': 'Tên miền mặc định Relay',
+  'composerWeb.links.domainDefault': 'Tên miền mặc định Post Array',
   'composerWeb.links.domainNone': 'Chưa có tên miền có thương hiệu nào được xác minh.',
   'composerWeb.links.notAllowedHere': '{account} không cho phép liên kết ở đây.',
   'composerWeb.sequence.kindComment': 'Bình luận',
@@ -209,7 +209,7 @@ export const webComposerMessages = {
     'Không tìm thấy nguồn cho khiếu nại này. Kiểm tra nó trước khi xuất bản.',
   'composerWeb.assist.failed': 'Yêu cầu hỗ trợ không hoàn thành. Văn bản của bạn không thay đổi.',
   'composerWeb.assist.noMediaGeneration':
-    'Relay không tạo hình ảnh hoặc video. Mang các tập tin đã hoàn thành vào thư viện và xuất bản chúng ở đây.',
+    'Post Array không tạo hình ảnh hoặc video. Mang các tập tin đã hoàn thành vào thư viện và xuất bản chúng ở đây.',
   'composerWeb.autosave.pinned':
     'Đây là phiên bản đã được phê duyệt. Chỉnh sửa nó sẽ tạo ra một phiên bản mới và xóa sự chấp thuận.',
   'composerWeb.autosave.pinnedAcknowledge': 'Chỉnh sửa và xóa phê duyệt',
@@ -254,7 +254,7 @@ export const webComposerMessages = {
     'Không có gì bị mất. Hãy thử lại và nếu vẫn không thành công thì tham chiếu bên dưới sẽ giúp bộ phận hỗ trợ tìm thấy yêu cầu.',
   'composerWeb.page.noConnectionsTitle': 'Kết nối tài khoản trước khi soạn',
   'composerWeb.page.noConnectionsBody':
-    'Bản nháp cần có ít nhất một tài khoản được kết nối để Relay biết các giới hạn, bản xem trước và cài đặt cần hiển thị.',
+    'Bản nháp cần có ít nhất một tài khoản được kết nối để Post Array biết các giới hạn, bản xem trước và cài đặt cần hiển thị.',
   'composerWeb.page.noConnectionsExample':
     'Ví dụ: khi kết nối X và LinkedIn, một bản nháp sẽ trở thành hai phiên bản gốc có bộ đếm riêng.',
   'composerWeb.page.permissionTitle': 'Bạn không thể tạo bài viết trong không gian làm việc này',
@@ -282,7 +282,7 @@ export const webComposerMessages = {
   'mediaLib.openDetail': 'Mở {name}',
   'mediaLib.empty.title': 'Chưa có phương tiện truyền thông nào',
   'mediaLib.empty.body':
-    'Tải lên hình ảnh và video bạn đã có hoặc nhập tệp từ URL. Relay kiểm tra loại và kích thước đối với từng tài khoản bạn xuất bản.',
+    'Tải lên hình ảnh và video bạn đã có hoặc nhập tệp từ URL. Post Array kiểm tra loại và kích thước đối với từng tài khoản bạn xuất bản.',
   'mediaLib.empty.example':
     'Ví dụ: launch_hero.jpg, 1600 x 900, bộ văn bản thay thế, được sử dụng trong 2 bài viết.',
   'mediaLib.error.title': 'Không thể tải thư viện',
@@ -331,7 +331,7 @@ export const webComposerMessages = {
   'mediaLib.import.importing': 'Đang nhập phương tiện',
   'mediaLib.import.succeeded': 'Tệp đã có trong thư viện của bạn',
   'mediaLib.import.scanPending':
-    'Relay đã ghi lại nguồn của tệp. Việc xuất bản sẽ chờ đến khi kiểm tra an toàn hoàn tất.',
+    'Post Array đã ghi lại nguồn của tệp. Việc xuất bản sẽ chờ đến khi kiểm tra an toàn hoàn tất.',
   'mediaLib.import.failed': 'Không thể nhập tệp',
   'mediaLib.import.failedHelp':
     'Hãy kiểm tra rằng liên kết công khai và trỏ trực tiếp đến một tệp phương tiện được hỗ trợ, rồi thử lại.',
@@ -342,7 +342,7 @@ export const webComposerMessages = {
   'mediaLib.import.issue.credentials': 'Dùng liên kết không có tên đăng nhập hay mật khẩu.',
   'mediaLib.retention.title': 'Tệp lưu trữ được giữ trong 30 ngày sau khi bài đăng được tạo',
   'mediaLib.retention.body':
-    'Khi một tệp được đính kèm vào một bài đăng, chúng tôi sẽ xóa vĩnh viễn tệp đó khỏi kho lưu trữ của Relay 30 ngày sau khi bài đăng đó được tạo. Các tệp đang chờ được đính kèm dùng ngày tải lên làm mốc dọn dẹp dự phòng. Nội dung bài đăng, biên nhận xuất bản và lịch sử kiểm tra vẫn khả dụng lâu hơn. Một bài đăng đã xuất bản trên một nền tảng xã hội không bị gỡ bỏ khi tệp lưu trữ của nó hết hạn.',
+    'Khi một tệp được đính kèm vào một bài đăng, chúng tôi sẽ xóa vĩnh viễn tệp đó khỏi kho lưu trữ của Post Array 30 ngày sau khi bài đăng đó được tạo. Các tệp đang chờ được đính kèm dùng ngày tải lên làm mốc dọn dẹp dự phòng. Nội dung bài đăng, biên nhận xuất bản và lịch sử kiểm tra vẫn khả dụng lâu hơn. Một bài đăng đã xuất bản trên một nền tảng xã hội không bị gỡ bỏ khi tệp lưu trữ của nó hết hạn.',
   'mediaLib.retention.limits':
     'Ảnh, âm thanh và tệp PDF có thể lên đến {imageSize}. Video có thể lên đến {videoSize}.',
   'mediaLib.retention.expiresLabel': 'Ngày xóa tệp',
@@ -447,7 +447,7 @@ export const webComposerMessages = {
   'mediaLib.provenance.contentCredentialsNone':
     'Tệp này không có thông tin xác thực nội dung được nhúng. Điều đó là bình thường và không có nghĩa là có gì sai.',
   'mediaLib.provenance.unverified':
-    'Những chi tiết này được lấy từ nguồn chứ không phải từ Relay. Kiểm tra chúng trước khi bạn dựa vào chúng.',
+    'Những chi tiết này được lấy từ nguồn chứ không phải từ Post Array. Kiểm tra chúng trước khi bạn dựa vào chúng.',
   'mediaLib.picker.title': 'Chọn phương tiện',
   'mediaLib.picker.description':
     'Các tệp được kiểm tra đối với các tài khoản đã chọn trong bản nháp này.',

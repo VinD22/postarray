@@ -53,8 +53,8 @@ describe('the channels.active.max entitlement row', () => {
 
   it('derives the allowance from the tier that was bought, never from a channel price', () => {
     const cases: readonly (readonly [string, number, string])[] = [
-      ['prod_base', 15, 'relay_standard'],
-      ['prod_growth', 50, 'relay_growth'],
+      ['prod_base', 30, 'relay_standard'],
+      ['prod_growth', 100, 'relay_growth'],
       ['prod_studio', MAX_CHANNEL_LIMIT, 'relay_studio'],
     ];
     for (const [productId, expected, tierKey] of cases) {
@@ -75,7 +75,7 @@ describe('the channels.active.max entitlement row', () => {
       effectiveFrom: NOW,
     });
     expect(grant?.source).toBe('reconciliation');
-    expect(grant?.numericValue).toBe(15);
+    expect(grant?.numericValue).toBe(30);
   });
 
   it('grants nothing from a browser redirect or an unverified record', () => {
@@ -94,7 +94,7 @@ describe('the channels.active.max entitlement row', () => {
       productTiers: PRODUCT_TIERS,
     });
     expect(grant?.tierKey).toBe('relay_standard');
-    expect(grant?.numericValue).toBe(15);
+    expect(grant?.numericValue).toBe(30);
   });
 });
 
@@ -109,7 +109,7 @@ describe('one verified subscription writes both capacity rows', () => {
       'projects.active.max',
       'channels.active.max',
     ]);
-    expect(grants.map((grant) => grant.numericValue)).toEqual([10, 50]);
+    expect(grants.map((grant) => grant.numericValue)).toEqual([10, 100]);
     for (const grant of grants) {
       expect(grant.tierKey, grant.key).toBe('relay_growth');
       expect(grant.source, grant.key).toBe('webhook');
@@ -175,7 +175,7 @@ describe('a workspace inside its channel allowance', () => {
   });
 
   it('clamps a nonsense allowance rather than trusting it', () => {
-    expect(channelCapacityPosture({ activeChannels: 0, allowance: 9_000 }).allowance).toBe(100);
+    expect(channelCapacityPosture({ activeChannels: 0, allowance: 9_000 }).allowance).toBe(250);
     expect(channelCapacityPosture({ activeChannels: 0, allowance: 0 }).allowance).toBe(1);
   });
 });

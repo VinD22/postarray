@@ -290,7 +290,7 @@ export const webComposerMessages = {
     'Nic se neztratilo. Zkuste to znovu, a pokud bude stále selhávat, odkaz níže pomůže podpoře najít požadavek.',
   'composerWeb.page.noConnectionsTitle': 'Před psaním připojte účet',
   'composerWeb.page.noConnectionsBody':
-    'Draft potřebuje alespoň jeden připojený účet, takže Relay zná limity, náhled a nastavení, které se má zobrazit.',
+    'Draft potřebuje alespoň jeden připojený účet, takže Post Array zná limity, náhled a nastavení, které se má zobrazit.',
   'composerWeb.page.noConnectionsExample':
     'Příklad: s propojením X a LinkedIn se z jednoho konceptu stanou dvě nativní verze s vlastními počítadly.',
   'composerWeb.page.permissionTitle': 'V tomto pracovním prostoru nemůžete vytvářet příspěvky',
@@ -321,7 +321,7 @@ export const webComposerMessages = {
 
   'mediaLib.empty.title': 'Zatím žádná média',
   'mediaLib.empty.body':
-    'Nahrajte obrázky a video, které již máte, nebo importujte soubor z adresy URL. Relay kontroluje typ a velikost proti každému účtu, do kterého publikujete.',
+    'Nahrajte obrázky a video, které již máte, nebo importujte soubor z adresy URL. Post Array kontroluje typ a velikost proti každému účtu, do kterého publikujete.',
   'mediaLib.empty.example':
     'Příklad: launch_hero.jpg, 1600 x 900, sada alternativního textu, použito ve 2 příspěvcích.',
   'mediaLib.error.title': 'Knihovnu nelze načíst',
@@ -370,7 +370,7 @@ export const webComposerMessages = {
   'mediaLib.import.importing': 'Import médií',
   'mediaLib.import.succeeded': 'Soubor je ve vaší knihovně',
   'mediaLib.import.scanPending':
-    'Relay zaznamenal jeho zdroj. Publikování čeká, dokud nedokončí bezpečnostní kontrola.',
+    'Post Array zaznamenal jeho zdroj. Publikování čeká, dokud nedokončí bezpečnostní kontrola.',
   'mediaLib.import.failed': 'Soubor se nepodařilo importovat',
   'mediaLib.import.failedHelp':
     'Zkontrolujte, že odkaz je veřejný a vede přímo na podporovaný mediální soubor, pak to zkuste znovu.',
@@ -381,7 +381,7 @@ export const webComposerMessages = {
   'mediaLib.import.issue.credentials': 'Použijte odkaz bez uživatelského jména nebo hesla.',
   'mediaLib.retention.title': 'Uložené soubory se uchovávají 30 dní po vytvoření příspěvku',
   'mediaLib.retention.body':
-    'Jakmile je soubor připojen k příspěvku, trvale jej odstraníme z úložiště Relay 30 dní po vytvoření tohoto příspěvku. Soubory čekající na připojení používají jako záložní datum pro vymazání datum nahrání. Text příspěvku, potvrzenky o publikaci a auditní historie zůstávají dostupné déle. Publikovaný příspěvek na sociální platformě se neodstraní, když vyprší jeho uložený soubor.',
+    'Jakmile je soubor připojen k příspěvku, trvale jej odstraníme z úložiště Post Array 30 dní po vytvoření tohoto příspěvku. Soubory čekající na připojení používají jako záložní datum pro vymazání datum nahrání. Text příspěvku, potvrzenky o publikaci a auditní historie zůstávají dostupné déle. Publikovaný příspěvek na sociální platformě se neodstraní, když vyprší jeho uložený soubor.',
   'mediaLib.retention.limits':
     'Obrázky, zvuk a PDF soubory mohou mít až {imageSize}. Videa mohou mít až {videoSize}.',
   'mediaLib.retention.expiresLabel': 'Datum smazání souboru',

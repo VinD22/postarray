@@ -176,7 +176,7 @@ export const webSettingsMessages = {
   'settings.ui.security.grantScopes': '授予权限',
   'settings.ui.security.socialPermissionsTitle': '社交账号权限',
   'settings.ui.security.socialPermissionsBody':
-    '根据连接时拍摄的功能快照，每个连接的帐户允许 Relay 执行的操作。',
+    '根据连接时拍摄的功能快照，每个连接的帐户允许 Post Array 执行的操作。',
   'settings.ui.security.viewInSection': '在 {section} 中管理',
   'settings.ui.security.emptySessions': '仅此会话已登录。',
   'settings.ui.security.emptyGrants':
@@ -207,7 +207,7 @@ export const webSettingsMessages = {
     '选择能解决你的问题的最小的东西。下面的每个选项都说明了哪些内容能够幸存。',
   'settings.ui.data.deleteConnection': '撤销一项社交联系',
   'settings.ui.data.deleteConnectionHelp':
-    'Relay。删除对该帐户的中继访问权限。工作区、其内容和收据将保留。',
+    'Post Array。删除对该帐户的中继访问权限。工作区、其内容和收据将保留。',
   'settings.ui.data.deleteProject': '删除品牌',
   'settings.ui.data.deleteProjectHelp': '删除品牌、其规则和术语表。在其下发布的内容保留其收据。',
   'settings.ui.data.deleteContent': '删除内容和媒体',
@@ -229,7 +229,7 @@ export const webSettingsMessages = {
     '平台上已发布的帖子不会被删除。删除平台上的那些。',
   'settings.ui.data.exportFirst': '在删除数据之前将其导出。',
   'settings.ui.referral.description':
-    'Relay。通过公开的链接共享中继。委员会从来不以积极的审查为条件。',
+    'Post Array。通过公开的链接共享中继。委员会从来不以积极的审查为条件。',
   'settings.ui.referral.linkLabel': '您的推荐链接',
   'settings.ui.referral.tableCaption': '归因注册及其佣金状态',
   'settings.ui.referral.column.signup': '报名',
@@ -348,7 +348,7 @@ export const webSettingsMessages = {
     '注册一个应用程序，以便其他人可以授予其访问其工作空间的权限。每个应用程序都有自己的身份、自己的重定向允许列表和自己的审核跟踪。',
   'developer.ui.apps.emptyTitle': '没有注册应用程序',
   'developer.ui.apps.emptyBody':
-    '当另一个产品需要代表 Relay 用户执行操作时，注册应用程序。对于您自己的自动化，请改用服务帐户。',
+    '当另一个产品需要代表 Post Array 用户执行操作时，注册应用程序。对于您自己的自动化，请改用服务帐户。',
   'developer.ui.apps.emptyExample':
     '示例：“Acme Publisher”，机密客户端，重定向 https://acme.example/oauth/callback，范围帐户：读取和草稿：写入。',
   'developer.ui.apps.typeHelp':
@@ -369,7 +369,7 @@ export const webSettingsMessages = {
   'developer.ui.apps.scopeGroup.consequential': '相应的权限',
   'developer.ui.apps.scopeGroupHelp.read': '这些让应用程序查看数据。没有任何改变。',
   'developer.ui.apps.scopeGroupHelp.reversible':
-    '这些允许应用程序在 Relay 内创建或编辑内容。没有任何东西到达平台。',
+    '这些允许应用程序在 Post Array 内创建或编辑内容。没有任何东西到达平台。',
   'developer.ui.apps.scopeGroupHelp.consequential':
     '这些可能会导致在真实帐户上发布帖子，或更改可以访问您帐户的人员。它们始终单独列出，并且从不捆绑在一起。',
   'developer.ui.apps.noBundling': '没有组合访问范围。计费和连接管理始终要求按姓名进行。',
@@ -509,7 +509,7 @@ export const webSettingsMessages = {
     '合理使用意味着反垃圾邮件、速率和提供商成本控制。它们以相同的方式适用于每个订户并被发布，而不是任意的。',
   'billing.ui.allowanceMetered':
     'X 和其他一些提供商按操作收费。这些费用按成本转嫁，不属于计划价格。',
-  'billing.ui.allowanceNoMedia': 'Relay。图像生成和视频生成不包括在内，也不出售。中继不生成媒体。',
+  'billing.ui.allowanceNoMedia': 'Post Array。图像生成和视频生成不包括在内，也不出售。中继不生成媒体。',
   'billing.ui.readFairUse': '阅读合理使用政策',
   'billing.ui.readMeteredPolicy': '了解计量使用量的计费方式',
   'billing.ui.usageCaption': '在此期间按流量计费的提供商使用量，按成本计费',
@@ -564,8 +564,6 @@ export const webSettingsMessages = {
   'billing.ui.canceledNotice': '此订阅已取消。',
   'billing.ui.resume': '重新开始订阅',
   'billing.ui.noSubscriptionTitle': '此工作区没有订阅',
-  'billing.ui.noSubscriptionBody':
-    '开始 7 天试用期以发布。 Polar 现在收集付款方式并且不收取任何费用。',
   'billing.ui.noSubscriptionExample':
     '每月费用为 29 美元。年费为 300 美元，即每月 25 美元，按年计费。每年节省 48 美元。',
   'billing.ui.overChannelLimitAction': '查看连接的渠道',
@@ -665,7 +663,7 @@ export const webSettingsMessages = {
   'growth.ui.ugc.incentiveNone': '没有提供奖励',
   'growth.ui.ugc.incentiveDisclosure': '您和参与者必须在由此产生的每个帖子中披露激励措施。',
   'growth.ui.ugc.honesty':
-    '这计划了您与真人一起开展的活动。 Relay 不会寻找创作者、联系他们、撰写推荐或创建客户内容。',
+    '这计划了您与真人一起开展的活动。 Post Array 不会寻找创作者、联系他们、撰写推荐或创建客户内容。',
   'growth.ui.opportunities.caption': '目录中经过验证的机会，按适合您的个人资料进行排名',
   'growth.ui.opportunities.column.opportunity': '机会',
   'growth.ui.opportunities.column.type': '类型',
@@ -686,7 +684,7 @@ export const webSettingsMessages = {
   'growth.ui.opportunities.prepareRules': '引用他们的规则',
   'growth.ui.opportunities.prepareChecklist': '需要准备什么',
   'growth.ui.opportunities.prepareManual':
-    '您自己在他们的网站上提交此内容。 Relay 不会填写表格、创建帐户或向任何人发送电子邮件。',
+    '您自己在他们的网站上提交此内容。 Post Array 不会填写表格、创建帐户或向任何人发送电子邮件。',
   'growth.ui.opportunities.pitchTitle': '俯仰吃水',
   'growth.ui.opportunities.pitchHelp': '在发送之前对其进行编辑。它仅使用您确认的事实。',
   'growth.ui.opportunities.submittedOn': '已提交{date}',
@@ -702,7 +700,7 @@ export const webSettingsMessages = {
   'growth.ui.tools.emptyBody':
     '每个条目在出现在这里之前都需要经过检查的价格、经过检查的权利条款和指定的限制。',
   'growth.ui.tools.emptyExample':
-    '条目说明它最适合什么，为什么它适合您的计划，它不能做什么，它需要的技能，输出如何返回到 Relay，以及上次检查价格的时间。',
+    '条目说明它最适合什么，为什么它适合您的计划，它不能做什么，它需要的技能，输出如何返回到 Post Array，以及上次检查价格的时间。',
   'growth.ui.tools.openSite': '打开 {name} 的官方网站',
   'growth.ui.tools.stale': '超过审核日期。从生成的计划中排除。',
   'growth.ui.item.explainTitle': '为什么建议这样做',

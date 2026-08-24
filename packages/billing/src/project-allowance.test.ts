@@ -137,7 +137,7 @@ describe('a workspace inside its allowance', () => {
   });
 
   it('clamps a nonsense allowance rather than trusting it', () => {
-    expect(projectCapacityPosture({ activeProjects: 0, allowance: 9_000 }).allowance).toBe(20);
+    expect(projectCapacityPosture({ activeProjects: 0, allowance: 9_000 }).allowance).toBe(25);
     expect(projectCapacityPosture({ activeProjects: 0, allowance: 0 }).allowance).toBe(1);
   });
 });

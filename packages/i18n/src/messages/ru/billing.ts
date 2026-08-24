@@ -11,7 +11,7 @@
  */
 export const billingMessages = {
   'billing.title': 'Биллинг',
-  'billing.plan.name': 'Relay',
+  'billing.plan.name': 'Post Array',
   'billing.plan.single': 'Один план. Каждая функция. Никаких уровней.',
   'billing.plan.monthlyPrice': '29 долларов США в месяц',
   'billing.plan.annualPrice': '300 долларов США в год',
@@ -37,7 +37,6 @@ export const billingMessages = {
   'billing.plan.fairUse':
     'Добросовестное использование означает защиту от спама, контроль тарифов и затрат поставщиков, которые защищают ваши учетные записи. Они работают одинаково для каждого абонента.',
 
-  'billing.trial.length': 'Семидневная пробная версия со всеми функциями',
   'billing.trial.dueToday': '0 долларов США к оплате сегодня',
   'billing.trial.paymentMethodRequired':
     'Polar сейчас выбирает способ оплаты и сегодня ничего не взимает.',
@@ -98,7 +97,7 @@ export const billingMessages = {
   'billing.usage.estimatedBeforeAction': 'Это действие оценивается в {amount}.',
   'billing.usage.periodTotal': '{amount} используется с {date}',
   'billing.usage.noMediaCredits':
-    'Авторские права на создание изображений или видео не взимаются, поскольку Relay не генерирует медиафайлы.',
+    'Авторские права на создание изображений или видео не взимаются, поскольку Post Array не генерирует медиафайлы.',
 
   'billing.downgrade.overLimit':
     'В этой рабочей области {count, plural, one {# канала} few {# каналов} many {# каналов} other {# каналов}} превышен лимит. Новые действия на этих каналах блокируются. У вас ничего не отключено.',

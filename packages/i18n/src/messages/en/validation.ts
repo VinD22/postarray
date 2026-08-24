@@ -10,7 +10,7 @@ export const validationMessages = {
   'validation.content_kind_unsupported.message':
     '{provider} does not offer {contentKind} publishing for this account.',
   'validation.content_kind_not_implemented.message':
-    'Relay has not implemented {contentKind} publishing for {provider}.',
+    'Post Array has not implemented {contentKind} publishing for {provider}.',
   'validation.content_kind_requires_review.message':
     '{contentKind} publishing is waiting for a provider policy review.',
   'validation.text_required.message': '{provider} needs some text for this post type.',
@@ -79,7 +79,7 @@ export const validationMessages = {
     'A repeating post needs an end date or a number of repeats.',
   'validation.schedule_in_past.message': 'That time has passed in {timeZone}.',
   'validation.schedule_too_far_ahead.message':
-    'This is further ahead than the {limit} look ahead set for this credential.',
+    'Posts can be scheduled up to {limit} ahead, which is also how long uploaded media is kept.',
   'validation.schedule_outside_quiet_hours.message':
     'This falls inside the quiet hours set for project {project}.',
   'validation.duplicate_within_window.message':

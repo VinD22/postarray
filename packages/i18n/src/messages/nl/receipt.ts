@@ -24,7 +24,7 @@ export const receiptMessages = {
   'receipt.actor.user': '{name}',
   'receipt.actor.serviceAccount': 'Serviceaccount {name}',
   'receipt.actor.oauthApp': '{app} treedt op voor {name}',
-  'receipt.actor.system': 'Relay',
+  'receipt.actor.system': 'Post Array',
 
   'receipt.timeline.title': 'Tijdlijn',
   'receipt.timeline.created': 'Concept gemaakt door {actor}',

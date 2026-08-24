@@ -197,7 +197,7 @@ export const webSettingsMessages = {
   'settings.ui.security.grantScopes': '付与された権限',
   'settings.ui.security.socialPermissionsTitle': 'ソーシャルアカウントの権限',
   'settings.ui.security.socialPermissionsBody':
-    '接続時に取得された機能スナップショットから、接続された各アカウントで Relay が実行できること。',
+    '接続時に取得された機能スナップショットから、接続された各アカウントで Post Array が実行できること。',
   'settings.ui.security.viewInSection': 'で管理する{section}',
   'settings.ui.security.emptySessions': 'このセッションのみがサインインされます。',
   'settings.ui.security.emptyGrants':
@@ -234,7 +234,7 @@ export const webSettingsMessages = {
     '問題を解決する最小のものを選択してください。以下の各オプションは、何が生き残るかを示します。',
   'settings.ui.data.deleteConnection': '1 つのソーシャル コネクションを取り消す',
   'settings.ui.data.deleteConnectionHelp':
-    'そのアカウントへの Relay アクセスを削除します。ワークスペース、そのコンテンツ、およびその領収書は残ります。',
+    'そのアカウントへの Post Array アクセスを削除します。ワークスペース、そのコンテンツ、およびその領収書は残ります。',
   'settings.ui.data.deleteProject': 'ブランドを削除する',
   'settings.ui.data.deleteProjectHelp':
     'ブランド、そのルール、用語集を削除します。その下で公開されたコンテンツは領収書を保持します。',
@@ -261,7 +261,7 @@ export const webSettingsMessages = {
     'プラットフォーム上にすでに公開されている投稿は削除されません。プラットフォーム上のそれらを削除します。',
   'settings.ui.data.exportFirst': 'データを削除する前にエクスポートしてください。',
   'settings.ui.referral.description':
-    'Relay を公開リンクで共有します。委員会は肯定的なレビューを条件とすることは決してありません。',
+    'Post Array を公開リンクで共有します。委員会は肯定的なレビューを条件とすることは決してありません。',
   'settings.ui.referral.linkLabel': 'あなたの紹介リンク',
   'settings.ui.referral.tableCaption': '帰属されるサインアップとそのコミッションの状態',
   'settings.ui.referral.column.signup': 'サインアップ',
@@ -390,7 +390,7 @@ export const webSettingsMessages = {
     'アプリケーションを登録して、他の人が自分のワークスペースへのアクセスを許可できるようにします。各アプリには独自の ID、独自のリダイレクト許可リスト、および独自の監査証跡があります。',
   'developer.ui.apps.emptyTitle': 'アプリが登録されていません',
   'developer.ui.apps.emptyBody':
-    '別の製品が Relay ユーザーに代わって動作する必要がある場合は、アプリを登録します。独自の自動化には、代わりにサービス アカウントを使用してください。',
+    '別の製品が Post Array ユーザーに代わって動作する必要がある場合は、アプリを登録します。独自の自動化には、代わりにサービス アカウントを使用してください。',
   'developer.ui.apps.emptyExample':
     '例: 「Acme Publisher」、機密クライアント、リダイレクト https://acme.example/oauth/callback、スコープ アカウント:読み取りおよびドラフト:書き込み。',
   'developer.ui.apps.typeHelp':
@@ -414,7 +414,7 @@ export const webSettingsMessages = {
   'developer.ui.apps.scopeGroupHelp.read':
     'これらにより、アプリはデータを参照できるようになります。何も変わりません。',
   'developer.ui.apps.scopeGroupHelp.reversible':
-    'これらにより、アプリは Relay 内で何かを作成または編集できるようになります。プラットフォームには何も到達しません。',
+    'これらにより、アプリは Post Array 内で何かを作成または編集できるようになります。プラットフォームには何も到達しません。',
   'developer.ui.apps.scopeGroupHelp.consequential':
     'これらにより、実際のアカウントに投稿が行われたり、アカウントにアクセスできるユーザーが変更されたりする可能性があります。これらは常に個別にリストされ、バンドルされることはありません。',
   'developer.ui.apps.noBundling':
@@ -564,7 +564,7 @@ export const webSettingsMessages = {
   'billing.ui.allowanceMetered':
     'X およびその他の一部のプロバイダーは、操作ごとに料金を請求します。これらの料金は原価で引き継がれ、プラン価格の一部ではありません。',
   'billing.ui.allowanceNoMedia':
-    '画像生成とビデオ生成は含まれておらず、販売されていません。 Relay はメディアを生成しません。',
+    '画像生成とビデオ生成は含まれておらず、販売されていません。 Post Array はメディアを生成しません。',
   'billing.ui.readFairUse': 'フェアユースポリシーを読む',
   'billing.ui.readMeteredPolicy': '従量制使用量の請求方法を読む',
   'billing.ui.usageCaption': 'この期間の従量制プロバイダーの使用量は実費で請求されます',
@@ -625,8 +625,6 @@ export const webSettingsMessages = {
   'billing.ui.canceledNotice': 'このサブスクリプションはキャンセルされました。',
   'billing.ui.resume': 'サブスクリプションを再度開始する',
   'billing.ui.noSubscriptionTitle': 'このワークスペースにはサブスクリプションがありません',
-  'billing.ui.noSubscriptionBody':
-    '公開するには 7 日間のトライアルを開始してください。 Polar は支払い方法を収集し、現在は料金を請求しません。',
   'billing.ui.noSubscriptionExample':
     '月額は 29 ドルです。年間料金は 300 ドルで、年間で月額 25 ドルが請求されます。年間 48 ドル節約できます。',
   'billing.ui.overChannelLimitAction': '接続されているチャネルを確認する',
@@ -735,7 +733,7 @@ export const webSettingsMessages = {
   'growth.ui.ugc.incentiveDisclosure':
     'インセンティブは、あなたと参加者によって、その投稿から生じるすべての投稿で開示されなければなりません。',
   'growth.ui.ugc.honesty':
-    'これは、実際の人々と実行するキャンペーンを計画します。 Relay は、クリエイターを見つけたり、連絡したり、紹介文を書いたり、顧客コンテンツを作成したりすることはありません。',
+    'これは、実際の人々と実行するキャンペーンを計画します。 Post Array は、クリエイターを見つけたり、連絡したり、紹介文を書いたり、顧客コンテンツを作成したりすることはありません。',
   'growth.ui.opportunities.caption':
     'カタログからの検証済みの機会を、プロフィールとの適合性によってランク付けします',
   'growth.ui.opportunities.column.opportunity': '機会',
@@ -757,7 +755,7 @@ export const webSettingsMessages = {
   'growth.ui.opportunities.prepareRules': '彼らのルール（引用）',
   'growth.ui.opportunities.prepareChecklist': '準備するもの',
   'growth.ui.opportunities.prepareManual':
-    'これを自分でサイトに送信します。 Relay は、フォームに記入したり、アカウントを作成したり、誰にもメールを送信したりしません。',
+    'これを自分でサイトに送信します。 Post Array は、フォームに記入したり、アカウントを作成したり、誰にもメールを送信したりしません。',
   'growth.ui.opportunities.pitchTitle': 'ピッチドラフト',
   'growth.ui.opportunities.pitchHelp':
     '送信する前に編集してください。あなたが確認した事実のみを使用します。',
@@ -774,7 +772,7 @@ export const webSettingsMessages = {
   'growth.ui.tools.emptyBody':
     'すべてのエントリーは、ここに表示される前に、価格、権利条件、および名前付き制限を確認する必要があります。',
   'growth.ui.tools.emptyExample':
-    'エントリには、それが最適な用途、それがあなたの計画に適合する理由、できないこと、必要なスキル、出力が Relay にどのように返されるか、価格が最後にチェックされた時期が記載されています。',
+    'エントリには、それが最適な用途、それがあなたの計画に適合する理由、できないこと、必要なスキル、出力が Post Array にどのように返されるか、価格が最後にチェックされた時期が記載されています。',
   'growth.ui.tools.openSite': '公式サイトを開く{name}',
   'growth.ui.tools.stale': 'レビュー日を過ぎています。生成された計画から除外されます。',
   'growth.ui.item.explainTitle': 'これが提案された理由',

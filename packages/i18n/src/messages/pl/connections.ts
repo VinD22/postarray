@@ -96,7 +96,7 @@ export const connectionMessages = {
   'capability.explain.unsupported':
     '{provider} nie oferuje tego za pośrednictwem oficjalnego API, więc żadne narzędzie nie może tego zrobić bezpiecznie.',
   'capability.explain.not_implemented':
-    '{provider} oferuje to, ale Relay jeszcze tego nie zbudował. Jest to uwzględnione w planie działania dotyczącym złącza.',
+    '{provider} oferuje to, ale Post Array jeszcze tego nie zbudował. Jest to uwzględnione w planie działania dotyczącym złącza.',
   'capability.explain.requires_review':
     '{provider} przyznaje to dopiero po sprawdzeniu aplikacji lub konta. Pozostaje niedostępny do czasu zatwierdzenia tej recenzji.',
   'capability.explain.beta':

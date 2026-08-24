@@ -11,7 +11,7 @@
  */
 export const billingMessages = {
   'billing.title': 'Billing',
-  'billing.plan.name': 'Relay',
+  'billing.plan.name': 'Post Array',
   'billing.plan.single': 'One plan. Every feature. No tiers.',
   'billing.plan.monthlyPrice': '$29/month',
   'billing.plan.annualPrice': '$300/year',
@@ -32,7 +32,6 @@ export const billingMessages = {
   'billing.plan.fairUse':
     'Fair use means anti spam, rate and provider cost controls that protect your accounts. They work the same for every subscriber.',
 
-  'billing.trial.length': 'Seven day trial with every feature',
   'billing.trial.dueToday': '$0 due today',
   'billing.trial.paymentMethodRequired':
     'Polar collects a payment method now and charges nothing today.',
@@ -89,7 +88,7 @@ export const billingMessages = {
   'billing.usage.estimatedBeforeAction': 'This action is estimated at {amount}.',
   'billing.usage.periodTotal': '{amount} used since {date}',
   'billing.usage.noMediaCredits':
-    'There are no image or video generation credits, because Relay does not generate media.',
+    'There are no image or video generation credits, because Post Array does not generate media.',
 
   'billing.downgrade.overLimit':
     'This workspace has {count, plural, one {# channel} other {# channels}} over the limit. New actions on those channels are blocked. Nothing is disconnected for you.',

@@ -33,7 +33,7 @@ export const connectionMessages = {
   'connection.permissions.granted': 'Đã được cấp',
   'connection.permissions.missing': 'Không được cấp',
   'connection.permissions.explainBeforeOAuth':
-    'Relay sẽ yêu cầu {provider} cấp các quyền này. Bạn có thể ngắt kết nối bất cứ lúc nào.',
+    'Post Array sẽ yêu cầu {provider} cấp các quyền này. Bạn có thể ngắt kết nối bất cứ lúc nào.',
   'connection.permissions.whyNeeded': 'Tại sao điều này là cần thiết',
   'connection.reconnect.title': 'Kết nối lại {account}',
   'connection.reconnect.body':
@@ -81,11 +81,11 @@ export const connectionMessages = {
   'capability.level.requires_review': 'Cần xem xét lại nền tảng',
   'capability.level.beta': 'bản thử nghiệm',
   'capability.level.unknown': 'Không có sẵn',
-  'capability.explain.supported': 'Relay có thể thực hiện việc này cho tài khoản này ngay hôm nay.',
+  'capability.explain.supported': 'Post Array có thể thực hiện việc này cho tài khoản này ngay hôm nay.',
   'capability.explain.unsupported':
     '{provider} không cung cấp tính năng này thông qua API chính thức, vì vậy không có công cụ nào có thể thực hiện việc đó một cách an toàn.',
   'capability.explain.not_implemented':
-    '{provider} cung cấp tính năng này, nhưng Relay vẫn chưa xây dựng nó. Nó nằm trên lộ trình kết nối.',
+    '{provider} cung cấp tính năng này, nhưng Post Array vẫn chưa xây dựng nó. Nó nằm trên lộ trình kết nối.',
   'capability.explain.requires_review':
     '{provider} chỉ cấp quyền này sau khi xem xét ứng dụng hoặc tài khoản. Nó vẫn không có sẵn cho đến khi đánh giá đó được thông qua.',
   'capability.explain.beta':

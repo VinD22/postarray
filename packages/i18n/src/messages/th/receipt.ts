@@ -22,7 +22,7 @@ export const receiptMessages = {
   'receipt.actor.user': '{name}',
   'receipt.actor.serviceAccount': 'บัญชีบริการ {name}',
   'receipt.actor.oauthApp': '{app} ทำหน้าที่แทน {name}',
-  'receipt.actor.system': 'Relay',
+  'receipt.actor.system': 'Post Array',
   'receipt.timeline.title': 'ไทม์ไลน์',
   'receipt.timeline.created': 'ฉบับร่างสร้างโดย {actor}',
   'receipt.timeline.approvalRequested': 'ขออนุมัติจาก {approver}',

@@ -74,7 +74,7 @@ export const developerMessages = {
   'developer.activity.redacted': 'Los cuerpos de solicitud y respuesta se almacenan sin secretos.',
   'developer.apps.title': 'Aplicaciones para desarrolladores',
   'developer.apps.subtitle':
-    'Dejar actuar a otro producto a través de Relay con los permisos que le otorga un usuario.',
+    'Dejar actuar a otro producto a través de Post Array con los permisos que le otorga un usuario.',
   'developer.apps.create': 'Registrar una aplicación',
   'developer.apps.name': 'Nombre de la aplicación',
   'developer.apps.type.label': 'Tipo de cliente',

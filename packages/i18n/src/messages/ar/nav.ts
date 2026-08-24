@@ -38,6 +38,7 @@ export const navMessages = {
   'settings.nav.notifications': 'تفضيلات الإخطار',
 
   'nav.public.product': 'المنتج',
+  'nav.public.demo': 'عرض توضيحي',
   'nav.public.integrations': 'التكامل',
   'nav.public.forCreators': 'للمبدعين',
   'nav.public.forAgencies': 'للوكالات',

@@ -39,21 +39,21 @@ export const webCalendarMessages = {
   'web.connection.requirement.mastodon':
     'Mastodon ansluter med en åtkomsttoken du skapar på din egen instans, inte med ditt lösenord.',
   'web.connection.requirement.telegram':
-    'Relay publicerar som en bot. Lägg till boten i kanalen eller gruppen där du vill publicera.',
+    'Post Array publicerar som en bot. Lägg till boten i kanalen eller gruppen där du vill publicera.',
   'web.connection.requirement.reddit':
     'Att skriva på Reddit kräver en godkänd app och varje inlägg behöver en titel och en subreddit.',
   'web.connection.requirement.wordpress':
-    'Relay publicerar via webbplatsens REST API med ett applösenord du skapar i WordPress.',
+    'Post Array publicerar via webbplatsens REST API med ett applösenord du skapar i WordPress.',
   'web.connection.requirement.medium':
-    'Medium ansluter via OAuth och Relay publicerar offentliga berättelser i Markdown.',
+    'Medium ansluter via OAuth och Post Array publicerar offentliga berättelser i Markdown.',
   'web.connection.requirement.devto':
     'Dev.to ansluter med en API-nyckel skapad i dina Dev.to-inställningar.',
   'web.connection.requirement.pinterest':
     'Att skriva på Pinterest kräver godkänd appåtkomst och en pin behöver en bild och en egen anslagstavla.',
   'web.connection.requirement.discord':
-    'Relay publicerar som en bot. Lägg till boten i servrarna och kanalerna där du vill publicera.',
+    'Post Array publicerar som en bot. Lägg till boten i servrarna och kanalerna där du vill publicera.',
   'web.connection.requirement.slack':
-    'Relay publicerar som en app. Lägg till appen i kanalerna där du vill publicera.',
+    'Post Array publicerar som en app. Lägg till appen i kanalerna där du vill publicera.',
   'web.provider.fake': 'Testa kontakten',
 
   'web.accountType.personal_profile': 'Personlig profil',
@@ -165,7 +165,7 @@ export const webCalendarMessages = {
 
   'web.calendar.published.title': 'Det här inlägget är redan publicerat',
   'web.calendar.published.body':
-    'Ett inlägg finns på {provider} vid {permalinkLabel}. Att flytta posten i Relay flyttar inte stolpen på plattformen. Välj vad du vill ska hända.',
+    'Ett inlägg finns på {provider} vid {permalinkLabel}. Att flytta posten i Post Array flyttar inte stolpen på plattformen. Välj vad du vill ska hända.',
   'web.calendar.published.optionLocal': 'Uppdatera endast den lokala posten',
   'web.calendar.published.optionLocalHint':
     'Kvittot håller den verkliga publiceringstiden. Endast planeringsposten flyttas, så din kalender matchar din plan.',
@@ -269,7 +269,7 @@ export const webCalendarMessages = {
 
   'web.receipt.analytics.never': 'Analytics har inte synkroniserats för det här inlägget ännu.',
   'web.receipt.analytics.explain':
-    'Leverantörer samlar på sina egna scheman. Tiden nedan är när Relay senast läste dem, inte när siffrorna var sanna.',
+    'Leverantörer samlar på sina egna scheman. Tiden nedan är när Post Array senast läste dem, inte när siffrorna var sanna.',
 
   'web.receipt.export.download': 'Ladda ner kvittot',
   'web.receipt.export.copyReference': 'Kopiera kvittotsreferensen',
@@ -354,11 +354,11 @@ export const webCalendarMessages = {
 
   'web.connection.connect.title': 'Anslut ett konto',
   'web.connection.connect.chooseProvider': 'Vilken plattform',
-  'web.connection.connect.permissionHeading': 'Vad Relay kommer att fråga {provider} om',
+  'web.connection.connect.permissionHeading': 'Vad Post Array kommer att fråga {provider} om',
   'web.connection.connect.requirementHeading': 'Innan du fortsätter',
   'web.connection.connect.continue': 'Fortsätt till {provider}',
   'web.connection.connect.handoffNote':
-    'Nästa skärm är {provider}, inte Relä. Relay ser aldrig ditt lösenord.',
+    'Nästa skärm är {provider}, inte Relä. Post Array ser aldrig ditt lösenord.',
   'web.connection.connect.noWriteWithoutApproval':
     'Att ansluta ett konto publicerar ingenting. Varje inlägg följer fortfarande denna policy för godkännande av arbetsytan.',
   'web.connection.projectScope.title': 'Kanaler för {project}',
@@ -387,11 +387,11 @@ export const webCalendarMessages = {
   'web.connection.requirement.generic':
     'Du behöver tillstånd för att göra inlägg på det här kontot från själva plattformen. Relä kan inte ge det.',
 
-  'web.connection.purpose.publish': 'Publicera de inlägg du schemalägger i Relay.',
+  'web.connection.purpose.publish': 'Publicera de inlägg du schemalägger i Post Array.',
   'web.connection.purpose.readPosts':
-    'Läser tillbaka ett inlägg Relay publicerat, så att kvittot kan bevisa att det är live.',
+    'Läser tillbaka ett inlägg Post Array publicerat, så att kvittot kan bevisa att det är live.',
   'web.connection.purpose.identity':
-    'Visar det exakta kontonamnet i Relay, så att du aldrig publicerar till fel.',
+    'Visar det exakta kontonamnet i Post Array, så att du aldrig publicerar till fel.',
   'web.connection.purpose.analytics':
     'Genom att läsa statistiken som denna plattform rapporterar för dina egna inlägg.',
   'web.connection.purpose.refresh':
@@ -402,7 +402,7 @@ export const webCalendarMessages = {
   'web.connection.permissions.title': 'Behörigheter på {account}',
   'web.connection.permissions.scopeColumn': 'Tillstånd',
   'web.connection.permissions.stateColumn': 'staten',
-  'web.connection.permissions.purposeColumn': 'Vad Relay använder det till',
+  'web.connection.permissions.purposeColumn': 'Vad Post Array använder det till',
   'web.connection.permissions.missingWarning':
     '{count, plural, one {# behörighet saknas} other {# behörigheter saknas}}. Återanslut och acceptera det för att återställa funktionerna nedan.',
   'web.connection.permissions.snapshot': 'Läs från {provider} {relativeTime}',
@@ -416,7 +416,7 @@ export const webCalendarMessages = {
   'web.connection.capability.legend.supported':
     'Relä kan göra detta idag för ett uppkopplat konto av rätt typ.',
   'web.connection.capability.legend.not_implemented':
-    'Plattformen erbjuder detta och Relay har inte byggt det ännu. Det finns på anslutningsfärdplanen.',
+    'Plattformen erbjuder detta och Post Array har inte byggt det ännu. Det finns på anslutningsfärdplanen.',
   'web.connection.capability.legend.unsupported':
     'Plattformen erbjuder inte detta via sitt officiella API, så inget verktyg kan göra det säkert.',
   'web.connection.capability.legend.requires_review':

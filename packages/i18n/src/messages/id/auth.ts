@@ -3,7 +3,6 @@ export const authMessages = {
   'auth.signIn.title': 'Masuk',
   'auth.signIn.subtitle': 'Publikasikan, setujui, dan lihat apa yang sebenarnya terjadi.',
   'auth.signUp.title': 'Buat akun Anda',
-  'auth.signUp.subtitle': 'Tujuh hari dengan setiap fitur. $0 jatuh tempo hari ini.',
   'auth.continueWithGoogle': 'Lanjutkan dengan Google',
   'auth.continueWithFacebook': 'Lanjutkan dengan Facebook',
   'auth.orUseEmail': 'Atau gunakan email Anda',

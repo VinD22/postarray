@@ -73,7 +73,7 @@ export const developerMessages = {
   'developer.activity.empty': '아직 전화가 없습니다.',
   'developer.activity.redacted': '요청 및 응답 본문은 비밀이 제거된 상태로 저장됩니다.',
   'developer.apps.title': '개발자 앱',
-  'developer.apps.subtitle': '사용자가 부여한 권한으로 다른 제품이 Relay을 통해 작동하도록 합니다.',
+  'developer.apps.subtitle': '사용자가 부여한 권한으로 다른 제품이 Post Array을 통해 작동하도록 합니다.',
   'developer.apps.create': '앱 등록',
   'developer.apps.name': '앱 이름',
   'developer.apps.type.label': '클라이언트 유형',

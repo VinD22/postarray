@@ -161,7 +161,7 @@ export const webComposerMessages = {
   'composerWeb.entity.lookupUnsupported':
     '{provider} non offre la ricerca di entità per questo tipo di account.',
   'composerWeb.entity.lookupNotBuilt':
-    'Relay non ha ancora creato la ricerca di entità per {provider}. Nel frattempo non si indovina nulla.',
+    'Post Array non ha ancora creato la ricerca di entità per {provider}. Nel frattempo non si indovina nulla.',
   'composerWeb.entity.searchHint': 'Digita almeno due caratteri, quindi scegli un risultato.',
   'composerWeb.entity.resultCount':
     '{count, plural, =0 {Nessuna corrispondenza} one {# corrispondenza} many {# corrispondenze} other {# corrispondenze}}',
@@ -179,7 +179,7 @@ export const webComposerMessages = {
   'composerWeb.links.utmTerm': 'Termine',
   'composerWeb.links.utmContent': 'Contenuto',
   'composerWeb.links.domainVerified': '{domain}, verificato per questa area di lavoro',
-  'composerWeb.links.domainDefault': 'Dominio predefinito Relay',
+  'composerWeb.links.domainDefault': 'Dominio predefinito Post Array',
   'composerWeb.links.domainNone': 'Nessun dominio con marchio è stato ancora verificato.',
   'composerWeb.links.notAllowedHere': '{account} non consente un collegamento qui.',
 
@@ -247,7 +247,7 @@ export const webComposerMessages = {
   'composerWeb.assist.failed':
     'La richiesta di assistenza non è stata completata. Il tuo testo è invariato.',
   'composerWeb.assist.noMediaGeneration':
-    'Relay non crea immagini o video. Porta i file finiti nella libreria e pubblicali qui.',
+    'Post Array non crea immagini o video. Porta i file finiti nella libreria e pubblicali qui.',
 
   // ------------------------------------------------------------- autosave
   'composerWeb.autosave.pinned':
@@ -297,7 +297,7 @@ export const webComposerMessages = {
     "Niente è andato perduto. Riprova e, se il problema persiste, il riferimento riportato di seguito aiuta l'assistenza a trovare la richiesta.",
   'composerWeb.page.noConnectionsTitle': 'Collega un account prima di comporre',
   'composerWeb.page.noConnectionsBody':
-    "Una bozza necessita di almeno un account connesso in modo che Relay conosca i limiti, l'anteprima e le impostazioni da mostrare.",
+    "Una bozza necessita di almeno un account connesso in modo che Post Array conosca i limiti, l'anteprima e le impostazioni da mostrare.",
   'composerWeb.page.noConnectionsExample':
     'Esempio: con X e LinkedIn collegati, una bozza diventa due versioni native con i propri contatori.',
   'composerWeb.page.permissionTitle': "Non puoi creare post in quest'area di lavoro",
@@ -328,7 +328,7 @@ export const webComposerMessages = {
 
   'mediaLib.empty.title': 'Nessun supporto ancora',
   'mediaLib.empty.body':
-    'Carica le immagini e i video che hai già o importa un file da un URL. Relay controlla il tipo e le dimensioni rispetto a ciascun account su cui pubblichi.',
+    'Carica le immagini e i video che hai già o importa un file da un URL. Post Array controlla il tipo e le dimensioni rispetto a ciascun account su cui pubblichi.',
   'mediaLib.empty.example':
     'Esempio: launch_hero.jpg, 1600 x 900, set di testo alternativo, utilizzato in 2 post.',
   'mediaLib.error.title': 'Impossibile caricare la libreria',
@@ -378,7 +378,7 @@ export const webComposerMessages = {
   'mediaLib.import.importing': 'Importazione del media in corso',
   'mediaLib.import.succeeded': 'Il file è nella tua libreria',
   'mediaLib.import.scanPending':
-    'Relay ha registrato la sua fonte. La pubblicazione attende che il controllo di sicurezza sia terminato.',
+    'Post Array ha registrato la sua fonte. La pubblicazione attende che il controllo di sicurezza sia terminato.',
   'mediaLib.import.failed': 'Non è stato possibile importare il file',
   'mediaLib.import.failedHelp':
     'Controlla che il link sia pubblico e punti direttamente a un file multimediale supportato, poi riprova.',
@@ -390,7 +390,7 @@ export const webComposerMessages = {
   'mediaLib.retention.title':
     'I file memorizzati sono conservati per 30 giorni dopo la creazione del post',
   'mediaLib.retention.body':
-    "Una volta che un file è collegato a un post, lo eliminiamo permanentemente dall'archivio di Relay 30 giorni dopo la creazione di quel post. I file in attesa di essere collegati usano la data di caricamento come ripiego per la pulizia. Il testo del post, le ricevute di pubblicazione e la cronologia di controllo restano disponibili più a lungo. Un post pubblicato su una piattaforma social non viene rimosso quando il suo file memorizzato scade.",
+    "Una volta che un file è collegato a un post, lo eliminiamo permanentemente dall'archivio di Post Array 30 giorni dopo la creazione di quel post. I file in attesa di essere collegati usano la data di caricamento come ripiego per la pulizia. Il testo del post, le ricevute di pubblicazione e la cronologia di controllo restano disponibili più a lungo. Un post pubblicato su una piattaforma social non viene rimosso quando il suo file memorizzato scade.",
   'mediaLib.retention.limits':
     'Immagini, audio e file PDF possono arrivare a {imageSize}. I video possono arrivare a {videoSize}.',
   'mediaLib.retention.expiresLabel': 'Data di eliminazione del file',
@@ -503,7 +503,7 @@ export const webComposerMessages = {
   'mediaLib.provenance.contentCredentialsNone':
     'Questo file non contiene credenziali di contenuto incorporato. Questo è comune e non significa che ci sia qualcosa che non va.',
   'mediaLib.provenance.unverified':
-    'Questi dettagli provengono dalla fonte, non da Relay. Controllali prima di fare affidamento su di loro.',
+    'Questi dettagli provengono dalla fonte, non da Post Array. Controllali prima di fare affidamento su di loro.',
 
   'mediaLib.picker.title': 'Scegli il supporto',
   'mediaLib.picker.description':

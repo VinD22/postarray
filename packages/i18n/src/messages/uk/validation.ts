@@ -63,7 +63,7 @@ export const validationMessages = {
     'Повторювана публікація потребує дати завершення або кількості повторів.',
   'validation.schedule_in_past.message': 'той час минув {timeZone}.',
   'validation.schedule_too_far_ahead.message':
-    'Це далі попереду, ніж {limit} подивіться вперед для цих облікових даних.',
+    'Дописи можна планувати щонайбільше на {limit} наперед; стільки ж зберігаються завантажені файли.',
   'validation.schedule_outside_quiet_hours.message':
     'Це відбувається у встановлені години тиші {project}.',
   'validation.duplicate_within_window.message':

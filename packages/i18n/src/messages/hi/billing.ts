@@ -33,7 +33,6 @@ export const billingMessages = {
   'billing.plan.fairUse':
     'उचित उपयोग का अर्थ है एंटी स्पैम, दर और प्रदाता लागत नियंत्रण जो आपके खातों की सुरक्षा करते हैं। वे प्रत्येक ग्राहक के लिए समान रूप से कार्य करते हैं।',
 
-  'billing.trial.length': 'हर सुविधा के साथ सात दिवसीय परीक्षण',
   'billing.trial.dueToday': '$0 आज देय है',
   'billing.trial.paymentMethodRequired':
     'पोलर अभी एक भुगतान विधि एकत्र करता है और आज कोई शुल्क नहीं लेता है।',
@@ -93,7 +92,7 @@ export const billingMessages = {
   'billing.usage.estimatedBeforeAction': 'इस कार्रवाई का अनुमान है {amount}.',
   'billing.usage.periodTotal': '{amount} तब से उपयोग किया जाता है {date}',
   'billing.usage.noMediaCredits':
-    'कोई छवि या वीडियो निर्माण क्रेडिट नहीं है, क्योंकि Relay मीडिया उत्पन्न नहीं करता है।',
+    'कोई छवि या वीडियो निर्माण क्रेडिट नहीं है, क्योंकि Post Array मीडिया उत्पन्न नहीं करता है।',
 
   'billing.downgrade.overLimit':
     'इस कार्यक्षेत्र में है {count, plural, one {# चैनल} other {# चैनल}} सीमा से अधिक. उन चैनलों पर नई कार्रवाइयां अवरुद्ध हैं. आपके लिए कुछ भी डिस्कनेक्ट नहीं है.',

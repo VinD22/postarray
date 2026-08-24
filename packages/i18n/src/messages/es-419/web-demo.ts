@@ -27,6 +27,10 @@ export const webDemoMessages = {
   /* La demostración destacada en la página de inicio                      */
   /* ---------------------------------------------------------------------- */
 
+  'web.demo.hero.viewCta': 'Ver la demo',
+  'web.demo.hero.projectsLine':
+    'Una cuenta administra varios negocios. Cada proyecto es su propio negocio, con sus propias cuentas conectadas, su propio calendario y sus propias aprobaciones, y cambias entre ellos desde un solo menú, como cambias de propiedad en una consola de búsqueda.',
+  'web.demo.hero.projectsChip': '{count, plural, one {# cuenta} many {# cuentas} other {# cuentas}}',
   'web.demo.hero.caption':
     'Un borrador se convierte en una versión por plataforma, recibe un horario y llega a la semana. Contenido de ejemplo, no es una cuenta real.',
   'web.demo.hero.more': 'Recorre todo el flujo de trabajo',

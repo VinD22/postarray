@@ -11,7 +11,7 @@ export const errorMessages = {
   'error.internal.message': 'यह हमारी ओर से समस्या है, आपकी सामग्री के साथ नहीं।',
   'error.internal.action':
     'आपका कार्य सहेजा गया है. हमें सतर्क कर दिया गया है. कुछ मिनटों में पुनः प्रयास करें.',
-  'error.not_implemented.message': 'Relay ने अभी तक इसे नहीं बनाया है।',
+  'error.not_implemented.message': 'Post Array ने अभी तक इसे नहीं बनाया है।',
   'error.not_implemented.action': 'यह कब भेजा जाएगा इसके लिए चेंजलॉग का पालन करें।',
   'error.offline.message': 'आप ऑफ़लाइन हैं.',
   'error.offline.action':
@@ -56,6 +56,10 @@ export const errorMessages = {
   'error.subscription_past_due.action': 'पोलर पोर्टल में भुगतान विधि को अपडेट करें।',
   'error.trial_expired.message': 'मुक़दमा ख़त्म हो गया {date}.',
   'error.trial_expired.action': 'प्रकाशन जारी रखने के लिए सदस्यता प्रारंभ करें.',
+  'error.post_credits_exhausted.message':
+    'इस वर्कस्पेस ने अपनी सभी मुफ़्त पोस्ट इस्तेमाल कर ली हैं। बाकी सब पहले जैसा काम कर रहा है।',
+  'error.post_credits_exhausted.action':
+    'प्रकाशित करते रहने के लिए कोई प्लान चुनें। आपके खाते जुड़े रहेंगे और आपके ड्राफ़्ट और शेड्यूल सुरक्षित रहेंगे।',
   'error.entitlement_missing.message': 'इस कार्यस्थान के पास उस सुविधा तक पहुंच नहीं है.',
   'error.entitlement_missing.action': 'बिलिंग सेटिंग जांचें, या सहायता से संपर्क करें।',
   'error.channel_limit_reached.message':
@@ -87,7 +91,7 @@ export const errorMessages = {
     '{provider} यह अपने आधिकारिक API के माध्यम से यह पेशकश नहीं करता है।',
   'error.capability_unsupported.action': 'उस प्रारूप का उपयोग करें जिसका यह खाता समर्थन करता है।',
   'error.capability_not_implemented.message':
-    'Relay ने इसे इसके लिए नहीं बनाया है {provider} अभी तक.',
+    'Post Array ने इसे इसके लिए नहीं बनाया है {provider} अभी तक.',
   'error.capability_not_implemented.action':
     'क्षमता पृष्ठ सूचीबद्ध करता है कि प्रत्येक कनेक्टर आज क्या कर सकता है।',
   'error.capability_requires_review.message':

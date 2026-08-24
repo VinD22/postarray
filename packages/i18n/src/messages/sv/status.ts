@@ -92,6 +92,6 @@ export const statusMessages = {
     'Den kommer inte att publiceras. Utkastet stannar här så att du kan schemalägga det igen.',
   'confirm.publishNow.title': 'Publicera nu?',
   'confirm.publishNow.body':
-    '{count, plural, one {Detta publiceras till # konto omedelbart} other {Detta publiceras till # konton omedelbart}}. Den kan inte återkallas från Relay.',
+    '{count, plural, one {Detta publiceras till # konto omedelbart} other {Detta publiceras till # konton omedelbart}}. Den kan inte återkallas från Post Array.',
   'confirm.typeToConfirm': 'Skriv {word} för att bekräfta.',
 } as const;

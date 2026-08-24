@@ -98,7 +98,7 @@ export const automationMessages = {
 
   'automation.notPermitted.title': 'Это правило не может быть создано',
   'automation.notPermitted.body':
-    'Relay не автоматизирует лайки, подписки, нежелательные ответы или сообщения, дублирование массовых публикаций или что-либо еще, что зависит от автоматизации браузера. {provider} запрещает это, и мы тоже.',
+    'Post Array не автоматизирует лайки, подписки, нежелательные ответы или сообщения, дублирование массовых публикаций или что-либо еще, что зависит от автоматизации браузера. {provider} запрещает это, и мы тоже.',
   'automation.notPermitted.providerCapability':
     '{provider} не предлагает {action} через свой официальный API, поэтому для него это действие невозможно выбрать.',
 
@@ -111,7 +111,7 @@ export const automationMessages = {
   'automation.rss.targets': 'Опубликовать в',
   'automation.rss.template': 'Текстовый шаблон',
   'automation.rss.templateHelp':
-    'Используйте поля фида, которые вы сопоставили. Relay не создает изображения для элементов ленты.',
+    'Используйте поля фида, которые вы сопоставили. Post Array не создает изображения для элементов ленты.',
   'automation.rss.policy.draft': 'Создать черновик',
   'automation.rss.policy.approval': 'Создайте черновик и запросите одобрение',
   'automation.rss.policy.nextSlot': 'Расписание в следующем свободном слоте',

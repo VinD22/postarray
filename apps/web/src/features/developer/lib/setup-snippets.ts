@@ -10,7 +10,7 @@
  * marketing page both read it, which is what stops the two from documenting
  * different configuration for the same client. `audience` is the only thing
  * that differs between them: the connect screen offers the clients a person
- * actually points at Relay, the marketing page shows everything.
+ * actually points at Post Array, the marketing page shows everything.
  */
 
 export const CREDENTIAL_ENV_VAR = 'RELAY_SERVICE_TOKEN';

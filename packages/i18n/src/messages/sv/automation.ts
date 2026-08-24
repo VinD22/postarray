@@ -95,7 +95,7 @@ export const automationMessages = {
 
   'automation.notPermitted.title': 'Denna regel kan inte skapas',
   'automation.notPermitted.body':
-    'Relay automatiserar inte gilla-markeringar, följer, oönskade svar eller meddelanden, dubbletter av massinlägg eller något som beror på webbläsarautomatisering. {provider} förbjuder det och det gör vi också.',
+    'Post Array automatiserar inte gilla-markeringar, följer, oönskade svar eller meddelanden, dubbletter av massinlägg eller något som beror på webbläsarautomatisering. {provider} förbjuder det och det gör vi också.',
   'automation.notPermitted.providerCapability':
     '{provider} erbjuder inte {action} genom sitt officiella API, så den här åtgärden är inte valbar för den.',
 

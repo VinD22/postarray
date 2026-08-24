@@ -234,7 +234,9 @@ export function FactList({
   children: ReactNode;
   className?: string;
 }): ReactNode {
-  return <dl className={cn('border-border-default border-t', className)}>{children}</dl>;
+  return (
+    <dl className={cn('@container border-border-default border-t', className)}>{children}</dl>
+  );
 }
 
 export function Fact({
@@ -250,7 +252,11 @@ export function Fact({
     <div
       className={cn(
         'border-border-subtle grid gap-1 border-b py-4',
-        'sm:grid-cols-[minmax(0,15rem)_minmax(0,1fr)] sm:gap-8',
+        // Keyed to the list's own width, not the viewport's. A 15rem term
+        // column is right in a full-width band and ruinous inside a narrow
+        // bento cell, where it left the definition about two words wide; the
+        // pair only splits once there is room for both halves to read.
+        '@lg:grid-cols-[minmax(0,15rem)_minmax(0,1fr)] @lg:gap-8',
         className,
       )}
     >

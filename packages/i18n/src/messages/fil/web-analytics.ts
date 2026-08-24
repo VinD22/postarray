@@ -39,7 +39,7 @@ export const webAnalyticsMessages = {
 
   'analytics.rankMetric.label': 'I-rank ang mga post ni',
   'analytics.rankMetric.help':
-    'Walang pinagsamang marka sa Relay. Pumili ng isang sukatan kung saan ang kahulugan ay pinagkakatiwalaan mo at ang talahanayan ay nakaayos ayon sa sukatan na iyon lamang.',
+    'Walang pinagsamang marka sa Post Array. Pumili ng isang sukatan kung saan ang kahulugan ay pinagkakatiwalaan mo at ang talahanayan ay nakaayos ayon sa sukatan na iyon lamang.',
   'analytics.rankMetric.chosen':
     'Niraranggo ayon sa {metric}, gaya ng iniulat ng bawat provider ng account.',
 
@@ -108,7 +108,7 @@ export const webAnalyticsMessages = {
   'analytics.evidence.confounder.followers':
     'Umaasa ang tagasunod {account} binago ng {percent} sa panahong ito.',
   'analytics.evidence.confounder.paid':
-    'Hindi masabi ng Relay kung nakatanggap ng bayad na pamamahagi ang alinman sa mga post na ito.',
+    'Hindi masabi ng Post Array kung nakatanggap ng bayad na pamamahagi ang alinman sa mga post na ito.',
   'analytics.evidence.confounder.provider':
     '{provider} binago kung paano ito nag-uulat {metric} sa loob ng panahong ito.',
 
@@ -147,7 +147,7 @@ export const webAnalyticsMessages = {
   'analytics.unit.count': 'Isang bilang ng mga kaganapan',
   'analytics.unit.seconds': 'Mga segundo',
   'analytics.unit.percent': 'Isang porsyento na nakalkula na ng provider',
-  'analytics.unit.ratio': 'Isang ratio na Relay na kinakalkula mula sa dalawang field ng provider',
+  'analytics.unit.ratio': 'Isang ratio na Post Array na kinakalkula mula sa dalawang field ng provider',
   'analytics.unit.currency_minor': 'Isang halaga ng pera sa mga menor de edad na yunit',
 
   'analytics.denominator.none': 'Ito ay isang bilang, hindi isang rate. Wala itong denominator.',
@@ -167,7 +167,7 @@ export const webAnalyticsMessages = {
   'analytics.format.thread': 'Thread',
 
   'analytics.value.unavailableReason.notImplemented':
-    'Hindi pa binuo ng Relay ang pagmamapa para sa sukatang ito {provider} pa.',
+    'Hindi pa binuo ng Post Array ang pagmamapa para sa sukatang ito {provider} pa.',
   'analytics.value.estimated': 'Tinatantya',
   'analytics.value.estimatedMethod': 'Paraan: {method}.',
 
@@ -296,7 +296,7 @@ export const webAnalyticsMessages = {
   'analytics.state.rateLimitTitle':
     '{provider} ay nililimitahan ng rate ang mga kahilingan sa analytics',
   'analytics.state.rateLimitCause':
-    'Ginamit ng account ang bahagi nito sa quota ng provider para sa window na ito. Ang Relay ay hindi muling nagsusumikap, dahil maaantala nito ang pag-publish.',
+    'Ginamit ng account ang bahagi nito sa quota ng provider para sa window na ito. Ang Post Array ay hindi muling nagsusumikap, dahil maaantala nito ang pag-publish.',
   'analytics.state.rateLimitAlternative':
     'Paliitin ang hanay ng petsa o ang filter ng account, na humihingi ng mas mura sa provider.',
   'analytics.state.rateLimitReset': 'Ipagpatuloy ang mga kahilingan',
@@ -308,7 +308,7 @@ export const webAnalyticsMessages = {
   'analytics.links.new': 'Gumawa ng sinusubaybayang link',
   'analytics.links.empty': 'Wala pang sinusubaybayang link',
   'analytics.links.emptyBody':
-    'Ang isang sinusubaybayang link ay isang maikling URL na Relay na nagre-redirect, upang makakakita ka ng mga pag-click kahit na walang nag-uulat ng isang platform. Ang orihinal na destinasyon ay hindi kailanman mababago nang walang audit entry.',
+    'Ang isang sinusubaybayang link ay isang maikling URL na Post Array na nagre-redirect, upang makakakita ka ng mga pag-click kahit na walang nag-uulat ng isang platform. Ang orihinal na destinasyon ay hindi kailanman mababago nang walang audit entry.',
   'analytics.links.emptyExample':
     'Halimbawa: nagre-redirect ang relay.to/a7Kq2 sa acme.com/blog/launch na may campaign q3-launch.',
   'analytics.links.table.caption':
@@ -340,7 +340,7 @@ export const webAnalyticsMessages = {
   'analytics.links.destinationHistoryRow': '{destination}, aktibo mula sa {start} sa {end}',
   'analytics.links.destinationHistoryCurrent': '{destination}, aktibo mula noon {start}',
   'analytics.links.domainLabel': 'Maikling domain',
-  'analytics.links.domainDefault': 'Relay default na domain',
+  'analytics.links.domainDefault': 'Post Array default na domain',
   'analytics.links.domainVerified': 'Na-verify ng DNS sa {date}',
   'analytics.links.domainPending': 'Naghihintay para sa tala ng DNS',
   'analytics.links.domainPendingHelp':
@@ -363,7 +363,7 @@ export const webAnalyticsMessages = {
   'analytics.links.abuseAction': 'Iulat ang link na ito',
   'analytics.links.measurementLabel': 'Pagsukat ng pag-redirect ng first party',
   'analytics.links.measurementExplained':
-    'Binibilang ng Relay ang isang kahilingan kapag hiniling ang serbisyo sa pag-redirect para sa URL na ito. Ang na-deduplicate na pag-click ay nag-aalis ng mga paulit-ulit na kahilingan mula sa parehong bisita sa loob ng maikling window, at ang mga kahilingang tumutugma sa mga kilalang pattern ng crawler ay hindi kasama sa halip na tanggalin.',
+    'Binibilang ng Post Array ang isang kahilingan kapag hiniling ang serbisyo sa pag-redirect para sa URL na ito. Ang na-deduplicate na pag-click ay nag-aalis ng mga paulit-ulit na kahilingan mula sa parehong bisita sa loob ng maikling window, at ang mga kahilingang tumutugma sa mga kilalang pattern ng crawler ay hindi kasama sa halip na tanggalin.',
   'analytics.links.botsNote':
     '{count, plural, one {# kahilingan} other {# mga kahilingan}} ay inuri bilang awtomatiko at hindi kasama sa na-deduplicate na bilang.',
   'analytics.links.series.title':
@@ -387,7 +387,7 @@ export const webAnalyticsMessages = {
   'analytics.links.noEventsBody':
     'Ang link na ito ay hindi pa hiniling mula noong ito ay nilikha. Totoong zero iyon, na sinusukat ng sarili naming serbisyo sa pag-redirect.',
   'analytics.links.compareWarning':
-    '{provider} mga ulat {providerValue} mga pag-click ng link para sa post na ito. Naitala ang Relay {relayValue} mga deduplicated na pag-click. Ang dalawa ay nagbibilang ng magkaibang mga kaganapan at hindi pumapalit sa isa pa.',
+    '{provider} mga ulat {providerValue} mga pag-click ng link para sa post na ito. Naitala ang Post Array {relayValue} mga deduplicated na pag-click. Ang dalawa ay nagbibilang ng magkaibang mga kaganapan at hindi pumapalit sa isa pa.',
   'analytics.links.errorTitle': 'Hindi ma-load ang mga istatistika ng link',
   'analytics.links.errorBody':
     'Gumagana pa rin ang serbisyo sa pag-redirect, kaya ang link ay patuloy na nagpapadala ng mga bisita sa destinasyon nito. Ang pag-uulat lamang ang apektado.',
@@ -397,7 +397,7 @@ export const webAnalyticsMessages = {
   'analytics.links.createCampaign': 'Pangalan ng kampanya',
   'analytics.links.createSlug': 'Pasadyang pagtatapos',
   'analytics.links.createSlugHelp':
-    'Iwanan itong walang laman at Relay ay bumubuo ng isang maikling random na pagtatapos.',
+    'Iwanan itong walang laman at Post Array ay bumubuo ng isang maikling random na pagtatapos.',
   'analytics.links.createUtm': 'Mga parameter ng UTM',
   'analytics.links.blockedScheme': 'Tanging ang mga patutunguhan sa https ang tinatanggap.',
   'analytics.links.blockedPrivate':
@@ -548,7 +548,7 @@ export const webAnalyticsMessages = {
     '{count, plural, one {# aksyon ay} other {# mga aksyon ay}} hindi nakalista dahil hindi maisagawa ng mga napiling account ang mga ito.',
   'automation.picker.hiddenDetail': '{action} ay hindi magagamit para sa {provider}. {reason}',
   'automation.picker.consequential': 'Lumilikha ng isang bagay sa isang platform',
-  'automation.picker.internalOnly': 'Nananatili sa loob ng Relay',
+  'automation.picker.internalOnly': 'Nananatili sa loob ng Post Array',
 
   'automation.accounts.label': 'Mga account na maaaring kumilos ang panuntunang ito',
   'automation.accounts.help':
@@ -652,7 +652,7 @@ export const webAnalyticsMessages = {
   'automation.test.conditionFailed': '{condition} hindi pumasa, kaya huminto ang panuntunan dito',
   'automation.test.actionSimulated': '{action} tatakbo sana',
   'automation.test.actionSkipped': '{action} ay laktawan: {reason}',
-  'automation.test.noExternalEffect': 'Walang natira Relay sa panahon ng pagsubok na ito.',
+  'automation.test.noExternalEffect': 'Walang natira Post Array sa panahon ng pagsubok na ito.',
   'automation.test.failed': 'Hindi makumpleto ang pagsusulit: {reason}',
 
   'automation.runs.table.caption': 'Mga kamakailang pagpapatakbo ng panuntunang ito.',
@@ -714,7 +714,7 @@ export const webAnalyticsMessages = {
     'Gawing mga draft o naka-iskedyul na mga post ang isang feed, na may parehong pagpapatunay at pag-apruba sa anumang bagay na isinulat mo mismo.',
   'automation.rss.empty': 'Wala pang feeds',
   'automation.rss.emptyBody':
-    'Magdagdag ng feed at tinitingnan ito ng Relay sa isang iskedyul. Ang bawat bagong item ay nagiging draft, nakaiskedyul na post o kahilingan sa pag-apruba, alinman ang pipiliin mo.',
+    'Magdagdag ng feed at tinitingnan ito ng Post Array sa isang iskedyul. Ang bawat bagong item ay nagiging draft, nakaiskedyul na post o kahilingan sa pag-apruba, alinman ang pipiliin mo.',
   'automation.rss.emptyExample':
     'Halimbawa: ang Acme blog feed ay lumilikha ng draft para sa X at LinkedIn sa bawat oras na ma-publish ang isang artikulo, at naghihintay para sa isang approver.',
   'automation.rss.table.caption': 'Pinapakain ang mga poll sa workspace na ito.',
@@ -731,7 +731,7 @@ export const webAnalyticsMessages = {
   'automation.rss.stepOf': 'Hakbang {current} ng {total}',
 
   'automation.rss.urlHelp':
-    'Kinukuha ng Relay ang feed mula sa aming mga server, hindi mula sa iyong browser. Ang mga address ng pribadong network ay tinanggihan.',
+    'Kinukuha ng Post Array ang feed mula sa aming mga server, hindi mula sa iyong browser. Ang mga address ng pribadong network ay tinanggihan.',
   'automation.rss.validateAction': 'Suriin ang feed na ito',
   'automation.rss.validateFailed': 'Ang address na iyon ay hindi nagbalik ng nababasang feed',
   'automation.rss.validateFailedReason': 'Ano ang nabawi namin: {reason}',
@@ -744,7 +744,7 @@ export const webAnalyticsMessages = {
   'automation.rss.previewNoImage': 'Walang larawan sa item na ito',
   'automation.rss.previewImageAlt': 'Larawan mula sa feed item {title}',
   'automation.rss.previewNoDate':
-    'Walang timestamp ang item na ito, kaya ginagamit ng Relay ang oras na una nitong nakita.',
+    'Walang timestamp ang item na ito, kaya ginagamit ng Post Array ang oras na una nitong nakita.',
   'automation.rss.previewFieldsTitle': 'Mga field na ibinibigay ng feed na ito',
   'automation.rss.previewFieldMissing': 'Wala sa feed na ito',
 
@@ -772,7 +772,7 @@ export const webAnalyticsMessages = {
   'automation.rss.templatePreview': 'I-preview gamit ang pinakabagong item',
   'automation.rss.adaptWithAi': 'Iangkop ang teksto para sa bawat target',
   'automation.rss.adaptHelp':
-    'Ang mga salita ay muling isinulat upang magkasya sa bawat platform at ipinapakita bilang isang pagkakaiba na tinatanggap o tinatanggihan mo. Ang media ay nagmula sa feed item. Ang Relay ay hindi bumubuo ng mga larawan.',
+    'Ang mga salita ay muling isinulat upang magkasya sa bawat platform at ipinapakita bilang isang pagkakaiba na tinatanggap o tinatanggihan mo. Ang media ay nagmula sa feed item. Ang Post Array ay hindi bumubuo ng mga larawan.',
   'automation.rss.noImageGeneration':
     'Kung walang larawan ang isang feed item, lalabas ang post nang walang larawan.',
   'automation.rss.imageFromFeed': 'Gamitin ang larawan mula sa feed item kapag mayroon na ito',
@@ -810,13 +810,13 @@ export const webAnalyticsMessages = {
   'automation.rss.resumeFeed': 'Ipagpatuloy ang feed na ito',
   'automation.rss.deleteTitle': 'Alisin {title}?',
   'automation.rss.deleteBody':
-    'Huminto ang Relay sa pagsuri sa feed na ito. Ang mga draft at post na nagawa na nito ay mananatiling eksakto kung ano ang mga ito.',
+    'Huminto ang Post Array sa pagsuri sa feed na ito. Ang mga draft at post na nagawa na nito ay mananatiling eksakto kung ano ang mga ito.',
   'automation.rss.errorTitle': 'Hindi mabasa ang feed na ito',
   'automation.rss.errorBody':
-    'Ang Relay ay patuloy na tumitingin sa normal na iskedyul. Walang nai-publish mula sa isang bahagyang tugon.',
+    'Ang Post Array ay patuloy na tumitingin sa normal na iskedyul. Walang nai-publish mula sa isang bahagyang tugon.',
 
   /* ----------------------------------------------------------------------
-     What Relay refuses to automate
+     What Post Array refuses to automate
      ---------------------------------------------------------------------- */
   'automation.refuse.title': 'Hindi available sa anumang panuntunan',
   'automation.refuse.body':

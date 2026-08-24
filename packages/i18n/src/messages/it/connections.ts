@@ -38,7 +38,7 @@ export const connectionMessages = {
   'connection.permissions.granted': 'Concesso',
   'connection.permissions.missing': 'Non concesso',
   'connection.permissions.explainBeforeOAuth':
-    'Relay chiederà a {provider} queste autorizzazioni. Puoi disconnetterti in qualsiasi momento.',
+    'Post Array chiederà a {provider} queste autorizzazioni. Puoi disconnetterti in qualsiasi momento.',
   'connection.permissions.whyNeeded': 'Perché questo è necessario',
 
   'connection.reconnect.title': 'Ricollegare {account}',
@@ -93,11 +93,11 @@ export const connectionMessages = {
   'capability.level.beta': 'Beta',
   'capability.level.unknown': 'Non disponibile',
   'capability.explain.supported':
-    'Relay può eseguire questa operazione per questo account oggi stesso.',
+    'Post Array può eseguire questa operazione per questo account oggi stesso.',
   'capability.explain.unsupported':
     '{provider} non lo offre tramite la sua API ufficiale, quindi nessuno strumento può farlo in sicurezza.',
   'capability.explain.not_implemented':
-    '{provider} lo offre, ma Relay non lo ha ancora creato. È sulla roadmap del connettore.',
+    '{provider} lo offre, ma Post Array non lo ha ancora creato. È sulla roadmap del connettore.',
   'capability.explain.requires_review':
     "{provider} lo concede solo dopo aver esaminato l'app o l'account. Rimane non disponibile finché la revisione non viene superata.",
   'capability.explain.beta':

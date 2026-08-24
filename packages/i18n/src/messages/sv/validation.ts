@@ -64,7 +64,7 @@ export const validationMessages = {
     'Ett återkommande inlägg behöver ett slutdatum eller ett antal upprepningar.',
   'validation.schedule_in_past.message': 'Den tiden har gått i {timeZone}.',
   'validation.schedule_too_far_ahead.message':
-    'Detta är längre fram än {limit} framåtblicken som ställts in för denna referens.',
+    'Inlägg kan schemaläggas upp till {limit} i förväg, vilket också är så länge uppladdade medier sparas.',
   'validation.schedule_outside_quiet_hours.message':
     'Detta faller inom de tysta timmar som är inställda på {project}.',
   'validation.duplicate_within_window.message':

@@ -18,6 +18,11 @@ export const BILLING_MESSAGE_KEYS = Object.freeze({
   paymentRequired: 'error.payment_required.message',
   pastDue: 'error.subscription_past_due.message',
   trialExpired: 'error.trial_expired.message',
+  // Free posts spent. Deliberately its own key rather than `paymentRequired`
+  // or `quotaExceeded`: it is neither a failed charge nor an abuse limit, and
+  // the reader needs to be sent to the plan page, not to a card form or a
+  // support article.
+  postCreditsExhausted: 'error.post_credits_exhausted.message',
   entitlementMissing: 'error.entitlement_missing.message',
   channelLimitReached: 'error.channel_limit_reached.message',
   projectLimitReached: 'error.project_limit_reached.message',

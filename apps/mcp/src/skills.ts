@@ -32,10 +32,10 @@ Always in this order. Skipping a step is how an agent publishes something nobody
 1. \`list_accounts\` to see which accounts exist and whether they are healthy.
 2. \`get_capabilities\` for each account you intend to use. Character limits,
    media rules and cost differ per account, and \`unsupported\` (the platform
-   does not offer it) is not the same as \`not_implemented\` (Relay has not built
+   does not offer it) is not the same as \`not_implemented\` (Post Array has not built
    it). Never treat them as the same.
 3. \`draft_post\` with one master body and one entry per target account. Use
-   Relay connection ids. A raw platform handle is never accepted.
+   Post Array connection ids. A raw platform handle is never accepted.
 4. \`validate_post\`. Fix every \`error\` before going further. A \`warning\` is a
    judgement call; explain it to the person rather than silently ignoring it.
 5. \`preview_post\` for each target and show the person what will actually
@@ -78,8 +78,8 @@ asked for one of those, say it is not available and why.`;
 
 const CONFIGURATION = `## Configuration
 
-The endpoint is the remote Streamable HTTP MCP URL for your Relay deployment,
-and authorization is OAuth against Relay's own issuer. Your client performs the
+The endpoint is the remote Streamable HTTP MCP URL for your Post Array deployment,
+and authorization is OAuth against Post Array's own issuer. Your client performs the
 OAuth flow; you never paste a token into this file, and this file never contains
 one.`;
 
@@ -105,7 +105,7 @@ function body(host: SkillHost, title: string, intro: string): string {
 }
 
 const DESCRIPTION =
-  'Draft, validate, preview, approve, schedule and publish social posts through Relay, with receipts and the same approval policy as the app.';
+  'Draft, validate, preview, approve, schedule and publish social posts through Post Array, with receipts and the same approval policy as the app.';
 
 export const SKILLS: readonly SkillDefinition[] = [
   {
@@ -115,8 +115,8 @@ export const SKILLS: readonly SkillDefinition[] = [
     path: 'claude-code/relay-publishing/SKILL.md',
     body: body(
       'claude-code',
-      'Relay publishing',
-      'Use this skill when the user asks to draft, review, schedule or publish a social post, or to look at what is scheduled or how a post performed. It calls the Relay MCP server, which enforces the same permissions and approval policy as the Relay app.',
+      'Post Array publishing',
+      'Use this skill when the user asks to draft, review, schedule or publish a social post, or to look at what is scheduled or how a post performed. It calls the Post Array MCP server, which enforces the same permissions and approval policy as the Post Array app.',
     ),
   },
   {
@@ -126,8 +126,8 @@ export const SKILLS: readonly SkillDefinition[] = [
     path: 'codex/relay-publishing.md',
     body: body(
       'codex',
-      'Relay publishing',
-      'Add the Relay MCP server to your Codex configuration as a remote HTTP server with OAuth, then follow this workflow whenever the task involves social publishing.',
+      'Post Array publishing',
+      'Add the Post Array MCP server to your Codex configuration as a remote HTTP server with OAuth, then follow this workflow whenever the task involves social publishing.',
     ),
   },
   {
@@ -137,8 +137,8 @@ export const SKILLS: readonly SkillDefinition[] = [
     path: 'hermes/relay-publishing.md',
     body: body(
       'hermes',
-      'Relay publishing',
-      'Connect the Relay MCP server over HTTP, then follow this workflow. Relay is authoritative for approvals: a Hermes scheduled task cannot pre-approve a publication on the user’s behalf.',
+      'Post Array publishing',
+      'Connect the Post Array MCP server over HTTP, then follow this workflow. Post Array is authoritative for approvals: a Hermes scheduled task cannot pre-approve a publication on the user’s behalf.',
     ),
   },
 ];

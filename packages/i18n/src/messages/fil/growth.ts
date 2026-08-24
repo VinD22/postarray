@@ -75,7 +75,7 @@ export const growthMessages = {
   'growth.ugc.review': 'Suriin ang pamantayan',
   'growth.ugc.reuse': 'Muling gamitin ang plano',
   'growth.ugc.boundary':
-    'Nagpaplano ito ng campaign na pinapatakbo mo kasama ng mga totoong tao. Ang Relay ay hindi nakakahanap ng mga creator, makipag-ugnayan sa kanila o magsulat ng mga testimonial.',
+    'Nagpaplano ito ng campaign na pinapatakbo mo kasama ng mga totoong tao. Ang Post Array ay hindi nakakahanap ng mga creator, makipag-ugnayan sa kanila o magsulat ng mga testimonial.',
 
   'growth.opportunities.title': 'Mga pagkakataon sa promosyon',
   'growth.opportunities.help':
@@ -97,7 +97,7 @@ export const growthMessages = {
   'growth.opportunities.noGuarantee':
     'Ang isang tugma ay isang mungkahi. Ito ay hindi isang ipinangakong link, isang pagkakalagay o isang pagraranggo.',
   'growth.opportunities.boundary':
-    'Ang Relay ay hindi nagsusumite ng mga form, gumagawa ng mga account, email contact, nagpo-post sa mga komunidad o bumili ng mga link.',
+    'Ang Post Array ay hindi nagsusumite ng mga form, gumagawa ng mga account, email contact, nagpo-post sa mga komunidad o bumili ng mga link.',
   'growth.opportunities.empty':
     'Wala pang na-verify na pagkakataon na tumutugma sa profile na ito. Ang isang walang laman na listahan ay mas mahusay kaysa sa isang imbento.',
 
@@ -108,7 +108,7 @@ export const growthMessages = {
   'growth.tools.whyItFits': 'Bakit ito magkasya',
   'growth.tools.limitations': 'Mga Limitasyon',
   'growth.tools.requiredSkills': 'Mga kasanayang kailangan mo',
-  'growth.tools.handoff': 'Paano bumalik ang output sa Relay',
+  'growth.tools.handoff': 'Paano bumalik ang output sa Post Array',
   'growth.tools.rights': 'Mga karapatan at tala sa privacy',
   'growth.tools.priceChecked': 'Huling nasuri ang presyo {date}',
   'growth.tools.affiliateDisclosure':

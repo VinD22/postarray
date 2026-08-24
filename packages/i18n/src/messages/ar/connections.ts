@@ -37,7 +37,7 @@ export const connectionMessages = {
   'connection.permissions.granted': 'منح',
   'connection.permissions.missing': 'غير ممنوحة',
   'connection.permissions.explainBeforeOAuth':
-    'Relay سوف يطلب {provider} لهذه الأذونات. يمكنك قطع الاتصال في أي وقت.',
+    'Post Array سوف يطلب {provider} لهذه الأذونات. يمكنك قطع الاتصال في أي وقت.',
   'connection.permissions.whyNeeded': 'لماذا هذا مطلوب',
 
   'connection.reconnect.title': 'أعد الاتصال {account}',
@@ -88,11 +88,11 @@ export const connectionMessages = {
   'capability.level.requires_review': 'يحتاج إلى مراجعة المنصة',
   'capability.level.beta': 'بيتا',
   'capability.level.unknown': 'غير متاح',
-  'capability.explain.supported': 'Relay يمكنه القيام بذلك لهذا الحساب اليوم.',
+  'capability.explain.supported': 'Post Array يمكنه القيام بذلك لهذا الحساب اليوم.',
   'capability.explain.unsupported':
     '{provider} لا يقدم هذا من خلال واجهة برمجة التطبيقات الرسمية الخاصة به، لذلك لا توجد أداة يمكنها القيام بذلك بأمان.',
   'capability.explain.not_implemented':
-    '{provider} يقدم هذا، لكن Relay لم يقم ببنائه بعد. إنه موجود على خريطة طريق الموصل.',
+    '{provider} يقدم هذا، لكن Post Array لم يقم ببنائه بعد. إنه موجود على خريطة طريق الموصل.',
   'capability.explain.requires_review':
     '{provider} لا يمنح هذا إلا بعد مراجعة التطبيق أو الحساب. ويظل غير متاح حتى تتم هذه المراجعة.',
   'capability.explain.beta':

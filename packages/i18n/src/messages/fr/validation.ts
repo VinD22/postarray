@@ -64,7 +64,7 @@ export const validationMessages = {
     'Une publication répétitive nécessite une date de fin ou un certain nombre de répétitions.',
   'validation.schedule_in_past.message': 'Ce temps est passé {timeZone}.',
   'validation.schedule_too_far_ahead.message':
-    "C'est plus en avance que le {limit} anticipez ce titre.",
+    'Les publications peuvent être programmées jusqu\'à {limit} à l\'avance, ce qui correspond aussi à la durée de conservation des médias importés.',
   'validation.schedule_outside_quiet_hours.message':
     'Cela tombe dans les heures calmes fixées pour {project}.',
   'validation.duplicate_within_window.message':

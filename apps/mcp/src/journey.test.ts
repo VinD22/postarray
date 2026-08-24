@@ -158,7 +158,7 @@ describe('an external MCP client, end to end', () => {
     expect(client.services.state.receiptCount).toBe(0);
 
     const confirmationId = asked['confirmation_id'] as string;
-    // Approval happens in Relay, by a person. No tool can reach this call.
+    // Approval happens in Post Array, by a person. No tool can reach this call.
     await client.confirmations.approve({ confirmationId, approvedBy: 'user_01' });
 
     const published = dataOf(

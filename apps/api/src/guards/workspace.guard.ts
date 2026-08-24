@@ -28,7 +28,7 @@ export const WORKSPACE_HEADER = API_HEADERS.workspaceId;
  *
  * Selection order, first match wins:
  *
- * 1. The `X-Relay-Workspace-Id` header.
+ * 1. The `X-Post Array-Workspace-Id` header.
  * 2. A `workspaceId` route parameter.
  * 3. The credential's single workspace, when it has exactly one. A bearer token
  *    and an API key are always bound to one workspace, so programmatic callers

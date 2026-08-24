@@ -87,7 +87,7 @@ export const automationMessages = {
   'automation.rules.versionHistory': '版本历史记录',
   'automation.notPermitted.title': '无法创建此规则',
   'automation.notPermitted.body':
-    'Relay 不会自动点赞、关注、主动回复或消息、重复批量发帖或任何依赖于浏览器自动化的操作。 {provider} 禁止这样做，我们也是如此。',
+    'Post Array 不会自动点赞、关注、主动回复或消息、重复批量发帖或任何依赖于浏览器自动化的操作。 {provider} 禁止这样做，我们也是如此。',
   'automation.notPermitted.providerCapability':
     '{provider} 不通过其官方 API 提供 {action}，因此无法选择此操作。',
   'automation.rss.title': 'RSS 自动发布',
@@ -98,7 +98,7 @@ export const automationMessages = {
   'automation.rss.markSeen': '将当前最新项目视为已查看',
   'automation.rss.targets': '发布到',
   'automation.rss.template': '文本模板',
-  'automation.rss.templateHelp': '使用您映射的 Feed 字段。 Relay 不会为 Feed 项目生成图像。',
+  'automation.rss.templateHelp': '使用您映射的 Feed 字段。 Post Array 不会为 Feed 项目生成图像。',
   'automation.rss.policy.draft': '创建草稿',
   'automation.rss.policy.approval': '创建草稿并请求批准',
   'automation.rss.policy.nextSlot': '安排在下一个空闲时段',

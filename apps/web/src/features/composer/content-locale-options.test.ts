@@ -6,8 +6,8 @@ import { COMPOSER_CONTENT_LOCALES, contentLocaleLabel } from './content-locale-o
 describe('composer content locale options', () => {
   it('offers every public locale and no retired or planned locale', () => {
     expect(COMPOSER_CONTENT_LOCALES).toEqual(PUBLIC_LOCALE_CODES);
-    expect(COMPOSER_CONTENT_LOCALES).toHaveLength(20);
-    expect(new Set(COMPOSER_CONTENT_LOCALES).size).toBe(20);
+    expect(COMPOSER_CONTENT_LOCALES).toHaveLength(PUBLIC_LOCALE_CODES.length);
+    expect(new Set(COMPOSER_CONTENT_LOCALES).size).toBe(PUBLIC_LOCALE_CODES.length);
   });
 
   it('renders the locale endonym instead of exposing a raw locale code', () => {

@@ -3,7 +3,6 @@ export const authMessages = {
   'auth.signIn.title': 'Zaloguj się',
   'auth.signIn.subtitle': 'Opublikuj, zatwierdź i zobacz dokładnie, co się stało.',
   'auth.signUp.title': 'Utwórz swoje konto',
-  'auth.signUp.subtitle': 'Siedem dni z każdą funkcją. Termin płatności: 0 USD na dzisiaj.',
   'auth.continueWithGoogle': 'Kontynuuj korzystanie z Google',
   'auth.continueWithFacebook': 'Kontynuuj na Facebooku',
   'auth.orUseEmail': 'Lub użyj swojego adresu e-mail',

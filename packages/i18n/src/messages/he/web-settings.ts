@@ -216,7 +216,7 @@ export const webSettingsMessages = withHebrewPluralForms({
   'settings.ui.security.grantScopes': 'ניתנו הרשאות',
   'settings.ui.security.socialPermissionsTitle': 'הרשאות חשבון חברתי',
   'settings.ui.security.socialPermissionsBody':
-    'מה כל חשבון מחובר איפשר ל-Relay לעשות, מתוך תמונת המצב של היכולת שצולמה בזמן החיבור.',
+    'מה כל חשבון מחובר איפשר ל-Post Array לעשות, מתוך תמונת המצב של היכולת שצולמה בזמן החיבור.',
   'settings.ui.security.viewInSection': 'נהל ב-{section}',
   'settings.ui.security.emptySessions': 'רק הפעלה זו מחוברת.',
   'settings.ui.security.emptyGrants':
@@ -397,7 +397,7 @@ export const webSettingsMessages = withHebrewPluralForms({
     'רשום אפליקציה כדי שאנשים אחרים יוכלו להעניק לה גישה לסביבת העבודה שלהם. לכל אפליקציה יש זהות משלה, רשימת אישורים להפניה מחדש משלה ומסלול ביקורת משלה.',
   'developer.ui.apps.emptyTitle': 'לא רשומות אפליקציות',
   'developer.ui.apps.emptyBody':
-    'רשום אפליקציה כאשר מוצר אחר צריך לפעול בשמו של משתמש Relay. עבור אוטומציה משלך, השתמש בחשבון שירות במקום זאת.',
+    'רשום אפליקציה כאשר מוצר אחר צריך לפעול בשמו של משתמש Post Array. עבור אוטומציה משלך, השתמש בחשבון שירות במקום זאת.',
   'developer.ui.apps.emptyExample':
     'דוגמה: "Acme Publisher", לקוח סודי, הפניה מחדש https://acme.example/oauth/callback, scopes accounts:read ו-drafts:write.',
   'developer.ui.apps.typeHelp':
@@ -421,7 +421,7 @@ export const webSettingsMessages = withHebrewPluralForms({
   'developer.ui.apps.scopeGroupHelp.read':
     'אלה מאפשרים לאפליקציה להסתכל על נתונים. שום דבר לא משתנה.',
   'developer.ui.apps.scopeGroupHelp.reversible':
-    'אלה מאפשרים לאפליקציה ליצור או לערוך דברים בתוך Relay. שום דבר לא מגיע לפלטפורמה.',
+    'אלה מאפשרים לאפליקציה ליצור או לערוך דברים בתוך Post Array. שום דבר לא מגיע לפלטפורמה.',
   'developer.ui.apps.scopeGroupHelp.consequential':
     'אלה יכולים לגרום לפוסט בחשבון אמיתי, או לשנות מי יכול להגיע לחשבונות שלך. הם תמיד מופיעים בנפרד ולעולם אינם מצורפים.',
   'developer.ui.apps.noBundling': 'אין היקף גישה משולב. חיוב וניהול חיבור תמיד מתבקשים לפי השם.',
@@ -626,8 +626,6 @@ export const webSettingsMessages = withHebrewPluralForms({
   'billing.ui.canceledNotice': 'מנוי זה בוטל.',
   'billing.ui.resume': 'התחל שוב את המנוי',
   'billing.ui.noSubscriptionTitle': 'אין מנוי בסביבת העבודה הזו',
-  'billing.ui.noSubscriptionBody':
-    'התחל את תקופת הניסיון של שבעה ימים כדי לפרסם. Polar אוספת אמצעי תשלום ולא גובה כלום היום.',
   'billing.ui.noSubscriptionExample':
     'חודשי הוא $29. שנתי הוא $300, שהם $25 לחודש מחויב מדי שנה. חסוך $48 לשנה.',
   'billing.ui.overChannelLimitAction': 'סקור ערוצים מחוברים',
@@ -732,7 +730,7 @@ export const webSettingsMessages = withHebrewPluralForms({
   'growth.ui.ugc.incentiveDisclosure':
     'יש לחשוף תמריץ על כל פוסט הנובע ממנו, על ידך ועל ידי המשתתף.',
   'growth.ui.ugc.honesty':
-    'זה מתכנן קמפיין שאתה מנהל עם אנשים אמיתיים. Relay לא מוצא יוצרים, יוצר איתם קשר, כותב המלצות או יוצר תוכן של לקוחות.',
+    'זה מתכנן קמפיין שאתה מנהל עם אנשים אמיתיים. Post Array לא מוצא יוצרים, יוצר איתם קשר, כותב המלצות או יוצר תוכן של לקוחות.',
   'growth.ui.opportunities.caption': 'הזדמנויות מאומתות מהקטלוג, מדורגות לפי התאמה לפרופיל שלך',
   'growth.ui.opportunities.column.opportunity': 'הזדמנות',
   'growth.ui.opportunities.column.type': 'הקלד',
@@ -770,7 +768,7 @@ export const webSettingsMessages = withHebrewPluralForms({
   'growth.ui.tools.emptyBody':
     'כל ערך צריך מחיר מסומן, תנאי זכויות מסומנים והגבלה בשם לפני שהוא מופיע כאן.',
   'growth.ui.tools.emptyExample':
-    'ערך אומר למה זה הכי מתאים, למה זה מתאים לתוכנית שלך, מה זה לא יכול לעשות, הכישורים שהוא צריך, איך הפלט חוזר ל-Relay ומתי המחיר נבדק לאחרונה.',
+    'ערך אומר למה זה הכי מתאים, למה זה מתאים לתוכנית שלך, מה זה לא יכול לעשות, הכישורים שהוא צריך, איך הפלט חוזר ל-Post Array ומתי המחיר נבדק לאחרונה.',
   'growth.ui.tools.openSite': 'פתח את האתר הרשמי עבור {name}',
   'growth.ui.tools.stale': 'עבר את תאריך הביקורת שלו. לא נכלל בתוכניות שנוצרו.',
   'growth.ui.item.explainTitle': 'למה זה הוצע',

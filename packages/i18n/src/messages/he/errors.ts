@@ -45,6 +45,10 @@ export const errorMessages = withHebrewPluralForms({
   'error.subscription_past_due.action': 'עדכן את אמצעי התשלום בפורטל Polar.',
   'error.trial_expired.message': 'הניסיון הסתיים בתאריך {date}.',
   'error.trial_expired.action': 'התחל את המנוי כדי להמשיך לפרסם.',
+  'error.post_credits_exhausted.message':
+    'סביבת העבודה הזו ניצלה את כל הפוסטים החינמיים שלה. כל השאר ממשיך לעבוד.',
+  'error.post_credits_exhausted.action':
+    'בחרו תוכנית כדי להמשיך לפרסם. החשבונות שלכם נשארים מחוברים והטיוטות והתזמונים נשמרים.',
   'error.entitlement_missing.message': 'לסביבת העבודה הזו אין גישה לתכונה זו.',
   'error.entitlement_missing.action': 'בדוק את הגדרות החיוב, או פנה לתמיכה.',
   'error.channel_limit_reached.message': 'סביבת העבודה הזו כבר משתמשת בכל הערוצים הפעילים {limit}.',

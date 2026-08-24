@@ -30,7 +30,7 @@ import { useValueFormat } from './use-value-format';
  * and clicked often, and one number cannot hold both.
  *
  * The tracked link comparison at the foot is the other rule this screen exists
- * to enforce: when a provider reports link clicks and Relay also redirected the
+ * to enforce: when a provider reports link clicks and Post Array also redirected the
  * link, both numbers are shown, both are labelled with what they count, and
  * neither is presented as a correction of the other.
  */
@@ -39,7 +39,7 @@ export interface PostMetricsScreenProps {
   readonly contentItemId: string;
   /** Additional readings beyond the ranked one, grouped on this screen. */
   readonly readings?: readonly MetricReading[];
-  /** Provider native link clicks against Relay redirect clicks, when both exist. */
+  /** Provider native link clicks against Post Array redirect clicks, when both exist. */
   readonly linkComparison?: {
     readonly providerValue: string;
     readonly relayValue: string;

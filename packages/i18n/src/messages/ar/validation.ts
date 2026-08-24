@@ -60,7 +60,7 @@ export const validationMessages = {
     'يحتاج المنشور المتكرر إلى تاريخ انتهاء أو عدد من التكرارات.',
   'validation.schedule_in_past.message': 'لقد مر ذلك الوقت في {timeZone}.',
   'validation.schedule_too_far_ahead.message':
-    'يعد هذا متقدمًا أكثر من {limit} التطلع إلى المستقبل المحدد لبيانات الاعتماد هذه.',
+    'يمكن جدولة المنشورات حتى {limit} مقدمًا، وهي أيضًا مدة الاحتفاظ بالوسائط المرفوعة.',
   'validation.schedule_outside_quiet_hours.message':
     'يقع هذا ضمن ساعات الهدوء المحددة لـ {project}.',
   'validation.duplicate_within_window.message':

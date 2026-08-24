@@ -267,7 +267,7 @@ export const webSettingsMessages = {
   'settings.ui.security.grantScopes': 'Verilen izinler',
   'settings.ui.security.socialPermissionsTitle': 'Sosyal hesap izinleri',
   'settings.ui.security.socialPermissionsBody':
-    "Bağlantı zamanında alınan yetenek anlık görüntüsünden, her bağlı hesabın Relay'in yapmasına izin verdiği şey.",
+    "Bağlantı zamanında alınan yetenek anlık görüntüsünden, her bağlı hesabın Post Array'in yapmasına izin verdiği şey.",
   'settings.ui.security.viewInSection': "{section}'da yönetin",
   'settings.ui.security.emptySessions': 'Yalnızca bu oturumda oturum açıldı.',
   'settings.ui.security.emptyGrants':
@@ -306,7 +306,7 @@ export const webSettingsMessages = {
     'Choose the smallest thing that solves your problem. Each option below says what survives.',
   'settings.ui.data.deleteConnection': 'Revoke one social connection',
   'settings.ui.data.deleteConnectionHelp':
-    'Removes Relay access to that account. The workspace, its content and its receipts stay.',
+    'Removes Post Array access to that account. The workspace, its content and its receipts stay.',
   'settings.ui.data.deleteProject': 'Bir projeyi arşivle',
   'settings.ui.data.deleteProjectHelp':
     'Projeyi, kurallarını ve terim sözlüğünü kaldırır. Bu proje altında yayınlanan içerik makbuzlarını korur.',
@@ -506,7 +506,7 @@ export const webSettingsMessages = {
   'developer.ui.apps.scopeGroupHelp.read':
     'Bunlar uygulamanın verilere bakmasına izin verir. Hiçbir şey değişmiyor.',
   'developer.ui.apps.scopeGroupHelp.reversible':
-    'Bunlar, uygulamanın Relay içinde bir şeyler oluşturmasına veya düzenlemesine olanak tanır. Hiçbir şey bir platforma ulaşmıyor.',
+    'Bunlar, uygulamanın Post Array içinde bir şeyler oluşturmasına veya düzenlemesine olanak tanır. Hiçbir şey bir platforma ulaşmıyor.',
   'developer.ui.apps.scopeGroupHelp.consequential':
     'Bunlar gerçek bir hesapta paylaşım yapılmasına neden olabilir veya hesaplarınıza kimlerin erişebileceğini değiştirebilir. Her zaman ayrı olarak listelenirler ve asla paketlenmezler.',
   'developer.ui.apps.noBundling':
@@ -666,7 +666,7 @@ export const webSettingsMessages = {
   'billing.ui.allowanceMetered':
     'X and some other providers charge per operation. Those charges are passed through at cost and are not part of the plan price.',
   'billing.ui.allowanceNoMedia':
-    'Image generation and video generation are not included and are not sold. Relay does not generate media.',
+    'Image generation and video generation are not included and are not sold. Post Array does not generate media.',
   'billing.ui.readFairUse': 'Read the fair use policy',
   'billing.ui.readMeteredPolicy': 'Read how metered usage is billed',
   'billing.ui.usageCaption': 'Metered provider usage this period, billed at cost',
@@ -726,8 +726,6 @@ export const webSettingsMessages = {
   'billing.ui.canceledNotice': 'This subscription is canceled.',
   'billing.ui.resume': 'Start the subscription again',
   'billing.ui.noSubscriptionTitle': 'No subscription on this workspace',
-  'billing.ui.noSubscriptionBody':
-    'Start the seven day trial to publish. Polar collects a payment method and charges nothing today.',
   'billing.ui.noSubscriptionExample':
     'Monthly is $29. Annual is $300, which is $25/month billed annually. Save $48/year.',
   'billing.ui.overChannelLimitAction': 'Review connected channels',
@@ -846,7 +844,7 @@ export const webSettingsMessages = {
   'growth.ui.ugc.incentiveDisclosure':
     'Bir teşvik, sizin ve katılımcının, bundan doğan her gönderide belirtilmelidir.',
   'growth.ui.ugc.honesty':
-    'Bu, gerçek kişilerle yürüttüğünüz bir kampanyayı planlar. Relay içerik üreticisi bulmaz, onlarla iletişime geçmez, referans yazmaz veya müşteri içeriği oluşturmaz.',
+    'Bu, gerçek kişilerle yürüttüğünüz bir kampanyayı planlar. Post Array içerik üreticisi bulmaz, onlarla iletişime geçmez, referans yazmaz veya müşteri içeriği oluşturmaz.',
 
   'growth.ui.opportunities.caption':
     'Profilinize uygun olarak sıralanmış, katalogdan doğrulanmış fırsatlar',
@@ -869,7 +867,7 @@ export const webSettingsMessages = {
   'growth.ui.opportunities.prepareRules': 'Alıntılanan kuralları',
   'growth.ui.opportunities.prepareChecklist': 'Neler hazır olmalı',
   'growth.ui.opportunities.prepareManual':
-    'Bunu kendi sitelerine kendiniz gönderiyorsunuz. Relay form doldurmaz, hesap oluşturmaz veya kimseye e-posta göndermez.',
+    'Bunu kendi sitelerine kendiniz gönderiyorsunuz. Post Array form doldurmaz, hesap oluşturmaz veya kimseye e-posta göndermez.',
   'growth.ui.opportunities.pitchTitle': 'Satış konuşması taslağı',
   'growth.ui.opportunities.pitchHelp':
     'Göndermeden önce düzenleyin. Yalnızca onayladığınız gerçekleri kullanır.',
@@ -887,7 +885,7 @@ export const webSettingsMessages = {
   'growth.ui.tools.emptyBody':
     'Her girişin burada görünmeden önce kontrol edilmiş bir fiyata, kontrol edilmiş hak koşullarına ve adlandırılmış bir sınırlamaya ihtiyacı vardır.',
   'growth.ui.tools.emptyExample':
-    "Bir giriş, bunun ne için en iyi olduğunu, neden planınıza uyduğunu, neyi yapamayacağını, ihtiyaç duyduğu becerileri, çıktının Relay'e nasıl geri döndüğünü ve fiyatın en son ne zaman kontrol edildiğini belirtir.",
+    "Bir giriş, bunun ne için en iyi olduğunu, neden planınıza uyduğunu, neyi yapamayacağını, ihtiyaç duyduğu becerileri, çıktının Post Array'e nasıl geri döndüğünü ve fiyatın en son ne zaman kontrol edildiğini belirtir.",
   'growth.ui.tools.openSite': '{name} için resmi siteyi açın',
   'growth.ui.tools.stale': 'İnceleme tarihi geçmiş. Oluşturulan planlardan hariç tutuldu.',
 

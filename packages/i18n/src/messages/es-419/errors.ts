@@ -6,7 +6,7 @@ export const errorMessages = {
   'error.internal.message': 'Este es un problema de nuestro lado, no de su contenido.',
   'error.internal.action':
     'Tu trabajo está guardado. Hemos sido alertados. Inténtalo de nuevo en unos minutos.',
-  'error.not_implemented.message': 'Relay aún no ha creado esto.',
+  'error.not_implemented.message': 'Post Array aún no ha creado esto.',
   'error.not_implemented.action': 'Siga el registro de cambios para saber cuándo se envía.',
   'error.offline.message': 'Estás desconectado.',
   'error.offline.action':
@@ -56,6 +56,10 @@ export const errorMessages = {
   'error.subscription_past_due.action': 'Actualiza el método de pago en el portal Polar.',
   'error.trial_expired.message': 'El juicio terminó el {date}.',
   'error.trial_expired.action': 'Inicia la suscripción para continuar publicando.',
+  'error.post_credits_exhausted.message':
+    'Este espacio de trabajo ya usó todas sus publicaciones gratuitas. Todo lo demás sigue funcionando.',
+  'error.post_credits_exhausted.action':
+    'Elige un plan para seguir publicando. Tus cuentas siguen conectadas y se conservan tus borradores y programaciones.',
   'error.entitlement_missing.message': 'Este espacio de trabajo no tiene acceso a esa función.',
   'error.entitlement_missing.action':
     'Verifique la configuración de facturación o comuníquese con el soporte.',
@@ -98,7 +102,7 @@ export const errorMessages = {
     'Las publicaciones se publican de forma privada hasta que se apruebe la revisión. Actualizamos esta página cuando cambia.',
   'error.capability_unsupported.message': '{provider}no ofrece esto a través de su API oficial.',
   'error.capability_unsupported.action': 'Utilice un formato que admita esta cuenta.',
-  'error.capability_not_implemented.message': 'Relay no ha creado esto para {provider}todavía.',
+  'error.capability_not_implemented.message': 'Post Array no ha creado esto para {provider}todavía.',
   'error.capability_not_implemented.action':
     'La página de capacidades enumera lo que cada conector puede hacer hoy.',
   'error.capability_requires_review.message':

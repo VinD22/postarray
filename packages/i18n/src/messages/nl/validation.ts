@@ -65,7 +65,7 @@ export const validationMessages = {
     'Een herhalend bericht heeft een einddatum of een aantal herhalingen nodig.',
   'validation.schedule_in_past.message': 'Die tijd is verstreken in {timeZone}.',
   'validation.schedule_too_far_ahead.message':
-    'Dit is verder vooruit dan de {limit}-vooruitblik die voor dit certificaat is vastgesteld.',
+    'Berichten kunnen tot {limit} vooruit worden ingepland; zo lang worden geüploade media ook bewaard.',
   'validation.schedule_outside_quiet_hours.message':
     'Dit valt binnen de rustige uren die zijn vastgesteld voor {project}.',
   'validation.duplicate_within_window.message':

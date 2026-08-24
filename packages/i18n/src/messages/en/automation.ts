@@ -96,7 +96,7 @@ export const automationMessages = {
 
   'automation.notPermitted.title': 'This rule cannot be created',
   'automation.notPermitted.body':
-    'Relay does not automate likes, follows, unsolicited replies or messages, duplicate mass posting or anything that depends on browser automation. {provider} forbids it and so do we.',
+    'Post Array does not automate likes, follows, unsolicited replies or messages, duplicate mass posting or anything that depends on browser automation. {provider} forbids it and so do we.',
   'automation.notPermitted.providerCapability':
     '{provider} does not offer {action} through its official API, so this action is not selectable for it.',
 
@@ -109,7 +109,7 @@ export const automationMessages = {
   'automation.rss.targets': 'Publish to',
   'automation.rss.template': 'Text template',
   'automation.rss.templateHelp':
-    'Use the feed fields you mapped. Relay does not generate images for feed items.',
+    'Use the feed fields you mapped. Post Array does not generate images for feed items.',
   'automation.rss.policy.draft': 'Create a draft',
   'automation.rss.policy.approval': 'Create a draft and request approval',
   'automation.rss.policy.nextSlot': 'Schedule in the next free slot',

@@ -70,7 +70,7 @@ export const growthMessages = {
   'growth.ugc.review': '검토기준',
   'growth.ugc.reuse': '재사용 계획',
   'growth.ugc.boundary':
-    '이것은 실제 사람들과 함께 운영하는 캠페인을 계획합니다. Relay은 제작자를 찾거나 연락하거나 추천서를 작성하지 않습니다.',
+    '이것은 실제 사람들과 함께 운영하는 캠페인을 계획합니다. Post Array은 제작자를 찾거나 연락하거나 추천서를 작성하지 않습니다.',
   'growth.opportunities.title': '프로모션 기회',
   'growth.opportunities.help':
     '적합성에 따라 순위가 매겨진 카탈로그의 목록을 검토했습니다. 좋은 제출물을 준비하는 것이 작업입니다. 일괄 제출은 없습니다.',
@@ -91,7 +91,7 @@ export const growthMessages = {
   'growth.opportunities.noGuarantee':
     '일치는 제안입니다. 이는 약속된 링크, 게재위치 또는 순위가 아닙니다.',
   'growth.opportunities.boundary':
-    'Relay은 양식을 제출하거나, 계정을 생성하거나, 연락처에 이메일을 보내거나, 커뮤니티에 게시하거나, 링크를 구매하지 않습니다.',
+    'Post Array은 양식을 제출하거나, 계정을 생성하거나, 연락처에 이메일을 보내거나, 커뮤니티에 게시하거나, 링크를 구매하지 않습니다.',
   'growth.opportunities.empty':
     '아직 이 프로필과 일치하는 확인된 기회가 없습니다. 빈 목록이 새로 만든 목록보다 낫습니다.',
   'growth.tools.title': '툴 레이더',
@@ -101,7 +101,7 @@ export const growthMessages = {
   'growth.tools.whyItFits': '왜 맞는가',
   'growth.tools.limitations': '제한 사항',
   'growth.tools.requiredSkills': '필요한 기술',
-  'growth.tools.handoff': '출력이 Relay로 다시 들어오는 방법',
+  'growth.tools.handoff': '출력이 Post Array로 다시 들어오는 방법',
   'growth.tools.rights': '권리 및 개인 정보 보호 참고 사항',
   'growth.tools.priceChecked': '마지막으로 확인한 가격{date}',
   'growth.tools.affiliateDisclosure':

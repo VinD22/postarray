@@ -1,7 +1,7 @@
 import { z } from 'zod';
 
 /**
- * The environment contract for Relay.
+ * The environment contract for Post Array.
  *
  * Every variable in `.env.example` appears here exactly once, grouped the same
  * way the file groups them. Nothing in this module is strictly required: format

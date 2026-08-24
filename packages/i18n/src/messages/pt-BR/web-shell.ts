@@ -8,8 +8,8 @@
  */
 export const webShellMessages = {
   /* -- Document and shell chrome ----------------------------------------- */
-  'shell.appName': 'Relay',
-  'shell.documentTitle': '{page} · Relay',
+  'shell.appName': 'Post Array',
+  'shell.documentTitle': '{page} · Post Array',
   'shell.tagline': 'Uma mesa de publicação para pessoas e agentes.',
   'shell.menu.open': 'Abra o menu',
   'shell.menu.title': 'Menu',
@@ -30,7 +30,7 @@ export const webShellMessages = {
   'shell.demo.badge': 'Dados de demonstração',
   'shell.demo.title': 'Você está vendo dados de demonstração',
   'shell.demo.body':
-    'A API Relay não pode ser acessada neste navegador, portanto, as telas são preenchidas com um exemplo de espaço de trabalho propagado. Nada aqui está conectado a uma conta real e nada pode ser publicado.',
+    'A API Post Array não pode ser acessada neste navegador, portanto, as telas são preenchidas com um exemplo de espaço de trabalho propagado. Nada aqui está conectado a uma conta real e nada pode ser publicado.',
   'shell.demo.howToConnect':
     'Defina NEXT_PUBLIC_RELAY_API_URL e reinicie o aplicativo para usar dados ao vivo.',
 
@@ -146,7 +146,7 @@ export const webShellMessages = {
   'home.trial.manage': 'Gerenciar ou cancelar',
   'home.error.title': 'Home não pôde carregar',
   'home.error.body':
-    'Seu espaço de trabalho está intacto. Este é um problema ao atingir a API Relay.',
+    'Seu espaço de trabalho está intacto. Este é um problema ao atingir a API Post Array.',
 
   /* -- Auth: provider consent, alias sign in, honest failure ------------- */
   'auth.aside.title': 'Publique através de APIs oficiais e veja exatamente o que aconteceu.',
@@ -158,9 +158,9 @@ export const webShellMessages = {
     'O mesmo fluxo de trabalho do aplicativo web, API REST, MCP, CLI e webhooks.',
   'auth.provider.title': 'Antes de continuar',
   'auth.provider.google.access':
-    'Google compartilha seu nome, endereço de e-mail e foto do perfil com Relay. Relay não consegue ler seu Gmail, Drive ou Agenda.',
+    'Google compartilha seu nome, endereço de e-mail e foto do perfil com Post Array. Post Array não consegue ler seu Gmail, Drive ou Agenda.',
   'auth.provider.facebook.access':
-    'Facebook compartilha seu nome, endereço de e-mail e foto do perfil com Relay. Conectar uma página para publicar é uma etapa separada que você aprovará mais tarde.',
+    'Facebook compartilha seu nome, endereço de e-mail e foto do perfil com Post Array. Conectar uma página para publicar é uma etapa separada que você aprovará mais tarde.',
   'auth.provider.note': 'Isso faz seu login. Não conecta uma conta para publicar.',
   'auth.continueWithEmail': 'Continue com e-mail',
   'auth.method.password': 'Senha',
@@ -182,9 +182,7 @@ export const webShellMessages = {
     'Para sua segurança, não informamos se um endereço está registrado.',
   'auth.failure.provider': 'O login com {provider} não foi concluído. Nada foi alterado.',
   'auth.failure.network':
-    'Não conseguimos alcançar Relay. Verifique sua conexão e tente novamente.',
-  'auth.signUp.trialNote':
-    'Sete dias completos de teste. É necessário um método de pagamento. $ 0 devido hoje.',
+    'Não conseguimos alcançar Post Array. Verifique sua conexão e tente novamente.',
   'auth.signUp.emailInUseNote':
     'Se este endereço já tiver uma conta, enviaremos um link de login por e-mail em vez de criar um segundo.',
   'auth.legal.readTerms': 'Leia os Termos',
@@ -217,7 +215,7 @@ export const webShellMessages = {
   'onboarding.workspace.timeZoneDetected': 'Detectado neste dispositivo: {timeZone}',
   'onboarding.connect.permissionsTitle': 'O que {provider} será solicitado',
   'onboarding.connect.permissionsFooter':
-    'Relay nunca pede permissão que não usa e você pode desconectar a qualquer momento.',
+    'Post Array nunca pede permissão que não usa e você pode desconectar a qualquer momento.',
   'onboarding.connect.chooseProvider': 'Escolha uma plataforma',
   'onboarding.connect.opensProvider': 'Continuar abre {provider} nesta guia.',
   'onboarding.compose.help':

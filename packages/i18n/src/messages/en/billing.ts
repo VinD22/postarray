@@ -21,7 +21,7 @@
  */
 export const billingMessages = {
   'billing.title': 'Billing',
-  'billing.plan.name': 'Relay',
+  'billing.plan.name': 'Post Array',
   'billing.plan.single': 'Every feature on every tier',
   'billing.plan.monthlyPrice': '$25/month',
   'billing.plan.annualPrice': '$250/year',
@@ -76,6 +76,21 @@ export const billingMessages = {
   'billing.tier.studio.name': 'Studio',
   'billing.tier.studio.tagline': 'The largest project capacity we offer.',
   'billing.tier.studio.annualFraming': 'Save $200 a year. That is 2 months free.',
+
+  'billing.credits.label': 'Free posts',
+  'billing.credits.remaining':
+    '{count, plural, =0 {No free posts left} one {# free post left} other {# free posts left}}',
+  'billing.credits.lastFreePost': 'This is the last free post for this workspace.',
+  'billing.credits.exhausted.title': 'The free posts are used up',
+  'billing.credits.exhausted.body':
+    'Your accounts stay connected and your drafts and schedules are kept. Choose a plan to publish again.',
+  'billing.credits.included':
+    '{count, plural, one {# post to try it with} other {# posts to try it with}}',
+  'billing.credits.noCard': 'No card to start. Connect your accounts and publish.',
+  'billing.credits.earn':
+    'Refer someone or tell people about Post Array and we will add posts to this workspace by hand.',
+  'billing.credits.granted':
+    '{count, plural, one {# post added} other {# posts added}}',
 
   'billing.trial.length': 'Seven day trial with every feature',
   'billing.trial.dueToday': '$0 due today',
@@ -134,7 +149,7 @@ export const billingMessages = {
   'billing.usage.estimatedBeforeAction': 'This action is estimated at {amount}.',
   'billing.usage.periodTotal': '{amount} used since {date}',
   'billing.usage.noMediaCredits':
-    'There are no image or video generation credits, because Relay does not generate media.',
+    'There are no image or video generation credits, because Post Array does not generate media.',
 
   'billing.downgrade.overLimit':
     'This workspace has {count, plural, one {# channel} other {# channels}} over the tier allowance. Every connected channel keeps publishing and nothing is disconnected for you. You cannot connect another channel until you are back within the allowance.',

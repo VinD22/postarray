@@ -1,7 +1,7 @@
 /** Thai beta catalog namespace. */
 export const webShellMessages = {
-  'shell.appName': 'Relay',
-  'shell.documentTitle': '{page} · Relay',
+  'shell.appName': 'Post Array',
+  'shell.documentTitle': '{page} · Post Array',
   'shell.tagline': 'โต๊ะสำนักพิมพ์สำหรับคนและตัวแทน',
   'shell.menu.open': 'เปิดเมนู',
   'shell.menu.title': 'เมนู',
@@ -20,7 +20,7 @@ export const webShellMessages = {
   'shell.demo.badge': 'ข้อมูลสาธิต',
   'shell.demo.title': 'คุณกำลังดูข้อมูลสาธิต',
   'shell.demo.body':
-    'ไม่สามารถเข้าถึงได้ Relay API จากเบราว์เซอร์นี้ ดังนั้นหน้าจอจึงเต็มไปด้วยพื้นที่ทำงานตัวอย่างที่เริ่มต้น ไม่มีสิ่งใดที่นี่เชื่อมโยงกับบัญชีจริงและไม่มีอะไรสามารถเผยแพร่ได้',
+    'ไม่สามารถเข้าถึงได้ Post Array API จากเบราว์เซอร์นี้ ดังนั้นหน้าจอจึงเต็มไปด้วยพื้นที่ทำงานตัวอย่างที่เริ่มต้น ไม่มีสิ่งใดที่นี่เชื่อมโยงกับบัญชีจริงและไม่มีอะไรสามารถเผยแพร่ได้',
   'shell.demo.howToConnect': 'ตั้งค่า NEXT_PUBLIC_RELAY_API_URL และรีสตาร์ทแอปเพื่อใช้ข้อมูลสด',
   'shell.offline.title': 'คุณออฟไลน์อยู่',
   'shell.offline.body':
@@ -123,7 +123,7 @@ export const webShellMessages = {
     'Trial, {days, plural, =0 {ends today} one {# day left} other {# days left}}. Converts {date} to {amount}.',
   'home.trial.manage': 'จัดการหรือยกเลิก',
   'home.error.title': 'หน้าแรกไม่สามารถโหลดได้',
-  'home.error.body': 'พื้นที่ทำงานของคุณไม่เสียหาย นี่เป็นปัญหาในการเข้าถึง Relay API',
+  'home.error.body': 'พื้นที่ทำงานของคุณไม่เสียหาย นี่เป็นปัญหาในการเข้าถึง Post Array API',
   'auth.aside.title': 'เผยแพร่ผ่าน API อย่างเป็นทางการและดูว่าเกิดอะไรขึ้น',
   'auth.aside.point.receipts':
     'สิ่งพิมพ์ทุกฉบับจะมีใบเสร็จรับเงิน: ใครเป็นผู้อนุมัติ, เมื่อจัดส่ง, สิ่งที่แพลตฟอร์มส่งคืน',
@@ -132,9 +132,9 @@ export const webShellMessages = {
   'auth.aside.point.surfaces': 'เวิร์กโฟลว์เดียวกันจากเว็บแอป, REST API, MCP, CLI และ webhooks',
   'auth.provider.title': 'ก่อนที่คุณจะดำเนินการต่อ',
   'auth.provider.google.access':
-    'Google แชร์ชื่อ ที่อยู่อีเมล และรูปโปรไฟล์ของคุณกับ Relay Relay ไม่สามารถอ่าน Gmail, ไดรฟ์ หรือปฏิทินของคุณได้',
+    'Google แชร์ชื่อ ที่อยู่อีเมล และรูปโปรไฟล์ของคุณกับ Post Array Post Array ไม่สามารถอ่าน Gmail, ไดรฟ์ หรือปฏิทินของคุณได้',
   'auth.provider.facebook.access':
-    'Facebook แชร์ชื่อ ที่อยู่อีเมล และรูปโปรไฟล์ของคุณกับ Relay การเชื่อมต่อเพจเพื่อเผยแพร่เป็นขั้นตอนแยกต่างหากที่คุณอนุมัติในภายหลัง',
+    'Facebook แชร์ชื่อ ที่อยู่อีเมล และรูปโปรไฟล์ของคุณกับ Post Array การเชื่อมต่อเพจเพื่อเผยแพร่เป็นขั้นตอนแยกต่างหากที่คุณอนุมัติในภายหลัง',
   'auth.provider.note': 'นี่เป็นการลงชื่อเข้าใช้ให้คุณ โดยไม่ได้เชื่อมต่อกับบัญชีที่จะเผยแพร่',
   'auth.continueWithEmail': 'ดำเนินการต่อด้วยอีเมล',
   'auth.method.password': 'รหัสผ่าน',
@@ -155,8 +155,7 @@ export const webShellMessages = {
   'auth.failure.noAccountLeak':
     'เพื่อความปลอดภัยของคุณ เราไม่ได้บอกว่าที่อยู่นั้นได้รับการลงทะเบียนหรือไม่',
   'auth.failure.provider': 'การลงชื่อเข้าใช้ด้วย {provider} ไม่เสร็จสมบูรณ์ ไม่มีอะไรเปลี่ยนแปลง',
-  'auth.failure.network': 'เราไม่สามารถติดต่อ Relay ได้ โปรดตรวจสอบการเชื่อมต่อแล้วลองอีกครั้ง',
-  'auth.signUp.trialNote': 'ทดลองใช้งานเจ็ดวันเต็ม ต้องระบุวิธีการชำระเงิน $0 ครบกำหนดชำระวันนี้',
+  'auth.failure.network': 'เราไม่สามารถติดต่อ Post Array ได้ โปรดตรวจสอบการเชื่อมต่อแล้วลองอีกครั้ง',
   'auth.signUp.emailInUseNote':
     'หากที่อยู่นี้มีบัญชีอยู่แล้ว เราจะส่งลิงก์ลงชื่อเข้าใช้ทางอีเมลแทนการสร้างบัญชีที่สอง',
   'auth.legal.readTerms': 'อ่านข้อกำหนด',
@@ -187,7 +186,7 @@ export const webShellMessages = {
   'onboarding.workspace.timeZoneDetected': 'ตรวจพบจากอุปกรณ์นี้: {timeZone}',
   'onboarding.connect.permissionsTitle': 'จะมีการขอ {provider} อะไร',
   'onboarding.connect.permissionsFooter':
-    'Relay ไม่เคยขออนุญาตที่ไม่ได้ใช้ และคุณสามารถยกเลิกการเชื่อมต่อได้ตลอดเวลา',
+    'Post Array ไม่เคยขออนุญาตที่ไม่ได้ใช้ และคุณสามารถยกเลิกการเชื่อมต่อได้ตลอดเวลา',
   'onboarding.connect.chooseProvider': 'เลือกแพลตฟอร์ม',
   'onboarding.connect.opensProvider': 'การดำเนินการต่อจะเปิด {provider} ในแท็บนี้',
   'onboarding.compose.help': 'เขียนโพสต์ จากนั้นตรวจสอบตัวอย่างและการตรวจสอบก่อนเลือกเวลา',

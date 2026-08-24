@@ -72,6 +72,6 @@ export const statusMessages = {
   'confirm.cancelScheduled.body': '它不会发布。草稿保留在这里，以便您可以再次安排。',
   'confirm.publishNow.title': '现在发布？',
   'confirm.publishNow.body':
-    '{count, plural, one {This publishes to # account immediately} other {This publishes to # accounts immediately}}。无法从 Relay 中调用它。',
+    '{count, plural, one {This publishes to # account immediately} other {This publishes to # accounts immediately}}。无法从 Post Array 中调用它。',
   'confirm.typeToConfirm': '输入 {word} 进行确认。',
 } as const;

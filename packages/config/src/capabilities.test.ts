@@ -145,7 +145,7 @@ describe('detectCapabilities', () => {
       NEON_STORAGE_SECRET_ACCESS_KEY: 'placeholder-storage-secret',
       DEEPSEEK_API_KEY: 'placeholder-ai-key',
       EMAIL_API_KEY: 'placeholder-email-key',
-      EMAIL_FROM: 'Relay <no-reply@example.test>',
+      EMAIL_FROM: 'Post Array <no-reply@example.test>',
       OTEL_EXPORTER_OTLP_ENDPOINT: 'https://otel.example.test',
       SENTRY_DSN: 'https://public@sentry.example.test/1',
       POSTHOG_KEY: 'placeholder-posthog',

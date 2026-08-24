@@ -8,7 +8,7 @@
  * next step rather than reporting that something failed.
  *
  * The vocabulary is deliberate. Nothing here says generate, enhance, upscale,
- * restore or fix, because Relay does not do any of those and copy that hinted
+ * restore or fix, because Post Array does not do any of those and copy that hinted
  * otherwise would be the first half of a promise the product cannot keep. The
  * word used throughout is "version": an edit adds one, and the original stays
  * exactly where it was.
@@ -74,7 +74,7 @@ export const mediaMessages = {
     'Video, audio y documentos no se pueden editar aquí. Prepara el archivo antes de subirlo. Tu carga original nunca cambia de ninguna forma.',
 
   'mediaLib.derivative.nonGenerative':
-    'Relay no genera imágenes ni videos. Este editor solo recorta, rota, cambia el tamaño, convierte y comprime lo que subiste.',
+    'Post Array no genera imágenes ni videos. Este editor solo recorta, rota, cambia el tamaño, convierte y comprime lo que subiste.',
 
   // ==================================================== refusals ====
   'error.media_derivative_no_operations.message':

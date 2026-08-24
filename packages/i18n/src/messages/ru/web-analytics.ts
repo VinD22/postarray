@@ -39,7 +39,7 @@ export const webAnalyticsMessages = {
 
   'analytics.rankMetric.label': 'Ранжируйте публикации по',
   'analytics.rankMetric.help':
-    'В Relay нет общего результата. Выберите одну метрику, определению которой вы доверяете, и таблица будет упорядочена только по этой метрике.',
+    'В Post Array нет общего результата. Выберите одну метрику, определению которой вы доверяете, и таблица будет упорядочена только по этой метрике.',
   'analytics.rankMetric.chosen': 'Рейтинг {metric} по данным каждого поставщика учетных записей.',
 
   /* ----------------------------------------------------------------------
@@ -106,7 +106,7 @@ export const webAnalyticsMessages = {
   'analytics.evidence.confounder.followers':
     'За этот период количество подписчиков на {account} изменилось на {percent}.',
   'analytics.evidence.confounder.paid':
-    'Relay не может сказать, получило ли какое-либо из этих сообщений платное распространение.',
+    'Post Array не может сказать, получило ли какое-либо из этих сообщений платное распространение.',
   'analytics.evidence.confounder.provider':
     '{provider} изменил способ сообщения {metric} в этот период.',
 
@@ -143,7 +143,7 @@ export const webAnalyticsMessages = {
   'analytics.unit.count': 'Количество событий',
   'analytics.unit.seconds': 'Секунды',
   'analytics.unit.percent': 'Процент, который уже рассчитан поставщиком',
-  'analytics.unit.ratio': 'Коэффициент Relay, рассчитанный на основе двух полей поставщика.',
+  'analytics.unit.ratio': 'Коэффициент Post Array, рассчитанный на основе двух полей поставщика.',
   'analytics.unit.currency_minor': 'Денежная сумма в мелких единицах',
 
   'analytics.denominator.none': 'Это счет, а не ставка. У него нет знаменателя.',
@@ -163,7 +163,7 @@ export const webAnalyticsMessages = {
   'analytics.format.thread': 'Тема',
 
   'analytics.value.unavailableReason.notImplemented':
-    'Relay еще не создал сопоставление для этой метрики в {provider}.',
+    'Post Array еще не создал сопоставление для этой метрики в {provider}.',
   'analytics.value.estimated': 'Предполагаемый',
   'analytics.value.estimatedMethod': 'Метод: {method}.',
 
@@ -291,7 +291,7 @@ export const webAnalyticsMessages = {
     'Аналитикам нужна роль аналитика или выше. Предоставить его может владелец или администратор этой рабочей области.',
   'analytics.state.rateLimitTitle': '{provider}, это ограничение скорости аналитических запросов.',
   'analytics.state.rateLimitCause':
-    'Для этого окна учетная запись использовала свою долю квоты провайдера. Relay не повторяет повторную попытку, поскольку это приведет к задержке публикации.',
+    'Для этого окна учетная запись использовала свою долю квоты провайдера. Post Array не повторяет повторную попытку, поскольку это приведет к задержке публикации.',
   'analytics.state.rateLimitAlternative':
     'Сузьте диапазон дат или фильтр учетных записей, который требует от провайдера меньше.',
   'analytics.state.rateLimitReset': 'Запросить резюме',
@@ -303,7 +303,7 @@ export const webAnalyticsMessages = {
   'analytics.links.new': 'Создать отслеживаемую ссылку',
   'analytics.links.empty': 'Отслеживаемых ссылок пока нет',
   'analytics.links.emptyBody':
-    'Отслеживаемая ссылка, это короткий URL-адрес, через который перенаправляется Relay, поэтому вы можете видеть клики, даже если платформа не сообщает об их отсутствии. Исходное место назначения никогда не меняется без записи аудита.',
+    'Отслеживаемая ссылка, это короткий URL-адрес, через который перенаправляется Post Array, поэтому вы можете видеть клики, даже если платформа не сообщает об их отсутствии. Исходное место назначения никогда не меняется без записи аудита.',
   'analytics.links.emptyExample':
     'Пример: redirect.to/a7Kq2 перенаправляет на acme.com/blog/launch с запуском кампании q3.',
   'analytics.links.table.caption':
@@ -334,7 +334,7 @@ export const webAnalyticsMessages = {
   'analytics.links.destinationHistoryRow': '{destination}, активен с {start} по {end}',
   'analytics.links.destinationHistoryCurrent': '{destination}, активен с {start}',
   'analytics.links.domainLabel': 'Короткий домен',
-  'analytics.links.domainDefault': 'Relay домен по умолчанию',
+  'analytics.links.domainDefault': 'Post Array домен по умолчанию',
   'analytics.links.domainVerified': 'Проверено DNS на {date}',
   'analytics.links.domainPending': 'Ожидание записи DNS',
   'analytics.links.domainPendingHelp':
@@ -357,7 +357,7 @@ export const webAnalyticsMessages = {
   'analytics.links.abuseAction': 'Пожаловаться на эту ссылку',
   'analytics.links.measurementLabel': 'Собственное измерение перенаправления',
   'analytics.links.measurementExplained':
-    'Relay учитывает запрос, когда служба перенаправления запрашивает этот URL-адрес. Дедуплицированный щелчок удаляет повторные запросы от одного и того же посетителя в течение короткого окна, а запросы, соответствующие известным шаблонам сканирования, исключаются, а не удаляются.',
+    'Post Array учитывает запрос, когда служба перенаправления запрашивает этот URL-адрес. Дедуплицированный щелчок удаляет повторные запросы от одного и того же посетителя в течение короткого окна, а запросы, соответствующие известным шаблонам сканирования, исключаются, а не удаляются.',
   'analytics.links.botsNote':
     '{count, plural, one {# запроса} few {# запроса} many {# запроса} other {# запроса}} были классифицированы как автоматизированные и исключены из дедуплицированного подсчета.',
   'analytics.links.series.title': 'Запросы и дедуплицированные клики с течением времени',
@@ -380,7 +380,7 @@ export const webAnalyticsMessages = {
   'analytics.links.noEventsBody':
     'Эта ссылка не запрашивалась с момента ее создания. Это настоящий ноль, измеренный нашей собственной службой перенаправления.',
   'analytics.links.compareWarning':
-    '{provider} сообщает, что {providerValue} нажал ссылку на этот пост. Relay записал дедуплицированные клики {relayValue}. Они учитывают разные события, и ни одно из них не заменяет другое.',
+    '{provider} сообщает, что {providerValue} нажал ссылку на этот пост. Post Array записал дедуплицированные клики {relayValue}. Они учитывают разные события, и ни одно из них не заменяет другое.',
   'analytics.links.errorTitle': 'Не удалось загрузить статистику ссылок.',
   'analytics.links.errorBody':
     'Служба перенаправления все еще работает, поэтому ссылка продолжает отправлять посетителей по назначению. Затрагивается только отчетность.',
@@ -390,7 +390,7 @@ export const webAnalyticsMessages = {
   'analytics.links.createCampaign': 'Название кампании',
   'analytics.links.createSlug': 'Пользовательский финал',
   'analytics.links.createSlugHelp':
-    'Оставьте это поле пустым, и Relay сгенерирует короткий случайный финал.',
+    'Оставьте это поле пустым, и Post Array сгенерирует короткий случайный финал.',
   'analytics.links.createUtm': 'UTM-параметры',
   'analytics.links.blockedScheme': 'Принимаются только направления https.',
   'analytics.links.blockedPrivate':
@@ -543,7 +543,7 @@ export const webAnalyticsMessages = {
     '{count, plural, one {# действие} few {# действий} many {# действий} other {# действий}} не указано, поскольку выбранные учетные записи не могут их выполнить.',
   'automation.picker.hiddenDetail': '{action} недоступен для {provider}. {reason}',
   'automation.picker.consequential': 'Создает что-то на платформе',
-  'automation.picker.internalOnly': 'Остается внутри Relay',
+  'automation.picker.internalOnly': 'Остается внутри Post Array',
 
   'automation.accounts.label': 'Аккаунты, на которые может распространяться это правило',
   'automation.accounts.help':
@@ -646,7 +646,7 @@ export const webAnalyticsMessages = {
   'automation.test.conditionFailed': '{condition} не прошел, поэтому правило на этом остановилось',
   'automation.test.actionSimulated': '{action} будет работать',
   'automation.test.actionSkipped': '{action} будет пропущен: {reason}.',
-  'automation.test.noExternalEffect': 'Во время этого теста ничего не осталось Relay.',
+  'automation.test.noExternalEffect': 'Во время этого теста ничего не осталось Post Array.',
   'automation.test.failed': 'Не удалось завершить тест: {reason}.',
 
   'automation.runs.table.caption': 'Недавние запуски этого правила.',
@@ -708,7 +708,7 @@ export const webAnalyticsMessages = {
     'Превратите ленту в черновики или запланированные публикации с такой же проверкой и одобрением, как и все, что вы пишете сами.',
   'automation.rss.empty': 'Пока нет каналов',
   'automation.rss.emptyBody':
-    'Добавьте канал, и Relay проверит его по расписанию. Каждый новый элемент становится черновиком, запланированной публикацией или запросом на утверждение, в зависимости от того, что вы выберете.',
+    'Добавьте канал, и Post Array проверит его по расписанию. Каждый новый элемент становится черновиком, запланированной публикацией или запросом на утверждение, в зависимости от того, что вы выберете.',
   'automation.rss.emptyExample':
     'Пример: канал блога Acme создает черновик для X и LinkedIn каждый раз при публикации статьи и ожидает утверждения.',
   'automation.rss.table.caption': 'Подает опросы в этой рабочей области.',
@@ -725,7 +725,7 @@ export const webAnalyticsMessages = {
   'automation.rss.stepOf': 'Шаг {current} из {total}',
 
   'automation.rss.urlHelp':
-    'Relay получает канал с наших серверов, а не из вашего браузера. Адреса частных сетей отклоняются.',
+    'Post Array получает канал с наших серверов, а не из вашего браузера. Адреса частных сетей отклоняются.',
   'automation.rss.validateAction': 'Проверьте этот канал',
   'automation.rss.validateFailed': 'Этот адрес не вернул читаемый канал.',
   'automation.rss.validateFailedReason': 'Что мы получили в ответ: {reason}',
@@ -738,7 +738,7 @@ export const webAnalyticsMessages = {
   'automation.rss.previewNoImage': 'В этом товаре нет изображения',
   'automation.rss.previewImageAlt': 'Изображение из элемента фида {title}',
   'automation.rss.previewNoDate':
-    'У этого элемента нет временной метки, поэтому Relay использует время, когда он впервые его увидел.',
+    'У этого элемента нет временной метки, поэтому Post Array использует время, когда он впервые его увидел.',
   'automation.rss.previewFieldsTitle': 'Поля, которые предоставляет этот фид',
   'automation.rss.previewFieldMissing': 'Нет в этом фиде',
 
@@ -766,7 +766,7 @@ export const webAnalyticsMessages = {
   'automation.rss.templatePreview': 'Предварительный просмотр новейшего товара',
   'automation.rss.adaptWithAi': 'Адаптируйте текст для каждой цели',
   'automation.rss.adaptHelp':
-    'Формулировка переписана, чтобы соответствовать каждой платформе, и отображается в виде разницы, которую вы принимаете или отклоняете. Медиафайлы поступают из элемента фида. Relay не генерирует изображения.',
+    'Формулировка переписана, чтобы соответствовать каждой платформе, и отображается в виде разницы, которую вы принимаете или отклоняете. Медиафайлы поступают из элемента фида. Post Array не генерирует изображения.',
   'automation.rss.noImageGeneration':
     'Если элемент ленты не имеет изображения, сообщение будет опубликовано без него.',
   'automation.rss.imageFromFeed': 'Используйте изображение из элемента фида, если оно есть.',
@@ -804,13 +804,13 @@ export const webAnalyticsMessages = {
   'automation.rss.resumeFeed': 'Возобновить этот канал',
   'automation.rss.deleteTitle': 'Удалить {title}?',
   'automation.rss.deleteBody':
-    'Relay прекращает проверку этого канала. Уже созданные черновики и публикации остаются такими же, какие они есть.',
+    'Post Array прекращает проверку этого канала. Уже созданные черновики и публикации остаются такими же, какие они есть.',
   'automation.rss.errorTitle': 'Этот канал не может быть прочитан',
   'automation.rss.errorBody':
-    'Relay продолжает проверять по обычному расписанию. Из частичного ответа ничего не было опубликовано.',
+    'Post Array продолжает проверять по обычному расписанию. Из частичного ответа ничего не было опубликовано.',
 
   /* ----------------------------------------------------------------------
-     What Relay refuses to automate
+     What Post Array refuses to automate
      ---------------------------------------------------------------------- */
   'automation.refuse.title': 'Недоступно ни в одном правиле.',
   'automation.refuse.body':

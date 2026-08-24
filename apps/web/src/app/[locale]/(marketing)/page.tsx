@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import type { ReactNode } from 'react';
-import { X } from 'lucide-react';
+import { AppWindow, Bot, Braces, TerminalSquare, Webhook, X } from 'lucide-react';
+import type { LucideIcon } from 'lucide-react';
 import { CORE_PROVIDER_IDS, type CoreProviderId } from '@relay/contracts';
 import { cn } from '@relay/design-system/utils';
 import type { Translator } from '@relay/i18n/translate';
@@ -28,8 +29,6 @@ import { tierColumns } from '@/features/marketing/components/editorial/tier-colu
 import { ColorBand, GradientWash, Sticker } from '@/features/marketing/components/scene';
 import {
   Body,
-  Fact,
-  FactList,
   Heading,
   Lede,
   Step,
@@ -114,7 +113,7 @@ const EXAMPLE_ROWS = [
 const CONNECTOR_PROVIDERS: readonly CoreProviderId[] = CORE_PROVIDER_IDS;
 
 /**
- * The MCP clients Relay ships a reviewed setup for, named the way the product
+ * The MCP clients Post Array ships a reviewed setup for, named the way the product
  * itself names them (`SETUP_CLIENTS` in `features/developer/lib/
  * setup-snippets.ts`, which is what the in-product setup panel renders).
  *
@@ -195,6 +194,19 @@ const PILLARS = [
   },
 ] as const;
 
+/**
+ * The switcher strip above the demonstration. Sample businesses, not claims:
+ * the names are the same fictional companies the demonstration composes for,
+ * and the counts are the connected accounts each of those projects holds in
+ * the walkthrough. The first chip is "selected" so the strip reads as the
+ * control it depicts rather than as three badges.
+ */
+const SAMPLE_PROJECTS = [
+  { name: 'Northbound Tools', accounts: 6, dotClass: 'bg-accent-warm' },
+  { name: 'Sagafold', accounts: 4, dotClass: 'bg-accent-cool' },
+  { name: 'Timedflow', accounts: 8, dotClass: 'bg-border-strong' },
+] as const;
+
 const SURFACES = [
   { id: 'web', nameKey: 'web.home.surfaces.web', bodyKey: 'web.home.surfaces.webBody' },
   { id: 'mcp', nameKey: 'web.home.surfaces.mcp', bodyKey: 'web.home.surfaces.mcpBody' },
@@ -206,6 +218,22 @@ const SURFACES = [
     bodyKey: 'web.home.surfaces.webhooksBody',
   },
 ] as const;
+
+/**
+ * One mark per surface.
+ *
+ * The row exists to be scanned before it is read, and five paragraphs of equal
+ * weight cannot be. These are the plainest available signs for each thing —
+ * a window, an agent, braces, a prompt, a hook — not decoration standing in
+ * for a missing idea.
+ */
+const SURFACE_ICONS: Record<(typeof SURFACES)[number]['id'], LucideIcon> = {
+  web: AppWindow,
+  mcp: Bot,
+  api: Braces,
+  cli: TerminalSquare,
+  webhooks: Webhook,
+};
 
 const BOUNDARIES = [
   'web.home.honest.noMedia',
@@ -352,12 +380,24 @@ export default async function HomePage({
             accent={t.t('web.home.v2.hero.headlineAccent')}
           />
 
-          <div className="mt-12 grid gap-10 lg:grid-cols-12 lg:items-end lg:gap-12">
+          {/*
+            Top aligned, not bottom aligned.
+
+            `items-end` sat the promise and its action on the same baseline as
+            the reach figure's column, and that column is the taller of the two
+            because of the fanout stage at the foot of it — so the sentence the
+            headline is waiting for started roughly 130px below where the
+            headline ends, as a hole in the middle of the fold. Aligning to the
+            top closes it and pulls everything under it, the demonstration
+            included, up by the same amount.
+          */}
+          <div className="mt-12 grid gap-10 lg:grid-cols-12 lg:items-start lg:gap-12">
             <div className="lg:col-span-7">
               <Lede className="max-w-[62ch]">{t.t('web.home.v2.hero.subhead')}</Lede>
 
               <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-3">
                 <Cta href={ROUTES.signUp}>{t.t('web.cta.startTrial')}</Cta>
+                <TextLink href={ROUTES.demo}>{t.t('web.demo.hero.viewCta')}</TextLink>
                 <TextLink href="#agents">{t.t('web.home.v2.hero.agentsCta')}</TextLink>
               </div>
 
@@ -401,8 +441,37 @@ export default async function HomePage({
             rather than in front of the headline that has already said it in
             six words.
           */}
-          <div className="mt-16 md:mt-20">
-            <Body className="mb-8">{t.t('web.home.lede')}</Body>
+          <div className="mt-12 md:mt-14">
+            <Body className="mb-4">{t.t('web.home.lede')}</Body>
+            {/*
+              The sentence the demonstration was missing: this is not a desk
+              for one business. The strip under it shows the model instead of
+              arguing it, as the switcher a customer will actually meet: three
+              sample businesses, each its own project with its own accounts.
+              Sample names, deliberately the same fictional company set the
+              demonstration itself uses.
+            */}
+            <Body className="mb-6">{t.t('web.demo.hero.projectsLine')}</Body>
+            <ul className="mb-8 flex flex-wrap gap-3">
+              {SAMPLE_PROJECTS.map((project, index) => (
+                <li
+                  key={project.name}
+                  className={cn(
+                    'border-border-strong flex min-h-11 items-center gap-3 rounded-md border px-4',
+                    index === 0 && 'bg-surface-raised',
+                  )}
+                >
+                  <span
+                    aria-hidden="true"
+                    className={cn('size-2 rounded-full', project.dotClass)}
+                  />
+                  <span className="text-body-md text-text-primary">{project.name}</span>
+                  <span className="text-body-sm text-text-tertiary font-mono tabular-nums">
+                    {t.format('web.demo.hero.projectsChip', { count: project.accounts })}
+                  </span>
+                </li>
+              ))}
+            </ul>
             <HeroDemoSection locale={locale} />
             <p className="mt-6">
               <TextLink href={ROUTES.demo}>{t.t('web.demo.hero.more')}</TextLink>
@@ -457,29 +526,6 @@ export default async function HomePage({
           </BentoCell>
 
           <BentoCell span="side" as="section">
-            <Subheading as="h3">{t.t('web.home.surfaces.title')}</Subheading>
-            <EditorialBigNumber
-              value={SURFACES.length}
-              locale={locale}
-              label={t.t('web.home.v2.surfacesStat')}
-              className="mt-6"
-            />
-            <p className="text-body-md text-text-secondary mt-6 leading-[1.6]">
-              {t.t('web.home.surfaces.body')}
-            </p>
-            <FactList className="mt-6">
-              {SURFACES.map((surface) => (
-                <Fact key={surface.id} term={t.format(surface.nameKey)}>
-                  {t.format(surface.bodyKey)}
-                </Fact>
-              ))}
-            </FactList>
-            <p className="mt-6">
-              <TextLink href={ROUTES.developers}>{t.t('nav.public.forDevelopers')}</TextLink>
-            </p>
-          </BentoCell>
-
-          <BentoCell span="side" as="section">
             <Subheading as="h3">{t.t('web.home.v2.bento.networks.title')}</Subheading>
             {/*
               Two columns, not the grid's default four: this cell is five of
@@ -499,6 +545,63 @@ export default async function HomePage({
                 accent="warm"
               />
             </div>
+          </BentoCell>
+
+          {/*
+            The five surfaces run the full twelve columns rather than sitting
+            in a second `side` cell.
+
+            As a five-of-twelve cell this was a definition list about 200px
+            wide, which wrapped "Scoped keys, idempotency keys on every write"
+            to one or two words a line, and it stacked under the networks cell
+            to roughly twice the height of the scene beside it — so the band
+            carried an empty half-page to its left. Full width fixes both at
+            once: the list becomes a row of five, the void closes, and each
+            surface leads with its own mark so the row can be understood
+            without reading five sentences first.
+          */}
+          <BentoCell span="full" as="section">
+            <div className="flex flex-wrap items-end justify-between gap-6">
+              <div>
+                <Subheading as="h3">{t.t('web.home.surfaces.title')}</Subheading>
+                <p className="text-body-md text-text-secondary mt-3 max-w-[62ch] leading-[1.6]">
+                  {t.t('web.home.surfaces.body')}
+                </p>
+              </div>
+              <EditorialBigNumber
+                value={SURFACES.length}
+                locale={locale}
+                label={t.t('web.home.v2.surfacesStat')}
+              />
+            </div>
+
+            <ul className="border-border-default mt-8 grid gap-px border-t sm:grid-cols-2 lg:grid-cols-5">
+              {SURFACES.map((surface) => {
+                const Mark = SURFACE_ICONS[surface.id];
+                return (
+                  <li
+                    key={surface.id}
+                    className="border-border-subtle min-w-0 border-b pt-5 pb-6 lg:border-b-0 lg:pe-6"
+                  >
+                    <Mark
+                      aria-hidden="true"
+                      className="text-accent-warm size-6 shrink-0"
+                      strokeWidth={1.5}
+                    />
+                    <h4 className="text-title-sm text-text-primary mt-4">
+                      {t.format(surface.nameKey)}
+                    </h4>
+                    <p className="text-body-sm text-text-secondary mt-2 leading-[1.6]">
+                      {t.format(surface.bodyKey)}
+                    </p>
+                  </li>
+                );
+              })}
+            </ul>
+
+            <p className="mt-8">
+              <TextLink href={ROUTES.developers}>{t.t('nav.public.forDevelopers')}</TextLink>
+            </p>
           </BentoCell>
         </BentoGrid>
       </ColorBand>
@@ -664,7 +767,15 @@ export default async function HomePage({
         {/* The three sizes, compact: the same integer minor units and the
             same interval control as the pricing page, without the delta
             prose. A visitor who never reaches /pricing should still know the
-            ladder exists and that only Standard is on sale. */}
+            ladder exists and that only Standard is on sale.
+
+            `parityNote` is the sentence that makes the three prices legible.
+            The teaser used to show $25, $50 and $100 under three adjectives,
+            which left the obvious question — what does the extra money buy —
+            unanswered on the page most readers stop at. Each card now states
+            its own project allowance, and this line says that capacity is the
+            entire difference, so nobody has to wonder which features the
+            cheapest column is missing. It is missing none. */}
         <TierGrid
           locale={locale}
           variant="compact"
@@ -677,6 +788,7 @@ export default async function HomePage({
           monthlyLabel={t.t('web.pricing.monthlyLabel')}
           annualLabel={t.t('web.pricing.annualLabel')}
           startHereLabel={t.t('web.pricing.tierGrid.startHere')}
+          parityNote={t.t('billing.tier.everyFeature')}
           className="mt-12"
         />
 

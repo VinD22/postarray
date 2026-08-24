@@ -62,6 +62,10 @@ export const errorMessages = {
   'error.subscription_past_due.action': 'Zaktualizuj metodę płatności w portalu Polar.',
   'error.trial_expired.message': 'Próba zakończyła się {date}.',
   'error.trial_expired.action': 'Rozpocznij subskrypcję, aby kontynuować publikowanie.',
+  'error.post_credits_exhausted.message':
+    'Ten obszar roboczy wykorzystał wszystkie darmowe posty. Cała reszta nadal działa.',
+  'error.post_credits_exhausted.action':
+    'Wybierz plan, aby publikować dalej. Twoje konta pozostają połączone, a wersje robocze i harmonogramy są zachowane.',
   'error.entitlement_missing.message': 'Ten obszar roboczy nie ma dostępu do tej funkcji.',
   'error.entitlement_missing.action':
     'Sprawdź ustawienia rozliczeń lub skontaktuj się z pomocą techniczną.',

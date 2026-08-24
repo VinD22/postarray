@@ -74,7 +74,7 @@ export const growthMessages = {
   'growth.ugc.review': 'معايير المراجعة',
   'growth.ugc.reuse': 'خطة إعادة الاستخدام',
   'growth.ugc.boundary':
-    'يخطط هذا لحملة تديرها مع أشخاص حقيقيين. Relay لا يجد المبدعين أو يتصل بهم أو يكتب شهادات.',
+    'يخطط هذا لحملة تديرها مع أشخاص حقيقيين. Post Array لا يجد المبدعين أو يتصل بهم أو يكتب شهادات.',
 
   'growth.opportunities.title': 'فرص الترويج',
   'growth.opportunities.help':
@@ -96,7 +96,7 @@ export const growthMessages = {
   'growth.opportunities.noGuarantee':
     'المباراة هي اقتراح. إنه ليس رابطًا موعودًا أو موضعًا أو تصنيفًا.',
   'growth.opportunities.boundary':
-    'Relay لا يرسل النماذج أو ينشئ حسابات أو يرسل بريدًا إلكترونيًا إلى جهات الاتصال أو ينشر في المجتمعات أو يشتري روابط.',
+    'Post Array لا يرسل النماذج أو ينشئ حسابات أو يرسل بريدًا إلكترونيًا إلى جهات الاتصال أو ينشر في المجتمعات أو يشتري روابط.',
   'growth.opportunities.empty':
     'لا توجد فرص تم التحقق منها تتطابق مع هذا الملف الشخصي حتى الآن. القائمة الفارغة أفضل من القائمة المخترعة.',
 
@@ -107,7 +107,7 @@ export const growthMessages = {
   'growth.tools.whyItFits': 'لماذا يناسب',
   'growth.tools.limitations': 'القيود',
   'growth.tools.requiredSkills': 'المهارات التي تحتاجها',
-  'growth.tools.handoff': 'كيف يعود الإخراج إلى Relay',
+  'growth.tools.handoff': 'كيف يعود الإخراج إلى Post Array',
   'growth.tools.rights': 'ملاحظات الحقوق والخصوصية',
   'growth.tools.priceChecked': 'آخر فحص للسعر {date}',
   'growth.tools.affiliateDisclosure': 'قد نكسب عمولة من هذا الرابط. ولا يغير الترتيب.',

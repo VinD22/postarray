@@ -3,7 +3,7 @@ import { createHmac, randomBytes, timingSafeEqual } from 'node:crypto';
 /**
  * Bearer credential formats and their verification.
  *
- * Relay prefixes (`docs/planning/04-auth-oauth-and-security.md`, section 7.6):
+ * Post Array prefixes (`docs/planning/04-auth-oauth-and-security.md`, section 7.6):
  *
  * | Prefix    | Credential                          |
  * | --------- | ----------------------------------- |

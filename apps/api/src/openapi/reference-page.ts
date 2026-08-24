@@ -157,12 +157,12 @@ export function renderReference(
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex">
-<title>${escapeHtml(text(translator, 'developer.title', String(info['title'] ?? 'Relay API')))}</title>
+<title>${escapeHtml(text(translator, 'developer.title', String(info['title'] ?? 'Post Array API')))}</title>
 <style nonce="${escapeHtml(nonce)}">${STYLES}</style>
 </head>
 <body>
 <main>
-<h1>${escapeHtml(text(translator, 'developer.title', String(info['title'] ?? 'Relay API')))} <span class="tag">${escapeHtml(
+<h1>${escapeHtml(text(translator, 'developer.title', String(info['title'] ?? 'Post Array API')))} <span class="tag">${escapeHtml(
     String(info['version'] ?? ''),
   )}</span></h1>
 <p class="lede">${escapeHtml(

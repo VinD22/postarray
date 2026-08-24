@@ -39,21 +39,21 @@ export const webCalendarMessages = {
   'web.connection.requirement.mastodon':
     'Mastodon łączy się z tokenem dostępu utworzonym na Twojej instancji, nie z hasłem.',
   'web.connection.requirement.telegram':
-    'Relay publikuje jako bot. Dodaj bota do kanału lub grupy, gdzie chcesz publikować.',
+    'Post Array publikuje jako bot. Dodaj bota do kanału lub grupy, gdzie chcesz publikować.',
   'web.connection.requirement.reddit':
     'Pisanie na Reddicie wymaga zatwierdzonej aplikacji, a każdy post potrzebuje tytułu i subreddita.',
   'web.connection.requirement.wordpress':
-    'Relay publikuje przez REST API witryny z hasłem aplikacji utworzonym w WordPressie.',
+    'Post Array publikuje przez REST API witryny z hasłem aplikacji utworzonym w WordPressie.',
   'web.connection.requirement.medium':
-    'Medium łączy się przez OAuth, a Relay publikuje publiczne historie w Markdown.',
+    'Medium łączy się przez OAuth, a Post Array publikuje publiczne historie w Markdown.',
   'web.connection.requirement.devto':
     'Dev.to łączy się z kluczem API utworzonym w ustawieniach Dev.to.',
   'web.connection.requirement.pinterest':
     'Pisanie na Pintereście wymaga zatwierdzonego dostępu aplikacji, a pin potrzebuje obrazu i własnej tablicy.',
   'web.connection.requirement.discord':
-    'Relay publikuje jako bot. Dodaj bota do serwerów i kanałów, gdzie chcesz publikować.',
+    'Post Array publikuje jako bot. Dodaj bota do serwerów i kanałów, gdzie chcesz publikować.',
   'web.connection.requirement.slack':
-    'Relay publikuje jako aplikacja. Dodaj aplikację do kanałów, gdzie chcesz publikować.',
+    'Post Array publikuje jako aplikacja. Dodaj aplikację do kanałów, gdzie chcesz publikować.',
   'web.provider.fake': 'Złącze testowe',
 
   'web.accountType.personal_profile': 'Profil osobisty',
@@ -271,7 +271,7 @@ export const webCalendarMessages = {
 
   'web.receipt.analytics.never': 'Statystyki nie zostały jeszcze zsynchronizowane dla tego wpisu.',
   'web.receipt.analytics.explain':
-    'Dostawcy agregują dane według własnych harmonogramów. Poniższy czas dotyczy czasu, w którym Relay ostatni raz je odczytał, a nie momentu, w którym liczby były prawdziwe.',
+    'Dostawcy agregują dane według własnych harmonogramów. Poniższy czas dotyczy czasu, w którym Post Array ostatni raz je odczytał, a nie momentu, w którym liczby były prawdziwe.',
 
   'web.receipt.export.download': 'Pobierz paragon',
   'web.receipt.export.copyReference': 'Skopiuj numer paragonu',
@@ -390,11 +390,11 @@ export const webCalendarMessages = {
   'web.connection.requirement.generic':
     'Potrzebujesz pozwolenia na publikowanie postów na tym koncie z poziomu samej platformy. Przekaźnik nie może tego przyznać.',
 
-  'web.connection.purpose.publish': 'Publikowanie postów zaplanowanych w Relay.',
+  'web.connection.purpose.publish': 'Publikowanie postów zaplanowanych w Post Array.',
   'web.connection.purpose.readPosts':
     'Odczytywanie wpisu opublikowanego przez przekaźnik, aby potwierdzenie mogło potwierdzić, że działa.',
   'web.connection.purpose.identity':
-    'Pokazuje dokładną nazwę konta w Relay, dzięki czemu nigdy nie publikujesz na niewłaściwym koncie.',
+    'Pokazuje dokładną nazwę konta w Post Array, dzięki czemu nigdy nie publikujesz na niewłaściwym koncie.',
   'web.connection.purpose.analytics':
     'Czytanie wskaźników raportowanych przez tę platformę dla Twoich własnych postów.',
   'web.connection.purpose.refresh':
@@ -419,7 +419,7 @@ export const webCalendarMessages = {
   'web.connection.capability.legend.supported':
     'Przekaźnik może to zrobić już dziś dla podłączonego konta odpowiedniego typu.',
   'web.connection.capability.legend.not_implemented':
-    'Platforma to oferuje, a Relay jeszcze jej nie zbudował. Jest to uwzględnione w planie działania dotyczącym złącza.',
+    'Platforma to oferuje, a Post Array jeszcze jej nie zbudował. Jest to uwzględnione w planie działania dotyczącym złącza.',
   'web.connection.capability.legend.unsupported':
     'Platforma nie oferuje tego poprzez oficjalne API, więc żadne narzędzie nie zrobi tego bezpiecznie.',
   'web.connection.capability.legend.requires_review':

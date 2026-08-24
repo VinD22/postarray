@@ -1,7 +1,7 @@
 /** Simplified Chinese interface messages. */
 export const webShellMessages = {
-  'shell.appName': 'Relay。中继',
-  'shell.documentTitle': 'Relay。{page} · 继电器',
+  'shell.appName': 'Post Array。中继',
+  'shell.documentTitle': 'Post Array。{page} · 继电器',
   'shell.tagline': '供个人和代理商使用的出版台。',
   'shell.menu.open': '打开菜单',
   'shell.menu.title': '菜单',
@@ -20,7 +20,7 @@ export const webShellMessages = {
   'shell.demo.badge': '演示数据',
   'shell.demo.title': '您正在查看演示数据',
   'shell.demo.body':
-    '无法从此浏览器访问 Relay API，因此屏幕上充满了种子示例工作区。这里没有任何内容与真实帐户相关联，也没有任何内容可以发布。',
+    '无法从此浏览器访问 Post Array API，因此屏幕上充满了种子示例工作区。这里没有任何内容与真实帐户相关联，也没有任何内容可以发布。',
   'shell.demo.howToConnect': '设置 NEXT_PUBLIC_RELAY_API_URL 并重新启动应用程序以使用实时数据。',
   'shell.offline.title': '您离线',
   'shell.offline.body': '草稿保存在此设备上。连接恢复时恢复计划和发布。',
@@ -119,16 +119,16 @@ export const webShellMessages = {
     '试验，{days, plural, =0 {ends today} one {# day left} other {# days left}}。将 {date} 转换为 {amount}。',
   'home.trial.manage': '管理或取消',
   'home.error.title': '首页无法加载',
-  'home.error.body': '您的工作空间完好无损。这是访问 Relay API 时出现的问题。',
+  'home.error.body': '您的工作空间完好无损。这是访问 Post Array API 时出现的问题。',
   'auth.aside.title': '通过官方 API 发布，看看究竟发生了什么。',
   'auth.aside.point.receipts': '每份出版物都会产生一个收据：谁批准了它，何时发送，平台返回了什么。',
   'auth.aside.point.approvals': '未经您的政策要求的批准，任何内容都不会到达平台。',
   'auth.aside.point.surfaces': 'Web 应用程序、REST API、MCP、CLI 和 webhooks 的工作流程相同。',
   'auth.provider.title': '在继续之前',
   'auth.provider.google.access':
-    'Google 会与 Relay 分享您的姓名、电子邮件地址和个人资料照片。 Relay 无法读取您的 Gmail、云端硬盘或日历。',
+    'Google 会与 Post Array 分享您的姓名、电子邮件地址和个人资料照片。 Post Array 无法读取您的 Gmail、云端硬盘或日历。',
   'auth.provider.facebook.access':
-    'Facebook 与 Relay 分享您的姓名、电子邮件地址和个人资料图片。连接要发布的页面是您稍后批准的单独步骤。',
+    'Facebook 与 Post Array 分享您的姓名、电子邮件地址和个人资料图片。连接要发布的页面是您稍后批准的单独步骤。',
   'auth.provider.note': '这将使您登录。它不会连接要发布到的帐户。',
   'auth.continueWithEmail': '继续使用电子邮件',
   'auth.method.password': '密码',
@@ -145,8 +145,7 @@ export const webShellMessages = {
   'auth.failure.usernameCredentials': '该用户名和密码与帐户不匹配。检查两者并重试。',
   'auth.failure.noAccountLeak': '为了您的安全，我们不会透露地址是否已注册。',
   'auth.failure.provider': '使用 {provider} 登录未完成。一切都没有改变。',
-  'auth.failure.network': 'Relay。我们无法到达中继站。检查您的连接并重试。',
-  'auth.signUp.trialNote': '整整七天的试用期。需要提供付款方式。今天到期 0 美元。',
+  'auth.failure.network': 'Post Array。我们无法到达中继站。检查您的连接并重试。',
   'auth.signUp.emailInUseNote':
     '如果该地址已有帐户，我们会通过电子邮件发送登录链接，而不是创建第二个帐户。',
   'auth.legal.readTerms': '阅读条款',
@@ -176,7 +175,7 @@ export const webShellMessages = {
   'onboarding.workspace.timeZoneDetected': '从此设备检测到：{timeZone}',
   'onboarding.connect.permissionsTitle': '{provider} 会被要求做什么',
   'onboarding.connect.permissionsFooter':
-    'Relay 永远不会请求它不使用的权限，并且您可以随时断开连接。',
+    'Post Array 永远不会请求它不使用的权限，并且您可以随时断开连接。',
   'onboarding.connect.chooseProvider': '选择平台',
   'onboarding.connect.opensProvider': '继续在此选项卡中打开 {provider}。',
   'onboarding.compose.help': '撰写帖子，然后在选择时间之前检查预览和验证。',

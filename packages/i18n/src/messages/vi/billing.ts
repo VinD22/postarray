@@ -1,7 +1,7 @@
 /** vi beta catalog namespace. */
 export const billingMessages = {
   'billing.title': 'Thanh toán',
-  'billing.plan.name': 'Relay',
+  'billing.plan.name': 'Post Array',
   'billing.plan.single': 'Một kế hoạch. Mọi tính năng. Không có bậc.',
   'billing.plan.monthlyPrice': '$29/tháng',
   'billing.plan.annualPrice': '$300/năm',
@@ -24,7 +24,6 @@ export const billingMessages = {
   'billing.plan.includes.support': 'Hỗ trợ qua email và trong ứng dụng',
   'billing.plan.fairUse':
     'Sử dụng hợp lý có nghĩa là chống thư rác, kiểm soát tỷ lệ và chi phí của nhà cung cấp để bảo vệ tài khoản của bạn. Chúng hoạt động giống nhau cho mọi người đăng ký.',
-  'billing.trial.length': 'Dùng thử bảy ngày với mọi tính năng',
   'billing.trial.dueToday': '$0 đến hạn hôm nay',
   'billing.trial.paymentMethodRequired':
     'Polar thu thập phương thức thanh toán ngay bây giờ và không tính phí gì ngay hôm nay.',
@@ -79,7 +78,7 @@ export const billingMessages = {
   'billing.usage.estimatedBeforeAction': 'Hành động này được ước tính ở mức {amount}.',
   'billing.usage.periodTotal': '{amount} được sử dụng kể từ {date}',
   'billing.usage.noMediaCredits':
-    'Không có tín dụng tạo hình ảnh hoặc video vì Relay không tạo ra phương tiện.',
+    'Không có tín dụng tạo hình ảnh hoặc video vì Post Array không tạo ra phương tiện.',
   'billing.downgrade.overLimit':
     'This workspace has {count, plural, one {# channel} other {# channels}} over the limit. New actions on those channels are blocked. Nothing is disconnected for you.',
   'billing.mediaGeneration.title': 'Tại sao chúng tôi không tạo hình ảnh hoặc video',

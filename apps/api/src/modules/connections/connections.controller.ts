@@ -108,7 +108,7 @@ export class ConnectionsController {
   /**
    * Start a provider handshake.
    *
-   * Connecting an account grants Relay publishing power over a third-party
+   * Connecting an account grants Post Array publishing power over a third-party
    * identity, so it is a step-up action. The `state` we generate is recorded in
    * a server-side transaction *and* placed in a short-lived, HttpOnly cookie on
    * this browser. The callback must satisfy both.

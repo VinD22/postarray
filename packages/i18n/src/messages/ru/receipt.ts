@@ -25,7 +25,7 @@ export const receiptMessages = {
   'receipt.actor.user': '{name}',
   'receipt.actor.serviceAccount': 'Сервисный аккаунт {name}',
   'receipt.actor.oauthApp': '{app} действует от имени {name}',
-  'receipt.actor.system': 'Relay',
+  'receipt.actor.system': 'Post Array',
 
   'receipt.timeline.title': 'Хронология',
   'receipt.timeline.created': 'Черновик создан {actor}',

@@ -1,6 +1,6 @@
 /** Japanese beta catalog. */
 export const onboardingMessages = {
-  'onboarding.title': 'Relay をセットアップする',
+  'onboarding.title': 'Post Array をセットアップする',
   'onboarding.progress': 'ステップ{current}の{total}',
   'onboarding.skipForNow': '今のところスキップしてください',
   'onboarding.goal': '確認済みの予約投稿は 10 分以内に完了します。',

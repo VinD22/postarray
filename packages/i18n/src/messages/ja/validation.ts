@@ -56,7 +56,7 @@ export const validationMessages = {
   'validation.repeat_end_required.message': '繰り返し投稿には終了日または繰り返し回数が必要です。',
   'validation.schedule_in_past.message': 'そんな時代が過ぎてしまいました{timeZone}。',
   'validation.schedule_too_far_ahead.message':
-    'これはそれよりもさらに先のことです{limit}この資格情報に対して先読みセットを設定します。',
+    '投稿は最大 {limit} 先まで予約できます。アップロードしたメディアの保存期間も同じです。',
   'validation.schedule_outside_quiet_hours.message':
     'これは、設定された静かな時間帯に該当します。{project}。',
   'validation.duplicate_within_window.message':

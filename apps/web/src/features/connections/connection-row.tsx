@@ -401,7 +401,7 @@ export function ConnectionRow({
                   <li key={permission.scope}>
                     {/*
                       Three states, three tones. An unknown grant is neutral,
-                      not a warning: Relay has no record of it, which is not the
+                      not a warning: Post Array has no record of it, which is not the
                       same as the provider having withheld it.
                     */}
                     <Badge

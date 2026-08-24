@@ -37,7 +37,7 @@ export const connectionMessages = {
   'connection.permissions.granted': 'Toegegeven',
   'connection.permissions.missing': 'Niet verleend',
   'connection.permissions.explainBeforeOAuth':
-    'Relay zal {provider} om deze machtigingen vragen. U kunt op elk moment de verbinding verbreken.',
+    'Post Array zal {provider} om deze machtigingen vragen. U kunt op elk moment de verbinding verbreken.',
   'connection.permissions.whyNeeded': 'Waarom dit nodig is',
 
   'connection.reconnect.title': 'Maak opnieuw verbinding met {account}',
@@ -91,11 +91,11 @@ export const connectionMessages = {
   'capability.level.requires_review': 'Platformbeoordeling vereist',
   'capability.level.beta': 'Bèta',
   'capability.level.unknown': 'Niet beschikbaar',
-  'capability.explain.supported': 'Relay kan dit vandaag voor deze rekening doen.',
+  'capability.explain.supported': 'Post Array kan dit vandaag voor deze rekening doen.',
   'capability.explain.unsupported':
     '{provider} biedt dit niet aan via zijn officiële API, dus geen enkele tool kan dit veilig doen.',
   'capability.explain.not_implemented':
-    '{provider} biedt dit aan, maar Relay heeft het nog niet gebouwd. Het staat op de connectorroadmap.',
+    '{provider} biedt dit aan, maar Post Array heeft het nog niet gebouwd. Het staat op de connectorroadmap.',
   'capability.explain.requires_review':
     '{provider} verleent dit alleen nadat zij de app of het account heeft beoordeeld. Het blijft niet beschikbaar totdat de beoordeling is geslaagd.',
   'capability.explain.beta':

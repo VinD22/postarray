@@ -5,7 +5,7 @@ export const errorMessages = {
   'error.internal.message': '이는 귀하의 콘텐츠가 아닌 당사 측의 문제입니다.',
   'error.internal.action':
     '작업 내용이 저장되었습니다. 우리는 경고를 받았습니다. 몇 분 후에 다시 시도해 보세요.',
-  'error.not_implemented.message': 'Relay은 아직 이것을 구축하지 않았습니다.',
+  'error.not_implemented.message': 'Post Array은 아직 이것을 구축하지 않았습니다.',
   'error.not_implemented.action': '배송 시기는 변경 로그를 따르세요.',
   'error.offline.message': '귀하는 오프라인 상태입니다.',
   'error.offline.action': '초안이 이 기기에 보관됩니다. 연결이 복구되면 게시 및 예약이 재개됩니다.',
@@ -47,6 +47,10 @@ export const errorMessages = {
   'error.subscription_past_due.action': 'Polar 포털에서 결제 방법을 업데이트하세요.',
   'error.trial_expired.message': '재판은 에 종료되었습니다.{date}.',
   'error.trial_expired.action': '계속 게시하려면 구독을 시작하세요.',
+  'error.post_credits_exhausted.message':
+    '이 워크스페이스는 무료 게시물을 모두 사용했습니다. 나머지 기능은 그대로 작동합니다.',
+  'error.post_credits_exhausted.action':
+    '계속 게시하려면 요금제를 선택하세요. 연결된 계정은 유지되고 초안과 예약도 그대로 보관됩니다.',
   'error.entitlement_missing.message': '이 작업공간에는 해당 기능에 대한 액세스 권한이 없습니다.',
   'error.entitlement_missing.action': '결제 설정을 확인하거나 지원팀에 문의하세요.',
   'error.channel_limit_reached.message':
@@ -84,7 +88,7 @@ export const errorMessages = {
   'error.capability_unsupported.message': '{provider}공식 API를 통해 이를 제공하지 않습니다.',
   'error.capability_unsupported.action': '이 계정이 지원하는 형식을 사용하세요.',
   'error.capability_not_implemented.message':
-    'Relay은 이것을 위해 이것을 구축하지 않았습니다{provider}아직.',
+    'Post Array은 이것을 위해 이것을 구축하지 않았습니다{provider}아직.',
   'error.capability_not_implemented.action':
     '기능 페이지에는 현재 각 커넥터가 수행할 수 있는 작업이 나열되어 있습니다.',
   'error.capability_requires_review.message':

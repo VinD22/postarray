@@ -95,6 +95,6 @@ export const statusMessages = {
     'Het zal niet publiceren. Het concept blijft hier staan, zodat u het opnieuw kunt inplannen.',
   'confirm.publishNow.title': 'Nu publiceren?',
   'confirm.publishNow.body':
-    '{count, plural, one {Dit wordt onmiddellijk gepubliceerd naar # account} other {Dit wordt onmiddellijk gepubliceerd naar # accounts}}. Het kan niet worden teruggeroepen van Relay.',
+    '{count, plural, one {Dit wordt onmiddellijk gepubliceerd naar # account} other {Dit wordt onmiddellijk gepubliceerd naar # accounts}}. Het kan niet worden teruggeroepen van Post Array.',
   'confirm.typeToConfirm': 'Typ {word} om te bevestigen.',
 } as const;

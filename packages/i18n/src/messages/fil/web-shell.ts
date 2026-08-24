@@ -8,8 +8,8 @@
  */
 export const webShellMessages = {
   /* -- Document and shell chrome ----------------------------------------- */
-  'shell.appName': 'Relay',
-  'shell.documentTitle': '{page} · Relay',
+  'shell.appName': 'Post Array',
+  'shell.documentTitle': '{page} · Post Array',
   'shell.tagline': 'Isang publishing desk para sa mga tao at ahente.',
   'shell.menu.open': 'Buksan ang menu',
   'shell.menu.title': 'Menu',
@@ -30,7 +30,7 @@ export const webShellMessages = {
   'shell.demo.badge': 'Demo data',
   'shell.demo.title': 'Tinitingnan mo ang data ng demo',
   'shell.demo.body':
-    'Ang Relay API ay hindi maabot mula sa browser na ito, kaya ang mga screen ay puno ng isang seeded na halimbawang workspace. Walang nakakonekta rito sa totoong account at walang makakapag-publish.',
+    'Ang Post Array API ay hindi maabot mula sa browser na ito, kaya ang mga screen ay puno ng isang seeded na halimbawang workspace. Walang nakakonekta rito sa totoong account at walang makakapag-publish.',
   'shell.demo.howToConnect':
     'Itakda ang NEXT_PUBLIC_RELAY_API_URL at i-restart ang app para gumamit ng live na data.',
 
@@ -144,7 +144,7 @@ export const webShellMessages = {
     'Trial, {days, plural, =0 {ends today} one {# day left} other {# days left}}. Converts {date} to {amount}.',
   'home.trial.manage': 'Manage or cancel',
   'home.error.title': 'Hindi makapag-load ang bahay',
-  'home.error.body': 'Ang iyong workspace ay buo. Ito ay isang problema sa pag-abot sa Relay API.',
+  'home.error.body': 'Ang iyong workspace ay buo. Ito ay isang problema sa pag-abot sa Post Array API.',
 
   /* -- Auth: provider consent, alias sign in, honest failure ------------- */
   'auth.aside.title':
@@ -157,9 +157,9 @@ export const webShellMessages = {
     'Ang parehong daloy ng trabaho mula sa web app, ang REST API, MCP, ang CLI at mga webhook.',
   'auth.provider.title': 'Bago ka magpatuloy',
   'auth.provider.google.access':
-    'Ibinahagi ng Google ang iyong pangalan, email address at larawan sa profile sa Relay. Hindi mabasa ng Relay ang iyong Gmail, Drive o Calendar.',
+    'Ibinahagi ng Google ang iyong pangalan, email address at larawan sa profile sa Post Array. Hindi mabasa ng Post Array ang iyong Gmail, Drive o Calendar.',
   'auth.provider.facebook.access':
-    'Ibinahagi ng Facebook ang iyong pangalan, email address at larawan sa profile sa Relay. Ang pagkonekta sa isang Pahina kung saan i-publish ay isang hiwalay na hakbang na aaprubahan mo sa ibang pagkakataon.',
+    'Ibinahagi ng Facebook ang iyong pangalan, email address at larawan sa profile sa Post Array. Ang pagkonekta sa isang Pahina kung saan i-publish ay isang hiwalay na hakbang na aaprubahan mo sa ibang pagkakataon.',
   'auth.provider.note':
     'Sina-sign in ka nito. Hindi ito nagkokonekta ng account kung saan mag-publish.',
   'auth.continueWithEmail': 'Magpatuloy sa email',
@@ -183,9 +183,7 @@ export const webShellMessages = {
   'auth.failure.provider':
     'Ang pag-sign in gamit ang {provider} hindi nakumpleto. Walang pinagbago.',
   'auth.failure.network':
-    'Hindi namin maabot ang Relay. Suriin ang iyong koneksyon at subukang muli.',
-  'auth.signUp.trialNote':
-    'Pitong buong araw ng pagsubok. Kailangan ng paraan ng pagbabayad. $0 na dapat bayaran ngayon.',
+    'Hindi namin maabot ang Post Array. Suriin ang iyong koneksyon at subukang muli.',
   'auth.signUp.emailInUseNote':
     'Kung mayroon nang account ang address na ito, nag-email kami ng link sa pag-sign in sa halip na gumawa ng pangalawa.',
   'auth.legal.readTerms': 'Basahin ang Mga Tuntunin',
@@ -219,7 +217,7 @@ export const webShellMessages = {
   'onboarding.workspace.timeZoneDetected': 'Nakita mula sa device na ito: {timeZone}',
   'onboarding.connect.permissionsTitle': 'ano {provider} hihilingin',
   'onboarding.connect.permissionsFooter':
-    'Ang Relay ay hindi kailanman humihingi ng pahintulot na hindi nito ginagamit, at maaari kang magdiskonekta anumang oras.',
+    'Ang Post Array ay hindi kailanman humihingi ng pahintulot na hindi nito ginagamit, at maaari kang magdiskonekta anumang oras.',
   'onboarding.connect.chooseProvider': 'Pumili ng platform',
   'onboarding.connect.opensProvider': 'Ang patuloy na pagbukas {provider} sa tab na ito.',
   'onboarding.compose.help':

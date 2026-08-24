@@ -82,7 +82,7 @@ export const developerMessages = {
 
   'developer.apps.title': 'Developer apps',
   'developer.apps.subtitle':
-    'Let another product act through Relay with the permissions a user grants it.',
+    'Let another product act through Post Array with the permissions a user grants it.',
   'developer.apps.create': 'Register an app',
   'developer.apps.name': 'App name',
   'developer.apps.type.label': 'Client type',
@@ -119,7 +119,7 @@ export const developerMessages = {
   'developer.consent.allow': 'Allow access',
   'developer.consent.deny': 'Do not allow',
   'developer.consent.developerIdentity': 'Published by {developer}',
-  'developer.consent.notFirstParty': 'This app is not built by Relay.',
+  'developer.consent.notFirstParty': 'This app is not built by Post Array.',
   'developer.consent.clientId': 'Client ID',
   'developer.consent.selectWorkspace': 'Choose the workspace this app can use',
   'developer.consent.workspaceHelp':

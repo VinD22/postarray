@@ -21,7 +21,7 @@ export const receiptMessages = {
   'receipt.actor.user': '{name}',
   'receipt.actor.serviceAccount': '服務帳號 {name}',
   'receipt.actor.oauthApp': '{app} 代表 {name}',
-  'receipt.actor.system': 'Relay',
+  'receipt.actor.system': 'Post Array',
   'receipt.timeline.title': '時間軸',
   'receipt.timeline.created': '草稿由 {actor} 建立',
   'receipt.timeline.approvalRequested': '已向 {approver} 請求核准',

@@ -21,7 +21,7 @@ export const webShellMessages = withHebrewPluralForms({
   'shell.demo.badge': 'נתוני הדגמה',
   'shell.demo.title': 'אתה מסתכל על נתוני הדגמה',
   'shell.demo.body':
-    'לא ניתן להגיע ל-Relay API מדפדפן זה, כך שהמסכים מלאים בסביבת עבודה לדוגמה. שום דבר כאן לא מחובר לחשבון אמיתי ושום דבר לא יכול לפרסם.',
+    'לא ניתן להגיע ל-Post Array API מדפדפן זה, כך שהמסכים מלאים בסביבת עבודה לדוגמה. שום דבר כאן לא מחובר לחשבון אמיתי ושום דבר לא יכול לפרסם.',
   'shell.demo.howToConnect':
     'הגדר את NEXT_PUBLIC_RELAY_API_URL והפעל מחדש את האפליקציה כדי להשתמש בנתונים חיים.',
   'shell.offline.title': 'אתה במצב לא מקוון',
@@ -122,7 +122,7 @@ export const webShellMessages = withHebrewPluralForms({
     'Trial, {days, plural, =0 {ends today} one {# day left} other {# days left}}. Converts {date} to {amount}.',
   'home.trial.manage': 'נהל או בטל',
   'home.error.title': 'הבית לא יכול לטעון',
-  'home.error.body': 'סביבת העבודה שלך שלמה. זו בעיה בהגעה ל-Relay API.',
+  'home.error.body': 'סביבת העבודה שלך שלמה. זו בעיה בהגעה ל-Post Array API.',
   'auth.aside.title': 'פרסם דרך ממשקי API רשמיים וראה בדיוק מה קרה.',
   'auth.aside.point.receipts': 'כל פרסום מפיק קבלה: מי אישר אותו, כשהוא נשלח, מה הפלטפורמה החזירה.',
   'auth.aside.point.approvals': 'שום דבר לא מגיע לפלטפורמה ללא האישור שהמדיניות שלך דורשת.',
@@ -130,9 +130,9 @@ export const webShellMessages = withHebrewPluralForms({
     'אותה זרימת עבודה מאפליקציית האינטרנט, REST API, MCP, CLI ו-webhooks.',
   'auth.provider.title': 'לפני שתמשיך',
   'auth.provider.google.access':
-    'Google משתפת את השם, כתובת האימייל ותמונת הפרופיל שלך עם Relay. Relay לא יכול לקרוא את Gmail, Drive או יומן.',
+    'Google משתפת את השם, כתובת האימייל ותמונת הפרופיל שלך עם Post Array. Post Array לא יכול לקרוא את Gmail, Drive או יומן.',
   'auth.provider.facebook.access':
-    'פייסבוק משתפת את השם, כתובת האימייל ותמונת הפרופיל שלך עם Relay. חיבור דף לפרסום הוא שלב נפרד שתאשר מאוחר יותר.',
+    'פייסבוק משתפת את השם, כתובת האימייל ותמונת הפרופיל שלך עם Post Array. חיבור דף לפרסום הוא שלב נפרד שתאשר מאוחר יותר.',
   'auth.provider.note': 'זה מכניס אותך לחשבון. זה לא מחבר חשבון לפרסום.',
   'auth.continueWithEmail': 'המשך במייל',
   'auth.method.password': 'סיסמה',
@@ -152,7 +152,6 @@ export const webShellMessages = withHebrewPluralForms({
   'auth.failure.noAccountLeak': 'למען בטיחותך איננו אומרים אם כתובת רשומה.',
   'auth.failure.provider': 'הכניסה עם {provider} לא הושלמה. שום דבר לא השתנה.',
   'auth.failure.network': 'לא הצלחנו להגיע לממסר. בדוק את החיבור שלך ונסה שוב.',
-  'auth.signUp.trialNote': 'שבעה ימי ניסיון מלאים. נדרש אמצעי תשלום. 0 דולר לפירעון היום.',
   'auth.signUp.emailInUseNote':
     'אם לכתובת זו כבר יש חשבון, נשלח באימייל קישור כניסה במקום ליצור קישור שני.',
   'auth.legal.readTerms': 'קרא את התנאים',
@@ -183,7 +182,7 @@ export const webShellMessages = withHebrewPluralForms({
   'onboarding.workspace.timeZoneDetected': 'זוהה ממכשיר זה: {timeZone}',
   'onboarding.connect.permissionsTitle': 'מה {provider} יתבקש',
   'onboarding.connect.permissionsFooter':
-    'Relay אף פעם לא מבקש רשות שהוא לא משתמש בו, ואתה יכול להתנתק בכל עת.',
+    'Post Array אף פעם לא מבקש רשות שהוא לא משתמש בו, ואתה יכול להתנתק בכל עת.',
   'onboarding.connect.chooseProvider': 'בחר פלטפורמה',
   'onboarding.connect.opensProvider': 'המשך פותח את {provider} בכרטיסייה זו.',
   'onboarding.compose.help':

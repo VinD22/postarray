@@ -57,7 +57,7 @@ export const validationMessages = {
     '반복 게시물에는 종료 날짜 또는 반복 횟수가 필요합니다.',
   'validation.schedule_in_past.message': '그 시간이 지나갔어{timeZone}.',
   'validation.schedule_too_far_ahead.message':
-    '이는 과거보다 훨씬 앞서 있다.{limit}이 자격 증명을 미리 설정해 보세요.',
+    '게시물은 최대 {limit} 후까지 예약할 수 있으며, 업로드한 미디어도 같은 기간 동안 보관됩니다.',
   'validation.schedule_outside_quiet_hours.message':
     '이는 설정된 조용한 시간에 속합니다.{project}.',
   'validation.duplicate_within_window.message':

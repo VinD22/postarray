@@ -4,7 +4,7 @@ import { describe, expect, it } from 'vitest';
 import { renderReference } from './reference-page';
 
 const DOCUMENT = {
-  info: { title: 'Relay API', version: 'v1', description: 'Machine document.' },
+  info: { title: 'Post Array API', version: 'v1', description: 'Machine document.' },
   paths: {
     '/v1/projects': {
       get: {

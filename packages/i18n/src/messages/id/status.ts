@@ -87,6 +87,6 @@ export const statusMessages = {
     'Itu tidak akan dipublikasikan. Drafnya tetap di sini sehingga Anda dapat menjadwalkannya lagi.',
   'confirm.publishNow.title': 'Publikasikan sekarang?',
   'confirm.publishNow.body':
-    '{count, plural, one {This publishes to # account immediately} other {This publishes to # accounts immediately}}. It cannot be recalled from Relay.',
+    '{count, plural, one {This publishes to # account immediately} other {This publishes to # accounts immediately}}. It cannot be recalled from Post Array.',
   'confirm.typeToConfirm': 'Ketik {word} untuk mengonfirmasi.',
 } as const;

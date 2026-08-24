@@ -1,7 +1,7 @@
 /**
  * @relay/design-system
  *
- * Tokens, primitives, product patterns and hooks for the Relay publishing
+ * Tokens, primitives, product patterns and hooks for the Post Array publishing
  * desk. Import the stylesheet once at the app root:
  *
  *   import '@relay/design-system/styles.css';

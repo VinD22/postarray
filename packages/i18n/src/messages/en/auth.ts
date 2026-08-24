@@ -3,7 +3,7 @@ export const authMessages = {
   'auth.signIn.title': 'Sign in',
   'auth.signIn.subtitle': 'Publish, approve and see exactly what happened.',
   'auth.signUp.title': 'Create your account',
-  'auth.signUp.subtitle': 'Seven days with every feature. $0 due today.',
+  'auth.signUp.subtitle': 'Free to start, no card. Your first published posts are on us.',
   'auth.emailOnly.title': 'Email sign in is available now',
   'auth.emailOnly.description':
     'Google and Facebook sign in are not available in this prelaunch. Use your email and password or a one-time code.',

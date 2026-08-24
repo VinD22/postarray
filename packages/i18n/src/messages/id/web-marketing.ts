@@ -1,18 +1,16 @@
 /** id beta catalog namespace. */
 export const webMarketingMessages = {
-  'web.brand.name': 'Relay',
+  'web.brand.name': 'Post Array',
   'web.brand.tagline': 'Bidang kendali penerbitan multibahasa untuk orang dan agen.',
   'web.skipToContent': 'Lompat ke konten utama',
   'web.nav.label': 'Navigasi situs',
   'web.nav.openMenu': 'Tidak bisa',
   'web.nav.closeMenu': 'Tutup menunya',
   'web.nav.footerLabel': 'Navigasi catatan kaki',
-  'web.cta.startTrial': 'Mulai uji coba 7 hari',
+  'web.cta.startTrial': 'Mulai gratis, tanpa kartu',
   'web.cta.seePricing': 'Lihat harganya',
   'web.cta.seeCapabilities': 'Baca matriks kemampuan',
   'web.cta.readDocs': 'Baca dokumentasinya',
-  'web.cta.trialFootnote':
-    'Polar mengumpulkan metode pembayaran, menagih $0 hari ini, dan menunjukkan tanggal tagihan pertama yang tepat sebelum Anda mengonfirmasi.',
   'web.label.lastReviewed': 'Terakhir diulas {date}',
   'web.label.nextReview': 'Ulasan selanjutnya {date}',
   'web.label.researchDate': 'Meneliti {date}',
@@ -28,42 +26,40 @@ export const webMarketingMessages = {
   'web.correction.body':
     'Aturan platform berubah dan kami melakukan kesalahan. Kirimkan URL dan apa yang tidak akurat dan kami akan memperbaiki halaman tersebut atau menghentikannya.',
   'web.correction.email': 'koreksi@relay.contoh',
-  'web.meta.home.title': 'Relay, bidang kendali penerbitan multibahasa',
+  'web.meta.home.title': 'Post Array, bidang kendali penerbitan multibahasa',
   'web.meta.home.description':
     'Ubah satu ide menjadi konten asli platform, setujui sekali, publikasikan dengan andal melalui API platform resmi, dan pelajari hal-hal yang perlu ditingkatkan selanjutnya.',
-  'web.meta.product.title': 'Bagaimana Relay bekerja',
+  'web.meta.product.title': 'Bagaimana Post Array bekerja',
   'web.meta.product.description':
     'Panduan bagian penerbitan: buat sekali, sesuaikan per platform, validasi berdasarkan batas sebenarnya, setujui, jadwalkan, publikasikan, dan simpan tanda terima.',
-  'web.meta.integrations.title': 'Platform Relay menerbitkannya',
+  'web.meta.integrations.title': 'Platform Post Array menerbitkannya',
   'web.meta.integrations.description':
-    'Platform mana yang terhubung dengan Relay, apa yang dapat dilakukan setiap koneksi saat ini, dan apa yang tidak diizinkan oleh platform itu sendiri.',
+    'Platform mana yang terhubung dengan Post Array, apa yang dapat dilakukan setiap koneksi saat ini, dan apa yang tidak diizinkan oleh platform itu sendiri.',
   'web.meta.capabilities.title': 'Matriks kemampuan konektor',
   'web.meta.capabilities.description':
     'Tabel per platform, per kemampuan yang dihasilkan dari definisi konektor kami, memisahkan apa yang telah kami bangun dari apa yang tidak ditawarkan platform.',
-  'web.meta.creators.title': 'Relay untuk pencipta',
+  'web.meta.creators.title': 'Post Array untuk pencipta',
   'web.meta.creators.description':
     'Untuk pencipta tunggal menerbitkan ide yang sama dalam beberapa format dan bahasa tanpa menulis ulang sebanyak lima kali.',
-  'web.meta.agencies.title': 'Relay untuk agensi',
+  'web.meta.agencies.title': 'Post Array untuk agensi',
   'web.meta.agencies.description':
     'Pemisahan klien, persetujuan, tautan ulasan yang dapat dibagikan, tanda terima, dan pelaporan untuk tim yang mempublikasikan atas nama orang lain.',
-  'web.meta.developers.title': 'Relay untuk pengembang',
+  'web.meta.developers.title': 'Post Array untuk pengembang',
   'web.meta.developers.description':
     'Satu backend di belakang aplikasi web, REST API, server MCP jarak jauh, CLI, dan webhook bertanda tangan. Aturan persetujuan yang sama di setiap permukaan.',
   'web.meta.pricing.title': 'Harga',
-  'web.meta.pricing.description':
-    'Satu rencana. $29 per bulan, atau $300 per tahun yaitu $25 per bulan yang ditagih setiap tahun. 30 saluran aktif, anggota tim tidak terbatas, tanpa tingkatan fitur.',
   'web.meta.resources.title': 'Sumber daya',
   'web.meta.resources.description':
     'Status, log perubahan, dokumentasi, metodologi, perbandingan, radar alat, dan katalog peluang.',
   'web.meta.status.title': 'Status',
   'web.meta.status.description':
-    'Keadaan terkini setiap permukaan Relay dan setiap konektor, ditambah riwayat kejadian.',
+    'Keadaan terkini setiap permukaan Post Array dan setiap konektor, ditambah riwayat kejadian.',
   'web.meta.changelog.title': 'log perubahan',
   'web.meta.changelog.description':
     'Apa yang dikirimkan, apa yang diubah pada konektornya, dan apa yang diperbaiki.',
   'web.meta.docs.title': 'Dokumentasi',
   'web.meta.docs.description':
-    'REST API, server MCP, CLI, dan dokumentasi webhook untuk dibangun di Relay.',
+    'REST API, server MCP, CLI, dan dokumentasi webhook untuk dibangun di Post Array.',
   'web.meta.methodology.title': 'Metodologi',
   'web.meta.methodology.description':
     'Cara kami meneliti klaim platform, cara kami menentukan tanggalnya, cara kami membandingkan produk lain, dan cara kami memperbaiki kesalahan.',
@@ -82,9 +78,7 @@ export const webMarketingMessages = {
   'web.home.promise':
     'Ubah satu ide menjadi konten asli platform, setujui sekali, publikasikan dengan andal, dan pelajari hal-hal yang perlu ditingkatkan selanjutnya.',
   'web.home.lede':
-    'Relay adalah meja penerbitan untuk orang-orang yang bertanggung jawab atas apa yang keluar. Anda menulis sekali, beradaptasi per platform, melihat batasan sebenarnya sebelum Anda menjadwalkan, mendapatkan persetujuan yang Anda perlukan, mempublikasikan melalui API platform resmi, dan menyimpan tanda terima untuk setiap postingan.',
-  'web.home.summaryLine':
-    'Satu paket seharga $29 per bulan atau $300 per tahun. 30 saluran sosial aktif, anggota tim tidak terbatas, tanpa tingkatan fitur. Uji coba tujuh hari mengumpulkan metode pembayaran dan mengenakan biaya $0 saat checkout.',
+    'Post Array adalah meja penerbitan untuk orang-orang yang bertanggung jawab atas apa yang keluar. Anda menulis sekali, beradaptasi per platform, melihat batasan sebenarnya sebelum Anda menjadwalkan, mendapatkan persetujuan yang Anda perlukan, mempublikasikan melalui API platform resmi, dan menyimpan tanda terima untuk setiap postingan.',
   'web.home.example.title': 'Satu ide, lima versi platform asli',
   'web.home.example.body':
     'Komposer memulai dengan versi master. Memilih satu akun akan membuka penggantian untuk akun itu saja, dengan batas aktifnya sendiri dan pratinjaunya sendiri. Tidak ada yang Anda tulis untuk LinkedIn yang mengubah apa yang diterima X.',
@@ -113,7 +107,7 @@ export const webMarketingMessages = {
   'web.home.example.bluesky.variant': 'Teks master dengan kartu tautan',
   'web.home.example.bluesky.check':
     'Jumlah karakter, resolusi kartu tautan, teks alternatif yang ada',
-  'web.home.pillars.title': 'Apa yang menjadi keunggulan Relay',
+  'web.home.pillars.title': 'Apa yang menjadi keunggulan Post Array',
   'web.home.pillars.confidence.title': 'Publikasikan dengan percaya diri',
   'web.home.pillars.confidence.body':
     'Pratinjau sebenarnya per akun, kebijakan deterministik dan pemeriksaan platform sebelum segala sesuatunya dimasukkan ke dalam antrean, persetujuan yang diperlukan ruang kerja Anda, tanda terima yang tidak dapat diubah dengan ID kiriman eksternal, dan status kesehatan untuk setiap koneksi.',
@@ -126,7 +120,7 @@ export const webMarketingMessages = {
     'Antarmuka tersedia dalam bahasa tertentu. Adaptasi konten mencakup 20 bahasa konten dan semuanya dapat ditinjau sebelum dipublikasikan.',
   'web.home.pillars.loop.title': 'Tutup lingkarannya',
   'web.home.pillars.loop.body':
-    'Analisis yang memberi nama metrik, platform yang melaporkannya, penyebutnya, dan kapan terakhir kali disegarkan. Jika platform tidak melaporkan sesuatu, Relay akan melaporkannya alih-alih menunjukkan angka nol.',
+    'Analisis yang memberi nama metrik, platform yang melaporkannya, penyebutnya, dan kapan terakhir kali disegarkan. Jika platform tidak melaporkan sesuatu, Post Array akan melaporkannya alih-alih menunjukkan angka nol.',
   'web.home.pillars.loop.proof':
     'Sebuah postingan dibandingkan dengan median Anda sendiri, bukan dengan skor yang tidak dapat diaudit oleh siapa pun.',
   'web.home.pillars.anywhere.title': 'Bekerja dari tempat Anda berada',
@@ -138,18 +132,18 @@ export const webMarketingMessages = {
   'web.home.pillars.economics.body':
     'Satu harga, setiap fitur yang dikirimkan, 30 saluran aktif, dan anggota tim tanpa batas. Penggunaan platform yang dikenakan biaya oleh penyedia per operasi dilakukan sesuai biaya dan ditampilkan sebelum Anda mengonfirmasi tindakan.',
   'web.home.pillars.economics.proof':
-    'Tidak ada sistem kredit pembuatan gambar atau video, karena Relay tidak menghasilkan media.',
-  'web.home.honest.title': 'Apa yang tidak dilakukan Relay',
+    'Tidak ada sistem kredit pembuatan gambar atau video, karena Post Array tidak menghasilkan media.',
+  'web.home.honest.title': 'Apa yang tidak dilakukan Post Array',
   'web.home.honest.lede':
     'Ini adalah batasan, bukan peta jalan yang menggoda. Jika salah satunya berubah, maka akan diubah terlebih dahulu di changelog.',
   'web.home.honest.noMedia':
-    'Tidak ada pembuatan gambar AI dan tidak ada pembuatan video AI. Relay mengadaptasi, menyetujui, menerbitkan, dan mengukur media yang Anda bawa.',
+    'Tidak ada pembuatan gambar AI dan tidak ada pembuatan video AI. Post Array mengadaptasi, menyetujui, menerbitkan, dan mengukur media yang Anda bawa.',
   'web.home.honest.noAutomationOfEngagement':
     'Tidak ada suka otomatis, mengikuti, memposting ulang, balasan yang tidak diminta, atau pesan langsung. Tidak ada pod keterlibatan dan tidak ada keterlibatan palsu.',
   'web.home.honest.noUnofficial':
     'Tidak ada otomatisasi browser, tidak ada pemutaran ulang cookie, tidak ada pengikisan, dan tidak ada titik akhir postingan tidak resmi. Hanya API platform resmi.',
   'web.home.honest.noPromises':
-    'Tidak ada janji tentang jangkauan, peringkat, atau keterlibatan. Relay dapat memberi tahu Anda apa yang terjadi dan apa yang harus diuji selanjutnya. Itu tidak bisa memberi tahu Anda apa yang akan dilakukan penonton.',
+    'Tidak ada janji tentang jangkauan, peringkat, atau keterlibatan. Post Array dapat memberi tahu Anda apa yang terjadi dan apa yang harus diuji selanjutnya. Itu tidak bisa memberi tahu Anda apa yang akan dilakukan penonton.',
   'web.home.honest.noUnattendedPublishing':
     'Tidak ada penerbitan tanpa pengawasan secara default. Agen dapat menyusun, memvalidasi, dan meminta persetujuan. Manusia mengambil keputusan sebelum segala sesuatunya diketahui publik, kecuali Anda dengan sengaja membatalkan kebijakan tertentu.',
   'web.home.surfaces.title': 'Lima permukaan, satu backend',
@@ -173,7 +167,6 @@ export const webMarketingMessages = {
   'web.home.closing.body':
     'Hubungkan satu akun, buat draf satu postingan, saksikan validasi berjalan, jadwalkan, dan baca tanda terima. Itu adalah keseluruhan produk dalam waktu sekitar sepuluh menit.',
   'web.home.v2.heroTemplate': 'Postingan asli sesuai merek untuk {platform}.',
-  'web.home.v2.sticker.trial': 'Uji coba 7 hari',
   'web.home.v2.sticker.official': 'Hanya API Resmi',
   'web.home.v2.marqueeCaption': 'Hanya API Resmi.',
   'web.home.v2.surfacesStat': 'Permukaan di satu backend bersama',
@@ -225,7 +218,7 @@ export const webMarketingMessages = {
     'Tindakan yang tidak diizinkan oleh peran Anda, sebutkan peran yang mengizinkannya.',
   'web.integrations.title': 'Platform',
   'web.integrations.lede':
-    'Relay terhubung melalui API platform resmi. Setiap konektor memiliki nama pemilik, rekaman URL kebijakan, dan tanggal peninjauan. Konektor tidak terdaftar sebagai didukung hingga konektor tersebut melewati definisi konektor selesai.',
+    'Post Array terhubung melalui API platform resmi. Setiap konektor memiliki nama pemilik, rekaman URL kebijakan, dan tanggal peninjauan. Konektor tidak terdaftar sebagai didukung hingga konektor tersebut melewati definisi konektor selesai.',
   'web.integrations.reviewNotice.title':
     'Tidak ada konektor yang dianggap resmi sebelum platform menyetujuinya',
   'web.integrations.reviewNotice.body':
@@ -247,7 +240,7 @@ export const webMarketingMessages = {
     'Setiap klaim platform dalam tabel ini tertaut ke dokumentasi resmi asalnya dan tanggal terakhir kami membacanya.',
   'web.creators.title': 'Untuk pencipta',
   'web.creators.lede':
-    'Anda mempublikasikan ide yang sama dalam beberapa format, terkadang dalam lebih dari satu bahasa, dan Anda adalah keseluruhan tim. Pekerjaan yang dihilangkan Relay adalah mengetik ulang, memotong ulang, dan memeriksa.',
+    'Anda mempublikasikan ide yang sama dalam beberapa format, terkadang dalam lebih dari satu bahasa, dan Anda adalah keseluruhan tim. Pekerjaan yang dihilangkan Post Array adalah mengetik ulang, memotong ulang, dan memeriksa.',
   'web.creators.job.adapt.title': 'Tulis sekali, kirimkan lima versi asli',
   'web.creators.job.adapt.body':
     'Versi master membawa ide tersebut. Setiap akun mendapatkan durasi, pemotongan, pengaturan, dan warna yang diharapkan platform, dan Anda dapat melihat semuanya secara berdampingan sebelum Anda berkomitmen.',
@@ -256,13 +249,13 @@ export const webMarketingMessages = {
     'Transkreasi mempertahankan maksud dan bukan kata-katanya, menggunakan glosarium proyek Anda, dan menandai apakah pengulas asli telah membacanya. Tidak ada yang diterbitkan dalam bahasa yang tidak dapat Anda jamin kecuali Anda mengatakannya.',
   'web.creators.job.rights.title': 'Simpan catatan hak Anda dengan file tersebut',
   'web.creators.job.rights.body':
-    'Media membawa dari mana asalnya, siapa yang memegang haknya dan apakah diciptakan dengan alat generatif. Platform semakin banyak bertanya. Relay menyimpan jawaban Anda dengan aset alih-alih menanyakannya lagi.',
+    'Media membawa dari mana asalnya, siapa yang memegang haknya dan apakah diciptakan dengan alat generatif. Platform semakin banyak bertanya. Post Array menyimpan jawaban Anda dengan aset alih-alih menanyakannya lagi.',
   'web.creators.job.cost.title': 'Ketahui biayanya sebelum Anda memposting',
   'web.creators.job.cost.body':
-    'X mengenakan biaya per operasi dan mengenakan biaya lebih banyak untuk postingan yang berisi URL. Relay memperkirakan bahwa sebelum Anda mengonfirmasi, jadi tautan minggu yang berat adalah keputusan, bukan kejutan faktur.',
+    'X mengenakan biaya per operasi dan mengenakan biaya lebih banyak untuk postingan yang berisi URL. Post Array memperkirakan bahwa sebelum Anda mengonfirmasi, jadi tautan minggu yang berat adalah keputusan, bukan kejutan faktur.',
   'web.creators.notFor.title': 'Apa yang bukan ini',
   'web.creators.notFor.body':
-    'Relay tidak menghasilkan gambar atau video, tidak menjalankan otomatisasi keterlibatan, dan tidak memprediksi bagaimana kinerja sebuah postingan. Jika itu adalah alat yang Anda inginkan, produk lain dapat melakukannya dan kami lebih suka Anda mengetahuinya sekarang.',
+    'Post Array tidak menghasilkan gambar atau video, tidak menjalankan otomatisasi keterlibatan, dan tidak memprediksi bagaimana kinerja sebuah postingan. Jika itu adalah alat yang Anda inginkan, produk lain dapat melakukannya dan kami lebih suka Anda mengetahuinya sekarang.',
   'web.agencies.title': 'Untuk agensi',
   'web.agencies.lede':
     'Anda menerbitkan atas nama orang lain, yang menjadikan atribusi, persetujuan, dan bukti sebagai bagian dari pekerjaan, bukan sekedar basa-basi.',
@@ -283,7 +276,7 @@ export const webMarketingMessages = {
     'Satu paket mencakup 30 saluran sosial aktif. Saluran adalah satu akun sosial, Halaman, profil, grup, atau koneksi publikasi. Jika Anda membutuhkan lebih dari 30, beri tahu kami apa yang Anda butuhkan dan kami akan memberi Anda jawaban langsung, bukan jawaban tersembunyi.',
   'web.developers.title': 'Untuk pengembang',
   'web.developers.lede':
-    'Penerbitan adalah bagian dari alur kerja di mana kesalahan bersifat publik dan permanen. Relay memberi Anda satu backend, kesalahan pengetikan, idempotensi pada setiap penulisan, dan model persetujuan yang tidak dapat dibicarakan oleh agen.',
+    'Penerbitan adalah bagian dari alur kerja di mana kesalahan bersifat publik dan permanen. Post Array memberi Anda satu backend, kesalahan pengetikan, idempotensi pada setiap penulisan, dan model persetujuan yang tidak dapat dibicarakan oleh agen.',
   'web.developers.surface.api.title': 'API REST',
   'web.developers.surface.api.body':
     'Kunci API tercakup, kunci idempotensi yang diperlukan pada setiap penulisan, penomoran halaman kursor, dan amplop kesalahan yang diketik yang membawa kode stabil, kunci pesan, dan detail yang dibersihkan. Tidak ada muatan penyedia yang direfleksikan kembali kepada Anda secara mentah.',
@@ -305,10 +298,8 @@ export const webMarketingMessages = {
     'Setiap agen dan setiap ruang kerja memiliki tombol pemutus (kill switch) yang menghentikan pekerjaan yang tertunda tanpa menghapusnya.',
   'web.developers.openSource.title': 'Potongan terbuka',
   'web.developers.openSource.body':
-    'Kontrak konektor, CLI, contoh skema, definisi alat MCP, dan simulator penyedia adalah bagian yang Anda perlukan untuk membangun Relay tanpa akun sandbox. Jika repositori belum diterbitkan, halaman ini menyatakannya daripada tidak menghubungkan ke apa pun.',
+    'Kontrak konektor, CLI, contoh skema, definisi alat MCP, dan simulator penyedia adalah bagian yang Anda perlukan untuk membangun Post Array tanpa akun sandbox. Jika repositori belum diterbitkan, halaman ini menyatakannya daripada tidak menghubungkan ke apa pun.',
   'web.pricing.title': 'Satu rencana',
-  'web.pricing.lede':
-    'Tidak ada tingkatan fitur, jadi tidak ada tabel perbandingan untuk dibaca. Kedua interval penagihan membuka kunci setiap fitur yang dikirimkan.',
   'web.pricing.intervalHeading': 'Pilih cara Anda membayar',
   'web.pricing.monthlyLabel': 'Ditagih setiap bulan',
   'web.pricing.annualLabel': 'Ditagih setiap tahun',
@@ -324,15 +315,9 @@ export const webMarketingMessages = {
   'web.pricing.beside.fairUse':
     'Draf tak terbatas, postingan terjadwal, dan tanda terima yang disimpan berdasarkan kebijakan penggunaan wajar dan anti spam yang dipublikasikan. Kontrol tersebut ada untuk melindungi akun Anda yang terhubung dan berlaku sama untuk setiap pelanggan.',
   'web.pricing.beside.metered':
-    'X mengenakan biaya per operasi API dan mengenakan biaya lebih banyak untuk postingan yang berisi URL. Relay meneruskannya dengan biaya, memperkirakannya sebelum Anda mengonfirmasi tindakan, dan menampilkannya dalam penggunaan Anda. Biaya platform lainnya hanya dikenakan jika diumumkan sebelum tindakan.',
+    'X mengenakan biaya per operasi API dan mengenakan biaya lebih banyak untuk postingan yang berisi URL. Post Array meneruskannya dengan biaya, memperkirakannya sebelum Anda mengonfirmasi tindakan, dan menampilkannya dalam penggunaan Anda. Biaya platform lainnya hanya dikenakan jika diumumkan sebelum tindakan.',
   'web.pricing.beside.noMedia':
-    'Pembuatan gambar AI dan pembuatan video AI tidak termasuk dan tidak dijual. Tidak ada kredit media, karena Relay tidak menghasilkan media.',
-  'web.pricing.beside.trial':
-    'Uji coba berjalan selama tujuh hari dengan setiap fitur. Polar mengumpulkan metode pembayaran saat checkout dan menagih $0 hari ini. Jumlah dan tanggal tagihan pertama yang tepat ditampilkan di sebelah tindakan awal sebelum Anda mengonfirmasi.',
-  'web.pricing.beside.conversion':
-    'Jika Anda tidak melakukan apa pun, uji coba akan dikonversi pada hari ketujuh ke interval yang Anda pilih dan Polar membebankan biaya sesuai jumlah yang ditunjukkan saat pembayaran. Polar mengirimkan email pengingat tiga hari sebelum hal itu terjadi.',
-  'web.pricing.beside.cancel':
-    'Batalkan dari Pengaturan kapan saja tanpa menghubungi dukungan. Batalkan sebelum uji coba berubah dan tidak ada biaya yang dikenakan. Batalkan setelah itu dan Anda tetap memiliki akses hingga periode pembayaran berakhir.',
+    'Pembuatan gambar AI dan pembuatan video AI tidak termasuk dan tidak dijual. Tidak ada kredit media, karena Post Array tidak menghasilkan media.',
   'web.pricing.beside.data':
     'Tidak ada yang dihapus saat langganan berakhir. Anda dapat mengekspor konten, tanda terima, dan analitik, dan Anda dapat menghapusnya sendiri.',
   'web.pricing.included.title': 'Termasuk, di kedua interval',
@@ -354,13 +339,8 @@ export const webMarketingMessages = {
     'Tidak hari ini. Apakah akan ada edisi yang dihosting sendiri, dan dengan lisensi apa, itu merupakan keputusan terbuka. Kami akan mempublikasikan jawabannya daripada menyiratkannya.',
   'web.pricing.faq.xCost.q': 'Berapa sebenarnya biaya X bagi saya',
   'web.pricing.faq.xCost.a':
-    'Itu tergantung pada berapa banyak postingan yang Anda publikasikan dan berapa banyak di antaranya yang berisi URL, karena X memberi harga yang berbeda. Relay memperkirakan setiap tindakan sebelum Anda mengonfirmasinya dan menjumlahkannya dalam tampilan penggunaan Anda. Kami tidak menandainya.',
-  'web.pricing.faq.trialAbuse.q': 'Bisakah saya memulai uji coba kedua',
-  'web.pricing.faq.trialAbuse.a':
-    'Uji coba berulang dibatasi oleh Polar. Jika Anda memiliki alasan yang sah, hubungi dukungan dan seseorang akan memeriksanya.',
+    'Itu tergantung pada berapa banyak postingan yang Anda publikasikan dan berapa banyak di antaranya yang berisi URL, karena X memberi harga yang berbeda. Post Array memperkirakan setiap tindakan sebelum Anda mengonfirmasinya dan menjumlahkannya dalam tampilan penggunaan Anda. Kami tidak menandainya.',
   'web.pricing.v2.closing.title': 'Tujuh hari untuk mencobanya, di akun Anda sendiri',
-  'web.pricing.v2.closing.body':
-    'Mulai uji coba, sambungkan akun yang sebenarnya Anda jalankan, dan lihat bagaimana validasi dan penjadwalan sebelum dikenakan biaya apa pun.',
   'web.resources.title': 'Sumber daya',
   'web.resources.lede':
     'Kebenaran operasional tentang produk, dan penelitian di balik apa pun yang kami klaim tentang suatu platform.',
@@ -387,7 +367,7 @@ export const webMarketingMessages = {
     'Standar editorial memerlukan data produk asli, alur kerja yang dapat direproduksi, sumber platform utama dengan tanggal verifikasi, dan editor manusia bernama. Pemandu pertama mempublikasikan ketika mereka bertemu dengannya.',
   'web.status.title': 'Status',
   'web.status.lede':
-    'Keadaan setiap permukaan Relay dan setiap konektor. Status konektor mencakup adaptor kami dan API platform tempat ia bergantung.',
+    'Keadaan setiap permukaan Post Array dan setiap konektor. Status konektor mencakup adaptor kami dan API platform tempat ia bergantung.',
   'web.status.updated': 'Status diatur secara manual. Terakhir diperbarui {time}.',
   'web.status.surfaces.title': 'Permukaan',
   'web.status.connectors.title': 'Konektor',
@@ -422,7 +402,7 @@ export const webMarketingMessages = {
   'web.changelog.kind.security': 'Keamanan',
   'web.changelog.empty': 'Belum ada yang dikirimkan secara publik',
   'web.changelog.emptyBody':
-    'Relay sedang dibangun. Entri pertama di sini adalah hal pertama yang dapat digunakan pelanggan, bukan pencapaian tentang diri kita sendiri.',
+    'Post Array sedang dibangun. Entri pertama di sini adalah hal pertama yang dapat digunakan pelanggan, bukan pencapaian tentang diri kita sendiri.',
   'web.docs.title': 'Dokumentasi',
   'web.docs.lede':
     'Satu backend, empat cara masuk. Setiap bagian mendokumentasikan kasus penggunaan yang sama, sehingga konsep yang Anda pelajari di REST API adalah konsep yang sama di MCP dan CLI.',
@@ -511,7 +491,7 @@ export const webMarketingMessages = {
     'Setiap halaman memerlukan pemeriksaan fakta baru terhadap harga dan dokumentasi produk lainnya. Mereka menerbitkannya satu per satu setelah pekerjaan itu selesai.',
   'web.toolRadar.title': 'Radar alat kreatif',
   'web.toolRadar.lede':
-    'Relay tidak menghasilkan gambar atau video. Ini membantu Anda memutuskan alat khusus mana yang akan digunakan dan memasukkan aset yang sudah jadi dengan catatan haknya yang utuh.',
+    'Post Array tidak menghasilkan gambar atau video. Ini membantu Anda memutuskan alat khusus mana yang akan digunakan dan memasukkan aset yang sudah jadi dengan catatan haknya yang utuh.',
   'web.toolRadar.record.title': 'Apa yang harus dibawa oleh setiap rekaman',
   'web.toolRadar.record.url': 'URL resmi dan organisasi pemilik produk.',
   'web.toolRadar.record.useCase':
@@ -536,7 +516,7 @@ export const webMarketingMessages = {
   'web.opportunities.rules.curated':
     'Setiap entri adalah catatan yang ditinjau dengan URL resmi, aturan pengiriman saat ini, dan tanggal verifikasi. Tidak ada yang ditemukan oleh model dan disajikan sebagai terverifikasi.',
   'web.opportunities.rules.noAutomation':
-    'Relay tidak pernah mengirimkan formulir, menghapus kontak, mengirim email atau postingan massal ke komunitas untuk Anda. Anda melakukan penyerahan.',
+    'Post Array tidak pernah mengirimkan formulir, menghapus kontak, mengirim email atau postingan massal ke komunitas untuk Anda. Anda melakukan penyerahan.',
   'web.opportunities.rules.noGuarantee':
     'Daftar bukanlah janji peringkat dan tautan bukanlah strategi pertumbuhan. Kami menunjukkan persyaratan kecocokan, penonton, upaya, biaya, dan pengungkapan sehingga Anda dapat memutuskan apakah acara tersebut layak untuk sore Anda.',
   'web.opportunities.rules.stale':
@@ -547,10 +527,10 @@ export const webMarketingMessages = {
     'Setiap peraturan destinasi harus dibaca dan dicatat oleh seseorang sebelum dapat direkomendasikan. Kategori tercantum di atas sehingga Anda dapat melihat bentuk apa yang akan datang.',
   'web.legal.title': 'Hukum dan kebijakan',
   'web.legal.lede':
-    'Dokumen yang mengatur penggunaan Relay. Jika kata-katanya harus disusun oleh pengacara untuk perusahaan dan yurisdiksi tertentu, halaman tersebut menyatakan demikian alih-alih berpura-pura.',
+    'Dokumen yang mengatur penggunaan Post Array. Jika kata-katanya harus disusun oleh pengacara untuk perusahaan dan yurisdiksi tertentu, halaman tersebut menyatakan demikian alih-alih berpura-pura.',
   'web.legal.counselPending.title': 'Menunggu peninjauan oleh penasihat sebelum peluncuran',
   'web.legal.counselPending.body':
-    'Substansi di halaman ini mencerminkan bagaimana produk sebenarnya berperilaku dan akurat saat ini. Kata-kata hukum yang mengikat, yurisdiksi yang mengatur, dan persyaratan tanggung jawab sedang dirancang oleh penasihat hukum yang berkualifikasi dan akan menggantikan teks ini sebelum Relay tersedia secara umum. Halaman ini bukan merupakan nasihat hukum dan belum merupakan kontrak.',
+    'Substansi di halaman ini mencerminkan bagaimana produk sebenarnya berperilaku dan akurat saat ini. Kata-kata hukum yang mengikat, yurisdiksi yang mengatur, dan persyaratan tanggung jawab sedang dirancang oleh penasihat hukum yang berkualifikasi dan akan menggantikan teks ini sebelum Post Array tersedia secara umum. Halaman ini bukan merupakan nasihat hukum dan belum merupakan kontrak.',
   'web.legal.contact.title': 'Kontak',
   'web.legal.contact.privacy': 'privacy@relay.contoh',
   'web.legal.contact.legal': 'legal@relay.contoh',
@@ -564,22 +544,22 @@ export const webMarketingMessages = {
   'web.legal.index.updated': '{date} yang diperbarui',
   'web.legal.terms.title': 'Ketentuan Layanan',
   'web.legal.terms.summary':
-    'Apa yang Relay setuju untuk berikan, apa yang Anda setujui untuk dilakukan, dan apa yang terjadi jika salah satu pihak berhenti.',
+    'Apa yang Post Array setuju untuk berikan, apa yang Anda setujui untuk dilakukan, dan apa yang terjadi jika salah satu pihak berhenti.',
   'web.legal.terms.service.title': 'Apa layanannya',
   'web.legal.terms.service.body':
-    'Relay adalah layanan yang dihosting untuk membuat, menyetujui, menjadwalkan, dan menerbitkan konten ke platform sosial melalui API resmi platform tersebut, bersama dengan tanda terima, analisis, dan catatan audit yang dihasilkan. Ini bukan platform sosial dan tidak mengontrol apa yang dilakukan platform mana pun terhadap postingan setelah dipublikasikan.',
+    'Post Array adalah layanan yang dihosting untuk membuat, menyetujui, menjadwalkan, dan menerbitkan konten ke platform sosial melalui API resmi platform tersebut, bersama dengan tanda terima, analisis, dan catatan audit yang dihasilkan. Ini bukan platform sosial dan tidak mengontrol apa yang dilakukan platform mana pun terhadap postingan setelah dipublikasikan.',
   'web.legal.terms.content.title': 'Konten Anda tetap menjadi milik Anda',
   'web.legal.terms.content.body':
-    'Anda tetap memiliki kepemilikan atas semua yang Anda unggah, tulis, atau impor. Anda hanya memberikan Relay lisensi yang diperlukan untuk menyimpannya, memprosesnya, mengadaptasinya ke dalam varian yang Anda minta, dan mengirimkannya ke akun yang Anda pilih. Lisensi tersebut berakhir ketika Anda menghapus konten tersebut, selain dari catatan yang harus kami simpan.',
+    'Anda tetap memiliki kepemilikan atas semua yang Anda unggah, tulis, atau impor. Anda hanya memberikan Post Array lisensi yang diperlukan untuk menyimpannya, memprosesnya, mengadaptasinya ke dalam varian yang Anda minta, dan mengirimkannya ke akun yang Anda pilih. Lisensi tersebut berakhir ketika Anda menghapus konten tersebut, selain dari catatan yang harus kami simpan.',
   'web.legal.terms.warranties.title': 'Apa yang Anda konfirmasikan saat Anda mempublikasikan',
   'web.legal.terms.warranties.body':
     'Bahwa Anda berwenang untuk mempublikasikan ke akun yang Anda hubungkan, bahwa Anda memegang hak atas konten dan media, bahwa Anda memiliki izin yang diperlukan untuk siapa pun yang muncul di dalamnya, dan bahwa mempublikasikannya tidak melanggar aturan platform tujuan.',
   'web.legal.terms.platforms.title': 'Ketergantungan platform',
   'web.legal.terms.platforms.body':
-    'Konektor bergantung pada API pihak ketiga yang dikontrol oleh perusahaan tersebut. Sebuah platform dapat mengubah API-nya, membatasi izin, mencabut aplikasi, atau menutup akses dengan sedikit pemberitahuan. Relay tidak dapat menjamin bahwa konektor apa pun tetap tersedia, dan hilangnya konektor bukan merupakan kegagalan perjanjian ini. Kami akan memberi tahu Anda di halaman status dan log perubahan kapan hal itu terjadi.',
+    'Konektor bergantung pada API pihak ketiga yang dikontrol oleh perusahaan tersebut. Sebuah platform dapat mengubah API-nya, membatasi izin, mencabut aplikasi, atau menutup akses dengan sedikit pemberitahuan. Post Array tidak dapat menjamin bahwa konektor apa pun tetap tersedia, dan hilangnya konektor bukan merupakan kegagalan perjanjian ini. Kami akan memberi tahu Anda di halaman status dan log perubahan kapan hal itu terjadi.',
   'web.legal.terms.ai.title': 'keluaran AI',
   'web.legal.terms.ai.body':
-    'Fitur bantuan teks, terjemahan, transkreasi dan perencanaan menghasilkan saran. Mereka bisa saja salah, ketinggalan jaman, atau tidak cocok. Anda bertanggung jawab untuk meninjau apa pun yang Anda publikasikan. Relay tidak menghasilkan gambar atau video.',
+    'Fitur bantuan teks, terjemahan, transkreasi dan perencanaan menghasilkan saran. Mereka bisa saja salah, ketinggalan jaman, atau tidak cocok. Anda bertanggung jawab untuk meninjau apa pun yang Anda publikasikan. Post Array tidak menghasilkan gambar atau video.',
   'web.legal.terms.billing.title': 'Pembayaran',
   'web.legal.terms.billing.body':
     'Polar adalah pedagang rekor. Polar menangani pembayaran, pajak, faktur, dan pengembalian uang. Langganan diperpanjang secara otomatis pada interval yang Anda pilih hingga Anda membatalkan. Penggunaan platform yang dibebankan oleh penyedia per operasi ditagih secara terpisah sebesar biaya dan diungkapkan sebelum tindakan yang dilakukan.',
@@ -597,7 +577,7 @@ export const webMarketingMessages = {
     'Akses terprogram juga diatur oleh Persyaratan API dan MCP, termasuk batas kapasitas, persyaratan cakupan, dan aturan bahwa akun layanan tidak pernah mewarisi izin penuh dari manusia.',
   'web.legal.privacy.title': 'Kebijakan Privasi',
   'web.legal.privacy.summary':
-    'Apa yang Relay kumpulkan, mengapa, siapa yang memprosesnya, berapa lama disimpan, dan bagaimana cara mengeluarkannya atau menghapusnya.',
+    'Apa yang Post Array kumpulkan, mengapa, siapa yang memprosesnya, berapa lama disimpan, dan bagaimana cara mengeluarkannya atau menghapusnya.',
   'web.legal.privacy.collect.title': 'Apa yang kami pegang',
   'web.legal.privacy.collect.account':
     'Akun dan profil: nama, email, keanggotaan ruang kerja, dan peran Anda.',
@@ -608,9 +588,9 @@ export const webMarketingMessages = {
   'web.legal.privacy.collect.schedules':
     'Jadwal, keputusan persetujuan, tanda terima publikasi dan acara audit.',
   'web.legal.privacy.collect.analytics':
-    'Metrik diambil dari platform tentang postingan yang Anda publikasikan melalui Relay.',
+    'Metrik diambil dari platform tentang postingan yang Anda publikasikan melalui Post Array.',
   'web.legal.privacy.collect.billing':
-    'Referensi penagihan dipegang oleh Polar. Relay tidak menyimpan detail kartu Anda.',
+    'Referensi penagihan dipegang oleh Polar. Post Array tidak menyimpan detail kartu Anda.',
   'web.legal.privacy.collect.technical':
     'Data perangkat dan log yang diperlukan untuk mengoperasikan dan mengamankan layanan, disunting secara default.',
   'web.legal.privacy.collect.agent':
@@ -643,13 +623,13 @@ export const webMarketingMessages = {
     'Preferensi persetujuan memiliki versi dan dapat diaudit, sehingga Anda dapat melihat apa yang Anda setujui dan kapan.',
   'web.legal.privacy.deletion.title': 'Menghapus data yang disimpan di platform',
   'web.legal.privacy.deletion.body':
-    'Memutuskan sambungan akun di Relay akan mencabut token di platform dan menghapus kredensial di sini. Konten yang sudah dipublikasikan di suatu platform diatur oleh platform tersebut dan harus dihapus di sana. Jika platform mengharuskan penghapusan data turunan dalam jangka waktu tertentu setelah pencabutan, kami memenuhi jangka waktu tersebut. Untuk data Google dan YouTube periode tersebut saat ini adalah 30 hari.',
+    'Memutuskan sambungan akun di Post Array akan mencabut token di platform dan menghapus kredensial di sini. Konten yang sudah dipublikasikan di suatu platform diatur oleh platform tersebut dan harus dihapus di sana. Jika platform mengharuskan penghapusan data turunan dalam jangka waktu tertentu setelah pencabutan, kami memenuhi jangka waktu tersebut. Untuk data Google dan YouTube periode tersebut saat ini adalah 30 hari.',
   'web.legal.privacy.transfers.title': 'Transfer internasional',
   'web.legal.privacy.transfers.body':
     'Wilayah tuan rumah dan mekanisme transfernya sedang diselesaikan dengan penasihat hukum dan akan disebutkan di sini, bersama dengan upaya perlindungan yang berlaku, sebelum diluncurkan.',
   'web.legal.aup.title': 'Kebijakan Penggunaan yang Dapat Diterima',
   'web.legal.aup.summary':
-    'Relay membantu Anda mempublikasikan konten yang Anda izinkan untuk menerbitkannya. Itu tidak dibuat untuk membantu siapa pun menghindari batasan platform, memalsukan dukungan, atau mengirim pesan yang tidak diinginkan.',
+    'Post Array membantu Anda mempublikasikan konten yang Anda izinkan untuk menerbitkannya. Itu tidak dibuat untuk membantu siapa pun menghindari batasan platform, memalsukan dukungan, atau mengirim pesan yang tidak diinginkan.',
   'web.legal.aup.prohibited.title': 'Tidak diizinkan',
   'web.legal.aup.prohibited.spam':
     'Spam, pesan massal yang tidak diminta, balasan atau penyebutan, umpan keterlibatan, dan konten berulang yang tidak diinginkan.',
@@ -691,10 +671,10 @@ export const webMarketingMessages = {
     'Jika memungkinkan, kami memblokir sebelum tindakan eksternal, bukan setelahnya, dan kami mencatat alasannya, versi aturan, dan jalur banding. Perilaku yang berulang atau serius akan ditinjau oleh seseorang. Anda akan diberitahu apa yang terjadi, tanpa tingkat detail yang akan membantu seseorang menghindari pemeriksaan. Setiap keputusan dapat diajukan banding dan dibatalkan.',
   'web.legal.aup.report.title': 'Melaporkan penyalahgunaan',
   'web.legal.aup.report.body':
-    'Jika konten yang dipublikasikan melalui Relay melanggar aturan ini, beri tahu kami. Sertakan URL postingan dan apa yang salah dengannya.',
+    'Jika konten yang dipublikasikan melalui Post Array melanggar aturan ini, beri tahu kami. Sertakan URL postingan dan apa yang salah dengannya.',
   'web.legal.ai.title': 'Kebijakan Penggunaan AI dan Konten Buatan',
   'web.legal.ai.summary':
-    'Fitur mana yang menggunakan model, apa yang dikirim, apa yang disimpan, apa yang tetap menjadi tanggung jawab Anda, dan mengapa Relay tidak menghasilkan media.',
+    'Fitur mana yang menggunakan model, apa yang dikirim, apa yang disimpan, apa yang tetap menjadi tanggung jawab Anda, dan mengapa Post Array tidak menghasilkan media.',
   'web.legal.ai.features.title': 'Dimana model digunakan',
   'web.legal.ai.features.text':
     'Bantuan teks pada komposer: menulis ulang, memperpendek, dan mengadaptasi untuk suatu platform.',
@@ -715,7 +695,7 @@ export const webMarketingMessages = {
     'Seorang model bisa saja salah. Anda bertanggung jawab untuk memeriksa fakta, klaim, nama, angka, dan nada sebelum Anda mempublikasikannya, dan untuk pengungkapan apa pun yang diperlukan oleh platform. Tidak ada fitur AI yang menjamin jangkauan, keterlibatan, atau peringkat, dan tidak ada yang ditawarkan sebagai satu kesatuan.',
   'web.legal.ai.disclosure.title': 'Pengungkapan dan asal',
   'web.legal.ai.disclosure.body':
-    'Relay mencatat apakah konten dibantu oleh AI dalam riwayat internalnya, mengingatkan Anda ketika suatu platform memerlukan pengungkapan media yang diubah atau sintetis, dan menyimpan asal yang Anda berikan dengan aset yang diimpor. Jika platform menawarkan bidang pengungkapan, Relay menetapkannya dari deklarasi Anda, bukan hanya menebak-nebak.',
+    'Post Array mencatat apakah konten dibantu oleh AI dalam riwayat internalnya, mengingatkan Anda ketika suatu platform memerlukan pengungkapan media yang diubah atau sintetis, dan menyimpan asal yang Anda berikan dengan aset yang diimpor. Jika platform menawarkan bidang pengungkapan, Post Array menetapkannya dari deklarasi Anda, bukan hanya menebak-nebak.',
   'web.legal.ai.blocks.title': 'Apa yang ditolak oleh fitur AI',
   'web.legal.ai.blocks.impersonation': 'Meniru identitas orang sungguhan atau figur publik.',
   'web.legal.ai.blocks.ncii': 'Citra intim non-konsensual, dalam bentuk apa pun.',
@@ -725,7 +705,7 @@ export const webMarketingMessages = {
     'Menyajikan URL yang dihasilkan model sebagai peluang terverifikasi. Peluang dan rekomendasi alat hanya datang dari katalog yang dikurasi.',
   'web.legal.ai.noMedia.title': 'Mengapa tidak ada pembuatan gambar atau video',
   'web.legal.ai.noMedia.body':
-    'Relay belum mengumpulkan sistem visual terverifikasi, detail produk, hak aset, izin kemiripan, dan konteks kampanye yang diperlukan oleh keluaran siap merek, dan dalam pembuatan aplikasi memerlukan persetujuan, asal, evaluasi keselamatan, dan pengendalian biaya sendiri. Kemampuan model media, perizinan, harga, dan retensi juga berubah dengan cepat, itulah sebabnya rekomendasi alat kami selalu berlaku. Anda tetap mengontrol materi iklan dengan memilih alat khusus dan mengimpor aset yang disetujui. Relay menangani adaptasi, persetujuan, penerbitan dan pengukuran.',
+    'Post Array belum mengumpulkan sistem visual terverifikasi, detail produk, hak aset, izin kemiripan, dan konteks kampanye yang diperlukan oleh keluaran siap merek, dan dalam pembuatan aplikasi memerlukan persetujuan, asal, evaluasi keselamatan, dan pengendalian biaya sendiri. Kemampuan model media, perizinan, harga, dan retensi juga berubah dengan cepat, itulah sebabnya rekomendasi alat kami selalu berlaku. Anda tetap mengontrol materi iklan dengan memilih alat khusus dan mengimpor aset yang disetujui. Post Array menangani adaptasi, persetujuan, penerbitan dan pengukuran.',
   'web.legal.ai.noMedia.caveat':
     'Alat yang muncul di radar kita bukanlah pernyataan bahwa keluarannya aman atau haknya bersih. Peringatan yang terdokumentasi ditunjukkan bersamanya dan deklarasi hak normal Anda masih berlaku.',
   'web.legal.cookies.title': 'Kebijakan Cookie',
@@ -758,13 +738,11 @@ export const webMarketingMessages = {
   'web.legal.subprocessors.column.region': 'Wilayah pemrosesan',
   'web.legal.subprocessors.platforms.title': 'Platform sosial bukanlah subprosesor',
   'web.legal.subprocessors.platforms.body':
-    'Saat Anda mempublikasikan, Relay mengirimkan konten Anda ke akun platform yang Anda pilih, sesuai instruksi Anda. Platform tersebut merupakan pengendali independen atas apa yang mereka terima dan ketentuan mereka sendiri yang mengaturnya.',
+    'Saat Anda mempublikasikan, Post Array mengirimkan konten Anda ke akun platform yang Anda pilih, sesuai instruksi Anda. Platform tersebut merupakan pengendali independen atas apa yang mereka terima dan ketentuan mereka sendiri yang mengaturnya.',
   'web.legal.refunds.title': 'Kebijakan Pengembalian Dana dan Pembatalan',
   'web.legal.refunds.summary':
     'Bagaimana cara membatalkan, apa yang terjadi pada data Anda, dan kapan Anda mendapatkan uang kembali.',
   'web.legal.refunds.cancel.title': 'Membatalkan',
-  'web.legal.refunds.cancel.body':
-    'Batalkan dari Pengaturan tanpa menghubungi dukungan. Membatalkan selama uji coba tujuh hari berarti tidak ada biaya yang dikenakan dan layar pembatalan mengonfirmasi hal itu secara tertulis. Membatalkan setelah uji coba akan mempertahankan akses Anda hingga akhir periode yang telah Anda bayar.',
   'web.legal.refunds.refund.title': 'Pengembalian dana',
   'web.legal.refunds.refund.body':
     'Jika layanan tidak berfungsi seperti yang dijelaskan, hubungi dukungan dan kami akan mengembalikan dana untuk periode yang terpengaruh. Hak penarikan konsumen yang bersifat wajib, termasuk periode jeda menurut undang-undang yang berlaku bagi Anda, dihormati sepenuhnya dan tidak dibatasi oleh apa pun di halaman ini. Pengembalian dana dilakukan oleh Polar, pedagang tercatat kami, ke metode pembayaran asli.',
@@ -779,10 +757,10 @@ export const webMarketingMessages = {
     'Polar mencoba lagi dan mengirimkan email kepada Anda. Selama masa tenggang, penerbitan terus berlanjut. Setelah itu, ruang kerja menjadi hanya baca dan postingan terjadwal berhenti. Tidak ada yang terputus dan tidak ada yang terhapus.',
   'web.legal.dmca.title': 'Hak Cipta dan Penghapusan',
   'web.legal.dmca.summary':
-    'Cara melaporkan konten yang dihosting oleh Relay yang melanggar hak Anda, dan cara merespons jika konten Anda dihapus.',
+    'Cara melaporkan konten yang dihosting oleh Post Array yang melanggar hak Anda, dan cara merespons jika konten Anda dihapus.',
   'web.legal.dmca.scope.title': 'Apa yang bisa kita tindak lanjuti',
   'web.legal.dmca.scope.body':
-    'Relay dapat menghapus materi yang disimpan di sistem kami, seperti file media atau draf. Konten yang sudah dipublikasikan di platform sosial ada di platform tersebut dan harus dilaporkan ke platform tersebut, karena kami tidak dapat menghapus postingan yang tidak kami host. Kami akan memberi tahu Anda yang mana di antara keduanya yang berlaku untuk laporan Anda.',
+    'Post Array dapat menghapus materi yang disimpan di sistem kami, seperti file media atau draf. Konten yang sudah dipublikasikan di platform sosial ada di platform tersebut dan harus dilaporkan ke platform tersebut, karena kami tidak dapat menghapus postingan yang tidak kami host. Kami akan memberi tahu Anda yang mana di antara keduanya yang berlaku untuk laporan Anda.',
   'web.legal.dmca.notice.title': 'Mengirim pemberitahuan',
   'web.legal.dmca.notice.identify':
     'Identifikasi karya berhak cipta dan materi yang Anda katakan melanggarnya, dengan URL yang dapat kami jangkau.',
@@ -800,7 +778,7 @@ export const webMarketingMessages = {
     'Akun yang berulang kali melakukan pelanggaran akan ditangguhkan dan kemudian dihentikan. Pemberitahuan dengan itikad buruk, yang digunakan untuk menghapus konten pesaing, juga menjadi dasar penghentian.',
   'web.legal.security.title': 'Keamanan dan Pengungkapan yang Bertanggung Jawab',
   'web.legal.security.summary':
-    'Bagaimana Relay melindungi kredensial yang Anda percayai, dan cara melaporkan masalah yang Anda temukan.',
+    'Bagaimana Post Array melindungi kredensial yang Anda percayai, dan cara melaporkan masalah yang Anda temukan.',
   'web.legal.security.tokens.title': 'Kredensial sosial',
   'web.legal.security.tokens.body':
     'Token platform dienkripsi dengan enkripsi amplop di bawah kunci yang dikelola, dirotasi, disimpan terpisah dari konten dan data penagihan, dan disunting dari setiap log. Token tidak pernah dikirim ke browser, tidak pernah ditempatkan dalam konteks model, dan tidak pernah disertakan dalam pesan kesalahan.',
@@ -833,10 +811,10 @@ export const webMarketingMessages = {
     'Kami memiliki rencana respons insiden dengan nama pengambil keputusan, tingkat keparahan, pelestarian bukti, dan tugas pemberitahuan. Insiden yang memengaruhi penerbitan dipublikasikan di halaman status dengan garis waktu dan apa yang berubah setelahnya, termasuk yang kami sebabkan.',
   'web.legal.accessibility.title': 'Pernyataan Aksesibilitas',
   'web.legal.accessibility.summary':
-    'Standar Relay dibuat berdasarkan apa yang telah kami verifikasi, apa yang kami ketahui belum benar, dan cara memberi tahu kami.',
+    'Standar Post Array dibuat berdasarkan apa yang telah kami verifikasi, apa yang kami ketahui belum benar, dan cara memberi tahu kami.',
   'web.legal.accessibility.standard.title': 'Standar',
   'web.legal.accessibility.standard.body':
-    'Relay menargetkan WCAG 2.2 level AA di seluruh produk dan situs ini. Aksesibilitas adalah persyaratan penggabungan di sini, bukan tiket selanjutnya, dan layar yang gagal tidak dikirimkan.',
+    'Post Array menargetkan WCAG 2.2 level AA di seluruh produk dan situs ini. Aksesibilitas adalah persyaratan penggabungan di sini, bukan tiket selanjutnya, dan layar yang gagal tidak dikirimkan.',
   'web.legal.accessibility.measures.title': 'Apa artinya dalam praktik',
   'web.legal.accessibility.measures.keyboard':
     'Semuanya dapat dioperasikan dari keyboard, dengan cincin fokus yang terlihat dan urutan fokus yang logis. Tidak ada interaksi tarik-menarik saja di mana pun.',
@@ -875,7 +853,7 @@ export const webMarketingMessages = {
     'Satu panggilan mungkin tidak dipublikasikan secara diam-diam ke setiap akun yang terhubung. Tindakan massal, domain baru, akun baru, kategori sensitif, dukungan berbayar, perubahan privasi, atau konten diubah setelah persetujuan selalu meningkat berdasarkan keputusan manusia. Setiap agen dan setiap ruang kerja memiliki tombol pemutus (kill switch).',
   'web.legal.apiTerms.prohibited.title': 'Tidak diizinkan melalui API',
   'web.legal.apiTerms.prohibited.body':
-    'Menjual kembali akses tanpa persetujuan tertulis, menggunakan Relay sebagai relay untuk konten yang tidak boleh Anda publikasikan, menghindari kebijakan persetujuan, dan penggunaan apa pun yang melanggar Kebijakan Penggunaan yang Dapat Diterima. Akses terprogram tunduk pada kontrol anti spam yang sama seperti aplikasi web.',
+    'Menjual kembali akses tanpa persetujuan tertulis, menggunakan Post Array sebagai relay untuk konten yang tidak boleh Anda publikasikan, menghindari kebijakan persetujuan, dan penggunaan apa pun yang melanggar Kebijakan Penggunaan yang Dapat Diterima. Akses terprogram tunduk pada kontrol anti spam yang sama seperti aplikasi web.',
   'web.legal.apiTerms.changes.title': 'Ubah kebijakan',
   'web.legal.apiTerms.changes.body':
     'Perubahan aditif dikirimkan tanpa pemberitahuan. Perubahan yang dapat menyebabkan gangguan mendapatkan versi baru, jendela penghentian yang diumumkan, dan catatan migrasi di log perubahan. Kode kesalahan tidak mengubah arti dalam suatu versi.',
@@ -899,7 +877,7 @@ export const webMarketingMessages = {
   'web.legal.affiliate.prohibited.cookieStuffing':
     'Pengisian cookie, klik paksa, rujukan mandiri, dan jongkok kupon.',
   'web.legal.affiliate.prohibited.claims':
-    'Menemukan hasil pelanggan, membuat kesaksian, atau mengklaim Relay melakukan sesuatu yang tidak dilakukannya, termasuk apa pun tentang pembuatan media AI.',
+    'Menemukan hasil pelanggan, membuat kesaksian, atau mengklaim Post Array melakukan sesuatu yang tidak dilakukannya, termasuk apa pun tentang pembuatan media AI.',
   'web.legal.affiliate.prohibited.trademark':
     'Mendaftarkan domain, pegangan, atau daftar aplikasi yang menggunakan nama kami dengan cara yang menunjukkan bahwa Anda adalah perusahaannya.',
   'web.marketing.provider.x.label': 'X',
@@ -912,35 +890,35 @@ export const webMarketingMessages = {
   'web.marketing.provider.bluesky.label': 'Bluesky',
   'web.marketing.provider.x.accountTypes': 'Akun X pribadi atau bisnis yang Anda kendalikan.',
   'web.marketing.provider.x.restriction':
-    'Pengeposan otomatis memerlukan persetujuan tegas dari pemegang akun, yang dicatat oleh Relay. Postingan duplikat atau serupa secara substansial di seluruh akun tidak diizinkan, dan balasan otomatis yang tidak diminta tidak akan dibuat.',
+    'Pengeposan otomatis memerlukan persetujuan tegas dari pemegang akun, yang dicatat oleh Post Array. Postingan duplikat atau serupa secara substansial di seluruh akun tidak diizinkan, dan balasan otomatis yang tidak diminta tidak akan dibuat.',
   'web.marketing.provider.x.cost':
-    'X mengenakan biaya untuk setiap operasi API dan mengenakan biaya lebih banyak untuk postingan yang berisi URL. Relay memperkirakan biaya sebelum Anda mengonfirmasi dan meneruskannya tanpa markup.',
+    'X mengenakan biaya untuk setiap operasi API dan mengenakan biaya lebih banyak untuk postingan yang berisi URL. Post Array memperkirakan biaya sebelum Anda mengonfirmasi dan meneruskannya tanpa markup.',
   'web.marketing.provider.linkedin.accountTypes':
     'Profil anggota, atau Halaman organisasi tempat Anda memegang peran yang tepat.',
   'web.marketing.provider.linkedin.restriction':
-    'Publikasi atas nama organisasi memerlukan produk Pengelolaan Komunitas yang disetujui dan identitas bisnis terverifikasi. Analisis kiriman anggota bergantung pada izin baca LinkedIn telah ditutup untuk aplikasi baru, jadi Relay tidak akan menawarkannya.',
+    'Publikasi atas nama organisasi memerlukan produk Pengelolaan Komunitas yang disetujui dan identitas bisnis terverifikasi. Analisis kiriman anggota bergantung pada izin baca LinkedIn telah ditutup untuk aplikasi baru, jadi Post Array tidak akan menawarkannya.',
   'web.marketing.provider.linkedin.cost':
     'Tidak ada biaya per operasi. Batasan harian pendaftaran dan anggota berlaku.',
   'web.marketing.provider.instagram.accountTypes':
     'Akun Instagram profesional, bisnis, atau pencipta.',
   'web.marketing.provider.instagram.restriction':
-    'Penerbitan konten Instagram hanya tersedia untuk akun profesional. Akun konsumen tidak dapat dipublikasikan oleh aplikasi apa pun, termasuk aplikasi ini. Penerbitan menggunakan wadah resmi dan urutan penerbitan, dan Relay mengonfirmasi keadaan akhir daripada melaporkan unggahan sebagai sukses.',
+    'Penerbitan konten Instagram hanya tersedia untuk akun profesional. Akun konsumen tidak dapat dipublikasikan oleh aplikasi apa pun, termasuk aplikasi ini. Penerbitan menggunakan wadah resmi dan urutan penerbitan, dan Post Array mengonfirmasi keadaan akhir daripada melaporkan unggahan sebagai sukses.',
   'web.marketing.provider.instagram.cost':
     'Tidak ada biaya per operasi. Tinjauan aplikasi meta dan verifikasi bisnis diperlukan.',
   'web.marketing.provider.facebook.accountTypes': 'Halaman Facebook yang Anda kelola.',
   'web.marketing.provider.facebook.restriction':
-    'Target penerbitannya adalah Halaman. Mengotomatiskan profil pribadi tidak ditawarkan oleh API dan Relay tidak mencobanya.',
+    'Target penerbitannya adalah Halaman. Mengotomatiskan profil pribadi tidak ditawarkan oleh API dan Post Array tidak mencobanya.',
   'web.marketing.provider.facebook.cost':
     'Tidak ada biaya per operasi. Tinjauan aplikasi meta dan verifikasi bisnis diperlukan.',
   'web.marketing.provider.youtube.accountTypes':
     'Saluran YouTube terhubung melalui akun Google Anda.',
   'web.marketing.provider.youtube.restriction':
-    'Proyek yang belum lulus audit kepatuhan Google API hanya dapat diunggah sebagai proyek pribadi. Relay tidak akan mendeskripsikan unggahan publik sebagai tersedia hingga audit tersebut lulus, dan layar koneksi menyatakan di negara bagian mana unggahan Anda akan diterima.',
+    'Proyek yang belum lulus audit kepatuhan Google API hanya dapat diunggah sebagai proyek pribadi. Post Array tidak akan mendeskripsikan unggahan publik sebagai tersedia hingga audit tersebut lulus, dan layar koneksi menyatakan di negara bagian mana unggahan Anda akan diterima.',
   'web.marketing.provider.youtube.cost':
     'Tidak ada biaya per operasi. Kuota harian berlaku dan tidak dapat dibagikan ke seluruh proyek.',
   'web.marketing.provider.tiktok.accountTypes': 'Akun TikTok dengan otorisasi Direct Post.',
   'web.marketing.provider.tiktok.restriction':
-    'Hingga audit Content Posting API lolos, postingan bersifat pribadi dan berlaku batas per akun. Pada waktu publikasi Relay mengambil informasi pembuat saat ini, menunjukkan opsi privasi yang tersedia tanpa memilih salah satu sebelumnya, dan meminta komentar, pengaturan duet dan gabungan serta deklarasi konten komersial.',
+    'Hingga audit Content Posting API lolos, postingan bersifat pribadi dan berlaku batas per akun. Pada waktu publikasi Post Array mengambil informasi pembuat saat ini, menunjukkan opsi privasi yang tersedia tanpa memilih salah satu sebelumnya, dan meminta komentar, pengaturan duet dan gabungan serta deklarasi konten komersial.',
   'web.marketing.provider.tiktok.cost':
     'Tidak ada biaya per operasi. Mode tidak diaudit menerapkan batas postingan harian.',
   'web.marketing.provider.threads.accountTypes':
@@ -1012,7 +990,7 @@ export const webMarketingMessages = {
     '{supported, plural, one {# capability supported} other {# capabilities supported}}, {requiresReview, plural, one {# waiting on a platform review} other {# waiting on a platform review}}, {notImplemented, plural, one {# not built yet} other {# not built yet}}, {unsupported, plural, one {# the platform does not offer} other {# the platform does not offer}}.',
   'web.capabilities.buildState.title': 'Belum ada konektor yang membawa lalu lintas pelanggan',
   'web.capabilities.buildState.body':
-    'Relay sedang dibangun. Tabel ini mencerminkan definisi konektor yang ada saat ini, itulah sebabnya sebagian besar sel terbaca sebagai belum dibuat. Sebuah sel hanya didukung setelah konektor tersebut melewati definisi selesai, termasuk pengujian kontrak terhadap perlengkapan platform yang direkam. Sel-sel yang mengatakan bahwa suatu platform tidak menawarkan sesuatu, atau membatasi ulasan, adalah fakta tentang platform tersebut dan sudah bersifat final.',
+    'Post Array sedang dibangun. Tabel ini mencerminkan definisi konektor yang ada saat ini, itulah sebabnya sebagian besar sel terbaca sebagai belum dibuat. Sebuah sel hanya didukung setelah konektor tersebut melewati definisi selesai, termasuk pengujian kontrak terhadap perlengkapan platform yang direkam. Sel-sel yang mengatakan bahwa suatu platform tidak menawarkan sesuatu, atau membatasi ulasan, adalah fakta tentang platform tersebut dan sudah bersifat final.',
   'web.capabilities.note.instagramProfessional':
     'Hanya akun profesional. Akun konsumen tidak dapat dipublikasikan oleh aplikasi apa pun.',
   'web.capabilities.note.facebookPagesOnly':
@@ -1033,7 +1011,7 @@ export const webMarketingMessages = {
   'web.capabilities.note.xConsent':
     'Memerlukan persetujuan tercatat dari pemegang akun untuk pengeposan otomatis.',
   'web.capabilities.note.xDisclosure':
-    'Platform ini menyediakan bidang yang dibuat dengan AI, yang ditetapkan Relay dari deklarasi Anda.',
+    'Platform ini menyediakan bidang yang dibuat dengan AI, yang ditetapkan Post Array dari deklarasi Anda.',
   'web.capabilities.note.noDestinations':
     'Platform ini tidak memiliki konsep tujuan seperti Halaman, papan atau komunitas.',
   'web.capabilities.note.noThreads': 'Platform ini tidak memiliki urutan multi-posting asli.',
@@ -1045,7 +1023,7 @@ export const webMarketingMessages = {
     'Platform ini tidak menawarkan opsi privasi per posting melalui API-nya.',
   'web.capabilities.note.noThumbnail':
     'Platform ini tidak menerima thumbnail khusus melalui API-nya.',
-  'web.capabilities.note.inBuild': 'Platform ini menawarkan hal ini. Relay belum mengirimkannya.',
+  'web.capabilities.note.inBuild': 'Platform ini menawarkan hal ini. Post Array belum mengirimkannya.',
   'web.capabilities.note.noCarousel': 'Platform tidak menawarkan karousel geser.',
   'web.capabilities.note.noDisclosure':
     'Platform tidak memiliki bidang pengungkapan untuk konten AI atau komersial.',
@@ -1071,7 +1049,7 @@ export const webMarketingMessages = {
   'web.status.surface.analytics': 'Koleksi analitik',
   'web.status.surface.links': 'Pengalihan tautan pendek',
   'web.status.surface.checkout': 'Pembayaran dan penagihan',
-  'web.status.preLaunch.title': 'Relay belum tersedia secara umum',
+  'web.status.preLaunch.title': 'Post Array belum tersedia secara umum',
   'web.status.preLaunch.body':
     'Halaman ini aktif sebelum produk tersedia, sehingga kebiasaan pelaporan sudah ada sejak pelanggan pertama dan bukan ditambahkan setelah pemadaman pertama. Permukaan yang masih dalam tahap pembangunan ditandai seperti itu alih-alih ditampilkan sebagai permukaan yang sehat.',
   'web.compare.product.postiz': 'Posting',
@@ -1124,8 +1102,6 @@ export const webMarketingMessages = {
     'Melayani aplikasi web, API, dan layanan tautan pendek.',
   'web.legal.subprocessors.hosting.data': 'Minta metadata dan log yang disunting.',
   'web.legal.subprocessors.email.label': 'Pengiriman email transaksional',
-  'web.legal.subprocessors.email.purpose':
-    'Tautan masuk, permintaan persetujuan, publikasikan pemberitahuan hasil, dan pengingat uji coba.',
   'web.legal.subprocessors.email.data': 'Nama, alamat email dan isi pesan.',
   'web.legal.subprocessors.monitoring.label': 'Pemantauan kesalahan dan kinerja',
   'web.legal.subprocessors.monitoring.purpose':
@@ -1170,13 +1146,11 @@ export const webMarketingMessages = {
   'web.footer.legal': 'Hukum',
   'web.footer.developers': 'Pengembang',
   'web.footer.statement':
-    'Relay menerbitkan melalui API platform resmi saja. Ketersediaan konektor bergantung pada persetujuan yang dikontrol platform, dan setiap klaim kemampuan di situs ini diberi tanggal dan sumber.',
+    'Post Array menerbitkan melalui API platform resmi saja. Ketersediaan konektor bergantung pada persetujuan yang dikontrol platform, dan setiap klaim kemampuan di situs ini diberi tanggal dan sumber.',
   'web.footer.noAffiliation':
     'Nama dan merek platform adalah milik pemiliknya. Penggunaannya di sini mengidentifikasi penghubung dan tidak menyiratkan dukungan atau kemitraan.',
-  'web.footer.copyright': 'Relay {year}',
+  'web.footer.copyright': 'Post Array {year}',
   'web.marketing.v2.closing.title': 'Cobalah di akun Anda sendiri',
-  'web.marketing.v2.closing.body':
-    'Tujuh hari, konektor nyata, tidak ada data demo bertahap. Batalkan kapan saja sebelum dikonversi.',
   'web.product.v2.demo.title': 'Satu draf singkat, lima draf asli platform',
   'web.product.v2.demo.body':
     'Adegan yang sama dari halaman beranda, disesuaikan dengan apa yang sebenarnya dihasilkan oleh langkah penulisan.',

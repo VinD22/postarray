@@ -88,7 +88,7 @@ export const automationMessages = withHebrewPluralForms({
   'automation.rules.versionHistory': 'היסטוריית גרסאות',
   'automation.notPermitted.title': 'לא ניתן ליצור כלל זה',
   'automation.notPermitted.body':
-    'Relay אינו עושה לייקים, עוקבים, תשובות או הודעות לא רצויות, פרסום המוני כפול או כל דבר שתלוי באוטומציה של הדפדפן. {provider} אוסר על כך וכך גם אנחנו.',
+    'Post Array אינו עושה לייקים, עוקבים, תשובות או הודעות לא רצויות, פרסום המוני כפול או כל דבר שתלוי באוטומציה של הדפדפן. {provider} אוסר על כך וכך גם אנחנו.',
   'automation.notPermitted.providerCapability':
     '{provider} אינו מציע את {action} דרך ה-API הרשמי שלו, ולכן פעולה זו אינה ניתנת לבחירה עבורו.',
   'automation.rss.title': 'פוסט אוטומטי של RSS',

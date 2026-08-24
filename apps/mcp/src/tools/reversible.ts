@@ -7,7 +7,7 @@ import type { ToolResult } from './registry';
 /**
  * Reversible tools.
  *
- * They create or change something inside Relay and publish nothing. A draft
+ * They create or change something inside Post Array and publish nothing. A draft
  * sits in the workspace until a person or a level 2 grant schedules it, and a
  * generated plan is a document, not an action.
  *
@@ -21,7 +21,7 @@ export const draftPostTool = defineTool({
   name: 'draft_post',
   risk: 'reversible',
   summary: 'Create an unpublished draft with one master body and one entry per target account.',
-  sideEffects: 'creates a draft inside Relay. Nothing is scheduled and nothing reaches a platform',
+  sideEffects: 'creates a draft inside Post Array. Nothing is scheduled and nothing reaches a platform',
   scopes: ['drafts:write'],
   approvalLevel: 'level_1_draft',
   requiresIdempotencyKey: false,
@@ -36,7 +36,7 @@ export const draftPostTool = defineTool({
     campaign_id: z.string().min(1).optional(),
     media_ids: z.array(z.string().min(1)).max(20).optional(),
     /**
-     * Relay connection ids only. A raw provider handle is never accepted: an
+     * Post Array connection ids only. A raw provider handle is never accepted: an
      * account is resolved server side against what this grant already permits,
      * never looked up with ambient authority.
      */
@@ -83,7 +83,7 @@ export const requestApprovalTool = defineTool({
   risk: 'reversible',
   summary: 'Route a draft into the workspace approval policy and notify the approvers.',
   sideEffects:
-    'creates an approval request inside Relay and notifies people. Nothing reaches a platform',
+    'creates an approval request inside Post Array and notifies people. Nothing reaches a platform',
   scopes: ['drafts:write'],
   approvalLevel: 'level_1_draft',
   requiresIdempotencyKey: false,
@@ -125,7 +125,7 @@ export const generateGrowthPlanTool = defineTool({
   summary:
     'Start generating a draft growth plan from a confirmed business profile and the curated catalogs.',
   sideEffects:
-    'creates a draft plan document inside Relay. It never submits a listing, contacts a community or publishes anything',
+    'creates a draft plan document inside Post Array. It never submits a listing, contacts a community or publishes anything',
   scopes: ['growth:write'],
   approvalLevel: 'level_1_draft',
   requiresIdempotencyKey: false,
@@ -162,7 +162,7 @@ export const createCampaignFromPlanTool = defineTool({
   risk: 'reversible',
   summary: 'Turn selected growth plan items into drafts in this workspace.',
   sideEffects:
-    'creates drafts inside Relay. It schedules nothing and publishes nothing. Every draft still goes through the normal validation and approval path',
+    'creates drafts inside Post Array. It schedules nothing and publishes nothing. Every draft still goes through the normal validation and approval path',
   scopes: ['growth:write', 'drafts:write'],
   approvalLevel: 'level_1_draft',
   // A retrying agent calling this in a loop produces duplicate drafts across a
@@ -207,7 +207,7 @@ export const importMediaTool = defineTool({
   risk: 'reversible',
   summary: 'Import a media file into the workspace library from a URL the person supplied.',
   sideEffects:
-    'fetches the URL and stores the file inside Relay. Nothing is attached to a draft, nothing is scheduled and nothing reaches a platform',
+    'fetches the URL and stores the file inside Post Array. Nothing is attached to a draft, nothing is scheduled and nothing reaches a platform',
   scopes: ['media:write'],
   approvalLevel: 'level_1_draft',
   // Import is a network fetch that costs bandwidth and storage, and a retrying

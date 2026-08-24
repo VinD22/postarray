@@ -32,7 +32,7 @@ export const connectionMessages = {
   'connection.permissions.granted': 'Memang benar',
   'connection.permissions.missing': 'Tidak diberikan',
   'connection.permissions.explainBeforeOAuth':
-    'Relay akan meminta izin ini kepada {provider}. Anda dapat memutuskan sambungan kapan saja.',
+    'Post Array akan meminta izin ini kepada {provider}. Anda dapat memutuskan sambungan kapan saja.',
   'connection.permissions.whyNeeded': 'Mengapa hal ini diperlukan',
   'connection.reconnect.title': 'Hubungkan kembali {account}',
   'connection.reconnect.body':
@@ -81,11 +81,11 @@ export const connectionMessages = {
   'capability.level.requires_review': 'Perlu peninjauan platform',
   'capability.level.beta': 'Beta',
   'capability.level.unknown': 'Tidak tersedia',
-  'capability.explain.supported': 'Relay dapat melakukan ini untuk akun ini hari ini.',
+  'capability.explain.supported': 'Post Array dapat melakukan ini untuk akun ini hari ini.',
   'capability.explain.unsupported':
     '{provider} tidak menawarkan ini melalui API resminya, jadi tidak ada alat yang dapat melakukannya dengan aman.',
   'capability.explain.not_implemented':
-    '{provider} menawarkan ini, tetapi Relay belum membuatnya. Itu ada di peta jalan konektor.',
+    '{provider} menawarkan ini, tetapi Post Array belum membuatnya. Itu ada di peta jalan konektor.',
   'capability.explain.requires_review':
     '{provider} memberikan ini hanya setelah meninjau aplikasi atau akun. Itu tetap tidak tersedia sampai peninjauan itu berlalu.',
   'capability.explain.beta':

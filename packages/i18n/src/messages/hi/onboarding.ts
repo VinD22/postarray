@@ -1,6 +1,6 @@
 /** First run: checkout, workspace, role, first connection, first post. */
 export const onboardingMessages = {
-  'onboarding.title': 'Relay सेट करें',
+  'onboarding.title': 'Post Array सेट करें',
   'onboarding.progress': 'कदम {current} का {total}',
   'onboarding.skipForNow': 'अभी के लिए छोड़ें',
   'onboarding.goal': 'दस मिनट से कम समय में एक सत्यापित निर्धारित पोस्ट।',

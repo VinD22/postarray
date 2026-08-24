@@ -31,7 +31,7 @@ import { ipInAllowlist } from './ip-allowlist';
  *   is how privilege confusion bugs are born (section 14.2 of the security plan).
  * - **Audience binding on every bearer token.** A token is accepted only after
  *   its recorded audience matches this resource's identifier. This is the
- *   confused-deputy defence: a token minted for another Relay resource does not
+ *   confused-deputy defence: a token minted for another Post Array resource does not
  *   work here.
  * - **Tokens never come from the query string.** `Authorization: Bearer` only,
  *   so a credential cannot end up in a proxy log, a referrer or browser history.

@@ -70,7 +70,7 @@ export const growthMessages = {
   'growth.ugc.review': 'Kriteria tinjauan',
   'growth.ugc.reuse': 'Rencana penggunaan kembali',
   'growth.ugc.boundary':
-    'Ini merencanakan kampanye yang Anda jalankan dengan orang sungguhan. Relay tidak menemukan pembuat, menghubungi mereka atau menulis testimonial.',
+    'Ini merencanakan kampanye yang Anda jalankan dengan orang sungguhan. Post Array tidak menemukan pembuat, menghubungi mereka atau menulis testimonial.',
   'growth.opportunities.title': 'Peluang promosi',
   'growth.opportunities.help':
     'Daftar yang ditinjau dari katalog kami, diberi peringkat berdasarkan kecocokan. Mempersiapkan penyerahan yang baik adalah pekerjaan. Tidak ada pengiriman massal.',
@@ -91,7 +91,7 @@ export const growthMessages = {
   'growth.opportunities.noGuarantee':
     'Kecocokan adalah sebuah saran. Ini bukan tautan, penempatan, atau peringkat yang dijanjikan.',
   'growth.opportunities.boundary':
-    'Relay tidak mengirimkan formulir, membuat akun, kontak email, memposting ke komunitas atau membeli tautan.',
+    'Post Array tidak mengirimkan formulir, membuat akun, kontak email, memposting ke komunitas atau membeli tautan.',
   'growth.opportunities.empty':
     'Belum ada peluang terverifikasi yang cocok dengan profil ini. Daftar yang kosong lebih baik daripada daftar yang dibuat-buat.',
   'growth.tools.title': 'Radar alat',
@@ -101,7 +101,7 @@ export const growthMessages = {
   'growth.tools.whyItFits': 'Mengapa cocok',
   'growth.tools.limitations': 'Keterbatasan',
   'growth.tools.requiredSkills': 'Keterampilan yang Anda butuhkan',
-  'growth.tools.handoff': 'Bagaimana outputnya kembali menjadi Relay',
+  'growth.tools.handoff': 'Bagaimana outputnya kembali menjadi Post Array',
   'growth.tools.rights': 'Catatan hak dan privasi',
   'growth.tools.priceChecked': 'Harga terakhir diperiksa {date}',
   'growth.tools.affiliateDisclosure':

@@ -20,20 +20,20 @@ export const webCalendarMessages = {
   'web.connection.requirement.mastodon':
     'Mastodon은 사용자 자신의 인스턴스에서 만든 액세스 토큰으로 연결되며 비밀번호가 아닙니다.',
   'web.connection.requirement.telegram':
-    'Relay는 봇으로 게시합니다. 게시하려는 채널이나 그룹에 봇을 추가하세요.',
+    'Post Array는 봇으로 게시합니다. 게시하려는 채널이나 그룹에 봇을 추가하세요.',
   'web.connection.requirement.reddit':
     'Reddit에 쓰려면 승인된 앱이 필요하며 각 게시물에는 제목과 서브레딧이 필요합니다.',
   'web.connection.requirement.wordpress':
-    'Relay는 WordPress에서 만든 앱 비밀번호로 사이트 REST API를 통해 게시합니다.',
+    'Post Array는 WordPress에서 만든 앱 비밀번호로 사이트 REST API를 통해 게시합니다.',
   'web.connection.requirement.medium':
-    'Medium은 OAuth로 연결되며 Relay는 Markdown으로 공개 스토리를 게시합니다.',
+    'Medium은 OAuth로 연결되며 Post Array는 Markdown으로 공개 스토리를 게시합니다.',
   'web.connection.requirement.devto': 'Dev.to는 Dev.to 설정에서 만든 API 키로 연결됩니다.',
   'web.connection.requirement.pinterest':
     'Pinterest에 쓰려면 승인된 앱 액세스가 필요하며 핀에는 이미지와 자신의 보드가 필요합니다.',
   'web.connection.requirement.discord':
-    'Relay는 봇으로 게시합니다. 게시하려는 서버와 채널에 봇을 추가하세요.',
+    'Post Array는 봇으로 게시합니다. 게시하려는 서버와 채널에 봇을 추가하세요.',
   'web.connection.requirement.slack':
-    'Relay는 앱으로 게시합니다. 게시하려는 채널에 앱을 추가하세요.',
+    'Post Array는 앱으로 게시합니다. 게시하려는 채널에 앱을 추가하세요.',
   'web.provider.fake': '테스트 커넥터',
   'web.accountType.personal_profile': '개인 프로필',
   'web.accountType.creator_profile': '크리에이터 계정',
@@ -132,7 +132,7 @@ export const webCalendarMessages = {
   'web.calendar.reschedule.pastBody': '미래의 시간을 선택하거나 대신 지금 게시하세요.',
   'web.calendar.published.title': '이 게시물은 이미 게시되었습니다.',
   'web.calendar.published.body':
-    '게시물이 다음 위치에 존재합니다.{provider}~에{permalinkLabel}. Relay에서 항목을 이동해도 플랫폼의 게시물은 이동되지 않습니다. 원하는 일을 선택하세요.',
+    '게시물이 다음 위치에 존재합니다.{provider}~에{permalinkLabel}. Post Array에서 항목을 이동해도 플랫폼의 게시물은 이동되지 않습니다. 원하는 일을 선택하세요.',
   'web.calendar.published.optionLocal': '로컬 레코드만 업데이트',
   'web.calendar.published.optionLocalHint':
     '영수증은 실제 게시 시간을 유지합니다. 계획 항목만 이동하므로 달력이 계획과 일치합니다.',
@@ -223,7 +223,7 @@ export const webCalendarMessages = {
     '{provider}이 게시물 유형에 대해서는 작업당 요금이 부과되지 않습니다.',
   'web.receipt.analytics.never': '이 게시물에 대한 분석이 아직 동기화되지 않았습니다.',
   'web.receipt.analytics.explain':
-    '제공업체는 자체 일정에 따라 집계합니다. 아래 시간은 숫자가 참이었던 때가 아니라 Relay이 마지막으로 읽은 시간입니다.',
+    '제공업체는 자체 일정에 따라 집계합니다. 아래 시간은 숫자가 참이었던 때가 아니라 Post Array이 마지막으로 읽은 시간입니다.',
   'web.receipt.export.download': '영수증 다운로드',
   'web.receipt.export.copyReference': '영수증 참조 복사',
   'web.receipt.export.denied':
@@ -232,11 +232,11 @@ export const webCalendarMessages = {
   'web.receipt.partial.retryHint':
     '재시도는 이미 외부 게시물을 생성한 대상에 영향을 미치지 않습니다.',
   'web.receipt.remediation.user_action_required':
-    'Relay 또는에서 변경이 필요합니다.{provider}다시 실행되기 전에.',
+    'Post Array 또는에서 변경이 필요합니다.{provider}다시 실행되기 전에.',
   'web.receipt.remediation.content_invalid':
     '내용이 통과되도록 편집하세요.{provider}검증한 후 다시 예약하세요.',
   'web.receipt.remediation.transient_provider':
-    '{provider}일시적인 오류를 반환했습니다. Relay이 자체 일정에 따라 재시도했습니다.',
+    '{provider}일시적인 오류를 반환했습니다. Post Array이 자체 일정에 따라 재시도했습니다.',
   'web.receipt.remediation.permanent_provider':
     '{provider}이것을 영구적으로 거부했습니다. 동일한 내용을 다시 시도해도 답변이 변경되지 않습니다.',
   'web.receipt.remediation.internal':
@@ -291,16 +291,16 @@ export const webCalendarMessages = {
   'web.connection.disconnect.consequence.scheduled':
     '{count, plural, other {# 예약된 게시물}}이 계정에서는 게시되지 않습니다.',
   'web.connection.disconnect.consequence.published':
-    '이미 게시된 게시물은 계속 유지됩니다.{provider}. Relay은 해당 항목을 삭제하지 않습니다.',
+    '이미 게시된 게시물은 계속 유지됩니다.{provider}. Post Array은 해당 항목을 삭제하지 않습니다.',
   'web.connection.disconnect.consequence.analytics':
     '이미 수집된 측정항목은 이 작업 영역에 유지되고 업데이트가 중지됩니다.',
   'web.connection.connect.title': '계정 연결',
   'web.connection.connect.chooseProvider': '어떤 플랫폼',
-  'web.connection.connect.permissionHeading': 'Relay이 무엇을 물어볼 것인가?{provider}~을 위한',
+  'web.connection.connect.permissionHeading': 'Post Array이 무엇을 물어볼 것인가?{provider}~을 위한',
   'web.connection.connect.requirementHeading': '계속하기 전에',
   'web.connection.connect.continue': '계속{provider}',
   'web.connection.connect.handoffNote':
-    '다음 화면은{provider}, Relay이 아닙니다. Relay은 귀하의 비밀번호를 결코 볼 수 없습니다.',
+    '다음 화면은{provider}, Post Array이 아닙니다. Post Array은 귀하의 비밀번호를 결코 볼 수 없습니다.',
   'web.connection.connect.noWriteWithoutApproval':
     '계정을 연결해도 아무 것도 게시되지 않습니다. 모든 게시물은 여전히 ​​이 작업공간 승인 정책을 따릅니다.',
   'web.connection.projectScope.title': '{project}의 채널을 표시하고 있습니다',
@@ -313,13 +313,13 @@ export const webCalendarMessages = {
   'web.connection.requirement.instagram':
     'Instagram 게시하려면 전문가 계정이 필요합니다. 즉, Facebook 페이지에 연결된 비즈니스 또는 제작자 계정을 의미합니다.',
   'web.connection.requirement.facebook':
-    'Relay이 Facebook Pages에 게시됩니다. 개인 프로필은 게시 대상이 될 수 없습니다.',
+    'Post Array이 Facebook Pages에 게시됩니다. 개인 프로필은 게시 대상이 될 수 없습니다.',
   'web.connection.requirement.linkedin':
     '조직에 게시하려면 해당 LinkedIn 페이지에 대한 콘텐츠 관리자 역할이 필요합니다.',
   'web.connection.requirement.youtube':
     'Google에서 앱 감사를 완료할 때까지 이 프로젝트의 업로드는 비공개로 게시됩니다. 나중에 YouTube에서 가시성을 변경할 수 있습니다.',
   'web.connection.requirement.tiktok':
-    'TikTok에서는 각 게시물의 독자를 직접 선택해야 합니다. Relay에서는 하나를 미리 선택할 수 없습니다.',
+    'TikTok에서는 각 게시물의 독자를 직접 선택해야 합니다. Post Array에서는 하나를 미리 선택할 수 없습니다.',
   'web.connection.requirement.x':
     'X 작업당 요금. URL이 포함된 게시물은 일반 텍스트 게시물보다 비용이 더 많이 들며, 예약하기 전에 견적이 표시됩니다.',
   'web.connection.requirement.threads':
@@ -327,12 +327,12 @@ export const webCalendarMessages = {
   'web.connection.requirement.bluesky':
     'Bluesky은 계정 비밀번호가 아닌 Bluesky 설정에서 생성된 앱 비밀번호로 연결됩니다.',
   'web.connection.requirement.generic':
-    '플랫폼 자체에서 이 계정에 게시하려면 권한이 필요합니다. Relay은 이를 승인할 수 없습니다.',
-  'web.connection.purpose.publish': 'Relay에서 예약한 게시물을 게시합니다.',
+    '플랫폼 자체에서 이 계정에 게시하려면 권한이 필요합니다. Post Array은 이를 승인할 수 없습니다.',
+  'web.connection.purpose.publish': 'Post Array에서 예약한 게시물을 게시합니다.',
   'web.connection.purpose.readPosts':
-    'Relay 게시된 게시물을 다시 읽으면 영수증을 통해 해당 게시물이 게시되었음을 증명할 수 있습니다.',
+    'Post Array 게시된 게시물을 다시 읽으면 영수증을 통해 해당 게시물이 게시되었음을 증명할 수 있습니다.',
   'web.connection.purpose.identity':
-    'Relay에 정확한 계정 이름을 표시하므로 잘못된 계정에 게시하는 일이 없습니다.',
+    'Post Array에 정확한 계정 이름을 표시하므로 잘못된 계정에 게시하는 일이 없습니다.',
   'web.connection.purpose.analytics':
     '이 플랫폼이 귀하의 게시물에 대해 보고하는 측정항목을 읽습니다.',
   'web.connection.purpose.refresh':
@@ -342,7 +342,7 @@ export const webCalendarMessages = {
   'web.connection.permissions.title': '다음에 대한 권한{account}',
   'web.connection.permissions.scopeColumn': '허가',
   'web.connection.permissions.stateColumn': '상태',
-  'web.connection.permissions.purposeColumn': 'Relay이 그것을 사용하는 목적',
+  'web.connection.permissions.purposeColumn': 'Post Array이 그것을 사용하는 목적',
   'web.connection.permissions.missingWarning':
     '{count, plural, other {# 권한이 누락되었습니다}}. 아래 기능을 복원하려면 다시 연결하고 수락하세요.',
   'web.connection.permissions.snapshot': '다음에서 읽기{provider}{relativeTime}',
@@ -353,9 +353,9 @@ export const webCalendarMessages = {
   'web.connection.capability.featureColumn': '능력',
   'web.connection.capability.legendTitle': '이것을 읽는 방법',
   'web.connection.capability.legend.supported':
-    'Relay은 올바른 유형의 연결된 계정에 대해 오늘 이 작업을 수행할 수 있습니다.',
+    'Post Array은 올바른 유형의 연결된 계정에 대해 오늘 이 작업을 수행할 수 있습니다.',
   'web.connection.capability.legend.not_implemented':
-    '플랫폼은 이를 제공하지만 Relay은 아직 이를 구축하지 않았습니다. 커넥터 로드맵에 있습니다.',
+    '플랫폼은 이를 제공하지만 Post Array은 아직 이를 구축하지 않았습니다. 커넥터 로드맵에 있습니다.',
   'web.connection.capability.legend.unsupported':
     '플랫폼은 공식 API를 통해 이를 제공하지 않으므로 어떤 도구도 이를 안전하게 수행할 수 없습니다.',
   'web.connection.capability.legend.requires_review':

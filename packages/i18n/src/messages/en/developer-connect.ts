@@ -1,5 +1,5 @@
 /**
- * Connecting an AI client to Relay.
+ * Connecting an AI client to Post Array.
  *
  * One screen, one decision: which client the person uses. Everything else is
  * derived from that choice. The credential sentences are deliberately blunt:
@@ -13,7 +13,7 @@
 export const developerConnectMessages = {
   'developer.connect.title': 'Connect your AI',
   'developer.connect.lede':
-    'Pick the client you use. Relay gives you the configuration to paste and the credential it needs.',
+    'Pick the client you use. Post Array gives you the configuration to paste and the credential it needs.',
 
   'developer.connect.clientLabel': 'Your client',
   'developer.connect.client.claudeCode': 'Claude Code',
@@ -21,14 +21,14 @@ export const developerConnectMessages = {
   'developer.connect.client.codex': 'Codex',
   'developer.connect.client.cursor': 'Cursor',
   'developer.connect.client.genericMcp': 'Any MCP client',
-  'developer.connect.client.cli': 'Relay CLI',
+  'developer.connect.client.cli': 'Post Array CLI',
 
   'developer.connect.step.credential': 'Step 1. Hold the credential',
   'developer.connect.step.config': 'Step 2. Paste this configuration',
   'developer.connect.step.verify': 'Step 3. Check that it connected',
 
   'developer.connect.credentialOnce':
-    'The credential is shown once, at the moment you create or rotate it. Relay keeps only a hash of it, so this screen cannot show it to you again.',
+    'The credential is shown once, at the moment you create or rotate it. Post Array keeps only a hash of it, so this screen cannot show it to you again.',
   'developer.connect.credentialGone':
     'No credential is on this screen. If you no longer have it, rotate the credential and the new one will be shown once, here.',
   'developer.connect.credentialEnv':

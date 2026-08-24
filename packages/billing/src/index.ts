@@ -68,6 +68,7 @@ export {
   planTierKeySchema,
   publishableTiers,
   tierDecisionPending,
+  productTiersFromProductIds,
   tierForProductId,
   tierInclusionKeys,
   tierPriceMinor,
@@ -95,6 +96,19 @@ export {
   type ProjectAllowanceGrant,
   type ProjectCapacityPosture,
 } from './project-allowance';
+
+export {
+  POST_CREDIT_KEY,
+  POST_CREDIT_NOTICE_THRESHOLD,
+  buildPostCreditGrant,
+  postCreditPosture,
+  signupPostCreditGrant,
+  type BuildPostCreditGrantInput,
+  type PostCreditGrant,
+  type PostCreditPosture,
+  type PostCreditPostureInput,
+  type PublishingPlan,
+} from './post-credits';
 
 export {
   MICRO_PER_MINOR,

@@ -1,7 +1,7 @@
 /** Japanese beta catalog. */
 export const billingMessages = {
   'billing.title': '請求する',
-  'billing.plan.name': 'Relay',
+  'billing.plan.name': 'Post Array',
   'billing.plan.single': '一つの計画。あらゆる機能。階層はありません。',
   'billing.plan.monthlyPrice': '$29/月',
   'billing.plan.annualPrice': '300ドル/年',
@@ -21,7 +21,6 @@ export const billingMessages = {
   'billing.plan.includes.support': '電子メールとアプリ内サポート',
   'billing.plan.fairUse':
     'フェアユースとは、アカウントを保護するスパム対策、料金およびプロバイダーのコスト管理を意味します。これらはすべての加入者に対して同じように機能します。',
-  'billing.trial.length': 'すべての機能を利用できる 7 日間のトライアル',
   'billing.trial.dueToday': '今日の期限は $0',
   'billing.trial.paymentMethodRequired':
     'Polar は現在支払い方法を徴収しており、今日は料金を請求しません。',
@@ -73,7 +72,7 @@ export const billingMessages = {
   'billing.usage.estimatedBeforeAction': 'このアクションは次のように推定されます{amount}。',
   'billing.usage.periodTotal': '{amount}以来使用されています{date}',
   'billing.usage.noMediaCredits':
-    'Relay はメディアを生成しないため、画像やビデオの生成クレジットはありません。',
+    'Post Array はメディアを生成しないため、画像やビデオの生成クレジットはありません。',
   'billing.downgrade.overLimit':
     'このワークスペースには、{count, plural, other {# チャンネル}}限界を超えています。これらのチャネルでの新しいアクションはブロックされます。あなたにとって切断されるものは何もありません。',
   'billing.mediaGeneration.title': '画像やビデオを生成しない理由',

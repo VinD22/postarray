@@ -1,6 +1,6 @@
 /** First run: checkout, workspace, role, first connection, first post. */
 export const onboardingMessages = {
-  'onboarding.title': 'I-set up ang Relay',
+  'onboarding.title': 'I-set up ang Post Array',
   'onboarding.progress': 'Hakbang {current} ng {total}',
   'onboarding.skipForNow': 'Laktawan sa ngayon',
   'onboarding.goal':

@@ -238,7 +238,7 @@ export const webSettingsMessages = {
   'settings.ui.security.grantScopes': 'अनुमतियाँ प्रदान की गईं',
   'settings.ui.security.socialPermissionsTitle': 'सामाजिक खाता अनुमतियाँ',
   'settings.ui.security.socialPermissionsBody':
-    'कनेक्शन के समय लिए गए क्षमता स्नैपशॉट से, प्रत्येक कनेक्टेड खाते ने Relay को क्या करने की अनुमति दी है।',
+    'कनेक्शन के समय लिए गए क्षमता स्नैपशॉट से, प्रत्येक कनेक्टेड खाते ने Post Array को क्या करने की अनुमति दी है।',
   'settings.ui.security.viewInSection': 'Manage in {section}',
   'settings.ui.security.emptySessions': 'केवल इसी सत्र में साइन इन किया गया है.',
   'settings.ui.security.emptyGrants':
@@ -277,7 +277,7 @@ export const webSettingsMessages = {
     'सबसे छोटी चीज़ चुनें जो आपकी समस्या का समाधान करती हो। नीचे दिया गया प्रत्येक विकल्प बताता है कि क्या बचता है।',
   'settings.ui.data.deleteConnection': 'एक सामाजिक संबंध रद्द करें',
   'settings.ui.data.deleteConnectionHelp':
-    'उस खाते तक Relay पहुंच हटा देता है। कार्यक्षेत्र, उसकी सामग्री और उसकी प्राप्तियाँ बनी रहती हैं।',
+    'उस खाते तक Post Array पहुंच हटा देता है। कार्यक्षेत्र, उसकी सामग्री और उसकी प्राप्तियाँ बनी रहती हैं।',
   'settings.ui.data.deleteProject': 'एक ब्रांड हटाएँ',
   'settings.ui.data.deleteProjectHelp':
     'ब्रांड, उसके नियम और उसकी शब्दावली को हटा देता है। इसके अंतर्गत प्रकाशित सामग्री अपनी रसीदें रखती है।',
@@ -308,7 +308,7 @@ export const webSettingsMessages = {
   /* --------------------------------------------------------------- referrals */
 
   'settings.ui.referral.description':
-    'एक प्रकट लिंक के साथ Relay साझा करें। आयोग कभी भी सकारात्मक समीक्षा पर सशर्त नहीं होता।',
+    'एक प्रकट लिंक के साथ Post Array साझा करें। आयोग कभी भी सकारात्मक समीक्षा पर सशर्त नहीं होता।',
   'settings.ui.referral.linkLabel': 'आपका रेफरल लिंक',
   'settings.ui.referral.tableCaption': 'जिम्मेदार साइनअप और उनके कमीशन की स्थिति',
   'settings.ui.referral.column.signup': 'साइन अप करें',
@@ -453,7 +453,7 @@ export const webSettingsMessages = {
     'एक एप्लिकेशन पंजीकृत करें ताकि अन्य लोग इसे अपने कार्यक्षेत्र तक पहुंच प्रदान कर सकें। प्रत्येक ऐप की अपनी पहचान, अपनी रीडायरेक्ट अनुमति सूची और अपना ऑडिट ट्रेल होता है।',
   'developer.ui.apps.emptyTitle': 'कोई ऐप्स पंजीकृत नहीं',
   'developer.ui.apps.emptyBody':
-    'जब किसी अन्य उत्पाद को Relay उपयोगकर्ता की ओर से कार्य करने की आवश्यकता हो तो एक ऐप पंजीकृत करें। अपने स्वयं के स्वचालन के लिए, इसके बजाय एक सेवा खाते का उपयोग करें।',
+    'जब किसी अन्य उत्पाद को Post Array उपयोगकर्ता की ओर से कार्य करने की आवश्यकता हो तो एक ऐप पंजीकृत करें। अपने स्वयं के स्वचालन के लिए, इसके बजाय एक सेवा खाते का उपयोग करें।',
   'developer.ui.apps.emptyExample':
     'Example: "Acme Publisher", confidential client, redirect https://acme.example/oauth/callback, scopes accounts:read and drafts:write.',
   'developer.ui.apps.typeHelp':
@@ -475,7 +475,7 @@ export const webSettingsMessages = {
   'developer.ui.apps.scopeGroup.consequential': 'परिणामी अनुमतियाँ',
   'developer.ui.apps.scopeGroupHelp.read': 'ये ऐप को डेटा देखने देते हैं। कुछ भी नहीं बदलता.',
   'developer.ui.apps.scopeGroupHelp.reversible':
-    'ये ऐप को Relay के अंदर चीज़ें बनाने या संपादित करने देते हैं। कोई भी चीज़ एक मंच तक नहीं पहुंचती.',
+    'ये ऐप को Post Array के अंदर चीज़ें बनाने या संपादित करने देते हैं। कोई भी चीज़ एक मंच तक नहीं पहुंचती.',
   'developer.ui.apps.scopeGroupHelp.consequential':
     'ये किसी वास्तविक खाते पर पोस्ट का कारण बन सकते हैं, या यह बदल सकते हैं कि आपके खातों तक कौन पहुंच सकता है। उन्हें हमेशा अलग से सूचीबद्ध किया जाता है और कभी भी बंडल नहीं किया जाता है।',
   'developer.ui.apps.noBundling':
@@ -636,7 +636,7 @@ export const webSettingsMessages = {
   'billing.ui.allowanceMetered':
     'एक्स और कुछ अन्य प्रदाता प्रति ऑपरेशन शुल्क लेते हैं। वे शुल्क लागत पर लगाए जाते हैं और योजना मूल्य का हिस्सा नहीं होते हैं।',
   'billing.ui.allowanceNoMedia':
-    'छवि निर्माण और वीडियो निर्माण शामिल नहीं हैं और बेचे नहीं जाते हैं। Relay मीडिया उत्पन्न नहीं करता है।',
+    'छवि निर्माण और वीडियो निर्माण शामिल नहीं हैं और बेचे नहीं जाते हैं। Post Array मीडिया उत्पन्न नहीं करता है।',
   'billing.ui.readFairUse': 'उचित उपयोग नीति पढ़ें',
   'billing.ui.readMeteredPolicy': 'पढ़ें कि मीटर्ड उपयोग का बिल कैसे दिया जाता है',
   'billing.ui.usageCaption': 'मीटर प्रदाता द्वारा इस अवधि का उपयोग, लागत पर बिल किया गया',
@@ -698,8 +698,6 @@ export const webSettingsMessages = {
   'billing.ui.canceledNotice': 'यह सदस्यता रद्द कर दी गई है.',
   'billing.ui.resume': 'सदस्यता पुनः प्रारंभ करें',
   'billing.ui.noSubscriptionTitle': 'इस कार्यक्षेत्र पर कोई सदस्यता नहीं',
-  'billing.ui.noSubscriptionBody':
-    'प्रकाशित करने के लिए सात दिवसीय परीक्षण प्रारंभ करें. पोलर एक भुगतान विधि एकत्र करता है और आज कोई शुल्क नहीं लेता है।',
   'billing.ui.noSubscriptionExample':
     'मासिक $29 है. वार्षिक शुल्क $300 है, जिसका वार्षिक बिल $25/माह है। $48/वर्ष बचाएं।',
   'billing.ui.overChannelLimitAction': 'कनेक्टेड चैनलों की समीक्षा करें',
@@ -816,7 +814,7 @@ export const webSettingsMessages = {
   'growth.ui.ugc.incentiveDisclosure':
     'प्रत्येक पोस्ट पर आपके और प्रतिभागी द्वारा प्रोत्साहन का खुलासा किया जाना चाहिए।',
   'growth.ui.ugc.honesty':
-    'यह आपके द्वारा वास्तविक लोगों के साथ चलाए जाने वाले अभियान की योजना है। Relay रचनाकारों को नहीं ढूंढता, उनसे संपर्क नहीं करता, प्रशंसापत्र नहीं लिखता या ग्राहक सामग्री नहीं बनाता।',
+    'यह आपके द्वारा वास्तविक लोगों के साथ चलाए जाने वाले अभियान की योजना है। Post Array रचनाकारों को नहीं ढूंढता, उनसे संपर्क नहीं करता, प्रशंसापत्र नहीं लिखता या ग्राहक सामग्री नहीं बनाता।',
 
   'growth.ui.opportunities.caption': 'कैटलॉग से सत्यापित अवसर, आपकी प्रोफ़ाइल के अनुरूप क्रमबद्ध',
   'growth.ui.opportunities.column.opportunity': 'अवसर',
@@ -838,7 +836,7 @@ export const webSettingsMessages = {
   'growth.ui.opportunities.prepareRules': 'उनके नियम, उद्धृत',
   'growth.ui.opportunities.prepareChecklist': 'क्या तैयार रखना है',
   'growth.ui.opportunities.prepareManual':
-    'आप इसे स्वयं उनकी साइट पर सबमिट करें। Relay फॉर्म नहीं भरता, खाता नहीं बनाता या किसी को ईमेल नहीं करता।',
+    'आप इसे स्वयं उनकी साइट पर सबमिट करें। Post Array फॉर्म नहीं भरता, खाता नहीं बनाता या किसी को ईमेल नहीं करता।',
   'growth.ui.opportunities.pitchTitle': 'पिच ड्राफ्ट',
   'growth.ui.opportunities.pitchHelp':
     'इसे भेजने से पहले इसे संपादित करें. यह केवल आपके द्वारा पुष्टि किये गये तथ्यों का उपयोग करता है।',
@@ -857,7 +855,7 @@ export const webSettingsMessages = {
   'growth.ui.tools.emptyBody':
     'प्रत्येक प्रविष्टि को यहां प्रदर्शित होने से पहले एक जाँच की गई कीमत, जाँच की गई अधिकार शर्तों और एक नामित सीमा की आवश्यकता होती है।',
   'growth.ui.tools.emptyExample':
-    'एक प्रविष्टि बताती है कि यह किसके लिए सबसे अच्छा है, यह आपकी योजना में क्यों फिट बैठता है, यह क्या नहीं कर सकता है, इसके लिए आवश्यक कौशल, आउटपुट Relay में कैसे वापस आता है, और कीमत आखिरी बार कब जांची गई थी।',
+    'एक प्रविष्टि बताती है कि यह किसके लिए सबसे अच्छा है, यह आपकी योजना में क्यों फिट बैठता है, यह क्या नहीं कर सकता है, इसके लिए आवश्यक कौशल, आउटपुट Post Array में कैसे वापस आता है, और कीमत आखिरी बार कब जांची गई थी।',
   'growth.ui.tools.openSite': 'Open the official site for {name}',
   'growth.ui.tools.stale': 'इसकी समीक्षा तिथि बीत चुकी है. उत्पन्न योजनाओं से बाहर रखा गया.',
 

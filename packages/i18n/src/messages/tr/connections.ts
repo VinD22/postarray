@@ -91,11 +91,11 @@ export const connectionMessages = {
   'capability.level.requires_review': 'Platformun incelenmesi gerekiyor',
   'capability.level.beta': 'beta',
   'capability.level.unknown': 'Kullanılamıyor',
-  'capability.explain.supported': 'Relay bugün bu hesap için bunu yapabilir.',
+  'capability.explain.supported': 'Post Array bugün bu hesap için bunu yapabilir.',
   'capability.explain.unsupported':
     "{provider} bunu resmi API'si aracılığıyla sunmadığından hiçbir araç bunu güvenli bir şekilde yapamaz.",
   'capability.explain.not_implemented':
-    '{provider} bunu sunuyor ancak Relay henüz bunu oluşturmadı. Bağlayıcı yol haritasındadır.',
+    '{provider} bunu sunuyor ancak Post Array henüz bunu oluşturmadı. Bağlayıcı yol haritasındadır.',
   'capability.explain.requires_review':
     '{provider} bunu yalnızca uygulamayı veya hesabı inceledikten sonra verir. Bu inceleme geçilene kadar kullanılamaz durumda kalır.',
   'capability.explain.beta':

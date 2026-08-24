@@ -17,7 +17,7 @@ import type {
  * Reads for the analytics screens.
  *
  * Analytics is read only, so there is exactly one mutation here: creating an
- * experiment, which is a Relay side record and touches no provider. Nothing on
+ * experiment, which is a Post Array side record and touches no provider. Nothing on
  * these screens is optimistically updated. An optimistic analytics number would
  * be an invented measurement, which is the one thing this product must never
  * show.

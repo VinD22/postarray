@@ -3,7 +3,6 @@ export const authMessages = {
   'auth.signIn.title': 'เข้าสู่ระบบ',
   'auth.signIn.subtitle': 'เผยแพร่ อนุมัติ และดูว่าเกิดอะไรขึ้น',
   'auth.signUp.title': 'สร้างบัญชีของคุณ',
-  'auth.signUp.subtitle': 'เจ็ดวันพร้อมทุกฟีเจอร์ $0 ครบกำหนดชำระวันนี้',
   'auth.continueWithGoogle': 'ดำเนินการต่อด้วย Google',
   'auth.continueWithFacebook': 'ต่อด้วยเฟสบุ๊ค',
   'auth.orUseEmail': 'หรือใช้อีเมลของคุณ',

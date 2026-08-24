@@ -36,6 +36,24 @@ function publication(row: {
 export function createWorkerPublishingService(deps: ServiceDeps): WorkerPublishingService {
   return {
     async preflightCampaign(input) {
+      // Entitlement at dispatch, not only at scheduling. Between the two a
+      // workspace can spend its last free post or lose its subscription, and
+      // this is the final gate before a provider call that cannot be taken
+      // back. Refused here means nothing external happened: the job parks with
+      // the same message key every surface renders, and paying (or being
+      // granted credits) lets it be rescheduled.
+      const entitlement = await deps.billing.checkEntitlement({
+        workspaceId: input.ctx.workspaceId,
+        key: 'publishing.enabled',
+      });
+      if (!entitlement.allowed) {
+        return {
+          verdict: 'blocked' as const,
+          messageKey: entitlement.reasonKey ?? 'error.entitlement_missing.message',
+          errorCode: ERROR_CODES.ENTITLEMENT_REQUIRED,
+          blockedTargetIds: [...input.targetIds],
+        };
+      }
       return runInWorkspace(deps, context(input.ctx), async (db) => {
         const job = await db.publishJob.findFirst({
           where: { id: input.publishJobId, workspaceId: input.ctx.workspaceId },
@@ -225,7 +243,7 @@ export function createWorkerPublishingService(deps: ServiceDeps): WorkerPublishi
     },
 
     async writeReceipt(input) {
-      return runInWorkspace(deps, context(input.ctx), async (db) => {
+      const written = await runInWorkspace(deps, context(input.ctx), async (db) => {
         const existing = await db.publicationReceipt.findFirst({
           where: { publishJobId: input.publishJobId, workspaceId: input.ctx.workspaceId },
           select: { id: true },
@@ -264,6 +282,21 @@ export function createWorkerPublishingService(deps: ServiceDeps): WorkerPublishi
         });
         return { receiptId: created.id, created: true };
       });
+      // The spend, at the one moment the product has demonstrably published.
+      // It happens once per receipt: a crash-and-retry of this activity
+      // re-enters with `created: false` and never reaches this line. The
+      // gateway's statement is atomic and decides for itself whether the
+      // workspace is on the free plan (a verified paid entitlement makes it a
+      // no-op), so there is no read-then-write window here to race. A free
+      // workspace whose balance hit zero between preflight and now still keeps
+      // its receipt; we never retract a published post over a credit.
+      if (written.created) {
+        await deps.billing.spendPostCredit({
+          workspaceId: input.ctx.workspaceId,
+          contentItemId: input.contentVersionId,
+        });
+      }
+      return written;
     },
 
     async emitEvent(input) {

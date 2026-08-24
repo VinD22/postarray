@@ -3,7 +3,6 @@ export const authMessages = {
   'auth.signIn.title': 'Oturum aç',
   'auth.signIn.subtitle': 'Yayınlayın, onaylayın ve tam olarak ne olduğunu görün.',
   'auth.signUp.title': 'Hesabınızı oluşturun',
-  'auth.signUp.subtitle': 'Her özelliğin yer aldığı yedi gün. Bugün ödenmesi gereken 0$.',
   'auth.continueWithGoogle': 'Google ile devam et',
   'auth.continueWithFacebook': "Facebook'la devam et",
   'auth.orUseEmail': 'Veya e-postanızı kullanın',

@@ -1,7 +1,7 @@
 /** id beta catalog namespace. */
 export const webShellMessages = {
-  'shell.appName': 'Relay',
-  'shell.documentTitle': '{page} · Relay',
+  'shell.appName': 'Post Array',
+  'shell.documentTitle': '{page} · Post Array',
   'shell.tagline': 'Meja penerbitan untuk orang dan agen.',
   'shell.menu.open': 'Buka menunya',
   'shell.menu.title': 'Tidak bisa',
@@ -20,7 +20,7 @@ export const webShellMessages = {
   'shell.demo.badge': 'Data demo',
   'shell.demo.title': 'Anda sedang melihat data demo',
   'shell.demo.body':
-    'Relay API tidak dapat dijangkau dari browser ini, sehingga layar dipenuhi dengan contoh ruang kerja yang diunggulkan. Tidak ada apa pun di sini yang terhubung dengan akun nyata dan tidak ada yang dapat dipublikasikan.',
+    'Post Array API tidak dapat dijangkau dari browser ini, sehingga layar dipenuhi dengan contoh ruang kerja yang diunggulkan. Tidak ada apa pun di sini yang terhubung dengan akun nyata dan tidak ada yang dapat dipublikasikan.',
   'shell.demo.howToConnect':
     'Setel NEXT_PUBLIC_RELAY_API_URL dan mulai ulang aplikasi untuk menggunakan data langsung.',
   'shell.offline.title': 'Anda sedang luring',
@@ -125,7 +125,7 @@ export const webShellMessages = {
     'Trial, {days, plural, =0 {ends today} one {# day left} other {# days left}}. Converts {date} to {amount}.',
   'home.trial.manage': 'Kelola atau batalkan',
   'home.error.title': 'Rumah tidak dapat memuat',
-  'home.error.body': 'Ruang kerja Anda masih utuh. Ini adalah masalah saat menjangkau API Relay.',
+  'home.error.body': 'Ruang kerja Anda masih utuh. Ini adalah masalah saat menjangkau API Post Array.',
   'auth.aside.title': 'Publikasikan melalui API resmi dan lihat apa yang sebenarnya terjadi.',
   'auth.aside.point.receipts':
     'Setiap publikasi menghasilkan tanda terima: siapa yang menyetujuinya, kapan dikirimkan, apa yang dikembalikan oleh platform.',
@@ -135,9 +135,9 @@ export const webShellMessages = {
     'Alur kerja yang sama dari aplikasi web, REST API, MCP, CLI, dan webhook.',
   'auth.provider.title': 'Sebelum Anda melanjutkan',
   'auth.provider.google.access':
-    'Google membagikan nama, alamat email, dan gambar profil Anda dengan Relay. Relay tidak dapat membaca Gmail, Drive, atau Kalender Anda.',
+    'Google membagikan nama, alamat email, dan gambar profil Anda dengan Post Array. Post Array tidak dapat membaca Gmail, Drive, atau Kalender Anda.',
   'auth.provider.facebook.access':
-    'Facebook membagikan nama, alamat email, dan gambar profil Anda dengan Relay. Menghubungkan Halaman untuk dipublikasikan adalah langkah terpisah yang Anda setujui nanti.',
+    'Facebook membagikan nama, alamat email, dan gambar profil Anda dengan Post Array. Menghubungkan Halaman untuk dipublikasikan adalah langkah terpisah yang Anda setujui nanti.',
   'auth.provider.note':
     'Ini membuat Anda masuk. Itu tidak menghubungkan akun yang akan dipublikasikan.',
   'auth.continueWithEmail': 'Lanjutkan dengan email',
@@ -159,9 +159,7 @@ export const webShellMessages = {
   'auth.failure.noAccountLeak':
     'Demi keselamatan Anda, kami tidak menyebutkan apakah suatu alamat terdaftar.',
   'auth.failure.provider': 'Masuk dengan {provider} tidak selesai. Tidak ada yang berubah.',
-  'auth.failure.network': 'Kami tidak dapat mencapai Relay. Periksa koneksi Anda dan coba lagi.',
-  'auth.signUp.trialNote':
-    'Tujuh hari uji coba penuh. Diperlukan metode pembayaran. $0 jatuh tempo hari ini.',
+  'auth.failure.network': 'Kami tidak dapat mencapai Post Array. Periksa koneksi Anda dan coba lagi.',
   'auth.signUp.emailInUseNote':
     'Jika alamat ini sudah memiliki akun, kami mengirimkan tautan masuk melalui email alih-alih membuat akun kedua.',
   'auth.legal.readTerms': 'Baca Ketentuannya',
@@ -192,7 +190,7 @@ export const webShellMessages = {
   'onboarding.workspace.timeZoneDetected': 'Terdeteksi dari perangkat ini: {timeZone}',
   'onboarding.connect.permissionsTitle': '{provider} apa yang akan diminta',
   'onboarding.connect.permissionsFooter':
-    'Relay tidak pernah meminta izin yang tidak digunakannya, dan Anda dapat memutuskan sambungan kapan saja.',
+    'Post Array tidak pernah meminta izin yang tidak digunakannya, dan Anda dapat memutuskan sambungan kapan saja.',
   'onboarding.connect.chooseProvider': 'Pilih platform',
   'onboarding.connect.opensProvider': 'Melanjutkan membuka {provider} di tab ini.',
   'onboarding.compose.help':

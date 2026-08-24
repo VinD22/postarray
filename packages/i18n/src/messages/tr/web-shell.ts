@@ -30,7 +30,7 @@ export const webShellMessages = {
   'shell.demo.badge': 'Demo verileri',
   'shell.demo.title': 'Demo verilerine bakıyorsunuz',
   'shell.demo.body':
-    "Relay API'ye bu tarayıcıdan erişilemediği için ekranlar, yerleşik bir örnek çalışma alanıyla doldurulur. Buradaki hiçbir şey gerçek bir hesaba bağlı değildir ve hiçbir şey yayınlanamaz.",
+    "Post Array API'ye bu tarayıcıdan erişilemediği için ekranlar, yerleşik bir örnek çalışma alanıyla doldurulur. Buradaki hiçbir şey gerçek bir hesaba bağlı değildir ve hiçbir şey yayınlanamaz.",
   'shell.demo.howToConnect':
     "NEXT_PUBLIC_RELAY_API_URL'yi ayarlayın ve canlı verileri kullanmak için uygulamayı yeniden başlatın.",
 
@@ -155,9 +155,9 @@ export const webShellMessages = {
     'Web uygulaması, REST API, MCP, CLI ve web kancalarından aynı iş akışı.',
   'auth.provider.title': 'Devam etmeden önce',
   'auth.provider.google.access':
-    "Google adınızı, e-posta adresinizi ve profil resminizi Relay ile paylaşır. Geçiş Gmail'inizi, Drive'ınızı veya Takviminizi okuyamıyor.",
+    "Google adınızı, e-posta adresinizi ve profil resminizi Post Array ile paylaşır. Geçiş Gmail'inizi, Drive'ınızı veya Takviminizi okuyamıyor.",
   'auth.provider.facebook.access':
-    'Facebook adınızı, e-posta adresinizi ve profil resminizi Relay ile paylaşır. Yayınlanacak bir Sayfayı bağlamak, daha sonra onaylayacağınız ayrı bir adımdır.',
+    'Facebook adınızı, e-posta adresinizi ve profil resminizi Post Array ile paylaşır. Yayınlanacak bir Sayfayı bağlamak, daha sonra onaylayacağınız ayrı bir adımdır.',
   'auth.provider.note': 'Bu oturum açmanızı sağlar. Yayınlanacak bir hesaba bağlanmaz.',
   'auth.continueWithEmail': 'E-postayla devam et',
   'auth.method.password': 'Şifre',
@@ -178,9 +178,7 @@ export const webShellMessages = {
   'auth.failure.noAccountLeak':
     'Güvenliğiniz için bir adresin kayıtlı olup olmadığını söylemiyoruz.',
   'auth.failure.provider': '{provider} ile oturum açma işlemi tamamlanmadı. Hiçbir şey değişmedi.',
-  'auth.failure.network': "Relay'e ulaşamadık. Bağlantınızı kontrol edip tekrar deneyin.",
-  'auth.signUp.trialNote':
-    'Yedi tam deneme günü. Bir ödeme yöntemi gereklidir. Bugün ödenmesi gereken 0$.',
+  'auth.failure.network': "Post Array'e ulaşamadık. Bağlantınızı kontrol edip tekrar deneyin.",
   'auth.signUp.emailInUseNote':
     'Bu adresin zaten bir hesabı varsa ikinci bir oturum açma bağlantısı oluşturmak yerine e-postayla bir oturum açma bağlantısı göndeririz.',
   'auth.legal.readTerms': 'Şartları Okuyun',
@@ -213,7 +211,7 @@ export const webShellMessages = {
   'onboarding.workspace.timeZoneDetected': 'Bu cihazdan algılandı: {timeZone}',
   'onboarding.connect.permissionsTitle': '{provider} ne istenecek?',
   'onboarding.connect.permissionsFooter':
-    'Relay asla kullanmadığı bir izin istemez ve istediğiniz zaman bağlantıyı kesebilirsiniz.',
+    'Post Array asla kullanmadığı bir izin istemez ve istediğiniz zaman bağlantıyı kesebilirsiniz.',
   'onboarding.connect.chooseProvider': 'Bir platform seçin',
   'onboarding.connect.opensProvider': 'Devam bu sekmede {provider} öğesini açar.',
   'onboarding.compose.help':

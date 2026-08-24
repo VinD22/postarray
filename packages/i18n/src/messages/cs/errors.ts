@@ -59,6 +59,10 @@ export const errorMessages = {
   'error.subscription_past_due.action': 'Aktualizujte platební metodu na portálu Polar.',
   'error.trial_expired.message': 'Zkušební verze skončila {date}.',
   'error.trial_expired.action': 'Zahajte předplatné a pokračujte v publikování.',
+  'error.post_credits_exhausted.message':
+    'Tento pracovní prostor vyčerpal všechny bezplatné příspěvky. Vše ostatní funguje dál.',
+  'error.post_credits_exhausted.action':
+    'Vyberte si tarif a publikujte dál. Vaše účty zůstávají připojené a koncepty i naplánované příspěvky se zachovají.',
   'error.entitlement_missing.message': 'Tento pracovní prostor nemá přístup k této funkci.',
   'error.entitlement_missing.action': 'Zkontrolujte nastavení fakturace nebo kontaktujte podporu.',
   'error.channel_limit_reached.message':

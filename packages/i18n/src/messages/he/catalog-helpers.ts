@@ -14,12 +14,12 @@ export function withHebrewPluralForms<T extends Readonly<Record<string, string>>
   ) as Readonly<Record<keyof T, string>>;
 }
 
-/** Terms in this map are protected verbatim by the Relay interface glossary. */
+/** Terms in this map are protected verbatim by the Post Array interface glossary. */
 const PROTECTED_TERM_REPLACEMENTS: readonly (readonly [string, string])[] = [
   ['דפי פייסבוק', 'Facebook Pages'],
   ['עמוד פייסבוק', 'Facebook Pages'],
-  ['וריליי', 'ו-Relay'],
-  ['ממסר', 'Relay'],
+  ['וריליי', 'ו-Post Array'],
+  ['ממסר', 'Post Array'],
   ['מלחין', 'Composer'],
   ['יועץ צמיחה', 'Growth Advisor'],
   ['מרכז פעולה', 'Action Center'],
