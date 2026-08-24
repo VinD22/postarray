@@ -92,6 +92,14 @@ export const billingMessages = {
   'billing.credits.granted':
     '{count, plural, one {# post added} other {# posts added}}',
 
+  /* The disclosure beside the pay button when there is no trial, which is the
+     normal case: the products carry no trial period, so the block must say
+     what actually happens rather than describe a countdown nobody is on. */
+  'billing.charge.dueToday': '{amount} due today',
+  'billing.charge.renewal': 'Renews {amount} every {interval} until you cancel',
+  'billing.charge.cancelAnyTime':
+    'Cancel from Settings at any time. You keep access until the end of the period you paid for.',
+
   'billing.trial.length': 'Seven day trial with every feature',
   'billing.trial.dueToday': '$0 due today',
   'billing.trial.paymentMethodRequired':

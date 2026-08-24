@@ -226,6 +226,8 @@ export {
   CHECKOUT_RETURN_POLL_SECONDS,
   DISCLOSURE_VERSION,
   REQUIRED_DISCLOSURE_LINE_IDS,
+  REQUIRED_IMMEDIATE_DISCLOSURE_LINE_IDS,
+  requiredDisclosureLineIds,
   buildCheckoutDisclosure,
   buildConsentRecord,
   checkoutReturnState,

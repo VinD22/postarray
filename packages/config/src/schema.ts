@@ -126,6 +126,7 @@ const isoDate = z
     message: DATE_MESSAGE,
   });
 const positiveInt = z.coerce.number().int().positive();
+const nonNegativeInt = z.coerce.number().int().nonnegative();
 const nonNegativeNumber = z.coerce.number().nonnegative();
 
 export const NODE_ENVIRONMENTS = ['development', 'test', 'production'] as const;
@@ -208,7 +209,14 @@ const polarShape = {
   POLAR_GROWTH_ANNUAL_PRODUCT_ID: identifier.optional(),
   POLAR_STUDIO_MONTHLY_PRODUCT_ID: identifier.optional(),
   POLAR_STUDIO_ANNUAL_PRODUCT_ID: identifier.optional(),
-  POLAR_TRIAL_DAYS: positiveInt.max(90).default(7),
+  /**
+   * Zero, and zero is the default, because this product does not sell a trial.
+   * Signing up is free and spends publishing credits instead, so the Polar
+   * products carry no trial period and the checkout disclosure must not
+   * promise one. The variable survives so a deployment that genuinely runs a
+   * trial promotion can set it, and so the number is never hardcoded.
+   */
+  POLAR_TRIAL_DAYS: nonNegativeInt.max(90).default(0),
 };
 
 const aiShape = {

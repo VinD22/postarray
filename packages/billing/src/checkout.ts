@@ -28,6 +28,8 @@ import { nowIso } from './time';
 export {
   DISCLOSURE_VERSION,
   REQUIRED_DISCLOSURE_LINE_IDS,
+  REQUIRED_IMMEDIATE_DISCLOSURE_LINE_IDS,
+  requiredDisclosureLineIds,
   buildCheckoutDisclosure,
   buildConsentRecord,
   type BuildDisclosureInput,
