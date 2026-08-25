@@ -1,7 +1,7 @@
 /**
  * Seeded demo data.
  *
- * Served only when `NEXT_PUBLIC_RELAY_DEMO_MODE=true` is explicitly enabled in
+ * Served only when `NEXT_PUBLIC_POSTARRAY_DEMO_MODE=true` is explicitly enabled in
  * a non-production environment. Every screen that renders this data also
  * renders the "Demo data" notice from the shell: this is example content, not a
  * fake dashboard pretending to be real.

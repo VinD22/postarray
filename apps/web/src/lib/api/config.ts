@@ -30,8 +30,8 @@ function readBaseUrl(rawValue: string | undefined): string | null {
 
 export function readApiConfig(
   environment: ApiEnvironment = {
-    apiUrl: process.env.NEXT_PUBLIC_RELAY_API_URL,
-    demoMode: process.env.NEXT_PUBLIC_RELAY_DEMO_MODE,
+    apiUrl: process.env.NEXT_PUBLIC_POSTARRAY_API_URL,
+    demoMode: process.env.NEXT_PUBLIC_POSTARRAY_DEMO_MODE,
     nodeEnv: process.env.NODE_ENV,
   },
 ): ApiConfig {
