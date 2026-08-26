@@ -653,7 +653,7 @@ export const webMarketingMessages = {
   'web.legal.contact.abuse': 'दुरुपयोग@postarray.com',
   'web.legal.contact.copyright': 'कॉपीराइट@postarray.com',
   'web.legal.contact.affiliates': 'Affiliates@postarray.com',
-  'web.legal.contact.accessibility': 'accessibility@postarray.com',
+  'web.legal.contact.accessibility': 'support@postarray.com',
   'web.legal.entity.pending':
     'अनुबंध करने वाली इकाई, इसका पंजीकृत पता और शासी क्षेत्राधिकार एक खुला निर्णय है और लॉन्च से पहले इसका नाम यहां दिया जाएगा।',
   'web.legal.index.updated': 'Updated {date}',

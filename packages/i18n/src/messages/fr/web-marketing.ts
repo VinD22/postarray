@@ -52,7 +52,7 @@ export const webMarketingMessages = {
   'web.correction.title': "J'ai trouvé quelque chose qui ne va pas sur cette page",
   'web.correction.body':
     "Les règles de la plateforme changent et nous nous trompons. Envoyez l'URL et ce qui est inexact et nous corrigerons la page ou la retirerons.",
-  'web.correction.email': 'corrections@postarray.com',
+  'web.correction.email': 'support@postarray.com',
 
   /* ---------------------------------------------------------------------- */
   /* Metadata                                                                */
@@ -650,13 +650,13 @@ export const webMarketingMessages = {
   'web.legal.counselPending.body':
     'The substance on this page reflects how the product actually behaves and is accurate today. The binding legal wording, the governing jurisdiction and the liability terms are being drafted with qualified counsel and will replace this text before Post Array is generally available. This page is not legal advice and it is not a contract yet.',
   'web.legal.contact.title': 'Contact',
-  'web.legal.contact.privacy': 'privacy@postarray.com',
-  'web.legal.contact.legal': 'legal@postarray.com',
-  'web.legal.contact.security': 'security@postarray.com',
-  'web.legal.contact.abuse': 'abuse@postarray.com',
-  'web.legal.contact.copyright': 'copyright@postarray.com',
-  'web.legal.contact.affiliates': 'affiliates@postarray.com',
-  'web.legal.contact.accessibility': 'accessibility@postarray.com',
+  'web.legal.contact.privacy': 'support@postarray.com',
+  'web.legal.contact.legal': 'support@postarray.com',
+  'web.legal.contact.security': 'support@postarray.com',
+  'web.legal.contact.abuse': 'support@postarray.com',
+  'web.legal.contact.copyright': 'support@postarray.com',
+  'web.legal.contact.affiliates': 'support@postarray.com',
+  'web.legal.contact.accessibility': 'support@postarray.com',
   'web.legal.entity.pending':
     'The contracting entity, its registered address and the governing jurisdiction are an open decision and will be named here before launch.',
   'web.legal.index.updated': 'Updated {date}',

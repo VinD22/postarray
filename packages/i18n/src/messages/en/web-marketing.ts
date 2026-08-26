@@ -61,7 +61,7 @@ export const webMarketingMessages = {
   'web.correction.title': 'Found something wrong on this page',
   'web.correction.body':
     'Platform rules change and we get things wrong. Send the URL and what is inaccurate and we will correct the page or retire it.',
-  'web.correction.email': 'corrections@postarray.com',
+  'web.correction.email': 'support@postarray.com',
 
   /* ---------------------------------------------------------------------- */
   /* Metadata                                                                */
@@ -793,13 +793,13 @@ export const webMarketingMessages = {
   'web.legal.counselPending.body':
     'The substance on this page reflects how the product actually behaves and is accurate today. The binding legal wording, the governing jurisdiction and the liability terms are being drafted with qualified counsel and will replace this text before Post Array is generally available. This page is not legal advice and it is not a contract yet.',
   'web.legal.contact.title': 'Contact',
-  'web.legal.contact.privacy': 'privacy@postarray.com',
-  'web.legal.contact.legal': 'legal@postarray.com',
-  'web.legal.contact.security': 'security@postarray.com',
-  'web.legal.contact.abuse': 'abuse@postarray.com',
-  'web.legal.contact.copyright': 'copyright@postarray.com',
-  'web.legal.contact.affiliates': 'affiliates@postarray.com',
-  'web.legal.contact.accessibility': 'accessibility@postarray.com',
+  'web.legal.contact.privacy': 'support@postarray.com',
+  'web.legal.contact.legal': 'support@postarray.com',
+  'web.legal.contact.security': 'support@postarray.com',
+  'web.legal.contact.abuse': 'support@postarray.com',
+  'web.legal.contact.copyright': 'support@postarray.com',
+  'web.legal.contact.affiliates': 'support@postarray.com',
+  'web.legal.contact.accessibility': 'support@postarray.com',
   'web.legal.contact.prelaunch':
     'Contact channels will be published here before general availability. No legal or support inbox is operating during this preview.',
   'web.legal.entity.pending':

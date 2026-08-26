@@ -636,7 +636,7 @@ export const webMarketingMessages = {
     'تعكس المادة الموجودة في هذه الصفحة كيفية تصرف المنتج فعليًا ودقته اليوم. تتم صياغة الصياغة القانونية الملزمة والولاية القضائية الحاكمة وشروط المسؤولية مع مستشار مؤهل وسيتم استبدال هذا النص قبل أن يصبح Post Array متاحًا بشكل عام. هذه الصفحة ليست نصيحة قانونية وليست عقدًا بعد.',
   'web.legal.contact.title': 'الاتصال',
   'web.legal.contact.privacy': 'Privacy@postarray.com',
-  'web.legal.contact.legal': 'legal@postarray.com',
+  'web.legal.contact.legal': 'support@postarray.com',
   'web.legal.contact.security': 'الأمن@postarray.com',
   'web.legal.contact.abuse': 'تعاطيا@postarray.com',
   'web.legal.contact.copyright': 'حقوق النشر@postarray.com',

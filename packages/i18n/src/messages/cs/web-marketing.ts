@@ -634,7 +634,7 @@ export const webMarketingMessages = {
     'Látka na této stránce odráží, jak se produkt skutečně chová, a je dnes přesný. Závazné právní znění, rozhodná jurisdikce a podmínky odpovědnosti jsou připravovány s kvalifikovaným právníkem a nahradí tento text dříve, než bude služba Post Array obecně dostupná. Tato stránka nepředstavuje právní poradenství a zatím to není smlouva.',
   'web.legal.contact.title': 'Kontakt',
   'web.legal.contact.privacy': 'soukromí@relé.příklad',
-  'web.legal.contact.legal': 'legal@postarray.com',
+  'web.legal.contact.legal': 'support@postarray.com',
   'web.legal.contact.security': 'zabezpečení@relé.příklad',
   'web.legal.contact.abuse': 'zneužívání@relé.příklad',
   'web.legal.contact.copyright': 'copyright@relé.příklad',

@@ -662,10 +662,10 @@ export const webMarketingMessages = {
   'web.legal.contact.privacy': 'Privacy@postarray.com',
   'web.legal.contact.legal': 'Legal@postarray.com',
   'web.legal.contact.security': 'безопасность@реле.пример',
-  'web.legal.contact.abuse': 'abuse@postarray.com',
+  'web.legal.contact.abuse': 'support@postarray.com',
   'web.legal.contact.copyright': 'авторское право@postarray.com',
   'web.legal.contact.affiliates': 'филиалы@postarray.com',
-  'web.legal.contact.accessibility': 'accessibility@postarray.com',
+  'web.legal.contact.accessibility': 'support@postarray.com',
   'web.legal.entity.pending':
     'Организация-заказчик, ее зарегистрированный адрес и регулирующая юрисдикция являются открытым решением и будут названы здесь перед запуском.',
   'web.legal.index.updated': 'Обновлен {date}',

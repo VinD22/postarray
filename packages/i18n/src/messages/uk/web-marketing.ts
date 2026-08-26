@@ -51,7 +51,7 @@ export const webMarketingMessages = {
   'web.correction.title': 'Знайшов щось не так на цій сторінці',
   'web.correction.body':
     'Правила платформи змінюються, і ми помиляємося. Надішліть URL і те, що є неточним, і ми виправимо сторінку або видалимо її.',
-  'web.correction.email': 'corrections@postarray.com',
+  'web.correction.email': 'support@postarray.com',
 
   /* ---------------------------------------------------------------------- */
   /* Metadata                                                                */
@@ -653,13 +653,13 @@ export const webMarketingMessages = {
   'web.legal.counselPending.body':
     'Сутність на цій сторінці відображає те, як продукт насправді поводиться, і є точною сьогодні. Обов’язкові юридичні формулювання, регулююча юрисдикція та умови відповідальності розробляються кваліфікованими консультантами та замінять цей текст до того, як Post Array стане загальнодоступним. Ця сторінка не є юридичною консультацією та ще не є договором.',
   'web.legal.contact.title': 'контакт',
-  'web.legal.contact.privacy': 'privacy@postarray.com',
-  'web.legal.contact.legal': 'legal@postarray.com',
-  'web.legal.contact.security': 'security@postarray.com',
-  'web.legal.contact.abuse': 'abuse@postarray.com',
-  'web.legal.contact.copyright': 'copyright@postarray.com',
-  'web.legal.contact.affiliates': 'affiliates@postarray.com',
-  'web.legal.contact.accessibility': 'accessibility@postarray.com',
+  'web.legal.contact.privacy': 'support@postarray.com',
+  'web.legal.contact.legal': 'support@postarray.com',
+  'web.legal.contact.security': 'support@postarray.com',
+  'web.legal.contact.abuse': 'support@postarray.com',
+  'web.legal.contact.copyright': 'support@postarray.com',
+  'web.legal.contact.affiliates': 'support@postarray.com',
+  'web.legal.contact.accessibility': 'support@postarray.com',
   'web.legal.entity.pending':
     'Організація-замовник, її юридична адреса та керівна юрисдикція є відкритим рішенням і будуть названі тут до запуску.',
   'web.legal.index.updated': 'Оновлено{date}',

@@ -641,7 +641,7 @@ export const webMarketingMessages = {
     'Treść na tej stronie odzwierciedla faktyczne zachowanie produktu i jest dokładna na dzień dzisiejszy. Wiążące brzmienie prawne, obowiązująca jurysdykcja i warunki odpowiedzialności są opracowywane z wykwalifikowanym doradcą i zastąpią ten tekst, zanim Post Array będzie ogólnie dostępny. Ta strona nie stanowi porady prawnej i nie jest jeszcze umową.',
   'web.legal.contact.title': 'Kontakt',
   'web.legal.contact.privacy': 'prywatność@przekaźnik.przykład',
-  'web.legal.contact.legal': 'legal@postarray.com',
+  'web.legal.contact.legal': 'support@postarray.com',
   'web.legal.contact.security': 'bezpieczeństwo@przekaźnik.przykład',
   'web.legal.contact.abuse': 'nadużycie@przekaźnik.przykład',
   'web.legal.contact.copyright': 'prawa autorskie@przekaźnik.przykład',

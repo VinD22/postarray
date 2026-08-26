@@ -24,7 +24,7 @@ export const webMarketingMessages = {
   'web.correction.title': 'Encontré algo mal en esta página',
   'web.correction.body':
     'Las reglas de la plataforma cambian y nos equivocamos. Envíe la URL y lo que es incorrecto y corregiremos la página o la retiraremos.',
-  'web.correction.email': 'corrections@postarray.com',
+  'web.correction.email': 'support@postarray.com',
   'web.meta.home.title': 'Post Array, el plano de control de publicación multilingüe',
   'web.meta.home.description':
     'Convierta una idea en contenido nativo de la plataforma, aprovéchela una vez, publíquela de manera confiable a través de las API oficiales de la plataforma y aprenda qué mejorar a continuación.',

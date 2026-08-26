@@ -26,7 +26,7 @@ export const webMarketingMessages = withHebrewPluralForms({
   'web.correction.title': 'מצא משהו לא בסדר בעמוד הזה',
   'web.correction.body':
     'חוקי הפלטפורמה משתנים ואנחנו טועים. שלח את כתובת האתר ומה לא מדויק ואנו נתקן את הדף או נוציא אותו משימוש.',
-  'web.correction.email': 'corrections@postarray.com',
+  'web.correction.email': 'support@postarray.com',
   'web.meta.home.title': 'ממסר, מישור השליטה בפרסום רב לשוני',
   'web.meta.home.description':
     'הפוך רעיון מקורי אחד לתוכן מקורי לפלטפורמה, אשר אותו פעם אחת, פרסם אותו בצורה מהימנה באמצעות ממשקי API רשמיים של פלטפורמה ולמד מה לשפר בהמשך.',
@@ -488,13 +488,13 @@ export const webMarketingMessages = withHebrewPluralForms({
   'web.legal.counselPending.body':
     'החומר בדף זה משקף את אופן התנהלות המוצר בפועל ומדויק כיום. הנוסח המשפטי המחייב, תחום השיפוט השולט ותנאי החבות מנוסחים עם עורך דין מוסמך ויחליפו את הטקסט הזה לפני ש-Post Array יהיה זמין באופן כללי. דף זה אינו ייעוץ משפטי והוא עדיין לא חוזה.',
   'web.legal.contact.title': 'צור קשר',
-  'web.legal.contact.privacy': 'privacy@postarray.com',
-  'web.legal.contact.legal': 'legal@postarray.com',
-  'web.legal.contact.security': 'security@postarray.com',
-  'web.legal.contact.abuse': 'abuse@postarray.com',
-  'web.legal.contact.copyright': 'copyright@postarray.com',
-  'web.legal.contact.affiliates': 'affiliates@postarray.com',
-  'web.legal.contact.accessibility': 'accessibility@postarray.com',
+  'web.legal.contact.privacy': 'support@postarray.com',
+  'web.legal.contact.legal': 'support@postarray.com',
+  'web.legal.contact.security': 'support@postarray.com',
+  'web.legal.contact.abuse': 'support@postarray.com',
+  'web.legal.contact.copyright': 'support@postarray.com',
+  'web.legal.contact.affiliates': 'support@postarray.com',
+  'web.legal.contact.accessibility': 'support@postarray.com',
   'web.legal.entity.pending':
     'הישות המתקשרת, הכתובת הרשומה שלו ותחום השיפוט השלטוני הם החלטה פתוחה ושמותיהם יינתנו כאן לפני ההשקה.',
   'web.legal.index.updated': 'עודכן {date}',

@@ -510,10 +510,10 @@ export const webMarketingMessages = {
     '이 페이지의 내용은 제품이 실제로 어떻게 작동하는지를 반영하며 현재 정확합니다. 구속력 있는 법적 문구, 준거 관할권 및 책임 조건은 자격을 갖춘 변호사의 초안을 작성 중이며 Post Array이 일반적으로 제공되기 전에 이 텍스트를 대체할 것입니다. 이 페이지는 법적 조언이 아니며 아직 계약도 아닙니다.',
   'web.legal.contact.title': '연락하다',
   'web.legal.contact.privacy': 'Privacy@postarray.com',
-  'web.legal.contact.legal': 'legal@postarray.com',
-  'web.legal.contact.security': 'security@postarray.com',
+  'web.legal.contact.legal': 'support@postarray.com',
+  'web.legal.contact.security': 'support@postarray.com',
   'web.legal.contact.abuse': '남용@postarray.com',
-  'web.legal.contact.copyright': 'copyright@postarray.com',
+  'web.legal.contact.copyright': 'support@postarray.com',
   'web.legal.contact.affiliates': '계열사@postarray.com',
   'web.legal.contact.accessibility': '접근성@postarray.com',
   'web.legal.entity.pending':
